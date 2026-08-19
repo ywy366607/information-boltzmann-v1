@@ -1,0 +1,76 @@
+{
+  "task": "native_mot_hf_pretrain_smoke",
+  "dataset": "jxie/flickr8k",
+  "backend": "local-D path=D:\\ml_cache\\huggingface\\models\\google--gemma-3-270m d_llm=640 dtype=torch.float32 cache=D:\\ml_cache",
+  "spec": "modal_private_qkv_ffn_shared_kv_space_slice_ephemeral",
+  "table": [
+    {
+      "kind": "native_mot",
+      "status": "ok",
+      "joint": true,
+      "lang_mode": "lora_r8_14:18",
+      "d_x": 128,
+      "d": 256,
+      "n_slices": 32,
+      "n_layers": 2,
+      "stack_params": 4545587,
+      "tokens_needed_1x": 4645587,
+      "approx_tokens_seen": 40000,
+      "validation_eligible_1x": false,
+      "final_loss": 3.0946104526519775,
+      "peak_vram_mb": 1932.173828125,
+      "seconds": 132.92567229270935,
+      "history": [
+        {
+          "step": 1,
+          "loss": 5.5880446434021,
+          "vram": 1786.025390625
+        },
+        {
+          "step": 50,
+          "loss": 5.71751594543457,
+          "vram": 1901.8359375
+        },
+        {
+          "step": 100,
+          "loss": 3.4271764755249023,
+          "vram": 1901.8359375
+        },
+        {
+          "step": 150,
+          "loss": 2.823530435562134,
+          "vram": 1901.8359375
+        },
+        {
+          "step": 200,
+          "loss": 3.51247239112854,
+          "vram": 1909.42431640625
+        },
+        {
+          "step": 250,
+          "loss": 4.844780445098877,
+          "vram": 1932.173828125
+        },
+        {
+          "step": 300,
+          "loss": 2.4246671199798584,
+          "vram": 1932.173828125
+        },
+        {
+          "step": 350,
+          "loss": 6.014883041381836,
+          "vram": 1932.173828125
+        },
+        {
+          "step": 400,
+          "loss": 3.0946104526519775,
+          "vram": 1932.173828125
+        }
+      ],
+      "tf_acc": 0.35611510791366907,
+      "tf_n_tokens": 556,
+      "eval_loss": 3.4361930986245475,
+      "n_eval": 48
+    }
+  ]
+}

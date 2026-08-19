@@ -1,0 +1,104 @@
+{
+  "arch": "unified residual increment + F2",
+  "knobs": {
+    "surprise_mode": "v1_bayes",
+    "s_update": "rms_dir",
+    "prior_loss_coef": 0.1,
+    "use_stiefel": true,
+    "deslice_topk": 2,
+    "gate_on": "u",
+    "deslice_write": "increment",
+    "gate_h_local": false,
+    "vfe_coef": 0.1,
+    "s_lang_topk": 0,
+    "s_kalman_update": false
+  },
+  "note": "Same graph for every port. Separate training only. Does not overwrite F2 / ChampB / old omni ckpts.",
+  "ports": {
+    "triad": {
+      "kind": "triad",
+      "acc": 0.9669642857142857,
+      "tasks": {
+        "color": 1.0,
+        "kinks": 0.9296875,
+        "ocr": 0.9725274725274725
+      },
+      "loss": 0.10753181917326791,
+      "checkpoint": "D:\\\u89c6\u89c9\u7f16\u7801\u5668\u6d4b\u8bd5\\checkpoints\\v1_bayes_2000step_unified_inc_run1_best.pt",
+      "deslice_write": "increment",
+      "vfe_coef": 0.1
+    },
+    "t2t": {
+      "kind": "t2t",
+      "acc": 1.0,
+      "psnr": 0.0,
+      "stroke_psnr": 0.0,
+      "bg_psnr": 0.0,
+      "ink": 0.0,
+      "flood": 0.0,
+      "checkpoint": "D:\\\u89c6\u89c9\u7f16\u7801\u5668\u6d4b\u8bd5\\checkpoints\\omni_d256_unified_t2t_best.pt",
+      "deslice_write": "increment",
+      "vfe_coef": 0.1
+    },
+    "i2t": {
+      "kind": "i2t",
+      "acc": 0.640625,
+      "psnr": 0.0,
+      "stroke_psnr": 0.0,
+      "bg_psnr": 0.0,
+      "ink": 0.0,
+      "flood": 0.0,
+      "checkpoint": "D:\\\u89c6\u89c9\u7f16\u7801\u5668\u6d4b\u8bd5\\checkpoints\\omni_d256_unified_i2t_best.pt",
+      "deslice_write": "increment",
+      "vfe_coef": 0.1
+    },
+    "it2t": {
+      "kind": "it2t",
+      "acc": 0.59375,
+      "psnr": 0.0,
+      "stroke_psnr": 0.0,
+      "bg_psnr": 0.0,
+      "ink": 0.0,
+      "flood": 0.0,
+      "checkpoint": "D:\\\u89c6\u89c9\u7f16\u7801\u5668\u6d4b\u8bd5\\checkpoints\\omni_d256_unified_it2t_best.pt",
+      "deslice_write": "increment",
+      "vfe_coef": 0.1
+    },
+    "recon": {
+      "kind": "recon",
+      "acc": 0.0,
+      "psnr": 36.254047840833664,
+      "stroke_psnr": 72.43364119529724,
+      "bg_psnr": 36.103581845760345,
+      "ink": 0.9375,
+      "flood": 0.12676055359588645,
+      "checkpoint": "D:\\\u89c6\u89c9\u7f16\u7801\u5668\u6d4b\u8bd5\\checkpoints\\omni_d256_unified_recon_best.pt",
+      "deslice_write": "increment",
+      "vfe_coef": 0.1
+    },
+    "i2i": {
+      "kind": "i2i",
+      "acc": 0.0,
+      "psnr": 22.469359010457993,
+      "stroke_psnr": 63.409269601106644,
+      "bg_psnr": 22.315119817852974,
+      "ink": 0.8125,
+      "flood": 0.1411319624967291,
+      "checkpoint": "D:\\\u89c6\u89c9\u7f16\u7801\u5668\u6d4b\u8bd5\\checkpoints\\omni_d256_unified_i2i_best.pt",
+      "deslice_write": "increment",
+      "vfe_coef": 0.1
+    },
+    "t2i": {
+      "kind": "t2i",
+      "acc": 0.0,
+      "psnr": 7.120823547244072,
+      "stroke_psnr": 71.96063935756683,
+      "bg_psnr": 6.96479095518589,
+      "ink": 0.90625,
+      "flood": 0.8035391084849834,
+      "checkpoint": "D:\\\u89c6\u89c9\u7f16\u7801\u5668\u6d4b\u8bd5\\checkpoints\\omni_d256_unified_t2i_best.pt",
+      "deslice_write": "increment",
+      "vfe_coef": 0.1
+    }
+  }
+}

@@ -1,8 +1,18 @@
-"""Vision→LLM frontends A/B/C: unified visual tokens [B, T, d_llm].
+"""Vision frontends: A/B/C token baselines + pointer to Transolver3 product path.
 
-A — pure patch (Uni-style grid embed + light MHSA stack)
-B — pure slice tokens (ST + topk=2 strong baseline; T = slice_num, scalable)
-C — coarse patch + fine slice concat (budget split reported)
+**Product / Transolver3 (multimodal):** do **not** use slice tokens as permanent
+visual memory. Keep full-res field X, communicate via shared workspace U
+(Read/Write), deslice write-back. See:
+  ``fine_grain.cross_modal_slice_loop.CrossModalSliceFrontend`` (kind B_xmodal)
+  ``results/published/NATIVE_MULTIMODAL_WORKSPACE.md``
+  ``results/published/FINAL_BIDIR_POINT_FIELD.md``
+
+**Legacy baselines only** (kept for A/B tables and ablations):
+
+A — pure patch tokens (ViT-style grid → LLM)
+B — **deprecated as product vision:** slice tokens projected to LLM (loses
+    live deslice field as working memory)
+C — hybrid patch + slice tokens (same caveat)
 
 All paths are torch-native (Conv2d / einsum / SDPA); no Python pixel loops.
 """
@@ -16,6 +26,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+from fine_grain.mm_projector import MMProjector
 from fine_grain.models import (
     NS_A,
     NS_B,
@@ -60,10 +71,11 @@ class FrontendOut:
 
 
 class PatchFrontend(nn.Module):
-    """A: fixed grid patchify → optional light stack → project to d_llm.
+    """A: fixed grid patchify → optional light stack → MM projector to d_llm.
 
     If ``T`` < native patch count, vectorized adaptive pool on the token grid.
     If ``T`` > native, raise (caller should pick smaller patch or higher res).
+    Projector default is LLaVA-1.5 2-layer MLP (Linear→GELU→Linear).
     """
 
     def __init__(
@@ -74,10 +86,12 @@ class PatchFrontend(nn.Module):
         dim: int = 64,
         depth: int = 2,
         T: Optional[int] = None,
+        projector: str = "mlp",
     ):
         super().__init__()
         assert res % patch == 0
         self.res, self.patch, self.dim = res, patch, dim
+        self.projector_kind = projector
         self.grid = res // patch
         self.native_T = self.grid * self.grid
         self.T = int(T) if T is not None else self.native_T
@@ -91,7 +105,7 @@ class PatchFrontend(nn.Module):
         self.pos = nn.Parameter(torch.zeros(1, self.native_T, dim))
         nn.init.normal_(self.pos, std=0.02)
         self.blocks = nn.ModuleList([Block(dim, SelfAttn(dim)) for _ in range(depth)])
-        self.proj = nn.Linear(dim, d_llm)
+        self.proj = MMProjector(dim, d_llm, kind=projector)
 
     def forward(self, img: torch.Tensor) -> FrontendOut:
         B, _, R, _ = img.shape
@@ -108,14 +122,25 @@ class PatchFrontend(nn.Module):
         return FrontendOut(
             tokens=tok,
             T=tok.shape[1],
-            meta={"kind": "A", "native_T": self.native_T, "patch": self.patch, "res": self.res},
+            meta={
+                "kind": "A",
+                "native_T": self.native_T,
+                "patch": self.patch,
+                "res": self.res,
+                "projector": self.projector_kind,
+            },
         )
 
 
 class SliceFrontend(nn.Module):
-    """B: content-adaptive slice tokens; T = slice_num (scalable, not locked small).
+    """LEGACY B: content-adaptive **slice tokens** for LLM prefix (not product core).
 
-    Strong baseline: local + mass + no_gumbel + ST + deslice_topk=2.
+    .. deprecated::
+        Product vision is Transolver3-style **full-res field + shared U**, not
+        permanent vision = slice tokens. Prefer ``CrossModalSliceFrontend``.
+        This class remains for historical A/B VLM tables and ablations only.
+
+    Strong baseline settings: local + mass + no_gumbel + ST + deslice_topk=2.
     Ambient C = heads*dim_head is raised when T is large so G<=C when possible.
     """
 
@@ -128,9 +153,11 @@ class SliceFrontend(nn.Module):
         depth: int = 2,
         deslice_topk: int = 2,
         stiefel: bool = True,
+        projector: str = "mlp",
     ):
         super().__init__()
         self.res, self.T, self.dim = res, int(T), dim
+        self.projector_kind = projector
         # Prefer G <= C: grow head dim so C >= T (cap for 4GB)
         heads = 4
         dim_head = max(16, (self.T + heads - 1) // heads)
@@ -163,7 +190,8 @@ class SliceFrontend(nn.Module):
         w = _Wrap()
         w.blocks = self.blocks
         apply_slice_flags(w, spec)
-        self.proj = nn.Linear(mix_dim, d_llm)
+        # LLaVA-1.5 style MM projector: mix_dim → d_llm
+        self.proj = MMProjector(mix_dim, d_llm, kind=projector)
         self._last_slot = {}
 
     def forward(self, img: torch.Tensor) -> FrontendOut:
@@ -209,6 +237,8 @@ class SliceFrontend(nn.Module):
             T=tok.shape[1],
             meta={
                 "kind": "B",
+                "legacy_slice_tokens": True,
+                "product_path": "CrossModalSliceFrontend / B_xmodal (Transolver3)",
                 "T": self.T,
                 "C": self.C,
                 "G_le_C": self.T <= self.C,
@@ -216,12 +246,13 @@ class SliceFrontend(nn.Module):
                 "stiefel_ns": bool(getattr(mix0, "stiefel_ns", False)),
                 "slot": slot,
                 "res": self.res,
+                "projector": self.projector_kind,
             },
         )
 
 
 class HybridFrontend(nn.Module):
-    """C: coarse patch tokens + fine slice tokens; T = T_patch + T_slice."""
+    """C: LEGACY hybrid patch + slice tokens (not Transolver3 product path)."""
 
     def __init__(
         self,
@@ -233,16 +264,19 @@ class HybridFrontend(nn.Module):
         dim: int = 64,
         depth: int = 2,
         deslice_topk: int = 2,
+        projector: str = "mlp",
     ):
         super().__init__()
+        self.projector_kind = projector
         native = patch_token_count(res, patch)
         Tp = int(T_patch) if T_patch is not None else native
         self.patch_fe = PatchFrontend(
             d_llm, res=res, patch=patch, dim=dim, depth=depth, T=Tp,
+            projector=projector,
         )
         self.slice_fe = SliceFrontend(
             d_llm, res=res, T=int(T_slice), dim=dim, depth=depth,
-            deslice_topk=deslice_topk, stiefel=True,
+            deslice_topk=deslice_topk, stiefel=True, projector=projector,
         )
         self.T_patch = self.patch_fe.T
         self.T_slice = self.slice_fe.T
@@ -263,6 +297,7 @@ class HybridFrontend(nn.Module):
                 "budget": f"{pa.T}+{sl.T}",
                 "slice_slot": sl.meta.get("slot", {}),
                 "res": self.patch_fe.res,
+                "projector": self.projector_kind,
             },
         )
 
@@ -278,13 +313,25 @@ def build_frontend(
     dim: int = 64,
     depth: int = 2,
     deslice_topk: int = 2,
+    projector: str = "mlp",
 ) -> nn.Module:
     kind = kind.upper()
     if kind == "A":
-        return PatchFrontend(d_llm, res=res, patch=patch, dim=dim, depth=depth, T=T)
+        return PatchFrontend(
+            d_llm, res=res, patch=patch, dim=dim, depth=depth, T=T,
+            projector=projector,
+        )
     if kind == "B":
+        # LEGACY slice-token frontend (not Transolver3 product path)
         return SliceFrontend(
             d_llm, res=res, T=T, dim=dim, depth=depth, deslice_topk=deslice_topk,
+            projector=projector,
+        )
+    if kind in ("B_XMODAL", "XMODAL", "B3", "TRANSOLVER3"):
+        from fine_grain.cross_modal_slice_loop import CrossModalSliceFrontend
+        return CrossModalSliceFrontend(
+            d_llm, res=res, T=T, dim=dim, n_layers=max(1, depth),
+            deslice_topk=deslice_topk, projector=projector,
         )
     if kind == "C":
         # default split: half budget each when T given
@@ -296,6 +343,7 @@ def build_frontend(
         tp = int(T_patch) if T_patch is not None else min(patch_token_count(res, p), max(8, T - ts))
         return HybridFrontend(
             d_llm, res=res, patch=p, T_patch=tp, T_slice=ts,
-            dim=dim, depth=depth, deslice_topk=deslice_topk,
+            dim=dim, depth=depth, deslice_topk=deslice_topk, projector=projector,
         )
     raise ValueError(f"unknown frontend kind {kind}")
+

@@ -1,0 +1,176 @@
+{
+  "task": "small_vlm_hf_caption",
+  "dataset": "jxie/flickr8k",
+  "backend": "local-D path=D:\\ml_cache\\huggingface\\models\\google--gemma-3-270m d_llm=640 dtype=torch.float32 cache=D:\\ml_cache",
+  "res": 64,
+  "T": 64,
+  "steps": 400,
+  "max_rows": 2000,
+  "joint": true,
+  "freeze_llm": false,
+  "lang": "lora",
+  "lora_r": 8,
+  "llm_last_n": 4,
+  "question": "Can slice work as VLM vision encoder at Gemma-270M scale (joint LoRA)?",
+  "table": [
+    {
+      "kind": "slice",
+      "encoder": "slice",
+      "status": "ok",
+      "joint": true,
+      "lang_mode": "lora_r8_14:18",
+      "final_loss": 2.8685972690582275,
+      "seconds": 252.27743244171143,
+      "peak_vram_mb": 1732.99755859375,
+      "trainable_vis": 521708,
+      "trainable_lang": 81920,
+      "history": [
+        {
+          "step": 1,
+          "loss": 5.183987617492676,
+          "vram_mb": 1680.49560546875
+        },
+        {
+          "step": 50,
+          "loss": 3.904273748397827,
+          "vram_mb": 1727.681640625
+        },
+        {
+          "step": 100,
+          "loss": 4.787022590637207,
+          "vram_mb": 1727.681640625
+        },
+        {
+          "step": 150,
+          "loss": 3.990851640701294,
+          "vram_mb": 1727.681640625
+        },
+        {
+          "step": 200,
+          "loss": 3.126101493835449,
+          "vram_mb": 1727.681640625
+        },
+        {
+          "step": 250,
+          "loss": 4.002254009246826,
+          "vram_mb": 1730.439453125
+        },
+        {
+          "step": 300,
+          "loss": 4.166801452636719,
+          "vram_mb": 1730.439453125
+        },
+        {
+          "step": 350,
+          "loss": 3.572768211364746,
+          "vram_mb": 1732.947265625
+        },
+        {
+          "step": 400,
+          "loss": 2.8685972690582275,
+          "vram_mb": 1732.99755859375
+        }
+      ],
+      "tf_acc": 0.3521897810218978,
+      "tf_n_tokens": 548,
+      "eval_loss": 3.3569147239128747,
+      "n_eval": 48
+    },
+    {
+      "kind": "patch",
+      "encoder": "patch",
+      "status": "ok",
+      "joint": true,
+      "lang_mode": "lora_r8_14:18",
+      "final_loss": 3.290996789932251,
+      "seconds": 239.23504662513733,
+      "peak_vram_mb": 1726.3544921875,
+      "trainable_vis": 543168,
+      "trainable_lang": 81920,
+      "history": [
+        {
+          "step": 1,
+          "loss": 4.276643753051758,
+          "vram_mb": 1621.36474609375
+        },
+        {
+          "step": 50,
+          "loss": 3.5754058361053467,
+          "vram_mb": 1660.63671875
+        },
+        {
+          "step": 100,
+          "loss": 3.0961971282958984,
+          "vram_mb": 1665.3486328125
+        },
+        {
+          "step": 150,
+          "loss": 4.025967597961426,
+          "vram_mb": 1726.3544921875
+        },
+        {
+          "step": 200,
+          "loss": 3.013183832168579,
+          "vram_mb": 1726.3544921875
+        },
+        {
+          "step": 250,
+          "loss": 3.0582592487335205,
+          "vram_mb": 1726.3544921875
+        },
+        {
+          "step": 300,
+          "loss": 4.893946647644043,
+          "vram_mb": 1726.3544921875
+        },
+        {
+          "step": 350,
+          "loss": 3.967700481414795,
+          "vram_mb": 1726.3544921875
+        },
+        {
+          "step": 400,
+          "loss": 3.290996789932251,
+          "vram_mb": 1726.3544921875
+        }
+      ],
+      "tf_acc": 0.2640449438202247,
+      "tf_n_tokens": 534,
+      "eval_loss": 3.8804795195659003,
+      "n_eval": 48
+    }
+  ],
+  "hf_datasets_catalog": {
+    "flickr8k": {
+      "id": "jxie/flickr8k",
+      "task": "image-caption",
+      "size": "~8k images, 5 caps each",
+      "note": "Best first target: small, free, parquet with embedded images",
+      "loader": "Flickr8kCaptionStore"
+    },
+    "flickr30k": {
+      "id": "nlphuji/flickr30k",
+      "task": "image-caption",
+      "size": "~31k",
+      "note": "zip images + csv; larger download"
+    },
+    "llava_pretrain_558k": {
+      "id": "liuhaotian/LLaVA-Pretrain",
+      "task": "image-caption / pretrain",
+      "size": "558k",
+      "note": "LLaVA stage-1 style; heavy download; projector pretrain SOTA recipe"
+    },
+    "coco_caps": {
+      "id": "Multimodal-Fatima/COCO_captions_train",
+      "task": "image-caption",
+      "size": "large multi-shard parquet",
+      "note": "Use 1\u20132 shards for experiments"
+    },
+    "pokemon_blip": {
+      "id": "lambdalabs/pokemon-blip-captions",
+      "task": "image-caption",
+      "size": "~800",
+      "note": "Gated \u2014 needs HF login; alt: svjack/pokemon-blip-captions-en-zh"
+    }
+  }
+}

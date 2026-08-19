@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Patch-ViT · Baseline · JEPA · Champion B · 2000-step 四路对决</title>
+<!-- KaTeX for formulas -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
+<style>
+  :root {
+    --bg: #090d16;
+    --bg-card: rgba(17, 24, 39, 0.85);
+    --bg-surface: #0f172a;
+    --border: rgba(148, 163, 184, 0.16);
+    --border-highlight: rgba(56, 189, 248, 0.35);
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --accent-blue: #38bdf8;
+    --accent-blue-dim: rgba(56, 189, 248, 0.12);
+    --accent-teal: #2dd4bf;
+    --accent-teal-dim: rgba(45, 212, 191, 0.12);
+    --accent-amber: #fbbf24;
+    --accent-amber-dim: rgba(251, 191, 36, 0.12);
+    --accent-purple: #c084fc;
+    --accent-purple-dim: rgba(192, 132, 252, 0.12);
+    --accent-rose: #fb7185;
+    --accent-rose-dim: rgba(251, 113, 133, 0.12);
+    --accent-gold: #fbbf24;
+    --accent-gold-dim: rgba(251, 191, 36, 0.14);
+    --max-w: 1240px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background-color: var(--bg);
+    color: var(--text-main);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    line-height: 1.75;
+    background-image:
+      radial-gradient(900px 450px at 10% -5%, rgba(56, 189, 248, 0.09), transparent 60%),
+      radial-gradient(800px 450px at 90% 15%, rgba(192, 132, 252, 0.08), transparent 60%),
+      radial-gradient(1000px 500px at 50% 100%, rgba(45, 212, 191, 0.06), transparent 70%);
+    background-attachment: fixed;
+    padding: 2.5rem 1.25rem;
+  }
+
+  .container { max-width: var(--max-w); margin: 0 auto; }
+
+  header {
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.7));
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 2.5rem;
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+  }
+  header::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--accent-blue), var(--accent-teal), var(--accent-amber), var(--accent-purple));
+  }
+
+  h1 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin-bottom: 0.8rem;
+    background: linear-gradient(135deg, #ffffff 40%, #cbd5e1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .subtitle { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 1.5rem; }
+
+  .badge-row { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 1rem; }
+  .badge {
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+  }
+  .badge-blue { background: var(--accent-blue-dim); color: var(--accent-blue); border: 1px solid rgba(56, 189, 248, 0.3); }
+  .badge-teal { background: var(--accent-teal-dim); color: var(--accent-teal); border: 1px solid rgba(45, 212, 191, 0.3); }
+  .badge-amber { background: var(--accent-amber-dim); color: var(--accent-amber); border: 1px solid rgba(251, 191, 36, 0.3); }
+  .badge-purple { background: var(--accent-purple-dim); color: var(--accent-purple); border: 1px solid rgba(192, 132, 252, 0.3); }
+  .badge-gold { background: var(--accent-gold-dim); color: var(--accent-gold); border: 1px solid rgba(251, 191, 36, 0.4); }
+
+  section {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 2.2rem;
+    margin-bottom: 2rem;
+    backdrop-filter: blur(10px);
+  }
+  .section-title {
+    font-size: 1.45rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .section-num {
+    width: 1.9rem;
+    height: 1.9rem;
+    border-radius: 6px;
+    background: var(--accent-blue-dim);
+    color: var(--accent-blue);
+    font-size: 0.95rem;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(56, 189, 248, 0.25);
+  }
+
+  p { margin-bottom: 1.2rem; color: #cbd5e1; font-size: 1rem; }
+  p:last-child { margin-bottom: 0; }
+
+  .focus-box {
+    background: rgba(15, 23, 42, 0.7);
+    border-left: 4px solid var(--accent-blue);
+    border-radius: 0 8px 8px 0;
+    padding: 1.2rem 1.4rem;
+    margin: 1.4rem 0;
+  }
+  .focus-box.teal { border-left-color: var(--accent-teal); }
+  .focus-box.amber { border-left-color: var(--accent-amber); }
+  .focus-box.rose { border-left-color: var(--accent-rose); }
+  .focus-box.gold { border-left-color: var(--accent-gold); }
+
+  .image-card {
+    background: #0b1120;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.2rem;
+    margin: 1.5rem 0;
+    text-align: center;
+  }
+  .image-card img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 6px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  }
+  .image-caption {
+    margin-top: 0.8rem;
+    font-size: 0.92rem;
+    color: var(--text-muted);
+  }
+
+  .grid-2 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(460px, 1fr));
+    gap: 1.2rem;
+    margin: 1.5rem 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 0.95rem;
+  }
+  th, td {
+    padding: 0.85rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+  }
+  th {
+    background: rgba(30, 41, 59, 0.6);
+    color: var(--accent-blue);
+    font-weight: 600;
+  }
+  tr:hover { background: rgba(56, 189, 248, 0.04); }
+
+  footer {
+    text-align: center;
+    padding: 2rem 0;
+    color: #64748b;
+    font-size: 0.88rem;
+    border-top: 1px solid var(--border);
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Header -->
+  <header>
+    <div class="badge-row">
+      <span class="badge badge-gold">Champion B · RMSNorm(Δ)</span>
+      <span class="badge badge-blue">JEPA + RMSNorm(Δ)</span>
+      <span class="badge badge-teal">Ungated DualStream</span>
+      <span class="badge" style="background:rgba(251,113,133,0.14);color:#fb7185;border:1px solid rgba(251,113,133,0.35);">Patch-ViT p=4</span>
+      <span class="badge badge-amber">2000-step · N=3</span>
+    </div>
+    <h1>四路阶梯：Patch-ViT → Baseline → JEPA+RMS → Champion B</h1>
+    <p class="subtitle">
+      同一套合成 VQA（1px OCR / Kinks / Color）、2000 步、3 种子。
+      传统 patch 网格 $49.1\%$，无门控点场 $61.0\%$，
+      <strong>JEPA + RMSNorm($\Delta$) $90.4\pm3.1\%$</strong>，
+      <strong>Bayes + RMSNorm($\Delta$) $97.6\pm2.0\%$</strong>。
+      两家门控都带 RMS；分差几乎全在 Kinks（$75.9$ vs $96.9$）。
+    </p>
+  </header>
+
+  <!-- 1. 核心大图：逐层真实决策归因梯度 -->
+  <section id="decision-saliency">
+    <div class="section-title">
+      <span class="section-num">1</span>
+      <span>直接证据：四路逐层决策归因梯度</span>
+    </div>
+    <p>
+      正确答案（数字 '7'）的 logit 对各层特征的偏导模长。
+      Patch-ViT 把 $4\times4$ 格子的 token 梯度铺回像素；其余三家是点场 $X_l$。
+      $$\text{Saliency}_l = \left\| \frac{\partial \text{Logit}_{7}}{\partial X_l} \right\|_2$$
+    </p>
+
+    <div class="image-card">
+      <img src="figs/decision_saliency_layer_evolution.png" alt="四路逐层决策归因梯度" />
+      <div class="image-caption">
+        ▲ <strong>图 1：从上到下 Patch-ViT · Baseline · JEPA+RMS · Champion B，$X_0 \to X_3$（Inferno）</strong>
+      </div>
+    </div>
+
+    <div class="focus-box gold">
+      <strong>一行一个病：</strong><br/>
+      1. <strong>Patch-ViT</strong> 从第一层就是 $4\times4$ 方块，永远画不出 1px 的 '7'。
+         这不是训不够，是归纳偏置：笔画被摊进 16 个像素的平均。<br/>
+      2. <strong>无门控 DualStream</strong> $X_0$ 其实最尖（单图 $21.5\times$）——点场看得到细结构。
+         $X_1$ 起被未调制残差冲掉，到 $X_3$ 变成均匀红场。<br/>
+      3. <strong>JEPA + RMS</strong> 不再塌成红场：单图 $12.5\to15.2\to8.3\to6.7\times$，'7' 一直还在，只是比 B 淡、深一层开始散。<br/>
+      4. <strong>Champion B</strong> $16\to19\to26\to26\times$，越深越尖，背景全黑。
+    </div>
+  </section>
+
+  <!-- 2. 定量 40 样本 Saliency SNR 柱状图 -->
+  <section id="saliency-snr">
+    <div class="section-title">
+      <span class="section-num">2</span>
+      <span>40 张独立 1px 数字上的跨深度 SNR</span>
+    </div>
+    <p>
+      $\text{SNR} = \overline{\text{Grad}}_{\text{stroke}} / \overline{\text{Grad}}_{\text{bg}}$，N=40。
+    </p>
+
+    <div class="image-card">
+      <img src="figs/saliency_snr_comparison.png" alt="四路深度信噪比柱状图" />
+      <div class="image-caption">
+        ▲ <strong>图 2：四路 $X_0 \to X_3$ 笔画决策 SNR（N=24，JEPA 为 RMS 权重）</strong>
+      </div>
+    </div>
+
+    <div class="focus-box amber">
+      <strong>40 样本均值：</strong>
+      <table style="margin-top:0.6rem;">
+        <tr><th></th><th>$X_0$</th><th>$X_1$</th><th>$X_2$</th><th>$X_3$</th></tr>
+        <tr><td>Patch-ViT</td><td>$5.23$</td><td>$2.70$</td><td>$3.06$</td><td>$3.19$</td></tr>
+        <tr><td>Baseline</td><td>$13.22$</td><td>$2.13$</td><td>$1.80$</td><td>$0.78$</td></tr>
+        <tr><td><strong>JEPA+RMS</strong></td><td>$8.01$</td><td>$10.95$</td><td>$6.24$</td><td>$6.26$</td></tr>
+        <tr style="background:rgba(251,191,36,0.12);"><td><strong>Champion B</strong></td><td>$13.42$</td><td>$16.67$</td><td>$\mathbf{24.24}$</td><td>$\mathbf{23.48}$</td></tr>
+      </table>
+      Patch 矮且块状。Baseline 过了 $X_1$ 掉进噪声。
+      JEPA+RMS <strong>不再塌到 $0.7\times$</strong>，深层稳住约 $6\times$。
+      B 继续往上走到 $23\times$。Kinks 差（$76$ vs $97$）对得上：两边都看得见笔画，B 更尖。
+    </div>
+  </section>
+
+  <!-- 3. 纯净单目标画面的逐层空间惊奇度 U_l(x,y) -->
+  <section id="pure-surprise">
+    <div class="section-title">
+      <span class="section-num">3</span>
+      <span>空间图：Patch 能量 · Baseline 点场 · JEPA/B 惊奇度</span>
+    </div>
+    <p>
+      Patch 没有切片惊奇度，画的是 token 能量铺回像素；Baseline 无门控，$U\equiv 0$，画点场能量；
+      JEPA+RMS / B 画 $U_l(x,y)$。色标各自归一，看结构不看绝对数。
+    </p>
+
+    <div class="image-card">
+      <img src="figs/pure_surprise_layer_comparison.png" alt="四路空间图" />
+      <div class="image-caption">
+        ▲ <strong>图 3：Patch 能量 / Baseline 点场能量 / JEPA+RMS 与 B 的空间惊奇度</strong>
+      </div>
+    </div>
+
+    <div class="focus-box rose">
+      Patch 的能量图是 8×8 积木，细笔画进不去。
+      JEPA+RMS 的 $U$ 不再炸成均匀场，笔画还在；B 更干净，幅度停在 $O(1)$–$O(4)$。
+    </div>
+  </section>
+
+  <!-- 4. 2000 步三方终极长程对决与渐近收敛极限 -->
+  <section id="triad-2000step">
+    <div class="section-title">
+      <span class="section-num">4</span>
+      <span>2000 步渐近对决：四路同一协议</span>
+    </div>
+    <p>
+      全部：$d=128$，4 层，res $32$，AdamW $10^{-3}$，余弦退火，种子 $\{42,1001,7777\}$，终评 1120 样本。
+      Patch-ViT 是 $p=4$ 固定网格（64 token）与文本拼在一起做共享自注意力，无切片、无 deslice、无门控（$0.63$M 参数）。
+      后三家是 Dual-Stream 点场（$2.1$M）：Baseline $g=1$，JEPA 与 Champion B <strong>都用 RMSNorm($\Delta$)</strong>，只是门控分别是 $L_2$ 与高斯 KL。
+    </p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>实验组</th>
+          <th>综合 Acc (%)</th>
+          <th>Val Loss</th>
+          <th>1px OCR</th>
+          <th>Kinks</th>
+          <th>Color</th>
+          <th>相对 Patch-ViT</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="background: rgba(251, 113, 133, 0.08);">
+          <td><strong>Patch-ViT</strong><br/><span style="color:#94a3b8;font-size:0.85rem;">$p=4$，共享 Transformer</span></td>
+          <td>$49.05 \pm 4.38$</td>
+          <td>$1.224$</td>
+          <td>$27.9\%$</td>
+          <td>$33.5\%$</td>
+          <td>$87.1\%$</td>
+          <td>传统 A 路。1px 进不了 $4\times4$ 格子</td>
+        </tr>
+        <tr>
+          <td><strong>Baseline</strong><br/><span style="color:#94a3b8;font-size:0.85rem;">DualStream，无门控 $g=1$</span></td>
+          <td>$61.01 \pm 8.21$</td>
+          <td>$0.846$</td>
+          <td>$49.2\%$</td>
+          <td>$35.4\%$</td>
+          <td>$99.8\%$</td>
+          <td>点场比 patch 多 $+12$ Acc；深层仍被残差冲掉</td>
+        </tr>
+        <tr style="background: rgba(56, 189, 248, 0.08);">
+          <td><strong>JEPA + RMS</strong><br/><span style="color:#94a3b8;font-size:0.85rem;">$L_2$ 门控 + RMSNorm($\Delta$)</span></td>
+          <td>$90.39 \pm 3.09$</td>
+          <td>$0.250$</td>
+          <td>$95.6\%$</td>
+          <td>$75.9\%$</td>
+          <td>$99.7\%$</td>
+          <td>与 B 同一套残差更新；OCR 已打平，Kinks 仍落后</td>
+        </tr>
+        <tr style="background: rgba(251, 191, 36, 0.14);">
+          <td><strong>Champion B</strong><br/><span style="color:#fbbf24;font-size:0.85rem;">Bayes + RMSNorm($\Delta$)</span></td>
+          <td>$\mathbf{97.59 \pm 2.01}$</td>
+          <td>$\mathbf{0.074}$</td>
+          <td>$\mathbf{95.9\%}$</td>
+          <td>$\mathbf{96.9\%}$</td>
+          <td>$\mathbf{100\%}$</td>
+          <td><strong>相对 Patch：Acc $+48.5$，OCR $+68$，kinks $+63$</strong></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="grid-2" style="margin-top: 1.5rem;">
+      <div class="image-card">
+        <img src="figs/champion_vs_jepa_trajectories.png" alt="2000步 JEPA vs Champion B 收敛轨迹" />
+        <div class="image-caption">▲ <strong>图 4：2000 步 val loss / acc。粉=Patch，灰=Baseline，蓝=JEPA+RMS，金=Champion B。</strong></div>
+      </div>
+      <div class="image-card">
+        <img src="figs/champion_vs_jepa_summary_bars.png" alt="2000步 JEPA vs Champion B 柱状图" />
+        <div class="image-caption">▲ <strong>图 5：终值。Color 是捷径（Patch 都有 87%）；真正分档的是 OCR 与 Kinks。</strong></div>
+      </div>
+    </div>
+
+    <div class="image-card" style="margin-top: 1.5rem;">
+      <img src="figs/champion_vs_jepa_tasks.png" alt="2000步子任务演化" />
+      <div class="image-caption">▲ <strong>图 6：子任务轨迹。Patch 在 OCR/Kinks 几乎起不来；B 的 Kinks 在 1000 步附近过 80%。</strong></div>
+    </div>
+
+    <div class="focus-box teal">
+      <strong>读曲线：</strong><br/>
+      1. Color 几乎人人会做。Patch 87%、其余三家 100%——它测不到 1px 能力。<br/>
+      2. 点场本身就比 patch 强一档（$49\to61$），因为 $X$ 还在像素分辨率。没有门控，这个优势只活在 $X_0$。<br/>
+      3. JEPA+RMS 把 OCR 拉到 $95.6$，与 B 打平；Kinks $75.9$，还差一截。<br/>
+      4. B 的剩余红利几乎全在拓扑（Kinks $96.9$）。阶梯是分辨率 → 写回不被冲掉 → RMS 钉幅度 → KL 门控，不是换一个更大的 ViT。
+    </div>
+  </section>
+
+  <!-- 4c fair 2x2 -->
+  <section id="fair-2x2">
+    <div class="section-title">
+      <span class="section-num">4b</span>
+      <span>同一协议：JEPA+RMS vs Bayes+RMS</span>
+    </div>
+    <p>
+      两边都是 $\lambda=0.1$，Stiefel，topk2，RMSNorm($\Delta$)，2000×3。差别只剩门控是 $L_2$ 还是高斯 KL。
+    </p>
+    <table>
+      <thead>
+        <tr><th></th><th>Acc</th><th>OCR</th><th>Kinks</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>JEPA + RMSNorm($\Delta$)</strong></td>
+          <td>$90.4\pm3.1$</td>
+          <td>$95.6$</td>
+          <td>$75.9$</td>
+        </tr>
+        <tr style="background:rgba(251,191,36,0.14);">
+          <td><strong>Bayes + RMSNorm($\Delta$)</strong></td>
+          <td>$\mathbf{97.6\pm2.0}$</td>
+          <td>$95.9$</td>
+          <td>$\mathbf{96.9}$</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="image-card">
+      <img src="figs/jepa_bayes_rms_2x2.png" alt="JEPA+RMS vs Bayes+RMS" />
+      <div class="image-caption">▲ <strong>图 7：都带 RMS 之后，OCR 打平，Bayes 多出来的几乎全在 Kinks。</strong></div>
+    </div>
+    <div class="focus-box amber">
+      不再把无 RMS 的 $76\%$ JEPA 放进主对比。
+      公平说法：<strong>两家都 90+，KL 门控在 kinks 上再拉开约 21 点</strong>。
+    </div>
+  </section>
+
+  <section id="five-ports">
+    <div class="section-title">
+      <span class="section-num">4c</span>
+      <span>五种端口：同一场循环上的文生文 / 图文生文 / 重建 / 文生图 / 图生图</span>
+    </div>
+    <p>
+      架构是 I/O 对称的。识别（图文生文）和重建已经测过；生成只是换初值：
+      $X_0$ 换成噪声或残缺图，最后读 $X_L$ 而不是 $H_L$。
+    </p>
+    <table>
+      <thead>
+        <tr><th>端口</th><th>公式</th><th>本仓库里的名字</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>文生文</td><td>$H_0=\text{文本},\; X_0=\mathbf{0}\;\to\;$ 读 $H$</td><td>T2T（语言）</td></tr>
+        <tr><td>图文生文</td><td>$X_0=\text{图},\; H_0=\text{问}\;\to\;$ 读 $H$</td><td>IT2T / OCR / VQA</td></tr>
+        <tr><td>重建</td><td>$X_0=\text{图}\;\to\;$ 解码 $X$</td><td>Recon</td></tr>
+        <tr><td>文生图</td><td>$X_0=\text{噪声},\; H_0=\text{描述}\;\to\;$ 解码 $X$</td><td>T2I</td></tr>
+        <tr><td>图生图</td><td>$X_0=\text{图},\; H_0=\text{指令}\;\to\;$ 解码 $X$</td><td>I2I（上色 / 去噪）</td></tr>
+      </tbody>
+    </table>
+    <div class="image-card">
+      <img src="figs/omni_five_ports_gallery.png" alt="五端口画廊" />
+      <div class="image-caption">
+        ▲ <strong>图 8：同一 Champion-B 场循环，四条像素/识别端口（800+600 步混训）</strong><br/>
+        行：图文生文 · 重建 · 文生图 · 图生图。列：输入场 · 目标 · 预测。
+      </div>
+    </div>
+    <table>
+      <thead>
+        <tr><th>端口</th><th>探针结果</th><th>怎么读</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>文生文 T2T</td><td>答案在问句里时 acc $100\%$</td><td>$H$ 通路通。这是玩具抄写，不是语言能力</td></tr>
+        <tr><td>图文生文 IT2T</td><td>混训 OCR $\sim 40\%$（专训 B 是 $96\%$）</td><td>端口成立；和像素头抢容量</td></tr>
+        <tr><td>重建 Recon</td><td>PSNR $\sim 21$，笔画在</td><td>写回点场已经会（和 line-recon 一致）</td></tr>
+        <tr><td>图生图 I2I</td><td>去噪能找回 1px 字形，PSNR $\sim 13$</td><td>$H$ 指令 + 残缺 $X_0$ 可以改场</td></tr>
+        <tr style="background:rgba(251,113,133,0.08);"><td>文生图 T2I</td><td>先学会颜色，字形还没长出来，PSNR $\sim 6$</td><td>语言先验单独写结构，这一头还没过</td></tr>
+      </tbody>
+    </table>
+    <div class="focus-box rose">
+      架构上五个端口都接得上，并不等于五个都已经会。
+      重建和图生图说明 <code>Write_visual</code> 在有视觉证据时工作；
+      文生图失败说明「只靠 $H$ 从空场长出 1px 结构」还是缺的那一块，不是已经完成的故事。
+    </div>
+  </section>
+
+  <!-- 4b. Forward State Optimizer family -->
+  <section id="forward-opt">
+    <div class="section-title">
+      <span class="section-num">5</span>
+      <span>为什么是 B，不是 Adam / Muon</span>
+    </div>
+    <p>
+      权重一路都是 AdamW。消融的是<strong>前向</strong>对切片矩阵 $S\in\mathbb{R}^{32\times 128}$ 的 4 层残差：
+      $S \leftarrow S + \eta\, g(U)\, O(\Delta)$，$\Delta = S_2 - S$。
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th>$O(\Delta)$</th>
+          <th>综合 Acc</th>
+          <th>Kinks</th>
+          <th>7777 这颗炸种子</th>
+          <th>几何</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="background: rgba(251, 191, 36, 0.14);">
+          <td><strong>B · RMSNorm($\Delta$)</strong></td>
+          <td>$\mathbf{97.59\pm 2.01}$</td>
+          <td>$\mathbf{96.9}$</td>
+          <td>$\mathbf{99.6}$（kinks $99.2$）</td>
+          <td>整条 token 只改幅度，方向不动，无层状态</td>
+        </tr>
+        <tr>
+          <td>Momentum</td>
+          <td>$97.02\pm 3.45$</td>
+          <td>$97.2$</td>
+          <td>$99.4$</td>
+          <td>跨层平滑，方向大致仍是 $\Delta$</td>
+        </tr>
+        <tr>
+          <td>Muon $\mathrm{NS}(m)$</td>
+          <td>$94.76\pm 3.74$</td>
+          <td>$85.5$</td>
+          <td>$89.9$（kinks $70.4$）</td>
+          <td>保住列空间，但把 32 个奇异值强行铺平</td>
+        </tr>
+        <tr>
+          <td>Adam $m/\sqrt{v}$</td>
+          <td>$90.45\pm 5.19$</td>
+          <td>$75.9$</td>
+          <td>$83.1$（kinks $53.0$）</td>
+          <td>4 步地平线 + $\beta_2=0.999$ ≈ 逐坐标符号，拆相对角度</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="focus-box gold">
+      Adam 更通用，是针对<strong>参数、上万步、逐坐标</strong>。
+      这里的 $S$ 是 4 步深的二维切片矩阵，病是秩和尺度，不是某个坐标的学习率。
+      Muon 对口二维，但满秩正交化跟「健康漏斗秩 2–4」打架。
+      B 最省事，也最对口：$\Delta$ 自己的子空间原样留下，只钉死 $\|\Delta\|$。
+    </div>
+  </section>
+
+  <!-- 6. 先验坍塌：Stiefel 留下，SIGReg 没有赢 -->
+  <section id="anti-collapse">
+    <div class="section-title">
+      <span class="section-num">6</span>
+      <span>抗坍塌备忘：Stiefel 留下，官方 SIGReg 没有赢过 B</span>
+    </div>
+    <div class="focus-box" style="border-left-color: var(--accent-purple);">
+      <strong>先验同质化曾经是真的：</strong>
+      无约束交叉注意力下，$\hat S = P(H)\in\mathbb{R}^{32\times 128}$ 会塌成 $\mathrm{srank}=1$（32 个探针变成同一个广播）。
+      读出修完 + Stiefel 之后，这一处不再是主矛盾。后面把准确率从 85 拉到 97 的，是残差尺度，不是再往 $S$ 上浇一层各向同性高斯。
+    </div>
+
+    <div class="grid-2" style="margin-top: 1.5rem;">
+      <div class="card" style="background: rgba(15, 23, 42, 0.9); border: 1px solid var(--border-highlight); padding: 1.5rem; border-radius: 12px;">
+        <h3 style="color: var(--accent-blue); margin-bottom: 0.8rem;">方案 A：Stiefel 流形极分解硬投影 (Newton–Schulz)</h3>
+        <p style="font-size: 0.92rem; color: #cbd5e1;">
+          <strong>作用位置：</strong>语言探针矩阵 $Q_{\text{slice}} \in \mathbb{R}^{M \times d}$<br/>
+          <strong>数学机制：</strong>在每次 forward 时，采用 Muon 五阶极分解将探针投影到 Stiefel 流形 $\mathrm{St}(M, d)$：
+          $$Q_{\text{ortho}} = \text{Newton-Schulz}(Q), \quad \text{满足 } Q_{\text{ortho}} Q_{\text{ortho}}^\top = I_M$$
+          <strong>核心优势：</strong>零超参数、无额外 Loss，几何硬约束将先验秩从 <strong>1.00 强制拉满至 32.00</strong>！
+        </p>
+      </div>
+
+      <div class="card" style="background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(192, 132, 252, 0.35); padding: 1.5rem; border-radius: 12px;">
+        <h3 style="color: var(--accent-purple); margin-bottom: 0.8rem;">方案 B：LeJEPA SIGReg (Statistical Isotropic Gaussian Regularizer)</h3>
+        <p style="font-size: 0.92rem; color: #cbd5e1;">
+          <strong>作用位置：</strong>先验/后验特征空间分布 $Z \in \mathbb{R}^{B \cdot M \times d}$<br/>
+          <strong>数学机制：</strong>强制切片特征分布在通道与切片维度服从各向同性高斯，惩罚协方差非对角能量：
+          $$\mathcal{L}_{\text{cov}} = \frac{1}{d} \sum_{i \neq j} [\Sigma_Z]_{ij}^2, \quad \mathcal{L}_{\text{slice}} = \frac{1}{M(M-1)} \sum_{m \neq k} [C_{\text{slice}}]_{mk}^2$$
+          <strong>实测：</strong>官方 Epps–Pulley 打在活 $S$ 上，流形是撑开了（L3 云从 2.3 到 73），
+          准确率却从 86 掉到 70；关掉 Stiefel 只留 SIGReg 更掉到 37.5。
+          深秩 2–4 在 84%+ 模型里是健康漏斗，不是病。
+        </p>
+      </div>
+    </div>
+    <p style="margin-top: 1.2rem; color:#94a3b8; font-size:0.95rem;">
+      产品默认因此很短：Stiefel 开，SIGReg 关，前向更新用 B，权重继续 AdamW。
+    </p>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    Patch-ViT p=4 · Ungated DualStream · JEPA+RMS · Champion B = Bayes + RMSNorm(Δ) · 2000-step · 2026
+  </footer>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,166 @@
+{
+  "task": "small_vlm_hf_caption",
+  "dataset": "jxie/flickr8k",
+  "backend": "local-D path=D:\\ml_cache\\huggingface\\models\\google--gemma-3-270m d_llm=640 dtype=torch.float32 cache=D:\\ml_cache",
+  "res": 64,
+  "T": 64,
+  "steps": 400,
+  "max_rows": 2000,
+  "freeze_llm": true,
+  "question": "Can slice work as VLM vision encoder at Gemma-270M scale?",
+  "table": [
+    {
+      "kind": "slice",
+      "encoder": "slice",
+      "status": "ok",
+      "final_loss": 5.858494281768799,
+      "seconds": 209.28031730651855,
+      "peak_vram_mb": 2013.8359375,
+      "trainable_params": 521708,
+      "history": [
+        {
+          "step": 1,
+          "loss": 3.8835082054138184,
+          "vram_mb": 1909.2626953125
+        },
+        {
+          "step": 50,
+          "loss": 3.1072628498077393,
+          "vram_mb": 1966.46044921875
+        },
+        {
+          "step": 100,
+          "loss": 6.151971817016602,
+          "vram_mb": 1966.46044921875
+        },
+        {
+          "step": 150,
+          "loss": 8.217833518981934,
+          "vram_mb": 1985.84716796875
+        },
+        {
+          "step": 200,
+          "loss": 7.181737899780273,
+          "vram_mb": 2013.8359375
+        },
+        {
+          "step": 250,
+          "loss": 5.1820549964904785,
+          "vram_mb": 2013.8359375
+        },
+        {
+          "step": 300,
+          "loss": 9.336482048034668,
+          "vram_mb": 2013.8359375
+        },
+        {
+          "step": 350,
+          "loss": 6.37485933303833,
+          "vram_mb": 2013.8359375
+        },
+        {
+          "step": 400,
+          "loss": 5.858494281768799,
+          "vram_mb": 2013.8359375
+        }
+      ],
+      "tf_acc": 0.12701612903225806,
+      "tf_n_tokens": 496,
+      "eval_loss": 5.335408394535382,
+      "n_eval": 48
+    },
+    {
+      "kind": "patch",
+      "encoder": "patch",
+      "status": "ok",
+      "final_loss": 3.2494425773620605,
+      "seconds": 197.4363181591034,
+      "peak_vram_mb": 1958.619140625,
+      "trainable_params": 543168,
+      "history": [
+        {
+          "step": 1,
+          "loss": 9.5245361328125,
+          "vram_mb": 1868.55859375
+        },
+        {
+          "step": 50,
+          "loss": 3.5963077545166016,
+          "vram_mb": 1908.9365234375
+        },
+        {
+          "step": 100,
+          "loss": 4.177891731262207,
+          "vram_mb": 1957.86572265625
+        },
+        {
+          "step": 150,
+          "loss": 4.031731128692627,
+          "vram_mb": 1957.86572265625
+        },
+        {
+          "step": 200,
+          "loss": 4.893771648406982,
+          "vram_mb": 1957.86572265625
+        },
+        {
+          "step": 250,
+          "loss": 3.543170213699341,
+          "vram_mb": 1957.86572265625
+        },
+        {
+          "step": 300,
+          "loss": 4.990444183349609,
+          "vram_mb": 1958.619140625
+        },
+        {
+          "step": 350,
+          "loss": 2.911163330078125,
+          "vram_mb": 1958.619140625
+        },
+        {
+          "step": 400,
+          "loss": 3.2494425773620605,
+          "vram_mb": 1958.619140625
+        }
+      ],
+      "tf_acc": 0.30639097744360905,
+      "tf_n_tokens": 532,
+      "eval_loss": 3.9805721044540405,
+      "n_eval": 48
+    }
+  ],
+  "hf_datasets_catalog": {
+    "flickr8k": {
+      "id": "jxie/flickr8k",
+      "task": "image-caption",
+      "size": "~8k images, 5 caps each",
+      "note": "Best first target: small, free, parquet with embedded images",
+      "loader": "Flickr8kCaptionStore"
+    },
+    "flickr30k": {
+      "id": "nlphuji/flickr30k",
+      "task": "image-caption",
+      "size": "~31k",
+      "note": "zip images + csv; larger download"
+    },
+    "llava_pretrain_558k": {
+      "id": "liuhaotian/LLaVA-Pretrain",
+      "task": "image-caption / pretrain",
+      "size": "558k",
+      "note": "LLaVA stage-1 style; heavy download; projector pretrain SOTA recipe"
+    },
+    "coco_caps": {
+      "id": "Multimodal-Fatima/COCO_captions_train",
+      "task": "image-caption",
+      "size": "large multi-shard parquet",
+      "note": "Use 1\u20132 shards for experiments"
+    },
+    "pokemon_blip": {
+      "id": "lambdalabs/pokemon-blip-captions",
+      "task": "image-caption",
+      "size": "~800",
+      "note": "Gated \u2014 needs HF login; alt: svjack/pokemon-blip-captions-en-zh"
+    }
+  }
+}

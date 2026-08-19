@@ -221,8 +221,13 @@ def load_frozen_lm(
         try:
             if not str(p).upper().startswith("D:"):
                 raise RuntimeError(f"refusing non-D path {p}")
-            # force fp32 for gemma* paths even if prefer was generic
-            use_dtype = torch.float32 if "gemma" in p.name.lower() else dtype
+            # Default: fp32 for gemma (stability). Caller may pass dtype=fp16 for joint/4GB.
+            if dtype is not None:
+                use_dtype = dtype
+            elif "gemma" in p.name.lower():
+                use_dtype = torch.float32
+            else:
+                use_dtype = dtype
             model, tok, d_llm, path = _load_from_path(str(p), device, use_dtype)
             note = (
                 f"local-D path={path} d_llm={d_llm} dtype={use_dtype} cache={_D_CACHE}"

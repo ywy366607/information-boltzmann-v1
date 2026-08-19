@@ -1,0 +1,27 @@
+{
+  "steps": 2000,
+  "res": 32,
+  "d_model": 256,
+  "n_slices": 64,
+  "n_heads": 8,
+  "final": {
+    "recon": {
+      "n": 64,
+      "acc": 0.0,
+      "psnr": 36.254047840833664,
+      "stroke_psnr": 72.43364119529724,
+      "bg_psnr": 36.103581845760345,
+      "ink": 0.9375,
+      "flood": 0.12676055359588645
+    }
+  },
+  "ckpt": "D:\\\u89c6\u89c9\u7f16\u7801\u5668\u6d4b\u8bd5\\checkpoints\\omni_d256_unified_recon_best.pt",
+  "gallery": "D:\\\u89c6\u89c9\u7f16\u7801\u5668\u6d4b\u8bd5\\present\\figs\\omni_unified_recon_gallery.png",
+  "vfe_coef": 0.1,
+  "deslice_write": "increment",
+  "s_lang_topk": 0,
+  "mix": [
+    "recon"
+  ],
+  "note": "Unified residual. Recovered after gallery crash; ckpt was already saved."
+}

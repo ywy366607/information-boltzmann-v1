@@ -1,0 +1,154 @@
+{
+  "task": "visual_latent_cot_ocr_string",
+  "backend": "local-D path=D:\\ml_cache\\huggingface\\models\\google--gemma-3-270m d_llm=640 dtype=torch.float32 cache=D:\\ml_cache",
+  "design": {
+    "query": "q = W_q z, z continuous thought (Coconut-like)",
+    "writeback": "damped deslice residual beta",
+    "memory": "KV cache for text; x field for vision; no GDN-2",
+    "train": "next-token CE + optional NextLat aux on z; no LLM BPTT",
+    "latent_steps": 2,
+    "beta": 0.5,
+    "gamma": 0.9,
+    "nextlat_w": 0.1
+  },
+  "table": [
+    {
+      "kind": "A",
+      "T": 32,
+      "latent_steps": 1,
+      "seed": 0,
+      "final_loss": 1.7176251411437988,
+      "exact_acc": 0.0,
+      "cer": 2.697916666666667,
+      "n_eval": 32,
+      "peak_vram_mb": 1747.4287109375,
+      "seconds": 178.33873009681702,
+      "status": "ok",
+      "fail_examples": [
+        {
+          "gold": "40",
+          "pred": " 4444444",
+          "cer": 3.0
+        },
+        {
+          "gold": "696",
+          "pred": " 4444444",
+          "cer": 2.333
+        },
+        {
+          "gold": "607",
+          "pred": " 4444444",
+          "cer": 2.333
+        },
+        {
+          "gold": "39",
+          "pred": " 4444444",
+          "cer": 3.5
+        },
+        {
+          "gold": "798",
+          "pred": " 4444444",
+          "cer": 2.333
+        },
+        {
+          "gold": "863",
+          "pred": " 4444444",
+          "cer": 2.333
+        },
+        {
+          "gold": "794",
+          "pred": " 4444444",
+          "cer": 2.0
+        },
+        {
+          "gold": "431",
+          "pred": " 4444444",
+          "cer": 2.0
+        }
+      ],
+      "meta": {
+        "kind": "A",
+        "native_T": 64,
+        "patch": 4,
+        "res": 32,
+        "projector": "mlp",
+        "T": 32
+      }
+    },
+    {
+      "kind": "B_vlcot",
+      "T": 32,
+      "latent_steps": 2,
+      "seed": 0,
+      "final_loss": 1.7907131910324097,
+      "exact_acc": 0.0,
+      "cer": 2.546875,
+      "n_eval": 32,
+      "peak_vram_mb": 1760.6396484375,
+      "seconds": 193.6765375137329,
+      "status": "ok",
+      "fail_examples": [
+        {
+          "gold": "40",
+          "pred": " 2200000",
+          "cer": 3.0
+        },
+        {
+          "gold": "696",
+          "pred": " 4200000",
+          "cer": 2.333
+        },
+        {
+          "gold": "607",
+          "pred": " 220 100",
+          "cer": 1.667
+        },
+        {
+          "gold": "39",
+          "pred": " 2200000",
+          "cer": 3.5
+        },
+        {
+          "gold": "798",
+          "pred": " 8888888",
+          "cer": 2.0
+        },
+        {
+          "gold": "863",
+          "pred": " 8888888",
+          "cer": 2.0
+        },
+        {
+          "gold": "794",
+          "pred": " 7888888",
+          "cer": 2.0
+        },
+        {
+          "gold": "431",
+          "pred": " 220 110",
+          "cer": 1.667
+        }
+      ],
+      "meta": {
+        "kind": "B_vlcot",
+        "T": 32,
+        "C": 64,
+        "latent_steps": 2,
+        "beta": 0.5,
+        "gamma": 0.9,
+        "deslice_topk": 2,
+        "stiefel_ns": true,
+        "slot": {
+          "PR_mass": 15.037529945373535,
+          "support": 2.0
+        },
+        "res": 32,
+        "projector": "mlp"
+      }
+    }
+  ],
+  "T": 32,
+  "steps": 600,
+  "batch": 1,
+  "grad_accum": 8
+}

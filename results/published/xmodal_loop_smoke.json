@@ -1,0 +1,87 @@
+{
+  "task": "xmodal_4step_loop_smoke",
+  "n_layers": 2,
+  "steps": 40,
+  "res": 32,
+  "T": 16,
+  "val_acc": 0.103515625,
+  "chance": 0.1,
+  "history": [
+    {
+      "step": 1,
+      "loss": 2.286879062652588,
+      "train_acc": 0.1875,
+      "layer_traces": [
+        {
+          "layer": 0,
+          "x_delta_norm": 1.9977514743804932,
+          "h_delta_norm": 0.617402195930481,
+          "read_entropy": 2.741708993911743,
+          "write_applied": true,
+          "support": 2.0
+        },
+        {
+          "layer": 1,
+          "x_delta_norm": 1.998697280883789,
+          "h_delta_norm": 1.2520670890808105,
+          "read_entropy": 2.743640184402466,
+          "write_applied": true,
+          "support": 2.0
+        }
+      ]
+    },
+    {
+      "step": 20,
+      "loss": 2.29128360748291,
+      "train_acc": 0.125,
+      "layer_traces": [
+        {
+          "layer": 0,
+          "x_delta_norm": 2.005626678466797,
+          "h_delta_norm": 1.2216932773590088,
+          "read_entropy": 2.7400825023651123,
+          "write_applied": true,
+          "support": 2.0
+        },
+        {
+          "layer": 1,
+          "x_delta_norm": 2.2723546028137207,
+          "h_delta_norm": 1.1764113903045654,
+          "read_entropy": 2.7386856079101562,
+          "write_applied": true,
+          "support": 2.0
+        }
+      ]
+    },
+    {
+      "step": 40,
+      "loss": 2.291132926940918,
+      "train_acc": 0.125,
+      "layer_traces": [
+        {
+          "layer": 0,
+          "x_delta_norm": 2.0695607662200928,
+          "h_delta_norm": 1.1526389122009277,
+          "read_entropy": 2.738142490386963,
+          "write_applied": true,
+          "support": 2.0
+        },
+        {
+          "layer": 1,
+          "x_delta_norm": 2.4170637130737305,
+          "h_delta_norm": 1.1596243381500244,
+          "read_entropy": 2.736124277114868,
+          "write_applied": true,
+          "support": 2.0
+        }
+      ]
+    }
+  ],
+  "contract": [
+    "1 X\u2192Slice\u2192interact\u2192deslice\u2192X",
+    "2 H dynamic read slices",
+    "3 text state update",
+    "4 optional deslice writeback H\u2192X"
+  ],
+  "seconds": 3.3476805686950684
+}

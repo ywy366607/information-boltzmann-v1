@@ -1,0 +1,284 @@
+{
+  "backend": "local-D path=D:\\ml_cache\\huggingface\\models\\google--gemma-3-270m d_llm=640 dtype=torch.float32 cache=D:\\ml_cache",
+  "cache_root": "D:\\ml_cache",
+  "res": 32,
+  "patch": 4,
+  "steps": 20,
+  "batch": 2,
+  "topk": 2,
+  "val_seed": 90001,
+  "probe": "held-out synthetic VQA exact-match (color, kinks); no angles",
+  "T_list": [
+    32
+  ],
+  "table": [
+    {
+      "kind": "A",
+      "T": 32,
+      "final_loss": 2.9035723209381104,
+      "acc_overall": 0.0625,
+      "acc_color": 0.1111111111111111,
+      "acc_kinks": 0.0,
+      "probe": {
+        "acc_color": 0.1111111111111111,
+        "n_color": 18,
+        "acc_kinks": 0.0,
+        "n_kinks": 14,
+        "acc_overall": 0.0625,
+        "n_overall": 32
+      },
+      "slot_last": {},
+      "budget": null,
+      "seconds": 10.088062524795532,
+      "status": "ok"
+    },
+    {
+      "kind": "B",
+      "T": 32,
+      "final_loss": 4.326408863067627,
+      "acc_overall": 0.0,
+      "acc_color": 0.0,
+      "acc_kinks": 0.0,
+      "probe": {
+        "acc_color": 0.0,
+        "n_color": 18,
+        "acc_kinks": 0.0,
+        "n_kinks": 14,
+        "acc_overall": 0.0,
+        "n_overall": 32
+      },
+      "slot_last": {
+        "PR_mass": 16.941059112548828,
+        "r99": 30.25,
+        "support": 2.0
+      },
+      "budget": null,
+      "seconds": 12.22279405593872,
+      "status": "ok"
+    },
+    {
+      "kind": "C",
+      "T": 32,
+      "final_loss": 4.320030689239502,
+      "acc_overall": 0.0,
+      "acc_color": 0.0,
+      "acc_kinks": 0.0,
+      "probe": {
+        "acc_color": 0.0,
+        "n_color": 18,
+        "acc_kinks": 0.0,
+        "n_kinks": 14,
+        "acc_overall": 0.0,
+        "n_overall": 32
+      },
+      "slot_last": {
+        "PR_mass": 11.408100128173828,
+        "r99": 15.5,
+        "support": 2.0
+      },
+      "budget": "16+16",
+      "seconds": 11.958838939666748,
+      "status": "ok"
+    }
+  ],
+  "rows": [
+    {
+      "kind": "A",
+      "T": 32,
+      "final_loss": 2.9035723209381104,
+      "probe": {
+        "acc_color": 0.1111111111111111,
+        "n_color": 18,
+        "acc_kinks": 0.0,
+        "n_kinks": 14,
+        "acc_overall": 0.0625,
+        "n_overall": 32
+      },
+      "probe_overall": 0.0625,
+      "probe_color": 0.1111111111111111,
+      "probe_kinks": 0.0,
+      "history": [
+        {
+          "step": 1,
+          "loss": 4.527369976043701,
+          "T": 32,
+          "kind": "A",
+          "seconds": 0.5021765232086182
+        },
+        {
+          "step": 10,
+          "loss": 2.994441509246826,
+          "T": 32,
+          "kind": "A",
+          "seconds": 1.822901725769043
+        },
+        {
+          "step": 20,
+          "loss": 2.9035723209381104,
+          "T": 32,
+          "kind": "A",
+          "seconds": 3.197657823562622
+        }
+      ],
+      "slot_last": {},
+      "meta_example": {
+        "kind": "A",
+        "native_T": 64,
+        "patch": 4,
+        "res": 32,
+        "T": 32
+      },
+      "seconds": 10.088062524795532
+    },
+    {
+      "kind": "B",
+      "T": 32,
+      "final_loss": 4.326408863067627,
+      "probe": {
+        "acc_color": 0.0,
+        "n_color": 18,
+        "acc_kinks": 0.0,
+        "n_kinks": 14,
+        "acc_overall": 0.0,
+        "n_overall": 32
+      },
+      "probe_overall": 0.0,
+      "probe_color": 0.0,
+      "probe_kinks": 0.0,
+      "history": [
+        {
+          "step": 1,
+          "loss": 4.282649993896484,
+          "T": 32,
+          "kind": "B",
+          "seconds": 0.6458942890167236,
+          "slot": {
+            "PR_mass": 17.206771850585938,
+            "r99": 30.25,
+            "support": 2.0
+          }
+        },
+        {
+          "step": 10,
+          "loss": 4.202292442321777,
+          "T": 32,
+          "kind": "B",
+          "seconds": 2.290609121322632,
+          "slot": {
+            "PR_mass": 16.62368392944336,
+            "r99": 30.25,
+            "support": 2.0
+          }
+        },
+        {
+          "step": 20,
+          "loss": 4.326408863067627,
+          "T": 32,
+          "kind": "B",
+          "seconds": 4.144924640655518,
+          "slot": {
+            "PR_mass": 16.941059112548828,
+            "r99": 30.25,
+            "support": 2.0
+          }
+        }
+      ],
+      "slot_last": {
+        "PR_mass": 16.941059112548828,
+        "r99": 30.25,
+        "support": 2.0
+      },
+      "meta_example": {
+        "kind": "B",
+        "T": 32,
+        "C": 64,
+        "G_le_C": true,
+        "deslice_topk": 2,
+        "stiefel_ns": true,
+        "slot": {
+          "PR_mass": 16.941059112548828,
+          "r99": 30.25,
+          "support": 2.0
+        },
+        "res": 32
+      },
+      "seconds": 12.22279405593872
+    },
+    {
+      "kind": "C",
+      "T": 32,
+      "final_loss": 4.320030689239502,
+      "probe": {
+        "acc_color": 0.0,
+        "n_color": 18,
+        "acc_kinks": 0.0,
+        "n_kinks": 14,
+        "acc_overall": 0.0,
+        "n_overall": 32
+      },
+      "probe_overall": 0.0,
+      "probe_color": 0.0,
+      "probe_kinks": 0.0,
+      "history": [
+        {
+          "step": 1,
+          "loss": 4.253934860229492,
+          "T": 32,
+          "kind": "C",
+          "seconds": 0.21651697158813477,
+          "slot": {
+            "PR_mass": 11.72994327545166,
+            "r99": 15.5,
+            "support": 2.0
+          },
+          "budget": "16+16"
+        },
+        {
+          "step": 10,
+          "loss": 4.083153247833252,
+          "T": 32,
+          "kind": "C",
+          "seconds": 1.9020757675170898,
+          "slot": {
+            "PR_mass": 11.585042953491211,
+            "r99": 15.5,
+            "support": 2.0
+          },
+          "budget": "16+16"
+        },
+        {
+          "step": 20,
+          "loss": 4.320030689239502,
+          "T": 32,
+          "kind": "C",
+          "seconds": 3.814404249191284,
+          "slot": {
+            "PR_mass": 11.408100128173828,
+            "r99": 15.5,
+            "support": 2.0
+          },
+          "budget": "16+16"
+        }
+      ],
+      "slot_last": {
+        "PR_mass": 11.408100128173828,
+        "r99": 15.5,
+        "support": 2.0
+      },
+      "meta_example": {
+        "kind": "C",
+        "T": 32,
+        "T_patch": 16,
+        "T_slice": 16,
+        "budget": "16+16",
+        "slice_slot": {
+          "PR_mass": 11.408100128173828,
+          "r99": 15.5,
+          "support": 2.0
+        },
+        "res": 32
+      },
+      "seconds": 11.958838939666748
+    }
+  ]
+}

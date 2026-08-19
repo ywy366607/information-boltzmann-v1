@@ -1,0 +1,489 @@
+{
+  "task": "vlm_path_lora_phase3",
+  "backend": "local-D path=D:\\ml_cache\\huggingface\\models\\google--gemma-3-270m d_llm=640 dtype=torch.float32 cache=D:\\ml_cache",
+  "cache_root": "D:\\ml_cache",
+  "profile": "4gb",
+  "res": 32,
+  "batch": 1,
+  "grad_accum": 8,
+  "steps": 400,
+  "T": 32,
+  "projector": "mlp",
+  "amp": true,
+  "lora_r": 8,
+  "lora_alpha": 16,
+  "lora_last_n": 4,
+  "min_len": 2,
+  "str_max_len": 3,
+  "probe_n": 48,
+  "kinds": [
+    "A",
+    "B"
+  ],
+  "modes": [
+    "frozen",
+    "lora"
+  ],
+  "metrics": [
+    "tf_acc",
+    "exact_acc",
+    "cer"
+  ],
+  "decode": "digit-constrained",
+  "table": [
+    {
+      "kind": "A",
+      "mode": "frozen",
+      "T": 32,
+      "seed": 0,
+      "final_loss": 1.8764524459838867,
+      "seconds": 121.89312863349915,
+      "peak_vram_mb": 1747.4287109375,
+      "trainable_params": 533952,
+      "status": "ok",
+      "history": [
+        {
+          "step": 1,
+          "loss": 2.684389591217041,
+          "vram_mb": 1732.34130859375
+        },
+        {
+          "step": 50,
+          "loss": 1.8718280792236328,
+          "vram_mb": 1747.4287109375
+        },
+        {
+          "step": 100,
+          "loss": 1.8654699325561523,
+          "vram_mb": 1747.4287109375
+        },
+        {
+          "step": 150,
+          "loss": 1.8477792739868164,
+          "vram_mb": 1747.4287109375
+        },
+        {
+          "step": 200,
+          "loss": 1.7272779941558838,
+          "vram_mb": 1747.4287109375
+        },
+        {
+          "step": 250,
+          "loss": 1.7586379051208496,
+          "vram_mb": 1747.4287109375
+        },
+        {
+          "step": 300,
+          "loss": 1.664338231086731,
+          "vram_mb": 1747.4287109375
+        },
+        {
+          "step": 350,
+          "loss": 1.5217465162277222,
+          "vram_mb": 1747.4287109375
+        },
+        {
+          "step": 400,
+          "loss": 1.8764524459838867,
+          "vram_mb": 1747.4287109375
+        }
+      ],
+      "tf_acc": 0.3218390804597701,
+      "tf_n_tokens": 174,
+      "exact_acc": 0.0,
+      "cer": 0.9270833333333334,
+      "n_eval": 48,
+      "fail_examples": [
+        {
+          "gold": "40",
+          "pred": " 10",
+          "cer": 0.5
+        },
+        {
+          "gold": "696",
+          "pred": " 100",
+          "cer": 1.0
+        },
+        {
+          "gold": "607",
+          "pred": " 100",
+          "cer": 0.667
+        },
+        {
+          "gold": "39",
+          "pred": " 10",
+          "cer": 1.0
+        },
+        {
+          "gold": "798",
+          "pred": " 100",
+          "cer": 1.0
+        },
+        {
+          "gold": "863",
+          "pred": " 100",
+          "cer": 1.0
+        },
+        {
+          "gold": "794",
+          "pred": " 100",
+          "cer": 1.0
+        },
+        {
+          "gold": "431",
+          "pred": " 100",
+          "cer": 1.0
+        }
+      ],
+      "decode": "digit-constrained"
+    },
+    {
+      "kind": "B",
+      "mode": "frozen",
+      "T": 32,
+      "seed": 0,
+      "final_loss": 1.5025430917739868,
+      "seconds": 128.12819457054138,
+      "peak_vram_mb": 2137.3193359375,
+      "trainable_params": 519468,
+      "status": "ok",
+      "history": [
+        {
+          "step": 1,
+          "loss": 3.580906629562378,
+          "vram_mb": 2131.3818359375
+        },
+        {
+          "step": 50,
+          "loss": 3.223141670227051,
+          "vram_mb": 2132.9443359375
+        },
+        {
+          "step": 100,
+          "loss": 2.5897316932678223,
+          "vram_mb": 2137.3193359375
+        },
+        {
+          "step": 150,
+          "loss": 2.207068681716919,
+          "vram_mb": 2137.3193359375
+        },
+        {
+          "step": 200,
+          "loss": 1.7568178176879883,
+          "vram_mb": 2137.3193359375
+        },
+        {
+          "step": 250,
+          "loss": 1.6834230422973633,
+          "vram_mb": 2137.3193359375
+        },
+        {
+          "step": 300,
+          "loss": 1.8720868825912476,
+          "vram_mb": 2137.3193359375
+        },
+        {
+          "step": 350,
+          "loss": 1.4965063333511353,
+          "vram_mb": 2137.3193359375
+        },
+        {
+          "step": 400,
+          "loss": 1.5025430917739868,
+          "vram_mb": 2137.3193359375
+        }
+      ],
+      "tf_acc": 0.3218390804597701,
+      "tf_n_tokens": 174,
+      "exact_acc": 0.0,
+      "cer": 0.9479166666666669,
+      "n_eval": 48,
+      "fail_examples": [
+        {
+          "gold": "40",
+          "pred": " 11",
+          "cer": 1.0
+        },
+        {
+          "gold": "696",
+          "pred": " 100",
+          "cer": 1.0
+        },
+        {
+          "gold": "607",
+          "pred": " 111",
+          "cer": 1.0
+        },
+        {
+          "gold": "39",
+          "pred": " 14",
+          "cer": 1.0
+        },
+        {
+          "gold": "798",
+          "pred": " 111",
+          "cer": 1.0
+        },
+        {
+          "gold": "863",
+          "pred": " 111",
+          "cer": 1.0
+        },
+        {
+          "gold": "794",
+          "pred": " 111",
+          "cer": 1.0
+        },
+        {
+          "gold": "431",
+          "pred": " 111",
+          "cer": 0.667
+        }
+      ],
+      "decode": "digit-constrained"
+    },
+    {
+      "kind": "A",
+      "mode": "lora",
+      "T": 32,
+      "seed": 0,
+      "final_loss": 1.5798486471176147,
+      "seconds": 122.87459087371826,
+      "peak_vram_mb": 2514.9990234375,
+      "trainable_params": 615872,
+      "status": "ok",
+      "history": [
+        {
+          "step": 1,
+          "loss": 2.684389591217041,
+          "vram_mb": 2507.72412109375
+        },
+        {
+          "step": 50,
+          "loss": 1.9797015190124512,
+          "vram_mb": 2514.9990234375
+        },
+        {
+          "step": 100,
+          "loss": 1.8682055473327637,
+          "vram_mb": 2514.9990234375
+        },
+        {
+          "step": 150,
+          "loss": 1.6915704011917114,
+          "vram_mb": 2514.9990234375
+        },
+        {
+          "step": 200,
+          "loss": 1.7920947074890137,
+          "vram_mb": 2514.9990234375
+        },
+        {
+          "step": 250,
+          "loss": 1.7257184982299805,
+          "vram_mb": 2514.9990234375
+        },
+        {
+          "step": 300,
+          "loss": 1.5195595026016235,
+          "vram_mb": 2514.9990234375
+        },
+        {
+          "step": 350,
+          "loss": 1.53606379032135,
+          "vram_mb": 2514.9990234375
+        },
+        {
+          "step": 400,
+          "loss": 1.5798486471176147,
+          "vram_mb": 2514.9990234375
+        }
+      ],
+      "tf_acc": 0.3333333333333333,
+      "tf_n_tokens": 174,
+      "exact_acc": 0.0,
+      "cer": 0.90625,
+      "n_eval": 48,
+      "fail_examples": [
+        {
+          "gold": "40",
+          "pred": " 14",
+          "cer": 1.0
+        },
+        {
+          "gold": "696",
+          "pred": " 148",
+          "cer": 1.0
+        },
+        {
+          "gold": "607",
+          "pred": " 148",
+          "cer": 1.0
+        },
+        {
+          "gold": "39",
+          "pred": " 14",
+          "cer": 1.0
+        },
+        {
+          "gold": "798",
+          "pred": " 148",
+          "cer": 0.667
+        },
+        {
+          "gold": "863",
+          "pred": " 148",
+          "cer": 1.0
+        },
+        {
+          "gold": "794",
+          "pred": " 148",
+          "cer": 1.0
+        },
+        {
+          "gold": "431",
+          "pred": " 148",
+          "cer": 1.0
+        }
+      ],
+      "decode": "digit-constrained",
+      "lora": {
+        "lora_r": 8,
+        "lora_alpha": 16,
+        "lora_dropout": 0.05,
+        "target_modules": [
+          "q_proj",
+          "v_proj"
+        ],
+        "last_n_layers": 4,
+        "layer_range": "14:18",
+        "n_layers": 18,
+        "trainable_params": 81920,
+        "all_params": 268180096,
+        "trainable_pct": 0.03054663683914857
+      }
+    },
+    {
+      "kind": "B",
+      "mode": "lora",
+      "T": 32,
+      "seed": 0,
+      "final_loss": 1.5363737344741821,
+      "seconds": 129.30866384506226,
+      "peak_vram_mb": 2905.2021484375,
+      "trainable_params": 601388,
+      "status": "ok",
+      "history": [
+        {
+          "step": 1,
+          "loss": 3.580906629562378,
+          "vram_mb": 2898.3271484375
+        },
+        {
+          "step": 50,
+          "loss": 3.223141670227051,
+          "vram_mb": 2900.2021484375
+        },
+        {
+          "step": 100,
+          "loss": 2.51005482673645,
+          "vram_mb": 2905.2021484375
+        },
+        {
+          "step": 150,
+          "loss": 2.0668392181396484,
+          "vram_mb": 2905.2021484375
+        },
+        {
+          "step": 200,
+          "loss": 1.6946860551834106,
+          "vram_mb": 2905.2021484375
+        },
+        {
+          "step": 250,
+          "loss": 1.8060294389724731,
+          "vram_mb": 2905.2021484375
+        },
+        {
+          "step": 300,
+          "loss": 1.6389878988265991,
+          "vram_mb": 2905.2021484375
+        },
+        {
+          "step": 350,
+          "loss": 1.5916742086410522,
+          "vram_mb": 2905.2021484375
+        },
+        {
+          "step": 400,
+          "loss": 1.5363737344741821,
+          "vram_mb": 2905.2021484375
+        }
+      ],
+      "tf_acc": 0.3563218390804598,
+      "tf_n_tokens": 174,
+      "exact_acc": 0.0,
+      "cer": 0.9062500000000001,
+      "n_eval": 48,
+      "fail_examples": [
+        {
+          "gold": "40",
+          "pred": " 10",
+          "cer": 0.5
+        },
+        {
+          "gold": "696",
+          "pred": " 100",
+          "cer": 1.0
+        },
+        {
+          "gold": "607",
+          "pred": " 100",
+          "cer": 0.667
+        },
+        {
+          "gold": "39",
+          "pred": " 18",
+          "cer": 1.0
+        },
+        {
+          "gold": "798",
+          "pred": " 100",
+          "cer": 1.0
+        },
+        {
+          "gold": "863",
+          "pred": " 100",
+          "cer": 1.0
+        },
+        {
+          "gold": "794",
+          "pred": " 100",
+          "cer": 1.0
+        },
+        {
+          "gold": "431",
+          "pred": " 100",
+          "cer": 1.0
+        }
+      ],
+      "decode": "digit-constrained",
+      "lora": {
+        "lora_r": 8,
+        "lora_alpha": 16,
+        "lora_dropout": 0.05,
+        "target_modules": [
+          "q_proj",
+          "v_proj"
+        ],
+        "last_n_layers": 4,
+        "layer_range": "14:18",
+        "n_layers": 18,
+        "trainable_params": 81920,
+        "all_params": 268180096,
+        "trainable_pct": 0.03054663683914857
+      }
+    }
+  ]
+}

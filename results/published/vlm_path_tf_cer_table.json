@@ -1,0 +1,353 @@
+{
+  "task": "vlm_path_tf_cer",
+  "backend": "local-D path=D:\\ml_cache\\huggingface\\models\\google--gemma-3-270m d_llm=640 dtype=torch.float32 cache=D:\\ml_cache",
+  "cache_root": "D:\\ml_cache",
+  "profile": "4gb",
+  "res": 32,
+  "batch": 1,
+  "grad_accum": 8,
+  "steps": 400,
+  "T": 32,
+  "projector": "mlp",
+  "amp": true,
+  "min_len": 2,
+  "str_max_len": 3,
+  "probe_n": 48,
+  "kinds": [
+    "A",
+    "B",
+    "B_vlcot"
+  ],
+  "seeds": [
+    0
+  ],
+  "metrics": [
+    "tf_acc",
+    "exact_acc",
+    "cer"
+  ],
+  "decode": "digit-constrained",
+  "table": [
+    {
+      "kind": "A",
+      "T": 32,
+      "requested_T": 32,
+      "two_look": false,
+      "latent_steps": 1,
+      "seed": 0,
+      "final_loss": 1.2760692834854126,
+      "seconds": 122.40403461456299,
+      "peak_vram_mb": 1747.4287109375,
+      "status": "ok",
+      "history": [
+        {
+          "step": 1,
+          "loss": 2.733826160430908,
+          "vram_mb": 1732.34130859375
+        },
+        {
+          "step": 50,
+          "loss": 2.1308116912841797,
+          "vram_mb": 1747.4287109375
+        },
+        {
+          "step": 100,
+          "loss": 1.4906377792358398,
+          "vram_mb": 1747.4287109375
+        },
+        {
+          "step": 150,
+          "loss": 1.6008025407791138,
+          "vram_mb": 1747.4287109375
+        },
+        {
+          "step": 200,
+          "loss": 1.9147560596466064,
+          "vram_mb": 1747.4287109375
+        },
+        {
+          "step": 250,
+          "loss": 1.69660222530365,
+          "vram_mb": 1747.4287109375
+        },
+        {
+          "step": 300,
+          "loss": 1.843152403831482,
+          "vram_mb": 1747.4287109375
+        },
+        {
+          "step": 350,
+          "loss": 1.6410497426986694,
+          "vram_mb": 1747.4287109375
+        },
+        {
+          "step": 400,
+          "loss": 1.2760692834854126,
+          "vram_mb": 1747.4287109375
+        }
+      ],
+      "tf_acc": 0.3333333333333333,
+      "tf_n_tokens": 174,
+      "exact_acc": 0.0,
+      "cer": 0.9270833333333334,
+      "n_eval": 48,
+      "fail_examples": [
+        {
+          "gold": "40",
+          "pred": " 10",
+          "cer": 0.5
+        },
+        {
+          "gold": "696",
+          "pred": " 100",
+          "cer": 1.0
+        },
+        {
+          "gold": "607",
+          "pred": " 100",
+          "cer": 0.667
+        },
+        {
+          "gold": "39",
+          "pred": " 10",
+          "cer": 1.0
+        },
+        {
+          "gold": "798",
+          "pred": " 100",
+          "cer": 1.0
+        },
+        {
+          "gold": "863",
+          "pred": " 100",
+          "cer": 1.0
+        },
+        {
+          "gold": "794",
+          "pred": " 100",
+          "cer": 1.0
+        },
+        {
+          "gold": "431",
+          "pred": " 100",
+          "cer": 1.0
+        }
+      ],
+      "decode": "digit-constrained"
+    },
+    {
+      "kind": "B",
+      "T": 32,
+      "requested_T": 32,
+      "two_look": false,
+      "latent_steps": 1,
+      "seed": 0,
+      "final_loss": 1.250558614730835,
+      "seconds": 128.655437707901,
+      "peak_vram_mb": 1754.6083984375,
+      "status": "ok",
+      "history": [
+        {
+          "step": 1,
+          "loss": 3.0919885635375977,
+          "vram_mb": 1748.6708984375
+        },
+        {
+          "step": 50,
+          "loss": 3.274017810821533,
+          "vram_mb": 1750.2333984375
+        },
+        {
+          "step": 100,
+          "loss": 1.6338869333267212,
+          "vram_mb": 1754.6083984375
+        },
+        {
+          "step": 150,
+          "loss": 1.591254711151123,
+          "vram_mb": 1754.6083984375
+        },
+        {
+          "step": 200,
+          "loss": 2.128472328186035,
+          "vram_mb": 1754.6083984375
+        },
+        {
+          "step": 250,
+          "loss": 1.780866026878357,
+          "vram_mb": 1754.6083984375
+        },
+        {
+          "step": 300,
+          "loss": 1.8516288995742798,
+          "vram_mb": 1754.6083984375
+        },
+        {
+          "step": 350,
+          "loss": 1.579787254333496,
+          "vram_mb": 1754.6083984375
+        },
+        {
+          "step": 400,
+          "loss": 1.250558614730835,
+          "vram_mb": 1754.6083984375
+        }
+      ],
+      "tf_acc": 0.3333333333333333,
+      "tf_n_tokens": 174,
+      "exact_acc": 0.0,
+      "cer": 0.9236111111111112,
+      "n_eval": 48,
+      "fail_examples": [
+        {
+          "gold": "40",
+          "pred": " 14",
+          "cer": 1.0
+        },
+        {
+          "gold": "696",
+          "pred": " 199",
+          "cer": 0.667
+        },
+        {
+          "gold": "607",
+          "pred": " 123",
+          "cer": 1.0
+        },
+        {
+          "gold": "39",
+          "pred": " 10",
+          "cer": 1.0
+        },
+        {
+          "gold": "798",
+          "pred": " 199",
+          "cer": 0.667
+        },
+        {
+          "gold": "863",
+          "pred": " 146",
+          "cer": 1.0
+        },
+        {
+          "gold": "794",
+          "pred": " 100",
+          "cer": 1.0
+        },
+        {
+          "gold": "431",
+          "pred": " 146",
+          "cer": 1.0
+        }
+      ],
+      "decode": "digit-constrained"
+    },
+    {
+      "kind": "B_vlcot",
+      "T": 32,
+      "requested_T": 32,
+      "two_look": true,
+      "latent_steps": 2,
+      "seed": 0,
+      "final_loss": 1.8144854307174683,
+      "seconds": 312.4558689594269,
+      "peak_vram_mb": 2399.51025390625,
+      "status": "ok",
+      "history": [
+        {
+          "step": 1,
+          "loss": 3.6273245811462402,
+          "vram_mb": 2391.576171875
+        },
+        {
+          "step": 50,
+          "loss": 3.791368007659912,
+          "vram_mb": 2393.80517578125
+        },
+        {
+          "step": 100,
+          "loss": 2.0965709686279297,
+          "vram_mb": 2399.51025390625
+        },
+        {
+          "step": 150,
+          "loss": 2.0826799869537354,
+          "vram_mb": 2399.51025390625
+        },
+        {
+          "step": 200,
+          "loss": 2.408416509628296,
+          "vram_mb": 2399.51025390625
+        },
+        {
+          "step": 250,
+          "loss": 2.101107358932495,
+          "vram_mb": 2399.51025390625
+        },
+        {
+          "step": 300,
+          "loss": 2.1184146404266357,
+          "vram_mb": 2399.51025390625
+        },
+        {
+          "step": 350,
+          "loss": 2.125932216644287,
+          "vram_mb": 2399.51025390625
+        },
+        {
+          "step": 400,
+          "loss": 1.8144854307174683,
+          "vram_mb": 2399.51025390625
+        }
+      ],
+      "tf_acc": 0.3333333333333333,
+      "tf_n_tokens": 174,
+      "exact_acc": 0.0,
+      "cer": 0.9236111111111112,
+      "n_eval": 48,
+      "fail_examples": [
+        {
+          "gold": "40",
+          "pred": " 11",
+          "cer": 1.0
+        },
+        {
+          "gold": "696",
+          "pred": " 700",
+          "cer": 1.0
+        },
+        {
+          "gold": "607",
+          "pred": " 210",
+          "cer": 1.0
+        },
+        {
+          "gold": "39",
+          "pred": " 11",
+          "cer": 1.0
+        },
+        {
+          "gold": "798",
+          "pred": " 700",
+          "cer": 0.667
+        },
+        {
+          "gold": "863",
+          "pred": " 210",
+          "cer": 1.0
+        },
+        {
+          "gold": "794",
+          "pred": " 180",
+          "cer": 1.0
+        },
+        {
+          "gold": "431",
+          "pred": " 110",
+          "cer": 1.0
+        }
+      ],
+      "decode": "digit-constrained"
+    }
+  ]
+}

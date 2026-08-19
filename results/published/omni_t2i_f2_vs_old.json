@@ -1,0 +1,31 @@
+{
+  "old_model": "DualStreamOmni Champion B (v1_bayes + rms_dir, vfe_coef=0)",
+  "old_ckpt": "D:\\\u89c6\u89c9\u7f16\u7801\u5668\u6d4b\u8bd5\\checkpoints\\omni_d256_t2i_best.pt",
+  "old_size": "d=256 M=64 h=8  ~8.1M",
+  "old_on_mismatched_canvas": {
+    "n": 64,
+    "acc": 0.0,
+    "psnr": 7.310392610728741,
+    "stroke_psnr": 73.66246682405472,
+    "bg_psnr": 7.154610060155392,
+    "ink": 0.90625
+  },
+  "old_on_fixed_same_paper": {
+    "n": 64,
+    "acc": 0.0,
+    "psnr": 6.998201385140419,
+    "stroke_psnr": 72.0121757388115,
+    "bg_psnr": 6.848217837512493,
+    "ink": 0.8125
+  },
+  "f2_on_fixed_same_paper": {
+    "n": 64,
+    "acc": 0.0,
+    "psnr": 7.198367916047573,
+    "stroke_psnr": 71.88790175318718,
+    "bg_psnr": 7.04250056296587,
+    "ink": 0.890625
+  },
+  "f2_ckpt": "D:\\\u89c6\u89c9\u7f16\u7801\u5668\u6d4b\u8bd5\\checkpoints\\omni_d256_t2i_f2_best.pt",
+  "note": "Old headline PSNR~7 was a second random canvas as target. Stroke/ink were already high. F2 trained on same-paper t2i."
+}

@@ -349,7 +349,18 @@ def run_arm(name, args, device):
                 "args": vars(args), "probe": st,
             }, path)
 
-    return dict(arm=name, n_par=n_par, history=history, final=history[-1])
+    # Report effective recur_T from first block (1 if absent)
+    raw = getattr(model, "_orig_mod", model)
+    recur_T = 1
+    try:
+        if hasattr(raw, "inner") and getattr(raw.inner, "blocks", None):
+            recur_T = int(getattr(raw.inner.blocks[0], "recur_T", 1) or 1)
+    except Exception:
+        pass
+    return dict(
+        arm=name, n_par=n_par, recur_T=recur_T,
+        history=history, final=history[-1],
+    )
 
 
 def main():

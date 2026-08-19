@@ -1,0 +1,136 @@
+{
+  "task": "transolver3_native_multimodal_ocr",
+  "backend": "local-D path=D:\\ml_cache\\huggingface\\models\\google--gemma-3-270m d_llm=640 dtype=torch.float32 cache=D:\\ml_cache",
+  "thesis": "vision-language co-evolve; full-res X; U workspace; not slice tokens",
+  "cache_root": "D:\\ml_cache",
+  "res": 32,
+  "steps": 400,
+  "batch": 1,
+  "grad_accum": 8,
+  "T": 32,
+  "n_layers": 2,
+  "coevolve_rounds": 1,
+  "freeze_llm": false,
+  "joint": true,
+  "lr": 0.0003,
+  "llm_lr": 0.0001,
+  "kinds": [
+    "B_mot"
+  ],
+  "table": [
+    {
+      "kind": "B_mot",
+      "transolver3": true,
+      "mot": true,
+      "freeze_llm": false,
+      "joint": true,
+      "llm_last_n": 4,
+      "lang_mode": "lora_r8_layers_14:18",
+      "T": 32,
+      "n_layers": 2,
+      "coevolve_rounds": 1,
+      "seed": 0,
+      "final_loss": 1.9653549194335938,
+      "seconds": 172.2539849281311,
+      "peak_vram_mb": 1530.240234375,
+      "n_trainable_vis": 633802,
+      "n_trainable_lang": 81920,
+      "status": "ok",
+      "history": [
+        {
+          "step": 1,
+          "loss": 2.6137921810150146,
+          "vram_mb": 1513.21337890625
+        },
+        {
+          "step": 50,
+          "loss": 2.742831230163574,
+          "vram_mb": 1530.240234375
+        },
+        {
+          "step": 100,
+          "loss": 2.3216969966888428,
+          "vram_mb": 1530.240234375
+        },
+        {
+          "step": 150,
+          "loss": 1.8465770483016968,
+          "vram_mb": 1530.240234375
+        },
+        {
+          "step": 200,
+          "loss": 1.7522414922714233,
+          "vram_mb": 1530.240234375
+        },
+        {
+          "step": 250,
+          "loss": 1.9231866598129272,
+          "vram_mb": 1530.240234375
+        },
+        {
+          "step": 300,
+          "loss": 2.0415916442871094,
+          "vram_mb": 1530.240234375
+        },
+        {
+          "step": 350,
+          "loss": 1.805804967880249,
+          "vram_mb": 1530.240234375
+        },
+        {
+          "step": 400,
+          "loss": 1.9653549194335938,
+          "vram_mb": 1530.240234375
+        }
+      ],
+      "tf_acc": 0.3390804597701149,
+      "tf_n_tokens": 174,
+      "exact_acc": 0.0,
+      "cer": 0.892361111111111,
+      "n_eval": 48,
+      "fail_examples": [
+        {
+          "gold": "40",
+          "pred": " 58",
+          "cer": 1.0
+        },
+        {
+          "gold": "696",
+          "pred": " 585",
+          "cer": 1.0
+        },
+        {
+          "gold": "607",
+          "pred": " 585",
+          "cer": 1.0
+        },
+        {
+          "gold": "39",
+          "pred": " 58",
+          "cer": 1.0
+        },
+        {
+          "gold": "798",
+          "pred": " 785",
+          "cer": 0.667
+        },
+        {
+          "gold": "863",
+          "pred": " 585",
+          "cer": 1.0
+        },
+        {
+          "gold": "794",
+          "pred": " 785",
+          "cer": 0.667
+        },
+        {
+          "gold": "431",
+          "pred": " 585",
+          "cer": 1.0
+        }
+      ],
+      "decode": "digit-constrained"
+    }
+  ]
+}

@@ -1,0 +1,141 @@
+{
+  "task": "vlcot_m1_two_look_ocr",
+  "backend": "local-D path=D:\\ml_cache\\huggingface\\models\\google--gemma-3-270m d_llm=640 dtype=torch.float32 cache=D:\\ml_cache",
+  "design": {
+    "M1": "LLM last-h (prompt end) \u2192 h_to_z \u2192 second visual encode",
+    "decode": "digit-constrained greedy + refine_every=1 for B_vlcot",
+    "train": "CE(pass2) + pass1_w*CE(pass1) + 0.1*NextLat; no LLM BPTT",
+    "latent_steps": 2,
+    "pass1_w": 0.3,
+    "beta": 0.5,
+    "gamma": 0.9
+  },
+  "table": [
+    {
+      "kind": "A",
+      "T": 32,
+      "latent_steps": 1,
+      "two_look": false,
+      "seed": 0,
+      "final_loss": 1.7402724027633667,
+      "exact_acc": 0.020833333333333332,
+      "cer": 0.8472222222222222,
+      "n_eval": 48,
+      "peak_vram_mb": 1747.4287109375,
+      "seconds": 228.99406337738037,
+      "status": "ok",
+      "fail_examples": [
+        {
+          "gold": "40",
+          "pred": " 44",
+          "cer": 0.5
+        },
+        {
+          "gold": "696",
+          "pred": " 420",
+          "cer": 1.0
+        },
+        {
+          "gold": "607",
+          "pred": " 444",
+          "cer": 1.0
+        },
+        {
+          "gold": "39",
+          "pred": " 44",
+          "cer": 1.0
+        },
+        {
+          "gold": "798",
+          "pred": " 420",
+          "cer": 1.0
+        },
+        {
+          "gold": "863",
+          "pred": " 444",
+          "cer": 1.0
+        },
+        {
+          "gold": "794",
+          "pred": " 444",
+          "cer": 0.667
+        },
+        {
+          "gold": "431",
+          "pred": " 444",
+          "cer": 0.667
+        }
+      ],
+      "meta": {
+        "kind": "A",
+        "two_look": false
+      }
+    },
+    {
+      "kind": "B_vlcot",
+      "T": 32,
+      "latent_steps": 2,
+      "two_look": true,
+      "seed": 0,
+      "final_loss": 2.3568274974823,
+      "exact_acc": 0.0,
+      "cer": 0.9027777777777778,
+      "n_eval": 48,
+      "peak_vram_mb": 2399.51025390625,
+      "seconds": 604.7229704856873,
+      "status": "ok",
+      "fail_examples": [
+        {
+          "gold": "40",
+          "pred": " 44",
+          "cer": 0.5
+        },
+        {
+          "gold": "696",
+          "pred": " 000",
+          "cer": 1.0
+        },
+        {
+          "gold": "607",
+          "pred": " 444",
+          "cer": 1.0
+        },
+        {
+          "gold": "39",
+          "pred": " 00",
+          "cer": 1.0
+        },
+        {
+          "gold": "798",
+          "pred": " 000",
+          "cer": 1.0
+        },
+        {
+          "gold": "863",
+          "pred": " 444",
+          "cer": 1.0
+        },
+        {
+          "gold": "794",
+          "pred": " 200",
+          "cer": 1.0
+        },
+        {
+          "gold": "431",
+          "pred": " 000",
+          "cer": 1.0
+        }
+      ],
+      "meta": {
+        "kind": "B_vlcot",
+        "latent_steps": 2,
+        "beta": 0.5,
+        "gamma": 0.9,
+        "deslice_topk": 2,
+        "two_look": true
+      }
+    }
+  ],
+  "steps": 800,
+  "T": 32
+}

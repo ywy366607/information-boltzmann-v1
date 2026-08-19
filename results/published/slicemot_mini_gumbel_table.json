@@ -1,0 +1,47 @@
+{
+  "experiment": "SliceMoT-Mini-2L",
+  "arm": "gumbel",
+  "arm_note": "base + Transolver++ Gumbel (train); early-stopped",
+  "status": "early_stop_negative",
+  "eligible_1x": false,
+  "early_stop": true,
+  "early_stop_reason": "unstable CE vs base at same stage; Gumbel not needed given Stiefel default; user decision",
+  "n_params_gate": 4944051,
+  "tokens_needed": 4944051,
+  "tokens_seen": 63753,
+  "token_ratio_achieved": 0.0129,
+  "steps": 5300,
+  "max_steps_planned": 100000,
+  "final_loss": 12.1242,
+  "loss_ema_last": 8.226,
+  "spike_frac_loss_ge8": 0.327,
+  "n_log_points": 107,
+  "probes": null,
+  "probes_note": "not run; training abandoned before 100k / 1x",
+  "flags": {
+    "use_ada_temp": true,
+    "use_gumbel": true,
+    "deslice_topk": 0,
+    "use_stiefel": true
+  },
+  "compare_to_base_same_stage": {
+    "base_arm": "base (ST+Ada-Temp, no Gumbel)",
+    "at_step_approx": 2000,
+    "base_ema_loss_approx": 3.4,
+    "gumbel_ema_loss_approx": 6.7,
+    "base_final_probes": {
+      "matched_nll": 2.887,
+      "shuffled_nll": 3.136,
+      "delta_nll_shuffle_minus_matched": 0.249,
+      "frac_matched_lower_nll": 0.792,
+      "tf_acc": 0.419,
+      "n_eval": 48,
+      "eligible_1x": false,
+      "steps": 100000,
+      "tokens_seen": 1205716
+    }
+  },
+  "decision": "default_use_gumbel=false; Stiefel sufficient for anti-collapse; Gumbel not required under mini VLM recipe",
+  "dataset": "jxie/flickr8k train n=6000",
+  "no_patch_control": true
+}

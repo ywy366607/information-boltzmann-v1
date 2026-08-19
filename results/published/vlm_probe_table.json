@@ -1,0 +1,6338 @@
+{
+  "backend": "n/a (probe-only; no LLM)",
+  "cache_root": "D:\\ml_cache",
+  "res": 32,
+  "patch": 4,
+  "vqa_steps": null,
+  "probe_steps": 400,
+  "d_feat": 640,
+  "batch": 8,
+  "topk": 2,
+  "val_seed": 90001,
+  "seeds": [
+    0,
+    1
+  ],
+  "T_list": [
+    64,
+    32,
+    16
+  ],
+  "protocols": [
+    "linear_probe"
+  ],
+  "table": [
+    {
+      "kind": "A",
+      "T": 64,
+      "protocol": "linear_probe",
+      "seed": 0,
+      "final_loss": 1.3929071426391602,
+      "acc_overall": 0.3125,
+      "acc_color": 0.4117647058823529,
+      "acc_kinks": 0.2,
+      "probe": {
+        "acc_color": 0.4117647058823529,
+        "n_color": 34,
+        "acc_kinks": 0.2,
+        "n_kinks": 30,
+        "acc_overall": 0.3125,
+        "n_overall": 64,
+        "protocol": "linear_probe",
+        "failures": [
+          {
+            "probe": "color",
+            "gold": "blue",
+            "gold_id": 2,
+            "pred_id": 1,
+            "pred": "green",
+            "answer": "blue"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "7"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "7"
+          },
+          {
+            "probe": "color",
+            "gold": "red",
+            "gold_id": 0,
+            "pred_id": 1,
+            "pred": "green",
+            "answer": "red"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 3,
+            "gold_k": 8,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "8"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 3,
+            "gold_k": 8,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "8"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "7"
+          },
+          {
+            "probe": "color",
+            "gold": "yellow",
+            "gold_id": 3,
+            "pred_id": 1,
+            "pred": "green",
+            "answer": "yellow"
+          }
+        ]
+      },
+      "failures": [
+        {
+          "probe": "color",
+          "gold": "blue",
+          "gold_id": 2,
+          "pred_id": 1,
+          "pred": "green",
+          "answer": "blue"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "7"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "7"
+        },
+        {
+          "probe": "color",
+          "gold": "red",
+          "gold_id": 0,
+          "pred_id": 1,
+          "pred": "green",
+          "answer": "red"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 3,
+          "gold_k": 8,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "8"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 3,
+          "gold_k": 8,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "8"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "7"
+        },
+        {
+          "probe": "color",
+          "gold": "yellow",
+          "gold_id": 3,
+          "pred_id": 1,
+          "pred": "green",
+          "answer": "yellow"
+        }
+      ],
+      "slot_last": {},
+      "budget": null,
+      "seconds": 4.891752481460571,
+      "status": "ok"
+    },
+    {
+      "kind": "B",
+      "T": 64,
+      "protocol": "linear_probe",
+      "seed": 0,
+      "final_loss": 1.3900165557861328,
+      "acc_overall": 0.328125,
+      "acc_color": 0.4117647058823529,
+      "acc_kinks": 0.23333333333333334,
+      "probe": {
+        "acc_color": 0.4117647058823529,
+        "n_color": 34,
+        "acc_kinks": 0.23333333333333334,
+        "n_kinks": 30,
+        "acc_overall": 0.328125,
+        "n_overall": 64,
+        "protocol": "linear_probe",
+        "failures": [
+          {
+            "probe": "color",
+            "gold": "blue",
+            "gold_id": 2,
+            "pred_id": 1,
+            "pred": "green",
+            "answer": "blue"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "7"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "7"
+          },
+          {
+            "probe": "color",
+            "gold": "red",
+            "gold_id": 0,
+            "pred_id": 1,
+            "pred": "green",
+            "answer": "red"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 3,
+            "gold_k": 8,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "8"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 3,
+            "gold_k": 8,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "8"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "7"
+          },
+          {
+            "probe": "color",
+            "gold": "yellow",
+            "gold_id": 3,
+            "pred_id": 1,
+            "pred": "green",
+            "answer": "yellow"
+          }
+        ]
+      },
+      "failures": [
+        {
+          "probe": "color",
+          "gold": "blue",
+          "gold_id": 2,
+          "pred_id": 1,
+          "pred": "green",
+          "answer": "blue"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "7"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "7"
+        },
+        {
+          "probe": "color",
+          "gold": "red",
+          "gold_id": 0,
+          "pred_id": 1,
+          "pred": "green",
+          "answer": "red"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 3,
+          "gold_k": 8,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "8"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 3,
+          "gold_k": 8,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "8"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "7"
+        },
+        {
+          "probe": "color",
+          "gold": "yellow",
+          "gold_id": 3,
+          "pred_id": 1,
+          "pred": "green",
+          "answer": "yellow"
+        }
+      ],
+      "slot_last": {
+        "PR_mass": 49.43809509277344,
+        "r99": 62.75,
+        "support": 2.0
+      },
+      "budget": null,
+      "seconds": 16.850990295410156,
+      "status": "ok"
+    },
+    {
+      "kind": "C",
+      "T": 48,
+      "protocol": "linear_probe",
+      "seed": 0,
+      "final_loss": 1.3944857120513916,
+      "acc_overall": 0.3125,
+      "acc_color": 0.4117647058823529,
+      "acc_kinks": 0.2,
+      "probe": {
+        "acc_color": 0.4117647058823529,
+        "n_color": 34,
+        "acc_kinks": 0.2,
+        "n_kinks": 30,
+        "acc_overall": 0.3125,
+        "n_overall": 64,
+        "protocol": "linear_probe",
+        "failures": [
+          {
+            "probe": "color",
+            "gold": "blue",
+            "gold_id": 2,
+            "pred_id": 1,
+            "pred": "green",
+            "answer": "blue"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 3,
+            "pred_k": 8,
+            "answer": "7"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 3,
+            "pred_k": 8,
+            "answer": "7"
+          },
+          {
+            "probe": "color",
+            "gold": "red",
+            "gold_id": 0,
+            "pred_id": 1,
+            "pred": "green",
+            "answer": "red"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 3,
+            "pred_k": 8,
+            "answer": "7"
+          },
+          {
+            "probe": "color",
+            "gold": "yellow",
+            "gold_id": 3,
+            "pred_id": 1,
+            "pred": "green",
+            "answer": "yellow"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 1,
+            "gold_k": 6,
+            "pred_id": 3,
+            "pred_k": 8,
+            "answer": "6"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 1,
+            "gold_k": 6,
+            "pred_id": 3,
+            "pred_k": 8,
+            "answer": "6"
+          }
+        ]
+      },
+      "failures": [
+        {
+          "probe": "color",
+          "gold": "blue",
+          "gold_id": 2,
+          "pred_id": 1,
+          "pred": "green",
+          "answer": "blue"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 3,
+          "pred_k": 8,
+          "answer": "7"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 3,
+          "pred_k": 8,
+          "answer": "7"
+        },
+        {
+          "probe": "color",
+          "gold": "red",
+          "gold_id": 0,
+          "pred_id": 1,
+          "pred": "green",
+          "answer": "red"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 3,
+          "pred_k": 8,
+          "answer": "7"
+        },
+        {
+          "probe": "color",
+          "gold": "yellow",
+          "gold_id": 3,
+          "pred_id": 1,
+          "pred": "green",
+          "answer": "yellow"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 1,
+          "gold_k": 6,
+          "pred_id": 3,
+          "pred_k": 8,
+          "answer": "6"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 1,
+          "gold_k": 6,
+          "pred_id": 3,
+          "pred_k": 8,
+          "answer": "6"
+        }
+      ],
+      "slot_last": {},
+      "budget": "16+32",
+      "seconds": 15.57004427909851,
+      "status": "ok"
+    },
+    {
+      "kind": "A",
+      "T": 32,
+      "protocol": "linear_probe",
+      "seed": 0,
+      "final_loss": 1.3929071426391602,
+      "acc_overall": 0.3125,
+      "acc_color": 0.4117647058823529,
+      "acc_kinks": 0.2,
+      "probe": {
+        "acc_color": 0.4117647058823529,
+        "n_color": 34,
+        "acc_kinks": 0.2,
+        "n_kinks": 30,
+        "acc_overall": 0.3125,
+        "n_overall": 64,
+        "protocol": "linear_probe",
+        "failures": [
+          {
+            "probe": "color",
+            "gold": "blue",
+            "gold_id": 2,
+            "pred_id": 1,
+            "pred": "green",
+            "answer": "blue"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "7"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "7"
+          },
+          {
+            "probe": "color",
+            "gold": "red",
+            "gold_id": 0,
+            "pred_id": 1,
+            "pred": "green",
+            "answer": "red"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 3,
+            "gold_k": 8,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "8"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 3,
+            "gold_k": 8,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "8"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "7"
+          },
+          {
+            "probe": "color",
+            "gold": "yellow",
+            "gold_id": 3,
+            "pred_id": 1,
+            "pred": "green",
+            "answer": "yellow"
+          }
+        ]
+      },
+      "failures": [
+        {
+          "probe": "color",
+          "gold": "blue",
+          "gold_id": 2,
+          "pred_id": 1,
+          "pred": "green",
+          "answer": "blue"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "7"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "7"
+        },
+        {
+          "probe": "color",
+          "gold": "red",
+          "gold_id": 0,
+          "pred_id": 1,
+          "pred": "green",
+          "answer": "red"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 3,
+          "gold_k": 8,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "8"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 3,
+          "gold_k": 8,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "8"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "7"
+        },
+        {
+          "probe": "color",
+          "gold": "yellow",
+          "gold_id": 3,
+          "pred_id": 1,
+          "pred": "green",
+          "answer": "yellow"
+        }
+      ],
+      "slot_last": {},
+      "budget": null,
+      "seconds": 4.725858449935913,
+      "status": "ok"
+    },
+    {
+      "kind": "B",
+      "T": 32,
+      "protocol": "linear_probe",
+      "seed": 0,
+      "final_loss": 1.3920387029647827,
+      "acc_overall": 0.328125,
+      "acc_color": 0.4117647058823529,
+      "acc_kinks": 0.23333333333333334,
+      "probe": {
+        "acc_color": 0.4117647058823529,
+        "n_color": 34,
+        "acc_kinks": 0.23333333333333334,
+        "n_kinks": 30,
+        "acc_overall": 0.328125,
+        "n_overall": 64,
+        "protocol": "linear_probe",
+        "failures": [
+          {
+            "probe": "color",
+            "gold": "blue",
+            "gold_id": 2,
+            "pred_id": 1,
+            "pred": "green",
+            "answer": "blue"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "7"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "7"
+          },
+          {
+            "probe": "color",
+            "gold": "red",
+            "gold_id": 0,
+            "pred_id": 1,
+            "pred": "green",
+            "answer": "red"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 3,
+            "gold_k": 8,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "8"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 3,
+            "gold_k": 8,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "8"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "7"
+          },
+          {
+            "probe": "color",
+            "gold": "yellow",
+            "gold_id": 3,
+            "pred_id": 1,
+            "pred": "green",
+            "answer": "yellow"
+          }
+        ]
+      },
+      "failures": [
+        {
+          "probe": "color",
+          "gold": "blue",
+          "gold_id": 2,
+          "pred_id": 1,
+          "pred": "green",
+          "answer": "blue"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "7"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "7"
+        },
+        {
+          "probe": "color",
+          "gold": "red",
+          "gold_id": 0,
+          "pred_id": 1,
+          "pred": "green",
+          "answer": "red"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 3,
+          "gold_k": 8,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "8"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 3,
+          "gold_k": 8,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "8"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "7"
+        },
+        {
+          "probe": "color",
+          "gold": "yellow",
+          "gold_id": 3,
+          "pred_id": 1,
+          "pred": "green",
+          "answer": "yellow"
+        }
+      ],
+      "slot_last": {
+        "PR_mass": 19.08087921142578,
+        "r99": 30.75,
+        "support": 2.0
+      },
+      "budget": null,
+      "seconds": 14.011791706085205,
+      "status": "ok"
+    },
+    {
+      "kind": "C",
+      "T": 32,
+      "protocol": "linear_probe",
+      "seed": 0,
+      "final_loss": 1.406278133392334,
+      "acc_overall": 0.328125,
+      "acc_color": 0.4117647058823529,
+      "acc_kinks": 0.23333333333333334,
+      "probe": {
+        "acc_color": 0.4117647058823529,
+        "n_color": 34,
+        "acc_kinks": 0.23333333333333334,
+        "n_kinks": 30,
+        "acc_overall": 0.328125,
+        "n_overall": 64,
+        "protocol": "linear_probe",
+        "failures": [
+          {
+            "probe": "color",
+            "gold": "blue",
+            "gold_id": 2,
+            "pred_id": 1,
+            "pred": "green",
+            "answer": "blue"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "7"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "7"
+          },
+          {
+            "probe": "color",
+            "gold": "red",
+            "gold_id": 0,
+            "pred_id": 1,
+            "pred": "green",
+            "answer": "red"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 3,
+            "gold_k": 8,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "8"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 3,
+            "gold_k": 8,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "8"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "7"
+          },
+          {
+            "probe": "color",
+            "gold": "yellow",
+            "gold_id": 3,
+            "pred_id": 1,
+            "pred": "green",
+            "answer": "yellow"
+          }
+        ]
+      },
+      "failures": [
+        {
+          "probe": "color",
+          "gold": "blue",
+          "gold_id": 2,
+          "pred_id": 1,
+          "pred": "green",
+          "answer": "blue"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "7"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "7"
+        },
+        {
+          "probe": "color",
+          "gold": "red",
+          "gold_id": 0,
+          "pred_id": 1,
+          "pred": "green",
+          "answer": "red"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 3,
+          "gold_k": 8,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "8"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 3,
+          "gold_k": 8,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "8"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "7"
+        },
+        {
+          "probe": "color",
+          "gold": "yellow",
+          "gold_id": 3,
+          "pred_id": 1,
+          "pred": "green",
+          "answer": "yellow"
+        }
+      ],
+      "slot_last": {},
+      "budget": "16+16",
+      "seconds": 15.975165367126465,
+      "status": "ok"
+    },
+    {
+      "kind": "A",
+      "T": 16,
+      "protocol": "linear_probe",
+      "seed": 0,
+      "final_loss": 1.3929070234298706,
+      "acc_overall": 0.3125,
+      "acc_color": 0.4117647058823529,
+      "acc_kinks": 0.2,
+      "probe": {
+        "acc_color": 0.4117647058823529,
+        "n_color": 34,
+        "acc_kinks": 0.2,
+        "n_kinks": 30,
+        "acc_overall": 0.3125,
+        "n_overall": 64,
+        "protocol": "linear_probe",
+        "failures": [
+          {
+            "probe": "color",
+            "gold": "blue",
+            "gold_id": 2,
+            "pred_id": 1,
+            "pred": "green",
+            "answer": "blue"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "7"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "7"
+          },
+          {
+            "probe": "color",
+            "gold": "red",
+            "gold_id": 0,
+            "pred_id": 1,
+            "pred": "green",
+            "answer": "red"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 3,
+            "gold_k": 8,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "8"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 3,
+            "gold_k": 8,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "8"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "7"
+          },
+          {
+            "probe": "color",
+            "gold": "yellow",
+            "gold_id": 3,
+            "pred_id": 1,
+            "pred": "green",
+            "answer": "yellow"
+          }
+        ]
+      },
+      "failures": [
+        {
+          "probe": "color",
+          "gold": "blue",
+          "gold_id": 2,
+          "pred_id": 1,
+          "pred": "green",
+          "answer": "blue"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "7"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "7"
+        },
+        {
+          "probe": "color",
+          "gold": "red",
+          "gold_id": 0,
+          "pred_id": 1,
+          "pred": "green",
+          "answer": "red"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 3,
+          "gold_k": 8,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "8"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 3,
+          "gold_k": 8,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "8"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "7"
+        },
+        {
+          "probe": "color",
+          "gold": "yellow",
+          "gold_id": 3,
+          "pred_id": 1,
+          "pred": "green",
+          "answer": "yellow"
+        }
+      ],
+      "slot_last": {},
+      "budget": null,
+      "seconds": 4.853016376495361,
+      "status": "ok"
+    },
+    {
+      "kind": "B",
+      "T": 16,
+      "protocol": "linear_probe",
+      "seed": 0,
+      "final_loss": 0.8307391405105591,
+      "acc_overall": 0.5625,
+      "acc_color": 0.8823529411764706,
+      "acc_kinks": 0.2,
+      "probe": {
+        "acc_color": 0.8823529411764706,
+        "n_color": 34,
+        "acc_kinks": 0.2,
+        "n_kinks": 30,
+        "acc_overall": 0.5625,
+        "n_overall": 64,
+        "protocol": "linear_probe",
+        "failures": [
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 3,
+            "pred_k": 8,
+            "answer": "7"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 3,
+            "pred_k": 8,
+            "answer": "7"
+          },
+          {
+            "probe": "color",
+            "gold": "red",
+            "gold_id": 0,
+            "pred_id": 2,
+            "pred": "blue",
+            "answer": "red"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 3,
+            "pred_k": 8,
+            "answer": "7"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 1,
+            "gold_k": 6,
+            "pred_id": 3,
+            "pred_k": 8,
+            "answer": "6"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 1,
+            "gold_k": 6,
+            "pred_id": 3,
+            "pred_k": 8,
+            "answer": "6"
+          },
+          {
+            "probe": "color",
+            "gold": "red",
+            "gold_id": 0,
+            "pred_id": 2,
+            "pred": "blue",
+            "answer": "red"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 1,
+            "gold_k": 6,
+            "pred_id": 3,
+            "pred_k": 8,
+            "answer": "6"
+          }
+        ]
+      },
+      "failures": [
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 3,
+          "pred_k": 8,
+          "answer": "7"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 3,
+          "pred_k": 8,
+          "answer": "7"
+        },
+        {
+          "probe": "color",
+          "gold": "red",
+          "gold_id": 0,
+          "pred_id": 2,
+          "pred": "blue",
+          "answer": "red"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 3,
+          "pred_k": 8,
+          "answer": "7"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 1,
+          "gold_k": 6,
+          "pred_id": 3,
+          "pred_k": 8,
+          "answer": "6"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 1,
+          "gold_k": 6,
+          "pred_id": 3,
+          "pred_k": 8,
+          "answer": "6"
+        },
+        {
+          "probe": "color",
+          "gold": "red",
+          "gold_id": 0,
+          "pred_id": 2,
+          "pred": "blue",
+          "answer": "red"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 1,
+          "gold_k": 6,
+          "pred_id": 3,
+          "pred_k": 8,
+          "answer": "6"
+        }
+      ],
+      "slot_last": {
+        "PR_mass": 2.9248266220092773,
+        "r99": 9.75,
+        "support": 2.0
+      },
+      "budget": null,
+      "seconds": 14.161659002304077,
+      "status": "ok"
+    },
+    {
+      "kind": "C",
+      "T": 12,
+      "protocol": "linear_probe",
+      "seed": 0,
+      "final_loss": 1.3674931526184082,
+      "acc_overall": 0.390625,
+      "acc_color": 0.5588235294117647,
+      "acc_kinks": 0.2,
+      "probe": {
+        "acc_color": 0.5588235294117647,
+        "n_color": 34,
+        "acc_kinks": 0.2,
+        "n_kinks": 30,
+        "acc_overall": 0.390625,
+        "n_overall": 64,
+        "protocol": "linear_probe",
+        "failures": [
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "7"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 2,
+            "pred": "blue",
+            "answer": "green"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "7"
+          },
+          {
+            "probe": "color",
+            "gold": "red",
+            "gold_id": 0,
+            "pred_id": 1,
+            "pred": "green",
+            "answer": "red"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 3,
+            "gold_k": 8,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "8"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 3,
+            "gold_k": 8,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "8"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "7"
+          },
+          {
+            "probe": "color",
+            "gold": "yellow",
+            "gold_id": 3,
+            "pred_id": 1,
+            "pred": "green",
+            "answer": "yellow"
+          }
+        ]
+      },
+      "failures": [
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "7"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 2,
+          "pred": "blue",
+          "answer": "green"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "7"
+        },
+        {
+          "probe": "color",
+          "gold": "red",
+          "gold_id": 0,
+          "pred_id": 1,
+          "pred": "green",
+          "answer": "red"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 3,
+          "gold_k": 8,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "8"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 3,
+          "gold_k": 8,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "8"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "7"
+        },
+        {
+          "probe": "color",
+          "gold": "yellow",
+          "gold_id": 3,
+          "pred_id": 1,
+          "pred": "green",
+          "answer": "yellow"
+        }
+      ],
+      "slot_last": {},
+      "budget": "4+8",
+      "seconds": 15.743693351745605,
+      "status": "ok"
+    },
+    {
+      "kind": "A",
+      "T": 64,
+      "protocol": "linear_probe",
+      "seed": 1,
+      "final_loss": 1.4053126573562622,
+      "acc_overall": 0.3125,
+      "acc_color": 0.38235294117647056,
+      "acc_kinks": 0.23333333333333334,
+      "probe": {
+        "acc_color": 0.38235294117647056,
+        "n_color": 34,
+        "acc_kinks": 0.23333333333333334,
+        "n_kinks": 30,
+        "acc_overall": 0.3125,
+        "n_overall": 64,
+        "protocol": "linear_probe",
+        "failures": [
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 3,
+            "pred": "yellow",
+            "answer": "green"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 3,
+            "pred_k": 8,
+            "answer": "7"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 3,
+            "pred": "yellow",
+            "answer": "green"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 3,
+            "pred_k": 8,
+            "answer": "7"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 3,
+            "pred": "yellow",
+            "answer": "green"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 3,
+            "pred": "yellow",
+            "answer": "green"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 2,
+            "pred": "blue",
+            "answer": "green"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 3,
+            "pred_k": 8,
+            "answer": "7"
+          }
+        ]
+      },
+      "failures": [
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 3,
+          "pred": "yellow",
+          "answer": "green"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 3,
+          "pred_k": 8,
+          "answer": "7"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 3,
+          "pred": "yellow",
+          "answer": "green"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 3,
+          "pred_k": 8,
+          "answer": "7"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 3,
+          "pred": "yellow",
+          "answer": "green"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 3,
+          "pred": "yellow",
+          "answer": "green"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 2,
+          "pred": "blue",
+          "answer": "green"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 3,
+          "pred_k": 8,
+          "answer": "7"
+        }
+      ],
+      "slot_last": {},
+      "budget": null,
+      "seconds": 4.745499610900879,
+      "status": "ok"
+    },
+    {
+      "kind": "B",
+      "T": 64,
+      "protocol": "linear_probe",
+      "seed": 1,
+      "final_loss": 1.3858230113983154,
+      "acc_overall": 0.3125,
+      "acc_color": 0.17647058823529413,
+      "acc_kinks": 0.4666666666666667,
+      "probe": {
+        "acc_color": 0.17647058823529413,
+        "n_color": 34,
+        "acc_kinks": 0.4666666666666667,
+        "n_kinks": 30,
+        "acc_overall": 0.3125,
+        "n_overall": 64,
+        "protocol": "linear_probe",
+        "failures": [
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 2,
+            "pred": "blue",
+            "answer": "green"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 2,
+            "pred": "blue",
+            "answer": "green"
+          },
+          {
+            "probe": "color",
+            "gold": "red",
+            "gold_id": 0,
+            "pred_id": 2,
+            "pred": "blue",
+            "answer": "red"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 2,
+            "pred": "blue",
+            "answer": "green"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 3,
+            "gold_k": 8,
+            "pred_id": 2,
+            "pred_k": 7,
+            "answer": "8"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 2,
+            "pred": "blue",
+            "answer": "green"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 2,
+            "pred": "blue",
+            "answer": "green"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 3,
+            "gold_k": 8,
+            "pred_id": 2,
+            "pred_k": 7,
+            "answer": "8"
+          }
+        ]
+      },
+      "failures": [
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 2,
+          "pred": "blue",
+          "answer": "green"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 2,
+          "pred": "blue",
+          "answer": "green"
+        },
+        {
+          "probe": "color",
+          "gold": "red",
+          "gold_id": 0,
+          "pred_id": 2,
+          "pred": "blue",
+          "answer": "red"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 2,
+          "pred": "blue",
+          "answer": "green"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 3,
+          "gold_k": 8,
+          "pred_id": 2,
+          "pred_k": 7,
+          "answer": "8"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 2,
+          "pred": "blue",
+          "answer": "green"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 2,
+          "pred": "blue",
+          "answer": "green"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 3,
+          "gold_k": 8,
+          "pred_id": 2,
+          "pred_k": 7,
+          "answer": "8"
+        }
+      ],
+      "slot_last": {
+        "PR_mass": 52.26523208618164,
+        "r99": 62.25,
+        "support": 2.0
+      },
+      "budget": null,
+      "seconds": 16.293153285980225,
+      "status": "ok"
+    },
+    {
+      "kind": "C",
+      "T": 48,
+      "protocol": "linear_probe",
+      "seed": 1,
+      "final_loss": 1.419085144996643,
+      "acc_overall": 0.234375,
+      "acc_color": 0.2647058823529412,
+      "acc_kinks": 0.2,
+      "probe": {
+        "acc_color": 0.2647058823529412,
+        "n_color": 34,
+        "acc_kinks": 0.2,
+        "n_kinks": 30,
+        "acc_overall": 0.234375,
+        "n_overall": 64,
+        "protocol": "linear_probe",
+        "failures": [
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 2,
+            "pred": "blue",
+            "answer": "green"
+          },
+          {
+            "probe": "color",
+            "gold": "blue",
+            "gold_id": 2,
+            "pred_id": 3,
+            "pred": "yellow",
+            "answer": "blue"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 3,
+            "pred_k": 8,
+            "answer": "7"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 2,
+            "pred": "blue",
+            "answer": "green"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 3,
+            "pred_k": 8,
+            "answer": "7"
+          },
+          {
+            "probe": "color",
+            "gold": "red",
+            "gold_id": 0,
+            "pred_id": 3,
+            "pred": "yellow",
+            "answer": "red"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 3,
+            "pred": "yellow",
+            "answer": "green"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 2,
+            "pred": "blue",
+            "answer": "green"
+          }
+        ]
+      },
+      "failures": [
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 2,
+          "pred": "blue",
+          "answer": "green"
+        },
+        {
+          "probe": "color",
+          "gold": "blue",
+          "gold_id": 2,
+          "pred_id": 3,
+          "pred": "yellow",
+          "answer": "blue"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 3,
+          "pred_k": 8,
+          "answer": "7"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 2,
+          "pred": "blue",
+          "answer": "green"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 3,
+          "pred_k": 8,
+          "answer": "7"
+        },
+        {
+          "probe": "color",
+          "gold": "red",
+          "gold_id": 0,
+          "pred_id": 3,
+          "pred": "yellow",
+          "answer": "red"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 3,
+          "pred": "yellow",
+          "answer": "green"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 2,
+          "pred": "blue",
+          "answer": "green"
+        }
+      ],
+      "slot_last": {},
+      "budget": "16+32",
+      "seconds": 15.606847763061523,
+      "status": "ok"
+    },
+    {
+      "kind": "A",
+      "T": 32,
+      "protocol": "linear_probe",
+      "seed": 1,
+      "final_loss": 1.4053131341934204,
+      "acc_overall": 0.3125,
+      "acc_color": 0.38235294117647056,
+      "acc_kinks": 0.23333333333333334,
+      "probe": {
+        "acc_color": 0.38235294117647056,
+        "n_color": 34,
+        "acc_kinks": 0.23333333333333334,
+        "n_kinks": 30,
+        "acc_overall": 0.3125,
+        "n_overall": 64,
+        "protocol": "linear_probe",
+        "failures": [
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 3,
+            "pred": "yellow",
+            "answer": "green"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 3,
+            "pred_k": 8,
+            "answer": "7"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 3,
+            "pred": "yellow",
+            "answer": "green"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 3,
+            "pred_k": 8,
+            "answer": "7"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 3,
+            "pred": "yellow",
+            "answer": "green"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 3,
+            "pred": "yellow",
+            "answer": "green"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 2,
+            "pred": "blue",
+            "answer": "green"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 3,
+            "pred_k": 8,
+            "answer": "7"
+          }
+        ]
+      },
+      "failures": [
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 3,
+          "pred": "yellow",
+          "answer": "green"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 3,
+          "pred_k": 8,
+          "answer": "7"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 3,
+          "pred": "yellow",
+          "answer": "green"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 3,
+          "pred_k": 8,
+          "answer": "7"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 3,
+          "pred": "yellow",
+          "answer": "green"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 3,
+          "pred": "yellow",
+          "answer": "green"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 2,
+          "pred": "blue",
+          "answer": "green"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 3,
+          "pred_k": 8,
+          "answer": "7"
+        }
+      ],
+      "slot_last": {},
+      "budget": null,
+      "seconds": 4.690819501876831,
+      "status": "ok"
+    },
+    {
+      "kind": "B",
+      "T": 32,
+      "protocol": "linear_probe",
+      "seed": 1,
+      "final_loss": 1.3860021829605103,
+      "acc_overall": 0.3125,
+      "acc_color": 0.17647058823529413,
+      "acc_kinks": 0.4666666666666667,
+      "probe": {
+        "acc_color": 0.17647058823529413,
+        "n_color": 34,
+        "acc_kinks": 0.4666666666666667,
+        "n_kinks": 30,
+        "acc_overall": 0.3125,
+        "n_overall": 64,
+        "protocol": "linear_probe",
+        "failures": [
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 2,
+            "pred": "blue",
+            "answer": "green"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 2,
+            "pred": "blue",
+            "answer": "green"
+          },
+          {
+            "probe": "color",
+            "gold": "red",
+            "gold_id": 0,
+            "pred_id": 2,
+            "pred": "blue",
+            "answer": "red"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 2,
+            "pred": "blue",
+            "answer": "green"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 3,
+            "gold_k": 8,
+            "pred_id": 2,
+            "pred_k": 7,
+            "answer": "8"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 2,
+            "pred": "blue",
+            "answer": "green"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 2,
+            "pred": "blue",
+            "answer": "green"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 3,
+            "gold_k": 8,
+            "pred_id": 2,
+            "pred_k": 7,
+            "answer": "8"
+          }
+        ]
+      },
+      "failures": [
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 2,
+          "pred": "blue",
+          "answer": "green"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 2,
+          "pred": "blue",
+          "answer": "green"
+        },
+        {
+          "probe": "color",
+          "gold": "red",
+          "gold_id": 0,
+          "pred_id": 2,
+          "pred": "blue",
+          "answer": "red"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 2,
+          "pred": "blue",
+          "answer": "green"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 3,
+          "gold_k": 8,
+          "pred_id": 2,
+          "pred_k": 7,
+          "answer": "8"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 2,
+          "pred": "blue",
+          "answer": "green"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 2,
+          "pred": "blue",
+          "answer": "green"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 3,
+          "gold_k": 8,
+          "pred_id": 2,
+          "pred_k": 7,
+          "answer": "8"
+        }
+      ],
+      "slot_last": {
+        "PR_mass": 14.673627853393555,
+        "r99": 30.3125,
+        "support": 2.0
+      },
+      "budget": null,
+      "seconds": 14.12424921989441,
+      "status": "ok"
+    },
+    {
+      "kind": "C",
+      "T": 32,
+      "protocol": "linear_probe",
+      "seed": 1,
+      "final_loss": 1.4960308074951172,
+      "acc_overall": 0.328125,
+      "acc_color": 0.4411764705882353,
+      "acc_kinks": 0.2,
+      "probe": {
+        "acc_color": 0.4411764705882353,
+        "n_color": 34,
+        "acc_kinks": 0.2,
+        "n_kinks": 30,
+        "acc_overall": 0.328125,
+        "n_overall": 64,
+        "protocol": "linear_probe",
+        "failures": [
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 2,
+            "pred": "blue",
+            "answer": "green"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 3,
+            "pred_k": 8,
+            "answer": "7"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 2,
+            "pred": "blue",
+            "answer": "green"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 3,
+            "pred_k": 8,
+            "answer": "7"
+          },
+          {
+            "probe": "color",
+            "gold": "red",
+            "gold_id": 0,
+            "pred_id": 2,
+            "pred": "blue",
+            "answer": "red"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 2,
+            "pred": "blue",
+            "answer": "green"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 2,
+            "pred": "blue",
+            "answer": "green"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 2,
+            "pred": "blue",
+            "answer": "green"
+          }
+        ]
+      },
+      "failures": [
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 2,
+          "pred": "blue",
+          "answer": "green"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 3,
+          "pred_k": 8,
+          "answer": "7"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 2,
+          "pred": "blue",
+          "answer": "green"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 3,
+          "pred_k": 8,
+          "answer": "7"
+        },
+        {
+          "probe": "color",
+          "gold": "red",
+          "gold_id": 0,
+          "pred_id": 2,
+          "pred": "blue",
+          "answer": "red"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 2,
+          "pred": "blue",
+          "answer": "green"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 2,
+          "pred": "blue",
+          "answer": "green"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 2,
+          "pred": "blue",
+          "answer": "green"
+        }
+      ],
+      "slot_last": {},
+      "budget": "16+16",
+      "seconds": 15.628519535064697,
+      "status": "ok"
+    },
+    {
+      "kind": "A",
+      "T": 16,
+      "protocol": "linear_probe",
+      "seed": 1,
+      "final_loss": 1.4053127765655518,
+      "acc_overall": 0.3125,
+      "acc_color": 0.38235294117647056,
+      "acc_kinks": 0.23333333333333334,
+      "probe": {
+        "acc_color": 0.38235294117647056,
+        "n_color": 34,
+        "acc_kinks": 0.23333333333333334,
+        "n_kinks": 30,
+        "acc_overall": 0.3125,
+        "n_overall": 64,
+        "protocol": "linear_probe",
+        "failures": [
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 3,
+            "pred": "yellow",
+            "answer": "green"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 3,
+            "pred_k": 8,
+            "answer": "7"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 3,
+            "pred": "yellow",
+            "answer": "green"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 3,
+            "pred_k": 8,
+            "answer": "7"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 3,
+            "pred": "yellow",
+            "answer": "green"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 3,
+            "pred": "yellow",
+            "answer": "green"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 2,
+            "pred": "blue",
+            "answer": "green"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 3,
+            "pred_k": 8,
+            "answer": "7"
+          }
+        ]
+      },
+      "failures": [
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 3,
+          "pred": "yellow",
+          "answer": "green"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 3,
+          "pred_k": 8,
+          "answer": "7"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 3,
+          "pred": "yellow",
+          "answer": "green"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 3,
+          "pred_k": 8,
+          "answer": "7"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 3,
+          "pred": "yellow",
+          "answer": "green"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 3,
+          "pred": "yellow",
+          "answer": "green"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 2,
+          "pred": "blue",
+          "answer": "green"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 3,
+          "pred_k": 8,
+          "answer": "7"
+        }
+      ],
+      "slot_last": {},
+      "budget": null,
+      "seconds": 4.7371439933776855,
+      "status": "ok"
+    },
+    {
+      "kind": "B",
+      "T": 16,
+      "protocol": "linear_probe",
+      "seed": 1,
+      "final_loss": 1.3214492797851562,
+      "acc_overall": 0.46875,
+      "acc_color": 0.47058823529411764,
+      "acc_kinks": 0.4666666666666667,
+      "probe": {
+        "acc_color": 0.47058823529411764,
+        "n_color": 34,
+        "acc_kinks": 0.4666666666666667,
+        "n_kinks": 30,
+        "acc_overall": 0.46875,
+        "n_overall": 64,
+        "protocol": "linear_probe",
+        "failures": [
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 2,
+            "pred": "blue",
+            "answer": "green"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 2,
+            "pred": "blue",
+            "answer": "green"
+          },
+          {
+            "probe": "color",
+            "gold": "red",
+            "gold_id": 0,
+            "pred_id": 2,
+            "pred": "blue",
+            "answer": "red"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 2,
+            "pred": "blue",
+            "answer": "green"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 3,
+            "gold_k": 8,
+            "pred_id": 2,
+            "pred_k": 7,
+            "answer": "8"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 2,
+            "pred": "blue",
+            "answer": "green"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 2,
+            "pred": "blue",
+            "answer": "green"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 3,
+            "gold_k": 8,
+            "pred_id": 2,
+            "pred_k": 7,
+            "answer": "8"
+          }
+        ]
+      },
+      "failures": [
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 2,
+          "pred": "blue",
+          "answer": "green"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 2,
+          "pred": "blue",
+          "answer": "green"
+        },
+        {
+          "probe": "color",
+          "gold": "red",
+          "gold_id": 0,
+          "pred_id": 2,
+          "pred": "blue",
+          "answer": "red"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 2,
+          "pred": "blue",
+          "answer": "green"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 3,
+          "gold_k": 8,
+          "pred_id": 2,
+          "pred_k": 7,
+          "answer": "8"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 2,
+          "pred": "blue",
+          "answer": "green"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 2,
+          "pred": "blue",
+          "answer": "green"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 3,
+          "gold_k": 8,
+          "pred_id": 2,
+          "pred_k": 7,
+          "answer": "8"
+        }
+      ],
+      "slot_last": {
+        "PR_mass": 3.504072427749634,
+        "r99": 9.125,
+        "support": 2.0
+      },
+      "budget": null,
+      "seconds": 14.108614444732666,
+      "status": "ok"
+    },
+    {
+      "kind": "C",
+      "T": 12,
+      "protocol": "linear_probe",
+      "seed": 1,
+      "final_loss": 1.4397735595703125,
+      "acc_overall": 0.265625,
+      "acc_color": 0.29411764705882354,
+      "acc_kinks": 0.23333333333333334,
+      "probe": {
+        "acc_color": 0.29411764705882354,
+        "n_color": 34,
+        "acc_kinks": 0.23333333333333334,
+        "n_kinks": 30,
+        "acc_overall": 0.265625,
+        "n_overall": 64,
+        "protocol": "linear_probe",
+        "failures": [
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 3,
+            "pred": "yellow",
+            "answer": "green"
+          },
+          {
+            "probe": "color",
+            "gold": "blue",
+            "gold_id": 2,
+            "pred_id": 3,
+            "pred": "yellow",
+            "answer": "blue"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 3,
+            "pred_k": 8,
+            "answer": "7"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 3,
+            "pred": "yellow",
+            "answer": "green"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 3,
+            "pred_k": 8,
+            "answer": "7"
+          },
+          {
+            "probe": "color",
+            "gold": "red",
+            "gold_id": 0,
+            "pred_id": 3,
+            "pred": "yellow",
+            "answer": "red"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 3,
+            "pred": "yellow",
+            "answer": "green"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 3,
+            "pred": "yellow",
+            "answer": "green"
+          }
+        ]
+      },
+      "failures": [
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 3,
+          "pred": "yellow",
+          "answer": "green"
+        },
+        {
+          "probe": "color",
+          "gold": "blue",
+          "gold_id": 2,
+          "pred_id": 3,
+          "pred": "yellow",
+          "answer": "blue"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 3,
+          "pred_k": 8,
+          "answer": "7"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 3,
+          "pred": "yellow",
+          "answer": "green"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 3,
+          "pred_k": 8,
+          "answer": "7"
+        },
+        {
+          "probe": "color",
+          "gold": "red",
+          "gold_id": 0,
+          "pred_id": 3,
+          "pred": "yellow",
+          "answer": "red"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 3,
+          "pred": "yellow",
+          "answer": "green"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 3,
+          "pred": "yellow",
+          "answer": "green"
+        }
+      ],
+      "slot_last": {},
+      "budget": "4+8",
+      "seconds": 15.649327754974365,
+      "status": "ok"
+    }
+  ],
+  "rows": [
+    {
+      "kind": "A",
+      "T": 64,
+      "protocol": "linear_probe",
+      "final_loss": 1.3929071426391602,
+      "acc_overall": 0.3125,
+      "acc_color": 0.4117647058823529,
+      "acc_kinks": 0.2,
+      "probe": {
+        "acc_color": 0.4117647058823529,
+        "n_color": 34,
+        "acc_kinks": 0.2,
+        "n_kinks": 30,
+        "acc_overall": 0.3125,
+        "n_overall": 64,
+        "protocol": "linear_probe",
+        "failures": [
+          {
+            "probe": "color",
+            "gold": "blue",
+            "gold_id": 2,
+            "pred_id": 1,
+            "pred": "green",
+            "answer": "blue"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "7"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "7"
+          },
+          {
+            "probe": "color",
+            "gold": "red",
+            "gold_id": 0,
+            "pred_id": 1,
+            "pred": "green",
+            "answer": "red"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 3,
+            "gold_k": 8,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "8"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 3,
+            "gold_k": 8,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "8"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "7"
+          },
+          {
+            "probe": "color",
+            "gold": "yellow",
+            "gold_id": 3,
+            "pred_id": 1,
+            "pred": "green",
+            "answer": "yellow"
+          }
+        ]
+      },
+      "failures": [
+        {
+          "probe": "color",
+          "gold": "blue",
+          "gold_id": 2,
+          "pred_id": 1,
+          "pred": "green",
+          "answer": "blue"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "7"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "7"
+        },
+        {
+          "probe": "color",
+          "gold": "red",
+          "gold_id": 0,
+          "pred_id": 1,
+          "pred": "green",
+          "answer": "red"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 3,
+          "gold_k": 8,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "8"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 3,
+          "gold_k": 8,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "8"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "7"
+        },
+        {
+          "probe": "color",
+          "gold": "yellow",
+          "gold_id": 3,
+          "pred_id": 1,
+          "pred": "green",
+          "answer": "yellow"
+        }
+      ],
+      "slot_last": {},
+      "budget": null,
+      "seconds": 4.891752481460571,
+      "seed": 0,
+      "status": "ok",
+      "history": [
+        {
+          "step": 1,
+          "loss": 1.4477492570877075,
+          "T": 64,
+          "kind": "A"
+        },
+        {
+          "step": 100,
+          "loss": 1.3774375915527344,
+          "T": 64,
+          "kind": "A"
+        },
+        {
+          "step": 200,
+          "loss": 1.4138031005859375,
+          "T": 64,
+          "kind": "A"
+        },
+        {
+          "step": 300,
+          "loss": 1.3162344694137573,
+          "T": 64,
+          "kind": "A"
+        },
+        {
+          "step": 400,
+          "loss": 1.3929071426391602,
+          "T": 64,
+          "kind": "A"
+        }
+      ]
+    },
+    {
+      "kind": "B",
+      "T": 64,
+      "protocol": "linear_probe",
+      "final_loss": 1.3900165557861328,
+      "acc_overall": 0.328125,
+      "acc_color": 0.4117647058823529,
+      "acc_kinks": 0.23333333333333334,
+      "probe": {
+        "acc_color": 0.4117647058823529,
+        "n_color": 34,
+        "acc_kinks": 0.23333333333333334,
+        "n_kinks": 30,
+        "acc_overall": 0.328125,
+        "n_overall": 64,
+        "protocol": "linear_probe",
+        "failures": [
+          {
+            "probe": "color",
+            "gold": "blue",
+            "gold_id": 2,
+            "pred_id": 1,
+            "pred": "green",
+            "answer": "blue"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "7"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "7"
+          },
+          {
+            "probe": "color",
+            "gold": "red",
+            "gold_id": 0,
+            "pred_id": 1,
+            "pred": "green",
+            "answer": "red"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 3,
+            "gold_k": 8,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "8"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 3,
+            "gold_k": 8,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "8"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "7"
+          },
+          {
+            "probe": "color",
+            "gold": "yellow",
+            "gold_id": 3,
+            "pred_id": 1,
+            "pred": "green",
+            "answer": "yellow"
+          }
+        ]
+      },
+      "failures": [
+        {
+          "probe": "color",
+          "gold": "blue",
+          "gold_id": 2,
+          "pred_id": 1,
+          "pred": "green",
+          "answer": "blue"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "7"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "7"
+        },
+        {
+          "probe": "color",
+          "gold": "red",
+          "gold_id": 0,
+          "pred_id": 1,
+          "pred": "green",
+          "answer": "red"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 3,
+          "gold_k": 8,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "8"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 3,
+          "gold_k": 8,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "8"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "7"
+        },
+        {
+          "probe": "color",
+          "gold": "yellow",
+          "gold_id": 3,
+          "pred_id": 1,
+          "pred": "green",
+          "answer": "yellow"
+        }
+      ],
+      "slot_last": {
+        "PR_mass": 49.43809509277344,
+        "r99": 62.75,
+        "support": 2.0
+      },
+      "budget": null,
+      "seconds": 16.850990295410156,
+      "seed": 0,
+      "status": "ok",
+      "history": [
+        {
+          "step": 1,
+          "loss": 1.3772133588790894,
+          "T": 64,
+          "kind": "B"
+        },
+        {
+          "step": 100,
+          "loss": 1.3929178714752197,
+          "T": 64,
+          "kind": "B"
+        },
+        {
+          "step": 200,
+          "loss": 1.3863180875778198,
+          "T": 64,
+          "kind": "B"
+        },
+        {
+          "step": 300,
+          "loss": 1.3890212774276733,
+          "T": 64,
+          "kind": "B"
+        },
+        {
+          "step": 400,
+          "loss": 1.3900165557861328,
+          "T": 64,
+          "kind": "B"
+        }
+      ]
+    },
+    {
+      "kind": "C",
+      "T": 48,
+      "protocol": "linear_probe",
+      "final_loss": 1.3944857120513916,
+      "acc_overall": 0.3125,
+      "acc_color": 0.4117647058823529,
+      "acc_kinks": 0.2,
+      "probe": {
+        "acc_color": 0.4117647058823529,
+        "n_color": 34,
+        "acc_kinks": 0.2,
+        "n_kinks": 30,
+        "acc_overall": 0.3125,
+        "n_overall": 64,
+        "protocol": "linear_probe",
+        "failures": [
+          {
+            "probe": "color",
+            "gold": "blue",
+            "gold_id": 2,
+            "pred_id": 1,
+            "pred": "green",
+            "answer": "blue"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 3,
+            "pred_k": 8,
+            "answer": "7"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 3,
+            "pred_k": 8,
+            "answer": "7"
+          },
+          {
+            "probe": "color",
+            "gold": "red",
+            "gold_id": 0,
+            "pred_id": 1,
+            "pred": "green",
+            "answer": "red"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 3,
+            "pred_k": 8,
+            "answer": "7"
+          },
+          {
+            "probe": "color",
+            "gold": "yellow",
+            "gold_id": 3,
+            "pred_id": 1,
+            "pred": "green",
+            "answer": "yellow"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 1,
+            "gold_k": 6,
+            "pred_id": 3,
+            "pred_k": 8,
+            "answer": "6"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 1,
+            "gold_k": 6,
+            "pred_id": 3,
+            "pred_k": 8,
+            "answer": "6"
+          }
+        ]
+      },
+      "failures": [
+        {
+          "probe": "color",
+          "gold": "blue",
+          "gold_id": 2,
+          "pred_id": 1,
+          "pred": "green",
+          "answer": "blue"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 3,
+          "pred_k": 8,
+          "answer": "7"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 3,
+          "pred_k": 8,
+          "answer": "7"
+        },
+        {
+          "probe": "color",
+          "gold": "red",
+          "gold_id": 0,
+          "pred_id": 1,
+          "pred": "green",
+          "answer": "red"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 3,
+          "pred_k": 8,
+          "answer": "7"
+        },
+        {
+          "probe": "color",
+          "gold": "yellow",
+          "gold_id": 3,
+          "pred_id": 1,
+          "pred": "green",
+          "answer": "yellow"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 1,
+          "gold_k": 6,
+          "pred_id": 3,
+          "pred_k": 8,
+          "answer": "6"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 1,
+          "gold_k": 6,
+          "pred_id": 3,
+          "pred_k": 8,
+          "answer": "6"
+        }
+      ],
+      "slot_last": {},
+      "budget": "16+32",
+      "seconds": 15.57004427909851,
+      "seed": 0,
+      "status": "ok",
+      "history": [
+        {
+          "step": 1,
+          "loss": 1.3343253135681152,
+          "T": 48,
+          "kind": "C"
+        },
+        {
+          "step": 100,
+          "loss": 1.3740100860595703,
+          "T": 48,
+          "kind": "C"
+        },
+        {
+          "step": 200,
+          "loss": 1.4021724462509155,
+          "T": 48,
+          "kind": "C"
+        },
+        {
+          "step": 300,
+          "loss": 1.326695203781128,
+          "T": 48,
+          "kind": "C"
+        },
+        {
+          "step": 400,
+          "loss": 1.3944857120513916,
+          "T": 48,
+          "kind": "C"
+        }
+      ]
+    },
+    {
+      "kind": "A",
+      "T": 32,
+      "protocol": "linear_probe",
+      "final_loss": 1.3929071426391602,
+      "acc_overall": 0.3125,
+      "acc_color": 0.4117647058823529,
+      "acc_kinks": 0.2,
+      "probe": {
+        "acc_color": 0.4117647058823529,
+        "n_color": 34,
+        "acc_kinks": 0.2,
+        "n_kinks": 30,
+        "acc_overall": 0.3125,
+        "n_overall": 64,
+        "protocol": "linear_probe",
+        "failures": [
+          {
+            "probe": "color",
+            "gold": "blue",
+            "gold_id": 2,
+            "pred_id": 1,
+            "pred": "green",
+            "answer": "blue"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "7"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "7"
+          },
+          {
+            "probe": "color",
+            "gold": "red",
+            "gold_id": 0,
+            "pred_id": 1,
+            "pred": "green",
+            "answer": "red"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 3,
+            "gold_k": 8,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "8"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 3,
+            "gold_k": 8,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "8"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "7"
+          },
+          {
+            "probe": "color",
+            "gold": "yellow",
+            "gold_id": 3,
+            "pred_id": 1,
+            "pred": "green",
+            "answer": "yellow"
+          }
+        ]
+      },
+      "failures": [
+        {
+          "probe": "color",
+          "gold": "blue",
+          "gold_id": 2,
+          "pred_id": 1,
+          "pred": "green",
+          "answer": "blue"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "7"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "7"
+        },
+        {
+          "probe": "color",
+          "gold": "red",
+          "gold_id": 0,
+          "pred_id": 1,
+          "pred": "green",
+          "answer": "red"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 3,
+          "gold_k": 8,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "8"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 3,
+          "gold_k": 8,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "8"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "7"
+        },
+        {
+          "probe": "color",
+          "gold": "yellow",
+          "gold_id": 3,
+          "pred_id": 1,
+          "pred": "green",
+          "answer": "yellow"
+        }
+      ],
+      "slot_last": {},
+      "budget": null,
+      "seconds": 4.725858449935913,
+      "seed": 0,
+      "status": "ok",
+      "history": [
+        {
+          "step": 1,
+          "loss": 1.4477492570877075,
+          "T": 32,
+          "kind": "A"
+        },
+        {
+          "step": 100,
+          "loss": 1.3774375915527344,
+          "T": 32,
+          "kind": "A"
+        },
+        {
+          "step": 200,
+          "loss": 1.4138031005859375,
+          "T": 32,
+          "kind": "A"
+        },
+        {
+          "step": 300,
+          "loss": 1.3162344694137573,
+          "T": 32,
+          "kind": "A"
+        },
+        {
+          "step": 400,
+          "loss": 1.3929071426391602,
+          "T": 32,
+          "kind": "A"
+        }
+      ]
+    },
+    {
+      "kind": "B",
+      "T": 32,
+      "protocol": "linear_probe",
+      "final_loss": 1.3920387029647827,
+      "acc_overall": 0.328125,
+      "acc_color": 0.4117647058823529,
+      "acc_kinks": 0.23333333333333334,
+      "probe": {
+        "acc_color": 0.4117647058823529,
+        "n_color": 34,
+        "acc_kinks": 0.23333333333333334,
+        "n_kinks": 30,
+        "acc_overall": 0.328125,
+        "n_overall": 64,
+        "protocol": "linear_probe",
+        "failures": [
+          {
+            "probe": "color",
+            "gold": "blue",
+            "gold_id": 2,
+            "pred_id": 1,
+            "pred": "green",
+            "answer": "blue"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "7"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "7"
+          },
+          {
+            "probe": "color",
+            "gold": "red",
+            "gold_id": 0,
+            "pred_id": 1,
+            "pred": "green",
+            "answer": "red"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 3,
+            "gold_k": 8,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "8"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 3,
+            "gold_k": 8,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "8"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "7"
+          },
+          {
+            "probe": "color",
+            "gold": "yellow",
+            "gold_id": 3,
+            "pred_id": 1,
+            "pred": "green",
+            "answer": "yellow"
+          }
+        ]
+      },
+      "failures": [
+        {
+          "probe": "color",
+          "gold": "blue",
+          "gold_id": 2,
+          "pred_id": 1,
+          "pred": "green",
+          "answer": "blue"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "7"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "7"
+        },
+        {
+          "probe": "color",
+          "gold": "red",
+          "gold_id": 0,
+          "pred_id": 1,
+          "pred": "green",
+          "answer": "red"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 3,
+          "gold_k": 8,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "8"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 3,
+          "gold_k": 8,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "8"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "7"
+        },
+        {
+          "probe": "color",
+          "gold": "yellow",
+          "gold_id": 3,
+          "pred_id": 1,
+          "pred": "green",
+          "answer": "yellow"
+        }
+      ],
+      "slot_last": {
+        "PR_mass": 19.08087921142578,
+        "r99": 30.75,
+        "support": 2.0
+      },
+      "budget": null,
+      "seconds": 14.011791706085205,
+      "seed": 0,
+      "status": "ok",
+      "history": [
+        {
+          "step": 1,
+          "loss": 1.4147931337356567,
+          "T": 32,
+          "kind": "B"
+        },
+        {
+          "step": 100,
+          "loss": 1.387984275817871,
+          "T": 32,
+          "kind": "B"
+        },
+        {
+          "step": 200,
+          "loss": 1.387570858001709,
+          "T": 32,
+          "kind": "B"
+        },
+        {
+          "step": 300,
+          "loss": 1.3808746337890625,
+          "T": 32,
+          "kind": "B"
+        },
+        {
+          "step": 400,
+          "loss": 1.3920387029647827,
+          "T": 32,
+          "kind": "B"
+        }
+      ]
+    },
+    {
+      "kind": "C",
+      "T": 32,
+      "protocol": "linear_probe",
+      "final_loss": 1.406278133392334,
+      "acc_overall": 0.328125,
+      "acc_color": 0.4117647058823529,
+      "acc_kinks": 0.23333333333333334,
+      "probe": {
+        "acc_color": 0.4117647058823529,
+        "n_color": 34,
+        "acc_kinks": 0.23333333333333334,
+        "n_kinks": 30,
+        "acc_overall": 0.328125,
+        "n_overall": 64,
+        "protocol": "linear_probe",
+        "failures": [
+          {
+            "probe": "color",
+            "gold": "blue",
+            "gold_id": 2,
+            "pred_id": 1,
+            "pred": "green",
+            "answer": "blue"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "7"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "7"
+          },
+          {
+            "probe": "color",
+            "gold": "red",
+            "gold_id": 0,
+            "pred_id": 1,
+            "pred": "green",
+            "answer": "red"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 3,
+            "gold_k": 8,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "8"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 3,
+            "gold_k": 8,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "8"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "7"
+          },
+          {
+            "probe": "color",
+            "gold": "yellow",
+            "gold_id": 3,
+            "pred_id": 1,
+            "pred": "green",
+            "answer": "yellow"
+          }
+        ]
+      },
+      "failures": [
+        {
+          "probe": "color",
+          "gold": "blue",
+          "gold_id": 2,
+          "pred_id": 1,
+          "pred": "green",
+          "answer": "blue"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "7"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "7"
+        },
+        {
+          "probe": "color",
+          "gold": "red",
+          "gold_id": 0,
+          "pred_id": 1,
+          "pred": "green",
+          "answer": "red"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 3,
+          "gold_k": 8,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "8"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 3,
+          "gold_k": 8,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "8"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "7"
+        },
+        {
+          "probe": "color",
+          "gold": "yellow",
+          "gold_id": 3,
+          "pred_id": 1,
+          "pred": "green",
+          "answer": "yellow"
+        }
+      ],
+      "slot_last": {},
+      "budget": "16+16",
+      "seconds": 15.975165367126465,
+      "seed": 0,
+      "status": "ok",
+      "history": [
+        {
+          "step": 1,
+          "loss": 1.4130669832229614,
+          "T": 32,
+          "kind": "C"
+        },
+        {
+          "step": 100,
+          "loss": 1.3386874198913574,
+          "T": 32,
+          "kind": "C"
+        },
+        {
+          "step": 200,
+          "loss": 1.411043405532837,
+          "T": 32,
+          "kind": "C"
+        },
+        {
+          "step": 300,
+          "loss": 1.305336356163025,
+          "T": 32,
+          "kind": "C"
+        },
+        {
+          "step": 400,
+          "loss": 1.406278133392334,
+          "T": 32,
+          "kind": "C"
+        }
+      ]
+    },
+    {
+      "kind": "A",
+      "T": 16,
+      "protocol": "linear_probe",
+      "final_loss": 1.3929070234298706,
+      "acc_overall": 0.3125,
+      "acc_color": 0.4117647058823529,
+      "acc_kinks": 0.2,
+      "probe": {
+        "acc_color": 0.4117647058823529,
+        "n_color": 34,
+        "acc_kinks": 0.2,
+        "n_kinks": 30,
+        "acc_overall": 0.3125,
+        "n_overall": 64,
+        "protocol": "linear_probe",
+        "failures": [
+          {
+            "probe": "color",
+            "gold": "blue",
+            "gold_id": 2,
+            "pred_id": 1,
+            "pred": "green",
+            "answer": "blue"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "7"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "7"
+          },
+          {
+            "probe": "color",
+            "gold": "red",
+            "gold_id": 0,
+            "pred_id": 1,
+            "pred": "green",
+            "answer": "red"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 3,
+            "gold_k": 8,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "8"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 3,
+            "gold_k": 8,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "8"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "7"
+          },
+          {
+            "probe": "color",
+            "gold": "yellow",
+            "gold_id": 3,
+            "pred_id": 1,
+            "pred": "green",
+            "answer": "yellow"
+          }
+        ]
+      },
+      "failures": [
+        {
+          "probe": "color",
+          "gold": "blue",
+          "gold_id": 2,
+          "pred_id": 1,
+          "pred": "green",
+          "answer": "blue"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "7"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "7"
+        },
+        {
+          "probe": "color",
+          "gold": "red",
+          "gold_id": 0,
+          "pred_id": 1,
+          "pred": "green",
+          "answer": "red"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 3,
+          "gold_k": 8,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "8"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 3,
+          "gold_k": 8,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "8"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "7"
+        },
+        {
+          "probe": "color",
+          "gold": "yellow",
+          "gold_id": 3,
+          "pred_id": 1,
+          "pred": "green",
+          "answer": "yellow"
+        }
+      ],
+      "slot_last": {},
+      "budget": null,
+      "seconds": 4.853016376495361,
+      "seed": 0,
+      "status": "ok",
+      "history": [
+        {
+          "step": 1,
+          "loss": 1.447749376296997,
+          "T": 16,
+          "kind": "A"
+        },
+        {
+          "step": 100,
+          "loss": 1.3774375915527344,
+          "T": 16,
+          "kind": "A"
+        },
+        {
+          "step": 200,
+          "loss": 1.4138031005859375,
+          "T": 16,
+          "kind": "A"
+        },
+        {
+          "step": 300,
+          "loss": 1.3162343502044678,
+          "T": 16,
+          "kind": "A"
+        },
+        {
+          "step": 400,
+          "loss": 1.3929070234298706,
+          "T": 16,
+          "kind": "A"
+        }
+      ]
+    },
+    {
+      "kind": "B",
+      "T": 16,
+      "protocol": "linear_probe",
+      "final_loss": 0.8307391405105591,
+      "acc_overall": 0.5625,
+      "acc_color": 0.8823529411764706,
+      "acc_kinks": 0.2,
+      "probe": {
+        "acc_color": 0.8823529411764706,
+        "n_color": 34,
+        "acc_kinks": 0.2,
+        "n_kinks": 30,
+        "acc_overall": 0.5625,
+        "n_overall": 64,
+        "protocol": "linear_probe",
+        "failures": [
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 3,
+            "pred_k": 8,
+            "answer": "7"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 3,
+            "pred_k": 8,
+            "answer": "7"
+          },
+          {
+            "probe": "color",
+            "gold": "red",
+            "gold_id": 0,
+            "pred_id": 2,
+            "pred": "blue",
+            "answer": "red"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 3,
+            "pred_k": 8,
+            "answer": "7"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 1,
+            "gold_k": 6,
+            "pred_id": 3,
+            "pred_k": 8,
+            "answer": "6"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 1,
+            "gold_k": 6,
+            "pred_id": 3,
+            "pred_k": 8,
+            "answer": "6"
+          },
+          {
+            "probe": "color",
+            "gold": "red",
+            "gold_id": 0,
+            "pred_id": 2,
+            "pred": "blue",
+            "answer": "red"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 1,
+            "gold_k": 6,
+            "pred_id": 3,
+            "pred_k": 8,
+            "answer": "6"
+          }
+        ]
+      },
+      "failures": [
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 3,
+          "pred_k": 8,
+          "answer": "7"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 3,
+          "pred_k": 8,
+          "answer": "7"
+        },
+        {
+          "probe": "color",
+          "gold": "red",
+          "gold_id": 0,
+          "pred_id": 2,
+          "pred": "blue",
+          "answer": "red"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 3,
+          "pred_k": 8,
+          "answer": "7"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 1,
+          "gold_k": 6,
+          "pred_id": 3,
+          "pred_k": 8,
+          "answer": "6"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 1,
+          "gold_k": 6,
+          "pred_id": 3,
+          "pred_k": 8,
+          "answer": "6"
+        },
+        {
+          "probe": "color",
+          "gold": "red",
+          "gold_id": 0,
+          "pred_id": 2,
+          "pred": "blue",
+          "answer": "red"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 1,
+          "gold_k": 6,
+          "pred_id": 3,
+          "pred_k": 8,
+          "answer": "6"
+        }
+      ],
+      "slot_last": {
+        "PR_mass": 2.9248266220092773,
+        "r99": 9.75,
+        "support": 2.0
+      },
+      "budget": null,
+      "seconds": 14.161659002304077,
+      "seed": 0,
+      "status": "ok",
+      "history": [
+        {
+          "step": 1,
+          "loss": 1.3744887113571167,
+          "T": 16,
+          "kind": "B"
+        },
+        {
+          "step": 100,
+          "loss": 1.410569190979004,
+          "T": 16,
+          "kind": "B"
+        },
+        {
+          "step": 200,
+          "loss": 1.385630488395691,
+          "T": 16,
+          "kind": "B"
+        },
+        {
+          "step": 300,
+          "loss": 0.6658427119255066,
+          "T": 16,
+          "kind": "B"
+        },
+        {
+          "step": 400,
+          "loss": 0.8307391405105591,
+          "T": 16,
+          "kind": "B"
+        }
+      ]
+    },
+    {
+      "kind": "C",
+      "T": 12,
+      "protocol": "linear_probe",
+      "final_loss": 1.3674931526184082,
+      "acc_overall": 0.390625,
+      "acc_color": 0.5588235294117647,
+      "acc_kinks": 0.2,
+      "probe": {
+        "acc_color": 0.5588235294117647,
+        "n_color": 34,
+        "acc_kinks": 0.2,
+        "n_kinks": 30,
+        "acc_overall": 0.390625,
+        "n_overall": 64,
+        "protocol": "linear_probe",
+        "failures": [
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "7"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 2,
+            "pred": "blue",
+            "answer": "green"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "7"
+          },
+          {
+            "probe": "color",
+            "gold": "red",
+            "gold_id": 0,
+            "pred_id": 1,
+            "pred": "green",
+            "answer": "red"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 3,
+            "gold_k": 8,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "8"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 3,
+            "gold_k": 8,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "8"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 1,
+            "pred_k": 6,
+            "answer": "7"
+          },
+          {
+            "probe": "color",
+            "gold": "yellow",
+            "gold_id": 3,
+            "pred_id": 1,
+            "pred": "green",
+            "answer": "yellow"
+          }
+        ]
+      },
+      "failures": [
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "7"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 2,
+          "pred": "blue",
+          "answer": "green"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "7"
+        },
+        {
+          "probe": "color",
+          "gold": "red",
+          "gold_id": 0,
+          "pred_id": 1,
+          "pred": "green",
+          "answer": "red"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 3,
+          "gold_k": 8,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "8"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 3,
+          "gold_k": 8,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "8"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 1,
+          "pred_k": 6,
+          "answer": "7"
+        },
+        {
+          "probe": "color",
+          "gold": "yellow",
+          "gold_id": 3,
+          "pred_id": 1,
+          "pred": "green",
+          "answer": "yellow"
+        }
+      ],
+      "slot_last": {},
+      "budget": "4+8",
+      "seconds": 15.743693351745605,
+      "seed": 0,
+      "status": "ok",
+      "history": [
+        {
+          "step": 1,
+          "loss": 1.4054245948791504,
+          "T": 12,
+          "kind": "C"
+        },
+        {
+          "step": 100,
+          "loss": 1.3602800369262695,
+          "T": 12,
+          "kind": "C"
+        },
+        {
+          "step": 200,
+          "loss": 1.3991177082061768,
+          "T": 12,
+          "kind": "C"
+        },
+        {
+          "step": 300,
+          "loss": 1.2970794439315796,
+          "T": 12,
+          "kind": "C"
+        },
+        {
+          "step": 400,
+          "loss": 1.3674931526184082,
+          "T": 12,
+          "kind": "C"
+        }
+      ]
+    },
+    {
+      "kind": "A",
+      "T": 64,
+      "protocol": "linear_probe",
+      "final_loss": 1.4053126573562622,
+      "acc_overall": 0.3125,
+      "acc_color": 0.38235294117647056,
+      "acc_kinks": 0.23333333333333334,
+      "probe": {
+        "acc_color": 0.38235294117647056,
+        "n_color": 34,
+        "acc_kinks": 0.23333333333333334,
+        "n_kinks": 30,
+        "acc_overall": 0.3125,
+        "n_overall": 64,
+        "protocol": "linear_probe",
+        "failures": [
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 3,
+            "pred": "yellow",
+            "answer": "green"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 3,
+            "pred_k": 8,
+            "answer": "7"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 3,
+            "pred": "yellow",
+            "answer": "green"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 3,
+            "pred_k": 8,
+            "answer": "7"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 3,
+            "pred": "yellow",
+            "answer": "green"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 3,
+            "pred": "yellow",
+            "answer": "green"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 2,
+            "pred": "blue",
+            "answer": "green"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 3,
+            "pred_k": 8,
+            "answer": "7"
+          }
+        ]
+      },
+      "failures": [
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 3,
+          "pred": "yellow",
+          "answer": "green"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 3,
+          "pred_k": 8,
+          "answer": "7"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 3,
+          "pred": "yellow",
+          "answer": "green"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 3,
+          "pred_k": 8,
+          "answer": "7"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 3,
+          "pred": "yellow",
+          "answer": "green"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 3,
+          "pred": "yellow",
+          "answer": "green"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 2,
+          "pred": "blue",
+          "answer": "green"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 3,
+          "pred_k": 8,
+          "answer": "7"
+        }
+      ],
+      "slot_last": {},
+      "budget": null,
+      "seconds": 4.745499610900879,
+      "seed": 1,
+      "status": "ok",
+      "history": [
+        {
+          "step": 1,
+          "loss": 1.3941543102264404,
+          "T": 64,
+          "kind": "A"
+        },
+        {
+          "step": 100,
+          "loss": 1.3468317985534668,
+          "T": 64,
+          "kind": "A"
+        },
+        {
+          "step": 200,
+          "loss": 1.2138524055480957,
+          "T": 64,
+          "kind": "A"
+        },
+        {
+          "step": 300,
+          "loss": 1.3998801708221436,
+          "T": 64,
+          "kind": "A"
+        },
+        {
+          "step": 400,
+          "loss": 1.4053126573562622,
+          "T": 64,
+          "kind": "A"
+        }
+      ]
+    },
+    {
+      "kind": "B",
+      "T": 64,
+      "protocol": "linear_probe",
+      "final_loss": 1.3858230113983154,
+      "acc_overall": 0.3125,
+      "acc_color": 0.17647058823529413,
+      "acc_kinks": 0.4666666666666667,
+      "probe": {
+        "acc_color": 0.17647058823529413,
+        "n_color": 34,
+        "acc_kinks": 0.4666666666666667,
+        "n_kinks": 30,
+        "acc_overall": 0.3125,
+        "n_overall": 64,
+        "protocol": "linear_probe",
+        "failures": [
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 2,
+            "pred": "blue",
+            "answer": "green"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 2,
+            "pred": "blue",
+            "answer": "green"
+          },
+          {
+            "probe": "color",
+            "gold": "red",
+            "gold_id": 0,
+            "pred_id": 2,
+            "pred": "blue",
+            "answer": "red"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 2,
+            "pred": "blue",
+            "answer": "green"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 3,
+            "gold_k": 8,
+            "pred_id": 2,
+            "pred_k": 7,
+            "answer": "8"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 2,
+            "pred": "blue",
+            "answer": "green"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 2,
+            "pred": "blue",
+            "answer": "green"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 3,
+            "gold_k": 8,
+            "pred_id": 2,
+            "pred_k": 7,
+            "answer": "8"
+          }
+        ]
+      },
+      "failures": [
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 2,
+          "pred": "blue",
+          "answer": "green"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 2,
+          "pred": "blue",
+          "answer": "green"
+        },
+        {
+          "probe": "color",
+          "gold": "red",
+          "gold_id": 0,
+          "pred_id": 2,
+          "pred": "blue",
+          "answer": "red"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 2,
+          "pred": "blue",
+          "answer": "green"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 3,
+          "gold_k": 8,
+          "pred_id": 2,
+          "pred_k": 7,
+          "answer": "8"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 2,
+          "pred": "blue",
+          "answer": "green"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 2,
+          "pred": "blue",
+          "answer": "green"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 3,
+          "gold_k": 8,
+          "pred_id": 2,
+          "pred_k": 7,
+          "answer": "8"
+        }
+      ],
+      "slot_last": {
+        "PR_mass": 52.26523208618164,
+        "r99": 62.25,
+        "support": 2.0
+      },
+      "budget": null,
+      "seconds": 16.293153285980225,
+      "seed": 1,
+      "status": "ok",
+      "history": [
+        {
+          "step": 1,
+          "loss": 1.372868299484253,
+          "T": 64,
+          "kind": "B"
+        },
+        {
+          "step": 100,
+          "loss": 1.3793864250183105,
+          "T": 64,
+          "kind": "B"
+        },
+        {
+          "step": 200,
+          "loss": 1.372391939163208,
+          "T": 64,
+          "kind": "B"
+        },
+        {
+          "step": 300,
+          "loss": 1.3865787982940674,
+          "T": 64,
+          "kind": "B"
+        },
+        {
+          "step": 400,
+          "loss": 1.3858230113983154,
+          "T": 64,
+          "kind": "B"
+        }
+      ]
+    },
+    {
+      "kind": "C",
+      "T": 48,
+      "protocol": "linear_probe",
+      "final_loss": 1.419085144996643,
+      "acc_overall": 0.234375,
+      "acc_color": 0.2647058823529412,
+      "acc_kinks": 0.2,
+      "probe": {
+        "acc_color": 0.2647058823529412,
+        "n_color": 34,
+        "acc_kinks": 0.2,
+        "n_kinks": 30,
+        "acc_overall": 0.234375,
+        "n_overall": 64,
+        "protocol": "linear_probe",
+        "failures": [
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 2,
+            "pred": "blue",
+            "answer": "green"
+          },
+          {
+            "probe": "color",
+            "gold": "blue",
+            "gold_id": 2,
+            "pred_id": 3,
+            "pred": "yellow",
+            "answer": "blue"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 3,
+            "pred_k": 8,
+            "answer": "7"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 2,
+            "pred": "blue",
+            "answer": "green"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 3,
+            "pred_k": 8,
+            "answer": "7"
+          },
+          {
+            "probe": "color",
+            "gold": "red",
+            "gold_id": 0,
+            "pred_id": 3,
+            "pred": "yellow",
+            "answer": "red"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 3,
+            "pred": "yellow",
+            "answer": "green"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 2,
+            "pred": "blue",
+            "answer": "green"
+          }
+        ]
+      },
+      "failures": [
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 2,
+          "pred": "blue",
+          "answer": "green"
+        },
+        {
+          "probe": "color",
+          "gold": "blue",
+          "gold_id": 2,
+          "pred_id": 3,
+          "pred": "yellow",
+          "answer": "blue"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 3,
+          "pred_k": 8,
+          "answer": "7"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 2,
+          "pred": "blue",
+          "answer": "green"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 3,
+          "pred_k": 8,
+          "answer": "7"
+        },
+        {
+          "probe": "color",
+          "gold": "red",
+          "gold_id": 0,
+          "pred_id": 3,
+          "pred": "yellow",
+          "answer": "red"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 3,
+          "pred": "yellow",
+          "answer": "green"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 2,
+          "pred": "blue",
+          "answer": "green"
+        }
+      ],
+      "slot_last": {},
+      "budget": "16+32",
+      "seconds": 15.606847763061523,
+      "seed": 1,
+      "status": "ok",
+      "history": [
+        {
+          "step": 1,
+          "loss": 1.343425989151001,
+          "T": 48,
+          "kind": "C"
+        },
+        {
+          "step": 100,
+          "loss": 1.3550617694854736,
+          "T": 48,
+          "kind": "C"
+        },
+        {
+          "step": 200,
+          "loss": 1.3045144081115723,
+          "T": 48,
+          "kind": "C"
+        },
+        {
+          "step": 300,
+          "loss": 1.390387773513794,
+          "T": 48,
+          "kind": "C"
+        },
+        {
+          "step": 400,
+          "loss": 1.419085144996643,
+          "T": 48,
+          "kind": "C"
+        }
+      ]
+    },
+    {
+      "kind": "A",
+      "T": 32,
+      "protocol": "linear_probe",
+      "final_loss": 1.4053131341934204,
+      "acc_overall": 0.3125,
+      "acc_color": 0.38235294117647056,
+      "acc_kinks": 0.23333333333333334,
+      "probe": {
+        "acc_color": 0.38235294117647056,
+        "n_color": 34,
+        "acc_kinks": 0.23333333333333334,
+        "n_kinks": 30,
+        "acc_overall": 0.3125,
+        "n_overall": 64,
+        "protocol": "linear_probe",
+        "failures": [
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 3,
+            "pred": "yellow",
+            "answer": "green"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 3,
+            "pred_k": 8,
+            "answer": "7"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 3,
+            "pred": "yellow",
+            "answer": "green"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 3,
+            "pred_k": 8,
+            "answer": "7"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 3,
+            "pred": "yellow",
+            "answer": "green"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 3,
+            "pred": "yellow",
+            "answer": "green"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 2,
+            "pred": "blue",
+            "answer": "green"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 3,
+            "pred_k": 8,
+            "answer": "7"
+          }
+        ]
+      },
+      "failures": [
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 3,
+          "pred": "yellow",
+          "answer": "green"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 3,
+          "pred_k": 8,
+          "answer": "7"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 3,
+          "pred": "yellow",
+          "answer": "green"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 3,
+          "pred_k": 8,
+          "answer": "7"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 3,
+          "pred": "yellow",
+          "answer": "green"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 3,
+          "pred": "yellow",
+          "answer": "green"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 2,
+          "pred": "blue",
+          "answer": "green"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 3,
+          "pred_k": 8,
+          "answer": "7"
+        }
+      ],
+      "slot_last": {},
+      "budget": null,
+      "seconds": 4.690819501876831,
+      "seed": 1,
+      "status": "ok",
+      "history": [
+        {
+          "step": 1,
+          "loss": 1.3941543102264404,
+          "T": 32,
+          "kind": "A"
+        },
+        {
+          "step": 100,
+          "loss": 1.3468316793441772,
+          "T": 32,
+          "kind": "A"
+        },
+        {
+          "step": 200,
+          "loss": 1.2138524055480957,
+          "T": 32,
+          "kind": "A"
+        },
+        {
+          "step": 300,
+          "loss": 1.399880051612854,
+          "T": 32,
+          "kind": "A"
+        },
+        {
+          "step": 400,
+          "loss": 1.4053131341934204,
+          "T": 32,
+          "kind": "A"
+        }
+      ]
+    },
+    {
+      "kind": "B",
+      "T": 32,
+      "protocol": "linear_probe",
+      "final_loss": 1.3860021829605103,
+      "acc_overall": 0.3125,
+      "acc_color": 0.17647058823529413,
+      "acc_kinks": 0.4666666666666667,
+      "probe": {
+        "acc_color": 0.17647058823529413,
+        "n_color": 34,
+        "acc_kinks": 0.4666666666666667,
+        "n_kinks": 30,
+        "acc_overall": 0.3125,
+        "n_overall": 64,
+        "protocol": "linear_probe",
+        "failures": [
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 2,
+            "pred": "blue",
+            "answer": "green"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 2,
+            "pred": "blue",
+            "answer": "green"
+          },
+          {
+            "probe": "color",
+            "gold": "red",
+            "gold_id": 0,
+            "pred_id": 2,
+            "pred": "blue",
+            "answer": "red"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 2,
+            "pred": "blue",
+            "answer": "green"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 3,
+            "gold_k": 8,
+            "pred_id": 2,
+            "pred_k": 7,
+            "answer": "8"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 2,
+            "pred": "blue",
+            "answer": "green"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 2,
+            "pred": "blue",
+            "answer": "green"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 3,
+            "gold_k": 8,
+            "pred_id": 2,
+            "pred_k": 7,
+            "answer": "8"
+          }
+        ]
+      },
+      "failures": [
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 2,
+          "pred": "blue",
+          "answer": "green"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 2,
+          "pred": "blue",
+          "answer": "green"
+        },
+        {
+          "probe": "color",
+          "gold": "red",
+          "gold_id": 0,
+          "pred_id": 2,
+          "pred": "blue",
+          "answer": "red"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 2,
+          "pred": "blue",
+          "answer": "green"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 3,
+          "gold_k": 8,
+          "pred_id": 2,
+          "pred_k": 7,
+          "answer": "8"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 2,
+          "pred": "blue",
+          "answer": "green"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 2,
+          "pred": "blue",
+          "answer": "green"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 3,
+          "gold_k": 8,
+          "pred_id": 2,
+          "pred_k": 7,
+          "answer": "8"
+        }
+      ],
+      "slot_last": {
+        "PR_mass": 14.673627853393555,
+        "r99": 30.3125,
+        "support": 2.0
+      },
+      "budget": null,
+      "seconds": 14.12424921989441,
+      "seed": 1,
+      "status": "ok",
+      "history": [
+        {
+          "step": 1,
+          "loss": 1.3880388736724854,
+          "T": 32,
+          "kind": "B"
+        },
+        {
+          "step": 100,
+          "loss": 1.3678886890411377,
+          "T": 32,
+          "kind": "B"
+        },
+        {
+          "step": 200,
+          "loss": 1.372507095336914,
+          "T": 32,
+          "kind": "B"
+        },
+        {
+          "step": 300,
+          "loss": 1.3874750137329102,
+          "T": 32,
+          "kind": "B"
+        },
+        {
+          "step": 400,
+          "loss": 1.3860021829605103,
+          "T": 32,
+          "kind": "B"
+        }
+      ]
+    },
+    {
+      "kind": "C",
+      "T": 32,
+      "protocol": "linear_probe",
+      "final_loss": 1.4960308074951172,
+      "acc_overall": 0.328125,
+      "acc_color": 0.4411764705882353,
+      "acc_kinks": 0.2,
+      "probe": {
+        "acc_color": 0.4411764705882353,
+        "n_color": 34,
+        "acc_kinks": 0.2,
+        "n_kinks": 30,
+        "acc_overall": 0.328125,
+        "n_overall": 64,
+        "protocol": "linear_probe",
+        "failures": [
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 2,
+            "pred": "blue",
+            "answer": "green"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 3,
+            "pred_k": 8,
+            "answer": "7"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 2,
+            "pred": "blue",
+            "answer": "green"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 3,
+            "pred_k": 8,
+            "answer": "7"
+          },
+          {
+            "probe": "color",
+            "gold": "red",
+            "gold_id": 0,
+            "pred_id": 2,
+            "pred": "blue",
+            "answer": "red"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 2,
+            "pred": "blue",
+            "answer": "green"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 2,
+            "pred": "blue",
+            "answer": "green"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 2,
+            "pred": "blue",
+            "answer": "green"
+          }
+        ]
+      },
+      "failures": [
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 2,
+          "pred": "blue",
+          "answer": "green"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 3,
+          "pred_k": 8,
+          "answer": "7"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 2,
+          "pred": "blue",
+          "answer": "green"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 3,
+          "pred_k": 8,
+          "answer": "7"
+        },
+        {
+          "probe": "color",
+          "gold": "red",
+          "gold_id": 0,
+          "pred_id": 2,
+          "pred": "blue",
+          "answer": "red"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 2,
+          "pred": "blue",
+          "answer": "green"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 2,
+          "pred": "blue",
+          "answer": "green"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 2,
+          "pred": "blue",
+          "answer": "green"
+        }
+      ],
+      "slot_last": {},
+      "budget": "16+16",
+      "seconds": 15.628519535064697,
+      "seed": 1,
+      "status": "ok",
+      "history": [
+        {
+          "step": 1,
+          "loss": 1.3662123680114746,
+          "T": 32,
+          "kind": "C"
+        },
+        {
+          "step": 100,
+          "loss": 1.3487560749053955,
+          "T": 32,
+          "kind": "C"
+        },
+        {
+          "step": 200,
+          "loss": 1.2889057397842407,
+          "T": 32,
+          "kind": "C"
+        },
+        {
+          "step": 300,
+          "loss": 1.3864073753356934,
+          "T": 32,
+          "kind": "C"
+        },
+        {
+          "step": 400,
+          "loss": 1.4960308074951172,
+          "T": 32,
+          "kind": "C"
+        }
+      ]
+    },
+    {
+      "kind": "A",
+      "T": 16,
+      "protocol": "linear_probe",
+      "final_loss": 1.4053127765655518,
+      "acc_overall": 0.3125,
+      "acc_color": 0.38235294117647056,
+      "acc_kinks": 0.23333333333333334,
+      "probe": {
+        "acc_color": 0.38235294117647056,
+        "n_color": 34,
+        "acc_kinks": 0.23333333333333334,
+        "n_kinks": 30,
+        "acc_overall": 0.3125,
+        "n_overall": 64,
+        "protocol": "linear_probe",
+        "failures": [
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 3,
+            "pred": "yellow",
+            "answer": "green"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 3,
+            "pred_k": 8,
+            "answer": "7"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 3,
+            "pred": "yellow",
+            "answer": "green"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 3,
+            "pred_k": 8,
+            "answer": "7"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 3,
+            "pred": "yellow",
+            "answer": "green"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 3,
+            "pred": "yellow",
+            "answer": "green"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 2,
+            "pred": "blue",
+            "answer": "green"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 3,
+            "pred_k": 8,
+            "answer": "7"
+          }
+        ]
+      },
+      "failures": [
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 3,
+          "pred": "yellow",
+          "answer": "green"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 3,
+          "pred_k": 8,
+          "answer": "7"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 3,
+          "pred": "yellow",
+          "answer": "green"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 3,
+          "pred_k": 8,
+          "answer": "7"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 3,
+          "pred": "yellow",
+          "answer": "green"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 3,
+          "pred": "yellow",
+          "answer": "green"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 2,
+          "pred": "blue",
+          "answer": "green"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 3,
+          "pred_k": 8,
+          "answer": "7"
+        }
+      ],
+      "slot_last": {},
+      "budget": null,
+      "seconds": 4.7371439933776855,
+      "seed": 1,
+      "status": "ok",
+      "history": [
+        {
+          "step": 1,
+          "loss": 1.3941543102264404,
+          "T": 16,
+          "kind": "A"
+        },
+        {
+          "step": 100,
+          "loss": 1.3468316793441772,
+          "T": 16,
+          "kind": "A"
+        },
+        {
+          "step": 200,
+          "loss": 1.2138524055480957,
+          "T": 16,
+          "kind": "A"
+        },
+        {
+          "step": 300,
+          "loss": 1.399880051612854,
+          "T": 16,
+          "kind": "A"
+        },
+        {
+          "step": 400,
+          "loss": 1.4053127765655518,
+          "T": 16,
+          "kind": "A"
+        }
+      ]
+    },
+    {
+      "kind": "B",
+      "T": 16,
+      "protocol": "linear_probe",
+      "final_loss": 1.3214492797851562,
+      "acc_overall": 0.46875,
+      "acc_color": 0.47058823529411764,
+      "acc_kinks": 0.4666666666666667,
+      "probe": {
+        "acc_color": 0.47058823529411764,
+        "n_color": 34,
+        "acc_kinks": 0.4666666666666667,
+        "n_kinks": 30,
+        "acc_overall": 0.46875,
+        "n_overall": 64,
+        "protocol": "linear_probe",
+        "failures": [
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 2,
+            "pred": "blue",
+            "answer": "green"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 2,
+            "pred": "blue",
+            "answer": "green"
+          },
+          {
+            "probe": "color",
+            "gold": "red",
+            "gold_id": 0,
+            "pred_id": 2,
+            "pred": "blue",
+            "answer": "red"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 2,
+            "pred": "blue",
+            "answer": "green"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 3,
+            "gold_k": 8,
+            "pred_id": 2,
+            "pred_k": 7,
+            "answer": "8"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 2,
+            "pred": "blue",
+            "answer": "green"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 2,
+            "pred": "blue",
+            "answer": "green"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 3,
+            "gold_k": 8,
+            "pred_id": 2,
+            "pred_k": 7,
+            "answer": "8"
+          }
+        ]
+      },
+      "failures": [
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 2,
+          "pred": "blue",
+          "answer": "green"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 2,
+          "pred": "blue",
+          "answer": "green"
+        },
+        {
+          "probe": "color",
+          "gold": "red",
+          "gold_id": 0,
+          "pred_id": 2,
+          "pred": "blue",
+          "answer": "red"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 2,
+          "pred": "blue",
+          "answer": "green"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 3,
+          "gold_k": 8,
+          "pred_id": 2,
+          "pred_k": 7,
+          "answer": "8"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 2,
+          "pred": "blue",
+          "answer": "green"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 2,
+          "pred": "blue",
+          "answer": "green"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 3,
+          "gold_k": 8,
+          "pred_id": 2,
+          "pred_k": 7,
+          "answer": "8"
+        }
+      ],
+      "slot_last": {
+        "PR_mass": 3.504072427749634,
+        "r99": 9.125,
+        "support": 2.0
+      },
+      "budget": null,
+      "seconds": 14.108614444732666,
+      "seed": 1,
+      "status": "ok",
+      "history": [
+        {
+          "step": 1,
+          "loss": 1.3942692279815674,
+          "T": 16,
+          "kind": "B"
+        },
+        {
+          "step": 100,
+          "loss": 1.3613271713256836,
+          "T": 16,
+          "kind": "B"
+        },
+        {
+          "step": 200,
+          "loss": 1.3686902523040771,
+          "T": 16,
+          "kind": "B"
+        },
+        {
+          "step": 300,
+          "loss": 1.382551908493042,
+          "T": 16,
+          "kind": "B"
+        },
+        {
+          "step": 400,
+          "loss": 1.3214492797851562,
+          "T": 16,
+          "kind": "B"
+        }
+      ]
+    },
+    {
+      "kind": "C",
+      "T": 12,
+      "protocol": "linear_probe",
+      "final_loss": 1.4397735595703125,
+      "acc_overall": 0.265625,
+      "acc_color": 0.29411764705882354,
+      "acc_kinks": 0.23333333333333334,
+      "probe": {
+        "acc_color": 0.29411764705882354,
+        "n_color": 34,
+        "acc_kinks": 0.23333333333333334,
+        "n_kinks": 30,
+        "acc_overall": 0.265625,
+        "n_overall": 64,
+        "protocol": "linear_probe",
+        "failures": [
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 3,
+            "pred": "yellow",
+            "answer": "green"
+          },
+          {
+            "probe": "color",
+            "gold": "blue",
+            "gold_id": 2,
+            "pred_id": 3,
+            "pred": "yellow",
+            "answer": "blue"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 3,
+            "pred_k": 8,
+            "answer": "7"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 3,
+            "pred": "yellow",
+            "answer": "green"
+          },
+          {
+            "probe": "kinks",
+            "gold_id": 2,
+            "gold_k": 7,
+            "pred_id": 3,
+            "pred_k": 8,
+            "answer": "7"
+          },
+          {
+            "probe": "color",
+            "gold": "red",
+            "gold_id": 0,
+            "pred_id": 3,
+            "pred": "yellow",
+            "answer": "red"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 3,
+            "pred": "yellow",
+            "answer": "green"
+          },
+          {
+            "probe": "color",
+            "gold": "green",
+            "gold_id": 1,
+            "pred_id": 3,
+            "pred": "yellow",
+            "answer": "green"
+          }
+        ]
+      },
+      "failures": [
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 3,
+          "pred": "yellow",
+          "answer": "green"
+        },
+        {
+          "probe": "color",
+          "gold": "blue",
+          "gold_id": 2,
+          "pred_id": 3,
+          "pred": "yellow",
+          "answer": "blue"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 3,
+          "pred_k": 8,
+          "answer": "7"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 3,
+          "pred": "yellow",
+          "answer": "green"
+        },
+        {
+          "probe": "kinks",
+          "gold_id": 2,
+          "gold_k": 7,
+          "pred_id": 3,
+          "pred_k": 8,
+          "answer": "7"
+        },
+        {
+          "probe": "color",
+          "gold": "red",
+          "gold_id": 0,
+          "pred_id": 3,
+          "pred": "yellow",
+          "answer": "red"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 3,
+          "pred": "yellow",
+          "answer": "green"
+        },
+        {
+          "probe": "color",
+          "gold": "green",
+          "gold_id": 1,
+          "pred_id": 3,
+          "pred": "yellow",
+          "answer": "green"
+        }
+      ],
+      "slot_last": {},
+      "budget": "4+8",
+      "seconds": 15.649327754974365,
+      "seed": 1,
+      "status": "ok",
+      "history": [
+        {
+          "step": 1,
+          "loss": 1.385709524154663,
+          "T": 12,
+          "kind": "C"
+        },
+        {
+          "step": 100,
+          "loss": 1.3489458560943604,
+          "T": 12,
+          "kind": "C"
+        },
+        {
+          "step": 200,
+          "loss": 1.2957305908203125,
+          "T": 12,
+          "kind": "C"
+        },
+        {
+          "step": 300,
+          "loss": 1.383491039276123,
+          "T": 12,
+          "kind": "C"
+        },
+        {
+          "step": 400,
+          "loss": 1.4397735595703125,
+          "T": 12,
+          "kind": "C"
+        }
+      ]
+    }
+  ],
+  "diagnosis": {
+    "classes": [
+      "alignment-weak",
+      "alignment-weak"
+    ],
+    "b_probe_vs_vqa": "n/a",
+    "probe_color_max": 0.8823529411764706,
+    "probe_kinks_max": 0.4666666666666667,
+    "vqa_color_max": 0.0,
+    "vqa_kinks_max": 0.0,
+    "kinks_all_zero": false,
+    "probe_mean": [
+      {
+        "kind": "A",
+        "T": 64,
+        "protocol": "linear_probe",
+        "n_seeds": 2,
+        "acc_overall": 0.3125,
+        "acc_color": 0.39705882352941174,
+        "acc_kinks": 0.21666666666666667,
+        "acc_overall_std": 0.0
+      },
+      {
+        "kind": "A",
+        "T": 32,
+        "protocol": "linear_probe",
+        "n_seeds": 2,
+        "acc_overall": 0.3125,
+        "acc_color": 0.39705882352941174,
+        "acc_kinks": 0.21666666666666667,
+        "acc_overall_std": 0.0
+      },
+      {
+        "kind": "A",
+        "T": 16,
+        "protocol": "linear_probe",
+        "n_seeds": 2,
+        "acc_overall": 0.3125,
+        "acc_color": 0.39705882352941174,
+        "acc_kinks": 0.21666666666666667,
+        "acc_overall_std": 0.0
+      },
+      {
+        "kind": "B",
+        "T": 64,
+        "protocol": "linear_probe",
+        "n_seeds": 2,
+        "acc_overall": 0.3203125,
+        "acc_color": 0.29411764705882354,
+        "acc_kinks": 0.35,
+        "acc_overall_std": 0.0078125
+      },
+      {
+        "kind": "B",
+        "T": 32,
+        "protocol": "linear_probe",
+        "n_seeds": 2,
+        "acc_overall": 0.3203125,
+        "acc_color": 0.29411764705882354,
+        "acc_kinks": 0.35,
+        "acc_overall_std": 0.0078125
+      },
+      {
+        "kind": "B",
+        "T": 16,
+        "protocol": "linear_probe",
+        "n_seeds": 2,
+        "acc_overall": 0.515625,
+        "acc_color": 0.6764705882352942,
+        "acc_kinks": 0.33333333333333337,
+        "acc_overall_std": 0.046875
+      },
+      {
+        "kind": "C",
+        "T": 48,
+        "protocol": "linear_probe",
+        "n_seeds": 2,
+        "acc_overall": 0.2734375,
+        "acc_color": 0.3382352941176471,
+        "acc_kinks": 0.2,
+        "acc_overall_std": 0.0390625
+      },
+      {
+        "kind": "C",
+        "T": 32,
+        "protocol": "linear_probe",
+        "n_seeds": 2,
+        "acc_overall": 0.328125,
+        "acc_color": 0.4264705882352941,
+        "acc_kinks": 0.21666666666666667,
+        "acc_overall_std": 0.0
+      },
+      {
+        "kind": "C",
+        "T": 12,
+        "protocol": "linear_probe",
+        "n_seeds": 2,
+        "acc_overall": 0.328125,
+        "acc_color": 0.42647058823529416,
+        "acc_kinks": 0.21666666666666667,
+        "acc_overall_std": 0.0625
+      }
+    ],
+    "vqa_mean": [],
+    "failure_log": "C:\\Users\\85750\\AppData\\Local\\Temp\\grok-goal-60db57dd8c93\\implementer\\probe_failures.json"
+  }
+}

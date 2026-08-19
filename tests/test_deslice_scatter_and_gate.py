@@ -15,6 +15,37 @@ sys.path.insert(0, ROOT)
 import fine_grain as D  # noqa: E402
 
 
+def test_deslice_write_delta_zero_increment():
+    """Shipped DesliceWrite: S+=S (zero increment) must not write, even with bias."""
+    from fine_grain.native_mot import DesliceWrite
+
+    torch.manual_seed(0)
+    dw = DesliceWrite(d=16, d_x=8, deslice_topk=2)
+    with torch.no_grad():
+        dw.proj.bias.fill_(3.0)
+    delta = dw.write_delta(torch.zeros(2, 6, 16), torch.softmax(torch.randn(2, 20, 6), -1))
+    assert delta.abs().max().item() < 1e-6
+
+
+def test_deslice_scatter_scalars_to_points():
+    """Slice scalars must land on the point field via write weights, not stay on S."""
+    from fine_grain.native_mot import DesliceWrite
+
+    torch.manual_seed(0)
+    dw = DesliceWrite(d=8, d_x=8, deslice_topk=2)
+    B, N, M = 2, 16, 6
+    w = torch.softmax(torch.randn(B, N, M), dim=-1)
+    val = torch.zeros(B, M)
+    val[:, 0] = 1.0
+    pix = dw.scatter_to_points(val, w)
+    assert pix.shape == (B, N)
+    # Only points that write-assign slice 0 get mass.
+    w_write = D.sparse_deslice_weights(w.unsqueeze(1), topk=2).squeeze(1)
+    expect = w_write[:, :, 0]
+    assert torch.allclose(pix, expect, atol=1e-6)
+    assert float(pix.max()) > 0.0
+
+
 def test_sparse_deslice_support_size():
     torch.manual_seed(0)
     B, H, N, G = 2, 4, 16, 8

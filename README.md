@@ -6,6 +6,16 @@ Self-contained PyTorch experiments. No external datasets required — all tasks 
 
 > Architectural comparison at tiny scale (depth 3, dim 64). Numbers are **not** comparable to production VLMs (MoonViT, Qwen-VL, …).
 
+### Transolver3 multimodal (product direction)
+
+**Not** permanent vision slice tokens into the LLM.  
+**Yes** full-res fields + temporary shared workspace \(U\) (Read/Write) + deslice
+write-back; each modality keeps topology. See
+[`results/published/TRANSOLVER3_MULTIMODAL.md`](results/published/TRANSOLVER3_MULTIMODAL.md),
+[`NATIVE_MULTIMODAL_WORKSPACE.md`](results/published/NATIVE_MULTIMODAL_WORKSPACE.md).  
+Code: `fine_grain/cross_modal_slice_loop.py` (`B_xmodal`).  
+Legacy `SliceFrontend` (B tokens) = ablation/history only.
+
 ## Question
 
 Modern VLM vision stacks remove *resize* but keep a **fixed patch grid**. Is that grid what buries small structure, or is the real bottleneck effective resolution / re-acquisition?
@@ -49,16 +59,20 @@ This is an experiment design, not a reported result.
 ```text
 fine_grain/           # installable package
   models.py           # AdaTempSlice, SliceNet, PatchNet, ARMS registry
+  native_mot.py       # product: full-res point field X, ephemeral SliceRead, MoT, Deslice
+  bayesian_surprise.py
+  unified_arch.py     # one residual-write graph for all I/O ports
   tasks.py            # needle / glyph / lines / connect / kinks generators
   train_utils.py      # optim, pool, collapse probes
 scripts/
   train_benchmark.py  # classification sweeps (main benchmark)
   line_recon.py       # dense polyline mask recon
+  train_omni_probe.py
   build_kinks_dataset.py
 tests/
 present/              # HTML showcase + figures
 reference/            # notes on Transolver++ / MoonViT
-results/published/    # key metrics for the README claims
+results/published/    # key metrics + Native MoT / Transolver3 specs
 ```
 
 ## Install

@@ -1,0 +1,34 @@
+{
+  "note": "P0 identity cell vs published Champion B. One seed (42). Old ckpts untouched.",
+  "champion_b_seed42": {
+    "final_acc": 0.9482142857142857,
+    "final_tasks": {
+      "color": 1.0,
+      "kinks": 0.9296875,
+      "ocr": 0.9148351648351648
+    },
+    "final_loss": 0.14932615501540047,
+    "ckpt": "checkpoints/v1_bayes_2000step_upd_rms_run1_best.pt"
+  },
+  "p0_identity_seed42": {
+    "final_acc": 0.8107142857142857,
+    "final_tasks": {
+      "color": 1.0,
+      "kinks": 0.5598958333333334,
+      "ocr": 0.8818681318681318
+    },
+    "final_loss": 0.43441786425454276,
+    "checkpoint": "D:\\\u89c6\u89c9\u7f16\u7801\u5668\u6d4b\u8bd5\\checkpoints\\v1_bayes_2000step_p0_id_run1_best.pt",
+    "elapsed_sec": 496.94
+  },
+  "delta_pp": {
+    "acc": -13.749999999999996,
+    "ocr": -3.296703296703296,
+    "kinks": -36.979166666666664,
+    "color": 0.0
+  },
+  "figs": [
+    "D:\\\u89c6\u89c9\u7f16\u7801\u5668\u6d4b\u8bd5\\present\\figs\\p0_id_vs_champb_bars.png",
+    "D:\\\u89c6\u89c9\u7f16\u7801\u5668\u6d4b\u8bd5\\present\\figs\\p0_id_vs_champb_trajectories.png"
+  ]
+}

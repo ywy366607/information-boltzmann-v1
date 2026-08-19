@@ -1,0 +1,3132 @@
+{
+  "backend": "local-D path=D:\\ml_cache\\huggingface\\models\\google--gemma-3-270m d_llm=640 dtype=torch.float32 cache=D:\\ml_cache",
+  "projector": "mlp",
+  "steps": 400,
+  "val_seed": 90001,
+  "max_new": 12,
+  "cells": [
+    {
+      "kind": "B",
+      "T": 16,
+      "seed": 0,
+      "final_loss": 1.4163706302642822,
+      "seconds": 64.98676109313965,
+      "summary": {
+        "overall": {
+          "n": 64,
+          "acc": 0.03125
+        },
+        "by_task": {
+          "color": {
+            "n": 34,
+            "acc": 0.058823529411764705,
+            "fail_tags": {
+              "wrong_color_word": 30,
+              "color_but_emitted_number": 2,
+              "ok": 2
+            }
+          },
+          "kinks": {
+            "n": 30,
+            "acc": 0.0,
+            "fail_tags": {
+              "kinks_digit_out_of_range": 30
+            }
+          }
+        },
+        "fail_tag_counts": {
+          "wrong_color_word": 30,
+          "kinks_digit_out_of_range": 30,
+          "color_but_emitted_number": 2,
+          "ok": 2
+        },
+        "examples": {
+          "wrong_color_word": [
+            {
+              "task": "color",
+              "gold": "green",
+              "pred_raw": " red Question: What color is the large square? Answer:",
+              "pred_norm": "red question: what color is the large square? answer:"
+            },
+            {
+              "task": "color",
+              "gold": "blue",
+              "pred_raw": " red Answer: red Answer: red Answer: red Answer:",
+              "pred_norm": "red answer: red answer: red answer: red answer:"
+            },
+            {
+              "task": "color",
+              "gold": "green",
+              "pred_raw": "? Answer: blue Questionдекатегорија: 1000",
+              "pred_norm": "? answer: blue questionдекатегорија: 1000"
+            },
+            {
+              "task": "color",
+              "gold": "red",
+              "pred_raw": "? Answer: blue QuestionQuestion: What color is the large square?",
+              "pred_norm": "? answer: blue questionquestion: what color is the large square?"
+            }
+          ],
+          "kinks_digit_out_of_range": [
+            {
+              "task": "kinks",
+              "gold": "7",
+              "pred_raw": " 1л Question: How many corners does the blue poly",
+              "pred_norm": "1л question: how many corners does the blue poly"
+            },
+            {
+              "task": "kinks",
+              "gold": "7",
+              "pred_raw": " 1л Question: How many corners does the blue poly",
+              "pred_norm": "1л question: how many corners does the blue poly"
+            },
+            {
+              "task": "kinks",
+              "gold": "8",
+              "pred_raw": " 1л Question: How many corners does the blue poly",
+              "pred_norm": "1л question: how many corners does the blue poly"
+            },
+            {
+              "task": "kinks",
+              "gold": "8",
+              "pred_raw": " 10\nQuestion: How many corners does the blue",
+              "pred_norm": "10"
+            }
+          ],
+          "color_but_emitted_number": [
+            {
+              "task": "color",
+              "gold": "green",
+              "pred_raw": "? Answer: 1л\n\nQuestion: What is the area of the",
+              "pred_norm": "? answer: 1л"
+            },
+            {
+              "task": "color",
+              "gold": "yellow",
+              "pred_raw": " 100. Question: What is the largest number",
+              "pred_norm": "100"
+            }
+          ]
+        },
+        "top_pred_norm": [
+          [
+            "10000000000",
+            12
+          ],
+          [
+            "1л question: how many corners does the red poly",
+            6
+          ],
+          [
+            "1л question: how many corners does the blue poly",
+            5
+          ],
+          [
+            "blue",
+            4
+          ],
+          [
+            "1л",
+            4
+          ],
+          [
+            "red question: what color is the large square? answer:",
+            3
+          ],
+          [
+            "red answer: red answer: red answer: red answer:",
+            3
+          ],
+          [
+            "red question: what is the largest number? answer:",
+            3
+          ],
+          [
+            "? answer: blue",
+            3
+          ],
+          [
+            "100",
+            2
+          ],
+          [
+            "red",
+            2
+          ],
+          [
+            "? answer: blue questionдекатегорија: 1000",
+            1
+          ]
+        ],
+        "top_pred_raw": [
+          [
+            " 10000000000",
+            12
+          ],
+          [
+            " 1л Question: How many corners does the red poly",
+            6
+          ],
+          [
+            " 1л Question: How many corners does the blue poly",
+            5
+          ],
+          [
+            " red Question: What color is the large square? Answer:",
+            3
+          ],
+          [
+            " red Answer: red Answer: red Answer: red Answer:",
+            3
+          ],
+          [
+            " red Question: What is the largest number? Answer: ",
+            3
+          ],
+          [
+            " Blue. Question: What color is the large square? Answer",
+            2
+          ],
+          [
+            " 1л. Question: How many corners does the blue",
+            2
+          ],
+          [
+            " 1л\n\nQuestion: How many corners does the red",
+            2
+          ],
+          [
+            "? Answer: blue Questionдекатегорија: 1000",
+            1
+          ],
+          [
+            "? Answer: blue QuestionQuestion: What color is the large square?",
+            1
+          ],
+          [
+            "? Answer: 1л\n\nQuestion: What is the area of the",
+            1
+          ]
+        ]
+      },
+      "all_rows": [
+        {
+          "kind_task": "color",
+          "gold": "green",
+          "pred_raw": " red Question: What color is the large square? Answer:",
+          "pred_norm": "red question: what color is the large square? answer:",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "blue",
+          "pred_raw": " red Answer: red Answer: red Answer: red Answer:",
+          "pred_norm": "red answer: red answer: red answer: red answer:",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "7",
+          "pred_raw": " 1л Question: How many corners does the blue poly",
+          "pred_norm": "1л question: how many corners does the blue poly",
+          "ok": false,
+          "fail_tag": "kinks_digit_out_of_range",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "green",
+          "pred_raw": "? Answer: blue Questionдекатегорија: 1000",
+          "pred_norm": "? answer: blue questionдекатегорија: 1000",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "7",
+          "pred_raw": " 1л Question: How many corners does the blue poly",
+          "pred_norm": "1л question: how many corners does the blue poly",
+          "ok": false,
+          "fail_tag": "kinks_digit_out_of_range",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "red",
+          "pred_raw": "? Answer: blue QuestionQuestion: What color is the large square?",
+          "pred_norm": "? answer: blue questionquestion: what color is the large square?",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "green",
+          "pred_raw": "? Answer: 1л\n\nQuestion: What is the area of the",
+          "pred_norm": "? answer: 1л",
+          "ok": false,
+          "fail_tag": "color_but_emitted_number",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "8",
+          "pred_raw": " 1л Question: How many corners does the blue poly",
+          "pred_norm": "1л question: how many corners does the blue poly",
+          "ok": false,
+          "fail_tag": "kinks_digit_out_of_range",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "green",
+          "pred_raw": " Blue. Question: What color is the large square? Answer",
+          "pred_norm": "blue",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "green",
+          "pred_raw": " red Answer: red Answer: red Answer: red Answer:",
+          "pred_norm": "red answer: red answer: red answer: red answer:",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "8",
+          "pred_raw": " 10\nQuestion: How many corners does the blue",
+          "pred_norm": "10",
+          "ok": false,
+          "fail_tag": "kinks_digit_out_of_range",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "7",
+          "pred_raw": " 10000000000",
+          "pred_norm": "10000000000",
+          "ok": false,
+          "fail_tag": "kinks_digit_out_of_range",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "yellow",
+          "pred_raw": " 100. Question: What is the largest number",
+          "pred_norm": "100",
+          "ok": false,
+          "fail_tag": "color_but_emitted_number",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "green",
+          "pred_raw": " red Question: What is the largest number? Answer: ",
+          "pred_norm": "red question: what is the largest number? answer:",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "6",
+          "pred_raw": " 10000000000",
+          "pred_norm": "10000000000",
+          "ok": false,
+          "fail_tag": "kinks_digit_out_of_range",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "8",
+          "pred_raw": " 10000000000",
+          "pred_norm": "10000000000",
+          "ok": false,
+          "fail_tag": "kinks_digit_out_of_range",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "6",
+          "pred_raw": " 1л Question: How many corners does the blue poly",
+          "pred_norm": "1л question: how many corners does the blue poly",
+          "ok": false,
+          "fail_tag": "kinks_digit_out_of_range",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "red",
+          "pred_raw": "? Answer: blue.\n\nQuestion: What color is the large square",
+          "pred_norm": "? answer: blue",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "blue",
+          "pred_raw": " blue. Question: What color is the large square? Answer",
+          "pred_norm": "blue",
+          "ok": true,
+          "fail_tag": "ok",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "green",
+          "pred_raw": " Blue. Question: What color is the large square? Answer",
+          "pred_norm": "blue",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "green",
+          "pred_raw": " red Question: What is the largest number? Answer: ",
+          "pred_norm": "red question: what is the largest number? answer:",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "yellow",
+          "pred_raw": " red Answer: red Answer: red Answer: red Answer:",
+          "pred_norm": "red answer: red answer: red answer: red answer:",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "6",
+          "pred_raw": " 10000000000",
+          "pred_norm": "10000000000",
+          "ok": false,
+          "fail_tag": "kinks_digit_out_of_range",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "5",
+          "pred_raw": " 10000000000",
+          "pred_norm": "10000000000",
+          "ok": false,
+          "fail_tag": "kinks_digit_out_of_range",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "green",
+          "pred_raw": " blue Answer: red Answer: green Answer: black Answer:",
+          "pred_norm": "blue answer: red answer: green answer: black answer:",
+          "ok": true,
+          "fail_tag": "ok",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "blue",
+          "pred_raw": " red Question: What color is the large square? Answer:",
+          "pred_norm": "red question: what color is the large square? answer:",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "5",
+          "pred_raw": " 1л. Question: How many corners does the blue",
+          "pred_norm": "1л",
+          "ok": false,
+          "fail_tag": "kinks_digit_out_of_range",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "yellow",
+          "pred_raw": "? Answer: red Question Question 1: What is the area of",
+          "pred_norm": "? answer: red question question 1: what is the area of",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "7",
+          "pred_raw": " 10000000000",
+          "pred_norm": "10000000000",
+          "ok": false,
+          "fail_tag": "kinks_digit_out_of_range",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "8",
+          "pred_raw": " 10000000000",
+          "pred_norm": "10000000000",
+          "ok": false,
+          "fail_tag": "kinks_digit_out_of_range",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "green",
+          "pred_raw": "? Answer: red QuestionQuestion: What color is the large square?",
+          "pred_norm": "? answer: red questionquestion: what color is the large square?",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "7",
+          "pred_raw": " 1л Question: How many corners does the red poly",
+          "pred_norm": "1л question: how many corners does the red poly",
+          "ok": false,
+          "fail_tag": "kinks_digit_out_of_range",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "blue",
+          "pred_raw": "? Answer: red Questionл: What color is the large square? Answer",
+          "pred_norm": "? answer: red questionл: what color is the large square? answer",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "7",
+          "pred_raw": " 1н\n\nQuestion: How many corners does the red",
+          "pred_norm": "1н",
+          "ok": false,
+          "fail_tag": "kinks_digit_out_of_range",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "8",
+          "pred_raw": " 10000000000",
+          "pred_norm": "10000000000",
+          "ok": false,
+          "fail_tag": "kinks_digit_out_of_range",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "8",
+          "pred_raw": " 10000000000",
+          "pred_norm": "10000000000",
+          "ok": false,
+          "fail_tag": "kinks_digit_out_of_range",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "yellow",
+          "pred_raw": "? Answer: red Answerьев ушах: 10.5",
+          "pred_norm": "? answer: red answerьев ушах: 10",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "7",
+          "pred_raw": " 1л. Question: How many corners does the blue",
+          "pred_norm": "1л",
+          "ok": false,
+          "fail_tag": "kinks_digit_out_of_range",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "green",
+          "pred_raw": "? Answer: Blue Answerл: What color is the large square? Answer",
+          "pred_norm": "? answer: blue answerл: what color is the large square? answer",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "7",
+          "pred_raw": " 1л Question: How many corners does the blue poly",
+          "pred_norm": "1л question: how many corners does the blue poly",
+          "ok": false,
+          "fail_tag": "kinks_digit_out_of_range",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "yellow",
+          "pred_raw": "? Answer: red Answerьев не соответствуют. Question: What color is",
+          "pred_norm": "? answer: red answerьев не соответствуют",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "5",
+          "pred_raw": " 1л Question: How many corners does the red poly",
+          "pred_norm": "1л question: how many corners does the red poly",
+          "ok": false,
+          "fail_tag": "kinks_digit_out_of_range",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "6",
+          "pred_raw": " 1л Question: How many corners does the red poly",
+          "pred_norm": "1л question: how many corners does the red poly",
+          "ok": false,
+          "fail_tag": "kinks_digit_out_of_range",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "yellow",
+          "pred_raw": "? Answer: red Question Question 1: What color is the large",
+          "pred_norm": "? answer: red question question 1: what color is the large",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "green",
+          "pred_raw": " red.\n\nQuestion: What color is the large square?",
+          "pred_norm": "red",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "blue",
+          "pred_raw": " red Question: What is the largest number? Answer: ",
+          "pred_norm": "red question: what is the largest number? answer:",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "7",
+          "pred_raw": " 1л Question: How many corners does the red poly",
+          "pred_norm": "1л question: how many corners does the red poly",
+          "ok": false,
+          "fail_tag": "kinks_digit_out_of_range",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "green",
+          "pred_raw": "? Answer: red Answerьев: 100.000",
+          "pred_norm": "? answer: red answerьев: 100",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "yellow",
+          "pred_raw": " Blue. Question: What is the largest number? Answer:",
+          "pred_norm": "blue",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "yellow",
+          "pred_raw": " red Question: What is the answer to the following? Answer",
+          "pred_norm": "red question: what is the answer to the following? answer",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "red",
+          "pred_raw": "? Answer: blue Questionде answer: What color is the large square?",
+          "pred_norm": "? answer: blue questionде answer: what color is the large square?",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "6",
+          "pred_raw": " 1л Question: How many corners does the red poly",
+          "pred_norm": "1л question: how many corners does the red poly",
+          "ok": false,
+          "fail_tag": "kinks_digit_out_of_range",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "6",
+          "pred_raw": " 1л\n\nQuestion: How many corners does the red",
+          "pred_norm": "1л",
+          "ok": false,
+          "fail_tag": "kinks_digit_out_of_range",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "red",
+          "pred_raw": "? Answer: blue.\nQuestion: What color is the large square?",
+          "pred_norm": "? answer: blue",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "blue",
+          "pred_raw": " red Question: What color is the large square? Answer:",
+          "pred_norm": "red question: what color is the large square? answer:",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "yellow",
+          "pred_raw": " red. Question: What is the largest number? Answer:",
+          "pred_norm": "red",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "yellow",
+          "pred_raw": "? Answer: blue Answerьев: 1000000",
+          "pred_norm": "? answer: blue answerьев: 1000000",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "7",
+          "pred_raw": " 1л Question: How many corners does the red poly",
+          "pred_norm": "1л question: how many corners does the red poly",
+          "ok": false,
+          "fail_tag": "kinks_digit_out_of_range",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "7",
+          "pred_raw": " 1л\n\nQuestion: How many corners does the red",
+          "pred_norm": "1л",
+          "ok": false,
+          "fail_tag": "kinks_digit_out_of_range",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "green",
+          "pred_raw": "? Answer: Blue. Video Questions\n\nQuestion: What color is the",
+          "pred_norm": "? answer: blue",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "7",
+          "pred_raw": " 100\n\nQuestion: How many corners does the",
+          "pred_norm": "100",
+          "ok": false,
+          "fail_tag": "kinks_digit_out_of_range",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "7",
+          "pred_raw": " 10000000000",
+          "pred_norm": "10000000000",
+          "ok": false,
+          "fail_tag": "kinks_digit_out_of_range",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "6",
+          "pred_raw": " 10000000000",
+          "pred_norm": "10000000000",
+          "ok": false,
+          "fail_tag": "kinks_digit_out_of_range",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "7",
+          "pred_raw": " 10000000000",
+          "pred_norm": "10000000000",
+          "ok": false,
+          "fail_tag": "kinks_digit_out_of_range",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        }
+      ]
+    },
+    {
+      "kind": "B",
+      "T": 16,
+      "seed": 1,
+      "final_loss": 0.20728355646133423,
+      "seconds": 65.74498844146729,
+      "summary": {
+        "overall": {
+          "n": 64,
+          "acc": 0.28125
+        },
+        "by_task": {
+          "color": {
+            "n": 34,
+            "acc": 0.38235294117647056,
+            "fail_tags": {
+              "ok": 13,
+              "wrong_color_word": 14,
+              "color_but_emitted_number": 1,
+              "color_non_vocab_garbage": 6
+            }
+          },
+          "kinks": {
+            "n": 30,
+            "acc": 0.16666666666666666,
+            "fail_tags": {
+              "wrong_kink_count": 25,
+              "ok": 5
+            }
+          }
+        },
+        "fail_tag_counts": {
+          "ok": 18,
+          "wrong_color_word": 14,
+          "wrong_kink_count": 25,
+          "color_but_emitted_number": 1,
+          "color_non_vocab_garbage": 6
+        },
+        "examples": {
+          "wrong_color_word": [
+            {
+              "task": "color",
+              "gold": "blue",
+              "pred_raw": " green\n\nQuestion: What color is the large square? Answer",
+              "pred_norm": "green"
+            },
+            {
+              "task": "color",
+              "gold": "green",
+              "pred_raw": "? Answer: red Answerгно Question: What color is the large square?",
+              "pred_norm": "? answer: red answerгно question: what color is the large square?"
+            },
+            {
+              "task": "color",
+              "gold": "yellow",
+              "pred_raw": " green\n\nQuestion: Did you answer?\n\nQuestion: What",
+              "pred_norm": "green"
+            },
+            {
+              "task": "color",
+              "gold": "blue",
+              "pred_raw": " green? Question 10 options: green, red,",
+              "pred_norm": "green? question 10 options: green"
+            }
+          ],
+          "wrong_kink_count": [
+            {
+              "task": "kinks",
+              "gold": "7",
+              "pred_raw": " 6н\n\nQuestion: How many corners does the blue",
+              "pred_norm": "6н"
+            },
+            {
+              "task": "kinks",
+              "gold": "7",
+              "pred_raw": " 5 забрудing\n\nQuestion: How many corners does the",
+              "pred_norm": "5 забрудing"
+            },
+            {
+              "task": "kinks",
+              "gold": "8",
+              "pred_raw": " 6 забрудing\n\n<strong>Answer:</strong>\n\n<strong>Red",
+              "pred_norm": "6 забрудing"
+            },
+            {
+              "task": "kinks",
+              "gold": "8",
+              "pred_raw": " 6\n\nQuestion: How many corners does the blue poly",
+              "pred_norm": "6"
+            }
+          ],
+          "color_but_emitted_number": [
+            {
+              "task": "color",
+              "gold": "green",
+              "pred_raw": "? Answer: yellow?</h1>\n\nAnswer: yellow\n\nQuestion: What color",
+              "pred_norm": "? answer: yellow?</h1>"
+            }
+          ],
+          "color_non_vocab_garbage": [
+            {
+              "task": "color",
+              "gold": "blue",
+              "pred_raw": " yellow? Answer: red? Answer: green? Answer:",
+              "pred_norm": "yellow? answer: red? answer: green? answer:"
+            },
+            {
+              "task": "color",
+              "gold": "yellow",
+              "pred_raw": "? Answer: red?\nQuestion/Answer Question\nQuestion: What color",
+              "pred_norm": "? answer: red?"
+            },
+            {
+              "task": "color",
+              "gold": "yellow",
+              "pred_raw": "? Answer: red?\nQuestion #1: Answer: 10",
+              "pred_norm": "? answer: red?"
+            },
+            {
+              "task": "color",
+              "gold": "yellow",
+              "pred_raw": " green? Answer: yellow? Answer: red? Answer:",
+              "pred_norm": "green? answer: yellow? answer: red? answer:"
+            }
+          ]
+        },
+        "top_pred_norm": [
+          [
+            "? answer: red",
+            8
+          ],
+          [
+            "6",
+            7
+          ],
+          [
+            "5",
+            7
+          ],
+          [
+            "green",
+            6
+          ],
+          [
+            "6гно",
+            5
+          ],
+          [
+            "yellow? answer: red? answer: green? answer:",
+            4
+          ],
+          [
+            "green? answer: red? answer: yellow? answer:",
+            3
+          ],
+          [
+            "6н",
+            3
+          ],
+          [
+            "? answer: red?",
+            3
+          ],
+          [
+            "6 забрудing",
+            2
+          ],
+          [
+            "? answer: yellow?</h1>",
+            1
+          ],
+          [
+            "5 забрудing",
+            1
+          ]
+        ],
+        "top_pred_raw": [
+          [
+            " 6гно\n\nQuestion: How many corners does the blue",
+            5
+          ],
+          [
+            " 6\n\nQuestion: How many corners does the blue poly",
+            4
+          ],
+          [
+            " 5\n\nQuestion: How many corners does the blue poly",
+            4
+          ],
+          [
+            " yellow? Answer: red? Answer: green? Answer:",
+            4
+          ],
+          [
+            " green? Answer: red? Answer: yellow? Answer:",
+            3
+          ],
+          [
+            " green\n\nQuestion: What color is the large square? Answer",
+            3
+          ],
+          [
+            " 6н\n\nQuestion: How many corners does the blue",
+            3
+          ],
+          [
+            " 6\n\nQuestion:\n\nAnswer: 6\n\nExplanation",
+            2
+          ],
+          [
+            " 5\n\nQuestion: How many corners does the red poly",
+            2
+          ],
+          [
+            "? Answer: yellow?</h1>\n\nAnswer: yellow\n\nQuestion: What color",
+            1
+          ],
+          [
+            " 5 забрудing\n\nQuestion: How many corners does the",
+            1
+          ],
+          [
+            "? Answer: red.гност на выбор: red.Question: A",
+            1
+          ]
+        ]
+      },
+      "all_rows": [
+        {
+          "kind_task": "color",
+          "gold": "green",
+          "pred_raw": " green? Answer: red? Answer: yellow? Answer:",
+          "pred_norm": "green? answer: red? answer: yellow? answer:",
+          "ok": true,
+          "fail_tag": "ok",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "blue",
+          "pred_raw": " green\n\nQuestion: What color is the large square? Answer",
+          "pred_norm": "green",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "7",
+          "pred_raw": " 6н\n\nQuestion: How many corners does the blue",
+          "pred_norm": "6н",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "green",
+          "pred_raw": "? Answer: yellow?</h1>\n\nAnswer: yellow\n\nQuestion: What color",
+          "pred_norm": "? answer: yellow?</h1>",
+          "ok": false,
+          "fail_tag": "color_but_emitted_number",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "7",
+          "pred_raw": " 5 забрудing\n\nQuestion: How many corners does the",
+          "pred_norm": "5 забрудing",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "red",
+          "pred_raw": "? Answer: red.гност на выбор: red.Question: A",
+          "pred_norm": "? answer: red",
+          "ok": true,
+          "fail_tag": "ok",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "green",
+          "pred_raw": "? Answer: red Answerгно Question: What color is the large square?",
+          "pred_norm": "? answer: red answerгно question: what color is the large square?",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "8",
+          "pred_raw": " 6 забрудing\n\n<strong>Answer:</strong>\n\n<strong>Red",
+          "pred_norm": "6 забрудing",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "green",
+          "pred_raw": " green? Answer: red? Answer: yellow? Answer:",
+          "pred_norm": "green? answer: red? answer: yellow? answer:",
+          "ok": true,
+          "fail_tag": "ok",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "green",
+          "pred_raw": " green? Answer: red? Answer: yellow? Answer:",
+          "pred_norm": "green? answer: red? answer: yellow? answer:",
+          "ok": true,
+          "fail_tag": "ok",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "8",
+          "pred_raw": " 6\n\nQuestion: How many corners does the blue poly",
+          "pred_norm": "6",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "7",
+          "pred_raw": " 6\n\nQuestion:\n\nAnswer: 6\n\nExplanation",
+          "pred_norm": "6",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "yellow",
+          "pred_raw": " green\n\nQuestion: Did you answer?\n\nQuestion: What",
+          "pred_norm": "green",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "green",
+          "pred_raw": " green\n\nQuestion: What color is the large square? Answer",
+          "pred_norm": "green",
+          "ok": true,
+          "fail_tag": "ok",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "6",
+          "pred_raw": " 5\n\nQuestion: How many corners does the blue poly",
+          "pred_norm": "5",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "8",
+          "pred_raw": " 6\n\nQuestion: How many corners does the blue poly",
+          "pred_norm": "6",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "6",
+          "pred_raw": " 6гно\n\nQuestion: How many corners does the blue",
+          "pred_norm": "6гно",
+          "ok": true,
+          "fail_tag": "ok",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "red",
+          "pred_raw": "? Answer: red\n\nгностовый корень\n\nQuestion: What color",
+          "pred_norm": "? answer: red",
+          "ok": true,
+          "fail_tag": "ok",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "blue",
+          "pred_raw": " green? Question 10 options: green, red,",
+          "pred_norm": "green? question 10 options: green",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "green",
+          "pred_raw": " yellow? Question 10 options: yellow, red,",
+          "pred_norm": "yellow? question 10 options: yellow",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "green",
+          "pred_raw": " green\n\nQuestion Go to the website: http://www.",
+          "pred_norm": "green",
+          "ok": true,
+          "fail_tag": "ok",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "yellow",
+          "pred_raw": " yellow? Answer: red? Answer: green? Answer:",
+          "pred_norm": "yellow? answer: red? answer: green? answer:",
+          "ok": true,
+          "fail_tag": "ok",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "6",
+          "pred_raw": " 6\n\nQuestion:\n\nAnswer: 6\n\nExplanation",
+          "pred_norm": "6",
+          "ok": true,
+          "fail_tag": "ok",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "5",
+          "pred_raw": " 6\n\nQuestion: How many corners does the blue poly",
+          "pred_norm": "6",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "green",
+          "pred_raw": " green\n\nQuestion: What is the answer? Answer: green",
+          "pred_norm": "green",
+          "ok": true,
+          "fail_tag": "ok",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "blue",
+          "pred_raw": " yellow? Answer: red? Answer: green? Answer:",
+          "pred_norm": "yellow? answer: red? answer: green? answer:",
+          "ok": false,
+          "fail_tag": "color_non_vocab_garbage",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "5",
+          "pred_raw": " 6гно\n\nQuestion: How many corners does the blue",
+          "pred_norm": "6гно",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "yellow",
+          "pred_raw": "? Answer: red?\nQuestion/Answer Question\nQuestion: What color",
+          "pred_norm": "? answer: red?",
+          "ok": false,
+          "fail_tag": "color_non_vocab_garbage",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "7",
+          "pred_raw": " 5\n\nQuestion: How many corners does the red poly",
+          "pred_norm": "5",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "8",
+          "pred_raw": " 6\n\nQuestion: How many corners does the blue poly",
+          "pred_norm": "6",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "green",
+          "pred_raw": "? Answer: red\n\n</h2>\n\nQuestion: What color is the large square",
+          "pred_norm": "? answer: red",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "7",
+          "pred_raw": " 6ли\n\nQuestion: How many corners does the blue",
+          "pred_norm": "6ли",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "blue",
+          "pred_raw": "? Answer: red.</td> </tr> <tr> <td>Question</td> ",
+          "pred_norm": "? answer: red",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "7",
+          "pred_raw": " 6блиx\n\nQuestion: How many corners does the",
+          "pred_norm": "6блиx",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "8",
+          "pred_raw": " 5\n\nQuestion: How many corners does the red poly",
+          "pred_norm": "5",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "8",
+          "pred_raw": " 5\n\nQuestion:\n\nAnswer: 5\n\nExplanation",
+          "pred_norm": "5",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "yellow",
+          "pred_raw": "? Answer: red\n\nгносто\n\nQuestion: What color is the large",
+          "pred_norm": "? answer: red",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "7",
+          "pred_raw": " 5н\n\nQuestion: How many corners does the blue",
+          "pred_norm": "5н",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "green",
+          "pred_raw": "? Answer: green.</h2>\n\nQuestion: What color is the large square",
+          "pred_norm": "? answer: green",
+          "ok": true,
+          "fail_tag": "ok",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "7",
+          "pred_raw": " 6 забрудing\n\n<strong>Answer:</strong>\n\n<strong>Given",
+          "pred_norm": "6 забрудing",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "yellow",
+          "pred_raw": "? Answer: red Answerгно Question 1Answer 10 questions in",
+          "pred_norm": "? answer: red answerгно question 1answer 10 questions in",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "5",
+          "pred_raw": " 6гно\n\nQuestion: How many corners does the blue",
+          "pred_norm": "6гно",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "6",
+          "pred_raw": " 6н\n\nQuestion: How many corners does the blue",
+          "pred_norm": "6н",
+          "ok": true,
+          "fail_tag": "ok",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "yellow",
+          "pred_raw": "? Answer: red?\nQuestion #1: Answer: 10",
+          "pred_norm": "? answer: red?",
+          "ok": false,
+          "fail_tag": "color_non_vocab_garbage",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "green",
+          "pred_raw": " green? Question 10 options: yellow? green?",
+          "pred_norm": "green? question 10 options: yellow? green?",
+          "ok": true,
+          "fail_tag": "ok",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "blue",
+          "pred_raw": " yellow\n\nQuestion Go to the website: http://www.",
+          "pred_norm": "yellow",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "7",
+          "pred_raw": " 5</td> <td>Question: How many corners does the",
+          "pred_norm": "5</td> <td>question: how many corners does the",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "green",
+          "pred_raw": "? Answer: red\n\nгномы: 10\n\nопрос:",
+          "pred_norm": "? answer: red",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "yellow",
+          "pred_raw": " green\n\nQuestion: What color is the large square? Answer",
+          "pred_norm": "green",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "yellow",
+          "pred_raw": " green? Answer: yellow? Answer: red? Answer:",
+          "pred_norm": "green? answer: yellow? answer: red? answer:",
+          "ok": false,
+          "fail_tag": "color_non_vocab_garbage",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "red",
+          "pred_raw": "? Answer: red?\nQuestion by <b>Teresa</b>:\n",
+          "pred_norm": "? answer: red?",
+          "ok": false,
+          "fail_tag": "color_non_vocab_garbage",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "6",
+          "pred_raw": " 6гно\n\nQuestion: How many corners does the blue",
+          "pred_norm": "6гно",
+          "ok": true,
+          "fail_tag": "ok",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "6",
+          "pred_raw": " 6</td></tr><tr><td width=&amp;amp",
+          "pred_norm": "6</td></tr><tr><td width=&amp",
+          "ok": true,
+          "fail_tag": "ok",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "red",
+          "pred_raw": "? Answer: red.\nQuestion goes to: 100%",
+          "pred_norm": "? answer: red",
+          "ok": true,
+          "fail_tag": "ok",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "blue",
+          "pred_raw": " yellow? Answer: red? Answer: green? Answer:",
+          "pred_norm": "yellow? answer: red? answer: green? answer:",
+          "ok": false,
+          "fail_tag": "color_non_vocab_garbage",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "yellow",
+          "pred_raw": " yellow? Answer: red? Answer: green? Answer:",
+          "pred_norm": "yellow? answer: red? answer: green? answer:",
+          "ok": true,
+          "fail_tag": "ok",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "yellow",
+          "pred_raw": "? Answer: red.\nQuestion Answers:\nQuestion:\nQuestion:",
+          "pred_norm": "? answer: red",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "7",
+          "pred_raw": " 6гно\n\nQuestion: How many corners does the blue",
+          "pred_norm": "6гно",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "7",
+          "pred_raw": " 6н\n\nQuestion: How many corners does the blue",
+          "pred_norm": "6н",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "green",
+          "pred_raw": "? Answer: red?гност на ответе: red\n\nQuestion:",
+          "pred_norm": "? answer: red?гност на ответе: red",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "7",
+          "pred_raw": " 5\n\nQuestion: How many corners does the blue poly",
+          "pred_norm": "5",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "7",
+          "pred_raw": " 6\nQuestion: How many corners does the blue poly",
+          "pred_norm": "6",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "6",
+          "pred_raw": " 5\n\nQuestion: How many corners does the blue poly",
+          "pred_norm": "5",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "7",
+          "pred_raw": " 5\n\nQuestion: How many corners does the blue poly",
+          "pred_norm": "5",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        }
+      ]
+    },
+    {
+      "kind": "B",
+      "T": 64,
+      "seed": 1,
+      "final_loss": 0.12578611075878143,
+      "seconds": 115.42902135848999,
+      "summary": {
+        "overall": {
+          "n": 64,
+          "acc": 0.328125
+        },
+        "by_task": {
+          "color": {
+            "n": 34,
+            "acc": 0.5,
+            "fail_tags": {
+              "ok": 17,
+              "wrong_color_word": 17
+            }
+          },
+          "kinks": {
+            "n": 30,
+            "acc": 0.13333333333333333,
+            "fail_tags": {
+              "wrong_kink_count": 23,
+              "ok": 4,
+              "kinks_digit_out_of_range": 3
+            }
+          }
+        },
+        "fail_tag_counts": {
+          "ok": 21,
+          "wrong_color_word": 17,
+          "wrong_kink_count": 23,
+          "kinks_digit_out_of_range": 3
+        },
+        "examples": {
+          "wrong_color_word": [
+            {
+              "task": "color",
+              "gold": "blue",
+              "pred_raw": " green. Question: What color is the small square? Answer",
+              "pred_norm": "green"
+            },
+            {
+              "task": "color",
+              "gold": "red",
+              "pred_raw": "? Answer: green. Question: What color is the small square? Answer",
+              "pred_norm": "? answer: green"
+            },
+            {
+              "task": "color",
+              "gold": "yellow",
+              "pred_raw": " green. Question: What color is the small square? Answer",
+              "pred_norm": "green"
+            },
+            {
+              "task": "color",
+              "gold": "red",
+              "pred_raw": "? Answer: green. Question: What color is the small square? Answer",
+              "pred_norm": "? answer: green"
+            }
+          ],
+          "wrong_kink_count": [
+            {
+              "task": "kinks",
+              "gold": "7",
+              "pred_raw": " 5 questions mark: How many degrees are in centigrade",
+              "pred_norm": "5 questions mark: how many degrees are in centigrade"
+            },
+            {
+              "task": "kinks",
+              "gold": "7",
+              "pred_raw": " 5 questions mark class is 100%\n",
+              "pred_norm": "5 questions mark class is 100%"
+            },
+            {
+              "task": "kinks",
+              "gold": "8",
+              "pred_raw": " 5 corners Answer: 5 questions Part 1:",
+              "pred_norm": "5 corners answer: 5 questions part 1:"
+            },
+            {
+              "task": "kinks",
+              "gold": "7",
+              "pred_raw": " 5 questions left and right Question: How many diagonals does",
+              "pred_norm": "5 questions left and right question: how many diagonals does"
+            }
+          ],
+          "kinks_digit_out_of_range": [
+            {
+              "task": "kinks",
+              "gold": "7",
+              "pred_raw": " 80 answers How many degrees are in centigrade triangles",
+              "pred_norm": "80 answers how many degrees are in centigrade triangles"
+            },
+            {
+              "task": "kinks",
+              "gold": "7",
+              "pred_raw": " 80 answers How many circles does the line have?",
+              "pred_norm": "80 answers how many circles does the line have?"
+            },
+            {
+              "task": "kinks",
+              "gold": "7",
+              "pred_raw": " 80 answer: 100 answer: ",
+              "pred_norm": "80 answer: 100 answer:"
+            }
+          ]
+        },
+        "top_pred_norm": [
+          [
+            "green",
+            16
+          ],
+          [
+            "? answer: green",
+            11
+          ],
+          [
+            "? answer: red",
+            5
+          ],
+          [
+            "5 questions mark: how many degrees are in centigrade",
+            3
+          ],
+          [
+            "5 questions left and right question: how many rectangles does",
+            3
+          ],
+          [
+            "5 questions left and right question: how many diagonals does",
+            2
+          ],
+          [
+            "8 question: how many diagonals does the line have length",
+            2
+          ],
+          [
+            "yellow",
+            2
+          ],
+          [
+            "5 questions mark: how many corners does the red line",
+            2
+          ],
+          [
+            "5 questions mark how many degrees are in centigrade?",
+            2
+          ],
+          [
+            "5 questions mark class is 100%",
+            1
+          ],
+          [
+            "80 answer: 80 answer: 8",
+            1
+          ]
+        ],
+        "top_pred_raw": [
+          [
+            " green. Question: What color is the small square? Answer",
+            16
+          ],
+          [
+            "? Answer: green. Question: What color is the small square? Answer",
+            9
+          ],
+          [
+            "? Answer: red. What color is the large square? Answer: blue",
+            4
+          ],
+          [
+            " 5 questions mark: How many degrees are in centigrade",
+            3
+          ],
+          [
+            " 5 questions left and right Question: How many rectangles does",
+            3
+          ],
+          [
+            "? Answer: green. Question: What color is the large square? Answer",
+            2
+          ],
+          [
+            " 5 questions left and right Question: How many diagonals does",
+            2
+          ],
+          [
+            " 8 Question: How many diagonals does the line have length",
+            2
+          ],
+          [
+            " yellow. Question: What color is the small square? Answer",
+            2
+          ],
+          [
+            " 5 questions mark: How many corners does the red line",
+            2
+          ],
+          [
+            " 5 questions mark How many degrees are in centigrade?",
+            2
+          ],
+          [
+            " 5 questions mark class is 100%\n",
+            1
+          ]
+        ]
+      },
+      "all_rows": [
+        {
+          "kind_task": "color",
+          "gold": "green",
+          "pred_raw": " green. Question: What color is the small square? Answer",
+          "pred_norm": "green",
+          "ok": true,
+          "fail_tag": "ok",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "blue",
+          "pred_raw": " green. Question: What color is the small square? Answer",
+          "pred_norm": "green",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "7",
+          "pred_raw": " 5 questions mark: How many degrees are in centigrade",
+          "pred_norm": "5 questions mark: how many degrees are in centigrade",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "green",
+          "pred_raw": "? Answer: green. Question: What color is the large square? Answer",
+          "pred_norm": "? answer: green",
+          "ok": true,
+          "fail_tag": "ok",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "7",
+          "pred_raw": " 5 questions mark class is 100%\n",
+          "pred_norm": "5 questions mark class is 100%",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "red",
+          "pred_raw": "? Answer: green. Question: What color is the small square? Answer",
+          "pred_norm": "? answer: green",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "green",
+          "pred_raw": "? Answer: green. Question: What color is the small square? Answer",
+          "pred_norm": "? answer: green",
+          "ok": true,
+          "fail_tag": "ok",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "8",
+          "pred_raw": " 80 Answer: 80 Answer: 8",
+          "pred_norm": "80 answer: 80 answer: 8",
+          "ok": true,
+          "fail_tag": "ok",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "green",
+          "pred_raw": " green. Question: What color is the small square? Answer",
+          "pred_norm": "green",
+          "ok": true,
+          "fail_tag": "ok",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "green",
+          "pred_raw": " green. Question: What color is the small square? Answer",
+          "pred_norm": "green",
+          "ok": true,
+          "fail_tag": "ok",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "8",
+          "pred_raw": " 5 corners Answer: 5 questions Part 1:",
+          "pred_norm": "5 corners answer: 5 questions part 1:",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "7",
+          "pred_raw": " 5 questions left and right Question: How many diagonals does",
+          "pred_norm": "5 questions left and right question: how many diagonals does",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "yellow",
+          "pred_raw": " green. Question: What color is the small square? Answer",
+          "pred_norm": "green",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "green",
+          "pred_raw": " green. Question: What color is the small square? Answer",
+          "pred_norm": "green",
+          "ok": true,
+          "fail_tag": "ok",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "6",
+          "pred_raw": " 8 Question: How many diagonals does the line have length",
+          "pred_norm": "8 question: how many diagonals does the line have length",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "8",
+          "pred_raw": " 5 questions left and right Question: How many rectangles such",
+          "pred_norm": "5 questions left and right question: how many rectangles such",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "6",
+          "pred_raw": " 5 questions mark: How many corners does the yellow poly",
+          "pred_norm": "5 questions mark: how many corners does the yellow poly",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "red",
+          "pred_raw": "? Answer: green. Question: What color is the small square? Answer",
+          "pred_norm": "? answer: green",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "blue",
+          "pred_raw": " green. Question: What color is the small square? Answer",
+          "pred_norm": "green",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "green",
+          "pred_raw": " green. Question: What color is the small square? Answer",
+          "pred_norm": "green",
+          "ok": true,
+          "fail_tag": "ok",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "green",
+          "pred_raw": " green. Question: What color is the small square? Answer",
+          "pred_norm": "green",
+          "ok": true,
+          "fail_tag": "ok",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "yellow",
+          "pred_raw": " yellow. Question: What color is the small square? Answer",
+          "pred_norm": "yellow",
+          "ok": true,
+          "fail_tag": "ok",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "6",
+          "pred_raw": " 5 questions mark How many degrees are in centigrade triangles",
+          "pred_norm": "5 questions mark how many degrees are in centigrade triangles",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "5",
+          "pred_raw": " 5 questions mark: How many degrees are in centigrade",
+          "pred_norm": "5 questions mark: how many degrees are in centigrade",
+          "ok": true,
+          "fail_tag": "ok",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "green",
+          "pred_raw": " green. Question: What color is the small square? Answer",
+          "pred_norm": "green",
+          "ok": true,
+          "fail_tag": "ok",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "blue",
+          "pred_raw": " green. Question: What color is the small square? Answer",
+          "pred_norm": "green",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "5",
+          "pred_raw": " 5 questions left and right Question: How many rectangles does",
+          "pred_norm": "5 questions left and right question: how many rectangles does",
+          "ok": true,
+          "fail_tag": "ok",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "yellow",
+          "pred_raw": "? Answer: red. Question: What color is the small square? Answer",
+          "pred_norm": "? answer: red",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "7",
+          "pred_raw": " 80 answers How many degrees are in centigrade triangles",
+          "pred_norm": "80 answers how many degrees are in centigrade triangles",
+          "ok": false,
+          "fail_tag": "kinks_digit_out_of_range",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "8",
+          "pred_raw": " 5 questions left and right Question: How many diagonals does",
+          "pred_norm": "5 questions left and right question: how many diagonals does",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "green",
+          "pred_raw": "? Answer: green. Question: What color is the small square? Answer",
+          "pred_norm": "? answer: green",
+          "ok": true,
+          "fail_tag": "ok",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "7",
+          "pred_raw": " 5 questions left and right Question: How many rectangles does",
+          "pred_norm": "5 questions left and right question: how many rectangles does",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "blue",
+          "pred_raw": "? Answer: red. What color is the large square? Answer: blue",
+          "pred_norm": "? answer: red",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "7",
+          "pred_raw": " 80 answers How many circles does the line have?",
+          "pred_norm": "80 answers how many circles does the line have?",
+          "ok": false,
+          "fail_tag": "kinks_digit_out_of_range",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "8",
+          "pred_raw": " 5 questions left and right Question: How many rectangles could",
+          "pred_norm": "5 questions left and right question: how many rectangles could",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "8",
+          "pred_raw": " 5 questions mark How many degrees are in 30",
+          "pred_norm": "5 questions mark how many degrees are in 30",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "yellow",
+          "pred_raw": "? Answer: green. Question: What color is the large square? Answer",
+          "pred_norm": "? answer: green",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "7",
+          "pred_raw": " 5 questions mark does Question: How many centimeters is the",
+          "pred_norm": "5 questions mark does question: how many centimeters is the",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "green",
+          "pred_raw": "? Answer: green. Question: What color is the small square? Answer",
+          "pred_norm": "? answer: green",
+          "ok": true,
+          "fail_tag": "ok",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "7",
+          "pred_raw": " 5 questions mark: How many corners does the red line",
+          "pred_norm": "5 questions mark: how many corners does the red line",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "yellow",
+          "pred_raw": "? Answer: red. What color is the large square? Answer: blue",
+          "pred_norm": "? answer: red",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "5",
+          "pred_raw": " 5 questions mark: How many degrees are in centigrade",
+          "pred_norm": "5 questions mark: how many degrees are in centigrade",
+          "ok": true,
+          "fail_tag": "ok",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "6",
+          "pred_raw": " 8 Question: How many diagonals does the line have length",
+          "pred_norm": "8 question: how many diagonals does the line have length",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "yellow",
+          "pred_raw": "? Answer: green. Question: What color is the small square? Answer",
+          "pred_norm": "? answer: green",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "green",
+          "pred_raw": " green. Question: What color is the small square? Answer",
+          "pred_norm": "green",
+          "ok": true,
+          "fail_tag": "ok",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "blue",
+          "pred_raw": " green. Question: What color is the small square? Answer",
+          "pred_norm": "green",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "7",
+          "pred_raw": " 5 questions mark How many degrees are in centigrade?",
+          "pred_norm": "5 questions mark how many degrees are in centigrade?",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "green",
+          "pred_raw": "? Answer: green. Question: What color is the small square? Answer",
+          "pred_norm": "? answer: green",
+          "ok": true,
+          "fail_tag": "ok",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "yellow",
+          "pred_raw": " green. Question: What color is the small square? Answer",
+          "pred_norm": "green",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "yellow",
+          "pred_raw": " yellow. Question: What color is the small square? Answer",
+          "pred_norm": "yellow",
+          "ok": true,
+          "fail_tag": "ok",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "red",
+          "pred_raw": "? Answer: green. Question: What color is the small square? Answer",
+          "pred_norm": "? answer: green",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "6",
+          "pred_raw": " 5 questions left and right Question: How many rectangles does",
+          "pred_norm": "5 questions left and right question: how many rectangles does",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "6",
+          "pred_raw": " 5 questions left and right Question: How many rectangles as",
+          "pred_norm": "5 questions left and right question: how many rectangles as",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "red",
+          "pred_raw": "? Answer: red. What color is the large square? Answer: blue",
+          "pred_norm": "? answer: red",
+          "ok": true,
+          "fail_tag": "ok",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "blue",
+          "pred_raw": " green. Question: What color is the small square? Answer",
+          "pred_norm": "green",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "yellow",
+          "pred_raw": " green. Question: What color is the small square? Answer",
+          "pred_norm": "green",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "yellow",
+          "pred_raw": "? Answer: red. What color is the large square? Answer: blue",
+          "pred_norm": "? answer: red",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "7",
+          "pred_raw": " 5 questions mark.\nQuestion: How many sides does",
+          "pred_norm": "5 questions mark",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "7",
+          "pred_raw": " 80 answer: 100 answer: ",
+          "pred_norm": "80 answer: 100 answer:",
+          "ok": false,
+          "fail_tag": "kinks_digit_out_of_range",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "green",
+          "pred_raw": "? Answer: green. Question: What color is the small square? Answer",
+          "pred_norm": "? answer: green",
+          "ok": true,
+          "fail_tag": "ok",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "7",
+          "pred_raw": " 8 questions mark.\nQuestion: How many sides does",
+          "pred_norm": "8 questions mark",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "7",
+          "pred_raw": " 5 questions mark: How many corners does the red line",
+          "pred_norm": "5 questions mark: how many corners does the red line",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "6",
+          "pred_raw": " 5 questions mark How many degrees are in centigrade?",
+          "pred_norm": "5 questions mark how many degrees are in centigrade?",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "7",
+          "pred_raw": " 5 questions mark class is 10 points How many",
+          "pred_norm": "5 questions mark class is 10 points how many",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        }
+      ]
+    },
+    {
+      "kind": "A",
+      "T": 16,
+      "seed": 1,
+      "final_loss": 0.2568918466567993,
+      "seconds": 59.505404233932495,
+      "summary": {
+        "overall": {
+          "n": 64,
+          "acc": 0.359375
+        },
+        "by_task": {
+          "color": {
+            "n": 34,
+            "acc": 0.4117647058823529,
+            "fail_tags": {
+              "ok": 14,
+              "wrong_color_word": 20
+            }
+          },
+          "kinks": {
+            "n": 30,
+            "acc": 0.3,
+            "fail_tags": {
+              "wrong_kink_count": 21,
+              "ok": 9
+            }
+          }
+        },
+        "fail_tag_counts": {
+          "ok": 23,
+          "wrong_color_word": 20,
+          "wrong_kink_count": 21
+        },
+        "examples": {
+          "wrong_color_word": [
+            {
+              "task": "color",
+              "gold": "blue",
+              "pred_raw": " green. Answer: yellow. Answer: blue. Answer:",
+              "pred_norm": "green"
+            },
+            {
+              "task": "color",
+              "gold": "red",
+              "pred_raw": "? Answer: green.俗称：红薯，又어린이",
+              "pred_norm": "? answer: green"
+            },
+            {
+              "task": "color",
+              "gold": "yellow",
+              "pred_raw": " green. Answer: yellow. Answer: blue. Answer:",
+              "pred_norm": "green"
+            },
+            {
+              "task": "color",
+              "gold": "red",
+              "pred_raw": "? Answer: green.俗称：红薯，又ี่: ",
+              "pred_norm": "? answer: green"
+            }
+          ],
+          "wrong_kink_count": [
+            {
+              "task": "kinks",
+              "gold": "7",
+              "pred_raw": " 5distanceArrayPossible Answers: Answer: 1 Answer:",
+              "pred_norm": "5distancearraypossible answers: answer: 1 answer:"
+            },
+            {
+              "task": "kinks",
+              "gold": "7",
+              "pred_raw": " 5distanceArrayPossible Answers: Answer: 1 Answer:",
+              "pred_norm": "5distancearraypossible answers: answer: 1 answer:"
+            },
+            {
+              "task": "kinks",
+              "gold": "8",
+              "pred_raw": " 5distanceArrayPossible Answers; Question: Answer: 5",
+              "pred_norm": "5distancearraypossible answers"
+            },
+            {
+              "task": "kinks",
+              "gold": "8",
+              "pred_raw": " 5 10 15 16 ",
+              "pred_norm": "5 10 15 16"
+            }
+          ]
+        },
+        "top_pred_norm": [
+          [
+            "green",
+            18
+          ],
+          [
+            "? answer: green",
+            16
+          ],
+          [
+            "5distancearraypossible answers: answer: 1 answer:",
+            12
+          ],
+          [
+            "5 10 15 16",
+            7
+          ],
+          [
+            "5 6 7 8 9 1",
+            7
+          ],
+          [
+            "5distancearraypossible answers",
+            4
+          ]
+        ],
+        "top_pred_raw": [
+          [
+            " green. Answer: yellow. Answer: blue. Answer:",
+            18
+          ],
+          [
+            " 5distanceArrayPossible Answers: Answer: 1 Answer:",
+            12
+          ],
+          [
+            "? Answer: green.лекуo. What color is the large square?",
+            8
+          ],
+          [
+            " 5 10 15 16 ",
+            7
+          ],
+          [
+            " 5 6 7 8 9 1",
+            7
+          ],
+          [
+            " 5distanceArrayPossible Answers; Question: Answer: 5",
+            4
+          ],
+          [
+            "? Answer: green.俗称：红薯，又어린이",
+            1
+          ],
+          [
+            "? Answer: green.俗称：红薯，又ี่: ",
+            1
+          ],
+          [
+            "? Answer: green.安慰ia County, California. Answer: 1",
+            1
+          ],
+          [
+            "? Answer: green.俗稱的 cella, 瓜, ",
+            1
+          ],
+          [
+            "? Answer: green.俗称：红薯，又 ชีฟาด",
+            1
+          ],
+          [
+            "? Answer: green.安慰ia County, California. Answer: green.",
+            1
+          ]
+        ]
+      },
+      "all_rows": [
+        {
+          "kind_task": "color",
+          "gold": "green",
+          "pred_raw": " green. Answer: yellow. Answer: blue. Answer:",
+          "pred_norm": "green",
+          "ok": true,
+          "fail_tag": "ok",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "blue",
+          "pred_raw": " green. Answer: yellow. Answer: blue. Answer:",
+          "pred_norm": "green",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "7",
+          "pred_raw": " 5distanceArrayPossible Answers: Answer: 1 Answer:",
+          "pred_norm": "5distancearraypossible answers: answer: 1 answer:",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "green",
+          "pred_raw": "? Answer: green.лекуo. What color is the large square?",
+          "pred_norm": "? answer: green",
+          "ok": true,
+          "fail_tag": "ok",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "7",
+          "pred_raw": " 5distanceArrayPossible Answers: Answer: 1 Answer:",
+          "pred_norm": "5distancearraypossible answers: answer: 1 answer:",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "red",
+          "pred_raw": "? Answer: green.俗称：红薯，又어린이",
+          "pred_norm": "? answer: green",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "green",
+          "pred_raw": "? Answer: green.лекуo. What color is the large square?",
+          "pred_norm": "? answer: green",
+          "ok": true,
+          "fail_tag": "ok",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "8",
+          "pred_raw": " 5distanceArrayPossible Answers; Question: Answer: 5",
+          "pred_norm": "5distancearraypossible answers",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "green",
+          "pred_raw": " green. Answer: yellow. Answer: blue. Answer:",
+          "pred_norm": "green",
+          "ok": true,
+          "fail_tag": "ok",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "green",
+          "pred_raw": " green. Answer: yellow. Answer: blue. Answer:",
+          "pred_norm": "green",
+          "ok": true,
+          "fail_tag": "ok",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "8",
+          "pred_raw": " 5 10 15 16 ",
+          "pred_norm": "5 10 15 16",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "7",
+          "pred_raw": " 5 10 15 16 ",
+          "pred_norm": "5 10 15 16",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "yellow",
+          "pred_raw": " green. Answer: yellow. Answer: blue. Answer:",
+          "pred_norm": "green",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "green",
+          "pred_raw": " green. Answer: yellow. Answer: blue. Answer:",
+          "pred_norm": "green",
+          "ok": true,
+          "fail_tag": "ok",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "6",
+          "pred_raw": " 5 6 7 8 9 1",
+          "pred_norm": "5 6 7 8 9 1",
+          "ok": true,
+          "fail_tag": "ok",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "8",
+          "pred_raw": " 5 10 15 16 ",
+          "pred_norm": "5 10 15 16",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "6",
+          "pred_raw": " 5distanceArrayPossible Answers: Answer: 1 Answer:",
+          "pred_norm": "5distancearraypossible answers: answer: 1 answer:",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "red",
+          "pred_raw": "? Answer: green.俗称：红薯，又ี่: ",
+          "pred_norm": "? answer: green",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "blue",
+          "pred_raw": " green. Answer: yellow. Answer: blue. Answer:",
+          "pred_norm": "green",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "green",
+          "pred_raw": " green. Answer: yellow. Answer: blue. Answer:",
+          "pred_norm": "green",
+          "ok": true,
+          "fail_tag": "ok",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "green",
+          "pred_raw": " green. Answer: yellow. Answer: blue. Answer:",
+          "pred_norm": "green",
+          "ok": true,
+          "fail_tag": "ok",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "yellow",
+          "pred_raw": " green. Answer: yellow. Answer: blue. Answer:",
+          "pred_norm": "green",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "6",
+          "pred_raw": " 5 6 7 8 9 1",
+          "pred_norm": "5 6 7 8 9 1",
+          "ok": true,
+          "fail_tag": "ok",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "5",
+          "pred_raw": " 5 6 7 8 9 1",
+          "pred_norm": "5 6 7 8 9 1",
+          "ok": true,
+          "fail_tag": "ok",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "green",
+          "pred_raw": " green. Answer: yellow. Answer: blue. Answer:",
+          "pred_norm": "green",
+          "ok": true,
+          "fail_tag": "ok",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "blue",
+          "pred_raw": " green. Answer: yellow. Answer: blue. Answer:",
+          "pred_norm": "green",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "5",
+          "pred_raw": " 5distanceArrayPossible Answers: Answer: 1 Answer:",
+          "pred_norm": "5distancearraypossible answers: answer: 1 answer:",
+          "ok": true,
+          "fail_tag": "ok",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "yellow",
+          "pred_raw": "? Answer: green.лекуo. What color is the large square?",
+          "pred_norm": "? answer: green",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "7",
+          "pred_raw": " 5 6 7 8 9 1",
+          "pred_norm": "5 6 7 8 9 1",
+          "ok": true,
+          "fail_tag": "ok",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "8",
+          "pred_raw": " 5 10 15 16 ",
+          "pred_norm": "5 10 15 16",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "green",
+          "pred_raw": "? Answer: green.安慰ia County, California. Answer: 1",
+          "pred_norm": "? answer: green",
+          "ok": true,
+          "fail_tag": "ok",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "7",
+          "pred_raw": " 5distanceArrayPossible Answers; Question: Answer: 5",
+          "pred_norm": "5distancearraypossible answers",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "blue",
+          "pred_raw": "? Answer: green.лекуo. What color is the large square?",
+          "pred_norm": "? answer: green",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "7",
+          "pred_raw": " 5distanceArrayPossible Answers: Answer: 1 Answer:",
+          "pred_norm": "5distancearraypossible answers: answer: 1 answer:",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "8",
+          "pred_raw": " 5 10 15 16 ",
+          "pred_norm": "5 10 15 16",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "8",
+          "pred_raw": " 5 6 7 8 9 1",
+          "pred_norm": "5 6 7 8 9 1",
+          "ok": true,
+          "fail_tag": "ok",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "yellow",
+          "pred_raw": "? Answer: green.俗稱的 cella, 瓜, ",
+          "pred_norm": "? answer: green",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "7",
+          "pred_raw": " 5distanceArrayPossible Answers: Answer: 1 Answer:",
+          "pred_norm": "5distancearraypossible answers: answer: 1 answer:",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "green",
+          "pred_raw": "? Answer: green.лекуo. What color is the large square?",
+          "pred_norm": "? answer: green",
+          "ok": true,
+          "fail_tag": "ok",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "7",
+          "pred_raw": " 5distanceArrayPossible Answers; Question: Answer: 5",
+          "pred_norm": "5distancearraypossible answers",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "yellow",
+          "pred_raw": "? Answer: green.俗称：红薯，又 ชีฟาด",
+          "pred_norm": "? answer: green",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "5",
+          "pred_raw": " 5distanceArrayPossible Answers; Question: Answer: 5",
+          "pred_norm": "5distancearraypossible answers",
+          "ok": true,
+          "fail_tag": "ok",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "6",
+          "pred_raw": " 5distanceArrayPossible Answers: Answer: 1 Answer:",
+          "pred_norm": "5distancearraypossible answers: answer: 1 answer:",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "yellow",
+          "pred_raw": "? Answer: green.лекуo. What color is the large square?",
+          "pred_norm": "? answer: green",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "green",
+          "pred_raw": " green. Answer: yellow. Answer: blue. Answer:",
+          "pred_norm": "green",
+          "ok": true,
+          "fail_tag": "ok",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "blue",
+          "pred_raw": " green. Answer: yellow. Answer: blue. Answer:",
+          "pred_norm": "green",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "7",
+          "pred_raw": " 5distanceArrayPossible Answers: Answer: 1 Answer:",
+          "pred_norm": "5distancearraypossible answers: answer: 1 answer:",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "green",
+          "pred_raw": "? Answer: green.安慰ia County, California. Answer: green.",
+          "pred_norm": "? answer: green",
+          "ok": true,
+          "fail_tag": "ok",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "yellow",
+          "pred_raw": " green. Answer: yellow. Answer: blue. Answer:",
+          "pred_norm": "green",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "yellow",
+          "pred_raw": " green. Answer: yellow. Answer: blue. Answer:",
+          "pred_norm": "green",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "red",
+          "pred_raw": "? Answer: green.лекуo. What color is the large square?",
+          "pred_norm": "? answer: green",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "6",
+          "pred_raw": " 5distanceArrayPossible Answers: Answer: 1 Answer:",
+          "pred_norm": "5distancearraypossible answers: answer: 1 answer:",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "6",
+          "pred_raw": " 5distanceArrayPossible Answers: Answer: 1 Answer:",
+          "pred_norm": "5distancearraypossible answers: answer: 1 answer:",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "red",
+          "pred_raw": "? Answer: green.安慰ia.org/news/news/news",
+          "pred_norm": "? answer: green",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "blue",
+          "pred_raw": " green. Answer: yellow. Answer: blue. Answer:",
+          "pred_norm": "green",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "yellow",
+          "pred_raw": " green. Answer: yellow. Answer: blue. Answer:",
+          "pred_norm": "green",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "yellow",
+          "pred_raw": "? Answer: green.俗称：红薯，又ี่. Answer",
+          "pred_norm": "? answer: green",
+          "ok": false,
+          "fail_tag": "wrong_color_word",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "7",
+          "pred_raw": " 5distanceArrayPossible Answers: Answer: 1 Answer:",
+          "pred_norm": "5distancearraypossible answers: answer: 1 answer:",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "7",
+          "pred_raw": " 5distanceArrayPossible Answers: Answer: 1 Answer:",
+          "pred_norm": "5distancearraypossible answers: answer: 1 answer:",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "color",
+          "gold": "green",
+          "pred_raw": "? Answer: green.лекуo. What color is the large square?",
+          "pred_norm": "? answer: green",
+          "ok": true,
+          "fail_tag": "ok",
+          "prompt": "Question: What color is the small square? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "7",
+          "pred_raw": " 5 10 15 16 ",
+          "pred_norm": "5 10 15 16",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "7",
+          "pred_raw": " 5 6 7 8 9 1",
+          "pred_norm": "5 6 7 8 9 1",
+          "ok": true,
+          "fail_tag": "ok",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "6",
+          "pred_raw": " 5 10 15 16 ",
+          "pred_norm": "5 10 15 16",
+          "ok": false,
+          "fail_tag": "wrong_kink_count",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        },
+        {
+          "kind_task": "kinks",
+          "gold": "7",
+          "pred_raw": " 5 6 7 8 9 1",
+          "pred_norm": "5 6 7 8 9 1",
+          "ok": true,
+          "fail_tag": "ok",
+          "prompt": "Question: How many corners does the red polyline have? Answer:"
+        }
+      ]
+    }
+  ]
+}

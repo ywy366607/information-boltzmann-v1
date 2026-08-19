@@ -1,6 +1,9 @@
 # Slice–NaViT 双流 MoT：接口与设计草图
 
-Status: **design draft**（非本轮 mini 实现范围）  
+Status: **partially implemented** in `fine_grain/native_mot.py`  
+  - `dual_patch=True`: `PointPatchEmbed(X) → P`, `SliceRead → S`, MoT concat `[P;S]` with text,  
+    `Deslice(S')` + optional `PointUnpatch(P')` on the **same** point field X.  
+  - Mini arm: `python scripts/run_slicemot_mini_gate.py --arm dual_ps`  
 Related: `docs/native_slice_mot_vlm_experiment.md`, `fine_grain/native_mot.py`  
 Date: 2026-08
 

@@ -58,13 +58,15 @@ NS_STEPS_DEFAULT = 5
 NS_EPS = 1e-7
 
 
-def sparse_deslice_weights(w, topk=0, threshold=0.0):
+def sparse_deslice_weights(w, topk=0, threshold=0.0, renorm=True):
     """Build write/scatter weights for deslice; keeps soft *pool* weights untouched.
 
     Primary fix for soft-scatter leakage (Transolver soft MoE write path):
     - topk>0: keep only top-k slice masses per point (per head), renormalize.
     - threshold>0: zero masses below threshold, renormalize.
     - both 0: full soft scatter (baseline Transolver++).
+    - renorm=False: keep leftover mass (null-slice Read). Empty rows stay 0
+      (that mass sat on ∅; do not fall back to a partition of unity).
 
     w: [B,H,N,G] assignment after softmax. Returns same shape.
     """
@@ -80,6 +82,8 @@ def sparse_deslice_weights(w, topk=0, threshold=0.0):
         w_sp.scatter_(-1, idx, vals)
     if thr > 0:
         w_sp = torch.where(w_sp >= thr, w_sp, torch.zeros_like(w_sp))
+    if not renorm:
+        return w_sp
     # If a point lost all mass, fall back to original soft row (avoid NaN)
     row = w_sp.sum(dim=-1, keepdim=True)
     empty = row < 1e-8
@@ -466,9 +470,14 @@ ARMS = {
     "slice_loc_nogumbel_st_topk2_gate": dict(
         kind="slice", norm="mass", mult=1, local=True, nog=True,
         stiefel_ns=True, deslice_topk=2, res_gate=True, qwen_sdpa_gate=True),
-    # Fallback only: shared-weight multi-pass mix (not the primary scatter fix)
+    # Fallback / recurrence study: shared-weight multi-pass mix
+    # (not the primary scatter fix; use for recur_T sweeps)
+    "slice_loc_nogumbel_recur1": dict(
+        kind="slice", norm="mass", mult=1, local=True, nog=True, recur_T=1),
     "slice_loc_nogumbel_recur2": dict(
         kind="slice", norm="mass", mult=1, local=True, nog=True, recur_T=2),
+    "slice_loc_nogumbel_recur4": dict(
+        kind="slice", norm="mass", mult=1, local=True, nog=True, recur_T=4),
     "slice_loc_nogumbel_topk2_recur2": dict(
         kind="slice", norm="mass", mult=1, local=True, nog=True,
         deslice_topk=2, recur_T=2),

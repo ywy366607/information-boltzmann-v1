@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Bayesian Surprise–Driven 双流视觉语言模型 · 开题报告</title>
+<!-- KaTeX for crisp mathematical typography -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
+<style>
+  :root {
+    --bg: #090d16;
+    --bg-surface: #0f172a;
+    --bg-card: rgba(17, 24, 39, 0.85);
+    --bg-code: #0b1120;
+    --border: rgba(148, 163, 184, 0.16);
+    --border-highlight: rgba(56, 189, 248, 0.35);
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --text-faint: #64748b;
+    --accent-blue: #38bdf8;
+    --accent-blue-dim: rgba(56, 189, 248, 0.12);
+    --accent-teal: #2dd4bf;
+    --accent-teal-dim: rgba(45, 212, 191, 0.12);
+    --accent-amber: #fbbf24;
+    --accent-amber-dim: rgba(251, 191, 36, 0.12);
+    --accent-purple: #c084fc;
+    --accent-purple-dim: rgba(192, 132, 252, 0.12);
+    --accent-rose: #fb7185;
+    --radius-sm: 8px;
+    --radius-md: 14px;
+    --radius-lg: 20px;
+    --max-w: 1040px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; font-size: 16px; }
+  body {
+    background-color: var(--bg);
+    color: var(--text-main);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    line-height: 1.8;
+    background-image:
+      radial-gradient(1000px 500px at 5% -5%, rgba(56, 189, 248, 0.08), transparent 60%),
+      radial-gradient(800px 500px at 95% 10%, rgba(192, 132, 252, 0.07), transparent 60%),
+      radial-gradient(1100px 600px at 50% 100%, rgba(45, 212, 191, 0.06), transparent 70%);
+    background-attachment: fixed;
+    padding: 2.5rem 1.25rem;
+  }
+
+  .container { max-width: var(--max-w); margin: 0 auto; }
+
+  /* Header / Meta Card */
+  header {
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.7));
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 3rem 2.5rem;
+    margin-bottom: 2.5rem;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+  }
+  header::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--accent-blue), var(--accent-teal), var(--accent-purple));
+  }
+  .tag-row { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 1.2rem; }
+  .badge {
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    border: 1px solid transparent;
+  }
+  .badge-blue { background: var(--accent-blue-dim); color: var(--accent-blue); border-color: rgba(56, 189, 248, 0.3); }
+  .badge-teal { background: var(--accent-teal-dim); color: var(--accent-teal); border-color: rgba(45, 212, 191, 0.3); }
+  .badge-purple { background: var(--accent-purple-dim); color: var(--accent-purple); border-color: rgba(192, 132, 252, 0.3); }
+
+  h1 {
+    font-size: 2.25rem;
+    font-weight: 800;
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, #ffffff 40%, #cbd5e1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .subtitle {
+    font-size: 1.15rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 1.8rem;
+  }
+  .meta-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.9rem;
+    color: var(--text-muted);
+  }
+  .meta-item b { color: var(--text-main); font-weight: 600; }
+
+  /* Sections */
+  section {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 2.5rem;
+    margin-bottom: 2rem;
+    backdrop-filter: blur(12px);
+  }
+  .section-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: #ffffff;
+  }
+  .section-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: var(--radius-sm);
+    background: var(--accent-blue-dim);
+    color: var(--accent-blue);
+    font-size: 0.95rem;
+    font-weight: 700;
+    border: 1px solid rgba(56, 189, 248, 0.25);
+  }
+
+  p { margin-bottom: 1.25rem; color: #cbd5e1; font-size: 1.02rem; }
+  p:last-child { margin-bottom: 0; }
+
+  /* Callout & Focus Boxes */
+  .focus-box {
+    background: rgba(15, 23, 42, 0.7);
+    border-left: 4px solid var(--accent-blue);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    padding: 1.25rem 1.5rem;
+    margin: 1.5rem 0;
+  }
+  .focus-box.teal { border-left-color: var(--accent-teal); }
+  .focus-box.amber { border-left-color: var(--accent-amber); }
+  .focus-box.purple { border-left-color: var(--accent-purple); }
+
+  .loop-banner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+    background: rgba(30, 41, 59, 0.4);
+    border: 1px solid var(--border-highlight);
+    border-radius: var(--radius-md);
+    padding: 1.2rem;
+    margin: 1.8rem 0;
+    font-weight: 600;
+    font-size: 1.05rem;
+    color: var(--accent-teal);
+  }
+  .loop-arrow { color: var(--accent-blue); font-size: 1.2rem; }
+
+  /* Diagrams & Visual Schema */
+  .diagram-wrapper {
+    background: var(--bg-code);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 1.5rem;
+    margin: 1.8rem 0;
+    overflow-x: auto;
+  }
+  svg text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+
+  /* Comparison Grid & Tables */
+  .compare-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin: 1.8rem 0;
+  }
+  @media (max-width: 768px) {
+    .compare-grid { grid-template-columns: 1fr; }
+  }
+  .card-sub {
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 1.5rem;
+  }
+  .card-sub h4 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 0.95rem;
+  }
+  th, td {
+    padding: 0.85rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  th {
+    background: rgba(15, 23, 42, 0.8);
+    color: #ffffff;
+    font-weight: 600;
+  }
+  tr:hover td { background: rgba(30, 41, 59, 0.25); }
+
+  /* Code Block */
+  pre {
+    background: var(--bg-code);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 1.25rem;
+    overflow-x: auto;
+    font-family: "JetBrains Mono", Consolas, Menlo, monospace;
+    font-size: 0.88rem;
+    line-height: 1.6;
+    color: #e2e8f0;
+    margin: 1.5rem 0;
+  }
+  .code-kw { color: #f472b6; }
+  .code-fn { color: #38bdf8; }
+  .code-cm { color: #64748b; font-style: italic; }
+  .code-num { color: #fbbf24; }
+
+  /* Step Ladder */
+  .step-list { display: flex; flex-direction: column; gap: 1.2rem; margin: 1.5rem 0; }
+  .step-item {
+    display: flex;
+    gap: 1.2rem;
+    background: rgba(15, 23, 42, 0.5);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 1.2rem;
+  }
+  .step-badge {
+    flex-shrink: 0;
+    width: 2.4rem;
+    height: 2.4rem;
+    background: var(--accent-purple-dim);
+    color: var(--accent-purple);
+    font-weight: 700;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(192, 132, 252, 0.3);
+  }
+  .step-content h4 { font-size: 1.05rem; font-weight: 600; margin-bottom: 0.3rem; color: #ffffff; }
+  .step-content p { font-size: 0.95rem; margin-bottom: 0; }
+
+  footer {
+    text-align: center;
+    padding: 2rem 0;
+    color: var(--text-faint);
+    font-size: 0.88rem;
+    border-top: 1px solid var(--border);
+    margin-top: 3rem;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- ==================== Header ==================== -->
+  <header>
+    <div class="tag-row">
+      <span class="badge badge-blue">开题方案 / Research Proposal</span>
+      <span class="badge badge-teal">Predictive Coding & Active Vision</span>
+      <span class="badge badge-purple">Bayesian Co-evolution</span>
+    </div>
+    <h1>Bayesian Surprise–Driven 双流视觉语言模型</h1>
+    <p class="subtitle">
+      超越“单向静态 Token 化”与纯 JEPA 距离：基于自顶向下预测编码与不确定度感知的多模态主动推理框架
+    </p>
+    <div class="meta-grid">
+      <div class="meta-item"><b>核心命题：</b> JEPA-$L_2$ 是完整贝叶斯协同演化在同方差下的退化极限</div>
+      <div class="meta-item"><b>角色分工：</b> Language 预测 Prior，Vision Slice 提供 Evidence，Surprise 驱动重构</div>
+      <div class="meta-item"><b>演进路线：</b> V0 (Deterministic JEPA) ➔ V1 (Gaussian Bayes) ➔ V2 (Active Vision)</div>
+    </div>
+  </header>
+
+  <!-- ==================== 1. 动机与认知引言 ==================== -->
+  <section id="introduction">
+    <div class="section-title">
+      <span class="section-num">1</span>
+      <span>引言：从生物预测编码到马尔可夫毯</span>
+    </div>
+
+    <p>
+      当前主流视觉语言模型（如 Qwen-VL、LLaVA、MoonViT 等）本质上遵循<strong>“See Once $\to$ Think Many Times”</strong>的单向前馈范式：高分辨率图像在初始阶段被固定的 ViT Patch 卷积硬性切碎、降采样为一串静态 Token，随后注入大语言模型。在此过程中，<strong>视觉编码器输出一次即宣告生命周期终结</strong>，LLM 只能被动阅读压缩后的静态表征，无法在后续的多步思考中反向回溯、重新聚焦或修饰视觉画布。
+    </p>
+
+    <div class="compare-grid">
+      <div class="card-sub" style="border-color: rgba(248, 113, 113, 0.3);">
+        <h4 style="color: var(--accent-rose);">❌ 传统主流 VLM（被动静态摄相）</h4>
+        <p style="font-size: 0.92rem; color: #94a3b8;">
+          • <strong>单向前馈</strong>：图像 $\to$ Patch Tokens $\to$ LLM（不可逆压缩）。<br/>
+          • <strong>零反馈连接</strong>：LLM 无法反向修改底层的视觉像素或几何特征。<br/>
+          • <strong>全局均匀算力</strong>：空白背景与极细线段消耗完全等价的静态 Token 预算。
+        </p>
+      </div>
+      <div class="card-sub" style="border-color: rgba(45, 212, 191, 0.3);">
+        <h4 style="color: var(--accent-teal);">✔ 生物预测编码（Predictive Coding）</h4>
+        <p style="font-size: 0.92rem; color: #94a3b8;">
+          • <strong>回流密集</strong>：高级皮层（Language/PFC）到早期视皮层（V1）的反馈神经纤维数量是前向输入的 <strong>10 倍以上</strong>。<br/>
+          • <strong>自顶向下先验</strong>：大脑先产生“预期”（Prior），感官输入负责“证伪”（Posterior）。<br/>
+          • <strong>惊奇度驱动</strong>：只在打破预期的区域分配代谢能量与微眼动（Saccade）。
+        </p>
+      </div>
+    </div>
+
+    <div class="focus-box teal">
+      <strong>终极认知闭环架构：</strong>
+      $$\boxed{
+      \begin{aligned}
+      \textbf{Language Stream} &\longrightarrow \textbf{Predict} \quad (p_l(z) = p(z \mid H_l, \text{history}) \text{ 自顶向下先验预期}) \\
+      \textbf{Vision Slice Field} &\longrightarrow \textbf{Observe} \quad (q_l(z) = q(z \mid S_{lj}, H_l) \text{ 自底向上观测证据}) \\
+      \textbf{Bayesian Divergence} &\longrightarrow \textbf{Compare Belief} \quad (U_{lj} = D_{\mathrm{KL}}(q_l \parallel p_l) \text{ 信念冲突与意外度}) \\
+      \textbf{Active Canvas Write} &\longrightarrow \textbf{Allocate Perception} \quad (\text{画板重塑、动态采样与算力分配}) \\
+      \textbf{Dual Stream Loop} &\longrightarrow \textbf{Repeat / Converge} \quad (\text{逐层协同演进直至收敛})
+      \end{aligned}
+      }$$
+    </div>
+
+    <h3 style="font-size: 1.15rem; margin: 1.5rem 0 0.8rem 0; color: #fff;">马尔可夫毯（Markov Blanket）与物理世界映射</h3>
+    <p>
+      在自由能原理（FEP）中，智能体内部信念与外部物理世界通过马尔可夫毯隔离，仅通过<strong>感觉（Sensory）</strong>与<strong>行动（Active）</strong>两道边界耦合：
+    </p>
+
+    <!-- SVG Architecture Diagram -->
+    <div class="diagram-wrapper">
+      <svg viewBox="0 0 880 330" width="100%" height="100%">
+        <!-- Background Grids & Containers -->
+        <rect x="20" y="20" width="840" height="70" rx="10" fill="#0f172a" stroke="#334155" stroke-dasharray="4" />
+        <text x="40" y="45" fill="#38bdf8" font-weight="700" font-size="14">【外部物理世界 / 视觉工作画板 External World】</text>
+        <text x="40" y="68" fill="#94a3b8" font-size="12">全分辨率可写点场 X_l ∈ R^{N × d_x} (N = H·W, 1px 精细拓扑常驻内存)</text>
+
+        <!-- Blanket Box -->
+        <rect x="20" y="115" width="840" height="90" rx="10" fill="#1e1b4b" stroke="#6366f1" stroke-width="1.5" />
+        <text x="40" y="138" fill="#c084fc" font-weight="700" font-size="14">【马尔可夫毯边界 Markov Blanket】</text>
+        <text x="40" y="160" fill="#e2e8f0" font-size="12">感觉端口 (Sensory): SliceRead(X) ➔ 瞬态切片 S_l ∈ R^{M × d} (M ≪ N, 质量归一化)</text>
+        <text x="40" y="180" fill="#e2e8f0" font-size="12">运动端口 (Active): Deslice(g(U)·ΔS, A) ➔ 稀疏散布写回，重塑点场 X_{l+1} = LocalMix(X + ΔX)</text>
+
+        <!-- Internal Box -->
+        <rect x="20" y="230" width="840" height="85" rx="10" fill="#064e3b" stroke="#10b981" stroke-width="1.5" />
+        <text x="40" y="252" fill="#34d399" font-weight="700" font-size="14">【认知内部核心 Internal Cognitive Core】</text>
+        <text x="40" y="274" fill="#cbd5e1" font-size="12">自顶向下预测: 语言 H_l 给出先验 p_l(z) = N(μ_p, Σ_p) ➔ "预计切片应该是什么"</text>
+        <text x="40" y="294" fill="#fbbf24" font-size="12">贝叶斯惊奇度: 结合视觉证据 q_l(z) = N(μ_q, Σ_q) ➔ U_l = D_KL(q_l ‖ p_l) 驱动画板重构</text>
+
+        <!-- Arrows -->
+        <path d="M 220 90 L 220 115" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrow)" />
+        <text x="230" y="105" fill="#38bdf8" font-size="11">1. SliceRead (Sensory)</text>
+
+        <path d="M 400 205 L 400 230" stroke="#c084fc" stroke-width="2" />
+        <text x="410" y="218" fill="#c084fc" font-size="11">2. Sensory Evidence S_l</text>
+
+        <path d="M 600 230 L 600 205" stroke="#fbbf24" stroke-width="2" />
+        <text x="610" y="218" fill="#fbbf24" font-size="11">3. Surprise Gate g(U)·ΔS</text>
+
+        <path d="M 760 115 L 760 90" stroke="#34d399" stroke-width="2" />
+        <text x="770" y="105" fill="#34d399" font-size="11">4. Deslice Write (Active)</text>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ==================== 2. 方法与数学形式 ==================== -->
+  <section id="methodology">
+    <div class="section-title">
+      <span class="section-num">2</span>
+      <span>方法：JEPA 退化极限与完整贝叶斯不确定度建模</span>
+    </div>
+
+    <div class="focus-box amber">
+      <strong>核心学术定位：JEPA-$L_2$ 是完整 Bayesian Co-evolution 的退化极限</strong><br/>
+      若假设语言预测分布 $p_l(z)$ 与视觉观测分布 $q_l(z)$ 为固定同方差对角高斯 $\mathcal{N}(\hat{s}_l, \sigma^2 I)$ 与 $\mathcal{N}(s_l, \sigma^2 I)$：
+      $$D_{\mathrm{KL}}(q_l \,\Vert\, p_l) = \frac{1}{2\sigma^2}\|s_l - \hat{s}_l\|_2^2 \iff \text{Bayesian Surprise} \equiv \text{JEPA Prediction Error}$$
+      因此，确定性 JEPA 仅是贝叶斯协同演化的零阶近似，完整模型必须显式建模不确定度（Uncertainty $\Sigma$）。
+    </div>
+
+    <h3 style="font-size: 1.15rem; margin: 1.5rem 0 0.8rem 0; color: #fff;">2.1 “错了多少” vs “错得有多意外”</h3>
+    <p>
+      假设视觉观测与语言预测的均值差距均为 $|\mu_q - \mu_p| = 1$：
+    </p>
+    <div class="compare-grid">
+      <div class="card-sub">
+        <h4 style="color: var(--accent-rose);">场景 A：高确定度先验打破（$\sigma_p = 0.1$）</h4>
+        <p style="font-size: 0.92rem; color: #cbd5e1;">
+          语言极其确信：“<em>此处绝对没有字符</em>”。但视觉切片清晰看到笔画。<br/>
+          • JEPA 误差：$L = 1$<br/>
+          • <strong>Bayesian Surprise</strong>：$U \propto \frac{1^2}{0.1^2} = 100$（<strong>指数级爆炸，强制重构画板</strong>）。
+        </p>
+      </div>
+      <div class="card-sub">
+        <h4 style="color: var(--accent-teal);">场景 B：低确定度模糊先验（$\sigma_p = 10.0$）</h4>
+        <p style="font-size: 0.92rem; color: #cbd5e1;">
+          语言原本就在说：“<em>这一块是复杂随机纹理，我完全不知道是什么</em>”。<br/>
+          • JEPA 误差：$L = 1$（完全相同）<br/>
+          • <strong>Bayesian Surprise</strong>：$U \propto \frac{1^2}{10^2} = 0.01$（<strong>微不足道，保持静默</strong>）。
+        </p>
+      </div>
+    </div>
+
+    <h3 style="font-size: 1.15rem; margin: 1.5rem 0 0.8rem 0; color: #fff;">2.2 完整高斯贝叶斯惊奇度解析式</h3>
+    <p>
+      对第 $l$ 层第 $j$ 个切片，语言预测先验 $p_l(z_j) = \mathcal{N}(\mu^p_{lj}, \Sigma^p_{lj})$，视觉证据后验 $q_l(z_j) = \mathcal{N}(\mu^q_{lj}, \Sigma^q_{lj})$：
+    </p>
+    $$U_{lj} = D_{\mathrm{KL}}\left(q_l(z_j) \,\Vert\, p_l(z_j)\right) = \frac{1}{2}\sum_{k=1}^d \left[ \log\frac{(\sigma^p_{ljk})^2}{(\sigma^q_{ljk})^2} + \frac{(\sigma^q_{ljk})^2 + (\mu^q_{ljk} - \mu^p_{ljk})^2}{(\sigma^p_{ljk})^2} - 1 \right]$$
+
+    <h3 style="font-size: 1.15rem; margin: 1.5rem 0 0.8rem 0; color: #fff;">2.3 双轨主动控制机制（Dual Control Paths）</h3>
+    <p>
+      完整贝叶斯系统不仅计算单一残差，而是解耦出两个正交的物理控制回路：
+    </p>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+      <div class="card-sub">
+        <strong style="color: var(--accent-blue);">1. 均值修正回路（$\Delta \mu = \mu_q - \mu_p$）：</strong>
+        <p style="font-size: 0.9rem; color: #cbd5e1; margin-top: 0.5rem;">
+          驱动视觉点场的语义特征重塑（“<em>改变我认为那里是什么</em>”）。<br/>
+          $$S_{l+1} = S_l + g(U_l) \odot \Delta \mu_l$$
+          $$X_{l+1} = \text{LocalMix}\left(X_l + \text{Deslice}(g(U_l)\odot \Delta \mu_l, A_l)\right)$$
+        </p>
+      </div>
+      <div class="card-sub">
+        <strong style="color: var(--accent-purple);">2. 不确定度回路（$\Delta \Sigma = \Sigma_q - \Sigma_p$）：</strong>
+        <p style="font-size: 0.9rem; color: #cbd5e1; margin-top: 0.5rem;">
+          驱动感知资源的自适应重分配（“<em>改变我对那里有多确定</em>”）。<br/>
+          • $\Sigma \uparrow \implies$ 触发局域超分、增加切片采样、增加思考深度；<br/>
+          • $\Sigma \downarrow \text{ 且 } U \to 0 \implies$ 信念收敛，提前退出。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 3. 实验设计与分期验证 ==================== -->
+  <section id="experiments">
+    <div class="section-title">
+      <span class="section-num">3</span>
+      <span>实验设计：V0 ➔ V1 ➔ V2 三阶落地路线</span>
+    </div>
+
+    <p>
+      为确保研究严格可控、步步为营，实验坚决避免一上来引入过多自由度，划分为清晰的三阶演进：
+    </p>
+
+    <div class="step-list">
+      <div class="step-item">
+        <div class="step-badge">V0</div>
+        <div class="step-content">
+          <h4 style="color: var(--accent-blue);">V0：确定性 JEPA 代理（Deterministic JEPA Proxy - 最小 Smoke Test）</h4>
+          <p>
+            • <strong>设定</strong>：冻结方差 $\sigma=1$，语言直接预测切片目标 $\hat{S}_l = P(H_l)$，惊奇度退化为预测误差 $U_l = \|S_l - \hat{S}_l\|_2^2$。<br/>
+            • <strong>验证目标</strong>：预测误差门控能否显著击败 Baseline、Random Gate 与 Constant Gate？（50行代码即可闭环验证）。
+          </p>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-badge">V1</div>
+        <div class="step-content">
+          <h4 style="color: var(--accent-teal);">V1：高斯贝叶斯惊奇度（Gaussian Bayesian Surprise - 真正引入不确定度）</h4>
+          <p>
+            • <strong>设定</strong>：语言头输出 $(\mu_p, \log\sigma_p)$，视觉头输出 $(\mu_q, \log\sigma_q)$，计算解析对角 KL 散度 $U_l = D_{\mathrm{KL}}(q_l \parallel p_l)$。<br/>
+            • <strong>验证目标</strong>：不确定度感知（Uncertainty-aware）在面对模糊背景与细小结构时，能否显著超越 V0 的均等 $L_2$？
+          </p>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-badge">V2</div>
+        <div class="step-content">
+          <h4 style="color: var(--accent-purple);">V2：贝叶斯主动视觉系统（Bayesian Active Vision - 全功能认知画板）</h4>
+          <p>
+            • <strong>设定</strong>：$(p, q, U)$ 全面接管下游计算控制——$U$ 驱动画板写回与 Router 重布线，$\Sigma$ 驱动局域超分与动态迭代深度（Adaptive Thinking Time）。<br/>
+            • <strong>验证目标</strong>：随着跨模态交互深度 $K$ 增加，模型展现出持续扩展的推理增益。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="font-size: 1.15rem; margin: 1.8rem 0 0.8rem 0; color: #fff;">3.1 必做的五大硬核因果消融（Negative Controls）</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>消融实验组</th>
+          <th>操作方式</th>
+          <th>证伪目标（若无显著下降则说明...）</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><b>Shuffled Surprise</b></td>
+          <td>保持 $U$ 的数值分布，但在切片间随机打乱 $U_{\pi(j)}$</td>
+          <td>Surprise 只是普通正则标量，<strong>不具备空间与语义对应性</strong></td>
+        </tr>
+        <tr>
+          <td><b>Stop Language $\to$ Predict</b></td>
+          <td>语言先验头切断 $H_l$，仅使用无条件先验 $p = \mathcal{N}(0, I)$</td>
+          <td>Top-down 语言预期是伪命题，<strong>没有真正提供自顶向下偏置</strong></td>
+        </tr>
+        <tr>
+          <td><b>Constant Gate</b></td>
+          <td>设 $g(U) = c$，使总更新能量与 Surprise 组严格一致</td>
+          <td>性能提升仅仅因为<strong>“多缩放了残差量”</strong></td>
+        </tr>
+        <tr>
+          <td><b>Reverse Surprise</b></td>
+          <td>令更新门控反转 $g_{\text{rev}}(U) = 1 - g(U)$</td>
+          <td>理论机制自相矛盾（抑制高惊奇反而变好）</td>
+        </tr>
+        <tr>
+          <td><b>Trainable vs Detached $U$</b></td>
+          <td>比较 $\operatorname{stopgrad}(U)$ 与端到端求导的差异</td>
+          <td>检测模型是否通过梯度 Hack 人为操纵了方差或距离</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 style="font-size: 1.15rem; margin: 1.8rem 0 0.8rem 0; color: #fff;">3.2 目标 Benchmark 与任务优先级</h3>
+    <div class="focus-box purple">
+      <strong>理论预测：</strong> 普通全局图像分类（ImageNet）提升有限。最大增益必须出现在<strong>“需要多步语言重解释微细拓扑/局部细节”</strong>的应力场景：<br/>
+      1. <strong>多查询 1px 合成 VQA（Multi-Query 1px Shapes/OCR）</strong>：同一张点场画布，面对不同 Query 观测 $U(x,y)$ 空间热力图精准转移；<br/>
+      2. <strong>微细折线几何与拓扑连通性（1px Kinks & Connect）</strong>：验证尺寸不变性与曲率记忆写回；<br/>
+      3. <strong>复杂密集图表与 CAD 电路图问答（Chart & Circuit Diagram Reasoning）</strong>；<br/>
+      4. <strong>遮挡环境下的局部再辨识（Occluded Visual Grounding）</strong>。
+    </div>
+  </section>
+
+  <!-- ==================== 4. 动力学与成功判据 ==================== -->
+  <section id="metrics">
+    <div class="section-title">
+      <span class="section-num">4</span>
+      <span>可观测动力学与成功/止损判定梯级</span>
+    </div>
+
+    <div class="compare-grid">
+      <div class="card-sub">
+        <h4 style="color: var(--accent-blue);">1. 惊奇度消除动力学（Surprise Dissipation）</h4>
+        <p style="font-size: 0.9rem; color: #cbd5e1;">
+          记录层间均值 $\bar{U}_l = \frac{1}{M}\sum_j U_{lj}$。理想动力学指征：<br/>
+          <strong>Surprise Spike（语言预测被打破） ➔ 视觉画板重塑 ➔ 后续层 Surprise 下降（冲突被解释消除）。</strong>
+        </p>
+      </div>
+      <div class="card-sub">
+        <h4 style="color: var(--accent-teal);">2. 语言条件性空间热力图（Spatial Selectivity）</h4>
+        <p style="font-size: 0.9rem; color: #cbd5e1;">
+          投影 $U_l(x,y) = \sum_j A_{lij} U_{lj}$。<br/>
+          问“左上角字符” ➔ 左上角产生 Surprise 热区；<br/>
+          问“右下角折线” ➔ 热区自适应转移至折线坐标。<br/>
+          <strong>若空间热区与语言解耦，判定自顶向下先验失败。</strong>
+        </p>
+      </div>
+    </div>
+
+    <h3 style="font-size: 1.15rem; margin: 1.5rem 0 0.8rem 0; color: #fff;">严格的里程碑梯级（Level 0 $\to$ Level 4）</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>梯级</th>
+          <th>判定状态</th>
+          <th>现象与处理策略</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><b style="color: var(--accent-rose);">Level 0</b></td>
+          <td>机制证伪</td>
+          <td>$\text{Surprise Gate} \approx \text{Random} \approx \text{Constant}$。立即止损，停止后续阶段。</td>
+        </tr>
+        <tr>
+          <td><b style="color: var(--accent-amber);">Level 1</b></td>
+          <td>控制信号成立</td>
+          <td>V0 / V1 显著优于 Baseline、Random、Constant 与 Shuffled 消融组。</td>
+        </tr>
+        <tr>
+          <td><b style="color: var(--accent-teal);">Level 2</b></td>
+          <td>空间因果绑定</td>
+          <td>不同语言 Query 在点场上产生明确语义对应的 $U_l(x,y)$ 空间激活热区。</td>
+        </tr>
+        <tr>
+          <td><b style="color: var(--accent-blue);">Level 3</b></td>
+          <td>不确定度优势</td>
+          <td>V1 高斯贝叶斯版在复杂模糊纹理中显著超越 V0 均等 $L_2$ 门控。</td>
+        </tr>
+        <tr>
+          <td><b style="color: var(--accent-purple);">Level 4</b></td>
+          <td>协同演化成立</td>
+          <td>随着交互深度 $K$ 增加，主动视觉模型展现出持续扩大的推理性能增益。</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ==================== 4b. 实证 2×2 与五端口 ==================== -->
+  <section id="empirical-2x2">
+    <div class="section-title">
+      <span class="section-num">4b</span>
+      <span>实证进展：公平 2×2，以及同一场循环上的五种 I/O</span>
+    </div>
+    <p>
+      主对比里 JEPA 与 Bayes <b>都带 RMSNorm($\Delta$)</b>，协议对齐（$\lambda=0.1$，Stiefel，topk2，2000×3）。
+      不再引用无 RMS 的 $76\%$ $L_2$ 旧跑。
+    </p>
+    <table>
+      <thead>
+        <tr><th></th><th>Acc</th><th>OCR</th><th>Kinks</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><b>V0 JEPA + RMSNorm($\Delta$)</b></td>
+          <td>$90.4\pm3.1$</td>
+          <td>$95.6$</td>
+          <td>$75.9$</td>
+        </tr>
+        <tr>
+          <td><b>V1 Bayes + RMSNorm($\Delta$)</b></td>
+          <td style="background: rgba(251, 191, 36, 0.12);"><b>$97.6\pm2.0$</b></td>
+          <td>$95.9$</td>
+          <td><b>$96.9$</b></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="diagram-wrapper" style="text-align:center;">
+      <img src="figs/jepa_bayes_rms_2x2.png" alt="JEPA vs Bayes × raw vs RMS" style="max-width:100%;border-radius:8px;" />
+    </div>
+    <div class="focus-box amber">
+      都带 RMS 之后 OCR 打平（$95.6$ vs $95.9$）。Bayes 的剩余红利几乎全在 Kinks（$75.9$ vs $96.9$）。
+    </div>
+
+    <p>
+      点场 $X$ 可写、语言 $H$ 可写回，五种端口是<strong>同一个动力学的不同初值</strong>，不是五套模型：
+    </p>
+    <table>
+      <thead>
+        <tr><th>端口</th><th>起点</th><th>终点</th><th>日常叫法</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><b>文生文</b></td><td>$H_0=$ 文本，$X_0=$ 空场</td><td>读 $H_L$</td><td>语言模型</td></tr>
+        <tr><td><b>图文生文</b></td><td>$X_0=$ 图，$H_0=$ 问句</td><td>读 $H_L$</td><td>VLM / OCR / VQA</td></tr>
+        <tr><td><b>重建</b></td><td>$X_0=$ 图</td><td>读 $X_L\to$ 像素</td><td>自编码 / 场复原</td></tr>
+        <tr><td><b>文生图</b></td><td>$X_0=$ 噪声，$H_0=$ 描述</td><td>读 $X_L\to$ 像素</td><td>T2I</td></tr>
+        <tr><td><b>图生图</b></td><td>$X_0=$ 图，$H_0=$ 指令</td><td>读 $X_L\to$ 像素</td><td>I2I / 上色 / 去噪</td></tr>
+      </tbody>
+    </table>
+    <div class="diagram-wrapper" style="text-align:center;">
+      <img src="figs/omni_five_ports_gallery.png" alt="五端口画廊" style="max-width:100%;border-radius:8px;" />
+      <div style="color:#94a3b8;font-size:0.88rem;margin-top:0.6rem;">同一 Champion-B 场循环的最小生成探针：重建与图生图有结构，文生图目前只会抹颜色。</div>
+    </div>
+    <table>
+      <thead>
+        <tr><th>端口</th><th>最小探针</th><th>状态</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>文生文</td><td>问句内含答案时 $100\%$</td><td>通路通（玩具）</td></tr>
+        <tr><td>图文生文</td><td>专训 OCR $96\%$；与像素头混训 $\sim40\%$</td><td>已测</td></tr>
+        <tr><td>重建</td><td>1px 折线 Dice $1.0$；混训 PSNR $\sim21$</td><td>已测</td></tr>
+        <tr><td>图生图</td><td>噪声上能找回笔画，PSNR $\sim13$</td><td>探针通过</td></tr>
+        <tr><td>文生图</td><td>先会颜色、字形未长出，PSNR $\sim6$</td><td><b>尚未过</b></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ==================== 5. 核心结论与哲学收束 ==================== -->
+  <section id="conclusion" style="background: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.7)); border-color: var(--border-highlight);">
+    <div class="section-title">
+      <span class="section-num" style="background: var(--accent-teal-dim); color: var(--accent-teal);">5</span>
+      <span>总结：迈向感知与注意力的信念动力学</span>
+    </div>
+
+    <div class="focus-box teal" style="margin-top: 0;">
+      <p style="font-size: 1.1rem; font-weight: 600; color: #f8fafc; margin-bottom: 0.8rem;">
+        “看见（Perceive）从来不是单向照相，而是由语言预期、观察证据与惊奇度驱动的主动信念构造过程。”
+      </p>
+      <p style="font-size: 0.98rem; color: #cbd5e1; margin-bottom: 0;">
+        本项目以全分辨率点场 $X$ 为持久工作记忆，以瞬态切片 $S$ 为马尔可夫毯感觉边界，以语言状态 $H$ 为自顶向下先验预测器，以贝叶斯惊奇度 $U = D_{\mathrm{KL}}(q_l \parallel p_l)$ 为信念修正量，建立了一个紧凑、自洽、高度可证伪的双流协同演进范式。它将确定性 JEPA 作为零阶极限包容其中，更为构建真正具备类脑主动推理能力的新一代通用多模态智能体奠定了坚实的理论基石。
+      </p>
+    </div>
+  </section>
+
+  <footer>
+    Bayesian Surprise–Driven Dual-Stream VLM Research Group · Generated for Thesis Defense & Proposal Review · 2026
+  </footer>
+
+</div>
+
+</body>
+</html>

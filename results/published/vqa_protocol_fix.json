@@ -1,0 +1,776 @@
+{
+  "backend": "local-D path=D:\\ml_cache\\huggingface\\models\\google--gemma-3-270m d_llm=640 dtype=torch.float32 cache=D:\\ml_cache",
+  "projector": "mlp",
+  "steps": 400,
+  "val_seed": 90001,
+  "table": [
+    {
+      "kind": "B",
+      "T": 16,
+      "seed": 0,
+      "train": "full_text",
+      "final_loss": 1.4163706302642822,
+      "seconds": 66.51385879516602,
+      "free_acc_color": 0.058823529411764705,
+      "free_n_color": 34,
+      "free_acc_kinks": 0.0,
+      "free_n_kinks": 30,
+      "free_acc_overall": 0.03125,
+      "free_n_overall": 64,
+      "cons_acc_color": 0.14705882352941177,
+      "cons_n_color": 34,
+      "cons_acc_kinks": 0.1,
+      "cons_n_kinks": 30,
+      "cons_acc_overall": 0.125,
+      "cons_n_overall": 64,
+      "free_fail_ex": [
+        {
+          "task": "color",
+          "gold": "green",
+          "pred": "? Answer: red Question",
+          "mode": "free"
+        },
+        {
+          "task": "color",
+          "gold": "blue",
+          "pred": "? Answer: red Answerл: 1",
+          "mode": "free"
+        },
+        {
+          "task": "kinks",
+          "gold": "7",
+          "pred": " 1л ",
+          "mode": "free"
+        },
+        {
+          "task": "color",
+          "gold": "green",
+          "pred": "? Answer: blue Questionдекатегорија",
+          "mode": "free"
+        },
+        {
+          "task": "kinks",
+          "gold": "7",
+          "pred": " 1л ",
+          "mode": "free"
+        },
+        {
+          "task": "color",
+          "gold": "red",
+          "pred": "? Answer: blue Question",
+          "mode": "free"
+        }
+      ],
+      "cons_fail_ex": [
+        {
+          "task": "color",
+          "gold": "green",
+          "pred": "red",
+          "mode": "cons"
+        },
+        {
+          "task": "color",
+          "gold": "blue",
+          "pred": "red",
+          "mode": "cons"
+        },
+        {
+          "task": "kinks",
+          "gold": "7",
+          "pred": "5",
+          "mode": "cons"
+        },
+        {
+          "task": "color",
+          "gold": "green",
+          "pred": "blue",
+          "mode": "cons"
+        },
+        {
+          "task": "kinks",
+          "gold": "7",
+          "pred": "5",
+          "mode": "cons"
+        },
+        {
+          "task": "color",
+          "gold": "green",
+          "pred": "blue",
+          "mode": "cons"
+        }
+      ]
+    },
+    {
+      "kind": "B",
+      "T": 16,
+      "seed": 0,
+      "train": "answer_only",
+      "final_loss": 0.9528835415840149,
+      "seconds": 66.5422637462616,
+      "free_acc_color": 0.058823529411764705,
+      "free_n_color": 34,
+      "free_acc_kinks": 0.06666666666666667,
+      "free_n_kinks": 30,
+      "free_acc_overall": 0.0625,
+      "free_n_overall": 64,
+      "cons_acc_color": 0.29411764705882354,
+      "cons_n_color": 34,
+      "cons_acc_kinks": 0.1,
+      "cons_n_kinks": 30,
+      "cons_acc_overall": 0.203125,
+      "cons_n_overall": 64,
+      "free_fail_ex": [
+        {
+          "task": "color",
+          "gold": "green",
+          "pred": "? Answer: red Question, what is the",
+          "mode": "free"
+        },
+        {
+          "task": "color",
+          "gold": "blue",
+          "pred": "? Answer: red Question louie is a",
+          "mode": "free"
+        },
+        {
+          "task": "kinks",
+          "gold": "7",
+          "pred": " 5 que ",
+          "mode": "free"
+        },
+        {
+          "task": "color",
+          "gold": "green",
+          "pred": "? Answer: blue Question Doe's what",
+          "mode": "free"
+        },
+        {
+          "task": "kinks",
+          "gold": "7",
+          "pred": " 4 stuff Question 2",
+          "mode": "free"
+        },
+        {
+          "task": "color",
+          "gold": "red",
+          "pred": "? Answer: blue Questiony is the large",
+          "mode": "free"
+        }
+      ],
+      "cons_fail_ex": [
+        {
+          "task": "color",
+          "gold": "green",
+          "pred": "blue",
+          "mode": "cons"
+        },
+        {
+          "task": "color",
+          "gold": "blue",
+          "pred": "red",
+          "mode": "cons"
+        },
+        {
+          "task": "kinks",
+          "gold": "7",
+          "pred": "5",
+          "mode": "cons"
+        },
+        {
+          "task": "color",
+          "gold": "green",
+          "pred": "blue",
+          "mode": "cons"
+        },
+        {
+          "task": "kinks",
+          "gold": "7",
+          "pred": "5",
+          "mode": "cons"
+        },
+        {
+          "task": "color",
+          "gold": "red",
+          "pred": "blue",
+          "mode": "cons"
+        }
+      ]
+    },
+    {
+      "kind": "B",
+      "T": 16,
+      "seed": 1,
+      "train": "full_text",
+      "final_loss": 0.20728355646133423,
+      "seconds": 66.3102331161499,
+      "free_acc_color": 0.14705882352941177,
+      "free_n_color": 34,
+      "free_acc_kinks": 0.16666666666666666,
+      "free_n_kinks": 30,
+      "free_acc_overall": 0.15625,
+      "free_n_overall": 64,
+      "cons_acc_color": 0.4411764705882353,
+      "cons_n_color": 34,
+      "cons_acc_kinks": 0.16666666666666666,
+      "cons_n_kinks": 30,
+      "cons_acc_overall": 0.3125,
+      "cons_n_overall": 64,
+      "free_fail_ex": [
+        {
+          "task": "color",
+          "gold": "green",
+          "pred": "? Answer: red?гност на отве",
+          "mode": "free"
+        },
+        {
+          "task": "color",
+          "gold": "blue",
+          "pred": "? Answer: red Answerوبتفسرها",
+          "mode": "free"
+        },
+        {
+          "task": "kinks",
+          "gold": "7",
+          "pred": " 6н",
+          "mode": "free"
+        },
+        {
+          "task": "color",
+          "gold": "green",
+          "pred": "? Answer: yellow?</h1>",
+          "mode": "free"
+        },
+        {
+          "task": "kinks",
+          "gold": "7",
+          "pred": " 5 забрудing",
+          "mode": "free"
+        },
+        {
+          "task": "color",
+          "gold": "green",
+          "pred": "? Answer: red Answerгно ",
+          "mode": "free"
+        }
+      ],
+      "cons_fail_ex": [
+        {
+          "task": "color",
+          "gold": "blue",
+          "pred": "green",
+          "mode": "cons"
+        },
+        {
+          "task": "kinks",
+          "gold": "7",
+          "pred": "6",
+          "mode": "cons"
+        },
+        {
+          "task": "color",
+          "gold": "green",
+          "pred": "yellow",
+          "mode": "cons"
+        },
+        {
+          "task": "kinks",
+          "gold": "7",
+          "pred": "5",
+          "mode": "cons"
+        },
+        {
+          "task": "color",
+          "gold": "red",
+          "pred": "green",
+          "mode": "cons"
+        },
+        {
+          "task": "kinks",
+          "gold": "8",
+          "pred": "6",
+          "mode": "cons"
+        }
+      ]
+    },
+    {
+      "kind": "B",
+      "T": 16,
+      "seed": 1,
+      "train": "answer_only",
+      "final_loss": 1.223653793334961,
+      "seconds": 66.47525453567505,
+      "free_acc_color": 0.11764705882352941,
+      "free_n_color": 34,
+      "free_acc_kinks": 0.1,
+      "free_n_kinks": 30,
+      "free_acc_overall": 0.109375,
+      "free_n_overall": 64,
+      "cons_acc_color": 0.11764705882352941,
+      "cons_n_color": 34,
+      "cons_acc_kinks": 0.16666666666666666,
+      "cons_n_kinks": 30,
+      "cons_acc_overall": 0.140625,
+      "cons_n_overall": 64,
+      "free_fail_ex": [
+        {
+          "task": "color",
+          "gold": "green",
+          "pred": "? Answer: red.",
+          "mode": "free"
+        },
+        {
+          "task": "color",
+          "gold": "blue",
+          "pred": "? Answer: red. 1. What",
+          "mode": "free"
+        },
+        {
+          "task": "kinks",
+          "gold": "7",
+          "pred": " 4 to the power of",
+          "mode": "free"
+        },
+        {
+          "task": "color",
+          "gold": "green",
+          "pred": "? Answer: red.",
+          "mode": "free"
+        },
+        {
+          "task": "kinks",
+          "gold": "7",
+          "pred": " 8",
+          "mode": "free"
+        },
+        {
+          "task": "color",
+          "gold": "green",
+          "pred": "? Answer: red. 12.",
+          "mode": "free"
+        }
+      ],
+      "cons_fail_ex": [
+        {
+          "task": "color",
+          "gold": "green",
+          "pred": "red",
+          "mode": "cons"
+        },
+        {
+          "task": "color",
+          "gold": "blue",
+          "pred": "yellow",
+          "mode": "cons"
+        },
+        {
+          "task": "kinks",
+          "gold": "7",
+          "pred": "8",
+          "mode": "cons"
+        },
+        {
+          "task": "color",
+          "gold": "green",
+          "pred": "red",
+          "mode": "cons"
+        },
+        {
+          "task": "kinks",
+          "gold": "7",
+          "pred": "8",
+          "mode": "cons"
+        },
+        {
+          "task": "color",
+          "gold": "red",
+          "pred": "yellow",
+          "mode": "cons"
+        }
+      ]
+    },
+    {
+      "kind": "B",
+      "T": 64,
+      "seed": 1,
+      "train": "full_text",
+      "final_loss": 0.12578611075878143,
+      "seconds": 115.51577162742615,
+      "free_acc_color": 0.38235294117647056,
+      "free_n_color": 34,
+      "free_acc_kinks": 0.1,
+      "free_n_kinks": 30,
+      "free_acc_overall": 0.25,
+      "free_n_overall": 64,
+      "cons_acc_color": 0.5,
+      "cons_n_color": 34,
+      "cons_acc_kinks": 0.13333333333333333,
+      "cons_n_kinks": 30,
+      "cons_acc_overall": 0.328125,
+      "cons_n_overall": 64,
+      "free_fail_ex": [
+        {
+          "task": "color",
+          "gold": "blue",
+          "pred": "? Answer: green. ",
+          "mode": "free"
+        },
+        {
+          "task": "kinks",
+          "gold": "7",
+          "pred": " 5 questions mark: How",
+          "mode": "free"
+        },
+        {
+          "task": "kinks",
+          "gold": "7",
+          "pred": " 5 questions mark class is",
+          "mode": "free"
+        },
+        {
+          "task": "color",
+          "gold": "red",
+          "pred": "? Answer: green. ",
+          "mode": "free"
+        },
+        {
+          "task": "kinks",
+          "gold": "8",
+          "pred": " 80 Answer: ",
+          "mode": "free"
+        },
+        {
+          "task": "color",
+          "gold": "green",
+          "pred": "? Answer: red. What color is the",
+          "mode": "free"
+        }
+      ],
+      "cons_fail_ex": [
+        {
+          "task": "color",
+          "gold": "blue",
+          "pred": "green",
+          "mode": "cons"
+        },
+        {
+          "task": "kinks",
+          "gold": "7",
+          "pred": "5",
+          "mode": "cons"
+        },
+        {
+          "task": "kinks",
+          "gold": "7",
+          "pred": "5",
+          "mode": "cons"
+        },
+        {
+          "task": "color",
+          "gold": "red",
+          "pred": "green",
+          "mode": "cons"
+        },
+        {
+          "task": "kinks",
+          "gold": "8",
+          "pred": "5",
+          "mode": "cons"
+        },
+        {
+          "task": "kinks",
+          "gold": "7",
+          "pred": "5",
+          "mode": "cons"
+        }
+      ]
+    },
+    {
+      "kind": "B",
+      "T": 64,
+      "seed": 1,
+      "train": "answer_only",
+      "final_loss": 0.9798122048377991,
+      "seconds": 115.59952545166016,
+      "free_acc_color": 0.17647058823529413,
+      "free_n_color": 34,
+      "free_acc_kinks": 0.1,
+      "free_n_kinks": 30,
+      "free_acc_overall": 0.140625,
+      "free_n_overall": 64,
+      "cons_acc_color": 0.4117647058823529,
+      "cons_n_color": 34,
+      "cons_acc_kinks": 0.1,
+      "cons_n_kinks": 30,
+      "cons_acc_overall": 0.265625,
+      "cons_n_overall": 64,
+      "free_fail_ex": [
+        {
+          "task": "color",
+          "gold": "green",
+          "pred": "? Answer: blue ",
+          "mode": "free"
+        },
+        {
+          "task": "color",
+          "gold": "blue",
+          "pred": "? Answer: green. ",
+          "mode": "free"
+        },
+        {
+          "task": "kinks",
+          "gold": "7",
+          "pred": " 6. Answer: ",
+          "mode": "free"
+        },
+        {
+          "task": "color",
+          "gold": "green",
+          "pred": "? Answer: green Answer: green Answer:",
+          "mode": "free"
+        },
+        {
+          "task": "kinks",
+          "gold": "7",
+          "pred": " 8 Answer: 8",
+          "mode": "free"
+        },
+        {
+          "task": "color",
+          "gold": "red",
+          "pred": "? Answer: yellow ",
+          "mode": "free"
+        }
+      ],
+      "cons_fail_ex": [
+        {
+          "task": "color",
+          "gold": "blue",
+          "pred": "green",
+          "mode": "cons"
+        },
+        {
+          "task": "kinks",
+          "gold": "7",
+          "pred": "6",
+          "mode": "cons"
+        },
+        {
+          "task": "kinks",
+          "gold": "7",
+          "pred": "8",
+          "mode": "cons"
+        },
+        {
+          "task": "color",
+          "gold": "red",
+          "pred": "yellow",
+          "mode": "cons"
+        },
+        {
+          "task": "color",
+          "gold": "green",
+          "pred": "yellow",
+          "mode": "cons"
+        },
+        {
+          "task": "kinks",
+          "gold": "8",
+          "pred": "6",
+          "mode": "cons"
+        }
+      ]
+    },
+    {
+      "kind": "A",
+      "T": 16,
+      "seed": 1,
+      "train": "full_text",
+      "final_loss": 0.2568918466567993,
+      "seconds": 60.03353691101074,
+      "free_acc_color": 0.4117647058823529,
+      "free_n_color": 34,
+      "free_acc_kinks": 0.16666666666666666,
+      "free_n_kinks": 30,
+      "free_acc_overall": 0.296875,
+      "free_n_overall": 64,
+      "cons_acc_color": 0.4117647058823529,
+      "cons_n_color": 34,
+      "cons_acc_kinks": 0.1,
+      "cons_n_kinks": 30,
+      "cons_acc_overall": 0.265625,
+      "cons_n_overall": 64,
+      "free_fail_ex": [
+        {
+          "task": "color",
+          "gold": "blue",
+          "pred": "? Answer: green.лекуo. What",
+          "mode": "free"
+        },
+        {
+          "task": "kinks",
+          "gold": "7",
+          "pred": " 5distanceArrayPossible Answers:",
+          "mode": "free"
+        },
+        {
+          "task": "kinks",
+          "gold": "7",
+          "pred": " 5distanceArrayPossible Answers:",
+          "mode": "free"
+        },
+        {
+          "task": "color",
+          "gold": "red",
+          "pred": "? Answer: green.俗称：红",
+          "mode": "free"
+        },
+        {
+          "task": "kinks",
+          "gold": "8",
+          "pred": " 5distanceArrayPossible Answers;",
+          "mode": "free"
+        },
+        {
+          "task": "kinks",
+          "gold": "8",
+          "pred": " 5distanceArrayPossible Answers;",
+          "mode": "free"
+        }
+      ],
+      "cons_fail_ex": [
+        {
+          "task": "color",
+          "gold": "blue",
+          "pred": "green",
+          "mode": "cons"
+        },
+        {
+          "task": "kinks",
+          "gold": "7",
+          "pred": "5",
+          "mode": "cons"
+        },
+        {
+          "task": "kinks",
+          "gold": "7",
+          "pred": "5",
+          "mode": "cons"
+        },
+        {
+          "task": "color",
+          "gold": "red",
+          "pred": "green",
+          "mode": "cons"
+        },
+        {
+          "task": "kinks",
+          "gold": "8",
+          "pred": "5",
+          "mode": "cons"
+        },
+        {
+          "task": "kinks",
+          "gold": "8",
+          "pred": "5",
+          "mode": "cons"
+        }
+      ]
+    },
+    {
+      "kind": "A",
+      "T": 16,
+      "seed": 1,
+      "train": "answer_only",
+      "final_loss": 1.3488489389419556,
+      "seconds": 60.44073939323425,
+      "free_acc_color": 0.4117647058823529,
+      "free_n_color": 34,
+      "free_acc_kinks": 0.23333333333333334,
+      "free_n_kinks": 30,
+      "free_acc_overall": 0.328125,
+      "free_n_overall": 64,
+      "cons_acc_color": 0.4117647058823529,
+      "cons_n_color": 34,
+      "cons_acc_kinks": 0.23333333333333334,
+      "cons_n_kinks": 30,
+      "cons_acc_overall": 0.328125,
+      "cons_n_overall": 64,
+      "free_fail_ex": [
+        {
+          "task": "color",
+          "gold": "blue",
+          "pred": "? Answer: green. \"\n  A",
+          "mode": "free"
+        },
+        {
+          "task": "kinks",
+          "gold": "7",
+          "pred": " 6\nID: ",
+          "mode": "free"
+        },
+        {
+          "task": "kinks",
+          "gold": "7",
+          "pred": " 6",
+          "mode": "free"
+        },
+        {
+          "task": "color",
+          "gold": "red",
+          "pred": "? Answer: green. \"",
+          "mode": "free"
+        },
+        {
+          "task": "kinks",
+          "gold": "8",
+          "pred": " 6\nReview the first",
+          "mode": "free"
+        },
+        {
+          "task": "kinks",
+          "gold": "8",
+          "pred": " 6\nProfessor: What",
+          "mode": "free"
+        }
+      ],
+      "cons_fail_ex": [
+        {
+          "task": "color",
+          "gold": "blue",
+          "pred": "green",
+          "mode": "cons"
+        },
+        {
+          "task": "kinks",
+          "gold": "7",
+          "pred": "6",
+          "mode": "cons"
+        },
+        {
+          "task": "kinks",
+          "gold": "7",
+          "pred": "6",
+          "mode": "cons"
+        },
+        {
+          "task": "color",
+          "gold": "red",
+          "pred": "green",
+          "mode": "cons"
+        },
+        {
+          "task": "kinks",
+          "gold": "8",
+          "pred": "6",
+          "mode": "cons"
+        },
+        {
+          "task": "kinks",
+          "gold": "8",
+          "pred": "6",
+          "mode": "cons"
+        }
+      ]
+    }
+  ]
+}
