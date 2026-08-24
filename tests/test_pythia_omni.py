@@ -5,7 +5,7 @@ import pytest
 import torch
 
 from fine_grain.llm_backend import canonical_pythia_id, load_frozen_pythia
-from fine_grain.omni_model import DualStreamOmni
+from fine_grain.omni_model import DualStreamOmni, token_nll_per_sample
 
 
 def _tiny_causal_lm(vocab=64, d=32, n_layer=2, n_head=4, n_pos=48):
@@ -65,6 +65,15 @@ def _ids(batch=2, length=8, vocab=64, prompt=4, seed=0):
     labels = ids.clone()
     labels[:, :prompt] = -100
     return ids, mask, labels
+
+
+def test_token_nll_reduces_fp16_logits_in_fp32():
+    logits = torch.zeros(1, 4, 8, dtype=torch.float16, requires_grad=True)
+    labels = torch.tensor([[-100, 2, 3, 4]])
+    nll = token_nll_per_sample(logits, labels)
+    assert nll.dtype == torch.float32
+    nll.mean().backward()
+    assert logits.grad is not None
 
 
 def test_canonical_pythia_id_and_reject_gpt2():
@@ -150,6 +159,24 @@ def test_labels_none_skips_nll_and_treats_prefix_as_observed():
     assert a["n_loss_tokens"] == 0
     # Observed prefix: the last token may write vision.
     assert not torch.allclose(a["X"], b["X"], atol=1e-5, rtol=1e-5)
+
+
+def test_visual_only_token_forward_skips_frozen_decoder(monkeypatch):
+    model = _omni().eval()
+    ids, mask, _ = _ids(batch=1)
+    images = torch.zeros(1, 3, 8, 8)
+
+    def forbidden(*_args, **_kwargs):
+        raise AssertionError("frozen causal decoder was called")
+
+    monkeypatch.setattr(model.lm, "forward", forbidden)
+    with torch.no_grad():
+        out = model.forward_tokens(
+            images, ids, mask, labels=None, score_tokens=False,
+        )
+    assert out["token_logits"] is None
+    assert out["token_nll"] is None
+    assert out["rgb"].shape == images.shape
 
 
 def test_init_token_gates_keep_lm_on_embeddings():

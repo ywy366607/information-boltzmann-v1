@@ -554,6 +554,42 @@
       "conclusion": "The selected candidate preserves all B3 static gates and establishes two of three text ports. T2T token accuracy/graph-greedy exact are 0.983/0.950; official next-color IT2T is 1.000/1.000. I2T matched-vs-shuffled median NLL gap is positive and large at 1.289 nat/token, so the output is image-causal, but token accuracy/greedy exact remain 0.444/0.400. No token champion is admitted; checkpoints/omni_d64_pythia_token_candidate.pt is candidate-only. The fixed 4x4 terminal atlas is linearly separable on X but underperforms through the frozen Pythia interface, and prototype/ridge initialization also fails end-to-end, so both default off.",
       "issues": ["I2T accuracy remains below the 0.80 admission floor despite a passing image-causal gap", "T2T/IT2T rehearsal reduces the best isolated I2T accuracy from about 0.60 to 0.44", "Pythia-70m is a base model and the missing-text BOS interface is not pretrained", "Terminal content Slice aggregation loses some 2-D digit topology", "One synthetic scene family and one seed"],
       "invalidation": "Reject any claimed token closure if I2T remains below its accuracy/decode floor, answer or generated tokens can change X or earlier logits, lm.generate is called, Pythia becomes trainable, a private digit head is added, or any B3 static gate regresses."
+    },
+    {
+      "id": "N097",
+      "parent": "N096",
+      "title": "Real ShareGPT-4o port pilot and boundary correction",
+      "status": "partial",
+      "time": "2026-08-24 / real-data selective pilot",
+      "motivation": "Move beyond the colored-digit micro-world and test whether real T2I, IT2I, and image-conditioned text records can enter the locked X-Slice-H graph without a diffusion generator, private visual backbone, or language bypass; audit rather than assume each dataset's task boundary.",
+      "action": "Normalize FreedomIntelligence ShareGPT-4o-Image generation/edit pairs and gated OpenGVLab ShareGPT-4o conversations as boundary conditions and terminal likelihoods. Add aspect-preserving fields, resumable partial-tar and remote-ZIP64 sampling, answer-to-vision masks, heteroscedastic natural-RGB likelihood, FP32 categorical likelihood over frozen-FP16 Pythia logits, matched/shuffled controls, deterministic per-port holdouts, and candidate-only narrow phases. Scan all 57,289 first-turn one-image OpenGV rows, correct caption paraphrase classification, materialize 134 T2I, 142 IT2I, and 512 I2T records, and train the I2T terminal reader at 64x64.",
+      "conclusion": "All 930 referenced images verify. The OpenGV scan found only generic caption requests and zero genuine question/instruction-conditioned IT2T; the earlier 128-IT2T claim and its metrics are invalidated. The clean RGB-likelihood run still improves T2I/IT2I/reconstruction while retaining every B3 gate. For corrected held-out I2T, NLL falls from 9.977 to 4.602 but only 52.9% of samples have positive shuffle gaps. A stricter real-image curriculum exposed missing EOS supervision and then passed finite-sample capacity gates: frozen Pythia plus token_reader reaches graph-greedy/rotated exact 5/5, 16/16, and 32/32; the 32-image gate has NLL 0.0339, token accuracy 99.7%, and EOS 32/32. Rotating images rotates every answer, and reloaded static T2I/current/edit gates all pass. Thus finite-sample expressivity and the training interface are established, while held-out open-domain I2T remains unadmitted.",
+      "issues": ["The two specified datasets contain no genuine IT2T/VQA supervision", "I2T positive causal-gap fraction is only 52.9% and the mean gap shrinks during fitting", "T2I prompt causality remains effectively zero", "No qualitative natural-image geometry or graph-decode gate", "No multiple seeds"],
+      "invalidation": "Reject real-data readiness if captions are mislabeled as IT2T, if held-out likelihood improves without a robust positive matched-vs-shuffled gap, if protected static gates regress, or if success requires an output-private backbone, trainable Pythia, answer leakage, or lm.generate."
+    },
+    {
+      "id": "N098",
+      "parent": "N097",
+      "title": "Joint fixed-bank 1px OCR and native generation",
+      "status": "passed",
+      "time": "2026-08-25 / finite-bank overfit gate",
+      "motivation": "Test the minimal claim requested by the project owner: the same checkpoint should be able to memorize original noisy 1px OCR while retaining native 1px text-to-image generation; held-out generalization is not required for this gate.",
+      "action": "Append one deterministic hard noisy Bresenham 1px image per digit to the passed 32-real-image I2T curriculum. Keep Pythia and all visual read/write paths frozen, train only token_reader with 3:1 real-I2T/OCR rehearsal, supervise EOS, save graph-greedy-selected model and Adam state, and use low-rate paired replay for competing visual addresses. Independently reload the final checkpoint and audit the protected static T2I/current/edit banks.",
+      "conclusion": "The final single checkpoint reaches real-I2T 32/32 and noisy 1px OCR 10/10 graph-greedy exact; rotated images are 42/42 and all answers terminate. Independent reload preserves native 1px digit T2I generation on 117 prompts with digit/color/paired-IoU 1.000/0.969/0.941, digit and color shuffle scores 0, and flood 0.00165. Current reconstruction/segmentation and next-color edit also pass. Therefore finite-bank OCR and generation coexistence is established under frozen Pythia and one X-Slice-H graph.",
+      "issues": ["OCR uses one fixed noisy 1px image per digit", "Generation is the fixed synthetic digit/color/address bank, not natural-image generation", "Targets are closed-set or compact and do not establish open-domain generalization", "No multiple seeds"],
+      "invalidation": "Reject the coexistence claim if any fixed OCR digit fails graph-greedy decode, image rotation does not rotate answers, the 1px T2I gate regresses, Pythia or a private OCR head becomes trainable, lm.generate is called, or the checkpoint cannot be independently reloaded."
+    },
+    {
+      "id": "N099",
+      "parent": "N098",
+      "title": "Natural-image native T2I finite-bank capacity",
+      "status": "conflict",
+      "time": "2026-08-25 / natural T2I overfit gate",
+      "motivation": "Test whether the same native full-resolution Slice graph can freely write dense natural RGB from text and an explicitly missing visual observation, rather than only generate sparse synthetic digits.",
+      "action": "Select two visually distinct Freedom ShareGPT-4o T2I targets; feed an all-zero field with image precision zero; keep Pythia frozen and skip its causal decoder; train only language-to-visual messages, F2 prior, Slice/Deslice visual query-output, modality precision, and the shared RGB Gaussian likelihood. Require 2/2 prompt retrieval, PSNR at least 20 dB, and a positive rotated-prompt MSE gap. Independently audit the protected T2I/current/edit banks; also test terminal RGB/seg teacher replay as a retention control.",
+      "conclusion": "The capacity prediction passes at step 480: prompt retrieval is 2/2, RGB PSNR 20.16 dB, matched MSE 0.00964, rotated-prompt MSE 0.19477, causal gap +0.18513, and prompt-output RMS 0.42735. Generation is one graph pass from image_precision=0 and does not call lm.generate or the frozen causal decoder. However, the candidate fails all protected static gates and is not admitted. A four-image synchronous replay run recovers old T2I to digit/color/paired-IoU 0.880/0.926/0.860 but plateaus at natural PSNR 14.23 and still misses current/edit. Natural RGB capacity is established; unified multi-task retention remains unresolved.",
+      "issues": ["Only two fixed 16x16 targets and one seed", "The output captures coarse full-field appearance, not high-resolution detail or held-out generalization", "The natural-capacity candidate catastrophically forgets protected static ports", "Synchronous terminal distillation does not yet find a joint solution"],
+      "invalidation": "Reject the capacity claim if prompt rotation ceases to worsen matched RGB, generation uses a source image, private generator, trainable Pythia, frozen-decoder sampling, or a second visual backbone. Do not promote the candidate until natural T2I and every protected static gate pass in one independently reloaded checkpoint."
     }
   ]
 }

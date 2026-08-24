@@ -193,6 +193,14 @@ def test_language_phase_trains_readers_not_visual_write():
     assert model.pix_head[-1].weight.requires_grad
     assert not model.mot_stack.stem.weight.requires_grad
     assert any(n.startswith("pix_head.") for n in rgb_names)
+    likelihood_names = set(model.set_optimization_phase("rgb_likelihood"))
+    assert likelihood_names
+    assert all(
+        name.startswith("pix_head.") or name.startswith("pix_log")
+        for name in likelihood_names
+    )
+    assert not model.mot_stack.text_in.weight.requires_grad
+    assert not model.mot_stack.stem.weight.requires_grad
     spatial = DualStreamOmni(
         d_model=32, n_slices=8, n_layers=1, n_heads=4, res=8,
         surprise_mode="v1_bayes", s_update="raw", use_stiefel=False,
@@ -230,6 +238,17 @@ def test_language_phase_trains_readers_not_visual_write():
     assert id(spatial.mot_stack.layers[0].mot.Wq_v.weight) in visual_ids
     assert id(spatial.mot_stack.layers[0].read.to_logits.weight) in visual_ids
     assert id(spatial.mot_stack.image_precision_coord.weight) not in visual_ids
+    generation_names = set(spatial.set_optimization_phase("generation_write"))
+    assert spatial.mot_stack.text_in.weight.requires_grad
+    assert spatial.mot_stack.layers[0].mot.Wk_t.weight.requires_grad
+    assert spatial.mot_stack.layers[0].mot.Wv_t.weight.requires_grad
+    assert spatial.mot_stack.layers[0].mot.Wq_v.weight.requires_grad
+    assert spatial.mot_stack.layers[0].deslice.proj.weight.requires_grad
+    assert spatial.pix_head[-1].weight.requires_grad
+    assert not spatial.mot_stack.stem.weight.requires_grad
+    assert not spatial.mot_stack.layers[0].mot.Wq_t.weight.requires_grad
+    assert not spatial.mot_stack.text_out.weight.requires_grad
+    assert any(name.startswith("pix_head.") for name in generation_names)
 
 
 def test_token_reader_opens_only_terminal_h_query_and_output():

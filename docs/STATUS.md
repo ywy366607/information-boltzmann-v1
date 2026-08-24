@@ -1,6 +1,6 @@
 # 现状简报（给外部模型指导本仓库代理）
 
-日期：2026-08-24。
+日期：2026-08-25。
 架构唯一来源：[`NORTH_STAR.md`](NORTH_STAR.md)。实施计划：[`PYTHIA_INTEGRATION_PLAN.md`](PYTHIA_INTEGRATION_PLAN.md)。证据树：[`../research_tree.json`](../research_tree.json)。
 
 本文是**操作快照**，不是新北极星。冲突时以 NORTH_STAR 为准。
@@ -215,11 +215,95 @@ python scripts/train_pythia_generation.py --init checkpoints/omni_d64_pythia_lan
 python scripts/train_pythia_generation.py --init checkpoints/omni_d64_pythia_named_edit_spatial_best.pt --load-language --modal-precision --opt-phase edit_read --edit-ratio 0.15 --edit-style named --edit-shuffle-coef 0.1 --interface-lr 1e-4 --visual-lr 1e-5 --steps-language 100 --eval-every 20 --ckpt checkpoints/omni_d64_pythia_named_edit_read_best.pt --out results/published/pythia_named_edit_read.json --device cuda
 ```
 
-相位：`language` = text 专家 + prior；`edit_spatial` = 再加精度坐标、冻结 pix_head；`edit_read` = 再加 SliceRead / 视觉 query-output / Deslice；`language_rgb` = 解冻 pix_head（编辑捷径，勿作下一探针）；不要默认 `joint`。
+相位：`language` = text 专家 + prior；`rgb_likelihood` = 只训共享 RGB 均值/方差头；`edit_spatial` = 再加精度坐标、冻结 pix_head；`edit_read` = 再加 SliceRead / 视觉 query-output / Deslice；`generation_write` = 只开语言→视觉 K/V、F2 prior、Slice/Deslice query-output、精度坐标和共享 RGB 头，stem 与终端语言 reader 冻结；`language_rgb` = 语言演化与 pix_head 同时解冻，真实轮训已证会破坏编辑；不要默认 `joint`。
 
 ---
 
-## 8. 环境
+## 8. ShareGPT-4o 真实数据 pilot
+
+真实数据入口已经落地，详细记录见 `docs/REAL_DATA_PILOT.md`。本地通过远程
+Range/ZIP64 按需抽取了 **134 T2I、142 IT2I、512 I2T**，930 个引用图像均
+可解码，不下载 262 GB 全库。完整扫描 OpenGV 57,289 条首轮单图会话后，全部
+都是通用看图描述，**没有真正的 IT2T/VQA**。此前“128 IT2T”是 caption
+paraphrase 分类器漏判，相关 IT2T 指标全部作废；不得再从这个数据集伪造 IT2T。
+两套数据仍只作为同一个 X–Slice–H 图的边界条件和终端似然。
+
+64×64 安全候选从 B3 启动，只更新统一 RGB 均值/方差似然头的 646 个参数。
+180 步后 T2I/IT2I/重建 NLL 分别为 `0.0614/0.0893/0.0681`；IT2I
+source-shuffle gap `+0.00589`，RGB MSE `0.2255→0.2238`；重建 RGB MSE
+`0.1825→0.1784`。重新以 16×16 审计，T2I/current/edit 三门全过。
+
+语言接口根因也已定位：安全 RGB 候选的 `proj_gate/text_out_gate` 都是 0，视觉
+token 和 logits 对 source shuffle 完全不变，并非 Pythia 预训练不足。以已有
+synthetic token reader 打开接口，再只合并互不重叠的安全 RGB 似然头，训练
+410 条 I2T、留出 102 条。300 步后 held-out NLL `9.977→4.602`；平均
+matched-vs-shuffled gap 保持为正（`+0.639→+0.173`），正 gap 样本占 52.9%。
+这证明冻结 Pythia 可作为语言 prior，且视觉到语言消息路径已生效；但逐样本因果性
+仍弱，不能晋级。
+
+随后完成了更基础的 **5 样本真实图像过拟合门**。五条目标是短而唯一的自然描述，
+训练显式监督 EOS；Pythia 冻结，只训 `token_reader`。step 0 为 NLL 6.947、
+teacher token 1.8%、图上 greedy 0/5；step 200 已到 NLL 0.0845、token 100%、
+greedy 5/5；step 600 为 NLL 0.0158、仍 5/5。循环换入另一张图后，五条回答全部
+跟随新图改变且正确停止，排除了行序/固定语言模板。16×16 重载后三个 B3 静态门
+仍全过。结论：架构和视觉→语言训练接口具备有限样本表达能力；当前瓶颈是泛化训练
+协议，不是“连五张图都记不住”。旧真实训练没有 EOS 监督，现已补上，历史 NLL
+结果仍按 legacy no-EOS 标记理解。
+
+分级过拟合门随后扩到嵌套的 16、32 张真实图片。目标为从原答案确定性抽取的唯一
+短描述（最多 8 词）并监督 EOS；它是容量诊断，不冒充开放域 caption。16 张达到
+token 100%、graph-greedy 16/16、换图 16/16。32 张从该检查点启动时准确保留
+16/32；均衡小批、低学习率 finishing 和成对 hard replay 后达到 NLL 0.0339、
+token 99.7%、graph-greedy 32/32、换图 32/32、停止 32/32。Pythia 全程冻结，
+每 token 回跑完整图。32 张候选在 16×16 独立重载后 T2I/current/edit 三门全过。
+因此“模型连少量真实图片都无法绑定到文本”的假设已被否定；下一问题是 64/128
+容量曲线与 held-out 泛化，而不是继续怀疑基础接口。
+
+同一候选又加入固定 noisy 1px OCR：64×64、每个数字一张、box=14、真实
+Bresenham 1px 线条。以真实 I2T:OCR=3:1 rehearsal 和成对 hard replay 后，
+最终 checkpoint 达到真实 I2T 32/32、OCR 10/10、换图 42/42、EOS 42/42，
+teacher token 99.4%。独立静态审计同时保持 1px 数字 T2I 生成 digit 1.000、
+color 0.969、paired IoU 0.941、digit/color shuffle 0/0、flood 0.00165；
+current 重建/分割与 next-color edit 也全过。故在“允许固定集过拟合”的标准下，
+原 1px OCR 与生成已经能在一个检查点共存。它不等价于多字体OCR或自然图生成泛化。
+
+自然照片 T2I 的最小容量门也已单列完成。`train_sharegpt4o_t2i_overfit.py`
+使用两张 Freedom ShareGPT-4o 自然场景，输入始终是全零视觉场且
+`image_precision=0`；Pythia 冻结并只提供 prompt embedding，冻结因果 decoder
+不调用，RGB 仍由同一 Slice–MoT–Deslice 图单次写出。480 步达到 prompt
+retrieval 2/2、PSNR 20.16 dB；轮换提示词后 MSE 从 0.00964 升至 0.19477，
+gap 0.18513、输出 RMS 0.42735，因此不是无条件平均图。结果与图库见
+`results/published/sharegpt4o_natural_t2i_overfit.json` 和
+`present/figs/sharegpt4o_natural_t2i_overfit.png`。
+
+该结果只回答“自然 RGB 能否过拟合”，**不是统一冠军**：无回放候选破坏旧
+T2I/current/edit 三门；同步终端蒸馏虽把四图候选的旧 T2I 恢复到
+digit/color/IoU `0.880/0.926/0.860`，自然图仅 14.23 dB，current/edit 仍未全过。
+因此下一优化问题是同一检查点的多目标保持，而不是再外挂更强生图器或宣称自然图
+生成已闭环。`omni_d64_pythia_i2t_ocr1px_joint_final.pt` 仍是已通过共存门的基线。
+
+反例：旧版 250 步 broad-`auto` 虽降低真实图像 NLL，却破坏官方编辑门；旧版
+混合语言试验中的 IT2T 又是误标 caption。当前 `auto` 仅把图像端映射到
+`rgb_likelihood`、文本端映射到 `token_reader`，禁止默认进入
+`language_rgb` 或把错误标签当能力证据。
+
+保护 B3 哈希仍为
+`64E79D3B7D8757A4C50AA12E880993A92312F4237986D840466B689FCA4F086B`。
+安全候选 `omni_d64_pythia_sharegpt4o_r64_safe_candidate.pt` 哈希为
+`CB4DA7423DEF230DB3F0379AB51AE1D831012AF3C36DE940C109956D0E1A2B79`，
+I2T 候选 `omni_d64_pythia_sharegpt4o_i2t_candidate.pt` 哈希为
+`D33679F911A31A9B35C47E142730A3461D1A71C27EF755B65E3F40FDD73C65AE`。
+两者都仍是 candidate-only；保护 B3 未覆盖，I2T 候选复验静态三门全过。
+
+下一步分两条门控支线：文本侧加入真正的图像条件问答/指令数据补 IT2T；视觉侧
+从已过自然 T2I 容量门出发，使用明确的 B3 capability replay/梯度冲突处理，使
+自然门与 T2I/current/edit 在同一检查点同时通过。共享语言或视觉写入一旦解冻，
+必须按每个门保存最佳候选；禁止默认 joint、无回放 `language_rgb`，也禁止把单项
+自然图过拟合候选升级为冠军。最终仍要求 held-out、多 seed 和全能力矩阵。
+
+---
+
+## 9. 环境
 
 - Windows，PowerShell，Python 3.10+，包在仓库根 `pip install -e .`
 - CUDA：GTX 1650 4GB 上 70m + d64/16² 可训

@@ -1,0 +1,33 @@
+{
+  "schema": "sharegpt4o-i2t-micro-overfit-v1",
+  "date": "2026-08-24",
+  "candidate_only": true,
+  "purpose": "architecture and training-interface diagnostic, not generalization",
+  "samples": 5,
+  "phase": "token_reader",
+  "steps": 600,
+  "lr": 0.0003,
+  "answer_eos_supervised": true,
+  "pythia_frozen": true,
+  "lm_generate_called": false,
+  "history": [
+    {"step": 0, "nll": 6.9472, "teacher_token_accuracy": 0.0182, "graph_greedy_exact": 0},
+    {"step": 100, "nll": 0.4276, "teacher_token_accuracy": 0.9578, "graph_greedy_exact": 2},
+    {"step": 200, "nll": 0.0845, "teacher_token_accuracy": 1.0, "graph_greedy_exact": 5},
+    {"step": 400, "nll": 0.0222, "teacher_token_accuracy": 1.0, "graph_greedy_exact": 5},
+    {"step": 600, "nll": 0.0158, "teacher_token_accuracy": 1.0, "graph_greedy_exact": 5}
+  ],
+  "answers": [
+    "Teeth whitening advertisement with a smiling woman.",
+    "Christian book cover with matchsticks.",
+    "Cowboys beside a white horse.",
+    "Golden Geneus Couture logo.",
+    "Thriller book cover on an empty road."
+  ],
+  "rotated_image_control": {
+    "all_answers_followed_the_swapped_image": true,
+    "all_answers_stopped_at_eos": true
+  },
+  "static_gates_after": {"t2i": true, "current": true, "edit": true},
+  "checkpoint": "checkpoints/omni_d64_pythia_sharegpt4o_i2t_micro5.pt"
+}

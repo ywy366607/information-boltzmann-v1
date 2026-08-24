@@ -1,0 +1,41 @@
+{
+  "schema": "northstar-i2t-ocr1px-joint-overfit-v1",
+  "date": "2026-08-25",
+  "candidate_only": true,
+  "admission_scope": "finite fixed-bank capability, not held-out generalization",
+  "graph": "single X-Slice-H graph",
+  "pythia_frozen": true,
+  "lm_generate_called": false,
+  "trainable_phase": "token_reader",
+  "bank": {
+    "real_i2t": 32,
+    "ocr_1px": 10,
+    "ocr_description": "one deterministic noisy hard 1px Bresenham digit per class, box=14, resolution=64"
+  },
+  "joint_text_result": {
+    "nll": 0.0797865614,
+    "teacher_token_accuracy": 0.9943977591,
+    "graph_greedy_exact": "42/42",
+    "rotated_image_exact": "42/42",
+    "stopped_at_eos": "42/42",
+    "real_i2t_exact": "32/32",
+    "ocr_1px_exact": "10/10"
+  },
+  "generation_result": {
+    "bank": 117,
+    "stroke_width": "1px grid_digit_mask",
+    "digit_top1": 1.0,
+    "color_accuracy": 0.9691883743,
+    "paired_iou": 0.9410703014,
+    "digit_shuffle_top1": 0.0,
+    "color_shuffle_accuracy": 0.0,
+    "background_flood": 0.0016531252
+  },
+  "other_static_gates": {
+    "current_reconstruction_segmentation": true,
+    "next_color_edit": true
+  },
+  "protected_b3_sha256": "64E79D3B7D8757A4C50AA12E880993A92312F4237986D840466B689FCA4F086B",
+  "candidate_sha256": "047C1545A910B1C5523B6EB4C0958956242FE11A69D7AE69A6A8B04058D6D537",
+  "candidate": "checkpoints/omni_d64_pythia_sharegpt4o_i2t_ocr1px_joint_final.pt"
+}

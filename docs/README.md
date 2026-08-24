@@ -5,6 +5,7 @@
 - [`NORTH_STAR.md`](NORTH_STAR.md) — the locked Slice full-resolution vision–language co-evolution contract, active-inference claim boundary, unified ports, and generation gates.
 - [`STATUS.md`](STATUS.md) — **current snapshot for handing to another model**. Checkpoints, Pythia T2I/edit facts, failed recipes, and the next allowed experiments. Not a new north star.
 - [`PYTHIA_INTEGRATION_PLAN.md`](PYTHIA_INTEGRATION_PLAN.md) — implementation plan for using frozen Pythia as the token prior/likelihood inside the same Slice–MoT graph without creating a language or image bypass.
+- [`REAL_DATA_PILOT.md`](REAL_DATA_PILOT.md) — real ShareGPT-4o T2I/IT2I/I2T/IT2T mapping, selective archive preparation, first causal metrics, and the next admission gate.
 - [`../research_tree.json`](../research_tree.json) — current hypothesis, evidence, conflict, and experiment dependency tree.
 
 Read `NORTH_STAR.md` and `STATUS.md` before changing `native_mot.py`, `omni_model.py`, unified port behavior, generation, or Pythia wiring.

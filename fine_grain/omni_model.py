@@ -19,7 +19,13 @@ from scripts.run_v0_surprise_eval import DualStreamVQAModel
 
 def token_nll_per_sample(logits: torch.Tensor, labels: torch.Tensor) -> torch.Tensor:
     """Shifted causal NLL, one scalar per row. Empty rows are 0, not NaN."""
-    shift_logits = logits[:, :-1].contiguous()
+    # Pythia runs in fp16 on the 4 GB development GPU. Reducing hundreds of
+    # answer-token losses in fp16 quantizes matched-vs-shuffled gaps to zero
+    # even when the frozen decoder has a small visual preference. Keep the LM
+    # frozen and its forward cheap, but evaluate its categorical likelihood in
+    # fp32 so the variational accuracy term and its counterfactual gradient are
+    # numerically identifiable.
+    shift_logits = logits[:, :-1].contiguous().float()
     shift_labels = labels[:, 1:].contiguous()
     vocab = shift_logits.shape[-1]
     nll = F.cross_entropy(
@@ -113,7 +119,7 @@ class DualStreamOmni(DualStreamVQAModel):
         self.spatial_prompt_vocab = bool(kwargs.pop("spatial_prompt_vocab", False))
         self.capability_vocab = bool(kwargs.pop("capability_vocab", False))
         self.pixel_loss_mode = str(kwargs.pop("pixel_loss_mode", "vfe")).lower()
-        if self.pixel_loss_mode not in ("vfe", "balanced_bce"):
+        if self.pixel_loss_mode not in ("vfe", "balanced_bce", "gaussian_nll"):
             raise ValueError(f"unknown pixel_loss_mode={self.pixel_loss_mode!r}")
         self.s0_acc_coef = float(kwargs.pop("s0_acc_coef", 1.0))
         self.seg_classes = int(kwargs.pop("seg_classes", 0))
@@ -563,6 +569,7 @@ class DualStreamOmni(DualStreamVQAModel):
         causal_state=None,
         n_loops=None,
         need_pix=None,
+        score_tokens: bool = True,
     ) -> Dict:
         """Joint Slice–MoT step with frozen causal token NLL on H*.
 
@@ -631,13 +638,16 @@ class DualStreamOmni(DualStreamVQAModel):
             batch, n_vis, device=images.device, dtype=attention_mask.dtype,
         )
         attn = torch.cat([vis_m, attention_mask], dim=1)
-        lm_out = self.lm(
-            inputs_embeds=inputs,
-            attention_mask=attn,
-            use_cache=False,
-        )
-        token_logits = lm_out.logits
-        if text_lab is None:
+        if score_tokens:
+            lm_out = self.lm(
+                inputs_embeds=inputs,
+                attention_mask=attn,
+                use_cache=False,
+            )
+            token_logits = lm_out.logits
+        else:
+            token_logits = None
+        if text_lab is None or not score_tokens:
             token_nll = None
             n_loss_tokens = 0
         else:
@@ -819,7 +829,24 @@ class DualStreamOmni(DualStreamVQAModel):
             idx = torch.tensor([i for i, t in enumerate(need_pix) if t], device=device)
             tgt = rgb_tgt[idx]
             t = batch.get("t")
-            if out.get("x_pred") is not None and self.fm_pred != "v":
+            if self.pixel_loss_mode == "gaussian_nll":
+                pred = out.get("x_pred")
+                if pred is None or self.fm_pred == "v":
+                    pred = out["rgb"]
+                pred = pred[idx]
+                lv = out.get("rgb_lv")
+                if lv is None:
+                    lv = torch.zeros_like(pred)
+                else:
+                    lv = lv[idx].clamp(-6.0, 3.0)
+                nll = 0.5 * (lv + (tgt - pred).pow(2) * torch.exp(-lv))
+                pix_each = nll.flatten(1).mean(dim=1)
+                pix = self._precision_mean(pix_each, image_like_pi[idx])
+                meta["gaussian_nll"] = float(pix.detach())
+                meta["n_obs"] = 1
+                out["point_vfe"] = None
+                out["point_vfe_terms"] = None
+            elif out.get("x_pred") is not None and self.fm_pred != "v":
                 xh = out["x_pred"][idx]
                 if self.pixel_loss_mode == "balanced_bce":
                     pix_each = balanced_observation_bce(

@@ -1,0 +1,111 @@
+{
+  "schema": "sharegpt4o-real-northstar-pilot-summary-v3",
+  "date": "2026-08-24",
+  "candidate_only": true,
+  "admitted": false,
+  "data": {
+    "t2i": 134,
+    "it2i": 142,
+    "i2t": 512,
+    "it2t": 0,
+    "referenced_images_verified": 930,
+    "resolution": 64
+  },
+  "boundary_audit": {
+    "opengv_first_turn_one_image_rows": 57289,
+    "generic_caption_rows": 57289,
+    "genuine_it2t_rows": 0,
+    "previous_it2t_metrics_invalidated": true,
+    "reason": "caption-request paraphrases were previously misclassified as IT2T"
+  },
+  "safe_rgb_run": {
+    "evaluation_bank_per_port": 128,
+    "phase": "rgb_likelihood",
+    "steps": 180,
+    "batch": 2,
+    "trainable_parameters": 646,
+    "pythia_frozen": true,
+    "lm_generate_called": false,
+    "before": {
+      "t2i": {"nll": 0.0830816105, "rgb_mse": 0.1661632210},
+      "it2i": {"nll": 0.1127413362, "rgb_mse": 0.2254826725, "causal_gap": 0.0048377686},
+      "reconstruct": {"nll": 0.0912524238, "rgb_mse": 0.1825048476, "causal_gap": 0.0210197791}
+    },
+    "after": {
+      "t2i": {"nll": 0.0614365302, "rgb_mse": 0.1661605239},
+      "it2i": {"nll": 0.0893224776, "rgb_mse": 0.2238211632, "causal_gap": 0.0058859377},
+      "reconstruct": {"nll": 0.0681243911, "rgb_mse": 0.1783514917, "causal_gap": 0.0240747482}
+    }
+  },
+  "i2t_run": {
+    "phase": "token_reader",
+    "steps": 300,
+    "batch": 4,
+    "train": 410,
+    "heldout": 102,
+    "max_answer_tokens": 64,
+    "answer_eos_supervised": false,
+    "legacy_note": "this held-out run predates EOS supervision and is not a free-generation result",
+    "pythia_frozen": true,
+    "lm_generate_called": false,
+    "gdn2": false,
+    "before": {
+      "nll": 9.9773120880,
+      "shuffled_nll": 10.6163616180,
+      "mean_causal_gap": 0.6390501261,
+      "positive_gap_fraction": 0.5490196347
+    },
+    "after": {
+      "nll": 4.6020202637,
+      "shuffled_nll": 4.7749161720,
+      "mean_causal_gap": 0.1728961766,
+      "positive_gap_fraction": 0.5294117928
+    }
+  },
+  "i2t_micro_overfit": {
+    "samples": 5,
+    "steps_to_full_graph_greedy_exact": 200,
+    "final_nll": 0.0158,
+    "teacher_token_accuracy": 1.0,
+    "graph_greedy_exact": "5/5",
+    "answer_eos_supervised": true,
+    "all_rotated_answers_followed_swapped_images": true,
+    "all_answers_stopped": true,
+    "static_gates_preserved": true,
+    "admission_scope": "finite-sample expressivity only"
+  },
+  "i2t_curriculum_overfit": {
+    "target_policy": "unique real-caption prefixes of at most 8 words with EOS",
+    "sixteen": {"token_accuracy": 1.0, "graph_greedy_exact": "16/16", "rotated_exact": "16/16"},
+    "thirty_two": {
+      "nll": 0.0339188986,
+      "token_accuracy": 0.9970326409,
+      "graph_greedy_exact": "32/32",
+      "rotated_exact": "32/32",
+      "stopped": "32/32"
+    },
+    "static_gates_preserved": true,
+    "admission_scope": "finite-sample capacity only; not held-out caption generalization"
+  },
+  "joint_ocr1px_generation_overfit": {
+    "real_i2t_graph_greedy": "32/32",
+    "ocr_1px_graph_greedy": "10/10",
+    "rotated_image_exact": "42/42",
+    "generation_digit": 1.0,
+    "generation_color": 0.9691883743,
+    "generation_paired_iou": 0.9410703014,
+    "generation_stroke_width": "1px",
+    "all_static_gates_preserved": true,
+    "admission_scope": "fixed-bank overfit only"
+  },
+  "static_after_i2t": {
+    "gates": {"t2i": true, "current": true, "edit": true},
+    "t2i": {"digit": 1.0, "color": 0.9691883743, "paired_iou": 0.9410703014, "flood": 0.001653},
+    "current": {"digit": 0.9333333333, "color": 0.9102814065, "paired_iou": 0.8901521007, "seg": 0.9749867},
+    "edit": {"digit": 0.8777777778, "color": 0.9394542247, "paired_iou": 0.7030533637, "seg": 0.9913217, "flood": 0.0284163468}
+  },
+  "protected_b3_sha256": "64E79D3B7D8757A4C50AA12E880993A92312F4237986D840466B689FCA4F086B",
+  "safe_rgb_candidate_sha256": "CB4DA7423DEF230DB3F0379AB51AE1D831012AF3C36DE940C109956D0E1A2B79",
+  "unified_init_sha256": "AB8C3B92AFA7C231F6102BAF9343E751B77EA9243B628B75C08B9265288D8202",
+  "i2t_candidate_sha256": "D33679F911A31A9B35C47E142730A3461D1A71C27EF755B65E3F40FDD73C65AE"
+}

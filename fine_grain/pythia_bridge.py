@@ -61,6 +61,20 @@ EDIT_READ_MARKERS: tuple[str, ...] = (
     ".mot.Wo_v",
 )
 
+# Text-to-image adaptation moves only the language-to-visual messages and the
+# shared Slice/Deslice RGB write.  It deliberately leaves the visual stem and
+# terminal language reader frozen, so a finite natural-image capacity probe is
+# not implemented by replacing the perception or language path.
+GENERATION_WRITE_MARKERS: tuple[str, ...] = (
+    "mot_stack.text_in.",
+    ".mot.Wk_t",
+    ".mot.Wv_t",
+    ".surprise_gate.prior_head.",
+    ".surprise_gate.slice_queries",
+    ".surprise_gate.q_norm.",
+    ".surprise_gate.h_norm.",
+)
+
 FROZEN_EVEN_WHEN_JOINT_PREFIXES: tuple[str, ...] = (
     "lm.",
     "embed.",
@@ -156,6 +170,17 @@ def is_edit_read_visual(name: str) -> bool:
     return any(marker in name for marker in EDIT_READ_MARKERS)
 
 
+def is_generation_write(name: str) -> bool:
+    return (
+        any(marker in name or name.startswith(marker)
+            for marker in GENERATION_WRITE_MARKERS)
+        or is_edit_read_visual(name)
+        or "precision_coord" in name
+        or name.startswith("pix_head.")
+        or name.startswith("pix_log")
+    )
+
+
 def generation_champion_kwargs(**overrides) -> Dict:
     kw = dict(GENERATION_CHAMPION_KNOBS)
     kw.update(overrides)
@@ -227,17 +252,22 @@ def set_optimization_phase(model: nn.Module, phase: str) -> List[str]:
     final MoT layer's H-query, H-output, and H-FFN. Text K/V and every visual
     write parameter stay fixed, so the final visual field cannot change.
     ``language``: those maps plus MoT text experts and the F2 language prior.
+    ``rgb_likelihood``: only the shared RGB mean/log-variance likelihood head.
     ``language_rgb``: language readers plus the RGB head (not stem/Deslice).
     ``edit_spatial``: language readers plus image/text precision coords;
     pix_head, stem, SliceRead, and Deslice stay frozen.
     ``edit_read``: edit_spatial plus SliceRead, visual MoT query/output,
     and Deslice. Stem and pix_head stay frozen. Use visual_lr=1e-5.
+    ``generation_write``: language-to-visual K/V, F2 prior, Slice/Deslice,
+    visual query/output, modality precision, and the shared RGB likelihood.
+    The visual stem and terminal language reader stay frozen.
     ``joint``: all non-Pythia weights except the leftover toy embed/class head.
     """
     phase = str(phase).lower()
     if phase not in (
-        "interface", "token_interface", "token_reader", "language", "language_rgb",
-        "edit_spatial", "edit_read", "joint",
+        "interface", "token_interface", "token_reader", "language",
+        "rgb_likelihood", "language_rgb", "edit_spatial", "edit_read",
+        "generation_write", "joint",
     ):
         raise ValueError(f"unknown optimization phase {phase!r}")
     freeze_lm = getattr(model, "_freeze_lm", None)
@@ -256,6 +286,8 @@ def set_optimization_phase(model: nn.Module, phase: str) -> List[str]:
             allow = is_token_interface(name) or is_terminal_token_reader(model, name)
         elif phase == "language":
             allow = is_language_reader(name)
+        elif phase == "rgb_likelihood":
+            allow = name.startswith("pix_head.") or name.startswith("pix_log")
         elif phase == "language_rgb":
             allow = is_language_reader(name) or name.startswith("pix_head.") or name.startswith("pix_log")
         elif phase == "edit_spatial":
@@ -266,6 +298,8 @@ def set_optimization_phase(model: nn.Module, phase: str) -> List[str]:
                 or "precision_coord" in name
                 or is_edit_read_visual(name)
             )
+        elif phase == "generation_write":
+            allow = is_generation_write(name)
         else:
             allow = True
         param.requires_grad_(allow)

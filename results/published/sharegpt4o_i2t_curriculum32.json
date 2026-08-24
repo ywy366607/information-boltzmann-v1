@@ -1,0 +1,49 @@
+{
+  "schema": "sharegpt4o-i2t-curriculum-summary-v1",
+  "date": "2026-08-25",
+  "candidate_only": true,
+  "purpose": "finite-sample visual-language capacity and optimization diagnostic",
+  "graph": "single X-Slice-H graph",
+  "pythia_frozen": true,
+  "lm_generate_called": false,
+  "answer_eos_supervised": true,
+  "target_policy": "deterministic first-sentence prefix, at most 8 words, 32 unique targets",
+  "gates": {
+    "five_samples": {
+      "steps_to_pass": 200,
+      "teacher_token_accuracy": 1.0,
+      "graph_greedy_exact": "5/5",
+      "rotated_exact": "5/5"
+    },
+    "sixteen_samples": {
+      "passed": true,
+      "nll": 0.0393,
+      "teacher_token_accuracy": 1.0,
+      "graph_greedy_exact": "16/16",
+      "rotated_exact": "16/16"
+    },
+    "thirty_two_samples": {
+      "passed": true,
+      "nll": 0.0339188986,
+      "teacher_token_accuracy": 0.9970326409,
+      "supervised_tokens": 337,
+      "graph_greedy_exact": "32/32",
+      "rotated_exact": "32/32",
+      "stopped_at_eos": "32/32"
+    }
+  },
+  "optimization_findings": [
+    "balanced small batches learn natural-image addresses better than an effective full batch",
+    "checkpoint selection must prioritize graph-greedy exact over average NLL",
+    "Adam state must be saved for stable curriculum continuation",
+    "low-rate paired hard replay separates the final competing visual addresses"
+  ],
+  "static_after_32": {
+    "t2i": true,
+    "current_reconstruction_segmentation": true,
+    "next_color_edit": true
+  },
+  "protected_b3_sha256": "64E79D3B7D8757A4C50AA12E880993A92312F4237986D840466B689FCA4F086B",
+  "candidate_sha256": "CA566C151A6067A241F0C91F5B2D1863BB2AD86E7291695C470FBD137C405D03",
+  "candidate": "checkpoints/omni_d64_pythia_sharegpt4o_i2t_overfit32_final.pt"
+}
