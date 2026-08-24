@@ -249,6 +249,15 @@ def test_language_phase_trains_readers_not_visual_write():
     assert not spatial.mot_stack.layers[0].mot.Wq_t.weight.requires_grad
     assert not spatial.mot_stack.text_out.weight.requires_grad
     assert any(name.startswith("pix_head.") for name in generation_names)
+    capacity_names = set(spatial.set_optimization_phase("generation_capacity"))
+    assert spatial.mot_stack.stem.weight.requires_grad
+    assert spatial.mot_stack.stem_local[0].weight.requires_grad
+    assert spatial.mot_stack.layers[0].mot.Wk_v.weight.requires_grad
+    assert spatial.mot_stack.layers[0].mot.ffn_v.w1.weight.requires_grad
+    assert spatial.mot_stack.layers[0].local.dw.weight.requires_grad
+    assert not spatial.mot_stack.layers[0].mot.Wq_t.weight.requires_grad
+    assert not spatial.mot_stack.text_out.weight.requires_grad
+    assert any(".local." in name for name in capacity_names)
 
 
 def test_token_reader_opens_only_terminal_h_query_and_output():

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Finite-bank natural-photo T2I capacity gate on the native Slice graph.
+"""Finite-bank natural-photo T2I content gate on the native Slice graph.
 
 The source image is an all-zero field with ``image_precision=0``.  Frozen
 Pythia provides prompt embeddings only; RGB is written by the existing
@@ -20,7 +20,7 @@ from pathlib import Path
 import numpy as np
 import torch
 import torch.nn.functional as F
-from PIL import Image
+from PIL import Image, ImageDraw, ImageOps
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
@@ -175,6 +175,30 @@ def pairwise_mse(pred: torch.Tensor, target: torch.Tensor) -> torch.Tensor:
     return (pred[:, None] - target[None, :]).pow(2).flatten(2).mean(dim=2)
 
 
+def image_gradients(image: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
+    return (
+        image[:, :, :, 1:] - image[:, :, :, :-1],
+        image[:, :, 1:] - image[:, :, :-1],
+    )
+
+
+def edge_metrics(pred: torch.Tensor, target: torch.Tensor) -> tuple[float, float]:
+    pred_dx, pred_dy = image_gradients(pred)
+    tgt_dx, tgt_dy = image_gradients(target)
+    pred_edge = torch.cat([pred_dx.flatten(1), pred_dy.flatten(1)], dim=1)
+    tgt_edge = torch.cat([tgt_dx.flatten(1), tgt_dy.flatten(1)], dim=1)
+    relative_mse = (
+        (pred_edge - tgt_edge).pow(2).mean(dim=1)
+        / tgt_edge.pow(2).mean(dim=1).clamp_min(1e-8)
+    )
+    pred_centered = pred_edge - pred_edge.mean(dim=1, keepdim=True)
+    tgt_centered = tgt_edge - tgt_edge.mean(dim=1, keepdim=True)
+    correlation = (pred_centered * tgt_centered).sum(dim=1) / (
+        pred_centered.norm(dim=1) * tgt_centered.norm(dim=1)
+    ).clamp_min(1e-8)
+    return float(relative_mse.mean()), float(correlation.mean())
+
+
 def finite_t2i_metrics(
     pred: torch.Tensor, target: torch.Tensor, shuffled: torch.Tensor,
 ) -> dict:
@@ -186,6 +210,7 @@ def finite_t2i_metrics(
     shuffled_mse = (shuffled - target).pow(2).flatten(1).mean(dim=1)
     prompt_rms = (pred - shuffled).pow(2).mean().sqrt()
     mse = diagonal.mean()
+    edge_relative_mse, edge_correlation = edge_metrics(pred, target)
     return {
         "n": len(pred),
         "rgb_mse": float(mse),
@@ -201,6 +226,8 @@ def finite_t2i_metrics(
         "shuffled_rgb_mse": float(shuffled_mse.mean()),
         "shuffle_causal_gap": float((shuffled_mse - diagonal).mean()),
         "prompt_output_rms": float(prompt_rms),
+        "edge_relative_mse": edge_relative_mse,
+        "edge_correlation": edge_correlation,
     }
 
 
@@ -211,6 +238,8 @@ def natural_gate(metrics: dict) -> bool:
         and metrics["rgb_psnr"] >= 20.0
         and metrics["shuffle_causal_gap"] >= 0.01
         and metrics["prompt_output_rms"] >= 0.05
+        and metrics["edge_relative_mse"] <= 0.75
+        and metrics["edge_correlation"] >= 0.50
     )
 
 
@@ -228,19 +257,42 @@ def evaluate(model, tokenizer, samples: list[dict], device) -> tuple[dict, torch
 
 
 def save_gallery(samples: list[dict], pred: torch.Tensor, path: Path) -> None:
-    """Save target/prediction pairs without making the image a training input."""
-    scale = max(1, 256 // pred.shape[-1])
-    tile = pred.shape[-1] * scale
-    canvas = Image.new("RGB", (tile * len(samples), tile * 2), (16, 24, 39))
+    """Show original dataset targets above native-resolution predictions."""
+    tile = 384
+    header = 28
+    canvas = Image.new(
+        "RGB", (tile * len(samples), (tile + header) * 2), (16, 24, 39),
+    )
+    draw = ImageDraw.Draw(canvas)
     for column, (sample, output) in enumerate(zip(samples, pred)):
-        for row, tensor in enumerate((sample["target_rgb"], output)):
-            array = (
-                tensor.detach().clamp(0, 1).permute(1, 2, 0).numpy() * 255
-            ).round().astype(np.uint8)
-            image = Image.fromarray(array).resize(
-                (tile, tile), Image.Resampling.NEAREST,
+        x = column * tile
+        draw.text(
+            (x + 8, 7), "ShareGPT-4o target (original PNG)", fill=(226, 232, 240),
+        )
+        target_path = Path(str(sample["target_file"]))
+        with Image.open(target_path) as source:
+            target = ImageOps.contain(
+                source.convert("RGB"), (tile, tile), Image.Resampling.LANCZOS,
             )
-            canvas.paste(image, (column * tile, row * tile))
+        target_panel = Image.new("RGB", (tile, tile), (0, 0, 0))
+        target_panel.paste(
+            target, ((tile - target.width) // 2, (tile - target.height) // 2),
+        )
+        canvas.paste(target_panel, (x, header))
+
+        y = tile + header
+        draw.text(
+            (x + 8, y + 7),
+            f"Slice generation ({pred.shape[-1]}x{pred.shape[-1]} native)",
+            fill=(226, 232, 240),
+        )
+        array = (
+            output.detach().clamp(0, 1).permute(1, 2, 0).numpy() * 255
+        ).round().astype(np.uint8)
+        generated = Image.fromarray(array).resize(
+            (tile, tile), Image.Resampling.NEAREST,
+        )
+        canvas.paste(generated, (x, y + header))
     path.parent.mkdir(parents=True, exist_ok=True)
     canvas.save(path)
 
@@ -265,15 +317,22 @@ def main() -> None:
         ),
     )
     parser.add_argument("--resolution", type=int, default=32)
+    parser.add_argument("--n-slices", type=int, default=16)
     parser.add_argument("--steps", type=int, default=800)
     parser.add_argument("--eval-every", type=int, default=25)
     parser.add_argument("--interface-lr", type=float, default=3e-4)
     parser.add_argument("--visual-lr", type=float, default=2e-4)
     parser.add_argument("--mse-coef", type=float, default=4.0)
+    parser.add_argument("--nll-coef", type=float, default=1.0)
     parser.add_argument("--retrieval-coef", type=float, default=0.5)
     parser.add_argument("--retrieval-temperature", type=float, default=0.02)
     parser.add_argument("--shuffle-coef", type=float, default=1.0)
     parser.add_argument("--shuffle-margin", type=float, default=0.02)
+    parser.add_argument("--edge-coef", type=float, default=4.0)
+    parser.add_argument(
+        "--phase", choices=("generation_write", "generation_capacity"),
+        default="generation_write",
+    )
     parser.add_argument("--rehearsal-coef", type=float, default=10.0)
     parser.add_argument("--rehearsal-batch", type=int, default=8)
     parser.add_argument("--device", default="cuda" if torch.cuda.is_available() else "cpu")
@@ -298,7 +357,8 @@ def main() -> None:
     lm_device = args.lm_device or args.device
     torch.manual_seed(20260825)
     model = DualStreamOmni(**capability_champion_kwargs(
-        res=int(args.resolution), language="pythia", lm_device=lm_device,
+        res=int(args.resolution), n_slices=int(args.n_slices),
+        language="pythia", lm_device=lm_device,
         pixel_loss_mode="gaussian_nll", s0_acc_coef=0.0,
     )).to(device)
     if model.lm is not None:
@@ -306,7 +366,7 @@ def main() -> None:
     load_report = load_visual_champion(
         model, init_path, skip_language_interface=False,
     )
-    trainable = set_optimization_phase(model, "generation_write")
+    trainable = set_optimization_phase(model, args.phase)
     if any(parameter.requires_grad for parameter in model.lm.parameters()):
         raise RuntimeError("Pythia must remain frozen")
     optimizer = torch.optim.AdamW(
@@ -342,6 +402,9 @@ def main() -> None:
         error = (pred - target).pow(2)
         nll = 0.5 * (lv + error * torch.exp(-lv)).mean()
         mse = error.mean()
+        pred_dx, pred_dy = image_gradients(pred)
+        tgt_dx, tgt_dy = image_gradients(target)
+        edge_loss = F.mse_loss(pred_dx, tgt_dx) + F.mse_loss(pred_dy, tgt_dy)
         energy = pairwise_mse(pred, target)
         labels = torch.arange(len(samples), device=device)
         retrieval = F.cross_entropy(
@@ -369,10 +432,11 @@ def main() -> None:
         else:
             rehearsal = pred.new_zeros(())
         loss = (
-            nll
+            float(args.nll_coef) * nll
             + float(args.mse_coef) * mse
             + float(args.retrieval_coef) * retrieval
             + float(args.shuffle_coef) * causal
+            + float(args.edge_coef) * edge_loss
             + float(args.rehearsal_coef) * rehearsal
         )
         loss.backward()
@@ -390,6 +454,7 @@ def main() -> None:
                 "gaussian_nll": float(nll.detach()),
                 "retrieval_loss": float(retrieval.detach()),
                 "causal_hinge": float(causal.detach()),
+                "edge_loss": float(edge_loss.detach()),
                 "rehearsal_loss": float(rehearsal.detach()),
                 "rehearsal_case": rehearsal_case,
             })
@@ -433,12 +498,20 @@ def main() -> None:
     if file_sha256(init_path) != init_hash:
         raise RuntimeError("protected input checkpoint changed during training")
     record = {
-        "schema": "sharegpt4o-natural-t2i-overfit-v1",
+        "schema": "sharegpt4o-natural-t2i-overfit-v2",
         "candidate_only": True,
         "admitted": bool(natural_passed and static_passed),
         "natural_capacity_gate_passed": natural_passed,
         "static_capability_gates_preserved": static_passed,
-        "claim_scope": "finite-bank natural-image T2I capacity only",
+        "claim_scope": "finite-bank natural-image T2I content capacity only",
+        "gate": {
+            "rgb_psnr_min": 20.0,
+            "retrieval": f"{len(samples)}/{len(samples)}",
+            "shuffle_causal_gap_min": 0.01,
+            "prompt_output_rms_min": 0.05,
+            "edge_relative_mse_max": 0.75,
+            "edge_correlation_min": 0.50,
+        },
         "boundary": {
             "source_image": "all-zero field",
             "image_precision": 0.0,
@@ -450,7 +523,8 @@ def main() -> None:
         "ids": ids,
         "prompts": [str(sample["prompt"]) for sample in samples],
         "resolution": int(args.resolution),
-        "phase": "generation_write",
+        "n_slices": int(args.n_slices),
+        "phase": str(args.phase),
         "pythia_frozen": True,
         "init": str(init_path),
         "init_sha256": init_hash,

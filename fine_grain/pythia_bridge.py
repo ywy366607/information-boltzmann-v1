@@ -75,6 +75,15 @@ GENERATION_WRITE_MARKERS: tuple[str, ...] = (
     ".surprise_gate.h_norm.",
 )
 
+GENERATION_CAPACITY_MARKERS: tuple[str, ...] = (
+    "mot_stack.stem.",
+    "mot_stack.stem_local.",
+    ".mot.Wk_v",
+    ".mot.Wv_v",
+    ".mot.ffn_v.",
+    ".local.",
+)
+
 FROZEN_EVEN_WHEN_JOINT_PREFIXES: tuple[str, ...] = (
     "lm.",
     "embed.",
@@ -181,6 +190,14 @@ def is_generation_write(name: str) -> bool:
     )
 
 
+def is_generation_capacity(name: str) -> bool:
+    """Existing spatial content evolution needed for dense-image capacity."""
+    return is_generation_write(name) or any(
+        marker in name or name.startswith(marker)
+        for marker in GENERATION_CAPACITY_MARKERS
+    )
+
+
 def generation_champion_kwargs(**overrides) -> Dict:
     kw = dict(GENERATION_CHAMPION_KNOBS)
     kw.update(overrides)
@@ -261,13 +278,16 @@ def set_optimization_phase(model: nn.Module, phase: str) -> List[str]:
     ``generation_write``: language-to-visual K/V, F2 prior, Slice/Deslice,
     visual query/output, modality precision, and the shared RGB likelihood.
     The visual stem and terminal language reader stay frozen.
+    ``generation_capacity``: generation_write plus the existing visual stem,
+    visual K/V+FFN, and local full-resolution evolution.  This is an explicit
+    capacity diagnostic, not a safe continual-learning phase.
     ``joint``: all non-Pythia weights except the leftover toy embed/class head.
     """
     phase = str(phase).lower()
     if phase not in (
         "interface", "token_interface", "token_reader", "language",
         "rgb_likelihood", "language_rgb", "edit_spatial", "edit_read",
-        "generation_write", "joint",
+        "generation_write", "generation_capacity", "joint",
     ):
         raise ValueError(f"unknown optimization phase {phase!r}")
     freeze_lm = getattr(model, "_freeze_lm", None)
@@ -300,6 +320,8 @@ def set_optimization_phase(model: nn.Module, phase: str) -> List[str]:
             )
         elif phase == "generation_write":
             allow = is_generation_write(name)
+        elif phase == "generation_capacity":
+            allow = is_generation_capacity(name)
         else:
             allow = True
         param.requires_grad_(allow)

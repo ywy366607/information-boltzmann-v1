@@ -215,7 +215,7 @@ python scripts/train_pythia_generation.py --init checkpoints/omni_d64_pythia_lan
 python scripts/train_pythia_generation.py --init checkpoints/omni_d64_pythia_named_edit_spatial_best.pt --load-language --modal-precision --opt-phase edit_read --edit-ratio 0.15 --edit-style named --edit-shuffle-coef 0.1 --interface-lr 1e-4 --visual-lr 1e-5 --steps-language 100 --eval-every 20 --ckpt checkpoints/omni_d64_pythia_named_edit_read_best.pt --out results/published/pythia_named_edit_read.json --device cuda
 ```
 
-相位：`language` = text 专家 + prior；`rgb_likelihood` = 只训共享 RGB 均值/方差头；`edit_spatial` = 再加精度坐标、冻结 pix_head；`edit_read` = 再加 SliceRead / 视觉 query-output / Deslice；`generation_write` = 只开语言→视觉 K/V、F2 prior、Slice/Deslice query-output、精度坐标和共享 RGB 头，stem 与终端语言 reader 冻结；`language_rgb` = 语言演化与 pix_head 同时解冻，真实轮训已证会破坏编辑；不要默认 `joint`。
+相位：`language` = text 专家 + prior；`rgb_likelihood` = 只训共享 RGB 均值/方差头；`edit_spatial` = 再加精度坐标、冻结 pix_head；`edit_read` = 再加 SliceRead / 视觉 query-output / Deslice；`generation_write` = 只开语言→视觉 K/V、F2 prior、Slice/Deslice query-output、精度坐标和共享 RGB 头，stem 与终端语言 reader 冻结；`generation_capacity` = 诊断性地再开已有视觉 stem/KV/FFN/local，不是安全持续训练相位；`language_rgb` = 语言演化与 pix_head 同时解冻，真实轮训已证会破坏编辑；不要默认 `joint`。
 
 ---
 
@@ -267,20 +267,22 @@ color 0.969、paired IoU 0.941、digit/color shuffle 0/0、flood 0.00165；
 current 重建/分割与 next-color edit 也全过。故在“允许固定集过拟合”的标准下，
 原 1px OCR 与生成已经能在一个检查点共存。它不等价于多字体OCR或自然图生成泛化。
 
-自然照片 T2I 的最小容量门也已单列完成。`train_sharegpt4o_t2i_overfit.py`
-使用两张 Freedom ShareGPT-4o 自然场景，输入始终是全零视觉场且
-`image_precision=0`；Pythia 冻结并只提供 prompt embedding，冻结因果 decoder
-不调用，RGB 仍由同一 Slice–MoT–Deslice 图单次写出。480 步达到 prompt
-retrieval 2/2、PSNR 20.16 dB；轮换提示词后 MSE 从 0.00964 升至 0.19477，
-gap 0.18513、输出 RMS 0.42735，因此不是无条件平均图。结果与图库见
-`results/published/sharegpt4o_natural_t2i_overfit.json` 和
-`present/figs/sharegpt4o_natural_t2i_overfit.png`。
+自然照片 T2I 已改用 Freedom ShareGPT-4o 的**原始目标 PNG**直接展示；此前图库
+把目标先缩成 16×16 再放大，造成“目标也像色块”的误导，现已修正。输入仍始终是
+全零视觉场且 `image_precision=0`，Pythia 冻结、因果 decoder 不调用，RGB 由同一
+Slice–MoT–Deslice 图单次写出。
 
-该结果只回答“自然 RGB 能否过拟合”，**不是统一冠军**：无回放候选破坏旧
-T2I/current/edit 三门；同步终端蒸馏虽把四图候选的旧 T2I 恢复到
-digit/color/IoU `0.880/0.926/0.860`，自然图仅 14.23 dB，current/edit 仍未全过。
-因此下一优化问题是同一检查点的多目标保持，而不是再外挂更强生图器或宣称自然图
-生成已闭环。`omni_d64_pythia_i2t_ocr1px_joint_final.pt` 仍是已通过共存门的基线。
+修正后的内容审计推翻了旧“自然容量通过”结论。16×16 候选虽有 retrieval 2/2、
+PSNR 20.16 dB 和提示词 gap +0.185，但边缘相对 MSE/相关为 `0.803/0.426`，未过
+`≤0.75/≥0.50` 内容门。64×64、16 Slice 训练 1000 步后 PSNR 19.04 dB，边缘
+相关仅 0.133，输出仍是平滑配色场。进一步开放已有视觉 stem/KV/FFN/local，扩到
+64 Slice，关闭 Gaussian 方差捷径并强化边缘损失后，面罩低频轮廓开始出现，但
+600 步 PSNR/边缘相关仍只有 `15.64/0.190`，岛屿与船等结构没有重建。因此当前
+结论是：文本能选择不同低频视觉场，**自然图内容过拟合尚未完成**。
+
+清晰目标/输出见 `present/figs/sharegpt4o_natural_t2i_overfit.png`；64×64 诊断见
+`present/figs/sharegpt4o_natural_t2i_r64_m64_capacity.png` 和对应 JSON。旧静态门
+也未保留，故任何自然候选都不得升级为冠军；已通过的 1px OCR+数字生成基线不变。
 
 反例：旧版 250 步 broad-`auto` 虽降低真实图像 NLL，却破坏官方编辑门；旧版
 混合语言试验中的 IT2T 又是误标 caption。当前 `auto` 仅把图像端映射到
@@ -296,8 +298,8 @@ I2T 候选 `omni_d64_pythia_sharegpt4o_i2t_candidate.pt` 哈希为
 两者都仍是 candidate-only；保护 B3 未覆盖，I2T 候选复验静态三门全过。
 
 下一步分两条门控支线：文本侧加入真正的图像条件问答/指令数据补 IT2T；视觉侧
-从已过自然 T2I 容量门出发，使用明确的 B3 capability replay/梯度冲突处理，使
-自然门与 T2I/current/edit 在同一检查点同时通过。共享语言或视觉写入一旦解冻，
+先解决自然 T2I 的全分辨率空间地址基/写入秩，使边缘内容门通过，再使用明确的 B3
+capability replay/梯度冲突处理，使自然门与 T2I/current/edit 在同一检查点同时通过。共享语言或视觉写入一旦解冻，
 必须按每个门保存最佳候选；禁止默认 joint、无回放 `language_rgb`，也禁止把单项
 自然图过拟合候选升级为冠军。最终仍要求 held-out、多 seed 和全能力矩阵。
 

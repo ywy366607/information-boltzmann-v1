@@ -10,10 +10,9 @@ from scripts.train_sharegpt4o_t2i_overfit import (
 
 
 def test_pairwise_t2i_metrics_reject_prompt_independent_average():
-    target = torch.stack([
-        torch.zeros(3, 4, 4),
-        torch.ones(3, 4, 4),
-    ])
+    first = torch.zeros(3, 4, 4)
+    first[:, :, 2:] = 1.0
+    target = torch.stack([first, 1.0 - first])
     average = torch.full_like(target, 0.5)
     metrics = finite_t2i_metrics(average, target, average.flip(0))
     assert metrics["retrieval_top1"] < 2
@@ -22,10 +21,9 @@ def test_pairwise_t2i_metrics_reject_prompt_independent_average():
 
 
 def test_pairwise_t2i_metrics_accept_identified_high_fidelity_outputs():
-    target = torch.stack([
-        torch.zeros(3, 4, 4),
-        torch.ones(3, 4, 4),
-    ])
+    first = torch.zeros(3, 4, 4)
+    first[:, :, 2:] = 1.0
+    target = torch.stack([first, 1.0 - first])
     pred = target * 0.99 + 0.005
     shuffled = pred.flip(0)
     energy = pairwise_mse(pred, target)

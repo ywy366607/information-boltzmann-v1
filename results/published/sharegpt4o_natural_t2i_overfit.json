@@ -1,10 +1,18 @@
 {
-  "schema": "sharegpt4o-natural-t2i-overfit-v1",
+  "schema": "sharegpt4o-natural-t2i-overfit-v2",
   "candidate_only": true,
   "admitted": false,
-  "natural_capacity_gate_passed": true,
+  "legacy_pixel_gate_passed": true,
+  "natural_capacity_gate_passed": false,
+  "posthoc_content_audit": {
+    "edge_relative_mse": 0.8025171161,
+    "edge_correlation": 0.4260743856,
+    "required_edge_relative_mse_max": 0.75,
+    "required_edge_correlation_min": 0.5,
+    "reason": "Original-PNG display exposed low-frequency color matching; the legacy PSNR-only gate is superseded."
+  },
   "static_capability_gates_preserved": false,
-  "claim_scope": "finite-bank natural-image T2I capacity only",
+  "claim_scope": "prompt-selective low-frequency RGB only; natural-image content gate failed",
   "boundary": {
     "source_image": "all-zero field",
     "image_precision": 0.0,

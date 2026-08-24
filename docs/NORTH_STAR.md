@@ -116,7 +116,7 @@ F2 的 `gap=KL(q||q*)`、surprise 和 prior action 是规范训练组成；它�
 | 冻结 Pythia 文本观测 | `DualStreamOmni.forward_tokens` / `token_tasks.py` / `train_pythia_tokens.py` | B3 静态三门保持；真实 token NLL 与每-token-回跑图的 greedy 已接通。候选 T2T=0.983/0.950、next-color IT2T=1.000/1.000（token/greedy），但 I2T=0.444/0.400，故仍为 partial、没有 token 冠军。见 `docs/STATUS.md` |
 | ShareGPT-4o 真实数据端口 | `sharegpt4o_data.py` / `prepare_sharegpt4o_pilot.py` / `train_sharegpt4o_pilot.py` / `train_sharegpt4o_i2t_curriculum.py` | 134 T2I、142 IT2I、512 I2T 已贯通；OpenGV 没有真实 IT2T，旧标签作废。冻结 Pythia 的真实 I2T 分级过拟合门已达 16/16、32/32 graph-greedy 与换图 exact，且保持 B3 三门，证明有限样本接口可训练；held-out 仍只有 NLL `9.977→4.602`、52.9% 逐样本正 gap，故开放域候选未获准。见 `docs/REAL_DATA_PILOT.md` |
 | 固定集 1px OCR + 生成共存 | `train_sharegpt4o_i2t_curriculum.py --ocr-one-per-digit` | 同一冻结-Pythia候选达真实 I2T 32/32、noisy 1px OCR 10/10 graph-greedy；独立重载的1px T2I digit/color/IoU为 `1.000/0.969/0.941`，current/edit门也保持。该门仅证明有限集容量，不宣称OCR或生成泛化 |
-| 自然图自由 T2I 容量门 | `train_sharegpt4o_t2i_overfit.py` | 从全零场、`image_precision=0` 经同一图单次生成两张 ShareGPT-4o 自然场景，480步达 2/2 prompt retrieval、PSNR 20.16 dB；提示词轮换使 MSE 增加 0.185。它证明有限集自然 RGB 写入容量，但该候选破坏旧静态三门，故不准入统一检查点 |
+| 自然图自由 T2I 内容门 | `train_sharegpt4o_t2i_overfit.py` | 原始 ShareGPT PNG 已直接展示。16×16 旧像素门虽达 2/2 retrieval、PSNR 20.16 dB，但边缘相关仅 0.426；64×64/16 Slice 为 0.133，开放视觉内容层并扩至 64 Slice 后也只有 0.190。模型主要拟合配色与低频轮廓，尚未过拟合自然图内容，旧“容量通过”结论已回退 |
 | 不确定性循环 | 共享层与 saccade 原型 | 后置，不进入当前检查点 |
 
 已发布生成证据：active-F2 检查点在固定 90 个数字×九宫格银行上达到数字、颜色、位置均 1.00；打乱数字词或位置词会破坏对应属性，关闭 prior action 使数字 top1 从 1.00 降至 0.478。共同 Anchor 能量并未跨层下降，因此“当前网络已实现全局 F-descent”已被否证，但这不影响能力北极星。
