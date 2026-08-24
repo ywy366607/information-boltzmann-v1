@@ -1,0 +1,470 @@
+{
+  "schema": "pythia-language-reader",
+  "init": "checkpoints\\omni_d64_pythia_language_best.pt",
+  "checkpoint": "D:\\\u89c6\u89c9\u7f16\u7801\u5668\u6d4b\u8bd5\\checkpoints\\omni_d64_pythia_language_best.pt",
+  "language": {
+    "lm_id": "EleutherAI/pythia-70m",
+    "lm_revision": "manual",
+    "d_llm": 512,
+    "lm_note": "pythia id=EleutherAI/pythia-70m revision=manual path=D:\\ml_cache\\huggingface\\hub\\models--EleutherAI--pythia-70m\\snapshots\\manual d_llm=512 dtype=torch.float16 cache=D:\\ml_cache"
+  },
+  "best_step": 40,
+  "final": {
+    "t2i": {
+      "n": 90,
+      "psnr": 31.87868881225586,
+      "digit_top1": 0.9666666666666667,
+      "digit_iou": 0.9599204030301836,
+      "color_acc": 0.9882645911640591,
+      "paired_iou": 0.9599204030301836,
+      "centroid_error": 0.0022478152299299837,
+      "flood": 0.002234993502497673,
+      "digit_shuffled_top1": 0.011111111111111112,
+      "color_shuffled_acc": 0.0,
+      "bce": 0.05725521221756935
+    },
+    "edit": {
+      "score": 0.0,
+      "color_acc": 0.0,
+      "n": 0
+    }
+  },
+  "gates": {
+    "t2i": true,
+    "edit": false
+  },
+  "history": [
+    {
+      "phase": "language_rgb",
+      "step": 1,
+      "loss": 0.10470689088106155,
+      "pix": 0.06653250753879547,
+      "t2i": {
+        "n": 90,
+        "psnr": 31.72090721130371,
+        "digit_top1": 0.9444444444444444,
+        "digit_iou": 0.9523285054498248,
+        "color_acc": 0.9811441795693503,
+        "paired_iou": 0.9510674830940035,
+        "centroid_error": 0.0032530051306821407,
+        "flood": 0.0018700966611504555,
+        "digit_shuffled_top1": 0.011111111111111112,
+        "color_shuffled_acc": 0.0,
+        "bce": 0.059409867972135544
+      },
+      "edit": {
+        "score": 0.0,
+        "color_acc": 0.0,
+        "n": 0
+      },
+      "t2i_gate": false,
+      "edit_gate": false,
+      "dt": 6.804475545883179
+    },
+    {
+      "phase": "language_rgb",
+      "step": 20,
+      "loss": 0.10020031780004501,
+      "pix": 0.07730001211166382,
+      "t2i": {
+        "n": 90,
+        "psnr": 31.526166915893555,
+        "digit_top1": 0.8888888888888888,
+        "digit_iou": 0.9529095265600417,
+        "color_acc": 0.9887213402324253,
+        "paired_iou": 0.9526008844375611,
+        "centroid_error": 0.0023533637415514225,
+        "flood": 0.0024174421560019255,
+        "digit_shuffled_top1": 0.0,
+        "color_shuffled_acc": 0.0,
+        "bce": 0.05837288126349449
+      },
+      "edit": {
+        "score": 0.0,
+        "color_acc": 0.0,
+        "n": 0
+      },
+      "t2i_gate": false,
+      "edit_gate": false,
+      "dt": 16.69234275817871
+    },
+    {
+      "phase": "language_rgb",
+      "step": 40,
+      "loss": 0.09522881358861923,
+      "pix": 0.07238776981830597,
+      "t2i": {
+        "n": 90,
+        "psnr": 31.87868881225586,
+        "digit_top1": 0.9666666666666667,
+        "digit_iou": 0.9599204030301836,
+        "color_acc": 0.9882645911640591,
+        "paired_iou": 0.9599204030301836,
+        "centroid_error": 0.0022478152299299837,
+        "flood": 0.002234993502497673,
+        "digit_shuffled_top1": 0.011111111111111112,
+        "color_shuffled_acc": 0.0,
+        "bce": 0.05725521221756935
+      },
+      "edit": {
+        "score": 0.0,
+        "color_acc": 0.0,
+        "n": 0
+      },
+      "t2i_gate": true,
+      "edit_gate": false,
+      "dt": 26.573232889175415
+    },
+    {
+      "phase": "language_rgb",
+      "step": 60,
+      "loss": 0.03093813732266426,
+      "pix": 0.020729457959532738,
+      "t2i": {
+        "n": 90,
+        "psnr": 32.09425354003906,
+        "digit_top1": 0.9222222222222223,
+        "digit_iou": 0.9625722355312771,
+        "color_acc": 0.992724867661794,
+        "paired_iou": 0.9625722355312771,
+        "centroid_error": 0.0018629651801246735,
+        "flood": 0.0015964240301400423,
+        "digit_shuffled_top1": 0.0,
+        "color_shuffled_acc": 0.0,
+        "bce": 0.05783529579639435
+      },
+      "edit": {
+        "score": 0.0,
+        "color_acc": 0.0,
+        "n": 0
+      },
+      "t2i_gate": false,
+      "edit_gate": false,
+      "dt": 36.37968420982361
+    },
+    {
+      "phase": "language_rgb",
+      "step": 80,
+      "loss": 0.07913956046104431,
+      "pix": 0.06298865377902985,
+      "t2i": {
+        "n": 90,
+        "psnr": 31.891704559326172,
+        "digit_top1": 0.9333333333333333,
+        "digit_iou": 0.9594786670472887,
+        "color_acc": 0.9874720189306471,
+        "paired_iou": 0.9591862691773309,
+        "centroid_error": 0.0020191972221558292,
+        "flood": 0.0016876482404768467,
+        "digit_shuffled_top1": 0.022222222222222223,
+        "color_shuffled_acc": 0.0,
+        "bce": 0.058328159153461456
+      },
+      "edit": {
+        "score": 0.0,
+        "color_acc": 0.0,
+        "n": 0
+      },
+      "t2i_gate": false,
+      "edit_gate": false,
+      "dt": 46.23271679878235
+    },
+    {
+      "phase": "language_rgb",
+      "step": 100,
+      "loss": 0.11752492189407349,
+      "pix": 0.10114806890487671,
+      "t2i": {
+        "n": 90,
+        "psnr": 31.910564422607422,
+        "digit_top1": 0.9222222222222223,
+        "digit_iou": 0.9661186012956832,
+        "color_acc": 0.9935648149914211,
+        "paired_iou": 0.9658262034257253,
+        "centroid_error": 0.0013785366214708321,
+        "flood": 0.0014595877146348357,
+        "digit_shuffled_top1": 0.0,
+        "color_shuffled_acc": 0.0,
+        "bce": 0.058754805475473404
+      },
+      "edit": {
+        "score": 0.0,
+        "color_acc": 0.0,
+        "n": 0
+      },
+      "t2i_gate": false,
+      "edit_gate": false,
+      "dt": 56.04614877700806
+    },
+    {
+      "phase": "language_rgb",
+      "step": 120,
+      "loss": 0.05596067011356354,
+      "pix": 0.0402633398771286,
+      "t2i": {
+        "n": 90,
+        "psnr": 31.732730865478516,
+        "digit_top1": 0.9,
+        "digit_iou": 0.9576423817210727,
+        "color_acc": 0.9890277783075968,
+        "paired_iou": 0.9576423817210727,
+        "centroid_error": 0.0023128982710962495,
+        "flood": 0.0016876482404768467,
+        "digit_shuffled_top1": 0.011111111111111112,
+        "color_shuffled_acc": 0.0,
+        "bce": 0.05934132635593414
+      },
+      "edit": {
+        "score": 0.0,
+        "color_acc": 0.0,
+        "n": 0
+      },
+      "t2i_gate": false,
+      "edit_gate": false,
+      "dt": 65.87474536895752
+    },
+    {
+      "phase": "language_rgb",
+      "step": 140,
+      "loss": 0.07917214184999466,
+      "pix": 0.05279599502682686,
+      "t2i": {
+        "n": 90,
+        "psnr": 31.449661254882812,
+        "digit_top1": 0.9444444444444444,
+        "digit_iou": 0.9475343565146128,
+        "color_acc": 0.981615561246872,
+        "paired_iou": 0.9475343565146128,
+        "centroid_error": 0.003129077746739818,
+        "flood": 0.002463054144755006,
+        "digit_shuffled_top1": 0.022222222222222223,
+        "color_shuffled_acc": 0.0,
+        "bce": 0.05822846293449402
+      },
+      "edit": {
+        "score": 0.0,
+        "color_acc": 0.0,
+        "n": 0
+      },
+      "t2i_gate": false,
+      "edit_gate": false,
+      "dt": 75.67425394058228
+    },
+    {
+      "phase": "language_rgb",
+      "step": 160,
+      "loss": 0.0748608186841011,
+      "pix": 0.05870913714170456,
+      "t2i": {
+        "n": 90,
+        "psnr": 31.93882942199707,
+        "digit_top1": 0.9444444444444444,
+        "digit_iou": 0.9629182212882572,
+        "color_acc": 0.9890064107047187,
+        "paired_iou": 0.9626258234182994,
+        "centroid_error": 0.0017768463637265893,
+        "flood": 0.0015964240301400423,
+        "digit_shuffled_top1": 0.0,
+        "color_shuffled_acc": 0.0,
+        "bce": 0.05792805552482605
+      },
+      "edit": {
+        "score": 0.0,
+        "color_acc": 0.0,
+        "n": 0
+      },
+      "t2i_gate": false,
+      "edit_gate": false,
+      "dt": 85.5225841999054
+    },
+    {
+      "phase": "language_rgb",
+      "step": 180,
+      "loss": 0.11745559424161911,
+      "pix": 0.0869181901216507,
+      "t2i": {
+        "n": 90,
+        "psnr": 32.162322998046875,
+        "digit_top1": 0.9444444444444444,
+        "digit_iou": 0.9574584934446547,
+        "color_acc": 0.991296296649509,
+        "paired_iou": 0.9574584934446547,
+        "centroid_error": 0.002274826285429299,
+        "flood": 0.002006933093070984,
+        "digit_shuffled_top1": 0.022222222222222223,
+        "color_shuffled_acc": 0.0,
+        "bce": 0.05679347738623619
+      },
+      "edit": {
+        "score": 0.0,
+        "color_acc": 0.0,
+        "n": 0
+      },
+      "t2i_gate": false,
+      "edit_gate": false,
+      "dt": 95.34252667427063
+    },
+    {
+      "phase": "language_rgb",
+      "step": 200,
+      "loss": 0.06297910958528519,
+      "pix": 0.04602568596601486,
+      "t2i": {
+        "n": 90,
+        "psnr": 32.14534378051758,
+        "digit_top1": 0.9444444444444444,
+        "digit_iou": 0.9581030329068502,
+        "color_acc": 0.989468695057763,
+        "paired_iou": 0.957904620303048,
+        "centroid_error": 0.0024990127473655675,
+        "flood": 0.00196132087148726,
+        "digit_shuffled_top1": 0.0,
+        "color_shuffled_acc": 0.0,
+        "bce": 0.057787273079156876
+      },
+      "edit": {
+        "score": 0.0,
+        "color_acc": 0.0,
+        "n": 0
+      },
+      "t2i_gate": false,
+      "edit_gate": false,
+      "dt": 105.16518926620483
+    },
+    {
+      "phase": "language_rgb",
+      "step": 220,
+      "loss": 0.07987141609191895,
+      "pix": 0.06498580425977707,
+      "t2i": {
+        "n": 90,
+        "psnr": 31.958951950073242,
+        "digit_top1": 0.9444444444444444,
+        "digit_iou": 0.9664627479182349,
+        "color_acc": 0.9907495591375562,
+        "paired_iou": 0.9664627479182349,
+        "centroid_error": 0.001551190578740918,
+        "flood": 0.0016420361353084445,
+        "digit_shuffled_top1": 0.0,
+        "color_shuffled_acc": 0.0,
+        "bce": 0.057931963354349136
+      },
+      "edit": {
+        "score": 0.0,
+        "color_acc": 0.0,
+        "n": 0
+      },
+      "t2i_gate": false,
+      "edit_gate": false,
+      "dt": 115.02490901947021
+    },
+    {
+      "phase": "language_rgb",
+      "step": 240,
+      "loss": 0.04191417247056961,
+      "pix": 0.025445276871323586,
+      "t2i": {
+        "n": 90,
+        "psnr": 31.94088363647461,
+        "digit_top1": 0.9,
+        "digit_iou": 0.962222918536928,
+        "color_acc": 0.9913425929016537,
+        "paired_iou": 0.9619305206669702,
+        "centroid_error": 0.0017266540490608248,
+        "flood": 0.0013683633878827095,
+        "digit_shuffled_top1": 0.011111111111111112,
+        "color_shuffled_acc": 0.0,
+        "bce": 0.05893829092383385
+      },
+      "edit": {
+        "score": 0.0,
+        "color_acc": 0.0,
+        "n": 0
+      },
+      "t2i_gate": false,
+      "edit_gate": false,
+      "dt": 124.95981812477112
+    },
+    {
+      "phase": "language_rgb",
+      "step": 260,
+      "loss": 0.04098164290189743,
+      "pix": 0.032075025141239166,
+      "t2i": {
+        "n": 90,
+        "psnr": 31.933557510375977,
+        "digit_top1": 0.9111111111111111,
+        "digit_iou": 0.9643447226948209,
+        "color_acc": 0.992098765903049,
+        "paired_iou": 0.9643447226948209,
+        "centroid_error": 0.001499330189027306,
+        "flood": 0.0014139756094664335,
+        "digit_shuffled_top1": 0.011111111111111112,
+        "color_shuffled_acc": 0.0,
+        "bce": 0.058655932545661926
+      },
+      "edit": {
+        "score": 0.0,
+        "color_acc": 0.0,
+        "n": 0
+      },
+      "t2i_gate": false,
+      "edit_gate": false,
+      "dt": 134.91970205307007
+    },
+    {
+      "phase": "language_rgb",
+      "step": 280,
+      "loss": 0.04187561944127083,
+      "pix": 0.032252416014671326,
+      "t2i": {
+        "n": 90,
+        "psnr": 31.84105682373047,
+        "digit_top1": 0.9,
+        "digit_iou": 0.9625883115662469,
+        "color_acc": 0.991496913962894,
+        "paired_iou": 0.9625883115662469,
+        "centroid_error": 0.0015600746678602364,
+        "flood": 0.0014139756094664335,
+        "digit_shuffled_top1": 0.011111111111111112,
+        "color_shuffled_acc": 0.0,
+        "bce": 0.059078291058540344
+      },
+      "edit": {
+        "score": 0.0,
+        "color_acc": 0.0,
+        "n": 0
+      },
+      "t2i_gate": false,
+      "edit_gate": false,
+      "dt": 144.8161005973816
+    },
+    {
+      "phase": "language_rgb",
+      "step": 300,
+      "loss": 0.0816861018538475,
+      "pix": 0.07084228098392487,
+      "t2i": {
+        "n": 90,
+        "psnr": 31.964990615844727,
+        "digit_top1": 0.9666666666666667,
+        "digit_iou": 0.9581326001220279,
+        "color_acc": 0.9864506178432041,
+        "paired_iou": 0.9581326001220279,
+        "centroid_error": 0.0022453668863616056,
+        "flood": 0.0020525450818240643,
+        "digit_shuffled_top1": 0.011111111111111112,
+        "color_shuffled_acc": 0.0,
+        "bce": 0.05743947625160217
+      },
+      "edit": {
+        "score": 0.0,
+        "color_acc": 0.0,
+        "n": 0
+      },
+      "t2i_gate": true,
+      "edit_gate": false,
+      "dt": 154.73961901664734
+    }
+  ]
+}

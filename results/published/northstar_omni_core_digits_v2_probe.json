@@ -1,0 +1,94 @@
+{
+  "protocol": "docs/NORTH_STAR.md#9-竞争假设与关键实验",
+  "checkpoint": "D:\\视觉编码器测试\\checkpoints\\omni_d64_northstar_omni_core_digits_v2_best.pt",
+  "recipe": "core",
+  "bank": {
+    "n": 40,
+    "digits": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "color": "green",
+    "placement": "center",
+    "source": "coordinate black field",
+    "seed_rule": "1000 + 10*repeat + digit"
+  },
+  "matched": {
+    "psnr": 44.707400512695315,
+    "digit_iou": 0.9753694593906402,
+    "digit_top1": 1.0,
+    "color_acc": 1.0,
+    "ink_frac": 0.119921875,
+    "flood": 0.0025648520328104495
+  },
+  "shuffled_prompt": {
+    "psnr": 14.137986755371093,
+    "digit_iou": 0.42591374516487124,
+    "digit_top1": 0.0,
+    "color_acc": 1.0,
+    "ink_frac": 0.119921875,
+    "flood": 0.07031635548919439
+  },
+  "field_clamped_pi0": {
+    "psnr": 9.357354640960693,
+    "digit_iou": 0.22368977069854737,
+    "digit_top1": 0.1,
+    "color_acc": 0.1314285695552826,
+    "ink_frac": 0.08984375,
+    "flood": 0.08278291001915931
+  },
+  "causal_effects": {
+    "matched_vs_shuffled_rgb_rms": 0.19658271968364716,
+    "matched_vs_clamped_rgb_rms": 0.339671790599823,
+    "matched_latent_field_write_rms": 1.3146750926971436
+  },
+  "assignment": [
+    {
+      "layer": 0,
+      "point_assignment_entropy_norm": 0.9959030151367188,
+      "slice_mass_cv": 0.12774378061294556,
+      "slice_centroid_spread": 0.05176861956715584,
+      "null_mass_mean": null
+    },
+    {
+      "layer": 1,
+      "point_assignment_entropy_norm": 0.9924454092979431,
+      "slice_mass_cv": 0.1702507585287094,
+      "slice_centroid_spread": 0.0632222443819046,
+      "null_mass_mean": null
+    },
+    {
+      "layer": 2,
+      "point_assignment_entropy_norm": 0.9925951361656189,
+      "slice_mass_cv": 0.16148503124713898,
+      "slice_centroid_spread": 0.03332098200917244,
+      "null_mass_mean": null
+    },
+    {
+      "layer": 3,
+      "point_assignment_entropy_norm": 0.9780430793762207,
+      "slice_mass_cv": 0.23389127850532532,
+      "slice_centroid_spread": 0.039127517491579056,
+      "null_mass_mean": null
+    }
+  ],
+  "decision_rules": {
+    "prompt_causal": "matched digit_top1 must exceed shuffled by >=0.50",
+    "write_causal": "matched digit_top1 must exceed pi_x=0 by >=0.50",
+    "capacity": "matched digit_top1 >=0.95 before scaling"
+  },
+  "gate_verdicts": {
+    "prompt_causal": true,
+    "write_causal": true,
+    "capacity": true
+  },
+  "review": "not independently reviewed"
+}

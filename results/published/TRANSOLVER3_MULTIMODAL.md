@@ -1,5 +1,7 @@
 # Transolver3 in multimodal (product naming)
 
+> Supporting naming note. The current architecture source of truth is [`../../docs/NORTH_STAR.md`](../../docs/NORTH_STAR.md).
+
 ## Claim
 
 **Transolver3’s natural multimodal form** is not “emit G slice tokens and feed

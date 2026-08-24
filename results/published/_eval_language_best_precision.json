@@ -1,0 +1,37 @@
+{
+  "schema": "pythia-eval-only",
+  "init": "checkpoints\\omni_d64_pythia_language_best.pt",
+  "checkpoint": "checkpoints\\omni_d64_pythia_language_best.pt",
+  "eval_only": true,
+  "modal_precision": true,
+  "language": {
+    "lm_id": "EleutherAI/pythia-70m",
+    "lm_revision": "manual",
+    "d_llm": 512,
+    "lm_note": "pythia id=EleutherAI/pythia-70m revision=manual path=D:\\ml_cache\\huggingface\\hub\\models--EleutherAI--pythia-70m\\snapshots\\manual d_llm=512 dtype=torch.float16 cache=D:\\ml_cache"
+  },
+  "final": {
+    "t2i": {
+      "n": 90,
+      "psnr": 31.87868881225586,
+      "digit_top1": 0.9666666666666667,
+      "digit_iou": 0.9599204030301836,
+      "color_acc": 0.9882645911640591,
+      "paired_iou": 0.9599204030301836,
+      "centroid_error": 0.0022478152299299837,
+      "flood": 0.002234993502497673,
+      "digit_shuffled_top1": 0.011111111111111112,
+      "color_shuffled_acc": 0.0,
+      "bce": 0.05725521221756935
+    },
+    "edit": {
+      "score": 0.0,
+      "color_acc": 0.0,
+      "n": 0
+    }
+  },
+  "gates": {
+    "t2i": true,
+    "edit": false
+  }
+}

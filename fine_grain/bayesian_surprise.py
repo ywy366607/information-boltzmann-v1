@@ -25,7 +25,6 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from fine_grain.models import newton_schulz
 from fine_grain.sigreg import compute_sigreg_loss
 
 
@@ -86,9 +85,9 @@ def compute_slice_vfe(
     g_sig = 0.5 * ((lv_star - lv_q) + var_q / (var_star + 1e-7) - 1.0)
     gap = g_mu.mean(dim=-1, keepdim=True).clamp(min=0.0) + g_sig.mean(dim=-1, keepdim=True).clamp(min=0.0)
 
-    var_m = var_p + sr2
-    nll = 0.5 * ((S - mu_p).pow(2) / (var_m + 1e-7) + var_m.log() + math.log(2.0 * math.pi))
-    F_min = nll.mean(dim=-1, keepdim=True)
+    F_min = gaussian_prior_predictive_nll(
+        mu_p, lv_p, S, sigma_r=sigma_r,
+    )
     # Observation Kalman gain: S' = μp + K (S − μp), K = σp² / (σp² + σr²).
     K = var_p / (var_p + sr2)
 
@@ -108,6 +107,28 @@ def compute_slice_vfe(
     }
 
 
+def gaussian_prior_predictive_nll(
+    mu_p: torch.Tensor,
+    lv_p: torch.Tensor,
+    observation: torch.Tensor,
+    sigma_r: float = 1.0,
+) -> torch.Tensor:
+    """Negative log p(observation | prior) for the diagonal Gaussian model.
+
+    This is the minimum VFE after analytically optimizing q. Keeping it as a
+    standalone function lets one fixed observer score every state in a field
+    trajectory without comparing layer-private posterior coordinates.
+    """
+    lv_p = torch.clamp(lv_p, -5.0, 2.0)
+    var_m = torch.exp(lv_p) + float(sigma_r) ** 2 + 1e-12
+    nll = 0.5 * (
+        (observation - mu_p).pow(2) / (var_m + 1e-7)
+        + var_m.log()
+        + math.log(2.0 * math.pi)
+    )
+    return nll.mean(dim=-1, keepdim=True)
+
+
 def compute_point_vfe(
     mu_p: torch.Tensor,
     lv_p: torch.Tensor,
@@ -123,6 +144,24 @@ def compute_point_vfe(
     Same algebra as compute_slice_vfe; last dim is 3 (or d_x), not slice d.
     """
     return compute_slice_vfe(mu_p, lv_p, mu_q, lv_q, rgb, sigma_r=sigma_r)
+
+
+def reduce_observation_f(
+    vfe: Dict[str, torch.Tensor],
+    pi: Optional[torch.Tensor] = None,
+) -> torch.Tensor:
+    """Scalar F against one observation.
+
+    ``pi`` is an optional measure *on that same o* (SliceRead dual / rarity).
+    It is not a second observation and not a second F.
+    """
+    F_n = vfe["F"]
+    if pi is None:
+        return F_n.mean()
+    w = pi.to(dtype=F_n.dtype, device=F_n.device)
+    if w.shape != F_n.shape:
+        w = w.reshape(F_n.shape)
+    return (F_n * w).sum() / w.sum().clamp_min(1e-8)
 
 
 def _init_slice_queries(n_slices: int, d: int) -> nn.Parameter:
@@ -219,9 +258,17 @@ class BayesianSurpriseGate(nn.Module):
     def _get_queries(self) -> torch.Tensor:
         """Returns [1, M, d] slice query probes, optionally projected to Stiefel manifold."""
         if getattr(self, "stiefel_queries", False) and hasattr(self, "slice_queries"):
-            # Project [1, M, d] -> [M, d] -> Stiefel (Newton-Schulz polar decomposition) -> [1, M, d]
             q_flat = self.slice_queries.squeeze(0)  # [M, d]
-            q_ortho = newton_schulz(q_flat, steps=5)  # [M, d], satisfies Q @ Q.T = I_M
+            if q_flat.shape[0] > q_flat.shape[1]:
+                raise ValueError(
+                    "Stiefel slice queries require n_slices <= d_model for "
+                    "orthonormal rows"
+                )
+            # Reduced QR on Q^T gives exact orthonormal rows in Q.  The Muon
+            # Newton-Schulz zeropower is useful for optimizer updates but its
+            # finite-step polynomial does not satisfy Q @ Q.T == I exactly.
+            q_ortho = torch.linalg.qr(q_flat.transpose(0, 1), mode="reduced").Q
+            q_ortho = q_ortho.transpose(0, 1)
             return q_ortho.unsqueeze(0)
         return self.slice_queries
 
@@ -243,11 +290,18 @@ class BayesianSurpriseGate(nn.Module):
         v = H.view(B, T, h, dh).permute(0, 2, 1, 3)
         scale = dh ** -0.5
         logits = torch.matmul(q, k.transpose(-1, -2)) * scale  # [B, h, M, T]
+        none = None
         if text_mask is not None:
+            keep = text_mask.bool()
+            none = ~keep.any(dim=-1)
             logits = logits.masked_fill(
-                ~text_mask.bool()[:, None, None, :], torch.finfo(logits.dtype).min,
+                ~keep[:, None, None, :], torch.finfo(logits.dtype).min,
             )
+            if bool(none.any()):
+                logits = logits.masked_fill(none[:, None, None, None], 0.0)
         attn = torch.softmax(logits, dim=-1)
+        if none is not None and bool(none.any()):
+            attn = attn.masked_fill(none[:, None, None, None], 0.0)
         self.last_attn = attn.detach()
         out = torch.matmul(attn, v)  # [B, h, M, dh]
         return out.permute(0, 2, 1, 3).contiguous().view(B, M, self.d)
@@ -257,6 +311,33 @@ class BayesianSurpriseGate(nn.Module):
         B, M, _ = x.shape
         y = x.view(B, M, self.n_heads, self.dh)
         return mlp(y).reshape(B, M, -1)
+
+    def prior_predictive(
+        self,
+        S: torch.Tensor,
+        H: torch.Tensor,
+        text_mask: Optional[torch.Tensor] = None,
+    ) -> Dict[str, torch.Tensor]:
+        """Score S under the V1 language prior in one fixed Slice coordinate.
+
+        The returned ``F_min`` is ``-log p(S|H)`` for the same Gaussian model
+        used by F2. This method performs no belief update or field write.
+        """
+        if self.mode != "v1_bayes":
+            raise RuntimeError("prior_predictive requires mode='v1_bayes'")
+        H_ctx = self._predict_prior_from_h(H, text_mask=text_mask)
+        prior_params = self._head_mlp(H_ctx, self.prior_head)
+        mu_p, lv_p = prior_params.chunk(2, dim=-1)
+        lv_p = torch.clamp(lv_p, -5.0, 2.0)
+        self.last_H_ctx = H_ctx.detach()
+        return {
+            "F_min": gaussian_prior_predictive_nll(
+                mu_p, lv_p, S, sigma_r=self.sigma_r,
+            ),
+            "mu_p": mu_p,
+            "lv_p": lv_p,
+            "h_ctx": H_ctx,
+        }
 
     def forward(
         self,
@@ -356,12 +437,10 @@ class BayesianSurpriseGate(nn.Module):
 
         # --- V1: Full Gaussian Bayesian Surprise & KL Decomposition ---
         if self.mode == "v1_bayes":
-            H_ctx = self._predict_prior_from_h(H, text_mask=text_mask)
-            prior_params = self._head_mlp(H_ctx, self.prior_head)  # [B, M, 2*d]
-            mu_p, lv_p = prior_params.chunk(2, dim=-1)
-            lv_p = torch.clamp(lv_p, -5.0, 2.0)
+            prior = self.prior_predictive(S, H, text_mask=text_mask)
+            H_ctx = prior["h_ctx"]
+            mu_p, lv_p = prior["mu_p"], prior["lv_p"]
             var_p = torch.exp(lv_p)
-            self.last_H_ctx = H_ctx.detach()
 
             # Posterior conditioned on observed S and context
             post_params = self._head_mlp(S + H_ctx, self.post_head)  # [B, M, 2*d]

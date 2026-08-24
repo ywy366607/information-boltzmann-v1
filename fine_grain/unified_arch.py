@@ -1,7 +1,10 @@
 """One Native MoT graph for every I/O port.
 
 Write is always Transolver residual (increment). Text is a condition, not a
-canvas replacement. Ports differ by initial X and the loss head only.
+canvas replacement. Ports differ by initial X and the actual/preferred
+observation o. Pixel F is KL(q‖p)+acc against that one o (not a second
+all-black F). Read the residual r=X−S0 with PE-modulated ∅ (ℓ_∅=τ−γ e).
+Write follows content mass. Recognition keeps prior_write=0.
 
 Do not add port-only forks here (no s_lang_topk, no write A for VQA).
 Old Champion B / F2 write-A checkpoints stay on their own knobs.
@@ -24,10 +27,14 @@ UNIFIED_KNOBS = {
     "s_lang_topk": 0,
     "s_kalman_update": False,
     "prior_write": 0.0,
-    "use_null_slice": False,
+    "use_null_slice": True,
     "pack_by_surprise": False,
     "hard_admit": False,
-    "use_yield_read": True,
+    "use_yield_read": False,
+    "use_ticket_read": False,
+    "use_write_yield": False,
+    "write_alpha": 1.0,
+    "use_residual_read": True,
 }
 
 # Omni scale used for the six I/O ports (matches prior dedicated omni runs).

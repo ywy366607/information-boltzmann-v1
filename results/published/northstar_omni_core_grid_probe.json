@@ -1,0 +1,125 @@
+{
+  "protocol": "docs/NORTH_STAR.md#9-竞争假设与关键实验",
+  "checkpoint": "D:\\视觉编码器测试\\checkpoints\\omni_d64_northstar_omni_core_grid_best.pt",
+  "recipe": "core",
+  "bank": {
+    "n": 90,
+    "digits": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "color": "green",
+    "placement": "grid",
+    "placement_values": [
+      "top_left",
+      "top_center",
+      "top_right",
+      "middle_left",
+      "middle_center",
+      "middle_right",
+      "bottom_left",
+      "bottom_center",
+      "bottom_right"
+    ],
+    "source": "coordinate black field",
+    "seed_rule": "1000 + 1000*repeat + 10*place_index + digit"
+  },
+  "matched": {
+    "psnr": 74.39162686665853,
+    "digit_iou": 1.0,
+    "digit_top1": 1.0,
+    "color_acc": 1.0,
+    "ink_frac": 0.0484375,
+    "flood": 0.0,
+    "paired_iou": 1.0,
+    "centroid_error": 0.0
+  },
+  "shuffled_prompt": {
+    "psnr": 20.013702223036024,
+    "digit_iou": 0.5353178977966309,
+    "digit_top1": 0.0,
+    "color_acc": 1.0,
+    "ink_frac": 0.0484375,
+    "flood": 0.018336033308878542,
+    "paired_iou": 0.4699673280119896,
+    "centroid_error": 0.024240055333616006
+  },
+  "position_shuffled_prompt": {
+    "psnr": 15.0841798570421,
+    "digit_iou": 1.0,
+    "digit_top1": 1.0,
+    "color_acc": 1.0,
+    "ink_frac": 0.0484375,
+    "flood": 0.05107187069952488,
+    "paired_iou": 0.0,
+    "centroid_error": 0.36517201794518367
+  },
+  "field_clamped_pi0": {
+    "psnr": 12.075888103908962,
+    "digit_iou": 0.0,
+    "digit_top1": 0.0,
+    "color_acc": 0.0,
+    "ink_frac": 0.0,
+    "flood": 0.0,
+    "paired_iou": 0.0,
+    "centroid_error": 1.0
+  },
+  "causal_effects": {
+    "matched_vs_shuffled_rgb_rms": 0.10484626889228821,
+    "matched_vs_position_shuffled_rgb_rms": 0.1779918670654297,
+    "matched_vs_clamped_rgb_rms": 0.24912144243717194,
+    "matched_latent_field_write_rms": 1.5300202369689941
+  },
+  "assignment": [
+    {
+      "layer": 0,
+      "point_assignment_entropy_norm": 0.9930541515350342,
+      "slice_mass_cv": 0.19560877978801727,
+      "slice_centroid_spread": 0.032924484461545944,
+      "null_mass_mean": null
+    },
+    {
+      "layer": 1,
+      "point_assignment_entropy_norm": 0.7829359173774719,
+      "slice_mass_cv": 0.7318241596221924,
+      "slice_centroid_spread": 0.42663779854774475,
+      "null_mass_mean": null
+    },
+    {
+      "layer": 2,
+      "point_assignment_entropy_norm": 0.9895452260971069,
+      "slice_mass_cv": 0.1855689436197281,
+      "slice_centroid_spread": 0.049551889300346375,
+      "null_mass_mean": null
+    },
+    {
+      "layer": 3,
+      "point_assignment_entropy_norm": 0.9576461911201477,
+      "slice_mass_cv": 0.3689529001712799,
+      "slice_centroid_spread": 0.10018719732761383,
+      "null_mass_mean": null
+    }
+  ],
+  "decision_rules": {
+    "prompt_causal": "matched digit_top1 must exceed shuffled by >=0.50",
+    "write_causal": "matched digit_top1 must exceed pi_x=0 by >=0.50",
+    "capacity": "matched digit_top1 >=0.95 before scaling",
+    "position_causal": "grid only: matched paired_iou must exceed position-shuffled by >=0.50",
+    "grid_capacity": "matched paired_iou >=0.85 and centroid_error <=0.08"
+  },
+  "gate_verdicts": {
+    "prompt_causal": true,
+    "write_causal": true,
+    "capacity": true,
+    "position_causal": true
+  },
+  "review": "not independently reviewed"
+}

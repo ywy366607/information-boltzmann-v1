@@ -1,5 +1,7 @@
 # CLAUDE.md
 
+> **架构唯一来源：** `docs/NORTH_STAR.md`。修改多模态主图、统一端口或生成前必须先读该文档与 `research_tree.json`。必须保留全分辨率点场、瞬态 Slice、语言联合演化和 Slice/Deslice 语义写回；不得以独立生图模型绕过核心框架。
+
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## 仓库概览与核心架构

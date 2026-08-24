@@ -28,11 +28,15 @@ Ablation knobs on SliceRead / Deslice (default all OFF for clean baseline):
     masses need not sum to 1. Deslice preserves leftover (no row-renorm).
   - use_yield_read: Yield-GDN analog on Read. After softmax, ReLU(w−τ_h)
     per head, no renormalize. Uniform 1/M sits in the dead zone (∅).
+  - use_ticket_read: optical-flow tickets. S0 is pred_n = f(H, x_n, y_n),
+    not a broadcast language vector. s_n = ||X_n − pred_n||²; s ≤ τ → ∅.
 """
 from __future__ import annotations
 
 from dataclasses import dataclass
 from typing import Dict, List, Optional, Tuple
+
+import math
 
 import torch
 import torch.nn as nn
@@ -40,11 +44,13 @@ import torch.nn.functional as F
 
 from fine_grain.bayesian_surprise import BayesianSurpriseGate, global_gate_from_surprise
 from fine_grain.hard_admit import YieldGate
+from fine_grain.write_yield import retain_and_write, yield_residual
 from fine_grain.saccade import residual_pixel_mass, residual_rel
 from fine_grain.frontends import FrontendOut
 from fine_grain.mm_projector import MMProjector
 from fine_grain.flow_match import AdaLNZero, TimeCondition, TimestepEmbedder
 from fine_grain.forward_optim import ForwardStateOpt, normalize_kind
+from fine_grain.active_gdn2 import ActiveInferenceGDN2, ActiveInferenceState
 from fine_grain.models import (
     NS_A,
     NS_B,
@@ -101,9 +107,9 @@ class SliceRead(nn.Module):
       use_ada_temp — Transolver++ proj_temperature; else fixed T=1
       use_gumbel   — Transolver++ Gumbel on logits in train
       use_stiefel  — repo NS Stiefel on mass-normalized slice directions
-      use_null_slice — softmax over M content + 1 sink ∅. A point may spend
-        mass on ∅ and not enter any content slice. Returned w is content-only
-        and need not sum to 1. S still mass-norms over the M content slices.
+      use_null_slice — softmax over M content + 1 sink ∅. If point_pe is
+        given, ℓ_∅ = τ − γ e_n (PE-modulated refuse). Else a Linear on the
+        point. Content w need not sum to 1; S mass-norms over content.
       use_yield_read — per-head dead zone on assignment: ReLU(w−τ_h),
         τ_h=softplus(θ_h). Uniform 1/M does not enter any slice.
       point_u — lagged surprise tickets (BLT pack). Not a new entropy model.
@@ -145,8 +151,13 @@ class SliceRead(nn.Module):
             self.to_null = nn.Linear(self.dh, 1)
             nn.init.zeros_(self.to_null.weight)
             nn.init.zeros_(self.to_null.bias)
+            # ℓ_∅ = τ − γ e. τ>0 so r=0 (content logits ~0) prefers ∅.
+            self.pe_null_tau = nn.Parameter(torch.tensor(2.0))
+            self.pe_null_gamma_raw = nn.Parameter(torch.tensor(0.0))
         else:
             self.to_null = None
+            self.pe_null_tau = None
+            self.pe_null_gamma_raw = None
         # Per-head yield τ_h = softplus(θ_h). Init small so rows start open
         # (grads flow). Do not pin to 1/M: that sits on the ReLU kink of a
         # uniform softmax and freezes θ_h.
@@ -165,6 +176,7 @@ class SliceRead(nn.Module):
         self.ns_eps = NS_EPS
         self.last_null = None
         self.last_pack_alpha = None
+        self.last_admit_alpha = None
 
     def forward(
         self,
@@ -172,12 +184,16 @@ class SliceRead(nn.Module):
         w_override: Optional[torch.Tensor] = None,
         pixel_mass: Optional[torch.Tensor] = None,
         point_u: Optional[torch.Tensor] = None,
+        point_admit: Optional[torch.Tensor] = None,
+        admit_tau: Optional[torch.Tensor] = None,
+        point_pe: Optional[torch.Tensor] = None,
     ) -> Tuple[torch.Tensor, torch.Tensor]:
         B, N, _ = x.shape
         h, dh, M = self.h, self.dh, self.M
         xp = self.proj_in(x)  # [B,N,d]
         self.last_null = None
         self.last_pack_alpha = None
+        self.last_admit_alpha = None
         if w_override is not None:
             w_pts = w_override.to(dtype=xp.dtype, device=xp.device)
             if w_pts.shape != (B, N, M):
@@ -191,7 +207,13 @@ class SliceRead(nn.Module):
             xm = self.to_head(xp).reshape(B, N, h, dh).permute(0, 2, 1, 3)
             logits = self.to_logits(xm)  # B,h,N,M
             if self.use_null_slice:
-                logits = torch.cat([logits, self.to_null(xm)], dim=-1)
+                if point_pe is not None:
+                    e = point_pe.reshape(B, 1, N, 1).to(dtype=logits.dtype, device=logits.device)
+                    gamma = F.softplus(self.pe_null_gamma_raw)
+                    ell_null = self.pe_null_tau.to(dtype=logits.dtype) - gamma * e
+                    logits = torch.cat([logits, ell_null.expand(B, h, N, 1)], dim=-1)
+                else:
+                    logits = torch.cat([logits, self.to_null(xm)], dim=-1)
             if self.use_ada_temp:
                 temp = torch.clamp(self.temp(xm) + self.bias, min=0.01)
             else:
@@ -213,6 +235,11 @@ class SliceRead(nn.Module):
         if point_u is not None:
             w_pts, alpha = surprise_pack_weights(w_pts, point_u)
             self.last_pack_alpha = alpha.detach()
+        if point_admit is not None:
+            tau = admit_tau if admit_tau is not None else point_admit.new_zeros(())
+            w_pts, a2 = admit_read_weights(w_pts, point_admit, tau)
+            self.last_admit_alpha = a2.detach()
+            self.last_null = (1.0 - w_pts.sum(dim=-1)).clamp_min(0.0).detach()
         pool_w = w_pts
         if pixel_mass is not None:
             pm = pixel_mass.to(dtype=xp.dtype, device=xp.device).reshape(B, N, 1)
@@ -268,6 +295,70 @@ def surprise_pack_weights(
     w_out = torch.where(use.unsqueeze(-1), packed, w_pts)
     alpha_out = torch.where(use, alpha, torch.zeros_like(alpha))
     return w_out, alpha_out
+
+
+def field_rarity(x: torch.Tensor) -> torch.Tensor:
+    """Per-point contrast vs the field mean. [B,N], mean ≈ 1.
+
+    This is the BLT-style 'is this location like the rest?' score on the
+    live point field (includes xy). Detach: tickets are not a gameable loss.
+    """
+    xd = x.detach()
+    mu = xd.mean(dim=1, keepdim=True)
+    r = (xd - mu).pow(2).mean(dim=-1)
+    return r / r.mean(dim=-1, keepdim=True).clamp_min(1e-6)
+
+
+def flow_residual(
+    X: torch.Tensor,
+    pred: torch.Tensor,
+) -> torch.Tensor:
+    """Optical-flow analog: Δ = X − pred, per-point MSE. [B,N]."""
+    return (X.detach() - pred.detach()).pow(2).mean(dim=-1)
+
+
+LANG_S0_FREQ = 4  # Fourier bands on (y,x); matches slice_four in models.py
+
+
+def xy_features(xy: torch.Tensor, n_freq: int = LANG_S0_FREQ) -> torch.Tensor:
+    """Raw (y,x) plus sin/cos(2^k π xy). [..., 2] → [..., 2+4n].
+
+    Stem already cats raw xy. Fourier lets S0 paint 1px structure that a
+    linear (y,x) map cannot.
+    """
+    if n_freq <= 0:
+        return xy
+    f = (2.0 ** torch.arange(n_freq, device=xy.device, dtype=xy.dtype)) * math.pi
+    a = xy.unsqueeze(-1) * f
+    return torch.cat([xy, torch.sin(a).flatten(-2), torch.cos(a).flatten(-2)], dim=-1)
+
+
+def admit_participation(s: torch.Tensor, tau: torch.Tensor) -> torch.Tensor:
+    """s ≤ τ → 0 (invisible). Optical-flow dead zone, not relative-to-mean."""
+    score = s.detach().reshape(s.shape[0], -1).clamp_min(0.0)
+    t = tau.reshape(()).to(device=score.device, dtype=score.dtype)
+    return F.relu(score - t)
+
+
+def admit_read_weights(
+    w_pts: torch.Tensor,
+    s: torch.Tensor,
+    tau: torch.Tensor,
+) -> Tuple[torch.Tensor, torch.Tensor]:
+    """Zero content mass where prediction error ≤ τ. No row-renorm."""
+    gate = admit_participation(s, tau).to(device=w_pts.device, dtype=w_pts.dtype)
+    return w_pts * gate.unsqueeze(-1), gate
+
+
+def next_admit_score(
+    X: torch.Tensor,
+    U_x: Optional[torch.Tensor] = None,
+    X_prior: Optional[torch.Tensor] = None,
+) -> torch.Tensor:
+    """Δ vs language-prior field if present, else field rarity (first look)."""
+    if X_prior is not None:
+        return flow_residual(X, X_prior)
+    return field_rarity(X)
 
 
 def next_read_tickets(
@@ -522,6 +613,7 @@ class NativeMoTBlock(nn.Module):
         text_mask: Optional[torch.Tensor] = None,
         prompt_mask: Optional[torch.Tensor] = None,
         P: Optional[torch.Tensor] = None,
+        visual_attn_bias: Optional[torch.Tensor] = None,
     ) -> Tuple[torch.Tensor, torch.Tensor, Optional[torch.Tensor]]:
         """
         S: [B,M,d], H: [B,T,d], optional P: [B,N_p,d]
@@ -566,6 +658,16 @@ class NativeMoTBlock(nn.Module):
         neg = torch.finfo(S.dtype).min
         # --- visual queries: all visual keys + prompt text keys only ---
         av = torch.matmul(Qv, K.transpose(-2, -1)) * self.scale
+        if visual_attn_bias is not None:
+            vb = visual_attn_bias.to(device=av.device, dtype=av.dtype)
+            if vb.shape[:2] != (B, self.h):
+                raise ValueError("visual_attn_bias must start with [B,n_heads]")
+            if vb.shape[-2:] == (M, M):
+                av[:, :, n_p:, n_p:L_v] = av[:, :, n_p:, n_p:L_v] + vb
+            elif vb.shape[-2:] == (L_v, L_v):
+                av[:, :, :, :L_v] = av[:, :, :, :L_v] + vb
+            else:
+                raise ValueError("visual_attn_bias has incompatible token axes")
         vis_key_ok = torch.cat([
             torch.ones(B, L_v, device=S.device, dtype=torch.bool),
             prompt_mask,
@@ -575,6 +677,8 @@ class NativeMoTBlock(nn.Module):
         Av = self._merge(torch.matmul(av, Val))
         # Per-visual-token mass on text keys. Slice-selective language uses this.
         self.last_text_mass = av[:, :, :, L_v:].sum(dim=-1).mean(dim=1)  # [B, L_v]
+        # Mean visual-head mass on each text token. Diagnose language routing.
+        self.last_text_token_mass = av[:, :, :, L_v:].mean(dim=(1, 2))  # [B, T]
 
         # --- language queries: all visual + causal text ---
         at = torch.matmul(Qt, K.transpose(-2, -1)) * self.scale
@@ -628,7 +732,11 @@ def coerce_pi_x(pi_x, X: torch.Tensor) -> torch.Tensor:
 
 
 def need_pix_to_pi_x(need_pix, ref: torch.Tensor) -> torch.Tensor:
-    """π_X from omni ``need_pix`` (True = write port)."""
+    """Legacy output-to-write adapter for historical ablations.
+
+    Canonical unified ports must not use this: output selection (``need_pix``)
+    is distinct from latent-field evidence clamping (``pi_x``).
+    """
     if torch.is_tensor(need_pix):
         vals = need_pix.detach().to(device=ref.device, dtype=ref.dtype).reshape(-1)
     else:
@@ -700,6 +808,13 @@ class NativeMoTLayer(nn.Module):
         pack_by_surprise: bool = False,
         hard_admit: bool = False,
         use_yield_read: bool = False,
+        use_ticket_read: bool = False,
+        use_write_yield: bool = False,
+        write_alpha: float = 1.0,
+        use_residual_read: bool = False,
+        use_action_rel_bias: bool = False,
+        use_action_transport: bool = False,
+        use_action_slice_transition: bool = False,
     ):
         super().__init__()
         self.dual_patch = bool(dual_patch)
@@ -719,15 +834,47 @@ class NativeMoTLayer(nn.Module):
         self.eta = self.fwd_opt.eta
         self.s_in_norm = RMSNorm(d)
         self.h_in_norm = RMSNorm(d)
+        self.use_residual_read = bool(use_residual_read)
+        self.use_action_rel_bias = bool(use_action_rel_bias)
+        self.use_action_transport = bool(use_action_transport)
+        self.use_action_slice_transition = bool(use_action_slice_transition)
+        self.res = int(res)
         self.read = SliceRead(
             d_x, d, n_slices, n_heads=n_heads,
             use_ada_temp=use_ada_temp,
             use_gumbel=use_gumbel,
             use_stiefel=use_stiefel,
-            use_null_slice=use_null_slice,
+            use_null_slice=use_null_slice or self.use_residual_read,
             use_yield_read=use_yield_read,
         )
         self.mot = NativeMoTBlock(d=d, n_heads=n_heads)
+        if self.use_action_rel_bias:
+            hidden = max(16, d // 2)
+            self.action_rel_mlp = nn.Sequential(
+                nn.Linear(6, hidden), nn.SiLU(),
+                nn.Linear(hidden, n_heads, bias=False),
+            )
+            nn.init.normal_(self.action_rel_mlp[-1].weight, std=0.02)
+        else:
+            self.action_rel_mlp = None
+        if self.use_action_transport:
+            # Learned displacement of Slice assignments on the fixed Eulerian
+            # grid. Zero initialization leaves every existing path unchanged.
+            self.action_transport = nn.Linear(2, 2, bias=False)
+            nn.init.zeros_(self.action_transport.weight)
+        else:
+            self.action_transport = None
+        if self.use_action_slice_transition:
+            hidden = max(16, d // 2)
+            self.action_transition_mlp = nn.Sequential(
+                nn.Linear(6, hidden), nn.SiLU(),
+                nn.Linear(hidden, 1, bias=False),
+            )
+            nn.init.zeros_(self.action_transition_mlp[-1].weight)
+            self.action_transition_rate_raw = nn.Parameter(torch.tensor(-2.1972246))
+        else:
+            self.action_transition_mlp = None
+            self.action_transition_rate_raw = None
         self.surprise_gate = BayesianSurpriseGate(
             d_model=d,
             n_slices=n_slices,
@@ -741,7 +888,8 @@ class NativeMoTLayer(nn.Module):
         )
         self.deslice = DesliceWrite(
             d, d_x, deslice_topk=deslice_topk, beta=1.0,
-            preserve_mass=use_null_slice or use_yield_read,
+            preserve_mass=use_null_slice or use_yield_read or use_ticket_read
+            or bool(use_residual_read),
         )
         # dual_patch: local default none (patch stream carries spatial local bias)
         if self.dual_patch and local_kind == "dw3":
@@ -776,7 +924,31 @@ class NativeMoTLayer(nn.Module):
         self.pack_by_surprise = bool(pack_by_surprise)
         self.hard_admit = bool(hard_admit)
         self.use_yield_read = bool(use_yield_read)
+        self.use_ticket_read = bool(use_ticket_read)
+        self.use_write_yield = bool(use_write_yield)
+        self.write_alpha = float(write_alpha)
         self.admit = YieldGate(d_x) if self.hard_admit else None
+        # Admission τ, not leak. Init open (softplus(-3)≈0.05); learns; not 1/M.
+        self.write_yield_raw = (
+            nn.Parameter(torch.full((1, 1, d_x), -3.0))
+            if self.use_write_yield else None
+        )
+        # S0 = f(H, xy). Points query the language sequence (not mean-pool).
+        self.lang_s0_freq = LANG_S0_FREQ
+        if self.use_ticket_read or self.use_residual_read:
+            feat_dim = 2 + 4 * self.lang_s0_freq
+            self.s0_q = nn.Linear(feat_dim, d)
+            self.s0_kv = nn.Linear(d, 2 * d)
+            self.lang_s0 = nn.Sequential(
+                nn.Linear(d + feat_dim, d_x),
+                nn.SiLU(),
+                nn.Linear(d_x, d_x),
+            )
+        else:
+            self.s0_q = None
+            self.s0_kv = None
+            self.lang_s0 = None
+        self.ticket_raw = nn.Parameter(torch.tensor(-4.0)) if self.use_ticket_read else None
         # Open-Sora split: adaLN carries diffusion t only. Language stays in MoT.
         self.ada_x = AdaLNZero(d_x)
         self.ada_s = AdaLNZero(d)
@@ -784,6 +956,89 @@ class NativeMoTLayer(nn.Module):
         nn.init.zeros_(self.ada_write[-1].weight)
         nn.init.zeros_(self.ada_write[-1].bias)
         self.cond_to_s = nn.Identity() if d == d_x else nn.Linear(d_x, d)
+
+    @property
+    def lang_proto(self):
+        """Back-compat alias for the spatial S0 net."""
+        return self.lang_s0
+
+    def _transport_write_weights(
+        self,
+        w: torch.Tensor,
+        action_vector: Optional[torch.Tensor],
+        action_mask: Optional[torch.Tensor],
+    ) -> torch.Tensor:
+        """Learn p(write point | read assignment, action) at fixed addresses."""
+        self.last_transport_shift_yx = None
+        if self.action_transport is None or action_vector is None:
+            return w
+        B, N, M = w.shape
+        R = self.res
+        if N != R * R:
+            raise ValueError("action transport requires a square full-resolution field")
+        action_yx = action_vector[..., [1, 0]].to(device=w.device, dtype=w.dtype)
+        shift_yx = torch.tanh(self.action_transport(action_yx)) * (0.5 * R)
+        strength = action_yx.norm(dim=-1).clamp(0.0, 1.0)
+        if action_mask is not None:
+            strength = strength * action_mask.to(device=w.device, dtype=w.dtype)
+
+        # Backward semi-Lagrangian sampling of the assignment field. A 3x3
+        # tile implements the periodic micro-world without moving X addresses.
+        field = w.transpose(1, 2).reshape(B, M, R, R)
+        tiled = field.repeat(1, 1, 3, 3)
+        axis = torch.arange(R, device=w.device, dtype=w.dtype)
+        yy, xx = torch.meshgrid(axis, axis, indexing="ij")
+        source_y = yy[None] - shift_yx[:, 0, None, None] + R
+        source_x = xx[None] - shift_yx[:, 1, None, None] + R
+        denom = float(3 * R - 1)
+        grid = torch.stack(
+            [2.0 * source_x / denom - 1.0, 2.0 * source_y / denom - 1.0],
+            dim=-1,
+        )
+        moved = F.grid_sample(
+            tiled, grid, mode="bilinear", padding_mode="zeros", align_corners=True,
+        ).flatten(2).transpose(1, 2)
+        moved = moved / moved.sum(dim=-1, keepdim=True).clamp_min(1e-6)
+        self.last_transport_shift_yx = shift_yx.detach()
+        return w + strength[:, None, None] * (moved - w)
+
+    def _action_transition_prior(
+        self,
+        S: torch.Tensor,
+        w: torch.Tensor,
+        action_vector: Optional[torch.Tensor],
+        action_mask: Optional[torch.Tensor],
+        enabled: bool,
+    ) -> torch.Tensor:
+        """Apply one normalized p(S_dst | S_src, action) prior transition."""
+        self.last_action_transition = None
+        if (
+            not enabled
+            or bool(getattr(self, "disable_action_transition", False))
+            or self.action_transition_mlp is None
+            or action_vector is None
+        ):
+            return S
+        B, M, _ = S.shape
+        grid = coords(self.res, S.device).to(dtype=S.dtype).expand(B, -1, -1)
+        mass = w.sum(dim=1).clamp_min(1e-5).unsqueeze(-1)
+        centers = torch.einsum("bnm,bnd->bmd", w, grid) / mass
+        # Matrix axes are [destination, source].
+        rel = centers[:, :, None, :] - centers[:, None, :, :]
+        action_yx = action_vector[..., [1, 0]].to(device=S.device, dtype=S.dtype)
+        act = action_yx[:, None, None, :].expand(-1, M, M, -1)
+        feat = torch.cat([rel, act, rel - act], dim=-1)
+        learned = self.action_transition_mlp(feat).squeeze(-1)
+        identity = torch.eye(M, device=S.device, dtype=S.dtype)[None]
+        proposal = torch.softmax(learned, dim=1)
+        strength = action_yx.norm(dim=-1).clamp(0.0, 1.0)
+        if action_mask is not None:
+            strength = strength * action_mask.to(device=S.device, dtype=S.dtype)
+        rate = torch.sigmoid(self.action_transition_rate_raw).to(dtype=S.dtype)
+        transition = identity + strength[:, None, None] * rate * (proposal - identity)
+        self.last_action_transition = transition.detach()
+        self.last_action_transition_rate = float(rate.detach())
+        return torch.einsum("bij,bjd->bid", transition, S)
 
     def _apply_s_update(
         self,
@@ -818,6 +1073,77 @@ class NativeMoTLayer(nn.Module):
         self.last_lang_keep = keep.detach()
         self.last_lang_frac = float(keep.mean().item())
         return delta * keep
+
+    def _pool_h(self, H: torch.Tensor, text_mask: Optional[torch.Tensor]) -> torch.Tensor:
+        if text_mask is None:
+            return H.mean(dim=1)
+        m = text_mask.unsqueeze(-1).to(dtype=H.dtype)
+        return (H * m).sum(dim=1) / m.sum(dim=1).clamp_min(1.0)
+
+    def language_prior(
+        self,
+        H: torch.Tensor,
+        text_mask: Optional[torch.Tensor],
+        n_points: int,
+        device: torch.device,
+        dtype: torch.dtype,
+    ) -> torch.Tensor:
+        """pred_n = f(H, x_n, y_n). [B,N,d_x].
+
+        Each point queries the language *sequence* (not a pooled vector).
+        Same graph for captions, edits, and digits — no class mask.
+        """
+        R = int(getattr(getattr(self, "local", None), "res", 0) or round(n_points ** 0.5))
+        if R * R == n_points:
+            xy = coords(R, device).to(dtype=dtype)
+        else:
+            t = torch.linspace(-1.0, 1.0, n_points, device=device, dtype=dtype)
+            xy = torch.stack([t, t], dim=-1).unsqueeze(0)
+        B = H.shape[0]
+        feat = xy_features(xy, n_freq=self.lang_s0_freq).expand(B, n_points, -1)
+        q = self.s0_q(feat)
+        k, v = self.s0_kv(H).chunk(2, dim=-1)
+        scale = q.shape[-1] ** -0.5
+        attn = torch.matmul(q, k.transpose(-1, -2)) * scale
+        none = None
+        if text_mask is not None:
+            keep = text_mask.bool()
+            none = ~keep.any(dim=-1)
+            attn = attn.masked_fill(~keep.unsqueeze(1), torch.finfo(attn.dtype).min)
+            if bool(none.any()):
+                attn = attn.masked_fill(none[:, None, None], 0.0)
+        h_n = torch.matmul(torch.softmax(attn, dim=-1), v)
+        if none is not None and bool(none.any()):
+            h_n = h_n.masked_fill(none[:, None, None], 0.0)
+        return self.lang_s0(torch.cat([h_n, feat], dim=-1))
+
+    def flow_tickets(
+        self,
+        X: torch.Tensor,
+        H: torch.Tensor,
+        text_mask: Optional[torch.Tensor],
+        X_prior: Optional[torch.Tensor],
+    ) -> torch.Tensor:
+        """Δ = X − S0. S0 is pred_n = f(H, x_n, y_n), not a broadcast vector.
+
+        X_prior is an explicit override (tests / a real previous canvas). The
+        stack does not feed last Deslice back here: that write is spatially
+        constant while Read is collapsed, which is the deadlock we are
+        breaking.
+        """
+        s0 = None
+        if self.lang_s0 is not None:
+            # Live S0: accuracy vs real o is a separate term. Tickets detach.
+            s0 = self.language_prior(H, text_mask, X.shape[1], X.device, X.dtype)
+        self.last_s0 = s0
+        if X_prior is not None:
+            pred = X_prior
+        elif s0 is not None:
+            pred = s0
+        else:
+            pred = torch.zeros_like(X)
+        self.last_lang_pred = pred.detach()
+        return flow_residual(X, pred)
 
     def _recon_from_slices(self, S: torch.Tensor, w: torch.Tensor) -> torch.Tensor:
         return torch.einsum(
@@ -858,15 +1184,64 @@ class NativeMoTLayer(nn.Module):
         W: Optional[torch.Tensor] = None,
         pixel_mass: Optional[torch.Tensor] = None,
         point_u: Optional[torch.Tensor] = None,
+        point_admit: Optional[torch.Tensor] = None,
         t: Optional[torch.Tensor] = None,
         cond: Optional[torch.Tensor] = None,
+        action_vector: Optional[torch.Tensor] = None,
+        action_mask: Optional[torch.Tensor] = None,
+        apply_action_transition: bool = True,
+        causal_delta_s: Optional[torch.Tensor] = None,
+        causal_write_w: Optional[torch.Tensor] = None,
+        causal_prior_gate: Optional[torch.Tensor] = None,
+        causal_delta_x: Optional[torch.Tensor] = None,
+        X_prior: Optional[torch.Tensor] = None,
     ) -> Tuple[torch.Tensor, torch.Tensor, NativeLayerTrace]:
         if cond is not None:
             X = self.ada_x(X, cond)
         X0, H0 = X, H
-        S, w = self.read(X, pixel_mass=pixel_mass, point_u=point_u)
+        admit_tau = None
+        self.last_s0 = None
+        point_pe = None
+        x_read = X
+        # Visual writes (S0 / tickets / language prior) may only read observed
+        # prompt tokens. Answer tokens stay on the causal language path.
+        vis_h_mask = prompt_mask if prompt_mask is not None else text_mask
+        if self.use_residual_read and self.lang_s0 is not None:
+            s0 = self.language_prior(H, vis_h_mask, X.shape[1], X.device, X.dtype)
+            self.last_s0 = s0
+            # Detach S0 in the residual: assignment must not game the prior.
+            r = X - s0.detach()
+            x_read = r
+            point_pe = r.pow(2).mean(dim=-1)
+        elif self.use_ticket_read and point_admit is None:
+            point_admit = self.flow_tickets(X, H, vis_h_mask, X_prior)
+            admit_tau = F.softplus(self.ticket_raw)
+        S, w = self.read(
+            x_read, pixel_mass=pixel_mass, point_u=point_u,
+            point_admit=point_admit, admit_tau=admit_tau,
+            point_pe=point_pe,
+        )
         self.last_null = getattr(self.read, "last_null", None)
         self.last_pack_alpha = getattr(self.read, "last_pack_alpha", None)
+        self.last_admit_alpha = getattr(self.read, "last_admit_alpha", None)
+        visual_attn_bias = None
+        if self.action_rel_mlp is not None and action_vector is not None:
+            grid = coords(self.res, X.device).to(dtype=X.dtype).expand(X.shape[0], -1, -1)
+            mass = w.sum(dim=1).clamp_min(1e-5).unsqueeze(-1)
+            centers = torch.einsum("bnm,bnd->bmd", w, grid) / mass
+            rel = centers[:, :, None, :] - centers[:, None, :, :]
+            # External world actions use (dx, dy), while coords()/centroids use
+            # (y, x). Close the chart before forming geometric residuals.
+            action_yx = action_vector[..., [1, 0]]
+            act = action_yx[:, None, None, :].to(dtype=X.dtype, device=X.device)
+            act_full = act.expand(-1, rel.shape[1], rel.shape[2], -1)
+            feat = torch.cat([rel, act_full, rel - act_full], dim=-1)
+            visual_attn_bias = self.action_rel_mlp(feat).permute(0, 3, 1, 2)
+            if action_mask is not None:
+                visual_attn_bias = visual_attn_bias * action_mask.reshape(-1, 1, 1, 1).to(
+                    device=X.device, dtype=X.dtype,
+                )
+        w_write = self._transport_write_weights(w, action_vector, action_mask)
         if cond is not None:
             S = self.ada_s(S, self.cond_to_s(cond))
         if self.interact_prenorm:
@@ -879,6 +1254,7 @@ class NativeMoTLayer(nn.Module):
                 P = self.s_in_norm(P)
             S2n, H2n, P2 = self.mot(
                 S_in, H_in, text_mask=text_mask, prompt_mask=prompt_mask, P=P,
+                visual_attn_bias=visual_attn_bias,
             )
             delta = S2n - S_in
             v_H = H2n - H_in
@@ -886,13 +1262,14 @@ class NativeMoTLayer(nn.Module):
         else:
             S2n, H2n, _ = self.mot(
                 S_in, H_in, text_mask=text_mask, prompt_mask=prompt_mask,
+                visual_attn_bias=visual_attn_bias,
             )
             delta = S2n - S_in
             v_H = H2n - H_in
             P2 = None
         delta = self._mask_lang_delta(delta, S.shape[1])
         gate, s_meta = self.surprise_gate(
-            S, H, delta_S=delta, text_mask=text_mask,
+            S, H, delta_S=delta, text_mask=vis_h_mask,
         )
         u_field = s_meta.get("surprise", gate.new_zeros(gate.shape))
         if force_gate is not None:
@@ -928,21 +1305,66 @@ class NativeMoTLayer(nn.Module):
             if t is not None and getattr(self, "prior_write_by_t", True):
                 gain = (pw * t.reshape(-1, 1, 1)).to(dtype=S.dtype)
             S_write = S_write + gain * (mu_p - S)
+        S_write = self._action_transition_prior(
+            S_write, w, action_vector, action_mask, enabled=apply_action_transition,
+        )
         write = str(getattr(self, "deslice_write", "increment")).lower()
         S_W = None
         if write in ("absolute", "abs", "s", "state"):
             # Belief broadcast: scatter proj(S_write), including bias (Champion B).
-            delta_x = self.deslice(S_write, w, X) - X
+            delta_x = self.deslice(S_write, w_write, X) - X
         elif write in ("workspace", "ws", "consistency", "consist"):
             # Idempotent absolute broadcast onto workspace W, not time increment.
             # R(W) ≠ R(E+W)=S, so this is not P0. Empty W ⇒ ≈ D(S) (first stamp).
             if W is None:
                 W = torch.zeros_like(X)
             S_W, _ = self.read(W)
-            delta_x = self.deslice.write_delta(S_write - S_W, w)
+            delta_x = self.deslice.write_delta(S_write - S_W, w_write)
         else:
             # Velocity write: scatter proj(S_write − S), bias-free so 0 → 0.
-            delta_x = self.deslice.write_delta(S_write - S, w)
+            delta_x = self.deslice.write_delta(S_write - S, w_write)
+        # Physical-time prior action stays in its persistent atlas all the way
+        # to X. Reusing transient/content w here would discard the address
+        # identity that the causal memory was introduced to provide. This is
+        # still the same bias-free Deslice projection and the same X residual.
+        self.last_causal_prior = None
+        self.last_causal_gate = None
+        if causal_delta_s is not None:
+            if causal_write_w is None:
+                raise ValueError("causal_delta_s requires persistent Deslice weights")
+            if causal_delta_s.shape != S.shape:
+                raise ValueError(
+                    f"causal_delta_s {tuple(causal_delta_s.shape)} != {tuple(S.shape)}"
+                )
+            if causal_write_w.shape != w.shape:
+                raise ValueError(
+                    f"causal_write_w {tuple(causal_write_w.shape)} != {tuple(w.shape)}"
+                )
+            if causal_prior_gate is None:
+                cg = S.new_ones(S.shape[0], 1, 1)
+            else:
+                cg = torch.as_tensor(
+                    causal_prior_gate, device=S.device, dtype=S.dtype,
+                ).reshape(S.shape[0], 1, 1).clamp(0.0, 1.0)
+            delta_x = delta_x + cg * self.deslice.write_delta(
+                causal_delta_s, causal_write_w,
+            )
+            self.last_causal_prior = causal_delta_s.detach()
+            self.last_causal_gate = cg.detach()
+        if causal_delta_x is not None:
+            if causal_delta_x.shape != X.shape:
+                raise ValueError(
+                    f"causal_delta_x {tuple(causal_delta_x.shape)} != {tuple(X.shape)}"
+                )
+            if causal_prior_gate is None:
+                cg = X.new_ones(X.shape[0], 1, 1)
+            else:
+                cg = torch.as_tensor(
+                    causal_prior_gate, device=X.device, dtype=X.dtype,
+                ).reshape(X.shape[0], 1, 1).clamp(0.0, 1.0)
+            delta_x = delta_x + cg * causal_delta_x
+            self.last_causal_prior = causal_delta_x.detach()
+            self.last_causal_gate = cg.detach()
         if self.dual_patch and self.use_unpatch and P2 is not None:
             delta_x = delta_x + self.unpatch(P2)
         if cond is not None:
@@ -967,8 +1389,16 @@ class NativeMoTLayer(nn.Module):
                 self.last_a = scale.detach()
                 self.last_tau = tau.detach()
                 self.last_admit_frac = float((scale > 0).float().mean().item())
+        if self.use_write_yield and self.write_yield_raw is not None:
+            tau = F.softplus(self.write_yield_raw)
+            delta_x = yield_residual(delta_x, tau)
+            self.last_write_tau = tau.detach()
+            self.last_write_admit = float((delta_x.abs() > 0).float().mean().item())
+        else:
+            self.last_write_tau = None
+            self.last_write_admit = 1.0
         pi = coerce_pi_x(pi_x, X)
-        X1 = X + pi * delta_x
+        X1 = retain_and_write(X, delta_x, self.write_alpha, pi)
         loc_out = self.local(X1)
         loc_res = loc_out - X1
         if yield_scale is not None:
@@ -977,7 +1407,7 @@ class NativeMoTLayer(nn.Module):
         # Language-only prior canvas. Workspace wrote μp on slices; the
         # prior that seeing compares against is this field on points.
         if mu_p is not None:
-            self.last_X_prior = X0 + pi * self.deslice.write_delta(mu_p - S, w)
+            self.last_X_prior = X0 + pi * self.deslice.write_delta(mu_p - S, w_write)
         else:
             self.last_X_prior = None
         rms_s = float(S.detach().pow(2).mean().sqrt())
@@ -987,6 +1417,7 @@ class NativeMoTLayer(nn.Module):
         self.last_rms_ratio = rms_d / max(rms_s, 1e-6)
         # Store intermediate diagnostics for visualization / probe
         self.last_w = w.detach()
+        self.last_w_write = w_write.detach()
         self.last_u = s_meta.get("surprise", None)
         self.last_u_mu = s_meta.get("u_mu", None)
         self.last_u_sigma = s_meta.get("u_sigma", None)
@@ -1021,7 +1452,7 @@ class NativeMoTLayer(nn.Module):
         self.last_gap_x = None
         self.last_usig_x = None
         self.last_sigq_x = None
-        w_det = w.detach()
+        w_det = w_write.detach()
         if s_meta.get("surprise") is not None:
             self.last_U_x = self.deslice.scatter_to_points(s_meta["surprise"].detach(), w_det)
         if s_meta.get("gap") is not None:
@@ -1151,6 +1582,27 @@ class NativeMoTStack(nn.Module):
         pack_by_surprise: bool = False,
         hard_admit: bool = False,
         use_yield_read: bool = False,
+        use_ticket_read: bool = False,
+        use_write_yield: bool = False,
+        write_alpha: float = 1.0,
+        use_residual_read: bool = False,
+        use_modal_precision: bool = False,
+        use_target_time: bool = False,
+        use_target_time_adaln: bool = False,
+        use_horizon_tokens: bool = False,
+        gate_action_by_horizon: bool = False,
+        history_size: int = 0,
+        action_dim: int = 0,
+        use_action_adaln: bool = False,
+        use_action_tokens: bool = False,
+        use_action_rel_bias: bool = False,
+        use_action_transport: bool = False,
+        use_action_slice_transition: bool = False,
+        use_goal_adaln: bool = False,
+        use_active_gdn2: bool = False,
+        use_active_gdn2_history_transport: bool = False,
+        active_gdn2_initial_trust: float = 0.0,
+        terminal_token_atlas: bool = False,
     ):
         super().__init__()
         self.res = res
@@ -1198,6 +1650,61 @@ class NativeMoTStack(nn.Module):
         self.pack_by_surprise = bool(pack_by_surprise)
         self.hard_admit = bool(hard_admit)
         self.use_yield_read = bool(use_yield_read)
+        self.use_ticket_read = bool(use_ticket_read)
+        self.use_write_yield = bool(use_write_yield)
+        self.write_alpha = float(write_alpha)
+        self.use_residual_read = bool(use_residual_read)
+        self.use_modal_precision = bool(use_modal_precision)
+        self.use_target_time = bool(use_target_time)
+        self.use_target_time_adaln = bool(use_target_time_adaln)
+        self.use_horizon_tokens = bool(use_horizon_tokens)
+        self.gate_action_by_horizon = bool(gate_action_by_horizon)
+        self.history_size = max(0, int(history_size))
+        self.action_dim = max(0, int(action_dim))
+        self.use_action_adaln = bool(use_action_adaln)
+        self.use_action_tokens = bool(use_action_tokens)
+        self.use_action_rel_bias = bool(use_action_rel_bias)
+        self.use_action_transport = bool(use_action_transport)
+        self.use_action_slice_transition = bool(use_action_slice_transition)
+        self.use_goal_adaln = bool(use_goal_adaln)
+        self.use_active_gdn2 = bool(use_active_gdn2)
+        self.use_active_gdn2_history_transport = bool(
+            use_active_gdn2_history_transport
+        )
+        self.active_gdn2_initial_trust = float(active_gdn2_initial_trust)
+        self.terminal_token_atlas = bool(terminal_token_atlas)
+        if self.terminal_token_atlas:
+            side = int(round(self.n_slices ** 0.5))
+            if side * side != self.n_slices:
+                raise ValueError(
+                    "terminal_token_atlas requires a square n_slices"
+                )
+        if self.use_target_time_adaln and not self.use_target_time:
+            raise ValueError("use_target_time_adaln requires use_target_time")
+        if self.use_horizon_tokens and not self.use_target_time:
+            raise ValueError("use_horizon_tokens requires use_target_time")
+        if self.use_horizon_tokens and self.use_target_time_adaln:
+            raise ValueError("horizon tokens and horizon AdaLN are competing ablations")
+        if self.gate_action_by_horizon and not self.use_target_time:
+            raise ValueError("gate_action_by_horizon requires use_target_time")
+        if self.use_action_adaln and self.action_dim <= 0:
+            raise ValueError("use_action_adaln requires action_dim > 0")
+        if self.use_action_tokens and self.action_dim <= 0:
+            raise ValueError("use_action_tokens requires action_dim > 0")
+        if self.use_action_tokens and self.use_action_adaln:
+            raise ValueError("action tokens and action AdaLN are competing ablations")
+        if self.use_action_rel_bias and self.action_dim != 2:
+            raise ValueError("action-relative Slice bias currently requires action_dim=2")
+        if self.use_action_transport and self.action_dim != 2:
+            raise ValueError("action Slice transport currently requires action_dim=2")
+        if self.use_action_slice_transition and self.action_dim != 2:
+            raise ValueError("action Slice transition currently requires action_dim=2")
+        if self.use_active_gdn2 and self.action_dim not in (0, 2):
+            raise ValueError("active GDN-2 currently expects no action or a 2D action")
+        if self.use_active_gdn2 and self.use_action_slice_transition:
+            raise ValueError(
+                "active GDN-2 replaces the transient action Slice transition"
+            )
         # dual_patch: default no extra LocalVisual (patch stream is the local bias)
         if self.dual_patch and local_kind == "dw3":
             local_kind = "none"
@@ -1207,17 +1714,94 @@ class NativeMoTStack(nn.Module):
         self.stem = nn.Linear(5, d_x)
         self.t_coord = nn.Linear(1, d_x, bias=False)
         nn.init.normal_(self.t_coord.weight, std=0.02)
+        if self.use_modal_precision:
+            # Boundary conditions, not task IDs: zero means the corresponding
+            # modality is unobserved; one means observed evidence.
+            self.image_precision_coord = nn.Linear(1, d_x, bias=False)
+            self.text_precision_coord = nn.Linear(1, d, bias=False)
+            nn.init.zeros_(self.image_precision_coord.weight)
+            nn.init.zeros_(self.text_precision_coord.weight)
+        else:
+            self.image_precision_coord = None
+            self.text_precision_coord = None
+        if self.use_target_time and not self.use_horizon_tokens and not self.gate_action_by_horizon:
+            # A physical horizon separates reconstruction (0) from prediction
+            # (>0). It is not a port/readout switch.
+            self.target_time_coord = nn.Linear(1, d_x, bias=False)
+            nn.init.zeros_(self.target_time_coord.weight)
+        else:
+            self.target_time_coord = None
+        if self.history_size > 0:
+            # Transolver-style Eulerian history: ordered frame channels at the
+            # same point enter the one full-resolution stem. No video backbone
+            # or permanent temporal tokens are introduced.
+            self.history_stem = nn.Linear(
+                3 * self.history_size, d_x, bias=False,
+            )
+            nn.init.normal_(self.history_stem.weight, std=0.02)
+        else:
+            self.history_stem = None
+        if self.action_dim > 0:
+            # A sequence is encoded stepwise and pooled in chronological order.
+            # Subtracting the zero-action embedding gives exact action=0
+            # identity even though the affine layer has a bias.
+            self.action_step = nn.Linear(self.action_dim, d_x, bias=True)
+            self.action_pos = nn.Parameter(
+                torch.zeros(1, max(1, self.history_size), d_x)
+            )
+            nn.init.normal_(self.action_pos, std=0.02)
+            self.action_to_x = nn.Linear(d_x, d_x, bias=False)
+            self.action_to_h = nn.Linear(d_x, d, bias=False)
+            self.action_token_type = nn.Parameter(torch.zeros(1, 1, d))
+            # The precision gate already makes pi_a=0 an exact identity.  A
+            # live projection avoids the previous double-zero path
+            # (zero action projection + zero-AdaLN), which let optimization
+            # solve the toy dynamics from history while ignoring the action.
+            nn.init.normal_(self.action_to_x.weight, std=0.02)
+            nn.init.normal_(self.action_to_h.weight, std=0.02)
+            nn.init.normal_(self.action_token_type, std=0.02)
+        else:
+            self.action_step = None
+            self.action_pos = None
+            self.action_to_x = None
+            self.action_to_h = None
+            self.action_token_type = None
         self.stem_local = nn.Sequential(
             nn.Conv2d(d_x, d_x, 3, padding=1, groups=d_x),
             nn.Conv2d(d_x, d_x, 1),
         )
         self.text_in = nn.Linear(d_llm, d)
         self.text_out = nn.Linear(d, d_llm)
+        # Zero-init residual gates: H_llm = embedding + g_h ΔH, tok = g_v proj(S).
+        # g=0 keeps the frozen LM on observed token embeddings (token interface).
+        self.text_out_gate = nn.Parameter(torch.zeros(()))
+        self.proj_gate = nn.Parameter(torch.zeros(()))
+        if self.terminal_token_atlas:
+            # Generic cross-Slice likelihood connector. A token-wise projector
+            # cannot express 2-D topology while Pythia is frozen. Zero-init
+            # residual keeps old checkpoints exact until token NLL trains it.
+            width = self.n_slices * d
+            self.terminal_atlas_mix = nn.Linear(width, width, bias=False)
+            nn.init.zeros_(self.terminal_atlas_mix.weight)
+            self.terminal_atlas_to_text = nn.Linear(width, d_llm, bias=True)
+            nn.init.zeros_(self.terminal_atlas_to_text.weight)
+            nn.init.zeros_(self.terminal_atlas_to_text.bias)
+        else:
+            self.terminal_atlas_mix = None
+            self.terminal_atlas_to_text = None
         # Shared time condition (flow matching). Zero-init: absent t is identity.
         self.time_cond = TimeCondition(d_x)
         # Kept for old FM ckpts. Live path is t_coord on each point.
         self.t_embed = TimestepEmbedder(d_x)
         self.y_to_c = nn.Linear(d, d_x)
+        if self.use_horizon_tokens:
+            self.horizon_to_h = nn.Linear(d_x, d, bias=False)
+            self.horizon_token_type = nn.Parameter(torch.zeros(1, 1, d))
+            nn.init.normal_(self.horizon_to_h.weight, std=0.02)
+            nn.init.normal_(self.horizon_token_type, std=0.02)
+        else:
+            self.horizon_to_h = None
+            self.horizon_token_type = None
 
         n_mods = 1 if self.share_layers else n_layers
         layer_kw = dict(
@@ -1252,8 +1836,44 @@ class NativeMoTStack(nn.Module):
             pack_by_surprise=self.pack_by_surprise,
             hard_admit=self.hard_admit,
             use_yield_read=self.use_yield_read,
+            use_ticket_read=self.use_ticket_read,
+            use_write_yield=self.use_write_yield,
+            write_alpha=self.write_alpha,
+            use_residual_read=self.use_residual_read,
+            use_action_rel_bias=self.use_action_rel_bias,
+            use_action_transport=self.use_action_transport,
         )
-        self.layers = nn.ModuleList([NativeMoTLayer(**layer_kw) for _ in range(n_mods)])
+        self.layers = nn.ModuleList([
+            NativeMoTLayer(
+                **layer_kw,
+                use_action_slice_transition=(self.use_action_slice_transition and idx == 0),
+            )
+            for idx in range(n_mods)
+        ])
+        if self.use_active_gdn2:
+            # Adding an experimental module must not consume the global RNG
+            # stream and silently change downstream heads absent from an old
+            # checkpoint. fork_rng restores the caller's CPU RNG state.
+            with torch.random.fork_rng(devices=[]):
+                torch.manual_seed(1702)
+                self.active_gdn2 = ActiveInferenceGDN2(
+                    d_model=d_x, n_slots=n_slices, res=res,
+                    initial_prior_trust=self.active_gdn2_initial_trust,
+                )
+        else:
+            self.active_gdn2 = None
+        if self.use_target_time_adaln or self.use_action_adaln or self.use_goal_adaln:
+            # tau=0 and pi_action=0 must remain exact identity boundaries.
+            # A trainable affine bias would leak the future control operator
+            # into reconstruction/generation even when the control is absent.
+            for layer in self.layers:
+                for module in (
+                    layer.ada_x.net[-1],
+                    layer.ada_s.net[-1],
+                    layer.ada_write[-1],
+                ):
+                    nn.init.zeros_(module.bias)
+                    module.bias.requires_grad_(False)
         if self.share_layers:
             self.lti_x = LTIInjection(d_x)
             self.lti_h = LTIInjection(d)
@@ -1279,11 +1899,81 @@ class NativeMoTStack(nn.Module):
         self._last_X_prior = None
         self._last_H = None
         self._last_X_stem = None
+        self._last_H_stem = None
+        self._last_trace_text_mask = None
+        self._last_X_steps: List[torch.Tensor] = []
+        self.record_field_trace = False
         self._last_W = None
         self._last_step_H: List[torch.Tensor] = []
         self._last_rho: Dict[str, float] = {"rho_x": 0.0, "rho_h": 0.0}
         self._last_looks: Optional[torch.Tensor] = None
         self._last_traces: List[NativeLayerTrace] = []
+        self._last_causal_state: Optional[ActiveInferenceState] = None
+        self._last_causal_prior_mu: Optional[torch.Tensor] = None
+        self._last_causal_prior_logvar: Optional[torch.Tensor] = None
+        self._last_causal_posterior_mu: Optional[torch.Tensor] = None
+        self._last_causal_posterior_logvar: Optional[torch.Tensor] = None
+        self._last_causal_diagnostics: Dict[str, torch.Tensor] = {}
+
+    def set_record_field_trace(self, enabled: bool = True) -> None:
+        """Opt in to detached X_0..X_K snapshots for mechanism probes.
+
+        Full-resolution traces are disabled by default so normal training does
+        not retain another copy of every point field.
+        """
+        self.record_field_trace = bool(enabled)
+
+    @torch.no_grad()
+    def common_f2_anchor_energy(
+        self,
+        X: torch.Tensor,
+        anchor_layer: int = 0,
+    ) -> torch.Tensor:
+        """Evaluate one field with the fixed prompt and F2 anchor coordinate."""
+        if self._last_H_stem is None:
+            raise RuntimeError(
+                "no prompt anchor; call set_record_field_trace(True) before forward"
+            )
+        if not 0 <= int(anchor_layer) < len(self.layers):
+            raise IndexError(f"anchor_layer={anchor_layer} outside layer range")
+        layer = self.layers[int(anchor_layer)]
+        gate = layer.surprise_gate
+        if getattr(gate, "mode", None) != "v1_bayes":
+            raise RuntimeError("common F2 anchor requires surprise_mode='v1_bayes'")
+        S, _ = layer.read(X)
+        pred = gate.prior_predictive(
+            S,
+            self._last_H_stem,
+            text_mask=self._last_trace_text_mask,
+        )
+        return pred["F_min"].float().mean(dim=(1, 2))
+
+    @torch.no_grad()
+    def common_f2_anchor_trace(
+        self,
+        anchor_layer: int = 0,
+    ) -> Dict[str, torch.Tensor]:
+        """Evaluate one fixed F2 prior-predictive energy on every saved X_k.
+
+        The selected layer contributes one trained SliceRead and one trained
+        language-prior head. Those modules and the initial prompt state H_0
+        are reused unchanged for all k. The method is diagnostic-only: it does
+        not call MoT, Deslice, LocalVisual, or mutate the persistent field.
+        """
+        if not self._last_X_steps or self._last_H_stem is None:
+            raise RuntimeError(
+                "no field trace; call set_record_field_trace(True) before forward"
+            )
+        energies = [
+            self.common_f2_anchor_energy(X_k, anchor_layer=anchor_layer)
+            for X_k in self._last_X_steps
+        ]
+        energy = torch.stack(energies, dim=1)
+        return {
+            "energy": energy,
+            "delta": energy[:, 1:] - energy[:, :-1],
+            "terminal_delta": energy[:, -1] - energy[:, 0],
+        }
 
     def set_write_knobs(self, deslice_write: str = "increment", gate_h_local: bool = True) -> None:
         """Eval-time switch: absolute S broadcast vs ΔS velocity; gate H/Local or not."""
@@ -1313,7 +2003,283 @@ class NativeMoTStack(nn.Module):
             "rho_h": float(self.lti_h.rho().item()),
         }
 
-    def encode_X(self, img: torch.Tensor, t: Optional[torch.Tensor] = None) -> torch.Tensor:
+    @staticmethod
+    def _point_condition(
+        value,
+        batch: int,
+        points: int,
+        device: torch.device,
+        dtype: torch.dtype,
+        default: float,
+    ) -> torch.Tensor:
+        """Broadcast a scalar/batch/map boundary value to [B,N,1]."""
+        if value is None:
+            return torch.full((batch, points, 1), default, device=device, dtype=dtype)
+        v = torch.as_tensor(value, device=device, dtype=dtype)
+        if v.ndim == 0:
+            return v.reshape(1, 1, 1).expand(batch, points, 1)
+        if v.ndim == 1:
+            return v.reshape(batch, 1, 1).expand(batch, points, 1)
+        if v.ndim == 2:
+            if v.shape[1] == 1:
+                return v.reshape(batch, 1, 1).expand(batch, points, 1)
+            return v.reshape(batch, points, 1)
+        if v.ndim == 3:
+            return v.expand(batch, points, 1)
+        if v.ndim == 4 and v.shape[1] == 1:
+            return v.flatten(2).transpose(1, 2)
+        raise ValueError(f"cannot broadcast boundary condition with shape {tuple(v.shape)}")
+
+    def _transition_action_precision(
+        self,
+        action_precision,
+        target_time,
+        batch: int,
+        device: torch.device,
+        dtype: torch.dtype,
+    ):
+        """Apply action only across a nonzero prediction horizon."""
+        if not self.gate_action_by_horizon:
+            return action_precision
+        if target_time is None:
+            tau = torch.zeros(batch, device=device, dtype=dtype)
+        else:
+            tau = torch.as_tensor(target_time, device=device, dtype=dtype).reshape(-1)
+            if tau.numel() == 1:
+                tau = tau.expand(batch)
+            if tau.numel() != batch:
+                raise ValueError("target_time must be scalar or [B]")
+        gate = tau.clamp(0.0, 1.0)
+        if action_precision is None:
+            return gate
+        pi = torch.as_tensor(action_precision, device=device, dtype=dtype)
+        if pi.ndim == 0:
+            return pi * gate
+        if pi.ndim == 1:
+            return pi * gate
+        return pi * gate.reshape(batch, *([1] * (pi.ndim - 1)))
+
+    def _history_features(
+        self,
+        history_images,
+        history_precision,
+        batch: int,
+        res: int,
+        device: torch.device,
+        dtype: torch.dtype,
+    ) -> Optional[torch.Tensor]:
+        """Encode ordered Eulerian frame values into [B,N,d_x]."""
+        if self.history_stem is None or history_images is None:
+            return None
+        hist = torch.as_tensor(history_images, device=device, dtype=dtype)
+        if hist.ndim != 5 or hist.shape[0] != batch or hist.shape[2] != 3:
+            raise ValueError(
+                "history_images must have shape [B,T,3,R,R], got "
+                f"{tuple(hist.shape)}"
+            )
+        if hist.shape[-2:] != (res, res):
+            raise ValueError(
+                f"history resolution {tuple(hist.shape[-2:])} != {(res, res)}"
+            )
+        t_hist = hist.shape[1]
+        if history_precision is None:
+            pi = torch.ones(batch, t_hist, device=device, dtype=dtype)
+        else:
+            pi = torch.as_tensor(
+                history_precision, device=device, dtype=dtype,
+            )
+            if pi.ndim == 0:
+                pi = pi.reshape(1, 1).expand(batch, t_hist)
+            elif pi.ndim == 1:
+                if pi.numel() == batch:
+                    pi = pi.reshape(batch, 1).expand(batch, t_hist)
+                else:
+                    pi = pi.reshape(1, -1).expand(batch, -1)
+            elif pi.ndim != 2:
+                raise ValueError("history_precision must be scalar, [B], or [B,T]")
+            if pi.shape != (batch, t_hist):
+                raise ValueError(
+                    f"history_precision shape {tuple(pi.shape)} != {(batch, t_hist)}"
+                )
+        if t_hist > self.history_size:
+            hist = hist[:, -self.history_size :]
+            pi = pi[:, -self.history_size :]
+        elif t_hist < self.history_size:
+            pad = self.history_size - t_hist
+            hist = torch.cat(
+                [hist.new_zeros(batch, pad, 3, res, res), hist], dim=1,
+            )
+            pi = torch.cat([pi.new_zeros(batch, pad), pi], dim=1)
+        hist = hist * pi[:, :, None, None, None]
+        point_hist = hist.permute(0, 3, 4, 1, 2).reshape(
+            batch, res * res, 3 * self.history_size,
+        )
+        return self.history_stem(point_hist)
+
+    def _action_embedding(
+        self,
+        action,
+        action_precision,
+        batch: int,
+        device: torch.device,
+        dtype: torch.dtype,
+    ) -> Optional[torch.Tensor]:
+        """Encode a chronological action sequence with exact pi_a=0 identity."""
+        if self.action_step is None:
+            return None
+        if action is None:
+            return torch.zeros(batch, self.d_x, device=device, dtype=dtype)
+        act = torch.as_tensor(action, device=device, dtype=dtype)
+        if act.ndim == 1:
+            if self.action_dim == 1 and act.numel() == batch:
+                act = act.reshape(batch, 1, 1)
+            else:
+                act = act.reshape(1, 1, self.action_dim).expand(batch, -1, -1)
+        elif act.ndim == 2:
+            act = act.unsqueeze(1)
+        if act.ndim != 3 or act.shape[0] != batch or act.shape[-1] != self.action_dim:
+            raise ValueError(
+                f"action must have shape [B,A] or [B,T,A], got {tuple(act.shape)}"
+            )
+        t_act = act.shape[1]
+        if action_precision is None:
+            pi = torch.ones(batch, t_act, 1, device=device, dtype=dtype)
+        else:
+            pi = torch.as_tensor(action_precision, device=device, dtype=dtype)
+            if pi.ndim == 0:
+                pi = pi.reshape(1, 1, 1).expand(batch, t_act, 1)
+            elif pi.ndim == 1:
+                pi = pi.reshape(batch, 1, 1).expand(batch, t_act, 1)
+            elif pi.ndim == 2:
+                pi = pi.unsqueeze(-1)
+            if pi.shape != (batch, t_act, 1):
+                raise ValueError(
+                    f"action_precision shape {tuple(pi.shape)} != {(batch, t_act, 1)}"
+                )
+        slots = self.action_pos.shape[1]
+        if t_act > slots:
+            act = act[:, -slots:]
+            pi = pi[:, -slots:]
+            t_act = slots
+        pos = self.action_pos[:, :t_act].to(device=device, dtype=dtype)
+        zero = torch.zeros_like(act)
+        delta = self.action_step(act * pi) - self.action_step(zero)
+        # Slot-specific multiplicative coordinates preserve action order;
+        # adding position alone would vanish under mean pooling or leak when
+        # the action is missing.
+        delta = delta * (1.0 + torch.tanh(pos)) * pi
+        return delta.mean(dim=1)
+
+    def _action_token(
+        self,
+        action,
+        action_precision,
+        batch: int,
+        device: torch.device,
+        dtype: torch.dtype,
+    ) -> Tuple[torch.Tensor, torch.Tensor]:
+        """One masked control token; pi_a=0 is invisible to every Slice query."""
+        emb = self._action_embedding(
+            action, action_precision, batch, device, dtype,
+        )
+        if emb is None or self.action_to_h is None:
+            raise RuntimeError("action token requested without an action encoder")
+        if action is None:
+            present = torch.zeros(batch, device=device, dtype=torch.bool)
+        elif action_precision is None:
+            present = torch.ones(batch, device=device, dtype=torch.bool)
+        else:
+            pi = torch.as_tensor(action_precision, device=device, dtype=dtype)
+            if pi.ndim == 0:
+                present = (pi > 0).expand(batch)
+            elif pi.ndim == 1:
+                if pi.numel() != batch:
+                    raise ValueError("1D action_precision must have one value per batch item")
+                present = pi > 0
+            else:
+                if pi.shape[0] != batch:
+                    raise ValueError("action_precision first dimension must equal batch")
+                present = pi.reshape(batch, -1).amax(dim=1) > 0
+        token = self.action_to_h(emb).unsqueeze(1)
+        token = token + self.action_token_type.to(device=device, dtype=dtype)
+        token = token * present[:, None, None].to(dtype=dtype)
+        return token, present[:, None]
+
+    def _action_vector(
+        self,
+        action,
+        action_precision,
+        batch: int,
+        device: torch.device,
+        dtype: torch.dtype,
+    ) -> Tuple[torch.Tensor, torch.Tensor]:
+        """Precision-weighted geometric action for relative Slice attention."""
+        if action is None:
+            return (
+                torch.zeros(batch, 2, device=device, dtype=dtype),
+                torch.zeros(batch, device=device, dtype=torch.bool),
+            )
+        act = torch.as_tensor(action, device=device, dtype=dtype)
+        if act.ndim == 1:
+            act = act.reshape(1, 1, 2).expand(batch, -1, -1)
+        elif act.ndim == 2:
+            act = act.unsqueeze(1)
+        if act.ndim != 3 or act.shape[0] != batch or act.shape[-1] != 2:
+            raise ValueError("geometric action must have shape [B,2] or [B,T,2]")
+        if action_precision is None:
+            pi = torch.ones(batch, act.shape[1], 1, device=device, dtype=dtype)
+        else:
+            pi = torch.as_tensor(action_precision, device=device, dtype=dtype)
+            if pi.ndim == 0:
+                pi = pi.reshape(1, 1, 1).expand(batch, act.shape[1], 1)
+            elif pi.ndim == 1:
+                pi = pi.reshape(batch, 1, 1).expand(batch, act.shape[1], 1)
+            elif pi.ndim == 2:
+                pi = pi.unsqueeze(-1)
+            if pi.shape != (batch, act.shape[1], 1):
+                raise ValueError("action_precision is incompatible with geometric action")
+        present = pi.amax(dim=(1, 2)) > 0
+        denom = pi.sum(dim=1).clamp_min(1.0)
+        vector = (act * pi).sum(dim=1) / denom
+        return vector, present
+
+    def _horizon_token(
+        self,
+        target_time,
+        batch: int,
+        device: torch.device,
+        dtype: torch.dtype,
+    ) -> Tuple[torch.Tensor, torch.Tensor]:
+        """Temporary operator token; tau=0 is masked and never enters X."""
+        if self.horizon_to_h is None:
+            raise RuntimeError("horizon token requested without horizon encoder")
+        if target_time is None:
+            tau = torch.zeros(batch, device=device, dtype=dtype)
+        else:
+            tau = torch.as_tensor(target_time, device=device, dtype=dtype).reshape(-1)
+            if tau.numel() == 1:
+                tau = tau.expand(batch)
+            if tau.numel() != batch:
+                raise ValueError("target_time must be scalar or have one value per batch item")
+        zero = torch.zeros_like(tau)
+        delta = self.t_embed(tau) - self.t_embed(zero)
+        present = tau.abs() > 0
+        token = self.horizon_to_h(delta).unsqueeze(1)
+        token = token + self.horizon_token_type.to(device=device, dtype=dtype)
+        token = token * present[:, None, None].to(dtype=dtype)
+        return token, present[:, None]
+
+    def encode_X(
+        self,
+        img: torch.Tensor,
+        t: Optional[torch.Tensor] = None,
+        image_precision=None,
+        target_time=None,
+        history_images=None,
+        history_precision=None,
+        action=None,
+        action_precision=None,
+    ) -> torch.Tensor:
         """Point field. Recognition: [rgb, x, y]. FM: + t on every point.
 
         t is a coordinate, same as xy — SliceRead can pool it. Language
@@ -1323,13 +2289,194 @@ class NativeMoTStack(nn.Module):
         assert R == self.res, (R, self.res)
         pts = img.reshape(B, 3, R * R).transpose(1, 2)
         p = coords(R, img.device).expand(B, -1, -1)
+        image_pi = None
+        if self.use_modal_precision:
+            image_pi = self._point_condition(
+                image_precision, B, R * R, img.device, img.dtype, default=1.0,
+            )
+            # Missing RGB carries no accidental "black image" evidence.
+            pts = pts * image_pi
         x = self.stem(torch.cat([pts, p], -1))
+        if image_pi is not None:
+            x = x + self.image_precision_coord(image_pi)
         if t is not None:
             tt = t.reshape(-1, 1, 1).to(dtype=x.dtype, device=x.device).expand(B, R * R, 1)
             x = x + self.t_coord(tt)
+        if self.use_target_time and not self.use_horizon_tokens and not self.gate_action_by_horizon:
+            horizon = self._point_condition(
+                target_time, B, R * R, img.device, img.dtype, default=0.0,
+            )
+            x = x + self.target_time_coord(horizon)
+        hist = self._history_features(
+            history_images, history_precision, B, R, img.device, img.dtype,
+        )
+        if hist is not None:
+            x = x + hist
+        effective_action_precision = self._transition_action_precision(
+            action_precision, target_time, B, img.device, img.dtype,
+        )
+        action_emb = self._action_embedding(
+            action, effective_action_precision, B, img.device, img.dtype,
+        )
+        if action_emb is not None and not self.use_action_tokens:
+            x = x + self.action_to_x(action_emb).unsqueeze(1)
         g = x.transpose(1, 2).reshape(B, -1, R, R)
         x = x + self.stem_local(g).flatten(2).transpose(1, 2)
         return x
+
+    @staticmethod
+    def _batch_scalar(
+        value,
+        batch: int,
+        device: torch.device,
+        dtype: torch.dtype,
+        default: float,
+    ) -> torch.Tensor:
+        if value is None:
+            return torch.full((batch,), default, device=device, dtype=dtype)
+        out = torch.as_tensor(value, device=device, dtype=dtype)
+        if out.ndim == 0:
+            return out.expand(batch)
+        if out.shape[0] != batch:
+            raise ValueError(f"boundary first dimension {out.shape[0]} != batch {batch}")
+        if out.ndim == 1:
+            return out
+        return out.reshape(batch, -1).mean(dim=-1)
+
+    def _active_memory_prior(
+        self,
+        image: torch.Tensor,
+        X: torch.Tensor,
+        H: torch.Tensor,
+        text_mask: Optional[torch.Tensor],
+        image_precision,
+        text_precision,
+        target_time,
+        history_images,
+        history_precision,
+        action,
+        action_precision,
+        causal_state: Optional[ActiveInferenceState],
+    ) -> Tuple[
+        Optional[torch.Tensor], Optional[torch.Tensor], Optional[torch.Tensor],
+    ]:
+        """Build/query the physical-time belief; never recur over depth."""
+        memory = self.active_gdn2
+        if memory is None:
+            self._last_causal_state = None
+            self._last_causal_prior_mu = None
+            self._last_causal_prior_logvar = None
+            self._last_causal_posterior_mu = None
+            self._last_causal_posterior_logvar = None
+            self._last_causal_diagnostics = {}
+            return None, None, None
+        batch = X.shape[0]
+        device, dtype = X.device, X.dtype
+        point_coords = coords(self.res, device).to(dtype=dtype).expand(batch, -1, -1)
+        state = causal_state
+        if state is None:
+            state = memory.initial_state(batch, device, dtype)
+            # Ordered history is consumed by one shared stem/read atlas.  This
+            # is a causal scan over physical frames, not over network layers.
+            if history_images is not None:
+                hist = torch.as_tensor(history_images, device=device, dtype=dtype)
+                if hist.ndim != 5 or hist.shape[0] != batch:
+                    raise ValueError("history_images must have shape [B,T,3,R,R]")
+                t_hist = hist.shape[1]
+                if history_precision is None:
+                    hpi = torch.ones(batch, t_hist, device=device, dtype=dtype)
+                else:
+                    hpi = torch.as_tensor(history_precision, device=device, dtype=dtype)
+                    if hpi.ndim == 0:
+                        hpi = hpi.expand(batch, t_hist)
+                    elif hpi.ndim == 1:
+                        hpi = hpi.reshape(batch, 1).expand(batch, t_hist)
+                    if hpi.shape != (batch, t_hist):
+                        raise ValueError(
+                            f"history_precision {tuple(hpi.shape)} != {(batch, t_hist)}"
+                        )
+                zeros = torch.zeros(batch, device=device, dtype=dtype)
+                for j in range(t_hist):
+                    Xh = self.encode_X(
+                        hist[:, j], image_precision=hpi[:, j], target_time=zeros,
+                        history_images=None, history_precision=None,
+                        action=None, action_precision=None,
+                    )
+                    Xh_origin = self.encode_X(
+                        torch.zeros_like(hist[:, j]),
+                        image_precision=hpi[:, j], target_time=zeros,
+                        history_images=None, history_precision=None,
+                        action=None, action_precision=None,
+                    )
+                    # Transport visual content relative to the fixed Eulerian
+                    # coordinate basis; absolute xy features must not move.
+                    Sh, ch = memory.pool_field(Xh - Xh_origin, point_coords)
+                    state = memory.assimilate(
+                        state, Sh, ch, hpi[:, j], update_motion=True,
+                        transport_memory=self.use_active_gdn2_history_transport,
+                    )
+
+        # Observe the current frame without history/action conditioning. Those
+        # are prior factors, not pixels in the likelihood. This prevents the
+        # predictive control from leaking into q(o_t).
+        zeros = torch.zeros(batch, device=device, dtype=dtype)
+        X_observed = self.encode_X(
+            image, image_precision=image_precision, target_time=zeros,
+            history_images=None, history_precision=None,
+            action=None, action_precision=None,
+        )
+        X_origin = self.encode_X(
+            torch.zeros_like(image), image_precision=image_precision,
+            target_time=zeros, history_images=None, history_precision=None,
+            action=None, action_precision=None,
+        )
+        S, centers = memory.pool_field(X_observed - X_origin, point_coords)
+        image_pi = self._batch_scalar(
+            image_precision, batch, device, dtype, default=1.0,
+        ).clamp(0.0, 1.0)
+        # In the registered history convention the final history frame is the
+        # current frame. Do not replace the inferred velocity by a duplicate
+        # zero displacement, but do assimilate its observation precision.
+        state = memory.assimilate(
+            state, S, centers, image_pi, update_motion=history_images is None,
+        )
+        posterior_mu, posterior_lv, _ = memory.query_atlas(
+            state, horizon=torch.zeros_like(image_pi),
+            action=None, action_precision=None,
+        )
+        self._last_causal_posterior_mu = posterior_mu
+        self._last_causal_posterior_logvar = posterior_lv
+
+        tau = self._batch_scalar(
+            target_time, batch, device, dtype, default=0.0,
+        ).clamp_min(0.0)
+        effective_action_precision = self._transition_action_precision(
+            action_precision, target_time, batch, device, dtype,
+        )
+        state = memory.dynamic_prior(
+            state, tau, action=action,
+            action_precision=effective_action_precision,
+        )
+        prior_mu, prior_lv, diagnostics = memory.query_atlas(
+            state, horizon=tau, action=action,
+            action_precision=effective_action_precision,
+        )
+        # Semantic generation already minimizes the F2 language prior in the
+        # shared MoT graph. GDN-2 is the physical-time dynamic prior only.
+        boundary = tau.clamp(0.0, 1.0)
+        causal_delta = memory.prior_residual(posterior_mu, prior_mu)
+        causal_write_w = memory.point_to_atlas_weights(point_coords)
+        causal_delta_x = torch.einsum(
+            "bnk,bkd->bnd", causal_write_w, causal_delta,
+        )
+        causal_gate = boundary
+        if bool(getattr(self, "disable_active_gdn2", False)):
+            causal_gate = torch.zeros_like(causal_gate)
+        self._last_causal_state = state
+        self._last_causal_prior_mu = prior_mu
+        self._last_causal_prior_logvar = prior_lv
+        self._last_causal_diagnostics = diagnostics
+        return causal_delta_x, None, causal_gate
 
     def forward_native(
         self,
@@ -1341,6 +2488,14 @@ class NativeMoTStack(nn.Module):
         force_gate: Optional[torch.Tensor] = None,
         n_loops: Optional[int] = None,
         t: Optional[torch.Tensor] = None,
+        image_precision=None,
+        text_precision=None,
+        target_time=None,
+        history_images=None,
+        history_precision=None,
+        action=None,
+        action_precision=None,
+        causal_state: Optional[ActiveInferenceState] = None,
     ) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor, List[NativeLayerTrace]]:
         """
         text_emb: [B,T,d_llm]
@@ -1348,12 +2503,130 @@ class NativeMoTStack(nn.Module):
         n_loops: override recurrent depth when share_layers=True (eval extrapolation).
         Returns: X, H_llm [B,T,d_llm], interface_tokens [B,M,d_llm], traces
         """
-        X = self.encode_X(img, t=t)
+        X = self.encode_X(
+            img,
+            t=t,
+            image_precision=image_precision,
+            target_time=target_time,
+            history_images=history_images,
+            history_precision=history_precision,
+            action=action,
+            action_precision=action_precision,
+        )
         self._last_X_stem = X.detach()
         self._last_X_prior = None
-        H = self.text_in(text_emb)
-        # t lives on the point. Do not FiLM language into X. cond stays None.
+        if self.use_modal_precision:
+            text_pi = self._point_condition(
+                text_precision,
+                text_emb.shape[0],
+                text_emb.shape[1],
+                text_emb.device,
+                text_emb.dtype,
+                default=1.0,
+            )
+            # pi_h=0 removes lexical evidence while retaining a valid null
+            # token that can be updated from vision by MoT.
+            text_evidence = text_emb * text_pi
+            H = self.text_in(text_evidence)
+            H = H + self.text_precision_coord(text_pi)
+        else:
+            text_evidence = text_emb
+            H = self.text_in(text_emb)
+        text_token_count = H.shape[1]
+        self._last_text_evidence = text_evidence
+        record_trace = bool(getattr(self, "record_field_trace", False))
+        field_steps: List[torch.Tensor] = [X.detach()] if record_trace else []
+        self._last_H_stem = H.detach() if record_trace else None
+        self._last_trace_text_mask = (
+            None
+            if not record_trace or text_mask is None
+            else text_mask.detach()
+        )
+        # Text content stays in MoT. Optional AdaLN is a temporal control plane
+        # only. The live sinusoidal embedding lets zero-init AdaLN weights learn;
+        # subtracting the tau=0 embedding keeps reconstruction/generation exact.
         cond = None
+        effective_action_precision = self._transition_action_precision(
+            action_precision, target_time, X.shape[0], X.device, X.dtype,
+        )
+        if self.use_goal_adaln:
+            # H already participates in every MoT interaction. Its pooled
+            # semantic goal also supplies a global control plane so all layers
+            # know whether the requested update is reconstruction, editing,
+            # generation, or prediction. This is still one graph/head set.
+            goal_cond = self.y_to_c(self._pool_h(H, text_mask))
+            if self.use_modal_precision:
+                goal_cond = goal_cond * text_pi.mean(dim=1)
+            cond = goal_cond
+        if self.use_target_time_adaln:
+            if target_time is None:
+                tau = X.new_zeros(X.shape[0])
+            else:
+                tau = torch.as_tensor(
+                    target_time, device=X.device, dtype=X.dtype,
+                ).reshape(-1)
+            zero = torch.zeros_like(tau)
+            tau_cond = self.t_embed(tau) - self.t_embed(zero)
+            cond = tau_cond if cond is None else cond + tau_cond
+        if self.use_action_adaln:
+            action_cond = self._action_embedding(
+                action, effective_action_precision, X.shape[0], X.device, X.dtype,
+            )
+            cond = action_cond if cond is None else cond + action_cond
+        if self.use_action_tokens or self.use_horizon_tokens:
+            base_text_mask = (
+                torch.ones(
+                    X.shape[0], text_token_count, device=X.device,
+                    dtype=torch.bool,
+                )
+                if text_mask is None else text_mask.to(device=X.device).bool()
+            )
+            base_prompt_mask = (
+                base_text_mask
+                if prompt_mask is None
+                else prompt_mask.to(device=X.device).bool() & base_text_mask
+            )
+            control_tokens = []
+            control_masks = []
+            if self.use_horizon_tokens:
+                horizon_token, horizon_mask = self._horizon_token(
+                    target_time, X.shape[0], X.device, X.dtype,
+                )
+                control_tokens.append(horizon_token)
+                control_masks.append(horizon_mask)
+            if self.use_action_tokens:
+                action_token, action_mask = self._action_token(
+                    action, effective_action_precision, X.shape[0], X.device, X.dtype,
+                )
+                control_tokens.append(action_token)
+                control_masks.append(action_mask)
+            controls = torch.cat(control_tokens, dim=1)
+            controls_mask = torch.cat(control_masks, dim=1)
+            H = torch.cat([H, controls], dim=1)
+            text_mask = torch.cat([base_text_mask, controls_mask], dim=1)
+            # Slice queries read controls directly. Text output tokens remain
+            # causal and are stripped back to their original length.
+            prompt_mask = torch.cat([base_prompt_mask, controls_mask], dim=1)
+        action_vector = action_rel_mask = None
+        if (
+            self.use_action_rel_bias
+            or self.use_action_transport
+            or self.use_action_slice_transition
+        ):
+            action_vector, action_rel_mask = self._action_vector(
+                action, effective_action_precision, X.shape[0], X.device, X.dtype,
+            )
+        causal_delta_x, causal_write_w, causal_prior_gate = self._active_memory_prior(
+            img, X, H, text_mask,
+            image_precision=image_precision,
+            text_precision=text_precision,
+            target_time=target_time,
+            history_images=history_images,
+            history_precision=history_precision,
+            action=action,
+            action_precision=action_precision,
+            causal_state=causal_state,
+        )
         traces = []
         pred_terms = []
         vfe_terms = []
@@ -1383,6 +2656,7 @@ class NativeMoTStack(nn.Module):
         looks = X.new_zeros(X.shape[0])
         pixel_mass = None
         pack_u = None
+        X_prior = None
         prev_rel = None
         prev_g = None
         for i in range(n_steps):
@@ -1407,7 +2681,19 @@ class NativeMoTStack(nn.Module):
                     layer_idx=i if n_inner == 1 else i * n_inner + look,
                     opt_state=opt_state, X_orig=X_orig,
                     pi_x=pi_x, force_gate=force_gate, W=W, pixel_mass=pixel_mass,
-                    point_u=point_u, t=t, cond=cond,
+                    point_u=point_u, t=t, cond=cond, X_prior=X_prior,
+                    action_vector=action_vector, action_mask=action_rel_mask,
+                    apply_action_transition=(i == 0 and look == 0),
+                    causal_delta_s=None,
+                    causal_write_w=(
+                        causal_write_w if i == 0 and look == 0 else None
+                    ),
+                    causal_prior_gate=(
+                        causal_prior_gate if i == 0 and look == 0 else None
+                    ),
+                    causal_delta_x=(
+                        causal_delta_x if i == 0 and look == 0 else None
+                    ),
                 )
                 if use_lti:
                     X_phi = self.lti_x.assemble(X_in, e_x, X_phi - X_in)
@@ -1432,6 +2718,8 @@ class NativeMoTStack(nn.Module):
                 else:
                     X, H = X_phi, H_phi
                     looks = looks + 1.0
+                if record_trace:
+                    field_steps.append(X.detach())
                 prev_rel = rel
                 pixel_mass = getattr(layer, "last_pixel_mass", None) if self.saccade else None
                 if self.pack_by_surprise:
@@ -1439,6 +2727,8 @@ class NativeMoTStack(nn.Module):
                         getattr(layer, "last_pixel_mass", None),
                         getattr(layer, "last_U_x", None),
                     )
+                # Tickets stay pred_n=f(H,xy) every layer. Do not replace S0
+                # with Deslice(μp): that field is flat until Read specializes.
                 dW = getattr(layer, "last_dW", None)
                 if dW is not None and str(getattr(layer, "deslice_write", "")) in (
                     "workspace", "ws", "consistency", "consist",
@@ -1462,11 +2752,40 @@ class NativeMoTStack(nn.Module):
         self._last_W = W.detach()
         self._last_step_H = step_H
         self._last_rho = self.injection_rho()
-        S_out, _ = self.readout(X, point_u=pack_u if self.pack_by_surprise else None)
-        tok = self.proj(S_out)
-        H_llm = self.text_out(H) + text_emb  # residual in LLM space
+        terminal_text_message = None
+        if self.terminal_token_atlas:
+            # A fixed Eulerian atlas preserves 2-D topology for the terminal
+            # token likelihood. It is a read-only Slice(X), not another image
+            # encoder, and it never participates in Deslice/write dynamics.
+            side = int(round(self.n_slices ** 0.5))
+            field = X.transpose(1, 2).reshape(
+                X.shape[0], self.d_x, self.res, self.res,
+            )
+            S_out = F.adaptive_avg_pool2d(
+                field, (side, side),
+            ).flatten(2).transpose(1, 2)
+            flat = S_out.flatten(1)
+            S_out = S_out + self.terminal_atlas_mix(flat).reshape_as(S_out)
+            terminal_text_message = self.terminal_atlas_to_text(
+                S_out.flatten(1)
+            )
+        else:
+            S_out, _ = self.readout(
+                X,
+                point_u=pack_u if self.pack_by_surprise else None,
+            )
+        self._last_terminal_token_slices = S_out.detach()
+        tok = self.proj_gate * self.proj(S_out)
+        H_text = H[:, :text_token_count]
+        H_llm = text_evidence + self.text_out_gate * self.text_out(H_text)
+        if terminal_text_message is not None:
+            # Same cross-modal message at every causal language position. It
+            # is independent of answer tokens, so suffix leakage remains
+            # impossible while the frozen decoder can read the live X field.
+            H_llm = H_llm + terminal_text_message.unsqueeze(1)
         self._last_X = X.detach()
-        self._last_H = H.detach()
+        self._last_H = H_text.detach()
+        self._last_X_steps = field_steps
         self._last_traces = traces
         if pred_terms:
             self._last_pred_loss = torch.stack([p.reshape(()) for p in pred_terms]).mean()
@@ -1519,6 +2838,9 @@ class NativeMoTStack(nn.Module):
                 "pack_by_surprise": self.pack_by_surprise,
                 "hard_admit": self.hard_admit,
                 "use_yield_read": self.use_yield_read,
+                "use_ticket_read": self.use_ticket_read,
+                "use_write_yield": self.use_write_yield,
+                "use_residual_read": self.use_residual_read,
                 "local_kind": self.local_kind,
                 "dual_patch": self.dual_patch,
                 "patch_size": self.patch_size,

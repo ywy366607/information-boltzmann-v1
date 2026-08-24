@@ -8,6 +8,11 @@ Self-contained PyTorch experiments. No external datasets required — all tasks 
 
 ### Transolver3 multimodal (product direction)
 
+**Architecture source of truth:** [`docs/NORTH_STAR.md`](docs/NORTH_STAR.md).
+It defines the locked full-resolution `X ↔ Slice ↔ H` graph, the limits of the
+active-inference claim, all six ports as boundary conditions, and the generation
+gates. See [`docs/README.md`](docs/README.md) for document status.
+
 **Not** permanent vision slice tokens into the LLM.  
 **Yes** full-res fields + temporary shared workspace \(U\) (Read/Write) + deslice
 write-back; each modality keeps topology. See
@@ -70,6 +75,9 @@ scripts/
   train_omni_probe.py
   build_kinks_dataset.py
 tests/
+docs/
+  NORTH_STAR.md       # architecture source of truth and generation contract
+research_tree.json    # hypotheses, evidence, conflicts, invalidation tree
 present/              # HTML showcase + figures
 reference/            # notes on Transolver++ / MoonViT
 results/published/    # key metrics + Native MoT / Transolver3 specs

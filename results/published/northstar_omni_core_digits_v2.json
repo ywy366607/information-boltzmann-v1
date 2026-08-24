@@ -1,0 +1,294 @@
+{
+  "steps": 1000,
+  "res": 16,
+  "d_model": 64,
+  "n_slices": 16,
+  "n_heads": 4,
+  "elapsed_sec": 115.98,
+  "n_par": 647661,
+  "final": {
+    "t2i": {
+      "n": 64,
+      "acc": 0.0,
+      "psnr": 41.70957154035568,
+      "stroke_psnr": 41.6031828224659,
+      "bg_psnr": 43.333095371723175,
+      "ink": 1.0,
+      "flood": 0.0026720605019363575,
+      "color_acc": 0.995665923692286,
+      "digit_iou": 0.9721454652026296,
+      "digit_top1": 1.0,
+      "ink_frac": 0.120361328125,
+      "f_steps": 1.0
+    }
+  },
+  "history": [
+    {
+      "step": 100,
+      "loss": 0.20210233330726624,
+      "lr": 0.001,
+      "eval": {
+        "t2i": {
+          "n": 24,
+          "acc": 0.0,
+          "psnr": 12.716556708017984,
+          "stroke_psnr": 16.04810341199239,
+          "bg_psnr": 12.469180345535278,
+          "ink": 0.7083333333333334,
+          "flood": 0.38810257489482564,
+          "color_acc": 0.7825092772642771,
+          "digit_iou": 0.2552276101584236,
+          "digit_top1": 0.125,
+          "ink_frac": 0.3736979166666667,
+          "f_steps": 1.0
+        }
+      },
+      "score": 0.137716556708018
+    },
+    {
+      "step": 200,
+      "loss": 0.1590810865163803,
+      "lr": 0.001,
+      "eval": {
+        "t2i": {
+          "n": 24,
+          "acc": 0.0,
+          "psnr": 16.603706002235413,
+          "stroke_psnr": 17.021678964296978,
+          "bg_psnr": 16.597472349802654,
+          "ink": 1.0,
+          "flood": 0.2532282729322712,
+          "color_acc": 0.8758947107320031,
+          "digit_iou": 0.39274679372708005,
+          "digit_top1": 0.16666666666666666,
+          "ink_frac": 0.2970377604166667,
+          "f_steps": 1.0
+        }
+      },
+      "score": 0.18327037266890206
+    },
+    {
+      "step": 300,
+      "loss": 0.13723373413085938,
+      "lr": 0.001,
+      "eval": {
+        "t2i": {
+          "n": 24,
+          "acc": 0.0,
+          "psnr": 16.36505361398061,
+          "stroke_psnr": 22.46968150138855,
+          "bg_psnr": 15.999571760495504,
+          "ink": 0.625,
+          "flood": 0.225146166048944,
+          "color_acc": 0.814494484414657,
+          "digit_iou": 0.5088328098257383,
+          "digit_top1": 0.2916666666666667,
+          "ink_frac": 0.2648111979166667,
+          "f_steps": 1.0
+        }
+      },
+      "score": 0.3080317202806473
+    },
+    {
+      "step": 400,
+      "loss": 0.09049375355243683,
+      "lr": 0.001,
+      "eval": {
+        "t2i": {
+          "n": 24,
+          "acc": 0.0,
+          "psnr": 24.453760782877605,
+          "stroke_psnr": 25.712423245112102,
+          "bg_psnr": 24.67568031946818,
+          "ink": 0.9166666666666666,
+          "flood": 0.06093961677591627,
+          "color_acc": 0.9399772236744562,
+          "digit_iou": 0.7478081236282984,
+          "digit_top1": 0.625,
+          "ink_frac": 0.16520182291666666,
+          "f_steps": 1.0
+        }
+      },
+      "score": 0.6494537607828776
+    },
+    {
+      "step": 500,
+      "loss": 0.1284060925245285,
+      "lr": 0.001,
+      "eval": {
+        "t2i": {
+          "n": 24,
+          "acc": 0.0,
+          "psnr": 27.64179539680481,
+          "stroke_psnr": 29.555473804473877,
+          "bg_psnr": 28.79630700747172,
+          "ink": 0.625,
+          "flood": 0.029182070536383737,
+          "color_acc": 0.9424265573422114,
+          "digit_iou": 0.8216354697942734,
+          "digit_top1": 1.0,
+          "ink_frac": 0.1357421875,
+          "f_steps": 1.0
+        }
+      },
+      "score": 1.027641795396805
+    },
+    {
+      "step": 600,
+      "loss": 0.12854304909706116,
+      "lr": 0.001,
+      "eval": {
+        "t2i": {
+          "n": 24,
+          "acc": 0.0,
+          "psnr": 27.150917847951252,
+          "stroke_psnr": 24.900821924209595,
+          "bg_psnr": 29.327346165974934,
+          "ink": 1.0,
+          "flood": 0.03690648874423156,
+          "color_acc": 0.9274909074107806,
+          "digit_iou": 0.7570731341838837,
+          "digit_top1": 0.875,
+          "ink_frac": 0.13492838541666666,
+          "f_steps": 1.0
+        }
+      },
+      "score": 0.9021509178479512
+    },
+    {
+      "step": 700,
+      "loss": 0.07721032947301865,
+      "lr": 0.001,
+      "eval": {
+        "t2i": {
+          "n": 24,
+          "acc": 0.0,
+          "psnr": 35.024513244628906,
+          "stroke_psnr": 34.601821422576904,
+          "bg_psnr": 35.98769680658976,
+          "ink": 1.0,
+          "flood": 0.008756147503542403,
+          "color_acc": 0.9440536896387736,
+          "digit_iou": 0.9645555391907692,
+          "digit_top1": 1.0,
+          "ink_frac": 0.12516276041666666,
+          "f_steps": 1.0
+        }
+      },
+      "score": 1.035024513244629
+    },
+    {
+      "step": 800,
+      "loss": 0.09164857119321823,
+      "lr": 0.001,
+      "eval": {
+        "t2i": {
+          "n": 24,
+          "acc": 0.0,
+          "psnr": 43.78060340881348,
+          "stroke_psnr": 41.88941224416097,
+          "bg_psnr": 45.19730154673258,
+          "ink": 1.0,
+          "flood": 0.0019257703485588233,
+          "color_acc": 0.9940476194024086,
+          "digit_iou": 0.9839285711447397,
+          "digit_top1": 1.0,
+          "ink_frac": 0.12532552083333334,
+          "f_steps": 1.0
+        }
+      },
+      "score": 1.0437806034088135
+    },
+    {
+      "step": 900,
+      "loss": 0.08065493404865265,
+      "lr": 0.001,
+      "eval": {
+        "t2i": {
+          "n": 24,
+          "acc": 0.0,
+          "psnr": 39.21662584940592,
+          "stroke_psnr": 41.002556482950844,
+          "bg_psnr": 40.06370751063029,
+          "ink": 0.9166666666666666,
+          "flood": 0.0032281385889897742,
+          "color_acc": 0.9864969154198965,
+          "digit_iou": 0.9808601016799608,
+          "digit_top1": 1.0,
+          "ink_frac": 0.11490885416666667,
+          "f_steps": 1.0
+        }
+      },
+      "score": 1.039216625849406
+    },
+    {
+      "step": 1000,
+      "loss": 0.08996530622243881,
+      "lr": 0.001,
+      "eval": {
+        "t2i": {
+          "n": 24,
+          "acc": 0.0,
+          "psnr": 29.55204900105794,
+          "stroke_psnr": 37.37728373209635,
+          "bg_psnr": 29.998748143513996,
+          "ink": 1.0,
+          "flood": 0.023007395250412326,
+          "color_acc": 0.9512716804941496,
+          "digit_iou": 0.8870462402701378,
+          "digit_top1": 0.9166666666666666,
+          "ink_frac": 0.13916015625,
+          "f_steps": 1.0
+        }
+      },
+      "score": 0.9462187156677245
+    }
+  ],
+  "ckpt": "D:\\\u89c6\u89c9\u7f16\u7801\u5668\u6d4b\u8bd5\\checkpoints\\omni_d64_northstar_omni_core_digits_v2_best.pt",
+  "ckpt_last": "D:\\\u89c6\u89c9\u7f16\u7801\u5668\u6d4b\u8bd5\\checkpoints\\omni_d64_northstar_omni_core_digits_v2_last.pt",
+  "best_step": 800,
+  "best_score": 1.0437806034088135,
+  "best_eval_n24": {
+    "t2i": {
+      "n": 24,
+      "acc": 0.0,
+      "psnr": 43.78060340881348,
+      "stroke_psnr": 41.88941224416097,
+      "bg_psnr": 45.19730154673258,
+      "ink": 1.0,
+      "flood": 0.0019257703485588233,
+      "color_acc": 0.9940476194024086,
+      "digit_iou": 0.9839285711447397,
+      "digit_top1": 1.0,
+      "ink_frac": 0.12532552083333334,
+      "f_steps": 1.0
+    }
+  },
+  "gallery": "D:\\\u89c6\u89c9\u7f16\u7801\u5668\u6d4b\u8bd5\\present\\figs\\omni_northstar_omni_core_digits_v2_gallery.png",
+  "lr": 0.001,
+  "lr_schedule": "constant",
+  "warmup_frac": 0.05,
+  "mix": [
+    "t2i"
+  ],
+  "vfe_coef": 0.1,
+  "gate_on": "u",
+  "deslice_write": "increment",
+  "s_lang_topk": 0,
+  "flow_match": false,
+  "flow_steps": 0,
+  "f_gen": true,
+  "gen_recipe": "core",
+  "f_steps": 4,
+  "f_halt_eps": 0.0,
+  "t2i_hint_frac": 0.0,
+  "fm_pred": "x",
+  "fm_x0": "pair",
+  "t2i_canvas": "black",
+  "t2i_stroke_px": 1,
+  "t2i_place": "center",
+  "fm_signed": false,
+  "cfg": 1.0,
+  "flow_t": "uniform",
+  "note": "Dedicated port run. warmup 5% then cosine. fm_signed: JiT [-1,1] chart + adaLN-Zero(t, pool(H)) on X/S. best.pt is the max eval_score checkpoint (digit_top1 + 0.001 PSNR); final metrics reload that ckpt. Native generation encodes once, evolves X-Slice-H through the stack, and decodes once."
+}

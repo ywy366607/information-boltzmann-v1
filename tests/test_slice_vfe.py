@@ -5,7 +5,10 @@ import math
 
 import torch
 
-from fine_grain.bayesian_surprise import BayesianSurpriseGate, compute_slice_vfe
+from fine_grain.bayesian_surprise import (
+    BayesianSurpriseGate,
+    compute_slice_vfe,
+)
 
 
 def _kalman_q(mu_p, lv_p, S, sigma_r=1.0):
@@ -30,6 +33,26 @@ def test_compute_slice_vfe_shapes_and_split():
     # F is complexity + accuracy (mean + trace + const)
     recon = out["U"] + out["acc_mean"] + out["acc_tr"] + 0.5 * math.log(1.0)
     assert torch.allclose(out["F"], recon, atol=1e-5)
+
+
+def test_fixed_prior_predictive_matches_gaussian_evidence():
+    torch.manual_seed(7)
+    gate = BayesianSurpriseGate(
+        d_model=16, n_slices=4, n_heads=4, mode="v1_bayes",
+    ).eval()
+    S = torch.randn(3, 4, 16)
+    H = torch.randn(3, 5, 16)
+    pred = gate.prior_predictive(S, H, text_mask=torch.ones(3, 5))
+    var_m = pred["lv_p"].exp() + 1.0
+    manual = 0.5 * (
+        (S - pred["mu_p"]).pow(2) / var_m
+        + var_m.log()
+        + math.log(2.0 * math.pi)
+    )
+    assert pred["F_min"].shape == (3, 4, 1)
+    assert torch.allclose(
+        pred["F_min"], manual.mean(dim=-1, keepdim=True), atol=1e-6,
+    )
 
 
 def test_elephant_high_F_low_gap():

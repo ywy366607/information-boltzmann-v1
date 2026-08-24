@@ -36,6 +36,33 @@ def test_prior_write_uses_language_mu_p():
     assert (xa - xb).abs().mean() > 1e-6
 
 
+def test_active_generation_prior_write_is_not_zeroed_at_t0():
+    torch.manual_seed(7)
+    base = DualStreamOmni.unified(
+        d_model=32, n_slices=8, n_heads=4, n_layers=2, res=8,
+        fm_pred="x", fm_signed=False, prior_write=0.0,
+    )
+    scaled = DualStreamOmni.unified(
+        d_model=32, n_slices=8, n_heads=4, n_layers=2, res=8,
+        fm_pred="x", fm_signed=False, prior_write=1.0, prior_write_by_t=True,
+    )
+    active = DualStreamOmni.unified(
+        d_model=32, n_slices=8, n_heads=4, n_layers=2, res=8,
+        fm_pred="x", fm_signed=False, prior_write=1.0, prior_write_by_t=False,
+    )
+    scaled.load_state_dict(base.state_dict())
+    active.load_state_dict(base.state_dict())
+    z = torch.zeros(1, 3, 8, 8)
+    t0 = torch.zeros(1)
+    prompt = ["Draw digit 3 with a thin yellow stroke"]
+    with torch.no_grad():
+        x_base = base(z, prompt, need_pix=[True], t=t0)["X"]
+        x_scaled = scaled(z, prompt, need_pix=[True], t=t0)["X"]
+        x_active = active(z, prompt, need_pix=[True], t=t0)["X"]
+    assert torch.allclose(x_base, x_scaled, atol=1e-6)
+    assert not torch.allclose(x_base, x_active, atol=1e-6)
+
+
 def test_noisy_pred_loss_skipped_when_prior_write():
     torch.manual_seed(0)
     m = DualStreamOmni.unified(
@@ -56,20 +83,57 @@ def test_noisy_pred_loss_skipped_when_prior_write():
     }
     _, meta = m.omni_loss(out, batch, z.device)
     assert "prior_clean" in meta
+    assert meta["prior_clean_coef"] == 0.1
 
 
-def test_f_generate_iterates():
-    from scripts.train_omni_probe import f_generate
-
+def test_clean_prior_target_uses_the_generation_chart_time():
     torch.manual_seed(0)
     m = DualStreamOmni.unified(
         d_model=32, n_slices=8, n_heads=4, n_layers=1, res=8,
-        fm_pred="x", fm_signed=True, prior_write=1.0, prior_write_by_t=False,
+        fm_pred="x", fm_signed=False, prior_write=1.0, prior_loss_coef=0.1,
     )
+    z = torch.zeros(2, 3, 8, 8)
+    t0 = torch.zeros(2)
+    prompts = ["Draw digit 1 with a thin red stroke"] * 2
+    m(z, prompts, need_pix=[True, True], t=t0)
+    seen = []
+    original = m.mot_stack.encode_X
+
+    def record_t(img, t=None):
+        seen.append(None if t is None else t.detach().clone())
+        return original(img, t=t)
+
+    m.mot_stack.encode_X = record_t
+    idx = torch.arange(2)
+    clean = torch.rand_like(z)
+    loss = m._prior_clean_loss(clean, idx, z.device, t=t0)
+    assert loss is not None
+    assert len(seen) == 1 and torch.equal(seen[0], t0)
+
+
+def test_f_generate_uses_one_native_field_pass_at_source_time():
+    from scripts.train_omni_probe import f_generate
+
+    class ProbeModel:
+        def __init__(self):
+            self.calls = []
+
+        def __call__(self, x, prompts, pi_x=None, need_pix=None, t=None):
+            self.calls.append({"x": x.clone(), "pi_x": pi_x, "t": t.clone()})
+            return {"x_pred": x + 0.25}
+
+    m = ProbeModel()
     z = torch.randn(1, 3, 8, 8)
-    y = f_generate(m, z, ["Draw digit 2 with a thin red stroke"], [True], n_steps=2)
-    assert y.shape == z.shape
-    # pred_loss exists on the forward but must not be the noisy-S term in the loss.
+    y, n = f_generate(
+        m, z, ["Draw digit 2 with a thin red stroke"], [True],
+        n_steps=8, halt_eps=0.03, return_steps=True,
+    )
+    assert len(m.calls) == 1
+    assert torch.equal(m.calls[0]["x"], z)
+    assert torch.equal(m.calls[0]["t"], torch.zeros(1))
+    assert m.calls[0]["pi_x"] == 1.0
+    assert torch.allclose(y, z + 0.25)
+    assert torch.equal(n, torch.ones(1))
 
 
 def test_f_iterate_halts_when_field_stops():

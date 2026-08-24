@@ -53,6 +53,7 @@ class DualStreamVQAModel(nn.Module):
     def __init__(
         self,
         d_model: int = 128,
+        d_llm: int | None = None,
         n_slices: int = 32,
         n_layers: int = 4,
         res: int = 32,
@@ -96,9 +97,33 @@ class DualStreamVQAModel(nn.Module):
         pack_by_surprise: bool = False,
         hard_admit: bool = False,
         use_yield_read: bool = False,
+        use_ticket_read: bool = False,
+        use_write_yield: bool = False,
+        write_alpha: float = 1.0,
+        use_residual_read: bool = False,
+        use_modal_precision: bool = False,
+        use_target_time: bool = False,
+        use_target_time_adaln: bool = False,
+        use_horizon_tokens: bool = False,
+        gate_action_by_horizon: bool = False,
+        history_size: int = 0,
+        action_dim: int = 0,
+        use_action_adaln: bool = False,
+        use_action_tokens: bool = False,
+        use_action_rel_bias: bool = False,
+        use_action_transport: bool = False,
+        use_action_slice_transition: bool = False,
+        use_goal_adaln: bool = False,
+        use_active_gdn2: bool = False,
+        use_active_gdn2_history_transport: bool = False,
+        active_gdn2_initial_trust: float = 0.0,
+        terminal_token_atlas: bool = False,
     ):
         super().__init__()
         self.d_model = d_model
+        self.d_llm = int(d_llm if d_llm is not None else d_model)
+        self.lm = None
+        self.lm_tok = None
         self.res = res
         self.n_heads = int(n_heads)
         self.surprise_mode = surprise_mode
@@ -150,7 +175,7 @@ class DualStreamVQAModel(nn.Module):
         self.embed = nn.Embedding(len(self.vocab) + 10, d_model)
 
         self.mot_stack = NativeMoTStack(
-            d_llm=d_model,
+            d_llm=self.d_llm,
             res=res,
             d_x=d_model,
             d=d_model,
@@ -188,14 +213,35 @@ class DualStreamVQAModel(nn.Module):
             pack_by_surprise=pack_by_surprise,
             hard_admit=hard_admit,
             use_yield_read=use_yield_read,
+            use_ticket_read=use_ticket_read,
+            use_write_yield=use_write_yield,
+            write_alpha=write_alpha,
+            use_residual_read=use_residual_read,
+            use_modal_precision=use_modal_precision,
+            use_target_time=use_target_time,
+            use_target_time_adaln=use_target_time_adaln,
+            use_horizon_tokens=use_horizon_tokens,
+            gate_action_by_horizon=gate_action_by_horizon,
+            history_size=history_size,
+            action_dim=action_dim,
+            use_action_adaln=use_action_adaln,
+            use_action_tokens=use_action_tokens,
+            use_action_rel_bias=use_action_rel_bias,
+            use_action_transport=use_action_transport,
+            use_action_slice_transition=use_action_slice_transition,
+            use_goal_adaln=use_goal_adaln,
+            use_active_gdn2=use_active_gdn2,
+            use_active_gdn2_history_transport=use_active_gdn2_history_transport,
+            active_gdn2_initial_trust=active_gdn2_initial_trust,
+            terminal_token_atlas=terminal_token_atlas,
         )
 
         # Multi-task answer classification heads
         self.answers = list(COLORS) + [str(k) for k in KINK_KS] + list(OCR_DIGITS)
         self.ans_to_idx = {a: i for i, a in enumerate(self.answers)}
         self.head = nn.Sequential(
-            nn.LayerNorm(d_model),
-            nn.Linear(d_model, len(self.answers)),
+            nn.LayerNorm(self.d_llm),
+            nn.Linear(self.d_llm, len(self.answers)),
         )
         from fine_grain.s2a import AnswerGazeHead
         self.gaze_head = AnswerGazeHead(d_model) if self.s2a else None
@@ -203,6 +249,27 @@ class DualStreamVQAModel(nn.Module):
             self.mot_stack.s2a_head = self.gaze_head
             self.mot_stack.s2a_eval_halt = True
             self.mot_stack.s2a_halt_eps = float(s2a_halt_eps)
+
+    def encode_text(self, prompts: List[str], device: torch.device):
+        """Toy word-embed or frozen LM *input* embeddings. MoT evolves H."""
+        if self.lm is not None and self.lm_tok is not None:
+            enc = self.lm_tok(
+                list(prompts), padding=True, truncation=True,
+                max_length=64, return_tensors="pt",
+            )
+            ids = enc["input_ids"].to(device)
+            am = enc["attention_mask"].to(device)
+            if next(self.lm.parameters()).device != ids.device:
+                self.lm.to(device)
+            emb = self.lm.get_input_embeddings()(ids)
+            return emb.float(), am.bool()
+        if self.lm is not None and self.lm_tok is None:
+            raise RuntimeError(
+                "encode_text(prompts) needs a tokenizer; use forward_tokens "
+                "with input_ids or construct DualStreamOmni with lm_tok"
+            )
+        ids, mask = self.tokenize(prompts, device)
+        return self.embed(ids), mask
 
     def tokenize(self, prompts: List[str], device: torch.device) -> Tuple[torch.Tensor, torch.Tensor]:
         tokens_list = []
@@ -219,16 +286,38 @@ class DualStreamVQAModel(nn.Module):
             mask[i, :len(t)] = True
         return pad_t, mask
 
-    def forward(self, images: torch.Tensor, prompts: List[str], pi_x=None, n_loops=None, t=None):
+    def forward(
+        self,
+        images: torch.Tensor,
+        prompts: List[str],
+        pi_x=None,
+        n_loops=None,
+        t=None,
+        image_precision=None,
+        text_precision=None,
+        target_time=None,
+        history_images=None,
+        history_precision=None,
+        action=None,
+        action_precision=None,
+        causal_state=None,
+    ):
         B = images.shape[0]
-        tok_ids, mask = self.tokenize(prompts, images.device)
-        text_emb = self.embed(tok_ids)
+        text_emb, mask = self.encode_text(prompts, images.device)
 
         X, H_out, tok, traces = self.mot_stack.forward_native(
             img=images, text_emb=text_emb, text_mask=mask, prompt_mask=mask,
             pi_x=1.0 if pi_x is None else pi_x,
             n_loops=n_loops,
             t=t,
+            image_precision=image_precision,
+            text_precision=text_precision,
+            target_time=target_time,
+            history_images=history_images,
+            history_precision=history_precision,
+            action=action,
+            action_precision=action_precision,
+            causal_state=causal_state,
         )
 
         mask_f = mask.unsqueeze(-1).float()
@@ -239,8 +328,9 @@ class DualStreamVQAModel(nn.Module):
         logits = self.head(_pool(H_out))
         logits_k = []
         if self.deep_supervise:
+            text_residual = getattr(self.mot_stack, "_last_text_evidence", text_emb)
             for h_step in getattr(self.mot_stack, "_last_step_H", None) or []:
-                h_llm = self.mot_stack.text_out(h_step) + text_emb
+                h_llm = self.mot_stack.text_out(h_step) + text_residual
                 logits_k.append(self.head(_pool(h_llm)))
 
         s2a_g_logits = []
@@ -280,6 +370,20 @@ class DualStreamVQAModel(nn.Module):
             "looks": getattr(self.mot_stack, "_last_looks", None),
             "s2a_g_logits": s2a_g_logits,
             "s2a_ig": s2a_ig,
+            "causal_state": getattr(self.mot_stack, "_last_causal_state", None),
+            "causal_prior_mu": getattr(self.mot_stack, "_last_causal_prior_mu", None),
+            "causal_prior_logvar": getattr(
+                self.mot_stack, "_last_causal_prior_logvar", None,
+            ),
+            "causal_posterior_mu": getattr(
+                self.mot_stack, "_last_causal_posterior_mu", None,
+            ),
+            "causal_posterior_logvar": getattr(
+                self.mot_stack, "_last_causal_posterior_logvar", None,
+            ),
+            "causal_diagnostics": getattr(
+                self.mot_stack, "_last_causal_diagnostics", {},
+            ),
         }
 
     def task_loss(self, out: Dict, targets: torch.Tensor) -> torch.Tensor:

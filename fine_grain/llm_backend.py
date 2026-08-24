@@ -53,6 +53,49 @@ _MS_MAP = {
     "qwen/Qwen2.5-0.5B": "Qwen/Qwen2.5-0.5B",
 }
 
+DEFAULT_PYTHIA_ID = "EleutherAI/pythia-70m"
+_PYTHIA_CANON = {
+    "pythia": DEFAULT_PYTHIA_ID,
+    "pythia-70m": "EleutherAI/pythia-70m",
+    "eleutherai/pythia-70m": "EleutherAI/pythia-70m",
+    "pythia-160m": "EleutherAI/pythia-160m",
+    "eleutherai/pythia-160m": "EleutherAI/pythia-160m",
+    "lm": DEFAULT_PYTHIA_ID,
+    "frozen_lm": DEFAULT_PYTHIA_ID,
+}
+
+
+def canonical_pythia_id(name: str) -> str:
+    """Map a requested language name onto one exact EleutherAI Pythia id."""
+    raw = str(name).strip()
+    key = raw.lower()
+    if key in _PYTHIA_CANON:
+        return _PYTHIA_CANON[key]
+    if key.startswith("eleutherai/pythia-"):
+        suffix = raw.split("/", 1)[1]
+        return f"EleutherAI/{suffix}"
+    raise ValueError(
+        f"load_frozen_pythia requires an explicit Pythia id, got {name!r}. "
+        "Use EleutherAI/pythia-70m or EleutherAI/pythia-160m; "
+        "GPT-2/TinyLM silent fallback is forbidden."
+    )
+
+
+def _pythia_dir_matches(path: Path, model_id: str) -> bool:
+    """True only when a cache dir belongs to this exact Pythia id."""
+    key = model_id.split("/")[-1].lower()
+    slug = model_id.replace("/", "--").lower()
+    blob = str(path).replace("\\", "/").lower()
+    name = path.name.lower()
+    return key in name or slug in blob
+
+
+def _revision_from_path(local: str) -> str:
+    path = Path(local)
+    if "snapshots" in path.parts:
+        return path.name
+    return "local"
+
 
 def cache_root() -> Path:
     return _D_CACHE
@@ -272,3 +315,72 @@ def load_frozen_lm(
             "Failed to load LM on D: (hf-mirror local / ModelScope / tinylm):\n"
             + "\n".join(errors)
         )
+
+
+def load_frozen_pythia(
+    model_id: str = DEFAULT_PYTHIA_ID,
+    device: str = "cpu",
+    dtype: Any = None,
+    revision: str | None = None,
+) -> Tuple[Any, Any, int, str, dict]:
+    """Load one exact frozen Pythia. Never silently swap GPT-2 or TinyLM.
+
+    Returns (model, tokenizer, d_llm, note, meta) with meta keys
+    id / revision / d_llm / path.
+    """
+    import torch
+
+    model_id = canonical_pythia_id(model_id)
+    if dtype is None:
+        dtype = torch.float16 if str(device).startswith("cuda") else torch.float32
+
+    errors: List[str] = []
+    ranked: List[Path] = []
+    for path in _local_manual_dirs():
+        if _pythia_dir_matches(path, model_id) and path not in ranked:
+            ranked.append(path)
+
+    for path in ranked:
+        try:
+            if not str(path).upper().startswith("D:"):
+                raise RuntimeError(f"refusing non-D path {path}")
+            model, tok, d_llm, local = _load_from_path(str(path), device, dtype)
+            rev = revision or _revision_from_path(local)
+            meta = {
+                "id": model_id,
+                "revision": rev,
+                "d_llm": int(d_llm),
+                "path": local,
+            }
+            note = (
+                f"pythia id={model_id} revision={rev} path={local} "
+                f"d_llm={d_llm} dtype={dtype} cache={_D_CACHE}"
+            )
+            return model, tok, d_llm, note, meta
+        except Exception as e:
+            errors.append(f"manual:{path.name}: {type(e).__name__}: {e}")
+
+    try:
+        local = snapshot_modelscope(model_id)
+        if str(local).upper().startswith("C:"):
+            raise RuntimeError(f"refusing C: path {local}")
+        model, tok, d_llm, path = _load_from_path(local, device, dtype)
+        rev = revision or _revision_from_path(path)
+        meta = {
+            "id": model_id,
+            "revision": rev,
+            "d_llm": int(d_llm),
+            "path": path,
+        }
+        note = (
+            f"pythia id={model_id} revision={rev} modelscope path={path} "
+            f"d_llm={d_llm} cache={_D_CACHE}"
+        )
+        return model, tok, d_llm, note, meta
+    except Exception as e:
+        errors.append(f"modelscope:{model_id}: {type(e).__name__}: {e}")
+
+    raise RuntimeError(
+        f"Failed to load exact Pythia id={model_id} "
+        "(no GPT-2/TinyLM fallback):\n" + "\n".join(errors)
+    )

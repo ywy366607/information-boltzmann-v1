@@ -13,6 +13,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
+from fine_grain.omni_tasks import GRID_PLACES
 from scripts.train_omni_probe import main as train_omni_main
 
 PUB = ROOT / "results" / "published"
@@ -29,7 +30,7 @@ def main() -> None:
     ap.add_argument("--flow-steps", type=int, default=8)
     ap.add_argument("--ports", type=str, default="t2i")
     ap.add_argument("--init", type=str, default="")
-    ap.add_argument("--lr", type=float, default=2e-4)
+    ap.add_argument("--lr", type=float, default=None)
     ap.add_argument("--flow-t", type=str, default="uniform")
     ap.add_argument("--tag", type=str, default="")
     ap.add_argument("--mix", type=str, default="")
@@ -39,12 +40,20 @@ def main() -> None:
     ap.add_argument("--flow-method", type=str, default="heun", choices=["heun", "euler"])
     ap.add_argument("--t2i-canvas", type=str, default="paper", choices=["paper", "black"])
     ap.add_argument("--t2i-stroke-px", type=int, default=1)
-    ap.add_argument("--t2i-place", type=str, default="random", choices=["random", "center"])
+    ap.add_argument(
+        "--t2i-place", type=str, default="random",
+        choices=["random", "center", "grid", *GRID_PLACES],
+    )
     ap.add_argument("--t2i-digit", type=int, default=None)
     ap.add_argument("--t2i-color", type=str, default="")
-    ap.add_argument("--prior-write", type=float, default=0.0)
+    ap.add_argument("--prior-write", type=float, default=None)
     ap.add_argument("--f-gen", action="store_true")
-    ap.add_argument("--f-steps", type=int, default=4, help="F-descent Tmax.")
+    ap.add_argument(
+        "--gen-recipe", choices=["core", "active_f2", "vfe"],
+        default="active_f2",
+    )
+    ap.add_argument("--f-steps", type=int, default=1,
+                    help="Legacy compatibility; native generation is one stack pass.")
     ap.add_argument("--f-halt-eps", type=float, default=0.03)
     ap.add_argument("--fm-signed", action="store_true")
     ap.add_argument("--cfg", type=float, default=1.0)
@@ -57,7 +66,7 @@ def main() -> None:
     tag = args.tag or ("unified_fm_" + "_".join(ports))
     out_path = PUB / f"omni_{tag}_{args.steps}step_table.json"
     print(
-        f"=== UNIFIED FM  mix={mix}  pred={args.fm_pred}  increment+F2  "
+        f"=== UNIFIED FM  mix={mix}  pred={args.fm_pred}  recipe={args.gen_recipe}  "
         f"{args.flow_method}{args.flow_steps} t={args.flow_t} "
         f"x0={args.fm_x0} canvas={args.t2i_canvas} hint={args.t2i_hint_frac} ===",
         flush=True,
@@ -82,12 +91,15 @@ def main() -> None:
         "--t2i-canvas", args.t2i_canvas,
         "--t2i-stroke-px", str(args.t2i_stroke_px),
         "--t2i-place", args.t2i_place,
-        "--prior-write", str(args.prior_write),
+        "--gen-recipe", args.gen_recipe,
         "--cfg", str(args.cfg),
-        "--lr", str(args.lr),
         "--tag", tag,
         "--out", str(out_path),
     ]
+    if args.prior_write is not None:
+        argv.extend(["--prior-write", str(args.prior_write)])
+    if args.lr is not None:
+        argv.extend(["--lr", str(args.lr)])
     if args.fm_signed:
         argv.append("--fm-signed")
     if args.f_gen:

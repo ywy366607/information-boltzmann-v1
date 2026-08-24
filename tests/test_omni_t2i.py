@@ -4,7 +4,7 @@ from __future__ import annotations
 import numpy as np
 import torch
 
-from fine_grain.omni_tasks import one_sample
+from fine_grain.omni_tasks import GRID_PLACES, make_omni_batch, one_sample
 
 
 def test_t2i_target_shares_input_background():
@@ -57,6 +57,45 @@ def test_t2i_center_is_fixed_mid_box():
         assert int(xs.min()) >= 7 and int(xs.max()) <= 24
 
 
+def test_t2i_grid_names_the_full_resolution_address():
+    rng = np.random.default_rng(3)
+    corners = {
+        "top_left": (0, 0),
+        "top_right": (0, 2),
+        "bottom_left": (2, 0),
+        "bottom_right": (2, 2),
+    }
+    for place, (row, col) in corners.items():
+        s = one_sample(
+            rng, 32, "t2i", t2i_canvas="black", t2i_place=place,
+            t2i_digit=7, t2i_color="green",
+        )
+        ys, xs = torch.where(s["stroke"][0] > 0.5)
+        assert int(float(ys.float().mean()) // (32 / 3)) == row
+        assert int(float(xs.float().mean()) // (32 / 3)) == col
+        assert f"at {place.replace('_', ' ')}" in s["prompt"]
+        assert s["placement"] == place
+
+    batch = make_omni_batch(
+        rng, len(GRID_PLACES), 16, mix=["t2i"],
+        t2i_canvas="black", t2i_place="grid",
+    )
+    assert len(batch["placement"]) == len(GRID_PLACES)
+    assert set(batch["placement"]) <= set(GRID_PLACES)
+
+
+def test_spatial_prompt_vocabulary_is_explicit_and_opt_in():
+    from fine_grain.omni_model import DualStreamOmni
+
+    old = DualStreamOmni(d_model=16, n_slices=4, n_layers=1, res=8, n_heads=4)
+    grid = DualStreamOmni(
+        d_model=16, n_slices=4, n_layers=1, res=8, n_heads=4,
+        spatial_prompt_vocab=True,
+    )
+    assert "top" not in old.vocab
+    assert all(word in grid.vocab for word in grid.EXTRA_SPATIAL_WORDS)
+
+
 def test_equal_energy_ink_unit_l2():
     from fine_grain.omni_tasks import equal_energy_ink
     from fine_grain.vlm_data import COLORS
@@ -83,6 +122,20 @@ def test_rgb_energy_weights_equalize_yellow_vs_red():
     miss_y = ((bg - yel).pow(2) * rgb_energy_weights(yel, True)).mean()
     assert torch.allclose(miss_r, miss_y, rtol=1e-5)
     assert float((bg - yel).pow(2).mean()) > 1.5 * float((bg - red).pow(2).mean())
+
+
+def test_balanced_observation_bce_prefers_exact_thin_figure():
+    from fine_grain.omni_model import balanced_observation_bce
+
+    target = torch.zeros(1, 3, 8, 8)
+    target[:, 1, 2:6, 4] = 1.0
+    exact = target.clamp(1e-4, 1.0 - 1e-4)
+    flood = exact.clone()
+    flood[:, 1] = 1.0 - 1e-4
+    blank = torch.full_like(target, 1e-4)
+    le = balanced_observation_bce(exact, target)
+    assert le < balanced_observation_bce(flood, target)
+    assert le < balanced_observation_bce(blank, target)
 
 
 def test_fgen_deslice_write_topk_is_2():

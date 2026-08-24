@@ -1,5 +1,7 @@
 # Native MoT architecture (implemented)
 
+> Implementation snapshot, not the current architecture source of truth. See [`../../docs/NORTH_STAR.md`](../../docs/NORTH_STAR.md).
+
 Source of truth: `fine_grain/native_mot.py`
 
 ## State per layer

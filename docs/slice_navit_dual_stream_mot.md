@@ -1,5 +1,7 @@
 # Slice–NaViT 双流 MoT：接口与设计草图
 
+> **定位：可选辅助观察流，不是产品主状态。** 架构不变量与生成契约以 [`NORTH_STAR.md`](NORTH_STAR.md) 为准；若 patch 路径绕过 Slice/Deslice 写回，则不属于规范主图。
+
 Status: **partially implemented** in `fine_grain/native_mot.py`  
   - `dual_patch=True`: `PointPatchEmbed(X) → P`, `SliceRead → S`, MoT concat `[P;S]` with text,  
     `Deslice(S')` + optional `PointUnpatch(P')` on the **same** point field X.  

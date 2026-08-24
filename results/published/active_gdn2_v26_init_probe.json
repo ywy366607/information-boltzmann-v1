@@ -1,0 +1,32 @@
+{
+  "schema": "active-gdn2-init-identity-v1",
+  "checkpoint": "D:\\\u89c6\u89c9\u7f16\u7801\u5668\u6d4b\u8bd5\\checkpoints\\northstar_slice_capability_slice_transition_v18.pt",
+  "base_load": {
+    "loaded": 314,
+    "partial": [],
+    "skipped": [
+      "mot_stack.layers.0.action_transition_rate_raw",
+      "mot_stack.layers.0.action_transition_mlp.0.weight",
+      "mot_stack.layers.0.action_transition_mlp.0.bias",
+      "mot_stack.layers.0.action_transition_mlp.2.weight"
+    ]
+  },
+  "active_load": {
+    "loaded": 314,
+    "partial": [],
+    "skipped": [
+      "mot_stack.layers.0.action_transition_rate_raw",
+      "mot_stack.layers.0.action_transition_mlp.0.weight",
+      "mot_stack.layers.0.action_transition_mlp.0.bias",
+      "mot_stack.layers.0.action_transition_mlp.2.weight"
+    ]
+  },
+  "max_abs_delta": {
+    "X": 0.0,
+    "logits": 0.0,
+    "rgb": 0.0,
+    "seg_logits": 0.0
+  },
+  "exact_identity": true,
+  "causal_projection_norm": 0.0
+}

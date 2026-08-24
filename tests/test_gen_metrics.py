@@ -5,9 +5,12 @@ import numpy as np
 import torch
 
 from fine_grain.gen_metrics import (
+    background_flood_rate,
     digit_shift_scores,
     free_color_acc,
     gen_free_scores,
+    ink_centroid_error,
+    paired_ink_iou,
     parse_draw_prompt,
 )
 from fine_grain.omni_tasks import one_sample
@@ -36,9 +39,36 @@ def test_free_metrics_on_perfect_digit():
     assert wrong["digit_iou"] < rec["digit_iou"]
 
 
+def test_paired_position_metrics_do_not_hide_translation():
+    res = 32
+    target_m = render_digit_mask("5", res, 10, 1, 1)
+    moved_m = render_digit_mask("5", res, 10, 21, 21)
+    ink = torch.tensor(SIGNAL[1], dtype=torch.float32).view(1, 3, 1, 1)
+    target_stroke = torch.from_numpy(target_m.astype("float32")).view(1, res, res)
+    exact = ink * target_stroke.unsqueeze(1)
+    moved = ink * torch.from_numpy(moved_m.astype("float32")).view(1, 1, res, res)
+    assert paired_ink_iou(exact, target_stroke, "green") > 0.99
+    assert ink_centroid_error(exact, target_stroke, "green") < 1e-6
+    assert paired_ink_iou(moved, target_stroke, "green") < 0.05
+    assert ink_centroid_error(moved, target_stroke, "green") > 0.5
+    assert gen_free_scores(moved, "5", "green")["digit_top1"] == 1.0
+
+
 def test_color_acc_zero_on_black():
     img = torch.zeros(1, 3, 16, 16)
     assert free_color_acc(img, "red") == 0.0
+
+
+def test_flood_metric_does_not_call_black_green_ink():
+    target = torch.zeros(1, 3, 8, 8)
+    stroke = torch.zeros(1, 8, 8)
+    stroke[:, 3, 2:6] = 1.0
+    target[:, 1] = stroke
+    perfect = target.clone()
+    flooded = target.clone()
+    flooded[:, 1] = 1.0
+    assert background_flood_rate(perfect, target, stroke) == 0.0
+    assert background_flood_rate(flooded, target, stroke) > 0.99
 
 
 def test_t2i_black_canvas_is_black_off_stroke():

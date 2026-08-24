@@ -1,5 +1,7 @@
 # Final architecture thesis: bidirectional full-res point field
 
+> Historical thesis/supporting evidence. The current architecture source of truth is [`../../docs/NORTH_STAR.md`](../../docs/NORTH_STAR.md).
+
 ## One sentence
 
 **Keep a full-resolution visual field \(X\) alive, evolve it with text state \(H\) every step via slice read + deslice write; do not replace vision with a static bag of LLM tokens.**

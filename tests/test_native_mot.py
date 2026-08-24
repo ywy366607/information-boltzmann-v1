@@ -79,6 +79,32 @@ def test_stack_dims_default_product():
     assert out.meta["slice_ephemeral"] is True
 
 
+def test_common_f2_anchor_reads_one_coordinate_without_field_write():
+    torch.manual_seed(9)
+    stack = NativeMoTStack(
+        d_llm=32, res=8, d_x=32, d=32, n_slices=4, n_layers=2,
+        n_heads=4, surprise_mode="v1_bayes",
+    ).eval()
+    stack.set_record_field_trace(True)
+    img = torch.rand(3, 3, 8, 8)
+    emb = torch.randn(3, 6, 32)
+    mask = torch.ones(3, 6)
+    X, _, _, _ = stack.forward_native(img, emb, mask)
+    final_before = X.clone()
+    trace = stack.common_f2_anchor_trace(anchor_layer=0)
+
+    assert len(stack._last_X_steps) == 3
+    assert torch.allclose(stack._last_X_steps[0], stack._last_X_stem)
+    assert torch.allclose(stack._last_X_steps[-1], final_before)
+    assert trace["energy"].shape == (3, 3)
+    assert trace["delta"].shape == (3, 2)
+    assert trace["terminal_delta"].shape == (3,)
+    assert torch.isfinite(trace["energy"]).all()
+    direct = stack.common_f2_anchor_energy(stack._last_X_steps[-1])
+    assert torch.allclose(direct, trace["energy"][:, -1])
+    assert torch.allclose(stack._last_X, final_before)
+
+
 def test_s_update_rms_dir_bounds_step():
     layer = NativeMoTLayer(
         d_x=32, d=64, n_slices=8, n_heads=4, res=8,
@@ -284,6 +310,55 @@ def test_dual_patch_stack_forward_grad():
         torch.rand(1, 3, 8, 8), torch.randn(1, 4, 32), torch.ones(1, 4),
     )
     assert X2.shape[-1] == 32
+
+
+def test_visual_queries_ignore_answer_tokens():
+    """prompt_mask must hide answer keys from Slice queries and earlier H."""
+    torch.manual_seed(0)
+    blk = NativeMoTBlock(d=32, n_heads=4)
+    S = torch.randn(1, 4, 32)
+    H = torch.randn(1, 6, 32)
+    text_mask = torch.ones(1, 6, dtype=torch.bool)
+    prompt_mask = torch.tensor([[True, True, True, True, False, False]])
+    S1, H1, _ = blk(S, H, text_mask=text_mask, prompt_mask=prompt_mask)
+    H_suffix = H.clone()
+    H_suffix[:, 4:] = torch.randn_like(H_suffix[:, 4:])
+    S2, H2, _ = blk(S, H_suffix, text_mask=text_mask, prompt_mask=prompt_mask)
+    assert torch.allclose(S1, S2, atol=1e-5, rtol=1e-5)
+    assert torch.allclose(H1[:, :4], H2[:, :4], atol=1e-5, rtol=1e-5)
+    assert not torch.allclose(H1[:, 4:], H2[:, 4:], atol=1e-3)
+
+
+def test_language_queries_are_causal():
+    torch.manual_seed(1)
+    blk = NativeMoTBlock(d=32, n_heads=4)
+    S = torch.randn(1, 4, 32)
+    H = torch.randn(1, 5, 32)
+    mask = torch.ones(1, 5, dtype=torch.bool)
+    _, H1, _ = blk(S, H, text_mask=mask)
+    H_future = H.clone()
+    H_future[:, -1] = torch.randn_like(H_future[:, -1])
+    _, H2, _ = blk(S, H_future, text_mask=mask)
+    assert torch.allclose(H1[:, :-1], H2[:, :-1], atol=1e-5, rtol=1e-5)
+    assert not torch.allclose(H1[:, -1], H2[:, -1], atol=1e-3)
+
+
+def test_residual_read_s0_ignores_answer_tokens():
+    torch.manual_seed(2)
+    layer = NativeMoTLayer(
+        d_x=32, d=32, n_slices=8, n_heads=4, res=8,
+        use_residual_read=True, surprise_mode="baseline",
+    )
+    X = torch.randn(1, 64, 32)
+    H = torch.randn(1, 6, 32)
+    text_mask = torch.ones(1, 6, dtype=torch.bool)
+    prompt_mask = torch.tensor([[True, True, True, True, False, False]])
+    X1, H1, _ = layer(X, H, text_mask=text_mask, prompt_mask=prompt_mask)
+    H_suffix = H.clone()
+    H_suffix[:, 4:] = torch.randn_like(H_suffix[:, 4:])
+    X2, H2, _ = layer(X, H_suffix, text_mask=text_mask, prompt_mask=prompt_mask)
+    assert torch.allclose(X1, X2, atol=1e-5, rtol=1e-5)
+    assert torch.allclose(H1[:, :4], H2[:, :4], atol=1e-5, rtol=1e-5)
 
 
 if __name__ == "__main__":

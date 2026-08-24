@@ -1,0 +1,133 @@
+{
+  "schema": "pythia-capability-b2",
+  "claim_scope": "Frozen-Pythia binding to the proven static Slice capability chart; editing is not admitted until T2I and identity reconstruction pass.",
+  "init": "checkpoints\\omni_d64_pythia_capability_b2_best.pt",
+  "init_report": {
+    "path": "checkpoints\\omni_d64_pythia_capability_b2_best.pt",
+    "loaded": 298,
+    "skipped": [],
+    "n_skipped": 0
+  },
+  "lexical_init": null,
+  "checkpoint": "D:\\\u89c6\u89c9\u7f16\u7801\u5668\u6d4b\u8bd5\\checkpoints\\omni_d64_pythia_capability_b2_best.pt",
+  "candidate_checkpoint": "D:\\\u89c6\u89c9\u7f16\u7801\u5668\u6d4b\u8bd5\\checkpoints\\omni_d64_pythia_capability_b2_candidate.pt",
+  "did_save": false,
+  "best_step": 0,
+  "best_partial_step": 0,
+  "best_partial_score": null,
+  "best_score": null,
+  "language": {
+    "lm_id": "EleutherAI/pythia-70m",
+    "lm_revision": "manual",
+    "d_llm": 512,
+    "lm_note": "pythia id=EleutherAI/pythia-70m revision=manual path=D:\\ml_cache\\huggingface\\hub\\models--EleutherAI--pythia-70m\\snapshots\\manual d_llm=512 dtype=torch.float32 cache=D:\\ml_cache"
+  },
+  "run": {
+    "warmup_phase": "language_rgb",
+    "refinement_phase": "language",
+    "t2i_warmup_steps": 100,
+    "refinement_steps": 200,
+    "schedule": "generation-first text_to_both warmup, then deterministic alternating text_to_both,image_to_current",
+    "warmup_trainable": 288010,
+    "refinement_trainable": 288010,
+    "stem_read_deslice_seg_frozen": true,
+    "rgb_head_warmup_only": true,
+    "interface_lr": 0.0001,
+    "warmup_interface_lr": 0.0001,
+    "warmup_visual_lr": 1e-05,
+    "warmup_current_every": 4,
+    "digit_shuffle_coef": 1.0,
+    "current_shuffle_coef": 0.1,
+    "shuffle_margin": 0.05,
+    "seg_energy_weight": 0.25,
+    "digit_group_coef": 0.1,
+    "digit_group_temperature": 0.1,
+    "gdn2": false,
+    "scene_generator": "capability_sample/grid_digit_mask for every port"
+  },
+  "gates": {
+    "t2i": "official pythia T2I gate",
+    "current": {
+      "digit_top1": 0.85,
+      "color_acc": 0.9,
+      "paired_iou": 0.85,
+      "seg_iou": 0.9,
+      "flood_max": 0.1,
+      "source_iou_gap": 0.3
+    }
+  },
+  "final": {
+    "t2i": {
+      "n": 117,
+      "psnr": 34.08952860763441,
+      "digit_top1": 1.0,
+      "digit_iou": 0.9524712445389512,
+      "color_acc": 0.9763534074155693,
+      "paired_iou": 0.9520438940097125,
+      "centroid_error": 0.0033920414618447297,
+      "flood": 0.00140691502019763,
+      "digit_shuffled_top1": 0.0,
+      "color_shuffled_acc": 0.0,
+      "bce": 0.060860540717840195
+    },
+    "current": {
+      "n": 90,
+      "psnr": 25.361457162977757,
+      "digit_top1": 0.9111111111111111,
+      "color_acc": 0.9058342344231076,
+      "paired_iou": 0.8840608331892226,
+      "seg_iou": 0.9749867154492272,
+      "flood": 0.00018244846432935447,
+      "source_shuffled_digit_top1": 0.06666666666666667,
+      "source_shuffled_paired_iou": 0.05527438186109066,
+      "source_shuffled_seg_iou": 0.0584235188861688,
+      "source_digit_gap": 0.8444444444444444,
+      "source_iou_gap": 0.8287864513281319,
+      "source_seg_gap": 0.9165631965630584
+    }
+  },
+  "final_gates": {
+    "t2i": true,
+    "current": true
+  },
+  "history": [
+    {
+      "step": 0,
+      "meta": {},
+      "t2i": {
+        "n": 117,
+        "psnr": 34.08952860763441,
+        "digit_top1": 1.0,
+        "digit_iou": 0.9524712445389512,
+        "color_acc": 0.9763534074155693,
+        "paired_iou": 0.9520438940097125,
+        "centroid_error": 0.0033920414618447297,
+        "flood": 0.00140691502019763,
+        "digit_shuffled_top1": 0.0,
+        "color_shuffled_acc": 0.0,
+        "bce": 0.060860540717840195
+      },
+      "current": {
+        "n": 90,
+        "psnr": 25.361457162977757,
+        "digit_top1": 0.9111111111111111,
+        "color_acc": 0.9058342344231076,
+        "paired_iou": 0.8840608331892226,
+        "seg_iou": 0.9749867154492272,
+        "flood": 0.00018244846432935447,
+        "source_shuffled_digit_top1": 0.06666666666666667,
+        "source_shuffled_paired_iou": 0.05527438186109066,
+        "source_shuffled_seg_iou": 0.0584235188861688,
+        "source_digit_gap": 0.8444444444444444,
+        "source_iou_gap": 0.8287864513281319,
+        "source_seg_gap": 0.9165631965630584
+      },
+      "gates": {
+        "t2i": true,
+        "current": true
+      },
+      "score": 7.431587283441555,
+      "elapsed_sec": 9.82962155342102
+    }
+  ]
+}

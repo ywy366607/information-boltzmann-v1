@@ -72,6 +72,83 @@ def free_color_acc(pred: torch.Tensor, color: str) -> float:
     return float((hit & chroma_px).sum() / chroma_px.sum().clamp_min(1))
 
 
+def background_flood_rate(
+    pred: torch.Tensor,
+    target: torch.Tensor,
+    stroke: torch.Tensor,
+    color_distance: float = 0.35,
+) -> float:
+    """Fraction of ground that is visibly painted like the observed ink.
+
+    Color distance alone is insufficient: black is only 1/3 mean-L1 away
+    from pure red/green/blue and the historical 0.35 threshold therefore
+    labeled a perfect black background as 100% flood.  Requiring visible
+    chroma and luminance makes the metric agree with ``free_ink_mask``.
+    """
+    mask = stroke.unsqueeze(1) if stroke.dim() == 3 else stroke
+    mask = mask.to(device=pred.device, dtype=pred.dtype)
+    bg = 1.0 - mask
+    count = mask.sum(dim=(2, 3), keepdim=True).clamp_min(1.0)
+    ink = (target * mask).sum(dim=(2, 3), keepdim=True) / count
+    close = (pred - ink).abs().mean(dim=1, keepdim=True) < float(color_distance)
+    chromatic = (
+        pred.max(dim=1, keepdim=True).values
+        - pred.min(dim=1, keepdim=True).values
+    ) >= 0.20
+    visible = pred.max(dim=1, keepdim=True).values >= 0.15
+    hit = close & chromatic & visible
+    return float((hit.to(pred.dtype) * bg).sum() / bg.sum().clamp_min(1.0))
+
+
+def paired_ink_iou(pred: torch.Tensor, stroke: torch.Tensor, color: str) -> float:
+    """IoU at the requested point addresses; unlike digit_iou, no shifting."""
+    if pred.dim() == 3:
+        pred = pred.unsqueeze(0)
+    ink = free_ink_mask(pred, color)
+    target = stroke.to(device=pred.device)
+    if target.dim() == 2:
+        target = target.unsqueeze(0)
+    if target.dim() == 4:
+        target = target[:, 0]
+    target = target > 0.5
+    inter = (ink & target).flatten(1).sum(dim=1).float()
+    union = (ink | target).flatten(1).sum(dim=1).float()
+    return float((inter / union.clamp_min(1.0)).mean())
+
+
+def ink_centroid_error(pred: torch.Tensor, stroke: torch.Tensor, color: str) -> float:
+    """Requested-vs-generated ink centroid distance, normalized by image diagonal."""
+    if pred.dim() == 3:
+        pred = pred.unsqueeze(0)
+    ink = free_ink_mask(pred, color)
+    target = stroke.to(device=pred.device)
+    if target.dim() == 2:
+        target = target.unsqueeze(0)
+    if target.dim() == 4:
+        target = target[:, 0]
+    target = target > 0.5
+    h, w = ink.shape[-2:]
+    yy, xx = torch.meshgrid(
+        torch.arange(h, device=pred.device, dtype=torch.float32),
+        torch.arange(w, device=pred.device, dtype=torch.float32),
+        indexing="ij",
+    )
+    xy = torch.stack((yy, xx), dim=-1).view(1, h, w, 2)
+
+    def centroid(mask: torch.Tensor):
+        mass = mask.flatten(1).sum(dim=1).float()
+        point = (mask.float().unsqueeze(-1) * xy).sum(dim=(1, 2))
+        return point / mass.clamp_min(1.0).unsqueeze(-1), mass
+
+    pred_c, pred_mass = centroid(ink)
+    target_c, target_mass = centroid(target)
+    diag = max(((h - 1) ** 2 + (w - 1) ** 2) ** 0.5, 1.0)
+    error = (pred_c - target_c).norm(dim=-1) / diag
+    missing = (pred_mass < 1) | (target_mass < 1)
+    error = torch.where(missing, torch.ones_like(error), error)
+    return float(error.mean())
+
+
 def _digit_template(digit: str, res: int, box: int) -> torch.Tensor:
     key = (res, str(digit), int(box))
     cached = _TEMPLATE_CACHE.get(key)
@@ -113,7 +190,7 @@ def digit_shift_scores(
     pred: torch.Tensor,
     digit: str,
     color: str,
-    boxes: Tuple[int, ...] = (10, 12, 14, 16, 18, 20, 22),
+    boxes: Tuple[int, ...] = (4, 6, 8, 10, 12, 14, 16, 18, 20, 22),
 ) -> Dict[str, float]:
     """Translation-invariant digit match. pred is [1,3,H,W] or [3,H,W]."""
     if pred.dim() == 3:

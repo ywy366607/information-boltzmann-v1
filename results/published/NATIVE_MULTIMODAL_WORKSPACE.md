@@ -1,5 +1,7 @@
 # Native multimodal: shared workspace \(U\), not “everything → text tokens”
 
+> Supporting design. The current architecture source of truth is [`../../docs/NORTH_STAR.md`](../../docs/NORTH_STAR.md).
+
 > **This is Transolver3 applied to multimodal systems.**  
 > Naming note: `TRANSOLVER3_MULTIMODAL.md`.  
 > Legacy “vision = permanent slice tokens → LLM” is **not** Transolver3 product.

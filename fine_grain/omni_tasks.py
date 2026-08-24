@@ -21,6 +21,17 @@ from fine_grain.vlm_data import COLORS, KINK_KS, format_prompt
 
 TASKS = ("t2t", "i2t", "it2t", "recon", "i2i", "t2i")
 
+GRID_PLACES = (
+    "top_left", "top_center", "top_right",
+    "middle_left", "middle_center", "middle_right",
+    "bottom_left", "bottom_center", "bottom_right",
+)
+
+_GRID_WORDS = {
+    place: place.replace("_", " ")
+    for place in GRID_PLACES
+}
+
 _COLOR_IDX = {"red": 0, "green": 1, "blue": 2, "yellow": 3}
 
 # L2-unit inks. SIGNAL yellow is [1,1,0] (2× energy vs R/G/B) so MSE
@@ -63,6 +74,27 @@ def _paint(img: torch.Tensor, mask: torch.Tensor, rgb: np.ndarray) -> torch.Tens
     return img * (1.0 - m) + col * m
 
 
+def grid_digit_mask(digit: str, res: int, place: str) -> torch.Tensor:
+    """Render a deterministic small digit at one named full-resolution address."""
+    place = str(place).lower()
+    if place not in GRID_PLACES:
+        raise ValueError(f"unknown grid placement {place!r}")
+    row, col = place.split("_")
+    box = max(4, min(16, (int(res) + 2) // 3, int(res) - 2))
+    starts = {
+        "top": 1,
+        "middle": (int(res) - box) // 2,
+        "bottom": int(res) - box - 1,
+        "left": 1,
+        "center": (int(res) - box) // 2,
+        "right": int(res) - box - 1,
+    }
+    pm = render_digit_mask(
+        str(digit), int(res), box, starts[row], starts[col], jitter=0.0,
+    )
+    return torch.from_numpy(pm.astype(np.float32)).view(1, int(res), int(res))
+
+
 def one_sample(
     rng: np.random.Generator, res: int, kind: str,
     t2i_canvas: str = "paper", t2i_stroke_px: int = 1,
@@ -75,7 +107,12 @@ def one_sample(
     d = int(t2i_digit) if t2i_digit is not None else int(rng.integers(0, 10))
     img, lab, msk = make_ocr_1px(rng, np.array([d]), res=res, ink_color=color)
     stroke = _stroke_mask(msk, res)
-    extra = {"digit": OCR_DIGITS[d], "color": color, "t2i_canvas": str(t2i_canvas)}
+    extra = {
+        "digit": OCR_DIGITS[d],
+        "color": color,
+        "t2i_canvas": str(t2i_canvas),
+        "placement": str(t2i_place).lower(),
+    }
 
     if kind == "it2t":
         q = "What digit is drawn with the thin stroke?"
@@ -122,11 +159,21 @@ def one_sample(
             paper = torch.from_numpy(np.clip(_canvas(rng, 1, res, n_blobs=3), 0, 1))
             # product edit: image is the paper. Same wording as published t2i.
             prompt = f"Draw digit {d} with a thin {color} stroke"
-        if str(t2i_place).lower() == "center":
+        place = str(t2i_place).lower()
+        if place == "grid":
+            place = str(rng.choice(GRID_PLACES))
+        if place in GRID_PLACES:
+            stroke = grid_digit_mask(str(d), res, place)
+            prompt = f"{prompt} at {_GRID_WORDS[place]}"
+        elif place == "center":
             box = min(16, res - 2)
             y0 = x0 = (res - box) // 2
             pm = render_digit_mask(str(d), res, box, y0, x0, jitter=0.0)
             stroke = torch.from_numpy(pm.astype(np.float32)).view(1, res, res)
+        elif place != "random":
+            choices = ", ".join(("random", "center", "grid", *GRID_PLACES))
+            raise ValueError(f"unknown t2i_place={place!r}; choose one of {choices}")
+        extra["placement"] = place
         if int(t2i_stroke_px) > 1:
             stroke = thicken_stroke(stroke, t2i_stroke_px)
         tgt = _paint(paper, stroke, ink)
@@ -209,4 +256,5 @@ def make_omni_batch(
         "need_pix": [s["need_pix"] for s in samples],
         "digit": [s.get("digit", "") for s in samples],
         "color": [s.get("color", "") for s in samples],
+        "placement": [s.get("placement", "") for s in samples],
     }

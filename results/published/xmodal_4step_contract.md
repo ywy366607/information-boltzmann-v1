@@ -1,5 +1,7 @@
 # Bidirectional vision–language evolution
 
+> Historical transition contract. The canonical clock and invariants are now defined in [`../../docs/NORTH_STAR.md`](../../docs/NORTH_STAR.md).
+
 > **Product thesis:** `FINAL_BIDIR_POINT_FIELD.md` (full-res \(X\) + deslice) and
 > `NATIVE_MULTIMODAL_WORKSPACE.md` (shared \(U\), Read/Write ports, keep topology).
 

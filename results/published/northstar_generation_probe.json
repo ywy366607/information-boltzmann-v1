@@ -1,0 +1,93 @@
+{
+  "protocol": "docs/NORTH_STAR.md#9-竞争假设与关键实验",
+  "checkpoint": "D:\\视觉编码器测试\\checkpoints\\omni_d64_northstar_t2i_geometry_best.pt",
+  "bank": {
+    "n": 40,
+    "digits": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "color": "green",
+    "placement": "center",
+    "source": "coordinate black field",
+    "seed_rule": "1000 + 10*repeat + digit"
+  },
+  "matched": {
+    "psnr": 12.477291774749755,
+    "digit_iou": 0.21301741972565652,
+    "digit_top1": 0.1,
+    "color_acc": 1.0,
+    "ink_frac": 0.5796875,
+    "flood": 0.8807794928550721
+  },
+  "shuffled_prompt": {
+    "psnr": 12.35987310409546,
+    "digit_iou": 0.21300454288721085,
+    "digit_top1": 0.1,
+    "color_acc": 1.0,
+    "ink_frac": 0.5796875,
+    "flood": 0.8801510274410248
+  },
+  "field_clamped_pi0": {
+    "psnr": 13.160412216186524,
+    "digit_iou": 0.13607843592762947,
+    "digit_top1": 0.1,
+    "color_acc": 1.0,
+    "ink_frac": 0.99609375,
+    "flood": 1.0
+  },
+  "causal_effects": {
+    "matched_vs_shuffled_rgb_rms": 0.028583794832229614,
+    "matched_vs_clamped_rgb_rms": 0.17648160457611084,
+    "matched_latent_field_write_rms": 1.115674376487732
+  },
+  "assignment": [
+    {
+      "layer": 0,
+      "point_assignment_entropy_norm": 0.8582168817520142,
+      "slice_mass_cv": 0.5305127501487732,
+      "slice_centroid_spread": 0.08940653502941132,
+      "null_mass_mean": 0.13951118290424347
+    },
+    {
+      "layer": 1,
+      "point_assignment_entropy_norm": 0.822161853313446,
+      "slice_mass_cv": 0.2785399854183197,
+      "slice_centroid_spread": 0.07291245460510254,
+      "null_mass_mean": 0.23969338834285736
+    },
+    {
+      "layer": 2,
+      "point_assignment_entropy_norm": 0.8258142471313477,
+      "slice_mass_cv": 0.4871640205383301,
+      "slice_centroid_spread": 0.042391784489154816,
+      "null_mass_mean": 0.20731782913208008
+    },
+    {
+      "layer": 3,
+      "point_assignment_entropy_norm": 0.8673383593559265,
+      "slice_mass_cv": 0.33976706862449646,
+      "slice_centroid_spread": 0.027608556672930717,
+      "null_mass_mean": 0.1699020117521286
+    }
+  ],
+  "decision_rules": {
+    "prompt_causal": "matched digit_top1 must exceed shuffled by >=0.50",
+    "write_causal": "matched digit_top1 must exceed pi_x=0 by >=0.50",
+    "capacity": "matched digit_top1 >=0.95 before scaling"
+  },
+  "gate_verdicts": {
+    "prompt_causal": false,
+    "write_causal": false,
+    "capacity": false
+  },
+  "review": "not independently reviewed"
+}

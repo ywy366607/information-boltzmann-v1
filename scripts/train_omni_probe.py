@@ -25,8 +25,19 @@ from fine_grain.omni_model import DualStreamOmni
 import math
 
 from fine_grain.flow_match import interpolate, ode_integrate, sample_t, velocity_target
-from fine_grain.gen_metrics import gen_free_scores
-from fine_grain.omni_tasks import TASKS, apply_t2i_gray_hint, make_omni_batch, one_sample
+from fine_grain.gen_metrics import (
+    background_flood_rate,
+    gen_free_scores,
+    ink_centroid_error,
+    paired_ink_iou,
+)
+from fine_grain.omni_tasks import (
+    GRID_PLACES,
+    TASKS,
+    apply_t2i_gray_hint,
+    make_omni_batch,
+    one_sample,
+)
 
 
 def masked_psnr(pred: torch.Tensor, tgt: torch.Tensor, mask: torch.Tensor) -> float:
@@ -46,14 +57,7 @@ def ink_color_match(pred: torch.Tensor, tgt: torch.Tensor, stroke: torch.Tensor)
 
 
 def flood_rate(pred: torch.Tensor, tgt: torch.Tensor, stroke: torch.Tensor) -> float:
-    """Fraction of background pixels painted near the stroke ink color."""
-    m = stroke.unsqueeze(1)
-    bg = (1.0 - m)
-    w = m.sum(dim=(2, 3), keepdim=True).clamp_min(1.0)
-    ink = (tgt * m).sum(dim=(2, 3), keepdim=True) / w
-    dist = (pred - ink).abs().mean(dim=1, keepdim=True)
-    hit = (dist < 0.35).to(pred.dtype) * bg
-    return float(hit.sum() / bg.sum().clamp_min(1.0))
+    return background_flood_rate(pred, tgt, stroke)
 
 
 def psnr(pred: torch.Tensor, tgt: torch.Tensor) -> float:
@@ -93,10 +97,9 @@ def pixel_rms(a: torch.Tensor, b: torch.Tensor) -> torch.Tensor:
 
 
 def f_iterate(step_fn, x: torch.Tensor, n_steps: int, halt_eps: float = 0.0):
-    """Apply step_fn up to Tmax. Per-sample halt when RMS(Δx) ≤ halt_eps.
+    """Generic fixed-point probe retained for historical diagnostics.
 
-    halt_eps=0 keeps the old fixed-K path. This is the discrete F-descent
-    stop: the write no longer moves the field.
+    This helper does not establish that ``step_fn`` descends free energy.
     """
     n = max(1, int(n_steps))
     B = x.shape[0]
@@ -123,35 +126,65 @@ def f_generate(
     halt_eps: float = 0.0,
     return_steps: bool = False,
 ):
-    """Generation = F descent: iterate Deslice(μp−S), no OT/Heun.
+    """Generate through one native full-resolution X-Slice-H field pass.
 
-    n_steps is Tmax. halt_eps>0 stops a sample when the field stops moving.
+    The model's layers are the inference trajectory. The input is encoded once,
+    X remains live across those layers, and RGB is decoded only at the end.
+    ``n_steps`` and ``halt_eps`` remain for old CLI/checkpoint compatibility;
+    they must not create an outer RGB→stem→RGB loop. A strong F-descent claim
+    additionally requires a shared cross-step F evaluator (see NORTH_STAR.md).
     """
     B = x0.shape[0]
     null = [""] * len(prompts)
-    ones = torch.ones(B, device=x0.device, dtype=x0.dtype)
+    # In the registered bridge, t=0 is the source/null boundary and t=1 data.
+    zeros = torch.zeros(B, device=x0.device, dtype=x0.dtype)
     use_cfg = cfg is not None and abs(float(cfg) - 1.0) > 1e-6
-
-    def step_fn(x):
-        xc = model(x, prompts, need_pix=need_pix, t=ones)["x_pred"]
-        if use_cfg:
-            xu = model(x, null, need_pix=need_pix, t=ones)["x_pred"]
-            xc = xu + float(cfg) * (xc - xu)
-        return xc
-
-    x, n_used = f_iterate(step_fn, x0, n_steps, halt_eps=halt_eps)
+    x = model(x0, prompts, pi_x=1.0, need_pix=need_pix, t=zeros)["x_pred"]
+    if use_cfg:
+        xu = model(x0, null, pi_x=1.0, need_pix=need_pix, t=zeros)["x_pred"]
+        x = xu + float(cfg) * (x - xu)
+    n_used = torch.ones(B, device=x0.device, dtype=torch.float32)
     if return_steps:
         return x, n_used
     return x
 
 
+@torch.no_grad()
+def s0_prompt_cosine(model: DualStreamOmni, device) -> float | None:
+    """Kill criterion: S0 of two prompts must not be the same field."""
+    if not getattr(model.mot_stack, "use_residual_read", False):
+        return None
+    layer = model.mot_stack.layers[0]
+    if getattr(layer, "lang_s0", None) is None:
+        return None
+    model.eval()
+    x = torch.full((2, 3, model.res, model.res), -1.0 if model.fm_signed else 0.0, device=device)
+    prompts = [
+        "Draw digit 7 with a thin green stroke blank image",
+        "Draw digit 1 with a thin red stroke blank image",
+    ]
+    t = torch.ones(2, device=device)
+    model(x, prompts, need_pix=[True, True], t=t)
+    s0 = layer.last_s0
+    if s0 is None or s0.shape[0] < 2:
+        return None
+    a, b = s0[0].reshape(1, -1), s0[1].reshape(1, -1)
+    return float(F.cosine_similarity(a, b).item())
+
+
 def eval_score(ev: dict, mix) -> float:
-    """Identity first (digit_top1 / acc), PSNR only as a tie-break."""
+    """Select T2I by identity and requested address; PSNR only breaks ties."""
     scores = []
     for k in mix:
         rec = ev[k]
         if k in ("t2t", "i2t", "it2t"):
             scores.append(float(rec.get("acc", 0.0)))
+        elif k == "t2i":
+            scores.append(
+                float(rec.get("digit_top1", 0.0))
+                + float(rec.get("paired_iou", 0.0))
+                + 0.001 * float(rec.get("psnr", 0.0))
+            )
         else:
             scores.append(
                 float(rec.get("digit_top1", 0.0))
@@ -162,7 +195,8 @@ def eval_score(ev: dict, mix) -> float:
 
 PIX_KEYS = (
     "psnr", "stroke_psnr", "bg_psnr", "ink", "flood",
-    "color_acc", "digit_iou", "digit_top1", "ink_frac", "f_steps",
+    "color_acc", "digit_iou", "digit_top1", "ink_frac",
+    "paired_iou", "centroid_error", "f_steps",
 )
 
 
@@ -188,7 +222,8 @@ def eval_ports(
             "n": 0, "acc": 0.0, "psnr": 0.0, "stroke_psnr": 0.0,
             "bg_psnr": 0.0, "ink": 0.0, "flood": 0.0,
             "color_acc": 0.0, "digit_iou": 0.0, "digit_top1": 0.0,
-            "ink_frac": 0.0, "f_steps": 0.0,
+            "ink_frac": 0.0, "paired_iou": 0.0,
+            "centroid_error": 0.0, "f_steps": 0.0,
         }
         for k in kinds
     }
@@ -250,6 +285,12 @@ def eval_ports(
                 rec["digit_iou"] += free["digit_iou"]
                 rec["digit_top1"] += free["digit_top1"]
                 rec["ink_frac"] += free["ink_frac"]
+                rec["paired_iou"] += paired_ink_iou(
+                    rgb, st, s.get("color", "red"),
+                )
+                rec["centroid_error"] += ink_centroid_error(
+                    rgb, st, s.get("color", "red"),
+                )
     for k, rec in stats.items():
         n = max(1, rec["n"])
         for key in ("acc",) + PIX_KEYS:
@@ -277,12 +318,13 @@ def render_gallery(
     if len(kinds) == 1:
         axes = np.expand_dims(axes, 0)
     fig.patch.set_facecolor("#0b1120")
+    trajectory = "field start" if f_steps > 0 else "ODE start"
     if fm_x0 == "noise":
-        titles = ["noise (ODE start)", "target", "prediction"]
+        titles = [f"noise ({trajectory})", "target", "prediction"]
     elif t2i_canvas == "black":
-        titles = ["black (ODE start)", "target", "prediction"]
+        titles = [f"black ({trajectory})", "target", "prediction"]
     else:
-        titles = ["paper (ODE start)", "target", "prediction"]
+        titles = [f"paper ({trajectory})", "target", "prediction"]
     for r, kind in enumerate(kinds):
         s = one_sample(
             rng, res, kind, t2i_canvas=t2i_canvas,
@@ -335,12 +377,9 @@ def render_gallery(
             color="#94a3b8", fontsize=7.5, ha="left", va="top",
         )
     mode = f"{fm_x0}/{t2i_canvas}" if any(k == "t2i" for k in kinds) else "ports"
-    solver = (
-        f"F≤{f_steps}" + (f" halt={f_halt_eps:g}" if f_halt_eps > 0 else "")
-        if f_steps > 0 else f"{flow_method}{flow_steps or ''}"
-    )
+    solver = "native-field" if f_steps > 0 else f"{flow_method}{flow_steps or ''}"
     fig.suptitle(
-        f"DualStream  d=256  ·  {mode}  ·  {solver}",
+        f"DualStream  d={model.d_model}  ·  {mode}  ·  {solver}",
         color="white", fontsize=13, fontweight="bold",
     )
     plt.tight_layout()
@@ -362,13 +401,20 @@ def main() -> None:
     ap.add_argument("--out", type=str, default="results/published/omni_scaled_2000step_table.json")
     ap.add_argument("--init", type=str, default="")
     ap.add_argument("--mix", type=str, default="t2t,i2t,it2t,recon,i2i,t2i")
-    ap.add_argument("--lr", type=float, default=2e-4)
+    ap.add_argument(
+        "--lr", type=float, default=None,
+        help="Default: 1e-3 for core/active_f2 generation, otherwise 2e-4.",
+    )
+    ap.add_argument(
+        "--lr-schedule", choices=["auto", "constant", "cosine"], default="auto",
+        help="auto uses constant for generation core and cosine otherwise.",
+    )
     ap.add_argument("--warmup-frac", type=float, default=0.05)
     ap.add_argument("--tag", type=str, default="")
-    ap.add_argument("--vfe-coef", type=float, default=0.0,
-                    help="F2: λ E[gap] on post_head. 0 = Champion B (old omni default).")
+    ap.add_argument("--vfe-coef", type=float, default=0.1,
+                    help="λ E[gap] on post_head. Canonical unified default=0.1; use 0 for history.")
     ap.add_argument("--gate-on", type=str, default="u", choices=["u", "gap", "f"])
-    ap.add_argument("--deslice-write", type=str, default="absolute",
+    ap.add_argument("--deslice-write", type=str, default="increment",
                     choices=["absolute", "increment", "workspace"])
     ap.add_argument("--gate-h-local", action=argparse.BooleanOptionalAction, default=False)
     ap.add_argument(
@@ -412,26 +458,38 @@ def main() -> None:
         help="Dilate the target stroke (1=Bresenham 1px, 5=thick MNIST-like).",
     )
     ap.add_argument(
-        "--t2i-place", type=str, default="random", choices=["random", "center"],
-        help="center=fixed box 16 at mid (tests pose-collapse diagnosis).",
+        "--t2i-place", type=str, default="random",
+        choices=["random", "center", "grid", *GRID_PLACES],
+        help="grid=prompt-controlled nine-grid address; center keeps the legacy fixed box.",
     )
     ap.add_argument("--t2i-digit", type=int, default=None, help="Lock t2i to one digit (capacity probe).")
     ap.add_argument("--t2i-color", type=str, default="", help="Lock t2i to one color.")
     ap.add_argument(
-        "--prior-write", type=float, default=0.0,
-        help="F-action: Deslice(μp−S). 0=off (recognition). 1=full language decode.",
+        "--prior-write", type=float, default=None,
+        help="F-action Deslice(μp−S). Default: 1 for active_f2 generation, else 0.",
     )
     ap.add_argument(
         "--f-gen", action="store_true",
-        help="Generation is F descent (iterate Deslice μp), not FM/Heun.",
+        help="Native persistent-field generation: one stack trajectory, one terminal decode.",
+    )
+    ap.add_argument(
+        "--gen-recipe", choices=["core", "active_f2", "vfe"], default="active_f2",
+        help=(
+            "core=validated capacity recipe; active_f2=core plus F2 beliefs, "
+            "clean language prior and prior-error action; vfe=historical bundle."
+        ),
     )
     ap.add_argument(
         "--f-steps", type=int, default=4,
-        help="F-descent Tmax (Ouro-like 4–8). Used as a cap when halt is on.",
+        help="Legacy compatibility only; native generation uses one X-Slice-H stack pass.",
     )
     ap.add_argument(
         "--f-halt-eps", type=float, default=0.0,
         help="Per-sample halt when RMS(Δx)≤eps. 0=always Tmax. Signed chart ~0.03.",
+    )
+    ap.add_argument(
+        "--f-bptt", action=argparse.BooleanOptionalAction, default=False,
+        help="Train action by BPTT through K writes. Off: teacher-forced data bridge.",
     )
     ap.add_argument(
         "--null-slice", action=argparse.BooleanOptionalAction, default=False,
@@ -450,43 +508,89 @@ def main() -> None:
         help="Write-side yield on Bayes U. Off = Read yield is the sparse mechanism.",
     )
     ap.add_argument(
-        "--yield-read", action=argparse.BooleanOptionalAction, default=True,
-        help="Per-head ReLU(w−τ_h) on SliceRead. Uniform 1/M does not enter slices.",
+        "--yield-read", action=argparse.BooleanOptionalAction, default=False,
+        help="Per-head ReLU(w−τ_h) on SliceRead. Off: use ticket-read instead.",
+    )
+    ap.add_argument(
+        "--ticket-read", action=argparse.BooleanOptionalAction, default=False,
+        help="Read tickets = ||X − f(H,xy)||². Off: Read stays softmax. Yield is on write.",
+    )
+    ap.add_argument(
+        "--write-yield", action=argparse.BooleanOptionalAction, default=False,
+        help="Deslice Δ: u=sign(Δ)⊙ReLU(|Δ|−τ). Off: write follows residual-read w.",
+    )
+    ap.add_argument(
+        "--write-alpha", type=float, default=1.0,
+        help="Field leak X←αX+πu. 1=keep canvas (decoupled from τ).",
+    )
+    ap.add_argument(
+        "--residual-read", action=argparse.BooleanOptionalAction, default=True,
+        help="SliceRead(X−S0) with ℓ_∅=τ−γ e. Garbage (explained) is not read.",
     )
     args = ap.parse_args()
+
+    if args.f_gen and args.f_bptt:
+        raise ValueError(
+            "--f-bptt trained the removed RGB round-trip rollout; native field "
+            "generation keeps X inside one stack pass (docs/NORTH_STAR.md)."
+        )
 
     dev = torch.device(args.device)
     torch.manual_seed(42)
     rng = np.random.default_rng(42)
     rng_val = np.random.default_rng(9001)
 
+    core_gen = bool(args.f_gen and args.gen_recipe == "core")
+    active_f2_gen = bool(args.f_gen and args.gen_recipe == "active_f2")
+    simple_gen = core_gen or active_f2_gen
+    effective_prior_write = float(
+        (1.0 if active_f2_gen else 0.0)
+        if args.prior_write is None else args.prior_write
+    )
+    spatial_prompt_vocab = args.t2i_place == "grid" or args.t2i_place in GRID_PLACES
     model = DualStreamOmni(
         d_model=args.d_model, n_slices=args.n_slices, n_layers=4, res=args.res,
         n_heads=args.n_heads,
-        surprise_mode="v1_bayes", s_update="rms_dir",
-        prior_loss_coef=0.1, sigreg_coef=args.sigreg_coef, use_stiefel=True, deslice_topk=2,
-        use_null_slice=args.null_slice,
+        surprise_mode="baseline" if core_gen else "v1_bayes",
+        s_update="raw" if simple_gen else "rms_dir",
+        prior_loss_coef=0.1 if active_f2_gen else (0.0 if core_gen else 0.1),
+        sigreg_coef=0.0 if simple_gen else args.sigreg_coef,
+        use_stiefel=not simple_gen,
+        deslice_topk=0 if simple_gen else 2,
+        use_null_slice=False if simple_gen else (args.null_slice or args.residual_read),
         pack_by_surprise=args.pack_surprise,
         hard_admit=args.hard_admit,
         use_yield_read=args.yield_read,
+        use_ticket_read=args.ticket_read,
+        use_write_yield=args.write_yield,
+        write_alpha=args.write_alpha,
+        use_residual_read=False if simple_gen else args.residual_read,
         gate_on=args.gate_on,
         deslice_write=args.deslice_write,
         gate_h_local=args.gate_h_local,
-        vfe_coef=args.vfe_coef,
+        vfe_coef=args.vfe_coef if active_f2_gen else (0.0 if core_gen else args.vfe_coef),
         s_lang_topk=args.s_lang_topk,
         fm_pred=args.fm_pred,
         fm_signed=args.fm_signed,
-        prior_write=args.prior_write,
+        prior_write=effective_prior_write,
         prior_write_by_t=not args.f_gen,
+        pixel_loss_mode="balanced_bce" if simple_gen else "vfe",
+        spatial_prompt_vocab=spatial_prompt_vocab,
     ).to(dev)
     if args.init:
         raw = torch.load(args.init, map_location="cpu")
         missing = model.load_state_dict(raw, strict=False)
         print(f"  loaded {args.init} missing={len(missing.missing_keys)}", flush=True)
-    opt = torch.optim.AdamW(model.parameters(), lr=args.lr, weight_decay=1e-4)
-    warmup = max(1, int(args.warmup_frac * args.steps))
+    effective_lr = float(args.lr if args.lr is not None else (1e-3 if simple_gen else 2e-4))
+    lr_schedule = (
+        "constant" if simple_gen else "cosine"
+    ) if args.lr_schedule == "auto" else args.lr_schedule
+    opt = torch.optim.AdamW(model.parameters(), lr=effective_lr, weight_decay=1e-4)
+    warmup = 0 if lr_schedule == "constant" else max(1, int(args.warmup_frac * args.steps))
 
     def lr_at(step_idx: int) -> float:
+        if lr_schedule == "constant":
+            return 1.0
         if step_idx < warmup:
             return (step_idx + 1) / warmup
         t = (step_idx - warmup) / max(1, args.steps - warmup)
@@ -499,15 +603,22 @@ def main() -> None:
     hist = []
     print(
         f"[omni] {args.steps} steps on {dev}  n_par={sum(p.numel() for p in model.parameters())}  "
-        f"online data mix={mix}  lr={args.lr} warmup={warmup}/{args.steps}  "
+        f"online data mix={mix}  lr={effective_lr} schedule={lr_schedule} "
+        f"warmup={warmup}/{args.steps}  "
         f"flow_match={args.flow_match} fm_pred={args.fm_pred} write={args.deslice_write} "
         f"canvas={args.t2i_canvas} x0={args.fm_x0} signed={args.fm_signed} cfg={args.cfg} "
-        f"f_gen={args.f_gen} Tmax={args.f_steps} halt_eps={args.f_halt_eps} "
+        f"f_gen={args.f_gen} gen_recipe={args.gen_recipe} "
+        f"prior_write={effective_prior_write} "
+        f"field_passes={1 if args.f_gen else 0} "
         f"deslice_topk={model.mot_stack.deslice_topk} "
         f"null_slice={model.mot_stack.use_null_slice} "
         f"pack_u={model.mot_stack.pack_by_surprise} "
         f"hard_admit={model.mot_stack.hard_admit} "
-        f"yield_read={model.mot_stack.use_yield_read} sigreg={args.sigreg_coef}",
+        f"yield_read={model.mot_stack.use_yield_read} "
+        f"ticket_read={model.mot_stack.use_ticket_read} "
+        f"write_yield={model.mot_stack.use_write_yield} "
+        f"residual_read={model.mot_stack.use_residual_read} "
+        f"write_alpha={model.mot_stack.write_alpha} sigreg={args.sigreg_coef}",
         flush=True,
     )
     flow_eval = 0 if args.f_gen else (int(args.flow_steps) if args.flow_match else 0)
@@ -549,26 +660,23 @@ def main() -> None:
         prompts = list(b["prompt"])
         if args.f_gen and any(b["need_pix"]):
             if args.fm_signed:
+                x0 = to_signed(x0)
                 x1 = to_signed(x1)
-            x = torch.randn_like(x1)
-            ones = torch.ones(x.shape[0], device=dev)
-            n_f = max(1, int(args.f_steps))
-
-            def _train_step(cur):
-                return model(cur, prompts, need_pix=b["need_pix"], t=ones)["x_pred"]
-
-            if n_f > 1:
-                with torch.no_grad():
-                    x, _ = f_iterate(
-                        _train_step, x, n_f - 1, halt_eps=f_halt,
-                    )
-            imgs = x
-            t_fm = ones
+            zeros = torch.zeros(x1.shape[0], device=dev)
             b["target_rgb"] = x1.detach().cpu()
-            b["t"] = None
             if args.cfg_drop > 0.0:
                 drop = torch.rand(len(prompts)) < float(args.cfg_drop)
                 prompts = ["" if d else p for d, p in zip(drop.tolist(), prompts)]
+            # Same boundary at train and inference: source/null field at t=0,
+            # one native stack trajectory, terminal observation loss.
+            imgs = x0
+            t_fm = zeros
+            b["t"] = t_fm
+            b["_action_bptt"] = 0
+        elif args.f_gen:
+            imgs = x0
+            t_fm = None
+            b["_action_bptt"] = 0
         elif args.flow_match and any(b["need_pix"]):
             if args.fm_signed:
                 x0 = to_signed(x0)
@@ -592,7 +700,13 @@ def main() -> None:
         else:
             imgs = x0
         opt.zero_grad()
-        out = model(imgs, prompts, need_pix=b["need_pix"], t=t_fm)
+        n_act = int(b.get("_action_bptt") or 0)
+        if n_act > 0:
+            out = model.action_writes(
+                imgs, prompts, need_pix=b["need_pix"], n_steps=n_act, t=t_fm,
+            )
+        else:
+            out = model(imgs, prompts, need_pix=b["need_pix"], t=t_fm)
         loss, meta = model.omni_loss(out, b, dev)
         loss.backward()
         torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
@@ -614,6 +728,8 @@ def main() -> None:
                     else (
                         f"psnr={ev[k]['psnr']:.1f}/str={ev[k]['stroke_psnr']:.1f}"
                         f"/top1={ev[k]['digit_top1']*100:.0f}"
+                        f"/pair={ev[k]['paired_iou']*100:.0f}"
+                        f"/pos={ev[k]['centroid_error']*100:.1f}"
                         f"/col={ev[k]['color_acc']*100:.0f}/fld={ev[k]['flood']*100:.0f}"
                         f"/K={ev[k].get('f_steps', 0):.1f}"
                     )
@@ -628,9 +744,12 @@ def main() -> None:
                 best_state = {k: v.detach().cpu().clone() for k, v in model.state_dict().items()}
                 torch.save(best_state, ckpt_best)
                 mark = f"  *best={score:.4f}"
+            s0c = s0_prompt_cosine(model, dev)
+            s0bit = f"  s0cos={s0c:.4f}" if s0c is not None else ""
+            model.train()
             print(
                 f"  step {step:4d}/{args.steps} lr={opt.param_groups[0]['lr']:.2e} "
-                f"loss={loss.item():.3f}  {bits}{mark}",
+                f"loss={loss.item():.3f}  {bits}{s0bit}{mark}",
                 flush=True,
             )
 
@@ -669,7 +788,8 @@ def main() -> None:
         "best_score": best_score if best_score > float("-inf") else None,
         "best_eval_n24": best_eval,
         "gallery": str(gallery),
-        "lr": args.lr,
+        "lr": effective_lr,
+        "lr_schedule": lr_schedule,
         "warmup_frac": args.warmup_frac,
         "mix": mix,
         "vfe_coef": args.vfe_coef,
@@ -679,6 +799,7 @@ def main() -> None:
         "flow_match": args.flow_match,
         "flow_steps": flow_eval,
         "f_gen": bool(args.f_gen),
+        "gen_recipe": args.gen_recipe,
         "f_steps": f_eval,
         "f_halt_eps": f_halt,
         "t2i_hint_frac": args.t2i_hint_frac,
@@ -687,14 +808,17 @@ def main() -> None:
         "t2i_canvas": args.t2i_canvas,
         "t2i_stroke_px": args.t2i_stroke_px,
         "t2i_place": args.t2i_place,
+        "spatial_prompt_vocab": spatial_prompt_vocab,
+        "prior_write": effective_prior_write,
         "fm_signed": args.fm_signed,
         "cfg": args.cfg,
         "flow_t": args.flow_t,
         "note": (
-            "Dedicated port run. warmup 5% then cosine. "
+            "Dedicated port run. The selected lr_schedule is recorded above. "
             "fm_signed: JiT [-1,1] chart + adaLN-Zero(t, pool(H)) on X/S. "
-            "best.pt is the max eval_score checkpoint (digit_top1 + 0.001 PSNR); "
-            "final metrics reload that ckpt. F-descent Tmax with RMS halt."
+            "best.pt maximizes T2I digit_top1 + paired_iou + 0.001 PSNR; "
+            "final metrics reload that ckpt. Native generation encodes once, "
+            "evolves X-Slice-H through the stack, and decodes once."
         ),
     }
     out = Path(args.out)
@@ -708,6 +832,8 @@ def main() -> None:
             f"ink={rec['ink']*100:5.1f}  flood={rec['flood']*100:5.1f}  "
             f"color={rec.get('color_acc',0)*100:5.1f}  "
             f"top1={rec.get('digit_top1',0)*100:5.1f}  "
+            f"pair={rec.get('paired_iou',0)*100:5.1f}  "
+            f"pos={rec.get('centroid_error',0)*100:5.1f}  "
             f"K={rec.get('f_steps',0):.1f}",
             flush=True,
         )

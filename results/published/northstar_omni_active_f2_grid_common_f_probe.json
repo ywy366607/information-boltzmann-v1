@@ -1,0 +1,314 @@
+{
+  "protocol": "docs/NORTH_STAR.md#9-竞争假设与关键实验",
+  "checkpoint": "D:\\视觉编码器测试\\checkpoints\\omni_d64_northstar_omni_active_f2_grid_best.pt",
+  "recipe": "active_f2",
+  "bank": {
+    "n": 90,
+    "digits": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "color": "green",
+    "placement": "grid",
+    "placement_values": [
+      "top_left",
+      "top_center",
+      "top_right",
+      "middle_left",
+      "middle_center",
+      "middle_right",
+      "bottom_left",
+      "bottom_center",
+      "bottom_right"
+    ],
+    "source": "coordinate black field",
+    "seed_rule": "1000 + 1000*repeat + 10*place_index + digit"
+  },
+  "matched": {
+    "psnr": 62.93390303717719,
+    "digit_iou": 1.0,
+    "digit_top1": 1.0,
+    "color_acc": 1.0,
+    "ink_frac": 0.0484375,
+    "flood": 0.0,
+    "paired_iou": 1.0,
+    "centroid_error": 0.0
+  },
+  "shuffled_prompt": {
+    "psnr": 20.024900415208606,
+    "digit_iou": 0.5353178977966309,
+    "digit_top1": 0.0,
+    "color_acc": 1.0,
+    "ink_frac": 0.0484375,
+    "flood": 0.018336033308878542,
+    "paired_iou": 0.4699673280119896,
+    "centroid_error": 0.024240055333616006
+  },
+  "position_shuffled_prompt": {
+    "psnr": 15.085456964704726,
+    "digit_iou": 1.0,
+    "digit_top1": 1.0,
+    "color_acc": 1.0,
+    "ink_frac": 0.0484375,
+    "flood": 0.05107187069952488,
+    "paired_iou": 0.0,
+    "centroid_error": 0.36517201794518367
+  },
+  "prior_action_off": {
+    "psnr": 25.8353913837009,
+    "digit_iou": 0.7374699963463678,
+    "digit_top1": 0.4777777777777778,
+    "color_acc": 1.0,
+    "ink_frac": 0.06740451388888889,
+    "flood": 0.02002935381606221,
+    "paired_iou": 0.7310383299986521,
+    "centroid_error": 0.02109945932817128
+  },
+  "field_clamped_pi0": {
+    "psnr": 12.473006884256998,
+    "digit_iou": 0.2955839455127716,
+    "digit_top1": 0.1,
+    "color_acc": 0.7666666507720947,
+    "ink_frac": 0.26953125,
+    "flood": 0.2734807640314102,
+    "paired_iou": 0.04459631254689561,
+    "centroid_error": 0.3045023368593926
+  },
+  "causal_effects": {
+    "matched_vs_shuffled_rgb_rms": 0.10445272922515869,
+    "matched_vs_position_shuffled_rgb_rms": 0.17794205248355865,
+    "matched_vs_prior_action_off_rgb_rms": 0.05616878718137741,
+    "matched_vs_clamped_rgb_rms": 0.2386046200990677,
+    "matched_latent_field_write_rms": 1.1723575592041016
+  },
+  "assignment": [
+    {
+      "layer": 0,
+      "point_assignment_entropy_norm": 0.9912520051002502,
+      "slice_mass_cv": 0.18164725601673126,
+      "slice_centroid_spread": 0.07894309610128403,
+      "null_mass_mean": null
+    },
+    {
+      "layer": 1,
+      "point_assignment_entropy_norm": 0.9814856648445129,
+      "slice_mass_cv": 0.2495489865541458,
+      "slice_centroid_spread": 0.12109670042991638,
+      "null_mass_mean": null
+    },
+    {
+      "layer": 2,
+      "point_assignment_entropy_norm": 0.990278959274292,
+      "slice_mass_cv": 0.20144349336624146,
+      "slice_centroid_spread": 0.04928917437791824,
+      "null_mass_mean": null
+    },
+    {
+      "layer": 3,
+      "point_assignment_entropy_norm": 0.9835991859436035,
+      "slice_mass_cv": 0.2575758695602417,
+      "slice_centroid_spread": 0.055280886590480804,
+      "null_mass_mean": null
+    }
+  ],
+  "f2_state": [
+    {
+      "layer": 0,
+      "F_mean": 0.35739797353744507,
+      "gap_mean": 0.00013668891915585846,
+      "U_mean": 0.10458841919898987,
+      "prior_error_mean": 0.0021875817328691483
+    },
+    {
+      "layer": 1,
+      "F_mean": 0.34288281202316284,
+      "gap_mean": 0.0004514666215982288,
+      "U_mean": 0.09848091751337051,
+      "prior_error_mean": 0.009831264615058899
+    },
+    {
+      "layer": 2,
+      "F_mean": 0.34384146332740784,
+      "gap_mean": 0.0007299107383005321,
+      "U_mean": 0.100355364382267,
+      "prior_error_mean": 0.008052470162510872
+    },
+    {
+      "layer": 3,
+      "F_mean": 0.3423853814601898,
+      "gap_mean": 0.0006884164176881313,
+      "U_mean": 0.10221871733665466,
+      "prior_error_mean": 0.010530107654631138
+    }
+  ],
+  "f2_state_note": "Each non-shared layer has its own prior head/query coordinates; these F values establish F2 form but are not a cross-layer descent curve.",
+  "common_action_trajectory": {
+    "definition": "A_k = -log p_anchor(S_anchor(X_k)|H_0); anchor is the frozen layer-0 SliceRead and F2 language prior reused for every step.",
+    "anchor_layer": 0,
+    "prompt_state": "fixed initial H_0",
+    "writes_to_field": false,
+    "steps": [
+      {
+        "step": 0,
+        "action_energy_mean": 1.2761996984481812,
+        "action_energy_median": 1.2762556076049805,
+        "rgb_mse_mean": 0.05734621733427048,
+        "rgb_mse_median": 0.0595194548368454,
+        "scores": {
+          "psnr": 12.473006884256998,
+          "digit_iou": 0.2955839455127716,
+          "digit_top1": 0.1,
+          "color_acc": 0.7666666507720947,
+          "ink_frac": 0.26953125,
+          "flood": 0.2734807640314102,
+          "paired_iou": 0.04459631254689561,
+          "centroid_error": 0.3045023368593926
+        }
+      },
+      {
+        "step": 1,
+        "action_energy_mean": 1.2831828594207764,
+        "action_energy_median": 1.2830097675323486,
+        "rgb_mse_mean": 0.15495143830776215,
+        "rgb_mse_median": 0.1214074119925499,
+        "scores": {
+          "psnr": 9.207745356029934,
+          "digit_iou": 0.2618115204075972,
+          "digit_top1": 0.1111111111111111,
+          "color_acc": 0.904286636908849,
+          "ink_frac": 0.3595052083333333,
+          "flood": 0.18564594366277257,
+          "paired_iou": 0.08029715291534861,
+          "centroid_error": 0.24817880367239317
+        }
+      },
+      {
+        "step": 2,
+        "action_energy_mean": 1.2811896800994873,
+        "action_energy_median": 1.280639410018921,
+        "rgb_mse_mean": 0.0978701189160347,
+        "rgb_mse_median": 0.09077702462673187,
+        "scores": {
+          "psnr": 10.467316087086996,
+          "digit_iou": 0.32445145837134787,
+          "digit_top1": 0.1111111111111111,
+          "color_acc": 0.5645117091635863,
+          "ink_frac": 0.16575520833333332,
+          "flood": 0.17347298252085844,
+          "paired_iou": 0.020644701551645994,
+          "centroid_error": 0.2376955311331484
+        }
+      },
+      {
+        "step": 3,
+        "action_energy_mean": 1.283414602279663,
+        "action_energy_median": 1.283375859260559,
+        "rgb_mse_mean": 0.08249148726463318,
+        "rgb_mse_median": 0.08280232548713684,
+        "scores": {
+          "psnr": 10.954779232872857,
+          "digit_iou": 0.24652432178457578,
+          "digit_top1": 0.14444444444444443,
+          "color_acc": 0.48204104925195373,
+          "ink_frac": 0.03706597222222222,
+          "flood": 0.03695569574936396,
+          "paired_iou": 0.0,
+          "centroid_error": 0.25450382717988557
+        }
+      },
+      {
+        "step": 4,
+        "action_energy_mean": 1.3250057697296143,
+        "action_energy_median": 1.3245699405670166,
+        "rgb_mse_mean": 8.611366979494051e-07,
+        "rgb_mse_median": 5.774459168605972e-07,
+        "scores": {
+          "psnr": 62.93390303717719,
+          "digit_iou": 1.0,
+          "digit_top1": 1.0,
+          "color_acc": 1.0,
+          "ink_frac": 0.0484375,
+          "flood": 0.0,
+          "paired_iou": 1.0,
+          "centroid_error": 0.0
+        }
+      }
+    ],
+    "transition_median_delta": [
+      0.0068176984786987305,
+      -0.0018951892852783203,
+      0.0023545026779174805,
+      0.041718125343322754
+    ],
+    "transition_nonincrease_fraction": [
+      0.0,
+      0.8555555939674377,
+      0.10000000149011612,
+      0.0
+    ],
+    "terminal_delta_mean": 0.04880597069859505,
+    "terminal_delta_median": 0.048432230949401855,
+    "terminal_lower_fraction": 0.0,
+    "coordinate_controls": {
+      "clean_target_stem_energy_mean": 1.2761743068695068,
+      "clean_target_stem_energy_median": 1.2762222290039062,
+      "terminal_rgb_reencoded_energy_mean": 1.2761740684509277,
+      "terminal_rgb_reencoded_energy_median": 1.2762222290039062,
+      "terminal_vs_clean_stem_field_rms": 1.1738994121551514,
+      "terminal_vs_reencoded_field_rms": 1.1738967895507812,
+      "decode_clean_target_stem_scores": {
+        "psnr": 12.432458845774333,
+        "digit_iou": 0.2923911285069254,
+        "digit_top1": 0.1,
+        "color_acc": 0.7685055183039771,
+        "ink_frac": 0.27547743055555557,
+        "flood": 0.2770036280155182,
+        "paired_iou": 0.05182396890595555,
+        "centroid_error": 0.2998790113591693
+      },
+      "decode_terminal_reencoded_scores": {
+        "psnr": 12.432436021169027,
+        "digit_iou": 0.2923973942796389,
+        "digit_top1": 0.1,
+        "color_acc": 0.7686044818825192,
+        "ink_frac": 0.27547743055555557,
+        "flood": 0.2770036280155182,
+        "paired_iou": 0.05184105714369151,
+        "centroid_error": 0.29987601291440014
+      },
+      "note": "These controls distinguish true prior mismatch from a latent gauge/decoder-null mismatch; none is fed back into generation."
+    },
+    "gate_verdicts": {
+      "median_nonincrease_each_transition": false,
+      "median_terminal_lower": false,
+      "output_improves": true,
+      "joint_common_action_descent": false
+    }
+  },
+  "decision_rules": {
+    "prompt_causal": "matched digit_top1 must exceed shuffled by >=0.50",
+    "write_causal": "matched digit_top1 must exceed pi_x=0 by >=0.50",
+    "capacity": "matched digit_top1 >=0.95 before scaling",
+    "position_causal": "grid only: matched paired_iou must exceed position-shuffled by >=0.50",
+    "grid_capacity": "matched paired_iou >=0.85 and centroid_error <=0.08",
+    "prior_action_causal": "active_f2 only: disabling Deslice(mu_p-S) must reduce digit_top1 or paired_iou by >=0.50",
+    "common_action_descent": "active_f2 only: one fixed anchor has median delta <=0 at every transition, median terminal delta <0, and RGB task quality improves"
+  },
+  "gate_verdicts": {
+    "prompt_causal": true,
+    "write_causal": true,
+    "capacity": true,
+    "position_causal": true,
+    "prior_action_causal": true,
+    "common_action_descent": false
+  },
+  "review": "not independently reviewed"
+}

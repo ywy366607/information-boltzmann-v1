@@ -122,7 +122,7 @@ def test_pi_x_zero_freezes_stack_to_stem():
     assert (H0 - h_passthru).abs().mean().item() > 1e-5
 
 
-def test_omni_need_pix_false_freezes_field():
+def test_omni_need_pix_only_selects_readout():
     from fine_grain.omni_model import DualStreamOmni
 
     torch.manual_seed(5)
@@ -135,10 +135,12 @@ def test_omni_need_pix_false_freezes_field():
     prompts = ["What is this", "What is this"]
     with torch.no_grad():
         stem = model.mot_stack.encode_X(img)
-        out_ro = model(img, prompts, need_pix=[False, False])
-        out_wr = model(img, prompts, need_pix=[True, True])
-    assert torch.allclose(out_ro["X"], stem, atol=1e-5), float((out_ro["X"] - stem).abs().max())
-    assert (out_wr["X"] - stem).abs().mean().item() > 1e-4
+        out_text_only = model(img, prompts, need_pix=[False, False])
+        out_pix = model(img, prompts, need_pix=[True, True])
+        out_clamped = model(img, prompts, need_pix=[False, False], pi_x=0.0)
+    assert (out_text_only["X"] - stem).abs().mean().item() > 1e-4
+    assert torch.allclose(out_text_only["X"], out_pix["X"], atol=1e-5)
+    assert torch.allclose(out_clamped["X"], stem, atol=1e-5)
 
 
 def test_global_gate_lse_not_mean_on_1px():
@@ -215,7 +217,7 @@ if __name__ == "__main__":
     test_increment_write_zero_when_s_unchanged()
     test_baseline_still_moves_field()
     test_pi_x_zero_freezes_stack_to_stem()
-    test_omni_need_pix_false_freezes_field()
+    test_omni_need_pix_only_selects_readout()
     test_global_gate_lse_not_mean_on_1px()
     test_global_gate_baseline_open_zero_closed()
     print("ALL P0 IDENTITY TESTS PASSED")

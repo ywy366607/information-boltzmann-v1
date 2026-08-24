@@ -1,0 +1,204 @@
+{
+  "steps": 600,
+  "res": 32,
+  "d_model": 256,
+  "n_slices": 64,
+  "n_heads": 8,
+  "elapsed_sec": 853.86,
+  "n_par": 9671441,
+  "final": {
+    "t2i": {
+      "n": 64,
+      "acc": 0.0,
+      "psnr": 18.127685636281967,
+      "stroke_psnr": 4.931771971285343,
+      "bg_psnr": 24.755835622549057,
+      "ink": 0.234375,
+      "flood": 0.45697651035152376,
+      "color_acc": 0.234375,
+      "digit_iou": 0.01268723956309259,
+      "digit_top1": 0.0,
+      "ink_frac": 0.00030517578125,
+      "f_steps": 3.0
+    }
+  },
+  "history": [
+    {
+      "step": 100,
+      "loss": 0.2705868184566498,
+      "lr": 0.00019264940672148018,
+      "eval": {
+        "t2i": {
+          "n": 24,
+          "acc": 0.0,
+          "psnr": 16.380861798922222,
+          "stroke_psnr": 6.444577435652415,
+          "bg_psnr": 17.915967146555584,
+          "ink": 0.125,
+          "flood": 0.14997559040784836,
+          "color_acc": 0.0,
+          "digit_iou": 0.0,
+          "digit_top1": 0.0,
+          "ink_frac": 0.0,
+          "f_steps": 4.0
+        }
+      },
+      "score": 0.016380861798922224
+    },
+    {
+      "step": 200,
+      "loss": 0.22156637907028198,
+      "lr": 0.00015922352526649803,
+      "eval": {
+        "t2i": {
+          "n": 24,
+          "acc": 0.0,
+          "psnr": 17.58481486638387,
+          "stroke_psnr": 5.119823257128398,
+          "bg_psnr": 21.215827385584515,
+          "ink": 0.25,
+          "flood": 0.25050517459749244,
+          "color_acc": 0.0,
+          "digit_iou": 0.0,
+          "digit_top1": 0.0,
+          "ink_frac": 0.0,
+          "f_steps": 3.0
+        }
+      },
+      "score": 0.017584814866383868
+    },
+    {
+      "step": 300,
+      "loss": 1.5756323337554932,
+      "lr": 0.00010825793454723325,
+      "eval": {
+        "t2i": {
+          "n": 24,
+          "acc": 0.0,
+          "psnr": 16.808226664861042,
+          "stroke_psnr": 4.959282358487447,
+          "bg_psnr": 20.353615601857502,
+          "ink": 0.16666666666666666,
+          "flood": 0.2805265379138291,
+          "color_acc": 0.1664893627166748,
+          "digit_iou": 0.02966902529199918,
+          "digit_top1": 0.0,
+          "ink_frac": 0.038004557291666664,
+          "f_steps": 8.0
+        }
+      },
+      "score": 0.016808226664861044
+    },
+    {
+      "step": 400,
+      "loss": 5.207091331481934,
+      "lr": 5.484666416891109e-05,
+      "eval": {
+        "t2i": {
+          "n": 24,
+          "acc": 0.0,
+          "psnr": 17.984180490175884,
+          "stroke_psnr": 4.878237287203471,
+          "bg_psnr": 23.926373720169067,
+          "ink": 0.16666666666666666,
+          "flood": 0.3533021758000056,
+          "color_acc": 0.0,
+          "digit_iou": 0.0,
+          "digit_top1": 0.0,
+          "ink_frac": 0.0,
+          "f_steps": 3.25
+        }
+      },
+      "score": 0.017984180490175885
+    },
+    {
+      "step": 500,
+      "loss": 10.410477638244629,
+      "lr": 1.4808059116167305e-05,
+      "eval": {
+        "t2i": {
+          "n": 24,
+          "acc": 0.0,
+          "psnr": 18.303521394729614,
+          "stroke_psnr": 4.884097794691722,
+          "bg_psnr": 24.120507558186848,
+          "ink": 0.16666666666666666,
+          "flood": 0.36087769145766896,
+          "color_acc": 0.25,
+          "digit_iou": 0.015605922477940718,
+          "digit_top1": 0.0,
+          "ink_frac": 0.00048828125,
+          "f_steps": 3.0
+        }
+      },
+      "score": 0.018303521394729613
+    },
+    {
+      "step": 600,
+      "loss": 8.639200210571289,
+      "lr": 0.0,
+      "eval": {
+        "t2i": {
+          "n": 24,
+          "acc": 0.0,
+          "psnr": 18.679120461146038,
+          "stroke_psnr": 4.980653325716655,
+          "bg_psnr": 24.739360332489014,
+          "ink": 0.2916666666666667,
+          "flood": 0.4820469232896964,
+          "color_acc": 0.16666666666666666,
+          "digit_iou": 0.0036231884732842445,
+          "digit_top1": 0.0,
+          "ink_frac": 0.00020345052083333334,
+          "f_steps": 3.0
+        }
+      },
+      "score": 0.01867912046114604
+    }
+  ],
+  "ckpt": "D:\\\u89c6\u89c9\u7f16\u7801\u5668\u6d4b\u8bd5\\checkpoints\\omni_d256_unified_t2i_admit0_best.pt",
+  "ckpt_last": "D:\\\u89c6\u89c9\u7f16\u7801\u5668\u6d4b\u8bd5\\checkpoints\\omni_d256_unified_t2i_admit0_last.pt",
+  "best_step": 600,
+  "best_score": 0.01867912046114604,
+  "best_eval_n24": {
+    "t2i": {
+      "n": 24,
+      "acc": 0.0,
+      "psnr": 18.679120461146038,
+      "stroke_psnr": 4.980653325716655,
+      "bg_psnr": 24.739360332489014,
+      "ink": 0.2916666666666667,
+      "flood": 0.4820469232896964,
+      "color_acc": 0.16666666666666666,
+      "digit_iou": 0.0036231884732842445,
+      "digit_top1": 0.0,
+      "ink_frac": 0.00020345052083333334,
+      "f_steps": 3.0
+    }
+  },
+  "gallery": "D:\\\u89c6\u89c9\u7f16\u7801\u5668\u6d4b\u8bd5\\present\\figs\\omni_unified_t2i_admit0_gallery.png",
+  "lr": 0.0002,
+  "warmup_frac": 0.05,
+  "mix": [
+    "t2i"
+  ],
+  "vfe_coef": 0.1,
+  "gate_on": "u",
+  "deslice_write": "increment",
+  "s_lang_topk": 0,
+  "flow_match": false,
+  "flow_steps": 0,
+  "f_gen": true,
+  "f_steps": 8,
+  "f_halt_eps": 0.03,
+  "t2i_hint_frac": 0.0,
+  "fm_pred": "x",
+  "fm_x0": "pair",
+  "t2i_canvas": "black",
+  "t2i_stroke_px": 1,
+  "t2i_place": "center",
+  "fm_signed": true,
+  "cfg": 2.0,
+  "flow_t": "uniform",
+  "note": "Dedicated port run. warmup 5% then cosine. fm_signed: JiT [-1,1] chart + adaLN-Zero(t, pool(H)) on X/S. best.pt is the max eval_score checkpoint (digit_top1 + 0.001 PSNR); final metrics reload that ckpt. F-descent Tmax with RMS halt."
+}
