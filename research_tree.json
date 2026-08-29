@@ -1,6 +1,6 @@
 {
   "title": "Slice Full-Resolution Joint-Evolution VLM Research Tree",
-  "updated": "2026-08-29",
+  "updated": "2026-08-30",
   "source_of_truth": "docs/NORTH_STAR.md",
   "nodes": [
     {
@@ -602,6 +602,18 @@
       "conclusion": "The published 0.444 I2T was protocol-limited. E1 raises the isolated ceiling to 0.667/0.689 with the gate pinned near zero, so step count, not gate amplitude, was binding; E1b lands worse (0.556), refuting the amplitude hypothesis and showing the optimizer holds a small visual gate as a local optimum. E2 disproves rehearsal interference as inevitable: I2T rises to 0.778 while T2T/IT2T return to 1.000 within 400 steps. E2b crosses the 0.80 admission floor at step 100 (0.822/0.811) with all static gates intact. The wrong-cell gap structure (mean gap 1.27 on wrong cells versus 4.29 on right cells at E0) already indicated readout signal-to-noise, not missing causality, was the constraint.",
       "issues": ["Admission state is a single eval point of a finishing run; neighbor evals oscillate 0.73-0.79", "The audited bank overlaps the training bank by construction", "One seed and one synthetic scene family", "The winning lever is a training protocol, so its interaction with future open-domain data is untested"],
       "invalidation": "Revise the protocol conclusion if a second seed fails to reproduce admission, if removing hard replay or the i2t_heavy cycle from the same chain still admits, or if the admitted checkpoint fails its read-only re-verification."
+    },
+    {
+      "id": "N101",
+      "parent": "N099",
+      "title": "Protocol ladder on natural T2I write capacity",
+      "status": "conflict",
+      "time": "2026-08-30 / A1-A1c 15000-step discrimination gate",
+      "motivation": "N099 rejected natural content capacity from a 600-step diagnostic, but the token line had just shown that apparent ceilings in this stack can be step-count artifacts; the structural-versus-protocol question needed the same E-series ladder before any write-path redesign.",
+      "action": "Rerun the registered N099 capacity diagnostic (two fixed ShareGPT-4o targets, 64x64, 64 slices, generation_capacity phase, gaussian-variance shortcut off, edge loss strengthened) with 25x the steps in three stages: 6000 steps at lr 3e-4/2e-4, 6000 continuation steps at half rate, and 3000 finishing steps at one-twentieth rate. Score with the unchanged natural content gate (PSNR >= 20 dB, prompt retrieval, edge relative MSE <= 0.75, edge correlation >= 0.50) on the independently reloaded candidate.",
+      "conclusion": "The gate still fails, but the failure mode is revised. Edge correlation rises 0.194 to 0.351 to 0.422 to 0.448 and PSNR 15.6 to 22.1 dB; the gallery shows correct low-frequency layout, object placement, backlight gradient, and an emerging mask eye-opening. The last stage gained only +0.026 edge correlation, so the overfit asymptote of the current write path sits near 0.46-0.48, below the 0.50 gate. Protocol repair contributes 2.3x edge fidelity but cannot close the content gate: the Slice/Deslice write has a genuine high-frequency expressivity limit, distinct from N099's total-failure reading and from the read-side protocol win.",
+      "issues": ["Two targets, one seed, one resolution", "The 0.50 edge gate itself is a registered heuristic, not a perceptual floor", "Static ports are intentionally destroyed by the capacity phase (digit 0.085), so no candidate exists to promote", "Write-assignment sharpening has not been tried; the asymptote could still move under a mechanism change"],
+      "invalidation": "Upgrade to a protocol-only failure if a registered write-side mechanism change is unnecessary, that is, if further honest budget or replay variants alone push edge correlation through 0.50; downgrade to a hard structural rejection if a matched write-sharpened variant shows no asymptote change."
     }
   ]
 }
