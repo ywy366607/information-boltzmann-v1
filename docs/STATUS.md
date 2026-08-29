@@ -1,6 +1,6 @@
 # 现状简报（给外部模型指导本仓库代理）
 
-日期：2026-08-25。
+日期：2026-08-29。
 架构唯一来源：[`NORTH_STAR.md`](NORTH_STAR.md)。实施计划：[`PYTHIA_INTEGRATION_PLAN.md`](PYTHIA_INTEGRATION_PLAN.md)。证据树：[`../research_tree.json`](../research_tree.json)。
 
 本文是**操作快照**，不是新北极星。冲突时以 NORTH_STAR 为准。
@@ -35,6 +35,17 @@
 
 新冠军 `omni_d64_pythia_capability_b3_edit_best.pt` 独立重载三门通过：T2I digit/color/IoU = **1.000/0.963/0.936**；重建 digit/color/IoU/seg = **0.911/0.903/0.883/0.975**；官方 next-color 编辑 digit/color/IoU/seg = **0.878/0.940/0.697/0.991**。编辑 source digit gap **0.789**、source IoU gap **0.631**、flood **0.028**。Pythia 冻结、无 GDN-2；stem/SliceRead/Deslice/seg head 全程冻结。
 
+### 首个统一 token 冠军（2026-08-29）
+
+`omni_d64_pythia_token_best.pt`（SHA256
+`2768A79451B774E1CD1AA2163AAC094099A52D686885120498CF643F49802830`）独立重载全门通过：
+T2T token/greedy **1.000/1.000**（gap 9.50）；I2T token/greedy **0.822/0.811**（90 格全 bank、
+matched-vs-shuffled 中位 gap **7.47 nat**）；官方 next-color IT2T **1.000/1.000**（gap 11.0）；
+静态 T2I/current/edit 三门同过。Pythia 冻结、每 token 重跑同一图、无 `lm.generate()`、
+可训参数仍是 `token_reader` 的 383,224 个。注意：token 评测 bank 是训练 bank 的注册子集
+（固定 90 格审计，与 T2I/B3 同一 fixed-bank 标准），这是有限 bank 能力闭合，
+不是 held-out 泛化。
+
 ---
 
 ## 2. Pythia 接入进度
@@ -45,40 +56,48 @@
 |---|---|---|
 | A | 精确加载、`forward_tokens`、因果 mask、结构测试 | **结构完成；训练接口已按审查修正** |
 | B | 能力冠军视觉图 + 冻结 Pythia，闭合 T2I/重建/分割/编辑 | **完成；B3 三门通过** |
-| C | 统一 collator，token NLL，T2T+I2T 再混其它端口 | **部分：T2T/IT2T 过，I2T 因果过但准确率未过** |
-| D | 统一图 greedy decode（每 token 重跑 MoT） | **已实现；T2T/IT2T 过，I2T 未过** |
+| C | 统一 collator，token NLL，T2T+I2T 再混其它端口 | **完成；三门 token gate 全过** |
+| D | 统一图 greedy decode（每 token 重跑 MoT） | **完成；全 bank decode ≥0.811** |
 
-### 最新 token 结果（阶段 C/D，未获准为冠军）
+### token 结果（冠军 `omni_d64_pythia_token_best.pt`，2026-08-29）
 
 入口为 `scripts/train_pythia_tokens.py`；统一 token 边界在
 `fine_grain/token_tasks.py`。训练答案 token 只作因果 teacher forcing，
 `visual_prompt_mask` 禁止答案或已生成 token 回写视觉场。解码每个 token 都重新
 调用 `forward_tokens`，没有调用 `lm.generate()`。
 
-候选 `omni_d64_pythia_token_candidate.pt` 独立重载结果：T2T token/greedy
-**0.983/0.950**；官方 next-color IT2T **1.000/1.000**；I2T
-**0.444/0.400**。I2T matched-vs-shuffled 中位 NLL 差 **1.289 nat/token**，
-证明模型确实看图，但数字解码准确率不够。静态 T2I/current/edit 三门仍全部通过，
-B3 保护检查点 SHA256 仍为
+冠军独立重载（`results/published/pythia_token_champion_audit.json`）：T2T
+token/greedy **1.000/1.000**；I2T **0.822/0.811**（gap 7.47）；官方 next-color
+IT2T **1.000/1.000**。静态 T2I/current/edit 三门全过，B3 保护检查点 SHA256 仍为
 `64E79D3B7D8757A4C50AA12E880993A92312F4237986D840466B689FCA4F086B`。
-因此没有创建 `omni_d64_pythia_token_best.pt`，候选不可称为统一冠军。
 
-已否/收缩路径：只训零门 token interface 时 I2T 近随机；开放只读 terminal
-SliceRead 与最后一层 H-only reader 后最高约 0.60，但与 T2T/IT2T rehearsal
-存在冲突；固定 4×4 atlas 虽在线性探针上为 1.00，真实冻结 Pythia 训练反而更差，
-故仅保留 `--terminal-atlas` 实验开关且默认关闭；prototype/ridge 对齐也默认关闭。
+获胜配方（E1→E2→E2b，`results/published/pythia_token_e1_i2t_only.json` /
+`pythia_token_e2_joint.json` / `pythia_token_e2b_finish.json`）：
+
+1. **E1 纯 I2T 长跑**（B3 起点、2000 步、lr 3e-4、hard replay 4）：I2T 到
+   0.667/0.689，静态门保持。历史 ~0.60 天花板主要是步数不足。
+2. **E2 联合 + 回放**（E1 最佳起点、`--case-cycle i2t_heavy`、hard replay 4、
+   resume-optimizer、lr 1e-4、900 步）：I2T 不再被 rehearsal 啃掉，反而升到
+   0.778；T2T/IT2T 分别在 400/100 步内回到 1.000。旧「联合即干扰」已被协议修复打破。
+3. **E2b 低学习率收尾**（E2 最佳起点、lr 3e-5、`--class-contrast-coef 10.0`、
+   600 步）：step 100 出现三门全过（I2T 0.822），晋升为冠军。
+
+已否/收缩路径（本轮新增）：`--initial-proj-trust 0.2`（视觉 token 提到
+embedding 量级）反而更差（0.556），门幅度假说证伪——优化器维持 ~0.01 的小门
+是局部最优而非步数问题；`token_reader_deep`（放开倒数第二层 H 专家）**破坏
+X 不变性**（H_out 会进入下一层 Kt），已被确定性测试拒绝，未保留该相位。
 
 代码入口：
 
 - `fine_grain/llm_backend.py`：`load_frozen_pythia` / `canonical_pythia_id`
 - `fine_grain/omni_model.py`：`DualStreamOmni.forward_tokens`、`non_lm_state_dict`、`language_meta`
-- `fine_grain/pythia_bridge.py`：加载生成冠军、优化相位 `interface` / `token_interface` / `language` / `language_rgb` / `edit_spatial` / `joint`
+- `fine_grain/pythia_bridge.py`：加载生成冠军、优化相位 `interface` / `token_interface` / `token_reader` / `language` / `language_rgb` / `edit_spatial` / `joint`
 - `scripts/train_pythia_generation.py`：T2I/编辑训练
 - `scripts/train_pythia_capabilities.py`：统一场景 B2/B3（T2I、重建、分割、官方 next-color）
-- `scripts/train_pythia_tokens.py`：阶段 C/D token NLL、反事实门与逐 token 图上 decode
+- `scripts/train_pythia_tokens.py`：阶段 C/D token NLL、反事实门、hard replay、`--case-cycle`、resume-optimizer 与逐 token 图上 decode
 - `fine_grain/token_tasks.py`：统一 token collator、答案因果边界与 graph greedy
 - `scripts/diagnose_pythia_language.py`：toy vs Pythia 语言敏感度
-- 测试：`tests/test_pythia_omni.py`、`tests/test_pythia_generation.py`、`tests/test_pythia_capabilities.py`
+- 测试：`tests/test_pythia_omni.py`、`tests/test_pythia_generation.py`、`tests/test_pythia_capabilities.py`、`tests/test_pythia_tokens.py`
 
 本地权重：`EleutherAI/pythia-70m`（`d_llm=512`）已在 `D:\ml_cache`。优先 70m，结构稳定后再 160m。
 
@@ -98,6 +117,7 @@ SliceRead 与最后一层 H-only reader 后最高约 0.60，但与 T2T/IT2T rehe
 | `checkpoints/omni_d64_pythia_named_edit_spatial_best.pt` | named-color `edit_spatial` 步 40，T2I 0.956；几何未过 | 否（阶段 1 起点） |
 | `checkpoints/omni_d64_pythia_capability_b2_best.pt` | 统一场景 T2I + 当前重建/分割双门冠军 | **否** |
 | `checkpoints/omni_d64_pythia_capability_b3_edit_best.pt` | **统一场景 T2I + 重建/分割 + 官方 next-color 三门冠军** | **否** |
+| `checkpoints/omni_d64_pythia_token_best.pt` | **统一 token 冠军：T2T/I2T/IT2T + 图 decode + 静态三门** | **否** |
 | `checkpoints/omni_d64_pythia_edit_best.pt` | Pythia 编辑混训失败件，非冠军 | 可删/可覆盖 |
 
 Pythia T2I 指标（90 格、四色循环、`results/published/pythia_language_reader.json`）：
@@ -153,25 +173,41 @@ Pythia 上 40% 混 next-color + named-color、保 T2I：编辑 color_acc **0.22*
 
 ## 6. 对话 / I2T
 
-仍不能宣称对话或完整 I2T。阶段 C/D 已接通真实 token NLL 与图上 greedy，
-但当前 I2T token/greedy 仅 0.444/0.400，未过 0.80 准确门。
+固定 bank 能力闭合已完成：统一 token 冠军在同一检查点上 T2T/I2T/IT2T 三门
+token + 图上 greedy decode 全过（见 §2）。仍不能宣称的：
 
-- `pythia-70m` 是 The Pile 基座，非 instruct。
-- T2T 与 next-color IT2T 已在同一候选过 token/greedy，但不能掩盖 I2T 失败。
-- 禁止 `model.lm.generate()`；现有 decode 每 token 回跑统一图。
+- **held-out / 开域对话**。token 评测 bank 是训练 bank 的注册子集；真实数据
+  512 条 held-out I2T 的逐样本因果性仍弱（`docs/REAL_DATA_PILOT.md`）。
+- **多轮对话 / instruct 行为**。`pythia-70m` 是 The Pile 基座，非 instruct。
+
+禁止 `model.lm.generate()`；现有 decode 每 token 回跑统一图。
 
 ---
 
 ## 7. 建议下一步（按优先级）
 
-指导代理时选一条，不要并行拆图：
+I2T token 门已闭合（2026-08-29），指导代理时选一条，不要并行拆图：
 
-1. 以 `omni_d64_pythia_capability_b3_edit_best.pt` 为唯一静态视觉起点；不要回到 named-color、旧 `one_sample` T2I 银行或纯生成冠军。
-2. **只修 I2T token accuracy。** 当前因果差已过，不要继续放大 shuffle margin；目标是在保住 T2T/IT2T 与静态三门时把 I2T token/greedy 从 0.444/0.400 提到至少 0.80。不得加数字分类头或输出词表旁路。
-3. 图上 greedy 已实现；继续保持每 token 重跑同一 Slice–MoT 图，禁止 `lm.generate()`。
-4. 不要重开 GDN-2/世界模型当当前门槛；I2T token 与 decode 闭合后再恢复 `tau>0`。
+1. **静态视觉唯一起点改为 `omni_d64_pythia_token_best.pt`**（它同时保有 B3
+   三门）；B3 检查点仍受保护，只作历史证据。
+2. **真实 IT2T/VQA 数据支线**：引入真正的图像条件问答/指令数据（ShareGPT-4o
+   两个源都没有真 IT2T，不得再从 caption 伪造），带确定性 holdout，要求
+   matched NLL 改善且逐样本 shuffle gap 显著为正。
+3. **自然 T2I 支线**：解决全分辨率空间地址基/写入秩，使边缘内容门通过
+   （N099 现状：文本能选低频场，结构未闭合）；任何自然候选不得覆盖冠军。
+4. **`tau>0` 时序线可恢复**：token 闭合满足「I2T token 与 decode 闭合后再恢复」
+   的前置条件；从 v29 内容坐标先验继续，仍要求静态门与因果符号双过。
 
-三门只读复验：
+冠军只读复验：
+
+```text
+ML_CACHE_ROOT=D:/ml_cache python scripts/train_pythia_tokens.py --init checkpoints/omni_d64_pythia_token_best.pt --eval-only --decode-limit -1 --out results/published/_eval_token_best.json --device cuda
+```
+
+注意 eval-only 记录里 `admitted=false` 是「selected==init」的语义；门数字
+（gates=111、decode、static）才是复验对象。
+
+三门只读复验（B3 历史冠军）：
 
 ```text
 python scripts/train_pythia_capabilities.py --device cpu --lm-device cpu --init checkpoints/omni_d64_pythia_capability_b3_edit_best.pt --load-language --no-lexical-ridge --eval-only --edit-steps 1 --out results/published/_eval_pythia_capability_b3_edit_best.json

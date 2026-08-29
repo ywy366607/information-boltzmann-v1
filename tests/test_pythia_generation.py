@@ -278,6 +278,20 @@ def test_token_reader_opens_only_terminal_h_query_and_output():
     assert any(name.startswith("mot_stack.readout.") for name in names)
 
 
+def test_token_reader_excludes_penultimate_h_because_h_feeds_next_layer_kt():
+    """A depth-2 token reader would move X: H_out feeds the next block's Kt.
+
+    This pins the rejected ``token_reader_deep`` variant: opening the
+    penultimate-layer H experts must remain impossible without breaking the
+    X-invariance contract that the token phases guarantee.
+    """
+    model = _omni(n_layers=3)
+    names = set(model.set_optimization_phase("token_reader"))
+    assert not any("layers.1.mot." in name for name in names)
+    assert not any("layers.0.mot." in name for name in names)
+    assert any("layers.2.mot.Wq_t" in name for name in names)
+
+
 def test_edit_step_records_source_shuffle_loss():
     import numpy as np
     from scripts.train_pythia_generation import (

@@ -159,8 +159,19 @@ def is_token_interface(name: str) -> bool:
     )
 
 
+TOKEN_READER_H_SUFFIXES = (
+    "Wq_t.", "Wo_t.", "rms_t_ffn.", "ffn_t.", "res_t",
+)
+
+
 def is_terminal_token_reader(model: nn.Module, name: str) -> bool:
-    """Read-only terminal token adapters; none can alter the final X field."""
+    """Read-only terminal token adapters; none can alter the final X field.
+
+    Only the final MoT layer's H suffixes are admitted: a penultimate-layer
+    H expert would change the H entering the last block, whose Kt feeds the
+    final X attention and therefore moves the visual field (test-verified
+    rejection of a depth-2 token_reader variant).
+    """
     if name.startswith("mot_stack.readout."):
         return True
     layers = getattr(getattr(model, "mot_stack", None), "layers", ())
@@ -169,10 +180,7 @@ def is_terminal_token_reader(model: nn.Module, name: str) -> bool:
     prefix = f"mot_stack.layers.{len(layers) - 1}.mot."
     if not name.startswith(prefix):
         return False
-    suffix = name[len(prefix):]
-    return suffix.startswith((
-        "Wq_t.", "Wo_t.", "rms_t_ffn.", "ffn_t.", "res_t",
-    ))
+    return name[len(prefix):].startswith(TOKEN_READER_H_SUFFIXES)
 
 
 def is_edit_read_visual(name: str) -> bool:
@@ -268,6 +276,8 @@ def set_optimization_phase(model: nn.Module, phase: str) -> List[str]:
     ``token_reader``: token_interface plus terminal SliceRead(X) and only the
     final MoT layer's H-query, H-output, and H-FFN. Text K/V and every visual
     write parameter stay fixed, so the final visual field cannot change.
+    Penultimate-layer H experts are excluded on purpose: H feeds the next
+    block's Kt and would move X.
     ``language``: those maps plus MoT text experts and the F2 language prior.
     ``rgb_likelihood``: only the shared RGB mean/log-variance likelihood head.
     ``language_rgb``: language readers plus the RGB head (not stem/Deslice).

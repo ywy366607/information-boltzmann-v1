@@ -169,16 +169,22 @@ def answer_token_accuracy(out: dict, batch: dict) -> torch.Tensor:
     return correct.sum(dim=1).float() / valid.sum(dim=1).clamp_min(1)
 
 
-def answer_class_nll(out: dict, batch: dict) -> torch.Tensor:
+def answer_class_nll(out: dict, batch: dict, rows: Sequence[int] | None = None) -> torch.Tensor:
     """Identified answer contrast using the same frozen-decoder logits.
 
     Every row in an identified group has a one-token answer. Restricting the
     denominator to the answer tokens in that group prevents the 50k-word
     vocabulary from hiding a failure to distinguish 0--9 or four colors. This
     is an auxiliary view of the native token likelihood, not a new head.
+    ``rows`` restricts the contrast to the identified group when hard-replay
+    rows with duplicated answer classes are appended after it.
     """
     logits = out["token_logits"]
     labels = batch["labels"].to(logits.device)
+    if rows is not None:
+        index = torch.tensor(list(rows), dtype=torch.long, device=logits.device)
+        logits = logits.index_select(0, index)
+        labels = labels.index_select(0, index)
     supervised = labels.ne(-100)
     if not bool((supervised.sum(dim=1) == 1).all().item()):
         raise ValueError("identified answer contrast requires one-token answers")

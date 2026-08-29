@@ -1,6 +1,6 @@
 {
   "title": "Slice Full-Resolution Joint-Evolution VLM Research Tree",
-  "updated": "2026-08-24",
+  "updated": "2026-08-29",
   "source_of_truth": "docs/NORTH_STAR.md",
   "nodes": [
     {
@@ -545,15 +545,15 @@
     },
     {
       "id": "N096",
-      "parent": "N095",
+      "parent": "N094",
       "title": "Causal token likelihood and graph-native decode",
-      "status": "partial",
-      "time": "2026-08-24 / Pythia stages C-D",
+      "status": "passed",
+      "time": "2026-08-29 / token champion admission (E1-E2b protocol)",
       "motivation": "The B3 checkpoint closed static visual likelihoods but still had no autoregressive text observation or decode path, so it could not demonstrate T2T, I2T, or IT2T with the frozen causal language distribution.",
-      "action": "Add a unified token collator with per-token precision, a legal zero-precision BOS for missing text, an explicit visual_prompt_mask that excludes teacher-forced and generated answer tokens, matched/shuffled token-NLL gates, identified answer-set NLL on the same Pythia logits, a read-only token_reader phase, and greedy decode that reruns forward_tokens for every token. Keep Pythia and every visual write path frozen. Test a fixed terminal atlas and prototype/ridge chart only as opt-in ablations after the content-Slice reader plateaued.",
-      "conclusion": "The selected candidate preserves all B3 static gates and establishes two of three text ports. T2T token accuracy/graph-greedy exact are 0.983/0.950; official next-color IT2T is 1.000/1.000. I2T matched-vs-shuffled median NLL gap is positive and large at 1.289 nat/token, so the output is image-causal, but token accuracy/greedy exact remain 0.444/0.400. No token champion is admitted; checkpoints/omni_d64_pythia_token_candidate.pt is candidate-only. The fixed 4x4 terminal atlas is linearly separable on X but underperforms through the frozen Pythia interface, and prototype/ridge initialization also fails end-to-end, so both default off.",
-      "issues": ["I2T accuracy remains below the 0.80 admission floor despite a passing image-causal gap", "T2T/IT2T rehearsal reduces the best isolated I2T accuracy from about 0.60 to 0.44", "Pythia-70m is a base model and the missing-text BOS interface is not pretrained", "Terminal content Slice aggregation loses some 2-D digit topology", "One synthetic scene family and one seed"],
-      "invalidation": "Reject any claimed token closure if I2T remains below its accuracy/decode floor, answer or generated tokens can change X or earlier logits, lm.generate is called, Pythia becomes trainable, a private digit head is added, or any B3 static gate regresses."
+      "action": "Add a unified token collator with per-token precision, a legal zero-precision BOS for missing text, an explicit visual_prompt_mask that excludes teacher-forced and generated answer tokens, matched/shuffled token-NLL gates, identified answer-set NLL on the same Pythia logits, a read-only token_reader phase, and greedy decode that reruns forward_tokens for every token. Then repair the training protocol instead of the architecture: pure-I2T long run with hard-cell replay, I2T-heavy rehearsal cycle, Adam-state resume, and low-rate high-contrast finishing.",
+      "conclusion": "The first unified token champion is admitted. checkpoints/omni_d64_pythia_token_best.pt independently reloads with T2T token/greedy 1.000/1.000, I2T 0.822/0.811 (full 90-cell bank, median matched-vs-shuffled gap 7.47 nat), official next-color IT2T 1.000/1.000, and all three protected static gates intact. The earlier 0.444 candidate was protocol-limited, not capacity-limited: a 2000-step pure-I2T run lifts the isolated ceiling to 0.667, and joint rehearsal from that state with hard replay no longer erodes I2T (0.667 to 0.778 while T2T/IT2T return to 1.000). Shrunk paths: starting the visual residual gate at embedding magnitude is worse (0.556), refuting the amplitude hypothesis; opening penultimate-layer H-only experts is rejected because their H output feeds the next block's Kt and moves X (test-pinned).",
+      "issues": ["The token audit bank is a registered subset of the training bank; this is finite-bank closure, not held-out generalization", "I2T leaves 16 of 90 cells wrong with diffuse digit and place spread", "Single seed for every run in the admission chain", "Pythia-70m is a base model; the missing-text BOS interface is not pretrained", "The fixed 4x4 terminal atlas and prototype/ridge initialization remain default-off"],
+      "invalidation": "Reject the token champion if an independent reload fails any token, decode, or static gate; if answer or generated tokens can change X or earlier logits; if lm.generate is called; if Pythia becomes trainable; or if a held-out bank without training-bank overlap cannot close the I2T accuracy gate."
     },
     {
       "id": "N097",
@@ -590,6 +590,18 @@
       "conclusion": "The original pixel-only decision was a false positive. At 16x16, prompt retrieval is 2/2 and PSNR 20.16 dB with a +0.185 prompt-shuffle gap, but direct display of the original ShareGPT PNG shows only coarse color/layout; edge relative MSE/correlation are 0.803/0.426 and fail the registered 0.75/0.50 content gate. At 64x64 with 16 slices, PSNR is 19.04 and edge correlation 0.133. Opening the existing visual stem/KV/FFN/local path, expanding to 64 slices, setting Gaussian NLL weight to zero, and strongly supervising edges yields a coarse mask outline but only PSNR 15.64 and edge correlation 0.190 after 600 steps; island and boat structure remain absent. Natural content capacity is not established. The model can select prompt-specific low-frequency fields, and no source image, private generator, lm.generate, or trainable Pythia is used.",
       "issues": ["Only two fixed targets and one seed", "Pixel PSNR is dominated by low-frequency color and cannot serve as the natural-image gate", "Current transient Slice/Deslice writes lack sufficient learned high-frequency address structure", "Increasing slices and opening existing visual content layers is insufficient", "All natural candidates forget protected static ports"],
       "invalidation": "Reject the capacity claim if prompt rotation ceases to worsen matched RGB, generation uses a source image, private generator, trainable Pythia, frozen-decoder sampling, or a second visual backbone. Do not promote the candidate until natural T2I and every protected static gate pass in one independently reloaded checkpoint."
+    },
+    {
+      "id": "N100",
+      "parent": "N096",
+      "title": "Rehearsal-controlled token admission protocol",
+      "status": "passed",
+      "time": "2026-08-29 / E0-E2b controlled experiment chain",
+      "motivation": "Separate readout capacity from training-protocol causes before conceding that the terminal Slice reader cannot drive a frozen causal LM.",
+      "action": "Full-bank diagnostic of the published candidate with per-cell records and gate-value tracking, then a preregistered ladder: E1 pure-I2T 2000 steps at lr 3e-4 with hard-cell replay; E1b identical but with the visual residual gate started at embedding magnitude (initial_proj_trust 0.2); E3 penultimate-layer H-only experts (rejected by X-invariance test before training); E2 joint training from E1 with i2t_heavy cycle, hard replay, and Adam-state resume; E2b finishing at lr 3e-5 with answer-set contrast coefficient 10.",
+      "conclusion": "The published 0.444 I2T was protocol-limited. E1 raises the isolated ceiling to 0.667/0.689 with the gate pinned near zero, so step count, not gate amplitude, was binding; E1b lands worse (0.556), refuting the amplitude hypothesis and showing the optimizer holds a small visual gate as a local optimum. E2 disproves rehearsal interference as inevitable: I2T rises to 0.778 while T2T/IT2T return to 1.000 within 400 steps. E2b crosses the 0.80 admission floor at step 100 (0.822/0.811) with all static gates intact. The wrong-cell gap structure (mean gap 1.27 on wrong cells versus 4.29 on right cells at E0) already indicated readout signal-to-noise, not missing causality, was the constraint.",
+      "issues": ["Admission state is a single eval point of a finishing run; neighbor evals oscillate 0.73-0.79", "The audited bank overlaps the training bank by construction", "One seed and one synthetic scene family", "The winning lever is a training protocol, so its interaction with future open-domain data is untested"],
+      "invalidation": "Revise the protocol conclusion if a second seed fails to reproduce admission, if removing hard replay or the i2t_heavy cycle from the same chain still admits, or if the admitted checkpoint fails its read-only re-verification."
     }
   ]
 }

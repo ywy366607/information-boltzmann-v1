@@ -249,3 +249,71 @@ def test_token_reader_update_cannot_change_static_visual_field():
         after = model.forward_tokens(image, ids, mask, labels=labels)
     assert torch.allclose(x_before, after["X"], atol=1e-6, rtol=1e-6)
     assert torch.allclose(rgb_before, after["rgb"], atol=1e-6, rtol=1e-6)
+
+
+def test_answer_class_nll_restricts_rows_to_identified_group():
+    logits = torch.zeros(3, 5, 16, requires_grad=True)
+    with torch.no_grad():
+        # Identified group rows 0/1: one-token answers 7 and 9. Row 2 is a
+        # hard-replay row duplicating class 7, which must not join the contrast.
+        logits[0, 2, 7] = 4.0
+        logits[1, 2, 9] = 4.0
+        logits[2, 2, 7] = 4.0
+    out = {"token_logits": logits, "n_vis_tokens": 2}
+    batch = {"labels": torch.tensor([
+        [-100, 7], [-100, 9], [-100, 7],
+    ])}
+    loss = answer_class_nll(out, batch, rows=[0, 1])
+    assert float(loss.detach()) < 0.1
+    loss.backward()
+    assert logits.grad is not None
+    with pytest.raises(ValueError):
+        answer_class_nll(out, batch)
+
+
+def test_hard_replay_picks_failing_cells_round_robin():
+    from scripts.train_pythia_capabilities import make_static_bank
+    from scripts.train_pythia_tokens import (
+        hard_cells_from_records,
+        pick_hard_samples,
+    )
+
+    records = [
+        {"digit": "6", "place": "top_left", "color": "red",
+         "accuracy": 0.0, "matched_nll": 3.0, "gap": 0.5},
+        {"digit": "3", "place": "center", "color": "blue",
+         "accuracy": 1.0, "matched_nll": 0.1, "gap": 2.0},
+        {"digit": "9", "place": "top_left", "color": "red",
+         "accuracy": 0.0, "matched_nll": 4.0, "gap": 0.2},
+    ]
+    cells = hard_cells_from_records(records)
+    assert cells == [("6", "top_left", "red"), ("9", "top_left", "red")]
+    bank = make_static_bank(16, "image_to_current")
+    picked = pick_hard_samples(bank, cells, 3, 0)
+    assert [sample["digit"] for sample in picked] == ["6", "9", "6"]
+    assert all(
+        sample["source_place"] == "top_left"
+        and sample["source_color"] == "red"
+        for sample in picked
+    )
+    shifted = pick_hard_samples(bank, cells, 2, 1)
+    assert [sample["digit"] for sample in shifted] == ["9", "6"]
+    assert pick_hard_samples(bank, cells, 0, 0) == []
+
+
+def test_decode_summaries_records_cell_metadata_and_confusion():
+    from scripts.train_pythia_tokens import decode_summaries
+
+    samples = [
+        {"digit": "6", "source_place": "top_left", "source_color": "red"},
+        {"digit": "9", "source_place": "top_left", "source_color": "red"},
+    ]
+    rows = [
+        {"expected": "6", "text": "8", "exact": False},
+        {"expected": "9", "text": "9", "exact": True},
+    ]
+    results, confusion = decode_summaries(samples, rows)
+    assert results[0]["digit"] == "6"
+    assert results[0]["place"] == "top_left"
+    assert results[0]["exact"] is False
+    assert confusion == {"6": {"8": 1}, "9": {"9": 1}}

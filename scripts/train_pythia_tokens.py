@@ -240,7 +240,7 @@ def evaluate_token_case(
     chunk: int,
 ) -> dict:
     model.eval()
-    matched_nll, shuffled_nll, accuracy = [], [], []
+    matched_nll, shuffled_nll, accuracy, records = [], [], [], []
     for start in range(0, len(samples), int(chunk)):
         part = samples[start : start + int(chunk)]
         batch = move_token_batch(
@@ -248,7 +248,8 @@ def evaluate_token_case(
         )
         out = _forward_token_batch(model, batch, device)
         matched_nll.append(out["token_nll"].detach().cpu())
-        accuracy.append(answer_token_accuracy(out, batch).detach().cpu())
+        part_accuracy = answer_token_accuracy(out, batch).detach().cpu()
+        accuracy.append(part_accuracy)
         if part[0]["case"] == "text_to_both":
             controls = _prompt_counterfactual(part)
         else:
@@ -257,7 +258,20 @@ def evaluate_token_case(
             collate_token_capabilities(tokenizer, controls), device,
         )
         control_out = _forward_token_batch(model, control_batch, device)
-        shuffled_nll.append(control_out["token_nll"].detach().cpu())
+        part_matched = out["token_nll"].detach().cpu()
+        part_shuffled = control_out["token_nll"].detach().cpu()
+        shuffled_nll.append(part_shuffled)
+        part_gap = part_shuffled - part_matched
+        for position, sample in enumerate(part):
+            records.append({
+                "digit": str(sample["digit"]),
+                "place": str(sample["source_place"]),
+                "color": str(sample["source_color"]),
+                "answer": str(sample["answer"]),
+                "accuracy": float(part_accuracy[position]),
+                "matched_nll": float(part_matched[position]),
+                "gap": float(part_gap[position]),
+            })
     matched = torch.cat(matched_nll)
     shuffled = torch.cat(shuffled_nll)
     gap = shuffled - matched
@@ -269,7 +283,63 @@ def evaluate_token_case(
         "mean_gap": float(gap.mean()),
         "median_gap": float(gap.median()),
         "token_accuracy": float(acc.mean()),
+        "records": records,
     }
+
+
+def hard_cells_from_records(records: list[dict]) -> list[tuple[str, str, str]]:
+    """Deterministic sorted cells whose teacher-forced answer was wrong."""
+    cells = {
+        (str(record["digit"]), str(record["place"]), str(record["color"]))
+        for record in records
+        if float(record["accuracy"]) < 1.0
+    }
+    return sorted(cells)
+
+
+def pick_hard_samples(
+    bank: list[dict], cells: list[tuple[str, str, str]], count: int, cursor: int,
+) -> list[dict]:
+    """Round-robin train-bank rows matching failing cells, cursor-resumable.
+
+    The fixed audit bank is a registered subset of the training bank, so
+    replaying failing cells stays inside the finite-bank capability protocol.
+    """
+    if count <= 0 or not cells:
+        return []
+    picked = []
+    for offset in range(int(count)):
+        digit, place, color = cells[(int(cursor) + offset) % len(cells)]
+        matches = [
+            sample for sample in bank
+            if str(sample["digit"]) == digit
+            and str(sample["source_place"]) == place
+            and str(sample["source_color"]) == color
+        ]
+        if not matches:
+            raise ValueError(f"train bank lacks hard cell {digit}/{place}/{color}")
+        picked.append(matches[0])
+    return picked
+
+
+def decode_summaries(samples: list[dict], rows: list[dict]) -> tuple[list[dict], dict]:
+    """Compact per-case decode table plus expected-to-pred confusion counts."""
+    results = [
+        {
+            "digit": str(sample["digit"]),
+            "place": str(sample["source_place"]),
+            "color": str(sample["source_color"]),
+            "expected": row["expected"],
+            "text": row["text"],
+            "exact": bool(row["exact"]),
+        }
+        for sample, row in zip(samples, rows)
+    ]
+    confusion: dict[str, dict[str, int]] = {}
+    for item in results:
+        slot = confusion.setdefault(str(item["expected"]), {})
+        slot[str(item["text"])] = slot.get(str(item["text"]), 0) + 1
+    return results, confusion
 
 
 def token_gate(metrics: dict, *, require_image: bool) -> bool:
@@ -289,8 +359,9 @@ def evaluate_graph_decode(
     samples: list[dict],
     limit: int,
 ) -> dict:
-    chosen = samples[: min(int(limit), len(samples))]
+    chosen = samples if int(limit) < 0 else samples[: min(int(limit), len(samples))]
     rows = [graph_greedy_decode(model, tokenizer, sample) for sample in chosen]
+    results, confusion = decode_summaries(chosen, rows)
     return {
         "n": len(rows),
         "exact": float(sum(row["exact"] for row in rows) / max(1, len(rows))),
@@ -298,16 +369,34 @@ def evaluate_graph_decode(
             all(step["graph_rerun"] for step in row["steps"]) for row in rows
         ),
         "examples": rows[:8],
+        "results": results,
+        "confusion": confusion,
     }
 
 
-def _save(model, path: Path, payload: dict) -> None:
+def _save(model, path: Path, payload: dict, optimizer=None) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    torch.save({
+    record = {
         "state_dict": model.non_lm_state_dict(),
         "language": model.language_meta(),
         **payload,
-    }, path)
+    }
+    if optimizer is not None:
+        raw = optimizer.state_dict()
+        # state_dict() entries alias the live optimizer state; copy out
+        # per-entry so the training optimizer stays on its device.
+        state = {
+            index: {
+                key: value.detach().cpu().clone() if torch.is_tensor(value) else value
+                for key, value in entry.items()
+            }
+            for index, entry in raw["state"].items()
+        }
+        record["optimizer_state_dict"] = {
+            "state": state,
+            "param_groups": raw["param_groups"],
+        }
+    torch.save(record, path)
 
 
 def main() -> None:
@@ -360,7 +449,28 @@ def main() -> None:
         "--i2t-warmup", type=int, default=100,
         help="Initial image-only batches that force the terminal Slice reader to form.",
     )
-    parser.add_argument("--decode-limit", type=int, default=30)
+    parser.add_argument(
+        "--case-cycle",
+        choices=("default", "i2t_heavy"),
+        default="default",
+        help=(
+            "Post-it2t rehearsal cycle: default = 2xIT2T,T2T,I2T; "
+            "i2t_heavy = 2xI2T,T2T,IT2T."
+        ),
+    )
+    parser.add_argument(
+        "--hard-per-batch", type=int, default=0,
+        help=(
+            "Replay this many train-bank rows from failing audited cells in "
+            "every step of the matching case (0 disables)."
+        ),
+    )
+    parser.add_argument(
+        "--resume-optimizer", action="store_true",
+        help="Restore Adam state from the init checkpoint when present.",
+    )
+    parser.add_argument("--decode-limit", type=int, default=30,
+                        help="Greedy decode samples per case; -1 decodes the full bank.")
     parser.add_argument("--eval-only", action="store_true")
     args = parser.parse_args()
 
@@ -396,6 +506,18 @@ def main() -> None:
         param_groups(model, interface_lr=args.lr, visual_lr=args.lr),
         weight_decay=1e-4,
     )
+    resumed_optimizer = False
+    if args.resume_optimizer:
+        raw_init = torch.load(init_path, map_location=device)
+        optimizer_state = (
+            raw_init.get("optimizer_state_dict")
+            if isinstance(raw_init, dict) else None
+        )
+        if optimizer_state is not None:
+            optimizer.load_state_dict(optimizer_state)
+            for group in optimizer.param_groups:
+                group["lr"] = float(args.lr)
+            resumed_optimizer = True
     tokenizer = model.lm_tok
     train_banks = {
         case: make_static_bank(model.res, case) for case in TOKEN_CASES
@@ -442,6 +564,13 @@ def main() -> None:
     best_score = float("-inf")
     best_step = 0
     admitted = False
+    hard_cells = {case: [] for case in TOKEN_CASES}
+    hard_cursor = {case: 0 for case in TOKEN_CASES}
+    case_cycle = (
+        ("image_to_current", "image_to_current", "text_to_both", "image_text_edit")
+        if args.case_cycle == "i2t_heavy"
+        else ("image_text_edit", "image_text_edit", "text_to_both", "image_to_current")
+    )
 
     def evaluate(step: int, train_meta: dict | None = None):
         nonlocal best_score, best_step, admitted
@@ -452,6 +581,8 @@ def main() -> None:
             )
             for case in TOKEN_CASES
         }
+        for case in TOKEN_CASES:
+            hard_cells[case] = hard_cells_from_records(token[case]["records"])
         gates = {
             "t2t": token_gate(token["text_to_both"], require_image=False),
             "i2t": token_gate(token["image_to_current"], require_image=True),
@@ -477,6 +608,13 @@ def main() -> None:
             "token": token,
             "gates": gates,
             "score": float(score),
+            "gate_values": {
+                "proj_gate": float(model.mot_stack.proj_gate.detach()),
+                "text_out_gate": float(model.mot_stack.text_out_gate.detach()),
+            },
+            "hard_cells": {
+                case: len(hard_cells[case]) for case in TOKEN_CASES
+            },
             "elapsed_sec": time.time() - started,
         }
         history.append(row)
@@ -485,13 +623,13 @@ def main() -> None:
             _save(model, candidate_path, {
                 "step": step, "token": token, "gates": gates,
                 "candidate_only": True,
-            })
+            }, optimizer)
         if not args.eval_only and all(gates.values()) and score > best_score - 1e-12:
             admitted = True
             _save(model, ckpt_path, {
                 "step": step, "token": token, "gates": gates,
                 "static_gates": static_gates,
-            })
+            }, optimizer)
         print(
             f"step={step:4d} "
             + " ".join(
@@ -513,30 +651,38 @@ def main() -> None:
                 case = ("text_to_both", "image_to_current")[(step - 1) % 2]
             else:
                 # Add IT2T only after the basic language/image readers have a
-                # chance to form; retain equal T2T/I2T rehearsal pressure.
-                cycle = (
-                    "image_text_edit", "image_text_edit",
-                    "text_to_both", "image_to_current",
-                )
+                # chance to form; the cycle preset sets rehearsal pressure.
+                cycle = case_cycle
                 case = cycle[(step - int(args.it2t_start) - 1) % len(cycle)]
             bank = train_banks[case]
             samples = sample_identified_group(bank, case, rng)
+            hard_rows = pick_hard_samples(
+                bank, hard_cells[case], int(args.hard_per_batch),
+                hard_cursor[case],
+            )
+            if hard_rows:
+                hard_cursor[case] = (
+                    hard_cursor[case] + len(hard_rows)
+                ) % max(1, len(hard_cells[case]))
             batch = move_token_batch(
-                collate_token_capabilities(tokenizer, samples), device,
+                collate_token_capabilities(tokenizer, samples + hard_rows), device,
             )
             model.train()
             optimizer.zero_grad(set_to_none=True)
             out = _forward_token_batch(model, batch, device)
             nll = out["token_nll"]
-            class_nll = answer_class_nll(out, batch)
+            class_nll = answer_class_nll(
+                out, batch, rows=range(len(samples)),
+            )
             loss = nll.mean() + float(args.class_contrast_coef) * class_nll
             meta = {
                 "case": case,
+                "hard_rows": len(hard_rows),
                 "matched_nll": float(nll.mean().detach()),
                 "class_nll": float(class_nll.detach()),
             }
             if case != "text_to_both":
-                controls = counterfactual_token_samples(samples, bank)
+                controls = counterfactual_token_samples(samples + hard_rows, bank)
                 control_batch = move_token_batch(
                     collate_token_capabilities(tokenizer, controls), device,
                 )
@@ -624,6 +770,9 @@ def main() -> None:
             "initial_proj_trust": float(args.initial_proj_trust),
             "it2t_start": int(args.it2t_start),
             "i2t_warmup": int(args.i2t_warmup),
+            "case_cycle": args.case_cycle,
+            "hard_per_batch": int(args.hard_per_batch),
+            "resumed_optimizer": resumed_optimizer,
             "identified_groups": {
                 "t2t_i2t": "ten digits at fixed color/address",
                 "it2t": "four source colors at fixed digit/address",
