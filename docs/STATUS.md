@@ -46,6 +46,14 @@ matched-vs-shuffled 中位 gap **7.47 nat**）；官方 next-color IT2T **1.000/
 （固定 90 格审计，与 T2I/B3 同一 fixed-bank 标准），这是有限 bank 能力闭合，
 不是 held-out 泛化。
 
+**空间 held-out 审计（2026-08-29，
+`results/published/pythia_token_heldout_audit.json`）**：把同样的 90 格场景按
+整像素偏移重渲染后，冠军 I2T 为 control 0.822；水平 ±1px 0.722–0.767；垂直
+±1px **0.411–0.467**；更大偏移 0.422–0.589。所有 jitter 下 matched-vs-shuffled
+中位 gap 仍达 8.7–12.0 nat——模型仍看得见图，但 argmax 精度随位置退化，
+垂直方向尤其敏感。结论：0.822 含有实质的位置记忆成分；后续语言支线应加
+jitter 位置增广重训（协议类修复，与 E 系列同类）。
+
 ---
 
 ## 2. Pythia 接入进度
