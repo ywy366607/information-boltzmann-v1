@@ -64,6 +64,7 @@ class DualStreamVQAModel(nn.Module):
         sigreg_coef: float = 0.0,
         use_stiefel: bool = True,
         deslice_topk: int = 2,
+        deslice_write_sharpening: bool = False,
         s_update: str = "raw",
         interact_prenorm: bool = False,
         trust_rho: float = 0.1,
@@ -145,6 +146,7 @@ class DualStreamVQAModel(nn.Module):
         self.sigreg_coef = float(sigreg_coef)
         self.use_stiefel = bool(use_stiefel)
         self.deslice_topk = int(deslice_topk)
+        self.deslice_write_sharpening = bool(deslice_write_sharpening)
         self.s_update = str(s_update)
         self.interact_prenorm = bool(interact_prenorm)
         self.trust_rho = float(trust_rho)
@@ -183,6 +185,7 @@ class DualStreamVQAModel(nn.Module):
             n_layers=n_layers,
             n_heads=self.n_heads,
             deslice_topk=self.deslice_topk,
+            deslice_write_sharpening=self.deslice_write_sharpening,
             use_stiefel=self.use_stiefel,
             local_kind="dw3",
             surprise_mode=surprise_mode,

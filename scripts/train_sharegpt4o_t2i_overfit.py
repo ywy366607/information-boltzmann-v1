@@ -335,6 +335,21 @@ def main() -> None:
     )
     parser.add_argument("--rehearsal-coef", type=float, default=10.0)
     parser.add_argument("--rehearsal-batch", type=int, default=8)
+    parser.add_argument(
+        "--write-sharpening", action="store_true",
+        help=(
+            "Opt-in learned write-assignment temperature on Deslice "
+            "(identity at init; the write counterpart of the read temp head)."
+        ),
+    )
+    parser.add_argument(
+        "--write-gamma", type=float, default=0.0,
+        help=(
+            "If >0, construct the sharpening parameter and FIX it at this "
+            "gamma (frozen) for a prescribed-dose ablation; the scalar "
+            "gradient is too weak for the optimizer to explore amplitude."
+        ),
+    )
     parser.add_argument("--device", default="cuda" if torch.cuda.is_available() else "cpu")
     parser.add_argument("--lm-device", default=None)
     parser.add_argument("--stop-on-pass", action=argparse.BooleanOptionalAction, default=True)
@@ -360,6 +375,9 @@ def main() -> None:
         res=int(args.resolution), n_slices=int(args.n_slices),
         language="pythia", lm_device=lm_device,
         pixel_loss_mode="gaussian_nll", s0_acc_coef=0.0,
+        deslice_write_sharpening=bool(
+            args.write_sharpening or float(args.write_gamma) > 0.0
+        ),
     )).to(device)
     if model.lm is not None:
         model.lm.to(device)
@@ -367,6 +385,17 @@ def main() -> None:
         model, init_path, skip_language_interface=False,
     )
     trainable = set_optimization_phase(model, args.phase)
+    fixed_gamma = float(args.write_gamma)
+    if fixed_gamma > 0.0:
+        # Freeze after the phase pass so the prescribed dose is not re-opened.
+        for layer in model.mot_stack.layers:
+            raw = layer.deslice.write_gamma_raw
+            if raw is not None:
+                raw.data.fill_(float(torch.log(torch.tensor(fixed_gamma))))
+                raw.requires_grad_(False)
+        trainable = [
+            name for name in trainable if "write_gamma_raw" not in name
+        ]
     if any(parameter.requires_grad for parameter in model.lm.parameters()):
         raise RuntimeError("Pythia must remain frozen")
     optimizer = torch.optim.AdamW(
@@ -525,6 +554,8 @@ def main() -> None:
         "resolution": int(args.resolution),
         "n_slices": int(args.n_slices),
         "phase": str(args.phase),
+        "write_sharpening": bool(args.write_sharpening),
+        "write_gamma_fixed": float(args.write_gamma),
         "pythia_frozen": True,
         "init": str(init_path),
         "init_sha256": init_hash,

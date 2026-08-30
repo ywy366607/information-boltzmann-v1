@@ -361,6 +361,71 @@ def test_residual_read_s0_ignores_answer_tokens():
     assert torch.allclose(H1[:, :4], H2[:, :4], atol=1e-5, rtol=1e-5)
 
 
+def test_write_sharpening_identity_at_init_and_mass_preserved():
+    """gamma = exp(0) = 1 must leave the write weights exactly unchanged."""
+    from fine_grain.native_mot import DesliceWrite
+
+    torch.manual_seed(3)
+    plain = DesliceWrite(d=16, d_x=8)
+    sharpened = DesliceWrite(d=16, d_x=8, write_sharpening=True)
+    sharpened.load_state_dict(plain.state_dict(), strict=False)
+    assert sharpened.write_gamma_raw is not None
+    assert float(sharpened.write_gamma_raw) == 0.0
+    assert plain.write_gamma_raw is None
+    S = torch.randn(2, 8, 16)
+    w = torch.rand(2, 64, 8)
+    w = w / w.sum(dim=-1, keepdim=True)
+    assert torch.allclose(
+        plain._write_w(w), sharpened._write_w(w), atol=1e-6, rtol=1e-6,
+    )
+    sharp_w = sharpened._write_w(w)
+    assert torch.allclose(
+        sharp_w.sum(dim=-1), w.sum(dim=-1), atol=1e-5, rtol=1e-5,
+    )
+    assert torch.allclose(
+        plain.write_delta(S, w), sharpened.write_delta(S, w),
+        atol=1e-5, rtol=1e-5,
+    )
+
+
+def test_write_sharpening_localizes_writes_with_live_gradient():
+    """gamma > 1 must peak the write weights and receive gradient."""
+    from fine_grain.native_mot import DesliceWrite
+
+    sharpened = DesliceWrite(d=16, d_x=8, write_sharpening=True)
+    torch.manual_seed(3)
+    w = torch.rand(1, 64, 8)
+    w = w / w.sum(dim=-1, keepdim=True)
+    base = sharpened._write_w(w).detach().clone()
+    sharpened.write_gamma_raw.data.fill_(float(torch.log(torch.tensor(6.0))))
+    sharp = sharpened._write_w(w)
+    assert sharp.max() > base.max() * 2.0
+    loss = sharpened.write_delta(torch.randn(1, 8, 16), w).pow(2).mean()
+    loss.backward()
+    assert sharpened.write_gamma_raw.grad is not None
+    assert float(sharpened.write_gamma_raw.grad.abs()) > 0.0
+
+
+def test_generation_phase_admits_write_gamma_when_present():
+    """The opt-in parameter trains only inside generation write phases."""
+    from fine_grain.pythia_bridge import set_optimization_phase
+
+    torch.manual_seed(4)
+    stack = NativeMoTStack(
+        d_x=32, d=32, n_slices=8, n_layers=1, n_heads=4, res=8,
+        deslice_write_sharpening=True,
+    )
+    layer = stack.layers[0]
+    assert layer.deslice.write_gamma_raw is not None
+    for phase in ("token_reader", "language", "rgb_likelihood"):
+        set_optimization_phase(stack, phase)
+        assert not layer.deslice.write_gamma_raw.requires_grad
+    set_optimization_phase(stack, "generation_write")
+    assert layer.deslice.write_gamma_raw.requires_grad
+    set_optimization_phase(stack, "generation_capacity")
+    assert layer.deslice.write_gamma_raw.requires_grad
+
+
 if __name__ == "__main__":
     test_projections_not_shared()
     print("ok private projections")

@@ -409,23 +409,41 @@ class DesliceWrite(nn.Module):
     deslice_topk=0: full soft scatter (clean). topk>0: repo sparse write.
     preserve_mass: keep leftover (null-slice). Do not renormalize a 1%
     content assignment up to 1 and paint the sink.
+
+    write_sharpening: learned write-assignment temperature (off = clean).
+    When on, ``w_write`` becomes the mass-preserving power sharpening
+    ``w^gamma / sum(w^gamma) * sum(w)`` with ``gamma = exp(write_gamma_raw)``
+    initialized to exactly 1, so a loaded checkpoint behaves identically until
+    the parameter moves. gamma > 1 localizes writes and raises their spatial
+    bandwidth; this is the write counterpart of the read-side ``temp`` head.
     """
 
     def __init__(
         self, d: int, d_x: int, deslice_topk: int = 0, beta: float = 1.0,
-        preserve_mass: bool = False,
+        preserve_mass: bool = False, write_sharpening: bool = False,
     ):
         super().__init__()
         self.proj = nn.Linear(d, d_x)
         self.deslice_topk = int(deslice_topk)
         self.beta = float(beta)
         self.preserve_mass = bool(preserve_mass)
+        self.write_sharpening = bool(write_sharpening)
+        if self.write_sharpening:
+            self.write_gamma_raw = nn.Parameter(torch.zeros(()))
+        else:
+            self.write_gamma_raw = None
 
     def _write_w(self, w_pts: torch.Tensor) -> torch.Tensor:
-        return sparse_deslice_weights(
+        w = sparse_deslice_weights(
             w_pts.unsqueeze(1), topk=self.deslice_topk,
             renorm=not self.preserve_mass,
         ).squeeze(1)
+        if self.write_gamma_raw is not None:
+            gamma = self.write_gamma_raw.exp()
+            total = w.sum(dim=-1, keepdim=True)
+            powered = w.clamp_min(0.0).pow(gamma)
+            w = powered * (total / powered.sum(dim=-1, keepdim=True).clamp_min(1e-8))
+        return w
 
     def write_delta(self, S: torch.Tensor, w_pts: torch.Tensor) -> torch.Tensor:
         # S is an increment: 0 → 0. Bias is intentionally unused on the write.
@@ -778,6 +796,7 @@ class NativeMoTLayer(nn.Module):
         n_heads: int = 8,
         res: int = 64,
         deslice_topk: int = 0,
+        deslice_write_sharpening: bool = False,
         use_ada_temp: bool = False,
         use_gumbel: bool = False,
         use_stiefel: bool = False,
@@ -890,6 +909,7 @@ class NativeMoTLayer(nn.Module):
             d, d_x, deslice_topk=deslice_topk, beta=1.0,
             preserve_mass=use_null_slice or use_yield_read or use_ticket_read
             or bool(use_residual_read),
+            write_sharpening=bool(deslice_write_sharpening),
         )
         # dual_patch: local default none (patch stream carries spatial local bias)
         if self.dual_patch and local_kind == "dw3":
@@ -1545,6 +1565,7 @@ class NativeMoTStack(nn.Module):
         n_layers: int = 4,
         n_heads: int = 8,
         deslice_topk: int = 0,
+        deslice_write_sharpening: bool = False,
         use_ada_temp: bool = False,
         use_gumbel: bool = False,
         use_stiefel: bool = False,
@@ -1641,6 +1662,7 @@ class NativeMoTStack(nn.Module):
         self.sigma_r = float(sigma_r)
         self.gate_on = str(gate_on)
         self.deslice_write = str(deslice_write)
+        self.deslice_write_sharpening = bool(deslice_write_sharpening)
         self.gate_h_local = bool(gate_h_local)
         self.s_kalman_update = bool(s_kalman_update)
         self.s_lang_topk = int(s_lang_topk)
@@ -1825,6 +1847,7 @@ class NativeMoTStack(nn.Module):
             sigma_r=self.sigma_r,
             gate_on=self.gate_on,
             deslice_write=self.deslice_write,
+            deslice_write_sharpening=self.deslice_write_sharpening,
             gate_h_local=self.gate_h_local,
             saccade=self.saccade,
             saccade_gain=self.saccade_gain,

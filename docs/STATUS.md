@@ -349,6 +349,30 @@ lr 3e-4/2e-4）→ A1b（6000 步，半 lr）→ A1c（3000 步，1/20 lr 收尾
 物），不是继续加步数。capacity 相位按预期摧毁静态端口（digit 0.085），
 诊断件不得晋级。
 
+**写分配温度开门（2026-08-30，
+`results/published/natural_t2i_b1_sharpening.json` / `_g4_fixed.json` /
+`_g8_fixed.json`，research_tree N102）**：给 `DesliceWrite` 加 opt-in 的
+写分配幂锐化 `w_write ∝ w^γ`（`γ=exp(raw)` 恒等初始化，`--write-sharpening`
+学习 / `--write-gamma` 处方固定）。要点：
+
+1. **学习型 γ 无效**（B1）：6000 步只走到 γ=1.06–1.26，edge 0.348 ≈ 基线
+   0.351。标量参数梯度太弱，优化器不会自行探索幅度——与 `proj_gate` 同一
+   教训，机制检验必须用处方剂量。
+2. **剂量响应单调并过门**：edge corr @6000 步 = 0.351（γ=1）→ 0.393（γ=4）
+   → **0.514（γ=8，过 0.50 注册门）**；edge MSE 0.863→0.728；PSNR 20.7→23.1。
+   γ=8 画廊出现可辨认的面罩形状与眼缝
+   （`present/figs/natural_t2i_g8_fixed.png`）。
+3. **候选-only**：capacity 相位摧毁静态端口，自然内容门通过 ≠ 冠军；
+   下一阶段是静态能力合并（同一检查点恢复 T2I/current/edit 且内容门保持），
+   以及 γ>8 的边界与多 seed 复验。
+4. **G8b 续训（半 lr，6000 步）**：13/13 评测点全过门，渐近线 edge corr
+   **0.628**（γ=1 时 0.448）、edge MSE 0.598、PSNR 24.78
+   （`results/published/natural_t2i_g8b_continue.json`）。γ=8 是有余量的稳态。
+5. **分辨率假设已检验并否决**：γ 剂量响应在固定 N/M/网格上移动了门，而
+   16×16→64×64 的升分辨率让门更难——约束在写端局域化，不在点数；剩余
+   自由度预算是 N/M 配比与 γ 的联合扫描（M=128/256 × γ、固定 N/M 的
+   32/128 网格门难度曲线）。
+
 反例：旧版 250 步 broad-`auto` 虽降低真实图像 NLL，却破坏官方编辑门；旧版
 混合语言试验中的 IT2T 又是误标 caption。当前 `auto` 仅把图像端映射到
 `rgb_likelihood`、文本端映射到 `token_reader`，禁止默认进入

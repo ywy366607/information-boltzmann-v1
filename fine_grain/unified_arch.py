@@ -20,6 +20,7 @@ UNIFIED_KNOBS = {
     "prior_loss_coef": 0.1,
     "use_stiefel": True,
     "deslice_topk": 2,
+    "deslice_write_sharpening": False,
     "gate_on": "u",
     "deslice_write": "increment",
     "gate_h_local": False,

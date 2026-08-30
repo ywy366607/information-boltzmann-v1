@@ -73,6 +73,7 @@ GENERATION_WRITE_MARKERS: tuple[str, ...] = (
     ".surprise_gate.slice_queries",
     ".surprise_gate.q_norm.",
     ".surprise_gate.h_norm.",
+    ".deslice.write_gamma_raw",
 )
 
 GENERATION_CAPACITY_MARKERS: tuple[str, ...] = (
