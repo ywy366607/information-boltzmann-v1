@@ -815,6 +815,7 @@ class NativeMoTLayer(nn.Module):
         evidence_decay: float = 0.0,
         sigma_r: float = 1.0,
         gate_on: str = "u",
+        prior_step_condition: bool = False,
         deslice_write: str = "absolute",
         gate_h_local: bool = False,
         saccade: bool = False,
@@ -904,6 +905,7 @@ class NativeMoTLayer(nn.Module):
             n_heads=n_heads,
             sigma_r=sigma_r,
             gate_on=gate_on,
+            use_prior_step_condition=bool(prior_step_condition),
         )
         self.deslice = DesliceWrite(
             d, d_x, deslice_topk=deslice_topk, beta=1.0,
@@ -1289,7 +1291,7 @@ class NativeMoTLayer(nn.Module):
             P2 = None
         delta = self._mask_lang_delta(delta, S.shape[1])
         gate, s_meta = self.surprise_gate(
-            S, H, delta_S=delta, text_mask=vis_h_mask,
+            S, H, delta_S=delta, text_mask=vis_h_mask, t=t,
         )
         u_field = s_meta.get("surprise", gate.new_zeros(gate.shape))
         if force_gate is not None:
@@ -1584,6 +1586,7 @@ class NativeMoTStack(nn.Module):
         evidence_decay: float = 0.0,
         sigma_r: float = 1.0,
         gate_on: str = "u",
+        prior_step_condition: bool = False,
         deslice_write: str = "absolute",
         gate_h_local: bool = False,
         share_layers: bool = False,
@@ -1661,6 +1664,7 @@ class NativeMoTStack(nn.Module):
         self.evidence_decay = float(evidence_decay)
         self.sigma_r = float(sigma_r)
         self.gate_on = str(gate_on)
+        self.prior_step_condition = bool(prior_step_condition)
         self.deslice_write = str(deslice_write)
         self.deslice_write_sharpening = bool(deslice_write_sharpening)
         self.gate_h_local = bool(gate_h_local)
@@ -1846,6 +1850,7 @@ class NativeMoTStack(nn.Module):
             evidence_decay=self.evidence_decay,
             sigma_r=self.sigma_r,
             gate_on=self.gate_on,
+            prior_step_condition=self.prior_step_condition,
             deslice_write=self.deslice_write,
             deslice_write_sharpening=self.deslice_write_sharpening,
             gate_h_local=self.gate_h_local,
@@ -2302,12 +2307,25 @@ class NativeMoTStack(nn.Module):
         history_precision=None,
         action=None,
         action_precision=None,
+        x_init: Optional[torch.Tensor] = None,
     ) -> torch.Tensor:
         """Point field. Recognition: [rgb, x, y]. FM: + t on every point.
 
         t is a coordinate, same as xy — SliceRead can pool it. Language
         still only meets vision in MoT. t=None is exact old stem (F2-safe).
+        x_init: optional persistent field [B,N,d_x] to continue from, for
+        sequential latent writes (stroke-sequential generation). When given,
+        the stem/precision/history encoders are skipped and only the t
+        coordinate is added, so t=None + x_init is exact identity.
         """
+        if x_init is not None:
+            if t is None:
+                return x_init
+            B = x_init.shape[0]
+            tt = t.reshape(-1, 1, 1).to(
+                dtype=x_init.dtype, device=x_init.device,
+            ).expand(B, x_init.shape[1], 1)
+            return x_init + self.t_coord(tt)
         B, _, R, _ = img.shape
         assert R == self.res, (R, self.res)
         pts = img.reshape(B, 3, R * R).transpose(1, 2)
@@ -2519,11 +2537,13 @@ class NativeMoTStack(nn.Module):
         action=None,
         action_precision=None,
         causal_state: Optional[ActiveInferenceState] = None,
+        x_init: Optional[torch.Tensor] = None,
     ) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor, List[NativeLayerTrace]]:
         """
         text_emb: [B,T,d_llm]
         pi_x: write permission for the point field (0 = read-only I2T / text).
         n_loops: override recurrent depth when share_layers=True (eval extrapolation).
+        x_init: continue from a persistent field instead of encoding img.
         Returns: X, H_llm [B,T,d_llm], interface_tokens [B,M,d_llm], traces
         """
         X = self.encode_X(
@@ -2535,6 +2555,7 @@ class NativeMoTStack(nn.Module):
             history_precision=history_precision,
             action=action,
             action_precision=action_precision,
+            x_init=x_init,
         )
         self._last_X_stem = X.detach()
         self._last_X_prior = None

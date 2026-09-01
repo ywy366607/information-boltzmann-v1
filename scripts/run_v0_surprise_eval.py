@@ -65,6 +65,7 @@ class DualStreamVQAModel(nn.Module):
         use_stiefel: bool = True,
         deslice_topk: int = 2,
         deslice_write_sharpening: bool = False,
+        prior_step_condition: bool = False,
         s_update: str = "raw",
         interact_prenorm: bool = False,
         trust_rho: float = 0.1,
@@ -147,6 +148,7 @@ class DualStreamVQAModel(nn.Module):
         self.use_stiefel = bool(use_stiefel)
         self.deslice_topk = int(deslice_topk)
         self.deslice_write_sharpening = bool(deslice_write_sharpening)
+        self.prior_step_condition = bool(prior_step_condition)
         self.s_update = str(s_update)
         self.interact_prenorm = bool(interact_prenorm)
         self.trust_rho = float(trust_rho)
@@ -186,6 +188,7 @@ class DualStreamVQAModel(nn.Module):
             n_heads=self.n_heads,
             deslice_topk=self.deslice_topk,
             deslice_write_sharpening=self.deslice_write_sharpening,
+            prior_step_condition=self.prior_step_condition,
             use_stiefel=self.use_stiefel,
             local_kind="dw3",
             surprise_mode=surprise_mode,
@@ -304,6 +307,7 @@ class DualStreamVQAModel(nn.Module):
         action=None,
         action_precision=None,
         causal_state=None,
+        x_init=None,
     ):
         B = images.shape[0]
         text_emb, mask = self.encode_text(prompts, images.device)
@@ -321,6 +325,7 @@ class DualStreamVQAModel(nn.Module):
             action=action,
             action_precision=action_precision,
             causal_state=causal_state,
+            x_init=x_init,
         )
 
         mask_f = mask.unsqueeze(-1).float()

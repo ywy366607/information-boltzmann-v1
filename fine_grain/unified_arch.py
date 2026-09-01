@@ -21,6 +21,7 @@ UNIFIED_KNOBS = {
     "use_stiefel": True,
     "deslice_topk": 2,
     "deslice_write_sharpening": False,
+    "prior_step_condition": False,
     "gate_on": "u",
     "deslice_write": "increment",
     "gate_h_local": False,

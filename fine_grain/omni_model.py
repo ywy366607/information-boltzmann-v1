@@ -473,6 +473,7 @@ class DualStreamOmni(DualStreamVQAModel):
         action=None,
         action_precision=None,
         causal_state=None,
+        x_init=None,
     ) -> Dict:
         # Port readouts do not define the internal dynamics. Perception ports
         # still evolve the latent visual field with language; an explicit pi_x
@@ -492,6 +493,7 @@ class DualStreamOmni(DualStreamVQAModel):
             action=action,
             action_precision=action_precision,
             causal_state=causal_state,
+            x_init=x_init,
         )
         return self._fill_visual_outputs(out, images, t)
 

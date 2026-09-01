@@ -70,10 +70,12 @@ GENERATION_WRITE_MARKERS: tuple[str, ...] = (
     ".mot.Wk_t",
     ".mot.Wv_t",
     ".surprise_gate.prior_head.",
+    ".surprise_gate.prior_step_proj",
     ".surprise_gate.slice_queries",
     ".surprise_gate.q_norm.",
     ".surprise_gate.h_norm.",
     ".deslice.write_gamma_raw",
+    ".t_coord",
 )
 
 GENERATION_CAPACITY_MARKERS: tuple[str, ...] = (

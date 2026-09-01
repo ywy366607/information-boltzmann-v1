@@ -191,6 +191,7 @@ class BayesianSurpriseGate(nn.Module):
         n_heads: int = 4,
         sigma_r: float = 1.0,
         gate_on: str = "u",
+        use_prior_step_condition: bool = False,
     ):
         super().__init__()
         assert mode in (
@@ -213,6 +214,7 @@ class BayesianSurpriseGate(nn.Module):
         self.detach_pred_target = bool(detach_pred_target)
         self.constant_val = float(constant_val)
         self.stiefel_queries = bool(stiefel_queries)
+        self.use_prior_step_condition = bool(use_prior_step_condition)
         assert self.d % int(n_heads) == 0, (self.d, n_heads)
         self.n_heads = int(n_heads)
         self.dh = self.d // self.n_heads
@@ -254,6 +256,18 @@ class BayesianSurpriseGate(nn.Module):
                 nn.GELU(),
                 nn.Linear(self.dh, 2 * self.dh),
             )
+            # Step-conditioned prior content (opt-in, zero-init = identity).
+            # The single-shot F2 prior is a canvas-blind attractor: with
+            # prior_write gain 1 every sequential write applies the SAME
+            # mu_p, so repeated passes stamp one blob instead of composing.
+            # This projection lets the prior content depend on the write
+            # step so set-point semantics complete progressively.
+            if self.use_prior_step_condition:
+                self.prior_step_proj = nn.Linear(1, self.d)
+                nn.init.zeros_(self.prior_step_proj.weight)
+                nn.init.zeros_(self.prior_step_proj.bias)
+            else:
+                self.prior_step_proj = None
 
     def _get_queries(self) -> torch.Tensor:
         """Returns [1, M, d] slice query probes, optionally projected to Stiefel manifold."""
@@ -276,10 +290,13 @@ class BayesianSurpriseGate(nn.Module):
         self,
         H: torch.Tensor,
         text_mask: Optional[torch.Tensor] = None,
+        t=None,
     ) -> torch.Tensor:
         """MoT-aligned multi-head SDPA: M probes attend to language H.
 
         Per-head RMSNorm on Q/K (QK-Norm). Values stay raw H. No extra in_proj.
+        ``t`` optionally conditions the prior content on the write step
+        (zero-init projection, exact identity when absent or untrained).
         """
         B, T, _ = H.shape
         h, dh, M = self.n_heads, self.dh, self.n_slices
@@ -304,7 +321,11 @@ class BayesianSurpriseGate(nn.Module):
             attn = attn.masked_fill(none[:, None, None, None], 0.0)
         self.last_attn = attn.detach()
         out = torch.matmul(attn, v)  # [B, h, M, dh]
-        return out.permute(0, 2, 1, 3).contiguous().view(B, M, self.d)
+        out = out.permute(0, 2, 1, 3).contiguous().view(B, M, self.d)
+        if t is not None and self.prior_step_proj is not None:
+            step = t.reshape(-1, 1).to(dtype=out.dtype, device=out.device)
+            out = out + self.prior_step_proj(step).unsqueeze(1)
+        return out
 
     def _head_mlp(self, x: torch.Tensor, mlp: nn.Module) -> torch.Tensor:
         """Apply an MLP independently on each of the n_heads feature blocks."""
@@ -317,6 +338,7 @@ class BayesianSurpriseGate(nn.Module):
         S: torch.Tensor,
         H: torch.Tensor,
         text_mask: Optional[torch.Tensor] = None,
+        t=None,
     ) -> Dict[str, torch.Tensor]:
         """Score S under the V1 language prior in one fixed Slice coordinate.
 
@@ -325,7 +347,7 @@ class BayesianSurpriseGate(nn.Module):
         """
         if self.mode != "v1_bayes":
             raise RuntimeError("prior_predictive requires mode='v1_bayes'")
-        H_ctx = self._predict_prior_from_h(H, text_mask=text_mask)
+        H_ctx = self._predict_prior_from_h(H, text_mask=text_mask, t=t)
         prior_params = self._head_mlp(H_ctx, self.prior_head)
         mu_p, lv_p = prior_params.chunk(2, dim=-1)
         lv_p = torch.clamp(lv_p, -5.0, 2.0)
@@ -345,6 +367,7 @@ class BayesianSurpriseGate(nn.Module):
         H: torch.Tensor,
         delta_S: Optional[torch.Tensor] = None,
         text_mask: Optional[torch.Tensor] = None,
+        t=None,
     ) -> Tuple[torch.Tensor, Dict[str, torch.Tensor]]:
         """S: [B, M, d] visual slices observed from point field
 
@@ -437,7 +460,7 @@ class BayesianSurpriseGate(nn.Module):
 
         # --- V1: Full Gaussian Bayesian Surprise & KL Decomposition ---
         if self.mode == "v1_bayes":
-            prior = self.prior_predictive(S, H, text_mask=text_mask)
+            prior = self.prior_predictive(S, H, text_mask=text_mask, t=t)
             H_ctx = prior["h_ctx"]
             mu_p, lv_p = prior["mu_p"], prior["lv_p"]
             var_p = torch.exp(lv_p)
