@@ -1342,6 +1342,20 @@ class NativeMoTLayer(nn.Module):
                 W = torch.zeros_like(X)
             S_W, _ = self.read(W)
             delta_x = self.deslice.write_delta(S_write - S_W, w_write)
+        elif write in ("prior_increment", "painter"):
+            # Painter semantics: the language prior emits a slice-space
+            # INCREMENT and the canvas is written additively. Nothing
+            # subtracts the canvas read-back, so earlier strokes survive
+            # later passes and write bandwidth accumulates across steps;
+            # addresses still come from the live canvas assignment. Set-point
+            # semantics (gain-1 residual mu_p - S) instead cancels the canvas
+            # exactly, which is bandwidth-neutral however faithful the
+            # read-write round trip becomes. prior_write_by_t is not applied
+            # here: the gain is the constant prior_write.
+            if pw != 0.0 and mu_p is not None:
+                delta_x = self.deslice.write_delta(pw * mu_p, w_write)
+            else:
+                delta_x = self.deslice.write_delta(S_write - S, w_write)
         else:
             # Velocity write: scatter proj(S_write − S), bias-free so 0 → 0.
             delta_x = self.deslice.write_delta(S_write - S, w_write)

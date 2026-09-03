@@ -1,0 +1,149 @@
+{
+  "schema": "latent-roundtrip-fidelity",
+  "init": "D:\\\u89c6\u89c9\u7f16\u7801\u5668\u6d4b\u8bd5\\checkpoints\\omni_d64_northstar_omni_active_f2_grid_best.pt",
+  "note": "Zero-training operator diagnostic: X_rt = blank + W(read(X)); error is decode distance to decode(X). Composition across sequential passes requires this to be faithful.",
+  "n_samples": 90,
+  "results": {
+    "gamma_1": {
+      "anchor_decode_psnr": 12.229898452758789,
+      "perception": {
+        "layer0": {
+          "rgb_mse": 0.776145875453949,
+          "rgb_psnr": 1.1006038188934326,
+          "field_variance_recovered": 0.07634516177805437
+        },
+        "layer1": {
+          "rgb_mse": 0.7704683542251587,
+          "rgb_psnr": 1.1324864625930786,
+          "field_variance_recovered": 0.11627386446259838
+        },
+        "layer2": {
+          "rgb_mse": 0.8427446484565735,
+          "rgb_psnr": 0.7430680990219116,
+          "field_variance_recovered": 0.07805735005064837
+        },
+        "layer3": {
+          "rgb_mse": 0.8524304032325745,
+          "rgb_psnr": 0.6934400796890259,
+          "field_variance_recovered": 0.08900807251875899
+        }
+      },
+      "generation": {
+        "layer0": {
+          "rgb_mse": 0.49179384112358093,
+          "rgb_psnr": 3.0830235481262207,
+          "field_variance_recovered": 0.035092797457901316
+        },
+        "layer1": {
+          "rgb_mse": 0.451768159866333,
+          "rgb_psnr": 3.4532289505004883,
+          "field_variance_recovered": 0.02326569271806589
+        },
+        "layer2": {
+          "rgb_mse": 0.09384380280971527,
+          "rgb_psnr": 10.308001518249512,
+          "field_variance_recovered": 0.036186570254795776
+        },
+        "layer3": {
+          "rgb_mse": 0.8736347556114197,
+          "rgb_psnr": 0.5868820548057556,
+          "field_variance_recovered": 0.03717025387896701
+        }
+      }
+    },
+    "gamma_4": {
+      "anchor_decode_psnr": 12.229898452758789,
+      "perception": {
+        "layer0": {
+          "rgb_mse": 0.7740128040313721,
+          "rgb_psnr": 1.112558126449585,
+          "field_variance_recovered": 0.07594083274892911
+        },
+        "layer1": {
+          "rgb_mse": 0.768909215927124,
+          "rgb_psnr": 1.1412842273712158,
+          "field_variance_recovered": 0.11704071117220909
+        },
+        "layer2": {
+          "rgb_mse": 0.842645525932312,
+          "rgb_psnr": 0.7435791492462158,
+          "field_variance_recovered": 0.07837965607617844
+        },
+        "layer3": {
+          "rgb_mse": 0.8524144887924194,
+          "rgb_psnr": 0.6935209035873413,
+          "field_variance_recovered": 0.08930730554304182
+        }
+      },
+      "generation": {
+        "layer0": {
+          "rgb_mse": 0.5078701376914978,
+          "rgb_psnr": 2.9436755180358887,
+          "field_variance_recovered": 0.044355201617742
+        },
+        "layer1": {
+          "rgb_mse": 0.35539793968200684,
+          "rgb_psnr": 4.499480724334717,
+          "field_variance_recovered": 0.02705253139934339
+        },
+        "layer2": {
+          "rgb_mse": 0.02491169609129429,
+          "rgb_psnr": 16.055295944213867,
+          "field_variance_recovered": 0.04459616249184398
+        },
+        "layer3": {
+          "rgb_mse": 0.8197662830352783,
+          "rgb_psnr": 0.8640864491462708,
+          "field_variance_recovered": 0.03821963929949174
+        }
+      }
+    },
+    "gamma_8": {
+      "anchor_decode_psnr": 12.229898452758789,
+      "perception": {
+        "layer0": {
+          "rgb_mse": 0.7715274691581726,
+          "rgb_psnr": 1.1265287399291992,
+          "field_variance_recovered": 0.06111456851359043
+        },
+        "layer1": {
+          "rgb_mse": 0.7677747011184692,
+          "rgb_psnr": 1.1476978063583374,
+          "field_variance_recovered": 0.11758446511661509
+        },
+        "layer2": {
+          "rgb_mse": 0.8425715565681458,
+          "rgb_psnr": 0.743960440158844,
+          "field_variance_recovered": 0.07800361840390821
+        },
+        "layer3": {
+          "rgb_mse": 0.8523962497711182,
+          "rgb_psnr": 0.693613588809967,
+          "field_variance_recovered": 0.073881620603229
+        }
+      },
+      "generation": {
+        "layer0": {
+          "rgb_mse": 0.4830820858478546,
+          "rgb_psnr": 3.160398483276367,
+          "field_variance_recovered": 0.043475032573234956
+        },
+        "layer1": {
+          "rgb_mse": 0.36937764286994934,
+          "rgb_psnr": 4.327759742736816,
+          "field_variance_recovered": 0.025846137931938833
+        },
+        "layer2": {
+          "rgb_mse": 0.03236227110028267,
+          "rgb_psnr": 14.919297218322754,
+          "field_variance_recovered": 0.04113636653004752
+        },
+        "layer3": {
+          "rgb_mse": 0.8552951812744141,
+          "rgb_psnr": 0.6789828538894653,
+          "field_variance_recovered": 0.04509705616090378
+        }
+      }
+    }
+  }
+}

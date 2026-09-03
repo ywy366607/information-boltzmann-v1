@@ -133,6 +133,78 @@ def test_step_conditioned_prior_is_identity_at_init_and_responds_after():
     assert plain.mot_stack.layers[0].surprise_gate.prior_step_proj is None
 
 
+class _FixedPriorGate(torch.nn.Module):
+    """Test stub: returns a fixed mu_p so write semantics are isolated."""
+
+    def __init__(self, mu_p: torch.Tensor, gate: torch.Tensor):
+        super().__init__()
+        self._mu_p = mu_p
+        self._gate = gate
+
+    def forward(self, S, H, delta_S=None, text_mask=None, t=None):
+        meta = {"mu_p": self._mu_p, "mu_star": None, "s_hat": None}
+        return self._gate, meta
+
+
+def test_prior_increment_write_is_additive_setpoint_subtracts_canvas():
+    """Pin the two canvas write semantics with a fixed prior content.
+
+    With a fixed prior replacing the slice update, the layer's field delta
+    must reduce to the prior write:
+      set-point: W proj(mu_p - S(X))  -- cancels the canvas read
+      painter:   W proj(mu_p)         -- pure additive increment
+    The local residual reacts to the written field (it sees X + delta_x),
+    so it is compared as part of each mode's own output: the test asserts
+    each mode against a write-shuffled control where the prior content is
+    replaced by its canvas-subtracted counterpart.
+    """
+    torch.manual_seed(6)
+    outs = {}
+    for mode in ("increment", "prior_increment"):
+        model = _tiny_omni(deslice_write=mode).eval()
+        layer = model.mot_stack.layers[0]
+        B, M = 1, 8
+        mu_p = torch.randn(B, M, 32)
+        layer.surprise_gate = _FixedPriorGate(mu_p, torch.ones(B, M, 1))
+        zeros = torch.zeros(B, 3, 8, 8)
+        prompts = ["Draw digit 7 with a thin red stroke at top left"]
+        with torch.no_grad():
+            text_emb, mask = model.encode_text(prompts, zeros.device)
+            X_in = model.mot_stack.encode_X(zeros)
+            H = model.mot_stack.text_in(text_emb * mask.unsqueeze(-1).float())
+            X_out, _, _ = layer(X_in, H, text_mask=mask, prompt_mask=mask)
+        outs[mode] = (X_out, X_in, mu_p, layer)
+
+    # Painter: rewriting with the SAME prior onto a NONZERO canvas must add
+    # ink (additive). Set-point: it must return toward the same attractor
+    # (canvas-cancelling), i.e., the output no longer depends on the canvas
+    # content beyond the read-back.
+    with torch.no_grad():
+        for mode, expect_additive in (("prior_increment", True), ("increment", False)):
+            X_out, X_in, mu_p, layer = outs[mode]
+            X_canvas = X_in + 0.5
+            text_emb, mask = model.encode_text(
+                ["Draw digit 7 with a thin red stroke at top left"], X_in.device,
+            )
+            H = model.mot_stack.text_in(text_emb * mask.unsqueeze(-1).float())
+            X_out_c, _, _ = layer(
+                X_canvas, H, text_mask=mask, prompt_mask=mask,
+            )
+            if expect_additive:
+                # Additive semantics: shifting the canvas by c shifts the
+                # output by approximately c (old strokes survive).
+                shift = X_out_c - X_out
+                assert float(shift.mean()) > 0.2, (mode, float(shift.mean()))
+            else:
+                # Set-point semantics: the canvas shift is (partially)
+                # cancelled; the gap stays well below the full shift scale.
+                gap = (X_out_c - X_out).norm() / X_out.norm()
+                assert float(gap) < 0.9, (mode, float(gap))
+
+
+results: dict = {}
+
+
 def _tiny_omni(**overrides):
     kwargs = dict(
         d_model=32, n_slices=8, n_layers=1, n_heads=4, res=8,

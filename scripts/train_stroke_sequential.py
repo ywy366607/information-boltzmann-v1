@@ -300,6 +300,14 @@ def main() -> None:
             "projection, so the set-point target varies per stroke."
         ),
     )
+    parser.add_argument(
+        "--prior-increment", action="store_true",
+        help=(
+            "Painter write semantics: the language prior emits a slice-space "
+            "increment written additively (deslice_write='prior_increment'); "
+            "the canvas read-back is never subtracted, so strokes accumulate."
+        ),
+    )
     parser.add_argument("--eval-only", action="store_true")
     args = parser.parse_args()
 
@@ -320,7 +328,7 @@ def main() -> None:
         prior_loss_coef=0.1, sigreg_coef=0.0,
         use_stiefel=False, deslice_topk=0,
         use_null_slice=False, use_residual_read=False,
-        gate_on="u", deslice_write="increment", gate_h_local=False,
+        gate_on="u", gate_h_local=False,
         vfe_coef=0.1, prior_write=1.0, prior_write_by_t=False,
         pixel_loss_mode="balanced_bce",
         spatial_prompt_vocab=True, capability_vocab=True,
@@ -334,6 +342,9 @@ def main() -> None:
         s0_acc_coef=0.0,
         deslice_write_sharpening=float(args.write_gamma) > 0.0,
         prior_step_condition=bool(args.prior_step_condition),
+        deslice_write=(
+            "prior_increment" if args.prior_increment else "increment"
+        ),
     ).to(device)
     report = load_visual_champion(model, init_path, skip_language_interface=False)
     if float(args.write_gamma) > 0.0:
@@ -413,6 +424,7 @@ def main() -> None:
             "stroke_split": STROKE_SPLIT,
             "write_gamma": float(args.write_gamma),
             "prior_step_condition": bool(args.prior_step_condition),
+            "prior_increment": bool(args.prior_increment),
             "trainable": trainable,
             "n_trainable": sum(
                 p.numel() for p in model.parameters() if p.requires_grad

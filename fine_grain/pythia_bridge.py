@@ -186,6 +186,16 @@ def is_terminal_token_reader(model: nn.Module, name: str) -> bool:
     return name[len(prefix):].startswith(TOKEN_READER_H_SUFFIXES)
 
 
+_active_phase = ""
+
+
+def phase_is_idempotence_readwrite(name: str) -> bool:
+    return (
+        (".read." in name and name.startswith("mot_stack.layers."))
+        or ".deslice.proj" in name
+    )
+
+
 def is_edit_read_visual(name: str) -> bool:
     return any(marker in name for marker in EDIT_READ_MARKERS)
 
@@ -301,11 +311,14 @@ def set_optimization_phase(model: nn.Module, phase: str) -> List[str]:
         "interface", "token_interface", "token_reader", "language",
         "rgb_likelihood", "language_rgb", "edit_spatial", "edit_read",
         "generation_write", "generation_capacity", "joint",
+        "readwrite_idempotence",
     ):
         raise ValueError(f"unknown optimization phase {phase!r}")
     freeze_lm = getattr(model, "_freeze_lm", None)
     if callable(freeze_lm):
         freeze_lm()
+    global _active_phase
+    _active_phase = str(phase)
     trainable: List[str] = []
     for name, param in model.named_parameters():
         if any(name.startswith(p) for p in FROZEN_EVEN_WHEN_JOINT_PREFIXES):
@@ -335,6 +348,14 @@ def set_optimization_phase(model: nn.Module, phase: str) -> List[str]:
             allow = is_generation_write(name)
         elif phase == "generation_capacity":
             allow = is_generation_capacity(name)
+        elif phase == "readwrite_idempotence":
+            # Latent round-trip repair: only the per-layer SliceRead and the
+            # write projection train, so W(read(X)) can learn to carry
+            # canvas content. No prior, MoT, stem, or pixel head moves.
+            allow = (
+                (".read." in name and name.startswith("mot_stack.layers."))
+                or ".deslice.proj" in name
+            )
         else:
             allow = True
         param.requires_grad_(allow)
@@ -349,8 +370,16 @@ def param_groups(
     interface_lr: float,
     visual_lr: float,
 ) -> List[Dict]:
-    """Language readers at ``interface_lr``; any unfrozen visual at ``visual_lr``."""
+    """Language readers at ``interface_lr``; any unfrozen visual at ``visual_lr``.
+
+    The idempotence predicate is scoped to its own phase: edit_read keeps
+    routing per-layer SliceRead to the visual group, while
+    readwrite_idempotence routes it to interface_lr (the repair objective
+    lives there, not in visual adaptation).
+    """
     language, visual = [], []
+    from fine_grain.pythia_bridge import _active_phase
+    idem = _active_phase == "readwrite_idempotence"
     for name, param in model.named_parameters():
         if not param.requires_grad:
             continue
@@ -359,6 +388,7 @@ def param_groups(
             or is_token_interface(name)
             or is_terminal_token_reader(model, name)
             or "precision_coord" in name
+            or (idem and phase_is_idempotence_readwrite(name))
         ):
             language.append(param)
         else:

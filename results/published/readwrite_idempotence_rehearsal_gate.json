@@ -1,0 +1,365 @@
+{
+  "schema": "readwrite-idempotence-gate",
+  "init": "D:\\\u89c6\u89c9\u7f16\u7801\u5668\u6d4b\u8bd5\\checkpoints\\omni_d64_pythia_capability_b3_edit_best.pt",
+  "init_report": {
+    "path": "D:\\\u89c6\u89c9\u7f16\u7801\u5668\u6d4b\u8bd5\\checkpoints\\omni_d64_pythia_capability_b3_edit_best.pt",
+    "loaded": 298,
+    "skipped": [],
+    "n_skipped": 0
+  },
+  "candidate": "checkpoints\\_readwrite_idemp_rehearsal_candidate.pt",
+  "run": {
+    "steps": 600,
+    "batch": 16,
+    "lr": 0.0001,
+    "gen_frac": 0.25,
+    "rehearsal_frac": 0.5,
+    "objective": "sum_l || W_l(read_l(X)) - (X - X_blank) ||^2",
+    "trainable": [
+      "mot_stack.layers.0.read.bias",
+      "mot_stack.layers.0.read.proj_in.weight",
+      "mot_stack.layers.0.read.proj_in.bias",
+      "mot_stack.layers.0.read.to_logits.weight",
+      "mot_stack.layers.0.read.to_logits.bias",
+      "mot_stack.layers.0.read.temp.0.weight",
+      "mot_stack.layers.0.read.temp.0.bias",
+      "mot_stack.layers.0.read.temp.2.weight",
+      "mot_stack.layers.0.read.temp.2.bias",
+      "mot_stack.layers.0.read.out.weight",
+      "mot_stack.layers.0.read.out.bias",
+      "mot_stack.layers.0.deslice.proj.weight",
+      "mot_stack.layers.0.deslice.proj.bias",
+      "mot_stack.layers.1.read.bias",
+      "mot_stack.layers.1.read.proj_in.weight",
+      "mot_stack.layers.1.read.proj_in.bias",
+      "mot_stack.layers.1.read.to_logits.weight",
+      "mot_stack.layers.1.read.to_logits.bias",
+      "mot_stack.layers.1.read.temp.0.weight",
+      "mot_stack.layers.1.read.temp.0.bias",
+      "mot_stack.layers.1.read.temp.2.weight",
+      "mot_stack.layers.1.read.temp.2.bias",
+      "mot_stack.layers.1.read.out.weight",
+      "mot_stack.layers.1.read.out.bias",
+      "mot_stack.layers.1.deslice.proj.weight",
+      "mot_stack.layers.1.deslice.proj.bias",
+      "mot_stack.layers.2.read.bias",
+      "mot_stack.layers.2.read.proj_in.weight",
+      "mot_stack.layers.2.read.proj_in.bias",
+      "mot_stack.layers.2.read.to_logits.weight",
+      "mot_stack.layers.2.read.to_logits.bias",
+      "mot_stack.layers.2.read.temp.0.weight",
+      "mot_stack.layers.2.read.temp.0.bias",
+      "mot_stack.layers.2.read.temp.2.weight",
+      "mot_stack.layers.2.read.temp.2.bias",
+      "mot_stack.layers.2.read.out.weight",
+      "mot_stack.layers.2.read.out.bias",
+      "mot_stack.layers.2.deslice.proj.weight",
+      "mot_stack.layers.2.deslice.proj.bias",
+      "mot_stack.layers.3.read.bias",
+      "mot_stack.layers.3.read.proj_in.weight",
+      "mot_stack.layers.3.read.proj_in.bias",
+      "mot_stack.layers.3.read.to_logits.weight",
+      "mot_stack.layers.3.read.to_logits.bias",
+      "mot_stack.layers.3.read.temp.0.weight",
+      "mot_stack.layers.3.read.temp.0.bias",
+      "mot_stack.layers.3.read.temp.2.weight",
+      "mot_stack.layers.3.read.temp.2.bias",
+      "mot_stack.layers.3.read.out.weight",
+      "mot_stack.layers.3.read.out.bias",
+      "mot_stack.layers.3.deslice.proj.weight",
+      "mot_stack.layers.3.deslice.proj.bias"
+    ],
+    "n_trainable": 52180
+  },
+  "history": [
+    {
+      "step": 0,
+      "rt_perception": {
+        "layer0": 1.5046684741973877,
+        "layer1": 1.117349624633789,
+        "layer2": 1.0831663608551025,
+        "layer3": 0.7352247834205627
+      },
+      "rt_generation": {
+        "layer0": 5.410265922546387,
+        "layer1": 6.0018205642700195,
+        "layer2": 17.59200668334961,
+        "layer3": 2.460327625274658
+      },
+      "rt_min": 0.7352247834205627,
+      "static": {
+        "t2i": {
+          "digit_top1": 1.0,
+          "paired_iou": 0.9361455965245891
+        },
+        "current": {
+          "digit_top1": 0.9111111111111111,
+          "paired_iou": 0.8830026302072737
+        },
+        "edit": {
+          "digit_top1": 0.8777777777777778,
+          "paired_iou": 0.6969912255803744
+        }
+      },
+      "gates": {
+        "t2i": true,
+        "current": true,
+        "edit": true
+      },
+      "all_static_held": true
+    },
+    {
+      "step": 100,
+      "rt_perception": {
+        "layer0": 1.924778699874878,
+        "layer1": 1.8627967834472656,
+        "layer2": 1.8891074657440186,
+        "layer3": 0.7597765922546387
+      },
+      "rt_generation": {
+        "layer0": 17.936742782592773,
+        "layer1": 17.950990676879883,
+        "layer2": 17.91608428955078,
+        "layer3": 17.979509353637695
+      },
+      "rt_min": 0.7597765922546387,
+      "static": {
+        "t2i": {
+          "digit_top1": 0.8717948717948718,
+          "paired_iou": 0.8487262757670166
+        },
+        "current": {
+          "digit_top1": 0.9111111111111111,
+          "paired_iou": 0.9025851554340787
+        },
+        "edit": {
+          "digit_top1": 0.8333333333333334,
+          "paired_iou": 0.7105658984846539
+        }
+      },
+      "gates": {
+        "t2i": false,
+        "current": true,
+        "edit": false
+      },
+      "all_static_held": false
+    },
+    {
+      "step": 200,
+      "rt_perception": {
+        "layer0": 2.2836227416992188,
+        "layer1": 4.440998077392578,
+        "layer2": 5.44901180267334,
+        "layer3": 0.86771160364151
+      },
+      "rt_generation": {
+        "layer0": 17.916271209716797,
+        "layer1": 17.919662475585938,
+        "layer2": 17.91472625732422,
+        "layer3": 17.915794372558594
+      },
+      "rt_min": 0.86771160364151,
+      "static": {
+        "t2i": {
+          "digit_top1": 0.7692307692307693,
+          "paired_iou": 0.7555788695557505
+        },
+        "current": {
+          "digit_top1": 0.9111111111111111,
+          "paired_iou": 0.9147501528263092
+        },
+        "edit": {
+          "digit_top1": 0.6111111111111112,
+          "paired_iou": 0.6196772553026676
+        }
+      },
+      "gates": {
+        "t2i": false,
+        "current": true,
+        "edit": false
+      },
+      "all_static_held": false
+    },
+    {
+      "step": 300,
+      "rt_perception": {
+        "layer0": 2.4561290740966797,
+        "layer1": 6.008787155151367,
+        "layer2": 7.780745506286621,
+        "layer3": 1.2803481817245483
+      },
+      "rt_generation": {
+        "layer0": 17.914915084838867,
+        "layer1": 17.915651321411133,
+        "layer2": 17.914539337158203,
+        "layer3": 17.914743423461914
+      },
+      "rt_min": 1.2803481817245483,
+      "static": {
+        "t2i": {
+          "digit_top1": 0.717948717948718,
+          "paired_iou": 0.7735429770416684
+        },
+        "current": {
+          "digit_top1": 0.8888888888888888,
+          "paired_iou": 0.8770999176634683
+        },
+        "edit": {
+          "digit_top1": 0.9,
+          "paired_iou": 0.7046337963806258
+        }
+      },
+      "gates": {
+        "t2i": false,
+        "current": true,
+        "edit": true
+      },
+      "all_static_held": false
+    },
+    {
+      "step": 400,
+      "rt_perception": {
+        "layer0": 2.3554296493530273,
+        "layer1": 9.637099266052246,
+        "layer2": 11.880903244018555,
+        "layer3": 1.336714506149292
+      },
+      "rt_generation": {
+        "layer0": 17.914581298828125,
+        "layer1": 17.91478729248047,
+        "layer2": 17.91446876525879,
+        "layer3": 17.914546966552734
+      },
+      "rt_min": 1.336714506149292,
+      "static": {
+        "t2i": {
+          "digit_top1": 0.6666666666666666,
+          "paired_iou": 0.7583661500332702
+        },
+        "current": {
+          "digit_top1": 0.7888888888888889,
+          "paired_iou": 0.827888834476471
+        },
+        "edit": {
+          "digit_top1": 0.8444444444444444,
+          "paired_iou": 0.6698459506034851
+        }
+      },
+      "gates": {
+        "t2i": false,
+        "current": false,
+        "edit": false
+      },
+      "all_static_held": false
+    },
+    {
+      "step": 500,
+      "rt_perception": {
+        "layer0": 2.379791498184204,
+        "layer1": 11.634398460388184,
+        "layer2": 12.890238761901855,
+        "layer3": 1.9696452617645264
+      },
+      "rt_generation": {
+        "layer0": 17.91445541381836,
+        "layer1": 17.91460609436035,
+        "layer2": 17.914440155029297,
+        "layer3": 17.91446876525879
+      },
+      "rt_min": 1.9696452617645264,
+      "static": {
+        "t2i": {
+          "digit_top1": 0.7350427350427351,
+          "paired_iou": 0.7904170743930035
+        },
+        "current": {
+          "digit_top1": 0.8888888888888888,
+          "paired_iou": 0.9024931546714571
+        },
+        "edit": {
+          "digit_top1": 0.8888888888888888,
+          "paired_iou": 0.7282355238993963
+        }
+      },
+      "gates": {
+        "t2i": false,
+        "current": true,
+        "edit": false
+      },
+      "all_static_held": false
+    },
+    {
+      "step": 600,
+      "rt_perception": {
+        "layer0": 2.286684274673462,
+        "layer1": 13.757657051086426,
+        "layer2": 12.936239242553711,
+        "layer3": 4.068122863769531
+      },
+      "rt_generation": {
+        "layer0": 17.91440773010254,
+        "layer1": 17.91451072692871,
+        "layer2": 17.914426803588867,
+        "layer3": 17.914445877075195
+      },
+      "rt_min": 2.286684274673462,
+      "static": {
+        "t2i": {
+          "digit_top1": 0.717948717948718,
+          "paired_iou": 0.7875089726896367
+        },
+        "current": {
+          "digit_top1": 0.9333333333333333,
+          "paired_iou": 0.925485348701477
+        },
+        "edit": {
+          "digit_top1": 0.5888888888888889,
+          "paired_iou": 0.5041437117589844
+        }
+      },
+      "gates": {
+        "t2i": false,
+        "current": true,
+        "edit": false
+      },
+      "all_static_held": false
+    }
+  ],
+  "final": {
+    "step": 600,
+    "rt_perception": {
+      "layer0": 2.286684274673462,
+      "layer1": 13.757657051086426,
+      "layer2": 12.936239242553711,
+      "layer3": 4.068122863769531
+    },
+    "rt_generation": {
+      "layer0": 17.91440773010254,
+      "layer1": 17.91451072692871,
+      "layer2": 17.914426803588867,
+      "layer3": 17.914445877075195
+    },
+    "rt_min": 2.286684274673462,
+    "static": {
+      "t2i": {
+        "digit_top1": 0.717948717948718,
+        "paired_iou": 0.7875089726896367
+      },
+      "current": {
+        "digit_top1": 0.9333333333333333,
+        "paired_iou": 0.925485348701477
+      },
+      "edit": {
+        "digit_top1": 0.5888888888888889,
+        "paired_iou": 0.5041437117589844
+      }
+    },
+    "gates": {
+      "t2i": false,
+      "current": true,
+      "edit": false
+    },
+    "all_static_held": false
+  },
+  "elapsed_sec": 143.7990207672119
+}
