@@ -192,6 +192,7 @@ class BayesianSurpriseGate(nn.Module):
         sigma_r: float = 1.0,
         gate_on: str = "u",
         use_prior_step_condition: bool = False,
+        gaussian_head_layout: str = "legacy",
     ):
         super().__init__()
         assert mode in (
@@ -215,6 +216,9 @@ class BayesianSurpriseGate(nn.Module):
         self.constant_val = float(constant_val)
         self.stiefel_queries = bool(stiefel_queries)
         self.use_prior_step_condition = bool(use_prior_step_condition)
+        if gaussian_head_layout not in ("legacy", "per_head"):
+            raise ValueError("gaussian_head_layout must be legacy or per_head")
+        self.gaussian_head_layout = gaussian_head_layout
         assert self.d % int(n_heads) == 0, (self.d, n_heads)
         self.n_heads = int(n_heads)
         self.dh = self.d // self.n_heads
@@ -331,7 +335,13 @@ class BayesianSurpriseGate(nn.Module):
         """Apply an MLP independently on each of the n_heads feature blocks."""
         B, M, _ = x.shape
         y = x.view(B, M, self.n_heads, self.dh)
-        return mlp(y).reshape(B, M, -1)
+        params = mlp(y)
+        if self.gaussian_head_layout == "per_head":
+            # [head, (mu, logvar), channel] -> [(mu, logvar), head, channel].
+            # Flattening heads first then chunking globally silences half of
+            # the context heads for mu and the other half for logvar.
+            params = params.reshape(B, M, self.n_heads, 2, self.dh).transpose(2, 3)
+        return params.reshape(B, M, -1)
 
     def prior_predictive(
         self,

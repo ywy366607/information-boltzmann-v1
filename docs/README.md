@@ -15,6 +15,10 @@ Read `NORTH_STAR.md` and `STATUS.md` before changing `native_mot.py`, `omni_mode
 - `native_slice_mot_vlm_experiment.md` — preregistered large-scale native VLM experiment.
 - `slice_navit_dual_stream_mot.md` — optional patch observation stream; patch is not the product's persistent visual state.
 - `VLM_OCR_FRONTEND.md` — historical frontend/OCR integration notes.
+- `NATIVE_256_CAPACITY.md` — native 256px scratch training, four-color/nine-address bank, memory budget and exact-raster evaluation.
+- `REAL_256_JOINT.md` — current real-data mainline: native 256px shared Pythia/Slice generation, editing, captioning, reconstruction, DAVIS segmentation and next-frame prediction.
+- `MIXED_NATIVE_CHAMPION.md` — shared native 64px/256px training, dynamic square-grid handling, paired horizon controls and remaining unified-checkpoint requirements.
+- `SEVEN_UNIFIED_SOLUTIONS.md` — seven distinct repair mechanisms and independent agent selection; S1 observation weighting first, S3 coordinate encoding as fallback; not yet implemented or validated.
 
 ## Historical evidence and specifications
 

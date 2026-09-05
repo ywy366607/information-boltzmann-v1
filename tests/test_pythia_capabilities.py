@@ -14,6 +14,8 @@ from scripts.train_pythia_capabilities import (
     edit_gate,
     make_static_bank,
     paired_digit_likelihood,
+    digit_residual_likelihood,
+    requires_digit_group,
     sample_digit_group,
     static_one_step,
 )
@@ -129,3 +131,50 @@ def test_digit_group_is_identified_by_existing_likelihoods():
     assert torch.isfinite(loss)
     assert meta["digit_group_active"] is True
     assert "digit_energy_gap" in meta
+
+
+def test_difference_only_digit_group_uses_existing_observation_heads():
+    bank = make_static_bank(8, "text_to_both")
+    samples = sample_digit_group(bank, np.random.default_rng(3))
+    model = _model().eval()
+    from fine_grain.capability_tasks import collate_capability
+
+    batch = collate_capability(samples)
+    with torch.no_grad():
+        out = model(
+            batch["image"], batch["prompt"], t=torch.zeros(10),
+            image_precision=batch["image_precision"],
+            text_precision=batch["text_precision"],
+            target_time=batch["target_time"],
+        )
+        loss, meta = paired_digit_likelihood(out, batch, difference_only=True)
+    assert torch.isfinite(loss)
+    assert meta["digit_group_active"] is True
+    assert meta["digit_group_difference_only"] is True
+
+
+def test_digit_residual_likelihood_has_no_classifier_or_private_target():
+    bank = make_static_bank(8, "text_to_both")
+    samples = sample_digit_group(bank, np.random.default_rng(4))
+    model = _model().eval()
+    from fine_grain.capability_tasks import collate_capability
+
+    batch = collate_capability(samples)
+    with torch.no_grad():
+        out = model(
+            batch["image"], batch["prompt"], t=torch.zeros(10),
+            image_precision=batch["image_precision"],
+            text_precision=batch["text_precision"],
+            target_time=batch["target_time"],
+        )
+        loss, meta = digit_residual_likelihood(out, batch)
+    assert torch.isfinite(loss)
+    assert meta["digit_residual_active"] is True
+    assert meta["digit_residual_union_pixels"] > 0
+
+
+def test_residual_likelihood_requires_a_complete_digit_group():
+    assert requires_digit_group("text_to_both", 0.0, 1.0)
+    assert requires_digit_group("text_to_both", 0.1, 0.0)
+    assert not requires_digit_group("text_to_both", 0.0, 0.0)
+    assert not requires_digit_group("image_to_current", 0.0, 1.0)

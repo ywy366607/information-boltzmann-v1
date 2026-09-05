@@ -43,6 +43,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 from fine_grain.bayesian_surprise import BayesianSurpriseGate, global_gate_from_surprise
+from fine_grain.spatial_address import LanguageAddressPrior
 from fine_grain.hard_admit import YieldGate
 from fine_grain.write_yield import retain_and_write, yield_residual
 from fine_grain.saccade import residual_pixel_mass, residual_rel
@@ -61,6 +62,19 @@ from fine_grain.models import (
     newton_schulz,
     sparse_deslice_weights,
 )
+
+
+def square_field_side(points: int) -> int:
+    """Infer spatial extent from this call, never mutate resolution metadata.
+
+    Native Slice fields have no learned position table. Keeping shape local
+    permits 64px and 256px autograd graphs to coexist in one optimizer update.
+    The legacy patch ablation still owns a resolution-specific position table.
+    """
+    side = math.isqrt(points)
+    if side < 1 or side * side != points:
+        raise ValueError(f"expected a square point field, got {points} points")
+    return side
 
 
 # --------------------------------------------------------------------------- norms / FFN
@@ -126,6 +140,9 @@ class SliceRead(nn.Module):
         use_stiefel: bool = False,
         use_null_slice: bool = False,
         use_yield_read: bool = False,
+        use_lang_address: bool = False,
+        lang_address_freq: int = 4,
+        lang_address_hidden: int = 64,
     ):
         super().__init__()
         self.M = int(n_slices)
@@ -137,6 +154,21 @@ class SliceRead(nn.Module):
         self.use_stiefel = bool(use_stiefel)
         self.use_null_slice = bool(use_null_slice)
         self.use_yield_read = bool(use_yield_read)
+        self.use_lang_address = bool(use_lang_address)
+        self.lang_address_freq = int(lang_address_freq)
+        if self.use_lang_address:
+            self.lang_address = LanguageAddressPrior(
+                d_model=d,
+                n_slices=self.M,
+                n_freq=self.lang_address_freq,
+                hidden_dim=int(lang_address_hidden),
+            )
+            self.lang_address_gain = nn.Parameter(torch.tensor(0.5))
+        else:
+            self.lang_address = None
+            self.lang_address_gain = None
+        self.last_w_prior = None
+        self.last_w = None
         self.proj_in = nn.Linear(d_x, d)
         # assignment head dim
         self.dh = max(16, d // n_heads)
@@ -187,6 +219,9 @@ class SliceRead(nn.Module):
         point_admit: Optional[torch.Tensor] = None,
         admit_tau: Optional[torch.Tensor] = None,
         point_pe: Optional[torch.Tensor] = None,
+        H_lang: Optional[torch.Tensor] = None,
+        text_mask: Optional[torch.Tensor] = None,
+        res_grid: Optional[int] = None,
     ) -> Tuple[torch.Tensor, torch.Tensor]:
         B, N, _ = x.shape
         h, dh, M = self.h, self.dh, self.M
@@ -194,6 +229,8 @@ class SliceRead(nn.Module):
         self.last_null = None
         self.last_pack_alpha = None
         self.last_admit_alpha = None
+        self.last_w_prior = None
+        self.last_w = None
         if w_override is not None:
             w_pts = w_override.to(dtype=xp.dtype, device=xp.device)
             if w_pts.shape != (B, N, M):
@@ -206,6 +243,11 @@ class SliceRead(nn.Module):
         else:
             xm = self.to_head(xp).reshape(B, N, h, dh).permute(0, 2, 1, 3)
             logits = self.to_logits(xm)  # B,h,N,M
+            if self.use_lang_address and self.lang_address is not None and H_lang is not None:
+                R_grid = res_grid or square_field_side(N)
+                l_lang, w_prior = self.lang_address(H_lang, R_grid, text_mask=text_mask)
+                self.last_w_prior = w_prior.detach()
+                logits = logits + self.lang_address_gain * l_lang.unsqueeze(1)
             if self.use_null_slice:
                 if point_pe is not None:
                     e = point_pe.reshape(B, 1, N, 1).to(dtype=logits.dtype, device=logits.device)
@@ -260,6 +302,10 @@ class SliceRead(nn.Module):
             )
             S = (U * mag).transpose(1, 2)  # [B,M,d]
         S = self.out(S)
+        # Kept with gradients for the optional training-only q(W|o,H) versus
+        # p(W|blank,H) objective.  It is the same SliceRead assignment used by
+        # Deslice, never a parallel pixel route.
+        self.last_w = w_pts
         return S, w_pts
 
 
@@ -440,9 +486,16 @@ class DesliceWrite(nn.Module):
         ).squeeze(1)
         if self.write_gamma_raw is not None:
             gamma = self.write_gamma_raw.exp()
-            total = w.sum(dim=-1, keepdim=True)
-            powered = w.clamp_min(0.0).pow(gamma)
-            w = powered * (total / powered.sum(dim=-1, keepdim=True).clamp_min(1e-8))
+            # With a diffuse 64-way row, (1/64)^8 is below fp16's normal
+            # range.  Computing power and its normalizer in the incoming
+            # activation dtype silently turns a mass-preserving sharpen into
+            # an almost-zero write (and makes a categorical KL invalid).
+            # Keep the deployed formula, but evaluate this numerically
+            # sensitive normalization in fp32 before returning to X's dtype.
+            work = w.float()
+            total = work.sum(dim=-1, keepdim=True)
+            powered = work.clamp_min(0.0).pow(gamma.float())
+            w = (powered * (total / powered.sum(dim=-1, keepdim=True).clamp_min(1e-20))).to(w.dtype)
         return w
 
     def write_delta(self, S: torch.Tensor, w_pts: torch.Tensor) -> torch.Tensor:
@@ -475,9 +528,12 @@ class LocalVisual(nn.Module):
       "cnx7" — ConvNeXt-ish residual: DWConv7 + LN + PW expand/contract
     """
 
-    def __init__(self, d_x: int, res: int, kind: str = "dw3"):
+    def __init__(
+        self, d_x: int, res: int, kind: str = "dw3", local_dilation: int = 1,
+    ):
         super().__init__()
         self.res = res
+        self.local_dilation = max(1, int(local_dilation))
         self.kind = str(kind).lower()
         if self.kind in ("none", "off", "identity", "0", "false"):
             self.kind = "none"
@@ -485,13 +541,19 @@ class LocalVisual(nn.Module):
         elif self.kind in ("dw3", "default", "conv", "true", "1"):
             self.kind = "dw3"
             self.norm = RMSNorm(d_x)
-            self.dw = nn.Conv2d(d_x, d_x, 3, padding=1, groups=d_x, bias=False)
+            self.dw = nn.Conv2d(
+                d_x, d_x, 3, padding=self.local_dilation,
+                dilation=self.local_dilation, groups=d_x, bias=False,
+            )
             self.pw = nn.Conv2d(d_x, d_x, 1)
             self.body = "dw3"
         elif self.kind in ("cnx7", "convnext", "cnx"):
             self.kind = "cnx7"
             # channels-last LN via LayerNorm on last dim after reshape to BHWC
-            self.dw = nn.Conv2d(d_x, d_x, 7, padding=3, groups=d_x, bias=False)
+            self.dw = nn.Conv2d(
+                d_x, d_x, 7, padding=3 * self.local_dilation,
+                dilation=self.local_dilation, groups=d_x, bias=False,
+            )
             self.norm = nn.LayerNorm(d_x)
             hidden = int(4 * d_x)
             self.pw1 = nn.Linear(d_x, hidden)
@@ -504,7 +566,7 @@ class LocalVisual(nn.Module):
         if self.kind == "none":
             return X
         B, N, C = X.shape
-        R = self.res
+        R = square_field_side(N)
         assert N == R * R, (N, R)
         if self.kind == "dw3":
             x = self.norm(X)
@@ -614,6 +676,31 @@ class NativeMoTBlock(nn.Module):
         self.ffn_t = SwiGLUFFN(d, ffn_mult)
         self.res_t = nn.Parameter(torch.tensor(float(residual_scale_init)))
 
+    def enable_attention_sink(self, initial_logit: float = -4.0) -> None:
+        """Add a true zero-value abstention option, separate from semantic H."""
+        self.sink_v = nn.Parameter(torch.full((self.h,), float(initial_logit)))
+        self.sink_t = nn.Parameter(torch.full((self.h,), float(initial_logit)))
+
+    def _sink_attention(self, logits, sink, query_mask=None):
+        # Exact softmax([logits, sink]) @ [values; 0] without adding a token.
+        gate = torch.sigmoid(torch.logsumexp(logits.float(), dim=-1) - sink[None, :, None])
+        weights = torch.softmax(logits, dim=-1) * gate.to(logits.dtype).unsqueeze(-1)
+        if query_mask is None:
+            importance = gate.mean(dim=(0, 2))
+        else:
+            valid = query_mask[:, None, :].to(gate.dtype)
+            importance = (gate * valid).sum(dim=(0, 2)) / valid.sum().clamp_min(1)
+        return weights, importance
+
+    def head_balance_loss(self, shared_heads: int = 1):
+        """Paper Eq. 8: preserve the most active heads during fine-tuning."""
+        terms = []
+        for importance in getattr(self, "head_importance", ()):
+            routed = importance.sort(descending=True).values[int(shared_heads):]
+            if routed.numel() > 1:
+                terms.append(routed.numel() * routed.var(unbiased=False) / routed.mean().square().clamp_min(1e-8))
+        return sum(terms) if terms else self.res_v * 0.0
+
     def _shape(self, x: torch.Tensor) -> torch.Tensor:
         # [B,L,d] -> [B,h,L,dh]
         B, L, _ = x.shape
@@ -632,6 +719,7 @@ class NativeMoTBlock(nn.Module):
         prompt_mask: Optional[torch.Tensor] = None,
         P: Optional[torch.Tensor] = None,
         visual_attn_bias: Optional[torch.Tensor] = None,
+        condition_mask: Optional[torch.Tensor] = None,
     ) -> Tuple[torch.Tensor, torch.Tensor, Optional[torch.Tensor]]:
         """
         S: [B,M,d], H: [B,T,d], optional P: [B,N_p,d]
@@ -691,7 +779,13 @@ class NativeMoTBlock(nn.Module):
             prompt_mask,
         ], dim=1)
         av = av.masked_fill(~vis_key_ok[:, None, None, :], neg)
-        av = torch.softmax(av, dim=-1)
+        self.head_importance = []
+        if hasattr(self, "sink_v"):
+            av, importance = self._sink_attention(av, self.sink_v)
+            self.head_importance.append(importance)
+        else:
+            av = torch.softmax(av, dim=-1)
+        self.last_av = av.detach()
         Av = self._merge(torch.matmul(av, Val))
         # Per-visual-token mass on text keys. Slice-selective language uses this.
         self.last_text_mass = av[:, :, :, L_v:].sum(dim=-1).mean(dim=1)  # [B, L_v]
@@ -710,8 +804,28 @@ class NativeMoTBlock(nn.Module):
         causal_tt = j <= i
         allow = torch.ones(T, L_v + T, device=S.device, dtype=torch.bool)
         allow[:, L_v:] = causal_tt
-        at = at.masked_fill(~allow[None, None, :, :], neg)
-        at = torch.softmax(at, dim=-1)
+        allow = allow[None, :, :].expand(B, -1, -1)
+        if condition_mask is not None:
+            # Appended observed controls behave like a prefix, not answer tokens.
+            # They may read prompt/controls but never teacher-forced answers:
+            # otherwise answers leak back through control K/V at the next layer.
+            condition_mask = condition_mask.bool() & prompt_mask
+            if condition_mask.shape != (B, T):
+                raise ValueError("condition_mask must have shape [B,T]")
+            text_allow = causal_tt[None].expand(B, -1, -1) | condition_mask[:, None, :]
+            text_allow = torch.where(
+                condition_mask[:, :, None], prompt_mask[:, None, :], text_allow,
+            )
+            allow = torch.cat([
+                torch.ones(B, T, L_v, device=S.device, dtype=torch.bool), text_allow,
+            ], dim=-1)
+        at = at.masked_fill(~allow[:, None, :, :], neg)
+        if hasattr(self, "sink_t"):
+            at, importance = self._sink_attention(at, self.sink_t, text_mask)
+            self.head_importance.append(importance)
+        else:
+            at = torch.softmax(at, dim=-1)
+        self.last_at = at.detach()
         At = self._merge(torch.matmul(at, Val))
 
         # 3) modal-independent output experts
@@ -801,6 +915,7 @@ class NativeMoTLayer(nn.Module):
         use_gumbel: bool = False,
         use_stiefel: bool = False,
         local_kind: str = "dw3",
+        local_dilation: int = 1,
         dual_patch: bool = False,
         patch_size: int = 4,
         use_unpatch: bool = True,
@@ -835,6 +950,9 @@ class NativeMoTLayer(nn.Module):
         use_action_rel_bias: bool = False,
         use_action_transport: bool = False,
         use_action_slice_transition: bool = False,
+        use_lang_address: bool = False,
+        lang_address_freq: int = 4,
+        lang_address_hidden: int = 64,
     ):
         super().__init__()
         self.dual_patch = bool(dual_patch)
@@ -858,6 +976,7 @@ class NativeMoTLayer(nn.Module):
         self.use_action_rel_bias = bool(use_action_rel_bias)
         self.use_action_transport = bool(use_action_transport)
         self.use_action_slice_transition = bool(use_action_slice_transition)
+        self.use_lang_address = bool(use_lang_address)
         self.res = int(res)
         self.read = SliceRead(
             d_x, d, n_slices, n_heads=n_heads,
@@ -866,6 +985,9 @@ class NativeMoTLayer(nn.Module):
             use_stiefel=use_stiefel,
             use_null_slice=use_null_slice or self.use_residual_read,
             use_yield_read=use_yield_read,
+            use_lang_address=use_lang_address,
+            lang_address_freq=lang_address_freq,
+            lang_address_hidden=lang_address_hidden,
         )
         self.mot = NativeMoTBlock(d=d, n_heads=n_heads)
         if self.use_action_rel_bias:
@@ -916,7 +1038,9 @@ class NativeMoTLayer(nn.Module):
         # dual_patch: local default none (patch stream carries spatial local bias)
         if self.dual_patch and local_kind == "dw3":
             local_kind = "none"
-        self.local = LocalVisual(d_x, res=res, kind=local_kind)
+        self.local = LocalVisual(
+            d_x, res=res, kind=local_kind, local_dilation=local_dilation,
+        )
         self.M = n_slices
         self.local_kind = self.local.kind
         if self.dual_patch:
@@ -995,7 +1119,7 @@ class NativeMoTLayer(nn.Module):
         if self.action_transport is None or action_vector is None:
             return w
         B, N, M = w.shape
-        R = self.res
+        R = square_field_side(N)
         if N != R * R:
             raise ValueError("action transport requires a square full-resolution field")
         action_yx = action_vector[..., [1, 0]].to(device=w.device, dtype=w.dtype)
@@ -1042,7 +1166,7 @@ class NativeMoTLayer(nn.Module):
         ):
             return S
         B, M, _ = S.shape
-        grid = coords(self.res, S.device).to(dtype=S.dtype).expand(B, -1, -1)
+        grid = coords(square_field_side(w.shape[1]), S.device).to(dtype=S.dtype).expand(B, -1, -1)
         mass = w.sum(dim=1).clamp_min(1e-5).unsqueeze(-1)
         centers = torch.einsum("bnm,bnd->bmd", w, grid) / mass
         # Matrix axes are [destination, source].
@@ -1217,6 +1341,7 @@ class NativeMoTLayer(nn.Module):
         causal_prior_gate: Optional[torch.Tensor] = None,
         causal_delta_x: Optional[torch.Tensor] = None,
         X_prior: Optional[torch.Tensor] = None,
+        condition_mask: Optional[torch.Tensor] = None,
     ) -> Tuple[torch.Tensor, torch.Tensor, NativeLayerTrace]:
         if cond is not None:
             X = self.ada_x(X, cond)
@@ -1242,13 +1367,17 @@ class NativeMoTLayer(nn.Module):
             x_read, pixel_mass=pixel_mass, point_u=point_u,
             point_admit=point_admit, admit_tau=admit_tau,
             point_pe=point_pe,
+            H_lang=H if getattr(self.read, "use_lang_address", False) else None,
+            text_mask=vis_h_mask,
+            res_grid=square_field_side(X.shape[1]),
         )
         self.last_null = getattr(self.read, "last_null", None)
         self.last_pack_alpha = getattr(self.read, "last_pack_alpha", None)
         self.last_admit_alpha = getattr(self.read, "last_admit_alpha", None)
+        self.last_w_prior = getattr(self.read, "last_w_prior", None)
         visual_attn_bias = None
         if self.action_rel_mlp is not None and action_vector is not None:
-            grid = coords(self.res, X.device).to(dtype=X.dtype).expand(X.shape[0], -1, -1)
+            grid = coords(square_field_side(X.shape[1]), X.device).to(dtype=X.dtype).expand(X.shape[0], -1, -1)
             mass = w.sum(dim=1).clamp_min(1e-5).unsqueeze(-1)
             centers = torch.einsum("bnm,bnd->bmd", w, grid) / mass
             rel = centers[:, :, None, :] - centers[:, None, :, :]
@@ -1277,6 +1406,7 @@ class NativeMoTLayer(nn.Module):
             S2n, H2n, P2 = self.mot(
                 S_in, H_in, text_mask=text_mask, prompt_mask=prompt_mask, P=P,
                 visual_attn_bias=visual_attn_bias,
+                condition_mask=condition_mask,
             )
             delta = S2n - S_in
             v_H = H2n - H_in
@@ -1285,6 +1415,7 @@ class NativeMoTLayer(nn.Module):
             S2n, H2n, _ = self.mot(
                 S_in, H_in, text_mask=text_mask, prompt_mask=prompt_mask,
                 visual_attn_bias=visual_attn_bias,
+                condition_mask=condition_mask,
             )
             delta = S2n - S_in
             v_H = H2n - H_in
@@ -1586,6 +1717,7 @@ class NativeMoTStack(nn.Module):
         use_gumbel: bool = False,
         use_stiefel: bool = False,
         local_kind: str = "dw3",
+        local_dilation: int = 1,
         dual_patch: bool = False,
         patch_size: int = 4,
         use_unpatch: bool = True,
@@ -1633,6 +1765,11 @@ class NativeMoTStack(nn.Module):
         action_dim: int = 0,
         use_action_adaln: bool = False,
         use_action_tokens: bool = False,
+        use_task_tokens: bool = False,
+        n_task_tokens: int = 4,
+        control_prefix_attention: bool = False,
+        use_attention_sink: bool = False,
+        gaussian_head_layout: str = "legacy",
         use_action_rel_bias: bool = False,
         use_action_transport: bool = False,
         use_action_slice_transition: bool = False,
@@ -1641,6 +1778,9 @@ class NativeMoTStack(nn.Module):
         use_active_gdn2_history_transport: bool = False,
         active_gdn2_initial_trust: float = 0.0,
         terminal_token_atlas: bool = False,
+        use_lang_address: bool = False,
+        lang_address_freq: int = 4,
+        lang_address_hidden: int = 64,
     ):
         super().__init__()
         self.res = res
@@ -1649,6 +1789,9 @@ class NativeMoTStack(nn.Module):
         self.d_llm = d_llm
         self.n_slices = n_slices
         self.n_layers = n_layers
+        self.use_lang_address = bool(use_lang_address)
+        self.lang_address_freq = int(lang_address_freq)
+        self.lang_address_hidden = int(lang_address_hidden)
         self.share_layers = bool(share_layers)
         self.n_loops = int(n_layers if n_loops is None else n_loops)
         self.lti_inject = bool(lti_inject)
@@ -1703,6 +1846,13 @@ class NativeMoTStack(nn.Module):
         self.action_dim = max(0, int(action_dim))
         self.use_action_adaln = bool(use_action_adaln)
         self.use_action_tokens = bool(use_action_tokens)
+        self.use_task_tokens = bool(use_task_tokens)
+        self.n_task_tokens = max(1, int(n_task_tokens))
+        self.control_prefix_attention = bool(control_prefix_attention)
+        self.use_attention_sink = bool(use_attention_sink)
+        if gaussian_head_layout not in ("legacy", "per_head"):
+            raise ValueError("gaussian_head_layout must be legacy or per_head")
+        self.gaussian_head_layout = gaussian_head_layout
         self.use_action_rel_bias = bool(use_action_rel_bias)
         self.use_action_transport = bool(use_action_transport)
         self.use_action_slice_transition = bool(use_action_slice_transition)
@@ -1749,6 +1899,7 @@ class NativeMoTStack(nn.Module):
         if self.dual_patch and local_kind == "dw3":
             local_kind = "none"
         self.local_kind = str(local_kind)
+        self.local_dilation = max(1, int(local_dilation))
 
         # stem: RGB+xy → d_x. t is a 6th point coordinate (not adaLN, not language).
         self.stem = nn.Linear(5, d_x)
@@ -1806,8 +1957,19 @@ class NativeMoTStack(nn.Module):
             self.action_to_x = None
             self.action_to_h = None
             self.action_token_type = None
+        if self.use_task_tokens:
+            # A task is an observed semantic intention, not an output switch.
+            # Its learned token enters the same H workspace as words/actions,
+            # so every Slice interaction may condition on the global mode.
+            self.task_embed = nn.Embedding(self.n_task_tokens, d)
+            nn.init.normal_(self.task_embed.weight, std=0.02)
+        else:
+            self.task_embed = None
         self.stem_local = nn.Sequential(
-            nn.Conv2d(d_x, d_x, 3, padding=1, groups=d_x),
+            nn.Conv2d(
+                d_x, d_x, 3, padding=self.local_dilation,
+                dilation=self.local_dilation, groups=d_x,
+            ),
             nn.Conv2d(d_x, d_x, 1),
         )
         self.text_in = nn.Linear(d_llm, d)
@@ -1851,6 +2013,7 @@ class NativeMoTStack(nn.Module):
             use_gumbel=use_gumbel,
             use_stiefel=use_stiefel,
             local_kind=local_kind,
+            local_dilation=self.local_dilation,
             dual_patch=self.dual_patch,
             patch_size=self.patch_size,
             use_unpatch=self.use_unpatch,
@@ -1884,6 +2047,9 @@ class NativeMoTStack(nn.Module):
             use_residual_read=self.use_residual_read,
             use_action_rel_bias=self.use_action_rel_bias,
             use_action_transport=self.use_action_transport,
+            use_lang_address=self.use_lang_address,
+            lang_address_freq=self.lang_address_freq,
+            lang_address_hidden=self.lang_address_hidden,
         )
         self.layers = nn.ModuleList([
             NativeMoTLayer(
@@ -1892,6 +2058,11 @@ class NativeMoTStack(nn.Module):
             )
             for idx in range(n_mods)
         ])
+        if self.use_attention_sink:
+            for layer in self.layers:
+                layer.mot.enable_attention_sink()
+        for layer in self.layers:
+            layer.surprise_gate.gaussian_head_layout = self.gaussian_head_layout
         if self.use_active_gdn2:
             # Adding an experimental module must not consume the global RNG
             # stream and silently change downstream heads absent from an old
@@ -2247,6 +2418,29 @@ class NativeMoTStack(nn.Module):
         token = token * present[:, None, None].to(dtype=dtype)
         return token, present[:, None]
 
+    def _task_token(
+        self,
+        task_id,
+        batch: int,
+        device: torch.device,
+        dtype: torch.dtype,
+    ) -> Tuple[torch.Tensor, torch.Tensor]:
+        """One masked global-intention token in the ordinary H workspace."""
+        if self.task_embed is None:
+            raise RuntimeError("task token requested without task embeddings")
+        if task_id is None:
+            ids = torch.zeros(batch, device=device, dtype=torch.long)
+            present = torch.zeros(batch, device=device, dtype=torch.bool)
+        else:
+            ids = torch.as_tensor(task_id, device=device, dtype=torch.long).reshape(-1)
+            if ids.numel() != batch:
+                raise ValueError("task_id must have one value per batch item")
+            present = (ids >= 0) & (ids < self.n_task_tokens)
+            ids = ids.clamp(0, self.n_task_tokens - 1)
+        token = self.task_embed(ids).to(dtype=dtype).unsqueeze(1)
+        token = token * present[:, None, None].to(dtype=dtype)
+        return token, present[:, None]
+
     def _action_vector(
         self,
         action,
@@ -2340,8 +2534,9 @@ class NativeMoTStack(nn.Module):
                 dtype=x_init.dtype, device=x_init.device,
             ).expand(B, x_init.shape[1], 1)
             return x_init + self.t_coord(tt)
-        B, _, R, _ = img.shape
-        assert R == self.res, (R, self.res)
+        B, channels, R, width = img.shape
+        if channels != 3 or width != R:
+            raise ValueError("native image inputs must be square RGB fields")
         pts = img.reshape(B, 3, R * R).transpose(1, 2)
         p = coords(R, img.device).expand(B, -1, -1)
         image_pi = None
@@ -2427,7 +2622,7 @@ class NativeMoTStack(nn.Module):
             return None, None, None
         batch = X.shape[0]
         device, dtype = X.device, X.dtype
-        point_coords = coords(self.res, device).to(dtype=dtype).expand(batch, -1, -1)
+        point_coords = coords(square_field_side(X.shape[1]), device).to(dtype=dtype).expand(batch, -1, -1)
         state = causal_state
         if state is None:
             state = memory.initial_state(batch, device, dtype)
@@ -2550,6 +2745,7 @@ class NativeMoTStack(nn.Module):
         history_precision=None,
         action=None,
         action_precision=None,
+        task_id=None,
         causal_state: Optional[ActiveInferenceState] = None,
         x_init: Optional[torch.Tensor] = None,
     ) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor, List[NativeLayerTrace]]:
@@ -2631,7 +2827,8 @@ class NativeMoTStack(nn.Module):
                 action, effective_action_precision, X.shape[0], X.device, X.dtype,
             )
             cond = action_cond if cond is None else cond + action_cond
-        if self.use_action_tokens or self.use_horizon_tokens:
+        condition_mask = None
+        if self.use_action_tokens or self.use_horizon_tokens or self.use_task_tokens:
             base_text_mask = (
                 torch.ones(
                     X.shape[0], text_token_count, device=X.device,
@@ -2658,6 +2855,12 @@ class NativeMoTStack(nn.Module):
                 )
                 control_tokens.append(action_token)
                 control_masks.append(action_mask)
+            if self.use_task_tokens:
+                task_token, task_mask = self._task_token(
+                    task_id, X.shape[0], X.device, X.dtype,
+                )
+                control_tokens.append(task_token)
+                control_masks.append(task_mask)
             controls = torch.cat(control_tokens, dim=1)
             controls_mask = torch.cat(control_masks, dim=1)
             H = torch.cat([H, controls], dim=1)
@@ -2665,6 +2868,8 @@ class NativeMoTStack(nn.Module):
             # Slice queries read controls directly. Text output tokens remain
             # causal and are stripped back to their original length.
             prompt_mask = torch.cat([base_prompt_mask, controls_mask], dim=1)
+            if self.control_prefix_attention:
+                condition_mask = torch.cat([torch.zeros_like(base_text_mask), controls_mask], dim=1)
         action_vector = action_rel_mask = None
         if (
             self.use_action_rel_bias
@@ -2690,6 +2895,7 @@ class NativeMoTStack(nn.Module):
         vfe_terms = []
         sig_terms = []
         step_H: List[torch.Tensor] = []
+        live_field_steps: List[torch.Tensor] = []
         X_orig = X
         opt_state = None
         W = torch.zeros_like(X)
@@ -2743,6 +2949,7 @@ class NativeMoTStack(nn.Module):
                     action_vector=action_vector, action_mask=action_rel_mask,
                     apply_action_transition=(i == 0 and look == 0),
                     causal_delta_s=None,
+                    condition_mask=condition_mask,
                     causal_write_w=(
                         causal_write_w if i == 0 and look == 0 else None
                     ),
@@ -2776,6 +2983,7 @@ class NativeMoTStack(nn.Module):
                 else:
                     X, H = X_phi, H_phi
                     looks = looks + 1.0
+                live_field_steps.append(X)
                 if record_trace:
                     field_steps.append(X.detach())
                 prev_rel = rel
@@ -2817,7 +3025,7 @@ class NativeMoTStack(nn.Module):
             # encoder, and it never participates in Deslice/write dynamics.
             side = int(round(self.n_slices ** 0.5))
             field = X.transpose(1, 2).reshape(
-                X.shape[0], self.d_x, self.res, self.res,
+                X.shape[0], self.d_x, square_field_side(X.shape[1]), square_field_side(X.shape[1]),
             )
             S_out = F.adaptive_avg_pool2d(
                 field, (side, side),
@@ -2842,6 +3050,10 @@ class NativeMoTStack(nn.Module):
             # impossible while the frozen decoder can read the live X field.
             H_llm = H_llm + terminal_text_message.unsqueeze(1)
         self._last_X = X.detach()
+        # Live references let the shared terminal likelihood supervise every
+        # inference update when explicitly requested. No intermediate decoder
+        # or private target is introduced.
+        self._last_live_X_steps = live_field_steps
         self._last_H = H_text.detach()
         self._last_X_steps = field_steps
         self._last_traces = traces

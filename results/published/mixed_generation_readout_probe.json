@@ -1,0 +1,104 @@
+{
+  "checkpoint": "checkpoints/mixed_native_64_256.pt",
+  "sha256": "fa923cd0427d7bdf33068851cf88bede75c891094e42f764eb60cea164052b2a",
+  "step": 3200,
+  "scope": "target-fitted frozen-feature probes; not model outputs or RGB accuracy upper bounds",
+  "rows": [
+    {
+      "id": "freedom-t2i-17808",
+      "resolution": 64,
+      "probes": [
+        {
+          "field": "initial",
+          "feature_rank": 65,
+          "logit_relative_mse": 0.20963555086219207,
+          "psnr": 19.000237008513523,
+          "edge_correlation": 0.03128068521618843
+        },
+        {
+          "field": "terminal",
+          "feature_rank": 65,
+          "logit_relative_mse": 0.06332392027486906,
+          "psnr": 23.31516136643937,
+          "edge_correlation": 0.15970474481582642
+        }
+      ],
+      "actual_output": {
+        "psnr": 22.54878838276367,
+        "edge_correlation": 0.18370434641838074
+      }
+    },
+    {
+      "id": "freedom-t2i-32449",
+      "resolution": 64,
+      "probes": [
+        {
+          "field": "initial",
+          "feature_rank": 65,
+          "logit_relative_mse": 0.25747730634057114,
+          "psnr": 16.516650418418546,
+          "edge_correlation": 0.03130996227264404
+        },
+        {
+          "field": "terminal",
+          "feature_rank": 65,
+          "logit_relative_mse": 0.12072745322829495,
+          "psnr": 19.925892282250707,
+          "edge_correlation": 0.14754092693328857
+        }
+      ],
+      "actual_output": {
+        "psnr": 19.369524813821478,
+        "edge_correlation": 0.17476877570152283
+      }
+    },
+    {
+      "id": "freedom-t2i-17808",
+      "resolution": 256,
+      "probes": [
+        {
+          "field": "initial",
+          "feature_rank": 65,
+          "logit_relative_mse": 0.2319983667388758,
+          "psnr": 18.482906275333974,
+          "edge_correlation": 0.005232823546975851
+        },
+        {
+          "field": "terminal",
+          "feature_rank": 65,
+          "logit_relative_mse": 0.07125394771470932,
+          "psnr": 22.77720961821679,
+          "edge_correlation": 0.02850046567618847
+        }
+      ],
+      "actual_output": {
+        "psnr": 22.040738045435624,
+        "edge_correlation": 0.051338061690330505
+      }
+    },
+    {
+      "id": "freedom-t2i-32449",
+      "resolution": 256,
+      "probes": [
+        {
+          "field": "initial",
+          "feature_rank": 65,
+          "logit_relative_mse": 0.2708916256853551,
+          "psnr": 16.294133059892026,
+          "edge_correlation": 0.002497951267287135
+        },
+        {
+          "field": "terminal",
+          "feature_rank": 65,
+          "logit_relative_mse": 0.12619008755599262,
+          "psnr": 19.840450885571045,
+          "edge_correlation": 0.029735220596194267
+        }
+      ],
+      "actual_output": {
+        "psnr": 19.03656508347745,
+        "edge_correlation": 0.06742921471595764
+      }
+    }
+  ]
+}

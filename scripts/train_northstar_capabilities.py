@@ -26,6 +26,12 @@ from fine_grain.capability_tasks import (
     make_capability_batch,
     make_counterfactual_future_batch,
 )
+from scripts.train_pythia_capabilities import (
+    digit_residual_likelihood,
+    make_static_bank,
+    paired_digit_likelihood,
+    sample_digit_group,
+)
 from fine_grain.gen_metrics import (
     free_color_acc,
     ink_centroid_error,
@@ -73,6 +79,12 @@ def model_config(args) -> Dict:
         # instead a masked MoT token that interacts with spatial Slice tokens.
         "use_action_adaln": False,
         "use_action_tokens": bool(args.action_tokens),
+        "use_task_tokens": bool(args.task_tokens),
+        "n_task_tokens": len(CAPABILITY_CASES),
+        "control_prefix_attention": bool(args.control_prefix_attention),
+        "use_attention_sink": bool(args.attention_sink),
+        "head_balance_coef": float(args.head_balance_coef),
+        "gaussian_head_layout": args.gaussian_head_layout,
         "use_action_rel_bias": bool(args.action_rel_bias),
         "use_action_transport": bool(args.action_transport),
         "use_action_slice_transition": bool(args.action_slice_transition),
@@ -84,6 +96,7 @@ def model_config(args) -> Dict:
         "use_goal_adaln": False,
         "seg_classes": 2,
         "seg_loss_coef": 1.0,
+        "deep_visual_likelihood_coef": args.deep_visual_likelihood_coef,
         "transition_loss_coef": args.transition_loss_coef,
         "transition_posterior_loss_coef": args.transition_posterior_loss_coef,
         "transition_detach_q": True,
@@ -95,6 +108,13 @@ def model_config(args) -> Dict:
 def load_compatible(model: torch.nn.Module, path: Path) -> Dict:
     """Load the proven generator while admitting only explicit new interfaces."""
     raw = torch.load(path, map_location="cpu")
+    source_layout = raw.get("config", {}).get("gaussian_head_layout", "legacy") if isinstance(raw, dict) else "legacy"
+    target_layout = getattr(model.mot_stack, "gaussian_head_layout", "legacy")
+    if source_layout != target_layout:
+        raise ValueError(
+            f"Gaussian layout mismatch: checkpoint={source_layout}, model={target_layout}. "
+            "Use the checkpoint's declared layout or train the corrected layout from scratch."
+        )
     state = raw.get("state_dict", raw) if isinstance(raw, dict) else raw
     current = model.state_dict()
     loaded, partial, skipped = [], [], []
@@ -277,11 +297,18 @@ def evaluate_samples(
         horizon = batch["target_time"].to(device)
         history_pi = batch["history_precision"].to(device)
         action_pi = batch["action_precision"].to(device)
+        task_id = batch["task_id"].to(device)
         if ablate == "image":
             image_pi.zero_()
-        elif ablate in ("text", "goal"):
+        elif ablate == "text":
             text_pi.zero_()
             prompts = [""] * len(part)
+        elif ablate == "goal":
+            if bool(getattr(model.mot_stack, "use_task_tokens", False)):
+                task_id.fill_(-1)
+            else:
+                text_pi.zero_()
+                prompts = [""] * len(part)
         elif ablate == "horizon":
             horizon.zero_()
         elif ablate == "history":
@@ -304,6 +331,7 @@ def evaluate_samples(
             history_precision=history_pi,
             action=batch["action"].to(device),
             action_precision=action_pi,
+            task_id=task_id,
         )
         if ablate == "slice_transition":
             for layer in model.mot_stack.layers:
@@ -431,7 +459,10 @@ def audit_causal_boundaries(
             ablated_primary = ablated["score"]
             metric = "case_score"
         report[f"{case}_goal"] = {
-            "intervention": "language_goal",
+            "intervention": (
+                "task_token" if bool(getattr(model.mot_stack, "use_task_tokens", False))
+                else "language_goal"
+            ),
             "intact": intact,
             "ablated": ablated,
             "primary_metric": metric,
@@ -439,6 +470,28 @@ def audit_causal_boundaries(
             "ablated_primary": ablated_primary,
             "primary_drop": intact_primary - ablated_primary,
         }
+    if bool(getattr(model.mot_stack, "use_task_tokens", False)):
+        # Report the semantic mode separately from lexical content for every
+        # port. Generation/editing still need words after the mode is known.
+        for case in CAPABILITY_CASES:
+            if case in ("image_to_current", "image_to_future"):
+                report[f"{case}_mode"] = dict(report[f"{case}_goal"])
+                continue
+            samples = [s for s in bank if s["case"] == case]
+            intact = report[case]["intact"]
+            ablated = evaluate_samples(
+                model, samples, device, chunk=chunk, ablate="goal",
+                future_language_evidence=future_language_evidence,
+            )[case]
+            report[f"{case}_mode"] = {
+                "intervention": "task_token",
+                "intact": intact,
+                "ablated": ablated,
+                "primary_metric": "case_score",
+                "intact_primary": intact["score"],
+                "ablated_primary": ablated["score"],
+                "primary_drop": intact["score"] - ablated["score"],
+            }
     return report
 
 
@@ -465,6 +518,7 @@ def render_gallery(
         history_precision=batch["history_precision"].to(device),
         action=batch["action"].to(device),
         action_precision=batch["action_precision"].to(device),
+        task_id=batch["task_id"].to(device),
     )
     pred = out["rgb"].clamp(0, 1).cpu()
     seg = out["seg_logits"].argmax(dim=1).float().cpu()
@@ -498,6 +552,13 @@ def main() -> None:
     parser.add_argument("--d-model", type=int, default=64)
     parser.add_argument("--n-slices", type=int, default=16)
     parser.add_argument("--n-heads", type=int, default=4)
+    parser.add_argument("--control-prefix-attention", action="store_true",
+                        help="Make observed control tokens visible to causal text without answer leakage.")
+    parser.add_argument("--attention-sink", action="store_true",
+                        help="Independent zero-value attention sink per head, separate from task tokens.")
+    parser.add_argument("--head-balance-coef", type=float, default=0.0)
+    parser.add_argument("--gaussian-head-layout", choices=("legacy", "per_head"), default="legacy",
+                        help="Versioned Gaussian parameter packing; per_head repairs mean/variance head separation.")
     parser.add_argument("--lr", type=float, default=1e-4, help="Shared graph learning rate.")
     parser.add_argument(
         "--head-lr", type=float, default=1e-3,
@@ -508,10 +569,81 @@ def main() -> None:
         help="Temporal coordinate, embedding, and zero-AdaLN learning rate.",
     )
     parser.add_argument(
+        "--lr-schedule", choices=("constant", "cosine"), default="constant",
+        help="Learning-rate schedule; cosine scales every parameter group proportionally.",
+    )
+    parser.add_argument(
+        "--min-lr-ratio", type=float, default=0.05,
+        help="Final/base learning-rate ratio for --lr-schedule cosine.",
+    )
+    parser.add_argument(
+        "--static-only", action="store_true",
+        help="Train/select generation, current reconstruction/segmentation, and editing only.",
+    )
+    parser.add_argument(
+        "--static-selection",
+        choices=("capability_floor", "generation", "macro"),
+        default="capability_floor",
+        help=(
+            "Checkpoint rule for --static-only. 'generation' is for an explicit "
+            "T2I refinement phase and selects text_to_both score directly."
+        ),
+    )
+    parser.add_argument(
+        "--generation-warmup-steps", type=int, default=0,
+        help="From-scratch curriculum: train text_to_both alone for the first N steps.",
+    )
+    parser.add_argument(
+        "--optimization-phase",
+        choices=(
+            "joint", "language", "language_rgb", "generation_write",
+            "generation_capacity",
+        ),
+        default="joint",
+        help="Optional same-graph refinement phase after loading a target-resolution checkpoint.",
+    )
+    parser.add_argument("--digit-contrast-coef", type=float, default=0.0)
+    parser.add_argument(
+        "--digit-residual-coef", type=float, default=0.0,
+        help=(
+            "Weight of the group-centred RGB/seg observation likelihood. "
+            "This gives prompt-specific glyph residuals a signed target."
+        ),
+    )
+    parser.add_argument("--digit-contrast-temperature", type=float, default=0.1)
+    parser.add_argument(
+        "--digit-contrast-difference-only", action="store_true",
+        help="Score only target-template symmetric differences in the ten-digit likelihood.",
+    )
+    parser.add_argument(
+        "--digit-group-every", type=int, default=4,
+        help="Once enabled, use one complete ten-digit group every N steps.",
+    )
+    parser.add_argument(
+        "--digit-group-start", type=int, default=1,
+        help="First optimization step eligible for a grouped digit likelihood.",
+    )
+    parser.add_argument(
+        "--deep-visual-likelihood-coef", type=float, default=0.0,
+        help=(
+            "Apply the shared RGB observation likelihood to intermediate layer "
+            "fields so later inference updates cannot erase earlier structure."
+        ),
+    )
+    parser.add_argument(
         "--target-time-adaln",
         action=argparse.BooleanOptionalAction,
         default=False,
         help="Inject the prediction horizon through per-layer zero-AdaLN.",
+    )
+    parser.add_argument(
+        "--task-tokens",
+        action=argparse.BooleanOptionalAction,
+        default=False,
+        help=(
+            "Append one learned semantic-intention token (generation, current, "
+            "edit, or future) to the shared H workspace."
+        ),
     )
     parser.add_argument(
         "--temporal-only",
@@ -676,6 +808,20 @@ def main() -> None:
         raise ValueError("--causal-projection-only requires --active-gdn2")
     if args.causal_only and args.causal_projection_only:
         raise ValueError("causal-only and causal-projection-only are competing ablations")
+    if not 0.0 <= args.min_lr_ratio <= 1.0:
+        raise ValueError("--min-lr-ratio must lie in [0, 1]")
+    if not 0 <= args.generation_warmup_steps <= args.steps:
+        raise ValueError("--generation-warmup-steps must lie in [0, steps]")
+    if args.digit_contrast_coef < 0.0:
+        raise ValueError("--digit-contrast-coef must be nonnegative")
+    if args.digit_residual_coef < 0.0:
+        raise ValueError("--digit-residual-coef must be nonnegative")
+    if (args.digit_contrast_coef > 0.0 or args.digit_residual_coef > 0.0) and args.digit_group_every < 1:
+        raise ValueError("--digit-group-every must be positive when a grouped digit likelihood is enabled")
+    if args.digit_group_start < 1:
+        raise ValueError("--digit-group-start must be positive")
+    if args.deep_visual_likelihood_coef < 0.0:
+        raise ValueError("--deep-visual-likelihood-coef must be nonnegative")
 
     torch.manual_seed(42)
     rng = np.random.default_rng(42)
@@ -687,6 +833,8 @@ def main() -> None:
     if init_path and init_path.exists():
         init_report = load_compatible(model, init_path)
         print(f"initialized from {init_path} ({init_report})", flush=True)
+    if args.optimization_phase != "joint":
+        model.set_optimization_phase(args.optimization_phase)
 
     repeats = [int(x.strip()) for x in args.case_repeats.split(",")]
     if (
@@ -754,9 +902,20 @@ def main() -> None:
         ],
         weight_decay=1e-4,
     )
+    scheduler = None
+    if args.lr_schedule == "cosine":
+        floor = float(args.min_lr_ratio)
+        scheduler = torch.optim.lr_scheduler.LambdaLR(
+            optimizer,
+            lr_lambda=lambda step: floor + (1.0 - floor) * 0.5 * (
+                1.0 + math.cos(math.pi * min(step, args.steps) / max(1, args.steps))
+            ),
+        )
     bank = fixed_capability_bank(args.res)
+    digit_bank = make_static_bank(args.res, "text_to_both")
     quick = []
-    for case in CAPABILITY_CASES:
+    eval_cases = CAPABILITY_CASES[:3] if args.static_only else CAPABILITY_CASES
+    for case in eval_cases:
         case_bank = [s for s in bank if s["case"] == case]
         ids = np.linspace(0, len(case_bank) - 1, args.eval_per_case, dtype=int)
         quick.extend([case_bank[int(i)] for i in ids])
@@ -771,7 +930,7 @@ def main() -> None:
         model.train()
         # Keep the already-proven generator as a rehearsal anchor while the
         # missing boundaries learn; all cases remain online from step one.
-        def batch_loss(batch, with_future):
+        def batch_loss(batch, with_future, with_digit_contrast=False):
             n = len(batch["prompt"])
             zeros = torch.zeros(n, device=device)
             batch["t"] = zeros
@@ -794,8 +953,47 @@ def main() -> None:
                 history_precision=batch["history_precision"].to(device),
                 action=batch["action"].to(device),
                 action_precision=batch["action_precision"].to(device),
+                task_id=batch["task_id"].to(device),
             )
             loss, meta = model.omni_loss(out, batch, device)
+            if with_digit_contrast:
+                if args.digit_contrast_coef > 0.0:
+                    digit_loss, digit_meta = paired_digit_likelihood(
+                        out, batch,
+                        temperature=args.digit_contrast_temperature,
+                        difference_only=args.digit_contrast_difference_only,
+                    )
+                    loss = loss + float(args.digit_contrast_coef) * digit_loss
+                    meta.update(digit_meta)
+                if args.digit_residual_coef > 0.0:
+                    residual_loss, residual_meta = digit_residual_likelihood(
+                        out, batch,
+                    )
+                    loss = loss + float(args.digit_residual_coef) * residual_loss
+                    meta.update(residual_meta)
+                    x_steps = out.get("X_steps") or []
+                    if args.deep_visual_likelihood_coef > 0.0 and len(x_steps) > 1:
+                        deep_residuals = []
+                        for x_step in x_steps[:-1]:
+                            mu_step, _ = model.decode_gauss(x_step)
+                            rgb_step = torch.sigmoid(model._pts_to_img(mu_step))
+                            seg_step = model.seg_head(x_step)
+                            seg_step = seg_step.transpose(1, 2).reshape(
+                                x_step.shape[0], model.seg_classes,
+                                model.res, model.res,
+                            )
+                            step_residual, _ = digit_residual_likelihood(
+                                {"rgb": rgb_step, "seg_logits": seg_step}, batch,
+                            )
+                            deep_residuals.append(step_residual)
+                        deep_residual = torch.stack(deep_residuals).mean()
+                        weight = (
+                            float(args.digit_residual_coef)
+                            * float(args.deep_visual_likelihood_coef)
+                        )
+                        loss = loss + weight * deep_residual
+                        meta["deep_digit_residual"] = float(deep_residual.detach())
+                        meta["n_deep_digit_steps"] = len(deep_residuals)
             if args.action_contrast_coef > 0.0:
                 contrast, contrast_meta = paired_action_likelihood(
                     out, batch, temperature=args.action_contrast_temp,
@@ -856,13 +1054,29 @@ def main() -> None:
                 "pcgrad_projection": float(coef.detach()),
             }
         else:
-            batch = make_capability_batch(
-                rng, args.batch, args.res, cases=train_cases,
+            active_cases = (
+                ("text_to_both",)
+                if step <= args.generation_warmup_steps
+                else train_cases
             )
-            loss, meta = batch_loss(batch, True)
+            use_digit_group = bool(
+                args.digit_contrast_coef > 0.0 or args.digit_residual_coef > 0.0
+            ) and step >= args.digit_group_start and step % args.digit_group_every == 0
+            if use_digit_group:
+                batch = collate_capability(sample_digit_group(digit_bank, rng))
+            else:
+                batch = make_capability_batch(
+                    rng, args.batch, args.res, cases=active_cases,
+                )
+            loss, meta = batch_loss(
+                batch, not args.static_only and not use_digit_group,
+                with_digit_contrast=use_digit_group,
+            )
             loss.backward()
         torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
         optimizer.step()
+        if scheduler is not None:
+            scheduler.step()
 
         if step % args.eval_every == 0 or step == args.steps:
             ev = evaluate_samples(
@@ -870,30 +1084,48 @@ def main() -> None:
                 future_language_evidence=args.future_language_evidence,
             )
             quick_future = [s for s in quick if s["case"] == "image_to_future"]
-            action_ablated = evaluate_samples(
-                model, quick_future, device, chunk=args.batch, ablate="action",
-                future_language_evidence=args.future_language_evidence,
-            )["image_to_future"]
+            action_ablated = None
             transition_ablated = None
             transition_ablation_name = None
-            if args.action_slice_transition:
+            if args.static_only:
+                floors = {
+                    "text_to_both": 0.85,
+                    "image_to_current": 0.75,
+                    "image_text_edit": 0.80,
+                }
+                margins = [ev[case]["score"] - floor for case, floor in floors.items()]
+                admitted = min(margins) >= 0.0
+                if args.static_selection == "generation":
+                    score = float(ev["text_to_both"]["score"])
+                elif args.static_selection == "macro":
+                    score = float(ev["macro_score"])
+                else:
+                    score = float(ev["macro_score"] if admitted else -1.0 + min(margins))
+                future_primary = float("nan")
+            else:
+                action_ablated = evaluate_samples(
+                    model, quick_future, device, chunk=args.batch, ablate="action",
+                    future_language_evidence=args.future_language_evidence,
+                )["image_to_future"]
+            if not args.static_only and args.action_slice_transition:
                 transition_ablated = evaluate_samples(
                     model, quick_future, device, chunk=args.batch,
                     ablate="slice_transition",
                     future_language_evidence=args.future_language_evidence,
                 )["image_to_future"]
                 transition_ablation_name = "slice_transition"
-            elif args.active_gdn2:
+            elif not args.static_only and args.active_gdn2:
                 transition_ablated = evaluate_samples(
                     model, quick_future, device, chunk=args.batch,
                     ablate="causal_memory",
                     future_language_evidence=args.future_language_evidence,
                 )["image_to_future"]
                 transition_ablation_name = "causal_memory"
-            score, future_primary, admitted = _checkpoint_score(
-                ev, action_ablated, action_min_gain=args.action_min_gain,
-                transition_ablated=transition_ablated,
-            )
+            if not args.static_only:
+                score, future_primary, admitted = _checkpoint_score(
+                    ev, action_ablated, action_min_gain=args.action_min_gain,
+                    transition_ablated=transition_ablated,
+                )
             history.append({
                 "step": step,
                 "loss": float(loss.detach()),
@@ -905,6 +1137,7 @@ def main() -> None:
                 "action_ablated": action_ablated,
                 "transition_ablation": transition_ablation_name,
                 "transition_ablated": transition_ablated,
+                "learning_rates": [group["lr"] for group in optimizer.param_groups],
             })
             if score > best_score:
                 best_score, best_step = score, step
@@ -916,7 +1149,7 @@ def main() -> None:
                     },
                     ckpt_path,
                 )
-            bits = " ".join(f"{case}={ev[case]['score']:.3f}" for case in CAPABILITY_CASES)
+            bits = " ".join(f"{case}={ev[case]['score']:.3f}" for case in eval_cases)
             print(
                 f"step {step:4d}/{args.steps} loss={float(loss.detach()):.4f} "
                 f"macro={ev['macro_score']:.3f} future_primary={future_primary:.3f} "
@@ -943,8 +1176,8 @@ def main() -> None:
     record = {
         "schema": "northstar-capability-v1",
         "claim_scope": (
-            "One checkpoint closes a deterministic 16x16 colored-digit microbenchmark. "
-            "Text output is a single categorical token; this is not open-domain generation."
+            f"Candidate evaluation on a deterministic {args.res}x{args.res} colored-digit microbenchmark. "
+            "Metrics and admission fields determine capability closure. Text output is one categorical token."
         ),
         "architecture": (
             "one full-resolution X + H coevolution graph; transient fixed Slice; "
@@ -972,6 +1205,19 @@ def main() -> None:
         },
         "config": config,
         "steps": args.steps,
+        "generation_warmup_steps": args.generation_warmup_steps,
+        "optimization_phase": args.optimization_phase,
+        "digit_contrast_coef": args.digit_contrast_coef,
+        "digit_residual_coef": args.digit_residual_coef,
+        "digit_contrast_temperature": args.digit_contrast_temperature,
+        "digit_contrast_difference_only": bool(args.digit_contrast_difference_only),
+        "digit_group_start": args.digit_group_start,
+        "deep_visual_likelihood_coef": args.deep_visual_likelihood_coef,
+        "static_only": bool(args.static_only),
+        "task_tokens": bool(args.task_tokens),
+        "static_selection": args.static_selection,
+        "lr_schedule": args.lr_schedule,
+        "min_lr_ratio": args.min_lr_ratio,
         "case_repeats": dict(zip(CAPABILITY_CASES, repeats)),
         "temporal_only": bool(args.temporal_only),
         "causal_only": bool(args.causal_only),
@@ -981,12 +1227,23 @@ def main() -> None:
         "future_language_evidence": bool(args.future_language_evidence),
         "best_step": best_step,
         "checkpoint_selection": (
-            "maximize mean(future paired-IoU, segmentation-IoU) after "
-            "generation/current/edit score floors 0.85/0.75/0.80 and after "
-            "intact action conditioning beats action_precision=0 on both "
-            "future paired-IoU and segmentation-IoU by more than "
-            f"{args.action_min_gain:.6f}; when enabled, the Slice transition "
-            "or active causal memory must also beat its own ablation on both metrics"
+            "maximize text_to_both score during an explicit static generation refinement"
+            if args.static_only and args.static_selection == "generation"
+            else "maximize static generation/current/edit macro score"
+            if args.static_only and args.static_selection == "macro"
+            else (
+                "maximize static macro score after generation/current/edit score floors "
+                "0.85/0.75/0.80"
+                if args.static_only
+                else (
+                    "maximize mean(future paired-IoU, segmentation-IoU) after "
+                    "generation/current/edit score floors 0.85/0.75/0.80 and after "
+                    "intact action conditioning beats action_precision=0 on both "
+                    "future paired-IoU and segmentation-IoU by more than "
+                    f"{args.action_min_gain:.6f}; when enabled, the Slice transition "
+                    "or active causal memory must also beat its own ablation on both metrics"
+                )
+            )
         ),
         "best_quick_score": best_score,
         "elapsed_sec": time.time() - started,

@@ -1,0 +1,1733 @@
+{
+  "status": "completed_budget_candidate_only",
+  "config": {
+    "d_model": 64,
+    "n_slices": 16,
+    "n_layers": 4,
+    "n_heads": 4,
+    "res": 256,
+    "surprise_mode": "v1_bayes",
+    "s_update": "raw",
+    "prior_loss_coef": 0.1,
+    "sigreg_coef": 0.0,
+    "use_stiefel": false,
+    "deslice_topk": 0,
+    "use_null_slice": false,
+    "use_residual_read": false,
+    "gate_on": "u",
+    "deslice_write": "increment",
+    "gate_h_local": false,
+    "vfe_coef": 0.1,
+    "prior_write": 1.0,
+    "prior_write_by_t": false,
+    "pixel_loss_mode": "gaussian_nll",
+    "spatial_prompt_vocab": true,
+    "capability_vocab": true,
+    "use_modal_precision": true,
+    "use_target_time": true,
+    "use_target_time_adaln": false,
+    "use_horizon_tokens": false,
+    "gate_action_by_horizon": true,
+    "history_size": 2,
+    "action_dim": 2,
+    "use_action_adaln": false,
+    "use_action_tokens": true,
+    "use_task_tokens": true,
+    "n_task_tokens": 4,
+    "use_action_rel_bias": true,
+    "use_action_transport": false,
+    "use_action_slice_transition": false,
+    "use_active_gdn2": true,
+    "use_active_gdn2_history_transport": false,
+    "active_gdn2_initial_trust": 0.1,
+    "use_goal_adaln": false,
+    "seg_classes": 2,
+    "seg_loss_coef": 1.0,
+    "deep_visual_likelihood_coef": 0.0,
+    "transition_loss_coef": 0.5,
+    "transition_posterior_loss_coef": 1.0,
+    "transition_detach_q": true,
+    "causal_memory_loss_coef": 0.25,
+    "s0_acc_coef": 0.0,
+    "control_prefix_attention": true,
+    "use_attention_sink": false,
+    "gaussian_head_layout": "per_head",
+    "language": "pythia",
+    "lm_device": "cuda",
+    "lm_id": "EleutherAI/pythia-70m",
+    "lm_revision": "manual"
+  },
+  "training": {
+    "sharegpt_manifest": "D:\\ml_cache\\sharegpt4o\\pilot_manifest.json",
+    "davis_manifest": "D:\\ml_cache\\davis_micro\\manifest.json",
+    "config_from": "checkpoints/gaussian_layout_per_head_finish.pt",
+    "tag": "real256_joint",
+    "steps": 800,
+    "warmup_steps": 160,
+    "eval_every": 200,
+    "lr": 0.0003,
+    "seed": 42,
+    "device": "cuda",
+    "init": null
+  },
+  "initialization": "random multimodal weights; pretrained frozen Pythia",
+  "scope": "14 fixed real/identity-derived samples; capacity only, not generalization",
+  "counts": {
+    "t2i": 2,
+    "reconstruction": 2,
+    "it2i": 4,
+    "i2t": 2,
+    "segmentation": 2,
+    "future": 2
+  },
+  "data": [
+    {
+      "id": "freedom-t2i-17808",
+      "dataset": "FreedomIntelligence/ShareGPT-4o-Image",
+      "task": "t2i",
+      "prompt": "A few distant hot air balloons drift serenely over a patchwork quilt of rolling farmlands at dawn.",
+      "answer": "",
+      "source_members": [],
+      "target_member": "image/10082.png",
+      "source_resolution": [],
+      "target_resolution": [
+        1024,
+        1024
+      ],
+      "source_files": [],
+      "target_file": "D:\\ml_cache\\sharegpt4o\\pilot_images\\t2i\\freedom-t2i-17808-0.png",
+      "image_precision": 0.0,
+      "text_missing": false,
+      "need_pix": true,
+      "need_text": false,
+      "target_image_precision": 1.0,
+      "target_text_precision": 0.0,
+      "task_id": 0,
+      "target_time": 0.0,
+      "need_seg": false,
+      "target_seg_precision": 0.0
+    },
+    {
+      "id": "freedom-t2i-17808-reconstruct",
+      "dataset": "FreedomIntelligence/ShareGPT-4o-Image",
+      "task": "reconstruction",
+      "prompt": "",
+      "answer": "",
+      "source_members": [],
+      "target_member": "image/10082.png",
+      "source_resolution": [],
+      "target_resolution": [
+        1024,
+        1024
+      ],
+      "source_files": [
+        "D:\\ml_cache\\sharegpt4o\\pilot_images\\t2i\\freedom-t2i-17808-0.png"
+      ],
+      "target_file": "D:\\ml_cache\\sharegpt4o\\pilot_images\\t2i\\freedom-t2i-17808-0.png",
+      "image_precision": 1.0,
+      "text_missing": true,
+      "need_pix": true,
+      "need_text": false,
+      "target_image_precision": 1.0,
+      "target_text_precision": 0.0,
+      "task_id": 1,
+      "target_time": 0.0,
+      "need_seg": false,
+      "target_seg_precision": 0.0
+    },
+    {
+      "id": "freedom-t2i-32449",
+      "dataset": "FreedomIntelligence/ShareGPT-4o-Image",
+      "task": "t2i",
+      "prompt": "A warmly side-lit Persian cat contemplates bustling shipping docks and cranes in a medium close-up.",
+      "answer": "",
+      "source_members": [],
+      "target_member": "image/10049.png",
+      "source_resolution": [],
+      "target_resolution": [
+        1024,
+        1024
+      ],
+      "source_files": [],
+      "target_file": "D:\\ml_cache\\sharegpt4o\\pilot_images\\t2i\\freedom-t2i-32449-0.png",
+      "image_precision": 0.0,
+      "text_missing": false,
+      "need_pix": true,
+      "need_text": false,
+      "target_image_precision": 1.0,
+      "target_text_precision": 0.0,
+      "task_id": 0,
+      "target_time": 0.0,
+      "need_seg": false,
+      "target_seg_precision": 0.0
+    },
+    {
+      "id": "freedom-t2i-32449-reconstruct",
+      "dataset": "FreedomIntelligence/ShareGPT-4o-Image",
+      "task": "reconstruction",
+      "prompt": "",
+      "answer": "",
+      "source_members": [],
+      "target_member": "image/10049.png",
+      "source_resolution": [],
+      "target_resolution": [
+        1024,
+        1024
+      ],
+      "source_files": [
+        "D:\\ml_cache\\sharegpt4o\\pilot_images\\t2i\\freedom-t2i-32449-0.png"
+      ],
+      "target_file": "D:\\ml_cache\\sharegpt4o\\pilot_images\\t2i\\freedom-t2i-32449-0.png",
+      "image_precision": 1.0,
+      "text_missing": true,
+      "need_pix": true,
+      "need_text": false,
+      "target_image_precision": 1.0,
+      "target_text_precision": 0.0,
+      "task_id": 1,
+      "target_time": 0.0,
+      "need_seg": false,
+      "target_seg_precision": 0.0
+    },
+    {
+      "id": "freedom-it2i-34244",
+      "dataset": "FreedomIntelligence/ShareGPT-4o-Image",
+      "task": "it2i",
+      "prompt": "Take away the mug.",
+      "answer": "",
+      "source_members": [
+        "image/v2v_10255.png"
+      ],
+      "target_member": "image/v2v_10254.png",
+      "source_resolution": [
+        1024,
+        1024
+      ],
+      "target_resolution": [
+        1024,
+        1024
+      ],
+      "source_files": [
+        "D:\\ml_cache\\sharegpt4o\\pilot_images\\it2i\\freedom-it2i-34244-1.png"
+      ],
+      "target_file": "D:\\ml_cache\\sharegpt4o\\pilot_images\\it2i\\freedom-it2i-34244-0.png",
+      "image_precision": 1.0,
+      "text_missing": false,
+      "need_pix": true,
+      "need_text": false,
+      "target_image_precision": 1.0,
+      "target_text_precision": 0.0,
+      "task_id": 2,
+      "target_time": 0.0,
+      "need_seg": false,
+      "target_seg_precision": 0.0
+    },
+    {
+      "id": "freedom-it2i-34244-identity",
+      "dataset": "FreedomIntelligence/ShareGPT-4o-Image",
+      "task": "it2i",
+      "prompt": "Keep the image unchanged.",
+      "answer": "",
+      "source_members": [
+        "image/v2v_10255.png"
+      ],
+      "target_member": "image/v2v_10254.png",
+      "source_resolution": [
+        1024,
+        1024
+      ],
+      "target_resolution": [
+        1024,
+        1024
+      ],
+      "source_files": [
+        "D:\\ml_cache\\sharegpt4o\\pilot_images\\it2i\\freedom-it2i-34244-1.png"
+      ],
+      "target_file": "D:\\ml_cache\\sharegpt4o\\pilot_images\\it2i\\freedom-it2i-34244-1.png",
+      "image_precision": 1.0,
+      "text_missing": false,
+      "need_pix": true,
+      "need_text": false,
+      "target_image_precision": 1.0,
+      "target_text_precision": 0.0,
+      "derived_supervision": "identity edit of original source",
+      "task_id": 2,
+      "target_time": 0.0,
+      "need_seg": false,
+      "target_seg_precision": 0.0
+    },
+    {
+      "id": "freedom-it2i-24875",
+      "dataset": "FreedomIntelligence/ShareGPT-4o-Image",
+      "task": "it2i",
+      "prompt": "Make the sink red in color.",
+      "answer": "",
+      "source_members": [
+        "image/v2v_10083.png"
+      ],
+      "target_member": "image/v2v_10082.png",
+      "source_resolution": [
+        1024,
+        1024
+      ],
+      "target_resolution": [
+        1024,
+        1024
+      ],
+      "source_files": [
+        "D:\\ml_cache\\sharegpt4o\\pilot_images\\it2i\\freedom-it2i-24875-1.png"
+      ],
+      "target_file": "D:\\ml_cache\\sharegpt4o\\pilot_images\\it2i\\freedom-it2i-24875-0.png",
+      "image_precision": 1.0,
+      "text_missing": false,
+      "need_pix": true,
+      "need_text": false,
+      "target_image_precision": 1.0,
+      "target_text_precision": 0.0,
+      "task_id": 2,
+      "target_time": 0.0,
+      "need_seg": false,
+      "target_seg_precision": 0.0
+    },
+    {
+      "id": "freedom-it2i-24875-identity",
+      "dataset": "FreedomIntelligence/ShareGPT-4o-Image",
+      "task": "it2i",
+      "prompt": "Keep the image unchanged.",
+      "answer": "",
+      "source_members": [
+        "image/v2v_10083.png"
+      ],
+      "target_member": "image/v2v_10082.png",
+      "source_resolution": [
+        1024,
+        1024
+      ],
+      "target_resolution": [
+        1024,
+        1024
+      ],
+      "source_files": [
+        "D:\\ml_cache\\sharegpt4o\\pilot_images\\it2i\\freedom-it2i-24875-1.png"
+      ],
+      "target_file": "D:\\ml_cache\\sharegpt4o\\pilot_images\\it2i\\freedom-it2i-24875-1.png",
+      "image_precision": 1.0,
+      "text_missing": false,
+      "need_pix": true,
+      "need_text": false,
+      "target_image_precision": 1.0,
+      "target_text_precision": 0.0,
+      "derived_supervision": "identity edit of original source",
+      "task_id": 2,
+      "target_time": 0.0,
+      "need_seg": false,
+      "target_seg_precision": 0.0
+    },
+    {
+      "id": "opengv-1",
+      "dataset": "OpenGVLab/ShareGPT-4o",
+      "task": "i2t",
+      "prompt": "",
+      "source_members": [
+        "192.jpg"
+      ],
+      "target_member": "",
+      "answer": "The image depicts an outdoor scene featuring what appears to be a setup for a small, intimate gathering or event.",
+      "source_files": [
+        "D:\\ml_cache\\sharegpt4o\\pilot_images\\opengv\\opengv-1.jpg"
+      ],
+      "target_file": "",
+      "image_precision": 1.0,
+      "text_missing": true,
+      "need_pix": true,
+      "need_text": true,
+      "target_image_precision": 1.0,
+      "target_text_precision": 1.0,
+      "answer_scope": "first complete sentence of original dataset caption",
+      "task_id": 1,
+      "target_time": 0.0,
+      "need_seg": false,
+      "target_seg_precision": 0.0
+    },
+    {
+      "id": "opengv-4",
+      "dataset": "OpenGVLab/ShareGPT-4o",
+      "task": "i2t",
+      "prompt": "",
+      "source_members": [
+        "20884.jpg"
+      ],
+      "target_member": "",
+      "answer": "The image depicts an urban street scene that appears to be bustling with activity.",
+      "source_files": [
+        "D:\\ml_cache\\sharegpt4o\\pilot_images\\opengv\\opengv-4.jpg"
+      ],
+      "target_file": "",
+      "image_precision": 1.0,
+      "text_missing": true,
+      "need_pix": true,
+      "need_text": true,
+      "target_image_precision": 1.0,
+      "target_text_precision": 1.0,
+      "answer_scope": "first complete sentence of original dataset caption",
+      "task_id": 1,
+      "target_time": 0.0,
+      "need_seg": false,
+      "target_seg_precision": 0.0
+    },
+    {
+      "id": "davis-blackswan-1",
+      "dataset": "DAVIS-2017-trainval",
+      "source_files": [
+        "D:\\ml_cache\\davis_micro\\blackswan-00001-image.jpg"
+      ],
+      "target_file": "D:\\ml_cache\\davis_micro\\blackswan-00001-image.jpg",
+      "image_precision": 1.0,
+      "text_missing": true,
+      "prompt": "",
+      "answer": "",
+      "need_pix": true,
+      "need_text": false,
+      "need_seg": true,
+      "target_image_precision": 1.0,
+      "target_text_precision": 0.0,
+      "mask_file": "D:\\ml_cache\\davis_micro\\blackswan-00001-mask.png",
+      "sequence": "blackswan",
+      "task": "segmentation",
+      "task_id": 1,
+      "target_time": 0.0,
+      "target_seg_precision": 1.0
+    },
+    {
+      "id": "davis-blackswan-0-1-to-2",
+      "dataset": "DAVIS-2017-trainval",
+      "source_files": [
+        "D:\\ml_cache\\davis_micro\\blackswan-00001-image.jpg"
+      ],
+      "target_file": "D:\\ml_cache\\davis_micro\\blackswan-00002-image.jpg",
+      "image_precision": 1.0,
+      "text_missing": true,
+      "prompt": "",
+      "answer": "",
+      "need_pix": true,
+      "need_text": false,
+      "need_seg": true,
+      "target_image_precision": 1.0,
+      "target_text_precision": 0.0,
+      "mask_file": "D:\\ml_cache\\davis_micro\\blackswan-00002-mask.png",
+      "sequence": "blackswan",
+      "task": "future",
+      "history_files": [
+        "D:\\ml_cache\\davis_micro\\blackswan-00000-image.jpg",
+        "D:\\ml_cache\\davis_micro\\blackswan-00001-image.jpg"
+      ],
+      "history_frames": [
+        0,
+        1
+      ],
+      "target_frame": 2,
+      "target_time": 1.0,
+      "task_id": 3,
+      "target_seg_precision": 1.0
+    },
+    {
+      "id": "davis-camel-1",
+      "dataset": "DAVIS-2017-trainval",
+      "source_files": [
+        "D:\\ml_cache\\davis_micro\\camel-00001-image.jpg"
+      ],
+      "target_file": "D:\\ml_cache\\davis_micro\\camel-00001-image.jpg",
+      "image_precision": 1.0,
+      "text_missing": true,
+      "prompt": "",
+      "answer": "",
+      "need_pix": true,
+      "need_text": false,
+      "need_seg": true,
+      "target_image_precision": 1.0,
+      "target_text_precision": 0.0,
+      "mask_file": "D:\\ml_cache\\davis_micro\\camel-00001-mask.png",
+      "sequence": "camel",
+      "task": "segmentation",
+      "task_id": 1,
+      "target_time": 0.0,
+      "target_seg_precision": 1.0
+    },
+    {
+      "id": "davis-camel-0-1-to-2",
+      "dataset": "DAVIS-2017-trainval",
+      "source_files": [
+        "D:\\ml_cache\\davis_micro\\camel-00001-image.jpg"
+      ],
+      "target_file": "D:\\ml_cache\\davis_micro\\camel-00002-image.jpg",
+      "image_precision": 1.0,
+      "text_missing": true,
+      "prompt": "",
+      "answer": "",
+      "need_pix": true,
+      "need_text": false,
+      "need_seg": true,
+      "target_image_precision": 1.0,
+      "target_text_precision": 0.0,
+      "mask_file": "D:\\ml_cache\\davis_micro\\camel-00002-mask.png",
+      "sequence": "camel",
+      "task": "future",
+      "history_files": [
+        "D:\\ml_cache\\davis_micro\\camel-00000-image.jpg",
+        "D:\\ml_cache\\davis_micro\\camel-00001-image.jpg"
+      ],
+      "history_frames": [
+        0,
+        1
+      ],
+      "target_frame": 2,
+      "target_time": 1.0,
+      "task_id": 3,
+      "target_seg_precision": 1.0
+    }
+  ],
+  "seen": {
+    "freedom-t2i-17808": 126,
+    "freedom-t2i-17808-reconstruct": 46,
+    "freedom-t2i-32449": 126,
+    "freedom-t2i-32449-reconstruct": 46,
+    "freedom-it2i-34244": 46,
+    "freedom-it2i-34244-identity": 46,
+    "freedom-it2i-24875": 46,
+    "freedom-it2i-24875-identity": 46,
+    "opengv-1": 46,
+    "opengv-4": 46,
+    "davis-blackswan-1": 45,
+    "davis-blackswan-0-1-to-2": 45,
+    "davis-camel-1": 45,
+    "davis-camel-0-1-to-2": 45
+  },
+  "history": [
+    {
+      "step": 200,
+      "metrics": {
+        "summary": {
+          "t2i": {
+            "n": 2,
+            "psnr": 17.15534714560395,
+            "edge_correlation": 0.03167325258255005
+          },
+          "reconstruction": {
+            "n": 2,
+            "psnr": 15.640031213094936,
+            "edge_correlation": 0.24569643288850784
+          },
+          "it2i": {
+            "n": 4,
+            "psnr": 11.31287313338667,
+            "edge_correlation": -0.03780702990479767
+          },
+          "i2t": {
+            "n": 2,
+            "psnr": 9.36602783306579,
+            "edge_correlation": 0.24538201093673706,
+            "token_nll": 4.526099443435669,
+            "token_accuracy": 0.2698209658265114,
+            "image_shuffle_nll_gap": -0.03184247016906738
+          },
+          "segmentation": {
+            "n": 2,
+            "psnr": 9.245890012223443,
+            "edge_correlation": 0.1711743101477623,
+            "seg_iou": 0.14415394887328148
+          },
+          "future": {
+            "n": 2,
+            "psnr": 8.965659235484795,
+            "edge_correlation": 0.13867449387907982,
+            "seg_iou": 0.0955350250005722,
+            "improvement_over_copy": -0.12456829519942403
+          }
+        },
+        "samples": [
+          {
+            "id": "freedom-t2i-17808",
+            "task": "t2i",
+            "mse": 0.015497668646275997,
+            "psnr": 18.097336289400253,
+            "edge_correlation": 0.029762938618659973,
+            "edge_relative_mse": 1.0068824291229248,
+            "control_mse_gap": 0.029470396228134632,
+            "control_output_rms": 0.12038857489824295
+          },
+          {
+            "id": "freedom-t2i-17808-reconstruct",
+            "task": "reconstruction",
+            "mse": 0.027051517739892006,
+            "psnr": 15.678083635493214,
+            "edge_correlation": 0.21270646154880524,
+            "edge_relative_mse": 0.9674099087715149
+          },
+          {
+            "id": "freedom-t2i-32449",
+            "task": "t2i",
+            "mse": 0.023914659395813942,
+            "psnr": 16.21335800180765,
+            "edge_correlation": 0.033583566546440125,
+            "edge_relative_mse": 1.0086666345596313,
+            "control_mse_gap": 0.010963069275021553,
+            "control_output_rms": 0.12038857489824295
+          },
+          {
+            "id": "freedom-t2i-32449-reconstruct",
+            "task": "reconstruction",
+            "mse": 0.02752974070608616,
+            "psnr": 15.60197879069666,
+            "edge_correlation": 0.27868640422821045,
+            "edge_relative_mse": 0.9486817717552185
+          },
+          {
+            "id": "freedom-it2i-34244",
+            "task": "it2i",
+            "mse": 0.05355287715792656,
+            "psnr": 12.71217191494226,
+            "edge_correlation": -0.010137485340237617,
+            "edge_relative_mse": 1.0030940771102905,
+            "control_mse_gap": -0.00030400604009628296,
+            "control_output_rms": 0.0012620664201676846
+          },
+          {
+            "id": "freedom-it2i-34244-identity",
+            "task": "it2i",
+            "mse": 0.06924714893102646,
+            "psnr": 11.595981028268678,
+            "edge_correlation": 0.011866525746881962,
+            "edge_relative_mse": 1.0021107196807861,
+            "control_mse_gap": 0.0004108995199203491,
+            "control_output_rms": 0.0012620664201676846
+          },
+          {
+            "id": "freedom-it2i-24875",
+            "task": "it2i",
+            "mse": 0.08788016438484192,
+            "psnr": 10.561091393782572,
+            "edge_correlation": -0.09874535351991653,
+            "edge_relative_mse": 1.0158015489578247,
+            "control_mse_gap": 0.0007787942886352539,
+            "control_output_rms": 0.0018077510176226497
+          },
+          {
+            "id": "freedom-it2i-24875-identity",
+            "task": "it2i",
+            "mse": 0.09157463163137436,
+            "psnr": 10.38224819655317,
+            "edge_correlation": -0.0542118065059185,
+            "edge_relative_mse": 1.0111618041992188,
+            "control_mse_gap": -0.0008550137281417847,
+            "control_output_rms": 0.0018077510176226497
+          },
+          {
+            "id": "opengv-1",
+            "task": "i2t",
+            "mse": 0.11400424689054489,
+            "psnr": 9.430789700076097,
+            "edge_correlation": 0.3063116669654846,
+            "edge_relative_mse": 0.952165424823761,
+            "token_nll": 4.545330047607422,
+            "token_accuracy": 0.30434781312942505,
+            "decoded": {
+              "text": ", the\n\n\"I'm not sure if I can do that.\"\n\n\"I'm not sure if I can do that.\"\n\n\"I'm not sure if I can do that.\"\n\n\"I'm not sure",
+              "exact": false,
+              "eos": false
+            },
+            "control_mse_gap": 0.011760078370571136,
+            "control_output_rms": 0.03316225856542587,
+            "image_shuffle_nll_gap": -4.76837158203125e-06
+          },
+          {
+            "id": "opengv-4",
+            "task": "i2t",
+            "mse": 0.11745551228523254,
+            "psnr": 9.301265966055484,
+            "edge_correlation": 0.1844523549079895,
+            "edge_relative_mse": 0.9803088903427124,
+            "token_nll": 4.506868839263916,
+            "token_accuracy": 0.23529411852359772,
+            "decoded": {
+              "text": ", the\n\n\"I'm not going to be able to do that.\"\n\n\"I'm not going to be able to do that.\"\n\n\"I'm not going to be able to do that.\"\n\n\"I",
+              "exact": false,
+              "eos": false
+            },
+            "control_mse_gap": 0.008334383368492126,
+            "control_output_rms": 0.03316225856542587,
+            "image_shuffle_nll_gap": -0.06368017196655273
+          },
+          {
+            "id": "davis-blackswan-1",
+            "task": "segmentation",
+            "mse": 0.09150224924087524,
+            "psnr": 10.385682302953594,
+            "edge_correlation": 0.12791390717029572,
+            "edge_relative_mse": 0.9863149523735046,
+            "seg_iou": 0.0792003646492958
+          },
+          {
+            "id": "davis-blackswan-0-1-to-2",
+            "task": "future",
+            "mse": 0.10107094794511795,
+            "psnr": 9.953736610291742,
+            "edge_correlation": 0.08137377351522446,
+            "edge_relative_mse": 0.9936031103134155,
+            "seg_iou": 0.09322458505630493,
+            "control_mse_gap": 0.0004479214549064636,
+            "control_output_rms": 0.0021029720082879066,
+            "copy_mse": 0.004039469640702009,
+            "improvement_over_copy": -0.09703147830441594,
+            "changed_pixel_fraction": 0.3289642333984375,
+            "changed_region_mse": 0.04427368938922882
+          },
+          {
+            "id": "davis-camel-1",
+            "task": "segmentation",
+            "mse": 0.15466435253620148,
+            "psnr": 8.106097721493292,
+            "edge_correlation": 0.21443471312522888,
+            "edge_relative_mse": 0.976402759552002,
+            "seg_iou": 0.20910753309726715
+          },
+          {
+            "id": "davis-camel-0-1-to-2",
+            "task": "future",
+            "mse": 0.15930955111980438,
+            "psnr": 7.977581860677848,
+            "edge_correlation": 0.19597521424293518,
+            "edge_relative_mse": 0.9800787568092346,
+            "seg_iou": 0.09784546494483948,
+            "control_mse_gap": 0.001297682523727417,
+            "control_output_rms": 0.0033083755988627672,
+            "copy_mse": 0.007204439025372267,
+            "improvement_over_copy": -0.15210511209443212,
+            "changed_pixel_fraction": 0.3249053955078125,
+            "changed_region_mse": 0.10664724558591843
+          }
+        ]
+      }
+    },
+    {
+      "step": 400,
+      "metrics": {
+        "summary": {
+          "t2i": {
+            "n": 2,
+            "psnr": 17.724962764896624,
+            "edge_correlation": 0.024853275157511234
+          },
+          "reconstruction": {
+            "n": 2,
+            "psnr": 23.02083102012287,
+            "edge_correlation": 0.6661653518676758
+          },
+          "it2i": {
+            "n": 4,
+            "psnr": 17.889910918150473,
+            "edge_correlation": 0.4109008018858731
+          },
+          "i2t": {
+            "n": 2,
+            "psnr": 19.634272387428606,
+            "edge_correlation": 0.6183957457542419,
+            "token_nll": 3.35741925239563,
+            "token_accuracy": 0.3286444991827011,
+            "image_shuffle_nll_gap": -0.0571824312210083
+          },
+          "segmentation": {
+            "n": 2,
+            "psnr": 19.89884014601305,
+            "edge_correlation": 0.6053691506385803,
+            "seg_iou": 0.15840674191713333
+          },
+          "future": {
+            "n": 2,
+            "psnr": 19.562103357228573,
+            "edge_correlation": 0.37608370184898376,
+            "seg_iou": 0.1611028090119362,
+            "improvement_over_copy": -0.005439584143459797
+          }
+        },
+        "samples": [
+          {
+            "id": "freedom-t2i-17808",
+            "task": "t2i",
+            "mse": 0.013719472102820873,
+            "psnr": 18.626625990696922,
+            "edge_correlation": 0.019495975226163864,
+            "edge_relative_mse": 1.0143404006958008,
+            "control_mse_gap": 0.03282364923506975,
+            "control_output_rms": 0.17626690864562988
+          },
+          {
+            "id": "freedom-t2i-17808-reconstruct",
+            "task": "reconstruction",
+            "mse": 0.0054029435850679874,
+            "psnr": 22.67369567130725,
+            "edge_correlation": 0.6108007431030273,
+            "edge_relative_mse": 0.6561420559883118
+          },
+          {
+            "id": "freedom-t2i-32449",
+            "task": "t2i",
+            "mse": 0.020781172439455986,
+            "psnr": 16.823299539096322,
+            "edge_correlation": 0.030210575088858604,
+            "edge_relative_mse": 1.034140944480896,
+            "control_mse_gap": 0.028398102149367332,
+            "control_output_rms": 0.17626690864562988
+          },
+          {
+            "id": "freedom-t2i-32449-reconstruct",
+            "task": "reconstruction",
+            "mse": 0.004604721441864967,
+            "psnr": 23.36796636893849,
+            "edge_correlation": 0.7215299606323242,
+            "edge_relative_mse": 0.4916844666004181
+          },
+          {
+            "id": "freedom-it2i-34244",
+            "task": "it2i",
+            "mse": 0.04938459396362305,
+            "psnr": 13.064085126169092,
+            "edge_correlation": 0.009709121659398079,
+            "edge_relative_mse": 1.0931416749954224,
+            "control_mse_gap": 0.004672050476074219,
+            "control_output_rms": 0.019103167578577995
+          },
+          {
+            "id": "freedom-it2i-34244-identity",
+            "task": "it2i",
+            "mse": 0.009490061551332474,
+            "psnr": 20.227309707847873,
+            "edge_correlation": 0.628642737865448,
+            "edge_relative_mse": 0.640769362449646,
+            "control_mse_gap": 0.001386638730764389,
+            "control_output_rms": 0.019103167578577995
+          },
+          {
+            "id": "freedom-it2i-24875",
+            "task": "it2i",
+            "mse": 0.030305420979857445,
+            "psnr": 15.184796787234575,
+            "edge_correlation": 0.4084460735321045,
+            "edge_relative_mse": 0.836651623249054,
+            "control_mse_gap": -0.0002916567027568817,
+            "control_output_rms": 0.004896455444395542
+          },
+          {
+            "id": "freedom-it2i-24875-identity",
+            "task": "it2i",
+            "mse": 0.0049164858646690845,
+            "psnr": 23.083452051350356,
+            "edge_correlation": 0.5968052744865417,
+            "edge_relative_mse": 0.6884427666664124,
+            "control_mse_gap": 0.00013260170817375183,
+            "control_output_rms": 0.004896455444395542
+          },
+          {
+            "id": "opengv-1",
+            "task": "i2t",
+            "mse": 0.008215617388486862,
+            "psnr": 20.853597945736418,
+            "edge_correlation": 0.6439967751502991,
+            "edge_relative_mse": 0.6008744835853577,
+            "token_nll": 3.49521541595459,
+            "token_accuracy": 0.30434781312942505,
+            "decoded": {
+              "text": "The following is a list of the most popular and most popular of all the most popular of all the most popular of all the most popular of all the most popular of all the most popular of all the most popular of all the most",
+              "exact": false,
+              "eos": false
+            },
+            "control_mse_gap": 0.1006963811814785,
+            "control_output_rms": 0.31287381052970886,
+            "image_shuffle_nll_gap": -0.09954309463500977
+          },
+          {
+            "id": "opengv-4",
+            "task": "i2t",
+            "mse": 0.014404736459255219,
+            "psnr": 18.414946829120794,
+            "edge_correlation": 0.5927947163581848,
+            "edge_relative_mse": 0.673118531703949,
+            "token_nll": 3.21962308883667,
+            "token_accuracy": 0.3529411852359772,
+            "decoded": {
+              "text": "The following is a list of the most popular and most popular of all the most popular of all the most popular of all the most popular of all the most popular of all the most popular of all the most popular of all the most",
+              "exact": false,
+              "eos": false
+            },
+            "control_mse_gap": 0.1061767190694809,
+            "control_output_rms": 0.31287381052970886,
+            "image_shuffle_nll_gap": -0.014821767807006836
+          },
+          {
+            "id": "davis-blackswan-1",
+            "task": "segmentation",
+            "mse": 0.009712579660117626,
+            "psnr": 20.126654062031125,
+            "edge_correlation": 0.5745401978492737,
+            "edge_relative_mse": 0.6796509623527527,
+            "seg_iou": 0.11881083250045776
+          },
+          {
+            "id": "davis-blackswan-0-1-to-2",
+            "task": "future",
+            "mse": 0.0111822709441185,
+            "psnr": 19.514699890841424,
+            "edge_correlation": 0.3126082122325897,
+            "edge_relative_mse": 0.9402245283126831,
+            "seg_iou": 0.12123917043209076,
+            "control_mse_gap": -0.0006815716624259949,
+            "control_output_rms": 0.026652758941054344,
+            "copy_mse": 0.004039469640702009,
+            "improvement_over_copy": -0.0071428013034164906,
+            "changed_pixel_fraction": 0.3289642333984375,
+            "changed_region_mse": 0.015767505392432213
+          },
+          {
+            "id": "davis-camel-1",
+            "task": "segmentation",
+            "mse": 0.010786917991936207,
+            "psnr": 19.67102622999498,
+            "edge_correlation": 0.636198103427887,
+            "edge_relative_mse": 0.634411633014679,
+            "seg_iou": 0.1980026513338089
+          },
+          {
+            "id": "davis-camel-0-1-to-2",
+            "task": "future",
+            "mse": 0.01094080600887537,
+            "psnr": 19.609506823615725,
+            "edge_correlation": 0.4395591914653778,
+            "edge_relative_mse": 0.8075795769691467,
+            "seg_iou": 0.20096644759178162,
+            "control_mse_gap": 0.0022247526794672012,
+            "control_output_rms": 0.034303292632102966,
+            "copy_mse": 0.007204439025372267,
+            "improvement_over_copy": -0.0037363669835031033,
+            "changed_pixel_fraction": 0.3249053955078125,
+            "changed_region_mse": 0.01784851774573326
+          }
+        ]
+      }
+    },
+    {
+      "step": 600,
+      "metrics": {
+        "summary": {
+          "t2i": {
+            "n": 2,
+            "psnr": 17.76455172482725,
+            "edge_correlation": 0.022614439018070698
+          },
+          "reconstruction": {
+            "n": 2,
+            "psnr": 25.637922188069737,
+            "edge_correlation": 0.7099955976009369
+          },
+          "it2i": {
+            "n": 4,
+            "psnr": 19.73355230739387,
+            "edge_correlation": 0.4632034134119749
+          },
+          "i2t": {
+            "n": 2,
+            "psnr": 22.682284514869345,
+            "edge_correlation": 0.6822128295898438,
+            "token_nll": 2.586840867996216,
+            "token_accuracy": 0.48209719359874725,
+            "image_shuffle_nll_gap": -0.021230101585388184
+          },
+          "segmentation": {
+            "n": 2,
+            "psnr": 22.287053774971334,
+            "edge_correlation": 0.6733831465244293,
+            "seg_iou": 0.17285049706697464
+          },
+          "future": {
+            "n": 2,
+            "psnr": 20.89632972772398,
+            "edge_correlation": 0.40298111736774445,
+            "seg_iou": 0.17857958376407623,
+            "improvement_over_copy": -0.00255919573828578
+          }
+        },
+        "samples": [
+          {
+            "id": "freedom-t2i-17808",
+            "task": "t2i",
+            "mse": 0.013430904597043991,
+            "psnr": 18.718947357844293,
+            "edge_correlation": 0.018016718327999115,
+            "edge_relative_mse": 1.0239896774291992,
+            "control_mse_gap": 0.02877625823020935,
+            "control_output_rms": 0.1548289805650711
+          },
+          {
+            "id": "freedom-t2i-17808-reconstruct",
+            "task": "reconstruction",
+            "mse": 0.004255009349435568,
+            "psnr": 23.71099481312927,
+            "edge_correlation": 0.6713351607322693,
+            "edge_relative_mse": 0.5799251198768616
+          },
+          {
+            "id": "freedom-t2i-32449",
+            "task": "t2i",
+            "mse": 0.02084415964782238,
+            "psnr": 16.810156091810207,
+            "edge_correlation": 0.02721215970814228,
+            "edge_relative_mse": 1.0362613201141357,
+            "control_mse_gap": 0.02537067048251629,
+            "control_output_rms": 0.1548289805650711
+          },
+          {
+            "id": "freedom-t2i-32449-reconstruct",
+            "task": "reconstruction",
+            "mse": 0.0017519231187179685,
+            "psnr": 27.564849563010206,
+            "edge_correlation": 0.7486560344696045,
+            "edge_relative_mse": 0.45175814628601074
+          },
+          {
+            "id": "freedom-it2i-34244",
+            "task": "it2i",
+            "mse": 0.029161999002099037,
+            "psnr": 15.351827092352359,
+            "edge_correlation": 0.015986435115337372,
+            "edge_relative_mse": 1.0317926406860352,
+            "control_mse_gap": 0.021495426073670387,
+            "control_output_rms": 0.13285838067531586
+          },
+          {
+            "id": "freedom-it2i-34244-identity",
+            "task": "it2i",
+            "mse": 0.004013994242995977,
+            "psnr": 23.964232547276744,
+            "edge_correlation": 0.6958479881286621,
+            "edge_relative_mse": 0.5489543080329895,
+            "control_mse_gap": 0.02338655898347497,
+            "control_output_rms": 0.13285838067531586
+          },
+          {
+            "id": "freedom-it2i-24875",
+            "task": "it2i",
+            "mse": 0.02974282205104828,
+            "psnr": 15.266178272379891,
+            "edge_correlation": 0.4712997078895569,
+            "edge_relative_mse": 0.7823890447616577,
+            "control_mse_gap": -0.0004499610513448715,
+            "control_output_rms": 0.0322866290807724
+          },
+          {
+            "id": "freedom-it2i-24875-identity",
+            "task": "it2i",
+            "mse": 0.0036711562424898148,
+            "psnr": 24.351971317566495,
+            "edge_correlation": 0.6696795225143433,
+            "edge_relative_mse": 0.5758057832717896,
+            "control_mse_gap": 0.003222580999135971,
+            "control_output_rms": 0.0322866290807724
+          },
+          {
+            "id": "opengv-1",
+            "task": "i2t",
+            "mse": 0.004069085232913494,
+            "psnr": 23.90503213121321,
+            "edge_correlation": 0.7012263536453247,
+            "edge_relative_mse": 0.5254864692687988,
+            "token_nll": 2.906588077545166,
+            "token_accuracy": 0.43478259444236755,
+            "decoded": {
+              "text": "The background of the drawing is the drawing of the drawing of the drawing of the drawing of the drawing of the drawing of the drawing of the drawing of the drawing of the drawing of the drawing of the drawing of the drawing of the drawing of",
+              "exact": false,
+              "eos": false
+            },
+            "control_mse_gap": 0.10832193214446306,
+            "control_output_rms": 0.33224084973335266,
+            "image_shuffle_nll_gap": 0.027190685272216797
+          },
+          {
+            "id": "opengv-4",
+            "task": "i2t",
+            "mse": 0.007145725190639496,
+            "psnr": 21.459536898525474,
+            "edge_correlation": 0.6631993055343628,
+            "edge_relative_mse": 0.5891667604446411,
+            "token_nll": 2.2670936584472656,
+            "token_accuracy": 0.529411792755127,
+            "decoded": {
+              "text": "The background of the drawing is the drawing of the drawing of the drawing of the drawing of the drawing of the drawing of the drawing of the drawing of the drawing of the drawing of the drawing of the drawing of the drawing of the drawing of",
+              "exact": false,
+              "eos": false
+            },
+            "control_mse_gap": 0.1148613691329956,
+            "control_output_rms": 0.33224084973335266,
+            "image_shuffle_nll_gap": -0.06965088844299316
+          },
+          {
+            "id": "davis-blackswan-1",
+            "task": "segmentation",
+            "mse": 0.005024523939937353,
+            "psnr": 22.989050801865716,
+            "edge_correlation": 0.6482701301574707,
+            "edge_relative_mse": 0.592943549156189,
+            "seg_iou": 0.13271334767341614
+          },
+          {
+            "id": "davis-blackswan-0-1-to-2",
+            "task": "future",
+            "mse": 0.00731506384909153,
+            "psnr": 21.357818788090587,
+            "edge_correlation": 0.33656156063079834,
+            "edge_relative_mse": 0.9310999512672424,
+            "seg_iou": 0.13928736746311188,
+            "control_mse_gap": 2.4545937776565552e-05,
+            "control_output_rms": 0.02318020537495613,
+            "copy_mse": 0.004039469640702009,
+            "improvement_over_copy": -0.0032755942083895206,
+            "changed_pixel_fraction": 0.3289642333984375,
+            "changed_region_mse": 0.012274038977921009
+          },
+          {
+            "id": "davis-camel-1",
+            "task": "segmentation",
+            "mse": 0.006942155305296183,
+            "psnr": 21.58505674807695,
+            "edge_correlation": 0.6984961628913879,
+            "edge_relative_mse": 0.5506890416145325,
+            "seg_iou": 0.21298764646053314
+          },
+          {
+            "id": "davis-camel-0-1-to-2",
+            "task": "future",
+            "mse": 0.009047236293554306,
+            "psnr": 20.434840667357378,
+            "edge_correlation": 0.46940067410469055,
+            "edge_relative_mse": 0.7823775410652161,
+            "seg_iou": 0.2178718000650406,
+            "control_mse_gap": 0.0020119166001677513,
+            "control_output_rms": 0.03128679096698761,
+            "copy_mse": 0.007204439025372267,
+            "improvement_over_copy": -0.0018427972681820393,
+            "changed_pixel_fraction": 0.3249053955078125,
+            "changed_region_mse": 0.017371095716953278
+          }
+        ]
+      }
+    },
+    {
+      "step": 800,
+      "metrics": {
+        "summary": {
+          "t2i": {
+            "n": 2,
+            "psnr": 18.28867720374423,
+            "edge_correlation": 0.023807261139154434
+          },
+          "reconstruction": {
+            "n": 2,
+            "psnr": 26.249861457837813,
+            "edge_correlation": 0.724263072013855
+          },
+          "it2i": {
+            "n": 4,
+            "psnr": 21.0974840664398,
+            "edge_correlation": 0.47894175397232175
+          },
+          "i2t": {
+            "n": 2,
+            "psnr": 23.18476506010425,
+            "edge_correlation": 0.7080161571502686,
+            "token_nll": 2.3138149976730347,
+            "token_accuracy": 0.5767263472080231,
+            "image_shuffle_nll_gap": 0.002115905284881592
+          },
+          "segmentation": {
+            "n": 2,
+            "psnr": 23.088462697135284,
+            "edge_correlation": 0.7005020976066589,
+            "seg_iou": 0.18648524582386017
+          },
+          "future": {
+            "n": 2,
+            "psnr": 21.099321619343883,
+            "edge_correlation": 0.41052423417568207,
+            "seg_iou": 0.19240248203277588,
+            "improvement_over_copy": -0.0021703995298594236
+          }
+        },
+        "samples": [
+          {
+            "id": "freedom-t2i-17808",
+            "task": "t2i",
+            "mse": 0.011055279523134232,
+            "psnr": 19.564302721879304,
+            "edge_correlation": 0.020676815882325172,
+            "edge_relative_mse": 1.0333051681518555,
+            "control_mse_gap": 0.03147735819220543,
+            "control_output_rms": 0.16830112040042877
+          },
+          {
+            "id": "freedom-t2i-17808-reconstruct",
+            "task": "reconstruction",
+            "mse": 0.0033478466793894768,
+            "psnr": 24.752344395138458,
+            "edge_correlation": 0.6964332461357117,
+            "edge_relative_mse": 0.5309351086616516
+          },
+          {
+            "id": "freedom-t2i-32449",
+            "task": "t2i",
+            "mse": 0.019892750307917595,
+            "psnr": 17.013051685609152,
+            "edge_correlation": 0.026937706395983696,
+            "edge_relative_mse": 1.049309492111206,
+            "control_mse_gap": 0.029719097539782524,
+            "control_output_rms": 0.16830112040042877
+          },
+          {
+            "id": "freedom-t2i-32449-reconstruct",
+            "task": "reconstruction",
+            "mse": 0.0016798176802694798,
+            "psnr": 27.74737852053717,
+            "edge_correlation": 0.7520928978919983,
+            "edge_relative_mse": 0.43693238496780396
+          },
+          {
+            "id": "freedom-it2i-34244",
+            "task": "it2i",
+            "mse": 0.027904847636818886,
+            "psnr": 15.54320344430942,
+            "edge_correlation": 0.017862292006611824,
+            "edge_relative_mse": 1.026984691619873,
+            "control_mse_gap": 0.029125841334462166,
+            "control_output_rms": 0.1679345816373825
+          },
+          {
+            "id": "freedom-it2i-34244-identity",
+            "task": "it2i",
+            "mse": 0.0022416128776967525,
+            "psnr": 26.49439387100871,
+            "edge_correlation": 0.7188206911087036,
+            "edge_relative_mse": 0.5000956654548645,
+            "control_mse_gap": 0.028846364933997393,
+            "control_output_rms": 0.1679345816373825
+          },
+          {
+            "id": "freedom-it2i-24875",
+            "task": "it2i",
+            "mse": 0.028824688866734505,
+            "psnr": 15.402353717761809,
+            "edge_correlation": 0.48848775029182434,
+            "edge_relative_mse": 0.7639655470848083,
+            "control_mse_gap": 0.0025219302624464035,
+            "control_output_rms": 0.04601093754172325
+          },
+          {
+            "id": "freedom-it2i-24875-identity",
+            "task": "it2i",
+            "mse": 0.0020183732267469168,
+            "psnr": 26.949985232679264,
+            "edge_correlation": 0.6905962824821472,
+            "edge_relative_mse": 0.5344433784484863,
+            "control_mse_gap": 0.002062042010948062,
+            "control_output_rms": 0.04601093754172325
+          },
+          {
+            "id": "opengv-1",
+            "task": "i2t",
+            "mse": 0.003876280039548874,
+            "psnr": 24.11584855141005,
+            "edge_correlation": 0.7225277423858643,
+            "edge_relative_mse": 0.48804357647895813,
+            "token_nll": 2.5687413215637207,
+            "token_accuracy": 0.5652173757553101,
+            "decoded": {
+              "text": "The image depicts a man wearing a black dress, which is a small, black, white, and black silhouette.\n\nThe image is a part of the \"Battle of the River of the River of the River of the River",
+              "exact": false,
+              "eos": false
+            },
+            "control_mse_gap": 0.11407963559031487,
+            "control_output_rms": 0.35028716921806335,
+            "image_shuffle_nll_gap": 0.0654611587524414
+          },
+          {
+            "id": "opengv-4",
+            "task": "i2t",
+            "mse": 0.005951574072241783,
+            "psnr": 22.253681568798452,
+            "edge_correlation": 0.6935045719146729,
+            "edge_relative_mse": 0.5386253595352173,
+            "token_nll": 2.0588886737823486,
+            "token_accuracy": 0.5882353186607361,
+            "decoded": {
+              "text": "The image depicts a man wearing a black dress, which is a small, black dress that is a small, black, and light-colored dress that is a small, black, and light-colored dress.\n\nThe \"Blow",
+              "exact": false,
+              "eos": false
+            },
+            "control_mse_gap": 0.12221203185617924,
+            "control_output_rms": 0.35028716921806335,
+            "image_shuffle_nll_gap": -0.06122934818267822
+          },
+          {
+            "id": "davis-blackswan-1",
+            "task": "segmentation",
+            "mse": 0.004589271266013384,
+            "psnr": 23.382562709497314,
+            "edge_correlation": 0.6784547567367554,
+            "edge_relative_mse": 0.5450899600982666,
+            "seg_iou": 0.15208470821380615
+          },
+          {
+            "id": "davis-blackswan-0-1-to-2",
+            "task": "future",
+            "mse": 0.007124526891857386,
+            "psnr": 21.47243969926841,
+            "edge_correlation": 0.3415628671646118,
+            "edge_relative_mse": 0.9538241624832153,
+            "seg_iou": 0.15807737410068512,
+            "control_mse_gap": -0.00023515895009040833,
+            "control_output_rms": 0.02024182304739952,
+            "copy_mse": 0.004039469640702009,
+            "improvement_over_copy": -0.0030850572511553764,
+            "changed_pixel_fraction": 0.3289642333984375,
+            "changed_region_mse": 0.01285899430513382
+          },
+          {
+            "id": "davis-camel-1",
+            "task": "segmentation",
+            "mse": 0.005254891235381365,
+            "psnr": 22.794362684773255,
+            "edge_correlation": 0.7225494384765625,
+            "edge_relative_mse": 0.503547191619873,
+            "seg_iou": 0.22088578343391418
+          },
+          {
+            "id": "davis-camel-0-1-to-2",
+            "task": "future",
+            "mse": 0.008460180833935738,
+            "psnr": 20.726203539419352,
+            "edge_correlation": 0.4794856011867523,
+            "edge_relative_mse": 0.7801970839500427,
+            "seg_iou": 0.22672758996486664,
+            "control_mse_gap": 0.0008662911131978035,
+            "control_output_rms": 0.027152474969625473,
+            "copy_mse": 0.007204439025372267,
+            "improvement_over_copy": -0.0012557418085634708,
+            "changed_pixel_fraction": 0.3249053955078125,
+            "changed_region_mse": 0.018128912895917892
+          }
+        ]
+      }
+    }
+  ],
+  "checkpoint": "checkpoints\\real256_joint.pt",
+  "gallery": "present\\real256_joint.html",
+  "config_source_sha256": "a379861f8f8832413c4dc22ee561276353811b84b31fe38d8963d4dd5224933a",
+  "language": {
+    "lm_id": "EleutherAI/pythia-70m",
+    "lm_revision": "manual",
+    "d_llm": 512,
+    "lm_note": "pythia id=EleutherAI/pythia-70m revision=manual path=D:\\ml_cache\\huggingface\\hub\\models--EleutherAI--pythia-70m\\snapshots\\manual d_llm=512 dtype=torch.float16 cache=D:\\ml_cache"
+  },
+  "baseline": {
+    "summary": {
+      "t2i": {
+        "n": 2,
+        "psnr": 9.862568857866384,
+        "edge_correlation": -0.0011414269101805985
+      },
+      "reconstruction": {
+        "n": 2,
+        "psnr": 9.856039094058637,
+        "edge_correlation": -0.34816692769527435
+      },
+      "it2i": {
+        "n": 4,
+        "psnr": 9.431557232603916,
+        "edge_correlation": -0.3265924691222608
+      },
+      "i2t": {
+        "n": 2,
+        "psnr": 7.849202022503498,
+        "edge_correlation": -0.555146187543869,
+        "token_nll": 4.682309150695801,
+        "token_accuracy": 0.2698209658265114,
+        "image_shuffle_nll_gap": 0.0
+      },
+      "segmentation": {
+        "n": 2,
+        "psnr": 7.893934674505398,
+        "edge_correlation": -0.5938839316368103,
+        "seg_iou": 0.07694244384765625
+      },
+      "future": {
+        "n": 2,
+        "psnr": 7.90798636258242,
+        "edge_correlation": -0.30596859753131866,
+        "seg_iou": 0.07720184326171875,
+        "improvement_over_copy": -0.157535329926759
+      }
+    },
+    "samples": [
+      {
+        "id": "freedom-t2i-17808",
+        "task": "t2i",
+        "mse": 0.086752749979496,
+        "psnr": 10.617167495977093,
+        "edge_correlation": -0.002823606599122286,
+        "edge_relative_mse": 1.0191067457199097,
+        "control_mse_gap": 0.00019916146993637085,
+        "control_output_rms": 0.0012154302094131708
+      },
+      {
+        "id": "freedom-t2i-17808-reconstruct",
+        "task": "reconstruction",
+        "mse": 0.08971714228391647,
+        "psnr": 10.471245682376614,
+        "edge_correlation": -0.2975001931190491,
+        "edge_relative_mse": 1.1431914567947388
+      },
+      {
+        "id": "freedom-t2i-32449",
+        "task": "t2i",
+        "mse": 0.12280130386352539,
+        "psnr": 9.107970219755675,
+        "edge_correlation": 0.0005407527787610888,
+        "edge_relative_mse": 1.0211151838302612,
+        "control_mse_gap": -1.9252300262451172e-05,
+        "control_output_rms": 0.0012154302094131708
+      },
+      {
+        "id": "freedom-t2i-32449-reconstruct",
+        "task": "reconstruction",
+        "mse": 0.11910136789083481,
+        "psnr": 9.240832505740661,
+        "edge_correlation": -0.39883366227149963,
+        "edge_relative_mse": 1.1849961280822754
+      },
+      {
+        "id": "freedom-it2i-34244",
+        "task": "it2i",
+        "mse": 0.09537902474403381,
+        "psnr": 10.205471225652882,
+        "edge_correlation": -0.018352722749114037,
+        "edge_relative_mse": 1.0184060335159302,
+        "control_mse_gap": 0.00038269907236099243,
+        "control_output_rms": 0.0011987073812633753
+      },
+      {
+        "id": "freedom-it2i-34244-identity",
+        "task": "it2i",
+        "mse": 0.11703530699014664,
+        "psnr": 9.31683101349135,
+        "edge_correlation": -0.47985902428627014,
+        "edge_relative_mse": 1.1689423322677612,
+        "control_mse_gap": -0.00028589367866516113,
+        "control_output_rms": 0.0011987073812633753
+      },
+      {
+        "id": "freedom-it2i-24875",
+        "task": "it2i",
+        "mse": 0.1268799751996994,
+        "psnr": 8.966069149148286,
+        "edge_correlation": -0.33847910165786743,
+        "edge_relative_mse": 1.1238389015197754,
+        "control_mse_gap": 0.00016455352306365967,
+        "control_output_rms": 0.0010959634091705084
+      },
+      {
+        "id": "freedom-it2i-24875-identity",
+        "task": "it2i",
+        "mse": 0.11918298155069351,
+        "psnr": 9.237857542123148,
+        "edge_correlation": -0.4696790277957916,
+        "edge_relative_mse": 1.1751004457473755,
+        "control_mse_gap": -0.00015694648027420044,
+        "control_output_rms": 0.0010959634091705084
+      },
+      {
+        "id": "opengv-1",
+        "task": "i2t",
+        "mse": 0.15621255338191986,
+        "psnr": 8.062840687594049,
+        "edge_correlation": -0.5521066784858704,
+        "edge_relative_mse": 1.1857134103775024,
+        "token_nll": 4.748190402984619,
+        "token_accuracy": 0.30434781312942505,
+        "control_mse_gap": -0.015018165111541748,
+        "control_output_rms": 0.05740126222372055,
+        "image_shuffle_nll_gap": 0.0
+      },
+      {
+        "id": "opengv-4",
+        "task": "i2t",
+        "mse": 0.17236284911632538,
+        "psnr": 7.635563357412948,
+        "edge_correlation": -0.5581856966018677,
+        "edge_relative_mse": 1.163370132446289,
+        "token_nll": 4.616427898406982,
+        "token_accuracy": 0.23529411852359772,
+        "control_mse_gap": -0.020202308893203735,
+        "control_output_rms": 0.05740126222372055,
+        "image_shuffle_nll_gap": 0.0
+      },
+      {
+        "id": "davis-blackswan-1",
+        "task": "segmentation",
+        "mse": 0.14265108108520508,
+        "psnr": 8.457249326815635,
+        "edge_correlation": -0.571329653263092,
+        "edge_relative_mse": 1.1966617107391357,
+        "seg_iou": 0.056793212890625
+      },
+      {
+        "id": "davis-blackswan-0-1-to-2",
+        "task": "future",
+        "mse": 0.14280588924884796,
+        "psnr": 8.452538820868895,
+        "edge_correlation": -0.263281911611557,
+        "edge_relative_mse": 1.1053284406661987,
+        "seg_iou": 0.056549072265625,
+        "control_mse_gap": -8.67694616317749e-05,
+        "control_output_rms": 0.00297827017493546,
+        "copy_mse": 0.004039469640702009,
+        "improvement_over_copy": -0.13876641960814595,
+        "changed_pixel_fraction": 0.3289642333984375,
+        "changed_region_mse": 0.0523761548101902
+      },
+      {
+        "id": "davis-camel-1",
+        "task": "segmentation",
+        "mse": 0.1849004626274109,
+        "psnr": 7.330620022195161,
+        "edge_correlation": -0.6164382100105286,
+        "edge_relative_mse": 1.1773146390914917,
+        "seg_iou": 0.0970916748046875
+      },
+      {
+        "id": "davis-camel-0-1-to-2",
+        "task": "future",
+        "mse": 0.18350867927074432,
+        "psnr": 7.363433904295946,
+        "edge_correlation": -0.3486552834510803,
+        "edge_relative_mse": 1.1115583181381226,
+        "seg_iou": 0.0978546142578125,
+        "control_mse_gap": 0.0006582885980606079,
+        "control_output_rms": 0.004903698340058327,
+        "copy_mse": 0.007204439025372267,
+        "improvement_over_copy": -0.17630424024537206,
+        "changed_pixel_fraction": 0.3249053955078125,
+        "changed_region_mse": 0.09186577796936035
+      }
+    ]
+  },
+  "peak_allocated_mib": 2820.71923828125,
+  "reloaded": {
+    "summary": {
+      "t2i": {
+        "n": 2,
+        "psnr": 18.28867720374423,
+        "edge_correlation": 0.023807261139154434
+      },
+      "reconstruction": {
+        "n": 2,
+        "psnr": 26.249861457837813,
+        "edge_correlation": 0.724263072013855
+      },
+      "it2i": {
+        "n": 4,
+        "psnr": 21.0974840664398,
+        "edge_correlation": 0.47894175397232175
+      },
+      "i2t": {
+        "n": 2,
+        "psnr": 23.18476506010425,
+        "edge_correlation": 0.7080161571502686,
+        "token_nll": 2.3138149976730347,
+        "token_accuracy": 0.5767263472080231,
+        "image_shuffle_nll_gap": 0.002115905284881592
+      },
+      "segmentation": {
+        "n": 2,
+        "psnr": 23.088462697135284,
+        "edge_correlation": 0.7005020976066589,
+        "seg_iou": 0.18648524582386017
+      },
+      "future": {
+        "n": 2,
+        "psnr": 21.099321619343883,
+        "edge_correlation": 0.41052423417568207,
+        "seg_iou": 0.19240248203277588,
+        "improvement_over_copy": -0.0021703995298594236
+      }
+    },
+    "samples": [
+      {
+        "id": "freedom-t2i-17808",
+        "task": "t2i",
+        "mse": 0.011055279523134232,
+        "psnr": 19.564302721879304,
+        "edge_correlation": 0.020676815882325172,
+        "edge_relative_mse": 1.0333051681518555,
+        "control_mse_gap": 0.03147735819220543,
+        "control_output_rms": 0.16830112040042877
+      },
+      {
+        "id": "freedom-t2i-17808-reconstruct",
+        "task": "reconstruction",
+        "mse": 0.0033478466793894768,
+        "psnr": 24.752344395138458,
+        "edge_correlation": 0.6964332461357117,
+        "edge_relative_mse": 0.5309351086616516
+      },
+      {
+        "id": "freedom-t2i-32449",
+        "task": "t2i",
+        "mse": 0.019892750307917595,
+        "psnr": 17.013051685609152,
+        "edge_correlation": 0.026937706395983696,
+        "edge_relative_mse": 1.049309492111206,
+        "control_mse_gap": 0.029719097539782524,
+        "control_output_rms": 0.16830112040042877
+      },
+      {
+        "id": "freedom-t2i-32449-reconstruct",
+        "task": "reconstruction",
+        "mse": 0.0016798176802694798,
+        "psnr": 27.74737852053717,
+        "edge_correlation": 0.7520928978919983,
+        "edge_relative_mse": 0.43693238496780396
+      },
+      {
+        "id": "freedom-it2i-34244",
+        "task": "it2i",
+        "mse": 0.027904847636818886,
+        "psnr": 15.54320344430942,
+        "edge_correlation": 0.017862292006611824,
+        "edge_relative_mse": 1.026984691619873,
+        "control_mse_gap": 0.029125841334462166,
+        "control_output_rms": 0.1679345816373825
+      },
+      {
+        "id": "freedom-it2i-34244-identity",
+        "task": "it2i",
+        "mse": 0.0022416128776967525,
+        "psnr": 26.49439387100871,
+        "edge_correlation": 0.7188206911087036,
+        "edge_relative_mse": 0.5000956654548645,
+        "control_mse_gap": 0.028846364933997393,
+        "control_output_rms": 0.1679345816373825
+      },
+      {
+        "id": "freedom-it2i-24875",
+        "task": "it2i",
+        "mse": 0.028824688866734505,
+        "psnr": 15.402353717761809,
+        "edge_correlation": 0.48848775029182434,
+        "edge_relative_mse": 0.7639655470848083,
+        "control_mse_gap": 0.0025219302624464035,
+        "control_output_rms": 0.04601093754172325
+      },
+      {
+        "id": "freedom-it2i-24875-identity",
+        "task": "it2i",
+        "mse": 0.0020183732267469168,
+        "psnr": 26.949985232679264,
+        "edge_correlation": 0.6905962824821472,
+        "edge_relative_mse": 0.5344433784484863,
+        "control_mse_gap": 0.002062042010948062,
+        "control_output_rms": 0.04601093754172325
+      },
+      {
+        "id": "opengv-1",
+        "task": "i2t",
+        "mse": 0.003876280039548874,
+        "psnr": 24.11584855141005,
+        "edge_correlation": 0.7225277423858643,
+        "edge_relative_mse": 0.48804357647895813,
+        "token_nll": 2.5687413215637207,
+        "token_accuracy": 0.5652173757553101,
+        "decoded": {
+          "text": "The image depicts a man wearing a black dress, which is a small, black, white, and black silhouette.\n\nThe image is a part of the \"Battle of the River of the River of the River of the River",
+          "exact": false,
+          "eos": false
+        },
+        "control_mse_gap": 0.11407963559031487,
+        "control_output_rms": 0.35028716921806335,
+        "image_shuffle_nll_gap": 0.0654611587524414
+      },
+      {
+        "id": "opengv-4",
+        "task": "i2t",
+        "mse": 0.005951574072241783,
+        "psnr": 22.253681568798452,
+        "edge_correlation": 0.6935045719146729,
+        "edge_relative_mse": 0.5386253595352173,
+        "token_nll": 2.0588886737823486,
+        "token_accuracy": 0.5882353186607361,
+        "decoded": {
+          "text": "The image depicts a man wearing a black dress, which is a small, black dress that is a small, black, and light-colored dress that is a small, black, and light-colored dress.\n\nThe \"Blow",
+          "exact": false,
+          "eos": false
+        },
+        "control_mse_gap": 0.12221203185617924,
+        "control_output_rms": 0.35028716921806335,
+        "image_shuffle_nll_gap": -0.06122934818267822
+      },
+      {
+        "id": "davis-blackswan-1",
+        "task": "segmentation",
+        "mse": 0.004589271266013384,
+        "psnr": 23.382562709497314,
+        "edge_correlation": 0.6784547567367554,
+        "edge_relative_mse": 0.5450899600982666,
+        "seg_iou": 0.15208470821380615
+      },
+      {
+        "id": "davis-blackswan-0-1-to-2",
+        "task": "future",
+        "mse": 0.007124526891857386,
+        "psnr": 21.47243969926841,
+        "edge_correlation": 0.3415628671646118,
+        "edge_relative_mse": 0.9538241624832153,
+        "seg_iou": 0.15807737410068512,
+        "control_mse_gap": -0.00023515895009040833,
+        "control_output_rms": 0.02024182304739952,
+        "copy_mse": 0.004039469640702009,
+        "improvement_over_copy": -0.0030850572511553764,
+        "changed_pixel_fraction": 0.3289642333984375,
+        "changed_region_mse": 0.01285899430513382
+      },
+      {
+        "id": "davis-camel-1",
+        "task": "segmentation",
+        "mse": 0.005254891235381365,
+        "psnr": 22.794362684773255,
+        "edge_correlation": 0.7225494384765625,
+        "edge_relative_mse": 0.503547191619873,
+        "seg_iou": 0.22088578343391418
+      },
+      {
+        "id": "davis-camel-0-1-to-2",
+        "task": "future",
+        "mse": 0.008460180833935738,
+        "psnr": 20.726203539419352,
+        "edge_correlation": 0.4794856011867523,
+        "edge_relative_mse": 0.7801970839500427,
+        "seg_iou": 0.22672758996486664,
+        "control_mse_gap": 0.0008662911131978035,
+        "control_output_rms": 0.027152474969625473,
+        "copy_mse": 0.007204439025372267,
+        "improvement_over_copy": -0.0012557418085634708,
+        "changed_pixel_fraction": 0.3249053955078125,
+        "changed_region_mse": 0.018128912895917892
+      }
+    ]
+  },
+  "seconds": 419.3364094999997,
+  "checkpoint_sha256": "995a81e62c258d5d5f561fa0a1caea00c86b65cc9cc7966c0fbad1ff20c0acfe"
+}

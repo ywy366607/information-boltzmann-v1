@@ -1,0 +1,332 @@
+{
+  "checkpoint": "checkpoints/mixed_native_64_256.pt",
+  "checkpoint_step_loaded": 1600,
+  "resolution": 64,
+  "common_answer_prefix_tokens": 4,
+  "branch_tokens": [
+    " outdoor",
+    " urban"
+  ],
+  "samples": [
+    {
+      "id": "opengv-1",
+      "mean_nll": 0.10133689641952515,
+      "branch_nll": 0.8585596084594727,
+      "branch_fraction_of_summed_nll": 0.3683621883392334,
+      "branch_candidate_probabilities": [
+        0.42377203702926636,
+        0.5481340289115906
+      ],
+      "token_losses": [
+        {
+          "token": " The",
+          "nll": 0.015871504321694374
+        },
+        {
+          "token": " image",
+          "nll": 0.09646272659301758
+        },
+        {
+          "token": " depicts",
+          "nll": 0.011674300767481327
+        },
+        {
+          "token": " an",
+          "nll": 0.025613855570554733
+        },
+        {
+          "token": " outdoor",
+          "nll": 0.8585596084594727
+        },
+        {
+          "token": " scene",
+          "nll": 0.08746293932199478
+        },
+        {
+          "token": " featuring",
+          "nll": 0.16100449860095978
+        },
+        {
+          "token": " what",
+          "nll": 0.018519233912229538
+        },
+        {
+          "token": " appears",
+          "nll": 0.10453077405691147
+        },
+        {
+          "token": " to",
+          "nll": 0.00028796817059628665
+        },
+        {
+          "token": " be",
+          "nll": 2.3007127310847864e-05
+        },
+        {
+          "token": " a",
+          "nll": 0.010835383087396622
+        },
+        {
+          "token": " setup",
+          "nll": 0.4577831029891968
+        },
+        {
+          "token": " for",
+          "nll": 0.00687755923718214
+        },
+        {
+          "token": " a",
+          "nll": 0.009214494377374649
+        },
+        {
+          "token": " small",
+          "nll": 0.07526996731758118
+        },
+        {
+          "token": ",",
+          "nll": 0.03901868686079979
+        },
+        {
+          "token": " intimate",
+          "nll": 0.03565777465701103
+        },
+        {
+          "token": " gathering",
+          "nll": 0.011438739486038685
+        },
+        {
+          "token": " or",
+          "nll": 0.08609723299741745
+        },
+        {
+          "token": " event",
+          "nll": 0.12960195541381836
+        },
+        {
+          "token": ".",
+          "nll": 0.050360631197690964
+        },
+        {
+          "token": "<|endoftext|>",
+          "nll": 0.038582704961299896
+        }
+      ],
+      "branch_image_gradient_rms": 0.0012489898363128304,
+      "largest_parameter_gradient_rms": [
+        [
+          "mot_stack.text_out_gate",
+          33.14223861694336
+        ],
+        [
+          "mot_stack.proj_gate",
+          20.302282333374023
+        ],
+        [
+          "mot_stack.stem.bias",
+          0.8359692692756653
+        ],
+        [
+          "mot_stack.image_precision_coord.weight",
+          0.8359692096710205
+        ],
+        [
+          "mot_stack.stem_local.1.bias",
+          0.7065802812576294
+        ],
+        [
+          "mot_stack.text_in.bias",
+          0.5895922183990479
+        ],
+        [
+          "mot_stack.stem_local.0.bias",
+          0.45333606004714966
+        ],
+        [
+          "mot_stack.layers.2.mot.res_t",
+          0.4190501570701599
+        ],
+        [
+          "mot_stack.layers.0.surprise_gate.prior_head.2.bias",
+          0.41540980339050293
+        ],
+        [
+          "mot_stack.layers.0.local.pw.bias",
+          0.4148373305797577
+        ],
+        [
+          "mot_stack.layers.0.read.out.bias",
+          0.407873272895813
+        ],
+        [
+          "mot_stack.layers.2.mot.res_v",
+          0.3499666154384613
+        ],
+        [
+          "mot_stack.layers.1.surprise_gate.prior_head.2.bias",
+          0.34787994623184204
+        ],
+        [
+          "mot_stack.text_precision_coord.weight",
+          0.34235671162605286
+        ],
+        [
+          "mot_stack.layers.2.eta",
+          0.3097677528858185
+        ]
+      ],
+      "frozen_lm_has_gradient": false,
+      "swapped_branch_candidate_probabilities": [
+        0.2097615897655487,
+        0.7686352729797363
+      ]
+    },
+    {
+      "id": "opengv-4",
+      "mean_nll": 0.03222903609275818,
+      "branch_nll": 0.26310187578201294,
+      "branch_fraction_of_summed_nll": 0.48020610213279724,
+      "branch_candidate_probabilities": [
+        0.2097436934709549,
+        0.7686635851860046
+      ],
+      "token_losses": [
+        {
+          "token": " The",
+          "nll": 0.014931348152458668
+        },
+        {
+          "token": " image",
+          "nll": 0.04495183005928993
+        },
+        {
+          "token": " depicts",
+          "nll": 0.008553889580070972
+        },
+        {
+          "token": " an",
+          "nll": 0.017266666516661644
+        },
+        {
+          "token": " urban",
+          "nll": 0.26310187578201294
+        },
+        {
+          "token": " street",
+          "nll": 0.004800817463546991
+        },
+        {
+          "token": " scene",
+          "nll": 0.01084281224757433
+        },
+        {
+          "token": " that",
+          "nll": 0.04748477786779404
+        },
+        {
+          "token": " appears",
+          "nll": 0.050529174506664276
+        },
+        {
+          "token": " to",
+          "nll": 0.011344334110617638
+        },
+        {
+          "token": " be",
+          "nll": 0.00017891713650897145
+        },
+        {
+          "token": " bust",
+          "nll": 0.035601407289505005
+        },
+        {
+          "token": "ling",
+          "nll": 0.00597393698990345
+        },
+        {
+          "token": " with",
+          "nll": 0.0032795476727187634
+        },
+        {
+          "token": " activity",
+          "nll": 0.0007862337515689433
+        },
+        {
+          "token": ".",
+          "nll": 0.0003692421887535602
+        },
+        {
+          "token": "<|endoftext|>",
+          "nll": 0.02789679728448391
+        }
+      ],
+      "branch_image_gradient_rms": 0.00048743822844699025,
+      "largest_parameter_gradient_rms": [
+        [
+          "mot_stack.text_out_gate",
+          27.522815704345703
+        ],
+        [
+          "mot_stack.proj_gate",
+          3.7908334732055664
+        ],
+        [
+          "mot_stack.stem.bias",
+          0.33700987696647644
+        ],
+        [
+          "mot_stack.image_precision_coord.weight",
+          0.33700987696647644
+        ],
+        [
+          "mot_stack.stem_local.1.bias",
+          0.29736438393592834
+        ],
+        [
+          "mot_stack.text_in.bias",
+          0.27760225534439087
+        ],
+        [
+          "mot_stack.layers.2.mot.res_t",
+          0.21941809356212616
+        ],
+        [
+          "mot_stack.layers.3.mot.res_t",
+          0.20238396525382996
+        ],
+        [
+          "mot_stack.stem_local.0.bias",
+          0.18712933361530304
+        ],
+        [
+          "mot_stack.layers.0.surprise_gate.prior_head.2.bias",
+          0.18531467020511627
+        ],
+        [
+          "mot_stack.layers.0.local.pw.bias",
+          0.18442705273628235
+        ],
+        [
+          "mot_stack.layers.0.read.out.bias",
+          0.17446553707122803
+        ],
+        [
+          "mot_stack.layers.2.mot.res_v",
+          0.17403903603553772
+        ],
+        [
+          "mot_stack.text_precision_coord.weight",
+          0.16927111148834229
+        ],
+        [
+          "mot_stack.layers.2.eta",
+          0.15907466411590576
+        ]
+      ],
+      "frozen_lm_has_gradient": false,
+      "swapped_branch_candidate_probabilities": [
+        0.423770934343338,
+        0.548132598400116
+      ]
+    }
+  ]
+}

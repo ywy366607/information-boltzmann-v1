@@ -1,0 +1,179 @@
+{
+  "schema": "pythia-capability-b2",
+  "claim_scope": "Frozen-Pythia binding to the proven static Slice capability chart; editing is admitted only after T2I and identity reconstruction pass.",
+  "init": "checkpoints\\omni_d64_pythia_token_best.pt",
+  "init_report": {
+    "path": "checkpoints\\omni_d64_pythia_token_best.pt",
+    "loaded": 298,
+    "skipped": [],
+    "n_skipped": 0
+  },
+  "lexical_init": null,
+  "checkpoint": "checkpoints\\omni_d64_pythia_token_best.pt",
+  "candidate_checkpoint": "D:\\\u89c6\u89c9\u7f16\u7801\u5668\u6d4b\u8bd5\\checkpoints\\omni_d64_pythia_capability_b2_candidate.pt",
+  "did_save": false,
+  "best_step": 0,
+  "best_partial_step": 0,
+  "best_partial_score": null,
+  "best_score": null,
+  "language": {
+    "lm_id": "EleutherAI/pythia-70m",
+    "lm_revision": "manual",
+    "d_llm": 512,
+    "lm_note": "pythia id=EleutherAI/pythia-70m revision=manual path=D:\\ml_cache\\huggingface\\hub\\models--EleutherAI--pythia-70m\\snapshots\\manual d_llm=512 dtype=torch.float16 cache=D:\\ml_cache"
+  },
+  "run": {
+    "warmup_phase": "language_rgb",
+    "refinement_phase": "language",
+    "resolution": 32,
+    "n_slices": 16,
+    "glyph_box": 12,
+    "normalized_glyph_layout": true,
+    "t2i_warmup_steps": 100,
+    "refinement_steps": 200,
+    "edit_steps": 0,
+    "schedule": "generation-first text_to_both warmup, then deterministic alternating text_to_both,image_to_current",
+    "warmup_trainable": 288010,
+    "refinement_trainable": 288010,
+    "stem_read_deslice_seg_frozen": true,
+    "rgb_head_warmup_only": true,
+    "interface_lr": 0.0001,
+    "warmup_interface_lr": 0.0001,
+    "warmup_visual_lr": 1e-05,
+    "warmup_current_every": 4,
+    "digit_shuffle_coef": 1.0,
+    "current_shuffle_coef": 0.1,
+    "edit_shuffle_coef": 0.1,
+    "edit_interface_lr": 5e-05,
+    "shuffle_margin": 0.05,
+    "seg_energy_weight": 0.25,
+    "digit_group_coef": 0.1,
+    "digit_group_temperature": 0.1,
+    "gdn2": false,
+    "scene_generator": "capability_sample/grid_digit_mask for every port"
+  },
+  "gates": {
+    "t2i": "official pythia T2I gate",
+    "current": {
+      "digit_top1": 0.85,
+      "color_acc": 0.9,
+      "paired_iou": 0.85,
+      "seg_iou": 0.9,
+      "flood_max": 0.1,
+      "source_iou_gap": 0.3
+    },
+    "edit": null
+  },
+  "final": {
+    "t2i": {
+      "n": 117,
+      "psnr": 20.73501400852814,
+      "digit_top1": 0.18803418803418803,
+      "digit_iou": 0.3834345199358769,
+      "color_acc": 0.7611803383781359,
+      "paired_iou": 0.1265864300931621,
+      "centroid_error": 0.17403702321860334,
+      "flood": 0.014442132785916328,
+      "digit_shuffled_top1": 0.05128205128205128,
+      "color_shuffled_acc": 0.0,
+      "bce": 0.7842297554016113
+    },
+    "current": {
+      "n": 90,
+      "psnr": 25.985534207291195,
+      "digit_top1": 0.8666666666666667,
+      "color_acc": 0.8302401238017612,
+      "paired_iou": 0.7206221744418144,
+      "seg_iou": 0.9796257780657874,
+      "flood": 1.1124460797873326e-05,
+      "source_shuffled_digit_top1": 0.06666666666666667,
+      "source_shuffled_paired_iou": 0.03272403161972761,
+      "source_shuffled_seg_iou": 0.04195725365231435,
+      "source_digit_gap": 0.8,
+      "source_iou_gap": 0.6878981428220868,
+      "source_seg_gap": 0.937668524413473
+    },
+    "edit": null
+  },
+  "final_gates": {
+    "t2i": false,
+    "current": false
+  },
+  "terminal_step": 0,
+  "terminal": {
+    "t2i": {
+      "n": 117,
+      "psnr": 20.73501400852814,
+      "digit_top1": 0.18803418803418803,
+      "digit_iou": 0.3834345199358769,
+      "color_acc": 0.7611803383781359,
+      "paired_iou": 0.1265864300931621,
+      "centroid_error": 0.17403702321860334,
+      "flood": 0.014442132785916328,
+      "digit_shuffled_top1": 0.05128205128205128,
+      "color_shuffled_acc": 0.0,
+      "bce": 0.7842297554016113
+    },
+    "current": {
+      "n": 90,
+      "psnr": 25.985534207291195,
+      "digit_top1": 0.8666666666666667,
+      "color_acc": 0.8302401238017612,
+      "paired_iou": 0.7206221744418144,
+      "seg_iou": 0.9796257780657874,
+      "flood": 1.1124460797873326e-05,
+      "source_shuffled_digit_top1": 0.06666666666666667,
+      "source_shuffled_paired_iou": 0.03272403161972761,
+      "source_shuffled_seg_iou": 0.04195725365231435,
+      "source_digit_gap": 0.8,
+      "source_iou_gap": 0.6878981428220868,
+      "source_seg_gap": 0.937668524413473
+    },
+    "edit": null,
+    "gates": {
+      "t2i": false,
+      "current": false
+    }
+  },
+  "history": [
+    {
+      "step": 0,
+      "meta": {},
+      "t2i": {
+        "n": 117,
+        "psnr": 20.73501400852814,
+        "digit_top1": 0.18803418803418803,
+        "digit_iou": 0.3834345199358769,
+        "color_acc": 0.7611803383781359,
+        "paired_iou": 0.1265864300931621,
+        "centroid_error": 0.17403702321860334,
+        "flood": 0.014442132785916328,
+        "digit_shuffled_top1": 0.05128205128205128,
+        "color_shuffled_acc": 0.0,
+        "bce": 0.7842297554016113
+      },
+      "current": {
+        "n": 90,
+        "psnr": 25.985534207291195,
+        "digit_top1": 0.8666666666666667,
+        "color_acc": 0.8302401238017612,
+        "paired_iou": 0.7206221744418144,
+        "seg_iou": 0.9796257780657874,
+        "flood": 1.1124460797873326e-05,
+        "source_shuffled_digit_top1": 0.06666666666666667,
+        "source_shuffled_paired_iou": 0.03272403161972761,
+        "source_shuffled_seg_iou": 0.04195725365231435,
+        "source_digit_gap": 0.8,
+        "source_iou_gap": 0.6878981428220868,
+        "source_seg_gap": 0.937668524413473
+      },
+      "edit": null,
+      "gates": {
+        "t2i": false,
+        "current": false
+      },
+      "score": 5.146400585056889,
+      "elapsed_sec": 13.546546936035156
+    }
+  ]
+}

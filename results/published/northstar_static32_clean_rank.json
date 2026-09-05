@@ -1,0 +1,200 @@
+{
+  "schema": "static32-m16-geometry-identity-gradient-audit-v1",
+  "checkpoint": "D:\\\u89c6\u89c9\u7f16\u7801\u5668\u6d4b\u8bd5\\checkpoints\\_northstar_static32_clean_scratch_best.pt",
+  "graph": {
+    "resolution": 32,
+    "n_slices": 16,
+    "glyph_box": 12,
+    "glyph_stroke_px": 2,
+    "normalized_layout": true,
+    "local_dilation": 1,
+    "pythia_frozen": true,
+    "new_head": false,
+    "recurrence": false,
+    "identity_mode": "residual"
+  },
+  "losses": {
+    "geometry": 0.3165415823459625,
+    "identity": 0.09038037061691284,
+    "contrast_coef_screened": 10.0,
+    "scaled_identity_to_geometry_norm_ratio": 1.3719104528427124
+  },
+  "template_overlap": {
+    "foreground_pixels": 792,
+    "shared_foreground_fraction": 1.0,
+    "unique_foreground_fraction": 0.0
+  },
+  "rgb_gradient_regions": {
+    "shared_strokes": {
+      "entries": 2376,
+      "geometry_norm": 0.05429703742265701,
+      "identity_norm": 0.004854631144553423,
+      "cosine": 0.46940407156944275,
+      "opposing_coordinate_fraction": 0.44654881954193115
+    },
+    "unique_strokes": {
+      "entries": 0,
+      "geometry_norm": 0.0,
+      "identity_norm": 0.0,
+      "cosine": null,
+      "opposing_coordinate_fraction": null
+    },
+    "all_foreground": {
+      "entries": 2376,
+      "geometry_norm": 0.05429703742265701,
+      "identity_norm": 0.004854631144553423,
+      "cosine": 0.46940407156944275,
+      "opposing_coordinate_fraction": 0.44654881954193115
+    },
+    "full_canvas": {
+      "entries": 30720,
+      "geometry_norm": 0.054544903337955475,
+      "identity_norm": 0.007483072578907013,
+      "cosine": 0.34563374519348145,
+      "opposing_coordinate_fraction": 0.04983724281191826
+    }
+  },
+  "parameter_gradient_groups": {
+    "f2_prior": {
+      "n_tensors": 20,
+      "geometry_norm": 2.393493890762329,
+      "identity_norm": 0.13940061628818512,
+      "cosine": 0.8207361698150635
+    },
+    "language_to_vision": {
+      "n_tensors": 8,
+      "geometry_norm": 6.256866455078125,
+      "identity_norm": 0.447165310382843,
+      "cosine": 0.9683664441108704
+    },
+    "slice_write": {
+      "n_tensors": 0,
+      "cosine": null
+    },
+    "other": {
+      "n_tensors": 48,
+      "geometry_norm": 10.499126434326172,
+      "identity_norm": 0.7286728024482727,
+      "cosine": 0.9827869534492493
+    }
+  },
+  "prompt_conditioned_response": {
+    "prediction": {
+      "singular_values": [
+        3.424809694290161,
+        1.8605090379714966,
+        0.9741175770759583,
+        0.7344761490821838,
+        0.47689029574394226,
+        0.29310569167137146,
+        0.1703583300113678,
+        0.1376970410346985,
+        0.07112690806388855,
+        9.488556997894193e-07
+      ],
+      "effective_rank": 1.926593542098999,
+      "rank_eps": 9
+    },
+    "target": {
+      "singular_values": [
+        8.03597640991211,
+        6.268838405609131,
+        5.575608253479004,
+        4.400203704833984,
+        4.201529502868652,
+        3.555457353591919,
+        2.970947504043579,
+        2.2713510990142822,
+        1.093502402305603,
+        7.961642722875695e-07
+      ],
+      "effective_rank": 5.229770660400391,
+      "rank_eps": 9
+    },
+    "centered_rgb_cosine": 0.3019549548625946,
+    "centered_rgb_relative_mse": 0.9089206457138062
+  },
+  "condition_path_spectra": {
+    "frozen_pythia": {
+      "effective_rank": 7.882059574127197,
+      "rank_eps": 9,
+      "rms": 0.2399991750717163
+    },
+    "text_in": {
+      "effective_rank": 7.732830047607422,
+      "rank_eps": 9,
+      "rms": 0.184099480509758
+    },
+    "joint_layer_0": {
+      "effective_rank": 5.266496181488037,
+      "rank_eps": 9,
+      "rms": 0.4351655840873718
+    },
+    "joint_layer_1": {
+      "effective_rank": 5.63928747177124,
+      "rank_eps": 9,
+      "rms": 0.8037835955619812
+    },
+    "joint_layer_2": {
+      "effective_rank": 6.544680118560791,
+      "rank_eps": 9,
+      "rms": 1.3452681303024292
+    },
+    "joint_layer_3": {
+      "effective_rank": 7.231282711029053,
+      "rank_eps": 9,
+      "rms": 4.107491970062256
+    },
+    "field_after_layer_-1": {
+      "effective_rank": 1.0,
+      "rank_eps": 1,
+      "rms": 0.3012373745441437
+    },
+    "field_after_layer_0": {
+      "effective_rank": 3.644718647003174,
+      "rank_eps": 9,
+      "rms": 0.4155839681625366
+    },
+    "field_after_layer_1": {
+      "effective_rank": 4.1517252922058105,
+      "rank_eps": 9,
+      "rms": 0.43761715292930603
+    },
+    "field_after_layer_2": {
+      "effective_rank": 2.6031694412231445,
+      "rank_eps": 9,
+      "rms": 0.46907874941825867
+    },
+    "field_after_layer_3": {
+      "effective_rank": 2.3504064083099365,
+      "rank_eps": 9,
+      "rms": 0.8545907139778137
+    },
+    "f2_context_0": {
+      "effective_rank": 6.926252841949463,
+      "rank_eps": 9,
+      "rms": 0.3333521783351898
+    },
+    "f2_context_1": {
+      "effective_rank": 4.809084892272949,
+      "rank_eps": 9,
+      "rms": 0.5873773097991943
+    },
+    "f2_context_2": {
+      "effective_rank": 5.39337158203125,
+      "rank_eps": 9,
+      "rms": 0.9011327028274536
+    },
+    "f2_context_3": {
+      "effective_rank": 6.105218887329102,
+      "rank_eps": 9,
+      "rms": 1.4397461414337158
+    }
+  },
+  "identity_meta": {
+    "digit_residual_active": true,
+    "digit_residual_rgb": 0.05039673298597336,
+    "digit_residual_seg": 0.15993456542491913,
+    "digit_residual_union_pixels": 120
+  }
+}

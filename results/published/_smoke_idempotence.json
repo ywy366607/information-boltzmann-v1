@@ -1,0 +1,184 @@
+{
+  "schema": "readwrite-idempotence-gate",
+  "init": "D:\\\u89c6\u89c9\u7f16\u7801\u5668\u6d4b\u8bd5\\checkpoints\\omni_d64_pythia_capability_b3_edit_best.pt",
+  "init_report": {
+    "path": "D:\\\u89c6\u89c9\u7f16\u7801\u5668\u6d4b\u8bd5\\checkpoints\\omni_d64_pythia_capability_b3_edit_best.pt",
+    "loaded": 298,
+    "skipped": [],
+    "n_skipped": 0
+  },
+  "candidate": "checkpoints\\_smoke_idempotence.pt",
+  "run": {
+    "steps": 2,
+    "batch": 16,
+    "lr": 0.0001,
+    "gen_frac": 0.25,
+    "objective": "sum_l || W_l(read_l(X)) - (X - X_blank) ||^2",
+    "trainable": [
+      "mot_stack.layers.0.read.bias",
+      "mot_stack.layers.0.read.proj_in.weight",
+      "mot_stack.layers.0.read.proj_in.bias",
+      "mot_stack.layers.0.read.to_logits.weight",
+      "mot_stack.layers.0.read.to_logits.bias",
+      "mot_stack.layers.0.read.temp.0.weight",
+      "mot_stack.layers.0.read.temp.0.bias",
+      "mot_stack.layers.0.read.temp.2.weight",
+      "mot_stack.layers.0.read.temp.2.bias",
+      "mot_stack.layers.0.read.out.weight",
+      "mot_stack.layers.0.read.out.bias",
+      "mot_stack.layers.0.deslice.proj.weight",
+      "mot_stack.layers.0.deslice.proj.bias",
+      "mot_stack.layers.1.read.bias",
+      "mot_stack.layers.1.read.proj_in.weight",
+      "mot_stack.layers.1.read.proj_in.bias",
+      "mot_stack.layers.1.read.to_logits.weight",
+      "mot_stack.layers.1.read.to_logits.bias",
+      "mot_stack.layers.1.read.temp.0.weight",
+      "mot_stack.layers.1.read.temp.0.bias",
+      "mot_stack.layers.1.read.temp.2.weight",
+      "mot_stack.layers.1.read.temp.2.bias",
+      "mot_stack.layers.1.read.out.weight",
+      "mot_stack.layers.1.read.out.bias",
+      "mot_stack.layers.1.deslice.proj.weight",
+      "mot_stack.layers.1.deslice.proj.bias",
+      "mot_stack.layers.2.read.bias",
+      "mot_stack.layers.2.read.proj_in.weight",
+      "mot_stack.layers.2.read.proj_in.bias",
+      "mot_stack.layers.2.read.to_logits.weight",
+      "mot_stack.layers.2.read.to_logits.bias",
+      "mot_stack.layers.2.read.temp.0.weight",
+      "mot_stack.layers.2.read.temp.0.bias",
+      "mot_stack.layers.2.read.temp.2.weight",
+      "mot_stack.layers.2.read.temp.2.bias",
+      "mot_stack.layers.2.read.out.weight",
+      "mot_stack.layers.2.read.out.bias",
+      "mot_stack.layers.2.deslice.proj.weight",
+      "mot_stack.layers.2.deslice.proj.bias",
+      "mot_stack.layers.3.read.bias",
+      "mot_stack.layers.3.read.proj_in.weight",
+      "mot_stack.layers.3.read.proj_in.bias",
+      "mot_stack.layers.3.read.to_logits.weight",
+      "mot_stack.layers.3.read.to_logits.bias",
+      "mot_stack.layers.3.read.temp.0.weight",
+      "mot_stack.layers.3.read.temp.0.bias",
+      "mot_stack.layers.3.read.temp.2.weight",
+      "mot_stack.layers.3.read.temp.2.bias",
+      "mot_stack.layers.3.read.out.weight",
+      "mot_stack.layers.3.read.out.bias",
+      "mot_stack.layers.3.deslice.proj.weight",
+      "mot_stack.layers.3.deslice.proj.bias"
+    ],
+    "n_trainable": 52180
+  },
+  "history": [
+    {
+      "step": 0,
+      "rt_perception": {
+        "layer0": 1.5046684741973877,
+        "layer1": 1.117349624633789,
+        "layer2": 1.0831663608551025,
+        "layer3": 0.7352247834205627
+      },
+      "rt_generation": {
+        "layer0": 5.410265922546387,
+        "layer1": 6.0018205642700195,
+        "layer2": 17.59200668334961,
+        "layer3": 2.460327625274658
+      },
+      "rt_min": 0.7352247834205627,
+      "static": {
+        "t2i": {
+          "digit_top1": 1.0,
+          "paired_iou": 0.9361455965245891
+        },
+        "current": {
+          "digit_top1": 0.9111111111111111,
+          "paired_iou": 0.8830026302072737
+        },
+        "edit": {
+          "digit_top1": 0.8777777777777778,
+          "paired_iou": 0.6969912255803744
+        }
+      },
+      "gates": {
+        "t2i": true,
+        "current": true,
+        "edit": true
+      },
+      "all_static_held": true
+    },
+    {
+      "step": 2,
+      "rt_perception": {
+        "layer0": 1.5548477172851562,
+        "layer1": 1.1552313566207886,
+        "layer2": 1.1277039051055908,
+        "layer3": 0.7374075055122375
+      },
+      "rt_generation": {
+        "layer0": 6.550686836242676,
+        "layer1": 6.6952900886535645,
+        "layer2": 17.884479522705078,
+        "layer3": 2.916840076446533
+      },
+      "rt_min": 0.7374075055122375,
+      "static": {
+        "t2i": {
+          "digit_top1": 1.0,
+          "paired_iou": 0.9270463713213929
+        },
+        "current": {
+          "digit_top1": 0.9111111111111111,
+          "paired_iou": 0.8863359636730618
+        },
+        "edit": {
+          "digit_top1": 0.8555555555555555,
+          "paired_iou": 0.6712076243427064
+        }
+      },
+      "gates": {
+        "t2i": true,
+        "current": true,
+        "edit": true
+      },
+      "all_static_held": true
+    }
+  ],
+  "final": {
+    "step": 2,
+    "rt_perception": {
+      "layer0": 1.5548477172851562,
+      "layer1": 1.1552313566207886,
+      "layer2": 1.1277039051055908,
+      "layer3": 0.7374075055122375
+    },
+    "rt_generation": {
+      "layer0": 6.550686836242676,
+      "layer1": 6.6952900886535645,
+      "layer2": 17.884479522705078,
+      "layer3": 2.916840076446533
+    },
+    "rt_min": 0.7374075055122375,
+    "static": {
+      "t2i": {
+        "digit_top1": 1.0,
+        "paired_iou": 0.9270463713213929
+      },
+      "current": {
+        "digit_top1": 0.9111111111111111,
+        "paired_iou": 0.8863359636730618
+      },
+      "edit": {
+        "digit_top1": 0.8555555555555555,
+        "paired_iou": 0.6712076243427064
+      }
+    },
+    "gates": {
+      "t2i": true,
+      "current": true,
+      "edit": true
+    },
+    "all_static_held": true
+  },
+  "elapsed_sec": 24.616005420684814
+}

@@ -74,25 +74,55 @@ def _paint(img: torch.Tensor, mask: torch.Tensor, rgb: np.ndarray) -> torch.Tens
     return img * (1.0 - m) + col * m
 
 
-def grid_digit_mask(digit: str, res: int, place: str) -> torch.Tensor:
-    """Render a deterministic small digit at one named full-resolution address."""
+def grid_digit_mask(
+    digit: str,
+    res: int,
+    place: str,
+    *,
+    box: int | None = None,
+    stroke_px: int = 1,
+    normalized_layout: bool = False,
+) -> torch.Tensor:
+    """Render a digit at one named full-resolution address.
+
+    Defaults reproduce the historical fixed-pixel capability bank.  The
+    optional normalized layout is a curriculum datum: it holds the relative
+    glyph extent and named address fixed while only the point-field density
+    changes across resolutions.
+    """
     place = str(place).lower()
     if place not in GRID_PLACES:
         raise ValueError(f"unknown grid placement {place!r}")
     row, col = place.split("_")
-    box = max(4, min(16, (int(res) + 2) // 3, int(res) - 2))
-    starts = {
-        "top": 1,
-        "middle": (int(res) - box) // 2,
-        "bottom": int(res) - box - 1,
-        "left": 1,
-        "center": (int(res) - box) // 2,
-        "right": int(res) - box - 1,
-    }
+    if box is None:
+        box = max(4, min(16, (int(res) + 2) // 3, int(res) - 2))
+    box = int(box)
+    if not 2 <= box <= int(res) - 2:
+        raise ValueError("box must lie in [2, res - 2]")
+    if normalized_layout:
+        span = int(res) - box
+        starts = {
+            "top": int(round(0.10 * span)),
+            "middle": int(round(0.50 * span)),
+            "bottom": int(round(0.90 * span)),
+            "left": int(round(0.10 * span)),
+            "center": int(round(0.50 * span)),
+            "right": int(round(0.90 * span)),
+        }
+    else:
+        starts = {
+            "top": 1,
+            "middle": (int(res) - box) // 2,
+            "bottom": int(res) - box - 1,
+            "left": 1,
+            "center": (int(res) - box) // 2,
+            "right": int(res) - box - 1,
+        }
     pm = render_digit_mask(
         str(digit), int(res), box, starts[row], starts[col], jitter=0.0,
     )
-    return torch.from_numpy(pm.astype(np.float32)).view(1, int(res), int(res))
+    mask = torch.from_numpy(pm.astype(np.float32)).view(1, int(res), int(res))
+    return thicken_stroke(mask, int(stroke_px))
 
 
 def one_sample(

@@ -1,0 +1,125 @@
+{
+  "metric": "exact-renderer paired-address identity; legacy sliding scores retained",
+  "checkpoints": {
+    "checkpoints/northstar_static32_unified_task_best.pt": {
+      "text_to_both": {
+        "paired_digit_top1": 0.18888888888888888,
+        "paired_digit_margin": -0.06431141247351964,
+        "paired_digit_iou": 0.26723218974139956,
+        "paired_digit_ambiguous": 0.0
+      },
+      "image_to_current": {
+        "paired_digit_top1": 0.9555555555555556,
+        "paired_digit_margin": 0.3518984271420373,
+        "paired_digit_iou": 0.9372966524627474,
+        "paired_digit_ambiguous": 0.0
+      },
+      "image_text_edit": {
+        "paired_digit_top1": 0.7444444444444445,
+        "paired_digit_margin": 0.2533214898986949,
+        "paired_digit_iou": 0.663591490396195,
+        "paired_digit_ambiguous": 0.2222222222222222
+      },
+      "image_to_future": {
+        "paired_digit_top1": 0.12222222222222222,
+        "paired_digit_margin": 0.041033415993054705,
+        "paired_digit_iou": 0.10489627321561178,
+        "paired_digit_ambiguous": 0.8777777777777778
+      },
+      "oracle": {
+        "paired_digit_top1": 1.0,
+        "legacy_digit_top1": 0.4111111111111111
+      }
+    },
+    "checkpoints/attention_repair_control_candidate.pt": {
+      "text_to_both": {
+        "paired_digit_top1": 0.17777777777777778,
+        "paired_digit_margin": -0.06191806495189667,
+        "paired_digit_iou": 0.2736610369549857,
+        "paired_digit_ambiguous": 0.0
+      },
+      "image_to_current": {
+        "paired_digit_top1": 0.9888888888888889,
+        "paired_digit_margin": 0.37364625765217674,
+        "paired_digit_iou": 0.9707267767853207,
+        "paired_digit_ambiguous": 0.0
+      },
+      "image_text_edit": {
+        "paired_digit_top1": 0.9111111111111111,
+        "paired_digit_margin": 0.25296152267191147,
+        "paired_digit_iou": 0.7070809472766187,
+        "paired_digit_ambiguous": 0.011111111111111112
+      },
+      "image_to_future": {
+        "paired_digit_top1": 0.12222222222222222,
+        "paired_digit_margin": 0.047711959812376234,
+        "paired_digit_iou": 0.11592724985546536,
+        "paired_digit_ambiguous": 0.8777777777777778
+      },
+      "oracle": {
+        "paired_digit_top1": 1.0,
+        "legacy_digit_top1": 0.4111111111111111
+      }
+    },
+    "checkpoints/attention_repair_prefix_candidate.pt": {
+      "text_to_both": {
+        "paired_digit_top1": 0.16666666666666666,
+        "paired_digit_margin": -0.061045308079984456,
+        "paired_digit_iou": 0.2743868216872215,
+        "paired_digit_ambiguous": 0.0
+      },
+      "image_to_current": {
+        "paired_digit_top1": 0.9888888888888889,
+        "paired_digit_margin": 0.3749809556537204,
+        "paired_digit_iou": 0.9736103740003373,
+        "paired_digit_ambiguous": 0.0
+      },
+      "image_text_edit": {
+        "paired_digit_top1": 0.9333333333333333,
+        "paired_digit_margin": 0.26265813041892316,
+        "paired_digit_iou": 0.7253662563032575,
+        "paired_digit_ambiguous": 0.011111111111111112
+      },
+      "image_to_future": {
+        "paired_digit_top1": 0.12222222222222222,
+        "paired_digit_margin": 0.04733383986685011,
+        "paired_digit_iou": 0.11532867153485617,
+        "paired_digit_ambiguous": 0.8777777777777778
+      },
+      "oracle": {
+        "paired_digit_top1": 1.0,
+        "legacy_digit_top1": 0.4111111111111111
+      }
+    },
+    "checkpoints/attention_repair_sink_candidate.pt": {
+      "text_to_both": {
+        "paired_digit_top1": 0.15555555555555556,
+        "paired_digit_margin": -0.06387787709633509,
+        "paired_digit_iou": 0.2739964597755008,
+        "paired_digit_ambiguous": 0.0
+      },
+      "image_to_current": {
+        "paired_digit_top1": 0.9888888888888889,
+        "paired_digit_margin": 0.37459496127234565,
+        "paired_digit_iou": 0.9731830232673221,
+        "paired_digit_ambiguous": 0.0
+      },
+      "image_text_edit": {
+        "paired_digit_top1": 0.9333333333333333,
+        "paired_digit_margin": 0.2717929599185785,
+        "paired_digit_iou": 0.737137078659402,
+        "paired_digit_ambiguous": 0.0
+      },
+      "image_to_future": {
+        "paired_digit_top1": 0.12222222222222222,
+        "paired_digit_margin": 0.04733383986685011,
+        "paired_digit_iou": 0.11532867153485617,
+        "paired_digit_ambiguous": 0.8777777777777778
+      },
+      "oracle": {
+        "paired_digit_top1": 1.0,
+        "legacy_digit_top1": 0.4111111111111111
+      }
+    }
+  }
+}

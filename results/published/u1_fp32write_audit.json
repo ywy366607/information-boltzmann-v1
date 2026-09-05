@@ -1,0 +1,100 @@
+{
+  "schema": "u1-language-address-reload-audit",
+  "candidate": "D:\\\u89c6\u89c9\u7f16\u7801\u5668\u6d4b\u8bd5\\checkpoints\\_unified_u1_candidate.pt",
+  "prompts": [
+    "Draw digit 7 with a thin red stroke blank image",
+    "Draw digit 0 with a thin blue stroke blank image"
+  ],
+  "layers": [
+    {
+      "layer": 0,
+      "actual": {
+        "normalized_row_entropy": 0.9602477550506592,
+        "effective_rank": 1.436235785484314,
+        "mean_radius": 0.8105955123901367,
+        "uniform_radius": 0.8293555974960327,
+        "mean_peak_assignment": 0.05503416806459427
+      },
+      "prior": {
+        "normalized_row_entropy": 0.9989143013954163,
+        "effective_rank": 1.027898907661438,
+        "mean_radius": 0.8292738199234009,
+        "uniform_radius": 0.8293555974960327,
+        "mean_peak_assignment": 0.019531570374965668
+      },
+      "actual_prompt_relative_difference": 0.008119655773043633,
+      "prior_prompt_relative_difference": 0.014517565257847309
+    },
+    {
+      "layer": 1,
+      "actual": {
+        "normalized_row_entropy": 0.9777426719665527,
+        "effective_rank": 1.2780694961547852,
+        "mean_radius": 0.8240649104118347,
+        "uniform_radius": 0.8293555974960327,
+        "mean_peak_assignment": 0.05055050551891327
+      },
+      "prior": {
+        "normalized_row_entropy": 0.9988001585006714,
+        "effective_rank": 1.0303181409835815,
+        "mean_radius": 0.8292150497436523,
+        "uniform_radius": 0.8293555974960327,
+        "mean_peak_assignment": 0.019384881481528282
+      },
+      "actual_prompt_relative_difference": 0.16397148370742798,
+      "prior_prompt_relative_difference": 0.011623455211520195
+    },
+    {
+      "layer": 2,
+      "actual": {
+        "normalized_row_entropy": 0.9897796511650085,
+        "effective_rank": 1.1928690671920776,
+        "mean_radius": 0.8267046213150024,
+        "uniform_radius": 0.8293555974960327,
+        "mean_peak_assignment": 0.034876205027103424
+      },
+      "prior": {
+        "normalized_row_entropy": 0.9982680082321167,
+        "effective_rank": 1.031448483467102,
+        "mean_radius": 0.8293154239654541,
+        "uniform_radius": 0.8293555974960327,
+        "mean_peak_assignment": 0.020030057057738304
+      },
+      "actual_prompt_relative_difference": 0.14100855588912964,
+      "prior_prompt_relative_difference": 0.030939524993300438
+    },
+    {
+      "layer": 3,
+      "actual": {
+        "normalized_row_entropy": 0.9795621633529663,
+        "effective_rank": 1.1488120555877686,
+        "mean_radius": 0.8280928134918213,
+        "uniform_radius": 0.8293555974960327,
+        "mean_peak_assignment": 0.03301673009991646
+      },
+      "prior": {
+        "normalized_row_entropy": 0.9981880784034729,
+        "effective_rank": 1.0321708917617798,
+        "mean_radius": 0.8292776942253113,
+        "uniform_radius": 0.8293555974960327,
+        "mean_peak_assignment": 0.020618459209799767
+      },
+      "actual_prompt_relative_difference": 0.13882321119308472,
+      "prior_prompt_relative_difference": 0.041348896920681
+    }
+  ],
+  "static_t2i": {
+    "n": 117,
+    "psnr": 24.766076104809976,
+    "digit_top1": 0.0,
+    "digit_iou": 0.0028490029339097505,
+    "color_acc": 0.008547008547008548,
+    "paired_iou": 0.0,
+    "centroid_error": 0.9942391973275405,
+    "flood": 0.00013049555127508938,
+    "digit_shuffled_top1": 0.0,
+    "color_shuffled_acc": 0.0,
+    "bce": 1.5457428693771362
+  },
+  "interpretation": "Prompt sensitivity only establishes a control path. Sparse drawing requires localized, high-rank actual assignments and nontrivial digit/paired IoU."
+}

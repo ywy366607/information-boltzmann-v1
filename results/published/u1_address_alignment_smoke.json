@@ -1,0 +1,51 @@
+{
+  "schema": "u1-address-posterior-alignment-candidate",
+  "admitted": false,
+  "source": "D:\\\u89c6\u89c9\u7f16\u7801\u5668\u6d4b\u8bd5\\checkpoints\\_unified_u1_candidate.pt",
+  "run": {
+    "steps": 1,
+    "lr": 0.0001,
+    "address_kl": 1.0,
+    "compactness": 0.15,
+    "diversity": 0.02,
+    "frozen_pythia": true,
+    "same_slice_deslice_graph": true
+  },
+  "history": [
+    {
+      "step": 1,
+      "loss": 2.1833133697509766,
+      "task_loss": 2.2685985565185547,
+      "address_kl": 0.004964607767760754,
+      "compactness": -0.35288727283477783,
+      "diversity": -1.8658440113067627,
+      "t2i": {
+        "n": 117,
+        "psnr": 15.975808163929443,
+        "digit_top1": 0.05128205128205128,
+        "digit_iou": 0.1430953038044465,
+        "color_acc": 0.2413580597927555,
+        "paired_iou": 0.00308543187367101,
+        "centroid_error": 0.5745355120947601,
+        "flood": 0.04996927082538605,
+        "digit_shuffled_top1": 0.05128205128205128,
+        "color_shuffled_acc": 0.2491355039175345,
+        "bce": 0.9701775312423706
+      }
+    }
+  ],
+  "final_t2i": {
+    "n": 117,
+    "psnr": 15.975808163929443,
+    "digit_top1": 0.05128205128205128,
+    "digit_iou": 0.1430953038044465,
+    "color_acc": 0.2413580597927555,
+    "paired_iou": 0.00308543187367101,
+    "centroid_error": 0.5745355120947601,
+    "flood": 0.04996927082538605,
+    "digit_shuffled_top1": 0.05128205128205128,
+    "color_shuffled_acc": 0.2491355039175345,
+    "bce": 0.9701775312423706
+  },
+  "decision_rule": "Promote neither this candidate nor recurrence unless reload improves paired IoU and address locality without a prompt-control collapse."
+}

@@ -1,0 +1,65 @@
+{
+  "checkpoint": "checkpoints/mixed_native_full_64_256.pt",
+  "sha256_loaded": "5718aee71281bccb93203c84e0c7ac9fbfeff275772f9537b625df42418f974a",
+  "step": 800,
+  "device": "cpu",
+  "scope": "one-checkpoint local gradient diagnosis; not a causal convergence result",
+  "rows": [
+    {
+      "id": "t2i1px-0",
+      "resolution": 64,
+      "ink_pixels": 36,
+      "ink_area_fraction": 0.0087890625,
+      "ink_red_prediction_mean": 0.016891129314899445,
+      "ink_abs_rgb_gradient_mass": 0.05914376676082611,
+      "background_abs_rgb_gradient_mass": 0.690190851688385,
+      "ink_mean_head_gradient_norm": 0.008035999722778797,
+      "background_mean_head_gradient_norm": 0.1352916806936264,
+      "mean_head_gradient_cosine": -0.2474008947610855,
+      "ink_pixel_nll_mean": 1.736318826675415,
+      "background_pixel_nll_mean": -1.4840373992919922
+    },
+    {
+      "id": "t2i1px-7",
+      "resolution": 64,
+      "ink_pixels": 18,
+      "ink_area_fraction": 0.00439453125,
+      "ink_red_prediction_mean": 0.016973666846752167,
+      "ink_abs_rgb_gradient_mass": 0.02956441603600979,
+      "background_abs_rgb_gradient_mass": 0.6938067674636841,
+      "ink_mean_head_gradient_norm": 0.004064769949764013,
+      "background_mean_head_gradient_norm": 0.1363547444343567,
+      "mean_head_gradient_cosine": -0.22253255546092987,
+      "ink_pixel_nll_mean": 1.7357594966888428,
+      "background_pixel_nll_mean": -1.483969807624817
+    },
+    {
+      "id": "t2i1px-0",
+      "resolution": 256,
+      "ink_pixels": 36,
+      "ink_area_fraction": 0.00054931640625,
+      "ink_red_prediction_mean": 0.019913822412490845,
+      "ink_abs_rgb_gradient_mass": 0.0036978174466639757,
+      "background_abs_rgb_gradient_mass": 0.6821622252464294,
+      "ink_mean_head_gradient_norm": 0.0005984268500469625,
+      "background_mean_head_gradient_norm": 0.1297309696674347,
+      "mean_head_gradient_cosine": -0.20032313466072083,
+      "ink_pixel_nll_mean": 1.716688632965088,
+      "background_pixel_nll_mean": -1.485060214996338
+    },
+    {
+      "id": "t2i1px-7",
+      "resolution": 256,
+      "ink_pixels": 18,
+      "ink_area_fraction": 0.000274658203125,
+      "ink_red_prediction_mean": 0.019886918365955353,
+      "ink_abs_rgb_gradient_mass": 0.0018484953325241804,
+      "background_abs_rgb_gradient_mass": 0.6846635341644287,
+      "ink_mean_head_gradient_norm": 0.0002989532658830285,
+      "background_mean_head_gradient_norm": 0.13066460192203522,
+      "mean_head_gradient_cosine": -0.19688153266906738,
+      "ink_pixel_nll_mean": 1.7168409824371338,
+      "background_pixel_nll_mean": -1.4849467277526855
+    }
+  ]
+}

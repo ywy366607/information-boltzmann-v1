@@ -8,6 +8,7 @@ homemade recognizer, not a generation metric. Do not optimize them.
 """
 from __future__ import annotations
 
+from functools import lru_cache
 from typing import Dict, List, Tuple
 
 import torch
@@ -219,3 +220,44 @@ def gen_free_scores(pred: torch.Tensor, digit: str, color: str) -> Dict[str, flo
     rec = digit_shift_scores(pred, digit, color)
     rec["color_acc"] = free_color_acc(pred, color)
     return rec
+
+
+@lru_cache(maxsize=32)
+def _registered_templates(res, place, box, stroke_px, normalized_layout):
+    """Bounded CPU-only cache; metrics never mutate these boolean templates."""
+    from fine_grain.omni_tasks import grid_digit_mask
+
+    return torch.stack([
+        grid_digit_mask(d, res, place, box=box, stroke_px=stroke_px,
+                        normalized_layout=normalized_layout)[0]
+        for d in OCR_DIGITS
+    ]).bool()
+
+
+def paired_digit_scores(
+    pred: torch.Tensor, digit: str, color: str, place: str,
+    *, box: int | None = None, stroke_px: int = 1, normalized_layout: bool = False,
+) -> Dict[str, float]:
+    """Registered-address glyph retrieval using the exact data renderer.
+
+    This is a paired synthetic metric, not an OCR model. It covers odd boxes
+    and address-dependent raster rounding missed by legacy sliding templates.
+    Target labels select among all ten templates; they never affect inference.
+    """
+    if pred.dim() == 3:
+        pred = pred.unsqueeze(0)
+    ink = free_ink_mask(pred, color)[0].bool()
+    templates = _registered_templates(
+        int(pred.shape[-1]), place, box, stroke_px, normalized_layout,
+    ).to(device=pred.device)
+    overlap = (templates & ink).sum(dim=(1, 2)).float()
+    union = (templates | ink).sum(dim=(1, 2)).clamp_min(1)
+    scores = overlap / union
+    gold = list(OCR_DIGITS).index(str(digit))
+    others = scores.clone()
+    others[gold] = -1
+    margin = scores[gold] - others.max()
+    return {"paired_digit_top1": float(margin > 1e-6),
+            "paired_digit_margin": float(margin),
+            "paired_digit_iou": float(scores[gold]),
+            "paired_digit_ambiguous": float((scores == scores.max()).sum() > 1)}

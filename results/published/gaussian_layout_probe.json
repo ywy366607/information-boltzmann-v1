@@ -1,0 +1,452 @@
+{
+  "scope": "30 fixed 32px samples, ten digits at one color/address in three modes; scratch, one seed",
+  "steps": 1200,
+  "seed": 42,
+  "learning_rate": 0.001,
+  "arms": {
+    "legacy": {
+      "checkpoint": "checkpoints/gaussian_layout_legacy_probe.pt",
+      "config": {
+        "d_model": 64,
+        "n_slices": 16,
+        "n_layers": 4,
+        "n_heads": 4,
+        "res": 32,
+        "surprise_mode": "v1_bayes",
+        "s_update": "raw",
+        "prior_loss_coef": 0.1,
+        "sigreg_coef": 0.0,
+        "use_stiefel": false,
+        "deslice_topk": 0,
+        "use_null_slice": false,
+        "use_residual_read": false,
+        "gate_on": "u",
+        "deslice_write": "increment",
+        "gate_h_local": false,
+        "vfe_coef": 0.1,
+        "prior_write": 1.0,
+        "prior_write_by_t": false,
+        "pixel_loss_mode": "balanced_bce",
+        "spatial_prompt_vocab": true,
+        "capability_vocab": true,
+        "use_modal_precision": true,
+        "use_target_time": true,
+        "use_target_time_adaln": false,
+        "use_horizon_tokens": false,
+        "gate_action_by_horizon": true,
+        "history_size": 2,
+        "action_dim": 2,
+        "use_action_adaln": false,
+        "use_action_tokens": true,
+        "use_task_tokens": true,
+        "n_task_tokens": 4,
+        "use_action_rel_bias": true,
+        "use_action_transport": false,
+        "use_action_slice_transition": false,
+        "use_active_gdn2": false,
+        "use_active_gdn2_history_transport": false,
+        "active_gdn2_initial_trust": 0.0,
+        "use_goal_adaln": false,
+        "seg_classes": 2,
+        "seg_loss_coef": 1.0,
+        "deep_visual_likelihood_coef": 0.0,
+        "transition_loss_coef": 0.5,
+        "transition_posterior_loss_coef": 1.0,
+        "transition_detach_q": true,
+        "causal_memory_loss_coef": 0.25,
+        "s0_acc_coef": 0.0,
+        "control_prefix_attention": true,
+        "use_attention_sink": false,
+        "gaussian_head_layout": "legacy"
+      },
+      "history": [
+        {
+          "step": 200,
+          "loss": 0.115179643034935,
+          "metrics": {
+            "text_to_both": {
+              "paired_digit_top1": 0.2,
+              "paired_iou": 0.3550884559750557,
+              "text_acc": 1.0,
+              "seg_iou": 0.4000201463699341
+            },
+            "image_to_current": {
+              "paired_digit_top1": 0.1,
+              "paired_iou": 0.230904521048069,
+              "text_acc": 0.1,
+              "seg_iou": 0.12308468855917454
+            },
+            "image_text_edit": {
+              "paired_digit_top1": 0.0,
+              "paired_iou": 0.0,
+              "text_acc": 0.0,
+              "seg_iou": 0.1487005390226841
+            }
+          }
+        },
+        {
+          "step": 400,
+          "loss": 0.010689795017242432,
+          "metrics": {
+            "text_to_both": {
+              "paired_digit_top1": 0.8,
+              "paired_iou": 0.8300618290901184,
+              "text_acc": 1.0,
+              "seg_iou": 0.9423100590705872
+            },
+            "image_to_current": {
+              "paired_digit_top1": 0.1,
+              "paired_iou": 0.215074260532856,
+              "text_acc": 0.1,
+              "seg_iou": 0.2004024527966976
+            },
+            "image_text_edit": {
+              "paired_digit_top1": 0.0,
+              "paired_iou": 0.0,
+              "text_acc": 0.0,
+              "seg_iou": 0.17558431401848792
+            }
+          }
+        },
+        {
+          "step": 600,
+          "loss": 0.6197131276130676,
+          "metrics": {
+            "text_to_both": {
+              "paired_digit_top1": 0.8,
+              "paired_iou": 0.6870177119970322,
+              "text_acc": 1.0,
+              "seg_iou": 0.8781814396381378
+            },
+            "image_to_current": {
+              "paired_digit_top1": 1.0,
+              "paired_iou": 0.9500021636486053,
+              "text_acc": 0.3,
+              "seg_iou": 1.0
+            },
+            "image_text_edit": {
+              "paired_digit_top1": 1.0,
+              "paired_iou": 0.9708333313465118,
+              "text_acc": 1.0,
+              "seg_iou": 1.0
+            }
+          }
+        },
+        {
+          "step": 800,
+          "loss": 0.4380539059638977,
+          "metrics": {
+            "text_to_both": {
+              "paired_digit_top1": 0.8,
+              "paired_iou": 0.7072039425373078,
+              "text_acc": 1.0,
+              "seg_iou": 0.890160083770752
+            },
+            "image_to_current": {
+              "paired_digit_top1": 1.0,
+              "paired_iou": 0.9521987974643707,
+              "text_acc": 0.8,
+              "seg_iou": 1.0
+            },
+            "image_text_edit": {
+              "paired_digit_top1": 1.0,
+              "paired_iou": 0.9671296298503875,
+              "text_acc": 1.0,
+              "seg_iou": 1.0
+            }
+          }
+        },
+        {
+          "step": 1000,
+          "loss": 0.6039700508117676,
+          "metrics": {
+            "text_to_both": {
+              "paired_digit_top1": 0.9,
+              "paired_iou": 0.7447378993034363,
+              "text_acc": 1.0,
+              "seg_iou": 0.9058137714862824
+            },
+            "image_to_current": {
+              "paired_digit_top1": 1.0,
+              "paired_iou": 0.9645598351955413,
+              "text_acc": 0.4,
+              "seg_iou": 1.0
+            },
+            "image_text_edit": {
+              "paired_digit_top1": 1.0,
+              "paired_iou": 0.9671296298503875,
+              "text_acc": 1.0,
+              "seg_iou": 1.0
+            }
+          }
+        },
+        {
+          "step": 1200,
+          "loss": 0.3333958685398102,
+          "metrics": {
+            "text_to_both": {
+              "paired_digit_top1": 0.9,
+              "paired_iou": 0.7359259188175201,
+              "text_acc": 1.0,
+              "seg_iou": 0.8982380092144012
+            },
+            "image_to_current": {
+              "paired_digit_top1": 1.0,
+              "paired_iou": 0.9608675301074981,
+              "text_acc": 0.7,
+              "seg_iou": 1.0
+            },
+            "image_text_edit": {
+              "paired_digit_top1": 1.0,
+              "paired_iou": 0.9671296298503875,
+              "text_acc": 1.0,
+              "seg_iou": 1.0
+            }
+          }
+        }
+      ],
+      "reloaded_metrics": {
+        "text_to_both": {
+          "paired_digit_top1": 0.9,
+          "paired_iou": 0.7359259188175201,
+          "text_acc": 1.0,
+          "seg_iou": 0.8982380092144012
+        },
+        "image_to_current": {
+          "paired_digit_top1": 1.0,
+          "paired_iou": 0.9608675301074981,
+          "text_acc": 0.7,
+          "seg_iou": 1.0
+        },
+        "image_text_edit": {
+          "paired_digit_top1": 1.0,
+          "paired_iou": 0.9671296298503875,
+          "text_acc": 1.0,
+          "seg_iou": 1.0
+        }
+      }
+    },
+    "per_head": {
+      "checkpoint": "checkpoints/gaussian_layout_per_head_probe.pt",
+      "config": {
+        "d_model": 64,
+        "n_slices": 16,
+        "n_layers": 4,
+        "n_heads": 4,
+        "res": 32,
+        "surprise_mode": "v1_bayes",
+        "s_update": "raw",
+        "prior_loss_coef": 0.1,
+        "sigreg_coef": 0.0,
+        "use_stiefel": false,
+        "deslice_topk": 0,
+        "use_null_slice": false,
+        "use_residual_read": false,
+        "gate_on": "u",
+        "deslice_write": "increment",
+        "gate_h_local": false,
+        "vfe_coef": 0.1,
+        "prior_write": 1.0,
+        "prior_write_by_t": false,
+        "pixel_loss_mode": "balanced_bce",
+        "spatial_prompt_vocab": true,
+        "capability_vocab": true,
+        "use_modal_precision": true,
+        "use_target_time": true,
+        "use_target_time_adaln": false,
+        "use_horizon_tokens": false,
+        "gate_action_by_horizon": true,
+        "history_size": 2,
+        "action_dim": 2,
+        "use_action_adaln": false,
+        "use_action_tokens": true,
+        "use_task_tokens": true,
+        "n_task_tokens": 4,
+        "use_action_rel_bias": true,
+        "use_action_transport": false,
+        "use_action_slice_transition": false,
+        "use_active_gdn2": false,
+        "use_active_gdn2_history_transport": false,
+        "active_gdn2_initial_trust": 0.0,
+        "use_goal_adaln": false,
+        "seg_classes": 2,
+        "seg_loss_coef": 1.0,
+        "deep_visual_likelihood_coef": 0.0,
+        "transition_loss_coef": 0.5,
+        "transition_posterior_loss_coef": 1.0,
+        "transition_detach_q": true,
+        "causal_memory_loss_coef": 0.25,
+        "s0_acc_coef": 0.0,
+        "control_prefix_attention": true,
+        "use_attention_sink": false,
+        "gaussian_head_layout": "per_head"
+      },
+      "history": [
+        {
+          "step": 200,
+          "loss": 0.12805235385894775,
+          "metrics": {
+            "text_to_both": {
+              "paired_digit_top1": 0.1,
+              "paired_iou": 0.2810192689299583,
+              "text_acc": 1.0,
+              "seg_iou": 0.3096077531576157
+            },
+            "image_to_current": {
+              "paired_digit_top1": 0.0,
+              "paired_iou": 0.18888166546821594,
+              "text_acc": 0.1,
+              "seg_iou": 0.07472934946417809
+            },
+            "image_text_edit": {
+              "paired_digit_top1": 0.0,
+              "paired_iou": 0.0,
+              "text_acc": 0.0,
+              "seg_iou": 0.0986647691577673
+            }
+          }
+        },
+        {
+          "step": 400,
+          "loss": 0.013855657540261745,
+          "metrics": {
+            "text_to_both": {
+              "paired_digit_top1": 1.0,
+              "paired_iou": 0.8674143731594086,
+              "text_acc": 1.0,
+              "seg_iou": 0.9280952394008637
+            },
+            "image_to_current": {
+              "paired_digit_top1": 0.1,
+              "paired_iou": 0.1911664441227913,
+              "text_acc": 0.1,
+              "seg_iou": 0.14366023875772954
+            },
+            "image_text_edit": {
+              "paired_digit_top1": 0.0,
+              "paired_iou": 0.0,
+              "text_acc": 0.0,
+              "seg_iou": 0.14113940373063089
+            }
+          }
+        },
+        {
+          "step": 600,
+          "loss": 0.6989826560020447,
+          "metrics": {
+            "text_to_both": {
+              "paired_digit_top1": 0.9,
+              "paired_iou": 0.8272800207138061,
+              "text_acc": 1.0,
+              "seg_iou": 0.9466116905212403
+            },
+            "image_to_current": {
+              "paired_digit_top1": 1.0,
+              "paired_iou": 0.9330765247344971,
+              "text_acc": 0.1,
+              "seg_iou": 1.0
+            },
+            "image_text_edit": {
+              "paired_digit_top1": 1.0,
+              "paired_iou": 0.9619825720787049,
+              "text_acc": 1.0,
+              "seg_iou": 1.0
+            }
+          }
+        },
+        {
+          "step": 800,
+          "loss": 0.5253037214279175,
+          "metrics": {
+            "text_to_both": {
+              "paired_digit_top1": 0.9,
+              "paired_iou": 0.8676454961299896,
+              "text_acc": 1.0,
+              "seg_iou": 0.9672462105751037
+            },
+            "image_to_current": {
+              "paired_digit_top1": 1.0,
+              "paired_iou": 0.9463508725166321,
+              "text_acc": 0.4,
+              "seg_iou": 0.9842424273490906
+            },
+            "image_text_edit": {
+              "paired_digit_top1": 1.0,
+              "paired_iou": 0.9415026485919953,
+              "text_acc": 1.0,
+              "seg_iou": 1.0
+            }
+          }
+        },
+        {
+          "step": 1000,
+          "loss": 0.3412996828556061,
+          "metrics": {
+            "text_to_both": {
+              "paired_digit_top1": 0.9,
+              "paired_iou": 0.8628299474716187,
+              "text_acc": 1.0,
+              "seg_iou": 0.9658730149269104
+            },
+            "image_to_current": {
+              "paired_digit_top1": 1.0,
+              "paired_iou": 0.9534608125686646,
+              "text_acc": 0.7,
+              "seg_iou": 0.9842424273490906
+            },
+            "image_text_edit": {
+              "paired_digit_top1": 1.0,
+              "paired_iou": 0.9496492385864258,
+              "text_acc": 1.0,
+              "seg_iou": 1.0
+            }
+          }
+        },
+        {
+          "step": 1200,
+          "loss": 0.28539642691612244,
+          "metrics": {
+            "text_to_both": {
+              "paired_digit_top1": 1.0,
+              "paired_iou": 0.8543094515800476,
+              "text_acc": 1.0,
+              "seg_iou": 0.9704481780529022
+            },
+            "image_to_current": {
+              "paired_digit_top1": 1.0,
+              "paired_iou": 0.953441321849823,
+              "text_acc": 0.5,
+              "seg_iou": 0.9842424273490906
+            },
+            "image_text_edit": {
+              "paired_digit_top1": 1.0,
+              "paired_iou": 0.9496492385864258,
+              "text_acc": 1.0,
+              "seg_iou": 1.0
+            }
+          }
+        }
+      ],
+      "reloaded_metrics": {
+        "text_to_both": {
+          "paired_digit_top1": 0.9,
+          "paired_iou": 0.8628299474716187,
+          "text_acc": 1.0,
+          "seg_iou": 0.9658730149269104
+        },
+        "image_to_current": {
+          "paired_digit_top1": 1.0,
+          "paired_iou": 0.9534608125686646,
+          "text_acc": 0.7,
+          "seg_iou": 0.9842424273490906
+        },
+        "image_text_edit": {
+          "paired_digit_top1": 1.0,
+          "paired_iou": 0.9496492385864258,
+          "text_acc": 1.0,
+          "seg_iou": 1.0
+        }
+      }
+    }
+  }
+}

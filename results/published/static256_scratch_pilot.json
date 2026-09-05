@@ -1,0 +1,202 @@
+{
+  "scope": "native-resolution synthetic fixed-bank overfit; not generalization, 1px OCR, natural images, Pythia, or future prediction",
+  "initialization": "random weights; reference config only",
+  "config": {
+    "d_model": 64,
+    "n_slices": 16,
+    "n_layers": 4,
+    "n_heads": 4,
+    "res": 256,
+    "surprise_mode": "v1_bayes",
+    "s_update": "raw",
+    "prior_loss_coef": 0.1,
+    "sigreg_coef": 0.0,
+    "use_stiefel": false,
+    "deslice_topk": 0,
+    "use_null_slice": false,
+    "use_residual_read": false,
+    "gate_on": "u",
+    "deslice_write": "increment",
+    "gate_h_local": false,
+    "vfe_coef": 0.1,
+    "prior_write": 1.0,
+    "prior_write_by_t": false,
+    "pixel_loss_mode": "balanced_bce",
+    "spatial_prompt_vocab": true,
+    "capability_vocab": true,
+    "use_modal_precision": true,
+    "use_target_time": true,
+    "use_target_time_adaln": false,
+    "use_horizon_tokens": false,
+    "gate_action_by_horizon": true,
+    "history_size": 2,
+    "action_dim": 2,
+    "use_action_adaln": false,
+    "use_action_tokens": true,
+    "use_task_tokens": true,
+    "n_task_tokens": 4,
+    "use_action_rel_bias": true,
+    "use_action_transport": false,
+    "use_action_slice_transition": false,
+    "use_active_gdn2": false,
+    "use_active_gdn2_history_transport": false,
+    "active_gdn2_initial_trust": 0.0,
+    "use_goal_adaln": false,
+    "seg_classes": 2,
+    "seg_loss_coef": 1.0,
+    "deep_visual_likelihood_coef": 0.0,
+    "transition_loss_coef": 0.5,
+    "transition_posterior_loss_coef": 1.0,
+    "transition_detach_q": true,
+    "causal_memory_loss_coef": 0.25,
+    "s0_acc_coef": 0.0,
+    "control_prefix_attention": true,
+    "use_attention_sink": false,
+    "gaussian_head_layout": "per_head"
+  },
+  "raster": {
+    "res": 256,
+    "box": 88,
+    "stroke_px": 7,
+    "normalized_layout": false
+  },
+  "training": {
+    "config_from": "checkpoints/gaussian_layout_per_head_finish.pt",
+    "res": 256,
+    "glyph_box": 88,
+    "stroke_px": 7,
+    "steps": 240,
+    "warmup_steps": 80,
+    "microbatch": 2,
+    "accumulation": 3,
+    "lr": 0.001,
+    "eval_every": 80,
+    "eval_scenes": 30,
+    "tag": "static256_scratch_pilot",
+    "seed": 42,
+    "device": "cuda"
+  },
+  "scene_count": 360,
+  "sample_count": 1080,
+  "effective_batch": 6,
+  "status": "training_budget_completed_selection_repaired",
+  "checkpoint": "checkpoints/static256_scratch_pilot_last.pt",
+  "selected_step": 240,
+  "invalidated_checkpoint": "checkpoints/static256_scratch_pilot_best.pt",
+  "selection_note": "Original selector chose generation-only step 80. Its redundant full audit was stopped after all training completed. Joint candidates must be after warmup; step 240 beats step 160 under the unchanged score. Full step-240 reload is reported separately.",
+  "full_evaluation": "results/published/static256_joint_audit.json",
+  "unique_scenes_seen_by_case": {"text_to_both": 360, "image_to_current": 320, "image_text_edit": 320},
+  "history": [
+    {
+      "step": 80,
+      "loss": 2.3247950077056885,
+      "lr": 0.0007624999999999999,
+      "gradient_norm": 4.796032905578613,
+      "quick_metrics": {
+        "text_to_both": {
+          "n": 30,
+          "paired_digit_top1": 0.0,
+          "paired_iou": 0.004924369230866432,
+          "text_acc": 0.8666666666666667,
+          "seg_iou": 0.01875436946672077,
+          "color_acc": 0.26666666666666666,
+          "flood": 0.26612368336645886
+        },
+        "image_to_current": {
+          "n": 30,
+          "paired_digit_top1": 0.0,
+          "paired_iou": 0.0,
+          "text_acc": 0.06666666666666667,
+          "seg_iou": 0.015130422954825917,
+          "color_acc": 0.0,
+          "flood": 0.0
+        },
+        "image_text_edit": {
+          "n": 30,
+          "paired_digit_top1": 0.0,
+          "paired_iou": 0.0,
+          "text_acc": 0.0,
+          "seg_iou": 0.014285148374801793,
+          "color_acc": 0.0,
+          "flood": 0.0
+        }
+      }
+    },
+    {
+      "step": 160,
+      "loss": 2.0705313682556152,
+      "lr": 0.0002875000000000001,
+      "gradient_norm": 4.085992336273193,
+      "quick_metrics": {
+        "text_to_both": {
+          "n": 30,
+          "paired_digit_top1": 0.1,
+          "paired_iou": 0.015950972804178794,
+          "text_acc": 1.0,
+          "seg_iou": 0.013231948926113546,
+          "color_acc": 0.6999027729034424,
+          "flood": 0.9980023642381032
+        },
+        "image_to_current": {
+          "n": 30,
+          "paired_digit_top1": 0.5,
+          "paired_iou": 0.38122889791460085,
+          "text_acc": 0.13333333333333333,
+          "seg_iou": 0.9893569688002268,
+          "color_acc": 0.45411993463834127,
+          "flood": 2.8127334735472688e-05
+        },
+        "image_text_edit": {
+          "n": 30,
+          "paired_digit_top1": 0.3,
+          "paired_iou": 0.024930297040070097,
+          "text_acc": 0.3,
+          "seg_iou": 0.980953045686086,
+          "color_acc": 0.2597675108971695,
+          "flood": 9.877755898439015e-06
+        }
+      }
+    },
+    {
+      "step": 240,
+      "loss": 1.9572579463322959,
+      "lr": 5e-05,
+      "gradient_norm": 4.465891361236572,
+      "quick_metrics": {
+        "text_to_both": {
+          "n": 30,
+          "paired_digit_top1": 0.1,
+          "paired_iou": 0.01594392644862334,
+          "text_acc": 1.0,
+          "seg_iou": 0.022660671484967074,
+          "color_acc": 0.7,
+          "flood": 0.9986945152282715
+        },
+        "image_to_current": {
+          "n": 30,
+          "paired_digit_top1": 0.7666666666666667,
+          "paired_iou": 0.46313202978732687,
+          "text_acc": 0.16666666666666666,
+          "seg_iou": 0.9915164987246196,
+          "color_acc": 0.6299705510338147,
+          "flood": 2.605016306915786e-05
+        },
+        "image_text_edit": {
+          "n": 30,
+          "paired_digit_top1": 0.3,
+          "paired_iou": 0.048197141425528875,
+          "text_acc": 0.16666666666666666,
+          "seg_iou": 0.9414747814337413,
+          "color_acc": 0.057477276469580826,
+          "flood": 4.688213690921354e-06
+        }
+      }
+    }
+  ],
+  "seen_by_case": {
+    "text_to_both": 800,
+    "image_to_current": 320,
+    "image_text_edit": 320
+  },
+  "seconds": 512.1695061999999
+}

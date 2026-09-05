@@ -1,0 +1,45 @@
+{
+  "checkpoint": "checkpoints/gaussian_layout_per_head_finish.pt",
+  "scope": "30 fixed 32px samples, ten digits at one color/address in three modes; checkpoint continuation, one seed",
+  "intervention": "rotate digit prompts for generation; rotate source images for current/edit; retain original targets",
+  "intact": {
+    "text_to_both": {
+      "paired_digit_top1": 1.0,
+      "paired_iou": 0.978649240732193,
+      "text_acc": 1.0,
+      "seg_iou": 1.0
+    },
+    "image_to_current": {
+      "paired_digit_top1": 1.0,
+      "paired_iou": 0.9933333337306977,
+      "text_acc": 1.0,
+      "seg_iou": 1.0
+    },
+    "image_text_edit": {
+      "paired_digit_top1": 1.0,
+      "paired_iou": 0.9962962985038757,
+      "text_acc": 1.0,
+      "seg_iou": 1.0
+    }
+  },
+  "changed": {
+    "text_to_both": {
+      "paired_digit_top1": 0.0,
+      "paired_iou": 0.29859174229204655,
+      "text_acc": 0.0,
+      "seg_iou": 0.29766334034502506
+    },
+    "image_to_current": {
+      "paired_digit_top1": 0.0,
+      "paired_iou": 0.2969070378690958,
+      "text_acc": 0.0,
+      "seg_iou": 0.29766334034502506
+    },
+    "image_text_edit": {
+      "paired_digit_top1": 0.0,
+      "paired_iou": 0.29728455282747746,
+      "text_acc": 1.0,
+      "seg_iou": 0.29766334034502506
+    }
+  }
+}

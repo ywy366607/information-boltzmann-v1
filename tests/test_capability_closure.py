@@ -3,11 +3,13 @@ import torch
 
 from fine_grain.capability_tasks import (
     CAPABILITY_CASES,
+    CAPABILITY_TASK_IDS,
     capability_sample,
     collate_capability,
     make_capability_batch,
     make_counterfactual_future_batch,
 )
+from fine_grain.omni_tasks import grid_digit_mask
 from fine_grain.omni_model import DualStreamOmni
 from scripts.train_northstar_capabilities import (
     _checkpoint_score,
@@ -21,6 +23,7 @@ def _model(
     transition_loss_coef=0.0,
     goal_adaln=False,
     action_tokens=False,
+    task_tokens=False,
     horizon_tokens=False,
     action_rel_bias=False,
     action_transport=False,
@@ -28,6 +31,7 @@ def _model(
     transition_gate=False,
     use_active_gdn2=False,
     causal_memory_loss_coef=0.0,
+    deep_visual_likelihood_coef=0.0,
 ):
     return DualStreamOmni(
         d_model=32,
@@ -53,12 +57,15 @@ def _model(
         action_dim=2,
         use_action_adaln=not action_tokens,
         use_action_tokens=action_tokens,
+        use_task_tokens=task_tokens,
+        n_task_tokens=len(CAPABILITY_CASES),
         use_action_rel_bias=action_rel_bias,
         use_action_transport=action_transport,
         use_action_slice_transition=action_slice_transition,
         use_active_gdn2=use_active_gdn2,
         use_goal_adaln=goal_adaln,
         seg_classes=2,
+        deep_visual_likelihood_coef=deep_visual_likelihood_coef,
         transition_loss_coef=transition_loss_coef,
         causal_memory_loss_coef=causal_memory_loss_coef,
         s0_acc_coef=0.0,
@@ -76,6 +83,90 @@ def test_missing_text_precision_removes_lexical_evidence():
     assert torch.equal(a["rgb"], b["rgb"])
 
 
+def test_task_token_is_global_intention_in_shared_h_workspace():
+    torch.manual_seed(0)
+    model = _model(task_tokens=True)
+    image = torch.zeros(2, 3, 16, 16)
+    prompt = ["Draw digit 7"] * 2
+    out = model(image, prompt, task_id=torch.tensor([
+        CAPABILITY_TASK_IDS["text_to_both"],
+        CAPABILITY_TASK_IDS["image_text_edit"],
+    ]))
+    assert not torch.equal(out["X"][0], out["X"][1])
+    out["X"].sum().backward()
+    assert model.mot_stack.task_embed.weight.grad is not None
+    assert model.mot_stack.task_embed.weight.grad.abs().sum() > 0
+
+
+def test_capability_batch_carries_declared_task_ids():
+    rng = np.random.default_rng(9)
+    samples = [capability_sample(rng, 16, case) for case in CAPABILITY_CASES]
+    batch = collate_capability(samples)
+    assert batch["task_id"].tolist() == [CAPABILITY_TASK_IDS[c] for c in CAPABILITY_CASES]
+
+
+def test_deep_visual_likelihood_reuses_layer_fields_and_rgb_head():
+    torch.manual_seed(0)
+    model = _model(deep_visual_likelihood_coef=0.5)
+    rng = np.random.default_rng(4)
+    samples = [capability_sample(rng, 16, "text_to_both") for _ in range(3)]
+    batch = collate_capability(samples)
+    batch["t"] = torch.zeros(len(samples))
+    out = model(
+        batch["image"], batch["prompt"], t=batch["t"],
+        image_precision=batch["image_precision"],
+        text_precision=batch["text_precision"],
+        target_time=batch["target_time"],
+        history_images=batch["history_images"],
+        history_precision=batch["history_precision"],
+        action=batch["action"], action_precision=batch["action_precision"],
+    )
+    assert len(out["X_steps"]) == 2
+    loss, meta = model.omni_loss(out, batch, torch.device("cpu"))
+    assert meta["n_deep_visual_steps"] == 1
+    assert meta["deep_visual_likelihood"] > 0
+    loss.backward()
+    assert model.mot_stack.layers[0].mot.Wv_t.weight.grad is not None
+
+
+def test_normalized_glyph_course_preserves_legacy_16_and_relative_address():
+    legacy = grid_digit_mask("7", 16, "top_left")
+    normalized = grid_digit_mask(
+        "7", 16, "top_left", box=6, normalized_layout=True,
+    )
+    assert torch.equal(legacy, normalized)
+    small = grid_digit_mask(
+        "7", 16, "middle_center", box=6, stroke_px=1, normalized_layout=True,
+    )
+    large = grid_digit_mask(
+        "7", 64, "middle_center", box=24, stroke_px=4, normalized_layout=True,
+    )
+    sy, sx = torch.nonzero(small[0], as_tuple=True)
+    ly, lx = torch.nonzero(large[0], as_tuple=True)
+    small_center = torch.stack([sy.float().mean() / 15.0, sx.float().mean() / 15.0])
+    large_center = torch.stack([ly.float().mean() / 63.0, lx.float().mean() / 63.0])
+    # Rasterized 7 has asymmetric 1px endpoints, so exact pixel centroids do
+    # not scale perfectly; the named-address drift must stay sub-cell.
+    assert torch.allclose(small_center, large_center, atol=0.04)
+
+
+def test_mesh_aware_local_dilation_changes_no_parameter_shapes():
+    from fine_grain.native_mot import NativeMoTStack
+
+    model = NativeMoTStack(
+        d_llm=32, d_x=32, d=32, res=32, n_slices=8, n_layers=1,
+        n_heads=4, local_dilation=2,
+    )
+    assert model.stem_local[0].dilation == (2, 2)
+    assert model.layers[0].local.dw.dilation == (2, 2)
+    legacy = NativeMoTStack(
+        d_llm=32, d_x=32, d=32, res=16, n_slices=8, n_layers=1,
+        n_heads=4,
+    )
+    assert model.stem_local[0].weight.shape == legacy.stem_local[0].weight.shape
+    assert model.layers[0].local.dw.weight.shape == legacy.layers[0].local.dw.weight.shape
+
+
 def test_missing_image_precision_removes_rgb_evidence():
     torch.manual_seed(1)
     model = _model()
@@ -86,6 +177,15 @@ def test_missing_image_precision_removes_rgb_evidence():
         b = model(b_img, ["Draw digit 3"], image_precision=torch.zeros(1))
     assert torch.equal(a["logits"], b["logits"])
     assert torch.equal(a["rgb"], b["rgb"])
+
+
+def test_only_future_port_observes_history():
+    rng = np.random.default_rng(29)
+    for case in CAPABILITY_CASES[:3]:
+        sample = capability_sample(rng, 16, case)
+        assert torch.count_nonzero(sample["history_precision"]) == 0
+    future = capability_sample(rng, 16, "image_to_future")
+    assert torch.all(future["history_precision"] == 1)
 
 
 def test_one_graph_produces_text_rgb_and_segmentation_losses():

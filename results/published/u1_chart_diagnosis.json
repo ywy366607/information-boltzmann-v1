@@ -1,0 +1,252 @@
+{
+  "schema": "u1-direct-merge-chart-diagnosis",
+  "source": {
+    "natural": "D:\\\u89c6\u89c9\u7f16\u7801\u5668\u6d4b\u8bd5\\checkpoints\\_natural_t2i_g8b_candidate.pt",
+    "token": "D:\\\u89c6\u89c9\u7f16\u7801\u5668\u6d4b\u8bd5\\checkpoints\\omni_d64_pythia_token_best.pt",
+    "candidate": "D:\\\u89c6\u89c9\u7f16\u7801\u5668\u6d4b\u8bd5\\checkpoints\\_unified_u1_candidate.pt"
+  },
+  "initial_load": {
+    "path": "D:\\\u89c6\u89c9\u7f16\u7801\u5668\u6d4b\u8bd5\\checkpoints\\_natural_t2i_g8b_candidate.pt",
+    "loaded": 302,
+    "skipped": [],
+    "n_skipped": 0
+  },
+  "overlay": {
+    "loaded_count": 25,
+    "skipped": [
+      "mot_stack.readout.to_logits.weight",
+      "mot_stack.readout.to_logits.bias",
+      "mot_stack.readout.temp.0.weight",
+      "mot_stack.readout.temp.0.bias",
+      "mot_stack.readout.temp.2.weight"
+    ]
+  },
+  "trainable_count": 139,
+  "static_before_training": {
+    "t2i": {
+      "n": 117,
+      "psnr": 16.697358874239246,
+      "digit_top1": 0.02564102564102564,
+      "digit_iou": 0.024963321721451916,
+      "color_acc": 0.24786324786324787,
+      "paired_iou": 0.002320868639737113,
+      "centroid_error": 0.8269127588241528,
+      "flood": 0.05549638718366623,
+      "digit_shuffled_top1": 0.02564102564102564,
+      "color_shuffled_acc": 0.24786324786324787,
+      "bce": 1.078189492225647
+    },
+    "current": {
+      "n": 90,
+      "psnr": 28.09357514541414,
+      "digit_top1": 0.5777777777777777,
+      "color_acc": 0.6849772681792577,
+      "paired_iou": 0.5833620756864548,
+      "seg_iou": 0.8646340707937876,
+      "flood": 0.0011927069863304496,
+      "source_shuffled_digit_top1": 0.06666666666666667,
+      "source_shuffled_paired_iou": 0.018879728391766548,
+      "source_shuffled_seg_iou": 0.018421993859940106,
+      "source_digit_gap": 0.5111111111111111,
+      "source_iou_gap": 0.5644823472946883,
+      "source_seg_gap": 0.8462120769338475
+    },
+    "edit": {
+      "n": 90,
+      "style": "next-color",
+      "digit_top1": 0.15555555555555556,
+      "color_acc": 0.15388172471688855,
+      "paired_iou": 0.09608595037005013,
+      "seg_iou": 0.8609327207008998,
+      "flood": 0.0008042565314099193,
+      "source_shuffled_digit_top1": 0.06666666666666667,
+      "source_shuffled_paired_iou": 0.0018241406314902836,
+      "source_digit_gap": 0.08888888888888889,
+      "source_iou_gap": 0.09426180973855985,
+      "psnr": 25.290710337517698
+    }
+  },
+  "static_after_400_steps": {
+    "t2i": {
+      "n": 117,
+      "psnr": 16.529659851274374,
+      "digit_top1": 0.042735042735042736,
+      "digit_iou": 0.1555786853035291,
+      "color_acc": 0.24585192071066964,
+      "paired_iou": 0.00363889393898157,
+      "centroid_error": 0.6556134518777204,
+      "flood": 0.05163203552365303,
+      "digit_shuffled_top1": 0.05982905982905983,
+      "color_shuffled_acc": 0.2474867668735166,
+      "bce": 1.0431506633758545
+    },
+    "current": {
+      "n": 90,
+      "psnr": 27.999228674677266,
+      "digit_top1": 0.5777777777777777,
+      "color_acc": 0.6769542205664847,
+      "paired_iou": 0.5864784801171885,
+      "seg_iou": 0.8524235152535968,
+      "flood": 0.001474470365792513,
+      "source_shuffled_digit_top1": 0.07777777777777778,
+      "source_shuffled_paired_iou": 0.02018999420106411,
+      "source_shuffled_seg_iou": 0.018004735766185654,
+      "source_digit_gap": 0.49999999999999994,
+      "source_iou_gap": 0.5662884859161244,
+      "source_seg_gap": 0.8344187794874112
+    },
+    "edit": {
+      "n": 90,
+      "style": "next-color",
+      "digit_top1": 0.14444444444444443,
+      "color_acc": 0.12585232762826815,
+      "paired_iou": 0.0647771790313224,
+      "seg_iou": 0.8328957070906957,
+      "flood": 0.0009574482683092356,
+      "source_shuffled_digit_top1": 0.1,
+      "source_shuffled_paired_iou": 0.0018026870157983568,
+      "source_digit_gap": 0.044444444444444425,
+      "source_iou_gap": 0.06297449201552403,
+      "psnr": 25.3089958291047
+    }
+  },
+  "gradient_audit": {
+    "text_to_both": {
+      "loss": 2.338048219680786,
+      "boundary": {
+        "image_precision": 0.0,
+        "text_precision": 1.0
+      },
+      "gradient_norm_sum": {
+        "other": 0.0856388583779335,
+        "text_in": 0.14706392958760262,
+        "slice_read_write": 2.550798263924662,
+        "language_to_vision": 0.2336049722507596,
+        "f2_prior": 0.6558833118760958,
+        "rgb_likelihood": 1.6595728802494705,
+        "seg_likelihood": 8.354377090930939
+      }
+    },
+    "image_to_current": {
+      "loss": 0.06690440326929092,
+      "boundary": {
+        "image_precision": 1.0,
+        "text_precision": 0.0
+      },
+      "gradient_norm_sum": {
+        "other": 0.414628803730011,
+        "text_in": 0.0,
+        "slice_read_write": 4.1734704551054165,
+        "language_to_vision": 0.0,
+        "f2_prior": 0.5173173798248172,
+        "rgb_likelihood": 1.9215366134012584,
+        "seg_likelihood": 1.0299497470259666
+      }
+    },
+    "image_text_edit": {
+      "loss": 0.07809823751449585,
+      "boundary": {
+        "image_precision": 1.0,
+        "text_precision": 1.0
+      },
+      "gradient_norm_sum": {
+        "other": 0.5906049832701683,
+        "text_in": 0.17485591024160385,
+        "slice_read_write": 4.022024502744898,
+        "language_to_vision": 0.47033138014376163,
+        "f2_prior": 1.0954661334399134,
+        "rgb_likelihood": 1.9290887851384468,
+        "seg_likelihood": 1.0594613403081894
+      }
+    }
+  },
+  "natural_static_t2i_gradient_cosine": {
+    "natural_loss": 0.05077604204416275,
+    "static_loss": 2.338048219680786,
+    "by_family": {
+      "other": {
+        "natural_norm": 0.010647162784211902,
+        "static_norm": 0.08563886306170285,
+        "cosine": -0.39165926374123267
+      },
+      "slice_read_write": {
+        "natural_norm": 0.741371383946465,
+        "static_norm": 0.5602449564141551,
+        "cosine": -0.02868874195848009
+      },
+      "language_to_vision": {
+        "natural_norm": 0.03939124301093842,
+        "static_norm": 0.10999706847724398,
+        "cosine": -0.03430800792674919
+      },
+      "f2_prior": {
+        "natural_norm": 0.015878553251619958,
+        "static_norm": 0.2046456704025004,
+        "cosine": -0.10837553092272786
+      },
+      "terminal_token": {
+        "natural_norm": 0.0,
+        "static_norm": 0.0,
+        "cosine": 0.0
+      },
+      "text_in": {
+        "natural_norm": 0.012167770908807772,
+        "static_norm": 0.10539000273450837,
+        "cosine": -0.2840431067725813
+      },
+      "rgb_likelihood": {
+        "natural_norm": 0.012416251280503256,
+        "static_norm": 1.3372156150701173,
+        "cosine": -0.0050035121744796025
+      },
+      "seg_likelihood": {
+        "natural_norm": 0.0,
+        "static_norm": 5.938832432165357,
+        "cosine": 0.0
+      }
+    }
+  },
+  "relative_parameter_drift_from_u1_start": {
+    "other": {
+      "n": 240,
+      "median_relative_rms": 0.0,
+      "max_relative_rms": 0.10896720737218857
+    },
+    "terminal_token": {
+      "n": 8,
+      "median_relative_rms": 0.02439169492572546,
+      "max_relative_rms": 0.05609244108200073
+    },
+    "text_in": {
+      "n": 2,
+      "median_relative_rms": 0.013266211142763495,
+      "max_relative_rms": 0.0197465643286705
+    },
+    "slice_read_write": {
+      "n": 64,
+      "median_relative_rms": 0.001286312734009698,
+      "max_relative_rms": 0.007996518164873123
+    },
+    "language_to_vision": {
+      "n": 8,
+      "median_relative_rms": 0.035275619477033615,
+      "max_relative_rms": 0.04517103359103203
+    },
+    "f2_prior": {
+      "n": 44,
+      "median_relative_rms": 0.005337432725355029,
+      "max_relative_rms": 0.11763692647218704
+    },
+    "rgb_likelihood": {
+      "n": 8,
+      "median_relative_rms": 0.006230061640962958,
+      "max_relative_rms": 1.2991129159927368
+    },
+    "seg_likelihood": {
+      "n": 4,
+      "median_relative_rms": 0.007212807075120509,
+      "max_relative_rms": 0.03813555836677551
+    }
+  },
+  "interpretation": "Nonzero gradients and correct 0/1 precision boundaries rule out a frozen-path or modality-boundary wiring failure. Shape-skipped M-dependent token readout and poor pretraining static scores identify cross-chart transfer plus insufficient per-task updates as the direct-merge limitation."
+}

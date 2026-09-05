@@ -56,7 +56,14 @@ PROTECTED_CHECKPOINTS = {
 }
 
 
-def make_static_bank(res: int, case: str) -> list[dict]:
+def make_static_bank(
+    res: int,
+    case: str,
+    *,
+    glyph_box: int | None = None,
+    glyph_stroke_px: int = 1,
+    normalized_layout: bool = False,
+) -> list[dict]:
     """Balanced digit/color/address bank in one explicit boundary condition."""
     if case not in ("text_to_both", "image_to_current", "image_text_edit"):
         raise ValueError(f"B2 static bank does not admit {case!r}")
@@ -69,6 +76,8 @@ def make_static_bank(res: int, case: str) -> list[dict]:
     bank = [
         capability_sample(
             rng, res, case, digit=digit, color=color, place=place,
+            glyph_box=glyph_box, glyph_stroke_px=glyph_stroke_px,
+            normalized_layout=normalized_layout,
         )
         for place in GRID_PLACES
         for digit in OCR_DIGITS
@@ -82,9 +91,19 @@ def make_static_bank(res: int, case: str) -> list[dict]:
     return bank
 
 
-def make_cycle_eval_bank(res: int, case: str) -> list[dict]:
+def make_cycle_eval_bank(
+    res: int,
+    case: str,
+    *,
+    glyph_box: int | None = None,
+    glyph_stroke_px: int = 1,
+    normalized_layout: bool = False,
+) -> list[dict]:
     """One color-cycled sample for every digit/address on the same scene API."""
-    bank = make_static_bank(res, case)
+    bank = make_static_bank(
+        res, case, glyph_box=glyph_box, glyph_stroke_px=glyph_stroke_px,
+        normalized_layout=normalized_layout,
+    )
     return [
         sample for sample in bank
         if sample["target_color"] == COLORS[
@@ -201,8 +220,15 @@ def paired_digit_likelihood(
     batch: dict,
     temperature: float = 0.1,
     seg_weight: float = 0.25,
+    difference_only: bool = False,
 ) -> tuple[torch.Tensor, dict]:
-    """Match ten digit prompts to ten targets at fixed color and address."""
+    """Match ten prompts to targets through existing RGB/seg likelihoods.
+
+    ``difference_only`` keeps the matched observation energy unchanged but
+    evaluates mismatched targets only on their symmetric-difference pixels.
+    It prevents common digit strokes from becoming false negatives while
+    retaining a plain pairwise observation-energy contrast.
+    """
     digits = list(batch["digit"])
     if len(digits) != 10 or set(digits) != set(OCR_DIGITS):
         zero = out["rgb"].sum() * 0.0
@@ -217,18 +243,38 @@ def paired_digit_likelihood(
     target_rgb = batch["target_rgb"].to(pred_rgb.device).index_select(0, order)
     pred_seg = out["seg_logits"].index_select(0, order)
     target_seg = batch["target_seg"].to(pred_rgb.device).index_select(0, order)
+    diagonal = _observation_energy(
+        {"rgb": pred_rgb, "seg_logits": pred_seg},
+        {"target_rgb": target_rgb, "target_seg": target_seg}, seg_weight,
+    )
     columns = []
     for column in range(10):
-        rgb = balanced_observation_bce(
-            pred_rgb,
-            target_rgb[column : column + 1].expand_as(pred_rgb),
-            reduction="none",
-        )
+        target_rgb_column = target_rgb[column : column + 1].expand_as(pred_rgb)
         seg_target = target_seg[column : column + 1].expand(
             pred_seg.shape[0], -1, -1,
         )
-        seg = _balanced_seg_nll(pred_seg, seg_target)
-        columns.append(rgb + float(seg_weight) * seg)
+        if difference_only:
+            difference = (
+                (target_rgb - target_rgb_column).abs().amax(dim=1) > 1e-5
+            )
+            rgb_error = torch.nn.functional.binary_cross_entropy(
+                pred_rgb.clamp(1e-5, 1.0 - 1e-5), target_rgb_column,
+                reduction="none",
+            ).mean(dim=1)
+            seg_error = torch.nn.functional.cross_entropy(
+                pred_seg, seg_target.long(), reduction="none",
+            )
+            weight = difference.to(rgb_error.dtype)
+            count = weight.flatten(1).sum(dim=1).clamp_min(1.0)
+            energy = ((rgb_error + float(seg_weight) * seg_error) * weight).flatten(1).sum(dim=1) / count
+            energy[column] = diagonal[column]
+        else:
+            rgb = balanced_observation_bce(
+                pred_rgb, target_rgb_column, reduction="none",
+            )
+            seg = _balanced_seg_nll(pred_seg, seg_target)
+            energy = rgb + float(seg_weight) * seg
+        columns.append(energy)
     energy = torch.stack(columns, dim=1)
     labels = torch.arange(10, device=energy.device)
     logits = -energy / float(temperature)
@@ -245,6 +291,47 @@ def paired_digit_likelihood(
         "digit_energy_diagonal": float(diagonal.detach()),
         "digit_energy_offdiagonal": float(offdiag.detach()),
         "digit_energy_gap": float((offdiag - diagonal).detach()),
+        "digit_group_difference_only": bool(difference_only),
+    }
+
+
+def digit_residual_likelihood(
+    out: dict,
+    batch: dict,
+    seg_weight: float = 0.25,
+) -> tuple[torch.Tensor, dict]:
+    """Match each prompt's observed glyph residual around its group mean.
+
+    This is a grouped RGB/seg observation likelihood, not a digit classifier:
+    common strokes cancel from both target and prediction residuals, while
+    prompt-specific strokes retain their signed target signal.
+    """
+    digits = list(batch["digit"])
+    if len(digits) != 10 or set(digits) != set(OCR_DIGITS):
+        zero = out["rgb"].sum() * 0.0
+        return zero, {"digit_residual_active": False}
+    if len(set(batch["target_color"])) != 1 or len(set(batch["source_place"])) != 1:
+        raise ValueError("digit residual requires one color and one address")
+    order = torch.tensor([digits.index(digit) for digit in OCR_DIGITS], device=out["rgb"].device)
+    pred_rgb = out["rgb"].index_select(0, order).clamp(0.0, 1.0)
+    target_rgb = batch["target_rgb"].to(pred_rgb.device).index_select(0, order)
+    pred_seg = torch.softmax(out["seg_logits"].index_select(0, order), dim=1)[:, 1]
+    target_seg = batch["target_seg"].to(pred_rgb.device).index_select(0, order).to(pred_seg.dtype)
+    union = target_rgb.abs().amax(dim=(0, 1), keepdim=True) > 1e-5
+    weight = union.to(pred_rgb.dtype)
+    count = weight.sum().clamp_min(1.0)
+    rgb_residual = pred_rgb - pred_rgb.mean(dim=0, keepdim=True)
+    target_residual = target_rgb - target_rgb.mean(dim=0, keepdim=True)
+    rgb = ((rgb_residual - target_residual).square() * weight).sum() / (count * pred_rgb.shape[0] * pred_rgb.shape[1])
+    seg_residual = pred_seg - pred_seg.mean(dim=0, keepdim=True)
+    target_seg_residual = target_seg - target_seg.mean(dim=0, keepdim=True)
+    seg = ((seg_residual - target_seg_residual).square() * weight[:, 0]).sum() / (count * pred_seg.shape[0])
+    loss = rgb + float(seg_weight) * seg
+    return loss, {
+        "digit_residual_active": True,
+        "digit_residual_rgb": float(rgb.detach()),
+        "digit_residual_seg": float(seg.detach()),
+        "digit_residual_union_pixels": int(union.sum()),
     }
 
 
@@ -258,6 +345,12 @@ def _forward(model: DualStreamOmni, batch: dict, image=None, prompts=None) -> di
         image_precision=batch["image_precision"].to(device),
         text_precision=batch["text_precision"].to(device),
         target_time=batch["target_time"].to(device),
+        task_id=(
+            batch["task_id"].to(device)
+            if bool(getattr(model.mot_stack, "use_task_tokens", False))
+            and "task_id" in batch
+            else None
+        ),
     )
 
 
@@ -273,7 +366,10 @@ def static_one_step(
     seg_energy_weight: float = 0.25,
     digit_group_coef: float = 0.1,
     digit_group_temperature: float = 0.1,
+    digit_group_difference_only: bool = False,
+    digit_residual_coef: float = 0.0,
     edit_shuffle_coef: float = 0.1,
+    foreground_bce_coef: float = 0.0,
 ) -> tuple[torch.Tensor, dict]:
     """One boundary-conditioned update using existing RGB/seg likelihoods."""
     case = str(samples[0]["case"])
@@ -292,6 +388,18 @@ def static_one_step(
     out = _forward(model, batch)
     device = out["rgb"].device
     loss, meta = model.omni_loss(out, batch, device)
+    # Gaussian RGB likelihood is intentionally valid for natural images, but
+    # its point-average can be background-dominated for a sparse 64px digit.
+    # This optional *same-observation* pane term is a curriculum weight, not
+    # an auxiliary head or a second target.  Default zero preserves every
+    # registered historical protocol.
+    if float(foreground_bce_coef) != 0.0:
+        foreground = balanced_observation_bce(
+            out["rgb"], batch["target_rgb"].to(device), signed=False,
+        )
+        loss = loss + float(foreground_bce_coef) * foreground
+        meta["foreground_bce"] = float(foreground.detach())
+        meta["foreground_bce_coef"] = float(foreground_bce_coef)
 
     if case == "text_to_both":
         coef = float(digit_shuffle_coef)
@@ -325,10 +433,18 @@ def static_one_step(
         group, group_meta = paired_digit_likelihood(
             out, batch, temperature=digit_group_temperature,
             seg_weight=seg_energy_weight,
+            difference_only=digit_group_difference_only,
         )
         if group_meta.get("digit_group_active"):
             loss = loss + float(digit_group_coef) * group
         meta.update(group_meta)
+    if case == "text_to_both" and float(digit_residual_coef) != 0.0:
+        residual, residual_meta = digit_residual_likelihood(
+            out, batch, seg_weight=seg_energy_weight,
+        )
+        if residual_meta.get("digit_residual_active"):
+            loss = loss + float(digit_residual_coef) * residual
+        meta.update(residual_meta)
     meta["case"] = case
     meta["image_precision"] = float(batch["image_precision"][0])
     meta["text_precision"] = float(batch["text_precision"][0])
@@ -351,6 +467,20 @@ def sample_digit_group(bank: list[dict], rng: np.random.Generator) -> list[dict]
             raise RuntimeError(f"missing digit group {place}/{color}/{digit}")
         selected.append(matches[0])
     return selected
+
+
+def requires_digit_group(case: str, digit_group_coef: float, digit_residual_coef: float) -> bool:
+    """Whether a T2I update must carry the ten prompt-conditioned examples.
+
+    Both the legacy contrast energy and the residual observation likelihood
+    compare predictions across all digits.  Sampling an ordinary minibatch
+    silently disables either objective, so keep this decision explicit and
+    independently testable.
+    """
+    return (
+        str(case) == "text_to_both"
+        and (float(digit_group_coef) != 0.0 or float(digit_residual_coef) != 0.0)
+    )
 
 
 def _seg_iou(logits: torch.Tensor, target: torch.Tensor) -> float:
@@ -610,10 +740,15 @@ def _score(t2i: dict, current: dict, edit: dict | None = None) -> float:
 
 def _save(model: DualStreamOmni, path: Path, payload: dict) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
+    runtime_config = capability_champion_kwargs(
+        res=int(model.res),
+        n_slices=int(model.mot_stack.n_slices),
+        local_dilation=int(getattr(model.mot_stack, "local_dilation", 1)),
+    )
     torch.save(
         {
             "state_dict": model.non_lm_state_dict(),
-            "config": capability_champion_kwargs(),
+            "config": runtime_config,
             "language": model.language_meta(),
             "schema": (
                 "pythia-capability-b3-edit"
@@ -650,6 +785,33 @@ def main() -> None:
     parser.add_argument("--lm-device", default=None)
     parser.add_argument("--device", default="cuda" if torch.cuda.is_available() else "cpu")
     parser.add_argument(
+        "--resolution", type=int, default=16,
+        help="Registered field resolution; changing it requires a separately audited candidate.",
+    )
+    parser.add_argument(
+        "--n-slices", type=int, default=16,
+        help="Transient Slice count for this candidate's single X--Slice--H graph.",
+    )
+    parser.add_argument(
+        "--local-dilation", type=int, default=1,
+        help=(
+            "Physical mesh spacing of the loaded local stencil; 2 preserves "
+            "a 16px-trained receptive field on a 32px proportional field."
+        ),
+    )
+    parser.add_argument(
+        "--glyph-scale", type=float, default=None,
+        help="Optional fraction of resolution for a registered scale curriculum.",
+    )
+    parser.add_argument(
+        "--glyph-stroke-scale", type=float, default=None,
+        help="Optional fraction of resolution for proportional glyph stroke width.",
+    )
+    parser.add_argument(
+        "--normalized-glyph-layout", action="store_true",
+        help="Keep named grid addresses proportional across curriculum resolutions.",
+    )
+    parser.add_argument(
         "--t2i-warmup-steps", type=int, default=100,
         help="Generation-first language binding before capability rehearsal.",
     )
@@ -682,6 +844,14 @@ def main() -> None:
     parser.add_argument("--seg-energy-weight", type=float, default=0.25)
     parser.add_argument("--digit-group-coef", type=float, default=0.1)
     parser.add_argument("--digit-group-temperature", type=float, default=0.1)
+    parser.add_argument(
+        "--digit-group-difference-only", action="store_true",
+        help="Contrast digit targets only where their observed RGB/seg fields differ.",
+    )
+    parser.add_argument(
+        "--digit-residual-coef", type=float, default=0.0,
+        help="Grouped prompt-specific RGB/seg residual likelihood; default preserves history.",
+    )
     parser.add_argument("--load-language", action="store_true")
     parser.add_argument(
         "--lexical-ridge", action=argparse.BooleanOptionalAction, default=True,
@@ -711,6 +881,8 @@ def main() -> None:
     model = DualStreamOmni(
         **capability_champion_kwargs(
             language=args.language, lm_device=lm_device,
+            res=int(args.resolution), n_slices=int(args.n_slices),
+            local_dilation=int(args.local_dilation),
         )
     ).to(device)
     report = model.load_visual_champion(
@@ -737,12 +909,25 @@ def main() -> None:
     optimizer = make_optimizer(
         args.warmup_interface_lr, args.warmup_visual_lr,
     )
-    t2i_train = make_static_bank(model.res, "text_to_both")
-    current_train = make_static_bank(model.res, "image_to_current")
-    edit_train = make_static_bank(model.res, "image_text_edit")
-    t2i_eval = make_cycle_eval_bank(model.res, "text_to_both")
-    current_eval = make_cycle_eval_bank(model.res, "image_to_current")
-    edit_eval = make_cycle_eval_bank(model.res, "image_text_edit")
+    glyph_box = (
+        None if args.glyph_scale is None
+        else int(round(float(args.glyph_scale) * model.res))
+    )
+    glyph_stroke_px = (
+        1 if args.glyph_stroke_scale is None
+        else max(1, int(round(float(args.glyph_stroke_scale) * model.res)))
+    )
+    bank_kw = {
+        "glyph_box": glyph_box,
+        "glyph_stroke_px": glyph_stroke_px,
+        "normalized_layout": bool(args.normalized_glyph_layout),
+    }
+    t2i_train = make_static_bank(model.res, "text_to_both", **bank_kw)
+    current_train = make_static_bank(model.res, "image_to_current", **bank_kw)
+    edit_train = make_static_bank(model.res, "image_text_edit", **bank_kw)
+    t2i_eval = make_cycle_eval_bank(model.res, "text_to_both", **bank_kw)
+    current_eval = make_cycle_eval_bank(model.res, "image_to_current", **bank_kw)
+    edit_eval = make_cycle_eval_bank(model.res, "image_text_edit", **bank_kw)
     history: list[dict] = []
     best_score = float("-inf")
     best_partial_score = float("-inf")
@@ -854,7 +1039,9 @@ def main() -> None:
                 bank = current_train
             else:
                 bank = edit_train
-            if case == "text_to_both" and args.digit_group_coef != 0.0:
+            if requires_digit_group(
+                case, args.digit_group_coef, args.digit_residual_coef,
+            ):
                 samples = sample_digit_group(bank, rng)
             else:
                 indices = rng.choice(
@@ -871,6 +1058,8 @@ def main() -> None:
                 seg_energy_weight=args.seg_energy_weight,
                 digit_group_coef=args.digit_group_coef,
                 digit_group_temperature=args.digit_group_temperature,
+                digit_group_difference_only=args.digit_group_difference_only,
+                digit_residual_coef=args.digit_residual_coef,
                 edit_shuffle_coef=args.edit_shuffle_coef,
             )
             loss.backward()
@@ -935,6 +1124,12 @@ def main() -> None:
         "run": {
             "warmup_phase": args.warmup_phase,
             "refinement_phase": "language",
+            "resolution": int(args.resolution),
+            "n_slices": int(args.n_slices),
+            "local_dilation": int(args.local_dilation),
+            "glyph_box": glyph_box,
+            "glyph_stroke_px": glyph_stroke_px,
+            "normalized_glyph_layout": bool(args.normalized_glyph_layout),
             "t2i_warmup_steps": int(args.t2i_warmup_steps),
             "refinement_steps": int(args.steps),
             "edit_steps": int(args.edit_steps),
@@ -964,6 +1159,8 @@ def main() -> None:
             "seg_energy_weight": args.seg_energy_weight,
             "digit_group_coef": args.digit_group_coef,
             "digit_group_temperature": args.digit_group_temperature,
+            "digit_group_difference_only": bool(args.digit_group_difference_only),
+            "digit_residual_coef": args.digit_residual_coef,
             "gdn2": False,
             "scene_generator": "capability_sample/grid_digit_mask for every port",
         },

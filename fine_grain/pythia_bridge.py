@@ -37,6 +37,7 @@ TOKEN_INTERFACE_PREFIXES: tuple[str, ...] = (
 # Language readers: maps plus MoT text experts and the F2 language prior.
 # Visual stem / SliceRead / Deslice / pix_head stay frozen in this phase.
 LANGUAGE_READER_MARKERS: tuple[str, ...] = INTERFACE_TRAINABLE_PREFIXES + (
+    "mot_stack.task_embed.",
     ".mot.Wq_t",
     ".mot.Wk_t",
     ".mot.Wv_t",
@@ -67,6 +68,7 @@ EDIT_READ_MARKERS: tuple[str, ...] = (
 # not implemented by replacing the perception or language path.
 GENERATION_WRITE_MARKERS: tuple[str, ...] = (
     "mot_stack.text_in.",
+    "mot_stack.task_embed.",
     ".mot.Wk_t",
     ".mot.Wv_t",
     ".surprise_gate.prior_head.",
@@ -76,6 +78,8 @@ GENERATION_WRITE_MARKERS: tuple[str, ...] = (
     ".surprise_gate.h_norm.",
     ".deslice.write_gamma_raw",
     ".t_coord",
+    ".read.lang_address.",
+    ".read.lang_address_gain",
 )
 
 GENERATION_CAPACITY_MARKERS: tuple[str, ...] = (
@@ -253,6 +257,13 @@ def load_visual_champion(
     excluded even when a leftover tensor happens to match shape.
     """
     raw = torch.load(path, map_location="cpu")
+    source_layout = raw.get("config", {}).get("gaussian_head_layout", "legacy") if isinstance(raw, dict) else "legacy"
+    target_layout = getattr(model.mot_stack, "gaussian_head_layout", "legacy")
+    if source_layout != target_layout:
+        raise ValueError(
+            f"Gaussian layout mismatch: checkpoint={source_layout}, model={target_layout}. "
+            "Load with the saved layout; shape-compatible weights cannot repair this semantic permutation."
+        )
     state = _state_from_ckpt(raw)
     current = model.state_dict()
     loaded: List[str] = []

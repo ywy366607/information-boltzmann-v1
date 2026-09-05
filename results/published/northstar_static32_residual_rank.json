@@ -1,0 +1,200 @@
+{
+  "schema": "static32-m16-geometry-identity-gradient-audit-v1",
+  "checkpoint": "D:\\\u89c6\u89c9\u7f16\u7801\u5668\u6d4b\u8bd5\\checkpoints\\_northstar_static32_residual_best.pt",
+  "graph": {
+    "resolution": 32,
+    "n_slices": 16,
+    "glyph_box": 12,
+    "glyph_stroke_px": 2,
+    "normalized_layout": true,
+    "local_dilation": 1,
+    "pythia_frozen": true,
+    "new_head": false,
+    "recurrence": false,
+    "identity_mode": "residual"
+  },
+  "losses": {
+    "geometry": 0.4377654492855072,
+    "identity": 0.09397836774587631,
+    "contrast_coef_screened": 10.0,
+    "scaled_identity_to_geometry_norm_ratio": 0.683399498462677
+  },
+  "template_overlap": {
+    "foreground_pixels": 792,
+    "shared_foreground_fraction": 1.0,
+    "unique_foreground_fraction": 0.0
+  },
+  "rgb_gradient_regions": {
+    "shared_strokes": {
+      "entries": 2376,
+      "geometry_norm": 0.1117773950099945,
+      "identity_norm": 0.0050509474240243435,
+      "cosine": 0.4759933650493622,
+      "opposing_coordinate_fraction": 0.5008417367935181
+    },
+    "unique_strokes": {
+      "entries": 0,
+      "geometry_norm": 0.0,
+      "identity_norm": 0.0,
+      "cosine": null,
+      "opposing_coordinate_fraction": null
+    },
+    "all_foreground": {
+      "entries": 2376,
+      "geometry_norm": 0.1117773950099945,
+      "identity_norm": 0.0050509474240243435,
+      "cosine": 0.4759933650493622,
+      "opposing_coordinate_fraction": 0.5008417367935181
+    },
+    "full_canvas": {
+      "entries": 30720,
+      "geometry_norm": 0.11183980852365494,
+      "identity_norm": 0.007643126882612705,
+      "cosine": 0.32456764578819275,
+      "opposing_coordinate_fraction": 0.05439453572034836
+    }
+  },
+  "parameter_gradient_groups": {
+    "f2_prior": {
+      "n_tensors": 20,
+      "geometry_norm": 3.063732624053955,
+      "identity_norm": 0.15402185916900635,
+      "cosine": 0.8015285730361938
+    },
+    "language_to_vision": {
+      "n_tensors": 8,
+      "geometry_norm": 6.874096393585205,
+      "identity_norm": 0.4266001880168915,
+      "cosine": 0.9784870743751526
+    },
+    "slice_write": {
+      "n_tensors": 0,
+      "cosine": null
+    },
+    "other": {
+      "n_tensors": 48,
+      "geometry_norm": 11.377687454223633,
+      "identity_norm": 0.6916429996490479,
+      "cosine": 0.9855165481567383
+    }
+  },
+  "prompt_conditioned_response": {
+    "prediction": {
+      "singular_values": [
+        4.283110618591309,
+        2.381439208984375,
+        1.5649617910385132,
+        1.176805019378662,
+        0.7836296558380127,
+        0.5239514112472534,
+        0.3682890832424164,
+        0.3267574906349182,
+        0.08697599917650223,
+        1.0977951205859426e-06
+      ],
+      "effective_rank": 2.2284505367279053,
+      "rank_eps": 9
+    },
+    "target": {
+      "singular_values": [
+        8.03597640991211,
+        6.268838405609131,
+        5.575608253479004,
+        4.400203704833984,
+        4.201529502868652,
+        3.555457353591919,
+        2.970947504043579,
+        2.2713510990142822,
+        1.093502402305603,
+        7.961642722875695e-07
+      ],
+      "effective_rank": 5.229770660400391,
+      "rank_eps": 9
+    },
+    "centered_rgb_cosine": 0.25898683071136475,
+    "centered_rgb_relative_mse": 0.9477902054786682
+  },
+  "condition_path_spectra": {
+    "frozen_pythia": {
+      "effective_rank": 7.882059574127197,
+      "rank_eps": 9,
+      "rms": 0.2399991750717163
+    },
+    "text_in": {
+      "effective_rank": 7.702638149261475,
+      "rank_eps": 9,
+      "rms": 0.18436558544635773
+    },
+    "joint_layer_0": {
+      "effective_rank": 5.342381000518799,
+      "rank_eps": 9,
+      "rms": 0.4512954652309418
+    },
+    "joint_layer_1": {
+      "effective_rank": 5.609730243682861,
+      "rank_eps": 9,
+      "rms": 0.8299006819725037
+    },
+    "joint_layer_2": {
+      "effective_rank": 6.404285907745361,
+      "rank_eps": 9,
+      "rms": 1.3744291067123413
+    },
+    "joint_layer_3": {
+      "effective_rank": 7.6537628173828125,
+      "rank_eps": 9,
+      "rms": 4.390344142913818
+    },
+    "field_after_layer_-1": {
+      "effective_rank": 1.0,
+      "rank_eps": 1,
+      "rms": 0.3012373745441437
+    },
+    "field_after_layer_0": {
+      "effective_rank": 3.3453168869018555,
+      "rank_eps": 9,
+      "rms": 0.41635414958000183
+    },
+    "field_after_layer_1": {
+      "effective_rank": 3.951859951019287,
+      "rank_eps": 9,
+      "rms": 0.4372306168079376
+    },
+    "field_after_layer_2": {
+      "effective_rank": 2.536193609237671,
+      "rank_eps": 9,
+      "rms": 0.46653592586517334
+    },
+    "field_after_layer_3": {
+      "effective_rank": 2.0459377765655518,
+      "rank_eps": 9,
+      "rms": 0.8617151379585266
+    },
+    "f2_context_0": {
+      "effective_rank": 6.952803611755371,
+      "rank_eps": 9,
+      "rms": 0.3264549672603607
+    },
+    "f2_context_1": {
+      "effective_rank": 4.9102678298950195,
+      "rank_eps": 9,
+      "rms": 0.5960866808891296
+    },
+    "f2_context_2": {
+      "effective_rank": 5.493428707122803,
+      "rank_eps": 9,
+      "rms": 0.9141937494277954
+    },
+    "f2_context_3": {
+      "effective_rank": 6.239623069763184,
+      "rank_eps": 9,
+      "rms": 1.458680272102356
+    }
+  },
+  "identity_meta": {
+    "digit_residual_active": true,
+    "digit_residual_rgb": 0.052575647830963135,
+    "digit_residual_seg": 0.1656108796596527,
+    "digit_residual_union_pixels": 120
+  }
+}

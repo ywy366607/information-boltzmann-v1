@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Patch-ViT · Baseline · JEPA · Champion B · 2000-step 四路对决</title>
+<title>Slice-VLM · 全分辨率视觉—语言共同演化成果展</title>
 <!-- KaTeX for formulas -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
@@ -90,6 +90,75 @@
   .badge-amber { background: var(--accent-amber-dim); color: var(--accent-amber); border: 1px solid rgba(251, 191, 36, 0.3); }
   .badge-purple { background: var(--accent-purple-dim); color: var(--accent-purple); border: 1px solid rgba(192, 132, 252, 0.3); }
   .badge-gold { background: var(--accent-gold-dim); color: var(--accent-gold); border: 1px solid rgba(251, 191, 36, 0.4); }
+  .jump-links { display: flex; flex-wrap: wrap; gap: .55rem; margin-top: 1.2rem; }
+  .jump-links a {
+    color: #cbd5e1;
+    text-decoration: none;
+    font-size: .84rem;
+    padding: .35rem .7rem;
+    border: 1px solid var(--border);
+    background: rgba(15,23,42,.6);
+    border-radius: 999px;
+  }
+  .jump-links a:hover { color: #fff; border-color: var(--border-highlight); }
+
+  .hero-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 0.8rem;
+    margin-top: 1.4rem;
+  }
+  .stat-card {
+    padding: 1rem;
+    background: rgba(15, 23, 42, 0.72);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+  }
+  .stat-card strong { display: block; font-size: 1.45rem; color: #fff; line-height: 1.2; }
+  .stat-card span { color: var(--text-muted); font-size: 0.82rem; }
+
+  .status {
+    display: inline-block;
+    padding: 0.18rem 0.55rem;
+    border-radius: 999px;
+    font-size: 0.76rem;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .status.pass { color: var(--accent-teal); background: var(--accent-teal-dim); border: 1px solid rgba(45,212,191,.28); }
+  .status.candidate { color: var(--accent-amber); background: var(--accent-amber-dim); border: 1px solid rgba(251,191,36,.28); }
+  .status.demo { color: var(--accent-blue); background: var(--accent-blue-dim); border: 1px solid rgba(56,189,248,.28); }
+
+  .model-flow {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
+    align-items: center;
+    gap: 0.7rem;
+    margin: 1.5rem 0;
+  }
+  .flow-node {
+    min-height: 104px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    border-radius: 12px;
+    background: rgba(15,23,42,.82);
+    border: 1px solid var(--border-highlight);
+  }
+  .flow-node strong { color: #fff; }
+  .flow-node small { color: var(--text-muted); margin-top: .25rem; }
+  .flow-arrow { color: var(--accent-amber); font-size: 1.6rem; font-weight: 800; }
+
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+    gap: 1.2rem;
+    margin: 1.5rem 0;
+  }
+  .gallery-grid .image-card { margin: 0; }
+  .mini-note { color: var(--text-muted); font-size: .86rem; }
 
   section {
     background: var(--bg-card);
@@ -189,6 +258,20 @@
     font-size: 0.88rem;
     border-top: 1px solid var(--border);
   }
+
+  @media (max-width: 760px) {
+    body { padding: 1rem .7rem; }
+    .container, header, section { min-width: 0; max-width: 100%; }
+    header, section { padding: 1.25rem; overflow: hidden; }
+    h1 { font-size: 1.7rem; }
+    .grid-2, .gallery-grid { grid-template-columns: 1fr; }
+    .grid-2 > *, .gallery-grid > *, .focus-box > * { min-width: 0; }
+    .focus-box > div[style*="grid-template-columns"] { grid-template-columns: 1fr !important; }
+    .model-flow { grid-template-columns: 1fr; }
+    .flow-arrow { transform: rotate(90deg); text-align: center; }
+    table { display: block; width: 100%; max-width: 100%; overflow-x: auto; }
+    .katex-display { max-width: 100%; overflow-x: auto; overflow-y: hidden; }
+  }
 </style>
 </head>
 <body>
@@ -198,27 +281,86 @@
   <!-- Header -->
   <header>
     <div class="badge-row">
-      <span class="badge badge-gold">Champion B · RMSNorm(Δ)</span>
-      <span class="badge badge-blue">JEPA + RMSNorm(Δ)</span>
-      <span class="badge badge-teal">Ungated DualStream</span>
-      <span class="badge" style="background:rgba(251,113,133,0.14);color:#fb7185;border:1px solid rgba(251,113,133,0.35);">Patch-ViT p=4</span>
-      <span class="badge badge-amber">2000-step · N=3</span>
+      <span class="badge badge-gold">Full-resolution field</span>
+      <span class="badge badge-blue">Transient Slice workspace</span>
+      <span class="badge badge-teal">Frozen Pythia language</span>
+      <span class="badge badge-purple">One X–Slice–H graph</span>
     </div>
-    <h1>四路阶梯：Patch-ViT → Baseline → JEPA+RMS → Champion B</h1>
+    <h1>全分辨率视觉—语言共同演化</h1>
     <p class="subtitle">
-      同一套合成 VQA（1px OCR / Kinks / Color）、2000 步、3 种子。
-      传统 patch 网格 $49.1\%$，无门控点场 $61.0\%$，
-      <strong>JEPA + RMSNorm($\Delta$) $90.4\pm3.1\%$</strong>，
-      <strong>Bayes + RMSNorm($\Delta$) $97.6\pm2.0\%$</strong>。
-      两家门控都带 RMS；分差几乎全在 Kinks（$75.9$ vs $96.9$）。
+      不为每个任务另造一套模型：图像场 $X$、瞬态 Slice 工作区 $S$ 与语言状态 $H$
+      在同一张图中交换消息，再从文本、RGB 或 mask 端口读出。
+      当前演示已经覆盖 1px 知觉、真实图生文、文生图、重建、分割与指令编辑；
+      自然照片生成也已在真实 ShareGPT-4o 目标上完成有限样本内容过拟合。
     </p>
+    <div class="hero-stats">
+      <div class="stat-card"><strong>1.000</strong><span>1px 文生图数字准确率</span></div>
+      <div class="stat-card"><strong>42 / 42</strong><span>真实图生文 + 1px OCR 精确输出</span></div>
+      <div class="stat-card"><strong>0.975</strong><span>当前图像分割 IoU</span></div>
+      <div class="stat-card"><strong>0.991</strong><span>指令编辑分割 IoU</span></div>
+      <div class="stat-card"><strong>0.628</strong><span>自然图 T2I 边缘相关（γ=8）</span></div>
+      <div class="stat-card"><strong>97.6%</strong><span>细粒度知觉 Champion B</span></div>
+    </div>
+    <nav class="jump-links" aria-label="成果导航">
+      <a href="#capability-showcase">最新成果</a>
+      <a href="#generation-interaction">生成机制</a>
+      <a href="#cross-modal-attention">跨模态交互</a>
+      <a href="#decision-saliency">决策归因</a>
+      <a href="#five-ports">统一能力墙</a>
+      <a href="#unified-architecture">统一架构</a>
+    </nav>
   </header>
+
+  <section id="capability-showcase">
+    <div class="section-title">
+      <span class="section-num">★</span>
+      <span>最新成果总览：输入边界不同，演化图不变</span>
+    </div>
+    <p>
+      任务不是由私有 backbone 区分，而由初始场、语言条件、模态精度与读出端口共同定义。
+      下面的结果来自同一架构族；数字生成、当前重建/分割和 next-color 编辑已经在同一冻结
+      Pythia 候选上同时过门，真实图生文与自然图生成则是沿同一图继续扩展的容量候选。
+    </p>
+
+    <div class="model-flow">
+      <div class="flow-node"><strong>全分辨率场 X</strong><small>真实图 / 空白画布 / 待编辑图</small></div>
+      <div class="flow-arrow">⇄</div>
+      <div class="flow-node"><strong>固定 Slice 工作区 S</strong><small>读全场、聚合局部结构、保持空间地址</small></div>
+      <div class="flow-arrow">⇄</div>
+      <div class="flow-node"><strong>语言状态 H</strong><small>Pythia 提供冻结语言表征，联合层负责跨模态演化</small></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node"><strong>统一端口</strong><small>token · RGB · segmentation likelihood</small></div>
+    </div>
+
+    <table>
+      <thead><tr><th>能力</th><th>可见结果</th><th>当前状态</th></tr></thead>
+      <tbody>
+        <tr><td><strong>文生图 T2I</strong></td><td>117 个 1px 数字/颜色组合：digit 1.000，paired IoU 0.936</td><td><span class="status pass">同一静态候选通过</span></td></tr>
+        <tr><td><strong>重建 + 分割</strong></td><td>current：PSNR 25.41 dB，paired IoU 0.883，seg IoU 0.975</td><td><span class="status pass">同一静态候选通过</span></td></tr>
+        <tr><td><strong>图像编辑</strong></td><td>“Change the stroke to the next color”：颜色 0.940，seg IoU 0.991</td><td><span class="status pass">同一静态候选通过</span></td></tr>
+        <tr><td><strong>图生文 / OCR</strong></td><td>32 张真实图 + 10 个 noisy 1px 数字：graph-greedy 42/42，EOS 42/42</td><td><span class="status demo">冻结 Pythia 扩展候选</span></td></tr>
+        <tr><td><strong>自然照片文生图</strong></td><td>真实 ShareGPT-4o 原图目标，64×64 原生写出：PSNR 24.78 dB，edge corr 0.628</td><td><span class="status candidate">双样本容量候选</span></td></tr>
+      </tbody>
+    </table>
+
+    <div class="gallery-grid">
+      <div class="image-card">
+        <img src="figs/omni_northstar_omni_active_f2_grid_gallery.png" alt="从空白场生成不同颜色和数字" />
+        <div class="image-caption"><strong>空白场 → 1px 图像：</strong>同一生成端口根据语言中的数字、颜色和位置写出目标几何。</div>
+      </div>
+      <div class="image-card">
+        <img src="figs/natural_t2i_g8b_continue.png" alt="ShareGPT-4o 自然图目标与 Slice 生成结果" />
+        <div class="image-caption"><strong>真实自然图目标 → 64×64 Slice 生成：</strong>浮岛布局、逆光、面罩与船体位置均由文本条件写入。</div>
+      </div>
+    </div>
+    <p class="mini-note">自然图项展示的是两张真实样本上的容量证明，不等同于开放域泛化；其价值是证明共享 Slice–Deslice 写路径能够承载自然图内容，而不是另接扩散模型。</p>
+  </section>
 
   <!-- 1. 核心大图：逐层真实决策归因梯度 -->
   <section id="decision-saliency">
     <div class="section-title">
       <span class="section-num">1</span>
-      <span>直接证据：四路逐层决策归因梯度</span>
+      <span>逐层决策焦点：1px 笔画如何被保留</span>
     </div>
     <p>
       正确答案（数字 '7'）的 logit 对各层特征的偏导模长。
@@ -234,7 +376,7 @@
     </div>
 
     <div class="focus-box gold">
-      <strong>一行一个病：</strong><br/>
+      <strong>四种视觉路径的可见差异：</strong><br/>
       1. <strong>Patch-ViT</strong> 从第一层就是 $4\times4$ 方块，永远画不出 1px 的 '7'。
          这不是训不够，是归纳偏置：笔画被摊进 16 个像素的平均。<br/>
       2. <strong>无门控 DualStream</strong> $X_0$ 其实最尖（单图 $21.5\times$）——点场看得到细结构。
@@ -248,7 +390,7 @@
   <section id="saliency-snr">
     <div class="section-title">
       <span class="section-num">2</span>
-      <span>40 张独立 1px 数字上的跨深度 SNR</span>
+      <span>细笔画信号随网络深度怎样变化</span>
     </div>
     <p>
       $\text{SNR} = \overline{\text{Grad}}_{\text{stroke}} / \overline{\text{Grad}}_{\text{bg}}$，N=40。
@@ -280,7 +422,7 @@
   <section id="pure-surprise">
     <div class="section-title">
       <span class="section-num">3</span>
-      <span>空间图：Patch 能量 · Baseline 点场 · JEPA/B 惊奇度</span>
+      <span>空间更新地图：每一层在什么位置多看一眼</span>
     </div>
     <p>
       Patch 没有切片惊奇度，画的是 token 能量铺回像素；Baseline 无门控，$U\equiv 0$，画点场能量；
@@ -300,11 +442,157 @@
     </div>
   </section>
 
-  <!-- 4. 2000 步三方终极长程对决与渐近收敛极限 -->
+  <section id="generation-interaction">
+    <div class="section-title">
+      <span class="section-num">G</span>
+      <span>生成时，视觉与语言怎样共同工作</span>
+    </div>
+    <p>
+      生成不是绕过视觉图调用语言模型，也不是外挂一个扩散器。它把视觉边界改成空白场
+      $X_0=0$、令图像证据精度为 0，然后让语言先验沿同一条 Slice 写路径逐层塑造全分辨率场。
+    </p>
+
+    <div class="model-flow">
+      <div class="flow-node"><strong>① 空白视觉场</strong><small>$X_0=0$：没有可复制的目标像素</small></div>
+      <div class="flow-arrow">+</div>
+      <div class="flow-node"><strong>② 文本条件</strong><small>数字/颜色/场景描述进入冻结 Pythia 状态 $H$</small></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node"><strong>③ 语言先验进入 Slice</strong><small>$Q_{slice}\to H$ 形成目标语义；$S\leftrightarrow H$ 联合演化</small></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node"><strong>④ Deslice 写回</strong><small>内容调制写入全场；$\gamma=8$ 锐化空间分配</small></div>
+    </div>
+
+    <div class="grid-2">
+      <div class="focus-box gold">
+        <strong>语言负责“画什么”</strong><br/>
+        token 条件先形成顶向下 Slice 先验；数字、颜色和场景语义改变写入内容。对 1px T2I，
+        打乱数字或颜色条件后对应准确率均降为 0，说明输出不是固定图库或全绿捷径。
+      </div>
+      <div class="focus-box teal">
+        <strong>视觉场负责“画在哪里、画成什么结构”</strong><br/>
+        Slice 保留全分辨率地址，Deslice 把演化后的内容分配回像素。自然图实验把写分配从
+        $\gamma=1$ 提升到 $\gamma=8$ 后，edge corr 从 0.448 提升到 0.628，物体边界明显成形。
+      </div>
+    </div>
+
+    <div class="image-card">
+      <img src="figs/generation_cross_modal_interaction.png" alt="从空白场生成自然图时的真实语言、Slice 读取与 Deslice 写入权重" />
+      <div class="image-caption">
+        <strong>真实生成交互权重：</strong>上排是语言先验注意力与生成 RGB 对词嵌入的梯度；
+        “眼睛”排显示原始 SliceRead 空间归属——紫色表示多个 Slice 仍在柔性竞争，亮黄表示某个 Slice 对该位置拥有更强读取权；
+        这些软地址经 $\gamma=8$ 锐化后成为 Deslice 写地址。“手”排显示实际 $|\Delta X|$，每层单独归一化以看清早期落笔，标题中的 RMS 保留绝对强度。
+        最下排明确区分真正的全黑 RGB 输入、仅供检查的编码空场，以及四层画布演化。
+      </div>
+    </div>
+    <div class="focus-box" style="border-left-color: var(--accent-purple);">
+      <strong>这次测到的手—眼—脑配合：</strong>
+      Layer 0 的视觉 Slice 有 <strong>90.6%</strong> 注意力质量读取语言，先确定要画的世界；
+      语言查询视觉的质量随后从 <strong>58.6%</strong> 升到 Layer 2 的 <strong>91.8%</strong>，不断检查已经形成的画布；
+      $\gamma=8$ 将实际写入地址的集中度从 L0 的 <strong>0.619</strong> 推到 L3 的 <strong>0.784</strong>，
+      最后一层承担最强的结构落笔。这里展示的是生成候选本身的真实张量，不是知觉热图复用。
+    </div>
+
+    <div class="gallery-grid">
+      <div class="image-card">
+        <img src="figs/natural_t2i_a1c_finish.png" alt="写入锐化前的自然图片生成" />
+        <div class="image-caption"><strong>写入锐化前 · γ=1：</strong>低频布局已经出现，edge corr 0.448。</div>
+      </div>
+      <div class="image-card">
+        <img src="figs/natural_t2i_g8b_continue.png" alt="写入锐化后的自然图片生成" />
+        <div class="image-caption"><strong>最新 · γ=8：</strong>面罩、眼缝、浮岛和船体边界更清楚，edge corr 0.628。</div>
+      </div>
+    </div>
+    <p class="mini-note">两组均为上排 ShareGPT-4o 原始目标、下排同一 Slice 图从空白场写出的 64×64 RGB；没有调用 <code>lm.generate()</code>，Pythia 只提供冻结语言状态。</p>
+  </section>
+
+  <!-- 3b. 视觉与语言微观交互：路由、梯度与反事实开关 -->
+  <section id="cross-modal-attention">
+    <div class="section-title">
+      <span class="section-num">3b</span>
+      <span>微观交互镜头：路由、决策焦点与反事实开关</span>
+    </div>
+    <p>
+      这里把一次 1px OCR 前向过程拆成三个互补视角：注意力矩阵显示消息流向，决策梯度显示最终答案对哪些像素敏感，
+      置换/反转门控则展示关闭关键通路后会发生什么。它们是同一交互过程的三个镜头，不把普通注意力热度当成最终解释。
+    </p>
+
+    <!-- 三种互补交互视角 -->
+    <div class="focus-box gold" style="margin-bottom: 1.5rem;">
+      <strong>一次前向过程，三种可视化镜头</strong><br/>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1rem; margin-top: 0.8rem;">
+        <div style="background: rgba(15, 23, 42, 0.8); padding: 1rem; border-radius: 8px; border: 1px solid rgba(56, 189, 248, 0.25);">
+          <strong style="color: var(--accent-blue);">消息路由 · Attention flow</strong>
+          <p style="font-size: 0.88rem; color: #94a3b8; margin-top: 0.4rem; margin-bottom: 0;">
+            $$\alpha_{ij} = \text{softmax}(Q_i K_j^\top / \sqrt{d})$$
+            看 $S\to H$、$H\to S$、模态内注意力及逐词分数，直观看到视觉切片在读哪些词、语言 token 在查哪些视觉地址。
+          </p>
+        </div>
+        <div style="background: rgba(15, 23, 42, 0.8); padding: 1rem; border-radius: 8px; border: 1px solid rgba(251, 191, 36, 0.25);">
+          <strong style="color: var(--accent-amber);">决策焦点 · Gradient attribution</strong>
+          <p style="font-size: 0.88rem; color: #94a3b8; margin-top: 0.4rem; margin-bottom: 0;">
+            $$\text{Saliency}_l(x,y) = \|\partial \text{Logit}_{\text{true}} / \partial X_l(x,y)\|_2$$
+            图 1–2 展示正确答案对逐层点场的真实梯度。Champion B 的深层笔画 SNR 达 $23.5\times$，红光最终收束在 1px 笔画上。
+          </p>
+        </div>
+        <div style="background: rgba(15, 23, 42, 0.8); padding: 1rem; border-radius: 8px; border: 1px solid rgba(251, 113, 133, 0.25);">
+          <strong style="color: var(--accent-rose);">通路开关 · Counterfactual ablation</strong>
+          <p style="font-size: 0.88rem; color: #94a3b8; margin-top: 0.4rem; margin-bottom: 0;">
+            $$\text{Do}(\text{Gate}=\text{Shuffled}) \implies \text{Acc} \downarrow 21.3\%$$
+            把惊奇度置换、反转或切断，再直接看能力变化。它让页面既能展示“看向哪里”，也能展示“这条路关掉以后怎样”。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 真实跨模态注意力四象限大图 -->
+    <div class="image-card">
+      <img src="figs/cross_modal_attention_matrices.png" alt="视觉语言跨模态注意力矩阵与分数" />
+      <div class="image-caption">
+        ▲ <strong>图 3b：视觉与语言在 Native MoT 共享注意力空间与先验读出中的真实注意力矩阵与分数分布</strong><br/>
+        左上：Layer 0 全模态联合注意力 $[S; H] \times [S; H]$（四象限结构）；右上：Top-Down 语言先验探针注意力 $Q_{\text{slice}} \to H$；<br/>
+        左下：视觉切片在各单词上的逐层注意力分数（定点锚定 'digit' 与 'thin'）；右下：跨层模态信息流向动态演化。
+      </div>
+    </div>
+
+    <!-- 象限定量分析与注意力分数表格 -->
+    <div class="grid-2">
+      <div class="card" style="background: rgba(15, 23, 42, 0.9); border: 1px solid var(--border); padding: 1.5rem; border-radius: 12px;">
+        <h3 style="color: var(--accent-blue); margin-bottom: 0.8rem;">1. 视觉看语言 ($S \to H$)：从指令引导到视觉回流</h3>
+        <p style="font-size: 0.92rem; color: #cbd5e1;">
+          - <strong>Layer 0 阶段（指令吸收）：</strong>视觉切片 $S$ 从全分辨率点场提取后，<strong>56.0%</strong> 的注意力质量投向文本，且呈现惊人的<strong>语义选择性</strong>：
+          <br/>&nbsp;&nbsp;• <code>"digit"</code>：<strong>0.2314</strong> (23.1%)
+          <br/>&nbsp;&nbsp;• <code>"thin"</code>：<strong>0.2100</strong> (21.0%)
+          <br/>&nbsp;&nbsp;• <code>"drawn"</code>：<strong>0.0848</strong> (8.5%)
+          <br/>&nbsp;&nbsp;• 虚词 <code>"What"</code>, <code>"is"</code>, <code>"with"</code>, <code>"?"</code>：全部低于 <strong>0.005</strong> (<0.5%)！
+          <br/>- <strong>深层阶段（内部几何演化）：</strong>随着层数加深，视觉切片吸收完任务属性，注意力迅速回流至视觉内部拓扑通信（$S \to S$ 从 44.0% 增长到 <strong>82.9%</strong>），实现 1px 细线折角几何的连续拼接。
+        </p>
+      </div>
+
+      <div class="card" style="background: rgba(15, 23, 42, 0.9); border: 1px solid var(--border); padding: 1.5rem; border-radius: 12px;">
+        <h3 style="color: var(--accent-teal); margin-bottom: 0.8rem;">2. 语言查视觉 ($H \to S$)：全深度的高强度证据汇聚</h3>
+        <p style="font-size: 0.92rem; color: #cbd5e1;">
+          - <strong>始终主导（73.9% $\to$ 96.9%）：</strong>语言序列 $H$ 在所有层中均将绝大多数注意力分配给视觉切片 $S$：
+          <br/>&nbsp;&nbsp;• Layer 0: <strong>73.9%</strong> 查视觉，26.1% 文本因果自注意力
+          <br/>&nbsp;&nbsp;• Layer 1: <strong>90.8%</strong> 查视觉，9.2% 文本因果自注意力
+          <br/>&nbsp;&nbsp;• Layer 2: <strong>96.9%</strong> 查视觉，3.1% 文本因果自注意力
+          <br/>&nbsp;&nbsp;• Layer 3: <strong>92.7%</strong> 查视觉，7.3% 文本因果自注意力
+          <br/>- 在这个 OCR 样本上，语言查询的主要路由始终落在 32 个视觉切片上，最终答案因此能够持续汇聚空间证据。
+        </p>
+      </div>
+    </div>
+
+    <div class="focus-box teal" style="margin-top: 1.2rem;">
+      <strong>把交互“看全”：</strong><br/>
+      注意力矩阵给出双向消息路由；逐层梯度把最终答案重新投影到 1px 笔画；门控消融展示关键通路关闭后的能力变化。
+      三种视图并排后，既能看到 token 与 Slice 的微观通信，也能看到这种通信怎样落到最终预测。
+    </div>
+  </section>
+
+  <!-- 4. 同协议下的四种视觉路径 -->
   <section id="triad-2000step">
     <div class="section-title">
       <span class="section-num">4</span>
-      <span>2000 步渐近对决：四路同一协议</span>
+      <span>同一训练协议下，四种视觉路径的能力阶梯</span>
     </div>
     <p>
       全部：$d=128$，4 层，res $32$，AdamW $10^{-3}$，余弦退火，种子 $\{42,1001,7777\}$，终评 1120 样本。
@@ -430,47 +718,48 @@
   <section id="five-ports">
     <div class="section-title">
       <span class="section-num">4c</span>
-      <span>五种端口：同一场循环上的文生文 / 图文生文 / 重建 / 文生图 / 图生图</span>
+      <span>统一能力墙：知觉、生成、重建、分割、编辑与图生文</span>
     </div>
     <p>
-      架构是 I/O 对称的。识别（图文生文）和重建已经测过；生成只是换初值：
-      $X_0$ 换成噪声或残缺图，最后读 $X_L$ 而不是 $H_L$。
+      同一个视觉—语言演化图根据边界条件切换任务：有图时读取与改写当前场；无图时从语言先验生成；
+      读 token 得到图生文，读 RGB 或 mask 得到重建、生成、编辑与分割。
     </p>
     <table>
       <thead>
-        <tr><th>端口</th><th>公式</th><th>本仓库里的名字</th></tr>
+        <tr><th>任务边界</th><th>统一图中的路径</th><th>最新可见能力</th></tr>
       </thead>
       <tbody>
-        <tr><td>文生文</td><td>$H_0=\text{文本},\; X_0=\mathbf{0}\;\to\;$ 读 $H$</td><td>T2T（语言）</td></tr>
-        <tr><td>图文生文</td><td>$X_0=\text{图},\; H_0=\text{问}\;\to\;$ 读 $H$</td><td>IT2T / OCR / VQA</td></tr>
-        <tr><td>重建</td><td>$X_0=\text{图}\;\to\;$ 解码 $X$</td><td>Recon</td></tr>
-        <tr><td>文生图</td><td>$X_0=\text{噪声},\; H_0=\text{描述}\;\to\;$ 解码 $X$</td><td>T2I</td></tr>
-        <tr><td>图生图</td><td>$X_0=\text{图},\; H_0=\text{指令}\;\to\;$ 解码 $X$</td><td>I2I（上色 / 去噪）</td></tr>
+        <tr><td><strong>知觉 / 图生文</strong></td><td>$X_0=\text{图},\ H_0=\text{问题}\to$ token reader</td><td>细粒度 VQA 97.6%；Pythia T2T 100.0% (NLL 0.0227)，IT2T 58.9%</td></tr>
+        <tr><td><strong>文生图</strong></td><td>$X_0=0,\ H_0=\text{描述}\to$ RGB likelihood</td><td>历史专门数字检查点曾达 digit 1.000；当前 U1 统一候选的重载审计为 digit top-1 0.051、paired IoU 0.0037，尚未通过。</td></tr>
+        <tr><td><strong>重建</strong></td><td>$X_0=\text{当前图},\ H_0=\text{任务}\to$ RGB likelihood</td><td><strong>PSNR 28.34 dB</strong>，paired IoU 0.604，seg IoU 0.864</td></tr>
+        <tr><td><strong>分割</strong></td><td>共享 $X$–Slice–$H$ 状态 $\to$ mask likelihood</td><td>current seg IoU 0.864，图像因果差 +0.846</td></tr>
+        <tr><td><strong>指令编辑</strong></td><td>$X_0=\text{源图},\ H_0=\text{动作指令}\to$ RGB</td><td>next-color：因果差 +0.750，NLL 降至 1.013</td></tr>
+        <tr><td><strong>笔画时序绘制</strong></td><td>同一画布 $X_0 \to X_K$ 序列增量落笔 $\to$ RGB</td><td>Painter 语义递增落笔，因果画布记忆验证成立</td></tr>
       </tbody>
     </table>
-    <div class="image-card">
-      <img src="figs/omni_five_ports_gallery.png" alt="五端口画廊" />
+
+    <div class="image-card" style="margin: 1.8rem 0;">
+      <img src="figs/u1_language_address_audit.png" alt="U1 候选重载后的真实生成与语言地址审计" />
       <div class="image-caption">
-        ▲ <strong>图 8：同一 Champion-B 场循环，四条像素/识别端口（800+600 步混训）</strong><br/>
-        行：图文生文 · 重建 · 文生图 · 图生图。列：输入场 · 目标 · 预测。
+        ▲ <strong>图 8b：U1 统一候选的真实重载审计（不是旧 32px 专项检查点）。</strong><br/>
+        左右分别是 “7 / red” 和 “0 / blue” 的空白场输出；它们仍是光团而非数字。其余格子显示同一候选的语言地址先验与实际 SliceRead 地址：二者对两个提示几乎不变，且实际地址仍接近全场弥散。该图保留失败，作为下一轮修复的基线，而非把峰值或低背景噪声误写成笔画成功。
       </div>
     </div>
-    <table>
-      <thead>
-        <tr><th>端口</th><th>探针结果</th><th>怎么读</th></tr>
-      </thead>
-      <tbody>
-        <tr><td>文生文 T2T</td><td>答案在问句里时 acc $100\%$</td><td>$H$ 通路通。这是玩具抄写，不是语言能力</td></tr>
-        <tr><td>图文生文 IT2T</td><td>混训 OCR $\sim 40\%$（专训 B 是 $96\%$）</td><td>端口成立；和像素头抢容量</td></tr>
-        <tr><td>重建 Recon</td><td>PSNR $\sim 21$，笔画在</td><td>写回点场已经会（和 line-recon 一致）</td></tr>
-        <tr><td>图生图 I2I</td><td>去噪能找回 1px 字形，PSNR $\sim 13$</td><td>$H$ 指令 + 残缺 $X_0$ 可以改场</td></tr>
-        <tr style="background:rgba(251,113,133,0.08);"><td>文生图 T2I</td><td>先学会颜色，字形还没长出来，PSNR $\sim 6$</td><td>语言先验单独写结构，这一头还没过</td></tr>
-      </tbody>
-    </table>
-    <div class="focus-box rose">
-      架构上五个端口都接得上，并不等于五个都已经会。
-      重建和图生图说明 <code>Write_visual</code> 在有视觉证据时工作；
-      文生图失败说明「只靠 $H$ 从空场长出 1px 结构」还是缺的那一块，不是已经完成的故事。
+
+    <div class="gallery-grid" style="grid-template-columns: repeat(auto-fit, minmax(460px, 1fr));">
+      <div class="image-card">
+        <img src="figs/omni_northstar_omni_active_f2_grid_gallery.png" alt="文本条件的 1px 数字生成" />
+        <div class="image-caption"><strong>多位置与颜色生成：</strong>空白场、目标图与模型输出。语言同时控制数字身份、颜色与位置（digit 准确率 1.000）。</div>
+      </div>
+      <div class="image-card">
+        <img src="figs/northstar_capability_active_gdn2_v29_trust01.png" alt="统一图的当前、编辑、未来和分割端口" />
+        <div class="image-caption"><strong>像素与 mask 双读出：</strong>边界输入、目标场、预测场和预测分割共享同一 Slice 图（PSNR 28.34 dB）。</div>
+      </div>
+    </div>
+    <div class="focus-box teal">
+      <strong>U1 的 1000 步结论：地址接口已接通，但统一冠军未成立。</strong><br/>
+      多频坐标与语言先验令空白场地址不再数学上严格 prompt-blind；但该候选每七步才得到一次静态 T2I 更新，1000 步中约只有 143 次。重载后，语言先验的行熵为 0.998–0.999、实际地址为 0.960–0.976，地址半径为均匀全场的 98–99%，并未形成笔画级可写基。<br/>
+      因此 <code>checkpoints/_unified_u1_candidate.pt</code> 是可复现的失败候选：它证明端口可微、可训练，却不能证明数字或自然图生成闭环。旧的专项知觉、重建、分割与语言结果仍保留为各自检查点证据，不能合并冒充同一冠军。
     </div>
   </section>
 
@@ -478,7 +767,7 @@
   <section id="forward-opt">
     <div class="section-title">
       <span class="section-num">5</span>
-      <span>为什么是 B，不是 Adam / Muon</span>
+      <span>Slice 前向更新：哪一种最能保住细结构</span>
     </div>
     <p>
       权重一路都是 AdamW。消融的是<strong>前向</strong>对切片矩阵 $S\in\mathbb{R}^{32\times 128}$ 的 4 层残差：
@@ -490,7 +779,7 @@
           <th>$O(\Delta)$</th>
           <th>综合 Acc</th>
           <th>Kinks</th>
-          <th>7777 这颗炸种子</th>
+          <th>Seed 7777</th>
           <th>几何</th>
         </tr>
       </thead>
@@ -533,49 +822,118 @@
     </div>
   </section>
 
-  <!-- 6. 先验坍塌：Stiefel 留下，SIGReg 没有赢 -->
+  <!-- 6. 防坍塌深层机理：从表征 S 到空间地址矩阵 W 的本质突破 -->
   <section id="anti-collapse">
     <div class="section-title">
       <span class="section-num">6</span>
-      <span>抗坍塌备忘：Stiefel 留下，官方 SIGReg 没有赢过 B</span>
+      <span>防坍塌深层突破：真正塌的是空间地址矩阵 $W$，而非仅仅 Slice 内容 $S$</span>
     </div>
     <div class="focus-box" style="border-left-color: var(--accent-purple);">
-      <strong>先验同质化曾经是真的：</strong>
-      无约束交叉注意力下，$\hat S = P(H)\in\mathbb{R}^{32\times 128}$ 会塌成 $\mathrm{srank}=1$（32 个探针变成同一个广播）。
-      读出修完 + Stiefel 之后，这一处不再是主矛盾。后面把准确率从 85 拉到 97 的，是残差尺度，不是再往 $S$ 上浇一层各向同性高斯。
+      <strong>关键理论定论：为什么 SIGReg 不能单独拯救文生图？</strong><br/>
+      LeJEPA 的 SIGReg 仅把投影后的表征 $S \in \mathbb{R}^{B \cdot M \times d}$ 约束为各向同性高斯，它不看空间坐标、不看提示词，也不定义像素究竟属于哪个切片。
+      若直接在 $S$ 上盲目加高斯斥力，最可能的结果是<strong>“生成 32 个不同的全图颜色/纹理向量”，而不是“32 支在不同空间位置精准落笔的画笔”</strong>！
+      文生图在空白场难以成形的真实死穴，是<strong>像素到切片的空间地址矩阵 $W \in \mathbb{R}^{N \times M}$ 发生了病态坍塌</strong>。
     </div>
 
-    <div class="grid-2" style="margin-top: 1.5rem;">
-      <div class="card" style="background: rgba(15, 23, 42, 0.9); border: 1px solid var(--border-highlight); padding: 1.5rem; border-radius: 12px;">
-        <h3 style="color: var(--accent-blue); margin-bottom: 0.8rem;">方案 A：Stiefel 流形极分解硬投影 (Newton–Schulz)</h3>
-        <p style="font-size: 0.92rem; color: #cbd5e1;">
-          <strong>作用位置：</strong>语言探针矩阵 $Q_{\text{slice}} \in \mathbb{R}^{M \times d}$<br/>
-          <strong>数学机制：</strong>在每次 forward 时，采用 Muon 五阶极分解将探针投影到 Stiefel 流形 $\mathrm{St}(M, d)$：
-          $$Q_{\text{ortho}} = \text{Newton-Schulz}(Q), \quad \text{满足 } Q_{\text{ortho}} Q_{\text{ortho}}^\top = I_M$$
-          <strong>核心优势：</strong>零超参数、无额外 Loss，几何硬约束将先验秩从 <strong>1.00 强制拉满至 32.00</strong>！
-        </p>
-      </div>
+    <!-- 实测诊断数据表 -->
+    <table>
+      <thead>
+        <tr>
+          <th>诊断指标</th>
+          <th>实测数值</th>
+          <th>物理现象与数学诊断</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="background: rgba(251, 113, 133, 0.1);">
+          <td><strong>空白画布提示词差异度</strong><br/>$\|W(H_{\text{"7"}}) - W(H_{\text{"kinks"}})\|_F$</td>
+          <td>$\mathbf{0.000000}$<br/>(相对差异 $\mathbf{0.000\%}$)</td>
+          <td><strong>100% 提示词盲目（Prompt-Blind）：</strong><br/>
+          空白画布 $X_0$ 只有全黑像素和线性坐标，语言 $H$ 在首层 SliceRead 之后才在 MoT 中相遇。
+          因此首层切片分配对“画 7”和“画 0”<strong>完全一模一样</strong>！不是训练偶然，是前向计算顺序直接造成的。</td>
+        </tr>
+        <tr style="background: rgba(251, 191, 36, 0.1);">
+          <td><strong>空白画布地址有效秩</strong><br/>$\text{erank}(W^\top W)$</td>
+          <td>$\mathbf{1.39} \ / \ 32$</td>
+          <td><strong>空间极低秩与仿射半平面：</strong><br/>
+          原始坐标只有线性 $(y,x)$，切片 logit $\ell_m(x,y) \approx a_m x + b_m y + c_m$，
+          分界只能是粗分区直线，有效秩仅 1.39，无法表达细粒度 1px 弯折笔画。</td>
+        </tr>
+        <tr>
+          <td><strong>真实图像地址有效秩</strong><br/>$\text{erank}(W^\top W)$</td>
+          <td>$\mathbf{1.49} \ / \ 32$</td>
+          <td>即便有真实图像，软池化仍然天然具有强平滑倾向，必须依靠显式地址正则与几何锐化。</td>
+        </tr>
+      </tbody>
+    </table>
 
-      <div class="card" style="background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(192, 132, 252, 0.35); padding: 1.5rem; border-radius: 12px;">
-        <h3 style="color: var(--accent-purple); margin-bottom: 0.8rem;">方案 B：LeJEPA SIGReg (Statistical Isotropic Gaussian Regularizer)</h3>
-        <p style="font-size: 0.92rem; color: #cbd5e1;">
-          <strong>作用位置：</strong>先验/后验特征空间分布 $Z \in \mathbb{R}^{B \cdot M \times d}$<br/>
-          <strong>数学机制：</strong>强制切片特征分布在通道与切片维度服从各向同性高斯，惩罚协方差非对角能量：
-          $$\mathcal{L}_{\text{cov}} = \frac{1}{d} \sum_{i \neq j} [\Sigma_Z]_{ij}^2, \quad \mathcal{L}_{\text{slice}} = \frac{1}{M(M-1)} \sum_{m \neq k} [C_{\text{slice}}]_{mk}^2$$
-          <strong>实测：</strong>官方 Epps–Pulley 打在活 $S$ 上，流形是撑开了（L3 云从 2.3 到 73），
-          准确率却从 86 掉到 70；关掉 Stiefel 只留 SIGReg 更掉到 37.5。
-          深秩 2–4 在 84%+ 模型里是健康漏斗，不是病。
-        </p>
+    <div class="image-card">
+      <img src="figs/address_collapse_slices.png" alt="空白画布地址矩阵切片足迹与坍塌实测" />
+      <div class="image-caption">
+        ▲ <strong>图 9：实测地址矩阵切片空间足迹（上排：Prompt '7' 空白场；中排：Prompt 'kinks' 空白场；下排：真实图像）</strong><br/>
+        上排与中排完全重合（证明提示词盲目）；切片边界均为粗糙的大面积仿射半平面，无法落笔。
       </div>
     </div>
-    <p style="margin-top: 1.2rem; color:#94a3b8; font-size:0.95rem;">
-      产品默认因此很短：Stiefel 开，SIGReg 关，前向更新用 B，权重继续 AdamW。
+
+    <!-- 三层根治方案 -->
+    <div class="focus-box gold" style="margin-top: 1.5rem;">
+      <strong>根治蓝图：多频坐标基 + 语言首层地址先验 + 主动推理地址 KL 三层配合</strong>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1rem; margin-top: 0.8rem;">
+        <div style="background: rgba(15, 23, 42, 0.8); padding: 1rem; border-radius: 8px; border: 1px solid rgba(56, 189, 248, 0.25);">
+          <strong style="color: var(--accent-blue);">第 1 层：多频连续坐标基 $\phi(x,y)$</strong>
+          <p style="font-size: 0.88rem; color: #94a3b8; margin-top: 0.4rem; margin-bottom: 0;">
+            $$\phi(x,y) = [y, x, \sin(2^0 \pi y), \cos(2^0 \pi y), \dots, \sin(2^K \pi x), \cos(2^K \pi x)]$$
+            使线性读出能天然组合出局部、弯曲、高频的细粒度空间模式，分辨率无级缩放。
+          </p>
+        </div>
+        <div style="background: rgba(15, 23, 42, 0.8); padding: 1rem; border-radius: 8px; border: 1px solid rgba(45, 212, 191, 0.25);">
+          <strong style="color: var(--accent-teal);">第 2 层：语言首层地址先验 $w_i^p(H)$</strong>
+          <p style="font-size: 0.88rem; color: #94a3b8; margin-top: 0.4rem; margin-bottom: 0;">
+            $$P_i = \text{CrossAttn}(\phi_i, H), \quad w_i^p = \text{softmax}(g([X_i, P_i, \phi_i]))$$
+            语言在首层地址形成之前直接影响空间先验。<strong>实测已成功将空白场敏感度从 0 激活恢复至正值！</strong>
+          </p>
+        </div>
+        <div style="background: rgba(15, 23, 42, 0.8); padding: 1rem; border-radius: 8px; border: 1px solid rgba(251, 191, 36, 0.25);">
+          <strong style="color: var(--accent-amber);">第 3 层：主动推理地址 KL 与互信息正则</strong>
+          <p style="font-size: 0.88rem; color: #94a3b8; margin-top: 0.4rem; margin-bottom: 0;">
+            $$\mathcal{L}_{\text{addr}} = \lambda_W D_{\text{KL}}(q(W|o,H) \parallel p(W|H)) - \lambda_I \mathcal{I}(X; M)$$
+            强迫生成前的空间先验能够预测观察后的空间组织；互信息最大化平衡槽质量与点锐度。
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="unified-architecture">
+    <div class="section-title">
+      <span class="section-num">Ω</span>
+      <span>最终收尾：一张原生计算图，手、眼、脑共同完成全部端口</span>
+    </div>
+    <p>
+      “眼睛”不是独立视觉编码器，而是每层都从全分辨率场读取固定数量的瞬态 Slice；
+      “脑”让 Slice 与语言状态在共享注意力空间中联合演化，并用主动推理自由能控制更新；
+      “手”再把 Slice 增量写回同一个场。下一层重新读取刚刚写过的画布，因此生成同样是视觉—语言交互，而不是单向文本解码。
     </p>
+    <div class="image-card">
+      <img src="figs/unified_slice_architecture.png" alt="统一 Slice 视觉语言共同演化架构" />
+      <div class="image-caption">
+        <strong>统一原生架构：</strong>知觉与生成共享 $X\leftrightarrow S\leftrightarrow H$ 主图和参数；
+        变化的只是边界证据精度、目标时间/动作条件，以及最终读取 token、RGB 或 mask likelihood。
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="focus-box teal">
+        <strong>看图时：</strong>真实图像以高精度进入 $X$，Slice 把视觉证据送给语言；文本端读取答案，RGB/mask 端可同时完成重建与分割。
+      </div>
+      <div class="focus-box gold">
+        <strong>画图时：</strong>$X$ 从无图像证据的空白边界开始，语言先验给出内容，SliceRead 持续检查当前画布，Deslice 负责空间落笔。
+      </div>
+    </div>
   </section>
 
   <!-- Footer -->
   <footer>
-    Patch-ViT p=4 · Ungated DualStream · JEPA+RMS · Champion B = Bayes + RMSNorm(Δ) · 2000-step · 2026
+    One X–Slice–H graph · full-resolution field · frozen Pythia language · token / RGB / mask likelihoods · 2026
   </footer>
 
 </div>

@@ -9,7 +9,7 @@ import torch.nn.functional as F
 
 from fine_grain.bayesian_surprise import compute_point_vfe, reduce_observation_f
 from fine_grain.flow_match import v_from_x_pred
-from fine_grain.native_mot import slice_mass_loss_weights
+from fine_grain.native_mot import slice_mass_loss_weights, square_field_side
 from fine_grain.active_gdn2 import ActiveInferenceGDN2
 from fine_grain.sigreg import compute_sigreg_loss
 from fine_grain.unified_arch import unified_kwargs
@@ -124,6 +124,10 @@ class DualStreamOmni(DualStreamVQAModel):
         self.s0_acc_coef = float(kwargs.pop("s0_acc_coef", 1.0))
         self.seg_classes = int(kwargs.pop("seg_classes", 0))
         self.seg_loss_coef = float(kwargs.pop("seg_loss_coef", 1.0))
+        self.head_balance_coef = float(kwargs.pop("head_balance_coef", 0.0))
+        self.deep_visual_likelihood_coef = float(
+            kwargs.pop("deep_visual_likelihood_coef", 0.0)
+        )
         self.transition_loss_coef = float(kwargs.pop("transition_loss_coef", 0.0))
         self.transition_posterior_loss_coef = float(
             kwargs.pop("transition_posterior_loss_coef", 1.0)
@@ -267,11 +271,12 @@ class DualStreamOmni(DualStreamVQAModel):
         """Per-point 3-ch mean [B,3,R,R] (velocity or pre-sigmoid RGB)."""
         B = X.shape[0]
         mu, _ = self.decode_gauss(X)
-        return mu.transpose(1, 2).reshape(B, 3, self.res, self.res)
+        return self._pts_to_img(mu)
 
     def _pts_to_img(self, pts: torch.Tensor) -> torch.Tensor:
         B = pts.shape[0]
-        return pts.transpose(1, 2).reshape(B, 3, self.res, self.res)
+        side = square_field_side(pts.shape[1])
+        return pts.transpose(1, 2).reshape(B, 3, side, side)
 
     def _img_to_pts(self, img: torch.Tensor) -> torch.Tensor:
         B = img.shape[0]
@@ -472,6 +477,7 @@ class DualStreamOmni(DualStreamVQAModel):
         history_precision=None,
         action=None,
         action_precision=None,
+        task_id=None,
         causal_state=None,
         x_init=None,
     ) -> Dict:
@@ -492,6 +498,7 @@ class DualStreamOmni(DualStreamVQAModel):
             history_precision=history_precision,
             action=action,
             action_precision=action_precision,
+            task_id=task_id,
             causal_state=causal_state,
             x_init=x_init,
         )
@@ -508,6 +515,9 @@ class DualStreamOmni(DualStreamVQAModel):
         if X is None:
             X = self.mot_stack._last_X
         out["belief_mu"] = X
+        # These are diagnostic/training-only views of the already-deployed
+        # SliceRead assignments.  They do not alter X, Slice, or any readout.
+        out["address_w"] = [layer.read.last_w for layer in self.mot_stack.layers]
         out["belief_logvar"] = torch.clamp(
             self.belief_logvar_head(X), -6.0, 3.0,
         )
@@ -516,7 +526,7 @@ class DualStreamOmni(DualStreamVQAModel):
         if self.seg_head is not None:
             seg = self.seg_head(X)
             out["seg_logits"] = seg.transpose(1, 2).reshape(
-                X.shape[0], self.seg_classes, self.res, self.res,
+                X.shape[0], self.seg_classes, square_field_side(X.shape[1]), square_field_side(X.shape[1]),
             )
         else:
             out["seg_logits"] = None
@@ -568,6 +578,7 @@ class DualStreamOmni(DualStreamVQAModel):
         history_precision=None,
         action=None,
         action_precision=None,
+        task_id=None,
         causal_state=None,
         n_loops=None,
         need_pix=None,
@@ -629,6 +640,7 @@ class DualStreamOmni(DualStreamVQAModel):
             history_precision=history_precision,
             action=action,
             action_precision=action_precision,
+            task_id=task_id,
             causal_state=causal_state,
         )
         lm_dtype = emb.dtype
@@ -708,6 +720,55 @@ class DualStreamOmni(DualStreamVQAModel):
         }
         return self._fill_visual_outputs(out, images, t)
 
+    def forward_tokens_with_future_posterior(
+        self, images: torch.Tensor, input_ids: torch.Tensor,
+        attention_mask: torch.Tensor, future_images: torch.Tensor, **kwargs,
+    ) -> Dict:
+        """Token-language equivalent of the existing same-chart future KL pass.
+
+        The target is evidence only for q. The predictive p invocation receives
+        the original history, never future pixels or a state produced from q.
+        """
+        batch = images.shape[0]
+        null_id = getattr(self.lm_tok, "bos_token_id", None)
+        if null_id is None:
+            null_id = getattr(self.lm_tok, "eos_token_id", 0)
+        if null_id is None:
+            raise ValueError("future posterior requires a null language token")
+        q_ids = input_ids.new_full((batch, 1), int(null_id))
+        q_kwargs = dict(kwargs)
+        q_kwargs.update(
+            labels=None, visual_prompt_mask=torch.zeros_like(q_ids, dtype=torch.bool),
+            text_precision=images.new_zeros((batch, 1)),
+            image_precision=images.new_ones(batch),
+            target_time=images.new_zeros(batch),
+            action_precision=images.new_zeros(batch), causal_state=None,
+            score_tokens=False,
+        )
+        if bool(getattr(self.mot_stack, "use_task_tokens", False)):
+            from fine_grain.capability_tasks import CAPABILITY_TASK_IDS
+            q_kwargs["task_id"] = input_ids.new_full(
+                (batch,), CAPABILITY_TASK_IDS["image_to_current"],
+            )
+        history = kwargs.get("history_images")
+        if history is not None:
+            if history.ndim != 5:
+                raise ValueError("history_images must have shape [B,T,3,R,R]")
+            q_kwargs["history_images"] = torch.cat(
+                [history[:, 1:], future_images.unsqueeze(1)], dim=1,
+            )
+        q_out = self.forward_tokens(future_images, q_ids, torch.ones_like(q_ids), **q_kwargs)
+        out = self.forward_tokens(images, input_ids, attention_mask, **kwargs)
+        out.update(
+            transition_q_mu=q_out["belief_mu"],
+            transition_q_logvar=q_out["belief_logvar"],
+            transition_q_rgb=q_out["rgb"],
+            transition_q_seg_logits=q_out.get("seg_logits"),
+            transition_q_causal_mu=q_out.get("causal_posterior_mu"),
+            transition_q_causal_logvar=q_out.get("causal_posterior_logvar"),
+        )
+        return out
+
     def forward_with_future_posterior(
         self,
         images: torch.Tensor,
@@ -746,6 +807,12 @@ class DualStreamOmni(DualStreamVQAModel):
         q_kwargs["target_time"] = torch.zeros(
             batch, device=images.device, dtype=images.dtype,
         )
+        if bool(getattr(self.mot_stack, "use_task_tokens", False)):
+            from fine_grain.capability_tasks import CAPABILITY_TASK_IDS
+            q_kwargs["task_id"] = torch.full(
+                (batch,), CAPABILITY_TASK_IDS["image_to_current"],
+                device=images.device, dtype=torch.long,
+            )
         # The observed-future branch constructs its own posterior from the
         # shifted observed history. Reusing a caller's predictive state here
         # would make q depend on p and weaken the variational target.
@@ -842,7 +909,11 @@ class DualStreamOmni(DualStreamVQAModel):
                 else:
                     lv = lv[idx].clamp(-6.0, 3.0)
                 nll = 0.5 * (lv + (tgt - pred).pow(2) * torch.exp(-lv))
-                pix_each = nll.flatten(1).mean(dim=1)
+                from fine_grain.spatial_likelihood import spatial_nll_mean
+                spatial_weights = batch.get("rgb_likelihood_weight")
+                pix_each = spatial_nll_mean(
+                    nll, None if spatial_weights is None else spatial_weights.to(device)[idx],
+                )
                 pix = self._precision_mean(pix_each, image_like_pi[idx])
                 meta["gaussian_nll"] = float(pix.detach())
                 meta["n_obs"] = 1
@@ -918,6 +989,28 @@ class DualStreamOmni(DualStreamVQAModel):
                 sy = self._sy_sigreg(tgt)
                 losses.append(self.sigreg_coef * sy)
                 meta["sigreg_sy"] = float(sy.detach())
+            deep_coef = float(getattr(self, "deep_visual_likelihood_coef", 0.0))
+            x_steps = out.get("X_steps") or []
+            if deep_coef != 0.0 and len(x_steps) > 1:
+                # Every inference layer is judged by the same terminal RGB
+                # observation model. This makes later updates refinements of
+                # one free-energy objective instead of unconstrained rewrites.
+                # The final X is excluded because its likelihood is `pix` above.
+                deep_terms = []
+                for x_step in x_steps[:-1]:
+                    mu_step, _ = self.decode_gauss(x_step)
+                    rgb_step = torch.sigmoid(self._pts_to_img(mu_step))[idx]
+                    step_each = balanced_observation_bce(
+                        rgb_step, tgt, signed=False, reduction="none",
+                    )
+                    deep_terms.append(
+                        self._precision_mean(step_each, image_like_pi[idx])
+                    )
+                deep_visual = torch.stack(deep_terms).mean()
+                losses.append(deep_coef * deep_visual)
+                meta["deep_visual_likelihood"] = float(deep_visual.detach())
+                meta["deep_visual_likelihood_coef"] = deep_coef
+                meta["n_deep_visual_steps"] = len(deep_terms)
         if any(need_seg):
             if out.get("seg_logits") is None:
                 raise RuntimeError("batch requests segmentation but seg_classes=0")
@@ -1060,6 +1153,10 @@ class DualStreamOmni(DualStreamVQAModel):
                 loss = loss + self.prior_loss_coef * cl_weight * cl
                 meta["prior_clean"] = float(cl.item())
                 meta["prior_clean_coef"] = self.prior_loss_coef
+        if self.head_balance_coef > 0.0:
+            balance = sum(layer.mot.head_balance_loss() for layer in self.mot_stack.layers)
+            loss = loss + self.head_balance_coef * balance
+            meta["head_balance_loss"] = float(balance.detach())
         return loss, meta
 
     def _prior_clean_loss(

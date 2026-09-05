@@ -1,0 +1,616 @@
+{
+  "status": "completed_diagnostic_not_a_capability_claim",
+  "checkpoint": "checkpoints\\mixed_native_full_64_256_resume.pt",
+  "checkpoint_sha256": "dcbb7283079ecf765720e0d3d2f2943e47ca34c0d13ac1cacbdbbe3d2a7ed1f9",
+  "resolution": 256,
+  "scope": "Deployed forward metrics use no target input. Oracle rows intentionally optimise against the target and quantify only field/readout or fixed-address write capacity.",
+  "frequency_definition": "FFT radial frequency >= 0.25 cycles/pixel; no DC energy",
+  "address_definition": "actual last_w_write per independent native layer; no address retraining",
+  "examples": [
+    {
+      "id": "freedom-t2i-17808",
+      "task": "t2i",
+      "family": "real",
+      "pred_bandwidth": {
+        "signal_rms": 0.20096468925476074,
+        "neighbor_gradient_rms": 0.00519769499078393,
+        "fft_highband_fraction_r_ge_0_25": 0.0023259310983121395
+      },
+      "target_bandwidth": {
+        "signal_rms": 0.21767939627170563,
+        "neighbor_gradient_rms": 0.029994728043675423,
+        "fft_highband_fraction_r_ge_0_25": 0.007531228009611368
+      },
+      "edge_correlation": 0.05714365467429161,
+      "edge_relative_mse": 1.0096803903579712,
+      "layers": [
+        {
+          "layer": 0,
+          "address": {
+            "mean_row_entropy_normalized": 0.9960323572158813,
+            "slice_mass_effective_count": 15.855439186096191,
+            "address_matrix_effective_rank": 1.4781908988952637,
+            "mean_slice_radius_over_uniform": 1.002972960472107,
+            "address_total_variation": 7.667629688512534e-05,
+            "address_signal_rms": 0.0033363322727382183,
+            "address_neighbor_gradient_rms": 0.0005265044746920466,
+            "address_fft_highband_fraction_r_ge_0_25": 0.14249956607818604
+          },
+          "deslice_latent_delta": {
+            "signal_rms": 0.00010389015369582921,
+            "neighbor_gradient_rms": 2.238886963823461e-06,
+            "fft_highband_fraction_r_ge_0_25": 0.004781032912433147
+          },
+          "local_latent_delta": {
+            "signal_rms": 0.24055972695350647,
+            "neighbor_gradient_rms": 0.017369169741868973,
+            "fft_highband_fraction_r_ge_0_25": 0.004322053864598274
+          },
+          "deslice_rgb_effect": {
+            "signal_rms": 0.04419620335102081,
+            "neighbor_gradient_rms": 0.0020672583486884832,
+            "fft_highband_fraction_r_ge_0_25": 0.0024132956750690937
+          },
+          "full_layer_rgb_effect": {
+            "signal_rms": 0.08084915578365326,
+            "neighbor_gradient_rms": 0.008367477916181087,
+            "fft_highband_fraction_r_ge_0_25": 0.01828811503946781
+          },
+          "deslice_latent_rms": 0.2550750970840454,
+          "local_latent_rms": 0.33495861291885376
+        },
+        {
+          "layer": 1,
+          "address": {
+            "mean_row_entropy_normalized": 0.9928146600723267,
+            "slice_mass_effective_count": 15.722136497497559,
+            "address_matrix_effective_rank": 1.7093994617462158,
+            "mean_slice_radius_over_uniform": 1.0032633543014526,
+            "address_total_variation": 0.0001259998680325225,
+            "address_signal_rms": 0.0041614617221057415,
+            "address_neighbor_gradient_rms": 0.0007696421816945076,
+            "address_fft_highband_fraction_r_ge_0_25": 0.1260739117860794
+          },
+          "deslice_latent_delta": {
+            "signal_rms": 0.00019655321375466883,
+            "neighbor_gradient_rms": 8.690231879882049e-06,
+            "fft_highband_fraction_r_ge_0_25": 0.0026299958117306232
+          },
+          "local_latent_delta": {
+            "signal_rms": 0.4087952971458435,
+            "neighbor_gradient_rms": 0.027403760701417923,
+            "fft_highband_fraction_r_ge_0_25": 0.0029082796536386013
+          },
+          "deslice_rgb_effect": {
+            "signal_rms": 0.04146767780184746,
+            "neighbor_gradient_rms": 0.002703699516132474,
+            "fft_highband_fraction_r_ge_0_25": 0.0015765426214784384
+          },
+          "full_layer_rgb_effect": {
+            "signal_rms": 0.08658870309591293,
+            "neighbor_gradient_rms": 0.012269836850464344,
+            "fft_highband_fraction_r_ge_0_25": 0.023304862901568413
+          },
+          "deslice_latent_rms": 0.1828514188528061,
+          "local_latent_rms": 0.6198291778564453
+        },
+        {
+          "layer": 2,
+          "address": {
+            "mean_row_entropy_normalized": 0.9747714996337891,
+            "slice_mass_effective_count": 15.163904190063477,
+            "address_matrix_effective_rank": 2.5602567195892334,
+            "mean_slice_radius_over_uniform": 0.9971049427986145,
+            "address_total_variation": 0.00033428188180550933,
+            "address_signal_rms": 0.010868314653635025,
+            "address_neighbor_gradient_rms": 0.002172573935240507,
+            "address_fft_highband_fraction_r_ge_0_25": 0.07142885029315948
+          },
+          "deslice_latent_delta": {
+            "signal_rms": 0.0031938825268298388,
+            "neighbor_gradient_rms": 0.00019212186452932656,
+            "fft_highband_fraction_r_ge_0_25": 0.0040815467946231365
+          },
+          "local_latent_delta": {
+            "signal_rms": 0.26889002323150635,
+            "neighbor_gradient_rms": 0.02773602493107319,
+            "fft_highband_fraction_r_ge_0_25": 0.006341838743537664
+          },
+          "deslice_rgb_effect": {
+            "signal_rms": 0.09332825988531113,
+            "neighbor_gradient_rms": 0.007910612039268017,
+            "fft_highband_fraction_r_ge_0_25": 0.005079494323581457
+          },
+          "full_layer_rgb_effect": {
+            "signal_rms": 0.1419038027524948,
+            "neighbor_gradient_rms": 0.012704068794846535,
+            "fft_highband_fraction_r_ge_0_25": 0.0038723491597920656
+          },
+          "deslice_latent_rms": 0.3007926642894745,
+          "local_latent_rms": 0.41260066628456116
+        },
+        {
+          "layer": 3,
+          "address": {
+            "mean_row_entropy_normalized": 0.9904918670654297,
+            "slice_mass_effective_count": 15.777606010437012,
+            "address_matrix_effective_rank": 2.8456385135650635,
+            "mean_slice_radius_over_uniform": 0.9991783499717712,
+            "address_total_variation": 0.0004024186637252569,
+            "address_signal_rms": 0.008638579398393631,
+            "address_neighbor_gradient_rms": 0.0022954961750656366,
+            "address_fft_highband_fraction_r_ge_0_25": 0.045231517404317856
+          },
+          "deslice_latent_delta": {
+            "signal_rms": 0.0028944506775587797,
+            "neighbor_gradient_rms": 0.00017061024846043438,
+            "fft_highband_fraction_r_ge_0_25": 0.0018755478085950017
+          },
+          "local_latent_delta": {
+            "signal_rms": 0.31008949875831604,
+            "neighbor_gradient_rms": 0.02502971515059471,
+            "fft_highband_fraction_r_ge_0_25": 0.004295422695577145
+          },
+          "deslice_rgb_effect": {
+            "signal_rms": 0.05483488366007805,
+            "neighbor_gradient_rms": 0.004873058293014765,
+            "fft_highband_fraction_r_ge_0_25": 0.0033315932378172874
+          },
+          "full_layer_rgb_effect": {
+            "signal_rms": 0.081119604408741,
+            "neighbor_gradient_rms": 0.012183909304440022,
+            "fft_highband_fraction_r_ge_0_25": 0.013385554775595665
+          },
+          "deslice_latent_rms": 0.16423220932483673,
+          "local_latent_rms": 0.4200618863105774
+        }
+      ],
+      "prompt_counterfactual": {
+        "control_id": "freedom-t2i-32449",
+        "final_rgb_rms": 0.20924495160579681,
+        "per_layer": [
+          {
+            "layer": 0,
+            "write_delta_rms": 0.22765758633613586,
+            "write_address_rms": 0.0,
+            "field_rms": 0.28563883900642395
+          },
+          {
+            "layer": 1,
+            "write_delta_rms": 0.08219032734632492,
+            "write_address_rms": 0.0050263917073607445,
+            "field_rms": 0.5471397042274475
+          },
+          {
+            "layer": 2,
+            "write_delta_rms": 0.24132494628429413,
+            "write_address_rms": 0.02263915166258812,
+            "field_rms": 0.6229735612869263
+          },
+          {
+            "layer": 3,
+            "write_delta_rms": 0.18320202827453613,
+            "write_address_rms": 0.015278533101081848,
+            "field_rms": 0.7736045718193054
+          }
+        ]
+      }
+    },
+    {
+      "id": "freedom-t2i-32449",
+      "task": "t2i",
+      "family": "real",
+      "pred_bandwidth": {
+        "signal_rms": 0.20002436637878418,
+        "neighbor_gradient_rms": 0.006441313773393631,
+        "fft_highband_fraction_r_ge_0_25": 0.004468204919248819
+      },
+      "target_bandwidth": {
+        "signal_rms": 0.22745923697948456,
+        "neighbor_gradient_rms": 0.027789494022727013,
+        "fft_highband_fraction_r_ge_0_25": 0.006626111920922995
+      },
+      "edge_correlation": 0.07184075564146042,
+      "edge_relative_mse": 1.0196088552474976,
+      "layers": [
+        {
+          "layer": 0,
+          "address": {
+            "mean_row_entropy_normalized": 0.9960323572158813,
+            "slice_mass_effective_count": 15.855439186096191,
+            "address_matrix_effective_rank": 1.4781908988952637,
+            "mean_slice_radius_over_uniform": 1.002972960472107,
+            "address_total_variation": 7.667629688512534e-05,
+            "address_signal_rms": 0.0033363322727382183,
+            "address_neighbor_gradient_rms": 0.0005265044746920466,
+            "address_fft_highband_fraction_r_ge_0_25": 0.14249956607818604
+          },
+          "deslice_latent_delta": {
+            "signal_rms": 0.00010540727816987783,
+            "neighbor_gradient_rms": 2.2148899461171823e-06,
+            "fft_highband_fraction_r_ge_0_25": 0.004768675193190575
+          },
+          "local_latent_delta": {
+            "signal_rms": 0.33027419447898865,
+            "neighbor_gradient_rms": 0.017476968467235565,
+            "fft_highband_fraction_r_ge_0_25": 0.0025525097735226154
+          },
+          "deslice_rgb_effect": {
+            "signal_rms": 0.023074913769960403,
+            "neighbor_gradient_rms": 0.0007539993966929615,
+            "fft_highband_fraction_r_ge_0_25": 0.0014447759604081511
+          },
+          "full_layer_rgb_effect": {
+            "signal_rms": 0.08840832859277725,
+            "neighbor_gradient_rms": 0.009138096123933792,
+            "fft_highband_fraction_r_ge_0_25": 0.012284552678465843
+          },
+          "deslice_latent_rms": 0.12198178470134735,
+          "local_latent_rms": 0.43650010228157043
+        },
+        {
+          "layer": 1,
+          "address": {
+            "mean_row_entropy_normalized": 0.9923574328422546,
+            "slice_mass_effective_count": 15.734185218811035,
+            "address_matrix_effective_rank": 1.9026472568511963,
+            "mean_slice_radius_over_uniform": 1.002388596534729,
+            "address_total_variation": 0.00014464775449596345,
+            "address_signal_rms": 0.0052990783005952835,
+            "address_neighbor_gradient_rms": 0.000908931135199964,
+            "address_fft_highband_fraction_r_ge_0_25": 0.0934901088476181
+          },
+          "deslice_latent_delta": {
+            "signal_rms": 0.0004350170202087611,
+            "neighbor_gradient_rms": 1.6573185348534025e-05,
+            "fft_highband_fraction_r_ge_0_25": 0.002299603307619691
+          },
+          "local_latent_delta": {
+            "signal_rms": 0.3309246897697449,
+            "neighbor_gradient_rms": 0.028304822742938995,
+            "fft_highband_fraction_r_ge_0_25": 0.0044619245454669
+          },
+          "deslice_rgb_effect": {
+            "signal_rms": 0.027168935164809227,
+            "neighbor_gradient_rms": 0.0023247194476425648,
+            "fft_highband_fraction_r_ge_0_25": 0.00727834552526474
+          },
+          "full_layer_rgb_effect": {
+            "signal_rms": 0.18320979177951813,
+            "neighbor_gradient_rms": 0.014210006222128868,
+            "fft_highband_fraction_r_ge_0_25": 0.005330249667167664
+          },
+          "deslice_latent_rms": 0.15651573240756989,
+          "local_latent_rms": 0.449738472700119
+        },
+        {
+          "layer": 2,
+          "address": {
+            "mean_row_entropy_normalized": 0.9916565418243408,
+            "slice_mass_effective_count": 15.87778091430664,
+            "address_matrix_effective_rank": 2.8530964851379395,
+            "mean_slice_radius_over_uniform": 0.9985470771789551,
+            "address_total_variation": 0.0003643400559667498,
+            "address_signal_rms": 0.0067751361057162285,
+            "address_neighbor_gradient_rms": 0.0019030253170058131,
+            "address_fft_highband_fraction_r_ge_0_25": 0.06715644896030426
+          },
+          "deslice_latent_delta": {
+            "signal_rms": 0.001234647468663752,
+            "neighbor_gradient_rms": 7.875461596995592e-05,
+            "fft_highband_fraction_r_ge_0_25": 0.0014307813253253698
+          },
+          "local_latent_delta": {
+            "signal_rms": 0.29236480593681335,
+            "neighbor_gradient_rms": 0.031309500336647034,
+            "fft_highband_fraction_r_ge_0_25": 0.006901327986270189
+          },
+          "deslice_rgb_effect": {
+            "signal_rms": 0.042155683040618896,
+            "neighbor_gradient_rms": 0.0022474294528365135,
+            "fft_highband_fraction_r_ge_0_25": 0.0031589141581207514
+          },
+          "full_layer_rgb_effect": {
+            "signal_rms": 0.13106279075145721,
+            "neighbor_gradient_rms": 0.012283182702958584,
+            "fft_highband_fraction_r_ge_0_25": 0.005802301224321127
+          },
+          "deslice_latent_rms": 0.22789637744426727,
+          "local_latent_rms": 0.3874742090702057
+        },
+        {
+          "layer": 3,
+          "address": {
+            "mean_row_entropy_normalized": 0.9904112815856934,
+            "slice_mass_effective_count": 15.742579460144043,
+            "address_matrix_effective_rank": 2.736351251602173,
+            "mean_slice_radius_over_uniform": 1.0008692741394043,
+            "address_total_variation": 0.0003854697570204735,
+            "address_signal_rms": 0.005770762450993061,
+            "address_neighbor_gradient_rms": 0.0019065432716161013,
+            "address_fft_highband_fraction_r_ge_0_25": 0.05234925076365471
+          },
+          "deslice_latent_delta": {
+            "signal_rms": 0.0014298496535047889,
+            "neighbor_gradient_rms": 0.00010290318459738046,
+            "fft_highband_fraction_r_ge_0_25": 0.0025193432811647654
+          },
+          "local_latent_delta": {
+            "signal_rms": 0.3047822117805481,
+            "neighbor_gradient_rms": 0.029011117294430733,
+            "fft_highband_fraction_r_ge_0_25": 0.006222941447049379
+          },
+          "deslice_rgb_effect": {
+            "signal_rms": 0.052211862057447433,
+            "neighbor_gradient_rms": 0.0030176977161318064,
+            "fft_highband_fraction_r_ge_0_25": 0.004049272276461124
+          },
+          "full_layer_rgb_effect": {
+            "signal_rms": 0.12616103887557983,
+            "neighbor_gradient_rms": 0.01476485375314951,
+            "fft_highband_fraction_r_ge_0_25": 0.010116726160049438
+          },
+          "deslice_latent_rms": 0.14226189255714417,
+          "local_latent_rms": 0.3892917335033417
+        }
+      ],
+      "prompt_counterfactual": {
+        "control_id": "freedom-t2i-17808",
+        "final_rgb_rms": 0.20924495160579681,
+        "per_layer": [
+          {
+            "layer": 0,
+            "write_delta_rms": 0.22765758633613586,
+            "write_address_rms": 0.0,
+            "field_rms": 0.28563883900642395
+          },
+          {
+            "layer": 1,
+            "write_delta_rms": 0.08219032734632492,
+            "write_address_rms": 0.0050263917073607445,
+            "field_rms": 0.5471397042274475
+          },
+          {
+            "layer": 2,
+            "write_delta_rms": 0.24132494628429413,
+            "write_address_rms": 0.02263915166258812,
+            "field_rms": 0.6229735612869263
+          },
+          {
+            "layer": 3,
+            "write_delta_rms": 0.18320202827453613,
+            "write_address_rms": 0.015278533101081848,
+            "field_rms": 0.7736045718193054
+          }
+        ]
+      }
+    },
+    {
+      "id": "t2i1px-7",
+      "task": "t2i",
+      "family": "generation1px",
+      "pred_bandwidth": {
+        "signal_rms": 0.006569480057805777,
+        "neighbor_gradient_rms": 0.001141269109211862,
+        "fft_highband_fraction_r_ge_0_25": 0.0173750352114439
+      },
+      "target_bandwidth": {
+        "signal_rms": 0.00956700462847948,
+        "neighbor_gradient_rms": 0.011070186272263527,
+        "fft_highband_fraction_r_ge_0_25": 0.5439640283584595
+      },
+      "edge_correlation": 0.00033016741508617997,
+      "edge_relative_mse": 1.010560154914856,
+      "layers": [
+        {
+          "layer": 0,
+          "address": {
+            "mean_row_entropy_normalized": 0.9960323572158813,
+            "slice_mass_effective_count": 15.855439186096191,
+            "address_matrix_effective_rank": 1.4781908988952637,
+            "mean_slice_radius_over_uniform": 1.002972960472107,
+            "address_total_variation": 7.667629688512534e-05,
+            "address_signal_rms": 0.0033363322727382183,
+            "address_neighbor_gradient_rms": 0.0005265044746920466,
+            "address_fft_highband_fraction_r_ge_0_25": 0.14249956607818604
+          },
+          "deslice_latent_delta": {
+            "signal_rms": 0.00011018421355402097,
+            "neighbor_gradient_rms": 2.317788357686368e-06,
+            "fft_highband_fraction_r_ge_0_25": 0.00474139116704464
+          },
+          "local_latent_delta": {
+            "signal_rms": 0.3312516510486603,
+            "neighbor_gradient_rms": 0.017995893955230713,
+            "fft_highband_fraction_r_ge_0_25": 0.0027790023013949394
+          },
+          "deslice_rgb_effect": {
+            "signal_rms": 0.027651051059365273,
+            "neighbor_gradient_rms": 0.0006944339256733656,
+            "fft_highband_fraction_r_ge_0_25": 0.0006125507643446326
+          },
+          "full_layer_rgb_effect": {
+            "signal_rms": 0.08546992391347885,
+            "neighbor_gradient_rms": 0.008586527779698372,
+            "fft_highband_fraction_r_ge_0_25": 0.013214480131864548
+          },
+          "deslice_latent_rms": 0.12133405357599258,
+          "local_latent_rms": 0.3782602548599243
+        },
+        {
+          "layer": 1,
+          "address": {
+            "mean_row_entropy_normalized": 0.9936121702194214,
+            "slice_mass_effective_count": 15.793787002563477,
+            "address_matrix_effective_rank": 1.9299592971801758,
+            "mean_slice_radius_over_uniform": 1.0019721984863281,
+            "address_total_variation": 0.00014223239850252867,
+            "address_signal_rms": 0.005475250072777271,
+            "address_neighbor_gradient_rms": 0.0009335185750387609,
+            "address_fft_highband_fraction_r_ge_0_25": 0.09174931049346924
+          },
+          "deslice_latent_delta": {
+            "signal_rms": 0.0004275509563740343,
+            "neighbor_gradient_rms": 1.3738985217059962e-05,
+            "fft_highband_fraction_r_ge_0_25": 0.0024833534844219685
+          },
+          "local_latent_delta": {
+            "signal_rms": 0.28940877318382263,
+            "neighbor_gradient_rms": 0.023701658472418785,
+            "fft_highband_fraction_r_ge_0_25": 0.004442304372787476
+          },
+          "deslice_rgb_effect": {
+            "signal_rms": 0.027212785556912422,
+            "neighbor_gradient_rms": 0.00318623473867774,
+            "fft_highband_fraction_r_ge_0_25": 0.022553825750947
+          },
+          "full_layer_rgb_effect": {
+            "signal_rms": 0.054941389709711075,
+            "neighbor_gradient_rms": 0.006480269134044647,
+            "fft_highband_fraction_r_ge_0_25": 0.011770508252084255
+          },
+          "deslice_latent_rms": 0.18359236419200897,
+          "local_latent_rms": 0.4382743835449219
+        },
+        {
+          "layer": 2,
+          "address": {
+            "mean_row_entropy_normalized": 0.9790087938308716,
+            "slice_mass_effective_count": 15.258238792419434,
+            "address_matrix_effective_rank": 2.3176982402801514,
+            "mean_slice_radius_over_uniform": 0.9971776604652405,
+            "address_total_variation": 0.0002910879848059267,
+            "address_signal_rms": 0.006054593250155449,
+            "address_neighbor_gradient_rms": 0.0015022916486486793,
+            "address_fft_highband_fraction_r_ge_0_25": 0.04437326639890671
+          },
+          "deslice_latent_delta": {
+            "signal_rms": 0.0007582039106637239,
+            "neighbor_gradient_rms": 4.389382229419425e-05,
+            "fft_highband_fraction_r_ge_0_25": 0.000823698821477592
+          },
+          "local_latent_delta": {
+            "signal_rms": 0.20787771046161652,
+            "neighbor_gradient_rms": 0.02572622150182724,
+            "fft_highband_fraction_r_ge_0_25": 0.011157491244375706
+          },
+          "deslice_rgb_effect": {
+            "signal_rms": 0.006079777609556913,
+            "neighbor_gradient_rms": 0.0013579807709902525,
+            "fft_highband_fraction_r_ge_0_25": 0.06265947967767715
+          },
+          "full_layer_rgb_effect": {
+            "signal_rms": 0.03490028902888298,
+            "neighbor_gradient_rms": 0.009670606814324856,
+            "fft_highband_fraction_r_ge_0_25": 0.03979455679655075
+          },
+          "deslice_latent_rms": 0.14252474904060364,
+          "local_latent_rms": 0.35729825496673584
+        },
+        {
+          "layer": 3,
+          "address": {
+            "mean_row_entropy_normalized": 0.9891291260719299,
+            "slice_mass_effective_count": 15.664767265319824,
+            "address_matrix_effective_rank": 2.4424331188201904,
+            "mean_slice_radius_over_uniform": 1.0002357959747314,
+            "address_total_variation": 0.00033814823837019503,
+            "address_signal_rms": 0.005707211792469025,
+            "address_neighbor_gradient_rms": 0.0015565003268420696,
+            "address_fft_highband_fraction_r_ge_0_25": 0.05205347388982773
+          },
+          "deslice_latent_delta": {
+            "signal_rms": 0.0007393569685518742,
+            "neighbor_gradient_rms": 5.8143617934547365e-05,
+            "fft_highband_fraction_r_ge_0_25": 0.0027919092681258917
+          },
+          "local_latent_delta": {
+            "signal_rms": 0.23709620535373688,
+            "neighbor_gradient_rms": 0.024637235328555107,
+            "fft_highband_fraction_r_ge_0_25": 0.0076541053131222725
+          },
+          "deslice_rgb_effect": {
+            "signal_rms": 0.03102370724081993,
+            "neighbor_gradient_rms": 0.005724675487726927,
+            "fft_highband_fraction_r_ge_0_25": 0.018045417964458466
+          },
+          "full_layer_rgb_effect": {
+            "signal_rms": 0.0439770445227623,
+            "neighbor_gradient_rms": 0.008292055688798428,
+            "fft_highband_fraction_r_ge_0_25": 0.019767260178923607
+          },
+          "deslice_latent_rms": 0.18720772862434387,
+          "local_latent_rms": 0.3621169328689575
+        }
+      ],
+      "prompt_counterfactual": {
+        "control_id": "t2i1px-0",
+        "final_rgb_rms": 0.0002256108564324677,
+        "per_layer": [
+          {
+            "layer": 0,
+            "write_delta_rms": 0.0029036065097898245,
+            "write_address_rms": 0.0,
+            "field_rms": 0.005146287847310305
+          },
+          {
+            "layer": 1,
+            "write_delta_rms": 0.0023001672234386206,
+            "write_address_rms": 0.00014183021266944706,
+            "field_rms": 0.008282692171633244
+          },
+          {
+            "layer": 2,
+            "write_delta_rms": 0.003968907054513693,
+            "write_address_rms": 0.00015750358579680324,
+            "field_rms": 0.010646430775523186
+          },
+          {
+            "layer": 3,
+            "write_delta_rms": 0.005373932886868715,
+            "write_address_rms": 0.0002338171034352854,
+            "field_rms": 0.013729017227888107
+          }
+        ]
+      }
+    }
+  ],
+  "oracles": {
+    "freedom-t2i-17808": [
+      {
+        "oracle": "four_writes",
+        "controls": 4096,
+        "steps": 1000,
+        "loss_first": 0.07938199490308762,
+        "loss_last_pre_step": 0.005220563616603613,
+        "mse": 0.005250285379588604,
+        "psnr": 22.798170898488685,
+        "edge_correlation": 0.06576722115278244,
+        "edge_relative_mse": 1.007214903831482,
+        "pred_bandwidth": {
+          "signal_rms": 0.20332762598991394,
+          "neighbor_gradient_rms": 0.005269788671284914,
+          "fft_highband_fraction_r_ge_0_25": 0.0023585553281009197
+        }
+      }
+    ],
+    "t2i1px-7": [
+      {
+        "oracle": "four_writes",
+        "controls": 4096,
+        "steps": 1000,
+        "loss_first": 0.07435756176710129,
+        "loss_last_pre_step": 0.00010389089584350586,
+        "mse": 0.0001038833725033328,
+        "psnr": 39.83453959737644,
+        "edge_correlation": 7.075182679727732e-07,
+        "edge_relative_mse": 1.0002495050430298,
+        "pred_bandwidth": {
+          "signal_rms": 0.00028181562083773315,
+          "neighbor_gradient_rms": 0.00017490134632680565,
+          "fft_highband_fraction_r_ge_0_25": 0.26242345571517944
+        }
+      }
+    ]
+  }
+}

@@ -301,6 +301,14 @@ def main() -> None:
         ),
     )
     parser.add_argument(
+        "--prior-step-dose", type=float, default=0.0,
+        help=(
+            "Prescribed L2 norm for the (frozen) step projection; the "
+            "learned scalar amplitude stays near zero, exactly like the "
+            "write gamma before its prescribed dose."
+        ),
+    )
+    parser.add_argument(
         "--prior-increment", action="store_true",
         help=(
             "Painter write semantics: the language prior emits a slice-space "
@@ -347,11 +355,29 @@ def main() -> None:
         ),
     ).to(device)
     report = load_visual_champion(model, init_path, skip_language_interface=False)
+    trainable = set_optimization_phase(model, "generation_write")
+    # Prescribed doses are applied AFTER the phase pass: it re-enables every
+    # marker-matched parameter, so an earlier freeze would be silently undone.
     if float(args.write_gamma) > 0.0:
         for layer in model.mot_stack.layers:
             layer.deslice.write_gamma_raw.data.fill_(float(math.log(args.write_gamma)))
             layer.deslice.write_gamma_raw.requires_grad_(False)
-    trainable = set_optimization_phase(model, "generation_write")
+        trainable = [n for n in trainable if "write_gamma_raw" not in n]
+    if float(args.prior_step_dose) > 0.0:
+        if not args.prior_step_condition:
+            raise SystemExit("--prior-step-dose requires --prior-step-condition")
+        generator = torch.Generator(device="cpu").manual_seed(20260902)
+        for layer in model.mot_stack.layers:
+            proj = layer.surprise_gate.prior_step_proj
+            direction = torch.randn(
+                proj.weight.shape, generator=generator,
+            )
+            direction = direction / direction.norm()
+            proj.weight.data.copy_(direction * float(args.prior_step_dose))
+            proj.bias.data.zero_()
+            proj.weight.requires_grad_(False)
+            proj.bias.requires_grad_(False)
+        trainable = [n for n in trainable if "prior_step_proj" not in n]
     assert any("t_coord" in name for name in trainable), (
         "step condition must be trainable for the sequential schedule"
     )
@@ -424,6 +450,7 @@ def main() -> None:
             "stroke_split": STROKE_SPLIT,
             "write_gamma": float(args.write_gamma),
             "prior_step_condition": bool(args.prior_step_condition),
+            "prior_step_dose": float(args.prior_step_dose),
             "prior_increment": bool(args.prior_increment),
             "trainable": trainable,
             "n_trainable": sum(

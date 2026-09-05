@@ -1,8 +1,9 @@
 """Capability-closed synthetic boundary conditions for one Omni checkpoint.
 
-Each sample supervises every available readout. Ports are not separate models
-or task tokens: observed-modality precision and prediction horizon define the
-boundary condition, while the same X/H Slice-MoT-Deslice graph always runs.
+Each sample supervises every available readout. Observed-modality precision and
+prediction horizon define the physical boundary condition; an optional task
+token states the semantic intention. The same X/H Slice-MoT-Deslice graph and
+heads always run.
 """
 from __future__ import annotations
 
@@ -21,6 +22,7 @@ CAPABILITY_CASES = (
     "image_text_edit",    # IT2T + IT2I editing
     "image_to_future",    # I2I next-frame world prediction
 )
+CAPABILITY_TASK_IDS = {case: index for index, case in enumerate(CAPABILITY_CASES)}
 
 WORLD_ACTIONS = (
     (-1.0, 0.0),
@@ -52,8 +54,20 @@ def action_place(place: str, action) -> str:
     return f"{_ROWS[ri]}_{_COLS[ci]}"
 
 
-def _scene(digit: str, color: str, place: str, res: int):
-    stroke = grid_digit_mask(str(digit), int(res), str(place))
+def _scene(
+    digit: str,
+    color: str,
+    place: str,
+    res: int,
+    *,
+    glyph_box: int | None = None,
+    glyph_stroke_px: int = 1,
+    normalized_layout: bool = False,
+):
+    stroke = grid_digit_mask(
+        str(digit), int(res), str(place), box=glyph_box, stroke_px=glyph_stroke_px,
+        normalized_layout=normalized_layout,
+    )
     blank = torch.zeros(1, 3, int(res), int(res), dtype=torch.float32)
     rgb = _paint(blank, stroke, equal_energy_ink(str(color)))
     return rgb, stroke
@@ -68,6 +82,9 @@ def capability_sample(
     place: str | None = None,
     velocity_override=None,
     action_override=None,
+    glyph_box: int | None = None,
+    glyph_stroke_px: int = 1,
+    normalized_layout: bool = False,
 ) -> Dict:
     """Create one falsifiable boundary case on the shared digit scene family."""
     case = str(case)
@@ -76,11 +93,20 @@ def capability_sample(
     digit = str(digit if digit is not None else rng.choice(OCR_DIGITS))
     color = str(color if color is not None else rng.choice(list(COLORS)))
     place = str(place if place is not None else rng.choice(GRID_PLACES))
-    source, source_stroke = _scene(digit, color, place, res)
+    scene_kw = {
+        "glyph_box": glyph_box,
+        "glyph_stroke_px": glyph_stroke_px,
+        "normalized_layout": normalized_layout,
+    }
+    source, source_stroke = _scene(digit, color, place, res, **scene_kw)
     action = torch.zeros(2, dtype=torch.float32)
     velocity = torch.zeros(2, dtype=torch.float32)
     action_precision = 0.0
-    history_precision = torch.ones(2, dtype=torch.float32)
+    # Static ports do not observe a temporal context.  Supplying duplicated
+    # source frames here lets reconstruction/editing bypass the declared
+    # image boundary through history_stem.  Future prediction enables history
+    # explicitly in its own branch below.
+    history_precision = torch.zeros(2, dtype=torch.float32)
     history_images = torch.stack([source[0], source[0]], dim=0)
 
     if case == "text_to_both":
@@ -91,7 +117,6 @@ def capability_sample(
         answer = digit
         image_precision, text_precision, target_time = 0.0, 1.0, 0.0
         history_images = torch.zeros_like(history_images)
-        history_precision.zero_()
         target_color, target_place = color, place
     elif case == "image_to_current":
         image = source
@@ -110,7 +135,7 @@ def capability_sample(
         target_color, target_place = color, place
     elif case == "image_text_edit":
         target_color = next_color(color)
-        target, stroke = _scene(digit, target_color, place, res)
+        target, stroke = _scene(digit, target_color, place, res, **scene_kw)
         image = source
         prompt = "Change the stroke to the next color"
         # The answer is not present in the text: it requires source color + rule.
@@ -137,9 +162,10 @@ def capability_sample(
         action = torch.as_tensor(action_value, dtype=torch.float32).clone()
         target_place = action_place(place, velocity + action)
         previous_place = action_place(place, -velocity)
-        previous, _ = _scene(digit, color, previous_place, res)
+        previous, _ = _scene(digit, color, previous_place, res, **scene_kw)
         history_images = torch.stack([previous[0], source[0]], dim=0)
-        target, stroke = _scene(digit, color, target_place, res)
+        history_precision.fill_(1.0)
+        target, stroke = _scene(digit, color, target_place, res, **scene_kw)
         image = source
         prompt = "Predict next frame"
         answer = digit
@@ -149,6 +175,7 @@ def capability_sample(
 
     return {
         "case": case,
+        "task_id": CAPABILITY_TASK_IDS[case],
         "kind": case,
         "image": image,
         "target_rgb": target,
@@ -236,7 +263,7 @@ def make_capability_batch(
 
 
 def collate_capability(samples: List[Dict]) -> Dict:
-    """Collate explicit samples without introducing a task/port token."""
+    """Collate explicit samples, including their semantic intention token."""
     chosen = [s["case"] for s in samples]
     batch = {
         "image": torch.cat([s["image"] for s in samples], dim=0),
@@ -247,6 +274,7 @@ def collate_capability(samples: List[Dict]) -> Dict:
         "answer": [s["answer"] for s in samples],
         "kind": chosen,
         "case": chosen,
+        "task_id": torch.tensor([s["task_id"] for s in samples], dtype=torch.long),
         "need_text": [True] * len(samples),
         "need_pix": [True] * len(samples),
         "need_seg": [True] * len(samples),

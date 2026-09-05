@@ -65,6 +65,7 @@ class DualStreamVQAModel(nn.Module):
         use_stiefel: bool = True,
         deslice_topk: int = 2,
         deslice_write_sharpening: bool = False,
+        local_dilation: int = 1,
         prior_step_condition: bool = False,
         s_update: str = "raw",
         interact_prenorm: bool = False,
@@ -112,6 +113,11 @@ class DualStreamVQAModel(nn.Module):
         action_dim: int = 0,
         use_action_adaln: bool = False,
         use_action_tokens: bool = False,
+        use_task_tokens: bool = False,
+        n_task_tokens: int = 4,
+        control_prefix_attention: bool = False,
+        use_attention_sink: bool = False,
+        gaussian_head_layout: str = "legacy",
         use_action_rel_bias: bool = False,
         use_action_transport: bool = False,
         use_action_slice_transition: bool = False,
@@ -120,6 +126,9 @@ class DualStreamVQAModel(nn.Module):
         use_active_gdn2_history_transport: bool = False,
         active_gdn2_initial_trust: float = 0.0,
         terminal_token_atlas: bool = False,
+        use_lang_address: bool = False,
+        lang_address_freq: int = 4,
+        lang_address_hidden: int = 64,
     ):
         super().__init__()
         self.d_model = d_model
@@ -130,6 +139,9 @@ class DualStreamVQAModel(nn.Module):
         self.n_heads = int(n_heads)
         self.surprise_mode = surprise_mode
         self.n_layers = n_layers
+        self.use_lang_address = bool(use_lang_address)
+        self.lang_address_freq = int(lang_address_freq)
+        self.lang_address_hidden = int(lang_address_hidden)
         self.share_layers = bool(share_layers)
         self.n_loops = int(n_layers if n_loops is None else n_loops)
         self.s2a = bool(s2a)
@@ -148,6 +160,7 @@ class DualStreamVQAModel(nn.Module):
         self.use_stiefel = bool(use_stiefel)
         self.deslice_topk = int(deslice_topk)
         self.deslice_write_sharpening = bool(deslice_write_sharpening)
+        self.local_dilation = max(1, int(local_dilation))
         self.prior_step_condition = bool(prior_step_condition)
         self.s_update = str(s_update)
         self.interact_prenorm = bool(interact_prenorm)
@@ -191,6 +204,7 @@ class DualStreamVQAModel(nn.Module):
             prior_step_condition=self.prior_step_condition,
             use_stiefel=self.use_stiefel,
             local_kind="dw3",
+            local_dilation=self.local_dilation,
             surprise_mode=surprise_mode,
             surprise_beta=surprise_beta,
             detach_pred_target=self.detach_pred_target,
@@ -232,6 +246,11 @@ class DualStreamVQAModel(nn.Module):
             action_dim=action_dim,
             use_action_adaln=use_action_adaln,
             use_action_tokens=use_action_tokens,
+            use_task_tokens=use_task_tokens,
+            n_task_tokens=n_task_tokens,
+            control_prefix_attention=control_prefix_attention,
+            use_attention_sink=use_attention_sink,
+            gaussian_head_layout=gaussian_head_layout,
             use_action_rel_bias=use_action_rel_bias,
             use_action_transport=use_action_transport,
             use_action_slice_transition=use_action_slice_transition,
@@ -240,6 +259,9 @@ class DualStreamVQAModel(nn.Module):
             use_active_gdn2_history_transport=use_active_gdn2_history_transport,
             active_gdn2_initial_trust=active_gdn2_initial_trust,
             terminal_token_atlas=terminal_token_atlas,
+            use_lang_address=self.use_lang_address,
+            lang_address_freq=self.lang_address_freq,
+            lang_address_hidden=self.lang_address_hidden,
         )
 
         # Multi-task answer classification heads
@@ -306,6 +328,7 @@ class DualStreamVQAModel(nn.Module):
         history_precision=None,
         action=None,
         action_precision=None,
+        task_id=None,
         causal_state=None,
         x_init=None,
     ):
@@ -324,6 +347,7 @@ class DualStreamVQAModel(nn.Module):
             history_precision=history_precision,
             action=action,
             action_precision=action_precision,
+            task_id=task_id,
             causal_state=causal_state,
             x_init=x_init,
         )
@@ -370,6 +394,7 @@ class DualStreamVQAModel(nn.Module):
             "logits_k": logits_k,
             "traces": traces,
             "X": X,
+            "X_steps": getattr(self.mot_stack, "_last_live_X_steps", []),
             "tokens": tok,
             "pred_loss": pred_loss,
             "vfe_loss": vfe_loss,

@@ -1,0 +1,103 @@
+{
+  "schema": "address-teaching-signal-h1-h4-probe",
+  "prediction": "P-20260906-01",
+  "candidate": "D:\\\u89c6\u89c9\u7f16\u7801\u5668\u6d4b\u8bd5\\checkpoints\\_u1_address_alignment_candidate.pt",
+  "sample": {
+    "digit": "7",
+    "color": "red",
+    "place": "middle_center"
+  },
+  "layers": [
+    {
+      "layer": 0,
+      "pre_blank": {
+        "normalized_row_entropy": 0.9485396146774292,
+        "effective_rank": 1.488211750984192,
+        "mean_radius": 0.8099616765975952,
+        "uniform_radius": 0.8293555974960327,
+        "mean_peak_assignment": 0.06987245380878448
+      },
+      "post_blank": {
+        "normalized_row_entropy": 0.06011650711297989,
+        "effective_rank": 1.4002844095230103,
+        "mean_radius": 0.5976195335388184,
+        "uniform_radius": 0.8293555974960327,
+        "mean_peak_assignment": 0.12305787205696106
+      },
+      "target_blank_relative_difference": 0.01754927821457386,
+      "foreground_to_background_assignment_change": 10.263967514038086
+    },
+    {
+      "layer": 1,
+      "pre_blank": {
+        "normalized_row_entropy": 0.975627064704895,
+        "effective_rank": 1.6067492961883545,
+        "mean_radius": 0.8143382668495178,
+        "uniform_radius": 0.8293555974960327,
+        "mean_peak_assignment": 0.05269370973110199
+      },
+      "post_blank": {
+        "normalized_row_entropy": 0.0327000692486763,
+        "effective_rank": 1.3206267356872559,
+        "mean_radius": 0.5972739458084106,
+        "uniform_radius": 0.8293555974960327,
+        "mean_peak_assignment": 0.13731655478477478
+      },
+      "target_blank_relative_difference": 0.06657710671424866,
+      "foreground_to_background_assignment_change": 2.5426836013793945
+    },
+    {
+      "layer": 2,
+      "pre_blank": {
+        "normalized_row_entropy": 0.9680210947990417,
+        "effective_rank": 1.7610399723052979,
+        "mean_radius": 0.8162169456481934,
+        "uniform_radius": 0.8293555974960327,
+        "mean_peak_assignment": 0.06626169383525848
+      },
+      "post_blank": {
+        "normalized_row_entropy": 0.049914538860321045,
+        "effective_rank": 1.7847501039505005,
+        "mean_radius": 0.6321536302566528,
+        "uniform_radius": 0.8293555974960327,
+        "mean_peak_assignment": 0.17508786916732788
+      },
+      "target_blank_relative_difference": 0.1497877687215805,
+      "foreground_to_background_assignment_change": 3.508800745010376
+    },
+    {
+      "layer": 3,
+      "pre_blank": {
+        "normalized_row_entropy": 0.9460121393203735,
+        "effective_rank": 2.019934892654419,
+        "mean_radius": 0.8212088942527771,
+        "uniform_radius": 0.8293555974960327,
+        "mean_peak_assignment": 0.09073501825332642
+      },
+      "post_blank": {
+        "normalized_row_entropy": 0.0540713407099247,
+        "effective_rank": 3.370351552963257,
+        "mean_radius": 0.6574153304100037,
+        "uniform_radius": 0.8293555974960327,
+        "mean_peak_assignment": 0.42056381702423096
+      },
+      "target_blank_relative_difference": 0.22343356907367706,
+      "foreground_to_background_assignment_change": 1.990743637084961
+    }
+  ],
+  "pre_write_oracle": {
+    "columns": 256,
+    "mse": 0.0012733126059174538,
+    "stroke_iou": 0.4047619104385376
+  },
+  "post_write_oracle": {
+    "columns": 256,
+    "mse": 0.0013468002434819937,
+    "stroke_iou": 0.31111112236976624
+  },
+  "free_pixel_oracle": {
+    "mse": 0.0,
+    "stroke_iou": 1.0
+  },
+  "interpretation_rule": "H1: tiny target/blank change and fg/bg ratio near 1. H2: low post-write oracle IoU. H3: high post-write oracle and selective target response. H4: post-write sharply improves locality/oracle over pre-write."
+}
