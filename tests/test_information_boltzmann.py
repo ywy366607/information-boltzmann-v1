@@ -304,3 +304,36 @@ def test_full_phase_response_undamped_oscillator():
     state = model.initialize(torch.tensor([1]), torch.Generator().manual_seed(1))
     response = conditional_response(model, state, [1]*48, torch.Generator().manual_seed(2), burn_in=8)
     assert abs(response["finite_response_rate"]) < .002
+
+
+def test_substep_energy_budget_and_instrumentation_equivalence():
+    model = tiny(temperature=.1).double()
+    state = model.initialize(torch.tensor([1]), torch.Generator().manual_seed(3))
+    budget = {}
+    with torch.no_grad():
+        a, _, _ = model._advance_steps(state, 2, torch.Generator().manual_seed(4), budget=budget)
+        b, _, _ = model._advance_steps(state, 2, torch.Generator().manual_seed(4))
+    assert torch.equal(a.x,b.x) and torch.equal(a.v,b.v)
+    energy = lambda s: float(((s.x.square()+s.v.square()).sum(-1).mean()/2).detach())
+    predicted = (budget['drive_work']+budget['trap_work']-budget['deterministic_damping_loss']
+                 +budget['ou_fluctuation_energy']+budget['drift_potential_change']
+                 +budget['collision_energy_error'])
+    assert abs(energy(a)-energy(state)-predicted) < 1e-12
+
+
+def test_two_streams_isolate_phase_parameters_and_rng():
+    import copy
+    source = tiny(temperature=.1)
+    deployed = copy.deepcopy(source)
+    reference = copy.deepcopy(source)
+    train = StreamRunner(source,1,seed=9,optimizer=torch.optim.Adam(source.parameters()),update_every=2)
+    inference = StreamRunner(deployed,1,seed=7)
+    control = StreamRunner(reference,1,seed=7)
+    for token in [2,3,4,5]:
+        train.predict()
+        train.observe(token)
+        assert torch.equal(inference.predict(),control.predict())
+        inference.observe(token)
+        control.observe(token)
+    assert any(not torch.equal(a,b) for a,b in zip(source.parameters(),deployed.parameters()))
+    assert torch.equal(inference.state.x,control.state.x)

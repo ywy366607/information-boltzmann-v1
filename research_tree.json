@@ -755,6 +755,24 @@
       "artifacts": [
         "docs/INFORMATION_BOLTZMANN_TRAINING_HOLD.md"
       ]
+    },
+    {
+      "id": "IB_DIAGNOSTICS_20260910",
+      "parent": "IB001",
+      "title": "Corrected full-phase response and substep energy accounting",
+      "status": "observed",
+      "action": "Keep training paused; validate full-phase common-noise response, analytic oscillator, two-stream isolation, and instrumented substep energy ledger.",
+      "conclusion": "23 tests pass; CUDA FP64 ledger residual 2.22e-16. Response approximately follows -gamma/2; no demonstrated critical transition or continual-learning benefit.",
+      "issues": [
+        "Single-seed finite-time diagnostic",
+        "Near-zero gamma response needs longer-time convergence",
+        "Local collision and NESS claims still unproven"
+      ],
+      "artifacts": [
+        "docs/INFORMATION_BOLTZMANN_DIAGNOSTIC_UPDATE.md",
+        "results/published/ib_substep_energy_budget.json",
+        "results/published/ib_response_refinement.json"
+      ]
     }
   ]
 }
