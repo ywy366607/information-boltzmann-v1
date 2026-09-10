@@ -1,0 +1,60 @@
+{
+  "status": "implemented_smoke_candidate",
+  "seed": 11,
+  "model": {
+    "phase_dim": 2,
+    "particles": 16,
+    "hidden_dim": 48,
+    "flow_layers": 4,
+    "base_density": "logistic",
+    "joint_xv": true,
+    "decoder": "distribution_integral"
+  },
+  "dynamics": {
+    "steps": 4,
+    "force": "data_driven_confined_damped",
+    "collision": "local_microreversible_attention_binary_elastic",
+    "max_collision_rate": 1.0,
+    "invariants": [
+      "mass",
+      "momentum",
+      "kinetic_energy"
+    ],
+    "h_theorem": "structural_microreversibility",
+    "supervision": "prequential_online_next_real_token",
+    "pde_form": "conservative_velocity_divergence",
+    "kappa": 1.0,
+    "gamma": 1.0,
+    "acceleration_norm_bound": 1.0,
+    "event_interval": 1.0,
+    "kernel_width": 1.0,
+    "temperature": 0.1
+  },
+  "data": {
+    "dataset": "openwebtext",
+    "revision": "433fe0f44ed7894fea29c08b3202aa348ccc6369",
+    "require_resolved_revision": true,
+    "vocab_size": 260,
+    "split": "document_sha256_98_1_1",
+    "tokenizer": "utf8_bytes_smoke"
+  },
+  "train": {
+    "precision": "float32",
+    "batch_size": 1,
+    "supervised_targets": 128,
+    "learning_rate": 0.0003,
+    "weight_decay": 0.01,
+    "gradient_clip": 1.0,
+    "warmup_fraction": 0.0,
+    "update_every_real_tokens": 8,
+    "tbptt_length": 8
+  },
+  "extra_modules": [],
+  "stream": {
+    "persistent_phase_state": true,
+    "initialize_once": true,
+    "reset_at_document_boundary": false,
+    "train_deploy_same_step": true,
+    "synthetic_tokens_are_supervision": false
+  }
+}

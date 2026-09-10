@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Information Boltzmann 3D Phase Space & Training Monitor</title>
+  <style>
+    :root {
+      --bg: #0d1117;
+      --card-bg: rgba(22, 27, 34, 0.95);
+      --border: #30363d;
+      --accent: #58a6ff;
+      --accent-green: #3fb950;
+      --accent-purple: #bc8cff;
+      --accent-red: #f85149;
+      --accent-orange: #d29922;
+      --text: #c9d1d9;
+      --text-bright: #f0f6fc;
+      --text-muted: #8b949e;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace; }
+    body { background: var(--bg); color: var(--text); overflow: hidden; height: 100vh; display: flex; flex-direction: column; }
+
+    /* Header & Navigation Tabs */
+    header {
+      background: #161b22; border-bottom: 1px solid var(--border);
+      padding: 8px 18px; display: flex; justify-content: space-between; align-items: center; z-index: 10;
+    }
+    .header-left { display: flex; align-items: center; gap: 16px; }
+    .header-title { font-size: 15px; font-weight: 700; color: var(--text-bright); display: flex; align-items: center; gap: 10px; }
+
+    .nav-tabs { display: flex; gap: 4px; background: #0d1117; padding: 3px; border-radius: 6px; border: 1px solid var(--border); }
+    .nav-tab {
+      padding: 5px 14px; font-size: 12px; font-weight: 600; color: var(--text-muted); cursor: pointer;
+      border-radius: 4px; transition: all 0.15s; user-select: none;
+    }
+    .nav-tab:hover { color: var(--text-bright); }
+    .nav-tab.active { background: #21262d; color: var(--accent); box-shadow: 0 1px 3px rgba(0,0,0,0.3); }
+
+    .status-badge {
+      display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 600;
+    }
+    .status-live { background: rgba(63, 185, 80, 0.15); color: var(--accent-green); border: 1px solid rgba(63, 185, 80, 0.4); }
+    .status-idle { background: rgba(139, 148, 158, 0.15); color: var(--text-muted); border: 1px solid var(--border); }
+    .status-pulse { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+    .status-live .status-pulse { animation: pulse 1.5s infinite; }
+    @keyframes pulse { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1); } }
+
+    .header-stats { font-size: 12px; color: var(--text-muted); display: flex; gap: 16px; }
+    .header-stats span strong { color: var(--text-bright); }
+
+    /* Tab Content Panels */
+    .tab-pane { display: none; flex: 1; height: calc(100vh - 55px); overflow: hidden; }
+    .tab-pane.active { display: flex; }
+
+    /* === TAB 1: 3D Phase Space Layout === */
+    .tab1-layout { flex: 1; display: grid; grid-template-columns: 1fr 380px; gap: 10px; padding: 10px; height: 100%; }
+
+    .viewport-panel {
+      background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px;
+      position: relative; display: flex; flex-direction: column; overflow: hidden;
+    }
+    .viewport-toolbar {
+      position: absolute; top: 10px; left: 10px; z-index: 5;
+      display: flex; flex-wrap: wrap; gap: 8px; background: rgba(13, 17, 23, 0.88); backdrop-filter: blur(8px);
+      padding: 6px 12px; border-radius: 6px; border: 1px solid var(--border); font-size: 12px; align-items: center;
+    }
+    .viewport-btn {
+      background: #21262d; border: 1px solid var(--border); color: var(--text); padding: 4px 10px;
+      border-radius: 4px; cursor: pointer; font-size: 11px; transition: all 0.15s;
+    }
+    .viewport-btn:hover { background: #30363d; color: var(--text-bright); }
+    .viewport-btn.active { background: rgba(88, 166, 255, 0.2); color: var(--accent); border-color: var(--accent); font-weight: 600; }
+
+    .slider-label { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--text-muted); margin-left: 6px; }
+    .slider-label input { width: 80px; accent-color: var(--accent); cursor: pointer; }
+
+    canvas#phase3DCanvas { width: 100%; height: 100%; display: block; cursor: grab; }
+    canvas#phase3DCanvas:active { cursor: grabbing; }
+
+    .camera-hint {
+      position: absolute; bottom: 10px; left: 10px; z-index: 5;
+      background: rgba(13, 17, 23, 0.85); backdrop-filter: blur(8px);
+      padding: 6px 10px; border-radius: 6px; border: 1px solid var(--border); font-size: 10px; color: var(--text-muted);
+    }
+
+    /* Sidebar */
+    .sidebar { display: flex; flex-direction: column; gap: 10px; overflow-y: auto; }
+    .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 12px; }
+    .card-header {
+      font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
+      color: var(--text-muted); margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;
+    }
+
+    /* Token Card */
+    .token-display { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+    .token-char {
+      width: 44px; height: 44px; background: #21262d; border: 1px solid var(--border);
+      border-radius: 6px; display: flex; align-items: center; justify-content: center;
+      font-size: 20px; font-weight: 700; color: var(--accent); font-family: monospace;
+    }
+    .token-meta { flex: 1; }
+    .token-prob { font-size: 13px; color: var(--text-bright); }
+    .token-loss { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
+
+    .top5-list { display: flex; flex-direction: column; gap: 3px; margin-top: 6px; }
+    .top5-item { display: flex; justify-content: space-between; font-size: 10px; padding: 3px 6px; background: #161b22; border-radius: 4px; }
+
+    /* Metrics Grid */
+    .metrics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+    .metric-box { background: #161b22; padding: 6px 8px; border-radius: 6px; border: 1px solid rgba(48, 54, 61, 0.5); }
+    .metric-label { font-size: 10px; color: var(--text-muted); }
+    .metric-value { font-size: 14px; font-weight: 700; color: var(--text-bright); margin-top: 1px; }
+
+    /* Particles Roster */
+    .particle-roster { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; max-height: 140px; overflow-y: auto; margin-top: 6px; }
+    .particle-chip {
+      display: flex; align-items: center; gap: 4px; background: #161b22; padding: 3px 5px;
+      border-radius: 4px; font-size: 10px; border: 1px solid rgba(48, 54, 61, 0.5);
+    }
+    .chip-dot { width: 7px; height: 7px; border-radius: 50%; }
+
+    /* === TAB 2: Full-sized Telemetry & Loss Charts === */
+    .tab2-layout {
+      flex: 1; padding: 12px; display: flex; flex-direction: column; gap: 12px; overflow-y: auto;
+    }
+    .charts-toolbar {
+      background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px;
+      padding: 10px 16px; display: flex; align-items: center; justify-content: space-between;
+    }
+    .charts-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+    }
+    .chart-card {
+      background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 14px;
+      display: flex; flex-direction: column;
+    }
+    .chart-title { font-size: 12px; font-weight: 700; color: var(--text-bright); margin-bottom: 2px; }
+    .chart-subtitle { font-size: 11px; color: var(--text-muted); margin-bottom: 10px; }
+    .chart-canvas { width: 100%; height: 160px; display: block; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-left">
+      <div class="header-title">
+        <span>Information Boltzmann Monitor</span>
+        <div class="status-badge status-idle" id="liveBadge">
+          <span class="status-pulse"></span>
+          <span id="liveStatusText">CONNECTING...</span>
+        </div>
+      </div>
+      <!-- Tab Bar -->
+      <div class="nav-tabs">
+        <div class="nav-tab active" onclick="switchTab('tab1', this)">🧊 3D 相空间粒子动力学</div>
+        <div class="nav-tab" onclick="switchTab('tab2', this)">📈 训练遥测与信号监控</div>
+      </div>
+    </div>
+    <div class="header-stats">
+      <span>Loss (CE): <strong id="headLoss">-</strong></span>
+      <span>Mean NLL: <strong id="headNLL">-</strong></span>
+      <span>Perplexity: <strong id="headPPL">-</strong></span>
+      <span>Event: <strong id="headStep">-</strong></span>
+      <span>LR: <strong id="headLR">-</strong></span>
+    </div>
+  </header>
+
+  <!-- TAB 1: 3D Phase Space -->
+  <div class="tab-pane active" id="tab1">
+    <div class="tab1-layout">
+      <!-- 3D Canvas Viewport -->
+      <div class="viewport-panel">
+        <div class="viewport-toolbar">
+          <button class="viewport-btn active" id="btnZSpeed" onclick="setZMode('speed')">Z = 速率 |v|</button>
+          <button class="viewport-btn" id="btnZV1" onclick="setZMode('v1')">Z = 速度 v₁</button>
+          <button class="viewport-btn" id="btnZV2" onclick="setZMode('v2')">Z = 速度 v₂</button>
+
+          <button class="viewport-btn" onclick="reset3DCamera()">重置视角</button>
+
+          <div class="slider-label">
+            <span>EMA 平滑:</span>
+            <input type="range" id="emaSlider" min="0" max="0.95" step="0.05" value="0.70" oninput="updateEMAWeight(this.value)">
+            <span id="emaValText" style="color:var(--text-bright);font-weight:600;width:30px;">0.70</span>
+          </div>
+
+          <div class="slider-label">
+            <span>轨迹长度:</span>
+            <input type="range" id="trailLenSlider" min="10" max="150" step="10" value="60" oninput="updateTrailLen(this.value)">
+            <span id="trailLenText" style="color:var(--text-bright);font-weight:600;width:25px;">60</span>
+          </div>
+        </div>
+
+        <canvas id="phase3DCanvas"></canvas>
+
+        <div class="camera-hint">
+          🖱️ 鼠标左键拖拽：自由旋转 3D 视角 | 滚轮：缩放距离 | 底面为实空间 (x₁, x₂)，垂直高度为速度维度
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <!-- Token Card -->
+        <div class="card">
+          <div class="card-header">
+            <span>当前观测真实 Token</span>
+            <span id="stepCounter">Event -</span>
+          </div>
+          <div class="token-display">
+            <div class="token-char" id="tokenChar">-</div>
+            <div class="token-meta">
+              <div class="token-prob">P(Target) = <span id="tokenProb" style="color:var(--accent-green);font-weight:700;">-</span></div>
+              <div class="token-loss">Loss (CE) = <span id="tokenCE" style="color:var(--accent-orange);">-</span></div>
+            </div>
+          </div>
+          <div style="font-size:10px;color:var(--text-muted);margin-bottom:3px;">Top-5 模型预测分布:</div>
+          <div class="top5-list" id="top5List"></div>
+        </div>
+
+        <!-- 16 Particles Color Roster -->
+        <div class="card">
+          <div class="card-header">
+            <span>16 个连续粒子色彩图例 (独立颜色)</span>
+            <span style="font-size:10px;color:var(--text-muted);">N = 16</span>
+          </div>
+          <div class="particle-roster" id="particleRoster"></div>
+        </div>
+
+        <!-- Thermodynamics -->
+        <div class="card">
+          <div class="card-header">
+            <span>物理热力学与稳态监控</span>
+            <span style="color:var(--accent-green);font-size:11px;">NESS Active</span>
+          </div>
+          <div class="metrics-grid">
+            <div class="metric-box">
+              <div class="metric-label">有效相面积 A_eff</div>
+              <div class="metric-value" id="valAeff" style="color:var(--accent);">-</div>
+            </div>
+            <div class="metric-box">
+              <div class="metric-label">等效温度 T_eff</div>
+              <div class="metric-value" id="valTeff" style="color:var(--accent-green);">-</div>
+            </div>
+            <div class="metric-box">
+              <div class="metric-label">位置方差 Var(x)</div>
+              <div class="metric-value" id="valVarX">-</div>
+            </div>
+            <div class="metric-box">
+              <div class="metric-label">速度方差 Var(v)</div>
+              <div class="metric-value" id="valVarV">-</div>
+            </div>
+            <div class="metric-box">
+              <div class="metric-label">系统总能量 E(t)</div>
+              <div class="metric-value" id="valEnergy">-</div>
+            </div>
+            <div class="metric-box">
+              <div class="metric-label">真实累积碰撞</div>
+              <div class="metric-value" id="valCollisions" style="color:var(--accent-purple);">-</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 2: Full-sized Telemetry & Loss Charts -->
+  <div class="tab-pane" id="tab2">
+    <div class="tab2-layout">
+      <!-- Toolbar -->
+      <div class="charts-toolbar">
+        <div>
+          <span style="font-size:13px;font-weight:700;color:var(--text-bright);">训练信号与动力学时序监控</span>
+          <span style="font-size:11px;color:var(--text-muted);margin-left:12px;">实时追踪语言建模损失与统计力学守恒律</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div class="slider-label">
+            <span>折线平滑度 (TensorBoard EMA):</span>
+            <input type="range" id="chartEmaSlider" min="0" max="0.95" step="0.05" value="0.75" oninput="updateChartEMA(this.value)">
+            <span id="chartEmaValText" style="color:var(--text-bright);font-weight:600;width:30px;">0.75</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Grid of 6 Detailed Charts -->
+      <div class="charts-grid">
+        <!-- 1. Cross-Entropy Loss -->
+        <div class="chart-card">
+          <div class="chart-title">即时交叉熵损失 (CE Loss) 与 Prequential NLL</div>
+          <div class="chart-subtitle">浅色为单步原始波动，深色为 EMA 平滑趋势曲线</div>
+          <canvas id="bigChartLoss" class="chart-canvas"></canvas>
+        </div>
+
+        <!-- 2. Perplexity (PPL) -->
+        <div class="chart-card">
+          <div class="chart-title">语言困惑度 (Perplexity = exp(NLL))</div>
+          <div class="chart-subtitle">反映模型在在线无重置流中吸收语言规律的泛化能力</div>
+          <canvas id="bigChartPPL" class="chart-canvas"></canvas>
+        </div>
+
+        <!-- 3. Effective Phase Area A_eff -->
+        <div class="chart-card">
+          <div class="chart-title">有效相空间面积 A_eff(t) [非退化不塌缩铁证]</div>
+          <div class="chart-subtitle">平稳维持在非零恒定水平，证明热浴消除了相空间单点塌缩</div>
+          <canvas id="bigChartAeff" class="chart-canvas"></canvas>
+        </div>
+
+        <!-- 4. Energy Balance E(t) -->
+        <div class="chart-card">
+          <div class="chart-title">系统总机械能 E(t) 与 动能 E_k(t) [NESS 守恒平衡]</div>
+          <div class="chart-subtitle">绿色：总能量 E = 动能 + 势能 | 紫色：微观粒子动能</div>
+          <canvas id="bigChartEnergy" class="chart-canvas"></canvas>
+        </div>
+
+        <!-- 5. Temperature T_eff vs Bath -->
+        <div class="chart-card">
+          <div class="chart-title">等效动力学温度 T_eff(t) 与 热浴基底温度 T_bath = 0.1</div>
+          <div class="chart-subtitle">反映输入做功与阻尼散热在微观动能尺度的平衡温度</div>
+          <canvas id="bigChartTemp" class="chart-canvas"></canvas>
+        </div>
+
+        <!-- 6. Phase Variances -->
+        <div class="chart-card">
+          <div class="chart-title">位置方差 Var(x) 与 速度方差 Var(v)</div>
+          <div class="chart-subtitle">蓝色：空间粒子展宽 | 橙色：速度弥散广度</div>
+          <canvas id="bigChartVariance" class="chart-canvas"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 16 High-contrast Distinct Particle Colors + Golden Ratio Palette for high N
+    const PARTICLE_COLORS = [
+      '#58a6ff', '#3fb950', '#f85149', '#bc8cff',
+      '#d29922', '#39c5bb', '#ff7b72', '#7ee787',
+      '#a5d6ff', '#e3b341', '#f0883e', '#d2a8ff',
+      '#56d364', '#79c0ff', '#ff9bce', '#ffa657'
+    ];
+
+    function getParticleColor(i, total) {
+      if (total <= 16) return PARTICLE_COLORS[i % PARTICLE_COLORS.length];
+      return `hsl(${(i * 137.508) % 360}, 85%, 60%)`;
+    }
+
+    // Telemetry State
+    let latestFrame = null;
+    let historyData = [];
+
+    // Tab State
+    let activeTab = 'tab1';
+    function switchTab(tabId, el) {
+      activeTab = tabId;
+      document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      el.classList.add('active');
+
+      if (tabId === 'tab1') {
+        resize3DCanvas();
+      } else {
+        renderBigCharts();
+      }
+    }
+
+    // === 3D Engine (Pure JS Orthographic/Perspective Projection) ===
+    let zMode = 'speed'; // 'speed', 'v1', 'v2'
+    let emaWeight = 0.70;
+    let maxTrailLen = 60;
+    let chartEmaWeight = 0.75;
+
+    // Smoothed EMA positions for 16 particles: [[x, y, z], ...]
+    let particleEMAs = Array.from({ length: 16 }, () => null);
+    // Trajectory history of EMA points: array of arrays: [ [p0, p1...], [p0, p1...] ]
+    let smoothedTrails = [];
+
+    // Real collision flash
+    let activeCollisionPairs = [];
+    let collisionFlashFrames = 0;
+
+    // Camera Rotation
+    let camAzimuth = -0.75;  // horizontal angle (radians)
+    let camElevation = 0.45; // vertical angle (radians)
+    let camDistance = 4.2;   // zoom distance
+    let isDragging = false;
+    let lastMouseX = 0, lastMouseY = 0;
+
+    const canvas3D = document.getElementById('phase3DCanvas');
+    const ctx3D = canvas3D.getContext('2d');
+
+    function resize3DCanvas() {
+      const rect = canvas3D.parentElement.getBoundingClientRect();
+      canvas3D.width = rect.width * window.devicePixelRatio;
+      canvas3D.height = rect.height * window.devicePixelRatio;
+      ctx3D.scale(window.devicePixelRatio, window.devicePixelRatio);
+    }
+    window.addEventListener('resize', () => {
+      resize3DCanvas();
+      if (activeTab === 'tab2') renderBigCharts();
+    });
+    resize3DCanvas();
+
+    // Mouse Drag to Orbit Camera
+    canvas3D.addEventListener('mousedown', e => {
+      isDragging = true;
+      lastMouseX = e.clientX;
+      lastMouseY = e.clientY;
+    });
+    window.addEventListener('mouseup', () => isDragging = false);
+    window.addEventListener('mousemove', e => {
+      if (!isDragging) return;
+      const dx = e.clientX - lastMouseX;
+      const dy = e.clientY - lastMouseY;
+      camAzimuth += dx * 0.008;
+      camElevation = Math.max(0.05, Math.min(Math.PI / 2 - 0.05, camElevation - dy * 0.008));
+      lastMouseX = e.clientX;
+      lastMouseY = e.clientY;
+    });
+    canvas3D.addEventListener('wheel', e => {
+      e.preventDefault();
+      camDistance = Math.max(1.8, Math.min(9.0, camDistance + e.deltaY * 0.004));
+    }, { passive: false });
+
+    function reset3DCamera() {
+      camAzimuth = -0.75;
+      camElevation = 0.45;
+      camDistance = 4.2;
+    }
+
+    function setZMode(mode) {
+      zMode = mode;
+      document.getElementById('btnZSpeed').classList.toggle('active', mode === 'speed');
+      document.getElementById('btnZV1').classList.toggle('active', mode === 'v1');
+      document.getElementById('btnZV2').classList.toggle('active', mode === 'v2');
+      // Reset EMA trails when switching coordinate axis
+      particleEMAs = Array.from({ length: 16 }, () => null);
+      smoothedTrails = [];
+    }
+
+    function updateEMAWeight(val) {
+      emaWeight = parseFloat(val);
+      document.getElementById('emaValText').innerText = parseFloat(val).toFixed(2);
+    }
+
+    function updateTrailLen(val) {
+      maxTrailLen = parseInt(val);
+      document.getElementById('trailLenText').innerText = val;
+    }
+
+    function updateChartEMA(val) {
+      chartEmaWeight = parseFloat(val);
+      document.getElementById('chartEmaValText').innerText = parseFloat(val).toFixed(2);
+      renderBigCharts();
+    }
+
+    // 3D Point Projection
+    function project3D(X, Y, Z, w, h) {
+      // 1. Rotate Azimuth around Z (horizontal plane)
+      const cosA = Math.cos(camAzimuth), sinA = Math.sin(camAzimuth);
+      const x1 = X * cosA - Y * sinA;
+      const y1 = X * sinA + Y * cosA;
+      const z1 = Z;
+
+      // 2. Rotate Elevation
+      const cosE = Math.cos(camElevation), sinE = Math.sin(camElevation);
+      const y2 = y1 * cosE - z1 * sinE;
+      const z2 = y1 * sinE + z1 * cosE;
+      const x2 = x1;
+
+      // 3. Perspective Projection
+      const fov = Math.min(w, h) * 1.2;
+      const depth = camDistance + z2;
+      const scale = depth > 0.1 ? fov / depth : fov / 0.1;
+
+      const px = w / 2 + x2 * scale;
+      const py = h / 2 - y2 * scale;
+      return { px, py, depth, scale };
+    }
+
+    // === Render 3D Scene ===
+    function render3D() {
+      if (activeTab !== 'tab1') {
+        requestAnimationFrame(render3D);
+        return;
+      }
+
+      const w = canvas3D.width / window.devicePixelRatio;
+      const h = canvas3D.height / window.devicePixelRatio;
+      ctx3D.clearRect(0, 0, w, h);
+
+      // 1. Draw 3D Spatial Floor Grid (z = 0)
+      ctx3D.strokeStyle = 'rgba(48, 54, 61, 0.4)';
+      ctx3D.lineWidth = 1;
+      const gridRange = 1.5;
+      const gridStep = 0.5;
+
+      for (let c = -gridRange; c <= gridRange + 1e-4; c += gridStep) {
+        // Line parallel to Y
+        const pA = project3D(c, -gridRange, 0, w, h);
+        const pB = project3D(c, gridRange, 0, w, h);
+        ctx3D.beginPath(); ctx3D.moveTo(pA.px, pA.py); ctx3D.lineTo(pB.px, pB.py); ctx3D.stroke();
+
+        // Line parallel to X
+        const pC = project3D(-gridRange, c, 0, w, h);
+        const pD = project3D(gridRange, c, 0, w, h);
+        ctx3D.beginPath(); ctx3D.moveTo(pC.px, pC.py); ctx3D.lineTo(pD.px, pD.py); ctx3D.stroke();
+      }
+
+      // 2. Draw Harmonic Potential Circle on Floor (|x| <= 1.0, z = 0)
+      ctx3D.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+      ctx3D.lineWidth = 1.5;
+      ctx3D.setLineDash([4, 4]);
+      ctx3D.beginPath();
+      const numSegs = 48;
+      for (let i = 0; i <= numSegs; i++) {
+        const ang = (i / numSegs) * Math.PI * 2;
+        const pt = project3D(Math.cos(ang), Math.sin(ang), 0, w, h);
+        if (i === 0) ctx3D.moveTo(pt.px, pt.py);
+        else ctx3D.lineTo(pt.px, pt.py);
+      }
+      ctx3D.stroke();
+      ctx3D.setLineDash([]);
+
+      // 3. Draw 3D Axes
+      const origin = project3D(0, 0, 0, w, h);
+      const axisX = project3D(1.2, 0, 0, w, h);
+      const axisY = project3D(0, 1.2, 0, w, h);
+      const axisZ = project3D(0, 0, 1.2, w, h);
+
+      ctx3D.lineWidth = 2;
+      // X-axis (Red)
+      ctx3D.strokeStyle = 'rgba(248, 81, 73, 0.6)';
+      ctx3D.beginPath(); ctx3D.moveTo(origin.px, origin.py); ctx3D.lineTo(axisX.px, axisX.py); ctx3D.stroke();
+      // Y-axis (Green)
+      ctx3D.strokeStyle = 'rgba(63, 185, 80, 0.6)';
+      ctx3D.beginPath(); ctx3D.moveTo(origin.px, origin.py); ctx3D.lineTo(axisY.px, axisY.py); ctx3D.stroke();
+      // Z-axis (Blue/Purple)
+      ctx3D.strokeStyle = 'rgba(88, 166, 255, 0.7)';
+      ctx3D.beginPath(); ctx3D.moveTo(origin.px, origin.py); ctx3D.lineTo(axisZ.px, axisZ.py); ctx3D.stroke();
+
+      // Axis Labels
+      ctx3D.font = '10px monospace';
+      ctx3D.fillStyle = '#f85149'; ctx3D.fillText('x₁', axisX.px + 4, axisX.py);
+      ctx3D.fillStyle = '#3fb950'; ctx3D.fillText('x₂', axisY.px + 4, axisY.py);
+      ctx3D.fillStyle = '#58a6ff'; ctx3D.fillText(zMode === 'speed' ? '|v|' : zMode, axisZ.px + 4, axisZ.py - 4);
+
+      if (!latestFrame || !latestFrame.particles || !latestFrame.particles.x || latestFrame.particles.x.length === 0) {
+        ctx3D.fillStyle = '#8b949e';
+        ctx3D.font = '13px monospace';
+        ctx3D.textAlign = 'center';
+        ctx3D.fillText('Waiting for training stream... (train_information_boltzmann.py --serve)', w / 2, h / 2);
+        requestAnimationFrame(render3D);
+        return;
+      }
+
+      const particles = latestFrame.particles;
+      const numP = particles.x.length;
+
+      // 4. Update Particle EMAs
+      const current3D = [];
+      for (let i = 0; i < numP; i++) {
+        const rawX = particles.x[i][0];
+        const rawY = particles.x[i][1];
+        const vx = particles.v[i][0];
+        const vy = particles.v[i][1];
+        let rawZ = 0;
+        if (zMode === 'speed') rawZ = Math.sqrt(vx * vx + vy * vy);
+        else if (zMode === 'v1') rawZ = vx;
+        else rawZ = vy;
+
+        if (!particleEMAs[i]) {
+          particleEMAs[i] = [rawX, rawY, rawZ];
+        } else {
+          particleEMAs[i][0] = emaWeight * particleEMAs[i][0] + (1 - emaWeight) * rawX;
+          particleEMAs[i][1] = emaWeight * particleEMAs[i][1] + (1 - emaWeight) * rawY;
+          particleEMAs[i][2] = emaWeight * particleEMAs[i][2] + (1 - emaWeight) * rawZ;
+        }
+        current3D.push([...particleEMAs[i]]);
+      }
+
+      // Add to smoothed trails
+      smoothedTrails.push(current3D);
+      if (smoothedTrails.length > maxTrailLen) smoothedTrails.shift();
+
+      // 5. Draw 3D EMA Smoothed Trajectory Ribbons
+      ctx3D.lineWidth = Math.max(1, Math.min(2.5, 8.0 / Math.sqrt(numP)));
+      for (let i = 0; i < numP; i++) {
+        const color = getParticleColor(i, numP);
+        ctx3D.strokeStyle = color;
+        ctx3D.beginPath();
+        let started = false;
+
+        for (let k = 0; k < smoothedTrails.length; k++) {
+          if (!smoothedTrails[k][i]) continue;
+          const [tx, ty, tz] = smoothedTrails[k][i];
+          const proj = project3D(tx, ty, tz, w, h);
+          if (!started) {
+            ctx3D.moveTo(proj.px, proj.py);
+            started = true;
+          } else {
+            ctx3D.lineTo(proj.px, proj.py);
+          }
+        }
+        ctx3D.globalAlpha = Math.max(0.2, Math.min(0.65, 3.0 / Math.sqrt(numP)));
+        ctx3D.stroke();
+        ctx3D.globalAlpha = 1.0;
+      }
+
+      // 6. Draw Real Elastic Collision 3D Line
+      if (collisionFlashFrames > 0 && activeCollisionPairs.length > 0) {
+        ctx3D.lineWidth = 3;
+        ctx3D.strokeStyle = `rgba(248, 81, 73, ${collisionFlashFrames / 8})`;
+        for (const [pA, pB] of activeCollisionPairs) {
+          if (pA < numP && pB < numP && particleEMAs[pA] && particleEMAs[pB]) {
+            const p1 = project3D(particleEMAs[pA][0], particleEMAs[pA][1], particleEMAs[pA][2], w, h);
+            const p2 = project3D(particleEMAs[pB][0], particleEMAs[pB][1], particleEMAs[pB][2], w, h);
+            ctx3D.beginPath();
+            ctx3D.moveTo(p1.px, p1.py);
+            ctx3D.lineTo(p2.px, p2.py);
+            ctx3D.stroke();
+          }
+        }
+        collisionFlashFrames--;
+      }
+
+      // 7. Depth Sort Particles for Correct 3D Occlusion
+      const renderList = [];
+      for (let i = 0; i < numP; i++) {
+        const [px, py, pz] = particleEMAs[i];
+        const proj = project3D(px, py, pz, w, h);
+        renderList.push({ index: i, x: px, y: py, z: pz, proj });
+      }
+      renderList.sort((a, b) => b.proj.depth - a.proj.depth);
+
+      // 8. Render 3D Spheres & Stems
+      const baseR = Math.max(2.0, Math.min(6.5, 24.0 / Math.sqrt(numP)));
+      for (const item of renderList) {
+        const i = item.index;
+        const color = getParticleColor(i, numP);
+        const proj = item.proj;
+
+        // Shadow projection on floor (z = 0)
+        const floorProj = project3D(item.x, item.y, 0, w, h);
+        ctx3D.strokeStyle = 'rgba(255, 255, 255, 0.12)';
+        ctx3D.lineWidth = 1;
+        ctx3D.beginPath();
+        ctx3D.moveTo(floorProj.px, floorProj.py);
+        ctx3D.lineTo(proj.px, proj.py);
+        ctx3D.stroke();
+
+        // Floor shadow dot
+        ctx3D.fillStyle = 'rgba(0, 0, 0, 0.4)';
+        ctx3D.beginPath();
+        ctx3D.arc(floorProj.px, floorProj.py, 2.0, 0, 2 * Math.PI);
+        ctx3D.fill();
+
+        // 3D Sphere radius based on depth and particle count
+        const sphereRad = Math.max(1.5, Math.min(10, baseR * (proj.scale / 120)));
+
+        // Outer glow
+        const grad = ctx3D.createRadialGradient(proj.px, proj.py, 1, proj.px, proj.py, sphereRad * 1.6);
+        grad.addColorStop(0, '#ffffff');
+        grad.addColorStop(0.5, color);
+        grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+        ctx3D.fillStyle = grad;
+        ctx3D.beginPath();
+        ctx3D.arc(proj.px, proj.py, sphereRad * 1.6, 0, 2 * Math.PI);
+        ctx3D.fill();
+
+        // Sphere body
+        ctx3D.fillStyle = color;
+        ctx3D.beginPath();
+        ctx3D.arc(proj.px, proj.py, sphereRad, 0, 2 * Math.PI);
+        ctx3D.fill();
+
+        // Index Label (only if N <= 64 to avoid text clutter)
+        if (numP <= 64) {
+          ctx3D.fillStyle = '#ffffff';
+          ctx3D.font = 'bold 9px monospace';
+          ctx3D.textAlign = 'center';
+          ctx3D.fillText(i, proj.px, proj.py - sphereRad - 3);
+        }
+      }
+
+      requestAnimationFrame(render3D);
+    }
+
+    // === Telemetry Receiver & UI Updater ===
+    function onNewFrame(frame) {
+      latestFrame = frame;
+
+      // Status Badge
+      const badge = document.getElementById('liveBadge');
+      const badgeText = document.getElementById('liveStatusText');
+      if (frame.status === 'training') {
+        badge.className = 'status-badge status-live';
+        badgeText.innerText = '● LIVE TRAINING';
+      } else if (frame.status === 'completed') {
+        badge.className = 'status-badge status-idle';
+        badgeText.innerText = '○ TRAINING COMPLETED';
+      } else {
+        badge.className = 'status-badge status-idle';
+        badgeText.innerText = '○ IDLE';
+      }
+
+      // Header metrics
+      document.getElementById('headLoss').innerText = frame.ce ? frame.ce.toFixed(3) : '-';
+      document.getElementById('headNLL').innerText = frame.mean_nll ? frame.mean_nll.toFixed(4) : '-';
+      document.getElementById('headPPL').innerText = frame.perplexity ? frame.perplexity.toFixed(1) : '-';
+      document.getElementById('headStep').innerText = frame.event;
+      document.getElementById('headLR').innerText = frame.lr ? frame.lr.toExponential(1) : '0';
+
+      // Sidebar Token Card
+      document.getElementById('stepCounter').innerText = `Event ${frame.event}`;
+      document.getElementById('tokenChar').innerText = frame.token_char.replace(/\n/, '↵').replace(/ /, '␣');
+      document.getElementById('tokenCE').innerText = frame.ce.toFixed(3);
+
+      if (frame.top5 && frame.top5.length > 0) {
+        document.getElementById('tokenProb').innerText = `${((frame.top5.find(x => x.token === frame.token_char)?.prob || 0) * 100).toFixed(1)}%`;
+        const top5Html = frame.top5.map(item => `
+          <div class="top5-item">
+            <span>${item.token.replace(/\n/, '↵').replace(/ /, '␣')}</span>
+            <span style="color:var(--text-bright);font-weight:600;">${(item.prob * 100).toFixed(1)}%</span>
+          </div>
+        `).join('');
+        document.getElementById('top5List').innerHTML = top5Html;
+      }
+
+      // Particle Color Roster Chips
+      const numP = frame.particles?.x?.length || 0;
+      if (document.getElementById('particleRoster').dataset.count !== String(numP) && numP > 0) {
+        document.getElementById('particleRoster').dataset.count = String(numP);
+        let rosterHtml = '';
+        const showCount = Math.min(numP, 32);
+        for (let i = 0; i < showCount; i++) {
+          const c = getParticleColor(i, numP);
+          rosterHtml += `
+            <div class="particle-chip">
+              <div class="chip-dot" style="background:${c};"></div>
+              <span>p${i}</span>
+            </div>
+          `;
+        }
+        if (numP > showCount) {
+          rosterHtml += `<div class="particle-chip" style="color:var(--text-muted);">+${numP - showCount}...</div>`;
+        }
+        document.getElementById('particleRoster').innerHTML = rosterHtml;
+      }
+
+      // Thermodynamics Metrics
+      const m = frame.metrics;
+      if (m) {
+        document.getElementById('valAeff').innerText = m.a_eff.toFixed(3);
+        document.getElementById('valTeff').innerText = m.t_eff.toFixed(3);
+        document.getElementById('valVarX').innerText = m.var_x.toFixed(3);
+        document.getElementById('valVarV').innerText = m.var_v.toFixed(3);
+        document.getElementById('valEnergy').innerText = m.energy.toFixed(3);
+        document.getElementById('valCollisions').innerText = frame.accepted_collisions;
+      }
+
+      // Real collision event flash
+      if (frame.collision_pairs && frame.collision_pairs.length > 0) {
+        activeCollisionPairs = frame.collision_pairs;
+        collisionFlashFrames = 8;
+      }
+
+      // Append to history for charts
+      historyData.push({
+        event: frame.event,
+        ce: frame.ce,
+        mean_nll: frame.mean_nll,
+        ppl: frame.perplexity,
+        a_eff: m ? m.a_eff : 0,
+        energy: m ? m.energy : 0,
+        ke: m ? m.ke : 0,
+        t_eff: m ? m.t_eff : 0,
+        var_x: m ? m.var_x : 0,
+        var_v: m ? m.var_v : 0,
+      });
+      if (historyData.length > 250) historyData.shift();
+
+      if (activeTab === 'tab2') {
+        renderBigCharts();
+      }
+    }
+
+    // === TAB 2 Chart Rendering (with TensorBoard-style EMA Smoothing) ===
+    function computeEMA(data, weight) {
+      if (!data || data.length === 0) return [];
+      const ema = [];
+      let prev = data[0];
+      for (let i = 0; i < data.length; i++) {
+        prev = weight * prev + (1 - weight) * data[i];
+        ema.push(prev);
+      }
+      return ema;
+    }
+
+    function drawTelemetryChart(canvasId, rawSeries, color, emaColor = '#ffffff') {
+      const c = document.getElementById(canvasId);
+      if (!c) return;
+      const ctx = c.getContext('2d');
+      const w = c.width = c.clientWidth * window.devicePixelRatio;
+      const h = c.height = c.clientHeight * window.devicePixelRatio;
+
+      ctx.clearRect(0, 0, w, h);
+      if (rawSeries.length < 2) return;
+
+      const smoothed = computeEMA(rawSeries, chartEmaWeight);
+
+      const minV = Math.min(...rawSeries) * 0.95;
+      const maxV = Math.max(...rawSeries) * 1.05 + 1e-4;
+
+      const getY = val => h - ((val - minV) / (maxV - minV)) * (h - 20) - 10;
+      const getX = idx => (idx / (rawSeries.length - 1)) * (w - 20) + 10;
+
+      // 1. Draw Raw Series (faint)
+      ctx.lineWidth = 1 * window.devicePixelRatio;
+      ctx.strokeStyle = color;
+      ctx.globalAlpha = 0.35;
+      ctx.beginPath();
+      for (let i = 0; i < rawSeries.length; i++) {
+        const x = getX(i), y = getY(rawSeries[i]);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+      ctx.globalAlpha = 1.0;
+
+      // 2. Draw EMA Smoothed Line (bold, solid)
+      ctx.lineWidth = 2.2 * window.devicePixelRatio;
+      ctx.strokeStyle = emaColor;
+      ctx.beginPath();
+      for (let i = 0; i < smoothed.length; i++) {
+        const x = getX(i), y = getY(smoothed[i]);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+
+      // Current Value Badge
+      const latestVal = smoothed[smoothed.length - 1];
+      ctx.fillStyle = '#f0f6fc';
+      ctx.font = `${11 * window.devicePixelRatio}px monospace`;
+      ctx.textAlign = 'right';
+      ctx.fillText(latestVal.toFixed(3), w - 10, 18 * window.devicePixelRatio);
+    }
+
+    function renderBigCharts() {
+      if (historyData.length < 2) return;
+
+      const ceVals = historyData.map(d => d.ce);
+      const pplVals = historyData.map(d => d.ppl || Math.exp(d.mean_nll));
+      const aeffVals = historyData.map(d => d.a_eff);
+      const energyVals = historyData.map(d => d.energy);
+      const tempVals = historyData.map(d => d.t_eff);
+      const varXVals = historyData.map(d => d.var_x);
+
+      drawTelemetryChart('bigChartLoss', ceVals, '#f85149', '#ff7b72');
+      drawTelemetryChart('bigChartPPL', pplVals, '#d29922', '#e3b341');
+      drawTelemetryChart('bigChartAeff', aeffVals, '#58a6ff', '#79c0ff');
+      drawTelemetryChart('bigChartEnergy', energyVals, '#3fb950', '#7ee787');
+      drawTelemetryChart('bigChartTemp', tempVals, '#bc8cff', '#d2a8ff');
+      drawTelemetryChart('bigChartVariance', varXVals, '#39c5bb', '#56d364');
+    }
+
+    // === Live SSE & Polling Connection ===
+    function connectLiveStream() {
+      if (window.location.protocol.startsWith('http')) {
+        const evtSource = new EventSource('/api/stream');
+        evtSource.onmessage = function(e) {
+          try {
+            const frame = JSON.parse(e.data);
+            onNewFrame(frame);
+          } catch(err) {}
+        };
+        evtSource.onerror = function() {
+          fallbackPoll('/api/state');
+        };
+      } else {
+        fallbackPoll('live_training_state.json');
+      }
+    }
+
+    function fallbackPoll(url) {
+      setInterval(() => {
+        fetch(url + '?t=' + Date.now())
+          .then(res => res.json())
+          .then(data => {
+            if (data.current) onNewFrame(data.current);
+            else if (data.event) onNewFrame(data);
+          })
+          .catch(() => {
+            const badge = document.getElementById('liveBadge');
+            const badgeText = document.getElementById('liveStatusText');
+            badge.className = 'status-badge status-idle';
+            badgeText.innerText = '○ WAITING FOR TRAINER';
+          });
+      }, 50);
+    }
+
+    // Start
+    connectLiveStream();
+    requestAnimationFrame(render3D);
+  </script>
+</body>
+</html>

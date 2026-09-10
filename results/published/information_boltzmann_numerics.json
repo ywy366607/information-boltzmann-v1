@@ -1,0 +1,107 @@
+{
+  "device": "cuda",
+  "dtype": "float64",
+  "collision_invariants": {
+    "positions_exact": true,
+    "momentum_max_error": 1.1102230246251565e-16,
+    "energy_sum_error": 0.0,
+    "candidates": 82,
+    "accepted": 35,
+    "cross_moment_change": 0.0
+  },
+  "frozen_parameter_collapse_controls": {
+    "collision_on": {
+      "initial_position_variance": 0.2835748272331178,
+      "trajectory": [
+        {
+          "event": 8,
+          "position_variance": 0.0002394127494517601,
+          "velocity_variance": 0.0002992250511458232
+        },
+        {
+          "event": 16,
+          "position_variance": 1.2519287347686898e-07,
+          "velocity_variance": 1.1282422472920206e-07
+        },
+        {
+          "event": 24,
+          "position_variance": 7.204161209266715e-11,
+          "velocity_variance": 9.277905693476847e-11
+        },
+        {
+          "event": 32,
+          "position_variance": 1.2156542261012334e-13,
+          "velocity_variance": 4.2577092990383703e-14
+        },
+        {
+          "event": 40,
+          "position_variance": 9.134865026852725e-17,
+          "velocity_variance": 5.404299517087207e-17
+        },
+        {
+          "event": 48,
+          "position_variance": 4.3127085489895516e-20,
+          "velocity_variance": 6.777210516699816e-20
+        },
+        {
+          "event": 56,
+          "position_variance": 3.727873292336679e-23,
+          "velocity_variance": 4.484826431470839e-23
+        },
+        {
+          "event": 64,
+          "position_variance": 2.661196912957874e-26,
+          "velocity_variance": 2.316602084961852e-26
+        }
+      ],
+      "final_initial_variance_ratio": 9.384461021888198e-26
+    },
+    "collision_off": {
+      "initial_position_variance": 0.2835748272331178,
+      "trajectory": [
+        {
+          "event": 8,
+          "position_variance": 0.0002197357640115266,
+          "velocity_variance": 7.027100601828356e-05
+        },
+        {
+          "event": 16,
+          "position_variance": 7.482268869245102e-08,
+          "velocity_variance": 6.138871982658997e-08
+        },
+        {
+          "event": 24,
+          "position_variance": 1.2084519389620846e-11,
+          "velocity_variance": 2.8284153804450146e-11
+        },
+        {
+          "event": 32,
+          "position_variance": 4.318684847277753e-15,
+          "velocity_variance": 5.811341167267653e-15
+        },
+        {
+          "event": 40,
+          "position_variance": 2.883076254106773e-18,
+          "velocity_variance": 1.3090285885870839e-18
+        },
+        {
+          "event": 48,
+          "position_variance": 1.0184401582736046e-21,
+          "velocity_variance": 8.78373333650842e-22
+        },
+        {
+          "event": 56,
+          "position_variance": 2.1364353209872607e-25,
+          "velocity_variance": 3.99365696764859e-25
+        },
+        {
+          "event": 64,
+          "position_variance": 8.136404088911479e-29,
+          "velocity_variance": 9.038323890331302e-29
+        }
+      ],
+      "final_initial_variance_ratio": 2.869226499509705e-28
+    }
+  },
+  "interpretation": "Noncollapse fails even without learning; compare collision-off. This is not an NESS proof."
+}

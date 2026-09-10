@@ -1,0 +1,64 @@
+{
+  "status": "implemented_not_benchmarked",
+  "seed": 11,
+  "model": {
+    "phase_dim": 8,
+    "particles": 64,
+    "hidden_dim": 256,
+    "flow_layers": 4,
+    "base_density": "logistic",
+    "joint_xv": true,
+    "decoder": "distribution_integral"
+  },
+  "dynamics": {
+    "steps": 8,
+    "force": "data_driven_confined_damped",
+    "collision": "local_microreversible_attention_binary_elastic",
+    "max_collision_rate": 1.0,
+    "invariants": [
+      "mass",
+      "momentum",
+      "kinetic_energy"
+    ],
+    "h_theorem": "structural_microreversibility",
+    "supervision": "prequential_online_next_real_token",
+    "pde_form": "conservative_velocity_divergence",
+    "kappa": 1.0,
+    "gamma": 1.0,
+    "acceleration_norm_bound": 1.0,
+    "event_interval": 1.0,
+    "kernel_width": 1.0
+  },
+  "data": {
+    "dataset": "openwebtext",
+    "revision": null,
+    "require_resolved_revision": true,
+    "vocab_size": 8192,
+    "split": "document_sha256_98_1_1",
+    "tokenizer": "bpe"
+  },
+  "train": {
+    "precision": "float32",
+    "batch_size": 1,
+    "supervised_targets": 1000000,
+    "learning_rate": 0.0003,
+    "weight_decay": 0.01,
+    "gradient_clip": 1.0,
+    "warmup_fraction": 0.05,
+    "update_every_real_tokens": 16,
+    "tbptt_length": 16
+  },
+  "extra_modules": [],
+  "evaluation_seeds": [
+    11,
+    23,
+    47
+  ],
+  "stream": {
+    "persistent_phase_state": true,
+    "initialize_once": true,
+    "reset_at_document_boundary": false,
+    "train_deploy_same_step": true,
+    "synthetic_tokens_are_supervision": false
+  }
+}

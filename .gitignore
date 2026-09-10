@@ -20,9 +20,15 @@ venv/
 # Local experiment artifacts (large; regenerate with scripts/)
 data/
 checkpoints/
+*.pt
+*.pth
+*.bin
+*.npy
+*.parquet
 results/*
 !results/published/
 !results/published/**
+!results/phase_space_monitor.html
 
 # OS
 .DS_Store

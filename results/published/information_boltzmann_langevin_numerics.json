@@ -1,0 +1,107 @@
+{
+  "device": "cuda",
+  "dtype": "float64",
+  "collision_invariants": {
+    "positions_exact": true,
+    "momentum_max_error": 1.1102230246251565e-16,
+    "energy_sum_error": 0.0,
+    "candidates": 82,
+    "accepted": 35,
+    "cross_moment_change": 0.0
+  },
+  "frozen_parameter_collapse_controls": {
+    "collision_on": {
+      "initial_position_variance": 0.2835748272331178,
+      "trajectory": [
+        {
+          "event": 8,
+          "position_variance": 0.22048388642709338,
+          "velocity_variance": 0.08500398254788077
+        },
+        {
+          "event": 16,
+          "position_variance": 0.1972198110132681,
+          "velocity_variance": 0.2033125386727941
+        },
+        {
+          "event": 24,
+          "position_variance": 0.21232002106281803,
+          "velocity_variance": 0.18741750926057377
+        },
+        {
+          "event": 32,
+          "position_variance": 0.15670950597053673,
+          "velocity_variance": 0.19475137350927046
+        },
+        {
+          "event": 40,
+          "position_variance": 0.24392095273871262,
+          "velocity_variance": 0.16663539144975353
+        },
+        {
+          "event": 48,
+          "position_variance": 0.21182888377313114,
+          "velocity_variance": 0.1586281410927164
+        },
+        {
+          "event": 56,
+          "position_variance": 0.27669483540493833,
+          "velocity_variance": 0.2620152840414396
+        },
+        {
+          "event": 64,
+          "position_variance": 0.24080733884581962,
+          "velocity_variance": 0.17341730268541494
+        }
+      ],
+      "final_initial_variance_ratio": 0.8491844681540073
+    },
+    "collision_off": {
+      "initial_position_variance": 0.2835748272331178,
+      "trajectory": [
+        {
+          "event": 8,
+          "position_variance": 0.17147864474565166,
+          "velocity_variance": 0.12691017674802782
+        },
+        {
+          "event": 16,
+          "position_variance": 0.1165237227064772,
+          "velocity_variance": 0.2791883789846084
+        },
+        {
+          "event": 24,
+          "position_variance": 0.27085600871778254,
+          "velocity_variance": 0.20185873810405364
+        },
+        {
+          "event": 32,
+          "position_variance": 0.1459006345506822,
+          "velocity_variance": 0.1429272771658505
+        },
+        {
+          "event": 40,
+          "position_variance": 0.1992052350515366,
+          "velocity_variance": 0.19321592034049606
+        },
+        {
+          "event": 48,
+          "position_variance": 0.11292149287500369,
+          "velocity_variance": 0.15147661713876176
+        },
+        {
+          "event": 56,
+          "position_variance": 0.17912475018012375,
+          "velocity_variance": 0.2012494750987426
+        },
+        {
+          "event": 64,
+          "position_variance": 0.17208052953503788,
+          "velocity_variance": 0.17670416754799817
+        }
+      ],
+      "final_initial_variance_ratio": 0.6068258287029688
+    }
+  },
+  "interpretation": "Langevin fluctuation-dissipation sustains finite phase variance across stream; non-collapse verified."
+}
