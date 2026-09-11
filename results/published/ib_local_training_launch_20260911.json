@@ -1,0 +1,19 @@
+{
+  "run": "results\\ib_local_bpe_256_3000_v2",
+  "pid": 30404,
+  "budget_updates": 3000,
+  "particles": 256,
+  "tokens_per_update": 128,
+  "execution": "8-token reusable graphs, full 128-token BPTT and score prefixes; eager complete overflow blocks",
+  "latest_step": 139,
+  "steady_samples": 84,
+  "median_seconds_with_monitor": 1.8529827000002115,
+  "max_seconds_with_monitor": 5.692536300000938,
+  "tensor_peak_mib": 240.3779296875,
+  "observed_full_gpu_mib": 653,
+  "observed_gpu_utilization_percent": 99,
+  "cpu_tests": 42,
+  "gpu_gradient_audits": 1,
+  "performance_target_met": false,
+  "note": "3000-update run ongoing; 1.5-second target not yet met. Measurements exclude startup; no convergence or criticality conclusion."
+}

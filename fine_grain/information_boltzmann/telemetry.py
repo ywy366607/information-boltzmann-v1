@@ -30,7 +30,6 @@ class TelemetryHub:
             "metrics": {
                 "var_x": 0.0,
                 "var_v": 0.0,
-                "a_eff": 0.0,
                 "energy": 0.0,
                 "ke": 0.0,
                 "t_eff": 0.0,
@@ -51,16 +50,16 @@ class TelemetryHub:
                 "event": frame["event"],
                 "ce": frame["ce"],
                 "mean_nll": frame["mean_nll"],
-                "a_eff": frame["metrics"]["a_eff"],
                 "energy": frame["metrics"]["energy"],
                 "var_x": frame["metrics"]["var_x"],
                 "var_v": frame["metrics"]["var_v"],
                 "t_eff": frame["metrics"]["t_eff"],
+                "gamma": frame["metrics"]["gamma"],
             })
             for evt in self.listeners:
                 evt.set()
 
-        # Atomically write live file to both target and fixed root path
+        # Atomically write this run's sampled state
         try:
             self.live_file.parent.mkdir(parents=True, exist_ok=True)
             tmp = self.live_file.with_suffix(".tmp")
@@ -68,12 +67,6 @@ class TelemetryHub:
             tmp.write_text(payload, encoding="utf-8")
             tmp.replace(self.live_file)
 
-            # Also write to results/live_training_state.json for local file viewing
-            root_live = Path("results/live_training_state.json")
-            root_live.parent.mkdir(parents=True, exist_ok=True)
-            root_tmp = root_live.with_suffix(".tmp")
-            root_tmp.write_text(payload, encoding="utf-8")
-            root_tmp.replace(root_live)
         except Exception:
             pass
 
@@ -132,7 +125,7 @@ class TelemetryHub:
                     self.send_response(404)
                     self.end_headers()
 
-        self.server = ThreadedHTTPServer(("", port), TelemetryHandler)
+        self.server = ThreadedHTTPServer(("127.0.0.1", port), TelemetryHandler)
         self.server_thread = threading.Thread(target=self.server.serve_forever, daemon=True)
         self.server_thread.start()
         print(f"\n>>> Live Training Telemetry Monitor running at http://localhost:{port}/ <<<\n", flush=True)

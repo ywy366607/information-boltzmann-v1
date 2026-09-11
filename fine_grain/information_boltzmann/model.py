@@ -17,7 +17,7 @@ class InformationBoltzmann(nn.Module):
                  kernel_width: float = 1.0, temperature: float = 0.0,
                  adaptive_gamma: bool = False, gamma_lr: float = 0.02,
                  gamma_min: float = 0.01, gamma_max: float = 2.0,
-                 scale_kappa_with_gamma: bool = True):
+                 scale_kappa_with_gamma: bool = True, gamma_mode: str = "fixed"):
         super().__init__()
         if phase_dim < 2 or particles < 2 or steps < 1:
             raise ValueError("Require phase_dim>=2, particles>=2 and steps>=1")
@@ -33,6 +33,7 @@ class InformationBoltzmann(nn.Module):
         self.vocab_size = vocab_size
         self.initial = InitialDensity(vocab_size, phase_dim, hidden_dim, flow_layers)
         self.force = DataForce(vocab_size, phase_dim, hidden_dim, kappa, gamma, amplitude, temperature=temperature)
+        self.force.configure_gamma(gamma_mode, gamma_min, gamma_max)
         self.collision = CollisionKernel(phase_dim, hidden_dim, collision_rate, kernel_width)
         self.features = nn.Sequential(nn.Linear(2 * phase_dim, hidden_dim), nn.SiLU(),
                                       nn.Linear(hidden_dim, hidden_dim), nn.SiLU())
@@ -56,7 +57,7 @@ class InformationBoltzmann(nn.Module):
             state, lp, report = self.collision(state, dt, generator)
             if budget is not None:
                 delta = .5*state.v.square().sum(-1).mean() - before_energy
-                budget["collision_energy_error"] = budget.get("collision_energy_error", 0.) + float(delta.detach())
+                budget["collision_energy_error"] = budget.get("collision_energy_error", 0.) + (delta.detach() if getattr(budget, "defer_cpu", False) else float(delta.detach()))
             log_prob = log_prob + lp
             for key in ("candidates", "accepted", "cross_moment_change"):
                 stats[key] += report[key]
@@ -89,4 +90,5 @@ class InformationBoltzmann(nn.Module):
                    gamma_lr=d.get("gamma_lr", 0.02),
                    gamma_min=d.get("gamma_min", 0.01),
                    gamma_max=d.get("gamma_max", 2.0),
-                   scale_kappa_with_gamma=d.get("scale_kappa_with_gamma", True))
+                   scale_kappa_with_gamma=d.get("scale_kappa_with_gamma", True),
+                   gamma_mode=d.get("gamma_mode", "fixed"))

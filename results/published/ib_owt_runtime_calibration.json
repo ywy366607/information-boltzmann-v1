@@ -1,0 +1,77 @@
+{
+  "scope": "128 real OWT tokens per configuration; runtime only; no learning-quality selection",
+  "selected_hidden_dim": 2048,
+  "selection": "largest measured width within 75% allocator cap and with less than 10% throughput loss versus smallest tested width; one persistent stream",
+  "rows": [
+    {
+      "hidden_dim": 128,
+      "parameters": 317134,
+      "tokens_per_second": 6.067689772390565,
+      "peak_allocated_mb": 48.71240234375,
+      "sampled_gpu_util_percent": [
+        2.0,
+        13.0,
+        37.0,
+        35.0,
+        36.0
+      ],
+      "max_total_gpu_mb": 133.0
+    },
+    {
+      "hidden_dim": 256,
+      "parameters": 1027150,
+      "tokens_per_second": 5.998358802169107,
+      "peak_allocated_mb": 81.31884765625,
+      "sampled_gpu_util_percent": [
+        0.0,
+        13.0,
+        34.0,
+        26.0,
+        25.0
+      ],
+      "max_total_gpu_mb": 165.0
+    },
+    {
+      "hidden_dim": 512,
+      "parameters": 3626830,
+      "tokens_per_second": 6.020206342853652,
+      "peak_allocated_mb": 165.13330078125,
+      "sampled_gpu_util_percent": [
+        2.0,
+        13.0,
+        26.0,
+        37.0,
+        33.0
+      ],
+      "max_total_gpu_mb": 267.0
+    },
+    {
+      "hidden_dim": 1024,
+      "parameters": 13544782,
+      "tokens_per_second": 5.93969785787109,
+      "peak_allocated_mb": 406.19580078125,
+      "sampled_gpu_util_percent": [
+        1.0,
+        18.0,
+        37.0,
+        34.0,
+        26.0
+      ],
+      "max_total_gpu_mb": 587.0
+    },
+    {
+      "hidden_dim": 2048,
+      "parameters": 52255054,
+      "tokens_per_second": 5.791611877302848,
+      "peak_allocated_mb": 1167.51611328125,
+      "sampled_gpu_util_percent": [
+        0.0,
+        14.0,
+        29.0,
+        30.0,
+        36.0
+      ],
+      "max_total_gpu_mb": 1537.0
+    }
+  ]
+}

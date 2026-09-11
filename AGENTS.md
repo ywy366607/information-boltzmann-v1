@@ -29,3 +29,11 @@ Use pytest and name tests `test_<behavior>`. Add deterministic tensor tests for 
 ## Commit & Pull Request Guidelines
 
 Recent history uses imperative subjects such as `Fix probe_token_acc causal alignment`. Keep commits focused. PRs should state the falsifiable claim, summarize code and metric changes, list validation commands, and link issues. Include figures for visual changes and compact artifacts under `results/published/`; exclude datasets, checkpoints, caches, and raw logs.
+
+## Information Boltzmann experimental policy
+
+- User directive (2026-09-10): capability research must use professional real-world datasets and sufficient training. Do not create or run synthetic/toy bit-memory, rule-switch, or cue-probe capability experiments, or make them prerequisites for dataset training.
+- Before drawing positive or negative architecture/capacity/memory conclusions, record dataset revision and splits, parameter count, tokens/examples processed, actual optimizer updates, training curves, periodic independent validation, and the stopping criterion. Establish convergence or clearly label a budget-limited run inconclusive; a fixed short run is not evidence of convergence.
+- Compare capacity and training budgets fairly. Online cumulative training CE is not final validation loss; identify tokenizer units and checkpoint provenance. Do not use the test split for tuning.
+- Keep deterministic numerical and interface unit tests (conservation, analytic solutions, gradients, causality, checkpoint continuation). These verify implementation only and are not toy capability studies.
+- Do not resurrect removed toy conclusions about decoder depth, memory failure, gamma superiority, or error-attribution root causes. The user has now authorized the first single-individual OWT run of 5000 optimizer updates, with learned local gamma and GPU/memory calibration. Preserve one continuous state and do not launch a population sweep as a substitute.

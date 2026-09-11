@@ -12,8 +12,12 @@
       "motivation": "Train one native checkpoint for text, perception, generation, editing, reconstruction, segmentation, and world prediction without replacing the Slice field architecture.",
       "action": "Lock persistent X and H, ephemeral S, Slice/Deslice semantic writes, and capability-as-boundary-condition invariants.",
       "conclusion": "The product target is capability closure on one X-S-H graph; a particular energy-descent interpretation is supporting theory, not the target.",
-      "issues": ["Open-domain data and autoregressive text remain beyond the current synthetic closure."],
-      "invalidation": "A matched causal experiment shows that a persistent full-resolution Slice write path cannot express the registered micro tasks while a topology-matched control can."
+      "issues": [
+        "Open-domain data and autoregressive text remain beyond the current synthetic closure."
+      ],
+      "invalidation": "A matched causal experiment shows that a persistent full-resolution Slice write path cannot express the registered micro tasks while a topology-matched control can.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
     },
     {
       "id": "N010",
@@ -24,8 +28,12 @@
       "motivation": "Test whether mass-normalized read and point-addressed write retain 1px structure.",
       "action": "Compared Slice and fair patch reconstruction heads on synthetic lines.",
       "conclusion": "Existing evidence supports Slice/Deslice as a useful full-resolution read/write mechanism.",
-      "issues": ["Evidence is synthetic and does not establish multimodal generation."],
-      "invalidation": "A matched rerun removes the reported thin-structure advantage or identifies leakage."
+      "issues": [
+        "Evidence is synthetic and does not establish multimodal generation."
+      ],
+      "invalidation": "A matched rerun removes the reported thin-structure advantage or identifies leakage.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
     },
     {
       "id": "N020",
@@ -36,8 +44,12 @@
       "motivation": "Make vision and language peer states connected by transient Slice communication.",
       "action": "Implemented full-resolution X, SliceRead, modality-private MoT experts, Deslice, and H evolution.",
       "conclusion": "The single-stack graph implements the core state topology; readout-controlled writes and RGB outer rollout were removed in the north-star closure.",
-      "issues": ["Multiple historical write/read knobs obscure the canonical path"],
-      "invalidation": "Code inspection or causal tests show that H or X bypasses the declared communication path."
+      "issues": [
+        "Multiple historical write/read knobs obscure the canonical path"
+      ],
+      "invalidation": "Code inspection or causal tests show that H or X bypasses the declared communication path.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
     },
     {
       "id": "N030",
@@ -48,8 +60,14 @@
       "motivation": "Use language priors and visual evidence to control inference and action.",
       "action": "Implemented Gaussian prior/posterior, KL surprise, accuracy, F, gap, and gates.",
       "conclusion": "Perception and generation share the F2 belief form. Generation also uses clean language priors and a causal Deslice(mu_p-S) prior-predictive action. Cross-layer common descent is neither established nor required for capability closure.",
-      "issues": ["Layer-specific coordinates make F values potentially incomparable", "Surprise gating and F2 form are not themselves common-F descent", "Current action omits learned precision weighting"],
-      "invalidation": "Analytical or empirical evidence shows the implemented F does not correspond to the claimed observation model."
+      "issues": [
+        "Layer-specific coordinates make F values potentially incomparable",
+        "Surprise gating and F2 form are not themselves common-F descent",
+        "Current action omits learned precision weighting"
+      ],
+      "invalidation": "Analytical or empirical evidence shows the implemented F does not correspond to the claimed observation model.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
     },
     {
       "id": "N040",
@@ -60,32 +78,51 @@
       "motivation": "Use one graph for T2T, I2T, IT2T, reconstruction, I2I/T2I, segmentation, and next-frame prediction.",
       "action": "Added explicit image/text observation precision, target horizon, and terminal text/RGB/point-segmentation likelihoods to one Omni graph.",
       "conclusion": "Readout flags do not control X. Missing modalities and reconstruction-versus-future behavior are explicit boundary coordinates rather than black-image, empty-string, or port-ID shortcuts.",
-      "issues": ["Single-token class head remains only as checkpoint compatibility", "Autoregressive Pythia token NLL is wired but not yet mixed into the capability matrix", "The one-checkpoint fixed-bank audit is still running."],
-      "invalidation": "A simpler, equivalent boundary-condition representation cannot reproduce the ports."
+      "issues": [
+        "Single-token class head remains only as checkpoint compatibility",
+        "Autoregressive Pythia token NLL is wired but not yet mixed into the capability matrix",
+        "The one-checkpoint fixed-bank audit is still running."
+      ],
+      "invalidation": "A simpler, equivalent boundary-condition representation cannot reproduce the ports.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
     },
     {
       "id": "N050",
       "parent": "N030",
       "title": "Current generation conflict",
-      "status": "conflict",
+      "status": "active",
       "time": "2026-08-20 to 2026-08-21 diagnostics",
       "motivation": "Test whether T2I emerges as active inference in the same graph.",
       "action": "Ran F-action, residual-read, S0, band, and real-apple probes; compared outer iteration counts.",
       "conclusion": "The invalid RGB loop was removed. The historical bundled VFE recipe fails, while both the simplified core and the minimal active-F2 recipe pass generation gates.",
-      "issues": ["Historical non-F2 mechanisms have not been reintroduced one at a time", "Unseen continuous-coordinate generalization is untested"],
-      "invalidation": "A persistent-field implementation with fixed evaluation shows non-increasing common F and improving task metrics."
+      "issues": [
+        "Historical non-F2 mechanisms have not been reintroduced one at a time",
+        "Unseen continuous-coordinate generalization is untested"
+      ],
+      "invalidation": "A persistent-field implementation with fixed evaluation shows non-increasing common F and improving task metrics.",
+      "legacy_status": "conflict",
+      "schema_migration_note": "Legacy classification preserved verbatim in legacy_status; active means retained for review, not a confirmed scientific claim.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
     },
     {
       "id": "H1",
       "parent": "N050",
       "title": "RGB round-trip breaks field persistence",
-      "status": "supported",
+      "status": "active",
       "time": "2026-08-21 diagnostic",
       "motivation": "Explain why additional generation iterations degrade output.",
       "action": "Compared K=1,2,4,8 on a fixed checkpoint and inspected f_generate.",
       "conclusion": "Quality degrades with K and each step rebuilds X from decoded RGB.",
-      "issues": ["Must compare against a true latent-field rollout."],
-      "invalidation": "A controlled run shows RGB round-trip and latent rollout are equivalent in state and metrics."
+      "issues": [
+        "Must compare against a true latent-field rollout."
+      ],
+      "invalidation": "A controlled run shows RGB round-trip and latent rollout are equivalent in state and metrics.",
+      "legacy_status": "supported",
+      "schema_migration_note": "Legacy classification preserved verbatim in legacy_status; active means retained for review, not a confirmed scientific claim.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
     },
     {
       "id": "H2",
@@ -96,428 +133,742 @@
       "motivation": "Explain color learning with weak digit geometry.",
       "action": "Held the graph fixed, simplified the objective/mechanisms, and trained 10 digits × 4 colors while retaining diffuse assignments.",
       "conclusion": "Generation reaches top1 1.00 with assignment entropy 0.978-0.996; diffuse assignment is not a capacity blocker.",
-      "issues": ["Assignment quality may still matter for position generalization, but did not explain the fixed-center failure."],
-      "invalidation": "Fixed probes show stable prompt-dependent Slice geometry before successful generation."
+      "issues": [
+        "Assignment quality may still matter for position generalization, but did not explain the fixed-center failure."
+      ],
+      "invalidation": "Fixed probes show stable prompt-dependent Slice geometry before successful generation.",
+      "pruning_record": {
+        "reason": "Generation reaches top1 1.00 with assignment entropy 0.978-0.996; diffuse assignment is not a capacity blocker.",
+        "pruning_commit": "Pre-existing in e2cdad217ae46f2af764520cbd468748a59dae0c; original pruning commit not identified",
+        "recovery_note": "Revisit only if new evidence contradicts the recorded conclusion; retain historical evidence."
+      },
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
     },
     {
       "id": "H3",
       "parent": "N050",
       "title": "Optimization and measurement favor false progress",
-      "status": "supported",
+      "status": "active",
       "time": "2026-08-22 controlled core-vs-historical comparison",
       "motivation": "Explain loss reduction and transient best-step spikes without robust generation.",
       "action": "Replaced the historical point-VFE bundle with balanced observation BCE, disabled bundled research knobs, and aligned the optimizer with the capacity gate.",
       "conclusion": "The same native Slice graph moves from chance to perfect digit identity; objective/mechanism bundling and optimization hid working capacity.",
-      "issues": ["Single-variable mechanism restoration and multi-seed confidence intervals are missing."],
-      "invalidation": "Fixed-bank, per-time metrics reproduce stable gains across seeds."
+      "issues": [
+        "Single-variable mechanism restoration and multi-seed confidence intervals are missing."
+      ],
+      "invalidation": "Fixed-bank, per-time metrics reproduce stable gains across seeds.",
+      "legacy_status": "supported",
+      "schema_migration_note": "Legacy classification preserved verbatim in legacy_status; active means retained for review, not a confirmed scientific claim.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
     },
     {
       "id": "N060",
       "parent": "N050",
       "title": "North-star generation closure",
-      "status": "partial",
+      "status": "active",
       "time": "2026-08-21 implementation and first registered probe",
       "motivation": "Restore generation as a native Slice port instead of adding another generator.",
       "action": "Removed RGB outer rollout and readout-controlled writes, aligned training with a coordinate null source, and added a fixed-bank causal/assignment probe.",
       "conclusion": "Structural, prompt-causal, write-causal, fixed-center 10×4, named nine-grid, and active-F2 prior-action gates pass; continuous-coordinate generalization remains open. Common-F descent is an optional theory claim, not a generation gate.",
-      "issues": ["Unseen continuous position/jitter bank", "Restore non-F2 research mechanisms one at a time"],
-      "invalidation": "The registered micro-capacity gate fails after structural and optimization checks while a topology-matched control passes."
+      "issues": [
+        "Unseen continuous position/jitter bank",
+        "Restore non-F2 research mechanisms one at a time"
+      ],
+      "invalidation": "The registered micro-capacity gate fails after structural and optimization checks while a topology-matched control passes.",
+      "legacy_status": "partial",
+      "schema_migration_note": "Legacy classification preserved verbatim in legacy_status; active means retained for review, not a confirmed scientific claim.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
     },
     {
       "id": "N061",
       "parent": "N060",
       "title": "Fixed-bank native generation audit",
-      "status": "historical",
+      "status": "active",
       "time": "2026-08-21 / northstar_t2i_geometry best checkpoint",
       "motivation": "Test semantic causality and Slice addressing after restoring persistent-field generation.",
       "action": "Evaluated 40 deterministic center-digit cases with matched prompts, cyclically shuffled prompts, pi_x=0, and per-layer assignment diagnostics.",
       "conclusion": "The historical bundled VFE recipe remains at chance; this is recipe-specific, not a limitation of the Slice graph.",
-      "issues": ["The old flood metric also mislabeled black as colored flood", "Bundled changes prevent single-mechanism attribution"],
-      "invalidation": "A registered rerun with the same topology produces >=0.50 matched-minus-shuffled top1 and passes the 0.95 capacity threshold across seeds."
+      "issues": [
+        "The old flood metric also mislabeled black as colored flood",
+        "Bundled changes prevent single-mechanism attribution"
+      ],
+      "invalidation": "A registered rerun with the same topology produces >=0.50 matched-minus-shuffled top1 and passes the 0.95 capacity threshold across seeds.",
+      "legacy_status": "historical",
+      "schema_migration_note": "Legacy classification preserved verbatim in legacy_status; active means retained for review, not a confirmed scientific claim.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
     },
     {
       "id": "N062",
       "parent": "N060",
       "title": "Validated native digit generation core",
-      "status": "passed",
+      "status": "active",
       "time": "2026-08-22 / northstar_omni_core_digits_v2",
       "motivation": "Establish accurate generation before recurrence or active-inference claims.",
       "action": "Trained the non-shared four-layer Slice graph with balanced observation BCE and validated matched, digit-shuffled, and pi_x=0 controls.",
       "conclusion": "Fixed bank: matched top1 1.00, IoU 0.975, PSNR 44.71 dB; shuffled top1 0.00; pi_x=0 top1 0.10. The 10×4 capacity run also passes color and flood thresholds.",
-      "issues": ["Fixed center only", "One training seed", "VFE and recurrence deliberately absent"],
-      "invalidation": "A clean rerun fails the registered thresholds or reveals a prompt/Deslice bypass."
+      "issues": [
+        "Fixed center only",
+        "One training seed",
+        "VFE and recurrence deliberately absent"
+      ],
+      "invalidation": "A clean rerun fails the registered thresholds or reveals a prompt/Deslice bypass.",
+      "legacy_status": "passed",
+      "schema_migration_note": "Legacy classification preserved verbatim in legacy_status; active means retained for review, not a confirmed scientific claim.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
     },
     {
       "id": "N063",
       "parent": "N062",
       "title": "Flood metric correction",
-      "status": "passed",
+      "status": "active",
       "time": "2026-08-22",
       "motivation": "Prevent black ground from being counted as one-channel colored ink.",
       "action": "Added visible chroma and luminance requirements and a black-vs-green regression test.",
       "conclusion": "Perfect black ground now scores zero flood; historical flood values are versioned evidence, not directly comparable.",
-      "issues": ["Metric remains a synthetic-task diagnostic, not a natural-image quality measure."],
-      "invalidation": "A palette edge case labels visibly black ground as flood or misses visibly colored ground."
+      "issues": [
+        "Metric remains a synthetic-task diagnostic, not a natural-image quality measure."
+      ],
+      "invalidation": "A palette edge case labels visibly black ground as flood or misses visibly colored ground.",
+      "legacy_status": "passed",
+      "schema_migration_note": "Legacy classification preserved verbatim in legacy_status; active means retained for review, not a confirmed scientific claim.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
     },
     {
       "id": "N064",
       "parent": "N062",
       "title": "Prompt-controlled nine-grid generation",
-      "status": "passed",
+      "status": "active",
       "time": "2026-08-22 / northstar_omni_core_grid",
       "motivation": "Test whether language can control full-resolution write addresses without a position decoder or recurrent RGB loop.",
       "action": "Trained the same non-shared four-layer, 16-Slice core on digit × color × nine named positions and audited 90 fixed digit-position cases with digit-shuffled, position-shuffled, and pi_x=0 controls.",
       "conclusion": "Matched digit/color/paired IoU are 1.00. Digit shuffle drives top1 to 0; position shuffle preserves identity but drives paired IoU to 0; pi_x=0 removes identity, color, and position. Named spatial generation is prompt- and Slice-write-causal.",
-      "issues": ["Training-distribution positions, not unseen continuous coordinates", "One training seed", "VFE and recurrence deliberately absent"],
-      "invalidation": "A clean rerun fails the registered thresholds, or an ablation finds a non-Slice route from position words to pixels."
+      "issues": [
+        "Training-distribution positions, not unseen continuous coordinates",
+        "One training seed",
+        "VFE and recurrence deliberately absent"
+      ],
+      "invalidation": "A clean rerun fails the registered thresholds, or an ablation finds a non-Slice route from position words to pixels.",
+      "legacy_status": "passed",
+      "schema_migration_note": "Legacy classification preserved verbatim in legacy_status; active means retained for review, not a confirmed scientific claim.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
     },
     {
       "id": "N065",
       "parent": "N060",
       "title": "Active-F2 generation unification",
-      "status": "passed",
+      "status": "active",
       "time": "2026-08-22 / northstar_omni_active_f2_grid",
       "motivation": "Make accurate generation use the same variational belief form as F2 perception instead of remaining a baseline-only path.",
       "action": "Added a minimal active_f2 recipe on the validated core: Gaussian language prior/posterior, F2 gap training, clean-target prior in the t=0 chart, and Deslice(mu_p-S) prior-predictive action. Audited prompt, position, pi_x, and prior-action ablations on 90 fixed cases.",
       "conclusion": "Matched digit/color/position are 1.00 and F2 gaps are 0.00014-0.00073. Disabling only prior action drops top1 to 0.478; the active write is causal. active_f2 is now the canonical generation recipe and core is the control.",
-      "issues": ["Non-shared layer coordinates prevent a common-F descent claim", "One seed", "PSNR 62.93 is below the core control's 74.39", "Prior action is isotropic rather than precision-weighted"],
-      "invalidation": "A registered rerun loses capacity or prior-action causality, or a bypass explains the ablation without the F2 write."
+      "issues": [
+        "Non-shared layer coordinates prevent a common-F descent claim",
+        "One seed",
+        "PSNR 62.93 is below the core control's 74.39",
+        "Prior action is isotropic rather than precision-weighted"
+      ],
+      "invalidation": "A registered rerun loses capacity or prior-action causality, or a bypass explains the ablation without the F2 write.",
+      "legacy_status": "passed",
+      "schema_migration_note": "Legacy classification preserved verbatim in legacy_status; active means retained for review, not a confirmed scientific claim.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
     },
     {
       "id": "N066",
       "parent": "N065",
       "title": "Fixed-coordinate common action-energy probe",
-      "status": "conflict",
+      "status": "active",
       "time": "2026-08-22 / northstar_omni_active_f2_grid_common_f_probe",
       "motivation": "Test whether the accurate non-shared generation trajectory reduces one comparable prior-predictive energy rather than arranging layer-private F values.",
       "action": "Recorded X0..X4 without changing the generator and scored every state with the frozen layer-0 SliceRead plus F2 language prior at fixed H0. Also compared the generated terminal field with Stem(clean target) and a re-encoded terminal RGB control.",
       "conclusion": "The common energy rises from 1.27620 to 1.32501 and no sample has lower terminal energy, while digit/color/location remain perfect. The existing implementation is not common-F descent. The anchor itself barely distinguishes clean target from blank, and the generated terminal field is in a different latent gauge from the perceptual Stem field.",
-      "issues": ["A blind anchor cannot support a useful monotonic regularizer", "A common field chart or decoder-quotient energy is missing", "The probe is one checkpoint and one seed", "The result has not been independently reviewed"],
-      "invalidation": "A preregistered chart-closure model makes the shared preference distinguish clean target from blank, preserves generation capacity, and yields non-increasing common energy without a direct H-to-RGB write bypass."
+      "issues": [
+        "A blind anchor cannot support a useful monotonic regularizer",
+        "A common field chart or decoder-quotient energy is missing",
+        "The probe is one checkpoint and one seed",
+        "The result has not been independently reviewed"
+      ],
+      "invalidation": "A preregistered chart-closure model makes the shared preference distinguish clean target from blank, preserves generation capacity, and yields non-increasing common energy without a direct H-to-RGB write bypass.",
+      "legacy_status": "conflict",
+      "schema_migration_note": "Legacy classification preserved verbatim in legacy_status; active means retained for review, not a confirmed scientific claim.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
     },
     {
       "id": "N067",
       "parent": "N000",
       "title": "North-star correction: capability closure before theory",
-      "status": "passed",
+      "status": "active",
       "time": "2026-08-22",
       "motivation": "Prevent the common-energy probe and recurrence theory from displacing the actual multimodal product objective.",
       "action": "Rewrote docs/NORTH_STAR.md around one-checkpoint capability closure and moved Hopfield/TTT/DeltaNet/common-F claims to supporting theory with separate evidence requirements.",
       "conclusion": "Per-layer attention may admit energy interpretations and global variational losses may be studied, but neither is a substitute for proving text, image, dense, and temporal capabilities on one native graph.",
-      "issues": ["The theory condition lattice still needs its own document and experiments."],
-      "invalidation": "A required capability provably cannot be represented as a boundary/likelihood of the locked graph while a minimal topology change can."
+      "issues": [
+        "The theory condition lattice still needs its own document and experiments."
+      ],
+      "invalidation": "A required capability provably cannot be represented as a boundary/likelihood of the locked graph while a minimal topology change can.",
+      "legacy_status": "passed",
+      "schema_migration_note": "Legacy classification preserved verbatim in legacy_status; active means retained for review, not a confirmed scientific claim.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
     },
     {
       "id": "N068",
       "parent": "N040",
       "title": "Single-checkpoint capability closure",
-      "status": "partial",
+      "status": "active",
       "time": "2026-08-22 / northstar-capability-v1",
       "motivation": "Replace separate port demonstrations with one checkpoint that jointly proves generation, perception, editing, reconstruction, segmentation, and world prediction.",
       "action": "Created four joint-supervision boundary cases on one colored-digit scene family, added fixed 360-sample auditing and modality/horizon interventions, and fine-tuned from the proven active-F2 generator.",
       "conclusion": "The first fixed-bank checkpoint scores 0.930 generation, 0.843 current perception/reconstruction, 0.865 editing, and 0.375 one-step future prediction. Text, image, and edit interventions are strongly causal; the horizon intervention fails, so capability closure is partial and the first checkpoint remains champion.",
-      "issues": ["Future address prediction is inaccurate", "Text readout is categorical rather than autoregressive", "Synthetic 16x16 task only", "One seed"],
-      "invalidation": "Within the registered budget, one or more capability boundaries stay at chance or require a private computation path while a matched unified alternative succeeds."
+      "issues": [
+        "Future address prediction is inaccurate",
+        "Text readout is categorical rather than autoregressive",
+        "Synthetic 16x16 task only",
+        "One seed"
+      ],
+      "invalidation": "Within the registered budget, one or more capability boundaries stay at chance or require a private computation path while a matched unified alternative succeeds.",
+      "legacy_status": "partial",
+      "schema_migration_note": "Legacy classification preserved verbatim in legacy_status; active means retained for review, not a confirmed scientific claim.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
     },
     {
       "id": "N069",
       "parent": "N040",
       "title": "LeJEPA and LeWM reference boundary",
-      "status": "passed",
+      "status": "active",
       "time": "2026-08-22 / official paper and code audit",
       "motivation": "Separate the reusable world-model mechanism from JEPA anti-collapse regularization and avoid adding an unrelated generator.",
       "action": "Audited the official LeJEPA minimal implementation, LeWM paper, and LeWM predictor/rollout code. Documented the mapping in docs/LEJEPA_LEWM_REFERENCE.md and docs/NORTH_STAR.md.",
       "conclusion": "LeJEPA is architecture-agnostic view alignment plus SIGReg and has no AdaLN. LeWM uses a causal latent-history predictor and per-layer AdaLN-Zero action conditioning. Its next-latent MSE plus SIGReg is a fixed-variance, latent-only degeneration of the project's conditional VFE, not the full active-inference objective.",
-      "issues": ["The current digit bank has one frame and no explicit action", "LeWM uses a global CLS latent whereas this project must retain full-resolution X"],
-      "invalidation": "Official source changes or code evidence show that LeJEPA itself contains the claimed temporal/action predictor or that LeWM does not use per-layer zero-initialized AdaLN."
+      "issues": [
+        "The current digit bank has one frame and no explicit action",
+        "LeWM uses a global CLS latent whereas this project must retain full-resolution X"
+      ],
+      "invalidation": "Official source changes or code evidence show that LeJEPA itself contains the claimed temporal/action predictor or that LeWM does not use per-layer zero-initialized AdaLN.",
+      "legacy_status": "passed",
+      "schema_migration_note": "Legacy classification preserved verbatim in legacy_status; active means retained for review, not a confirmed scientific claim.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
     },
     {
       "id": "N070",
       "parent": "N068",
       "title": "Full-resolution dynamic-prior degeneration",
-      "status": "conflict",
+      "status": "active",
       "time": "2026-08-22 / zero-AdaLN and transition-KL ablations",
       "motivation": "Test whether LeWM-style temporal conditioning and next-state prediction close the failed future boundary without a separate world-model backbone.",
       "action": "Added live timestep embeddings into per-layer zero-AdaLN with exact tau=0 identity, then added a fixed-covariance KL between predicted future X and the observed-future X chart. Ran zero-AdaLN-only and zero-AdaLN-plus-transition-KL continuations from the first champion.",
       "conclusion": "Zero-AdaLN alone is insufficient (future 0.382, macro 0.696). Adding transition KL lowers its batch value from about 0.15 to 0.08 and improves future score to 0.415. Horizon-conditioned target position/segmentation IoU improves from 0.033/0.059 when ablated to 0.183/0.224 intact, but macro 0.736 remains below the 0.753 champion and absolute transport is poor.",
-      "issues": ["No causal history or action sequence in this historical run", "Transition posterior uses only the sensory stem with fixed covariance", "Generation and editing regress under future-heavy fine-tuning", "The nine-grid list cycle is not a physical evolution benchmark"],
-      "invalidation": "Official or matched code evidence shows fixed Eulerian Slice read/write cannot predict nonlocal field evolution after history, action, dynamic covariance, and a valid temporal target are supplied."
+      "issues": [
+        "No causal history or action sequence in this historical run",
+        "Transition posterior uses only the sensory stem with fixed covariance",
+        "Generation and editing regress under future-heavy fine-tuning",
+        "The nine-grid list cycle is not a physical evolution benchmark"
+      ],
+      "invalidation": "Official or matched code evidence shows fixed Eulerian Slice read/write cannot predict nonlocal field evolution after history, action, dynamic covariance, and a valid temporal target are supplied.",
+      "legacy_status": "conflict",
+      "schema_migration_note": "Legacy classification preserved verbatim in legacy_status; active means retained for review, not a confirmed scientific claim.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
     },
     {
       "id": "N071",
       "parent": "N070",
       "title": "Official Transolver temporal audit and address correction",
-      "status": "passed",
+      "status": "active",
       "time": "2026-08-22 / official repository audit",
       "motivation": "Check whether Physics-Attention must move Slice addresses to evolve a Navier-Stokes field.",
       "action": "Audited the official Physics-Attention layer and NS benchmark. The layer reuses one slice assignment for read and deslice; the benchmark places ten historical values on every fixed grid point, predicts one next value, teacher-forces the rolling window in training, and autoregresses predictions in evaluation.",
       "conclusion": "Transolver performs field evolution on fixed Eulerian addresses. Nonlocal transport is represented by changes in field values through the learned operator, not by moving mesh addresses. The previous claim that shared read/write assignment is a necessary motion bottleneck is retracted.",
-      "issues": ["A shared low-rank basis may still limit capacity, but that is now an empirical ablation rather than an architectural necessity."],
-      "invalidation": "The cited official code is shown to use distinct future query addresses or a hidden transport-deslice path for the reported NS experiment."
+      "issues": [
+        "A shared low-rank basis may still limit capacity, but that is now an empirical ablation rather than an architectural necessity."
+      ],
+      "invalidation": "The cited official code is shown to use distinct future query addresses or a hidden transport-deslice path for the reported NS experiment.",
+      "legacy_status": "passed",
+      "schema_migration_note": "Legacy classification preserved verbatim in legacy_status; active means retained for review, not a confirmed scientific claim.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
     },
     {
       "id": "N072",
       "parent": "N068",
       "title": "Causal-history active-inference transition closure",
-      "status": "partial",
+      "status": "active",
       "time": "2026-08-22 / structural implementation and unit tests",
       "motivation": "Close the concrete gaps identified by the Transolver, LeWM, V-JEPA2-AC, and JEPA-WMs audits without adding a private world-model backbone.",
       "action": "Added ordered full-resolution Eulerian history channels, explicit low-dimensional actions and action precision, action zero-AdaLN, per-target text/RGB/segmentation likelihood precision, and a same-graph diagonal-Gaussian KL between predictive prior and observed-future posterior. Replaced the arbitrary next-place list cycle with a periodic micro-world where history supplies inertial velocity and an independent action supplies an impulse.",
       "conclusion": "The interface and VFE topology are closed: pi=0 removes evidence exactly, history order is live, action gradients reach layer modulation, and q/p share the complete Slice-MoT-Deslice chart and uncertainty head. Seven focused tests and a one-step end-to-end training/audit smoke pass. Capability accuracy is not yet established, so the first checkpoint remains champion.",
-      "issues": ["A registered training run must show future accuracy and independent history/action causality without regressing generation, perception, or editing", "Natural video and multi-step prior rollout remain untested", "The synthetic action space is two-dimensional and periodic"],
-      "invalidation": "A matched trained run cannot use either history or action causally, the heteroscedastic KL collapses uncertainty, or the new interfaces degrade the already-passed capability gates."
+      "issues": [
+        "A registered training run must show future accuracy and independent history/action causality without regressing generation, perception, or editing",
+        "Natural video and multi-step prior rollout remain untested",
+        "The synthetic action space is two-dimensional and periodic"
+      ],
+      "invalidation": "A matched trained run cannot use either history or action causally, the heteroscedastic KL collapses uncertainty, or the new interfaces degrade the already-passed capability gates.",
+      "legacy_status": "partial",
+      "schema_migration_note": "Legacy classification preserved verbatim in legacy_status; active means retained for review, not a confirmed scientific claim.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
     },
     {
       "id": "N073",
       "parent": "N069",
       "title": "SIGReg-active-inference correspondence audit",
-      "status": "passed",
+      "status": "active",
       "time": "2026-08-22 / arXiv 2607.13612 and official LeWM code audit",
       "motivation": "Determine whether SIGReg is already a variational-free-energy objective and whether it should be added to the explicit transition KL.",
       "action": "Audited the SIGReg-as-VFE theoretical preprint and the LeWM encoder, predictor, training objective, and configuration.",
       "conclusion": "Under fixed encoder noise and successful population isotropic-Gaussian enforcement, prediction plus SIGReg is an exact information-bottleneck/VFE degeneration. This is not an identity between finite-batch SIGReg and the project's per-sample state-conditional heteroscedastic KL. The explicit q-to-p KL remains primary and transition SIGReg stays off by default.",
-      "issues": ["The result is a 2026 theoretical preprint", "Empirical validation is explicitly left for future work", "Constant-noise and population Gaussian assumptions need independent checks", "The derived objective lacks state-epistemic value"],
-      "invalidation": "A derivation or experiment shows the explicit state-conditional KL is absent or degenerate while SIGReg uniquely restores calibrated per-sample uncertainty without damaging spatial structure."
+      "issues": [
+        "The result is a 2026 theoretical preprint",
+        "Empirical validation is explicitly left for future work",
+        "Constant-noise and population Gaussian assumptions need independent checks",
+        "The derived objective lacks state-epistemic value"
+      ],
+      "invalidation": "A derivation or experiment shows the explicit state-conditional KL is absent or degenerate while SIGReg uniquely restores calibrated per-sample uncertainty without damaging spatial structure.",
+      "legacy_status": "passed",
+      "schema_migration_note": "Legacy classification preserved verbatim in legacy_status; active means retained for review, not a confirmed scientific claim.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
     },
     {
       "id": "N074",
       "parent": "N072",
       "title": "Private goal-action conditioning ablation",
-      "status": "conflict",
+      "status": "active",
       "time": "2026-08-22 / northstar_capability_separate_channels_v5",
       "motivation": "Test whether separating goal semantics from action dynamics removes condition interference and closes future prediction without SIGReg.",
       "action": "Split Goal and Action into private zero-AdaLN paths, froze conditioning biases so zero precision is exact identity, kept transition SIGReg at zero, and ran a 250-step continuation with a fixed 360-sample audit. Reverted the private paths after the failed causal audit.",
       "conclusion": "Full-bank generation/current/edit/future scores are 0.892/0.824/0.821/0.227 and the future primary score is 0.137. History ablation reduces the primary score by 0.022, but action, horizon, and future-goal ablations improve it by 0.030, 0.042, and 0.027. Separate channels preserve much of the static capability but do not create causal controlled dynamics; the checkpoint and mechanism are rejected and the previous champion remains active. Future admission requires intact action conditioning to beat action_precision=0 separately on paired-position IoU and segmentation IoU.",
-      "issues": ["Action remains a global affine modulation rather than a spatial token interaction", "Only one seed and 250 continuation steps", "Quick-gate edit accuracy also missed admission", "Future transport remains poor"],
-      "invalidation": "A preregistered action-token-by-Slice causal operator with paired counterfactual supervision yields positive history, action, and horizon drops while preserving all three static capability gates."
+      "issues": [
+        "Action remains a global affine modulation rather than a spatial token interaction",
+        "Only one seed and 250 continuation steps",
+        "Quick-gate edit accuracy also missed admission",
+        "Future transport remains poor"
+      ],
+      "invalidation": "A preregistered action-token-by-Slice causal operator with paired counterfactual supervision yields positive history, action, and horizon drops while preserving all three static capability gates.",
+      "legacy_status": "conflict",
+      "schema_migration_note": "Legacy classification preserved verbatim in legacy_status; active means retained for review, not a confirmed scientific claim.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
     },
     {
       "id": "N075",
       "parent": "N074",
       "title": "Action-token by Slice causal operator",
-      "status": "conflict",
+      "status": "active",
       "time": "2026-08-22 / northstar_capability_action_token_v6",
       "motivation": "Test whether the failed action path lacked spatial interaction rather than merely a separate conditioning channel.",
       "action": "Replace uniform point-field and AdaLN action injection with one precision-masked action token in the native MoT sequence. Every layer's transient Slice can attend to the token; pi_a=0 masks it exactly, and text readout strips it. Keep one full-resolution X, the same Slice-MoT-Deslice path, the explicit heteroscedastic transition KL, and no SIGReg or recurrence.",
       "conclusion": "The full bank preserves static floors at 0.872/0.814/0.829 and history is weakly causal (+0.0188 primary). Action improves segmentation by 0.0078 but harms paired-position IoU by 0.0042, so it fails the preregistered two-metric gate. Horizon is strongly harmful (-0.0848 primary). The mechanism and checkpoint are rejected; the quick-bank admission was a sampling false positive.",
-      "issues": ["The predictive prior adds tau=1 into X while the observed-future posterior uses tau=0, violating the claimed common latent chart before KL", "One pooled action token may still underrepresent multi-step action history", "The action token uses the language expert rather than a third private QKV expert", "One seed and a synthetic periodic micro-world", "Not independently reviewed because delegation is disabled"],
-      "invalidation": "Either action metric is non-positive under ablation, static capability floors fail, or gains disappear under matched action shuffling/zero precision."
+      "issues": [
+        "The predictive prior adds tau=1 into X while the observed-future posterior uses tau=0, violating the claimed common latent chart before KL",
+        "One pooled action token may still underrepresent multi-step action history",
+        "The action token uses the language expert rather than a third private QKV expert",
+        "One seed and a synthetic periodic micro-world",
+        "Not independently reviewed because delegation is disabled"
+      ],
+      "invalidation": "Either action metric is non-positive under ablation, static capability floors fail, or gains disappear under matched action shuffling/zero precision.",
+      "legacy_status": "conflict",
+      "schema_migration_note": "Legacy classification preserved verbatim in legacy_status; active means retained for review, not a confirmed scientific claim.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
     },
     {
       "id": "N076",
       "parent": "N075",
       "title": "Control-token latent-chart closure",
-      "status": "conflict",
+      "status": "active",
       "time": "2026-08-22 / northstar_capability_control_tokens_v7",
       "motivation": "Remove the horizon coordinate mismatch exposed by the strongly negative tau ablation without changing the action-token hypothesis.",
       "action": "Keep target_time as an explicit boundary but encode nonzero tau as a precision-masked temporary MoT token. Do not add tau to persistent point field X, so predictive p and observed-future q end in the same latent coordinate chart before heteroscedastic KL. Keep action token, data, loss, budget, and all gates unchanged.",
       "conclusion": "Moving tau out of X reduces the harmful horizon primary drop from -0.0848 to -0.0175, supporting the chart-mismatch diagnosis, but does not make it causal. Action position becomes slightly positive (+0.0003) while segmentation becomes negative (-0.0055), and edit score regresses to 0.731. The checkpoint and horizon-token mainline configuration are rejected.",
-      "issues": ["A zero-content active control token still changes attention normalization", "A horizon token changes the operator through MoT but does not prove calibrated continuous-time extrapolation", "One seed", "No independent review"],
-      "invalidation": "Horizon or either action dense metric remains non-positive on the full fixed bank, or p/q chart equality is broken by another direct control injection."
+      "issues": [
+        "A zero-content active control token still changes attention normalization",
+        "A horizon token changes the operator through MoT but does not prove calibrated continuous-time extrapolation",
+        "One seed",
+        "No independent review"
+      ],
+      "invalidation": "Horizon or either action dense metric remains non-positive on the full fixed bank, or p/q chart equality is broken by another direct control injection.",
+      "legacy_status": "conflict",
+      "schema_migration_note": "Legacy classification preserved verbatim in legacy_status; active means retained for review, not a confirmed scientific claim.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
     },
     {
       "id": "N077",
       "parent": "N076",
       "title": "Action-relative Slice geometry",
-      "status": "partial",
+      "status": "active",
       "time": "2026-08-22 / northstar_capability_action_rel_slice_v8",
       "motivation": "Test the remaining spatial-address hypothesis after global action tokens changed mask mass but failed to move the target position reliably.",
       "action": "Retain the action token and add a learned per-head bias to existing Slice-Slice attention. The bias sees destination-source Slice centroid displacement, the precision-weighted 2D action, and their residual. It is multiplied by action precision, uses current SliceRead assignments, adds no backbone or hand-coded shift, and leaves read/deslice addresses fixed. Revert the failed horizon-token configuration for this isolated action test.",
       "conclusion": "The full bank passes static floors at 0.885/0.837/0.823. Action paired-position and segmentation drops are both positive for the first time (+0.00029/+0.00213), and history is positive on both (+0.0141/+0.0237). This passes the preregistered sign test but the effect is too small for a capability claim; the quick edit gate missed and horizon remains strongly harmful (-0.1008). The checkpoint is not promoted.",
-      "issues": ["Action effect size is near zero and untested across seeds", "Slice centroids are soft and may be poorly localized", "The learned relation sees raw toy translation coordinates and needs later generalization", "Horizon remains a separate unresolved control problem", "One seed and no independent review"],
-      "invalidation": "Either action dense metric is non-positive, static floors fail, or action gradients do not reach the relation bias under pi_a=1 while pi_a=0 remains exact identity."
+      "issues": [
+        "Action effect size is near zero and untested across seeds",
+        "Slice centroids are soft and may be poorly localized",
+        "The learned relation sees raw toy translation coordinates and needs later generalization",
+        "Horizon remains a separate unresolved control problem",
+        "One seed and no independent review"
+      ],
+      "invalidation": "Either action dense metric is non-positive, static floors fail, or action gradients do not reach the relation bias under pi_a=1 while pi_a=0 remains exact identity.",
+      "legacy_status": "partial",
+      "schema_migration_note": "Legacy classification preserved verbatim in legacy_status; active means retained for review, not a confirmed scientific claim.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
     },
     {
       "id": "N078",
       "parent": "N077",
       "title": "Deconfounded transition-boundary gate",
-      "status": "conflict",
+      "status": "active",
       "time": "2026-08-22 / northstar_capability_deconfounded_transition_v9",
       "motivation": "Remove the perfect training-set confound tau=1 iff action is observed, which prevents independent identification of transition horizon and action content.",
       "action": "Make tau gate whether an observed action is executed by the transition operator, without injecting tau into persistent X. Add tau=0 current-state samples containing a proposed nonzero action and tau=1 future samples containing an observed no-op. Retain action token, relative Slice bias, losses, budget, and static gates.",
       "conclusion": "All registered causal dense signs become positive: horizon/action paired-position and segmentation are +0.00142/+0.00030, and history is +0.00708/+0.01958. However current and edit scores fall to 0.745/0.749, below the static floors, and absolute future primary falls to 0.113. The causal boundary is identifiable but shared future training overwrites proven capabilities; the checkpoint is rejected.",
-      "issues": ["Horizon gates action execution by construction, so horizon and action effects remain mechanistically related", "No-op actions dilute the average action ablation", "Shared trunk optimization causes severe static regression", "One seed and no independent review"],
-      "invalidation": "Any causal dense metric is non-positive, static floors fail, or improvements arise only because tau directly selects an output/readout path."
+      "issues": [
+        "Horizon gates action execution by construction, so horizon and action effects remain mechanistically related",
+        "No-op actions dilute the average action ablation",
+        "Shared trunk optimization causes severe static regression",
+        "One seed and no independent review"
+      ],
+      "invalidation": "Any causal dense metric is non-positive, static floors fail, or improvements arise only because tau directly selects an output/readout path.",
+      "legacy_status": "conflict",
+      "schema_migration_note": "Legacy classification preserved verbatim in legacy_status; active means retained for review, not a confirmed scientific claim.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
     },
     {
       "id": "N079",
       "parent": "N078",
       "title": "Static-capability-preserving transition stage",
-      "status": "conflict",
+      "status": "active",
       "time": "2026-08-22 / northstar_capability_temporal_stage_v10",
       "motivation": "Test whether v9 failed from gradient interference after establishing that all transition controls have the correct causal sign.",
       "action": "Initialize from the static champion, gate both history and action by nonzero horizon, and train only history/action encoders, action token, action-relative Slice bias, and transition log-variance. Freeze the proven Slice-MoT-Deslice trunk, RGB/text/segmentation readouts, and all static interfaces. Keep the v9 counterfactual bank and budget.",
       "conclusion": "Horizon/history/action dense signs are all positive and future primary rises to 0.139; generation/edit remain 0.930/0.865. Current falls to 0.497 before any trainable-parameter effect: parameter and forward diffs show the cause is the false auxiliary assumption that history should be gated off at tau=0. History is current-state evidence, not a transition control. The checkpoint and history gate are rejected.",
-      "issues": ["The preregistered history-gating assumption was conceptually wrong", "Freezing may prevent the representation from learning a transport basis", "The transition log-variance head remains trainable but RGB/seg heads are fixed", "One seed and no independent review"],
-      "invalidation": "Static floors regress despite exact control gating, any causal sign reverses, or temporal-only parameters receive no gradient."
+      "issues": [
+        "The preregistered history-gating assumption was conceptually wrong",
+        "Freezing may prevent the representation from learning a transport basis",
+        "The transition log-variance head remains trainable but RGB/seg heads are fixed",
+        "One seed and no independent review"
+      ],
+      "invalidation": "Static floors regress despite exact control gating, any causal sign reverses, or temporal-only parameters receive no gradient.",
+      "legacy_status": "conflict",
+      "schema_migration_note": "Legacy classification preserved verbatim in legacy_status; active means retained for review, not a confirmed scientific claim.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
     },
     {
       "id": "N080",
       "parent": "N079",
       "title": "Action-only protected transition stage",
-      "status": "conflict",
+      "status": "active",
       "time": "2026-08-22 / northstar_capability_action_only_stage_v11",
       "motivation": "Correct the history-as-control category error while retaining v10's evidence that protected optimization improves transition causality.",
       "action": "Keep ordered history visible and freeze its champion stem. Gate only action execution by horizon. Train only action encoders/token, action-relative Slice bias, and transition log-variance; freeze the shared trunk, history stem, and all static readouts. Keep the counterfactual bank and 250-step budget.",
       "conclusion": "Generation/edit and several transition signs survive, but current remains 0.520 and action/history segmentation signs turn slightly negative. Parameter and forward audits show the static champion never trained history_stem; removing target_time_coord changed random initialization, and the protected stage then froze a random history encoder. This run is invalid as a test of protected action adaptation and its checkpoint is rejected.",
-      "issues": ["Initialization did not include a trained history stem", "Frozen random history representation invalidates the intended comparison", "One seed and no independent review"],
-      "invalidation": "Any static floor or dense causal sign fails, or future primary falls below 0.113."
+      "issues": [
+        "Initialization did not include a trained history stem",
+        "Frozen random history representation invalidates the intended comparison",
+        "One seed and no independent review"
+      ],
+      "invalidation": "Any static floor or dense causal sign fails, or future primary falls below 0.113.",
+      "legacy_status": "conflict",
+      "schema_migration_note": "Legacy classification preserved verbatim in legacy_status; active means retained for review, not a confirmed scientific claim.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
     },
     {
       "id": "N081",
       "parent": "N080",
       "title": "History-closed protected action stage",
-      "status": "conflict",
+      "status": "active",
       "time": "2026-08-22 / northstar_capability_history_closed_stage_v12",
       "motivation": "Run the intended protected action test from a checkpoint that actually contains the trained history basis.",
       "action": "Initialize the horizon-gated counterfactual model from v8, which has static scores 0.885/0.837/0.823 and trained history/action-relative modules. Drop only the harmful target_time_coord, then train action modules and transition log-variance for 250 steps with all history/static/shared parameters frozen.",
       "conclusion": "Static floors are preserved at 0.885/0.837/0.823 and future score rises from the audited 0.435 initialization to 0.485. However horizon and action paired-position/segmentation drops are both negative, and history position is negative. Protected action training optimizes easy future attributes while erasing controlled spatial causality; the checkpoint is rejected.",
-      "issues": ["The aggregate future loss does not protect action-relative transport", "v8 itself came from one seed", "The pre-training future score uses the new counterfactual bank and is not comparable to v8's published old-bank score", "No independent review"],
-      "invalidation": "Any static floor or causal dense sign fails after training, or the trained checkpoint does not improve a registered future quantity over its audited initialization."
+      "issues": [
+        "The aggregate future loss does not protect action-relative transport",
+        "v8 itself came from one seed",
+        "The pre-training future score uses the new counterfactual bank and is not comparable to v8's published old-bank score",
+        "No independent review"
+      ],
+      "invalidation": "Any static floor or causal dense sign fails after training, or the trained checkpoint does not improve a registered future quantity over its audited initialization.",
+      "legacy_status": "conflict",
+      "schema_migration_note": "Legacy classification preserved verbatim in legacy_status; active means retained for review, not a confirmed scientific claim.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
     },
     {
       "id": "N082",
       "parent": "N081",
       "title": "Static-future gradient conflict projection",
-      "status": "conflict",
+      "status": "active",
       "time": "2026-08-22 / northstar_capability_pcgrad_v13",
       "motivation": "Prevent aggregate future optimization from improving easy attributes by overwriting static capability or action-relative transport.",
       "action": "Use separate static and future minibatches. On shared trainable parameters, project away only the component of the future gradient that has negative inner product with the static gradient; future-only action parameters retain their full gradient. Keep model, counterfactual bank, VFE terms, v8 initialization, total examples per step, and 250-step budget fixed.",
       "conclusion": "Static floors pass at 0.871/0.788/0.913 and history position/segmentation drops are positive (+0.0116/+0.0101). Action and horizon position/segmentation drops are both negative (-0.00073/-0.00081), and future score 0.321 is below the audited 0.435 initialization. The final recorded static-future gradient inner product is positive and projection coefficient zero, so global PCGrad does not target the missing counterfactual action relation. The checkpoint is rejected.",
-      "issues": ["Global task-gradient alignment can be positive while action-specific spatial gradients are wrong", "Projection activation was recorded only at evaluation, not every step", "PCGrad protects static gradients but not explicitly action causality", "Two forward graphs per step add overhead", "One seed and no independent review"],
-      "invalidation": "Static floors or any dense causal sign fails, future score falls below initialization, or recorded gradient projection is never active."
+      "issues": [
+        "Global task-gradient alignment can be positive while action-specific spatial gradients are wrong",
+        "Projection activation was recorded only at evaluation, not every step",
+        "PCGrad protects static gradients but not explicitly action causality",
+        "Two forward graphs per step add overhead",
+        "One seed and no independent review"
+      ],
+      "invalidation": "Static floors or any dense causal sign fails, future score falls below initialization, or recorded gradient projection is never active.",
+      "legacy_status": "conflict",
+      "schema_migration_note": "Legacy classification preserved verbatim in legacy_status; active means retained for review, not a confirmed scientific claim.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
     },
     {
       "id": "N083",
       "parent": "N082",
       "title": "Counterfactual action objective is the next missing object",
-      "status": "partial",
+      "status": "active",
       "time": "2026-08-22 / synthesis of v6-v13",
       "motivation": "Stop adding generic conditioning and optimization mechanisms after repeated action-causality failures.",
       "action": "Compared private/global AdaLN, action tokens, horizon tokens, action-relative Slice attention, deconfounded boundaries, protected staging, and global gradient projection under fixed causal audits.",
       "conclusion": "Action-relative Slice geometry can make both dense action signs weakly positive on the old bank, and counterfactual data can make all transition controls positive when the shared trunk adapts, but aggregate VFE/observation losses do not preserve that relation together with static capability. The next admissible experiment must directly contrast predictions under paired actions for the same state/history, or train a controlled Slice write-transport likelihood. It must not add SIGReg, another backbone, recurrence, or a task-private output path.",
-      "issues": ["Direct action contrast must be formulated inside the explicit VFE rather than as an unrelated auxiliary classifier", "A dynamic write operator must preserve fixed full-resolution X and the Slice semantic write route", "Effect sizes need multiple seeds", "No independent review"],
-      "invalidation": "A simpler registered loss rebalance, without counterfactual action contrast or controlled write transport, produces robust positive action/horizon/history dense effects and all static floors across seeds."
+      "issues": [
+        "Direct action contrast must be formulated inside the explicit VFE rather than as an unrelated auxiliary classifier",
+        "A dynamic write operator must preserve fixed full-resolution X and the Slice semantic write route",
+        "Effect sizes need multiple seeds",
+        "No independent review"
+      ],
+      "invalidation": "A simpler registered loss rebalance, without counterfactual action contrast or controlled write transport, produces robust positive action/horizon/history dense effects and all static floors across seeds.",
+      "legacy_status": "partial",
+      "schema_migration_note": "Legacy classification preserved verbatim in legacy_status; active means retained for review, not a confirmed scientific claim.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
     },
     {
       "id": "N084",
       "parent": "N083",
       "title": "Paired counterfactual action likelihood",
-      "status": "conflict",
+      "status": "active",
       "time": "2026-08-22 / northstar_capability_paired_action_v14",
       "motivation": "Make action identity affect the observation likelihood directly instead of hoping that an aggregate future loss preserves the action-to-transport relation.",
       "action": "For each future state/history, form the five matched interventions left, right, up, down, and no-op. Run the same Slice-MoT model once per intervention and construct a pairwise RGB plus segmentation negative-log-likelihood energy matrix between every prediction and every counterfactual target. Add a symmetric contrast over negative energy so the matched action-target diagonal must have the lowest free energy. Use two five-action groups plus fourteen static samples per step, PCGrad only as the already-defined static rehearsal guard, v8 initialization, one fixed 250-step run, coefficient 1.0, temperature 0.1, and no new backbone, head, recurrence, SIGReg, or action classifier.",
       "conclusion": "The registered prediction failed. The final training batch has a positive but tiny diagonal energy gap (+0.000373), while the symmetric contrast remains 1.616, near random five-way log(5). The selected step-200 checkpoint passes generation/current floors at 0.858/0.761 but narrowly misses edit at 0.798; future primary is 0.109, below the v8 initialization 0.435. History position/segmentation are both positive (+0.0122/+0.0106), but action and horizon share negative position/segmentation effects (-0.00113/-0.00758). The checkpoint is rejected. Direct paired observation contrast is not sufficient when the action path cannot reliably control the Deslice destination; the next structural test is a learned action-conditioned Slice write-transport likelihood on the same X-S-H graph.",
-      "issues": ["Single seed and 250 steps", "RGB MSE plus categorical segmentation NLL is a registered finite observation model, not a proof of globally descending free energy", "PCGrad never projected at the final recorded step because the global gradient dot product was positive", "The selected rejected checkpoint is step 200 while the reported final-batch energy gap is from step 250", "No independent review because delegation is disabled"],
-      "invalidation": "Any static floor fails; action paired-position or segmentation gain is not greater than 0.005; history or horizon has a non-positive dense gain; matched diagonal energy is not below off-diagonal energy; future score is below 0.435; or future primary does not exceed 0.109."
+      "issues": [
+        "Single seed and 250 steps",
+        "RGB MSE plus categorical segmentation NLL is a registered finite observation model, not a proof of globally descending free energy",
+        "PCGrad never projected at the final recorded step because the global gradient dot product was positive",
+        "The selected rejected checkpoint is step 200 while the reported final-batch energy gap is from step 250",
+        "No independent review because delegation is disabled"
+      ],
+      "invalidation": "Any static floor fails; action paired-position or segmentation gain is not greater than 0.005; history or horizon has a non-positive dense gain; matched diagonal energy is not below off-diagonal energy; future score is below 0.435; or future primary does not exceed 0.109.",
+      "legacy_status": "conflict",
+      "schema_migration_note": "Legacy classification preserved verbatim in legacy_status; active means retained for review, not a confirmed scientific claim.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
     },
     {
       "id": "N085",
       "parent": "N084",
       "title": "Action-grid coordinate chart repair",
-      "status": "conflict",
+      "status": "active",
       "time": "2026-08-22 / northstar_capability_action_chart_v15",
       "motivation": "The world actions are encoded as (dx,dy), while coords() and Slice centroids are ordered (y,x); the relative-action feature currently subtracts these incompatible charts directly.",
       "action": "Convert the geometric action to (dy,dx) only at the Slice-relative geometry boundary, add a regression test that inspects the relation feature, and rerun the exact v14 paired-likelihood protocol from v8 for 250 steps. Keep data, sample budget, losses, learning rates, PCGrad guard, action token, model parameter count, checkpoint floors, and 0.005 causal effect gate unchanged.",
       "conclusion": "The coordinate feature is now correct and its regression test passes, but the registered capability prediction failed. The selected step-250 checkpoint has generation/current/edit 0.855/0.726/0.833, so current misses its floor. Future primary is 0.106. History position/segmentation remain positive (+0.0108/+0.00919), while action position is negative and segmentation is sub-threshold (-0.000274/+0.00114). The diagonal energy gap is only +0.000254 and contrast is 1.617. The axis mismatch was a real implementation error but not the dominant causal bottleneck; learned action-conditioned Slice write transport is now justified.",
-      "issues": ["The existing MLP could learn an axis permutation, consistent with the small change", "PCGrad activated at the final step but did not restore the missing action relation", "One seed", "No independent review because delegation is disabled"],
-      "invalidation": "Any v14 gate fails or the coordinate feature presented to the relation MLP is not exactly (dy,dx)."
+      "issues": [
+        "The existing MLP could learn an axis permutation, consistent with the small change",
+        "PCGrad activated at the final step but did not restore the missing action relation",
+        "One seed",
+        "No independent review because delegation is disabled"
+      ],
+      "invalidation": "Any v14 gate fails or the coordinate feature presented to the relation MLP is not exactly (dy,dx).",
+      "legacy_status": "conflict",
+      "schema_migration_note": "Legacy classification preserved verbatim in legacy_status; active means retained for review, not a confirmed scientific claim.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
     },
     {
       "id": "N086",
       "parent": "N085",
       "title": "Learned Slice write-transport likelihood",
-      "status": "conflict",
+      "status": "active",
       "time": "2026-08-22 / northstar_capability_action_transport_v16",
       "motivation": "v14-v15 show that action information and paired observation energy are present, but Deslice still writes through the same assignment used to read the current field.",
       "action": "Add one zero-initialized learned 2x2 action-to-displacement map per existing Slice layer. It transports only the Slice assignment field by differentiable periodic semi-Lagrangian sampling on fixed Eulerian addresses; semantic values still evolve through the same MoT and write through the same Deslice. Blend is exactly zero for missing action, no-op, or tau=0. Keep the v15 action token, relative bias, paired VFE, PCGrad guard, v8 initialization, two five-action groups plus fourteen static samples, 250 steps, and all thresholds unchanged.",
       "conclusion": "The registered prediction failed. Exact zero/no-op/tau=0 identity and transport gradients pass, and all four learned 2x2 maps become nonzero, but their per-layer displacements stay below 0.1 pixel and partly cancel. The selected step-200 checkpoint has static scores 0.838/0.825/0.832, so generation misses its floor; future primary is 0.114 and future score 0.344. History position/segmentation remain positive (+0.0129/+0.0124), while action is harmful (-0.00760/-0.00458). The final-batch energy gap is only +0.000125. A read-only audit finds per-layer assignment spatial standard deviation only 0.0069-0.0118 and Deslice write spatial standard deviation 0.00036-0.00129, so transporting a near-uniform assignment cannot express a one-cell move. The minimal assignment-transport form is rejected and remains off by default. The next theoretical object, if pursued, must evolve spatially resolved persistent belief content rather than merely advect diffuse assignment probabilities.",
-      "issues": ["Periodic advection is a disclosed micro-world inductive bias and must not be presented as learned general physics", "A global 2D displacement per layer cannot represent deformation or object-specific actions", "Applying the same action at four layers permits cancellation and confounds depth with physical time", "The persistent X mixes content and fixed coordinate embeddings, so blindly advecting X would corrupt its coordinate chart", "One seed", "No independent review because delegation is disabled"],
-      "invalidation": "Any registered gate fails, zero-action identity breaks, transport gradients vanish, or the observed gain can be reproduced with the transport map held at zero."
+      "issues": [
+        "Periodic advection is a disclosed micro-world inductive bias and must not be presented as learned general physics",
+        "A global 2D displacement per layer cannot represent deformation or object-specific actions",
+        "Applying the same action at four layers permits cancellation and confounds depth with physical time",
+        "The persistent X mixes content and fixed coordinate embeddings, so blindly advecting X would corrupt its coordinate chart",
+        "One seed",
+        "No independent review because delegation is disabled"
+      ],
+      "invalidation": "Any registered gate fails, zero-action identity breaks, transport gradients vanish, or the observed gain can be reproduced with the transport map held at zero.",
+      "legacy_status": "conflict",
+      "schema_migration_note": "Legacy classification preserved verbatim in legacy_status; active means retained for review, not a confirmed scientific claim.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
     },
     {
       "id": "N087",
       "parent": "N086",
       "title": "Unified F2 action as a Slice transition prior",
-      "status": "conflict",
+      "status": "active",
       "time": "2026-08-22 / northstar_capability_slice_transition_v17",
       "motivation": "Generation already succeeds through the F2 prior action Deslice(mu_p-S), whereas physical action only perturbs attention before the same-address write. The missing object may be an explicit action-conditioned transition of the Slice belief itself.",
       "action": "In the first physical transition only, construct a column-normalized T_a(destination Slice | source Slice, belief) from destination-source soft centroid displacement, the correctly charted action, and their residual. Apply S_write <- T_a S_write immediately after the existing language/F2 prior is formed, then use the unchanged fixed-address Deslice(w_read). Blend with identity by executed action magnitude so missing action, no-op, and tau=0 are exact identity. Keep one X-S-H graph, all existing likelihoods, the paired counterfactual VFE, PCGrad static guard, v8 initialization, 14 static plus 10 paired-future examples, and 250 steps. Disable the failed assignment transport.",
       "conclusion": "The registered prediction failed. Generation/edit pass at 0.875/0.835, current misses at 0.733, future primary is 0.116, and action position/segmentation are both negative (-0.000593/-0.000345) while history is strongly positive (+0.0103/+0.0200). Holding only T_a at identity leaves both dense metrics exactly unchanged. Parameters receive gradients, but the fixed +8 identity logit keeps the learned executed-action matrix at mean diagonal 0.99499, maximum off-diagonal 0.000334, and mean absolute identity deviation 0.000626. Therefore v17 did not instantiate a usable transition range; it rejects the saturated identity parameterization, not the Slice-transition hypothesis or VFE action.",
-      "issues": ["Soft Slice centroids remain weakly localized", "The +8 identity logit created an optimization saturation not included in the core theory", "The micro-world has global translations only", "One seed", "No independent review because delegation is disabled"],
-      "invalidation": "Any registered metric gate fails; T_a is applied more than once; column normalization or exact identity boundaries fail; transition parameters receive no gradient; or holding T_a at identity preserves the claimed action gain."
+      "issues": [
+        "Soft Slice centroids remain weakly localized",
+        "The +8 identity logit created an optimization saturation not included in the core theory",
+        "The micro-world has global translations only",
+        "One seed",
+        "No independent review because delegation is disabled"
+      ],
+      "invalidation": "Any registered metric gate fails; T_a is applied more than once; column normalization or exact identity boundaries fail; transition parameters receive no gradient; or holding T_a at identity preserves the claimed action gain.",
+      "legacy_status": "conflict",
+      "schema_migration_note": "Legacy classification preserved verbatim in legacy_status; active means retained for review, not a confirmed scientific claim.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
     },
     {
       "id": "N088",
       "parent": "N087",
       "title": "Non-saturated stochastic Slice action",
-      "status": "partial",
+      "status": "active",
       "time": "2026-08-22 / northstar_capability_slice_transition_v18",
       "motivation": "v17's transition was mathematically normalized but practically locked to identity by a +8 diagonal logit, so its zero-transition ablation could not distinguish the mechanism.",
       "action": "Replace the saturated softmax parameterization with T_a=(1-rho_a)I+rho_a P_a, where P_a is column-softmax of the same centroid/action score and rho_a=||a|| sigmoid(r) is a learned execution rate initialized to 0.1. Missing action, no-op, and tau=0 remain exact identity; active actions start in a non-saturated range. Change no data, backbone, likelihood, paired VFE coefficient, optimizer, budget, initialization, or gates from v17.",
       "conclusion": "The non-saturated transition changes the result pattern but does not pass. Static generation/current/edit all pass at 0.891/0.764/0.901 and history position/segmentation are positive (+0.0116/+0.0184). Overall action becomes weakly double-positive (+0.00185/+0.00170) on the full counterfactual bank, but remains below the registered 0.005 effect floor. The learned rate is 0.10046 and T_a clearly departs from identity (mean diagonal 0.9058, maximum off-diagonal 0.00628), yet holding only T_a at identity leaves paired IoU exactly unchanged and improves segmentation by 0.000214. Thus the old action token/attention path, not T_a, explains the weak gain. This rules out saturation as the sole cause and shifts the conflict to the use of diffuse soft centroids/Slice slots as stable dynamical addresses and to the absence of a posterior-aligned transition likelihood. The checkpoint is rejected and the mechanism remains experimental/off by default.",
-      "issues": ["The 0.1 initial rate is an explicit optimization assumption", "The learned proposal remains near diffuse mixing", "Soft Slice slots are transient and not guaranteed to keep identity between current prior and future posterior", "The paired RGB/segmentation likelihood does not directly identify which future Slice corresponds to which source Slice", "One seed", "No independent review because delegation is disabled"],
-      "invalidation": "Any v17 gate fails, transition stays effectively identity, or transition ablation is non-causal."
+      "issues": [
+        "The 0.1 initial rate is an explicit optimization assumption",
+        "The learned proposal remains near diffuse mixing",
+        "Soft Slice slots are transient and not guaranteed to keep identity between current prior and future posterior",
+        "The paired RGB/segmentation likelihood does not directly identify which future Slice corresponds to which source Slice",
+        "One seed",
+        "No independent review because delegation is disabled"
+      ],
+      "invalidation": "Any v17 gate fails, transition stays effectively identity, or transition ablation is non-causal.",
+      "legacy_status": "partial",
+      "schema_migration_note": "Legacy classification preserved verbatim in legacy_status; active means retained for review, not a confirmed scientific claim.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
     },
     {
       "id": "N089",
       "parent": "N088",
       "title": "Active-inference GDN-2 causal Slice belief",
-      "status": "proposed",
+      "status": "active",
       "time": "2026-08-22 / implementation and mechanism smoke",
       "motivation": "v18 moves a transient Slice transition but its identity ablation is null, implying that an action has no persistent, posterior-aligned state address on which to act.",
       "action": "Introduce one shared fixed spatial atlas and a persistent factorized Gaussian fast-weight belief represented by natural parameters and precision. Ordered physical history updates the belief through the shared first-layer SliceRead. Dynamic process variance releases obsolete precision; observation likelihood precision writes natural parameters; inferred velocity and explicit action shift causal source queries. The returned prior writes only through the existing first Deslice residual. Add a same-chart future Slice KL, external causal-state I/O, exact zero-precision/zero-horizon boundaries, a causal-memory ablation, mechanism tests, and an opt-in training flag. Do not use network depth as time or add another generator/backbone.",
       "conclusion": "Implementation and mechanism evidence only: the full local suite passes after adding focused tests. A one-step from-scratch smoke has finite full-field transition KL 0.0298 and causal Slice KL 0.6362, but exposed that the first landing used a 0.5 sigmoid gain and therefore was not champion-preserving. The landing was corrected to an exactly zero-initialized residual projection with a live first-step gradient; the old smoke is retained only as numerical evidence and is invalid as a performance comparison. No capability claim is made and the feature remains disabled by default pending a registered continuation.",
-      "issues": ["Stable atlas identity is an architectural assumption and content-address correction may still drift", "The current factorized Gaussian address belief is not exact full-covariance Bayesian linear regression", "Motion correspondence is learned from Slice content and may fail under occlusion or deformation", "The periodic nine-grid action scale is a disclosed initialization, not learned general physics", "A registered continuation from the proven generator and multiple seeds have not run", "No independent review because delegation is disabled"],
-      "invalidation": "Reject or revise if a registered continuation fails any static floor; history, action, horizon, or causal-memory ablation is non-positive on either paired IoU or segmentation IoU; the same-index atlas is worse than permutation-matched posterior alignment; zero-precision or zero-horizon identity breaks; or gains vanish when parameter count and training budget are matched."
+      "issues": [
+        "Stable atlas identity is an architectural assumption and content-address correction may still drift",
+        "The current factorized Gaussian address belief is not exact full-covariance Bayesian linear regression",
+        "Motion correspondence is learned from Slice content and may fail under occlusion or deformation",
+        "The periodic nine-grid action scale is a disclosed initialization, not learned general physics",
+        "A registered continuation from the proven generator and multiple seeds have not run",
+        "No independent review because delegation is disabled"
+      ],
+      "invalidation": "Reject or revise if a registered continuation fails any static floor; history, action, horizon, or causal-memory ablation is non-positive on either paired IoU or segmentation IoU; the same-index atlas is worse than permutation-matched posterior alignment; zero-precision or zero-horizon identity breaks; or gains vanish when parameter count and training budget are matched.",
+      "legacy_status": "proposed",
+      "schema_migration_note": "Legacy classification preserved verbatim in legacy_status; active means retained for review, not a confirmed scientific claim.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
     },
     {
       "id": "N090",
       "parent": "N089",
       "title": "Persistent atlas landing versus transient Deslice",
-      "status": "partial",
+      "status": "active",
       "time": "2026-08-22 / active GDN-2 v19-v20",
       "motivation": "The Gaussian state has stable addresses, but its first implementation landed through the current content-dependent Slice assignment and could discard that identity.",
       "action": "Compare equal-budget 50-step temporal continuations from v18. v19 queries persistent memory but lands through transient w_read; v20 uses fixed point-to-atlas weights through the same additive X residual. Preserve zero-initialized behavior, static floors, data, optimizer, likelihoods, and causal audits.",
       "conclusion": "v19 initially looked positive but a continuation made causal-memory segmentation harmful. v20 at 50 steps preserves generation/current/edit 0.910/0.764/0.901, gives action +0.00473/+0.00406 and causal-memory +0.00292/+0.00280, and is clearly better under the same budget. A 100-step continuation overtrains and makes memory position slightly negative, so v20-50 is retained as evidence but not a robust champion.",
-      "issues": ["One seed", "Effects remain below 0.005", "Longer training regresses", "No independent review because delegation is disabled"],
-      "invalidation": "Reject fixed atlas landing if a matched transient landing produces larger positive causal-memory effects on both dense metrics without static regression."
+      "issues": [
+        "One seed",
+        "Effects remain below 0.005",
+        "Longer training regresses",
+        "No independent review because delegation is disabled"
+      ],
+      "invalidation": "Reject fixed atlas landing if a matched transient landing produces larger positive causal-memory effects on both dense metrics without static regression.",
+      "legacy_status": "partial",
+      "schema_migration_note": "Legacy classification preserved verbatim in legacy_status; active means retained for review, not a confirmed scientific claim.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
     },
     {
       "id": "N091",
       "parent": "N090",
       "title": "Predict-before-correct history transport",
-      "status": "conflict",
+      "status": "active",
       "time": "2026-08-22 / active GDN-2 v21",
       "motivation": "A Bayesian filter normally predicts the previous state into the current chart before assimilating the next observation; v20 only inferred velocity and used it at the terminal query.",
       "action": "Transport Gaussian mean and variance between consecutive history observations before correction, repair duplicate periodic atlas endpoints, and rerun the matched 50-step continuation.",
       "conclusion": "The theoretically fuller filter regresses relative to v20: action falls to +0.00380/+0.00321 and causal-memory to +0.00129/+0.00090. Inferred correspondence is not reliable enough to move stored belief. History transport is therefore an explicit flag that defaults off; a formal predict step is not admitted merely because it is theoretically attractive.",
-      "issues": ["Velocity confidence is not calibrated", "Content correspondence may mix background and digit", "One seed", "No independent review because delegation is disabled"],
-      "invalidation": "Reopen only when a precision-gated or externally identified correspondence improves both causal-memory metrics over v20 under a matched budget."
+      "issues": [
+        "Velocity confidence is not calibrated",
+        "Content correspondence may mix background and digit",
+        "One seed",
+        "No independent review because delegation is disabled"
+      ],
+      "invalidation": "Reopen only when a precision-gated or externally identified correspondence improves both causal-memory metrics over v20 under a matched budget.",
+      "legacy_status": "conflict",
+      "schema_migration_note": "Legacy classification preserved verbatim in legacy_status; active means retained for review, not a confirmed scientific claim.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
     },
     {
       "id": "N092",
       "parent": "N091",
       "title": "Future language boundary deconfounding",
-      "status": "partial",
+      "status": "active",
       "time": "2026-08-22 / active GDN-2 v22-v25",
       "motivation": "Every audit showed that removing the literal Predict next frame prompt improved future dense metrics, suggesting a task label was being treated as semantic evidence.",
       "action": "Set prompt and text precision to missing only for world samples with no semantic instruction; retain history, horizon, action, output text likelihood, and all static language boundaries. Add a CLI flag so historical comparisons remain reproducible. Then isolate full-memory, projection-only, and sole-action-path variants.",
       "conclusion": "Without the vacuous prompt, future primary rises from about 0.117 to 0.153, history primary effect rises to about +0.025, and action position effect becomes large and positive. Whole-memory, arbitrary projection-only, and GDN-only action continuations still fail their causal-memory ablations, showing that boundary deconfounding is necessary but does not close the latent coordinate chart.",
-      "issues": ["The microbenchmark prompt contains no target semantics", "Natural-language future instructions must be retested separately", "One seed", "No independent review because delegation is disabled"],
-      "invalidation": "Restore the label as evidence if it contains target semantics or if a matched run improves future primary and all causal signs without it being ablated."
+      "issues": [
+        "The microbenchmark prompt contains no target semantics",
+        "Natural-language future instructions must be retested separately",
+        "One seed",
+        "No independent review because delegation is disabled"
+      ],
+      "invalidation": "Restore the label as evidence if it contains target semantics or if a matched run improves future primary and all causal signs without it being ablated.",
+      "legacy_status": "partial",
+      "schema_migration_note": "Legacy classification preserved verbatim in legacy_status; active means retained for review, not a confirmed scientific claim.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
     },
     {
       "id": "N093",
       "parent": "N092",
       "title": "Closed content-coordinate dynamic prior",
-      "status": "partial",
+      "status": "active",
       "time": "2026-08-22 / active GDN-2 v26-v29",
       "motivation": "A mechanism probe found the transient-atlas prior delta almost orthogonal to the true full-resolution change. The persistent X mixed movable RGB content with immobile xy coordinates, and dense learned landing maps could relearn incompatible charts.",
       "action": "Define X_content as encode(image) minus encode(black at the same coordinates and precision). Fixed-atlas Slice, Gaussian update, action/velocity query, and fixed Deslice scatter all operate in that X-content chart. Keep semantic F2 generation separate and gate physical write by tau only. Replace the dense prior projection with a per-channel trust gate; keep library trust zero for exact checkpoint identity and use the audited 0.1 warm start for the physical experiment.",
       "conclusion": "v29 is the first active-memory checkpoint with both causal-memory dense signs positive while preserving all static floors. Generation/current/edit are 0.891/0.764/0.901; future primary is 0.15415. Causal-memory position/segmentation gains are +0.00040/+0.00073, history +0.02172/+0.03085, and total action +0.01941/+0.00134. This resolves the sign conflict but not the robustness gate: action segmentation and memory effects remain below 0.005, and future accuracy is still weak. The result is partial, not a completed world model.",
-      "issues": ["Single seed", "Audited trust 0.1 is an optimization prior", "The fixed factorized atlas is low rank", "Action segmentation gain is below 0.005", "No independent review because delegation is disabled"],
-      "invalidation": "Reject as a mainline world model if multiple seeds lose either causal-memory sign, any static floor regresses, action segmentation remains below 0.005 after a registered scale test, or gains disappear with a matched parameter/budget control."
+      "issues": [
+        "Single seed",
+        "Audited trust 0.1 is an optimization prior",
+        "The fixed factorized atlas is low rank",
+        "Action segmentation gain is below 0.005",
+        "No independent review because delegation is disabled"
+      ],
+      "invalidation": "Reject as a mainline world model if multiple seeds lose either causal-memory sign, any static floor regresses, action segmentation remains below 0.005 after a registered scale test, or gains disappear with a matched parameter/budget control.",
+      "legacy_status": "partial",
+      "schema_migration_note": "Legacy classification preserved verbatim in legacy_status; active means retained for review, not a confirmed scientific claim.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
     },
     {
       "id": "N094",
@@ -528,146 +879,259 @@
       "motivation": "Replace the single-class text readout with a pretrained causal token likelihood on the same Slice–MoT graph, without a second VLM or an image generator.",
       "action": "Wired exact Pythia-70m load and forward_tokens. Bound frozen embeddings to the generation champion by training language-side MoT readers plus digit-shuffle. Fixed labels=None NLL leak, added eval-only, zero-init text_out/proj residual gates, and a token_interface phase. Named-edit source-shuffle was implemented then disabled at the train call site; modal precision was allocated but not passed; language_rgb unfroze pix_head. Retraining uses edit_spatial, explicit pi_x=0/1, and a live edit-shuffle coefficient. Documented in docs/STATUS.md.",
       "conclusion": "Phase A is in. Pythia T2I on the 90-cell mixed-color grid passes (digit 0.967, color 0.988, IoU 0.960, shuffles ~0) at checkpoints/omni_d64_pythia_language_best.pt. Official capability edit is next-color, not named-color. A 400-step named-color run is not a frozen-read invalidation: source-shuffle was off during optimization, pix_head was free, and flood 0.59 is a global-color shortcut. Token NLL and graph decode remain open.",
-      "issues": ["IT2I next-color edit is unsolved under Pythia", "Named-color edit_spatial: no geometry gap; flood low with pix_head frozen", "Named-color edit_read (unfreeze SliceRead/Wq_v/Wo_v/Deslice at 1e-5): still no geometry gap; T2I never holds 0.95; flood rises to 0.20 once Deslice moves; no ckpt saved", "Pythia-70m is not instruction-tuned; graph decode is not implemented", "No mixed-port token-NLL training yet"],
-      "invalidation": "Token NLL bypasses MoT, answer tokens write X, or requesting Pythia silently loads GPT-2/TinyLM."
+      "issues": [
+        "IT2I next-color edit is unsolved under Pythia",
+        "Named-color edit_spatial: no geometry gap; flood low with pix_head frozen",
+        "Named-color edit_read (unfreeze SliceRead/Wq_v/Wo_v/Deslice at 1e-5): still no geometry gap; T2I never holds 0.95; flood rises to 0.20 once Deslice moves; no ckpt saved",
+        "Pythia-70m is not instruction-tuned; graph decode is not implemented",
+        "No mixed-port token-NLL training yet"
+      ],
+      "invalidation": "Token NLL bypasses MoT, answer tokens write X, or requesting Pythia silently loads GPT-2/TinyLM.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
     },
     {
       "id": "N095",
       "parent": "N094",
       "title": "Unified static Pythia capability closure",
-      "status": "passed",
+      "status": "active",
       "time": "2026-08-24 / Pythia capability B2-B3",
       "motivation": "The generation-only Pythia checkpoint could not reconstruct its input, and named-color editing remained source-invariant. Audit showed that the initialization lacked current-frame capability, reconstruction leaked a pi_text=1 task label, and the old T2I and capability banks used different stroke generators.",
       "action": "Start from northstar_slice_capability_best.pt; use capability_sample/grid_digit_mask for T2I, current reconstruction/segmentation, and official next-color editing; set reconstruction text evidence to missing at tau=0; initialize the existing Pythia text_in by ridge alignment to the toy champion's post-text_in lexical chart; train same-color/same-address ten-digit groups with a 10x10 RGB+segmentation observation-energy likelihood; keep Pythia, stem, SliceRead, Deslice, and segmentation head frozen; open the shared RGB head only during low-rate generation warmup; admit editing only after T2I and current gates pass.",
       "conclusion": "Independent reload of checkpoints/omni_d64_pythia_capability_b3_edit_best.pt passes all registered static visual gates. T2I digit/color/paired-IoU are 1.000/0.963/0.936 with digit and color shuffles at 0. Current reconstruction digit/color/paired-IoU/seg-IoU are 0.911/0.903/0.883/0.975 with source-IoU gap 0.827. Official next-color edit digit/color/paired-IoU/seg-IoU are 0.878/0.940/0.697/0.991 with source digit/IoU gaps 0.789/0.631 and flood 0.028. This resolves the source-geometry failure without unfreezing the visual read/write path.",
-      "issues": ["Autoregressive token NLL and graph decode remain untrained", "IT2T next-color text output is not yet closed", "The ridge anchors use the synthetic capability vocabulary and must be replaced or expanded for natural language", "The result is one synthetic scene family and one seed", "The old generation-only checkpoint remains a separate historical proof, not the unified checkpoint"],
-      "invalidation": "Any independent reload fails a registered T2I/current/edit gate; source shuffling does not reduce edit geometry; the result depends on a second scene generator or a bypass head; Pythia becomes trainable; or token training later destroys any static gate."
+      "issues": [
+        "Autoregressive token NLL and graph decode remain untrained",
+        "IT2T next-color text output is not yet closed",
+        "The ridge anchors use the synthetic capability vocabulary and must be replaced or expanded for natural language",
+        "The result is one synthetic scene family and one seed",
+        "The old generation-only checkpoint remains a separate historical proof, not the unified checkpoint"
+      ],
+      "invalidation": "Any independent reload fails a registered T2I/current/edit gate; source shuffling does not reduce edit geometry; the result depends on a second scene generator or a bypass head; Pythia becomes trainable; or token training later destroys any static gate.",
+      "legacy_status": "passed",
+      "schema_migration_note": "Legacy classification preserved verbatim in legacy_status; active means retained for review, not a confirmed scientific claim.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
     },
     {
       "id": "N096",
       "parent": "N094",
       "title": "Causal token likelihood and graph-native decode",
-      "status": "passed",
+      "status": "active",
       "time": "2026-08-29 / token champion admission (E1-E2b protocol)",
       "motivation": "The B3 checkpoint closed static visual likelihoods but still had no autoregressive text observation or decode path, so it could not demonstrate T2T, I2T, or IT2T with the frozen causal language distribution.",
       "action": "Add a unified token collator with per-token precision, a legal zero-precision BOS for missing text, an explicit visual_prompt_mask that excludes teacher-forced and generated answer tokens, matched/shuffled token-NLL gates, identified answer-set NLL on the same Pythia logits, a read-only token_reader phase, and greedy decode that reruns forward_tokens for every token. Then repair the training protocol instead of the architecture: pure-I2T long run with hard-cell replay, I2T-heavy rehearsal cycle, Adam-state resume, and low-rate high-contrast finishing.",
       "conclusion": "The first unified token champion is admitted. checkpoints/omni_d64_pythia_token_best.pt independently reloads with T2T token/greedy 1.000/1.000, I2T 0.822/0.811 (full 90-cell bank, median matched-vs-shuffled gap 7.47 nat), official next-color IT2T 1.000/1.000, and all three protected static gates intact. The earlier 0.444 candidate was protocol-limited, not capacity-limited: a 2000-step pure-I2T run lifts the isolated ceiling to 0.667, and joint rehearsal from that state with hard replay no longer erodes I2T (0.667 to 0.778 while T2T/IT2T return to 1.000). Shrunk paths: starting the visual residual gate at embedding magnitude is worse (0.556), refuting the amplitude hypothesis; opening penultimate-layer H-only experts is rejected because their H output feeds the next block's Kt and moves X (test-pinned).",
-      "issues": ["The token audit bank is a registered subset of the training bank; this is finite-bank closure, not held-out generalization", "I2T leaves 16 of 90 cells wrong with diffuse digit and place spread", "Single seed for every run in the admission chain", "Pythia-70m is a base model; the missing-text BOS interface is not pretrained", "The fixed 4x4 terminal atlas and prototype/ridge initialization remain default-off"],
-      "invalidation": "Reject the token champion if an independent reload fails any token, decode, or static gate; if answer or generated tokens can change X or earlier logits; if lm.generate is called; if Pythia becomes trainable; or if a held-out bank without training-bank overlap cannot close the I2T accuracy gate."
+      "issues": [
+        "The token audit bank is a registered subset of the training bank; this is finite-bank closure, not held-out generalization",
+        "I2T leaves 16 of 90 cells wrong with diffuse digit and place spread",
+        "Single seed for every run in the admission chain",
+        "Pythia-70m is a base model; the missing-text BOS interface is not pretrained",
+        "The fixed 4x4 terminal atlas and prototype/ridge initialization remain default-off"
+      ],
+      "invalidation": "Reject the token champion if an independent reload fails any token, decode, or static gate; if answer or generated tokens can change X or earlier logits; if lm.generate is called; if Pythia becomes trainable; or if a held-out bank without training-bank overlap cannot close the I2T accuracy gate.",
+      "legacy_status": "passed",
+      "schema_migration_note": "Legacy classification preserved verbatim in legacy_status; active means retained for review, not a confirmed scientific claim.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
     },
     {
       "id": "N097",
       "parent": "N096",
       "title": "Real ShareGPT-4o port pilot and boundary correction",
-      "status": "partial",
+      "status": "active",
       "time": "2026-08-24 / real-data selective pilot",
       "motivation": "Move beyond the colored-digit micro-world and test whether real T2I, IT2I, and image-conditioned text records can enter the locked X-Slice-H graph without a diffusion generator, private visual backbone, or language bypass; audit rather than assume each dataset's task boundary.",
       "action": "Normalize FreedomIntelligence ShareGPT-4o-Image generation/edit pairs and gated OpenGVLab ShareGPT-4o conversations as boundary conditions and terminal likelihoods. Add aspect-preserving fields, resumable partial-tar and remote-ZIP64 sampling, answer-to-vision masks, heteroscedastic natural-RGB likelihood, FP32 categorical likelihood over frozen-FP16 Pythia logits, matched/shuffled controls, deterministic per-port holdouts, and candidate-only narrow phases. Scan all 57,289 first-turn one-image OpenGV rows, correct caption paraphrase classification, materialize 134 T2I, 142 IT2I, and 512 I2T records, and train the I2T terminal reader at 64x64.",
       "conclusion": "All 930 referenced images verify. The OpenGV scan found only generic caption requests and zero genuine question/instruction-conditioned IT2T; the earlier 128-IT2T claim and its metrics are invalidated. The clean RGB-likelihood run still improves T2I/IT2I/reconstruction while retaining every B3 gate. For corrected held-out I2T, NLL falls from 9.977 to 4.602 but only 52.9% of samples have positive shuffle gaps. A stricter real-image curriculum exposed missing EOS supervision and then passed finite-sample capacity gates: frozen Pythia plus token_reader reaches graph-greedy/rotated exact 5/5, 16/16, and 32/32; the 32-image gate has NLL 0.0339, token accuracy 99.7%, and EOS 32/32. Rotating images rotates every answer, and reloaded static T2I/current/edit gates all pass. Thus finite-sample expressivity and the training interface are established, while held-out open-domain I2T remains unadmitted.",
-      "issues": ["The two specified datasets contain no genuine IT2T/VQA supervision", "I2T positive causal-gap fraction is only 52.9% and the mean gap shrinks during fitting", "T2I prompt causality remains effectively zero", "No qualitative natural-image geometry or graph-decode gate", "No multiple seeds"],
-      "invalidation": "Reject real-data readiness if captions are mislabeled as IT2T, if held-out likelihood improves without a robust positive matched-vs-shuffled gap, if protected static gates regress, or if success requires an output-private backbone, trainable Pythia, answer leakage, or lm.generate."
+      "issues": [
+        "The two specified datasets contain no genuine IT2T/VQA supervision",
+        "I2T positive causal-gap fraction is only 52.9% and the mean gap shrinks during fitting",
+        "T2I prompt causality remains effectively zero",
+        "No qualitative natural-image geometry or graph-decode gate",
+        "No multiple seeds"
+      ],
+      "invalidation": "Reject real-data readiness if captions are mislabeled as IT2T, if held-out likelihood improves without a robust positive matched-vs-shuffled gap, if protected static gates regress, or if success requires an output-private backbone, trainable Pythia, answer leakage, or lm.generate.",
+      "legacy_status": "partial",
+      "schema_migration_note": "Legacy classification preserved verbatim in legacy_status; active means retained for review, not a confirmed scientific claim.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
     },
     {
       "id": "N098",
       "parent": "N097",
       "title": "Joint fixed-bank 1px OCR and native generation",
-      "status": "passed",
+      "status": "active",
       "time": "2026-08-25 / finite-bank overfit gate",
       "motivation": "Test the minimal claim requested by the project owner: the same checkpoint should be able to memorize original noisy 1px OCR while retaining native 1px text-to-image generation; held-out generalization is not required for this gate.",
       "action": "Append one deterministic hard noisy Bresenham 1px image per digit to the passed 32-real-image I2T curriculum. Keep Pythia and all visual read/write paths frozen, train only token_reader with 3:1 real-I2T/OCR rehearsal, supervise EOS, save graph-greedy-selected model and Adam state, and use low-rate paired replay for competing visual addresses. Independently reload the final checkpoint and audit the protected static T2I/current/edit banks.",
       "conclusion": "The final single checkpoint reaches real-I2T 32/32 and noisy 1px OCR 10/10 graph-greedy exact; rotated images are 42/42 and all answers terminate. Independent reload preserves native 1px digit T2I generation on 117 prompts with digit/color/paired-IoU 1.000/0.969/0.941, digit and color shuffle scores 0, and flood 0.00165. Current reconstruction/segmentation and next-color edit also pass. Therefore finite-bank OCR and generation coexistence is established under frozen Pythia and one X-Slice-H graph.",
-      "issues": ["OCR uses one fixed noisy 1px image per digit", "Generation is the fixed synthetic digit/color/address bank, not natural-image generation", "Targets are closed-set or compact and do not establish open-domain generalization", "No multiple seeds"],
-      "invalidation": "Reject the coexistence claim if any fixed OCR digit fails graph-greedy decode, image rotation does not rotate answers, the 1px T2I gate regresses, Pythia or a private OCR head becomes trainable, lm.generate is called, or the checkpoint cannot be independently reloaded."
+      "issues": [
+        "OCR uses one fixed noisy 1px image per digit",
+        "Generation is the fixed synthetic digit/color/address bank, not natural-image generation",
+        "Targets are closed-set or compact and do not establish open-domain generalization",
+        "No multiple seeds"
+      ],
+      "invalidation": "Reject the coexistence claim if any fixed OCR digit fails graph-greedy decode, image rotation does not rotate answers, the 1px T2I gate regresses, Pythia or a private OCR head becomes trainable, lm.generate is called, or the checkpoint cannot be independently reloaded.",
+      "legacy_status": "passed",
+      "schema_migration_note": "Legacy classification preserved verbatim in legacy_status; active means retained for review, not a confirmed scientific claim.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
     },
     {
       "id": "N099",
       "parent": "N098",
       "title": "Natural-image native T2I finite-bank capacity",
-      "status": "conflict",
+      "status": "active",
       "time": "2026-08-25 / natural T2I overfit gate",
       "motivation": "Test whether the same native full-resolution Slice graph can freely write dense natural RGB from text and an explicitly missing visual observation, rather than only generate sparse synthetic digits.",
       "action": "Select two visually distinct Freedom ShareGPT-4o T2I targets; feed an all-zero field with image precision zero; keep Pythia frozen and skip its causal decoder; train only language-to-visual messages, F2 prior, Slice/Deslice visual query-output, modality precision, and the shared RGB Gaussian likelihood. Require 2/2 prompt retrieval, PSNR at least 20 dB, and a positive rotated-prompt MSE gap. Independently audit the protected T2I/current/edit banks; also test terminal RGB/seg teacher replay as a retention control.",
       "conclusion": "The original pixel-only decision was a false positive. At 16x16, prompt retrieval is 2/2 and PSNR 20.16 dB with a +0.185 prompt-shuffle gap, but direct display of the original ShareGPT PNG shows only coarse color/layout; edge relative MSE/correlation are 0.803/0.426 and fail the registered 0.75/0.50 content gate. At 64x64 with 16 slices, PSNR is 19.04 and edge correlation 0.133. Opening the existing visual stem/KV/FFN/local path, expanding to 64 slices, setting Gaussian NLL weight to zero, and strongly supervising edges yields a coarse mask outline but only PSNR 15.64 and edge correlation 0.190 after 600 steps; island and boat structure remain absent. Natural content capacity is not established. The model can select prompt-specific low-frequency fields, and no source image, private generator, lm.generate, or trainable Pythia is used.",
-      "issues": ["Only two fixed targets and one seed", "Pixel PSNR is dominated by low-frequency color and cannot serve as the natural-image gate", "Current transient Slice/Deslice writes lack sufficient learned high-frequency address structure", "Increasing slices and opening existing visual content layers is insufficient", "All natural candidates forget protected static ports"],
-      "invalidation": "Reject the capacity claim if prompt rotation ceases to worsen matched RGB, generation uses a source image, private generator, trainable Pythia, frozen-decoder sampling, or a second visual backbone. Do not promote the candidate until natural T2I and every protected static gate pass in one independently reloaded checkpoint."
+      "issues": [
+        "Only two fixed targets and one seed",
+        "Pixel PSNR is dominated by low-frequency color and cannot serve as the natural-image gate",
+        "Current transient Slice/Deslice writes lack sufficient learned high-frequency address structure",
+        "Increasing slices and opening existing visual content layers is insufficient",
+        "All natural candidates forget protected static ports"
+      ],
+      "invalidation": "Reject the capacity claim if prompt rotation ceases to worsen matched RGB, generation uses a source image, private generator, trainable Pythia, frozen-decoder sampling, or a second visual backbone. Do not promote the candidate until natural T2I and every protected static gate pass in one independently reloaded checkpoint.",
+      "legacy_status": "conflict",
+      "schema_migration_note": "Legacy classification preserved verbatim in legacy_status; active means retained for review, not a confirmed scientific claim.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
     },
     {
       "id": "N100",
       "parent": "N096",
       "title": "Rehearsal-controlled token admission protocol",
-      "status": "passed",
+      "status": "active",
       "time": "2026-08-29 / E0-E2b controlled experiment chain",
       "motivation": "Separate readout capacity from training-protocol causes before conceding that the terminal Slice reader cannot drive a frozen causal LM.",
       "action": "Full-bank diagnostic of the published candidate with per-cell records and gate-value tracking, then a preregistered ladder: E1 pure-I2T 2000 steps at lr 3e-4 with hard-cell replay; E1b identical but with the visual residual gate started at embedding magnitude (initial_proj_trust 0.2); E3 penultimate-layer H-only experts (rejected by X-invariance test before training); E2 joint training from E1 with i2t_heavy cycle, hard replay, and Adam-state resume; E2b finishing at lr 3e-5 with answer-set contrast coefficient 10.",
       "conclusion": "The published 0.444 I2T was protocol-limited. E1 raises the isolated ceiling to 0.667/0.689 with the gate pinned near zero, so step count, not gate amplitude, was binding; E1b lands worse (0.556), refuting the amplitude hypothesis and showing the optimizer holds a small visual gate as a local optimum. E2 disproves rehearsal interference as inevitable: I2T rises to 0.778 while T2T/IT2T return to 1.000 within 400 steps. E2b crosses the 0.80 admission floor at step 100 (0.822/0.811) with all static gates intact. The wrong-cell gap structure (mean gap 1.27 on wrong cells versus 4.29 on right cells at E0) already indicated readout signal-to-noise, not missing causality, was the constraint.",
-      "issues": ["Admission state is a single eval point of a finishing run; neighbor evals oscillate 0.73-0.79", "The audited bank overlaps the training bank by construction", "One seed and one synthetic scene family", "The winning lever is a training protocol, so its interaction with future open-domain data is untested"],
-      "invalidation": "Revise the protocol conclusion if a second seed fails to reproduce admission, if removing hard replay or the i2t_heavy cycle from the same chain still admits, or if the admitted checkpoint fails its read-only re-verification."
+      "issues": [
+        "Admission state is a single eval point of a finishing run; neighbor evals oscillate 0.73-0.79",
+        "The audited bank overlaps the training bank by construction",
+        "One seed and one synthetic scene family",
+        "The winning lever is a training protocol, so its interaction with future open-domain data is untested"
+      ],
+      "invalidation": "Revise the protocol conclusion if a second seed fails to reproduce admission, if removing hard replay or the i2t_heavy cycle from the same chain still admits, or if the admitted checkpoint fails its read-only re-verification.",
+      "legacy_status": "passed",
+      "schema_migration_note": "Legacy classification preserved verbatim in legacy_status; active means retained for review, not a confirmed scientific claim.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
     },
     {
       "id": "N101",
       "parent": "N099",
       "title": "Protocol ladder on natural T2I write capacity",
-      "status": "conflict",
+      "status": "active",
       "time": "2026-08-30 / A1-A1c 15000-step discrimination gate",
       "motivation": "N099 rejected natural content capacity from a 600-step diagnostic, but the token line had just shown that apparent ceilings in this stack can be step-count artifacts; the structural-versus-protocol question needed the same E-series ladder before any write-path redesign.",
       "action": "Rerun the registered N099 capacity diagnostic (two fixed ShareGPT-4o targets, 64x64, 64 slices, generation_capacity phase, gaussian-variance shortcut off, edge loss strengthened) with 25x the steps in three stages: 6000 steps at lr 3e-4/2e-4, 6000 continuation steps at half rate, and 3000 finishing steps at one-twentieth rate. Score with the unchanged natural content gate (PSNR >= 20 dB, prompt retrieval, edge relative MSE <= 0.75, edge correlation >= 0.50) on the independently reloaded candidate.",
       "conclusion": "The gate still fails, but the failure mode is revised. Edge correlation rises 0.194 to 0.351 to 0.422 to 0.448 and PSNR 15.6 to 22.1 dB; the gallery shows correct low-frequency layout, object placement, backlight gradient, and an emerging mask eye-opening. The last stage gained only +0.026 edge correlation, so the overfit asymptote of the current write path sits near 0.46-0.48, below the 0.50 gate. Protocol repair contributes 2.3x edge fidelity but cannot close the content gate: the Slice/Deslice write has a genuine high-frequency expressivity limit, distinct from N099's total-failure reading and from the read-side protocol win.",
-      "issues": ["Two targets, one seed, one resolution", "The 0.50 edge gate itself is a registered heuristic, not a perceptual floor", "Static ports are intentionally destroyed by the capacity phase (digit 0.085), so no candidate exists to promote", "Write-assignment sharpening has not been tried; the asymptote could still move under a mechanism change"],
-      "invalidation": "Upgrade to a protocol-only failure if a registered write-side mechanism change is unnecessary, that is, if further honest budget or replay variants alone push edge correlation through 0.50; downgrade to a hard structural rejection if a matched write-sharpened variant shows no asymptote change."
+      "issues": [
+        "Two targets, one seed, one resolution",
+        "The 0.50 edge gate itself is a registered heuristic, not a perceptual floor",
+        "Static ports are intentionally destroyed by the capacity phase (digit 0.085), so no candidate exists to promote",
+        "Write-assignment sharpening has not been tried; the asymptote could still move under a mechanism change"
+      ],
+      "invalidation": "Upgrade to a protocol-only failure if a registered write-side mechanism change is unnecessary, that is, if further honest budget or replay variants alone push edge correlation through 0.50; downgrade to a hard structural rejection if a matched write-sharpened variant shows no asymptote change.",
+      "legacy_status": "conflict",
+      "schema_migration_note": "Legacy classification preserved verbatim in legacy_status; active means retained for review, not a confirmed scientific claim.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
     },
     {
       "id": "N102",
       "parent": "N101",
       "title": "Write-assignment temperature passes the natural content gate",
-      "status": "passed",
+      "status": "active",
       "time": "2026-08-30 / write sharpening B1-G8 dose response",
       "motivation": "N101 located the natural T2I bottleneck in write-assignment spatial bandwidth; test whether a learned write-side temperature, the Deslice counterpart of the read temp head, moves that bandwidth through the registered content gate.",
       "action": "Add an opt-in mass-preserving power sharpening on the Deslice write assignment, w_write proportional to w^gamma with gamma = exp(raw) initialized to exactly 1, threaded through DesliceWrite, the MoT layer/stack, and a --write-gamma script flag. Because scalar-parameter gradients are too weak for the optimizer to explore amplitude (B1 learned gamma only 1.06-1.26 and matched baseline edge 0.348 vs 0.351), run prescribed-dose ablations with frozen gamma: 4 and 8, against the unchanged A1 protocol at 64x64, 64 slices, generation_capacity, 6000 steps.",
       "conclusion": "The dose response is monotone and crosses the gate. Edge correlation at 6000 steps is 0.351 (gamma 1), 0.393 (gamma 4), and 0.514 (gamma 8), with edge relative MSE 0.863, 0.826, 0.728 and PSNR 20.65, 21.45, 23.12 dB. The gamma-8 run passes the registered natural content gate (retrieval 2/2, PSNR >= 20, causal gap 0.205, prompt RMS 0.455, edge 0.728/0.514) with the gallery showing a recognizable mask shape with eye-opening and correct composition. The mechanism, not longer training alone, is what opens the gate: the B1 learned variant matched baseline exactly while gamma stayed near 1. A half-rate continuation at gamma 8 holds the gate at every one of 13 evaluation points and moves the asymptote from the gamma-1 0.448 to 0.628 edge correlation with edge MSE 0.598 and PSNR 24.78 dB, so the pass is a stable regime with margin, not a grazing transient. The resolution hypothesis was tested and rejected: the gamma dose response moves the gate at fixed N, M, and grid, while the earlier 16x16 to 64x64 resolution increase made the gate harder, so the binding constraint is write localization, not point count; the remaining free-degree budget is the slice-per-point ratio joint with gamma.",
-      "issues": ["Candidate-only: the capacity phase destroys the protected static ports (digit 0.085), so no single checkpoint yet holds natural T2I plus T2I/current/edit", "Two fixed targets, one seed, one resolution; the gate is a finite-bank overfit standard", "gamma is prescribed rather than learned; an amplitude scheduler or per-layer gamma curriculum is untested", "The dose ladder stops at 8; the optimum and any degradation boundary above 8 are unknown"],
-      "invalidation": "Reject the mechanism claim if a second seed fails to pass the content gate at gamma 8, if the gate pass disappears under matched-shuffle or source-image controls, or if the static-capability merge stage cannot restore T2I/current/edit in the same checkpoint without losing the content gate."
+      "issues": [
+        "Candidate-only: the capacity phase destroys the protected static ports (digit 0.085), so no single checkpoint yet holds natural T2I plus T2I/current/edit",
+        "Two fixed targets, one seed, one resolution; the gate is a finite-bank overfit standard",
+        "gamma is prescribed rather than learned; an amplitude scheduler or per-layer gamma curriculum is untested",
+        "The dose ladder stops at 8; the optimum and any degradation boundary above 8 are unknown"
+      ],
+      "invalidation": "Reject the mechanism claim if a second seed fails to pass the content gate at gamma 8, if the gate pass disappears under matched-shuffle or source-image controls, or if the static-capability merge stage cannot restore T2I/current/edit in the same checkpoint without losing the content gate.",
+      "legacy_status": "passed",
+      "schema_migration_note": "Legacy classification preserved verbatim in legacy_status; active means retained for review, not a confirmed scientific claim.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
     },
     {
       "id": "N103",
       "parent": "N102",
       "title": "Stroke-sequential composition gate on the persistent canvas",
-      "status": "conflict",
+      "status": "active",
       "time": "2026-08-31 / 2x2 sequential protocol matrix",
       "motivation": "Test the painter hypothesis: because the write bandwidth per pass is bounded by M*edges, sequential passes onto a persistent canvas, each conditioned on the accumulated field and the write step, should accumulate detail the way iterative refinement does, instead of stamping one attractor.",
       "action": "Thread an x_init persistent-field input through encode_X/forward_native (identity when absent, step coordinate added when present), decompose each digit template into short sub-strokes with trailing no-op steps (K=8), supervise the cumulative partial mask at every step through the same Slice-MoT-Deslice write, and add an opt-in step-conditioned prior projection (zero-init, exact identity at init) after the first run showed the F2 language prior is canvas-blind and step-blind. Run the 2x2 matrix over write sharpening (gamma 1 vs 8) and prior step conditioning (off vs on), 1200 steps each, with blank-canvas and constant-t causal ablations.",
       "conclusion": "The gate fails in all four cells (final digit 0.066-0.140 paired IoU versus the single-shot champion 0.94), but the failure is informative and partly ordered. Canvas persistence causality is perfect everywhere: blanking the canvas at the final step yields a blank output (IoU 0.000-0.001), so every step demonstrably reads the accumulated field. Yet the step index is never causal: constant-t ablations match the full schedule to the last digit in every cell, even with a trained t_coord and the trained step-conditioned prior (learned projection norms only 0.02-0.04). Write sharpening improves per-step tracking (peak step IoU 0.518 at gamma 8 versus 0.408) but not composition, and the per-step IoU plateaus then decays over the no-op tail. Mechanistic reading: the set-point write X += proj(mu_p - S(X)) composes across passes only if S(X) is a faithful latent read of the canvas; the same diffuse-assignment lossiness that bounded single-shot high-frequency bandwidth makes the residual mu_p - S unable to express target-minus-canvas, so repeated writes converge to one attractor rather than accumulating strokes. Sequential refinement is not free; it is gated by latent read fidelity.",
-      "issues": ["1200 steps per cell; the E1 lesson says step-count ceilings can be artifacts, although the plateau-plus-decay and unused step machinery differ from a pure budget signature", "The sub-stroke schedule is a fixed canonical order with a shared prompt; language-conditioned stroke ordering is untested", "Only the toy digit family at 16x16", "One seed per cell", "The completion-prior variant used a zero-init linear on t; a canvas-conditioned prior mu_p = f(H, S(X)) remains unimplemented"],
-      "invalidation": "Upgrade to a protocol-only failure if a canvas-conditioned completion prior or substantially longer training passes the sequential gate without canvas or step causality regressing; confirm the structural reading if a diagnostic shows S(X) round-trip reconstruction of a written stroke is lossy in proportion to the composition failure."
+      "issues": [
+        "1200 steps per cell; the E1 lesson says step-count ceilings can be artifacts, although the plateau-plus-decay and unused step machinery differ from a pure budget signature",
+        "The sub-stroke schedule is a fixed canonical order with a shared prompt; language-conditioned stroke ordering is untested",
+        "Only the toy digit family at 16x16",
+        "One seed per cell",
+        "The completion-prior variant used a zero-init linear on t; a canvas-conditioned prior mu_p = f(H, S(X)) remains unimplemented"
+      ],
+      "invalidation": "Upgrade to a protocol-only failure if a canvas-conditioned completion prior or substantially longer training passes the sequential gate without canvas or step causality regressing; confirm the structural reading if a diagnostic shows S(X) round-trip reconstruction of a written stroke is lossy in proportion to the composition failure.",
+      "legacy_status": "conflict",
+      "schema_migration_note": "Legacy classification preserved verbatim in legacy_status; active means retained for review, not a confirmed scientific claim.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
     },
     {
       "id": "N104",
       "parent": "N103",
       "title": "Latent read-write round-trip fidelity diagnostic",
-      "status": "passed",
+      "status": "active",
       "time": "2026-09-01 / zero-training operator measurement",
       "motivation": "N103 predicted that sequential composition fails because the set-point residual mu_p - S(X) cannot express target-minus-canvas when the read-write pair is lossy; measure that pair directly with no training, decoupled from prior quality.",
       "action": "On the frozen toy champion, encode digit fields on the perception manifold (stem) and take champion-generated fields on the generation manifold (prior write); for each layer compute X_rt = blank + W(read(X)) and measure decode distance between X_rt and X, plus the field-variance fraction W(read(X)) recovers, sweeping prescribed write sharpening gamma in {1,4,8}. Anchor the field content separately by decoding X directly, which is the path the B3 reconstruction gate actually certifies.",
       "conclusion": "The round trip destroys nearly all content: perception-manifold PSNR is 0.7-1.1 dB on every layer and generation-manifold PSNR is below 5 dB on three of four layers, with only layer 2 reaching 10-16 dB; W(read(X)) recovers 3.6-7.6 percent of field variance. The anchor decode sits at 12.2 dB, so the field itself holds the content and the loss is created inside one read-write cycle. This is exactly the quantity the B3 reconstruction gate never measured: that gate certifies pixel decode of a stem-encoded field through the full graph, while composition needs slice-space read-back of deslice-written content. Write sharpening does not move the round trip, matching N103. Layer 2's near-faithful pair shows the loss is learned rather than dimension-fatal: M*d = 1024 slice numbers exceed the 768 numbers of a 16x16 RGB image.",
-      "issues": ["One champion, one seed, one scene family at 16x16", "The diagnostic writes read(X) verbatim; the real forward evolves S through MoT before writing, so the measured lossiness bounds rather than equals the in-graph round trip", "Layer 2's consistency suggests per-layer read assignment quality varies and could be trained directly", "No registered intervention yet"],
-      "invalidation": "Revise the structural verdict if a read-side intervention raises round-trip fidelity substantially without regressing the static gates, or if composition is achieved by a canvas-conditioned prior while the round trip remains lossy, which would relocate the bottleneck to prior content rather than read fidelity."
+      "issues": [
+        "One champion, one seed, one scene family at 16x16",
+        "The diagnostic writes read(X) verbatim; the real forward evolves S through MoT before writing, so the measured lossiness bounds rather than equals the in-graph round trip",
+        "Layer 2's consistency suggests per-layer read assignment quality varies and could be trained directly",
+        "No registered intervention yet"
+      ],
+      "invalidation": "Revise the structural verdict if a read-side intervention raises round-trip fidelity substantially without regressing the static gates, or if composition is achieved by a canvas-conditioned prior while the round trip remains lossy, which would relocate the bottleneck to prior content rather than read fidelity.",
+      "legacy_status": "passed",
+      "schema_migration_note": "Legacy classification preserved verbatim in legacy_status; active means retained for review, not a confirmed scientific claim.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
     },
     {
       "id": "N105",
       "parent": "N104",
       "title": "Idempotence training and painter write semantics",
-      "status": "conflict",
+      "status": "active",
       "time": "2026-09-02 / four follow-up experiments on the read-write bottleneck",
       "motivation": "N104 showed the latent round trip recovers only 4-8 percent of field variance. Test whether that lossiness is a trainable deficiency (the Transolver reading: read assignments become faithful when a loss demands it) and whether sequential composition is blocked by set-point semantics rather than read fidelity alone.",
       "action": "Four registered experiments on the frozen B3 champion: (1) train only per-layer SliceRead and Deslice projections with the idempotence objective sum_l ||W_l(read_l(X)) - (X - X_blank)||^2 on mixed perception/generation fields; (2) the same with 50 percent static capability rehearsal interleaved; (3) an algebraic correction of the set-point write: with prior_write gain 1 the write is X <- blank + W proj(mu_p), so composition is bandwidth-neutral however faithful the round trip; add a painter write mode deslice_write='prior_increment' that writes pw*mu_p additively without subtracting the canvas read, pinned by a fixed-prior unit test; (4) run the stroke-sequential gate under painter semantics with the step-conditioned prior.",
       "conclusion": "Read fidelity is trainable but fights the static gates, and the bandwidth argument dissolves the original composition hope. Pure idempotence training lifts the round-trip PSNR from 0.74 to 13.3 dB within 100 steps (perception layers all ~14 dB), confirming that no objective ever demanded faithfulness; it also destroys every static gate, because the shared read/deslice operators carry the certified perception and generation paths. 50 percent rehearsal holds only partial gates while round-trip stalls at 2.3 dB. The painter-mode sequential run fails the gate like all predecessors (final digit 0.100, IoU 0.033, diffuse low-mass ink per step rather than a repeated stamp), with the first-ever weak step-index use (ablate-t 0.144 vs 0.100 mid-run before decaying). Net: three independent barriers now bound sequential composition from the current champion - canvas-blind prior content, unfaithful latent read-back, and per-step write mass - and each has a measured signature.",
-      "issues": ["Painter mode ran one 1200-step cell at 16x16 with the toy champion; the write-mass barrier may be a budget artifact like E1", "Idempotence training used a frozen generation-field snapshot, so the repaired read was never re-audited under live generation", "The step-conditioned prior projection remains tiny (norms 0.02-0.04); amplitude exploration may need a prescribed dose like gamma", "No gradient-isolation variant (idempotence-dedicated read/deslice copies) has been run", "One seed per experiment"],
-      "invalidation": "Upgrade if a gradient-isolated or dose-scheduled variant passes the sequential gate while holding the static gates; downgrade the read-fidelity claim if the static-gate destruction traces to a single identifiable sub-module rather than the shared operators."
+      "issues": [
+        "Painter mode ran one 1200-step cell at 16x16 with the toy champion; the write-mass barrier may be a budget artifact like E1",
+        "Idempotence training used a frozen generation-field snapshot, so the repaired read was never re-audited under live generation",
+        "The step-conditioned prior projection remains tiny (norms 0.02-0.04); amplitude exploration may need a prescribed dose like gamma",
+        "No gradient-isolation variant (idempotence-dedicated read/deslice copies) has been run",
+        "One seed per experiment"
+      ],
+      "invalidation": "Upgrade if a gradient-isolated or dose-scheduled variant passes the sequential gate while holding the static gates; downgrade the read-fidelity claim if the static-gate destruction traces to a single identifiable sub-module rather than the shared operators.",
+      "legacy_status": "conflict",
+      "schema_migration_note": "Legacy classification preserved verbatim in legacy_status; active means retained for review, not a confirmed scientific claim.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
     },
     {
       "id": "IB001",
       "parent": null,
       "title": "Information Boltzmann isolated text prototype",
-      "status": "audited_noncollapse_failed",
+      "status": "active",
       "time": "2026-09-10",
       "motivation": "User requested joint continuous phase density, velocity semantics, conservative dissipative collisions, and OWT language test.",
       "action": "Implement and audit the full prototype: joint coupling flow f0(x,v), bounded token force in divergence form, local microreversible attention binary elastic collisions, and no-reset prequential online streaming runner; execute FP64 conservation and collapse audit.",
@@ -687,13 +1151,17 @@
         "scripts/train_information_boltzmann.py",
         "results/published/information_boltzmann_numerics.json",
         "tests/test_information_boltzmann.py"
-      ]
+      ],
+      "legacy_status": "audited_noncollapse_failed",
+      "schema_migration_note": "Legacy classification preserved verbatim in legacy_status; active means retained for review, not a confirmed scientific claim.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
     },
     {
       "id": "IB002",
       "parent": "IB001",
       "title": "Langevin fluctuation-dissipation thermal bath (Route B)",
-      "status": "completed",
+      "status": "active",
       "time": "2026-09-10",
       "motivation": "IB001 proved deterministic damping + elastic collisions strictly contracts phase space (largest Lyapunov exponent < 0), collapsing particle variance to 1e-26 by event 64. Test whether Route B (underdamped Langevin thermal bath matching Einstein fluctuation-dissipation relation dv = (-kappa*x - gamma*v + b_theta)dt + sqrt(2*gamma*T)dW_t) maintains a stable, non-degenerate non-equilibrium steady state.",
       "action": "Augment DataForce and InformationBoltzmann with temperature T; integrate exact Ornstein-Uhlenbeck noise variance sigma^2 = T(1 - exp(-2*gamma*h)) in symmetric Strang transport; verify exact equilibrium Tr(Sigma_x) ~ d*T/kappa = 0.2 and Tr(Sigma_v) ~ d*T = 0.2; audit FP64 collapse controls and prequential streaming online learning.",
@@ -709,17 +1177,21 @@
         "configs/information_boltzmann/smoke_langevin.json",
         "results/published/information_boltzmann_langevin_numerics.json",
         "tests/test_information_boltzmann.py"
-      ]
+      ],
+      "legacy_status": "superseded_by_corrected_diagnostics",
+      "schema_migration_note": "Legacy classification preserved verbatim in legacy_status; active means retained for review, not a confirmed scientific claim.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
     },
     {
       "id": "IB003",
       "parent": "IB002",
       "title": "2D Phase-Space Dynamic Diagnostics and Causal Experimental Chain",
-      "status": "completed",
+      "status": "active",
       "time": "2026-09-10",
       "motivation": "User requested shifting from abstract complexity to full physical transparency in the 2D continuous phase space (38k parameters). Establish a four-part causal chain: (1) 4-arm heat-bath ablation proving A_eff -> 0 without bath; (2) moment-by-moment NESS power budget <dE/dt> ~ 0; (3) gamma phase diagram with critical slowing down; (4) perturbation-recovery proving dynamic self-maintenance. Deliver an interactive animated HTML monitor.",
       "action": "Implement and execute: exp1_phase_space_trajectory.py, exp2_collapse_temperature_sweep.py, exp3_gamma_phase_diagram.py, exp4_perturbation_recovery.py, verify_power_budget.py, and generate results/phase_space_monitor.html.",
-      "conclusion": "The 4-part physical causal chain is completely verified: (1) Temperature ablation proves quadratic scaling A_eff(T) ~ T^2; at T=0, A_eff collapses to exactly 0, whereas at T=0.1, A_eff = 1.537 > 0. (2) Power budget confirms true NESS with long-term energy drift <dE/dt> = -0.000077 ~ 0. (3) Gamma phase diagram reveals explosion at gamma=0 (A_eff ~ 6.9e4) and stable NESS for gamma >= 0.02. (4) Perturbation-recovery proves dynamic self-maintenance: at gamma=0.20, tau_recovery expands 4x to 5.0~6.1 steps with complete relaxation D_final -> 0, distinguishing active self-maintenance from dead or hyper-damped attractors. Standalone animated HTML monitor operational.",
+      "conclusion": "Superseded. Later full-phase common-noise response, corrected zero-gamma heat-bath dynamics and substep accounting show that the reported finite-time diagnostics cannot establish true NESS, self-organized criticality, a critical threshold, or continual learning. The underlying visualization artifacts remain historical implementation records only.",
       "issues": [
         "Tested in d=2 phase space; scaling to d=4/8 will test multi-attractor subpopulation clustering"
       ],
@@ -739,13 +1211,17 @@
         "scripts/exp4_perturbation_recovery.py",
         "scripts/verify_power_budget.py",
         "scripts/build_html_monitor.py"
-      ]
+      ],
+      "legacy_status": "completed",
+      "schema_migration_note": "Legacy classification preserved verbatim in legacy_status; active means retained for review, not a confirmed scientific claim.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
     },
     {
       "id": "IB_TRAINING_HOLD_20260910",
       "parent": "IB001",
       "title": "Small-corpus learning claims withdrawn; training paused by user",
-      "status": "paused",
+      "status": "active",
       "action": "Stop active N128 training, preserve artifacts, correct gamma-zero diffusion and full-phase response diagnostics.",
       "conclusion": "CE/PPL from four-document smoke runs are debugging-only; finite-time noncollapse is not proof of continual learning or critical NESS.",
       "issues": [
@@ -754,13 +1230,19 @@
       ],
       "artifacts": [
         "docs/INFORMATION_BOLTZMANN_TRAINING_HOLD.md"
-      ]
+      ],
+      "legacy_status": "paused",
+      "motivation": "Track the implementation, evidence and limitations for: Small-corpus learning claims withdrawn; training paused by user",
+      "invalidation": "The recorded result must be revised if reproduction using its stated data, checkpoint and numerical protocol contradicts it; capability or infinite-persistence claims are not implied by implementation or short-run observations.",
+      "schema_migration_note": "Legacy classification preserved verbatim in legacy_status; active means retained for review, not a confirmed scientific claim.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
     },
     {
       "id": "IB_DIAGNOSTICS_20260910",
       "parent": "IB001",
       "title": "Corrected full-phase response and substep energy accounting",
-      "status": "observed",
+      "status": "active",
       "action": "Keep training paused; validate full-phase common-noise response, analytic oscillator, two-stream isolation, and instrumented substep energy ledger.",
       "conclusion": "23 tests pass; CUDA FP64 ledger residual 2.22e-16. Response approximately follows -gamma/2; no demonstrated critical transition or continual-learning benefit.",
       "issues": [
@@ -772,7 +1254,236 @@
         "docs/INFORMATION_BOLTZMANN_DIAGNOSTIC_UPDATE.md",
         "results/published/ib_substep_energy_budget.json",
         "results/published/ib_response_refinement.json"
-      ]
+      ],
+      "legacy_status": "observed",
+      "motivation": "Track the implementation, evidence and limitations for: Corrected full-phase response and substep energy accounting",
+      "invalidation": "The recorded result must be revised if reproduction using its stated data, checkpoint and numerical protocol contradicts it; capability or infinite-persistence claims are not implied by implementation or short-run observations.",
+      "schema_migration_note": "Legacy classification preserved verbatim in legacy_status; active means retained for review, not a confirmed scientific claim.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
+    },
+    {
+      "id": "IB_LOCAL_GAMMA_COALGEBR_20260910",
+      "parent": "IB001",
+      "title": "Learned local damping and finite continuation semantics",
+      "status": "active",
+      "conclusion": "Local gamma and asynchronous monitoring are implemented. The monitoring comparison checks runtime behavior only. Local-gamma task benefit, memory capacity and decoder limitations remain unassessed pending sufficiently trained real-dataset experiments; OWT remains paused.",
+      "artifacts": [
+        "docs/INFORMATION_BOLTZMANN_GAMMA_COALGEBRA.md",
+        "results/published/ib_monitor_comparison.json"
+      ],
+      "legacy_status": "observed",
+      "motivation": "Track the implementation, evidence and limitations for: Learned local damping and finite continuation semantics",
+      "action": "Preserve the recorded artifacts and evaluate the implementation described in this node before extending its claims.",
+      "invalidation": "The recorded result must be revised if reproduction using its stated data, checkpoint and numerical protocol contradicts it; capability or infinite-persistence claims are not implied by implementation or short-run observations.",
+      "schema_migration_note": "Legacy classification preserved verbatim in legacy_status; active means retained for review, not a confirmed scientific claim.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
+    },
+    {
+      "id": "IB_FROZEN_DISSIPATION_C_20260910",
+      "parent": "IB001",
+      "title": "Frozen ordered/shuffled/no-drive controls separate bath support from observable behavior",
+      "status": "active",
+      "action": "Run 54 untrained FP64 controls over validation tokens with gamma=.03/.1/.3, temperature=0/.1 and seeds 11/23/47. Measure substep energy accounting, full-phase response, phase separation and common-suffix decoder total variation.",
+      "conclusion": "OU noise sustains second moments when drive is absent, while substantially different prefix phase states produce only tiny decoder total variation in the untrained model. Response remains approximately -gamma/2. This is evidence against treating noncollapse or apparent phase-space activity as retained information or criticality.",
+      "issues": [
+        "Random decoder makes this a negative observability control, not a language-memory measurement",
+        "No critical transition, self-organization, or local-gamma advantage is demonstrated"
+      ],
+      "artifacts": [
+        "scripts/diagnose_information_dissipation.py",
+        "results/published/ib_frozen_dissipation_controls.json",
+        "docs/INFORMATION_BOLTZMANN_GAMMA_COALGEBRA.md"
+      ],
+      "legacy_status": "observed",
+      "motivation": "Track the implementation, evidence and limitations for: Frozen ordered/shuffled/no-drive controls separate bath support from observable behavior",
+      "invalidation": "The recorded result must be revised if reproduction using its stated data, checkpoint and numerical protocol contradicts it; capability or infinite-persistence claims are not implied by implementation or short-run observations.",
+      "schema_migration_note": "Legacy classification preserved verbatim in legacy_status; active means retained for review, not a confirmed scientific claim.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
+    },
+    {
+      "id": "IB_INDIVIDUAL_OWT_5000_20260910",
+      "parent": "IB001",
+      "title": "Single persistent OWT individual with learned local damping and age-local observations",
+      "status": "active",
+      "action": "Train 5000 optimizer updates on pinned real OWT bytes, one persistent phase, 16 events per update. Runtime-calibrated width2048, 32 particles, phase_dim4, local gamma. Save lifetime energy, learning and isolated diagnostic records.",
+      "conclusion": "User stopped at logged update761; last resumable checkpoint700, age checkpoint500. Budget incomplete, no convergence/criticality/scaling conclusion. Checkpoint measurements and acceleration profiling now authorized. Same 1024-byte validation NLL: birth5.5638, update5003.2909, update7003.3062. Short isolated CUDA profile2.313s versus CPU4.082s per16 tokens; not a convergence or hardware ranking claim. Frozen checkpoint response audit: update500 remains about -0.150 across three epsilon scales and two coordinate directions; update700 about -0.152. No near-zero conditional response observed in sampled windows; not a maximal exponent or full-learning-system verdict. Single-state drive saturation merits follow-up. Opt-in shared projections and Triton OU implemented: short64token combined runtime9.154s versus9.804s reference; 41 tests pass, memory reduced. Frozen gamma intervention shows response approximately -gamma/2 with lower-gamma energy/prediction cost. No self-critical controller justified yet; structural collision acceleration now prioritized. See docs/INFORMATION_BOLTZMANN_ACCELERATION_DECISION.md. See docs/INFORMATION_BOLTZMANN_CHECKPOINT_AUDIT.md. Correctness suite438 passed.",
+      "issues": [
+        "80000-token budget is not convergence or infinite-life proof",
+        "GPU remains launch/serial bound; sampled utilization about30-40 percent",
+        "Initial density parameters receive first-window gradients only",
+        "Finite response and descriptive spectra do not establish criticality or history-memory scaling"
+      ],
+      "artifacts": [
+        "scripts/train_information_boltzmann_lifetime.py",
+        "configs/information_boltzmann/owt_individual.json",
+        "docs/INFORMATION_BOLTZMANN_INDIVIDUAL_RUN.md",
+        "results/published/ib_owt_runtime_calibration.json"
+      ],
+      "legacy_status": "stopped_budget_incomplete",
+      "motivation": "Track the implementation, evidence and limitations for: Single persistent OWT individual with learned local damping and age-local observations",
+      "invalidation": "The recorded result must be revised if reproduction using its stated data, checkpoint and numerical protocol contradicts it; capability or infinite-persistence claims are not implied by implementation or short-run observations.",
+      "schema_migration_note": "Legacy classification preserved verbatim in legacy_status; active means retained for review, not a confirmed scientific claim.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
+    },
+    {
+      "id": "IB_EMERGENT_ORGANIZATIO_20260910",
+      "parent": "IB_INDIVIDUAL_OWT_5000_20260910",
+      "title": "Within-individual multiscale organization and propagating collective modes",
+      "status": "active",
+      "action": "After the ongoing OWT run, investigate age-dependent organization, collective time scales and propagation in the same individual; later test functional relevance on real text. No dynamics changes or new runs authorized by this note.",
+      "conclusion": "User research direction, not established phase separation or semantic specialization. Harmonic confinement and elastic collisions do not by themselves guarantee multiple clusters.",
+      "issues": [
+        "Separate emergent organization from forced oscillations and visualization artifacts",
+        "A single harmonic potential does not imply distinct deep/medium/shallow semantic wells",
+        "Propagation requires spatial lag/phase evidence beyond a spectral peak",
+        "32 samples limit spatial resolution"
+      ],
+      "artifacts": [
+        "docs/INFORMATION_BOLTZMANN_EMERGENT_ORGANIZATION.md"
+      ],
+      "legacy_status": "hypothesis_not_tested",
+      "motivation": "Track the implementation, evidence and limitations for: Within-individual multiscale organization and propagating collective modes",
+      "invalidation": "The recorded result must be revised if reproduction using its stated data, checkpoint and numerical protocol contradicts it; capability or infinite-persistence claims are not implied by implementation or short-run observations.",
+      "schema_migration_note": "Legacy classification preserved verbatim in legacy_status; active means retained for review, not a confirmed scientific claim.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
+    },
+    {
+      "id": "IB_SLICE_LBM_CHANNEL_HY_20260910",
+      "parent": "IB001",
+      "title": "Transolver Slice as adaptive kinetic channels: discrete velocities or continuous-velocity basis",
+      "status": "active",
+      "action": "Record the user observation linking Slice aggregation/interaction/Deslice reconstruction with LBM velocity channels. Distinguish explicit discrete-velocity, continuous-velocity low-rank basis and moment-closure variants before any implementation. After baseline analysis, profile real OWT end-to-end costs, prioritize measured hotspots, and evaluate scaling from 32 to 1024 particles with explicit speed, memory, prediction and path-dynamics tradeoffs. Preserve the current individual; no acceleration result claimed.",
+      "conclusion": "Structural analogy only. Existing Slice tokens are not automatically local velocity populations, conservative collisions or streaming operators. Current OWT individual unchanged.",
+      "issues": [
+        "Define information-space locality versus visual-field coordinates",
+        "Clarify channel mass versus normalized feature averages",
+        "Supply transport, moment conservation and moving-basis accounting",
+        "Explicit velocity discretization would require revisiting the original continuous-velocity constraint"
+      ],
+      "artifacts": [
+        "docs/INFORMATION_BOLTZMANN_SLICE_LBM_HYPOTHESIS.md"
+      ],
+      "legacy_status": "hypothesis_not_tested",
+      "motivation": "Track the implementation, evidence and limitations for: Transolver Slice as adaptive kinetic channels: discrete velocities or continuous-velocity basis",
+      "invalidation": "The recorded result must be revised if reproduction using its stated data, checkpoint and numerical protocol contradicts it; capability or infinite-persistence claims are not implied by implementation or short-run observations.",
+      "schema_migration_note": "Legacy classification preserved verbatim in legacy_status; active means retained for review, not a confirmed scientific claim.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
+    },
+    {
+      "id": "IB_BPE_LIFETIME_5000_20260911",
+      "parent": "IB_BPE_GRAPH_20260911",
+      "title": "Authorized monitored 512-particle BPE individual, 5000 optimizer updates",
+      "status": "active",
+      "conclusion": "No capability conclusion. Select BBest by independent fixed validation NLL; preserve persistent state, RNG, optimizer, phase snapshots and hardware records. Full recomputation retained after half-recomputation increased memory and slowed updates.",
+      "artifacts": [
+        "scripts/train_ib_bpe_lifetime.py",
+        "scripts/serve_ib_bpe_monitor.py",
+        "present/ib_bpe_live.html",
+        "docs/INFORMATION_BOLTZMANN_BPE_RUNTIME.md"
+      ],
+      "runtime_note": "Saved age_002500.pt and paused to give GPU to the user-prioritized local 3000-update baseline; the original 5000-update control is not complete.",
+      "legacy_status": "paused_at_saved_update_2500",
+      "motivation": "Track the implementation, evidence and limitations for: Authorized monitored 512-particle BPE individual, 5000 optimizer updates",
+      "action": "Preserve the recorded artifacts and evaluate the implementation described in this node before extending its claims.",
+      "invalidation": "The recorded result must be revised if reproduction using its stated data, checkpoint and numerical protocol contradicts it; capability or infinite-persistence claims are not implied by implementation or short-run observations.",
+      "schema_migration_note": "Legacy classification preserved verbatim in legacy_status; active means retained for review, not a confirmed scientific claim.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
+    },
+    {
+      "id": "IB_SLICE_CAYLEY_20260911",
+      "parent": "IB_SLICE_LBM_CHANNEL_HY_20260910",
+      "title": "Conservative continuous-particle Slice Cayley collision with velocity-axis channels",
+      "status": "active",
+      "action": "Replace serial stochastic binary collisions with low-rank deterministic channel Cayley updates; preserve original baseline. Runtime probe M16 at N32/128/512/1024 on real OWT with shared drive, activation recomputation and fused OU.",
+      "conclusion": "Final v3 64-event training windows6.39-6.94s; N1024 peak1088MiB. Nonzero updates/gradients and scalar energy/momentum conservation; velocity covariance can change. No equivalence, thermodynamic, criticality or trained-capability claim.",
+      "issues": [
+        "New collision requires independent sufficient training; legacy collision optimizer state removed",
+        "Low-rank nonlocal deterministic dynamics; no detailed balance/H theorem established",
+        "Initial identity and covariance-lock variants excluded from final results",
+        "Expanded particle support is runtime preparation, not trained population scaling"
+      ],
+      "artifacts": [
+        "scripts/ib_slice_collision.py",
+        "tests/test_ib_slice_collision.py",
+        "docs/INFORMATION_BOLTZMANN_SLICE_CAYLEY.md",
+        "results/published/ib_slice_cayley_runtime_20260911.json"
+      ],
+      "legacy_status": "implemented_runtime_validated_not_capability_validated",
+      "motivation": "Track the implementation, evidence and limitations for: Conservative continuous-particle Slice Cayley collision with velocity-axis channels",
+      "invalidation": "The recorded result must be revised if reproduction using its stated data, checkpoint and numerical protocol contradicts it; capability or infinite-persistence claims are not implied by implementation or short-run observations.",
+      "schema_migration_note": "Legacy classification preserved verbatim in legacy_status; active means retained for review, not a confirmed scientific claim.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
+    },
+    {
+      "id": "IB_BPE_GRAPH_20260911",
+      "parent": "IB_SLICE_CAYLEY_20260911",
+      "title": "GPT-2 BPE persistent 512-particle CUDA Graph runtime candidate",
+      "status": "active",
+      "conclusion": "256 BPE tokens/update; median 1.340789 seconds over 10 timed actual updates; H128 tied embedding 6.699M parameters. Separate new model; no convergence or criticality claim.",
+      "artifacts": [
+        "docs/INFORMATION_BOLTZMANN_BPE_RUNTIME.md",
+        "results/published/ib_bpe_runtime_20260911.json",
+        "tests/test_ib_bpe_window.py"
+      ],
+      "legacy_status": "runtime_validated_not_capability_validated",
+      "motivation": "Track the implementation, evidence and limitations for: GPT-2 BPE persistent 512-particle CUDA Graph runtime candidate",
+      "action": "Preserve the recorded artifacts and evaluate the implementation described in this node before extending its claims.",
+      "invalidation": "The recorded result must be revised if reproduction using its stated data, checkpoint and numerical protocol contradicts it; capability or infinite-persistence claims are not implied by implementation or short-run observations.",
+      "schema_migration_note": "Legacy classification preserved verbatim in legacy_status; active means retained for review, not a confirmed scientific claim.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
+    },
+    {
+      "id": "IB_LOCAL_OPERATOR_SPEC_20260911",
+      "parent": "IB001",
+      "title": "Local learnable collision contract and implementation handoff",
+      "status": "active",
+      "action": "Preserve input-conditioned birth/drive and local learnable elastic collision rate; exact frozen-context dependency scheduling first. Independent global Slice remains control.",
+      "conclusion": "Analytic pair-rate normalization, conservation, conditional scheduling equivalence, likelihood-ratio surrogate and open energy identity documented. Infinite persistence and criticality thresholds remain explicit open proof/definition items, not filled by coding agents.",
+      "artifacts": [
+        "docs/INFORMATION_BOLTZMANN_LOCAL_OPERATOR_SPEC.md",
+        "docs/INFORMATION_BOLTZMANN_CODING_TASKS.md"
+      ],
+      "legacy_status": "specified_pending_implementation_and_criticality_definition",
+      "motivation": "Track the implementation, evidence and limitations for: Local learnable collision contract and implementation handoff",
+      "invalidation": "The recorded result must be revised if reproduction using its stated data, checkpoint and numerical protocol contradicts it; capability or infinite-persistence claims are not implied by implementation or short-run observations.",
+      "schema_migration_note": "Legacy classification preserved verbatim in legacy_status; active means retained for review, not a confirmed scientific claim.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
+    },
+    {
+      "id": "IB_LOCAL_3000_20260911",
+      "parent": "IB_LOCAL_OPERATOR_SPEC_20260911",
+      "title": "Birth-flow strict local collision BPE 3000-update baseline",
+      "status": "active",
+      "time": "2026-09-11",
+      "motivation": "User prioritizes a new measurable baseline and explicitly chooses birth-only input density plus local collisions.",
+      "action": "Continue results/ib_local_bpe_256_3000_v2 to 3000 updates. N256/H128/Hc32/S4/L128, reusable 8-token graphs without cross-block detach, exact uncapped local collisions. PID 30404. Old Slice remains paused at saved update 2500.",
+      "conclusion": "Healthy beyond update 139; checkpoint 50 preserved and continuation active. 42 CPU tests and a GPU full-window gradient/update/mixed-fallback audit passed. Typical full update ~1.85 s, observed full-card memory 653 MiB and utilization 99%. The 1.5 s target is still unmet; prioritize the user-authorized 3000-update baseline. No capability/criticality conclusion.",
+      "issues": [
+        "Birth-only density is not per-token distribution injection.",
+        "3000 updates do not establish convergence or criticality."
+      ],
+      "legacy_status": "training_in_progress",
+      "invalidation": "The recorded result must be revised if reproduction using its stated data, checkpoint and numerical protocol contradicts it; capability or infinite-persistence claims are not implied by implementation or short-run observations.",
+      "schema_migration_note": "Legacy classification preserved verbatim in legacy_status; active means retained for review, not a confirmed scientific claim.",
+      "confidence": "I",
+      "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
     }
-  ]
+  ],
+  "status_migration_note": "Normalize historical workflow labels for repository validator; original labels retained as legacy_status. No new experimental conclusions introduced.",
+  "legacy_id_mapping": {
+    "IB_LOCAL_GAMMA_COALGEBRA_20260910": "IB_LOCAL_GAMMA_COALGEBR_20260910",
+    "IB_FROZEN_DISSIPATION_CONTROLS_20260910": "IB_FROZEN_DISSIPATION_C_20260910",
+    "IB_EMERGENT_ORGANIZATION_HYPOTHESIS_20260910": "IB_EMERGENT_ORGANIZATIO_20260910",
+    "IB_SLICE_LBM_CHANNEL_HYPOTHESIS_20260910": "IB_SLICE_LBM_CHANNEL_HY_20260910"
+  }
 }

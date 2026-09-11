@@ -22,6 +22,46 @@ def tiny(**kwargs):
                                hidden_dim=8, flow_layers=2, steps=2, **kwargs)
 
 
+def test_lifetime_tensor_accounting_preserves_online_updates():
+    import copy
+    from scripts.train_information_boltzmann_lifetime import TensorBudget, energy
+    a = tiny(gamma=.3, temperature=.1, gamma_mode='local').double()
+    b = copy.deepcopy(a)
+    left = StreamRunner(a, 1, seed=17, optimizer=torch.optim.Adam(a.parameters()), update_every=2)
+    right = StreamRunner(b, 1, seed=17, optimizer=torch.optim.Adam(b.parameters()), update_every=2)
+    for token in (2, 3, 4, 5):
+        before = energy(a, left.state).detach()
+        budget = TensorBudget()
+        assert torch.equal(left.predict(budget), right.predict())
+        total = (budget['drive_work']+budget['trap_work']-budget['deterministic_damping_loss']
+                 +budget['ou_fluctuation_energy']+budget['drift_potential_change']
+                 +budget['collision_energy_error'])
+        assert abs(float((energy(a,left.state)-before-total).detach())) < 1e-12
+        assert all(not value.requires_grad for value in budget.values())
+        left.observe(token)
+        right.observe(token)
+    for x, y in zip(a.parameters(), b.parameters()):
+        assert torch.equal(x, y)
+
+
+def test_lifetime_validation_does_not_mutate_individual_or_rng():
+    from scripts.train_information_boltzmann_lifetime import validate
+    model = tiny(gamma=.3, temperature=.1, gamma_mode='local')
+    runner = StreamRunner(model, 1, seed=17, optimizer=torch.optim.Adam(model.parameters()), update_every=2)
+    for token in (2, 3):
+        runner.predict()
+        runner.observe(token)
+    parameters = {k: v.clone() for k, v in model.state_dict().items()}
+    x, v, rng = runner.state.x.clone(), runner.state.v.clone(), runner.generator.get_state().clone()
+    global_rng = torch.get_rng_state().clone()
+    result = validate(model, [2, 3, 4, 5], 1, length=3, burn_in=1)
+    assert result['scored_tokens'] == 3
+    assert torch.equal(global_rng, torch.get_rng_state())
+    assert torch.equal(rng, runner.generator.get_state())
+    assert torch.equal(x, runner.state.x) and torch.equal(v, runner.state.v)
+    assert all(torch.equal(parameters[k], value) for k, value in model.state_dict().items())
+
+
 def test_joint_flow_inverse_jacobian_and_conditional_samples():
     op = InitialDensity(8, 2, 12, 4).double()
     distribution = op.condition(torch.tensor([1, 2]))
@@ -337,3 +377,75 @@ def test_two_streams_isolate_phase_parameters_and_rng():
         control.observe(token)
     assert any(not torch.equal(a,b) for a,b in zip(source.parameters(),deployed.parameters()))
     assert torch.equal(inference.state.x,control.state.x)
+
+
+@pytest.mark.parametrize('mode',['global','local'])
+def test_learned_gamma_bounds_gradients_and_checkpoint(mode,tmp_path):
+    model=tiny(gamma=.3,temperature=.1,gamma_mode=mode).double()
+    state=model.initialize(torch.tensor([1]))
+    g=model.force.damping(state.x)
+    assert torch.allclose(g,torch.full_like(g,.3))
+    out=model.force.transport(state,2,.2,torch.Generator().manual_seed(1))
+    out.v.square().sum().backward()
+    assert model.force.gamma_field.bias.grad.abs().sum()>0
+    with torch.no_grad():model.force.gamma_field.weight.fill_(3)
+    gamma=model.force.damping(state.x)
+    assert (gamma>.01).all() and (gamma<2).all()
+    order=torch.randperm(len(state.x))
+    assert torch.allclose(model.force.damping(state.x[order]),gamma[order])
+    if mode=='local':assert gamma.std()>0
+    torch.save(model.state_dict(),tmp_path/'model.pt')
+    restored=tiny(gamma=.3,temperature=.1,gamma_mode=mode).double()
+    restored.load_state_dict(torch.load(tmp_path/'model.pt',weights_only=True))
+    assert torch.equal(restored.force.damping(state.x),gamma)
+
+@pytest.mark.parametrize('mode', ['global', 'local'])
+def test_learned_gamma_energy_accounting(mode):
+    model = tiny(gamma=.3, temperature=.1, gamma_mode=mode).double()
+    with torch.no_grad():
+        model.force.gamma_field.weight.fill_(.2)
+    state = model.initialize(torch.tensor([1]))
+    budget = {}
+    with torch.no_grad():
+        after, _, _ = model._advance_steps(state, 2, torch.Generator().manual_seed(4), budget=budget)
+    energy = lambda s: float((s.x.square()+s.v.square()).sum(-1).mean().detach()/2)
+    accounted = (budget['drive_work']+budget['trap_work']-budget['deterministic_damping_loss']
+                 +budget['ou_fluctuation_energy']+budget['drift_potential_change']
+                 +budget['collision_energy_error'])
+    assert abs(energy(after)-energy(state)-accounted) < 1e-12
+
+
+def test_continuation_probe_identical_states_and_no_mutation():
+    from fine_grain.information_boltzmann.behavior import continuation_distance
+    model = tiny(temperature=.1)
+    state = model.initialize(torch.tensor([1]))
+    before = state.x.clone()
+    rng = torch.get_rng_state().clone()
+    result = continuation_distance(model, state, state, [[1, 2], [3]], seed=7)
+    assert result['total_variation_by_suffix'] == [[0., 0., 0.], [0., 0.]]
+    assert torch.equal(state.x, before)
+    assert torch.equal(torch.get_rng_state(), rng)
+
+
+def test_stream_boot_context_conditions_f0_once_without_reset():
+    model = tiny(collision_rate=0, temperature=0)
+    context = torch.tensor([1, 2, 3])
+    expected = model.initialize(context, torch.Generator().manual_seed(7))
+    runner = StreamRunner(model, 1, seed=7, boot_tokens=context)
+    assert torch.equal(runner.state.x, expected.x)
+    assert torch.equal(runner.state.v, expected.v)
+    assert runner.current_token == 3
+    initial_time = runner.state.time
+    runner.predict()
+    runner.observe(4)
+    assert runner.state.time > initial_time
+    assert runner.current_token == 4
+
+
+def test_initial_joint_density_uses_ordered_input_context():
+    model = tiny()
+    left = model.initial.condition(torch.tensor([1, 2]))
+    right = model.initial.condition(torch.tensor([2, 1]))
+    a = left.sample(4, torch.Generator().manual_seed(9))
+    b = right.sample(4, torch.Generator().manual_seed(9))
+    assert not torch.allclose(a.x, b.x) or not torch.allclose(a.v, b.v)

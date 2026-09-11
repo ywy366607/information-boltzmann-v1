@@ -13,17 +13,28 @@ from .state import PhaseState
 class StreamRunner:
     def __init__(self, model: InformationBoltzmann, bos_token: int, seed: int = 11,
                  optimizer: torch.optim.Optimizer | None = None,
-                 update_every: int = 16, gradient_clip: float = 1.0):
+                 update_every: int = 16, gradient_clip: float = 1.0,
+                 boot_tokens: Tensor | None = None):
         if update_every < 1:
             raise ValueError("update_every must be positive")
         self.model, self.optimizer = model, optimizer
         self.update_every, self.gradient_clip = update_every, gradient_clip
         device = next(model.parameters()).device
         self.generator = torch.Generator(device=device).manual_seed(seed)
-        self.state = model.initialize(torch.tensor([bos_token], device=device), self.generator)
+        if boot_tokens is None:
+            boot_tokens = torch.tensor([bos_token], device=device)
+        else:
+            boot_tokens = boot_tokens.to(device=device, dtype=torch.long)
+        if boot_tokens.ndim != 1 or boot_tokens.numel() == 0:
+            raise ValueError("boot_tokens must be a nonempty one-dimensional input context")
+        if not bool(((0 <= boot_tokens) & (boot_tokens < model.vocab_size)).all()):
+            raise ValueError("boot_tokens contain a token outside the vocabulary")
+        # F_theta conditions f_0 on the supplied stream-start context exactly once.
+        # Later observations only enter the continuous dynamics; they never reset f.
+        self.state = model.initialize(boot_tokens, self.generator)
         if optimizer is None:
             self.state = self.state.detach()
-        self.current_token = bos_token
+        self.current_token = int(boot_tokens[-1])
         self.pending: Tensor | None = None
         self.prefix_log_prob = self.state.x.new_zeros(())
         self.loss_terms: list[Tensor] = []
@@ -32,11 +43,17 @@ class StreamRunner:
         self.cross_moment_abs_sum = 0.0
         self.last_gradient_norm = 0.0
 
-    def predict(self) -> Tensor:
+    def predict(self, budget: dict | None = None) -> Tensor:
         if self.pending is not None:
             raise RuntimeError("Observe the pending prediction before predicting again")
         with torch.set_grad_enabled(self.optimizer is not None):
-            self.state, log_prob, stats = self.model.advance(self.state, self.current_token, self.generator)
+            if budget is None:
+                self.state, log_prob, stats = self.model.advance(self.state, self.current_token, self.generator)
+            else:
+                if self.model.adaptive_gamma:
+                    raise RuntimeError("Unvalidated criticality controller disabled")
+                self.state, log_prob, stats = self.model._advance_steps(
+                    self.state, self.current_token, self.generator, budget=budget)
             self.prefix_log_prob = self.prefix_log_prob + log_prob
             self.pending = self.model.decode(self.state)
         self.candidates += stats["candidates"]

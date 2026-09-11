@@ -1,3 +1,5 @@
+> Superseded for the single-individual OWT run: user explicitly authorized 5000 optimizer updates and GPU calibration. See INFORMATION_BOLTZMANN_INDIVIDUAL_RUN.md. The earlier hold below is historical.
+
 # Training hold — 2026-09-10
 
 User requested stopping training. The identified N=128 training process (PID 25224) was terminated. No new training is launched. Existing saved files are retained; unsaved in-memory progress is not claimed recovered.

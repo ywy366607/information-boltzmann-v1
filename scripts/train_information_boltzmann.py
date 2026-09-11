@@ -16,7 +16,7 @@ import torch
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from fine_grain.information_boltzmann import InformationBoltzmann
 from fine_grain.information_boltzmann.streaming import StreamRunner
-from fine_grain.information_boltzmann.telemetry import TelemetryHub
+from fine_grain.information_boltzmann.async_monitor import AsyncMonitor
 
 
 def file_hash(path: Path) -> str:
@@ -39,6 +39,7 @@ def main() -> None:
     checkpoint.add_argument("--resume", type=Path, help="Exact continuation of the same stream")
     checkpoint.add_argument("--weights", type=Path, help="Load weights and start a separate evaluation stream")
     parser.add_argument("--frozen", action="store_true", help="No online optimizer")
+    parser.add_argument("--monitor", action="store_true", help="Independent TensorBoard/animation worker")
     parser.add_argument("--serve", action="store_true", help="Launch live web telemetry server at http://localhost:8080")
     parser.add_argument("--port", type=int, default=8080, help="Web telemetry port (default 8080)")
     parser.add_argument("--telemetry-interval", type=int, default=1, help="Events between telemetry updates (default 1)")
@@ -98,9 +99,7 @@ def main() -> None:
     metrics = []
     nll_before = runner.total_nll
 
-    telemetry = TelemetryHub(history_len=150, live_file=args.output / "live_state.json")
-    if args.serve:
-        telemetry.start_server(port=args.port, html_path=Path("results/phase_space_monitor.html"))
+    telemetry = AsyncMonitor(args.output, port=args.port if args.serve else 0) if (args.monitor or args.serve) else None
 
     def token_to_char(t_id: int) -> str:
         if t_id < 4:
@@ -120,28 +119,21 @@ def main() -> None:
 
         pred_logits = runner.predict()  # no access to tokens[cursor] before this call
 
-        probs = torch.softmax(pred_logits, dim=-1)
-        top5_indices = torch.topk(probs, 5).indices.cpu().numpy().tolist()
-        top5_tokens = [{"token": token_to_char(idx), "prob": float(probs[idx].item())} for idx in top5_indices]
-
         tok = int(tokens[cursor])
         ce = runner.observe(tok)
 
         # Real telemetry update from live state
-        if (cursor + 1) % args.telemetry_interval == 0 or cursor + 1 == count:
+        if telemetry is not None and telemetry.due() and ((cursor + 1) % args.telemetry_interval == 0 or cursor + 1 == count):
             ke = float(runner.state.moments()["kinetic_energy"].item())
             pe = 0.5 * model.force.kappa * float(runner.state.moments()["position_second_moment"].item())
             var_x = float(runner.state.moments()["position_variance"].item())
             var_v = float(runner.state.moments()["velocity_variance"].item())
             dim = model.force.net[-1].out_features
 
-            xv = torch.cat((runner.state.x, runner.state.v), dim=-1)
-            centered = xv - xv.mean(0)
-            cov = (centered.T @ centered) / len(runner.state.x)
-            eigvals = torch.linalg.eigvalsh(cov).clamp_min(1e-30)
-            h = 0.5 * (2 * dim * (1.0 + math.log(2.0 * math.pi)) + float(eigvals.log().sum().item()))
-            a_eff = math.exp(min(h, 50.0)) if h > -50.0 else 0.0
-
+            # Expensive eigendecomposition belongs to offline diagnostics.
+            probs = torch.softmax(pred_logits,dim=-1)
+            top = torch.topk(probs,5)
+            top5_tokens = [{"token":token_to_char(i),"prob":p} for i,p in zip(top.indices.cpu().tolist(),top.values.cpu().tolist())]
             telemetry.push_frame({
                 "status": "training",
                 "event": cursor + 1,
@@ -152,19 +144,18 @@ def main() -> None:
                 "perplexity": math.exp(runner.total_nll / runner.events),
                 "lr": optimizer.param_groups[0]["lr"] if optimizer is not None else 0.0,
                 "particles": {
-                    "x": runner.state.x.detach().cpu().numpy().tolist(),
-                    "v": runner.state.v.detach().cpu().numpy().tolist(),
+                    "x": runner.state.x[:128].detach().cpu().numpy().tolist(),
+                    "v": runner.state.v[:128].detach().cpu().numpy().tolist(),
                 },
                 "collision_pairs": getattr(runner, "last_collision_pairs", []),
                 "accepted_collisions": runner.accepted,
                 "metrics": {
                     "var_x": var_x,
                     "var_v": var_v,
-                    "a_eff": a_eff,
                     "energy": ke + pe,
                     "ke": ke,
                     "t_eff": var_v / dim,
-                    "gamma": getattr(model.force, "gamma", 1.0),
+                    "gamma": float(model.force.damping(runner.state.x).mean().detach()),
                 },
                 "top5": top5_tokens,
             })
@@ -178,14 +169,12 @@ def main() -> None:
             metrics.append(row)
             print(json.dumps(row), flush=True)
 
-    telemetry.push_frame({
-        **telemetry.current_frame,
-        "status": "completed",
-    })
     runner.flush()
     if args.device == "cuda":
         torch.cuda.synchronize()
     elapsed = time.perf_counter() - started
+    if telemetry is not None:
+        telemetry.close()
     metadata["git_commit"] = subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip()
     runner.save(args.output / "last.pt", metadata)
     summary = {

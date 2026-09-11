@@ -1,0 +1,298 @@
+{
+  "purpose": "runtime_diagnosis_not_capability_benchmark",
+  "checkpoint": "age_000500.pt",
+  "cpu_threads": 1,
+  "isolated_runs": {
+    "ib_profile_isolated_cuda": {
+      "status": {
+        "status": "complete",
+        "start_wall_time": 1789053974.4220529,
+        "end_wall_time": 1789053982.8908896,
+        "checkpoint": "results\\ib_owt_individual_20260910\\age_000500.pt",
+        "initial_event": 8000,
+        "warmup_tokens": 16,
+        "profiled_tokens": 16,
+        "profiled_seconds": 2.3133017999999765,
+        "device": "cuda",
+        "peak_allocated_mb": 1023.43701171875,
+        "concurrent_with_baseline": false,
+        "limitation": "Nested CPU-wall/CUDA-event intervals include submission gaps; not exclusive kernel time or capability evidence. CPU and CUDA random paths differ. Excludes file logging, live UI and periodic diagnostics."
+      },
+      "stages": [
+        {
+          "name": "stage/drive",
+          "calls": 256,
+          "cpu_wall_ms": 95.76060000006237,
+          "cuda_stream_elapsed_ms": 132.55753603577614
+        },
+        {
+          "name": "stage/transport",
+          "calls": 128,
+          "cpu_wall_ms": 579.7851999999466,
+          "cuda_stream_elapsed_ms": 579.6024951934814
+        },
+        {
+          "name": "stage/collision_rate",
+          "calls": 213,
+          "cpu_wall_ms": 279.75400000002537,
+          "cuda_stream_elapsed_ms": 279.67334401607513
+        },
+        {
+          "name": "stage/collision",
+          "calls": 64,
+          "cpu_wall_ms": 478.0389000003993,
+          "cuda_stream_elapsed_ms": 477.96691209077835
+        },
+        {
+          "name": "stage/decode",
+          "calls": 16,
+          "cpu_wall_ms": 6.166200000052413,
+          "cuda_stream_elapsed_ms": 8.884416043758392
+        },
+        {
+          "name": "stage/predict",
+          "calls": 16,
+          "cpu_wall_ms": 1093.0887000000098,
+          "cuda_stream_elapsed_ms": 1094.7028121948242
+        },
+        {
+          "name": "stage/observe",
+          "calls": 16,
+          "cpu_wall_ms": 1200.3601999999205,
+          "cuda_stream_elapsed_ms": 1199.0945864915848
+        },
+        {
+          "name": "stage/observables",
+          "calls": 16,
+          "cpu_wall_ms": 17.532899999935125,
+          "cuda_stream_elapsed_ms": 17.533472180366516
+        },
+        {
+          "name": "stage/optimizer",
+          "calls": 1,
+          "cpu_wall_ms": 3.396899999984271,
+          "cuda_stream_elapsed_ms": 5.393887996673584
+        },
+        {
+          "name": "stage/backward_and_update",
+          "calls": 1,
+          "cpu_wall_ms": 1186.8476000000214,
+          "cuda_stream_elapsed_ms": 1188.540771484375
+        }
+      ]
+    },
+    "ib_profile_isolated_cpu_v2": {
+      "status": {
+        "status": "complete",
+        "start_wall_time": 1789054016.549847,
+        "end_wall_time": 1789054026.6597,
+        "checkpoint": "results\\ib_owt_individual_20260910\\age_000500.pt",
+        "initial_event": 8000,
+        "warmup_tokens": 16,
+        "profiled_tokens": 16,
+        "profiled_seconds": 4.082492099999968,
+        "device": "cpu",
+        "peak_allocated_mb": 0,
+        "concurrent_with_baseline": false,
+        "limitation": "Nested CPU-wall/CUDA-event intervals include submission gaps; not exclusive kernel time or capability evidence. CPU and CUDA random paths differ. Excludes file logging, live UI and periodic diagnostics."
+      },
+      "stages": [
+        {
+          "name": "stage/drive",
+          "calls": 256,
+          "cpu_wall_ms": 999.137499999506,
+          "cuda_stream_elapsed_ms": null
+        },
+        {
+          "name": "stage/transport",
+          "calls": 128,
+          "cpu_wall_ms": 1209.127499999795,
+          "cuda_stream_elapsed_ms": null
+        },
+        {
+          "name": "stage/collision_rate",
+          "calls": 209,
+          "cpu_wall_ms": 149.29510000001756,
+          "cuda_stream_elapsed_ms": null
+        },
+        {
+          "name": "stage/collision",
+          "calls": 64,
+          "cpu_wall_ms": 221.61940000023606,
+          "cuda_stream_elapsed_ms": null
+        },
+        {
+          "name": "stage/decode",
+          "calls": 16,
+          "cpu_wall_ms": 66.75029999996696,
+          "cuda_stream_elapsed_ms": null
+        },
+        {
+          "name": "stage/predict",
+          "calls": 16,
+          "cpu_wall_ms": 1509.3665999999644,
+          "cuda_stream_elapsed_ms": null
+        },
+        {
+          "name": "stage/observe",
+          "calls": 16,
+          "cpu_wall_ms": 2564.168600000073,
+          "cuda_stream_elapsed_ms": null
+        },
+        {
+          "name": "stage/observables",
+          "calls": 16,
+          "cpu_wall_ms": 8.435899999881258,
+          "cuda_stream_elapsed_ms": null
+        },
+        {
+          "name": "stage/optimizer",
+          "calls": 1,
+          "cpu_wall_ms": 36.762599999974555,
+          "cuda_stream_elapsed_ms": null
+        },
+        {
+          "name": "stage/backward_and_update",
+          "calls": 1,
+          "cpu_wall_ms": 2549.5073999999818,
+          "cuda_stream_elapsed_ms": null
+        }
+      ]
+    },
+    "ib_profile_no_accounting": {
+      "status": {
+        "status": "complete",
+        "start_wall_time": 1789054171.7540772,
+        "end_wall_time": 1789054178.6507697,
+        "checkpoint": "results\\ib_owt_individual_20260910\\age_000500.pt",
+        "initial_event": 8000,
+        "warmup_tokens": 16,
+        "profiled_tokens": 16,
+        "profiled_seconds": 2.038047499999948,
+        "device": "cuda",
+        "accounting": false,
+        "peak_allocated_mb": 1023.43701171875,
+        "concurrent_with_baseline": false,
+        "limitation": "Nested CPU-wall/CUDA-event intervals include submission gaps; not exclusive kernel time or capability evidence. CPU and CUDA random paths differ. Excludes file logging, live UI and periodic diagnostics."
+      },
+      "stages": [
+        {
+          "name": "stage/drive",
+          "calls": 256,
+          "cpu_wall_ms": 93.22070000132499,
+          "cuda_stream_elapsed_ms": 122.82982397079468
+        },
+        {
+          "name": "stage/transport",
+          "calls": 128,
+          "cpu_wall_ms": 294.66389999981857,
+          "cuda_stream_elapsed_ms": 294.58281779289246
+        },
+        {
+          "name": "stage/collision_rate",
+          "calls": 213,
+          "cpu_wall_ms": 284.1446000002179,
+          "cuda_stream_elapsed_ms": 284.0489602088928
+        },
+        {
+          "name": "stage/collision",
+          "calls": 64,
+          "cpu_wall_ms": 480.8682999996563,
+          "cuda_stream_elapsed_ms": 480.76444613933563
+        },
+        {
+          "name": "stage/decode",
+          "calls": 16,
+          "cpu_wall_ms": 5.312600000024759,
+          "cuda_stream_elapsed_ms": 7.705760031938553
+        },
+        {
+          "name": "stage/predict",
+          "calls": 16,
+          "cpu_wall_ms": 793.6799999997675,
+          "cuda_stream_elapsed_ms": 795.0509796142578
+        },
+        {
+          "name": "stage/observe",
+          "calls": 16,
+          "cpu_wall_ms": 1223.4209000001783,
+          "cuda_stream_elapsed_ms": 1222.401827275753
+        },
+        {
+          "name": "stage/observables",
+          "calls": 16,
+          "cpu_wall_ms": 19.10269999996217,
+          "cuda_stream_elapsed_ms": 19.066464066505432
+        },
+        {
+          "name": "stage/optimizer",
+          "calls": 1,
+          "cpu_wall_ms": 3.459700000007615,
+          "cuda_stream_elapsed_ms": 5.391903877258301
+        },
+        {
+          "name": "stage/backward_and_update",
+          "calls": 1,
+          "cpu_wall_ms": 1209.9898000000167,
+          "cuda_stream_elapsed_ms": 1211.60888671875
+        }
+      ]
+    }
+  },
+  "concurrent_probe_windows": [
+    {
+      "status": "failed",
+      "start_wall_time": 1789053382.7559996,
+      "end_wall_time": 1789053398.0759099,
+      "error": "MemoryError('bad allocation')",
+      "concurrent_with_baseline": true
+    },
+    {
+      "status": "complete",
+      "start_wall_time": 1789053425.0831244,
+      "end_wall_time": 1789053433.5533588,
+      "checkpoint": "results\\ib_owt_individual_20260910\\age_000500.pt",
+      "initial_event": 8000,
+      "warmup_tokens": 16,
+      "profiled_tokens": 16,
+      "profiled_seconds": 2.8350892000016756,
+      "peak_allocated_mb": 1023.43701171875,
+      "concurrent_with_baseline": true,
+      "limitation": "Nested CPU-wall/CUDA-event intervals include submission gaps and GPU contention; not exclusive kernel time, isolated throughput or capability evidence. Excludes file logging, live UI and periodic diagnostics."
+    }
+  ],
+  "validation": [
+    {
+      "nll": 5.5638248305767775,
+      "scored_tokens": 1024,
+      "burn_in_tokens": 128,
+      "unit": "byte_token",
+      "frozen": true,
+      "validation_seed": 99173,
+      "checkpoint": "birth.pt",
+      "update": 0,
+      "event": 0
+    },
+    {
+      "nll": 3.2909059689263813,
+      "scored_tokens": 1024,
+      "burn_in_tokens": 128,
+      "unit": "byte_token",
+      "frozen": true,
+      "validation_seed": 99173,
+      "update": 500,
+      "event": 8000
+    },
+    {
+      "nll": 3.3062249248614535,
+      "scored_tokens": 1024,
+      "burn_in_tokens": 128,
+      "unit": "byte_token",
+      "frozen": true,
+      "validation_seed": 99173,
+      "checkpoint": "last.pt",
+      "update": 700,
+      "event": 11200
+    }
+  ]
+}

@@ -1,0 +1,86 @@
+{
+  "status": "complete",
+  "tokens_per_update": 256,
+  "particles": 512,
+  "hidden": 128,
+  "vocab": 50257,
+  "parameters": 6698826,
+  "graph": true,
+  "warmup_seconds": 15.590527000000293,
+  "capture_seconds": 13.126421299999947,
+  "updates": [
+    {
+      "offset": 256,
+      "seconds": 1.3136239999998907,
+      "nll": 10.766904830932617,
+      "grad_norm": 1.139827847480774
+    },
+    {
+      "offset": 512,
+      "seconds": 1.3420602999999574,
+      "nll": 10.718868255615234,
+      "grad_norm": 1.072197437286377
+    },
+    {
+      "offset": 768,
+      "seconds": 1.342156199999863,
+      "nll": 10.680350303649902,
+      "grad_norm": 1.125710368156433
+    },
+    {
+      "offset": 1024,
+      "seconds": 1.3409871000003477,
+      "nll": 10.713479995727539,
+      "grad_norm": 0.9607642889022827
+    },
+    {
+      "offset": 1280,
+      "seconds": 1.3373558000002959,
+      "nll": 10.768753051757812,
+      "grad_norm": 0.9713094234466553
+    },
+    {
+      "offset": 1536,
+      "seconds": 1.335931900000105,
+      "nll": 10.733299255371094,
+      "grad_norm": 1.0394736528396606
+    },
+    {
+      "offset": 1792,
+      "seconds": 1.3397483999997348,
+      "nll": 10.708806991577148,
+      "grad_norm": 1.0186275243759155
+    },
+    {
+      "offset": 2048,
+      "seconds": 1.3405906000002688,
+      "nll": 10.641426086425781,
+      "grad_norm": 1.0958411693572998
+    },
+    {
+      "offset": 2304,
+      "seconds": 1.3426813999999467,
+      "nll": 10.679292678833008,
+      "grad_norm": 0.8789326548576355
+    },
+    {
+      "offset": 2560,
+      "seconds": 1.343906600000082,
+      "nll": 10.76452922821045,
+      "grad_norm": 0.9365988969802856
+    }
+  ],
+  "median_seconds": 1.3407888500003082,
+  "peak_allocated_mib": 746.775390625,
+  "scope": "runtime calibration with actual updates on real BPE tokens; one learned initialization then persistent state; no convergence/criticality claim",
+  "actual_optimizer_updates": 11,
+  "actual_tokens": 2816,
+  "dataset_manifest_sha256": "caf2298208a1935275f06b5822da55b61cff7521ae7403db55404ed4cb4c055d",
+  "source_sha256": {
+    "scripts/ib_bpe_window.py": "93c66230469195b59c11106eb6e2c05b7d21f8af80e61f49de3b4c8391732e06",
+    "scripts/benchmark_ib_bpe_window.py": "668a4d5ca8f75b7ae9fd85234f1c84fea62c510ca80b98b5d517fb6df740f181",
+    "scripts/ib_fused_ou.py": "18a32017793401ebe101a23693ec7536aade3b08286056e44d786e4d5de1dd27",
+    "scripts/ib_slice_collision.py": "f26268401c2078e78d7e35e56591843537de7d00e6f09f46c04937bb2fb0da27"
+  },
+  "numerical_tests_passed": 47
+}

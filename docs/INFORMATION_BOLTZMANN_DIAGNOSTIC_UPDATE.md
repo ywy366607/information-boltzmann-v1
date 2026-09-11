@@ -44,4 +44,4 @@ gamma=0的微小正值不能据此称混沌，更不能称临界；需更长窗�
 
 23项focused tests通过，原Deslice脚本测试通过。独立输出：ib_substep_energy_budget.json、ib_corrected_response_scan.json、ib_response_refinement.json，均位于results/published。
 
-下一项研究应在冻结参数下比较真实输入、打乱输入与无驱动的响应和延迟信息保持；同时检查状态矩/噪声占比。之后才决定是否存在有用的临界工作区。当前没有恢复训练的依据或自动执行安排。
+后续能力研究按 AGENTS.md 在专业真实数据集上充分训练并记录验证曲线，再评估历史依赖贡献。冻结数值检查不构成能力门槛。当前未启动新的训练。

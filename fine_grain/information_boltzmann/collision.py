@@ -62,30 +62,42 @@ class CollisionKernel(nn.Module):
         velocities, log_prob, accepted = state.v, zero, 0
         pairs = []
         context_x, context_v = state.x, state.v
-        for _ in range(count):
-            i = int(torch.randint(n, (), device=state.v.device, generator=generator).item())
-            j = int(torch.randint(n - 1, (), device=state.v.device, generator=generator).item())
-            j += int(j >= i)
-            normal = torch.randn(dim, device=state.v.device, dtype=state.v.dtype, generator=generator)
-            normal = normal / normal.norm().clamp_min(torch.finfo(normal.dtype).tiny)
-            local = spatial_kernel(state.x[i] - state.x[j], self.width) / kernel_bound
-            if local > 0:
-                rate = self.rate((state.x[i] + state.x[j]) / 2, velocities[i], velocities[j],
-                                 normal, context_x, context_v)
-                probability = local * rate / self.max_rate
-            else:
-                probability = zero
-            choose = bool((torch.rand((), device=state.v.device, generator=generator) < probability).item())
+        # Candidate geometry is independent of velocity updates. Batch these
+        # independent draws, but execute the dependent collisions in order.
+        # This preserves the jump law, not old-version seeded trajectories.
+        indices_i = torch.randint(n, (count,), device=state.v.device, generator=generator)
+        indices_j = torch.randint(n - 1, (count,), device=state.v.device, generator=generator)
+        indices_j = indices_j + (indices_j >= indices_i)
+        normals = torch.randn(count, dim, device=state.v.device, dtype=state.v.dtype, generator=generator)
+        normals = normals / normals.norm(dim=-1, keepdim=True).clamp_min(torch.finfo(normals.dtype).tiny)
+        uniforms = torch.rand(count, device=state.v.device, generator=generator)
+        local_weights = spatial_kernel(state.x[indices_i] - state.x[indices_j], self.width) / kernel_bound
+        # Compact support is fixed during this collision substep. One transfer
+        # replaces multiple device synchronizations per candidate.
+        geometry = torch.stack((indices_i, indices_j, local_weights.detach() > 0), -1).cpu().tolist()
+        choices, active_pairs = [], []
+        for event, (i, j, active) in enumerate(geometry):
+            if not active:
+                continue
+            normal = normals[event]
+            rate = self.rate((state.x[i] + state.x[j]) / 2, velocities[i], velocities[j],
+                             normal, context_x, context_v)
+            probability = local_weights[event] * rate / self.max_rate
+            choose = uniforms[event] < probability
             # Pathwise gradients alone omit the Bernoulli event-probability term.
             # The streaming loss adds the causal likelihood-ratio estimator.
-            log_prob = log_prob + (probability.clamp_min(1e-30).log() if choose
-                                   else torch.log1p(-probability))
-            if choose:
-                vp, wp = reflect(velocities[i], velocities[j], normal)
-                indices = torch.tensor([i, j], device=state.v.device)
-                velocities = velocities.index_copy(0, indices, torch.stack((vp, wp)))
-                pairs.append([i, j])
-                accepted += 1
+            log_prob = log_prob + torch.where(choose, probability.clamp_min(1e-30).log(),
+                                              torch.log1p(-probability))
+            vp, wp = reflect(velocities[i], velocities[j], normal)
+            indices = torch.stack((indices_i[event], indices_j[event]))
+            replacement = torch.where(choose, torch.stack((vp, wp)), velocities[indices])
+            velocities = velocities.index_copy(0, indices, replacement)
+            choices.append(choose)
+            active_pairs.append([i, j])
+        if choices:
+            flags = torch.stack(choices).cpu().tolist()
+            pairs = [pair for pair, flag in zip(active_pairs, flags) if flag]
+            accepted = len(pairs)
         cross = ((velocities - state.v) * state.x).sum(-1).mean().detach().item()
         return PhaseState(state.x, velocities, state.time), log_prob, {
             "candidates": count, "accepted": accepted, "cross_moment_change": cross,
