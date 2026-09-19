@@ -317,13 +317,15 @@ class CBIMSudokuModel(nn.Module):
         if self.training and self.multi_step_loss:
             curr = prior_field
             step_logits = []
+            stride = max(1, self.ponder_steps // 16)
             for k in range(1, self.ponder_steps + 1):
                 f_5d = curr.view(B, 9, 9, self.n_v, self.d_c)
                 f_tr = self.transport(f_5d).view(B, 9, 9, self.d)
                 curr = self.collision(f_tr)
-                flat_k = curr.view(B, 81, self.d)
-                logits_k = self.readout_mlp(flat_k)
-                step_logits.append(logits_k)
+                if k % stride == 0 or k == self.ponder_steps:
+                    flat_k = curr.view(B, 81, self.d)
+                    logits_k = self.readout_mlp(flat_k)
+                    step_logits.append(logits_k)
             evolved_field = curr
             logits = step_logits[-1]
             all_step_logits = step_logits

@@ -153,10 +153,11 @@ def evaluate_exact_accuracy(model, test_in: np.ndarray, test_lbl: np.ndarray,
 
 def train_benchmark(arch: str, data_dir: str, steps: int = 1000,
                     batch_size: int = 32, lr: float = 1e-4,
-                    eval_interval: int = 250, output_dir: str = "results/sudoku_benchmark"):
+                    eval_interval: int = 250, output_dir: str = "results/sudoku_benchmark",
+                    cbim_k: int = 6):
     print("=" * 80)
     print(f"   STARTING BENCHMARK RUN: {arch.upper()} on Sudoku-Extreme")
-    print(f"   Steps: {steps} | Batch Size: {batch_size} | LR: {lr} | Data: {data_dir}")
+    print(f"   Steps: {steps} | Batch Size: {batch_size} | LR: {lr} | CBIM-K: {cbim_k} | Data: {data_dir}")
     print("=" * 80)
 
     out_path = Path(output_dir)
@@ -174,7 +175,7 @@ def train_benchmark(arch: str, data_dir: str, steps: int = 1000,
     if arch == "trm":
         model = create_trm_model(batch_size=batch_size, hidden_size=512, forward_dtype="float32").to(device)
     elif arch == "cbim":
-        model = create_cbim_model(batch_size=batch_size, d_channels=128, ponder_steps=6).to(device)
+        model = create_cbim_model(batch_size=batch_size, d_channels=128, ponder_steps=cbim_k).to(device)
     else:
         raise ValueError(f"Unknown architecture: {arch}")
 
@@ -289,6 +290,7 @@ def main():
     parser.add_argument("--batch-size", type=int, default=32)
     parser.add_argument("--lr", type=float, default=1e-4)
     parser.add_argument("--eval-interval", type=int, default=250)
+    parser.add_argument("--cbim-k", type=int, default=6)
     parser.add_argument("--output-dir", default="results/sudoku_benchmark")
     args = parser.parse_args()
 
@@ -303,7 +305,7 @@ def main():
         results["cbim"] = train_benchmark(
             arch="cbim", data_dir=args.data_dir, steps=args.steps,
             batch_size=args.batch_size, lr=args.lr, eval_interval=args.eval_interval,
-            output_dir=args.output_dir
+            output_dir=args.output_dir, cbim_k=args.cbim_k
         )
 
     summary_file = Path(args.output_dir) / "summary.json"
