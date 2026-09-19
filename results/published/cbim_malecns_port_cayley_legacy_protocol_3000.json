@@ -1,0 +1,26 @@
+{
+  "architecture": "CBIM-MaleCNS-anatomical-port-geometric-transport",
+  "checkpoint": "results\\cbim_malecns_port_cayley_3000\\BBest.pt",
+  "step": 3000,
+  "protocol": {
+    "dataset": "OpenWebText validation stream",
+    "sites": 1,
+    "shared_full_history": 1024,
+    "intervention_horizon": 512,
+    "intervention": "single-factor bypass only during scoring horizon"
+  },
+  "sites": [
+    {
+      "site": 0,
+      "start": 0,
+      "full": 7.537696123123169,
+      "no_collision": 7.54143226146698,
+      "no_transport": 7.562606334686279,
+      "collision_delta_nll": 0.003736138343811035,
+      "transport_delta_nll": 0.02491021156311035
+    }
+  ],
+  "mean_full_nll": 7.537696123123169,
+  "mean_collision_delta_nll": 0.003736138343811035,
+  "mean_transport_delta_nll": 0.02491021156311035
+}

@@ -1,0 +1,53 @@
+{
+  "architecture": "CBIM-MaleCNS-anatomical-port-geometric-transport",
+  "checkpoint": "results\\cbim_malecns_port_cayley_3000\\BBest.pt",
+  "step": 3000,
+  "protocol": {
+    "dataset": "OpenWebText validation stream",
+    "sites": 4,
+    "shared_full_history": 256,
+    "intervention_horizon": 128,
+    "intervention": "single-factor bypass only during scoring horizon"
+  },
+  "sites": [
+    {
+      "site": 0,
+      "start": 8192,
+      "full": 7.30471134185791,
+      "no_collision": 7.319008827209473,
+      "no_transport": 7.341714859008789,
+      "collision_delta_nll": 0.0142974853515625,
+      "transport_delta_nll": 0.037003517150878906
+    },
+    {
+      "site": 1,
+      "start": 12288,
+      "full": 8.570577621459961,
+      "no_collision": 8.570920944213867,
+      "no_transport": 8.570338249206543,
+      "collision_delta_nll": 0.00034332275390625,
+      "transport_delta_nll": -0.00023937225341796875
+    },
+    {
+      "site": 2,
+      "start": 16384,
+      "full": 7.417080879211426,
+      "no_collision": 7.433048248291016,
+      "no_transport": 7.456652641296387,
+      "collision_delta_nll": 0.015967369079589844,
+      "transport_delta_nll": 0.03957176208496094
+    },
+    {
+      "site": 3,
+      "start": 20480,
+      "full": 7.112349510192871,
+      "no_collision": 7.138039588928223,
+      "no_transport": 7.216254711151123,
+      "collision_delta_nll": 0.025690078735351562,
+      "transport_delta_nll": 0.10390520095825195
+    }
+  ],
+  "mean_full_nll": 7.601179838180542,
+  "mean_collision_delta_nll": 0.014074563980102539,
+  "mean_transport_delta_nll": 0.04506027698516846
+}

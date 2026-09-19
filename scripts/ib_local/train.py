@@ -61,6 +61,10 @@ def main():
     parser.add_argument('--small-workspace', action='store_true')
     parser.add_argument('--no-recompute', action='store_true')
     parser.add_argument('--block-graph', action='store_true')
+    parser.add_argument('--decoupled-clip', action='store_true')
+    parser.add_argument('--write-operator', action='store_true')
+    parser.add_argument('--coupling-mode', choices=['none', 'adaptive_force', 'message_coupling'], default='none')
+    parser.add_argument('--score-scale', type=float, default=1.0)
     parser.add_argument('--wait-pid', type=int)
     args = parser.parse_args()
     if args.small_workspace:
@@ -113,7 +117,8 @@ def main():
     assert args.steps * args.tokens <= len(train), 'No implicit training stream wrap'
     assert args.validation_tokens % args.tokens == 0
     assert args.validation_tokens + args.tokens <= len(valid)
-    model = LocalWindow(hidden=args.hidden, particles=args.particles).cuda()
+    score_scale = args.score_scale
+    model = LocalWindow(hidden=args.hidden, particles=args.particles, use_write_operator=args.write_operator, coupling_mode=args.coupling_mode, score_scale=score_scale).cuda()
     model.recompute = not args.no_recompute
     if args.compile_layer:
         model.layer_fn = torch.compile(model.layer_fn, dynamic=True)
@@ -134,8 +139,17 @@ def main():
         for key in ('manifest_sha256', 'tokens', 'particles', 'hidden', 'validation_tokens', 'architecture', 'mask_mode', 'proposal'):
             assert saved['config'][key] == config[key], key
         proposal_rng.bit_generator.state = saved['proposal_rng']
-        model.load_state_dict(saved['model'])
-        opt.load_state_dict(saved['optimizer'])
+        if args.write_operator or args.coupling_mode in ('adaptive_force', 'message_coupling'):
+            model.load_state_dict(saved['model'], strict=False)
+            saved_opt = saved['optimizer']
+            params = list(model.parameters())
+            for i in range(len(saved_opt['param_groups'][0]['params'])):
+                p = params[i]
+                if i in saved_opt['state']:
+                    opt.state[p] = {k: v.clone() if isinstance(v, torch.Tensor) else v for k, v in saved_opt['state'][i].items()}
+        else:
+            model.load_state_dict(saved['model'])
+            opt.load_state_dict(saved['optimizer'])
         x, v = saved['x'].detach().clone().requires_grad_(), saved['v'].detach().clone().requires_grad_()
         generator.set_state(saved['generator'].cpu())
         torch.set_rng_state(saved['torch_rng'].cpu())
@@ -189,14 +203,46 @@ def main():
             x.grad = None
         if v.is_leaf:
             v.grad = None
-        surrogate, loss, nx, nv, accepted = model(x, v, ids, targets, clocks, noise, tables)
-        surrogate.backward()
-        norm = torch.nn.utils.clip_grad_norm_(model.parameters(), 1., foreach=True)
-        opt.step()
-        with torch.no_grad():
-            x.copy_(nx)
-            v.copy_(nv)
-        return loss, norm, accepted
+        if not args.decoupled_clip:
+            surrogate, loss, nx, nv, accepted = model(x, v, ids, targets, clocks, noise, tables)
+            surrogate.backward()
+            norm = torch.nn.utils.clip_grad_norm_(model.parameters(), 1., foreach=True)
+            opt.step()
+            with torch.no_grad():
+                x.copy_(nx)
+                v.copy_(nv)
+            return loss, norm, accepted
+        else:
+            loss_p, nx, nv, ce_det = model.forward_path(x, v, ids, targets, clocks, noise, tables)
+            loss_p.backward()
+            grads_path = [p.grad.clone() if p.grad is not None else None for p in model.parameters()]
+            model.zero_grad(set_to_none=True)
+
+            score_val, _, _, accepted = model.forward_score(x, v, ids, targets, clocks, noise, tables, ce_det)
+            score_val.backward()
+            grads_score = [p.grad.clone() if p.grad is not None else None for p in model.parameters()]
+            model.zero_grad(set_to_none=True)
+
+            norm_p = torch.cat([g.flatten() for g in grads_path if g is not None]).norm()
+            norm_s = torch.cat([g.flatten() for g in grads_score if g is not None]).norm()
+            scale_p = min(1.0, float(1.0 / norm_p.item())) if norm_p > 0 else 1.0
+            scale_s = min(1.0, float(1.0 / norm_s.item())) if norm_s > 0 else 1.0
+
+            for p, gp, gs in zip(model.parameters(), grads_path, grads_score):
+                if gp is not None and gs is not None:
+                    p.grad = gp * scale_p + gs * scale_s * score_scale
+                elif gp is not None:
+                    p.grad = gp * scale_p
+                elif gs is not None:
+                    p.grad = gs * scale_s * score_scale
+                else:
+                    p.grad = None
+
+            opt.step()
+            with torch.no_grad():
+                x.copy_(nx)
+                v.copy_(nv)
+            return loss_p, norm_p, accepted
 
     def log(row):
         with (args.output / 'metrics.jsonl').open('a', encoding='utf-8') as handle:

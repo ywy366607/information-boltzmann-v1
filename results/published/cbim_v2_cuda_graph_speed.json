@@ -1,0 +1,17 @@
+{
+  "purpose": "Numerical throughput only; random tokens; no capability claim",
+  "gpu": "GTX 1650",
+  "precision": "FP32",
+  "batch": 1,
+  "tokens": 128,
+  "grid": 64,
+  "channels": 128,
+  "vocab": 50257,
+  "capture_seconds": 9.3784663,
+  "update_seconds": [0.4975071, 0.2489567, 0.2462879, 0.245999, 0.2462635, 0.2462332],
+  "peak_allocated_MiB": 321.6113,
+  "peak_reserved_MiB": 394.0,
+  "includes": "Input copy, forward, backward, grad clip, AdamW, persistent state carry, synchronization",
+  "excludes": "data loading, checkpoint IO, host monitoring",
+  "validation": "8 tests passed, including two-update eager/graph parameter and state equivalence"
+}

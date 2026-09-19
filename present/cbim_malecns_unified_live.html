@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CBIM Unified V6 实时动力学</title>
+<style>
+body{margin:0;background:#071018;color:#dcecff;font:14px system-ui}main{max-width:1480px;margin:auto;padding:18px}h1{margin:0 0 7px;font-size:22px}.sub,.status{color:#8fb0c3;margin:5px 0 12px}.status{color:#ffce6b}.cards{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}.card,.panel{background:#0d1c28;border:1px solid #1e4053;border-radius:10px;padding:10px}.label{color:#86a9bd;font-size:12px}.value{font-size:18px;color:#68e1c1;margin-top:4px}.grid{display:grid;grid-template-columns:1fr;gap:11px;margin-top:11px}.maps{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}.plots{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}canvas{width:100%;height:240px;background:#08131d;border-radius:8px}.caption{color:#9bb6c7;margin:2px 0 5px}footer{color:#7897aa;margin-top:11px;line-height:1.5}@media(max-width:950px){.cards{grid-template-columns:repeat(3,1fr)}.maps,.plots{grid-template-columns:1fr 1fr}}
+</style></head><body><main>
+<h1>CBIM · 自组织写入、定向输运与局部碰撞</h1>
+<div class="sub">写入位置与注意力读出位置由任务共同学习；D3Q8 速度决定解剖边上的输运方向，碰撞只在节点内部重组速度与内容。冷浴只负责能量出口。</div>
+<div id="status" class="status">初始化…</div>
+<div class="cards">
+ <div class="card"><div class="label">训练步</div><div class="value" id="step">—</div></div>
+ <div class="card"><div class="label">训练 NLL</div><div class="value" id="nll">—</div></div>
+ <div class="card"><div class="label">最佳验证 NLL</div><div class="value" id="best">—</div></div>
+ <div class="card"><div class="label">秒 / 步</div><div class="value" id="seconds">—</div></div>
+ <div class="card"><div class="label">预留显存</div><div class="value" id="memory">—</div></div>
+ <div class="card"><div class="label">有效脑区数</div><div class="value" id="nodes">—</div></div>
+ <div class="card"><div class="label">最大脑区能量占比</div><div class="value" id="share">—</div></div>
+</div>
+<div class="grid">
+ <section class="panel maps">
+  <div><div class="caption">实时场幅度</div><canvas id="activity"></canvas></div>
+  <div><div class="caption">D3Q8 速度各向异性</div><canvas id="anisotropy"></canvas></div>
+  <div><div class="caption">当前 token 的可学习写入分布</div><canvas id="writeMap"></canvas></div>
+  <div><div class="caption">可学习读出注意力（四个 head 独立着色）</div><canvas id="readMap"></canvas></div>
+ </section>
+ <section class="panel plots">
+  <div><div class="caption">训练 / 验证 NLL</div><canvas id="loss"></canvas></div>
+  <div><div class="caption">持存场能量</div><canvas id="energy"></canvas></div>
+  <div><div class="caption">入射能量</div><canvas id="incident"></canvas></div>
+  <div><div class="caption">边界反射能量</div><canvas id="reflected"></canvas></div>
+  <div><div class="caption">冷浴出射能量</div><canvas id="bathEnergy"></canvas></div>
+  <div><div class="caption">写入角</div><canvas id="writeAngle"></canvas></div>
+  <div><div class="caption">输运角</div><canvas id="transportAngle"></canvas></div>
+  <div><div class="caption">碰撞生成元范数</div><canvas id="collisionAngle"></canvas></div>
+  <div><div class="caption">冷浴交换能量比例 sin²θ</div><canvas id="bathAngle"></canvas></div>
+  <div><div class="caption">平均局部占用率</div><canvas id="bathActive"></canvas></div>
+  <div><div class="caption">空间有效脑区数</div><canvas id="effectiveNodes"></canvas></div>
+  <div><div class="caption">最大脑区能量占比</div><canvas id="maxShare"></canvas></div>
+  <div><div class="caption">通道有效秩</div><canvas id="effectiveRank"></canvas></div>
+  <div><div class="caption">读出注意力熵</div><canvas id="readEntropy"></canvas></div>
+  <div><div class="caption">读出逐头逆温度</div><canvas id="readScale"></canvas></div>
+  <div><div class="caption">写入包络平均覆盖率</div><canvas id="writeWidth"></canvas></div>
+  <div><div class="caption">写入能量账本残差</div><canvas id="writeResidual"></canvas></div>
+  <div><div class="caption">输运范数残差</div><canvas id="transportResidual"></canvas></div>
+ </section>
+</div>
+<footer>本轮固定每个 token 一个动力学步，检验完整单步因果链。写入、输运、碰撞和读出均接收 CE 梯度；读出与冷浴分离。颜色按每帧 5–95% 分位数显示。</footer>
+</main><script>
+const $=id=>document.getElementById(id);let layout=null,rx=.35,ry=-.55,drag=null;
+function fit(el){let d=devicePixelRatio||1,w=el.clientWidth,h=el.clientHeight;if(el.width!==w*d||el.height!==h*d){el.width=w*d;el.height=h*d}let c=el.getContext('2d');c.setTransform(d,0,0,d,0,0);return[c,w,h]}
+function quantile(a,p){let b=a.filter(Number.isFinite).slice().sort((x,y)=>x-y);return b.length?b[Math.floor((b.length-1)*p)]:0}
+function project(p,w,h){let x=p[0]-.5,y=p[1]-.5,z=p[2]-.5,cy=Math.cos(ry),sy=Math.sin(ry),cx=Math.cos(rx),sx=Math.sin(rx),a=cy*x+sy*z,b=-sy*x+cy*z,c=cx*y-sx*b;return[w*(.5+.72*a),h*(.5-.72*c),b]}
+function map(canvas,values,h0=220,h1=0,edgeValues=values){if(!layout||!values)return;let[c,w,h]=fit(canvas),pts=layout.coordinates.map(p=>project(p,w,h)),lo=quantile(values,.05),hi=quantile(values,.95),span=Math.max(hi-lo,1e-12),elo=quantile(edgeValues||values,.05),ehi=quantile(edgeValues||values,.95),espan=Math.max(ehi-elo,1e-12);c.clearRect(0,0,w,h);c.strokeStyle='#72b7da';c.lineWidth=1;for(let e of layout.edges){let a=pts[e[0]],b=pts[e[1]],ev=.5*((edgeValues||values)[e[0]]+(edgeValues||values)[e[1]]),et=Math.max(0,Math.min(1,(ev-elo)/espan));c.globalAlpha=.025+.62*et;c.beginPath();c.moveTo(a[0],a[1]);c.lineTo(b[0],b[1]);c.stroke()}c.globalAlpha=1;pts.map((p,i)=>[p,i]).sort((a,b)=>a[0][2]-b[0][2]).forEach(([p,i])=>{let t=Math.max(0,Math.min(1,(values[i]-lo)/span));c.fillStyle=`hsl(${h0+(h1-h0)*t} 85% ${39+20*t}%)`;c.beginPath();c.arc(p[0],p[1],2.4+4*t,0,7);c.fill()});c.fillStyle='#a9bfd0';c.fillText(`${lo.toExponential(2)} … ${hi.toExponential(2)}`,7,15)}
+function headMap(canvas,maps,edgeValues){if(!layout||!maps||!maps.length)return;let[c,w,h]=fit(canvas),pts=layout.coordinates.map(p=>project(p,w,h)),colors=[[52,211,153],[96,165,250],[244,114,182],[251,191,36]],flat=maps.flat(),hi=Math.max(quantile(flat,.95),1e-12);c.clearRect(0,0,w,h);c.strokeStyle='#72b7da';for(let e of layout.edges){let ev=.5*((edgeValues||[])[e[0]]+(edgeValues||[])[e[1]])||0;c.globalAlpha=.025+.45*Math.min(1,ev/(quantile(edgeValues||[],.95)||1));let a=pts[e[0]],b=pts[e[1]];c.beginPath();c.moveTo(a[0],a[1]);c.lineTo(b[0],b[1]);c.stroke()}c.globalAlpha=1;pts.map((p,i)=>[p,i]).sort((a,b)=>a[0][2]-b[0][2]).forEach(([p,i])=>{let ws=maps.map(m=>Math.min(1,m[i]/hi)),sum=ws.reduce((a,b)=>a+b,0)||1,r=0,g=0,b=0;ws.forEach((v,j)=>{r+=v*colors[j][0];g+=v*colors[j][1];b+=v*colors[j][2]});c.fillStyle=`rgb(${r/sum} ${g/sum} ${b/sum})`;c.beginPath();c.arc(p[0],p[1],2.2+5*Math.min(1,Math.max(...ws)),0,7);c.fill()});colors.forEach((v,i)=>{c.fillStyle=`rgb(${v[0]} ${v[1]} ${v[2]})`;c.fillRect(8+i*58,h-17,9,9);c.fillStyle='#a9bfd0';c.fillText(`H${i}`,20+i*58,h-9)})}function plot(canvas,sets,log=false){let[c,w,h]=fit(canvas),all=sets.flatMap(s=>s.data.map(v=>v[1])).filter(v=>Number.isFinite(v)&&(!log||v>0));c.clearRect(0,0,w,h);if(!all.length)return;let cv=v=>log?Math.log10(Math.max(v,1e-16)):v,lo=Math.min(...all.map(cv)),hi=Math.max(...all.map(cv));if(hi===lo)hi=lo+1;let xmax=Math.max(1,...sets.flatMap(s=>s.data.map(v=>v[0])));c.strokeStyle='#244052';for(let i=1;i<5;i++){let y=h*i/5;c.beginPath();c.moveTo(0,y);c.lineTo(w,y);c.stroke()}for(let s of sets){c.strokeStyle=s.color;c.lineWidth=1.8;c.beginPath();s.data.filter(v=>Number.isFinite(v[1])&&(!log||v[1]>0)).forEach((v,i)=>{let x=v[0]/xmax*w,y=h-(cv(v[1])-lo)/(hi-lo)*h;i?c.lineTo(x,y):c.moveTo(x,y)});c.stroke()}c.fillStyle='#91afc1';c.fillText(log?`10^${lo.toFixed(1)}`:lo.toExponential(2),4,h-5);c.fillText(log?`10^${hi.toFixed(1)}`:hi.toExponential(2),4,12)}
+for(let id of ['activity','anisotropy','writeMap','readMap']){$(id).onpointerdown=e=>drag=[e.clientX,e.clientY];$(id).onpointermove=e=>{if(!drag)return;ry+=(e.clientX-drag[0])*.01;rx+=(e.clientY-drag[1])*.01;drag=[e.clientX,e.clientY]};$(id).onpointerup=()=>drag=null}
+async function update(){try{let t=Date.now(),[pr,mt,ls]=await Promise.all([fetch('progress.json?'+t).then(r=>r.json()),fetch('metrics.jsonl?'+t).then(r=>r.ok?r.text():''),fetch('live_state.json?'+t).then(r=>r.ok?r.json():null).catch(()=>null)]),rows=mt.trim()?mt.trim().split(/\n/).map(JSON.parse):[],tr=rows.filter(r=>r.kind==='train'),va=rows.filter(r=>r.kind==='validation'),last=tr.at(-1)||{};$('status').textContent=pr.status==='complete'?'训练完成':pr.status==='failed'?'失败：'+pr.error:pr.status==='capturing'?'正在捕获 CUDA Graph':'持续训练中';$('step').textContent=(pr.step||0)+' / '+(pr.target_steps||3000);$('nll').textContent=last.nll?.toFixed(4)||'—';$('best').textContent=(pr.best_validation_nll??va.at(-1)?.best_validation_nll??va.at(-1)?.validation_nll)?.toFixed(4)||'—';$('seconds').textContent=last.seconds?.toFixed(3)||'—';$('memory').textContent=last.reserved_mib?last.reserved_mib.toFixed(0)+' MiB':'—';$('nodes').textContent=last.spatial_effective_nodes?.toFixed(1)||'—';$('share').textContent=last.max_node_energy_share?(100*last.max_node_energy_share).toFixed(2)+'%':'—';plot($('loss'),[{data:tr.map(r=>[r.step,r.nll]),color:'#63dfbf'},{data:va.map(r=>[r.step,r.validation_nll]),color:'#ffcd68'}]);plot($('energy'),[{data:tr.map(r=>[r.step,r.energy]),color:'#ff7585'}]);plot($('incident'),[{data:tr.map(r=>[r.step,r.incident_energy]),color:'#70b7ff'}]);plot($('reflected'),[{data:tr.map(r=>[r.step,r.reflected_energy]),color:'#ffcd68'}]);plot($('bathEnergy'),[{data:tr.map(r=>[r.step,r.bath_power]),color:'#ff7585'}]);plot($('writeAngle'),[{data:tr.map(r=>[r.step,r.write_angle_abs_mean]),color:'#70b7ff'}]);plot($('transportAngle'),[{data:tr.map(r=>[r.step,r.transport_edge_angle_mean]),color:'#63dfbf'}]);plot($('collisionAngle'),[{data:tr.map(r=>[r.step,r.collision_generator_norm]),color:'#d596ff'}]);plot($('bathAngle'),[{data:tr.map(r=>[r.step,r.cooling_sin2_mean]),color:'#ff7585'}]);plot($('bathActive'),[{data:tr.map(r=>[r.step,r.occupation_ratio_mean]),color:'#ffa65c'}]);plot($('effectiveNodes'),[{data:tr.map(r=>[r.step,r.spatial_effective_nodes]),color:'#63dfbf'}]);plot($('maxShare'),[{data:tr.map(r=>[r.step,r.max_node_energy_share]),color:'#ffcd68'}]);plot($('effectiveRank'),[{data:tr.map(r=>[r.step,r.channel_effective_rank]),color:'#d596ff'}]);plot($('readEntropy'),[{data:tr.map(r=>[r.step,r.read_attention_entropy]),color:'#66d9ef'}]);plot($('readScale'),[{data:tr.map(r=>[r.step,r.read_logit_scale_mean]),color:'#f5a97f'}]);plot($('writeWidth'),[{data:tr.map(r=>[r.step,r.write_envelope_mean]),color:'#a6da95'}]);plot($('writeResidual'),[{data:tr.map(r=>[r.step,r.write_balance_residual]),color:'#70b7ff'}],true);plot($('transportResidual'),[{data:tr.map(r=>[r.step,r.transport_norm_residual]),color:'#ffcd68'}],true);if(ls){map($('activity'),(ls.node_amplitudes||ls.node_values));let a=ls.node_velocity_energy?.map(v=>{let m=v.reduce((x,y)=>x+y,0)/v.length;return Math.max(...v)/(m+1e-12)-1});map($('anisotropy'),a,190,330,(ls.node_amplitudes||ls.node_values));map($('writeMap'),ls.write_map||[],135,35,(ls.node_amplitudes||ls.node_values));headMap($('readMap'),ls.readout_attention_heads||ls.read_head_maps||[],(ls.node_amplitudes||ls.node_values))}}catch(e){$('status').textContent='等待训练文件… '+e.message}setTimeout(update,2000)}
+fetch('graph_layout.json').then(r=>r.json()).then(x=>{layout=x;update()}).catch(()=>setTimeout(()=>location.reload(),2000));
+</script></body></html>
+
+
+
+
+
+
+
+
+
+
+

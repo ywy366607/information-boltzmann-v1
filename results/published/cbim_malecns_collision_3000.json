@@ -1,0 +1,48 @@
+{
+  "architecture": "CBIM-MaleCNS-graph-v1",
+  "checkpoint": "results\\cbim_malecns_256_3000\\BBest.pt",
+  "step": 3000,
+  "protocol": {
+    "validation_tokens": 4096,
+    "history": 256,
+    "horizon": 128,
+    "sites": 4,
+    "intervention": "bypass only graph conservative scattering"
+  },
+  "full_validation": {
+    "full_nll": 7.325838387012482,
+    "no_scattering_nll": 7.344707056879997,
+    "delta_nll": 0.018868669867515564
+  },
+  "sites": [
+    {
+      "site": 0,
+      "start": 8192,
+      "full_nll": 7.125528335571289,
+      "no_scattering_nll": 7.146191596984863,
+      "delta_nll": 0.02066326141357422
+    },
+    {
+      "site": 1,
+      "start": 12288,
+      "full_nll": 8.488868713378906,
+      "no_scattering_nll": 8.512934684753418,
+      "delta_nll": 0.02406597137451172
+    },
+    {
+      "site": 2,
+      "start": 16384,
+      "full_nll": 7.249645233154297,
+      "no_scattering_nll": 7.281752109527588,
+      "delta_nll": 0.032106876373291016
+    },
+    {
+      "site": 3,
+      "start": 20480,
+      "full_nll": 6.36840295791626,
+      "no_scattering_nll": 6.373043537139893,
+      "delta_nll": 0.0046405792236328125
+    }
+  ],
+  "site_mean_delta_nll": 0.02036917209625244
+}

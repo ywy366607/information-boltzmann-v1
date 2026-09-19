@@ -1,0 +1,76 @@
+{
+  "architecture": "CBIM-MaleCNS-kinetic-v2",
+  "status": "rejected",
+  "reason": "energy control failed despite role separation",
+  "updates": 3000,
+  "tokens": 384000,
+  "validation_curve": [
+    {
+      "step": 0,
+      "validation_nll": 11.107842445373535
+    },
+    {
+      "step": 250,
+      "validation_nll": 10.005332738161087
+    },
+    {
+      "step": 500,
+      "validation_nll": 9.183746993541718
+    },
+    {
+      "step": 750,
+      "validation_nll": 8.543163448572159
+    },
+    {
+      "step": 1000,
+      "validation_nll": 8.289476856589317
+    },
+    {
+      "step": 1250,
+      "validation_nll": 7.963843554258347
+    },
+    {
+      "step": 1500,
+      "validation_nll": 7.881194666028023
+    },
+    {
+      "step": 1750,
+      "validation_nll": 8.004999443888664
+    },
+    {
+      "step": 2000,
+      "validation_nll": 7.8320555835962296
+    },
+    {
+      "step": 2250,
+      "validation_nll": 7.691259816288948
+    },
+    {
+      "step": 2500,
+      "validation_nll": 7.819101378321648
+    },
+    {
+      "step": 2750,
+      "validation_nll": 7.746859446167946
+    },
+    {
+      "step": 3000,
+      "validation_nll": 7.63341911137104
+    }
+  ],
+  "best_validation_nll": 7.63341911137104,
+  "final_validation_nll": 7.63341911137104,
+  "final_dynamics": {
+    "energy": 5.075287818908691,
+    "gamma_mean": 5.804266766062938e-05,
+    "gamma_spatial_std": 1.8542374164098874e-05,
+    "safety_projection_rate": 0.04644775390625,
+    "collision_angle_abs_mean": 0.23592545092105865,
+    "seconds": 0.4018873999993957,
+    "reserved_mib": 452.0
+  },
+  "comparison": {
+    "malecns_v1_validation_nll": 7.325838387012482,
+    "delta_nll": 0.30758072435855865
+  }
+}

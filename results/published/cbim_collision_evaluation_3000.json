@@ -1,0 +1,43 @@
+{
+  "checkpoint_step": 3000,
+  "events": 384000,
+  "checkpoint_sha256": "79fed08f07f5513943369cee1780712c8d313005c3c09d4ce131006f9a0cc4a4",
+  "protocol": "Frozen BBest. Shared held-out GPT-2 BPE validation. no_scattering bypasses only ConservativeScattering; writer, Cayley transport and state-only readout remain active.",
+  "full_validation_tokens": 4096,
+  "full_validation": {
+    "keep_nll": 7.187178894877434,
+    "no_scattering_nll": 7.681403160095215,
+    "delta_nll": 0.49422426521778107
+  },
+  "sites": [
+    {
+      "site": 0,
+      "start": 8192,
+      "keep_nll": 7.027412414550781,
+      "no_scattering_nll": 7.304893970489502,
+      "delta_nll": 0.2774815559387207
+    },
+    {
+      "site": 1,
+      "start": 12288,
+      "keep_nll": 8.447080612182617,
+      "no_scattering_nll": 8.613025665283203,
+      "delta_nll": 0.16594505310058594
+    },
+    {
+      "site": 2,
+      "start": 16384,
+      "keep_nll": 7.08681583404541,
+      "no_scattering_nll": 7.482288360595703,
+      "delta_nll": 0.39547252655029297
+    },
+    {
+      "site": 3,
+      "start": 20480,
+      "keep_nll": 6.376544952392578,
+      "no_scattering_nll": 7.2367844581604,
+      "delta_nll": 0.8602395057678223
+    }
+  ],
+  "site_mean_delta_nll": 0.42478466033935547
+}

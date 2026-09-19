@@ -1,0 +1,28 @@
+{
+  "checkpoint_step": 3000,
+  "probe_tokens": 1024,
+  "warmup_tokens": 256,
+  "mean_after_warmup": {
+    "write_rate": 0.028806976719452152,
+    "outflow_rate": 0.016194871362358754,
+    "projection_rate": 0.4821828206380208,
+    "source_relative_change": 0.15741544677196848,
+    "transport_relative_change": 0.19434388935527144,
+    "scattering_relative_change": 0.18036987353116274
+  },
+  "p95_after_warmup": {
+    "write_rate": 0.06448315382003784,
+    "outflow_rate": 0.04476926699280739,
+    "projection_rate": 0.70703125,
+    "source_relative_change": 0.3736241430044174,
+    "transport_relative_change": 0.28805548101663586,
+    "scattering_relative_change": 0.24645879864692682
+  },
+  "state": {
+    "effective_rank_of_64": 32.42011642456055,
+    "stable_rank_of_64": 1.3241926431655884,
+    "spatial_effective_nodes_of_256": 251.29067993164062,
+    "max_node_energy_share": 0.006225432734936476,
+    "frobenius_norm": 18.744050979614258
+  }
+}

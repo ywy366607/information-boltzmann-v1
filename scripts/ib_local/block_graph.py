@@ -15,11 +15,13 @@ from .sampling import padded_capacities
 class _CaptureBlock(nn.Module):
     def __init__(self, owner, capacities):
         super().__init__()
+        self.owner = owner
         self.weights = nn.ParameterList(list(owner.parameters()))
         self.call_block = owner.feature_block
         self.capacities = capacities
+        self.has_token_input = (owner.write_operator is not None) or (getattr(owner, 'coupling_mode', 'none') in ('adaptive_force', 'message_coupling'))
 
-    def forward(self, x, v, shared, clocks, noise, indices, fields):
+    def forward(self, x, v, shared, clocks, noise, indices, fields, token_ids=None):
         tables = []
         for step in range(shared.shape[0] * clocks.shape[1]):
             layers, cursor = [], 0
@@ -29,6 +31,9 @@ class _CaptureBlock(nn.Module):
                 layers.append((idx[:, 0], idx[:, 1], data[:, :4], data[:, 4], data[:, 5] > 0))
                 cursor += capacity
             tables.append(layers)
+        if self.has_token_input and token_ids is not None:
+            tok_embs = self.owner.core.force.embedding(token_ids)
+            return self.call_block(x, v, shared, clocks, noise, tables, tok_embs=tok_embs)
         return self.call_block(x, v, shared, clocks, noise, tables)
 
 
@@ -50,8 +55,14 @@ class BlockGraph:
         fields[..., 0] = 1
         fields[..., 4] = .5
         wrapper = _CaptureBlock(owner, self.capacities)
-        self.graphed = torch.cuda.make_graphed_callables(
-            wrapper, (x, v, shared, clocks, noise, indices, fields), allow_unused_input=True)
+        self.has_token_input = wrapper.has_token_input
+        if self.has_token_input:
+            token_ids = torch.zeros(block_tokens, device=device, dtype=torch.long)
+            self.graphed = torch.cuda.make_graphed_callables(
+                wrapper, (x, v, shared, clocks, noise, indices, fields, token_ids), allow_unused_input=True)
+        else:
+            self.graphed = torch.cuda.make_graphed_callables(
+                wrapper, (x, v, shared, clocks, noise, indices, fields), allow_unused_input=True)
         self.original = owner.feature_block
 
     def packed(self, tables):
@@ -60,7 +71,7 @@ class BlockGraph:
         fields = torch.cat((a[2]._base, a[3]._base[:, None], a[4]._base[:, None].float()), -1)
         return indices, fields
 
-    def run(self, x, v, shared, clocks, noise, tables, packed):
+    def run(self, x, v, shared, clocks, noise, tables, packed, token_ids=None):
         regular = len(shared) == self.block_tokens and all(
             tuple(len(layer[0]) for layer in step) == self.capacities for step in tables)
         if regular:
@@ -80,10 +91,16 @@ class BlockGraph:
                     outputs[0].grad_fn.register_hook(own_gradients)
                 return tuple(t.clone() for t in outputs)
 
-            args = (x, v, shared, clocks, noise, indices, fields)
+            if self.has_token_input:
+                args = (x, v, shared, clocks, noise, indices, fields, token_ids)
+            else:
+                args = (x, v, shared, clocks, noise, indices, fields)
         else:
             # Bind the complete table now; no late-bound loop closure in backward.
             def execute(*args, table=tables):
+                if self.has_token_input and token_ids is not None:
+                    tok_embs = self.original.__self__.core.force.embedding(token_ids)
+                    return self.original(*args, table, tok_embs=tok_embs, eager=True)
                 return self.original(*args, table, eager=True)
 
             args = (x, v, shared, clocks, noise)

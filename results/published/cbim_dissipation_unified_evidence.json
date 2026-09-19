@@ -1,0 +1,25 @@
+{
+  "protocol": "Matched OpenWebText validation where available; 128 GPT-2 BPE tokens per optimizer update",
+  "claim": "Energy, global Lyapunov exponent, and state rank are insufficient predictors of NLL. The next hypothesis is that NLL follows future-predictive input-output alignment and its signal-to-interference ratio under a bounded open-system evolution.",
+  "matched_1500": [
+    {"model": "CBIM-1D", "nll": 7.502230271697044, "energy": 49.99999237060547, "energy_comparable": false},
+    {"model": "MaleCNS-v1", "nll": 7.7531377375125885, "energy": 0.5806512832641602},
+    {"model": "Kinetic-v2", "nll": 7.881194666028023, "energy": 3.6934003829956055},
+    {"model": "Energy-v2.1", "nll": 7.891210526227951, "energy": 0.05179022625088692},
+    {"model": "MaleCNS-v3", "nll": 7.751417517662048, "energy": 0.012011709623038769, "effective_rank": 24.975873947143555, "stable_rank": 3.1198055744171143},
+    {"model": "Critical-v1-rejected", "nll": 7.743853941559792, "energy": 0.07143520563840866, "effective_rank": 15.13514232635498, "stable_rank": 2.177734851837158},
+    {"model": "Critical-port-v2-rejected", "nll": 8.032920390367508, "energy": 0.15917837619781494, "effective_rank": 33.62187957763672, "stable_rank": 4.076991558074951, "port_balance_residual": 9.413270163349807e-10, "conditional_lambda": 0.004766341298818588}
+  ],
+  "frozen_mechanism_evidence": {
+    "MaleCNS-v1": {"nll": 7.219648, "reset_delta_nll": 0.976871, "no_transport_delta_nll": 0.954814, "no_collision_delta_nll": 0.024699, "conditional_lambda": -0.03607},
+    "MaleCNS-v3": {"nll": 7.527741954796511, "reset_delta_nll": 1.2025843856790743, "no_transport_delta_nll": 0.01498342342893011, "no_collision_delta_nll": 12.326346767786163, "conditional_lambda": 0.05747891258279739}
+  },
+  "theory_falsification_gate": "Before a new architecture run, matched real-OWT prefix/suffix experiments and low-rank controllability-observability estimates must explain the established model ordering and v1/v3 role reversal better than energy, rank, or global conditional lambda.",
+  "next_architecture_if_gate_passes": "One low-rank orthogonal three-port boundary scatterer with independent token-write and bath-outflow couplings, conservative internal collision and transport, and no gamma, hard clip, resource, fatigue, spillover, separate outflow, or inference-time integral controller.",
+  "source_artifacts": [
+    "results/published/cbim_critical_port_matched_1500.json",
+    "results/published/cbim_v1_dynamics.json",
+    "results/published/cbim_v3_dynamics.json",
+    "results/published/cbim_malecns_kinetic_v2_3000.json"
+  ]
+}

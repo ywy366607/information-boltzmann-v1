@@ -1,0 +1,41 @@
+{
+  "date": "2026-09-13",
+  "source": "data/malecns_v1/body-annotations.feather",
+  "filter": "status == Traced",
+  "traced_neurons": 165122,
+  "spatial_traced_neurons_used_by_current_builder": 140024,
+  "sensory_superclasses_total": {
+    "cb_sensory": 4868,
+    "ol_sensory": 4114,
+    "vnc_sensory": 6365,
+    "sensory_ascending": 537,
+    "sensory_descending": 12
+  },
+  "sensory_superclasses_with_soma_location": {
+    "cb_sensory": 0,
+    "ol_sensory": 28,
+    "vnc_sensory": 2,
+    "sensory_ascending": 0,
+    "sensory_descending": 0
+  },
+  "internal_brain_vnc_relays": {
+    "ascending_neuron_total": 1846,
+    "ascending_neuron_with_soma_location": 1812,
+    "descending_neuron_total": 1314,
+    "descending_neuron_with_soma_location": 1308
+  },
+  "external_output_superclasses_with_soma_location": {
+    "cb_motor": 103,
+    "vnc_motor": 703,
+    "cb_efferent": 4,
+    "vnc_efferent": 90,
+    "cb_endocrine": 68,
+    "vnc_endocrine": 22,
+    "efferent_ascending": 8,
+    "efferent_descending": 4
+  },
+  "spatial_neurons_with_exit_nerve": 989,
+  "mushroom_body_output_neurons_with_soma_location": 96,
+  "dopaminergic_neurons_with_soma_location": 340,
+  "conclusion": "The current soma-position builder excludes nearly all annotated sensory neurons and discards superclass, entryNerve and exitNerve. It therefore cannot represent a biological sensory boundary or identify true efferent readout ports. Descending neurons are internal brain-to-VNC relays in a full-CNS model, while motor, efferent and endocrine neurons with exit nerves form the external output boundary."
+}

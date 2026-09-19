@@ -1,0 +1,22 @@
+{
+  "run": "Run 1: D3Q8 Baseline",
+  "checkpoint": "results/cbim_torus3d_w2_16ch_k3_adaptive_xavier_1500/BBest.pt",
+  "steps": 1500,
+  "validation_nll_4096": 7.41019,
+  "causality": {
+    "mean_transport_delta_nll": 0.2964,
+    "mean_collision_delta_nll": 0.3272,
+    "mean_joint_delta_nll": 0.337,
+    "site3_transport_delta_nll": 0.6937,
+    "site3_collision_delta_nll": 0.6821,
+    "site3_joint_delta_nll": 0.6642,
+    "t_packet": 0.4518,
+    "delta_tau_total": 2.7096
+  },
+  "symmetry_perturbation": {
+    "baseline_nll": 7.18622,
+    "swap_xy_delta": 0.00026,
+    "rot90_xy_delta": 0.02619,
+    "inversion_xyz_delta": 0.03566
+  }
+}

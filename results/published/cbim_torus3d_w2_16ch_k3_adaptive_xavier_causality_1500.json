@@ -1,0 +1,75 @@
+{
+  "checkpoint": "results\\cbim_torus3d_w2_16ch_k3_adaptive_xavier_1500\\BBest.pt",
+  "step": 1500,
+  "protocol": {
+    "dataset": "OWT validation",
+    "sites": 4,
+    "shared_history": 256,
+    "horizon": 128
+  },
+  "sites": [
+    {
+      "site": 0,
+      "full": 7.340886116027832,
+      "no_collision": 7.530943870544434,
+      "no_transport": 7.507874488830566,
+      "no_both": 7.639087677001953,
+      "collision_delta_nll": 0.19005775451660156,
+      "transport_delta_nll": 0.16698837280273438,
+      "joint_delta_nll": 0.2982015609741211
+    },
+    {
+      "site": 1,
+      "full": 8.744071006774902,
+      "no_collision": 8.913070678710938,
+      "no_transport": 8.902023315429688,
+      "no_both": 8.909053802490234,
+      "collision_delta_nll": 0.16899967193603516,
+      "transport_delta_nll": 0.15795230865478516,
+      "joint_delta_nll": 0.16498279571533203
+    },
+    {
+      "site": 2,
+      "full": 7.367519378662109,
+      "no_collision": 7.63515567779541,
+      "no_transport": 7.534474849700928,
+      "no_both": 7.588115692138672,
+      "collision_delta_nll": 0.2676362991333008,
+      "transport_delta_nll": 0.16695547103881836,
+      "joint_delta_nll": 0.2205963134765625
+    },
+    {
+      "site": 3,
+      "full": 6.2940192222595215,
+      "no_collision": 6.976089954376221,
+      "no_transport": 6.987736701965332,
+      "no_both": 6.958237171173096,
+      "collision_delta_nll": 0.6820707321166992,
+      "transport_delta_nll": 0.6937174797058105,
+      "joint_delta_nll": 0.6642179489135742
+    }
+  ],
+  "mean_full_nll": 7.436623930931091,
+  "mean_collision_delta_nll": 0.3271911144256592,
+  "mean_transport_delta_nll": 0.2964034080505371,
+  "mean_joint_delta_nll": 0.33699965476989746,
+  "physical_diagnostics": {
+    "t_packet": 0.45180393755435944,
+    "delta_e_field": 0.053101733326911926,
+    "reflected_energy": 0.05382572486996651,
+    "incident_energy": 0.10692746099084616,
+    "cross_interference": 0.0805959589779377,
+    "write_to_f_ratio": 0.10763555858284235,
+    "write_angle_abs_mean": 0.12395404651761055,
+    "collision_angle_abs_mean": 0.04806937463581562,
+    "collision_input_snr": 8.822587609291077,
+    "collision_output_snr": 8.822588086128235,
+    "bath_out_energy": 0.0135391796939075,
+    "energy": 0.5615663528442383,
+    "alpha_1": 0.9031733125448227,
+    "alpha_2": 0.903198167681694,
+    "alpha_3": 0.9032129943370819,
+    "delta_tau_total": 2.7095844745635986,
+    "collision_exposure": 0.14480018988251686
+  }
+}

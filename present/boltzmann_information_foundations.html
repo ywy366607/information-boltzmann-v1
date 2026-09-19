@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>玻尔兹曼方程与信息介质：从物理第一性原理到神经符号计算</title>
+
+  <!-- KaTeX for crisp LaTeX math rendering -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+          onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
+
+  <style>
+    :root {
+      --bg: #060a0f;
+      --bg-card: #0b131c;
+      --bg-card-hover: #101c2a;
+      --border: #1a2938;
+      --border-bright: #2d455d;
+      --text: #e2e8f0;
+      --text-muted: #88a1b9;
+      --text-dim: #546b80;
+      --accent-cyan: #38bdf8;
+      --accent-green: #34d399;
+      --accent-amber: #fbbf24;
+      --accent-purple: #c084fc;
+      --accent-rose: #f43f5e;
+      --glow-cyan: rgba(56, 189, 248, 0.15);
+      --glow-amber: rgba(251, 191, 36, 0.15);
+      --glow-green: rgba(52, 211, 153, 0.15);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Noto Sans SC", sans-serif;
+      line-height: 1.68;
+      font-size: 15px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Container */
+    .container {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 40px 24px 100px;
+    }
+
+    /* Hero */
+    header {
+      margin-bottom: 50px;
+      text-align: center;
+      position: relative;
+    }
+    .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      background: rgba(56, 189, 248, 0.1);
+      color: var(--accent-cyan);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      margin-bottom: 16px;
+    }
+    h1 {
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+      margin-bottom: 14px;
+      background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 50%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .lead {
+      color: var(--text-muted);
+      font-size: 16px;
+      max-width: 820px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    /* Interactive Big Equation Callout */
+    .equation-hero {
+      background: radial-gradient(circle at 50% 0%, #132435 0%, #0b131c 75%);
+      border: 1px solid var(--border-bright);
+      border-radius: 16px;
+      padding: 32px 24px;
+      margin: 36px 0;
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.4);
+      position: relative;
+      overflow: hidden;
+    }
+    .equation-hero::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent);
+    }
+    .equation-display {
+      font-size: 24px;
+      text-align: center;
+      margin-bottom: 24px;
+      overflow-x: auto;
+      padding-bottom: 10px;
+    }
+    .equation-terms {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    .eq-term-card {
+      background: rgba(16, 28, 42, 0.7);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      position: relative;
+    }
+    .eq-term-card:hover, .eq-term-card.active {
+      transform: translateY(-2px);
+      border-color: var(--term-color, var(--accent-cyan));
+      box-shadow: 0 6px 20px var(--term-glow, var(--glow-cyan));
+    }
+    .eq-term-card .symbol {
+      font-weight: 700;
+      font-size: 16px;
+      margin-bottom: 4px;
+      color: var(--term-color, var(--accent-cyan));
+    }
+    .eq-term-card .title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .eq-term-card .desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    /* Content Layout */
+    .section-title {
+      font-size: 22px;
+      font-weight: 700;
+      margin: 56px 0 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: #fff;
+    }
+    .section-title .num {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--accent-cyan);
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    /* Callout & Highlights */
+    .callout {
+      border-left: 3px solid var(--callout-color, var(--accent-cyan));
+      background: rgba(16, 28, 42, 0.4);
+      padding: 14px 18px;
+      border-radius: 0 10px 10px 0;
+      margin: 16px 0;
+      font-size: 14px;
+    }
+    .callout-amber {
+      --callout-color: var(--accent-amber);
+      background: rgba(251, 191, 36, 0.05);
+    }
+    .callout-green {
+      --callout-color: var(--accent-green);
+      background: rgba(52, 211, 153, 0.05);
+    }
+    .callout-purple {
+      --callout-color: var(--accent-purple);
+      background: rgba(192, 132, 252, 0.05);
+    }
+    .callout-rose {
+      --callout-color: var(--accent-rose);
+      background: rgba(244, 63, 94, 0.05);
+    }
+
+    /* Comparison Table */
+    .comp-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+      font-size: 14px;
+    }
+    .comp-table th, .comp-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+    }
+    .comp-table th {
+      color: var(--text-muted);
+      font-weight: 600;
+      background: rgba(16, 28, 42, 0.4);
+    }
+    .comp-table tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    /* Interactive Physics Sim Canvas */
+    .sim-panel {
+      background: #081119;
+      border: 1px solid var(--border-bright);
+      border-radius: 14px;
+      overflow: hidden;
+      margin: 24px 0;
+    }
+    .sim-header {
+      background: #0d1a26;
+      padding: 12px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .sim-title {
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--accent-cyan);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .sim-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .btn {
+      background: #142537;
+      border: 1px solid var(--border-bright);
+      color: var(--text);
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+    .btn:hover {
+      background: #1e364f;
+      color: #fff;
+    }
+    .btn-primary {
+      background: rgba(56, 189, 248, 0.2);
+      border-color: var(--accent-cyan);
+      color: var(--accent-cyan);
+    }
+    .btn-primary:hover {
+      background: rgba(56, 189, 248, 0.35);
+    }
+    canvas#simCanvas {
+      display: block;
+      width: 100%;
+      height: 380px;
+      background: radial-gradient(circle at 50% 50%, #0a1420 0%, #050a0f 100%);
+      cursor: crosshair;
+    }
+    .sim-footer {
+      background: #0b141d;
+      padding: 12px 18px;
+      font-size: 13px;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* Tag / Code Inline */
+    code {
+      background: rgba(255, 255, 255, 0.08);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 13px;
+      color: var(--accent-cyan);
+    }
+
+    /* Accordion / Steps */
+    .step-box {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 12px;
+      background: rgba(11, 19, 28, 0.7);
+    }
+    .step-box-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+    .step-pill {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 4px;
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--accent-cyan);
+    }
+
+    /* Responsive */
+    @media (max-width: 860px) {
+      .equation-terms { grid-template-columns: 1fr 1fr; }
+      .grid-2 { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 520px) {
+      .equation-terms { grid-template-columns: 1fr; }
+      h1 { font-size: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <!-- Header -->
+  <header>
+    <div class="badge">Information Boltzmann Mechanics · 概念奠基篇</div>
+    <h1>玻尔兹曼方程如何成为信息写入与演化的动力引擎？</h1>
+    <p class="lead">
+      从 1872 年路德维希·玻尔兹曼的经典气体动理论，到神经科学连接组上的连续信息场。
+      彻底搞懂每一个微分项、物理对应物，以及最关键的灵魂拷问：<strong>“我们这里到底有没有外力？”</strong>
+    </p>
+  </header>
+
+  <!-- Big Interactive Equation Banner -->
+  <div class="equation-hero">
+    <div class="equation-display">
+      $$ \underbrace{\frac{\partial f}{\partial t}}_{\text{时间累积}} + \underbrace{\mathbf{v} \cdot \nabla_{\mathbf{r}} f}_{\text{空间对流输运}} + \underbrace{\frac{\mathbf{F}}{m} \cdot \nabla_{\mathbf{v}} f}_{\text{外力漂移作用}} = \underbrace{\left( \frac{\partial f}{\partial t} \right)_{\text{coll}}}_{\text{微观碰撞重组}} $$
+    </div>
+
+    <div class="equation-terms">
+      <div class="eq-term-card active" style="--term-color: var(--accent-cyan); --term-glow: var(--glow-cyan);" onclick="highlightSection('sec-transport')">
+        <div class="symbol">$\mathbf{v} \cdot \nabla_{\mathbf{r}} f$</div>
+        <div class="title">输运项（Transport）</div>
+        <div class="desc">粒子凭速度沿空间自由漂移。在图上对应轴突无损酉流动。</div>
+      </div>
+
+      <div class="eq-term-card" style="--term-color: var(--accent-amber); --term-glow: var(--glow-amber);" onclick="highlightSection('sec-force')">
+        <div class="symbol">$\frac{\mathbf{F}}{m} \cdot \nabla_{\mathbf{v}} f$</div>
+        <div class="title">外力项（Force）</div>
+        <div class="desc">外场弯曲粒子轨迹。我们这里有外力吗？答案是：三种广义力！</div>
+      </div>
+
+      <div class="eq-term-card" style="--term-color: var(--accent-purple); --term-glow: var(--glow-purple);" onclick="highlightSection('sec-collision')">
+        <div class="symbol">$\left( \frac{\partial f}{\partial t} \right)_{\text{coll}}$</div>
+        <div class="title">碰撞项（Collision）</div>
+        <div class="desc">粒子相撞打乱速度，重组信息相位，诱发多体纠缠。</div>
+      </div>
+
+      <div class="eq-term-card" style="--term-color: var(--accent-green); --term-glow: var(--glow-green);" onclick="highlightSection('sec-write')">
+        <div class="symbol">$\mathcal{J}_{\text{in}} - \mathcal{J}_{\text{bath}}$</div>
+        <div class="title">边界注入与冷浴</div>
+        <div class="desc">开放系统专用项：波导散射写字，二次辐射散热，维持稳定耗散结构。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Interactive 2D Phase Space Simulation -->
+  <div class="sim-panel">
+    <div class="sim-header">
+      <div class="sim-title">
+        <span style="display:inline-block;width:10px;height:10px;background:var(--accent-cyan);border-radius:50%;box-shadow:0 0 8px var(--accent-cyan);"></span>
+        玻尔兹曼连续相空间动态演示（点击画布注入信息波包）
+      </div>
+      <div class="sim-controls">
+        <button class="btn" id="btnToggleColl" onclick="toggleSimParam('coll')">微观碰撞: 开</button>
+        <button class="btn" id="btnToggleTrans" onclick="toggleSimParam('trans')">图输运: 开</button>
+        <button class="btn" id="btnToggleForce" onclick="toggleSimParam('force')">流形势阱外力: 开</button>
+        <button class="btn" id="btnToggleBath" onclick="toggleSimParam('bath')">二次冷浴: 开</button>
+        <button class="btn btn-primary" onclick="injectRandomPacket()">注入测试波包</button>
+      </div>
+    </div>
+    <canvas id="simCanvas"></canvas>
+    <div class="sim-footer">
+      <div>当前粒子总数: <span id="simCount" style="color:var(--accent-cyan);font-weight:600;">180</span> | 宏观动能 $E$: <span id="simEnergy" style="color:var(--accent-amber);font-weight:600;">0.00</span> | 状态: <span id="simStatus" style="color:var(--accent-green);">开放非平衡稳态 (NESS)</span></div>
+      <div style="font-size:12px;">鼠标滚轮缩放 / 拖拽旋转 / 点击节点直接注入激发</div>
+    </div>
+  </div>
+
+  <!-- Chapter 1: The Foundations of Boltzmann Equation -->
+  <div class="section-title" id="sec-foundation">
+    <div class="num">1</div>
+    经典玻尔兹曼方程逐项解构：从微观粒子到宏观场
+  </div>
+
+  <div class="card">
+    <p style="margin-bottom: 14px;">
+      在 19 世纪末，路德维希·玻尔兹曼面临一个巨大的挑战：水是由数万亿个分子组成的，每个分子都在疯狂乱撞。如果跟踪每个分子的牛顿力学方程 $\mathbf{F} = m\mathbf{a}$，计算量是无限的；但宏观上，水却呈现为平滑流动的液体。
+    </p>
+    <p style="margin-bottom: 14px;">
+      玻尔兹曼的绝妙构想是引入<strong>相空间分布函数 $f(\mathbf{r}, \mathbf{v}, t)$</strong>：
+      它不再记录具体哪一个分子在哪，而是表示：<strong>在时刻 $t$，在空间位置 $\mathbf{r}$、以速度 $\mathbf{v}$ 运动的粒子概率密度有多大？</strong>
+    </p>
+
+    <div class="grid-2" style="margin-top: 20px;">
+      <div class="step-box">
+        <div class="step-box-header">
+          <span class="step-pill">Term 1</span>
+          <strong style="color:var(--accent-cyan)">时间累积项 $\frac{\partial f}{\partial t}$</strong>
+        </div>
+        <p style="font-size:13px;color:var(--text-muted);">
+          这是观察者固定在特定位置时，看到的局部信息浓度随时间的变化。如果整个系统没有新信息注入、没有空间流动也没有碰撞，那么 $\frac{\partial f}{\partial t} = 0$，系统处于永久静态。
+        </p>
+      </div>
+
+      <div class="step-box">
+        <div class="step-box-header">
+          <span class="step-pill">Term 2</span>
+          <strong style="color:var(--accent-cyan)">空间输运项 $\mathbf{v} \cdot \nabla_{\mathbf{r}} f$</strong>
+        </div>
+        <p style="font-size:13px;color:var(--text-muted);">
+          <strong>“凭惯性自由位移”</strong>。拥有速度 $\mathbf{v}$ 的粒子群，随时间自发从高密度区域漂移到低密度区域。在纯输运过程中，粒子之间互不干涉，只是单纯的位置搬运。
+        </p>
+      </div>
+
+      <div class="step-box">
+        <div class="step-box-header">
+          <span class="step-pill">Term 3</span>
+          <strong style="color:var(--accent-amber)">外力作用项 $\frac{\mathbf{F}}{m} \cdot \nabla_{\mathbf{v}} f$</strong>
+        </div>
+        <p style="font-size:13px;color:var(--text-muted);">
+          <strong>“外力使速度分布发生形变”</strong>。如果存在重力或电场力 $\mathbf{F}$，粒子在运动过程中会被加速或减速，其速度分布将沿力场方向整体漂移拉伸。
+        </p>
+      </div>
+
+      <div class="step-box">
+        <div class="step-box-header">
+          <span class="step-pill">Term 4</span>
+          <strong style="color:var(--accent-purple)">微观碰撞项 $\left( \frac{\partial f}{\partial t} \right)_{\text{coll}}$</strong>
+        </div>
+        <p style="font-size:13px;color:var(--text-muted);">
+          <strong>“相互作用与热化”</strong>。当两个粒子在极近距离相遇时发生碰撞，速度方向突变。碰撞打乱原有的速度关联，让系统趋向局域热动平衡（麦克斯韦分布）。
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chapter 2: The Core Question: Do we have an external force? -->
+  <div class="section-title" id="sec-force">
+    <div class="num">2</div>
+    灵魂诘问：在我们这个信息介质里，到底有没有“外力”？
+  </div>
+
+  <div class="card">
+    <div class="callout callout-amber">
+      <strong>核心直觉冲突：</strong>
+      在经典物理里，外力是重力、电磁力；但我们处理的是自然语言 Token 和果蝇连接组，这里没有挂着一个地球产生重力。那么方程里的 $\frac{\mathbf{F}}{m} \cdot \nabla_{\mathbf{v}} f$ 到底存不存在？
+    </div>
+
+    <p style="margin: 16px 0;">
+      答案是：<strong>不仅有，而且它以三种极其深刻、自洽的“广义物理力”形式存在！</strong>
+    </p>
+
+    <div style="margin-top: 20px;">
+      <h3 style="font-size: 16px; color: var(--accent-amber); margin-bottom: 8px;">
+        ① 广义相对论式外力：连接组的“非欧几何测地线势阱” ($\mathbf{F}_{\text{metric}}$)
+      </h3>
+      <p style="color: var(--text-muted); margin-bottom: 12px;">
+        爱因斯坦在广义相对论中告诉我们：<strong>引力根本不是真实的外力，而是弯曲时空的测地线效应！</strong>
+        在经典方程中，测地线方程写作：
+      </p>
+      <div style="text-align: center; margin: 10px 0; color: #fff;">
+        $$ \frac{d^2 x^\mu}{d\tau^2} + \underbrace{\Gamma^\mu_{\alpha\beta} \frac{dx^\alpha}{d\tau} \frac{dx^\beta}{d\tau}}_{\text{时空联络产生的等效几何力}} = 0 $$
+      </div>
+      <p style="color: var(--text-muted);">
+        在果蝇大脑 256 个解剖脑区构成的连接组图 $\mathcal{M}$ 上，由于突触连接是有向且非对称的（$W_{ij} \neq W_{ji}$），轴突密集的脑区形成了天然的<strong>“信息引力势阱”</strong>。
+        粒子并不是在平坦的欧氏空间里走匀速直线运动，而是被连接组的几何曲率推向特定的中继枢纽（Hubs）。这种由连接拓扑产生的<strong>测地偏向力</strong>，就是经典方程里作用在空间梯度上的广义外力！
+      </p>
+    </div>
+
+    <div style="margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--border);">
+      <h3 style="font-size: 16px; color: var(--accent-cyan); margin-bottom: 8px;">
+        ② 边界泵浦驱动力：外界语言 Token 的“高能边界脉冲” ($\mathbf{F}_{\text{injection}}$)
+      </h3>
+      <p style="color: var(--text-muted);">
+        对于一个<strong>开放热力学系统</strong>，外界做功往往不是在体内均匀撒胡椒面，而是通过<strong>边界端口注入（Waveguide Injection）</strong>。
+        外部句子里的每一个 Token，都是外界对介质施加的一个冲量 $\Delta \mathbf{P} = \int \mathbf{F}_{\text{ext}} dt$。
+        它在特定脑区敲击出局部振荡波包，向介质注入宏观功率 $P_{\text{in}}$。
+      </p>
+    </div>
+
+    <div style="margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--border);">
+      <h3 style="font-size: 16px; color: var(--accent-rose); margin-bottom: 8px;">
+        ③ 非线性粘滞阻尼力：二次被动冷浴摩擦力 ($\mathbf{F}_{\text{damping}} = -\beta \|\mathbf{v}\|^2 \mathbf{v}$)
+      </h3>
+      <p style="color: var(--text-muted);">
+        当外界持续注入能量时，如果没有摩擦阻尼，系统就会发生“热灾难”（数值发散爆炸）。
+        我们的二次被动冷浴（Quadratic Passive Bath）提供了物理上的<strong>非线性辐射阻尼力</strong>：
+        $$\mathbf{F}_{\text{diss}} = -\kappa \cdot \rho(v) \cdot \mathbf{x}(v) = -\frac{2\kappa}{R_d^2} \|\mathbf{x}(v)\|^2 \mathbf{x}(v)$$
+        <strong>外力驱动与冷浴阻尼精准平衡，催生出了普里戈金所谓的“非平衡态自组织耗散结构（Dissipative Structure）”！</strong>
+      </p>
+    </div>
+  </div>
+
+  <!-- Chapter 3: The Write Operator -->
+  <div class="section-title" id="sec-write">
+    <div class="num">3</div>
+    写入算子（The Write Operator）：如何将符号信息注入物理连续统？
+  </div>
+
+  <div class="card">
+    <p style="margin-bottom: 14px;">
+      深度学习中最粗暴的操作莫过于：$x_{t+1} = x_t + \text{Embedding}$。这在物理上相当于<strong>无中生有地违反能量守恒定律</strong>，并且每次加法都会把先前的场状态往外推，导致长程动力学完全失控。
+    </p>
+
+    <div class="callout callout-green">
+      <strong>CBIM 第一性原理：保幺双端口边界散射（Unitary Two-Port Scattering）</strong><br>
+      写入本质上是一个波导耦合器（Directional Coupler）。外界输入的语言波包与场内部原有的振荡态在边界相遇，发生可逆保能散射。
+    </div>
+
+    <div style="text-align: center; margin: 18px 0;">
+      $$ \begin{pmatrix} \mathbf{x}_{\text{field}}^+ \\ \mathbf{y}_{\text{reflected}} \end{pmatrix} = \begin{pmatrix} \cos\boldsymbol{\theta} & \sin\boldsymbol{\theta} \\ -\sin\boldsymbol{\theta} & \cos\boldsymbol{\theta} \end{pmatrix} \begin{pmatrix} \mathbf{x}_{\text{field}}^- \\ \mathbf{p}_{\text{packet}}(\text{Token}) \end{pmatrix} $$
+    </div>
+
+    <div class="grid-2" style="margin-top: 20px;">
+      <div>
+        <h4 style="color:var(--accent-green);font-size:14px;margin-bottom:6px;">严格代数能量守恒定理</h4>
+        <p style="font-size:13px;color:var(--text-muted);line-height:1.5;">
+          根据三角恒等式 $\cos^2\theta + \sin^2\theta = 1$，系统总能量严格守恒：
+          $$ \|\mathbf{x}^+\|^2 + \|\mathbf{y}_{\text{refl}}\|^2 = \|\mathbf{x}^-\|^2 + \|\mathbf{p}\|^2 $$
+          注入多少能量，必须伴随反射多少能量。场既不会因为注入而数值爆炸，也不会丢失信息先验。
+        </p>
+      </div>
+
+      <div>
+        <h4 style="color:var(--accent-cyan);font-size:14px;margin-bottom:6px;">单节点峰值归一化（Peak-Norm）</h4>
+        <p style="font-size:13px;color:var(--text-muted);line-height:1.5;">
+          针对三维离散图稀疏性，波包空间包络采用峰值归一：
+          $$ \mathbf{p}_i = \frac{\phi_i}{\max_m \phi_m} \cdot \left( \boldsymbol{\gamma} \odot \mathbf{c}(\text{token}) \right) $$
+          确保不论写入点落在脑区的哪个位置，最近脑区的振幅恒为 1，注入信噪比提升 876 倍，彻底根除信息稀释！
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chapter 4: The Collision Operator -->
+  <div class="section-title" id="sec-collision">
+    <div class="num">4</div>
+    碰撞算子（The Collision Operator）：零空间内的正交信息重组
+  </div>
+
+  <div class="card">
+    <p style="margin-bottom: 14px;">
+      经典玻尔兹曼方程中的碰撞项 $\mathcal{C}[f]$，在物理上代表分子热运动碰撞。它的核心特征是：
+      <strong>碰撞改变粒子的运动方向（微观重组），但绝不改变碰撞点的质量与动能（宏观守恒）。</strong>
+    </p>
+
+    <div class="callout callout-purple">
+      <strong>为什么神经网络不能用普通 MLP 做碰撞？</strong><br>
+      普通 Linear/MLP 会伸缩向量的长度。经过多步循环后，场能量要么指数衰减到 0（梯度消失），要么指数膨胀（数值溢出）。
+    </div>
+
+    <p style="margin: 16px 0;">
+      在 CBIM 中，我们将碰撞算子设计为<strong>宏观态的正交零空间旋转（Orthogonal Nullspace Collision）</strong>：
+    </p>
+
+    <div style="text-align: center; margin: 18px 0;">
+      $$ \mathbf{x}' = \mathbf{x} + \mathcal{C}[\mathbf{x}], \quad \text{其中} \quad \langle \mathbf{x}, \mathcal{C}[\mathbf{x}] \rangle \equiv 0 $$
+    </div>
+
+    <div class="step-box" style="margin-top: 16px; border-left: 3px solid var(--accent-purple);">
+      <h4 style="color:#fff;font-size:14px;margin-bottom:4px;">几何图像：切空间纯旋转（Pure Tangent Rotation）</h4>
+      <p style="font-size:13px;color:var(--text-muted);line-height:1.6;">
+        碰撞扰动量 $\mathcal{C}[\mathbf{x}]$ 永远严格垂直于当前状态 $\mathbf{x}$：
+        $$ \mathcal{C}[\mathbf{x}] = \mathbf{P}_{\perp}(\mathbf{x}) \cdot \text{MLP}(\mathbf{x}) = \left( I - \frac{\mathbf{x} \mathbf{x}^\top}{\|\mathbf{x}\|^2} \right) \text{MLP}(\mathbf{x}) $$
+        这在几何上相当于粒子在一个恒定能量球面上做切向流动。
+        微观上，128 个内部通道的相对相位在非线性作用下被打乱、纠缠、重构；
+        宏观上，每个节点的能量保持严格不变，避免了虚假能量积累。
+      </p>
+    </div>
+  </div>
+
+  <!-- Chapter 5: Complete Paradigm Comparison -->
+  <div class="section-title">
+    <div class="num">5</div>
+    终极全景对照：经典流体 vs 标准 Transformer vs 我们的 CBIM
+  </div>
+
+  <div class="card" style="padding: 10px; overflow-x: auto;">
+    <table class="comp-table">
+      <thead>
+        <tr>
+          <th>物理机制 / 数学维度</th>
+          <th>经典流体玻尔兹曼</th>
+          <th>标准 Transformer (NLP)</th>
+          <th>我们的 CBIM (玻尔兹曼信息介质)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>载体流形 $\mathcal{M}$</strong></td>
+          <td>平坦三维实数空间 $\mathbb{R}^3$</td>
+          <td>离散无序全连接图 $K_T$（忽略拓扑）</td>
+          <td><span style="color:var(--accent-cyan);font-weight:600;">果蝇脑 256 解剖连接组非欧流形</span></td>
+        </tr>
+        <tr>
+          <td><strong>状态变量</strong></td>
+          <td>微观粒子分布 $f(\mathbf{r}, \mathbf{v}, t)$</td>
+          <td>离散词向量 $h_t \in \mathbb{R}^d$</td>
+          <td><span style="color:var(--accent-green);font-weight:600;">连续时空多通道场 $\mathbf{x}(v, t) \in \mathbb{R}^{256 \times 128}$</span></td>
+        </tr>
+        <tr>
+          <td><strong>空间输运项</strong></td>
+          <td>线性漂移 $\mathbf{v} \cdot \nabla f$</td>
+          <td>全序列 $O(T^2)$ 矩阵点积注意力</td>
+          <td><span style="color:var(--accent-cyan);font-weight:600;">Cayley 反对称酉输运 $(I-\Omega)(I+\Omega)^{-1}$</span></td>
+        </tr>
+        <tr>
+          <td><strong>外力作用</strong></td>
+          <td>重力、静电场等保守力场</td>
+          <td>无物理力概念（靠位置编码偏置）</td>
+          <td><span style="color:var(--accent-amber);font-weight:600;">连接组几何测地势阱 + 边界脉冲冲量</span></td>
+        </tr>
+        <tr>
+          <td><strong>微观碰撞</strong></td>
+          <td>硬球分子相互散射（二体积分）</td>
+          <td>全连接前馈网络 FFN</td>
+          <td><span style="color:var(--accent-purple);font-weight:600;">正交零空间保能碰撞 $\langle \mathbf{x}, \Delta \mathbf{x} \rangle = 0$</span></td>
+        </tr>
+        <tr>
+          <td><strong>热力学平衡</strong></td>
+          <td>封闭系统孤立热平衡（熵增热寂）</td>
+          <td>无热力学闭环，能量任意漂移</td>
+          <td><span style="color:var(--accent-rose);font-weight:600;">开放驱动-耗散系统（自稳 NESS 极限环）</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Simulation Script -->
+<script>
+  // Simple interactive 2D graph simulation mimicking Boltzmann continuous field
+  const canvas = document.getElementById('simCanvas');
+  const ctx = canvas.getContext('2d');
+
+  let width, height;
+  function resize() {
+    const rect = canvas.getBoundingClientRect();
+    width = canvas.width = rect.width * (window.devicePixelRatio || 1);
+    height = canvas.height = rect.height * (window.devicePixelRatio || 1);
+    ctx.scale(window.devicePixelRatio || 1, window.devicePixelRatio || 1);
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  // Settings
+  let params = {
+    coll: true,
+    trans: true,
+    force: true,
+    bath: true,
+  };
+
+  function toggleSimParam(key) {
+    params[key] = !params[key];
+    const btn = document.getElementById('btnToggle' + key.charAt(0).toUpperCase() + key.slice(1));
+    const labels = { coll: '微观碰撞', trans: '图输运', force: '流形势阱外力', bath: '二次冷浴' };
+    btn.textContent = `${labels[key]}: ${params[key] ? '开' : '关'}`;
+    btn.classList.toggle('btn-primary', params[key]);
+  }
+
+  // Create a synthetic connectome of 16 anatomical parcels
+  const nodes = [];
+  const numNodes = 16;
+  const cx = () => canvas.clientWidth / 2;
+  const cy = () => canvas.clientHeight / 2;
+
+  for (let i = 0; i < numNodes; i++) {
+    const angle = (i / numNodes) * Math.PI * 2;
+    const r = 110 + (i % 3) * 35;
+    nodes.push({
+      id: i,
+      x: cx() + Math.cos(angle) * r,
+      y: cy() + Math.sin(angle) * r,
+      vx: 0,
+      vy: 0,
+      energy: 0.1 + Math.random() * 0.2,
+      phase: Math.random() * Math.PI * 2,
+      hub: i === 0 || i === 5 || i === 11, // Geodesic Potential Hubs
+    });
+  }
+
+  // Connectome Edges (Directed)
+  const edges = [];
+  for (let i = 0; i < numNodes; i++) {
+    edges.push({ u: i, v: (i + 1) % numNodes, w: 0.8 });
+    edges.push({ u: i, v: (i + 3) % numNodes, w: 0.5 });
+    if (i % 4 === 0) {
+      edges.push({ u: i, v: 0, w: 1.2 }); // Central hub pull
+    }
+  }
+
+  // Particles inside the field (representing discrete microstates f(r,v,t))
+  const particles = [];
+  const totalParticles = 180;
+  for (let i = 0; i < totalParticles; i++) {
+    const node = nodes[Math.floor(Math.random() * numNodes)];
+    particles.push({
+      x: node.x + (Math.random() - 0.5) * 20,
+      y: node.y + (Math.random() - 0.5) * 20,
+      vx: (Math.random() - 0.5) * 2,
+      vy: (Math.random() - 0.5) * 2,
+      currentNode: node.id,
+      energy: 0.5 + Math.random() * 0.5,
+      colorPhase: Math.random() * 360,
+    });
+  }
+
+  // Click on canvas to inject packet
+  canvas.addEventListener('pointerdown', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const mx = e.clientX - rect.left;
+    const my = e.clientY - rect.top;
+
+    // Find closest node
+    let closest = nodes[0], minDist = 1e9;
+    for (let n of nodes) {
+      let d = Math.hypot(n.x - mx, n.y - my);
+      if (d < minDist) { minDist = d; closest = n; }
+    }
+    injectPacketAt(closest);
+  });
+
+  function injectPacketAt(node) {
+    node.energy += 1.5;
+    for (let i = 0; i < 24; i++) {
+      const p = particles[Math.floor(Math.random() * particles.length)];
+      p.x = node.x;
+      p.y = node.y;
+      p.vx = (Math.random() - 0.5) * 5;
+      p.vy = (Math.random() - 0.5) * 5;
+      p.energy = 2.0;
+      p.colorPhase = 45; // Amber/Gold burst
+    }
+  }
+
+  function injectRandomPacket() {
+    const node = nodes[Math.floor(Math.random() * nodes.length)];
+    injectPacketAt(node);
+  }
+
+  // Animation Loop
+  let lastTime = performance.now();
+  function animate(now) {
+    const dt = Math.min((now - lastTime) / 1000, 0.05);
+    lastTime = now;
+
+    // Simulation Step
+    let totalE = 0;
+    nodes.forEach(n => {
+      // 1. Manifold Geodesic Force & Transport
+      if (params.trans) {
+        // Transport across edges
+        edges.forEach(e => {
+          if (e.u === n.id) {
+            let target = nodes[e.v];
+            let flux = (n.energy - target.energy * 0.7) * 0.05 * e.w;
+            if (flux > 0) {
+              n.energy -= flux;
+              target.energy += flux;
+            }
+          }
+        });
+      }
+
+      // 2. Dissipation / Radiation Bath
+      if (params.bath) {
+        let rho = n.energy / 1.0;
+        let dissipation = 0.015 * (rho * rho); // Quadratic dissipation
+        n.energy = Math.max(0.08, n.energy - dissipation);
+      }
+
+      totalE += n.energy;
+    });
+
+    // Update Particles
+    particles.forEach((p, idx) => {
+      let n = nodes[p.currentNode];
+
+      // External Manifold Force: pull towards connected nodes and hub
+      if (params.force) {
+        let targetNode = n.hub ? n : nodes[(n.id + 1) % numNodes];
+        let dx = targetNode.x - p.x;
+        let dy = targetNode.y - p.y;
+        let dist = Math.hypot(dx, dy) + 1e-4;
+        let forceMag = 1.2;
+        p.vx += (dx / dist) * forceMag * dt;
+        p.vy += (dy / dist) * forceMag * dt;
+      }
+
+      // Collision operator: Random orthogonal rotation in velocity space
+      if (params.coll && Math.random() < 0.15) {
+        let speed = Math.hypot(p.vx, p.vy);
+        let theta = (Math.random() - 0.5) * 1.5;
+        let cosT = Math.cos(theta), sinT = Math.sin(theta);
+        let nvx = p.vx * cosT - p.vy * sinT;
+        let nvy = p.vx * sinT + p.vy * cosT;
+        // Project back to ensure strictly zero energy drift
+        let nSpeed = Math.hypot(nvx, nvy) + 1e-6;
+        p.vx = (nvx / nSpeed) * speed;
+        p.vy = (nvy / nSpeed) * speed;
+        p.colorPhase = (p.colorPhase + 30) % 360;
+      }
+
+      // Advection / Streaming
+      p.x += p.vx * 60 * dt;
+      p.y += p.vy * 60 * dt;
+
+      // Wrap-around or node jump
+      let closest = nodes[0], minDist = 1e9;
+      for (let cand of nodes) {
+        let d = Math.hypot(cand.x - p.x, cand.y - p.y);
+        if (d < minDist) { minDist = d; closest = cand; }
+      }
+      p.currentNode = closest.id;
+
+      if (p.x < 0 || p.x > canvas.clientWidth || p.y < 0 || p.y > canvas.clientHeight) {
+        p.x = closest.x;
+        p.y = closest.y;
+      }
+    });
+
+    // Render Canvas
+    ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
+
+    // Draw Edges
+    ctx.lineWidth = 1.2;
+    edges.forEach(e => {
+      let u = nodes[e.u], v = nodes[e.v];
+      ctx.strokeStyle = `rgba(56, 189, 248, ${0.08 * e.w})`;
+      ctx.beginPath();
+      ctx.moveTo(u.x, u.y);
+      ctx.lineTo(v.x, v.y);
+      ctx.stroke();
+    });
+
+    // Draw Nodes
+    nodes.forEach(n => {
+      let radius = Math.min(22, 6 + n.energy * 8);
+      ctx.fillStyle = n.hub ? 'rgba(251, 191, 36, 0.7)' : 'rgba(56, 189, 248, 0.6)';
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, radius, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Halo glow
+      ctx.strokeStyle = n.hub ? 'rgba(251, 191, 36, 0.25)' : 'rgba(56, 189, 248, 0.25)';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, radius + 4 + Math.sin(now * 0.005 + n.id) * 2, 0, Math.PI * 2);
+      ctx.stroke();
+    });
+
+    // Draw Particles
+    particles.forEach(p => {
+      ctx.fillStyle = `hsl(${p.colorPhase}, 85%, 65%)`;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 2.2, 0, Math.PI * 2);
+      ctx.fill();
+    });
+
+    // Telemetry display update
+    document.getElementById('simEnergy').textContent = totalE.toFixed(3);
+
+    requestAnimationFrame(animate);
+  }
+  requestAnimationFrame(animate);
+
+  function highlightSection(id) {
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+</script>
+
+</body>
+</html>

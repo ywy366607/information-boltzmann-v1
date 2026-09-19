@@ -1,0 +1,31 @@
+{
+  "date": "2026-09-13",
+  "status": "preflight_only",
+  "graph": "data/malecns_v1/malecns_parcels_256.npz",
+  "nodes": 256,
+  "velocities": 8,
+  "content_dim": 8,
+  "batch": 1,
+  "device": "NVIDIA GeForce GTX 1650 4096 MiB",
+  "torch": "2.9.1+cu126",
+  "warmup_iterations": 100,
+  "timed_iterations": 2000,
+  "directional_finite_volume_ms_per_token": 0.188406,
+  "legacy_spectral_ms_per_token": 0.754037,
+  "directional_transition_storage_mib": 2.0,
+  "unit_tests": {
+    "command": ".venv/Scripts/python.exe -m pytest tests/test_geometric_transport.py -q",
+    "result": "3 passed",
+    "claims": [
+      "nonnegative occupancy remains nonnegative",
+      "mass is conserved independently for each velocity and content channel",
+      "opposite velocities have reciprocal off-diagonal flux",
+      "routing changes when physical axis scale changes"
+    ]
+  },
+  "limitations": [
+    "The kernel is not integrated into a trained model yet.",
+    "The current signed CBIM field does not supply a classical nonnegative Boltzmann occupancy or H functional.",
+    "End-to-end CUDA Graph timing and NLL remain unmeasured."
+  ]
+}
