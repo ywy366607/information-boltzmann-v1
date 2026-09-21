@@ -103,11 +103,14 @@ class UnitaryCayleyTransport2D(nn.Module):
 
 
 class GivensCollision2D(nn.Module):
-    """Local Givens SO(d-4) Collision Rotations conserving density and momentum."""
-    def __init__(self, d_channels: int = 128, n_layers: int = 2):
+    """Local Givens SO(d-4) Collision Rotations conserving density and momentum.
+    Supports problem-conditioned angles (P_t) with exact zero energy injection.
+    """
+    def __init__(self, d_channels: int = 128, n_layers: int = 2, conditioned: bool = True):
         super().__init__()
         self.d = d_channels
         self.layers = n_layers
+        self.conditioned = conditioned
 
         # Conserved subspace: 4 invariants (1 density + 2 momentum + 1 energy)
         velocities = 8
@@ -138,14 +141,15 @@ class GivensCollision2D(nn.Module):
         self.register_buffer("pairs_l0", pairs_l0)
         self.register_buffer("pairs_l1", pairs_l1)
 
-        # Angle prediction network
+        # Angle prediction network: takes [state, clue] if conditioned, else [state]
+        in_dim = self.d * 2 if conditioned else self.d
         self.angle_net = nn.Sequential(
-            nn.Linear(self.d, 128),
+            nn.Linear(in_dim, 128),
             nn.SiLU(),
             nn.Linear(128, self.layers * (self.d_active // 2))
         )
 
-    def forward(self, field: torch.Tensor, inverse: bool = False) -> torch.Tensor:
+    def forward(self, field: torch.Tensor, cond: Optional[torch.Tensor] = None, inverse: bool = False) -> torch.Tensor:
         """Apply local Givens collision rotations to field [B, 9, 9, D]."""
         B, H, W, D = field.shape
         flat = field.view(B, H * W, D)
@@ -154,11 +158,16 @@ class GivensCollision2D(nn.Module):
         coeff = torch.einsum("dk,bnd->bnk", self.nullspace, flat)
         conserved = flat - torch.einsum("dk,bnk->bnd", self.nullspace, coeff)
 
-        # Compute rotation angles
-        angles = self.angle_net(flat).view(B, H * W, self.layers, self.d_active // 2)
+        # Angle condition
+        if self.conditioned and cond is not None:
+            flat_cond = cond.view(B, H * W, D)
+            angle_in = torch.cat([flat, flat_cond], dim=-1)
+        else:
+            angle_in = flat
+
+        angles = self.angle_net(angle_in).view(B, H * W, self.layers, self.d_active // 2)
 
         val = coeff
-        # Layer schedules
         schedules = [self.pairs_l0, self.pairs_l1]
         layer_indices = range(self.layers - 1, -1, -1) if inverse else range(self.layers)
 
@@ -183,11 +192,13 @@ class ReversiblePonderFunction2D(torch.autograd.Function):
     """Hamiltonian Reversible Pondering Function for 2D Sudoku field with O(1) memory in depth K."""
     @staticmethod
     def forward(ctx, field: torch.Tensor, k_steps: int, transport: UnitaryCayleyTransport2D,
-                collision: GivensCollision2D, dt: Optional[torch.Tensor]) -> torch.Tensor:
+                collision: GivensCollision2D, dt: Optional[torch.Tensor],
+                cond: Optional[torch.Tensor] = None) -> torch.Tensor:
         ctx.k_steps = k_steps
         ctx.transport = transport
         ctx.collision = collision
         ctx.dt = dt
+        ctx.save_for_backward(field.detach(), cond.detach() if cond is not None else None)
 
         curr = field
         B, H, W, D = curr.shape
@@ -196,13 +207,10 @@ class ReversiblePonderFunction2D(torch.autograd.Function):
 
         with torch.no_grad():
             for _ in range(k_steps):
-                # 1. Transport
                 f_5d = curr.view(B, H, W, n_v, d_c)
                 f_tr = transport(f_5d, dt=dt, inverse=False).view(B, H, W, D)
-                # 2. Collision
-                curr = collision(f_tr, inverse=False)
+                curr = collision(f_tr, cond=cond, inverse=False)
 
-        ctx.save_for_backward(curr.detach())
         return curr
 
     @staticmethod
@@ -211,41 +219,44 @@ class ReversiblePonderFunction2D(torch.autograd.Function):
         transport = ctx.transport
         collision = ctx.collision
         dt = ctx.dt
-        curr, = ctx.saved_tensors
+        f_init, cond = ctx.saved_tensors
 
+        # Re-roll forward to reconstruct final state or invert step by step
+        # Reconstruct trajectory
+        curr = f_init
         B, H, W, D = curr.shape
         n_v = transport.n_v
         d_c = transport.d_c
 
+        history = [curr]
+        with torch.no_grad():
+            for _ in range(k_steps):
+                f_5d = curr.view(B, H, W, n_v, d_c)
+                f_tr = transport(f_5d, dt=dt, inverse=False).view(B, H, W, D)
+                curr = collision(f_tr, cond=cond, inverse=False)
+                history.append(curr)
+
         grad_f = grad_output.clone()
 
-        # Invert step by step
-        for _ in range(k_steps):
-            # 1. Invert collision
+        for step_idx in range(k_steps - 1, -1, -1):
+            f_prev = history[step_idx]
             with torch.enable_grad():
-                f_in_coll = curr.detach().requires_grad_(True)
-                f_coll = collision(f_in_coll, inverse=True)
-                vjp_coll, = torch.autograd.grad(f_coll, f_in_coll, grad_f, retain_graph=False)
+                f_in = f_prev.detach().requires_grad_(True)
+                f_5d_in = f_in.view(B, H, W, n_v, d_c)
+                f_tr_in = transport(f_5d_in, dt=dt, inverse=False).view(B, H, W, D)
+                f_out_step = collision(f_tr_in, cond=cond, inverse=False)
+                vjp, = torch.autograd.grad(f_out_step, f_in, grad_f, retain_graph=False)
 
-            curr = f_coll.detach()
+            grad_f = vjp
 
-            # 2. Invert transport
-            with torch.enable_grad():
-                f_in_tr = curr.view(B, H, W, n_v, d_c).detach().requires_grad_(True)
-                f_tr = transport(f_in_tr, dt=dt, inverse=True).view(B, H, W, D)
-                vjp_tr, = torch.autograd.grad(f_tr, f_in_tr, vjp_coll, retain_graph=False)
-
-            curr = f_tr.detach()
-            grad_f = vjp_tr.view(B, H, W, D)
-
-        return grad_f, None, None, None, None
+        return grad_f, None, None, None, None, None
 
 
 class CBIMSudokuModel(nn.Module):
-    """CBIM Sudoku Solver with continuous kinetic pondering."""
+    """CBIM Sudoku Solver with continuous kinetic pondering and problem conditioning."""
     def __init__(self, vocab_size: int = 11, d_channels: int = 128, n_velocities: int = 8,
                  ponder_steps: int = 6, halt_max_steps: int = 16,
-                 multi_step_loss: bool = True):
+                 multi_step_loss: bool = True, conditioned: bool = True):
         super().__init__()
         self.vocab_size = vocab_size
         self.d = d_channels
@@ -254,6 +265,7 @@ class CBIMSudokuModel(nn.Module):
         self.ponder_steps = ponder_steps
         self.halt_max_steps = halt_max_steps
         self.multi_step_loss = multi_step_loss
+        self.conditioned = conditioned
 
         # 1. Clue Input Embedding
         self.embed_tokens = nn.Embedding(vocab_size, d_channels)
@@ -265,7 +277,7 @@ class CBIMSudokuModel(nn.Module):
 
         # 2. Kinetic Operators
         self.transport = UnitaryCayleyTransport2D(d_channels=d_channels, n_velocities=n_velocities)
-        self.collision = GivensCollision2D(d_channels=d_channels, n_layers=2)
+        self.collision = GivensCollision2D(d_channels=d_channels, n_layers=2, conditioned=conditioned)
 
         # 3. Characteristic Kernel Readout
         self.readout_mlp = nn.Sequential(
@@ -280,9 +292,9 @@ class CBIMSudokuModel(nn.Module):
             self.q_head.weight.zero_()
             self.q_head.bias.fill_(-5.0)
 
-    def forward_ponder(self, field: torch.Tensor, k: int) -> torch.Tensor:
+    def forward_ponder(self, field: torch.Tensor, k: int, cond: Optional[torch.Tensor] = None) -> torch.Tensor:
         """Run K pondering steps with Hamiltonian Reversible Inversion."""
-        return ReversiblePonderFunction2D.apply(field, k, self.transport, self.collision, None)
+        return ReversiblePonderFunction2D.apply(field, k, self.transport, self.collision, None, cond)
 
     def initial_carry(self, batch: Dict[str, torch.Tensor]) -> CBIMSudokuCarry:
         B = batch["inputs"].shape[0]
@@ -314,6 +326,7 @@ class CBIMSudokuModel(nn.Module):
         prior_field = torch.where(carry.halted.view(B, 1, 1, 1), clue_field, carry.inner_carry.field)
 
         # 2. Kinetic Pondering: Run K microsteps
+        cond = clue_field if self.conditioned else None
         if self.training and self.multi_step_loss:
             curr = prior_field
             step_logits = []
@@ -321,7 +334,7 @@ class CBIMSudokuModel(nn.Module):
             for k in range(1, self.ponder_steps + 1):
                 f_5d = curr.view(B, 9, 9, self.n_v, self.d_c)
                 f_tr = self.transport(f_5d).view(B, 9, 9, self.d)
-                curr = self.collision(f_tr)
+                curr = self.collision(f_tr, cond=cond)
                 if k % stride == 0 or k == self.ponder_steps:
                     flat_k = curr.view(B, 81, self.d)
                     logits_k = self.readout_mlp(flat_k)
@@ -330,7 +343,7 @@ class CBIMSudokuModel(nn.Module):
             logits = step_logits[-1]
             all_step_logits = step_logits
         else:
-            evolved_field = self.forward_ponder(prior_field, self.ponder_steps)
+            evolved_field = self.forward_ponder(prior_field, self.ponder_steps, cond=cond)
             flat_field = evolved_field.view(B, 81, self.d)
             logits = self.readout_mlp(flat_field)
             all_step_logits = [logits]

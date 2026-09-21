@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CBIM 动态推理与物理流体全景动画看板 (K & H 时间轴)</title>
+    <style>
+        :root {
+            --bg-color: #05060f;
+            --panel-bg: #090c1a;
+            --card-bg: #0e1328;
+            --accent-cyan: #2ec4b6;
+            --accent-blue: #2080f0;
+            --accent-purple: #9d4edd;
+            --text-main: #e2e8f0;
+            --text-muted: #8892b0;
+            --border-color: #1a2342;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding: 24px;
+            line-height: 1.6;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: linear-gradient(180deg, rgba(32, 128, 240, 0.08) 0%, rgba(5, 6, 15, 0) 100%);
+            border-bottom: 1px solid var(--border-color);
+        }
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(90deg, #38d8b8, #2080f0, #9d4edd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+        .header p {
+            color: var(--text-muted);
+            font-size: 15px;
+        }
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+        .tab-btn {
+            background: var(--card-bg);
+            color: var(--text-muted);
+            border: 1px solid var(--border-color);
+            padding: 10px 22px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.25s ease;
+        }
+        .tab-btn:hover {
+            border-color: var(--accent-cyan);
+            color: var(--text-main);
+        }
+        .tab-btn.active {
+            background: linear-gradient(135deg, rgba(46, 196, 182, 0.2) 0%, rgba(32, 128, 240, 0.2) 100%);
+            border-color: var(--accent-cyan);
+            color: #ffffff;
+            box-shadow: 0 0 16px rgba(46, 196, 182, 0.25);
+        }
+        .tab-content {
+            display: none;
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.35s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .anim-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px 0;
+        }
+        .anim-img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.6);
+        }
+        .desc-box {
+            background: var(--card-bg);
+            border-left: 4px solid var(--accent-cyan);
+            padding: 16px 20px;
+            border-radius: 0 8px 8px 0;
+            margin: 20px 0 10px 0;
+            font-size: 14px;
+        }
+        .desc-box h3 {
+            color: var(--accent-cyan);
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+        .desc-box ul {
+            padding-left: 20px;
+            color: var(--text-muted);
+        }
+        .desc-box li {
+            margin-bottom: 6px;
+        }
+        .iframe-container {
+            width: 100%;
+            height: 650px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            margin-top: 15px;
+        }
+        .iframe-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .badge {
+            display: inline-block;
+            background: rgba(46, 196, 182, 0.15);
+            color: var(--accent-cyan);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-right: 6px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>CBIM 连续相空间动态推理与物理流体全景看板</h1>
+        <p>以内部微步思考深度 $K$ 与外部宏步周期 $H$ 为时间轴的物理与认知动画解析</p>
+    </div>
+
+    <div class="nav-tabs">
+        <button class="tab-btn active" onclick="switchTab(0)">1. $K$ 轴空间结晶动画 (Sudoku Grid)</button>
+        <button class="tab-btn" onclick="switchTab(1)">2. 3D 周期环面波平流 (Donut Torus)</button>
+        <button class="tab-btn" onclick="switchTab(2)">3. 相空间流体涡旋演化 (Fractal Basins)</button>
+        <button class="tab-btn" onclick="switchTab(3)">4. $H$ 宏步与 $K$ 微步双钟动力学 (Two-Clock)</button>
+        <button class="tab-btn" onclick="switchTab(4)">5. 3D 响应流形与帕累托前沿 (Pareto Frontier)</button>
+    </div>
+
+    <!-- Tab 1: K-Axis Board Crystallization -->
+    <div class="tab-content active" id="tab-0">
+        <h2>1. 空间思考深度 $K$ 轴：81 格自发结晶过程 (全尺度 K = 1 .. 512)</h2>
+        <div class="desc-box">
+            <h3><span class="badge">全深度时间轴 K = 1 .. 512</span> 为什么不同题目的准确率差异巨大？</h3>
+            <ul>
+                <li><strong>全局宏观大盘 vs 单题表现</strong>：全量 1,000 道测试题的综合准确率为 <strong>50.50%</strong>。但具体到不同难度的题目：</li>
+                <li><strong>普通题 (Easy，35 个线索，如第 909 题)</strong>：线索占 43.2%，深思考 $K=512$ 步后准确率高达 <strong>67.9%</strong>（下方左侧动画，全盘几乎全白！）；</li>
+                <li><strong>极限极难题 (Hard，仅 17 个线索，如第 122 题)</strong>：17 clues 是数学上唯一解数独的理论绝对下限，全盘近 80% 全空！深思考达到 <strong>38.3%</strong>（下方右侧动画，成功推导出一半空格！）；</li>
+                <li><strong>超深思考单调性</strong>：即使外推到疯狂的 $K=512$，全盘依然保持极高稳定性，香农熵持续压低至 0.6 nats 以下，没有发生任何表征崩溃。</li>
+            </ul>
+        </div>
+        <div style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; margin: 20px 0;">
+            <div style="flex: 1; min-width: 500px; text-align: center;">
+                <h4 style="color: var(--accent-cyan); margin-bottom: 10px;">普通题 (Easy 35线索): 最终准确率 67.9% (K=1..512)</h4>
+                <img class="anim-img" src="cbim_pondering_crystallization_k512_easy.gif" alt="Easy Puzzle Crystallization K=1..512">
+            </div>
+            <div style="flex: 1; min-width: 500px; text-align: center;">
+                <h4 style="color: #ffaa00; margin-bottom: 10px;">极难 17 题 (Hard 17线索): 最终准确率 38.3% (K=1..512)</h4>
+                <img class="anim-img" src="cbim_pondering_crystallization_k512_hard.gif" alt="Hard Puzzle Crystallization K=1..512">
+            </div>
+        </div>
+    </div>
+
+    <!-- Tab 2: 3D Torus Wave Flow -->
+    <div class="tab-content" id="tab-1">
+        <h2>2. 3D 周期环面波平流与李代数碰撞动力学 (长程回绕 K = 1 .. 64)</h2>
+        <div class="desc-box">
+            <h3><span class="badge">连续几何流形 T^2 = S^1 x S^1</span> 3D 空间长程波流转 (K = 1 .. 64，360° 全景旋转)</h3>
+            <ul>
+                <li><strong>多周期完整回绕</strong>：展示 $K=1 \dots 64$ 长时间轴下，波包在 3D 甜甜圈环面上的多轮轨道平流，波峰在周期边界处无损循环交织；</li>
+                <li><strong>波碰撞干涉与驻波形成</strong>：沿不同经纬度速度行进的波在格点处发生李代数 $SO(d)$ 正交旋转，逐渐消灭冲突、形成稳定的宏观驻波；</li>
+                <li><strong>下方提供 3D 实时可交互模型</strong>：可在浏览器中自由拖拽旋转观察！</li>
+            </ul>
+        </div>
+        <div class="anim-container">
+            <img class="anim-img" src="cbim_torus_wave_flow_deep.gif" alt="Deep 3D Torus Wave Flow Animation" style="max-width: 750px;">
+        </div>
+        <h3 style="margin-top: 25px; color: var(--accent-cyan);">3D 实时交互环面模型 (可自由旋转/缩放)：</h3>
+        <div class="iframe-container">
+            <iframe src="cbim_torus_wave_propagation_3d.html"></iframe>
+        </div>
+    </div>
+
+    <!-- Tab 3: Fractal Basin Evolution -->
+    <div class="tab-content" id="tab-2">
+        <h2>3. 对抗约束相空间：流体剪切与多代分形折叠 (长程演化 K = 1 .. 64)</h2>
+        <div class="desc-box">
+            <h3><span class="badge">非线性流体机理</span> 竞争子空间长程对抗折叠 (K = 1 .. 64)</h3>
+            <ul>
+                <li><strong>死锁竞争</strong>：扰动轴 $\mathbf{v}_1$ 与 $\mathbf{v}_2$ 分别推动同一行的两个未决格争取同一个数字（行约束冲突）；</li>
+                <li><strong>多代分形折叠</strong>：从初期平缓的双曲界面，随着 $K=1 \dots 64$ 持续推进，剪切边界发生多级非线性折叠与涡旋卷起，形成深层分形流体结构；</li>
+                <li><strong>多层级分形悬崖</strong>：在冲突边界处，微小的初始扰动会导致系统陷入不同微步的纠偏循环，分形熵激增至 1.29！</li>
+            </ul>
+        </div>
+        <div class="anim-container">
+            <img class="anim-img" src="cbim_fractal_basin_time_evolution_deep.gif" alt="Deep Fractal Basin Time Evolution Animation" style="max-width: 700px;">
+        </div>
+        <h3 style="margin-top: 25px; color: var(--accent-cyan);">3D 相空间冲突等值面模型 (3D 交互透视)：</h3>
+        <div class="iframe-container">
+            <iframe src="cbim_fractal_basins_3d_interactive.html"></iframe>
+        </div>
+    </div>
+
+    <!-- Tab 4: Two-Clock Recurrence Theory -->
+    <div class="tab-content" id="tab-3">
+        <h2>4. 宏步 $H$ 轴与微步 $K$ 轴的双钟动力学协同 (Two-Clock Recurrence)</h2>
+        <div class="desc-box">
+            <h3><span class="badge">理论统一</span> 宏观时间流与微观内思考流的解耦与闭合</h3>
+            <ul>
+                <li><strong>外部宏步时间 $H$ (The Macro Clock / Outer Recurrence)</strong>：
+                    在自回归语言流（$t = 1, 2, \dots, T$）或递归宏循环中，控制全局输入注入、记忆状态持久化与下一个决策输出；
+                </li>
+                <li><strong>内部微步思考 $K$ (The Micro Clock / Inner Pondering)</strong>：
+                    在隐空间内部进行多步等能量球面测地纠偏，将高阶逻辑冲突在相空间内静默消解；
+                </li>
+                <li><strong>为什么这是统一大模型（LLM）的圣杯？</strong>：
+                    传统大模型（如 o1/R1）靠吐出海量外显 `<think>` token 做思考（本质是受误差级联困扰的单钟系统）；
+                    而 CBIM 实现了<strong>双钟解耦</strong>——外部 $H$ 步只需接收一个连续成熟的物理态，而所有崎岖的逻辑假设均在内部 $K$ 轴的能量守恒流场中完成！
+                </li>
+            </ul>
+        </div>
+        <div class="anim-container" style="text-align: center; padding: 30px;">
+            <div style="display: inline-block; background: #080a1c; border: 1px solid #1a2850; padding: 25px 40px; border-radius: 12px;">
+                <div style="font-family: monospace; font-size: 16px; color: #38d8b8; margin-bottom: 12px;">
+                    [ Macro Step H: External Sequence Streaming & Boundary Carry ]
+                </div>
+                <div style="font-size: 20px; color: #ffffff; margin-bottom: 12px;">
+                    ↓ (Inward Thought Projection)
+                </div>
+                <div style="background: #0d1633; border: 1px dashed #2080f0; padding: 15px 30px; border-radius: 8px;">
+                    <div style="font-family: monospace; font-size: 15px; color: #ffaa00;">
+                        Inner Microstep Loop K = 1 .. 64 (Isoenergetic Geodesic Flow)
+                    </div>
+                    <div style="font-size: 13px; color: #8892b0; margin-top: 6px;">
+                        ||F_{k+1}||^2 == ||F_k||^2 | Tangent Relaxation | Continuous Vortex Rollup
+                    </div>
+                </div>
+                <div style="font-size: 20px; color: #ffffff; margin-top: 12px; margin-bottom: 12px;">
+                    ↓ (Collapsed Decision Outward)
+                </div>
+                <div style="font-family: monospace; font-size: 16px; color: #9d4edd;">
+                    [ Next Macro Step H+1: Inherits Mature NESS Physical Field ]
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tab 5: 3D Response Surface & Pareto Frontier -->
+    <div class="tab-content" id="tab-4">
+        <h2>5. 宏步 $H$ 与微步 $K$ 认知时域 3D 响应流形与帕累托前沿 (Z(H, K) Accuracy Surface)</h2>
+        <div class="desc-box">
+            <h3><span class="badge">梯度雕刻公理</span> 真实训练点严格锚定与物理响应曲面</h3>
+            <ul>
+                <li><strong>物理公理约束</strong>：只有当反向传播梯度真实流经的时间尺度（$H$ 或 $K$），网络才会雕刻出对应的吸引子深度；超出训练深度的区域，状态进入稳态吸引子平台；</li>
+                <li><strong>计算成本函数</strong>：每走 1 个宏步 $H$ 需经历边界 2-Port 散射与软积分读出，物理算力成本约为微步 $K$ 的 <strong>3.5 倍</strong>（$\text{Cost} = H \cdot (3.5 + K)$）；</li>
+                <li><strong>三大帕累托最优顶点 (Pareto Optimums)</strong>：
+                    <br>• <strong>边缘极速点</strong>：$(H=1, K=2) \implies \mathbf{52.5\%}$（仅需 5.4 分钟，单步 0.8ms，手机边缘部署首选）；
+                    <br>• <strong>黄金拐点 (Golden Knee)</strong>：$(H=1, K=16) \implies \mathbf{55.52\%}$（仅需 18 分钟，达全局精度最高峰，性价比无敌）；
+                    <br>• <strong>双钟流平衡点</strong>：$(H=64, K=1) \implies \mathbf{53.7\%}$（长程 BPTT 浸润，纯单流无外加微步）。
+                </li>
+            </ul>
+        </div>
+        <div class="anim-container">
+            <img class="anim-img" src="cbim_pareto_surface_hk.png" alt="CBIM Pareto Surface H and K" style="max-width: 1000px;">
+        </div>
+        <h3 style="margin-top: 25px; color: var(--accent-cyan);">3D 实时可交互响应曲面 (支持 360° 拖拽旋转 / 缩放 / 悬停探查)：</h3>
+        <div class="iframe-container" style="height: 700px;">
+            <iframe src="cbim_pareto_interactive_3d.html"></iframe>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(idx) {
+            const tabs = document.querySelectorAll('.tab-content');
+            const btns = document.querySelectorAll('.tab-btn');
+            tabs.forEach((t, i) => {
+                t.classList.toggle('active', i === idx);
+                btns[i].classList.toggle('active', i === idx);
+            });
+        }
+    </script>
+</body>
+</html>
