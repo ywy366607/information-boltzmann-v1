@@ -286,6 +286,36 @@ If these conditions force an output shortcut, a hidden reset, or an
 unbounded controller, port agency is rejected as the Q8 closure and the
 research returns to the readout-observability or contextual-routing branches.
 
+## First implementation scope
+
+`information_boltzmann/core/torus3d.py` now contains
+`PredictiveImpedanceWriteAgent` and `KineticBeliefState`.  The implementation
+maintains a posterior field mean plus channelwise precision; it propagates
+precision through learned process variance, forms a posterior observation
+precision, and retains that tensor across `belief_step` events.  The
+observation packet and predicted packet are synthesized by exactly the same
+nonlinear `FullRankTorusWrite.synthesize_packet` chart.  Its structural tests
+establish zero-innovation identity, port-metric balance, persistent precision,
+and gradients to the port prior and posterior action law.
+
+This is deliberately the first closure, not the final categorical language
+likelihood.  The present field-generated port coordinate is a continuous
+prediction in the shared chart.  Because the current packet chart has
+nonlinear token-dependent address, width and content maps,
+\(P(\mathbb E[e])\) is not generally
+\(\mathbb E[P(e)]\).  An exact categorical identity
+\(\widehat P=\mathbb E_{p(x\mid b^-)}P(x)\) requires a factorized
+exponential-family packet chart and remains an explicit next obligation.
+Until then, the port density is a physical observation factor and the
+field-only token decoder remains a separate likelihood factor.  This prevents
+the first implementation from claiming a stronger generative equivalence than
+its current geometry provides.
+
+M sampling, the read agent, adaptive physical duration, and the CUDA-graph
+trainer intentionally remain unchanged in this commit.  They require the
+factorized port chart so that one common prior/posterior model, rather than a
+collection of auxiliary losses, governs all port actions.
+
 ## Review status
 
 This is a first-principles specification reconstructed by the primary agent.

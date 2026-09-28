@@ -7,7 +7,9 @@ used by this model.
 """
 from __future__ import annotations
 
+from dataclasses import dataclass
 import math
+from typing import Optional
 
 import torch
 from torch import nn
@@ -156,39 +158,50 @@ class FullRankTorusWrite(nn.Module):
         # once energy exists, both numerator and denominator translate with it.
         return torch.remainder(torch.atan2(sine, cosine + 1e-6) / (2.0 * math.pi), 1.0)
 
-    def forward(self, field: torch.Tensor, token_ids: torch.Tensor, return_diag: bool = True,
-                *, token: Optional[torch.Tensor] = None,
-                displacement: Optional[torch.Tensor] = None,
-                width: Optional[torch.Tensor] = None,
-                content: Optional[torch.Tensor] = None):
-        if token is None:
-            token = self.embedding(token_ids)
+    def synthesize_packet(
+            self, field: torch.Tensor, token: torch.Tensor, *,
+            displacement: Optional[torch.Tensor] = None,
+            width: Optional[torch.Tensor] = None,
+            content: Optional[torch.Tensor] = None) -> dict[str, torch.Tensor]:
+        """Map one port coordinate to the shared physical packet chart.
+
+        The observed token and a field-generated prior token must use this
+        exact function.  That makes their difference a genuine innovation in
+        the field's input-port Hilbert space, rather than an error between two
+        unrelated latent vectors.
+        """
         if self.relative_address:
             anchor = self.field_anchor(field)
-            displacement_val = displacement if displacement is not None else 0.5 * torch.tanh(self.address(token))
+            displacement_val = (displacement if displacement is not None else
+                                0.5 * torch.tanh(self.address(token)))
             center_value = torch.remainder(anchor + displacement_val, 1.0)
         else:
             anchor = torch.zeros(field.shape[0], 3, device=field.device,
                                  dtype=field.dtype)
-            center_value = torch.sigmoid(self.address(token)) if displacement is None else displacement
+            center_value = (torch.sigmoid(self.address(token)) if displacement is None
+                            else displacement)
             displacement_val = center_value
+
+        nu_s = field.new_zeros(())
         if self.spectral_packet:
             nu_s = F.softplus(self.nu_s_param).clamp_min(1e-5)
-            width_val = width if width is not None else F.softplus(self.width(token))  # [B, 3]
-            sigma_eff_sq = width_val.square() + 2.0 * nu_s * 1.0  # [B, 3]
-            exponent = -0.5 * torch.einsum("bj,xyzj->bxyz", sigma_eff_sq, self.wave_sq.to(dtype=field.dtype))  # [B, X, Y, Z]
+            width_val = width if width is not None else F.softplus(self.width(token))
+            sigma_eff_sq = width_val.square() + 2.0 * nu_s
+            exponent = -0.5 * torch.einsum(
+                "bj,xyzj->bxyz", sigma_eff_sq,
+                self.wave_sq.to(dtype=field.dtype))
             b_eff = torch.exp(exponent)
-            phase = -torch.einsum("xyzj,bj->bxyz", self.wave.to(dtype=field.dtype), center_value)
+            phase = -torch.einsum(
+                "xyzj,bj->bxyz", self.wave.to(dtype=field.dtype), center_value)
             s_k = b_eff * torch.complex(phase.cos(), phase.sin())
             s_x = torch.fft.ifftn(s_k, dim=(1, 2, 3), norm="ortho").real
             spatial = s_x / s_x.amax((1, 2, 3), keepdim=True).clamp_min(1e-8)
             spatial = spatial.clamp(min=0.0, max=1.0)
-            center = center_value[:, None, None, None, :]
-            width_tensor = width_val[:, None, None, None, :]
         else:
-            center = center_value[:, None, None, None, :]
             width_val = width if width is not None else F.softplus(self.width(token))
-            width_tensor = width_val[:, None, None, None, :] if width_val.ndim == 2 else width_val
+            center = center_value[:, None, None, None, :]
+            width_tensor = (width_val[:, None, None, None, :]
+                            if width_val.ndim == 2 else width_val)
             delta = (self.coordinates - center).abs()
             distance = torch.minimum(delta, 1.0 - delta) / width_tensor.clamp_min(1e-6)
             tail = math.sqrt(-2.0 * math.log(torch.finfo(field.dtype).tiny))
@@ -203,6 +216,32 @@ class FullRankTorusWrite(nn.Module):
                  + self.neighbor_content(neighbors))
         local = F.normalize(local, dim=-1)
         packet = spatial[..., None] * (self.channel_scale * local)
+        return {
+            "packet": packet,
+            "spatial": spatial,
+            "anchor": anchor,
+            "center": center_value[:, None, None, None, :],
+            "displacement": displacement_val,
+            "width": width_val,
+            "nu_s": nu_s,
+        }
+
+    def forward(self, field: torch.Tensor, token_ids: torch.Tensor, return_diag: bool = True,
+                *, token: Optional[torch.Tensor] = None,
+                displacement: Optional[torch.Tensor] = None,
+                width: Optional[torch.Tensor] = None,
+                content: Optional[torch.Tensor] = None):
+        if token is None:
+            token = self.embedding(token_ids)
+        synthesis = self.synthesize_packet(
+            field, token, displacement=displacement, width=width, content=content)
+        packet = synthesis["packet"]
+        spatial = synthesis["spatial"]
+        anchor = synthesis["anchor"]
+        center = synthesis["center"]
+        displacement_val = synthesis["displacement"]
+        width_val = synthesis["width"]
+        nu_s = synthesis["nu_s"]
         axes = (1, 2, 3)
         spatial_weight = spatial[..., None]
         spatial_sum = spatial.sum(axes)[..., None].clamp_min(1e-8)
@@ -450,6 +489,168 @@ class FullRankTorusWrite(nn.Module):
         else:
             diag = {}
         return field_next, reflected, diag
+
+
+@dataclass
+class KineticBeliefState:
+    """Persistent posterior belief for the predictive-impedance branch.
+
+    ``field`` is the posterior kinetic mean.  ``precision`` is a channelwise
+    structured precision, deliberately compact enough to persist in an
+    infinite stream while retaining a real prior-to-posterior update.
+    """
+
+    field: torch.Tensor
+    precision: torch.Tensor
+
+
+class PredictiveImpedanceWriteAgent(nn.Module):
+    """Causal posterior writer on the common Q8 packet chart.
+
+    The agent receives a pre-event field belief and an observed token.  It
+    predicts a token coordinate from the field alone, synthesizes observed and
+    predicted packets with the *same* ``FullRankTorusWrite.synthesize_packet``
+    map, and scatters only their innovation.  Its action is a posterior
+    distribution over positive channel admittances; this first implementation
+    uses its reparameterized mean.  Later M branches may sample that same
+    posterior without changing the physical port law.
+    """
+
+    def __init__(self, d: int) -> None:
+        super().__init__()
+        self.d = int(d)
+        self.port_prior = nn.Sequential(
+            nn.Linear(2 * d, 2 * d), nn.SiLU(), nn.Linear(2 * d, d))
+        self.action_prior = nn.Sequential(
+            nn.Linear(2 * d, 2 * d), nn.SiLU(), nn.Linear(2 * d, 2 * d))
+        self.action_posterior = nn.Sequential(
+            nn.Linear(3 * d, 2 * d), nn.SiLU(), nn.Linear(2 * d, 2 * d))
+        self.process_variance = nn.Sequential(
+            nn.Linear(2 * d, d), nn.Softplus())
+        self.observation_precision = nn.Sequential(
+            nn.Linear(3 * d, d), nn.Softplus())
+
+        # The field-to-port prediction starts near its uninformative prior,
+        # while the policy starts at unit natural scale (log-admittance 0).
+        for module in (self.port_prior[-1], self.action_prior[-1],
+                       self.action_posterior[-1]):
+            nn.init.normal_(module.weight, std=1e-3)
+            nn.init.zeros_(module.bias)
+
+    def initial_precision(self, batch_size: int, *, device: torch.device,
+                          dtype: torch.dtype) -> torch.Tensor:
+        """Return the unit-precision prior in dimensionless port units."""
+        return torch.ones(batch_size, self.d, device=device, dtype=dtype)
+
+    @staticmethod
+    def _normal_kl(prior_mean: torch.Tensor, prior_std: torch.Tensor,
+                   posterior_mean: torch.Tensor,
+                   posterior_std: torch.Tensor) -> torch.Tensor:
+        ratio_sq = (posterior_std / prior_std).square()
+        mean_sq = ((posterior_mean - prior_mean) / prior_std).square()
+        return 0.5 * (ratio_sq + mean_sq - 1.0 - ratio_sq.log()).mean()
+
+    def forward(self, writer: FullRankTorusWrite, field: torch.Tensor,
+                token_ids: torch.Tensor, precision: torch.Tensor,
+                *, predicted_token: Optional[torch.Tensor] = None,
+                return_diag: bool = True):
+        """Apply one posterior innovation write and update precision.
+
+        ``predicted_token`` exists only for analytical tests and controlled
+        interventions.  The ordinary causal path predicts it from ``field``
+        and ``precision`` before inspecting ``token_ids``.
+        """
+        if precision.shape != (field.shape[0], self.d):
+            raise ValueError(
+                f"Expected precision {(field.shape[0], self.d)}, got {tuple(precision.shape)}")
+        eps = torch.finfo(field.dtype).eps
+        field_summary = field.mean((1, 2, 3))
+        log_precision = precision.clamp_min(eps).log()
+        prior_features = torch.cat((F.rms_norm(field_summary, (self.d,)), log_precision), -1)
+
+        prior_action = self.action_prior(prior_features)
+        prior_mean, prior_log_std = prior_action.chunk(2, -1)
+        prior_std = F.softplus(prior_log_std) + eps
+        process_variance = self.process_variance(prior_features) + eps
+        prior_precision = 1.0 / (precision.reciprocal() + process_variance)
+
+        # This prediction is causal: it was constructed before the observed
+        # token embedding is read.
+        predicted_token = (self.port_prior(prior_features)
+                           if predicted_token is None else predicted_token)
+        observed_token = writer.embedding(token_ids)
+        observed = writer.synthesize_packet(field, observed_token)
+        predicted = writer.synthesize_packet(field, predicted_token)
+        innovation = observed["packet"] - predicted["packet"]
+        innovation_summary = innovation.square().mean((1, 2, 3)).sqrt()
+
+        posterior_features = torch.cat((
+            F.rms_norm(field_summary, (self.d,)), log_precision,
+            innovation_summary), -1)
+        posterior_action = self.action_posterior(posterior_features)
+        posterior_mean, posterior_log_std = posterior_action.chunk(2, -1)
+        posterior_std = F.softplus(posterior_log_std) + eps
+        admittance = F.softplus(posterior_mean)
+        observation_precision = self.observation_precision(posterior_features) + eps
+        posterior_precision = prior_precision + observation_precision
+
+        # A Cayley-equivalent bounded port angle.  The observed innovation
+        # controls the action amplitude, hence an exactly predicted packet is
+        # an exact identity boundary event.
+        theta = torch.atan(
+            admittance[:, None, None, None, :]
+            * innovation.abs()
+            * posterior_precision[:, None, None, None, :].sqrt())
+        cosine, sine = theta.cos(), theta.sin()
+        field_next = cosine * field + sine * innovation
+        reflected = -sine * field + cosine * innovation
+
+        if not return_diag:
+            return field_next, posterior_precision, reflected, {}
+
+        innovation_energy = writer.energy(innovation)
+        port_nll = 0.5 * (
+            posterior_precision * innovation_summary.square()
+            - posterior_precision.log()).mean()
+        policy_kl = self._normal_kl(
+            prior_mean, prior_std, posterior_mean, posterior_std)
+        balance = (writer.energy(field_next) + writer.energy(reflected)
+                   - writer.energy(field) - innovation_energy).abs()
+        support = torch.maximum(observed["spatial"], predicted["spatial"])
+        diag = {
+            "incident_energy": innovation_energy.detach(),
+            "reflected_energy": writer.energy(reflected).detach(),
+            "accepted_energy": (writer.energy(field_next) - writer.energy(field)).detach(),
+            "accepted_fraction": (
+                1.0 - writer.energy(reflected) / innovation_energy.clamp_min(eps)).detach(),
+            "t_packet": (
+                1.0 - writer.energy(reflected) / innovation_energy.clamp_min(eps)).detach(),
+            "delta_e_field": (writer.energy(field_next) - writer.energy(field)).detach(),
+            "cross_interference": (
+                torch.sin(2.0 * theta) * field * innovation).sum(dim=-1).mean().detach(),
+            "write_to_f_ratio": (
+                (field_next - field).norm(dim=-1).mean()
+                / field.norm(dim=-1).mean().clamp_min(eps)).detach(),
+            "write_angle_abs_mean": theta.detach().abs().mean(),
+            "write_angle_peak_mean": theta.detach().abs().amax(dim=(1, 2, 3)).mean(),
+            "write_spatial_support": (support.detach() > 0.1).float().mean(),
+            "write_balance_residual": balance.detach(),
+            "source_center": observed["center"].detach().reshape(field.shape[0], 3),
+            "source_anchor": observed["anchor"].detach(),
+            "source_displacement": observed["displacement"].detach(),
+            "write_width_mean": observed["width"].detach().mean(),
+            "source_nu_s": observed["nu_s"].detach(),
+            "innovation_energy": innovation_energy.detach(),
+            "innovation_norm": innovation_summary.detach().mean(),
+            "port_nll": port_nll.detach(),
+            "write_action_kl": policy_kl.detach(),
+            "write_free_energy": (port_nll + policy_kl).detach(),
+            "_write_free_energy": port_nll + policy_kl,
+            "prior_precision_mean": prior_precision.detach().mean(),
+            "posterior_precision_mean": posterior_precision.detach().mean(),
+            "write_admittance_mean": admittance.detach().mean(),
+        }
+        return field_next, posterior_precision, reflected, diag
 
 
 class VelocityCayleyTransport3D(nn.Module):
@@ -1155,10 +1356,19 @@ class CBIMTorus3D(nn.Module):
         if self.dissipation_type == "unified" and not self.three_clock:
             self.architecture += "-unified-dissipation"
         self.state_shape = (*self.shape, self.d)
+        # W4 is a distinct active-inference boundary law.  It reuses the W2
+        # packet chart so that old raw writers stay loadable and the observed
+        # and predicted packets inhabit one physical space.
+        source_write_type = (
+            "w2_impedance" if self.write_type == "w4_predictive_agent"
+            else self.write_type)
         self.source = FullRankTorusWrite(
             vocab_size, shape, self.d, relative_address=relative_address,
-            write_type=self.write_type, spectral_packet=self.spectral_write,
+            write_type=source_write_type, spectral_packet=self.spectral_write,
             nu_s_init=nu_s_init, decouple_source_feedback=self.decouple_source_feedback)
+        self.write_agent = (
+            PredictiveImpedanceWriteAgent(self.d)
+            if self.write_type == "w4_predictive_agent" else None)
         self.transport = VelocityCayleyTransport3D(shape, velocities, content_dim)
         self.collision = LocalInvariantCollision3D(
             shape, velocities, content_dim, layers=collision_layers,
@@ -1268,12 +1478,33 @@ class CBIMTorus3D(nn.Module):
         else:
             return torch.zeros(batch_size, *self.state_shape, device=dev, dtype=dt)
 
+    def initial_belief(self, batch_size: int, device=None, dtype=None,
+                       warm_start: bool = True) -> KineticBeliefState:
+        """Initialize the explicit posterior state used by W4 port agency."""
+        if self.write_agent is None:
+            raise RuntimeError("initial_belief requires write_type='w4_predictive_agent'")
+        field = self.initial_state(batch_size, device=device, dtype=dtype,
+                                   warm_start=warm_start)
+        precision = self.write_agent.initial_precision(
+            batch_size, device=field.device, dtype=field.dtype)
+        return KineticBeliefState(field=field, precision=precision)
+
     def step(self, field, token_ids, *, disable_transport=False,
              disable_collision=False, disable_bath=False,
              micro_steps=None, gamma0_factor=1.0,
-             disable_viscosity=False, disable_subspace=False):
+             disable_viscosity=False, disable_subspace=False,
+             precision: Optional[torch.Tensor] = None):
         tok_embed = self.source.embedding(token_ids)
-        field, reflected, source_diag = self.source(field, token_ids)
+        posterior_precision = None
+        if self.write_agent is None:
+            field, reflected, source_diag = self.source(field, token_ids)
+        else:
+            if precision is None:
+                raise RuntimeError(
+                    "w4_predictive_agent requires a persistent precision; "
+                    "use initial_belief() and belief_step()")
+            field, posterior_precision, reflected, source_diag = self.write_agent(
+                self.source, field, token_ids, precision)
         transport_diag = {
             "transport_angle_abs_mean": field.new_zeros(()),
             "transport_angle_abs_max": field.new_zeros(()),
@@ -1373,10 +1604,69 @@ class CBIMTorus3D(nn.Module):
 
         diagnostics = {**source_diag, **transport_diag, **collision_diag, **bath_diag, **clock_diag, **dir_diag,
                        "energy": (0.5 * field.detach().square().sum(-1).mean())}
+        if posterior_precision is not None:
+            # Kept out of ordinary monitoring/JSON; ``belief_step`` carries
+            # it into the next event as persistent posterior uncertainty.
+            diagnostics["_posterior_precision"] = posterior_precision
         return logits, field, diagnostics
+
+    def belief_step(self, belief: KineticBeliefState, token_ids: torch.Tensor,
+                    **kwargs) -> tuple[torch.Tensor, KineticBeliefState, dict]:
+        """Advance a full W4 posterior belief through one observed event."""
+        if self.write_agent is None:
+            raise RuntimeError("belief_step requires write_type='w4_predictive_agent'")
+        logits, field, diagnostics = self.step(
+            belief.field, token_ids, precision=belief.precision, **kwargs)
+        precision = diagnostics.pop("_posterior_precision")
+        return logits, KineticBeliefState(field=field, precision=precision), diagnostics
+
+    def forward_belief(self, input_ids: torch.Tensor, targets: torch.Tensor,
+                       belief: Optional[KineticBeliefState] = None, *,
+                       port_free_energy_weight: float = 1.0,
+                       disable_transport: bool = False,
+                       disable_collision: bool = False,
+                       disable_bath: bool = False,
+                       micro_steps: Optional[int] = None):
+        """Run a token sequence while retaining W4 prior/posterior precision.
+
+        Both terms are expressed as per-event negative log densities.  The
+        coefficient therefore defaults to one rather than introducing a
+        hidden auxiliary-loss scale.  It remains explicit for ablations.
+        """
+        if self.write_agent is None:
+            raise RuntimeError("forward_belief requires write_type='w4_predictive_agent'")
+        batch, length = input_ids.shape
+        belief = (self.initial_belief(batch, input_ids.device)
+                  if belief is None else belief)
+        total_likelihood = input_ids.new_zeros((), dtype=torch.float32)
+        total_free_energy = input_ids.new_zeros((), dtype=torch.float32)
+        final_diagnostics = {}
+        for index in range(length):
+            logits, belief, diagnostics = self.belief_step(
+                belief, input_ids[:, index],
+                disable_transport=disable_transport,
+                disable_collision=disable_collision,
+                disable_bath=disable_bath,
+                micro_steps=micro_steps)
+            likelihood = F.cross_entropy(logits, targets[:, index])
+            total_likelihood = total_likelihood + likelihood
+            total_free_energy = total_free_energy + diagnostics.pop("_write_free_energy")
+            final_diagnostics = diagnostics
+        loss = (total_likelihood + float(port_free_energy_weight)
+                * total_free_energy) / length
+        final_diagnostics = {
+            **final_diagnostics,
+            "token_nll": (total_likelihood / length).detach(),
+            "write_free_energy_mean": (total_free_energy / length).detach(),
+        }
+        return loss, belief, final_diagnostics
 
     def forward(self, input_ids, targets, state=None, *, disable_transport=False,
                 disable_collision=False, disable_bath=False, micro_steps=None):
+        if self.write_agent is not None:
+            raise RuntimeError(
+                "w4_predictive_agent requires forward_belief() so its posterior "
+                "precision cannot be silently discarded between token events")
         batch, length = input_ids.shape
         field = self.initial_state(batch, input_ids.device) if state is None else state
         features, diagnostic_rows = [], []
