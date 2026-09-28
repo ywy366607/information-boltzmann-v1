@@ -1287,7 +1287,7 @@ class CBIMTorus3D(nn.Module):
         }
         bath_diag = {"bath_out_energy": field.new_zeros(()),
                      "bath_angle_abs_mean": field.new_zeros(())}
-        alphas_k, coll_angles_k, dirs_k = [], [], []
+        alphas_k, coll_angles_k, dirs_k, transport_phase_k = [], [], [], []
         steps_to_run = int(micro_steps) if micro_steps is not None else self.micro_steps
         for _ in range(steps_to_run):
             if self.adaptive_clock:
@@ -1302,8 +1302,15 @@ class CBIMTorus3D(nn.Module):
             else:
                 dir_k = None
             if not disable_transport:
-                mult, _ = self.transport.multiplier(dt_k, direction=dir_k)
+                mult, omega = self.transport.multiplier(dt_k, direction=dir_k)
                 field = self.transport.apply_multiplier(field, mult)
+                if isinstance(dt_k, torch.Tensor):
+                    transport_dt = dt_k.view(field.shape[0], 1, 1, 1, 1)
+                else:
+                    transport_dt = float(dt_k)
+                transport_phase_k.append(
+                    (2.0 * torch.atan(0.5 * omega * transport_dt)).abs().mean()
+                )
             if not disable_collision:
                 field, collision_diag = self.collision(field, dt_k)
                 coll_angles_k.append(collision_diag["collision_angle_abs_mean"])
@@ -1325,6 +1332,13 @@ class CBIMTorus3D(nn.Module):
                 "alpha_3": alphas_k[2].mean().detach(),
                 "delta_tau_total": torch.stack(alphas_k).sum(dim=0).mean().detach() * self.tau_0,
                 "collision_exposure": sum(coll_angles_k).detach() if coll_angles_k else field.new_zeros(()),
+            }
+
+        if transport_phase_k:
+            transport_diag = {
+                "transport_angle_abs_mean": torch.stack(transport_phase_k).mean().detach(),
+                "transport_angle_abs_max": torch.stack(transport_phase_k).amax().detach(),
+                "transport_norm_residual": field.new_zeros(()),
             }
 
         dir_diag = {}
@@ -1400,7 +1414,7 @@ class CBIMTorus3D(nn.Module):
                 field = ReversibleHamiltonianPonderFunction.apply(field, k_steps, self, tok_embed)
                 clock_diag, dir_diag = {}, {}
             else:
-                alphas_k, coll_angles_k, dirs_k = [], [], []
+                alphas_k, coll_angles_k, dirs_k, transport_phase_k = [], [], [], []
                 for _ in range(k_steps):
                     if self.adaptive_clock:
                         alpha_k = self.clock(field, tok_embed)
@@ -1414,9 +1428,16 @@ class CBIMTorus3D(nn.Module):
                     else:
                         dir_k = None
                     if not disable_transport:
-                        mult, _ = self.transport.multiplier(dt_k, direction=dir_k, learned=cached_learned)
+                        mult, omega = self.transport.multiplier(dt_k, direction=dir_k, learned=cached_learned)
                         before = field.square().sum()
                         field = self.transport.apply_multiplier(field, mult)
+                        if isinstance(dt_k, torch.Tensor):
+                            transport_dt = dt_k.view(batch, 1, 1, 1, 1)
+                        else:
+                            transport_dt = float(dt_k)
+                        transport_phase_k.append(
+                            (2.0 * torch.atan(0.5 * omega * transport_dt)).abs().mean()
+                        )
                         transport_diag = {"transport_norm_residual":
                                           (field.square().sum() - before).detach().abs()}
                     if not disable_collision:
@@ -1440,6 +1461,12 @@ class CBIMTorus3D(nn.Module):
                         "delta_tau_total": torch.stack(alphas_k).sum(dim=0).mean().detach() * self.tau_0,
                         "collision_exposure": sum(coll_angles_k).detach() if coll_angles_k else field.new_zeros(()),
                     }
+
+                if transport_phase_k:
+                    transport_diag.update({
+                        "transport_angle_abs_mean": torch.stack(transport_phase_k).mean().detach(),
+                        "transport_angle_abs_max": torch.stack(transport_phase_k).amax().detach(),
+                    })
 
                 dir_diag = {}
                 if self.continuous_velocities and dirs_k:
