@@ -1527,12 +1527,11 @@
       "status": "active",
       "time": "2026-09-29",
       "motivation": "Express innovation-sensitive writing, field observability, physical duration, and later M-path inference in one causal port framework rather than as independent gates or patches.",
-      "action": "Refactor the nonlinear packet chart into a factorized categorical port likelihood so that the current continuous write-agent prior becomes an exact expected packet. Then add causal read/duration policies while preserving field-only decoding, and use M only as full posterior field trajectories with K fixed as numerical resolution.",
-      "conclusion": "The write agent is implemented as predictive impedance: a field-generated continuous port prediction defines innovation, state-dependent passive admittance determines its local incorporation, and channelwise precision persists as a posterior state. The current nonlinear chart is shared by observed and predicted packets but does not yet make the continuous prediction an exact categorical expected packet. The read agent remains field-only and unimplemented.",
+      "action": "Derive the field-observability condition and implement the causal read agent on the same belief state. Then add duration and M posterior actions while preserving field-only decoding, with K fixed as numerical resolution.",
+      "conclusion": "The write agent is implemented as predictive impedance: a causal categorical field prior produces the expected bounded token statistic, a factorized Fourier--Galerkin chart maps that expectation exactly into the predicted packet, innovation drives passive admission, and channelwise precision persists as posterior state. The read agent remains field-only and unimplemented.",
       "issues": [
-        "The common packet space, categorical port likelihood, and causal field-to-port generator must be made explicit before implementation.",
-        "A structured field precision must be propagated and updated as persistent state; a dense covariance is not computationally admissible.",
-        "First implementation now carries channelwise precision and shares one nonlinear packet chart between observed and predicted continuous port coordinates. Exact categorical packet expectation still requires a factorized chart because P(E[e]) need not equal E[P(e)].",
+        "The common packet space, categorical port likelihood, and causal field-to-port generator are now explicit and satisfy P(E[varphi])=E[P(varphi)] for a fixed pre-event field.",
+        "The implemented precision is channelwise. A later local moment-block precision is needed if spatially heterogeneous uncertainty becomes the limiting mechanism.",
         "Expected free energy supplies a common objective, but it does not establish useful multi-modality without a non-degenerate posterior over port actions.",
         "MCTS or GRPO may optimize a later discrete policy; they cannot repair a missing predictive boundary law."
       ],

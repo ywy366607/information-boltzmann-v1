@@ -292,24 +292,29 @@ research returns to the readout-observability or contextual-routing branches.
 `PredictiveImpedanceWriteAgent` and `KineticBeliefState`.  The implementation
 maintains a posterior field mean plus channelwise precision; it propagates
 precision through learned process variance, forms a posterior observation
-precision, and retains that tensor across `belief_step` events.  The
-observation packet and predicted packet are synthesized by exactly the same
-nonlinear `FullRankTorusWrite.synthesize_packet` chart.  Its structural tests
-establish zero-innovation identity, port-metric balance, persistent precision,
-and gradients to the port prior and posterior action law.
+precision, and retains that tensor across `belief_step` events.  It now uses
+a factorized categorical Fourier--Galerkin chart
 
-This is deliberately the first closure, not the final categorical language
-likelihood.  The present field-generated port coordinate is a continuous
-prediction in the shared chart.  Because the current packet chart has
-nonlinear token-dependent address, width and content maps,
-\(P(\mathbb E[e])\) is not generally
-\(\mathbb E[P(e)]\).  An exact categorical identity
-\(\widehat P=\mathbb E_{p(x\mid b^-)}P(x)\) requires a factorized
-exponential-family packet chart and remains an explicit next obligation.
-Until then, the port density is a physical observation factor and the
-field-only token decoder remains a separate likelihood factor.  This prevents
-the first implementation from claiming a stronger generative equivalence than
-its current geometry provides.
+\[
+P(F,\varphi)=\sum_r g_r(F)\,\psi_r(x-x_\mathrm{anchor}(F))\,O_r\varphi,
+\]
+
+where \(O_r\) is a fixed channel permutation.  The chart is linear in the
+bounded token statistic \(\varphi(x)\).  The field produces categorical
+logits in the same statistic, then forms
+
+\[
+\widehat\varphi=\sum_x p_\theta(x\mid b_t^-)\varphi(x),
+\qquad
+\widehat P=P(F,\widehat\varphi)
+=\sum_xp_\theta(x\mid b_t^-)P(F,\varphi(x)).
+\]
+
+The final equality now follows algebraically and is covered by a structural
+test.  The realized port free energy contains the categorical port NLL plus
+the action-posterior KL.  The tests also establish zero-innovation identity,
+port-metric balance, persistent precision, and gradients to every agent
+parameter.
 
 M sampling, the read agent, adaptive physical duration, and the CUDA-graph
 trainer intentionally remain unchanged in this commit.  They require the

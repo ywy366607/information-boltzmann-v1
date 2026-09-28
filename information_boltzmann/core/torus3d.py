@@ -508,19 +508,26 @@ class PredictiveImpedanceWriteAgent(nn.Module):
     """Causal posterior writer on the common Q8 packet chart.
 
     The agent receives a pre-event field belief and an observed token.  It
-    predicts a token coordinate from the field alone, synthesizes observed and
-    predicted packets with the *same* ``FullRankTorusWrite.synthesize_packet``
-    map, and scatters only their innovation.  Its action is a posterior
-    distribution over positive channel admittances; this first implementation
-    uses its reparameterized mean.  Later M branches may sample that same
-    posterior without changing the physical port law.
+    predicts a categorical port distribution from the field alone, maps both
+    the observed feature and its predicted expectation through one *linear*
+    Fourier--Galerkin packet chart, and scatters only their innovation.  Its
+    action is a posterior distribution over positive channel admittances;
+    this first implementation uses its reparameterized mean.  Later M
+    branches may sample that same posterior without changing the port law.
     """
 
-    def __init__(self, d: int) -> None:
+    def __init__(self, d: int, vocab_size: int, port_modes: int = 8) -> None:
         super().__init__()
         self.d = int(d)
+        self.vocab_size = int(vocab_size)
+        self.port_modes = int(port_modes)
+        if self.port_modes not in (8, 27):
+            raise ValueError("Predictive impedance supports the Q8 or Q27 Fourier chart")
         self.port_prior = nn.Sequential(
             nn.Linear(2 * d, 2 * d), nn.SiLU(), nn.Linear(2 * d, d))
+        self.port_logit_bias = nn.Parameter(torch.zeros(vocab_size))
+        self.chart_gate = nn.Sequential(
+            nn.Linear(2 * d, d), nn.SiLU(), nn.Linear(d, self.port_modes))
         self.action_prior = nn.Sequential(
             nn.Linear(2 * d, 2 * d), nn.SiLU(), nn.Linear(2 * d, 2 * d))
         self.action_posterior = nn.Sequential(
@@ -532,10 +539,30 @@ class PredictiveImpedanceWriteAgent(nn.Module):
 
         # The field-to-port prediction starts near its uninformative prior,
         # while the policy starts at unit natural scale (log-admittance 0).
-        for module in (self.port_prior[-1], self.action_prior[-1],
-                       self.action_posterior[-1]):
+        for module in (self.port_prior[-1], self.chart_gate[-1],
+                       self.action_prior[-1], self.action_posterior[-1]):
             nn.init.normal_(module.weight, std=1e-3)
             nn.init.zeros_(module.bias)
+
+        if self.port_modes == 8:
+            modes = [
+                (0.0, 0.0, 0.0), (1.0, 0.0, 0.0),
+                (0.0, 1.0, 0.0), (0.0, 0.0, 1.0),
+                (1.0, 1.0, 0.0), (1.0, 0.0, 1.0),
+                (0.0, 1.0, 1.0), (1.0, 1.0, 1.0),
+            ]
+        else:
+            modes = [(float(x), float(y), float(z))
+                     for x in (-1, 0, 1)
+                     for y in (-1, 0, 1)
+                     for z in (-1, 0, 1)]
+        self.register_buffer("mode_vectors", torch.tensor(modes), persistent=False)
+        group = max(1, d // self.port_modes)
+        permutations = torch.stack([
+            torch.roll(torch.arange(d), shifts=mode * group)
+            for mode in range(self.port_modes)
+        ])
+        self.register_buffer("channel_permutations", permutations, persistent=False)
 
     def initial_precision(self, batch_size: int, *, device: torch.device,
                           dtype: torch.dtype) -> torch.Tensor:
@@ -550,15 +577,41 @@ class PredictiveImpedanceWriteAgent(nn.Module):
         mean_sq = ((posterior_mean - prior_mean) / prior_std).square()
         return 0.5 * (ratio_sq + mean_sq - 1.0 - ratio_sq.log()).mean()
 
+    def _packet_chart(self, writer: FullRankTorusWrite, field: torch.Tensor,
+                      prior_features: torch.Tensor,
+                      port_feature: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor,
+                                                            torch.Tensor, torch.Tensor]:
+        r"""Return the packet chart \(P(F,\varphi)\), exactly linear in \(\varphi\).
+
+        For a fixed pre-event field, the gates and translated Fourier basis do
+        not depend on the token.  Consequently
+        ``P(F, E[varphi]) == E[P(F, varphi)]`` exactly, which is the required
+        bridge from a categorical prediction to a physical innovation port.
+        """
+        gate = torch.softmax(self.chart_gate(prior_features), dim=-1)
+        anchor = writer.field_anchor(field)
+        relative = writer.coordinates.to(field) - anchor[:, None, None, None, :]
+        phase = 2.0 * math.pi * torch.einsum(
+            "bxyzj,rj->brxyz", relative, self.mode_vectors.to(field))
+        basis = phase.cos()
+        basis = basis / basis.square().mean((2, 3, 4), keepdim=True).sqrt().clamp_min(
+            torch.finfo(field.dtype).eps)
+        weighted_basis = gate[:, :, None, None, None] * basis
+        feature_by_mode = port_feature[:, self.channel_permutations]
+        packet = torch.einsum("brxyz,brd->bxyzd", weighted_basis, feature_by_mode)
+        packet = packet * writer.channel_scale
+        support = weighted_basis.abs().sum(1)
+        return packet, support, anchor, gate
+
     def forward(self, writer: FullRankTorusWrite, field: torch.Tensor,
                 token_ids: torch.Tensor, precision: torch.Tensor,
-                *, predicted_token: Optional[torch.Tensor] = None,
+                *, predicted_feature: Optional[torch.Tensor] = None,
                 return_diag: bool = True):
         """Apply one posterior innovation write and update precision.
 
-        ``predicted_token`` exists only for analytical tests and controlled
-        interventions.  The ordinary causal path predicts it from ``field``
-        and ``precision`` before inspecting ``token_ids``.
+        ``predicted_feature`` exists only for analytical tests and controlled
+        interventions.  The ordinary causal path derives it from a categorical
+        distribution before inspecting ``token_ids``.
         """
         if precision.shape != (field.shape[0], self.d):
             raise ValueError(
@@ -574,14 +627,22 @@ class PredictiveImpedanceWriteAgent(nn.Module):
         process_variance = self.process_variance(prior_features) + eps
         prior_precision = 1.0 / (precision.reciprocal() + process_variance)
 
-        # This prediction is causal: it was constructed before the observed
-        # token embedding is read.
-        predicted_token = (self.port_prior(prior_features)
-                           if predicted_token is None else predicted_token)
-        observed_token = writer.embedding(token_ids)
-        observed = writer.synthesize_packet(field, observed_token)
-        predicted = writer.synthesize_packet(field, predicted_token)
-        innovation = observed["packet"] - predicted["packet"]
+        # The categorical prior and its physical port expectation are both
+        # constructed before indexing the observed token.
+        token_features = F.normalize(writer.embedding.weight, dim=-1)
+        natural_parameter = self.port_prior(prior_features)
+        port_logits = natural_parameter @ token_features.transpose(0, 1)
+        port_logits = port_logits + self.port_logit_bias
+        port_probability = torch.softmax(port_logits, dim=-1)
+        expected_feature = port_probability @ token_features
+        predicted_feature = (expected_feature if predicted_feature is None
+                             else predicted_feature)
+        observed_feature = token_features[token_ids]
+        observed_packet, support, anchor, chart_gate = self._packet_chart(
+            writer, field, prior_features, observed_feature)
+        predicted_packet, _, _, _ = self._packet_chart(
+            writer, field, prior_features, predicted_feature)
+        innovation = observed_packet - predicted_packet
         innovation_summary = innovation.square().mean((1, 2, 3)).sqrt()
 
         posterior_features = torch.cat((
@@ -609,14 +670,11 @@ class PredictiveImpedanceWriteAgent(nn.Module):
             return field_next, posterior_precision, reflected, {}
 
         innovation_energy = writer.energy(innovation)
-        port_nll = 0.5 * (
-            posterior_precision * innovation_summary.square()
-            - posterior_precision.log()).mean()
+        port_nll = F.cross_entropy(port_logits, token_ids)
         policy_kl = self._normal_kl(
             prior_mean, prior_std, posterior_mean, posterior_std)
         balance = (writer.energy(field_next) + writer.energy(reflected)
                    - writer.energy(field) - innovation_energy).abs()
-        support = torch.maximum(observed["spatial"], predicted["spatial"])
         diag = {
             "incident_energy": innovation_energy.detach(),
             "reflected_energy": writer.energy(reflected).detach(),
@@ -635,16 +693,20 @@ class PredictiveImpedanceWriteAgent(nn.Module):
             "write_angle_peak_mean": theta.detach().abs().amax(dim=(1, 2, 3)).mean(),
             "write_spatial_support": (support.detach() > 0.1).float().mean(),
             "write_balance_residual": balance.detach(),
-            "source_center": observed["center"].detach().reshape(field.shape[0], 3),
-            "source_anchor": observed["anchor"].detach(),
-            "source_displacement": observed["displacement"].detach(),
-            "write_width_mean": observed["width"].detach().mean(),
-            "source_nu_s": observed["nu_s"].detach(),
+            "source_center": anchor.detach(),
+            "source_anchor": anchor.detach(),
+            "source_displacement": field.new_zeros(field.shape[0], 3),
+            "write_width_mean": field.new_zeros(()),
+            "source_nu_s": field.new_zeros(()),
             "innovation_energy": innovation_energy.detach(),
             "innovation_norm": innovation_summary.detach().mean(),
             "port_nll": port_nll.detach(),
             "write_action_kl": policy_kl.detach(),
             "write_free_energy": (port_nll + policy_kl).detach(),
+            "port_predictive_entropy": (
+                -(port_probability * port_probability.clamp_min(eps).log()).sum(-1).mean()).detach(),
+            "port_chart_entropy": (
+                -(chart_gate * chart_gate.clamp_min(eps).log()).sum(-1).mean()).detach(),
             "_write_free_energy": port_nll + policy_kl,
             "prior_precision_mean": prior_precision.detach().mean(),
             "posterior_precision_mean": posterior_precision.detach().mean(),
@@ -1367,7 +1429,8 @@ class CBIMTorus3D(nn.Module):
             write_type=source_write_type, spectral_packet=self.spectral_write,
             nu_s_init=nu_s_init, decouple_source_feedback=self.decouple_source_feedback)
         self.write_agent = (
-            PredictiveImpedanceWriteAgent(self.d)
+            PredictiveImpedanceWriteAgent(
+                self.d, vocab_size=vocab_size, port_modes=velocities)
             if self.write_type == "w4_predictive_agent" else None)
         self.transport = VelocityCayleyTransport3D(shape, velocities, content_dim)
         self.collision = LocalInvariantCollision3D(
