@@ -1,5 +1,12 @@
 # CBIM Infinite-Stream Evaluation & Training Protocol v1 (CBIM-ISP-v1)
 
+> **Ranking status, 2026-09-29:** this document preserves the general
+> infinite-stream protocol.  It is not a score registry.  Current Q8/GDN
+> rankings, checkpoint provenance, and the only admissible historical status
+> are defined in `results/published/ib_language_registry_20260929.json` and
+> `docs/IB_NORTH_STAR_AND_NEXT_EXPERIMENT.md`.  Legacy single-site and
+> mismatched-regime numbers below carry no comparative authority.
+
 > **核心原则**：
 > 1. **状态永不重置（Never Reset State）**：流体工作记忆是无限流物理状态，在推理和长程评测中严禁清空为零（$F=0$）或冷真空；跨网格必须使用连续谱投影重采样。
 > 2. **反向时间与物理时间分离（Decoupled Gradient Horizons）**：梯度截断视界 $H_{\text{BPTT}}$ 是训练算法的计算近似，不等于物理系统的动力学记忆寿命；严禁混淆 BPTT 长度与模型认知容量。
@@ -45,18 +52,17 @@ CBIM-ISP-v1 Header:
 ### 2. Warm Persistent Regime（暖机驻波域 —— GDN 对齐标准）
 - **状态定义**：继承训练成熟态，或在目标文章前缀施加 **256 Token 的共享历史预热**（`Warmup Tokens = 256`）；
 - **测试目的**：在流体场已建立起当前文章的语义相干驻波后，评测模型在后续 $128$ 词元视界内的即时因果推理能力与物理碰撞增益；
-- **历史成绩锚点**：
-  - Run 3 Continuous Q8 (Arm C): **$6.4409\text{ nats}$**（Site 3）；
-  - Three-Clock Run B (Arm C): **$6.5725\text{ nats}$**（Site 3，因果增益 $+2.0228\text{ nats}$）；
-  - **全网 4-Site 官方平均**：平均 NLL $\sim 7.51\text{ nats}$，平均碰撞因果贡献 $+0.786\text{ nats}$。
+- **当前成绩与比较规则**：仅使用注册表中来源锁定的 checkpoint、固定站点和相同训练预算。历史单站数字只保留为档案，不得用于声称超过 GDN。
 
 ### 3. NESS Long-Stream Regime（非平衡稳态长程流域）
 - **状态定义**：连续喂入 **$2048 \sim 4096+$ 个 Token**，状态全程不重置、不截断；
 - **测试目的**：检验系统在无限长文本流下的数值稳定性、长期记忆衰减谱以及能量耗散平衡（NESS）；
 - **标准指标**：
-  - 全序列平稳 NLL（Run B 在 4096 词元大盘取得 $7.4100\text{ nats}$）；
-  - 稳态场能量 $E_{\text{NESS}} \in [0.55, 0.85]$；
-  - 晚期词元（Token 1500~2048）的平均 NLL 衰减趋势。
+  - 全序列平稳 NLL；
+  - 稳态场能量与边界输入/外流账本；
+  - 晚期词元的 NLL 漂移趋势。
+
+能量区间必须由同一架构的无量纲存储函数和端口尺度推导或在报告中声明；固定“黄金区间”不是跨版本验收条件。
 
 ---
 

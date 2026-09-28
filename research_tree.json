@@ -1494,6 +1494,30 @@
       "invalidation": "A source-locked historical checkpoint plus the same protocol can supersede the archive designation; a new jointly trained kinetic model must beat the registered GDN reference on the expanded fixed-site protocol to establish a capability claim.",
       "confidence": "I",
       "confidence_note": "Direct reports and checkpoint hashes are retained for the two current entries."
+    },
+    {
+      "id": "IB_Q8_INNOVATION_PORT_20260929",
+      "parent": "IBLangReg20260929",
+      "title": "Q8 predictive innovation port: theoretical GDN gap diagnosis",
+      "status": "active",
+      "time": "2026-09-29",
+      "motivation": "Resolve the registered Q8-to-GDN-2 language gap through a mathematical closure for finite-capacity, infinite-stream kinetic writing rather than through another empirical patch.",
+      "action": "Specify a causal field-to-port predictor P_hat(F), write only the common-port innovation delta_P=P(x)-P_hat(F), and define positive-semidefinite dissipation on the collision non-equilibrium subspace. Derive storage and observability conditions before capability training.",
+      "conclusion": "Current Q8 writes a raw observed packet while GDN-2 writes a retrieval residual v-r. Q8 transport and collision are norm preserving and its active bath is radial quadratic damping. The leading theory hypothesis is that raw writing forces one amplitude controller to handle both predictable traffic and novelty, producing the historical hot/cold trade-off. The unread reflected port is boundary accounting, not a decoder candidate.",
+      "issues": [
+        "A learned Q8 writer might implicitly approximate innovation; the absence of an explicit innovation variable is a structural diagnosis, not an impossibility theorem.",
+        "Readout observability of collision tangent coordinates and context-dependent spatial routing remain independent competing explanations.",
+        "Input-to-state stability follows only if the proposed non-equilibrium mobility is coercive and the causal predicted port is bounded."
+      ],
+      "invalidation": "Reject H1 if no causal predictor can generate an observed-port-compatible packet without a hidden output shortcut, reset, or unbounded controller; then prioritize the analytic H2 readout-nullspace and H3 contextual-routing branches.",
+      "artifacts": [
+        "docs/information_boltzmann/Q8_GDN_THEORY_DIAGNOSIS.md",
+        "information_boltzmann/core/torus3d.py",
+        "scripts/ib_local/gated_deltanet_2.py",
+        "results/published/ib_language_registry_20260929.json"
+      ],
+      "confidence": "I",
+      "confidence_note": "Code-derived operator comparison plus conditional mathematical closure; no independent theory review and no new capability result."
     }
   ],
   "status_migration_note": "Normalize historical workflow labels for repository validator; original labels retained as legacy_status. No new experimental conclusions introduced.",
