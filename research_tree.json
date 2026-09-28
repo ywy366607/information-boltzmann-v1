@@ -1,6 +1,6 @@
 {
   "title": "Slice Full-Resolution Joint-Evolution VLM Research Tree",
-  "updated": "2026-09-10",
+  "updated": "2026-09-29",
   "source_of_truth": "docs/NORTH_STAR.md",
   "nodes": [
     {
@@ -1477,6 +1477,23 @@
       "schema_migration_note": "Legacy classification preserved verbatim in legacy_status; active means retained for review, not a confirmed scientific claim.",
       "confidence": "I",
       "confidence_note": "Historical record interpreted from its existing text; evidence classification not independently re-audited in this schema migration."
+    },
+    {
+      "id": "IBLangReg20260929",
+      "parent": "IB001",
+      "title": "Registered continuous-language baseline and comparator",
+      "status": "active",
+      "time": "2026-09-29",
+      "motivation": "Restore a single comparable language evidence chain after historical scores, evaluation regimes, and cleaned checkpoints became conflated.",
+      "action": "Use IB-warm-local-language-v1 with fixed held-out local sites, 256-token observed warm-in, and 128-token scored continuation. Register source/checkpoint provenance before a result enters a ranking.",
+      "conclusion": "Current Q8 compatibility control scores 7.21536 NLL and current GDN-2 reference scores 6.49815 under the registered local-window protocol. The historical Q8 7.19250 result remains archive-only because its checkpoint is unavailable and source hashes differ. No registered Q8 result currently exceeds GDN-2.",
+      "issues": [
+        "The kinetic and recurrent state initializers remain representation-specific; each report declares the policy.",
+        "The four-site control is a calibration set; the next comparison expands to 16 fixed sites."
+      ],
+      "invalidation": "A source-locked historical checkpoint plus the same protocol can supersede the archive designation; a new jointly trained kinetic model must beat the registered GDN reference on the expanded fixed-site protocol to establish a capability claim.",
+      "confidence": "I",
+      "confidence_note": "Direct reports and checkpoint hashes are retained for the two current entries."
     }
   ],
   "status_migration_note": "Normalize historical workflow labels for repository validator; original labels retained as legacy_status. No new experimental conclusions introduced.",

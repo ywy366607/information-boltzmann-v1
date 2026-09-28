@@ -1,0 +1,568 @@
+{
+  "nll": 6.4981485040189,
+  "sites": [
+    {
+      "site": 0,
+      "validation_start": 8192,
+      "warm_in_tokens": 256,
+      "score_start": 8448,
+      "score_tokens": 128,
+      "nll": 6.016320998809533,
+      "state_policy": "checkpoint_terminal_state_clone_then_local_warm_in",
+      "cold_start": false,
+      "random_phase_resampling": false,
+      "resets_within_site": 0,
+      "warm_in_diagnostics": {
+        "l0_decay_mean": {
+          "first": 0.844228208065033,
+          "last": 0.8813312649726868,
+          "mean": 0.8768926176708192
+        },
+        "l0_erase_mean": {
+          "first": 0.5364487171173096,
+          "last": 0.5156030654907227,
+          "mean": 0.514152062823996
+        },
+        "l0_write_mean": {
+          "first": 0.512019157409668,
+          "last": 0.520277202129364,
+          "mean": 0.49837267049588263
+        },
+        "l0_state_norm": {
+          "first": 0.11214597523212433,
+          "last": 0.1250665783882141,
+          "mean": 0.13060082076117396
+        },
+        "l0_state_norm_final": {
+          "first": 0.11214597523212433,
+          "last": 0.1250665783882141,
+          "mean": 0.13060082076117396
+        },
+        "l1_decay_mean": {
+          "first": 0.8718471527099609,
+          "last": 0.8958938121795654,
+          "mean": 0.8698086806107312
+        },
+        "l1_erase_mean": {
+          "first": 0.593056321144104,
+          "last": 0.5494192242622375,
+          "mean": 0.5596111131599173
+        },
+        "l1_write_mean": {
+          "first": 0.5191407203674316,
+          "last": 0.5126087665557861,
+          "mean": 0.4968925502616912
+        },
+        "l1_state_norm": {
+          "first": 0.16206477582454681,
+          "last": 0.141928032040596,
+          "mean": 0.16085555561585352
+        },
+        "l1_state_norm_final": {
+          "first": 0.16206477582454681,
+          "last": 0.141928032040596,
+          "mean": 0.16085555561585352
+        },
+        "l2_decay_mean": {
+          "first": 0.8776302933692932,
+          "last": 0.868922233581543,
+          "mean": 0.8669581590220332
+        },
+        "l2_erase_mean": {
+          "first": 0.509777843952179,
+          "last": 0.5386120080947876,
+          "mean": 0.5271526497090235
+        },
+        "l2_write_mean": {
+          "first": 0.582709550857544,
+          "last": 0.5529865622520447,
+          "mean": 0.5505943746538833
+        },
+        "l2_state_norm": {
+          "first": 0.3467305302619934,
+          "last": 0.30403298139572144,
+          "mean": 0.344267561333254
+        },
+        "l2_state_norm_final": {
+          "first": 0.3467305302619934,
+          "last": 0.30403298139572144,
+          "mean": 0.344267561333254
+        },
+        "state_norm": {
+          "first": 0.20698043704032898,
+          "last": 0.19034253060817719,
+          "mean": 0.21190798428142443
+        },
+        "decay_mean": {
+          "first": 0.8645685911178589,
+          "last": 0.8820490837097168,
+          "mean": 0.8712198387365788
+        },
+        "erase_mean": {
+          "first": 0.5464276075363159,
+          "last": 0.534544825553894,
+          "mean": 0.5336386257549748
+        },
+        "write_mean": {
+          "first": 0.5379564762115479,
+          "last": 0.5286241769790649,
+          "mean": 0.515286550973542
+        }
+      },
+      "diagnostics": {
+        "l0_decay_mean": 0.8769875564612448,
+        "l0_erase_mean": 0.516899110050872,
+        "l0_write_mean": 0.49713697703555226,
+        "l0_state_norm": 0.1280661392956972,
+        "l0_state_norm_final": 0.1280661392956972,
+        "l1_decay_mean": 0.8682708409614861,
+        "l1_erase_mean": 0.5636449989397079,
+        "l1_write_mean": 0.49142485740594566,
+        "l1_state_norm": 0.15444281382951885,
+        "l1_state_norm_final": 0.15444281382951885,
+        "l2_decay_mean": 0.8690722249448299,
+        "l2_erase_mean": 0.5263348529115319,
+        "l2_write_mean": 0.5458549875766039,
+        "l2_state_norm": 0.3463909369893372,
+        "l2_state_norm_final": 0.3463909369893372,
+        "state_norm": 0.2096333020599559,
+        "decay_mean": 0.8714435580186546,
+        "erase_mean": 0.53562633972615,
+        "write_mean": 0.5114722899161279
+      }
+    },
+    {
+      "site": 1,
+      "validation_start": 12288,
+      "warm_in_tokens": 256,
+      "score_start": 12544,
+      "score_tokens": 128,
+      "nll": 7.898103758794605,
+      "state_policy": "checkpoint_terminal_state_clone_then_local_warm_in",
+      "cold_start": false,
+      "random_phase_resampling": false,
+      "resets_within_site": 0,
+      "warm_in_diagnostics": {
+        "l0_decay_mean": {
+          "first": 0.8784920573234558,
+          "last": 0.8437925577163696,
+          "mean": 0.8756636646576226
+        },
+        "l0_erase_mean": {
+          "first": 0.5043882727622986,
+          "last": 0.5535944700241089,
+          "mean": 0.5133557473309338
+        },
+        "l0_write_mean": {
+          "first": 0.47420111298561096,
+          "last": 0.5120788216590881,
+          "mean": 0.49289365601725876
+        },
+        "l0_state_norm": {
+          "first": 0.11677621304988861,
+          "last": 0.11915639042854309,
+          "mean": 0.1284567051625345
+        },
+        "l0_state_norm_final": {
+          "first": 0.11677621304988861,
+          "last": 0.11915639042854309,
+          "mean": 0.1284567051625345
+        },
+        "l1_decay_mean": {
+          "first": 0.8387466669082642,
+          "last": 0.8859677314758301,
+          "mean": 0.8640476653818041
+        },
+        "l1_erase_mean": {
+          "first": 0.5082792043685913,
+          "last": 0.5714006423950195,
+          "mean": 0.54535214335192
+        },
+        "l1_write_mean": {
+          "first": 0.41881877183914185,
+          "last": 0.5250371694564819,
+          "mean": 0.47691476671025157
+        },
+        "l1_state_norm": {
+          "first": 0.16053733229637146,
+          "last": 0.14997515082359314,
+          "mean": 0.15277924650581554
+        },
+        "l1_state_norm_final": {
+          "first": 0.16053733229637146,
+          "last": 0.14997515082359314,
+          "mean": 0.15277924650581554
+        },
+        "l2_decay_mean": {
+          "first": 0.8617339134216309,
+          "last": 0.8780730962753296,
+          "mean": 0.8741347778122872
+        },
+        "l2_erase_mean": {
+          "first": 0.5270134210586548,
+          "last": 0.5220179557800293,
+          "mean": 0.5203713244991377
+        },
+        "l2_write_mean": {
+          "first": 0.4381778836250305,
+          "last": 0.5767178535461426,
+          "mean": 0.5224893771810457
+        },
+        "l2_state_norm": {
+          "first": 0.35029494762420654,
+          "last": 0.3646124005317688,
+          "mean": 0.34312243992462754
+        },
+        "l2_state_norm_final": {
+          "first": 0.35029494762420654,
+          "last": 0.3646124005317688,
+          "mean": 0.34312243992462754
+        },
+        "state_norm": {
+          "first": 0.2092028558254242,
+          "last": 0.211247980594635,
+          "mean": 0.20811946946196258
+        },
+        "decay_mean": {
+          "first": 0.8596576452255249,
+          "last": 0.869277834892273,
+          "mean": 0.871282052481547
+        },
+        "erase_mean": {
+          "first": 0.5132269859313965,
+          "last": 0.5490043759346008,
+          "mean": 0.5263597551966086
+        },
+        "write_mean": {
+          "first": 0.4437325894832611,
+          "last": 0.5379446148872375,
+          "mean": 0.49743261421099305
+        }
+      },
+      "diagnostics": {
+        "l0_decay_mean": 0.8729653903283179,
+        "l0_erase_mean": 0.5154368171934038,
+        "l0_write_mean": 0.48705377290025353,
+        "l0_state_norm": 0.1230889194412157,
+        "l0_state_norm_final": 0.1230889194412157,
+        "l1_decay_mean": 0.8595177568495274,
+        "l1_erase_mean": 0.5458420473150909,
+        "l1_write_mean": 0.4640701371245086,
+        "l1_state_norm": 0.14573588187340647,
+        "l1_state_norm_final": 0.14573588187340647,
+        "l2_decay_mean": 0.8716125641949475,
+        "l2_erase_mean": 0.5240016914904118,
+        "l2_write_mean": 0.5150388481561095,
+        "l2_state_norm": 0.3728310093283653,
+        "l2_state_norm_final": 0.3728310093283653,
+        "state_norm": 0.2138852757634595,
+        "decay_mean": 0.8680319269187748,
+        "erase_mean": 0.5284268686082214,
+        "write_mean": 0.48872093320824206
+      }
+    },
+    {
+      "site": 2,
+      "validation_start": 16384,
+      "warm_in_tokens": 256,
+      "score_start": 16640,
+      "score_tokens": 128,
+      "nll": 6.334887048375094,
+      "state_policy": "checkpoint_terminal_state_clone_then_local_warm_in",
+      "cold_start": false,
+      "random_phase_resampling": false,
+      "resets_within_site": 0,
+      "warm_in_diagnostics": {
+        "l0_decay_mean": {
+          "first": 0.9126238226890564,
+          "last": 0.8944137096405029,
+          "mean": 0.8739539571106434
+        },
+        "l0_erase_mean": {
+          "first": 0.529647707939148,
+          "last": 0.529038667678833,
+          "mean": 0.5171144299674779
+        },
+        "l0_write_mean": {
+          "first": 0.48367536067962646,
+          "last": 0.47591447830200195,
+          "mean": 0.49479592277202755
+        },
+        "l0_state_norm": {
+          "first": 0.1087312176823616,
+          "last": 0.12017717212438583,
+          "mean": 0.1243577190907672
+        },
+        "l0_state_norm_final": {
+          "first": 0.1087312176823616,
+          "last": 0.12017717212438583,
+          "mean": 0.1243577190907672
+        },
+        "l1_decay_mean": {
+          "first": 0.872927188873291,
+          "last": 0.8664336204528809,
+          "mean": 0.8638643168378621
+        },
+        "l1_erase_mean": {
+          "first": 0.5915883779525757,
+          "last": 0.5863858461380005,
+          "mean": 0.566452116239816
+        },
+        "l1_write_mean": {
+          "first": 0.4632917642593384,
+          "last": 0.4644884765148163,
+          "mean": 0.4854391365079209
+        },
+        "l1_state_norm": {
+          "first": 0.15850242972373962,
+          "last": 0.13938204944133759,
+          "mean": 0.15004021482309327
+        },
+        "l1_state_norm_final": {
+          "first": 0.15850242972373962,
+          "last": 0.13938204944133759,
+          "mean": 0.15004021482309327
+        },
+        "l2_decay_mean": {
+          "first": 0.8758394718170166,
+          "last": 0.8853314518928528,
+          "mean": 0.8675097725354135
+        },
+        "l2_erase_mean": {
+          "first": 0.53291916847229,
+          "last": 0.5587810277938843,
+          "mean": 0.530240690219216
+        },
+        "l2_write_mean": {
+          "first": 0.5178554654121399,
+          "last": 0.5054527521133423,
+          "mean": 0.5418913742760196
+        },
+        "l2_state_norm": {
+          "first": 0.3243662118911743,
+          "last": 0.30775943398475647,
+          "mean": 0.3486266932450235
+        },
+        "l2_state_norm_final": {
+          "first": 0.3243662118911743,
+          "last": 0.30775943398475647,
+          "mean": 0.3486266932450235
+        },
+        "state_norm": {
+          "first": 0.19719994068145752,
+          "last": 0.18910622596740723,
+          "mean": 0.2076748801046051
+        },
+        "decay_mean": {
+          "first": 0.8871302008628845,
+          "last": 0.8820595741271973,
+          "mean": 0.8684427014086396
+        },
+        "erase_mean": {
+          "first": 0.5513851046562195,
+          "last": 0.5580685138702393,
+          "mean": 0.5379357647616416
+        },
+        "write_mean": {
+          "first": 0.4882742166519165,
+          "last": 0.48195192217826843,
+          "mean": 0.5073754944605753
+        }
+      },
+      "diagnostics": {
+        "l0_decay_mean": 0.8707968825474381,
+        "l0_erase_mean": 0.5199561691842973,
+        "l0_write_mean": 0.49489104887470603,
+        "l0_state_norm": 0.12389657134190202,
+        "l0_state_norm_final": 0.12389657134190202,
+        "l1_decay_mean": 0.864192659035325,
+        "l1_erase_mean": 0.571078521432355,
+        "l1_write_mean": 0.4903934544418007,
+        "l1_state_norm": 0.15152985008899122,
+        "l1_state_norm_final": 0.15152985008899122,
+        "l2_decay_mean": 0.8666279320605099,
+        "l2_erase_mean": 0.5318893592339009,
+        "l2_write_mean": 0.5492448976729065,
+        "l2_state_norm": 0.35272608255036175,
+        "l2_state_norm_final": 0.35272608255036175,
+        "state_norm": 0.20938417338766158,
+        "decay_mean": 0.8672058451920748,
+        "erase_mean": 0.5409747043158859,
+        "write_mean": 0.5115098147653043
+      }
+    },
+    {
+      "site": 3,
+      "validation_start": 20480,
+      "warm_in_tokens": 256,
+      "score_start": 20736,
+      "score_tokens": 128,
+      "nll": 5.743282210096368,
+      "state_policy": "checkpoint_terminal_state_clone_then_local_warm_in",
+      "cold_start": false,
+      "random_phase_resampling": false,
+      "resets_within_site": 0,
+      "warm_in_diagnostics": {
+        "l0_decay_mean": {
+          "first": 0.8856208324432373,
+          "last": 0.8774126768112183,
+          "mean": 0.8758845028933138
+        },
+        "l0_erase_mean": {
+          "first": 0.5291441679000854,
+          "last": 0.5197007060050964,
+          "mean": 0.5157502526417375
+        },
+        "l0_write_mean": {
+          "first": 0.47158393263816833,
+          "last": 0.47412240505218506,
+          "mean": 0.4913410289445892
+        },
+        "l0_state_norm": {
+          "first": 0.10925352573394775,
+          "last": 0.11884600669145584,
+          "mean": 0.1300964737602044
+        },
+        "l0_state_norm_final": {
+          "first": 0.10925352573394775,
+          "last": 0.11884600669145584,
+          "mean": 0.1300964737602044
+        },
+        "l1_decay_mean": {
+          "first": 0.837706446647644,
+          "last": 0.8416057229042053,
+          "mean": 0.8622801697347313
+        },
+        "l1_erase_mean": {
+          "first": 0.57185959815979,
+          "last": 0.6096230149269104,
+          "mean": 0.5342379651265219
+        },
+        "l1_write_mean": {
+          "first": 0.4067862629890442,
+          "last": 0.4149335026741028,
+          "mean": 0.47803064272738993
+        },
+        "l1_state_norm": {
+          "first": 0.14893491566181183,
+          "last": 0.13443386554718018,
+          "mean": 0.15686592625570484
+        },
+        "l1_state_norm_final": {
+          "first": 0.14893491566181183,
+          "last": 0.13443386554718018,
+          "mean": 0.15686592625570484
+        },
+        "l2_decay_mean": {
+          "first": 0.8706192374229431,
+          "last": 0.8638095855712891,
+          "mean": 0.8725283606909215
+        },
+        "l2_erase_mean": {
+          "first": 0.5107940435409546,
+          "last": 0.5616313815116882,
+          "mean": 0.5158528541214764
+        },
+        "l2_write_mean": {
+          "first": 0.47346895933151245,
+          "last": 0.5039072036743164,
+          "mean": 0.522902712225914
+        },
+        "l2_state_norm": {
+          "first": 0.3346746563911438,
+          "last": 0.33326318860054016,
+          "mean": 0.34824661922175437
+        },
+        "l2_state_norm_final": {
+          "first": 0.3346746563911438,
+          "last": 0.33326318860054016,
+          "mean": 0.34824661922175437
+        },
+        "state_norm": {
+          "first": 0.19762103259563446,
+          "last": 0.19551436603069305,
+          "mean": 0.21173634490696713
+        },
+        "decay_mean": {
+          "first": 0.8646488189697266,
+          "last": 0.8609427213668823,
+          "mean": 0.8702310307417065
+        },
+        "erase_mean": {
+          "first": 0.537265956401825,
+          "last": 0.5636517405509949,
+          "mean": 0.5219470410374925
+        },
+        "write_mean": {
+          "first": 0.45061302185058594,
+          "last": 0.4643210768699646,
+          "mean": 0.4974248078651726
+        }
+      },
+      "diagnostics": {
+        "l0_decay_mean": 0.8718349705450237,
+        "l0_erase_mean": 0.5168929621577263,
+        "l0_write_mean": 0.5008955558296293,
+        "l0_state_norm": 0.13329937687376514,
+        "l0_state_norm_final": 0.13329937687376514,
+        "l1_decay_mean": 0.8698869496583939,
+        "l1_erase_mean": 0.5548763386905193,
+        "l1_write_mean": 0.49283367837779224,
+        "l1_state_norm": 0.1587615164462477,
+        "l1_state_norm_final": 0.1587615164462477,
+        "l2_decay_mean": 0.8727706312201917,
+        "l2_erase_mean": 0.518000456970185,
+        "l2_write_mean": 0.5482049232814461,
+        "l2_state_norm": 0.35429154173471034,
+        "l2_state_norm_final": 0.35429154173471034,
+        "state_norm": 0.215450816671364,
+        "decay_mean": 0.8714975332841277,
+        "erase_mean": 0.5299232688266784,
+        "write_mean": 0.5139780712779611
+      }
+    }
+  ],
+  "sites_count": 4,
+  "warm_in_tokens": 256,
+  "score_tokens_per_site": 128,
+  "state_policy": "one_mature_checkpoint_terminal_state_cloned_for_fixed_independent_local_contexts",
+  "cold_start": false,
+  "random_phase_resampling": false,
+  "resets_within_site": 0,
+  "mature_ness_initializations": 0,
+  "checkpoint_terminal_state_clones": 4,
+  "seconds": 10.410068500001216,
+  "scored_tokens_per_second": 49.18315379000053,
+  "diagnostics": {
+    "l0_decay_mean": 0.8731461999705061,
+    "l0_erase_mean": 0.5172962646465749,
+    "l0_write_mean": 0.4949943386600353,
+    "l0_state_norm": 0.12708775173814502,
+    "l0_state_norm_final": 0.12708775173814502,
+    "l1_decay_mean": 0.8654670516261831,
+    "l1_erase_mean": 0.5588604765944183,
+    "l1_write_mean": 0.4846805318375118,
+    "l1_state_norm": 0.15261751555954106,
+    "l1_state_norm_final": 0.15261751555954106,
+    "l2_decay_mean": 0.8700208381051198,
+    "l2_erase_mean": 0.5250565901515074,
+    "l2_write_mean": 0.5395859141717665,
+    "l2_state_norm": 0.35655989265069366,
+    "l2_state_norm_final": 0.35655989265069366,
+    "state_norm": 0.21208839197061025,
+    "decay_mean": 0.869544715853408,
+    "erase_mean": 0.5337377953692339,
+    "write_mean": 0.5064202772919089
+  },
+  "protocol": "IB-warm-local-language-v1",
+  "checkpoint": "results\\gated_deltanet_2_d128_3000\\BBest.pt",
+  "checkpoint_sha256": "eb5f348c9b0699222769343a04a97a02acd34b34bf9bc4641914b79f2b033650",
+  "checkpoint_step": 3000,
+  "architecture": "GatedDeltaNet2-d128-L3-BPE",
+  "model_family": "gdn2",
+  "continuous_velocity_channels": 0,
+  "K": 1,
+  "integration_resolution": "not_applicable",
+  "dataset": "data\\ib_owt_gpt2\\validation.npy",
+  "ness_phase_seed": null
+}

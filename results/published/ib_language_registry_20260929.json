@@ -1,0 +1,33 @@
+{
+  "schema": "ib-language-evidence-registry-v1",
+  "updated": "2026-09-29",
+  "ranking_protocol": "IB-warm-local-language-v1: four fixed OpenWebText sites; 256 observed warm-in tokens and 128 scored continuation tokens per site.",
+  "entries": [
+    {
+      "id": "q8_compatibility_replay_3000",
+      "status": "current_control",
+      "mean_nll": 7.2153571512,
+      "checkpoint": "results/q8_ness_reference_3000/BBest.pt",
+      "report": "results/published/q8_ness_reference_3000_warm_ness_sites.json",
+      "state_policy": "mature kinetic spectrum with randomized Fourier phase, then local warm-in",
+      "claim": "Current continuous-Q8 control; no claim against GDN."
+    },
+    {
+      "id": "gdn2_d128_3000",
+      "status": "current_reference",
+      "mean_nll": 6.4981485040,
+      "checkpoint": "results/gated_deltanet_2_d128_3000/BBest.pt",
+      "report": "results/published/gdn2_d128_3000_warm_local_sites.json",
+      "state_policy": "saved mature recurrent state, then local warm-in",
+      "claim": "Current local-window reference."
+    },
+    {
+      "id": "historical_continuous_q8_3000",
+      "status": "archive_only",
+      "mean_nll": 7.1925026178,
+      "report": "results/published/cbim_matched_continuous_q8_8x8x4_causality_3000.json",
+      "claim": "Historical observation only: checkpoint is unavailable and the recorded source hashes do not match the current implementation. It cannot establish a current ranking."
+    }
+  ],
+  "prohibited_comparison": "A single-site score and another model's global or trainer-validation score cannot establish a win."
+}

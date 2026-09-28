@@ -1,0 +1,33 @@
+{
+  "protocol": "audit-only: checkpoint terminal field clone then local warm-in",
+  "nll": 7.215358996769275,
+  "sites": [
+    {
+      "site": 0,
+      "validation_start": 8192,
+      "nll": 6.9529788037457365
+    },
+    {
+      "site": 1,
+      "validation_start": 12288,
+      "nll": 8.538848799442349
+    },
+    {
+      "site": 2,
+      "validation_start": 16384,
+      "nll": 6.957371018354337
+    },
+    {
+      "site": 3,
+      "validation_start": 20480,
+      "nll": 6.412237365534679
+    }
+  ],
+  "warm_in_tokens": 256,
+  "score_tokens_per_site": 128,
+  "state_policy": "checkpoint_terminal_field_clone_then_local_warm_in",
+  "cold_start": false,
+  "random_phase_resampling": false,
+  "resets_within_site": 0,
+  "comparison": "Within numerical noise of random-phase NESS after 256-token warm-in."
+}

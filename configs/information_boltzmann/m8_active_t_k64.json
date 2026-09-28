@@ -1,0 +1,64 @@
+{
+  "name": "m8_active_t_k64",
+  "status": "active_single_research_line",
+  "field": {
+    "topology": "T3 periodic Fourier-Galerkin workspace",
+    "shape": [
+      8,
+      8,
+      4
+    ],
+    "content_dim": 16,
+    "operators": [
+      "W2 full-rank boundary write",
+      "continuous-direction spectral Cayley transport",
+      "live-frame invariant local collision",
+      "explicit bath",
+      "query readout"
+    ],
+    "velocity_carriers": {
+      "count": 8,
+      "representation": "eight continuous S^2 carrier directions per path and microstep",
+      "transport": "Fourier Cayley phase transport from live directions",
+      "collision_invariants": "mass and momentum projector induced by the same live direction frame",
+      "initialization": "well-spaced spherical frame; it is not a fixed lattice velocity set"
+    }
+  },
+  "paths": {
+    "M": 8,
+    "K": 64,
+    "T": "learned positive duration per complete field path",
+    "responsibility": "posterior alignment after the next real observation"
+  },
+  "training": {
+    "protocol": "IB-continuous-language-train-v1",
+    "minimum_joint_updates": 3000,
+    "objective": "marginal next-observation likelihood plus posterior-responsibility alignment",
+    "ordered_stream": true,
+    "training_genesis_burn_in_tokens": 256,
+    "state_rule": "carry the terminal field across every update; detach BPTT graph only; never reset the field",
+    "resume_rule": "restore model, optimizer, terminal field, stream offset, and RNG from one same-update checkpoint",
+    "checkpoint_selection": "IB-warm-local-language-v1 energy-aligned NESS local-site protocol",
+    "stream_state": "persistent; never reset during ordered language training or evaluation"
+  },
+  "capability_surfaces": {
+    "primary": "OpenWebText GPT-2 BPE no-reset NLL",
+    "reasoning": "Sudoku blank-cell NLL and accuracy through generic ports"
+  },
+  "language_evaluation": {
+    "protocol": "IB-warm-local-language-v1",
+    "data_split": "OpenWebText GPT-2 BPE held-out fixed local sites",
+    "site_starts": [
+      8192,
+      12288,
+      16384,
+      20480
+    ],
+    "kinetic_state_policy": "terminal field supplies NESS DC and Fourier amplitude spectrum; deterministic independent random phase per site; then local warm-in without reset",
+    "gdn_state_policy": "saved mature recurrent state followed by the same local warm-in",
+    "warm_in_tokens": 256,
+    "score_tokens_per_site": 128,
+    "K": 64,
+    "target": "mean prior/deployed-mixture next-token NLL across fixed energy-aligned warm local sites"
+  }
+}
