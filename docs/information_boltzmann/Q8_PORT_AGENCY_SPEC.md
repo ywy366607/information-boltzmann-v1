@@ -188,6 +188,60 @@ choose the answer. Read locality therefore gives transport, collision and
 distributed storage an actual route to influence language likelihood, while
 preserving a field-only decoding path.
 
+### Complete kinetic observation coordinates
+
+For Q8, let the columns of (C) be an orthonormal basis of the local
+collision-invariant complement and let (N) be the collision nullspace.  The
+local field has the exact orthogonal coordinate map
+
+\[
+f_i=Cm_i+Ng_i,
+\qquad
+\binom{m_i}{g_i}=
+\binom{C^\top f_i}{N^\top f_i}.
+\]
+
+The implemented read agent first constructs this full vector
+\([m_i,g_i]\in\mathbb R^d\), then measures its probe-weighted mean and
+fluctuation.  Thus, before learned semantic mixing, the observation map has
+no collision-tangent channel nullspace:
+
+\[
+\forall v\ne0\in\mathbb R^d,\quad
+\exists (m,g)\text{ coordinate with }\langle[m,g],v\rangle\ne0.
+\]
+
+At a finite precision every softmax aperture is strictly positive on every
+sampled node.  Consequently a local perturbation in either the invariant or
+collision subspace has a nonzero measurement Jacobian before the decoder.  A
+trained decoder can still choose to ignore such evidence; that is an
+optimization/capacity outcome, not an unobserved physical coordinate.
+
+The action itself is a posterior distribution over a continuous torus atlas:
+
+\[
+p(a^r\mid \bar m),\qquad
+q(a^r\mid F,\Lambda),\qquad
+\rho_{h}(x)=\sum_aq(a^r=a\mid F,\Lambda)\,\rho_{h,a}(x).
+\]
+
+The atlas charts are normalized periodic kernels whose width follows the
+physical volume of the chart partition, rather than an arbitrary attention
+radius.  QK normalization and a per-head log scale initialized at zero set
+the initial cosine temperature to one; the learned scale is the only
+sharpness parameter.  The posterior is represented as a correction to the
+invariant-macrostate prior, so both distributions receive task-likelihood
+gradients even before a sampled action objective is introduced.
+
+The present differentiable implementation uses the exact expected aperture
+\(\sum_aq(a)\rho_a\).  It reports
+\(\mathrm{KL}[q(a^r\mid F,\Lambda)\Vert p(a^r\mid\bar m)]\) as action
+complexity but does **not** add it to the token loss yet.  Adding it would be
+a valid variational term only after replacing the decoder-at-mean shortcut by
+an explicit categorical action likelihood marginalization or a controlled
+Monte-Carlo estimator.  This distinction prevents a diagnostic KL from being
+mislabelled as an exact active-inference objective.
+
 ## Interior and physical time
 
 For the selected duration, the field follows
@@ -316,10 +370,22 @@ the action-posterior KL.  The tests also establish zero-innovation identity,
 port-metric balance, persistent precision, and gradients to every agent
 parameter.
 
-M sampling, the read agent, adaptive physical duration, and the CUDA-graph
-trainer intentionally remain unchanged in this commit.  They require the
-factorized port chart so that one common prior/posterior model, rather than a
-collection of auxiliary losses, governs all port actions.
+`PredictivePhysicalReadAgent` is now implemented in
+`information_boltzmann/core/readout_probes.py` and is available through
+`readout_type="belief_agent"` paired with the predictive write agent.  It
+accepts only the evolved field and persistent channel precision.  It never
+accepts a token embedding or reflected port.  Structural tests verify exact
+coordinate reconstruction, nonzero response to both invariant and collision
+directions, and finite likelihood gradients to every read-agent parameter.
+For the same reason, W4 disables the optional token-conditioned input to the
+unified bath: the observed event reaches the physical field only through the
+innovation boundary.
+
+M sampling, adaptive physical duration, categorical action-likelihood
+marginalization, and the CUDA-graph trainer intentionally remain separate
+steps.  They require this common prior/posterior port geometry so that one
+generative model, rather than a collection of auxiliary losses, governs all
+port actions.
 
 ## Review status
 

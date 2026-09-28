@@ -128,6 +128,218 @@ class DynamicLinearReadout(nn.Module):
         return h_t, diag
 
 
+class PredictivePhysicalReadAgent(nn.Module):
+    """Field-only read policy over a complete local kinetic coordinate system.
+
+    The action is a distribution over a finite Fourier--Galerkin atlas of
+    continuous torus apertures.  It is selected from the posterior field and
+    its channel precision, never from the current token or the reflected
+    boundary wave.  At every spatial cell the measured value is expressed in
+    an orthogonal decomposition::
+
+        f = C m + N g,
+
+    where ``C`` spans the collision invariants and ``N`` is the collision
+    nullspace.  Thus the value coordinates ``[m, g]`` are an invertible
+    reparameterization of the local field: conserved content and collision
+    changes are both observable before learned semantic mixing.
+
+    The atlas bandwidth follows its physical cell volume rather than a
+    hand-selected attention radius.  Softmax mixtures keep every aperture
+    strictly positive, so a finite read policy has no exact spatial blind
+    spot at initialization.
+    """
+
+    def __init__(
+        self,
+        shape: Tuple[int, int, int],
+        d: int,
+        nullspace: torch.Tensor,
+        *,
+        heads: int = 4,
+        queries: int = 4,
+        atlas_shape: Tuple[int, int, int] = (4, 4, 4),
+    ):
+        super().__init__()
+        if d % heads:
+            raise ValueError(f"d ({d}) must be divisible by heads ({heads})")
+        if nullspace.ndim != 2 or nullspace.shape[0] != d:
+            raise ValueError("nullspace must be [d, collision_nullity]")
+        self.shape, self.d = tuple(shape), int(d)
+        self.heads, self.queries = int(heads), int(queries)
+        self.head_dim = d // heads
+        self.nodes = math.prod(shape)
+        self.atlas_shape = tuple(atlas_shape)
+        self.atlas_size = math.prod(self.atlas_shape)
+        self.nullity = int(nullspace.shape[1])
+
+        # ``nullspace`` comes from the collision SVD and is orthonormal.  A
+        # complete QR supplies its orthogonal invariant complement C.
+        q_complete, _ = torch.linalg.qr(nullspace.detach(), mode="complete")
+        invariant_basis = q_complete[:, self.nullity:]
+        if invariant_basis.shape[1] + self.nullity != d:
+            raise RuntimeError("Kinetic coordinate decomposition is incomplete")
+        self.register_buffer("nullspace", nullspace.detach(), persistent=False)
+        self.register_buffer("invariant_basis", invariant_basis, persistent=False)
+
+        coordinates = torus_grid(self.shape).reshape(self.nodes, 3)
+        anchors = torus_grid(self.atlas_shape).reshape(self.atlas_size, 3)
+        delta = torch.remainder(
+            coordinates[None] - anchors[:, None] + 0.5, 1.0) - 0.5
+        distance_sq = delta.square().sum(-1)
+        # A chart cell has volume 1/A; its isotropic physical length is the
+        # cubic root.  The normalized kernel produces a partition of unity
+        # over the continuous torus independently of the sampled field grid.
+        cell_length = float(self.atlas_size) ** (-1.0 / 3.0)
+        log_kernel = -0.5 * distance_sq / (cell_length * cell_length)
+        log_kernel = log_kernel - torch.logsumexp(log_kernel, dim=0, keepdim=True)
+        self.register_buffer("coordinates", coordinates, persistent=False)
+        self.register_buffer("anchor_log_kernel", log_kernel, persistent=False)
+
+        # The prior is built from invariant macrostate.  The posterior policy
+        # may additionally use collision coordinates and persistent precision.
+        invariant_dim = d - self.nullity
+        self.prior_features = nn.Sequential(
+            nn.Linear(2 * invariant_dim, d), nn.SiLU(), nn.Linear(d, d))
+        self.posterior_features = nn.Sequential(
+            nn.Linear(2 * d, d), nn.SiLU(), nn.Linear(d, d))
+        self.action_prior = nn.Linear(d, heads * queries * self.atlas_size)
+        self.action_posterior = nn.Linear(d, heads * queries * self.atlas_size)
+        self.q_proj = nn.Linear(d, heads * queries * self.head_dim, bias=False)
+        self.k_proj = nn.Linear(d, d, bias=False)
+
+        # Cosine QK attention: exp(0)=1 is the ordinary unit-temperature
+        # cosine model.  Temperature is entirely learned per head.
+        self.head_log_scale = nn.Parameter(torch.zeros(1, heads, 1, 1))
+        self.merge = nn.Linear(2 * queries * d, d, bias=False)
+        self.correction = nn.Sequential(
+            nn.RMSNorm(d), nn.Linear(d, d), nn.SiLU(), nn.Linear(d, d))
+
+        for module in (self.prior_features, self.posterior_features):
+            nn.init.normal_(module[-1].weight, std=1e-3)
+            nn.init.zeros_(module[-1].bias)
+        nn.init.zeros_(self.action_prior.weight)
+        nn.init.zeros_(self.action_prior.bias)
+        nn.init.normal_(self.action_posterior.weight, std=1e-3)
+        nn.init.zeros_(self.action_posterior.bias)
+        nn.init.orthogonal_(self.k_proj.weight)
+        nn.init.normal_(self.q_proj.weight, std=0.02)
+        with torch.no_grad():
+            self.merge.weight.zero_()
+            # At initialization the first aperture is an exact physical mean
+            # reader for every channel; later queries and variance are learned.
+            self.merge.weight[:, :d] = torch.eye(d)
+            self.correction[-1].weight.zero_()
+            self.correction[-1].bias.zero_()
+
+    def physical_coordinates(self, flat_field: torch.Tensor) -> torch.Tensor:
+        """Return the exact [invariant, collision] local coordinates of f."""
+        c = self.invariant_basis.to(dtype=flat_field.dtype)
+        n = self.nullspace.to(dtype=flat_field.dtype)
+        invariant = torch.einsum("dk,bnd->bnk", c, flat_field)
+        collision = torch.einsum("dk,bnd->bnk", n, flat_field)
+        return torch.cat((invariant, collision), dim=-1)
+
+    def reconstruct_physical_coordinates(self, coordinates: torch.Tensor) -> torch.Tensor:
+        """Invert :meth:`physical_coordinates` exactly up to numerical error."""
+        invariant_dim = self.invariant_basis.shape[1]
+        c = self.invariant_basis.to(dtype=coordinates.dtype)
+        n = self.nullspace.to(dtype=coordinates.dtype)
+        return (
+            torch.einsum("dk,bnk->bnd", c, coordinates[..., :invariant_dim])
+            + torch.einsum("dk,bnk->bnd", n, coordinates[..., invariant_dim:]))
+
+    @staticmethod
+    def _categorical_kl(posterior: torch.Tensor, prior: torch.Tensor) -> torch.Tensor:
+        eps = torch.finfo(posterior.dtype).eps
+        return (posterior * (
+            posterior.clamp_min(eps).log() - prior.clamp_min(eps).log()
+        )).sum(dim=-1).mean()
+
+    def forward(
+        self,
+        field: torch.Tensor,
+        precision: torch.Tensor,
+        return_diag: bool = False,
+    ) -> Tuple[torch.Tensor, Optional[Dict[str, torch.Tensor]]]:
+        if precision.ndim != 2 or precision.shape != (field.shape[0], self.d):
+            raise ValueError("precision must be [batch, d]")
+        batch = field.shape[0]
+        flat = field.reshape(batch, self.nodes, self.d)
+        kinetic = self.physical_coordinates(flat)
+        invariant_dim = self.invariant_basis.shape[1]
+        invariant = kinetic[..., :invariant_dim]
+
+        invariant_mean = invariant.mean(dim=1)
+        invariant_energy = invariant.square().mean(dim=1).sqrt()
+        prior_state = self.prior_features(torch.cat((
+            F.rms_norm(invariant_mean, (invariant_dim,)), invariant_energy
+        ), dim=-1))
+        kinetic_mean = kinetic.mean(dim=1)
+        kinetic_energy = kinetic.square().mean(dim=1).sqrt()
+        posterior_state = self.posterior_features(torch.cat((
+            F.rms_norm(kinetic_mean, (self.d,)),
+            kinetic_energy * precision.clamp_min(torch.finfo(field.dtype).eps).sqrt(),
+        ), dim=-1))
+
+        prior_logits = self.action_prior(prior_state).reshape(
+            batch, self.heads, self.queries, self.atlas_size)
+        # q(a|F,Lambda) is a posterior correction of the invariant prior,
+        # so both the predictive prior and evidence correction receive the
+        # next-token likelihood gradient without adding an arbitrary KL weight.
+        posterior_logits = prior_logits + self.action_posterior(posterior_state).reshape(
+            batch, self.heads, self.queries, self.atlas_size)
+        prior_action = torch.softmax(prior_logits, dim=-1)
+        posterior_action = torch.softmax(posterior_logits, dim=-1)
+
+        # Marginalize the categorical aperture exactly.  This is the expected
+        # physical measurement under q(a_read | F, Lambda), not a sampled
+        # token-conditioned selector.
+        log_aperture = torch.logsumexp(
+            posterior_logits[..., :, None] + self.anchor_log_kernel.to(field)[None, None, None],
+            dim=-2,
+        )
+        keys = self.k_proj(F.rms_norm(kinetic, (self.d,))).reshape(
+            batch, self.nodes, self.heads, self.head_dim).transpose(1, 2)
+        query = self.q_proj(posterior_state).reshape(
+            batch, self.heads, self.queries, self.head_dim)
+        semantic = torch.einsum(
+            "bhqd,bhnd->bhqn", F.normalize(query, dim=-1), F.normalize(keys, dim=-1))
+        scores = semantic * self.head_log_scale.exp() + log_aperture
+        attention = torch.softmax(scores, dim=-1)
+
+        values = kinetic.reshape(batch, self.nodes, self.heads, self.head_dim).transpose(1, 2)
+        mean = torch.einsum("bhqn,bhnd->bhqd", attention, values)
+        variance = (
+            torch.einsum("bhqn,bhnd->bhqd", attention, values.square())
+            - mean.square()).clamp_min(0.0)
+        measurement = torch.cat((
+            mean.transpose(1, 2).reshape(batch, self.queries * self.d),
+            variance.transpose(1, 2).reshape(batch, self.queries * self.d),
+        ), dim=-1)
+        base = self.merge(measurement)
+        feature = base + self.correction(base)
+
+        if not return_diag:
+            return feature, None
+        entropy = -(attention * attention.clamp_min(torch.finfo(field.dtype).eps).log()).sum(-1).mean()
+        action_entropy = -(posterior_action * posterior_action.clamp_min(torch.finfo(field.dtype).eps).log()).sum(-1).mean()
+        diag: Dict[str, torch.Tensor] = {
+            "read_attention_entropy": entropy.detach(),
+            "read_action_entropy": action_entropy.detach(),
+            "read_action_kl": self._categorical_kl(posterior_action, prior_action).detach(),
+            "read_temperature_mean": self.head_log_scale.exp().detach().mean(),
+            "read_invariant_norm": invariant.detach().square().mean().sqrt(),
+            "read_collision_norm": kinetic[..., invariant_dim:].detach().square().mean().sqrt(),
+            "read_aperture_coverage": attention.detach().amin(dim=-1).mean(),
+            # Retained inside the differentiable execution graph for a later
+            # expected-free-energy action objective.  It is deliberately not
+            # silently added to token likelihood here.
+            "_read_action_complexity": self._categorical_kl(posterior_action, prior_action),
+        }
+        return feature, diag
+
+
 class CharacteristicKernelReadout(nn.Module):
     """16-Channel Decoupled Key/Value Characteristic Readout with Multi-Scale Hierarchy (3 Pillars).
 

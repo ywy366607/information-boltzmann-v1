@@ -92,3 +92,56 @@ def test_belief_step_carries_precision_and_has_finite_gradients():
     for parameter in model.write_agent.parameters():
         assert parameter.grad is not None
         assert torch.isfinite(parameter.grad).all()
+
+
+def test_physical_read_agent_is_complete_and_field_only():
+    """The read policy must see invariant and collision coordinates alike."""
+    torch.manual_seed(23)
+    model = CBIMTorus3D(
+        vocab_size=23, shape=(4, 4, 4), velocities=8, content_dim=2,
+        write_type="w4_predictive_agent", readout_type="belief_agent",
+        micro_steps=1,
+    ).double()
+    agent = model.readout
+    field = torch.randn(1, 4, 4, 4, 16, dtype=torch.float64)
+    flat = field.reshape(1, -1, 16)
+    coordinates = agent.physical_coordinates(flat)
+    reconstructed = agent.reconstruct_physical_coordinates(coordinates)
+    torch.testing.assert_close(reconstructed, flat, atol=2e-11, rtol=2e-11)
+
+    precision = model.write_agent.initial_precision(
+        1, device=field.device, dtype=field.dtype)
+    zero = torch.zeros_like(field)
+    baseline, _ = agent(zero, precision)
+    invariant_shift = zero.clone()
+    collision_shift = zero.clone()
+    invariant_shift.reshape(1, -1, 16)[0, 0] = agent.invariant_basis[:, 0]
+    collision_shift.reshape(1, -1, 16)[0, 0] = agent.nullspace[:, 0]
+    invariant_feature, invariant_diag = agent(invariant_shift, precision, return_diag=True)
+    collision_feature, collision_diag = agent(collision_shift, precision, return_diag=True)
+
+    # Both tangent spaces alter the measurement; neither is hidden behind a
+    # token residual or a value projection that can erase it at initialization.
+    assert (invariant_feature - baseline).norm().item() > 1e-8
+    assert (collision_feature - baseline).norm().item() > 1e-8
+    assert invariant_diag["read_aperture_coverage"].item() > 0.0
+    assert collision_diag["read_aperture_coverage"].item() > 0.0
+
+
+def test_belief_read_agent_receives_next_token_gradients_without_token_input():
+    torch.manual_seed(29)
+    model = CBIMTorus3D(
+        vocab_size=23, shape=(4, 4, 4), velocities=8, content_dim=2,
+        write_type="w4_predictive_agent", readout_type="belief_agent",
+        micro_steps=1,
+    )
+    ids = torch.tensor([[1, 2, 3]])
+    targets = torch.tensor([[2, 3, 4]])
+    loss, _, diagnostics = model.forward_belief(ids, targets)
+    assert torch.isfinite(loss)
+    assert "read_action_kl" in diagnostics
+    assert "read_action_entropy" in diagnostics
+    loss.backward()
+    for parameter in model.readout.parameters():
+        assert parameter.grad is not None
+        assert torch.isfinite(parameter.grad).all()

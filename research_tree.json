@@ -1528,10 +1528,12 @@
       "time": "2026-09-29",
       "motivation": "Express innovation-sensitive writing, field observability, physical duration, and later M-path inference in one causal port framework rather than as independent gates or patches.",
       "action": "Derive the field-observability condition and implement the causal read agent on the same belief state. Then add duration and M posterior actions while preserving field-only decoding, with K fixed as numerical resolution.",
-      "conclusion": "The write agent is implemented as predictive impedance: a causal categorical field prior produces the expected bounded token statistic, a factorized Fourier--Galerkin chart maps that expectation exactly into the predicted packet, innovation drives passive admission, and channelwise precision persists as posterior state. The read agent remains field-only and unimplemented.",
+      "conclusion": "The write agent is implemented as predictive impedance: a causal categorical field prior produces the expected bounded token statistic, a factorized Fourier--Galerkin chart maps that expectation exactly into the predicted packet, innovation drives passive admission, and channelwise precision persists as posterior state. The field-only read agent is now implemented: it selects an expected continuous-torus aperture from a posterior correction of an invariant-macrostate prior and measures a complete orthogonal [invariant, collision] coordinate system. Its action KL is a diagnostic until action likelihood is explicitly marginalized; no new capability result is claimed.",
       "issues": [
-        "The common packet space, categorical port likelihood, and causal field-to-port generator are now explicit and satisfy P(E[varphi])=E[P(varphi)] for a fixed pre-event field.",
+        "The common packet space, categorical port likelihood, and causal field-to-port generator are explicit and satisfy P(E[varphi])=E[P(varphi)] for a fixed pre-event field.",
+        "The read agent has a complete local kinetic coordinate map, but the learned decoder can still ignore a coordinate; later training must distinguish observability from useful utilization.",
         "The implemented precision is channelwise. A later local moment-block precision is needed if spatially heterogeneous uncertainty becomes the limiting mechanism.",
+        "The reported read-action KL is not yet an exact variational complexity loss because the current decoder consumes the expected aperture. A categorical likelihood marginalization or controlled estimator is required before including it in the free-energy objective.",
         "Expected free energy supplies a common objective, but it does not establish useful multi-modality without a non-degenerate posterior over port actions.",
         "MCTS or GRPO may optimize a later discrete policy; they cannot repair a missing predictive boundary law."
       ],
@@ -1540,7 +1542,8 @@
         "docs/information_boltzmann/Q8_PORT_AGENCY_SPEC.md",
         "docs/information_boltzmann/Q8_GDN_THEORY_DIAGNOSIS.md",
         "information_boltzmann/core/torus3d.py",
-        "tests/test_predictive_impedance_write_agent.py"
+        "tests/test_predictive_impedance_write_agent.py",
+        "information_boltzmann/core/readout_probes.py"
       ],
       "confidence": "I",
       "confidence_note": "Unreviewed first-principles architecture specification; no capability claim."

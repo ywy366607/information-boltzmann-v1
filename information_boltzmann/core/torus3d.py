@@ -1459,6 +1459,15 @@ class CBIMTorus3D(nn.Module):
             self.readout = CharacteristicKernelReadout(
                 shape=shape, d=self.d, heads=heads, queries=queries, rounds=rounds
             )
+        elif readout_type == "belief_agent":
+            if self.write_type != "w4_predictive_agent":
+                raise ValueError(
+                    "belief_agent readout requires w4_predictive_agent so "
+                    "the field-only measurement policy receives persistent posterior precision")
+            from .readout_probes import PredictivePhysicalReadAgent
+            self.readout = PredictivePhysicalReadAgent(
+                shape=shape, d=self.d, nullspace=self.collision.nullspace,
+                heads=heads, queries=queries)
         else:
             raise ValueError(f"Unknown readout_type: {readout_type}")
 
@@ -1558,6 +1567,10 @@ class CBIMTorus3D(nn.Module):
              disable_viscosity=False, disable_subspace=False,
              precision: Optional[torch.Tensor] = None):
         tok_embed = self.source.embedding(token_ids)
+        # In the predictive-port branch, the observed event has exactly one
+        # route into the field: the innovation boundary.  A token-conditioned
+        # bath would be a second, hidden write path.
+        bath_token = None if self.write_agent is not None else tok_embed
         posterior_precision = None
         if self.write_agent is None:
             field, reflected, source_diag = self.source(field, token_ids)
@@ -1598,10 +1611,13 @@ class CBIMTorus3D(nn.Module):
             if not disable_transport:
                 mult, omega = self.transport.multiplier(dt_k, direction=dir_k)
                 field = self.transport.apply_multiplier(field, mult)
-                if isinstance(dt_k, torch.Tensor):
+                if isinstance(dt_k, torch.Tensor) and dt_k.numel() == field.shape[0]:
                     transport_dt = dt_k.view(field.shape[0], 1, 1, 1, 1)
                 else:
-                    transport_dt = float(dt_k)
+                    # ``tau_0_tensor`` is a scalar buffer.  Preserve scalar
+                    # broadcasting for multi-item belief batches rather than
+                    # incorrectly reshaping it as a per-sample clock.
+                    transport_dt = dt_k
                 transport_phase_k.append(
                     (2.0 * torch.atan(0.5 * omega * transport_dt)).abs().mean()
                 )
@@ -1611,7 +1627,7 @@ class CBIMTorus3D(nn.Module):
             if not self.three_clock and not disable_bath:
                 if isinstance(self.bath, UnifiedTorusDissipation):
                     field, bath_diag = self.bath(
-                        field, dt_k, tok_embed=tok_embed,
+                        field, dt_k, tok_embed=bath_token,
                         gamma0_factor=gamma0_factor,
                         disable_viscosity=disable_viscosity,
                         disable_subspace=disable_subspace)
@@ -1648,8 +1664,14 @@ class CBIMTorus3D(nn.Module):
             else:
                 dir_diag["dir_change_micro_deg"] = field.new_zeros(())
 
+        read_diag = {}
         if self.readout_type == "baseline":
             feature = self.readout(field)
+        elif self.readout_type == "belief_agent":
+            # Read action is a posterior-field measurement decision.  It does
+            # not receive the observed token or the external reflected port.
+            feature, read_diag = self.readout(
+                field, posterior_precision, return_diag=True)
         else:
             feature, _ = self.readout(field, tok_embed, return_diag=False)
         logits = self.decoder(feature)
@@ -1658,14 +1680,14 @@ class CBIMTorus3D(nn.Module):
             dt_mem = self.tau_mem * self.tau_0_tensor
             if isinstance(self.bath, UnifiedTorusDissipation):
                 field, bath_diag = self.bath(
-                    field, dt_mem, tok_embed=tok_embed,
+                    field, dt_mem, tok_embed=bath_token,
                     gamma0_factor=gamma0_factor,
                     disable_viscosity=True,
                     disable_subspace=disable_subspace)
             else:
                 field, bath_diag = self.bath(field, dt_mem)
 
-        diagnostics = {**source_diag, **transport_diag, **collision_diag, **bath_diag, **clock_diag, **dir_diag,
+        diagnostics = {**source_diag, **transport_diag, **collision_diag, **bath_diag, **clock_diag, **dir_diag, **read_diag,
                        "energy": (0.5 * field.detach().square().sum(-1).mean())}
         if posterior_precision is not None:
             # Kept out of ordinary monitoring/JSON; ``belief_step`` carries
@@ -1703,6 +1725,7 @@ class CBIMTorus3D(nn.Module):
                   if belief is None else belief)
         total_likelihood = input_ids.new_zeros((), dtype=torch.float32)
         total_free_energy = input_ids.new_zeros((), dtype=torch.float32)
+        total_read_complexity = input_ids.new_zeros((), dtype=torch.float32)
         final_diagnostics = {}
         for index in range(length):
             logits, belief, diagnostics = self.belief_step(
@@ -1714,6 +1737,12 @@ class CBIMTorus3D(nn.Module):
             likelihood = F.cross_entropy(logits, targets[:, index])
             total_likelihood = total_likelihood + likelihood
             total_free_energy = total_free_energy + diagnostics.pop("_write_free_energy")
+            # The read prior/posterior is retained and monitored.  Its KL is
+            # intentionally not folded into the token ELBO until the decoder
+            # marginalizes a categorical read action rather than only its
+            # expected aperture.
+            total_read_complexity = total_read_complexity + diagnostics.pop(
+                "_read_action_complexity", total_read_complexity.new_zeros(()))
             final_diagnostics = diagnostics
         loss = (total_likelihood + float(port_free_energy_weight)
                 * total_free_energy) / length
@@ -1721,6 +1750,7 @@ class CBIMTorus3D(nn.Module):
             **final_diagnostics,
             "token_nll": (total_likelihood / length).detach(),
             "write_free_energy_mean": (total_free_energy / length).detach(),
+            "read_action_complexity_mean": (total_read_complexity / length).detach(),
         }
         return loss, belief, final_diagnostics
 
