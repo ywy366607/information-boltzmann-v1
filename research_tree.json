@@ -1547,6 +1547,32 @@
       ],
       "confidence": "I",
       "confidence_note": "Unreviewed first-principles architecture specification; no capability claim."
+    },
+    {
+      "id": "IB_Q8_PORT_TRAINER_20260929",
+      "parent": "IB_Q8_PORT_AGENCY_20260929",
+      "title": "K=64 joint predictive-port language trainer and belief-preserving local evaluation",
+      "status": "active",
+      "time": "2026-09-29",
+      "motivation": "Make the predictive write/read port a trainable and evaluable single-belief Q8 system before adding M=8 or T actions, while preserving the registered warm-local language protocol.",
+      "action": "Capture an 8-token truncated BPTT chunk of the fixed K=64 W4 write/read belief model in CUDA Graph; persist field and channelwise precision across chunks and checkpoints; evaluate every checkpoint from mature NESS spectrum plus saved posterior precision followed by 256 observed local tokens and 128 scored continuation tokens.",
+      "conclusion": "A one-update CUDA Graph smoke run on GTX 1650 completed K=64 W4 write/read forward-backward execution. An 8-token update took 0.839 s with 1352 MiB reserved GPU memory. The smoke NLL is initialization-only and has no capability meaning. Structural evaluation tests establish that local warm-in carries precision and does not reset within a site.",
+      "issues": [
+        "The trainer uses M=1. M=8 requires separate full posterior field and precision trajectories, then a principled posterior mixture or selection objective.",
+        "T is still fixed at one physical event duration; K=64 is numerical quadrature rather than an adaptive duration action.",
+        "BPTT spans eight events under the available memory budget. State persists indefinitely, while parameter credit assignment is truncated at the recorded boundary.",
+        "The next capability result requires at least 3000 jointly trained updates and the four-site registered comparison against GDN-2; the smoke run cannot rank architectures.",
+        "Read action KL remains an unoptimized diagnostic until categorical action likelihood is properly marginalized."
+      ],
+      "invalidation": "Reject this training/evaluation closure if a checkpoint cannot resume field, precision, optimizer and stream offset together, or if local-site evaluation drops posterior precision, cold-starts, or changes K.",
+      "artifacts": [
+        "scripts/ib/train_q8_port_agents.py",
+        "scripts/ib/evaluate_continuous_owt.py",
+        "configs/information_boltzmann/q8_predictive_ports_k64.json",
+        "tests/test_ib_continuous_language_evaluation.py"
+      ],
+      "confidence": "I",
+      "confidence_note": "Trainer and CUDA capture were directly smoke-tested. No trained capability or infinite-persistence claim."
     }
   ],
   "status_migration_note": "Normalize historical workflow labels for repository validator; original labels retained as legacy_status. No new experimental conclusions introduced.",

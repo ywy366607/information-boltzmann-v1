@@ -28,7 +28,7 @@ ROOT = Path(__file__).resolve().parents[2]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from information_boltzmann.core.torus3d import CBIMTorus3D
+from information_boltzmann.core.torus3d import CBIMTorus3D, KineticBeliefState
 from information_boltzmann.evaluation import WarmSiteSpec
 
 
@@ -72,8 +72,8 @@ def _model_from_checkpoint(saved: dict[str, Any]) -> tuple[torch.nn.Module, int,
         )
         model.step = types.MethodType(_gdn2_step, model)  # type: ignore[attr-defined]
         return model, 1, "gdn2"
-    if not config.get("continuous_velocities", False):
-        raise ValueError("Expected a GDN-2 reference or continuous-velocity kinetic checkpoint.")
+    if not architecture.startswith("CBIM"):
+        raise ValueError("Expected a GDN-2 reference or a CBIM kinetic checkpoint.")
     return (
         CBIMTorus3D(
             shape=tuple(config["shape"]),
@@ -88,7 +88,7 @@ def _model_from_checkpoint(saved: dict[str, Any]) -> tuple[torch.nn.Module, int,
             write_type=str(config.get("write_type", "w2_impedance")),
             micro_steps=int(config.get("micro_steps", 1)),
             adaptive_clock=bool(config.get("adaptive_clock", False)),
-            continuous_velocities=True,
+            continuous_velocities=bool(config.get("continuous_velocities", False)),
             alpha_causal=float(config.get("alpha_causal", 0.90)),
             alpha_max=float(config.get("alpha_max", 2.50)),
             dissipation_type=str(config.get("dissipation_type", "quadratic")),
@@ -115,25 +115,31 @@ def _as_float(value: torch.Tensor | float | int | None) -> float | None:
 @torch.no_grad()
 def evaluate_warm_sites(
     model: torch.nn.Module,
-    terminal_state: torch.Tensor,
+    terminal_state: torch.Tensor | KineticBeliefState,
     tokens: np.ndarray,
     spec: WarmSiteSpec,
     micro_steps: int,
     ness_phase_seed: int = 11,
 ) -> dict[str, Any]:
     """Measure fixed local contexts from a mature kinetic regime without cold starts."""
-    if terminal_state.ndim != 5:
+    belief_mode = isinstance(terminal_state, KineticBeliefState)
+    terminal_field = terminal_state.field if belief_mode else terminal_state
+    if terminal_field.ndim != 5:
         raise ValueError("Expected a rank-five checkpoint recurrent state")
     batch_axis = 1 if hasattr(model, "num_layers") else 0
-    if terminal_state.shape[batch_axis] != 1:
+    if terminal_field.shape[batch_axis] != 1:
         raise ValueError("Warm-site evaluation accepts exactly one carried stream state")
     if max(spec.site_starts) + spec.required_tokens_per_site > len(tokens):
         raise ValueError("A requested site exceeds the validation stream")
 
     device = next(model.parameters()).device
-    terminal = terminal_state.to(
+    terminal = terminal_field.to(
         device=device, dtype=next(model.parameters()).dtype
     ).detach().clone()
+    terminal_precision = (
+        terminal_state.precision.to(device=device, dtype=terminal.dtype).detach().clone()
+        if belief_mode else None
+    )
     model.eval()
     kinetic_ness = (
         hasattr(model, "set_ness_prior")
@@ -145,14 +151,23 @@ def evaluate_warm_sites(
         # its training-text phase before every independent held-out site.
         model.set_ness_prior(terminal)  # type: ignore[attr-defined]
 
-    def initialize_site(site_index: int) -> tuple[torch.Tensor, str, bool]:
+    def initialize_site(site_index: int) -> tuple[torch.Tensor | KineticBeliefState, str, bool]:
         if kinetic_ness:
             torch.manual_seed(ness_phase_seed + site_index)
             torch.cuda.manual_seed_all(ness_phase_seed + site_index)
+            field = model.initial_state(  # type: ignore[attr-defined]
+                1, device=device, dtype=terminal.dtype, warm_start=True
+            )
+            if belief_mode:
+                if terminal_precision is None:
+                    raise RuntimeError("Belief evaluation requires terminal posterior precision")
+                return (
+                    KineticBeliefState(field=field, precision=terminal_precision.clone()),
+                    "mature_ness_spectrum_with_randomized_phase_and_posterior_precision_then_local_warm_in",
+                    True,
+                )
             return (
-                model.initial_state(  # type: ignore[attr-defined]
-                    1, device=device, dtype=terminal.dtype, warm_start=True
-                ),
+                field,
                 "mature_ness_spectrum_with_randomized_phase_then_local_warm_in",
                 True,
             )
@@ -176,7 +191,11 @@ def evaluate_warm_sites(
             nonlocal state
             current = torch.as_tensor([int(tokens[index])], device=device, dtype=torch.long)
             target = torch.as_tensor([int(tokens[index + 1])], device=device, dtype=torch.long)
-            logits, state, diag = model.step(state, current, micro_steps=micro_steps)  # type: ignore[attr-defined]
+            if belief_mode:
+                logits, state, diag = model.belief_step(  # type: ignore[attr-defined]
+                    state, current, micro_steps=micro_steps)
+            else:
+                logits, state, diag = model.step(state, current, micro_steps=micro_steps)  # type: ignore[attr-defined]
             if score:
                 losses.append(float(F.cross_entropy(logits.float(), target).cpu()))
             destination = site_diagnostics if score else warm_diagnostics
@@ -225,6 +244,8 @@ def evaluate_warm_sites(
         "warm_in_tokens": spec.warm_in_tokens,
         "score_tokens_per_site": spec.score_tokens,
         "state_policy": (
+            "mature_ness_spectrum_with_randomized_phase_and_posterior_precision_then_fixed_local_warm_in"
+            if kinetic_ness and belief_mode else
             "mature_ness_spectrum_with_randomized_phase_then_fixed_local_warm_in"
             if kinetic_ness else
             "one_mature_checkpoint_terminal_state_cloned_for_fixed_independent_local_contexts"
@@ -272,8 +293,14 @@ def main() -> None:
     if micro_steps != trained_k:
         parser.error(f"K mismatch: checkpoint was trained at K={trained_k}, requested K={micro_steps}")
     stream = np.load(args.data / "validation.npy", mmap_mode="r")
+    terminal_state: torch.Tensor | KineticBeliefState = saved["state"]
+    if getattr(model, "write_agent", None) is not None:
+        if "precision" not in saved:
+            parser.error("Predictive-port checkpoint has no terminal posterior precision.")
+        terminal_state = KineticBeliefState(
+            field=saved["state"], precision=saved["precision"])
     report = evaluate_warm_sites(
-        model, saved["state"], stream, spec, micro_steps,
+        model, terminal_state, stream, spec, micro_steps,
         ness_phase_seed=args.ness_phase_seed,
     )
     report.update({

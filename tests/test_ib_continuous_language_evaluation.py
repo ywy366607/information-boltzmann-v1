@@ -3,6 +3,7 @@ import torch
 from torch import nn
 
 from information_boltzmann.evaluation import WarmSiteSpec
+from information_boltzmann.core.torus3d import CBIMTorus3D, KineticBeliefState
 from scripts.ib.evaluate_continuous_owt import _gdn2_step, evaluate_warm_sites
 from scripts.ib_local.gated_deltanet_2 import GatedDeltaNet2LM
 
@@ -65,3 +66,26 @@ def test_evaluator_clones_only_mature_state_then_carries_each_site():
     assert report["cold_start"] is False
     assert report["resets_within_site"] == 0
     assert report["checkpoint_terminal_state_clones"] == 2
+
+
+def test_evaluator_carries_predictive_port_precision_through_local_warm_in():
+    """W4 local evaluation must never discard the persistent uncertainty state."""
+    torch.manual_seed(13)
+    model = CBIMTorus3D(
+        vocab_size=17, shape=(2, 2, 2), velocities=8, content_dim=2,
+        write_type="w4_predictive_agent", readout_type="belief_agent",
+        micro_steps=1,
+    ).eval()
+    belief = model.initial_belief(1, warm_start=False)
+    model.set_ness_prior(belief.field)
+    spec = WarmSiteSpec(site_starts=(0, 5), warm_in_tokens=2, score_tokens=2)
+    tokens = torch.tensor([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]).numpy()
+    report = evaluate_warm_sites(
+        model, KineticBeliefState(belief.field, belief.precision), tokens, spec, 1
+    )
+
+    assert report["cold_start"] is False
+    assert report["resets_within_site"] == 0
+    assert report["mature_ness_initializations"] == 2
+    assert "posterior_precision_mean" in report["diagnostics"]
+    assert "posterior_precision" in report["state_policy"]

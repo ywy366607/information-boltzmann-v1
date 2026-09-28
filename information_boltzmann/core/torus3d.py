@@ -1696,6 +1696,7 @@ class CBIMTorus3D(nn.Module):
         return logits, field, diagnostics
 
     def belief_step(self, belief: KineticBeliefState, token_ids: torch.Tensor,
+                    *, include_private: bool = False,
                     **kwargs) -> tuple[torch.Tensor, KineticBeliefState, dict]:
         """Advance a full W4 posterior belief through one observed event."""
         if self.write_agent is None:
@@ -1703,6 +1704,12 @@ class CBIMTorus3D(nn.Module):
         logits, field, diagnostics = self.step(
             belief.field, token_ids, precision=belief.precision, **kwargs)
         precision = diagnostics.pop("_posterior_precision")
+        if not include_private:
+            # Event evaluation and deployment expose only physical/public
+            # diagnostics.  Training requests the differentiable terms
+            # explicitly through ``forward_belief`` below.
+            diagnostics.pop("_write_free_energy", None)
+            diagnostics.pop("_read_action_complexity", None)
         return logits, KineticBeliefState(field=field, precision=precision), diagnostics
 
     def forward_belief(self, input_ids: torch.Tensor, targets: torch.Tensor,
@@ -1730,6 +1737,7 @@ class CBIMTorus3D(nn.Module):
         for index in range(length):
             logits, belief, diagnostics = self.belief_step(
                 belief, input_ids[:, index],
+                include_private=True,
                 disable_transport=disable_transport,
                 disable_collision=disable_collision,
                 disable_bath=disable_bath,

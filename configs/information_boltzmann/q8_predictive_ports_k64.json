@@ -1,0 +1,48 @@
+{
+  "name": "q8_predictive_ports_k64",
+  "status": "joint_port_training_stage_for_m8_active_inference",
+  "field": {
+    "topology": "periodic T3 Fourier-Galerkin field",
+    "shape": [8, 8, 4],
+    "velocity_channels": 8,
+    "content_dim": 16,
+    "operators": [
+      "W4 categorical predictive-impedance write port",
+      "velocity Cayley transport",
+      "local invariant collision",
+      "quadratic field-only bath",
+      "posterior field-only kinetic read agent"
+    ]
+  },
+  "belief": {
+    "mean": "persistent kinetic field",
+    "precision": "persistent channelwise posterior precision",
+    "write_action": "categorical common-port prediction plus innovation-conditioned passive admittance",
+    "read_action": "posterior continuous-torus aperture distribution",
+    "reflection": "external boundary accounting only"
+  },
+  "paths": {
+    "implemented_M": 1,
+    "planned_M": 8,
+    "K": 64,
+    "T": "future physical-duration posterior action",
+    "note": "M8 branches require full independent field and precision states; this joint single-belief run establishes the common port law first."
+  },
+  "training": {
+    "dataset": "OpenWebText GPT-2 BPE",
+    "optimizer_updates": 3000,
+    "real_tokens_per_update": 128,
+    "bptt_chunk_tokens": 8,
+    "state_rule": "field and precision persist across chunks and updates; truncation detaches gradient history only",
+    "objective": "next-token NLL plus realized write-port free energy",
+    "read_action_kl": "diagnostic until categorical action likelihood is marginalized"
+  },
+  "evaluation": {
+    "protocol": "IB-warm-local-language-v1",
+    "sites": [8192, 12288, 16384, 20480],
+    "kinetic_initializer": "mature NESS spectrum with randomized Fourier phase plus saved channelwise precision",
+    "warm_in_tokens": 256,
+    "scored_tokens_per_site": 128,
+    "headline": "mean field-only next-token NLL"
+  }
+}

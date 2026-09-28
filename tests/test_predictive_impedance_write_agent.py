@@ -79,6 +79,8 @@ def test_belief_step_carries_precision_and_has_finite_gradients():
     assert (next_belief.precision > 0).all()
     assert "write_free_energy" in diagnostics
     assert "_posterior_precision" not in diagnostics
+    assert "_write_free_energy" not in diagnostics
+    assert "_read_action_complexity" not in diagnostics
 
     ids = torch.tensor([[1, 2, 3]])
     targets = torch.tensor([[2, 3, 4]])

@@ -5,10 +5,13 @@ medium. It is independent of task-specific data formatting.
 
 ## Active contract
 
-`M=8` complete periodic continuous-velocity fields evolve for learned pathwise physical
+`M=8` complete periodic continuous fields evolve for learned pathwise physical
 duration `T`; `K=64` is the fixed numerical integration resolution. The field
-operators are W2 boundary write, spectral transport, invariant collision,
-explicit bath, and query readout.
+operators are the W4 predictive-impedance boundary write, Cayley transport,
+invariant collision, field-only bath, and posterior field-only read agent.
+The implemented shared-port stage is one complete posterior field; it is the
+required common geometry before M=8 posterior trajectories and physical-time
+actions are added.
 
 The same core serves ordered GPT-2 BPE language events and generic
 observation/query ports used by Sudoku. Continuous no-reset OpenWebText NLL is
