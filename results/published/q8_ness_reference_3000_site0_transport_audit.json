@@ -1,0 +1,290 @@
+{
+  "nll": 6.952978687097584,
+  "sites": [
+    {
+      "site": 0,
+      "validation_start": 8192,
+      "warm_in_tokens": 256,
+      "score_start": 8448,
+      "score_tokens": 128,
+      "nll": 6.952978687097584,
+      "state_policy": "mature_ness_spectrum_with_randomized_phase_then_local_warm_in",
+      "cold_start": false,
+      "random_phase_resampling": true,
+      "resets_within_site": 0,
+      "warm_in_diagnostics": {
+        "incident_energy": {
+          "first": 0.07379777729511261,
+          "last": 0.03209220618009567,
+          "mean": 0.07182501443094225
+        },
+        "reflected_energy": {
+          "first": 0.03932240977883339,
+          "last": 0.012530796229839325,
+          "mean": 0.03428869237905019
+        },
+        "accepted_energy": {
+          "first": 0.0344754159450531,
+          "last": 0.019561409950256348,
+          "mean": 0.03753632470034063
+        },
+        "delta_e_field": {
+          "first": 0.0344754159450531,
+          "last": 0.019561409950256348,
+          "mean": 0.03753632470034063
+        },
+        "accepted_fraction": {
+          "first": 0.4671599864959717,
+          "last": 0.6095377206802368,
+          "mean": 0.4805782304611057
+        },
+        "t_packet": {
+          "first": 0.4671599864959717,
+          "last": 0.6095377206802368,
+          "mean": 0.4805782304611057
+        },
+        "cross_interference": {
+          "first": 0.04168970510363579,
+          "last": 0.020936468616127968,
+          "mean": 0.033099899832905066
+        },
+        "write_to_f_ratio": {
+          "first": 0.09412617981433868,
+          "last": 0.0354391485452652,
+          "mean": 0.08924064268830989
+        },
+        "write_angle_abs_mean": {
+          "first": 0.10191001743078232,
+          "last": 0.04090630263090134,
+          "mean": 0.07935691086095176
+        },
+        "write_angle_peak_mean": {
+          "first": 0.919123649597168,
+          "last": 0.8303321599960327,
+          "mean": 0.8006589078577235
+        },
+        "write_spatial_support": {
+          "first": 0.27734375,
+          "last": 0.125,
+          "mean": 0.22198486328125
+        },
+        "write_balance_residual": {
+          "first": 7.450580596923828e-08,
+          "last": 7.450580596923828e-09,
+          "mean": 2.3672328097745776e-08
+        },
+        "source_center": {
+          "first": 0.5663644075393677,
+          "last": 0.423774778842926,
+          "mean": 0.4960791717749089
+        },
+        "source_anchor": {
+          "first": 0.0,
+          "last": 0.0,
+          "mean": 0.0
+        },
+        "source_displacement": {
+          "first": 0.5663644075393677,
+          "last": 0.423774778842926,
+          "mean": 0.4960791717749089
+        },
+        "write_width_mean": {
+          "first": 0.18861323595046997,
+          "last": 0.14388588070869446,
+          "mean": 0.18650562956463546
+        },
+        "source_nu_s": {
+          "first": 0.0,
+          "last": 0.0,
+          "mean": 0.0
+        },
+        "transport_angle_abs_mean": {
+          "first": 1.882895827293396,
+          "last": 1.8746206760406494,
+          "mean": 1.890927501488477
+        },
+        "transport_angle_abs_max": {
+          "first": 1.8843963146209717,
+          "last": 1.8750765323638916,
+          "mean": 1.8918361426331103
+        },
+        "transport_norm_residual": {
+          "first": 0.0,
+          "last": 0.0,
+          "mean": 0.0
+        },
+        "collision_angle_abs_mean": {
+          "first": 0.06568916887044907,
+          "last": 0.05733208358287811,
+          "mean": 0.07039824788807891
+        },
+        "collision_angle_abs_max": {
+          "first": 0.475465327501297,
+          "last": 0.36078235507011414,
+          "mean": 0.4272622960852459
+        },
+        "collision_input_snr": {
+          "first": 1.3238389492034912,
+          "last": 1.3096988201141357,
+          "mean": 1.3234171497169882
+        },
+        "collision_output_snr": {
+          "first": 1.3238389492034912,
+          "last": 1.3096988201141357,
+          "mean": 1.3234171580988914
+        },
+        "bath_out_energy": {
+          "first": 0.011554870754480362,
+          "last": 0.01163956243544817,
+          "mean": 0.01176357886470214
+        },
+        "bath_angle_abs_mean": {
+          "first": 0.15252742171287537,
+          "last": 0.15123897790908813,
+          "mean": 0.15051634522387758
+        },
+        "alpha_1": {
+          "first": 0.9365290403366089,
+          "last": 0.9101681113243103,
+          "mean": 0.9421089263632894
+        },
+        "alpha_2": {
+          "first": 0.9349566102027893,
+          "last": 0.9105634689331055,
+          "mean": 0.9416318519506603
+        },
+        "alpha_3": {
+          "first": 0.9336669445037842,
+          "last": 0.9110485911369324,
+          "mean": 0.9412029930390418
+        },
+        "delta_tau_total": {
+          "first": 2.805152654647827,
+          "last": 2.7317800521850586,
+          "mean": 2.8249437753111124
+        },
+        "collision_exposure": {
+          "first": 0.19335144758224487,
+          "last": 0.17625689506530762,
+          "mean": 0.2126326616271399
+        },
+        "dir_disp_deg": {
+          "first": 64.23939514160156,
+          "last": 62.181175231933594,
+          "mean": 62.33943788707256
+        },
+        "dir_pairwise_sep_deg": {
+          "first": 91.01880645751953,
+          "last": 91.08396911621094,
+          "mean": 91.2819145321846
+        },
+        "dir_change_micro_deg": {
+          "first": 0.1266688108444214,
+          "last": 0.23656253516674042,
+          "mean": 0.209106882015476
+        },
+        "energy": {
+          "first": 0.47018876671791077,
+          "last": 0.4747709333896637,
+          "mean": 0.46015475131571293
+        }
+      },
+      "diagnostics": {
+        "incident_energy": 0.066887679262436,
+        "reflected_energy": 0.032539331274165306,
+        "accepted_energy": 0.034348348155617714,
+        "delta_e_field": 0.034348348155617714,
+        "accepted_fraction": 0.47212425898760557,
+        "t_packet": 0.47212425898760557,
+        "cross_interference": 0.030595199544677598,
+        "write_to_f_ratio": 0.08323182597086998,
+        "write_angle_abs_mean": 0.07531006243516458,
+        "write_angle_peak_mean": 0.7924971347674727,
+        "write_spatial_support": 0.216064453125,
+        "write_balance_residual": 2.1085725165903568e-08,
+        "source_center": 0.4996154315304011,
+        "source_anchor": 0.0,
+        "source_displacement": 0.4996154315304011,
+        "write_width_mean": 0.17980935447849333,
+        "source_nu_s": 0.0,
+        "transport_angle_abs_mean": 1.8939984384924173,
+        "transport_angle_abs_max": 1.89473647903651,
+        "transport_norm_residual": 0.0,
+        "collision_angle_abs_mean": 0.06892815339961089,
+        "collision_angle_abs_max": 0.42145743197761476,
+        "collision_input_snr": 1.3029109193012118,
+        "collision_output_snr": 1.302910927683115,
+        "bath_out_energy": 0.010960566622088663,
+        "bath_angle_abs_mean": 0.14848336076829582,
+        "alpha_1": 0.9487349335104227,
+        "alpha_2": 0.9483238309621811,
+        "alpha_3": 0.9479792742058635,
+        "delta_tau_total": 2.84503803960979,
+        "collision_exposure": 0.20787636877503246,
+        "dir_disp_deg": 62.54102295637131,
+        "dir_pairwise_sep_deg": 91.25131505727768,
+        "dir_change_micro_deg": 0.1709200106561184,
+        "energy": 0.44444724591448903
+      }
+    }
+  ],
+  "sites_count": 1,
+  "warm_in_tokens": 256,
+  "score_tokens_per_site": 128,
+  "state_policy": "mature_ness_spectrum_with_randomized_phase_then_fixed_local_warm_in",
+  "cold_start": false,
+  "random_phase_resampling": true,
+  "resets_within_site": 0,
+  "mature_ness_initializations": 1,
+  "checkpoint_terminal_state_clones": 0,
+  "seconds": 9.962162699986948,
+  "scored_tokens_per_second": 12.848615692671602,
+  "diagnostics": {
+    "incident_energy": 0.066887679262436,
+    "reflected_energy": 0.032539331274165306,
+    "accepted_energy": 0.034348348155617714,
+    "delta_e_field": 0.034348348155617714,
+    "accepted_fraction": 0.47212425898760557,
+    "t_packet": 0.47212425898760557,
+    "cross_interference": 0.030595199544677598,
+    "write_to_f_ratio": 0.08323182597086998,
+    "write_angle_abs_mean": 0.07531006243516458,
+    "write_angle_peak_mean": 0.7924971347674727,
+    "write_spatial_support": 0.216064453125,
+    "write_balance_residual": 2.1085725165903568e-08,
+    "source_center": 0.4996154315304011,
+    "source_anchor": 0.0,
+    "source_displacement": 0.4996154315304011,
+    "write_width_mean": 0.17980935447849333,
+    "source_nu_s": 0.0,
+    "transport_angle_abs_mean": 1.8939984384924173,
+    "transport_angle_abs_max": 1.89473647903651,
+    "transport_norm_residual": 0.0,
+    "collision_angle_abs_mean": 0.06892815339961089,
+    "collision_angle_abs_max": 0.42145743197761476,
+    "collision_input_snr": 1.3029109193012118,
+    "collision_output_snr": 1.302910927683115,
+    "bath_out_energy": 0.010960566622088663,
+    "bath_angle_abs_mean": 0.14848336076829582,
+    "alpha_1": 0.9487349335104227,
+    "alpha_2": 0.9483238309621811,
+    "alpha_3": 0.9479792742058635,
+    "delta_tau_total": 2.84503803960979,
+    "collision_exposure": 0.20787636877503246,
+    "dir_disp_deg": 62.54102295637131,
+    "dir_pairwise_sep_deg": 91.25131505727768,
+    "dir_change_micro_deg": 0.1709200106561184,
+    "energy": 0.44444724591448903
+  },
+  "protocol": "IB-warm-local-language-v1",
+  "checkpoint": "results\\q8_ness_reference_3000\\BBest.pt",
+  "checkpoint_sha256": "05ab4dc8faf7a51b07593398cc3ac056722ee94fd1e2705ad98edafd17a75b0e",
+  "checkpoint_step": 3000,
+  "architecture": "CBIM-Torus3D-w2_impedance-continuous-q8",
+  "model_family": "kinetic",
+  "continuous_velocity_channels": 8,
+  "K": 3,
+  "integration_resolution": "kinetic",
+  "dataset": "data\\ib_owt_gpt2\\validation.npy",
+  "ness_phase_seed": 11
+}
