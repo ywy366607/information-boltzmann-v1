@@ -320,3 +320,7 @@ This diagnosis was reconstructed from the registered checkpoints and current
 code by the primary agent.  It has not yet received an independent
 theory-review pass.  Its equations are a proposed closure, not an established
 theorem about language capability.
+
+The causal policy formulation that turns the innovation boundary into a
+write/read/duration active-inference port is specified in
+`Q8_PORT_AGENCY_SPEC.md`.

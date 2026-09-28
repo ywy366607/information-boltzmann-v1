@@ -1519,6 +1519,29 @@
       ],
       "confidence": "I",
       "confidence_note": "Code-derived operator comparison plus conditional mathematical closure; no independent theory review and no new capability result."
+    },
+    {
+      "id": "IB_Q8_PORT_AGENCY_20260929",
+      "parent": "IB_Q8_INNOVATION_PORT_20260929",
+      "title": "Q8 predictive impedance as a write/read active-inference port policy",
+      "status": "active",
+      "time": "2026-09-29",
+      "motivation": "Express innovation-sensitive writing, field observability, physical duration, and later M-path inference in one causal port framework rather than as independent gates or patches.",
+      "action": "Maintain an explicit predictive belief and posterior belief: propagate field mean plus structured local precision, generate the common-port observation prior, then infer write action/state posterior. Specify causal read/duration policies, preserve field-only decoding, and use M only as full posterior field trajectories with K fixed as numerical resolution.",
+      "conclusion": "The write agent is the predictive impedance itself: a field-generated port prediction defines innovation, and state-dependent passive admittance determines its local incorporation. The complete formulation maintains prior and posterior field/policy beliefs rather than a field plus training-only loss. The read agent selects only field probes. Neither may receive a current-token-to-logit or reflected-port shortcut.",
+      "issues": [
+        "The common packet space, categorical port likelihood, and causal field-to-port generator must be made explicit before implementation.",
+        "A structured field precision must be propagated and updated as persistent state; a dense covariance is not computationally admissible.",
+        "Expected free energy supplies a common objective, but it does not establish useful multi-modality without a non-degenerate posterior over port actions.",
+        "MCTS or GRPO may optimize a later discrete policy; they cannot repair a missing predictive boundary law."
+      ],
+      "invalidation": "Reject the port-agency closure if it cannot satisfy common-port geometry, zero-innovation identity, causal prediction, and a field-only decoder simultaneously.",
+      "artifacts": [
+        "docs/information_boltzmann/Q8_PORT_AGENCY_SPEC.md",
+        "docs/information_boltzmann/Q8_GDN_THEORY_DIAGNOSIS.md"
+      ],
+      "confidence": "I",
+      "confidence_note": "Unreviewed first-principles architecture specification; no capability claim."
     }
   ],
   "status_migration_note": "Normalize historical workflow labels for repository validator; original labels retained as legacy_status. No new experimental conclusions introduced.",
