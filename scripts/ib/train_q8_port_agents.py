@@ -169,7 +169,11 @@ def main() -> None:
     parser.add_argument("--steps", type=int, default=3000)
     parser.add_argument("--tokens", type=int, default=128)
     parser.add_argument("--chunk-tokens", type=int, default=8)
-    parser.add_argument("--micro-steps", type=int, default=64)
+    parser.add_argument("--micro-steps", type=int, default=16)
+    parser.add_argument("--tau-0", type=float, default=4.0,
+                        help="Integration step per microstep in physical time "
+                             "units; the event duration is micro-steps * tau-0 "
+                             "and the registered line keeps it at 64.")
     parser.add_argument("--shape", type=int, nargs=3, default=(8, 8, 4))
     parser.add_argument("--velocities", type=int, default=8, choices=(8, 27))
     parser.add_argument("--content-dim", type=int, default=16)
@@ -192,8 +196,6 @@ def main() -> None:
     parser.add_argument("--resume", type=Path)
     args = parser.parse_args()
     args.shape = tuple(args.shape)
-    if args.micro_steps != 64:
-        parser.error("The active Q8 port line fixes K=64; use a new registered branch for another K.")
     if not torch.cuda.is_available():
         parser.error("CUDA is required for the captured K=64 trainer")
     if args.steps < 1 or args.tokens < 1:
@@ -224,7 +226,7 @@ def main() -> None:
         collision_layers=args.collision_layers, relative_address=True,
         readout_type="belief_agent", write_type="w4_predictive_agent",
         micro_steps=args.micro_steps, dissipation_type=args.dissipation_type,
-        dissipation_rank=args.dissipation_rank,
+        dissipation_rank=args.dissipation_rank, tau_0=args.tau_0,
     ).cuda()
     if args.compile_operators:
         # The microstep loop launches millions of tiny elementwise kernels per
@@ -257,6 +259,8 @@ def main() -> None:
         "relative_address": True, "dissipation_type": args.dissipation_type,
         "dissipation_rank": args.dissipation_rank,
         "micro_steps": args.micro_steps, "K": args.micro_steps,
+        "tau_0": args.tau_0,
+        "event_duration": args.micro_steps * args.tau_0,
         "integration_resolution": "fixed kinetic quadrature",
         "tokens": args.tokens, "bptt_chunk_tokens": args.chunk_tokens,
         "state_policy": "one_never_reset_posterior_field_and_channel_precision",
@@ -276,7 +280,8 @@ def main() -> None:
 
     if args.resume is not None:
         saved = torch.load(args.resume, map_location="cuda", weights_only=False)
-        for key in ("architecture", "shape", "channels", "tokens", "K", "write_type", "readout_type"):
+        for key in ("architecture", "shape", "channels", "tokens", "K", "tau_0",
+                    "write_type", "readout_type"):
             if saved["config"].get(key) != config.get(key):
                 parser.error(f"Resume mismatch: {key}")
         if "precision" not in saved:

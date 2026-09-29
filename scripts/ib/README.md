@@ -30,8 +30,15 @@ D:\conda_envs\vox\python.exe scripts\ib\evaluate_continuous_owt.py `
 
 ```powershell
 D:\conda_envs\vox\python.exe scripts\ib\train_q8_port_agents.py `
-  --output results\q8_predictive_ports_k64_3000_v2 --compile-operators
+  --output results\q8_predictive_ports_k16_unified_bath_3000 `
+  --micro-steps 16 --tau-0 4.0 --dissipation-type unified --compile-operators
 ```
+
+K is the quadrature-resolution axis (`--micro-steps`) and the event
+duration is `micro-steps * tau-0` (`--tau-0`); the registered line keeps
+the duration at 64 tau0 while integrating it with 16 steps of 4 tau0,
+based on the two-axis probe on the parent checkpoint (+0.010 nats at
+dt=4 tau0 versus +0.473 nats for shortening the evolution time itself).
 
 Add `--resume results\<run>\last.pt` to continue a stopped run from its
 checkpoint (field, precision, optimizer, stream offset and best score).
@@ -42,7 +49,7 @@ eager on a GTX 1650, at roughly half the reserved GPU memory.
 `--dissipation-type unified` selects the three-layer field-only bath
 (learned gamma0 leakage, spectral viscosity on the exact Laplacian
 spectrum, rank-R content subspace forgetting of the field mean) as the
-registered dissipation arm `q8_predictive_ports_k64_unified_bath`; the
+registered dissipation arm `q8_predictive_ports_k16_unified_bath`; the
 bath context is the field mean only, so the token never gains a second
 write path.
 

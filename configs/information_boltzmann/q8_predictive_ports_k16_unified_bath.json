@@ -1,10 +1,14 @@
 {
-  "name": "q8_predictive_ports_k64_unified_bath",
-  "status": "registered_port_line_dissipation_upgrade_candidate",
-  "parent_run": "q8_predictive_ports_k64",
+  "name": "q8_predictive_ports_k16_unified_bath",
+  "status": "active_single_port_line",
+  "parent_run": "q8_predictive_ports_k64 (stopped by directive at step 890) and q8_predictive_ports_k64_unified_bath (stopped at step 470)",
   "field": {
     "topology": "periodic T3 Fourier-Galerkin field",
-    "shape": [8, 8, 4],
+    "shape": [
+      8,
+      8,
+      4
+    ],
     "velocity_channels": 8,
     "content_dim": 16,
     "operators": [
@@ -35,7 +39,7 @@
   "paths": {
     "implemented_M": 1,
     "planned_M": 8,
-    "K": 64,
+    "K": 16,
     "T": "future physical-duration posterior action",
     "note": "Single-belief joint run; registered as the dissipation arm against the quadratic parent q8_predictive_ports_k64."
   },
@@ -50,10 +54,22 @@
   },
   "evaluation": {
     "protocol": "IB-warm-local-language-v1",
-    "sites": [8192, 12288, 16384, 20480],
+    "sites": [
+      8192,
+      12288,
+      16384,
+      20480
+    ],
     "kinetic_initializer": "mature NESS spectrum with randomized Fourier phase plus saved channelwise precision",
     "warm_in_tokens": 256,
     "scored_tokens_per_site": 128,
     "headline": "mean field-only next-token NLL"
+  },
+  "integrator": {
+    "steps_per_event": 16,
+    "step_size": "4 * tau0 (tau0 = 1.0)",
+    "event_duration": "64 * tau0, preserved from the K=64 line",
+    "basis": "zero-training two-axis probe on the parent step-500 checkpoint: coarser quadrature at unchanged evolution time costs +0.010 nats at dt=4*tau0 and +0.030 at dt=16*tau0, versus +0.473 nats for shortening the evolution time itself; K=16 is the knee of the precision curve",
+    "note": "K is the quadrature resolution axis and T the duration axis; this change moves K only."
   }
 }
