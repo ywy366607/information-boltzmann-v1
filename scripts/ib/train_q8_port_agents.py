@@ -176,6 +176,9 @@ def main() -> None:
     parser.add_argument("--collision-layers", type=int, default=2)
     parser.add_argument("--lr", type=float, default=3e-4)
     parser.add_argument("--max-grad-norm", type=float, default=1.0)
+    parser.add_argument("--compile-operators", action="store_true",
+                        help="Fuse the per-microstep transport/collision/bath "
+                             "operators with torch.compile before graph capture")
     parser.add_argument("--validate-every", type=int, default=500)
     parser.add_argument("--site-starts", type=str, default="8192,12288,16384,20480")
     parser.add_argument("--warm-in-tokens", type=int, default=256)
@@ -216,6 +219,18 @@ def main() -> None:
         readout_type="belief_agent", write_type="w4_predictive_agent",
         micro_steps=args.micro_steps, dissipation_type="quadratic",
     ).cuda()
+    if args.compile_operators:
+        # The microstep loop launches millions of tiny elementwise kernels per
+        # update; inductor fusion collapses those chains before the CUDA graph
+        # capture below.  Compilation is triggered by the trainer warmup, so
+        # the captured region only records the fused kernels.  The static
+        # CUDA launcher mis-handles this kernel set on Windows torch 2.9
+        # (OverflowError in _launch_kernel), so pin the classic launcher.
+        os.environ.setdefault("TORCHINDUCTOR_USE_STATIC_CUDA_LAUNCHER", "0")
+        model.collision.forward = torch.compile(model.collision.forward)
+        model.bath.forward = torch.compile(model.bath.forward)
+        model.transport.apply_multiplier = torch.compile(
+            model.transport.apply_multiplier)
     runner = TruncatedBeliefGraphTrainer(
         model, tokens=args.tokens, chunk_tokens=args.chunk_tokens,
         lr=args.lr, max_grad_norm=args.max_grad_norm)

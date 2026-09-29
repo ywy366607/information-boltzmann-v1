@@ -830,9 +830,14 @@ class VelocityCayleyTransport3D(nn.Module):
 
     @staticmethod
     def apply_multiplier(field: torch.Tensor, multiplier: torch.Tensor):
-        frequency = torch.fft.fftn(field, dim=(1, 2, 3), norm="ortho")
-        return torch.fft.ifftn(
-            frequency * multiplier, dim=(1, 2, 3), norm="ortho").real
+        # Half-spectrum transform for real fields: the dispersion is odd in
+        # k (sin-wavenumber baseline), so the Cayley multiplier is Hermitian
+        # with a real Nyquist row, and the rfft half carries the operator
+        # exactly while costing roughly half of the full complex transform.
+        half = multiplier[..., : field.shape[3] // 2 + 1, :]
+        frequency = torch.fft.rfftn(field, dim=(1, 2, 3), norm="ortho")
+        return torch.fft.irfftn(
+            frequency * half, dim=(1, 2, 3), norm="ortho").real
 
     def forward(self, field: torch.Tensor):
         multiplier, omega = self.multiplier()
@@ -879,13 +884,24 @@ class LocalInvariantCollision3D(nn.Module):
             nn.Linear(hidden, self.layers * (self.nullity // 2)))
         nn.init.normal_(self.angle[-1].weight, std=1e-3)
         nn.init.zeros_(self.angle[-1].bias)
+        # Resolve the fused Givens kernel once; a per-call import both costs a
+        # lookup on every microstep and blocks tracer-based kernel fusion.
+        try:
+            from .triton_givens import triton_givens as _triton_givens
+            self._triton_givens = _triton_givens
+        except Exception:
+            self._triton_givens = None
 
     def forward(self, field: torch.Tensor, delta_tau: float | torch.Tensor = 1.0):
         batch = field.shape[0]
         flat = field.reshape(batch, -1, self.d)
         nullspace = self.nullspace.to(dtype=flat.dtype)
         coefficient = torch.einsum("dk,bnd->bnk", nullspace, flat)
-        conserved = flat - torch.einsum("dk,bnk->bnd", nullspace, coefficient)
+        # One projection application instead of two: subtracting the rotated
+        # nullspace coordinates from the raw coefficients and re-adding through
+        # the nullspace basis equals conserved + N @ value with one fewer
+        # einsum forward and backward per microstep.
+        flat_power = flat.square().sum(-1).mean()
         angle_input = self.norm(flat)
         if self.position_conditioned:
             position = self.position_features.to(flat)[None].expand(batch, -1, -1)
@@ -897,10 +913,22 @@ class LocalInvariantCollision3D(nn.Module):
         else:
             dt = float(delta_tau)
         scaled_angles = angles * dt
-        try:
-            from .triton_givens import triton_givens
-            value = triton_givens(coefficient, scaled_angles)
-        except Exception:
+        if self._triton_givens is not None:
+            try:
+                value = self._triton_givens(coefficient, scaled_angles)
+            except Exception:
+                self._triton_givens = None
+                value = coefficient
+                for layer in range(self.layers):
+                    pair = self.schedules[layer]
+                    left, right = value[..., pair[:, 0]], value[..., pair[:, 1]]
+                    theta = scaled_angles[:, :, layer]
+                    cosine, sine = theta.cos(), theta.sin()
+                    updated = value.clone()
+                    updated[..., pair[:, 0]] = cosine * left - sine * right
+                    updated[..., pair[:, 1]] = sine * left + cosine * right
+                    value = updated
+        else:
             value = coefficient
             for layer in range(self.layers):
                 pair = self.schedules[layer]
@@ -911,9 +939,9 @@ class LocalInvariantCollision3D(nn.Module):
                 updated[..., pair[:, 0]] = cosine * left - sine * right
                 updated[..., pair[:, 1]] = sine * left + cosine * right
                 value = updated
-        output = conserved + torch.einsum("dk,bnk->bnd", nullspace, value)
+        output = flat + torch.einsum("dk,bnk->bnd", nullspace, value - coefficient)
         coll_in_power = coefficient.square().sum(-1).mean()
-        cons_in_power = conserved.square().sum(-1).mean()
+        cons_in_power = (flat_power - coll_in_power).clamp_min(0.0)
         coll_out_power = value.square().sum(-1).mean()
         return output.reshape_as(field), {
             "collision_angle_abs_mean": scaled_angles.detach().abs().mean(),
@@ -1623,6 +1651,14 @@ class CBIMTorus3D(nn.Module):
                      "bath_angle_abs_mean": field.new_zeros(())}
         alphas_k, coll_angles_k, dirs_k, transport_phase_k = [], [], [], []
         steps_to_run = int(micro_steps) if micro_steps is not None else self.micro_steps
+        # The dispersion is parameter-only when neither the adaptive clock nor
+        # the direction controller runs, so one Cayley integration serves the
+        # whole microstep loop.  Recomputing it 64 times per event dominated
+        # the transport budget; the reuse keeps identical values and the
+        # accumulated gradient of every use flows through the single node.
+        hoisted_transport = None
+        if not disable_transport and not self.continuous_velocities and not self.adaptive_clock:
+            hoisted_transport = self.transport.multiplier(self.tau_0_tensor)
         for _ in range(steps_to_run):
             if self.adaptive_clock:
                 alpha_k = self.clock(field, tok_embed)
@@ -1636,7 +1672,10 @@ class CBIMTorus3D(nn.Module):
             else:
                 dir_k = None
             if not disable_transport:
-                mult, omega = self.transport.multiplier(dt_k, direction=dir_k)
+                if hoisted_transport is not None:
+                    mult, omega = hoisted_transport
+                else:
+                    mult, omega = self.transport.multiplier(dt_k, direction=dir_k)
                 field = self.transport.apply_multiplier(field, mult)
                 if isinstance(dt_k, torch.Tensor) and dt_k.numel() == field.shape[0]:
                     transport_dt = dt_k.view(field.shape[0], 1, 1, 1, 1)

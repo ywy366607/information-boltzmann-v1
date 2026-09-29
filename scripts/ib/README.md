@@ -30,8 +30,15 @@ D:\conda_envs\vox\python.exe scripts\ib\evaluate_continuous_owt.py `
 
 ```powershell
 D:\conda_envs\vox\python.exe scripts\ib\train_q8_port_agents.py `
-  --output results\q8_predictive_ports_k64_3000_v2
+  --output results\q8_predictive_ports_k64_3000_v2 --compile-operators
 ```
+
+Add `--resume results\<run>\last.pt` to continue a stopped run from its
+checkpoint (field, precision, optimizer, stream offset and best score).
+`--compile-operators` fuses the per-microstep transport/collision/bath
+operators with torch.compile before the CUDA graph capture; with the
+event-norm port law this measured 4.4 s per 128-token update versus 11.3 s
+eager on a GTX 1650, at roughly half the reserved GPU memory.
 
 The write port angle is driven by the precision-weighted event-total
 innovation norm `\|\delta\|_\Pi` (site-averaged, hence grid-resolution
