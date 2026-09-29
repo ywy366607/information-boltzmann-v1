@@ -1614,7 +1614,8 @@
         "Layer-2 viscosity adds another per-microstep FFT on a latency-bound GPU; the rfftn half-spectrum transform applies there too and is deferred.",
         "Subspace forgetting must remain field-only; a token-conditioned context would violate the single-write-path discipline.",
         "The two arms differ only in the bath, so four-site NLL, write free energy and field-energy traces are directly comparable.",
-        "fp16 autocast was measured slower than fp32 compiled operators on the GTX 1650 (3951 vs 3820 ms eager chunk) and is excluded; the win of half-precision storage does not materialize without tensor cores."
+        "fp16 autocast was measured slower than fp32 compiled operators on the GTX 1650 (3951 vs 3820 ms eager chunk) and is excluded; the win of half-precision storage does not materialize without tensor cores.",
+        "Measured K sensitivity on the quadratic parent's step-500 checkpoint under the identical four-site warm-local protocol with unchanged weights: NLL 9.153 at K=64, 9.262 at K=16, 9.491 at K=4, 9.626 at K=1, with evaluation time 402/154/92/76 s (2.6x-5.3x faster at reduced K). Inference-time sensitivity is shallow at this training stage; the curve must be re-measured at 3000 steps because a model that later learns to exploit evolution would steepen it. This measures sensitivity of K=64-trained weights, not the ceiling of a K=1-trained model."
       ],
       "invalidation": "Reject this arm if it does not improve the four-site NLL trajectory against the quadratic parent under the same protocol, or if the learned subspace channel destabilizes the persistent field energy.",
       "artifacts": [
