@@ -655,42 +655,68 @@ class PredictiveImpedanceWriteAgent(nn.Module):
         observation_precision = self.observation_precision(posterior_features) + eps
         posterior_precision = prior_precision + observation_precision
 
-        # A Cayley-equivalent bounded port angle.  The observed innovation
-        # controls the action amplitude, hence an exactly predicted packet is
-        # an exact identity boundary event.
-        theta = torch.atan(
-            admittance[:, None, None, None, :]
-            * innovation.abs()
-            * posterior_precision[:, None, None, None, :].sqrt())
+        # One physical boundary event: the precision-weighted event-total
+        # innovation norm ||delta||_Pi (site-averaged, hence resolution
+        # independent) sets the per-channel port angle, and the unit
+        # direction delta/||delta||_Pi is the incident mode.  A null
+        # innovation is the exact identity rotation, while an unpredictable
+        # token with ||delta||_Pi ~ 1 exchanges a finite fraction
+        # sin^2(theta) of the incident mode without rescaling by grid
+        # resolution or content dimension.
+        event_norm = (
+            innovation.square() * posterior_precision[:, None, None, None, :]
+        ).sum(-1).mean((1, 2, 3)).clamp_min(eps * eps).sqrt()
+        theta = torch.atan(admittance * event_norm[:, None])
         cosine, sine = theta.cos(), theta.sin()
-        field_next = cosine * field + sine * innovation
-        reflected = -sine * field + cosine * innovation
+        # Division-free unit-mode rotation: sin(theta) * delta/||delta||_Pi
+        # equals admittance * delta / sqrt(1 + admittance^2 ||delta||_Pi^2),
+        # which stays finite and smooth at zero innovation.
+        denominator = (1.0 + (admittance * event_norm[:, None]).square()).sqrt()
+        field_next = (
+            cosine[:, None, None, None, :] * field
+            + (admittance / denominator)[:, None, None, None, :] * innovation)
+        # Reflection is boundary ledger only and never enters the readout;
+        # its unit-mode factorization is safe because the ledger is detached.
+        unit_mode = innovation / event_norm[:, None, None, None, None]
+        reflected = (
+            -sine[:, None, None, None, :] * field
+            + cosine[:, None, None, None, :] * unit_mode)
 
         if not return_diag:
             return field_next, posterior_precision, reflected, {}
 
         innovation_energy = writer.energy(innovation)
+        incident_energy = writer.energy(unit_mode)
+        # The incident mode carries unit Pi-norm by construction, so the
+        # fraction of it absorbed by the field is the Pi-weighted mean of
+        # sin^2(theta) over the mode's channel energy distribution.  Unlike
+        # 1 - reflected/incident it stays a true fraction once the field
+        # itself carries energy: the reflected wave then contains the field
+        # bounce as well, which belongs to the ledger, not to the fraction.
+        transmitted_fraction = (
+            posterior_precision[:, None, None, None, :] * unit_mode.square()
+            * sine[:, None, None, None, :].square()
+        ).sum(-1).mean((1, 2, 3)).mean()
         port_nll = F.cross_entropy(port_logits, token_ids)
         policy_kl = self._normal_kl(
             prior_mean, prior_std, posterior_mean, posterior_std)
         balance = (writer.energy(field_next) + writer.energy(reflected)
-                   - writer.energy(field) - innovation_energy).abs()
+                   - writer.energy(field) - incident_energy).abs()
         diag = {
-            "incident_energy": innovation_energy.detach(),
+            "incident_energy": incident_energy.detach(),
             "reflected_energy": writer.energy(reflected).detach(),
             "accepted_energy": (writer.energy(field_next) - writer.energy(field)).detach(),
-            "accepted_fraction": (
-                1.0 - writer.energy(reflected) / innovation_energy.clamp_min(eps)).detach(),
-            "t_packet": (
-                1.0 - writer.energy(reflected) / innovation_energy.clamp_min(eps)).detach(),
+            "accepted_fraction": transmitted_fraction.detach(),
+            "t_packet": transmitted_fraction.detach(),
             "delta_e_field": (writer.energy(field_next) - writer.energy(field)).detach(),
             "cross_interference": (
-                torch.sin(2.0 * theta) * field * innovation).sum(dim=-1).mean().detach(),
+                torch.sin(2.0 * theta)[:, None, None, None, :] * field * unit_mode
+            ).sum(dim=-1).mean().detach(),
             "write_to_f_ratio": (
                 (field_next - field).norm(dim=-1).mean()
                 / field.norm(dim=-1).mean().clamp_min(eps)).detach(),
             "write_angle_abs_mean": theta.detach().abs().mean(),
-            "write_angle_peak_mean": theta.detach().abs().amax(dim=(1, 2, 3)).mean(),
+            "write_angle_peak_mean": theta.detach().abs().amax(dim=1).mean(),
             "write_spatial_support": (support.detach() > 0.1).float().mean(),
             "write_balance_residual": balance.detach(),
             "source_center": anchor.detach(),
@@ -699,7 +725,8 @@ class PredictiveImpedanceWriteAgent(nn.Module):
             "write_width_mean": field.new_zeros(()),
             "source_nu_s": field.new_zeros(()),
             "innovation_energy": innovation_energy.detach(),
-            "innovation_norm": innovation_summary.detach().mean(),
+            "innovation_norm": event_norm.detach().mean(),
+            "innovation_rms": innovation_summary.detach().mean(),
             "port_nll": port_nll.detach(),
             "write_action_kl": policy_kl.detach(),
             "write_free_energy": (port_nll + policy_kl).detach(),

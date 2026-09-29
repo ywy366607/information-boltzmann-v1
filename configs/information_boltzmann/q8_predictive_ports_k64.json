@@ -17,7 +17,7 @@
   "belief": {
     "mean": "persistent kinetic field",
     "precision": "persistent channelwise posterior precision",
-    "write_action": "categorical common-port prediction plus innovation-conditioned passive admittance",
+    "write_action": "categorical common-port prediction plus event-norm-conditioned passive admittance: the port angle is atan(Y_c * ||delta||_Pi) with the precision-weighted site-averaged event-total innovation norm and its unit direction as incident mode",
     "read_action": "posterior continuous-torus aperture distribution",
     "reflection": "external boundary accounting only"
   },

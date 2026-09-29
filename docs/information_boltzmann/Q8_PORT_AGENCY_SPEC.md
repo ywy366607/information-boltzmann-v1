@@ -148,12 +148,38 @@ It then performs one port exchange
 \]
 
 \(\mathcal S\) is parameterized as a Cayley/orthogonal scattering map. The
-action-dependent angle is a function of the dimensionless innovation energy
-\(\delta P_t^\top Y_t\delta P_t\), so it has the required limit
+action-dependent angle is a function of the dimensionless precision-weighted
+event-total innovation norm
 
 \[
-\delta P_t=0\quad\Longrightarrow\quad F_t^+=F_t^-,\quad R_t=0.
+\|\delta P_t\|_\Pi^2
+  =\big\langle \Pi_t\,\delta P_t,\delta P_t\big\rangle
+  =\sum_c \pi_{t,c}\,\big\langle\delta P_{t,c}\big\rangle_{T^3},
+\qquad
+\theta_{t,c}=\arctan\big(Y_{t,c}\,\|\delta P_t\|_\Pi\big),
 \]
+
+where \(\langle\cdot\rangle_{T^3}\) is the site average, so the norm is grid
+resolution independent and remains a property of the whole boundary event.
+The incident mode is the unit direction \(\delta P_t/\|\delta P_t\|_\Pi\) of
+the same norm; the implementation uses the algebraically identical
+division-free form \(\sin\theta\,\delta P_t/\|\delta P_t\|_\Pi
+=Y_t\,\delta P_t/\sqrt{1+Y_t^2\|\delta P_t\|_\Pi^2}\), which is smooth at
+\(\delta P_t=0\).  The law therefore has the required limits
+
+\[
+\delta P_t=0\quad\Longrightarrow\quad F_t^+=F_t^-,\quad R_t=0,
+\qquad
+\|\delta P_t\|_\Pi\sim1\ \text{(unpredictable token)}\ \Longrightarrow\ \text{finite exchange}.
+\]
+
+At the registered \(d=128\) packet calibration an unpredictable token has
+\(\|\delta P_t\|_\Pi\approx1\), so the initial admittance already transmits
+a finite fraction instead of a grid-averaged pointwise sliver.  The reported
+port-opening fraction is the \(\Pi\)-weighted transmission
+\(\sum_c\pi_{t,c}\langle\hat\delta_{t,c}^2\rangle_{T^3}\sin^2\theta_{t,c}\)
+of the unit incident mode; the raw incident, reflected and accepted energies
+remain the boundary ledger.
 
 This is the precise sense in which the write agent *is* the impedance. The
 predictor \(\Pi\) says what the field already accounts for; the admittance
@@ -161,10 +187,13 @@ says how much remaining discrepancy the local medium can incorporate. They
 must be implemented as one `PredictiveImpedancePort`, not as a predictor plus
 a separate amplitude patch.
 
-The reflected port remains an external accounting variable:
+The reflected port remains an external accounting variable.  Because the
+rotation acts on \((F_t^-, \delta P_t/\|\delta P_t\|_\Pi)\), the exact
+per-component conservation identity is
 
 \[
-\|F_t^+\|^2+\|R_t\|^2=\|F_t^-\|^2+\|\delta P_t\|^2.
+\|F_t^+\|^2+\|R_t\|^2=\|F_t^-\|^2+\|\hat\delta P_t\|^2,
+\qquad \hat\delta P_t=\delta P_t/\|\delta P_t\|_\Pi .
 \]
 
 It is deliberately unavailable to the decoder. Giving the decoder \(R_t\)

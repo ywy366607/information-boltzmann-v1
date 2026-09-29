@@ -30,6 +30,81 @@ def test_zero_innovation_is_exact_identity_port_event():
     assert diagnostics["write_balance_residual"].item() < 2e-12
 
 
+def test_event_norm_opens_the_port_and_conserves_the_ledger():
+    """An unpredictable token must exchange a finite fraction of one
+    unit-norm incident mode instead of a grid-averaged pointwise sliver."""
+    torch.manual_seed(13)
+    writer = FullRankTorusWrite(vocab_size=19, shape=(4, 4, 4), d=16,
+                                 write_type="w2_impedance").double()
+    agent = PredictiveImpedanceWriteAgent(16, vocab_size=19).double()
+    field = torch.randn(2, 4, 4, 4, 16, dtype=torch.float64)
+    precision = agent.initial_precision(2, device=field.device, dtype=field.dtype)
+    token_ids = torch.tensor([3, 11])
+    observed_feature = torch.nn.functional.normalize(
+        writer.embedding(token_ids), dim=-1)
+    noise = torch.randn(observed_feature.shape, dtype=observed_feature.dtype)
+    noise = noise - (noise * observed_feature).sum(-1, keepdim=True) * observed_feature
+    predicted_feature = torch.nn.functional.normalize(noise, dim=-1)
+
+    next_field, _, reflected, diagnostics = agent(
+        writer, field, token_ids, precision, predicted_feature=predicted_feature)
+
+    # The rotation acts on (field, unit incident mode), so the boundary
+    # ledger is an exact orthogonal identity up to floating point.
+    assert diagnostics["write_balance_residual"].item() < 1e-12
+    # The event angle is driven by the event-total norm, not the per-site
+    # magnitude: at unit admittance the angle must be an O(0.1) rad event
+    # quantity rather than the ~1e-2 pointwise sliver of the old law.
+    assert 0.05 < diagnostics["write_angle_abs_mean"].item() < 1.2
+    assert 0.005 < diagnostics["accepted_fraction"].item() < 0.95
+    assert diagnostics["innovation_norm"].item() > 0.05
+    assert (next_field - field).norm() > 0.0
+    assert reflected.abs().sum() > 0.0
+
+
+def test_port_angle_at_registered_scale_is_finite_for_surprise():
+    """At the registered d=128 packet calibration an unpredictable token
+    has ||delta||_Pi ~ 1, hence a finite exchange at initial admittance."""
+    torch.manual_seed(17)
+    writer = FullRankTorusWrite(vocab_size=19, shape=(4, 4, 4), d=128,
+                                 write_type="w2_impedance").double()
+    agent = PredictiveImpedanceWriteAgent(128, vocab_size=19).double()
+    field = torch.zeros(1, 4, 4, 4, 128, dtype=torch.float64)
+    precision = agent.initial_precision(1, device=field.device, dtype=field.dtype)
+    _, _, _, diagnostics = agent(
+        writer, field, torch.tensor([3]), precision,
+        predicted_feature=torch.zeros(1, 128, dtype=torch.float64))
+
+    assert 0.5 < diagnostics["innovation_norm"].item() < 2.0
+    assert 0.1 < diagnostics["write_angle_abs_mean"].item() < 1.3
+    assert diagnostics["accepted_fraction"].item() > 0.03
+
+
+def test_event_norm_and_port_angle_are_resolution_independent():
+    """The site-averaged event norm must not change with the grid."""
+    torch.manual_seed(5)
+    agent = PredictiveImpedanceWriteAgent(16, vocab_size=19).double()
+    writer_small = FullRankTorusWrite(vocab_size=19, shape=(4, 4, 4), d=16,
+                                      write_type="w2_impedance").double()
+    writer_large = FullRankTorusWrite(vocab_size=19, shape=(8, 4, 6), d=16,
+                                      write_type="w2_impedance").double()
+    with torch.no_grad():
+        writer_large.embedding.weight.copy_(writer_small.embedding.weight)
+        writer_large.channel_scale.copy_(writer_small.channel_scale)
+    rows = []
+    for writer in (writer_small, writer_large):
+        field = torch.zeros(1, *writer.shape, 16, dtype=torch.float64)
+        precision = agent.initial_precision(1, device=field.device,
+                                            dtype=field.dtype)
+        _, _, _, diagnostics = agent(
+            writer, field, torch.tensor([3]), precision,
+            predicted_feature=torch.zeros(1, 16, dtype=torch.float64))
+        rows.append((diagnostics["innovation_norm"].item(),
+                     diagnostics["write_angle_abs_mean"].item()))
+    torch.testing.assert_close(rows[0][0], rows[1][0], rtol=1e-8, atol=1e-12)
+    torch.testing.assert_close(rows[0][1], rows[1][1], rtol=1e-8, atol=1e-12)
+
+
 def test_factorized_packet_chart_commutes_with_categorical_expectation():
     torch.manual_seed(12)
     writer = FullRankTorusWrite(vocab_size=19, shape=(4, 4, 4), d=16,

@@ -30,8 +30,17 @@ D:\conda_envs\vox\python.exe scripts\ib\evaluate_continuous_owt.py `
 
 ```powershell
 D:\conda_envs\vox\python.exe scripts\ib\train_q8_port_agents.py `
-  --output results\q8_predictive_ports_k64_3000
+  --output results\q8_predictive_ports_k64_3000_v2
 ```
+
+The write port angle is driven by the precision-weighted event-total
+innovation norm `\|\delta\|_\Pi` (site-averaged, hence grid-resolution
+independent) and the incident mode is its unit direction; a null innovation
+is the exact identity rotation and an unpredictable token exchanges a finite
+fraction of the incident mode at initial admittance.  The first 3000-update
+attempt (`results\q8_predictive_ports_k64_3000`) used a pointwise angle law
+whose grid-averaged magnitude locked the port near total reflection and was
+abandoned at step 440.
 
 The entry point captures an 8-token BPTT chunk in CUDA Graph and carries both
 the field and its channelwise posterior precision across all chunks.  It saves

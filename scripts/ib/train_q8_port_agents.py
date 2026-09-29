@@ -319,6 +319,8 @@ def main() -> None:
                     "incident_energy": _float(diagnostics.get("incident_energy")),
                     "reflected_energy": _float(diagnostics.get("reflected_energy")),
                     "accepted_fraction": _float(diagnostics.get("accepted_fraction")),
+                    "innovation_norm": _float(diagnostics.get("innovation_norm")),
+                    "write_admittance_mean": _float(diagnostics.get("write_admittance_mean")),
                     "write_angle_abs_mean": _float(diagnostics.get("write_angle_abs_mean")),
                     "collision_angle_abs_mean": _float(diagnostics.get("collision_angle_abs_mean")),
                     "transport_angle_abs_mean": _float(diagnostics.get("transport_angle_abs_mean")),
