@@ -39,6 +39,12 @@ checkpoint (field, precision, optimizer, stream offset and best score).
 operators with torch.compile before the CUDA graph capture; with the
 event-norm port law this measured 4.4 s per 128-token update versus 11.3 s
 eager on a GTX 1650, at roughly half the reserved GPU memory.
+`--dissipation-type unified` selects the three-layer field-only bath
+(learned gamma0 leakage, spectral viscosity on the exact Laplacian
+spectrum, rank-R content subspace forgetting of the field mean) as the
+registered dissipation arm `q8_predictive_ports_k64_unified_bath`; the
+bath context is the field mean only, so the token never gains a second
+write path.
 
 The write port angle is driven by the precision-weighted event-total
 innovation norm `\|\delta\|_\Pi` (site-averaged, hence grid-resolution

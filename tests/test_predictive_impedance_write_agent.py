@@ -6,6 +6,7 @@ from information_boltzmann.core.torus3d import (
     CBIMTorus3D,
     FullRankTorusWrite,
     PredictiveImpedanceWriteAgent,
+    UnifiedTorusDissipation,
 )
 
 
@@ -222,3 +223,45 @@ def test_belief_read_agent_receives_next_token_gradients_without_token_input():
     for parameter in model.readout.parameters():
         assert parameter.grad is not None
         assert torch.isfinite(parameter.grad).all()
+
+def test_unified_dissipation_serves_the_w4_belief_path_field_only():
+    """The three-layer unified bath must run token-free inside the port line
+    with finite gradients and the same persistent precision semantics."""
+    torch.manual_seed(31)
+    model = CBIMTorus3D(
+        vocab_size=23, shape=(4, 4, 4), velocities=8, content_dim=2,
+        write_type="w4_predictive_agent", readout_type="belief_agent",
+        micro_steps=2, dissipation_type="unified", dissipation_rank=2,
+    )
+    assert isinstance(model.bath, UnifiedTorusDissipation)
+
+    ids = torch.tensor([[1, 2, 3]])
+    targets = torch.tensor([[2, 3, 4]])
+    loss, belief, diagnostics = model.forward_belief(ids, targets)
+    assert torch.isfinite(loss)
+    assert torch.isfinite(belief.field).all()
+    assert "dissipation_gamma0" in diagnostics
+    assert "dissipation_nu" in diagnostics
+    assert "dissipation_lambda_mean" in diagnostics
+
+    loss.backward()
+    for name in ("gamma0_param", "nu_param"):
+        parameter = getattr(model.bath, name)
+        assert parameter.grad is not None and torch.isfinite(parameter.grad).all()
+    for parameter in (*model.bath.u_proj.parameters(),
+                      *model.bath.lambda_net.parameters()):
+        assert parameter.grad is not None and torch.isfinite(parameter.grad).all()
+
+    # Structural invariant of the port line: the belief path never hands the
+    # token embedding to the bath, so the three-layer dissipation stays
+    # field-only and cannot become a second hidden write path.
+    recorded = []
+    original_forward = model.bath.forward
+
+    def spy_forward(field, delta_tau, tok_embed=None, **kwargs):
+        recorded.append(tok_embed)
+        return original_forward(field, delta_tau, tok_embed=tok_embed, **kwargs)
+
+    model.bath.forward = spy_forward
+    loss, belief, diagnostics = model.forward_belief(ids, targets)
+    assert recorded and all(token is None for token in recorded)

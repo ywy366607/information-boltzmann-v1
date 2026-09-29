@@ -174,6 +174,12 @@ def main() -> None:
     parser.add_argument("--velocities", type=int, default=8, choices=(8, 27))
     parser.add_argument("--content-dim", type=int, default=16)
     parser.add_argument("--collision-layers", type=int, default=2)
+    parser.add_argument("--dissipation-type", choices=("quadratic", "unified"),
+                        default="quadratic",
+                        help="quadratic: energy-density outflow; unified: "
+                             "three-layer field-only dissipation (gamma0 "
+                             "leakage, spectral viscosity, rank-R subspace)")
+    parser.add_argument("--dissipation-rank", type=int, default=4)
     parser.add_argument("--lr", type=float, default=3e-4)
     parser.add_argument("--max-grad-norm", type=float, default=1.0)
     parser.add_argument("--compile-operators", action="store_true",
@@ -217,7 +223,8 @@ def main() -> None:
         shape=args.shape, velocities=args.velocities, content_dim=args.content_dim,
         collision_layers=args.collision_layers, relative_address=True,
         readout_type="belief_agent", write_type="w4_predictive_agent",
-        micro_steps=args.micro_steps, dissipation_type="quadratic",
+        micro_steps=args.micro_steps, dissipation_type=args.dissipation_type,
+        dissipation_rank=args.dissipation_rank,
     ).cuda()
     if args.compile_operators:
         # The microstep loop launches millions of tiny elementwise kernels per
@@ -245,7 +252,8 @@ def main() -> None:
         "velocities": args.velocities, "content_dim": args.content_dim,
         "channels": model.d, "collision_layers": args.collision_layers,
         "write_type": "w4_predictive_agent", "readout_type": "belief_agent",
-        "relative_address": True, "dissipation_type": "quadratic",
+        "relative_address": True, "dissipation_type": args.dissipation_type,
+        "dissipation_rank": args.dissipation_rank,
         "micro_steps": args.micro_steps, "K": args.micro_steps,
         "integration_resolution": "fixed kinetic quadrature",
         "tokens": args.tokens, "bptt_chunk_tokens": args.chunk_tokens,
