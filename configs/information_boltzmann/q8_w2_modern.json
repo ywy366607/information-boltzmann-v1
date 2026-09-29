@@ -1,0 +1,36 @@
+{
+  "name": "q8_w2_modern",
+  "status": "active_write_factor_ablation",
+  "parent_run": "q8_w4_contvel_kernel_read (stopped at 1500, asymptotic parity verdict)",
+  "purpose": "Isolate the write factor: identical to the hybrid arm (kernel_r1 readout, continuous-direction transport steering, K=16 at dt=4*tau0, T=64*tau0, unified bath, chunk 32, relative addressing) except the write is W2 impedance instead of the W4 innovation port. Adaptive clock stays off to match the hybrid. If this lands near 7.2 the W2 write is the gap; near 7.4 the write is not the differentiator and the W4 line keeps the active-inference roadmap.",
+  "field": {
+    "shape": [
+      8,
+      8,
+      4
+    ],
+    "velocity_channels": 8,
+    "content_dim": 16,
+    "write_type": "w2_impedance",
+    "readout_type": "kernel_r1",
+    "transport": "continuous-direction Cayley steering",
+    "bath": "unified three-layer field-only"
+  },
+  "training": {
+    "dataset": "OpenWebText GPT-2 BPE",
+    "optimizer_updates": 3000,
+    "real_tokens_per_update": 128,
+    "bptt_chunk_tokens": 32
+  },
+  "evaluation": {
+    "protocol": "IB-warm-local-language-v1",
+    "sites": [
+      8192,
+      12288,
+      16384,
+      20480
+    ],
+    "warm_in_tokens": 256,
+    "scored_tokens_per_site": 128
+  }
+}

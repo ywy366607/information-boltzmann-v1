@@ -78,6 +78,8 @@ def main():
                         help="Adaptive internal clock rate per micro-step bounded by causal horizon")
     parser.add_argument("--continuous-velocities", action="store_true", default=False,
                         help="Continuous adaptive velocity directions on S^2 (Run 3)")
+    parser.add_argument("--tau-0", type=float, default=1.0,
+                        help="Integration step per microstep; event duration is micro_steps * tau_0")
     parser.add_argument("--dissipation-type", type=str, default="quadratic",
                         choices=["unified", "quadratic"],
                         help="Dissipation mechanism (unified 3-layer operator or legacy quadratic bath)")
@@ -138,6 +140,7 @@ def main():
         nu_init=args.nu_init,
         three_clock=args.three_clock,
         tau_mem=args.tau_mem,
+        tau_0=args.tau_0,
         nu_s_init=args.nu_s_init).cuda()
     chunk_tokens = args.chunk_tokens or args.tokens
     runner = TruncatedInternalTimeGraphTrainer(

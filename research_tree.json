@@ -1638,7 +1638,7 @@
       "time": "2026-09-29",
       "motivation": "Decompose the 0.205-nat gap between the completed W4 port line (7.4203) and the Continuous-Q8 baseline (7.2154). The baseline differs in three bundles: the W2 write injects full token content instead of the prediction residual, the readout is the mature kernel_r1 probe set consuming the observed token at read time, and the transport directions are token-conditioned continuous vectors with an adaptive clock. The hybrid keeps the W4 single-write-path discipline on the field and swaps in the two read/control bundles.",
       "action": "Run 3000 registered updates with the W4 event-norm port, continuous-direction transport (token-steered control path; the learned spectral symbol is hoisted per event and the direction baseline recomputed per microstep), kernel_r1 readout with the champion 4x4 probe geometry, K=16 at dt=4*tau0, unified bath, chunk 32. Expose --readout-type/--readout-queries/--continuous-velocities in the trainer.",
-      "conclusion": "Structural only at launch: the port law is unchanged (0.214 initial acceptance, event norm 0.753) and the steered transport raises the per-microstep phase from 1.827 to 2.487 rad. No capability claim.",
+      "conclusion": "Stopped at step 1500 with the verdict captured: the kernel readout and transport steering buy early convergence (8.636 vs 9.053 at step 500, 7.812 vs 7.911 at 1000) but reach asymptotic parity with the belief-readout line by step 1500 (7.672 vs 7.684). Readout and steering therefore do not explain the 0.205-nat gap to the Continuous-Q8 baseline; the remaining suspects are the W2 write itself and tuning maturity. The GPU was reassigned to the W2-modern write arm.",
       "issues": [
         "If the hybrid reaches the baseline, the gap was readout plus steering; if not, the residual is attributable to the W4 innovation-only write itself or to tuning maturity.",
         "The kernel readout consumes the observed token embedding at read time - a read-side pathway that does not write the field but does ease next-token decoding; the belief read agent remains the stricter field-only instrument.",
@@ -1654,6 +1654,28 @@
       ],
       "confidence": "I",
       "confidence_note": "Registered ablation launched; smoke-tested only."
+    },
+    {
+      "id": "IB_Q8_W2_MODERN_ARM_20260929",
+      "parent": "IB_Q8_HYBRID_READ_20260929",
+      "title": "W2-modern arm isolating the write factor on the settled integrator",
+      "status": "active",
+      "time": "2026-09-29",
+      "motivation": "With the integrator (K=16, dt=4*tau0, T=64*tau0), bath (unified), chunk (32), readout (kernel_r1) and steering (continuous directions) now fixed, the single blocking question for the main architecture is the write: W2 impedance (direct token-conditioned content) versus W4 predictive innovation port.",
+      "action": "Run 3000 registered updates of W2 write with the exact hybrid read/steer/integrator bundle via the reference trainer extended with --tau-0; adaptive clock off to match the hybrid.",
+      "conclusion": "Pending. Decision rule: near 7.2 confirms the W2 write as the gap and the perception-first main architecture; near 7.4 rules the write out as differentiator and keeps the W4 line with the active-inference roadmap.",
+      "issues": [
+        "The W2 line lacks the posterior precision state; if W2 wins on NLL, the T and M roadmap needs either a precision state added to W2 or a hybrid write law.",
+        "The entropy-gated dual port (direct content gated by predictor uncertainty with a description-length cost) remains the principled combination if both factors prove real.",
+        "The old champion's adaptive clock is excluded here for parity; its individual contribution is unmeasured."
+      ],
+      "invalidation": "The write-factor explanation is rejected if this arm lands within 0.05 nats of the hybrid's projected endpoint.",
+      "artifacts": [
+        "scripts/ib/train_q8_ness_reference.py",
+        "configs/information_boltzmann/q8_w2_modern.json"
+      ],
+      "confidence": "I",
+      "confidence_note": "Registered ablation launched; no result yet."
     }
   ],
   "status_migration_note": "Normalize historical workflow labels for repository validator; original labels retained as legacy_status. No new experimental conclusions introduced.",
