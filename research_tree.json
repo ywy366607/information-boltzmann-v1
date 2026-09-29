@@ -1642,13 +1642,15 @@
       "issues": [
         "If the hybrid reaches the baseline, the gap was readout plus steering; if not, the residual is attributable to the W4 innovation-only write itself or to tuning maturity.",
         "The kernel readout consumes the observed token embedding at read time - a read-side pathway that does not write the field but does ease next-token decoding; the belief read agent remains the stricter field-only instrument.",
-        "The direction controller receives the token embedding on the control path; the spec must keep stating that steering is not evidence injection."
+        "The direction controller receives the token embedding on the control path; the spec must keep stating that steering is not evidence injection.",
+        "Causal attribution probe (eval-time operator removal, identical protocol and weights): W2 champion full 7.2153, -transport 7.2250 (+0.010), -collision 10.2959 (+3.08), -bath 7.2501 (+0.035), no-dynamics 8.9062; W4 belief line full 7.4203, -transport 7.4494 (+0.029), -collision 9.6919 (+2.27), -bath 7.8874 (+0.467), no-dynamics 8.2219. The kernel readout's direct token access did not hollow the W2 champion's dynamics: its collision is MORE load-bearing than the W4 line's. Transport is nearly causally idle in both lines at evaluation time, so the continuous-velocity steering of this hybrid may contribute little; the collision operator is the causal workhorse of both architectures."
       ],
       "invalidation": "Treat the readout/steering explanation as rejected if the hybrid does not close a material part of the gap under the identical protocol.",
       "artifacts": [
         "scripts/ib/train_q8_port_agents.py",
         "configs/information_boltzmann/q8_w4_contvel_kernel_read.json",
-        "information_boltzmann/core/torus3d.py"
+        "information_boltzmann/core/torus3d.py",
+        "scripts/ib/measure_dynamics_attribution.py"
       ],
       "confidence": "I",
       "confidence_note": "Registered ablation launched; smoke-tested only."
