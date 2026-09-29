@@ -1674,6 +1674,13 @@ class CBIMTorus3D(nn.Module):
             hoisted_phase = (
                 2.0 * torch.atan(0.5 * hoisted_transport[1] * self.tau_0_tensor)
             ).abs().mean()
+        # Under continuous velocities the direction baseline changes per
+        # microstep, but the learned spectral symbol is parameter-only and
+        # is reused through a single node (same pattern as the reversible
+        # ponder path's cached_learned).
+        hoisted_learned = None
+        if not disable_transport and self.continuous_velocities:
+            hoisted_learned = self.transport.learned_symbol()
         for _ in range(steps_to_run):
             if self.adaptive_clock:
                 alpha_k = self.clock(field, tok_embed)
@@ -1692,7 +1699,8 @@ class CBIMTorus3D(nn.Module):
                     field = self.transport.apply_multiplier(field, mult)
                     transport_phase_k.append(hoisted_phase)
                 else:
-                    mult, omega = self.transport.multiplier(dt_k, direction=dir_k)
+                    mult, omega = self.transport.multiplier(
+                        dt_k, direction=dir_k, learned=hoisted_learned)
                     field = self.transport.apply_multiplier(field, mult)
                     if isinstance(dt_k, torch.Tensor) and dt_k.numel() == field.shape[0]:
                         transport_dt = dt_k.view(field.shape[0], 1, 1, 1, 1)

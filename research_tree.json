@@ -1629,6 +1629,29 @@
       ],
       "confidence": "I",
       "confidence_note": "Registered protocol completed on the recorded budget; the arm remains behind both registered references. Ladders measured on the best checkpoint."
+    },
+    {
+      "id": "IB_Q8_HYBRID_READ_20260929",
+      "parent": "IB_Q8_UNIFIED_BATH_ARM_20260929",
+      "title": "Hybrid arm: continuous transport steering and kernel readout on the W4 line",
+      "status": "active",
+      "time": "2026-09-29",
+      "motivation": "Decompose the 0.205-nat gap between the completed W4 port line (7.4203) and the Continuous-Q8 baseline (7.2154). The baseline differs in three bundles: the W2 write injects full token content instead of the prediction residual, the readout is the mature kernel_r1 probe set consuming the observed token at read time, and the transport directions are token-conditioned continuous vectors with an adaptive clock. The hybrid keeps the W4 single-write-path discipline on the field and swaps in the two read/control bundles.",
+      "action": "Run 3000 registered updates with the W4 event-norm port, continuous-direction transport (token-steered control path; the learned spectral symbol is hoisted per event and the direction baseline recomputed per microstep), kernel_r1 readout with the champion 4x4 probe geometry, K=16 at dt=4*tau0, unified bath, chunk 32. Expose --readout-type/--readout-queries/--continuous-velocities in the trainer.",
+      "conclusion": "Structural only at launch: the port law is unchanged (0.214 initial acceptance, event norm 0.753) and the steered transport raises the per-microstep phase from 1.827 to 2.487 rad. No capability claim.",
+      "issues": [
+        "If the hybrid reaches the baseline, the gap was readout plus steering; if not, the residual is attributable to the W4 innovation-only write itself or to tuning maturity.",
+        "The kernel readout consumes the observed token embedding at read time - a read-side pathway that does not write the field but does ease next-token decoding; the belief read agent remains the stricter field-only instrument.",
+        "The direction controller receives the token embedding on the control path; the spec must keep stating that steering is not evidence injection."
+      ],
+      "invalidation": "Treat the readout/steering explanation as rejected if the hybrid does not close a material part of the gap under the identical protocol.",
+      "artifacts": [
+        "scripts/ib/train_q8_port_agents.py",
+        "configs/information_boltzmann/q8_w4_contvel_kernel_read.json",
+        "information_boltzmann/core/torus3d.py"
+      ],
+      "confidence": "I",
+      "confidence_note": "Registered ablation launched; smoke-tested only."
     }
   ],
   "status_migration_note": "Normalize historical workflow labels for repository validator; original labels retained as legacy_status. No new experimental conclusions introduced.",

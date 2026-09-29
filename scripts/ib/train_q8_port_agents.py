@@ -177,6 +177,15 @@ def main() -> None:
     parser.add_argument("--shape", type=int, nargs=3, default=(8, 8, 4))
     parser.add_argument("--velocities", type=int, default=8, choices=(8, 27))
     parser.add_argument("--content-dim", type=int, default=16)
+    parser.add_argument("--readout-type", default="belief_agent",
+                        choices=("belief_agent", "kernel_r1", "kernel_r2"))
+    parser.add_argument("--readout-queries", type=int, default=4,
+                        help="Kernel-readout queries per head; the probe grid "
+                             "requires heads*queries == 16 (4 heads)")
+    parser.add_argument("--continuous-velocities", action="store_true",
+                        help="Learned per-microstep transport directions on the "
+                             "D3Q8 base (token-conditioned steering, not a "
+                             "content write path)")
     parser.add_argument("--collision-layers", type=int, default=2)
     parser.add_argument("--dissipation-type", choices=("quadratic", "unified"),
                         default="quadratic",
@@ -224,9 +233,11 @@ def main() -> None:
     model = CBIMTorus3D(
         shape=args.shape, velocities=args.velocities, content_dim=args.content_dim,
         collision_layers=args.collision_layers, relative_address=True,
-        readout_type="belief_agent", write_type="w4_predictive_agent",
+        readout_type=args.readout_type, queries=args.readout_queries,
+        write_type="w4_predictive_agent",
         micro_steps=args.micro_steps, dissipation_type=args.dissipation_type,
         dissipation_rank=args.dissipation_rank, tau_0=args.tau_0,
+        continuous_velocities=args.continuous_velocities,
     ).cuda()
     if args.compile_operators:
         # The microstep loop launches millions of tiny elementwise kernels per
@@ -255,7 +266,9 @@ def main() -> None:
         "data": str(args.data), "shape": args.shape,
         "velocities": args.velocities, "content_dim": args.content_dim,
         "channels": model.d, "collision_layers": args.collision_layers,
-        "write_type": "w4_predictive_agent", "readout_type": "belief_agent",
+        "write_type": "w4_predictive_agent", "readout_type": args.readout_type,
+        "readout_queries": args.readout_queries,
+        "continuous_velocities": args.continuous_velocities,
         "relative_address": True, "dissipation_type": args.dissipation_type,
         "dissipation_rank": args.dissipation_rank,
         "micro_steps": args.micro_steps, "K": args.micro_steps,
@@ -281,7 +294,7 @@ def main() -> None:
     if args.resume is not None:
         saved = torch.load(args.resume, map_location="cuda", weights_only=False)
         for key in ("architecture", "shape", "channels", "tokens", "K", "tau_0",
-                    "write_type", "readout_type"):
+                    "write_type", "readout_type", "continuous_velocities"):
             if saved["config"].get(key) != config.get(key):
                 parser.error(f"Resume mismatch: {key}")
         if "precision" not in saved:

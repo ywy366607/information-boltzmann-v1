@@ -1,0 +1,55 @@
+{
+  "name": "q8_w4_contvel_kernel_read",
+  "status": "active_hybrid_ablation_arm",
+  "parent_run": "q8_predictive_ports_k16_unified_bath (best 7.4203)",
+  "field": {
+    "topology": "periodic T3 Fourier-Galerkin field",
+    "shape": [
+      8,
+      8,
+      4
+    ],
+    "velocity_channels": 8,
+    "content_dim": 16,
+    "operators": [
+      "W4 categorical predictive-impedance write port (innovation-only, single field write path)",
+      "continuous-direction spectral Cayley transport (token-steered control path)",
+      "local invariant collision",
+      "unified three-layer field-only bath",
+      "kernel_r1 characteristic readout (field plus current-token embedding)"
+    ]
+  },
+  "integrator": {
+    "steps_per_event": 16,
+    "step_size": "4 * tau0",
+    "event_duration": "64 * tau0"
+  },
+  "belief": {
+    "mean": "persistent kinetic field",
+    "precision": "persistent channelwise posterior precision",
+    "write_action": "event-norm admittance port on the categorical prediction residual",
+    "read_action": "characteristic kernel probes over the field and current-token embedding",
+    "reflection": "external boundary accounting only"
+  },
+  "training": {
+    "dataset": "OpenWebText GPT-2 BPE",
+    "optimizer_updates": 3000,
+    "real_tokens_per_update": 128,
+    "bptt_chunk_tokens": 32,
+    "state_rule": "field and precision persist across chunks and updates; truncation detaches gradient history only",
+    "objective": "next_token_nll_plus_realized_write_port_free_energy"
+  },
+  "evaluation": {
+    "protocol": "IB-warm-local-language-v1",
+    "sites": [
+      8192,
+      12288,
+      16384,
+      20480
+    ],
+    "warm_in_tokens": 256,
+    "scored_tokens_per_site": 128,
+    "headline": "mean field-only next-token NLL"
+  },
+  "ablation_note": "Isolates the readout and transport-steering factors from the 0.205-nat gap to the Continuous-Q8 baseline while keeping the W4 single-write-path discipline on the field: the direction controller steers streaming but writes no content, and the kernel readout consumes the observed token at read time, not the field."
+}
