@@ -238,6 +238,8 @@ def main() -> None:
         model.bath.forward = torch.compile(model.bath.forward)
         model.transport.apply_multiplier = torch.compile(
             model.transport.apply_multiplier)
+        model.write_agent.forward = torch.compile(model.write_agent.forward)
+        model.readout.forward = torch.compile(model.readout.forward)
     runner = TruncatedBeliefGraphTrainer(
         model, tokens=args.tokens, chunk_tokens=args.chunk_tokens,
         lr=args.lr, max_grad_norm=args.max_grad_norm)

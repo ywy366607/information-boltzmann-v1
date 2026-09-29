@@ -606,12 +606,15 @@ class PredictiveImpedanceWriteAgent(nn.Module):
     def forward(self, writer: FullRankTorusWrite, field: torch.Tensor,
                 token_ids: torch.Tensor, precision: torch.Tensor,
                 *, predicted_feature: Optional[torch.Tensor] = None,
+                token_features: Optional[torch.Tensor] = None,
                 return_diag: bool = True):
         """Apply one posterior innovation write and update precision.
 
         ``predicted_feature`` exists only for analytical tests and controlled
         interventions.  The ordinary causal path derives it from a categorical
-        distribution before inspecting ``token_ids``.
+        distribution before inspecting ``token_ids``.  ``token_features`` may
+        carry the unit-normalized embedding table computed once per sequence
+        segment; when omitted it is recomputed here.
         """
         if precision.shape != (field.shape[0], self.d):
             raise ValueError(
@@ -629,7 +632,8 @@ class PredictiveImpedanceWriteAgent(nn.Module):
 
         # The categorical prior and its physical port expectation are both
         # constructed before indexing the observed token.
-        token_features = F.normalize(writer.embedding.weight, dim=-1)
+        if token_features is None:
+            token_features = F.normalize(writer.embedding.weight, dim=-1)
         natural_parameter = self.port_prior(prior_features)
         port_logits = natural_parameter @ token_features.transpose(0, 1)
         port_logits = port_logits + self.port_logit_bias
@@ -1106,9 +1110,12 @@ class UnifiedTorusDissipation(nn.Module):
             spectral_rate = gamma0 + nu * lap  # [*shape]
             damping = torch.exp(-dt_freq * spectral_rate.unsqueeze(0).unsqueeze(-1))  # [B, X, Y, Z, 1]
 
-            freq = torch.fft.fftn(field_sub, dim=(1, 2, 3), norm="ortho")
-            freq_damped = freq * damping
-            field_out = torch.fft.ifftn(freq_damped, dim=(1, 2, 3), norm="ortho").real
+            # The damping is a real nonnegative field, so the rfft half
+            # carries the operator exactly while costing half the transform.
+            half = damping[..., : self.shape[2] // 2 + 1, :]
+            freq = torch.fft.rfftn(field_sub, dim=(1, 2, 3), norm="ortho")
+            field_out = torch.fft.irfftn(
+                freq * half, dim=(1, 2, 3), norm="ortho").real
 
         energy_before = 0.5 * field.square().sum(-1).mean()
         energy_after = 0.5 * field_out.square().sum(-1).mean()
@@ -1620,7 +1627,8 @@ class CBIMTorus3D(nn.Module):
              disable_collision=False, disable_bath=False,
              micro_steps=None, gamma0_factor=1.0,
              disable_viscosity=False, disable_subspace=False,
-             precision: Optional[torch.Tensor] = None):
+             precision: Optional[torch.Tensor] = None,
+             token_features: Optional[torch.Tensor] = None):
         tok_embed = self.source.embedding(token_ids)
         # In the predictive-port branch, the observed event has exactly one
         # route into the field: the innovation boundary.  A token-conditioned
@@ -1635,7 +1643,8 @@ class CBIMTorus3D(nn.Module):
                     "w4_predictive_agent requires a persistent precision; "
                     "use initial_belief() and belief_step()")
             field, posterior_precision, reflected, source_diag = self.write_agent(
-                self.source, field, token_ids, precision)
+                self.source, field, token_ids, precision,
+                token_features=token_features)
         transport_diag = {
             "transport_angle_abs_mean": field.new_zeros(()),
             "transport_angle_abs_max": field.new_zeros(()),
@@ -1659,6 +1668,12 @@ class CBIMTorus3D(nn.Module):
         hoisted_transport = None
         if not disable_transport and not self.continuous_velocities and not self.adaptive_clock:
             hoisted_transport = self.transport.multiplier(self.tau_0_tensor)
+            # With a parameter-only multiplier and the fixed base clock the
+            # transport phase is one constant; record it once instead of
+            # baking 64 identical atan chains into the captured graph.
+            hoisted_phase = (
+                2.0 * torch.atan(0.5 * hoisted_transport[1] * self.tau_0_tensor)
+            ).abs().mean()
         for _ in range(steps_to_run):
             if self.adaptive_clock:
                 alpha_k = self.clock(field, tok_embed)
@@ -1673,20 +1688,22 @@ class CBIMTorus3D(nn.Module):
                 dir_k = None
             if not disable_transport:
                 if hoisted_transport is not None:
-                    mult, omega = hoisted_transport
+                    mult, _ = hoisted_transport
+                    field = self.transport.apply_multiplier(field, mult)
+                    transport_phase_k.append(hoisted_phase)
                 else:
                     mult, omega = self.transport.multiplier(dt_k, direction=dir_k)
-                field = self.transport.apply_multiplier(field, mult)
-                if isinstance(dt_k, torch.Tensor) and dt_k.numel() == field.shape[0]:
-                    transport_dt = dt_k.view(field.shape[0], 1, 1, 1, 1)
-                else:
-                    # ``tau_0_tensor`` is a scalar buffer.  Preserve scalar
-                    # broadcasting for multi-item belief batches rather than
-                    # incorrectly reshaping it as a per-sample clock.
-                    transport_dt = dt_k
-                transport_phase_k.append(
-                    (2.0 * torch.atan(0.5 * omega * transport_dt)).abs().mean()
-                )
+                    field = self.transport.apply_multiplier(field, mult)
+                    if isinstance(dt_k, torch.Tensor) and dt_k.numel() == field.shape[0]:
+                        transport_dt = dt_k.view(field.shape[0], 1, 1, 1, 1)
+                    else:
+                        # ``tau_0_tensor`` is a scalar buffer.  Preserve scalar
+                        # broadcasting for multi-item belief batches rather than
+                        # incorrectly reshaping it as a per-sample clock.
+                        transport_dt = dt_k
+                    transport_phase_k.append(
+                        (2.0 * torch.atan(0.5 * omega * transport_dt)).abs().mean()
+                    )
             if not disable_collision:
                 field, collision_diag = self.collision(field, dt_k)
                 coll_angles_k.append(collision_diag["collision_angle_abs_mean"])
@@ -1800,10 +1817,15 @@ class CBIMTorus3D(nn.Module):
         total_free_energy = input_ids.new_zeros((), dtype=torch.float32)
         total_read_complexity = input_ids.new_zeros((), dtype=torch.float32)
         final_diagnostics = {}
+        # One unit-normalized embedding read per sequence segment instead of
+        # per event: the table only changes between optimizer updates, and
+        # the single node carries the accumulated gradient of every use.
+        token_features = F.normalize(self.source.embedding.weight, dim=-1)
         for index in range(length):
             logits, belief, diagnostics = self.belief_step(
                 belief, input_ids[:, index],
                 include_private=True,
+                token_features=token_features,
                 disable_transport=disable_transport,
                 disable_collision=disable_collision,
                 disable_bath=disable_bath,

@@ -1607,13 +1607,14 @@
       "status": "active",
       "time": "2026-09-29",
       "motivation": "The registered port line pinned the single-coupling quadratic outflow as a deliberate causal-attribution control while the port law was being closed. With the port verified open (step-500 validation 9.163, acceptance about 0.50), the three-layer dissipation becomes the natural registered upgrade: learned gamma0 leakage, spectral viscosity on the exact continuous Laplacian spectrum, and rank-R content subspace forgetting of the field mean. The three layers are passive contraction semigroups composed once per microstep, so the retired three-clock scheduling is irrelevant to their validity; the layers, not the clocks, carry the value.",
-      "action": "Expose --dissipation-type/--dissipation-rank in the K64 trainer. The unified context stays field-only on the W4 path: a test pins that the belief path never hands the token embedding to the bath, so the bath cannot become a second hidden write path. Register configs/information_boltzmann/q8_predictive_ports_k64_unified_bath.json with the same 3000-update IB-warm-local protocol and queue it to start when the quadratic parent completes.",
+      "action": "Expose --dissipation-type/--dissipation-rank in the K64 trainer. The unified context stays field-only on the W4 path: a test pins that the belief path never hands the token embedding to the bath, so layer-3 content forgetting cannot become a second hidden write path. Register configs/information_boltzmann/q8_predictive_ports_k64_unified_bath.json with the same 3000-update IB-warm-local protocol. By user directive the quadratic parent was stopped at step 890 (validations 10.811 at step 0, 9.163 at step 500) and this arm is now the single port line, launched directly with compiled microstep operators.",
       "conclusion": "Structural only: implementation plus deterministic tests. No capability claim. The registered comparison is the 3000-update four-site NLL of the unified arm against the quadratic parent trajectory (9.163 at step 500).",
       "issues": [
         "Composing the layers 64 times per event rescales the effective rates; the learned gamma0/nu/R scalars must absorb that rescaling rather than the architecture.",
         "Layer-2 viscosity adds another per-microstep FFT on a latency-bound GPU; the rfftn half-spectrum transform applies there too and is deferred.",
         "Subspace forgetting must remain field-only; a token-conditioned context would violate the single-write-path discipline.",
-        "The two arms differ only in the bath, so four-site NLL, write free energy and field-energy traces are directly comparable."
+        "The two arms differ only in the bath, so four-site NLL, write free energy and field-energy traces are directly comparable.",
+        "fp16 autocast was measured slower than fp32 compiled operators on the GTX 1650 (3951 vs 3820 ms eager chunk) and is excluded; the win of half-precision storage does not materialize without tensor cores."
       ],
       "invalidation": "Reject this arm if it does not improve the four-site NLL trajectory against the quadratic parent under the same protocol, or if the learned subspace channel destabilizes the persistent field energy.",
       "artifacts": [
