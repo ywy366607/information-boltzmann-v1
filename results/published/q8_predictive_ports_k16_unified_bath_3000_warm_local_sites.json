@@ -1,0 +1,1343 @@
+{
+  "nll": 7.42028034242594,
+  "sites": [
+    {
+      "site": 0,
+      "validation_start": 8192,
+      "warm_in_tokens": 256,
+      "score_start": 8448,
+      "score_tokens": 128,
+      "nll": 7.307093964012893,
+      "state_policy": "mature_ness_spectrum_with_randomized_phase_and_posterior_precision_then_local_warm_in",
+      "cold_start": false,
+      "random_phase_resampling": true,
+      "resets_within_site": 0,
+      "warm_in_diagnostics": {
+        "incident_energy": {
+          "first": 0.009427906014025211,
+          "last": 0.013280204497277737,
+          "mean": 0.011886162612427142
+        },
+        "reflected_energy": {
+          "first": 0.0019289504271000624,
+          "last": 0.003259602002799511,
+          "mean": 0.002843602843086046
+        },
+        "accepted_energy": {
+          "first": 0.007498955819755793,
+          "last": 0.0100206034258008,
+          "mean": 0.009042559767451053
+        },
+        "accepted_fraction": {
+          "first": 0.6620646119117737,
+          "last": 0.4492306411266327,
+          "mean": 0.63980159337234
+        },
+        "t_packet": {
+          "first": 0.6620646119117737,
+          "last": 0.4492306411266327,
+          "mean": 0.63980159337234
+        },
+        "delta_e_field": {
+          "first": 0.007498955819755793,
+          "last": 0.0100206034258008,
+          "mean": 0.009042559767451053
+        },
+        "cross_interference": {
+          "first": 4.955899385095108e-06,
+          "last": 1.7029204173013568e-05,
+          "mean": 1.0870284447295209e-06
+        },
+        "write_to_f_ratio": {
+          "first": 10.361681938171387,
+          "last": 15.172298431396484,
+          "mean": 14.556322804186493
+        },
+        "write_angle_abs_mean": {
+          "first": 1.1894450187683105,
+          "last": 1.140661358833313,
+          "mean": 1.1430000747714075
+        },
+        "write_angle_peak_mean": {
+          "first": 1.529502511024475,
+          "last": 1.5327355861663818,
+          "mean": 1.505457414954435
+        },
+        "write_spatial_support": {
+          "first": 1.0,
+          "last": 1.0,
+          "mean": 1.0
+        },
+        "write_balance_residual": {
+          "first": 0.0,
+          "last": 9.313225746154785e-10,
+          "mean": 4.94765117764473e-10
+        },
+        "source_center": {
+          "first": 0.33337491750717163,
+          "last": 0.3333566188812256,
+          "mean": 0.33335231454111636
+        },
+        "source_anchor": {
+          "first": 0.33337491750717163,
+          "last": 0.3333566188812256,
+          "mean": 0.33335231454111636
+        },
+        "source_displacement": {
+          "first": 0.0,
+          "last": 0.0,
+          "mean": 0.0
+        },
+        "write_width_mean": {
+          "first": 0.0,
+          "last": 0.0,
+          "mean": 0.0
+        },
+        "source_nu_s": {
+          "first": 0.0,
+          "last": 0.0,
+          "mean": 0.0
+        },
+        "innovation_energy": {
+          "first": 0.18869136273860931,
+          "last": 0.20433998107910156,
+          "mean": 0.20062788634244288
+        },
+        "innovation_norm": {
+          "first": 4.473715782165527,
+          "last": 3.922602415084839,
+          "mean": 4.279379565370618
+        },
+        "innovation_rms": {
+          "first": 0.05238352715969086,
+          "last": 0.05499699339270592,
+          "mean": 0.05354170327382235
+        },
+        "port_nll": {
+          "first": 3.3039205074310303,
+          "last": 6.490568161010742,
+          "mean": 7.087489841878778
+        },
+        "write_action_kl": {
+          "first": 0.0003447360941208899,
+          "last": 0.0006471029482781887,
+          "mean": 0.0002128451388614394
+        },
+        "write_free_energy": {
+          "first": 3.304265260696411,
+          "last": 6.491215229034424,
+          "mean": 7.087702686741977
+        },
+        "port_predictive_entropy": {
+          "first": 6.7301812171936035,
+          "last": 7.920252799987793,
+          "mean": 7.427320270522614
+        },
+        "port_chart_entropy": {
+          "first": 2.045944929122925,
+          "last": 2.0400075912475586,
+          "mean": 2.0339113883674145
+        },
+        "prior_precision_mean": {
+          "first": 39.48304748535156,
+          "last": 39.50909423828125,
+          "mean": 38.172101870179176
+        },
+        "posterior_precision_mean": {
+          "first": 41.54851531982422,
+          "last": 41.427608489990234,
+          "mean": 40.15264427661896
+        },
+        "write_admittance_mean": {
+          "first": 1.2183659076690674,
+          "last": 1.3565233945846558,
+          "mean": 1.30467590643093
+        },
+        "transport_angle_abs_mean": {
+          "first": 2.486217498779297,
+          "last": 2.486217498779297,
+          "mean": 2.486217498779297
+        },
+        "transport_angle_abs_max": {
+          "first": 2.486217498779297,
+          "last": 2.486217498779297,
+          "mean": 2.486217498779297
+        },
+        "transport_norm_residual": {
+          "first": 0.0,
+          "last": 0.0,
+          "mean": 0.0
+        },
+        "collision_angle_abs_mean": {
+          "first": 0.051956091076135635,
+          "last": 0.04630591720342636,
+          "mean": 0.042866304007475264
+        },
+        "collision_angle_abs_max": {
+          "first": 0.16788166761398315,
+          "last": 0.18742802739143372,
+          "mean": 0.15906736184842885
+        },
+        "collision_input_snr": {
+          "first": 43.69198226928711,
+          "last": 29.74397087097168,
+          "mean": 89.90274636819959
+        },
+        "collision_output_snr": {
+          "first": 43.691986083984375,
+          "last": 29.743972778320312,
+          "mean": 89.90274586901069
+        },
+        "bath_out_energy": {
+          "first": 5.894653440918773e-06,
+          "last": 5.8453115343581885e-06,
+          "mean": 5.184545749159497e-06
+        },
+        "bath_angle_abs_mean": {
+          "first": 0.13603301346302032,
+          "last": 0.13603301346302032,
+          "mean": 0.13603301346302032
+        },
+        "dissipation_gamma0": {
+          "first": 0.013322955928742886,
+          "last": 0.013322955928742886,
+          "mean": 0.013322955928742886
+        },
+        "dissipation_nu": {
+          "first": 0.020451676100492477,
+          "last": 0.020451676100492477,
+          "mean": 0.020451676100492477
+        },
+        "dissipation_lambda_mean": {
+          "first": 0.027036922052502632,
+          "last": 0.0297248475253582,
+          "mean": 0.029975412791827694
+        },
+        "dissipation_high_q_damping": {
+          "first": 2.348762460566145e-13,
+          "last": 2.348762460566145e-13,
+          "mean": 2.348762460566145e-13
+        },
+        "dissipation_energy_ratio": {
+          "first": 0.89454585313797,
+          "last": 0.8963678479194641,
+          "mean": 0.897501751082018
+        },
+        "read_attention_entropy": {
+          "first": 5.545177459716797,
+          "last": 5.545177459716797,
+          "mean": 5.545177459716797
+        },
+        "read_action_entropy": {
+          "first": 4.158883094787598,
+          "last": 4.158883094787598,
+          "mean": 4.158883094787598
+        },
+        "read_action_kl": {
+          "first": -1.3243409924257321e-08,
+          "last": -3.0125981709261396e-08,
+          "mean": -2.830748830826013e-08
+        },
+        "read_temperature_mean": {
+          "first": 1.0000181198120117,
+          "last": 1.0000181198120117,
+          "mean": 1.0000181198120117
+        },
+        "read_invariant_norm": {
+          "first": 0.0007539652870036662,
+          "last": 0.0009068846120499074,
+          "mean": 0.0006490528733706924
+        },
+        "read_collision_norm": {
+          "first": 0.000888556707650423,
+          "last": 0.000889007409568876,
+          "mean": 0.0008300398000073983
+        },
+        "read_aperture_coverage": {
+          "first": 0.003906216472387314,
+          "last": 0.0039062192663550377,
+          "mean": 0.0039062139821908204
+        },
+        "energy": {
+          "first": 5.0087979616364464e-05,
+          "last": 5.064559809397906e-05,
+          "mean": 4.546420281315022e-05
+        }
+      },
+      "diagnostics": {
+        "incident_energy": 0.01098576103686355,
+        "reflected_energy": 0.002503720945242094,
+        "accepted_energy": 0.008482040162732574,
+        "accepted_fraction": 0.6352090736040736,
+        "t_packet": 0.6352090736040736,
+        "delta_e_field": 0.008482040162732574,
+        "cross_interference": 1.724112727474747e-06,
+        "write_to_f_ratio": 14.518202702980489,
+        "write_angle_abs_mean": 1.155247715068981,
+        "write_angle_peak_mean": 1.5135167114203796,
+        "write_spatial_support": 1.0,
+        "write_balance_residual": 4.656612873077393e-10,
+        "source_center": 0.33335180091671646,
+        "source_anchor": 0.33335180091671646,
+        "source_displacement": 0.0,
+        "write_width_mean": 0.0,
+        "source_nu_s": 0.0,
+        "innovation_energy": 0.20248802650998954,
+        "innovation_norm": 4.435150304081617,
+        "innovation_rms": 0.05391271368671369,
+        "port_nll": 7.262547784695926,
+        "write_action_kl": 0.0001974665162833844,
+        "write_free_energy": 7.262745235500915,
+        "port_predictive_entropy": 7.609897525806446,
+        "port_chart_entropy": 2.0334344506263733,
+        "prior_precision_mean": 40.734373956918716,
+        "posterior_precision_mean": 42.77033931016922,
+        "write_admittance_mean": 1.315047268755734,
+        "transport_angle_abs_mean": 2.486217498779297,
+        "transport_angle_abs_max": 2.486217498779297,
+        "transport_norm_residual": 0.0,
+        "collision_angle_abs_mean": 0.04311524404329248,
+        "collision_angle_abs_max": 0.15769398858537897,
+        "collision_input_snr": 73.21654995530844,
+        "collision_output_snr": 73.21654939651489,
+        "bath_out_energy": 4.8027788430715646e-06,
+        "bath_angle_abs_mean": 0.13603301346302032,
+        "dissipation_gamma0": 0.013322955928742886,
+        "dissipation_nu": 0.020451676100492477,
+        "dissipation_lambda_mean": 0.029820381561876275,
+        "dissipation_high_q_damping": 2.348762460566145e-13,
+        "dissipation_energy_ratio": 0.8975392230786383,
+        "read_attention_entropy": 5.545177459716797,
+        "read_action_entropy": 4.158883094787598,
+        "read_action_kl": -2.8497578102859578e-08,
+        "read_temperature_mean": 1.0000181198120117,
+        "read_invariant_norm": 0.0006411815425053646,
+        "read_collision_norm": 0.0008029520206491725,
+        "read_aperture_coverage": 0.00390621434962668,
+        "energy": 4.2167903036016696e-05
+      }
+    },
+    {
+      "site": 1,
+      "validation_start": 12288,
+      "warm_in_tokens": 256,
+      "score_start": 12544,
+      "score_tokens": 128,
+      "nll": 8.667431434616446,
+      "state_policy": "mature_ness_spectrum_with_randomized_phase_and_posterior_precision_then_local_warm_in",
+      "cold_start": false,
+      "random_phase_resampling": true,
+      "resets_within_site": 0,
+      "warm_in_diagnostics": {
+        "incident_energy": {
+          "first": 0.017973363399505615,
+          "last": 0.01405281201004982,
+          "mean": 0.012450597694623866
+        },
+        "reflected_energy": {
+          "first": 0.003929946571588516,
+          "last": 0.002858781488612294,
+          "mean": 0.0029817715342232987
+        },
+        "accepted_energy": {
+          "first": 0.014043418690562248,
+          "last": 0.01119403075426817,
+          "mean": 0.009468826164322763
+        },
+        "accepted_fraction": {
+          "first": 0.7763108015060425,
+          "last": 0.5456156730651855,
+          "mean": 0.616531551317621
+        },
+        "t_packet": {
+          "first": 0.7763108015060425,
+          "last": 0.5456156730651855,
+          "mean": 0.616531551317621
+        },
+        "delta_e_field": {
+          "first": 0.014043418690562248,
+          "last": 0.01119403075426817,
+          "mean": 0.009468826164322763
+        },
+        "cross_interference": {
+          "first": 1.9006194634130225e-05,
+          "last": 6.99121437719441e-06,
+          "mean": -6.043862645355169e-07
+        },
+        "write_to_f_ratio": {
+          "first": 14.078449249267578,
+          "last": 16.840858459472656,
+          "mean": 14.516774777323008
+        },
+        "write_angle_abs_mean": {
+          "first": 1.1334338188171387,
+          "last": 1.1573548316955566,
+          "mean": 1.129197798523819
+        },
+        "write_angle_peak_mean": {
+          "first": 1.5185229778289795,
+          "last": 1.5207149982452393,
+          "mean": 1.5018256602343172
+        },
+        "write_spatial_support": {
+          "first": 1.0,
+          "last": 1.0,
+          "mean": 1.0
+        },
+        "write_balance_residual": {
+          "first": 1.862645149230957e-09,
+          "last": 0.0,
+          "mean": 5.438778316602111e-10
+        },
+        "source_center": {
+          "first": 0.33337491750717163,
+          "last": 0.3333614766597748,
+          "mean": 0.33335338125471026
+        },
+        "source_anchor": {
+          "first": 0.33337491750717163,
+          "last": 0.3333614766597748,
+          "mean": 0.33335338125471026
+        },
+        "source_displacement": {
+          "first": 0.0,
+          "last": 0.0,
+          "mean": 0.0
+        },
+        "write_width_mean": {
+          "first": 0.0,
+          "last": 0.0,
+          "mean": 0.0
+        },
+        "source_nu_s": {
+          "first": 0.0,
+          "last": 0.0,
+          "mean": 0.0
+        },
+        "innovation_energy": {
+          "first": 0.22329330444335938,
+          "last": 0.20896178483963013,
+          "mean": 0.19285863998287134
+        },
+        "innovation_norm": {
+          "first": 3.5247080326080322,
+          "last": 3.8561313152313232,
+          "mean": 4.0293598015850876
+        },
+        "innovation_rms": {
+          "first": 0.056713640689849854,
+          "last": 0.055350445210933685,
+          "mean": 0.05217878537791876
+        },
+        "port_nll": {
+          "first": 13.957111358642578,
+          "last": 4.221837997436523,
+          "mean": 7.5306786857763655
+        },
+        "write_action_kl": {
+          "first": 0.00028226396534591913,
+          "last": 0.0001472208823543042,
+          "mean": 0.0002042191904934043
+        },
+        "write_free_energy": {
+          "first": 13.957393646240234,
+          "last": 4.221985340118408,
+          "mean": 7.5308829124714975
+        },
+        "port_predictive_entropy": {
+          "first": 6.730181694030762,
+          "last": 8.206594467163086,
+          "mean": 7.354268716124352
+        },
+        "port_chart_entropy": {
+          "first": 2.045944929122925,
+          "last": 2.039353370666504,
+          "mean": 2.0340663762763143
+        },
+        "prior_precision_mean": {
+          "first": 39.48304748535156,
+          "last": 35.72883224487305,
+          "mean": 35.79971504211426
+        },
+        "posterior_precision_mean": {
+          "first": 41.561649322509766,
+          "last": 37.73229217529297,
+          "mean": 37.76315224170685
+        },
+        "write_admittance_mean": {
+          "first": 1.2201899290084839,
+          "last": 1.1996550559997559,
+          "mean": 1.2887121206149459
+        },
+        "transport_angle_abs_mean": {
+          "first": 2.486217498779297,
+          "last": 2.486217498779297,
+          "mean": 2.486217498779297
+        },
+        "transport_angle_abs_max": {
+          "first": 2.486217498779297,
+          "last": 2.486217498779297,
+          "mean": 2.486217498779297
+        },
+        "transport_norm_residual": {
+          "first": 0.0,
+          "last": 0.0,
+          "mean": 0.0
+        },
+        "collision_angle_abs_mean": {
+          "first": 0.054678793996572495,
+          "last": 0.034766942262649536,
+          "mean": 0.04279134330136003
+        },
+        "collision_angle_abs_max": {
+          "first": 0.17050154507160187,
+          "last": 0.14995071291923523,
+          "mean": 0.15683932311367244
+        },
+        "collision_input_snr": {
+          "first": 18.21283721923828,
+          "last": 81.49888610839844,
+          "mean": 97.66304613649845
+        },
+        "collision_output_snr": {
+          "first": 18.21283721923828,
+          "last": 81.49887084960938,
+          "mean": 97.66304606199265
+        },
+        "bath_out_energy": {
+          "first": 9.11884126253426e-06,
+          "last": 6.651043804595247e-06,
+          "mean": 5.435096429806663e-06
+        },
+        "bath_angle_abs_mean": {
+          "first": 0.13603301346302032,
+          "last": 0.13603301346302032,
+          "mean": 0.13603301346302032
+        },
+        "dissipation_gamma0": {
+          "first": 0.013322955928742886,
+          "last": 0.013322955928742886,
+          "mean": 0.013322955928742886
+        },
+        "dissipation_nu": {
+          "first": 0.020451676100492477,
+          "last": 0.020451676100492477,
+          "mean": 0.020451676100492477
+        },
+        "dissipation_lambda_mean": {
+          "first": 0.03332638740539551,
+          "last": 0.032282039523124695,
+          "mean": 0.030144991673296317
+        },
+        "dissipation_high_q_damping": {
+          "first": 2.348762460566145e-13,
+          "last": 2.348762460566145e-13,
+          "mean": 2.348762460566145e-13
+        },
+        "dissipation_energy_ratio": {
+          "first": 0.8966584801673889,
+          "last": 0.8980318307876587,
+          "mean": 0.897415189538151
+        },
+        "read_attention_entropy": {
+          "first": 5.545177459716797,
+          "last": 5.545177459716797,
+          "mean": 5.545177459716797
+        },
+        "read_action_entropy": {
+          "first": 4.158883094787598,
+          "last": 4.158883094787598,
+          "mean": 4.158883094787598
+        },
+        "read_action_kl": {
+          "first": -3.019888694666406e-08,
+          "last": -4.268075670665894e-08,
+          "mean": -2.826932738592136e-08
+        },
+        "read_temperature_mean": {
+          "first": 1.0000181198120117,
+          "last": 1.0000181198120117,
+          "mean": 1.0000181198120117
+        },
+        "read_invariant_norm": {
+          "first": 0.0014302321942523122,
+          "last": 0.0005892817280255258,
+          "mean": 0.0006885533313152337
+        },
+        "read_collision_norm": {
+          "first": 0.0011007082648575306,
+          "last": 0.0009669470600783825,
+          "mean": 0.0008503135912860671
+        },
+        "read_aperture_coverage": {
+          "first": 0.003906209021806717,
+          "last": 0.0039062025025486946,
+          "mean": 0.0039062135556378053
+        },
+        "energy": {
+          "first": 7.920776261016726e-05,
+          "last": 5.866367064299993e-05,
+          "mean": 4.761325864777177e-05
+        }
+      },
+      "diagnostics": {
+        "incident_energy": 0.012815909292839933,
+        "reflected_energy": 0.0028655257260652434,
+        "accepted_energy": 0.009950383659088402,
+        "accepted_fraction": 0.6397404677700251,
+        "t_packet": 0.6397404677700251,
+        "delta_e_field": 0.009950383659088402,
+        "cross_interference": -7.037828659850476e-07,
+        "write_to_f_ratio": 14.366426061838865,
+        "write_angle_abs_mean": 1.157907317392528,
+        "write_angle_peak_mean": 1.528802121989429,
+        "write_spatial_support": 1.0,
+        "write_balance_residual": 4.984030965715647e-10,
+        "source_center": 0.3333540151361376,
+        "source_anchor": 0.3333540151361376,
+        "source_displacement": 0.0,
+        "write_width_mean": 0.0,
+        "source_nu_s": 0.0,
+        "innovation_energy": 0.20104589511174709,
+        "innovation_norm": 4.195978928357363,
+        "innovation_rms": 0.054030664774472825,
+        "port_nll": 8.57759999204427,
+        "write_action_kl": 0.00021182398370456212,
+        "write_free_energy": 8.577811805764213,
+        "port_predictive_entropy": 7.8086400288157165,
+        "port_chart_entropy": 2.035107135772705,
+        "prior_precision_mean": 37.98854544758797,
+        "posterior_precision_mean": 39.969413578510284,
+        "write_admittance_mean": 1.274159292690456,
+        "transport_angle_abs_mean": 2.486217498779297,
+        "transport_angle_abs_max": 2.486217498779297,
+        "transport_norm_residual": 0.0,
+        "collision_angle_abs_mean": 0.04398379664053209,
+        "collision_angle_abs_max": 0.1584415413090028,
+        "collision_input_snr": 81.33058705925941,
+        "collision_output_snr": 81.33058655261993,
+        "bath_out_energy": 5.772969210227075e-06,
+        "bath_angle_abs_mean": 0.13603301346302032,
+        "dissipation_gamma0": 0.013322955928742886,
+        "dissipation_nu": 0.020451676100492477,
+        "dissipation_lambda_mean": 0.03053784887015354,
+        "dissipation_high_q_damping": 2.348762460566145e-13,
+        "dissipation_energy_ratio": 0.8972770483233035,
+        "read_attention_entropy": 5.545177459716797,
+        "read_action_entropy": 4.158883094787598,
+        "read_action_kl": -2.9438527629488398e-08,
+        "read_temperature_mean": 1.0000181198120117,
+        "read_invariant_norm": 0.0007040363257146964,
+        "read_collision_norm": 0.0008749825135510036,
+        "read_aperture_coverage": 0.003906213376467349,
+        "energy": 5.0430804378720495e-05
+      }
+    },
+    {
+      "site": 2,
+      "validation_start": 16384,
+      "warm_in_tokens": 256,
+      "score_start": 16640,
+      "score_tokens": 128,
+      "nll": 7.44330036170868,
+      "state_policy": "mature_ness_spectrum_with_randomized_phase_and_posterior_precision_then_local_warm_in",
+      "cold_start": false,
+      "random_phase_resampling": true,
+      "resets_within_site": 0,
+      "warm_in_diagnostics": {
+        "incident_energy": {
+          "first": 0.014695653691887856,
+          "last": 0.013242652639746666,
+          "mean": 0.011110144563645008
+        },
+        "reflected_energy": {
+          "first": 0.002922921907156706,
+          "last": 0.00258562620729208,
+          "mean": 0.0024517125600596046
+        },
+        "accepted_energy": {
+          "first": 0.011772732250392437,
+          "last": 0.010657026432454586,
+          "mean": 0.008658432068614275
+        },
+        "accepted_fraction": {
+          "first": 0.6023001074790955,
+          "last": 0.6715803146362305,
+          "mean": 0.6440168044343864
+        },
+        "t_packet": {
+          "first": 0.6023001074790955,
+          "last": 0.6715803146362305,
+          "mean": 0.6440168044343864
+        },
+        "delta_e_field": {
+          "first": 0.011772732250392437,
+          "last": 0.010657026432454586,
+          "mean": 0.008658432068614275
+        },
+        "cross_interference": {
+          "first": 1.598524931978318e-06,
+          "last": 1.819197859731503e-05,
+          "mean": 5.446006111353707e-07
+        },
+        "write_to_f_ratio": {
+          "first": 12.982645034790039,
+          "last": 14.737285614013672,
+          "mean": 14.562784448964521
+        },
+        "write_angle_abs_mean": {
+          "first": 1.1496055126190186,
+          "last": 1.1564075946807861,
+          "mean": 1.1637504212267231
+        },
+        "write_angle_peak_mean": {
+          "first": 1.5218311548233032,
+          "last": 1.526604175567627,
+          "mean": 1.5230538721079938
+        },
+        "write_spatial_support": {
+          "first": 1.0,
+          "last": 1.0,
+          "mean": 1.0
+        },
+        "write_balance_residual": {
+          "first": 0.0,
+          "last": 0.0,
+          "mean": 5.002220859751105e-10
+        },
+        "source_center": {
+          "first": 0.33337491750717163,
+          "last": 0.3333752155303955,
+          "mean": 0.33335275133140385
+        },
+        "source_anchor": {
+          "first": 0.33337491750717163,
+          "last": 0.3333752155303955,
+          "mean": 0.33335275133140385
+        },
+        "source_displacement": {
+          "first": 0.0,
+          "last": 0.0,
+          "mean": 0.0
+        },
+        "write_width_mean": {
+          "first": 0.0,
+          "last": 0.0,
+          "mean": 0.0
+        },
+        "source_nu_s": {
+          "first": 0.0,
+          "last": 0.0,
+          "mean": 0.0
+        },
+        "innovation_energy": {
+          "first": 0.2083941400051117,
+          "last": 0.20622770488262177,
+          "mean": 0.20441014792415402
+        },
+        "innovation_norm": {
+          "first": 3.7657222747802734,
+          "last": 3.946263074874878,
+          "mean": 4.453232985113573
+        },
+        "innovation_rms": {
+          "first": 0.05491163581609726,
+          "last": 0.055323269218206406,
+          "mean": 0.054306801793472914
+        },
+        "port_nll": {
+          "first": 8.58080005645752,
+          "last": 7.76307487487793,
+          "mean": 7.456109830132846
+        },
+        "write_action_kl": {
+          "first": 0.0002976688265334815,
+          "last": 0.00011063201236538589,
+          "mean": 0.0001978085452378764
+        },
+        "write_free_energy": {
+          "first": 8.581097602844238,
+          "last": 7.763185501098633,
+          "mean": 7.456307623626344
+        },
+        "port_predictive_entropy": {
+          "first": 6.7301812171936035,
+          "last": 8.07651138305664,
+          "mean": 7.6986633201740915
+        },
+        "port_chart_entropy": {
+          "first": 2.045945167541504,
+          "last": 2.039947748184204,
+          "mean": 2.033376286737621
+        },
+        "prior_precision_mean": {
+          "first": 39.48304748535156,
+          "last": 45.2748908996582,
+          "mean": 40.40660518407822
+        },
+        "posterior_precision_mean": {
+          "first": 41.55543518066406,
+          "last": 47.42539596557617,
+          "mean": 42.45223557949066
+        },
+        "write_admittance_mean": {
+          "first": 1.2197175025939941,
+          "last": 1.2453587055206299,
+          "mean": 1.306650492362678
+        },
+        "transport_angle_abs_mean": {
+          "first": 2.486217498779297,
+          "last": 2.486217498779297,
+          "mean": 2.486217498779297
+        },
+        "transport_angle_abs_max": {
+          "first": 2.486217498779297,
+          "last": 2.486217498779297,
+          "mean": 2.486217498779297
+        },
+        "transport_norm_residual": {
+          "first": 0.0,
+          "last": 0.0,
+          "mean": 0.0
+        },
+        "collision_angle_abs_mean": {
+          "first": 0.04468576982617378,
+          "last": 0.056930795311927795,
+          "mean": 0.04280371255299542
+        },
+        "collision_angle_abs_max": {
+          "first": 0.1563820093870163,
+          "last": 0.17269930243492126,
+          "mean": 0.15718229749472812
+        },
+        "collision_input_snr": {
+          "first": 79.22694396972656,
+          "last": 247.2048797607422,
+          "mean": 103.22093283757567
+        },
+        "collision_output_snr": {
+          "first": 79.22694396972656,
+          "last": 247.20484924316406,
+          "mean": 103.22093187272549
+        },
+        "bath_out_energy": {
+          "first": 7.060079951770604e-06,
+          "last": 7.088048732839525e-06,
+          "mean": 4.8993979966382994e-06
+        },
+        "bath_angle_abs_mean": {
+          "first": 0.13603301346302032,
+          "last": 0.13603301346302032,
+          "mean": 0.13603301346302032
+        },
+        "dissipation_gamma0": {
+          "first": 0.013322955928742886,
+          "last": 0.013322955928742886,
+          "mean": 0.013322955928742886
+        },
+        "dissipation_nu": {
+          "first": 0.020451676100492477,
+          "last": 0.020451676100492477,
+          "mean": 0.020451676100492477
+        },
+        "dissipation_lambda_mean": {
+          "first": 0.03309107944369316,
+          "last": 0.03103906288743019,
+          "mean": 0.029854589636670426
+        },
+        "dissipation_high_q_damping": {
+          "first": 2.348762460566145e-13,
+          "last": 2.348762460566145e-13,
+          "mean": 2.348762460566145e-13
+        },
+        "dissipation_energy_ratio": {
+          "first": 0.89793860912323,
+          "last": 0.898634135723114,
+          "mean": 0.8975204634480178
+        },
+        "read_attention_entropy": {
+          "first": 5.545177459716797,
+          "last": 5.545177459716797,
+          "mean": 5.545177459716797
+        },
+        "read_action_entropy": {
+          "first": 4.158883094787598,
+          "last": 4.158883094787598,
+          "mean": 4.158883094787598
+        },
+        "read_action_kl": {
+          "first": -4.083221583073282e-08,
+          "last": -4.726733138227246e-08,
+          "mean": -2.8927266290668108e-08
+        },
+        "read_temperature_mean": {
+          "first": 1.0000181198120117,
+          "last": 1.0000181198120117,
+          "mean": 1.0000181198120117
+        },
+        "read_invariant_norm": {
+          "first": 0.0006277217180468142,
+          "last": 0.00035401020431891084,
+          "mean": 0.0006439831555269393
+        },
+        "read_collision_norm": {
+          "first": 0.0009952684631571174,
+          "last": 0.0010054315207526088,
+          "mean": 0.0008103914731236728
+        },
+        "read_aperture_coverage": {
+          "first": 0.0039062174037098885,
+          "last": 0.0039062085561454296,
+          "mean": 0.003906214004928188
+        },
+        "energy": {
+          "first": 6.220272916834801e-05,
+          "last": 6.292597390711308e-05,
+          "mean": 4.2987277357298126e-05
+        }
+      },
+      "diagnostics": {
+        "incident_energy": 0.009190732525894418,
+        "reflected_energy": 0.0018910426879301667,
+        "accepted_energy": 0.007299689803403453,
+        "accepted_fraction": 0.6520929563703248,
+        "t_packet": 0.6520929563703248,
+        "delta_e_field": 0.007299689803403453,
+        "cross_interference": 7.599539293412505e-07,
+        "write_to_f_ratio": 14.596181492321193,
+        "write_angle_abs_mean": 1.182985895080492,
+        "write_angle_peak_mean": 1.5281821261160076,
+        "write_spatial_support": 1.0,
+        "write_balance_residual": 4.18367562815547e-10,
+        "source_center": 0.33334832335822284,
+        "source_anchor": 0.33334832335822284,
+        "source_displacement": 0.0,
+        "write_width_mean": 0.0,
+        "source_nu_s": 0.0,
+        "innovation_energy": 0.2044312217446418,
+        "innovation_norm": 4.849333088757703,
+        "innovation_rms": 0.054330398606452945,
+        "port_nll": 7.372260239164461,
+        "write_action_kl": 0.00020616278396801135,
+        "write_free_energy": 7.372466400513076,
+        "port_predictive_entropy": 7.83254399697762,
+        "port_chart_entropy": 2.032863140106201,
+        "prior_precision_mean": 46.485017359256744,
+        "posterior_precision_mean": 48.52724531292915,
+        "write_admittance_mean": 1.3071687500923872,
+        "transport_angle_abs_mean": 2.486217498779297,
+        "transport_angle_abs_max": 2.486217498779297,
+        "transport_norm_residual": 0.0,
+        "collision_angle_abs_mean": 0.041319929994642735,
+        "collision_angle_abs_max": 0.14840931736398488,
+        "collision_input_snr": 67.75790298730135,
+        "collision_output_snr": 67.75790351629257,
+        "bath_out_energy": 4.083757126238652e-06,
+        "bath_angle_abs_mean": 0.13603301346302032,
+        "dissipation_gamma0": 0.013322955928742886,
+        "dissipation_nu": 0.020451676100492477,
+        "dissipation_lambda_mean": 0.029163717219489627,
+        "dissipation_high_q_damping": 2.348762460566145e-13,
+        "dissipation_energy_ratio": 0.8975828834809363,
+        "read_attention_entropy": 5.545177459716797,
+        "read_action_entropy": 4.158883094787598,
+        "read_action_kl": -2.7786329195866877e-08,
+        "read_temperature_mean": 1.0000181198120117,
+        "read_invariant_norm": 0.0005898407684981066,
+        "read_collision_norm": 0.0007423845106586668,
+        "read_aperture_coverage": 0.003906213822119753,
+        "energy": 3.588573060397948e-05
+      }
+    },
+    {
+      "site": 3,
+      "validation_start": 20480,
+      "warm_in_tokens": 256,
+      "score_start": 20736,
+      "score_tokens": 128,
+      "nll": 6.263295609365741,
+      "state_policy": "mature_ness_spectrum_with_randomized_phase_and_posterior_precision_then_local_warm_in",
+      "cold_start": false,
+      "random_phase_resampling": true,
+      "resets_within_site": 0,
+      "warm_in_diagnostics": {
+        "incident_energy": {
+          "first": 0.013741446658968925,
+          "last": 0.008226228877902031,
+          "mean": 0.015133390441405936
+        },
+        "reflected_energy": {
+          "first": 0.00284955115057528,
+          "last": 0.0015108470106497407,
+          "mean": 0.004183438543122975
+        },
+        "accepted_energy": {
+          "first": 0.010891895741224289,
+          "last": 0.006715381518006325,
+          "mean": 0.010949951956760628
+        },
+        "accepted_fraction": {
+          "first": 0.7169770002365112,
+          "last": 0.8030319213867188,
+          "mean": 0.5865752174531735
+        },
+        "t_packet": {
+          "first": 0.7169770002365112,
+          "last": 0.8030319213867188,
+          "mean": 0.5865752174531735
+        },
+        "delta_e_field": {
+          "first": 0.010891895741224289,
+          "last": 0.006715381518006325,
+          "mean": 0.010949951956760628
+        },
+        "cross_interference": {
+          "first": 1.141307620855514e-05,
+          "last": -1.0270131497236434e-05,
+          "mean": -2.2134676835872114e-07
+        },
+        "write_to_f_ratio": {
+          "first": 12.426629066467285,
+          "last": 12.431139945983887,
+          "mean": 14.93371142516844
+        },
+        "write_angle_abs_mean": {
+          "first": 1.1594576835632324,
+          "last": 1.1920008659362793,
+          "mean": 1.0850593527138699
+        },
+        "write_angle_peak_mean": {
+          "first": 1.5238652229309082,
+          "last": 1.539996862411499,
+          "mean": 1.4659948708140291
+        },
+        "write_spatial_support": {
+          "first": 1.0,
+          "last": 1.0,
+          "mean": 1.0
+        },
+        "write_balance_residual": {
+          "first": 0.0,
+          "last": 0.0,
+          "mean": 7.130438461899757e-10
+        },
+        "source_center": {
+          "first": 0.3333502411842346,
+          "last": 0.33335649967193604,
+          "mean": 0.3333560017636046
+        },
+        "source_anchor": {
+          "first": 0.3333502411842346,
+          "last": 0.33335649967193604,
+          "mean": 0.3333560017636046
+        },
+        "source_displacement": {
+          "first": 0.0,
+          "last": 0.0,
+          "mean": 0.0
+        },
+        "write_width_mean": {
+          "first": 0.0,
+          "last": 0.0,
+          "mean": 0.0
+        },
+        "source_nu_s": {
+          "first": 0.0,
+          "last": 0.0,
+          "mean": 0.0
+        },
+        "innovation_energy": {
+          "first": 0.21181181073188782,
+          "last": 0.2026744931936264,
+          "mean": 0.19549681513940165
+        },
+        "innovation_norm": {
+          "first": 3.926077365875244,
+          "last": 4.963627338409424,
+          "mean": 3.6841546585783362
+        },
+        "innovation_rms": {
+          "first": 0.05625016614794731,
+          "last": 0.0545884408056736,
+          "mean": 0.051989477836286824
+        },
+        "port_nll": {
+          "first": 9.33875560760498,
+          "last": 12.167337417602539,
+          "mean": 8.049408810753448
+        },
+        "write_action_kl": {
+          "first": 0.0002787410339806229,
+          "last": 0.00047411280684173107,
+          "mean": 0.000204134845802173
+        },
+        "write_free_energy": {
+          "first": 9.339034080505371,
+          "last": 12.167811393737793,
+          "mean": 8.049612957431236
+        },
+        "port_predictive_entropy": {
+          "first": 6.7301812171936035,
+          "last": 8.148098945617676,
+          "mean": 7.635824537923327
+        },
+        "port_chart_entropy": {
+          "first": 2.045944929122925,
+          "last": 2.0307204723358154,
+          "mean": 2.031121368519962
+        },
+        "prior_precision_mean": {
+          "first": 39.48304748535156,
+          "last": 32.62784194946289,
+          "mean": 29.88281863182783
+        },
+        "posterior_precision_mean": {
+          "first": 41.55796813964844,
+          "last": 34.53158187866211,
+          "mean": 31.816352292895317
+        },
+        "write_admittance_mean": {
+          "first": 1.2202961444854736,
+          "last": 1.3603265285491943,
+          "mean": 1.2937353169545531
+        },
+        "transport_angle_abs_mean": {
+          "first": 2.486217498779297,
+          "last": 2.486217498779297,
+          "mean": 2.486217498779297
+        },
+        "transport_angle_abs_max": {
+          "first": 2.486217498779297,
+          "last": 2.486217498779297,
+          "mean": 2.486217498779297
+        },
+        "transport_norm_residual": {
+          "first": 0.0,
+          "last": 0.0,
+          "mean": 0.0
+        },
+        "collision_angle_abs_mean": {
+          "first": 0.04128168523311615,
+          "last": 0.03608447313308716,
+          "mean": 0.044479813252110034
+        },
+        "collision_angle_abs_max": {
+          "first": 0.13628819584846497,
+          "last": 0.2066500037908554,
+          "mean": 0.16516063050949015
+        },
+        "collision_input_snr": {
+          "first": 67.60187530517578,
+          "last": 44.167728424072266,
+          "mean": 100.77780213207006
+        },
+        "collision_output_snr": {
+          "first": 67.60188293457031,
+          "last": 44.167728424072266,
+          "mean": 100.77780268713832
+        },
+        "bath_out_energy": {
+          "first": 7.69498001318425e-06,
+          "last": 3.228415152989328e-06,
+          "mean": 5.9912993712885054e-06
+        },
+        "bath_angle_abs_mean": {
+          "first": 0.13603301346302032,
+          "last": 0.13603301346302032,
+          "mean": 0.13603301346302032
+        },
+        "dissipation_gamma0": {
+          "first": 0.013322955928742886,
+          "last": 0.013322955928742886,
+          "mean": 0.013322955928742886
+        },
+        "dissipation_nu": {
+          "first": 0.020451676100492477,
+          "last": 0.020451676100492477,
+          "mean": 0.020451676100492477
+        },
+        "dissipation_lambda_mean": {
+          "first": 0.033296845853328705,
+          "last": 0.03088860772550106,
+          "mean": 0.030152546685712878
+        },
+        "dissipation_high_q_damping": {
+          "first": 2.348762460566145e-13,
+          "last": 2.348762460566145e-13,
+          "mean": 2.348762460566145e-13
+        },
+        "dissipation_energy_ratio": {
+          "first": 0.8975028991699219,
+          "last": 0.8964192867279053,
+          "mean": 0.8974101580679417
+        },
+        "read_attention_entropy": {
+          "first": 5.545177459716797,
+          "last": 5.545177459716797,
+          "mean": 5.545177459716797
+        },
+        "read_action_entropy": {
+          "first": 4.158883094787598,
+          "last": 4.158883094787598,
+          "mean": 4.158883094787598
+        },
+        "read_action_kl": {
+          "first": -2.2799664378680973e-08,
+          "last": -1.364651858182242e-08,
+          "mean": -2.88591381208958e-08
+        },
+        "read_temperature_mean": {
+          "first": 1.0000181198120117,
+          "last": 1.0000181198120117,
+          "mean": 1.0000181198120117
+        },
+        "read_invariant_norm": {
+          "first": 0.0006994666182436049,
+          "last": 0.0005633746040984988,
+          "mean": 0.0006683882766935767
+        },
+        "read_collision_norm": {
+          "first": 0.001035570167005062,
+          "last": 0.000664678867906332,
+          "mean": 0.0008918332230223314
+        },
+        "read_aperture_coverage": {
+          "first": 0.0039062132127583027,
+          "last": 0.0039062132127583027,
+          "mean": 0.0039062139185261913
+        },
+        "energy": {
+          "first": 6.746767030563205e-05,
+          "last": 2.8026253858115524e-05,
+          "mean": 5.2467949043233375e-05
+        }
+      },
+      "diagnostics": {
+        "incident_energy": 0.012319611345446901,
+        "reflected_energy": 0.0029971922012919094,
+        "accepted_energy": 0.009322419235786583,
+        "accepted_fraction": 0.6224295123492993,
+        "t_packet": 0.6224295123492993,
+        "delta_e_field": 0.009322419235786583,
+        "cross_interference": 2.01893396684083e-06,
+        "write_to_f_ratio": 14.550269739702344,
+        "write_angle_abs_mean": 1.1240748270356562,
+        "write_angle_peak_mean": 1.507805823464878,
+        "write_spatial_support": 1.0,
+        "write_balance_residual": 4.874891601502895e-10,
+        "source_center": 0.33335408638231456,
+        "source_anchor": 0.33335408638231456,
+        "source_displacement": 0.0,
+        "write_width_mean": 0.0,
+        "source_nu_s": 0.0,
+        "innovation_energy": 0.1870284212351052,
+        "innovation_norm": 3.9580425104359165,
+        "innovation_rms": 0.05132118100800653,
+        "port_nll": 6.161765936263691,
+        "write_action_kl": 0.00021098048836165617,
+        "write_free_energy": 6.161976891595259,
+        "port_predictive_entropy": 6.877027014561463,
+        "port_chart_entropy": 2.031879685819149,
+        "prior_precision_mean": 35.06382966041565,
+        "posterior_precision_mean": 37.06586545705795,
+        "write_admittance_mean": 1.325255242176354,
+        "transport_angle_abs_mean": 2.486217498779297,
+        "transport_angle_abs_max": 2.486217498779297,
+        "transport_norm_residual": 0.0,
+        "collision_angle_abs_mean": 0.04264976450940594,
+        "collision_angle_abs_max": 0.1522363016847521,
+        "collision_input_snr": 88.09133848547935,
+        "collision_output_snr": 88.09133990108967,
+        "bath_out_energy": 5.21639812234298e-06,
+        "bath_angle_abs_mean": 0.13603301346302032,
+        "dissipation_gamma0": 0.013322955928742886,
+        "dissipation_nu": 0.020451676100492477,
+        "dissipation_lambda_mean": 0.029426304434309714,
+        "dissipation_high_q_damping": 2.348762460566145e-13,
+        "dissipation_energy_ratio": 0.89740423951298,
+        "read_attention_entropy": 5.545177459716797,
+        "read_action_entropy": 4.158883094787598,
+        "read_action_kl": -2.8165834387028355e-08,
+        "read_temperature_mean": 1.0000181198120117,
+        "read_invariant_norm": 0.0006644127447543724,
+        "read_collision_norm": 0.0008360683357295784,
+        "read_aperture_coverage": 0.0039062138021108694,
+        "energy": 4.572207714659271e-05
+      }
+    }
+  ],
+  "sites_count": 4,
+  "warm_in_tokens": 256,
+  "score_tokens_per_site": 128,
+  "state_policy": "mature_ness_spectrum_with_randomized_phase_and_posterior_precision_then_fixed_local_warm_in",
+  "cold_start": false,
+  "random_phase_resampling": true,
+  "resets_within_site": 0,
+  "mature_ness_initializations": 4,
+  "checkpoint_terminal_state_clones": 0,
+  "seconds": 105.01708070000313,
+  "scored_tokens_per_second": 4.875397379047357,
+  "diagnostics": {
+    "incident_energy": 0.011328003550261201,
+    "reflected_energy": 0.0025643703901323534,
+    "accepted_energy": 0.008763633215252753,
+    "accepted_fraction": 0.6373680025234307,
+    "t_packet": 0.6373680025234307,
+    "delta_e_field": 0.008763633215252753,
+    "cross_interference": 9.49804439417945e-07,
+    "write_to_f_ratio": 14.507769999210723,
+    "write_angle_abs_mean": 1.1550539386444143,
+    "write_angle_peak_mean": 1.5195766957476735,
+    "write_spatial_support": 1.0,
+    "write_balance_residual": 4.674802767112851e-10,
+    "source_center": 0.33335205644834787,
+    "source_anchor": 0.33335205644834787,
+    "source_displacement": 0.0,
+    "write_width_mean": 0.0,
+    "source_nu_s": 0.0,
+    "innovation_energy": 0.1987483911503709,
+    "innovation_norm": 4.35962620790815,
+    "innovation_rms": 0.0533987395189115,
+    "port_nll": 7.343543488042087,
+    "write_action_kl": 0.00020660844307940351,
+    "write_free_energy": 7.343750083343366,
+    "port_predictive_entropy": 7.532027141540311,
+    "port_chart_entropy": 2.033321103081107,
+    "prior_precision_mean": 40.06794160604477,
+    "posterior_precision_mean": 42.08321591466665,
+    "write_admittance_mean": 1.3054076384287328,
+    "transport_angle_abs_mean": 2.486217498779297,
+    "transport_angle_abs_max": 2.486217498779297,
+    "transport_norm_residual": 0.0,
+    "collision_angle_abs_mean": 0.04276718379696831,
+    "collision_angle_abs_max": 0.1541952872357797,
+    "collision_input_snr": 77.59909462183714,
+    "collision_output_snr": 77.59909484162927,
+    "bath_out_energy": 4.968975825470068e-06,
+    "bath_angle_abs_mean": 0.13603301346302032,
+    "dissipation_gamma0": 0.013322955928742886,
+    "dissipation_nu": 0.020451676100492477,
+    "dissipation_lambda_mean": 0.02973706302145729,
+    "dissipation_high_q_damping": 2.348762460566145e-13,
+    "dissipation_energy_ratio": 0.8974508485989645,
+    "read_attention_entropy": 5.545177459716797,
+    "read_action_entropy": 4.158883094787598,
+    "read_action_kl": -2.8472067328810802e-08,
+    "read_temperature_mean": 1.0000181198120117,
+    "read_invariant_norm": 0.000649867845368135,
+    "read_collision_norm": 0.0008140968451471053,
+    "read_aperture_coverage": 0.003906213837581163,
+    "energy": 4.3551628791327346e-05
+  },
+  "protocol": "IB-warm-local-language-v1",
+  "checkpoint": "results\\q8_predictive_ports_k16_unified_bath_3000\\BBest.pt",
+  "checkpoint_sha256": "51a182d519532321836fb2cf3bc7d6d4be7f66b294c058adc8137ee58d4f53e0",
+  "checkpoint_step": 2500,
+  "architecture": "CBIM-Torus3D-belief_agent-d3q8-unified-dissipation",
+  "model_family": "kinetic",
+  "continuous_velocity_channels": 8,
+  "K": 16,
+  "integration_resolution": "kinetic",
+  "dataset": "data\\ib_owt_gpt2\\validation.npy",
+  "ness_phase_seed": 11
+}
