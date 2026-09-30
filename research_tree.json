@@ -1681,7 +1681,7 @@
       "id": "IB_Q8_MAIN_ARCH_20260930",
       "parent": "IB_Q8_W2_MODERN_ARM_20260929",
       "title": "Main architecture declared: the W4 predictive-innovation port line",
-      "status": "active",
+      "status": "superseded",
       "time": "2026-09-30",
       "motivation": "After the completed registered arms (unified-bath K16 run, hybrid read/steer arm, W2-modern write arm) and the causal-attribution and two-axis probes, the write factor is decided with the opposite sign of the working hypothesis and the main architecture can be declared.",
       "action": "Fix the main line as: CBIM torus field with collision-centric dynamics; W4 predictive-innovation write port (categorical prior, factorized chart, event-norm admittance law, persistent channelwise posterior precision, single field write path); K=16 integration steps at dt=4*tau0 preserving event duration T=64*tau0; unified three-layer field-only bath; BPTT chunk 32; fixed D3Q8 transport (continuous steering optional for early-convergence speed only); kernel_r1 readout for pragmatic NLL or belief_agent readout where the strict field-only instrument matters. Publish both records and pursue the remaining gap to the archived baseline (7.2154) and GDN-2 (6.4981) through training maturity (lr schedule, longer runs, adaptive-clock integration) rather than architecture redesign.",
@@ -1691,7 +1691,8 @@
         "The adaptive clock of the archived champion was excluded from all comparison arms and its individual contribution is unmeasured.",
         "The posterior precision state inflates with training (mean ~55 by step 3000); the T action must condition on normalized signals.",
         "Transport is causally idle at evaluation time in both lines; its training-time role and a possible transport-light variant are open.",
-        "The T duration action and M-path posterior remain the next capability stages on the declared main line."
+        "The T duration action and M-path posterior remain the next capability stages on the declared main line.",
+        "SUPERSEDED 2026-09-30: the exact spectral-viscosity scale calculation and the completed 2x2 field-spectrum audit show that the selected unified bath deterministically erases every non-DC torus mode over T=64. Its reported NLL is retained as an experimental record, but it cannot define the spatial persistent-field main line."
       ],
       "invalidation": "Reopen the architecture if training-maturity levers fail to move the W4 line below 7.2, or if a registered variant beats it by more than 0.1 nats at equal budget.",
       "artifacts": [
@@ -1704,7 +1705,12 @@
         "scripts/ib/measure_mature_ladders.py"
       ],
       "confidence": "I",
-      "confidence_note": "Main architecture chosen from completed registered comparisons at equal budget on one GPU and one dataset; the maturity levers for the remaining gap are untested."
+      "confidence_note": "Main architecture chosen from completed registered comparisons at equal budget on one GPU and one dataset; the maturity levers for the remaining gap are untested.",
+      "pruning_record": {
+        "reason": "The T=64 spectral-viscosity multiplier analytically annihilates every non-DC torus mode; the saved 2x2 field spectra confirm the prediction.",
+        "pruning_commit": "b8283f3",
+        "recovery_note": "The W4 predictive port, persistent precision state, conservative transport and collision remain reusable. Replace only the raw spectral-viscosity bath with the quadratic local bath; follow IB_Q8_BATH_SCALE_20260930."
+      }
     },
     {
       "id": "IB_Q8_SPATIAL_COLLAPSE_20260930",
@@ -1730,6 +1736,31 @@
       ],
       "confidence": "I",
       "confidence_note": "Direct spectral measurement on both saved mature states; the collapse mechanism is inferred from operator structure and training pressure, not yet isolated by intervention."
+    },
+    {
+      "id": "IB_Q8_BATH_SCALE_20260930",
+      "parent": "IB_Q8_SPATIAL_COLLAPSE_20260930",
+      "title": "Spectral viscosity analytically forces DC collapse at T=64",
+      "status": "active",
+      "time": "2026-09-30",
+      "motivation": "Resolve whether the two-arm 100% DC observation identifies a trained preference, a write/read defect, or a necessary consequence of the unified bath.",
+      "action": "Derive the exact Fourier multiplier of the implemented spectral-viscosity layer and encode it as a deterministic operator test on the fundamental torus mode.",
+      "conclusion": "For a Fourier coefficient k, the implemented field-only layer applies exp(-T*nu*|k|^2). At the registered unit-torus duration T=64 and initialized nu=0.02, the slowest non-DC amplitude is exp(-64*0.02*(2*pi)^2)=1.1e-22 and its quadratic energy ratio is 1.3e-44. DC has |k|^2=0 and therefore survives. The new operator test verifies one exact dt=4 attenuation and verifies that 16 microsteps drive the fundamental below 1e-30 energy, the FP64 FFT floor. This predicts the completed 2x2 spectrum exactly: both unified arms are 100% DC independent of W2/W4, while both quadratic arms retain non-DC structure.",
+      "issues": [
+        "The uniform leakage and rank-R content term are distinct mechanisms; the present result assigns the collapse to raw spectral viscosity, not to the entire idea of field-only dissipation.",
+        "A future scale-calibrated diffusion study may set nu by its dimensionless product T*nu*(2*pi/L)^2 and register its retained-mode spectrum before language training. It is an optional transport/smoothing study, not the default NESS bath.",
+        "The decisive remaining capability experiment is W4 plus quadratic local bath for 3000 registered updates at K=64, followed by the four-site warm-local evaluation and Fourier spectrum measurement."
+      ],
+      "invalidation": "This conclusion changes only if the deployed implementation uses a different spectral multiplier than exp(-dt*(gamma0+nu*|k|^2)), or a matched scale-calibrated diffusion arm retains non-DC modes while improving the registered four-site NLL.",
+      "artifacts": [
+        "information_boltzmann/core/torus3d.py",
+        "tests/test_predictive_impedance_write_agent.py",
+        "scripts/ib/measure_field_locality.py",
+        "results/q8_predictive_ports_k16_unified_bath_3000",
+        "results/q8_w2_modern_3000"
+      ],
+      "confidence": "I",
+      "confidence_note": "The Fourier attenuation is derived directly from the implemented operator and verified in a deterministic FP64 test; the cross-arm field spectra are direct saved-state measurements. Independent conceptual review remains pending."
     }
   ],
   "status_migration_note": "Normalize historical workflow labels for repository validator; original labels retained as legacy_status. No new experimental conclusions introduced.",

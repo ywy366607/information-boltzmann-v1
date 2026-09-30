@@ -1,6 +1,7 @@
 """Structural tests for the Q8 predictive-impedance write agent."""
 
 import torch
+import math
 
 from information_boltzmann.core.torus3d import (
     CBIMTorus3D,
@@ -265,3 +266,45 @@ def test_unified_dissipation_serves_the_w4_belief_path_field_only():
     model.bath.forward = spy_forward
     loss, belief, diagnostics = model.forward_belief(ids, targets)
     assert recorded and all(token is None for token in recorded)
+
+
+def test_unified_spectral_viscosity_annihilates_unit_torus_fundamental_at_t64():
+    """Expose the physical time-scale of the optional spectral bath.
+
+    This is an analytic operator test, not a language capability experiment.
+    For a mode cos(2*pi*x), repeated ``dt=4`` evolution for 16 microsteps
+    must yield exp(-2*T*nu*(2*pi)^2) in quadratic energy.  It prevents a
+    raw physical viscosity from being mistaken for a duration-neutral bath.
+    """
+    shape = (8, 8, 4)
+    bath = UnifiedTorusDissipation(
+        shape=shape, d=1, rank=1, gamma0_init=1e-5, nu_init=0.02,
+    ).double()
+    x = torch.arange(shape[0], dtype=torch.float64) / shape[0]
+    mode = torch.cos(2.0 * math.pi * x)[:, None, None, None]
+    field = mode.expand(1, *shape, 1).clone()
+    energy_initial = field.square().mean()
+    nu = torch.nn.functional.softplus(bath.nu_param).item()
+    field, _ = bath(
+        field, delta_tau=4.0, gamma0_factor=0.0,
+        disable_subspace=True,
+    )
+    measured_ratio = field.square().mean() / energy_initial
+    fundamental_laplacian = bath.laplacian[1, 0, 0].item()
+    assert math.isclose(fundamental_laplacian, (2.0 * math.pi) ** 2,
+                        rel_tol=1e-6)
+    expected_ratio = math.exp(-2.0 * 4.0 * nu * fundamental_laplacian)
+    torch.testing.assert_close(
+        measured_ratio, torch.tensor(expected_ratio, dtype=torch.float64),
+        rtol=2e-8, atol=1e-14,
+    )
+    for _ in range(15):
+        field, _ = bath(
+            field, delta_tau=4.0, gamma0_factor=0.0,
+            disable_subspace=True,
+        )
+    measured_ratio = field.square().mean() / energy_initial
+    # The primary Q8 event lasts T=64; this is why the raw nu=0.02 bath
+    # leaves DC as its sole long-lived spatial mode.  The analytic value is
+    # about 1e-44; the looser bound accounts for accumulated FP64 FFT roundoff.
+    assert measured_ratio.item() < 1e-30

@@ -999,14 +999,23 @@ class QuadraticTorusBath(nn.Module):
 
 
 class UnifiedTorusDissipation(nn.Module):
-    """Unified 3-layer dissipation operator:
+    """Experimental 3-layer dissipation operator:
        D_t(q) = gamma_0 * I + nu * lambda(q) * I + U_t * Lambda_t * U_t^T
 
     Layer 1: gamma_0 * I: weak uniform leakage ensuring BIBO stability and rho < 1.
-    Layer 2: nu * lambda(q) * I: scale-selective spectral viscosity killing acoustic ringing and torus reverberations.
+    Layer 2: nu * lambda(q) * I: scale-selective spectral viscosity.
              lambda(q) = 4 * sum_j sin^2(q_j / 2) on periodic 3D torus.
     Layer 3: U_t * Lambda_t * U_t^T: content-selective rank-R subspace forgetting (R=4 or 8).
              e^{-dt * U Lambda U^T} = I + U (e^{-dt * Lambda} - I) U^T in O(dR).
+    The spectral term is a physical diffusion coefficient with units
+    ``space**2 / time``.  It is therefore *not* a resolution- or duration-
+    neutral replacement for a local bath.  At a fixed event duration ``T`` a
+    Fourier mode ``k`` is multiplied by ``exp(-T * nu * |k|**2)``.  In
+    particular, using the historic ``nu=0.02`` for ``T=64`` on a unit torus
+    attenuates even the fundamental spatial mode by about ``1e-22``.  The
+    quadratic local bath remains the main persistent-language operator;
+    this class is retained only for explicitly scale-calibrated diffusion
+    studies.
     """
 
     def __init__(self, shape=(4, 4, 4), d=128, rank=4,

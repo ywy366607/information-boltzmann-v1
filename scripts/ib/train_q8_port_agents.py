@@ -169,8 +169,11 @@ def main() -> None:
     parser.add_argument("--steps", type=int, default=3000)
     parser.add_argument("--tokens", type=int, default=128)
     parser.add_argument("--chunk-tokens", type=int, default=8)
-    parser.add_argument("--micro-steps", type=int, default=16)
-    parser.add_argument("--tau-0", type=float, default=4.0,
+    parser.add_argument("--micro-steps", type=int, default=64,
+                        help="Numerical quadrature resolution K.  The primary "
+                             "persistent-field line uses K=64; lower-K runs are "
+                             "explicit integration studies, not a new default.")
+    parser.add_argument("--tau-0", type=float, default=1.0,
                         help="Integration step per microstep in physical time "
                              "units; the event duration is micro-steps * tau-0 "
                              "and the registered line keeps it at 64.")
@@ -294,8 +297,18 @@ def main() -> None:
     if args.resume is not None:
         saved = torch.load(args.resume, map_location="cuda", weights_only=False)
         for key in ("architecture", "shape", "channels", "tokens", "K", "tau_0",
-                    "write_type", "readout_type", "continuous_velocities"):
-            if saved["config"].get(key) != config.get(key):
+                    "write_type", "readout_type", "continuous_velocities",
+                    "dissipation_type", "dissipation_rank"):
+            # K=64 checkpoints created before the explicit physical-time
+            # field was introduced used the same implicit tau_0 = 1.  Treat
+            # that representation as exactly equivalent so their continuous
+            # posterior field and optimizer state remain resumable.
+            saved_value = saved["config"].get(key)
+            if key == "tau_0" and saved_value is None:
+                saved_value = 1.0
+            if key == "dissipation_rank" and saved_value is None:
+                saved_value = 4
+            if saved_value != config.get(key):
                 parser.error(f"Resume mismatch: {key}")
         if "precision" not in saved:
             parser.error("Resume checkpoint has no posterior precision")
