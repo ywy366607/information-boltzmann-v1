@@ -308,6 +308,11 @@ def main() -> None:
                 saved_value = 1.0
             if key == "dissipation_rank" and saved_value is None:
                 saved_value = 4
+            # The first W4 quadratic K=64 run predated the explicit flag.
+            # Its discrete Q8 channels are therefore the exact default,
+            # rather than a different dynamical system.
+            if key == "continuous_velocities" and saved_value is None:
+                saved_value = False
             if saved_value != config.get(key):
                 parser.error(f"Resume mismatch: {key}")
         if "precision" not in saved:
