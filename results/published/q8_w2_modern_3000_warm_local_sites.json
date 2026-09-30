@@ -1,0 +1,968 @@
+{
+  "nll": 7.89215817512013,
+  "sites": [
+    {
+      "site": 0,
+      "validation_start": 8192,
+      "warm_in_tokens": 256,
+      "score_start": 8448,
+      "score_tokens": 128,
+      "nll": 7.596991576254368,
+      "state_policy": "mature_ness_spectrum_with_randomized_phase_then_local_warm_in",
+      "cold_start": false,
+      "random_phase_resampling": true,
+      "resets_within_site": 0,
+      "warm_in_diagnostics": {
+        "incident_energy": {
+          "first": 0.03180813044309616,
+          "last": 0.037813834846019745,
+          "mean": 0.03640815287508303
+        },
+        "reflected_energy": {
+          "first": 0.027390602976083755,
+          "last": 0.029959551990032196,
+          "mean": 0.030253425607952522
+        },
+        "accepted_energy": {
+          "first": 0.004417527467012405,
+          "last": 0.0078542809933424,
+          "mean": 0.006154727736429777
+        },
+        "delta_e_field": {
+          "first": 0.004417527467012405,
+          "last": 0.0078542809933424,
+          "mean": 0.006154727736429777
+        },
+        "accepted_fraction": {
+          "first": 0.1388804316520691,
+          "last": 0.20770925283432007,
+          "mean": 0.17084456700831652
+        },
+        "t_packet": {
+          "first": 0.1388804316520691,
+          "last": 0.20770925283432007,
+          "mean": 0.17084456700831652
+        },
+        "cross_interference": {
+          "first": 0.000129425257910043,
+          "last": 0.0014720181934535503,
+          "mean": 0.0010476816832287739
+        },
+        "write_to_f_ratio": {
+          "first": 1.5821481943130493,
+          "last": 0.4248008728027344,
+          "mean": 0.47665731902816333
+        },
+        "write_angle_abs_mean": {
+          "first": 0.029300490394234657,
+          "last": 0.028965409845113754,
+          "mean": 0.02996971846005181
+        },
+        "write_angle_peak_mean": {
+          "first": 0.5384944081306458,
+          "last": 0.5385733842849731,
+          "mean": 0.5308002692181617
+        },
+        "write_spatial_support": {
+          "first": 0.13671875,
+          "last": 0.125,
+          "mean": 0.140716552734375
+        },
+        "write_balance_residual": {
+          "first": 0.0,
+          "last": 0.0,
+          "mean": 1.6189005691558123e-09
+        },
+        "source_center": {
+          "first": 0.8049954771995544,
+          "last": 0.40991371870040894,
+          "mean": 0.46049949154257774
+        },
+        "source_anchor": {
+          "first": 0.33338308334350586,
+          "last": 0.6696798801422119,
+          "mean": 0.45545269588274095
+        },
+        "source_displacement": {
+          "first": -0.19505423307418823,
+          "last": 0.07356717437505722,
+          "mean": 0.014161378744877773
+        },
+        "write_width_mean": {
+          "first": 0.1498643159866333,
+          "last": 0.1412677764892578,
+          "mean": 0.14254130143672228
+        },
+        "source_nu_s": {
+          "first": 0.0,
+          "last": 0.0,
+          "mean": 0.0
+        },
+        "transport_angle_abs_mean": {
+          "first": 1.8808634281158447,
+          "last": 1.8961821794509888,
+          "mean": 1.8825620980933309
+        },
+        "transport_angle_abs_max": {
+          "first": 1.8978610038757324,
+          "last": 1.9057879447937012,
+          "mean": 1.8958784048445523
+        },
+        "transport_norm_residual": {
+          "first": 0.0,
+          "last": 0.0,
+          "mean": 0.0
+        },
+        "collision_angle_abs_mean": {
+          "first": 0.12985530495643616,
+          "last": 0.3323418200016022,
+          "mean": 0.27234213214251213
+        },
+        "collision_angle_abs_max": {
+          "first": 0.5826503038406372,
+          "last": 1.5241628885269165,
+          "mean": 1.276722484617494
+        },
+        "collision_input_snr": {
+          "first": 2.670600414276123,
+          "last": 0.4550883173942566,
+          "mean": 0.7001305588055402
+        },
+        "collision_output_snr": {
+          "first": 2.670600652694702,
+          "last": 0.4550883173942566,
+          "mean": 0.7001305688172579
+        },
+        "bath_out_energy": {
+          "first": 6.588583346456289e-06,
+          "last": 4.4257030822336674e-05,
+          "mean": 4.41553434029629e-05
+        },
+        "bath_angle_abs_mean": {
+          "first": 0.14188750088214874,
+          "last": 0.14188750088214874,
+          "mean": 0.14188750088214874
+        },
+        "dissipation_gamma0": {
+          "first": 0.01150467712432146,
+          "last": 0.01150467712432146,
+          "mean": 0.01150467712432146
+        },
+        "dissipation_nu": {
+          "first": 0.021730469539761543,
+          "last": 0.021730469539761543,
+          "mean": 0.021730469539761543
+        },
+        "dissipation_lambda_mean": {
+          "first": 0.024491537362337112,
+          "last": 0.02085597813129425,
+          "mean": 0.026546000506641576
+        },
+        "dissipation_high_q_damping": {
+          "first": 3.8222524375176176e-14,
+          "last": 3.8222524375176176e-14,
+          "mean": 3.8222524375176176e-14
+        },
+        "dissipation_energy_ratio": {
+          "first": 0.9737383127212524,
+          "last": 0.9763950705528259,
+          "mean": 0.9706095790024847
+        },
+        "dir_disp_deg": {
+          "first": 38.471839904785156,
+          "last": 38.562625885009766,
+          "mean": 34.65767174959183
+        },
+        "dir_pairwise_sep_deg": {
+          "first": 97.54080963134766,
+          "last": 97.46614837646484,
+          "mean": 97.59419107437134
+        },
+        "dir_change_micro_deg": {
+          "first": 1.5593434572219849,
+          "last": 2.2704684734344482,
+          "mean": 2.060462350724265
+        },
+        "energy": {
+          "first": 0.0002446644357405603,
+          "last": 0.001831062021665275,
+          "mean": 0.0014934678358713427
+        }
+      },
+      "diagnostics": {
+        "incident_energy": 0.03795837385405321,
+        "reflected_energy": 0.03153124960226705,
+        "accepted_energy": 0.006427124770198134,
+        "delta_e_field": 0.006427124770198134,
+        "accepted_fraction": 0.17167282104492188,
+        "t_packet": 0.17167282104492188,
+        "cross_interference": 0.0011994330563993572,
+        "write_to_f_ratio": 0.4603296790155582,
+        "write_angle_abs_mean": 0.031111085299926344,
+        "write_angle_peak_mean": 0.5312782716937363,
+        "write_spatial_support": 0.146484375,
+        "write_balance_residual": 1.8335413187742233e-09,
+        "source_center": 0.5213644675095566,
+        "source_anchor": 0.4390793545380802,
+        "source_displacement": -0.03229822639696067,
+        "write_width_mean": 0.1433643233613111,
+        "source_nu_s": 0.0,
+        "transport_angle_abs_mean": 1.879765160381794,
+        "transport_angle_abs_max": 1.8929879432544112,
+        "transport_norm_residual": 0.0,
+        "collision_angle_abs_mean": 0.287233829672914,
+        "collision_angle_abs_max": 1.3460688050836325,
+        "collision_input_snr": 0.6890642957296222,
+        "collision_output_snr": 0.6890643064398319,
+        "bath_out_energy": 4.9761071295506554e-05,
+        "bath_angle_abs_mean": 0.14188750088214874,
+        "dissipation_gamma0": 0.01150467712432146,
+        "dissipation_nu": 0.021730469539761543,
+        "dissipation_lambda_mean": 0.02578350382827921,
+        "dissipation_high_q_damping": 3.8222524375176176e-14,
+        "dissipation_energy_ratio": 0.9701636917889118,
+        "dir_disp_deg": 36.56323689967394,
+        "dir_pairwise_sep_deg": 97.5397487282753,
+        "dir_change_micro_deg": 2.2580225677229464,
+        "energy": 0.001659434586599673
+      }
+    },
+    {
+      "site": 1,
+      "validation_start": 12288,
+      "warm_in_tokens": 256,
+      "score_start": 12544,
+      "score_tokens": 128,
+      "nll": 8.997857619076967,
+      "state_policy": "mature_ness_spectrum_with_randomized_phase_then_local_warm_in",
+      "cold_start": false,
+      "random_phase_resampling": true,
+      "resets_within_site": 0,
+      "warm_in_diagnostics": {
+        "incident_energy": {
+          "first": 0.037478215992450714,
+          "last": 0.011970669031143188,
+          "mean": 0.03784992901273654
+        },
+        "reflected_energy": {
+          "first": 0.031277190893888474,
+          "last": 0.009713094681501389,
+          "mean": 0.031190601192065515
+        },
+        "accepted_energy": {
+          "first": 0.006201025098562241,
+          "last": 0.00225757691077888,
+          "mean": 0.006659328232672124
+        },
+        "delta_e_field": {
+          "first": 0.006201025098562241,
+          "last": 0.00225757691077888,
+          "mean": 0.006659328232672124
+        },
+        "accepted_fraction": {
+          "first": 0.16545677185058594,
+          "last": 0.18859213590621948,
+          "mean": 0.17677156743593514
+        },
+        "t_packet": {
+          "first": 0.16545677185058594,
+          "last": 0.18859213590621948,
+          "mean": 0.17677156743593514
+        },
+        "cross_interference": {
+          "first": 9.283350664190948e-05,
+          "last": -2.975323332066182e-05,
+          "mean": 0.0010982197248488035
+        },
+        "write_to_f_ratio": {
+          "first": 1.9219194650650024,
+          "last": 0.12550096213817596,
+          "mean": 0.48707370695774443
+        },
+        "write_angle_abs_mean": {
+          "first": 0.032494910061359406,
+          "last": 0.008768444880843163,
+          "mean": 0.030810564840066945
+        },
+        "write_angle_peak_mean": {
+          "first": 0.5340874195098877,
+          "last": 0.524836540222168,
+          "mean": 0.530405483674258
+        },
+        "write_spatial_support": {
+          "first": 0.1640625,
+          "last": 0.0390625,
+          "mean": 0.1448974609375
+        },
+        "write_balance_residual": {
+          "first": 0.0,
+          "last": 2.7939677238464355e-09,
+          "mean": 1.9172148313373327e-09
+        },
+        "source_center": {
+          "first": 0.5705265998840332,
+          "last": 0.3539186120033264,
+          "mean": 0.4859825554303825
+        },
+        "source_anchor": {
+          "first": 0.33338308334350586,
+          "last": 0.9910087585449219,
+          "mean": 0.47520726745915454
+        },
+        "source_displacement": {
+          "first": -0.09618979692459106,
+          "last": 0.029576560482382774,
+          "mean": -0.0074538765088618675
+        },
+        "write_width_mean": {
+          "first": 0.1529931128025055,
+          "last": 0.09525760263204575,
+          "mean": 0.14243381674168631
+        },
+        "source_nu_s": {
+          "first": 0.0,
+          "last": 0.0,
+          "mean": 0.0
+        },
+        "transport_angle_abs_mean": {
+          "first": 1.8013992309570312,
+          "last": 1.9133179187774658,
+          "mean": 1.8668480743654072
+        },
+        "transport_angle_abs_max": {
+          "first": 1.830756425857544,
+          "last": 1.9182757139205933,
+          "mean": 1.8824401241727173
+        },
+        "transport_norm_residual": {
+          "first": 0.0,
+          "last": 0.0,
+          "mean": 0.0
+        },
+        "collision_angle_abs_mean": {
+          "first": 0.21056053042411804,
+          "last": 0.3154374361038208,
+          "mean": 0.2734472526644822
+        },
+        "collision_angle_abs_max": {
+          "first": 0.9916571974754333,
+          "last": 1.4836864471435547,
+          "mean": 1.286415575130377
+        },
+        "collision_input_snr": {
+          "first": 0.8668058514595032,
+          "last": 0.4664788246154785,
+          "mean": 0.8501042961142957
+        },
+        "collision_output_snr": {
+          "first": 0.8668058514595032,
+          "last": 0.4664788246154785,
+          "mean": 0.8501043049618602
+        },
+        "bath_out_energy": {
+          "first": 8.04068986326456e-06,
+          "last": 3.6847079172730446e-05,
+          "mean": 4.828947908208647e-05
+        },
+        "bath_angle_abs_mean": {
+          "first": 0.14188750088214874,
+          "last": 0.14188750088214874,
+          "mean": 0.14188750088214874
+        },
+        "dissipation_gamma0": {
+          "first": 0.01150467712432146,
+          "last": 0.01150467712432146,
+          "mean": 0.01150467712432146
+        },
+        "dissipation_nu": {
+          "first": 0.021730469539761543,
+          "last": 0.021730469539761543,
+          "mean": 0.021730469539761543
+        },
+        "dissipation_lambda_mean": {
+          "first": 0.01914624311029911,
+          "last": 0.03354316204786301,
+          "mean": 0.026998961613571737
+        },
+        "dissipation_high_q_damping": {
+          "first": 3.8222524375176176e-14,
+          "last": 3.8222524375176176e-14,
+          "mean": 3.8222524375176176e-14
+        },
+        "dissipation_energy_ratio": {
+          "first": 0.976189374923706,
+          "last": 0.9657239317893982,
+          "mean": 0.9710496531333774
+        },
+        "dir_disp_deg": {
+          "first": 24.468578338623047,
+          "last": 46.922607421875,
+          "mean": 31.68787705898285
+        },
+        "dir_pairwise_sep_deg": {
+          "first": 98.07538604736328,
+          "last": 96.8759994506836,
+          "mean": 97.72454881668091
+        },
+        "dir_change_micro_deg": {
+          "first": 1.696159839630127,
+          "last": 1.7361851930618286,
+          "mean": 2.222138681448996
+        },
+        "energy": {
+          "first": 0.00033006351441144943,
+          "last": 0.0010384436463937163,
+          "mean": 0.0016669630024352955
+        }
+      },
+      "diagnostics": {
+        "incident_energy": 0.04346547066961648,
+        "reflected_energy": 0.035794019866443705,
+        "accepted_energy": 0.007671451625355985,
+        "delta_e_field": 0.007671451625355985,
+        "accepted_fraction": 0.17793150851503015,
+        "t_packet": 0.17793150851503015,
+        "cross_interference": 0.0017641484937769292,
+        "write_to_f_ratio": 0.46718659345060587,
+        "write_angle_abs_mean": 0.03559382270032074,
+        "write_angle_peak_mean": 0.5322590572759509,
+        "write_spatial_support": 0.167327880859375,
+        "write_balance_residual": 2.35741026699543e-09,
+        "source_center": 0.49792639893712476,
+        "source_anchor": 0.4288165539419424,
+        "source_displacement": -0.027244326263371477,
+        "write_width_mean": 0.14952799549791962,
+        "source_nu_s": 0.0,
+        "transport_angle_abs_mean": 1.8720848076045513,
+        "transport_angle_abs_max": 1.8871404202654958,
+        "transport_norm_residual": 0.0,
+        "collision_angle_abs_mean": 0.31171205785358325,
+        "collision_angle_abs_max": 1.468196566682309,
+        "collision_input_snr": 0.7074341720435768,
+        "collision_output_snr": 0.7074341861298308,
+        "bath_out_energy": 7.107912824722007e-05,
+        "bath_angle_abs_mean": 0.14188750088214874,
+        "dissipation_gamma0": 0.01150467712432146,
+        "dissipation_nu": 0.021730469539761543,
+        "dissipation_lambda_mean": 0.025730315435794182,
+        "dissipation_high_q_damping": 3.8222524375176176e-14,
+        "dissipation_energy_ratio": 0.9703686228021979,
+        "dir_disp_deg": 32.577697582542896,
+        "dir_pairwise_sep_deg": 97.72627782821655,
+        "dir_change_micro_deg": 2.448868246283382,
+        "energy": 0.0024461119528496056
+      }
+    },
+    {
+      "site": 2,
+      "validation_start": 16384,
+      "warm_in_tokens": 256,
+      "score_start": 16640,
+      "score_tokens": 128,
+      "nll": 7.708164770156145,
+      "state_policy": "mature_ness_spectrum_with_randomized_phase_then_local_warm_in",
+      "cold_start": false,
+      "random_phase_resampling": true,
+      "resets_within_site": 0,
+      "warm_in_diagnostics": {
+        "incident_energy": {
+          "first": 0.051240626722574234,
+          "last": 0.05115603655576706,
+          "mean": 0.039926361492689466
+        },
+        "reflected_energy": {
+          "first": 0.043868087232112885,
+          "last": 0.04187532141804695,
+          "mean": 0.03322968709471752
+        },
+        "accepted_energy": {
+          "first": 0.007372543215751648,
+          "last": 0.009280717000365257,
+          "mean": 0.006696675177408906
+        },
+        "delta_e_field": {
+          "first": 0.007372543215751648,
+          "last": 0.009280717000365257,
+          "mean": 0.006696675177408906
+        },
+        "accepted_fraction": {
+          "first": 0.1438807249069214,
+          "last": 0.1814197301864624,
+          "mean": 0.17006550380028784
+        },
+        "t_packet": {
+          "first": 0.1438807249069214,
+          "last": 0.1814197301864624,
+          "mean": 0.17006550380028784
+        },
+        "cross_interference": {
+          "first": 0.00015945886843837798,
+          "last": 0.0026964759454131126,
+          "mean": 0.0013663734225328739
+        },
+        "write_to_f_ratio": {
+          "first": 2.5164263248443604,
+          "last": 0.46690207719802856,
+          "mean": 0.4843285154784098
+        },
+        "write_angle_abs_mean": {
+          "first": 0.04393626004457474,
+          "last": 0.035271063446998596,
+          "mean": 0.03280954928777646
+        },
+        "write_angle_peak_mean": {
+          "first": 0.534930408000946,
+          "last": 0.5364614129066467,
+          "mean": 0.5319269623141736
+        },
+        "write_spatial_support": {
+          "first": 0.21875,
+          "last": 0.140625,
+          "mean": 0.1552276611328125
+        },
+        "write_balance_residual": {
+          "first": 3.725290298461914e-09,
+          "last": 3.725290298461914e-09,
+          "mean": 2.0227162167429924e-09
+        },
+        "source_center": {
+          "first": 0.3453720510005951,
+          "last": 0.47900694608688354,
+          "mean": 0.5015209155935736
+        },
+        "source_anchor": {
+          "first": 0.33335840702056885,
+          "last": 0.332535982131958,
+          "mean": 0.4310194747249625
+        },
+        "source_displacement": {
+          "first": 0.012013634666800499,
+          "last": 0.14647094905376434,
+          "mean": -0.005019394979171921
+        },
+        "write_width_mean": {
+          "first": 0.1674603670835495,
+          "last": 0.13732120394706726,
+          "mean": 0.1463831755972933
+        },
+        "source_nu_s": {
+          "first": 0.0,
+          "last": 0.0,
+          "mean": 0.0
+        },
+        "transport_angle_abs_mean": {
+          "first": 1.8908116817474365,
+          "last": 1.8908836841583252,
+          "mean": 1.8823610940016806
+        },
+        "transport_angle_abs_max": {
+          "first": 1.8987385034561157,
+          "last": 1.8970963954925537,
+          "mean": 1.8955118674784899
+        },
+        "transport_norm_residual": {
+          "first": 0.0,
+          "last": 0.0,
+          "mean": 0.0
+        },
+        "collision_angle_abs_mean": {
+          "first": 0.2514030635356903,
+          "last": 0.3595941364765167,
+          "mean": 0.2990785611036699
+        },
+        "collision_angle_abs_max": {
+          "first": 1.2147905826568604,
+          "last": 1.6956431865692139,
+          "mean": 1.40687032812275
+        },
+        "collision_input_snr": {
+          "first": 1.0350935459136963,
+          "last": 0.27465614676475525,
+          "mean": 0.6647130058263429
+        },
+        "collision_output_snr": {
+          "first": 1.0350935459136963,
+          "last": 0.27465614676475525,
+          "mean": 0.6647130149649456
+        },
+        "bath_out_energy": {
+          "first": 1.288088969886303e-05,
+          "last": 7.644505240023136e-05,
+          "mean": 5.5371204325638246e-05
+        },
+        "bath_angle_abs_mean": {
+          "first": 0.14188750088214874,
+          "last": 0.14188750088214874,
+          "mean": 0.14188750088214874
+        },
+        "dissipation_gamma0": {
+          "first": 0.01150467712432146,
+          "last": 0.01150467712432146,
+          "mean": 0.01150467712432146
+        },
+        "dissipation_nu": {
+          "first": 0.021730469539761543,
+          "last": 0.021730469539761543,
+          "mean": 0.021730469539761543
+        },
+        "dissipation_lambda_mean": {
+          "first": 0.01855231449007988,
+          "last": 0.025551127269864082,
+          "mean": 0.025818726546276594
+        },
+        "dissipation_high_q_damping": {
+          "first": 3.8222524375176176e-14,
+          "last": 3.8222524375176176e-14,
+          "mean": 3.8222524375176176e-14
+        },
+        "dissipation_energy_ratio": {
+          "first": 0.9739118218421936,
+          "last": 0.9730757474899292,
+          "mean": 0.9699501534923911
+        },
+        "dir_disp_deg": {
+          "first": 42.30586624145508,
+          "last": 50.23759841918945,
+          "mean": 36.05913132801652
+        },
+        "dir_pairwise_sep_deg": {
+          "first": 97.19153594970703,
+          "last": 97.03238677978516,
+          "mean": 97.5628513097763
+        },
+        "dir_change_micro_deg": {
+          "first": 4.138341426849365,
+          "last": 1.830986738204956,
+          "mean": 2.228772379923612
+        },
+        "energy": {
+          "first": 0.0004812366678379476,
+          "last": 0.0027631798293441534,
+          "mean": 0.0018599208622163133
+        }
+      },
+      "diagnostics": {
+        "incident_energy": 0.03844904052675702,
+        "reflected_energy": 0.03203257954737637,
+        "accepted_energy": 0.006416461272237939,
+        "delta_e_field": 0.006416461272237939,
+        "accepted_fraction": 0.16788009321317077,
+        "t_packet": 0.16788009321317077,
+        "cross_interference": 0.0010769746862635543,
+        "write_to_f_ratio": 0.48240678710862994,
+        "write_angle_abs_mean": 0.03176513699872885,
+        "write_angle_peak_mean": 0.5316878561861813,
+        "write_spatial_support": 0.14996337890625,
+        "write_balance_residual": 1.5934347175061703e-09,
+        "source_center": 0.5231641255086288,
+        "source_anchor": 0.45554571456341364,
+        "source_displacement": -0.03394408539588767,
+        "write_width_mean": 0.14484270650427788,
+        "source_nu_s": 0.0,
+        "transport_angle_abs_mean": 1.8786667482927442,
+        "transport_angle_abs_max": 1.893729506060481,
+        "transport_norm_residual": 0.0,
+        "collision_angle_abs_mean": 0.2854341298225336,
+        "collision_angle_abs_max": 1.3580371723510325,
+        "collision_input_snr": 0.852184321382083,
+        "collision_output_snr": 0.8521843379130587,
+        "bath_out_energy": 4.84723359477357e-05,
+        "bath_angle_abs_mean": 0.14188750088214874,
+        "dissipation_gamma0": 0.01150467712432146,
+        "dissipation_nu": 0.021730469539761543,
+        "dissipation_lambda_mean": 0.026936849069898017,
+        "dissipation_high_q_damping": 3.8222524375176176e-14,
+        "dissipation_energy_ratio": 0.9697182178497314,
+        "dir_disp_deg": 34.15308626741171,
+        "dir_pairwise_sep_deg": 97.64578652381897,
+        "dir_change_micro_deg": 2.1162826942745596,
+        "energy": 0.0016017867151276732
+      }
+    },
+    {
+      "site": 3,
+      "validation_start": 20480,
+      "warm_in_tokens": 256,
+      "score_start": 20736,
+      "score_tokens": 128,
+      "nll": 7.265618734993041,
+      "state_policy": "mature_ness_spectrum_with_randomized_phase_then_local_warm_in",
+      "cold_start": false,
+      "random_phase_resampling": true,
+      "resets_within_site": 0,
+      "warm_in_diagnostics": {
+        "incident_energy": {
+          "first": 0.02923142910003662,
+          "last": 0.03278251737356186,
+          "mean": 0.04168503265827894
+        },
+        "reflected_energy": {
+          "first": 0.02404177375137806,
+          "last": 0.028150223195552826,
+          "mean": 0.034058216617268045
+        },
+        "accepted_energy": {
+          "first": 0.005189656745642424,
+          "last": 0.004632295109331608,
+          "mean": 0.007626816585798224
+        },
+        "delta_e_field": {
+          "first": 0.005189656745642424,
+          "last": 0.004632295109331608,
+          "mean": 0.007626816585798224
+        },
+        "accepted_fraction": {
+          "first": 0.17753684520721436,
+          "last": 0.14130377769470215,
+          "mean": 0.18206352810375392
+        },
+        "t_packet": {
+          "first": 0.17753684520721436,
+          "last": 0.14130377769470215,
+          "mean": 0.18206352810375392
+        },
+        "cross_interference": {
+          "first": 0.00011002414248650894,
+          "last": 0.0007346873171627522,
+          "mean": 0.0013837584741196451
+        },
+        "write_to_f_ratio": {
+          "first": 1.3475358486175537,
+          "last": 0.4339733421802521,
+          "mean": 0.47564400584087707
+        },
+        "write_angle_abs_mean": {
+          "first": 0.019359048455953598,
+          "last": 0.029872743412852287,
+          "mean": 0.0341041661631607
+        },
+        "write_angle_peak_mean": {
+          "first": 0.5335032939910889,
+          "last": 0.5322628021240234,
+          "mean": 0.5302361885551363
+        },
+        "write_spatial_support": {
+          "first": 0.0859375,
+          "last": 0.15625,
+          "mean": 0.16192626953125
+        },
+        "write_balance_residual": {
+          "first": 1.862645149230957e-09,
+          "last": 0.0,
+          "mean": 2.10275175049901e-09
+        },
+        "source_center": {
+          "first": 0.3456656336784363,
+          "last": 0.396939754486084,
+          "mean": 0.49934503874828806
+        },
+        "source_anchor": {
+          "first": 0.33338308334350586,
+          "last": 0.6682033538818359,
+          "mean": 0.489142166442889
+        },
+        "source_displacement": {
+          "first": 0.012282583862543106,
+          "last": 0.062069766223430634,
+          "mean": -0.01063046399031009
+        },
+        "write_width_mean": {
+          "first": 0.11228396743535995,
+          "last": 0.15129104256629944,
+          "mean": 0.14809894072823226
+        },
+        "source_nu_s": {
+          "first": 0.0,
+          "last": 0.0,
+          "mean": 0.0
+        },
+        "transport_angle_abs_mean": {
+          "first": 1.8598484992980957,
+          "last": 1.8637207746505737,
+          "mean": 1.873894423712045
+        },
+        "transport_angle_abs_max": {
+          "first": 1.8894729614257812,
+          "last": 1.884683609008789,
+          "mean": 1.8889091424643993
+        },
+        "transport_norm_residual": {
+          "first": 0.0,
+          "last": 0.0,
+          "mean": 0.0
+        },
+        "collision_angle_abs_mean": {
+          "first": 0.17958258092403412,
+          "last": 0.2677334249019623,
+          "mean": 0.28559904772555456
+        },
+        "collision_angle_abs_max": {
+          "first": 0.823101818561554,
+          "last": 1.2309719324111938,
+          "mean": 1.3381443745456636
+        },
+        "collision_input_snr": {
+          "first": 0.7785055637359619,
+          "last": 0.5842389464378357,
+          "mean": 0.8379731103777885
+        },
+        "collision_output_snr": {
+          "first": 0.7785055041313171,
+          "last": 0.5842389464378357,
+          "mean": 0.8379731262102723
+        },
+        "bath_out_energy": {
+          "first": 5.388457793742418e-06,
+          "last": 2.891826443374157e-05,
+          "mean": 6.215539883669408e-05
+        },
+        "bath_angle_abs_mean": {
+          "first": 0.14188750088214874,
+          "last": 0.14188750088214874,
+          "mean": 0.14188750088214874
+        },
+        "dissipation_gamma0": {
+          "first": 0.01150467712432146,
+          "last": 0.01150467712432146,
+          "mean": 0.01150467712432146
+        },
+        "dissipation_nu": {
+          "first": 0.021730469539761543,
+          "last": 0.021730469539761543,
+          "mean": 0.021730469539761543
+        },
+        "dissipation_lambda_mean": {
+          "first": 0.017886478453874588,
+          "last": 0.01844148337841034,
+          "mean": 0.024666567380336346
+        },
+        "dissipation_high_q_damping": {
+          "first": 3.8222524375176176e-14,
+          "last": 3.8222524375176176e-14,
+          "mean": 3.8222524375176176e-14
+        },
+        "dissipation_energy_ratio": {
+          "first": 0.9762736558914185,
+          "last": 0.9766624569892883,
+          "mean": 0.9713001309428364
+        },
+        "dir_disp_deg": {
+          "first": 30.874435424804688,
+          "last": 31.285842895507812,
+          "mean": 31.97046697884798
+        },
+        "dir_pairwise_sep_deg": {
+          "first": 97.8277587890625,
+          "last": 97.94420623779297,
+          "mean": 97.74027067422867
+        },
+        "dir_change_micro_deg": {
+          "first": 3.8002967834472656,
+          "last": 4.453026294708252,
+          "mean": 2.2799608376808465
+        },
+        "energy": {
+          "first": 0.0002221315517090261,
+          "last": 0.0012106308713555336,
+          "mean": 0.00214599954415462
+        }
+      },
+      "diagnostics": {
+        "incident_energy": 0.034182317525846884,
+        "reflected_energy": 0.028236158897925634,
+        "accepted_energy": 0.005946158946244395,
+        "delta_e_field": 0.005946158946244395,
+        "accepted_fraction": 0.17481776606291533,
+        "t_packet": 0.17481776606291533,
+        "cross_interference": 0.0006165278218190906,
+        "write_to_f_ratio": 0.5345888827578165,
+        "write_angle_abs_mean": 0.027546658835490234,
+        "write_angle_peak_mean": 0.5287893074564636,
+        "write_spatial_support": 0.1279296875,
+        "write_balance_residual": 1.8189894035458565e-09,
+        "source_center": 0.49482668144628406,
+        "source_anchor": 0.43434101819275384,
+        "source_displacement": -0.009826837349464768,
+        "write_width_mean": 0.13775268709287047,
+        "source_nu_s": 0.0,
+        "transport_angle_abs_mean": 1.8602633560076356,
+        "transport_angle_abs_max": 1.8762810938060284,
+        "transport_norm_residual": 0.0,
+        "collision_angle_abs_mean": 0.21264910875470378,
+        "collision_angle_abs_max": 1.0112880922388285,
+        "collision_input_snr": 1.434442730853334,
+        "collision_output_snr": 1.4344427383039147,
+        "bath_out_energy": 3.115387153229676e-05,
+        "bath_angle_abs_mean": 0.14188750088214874,
+        "dissipation_gamma0": 0.01150467712432146,
+        "dissipation_nu": 0.021730469539761543,
+        "dissipation_lambda_mean": 0.03221078624483198,
+        "dissipation_high_q_damping": 3.8222524375176176e-14,
+        "dissipation_energy_ratio": 0.9713326380588114,
+        "dir_disp_deg": 30.416574269533157,
+        "dir_pairwise_sep_deg": 97.75459271669388,
+        "dir_change_micro_deg": 2.044282534858212,
+        "energy": 0.0010773672588584304
+      }
+    }
+  ],
+  "sites_count": 4,
+  "warm_in_tokens": 256,
+  "score_tokens_per_site": 128,
+  "state_policy": "mature_ness_spectrum_with_randomized_phase_then_fixed_local_warm_in",
+  "cold_start": false,
+  "random_phase_resampling": true,
+  "resets_within_site": 0,
+  "mature_ness_initializations": 4,
+  "checkpoint_terminal_state_clones": 0,
+  "seconds": 128.44055449998996,
+  "scored_tokens_per_second": 3.9862798941750133,
+  "diagnostics": {
+    "incident_energy": 0.0385138006440684,
+    "reflected_energy": 0.03189850197850319,
+    "accepted_energy": 0.006615299153509113,
+    "delta_e_field": 0.006615299153509113,
+    "accepted_fraction": 0.17307554720900953,
+    "t_packet": 0.17307554720900953,
+    "cross_interference": 0.0011642710145647328,
+    "write_to_f_ratio": 0.4861279855831526,
+    "write_angle_abs_mean": 0.03150417595861654,
+    "write_angle_peak_mean": 0.531003623153083,
+    "write_spatial_support": 0.14792633056640625,
+    "write_balance_residual": 1.90084392670542e-09,
+    "source_center": 0.5093204183503985,
+    "source_anchor": 0.4394456603090475,
+    "source_displacement": -0.025828368851421146,
+    "write_width_mean": 0.14387192811409477,
+    "source_nu_s": 0.0,
+    "transport_angle_abs_mean": 1.8726950180716813,
+    "transport_angle_abs_max": 1.887534740846604,
+    "transport_norm_residual": 0.0,
+    "collision_angle_abs_mean": 0.27425728152593365,
+    "collision_angle_abs_max": 1.2958976590889506,
+    "collision_input_snr": 0.920781380002154,
+    "collision_output_snr": 0.920781392196659,
+    "bath_out_energy": 5.011660175568977e-05,
+    "bath_angle_abs_mean": 0.14188750088214874,
+    "dissipation_gamma0": 0.01150467712432146,
+    "dissipation_nu": 0.021730469539761543,
+    "dissipation_lambda_mean": 0.027665363644700847,
+    "dissipation_high_q_damping": 3.8222524375176176e-14,
+    "dissipation_energy_ratio": 0.9703957926249132,
+    "dir_disp_deg": 33.427648754790425,
+    "dir_pairwise_sep_deg": 97.66660144925117,
+    "dir_change_micro_deg": 2.216864010784775,
+    "energy": 0.0016961751283588455
+  },
+  "protocol": "IB-warm-local-language-v1",
+  "checkpoint": "results\\q8_w2_modern_3000\\BBest.pt",
+  "checkpoint_sha256": "1f37c1a5246be6de9c7f3b5c401760b80b7d4f3bc73c750d94bdffce723a37b6",
+  "checkpoint_step": 3000,
+  "architecture": "CBIM-Torus3D-w2_impedance-continuous-q8-unified-dissipation",
+  "model_family": "kinetic",
+  "continuous_velocity_channels": 8,
+  "K": 16,
+  "integration_resolution": "kinetic",
+  "dataset": "data\\ib_owt_gpt2\\validation.npy",
+  "ness_phase_seed": 11
+}

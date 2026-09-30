@@ -1663,7 +1663,7 @@
       "time": "2026-09-29",
       "motivation": "With the integrator (K=16, dt=4*tau0, T=64*tau0), bath (unified), chunk (32), readout (kernel_r1) and steering (continuous directions) now fixed, the single blocking question for the main architecture is the write: W2 impedance (direct token-conditioned content) versus W4 predictive innovation port.",
       "action": "Run 3000 registered updates of W2 write with the exact hybrid read/steer/integrator bundle via the reference trainer extended with --tau-0; adaptive clock off to match the hybrid.",
-      "conclusion": "Pending. Decision rule: near 7.2 confirms the W2 write as the gap and the perception-first main architecture; near 7.4 rules the write out as differentiator and keeps the W4 line with the active-inference roadmap.",
+      "conclusion": "Rejected the write hypothesis with the opposite sign. Under the single standalone registered evaluator the W2-modern arm scores 7.8922 (best checkpoint, step 3000) versus the W4 line's published 7.4203 - the W4 predictive-innovation write BEATS the W2 direct content write by 0.47 nats under identical modern conditions (same readout, steering, integrator, bath and chunk). The 0.205-nat gap to the archived Continuous-Q8 baseline is therefore attributable to tuning maturity (no lr schedule, excluded adaptive clock, still-descending trajectory at 2500), not the write law. Note: the reference trainer's in-loop validation (7.611) differs from the standalone registered evaluator (7.8922); the published number is the protocol-consistent one.",
       "issues": [
         "The W2 line lacks the posterior precision state; if W2 wins on NLL, the T and M roadmap needs either a precision state added to W2 or a hybrid write law.",
         "The entropy-gated dual port (direct content gated by predictor uncertainty with a description-length cost) remains the principled combination if both factors prove real.",
@@ -1676,6 +1676,35 @@
       ],
       "confidence": "I",
       "confidence_note": "Registered ablation launched; no result yet."
+    },
+    {
+      "id": "IB_Q8_MAIN_ARCH_20260930",
+      "parent": "IB_Q8_W2_MODERN_ARM_20260929",
+      "title": "Main architecture declared: the W4 predictive-innovation port line",
+      "status": "active",
+      "time": "2026-09-30",
+      "motivation": "After the completed registered arms (unified-bath K16 run, hybrid read/steer arm, W2-modern write arm) and the causal-attribution and two-axis probes, the write factor is decided with the opposite sign of the working hypothesis and the main architecture can be declared.",
+      "action": "Fix the main line as: CBIM torus field with collision-centric dynamics; W4 predictive-innovation write port (categorical prior, factorized chart, event-norm admittance law, persistent channelwise posterior precision, single field write path); K=16 integration steps at dt=4*tau0 preserving event duration T=64*tau0; unified three-layer field-only bath; BPTT chunk 32; fixed D3Q8 transport (continuous steering optional for early-convergence speed only); kernel_r1 readout for pragmatic NLL or belief_agent readout where the strict field-only instrument matters. Publish both records and pursue the remaining gap to the archived baseline (7.2154) and GDN-2 (6.4981) through training maturity (lr schedule, longer runs, adaptive-clock integration) rather than architecture redesign.",
+      "conclusion": "Structural declaration backed by completed registered evidence: the W4 line beats the W2 write by 0.47 nats under identical conditions, matches the belief/kernel readout asymptotically, and its integrator and memory budget are measured optima. Best registered score 7.4203 versus 7.2154 (archived baseline) and 6.4981 (GDN-2); no capability claim over GDN-2.",
+      "issues": [
+        "Training maturity is the remaining gap: the v4 trajectory was still descending at 2500 with a constant learning rate; lr decay and longer runs are the first lever.",
+        "The adaptive clock of the archived champion was excluded from all comparison arms and its individual contribution is unmeasured.",
+        "The posterior precision state inflates with training (mean ~55 by step 3000); the T action must condition on normalized signals.",
+        "Transport is causally idle at evaluation time in both lines; its training-time role and a possible transport-light variant are open.",
+        "The T duration action and M-path posterior remain the next capability stages on the declared main line."
+      ],
+      "invalidation": "Reopen the architecture if training-maturity levers fail to move the W4 line below 7.2, or if a registered variant beats it by more than 0.1 nats at equal budget.",
+      "artifacts": [
+        "configs/information_boltzmann/q8_predictive_ports_k16_unified_bath.json",
+        "configs/information_boltzmann/q8_w4_contvel_kernel_read.json",
+        "configs/information_boltzmann/q8_w2_modern.json",
+        "results/published/q8_predictive_ports_k16_unified_bath_3000_warm_local_sites.json",
+        "results/published/q8_w2_modern_3000_warm_local_sites.json",
+        "scripts/ib/measure_dynamics_attribution.py",
+        "scripts/ib/measure_mature_ladders.py"
+      ],
+      "confidence": "I",
+      "confidence_note": "Main architecture chosen from completed registered comparisons at equal budget on one GPU and one dataset; the maturity levers for the remaining gap are untested."
     }
   ],
   "status_migration_note": "Normalize historical workflow labels for repository validator; original labels retained as legacy_status. No new experimental conclusions introduced.",
