@@ -69,3 +69,14 @@ objective and finite independent warm-local validation show that the three
 agents can be trained end-to-end.  They do not establish convergence, an
 infinite-stream theorem, or a comparison with GDN; those require the
 registered longer budget and evaluation protocol.
+
+## K=64 learning smoke
+
+The first end-to-end OpenWebText smoke used one persistent field, a fixed K=64,
+300 optimizer updates, and 9,600 observed token events.  Two independent
+warm-local held-out sites measured 10.80262 NLL at initialization, 10.09936 at
+update 150, and 9.65469 at update 300.  Compiled CUDA Graph training ran at
+about 1.25 seconds per 32-token update with about 1.3 GiB reserved memory.
+The field remained finite and the maximum logged bath ledger residual was near
+1e-9.  This is a learning and numerical-closure result only; it is deliberately
+not an architecture ranking or a persistence claim.
