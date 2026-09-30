@@ -289,8 +289,12 @@ class FullRankTorusWrite(nn.Module):
                 "write_balance_residual": residual.detach(),
                 "source_center": center.detach().reshape(field.shape[0], 3),
                 "source_anchor": anchor.detach(),
-                "source_displacement": displacement.detach(),
-                "write_width_mean": width.detach().mean(),
+                # ``displacement`` and ``width`` are optional public
+                # overrides.  Diagnostics must report the values resolved by
+                # this call, including the common path where both overrides
+                # are omitted.
+                "source_displacement": displacement_val.detach(),
+                "write_width_mean": width_val.detach().mean(),
                 "source_nu_s": nu_s.detach() if self.spectral_packet else field.new_zeros(()),
             }
         else:

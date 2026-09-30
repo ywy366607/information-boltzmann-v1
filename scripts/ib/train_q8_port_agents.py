@@ -190,11 +190,12 @@ def main() -> None:
                              "D3Q8 base (token-conditioned steering, not a "
                              "content write path)")
     parser.add_argument("--collision-layers", type=int, default=2)
-    parser.add_argument("--dissipation-type", choices=("quadratic", "unified"),
-                        default="quadratic",
-                        help="quadratic: energy-density outflow; unified: "
-                             "three-layer field-only dissipation (gamma0 "
-                             "leakage, spectral viscosity, rank-R subspace)")
+    parser.add_argument("--dissipation-type",
+                        choices=("quadratic", "unified", "selective"),
+                        default="selective",
+                        help="selective: posterior-field-conditioned content "
+                             "outflow; quadratic: local energy control; unified: "
+                             "legacy three-layer diffusion study")
     parser.add_argument("--dissipation-rank", type=int, default=4)
     parser.add_argument("--lr", type=float, default=3e-4)
     parser.add_argument("--max-grad-norm", type=float, default=1.0)
@@ -274,6 +275,8 @@ def main() -> None:
         "continuous_velocities": args.continuous_velocities,
         "relative_address": True, "dissipation_type": args.dissipation_type,
         "dissipation_rank": args.dissipation_rank,
+        "state_agent": "symmetric_joint_kinetic_v1",
+        "interior_equation": "dF/dtau=J_transport(F)+J_collision(F)-R_bath(F,precision)F",
         "micro_steps": args.micro_steps, "K": args.micro_steps,
         "tau_0": args.tau_0,
         "event_duration": args.micro_steps * args.tau_0,
@@ -386,6 +389,10 @@ def main() -> None:
                     "collision_angle_abs_mean": _float(diagnostics.get("collision_angle_abs_mean")),
                     "transport_angle_abs_mean": _float(diagnostics.get("transport_angle_abs_mean")),
                     "bath_out_energy": _float(diagnostics.get("bath_out_energy")),
+                    "bath_rate_mean": _float(diagnostics.get("bath_rate_mean")),
+                    "bath_selectivity": _float(diagnostics.get("bath_selectivity")),
+                    "bath_energy_residual": _float(diagnostics.get("bath_energy_residual")),
+                    "state_agent_pairwise_symmetric": _float(diagnostics.get("state_agent_pairwise_symmetric")),
                     "read_attention_entropy": _float(diagnostics.get("read_attention_entropy")),
                     "read_action_entropy": _float(diagnostics.get("read_action_entropy")),
                     "read_action_kl": _float(diagnostics.get("read_action_kl")),

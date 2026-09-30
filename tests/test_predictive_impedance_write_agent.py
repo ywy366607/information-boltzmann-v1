@@ -7,6 +7,8 @@ from information_boltzmann.core.torus3d import (
     CBIMTorus3D,
     FullRankTorusWrite,
     PredictiveImpedanceWriteAgent,
+    SelectiveOutflowBath,
+    UnifiedKineticStateAgent,
     UnifiedTorusDissipation,
 )
 
@@ -308,3 +310,46 @@ def test_unified_spectral_viscosity_annihilates_unit_torus_fundamental_at_t64():
     # leaves DC as its sole long-lived spatial mode.  The analytic value is
     # about 1e-44; the looser bound accounts for accumulated FP64 FFT roundoff.
     assert measured_ratio.item() < 1e-30
+
+
+def test_selective_outflow_bath_is_field_only_and_closes_energy_ledger():
+    torch.manual_seed(37)
+    bath = SelectiveOutflowBath(shape=(4, 4, 4), d=16).double()
+    field = torch.randn(2, 4, 4, 4, 16, dtype=torch.float64)
+    precision = torch.exp(torch.randn(2, 16, dtype=torch.float64))
+    output, diag = bath(field, 0.3, precision=precision)
+    assert torch.isfinite(output).all()
+    assert diag["bath_out_energy"].item() > 0.0
+    assert diag["bath_energy_residual"].item() < 2e-12
+    assert diag["bath_selectivity"].item() >= 0.0
+    energy_before = 0.5 * field.square().sum(-1).mean()
+    energy_after = 0.5 * output.square().sum(-1).mean()
+    torch.testing.assert_close(
+        energy_before - energy_after, diag["bath_out_energy"],
+        atol=2e-12, rtol=2e-12)
+
+
+def test_state_agent_uses_palindromic_orders_over_a_microstep_pair():
+    assert UnifiedKineticStateAgent.order_for_microstep(0) == (
+        "transport", "collision", "bath")
+    assert UnifiedKineticStateAgent.order_for_microstep(1) == (
+        "bath", "collision", "transport")
+
+
+def test_selective_bath_joint_state_path_has_finite_w4_gradients():
+    torch.manual_seed(41)
+    model = CBIMTorus3D(
+        vocab_size=23, shape=(4, 4, 4), velocities=8, content_dim=2,
+        write_type="w4_predictive_agent", readout_type="belief_agent",
+        micro_steps=2, dissipation_type="selective")
+    ids = torch.tensor([[1, 2, 3]])
+    targets = torch.tensor([[2, 3, 4]])
+    loss, belief, diagnostics = model.forward_belief(ids, targets)
+    assert torch.isfinite(loss)
+    assert torch.isfinite(belief.field).all()
+    assert diagnostics["state_agent_pairwise_symmetric"].item() == 1.0
+    assert diagnostics["bath_out_energy"].item() >= 0.0
+    loss.backward()
+    for parameter in model.bath.parameters():
+        assert parameter.grad is not None
+        assert torch.isfinite(parameter.grad).all()

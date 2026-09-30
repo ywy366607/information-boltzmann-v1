@@ -1,6 +1,6 @@
 {
   "title": "Slice Full-Resolution Joint-Evolution VLM Research Tree",
-  "updated": "2026-09-29",
+  "updated": "2026-09-30",
   "source_of_truth": "docs/NORTH_STAR.md",
   "nodes": [
     {
@@ -1761,6 +1761,31 @@
       ],
       "confidence": "I",
       "confidence_note": "The Fourier attenuation is derived directly from the implemented operator and verified in a deterministic FP64 test; the cross-arm field spectra are direct saved-state measurements. Independent conceptual review remains pending."
+    },
+    {
+      "id": "IB_Q8_THREE_AGENT_JOINT_STATE_20260930",
+      "parent": "IB_Q8_BATH_SCALE_20260930",
+      "title": "Three-agent Q8 closure: predictive write, joint kinetic state, selective outflow read",
+      "status": "active",
+      "time": "2026-09-30",
+      "motivation": "The spatial main line needs one causal token entry, one persistent interior state law, and one field-only measurement policy. A fixed transport-then-collision-then-bath loop assigns a permanent numerical priority; a raw spectral bath was analytically shown to erase all spatial modes.",
+      "action": "Keep the W4 predictive innovation write and persistent precision. Replace the bath with posterior-field-conditioned selective outflow that has an exact energy ledger. Advance transport, collision, and outflow through paired palindromic K=64 microsteps, while the existing belief read agent remains field-only. Run a short real OWT end-to-end learning smoke before any registered longer comparison.",
+      "conclusion": "Proposal plus deterministic closure only. The selective bath has no raw-token input and satisfies coordinatewise energy accounting. The palindromic integrator removes a permanently last bath from the K=64 numerical map. No language capability, convergence, criticality, or GDN comparison is claimed until a registered longer jointly trained run completes.",
+      "issues": [
+        "The bath selector initially has nearly uniform gentle leakage; whether posterior-conditioned semantic selectivity emerges is a training result rather than a structural guarantee.",
+        "Palindromic composition is a second-order approximation to the joint generator, not an exact nonlinear implicit solve.",
+        "The canonical W4 belief path uses the new state agent. Historical non-W4 compatibility forwards remain outside the immediate language closure and must not be used as evidence for this line.",
+        "A short OWT curve establishes only finite loss, gradient, ledger, and early learning behavior; it cannot establish an infinite-stream property."
+      ],
+      "invalidation": "Reject the closure if the selective bath creates a second observed-token path, violates its energy ledger, fails finite K=64 gradients, or an adequately trained registered run cannot maintain non-DC field structure without loss of the local warm-site language signal.",
+      "artifacts": [
+        "docs/information_boltzmann/Q8_THREE_AGENT_JOINT_STATE.md",
+        "information_boltzmann/core/torus3d.py",
+        "scripts/ib/train_q8_port_agents.py",
+        "tests/test_predictive_impedance_write_agent.py"
+      ],
+      "confidence": "I",
+      "confidence_note": "Analytic operator closure and deterministic tests; the learning consequence is pending the declared real-data run."
     }
   ],
   "status_migration_note": "Normalize historical workflow labels for repository validator; original labels retained as legacy_status. No new experimental conclusions introduced.",

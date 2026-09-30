@@ -987,14 +987,83 @@ class QuadraticTorusBath(nn.Module):
             dt = delta_tau.view(-1, 1, 1, 1, 1)
         else:
             dt = float(delta_tau)
-        gamma_dt = (kappa * rho * dt).clamp(max=1.0)
+        gamma_dt = kappa * rho * dt
         cosine = torch.exp(-gamma_dt)
-        sin2 = (1.0 - torch.exp(-2.0 * gamma_dt)).clamp(max=0.5)
+        # This is a two-port energy exchange, not an amplitude clip.  The
+        # field loss and the recorded bath outflow must therefore agree even
+        # for a highly occupied cell.
+        sin2 = 1.0 - torch.exp(-2.0 * gamma_dt)
         sine = torch.sqrt(sin2.clamp_min(torch.finfo(field.dtype).tiny))
         output, bath_out = cosine * field, -sine * field
         return output, {
             "bath_out_energy": (0.5 * bath_out.square().sum(-1).mean()).detach(),
             "bath_angle_abs_mean": torch.asin(sine).detach().abs().mean(),
+        }
+
+
+class SelectiveOutflowBath(nn.Module):
+    """Field-only, content-selective outflow with an exact energy ledger.
+
+    The write agent chooses what enters the posterior field.  This bath sees
+    the resulting field and its posterior precision, then chooses content
+    directions to export.  It never receives a raw token, so it cannot
+    become a second input port.  Each local channel is a passive two-port
+    exchange: the complementary amplitude is recorded as bath outflow.
+    """
+
+    def __init__(self, shape=(4, 4, 4), d=128, hidden=64,
+                 initial_rate=0.01):
+        super().__init__()
+        self.shape, self.d = tuple(shape), int(d)
+        self.field_norm = nn.LayerNorm(d)
+        self.selector = nn.Sequential(
+            nn.Linear(2 * d + 1, hidden), nn.SiLU(), nn.Linear(hidden, d))
+        nn.init.normal_(self.selector[-1].weight, std=1e-3)
+        initial_logit = math.log(max(math.exp(initial_rate) - 1.0, 1e-8))
+        nn.init.constant_(self.selector[-1].bias, initial_logit)
+
+    def forward(self, field: torch.Tensor,
+                delta_tau: float | torch.Tensor = 1.0, *,
+                precision: torch.Tensor | None = None):
+        batch = field.shape[0]
+        flat = field.reshape(batch, -1, self.d)
+        if precision is None:
+            precision = torch.ones(batch, self.d, device=field.device,
+                                   dtype=field.dtype)
+        if precision.shape != (batch, self.d):
+            raise ValueError(
+                f"precision must be [B, {self.d}], got {tuple(precision.shape)}")
+        precision = precision.to(dtype=field.dtype)
+        log_precision = precision.clamp_min(1e-8).log().unsqueeze(1).expand_as(flat)
+        # Dimensionless posterior occupation.  It is one for a unit-whitened
+        # coordinate and lets the learned bath distinguish supported signal
+        # from low-precision residual amplitude.
+        occupation = (flat.square() * precision.unsqueeze(1)).mean(
+            dim=-1, keepdim=True)
+        control = torch.cat((self.field_norm(flat), log_precision,
+                             torch.log1p(occupation)), dim=-1)
+        rates = F.softplus(self.selector(control))
+        if isinstance(delta_tau, torch.Tensor):
+            dt = delta_tau.reshape(-1, 1, 1)
+            if dt.shape[0] == 1 and batch != 1:
+                dt = dt.expand(batch, 1, 1)
+        else:
+            dt = float(delta_tau)
+        decay = torch.exp(-rates * dt)
+        transfer = torch.sqrt(
+            (1.0 - decay.square()).clamp_min(torch.finfo(field.dtype).tiny))
+        output = (decay * flat).reshape_as(field)
+        bath_out = transfer * flat
+        energy_before = 0.5 * flat.square().sum(-1).mean()
+        energy_after = 0.5 * (decay * flat).square().sum(-1).mean()
+        energy_out = 0.5 * bath_out.square().sum(-1).mean()
+        return output, {
+            "bath_out_energy": energy_out.detach(),
+            "bath_angle_abs_mean": torch.atan2(transfer, decay).mean().detach(),
+            "bath_rate_mean": rates.mean().detach(),
+            "bath_selectivity": rates.std(dim=-1).mean().detach(),
+            "bath_energy_residual": (energy_before - energy_after - energy_out).abs().detach(),
+            "bath_occupation_mean": occupation.mean().detach(),
         }
 
 
@@ -1139,6 +1208,162 @@ class UnifiedTorusDissipation(nn.Module):
             "dissipation_high_q_damping": torch.exp(-gamma0 - nu * lap.amax()).detach(),
             "dissipation_energy_ratio": (energy_after / (energy_before + 1e-8)).detach(),
         }
+
+
+class UnifiedKineticStateAgent:
+    """Joint interior evolution of transport, collision, and bath.
+
+    The physical model is one continuous generator ``J_transport +
+    J_collision - R_bath``.  The individual maps remain specialized
+    structure-preserving numerical realizations of those terms.  For an even
+    number of microsteps we apply opposite palindromic orders over each pair,
+    ``T-C-B`` followed by ``B-C-T``.  Thus no component is assigned a
+    persistent priority, while the cost stays one transport, one collision,
+    and one bath application per microstep.
+    """
+
+    _FORWARD_ORDER = ("transport", "collision", "bath")
+    _REVERSE_ORDER = ("bath", "collision", "transport")
+
+    def __init__(self, transport: VelocityCayleyTransport3D,
+                 collision: LocalInvariantCollision3D, bath: nn.Module):
+        self.transport = transport
+        self.collision = collision
+        self.bath = bath
+
+    @classmethod
+    def order_for_microstep(cls, index: int) -> tuple[str, str, str]:
+        return cls._FORWARD_ORDER if index % 2 == 0 else cls._REVERSE_ORDER
+
+    def _apply_bath(self, field: torch.Tensor, precision: torch.Tensor | None,
+                    delta_tau: float | torch.Tensor, *, gamma0_factor: float,
+                    disable_viscosity: bool, disable_subspace: bool):
+        if isinstance(self.bath, UnifiedTorusDissipation):
+            return self.bath(
+                field, delta_tau, tok_embed=None,
+                gamma0_factor=gamma0_factor,
+                disable_viscosity=disable_viscosity,
+                disable_subspace=disable_subspace)
+        if isinstance(self.bath, SelectiveOutflowBath):
+            return self.bath(field, delta_tau, precision=precision)
+        return self.bath(field, delta_tau)
+
+    def evolve(self, field: torch.Tensor, precision: torch.Tensor | None, *,
+               micro_steps: int, tau_0: torch.Tensor,
+               adaptive_clock: nn.Module | None = None,
+               direction_controller: nn.Module | None = None,
+               token_embedding: torch.Tensor | None = None,
+               continuous_velocities: bool = False,
+               disable_transport: bool = False,
+               disable_collision: bool = False,
+               disable_bath: bool = False,
+               gamma0_factor: float = 1.0,
+               disable_viscosity: bool = False,
+               disable_subspace: bool = False):
+        transport_phase, collision_angles, bath_outflows = [], [], []
+        bath_angles, bath_rates, bath_selectivities = [], [], []
+        bath_last_diag = {}
+        alphas, directions = [], []
+        hoisted_transport = None
+        if not disable_transport and not continuous_velocities and adaptive_clock is None:
+            hoisted_transport = self.transport.multiplier(tau_0)
+            hoisted_phase = (
+                2.0 * torch.atan(0.5 * hoisted_transport[1] * tau_0)
+            ).abs().mean()
+        hoisted_learned = (
+            self.transport.learned_symbol()
+            if not disable_transport and continuous_velocities else None)
+
+        collision_diag = None
+        for index in range(int(micro_steps)):
+            if adaptive_clock is not None:
+                if token_embedding is None:
+                    raise ValueError("adaptive state evolution needs a token embedding")
+                alpha = adaptive_clock(field, token_embedding)
+                delta_tau = alpha * tau_0
+                alphas.append(alpha)
+            else:
+                delta_tau = tau_0
+            if continuous_velocities:
+                if direction_controller is None or token_embedding is None:
+                    raise ValueError("continuous transport needs its direction controller and token embedding")
+                direction = direction_controller(field, token_embedding)
+                directions.append(direction)
+            else:
+                direction = None
+
+            for term in self.order_for_microstep(index):
+                if term == "transport" and not disable_transport:
+                    if hoisted_transport is not None:
+                        multiplier, _ = hoisted_transport
+                        field = self.transport.apply_multiplier(field, multiplier)
+                        transport_phase.append(hoisted_phase)
+                    else:
+                        multiplier, omega = self.transport.multiplier(
+                            delta_tau, direction=direction,
+                            learned=hoisted_learned)
+                        field = self.transport.apply_multiplier(field, multiplier)
+                        if isinstance(delta_tau, torch.Tensor) and delta_tau.numel() == field.shape[0]:
+                            phase_dt = delta_tau.view(field.shape[0], 1, 1, 1, 1)
+                        else:
+                            phase_dt = delta_tau
+                        transport_phase.append(
+                            (2.0 * torch.atan(0.5 * omega * phase_dt)).abs().mean())
+                elif term == "collision" and not disable_collision:
+                    field, collision_diag = self.collision(field, delta_tau)
+                    collision_angles.append(collision_diag["collision_angle_abs_mean"])
+                elif term == "bath" and not disable_bath:
+                    field, bath_diag = self._apply_bath(
+                        field, precision, delta_tau,
+                        gamma0_factor=gamma0_factor,
+                        disable_viscosity=disable_viscosity,
+                        disable_subspace=disable_subspace)
+                    bath_last_diag = bath_diag
+                    bath_outflows.append(bath_diag["bath_out_energy"])
+                    bath_angles.append(bath_diag["bath_angle_abs_mean"])
+                    if "bath_rate_mean" in bath_diag:
+                        bath_rates.append(bath_diag["bath_rate_mean"])
+                    if "bath_selectivity" in bath_diag:
+                        bath_selectivities.append(bath_diag["bath_selectivity"])
+
+        zero = field.new_zeros(())
+        diagnostics = {
+            "transport_angle_abs_mean": torch.stack(transport_phase).mean().detach()
+            if transport_phase else zero,
+            "transport_angle_abs_max": torch.stack(transport_phase).amax().detach()
+            if transport_phase else zero,
+            "transport_norm_residual": zero,
+            "collision_angle_abs_mean": torch.stack(collision_angles).mean().detach()
+            if collision_angles else zero,
+            "collision_angle_abs_max": collision_diag["collision_angle_abs_max"].detach()
+            if collision_diag is not None else zero,
+            "collision_input_snr": collision_diag["collision_input_snr"].detach()
+            if collision_diag is not None else zero,
+            "collision_output_snr": collision_diag["collision_output_snr"].detach()
+            if collision_diag is not None else zero,
+            "bath_out_energy": torch.stack(bath_outflows).sum().detach()
+            if bath_outflows else zero,
+            "bath_angle_abs_mean": torch.stack(bath_angles).mean().detach()
+            if bath_angles else zero,
+            "bath_rate_mean": torch.stack(bath_rates).mean().detach()
+            if bath_rates else zero,
+            "bath_selectivity": torch.stack(bath_selectivities).mean().detach()
+            if bath_selectivities else zero,
+            "state_agent_pairwise_symmetric": zero + float(
+                int(micro_steps) % 2 == 0),
+        }
+        if alphas:
+            diagnostics["delta_tau_total"] = (
+                torch.stack(alphas).sum(dim=0).mean().detach() * tau_0)
+        if directions:
+            diagnostics["_last_direction"] = directions[-1]
+        # Preserve bath-specific diagnostics such as the legacy diffusion
+        # rates or the selective bath's exact ledger residual.  Shared fields
+        # above remain pair-aggregated over the physical event.
+        for key, value in bath_last_diag.items():
+            if key not in diagnostics:
+                diagnostics[key] = value
+        return field, diagnostics
 
 
 class EnergyFactoredTorusReadout(nn.Module):
@@ -1514,8 +1739,16 @@ class CBIMTorus3D(nn.Module):
         elif self.dissipation_type == "quadratic":
             self.bath = QuadraticTorusBath(
                 shape, self.d, position_conditioned=self.v2_coordinate_components)
+        elif self.dissipation_type == "selective":
+            self.bath = SelectiveOutflowBath(shape, self.d)
         else:
             raise ValueError(f"Unknown dissipation_type: {dissipation_type}")
+        # The state agent is intentionally the sole owner of interior time.
+        # Transport, collision, and outflow remain distinct generators but
+        # advance in a symmetric joint integrator rather than a fixed
+        # hand-authored pipeline order.
+        self.state_agent = UnifiedKineticStateAgent(
+            self.transport, self.collision, self.bath)
 
         if readout_type == "baseline":
             self.readout = EnergyFactoredTorusReadout(
@@ -1642,7 +1875,6 @@ class CBIMTorus3D(nn.Module):
         # In the predictive-port branch, the observed event has exactly one
         # route into the field: the innovation boundary.  A token-conditioned
         # bath would be a second, hidden write path.
-        bath_token = None if self.write_agent is not None else tok_embed
         posterior_precision = None
         if self.write_agent is None:
             field, reflected, source_diag = self.source(field, token_ids)
@@ -1654,115 +1886,52 @@ class CBIMTorus3D(nn.Module):
             field, posterior_precision, reflected, source_diag = self.write_agent(
                 self.source, field, token_ids, precision,
                 token_features=token_features)
-        transport_diag = {
-            "transport_angle_abs_mean": field.new_zeros(()),
-            "transport_angle_abs_max": field.new_zeros(()),
-            "transport_norm_residual": field.new_zeros(()),
-        }
-        collision_diag = {
-            "collision_angle_abs_mean": field.new_zeros(()),
-            "collision_angle_abs_max": field.new_zeros(()),
-            "collision_input_snr": field.new_zeros(()),
-            "collision_output_snr": field.new_zeros(()),
-        }
-        bath_diag = {"bath_out_energy": field.new_zeros(()),
-                     "bath_angle_abs_mean": field.new_zeros(())}
-        alphas_k, coll_angles_k, dirs_k, transport_phase_k = [], [], [], []
         steps_to_run = int(micro_steps) if micro_steps is not None else self.micro_steps
-        # The dispersion is parameter-only when neither the adaptive clock nor
-        # the direction controller runs, so one Cayley integration serves the
-        # whole microstep loop.  Recomputing it 64 times per event dominated
-        # the transport budget; the reuse keeps identical values and the
-        # accumulated gradient of every use flows through the single node.
-        hoisted_transport = None
-        if not disable_transport and not self.continuous_velocities and not self.adaptive_clock:
-            hoisted_transport = self.transport.multiplier(self.tau_0_tensor)
-            # With a parameter-only multiplier and the fixed base clock the
-            # transport phase is one constant; record it once instead of
-            # baking 64 identical atan chains into the captured graph.
-            hoisted_phase = (
-                2.0 * torch.atan(0.5 * hoisted_transport[1] * self.tau_0_tensor)
-            ).abs().mean()
-        # Under continuous velocities the direction baseline changes per
-        # microstep, but the learned spectral symbol is parameter-only and
-        # is reused through a single node (same pattern as the reversible
-        # ponder path's cached_learned).
-        hoisted_learned = None
-        if not disable_transport and self.continuous_velocities:
-            hoisted_learned = self.transport.learned_symbol()
-        for _ in range(steps_to_run):
-            if self.adaptive_clock:
-                alpha_k = self.clock(field, tok_embed)
-                dt_k = alpha_k * self.tau_0_tensor
-                alphas_k.append(alpha_k)
-            else:
-                dt_k = self.tau_0_tensor
-            if self.continuous_velocities:
-                dir_k = self.direction_controller(field, tok_embed)
-                dirs_k.append(dir_k)
-            else:
-                dir_k = None
-            if not disable_transport:
-                if hoisted_transport is not None:
-                    mult, _ = hoisted_transport
-                    field = self.transport.apply_multiplier(field, mult)
-                    transport_phase_k.append(hoisted_phase)
-                else:
-                    mult, omega = self.transport.multiplier(
-                        dt_k, direction=dir_k, learned=hoisted_learned)
-                    field = self.transport.apply_multiplier(field, mult)
-                    if isinstance(dt_k, torch.Tensor) and dt_k.numel() == field.shape[0]:
-                        transport_dt = dt_k.view(field.shape[0], 1, 1, 1, 1)
-                    else:
-                        # ``tau_0_tensor`` is a scalar buffer.  Preserve scalar
-                        # broadcasting for multi-item belief batches rather than
-                        # incorrectly reshaping it as a per-sample clock.
-                        transport_dt = dt_k
-                    transport_phase_k.append(
-                        (2.0 * torch.atan(0.5 * omega * transport_dt)).abs().mean()
-                    )
-            if not disable_collision:
-                field, collision_diag = self.collision(field, dt_k)
-                coll_angles_k.append(collision_diag["collision_angle_abs_mean"])
-            if not self.three_clock and not disable_bath:
-                if isinstance(self.bath, UnifiedTorusDissipation):
-                    field, bath_diag = self.bath(
-                        field, dt_k, tok_embed=bath_token,
-                        gamma0_factor=gamma0_factor,
-                        disable_viscosity=disable_viscosity,
-                        disable_subspace=disable_subspace)
-                else:
-                    field, bath_diag = self.bath(field, dt_k)
-
+        field, state_diag = self.state_agent.evolve(
+            field, posterior_precision, micro_steps=steps_to_run,
+            tau_0=self.tau_0_tensor,
+            adaptive_clock=self.clock if self.adaptive_clock else None,
+            direction_controller=self.direction_controller if self.continuous_velocities else None,
+            token_embedding=tok_embed,
+            continuous_velocities=self.continuous_velocities,
+            disable_transport=disable_transport,
+            disable_collision=disable_collision,
+            disable_bath=disable_bath or self.three_clock,
+            gamma0_factor=gamma0_factor,
+            disable_viscosity=disable_viscosity,
+            disable_subspace=disable_subspace)
+        last_direction = state_diag.pop("_last_direction", None)
+        transport_diag = {
+            key: state_diag[key] for key in (
+                "transport_angle_abs_mean", "transport_angle_abs_max",
+                "transport_norm_residual")}
+        collision_diag = {
+            key: state_diag[key] for key in (
+                "collision_angle_abs_mean", "collision_angle_abs_max",
+                "collision_input_snr", "collision_output_snr")}
+        bath_diag = {
+            key: state_diag[key] for key in (
+                "bath_out_energy", "bath_angle_abs_mean")}
+        for key in ("bath_rate_mean", "bath_selectivity",
+                    "bath_energy_residual", "bath_occupation_mean",
+                    "state_agent_pairwise_symmetric", "dissipation_gamma0",
+                    "dissipation_nu", "dissipation_lambda_mean",
+                    "dissipation_high_q_damping", "dissipation_energy_ratio"):
+            if key in state_diag:
+                bath_diag[key] = state_diag[key]
         clock_diag = {}
-        if self.adaptive_clock and len(alphas_k) >= 3:
-            clock_diag = {
-                "alpha_1": alphas_k[0].mean().detach(),
-                "alpha_2": alphas_k[1].mean().detach(),
-                "alpha_3": alphas_k[2].mean().detach(),
-                "delta_tau_total": torch.stack(alphas_k).sum(dim=0).mean().detach() * self.tau_0,
-                "collision_exposure": sum(coll_angles_k).detach() if coll_angles_k else field.new_zeros(()),
-            }
-
-        if transport_phase_k:
-            transport_diag = {
-                "transport_angle_abs_mean": torch.stack(transport_phase_k).mean().detach(),
-                "transport_angle_abs_max": torch.stack(transport_phase_k).amax().detach(),
-                "transport_norm_residual": field.new_zeros(()),
-            }
-
+        if "delta_tau_total" in state_diag:
+            clock_diag["delta_tau_total"] = state_diag["delta_tau_total"]
+            clock_diag["collision_exposure"] = (
+                state_diag["collision_angle_abs_mean"] * steps_to_run).detach()
         dir_diag = {}
-        if self.continuous_velocities and dirs_k:
-            cos_disp = (dirs_k[-1] * self.direction_controller.base_dirs[None]).sum(dim=-1).mean()
+        if last_direction is not None:
+            cos_disp = (last_direction * self.direction_controller.base_dirs[None]).sum(dim=-1).mean()
             dir_diag["dir_disp_deg"] = torch.rad2deg(torch.acos(cos_disp.clamp(-1.0, 1.0))).detach()
-            M = torch.bmm(dirs_k[-1], dirs_k[-1].transpose(1, 2))
+            M = torch.bmm(last_direction, last_direction.transpose(1, 2))
             off_diag_cos = (M.sum(dim=(-1, -2)) - self.velocities) / (self.velocities * (self.velocities - 1))
             dir_diag["dir_pairwise_sep_deg"] = torch.rad2deg(torch.acos(off_diag_cos.clamp(-1.0, 1.0))).mean().detach()
-            if len(dirs_k) >= 2:
-                cos_micro = (dirs_k[1] * dirs_k[0]).sum(dim=-1).mean()
-                dir_diag["dir_change_micro_deg"] = torch.rad2deg(torch.acos(cos_micro.clamp(-1.0, 1.0))).detach()
-            else:
-                dir_diag["dir_change_micro_deg"] = field.new_zeros(())
+            dir_diag["dir_change_micro_deg"] = field.new_zeros(())
 
         read_diag = {}
         if self.readout_type == "baseline":
@@ -1778,14 +1947,11 @@ class CBIMTorus3D(nn.Module):
 
         if self.three_clock and not disable_bath:
             dt_mem = self.tau_mem * self.tau_0_tensor
-            if isinstance(self.bath, UnifiedTorusDissipation):
-                field, bath_diag = self.bath(
-                    field, dt_mem, tok_embed=bath_token,
-                    gamma0_factor=gamma0_factor,
-                    disable_viscosity=True,
-                    disable_subspace=disable_subspace)
-            else:
-                field, bath_diag = self.bath(field, dt_mem)
+            field, bath_diag = self.state_agent._apply_bath(
+                field, posterior_precision, dt_mem,
+                gamma0_factor=gamma0_factor,
+                disable_viscosity=True,
+                disable_subspace=disable_subspace)
 
         diagnostics = {**source_diag, **transport_diag, **collision_diag, **bath_diag, **clock_diag, **dir_diag, **read_diag,
                        "energy": (0.5 * field.detach().square().sum(-1).mean())}
