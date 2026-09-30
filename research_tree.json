@@ -1705,6 +1705,30 @@
       ],
       "confidence": "I",
       "confidence_note": "Main architecture chosen from completed registered comparisons at equal budget on one GPU and one dataset; the maturity levers for the remaining gap are untested."
+    },
+    {
+      "id": "IB_Q8_SPATIAL_COLLAPSE_20260930",
+      "parent": "IB_Q8_MAIN_ARCH_20260930",
+      "title": "Spatial collapse: the language-trained W4 field is exactly uniform",
+      "status": "active",
+      "time": "2026-09-30",
+      "motivation": "Explain the measured causal idleness of transport. The two-ball complementarity requires locality: collision is site-local, so transport must create co-location events for the pair to matter.",
+      "action": "Measure the spectral energy distribution and site-vector geometry of the mature fields on both architecture lines.",
+      "conclusion": "The W4 language-trained field carries 100.00% of its spectral energy in the DC mode (spatially constant) and all 256 site vectors are identical to the field mean (cosine 1.000, std 0.000): the field has zero spatial degrees of freedom in use, and the torus operates as one replicated 128-dimensional recurrent state. The W2 champion's field retains 38.79 percent non-DC energy and site cosines 0.748 plus-or-minus 0.080. Transport idleness is therefore trivial for the W4 line - a uniform field is a fixed point of streaming - and is placement redundancy for the W2 line. Mechanism: the W4 chart includes the constant DC mode, gradient pressure concentrates the gates there, a uniform field is a fixed point of all three interior operators, and language provides no geometric signal to pay for spatial structure.",
+      "issues": [
+        "For pure language NLL, spatial structure is a measured COST: the structured W2-modern field scores 7.8922 versus the collapsed uniform W4 field at 7.4203.",
+        "The declared main line for language is therefore effectively a reduced recurrent system; its spatial machinery is unexercised rather than wrong.",
+        "Restoring locality requires a localized innovation write (gate regularization toward wavepacket superpositions or explicit addressing) plus narrow probes, at a short-term NLL cost.",
+        "The spatial machinery of the field architecture can only be validated on data with intrinsic geometry (next-frame prediction, segmentation, editing) in the capability matrix.",
+        "The W2 champion retains spatial structure without transport contribution, so its structure is decorative for NLL but demonstrates that addressed writes prevent collapse."
+      ],
+      "invalidation": "Revise if a localized-write variant shows spatial structure surviving training WITH an NLL improvement, or if the uniformity measurement is an artifact of the saved state rather than the running dynamics.",
+      "artifacts": [
+        "information_boltzmann/core/torus3d.py",
+        "results/published/q8_predictive_ports_k16_unified_bath_3000_warm_local_sites.json"
+      ],
+      "confidence": "I",
+      "confidence_note": "Direct spectral measurement on both saved mature states; the collapse mechanism is inferred from operator structure and training pressure, not yet isolated by intervention."
     }
   ],
   "status_migration_note": "Normalize historical workflow labels for repository validator; original labels retained as legacy_status. No new experimental conclusions introduced.",
