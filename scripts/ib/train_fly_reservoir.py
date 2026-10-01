@@ -109,6 +109,10 @@ def main() -> None:
                         help="broadcast drives every neuron; sensory drives "
                              "only the 15,912 annotated sensory neurons - "
                              "information must then flow through the wiring")
+    parser.add_argument("--read-surface", choices=("all", "interneuron"),
+                        default="all",
+                        help="interneuron: the readout sees only non-injected "
+                             "neurons - write and read surfaces are separated")
     parser.add_argument("--lr", type=float, default=3e-4)
     parser.add_argument("--max-grad-norm", type=float, default=1.0)
     parser.add_argument("--validate-every", type=int, default=500)
@@ -136,7 +140,8 @@ def main() -> None:
     model = FlyReservoirLM(
         args.graph, vocab_size=50257, d_model=args.d_model,
         leak=args.leak, threshold=args.threshold,
-        injection=args.injection).cuda()
+        injection=args.injection,
+        read_surface=args.read_surface).cuda()
     trainable = [p for p in model.parameters() if p.requires_grad]
     optimizer = torch.optim.AdamW(trainable, lr=args.lr)
 
@@ -152,6 +157,7 @@ def main() -> None:
         "cuda_graph": True,
         "frozen": "all wiring; trained = broadcast input projection, weighted readout, tied embedding",
         "injection": args.injection, "injection_neurons": model.n_injection,
+        "read_surface": args.read_surface,
         "state_policy": "reservoir state persists across chunks and updates; never reset",
         "evaluation_protocol": "IB-warm-local-language-v1 reservoir variant: state from zero, 256 warm-in, 128 scored, four sites batched",
         "sites": site_starts,

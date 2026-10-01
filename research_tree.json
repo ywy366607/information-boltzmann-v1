@@ -2011,6 +2011,29 @@
       ],
       "confidence": "I",
       "confidence_note": "Launched, smoke-tested; no trained result."
+    },
+    {
+      "id": "IB_FLY_ROUTED_SURFACES_20260930",
+      "parent": "IB_FLY_SENSORY_INJECT_20260930",
+      "title": "Separated write/read surfaces: routing is necessary by construction",
+      "status": "active",
+      "time": "2026-09-30",
+      "motivation": "The sensory-injection probes at step 500 still showed byte-identical wiring-perturbation deltas: with the readout reading the sensory surface itself, information never needs to leave the injection site - write and read surfaces overlapped. Completing the user's complementarity principle requires disjoint surfaces.",
+      "action": "Restrict the readout to the 149,210 non-injected (interneuron/output) neurons via a fixed read mask while injection stays on the 15,912 sensory neurons; everything else identical (frozen signed wiring, LIF, chunk 32, registered protocol). Now every bit of task information must physically traverse the wiring.",
+      "conclusion": "Structural at launch: smoke shows NLL starts at the no-information level (10.83) as expected when the read surface is blind to the injection surface. The registered question: can gradient descent discover routing through the frozen evolved wiring at this budget?",
+      "issues": [
+        "Dead-gradient risk: the read surface is blind at initialization, so early gradients to the sensory input projection flow only through the (small) wiring path - the run may plateau at the unigram distribution.",
+        "Firing rate must grow for any routing to exist; the vital-sign suite monitors it per validation.",
+        "The wiring remains frozen; a plateau would motivate level-2 plasticity (surprise-gated local rules) as the next rung rather than abandoning the topology."
+      ],
+      "invalidation": "If NLL plateaus at the unigram floor with near-zero wiring-perturbation deltas through 3000 updates, the direct-brain approach (frozen topology + gradient-trained I/O) is falsified at this budget, and the ladder must move to plasticity or learned dynamics.",
+      "artifacts": [
+        "information_boltzmann/core/fly_reservoir.py",
+        "scripts/ib/train_fly_reservoir.py",
+        "configs/information_boltzmann/q8_fly_reservoir_routed.json"
+      ],
+      "confidence": "I",
+      "confidence_note": "Launched, smoke-tested; the routing-learning question is open."
     }
   ],
   "status_migration_note": "Normalize historical workflow labels for repository validator; original labels retained as legacy_status. No new experimental conclusions introduced.",

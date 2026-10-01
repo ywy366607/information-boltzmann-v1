@@ -93,7 +93,7 @@ class FlyReservoirLM(nn.Module):
 
     def __init__(self, graph_npz: str | Path, vocab_size: int = 50257,
                  d_model: int = 128, leak: float = 0.9, threshold: float = 0.1,
-                 injection: str = "broadcast"):
+                 injection: str = "broadcast", read_surface: str = "all"):
         super().__init__()
         packed = np.load(graph_npz, allow_pickle=False)
         edge_pre = torch.from_numpy(packed["edge_pre"].astype(np.int64))
@@ -133,6 +133,19 @@ class FlyReservoirLM(nn.Module):
         self.n_injection = int(injection_index.size)
         self.register_buffer("injection_index",
                              torch.from_numpy(injection_index), persistent=False)
+        # Read surface: "all" neurons, or only non-injected (interneuron/output)
+        # neurons - with separated write and read surfaces, information must
+        # physically traverse the wiring between them.
+        if read_surface == "interneuron":
+            read_mask = np.ones(self.n_neurons, dtype=np.float32)
+            read_mask[injection_index] = 0.0
+        elif read_surface == "all":
+            read_mask = np.ones(self.n_neurons, dtype=np.float32)
+        else:
+            raise ValueError(f"Unknown read surface: {read_surface}")
+        self.read_surface = read_surface
+        self.register_buffer("read_mask",
+                             torch.from_numpy(read_mask), persistent=False)
 
         self.leak = leak
         self.threshold = threshold
@@ -160,7 +173,7 @@ class FlyReservoirLM(nn.Module):
         return h_next, spike_next
 
     def read(self, h: torch.Tensor) -> torch.Tensor:
-        return self.decoder(self.output_read(h))
+        return self.decoder(self.output_read(h * self.read_mask[None]))
 
     def forward_chunk(self, input_ids: torch.Tensor, targets: torch.Tensor,
                       h: torch.Tensor):

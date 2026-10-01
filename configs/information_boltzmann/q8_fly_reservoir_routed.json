@@ -1,0 +1,32 @@
+{
+  "name": "q8_fly_reservoir_routed",
+  "status": "active_separated_surfaces_arm",
+  "parent_line": "fly-connectome ladder (routing enforced v2: separated surfaces)",
+  "purpose": "The minimal system in which transport is NECESSARY by construction: language tokens enter ONLY through the 15,912 annotated sensory neurons, and the readout sees ONLY the 149,210 non-injected (interneuron/output) neurons. Write surface and read surface are disjoint; every bit of task information must physically traverse the frozen signed wiring between them. Both probes that proved wiring inertness at level 0/0.5 (node relabel, zero transmission) now attack the only pathway.",
+  "graph": {
+    "neurons": 165122,
+    "signed_edges": 25563096,
+    "injection_neurons": 15912,
+    "read_surface": "149,210 non-injected neurons"
+  },
+  "training": {
+    "dataset": "OpenWebText GPT-2 BPE",
+    "optimizer_updates": 3000,
+    "real_tokens_per_update": 128,
+    "bptt_chunk_tokens": 32,
+    "lr": 0.0003,
+    "trained": "sensory input projection (128->15,912), interneuron weighted readout (149,210->128), tied embedding"
+  },
+  "evaluation": {
+    "protocol": "IB-warm-local-language-v1 reservoir variant",
+    "sites": [
+      8192,
+      12288,
+      16384,
+      20480
+    ],
+    "warm_in_tokens": 256,
+    "scored_tokens_per_site": 128
+  },
+  "falsifiable_expectation": "If gradient descent can learn routing through the frozen evolved wiring, NLL descends below the ~7.7 unigram-ish floor and the wiring perturbation probes (relabel/zero/sign-flip) produce large NONZERO deltas - the transport-collision synergy signature. If NLL plateaus at the unigram level (~7.7-8.0) with near-zero deltas, gradient descent cannot discover routing in a frozen biological topology at this budget - the headline negative result for the 'direct brain' approach."
+}
