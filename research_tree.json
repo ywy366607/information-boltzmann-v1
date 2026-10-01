@@ -1804,10 +1804,11 @@
       "action": "Benchmark matched OWT captured updates. Batch causal output decoding, share the linear innovation chart, retain the port objective when skipping discarded monitoring, and compose adjacent fixed-symbol real-field transports including their rFFT boundary projection. Record forward and compiled-backward CUDA event intervals.",
       "conclusion": "GTX 1650, K16/dt4/d128, unified bath, 128 tokens/update and chunk32: median latency 2.0000 to 1.7675 seconds, throughput 64.00 to 72.42 tokens/s, peak reserved 1194 MiB. Matched short-update joint losses differ by less than 2e-6; deterministic value/gradient equivalence passes. The pre-fusion instrumented chunk measured bath 157 ms, collision 108 ms, writer 73 ms and transport 66 ms, superseding the eager-scaled component estimate. Execution results only; no new capability comparison.",
       "issues": [
-        "The 1.5-second target remains open. The measured unified bath's repeated QR basis construction and FFTs are the next execution targets.",
+        "2026-10-01: after the user retired unified dissipation, the computation-only quadratic-bath replacement measured 1.1291 s per complete 128-token update at K16/dt4/d128/chunk32, peak reserved 1114 MiB. The 1.5-second target is met for this configuration. Its captured chunk is now dominated by collision (107.4 ms) and write (73.3 ms), with transport 36.6 ms and bath 12.7 ms. This replacement used constructor-default bath weights and establishes execution cost, not repaired-model validation NLL.",
         "Component intervals include instrumentation and exclude AdamW/clipping; complete update timings are measured separately.",
         "Isolated FP16 vocabulary work improved 9.2 percent with calibrated loss scaling; the production trainer remains FP32.",
-        "Full suite: 640 passed, one skipped, one historical test lacks its untracked checkpoint asset. The active checkpoint loaded strictly and ran captured updates."
+        "2026-10-01 fused collision rotation: one Triton forward/backward pair preserves the existing two-layer schedule and returns both state and angle derivatives. The matched compiled-native comparison measures 1.1277 to 1.1022 s/update (2.26 percent lower latency), peak reserved 1114 to 1028 MiB. Direct relative angle-gradient error is 7.28e-8. Continuing FP32 optimizer trajectories are not bitwise identical; timing losses are not language-performance evidence. Full suite now has 651 passes, one skip and the same missing historical checkpoint fixture failure.",
+        "2026-10-01 exact projection factorization: the existing SVD nullspace basis equals a trailing identity plus a rank-four correction to FP64 error below 1e-12. Fused CUDA applications retain all D-4 collision coordinates, full first-order gradients and the actual FFT channel-major layout. Matched K16/d128 complete updates measure 1.10105 s dense versus 1.08712 s structured, peak reserved 1028 versus 998 MiB. Multiscale arithmetic shrinks with site count, while isolated 32-site measurements expose launch overhead; RG speed and capability remain unmeasured."
       ],
       "invalidation": "Reject an execution change if it alters the objective or causal state map beyond floating-point equivalence, fails full gradients, or lacks a reproducible matched-workload speedup.",
       "artifacts": [
@@ -1819,7 +1820,21 @@
         "results/published/port_execution_before.json",
         "results/published/port_execution_fft_fused.json",
         "results/published/port_captured_components.json",
-        "results/published/vocabulary_gemm_precision.json"
+        "results/published/port_execution_quadratic.json",
+        "results/published/port_captured_components_quadratic.json",
+        "docs/information_boltzmann/TRITON_COLLISION_KERNEL.md",
+        "information_boltzmann/core/triton_givens.py",
+        "tests/test_triton_collision.py",
+        "results/published/triton_collision_numerical.json",
+        "results/published/port_execution_quadratic_native.json",
+        "results/published/port_execution_quadratic_triton.json",
+        "results/published/port_captured_components_quadratic_triton.json",
+        "results/published/vocabulary_gemm_precision.json",
+        "information_boltzmann/core/triton_projection.py",
+        "scripts/ib/benchmark_collision_stages.py",
+        "results/published/collision_stages_structured.json",
+        "results/published/port_execution_quadratic_dense_projection_matched.json",
+        "results/published/port_execution_quadratic_structured_projection.json"
       ],
       "confidence": "I",
       "confidence_note": "Direct CUDA-graph timings and deterministic gradient equivalence on one GPU; no new architecture or infinite-stream claim."
@@ -1848,6 +1863,50 @@
       ],
       "confidence": "I",
       "confidence_note": "Independent conceptual review incorporated shared local trajectory, sensor boundaries, generative-model identification and world/agent independence. Implementation and capability evaluation remain pending."
+    },
+    {
+      "id": "IB_W4_QUAD_EXEC_20261002",
+      "parent": "IB_LANGUAGE_EXEC_COST_20261001",
+      "title": "Joint W4 quadratic bath trial with optimized execution",
+      "status": "active",
+      "time": "2026-10-02",
+      "confidence": "I",
+      "motivation": "Unified spectral viscosity erased newly written spatial structure at the first K16/dt4 microstep. Test quadratic bath while retaining W4 write, belief read and the same 3000-update budget.",
+      "action": "Train fresh on OWT BPE, 8x8x4, d128, Q8, K16/dt4, 128 tokens/update, BPTT32, seed11, AdamW3e-4, compile and CUDA Graph. Initialize shared parameters using the unified constructor RNG sequence, then replace only the bath. Never reset training field or posterior precision.",
+      "conclusion": "Training launched; no trained outcome yet. Compare validation NLL at matched updates and DC/spatial energy shares.",
+      "invalidation": "Retaining spatial energy without improving matched-budget NLL does not establish a language benefit. Surface non-finite loss instead of silently modifying the architecture.",
+      "artifacts": [
+        "configs/information_boltzmann/q8_w4_quadratic_k16_execv2.json",
+        "results/q8_w4_quadratic_k16_3000_execv2",
+        "tests/test_field_energy_statistics.py"
+      ],
+      "issues": [
+        "Warm-local evaluation: four sites, 256-token burn-in and 128 scored tokens/site from a mature NESS spectrum. Numerical execution acceleration is not capability evidence."
+      ]
+    },
+    {
+      "id": "IB_Q8_MALECNS_CAUSAL_20260930",
+      "parent": "IB_Q8_MAIN_ARCH_20260930",
+      "title": "MaleCNS causal attribution shows transport-collision synergy",
+      "status": "active",
+      "time": "2026-09-30",
+      "motivation": "The 19 unregistered MaleCNS graph-field arms include the best cheap line (d128_quadratic_bath, in-loop best 7.333 at 0.614 s/update, K=1, T=1*tau0). Its causal attribution was recorded in causality_best.json by a prior session (four sites, 256 shared history, 128 scored, step-3000 best checkpoint; weights since deleted - the record is the only artifact).",
+      "action": "Aggregate the recorded operator-removal probe: full, collision-bypass, transport-bypass, both-bypass across four validation sites.",
+      "conclusion": "Mean deltas: collision +1.584 (per-site 0.407-2.201, heterogeneous), transport +0.068 (0.031-0.129), both +14.782 (0.744-21.141). SUPER-ADDITIVE by about 9x: on the fly connectome transport and collision form a synergistic routing-plus-transformation pipeline, qualitatively unlike the torus lines where joint removal is sub-additive (both +1.69/+0.80, less than collision alone) because global deposition makes routing redundant. This is the first measured instance of the transport-collision complementarity that the uniform torus lacks. Mean full NLL 7.255 across the four probe sites.",
+      "issues": [
+        "Only four sites; the probe ran in a prior session and the weights are deleted, so it is not re-runnable - the record is the only artifact and the implementation was not re-verified.",
+        "Large site heterogeneity (one site loses only 0.744 without the whole interior) tracks parcel role differences.",
+        "Transport alone is still nearly idle (+0.068); the synergy appears only jointly with collision.",
+        "Protocol consistency with the standalone registered evaluator is unverified for this line."
+      ],
+      "invalidation": "Downgrade this finding if a re-trained MaleCNS d128_quadratic arm with retained weights does not reproduce the super-additive joint removal.",
+      "artifacts": [
+        "results/cbim_malecns_d128_quadratic_bath_3000/causality_best.json",
+        "docs/CBIM_MALECNS_GRAPH.md",
+        "scripts/ib_local/cbim_malecns.py"
+      ],
+      "confidence": "I",
+      "confidence_note": "Recorded prior-session probe aggregated; not independently re-executed."
     }
   ],
   "status_migration_note": "Normalize historical workflow labels for repository validator; original labels retained as legacy_status. No new experimental conclusions introduced.",
