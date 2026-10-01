@@ -1643,14 +1643,16 @@
         "If the hybrid reaches the baseline, the gap was readout plus steering; if not, the residual is attributable to the W4 innovation-only write itself or to tuning maturity.",
         "The kernel readout consumes the observed token embedding at read time - a read-side pathway that does not write the field but does ease next-token decoding; the belief read agent remains the stricter field-only instrument.",
         "The direction controller receives the token embedding on the control path; the spec must keep stating that steering is not evidence injection.",
-        "Causal attribution probe (eval-time operator removal, identical protocol and weights): W2 champion full 7.2153, -transport 7.2250 (+0.010), -collision 10.2959 (+3.08), -bath 7.2501 (+0.035), no-dynamics 8.9062; W4 belief line full 7.4203, -transport 7.4494 (+0.029), -collision 9.6919 (+2.27), -bath 7.8874 (+0.467), no-dynamics 8.2219. The kernel readout's direct token access did not hollow the W2 champion's dynamics: its collision is MORE load-bearing than the W4 line's. Transport is nearly causally idle in both lines at evaluation time, so the continuous-velocity steering of this hybrid may contribute little; the collision operator is the causal workhorse of both architectures."
+        "Causal attribution probe (eval-time operator removal, identical protocol and weights): W2 champion full 7.2153, -transport 7.2250 (+0.010), -collision 10.2959 (+3.08), -bath 7.2501 (+0.035), no-dynamics 8.9062; W4 belief line full 7.4203, -transport 7.4494 (+0.029), -collision 9.6919 (+2.27), -bath 7.8874 (+0.467), no-dynamics 8.2219. The kernel readout's direct token access did not hollow the W2 champion's dynamics: its collision is MORE load-bearing than the W4 line's. Transport is nearly causally idle in both lines at evaluation time, so the continuous-velocity steering of this hybrid may contribute little; the collision operator is the causal workhorse of both architectures.",
+        "Probe-position binding measured on the W2 champion: trained probe coordinates drift only 0.048 (torus period 1.0, direction cosine 0.9989) from the initialization lattice, but scrambling the position-probe binding (reverse/random-permute/half-shift, weights untouched) costs a consistent +0.061 to +0.068 nats on a single site. So read positions are learnable, DO bind to processing (the user's 'position determines how it is read' is real), but the binding is weak and barely re-located from initialization - the read side is position-agnostic to first order, which is consistent with transport idleness. The binding magnitude (+0.065) is the baseline any scarcity-restoring readout must beat."
       ],
       "invalidation": "Treat the readout/steering explanation as rejected if the hybrid does not close a material part of the gap under the identical protocol.",
       "artifacts": [
         "scripts/ib/train_q8_port_agents.py",
         "configs/information_boltzmann/q8_w4_contvel_kernel_read.json",
         "information_boltzmann/core/torus3d.py",
-        "scripts/ib/measure_dynamics_attribution.py"
+        "scripts/ib/measure_dynamics_attribution.py",
+        "scripts/ib/measure_probe_binding.py"
       ],
       "confidence": "I",
       "confidence_note": "Registered ablation launched; smoke-tested only."
@@ -1763,7 +1765,7 @@
       "confidence_note": "The Fourier attenuation is derived directly from the implemented operator and verified in a deterministic FP64 test; the cross-arm field spectra are direct saved-state measurements. Independent conceptual review remains pending."
     },
     {
-      "id": "IB_Q8_THREE_AGENT_JOINT_STATE_20260930",
+      "id": "IB_Q8_THREE_AGENT_JOINT_20260930",
       "parent": "IB_Q8_BATH_SCALE_20260930",
       "title": "Three-agent Q8 closure: predictive write, joint kinetic state, selective outflow read",
       "status": "active",
@@ -1787,6 +1789,31 @@
       ],
       "confidence": "I",
       "confidence_note": "Direct CUDA-graph learning smoke with recorded config and held-out local-site metrics; insufficient for any capability or infinite-persistence conclusion."
+    },
+    {
+      "id": "IB_EMBODIED_GEN_PRINC_20260930",
+      "parent": "IB_Q8_THREE_AGENT_JOINT_20260930",
+      "title": "Shared embodied generative dynamics and active inference",
+      "status": "active",
+      "time": "2026-09-30",
+      "motivation": "Unify native multimodal perception, persistent kinetic belief and embodied action around an ongoing individual. The sandbox currently generates scripted acoustic packets and gives the actor true object coordinates; connecting more modality modules does not identify a common generative law.",
+      "action": "Propose a shared spatial body-world trajectory prior with learned energy, reversible coupling and positive-semidefinite outflow, sensor-conditioned joint likelihoods, variational identification and expected-free-energy action selection. Demote the earlier multiphysics checklist to reference approximations and numerical calibration.",
+      "conclusion": "Design proposal only. Code inspection supports the shared-cause, oracle-input and audio-sampling gaps. Deterministic power-constrained parameterization gives an algebraic storage balance; actual material laws, cross-modal intervention prediction and autonomous exploration require identification and validation.",
+      "issues": [
+        "Active inference requires a specified generative process; minimizing variational free energy alone does not uniquely determine physical laws.",
+        "Separate observation likelihoods must share spatial dynamics and propagation history rather than private modality dynamics.",
+        "The external generator must remain independent of the actor's belief optimization to prevent a world that merely conforms to its predictions.",
+        "The native X-Slice-H graph and shared checkpoint guardrails remain binding; this proposal has not integrated or retrained the existing models."
+      ],
+      "invalidation": "Revise if a learned shared prior fails cross-modal intervention prediction despite adequate identifiable data, or if actor performance depends on hidden world-state access; reject claimed infinite stability without bounded-input and dissipation conditions.",
+      "artifacts": [
+        "Native multimodal project: docs/GENERATIVE_EMBODIED_PRINCIPLE.md",
+        "Native multimodal project: docs/PERSISTENT_EMBODIED_WORLD_DESIGN.md",
+        "information_boltzmann/sandbox/ether_medium.py",
+        "information_boltzmann/sandbox/active_inference_agent.py"
+      ],
+      "confidence": "I",
+      "confidence_note": "Independent conceptual review incorporated shared local trajectory, sensor boundaries, generative-model identification and world/agent independence. Implementation and capability evaluation remain pending."
     }
   ],
   "status_migration_note": "Normalize historical workflow labels for repository validator; original labels retained as legacy_status. No new experimental conclusions introduced.",
