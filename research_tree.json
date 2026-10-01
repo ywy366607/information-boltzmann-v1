@@ -1988,6 +1988,29 @@
       ],
       "confidence": "I",
       "confidence_note": "Registered protocol completed; new field-family record. The evolved-topology claim awaits the degree-preserving random-wiring control, which is now the mandatory next arm."
+    },
+    {
+      "id": "IB_FLY_SENSORY_INJECT_20260930",
+      "parent": "IB_FLY_LEVEL0_RESERVOIR_20260930",
+      "title": "Sparse sensory injection: routing enforced on the fly connectome",
+      "status": "active",
+      "time": "2026-09-30",
+      "motivation": "The level-0 eval-time probes proved the frozen wiring is inert: broadcast injection lets the model learn a leaky linear filter over recent drives and ignore all 25.6M synapses. The user's complementarity principle (two balls must meet to collide) requires removing the broadcast shortcut so routing becomes mandatory.",
+      "action": "Re-route language tokens exclusively into the 15,912 annotated sensory neurons (biological input surface); all other 149,210 neurons receive no direct drive and are reachable only through the frozen wiring. Same frozen signed wiring, LIF dynamics, trained I/O and registered protocol as level 0.",
+      "conclusion": "Structural at launch: smoke shows the state now lives on the sensory surface (activity participation ratio ~1480 of 15,912 injected neurons). Expected signature: early NLL far worse than broadcast (routing is now the model's job), firing rate growth, and nonzero eval-time wiring-perturbation deltas. No capability claim.",
+      "issues": [
+        "Cold start is the registered risk: with only 9.6 percent of neurons driven, early NLL may sit near the 10.8 initialization for hundreds of updates.",
+        "The wiring is still frozen; if routing is learned through the input projection alone, the natural next rung is level-2 plasticity (surprise-gated local rules on the wiring, the mushroom-body algorithm).",
+        "Sensory-class assignment (tbc variants included) is a data choice recorded in the config."
+      ],
+      "invalidation": "Reject the routing-enforcement arm as uninformative if its 3000-step trajectory converges to the broadcast arm's NLL with byte-identical wiring-probe deltas (meaning the broadcast shortcut was never actually load-bearing at level 0 either); treat routing as harmful if the final NLL exceeds the broadcast level-0 record (6.9662) by more than 0.5 nats with no wiring-alive signature.",
+      "artifacts": [
+        "information_boltzmann/core/fly_reservoir.py",
+        "scripts/ib/train_fly_reservoir.py",
+        "configs/information_boltzmann/q8_fly_reservoir_sensory.json"
+      ],
+      "confidence": "I",
+      "confidence_note": "Launched, smoke-tested; no trained result."
     }
   ],
   "status_migration_note": "Normalize historical workflow labels for repository validator; original labels retained as legacy_status. No new experimental conclusions introduced.",

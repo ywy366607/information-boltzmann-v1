@@ -86,8 +86,14 @@ def participation_ratio(weights: torch.Tensor) -> torch.Tensor:
 class FlyReservoirLM(nn.Module):
     """Frozen MaleCNS wiring + trained broadcast input / weighted readout."""
 
+    SENSORY_CLASSES = ("cb_sensory", "ol_sensory", "vnc_sensory",
+                       "sensory_ascending", "sensory_descending",
+                       "cb_sensory_tbc", "vnc_sensory_tbc",
+                       "sensory_ascending_tbc")
+
     def __init__(self, graph_npz: str | Path, vocab_size: int = 50257,
-                 d_model: int = 128, leak: float = 0.9, threshold: float = 0.1):
+                 d_model: int = 128, leak: float = 0.9, threshold: float = 0.1,
+                 injection: str = "broadcast"):
         super().__init__()
         packed = np.load(graph_npz, allow_pickle=False)
         edge_pre = torch.from_numpy(packed["edge_pre"].astype(np.int64))
@@ -107,11 +113,31 @@ class FlyReservoirLM(nn.Module):
         # Transmission is gather + index_add along real edges (see propagate):
         # a CSR sparse.mm backward is not CUDA-graph capturable on this
         # platform, while index_add's gather/scatter backward is.
+        # Injection surface: broadcast (every neuron) or the annotated
+        # sensory neurons only.  Sensory injection removes the broadcast
+        # shortcut: information must flow through the wiring to be read.
+        superclass_names = [str(s) for s in packed["superclass_names"]]
+        superclass_id = packed["superclass_id"]
+        if injection == "sensory":
+            sensory = np.zeros(self.n_neurons, dtype=bool)
+            for name in self.SENSORY_CLASSES:
+                if name in superclass_names:
+                    sensory |= superclass_id == superclass_names.index(name)
+            injection_index = np.flatnonzero(sensory).astype(np.int64)
+            self.injection_mode = "sensory"
+        elif injection == "broadcast":
+            injection_index = np.arange(self.n_neurons, dtype=np.int64)
+            self.injection_mode = "broadcast"
+        else:
+            raise ValueError(f"Unknown injection mode: {injection}")
+        self.n_injection = int(injection_index.size)
+        self.register_buffer("injection_index",
+                             torch.from_numpy(injection_index), persistent=False)
 
         self.leak = leak
         self.threshold = threshold
         self.embedding = nn.Embedding(vocab_size, d_model)
-        self.input_proj = nn.Linear(d_model, self.n_neurons, bias=False)
+        self.input_proj = nn.Linear(d_model, self.n_injection, bias=False)
         self.output_read = nn.Linear(self.n_neurons, d_model, bias=False)
         self.decoder = nn.Linear(d_model, vocab_size)
         self.decoder.weight = self.embedding.weight
@@ -125,7 +151,9 @@ class FlyReservoirLM(nn.Module):
         spikes = SpikeFn.apply(h - self.threshold)
         current = SynapticTransmission.apply(
             spikes, self.edge_pre, self.edge_post, self.edge_weight)
-        drive = self.input_proj(self.embedding(token))
+        drive = torch.zeros_like(h)
+        drive.index_copy_(1, self.injection_index,
+                          self.input_proj(self.embedding(token)))
         h_next = self.leak * h + current + drive
         spike_next = SpikeFn.apply(h_next - self.threshold)
         h_next = h_next - self.threshold * spike_next

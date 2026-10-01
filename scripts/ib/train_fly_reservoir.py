@@ -104,6 +104,11 @@ def main() -> None:
     parser.add_argument("--d-model", type=int, default=128)
     parser.add_argument("--leak", type=float, default=0.9)
     parser.add_argument("--threshold", type=float, default=0.1)
+    parser.add_argument("--injection", choices=("broadcast", "sensory"),
+                        default="broadcast",
+                        help="broadcast drives every neuron; sensory drives "
+                             "only the 15,912 annotated sensory neurons - "
+                             "information must then flow through the wiring")
     parser.add_argument("--lr", type=float, default=3e-4)
     parser.add_argument("--max-grad-norm", type=float, default=1.0)
     parser.add_argument("--validate-every", type=int, default=500)
@@ -130,7 +135,8 @@ def main() -> None:
 
     model = FlyReservoirLM(
         args.graph, vocab_size=50257, d_model=args.d_model,
-        leak=args.leak, threshold=args.threshold).cuda()
+        leak=args.leak, threshold=args.threshold,
+        injection=args.injection).cuda()
     trainable = [p for p in model.parameters() if p.requires_grad]
     optimizer = torch.optim.AdamW(trainable, lr=args.lr)
 
@@ -145,6 +151,7 @@ def main() -> None:
         "steps": args.steps, "lr": args.lr, "optimizer": "AdamW",
         "cuda_graph": True,
         "frozen": "all wiring; trained = broadcast input projection, weighted readout, tied embedding",
+        "injection": args.injection, "injection_neurons": model.n_injection,
         "state_policy": "reservoir state persists across chunks and updates; never reset",
         "evaluation_protocol": "IB-warm-local-language-v1 reservoir variant: state from zero, 256 warm-in, 128 scored, four sites batched",
         "sites": site_starts,
