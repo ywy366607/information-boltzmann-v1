@@ -1,6 +1,6 @@
 {
   "title": "Slice Full-Resolution Joint-Evolution VLM Research Tree",
-  "updated": "2026-09-30",
+  "updated": "2026-10-01",
   "source_of_truth": "docs/NORTH_STAR.md",
   "nodes": [
     {
@@ -1724,6 +1724,7 @@
       "action": "Measure the spectral energy distribution and site-vector geometry of the mature fields on both architecture lines.",
       "conclusion": "The W4 language-trained field carries 100.00% of its spectral energy in the DC mode (spatially constant) and all 256 site vectors are identical to the field mean (cosine 1.000, std 0.000): the field has zero spatial degrees of freedom in use, and the torus operates as one replicated 128-dimensional recurrent state. The W2 champion's field retains 38.79 percent non-DC energy and site cosines 0.748 plus-or-minus 0.080. Transport idleness is therefore trivial for the W4 line - a uniform field is a fixed point of streaming - and is placement redundancy for the W2 line. Mechanism: the W4 chart includes the constant DC mode, gradient pressure concentrates the gates there, a uniform field is a fixed point of all three interior operators, and language provides no geometric signal to pay for spatial structure.",
       "issues": [
+        "Within-event localization of the kill point (trace on one real token): the W4 write is INNOCENT - chart gates spread over all 8 modes (DC lowest at 0.058), observed/predicted/innovation packets are 96.5 percent spatial, and the field jumps from 100.00 percent DC to 96.22 percent spatial at the write. The FIRST interior microstep (unified bath spectral viscosity at dt=4) collapses spatial energy to 1.64 percent, microstep 2 to 0.00 percent; the readout never sees differentiation. Consequence: microsteps 2-16 are literal no-ops on the resulting uniform field (transport is identity at k=0, collision is identical per site). The W2 champion's quadratic bath preserves its 38 percent structure across all 3 microsteps (38.28 -> 38.27 percent). Write and readout are exonerated; the bath is the sole within-event killer, consistent with the across-training 2x2.",
         "Analytic closure: on the v4 checkpoint the learned nu stayed at its 0.020 initialization (no NLL pressure to preserve structure), so the spectral viscosity alone gives every non-DC Fourier mode a per-event survival factor exp(-T*nu*lambda_max) = 1.5e-7 at T=64*tau0 versus 0.479 at the old line's T=3*tau0, while DC (lambda(0)=0 by design) is only uniformly damped (0.43 per event) and is continuously re-fed by global-mode writes. The measured DC shares (100.00 percent unified at T=64, 38.79 percent quadratic at T=3) match this analytically. The unified bath is therefore a DC attractor by construction at long event durations: its monotone k-selective damping has no regeneration term. Fix options: revert to the quadratic bath at long T, make the viscosity duration-invariant so T stays a pure duration axis, restrict the unified bath to short-T regimes, or pair it with localized writes that re-inject structure faster than it is damped.",
         "CAUSE ISOLATED by the 2x2 across arms: both unified-bath arms collapse to 100.00% DC regardless of write (W2-modern 7.8922 and W4 v4 7.4203), while both quadratic-bath arms retain rich structure (old champion 38.79 percent, v2 step-500 76.26 percent) regardless of write and K/T. The unified bath's spectral-viscosity layer is the structure annihilator at T=64*tau0; the write law and the integrator are exonerated. The main-architecture declaration's bath choice is reopened: quadratic is the structure-preserving candidate and a W4+quadratic 3000-update reproduction run is launched (results/q8_w4_quadratic_k16_3000) - the never-run cell of the matrix that must reproduce low NLL with surviving spatial structure.",
         "For pure language NLL, spatial structure is a measured COST: the structured W2-modern field scores 7.8922 versus the collapsed uniform W4 field at 7.4203.",
@@ -1735,7 +1736,8 @@
       "invalidation": "Revise if a localized-write variant shows spatial structure surviving training WITH an NLL improvement, or if the uniformity measurement is an artifact of the saved state rather than the running dynamics.",
       "artifacts": [
         "information_boltzmann/core/torus3d.py",
-        "results/published/q8_predictive_ports_k16_unified_bath_3000_warm_local_sites.json"
+        "results/published/q8_predictive_ports_k16_unified_bath_3000_warm_local_sites.json",
+        "scripts/ib/trace_differentiation.py"
       ],
       "confidence": "I",
       "confidence_note": "Direct spectral measurement on both saved mature states; the collapse mechanism is inferred from operator structure and training pressure, not yet isolated by intervention."
@@ -1768,13 +1770,14 @@
     {
       "id": "IB_Q8_THREE_AGENT_JOINT_20260930",
       "parent": "IB_Q8_BATH_SCALE_20260930",
-      "title": "Three-agent Q8 closure: predictive write, joint kinetic state, selective outflow read",
+      "title": "Three-agent Q8 closure: predictive write, joint kinetic state, field-only read",
       "status": "active",
       "time": "2026-09-30",
       "motivation": "The spatial main line needs one causal token entry, one persistent interior state law, and one field-only measurement policy. A fixed transport-then-collision-then-bath loop assigns a permanent numerical priority; a raw spectral bath was analytically shown to erase all spatial modes.",
       "action": "Keep the W4 predictive innovation write and persistent precision. Replace the bath with posterior-field-conditioned selective outflow that has an exact energy ledger. Advance transport, collision, and outflow through paired palindromic K=64 microsteps, while the existing belief read agent remains field-only. Run a short real OWT end-to-end learning smoke before any registered longer comparison.",
       "conclusion": "Deterministic closure plus short real-data learning smoke. With K=64, 300 AdamW updates and 9,600 sequential OpenWebText events, two held-out warm-local sites fell from 10.80262 NLL at initialization to 10.09936 at update 150 and 9.65469 at update 300. The state remained finite and the selective-bath energy ledger stayed near 1e-9. This establishes end-to-end trainability of the three-agent map, not convergence, an infinite-stream theorem, a memory claim, or a GDN comparison.",
       "issues": [
+        "2026-10-01 user decision: quadratic local energy-dependent outflow is the model and canonical trainer default. The unified three-layer bath is retired from the main line and retained for explicit historical checkpoint loading. Selective outflow remains experimental. The earlier selective-bath smoke below remains historical evidence only; no new training is launched by this default change.",
         "The bath selector initially has nearly uniform gentle leakage; whether posterior-conditioned semantic selectivity emerges is a training result rather than a structural guarantee.",
         "Palindromic composition is a second-order approximation to the joint generator, not an exact nonlinear implicit solve.",
         "The canonical W4 belief path uses the new state agent. Historical non-W4 compatibility forwards remain outside the immediate language closure and must not be used as evidence for this line.",
