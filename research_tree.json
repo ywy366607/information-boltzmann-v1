@@ -1968,12 +1968,13 @@
       "time": "2026-09-30",
       "motivation": "The user's design fork: use the evolved brain directly for language instead of bolting on external dynamics. The published biofidelic reservoir (arXiv 2507.10951) used the 3000-neuron LARVAL connectome; no frozen-reservoir language run exists on the complete adult male CNS. The frozen wiring is also immune to the spatial collapse that flattened the learned torus line: structure conservation is guaranteed by freezing, not hoped for from an objective.",
       "action": "Build the full-neuron signed sparse graph from MaleCNS v1.0 (165,122 neurons, 25,563,096 edges after pair aggregation, spectral radius normalized to 1, neurotransmitter sign convention recorded); implement the LIF reservoir with broadcast input projection and weighted readout (only those plus the tied embedding are trained); run 3000 registered OWT updates with CUDA-graph-captured chunks (CSR sparse.mm backward and three other capture hazards were identified and replaced with index_add and a memory-lean custom synaptic function); record vital signs (firing rate, activity/input/output participation ratios) every validation.",
-      "conclusion": "Structural at launch: first adult-CNS-scale frozen-connectome language run. Initial validation 10.817 matches sibling arms; firing rate 0.0012 after the threshold rescale (the vital-sign suite caught a cold-start where the threshold exceeded the drive scale and the wiring transmitted nothing). No capability claim.",
+      "conclusion": "The 3000-update registered run completed at 3.68 s per 128-token update (384000 events, one persistent reservoir state): warm-local validation 10.817 -> 7.619 (500) -> 7.260 (1000) -> 7.116 (2000) -> 6.9662 (3000, best and still descending). This is the new field-family record, 0.249 nats below the archived Continuous-Q8 baseline (7.2154) and 0.468 nats behind GDN-2 (6.4981), achieved by the FROZEN adult male CNS wiring with only the broadcast input projection and weighted readout trained. Vital signs: firing rate grew 0.0008 -> 0.0032 (the wiring becomes increasingly causally active), output readout participation ratio concentrated 7.3M -> 958k effective neurons (emergent read-position specialization), population activity stayed distributed (~14.6k effective neurons, no collapse). Still descending at 3000 - the budget was not a convergence budget.",
       "issues": [
         "LIF spiking with surrogate gradients through 32-step BPTT runs at 3.68 s per 128-token update; the gather-scatter backward is the cost and a reduceat-based transmission is the identified speedup.",
         "Whether the evolved wiring contributes beyond the trained I/O path is the registered question: the degree-preserving random-wiring control remains mandatory before any topology claim.",
         "Firing rate near zero at initialization risks a silent dead-wiring regime; the vital-sign suite exists precisely to catch this.",
-        "The three earlier capture hazards (per-call COO-to-CSR conversion, float() host sync inside the captured region, a data-dependent python branch) are documented for future graph-captured arms."
+        "The three earlier capture hazards (per-call COO-to-CSR conversion, float() host sync inside the captured region, a data-dependent python branch) are documented for future graph-captured arms.",
+        "RESULT UPDATE: best 6.9662 at step 3000, still descending; the mandatory degree-preserving random-wiring control (the registered invalidation condition) is the immediate next arm before any evolved-topology claim."
       ],
       "invalidation": "Downgrade level 0 if it cannot beat an identically-trained degree-preserving random-wiring control on the same protocol; the ladder then continues from level 1 with no wiring-prior claim.",
       "artifacts": [
@@ -1981,10 +1982,11 @@
         "scripts/ib/build_fly_reservoir_graph.py",
         "scripts/ib/train_fly_reservoir.py",
         "tests/test_fly_reservoir.py",
-        "configs/information_boltzmann/q8_fly_reservoir_level0.json"
+        "configs/information_boltzmann/q8_fly_reservoir_level0.json",
+        "results/published/q8_fly_reservoir_level0_3000_warm_local_sites.json"
       ],
       "confidence": "I",
-      "confidence_note": "Launched, not concluded; vital signs healthy at step 90."
+      "confidence_note": "Registered protocol completed; new field-family record. The evolved-topology claim awaits the degree-preserving random-wiring control, which is now the mandatory next arm."
     }
   ],
   "status_migration_note": "Normalize historical workflow labels for repository validator; original labels retained as legacy_status. No new experimental conclusions introduced.",
