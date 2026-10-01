@@ -1724,6 +1724,7 @@
       "action": "Measure the spectral energy distribution and site-vector geometry of the mature fields on both architecture lines.",
       "conclusion": "The W4 language-trained field carries 100.00% of its spectral energy in the DC mode (spatially constant) and all 256 site vectors are identical to the field mean (cosine 1.000, std 0.000): the field has zero spatial degrees of freedom in use, and the torus operates as one replicated 128-dimensional recurrent state. The W2 champion's field retains 38.79 percent non-DC energy and site cosines 0.748 plus-or-minus 0.080. Transport idleness is therefore trivial for the W4 line - a uniform field is a fixed point of streaming - and is placement redundancy for the W2 line. Mechanism: the W4 chart includes the constant DC mode, gradient pressure concentrates the gates there, a uniform field is a fixed point of all three interior operators, and language provides no geometric signal to pay for spatial structure.",
       "issues": [
+        "Analytic closure: on the v4 checkpoint the learned nu stayed at its 0.020 initialization (no NLL pressure to preserve structure), so the spectral viscosity alone gives every non-DC Fourier mode a per-event survival factor exp(-T*nu*lambda_max) = 1.5e-7 at T=64*tau0 versus 0.479 at the old line's T=3*tau0, while DC (lambda(0)=0 by design) is only uniformly damped (0.43 per event) and is continuously re-fed by global-mode writes. The measured DC shares (100.00 percent unified at T=64, 38.79 percent quadratic at T=3) match this analytically. The unified bath is therefore a DC attractor by construction at long event durations: its monotone k-selective damping has no regeneration term. Fix options: revert to the quadratic bath at long T, make the viscosity duration-invariant so T stays a pure duration axis, restrict the unified bath to short-T regimes, or pair it with localized writes that re-inject structure faster than it is damped.",
         "CAUSE ISOLATED by the 2x2 across arms: both unified-bath arms collapse to 100.00% DC regardless of write (W2-modern 7.8922 and W4 v4 7.4203), while both quadratic-bath arms retain rich structure (old champion 38.79 percent, v2 step-500 76.26 percent) regardless of write and K/T. The unified bath's spectral-viscosity layer is the structure annihilator at T=64*tau0; the write law and the integrator are exonerated. The main-architecture declaration's bath choice is reopened: quadratic is the structure-preserving candidate and a W4+quadratic 3000-update reproduction run is launched (results/q8_w4_quadratic_k16_3000) - the never-run cell of the matrix that must reproduce low NLL with surviving spatial structure.",
         "For pure language NLL, spatial structure is a measured COST: the structured W2-modern field scores 7.8922 versus the collapsed uniform W4 field at 7.4203.",
         "The declared main line for language is therefore effectively a reduced recurrent system; its spatial machinery is unexercised rather than wrong.",
@@ -1789,6 +1790,36 @@
       ],
       "confidence": "I",
       "confidence_note": "Direct CUDA-graph learning smoke with recorded config and held-out local-site metrics; insufficient for any capability or infinite-persistence conclusion."
+    },
+    {
+      "id": "IB_LANGUAGE_EXEC_COST_20261001",
+      "parent": "IB_Q8_THREE_AGENT_JOINT_20260930",
+      "title": "Captured language cost audit and equivalent execution optimization",
+      "status": "active",
+      "time": "2026-10-01",
+      "motivation": "Language/thinking is the immediate priority. Eager component proportions suggested a writer bottleneck; production graph intervals needed direct measurement before changing mechanisms.",
+      "action": "Benchmark matched OWT captured updates. Batch causal output decoding, share the linear innovation chart, retain the port objective when skipping discarded monitoring, and compose adjacent fixed-symbol real-field transports including their rFFT boundary projection. Record forward and compiled-backward CUDA event intervals.",
+      "conclusion": "GTX 1650, K16/dt4/d128, unified bath, 128 tokens/update and chunk32: median latency 2.0000 to 1.7675 seconds, throughput 64.00 to 72.42 tokens/s, peak reserved 1194 MiB. Matched short-update joint losses differ by less than 2e-6; deterministic value/gradient equivalence passes. The pre-fusion instrumented chunk measured bath 157 ms, collision 108 ms, writer 73 ms and transport 66 ms, superseding the eager-scaled component estimate. Execution results only; no new capability comparison.",
+      "issues": [
+        "The 1.5-second target remains open. The measured unified bath's repeated QR basis construction and FFTs are the next execution targets.",
+        "Component intervals include instrumentation and exclude AdamW/clipping; complete update timings are measured separately.",
+        "Isolated FP16 vocabulary work improved 9.2 percent with calibrated loss scaling; the production trainer remains FP32.",
+        "Full suite: 640 passed, one skipped, one historical test lacks its untracked checkpoint asset. The active checkpoint loaded strictly and ran captured updates."
+      ],
+      "invalidation": "Reject an execution change if it alters the objective or causal state map beyond floating-point equivalence, fails full gradients, or lacks a reproducible matched-workload speedup.",
+      "artifacts": [
+        "docs/information_boltzmann/LANGUAGE_EXECUTION_AUDIT.md",
+        "tests/test_port_execution_equivalence.py",
+        "scripts/ib/benchmark_port_execution.py",
+        "scripts/ib/profile_captured_ports.py",
+        "scripts/ib/benchmark_vocabulary_gemm.py",
+        "results/published/port_execution_before.json",
+        "results/published/port_execution_fft_fused.json",
+        "results/published/port_captured_components.json",
+        "results/published/vocabulary_gemm_precision.json"
+      ],
+      "confidence": "I",
+      "confidence_note": "Direct CUDA-graph timings and deterministic gradient equivalence on one GPU; no new architecture or infinite-stream claim."
     },
     {
       "id": "IB_EMBODIED_GEN_PRINC_20260930",
