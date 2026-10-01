@@ -1,6 +1,6 @@
 {
   "title": "Slice Full-Resolution Joint-Evolution VLM Research Tree",
-  "updated": "2026-10-01",
+  "updated": "2026-10-02",
   "source_of_truth": "docs/NORTH_STAR.md",
   "nodes": [
     {
@@ -1873,15 +1873,20 @@
       "confidence": "I",
       "motivation": "Unified spectral viscosity erased newly written spatial structure at the first K16/dt4 microstep. Test quadratic bath while retaining W4 write, belief read and the same 3000-update budget.",
       "action": "Train fresh on OWT BPE, 8x8x4, d128, Q8, K16/dt4, 128 tokens/update, BPTT32, seed11, AdamW3e-4, compile and CUDA Graph. Initialize shared parameters using the unified constructor RNG sequence, then replace only the bath. Never reset training field or posterior precision.",
-      "conclusion": "Training launched; no trained outcome yet. Compare validation NLL at matched updates and DC/spatial energy shares.",
+      "conclusion": "Stopped at update680 for numerical learning instability; last and best checkpoint saved at500. Validation500 NLL10.27199, spatial share89.30%. This is a failed gradient regime, not a capability verdict on quadratic bath. Preclip gradients reach3.93e10 while forward field energy remains bounded.",
       "invalidation": "Retaining spatial energy without improving matched-budget NLL does not establish a language benefit. Surface non-finite loss instead of silently modifying the architecture.",
       "artifacts": [
         "configs/information_boltzmann/q8_w4_quadratic_k16_execv2.json",
         "results/q8_w4_quadratic_k16_3000_execv2",
-        "tests/test_field_energy_statistics.py"
+        "tests/test_field_energy_statistics.py",
+        "scripts/ib/audit_belief_gradient_feedback.py",
+        "results/published/quad_bath_gradient_feedback_500.json",
+        "results/published/quad_bath_gradient_feedback_native_500.json",
+        "results/published/quad_bath_gradient_history.json"
       ],
       "issues": [
-        "Warm-local evaluation: four sites, 256-token burn-in and 128 scored tokens/site from a mature NESS spectrum. Numerical execution acceleration is not capability evidence."
+        "Warm-local evaluation: four sites, 256-token burn-in and 128 scored tokens/site from a mature NESS spectrum. Numerical execution acceleration is not capability evidence.",
+        "Same checkpoint500 and32 real OWT tokens: unchanged forward loss21.15828; full gradient1.45249e8, detaching address feedback3206.80, detaching collision state-to-angle feedback229.62, both33.25. Backward-only diagnosis, not a replacement training rule. Native collision also amplifies to4.41298e7; FP32 trajectory sensitivity changes loss by0.01089 between native/fused paths, so kernel equivalence cannot be inferred over this unstable rollout."
       ]
     },
     {
@@ -1907,6 +1912,79 @@
       ],
       "confidence": "I",
       "confidence_note": "Recorded prior-session probe aggregated; not independently re-executed."
+    },
+    {
+      "id": "IB_W4_TIME_REPAIR_20261002",
+      "parent": "IB_W4_QUAD_EXEC_20261002",
+      "title": "Separate physical event duration from integration resolution",
+      "status": "active",
+      "time": "2026-10-02",
+      "confidence": "I",
+      "motivation": "Quadratic bath preserved spatial structure but T64 exposed recurrent adjoint expansion. An unchanged-feedback audit at reference duration3 lowers the first chunk gradient from1.45249e8 to25.4163.",
+      "action": "Declare T independently of K; dt=T/K also when evaluation overrides K. Keep full write/address/collision gradients and quadratic bath. Fresh 3000-update W4 joint OWT run at T3/K16/chunk32 with matched initialization and raw/actual gradient monitoring.",
+      "conclusion": "Numerical timing and full-gradient checks pass; fresh training active. The physical-duration intervention changes the model trajectory and is not a bath-only comparison or a proof of infinite-time stability.",
+      "issues": [
+        "Four persistent diagnostic chunks at T3 have raw norm25.42,45.00,184.39,2777.08, so continuing gradient monitoring is required.",
+        "No detach diagnostic is used during training. This is a fixed reference T baseline; adaptive active-inference timing remains a separate later mechanism.",
+        "Full suite668 passed,1 skipped,1 historical missing-checkpoint fixture failure; subsequent field-only and pondering regression checks13 passed."
+      ],
+      "artifacts": [
+        "configs/information_boltzmann/q8_w4_quadratic_t3_k16.json",
+        "docs/information_boltzmann/PHYSICAL_EVENT_TIME.md",
+        "tests/test_port_event_timing.py",
+        "results/q8_w4_quadratic_t3_k16_3000",
+        "results/published/quad_bath_gradient_duration3_multiwindow_500.json"
+      ],
+      "invalidation": "Reject the duration/resolution separation if fresh training with the separated axes fails to reproduce the prior single-axis trajectory quality at matched budget, or if the physical-duration intervention proves to change nothing measurable in the trajectory."
+    },
+    {
+      "id": "IB_W4_READ_PROBES_20261002",
+      "parent": "IB_W4_TIME_REPAIR_20261002",
+      "title": "Learnable periodic read priors and dimension-scaled semantic evidence",
+      "status": "active",
+      "time": "2026-10-02",
+      "confidence": "I",
+      "motivation": "The atlas reader remains near uniform even on spatially structured quadratic-bath fields. Recorded query-level diagnosis excludes head averaging as the main explanation.",
+      "action": "Add explicit learned_probes aperture variant: continuous torus coordinate prior, cosine QK scale sqrt(head_dim), periodic position scale sqrt(6), and equal initial contributions from all queries. Preserve field-conditioned categorical prior/posterior, physical kinetic observations and all other operators. User authorized a fresh 3000-update joint run; started results/q8_w4_quadratic_t3_learned_read_3000 with this variant on 2026-10-02.",
+      "conclusion": "Implementation and numerical gradient tests completed; matched full-training benefit remains to be evaluated. Entropy is monitored, never imposed as an optimization target.",
+      "issues": [
+        "Historical atlas checkpoints keep exact parameterization and resume behavior. New checkpoints record aperture type for evaluation.",
+        "The currently running q8_w4_quadratic_t3_k16_3000 remains the unchanged atlas control.",
+        "Numerical compiled CUDA Graph forward/backward passed. Full suite681 passed,1 skipped,1 historical missing-checkpoint fixture failure; subsequent reader-only common-parameter initialization check passed."
+      ],
+      "artifacts": [
+        "docs/information_boltzmann/LEARNED_READ_PROBES.md",
+        "configs/information_boltzmann/q8_w4_quadratic_t3_learned_read.json",
+        "tests/test_learned_read_probes.py",
+        "results/q8_w4_quadratic_t3_learned_read_3000"
+      ],
+      "invalidation": "Reject the learnable periodic read priors if matched full training shows no NLL benefit over the existing readout at equal budget, or if the semantic-evidence scaling degrades gradient stability."
+    },
+    {
+      "id": "IB_FLY_LEVEL0_RESERVOIR_20260930",
+      "parent": "IB_Q8_MAIN_ARCH_20260930",
+      "title": "Level-0 fly reservoir: frozen MaleCNS wiring on the registered language protocol",
+      "status": "active",
+      "time": "2026-09-30",
+      "motivation": "The user's design fork: use the evolved brain directly for language instead of bolting on external dynamics. The published biofidelic reservoir (arXiv 2507.10951) used the 3000-neuron LARVAL connectome; no frozen-reservoir language run exists on the complete adult male CNS. The frozen wiring is also immune to the spatial collapse that flattened the learned torus line: structure conservation is guaranteed by freezing, not hoped for from an objective.",
+      "action": "Build the full-neuron signed sparse graph from MaleCNS v1.0 (165,122 neurons, 25,563,096 edges after pair aggregation, spectral radius normalized to 1, neurotransmitter sign convention recorded); implement the LIF reservoir with broadcast input projection and weighted readout (only those plus the tied embedding are trained); run 3000 registered OWT updates with CUDA-graph-captured chunks (CSR sparse.mm backward and three other capture hazards were identified and replaced with index_add and a memory-lean custom synaptic function); record vital signs (firing rate, activity/input/output participation ratios) every validation.",
+      "conclusion": "Structural at launch: first adult-CNS-scale frozen-connectome language run. Initial validation 10.817 matches sibling arms; firing rate 0.0012 after the threshold rescale (the vital-sign suite caught a cold-start where the threshold exceeded the drive scale and the wiring transmitted nothing). No capability claim.",
+      "issues": [
+        "LIF spiking with surrogate gradients through 32-step BPTT runs at 3.68 s per 128-token update; the gather-scatter backward is the cost and a reduceat-based transmission is the identified speedup.",
+        "Whether the evolved wiring contributes beyond the trained I/O path is the registered question: the degree-preserving random-wiring control remains mandatory before any topology claim.",
+        "Firing rate near zero at initialization risks a silent dead-wiring regime; the vital-sign suite exists precisely to catch this.",
+        "The three earlier capture hazards (per-call COO-to-CSR conversion, float() host sync inside the captured region, a data-dependent python branch) are documented for future graph-captured arms."
+      ],
+      "invalidation": "Downgrade level 0 if it cannot beat an identically-trained degree-preserving random-wiring control on the same protocol; the ladder then continues from level 1 with no wiring-prior claim.",
+      "artifacts": [
+        "information_boltzmann/core/fly_reservoir.py",
+        "scripts/ib/build_fly_reservoir_graph.py",
+        "scripts/ib/train_fly_reservoir.py",
+        "tests/test_fly_reservoir.py",
+        "configs/information_boltzmann/q8_fly_reservoir_level0.json"
+      ],
+      "confidence": "I",
+      "confidence_note": "Launched, not concluded; vital signs healthy at step 90."
     }
   ],
   "status_migration_note": "Normalize historical workflow labels for repository validator; original labels retained as legacy_status. No new experimental conclusions introduced.",
