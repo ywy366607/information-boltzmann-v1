@@ -2034,6 +2034,27 @@
       ],
       "confidence": "I",
       "confidence_note": "Launched, smoke-tested; the routing-learning question is open."
+    },
+    {
+      "id": "IB_FLY_OUTPUT_READ_20260930",
+      "parent": "IB_FLY_ROUTED_SURFACES_20260930",
+      "title": "Action-surface read: the 2,333 output neurons as the read bottleneck",
+      "status": "active",
+      "time": "2026-09-30",
+      "motivation": "The user's read-competition principle taken to its biological extreme: reading from the annotated action surface (motor, descending, endocrine output neurons) instead of the full 149k non-injected surface. The action surface is where behavior lives in the embodied vision, and its scarcity (2,333 of 165k) maximizes read competition.",
+      "action": "Add the output read surface to FlyReservoirLM (fixed mask over the nine output-class superclasses); run 3000 registered updates with sensory injection and output-surface readout, queued behind the routed-interneuron arm.",
+      "conclusion": "Structural at launch; no trained result.",
+      "issues": [
+        "A 2,333-neuron read bottleneck is the sharpest scarcity in the ladder; if it matches the interneuron-surface arm, read scarcity is not binding and the routing itself is the mechanism.",
+        "The output classes include endocrine/efferent neurons whose language role is undefined; the mask is recorded in the config for later ablation."
+      ],
+      "invalidation": "Treat the sharp read as harmful if this arm's trajectory stays over 0.5 nats worse than the routed-interneuron arm at matched steps.",
+      "artifacts": [
+        "information_boltzmann/core/fly_reservoir.py",
+        "configs/information_boltzmann/q8_fly_reservoir_output_read.json"
+      ],
+      "confidence": "I",
+      "confidence_note": "Queued, not run."
     }
   ],
   "status_migration_note": "Normalize historical workflow labels for repository validator; original labels retained as legacy_status. No new experimental conclusions introduced.",

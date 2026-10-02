@@ -1,0 +1,26 @@
+{
+  "name": "q8_fly_reservoir_output_read",
+  "status": "active_sharp_read_arm",
+  "parent_line": "fly-connectome ladder (routing enforced v3: action-surface read)",
+  "purpose": "Read bottleneck sharpened to the biological ACTION surface: the readout sees only the 2,333 output-class neurons (vnc_motor 708, descending 1,314, cb_motor 107, endocrine/efferent 204) - 1.4 percent of the population and 64x scarcer than the interneuron surface. Injection stays on the 15,912 sensory neurons. Write and read surfaces are disjoint AND the read is scarce: every bit of task information must be routed through the frozen wiring onto a tiny output population.",
+  "training": {
+    "dataset": "OpenWebText GPT-2 BPE",
+    "optimizer_updates": 3000,
+    "real_tokens_per_update": 128,
+    "bptt_chunk_tokens": 32,
+    "lr": 0.0003,
+    "trained": "sensory input projection (128->15,912), output weighted readout (2,333->128), tied embedding"
+  },
+  "evaluation": {
+    "protocol": "IB-warm-local-language-v1 reservoir variant",
+    "sites": [
+      8192,
+      12288,
+      16384,
+      20480
+    ],
+    "warm_in_tokens": 256,
+    "scored_tokens_per_site": 128
+  },
+  "falsifiable_expectation": "Sharper read competition should force stronger routing specialization: if NLL reaches the routed-interneuron arm's level or better, the scarce action-surface read is sufficient; wiring perturbation probes must show large nonzero deltas (the only pathway)."
+}

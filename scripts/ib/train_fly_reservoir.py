@@ -109,7 +109,7 @@ def main() -> None:
                         help="broadcast drives every neuron; sensory drives "
                              "only the 15,912 annotated sensory neurons - "
                              "information must then flow through the wiring")
-    parser.add_argument("--read-surface", choices=("all", "interneuron"),
+    parser.add_argument("--read-surface", choices=("all", "interneuron", "output"),
                         default="all",
                         help="interneuron: the readout sees only non-injected "
                              "neurons - write and read surfaces are separated")

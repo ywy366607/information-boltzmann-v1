@@ -90,6 +90,9 @@ class FlyReservoirLM(nn.Module):
                        "sensory_ascending", "sensory_descending",
                        "cb_sensory_tbc", "vnc_sensory_tbc",
                        "sensory_ascending_tbc")
+    OUTPUT_CLASSES = ("cb_motor", "vnc_motor", "descending_neuron",
+                      "cb_efferent", "vnc_efferent", "efferent_ascending",
+                      "efferent_descending", "cb_endocrine", "vnc_endocrine")
 
     def __init__(self, graph_npz: str | Path, vocab_size: int = 50257,
                  d_model: int = 128, leak: float = 0.9, threshold: float = 0.1,
@@ -139,6 +142,14 @@ class FlyReservoirLM(nn.Module):
         if read_surface == "interneuron":
             read_mask = np.ones(self.n_neurons, dtype=np.float32)
             read_mask[injection_index] = 0.0
+        elif read_surface == "output":
+            # The biological action surface: motor, descending and endocrine
+            # output neurons only (~2.3k of 165k) - the sharpest read
+            # bottleneck in the ladder.
+            read_mask = np.zeros(self.n_neurons, dtype=np.float32)
+            for name in self.OUTPUT_CLASSES:
+                if name in superclass_names:
+                    read_mask[superclass_id == superclass_names.index(name)] = 1.0
         elif read_surface == "all":
             read_mask = np.ones(self.n_neurons, dtype=np.float32)
         else:
