@@ -516,13 +516,31 @@ class PredictiveImpedanceWriteAgent(nn.Module):
     branches may sample that same posterior without changing the port law.
     """
 
-    def __init__(self, d: int, vocab_size: int, port_modes: int = 8) -> None:
+    def __init__(self, d: int, vocab_size: int, port_modes: int = 8,
+                 exchange: str = 'global', local_shape=None, port_radius=None,
+                 activity_adaptation: bool = False) -> None:
         super().__init__()
+        if exchange not in ('global', 'contact_mode'):
+            raise ValueError('exchange must be global or contact_mode')
+        self.exchange = exchange
         self.d = int(d)
         self.vocab_size = int(vocab_size)
         self.port_modes = int(port_modes)
         if self.port_modes not in (8, 27):
             raise ValueError("Predictive impedance supports the Q8 or Q27 Fourier chart")
+        self.local_ports = None
+        self.activity_adaptation = bool(activity_adaptation)
+        if activity_adaptation and local_shape is None:
+            raise ValueError('Activity competition requires local write ports')
+        if activity_adaptation:
+            self.log_activity_sensitivity = nn.Parameter(torch.zeros(()))
+        if local_shape is not None:
+            if exchange != 'contact_mode':
+                raise ValueError('Compact spatial ports require contact-mode exchange')
+            from .local_ports import CompactTorusPorts
+            self.local_ports = CompactTorusPorts(local_shape, self.port_modes, port_radius)
+            self.local_content = nn.Linear(d, d, bias=False)
+            nn.init.normal_(self.local_content.weight, std=1 / math.sqrt(d))
         self.port_prior = nn.Sequential(
             nn.Linear(2 * d, 2 * d), nn.SiLU(), nn.Linear(2 * d, d))
         self.port_logit_bias = nn.Parameter(torch.zeros(vocab_size))
@@ -577,9 +595,22 @@ class PredictiveImpedanceWriteAgent(nn.Module):
         mean_sq = ((posterior_mean - prior_mean) / prior_std).square()
         return 0.5 * (ratio_sq + mean_sq - 1.0 - ratio_sq.log()).mean()
 
+    def chart_policy(self, prior_features, port_activity=None):
+        """Relative local inhibition biases spatial choice, not input amplitude.
+
+        Equal activity at every port cancels in softmax. Sensitivity is positive
+        and learned; the unit initialization introduces no target firing rate.
+        """
+        logits = self.chart_gate(prior_features)
+        if self.activity_adaptation:
+            if port_activity is None or port_activity.shape != logits.shape:
+                raise ValueError('Local inhibition must match the write-port policy')
+            logits = logits - self.log_activity_sensitivity.exp() * port_activity
+        return logits.softmax(-1)
+
     def _packet_chart(self, writer: FullRankTorusWrite, field: torch.Tensor,
                       prior_features: torch.Tensor,
-                      port_feature: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor,
+                      port_feature: torch.Tensor, port_activity=None) -> tuple[torch.Tensor, torch.Tensor,
                                                             torch.Tensor, torch.Tensor]:
         r"""Return the packet chart \(P(F,\varphi)\), exactly linear in \(\varphi\).
 
@@ -588,7 +619,23 @@ class PredictiveImpedanceWriteAgent(nn.Module):
         ``P(F, E[varphi]) == E[P(F, varphi)]`` exactly, which is the required
         bridge from a categorical prediction to a physical innovation port.
         """
-        gate = torch.softmax(self.chart_gate(prior_features), dim=-1)
+        gate = self.chart_policy(prior_features, port_activity)
+        if self.local_ports is not None:
+            ports = self.local_ports
+            footprint = ports.footprint().to(field)
+            relative = ports.coordinates.to(field)[None] - ports.centers[:, None]
+            phase = 2.0 * math.pi * (relative * self.mode_vectors.to(field)[:, None]).sum(-1)
+            basis = footprint * phase.cos()
+            basis = basis / torch.linalg.vector_norm(basis, dim=-1, keepdim=True).clamp_min(
+                torch.finfo(field.dtype).eps) * math.sqrt(ports.coordinates.shape[0])
+            local_state = ports.observe(field.flatten(1, 3))
+            modulation = 1.0 + self.local_content(F.rms_norm(local_state, (self.d,))).tanh()
+            feature_by_mode = port_feature[:, self.channel_permutations] * modulation
+            packet = torch.einsum('bp,pn,bpd->bnd', gate, basis, feature_by_mode)
+            packet = packet.reshape_as(field) * writer.channel_scale
+            support = torch.einsum('bp,pn->bn', gate, footprint).reshape(field.shape[:-1])
+            # Return all persistent centers: no state-dependent global anchor.
+            return packet, support, ports.centers[None].expand(field.shape[0], -1, -1), gate
         anchor = writer.field_anchor(field)
         relative = writer.coordinates.to(field) - anchor[:, None, None, None, :]
         phase = 2.0 * math.pi * torch.einsum(
@@ -607,20 +654,25 @@ class PredictiveImpedanceWriteAgent(nn.Module):
                 token_ids: torch.Tensor, precision: torch.Tensor,
                 *, predicted_feature: Optional[torch.Tensor] = None,
                 token_features: Optional[torch.Tensor] = None,
-                return_diag: bool = True):
+                port_activity: Optional[torch.Tensor] = None,
+                return_diag: bool = True,
+                training_terms: bool = False):
         """Apply one posterior innovation write and update precision.
 
         ``predicted_feature`` exists only for analytical tests and controlled
         interventions.  The ordinary causal path derives it from a categorical
         distribution before inspecting ``token_ids``.  ``token_features`` may
         carry the unit-normalized embedding table computed once per sequence
-        segment; when omitted it is recomputed here.
+        segment; when omitted it is recomputed here. ``training_terms=True``
+        retains the differentiable port objective when public monitoring is
+        skipped, so monitoring frequency cannot change the learning rule.
         """
         if precision.shape != (field.shape[0], self.d):
             raise ValueError(
                 f"Expected precision {(field.shape[0], self.d)}, got {tuple(precision.shape)}")
         eps = torch.finfo(field.dtype).eps
-        field_summary = field.mean((1, 2, 3))
+        field_summary = (field.mean((1, 2, 3)) if self.local_ports is None else
+                         self.local_ports.observe(field.flatten(1, 3)).mean(1))
         log_precision = precision.clamp_min(eps).log()
         prior_features = torch.cat((F.rms_norm(field_summary, (self.d,)), log_precision), -1)
 
@@ -642,12 +694,16 @@ class PredictiveImpedanceWriteAgent(nn.Module):
         predicted_feature = (expected_feature if predicted_feature is None
                              else predicted_feature)
         observed_feature = token_features[token_ids]
-        observed_packet, support, anchor, chart_gate = self._packet_chart(
-            writer, field, prior_features, observed_feature)
-        predicted_packet, _, _, _ = self._packet_chart(
-            writer, field, prior_features, predicted_feature)
-        innovation = observed_packet - predicted_packet
-        innovation_summary = innovation.square().mean((1, 2, 3)).sqrt()
+        # The chart depends only on the pre-event belief and is linear in
+        # port features: P(phi_observed) - P(E[phi]) = P(phi_observed-E[phi]).
+        # Share its geometry/gate evaluation and backward graph across both
+        # sides of the innovation without changing the categorical prior.
+        innovation, support, anchor, chart_gate = self._packet_chart(
+            writer, field, prior_features, observed_feature - predicted_feature, port_activity)
+        # vector_norm defines a zero subgradient for a null innovation; the
+        # equivalent sqrt(mean(square)) has an infinite derivative at zero.
+        innovation_summary = torch.linalg.vector_norm(
+            innovation, dim=(1, 2, 3)) / math.sqrt(math.prod(field.shape[1:4]))
 
         posterior_features = torch.cat((
             F.rms_norm(field_summary, (self.d,)), log_precision,
@@ -670,24 +726,45 @@ class PredictiveImpedanceWriteAgent(nn.Module):
         event_norm = (
             innovation.square() * posterior_precision[:, None, None, None, :]
         ).sum(-1).mean((1, 2, 3)).clamp_min(eps * eps).sqrt()
-        theta = torch.atan(admittance * event_norm[:, None])
-        cosine, sine = theta.cos(), theta.sin()
         # Division-free unit-mode rotation: sin(theta) * delta/||delta||_Pi
         # equals admittance * delta / sqrt(1 + admittance^2 ||delta||_Pi^2),
         # which stays finite and smooth at zero innovation.
-        denominator = (1.0 + (admittance * event_norm[:, None]).square()).sqrt()
-        field_next = (
-            cosine[:, None, None, None, :] * field
-            + (admittance / denominator)[:, None, None, None, :] * innovation)
-        # Reflection is boundary ledger only and never enters the readout;
-        # its unit-mode factorization is safe because the ledger is detached.
         unit_mode = innovation / event_norm[:, None, None, None, None]
-        reflected = (
-            -sine[:, None, None, None, :] * field
-            + cosine[:, None, None, None, :] * unit_mode)
+        if self.exchange == 'contact_mode':
+            from .mode_port import scatter_contact_mode
 
-        if not return_diag:
+            # The learned channel action shapes one complete contacted packet.
+            # Its norm sets the event angle without a fixed threshold or an
+            # extra time loop. The incident's physical norm retains the old
+            # precision-normalized packet energy budget.
+            coupling = innovation * (
+                admittance * posterior_precision.sqrt())[:, None, None, None, :]
+            incident = unit_mode.flatten(1).norm(dim=-1) / math.sqrt(
+                math.prod(field.shape[1:4]))
+            field_next, outgoing, contact_radius_squared = scatter_contact_mode(
+                field, coupling, incident)
+            reflected = outgoing[:, None, None, None, None]
+        else:
+            # Historical full-field exchange remains explicit for old runs.
+            theta = torch.atan(admittance * event_norm[:, None])
+            cosine, sine = theta.cos(), theta.sin()
+            denominator = (1.0 + (admittance * event_norm[:, None]).square()).sqrt()
+            field_next = (
+                cosine[:, None, None, None, :] * field
+                + (admittance / denominator)[:, None, None, None, :] * innovation)
+            reflected = (
+                -sine[:, None, None, None, :] * field
+                + cosine[:, None, None, None, :] * unit_mode)
+
+        if not return_diag and not training_terms:
             return field_next, posterior_precision, reflected, {}
+
+        port_nll = F.cross_entropy(port_logits, token_ids)
+        policy_kl = self._normal_kl(
+            prior_mean, prior_std, posterior_mean, posterior_std)
+        if not return_diag:
+            return field_next, posterior_precision, reflected, {
+                "_write_free_energy": port_nll + policy_kl}
 
         innovation_energy = writer.energy(innovation)
         incident_energy = writer.energy(unit_mode)
@@ -697,13 +774,21 @@ class PredictiveImpedanceWriteAgent(nn.Module):
         # 1 - reflected/incident it stays a true fraction once the field
         # itself carries energy: the reflected wave then contains the field
         # bounce as well, which belongs to the ledger, not to the fraction.
-        transmitted_fraction = (
-            posterior_precision[:, None, None, None, :] * unit_mode.square()
-            * sine[:, None, None, None, :].square()
-        ).sum(-1).mean((1, 2, 3)).mean()
-        port_nll = F.cross_entropy(port_logits, token_ids)
-        policy_kl = self._normal_kl(
-            prior_mean, prior_std, posterior_mean, posterior_std)
+        if self.exchange == 'contact_mode':
+            transmitted_fraction = (contact_radius_squared / (
+                1.0 + contact_radius_squared)).mean()
+            theta = torch.atan(contact_radius_squared.sqrt())
+            volume = 1.0 / math.prod(field.shape[1:4])
+            contact = (coupling * field).flatten(1).sum(-1) * volume
+            interference = (2.0 * contact * incident / (1.0 + contact_radius_squared)).mean()
+            peak_angle = theta.max()
+        else:
+            transmitted_fraction = (
+                posterior_precision[:, None, None, None, :] * unit_mode.square()
+                * sine[:, None, None, None, :].square()
+            ).sum(-1).mean((1, 2, 3)).mean()
+            interference = (torch.sin(2.0 * theta)[:, None, None, None, :] * field * unit_mode).sum(-1).mean()
+            peak_angle = theta.detach().abs().amax(dim=1).mean()
         balance = (writer.energy(field_next) + writer.energy(reflected)
                    - writer.energy(field) - incident_energy).abs()
         diag = {
@@ -713,14 +798,12 @@ class PredictiveImpedanceWriteAgent(nn.Module):
             "accepted_fraction": transmitted_fraction.detach(),
             "t_packet": transmitted_fraction.detach(),
             "delta_e_field": (writer.energy(field_next) - writer.energy(field)).detach(),
-            "cross_interference": (
-                torch.sin(2.0 * theta)[:, None, None, None, :] * field * unit_mode
-            ).sum(dim=-1).mean().detach(),
+            "cross_interference": interference.detach(),
             "write_to_f_ratio": (
                 (field_next - field).norm(dim=-1).mean()
                 / field.norm(dim=-1).mean().clamp_min(eps)).detach(),
             "write_angle_abs_mean": theta.detach().abs().mean(),
-            "write_angle_peak_mean": theta.detach().abs().amax(dim=1).mean(),
+            "write_angle_peak_mean": peak_angle.detach(),
             "write_spatial_support": (support.detach() > 0.1).float().mean(),
             "write_balance_residual": balance.detach(),
             "source_center": anchor.detach(),
@@ -743,6 +826,29 @@ class PredictiveImpedanceWriteAgent(nn.Module):
             "posterior_precision_mean": posterior_precision.detach().mean(),
             "write_admittance_mean": admittance.detach().mean(),
         }
+        if self.local_ports is not None:
+            diag['source_center'] = self.local_ports.centers.detach().remainder(1.0)
+            diag['write_port_weights'] = self.local_ports.weights().detach()
+            diag['write_port_gate'] = chart_gate.detach()
+            diag['write_spatial_support'] = (support > 0).float().mean().detach()
+        if self.exchange == 'contact_mode':
+            # Hold the incident and coupling fixed to measure preservation of
+            # the actual old-field component, rather than the full Jacobian.
+            volume = 1.0 / math.prod(field.shape[1:4])
+            contact = (coupling * field).flatten(1).sum(-1) * volume
+            denominator = (1.0 + contact_radius_squared).sqrt()
+            retained = field - coupling * (
+                contact / (denominator * (denominator + 1.0)))[:, None, None, None, None]
+            old_power = field.square().flatten(1).sum(-1)
+            diag['old_field_direct_energy_retention'] = (
+                retained.square().flatten(1).sum(-1) / old_power.clamp_min(eps)).mean().detach()
+            diag['cross_interference'] = (
+                2.0 * contact * incident / (1.0 + contact_radius_squared)).mean().detach()
+        else:
+            old_power = field.square().flatten(1).sum(-1)
+            retained = field * cosine[:, None, None, None, :]
+            diag['old_field_direct_energy_retention'] = (
+                retained.square().flatten(1).sum(-1) / old_power.clamp_min(eps)).mean().detach()
         return field_next, posterior_precision, reflected, diag
 
 
@@ -833,6 +939,23 @@ class VelocityCayleyTransport3D(nn.Module):
             return (value if isinstance(delta_tau, torch.Tensor) else value[None]), omega
 
     @staticmethod
+    def real_field_multiplier(multiplier: torch.Tensor, shape: tuple[int, int, int]):
+        """Effective symbol of an rFFT/real-iFFT map at the boundary planes.
+
+        irfftn projects kz=0/Nyquist onto conjugate-symmetric xy spectra.
+        Compose this effective symbol, including that projection, so fusion
+        preserves the existing map even for a learned Nyquist residual.
+        """
+        nx, ny, nz = shape
+        reverse_x = (-torch.arange(nx, device=multiplier.device)) % nx
+        reverse_y = (-torch.arange(ny, device=multiplier.device)) % ny
+        reflected = multiplier.index_select(1, reverse_x).index_select(2, reverse_y).conj()
+        z = torch.arange(nz, device=multiplier.device)
+        boundary = (z == 0) | ((z == nz // 2) if nz % 2 == 0 else (z == -1))
+        return torch.where(boundary.view(1, 1, 1, nz, 1),
+                           0.5 * (multiplier + reflected), multiplier)
+
+    @staticmethod
     def apply_multiplier(field: torch.Tensor, multiplier: torch.Tensor):
         # Half-spectrum transform for real fields: the dispersion is odd in
         # k (sin-wavenumber baseline), so the Cayley multiplier is Hermitian
@@ -879,6 +1002,18 @@ class LocalInvariantCollision3D(nn.Module):
         self.register_buffer("constraints", constraints, persistent=False)
         self.register_buffer("nullspace", nullspace, persistent=False)
         self.register_buffer("schedules", torch.stack(schedules), persistent=False)
+        # The SVD completion differs from the trailing identity in rank four.
+        # Factor the *same* basis, retaining every nullspace coordinate. This
+        # accelerates its application without restricting learned scattering.
+        trailing_identity = torch.eye(self.d, dtype=nullspace.dtype)[:, rank:]
+        delta = nullspace - trailing_identity
+        left, singular_delta, right = torch.linalg.svd(delta, full_matrices=False)
+        factor_left = (left[:, :4] * singular_delta[:4]).contiguous()
+        factor_right = right[:4].T.contiguous()
+        factor_error = (delta - factor_left @ factor_right.T).abs().amax()
+        self._structured_projection = rank == 4 and float(factor_error) < 1e-12
+        self.register_buffer("projection_left", factor_left, persistent=False)
+        self.register_buffer("projection_right", factor_right, persistent=False)
         self.norm = nn.LayerNorm(self.d)
         self.register_buffer(
             "position_features", torus_features(torus_grid(self.shape)).reshape(-1, 6),
@@ -895,12 +1030,26 @@ class LocalInvariantCollision3D(nn.Module):
             self._triton_givens = _triton_givens
         except Exception:
             self._triton_givens = None
+        try:
+            from .triton_projection import (
+                NullspaceProjection, NullspaceReconstruction, supports_projection)
+            self._projection_ops = (
+                NullspaceProjection, NullspaceReconstruction, supports_projection)
+        except ImportError:
+            self._projection_ops = None
 
     def forward(self, field: torch.Tensor, delta_tau: float | torch.Tensor = 1.0):
         batch = field.shape[0]
         flat = field.reshape(batch, -1, self.d)
         nullspace = self.nullspace.to(dtype=flat.dtype)
-        coefficient = torch.einsum("dk,bnd->bnk", nullspace, flat)
+        structured = (self._structured_projection and self._projection_ops is not None
+                      and self._projection_ops[2](flat))
+        if structured:
+            factor_left = self.projection_left.to(flat)
+            factor_right = self.projection_right.to(flat)
+            coefficient = self._projection_ops[0].apply(flat, factor_left, factor_right)
+        else:
+            coefficient = torch.einsum("dk,bnd->bnk", nullspace, flat)
         # One projection application instead of two: subtracting the rotated
         # nullspace coordinates from the raw coefficients and re-adding through
         # the nullspace basis equals conserved + N @ value with one fewer
@@ -918,20 +1067,9 @@ class LocalInvariantCollision3D(nn.Module):
             dt = float(delta_tau)
         scaled_angles = angles * dt
         if self._triton_givens is not None:
-            try:
-                value = self._triton_givens(coefficient, scaled_angles)
-            except Exception:
-                self._triton_givens = None
-                value = coefficient
-                for layer in range(self.layers):
-                    pair = self.schedules[layer]
-                    left, right = value[..., pair[:, 0]], value[..., pair[:, 1]]
-                    theta = scaled_angles[:, :, layer]
-                    cosine, sine = theta.cos(), theta.sin()
-                    updated = value.clone()
-                    updated[..., pair[:, 0]] = cosine * left - sine * right
-                    updated[..., pair[:, 1]] = sine * left + cosine * right
-                    value = updated
+            # Dispatch handles native layouts itself. Kernel failures surface
+            # here rather than silently disabling the optimized training path.
+            value = self._triton_givens(coefficient, scaled_angles)
         else:
             value = coefficient
             for layer in range(self.layers):
@@ -943,7 +1081,11 @@ class LocalInvariantCollision3D(nn.Module):
                 updated[..., pair[:, 0]] = cosine * left - sine * right
                 updated[..., pair[:, 1]] = sine * left + cosine * right
                 value = updated
-        output = flat + torch.einsum("dk,bnk->bnd", nullspace, value - coefficient)
+        if structured:
+            output = self._projection_ops[1].apply(
+                flat, value - coefficient, factor_left, factor_right)
+        else:
+            output = flat + torch.einsum("dk,bnk->bnd", nullspace, value - coefficient)
         coll_in_power = coefficient.square().sum(-1).mean()
         cons_in_power = (flat_power - coll_in_power).clamp_min(0.0)
         coll_out_power = value.square().sum(-1).mean()
@@ -1270,6 +1412,14 @@ class UnifiedKineticStateAgent:
             hoisted_phase = (
                 2.0 * torch.atan(0.5 * hoisted_transport[1] * tau_0)
             ).abs().mean()
+        # In T-C-B / B-C-T pairs, the ending T of an odd microstep is
+        # adjacent to the starting T of the next even one. With a fixed
+        # symbol, their exact composition uses multiplier**2 in one FFT
+        # pair. This is T(h) @ T(h), NOT a changed Cayley step T(2h).
+        paired_transport = (self.transport.real_field_multiplier(
+                                hoisted_transport[0], self.transport.shape).square()
+                            if hoisted_transport is not None and micro_steps > 2
+                            else None)
         hoisted_learned = (
             self.transport.learned_symbol()
             if not disable_transport and continuous_velocities else None)
@@ -1296,7 +1446,13 @@ class UnifiedKineticStateAgent:
                 if term == "transport" and not disable_transport:
                     if hoisted_transport is not None:
                         multiplier, _ = hoisted_transport
-                        field = self.transport.apply_multiplier(field, multiplier)
+                        if paired_transport is not None and index > 0 and index % 2 == 0:
+                            # Already applied together with the preceding T.
+                            pass
+                        elif paired_transport is not None and index % 2 == 1 and index + 1 < micro_steps:
+                            field = self.transport.apply_multiplier(field, paired_transport)
+                        else:
+                            field = self.transport.apply_multiplier(field, multiplier)
                         transport_phase.append(hoisted_phase)
                     else:
                         multiplier, omega = self.transport.multiplier(
@@ -1544,7 +1700,9 @@ class ReversibleHamiltonianPonderFunction(torch.autograd.Function):
         with torch.no_grad():
             for _ in range(micro_steps):
                 alpha = model.clock(curr, tok_embed) if model.adaptive_clock else model.tau_0_tensor
-                dt = alpha * model.tau_0_tensor if model.adaptive_clock else model.tau_0_tensor
+                base_dt = (model.tau_0_tensor * (model.micro_steps / micro_steps)
+                           if model.fixed_event_duration else model.tau_0_tensor)
+                dt = alpha * base_dt if model.adaptive_clock else base_dt
                 dir_k = model.direction_controller(curr, tok_embed) if model.continuous_velocities else None
                 mult, _ = model.transport.multiplier(dt, direction=dir_k, learned=cached_learned)
                 f_tr = model.transport.apply_multiplier(curr, mult)
@@ -1667,15 +1825,24 @@ class CBIMTorus3D(nn.Module):
                  three_clock=False, tau_mem=3.0,
                  spectral_write=None, nu_s_init=0.020,
                  decouple_source_feedback=None,
-                 reversible_ponder=None):
+                 reversible_ponder=None, event_duration=None,
+                 readout_aperture="atlas"):
         super().__init__()
         self.vocab_size, self.shape = vocab_size, tuple(shape)
         self.velocities, self.content_dim = velocities, content_dim
         self.d, self.L = velocities * content_dim, math.prod(shape)
         self.v2_coordinate_components = bool(v2_coordinate_components)
         self.readout_type = readout_type
+        self.readout_aperture = str(readout_aperture)
         self.write_type = str(write_type)
         self.micro_steps = int(micro_steps)
+        if self.micro_steps < 1:
+            raise ValueError("micro_steps must be positive")
+        self.fixed_event_duration = event_duration is not None
+        if self.fixed_event_duration:
+            if not math.isfinite(float(event_duration)) or float(event_duration) <= 0:
+                raise ValueError("event_duration must be finite and positive")
+            tau_0 = float(event_duration) / self.micro_steps
         self.adaptive_clock = bool(adaptive_clock)
         self.continuous_velocities = bool(continuous_velocities)
         self.dissipation_type = str(dissipation_type)
@@ -1771,7 +1938,9 @@ class CBIMTorus3D(nn.Module):
             from .readout_probes import PredictivePhysicalReadAgent
             self.readout = PredictivePhysicalReadAgent(
                 shape=shape, d=self.d, nullspace=self.collision.nullspace,
-                heads=heads, queries=queries)
+                heads=heads, queries=queries, aperture_type=self.readout_aperture)
+            if self.readout_aperture == "learned_probes":
+                self.architecture += "-learned-read-probes"
         else:
             raise ValueError(f"Unknown readout_type: {readout_type}")
 
@@ -1870,7 +2039,9 @@ class CBIMTorus3D(nn.Module):
              micro_steps=None, gamma0_factor=1.0,
              disable_viscosity=False, disable_subspace=False,
              precision: Optional[torch.Tensor] = None,
-             token_features: Optional[torch.Tensor] = None):
+             token_features: Optional[torch.Tensor] = None,
+             decode: bool = True,
+             write_diagnostics: bool = True):
         tok_embed = self.source.embedding(token_ids)
         # In the predictive-port branch, the observed event has exactly one
         # route into the field: the innovation boundary.  A token-conditioned
@@ -1885,11 +2056,19 @@ class CBIMTorus3D(nn.Module):
                     "use initial_belief() and belief_step()")
             field, posterior_precision, reflected, source_diag = self.write_agent(
                 self.source, field, token_ids, precision,
-                token_features=token_features)
+                token_features=token_features,
+                return_diag=write_diagnostics,
+                training_terms=not write_diagnostics)
         steps_to_run = int(micro_steps) if micro_steps is not None else self.micro_steps
+        if steps_to_run < 1:
+            raise ValueError("micro_steps must be positive")
+        # A resolution override changes dt, not the physical event duration.
+        # Old callers retain their explicit legacy per-step interpretation.
+        integration_dt = (self.tau_0_tensor * (self.micro_steps / steps_to_run)
+                          if self.fixed_event_duration else self.tau_0_tensor)
         field, state_diag = self.state_agent.evolve(
             field, posterior_precision, micro_steps=steps_to_run,
-            tau_0=self.tau_0_tensor,
+            tau_0=integration_dt,
             adaptive_clock=self.clock if self.adaptive_clock else None,
             direction_controller=self.direction_controller if self.continuous_velocities else None,
             token_embedding=tok_embed,
@@ -1943,7 +2122,10 @@ class CBIMTorus3D(nn.Module):
                 field, posterior_precision, return_diag=True)
         else:
             feature, _ = self.readout(field, tok_embed, return_diag=False)
-        logits = self.decoder(feature)
+        # A vocabulary projection does not feed the next physical event.
+        # Training can defer it until all causal features in a chunk exist;
+        # ordinary event inference still returns logits by default.
+        output = self.decoder(feature) if decode else feature
 
         if self.three_clock and not disable_bath:
             dt_mem = self.tau_mem * self.tau_0_tensor
@@ -1959,12 +2141,12 @@ class CBIMTorus3D(nn.Module):
             # Kept out of ordinary monitoring/JSON; ``belief_step`` carries
             # it into the next event as persistent posterior uncertainty.
             diagnostics["_posterior_precision"] = posterior_precision
-        return logits, field, diagnostics
+        return output, field, diagnostics
 
     def belief_step(self, belief: KineticBeliefState, token_ids: torch.Tensor,
                     *, include_private: bool = False,
                     **kwargs) -> tuple[torch.Tensor, KineticBeliefState, dict]:
-        """Advance a full W4 posterior belief through one observed event."""
+        """Advance a W4 belief; ``decode=False`` returns its read feature."""
         if self.write_agent is None:
             raise RuntimeError("belief_step requires write_type='w4_predictive_agent'")
         logits, field, diagnostics = self.step(
@@ -1996,25 +2178,26 @@ class CBIMTorus3D(nn.Module):
         batch, length = input_ids.shape
         belief = (self.initial_belief(batch, input_ids.device)
                   if belief is None else belief)
-        total_likelihood = input_ids.new_zeros((), dtype=torch.float32)
         total_free_energy = input_ids.new_zeros((), dtype=torch.float32)
         total_read_complexity = input_ids.new_zeros((), dtype=torch.float32)
         final_diagnostics = {}
+        read_features = []
         # One unit-normalized embedding read per sequence segment instead of
         # per event: the table only changes between optimizer updates, and
         # the single node carries the accumulated gradient of every use.
         token_features = F.normalize(self.source.embedding.weight, dim=-1)
         for index in range(length):
-            logits, belief, diagnostics = self.belief_step(
+            feature, belief, diagnostics = self.belief_step(
                 belief, input_ids[:, index],
                 include_private=True,
+                decode=False,
+                write_diagnostics=(index == length - 1),
                 token_features=token_features,
                 disable_transport=disable_transport,
                 disable_collision=disable_collision,
                 disable_bath=disable_bath,
                 micro_steps=micro_steps)
-            likelihood = F.cross_entropy(logits, targets[:, index])
-            total_likelihood = total_likelihood + likelihood
+            read_features.append(feature)
             total_free_energy = total_free_energy + diagnostics.pop("_write_free_energy")
             # The read prior/posterior is retained and monitored.  Its KL is
             # intentionally not folded into the token ELBO until the decoder
@@ -2023,11 +2206,16 @@ class CBIMTorus3D(nn.Module):
             total_read_complexity = total_read_complexity + diagnostics.pop(
                 "_read_action_complexity", total_read_complexity.new_zeros(()))
             final_diagnostics = diagnostics
-        loss = (total_likelihood + float(port_free_energy_weight)
-                * total_free_energy) / length
+        # Decode [B,L,D] in one GEMM, rather than L small vocabulary GEMMs.
+        # Every feature was already formed using only its causal prefix;
+        # the decoder acts independently on each row and never writes back.
+        logits = self.decoder(torch.stack(read_features, dim=1))
+        likelihood = F.cross_entropy(
+            logits.reshape(batch * length, -1), targets.reshape(batch * length))
+        loss = likelihood + float(port_free_energy_weight) * total_free_energy / length
         final_diagnostics = {
             **final_diagnostics,
-            "token_nll": (total_likelihood / length).detach(),
+            "token_nll": likelihood.detach(),
             "write_free_energy_mean": (total_free_energy / length).detach(),
             "read_action_complexity_mean": (total_read_complexity / length).detach(),
         }
@@ -2044,6 +2232,10 @@ class CBIMTorus3D(nn.Module):
         features, diagnostic_rows = [], []
         cached_learned = self.transport.learned_symbol()
         k_steps = int(micro_steps) if micro_steps is not None else self.micro_steps
+        if k_steps < 1:
+            raise ValueError("micro_steps must be positive")
+        integration_dt = (self.tau_0_tensor * (self.micro_steps / k_steps)
+                          if self.fixed_event_duration else self.tau_0_tensor)
 
         # 1. Static Projection Hoisting: Batch precompute token representations across all 128 tokens
         all_tok_embed = self.source.embedding(input_ids)
@@ -2080,10 +2272,10 @@ class CBIMTorus3D(nn.Module):
                 for _ in range(k_steps):
                     if self.adaptive_clock:
                         alpha_k = self.clock(field, tok_embed)
-                        dt_k = alpha_k * self.tau_0_tensor
+                        dt_k = alpha_k * integration_dt
                         alphas_k.append(alpha_k)
                     else:
-                        dt_k = self.tau_0_tensor
+                        dt_k = integration_dt
                     if self.continuous_velocities:
                         dir_k = self.direction_controller(field, tok_embed)
                         dirs_k.append(dir_k)

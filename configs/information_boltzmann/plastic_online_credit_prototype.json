@@ -1,0 +1,21 @@
+{
+  "name": "plastic_online_credit_prototype",
+  "status": "numerical_reference_high_variance",
+  "date": "2026-10-04",
+  "entrypoint": "scripts/ib/train_online_plastic.py",
+  "shape": [8, 8, 4],
+  "channels": 128,
+  "physical_law": "Existing compact-port conductance medium with activity adaptation and STP",
+  "learning": "UORO rank-compressed RTRL, exact local JVP/VJPs",
+  "rank": 1,
+  "execution": "graph",
+  "event_duration": 0.005,
+  "substeps": 1,
+  "bptt_window": null,
+  "credit_horizon": null,
+  "tokens_per_update": 128,
+  "historical_validation": "Frozen learner; mature physical clone per site, warm 256 then score 128; no reset",
+  "evaluation": "Current entry point: active prequential scoring plus actual continuous A/B/A; preserve the complete learner and optimizer",
+  "report": "results/published/plastic_online_credit_numerical.json",
+  "disposition": "Bounded learning-state interface verified. Global rank1 variance and cost require improvement before long capability training. Production learner remains unchanged."
+}

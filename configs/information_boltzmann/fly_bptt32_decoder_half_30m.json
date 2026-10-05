@@ -1,0 +1,22 @@
+{
+  "entry": "scripts/ib/train_fly_bptt_stream.py",
+  "resume": "results\\q8_fly_bptt32_adamw_continuous_100k\\last.pt",
+  "output": "results\\q8_fly_bptt32_adamw_continuous_100k",
+  "data": "data/ib_owt_gpt2_31m",
+  "additional_tokens": 30000000,
+  "extend_budget": true,
+  "window": 32,
+  "lr": 0.0002,
+  "lr_decoder": 0.0001,
+  "lr_synapse": 0.0002,
+  "lr_sensory": 0.0002,
+  "plasticity_optimizer": "adamw",
+  "validate_every_tokens": 100000,
+  "log_every_tokens": 1024,
+  "eval_tokens": 256,
+  "replay_tokens": 128,
+  "vram_limit_mib": 3900,
+  "never_reset": true,
+  "data_policy": "30M additional fresh train targets; no cursor wrap or repeated train documents; active validation and A revisits counted separately",
+  "resume_policy": "First launch uses --extend-budget. Subsequent recovery resumes same last.pt without --extend-budget to retain this exact 30M target."
+}

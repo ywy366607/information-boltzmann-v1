@@ -3,7 +3,8 @@
 This is the canonical trainer for the active Q8 port branch.  Every observed
 token updates one persistent posterior belief ``(field, precision)`` through
 the predictive write port; K=64 is the numerical resolution of its interior
-flow.  The run never resets the belief between training chunks.  Truncation
+flow. Physical event duration is declared independently of K and dt=T/K.
+The run never resets the belief between training chunks.  Truncation
 limits gradient history only and is recorded explicitly in the run config.
 
 The training objective is the joint realized port objective already defined by
@@ -31,8 +32,10 @@ ROOT = Path(__file__).resolve().parents[2]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from information_boltzmann.core.torus3d import CBIMTorus3D, KineticBeliefState
-from information_boltzmann.evaluation import WarmSiteSpec
+from information_boltzmann.core.torus3d import (
+    CBIMTorus3D, KineticBeliefState, QuadraticTorusBath,
+)
+from information_boltzmann.evaluation import WarmSiteSpec, field_energy_statistics
 from scripts.ib.evaluate_continuous_owt import evaluate_warm_sites
 
 
@@ -141,6 +144,10 @@ class TruncatedBeliefGraphTrainer:
             torch.nn.utils.clip_grad_norm_(group, self.max_grad_norm, foreach=True)
             for group in self.gradient_groups
         ))
+        self.post_clip_group_norms = torch.stack(tuple(
+            torch.linalg.vector_norm(torch.stack(torch._foreach_norm([
+                parameter.grad for parameter in group if parameter.grad is not None])))
+            for group in self.gradient_groups))
         self.grad_norm = self.group_grad_norms.square().sum().sqrt()
         if not torch.isfinite(self.grad_norm):
             raise FloatingPointError("Non-finite gradient norm")
@@ -162,6 +169,24 @@ def _float(value: torch.Tensor | float | int | None) -> float | None:
     return float(value.detach().float().mean().cpu()) if isinstance(value, torch.Tensor) else float(value)
 
 
+def resolve_event_timing(micro_steps: int, event_duration: float | None,
+                         legacy_dt: float | None) -> tuple[float, float]:
+    """Separate physical time from resolution; 3 is the historical K3 scale.
+
+    This is a declared reference duration, not a criticality constant.
+    Explicit legacy dt remains available for archived-run reproduction.
+    """
+    if micro_steps < 1:
+        raise ValueError("micro_steps must be positive")
+    if event_duration is not None and legacy_dt is not None:
+        raise ValueError("Choose --event-duration or legacy --tau-0, not both")
+    duration = (float(event_duration) if event_duration is not None else
+                micro_steps * float(legacy_dt) if legacy_dt is not None else 3.0)
+    if not math.isfinite(duration) or duration <= 0:
+        raise ValueError("Physical event duration must be finite and positive")
+    return duration, duration / micro_steps
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--data", type=Path, default=Path("data/ib_owt_gpt2"))
@@ -173,15 +198,20 @@ def main() -> None:
                         help="Numerical quadrature resolution K.  The primary "
                              "persistent-field line uses K=64; lower-K runs are "
                              "explicit integration studies, not a new default.")
-    parser.add_argument("--tau-0", type=float, default=1.0,
-                        help="Integration step per microstep in physical time "
-                             "units; the event duration is micro-steps * tau-0 "
-                             "and the registered line keeps it at 64.")
+    parser.add_argument("--event-duration", type=float,
+                        help="Physical time per token; default 3 is the historical "
+                             "K3 reference scale. dt=duration/K.")
+    parser.add_argument("--tau-0", type=float,
+                        help="Legacy per-microstep dt for archived-run reproduction; "
+                             "mutually exclusive with --event-duration.")
     parser.add_argument("--shape", type=int, nargs=3, default=(8, 8, 4))
     parser.add_argument("--velocities", type=int, default=8, choices=(8, 27))
     parser.add_argument("--content-dim", type=int, default=16)
     parser.add_argument("--readout-type", default="belief_agent",
                         choices=("belief_agent", "kernel_r1", "kernel_r2"))
+    parser.add_argument("--readout-aperture", choices=("atlas", "learned_probes"),
+                        help="Default learned_probes for new belief runs; "
+                             "resume inherits the checkpoint aperture")
     parser.add_argument("--readout-queries", type=int, default=4,
                         help="Kernel-readout queries per head; the probe grid "
                              "requires heads*queries == 16 (4 heads)")
@@ -192,11 +222,15 @@ def main() -> None:
     parser.add_argument("--collision-layers", type=int, default=2)
     parser.add_argument("--dissipation-type",
                         choices=("quadratic", "unified", "selective"),
-                        default="selective",
-                        help="selective: posterior-field-conditioned content "
-                             "outflow; quadratic: local energy control; unified: "
-                             "legacy three-layer diffusion study")
+                        default="quadratic",
+                        help="quadratic (default): local energy control; "
+                             "selective: experimental posterior-field-conditioned "
+                             "content outflow; unified: legacy checkpoint "
+                             "compatibility only")
     parser.add_argument("--dissipation-rank", type=int, default=4)
+    parser.add_argument("--match-unified-initialization", action="store_true",
+                        help="Initialize all common parameters exactly as the unified-bath "
+                             "seed reference, then replace only its bath with quadratic")
     parser.add_argument("--lr", type=float, default=3e-4)
     parser.add_argument("--max-grad-norm", type=float, default=1.0)
     parser.add_argument("--compile-operators", action="store_true",
@@ -213,6 +247,26 @@ def main() -> None:
         parser.error("CUDA is required for the captured K=64 trainer")
     if args.steps < 1 or args.tokens < 1:
         parser.error("steps and tokens must be positive")
+    resume_config = (torch.load(args.resume, map_location="cpu", weights_only=False)["config"]
+                     if args.resume is not None else None)
+    if args.readout_aperture is None:
+        args.readout_aperture = (resume_config.get("readout_aperture", "atlas")
+                                if resume_config is not None else ("learned_probes"
+                                if args.readout_type == "belief_agent" else "atlas"))
+    if (resume_config is not None
+            and args.readout_aperture != resume_config.get("readout_aperture", "atlas")):
+        parser.error("Resume mismatch: readout_aperture; select a new run for reader changes")
+    if args.resume is not None and args.event_duration is None and args.tau_0 is None:
+        args.event_duration = float(resume_config.get(
+            "event_duration", int(resume_config["micro_steps"]) *
+            float(resume_config.get("tau_0", 1.0))))
+    try:
+        args.event_duration, args.tau_0 = resolve_event_timing(
+            args.micro_steps, args.event_duration, args.tau_0)
+    except ValueError as error:
+        parser.error(str(error))
+    if args.match_unified_initialization and args.dissipation_type != "quadratic":
+        parser.error("--match-unified-initialization requires quadratic dissipation")
 
     torch.set_num_threads(2)
     torch.manual_seed(11)
@@ -223,6 +277,8 @@ def main() -> None:
     dashboard = Path("present/cbim_torus3d_live.html")
     if dashboard.exists():
         shutil.copy2(dashboard, args.output / "index.html")
+    atomic_json(args.output / "progress.json", {
+        "status": "initializing", "step": 0, "target_steps": args.steps}, required=True)
 
     train = np.load(args.data / "train.npy", mmap_mode="r")
     validation = np.load(args.data / "validation.npy", mmap_mode="r")
@@ -238,11 +294,23 @@ def main() -> None:
         shape=args.shape, velocities=args.velocities, content_dim=args.content_dim,
         collision_layers=args.collision_layers, relative_address=True,
         readout_type=args.readout_type, queries=args.readout_queries,
+        readout_aperture=args.readout_aperture,
         write_type="w4_predictive_agent",
-        micro_steps=args.micro_steps, dissipation_type=args.dissipation_type,
+        micro_steps=args.micro_steps,
+        dissipation_type="unified" if args.match_unified_initialization else args.dissipation_type,
         dissipation_rank=args.dissipation_rank, tau_0=args.tau_0,
+        event_duration=args.event_duration,
         continuous_velocities=args.continuous_velocities,
     ).cuda()
+    if args.match_unified_initialization:
+        # The legacy bath consumes random draws before readout construction.
+        # Construct the same seed reference first so bath selection cannot
+        # change the initial writer, collision, readout or decoder weights.
+        model.bath = QuadraticTorusBath(args.shape, model.d).cuda()
+        model.state_agent.bath = model.bath
+        model.dissipation_type = "quadratic"
+        # A reader variant may follow the bath token in this descriptive name.
+        model.architecture = model.architecture.replace("-unified-dissipation", "")
     if args.compile_operators:
         # The microstep loop launches millions of tiny elementwise kernels per
         # update; inductor fusion collapses those chains before the CUDA graph
@@ -251,7 +319,14 @@ def main() -> None:
         # CUDA launcher mis-handles this kernel set on Windows torch 2.9
         # (OverflowError in _launch_kernel), so pin the classic launcher.
         os.environ.setdefault("TORCHINDUCTOR_USE_STATIC_CUDA_LAUNCHER", "0")
-        model.collision.forward = torch.compile(model.collision.forward)
+        # The config may already have been imported by another component.
+        # Update the cached switch too, not only its environment default.
+        from torch._inductor import config as inductor_config
+        inductor_config.use_static_cuda_launcher = False
+        # Captured field shapes are fixed. Keep stride specializations static
+        # across alternating FFT/pointwise layouts (Torch 2.9 symbolic-stride
+        # tracing otherwise fails inside user-defined Triton autograd).
+        model.collision.forward = torch.compile(model.collision.forward, dynamic=False)
         model.bath.forward = torch.compile(model.bath.forward)
         model.transport.apply_multiplier = torch.compile(
             model.transport.apply_multiplier)
@@ -264,6 +339,9 @@ def main() -> None:
         Path(__file__), Path("information_boltzmann/core/torus3d.py"),
         Path("information_boltzmann/core/readout_probes.py"),
         Path("scripts/ib/evaluate_continuous_owt.py"),
+        Path("information_boltzmann/evaluation.py"),
+        Path("information_boltzmann/core/triton_givens.py"),
+        Path("information_boltzmann/core/triton_projection.py"),
     ]
     config = {
         "architecture": model.architecture,
@@ -272,15 +350,18 @@ def main() -> None:
         "channels": model.d, "collision_layers": args.collision_layers,
         "write_type": "w4_predictive_agent", "readout_type": args.readout_type,
         "readout_queries": args.readout_queries,
+        "readout_aperture": args.readout_aperture,
         "continuous_velocities": args.continuous_velocities,
         "relative_address": True, "dissipation_type": args.dissipation_type,
+        "initialization_bath_reference": "unified" if args.match_unified_initialization else args.dissipation_type,
         "dissipation_rank": args.dissipation_rank,
         "state_agent": "symmetric_joint_kinetic_v1",
         "interior_equation": "dF/dtau=J_transport(F)+J_collision(F)-R_bath(F,precision)F",
         "micro_steps": args.micro_steps, "K": args.micro_steps,
         "tau_0": args.tau_0,
-        "event_duration": args.micro_steps * args.tau_0,
-        "integration_resolution": "fixed kinetic quadrature",
+        "event_duration": args.event_duration,
+        "physical_time_policy": "fixed_event_duration",
+        "integration_resolution": "dt=event_duration/K",
         "tokens": args.tokens, "bptt_chunk_tokens": args.chunk_tokens,
         "state_policy": "one_never_reset_posterior_field_and_channel_precision",
         "objective": "next_token_nll_plus_realized_write_port_free_energy",
@@ -300,13 +381,17 @@ def main() -> None:
     if args.resume is not None:
         saved = torch.load(args.resume, map_location="cuda", weights_only=False)
         for key in ("architecture", "shape", "channels", "tokens", "K", "tau_0",
-                    "write_type", "readout_type", "continuous_velocities",
+                    "write_type", "readout_type", "readout_aperture", "continuous_velocities",
                     "dissipation_type", "dissipation_rank"):
             # K=64 checkpoints created before the explicit physical-time
             # field was introduced used the same implicit tau_0 = 1.  Treat
             # that representation as exactly equivalent so their continuous
             # posterior field and optimizer state remain resumable.
             saved_value = saved["config"].get(key)
+            if key == "architecture" and saved["config"].get("dissipation_type") == "quadratic":
+                saved_value = saved_value.replace("-unified-dissipation", "")
+            if key == "readout_aperture" and saved_value is None:
+                saved_value = "atlas"
             if key == "tau_0" and saved_value is None:
                 saved_value = 1.0
             if key == "dissipation_rank" and saved_value is None:
@@ -354,11 +439,11 @@ def main() -> None:
     try:
         if args.resume is None:
             atomic_json(args.output / "progress.json", {
-                "status": "capturing", "step": 0, "target_steps": args.steps}, required=True)
+                "status": "initial_validation", "step": 0, "target_steps": args.steps}, required=True)
             initial = validate()
             best = float(initial["nll"])
             log({"kind": "validation", "step": 0, "validation_nll": best,
-                 "sites": initial["sites_count"]})
+                 "sites": initial["sites_count"], **initial["field_statistics"]})
             save("BBest.pt")
             save("last.pt")
 
@@ -380,6 +465,7 @@ def main() -> None:
                     "write_free_energy": _float(diagnostics.get("write_free_energy_mean")),
                     "read_action_complexity": _float(diagnostics.get("read_action_complexity_mean")),
                     "seconds": elapsed, "energy": _float(diagnostics.get("energy")),
+                    "event_duration": args.event_duration, "integration_dt": args.tau_0,
                     "incident_energy": _float(diagnostics.get("incident_energy")),
                     "reflected_energy": _float(diagnostics.get("reflected_energy")),
                     "accepted_fraction": _float(diagnostics.get("accepted_fraction")),
@@ -402,6 +488,15 @@ def main() -> None:
                     "grad_norm": _float(runner.grad_norm),
                     "allocated_mib": torch.cuda.memory_allocated() / 2**20,
                     "reserved_mib": torch.cuda.memory_reserved() / 2**20,
+                    "grad_norm_lexical": _float(runner.group_grad_norms[0]),
+                    "grad_norm_dynamics": _float(runner.group_grad_norms[1]),
+                    "grad_norm_lexical_post_clip": _float(runner.post_clip_group_norms[0]),
+                    "grad_norm_dynamics_post_clip": _float(runner.post_clip_group_norms[1]),
+                    "grad_clip_scale_dynamics": min(1.0, args.max_grad_norm /
+                        (float(runner.group_grad_norms[1]) + 1e-6)),
+                    "nll": _float(diagnostics.get("token_nll")),
+                    "nll_scope": "last_bptt_chunk",
+                    **field_energy_statistics(field),
                 }
                 log(row)
                 atomic_json(args.output / "progress.json", {
@@ -409,6 +504,17 @@ def main() -> None:
                 atomic_json(args.output / "live_state.json", {
                     **row, "run_id": args.output.name,
                     "volume": field[0].square().mean(-1).sqrt().cpu().tolist(),
+                    "attention_heads": (
+                        diagnostics["read_attention_weights"][0].cpu().tolist()
+                        if "read_attention_weights" in diagnostics else None),
+                    "read_probe_coords": (
+                        diagnostics["read_probe_coords"].cpu().tolist()
+                        if "read_probe_coords" in diagnostics else None),
+                    "read_head_scales": (diagnostics["read_head_scales"].cpu().tolist()
+                                         if "read_head_scales" in diagnostics else None),
+                    "read_probe_scales": (
+                        diagnostics["read_probe_scales"].cpu().tolist()
+                        if "read_probe_scales" in diagnostics else None),
                 })
             if step % args.validate_every == 0 or step == args.steps:
                 report = validate()
@@ -418,7 +524,8 @@ def main() -> None:
                     save("BBest.pt")
                 log({"kind": "validation", "step": step,
                      "validation_nll": score, "best_validation_nll": best,
-                     "sites": report["sites_count"]})
+                     "sites": report["sites_count"], **report["field_statistics"]})
+                atomic_json(args.output / f"validation_{step:06d}.json", report, required=True)
                 save("last.pt")
         atomic_json(args.output / "progress.json", {
             "status": "complete", "step": step, "target_steps": args.steps,

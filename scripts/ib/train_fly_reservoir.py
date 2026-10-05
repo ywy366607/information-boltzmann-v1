@@ -169,11 +169,22 @@ def main() -> None:
     step, best = 0, float("inf")
 
     def save(name: str) -> None:
+        # The 1.1 GB checkpoint write is vulnerable to transient Windows file
+        # locks (indexer/antivirus touching the fresh tmp or target); retry
+        # with backoff instead of losing the run.
         temporary = args.output / f"{name}.{os.getpid()}.tmp"
         torch.save({"model": model.state_dict(), "optimizer": optimizer.state_dict(),
                     "state": h.detach().clone(), "step": step,
                     "best_validation_nll": best, "config": config}, temporary)
-        os.replace(temporary, args.output / name)
+        last_error = None
+        for attempt in range(40):
+            try:
+                os.replace(temporary, args.output / name)
+                return
+            except PermissionError as error:
+                last_error = error
+                time.sleep(0.5 * min(attempt + 1, 8))
+        raise PermissionError(f"Could not replace {name}: {last_error}")
 
     def log(row: dict) -> None:
         with (args.output / "metrics.jsonl").open("a", encoding="utf-8") as handle:

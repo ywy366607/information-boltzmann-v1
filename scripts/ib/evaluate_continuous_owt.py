@@ -29,7 +29,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from information_boltzmann.core.torus3d import CBIMTorus3D, KineticBeliefState
-from information_boltzmann.evaluation import WarmSiteSpec
+from information_boltzmann.evaluation import WarmSiteSpec, field_energy_statistics
 
 
 def _gdn2_step(
@@ -76,6 +76,7 @@ def _model_from_checkpoint(saved: dict[str, Any]) -> tuple[torch.nn.Module, int,
         raise ValueError("Expected a GDN-2 reference or a CBIM kinetic checkpoint.")
     return (
         CBIMTorus3D(
+            vocab_size=int(config.get("vocab_size", 50257)),
             shape=tuple(config["shape"]),
             velocities=int(config["velocities"]),
             content_dim=int(config["content_dim"]),
@@ -83,6 +84,8 @@ def _model_from_checkpoint(saved: dict[str, Any]) -> tuple[torch.nn.Module, int,
             relative_address=bool(config.get("relative_address", False)),
             v2_coordinate_components=bool(config.get("v2_coordinate_components", False)),
             readout_type=str(config.get("readout_type", "baseline")),
+            queries=int(config.get("readout_queries", 4)),
+            readout_aperture=str(config.get("readout_aperture", "atlas")),
             readout_probes=int(config.get("readout_probes", 8)),
             readout_rounds=int(config.get("readout_rounds", 1)),
             write_type=str(config.get("write_type", "w2_impedance")),
@@ -98,6 +101,9 @@ def _model_from_checkpoint(saved: dict[str, Any]) -> tuple[torch.nn.Module, int,
             three_clock=bool(config.get("three_clock", False)),
             tau_mem=float(config.get("tau_mem", 3.0)),
             tau_0=float(config.get("tau_0", 1.0)),
+            event_duration=(float(config["event_duration"])
+                            if config.get("physical_time_policy") == "fixed_event_duration"
+                            else None),
             nu_s_init=float(config.get("nu_s_init", 0.020)),
         ),
         int(config.get("micro_steps", 1)),
@@ -212,6 +218,8 @@ def evaluate_warm_sites(
         score_start = start + spec.warm_in_tokens
         for index in range(score_start, score_start + spec.score_tokens):
             advance(index, score=True)
+        spatial_statistics = (field_energy_statistics(state.field if belief_mode else state)
+                              if kinetic_ness else {})
         sites.append({
             "site": site_index,
             "validation_start": start,
@@ -219,6 +227,7 @@ def evaluate_warm_sites(
             "score_start": score_start,
             "score_tokens": spec.score_tokens,
             "nll": float(np.mean(losses)),
+            "field_statistics": spatial_statistics,
             "state_policy": state_policy,
             "cold_start": False,
             "random_phase_resampling": random_phase,
@@ -242,6 +251,10 @@ def evaluate_warm_sites(
         "nll": float(np.mean([site["nll"] for site in sites])),
         "sites": sites,
         "sites_count": len(sites),
+        "field_statistics": {
+            key: float(np.mean([site["field_statistics"][key] for site in sites]))
+            for key in sites[0]["field_statistics"]
+        },
         "warm_in_tokens": spec.warm_in_tokens,
         "score_tokens_per_site": spec.score_tokens,
         "state_policy": (

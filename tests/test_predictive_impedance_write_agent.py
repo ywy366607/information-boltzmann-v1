@@ -2,6 +2,7 @@
 
 import torch
 import math
+import pytest
 
 from information_boltzmann.core.torus3d import (
     CBIMTorus3D,
@@ -84,10 +85,11 @@ def test_port_angle_at_registered_scale_is_finite_for_surprise():
     assert diagnostics["accepted_fraction"].item() > 0.03
 
 
-def test_event_norm_and_port_angle_are_resolution_independent():
+@pytest.mark.parametrize('exchange', ('global', 'contact_mode'))
+def test_event_norm_and_port_angle_are_resolution_independent(exchange):
     """The site-averaged event norm must not change with the grid."""
     torch.manual_seed(5)
-    agent = PredictiveImpedanceWriteAgent(16, vocab_size=19).double()
+    agent = PredictiveImpedanceWriteAgent(16, vocab_size=19, exchange=exchange).double()
     writer_small = FullRankTorusWrite(vocab_size=19, shape=(4, 4, 4), d=16,
                                       write_type="w2_impedance").double()
     writer_large = FullRankTorusWrite(vocab_size=19, shape=(8, 4, 6), d=16,

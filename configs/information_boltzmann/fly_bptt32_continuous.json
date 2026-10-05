@@ -1,0 +1,15 @@
+{
+  "entry": "scripts/ib/train_fly_bptt_stream.py",
+  "resume": "results/q8_fly_bptt32_continuous_100k/last.pt",
+  "output": "results/q8_fly_bptt32_adamw_continuous_100k",
+  "window": 32,
+  "additional_tokens": 100000,
+  "never_reset": true,
+  "evaluation": "same learner active pre-update scores, fresh B and A revisit",
+  "lr": 0.0002,
+  "lr_synapse": 0.0002,
+  "lr_sensory": 0.0002,
+  "plasticity_optimizer": "adamw",
+  "optimizer": "AdamW for all currently trainable parameters; preserve existing Adam moments and start new edge/projection moments at zero when migrating from SGD; one joint update per window",
+  "vram_limit_mib": 3900
+}

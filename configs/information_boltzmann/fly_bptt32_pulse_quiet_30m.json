@@ -1,0 +1,42 @@
+{
+  "entry": "scripts/ib/train_fly_bptt_stream.py",
+  "status": "running; input-clock baseline correction; capability pending",
+  "resume": "results/q8_fly_bptt32_adamw_continuous_100k/last.pt",
+  "output": "results/q8_fly_bptt32_adamw_continuous_100k",
+  "data": "data/ib_owt_gpt2_31m",
+  "extend_budget": false,
+  "registered_target_bptt_tokens": 30182144,
+  "stopped_bptt_train_tokens": 600928,
+  "remaining_fresh_targets": 29581216,
+  "window": 32,
+  "settle_ticks": 1,
+  "physical_ticks_per_input": 2,
+  "lr": 0.0002,
+  "lr_decoder": 0.0001,
+  "lr_synapse": 0.0002,
+  "lr_sensory": 0.0002,
+  "plasticity_optimizer": "adamw",
+  "validate_every_tokens": 100000,
+  "log_every_tokens": 1024,
+  "eval_tokens": 256,
+  "replay_tokens": 128,
+  "vram_limit_mib": 3900,
+  "never_reset": true,
+  "event_order": "one sensory pulse, zero-source propagation, motor read, next token revelation",
+  "credit": "32 tokens / 64 physical ticks; all within-event dependencies retained",
+  "memory_measurement": {
+    "peak_allocated_mib": 2748.2890625,
+    "reserved_mib": 2934.0
+  },
+  "resource_calibration_only": true,
+  "recovery_policy": "First activation explicitly passes --settle-ticks 1; later resumes inherit saved timing. Preserve saved target; remove STOP only when long training is requested.",
+  "pid": 22884,
+  "execution": "CUDA Graph full forward/backward; sparse-zero forward atomics and segmented pulse-gradient reductions",
+  "throughput_calibration": {
+    "tokens_per_second": 39.947593750183344,
+    "median_seconds_per_32_tokens": 0.8010495000053197,
+    "resource_only": true
+  },
+  "writer_baseline_clock": "input",
+  "writer_clock_migration_train_targets": 943712
+}

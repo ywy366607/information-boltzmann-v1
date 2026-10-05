@@ -3,6 +3,28 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+import torch
+
+
+@torch.no_grad()
+def field_energy_statistics(field: torch.Tensor) -> dict[str, float]:
+    """Parseval DC/spatial split on a uniform periodic grid, without an FFT.
+
+    Energy is site-averaged and summed over content channels. Each sample's
+    spatial mean is computed separately; no batch averaging erases structure.
+    """
+    if field.ndim != 5:
+        raise ValueError("Expected [B,X,Y,Z,D] kinetic field")
+    center = field.mean(dim=(1, 2, 3), keepdim=True)
+    total = 0.5 * field.square().sum(-1).mean()
+    dc = 0.5 * center.square().sum(-1).mean()
+    spatial = 0.5 * (field - center).square().sum(-1).mean()
+    denominator = total.clamp_min(torch.finfo(field.dtype).tiny)
+    values = torch.stack((total, dc, spatial, dc / denominator,
+                          spatial / denominator)).cpu().tolist()
+    return dict(zip(("field_energy", "dc_energy", "spatial_energy",
+                     "dc_share", "spatial_share"), values))
+
 
 @dataclass(frozen=True)
 class WarmSiteSpec:

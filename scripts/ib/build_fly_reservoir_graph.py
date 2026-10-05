@@ -107,23 +107,31 @@ def main() -> None:
     agg_sign = np.add.reduceat(weight * sign, starts) / np.maximum(agg_weight, 1e-12)
     edge_pre = (unique_keys // n_neurons).astype(np.int32)
     edge_post = (unique_keys % n_neurons).astype(np.int32)
-    edge_weight = (agg_sign * agg_weight).astype(np.float32)
-    print(json.dumps({"unique_edges": int(unique_keys.size)}), flush=True)
+    raw_synapses = agg_weight.astype(np.float32)
+    sign = agg_sign.astype(np.float32)
 
-    # Spectral-radius normalization via power iteration on the signed matrix.
-    matrix = csr_matrix((edge_weight, (edge_pre, edge_post)),
-                        shape=(n_neurons, n_neurons))
+    # Flyvis In-degree Normalization: W_ij = (count_ij * sign_i) / sqrt(max(K_in(j), 1)) * g
+    k_in = np.bincount(edge_post, minlength=n_neurons)
+    in_degree_norm = np.sqrt(np.maximum(k_in[edge_post], 1.0)).astype(np.float32)
+    w_norm = (raw_synapses * sign) / in_degree_norm
+
+    matrix = csr_matrix((w_norm, (edge_pre, edge_post)), shape=(n_neurons, n_neurons))
     vector = np.random.default_rng(11).standard_normal(n_neurons)
     vector /= np.linalg.norm(vector)
-    radius = 0.0
-    for _ in range(40):
-        vector_new = matrix.T @ (matrix @ vector)
-        norm = np.linalg.norm(vector_new)
-        radius = float(norm)
-        vector = vector_new / max(norm, 1e-12)
-    edge_weight = edge_weight / max(radius, 1e-12)
-    print(json.dumps({"spectral_radius": radius,
-                      "scaled_to": 1.0}), flush=True)
+    for _ in range(25):
+        vector = matrix @ vector
+        norm = np.linalg.norm(vector)
+        vector /= max(norm, 1e-12)
+    rho_unscaled = float(norm)
+
+    g = 1.0 / max(rho_unscaled, 1e-12)
+    edge_weight = (w_norm * g).astype(np.float32)
+    print(json.dumps({
+        "normalization": "Flyvis in-degree sqrt(K_in)",
+        "unscaled_spectral_radius": rho_unscaled,
+        "scaling_factor_g": g,
+        "target_spectral_radius": 1.0,
+    }), flush=True)
 
     superclass_names = sorted(set(superclasses.tolist()))
     superclass_id = np.searchsorted(np.array(superclass_names), superclasses)

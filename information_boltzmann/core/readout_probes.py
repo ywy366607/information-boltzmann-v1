@@ -144,10 +144,17 @@ class PredictivePhysicalReadAgent(nn.Module):
     reparameterization of the local field: conserved content and collision
     changes are both observable before learned semantic mixing.
 
+    With ``learned_probes``, each head/query has a continuous trainable
+    torus location prior; the field-conditioned atlas and semantic evidence
+    update its aperture. The original ``atlas`` mode reproduces old checkpoints.
     The atlas bandwidth follows its physical cell volume rather than a
     hand-selected attention radius.  Softmax mixtures keep every aperture
     strictly positive, so a finite read policy has no exact spatial blind
     spot at initialization.
+
+    ``compact_probes`` instead has exact finite support. Each head/query's
+    policy and measurement use that port's local observations; a remote field
+    cannot enter through the controller or a shared writer-precision side path.
     """
 
     def __init__(
@@ -159,6 +166,8 @@ class PredictivePhysicalReadAgent(nn.Module):
         heads: int = 4,
         queries: int = 4,
         atlas_shape: Tuple[int, int, int] = (4, 4, 4),
+        aperture_type: str = "atlas",
+        port_radius=None,
     ):
         super().__init__()
         if d % heads:
@@ -169,6 +178,9 @@ class PredictivePhysicalReadAgent(nn.Module):
         self.heads, self.queries = int(heads), int(queries)
         self.head_dim = d // heads
         self.nodes = math.prod(shape)
+        self.aperture_type = str(aperture_type)
+        if self.aperture_type not in ("atlas", "learned_probes", "compact_probes"):
+            raise ValueError("Unknown physical read aperture")
         self.atlas_shape = tuple(atlas_shape)
         self.atlas_size = math.prod(self.atlas_shape)
         self.nullity = int(nullspace.shape[1])
@@ -203,14 +215,47 @@ class PredictivePhysicalReadAgent(nn.Module):
             nn.Linear(2 * invariant_dim, d), nn.SiLU(), nn.Linear(d, d))
         self.posterior_features = nn.Sequential(
             nn.Linear(2 * d, d), nn.SiLU(), nn.Linear(d, d))
-        self.action_prior = nn.Linear(d, heads * queries * self.atlas_size)
-        self.action_posterior = nn.Linear(d, heads * queries * self.atlas_size)
-        self.q_proj = nn.Linear(d, heads * queries * self.head_dim, bias=False)
+        action_dim = self.atlas_size if aperture_type == 'compact_probes' else heads * queries * self.atlas_size
+        query_dim = self.head_dim if aperture_type == 'compact_probes' else heads * queries * self.head_dim
+        self.action_prior = nn.Linear(d, action_dim)
+        self.action_posterior = nn.Linear(d, action_dim)
+        self.q_proj = nn.Linear(d, query_dim, bias=False)
         self.k_proj = nn.Linear(d, d, bias=False)
 
-        # Cosine QK attention: exp(0)=1 is the ordinary unit-temperature
-        # cosine model.  Temperature is entirely learned per head.
-        self.head_log_scale = nn.Parameter(torch.zeros(1, heads, 1, 1))
+        # Historical atlas checkpoints retain their original unit scale.
+        # For isotropic unit Q/K, Var(q.k)=1/head_dim: sqrt(head_dim)
+        # restores unit logit variance without bounding the learned scale.
+        initial_scale = (math.sqrt(self.head_dim)
+                         if self.aperture_type != "atlas" else 1.0)
+        self.head_log_scale = nn.Parameter(torch.full(
+            (1, heads, 1, 1), math.log(initial_scale)))
+        if self.aperture_type != "atlas":
+            # Factor the number of probes into a balanced periodic grid.
+            # Initialization supplies coverage, not a fixed anatomical role.
+            grid = [1, 1, 1]
+            remaining, factor = heads * queries, 2
+            while remaining > 1:
+                while remaining % factor == 0:
+                    axis = min(range(3), key=lambda i: grid[i])
+                    grid[axis] *= factor
+                    remaining //= factor
+                factor += 1
+            probe_grid = torus_grid(tuple(grid))
+            centers = (probe_grid + 0.5 / torch.tensor(grid)).reshape(
+                heads, queries, 3)
+            self.probe_coords = nn.Parameter(centers)
+            # A normalized six-component sin/cos location dot product has
+            # variance 1/6 on T^3. sqrt(6) gives unit prior-logit variance.
+            self.probe_log_scale = nn.Parameter(torch.full(
+                (1, heads, 1, 1), 0.5 * math.log(6.0)))
+            if self.aperture_type == 'compact_probes':
+                from .local_ports import CompactTorusPorts
+                geometry = CompactTorusPorts(shape, heads * queries, port_radius)
+                self.physical_radius = geometry.physical_radius
+                self.register_buffer('port_radius', geometry.radius, persistent=False)
+                with torch.no_grad():
+                    self.probe_coords.copy_(geometry.centers.reshape(heads, queries, 3))
+                    self.probe_log_scale.zero_()
         self.merge = nn.Linear(2 * queries * d, d, bias=False)
         self.correction = nn.Sequential(
             nn.RMSNorm(d), nn.Linear(d, d), nn.SiLU(), nn.Linear(d, d))
@@ -226,9 +271,15 @@ class PredictivePhysicalReadAgent(nn.Module):
         nn.init.normal_(self.q_proj.weight, std=0.02)
         with torch.no_grad():
             self.merge.weight.zero_()
-            # At initialization the first aperture is an exact physical mean
-            # reader for every channel; later queries and variance are learned.
-            self.merge.weight[:, :d] = torch.eye(d)
+            # Legacy initialization reads the first query; learned probes
+            # start with an equal mixture of all query measurements.
+            if self.aperture_type != "atlas":
+                # All queries receive the CE signal from the first update.
+                # This preserves the feature amplitude for a uniform field.
+                for index in range(queries):
+                    self.merge.weight[:, index * d:(index + 1) * d] = torch.eye(d) / queries
+            else:
+                self.merge.weight[:, :d] = torch.eye(d)
             self.correction[-1].weight.zero_()
             self.correction[-1].bias.zero_()
 
@@ -264,6 +315,8 @@ class PredictivePhysicalReadAgent(nn.Module):
     ) -> Tuple[torch.Tensor, Optional[Dict[str, torch.Tensor]]]:
         if precision.ndim != 2 or precision.shape != (field.shape[0], self.d):
             raise ValueError("precision must be [batch, d]")
+        if self.aperture_type == 'compact_probes':
+            return self._forward_compact(field, return_diag)
         batch = field.shape[0]
         flat = field.reshape(batch, self.nodes, self.d)
         kinetic = self.physical_coordinates(flat)
@@ -306,6 +359,15 @@ class PredictivePhysicalReadAgent(nn.Module):
         semantic = torch.einsum(
             "bhqd,bhnd->bhqn", F.normalize(query, dim=-1), F.normalize(keys, dim=-1))
         scores = semantic * self.head_log_scale.exp() + log_aperture
+        if self.aperture_type == "learned_probes":
+            # Periodic von Mises prior. The atlas and semantic likelihood
+            # update this movable prior by multiplication (addition in log
+            # space). All sites remain accessible; coordinates are trained.
+            phase = 2.0 * math.pi * (
+                self.coordinates.to(field)[None, None]
+                - self.probe_coords[:, :, None])
+            spatial_prior = phase.cos().mean(-1)
+            scores = scores + self.probe_log_scale.exp() * spatial_prior[None]
         attention = torch.softmax(scores, dim=-1)
 
         values = kinetic.reshape(batch, self.nodes, self.heads, self.head_dim).transpose(1, 2)
@@ -325,10 +387,15 @@ class PredictivePhysicalReadAgent(nn.Module):
         entropy = -(attention * attention.clamp_min(torch.finfo(field.dtype).eps).log()).sum(-1).mean()
         action_entropy = -(posterior_action * posterior_action.clamp_min(torch.finfo(field.dtype).eps).log()).sum(-1).mean()
         diag: Dict[str, torch.Tensor] = {
+            # Public monitoring output: [batch, head, query, spatial site].
+            # This is the actual posterior aperture used above, with no
+            # additional read pass or change to the differentiable feature.
+            "read_attention_weights": attention.detach(),
             "read_attention_entropy": entropy.detach(),
             "read_action_entropy": action_entropy.detach(),
             "read_action_kl": self._categorical_kl(posterior_action, prior_action).detach(),
             "read_temperature_mean": self.head_log_scale.exp().detach().mean(),
+            "read_head_scales": self.head_log_scale.exp().detach().reshape(self.heads),
             "read_invariant_norm": invariant.detach().square().mean().sqrt(),
             "read_collision_norm": kinetic[..., invariant_dim:].detach().square().mean().sqrt(),
             "read_aperture_coverage": attention.detach().amin(dim=-1).mean(),
@@ -337,7 +404,79 @@ class PredictivePhysicalReadAgent(nn.Module):
             # silently added to token likelihood here.
             "_read_action_complexity": self._categorical_kl(posterior_action, prior_action),
         }
+        if self.aperture_type == "learned_probes":
+            diag["read_probe_coords"] = self.probe_coords.detach().remainder(1.0)
+            diag["read_probe_scales"] = self.probe_log_scale.exp().detach().reshape(self.heads)
         return feature, diag
+
+    def footprint(self):
+        from .local_ports import compact_footprint
+        return compact_footprint(self.coordinates, self.probe_coords, self.port_radius)
+
+    def weights(self):
+        footprint = self.footprint()
+        return footprint / footprint.sum(-1, keepdim=True).clamp_min(torch.finfo(footprint.dtype).tiny)
+
+    def _forward_compact(self, field, return_diag):
+        """Each query sees only its own footprint, including its controller.
+
+        Shared dynamic writer precision is intentionally absent here: it may
+        contain observations from distant write ports. Local second moments
+        provide the read policy's evidence instead. Locality includes the
+        full derivative, not only a mask on the final value attention.
+        """
+        batch, eps = field.shape[0], torch.finfo(field.dtype).eps
+        kinetic = self.physical_coordinates(field.reshape(batch, self.nodes, self.d))
+        footprint = self.footprint().reshape(self.heads, self.queries, self.nodes)
+        local_weights = footprint / footprint.sum(-1, keepdim=True).clamp_min(eps)
+        mean = torch.einsum('hqn,bnd->bhqd', local_weights, kinetic)
+        second = torch.einsum('hqn,bnd->bhqd', local_weights, kinetic.square())
+        energy = second.clamp_min(eps * eps).sqrt()
+        invariant_dim = self.invariant_basis.shape[1]
+        prior_state = self.prior_features(torch.cat((
+            F.rms_norm(mean[..., :invariant_dim], (invariant_dim,)),
+            energy[..., :invariant_dim]), -1))
+        posterior_state = self.posterior_features(torch.cat((
+            F.rms_norm(mean, (self.d,)), energy), -1))
+        prior_logits = self.action_prior(prior_state)
+        posterior_logits = prior_logits + self.action_posterior(posterior_state)
+        prior_action, posterior_action = prior_logits.softmax(-1), posterior_logits.softmax(-1)
+        aperture = torch.logsumexp(posterior_logits[..., :, None]
+                                  + self.anchor_log_kernel[None, None, None], dim=-2)
+        keys = self.k_proj(F.rms_norm(kinetic, (self.d,))).reshape(
+            batch, self.nodes, self.heads, self.head_dim).transpose(1, 2)
+        query = self.q_proj(posterior_state)
+        scores = torch.einsum('bhqd,bhnd->bhqn', F.normalize(query, dim=-1),
+                              F.normalize(keys, dim=-1)) * self.head_log_scale.exp() + aperture
+        scores = scores + footprint.clamp_min(eps).log()[None] * self.probe_log_scale.exp()
+        scores = scores.masked_fill(footprint[None] == 0, float('-inf'))
+        attention = scores.softmax(-1)
+        values = kinetic.reshape(batch, self.nodes, self.heads, self.head_dim).transpose(1, 2)
+        measured_mean = torch.einsum('bhqn,bhnd->bhqd', attention, values)
+        variance = (torch.einsum('bhqn,bhnd->bhqd', attention, values.square())
+                    - measured_mean.square()).clamp_min(0)
+        measurement = torch.cat((measured_mean.transpose(1, 2).reshape(batch, -1),
+                                 variance.transpose(1, 2).reshape(batch, -1)), -1)
+        base = self.merge(measurement)
+        feature = base + self.correction(base)
+        if not return_diag:
+            return feature, None
+        return feature, {
+            'read_attention_weights': attention.detach(),
+            'read_attention_entropy': -(attention * attention.clamp_min(eps).log()).sum(-1).mean().detach(),
+            'read_action_entropy': -(posterior_action * posterior_action.clamp_min(eps).log()).sum(-1).mean().detach(),
+            'read_action_kl': self._categorical_kl(posterior_action, prior_action).detach(),
+            '_read_action_complexity': self._categorical_kl(posterior_action, prior_action),
+            'read_temperature_mean': self.head_log_scale.exp().mean().detach(),
+            'read_head_scales': self.head_log_scale.exp().detach().reshape(self.heads),
+            'read_probe_coords': self.probe_coords.detach().remainder(1),
+            'read_probe_scales': self.probe_log_scale.exp().detach().reshape(self.heads),
+            'read_port_weights': local_weights.detach(),
+            'read_port_support_fraction': (footprint > 0).float().mean().detach(),
+            'read_invariant_norm': mean[..., :invariant_dim].detach().square().mean().sqrt(),
+            'read_collision_norm': mean[..., invariant_dim:].detach().square().mean().sqrt(),
+            'read_aperture_coverage': attention.detach().amin(-1).mean(),
+        }
 
 
 class CharacteristicKernelReadout(nn.Module):

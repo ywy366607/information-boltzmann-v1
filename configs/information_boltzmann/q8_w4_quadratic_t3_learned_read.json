@@ -1,0 +1,61 @@
+{
+  "name": "q8_w4_quadratic_t3_learned_read_3000",
+  "started_date": "2026-10-02",
+  "purpose": "Reader-only intervention: learned periodic probe priors, dimension-scaled QK logits, and equal initial query contributions.",
+  "output": "results/q8_w4_quadratic_t3_learned_read_3000",
+  "shape": [
+    8,
+    8,
+    4
+  ],
+  "channels": 128,
+  "velocities": 8,
+  "content_dim": 16,
+  "K": 16,
+  "dt": 0.1875,
+  "event_duration": 3.0,
+  "collision_layers": 2,
+  "optimizer_updates": 3000,
+  "tokens_per_update": 128,
+  "training_tokens": 384000,
+  "bptt_chunk_tokens": 32,
+  "optimizer": "AdamW",
+  "lr": 0.0003,
+  "max_grad_norm": 1.0,
+  "seed": 11,
+  "initialization_bath_reference": "unified; common parameters copied by construction, only bath replaced",
+  "write_type": "w4_predictive_agent",
+  "readout_type": "belief_agent",
+  "bath": "quadratic",
+  "execution": "compiled operators + captured forward/backward + Triton Givens and exact rank-four basis application",
+  "state_policy": "one persistent field and posterior precision, carried over every chunk and update",
+  "validation": {
+    "every_updates": 500,
+    "protocol": "IB-warm-local-language-v1",
+    "sites": [
+      8192,
+      12288,
+      16384,
+      20480
+    ],
+    "warm_tokens": 256,
+    "score_tokens": 128
+  },
+  "comparison_reference": "q8_w4_quadratic_t3_k16_3000; preserve writer, transport, collision, bath, T/K, dataset, optimizer and evaluation.",
+  "primary_outcome": "held-out site NLL at matched optimizer update/data budget",
+  "mechanistic_outcome": "site-averaged total energy decomposed into DC and spatial energy at training snapshots and held-out site terminal states",
+  "stopping": "3000 jointly trained optimizer updates, or surfaced numerical failure; record learning curves and convergence evidence before further claims",
+  "predictions": [
+    "Probe coordinates and each query must receive finite nonzero CE gradients from initialization.",
+    "Reader-only benefit is assessed by matched 3000-update joint OWT curves and warm-local validation; entropy reduction is a diagnostic, not a task objective."
+  ],
+  "physical_time_policy": "fixed_event_duration",
+  "readout_aperture": "learned_probes",
+  "readout_initialization": {
+    "qk_scale": "sqrt(head_dim)=sqrt(32)",
+    "periodic_position_scale": "sqrt(6), unit spatial-logit variance on a uniform torus",
+    "probe_layout": "balanced 4x2x2 cell centers; learned in continuous periodic coordinates",
+    "query_merge": "equal 1/Q physical means initially; subsequently learned",
+    "head_specialization": "learned freely; no imposed diversity penalty"
+  }
+}

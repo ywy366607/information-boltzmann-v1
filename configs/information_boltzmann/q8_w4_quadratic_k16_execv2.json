@@ -1,0 +1,53 @@
+{
+  "name": "q8_w4_quadratic_k16_3000_execv2",
+  "started_date": "2026-10-02",
+  "purpose": "Joint OWT training of W4 write/state/read with quadratic local cold outflow; compare NLL and retained spatial structure with historical unified-bath W4 line.",
+  "output": "results/q8_w4_quadratic_k16_3000_execv2",
+  "shape": [
+    8,
+    8,
+    4
+  ],
+  "channels": 128,
+  "velocities": 8,
+  "content_dim": 16,
+  "K": 16,
+  "dt": 4.0,
+  "event_duration": 64.0,
+  "collision_layers": 2,
+  "optimizer_updates": 3000,
+  "tokens_per_update": 128,
+  "training_tokens": 384000,
+  "bptt_chunk_tokens": 32,
+  "optimizer": "AdamW",
+  "lr": 0.0003,
+  "max_grad_norm": 1.0,
+  "seed": 11,
+  "initialization_bath_reference": "unified; common parameters copied by construction, only bath replaced",
+  "write_type": "w4_predictive_agent",
+  "readout_type": "belief_agent",
+  "bath": "quadratic",
+  "execution": "compiled operators + captured forward/backward + Triton Givens and exact rank-four basis application",
+  "state_policy": "one persistent field and posterior precision, carried over every chunk and update",
+  "validation": {
+    "every_updates": 500,
+    "protocol": "IB-warm-local-language-v1",
+    "sites": [
+      8192,
+      12288,
+      16384,
+      20480
+    ],
+    "warm_tokens": 256,
+    "score_tokens": 128
+  },
+  "comparison_reference": "results/q8_predictive_ports_k16_unified_bath_3000; historical best=7.420280658662705 at update 2500",
+  "primary_outcome": "held-out site NLL at matched optimizer update/data budget",
+  "mechanistic_outcome": "site-averaged total energy decomposed into DC and spatial energy at training snapshots and held-out site terminal states",
+  "stopping": "3000 jointly trained optimizer updates, or surfaced numerical failure; record learning curves and convergence evidence before further claims",
+  "predictions": [
+    "Replacing raw spectral-viscosity outflow with quadratic local outflow should retain injected non-DC structure beyond floating-point residue.",
+    "Language improvement requires measured held-out NLL improvement; retained structure alone is not a performance claim."
+  ],
+  "no_other_architecture_changes": "no RG stack or new read/write/collision mechanism in this run"
+}

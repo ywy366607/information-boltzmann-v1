@@ -1,0 +1,39 @@
+{
+  "name": "plastic_local_credit_lifelong",
+  "status": "interfaces_verified_capability_unmeasured",
+  "entrypoint": "scripts/ib/train_online_plastic.py",
+  "credit": "local-receptors",
+  "shape": [8, 8, 4],
+  "channels": 128,
+  "pre_decoder_norm": true,
+  "optimizer_policy": "prediction matrix decay 0.01; physical parameters, precision maps, norm gains, biases, positions and attention scales decay 0",
+  "execution": "graph",
+  "event_duration": 0.005,
+  "substeps": 1,
+  "training_groups": 3000,
+  "tokens_per_update": 128,
+  "historical_credit": "Local receptor closing kinetics/material map; current-event gradients are joint for all operators",
+  "evaluation": {
+    "protocol": "live_prequential_A_B_A_v1",
+    "learning_active": true,
+    "reset": false,
+    "every_training_groups": 500,
+    "change_tokens": 384,
+    "measurement_block": 32,
+    "hold_blocks": 2,
+    "primary_score": "First-pass pre-update predictive NLL; replay separately labeled",
+    "context_change": "Fresh OWT adaptation-stream positions; no semantic-domain claim",
+    "revisit": "Exact preceding A observations after real B and scored return bridge"
+  },
+  "health": {
+    "protocol": "persistent_medium_health_v1",
+    "enabled": true,
+    "window_tokens": 512,
+    "response_directions": 2,
+    "objective_change": false,
+    "documentation": "docs/information_boltzmann/PERSISTENT_MEDIUM_HEALTH.md"
+  },
+  "continuation": "Physical belief, local eligibility, optimizer, pending gradients, primary/adaptation cursors, score ledger and fourth-pillar measurement history",
+  "documentation": "docs/information_boltzmann/LIFELONG_EVALUATION.md",
+  "long_training_started": false
+}
