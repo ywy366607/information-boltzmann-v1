@@ -1,8 +1,296 @@
 {
   "title": "Slice Full-Resolution Joint-Evolution VLM Research Tree",
-  "updated": "2026-10-02",
+  "updated": "2026-10-05",
   "source_of_truth": "docs/NORTH_STAR.md",
   "nodes": [
+    {
+      "id": "IB_FLY_NLL_ONSET_20261005",
+      "parent": "IB_FLY_CONDITIONAL_READ_20261005",
+      "title": "Locate predictive regression before later clock and STP repairs",
+      "status": "active",
+      "time": "2026-10-05",
+      "confidence": "I",
+      "action": "Read-only historical metrics/config/checkpoint/code audit; recompute exact active B train-only unigram references. No training reset or architecture change.",
+      "conclusion": "Early5k-30k mean7.419410 vs unigram7.317102; 35k-100k mean8.081703 vs7.494094, excess risk grows.485301. Onset35k pronounced70k, before BPTT/quiet/STP. Common-read imbalance already measured at34190. Old d128 STP trained, online STP frozen; old wide read matrix still output-masked. Latest STP B at1200k7.614604 vs7.355176; matched44832 prefix effect+.000073. Lost learning dimensions and source-head imbalance are real; individual upgrade causation remains open. Next target marginal/conditional decomposition on matched real life histories, not more unpaired mechanism additions.",
+      "artifacts": [
+        "docs/information_boltzmann/FLY_NLL_REGRESSION_TIMELINE_20261005.md",
+        "results/published/fly_nll_upgrade_timeline_20261005.json"
+      ],
+      "review": "diagnosis_review independently recomputed exact early references and reviewed chronology; distinguishes measured excess regression from unproven upgrade causation.",
+      "invalidation": "Revise if an identical-protocol rerun contradicts this outcome, or if the recorded measurements prove irreproducible on the retained artifacts.",
+      "motivation": "Locate predictive regression before later clock and STP repairs - motivation recorded retroactively after validator enforcement."
+    },
+    {
+      "id": "IB_FLY_STP_JOINT_20261005",
+      "parent": "IB_FLY_STP_CLOCK_20261005",
+      "title": "Restore joint release and recovery adaptation without changing timing or readout",
+      "status": "active",
+      "time": "2026-10-05",
+      "confidence": "I",
+      "action": "Activate existing 81 STP parameters, migrate existing Adam by names, preserve complete physical state/cursors and original 30M budget. Newly activated STP parameters have zero moments and zero weight decay.",
+      "conclusion": "20 numerical/interface tests passed. Mature real OWT continuation running from1100000 targets; all three STP tensors have finite nonzero gradients and actual updates. First32-event window .875s, peak2892MiB/reserved3084MiB. Existing physical life and named Adam history retained; target30182144 unchanged. Predictive mechanism claim awaits sufficient joint learning and conditional readout/first-pass gains.",
+      "artifacts": [
+        "configs/information_boltzmann/fly_bptt32_stp_joint_30m.json",
+        "results/q8_fly_bptt32_stp_joint_30m",
+        "tests/test_fly_bptt_learning.py",
+        "results/published/fly_stp_joint_launch_20261005.json",
+        "results/published/fly_stp_joint_matched_prefix_20261005.json"
+      ],
+      "review": "Minimal repair candidate was independently reviewed in parent diagnosis; implementation checked by deterministic tests and pending real-window verification.",
+      "interim_prediction_evidence": {
+        "scope": "matched complete first-pass fresh training prefix, pre-update scores; not independent validation",
+        "start_train_targets": 1100000,
+        "end_train_targets": 1144832,
+        "targets": 44832,
+        "joint_updates": 1401,
+        "frozen_stp_nll": 7.911715528970952,
+        "learned_stp_nll": 7.911788212564867,
+        "delta_learned_minus_frozen": 7.268359391421342e-05,
+        "fixed_unigram_nll": 7.534412322787672,
+        "capability_status": "inconclusive before3000joint updates and formal independent evaluation"
+      },
+      "invalidation": "Revise if an identical-protocol rerun contradicts this outcome, or if the recorded measurements prove irreproducible on the retained artifacts.",
+      "motivation": "Restore joint release and recovery adaptation without changing timing or readout - motivation recorded retroactively after validator enforcement."
+    },
+    {
+      "id": "IB_FLY_STP_CLOCK_20261005",
+      "parent": "IB_FLY_CONDITIONAL_READ_20261005",
+      "title": "Locate source recovery limitation versus latency and read geometry",
+      "status": "active",
+      "time": "2026-10-05",
+      "confidence": "I",
+      "motivation": "User asks why core dynamics provide little conditional prediction, comparing input/physical timing with write/read defects.",
+      "action": "Preregistered eight-tick quiet real-token contrast and one same-head continuing 32-event window, CPU only; verify STP optimizer coverage and derive exact long-time resource throughput bound.",
+      "conclusion": "Confirmed 81 STP parameters excluded from Adam and unchanged at U0=.25, tau_fac=100, tau_rec=200 from legacy100k to1100k. On changed sensory spike neurons x=.05355 and pulse/spike contrast=.13138. First motor arrival filtering gives .09685/.05910 gains with exact identity residual<1.6e-8. Motor relative contrast3.85% at read becomes R.135%, mostly tangential; waiting later does not monotonically restore readable response. Same-head real R gradient common/cov ratio4.44; this differs from prior decoder ratio33-42. Resource equation bounds long-time normalized mean pulse by .01146/physical tick. These locate missing timescale adaptation and read imbalance, not sole NLL cause or certified phase-locking failure. Next candidate: restore STP joint adaptation while keeping other axes fixed; accept only actual prediction/conditional gains, not larger pulses. Production unchanged, old PID absent with stale running log; no new training launched.",
+      "artifacts": [
+        "docs/information_boltzmann/FLY_STP_CLOCK_READ_DIAGNOSIS_20261005.md",
+        "scripts/ib/diagnose_fly_clock_readout.py",
+        "results/published/fly_clock_readout_preregistered.json",
+        "results/published/fly_clock_readout_diagnosis_1100k.json",
+        "results/published/fly_stp_learning_coverage_1100k.json"
+      ],
+      "review": "Independent diagnosis_review approved minimal protocol and reviewed results; differentiates confirmed frozen search dimension from unproven predictive contribution.",
+      "invalidation": "Revise if an identical-protocol rerun contradicts this outcome, or if the recorded measurements prove irreproducible on the retained artifacts."
+    },
+    {
+      "id": "IB_FLY_CONDITIONAL_READ_20261005",
+      "parent": "IB_FLY_PULSE_QUIET_20261005",
+      "title": "Separate motor dynamics from common-background task readout",
+      "status": "active",
+      "time": "2026-10-05",
+      "confidence": "I",
+      "motivation": "Explain why restored current-token causal access still fails to beat fixed unigram prediction.",
+      "action": "CPU-only mature-checkpoint read decomposition, real token substitution and 16-event motor-to-latent response trace; exact saved decoder CE mean/covariance gradient decomposition. No production reset, optimizer change or new training arm.",
+      "conclusion": "At 1.1M active B NLL 8.03538 vs unigram 7.65082 after 4884 corrected-clock joint train updates. Retrospective actual replay full/common head NLL 7.709641/7.709649; legacy also shows near equality. Motor temporal variation 7.7297% becomes 0.0344064% under read projection, then 0.0203063% after RMSNorm, showing common-background amplification / relative suppression, not proof of information erasure. Decoder common/covariance gradient ratios 32.75-42.23 before clip/Adam. Tested reset amplifies motor contrast. Next target is conditional readout learning and marginal calibration; useful motor task information and optimizer causation remain hypotheses. An earlier 34k audit already documented similar readout imbalance; subsequent repairs had not closed this acceptance dependency.",
+      "artifacts": [
+        "docs/information_boltzmann/FLY_CONDITIONAL_READOUT_DIAGNOSIS_20261005.md",
+        "scripts/ib/audit_fly_prediction_decomposition.py",
+        "results/published/fly_prediction_decomposition_1100k.json",
+        "results/published/fly_prediction_decomposition_100k_legacy.json",
+        "results/published/fly_current_token_read_chain_1100k.json"
+      ],
+      "review": "Independent diagnosis_review agrees with measured imbalance; restricts root-cause claims and rejects equivalent centering as a performance fix.",
+      "invalidation": "Revise if an identical-protocol rerun contradicts this outcome, or if the recorded measurements prove irreproducible on the retained artifacts."
+    },
+    {
+      "id": "IB_FLY_PULSE_QUIET_20261005",
+      "third_active_result": "At 900000 cumulative targets (299072 repaired fresh targets / 9346 training updates), fresh B NLL 8.06890 vs fixed unigram 7.74012 gives deficit 0.32877, narrower by 0.18241 than the second encounter. First 31 matched pre-return-update scores save 0.16562 NLL; all 127 matched replay scores save 0.17258. Raw recovery crossing 48 events; reference-relative opening-to-late drop 0.42563. Text/history differ. Three-encounter weighted NLL 8.53054 vs reference 8.02258; complete first-pass measured train 72608 targets NLL 7.83705 vs reference 7.49468. Prediction progress observed; platform breakthrough and convergence remain unproven. Long training continues under PID 5392 without resetting or extending budget.",
+      "third_health_partition": "CPU-only read of exact 900000-target checkpoint: whole mean-square 5.193 is 99.9385% sensory summed-square contribution. Non-sensory mean-square 0.003535, output 0.016305; internal voltages [-0.19352,0.23220]. All inspected physical arrays finite; ge/gi nonnegative, b/x/u within permitted ranges. Existing zero-source exponential COBA plus reset preserves internal voltage interval [-0.2,1] for initial voltages in this interval. Sensory signed-current integration is a separate amplitude regime. Rank 2.479/activity 0.01698 are descriptive; no NESS/criticality certificate.",
+      "first_pass_accounting": "Measurement-only full first-pass training NLL/reference sums and bounded 4096-target tail begin at cumulative training target 827392 / cursor 927392; earlier coverage not reconstructed. Same learner/state/AdamW/timing/budget preserved on resume under PID 5392. Twelve bookkeeping and encounter tests pass. Historical EMA mixes training, B and replay; the new meter excludes active B and replay from fresh training totals.",
+      "parent": "IB_FLY_TOKEN_TIMING_20261005",
+      "title": "Connect current sensory input to motor read before next-token scoring",
+      "status": "active",
+      "time": "2026-10-05",
+      "confidence": "I",
+      "motivation": "Restore the missing immediate conditional path while retaining biological sensory/motor surfaces and full never-reset life.",
+      "action": "Input pulse followed by one zero-source physical tick; shared learning/evaluation/generation event interface, native BPTT32 over all 64 physical ticks; save independent physical counters and migrate old checkpoints without resetting weights/state/Adam moments.",
+      "conclusion": "21 focused numerical/interface tests pass including sparse silent-pulse credit, segmented reduction block boundaries and CUDA Graph/eager agreement. Current-token causal access verified at the matched mature checkpoint. Sparse-zero forward atomics and contiguous presynaptic-gradient reductions reduce repaired execution from 1.21157 to 0.80105 s/32 targets (39.95 targets/s); 2748.29 MiB calibration peak / 2934 MiB reserved. Long run resumed from 600928 targets/cursor 700928 under PID 11852; complete physical state and AdamW moments retained, registered target 30182144 unchanged. New timing has a separate live best; NLL/four-pillar gains are pending sufficient fresh updates.",
+      "artifacts": [
+        "docs/information_boltzmann/FLY_PULSE_QUIET_TIMING.md",
+        "configs/information_boltzmann/fly_bptt32_pulse_quiet_30m.json",
+        "results/published/fly_current_token_timing_repair.json",
+        "results/published/fly_current_token_timing_repair_control.json",
+        "results/published/fly_event_timing_execution.json",
+        "results/published/fly_event_timing_profile.json",
+        "results/published/fly_event_timing_sparse_forward.json",
+        "results/published/fly_event_timing_segmented_backward.json",
+        "results/published/fly_pulse_quiet_30m_launch.json",
+        "scripts/ib/summarize_fly_live_timing.py",
+        "results/published/fly_pulse_quiet_live_summary.json",
+        "results/published/fly_pulse_quiet_700k_evaluation.json",
+        "results/published/fly_port_arrival_bounds.json",
+        "scripts/ib/audit_fly_port_arrival.py",
+        "results/published/fly_pulse_quiet_800k_evaluation.json",
+        "results/published/fly_pulse_quiet_900k_evaluation.json",
+        "results/published/fly_900k_physical_health.json",
+        "results/published/fly_first_pass_meter_installation.json",
+        "results/published/fly_writer_input_clock_installation.json",
+        "results/published/fly_writer_input_clock_1m_evaluation.json"
+      ],
+      "evaluation_readout": "Read-only summary splits actual timing phases, uses fixed train-only marginal baseline, reports first-return-window matched scores before return learning, excludes unmatched bridge and counts B plus bridge physical/input exposure. Three numerical bookkeeping tests pass. Capability assessment awaits at least 3000 repaired joint updates and active validation.",
+      "first_active_result": "At 700000 cumulative BPTT targets (99072 repaired fresh targets / 3096 training updates), 256 fresh B targets have NLL 8.9370 vs fixed train-only unigram 8.2531 (deficit 0.68395). Deficit narrowed by 0.04125 from the last old encounter but texts/history differ. First return window has 31 matched pre-return-update pairs with +0.12884 NLL saving; all 127 matched replay pairs +0.10184. Descriptive recovery crossing 112 input events. Centered effective rank 5.109, field energy 1.447, firing 0.01318. Predictive platform breakthrough remains unproven; registered long run continues.",
+      "structural_arrival_bound": "With retained positive-delay connectome, one quiet tick permits earliest anatomical input arrival at 1424/2333 output nodes (61.04%); two quiet ticks permit 2319/2333 (99.40%). Current repair opens earliest causal access, not every pathway; actual filtering/spiking can postpone/suppress arrival. This is not a prescription to add solver ticks or a causal NLL attribution.",
+      "second_active_result": "At 800000 cumulative targets (199072 repaired fresh targets / 6221 training updates), fresh B NLL=8.58572 vs fixed unigram=8.07454, deficit=0.51118. Deficit narrowed 0.17277 since the first repaired encounter. Two-encounter weighted NLL=8.76137 vs reference=8.16380. First return 31 matched pre-return-update pairs save 0.11136 NLL; all 127 replay pairs save 0.12162. No raw within-B recovery crossing this encounter. Centered effective rank 3.130, energy 0.78737, activity 0.01934. Speed ~39.47 targets/s, peak allocation 2731 MiB. Encouraging descriptive reference-relative trend, but no predictive platform breakthrough or convergence established. Continue registered fresh-data training.",
+      "writer_clock_correction": "At 943712 fresh training targets, hold packet baseline during quiet ticks; observed-input recurrence restores zero stationary DC innovation, versus 51.2505% remaining in archived physical-clock filter. Full life, AdamW moments, cursor and 30182144 target retained. Historical best moved, current-phase scores separated; 34 interface/numerical tests pass. Continues under PID 22884; NLL benefit pending sufficient training.",
+      "first_writer_input_clock_result": "At 1000000 cumulative targets, corrected clock has 56288 fresh training targets / 1759 joint training updates. Active fresh B NLL 7.85337 vs fixed unigram 7.75454 (deficit 0.09883); descriptive deficit narrows 0.22994 from previous physical-clock encounter, with different text/history. First 31 matched pre-return-update scores save 0.12606 NLL; all 127 matched replay scores save 0.11723. Centered effective rank 2.7418. Complete current-phase train NLL 7.85700 vs reference 7.49746. Below 3000-update minimum: observation only, capability/platform claim pending. Long 30M fresh-token target unchanged; live PID 22884 continues.",
+      "second_writer_input_clock_result": "At 1100000 cumulative targets: corrected clock 156288 fresh targets / 4884 joint train updates; active B NLL 8.03538 vs fixed unigram 7.65082 (deficit 0.38456); first 31 matched pre-return-update scores save 0.20452 NLL. Timing access remains verified, predictive breakthrough remains unproven; readout diagnosis recorded separately under IB_FLY_CONDITIONAL_READ_20261005.",
+      "invalidation": "Revise if an identical-protocol rerun contradicts this outcome, or if the recorded measurements prove irreproducible on the retained artifacts."
+    },
+    {
+      "id": "IB_FLY_TOKEN_TIMING_20261005",
+      "parent": "IB_FLY_DECODER_HALF_30M_20261005",
+      "title": "Current token misses the motor prediction deadline",
+      "status": "active",
+      "time": "2026-10-05",
+      "confidence": "I",
+      "motivation": "Explain weak fresh validation improvement without replacing biological sensory/output surfaces.",
+      "action": "CPU audit of complete mature checkpoint forks changing one real OWT input; compare fresh active validation scores to fixed train-only unigram reference.",
+      "conclusion": "Zero sensory/output overlap and old-ring synchronous COBA transmission make current-event motor/logit sensitivity exactly zero. A changed real token produces full-state difference norm 121.61 but identical current logits; the first output difference arrives one event later. On four distinct 256-token validation encounters, model NLL 7.644 to 8.137, unigram 7.176 to 7.412. This proves an interface timing gap and partial text-difficulty confounding, not the sole cause or asymptotic architecture failure. Production 30M run is unchanged.",
+      "artifacts": [
+        "docs/information_boltzmann/FLY_CURRENT_TOKEN_TIMING_AUDIT.md",
+        "scripts/ib/audit_fly_current_token_causality.py",
+        "results/published/fly_current_token_timing_audit.json"
+      ],
+      "invalidation": "Revise if an identical-protocol rerun contradicts this outcome, or if the recorded measurements prove irreproducible on the retained artifacts."
+    },
+    {
+      "id": "IB_FLY_DECODER_HALF_30M_20261005",
+      "parent": "IB_FLY_LR_DIAG_20261005",
+      "title": "Train the continuing fly for 30M fresh OWT targets with a half-rate decoder",
+      "status": "active",
+      "time": "2026-10-05",
+      "confidence": "I",
+      "motivation": "User requires substantial unique-data training and a lower learning rate for the GPT-2-initialized decoder weight.",
+      "action": "Decoder weight AdamW LR 0.0001, all other trainable parameters 0.0002. Preserve full physical life and moments, extend pinned/deduplicated GPT-2 OWT token arrays with identical prefixes, continue 30M new training targets with BPTT32 and active evaluation.",
+      "conclusion": "Launch verified, PID 28228; 31,000,387 prepared training targets, fresh cursor 282144, requested 30M additional targets (937500 fresh-training updates). Seven tests validate optimizer moment migration. Typical window 0.684 s and device memory 2539 MiB; capability results remain pending. Evaluation revisits are separately counted. User stopped and full state saved at 600928 BPTT training targets, cursor 700928, events 730264, optimizer updates 19271. Registered target 30182144 is unchanged. Pulse/quiet repair has been implemented and calibrated; long training is not running.",
+      "artifacts": [
+        "docs/information_boltzmann/FLY_BPTT32_DECODER_HALF_30M.md",
+        "configs/information_boltzmann/fly_bptt32_decoder_half_30m.json",
+        "results/published/fly_bptt32_decoder_half_30m_launch.json",
+        "scripts/ib/extend_owt_gpt2_stream.py",
+        "results/q8_fly_bptt32_adamw_continuous_100k"
+      ],
+      "invalidation": "Revise if an identical-protocol rerun contradicts this outcome, or if the recorded measurements prove irreproducible on the retained artifacts."
+    },
+    {
+      "id": "IB_FLY_LR_DIAG_20261005",
+      "parent": "IB_FLY_ADAMW_RUN_20261005",
+      "title": "Separate local AdamW step effectiveness from raw gradient norm imbalance",
+      "status": "active",
+      "time": "2026-10-05",
+      "confidence": "I",
+      "motivation": "User requests same-state learning-rate diagnostics and explains writer/synapse/read gradient norm disparity.",
+      "action": "Briefly save/pause production, run three real OWT paired BPTT32 windows with identical saved moments and half/current/double LR plus group-only updates, then resume production unchanged and expand scalar monitoring.",
+      "conclusion": "Local calibration: half/current/double LR mean fitting NLL reductions 0.00997/0.01985/0.03931 and subsequent-window reductions 0.00164/0.00335/0.00674; no local overshoot. Read/decoder-only gives 97.8% of immediate improvement. Raw gradient norms are concentrated in read RMSNorm gain and decoder; writer monitoring previously omitted gates. This identifies local update/measurement structure, not long-run optimizer superiority or cumulative mechanism value. Production remains AdamW LR 0.0002 and continues from saved full life.",
+      "artifacts": [
+        "docs/information_boltzmann/FLY_BPTT32_LR_DIAGNOSTIC.md",
+        "results/published/fly_bptt32_adamw_lr_diagnostic.json",
+        "scripts/ib/diagnose_fly_bptt_learning_rate.py"
+      ],
+      "invalidation": "Revise if an identical-protocol rerun contradicts this outcome, or if the recorded measurements prove irreproducible on the retained artifacts."
+    },
+    {
+      "id": "IB_FLY_ADAMW_RUN_20261005",
+      "parent": "IB_FLY_ADAMW_SCALE_20261005",
+      "title": "Continue the persistent fly with uniformly scaled AdamW learning",
+      "status": "active",
+      "time": "2026-10-05",
+      "confidence": "I",
+      "motivation": "User authorizes real training after short calibration shows previously tiny edge/projection gradients now produce represented weight updates.",
+      "action": "Continue completed BPTT32 individual for 100000 fresh OWT training targets with all currently trainable parameter groups using AdamW LR 0.0002; preserve physical state, existing Adam moments, sensory/motor ports, and active pre-update evaluation every 5000 training targets. Saved and resumed at cursor 234464 for a paired LR diagnostic; resume PID 3780, target retained.",
+      "conclusion": "Launch verified: PID 34068, CUDA Graph active, first 480 new targets finite, typical 32-event training window 0.68 s. Peak allocated 1914 MiB, reserved 2390 MiB, device-wide nvidia-smi 2539 MiB. Performance gains await periodic live evaluation. User replaced the unfinished uniform-rate segment at 82144 new targets with the decoder-half 30M continuation; physical individual preserved.",
+      "artifacts": [
+        "results/q8_fly_bptt32_adamw_continuous_100k",
+        "configs/information_boltzmann/fly_bptt32_continuous.json",
+        "scripts/ib/train_fly_bptt_stream.py"
+      ],
+      "invalidation": "Revise if an identical-protocol rerun contradicts this outcome, or if the recorded measurements prove irreproducible on the retained artifacts."
+    },
+    {
+      "id": "IB_FLY_ADAMW_SCALE_20261005",
+      "parent": "IB_FLY_BPTT32_20261004",
+      "title": "Make small sensory and synaptic gradients produce actual AdamW updates",
+      "status": "active",
+      "time": "2026-10-05",
+      "confidence": "I",
+      "motivation": "User requests uniform 0.0002 learning rates and AdamW rather than explaining weak learning through update frequency alone.",
+      "action": "Preserve the completed individual, BPTT32, sensory/motor boundaries and physical state; migrate all currently trainable groups to AdamW and measure eight fresh real OWT updates.",
+      "conclusion": "Numerical/resource calibration only: 256 targets completed with finite losses, about 47 tokens/s and peak allocated 2222 MiB (includes measurement copies). First-gradient old-SGD counterfactual leaves 80.75% E-edge, 95.28% I-edge and 99.92% chemical-projection nonzero gradients without represented float32 weight change. AdamW cumulative relative displacement is E 4.330%, I 1.070%, chemical projection 0.156%, readout 0.397% after eight updates. New plasticity moments start at zero; NLL superiority and long-run stability remain to be established.",
+      "artifacts": [
+        "docs/information_boltzmann/FLY_BPTT32_ADAMW_CALIBRATION.md",
+        "results/published/fly_bptt32_adamw_update_scale.json",
+        "scripts/ib/measure_fly_bptt_update_scale.py",
+        "information_boltzmann/core/fly_bptt_learning.py",
+        "configs/information_boltzmann/fly_bptt32_continuous.json"
+      ],
+      "invalidation": "Revise if an identical-protocol rerun contradicts this outcome, or if the recorded measurements prove irreproducible on the retained artifacts."
+    },
+    {
+      "id": "IB_FLY_BPTT32_20261004",
+      "parent": "IB_FLY_LEVEL0_RESERVOIR_20260930",
+      "title": "Archive local-credit exploration and continue the fly individual with BPTT32",
+      "status": "active",
+      "time": "2026-10-04",
+      "confidence": "I",
+      "motivation": "User elects bounded-window BPTT after local sensitivities failed to establish useful global credit.",
+      "action": "Preserve sensory/motor boundaries and full COBA/ALIF/STP physical state, repair edge-weight VJP and functional writer baseline, then calibrate 32-event CUDA Graph learning below 3900 MiB and continue fresh OWT.",
+      "conclusion": "Completed 100,000 additional real OWT training targets and 3,365 joint BPTT32 updates. Active validation mean 7.9844, best segment 7.0303; context-matched revisits mean +0.1481 nats with ongoing learning. Fixed-weight 1,024-target accumulated-learning intervention shows negligible mean gain from restoring starting edge/physical parameters. This validates execution, not superiority over a matched frozen-brain control or convergence. Edge and sensory-projection displacement remain tiny relative to learned readout changes.",
+      "artifacts": [
+        "docs/information_boltzmann/FLY_BPTT32_CONTINUATION.md",
+        "information_boltzmann/core/fly_bptt_learning.py",
+        "scripts/ib/train_fly_bptt_stream.py",
+        "configs/information_boltzmann/fly_bptt32_continuous.json",
+        "results/q8_fly_online_local_credit_first_revisit_100k/archive.json",
+        "results/q8_fly_bptt32_continuous_100k",
+        "docs/information_boltzmann/FLY_BPTT32_COMPLETED_AUDIT.md",
+        "scripts/ib/audit_fly_bptt_learned_brain.py",
+        "results/published/fly_bptt32_completed_audit.json"
+      ],
+      "invalidation": "Revise if an identical-protocol rerun contradicts this outcome, or if the recorded measurements prove irreproducible on the retained artifacts."
+    },
+    {
+      "id": "IB_DECODER_RMS_20261004",
+      "parent": "IB_MEDIUM_HEALTH_20261004",
+      "title": "Stabilize the plastic 3D medium expression interface",
+      "status": "active",
+      "time": "2026-10-04",
+      "confidence": "I",
+      "motivation": "Internal QK and correction normalization leave the final merged feature amplitude unconstrained; generic AdamW decay also acts on physical log coordinates.",
+      "action": "Use shared pre-decoder RMSNorm on every expression path and explicit prediction/physical optimizer groups. Preserve exact historical continuation; mark norm adoption as a new branch. Observe actual feature RMS, logit scale and predictive entropy.",
+      "conclusion": "Implementation repair: expression normalization does not modify persistent physical state. Learned norm gain and decoder weights retain their scale freedom. Capability and long-term calibration require sufficient joint real-data training.",
+      "artifacts": [
+        "information_boltzmann/core/plastic_ports.py",
+        "information_boltzmann/runtime/optimization.py",
+        "tests/test_medium_decoder.py",
+        "docs/information_boltzmann/MEDIUM_DECODER_SCALE.md",
+        "results/published/medium_decoder_scale_interface.json"
+      ],
+      "invalidation": "Revise if any execution path bypasses the shared head, if resume changes parameter-to-moment binding or physical state, or if normalization damages predictive calibration in sufficiently trained real streams."
+    },
+    {
+      "id": "IB_MEDIUM_HEALTH_20261004",
+      "parent": "IB_LIFE_EVAL_20261004",
+      "title": "Measure persistent-medium health on the actual online learning trajectory",
+      "status": "active",
+      "time": "2026-10-04",
+      "confidence": "I",
+      "motivation": "Complement predictive quality, context adaptation and revisit retention with measurements that identify energy imbalance, spatial collapse and interference without introducing new controllers.",
+      "action": "Observe actual incident/reflected energy, conductance reversal work and Joule heat; track full field/flux energy continuity and transport/collision/bath spatial-energy changes; preserve bounded phase-separated covariance/roughness/risk histories and actual optimizer displacement. Measure conditional complete-state directional response with JVP at live parameter snapshots.",
+      "conclusion": "Implementation only: monitoring preserves joint objective, complete state, parameter gradients and local eligibility continuation; energy balances and complete-state JVP have numerical reference checks. Actual 3D CUDA Graph outputs are supported. No model capability, noise-expulsion, criticality or convergence verdict is inferred from these numerical checks.",
+      "issues": [
+        "Feature temporal differences measure roughness rather than identified semantic noise; low spectral entropy may mean compression or collapse.",
+        "Conditional one-event gains are directional measurements in the declared state metric, not maximal Lyapunov exponents or SOC evidence.",
+        "Persistent learning performance requires sufficient jointly trained real-data experience; finite loss plateaus do not prove Bayes optimality."
+      ],
+      "artifacts": [
+        "information_boltzmann/runtime/medium_health.py",
+        "docs/information_boltzmann/PERSISTENT_MEDIUM_HEALTH.md",
+        "tests/test_medium_health.py",
+        "scripts/ib/train_online_plastic.py",
+        "results/published/persistent_medium_health_interface.json"
+      ],
+      "invalidation": "Revise if monitoring changes state, gradients, optimization or RNG; if its energy ledger fails against native transitions; if checkpoint continuation resets measurement history; or if phase mixing creates fictitious recovery/convergence."
+    },
     {
       "id": "N000",
       "parent": null,
@@ -2020,11 +2308,12 @@
       "time": "2026-09-30",
       "motivation": "The sensory-injection probes at step 500 still showed byte-identical wiring-perturbation deltas: with the readout reading the sensory surface itself, information never needs to leave the injection site - write and read surfaces overlapped. Completing the user's complementarity principle requires disjoint surfaces.",
       "action": "Restrict the readout to the 149,210 non-injected (interneuron/output) neurons via a fixed read mask while injection stays on the 15,912 sensory neurons; everything else identical (frozen signed wiring, LIF, chunk 32, registered protocol). Now every bit of task information must physically traverse the wiring.",
-      "conclusion": "Structural at launch: smoke shows NLL starts at the no-information level (10.83) as expected when the read surface is blind to the injection surface. The registered question: can gradient descent discover routing through the frozen evolved wiring at this budget?",
+      "conclusion": "The 3000-update run completed: 10.831 -> 10.68 (500) -> 10.537 (1000, blind plateau) -> 7.686 (1500, routing discovered: 2.85-nat escape from the unigram floor) -> 7.597 (2000) -> 7.553 (2500) -> 7.549 (3000). The endpoint wiring probes (causality_probe.json) show the frozen evolved wiring is MAXIMALLY causally alive: degree-preserving node relabel +2.757 nats, zero transmission +2.872, sign flip +8.523 - versus byte-identical zero deltas on the broadcast level-0 arm. Gradient descent DID discover routing through the frozen evolved topology, and the learned solution's computation lives in the biological substrate (unlike the broadcast arm's inert-wiring linear filter at 6.9662). The routed arm pays +0.583 nats versus the broadcast shortcut at this budget (the 1000-update blind period is the visible cost), but it is the only configuration in which the substrate carries the computation.",
       "issues": [
         "Dead-gradient risk: the read surface is blind at initialization, so early gradients to the sensory input projection flow only through the (small) wiring path - the run may plateau at the unigram distribution.",
         "Firing rate must grow for any routing to exist; the vital-sign suite monitors it per validation.",
-        "The wiring remains frozen; a plateau would motivate level-2 plasticity (surprise-gated local rules) as the next rung rather than abandoning the topology."
+        "The wiring remains frozen; a plateau would motivate level-2 plasticity (surprise-gated local rules) as the next rung rather than abandoning the topology.",
+        "The 0.583-nat premium over the broadcast shortcut is the optimization cost of the 1000-update blind period plus the harder solution class; level-2 plasticity (the wiring itself adapting) is the registered rung to close it while keeping the computation in the substrate."
       ],
       "invalidation": "If NLL plateaus at the unigram floor with near-zero wiring-perturbation deltas through 3000 updates, the direct-brain approach (frozen topology + gradient-trained I/O) is falsified at this budget, and the ladder must move to plasticity or learned dynamics.",
       "artifacts": [
@@ -2033,7 +2322,7 @@
         "configs/information_boltzmann/q8_fly_reservoir_routed.json"
       ],
       "confidence": "I",
-      "confidence_note": "Launched, smoke-tested; the routing-learning question is open."
+      "confidence_note": "Run complete, endpoint probes recorded by the parallel session; weights cleaned after probing (numbers preserved in causality_best/probe json)."
     },
     {
       "id": "IB_FLY_OUTPUT_READ_20260930",
@@ -2055,6 +2344,502 @@
       ],
       "confidence": "I",
       "confidence_note": "Queued, not run."
+    },
+    {
+      "id": "IB_PLASTIC_MEDIUM_20261003",
+      "parent": "IB_W4_READ_PROBES_20261002",
+      "title": "Learn a heterogeneous 3D medium instead of fixed biological wiring",
+      "status": "active",
+      "time": "2026-10-03",
+      "confidence": "I",
+      "motivation": "Borrow local heterogeneity and persistent transmission responses from the fly line while allowing language experience to learn spatial processing preferences on a periodic 3D domain. The user permits a different execution method where it improves engineering.",
+      "action": "Implement an independent signed-wave medium: continuous Fourier material conditions reciprocal local transport, nonlinear conservative scattering and selective quadratic release. Persist field, three edge responses and physical elapsed time. Attach existing W4 observation port and learned read probes; expose assimilation, evolution and read independently. Add full-update execution benchmark.",
+      "conclusion": "17 new CPU numerical/interface tests and 7 existing event-timing regressions pass. True next-token likelihood reaches all medium generators and ports. Core and port benchmark entry points execute forward/backward/AdamW with persistent continuation on CPU. No new corpus training, GPU speed, emergent specialization, optimal topology or criticality result is claimed.",
+      "issues": [
+        "This candidate uses signed wave field plus edge responses, not a nonnegative Boltzmann distribution or the D3Q8 velocity-moment invariants. Its four local linear constraints are documented explicitly.",
+        "Slow material parameters are differentiable and trained jointly; autonomous delayed-credit learning and event-memory inference are separate unimplemented interfaces.",
+        "A CUDA window is reserved for a later full-update benchmark, integration refinement and fusion work; independent fly training remains untouched.",
+        "W4 precision updates at observations and stays fixed during evolution; the port precision metric and wave energy are not yet a single closed metric. Full continuation must save flux and elapsed time in addition to field and precision."
+      ],
+      "invalidation": "Revise the numerical construction if locality, linear transport, energy ledger, fixed-duration refinement or causal full-state continuation fails. Judge the architecture only after sufficient real-data joint training against matched uniform-material and existing baselines.",
+      "artifacts": [
+        "docs/information_boltzmann/PLASTIC_MEDIUM_V1.md",
+        "information_boltzmann/core/plastic_medium.py",
+        "information_boltzmann/core/plastic_ports.py",
+        "scripts/ib/benchmark_plastic_medium.py",
+        "tests/test_plastic_medium.py",
+        "tests/test_plastic_ports.py"
+      ],
+      "confidence_note": "Implementation verified numerically; research and performance hypotheses remain open."
+    },
+    {
+      "id": "IB_PLASTIC_FEASIBILITY_20261003",
+      "parent": "IB_PLASTIC_MEDIUM_20261003",
+      "title": "Constructive pre-training feasibility and phase-locking certificate",
+      "status": "active",
+      "time": "2026-10-03",
+      "confidence": "I",
+      "motivation": "User requires mathematical representation, reachability and feasible-policy checks before training; training must search an admissible domain rather than compensate for structural impossibility.",
+      "action": "Replace the 13-column default material basis with a complete 256-column real Fourier reference basis. Remove endpoint averaging that annihilates checkerboard conductance. Derive the exact infinitesimal generator, collision-control Lie closure, bounded-power supply witness and its continuous/discrete synchronized orbit. Verify the full local Jacobian without any training.",
+      "conclusion": "Default material rank256 and initialization speed-map rank3 pass. A bounded-power, nonperiodically-driven boundary-action witness using existing collision and bath primitives has a single neutral phase direction and strictly stable transverse directions: continuous gap0.125, discrete transverse spectral radius0.999375. Orbit residuals below5e-16. 30 numerical/interface/regression tests pass. This proves a robust core feasible region under declared source conditions, not spontaneous synchronization at all parameters or validation of the W4 policy.",
+      "issues": [
+        "HOLD full W4 candidate training pending policy-support closure: innovation-only W4 writes vanish on a perfectly predicted observation, so the admissible physical boundary witness is not yet proved representable by that actor.",
+        "The control Lie result assumes independent rotation controls; the finite shared MLP is not asserted to express every spatial/time control policy.",
+        "Spatial material bandwidth remains finite and fixed across evaluation resolutions. Full reference-grid representation is not infinite-dimensional universality.",
+        "The single zero phase exponent follows autonomous time translation and does not prove SOC or a critical-dissipation phase transition."
+      ],
+      "invalidation": "Fail core feasibility if the real basis is rank-deficient, the generator differs from the actual integrator derivative, supply exceeds the declared work budget, or a transverse eigenvalue/multiplier violates the certified sign/modulus. Do not certify the full actor until its supported boundary actions include a compatible stable feedback.",
+      "artifacts": [
+        "docs/information_boltzmann/PLASTIC_MEDIUM_FEASIBILITY.md",
+        "information_boltzmann/core/plastic_feasibility.py",
+        "scripts/ib/audit_plastic_feasibility.py",
+        "tests/test_plastic_feasibility.py",
+        "results/published/plastic_medium_feasibility.json"
+      ],
+      "confidence_note": "Conditional analytic construction corroborated by exact code derivatives and Jacobians; no capability training or full W4 policy claim."
+    },
+    {
+      "id": "IB_PLASTIC_SPACE_20261003",
+      "parent": "IB_PLASTIC_FEASIBILITY_20261003",
+      "title": "Heterogeneous compartments and localized modes are representable before training",
+      "status": "active",
+      "time": "2026-10-03",
+      "confidence": "I",
+      "motivation": "The user asks whether the periodic medium can support fly-like heterogeneous spatial organization. Distinguish domain topology, coefficient basis and actual operator eigenmodes.",
+      "action": "Inverse-synthesize positive edge-speed fields through the full reference Fourier basis and full-row-rank speed map. Construct weakly coupled spatial compartments and a two-cell resonance, then solve the actual B.T@B wave spectrum. No optimizer or corpus training.",
+      "conclusion": "At8x8x4, weak boundary speed0.01 gives Rayleigh bound0.0064 and gap0.00639968 versus homogeneous gap32. A localized resonance has over99.99% of mode energy in its two cells and IPR0.5 versus plane-wave1/256. Exact speed synthesis error below2e-14.32 numerical/interface/regression tests pass. This certifies operator expressibility, not learned semantics or complete fly wiring.",
+      "issues": [
+        "Actual transport remains reciprocal three-axis nearest-neighbor wiring; arbitrary directed long-range graphs require a separate route representation.",
+        "Localized transport eigenmodes are not automatically invariant attractors of the nonlinear collision/bath/port combination.",
+        "The supplied fly script computes TwoNN onXYZ and random-walk spectra without physical delays. Its12.525 estimate is not a neural representation dimension and its walk counts are not milliseconds."
+      ],
+      "invalidation": "Fail spatial expressibility if inverse synthesis cannot realize positive target speeds, the min-max bound is violated, or the actual heterogeneous operator fails the localized-mode certificate.",
+      "artifacts": [
+        "information_boltzmann/core/plastic_feasibility.py",
+        "tests/test_plastic_spatial_feasibility.py",
+        "docs/information_boltzmann/PLASTIC_MEDIUM_FEASIBILITY.md",
+        "results/published/plastic_medium_feasibility.json"
+      ],
+      "confidence_note": "Training-free exact synthesis and spectral corroboration of explicit parameter witnesses."
+    },
+    {
+      "id": "IB_ADAPTIVE_CONDUCTION_20261003",
+      "parent": "IB_PLASTIC_SPACE_20261003",
+      "title": "Persistent activity-dependent conduction can form and relocate fast pathways",
+      "status": "active",
+      "time": "2026-10-03",
+      "confidence": "I",
+      "motivation": "The user authorizes runtime-plastic medium structure instead of frozen connectome topology. Learn the conduction rule jointly, while allowing each individual to adapt its pathways causally without deployment backpropagation.",
+      "action": "Add one persistent log-speed offset per positive-axis edge. A positive learned content metric measures normalized endpoint coherence and edge occupancy. An exact physical-time relaxation tracks the bounded local evidence with learned spatial gain and time scale. Preserve opposite endpoint signs in conservative transport and carry the structural state through W4 writes, reads, detach and continuation checkpoints.",
+      "conclusion": "Analytic evidence bound implies a forward-invariant structural interval and finite positive speeds for fixed finite parameters. Time-varying reciprocal conduction preserves wave energy. A declared coherent-path construction forms speed54.588 versus transverse1, then relocates to a new path while the old speed falls to1.000182 without any optimizer. The extended120-dimensional locking witness retains one neutral phase and transverse gap0.125.41 numerical/interface/regression tests pass.8x8x4/D128 adds438 parameters and3072 FP32 bytes per individual.",
+      "issues": [
+        "Activity is local routing evidence; semantic usefulness must be learned by the task objective. Uniform activity can reinforce all axes, so arbitrary specialization is not forced.",
+        "The prior W4 energy/action-support closure gate remains; the bounded source in the locking certificate is not the default innovation-only actor.",
+        "The rule changes functional conductance on local edges, not arbitrary graph adjacency or literal biological axon growth. Runtime state transfer across grids requires explicit periodic resampling.",
+        "Conservative edge updates stay norm-stable at high speed, but propagation accuracy requires integration refinement. No GPU timing or capability superiority is claimed.",
+        "Biological motivation comes from activity-dependent conduction plasticity; the exact normalized rule is engineered, and the argument does not attribute vertebrate myelination to fly neurons."
+      ],
+      "invalidation": "Revise the rule if evidence violates its bound, persistent offsets escape the derived invariant interval, adaptive transport breaks its energy ledger, solver refinement fails, or the extended locking witness gains a transverse instability. Evaluate semantic benefit only after matched sufficient real-data joint training.",
+      "artifacts": [
+        "information_boltzmann/core/conduction_plasticity.py",
+        "information_boltzmann/core/plastic_medium.py",
+        "information_boltzmann/core/plastic_ports.py",
+        "docs/information_boltzmann/ADAPTIVE_CONDUCTION.md",
+        "scripts/ib/audit_conduction_plasticity.py",
+        "tests/test_conduction_plasticity.py",
+        "results/published/conduction_plasticity_feasibility.json"
+      ],
+      "confidence_note": "Analytic runtime bounds, constructive rule response and exact extended Jacobian corroborate feasibility; training and execution performance remain pending."
+    },
+    {
+      "id": "IB_CONTINUOUS_RUNTIME_20261003",
+      "parent": "IB_ADAPTIVE_CONDUCTION_20261003",
+      "title": "Timestamped persistent dynamics supports independent observation and readout clocks",
+      "status": "active",
+      "time": "2026-10-03",
+      "confidence": "I",
+      "motivation": "The user authorizes continuous perception, thinking and action without a forced finish-pondering-before-read interface. Preserve differentiable credit assignment and autonomous conduction while reducing execution overhead.",
+      "action": "Implement a shared timestamped differentiable event engine and a single-owner background deployment runner. Evolve input-free intervals, prioritize current-state reads at safe solver boundaries, expose lag, preserve every continuation tensor and use an FP64 clock. Cache fixed-weight coefficients/table and skip monitoring reductions without changing dynamics; add an opt-in deployment CUDA Graph backend.",
+      "conclusion": "49 CPU numerical/interface/regression tests pass, including causal timestamped likelihood gradients, persistence, cache invalidation, exact continuation, nonblocking producer submission and urgent reads during catch-up. At8x8x4/D128 CPU one thread, matched dynamics changes10.651 to9.802ms/tick (1.087x) with zero state difference. GPU reference execution increased Windows shared usage from76 to78MiB and the guard stopped before graph capture. No new training or reasoning-capability claim.",
+      "issues": [
+        "The background producer interface is nonblocking; real-time catch-up still requires adequate compute throughput, reported through state timestamp and lag.",
+        "The physical clock scale and solver accuracy budget are explicit caller inputs. Numerical step refinement is distinct from cognitive-time selection.",
+        "2026-10-03 user revises memory policy: total dedicated VRAM below4 GiB; shared growth is recorded and permitted. Five CUDA deployment/training checks now pass.",
+        "The prior full W4 boundary action/energy-support closure gate remains; the runtime does not remove it or assert a trained autonomous reasoning policy."
+      ],
+      "invalidation": "Revise execution if caching changes evolution, read timestamps see future observations, continuation loses fast or structural state, submission blocks on catch-up, or errors leave futures unresolved. Accept GPU execution only within the declared memory condition.",
+      "artifacts": [
+        "information_boltzmann/runtime/continuous.py",
+        "information_boltzmann/core/plastic_ports.py",
+        "docs/information_boltzmann/CONTINUOUS_RUNTIME.md",
+        "scripts/ib/benchmark_continuous_execution.py",
+        "tests/test_continuous_runtime.py",
+        "tests/test_continuous_cuda_graph.py",
+        "results/published/continuous_execution_cpu.json",
+        "results/published/continuous_execution_gpu.json"
+      ],
+      "confidence_note": "Causal interfaces, differentiation, matched CPU execution and CUDA capture invariants verified. New full-training graph execution is recorded in IB_CONDUCTANCE_GRAPH_20261003; source-policy closure and task capability remain separate."
+    },
+    {
+      "id": "IB_CONDUCTANCE_RESPONSE_20261003",
+      "parent": "IB_CONTINUOUS_RUNTIME_20261003",
+      "title": "Learned conductance response unifies local persistence, E/I feedback and electrical release",
+      "status": "active",
+      "time": "2026-10-03",
+      "confidence": "I",
+      "motivation": "User requires equation-backed migration from the fly mechanism without a new fixed degree-to-time map or an imposed tau_syn/tau_m ratio. Local response must persist, allow competition and retain a valid open-system energy account.",
+      "action": "Implement two-state receptor kinetics, conductance times reversal driving potential, positive learned C/L/g/R and independent kinetic rates. Store field/current in energy coordinates, condition conservative collision on receptor history, integrate frozen subflows analytically and persist receptors through timestamped BPTT and schema2 continuation. Retain quadratic as the explicit historical control.",
+      "conclusion": "62 CPU numerical/interface/regression tests pass, including13 new conductance checks. Receptor fractions have a forward-invariant interval; integrated source-work/Joule residual is below2e-15 in the published audit. A conditional absorbing energy bound also holds under composition of actual conservative and frozen electrical steps. An actual local actor member has excitation-feedback eigenvalue+0.358899 when inhibitory state is clamped, and closed-loop eigenvalues-1.183330+/-3.678888i,-7.633341. This demonstrates realizable inhibition-stabilized damped response before training. D128 response has66112 parameters,256KiB receptor state; collision conditioning yields net15872 core parameters over quadratic.",
+      "issues": [
+        "Learned opening-rate actor and coefficient basis are engineered parameterizations; the two-state receptor approximation and electrical-only source ledger are explicit. No literal fly chemistry claim.",
+        "Time/electrical reference units and matched initialization are exposed trainable priors, not optimal physiological constants. No3--78ms degree map or fixed receptor/membrane time ratio is migrated.",
+        "The damped-focus witness is not a sustained limit cycle, semantic specialization or criticality claim. The previous quadratic locking certificate is not automatically transferred.",
+        "The energy bound assumes fixed finite parameters and bounded additional boundary power. Trajectory accuracy still requires fixed-duration refinement despite norm/bound stability.",
+        "CUDA deployment/training checks now pass under the revised dedicated VRAM cap. Sufficient joint real-data learning remains the capability criterion."
+      ],
+      "invalidation": "Revise if receptor fractions leave their invariant interval, electrical work and heat fail storage balance, the infinitesimal generator differs from implementation, changing physical units changes normalized dynamics, persisted response is lost, or the actual local E/I witness has the wrong stability signs.",
+      "artifacts": [
+        "information_boltzmann/core/conductance_response.py",
+        "information_boltzmann/core/conductance_feasibility.py",
+        "docs/information_boltzmann/CONDUCTANCE_RESPONSE.md",
+        "scripts/ib/audit_conductance_response.py",
+        "tests/test_conductance_response.py",
+        "results/published/conductance_response_feasibility.json",
+        "results/published/conductance_execution_cpu.json"
+      ],
+      "confidence_note": "Equation provenance, conditional analytic bounds, actual local Jacobian and numerical/interface consistency are established. No new training or task-performance claim."
+    },
+    {
+      "id": "IB_CONDUCTANCE_GRAPH_20261003",
+      "parent": "IB_CONDUCTANCE_RESPONSE_20261003",
+      "title": "Capture complete conductance forward/backward without changing physical dynamics",
+      "status": "active",
+      "time": "2026-10-03",
+      "confidence": "I",
+      "motivation": "User identifies13.79s/update as impractical and authorizes shared-counter growth while capping total dedicated VRAM at4 GiB.",
+      "action": "Share quiet chunk likelihood, capture full forward/backward with stable accumulated-gradient buffers, keep all continuation state and FP64 clock, measure matched real OWT updates.",
+      "conclusion": "At8x8x4/D128,50257 vocabulary,128 tokens/update,BPTT8,FP32, one solver step at explicit duration0.005: warmed eager13.174922s versus graph3.067339s,4.295229x speedup. Two different chunks match losses, accumulated gradients and all state with maximum differences0. Five CUDA and63 CPU regressions pass. Total card dedicated peak2937MiB with independent fly training retained.",
+      "issues": [
+        "Execution measurement uses one warmed measured update per arm under GPU contention; this establishes execution improvement, not task capability or a long-run median.",
+        "Duration0.005 is an explicit measurement setting; appropriate physical cadence and solver refinement remain separate.",
+        "Captured execution still exceeds1.5 seconds in this concurrent window; next work is local transport/conductance backward fusion.",
+        "CUDA graph trades a larger reserved pool for fewer launches; all GPU memory counters are recorded and total dedicated usage remains below4 GiB."
+      ],
+      "artifacts": [
+        "information_boltzmann/runtime/training.py",
+        "information_boltzmann/runtime/gpu_memory.py",
+        "scripts/ib/benchmark_conductance_training.py",
+        "tests/test_plastic_training_execution.py",
+        "docs/information_boltzmann/CONDUCTANCE_TRAINING_EXECUTION.md",
+        "results/published/conductance_training_execution_comparison.json"
+      ],
+      "invalidation": "Invalidate acceleration if accumulated gradients, updated-parameter replay, complete persistent state, physical duration or objective differs from eager, or dedicated VRAM exceeds the cap."
+    },
+    {
+      "id": "IB_LOCAL_MEDIUM_AUDIT_20261003",
+      "parent": "IB_CONDUCTANCE_RESPONSE_20261003",
+      "title": "Make local material directly trainable and condition pathway content preference on position",
+      "status": "active",
+      "time": "2026-10-03",
+      "confidence": "I",
+      "motivation": "User requests a self-audit against fixed fly physiological fits, preserving the advantage of learning brain-like material rather than freezing anatomy-specific numbers.",
+      "action": "Retain fan-in electrical coefficient projection with zero material/bias to preserve uniform initial coefficients and activate their material derivative; add a positive local material-conditioned edge metric for conductance while keeping the quadratic control reproducible.",
+      "conclusion": "66 affected CPU checks and five explicit CUDA checks pass. Local content preference, direct initial electrical material gradients, conservation, bounds, continuation and captured learning remain valid. Added3072 parameters and no persistent state or extra time loop.",
+      "issues": [
+        "Local periodic adjacency and material bandwidth remain explicit representational budgets; functional routes adapt within them.",
+        "Boundary channel scale is learned; packet_radius1.25*sqrt(D/64) defines its initialization only. Reference units and initial uniform coefficients are distinct from fixed physiological fits.",
+        "Earlier speed measurements belong to the previous14354610-parameter candidate; current total14357682 and no new task-capability claim."
+      ],
+      "invalidation": "Revise if initial electrical coefficient material derivatives vanish, local metric loses positivity or evidence bounds, historical quadratic metric changes, or CUDA capture/continuation differs.",
+      "artifacts": [
+        "docs/information_boltzmann/LEARNABLE_MEDIUM_AUDIT.md",
+        "information_boltzmann/core/conductance_response.py",
+        "information_boltzmann/core/conduction_plasticity.py",
+        "tests/test_conductance_response.py",
+        "tests/test_conduction_plasticity.py",
+        "results/published/learnable_medium_audit.json"
+      ]
+    },
+    {
+      "id": "IB_CONDUCTANCE_OWT_20261003",
+      "parent": "IB_LOCAL_MEDIUM_AUDIT_20261003",
+      "title": "Jointly train the persistent learned conductance medium on real OWT",
+      "status": "active",
+      "time": "2026-10-03",
+      "confidence": "I",
+      "motivation": "User authorizes starting the new medium training and observing execution under a4 GiB total dedicated VRAM limit while the independent fly job continues.",
+      "action": "Launch3000 optimizer updates with128 OWT tokens/update,FP32 CUDA Graph,BPTT8,8x8x4/D128, complete belief persistence, mature-state warm-local validation every500 updates, and best/last continuation checkpoints.",
+      "conclusion": "User-requested mechanism audit stopped training cleanly at update703 (89984 OWT tokens), retaining best500 and full last703 continuation. First independent validation500 NLL7.59481; mature-state warm-local audit703 NLL7.51761. Execution about3.08s/update with total dedicated peak2955MiB while independent fly training remained running. This early stop is a mechanism inspection, not convergence evidence.",
+      "issues": [
+        "Event duration0.005/substeps1 is an explicit first-launch setting inherited from the execution check; physical cadence and solver accuracy are not optimized.",
+        "3000-update budget with a WSD schedule is a finite training launch; convergence and benefits require independent validation.",
+        "Validation clones the complete mature training state per site, warms256 tokens and scores128; no zero-state validation reset."
+      ],
+      "artifacts": [
+        "scripts/ib/train_plastic_conductance.py",
+        "tests/test_plastic_training_entrypoint.py",
+        "results/plastic_conductance_d128_3000/config.json",
+        "results/plastic_conductance_d128_3000/metrics.jsonl",
+        "results/plastic_conductance_d128_3000/progress.json",
+        "results/published/plastic_conductance_mechanism_703.json"
+      ],
+      "invalidation": "Stop and report nonfinite loss/gradients, dedicated cap, explicit stop request, or corrupted continuation. Do not overwrite successful checkpoints with failed partial state."
+    },
+    {
+      "id": "IB_MEDIUM_MECHANISMS_20261004",
+      "parent": "IB_CONDUCTANCE_OWT_20261003",
+      "title": "Locate learned spatial differentiation and boundary versus internal timescale mismatch",
+      "status": "active",
+      "time": "2026-10-04",
+      "confidence": "I",
+      "motivation": "User requests checking differentiation and whether mechanisms act without finishing all training.",
+      "action": "Audit saved update703 on CPU: complete mature belief per real OWT site, warm256/score128,128 traced tokens, stage energy ledgers, read attention differentiation, direct CE gradients and inference interventions; no optimization.",
+      "conclusion": "Spatial field share94.91%, local material coefficients differ about3%, speed spatial variation5.72%, read-head pairwise TV0.379. Spatial power participation rank4.52 and top8 power96.08% reveal concentrated structure. Transport changes field6.92%, collision0.288%; FP32 energy-ledger residuals at most1.19e-7. All inspected parameter groups receive direct CE gradients. W4 direct old-field amplitude retention55.53% and energy retention34.13% are uniform over spatial positions per channel; this strong refresh precedes weak duration-scaled collision. Mean noT/noC/noResponse NLL changes -0.00233/-0.00467/-0.00587 with mixed site signs establish weak current reliance despite operator activity.",
+      "issues": [
+        "Fixed-action direct retention is not the full boundary Jacobian or a total memory lifetime; edge responses retain additional history and current readout sees field.",
+        "703-update mechanism measurements do not establish convergence, architecture inferiority, semantic brain regions or sustained phase locking.",
+        "Removing electrical response removes receptor dynamics, reversal work and heat together; it is not isolated bath removal.",
+        "Next design work should align dimensionless selective boundary retention and internal processing/storage timescales rather than increase solver duration solely to manufacture causality."
+      ],
+      "artifacts": [
+        "scripts/ib/audit_trained_plastic_medium.py",
+        "docs/information_boltzmann/TRAINED_MEDIUM_MECHANISMS.md",
+        "results/published/plastic_conductance_mechanism_703.json"
+      ],
+      "invalidation": "Revise if traced composition differs from the trained step, mature state is reset, heterogeneity is an initialization artifact, ledger residual fails, or selective-retention/internal-timescale analysis contradicts the measured boundary derivative and stage changes."
+    },
+    {
+      "id": "IB_CONTACT_PORT_20261004",
+      "parent": "IB_MEDIUM_MECHANISMS_20261004",
+      "title": "Preserve untouched old modes with learned energy-closed boundary exchange",
+      "status": "active",
+      "time": "2026-10-04",
+      "confidence": "I",
+      "motivation": "User authorizes replacing global W4 refresh with exchange of only the contacted mode, retaining the learned brain substrate.",
+      "action": "Implement exact rational mode/environment rotation in energy coordinates; keep categorical prior, innovation chart, learned channel admittances and precision. Mark exchange law in constructor, trainer and continuous continuation; preserve historical global path. Fix null-innovation summary derivative. Verify CPU invariants and CUDA graphs; inspect update703 weights without optimization.",
+      "conclusion": "Untouched complement and its frozen-action gradient are preserved algebraically; energy ledger closes with no new parameters, state or time loop.75 affected CPU tests pass and two CUDA Graph tests pass (six targeted CUDA-enabled entrypoint/execution tests). Identical-state old-field energy retention rises from32.36--33.52% to99.971--99.999% with exactly the same incident budget. New continued trace has99.60% direct old-field energy retention and spatial participation rank6.24--8.22 versus4.54--5.30 historically. Old-weight diagnostic transport-removal delta rises to+0.08297, while full NLL worsens7.51761 to7.99781; this is a mechanism repair, not learned capability improvement. Matched production-size FP32 graph execution: global3.095s versus contact3.111s/update, with405.0/406.8MiB peak allocated, each one warmed measurement under fly-job contention; graph/eager gradients and complete state agree.",
+      "issues": [
+        "One contacted mode is a complete spatial/content packet, not a rank-one envelope/content factorization. It can have broad Fourier support; geographical locality is not imposed.",
+        "Untouched-mode preservation concerns the direct frozen-action path, not the full state-dependent Jacobian or permanent retention of infinitely many events.",
+        "Existing update703 weights are not adapted to the changed forward distribution; joint training is required to assess learning benefit, and no long run was started.",
+        "Collision remains weak at the existing0.005 event cadence; no arbitrary timestep increase or new controller was introduced.",
+        "Boundary energy closure does not alone ensure global long-run stability; existing electrical source/loss hypotheses remain required."
+      ],
+      "artifacts": [
+        "information_boltzmann/core/mode_port.py",
+        "docs/information_boltzmann/CONTACT_MODE_BOUNDARY.md",
+        "tests/test_contact_mode_port.py",
+        "results/published/contact_mode_port_703_diagnostic.json",
+        "results/published/contact_port_execution_global.json",
+        "results/published/contact_port_execution_new.json"
+      ],
+      "invalidation": "Revise if energy or complement preservation fails, null gradients are nonfinite, incident budget changes without declaration, full-rank packet is factorized away, historical checkpoints silently change law, or graph/eager gradients differ."
+    },
+    {
+      "id": "IB_COMPACT_PORTS_20261004",
+      "parent": "IB_CONTACT_PORT_20261004",
+      "title": "Learn persistent finite spatial interfaces with overlap allowed",
+      "status": "active",
+      "time": "2026-10-04",
+      "confidence": "I",
+      "motivation": "User authorizes local write/read interfaces, allows learned overlap and separation, and requests monitoring of coincident-port collapse.",
+      "action": "Compact C1 torus footprints; local write-bank observations and state-conditioned linear chart; each read controller and measurement observes its own port. Preserve contact exchange and full medium state, with explicit scope/radius continuation and joint-training CLI. Monitor geometry, actual attention and next-event write policy use without a forced diversity objective.",
+      "conclusion": "Numerical contracts cover zero remote influence, untouched cells, energy closure, trainable centers, overlap/separation, chart linearity and physical-radius transfer. CUDA training/evaluation graph checks pass. Production OWT128/D128/BPTT8 execution measured3.215s/update after one warmup under fly contention,409MiB allocated peak, exact eager/graph state and gradient match. No joint language capability claim or long training launch.",
+      "issues": [
+        "Communication radius and port count are explicit architectural budgets; no optimality or biological constant is claimed.",
+        "Overlap alone does not eliminate local nonlinear collision; diagnose transport and collision reliance separately with task loss.",
+        "Coverage across a bank and locality of each query are distinct; bank controller/decoder combines finite port observations.",
+        "New local parameters and read policy dimensions require an explicit architecture branch; old global checkpoints do not silently change scope."
+      ],
+      "artifacts": [
+        "information_boltzmann/core/local_ports.py",
+        "docs/information_boltzmann/COMPACT_SPATIAL_PORTS.md",
+        "tests/test_compact_ports.py",
+        "results/published/compact_ports_execution.json"
+      ],
+      "invalidation": "Revise if a remote uncontacted perturbation influences a local controller, a footprint becomes empty, center gradients vanish on every axis, energy closure or graph gradients fail, or continuation silently changes scope/radius."
+    },
+    {
+      "id": "IB_ONLINE_CREDIT_20261004",
+      "parent": "IB_LOCAL_STP_20261004",
+      "title": "Forward persistent learning state without a BPTT horizon",
+      "status": "noisy",
+      "time": "2026-10-04",
+      "confidence": "I",
+      "motivation": "User wants one continuously learning individual whose credit history is not truncated at an arbitrary BPTT boundary.",
+      "action": "Implement UORO rank-compressed RTRL through the unchanged full 3D event map, with exact local forward AD JVP and reverse VJPs; retain all physical and sensitivity state, RNG and optimizer continuation; capture one online event in CUDA Graph.",
+      "conclusion": "Bounded-storage interface verified: 27 affected CPU tests and separate 8-test CUDA-enabled online set pass. Actual OWT64-event frozen-weight audit retains exactly54.42MiB eligibility and134.27MiB live allocations; persistent tensors are graph-free. Three joint execution updates/384 events average14.78s per128 tokens, peak628.38MiB tensors,total2009MiB below4GiB. Global rank1 derivative compression is numerically unsuitable at cold start: exact two-event historical norm0.25374 versus rank1 sample mean norm7491.59 and16-sample mean relative error9079.39. Retain as a reference, not production learner or capability conclusion.",
+      "issues": [
+        "Global stochastic compression mixes high-dimensional cancelling sensitivities and has extreme variance; derive locality/operator-aware factorization before long training.",
+        "The prototype is substantially slower than fused BPTT; graph capture improves scheduling but does not reduce Jacobian work.",
+        "Unbiased frozen-parameter sensitivity does not guarantee optimizer convergence, arbitrary lifelong credit or state stability.",
+        "No sufficient joint capability training performed; existing production training and physical architecture remain unchanged."
+      ],
+      "artifacts": [
+        "docs/information_boltzmann/ONLINE_CREDIT.md",
+        "information_boltzmann/runtime/online_credit.py",
+        "scripts/ib/train_online_plastic.py",
+        "scripts/ib/audit_online_credit.py",
+        "tests/test_online_credit.py",
+        "results/published/plastic_online_credit_numerical.json",
+        "results/published/plastic_online_credit_graph_execution.json"
+      ],
+      "invalidation": "Revise if exact factor expectation, first-event gradients, physical equivalence, graph-free persistence, continuation/RNG, CUDA weight refresh or live-memory plateau fails. Capability remains open until sufficient joint real-data training.",
+      "pruning_record": {
+        "reason": "Marked inconclusive/noisy by the originating session: the measurement is retained for reference but does not support the node's claims.",
+        "pruning_commit": "pending-reintegration",
+        "recovery_note": "Artifacts and metrics retained under results/; re-register with a prediction block and independent review to restore an active status."
+      }
+    },
+    {
+      "id": "IB_LOCAL_CREDIT_20261004",
+      "parent": "IB_ONLINE_CREDIT_20261004",
+      "title": "Deterministic local receptor eligibility with exact event supervision",
+      "status": "noisy",
+      "time": "2026-10-04",
+      "confidence": "I",
+      "motivation": "Keep online credit local and persistent without the severe variance of global rank1 compression; user assigns fly implementation to Gemini and this branch to the 3D medium only.",
+      "action": "Derive the actual receptor kinetics Jacobian, including I-to-E adaptation and closing-dependent baseline. Keep 2x2 per-site/channel traces and use the exact incoming-receptor loss derivative as feedback. Joint exact current-event gradients, CUDA capture and physical/trace/optimizer continuation preserve the original forward model.",
+      "conclusion": "Conditional 137-step receptor derivatives and first-event full-model gradients pass. All seven local tests pass with CUDA; broader set passes 39 with six optional skips. Real OWT full-shape two-event audit: closing-bias history cosine 0.9999306 and relative error 0.2107601 against full BPTT, explicitly quantifying omitted voltage/spatial history. Three real joint execution updates average 2.806s/128 tokens with 0.5MiB trace, 315.74MiB peak allocated and 661MiB total dedicated GPU memory. These are numerical/execution findings; language capability remains open.",
+      "issues": [
+        "Historical credit currently covers local receptor closing kinetics/material mapping; all other operators have exact current-event gradients, not full historical sensitivities.",
+        "Frozen voltage/current features define the conditional trace; extending local membrane credit is a concrete next step before interpreting this as a whole-medium lifelong learner.",
+        "Calibration is 384 real events, not sufficient capability training; no long run started. Different credit scope and GPU load prevent an equal-scope speed claim versus UORO."
+      ],
+      "artifacts": [
+        "information_boltzmann/runtime/local_credit.py",
+        "docs/information_boltzmann/LOCAL_MEDIUM_CREDIT.md",
+        "scripts/ib/audit_local_medium_credit.py",
+        "tests/test_local_medium_credit.py",
+        "results/published/plastic_local_credit_derivative.json",
+        "results/published/plastic_local_credit_execution.json"
+      ],
+      "invalidation": "Revise if conditional derivatives, original event gradients/physics, deterministic continuation, CUDA weight refresh or trace-memory constancy fails. Whole-history accuracy and language benefit require separate evidence.",
+      "pruning_record": {
+        "reason": "Marked inconclusive/noisy by the originating session: the measurement is retained for reference but does not support the node's claims.",
+        "pruning_commit": "pending-reintegration",
+        "recovery_note": "Artifacts and metrics retained under results/; re-register with a prediction block and independent review to restore an active status."
+      }
+    },
+    {
+      "id": "IB_LIFE_EVAL_20261004",
+      "parent": "IB_LOCAL_CREDIT_20261004",
+      "title": "Evaluate the actively learning continuous individual",
+      "status": "active",
+      "time": "2026-10-04",
+      "confidence": "I",
+      "motivation": "User requires three live evaluation modes for any infinite-stream never-reset learner: predictive quality on new experience, context-change adaptation and return/relearning of old experience.",
+      "action": "Attach a shared test-then-learn scoring/optimizer runner to both 3D online credit modes. Score true stream bridges, advance fresh B cursors, process actual A/B/A with the same learner, label replay separately and preserve pending gradients/optimizer cadence on resume. Replace the online entry point's frozen-clone primary validation.",
+      "conclusion": "Sixteen local/live interface checks pass with CUDA enabled, including two distinct GPU checks; broader run passes 46 with seven optional skips. A/B/A produces the exact same weights, physical state and eligibility as its unsegmented stream; scores precede updates, targets do not affect current forward physics, pending-gradient checkpoints and CUDA storage continuation pass. A real-OWT CLI fixture confirms advancing B positions, actual 7/14 event histories and 3/7 optimizer updates across two groups and resume. Production 8x8x4/d128 first-pass execution averages 2.753s per128 tokens over256 events, peak315.17MiB tensors,total657MiB GPU. Implementation/execution evidence only; no long capability run launched.",
+      "issues": [
+        "Additional B/replay experience creates real optimizer updates; model comparisons must align the entire exposure and update ledger.",
+        "OWT split changes provide context change, not automatically a labeled semantic-domain shift.",
+        "Recovery uses observed complete-block trajectories and sustained confirmation; missing/insufficient recovery remains null/censored."
+      ],
+      "artifacts": [
+        "information_boltzmann/runtime/lifelong_evaluation.py",
+        "scripts/ib/train_online_plastic.py",
+        "tests/test_lifelong_evaluation.py",
+        "docs/information_boltzmann/LIFELONG_EVALUATION.md",
+        "configs/information_boltzmann/plastic_local_credit_lifelong.json",
+        "results/published/lifelong_medium_evaluation_interface.json"
+      ],
+      "invalidation": "Revise if future targets influence predictions, scores are measured after their update, phase changes reset the learner, bridge observations are skipped, pending-gradient continuation changes the trajectory, or exposure/update counts are fictitious."
+    },
+    {
+      "id": "IB_EXEC_FUSION_20261004",
+      "parent": "IB_LOCAL_STP_20261004",
+      "title": "Fuse complete medium and quiet ports without changing the learning law",
+      "status": "active",
+      "time": "2026-10-04",
+      "confidence": "I",
+      "motivation": "Reduce persistent-medium training cost while retaining learned spatial material, conductance, activity feedback, STP and full BPTT state.",
+      "action": "Measure real CUDA Graph forward stages and entire backward; AOT-fuse quiet FP32 medium, assimilation and read operations. Retain native CPU/FP64/diagnostic references and unchanged parameters, objective, event cadence and continuation state. Put disposable compiler caches on the workspace drive.",
+      "conclusion": "Matched real OWT128-token/BPTT8 execution: native3.582s versus fused1.815s per optimizer update, approximately1.97x throughput under the same independent fly ALIF/STP load. Production-shape two-chunk native/fused complete state and accumulated gradients pass: max errors1.43e-6 and8.11e-7. Fused audit-inclusive peak417.87MiB tensors,total3275MiB below4GiB. Final31 CPU tests and five distinct CUDA checks pass, including training/evaluation replay after medium, write and read parameter changes and variable-time deployment snapshots. This establishes numerical/execution equivalence, not trained language improvement.",
+      "issues": [
+        "Reported update averages contain two measured updates after one warmup under concurrent GPU load.",
+        "First compilation is a minutes-long cached setup cost, excluded from update throughput.",
+        "FP32 fusion changes rounding; CPU/FP64 native references and explicit native execution remain available."
+      ],
+      "artifacts": [
+        "docs/information_boltzmann/PLASTIC_EXECUTION_FUSION.md",
+        "scripts/ib/profile_plastic_training.py",
+        "tests/test_fused_medium_execution.py",
+        "results/published/plastic_training_captured_profile.json",
+        "results/published/plastic_training_captured_profile_fused.json",
+        "results/published/plastic_native_execution_matched.json",
+        "results/published/plastic_all_fused_execution.json"
+      ],
+      "invalidation": "Revise if native/fused state or complete parameter gradients diverge beyond FP32 tolerances, replay ignores changed parameters, any state is detached/reset, or matched update/memory measurements fail."
+    },
+    {
+      "id": "IB_LOCAL_STP_20261004",
+      "parent": "IB_LOCAL_ACTIVITY_20261004",
+      "title": "Local resource recovery and facilitation in a learnable spatial medium",
+      "status": "active",
+      "time": "2026-10-04",
+      "confidence": "I",
+      "motivation": "Migrate dynamic pathway history from biological STP while retaining learned 3D anatomy and open continuous operation.",
+      "action": "Mean-rate Tsodyks-Markram x/u kinetics per reciprocal edge, learned spatial recovery/facilitation/activity rates and utilization; normalized ux/U modulates conservative coupling. Preserve all state through ports, BPTT, capture and schema5 continuation. Share scalar endpoint energy and half-step exponential; AOT-fuse CUDA FP32 forward/backward with native CPU/FP64 fallback.",
+      "conclusion": "Original numerical verification:115 affected CPU checks and nine CUDA graph checks passed. Optimized24-check CUDA-enabled set passes, including three fused/native full input-gradient comparisons. STP captured component1.225ms to0.159ms; max state/gradient reference errors7.45e-9/4.77e-7. Complete OWT execution originally3.816s, fused3.564s per128 tokens (two measured updates) versus no-STP3.491s under independent fly contention. Fused peak425.45MiB tensors,total3463MiB; graph/eager state/gradient differences zero. Adds108 parameters and6KiB runtime state. No jointly trained capability claim.",
+      "issues": [
+        "Continuous edge activity and channel-shared resource pairs are explicit approximations to presynaptic spike/bouton kinetics.",
+        "Rate references and initial U=1/2 are trainable initialization priors, not measured biological constants.",
+        "Resource admissibility and internal conservation do not alone establish long-time driven memory performance; joint warm-site validation remains necessary."
+      ],
+      "artifacts": [
+        "information_boltzmann/core/short_term_plasticity.py",
+        "docs/information_boltzmann/LOCAL_SHORT_TERM_PLASTICITY.md",
+        "tests/test_short_term_plasticity.py",
+        "results/published/local_stp_execution.json",
+        "results/published/local_stp_execution_baseline.json",
+        "scripts/ib/benchmark_stp_execution.py",
+        "results/published/local_stp_component_optimized.json",
+        "results/published/local_stp_execution_optimized.json"
+      ],
+      "invalidation": "Revise if local resource bounds, generator/refinement, transport conservation, gradients, checkpoint persistence or updated-parameter graph equivalence fail. Assess language benefit only after sufficient joint training."
+    },
+    {
+      "id": "IB_LOCAL_ACTIVITY_20261004",
+      "parent": "IB_COMPACT_PORTS_20261004",
+      "title": "Reuse inhibitory history for local activity adaptation and spatial choice",
+      "status": "active",
+      "time": "2026-10-04",
+      "confidence": "I",
+      "motivation": "User requests ALIF-like local adaptation to encourage useful spatial participation while keeping learnable anatomy.",
+      "action": "Couple dimensionless flow occupancy to existing I opening and excess I history to E response; compact write policy observes local I; reciprocal conduction senses bounded I contrast. Preserve learned timescales, all state and old explicit branch.",
+      "conclusion": "100 affected CPU tests and 8 CUDA-enabled training/evaluation checks pass. Real OWT execution uses full state: baseline3.221 versus adapted3.511s per128-token update under independent fly contention. Candidate adds2305 parameters and no persistent state; peak allocated425.05MiB, total3193MiB. Complete graph/eager state and gradient differences zero. After256 tokens, E opening/native ratio0.9298 and spatial I std0.0263 show feedback engagement; no language or trained-participation improvement claim.",
+      "issues": [
+        "Flow occupancy is an engineered activity proxy; references motivate adaptation rather than this exact coupling.",
+        "Reciprocal contrast connects differently occupied regions without forcing downhill current or semantic diversity.",
+        "A frozen kinetic interval and electrical ledger do not alone prove stability of the full nonlinear open system.",
+        "Joint training and independent warm-local validation are required to assess NLL and spatial participation."
+      ],
+      "artifacts": [
+        "docs/information_boltzmann/LOCAL_ACTIVITY_ADAPTATION.md",
+        "tests/test_local_activity_adaptation.py",
+        "results/published/local_activity_execution_baseline.json",
+        "results/published/local_activity_execution_adapted.json"
+      ],
+      "invalidation": "Revise if receptor/evidence bounds, chart linearity, locality, feedback recovery, energy closure, continuation or graph equivalence fails; revise capability hypothesis if joint validation fails."
+    },
+    {
+      "id": "IB_FLY_BPTT32_CREDIT_20261004",
+      "parent": "IB_FLY_BPTT32_20261004",
+      "title": "Measure exact edge sparsity and persistent state credit inside BPTT32",
+      "status": "active",
+      "time": "2026-10-04",
+      "confidence": "I",
+      "motivation": "Determine which temporal and spatial credit can be separated before changing the learner.",
+      "action": "Inspect full-window and single-endpoint adjoints on two continuous OWT checkpoint forks; compare checkpointed reverse replay with native autograd.",
+      "conclusion": "Mechanism evidence: 93–94% E and 98% I weight gradients are exactly zero, while lag-32 h credit survives or amplifies and is concentrated on mostly silent cells. Exact event sparsity is supported; shorter temporal cutoff or spike-only state masks are not supported. No capability conclusion or live-learning-rule change.",
+      "artifacts": [
+        "docs/information_boltzmann/FLY_BPTT32_CREDIT_STRUCTURE.md",
+        "scripts/ib/inspect_fly_bptt_credit.py",
+        "tests/test_fly_bptt_credit.py",
+        "results/published/fly_bptt32_credit_structure.json"
+      ],
+      "invalidation": "Revise if an identical-protocol rerun contradicts this outcome, or if the recorded measurements prove irreproducible on the retained artifacts."
     }
   ],
   "status_migration_note": "Normalize historical workflow labels for repository validator; original labels retained as legacy_status. No new experimental conclusions introduced.",
