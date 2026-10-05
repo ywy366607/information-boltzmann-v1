@@ -11,7 +11,7 @@ sys.path.insert(0, str(ROOT))
 
 from information_boltzmann.core.fly_reservoir import FlyReservoirLM
 
-CKPT = ROOT / "results/q8_fly_reservoir_sensory_3000/BBest.pt"
+CKPT = ROOT / "results/q8_fly_reservoir_routed_3000/BBest.pt"
 GRAPH = ROOT / "data/malecns_v1/fly_reservoir_full.npz"
 DATA = np.load(ROOT / "data/ib_owt_gpt2/validation.npy", mmap_mode="r")
 SITES = (8192, 12288, 16384, 20480)
