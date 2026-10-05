@@ -1,0 +1,682 @@
+{
+  "scope": "One real continuing OWT window and one saved-Adam update on a CPU fork.\n\nThis diagnoses optimization and readout, not long-run capabilities. No production\nstate/checkpoint is modified. Hard spikes retain their registered ATan backward.\n",
+  "checkpoint": "D:\\information-boltzmann-v1\\results\\q8_fly_bptt32_adamw_continuous_100k\\last.pt",
+  "checkpoint_train_targets": 1100000,
+  "checkpoint_events": 1231256,
+  "checkpoint_physical_ticks": 1732248,
+  "train_cursor": 1200000,
+  "window": 32,
+  "follow_window": 32,
+  "input_bridge": 8108,
+  "options": {
+    "settle_ticks": 1,
+    "writer_baseline_clock": "input"
+  },
+  "optimizer_ledger": [
+    {
+      "names": [
+        "output_read.weight"
+      ],
+      "lr": 0.0002,
+      "weight_decay": 0.0001,
+      "betas": [
+        0.9,
+        0.999
+      ],
+      "eps": 1e-08,
+      "saved_steps": [
+        63325.0
+      ]
+    },
+    {
+      "names": [
+        "decoder.weight"
+      ],
+      "lr": 0.0001,
+      "weight_decay": 0.0001,
+      "betas": [
+        0.9,
+        0.999
+      ],
+      "eps": 1e-08,
+      "saved_steps": [
+        63325.0
+      ]
+    },
+    {
+      "names": [
+        "read_norm.weight",
+        "decoder.bias",
+        "log_threshold",
+        "log_tau_m",
+        "log_beta",
+        "log_tau_a",
+        "log_tau_s_e",
+        "log_tau_s_i",
+        "log_g_e",
+        "log_g_i",
+        "topographic_writer.gate_linear.weight",
+        "topographic_writer.gate_linear.bias"
+      ],
+      "lr": 0.0002,
+      "weight_decay": 0.0,
+      "betas": [
+        0.9,
+        0.999
+      ],
+      "eps": 1e-08,
+      "saved_steps": [
+        63325.0,
+        63325.0,
+        63325.0,
+        63325.0,
+        63325.0,
+        63325.0,
+        63325.0,
+        63325.0,
+        63325.0,
+        63325.0,
+        63325.0,
+        63325.0
+      ]
+    },
+    {
+      "names": [
+        "topographic_writer.proj_vis.weight",
+        "topographic_writer.proj_chemo.weight",
+        "topographic_writer.proj_mech.weight"
+      ],
+      "lr": 0.0002,
+      "weight_decay": 0.0001,
+      "betas": [
+        0.9,
+        0.999
+      ],
+      "eps": 1e-08,
+      "saved_steps": [
+        31562.0,
+        31562.0,
+        31562.0
+      ]
+    },
+    {
+      "names": [
+        "edge_weight_e",
+        "edge_weight_i"
+      ],
+      "lr": 0.0002,
+      "weight_decay": 0.0,
+      "betas": [
+        0.9,
+        0.999
+      ],
+      "eps": 1e-08,
+      "saved_steps": [
+        31562.0,
+        31562.0
+      ]
+    }
+  ],
+  "all_trainable_parameters_covered_once": true,
+  "preregistration": "results/published/fly_one_update_preregistered_20261005.json",
+  "surrogate": "registered ATan backward; hard-spike function is discontinuous",
+  "numerical_scope": "CPU PyTorch forward/AdamW, equivalent registered algorithm; not bitwise CUDA/Triton equivalence",
+  "fixed_preupdate_history_common": {
+    "history_events": 128,
+    "train_nll": 9.280068397521973,
+    "follow_nll": 8.270822525024414
+  },
+  "grad_norm_before_clip": 1.702012062072754,
+  "global_clip_scale": 0.5875395567071472,
+  "gradient_parts": {
+    "output_read.weight": {
+      "full_norm": 0.10863846001136974,
+      "common_norm": 0.10607758188777613,
+      "covariance_norm": 0.023882462112673336,
+      "identity_relative_error": 1.210301845882917e-15,
+      "common_to_covariance_ratio": 4.441651844241201
+    },
+    "decoder.weight": {
+      "full_norm": 1.0320085380438033,
+      "common_norm": 1.0331650092236981,
+      "covariance_norm": 0.01581680921490077,
+      "identity_relative_error": 2.821869454084055e-15,
+      "common_to_covariance_ratio": 65.32069744195748
+    }
+  },
+  "actual_update_by_parameter": {
+    "log_tau_m": {
+      "update_norm": 0.0002491964629596175,
+      "relative_update_norm": 1.4760226210732679e-05,
+      "gradient_dot_actual_update": 3.292889737179072e-06,
+      "first_order_predicted_loss_reduction": -3.292889737179072e-06
+    },
+    "log_tau_s_e": {
+      "update_norm": 0.00025578992067706716,
+      "relative_update_norm": 2.8338985008567054e-05,
+      "gradient_dot_actual_update": 6.132540710758421e-07,
+      "first_order_predicted_loss_reduction": -6.132540710758421e-07
+    },
+    "log_tau_s_i": {
+      "update_norm": 0.0001615441695752639,
+      "relative_update_norm": 1.2927249842547955e-05,
+      "gradient_dot_actual_update": 5.615945240191575e-08,
+      "first_order_predicted_loss_reduction": -5.615945240191575e-08
+    },
+    "log_threshold": {
+      "update_norm": 0.0002473551680901722,
+      "relative_update_norm": 2.324980880699719e-05,
+      "gradient_dot_actual_update": 2.542617354998883e-05,
+      "first_order_predicted_loss_reduction": -2.542617354998883e-05
+    },
+    "log_g_e": {
+      "update_norm": 2.619624137878418e-05,
+      "relative_update_norm": 0.00010663000891130883,
+      "gradient_dot_actual_update": 8.151779065102005e-06,
+      "first_order_predicted_loss_reduction": -8.151779065102005e-06
+    },
+    "log_g_i": {
+      "update_norm": 3.2588839530944824e-05,
+      "relative_update_norm": 0.00021895543340861448,
+      "gradient_dot_actual_update": 1.0447377950750791e-05,
+      "first_order_predicted_loss_reduction": -1.0447377950750791e-05
+    },
+    "log_tau_a": {
+      "update_norm": 0.0002171023400403708,
+      "relative_update_norm": 1.0785401719259121e-05,
+      "gradient_dot_actual_update": -1.7042480155700517e-09,
+      "first_order_predicted_loss_reduction": 1.7042480155700517e-09
+    },
+    "log_beta": {
+      "update_norm": 0.00021950842643272576,
+      "relative_update_norm": 1.3986923782590416e-05,
+      "gradient_dot_actual_update": -2.8330488216584485e-08,
+      "first_order_predicted_loss_reduction": 2.8330488216584485e-08
+    },
+    "edge_weight_e": {
+      "update_norm": 0.07362623244572074,
+      "relative_update_norm": 0.0008412159372366462,
+      "gradient_dot_actual_update": 0.0005773599522098647,
+      "first_order_predicted_loss_reduction": -0.0005773599522098647
+    },
+    "edge_weight_i": {
+      "update_norm": 0.07930385274609528,
+      "relative_update_norm": 0.0007164160713595117,
+      "gradient_dot_actual_update": 0.00015016137359960324,
+      "first_order_predicted_loss_reduction": -0.00015016137359960324
+    },
+    "topographic_writer.gate_linear.weight": {
+      "update_norm": 0.0021322130134200853,
+      "relative_update_norm": 0.00038725516074049484,
+      "gradient_dot_actual_update": 5.312397923789216e-06,
+      "first_order_predicted_loss_reduction": -5.312397923789216e-06
+    },
+    "topographic_writer.gate_linear.bias": {
+      "update_norm": 9.612858162533596e-05,
+      "relative_update_norm": 0.0007830561467677068,
+      "gradient_dot_actual_update": 4.135837894121003e-07,
+      "first_order_predicted_loss_reduction": -4.135837894121003e-07
+    },
+    "topographic_writer.proj_vis.weight": {
+      "update_norm": 0.026535171696295268,
+      "relative_update_norm": 5.980460559159299e-05,
+      "gradient_dot_actual_update": -4.214623548807884e-08,
+      "first_order_predicted_loss_reduction": 4.214623548807884e-08
+    },
+    "topographic_writer.proj_chemo.weight": {
+      "update_norm": 0.07529128459471719,
+      "relative_update_norm": 0.0001516698420001992,
+      "gradient_dot_actual_update": -4.625339688564127e-05,
+      "first_order_predicted_loss_reduction": 4.625339688564127e-05
+    },
+    "topographic_writer.proj_mech.weight": {
+      "update_norm": 0.10554429249616827,
+      "relative_update_norm": 0.0001787530755117572,
+      "gradient_dot_actual_update": -0.0004722559781698487,
+      "first_order_predicted_loss_reduction": 0.0004722559781698487
+    },
+    "output_read.weight": {
+      "update_norm": 0.09324008435544004,
+      "relative_update_norm": 0.0005925164243315701,
+      "gradient_dot_actual_update": -0.004572644710547754,
+      "first_order_predicted_loss_reduction": 0.004572644710547754,
+      "common_gradient_dot_update": -0.0044135399809700476,
+      "covariance_gradient_dot_update": -0.0001591047295777066
+    },
+    "read_norm.weight": {
+      "update_norm": 0.0020137366280506778,
+      "relative_update_norm": 0.0003572588468713873,
+      "gradient_dot_actual_update": -0.0009800067821434904,
+      "first_order_predicted_loss_reduction": 0.0009800067821434904
+    },
+    "decoder.weight": {
+      "update_norm": 0.07475179803175162,
+      "relative_update_norm": 5.3355373173482675e-05,
+      "gradient_dot_actual_update": -0.022746961668090697,
+      "first_order_predicted_loss_reduction": 0.022746961668090697,
+      "common_gradient_dot_update": -0.022746329531859958,
+      "covariance_gradient_dot_update": -6.321362307389056e-07
+    },
+    "decoder.bias": {
+      "update_norm": 0.006574329802180435,
+      "relative_update_norm": 1.5384456567925554e-06,
+      "gradient_dot_actual_update": -0.00035471381020187417,
+      "first_order_predicted_loss_reduction": 0.00035471381020187417
+    }
+  },
+  "total_first_order_predicted_loss_reduction": 0.02839167358566186,
+  "fitted_window": {
+    "old": {
+      "full_nll": 9.287054061889648,
+      "own_window_common_nll": 9.27989673614502,
+      "descriptive_conditional_gain": -0.007157325744628906,
+      "variation_fraction": {
+        "motor": 0.08137848973274231,
+        "projected": 0.000437311886344105,
+        "normalized": 0.00024697717162780464
+      },
+      "scores": [
+        11.200141906738281,
+        4.838634490966797,
+        9.776540756225586,
+        7.684318542480469,
+        15.147821426391602,
+        9.394898414611816,
+        3.01680588722229,
+        10.44323444366455,
+        3.0156099796295166,
+        12.565488815307617,
+        19.665122985839844,
+        2.984933614730835,
+        3.9327147006988525,
+        10.980192184448242,
+        7.6479034423828125,
+        17.25575828552246,
+        9.464759826660156,
+        15.732699394226074,
+        3.045413017272949,
+        3.271195888519287,
+        9.690622329711914,
+        11.659692764282227,
+        14.904512405395508,
+        7.702969074249268,
+        15.084814071655273,
+        9.823176383972168,
+        7.262629508972168,
+        3.562915563583374,
+        7.749690055847168,
+        13.969947814941406,
+        5.812909126281738,
+        8.897686958312988
+      ]
+    },
+    "head_update_only": {
+      "full_nll": 9.258428573608398,
+      "own_window_common_nll": 9.25143814086914,
+      "descriptive_conditional_gain": -0.0069904327392578125,
+      "variation_fraction": {
+        "motor": 0.08137848973274231,
+        "projected": 0.00043724977876991034,
+        "normalized": 0.0002469874161761254
+      },
+      "scores": [
+        11.15970230102539,
+        4.84140682220459,
+        9.71994400024414,
+        7.666836738586426,
+        15.098869323730469,
+        9.363297462463379,
+        3.017529010772705,
+        10.381802558898926,
+        3.0164036750793457,
+        12.492857933044434,
+        19.6146297454834,
+        2.9855828285217285,
+        3.924114942550659,
+        10.930641174316406,
+        7.630577087402344,
+        17.210712432861328,
+        9.42051887512207,
+        15.681326866149902,
+        3.0462307929992676,
+        3.2675058841705322,
+        9.639287948608398,
+        11.619220733642578,
+        14.853487014770508,
+        7.692844867706299,
+        15.048103332519531,
+        9.78684139251709,
+        7.251290798187256,
+        3.5656089782714844,
+        7.739923477172852,
+        13.927652359008789,
+        5.80511474609375,
+        8.869837760925293
+      ]
+    },
+    "body_update_old_head": {
+      "full_nll": 9.286105155944824,
+      "own_window_common_nll": 9.279749870300293,
+      "descriptive_conditional_gain": -0.00635528564453125,
+      "variation_fraction": {
+        "motor": 0.08145865797996521,
+        "projected": 0.00042957565165124834,
+        "normalized": 0.0002412488975096494
+      },
+      "scores": [
+        11.200468063354492,
+        4.838583946228027,
+        9.775854110717773,
+        7.677738189697266,
+        15.14468765258789,
+        9.399209022521973,
+        3.018634557723999,
+        10.442009925842285,
+        3.017059087753296,
+        12.557947158813477,
+        19.67139434814453,
+        2.9827191829681396,
+        3.9294052124023438,
+        10.983169555664062,
+        7.6448822021484375,
+        17.247966766357422,
+        9.449939727783203,
+        15.743011474609375,
+        3.0451295375823975,
+        3.2684361934661865,
+        9.673287391662598,
+        11.684897422790527,
+        14.903372764587402,
+        7.689476013183594,
+        15.09312915802002,
+        9.805856704711914,
+        7.26422119140625,
+        3.5492055416107178,
+        7.759781837463379,
+        13.968135833740234,
+        5.819873809814453,
+        8.905899047851562
+      ]
+    },
+    "joint_update_replay": {
+      "full_nll": 9.257495880126953,
+      "own_window_common_nll": 9.251298904418945,
+      "descriptive_conditional_gain": -0.0061969757080078125,
+      "variation_fraction": {
+        "motor": 0.08145865797996521,
+        "projected": 0.00042951409704983234,
+        "normalized": 0.00024125965137500316
+      },
+      "scores": [
+        11.16003131866455,
+        4.84135627746582,
+        9.71926212310791,
+        7.660274505615234,
+        15.095723152160645,
+        9.367612838745117,
+        3.0193798542022705,
+        10.380573272705078,
+        3.0178582668304443,
+        12.48527717590332,
+        19.62088966369629,
+        2.983372449874878,
+        3.9207708835601807,
+        10.9336576461792,
+        7.62757682800293,
+        17.202945709228516,
+        9.405747413635254,
+        15.691694259643555,
+        3.0459530353546143,
+        3.264723539352417,
+        9.622030258178711,
+        11.644462585449219,
+        14.85236930847168,
+        7.679342269897461,
+        15.05644416809082,
+        9.769613265991211,
+        7.2529144287109375,
+        3.5518710613250732,
+        7.750060081481934,
+        13.925887107849121,
+        5.812097549438477,
+        8.878103256225586
+      ]
+    }
+  },
+  "immediate_fresh_window": {
+    "old": {
+      "full_nll": 8.271410942077637,
+      "own_window_common_nll": 8.269366264343262,
+      "descriptive_conditional_gain": -0.002044677734375,
+      "variation_fraction": {
+        "motor": 0.08334168046712875,
+        "projected": 0.0004283444432076067,
+        "normalized": 0.0002848329895641655
+      },
+      "scores": [
+        4.050037860870361,
+        8.708317756652832,
+        3.92219614982605,
+        11.105232238769531,
+        7.223311901092529,
+        13.99953842163086,
+        5.789057731628418,
+        9.592470169067383,
+        4.016523361206055,
+        8.776008605957031,
+        3.533646821975708,
+        5.627834320068359,
+        9.697985649108887,
+        7.060544967651367,
+        11.914484977722168,
+        3.262366771697998,
+        18.561840057373047,
+        7.69773006439209,
+        3.258598804473877,
+        19.166091918945312,
+        18.033205032348633,
+        3.024559736251831,
+        4.184725284576416,
+        14.642959594726562,
+        10.418476104736328,
+        5.055326461791992,
+        9.57769775390625,
+        16.50226593017578,
+        3.5121266841888428,
+        3.3725967407226562,
+        3.3776473999023438,
+        6.019752502441406
+      ]
+    },
+    "head_update_only": {
+      "full_nll": 8.260751724243164,
+      "own_window_common_nll": 8.258681297302246,
+      "descriptive_conditional_gain": -0.0020704269409179688,
+      "variation_fraction": {
+        "motor": 0.08334168046712875,
+        "projected": 0.0004282665904611349,
+        "normalized": 0.00028485781513154507
+      },
+      "scores": [
+        4.0569047927856445,
+        8.660624504089355,
+        3.913684129714966,
+        11.111745834350586,
+        7.212062835693359,
+        13.95775318145752,
+        5.781261444091797,
+        9.567055702209473,
+        4.0232696533203125,
+        8.728446006774902,
+        3.5363070964813232,
+        5.634500980377197,
+        9.647429466247559,
+        7.064253807067871,
+        11.913103103637695,
+        3.258730888366699,
+        18.51649284362793,
+        7.687873840332031,
+        3.254974126815796,
+        19.170448303222656,
+        18.037267684936523,
+        3.025325298309326,
+        4.183268070220947,
+        14.635493278503418,
+        10.429411888122559,
+        5.057958602905273,
+        9.53173542022705,
+        16.44890785217285,
+        3.514676570892334,
+        3.3762614727020264,
+        3.3813509941101074,
+        6.025459289550781
+      ]
+    },
+    "body_update_old_head": {
+      "full_nll": 8.270060539245605,
+      "own_window_common_nll": 8.268670082092285,
+      "descriptive_conditional_gain": -0.0013904571533203125,
+      "variation_fraction": {
+        "motor": 0.08347514271736145,
+        "projected": 0.0004274530801922083,
+        "normalized": 0.00028167219716124237
+      },
+      "scores": [
+        4.049997329711914,
+        8.708857536315918,
+        3.922163963317871,
+        11.096982955932617,
+        7.2238664627075195,
+        14.002330780029297,
+        5.78919792175293,
+        9.571075439453125,
+        4.018494606018066,
+        8.773775100708008,
+        3.5342063903808594,
+        5.629873275756836,
+        9.702232360839844,
+        7.050688743591309,
+        11.904714584350586,
+        3.262150287628174,
+        18.5720272064209,
+        7.693548202514648,
+        3.2573344707489014,
+        19.170513153076172,
+        18.020503997802734,
+        3.0247302055358887,
+        4.176741600036621,
+        14.617938041687012,
+        10.427839279174805,
+        5.053038597106934,
+        9.589325904846191,
+        16.526269912719727,
+        3.4984288215637207,
+        3.383420467376709,
+        3.375075101852417,
+        6.014598846435547
+      ]
+    },
+    "joint_update": {
+      "full_nll": 8.259405136108398,
+      "own_window_common_nll": 8.257988929748535,
+      "descriptive_conditional_gain": -0.0014162063598632812,
+      "variation_fraction": {
+        "motor": 0.08347514271736145,
+        "projected": 0.00042737816693261266,
+        "normalized": 0.0002816969354171306
+      },
+      "scores": [
+        4.056858539581299,
+        8.661178588867188,
+        3.913658380508423,
+        11.103483200073242,
+        7.212617874145508,
+        13.960562705993652,
+        5.781400680541992,
+        9.545660018920898,
+        4.025239944458008,
+        8.72623062133789,
+        3.536879539489746,
+        5.63655948638916,
+        9.651673316955566,
+        7.054339408874512,
+        11.903365135192871,
+        3.2585220336914062,
+        18.52672004699707,
+        7.68370246887207,
+        3.2536909580230713,
+        19.174854278564453,
+        18.02454376220703,
+        3.0255041122436523,
+        4.175254821777344,
+        14.610535621643066,
+        10.438777923583984,
+        5.055683135986328,
+        9.543428421020508,
+        16.47284698486328,
+        3.5009777545928955,
+        3.387134075164795,
+        3.3787827491760254,
+        6.020289421081543
+      ]
+    }
+  },
+  "physical_after_update": {
+    "fitted_replay_terminal_h_change_norm": 2.8248610496520996,
+    "fitted_replay_terminal_pulse_support_changes": 622,
+    "follow_all_neuron_pulse_support_changes": 9312,
+    "follow_pulse_support_change_fraction": 0.0017623333260416985
+  },
+  "baseline": {
+    "train_fixed_unigram_nll": 8.445574974652189,
+    "follow_fixed_unigram_nll": 7.509233082988198
+  },
+  "wall_seconds": 894.0989081000007,
+  "limitations": [
+    "One optimizer update, not a training/capability verdict.",
+    "Own-window common uses each arm future-inclusive sample mean and is descriptive only.",
+    "Fresh-window two forks share the complete pre-update terminal state; label use confined to preceding update.",
+    "Gradient/update inner products are surrogate first-order predictions; finite hard-spike changes are measured separately."
+  ],
+  "hypothesis_outcomes": {
+    "conditional_path": {
+      "verdict": "CONFIRMED",
+      "evidence": {
+        "decoder_common_to_covariance_ratio": 65.32,
+        "output_read_common_to_covariance_ratio": 4.44,
+        "realized_fitted_improvement": 0.0296,
+        "realized_fresh_improvement": 0.012,
+        "first_order_predicted": 0.0284
+      }
+    },
+    "marginal_calibration": {
+      "verdict": "CONFIRMED",
+      "evidence": {
+        "head_update_improves_common": true,
+        "window_fixed_unigram_train": 8.4456,
+        "window_fixed_unigram_follow": 7.5092,
+        "pre_update_fresh_nll": 8.2714,
+        "post_update_fresh_nll": 8.2594,
+        "note": "fresh NLL remains ~0.75 above the window's fixed unigram: the excess persists"
+      }
+    },
+    "optimizer_or_surrogate": {
+      "verdict": "REFUTED (optimizer exonerated)",
+      "evidence": {
+        "first_order_predicted_reduction": 0.02839,
+        "realized_fitted_reduction": 0.02956,
+        "realized_fresh_reduction": 0.012,
+        "note": "finite hard-spike replay matches the first-order prediction; saved-Adam displacement aligns with the current gradient"
+      }
+    },
+    "synaptic_updates": {
+      "verdict": "NEGATIVE CONTRIBUTION",
+      "evidence": {
+        "edge_weight_e_first_order": -0.00058,
+        "edge_weight_i_first_order": -0.00015,
+        "note": "the single update makes the synaptic wiring slightly WORSE; only the common head pathway improves"
+      }
+    },
+    "decision": "The optimizer and surrogate are exonerated; the update feeds the common/background head and slightly damages the synapses. The conditional pathway receives a 4.4-65x weaker gradient and carries ~0.05 percent of logit variation. Extending training cannot fix this gradient structure. Next registered intervention per the diagnosis: center the read pathway on the continuing baseline (read the conditional component only, background enters solely through the learned bias), so supervision must change the conditional pathway to reduce loss."
+  }
+}
