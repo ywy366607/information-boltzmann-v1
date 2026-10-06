@@ -66,17 +66,28 @@ def advance_fly_input_event(model, state, token, *, settle_ticks=0,
         raise ValueError('settle_ticks must be a nonnegative integer')
     if writer_baseline_clock not in ('input', 'physical'):
         raise ValueError('writer_baseline_clock must be input or physical')
-    drive, baseline = model.topographic_writer.forward_with_state(
-        model.embedding(token), state.h, state.baseline)
+    if model.topographic_writer is not None:
+        drive, baseline = model.topographic_writer.forward_with_state(
+            model.embedding(token), state.h, state.baseline)
+    else:
+        # Non-topographic injection modes drive inside model.step through
+        # their own input projection; the writer baseline does not apply.
+        drive, baseline = None, state.baseline
     options = dict(base_rates=base_rates, thresholds=thresholds,
                    conductance_gains=conductance_gains,
                    alif_params=alif_params, stp_params=stp_params)
 
     def tick(current, source, next_baseline):
-        h, _, ring, ge, gi, b, x, u = model.step(
+        ret = model.step(
             current.h, token, spike_ring=current.ring, ge=current.ge,
             gi=current.gi, b=current.b, x=current.x, u=current.u,
             sensory_drive=source, **options)
+        # Flexible arity: [h, spike, ring, ge, gi] plus optional ALIF/STP
+        # states depending on the model's flags.
+        h, ring, ge, gi = ret[0], ret[2], ret[3], ret[4]
+        b = ret[5] if len(ret) > 5 and ret[5] is not None else current.b
+        x = ret[6] if len(ret) > 6 and ret[6] is not None else current.x
+        u = ret[7] if len(ret) > 7 and ret[7] is not None else current.u
         h_mean = current.h_mean
         if h_mean.numel() != h.numel():
             h_mean = torch.zeros_like(h)
@@ -124,10 +135,12 @@ class FlyBPTTLearner:
         lr_sensory = lr if lr_sensory is None else lr_sensory
         self.model, self.state = model, state.detached()
         model.requires_grad_(False)
-        # Promote existing learned edge buffers without altering topology/values.
-        for name in ('edge_weight_e', 'edge_weight_i'):
-            value = getattr(model, name)
-            if name in model._buffers:
+        # Promote existing learned edge buffers without altering topology or
+        # values.  Layout-generic: COBA models carry edge_weight_e/i, other
+        # models a single signed edge_weight.
+        for name in tuple(model._buffers):
+            if 'edge_weight' in name and model._buffers[name] is not None:
+                value = model._buffers[name]
                 del model._buffers[name]
                 model.register_parameter(name, nn.Parameter(value))
         named = dict(model.named_parameters())
@@ -165,9 +178,16 @@ class FlyBPTTLearner:
         for group in adam_groups:
             group['parameter_names'] = [parameter_names[id(p)] for p in group['params']]
         self.optimizer = torch.optim.AdamW(adam_groups, lr=lr, fused=state.h.is_cuda)
-        self.projections = [getattr(model.topographic_writer, name).weight
-                            for name in ('proj_vis', 'proj_chemo', 'proj_mech')]
-        self.edges = [model.edge_weight_e, model.edge_weight_i]
+        # The topographic writer exists only for topographic injection; other
+        # injection modes have no sensory projection group to train.
+        self.projections = ([getattr(model.topographic_writer, name).weight
+                             for name in ('proj_vis', 'proj_chemo', 'proj_mech')]
+                            if model.topographic_writer is not None else [])
+        # Layout-generic edge collection: COBA models split excitatory and
+        # inhibitory synapses into separate tensors, other models keep a
+        # single signed tensor; the signed-aware clamp handles both.
+        self.edges = [parameter for name, parameter in model.named_parameters()
+                      if 'edge_weight' in name]
         for parameter in self.projections + self.edges:
             parameter.requires_grad_(True)
         plasticity_groups = [
@@ -188,6 +208,42 @@ class FlyBPTTLearner:
         self.ema = 0.0
         self.latent_window = torch.zeros(128, model.embedding.embedding_dim, device=state.h.device)
         self.runner = None
+        # Level-2: dopamine-gated three-factor local plasticity on the
+        # incoming edges of DAN-innervated targets.  The gate is the DAN
+        # drive computed from the terminal membrane each window; the rule is
+        # applied under no_grad outside the BPTT graph, like the clamp.
+        self.dan_plastic_lr = float(getattr(model, 'dan_plastic_lr', 0.0))
+        self._dan_setup()
+        self.dan_gate = None
+
+    def _dan_setup(self):
+        import numpy as np
+        model = self.model
+        if not getattr(model, 'has_dopamine', False) or self.dan_plastic_lr <= 0.0:
+            self.dan_eligible = None
+            return
+        dan_post = model.dan_edge_post.detach().cpu().numpy()
+        gated_targets = np.unique(dan_post)
+        gated_set = np.zeros(model.n_neurons, dtype=bool)
+        gated_set[gated_targets] = True
+        self.dan_gate_target_index = torch.as_tensor(gated_targets, dtype=torch.long,
+                                                     device=self.state.h.device)
+        edge_sets = []
+        if hasattr(model, 'edge_post_e'):
+            edge_sets.append(('edge_weight_e', model.edge_post_e, model.edge_pre_e, (0.0, 5.0)))
+        if hasattr(model, 'edge_post_i'):
+            edge_sets.append(('edge_weight_i', model.edge_post_i, model.edge_pre_i, (-5.0, 0.0)))
+        if hasattr(model, 'edge_post'):
+            edge_sets.append(('edge_weight', model.edge_post, model.edge_pre, (-5.0, 5.0)))
+        eligible = {}
+        for weight_name, post_tensor, pre_tensor, clamp in edge_sets:
+            post_np = post_tensor.detach().cpu().numpy()
+            mask = gated_set[post_np]
+            idx = torch.as_tensor(np.flatnonzero(mask), dtype=torch.long,
+                                  device=self.state.h.device)
+            if idx.numel():
+                eligible[weight_name] = (idx, pre_tensor, post_tensor, clamp)
+        self.dan_eligible = eligible or None
 
     def load_adam_state(self, saved, *, newly_trainable=()):
         """Retain per-parameter Adam history across a decoder group split.
@@ -310,8 +366,13 @@ class FlyBPTTLearner:
         self.sgd.step()
         with torch.no_grad():
             for weight in self.edges:
-                weight.clamp_(0.0, 5.0)  # Same sign/bounds as the archived online learner.
+                # Sign-preserving bounds: COBA split tensors are single-signed,
+                # a single signed tensor keeps both signs per element.
+                positive = weight >= 0
+                weight.copy_(torch.where(positive, weight.clamp(0.0, 5.0),
+                                         weight.clamp(-5.0, 0.0)))
             self.model.topographic_writer.a_adapt.copy_(next_state.baseline)
+            self._dan_update(next_state)
             for i, feature in enumerate(features):
                 self.latent_window[(self.events + i) % 128].copy_(feature)
         self.state = next_state.detached()
@@ -325,6 +386,34 @@ class FlyBPTTLearner:
         self.optimizer.zero_grad(set_to_none=True)
         self.sgd.zero_grad(set_to_none=True)
         return values, {'grad_norm_before_clip': float(grad_norm), **group_norms}
+
+    def _dan_update(self, terminal_state):
+        """Dopamine-gated three-factor local plasticity, once per window.
+
+        gate_i = the DAN drive received by target i (a sparse matvec of the
+        terminal membrane through the DAN edges); the eligible synapses'
+        update is eta * gate * pre_membrane * post_membrane, clamped to the
+        sign class of their tensor.  No gradient flows through this path.
+        """
+        if self.dan_eligible is None:
+            return {}
+        h = terminal_state.h[0]
+        dan_drive = torch.zeros_like(h)
+        dan_drive.index_add_(0, self.model.dan_edge_post[0],
+                             self.model.dan_edge_weight[0] * h[self.model.dan_edge_pre[0]])
+        applied = {}
+        for name, (idx, pre_tensor, post_tensor, clamp) in self.dan_eligible.items():
+            weight = getattr(self.model, name)
+            gate = dan_drive[post_tensor[idx]]
+            pre_act = h[0][pre_tensor[idx]]
+            post_act = h[0][post_tensor[idx]]
+            delta = self.dan_plastic_lr * gate * pre_act * post_act
+            with torch.no_grad():
+                updated = (weight[idx] + delta).clamp(*clamp)
+                weight.index_put_((idx,), updated)
+            applied[name] = float(delta.abs().sum())
+        self.dan_gate = dan_drive.detach()
+        return applied
 
     def state_dict(self):
         return {'physical': self.state.state_dict(), 'optimizer': self.optimizer.state_dict(),
