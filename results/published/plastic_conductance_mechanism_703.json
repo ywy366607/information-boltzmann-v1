@@ -1,0 +1,347 @@
+{
+  "checkpoint": "results\\plastic_conductance_d128_3000\\last.pt",
+  "step": 703,
+  "scope": "trained-checkpoint mechanism/ledger audit; no new optimization, no convergence claim",
+  "checkpoint_sha256": "3fbe25a297ae507f70aacab7d820520861d923851ebcc3d9b1f87c64f9cd9768",
+  "event_duration": 0.005,
+  "substeps": 1,
+  "validation_policy": "full mature state per site; warm256, score128; no reset",
+  "state_and_coefficients": {
+    "field": {
+      "field_energy": 0.09073217958211899,
+      "dc_energy": 0.00461750291287899,
+      "spatial_energy": 0.08611466735601425,
+      "dc_share": 0.05089156702160835,
+      "spatial_share": 0.9491083025932312
+    },
+    "field_rank": {
+      "spatial_power_participation_rank": 4.523960214019852,
+      "top1_power_fraction": 0.3999600086352268,
+      "top8_power_fraction": 0.9608073425221113
+    },
+    "material": {
+      "minimum": -0.2390466332435608,
+      "maximum": 0.274927020072937,
+      "rms": 0.05761964442407572,
+      "spatial_rms": 0.056451615638399136,
+      "spatial_fraction": 0.9598682001982309,
+      "mean_spatial_relative_std": 0.9800381034608288
+    },
+    "capacitance": {
+      "minimum": 0.8151952624320984,
+      "maximum": 1.2139784097671509,
+      "rms": 0.9987718448987796,
+      "spatial_rms": 0.030867786536908335,
+      "spatial_fraction": 0.0009551649864519862,
+      "mean_spatial_relative_std": 0.029754065554961094
+    },
+    "leak": {
+      "minimum": 0.8060870170593262,
+      "maximum": 1.2457200288772583,
+      "rms": 1.0017104285156502,
+      "spatial_rms": 0.033532983242453115,
+      "spatial_fraction": 0.0011206241915338825,
+      "mean_spatial_relative_std": 0.031871255299496366
+    },
+    "maximum_conductance": {
+      "minimum": 0.79694664478302,
+      "maximum": 1.3250828981399536,
+      "rms": 1.001425640818447,
+      "spatial_rms": 0.03416733697270033,
+      "spatial_fraction": 0.001164085414492506,
+      "mean_spatial_relative_std": 0.03261052451198119
+    },
+    "closing_rate": {
+      "minimum": 0.7910669445991516,
+      "maximum": 1.2391538619995117,
+      "rms": 1.0007470174077446,
+      "spatial_rms": 0.030639796450373232,
+      "spatial_fraction": 0.0009373961010096516,
+      "mean_spatial_relative_std": 0.0293490411854996
+    },
+    "conduction_offset": {
+      "minimum": 0.29028940200805664,
+      "maximum": 0.8883245587348938,
+      "rms": 0.7160713726517379,
+      "spatial_rms": 0.011692060075339237,
+      "spatial_fraction": 0.00026660571385168306,
+      "mean_spatial_relative_std": 0.02333429067438599
+    },
+    "receptors": {
+      "minimum": 0.44412076473236084,
+      "maximum": 0.5610097050666809,
+      "rms": 0.5000714738303637,
+      "spatial_rms": 0.007648994910466227,
+      "spatial_fraction": 0.00023396159925394703,
+      "mean_spatial_relative_std": 0.014658346297414885
+    },
+    "effective_speed": {
+      "minimum": 1.2424649000167847,
+      "maximum": 3.108900785446167,
+      "rms": 2.070048392700312,
+      "spatial_rms": 0.1299540956046937,
+      "spatial_fraction": 0.0039411135311775486,
+      "mean_spatial_relative_std": 0.057160521279480674
+    },
+    "membrane_time": {
+      "minimum": 0.35904359817504883,
+      "maximum": 0.6272094249725342,
+      "rms": 0.4992601951827002,
+      "spatial_rms": 0.018708936866691773,
+      "spatial_fraction": 0.0014042496832025987,
+      "mean_spatial_relative_std": 0.03600317823671105
+    },
+    "energy_in_field": 0.09073217958211899,
+    "energy_in_edge_responses": 0.0532231442630291,
+    "content_metric": {
+      "minimum": 0.006037149112671614,
+      "maximum": 0.010517362505197525,
+      "rms": 0.00781691489239251,
+      "spatial_rms": 0.00025728982570844114,
+      "spatial_fraction": 0.0010833641458886725,
+      "mean_spatial_relative_std": 0.03149155560181341
+    },
+    "read_probe_drift_mean": 0.003922216594219208,
+    "read_head_scales": [
+      5.66048526763916,
+      5.679539680480957,
+      5.64130973815918,
+      5.680891036987305
+    ],
+    "read_probe_scales": [
+      2.3831539154052734,
+      2.3805079460144043,
+      2.3740410804748535,
+      2.3850951194763184
+    ]
+  },
+  "traced_real_tokens": 128,
+  "trace_aggregate": {
+    "write_angle_mean": {
+      "mean": 0.9441604036837816,
+      "min": 0.6372445225715637,
+      "max": 0.997065544128418
+    },
+    "write_transmitted_fraction": {
+      "mean": 0.6499327912461013,
+      "min": 0.42722299695014954,
+      "max": 0.7380895614624023
+    },
+    "old_field_direct_amplitude_retention": {
+      "mean": 0.5553332860581577,
+      "min": 0.5105892419815063,
+      "max": 0.7680812478065491
+    },
+    "old_field_direct_energy_retention": {
+      "mean": 0.34129158593714237,
+      "min": 0.28423672914505005,
+      "max": 0.5840845704078674
+    },
+    "write_balance_residual": {
+      "mean": 9.255018085241318e-09,
+      "min": 0.0,
+      "max": 2.2351741790771484e-08
+    },
+    "write_chart_entropy": {
+      "mean": 1.989221935160458,
+      "min": 1.943192720413208,
+      "max": 2.0416698455810547
+    },
+    "transport_angle_mean": {
+      "mean": 0.10098008811473846,
+      "min": 0.10076286643743515,
+      "max": 0.10132566839456558
+    },
+    "transport_relative_change": {
+      "mean": 0.08353509717329274,
+      "min": 0.07882732387875983,
+      "max": 0.08489643355832205
+    },
+    "transport_field_relative_change": {
+      "mean": 0.06921358781983145,
+      "min": 0.06218382343649864,
+      "max": 0.08184708654880524
+    },
+    "transport_energy_residual": {
+      "mean": 7.392372936010361e-09,
+      "min": 0.0,
+      "max": 2.9802322387695312e-08
+    },
+    "collision_angle_mean": {
+      "mean": 0.0014576529283658601,
+      "min": 0.0013748528435826302,
+      "max": 0.0015667667612433434
+    },
+    "collision_relative_change": {
+      "mean": 0.002729052257743618,
+      "min": 0.0024849936616606664,
+      "max": 0.0030137527311929475
+    },
+    "collision_field_relative_change": {
+      "mean": 0.0028764902453985997,
+      "min": 0.002599426545202732,
+      "max": 0.003238970646634698
+    },
+    "collision_energy_residual": {
+      "mean": 9.66247171163559e-09,
+      "min": 0.0,
+      "max": 2.9802322387695312e-08
+    },
+    "response_relative_change": {
+      "mean": 0.009927359877714781,
+      "min": 0.009592661489177017,
+      "max": 0.0101363988125125
+    },
+    "response_source_work": {
+      "mean": 0.6426132111810148,
+      "min": 0.6425305604934692,
+      "max": 0.642676830291748
+    },
+    "response_joule_heat": {
+      "mean": 0.6448053759522736,
+      "min": 0.6442755460739136,
+      "max": 0.645193338394165
+    },
+    "response_balance_residual": {
+      "mean": 3.259629011154175e-08,
+      "min": 0.0,
+      "max": 1.1920928955078125e-07
+    },
+    "field_spatial_share": {
+      "mean": 0.938275886233896,
+      "min": 0.8256129622459412,
+      "max": 0.959248960018158
+    },
+    "read_head_pairwise_tv_mean": {
+      "mean": 0.3793791615559409,
+      "min": 0.2897338221470515,
+      "max": 0.5465835730234782
+    },
+    "read_max_site_weight": {
+      "mean": 0.07030879802186973,
+      "min": 0.045432932674884796,
+      "max": 0.14899158477783203
+    },
+    "transport_logit_rms_change": {
+      "mean": 0.020540089271207762,
+      "min": 0.00021897113765589893,
+      "max": 0.08666133135557175
+    },
+    "collision_logit_rms_change": {
+      "mean": 0.002584716327639569,
+      "min": 1.3425384167931043e-05,
+      "max": 0.007560294587165117
+    },
+    "read_entropy_per_head": [
+      4.864260848611593,
+      4.859671980142593,
+      4.910333577543497,
+      4.8598844818770885
+    ]
+  },
+  "spatial_rank_samples": [
+    {
+      "site": 8192,
+      "spatial_power_participation_rank": 4.930823644997023,
+      "top1_power_fraction": 0.388207511580281,
+      "top8_power_fraction": 0.9248808809077913
+    },
+    {
+      "site": 12288,
+      "spatial_power_participation_rank": 4.538512274044237,
+      "top1_power_fraction": 0.40878272820195094,
+      "top8_power_fraction": 0.9362351417080556
+    },
+    {
+      "site": 16384,
+      "spatial_power_participation_rank": 4.65185189058983,
+      "top1_power_fraction": 0.38154818667244866,
+      "top8_power_fraction": 0.971823472048408
+    },
+    {
+      "site": 20480,
+      "spatial_power_participation_rank": 5.296844780198199,
+      "top1_power_fraction": 0.3392577681320941,
+      "top8_power_fraction": 0.9556548766142612
+    }
+  ],
+  "checkpoint_interventions": [
+    {
+      "site": 8192,
+      "full": 7.25048303604126,
+      "no_transport": 7.248935699462891,
+      "no_collision": 7.261688232421875,
+      "no_response": 7.252910137176514,
+      "no_transport_minus_full": -0.0015473365783691406,
+      "no_collision_minus_full": 0.011205196380615234,
+      "no_response_minus_full": 0.0024271011352539062
+    },
+    {
+      "site": 12288,
+      "full": 8.611384391784668,
+      "no_transport": 8.604848861694336,
+      "no_collision": 8.5974702835083,
+      "no_response": 8.585246086120605,
+      "no_transport_minus_full": -0.006535530090332031,
+      "no_collision_minus_full": -0.013914108276367188,
+      "no_response_minus_full": -0.0261383056640625
+    },
+    {
+      "site": 16384,
+      "full": 7.351651668548584,
+      "no_transport": 7.343554973602295,
+      "no_collision": 7.337701797485352,
+      "no_response": 7.348766326904297,
+      "no_transport_minus_full": -0.008096694946289062,
+      "no_collision_minus_full": -0.013949871063232422,
+      "no_response_minus_full": -0.0028853416442871094
+    },
+    {
+      "site": 20480,
+      "full": 6.856937408447266,
+      "no_transport": 6.863814830780029,
+      "no_collision": 6.85493278503418,
+      "no_response": 6.860040187835693,
+      "no_transport_minus_full": 0.006877422332763672,
+      "no_collision_minus_full": -0.0020046234130859375,
+      "no_response_minus_full": 0.0031027793884277344
+    }
+  ],
+  "direct_gradients": {
+    "material": {
+      "next_token_ce_norm": 0.08724849871340894,
+      "write_auxiliary_norm": 0.12954650235066797
+    },
+    "transport": {
+      "next_token_ce_norm": 0.0002773939761210699,
+      "write_auxiliary_norm": 5.5312629177559675e-06
+    },
+    "pathway_metric": {
+      "next_token_ce_norm": 1.7100180797573328e-07,
+      "write_auxiliary_norm": 1.2804879889112563e-09
+    },
+    "collision": {
+      "next_token_ce_norm": 0.013100168349316961,
+      "write_auxiliary_norm": 0.03094582941168693
+    },
+    "response": {
+      "next_token_ce_norm": 0.08458958060750613,
+      "write_auxiliary_norm": 0.21955291930122423
+    },
+    "write": {
+      "next_token_ce_norm": 2.3094667111377674,
+      "write_auxiliary_norm": 11.004401817983918
+    },
+    "read": {
+      "next_token_ce_norm": 5.2309242874122885,
+      "write_auxiliary_norm": 0.0
+    }
+  },
+  "interpretation_notes": [
+    "State change shows operator activity; NLL interventions describe reliance at this checkpoint, not superiority of a separately trained architecture.",
+    "Direct old-field retention freezes the boundary action; it is not the full state-dependent Jacobian or a lifetime bound for stored edge responses.",
+    "mean_spatial_relative_std is spatial standard deviation divided by spatial RMS, averaged across remaining components.",
+    "no_response removes receptor updates, reversal work and Joule heat together; it is not an isolated dissipation intervention.",
+    "Trace reconstructs the one-substep trained split; additional substeps would need an explicit refined trace."
+  ]
+}

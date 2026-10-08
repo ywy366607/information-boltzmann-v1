@@ -1,8 +1,1392 @@
 {
   "title": "Slice Full-Resolution Joint-Evolution VLM Research Tree",
-  "updated": "2026-10-05",
+  "updated": "2026-10-09",
   "source_of_truth": "docs/NORTH_STAR.md",
   "nodes": [
+    {
+      "id": "IB_PORT_WORKSPACE_20261009",
+      "parent": "IB_CAUSAL_EVOLVE_20261008",
+      "title": "Exact finite-port workspace before approximate spatial compression",
+      "status": "active",
+      "confidence": "I",
+      "time": "2026-10-09",
+      "motivation": "Assess Transolver-inspired finite workspaces against actual D7688^3 computation, preserve full persistent state and finite physical propagation while reducing avoidable read computation.",
+      "action": "Implemented exact per-head live finite-support keys and unused auxiliary final-read omission; native diagnostic forward AD and birth-scale resume metadata repairs. Accepted CPU and full D7688^3/BPTT32 execution and resumed the existing real OWT individual; current8085 dashboard attached with active evaluation progress.",
+      "conclusion": "108 affected CPU regressions passed,13 optional CUDA tests skipped. Real saved-step157 full32 identity:11 outgoing state tensors exactly equal, maximum input-gradient error3.3813e-8 and named parameter-gradient error1.1139e-6; None semantics retained. Complete-state CUDA JVP succeeds. Sampled dedicated peak2952.65MiB below3072MiB. Identical checkpoint/RNG/next64targets warm second complete updates: dense+oldaux12.0728s, support+auxomitted11.5765s, dense+auxomitted11.5987s. The optimized paths differ0.2percent; only about4percent joint saving is seen in one warm window, with no separately resolved key-sparsity throughput gain. Implemented padded key MAC ratio7.11x is not full-update speed. Calibration writes no production checkpoint or cursor. No language-capability improvement is inferred.",
+      "next_action": "Continue the same5000-fresh-group/160k OWT individual and primary active four-pillar assessment. Verify real dashboard and evaluation progression; inspect>=3000 actual-update learning/recovery/platform/revisit evidence before capability claims. Approximate Slice and extra physical/model changes remain separate.",
+      "review": {
+        "reviewer": "medium_bottleneck_audit and free_energy_review",
+        "status": "accepted",
+        "scope": "Independent reader/auxiliary/state/pending/gradient source and CPU review, followed by root real D768 GPU identity, JVP, complete updates,3072MiB resource acceptance and paired warm timing."
+      },
+      "artifacts": [
+        "docs/information_boltzmann/MEDIUM_TRANSOLVER_COMPLEXITY_ASSESSMENT_20261009.md",
+        "results/published/medium_sparse_read_identity_20261009.json",
+        "scratch/check_medium_sparse_read_equivalence_20261009.py",
+        "scratch/medium_transolver_complexity_review_20261009.md",
+        "docs/information_boltzmann/MEDIUM_PORT_WORKSPACE_ACCEPTANCE_20261009.md",
+        "results/published/medium_port_workspace_gpu_acceptance_20261009.json",
+        "results/published/medium_port_workspace_resume_20261009.json",
+        "results/published/medium_port_workspace_dense_matched_20261009.json",
+        "results/published/medium_port_workspace_support_matched_20261009.json",
+        "results/published/medium_port_workspace_dense_aux_omitted_matched_20261009.json",
+        "scratch/medium_port_final_review_20261009.md"
+      ],
+      "invalidation": "Reject on changed support or footprint gradients, omitted physical/temporal state, fixed birth-only crop, or new instant global control path. Single-component MAC/CPU identity cannot certify complete-update throughput or language fidelity."
+    },
+    {
+      "id": "IB_CAUSAL_EVOLVE_20261008",
+      "parent": "IB_PATHWAY_VFE_20261008",
+      "title": "Resolve physical evolution and credit before finite structural pathways",
+      "status": "active",
+      "confidence": "I",
+      "time": "2026-10-08",
+      "motivation": "User paused the current individual and requires causal long-time propagation/credit first, then finite ports, material bandwidth and structural competition, preserving full continuous learning state.",
+      "action": "Gracefully saved step1237/fresh39584/events42272/1321 updates. Implemented pre-input local clock, differentiable interval execution and independently sampled temporal history, nested checkpoints, finite total aperture budgets, full-grid material basis and explicit expansion, Gaussian simplex resource posterior with bounded fast utilization, whole-window KL/actual-time OU, exact writer auxiliary block gradients, cache/resume/accounting/execution repairs. Full32 execution now uses deterministic first-order event VJP, explicit shared coefficient/table/duration inputs, serialized writer auxiliary credit, completed decoder-zero release and idle Adam moment host staging; all physical intervals and32-event credit remain.",
+      "conclusion": "263 CPU numerical regressions passed and21 opt-in tests skipped; independent final review closed four replay/cache/state-contract bugs. Disjoint numerical ports support remote response and write/material/time credit; blocked transport gives zero response. One real D7688^3/84-step interval completed forward/backward within2498.64MiB sampled dedicated memory, no updates, exact clock agreement. The real8-target old-checkpoint task/port material gradient cosine is+.3418, so that window does not support auxiliary-conflict root-cause attribution. Functional neural pathways and language improvements remain untested. Latest execution regression:35 passed,2 CUDA opt-in skipped; three actual-medium AdamW updates with host-state copying are bitwise equal to resident-state reference. First complete D7688^3/112-step-per-event/BPTT32 update succeeds; the subsequent second-window acceptance passed as recorded below. Warm execution is about335-345s per32targets, not previous tiny-interval throughput. Same-source two-window GPU acceptance now passed:64 actual targets,2 AdamW updates,pending0, sampled dedicated peak2490.64MiB, raw gradient norms20.7543/16.9086 finite, warm321.28s/32targets. Calibration creates no checkpoints and is not language-capability evidence. The formal new birth was launched and then user requested usable alternatives after seeing~5.5min/32 cost. It was paused before update1; birth checkpoint is retained. Numerical/resource acceptance did not establish operational acceptability. Independent design discussion identified two distinct costs: a removable fixed Householder read-coordinate GEMM, and the optional assumption that each input waits a full-domain traversal. Selected successor is a persistent local-cadence pipeline with finite recent-input physical reachability and deep propagation across later inputs. Freeze birth physical timing across numerical grid refinement. Nominal112-to4 microsteps changes stimulus timing; it is not old-trajectory equivalence or a measured28x speedup. Design only, production remains paused.",
+      "next_action": "Continue registered same-individual real OWT long training. Step157 first-evaluation compiler failure repaired and exact checkpoint resumed; current8085 now follows the live run and reports real evaluation counters. Execution acceptance and small timing saving are recorded in IB_PORT_WORKSPACE_20261009. Await>=3000-update active learning/recovery/platform/revisit evidence for capability conclusions.",
+      "review": {
+        "reviewer": "integration_final_review",
+        "status": "accepted",
+        "scope": "Causal interval, whole-window evidence, writer block-gradient, structural law restore, buffer cache, B1 and None-grad fixes; capability and production-window performance excluded."
+      },
+      "artifacts": [
+        "docs/information_boltzmann/MEDIUM_CAUSAL_EVOLUTION_REPAIR_20261008.md",
+        "results/published/medium_causal_evolution_repair_20261008.json",
+        "results/published/medium_d768_long_interval_calibration_20261008.json",
+        "results/published/medium_objective_gradients_d768_20261008.json",
+        "information_boltzmann/core/intrinsic_time.py",
+        "information_boltzmann/core/structural_posterior.py",
+        "tests/test_medium_interval_causality.py",
+        "tests/test_medium_structural_integration.py",
+        "information_boltzmann/core/state_checkpoint.py",
+        "information_boltzmann/runtime/optimizer_storage.py",
+        "tests/test_optimizer_storage.py",
+        "tests/test_active_medium_decoder_lifetime.py",
+        "results/published/medium_pathway_reopen_plan_20261008.json",
+        "scratch/medium_optimizer_staging_review_20261008.md",
+        "results/published/medium_full32_execution_acceptance_20261008.json",
+        "results/published/medium_full32_adam_staging_calibration_20261008.json",
+        "docs/information_boltzmann/MEDIUM_STREAMING_EXECUTION_DESIGN_20261008.md",
+        "scratch/medium_usable_compute_structure_options_20261008.md",
+        "scratch/medium_streaming_time_contract_review_20261008.md",
+        "results/published/medium_streaming_execution_protocol_20261008.json",
+        "results/published/medium_streaming_training_plan_20261008.json",
+        "scratch/medium_streaming_numerical_acceptance_20261008.md",
+        "scratch/medium_streaming_training_release_review_20261008.md",
+        "tests/test_medium_checkpoint_granularity.py",
+        "tests/test_medium_streaming_cadence.py",
+        "tests/test_fused_temporal_ports.py",
+        "tests/test_structured_medium_readout.py",
+        "results/published/medium_streaming_execution_acceptance_20261008.json",
+        "results/published/medium_streaming_fused_full32_calibration_20261008.json",
+        "results/published/medium_streaming_training_process_20261008.json"
+      ],
+      "invalidation": "Reject numerical contracts on lost remote causality, hidden token/target clock input, inconsistent interval gradients/clock/history, gain escaping installed capacity or nonexact pending resume. Single-event GPU acceptance does not certify BPTT32/structural production resource cost; numerical acceptance does not certify task performance.",
+      "design_review": {
+        "hypothesis_review": "medium_bottleneck_audit",
+        "independent_time_contract_review": "medium_bottleneck_audit/adam_offload_review",
+        "scope": "read-only code and algebra; local-time successor proposed, throughput and language capability untested",
+        "plan_status": "approved_to_register_with_explicit_boundaries; successor execution and capability not accepted",
+        "conditions": [
+          "Freeze birth physical input reference across grid refinement; untimed OWT input rate is an explicit design choice.",
+          "Verify finite recent-input response before target reveal and report actual32-event physical credit horizon; persistent state does not imply infinite credit.",
+          "Preserve QR invariant coordinate and restrict probe commutation to linear measurements."
+        ]
+      },
+      "streaming_implementation": {
+        "status": "two_window_accepted_and_long_training_started",
+        "design": "short input cadence, autonomous persistent material propagation across later observations; numerical resolution separate",
+        "reference_interval": 0.03327237442135811,
+        "physical_temporal_reference_preserved": 0.899332940578461,
+        "optimizations": [
+          "exact Householder reader",
+          "linear finite probe reorder",
+          "event-only first-order replay",
+          "writer-only auxiliary VJP targets",
+          "compiled supplied-motion temporal ports with native monitoring fallback"
+        ],
+        "gradient_acceptance": "13 root CPU regressions;6 independent32-event/pending-resume contracts;1 CUDA all-state/all-parameter temporal fusion regression passed",
+        "birth_geometry": "write64,read128,shared64 of512; legitimate recent-input overlap, not proof of learned deep pathways",
+        "independent_release_review": "accepted conditional on final two-window finite/resource/throughput acceptance",
+        "capability": "unassessed; sufficient joint real-data learning still required",
+        "warm_seconds_per32": 14.84574690000045,
+        "sampled_peak_dedicated_mib": 2916.6484375,
+        "formal_plan": "5000fresh32-token groups,160k unique training cursor targets plus separately counted active eval/replay updates; WSD100/500",
+        "process": 29516
+      }
+    },
+    {
+      "id": "IB_PATHWAY_VFE_20261008",
+      "parent": "IB_STRUCT_VFE_20261008",
+      "title": "Predictive resource-constrained continuous pathway learning",
+      "status": "active",
+      "confidence": "A",
+      "time": "2026-10-08",
+      "motivation": "User requests a complete mechanism for useful brain-like pathways and a code-grounded learning bottleneck audit, with live prediction and adaptation stronger than the fly reference as the capability goal.",
+      "action": "Derived a single conditional-VFE candidate on the existing continuous Fourier basis: Gaussian coefficient posterior, persistent affine-Gaussian prior, local simplex capacity with idle reserve, normalized transport directions and bounded fast utilization. Three independent math/code/learning reviews; CPU numerical identities only. Production and current training unchanged.",
+      "conclusion": "Paired skew transport retains fixed-coordinate energy; actual row norm is capacity, so unbounded baseline or fast-gain compensation cannot evade its cost in the proposed candidate. Existing six transport degrees express local SPD direction shapes. Current D768 geometry provides a feasible direct write/read path (276 shared sites; no causal performance attribution yet), task/port gradients share clipping, BPTT32 spans0.16 physical time, and runtime8^3 retains256 slow material basis degrees. Functional pathway emergence and superiority to fly remain hypotheses.",
+      "next_action": "Implementation and causal numerical acceptance are recorded in IB_CAUSAL_EVOLVE_20261008. Keep previous full-state individual paused; complete fused-window resource acceptance before matched active real-data capability comparisons.",
+      "prediction": {
+        "id": "P-20261008-12",
+        "registered_before_result": true,
+        "claim": "Within a declared continuous basis and installed-capacity budget, predictive structural inference may allocate reusable pathways and improve active adaptation over an equally repaired non-structural-posterior baseline; effect size unknown.",
+        "falsifying_observation": "After matched sufficient real-data training and convergence review, no predictive/recovery benefit or unacceptable revisit degradation rejects the capability claim; geometry changes alone do not count. Numerical invariants fail if actual coupling exceeds installed capacity or paired-skew/state-continuity identities break."
+      },
+      "review": {
+        "hypothesis_reviewer": {
+          "reviewer": "free_energy_review",
+          "status": "accepted",
+          "scope": "Conditional rather than exact historical VFE; basis-limited soft resource posterior; capacity/fast-utilization closure. No task benefit or mandatory tree morphology certified."
+        },
+        "experiment_committee": {
+          "reviewer": "learning_path_audit",
+          "status": "accepted",
+          "scope": "Low-cost zero-update audit followed by matched-birth/shared-repair comparison; complete state and likelihood scaling required. No new training initiated."
+        }
+      },
+      "artifacts": [
+        "docs/information_boltzmann/MEDIUM_PATHWAY_VFE_20261008.md",
+        "scripts/ib/audit_structural_vfe.py",
+        "results/published/medium_structural_vfe_math_20261008.json",
+        "scratch/medium_structure_math_review_20261008.md",
+        "scratch/medium_structure_code_review_20261008.md",
+        "scratch/medium_learning_review_20261008.md"
+      ],
+      "invalidation": "Do not infer semantic utility from anisotropy, high flow, shape, low rank, or conservation. Reject causal root-cause claims unsupported by current D768 attribution. Cost, prior scales, birth history, basis bandwidth, finite-window credit and inference approximation must remain explicit."
+    },
+    {
+      "id": "IB_STRUCT_VFE_20261008",
+      "parent": "IB_STRUCT_RESOURCE_20261008",
+      "title": "Variational free-energy comparison for pathway retention",
+      "status": "active",
+      "confidence": "D",
+      "time": "2026-10-08",
+      "motivation": "User rejects capacity-only scaling and requests a derived keep-versus-remove free-energy criterion.",
+      "action": "Derived normalized causal structural evidence, conditional variational objective, Bernoulli retention posterior and resource-prior threshold. Independent mathematical review completed. No production changes or training launch.",
+      "conclusion": "At fixed conditional variational objectives, r*=sigmoid(A0-A1+logit(pi)); hard MAP retains when evidence gain exceeds prior maintenance odds. Exact Bayes factor interpretation requires exact posteriors; current implementation has neither structural posterior nor maintenance constitutive law. Capacity projection is only a ceiling.",
+      "next_action": "Justify structural maintenance/supply and transition priors; specify affordable evidence approximation before numerical implementation or registered matched real-OWT experiment. Existing training unchanged.",
+      "artifacts": [
+        "docs/information_boltzmann/STRUCTURAL_FREE_ENERGY_20261008.md"
+      ],
+      "invalidation": "Reject evidence-ranking claim if unequal variational errors, inconsistent initial-state histories, likelihood normalization or unaccounted resource costs dominate. No guaranteed sparsity, metabolic equivalence, semantic retention or task benefit."
+    },
+    {
+      "id": "IB_STRUCT_RESOURCE_20261008",
+      "parent": "IB_MATERIAL_INIT_GRID_20261008",
+      "title": "Joint structure-content separation with finite material capacity",
+      "status": "active",
+      "confidence": "I",
+      "time": "2026-10-08",
+      "motivation": "User requests sigma-algebra-inspired observable distinctions and growth/maintenance considered together before integration.",
+      "action": "Integrated opt-in birth-capacity projection on slow material, shared transport/read-RHS coefficient path and checkpoint validation. Preserve local fast activity/STP modulation. Numerical tests cover locality and exact energy-current divergence.",
+      "conclusion": "Numerical budget, SPD, derivatives and conservation checks pass. A structural change alters a finite-time local observation kernel. Quadratic budget alone admits uniform and concentrated allocations at equal cost; no channel/capability/metabolic claim.",
+      "next_action": "Birth-budget individual gracefully stopped and saved at step1237/fresh39584/events42272/1321 actual updates on user instruction; retain this baseline. Superseding causal/structural candidate implementation is recorded in IB_CAUSAL_EVOLVE_20261008; no new capability run launched.",
+      "artifacts": [
+        "information_boltzmann/core/structural_resource.py",
+        "tests/test_structural_resource.py",
+        "scripts/ib/audit_structural_resource.py",
+        "results/published/medium_structural_resource_20261008.json",
+        "docs/information_boltzmann/STRUCTURE_CONTENT_RESOURCE_20261008.md"
+      ],
+      "invalidation": "Invalidate contracts if projection or coefficient paths violate conservation/budget or state continuity. Capability and long-term semantic retention require matched active real-data results; attractive spatial patterns do not establish benefit."
+    },
+    {
+      "id": "IB_MATERIAL_INIT_GRID_20261008",
+      "parent": "IB_COSMOS_VIEW_20261008",
+      "title": "Variance-calibrated heterogeneous birth and grid refinement",
+      "status": "active",
+      "confidence": "I",
+      "time": "2026-10-08",
+      "motivation": "User requests spatial differentiation from initialization and finer runtime grid within about3GB dedicated memory.",
+      "action": "Stop/save old individual at30016 fresh tokens. Add opt-in spectral-Xavier field calibration and explicit runtime shape; preserve physical port radii and material bandwidth. Calibrate complete BPTT32 updates before restart.",
+      "conclusion": "16 numerical tests pass; expected initial material variance and coincident-point refinement consistency verified. Task benefit unmeasured.",
+      "next_action": "Fresh D768 8x8x8 OWT individual running for5000 groups. Complete checkpoint resumed at157 and advanced beyond170. mmap checkpoint load, CPU payload release and completed zero decoder-gradient release avoid resume allocation duplication; dedicated GPU measured2681MiB.",
+      "artifacts": [
+        "results/published/medium_spectral_init_grid_20261008.json",
+        "tests/test_material_initialization.py"
+      ],
+      "invalidation": "Reject numerical implementation if centered field variance or refinement consistency fails; reject selected grid if complete production updates exceed3072MiB. Capability claim requires matched real-data improvement."
+    },
+    {
+      "id": "IB_COSMOS_VIEW_20261008",
+      "parent": "IB_TEMPORAL_JVP_FIX_20261008",
+      "title": "Read-only live spatial medium visualization",
+      "status": "active",
+      "confidence": "I",
+      "time": "2026-10-08",
+      "motivation": "Expose actual learned spatial material and persistent field structure during continuous training.",
+      "action": "Export actual effective transport factor, signed energy current, initial/current port coordinates, periodic drift and per-head read attention. Render normalized snapshot tracer animation, unoriented tensor direction lines and port initialization ghosts.",
+      "conclusion": "Browser verified actual energy-flow animation and continued snapshots on 512 sites. Port coordinates are learned, initialized regularly; step157 mean write/read drift0.417%/0.543% of period. No imposed write-read pairing. Exact discrete energy-current continuity tested; tracers are display particles, not semantic content tracking. Fixed snapshot refresh to wall_time rather than step alone. Added port IDs and selected-probe finite aperture display. Geometric center differs from within-aperture attention; instantaneous attention excludes additional temporal-history contribution.",
+      "next_action": "Observe spatial evolution alongside aligned active evaluations; visualization remains descriptive.",
+      "artifacts": [
+        "present/medium_cosmos_live.html",
+        "scripts/ib/serve_medium_cosmos.py",
+        "tests/test_medium_stream_telemetry.py",
+        "present/medium_flow.js"
+      ],
+      "invalidation": "Invalidate faithful visualization if plotted site values differ from sampled live tensors or snapshots do not advance with training."
+    },
+    {
+      "id": "IB_TEMPORAL_JVP_FIX_20261008",
+      "parent": "IB_EVENT_FUSION_20261008",
+      "title": "Preserve complex probe history in conditional state diagnostics",
+      "status": "active",
+      "confidence": "I",
+      "time": "2026-10-08",
+      "motivation": "First live evaluation at 5024 targets raised because legacy credit reconstruction omitted temporal read history.",
+      "action": "Diagnostic-specific complete state uses real and imaginary probe history, preserves elapsed clocks, and saves the individual before evaluation. Production dynamics and learning objective unchanged.",
+      "conclusion": "9 numerical/interface tests passed, 1 skipped, including temporal full-state finite-difference agreement and unchanged input state. Interrupted segment was unsaved; archived raw metrics, restored authoritative stream from last complete checkpoint at step32/1024 targets. Live D768 evaluation completed at5024 fresh targets: B NLL7.6676 vs paired reference7.5121; resumed beyond5760 targets. This confirms interface execution, not capability advantage.",
+      "next_action": "Continue authorized real-data learning and collect subsequent matched active evaluations.",
+      "artifacts": [
+        "tests/test_medium_health.py",
+        "information_boltzmann/runtime/medium_health.py"
+      ],
+      "invalidation": "Invalidate repair if full temporal-state conditional response fails or changes the live individual."
+    },
+    {
+      "id": "IB_EVENT_FUSION_20261008",
+      "parent": "IB_MEDIUM_4P_20261008",
+      "title": "Fuse D768 physical training event without changing learning policy",
+      "status": "active",
+      "confidence": "I",
+      "time": "2026-10-08",
+      "motivation": "Reduce launch and diagnostic graph overhead while retaining full pretrained vocabulary, BPTT32 and live four-pillar monitoring.",
+      "action": "One compiled event forward/backward plus exact activation recomputation; audited execution-only continuation at 1024 fresh targets.",
+      "conclusion": "CPU equivalence passed. Real D768 scores, continuation state and health agree; gradient relative L2 error 7.48e-7. Fused complete updates 8.20 token/s, 2341 MiB dedicated. First compile 1076s; paired eager timing slower than preceding live run, so live speedup awaits resumed measurements. Live continuation preserved state and optimizer: prior steps16-32 averaged3.916 token/s; resumed steps45-73 averaged19.443 token/s (4.96x sequential wall-clock speedup).",
+      "next_action": "Continue the existing 5000-update/160k fresh-target budget and score active adaptation and retention.",
+      "artifacts": [
+        "docs/information_boltzmann/MEDIUM_EVENT_FUSION_20261008.md",
+        "results/published/medium_d768_event_fusion_benchmark_20261008.json"
+      ],
+      "invalidation": "Invalidate equivalence if compiled execution changes state or gradients beyond numerical tolerance; invalidate speed claim if matched warm measurements do not improve."
+    },
+    {
+      "id": "IB_MEDIUM_4P_20261008",
+      "parent": "IB_LIVE_APPL_20261008",
+      "title": "Connect live four-pillar monitoring to BPTT32 medium training",
+      "status": "active",
+      "confidence": "I",
+      "time": "2026-10-08",
+      "motivation": "Compare persistent carriers with identical active adaptation and retention contracts.",
+      "action": "Per-token chunk health buffers in eager/CUDA Graph, real update displacement, checkpointed auditor, B snapshot and conditional physical JVP; require confirmed recovery for AG.",
+      "conclusion": "28 targeted CPU tests passed, 6 skipped; new CUDA per-token capture/replay and gradient equivalence test passed. No capability training run. Full health accounting uses native diagnostic arithmetic inside CUDA Graph; instrumented throughput remains unmeasured.",
+      "next_action": "Use four-pillar outputs on the next authorized real-data run with explicit measurement budgets.",
+      "artifacts": [
+        "docs/information_boltzmann/PERSISTENT_MEDIUM_HEALTH.md",
+        "tests/test_active_medium_training.py",
+        "tests/test_adaptation_generalization.py"
+      ],
+      "invalidation": "Invalidate evaluation alignment if targets update weights before scoring, state resets, or optimizer cadence changes across phase transitions."
+    },
+    {
+      "id": "IB_LIVE_APPL_20261008",
+      "parent": "IB_MEDIUM_TENSOR_20261008",
+      "title": "Standardize active adaptation as fixed-horizon APPL plus recovery and observed platform",
+      "status": "active",
+      "confidence": "I",
+      "time": "2026-10-08",
+      "motivation": "Measure an unfamiliar environment by its complete recovery cost and adapted quality, rather than its initial surprise.",
+      "action": "Shared APPL/log gain, exact-target reference, fixed-tail candidate/stability diagnostics and censored recovery; fly and 3D entrypoints plus legacy evaluator integration.",
+      "conclusion": "27 affected tests passed and 2 skipped. All 5 fly curves backfilled using exact recorded training-reference hash; 110016 yields APPL1822.31 and G1.3987. All five tail windows remain changing under declared policy; no steady-state claim. Training process and raw logs unchanged.",
+      "next_action": "Use joint speed/quality fields at declared shared H in future runs; preserve actual active experience and report platform estimates separately from observed stable tails.",
+      "artifacts": [
+        "docs/information_boltzmann/LIFELONG_EVALUATION.md",
+        "results/published/fly_adaptation_appl_backfill_20261008.json",
+        "tests/test_adaptation_generalization.py"
+      ],
+      "invalidation": "Invalidate reference gain if model and reference use different scored targets; no stable-platform claim without its confirmation criterion."
+    },
+    {
+      "id": "IB_MEDIUM_TENSOR_20261008",
+      "parent": "IB_MEDIUM_TEMPJOIN_20261008",
+      "title": "Learn local reciprocal anisotropic material with conservative cross-flux transport",
+      "status": "active",
+      "confidence": "I",
+      "time": "2026-10-08",
+      "motivation": "Open non-axis-aligned propagation directions without adding token waiting or replacing persistent temporal read.",
+      "action": "Unit lower triangular material factor, positive existing speed rows, exact skew edge splitting, analytic read derivative and continuous runtime checkpoint contract.",
+      "conclusion": "56 affected CPU checks and all 10 CUDA-enabled new checks pass; zero-shear legacy recovery, conservation, finite differences, continuum refinement, likelihood gradients, production training graph and temporal resume verified. No capability training performed.",
+      "next_action": "Use --anisotropic-transport with existing temporal-read learner for sufficient joint real-stream training; compare paired predictive NLL and runtime under matched budgets.",
+      "artifacts": [
+        "results/published/medium_anisotropic_transport_20261008.json",
+        "docs/information_boltzmann/MEDIUM_ANISOTROPIC_TRANSPORT_20261008.md",
+        "tests/test_anisotropic_medium.py"
+      ],
+      "invalidation": "Invalidate physical construction if positive-definiteness, energy accounting or fixed-material transport linearity fails."
+    },
+    {
+      "id": "IB_MEDIUM_TEMPJOIN_20261008",
+      "parent": "IB_MEDIUM_TEMPFILT_20261008",
+      "title": "Integrate persistent local temporal read into joint learner and continuous runtime",
+      "status": "active",
+      "confidence": "I",
+      "time": "2026-10-08",
+      "motivation": "Make accepted local phase/history measurements trainable and deployable in the same persistent individual without added physical waiting.",
+      "action": "Explicit temporal read mode and belief history, complete state serialization/graph replay, joint BPTT path, configurable learned temporal coverage; one real OWT D128/BPTT32 GPU execution calibration.",
+      "conclusion": "94 affected CPU and 2 temporal CUDA tests pass. Temporal-only medium/writer credit, live learning/cadence resume and complex state ownership verified. One 32-token actual AdamW group: .3803656s, board3059MiB, 1update, zeroPT. Capability and long-run timing remain to be evaluated.",
+      "next_action": "Authorized sufficient joint language training at declared sampling timestamps; compare predictive NLL and cost at matched capacity/budgets while preserving active state/optimizer continuity.",
+      "artifacts": [
+        "results/published/medium_temporal_read_integration_20261008.json",
+        "docs/information_boltzmann/MEDIUM_TEMPORAL_READ_INTEGRATION_20261008.md",
+        "tests/test_medium_temporal_read.py",
+        "information_boltzmann/core/temporal_probes.py",
+        "information_boltzmann/core/plastic_ports.py",
+        "scripts/ib/train_medium_active_stream.py"
+      ],
+      "invalidation": "Endpoint sampling and sensor-trajectory histories are explicit conventions. Different timestamp/cadence or location-history semantics need their own acceptance. Single-step execution is not evidence of language gains."
+    },
+    {
+      "id": "IB_MEDIUM_TEMPFILT_20261008",
+      "parent": "IB_MEDIUM_DYNREAD_20261008",
+      "title": "Causal local complex-exponential probe history",
+      "status": "active",
+      "confidence": "I",
+      "time": "2026-10-08",
+      "motivation": "Expose phase and multiscale local histories of ongoing medium activity without adding physical waiting or global read access.",
+      "action": "Optional independent explicit-state bank with exact held-input recurrence; 49CPU numerical/interface tests and fresh-weight actualOWT burn64/score32 full-grid D128audit; noGPU/optimizer/PT.",
+      "prediction": {
+        "registered_before_result": true,
+        "expected_observation": "Exact ZOH response/phase and same-input refinement; persistent chunk/clock consistency, compact instantaneous support, connected temporal-only task gradient.",
+        "falsifying_observation": "Failed analytic identities, causal/locality/replay tests, disconnected temporal-only medium/writer gradient or state blowup block promotion."
+      },
+      "conclusion": "Contracts pass; sampled complex transfer error2.38956e-15, chunkdiff0, clocksdoubleequal .4800000000000003. Temporal-only gradients rates.002420/freq.0001769/medium.08848/write.31544/source.01143;Added32904parameters and131080byte persistent state. Fresh weights,32targets are interface evidence only, not improvedNLL or infinitecredit. FinalCPU bank .994ms vs RHS/probepool7.089ms; noGPUthroughputclaim.",
+      "next_action": "Optional production integration accepted under IB_MEDIUM_TEMPJOIN_20261008; next assess sufficient joint language training at matched sample cadence and budget.",
+      "review": {
+        "experiment_approval_committee": {
+          "reviewer": "/root/rtc_contract_review",
+          "status": "approved",
+          "concerns": "Correct alpha/complex-lambda ZOH gain, same-input contraction, fixed geometry, fresh-weight scope and explicit burn boundary."
+        },
+        "result_reviewer": {
+          "reviewer": "/root/rtc_contract_review",
+          "status": "accepted",
+          "concerns": "Exact recurrence, signed phase, endpoint-sampling causality and temporal-only gradient path verified. Initially flagged floatclock/finitestate guards subsequently repaired with tests and actualrerun."
+        }
+      },
+      "artifacts": [
+        "docs/information_boltzmann/MEDIUM_TEMPORAL_PROBES_PREREG_20261008.md",
+        "docs/information_boltzmann/MEDIUM_TEMPORAL_PROBES_RESULTS_20261008.md",
+        "results/published/medium_temporal_probes_20261008.json",
+        "information_boltzmann/core/temporal_probes.py",
+        "tests/test_temporal_probes.py"
+      ],
+      "invalidation": "No production maturity claim; changed sample timing/rates/geometry/physical learner requires new contracts; moving probes cannot reinterpret cached history without explicit transport."
+    },
+    {
+      "id": "IB_FLY_ADMISSION_20261008",
+      "parent": "IB_FLY_FIXEDSUM_20261008",
+      "title": "Review adaptive inter-token admission and joint-learning connection",
+      "status": "active",
+      "confidence": "I",
+      "time": "2026-10-08",
+      "motivation": "Replace fixed per-token waiting with response-dependent admission while preserving useful brain learning and continuous state.",
+      "action": "Read actual gatekeeper, probes, production learner and archived reports; five CPU operator tests plus deterministic numerical counterexamples; zero GPU training and optimizer updates.",
+      "conclusion": "Adaptive tick count works in standalone serial admission probes, but production BPTT remains fixed. Smoke detaches physical latents and does not establish brain learning. New probes omit repaired surrogate/replay conventions and physical baseline decay. Low membrane flux can admit uniform-output static state at total tick2 despite pending delays. Current optional loss omits cluster coding rate and admits amplitude-only improvement. Benchmark fifth volume score not used in decision. Cost reports count ticks, not wall-time speedup.",
+      "next_action": "Integrate adaptive event advancement into repaired learner/evaluation with connected gradients, original stopping-schedule replay and exact counters before judging performance; evaluate MCR objective separately.",
+      "review": {
+        "source_reviewer": {
+          "reviewer": "/root/rtc_contract_review",
+          "status": "accepted",
+          "concerns": "Independently confirmed missing production integration, detached brain learning, serial admission and .item synchronization; MCR population mismatch/amplitude escape, heuristic score constants, unused benchmark coding-volume decision. No GPU work or capability conclusion."
+        }
+      },
+      "artifacts": [
+        "docs/information_boltzmann/FLY_ADAPTIVE_ADMISSION_REVIEW_20261008.md",
+        "results/published/fly_adaptive_admission_review_20261008.json"
+      ],
+      "invalidation": "Revised production integration, gradient connections or stopping rule supersede the source findings; preserve explicit provenance and inspect changed code."
+    },
+    {
+      "id": "IB_FLY_PROXYWIDTH_20261008",
+      "parent": "IB_FLY_PULSE_SG_20261008",
+      "title": "Restore useful full-window credit using intrinsic threshold proxy width",
+      "status": "active",
+      "confidence": "O",
+      "time": "2026-10-08",
+      "motivation": "Silent-pulse proxy feedback amplifies full480tick credit and shared clipping starves readout; preserve fullS14W32 and first-firing credit.",
+      "action": "Reject common-envelope chi1.52e-10 with metriccondition8.59e7. Optional threshold-width unit-peak ATan plus detachedreset; no new physical module, gamma or forward equation. Immutable100k individual, same32realOWT targets, full480tick backward-only and stateadjoints; zero updates. Inherit conventions in continuation config.",
+      "prediction": {
+        "registered_before_result": true,
+        "expected_observation": "Intrinsic threshold width reduces far-subthreshold feedback while nearthreshold peak and silent first-firing credit remain; useful raw and clipped group gradients recover.",
+        "falsifying_observation": "Huge whole norm, nearzero clipped writer/read/threshold, changed physical forward or source drift blocks promotion."
+      },
+      "conclusion": "Backward-only norm1.640208 vs old1.25234e14; rawread.61666664 unchanged, clippedread.375968 vs4.924e-15; clippedthreshold.165517, synE.442815, synI.191372, writermech.099562. Mean silentpsi.173066 vs.876039; firsth adjoint.127726 vs6.21e13. Same preupdate loss/NLL within atomic noise. Subsequent guarded singleupdate BLOCKED with0updates:6checkpoint spike flips insegment27, despite derivative norm1.640208. Candidate improves this-window derivative conditioning; complete numerical repair requires repeatable physical forward. No NLL benefit claim.",
+      "next_action": "Fixed incoming-row summation replay gate, then one restored AdamW update if exact replay holds. Keep previous failed gate and legacy defaults.",
+      "review": {
+        "experiment_approval_committee": {
+          "reviewer": "/root/rtc_contract_review",
+          "status": "approved",
+          "concerns": "Explicit new surrogate convention, not pure unit conversion or exact normalized-CDF derivative; preserve peak/silent/threshold credit; immutable source/full window."
+        },
+        "conclusion_reviewer": {
+          "reviewer": "/root/rtc_contract_review",
+          "status": "accepted",
+          "concerns": "Numerical credit recovery only. Atomic replay failure blocks complete promotion and was caught before update."
+        }
+      },
+      "artifacts": [
+        "docs/information_boltzmann/FLY_RESET_SURROGATE_20261008.md",
+        "results/published/fly_w32_feedback_feasibility_20261008.json",
+        "results/published/fly_w32_threshold_surrogate_20261008.json",
+        "results/published/fly_w32_threshold_update_20261008.json"
+      ],
+      "invalidation": "Changed physical state, width, loss or optimizer context needs fresh numerical gate; single window cannot certify lifetime stability or improved task loss."
+    },
+    {
+      "id": "IB_FLY_FIXEDSUM_20261008",
+      "parent": "IB_FLY_PROXYWIDTH_20261008",
+      "title": "Make physical checkpoint replay repeatable with fixed incoming sums",
+      "status": "active",
+      "confidence": "I",
+      "time": "2026-10-08",
+      "motivation": "Hard events at tiny margins flip under atomic floatingpoint reduction during checkpoint replay.",
+      "action": "Optional fixedpost stable sort perE/I/delay, topology-only buffers, fixedrow2D segment sums with current weights. Original edge IDs and full VJP preserved, zero pulses receive credit.36affected tests and24fullcheckpoint parity cases passed. Same individual480tick backward-only replay gate running;3900MiB,noPT. Final144affectedtests including opt-in CUDAgraph parity passed.",
+      "prediction": {
+        "registered_before_result": true,
+        "expected_observation": "Original and recomputed margins and normalized proxies match exactly throughout480ticks with zero flips and finite useful gradients.",
+        "falsifying_observation": "Any spike flip or proxy drift, stale weights, discarded silent VJP or memory cap failure blocks restored update."
+      },
+      "conclusion": "Actual full480tick backward and restored singleAdamW update pass:79258560decisions, zero flips, voltage/proxy margin/derivative maxdiff0, complete coverage. Totalnorm1.64020783, clippedread.375968, wholeboard2999MiB, allocated2401.38MiB.1update/32targets, allparameters/optimizerstatesfinite; sourcefileunchanged,noPT. Actualread deltaL2.280527,threshold.00021003,synE.206687,synI.298272; deltas include retained optimizer history. First process withoutreport inconclusive; prior atomic sixflipgate failed and blockedupdate. Numerical thiswindow credit/replay repair established; no NLL benefit or lifetime guarantee.",
+      "review": {
+        "experiment_approval_committee": {
+          "reviewer": "/root/rtc_contract_review",
+          "status": "approved",
+          "concerns": "No active-only backward mask, use current weights and originaledgegradorder, full coverage/repeatability, explicit executioncost."
+        },
+        "result_reviewer": {
+          "reviewer": "/root/rtc_contract_review",
+          "status": "accepted",
+          "concerns": "Actual480call replay exact/zero flips; oneupdate finite within2999MiB, fullgroupcredit restored. Scope is proxy-credit scale and checkpoint replay on this window, not hard-spike exactgradient/lifetime orNLL improvement. Delta includes oldAdam moments/decay/edgeclamp; failedatomic and inconclusivefirstincoming retained."
+        }
+      },
+      "artifacts": [
+        "information_boltzmann/core/triton_synapse.py",
+        "tests/test_incoming_synapse.py",
+        "docs/information_boltzmann/FLY_RESET_SURROGATE_20261008.md",
+        "results/published/fly_w32_incoming_backward_20261008.json",
+        "results/published/fly_w32_incoming_update_20261008.json"
+      ],
+      "invalidation": "Changing topology invalidates cached incoming layout; changing physical parameters changes trajectories and requires new replay/stability validation.",
+      "next_action": "Use explicit detach-reset/threshold/incoming continuation settings when next joint training is authorized; monitor gradientgroups/replay/pairedprequentialNLL. Fixed topologycache must be rebuilt if indices/delaytiers change."
+    },
+    {
+      "id": "IB_MEDIUM_GRADSAFE_20261008",
+      "parent": "IB_MEDIUM_CHAIN_AUDIT_20261007",
+      "title": "Separate medium feedback risks from fly spike-surrogate failure",
+      "status": "active",
+      "confidence": "O",
+      "time": "2026-10-08",
+      "motivation": "User asks whether fly gradient failure also exists in3Dmedium.",
+      "action": "Trace current ActiveMediumTrainer/PlasticMediumPorts3D path; rederive three historical actualOWT group norms; add boundedFP64 commonclip to two current training entrypoints and finite1e20 integration test.",
+      "conclusion": "Actual3Dpath has no hard-spike/ATan surrogate. Existing96k audit windows have combinednorm4.881/4.924/6.101 and clippedread.370/.329/.299, not observed fly-style starvation. State-dependent orthogonal rotations can still amplify perturbations: DF=R+(Rprime*x)gradthetaT. Previous mature weights deleted; no new trained-state replay claimed. Numerical norm-overflow protection implemented; no added fly proxy or NLL improvement claim.",
+      "review": {
+        "operator_reviewer": {
+          "reviewer": "/root/medium_operator_review",
+          "status": "accepted",
+          "concerns": "Current path distinct from archived online trainer; energy preservation is not Jacobian contraction; original trained checkpoints unavailable."
+        }
+      },
+      "artifacts": [
+        "docs/information_boltzmann/MEDIUM_GRADIENT_REVIEW_20261008.md",
+        "information_boltzmann/runtime/active_medium_training.py",
+        "scripts/ib/train_plastic_conductance.py",
+        "tests/test_active_medium_training.py"
+      ],
+      "invalidation": "Reassess changed execution graph or a restored trained checkpoint showing huge credit amplification; historical numerical windows establish only their recorded scope."
+    },
+    {
+      "id": "IB_FLY_PULSE_SG_20261008",
+      "parent": "IB_FLY_RESET_SG_20261008",
+      "title": "Locate silent surrogate feedback and derive conditional gain certificate",
+      "status": "active",
+      "time": "2026-10-08",
+      "confidence": "O",
+      "motivation": "Full S14/W32 reset-detached backward still has norm1.25e14; distinguish recomputation flips, silent surrogate transmission, active/slow or mixed feedback without shortening credit.",
+      "action": "Same-backward480tick spike audit; unchanged state-adjoint hooks; preregistered complementary pulse-path derivative interventions on the same immutable100k individual and32freshOWTtargets, no optimizer updates or PT. CPU forward/state/direct-read contracts and full10N surrogate-Jacobian algebra tests.63affected numerical checks passed.",
+      "prediction": {
+        "registered_before_result": true,
+        "expected_observation": "Zero checkpoint decision flips permits feedback attribution; active-only greatly reducing gain while silent-only retaining it supports silent-pulse proxy amplification. Both reducing it suggests mixed loops; neither redirects to non-transmission feedback.",
+        "falsifying_observation": "Physical-forward or loss mismatch outside baseline variation, incomplete meaningful hook coverage or source/target drift blocks attribution. Diagnostic masks are not production learners."
+      },
+      "conclusion": "Same-backward79258560decisions have zero flips. All norm1.252340468e14, active-only2.142329148, silent-only2.791340251e13;479of480pulse hooks fired, final pulse unused, zero spike/pulse support disagreements. Rawreadnorm.61666665in allarms; postclip4.924e-15 vs.287849. Scores maxdiff9.54e-7 within unchangedbaseline5.25e-6 variation; no GPUbitwiseclaim. Extreme amplification in this window depends on silent transmitted-pulse proxy feedback. Jacobian decompositionA+Bdiag(psi)C verified for10Nphysicalstate; common weighted row bound provides conditional sufficient certificate, not measured whole-brain feasibility or capability benefit.",
+      "next_action": "Establish feasible sparse common-weighted gain bounds including writer and observation-state contracts; derive proxy calibration while preserving positive silent first-firing credit and fullS14/W32. No arbitrary gamma, production active-only mask or NLL claim.",
+      "review": {
+        "experiment_approval_committee": {
+          "reviewer": "/root/rtc_contract_review",
+          "status": "approved",
+          "concerns": "Differentiate spike from transmittedpulse support; maskonly originalemission backward; report479meaningfulhooks and unchangedsource; complementary arms also remove mixed paths and do not add to all."
+        },
+        "conclusion_reviewer": {
+          "reviewer": "/root/rtc_contract_review",
+          "status": "accepted",
+          "concerns": "One-window attribution accepted. CommonS condition is sufficient, loses E/I cancellation; includewriterbaseline/observationstate or boundforcing; coordinatechange alone preservesfeedbackspectrum. Real-brain feasibility, usefullearning and deployment remain unestablished."
+        }
+      },
+      "artifacts": [
+        "docs/information_boltzmann/FLY_RESET_SURROGATE_20261008.md",
+        "scripts/ib/fly_checkpoint_audit.py",
+        "scripts/ib/fly_adjoint_audit.py",
+        "scripts/ib/fly_pulse_credit_audit.py",
+        "scripts/ib/summarize_fly_pulse_credit.py",
+        "tests/test_fly_checkpoint_audit.py",
+        "tests/test_fly_surrogate_geometry.py",
+        "results/published/fly_w32_checkpoint_audit_retry_20261008.json",
+        "results/published/fly_w32_state_adjoints_20261008.json",
+        "results/published/fly_w32_pulse_credit_comparison_20261008.json"
+      ],
+      "invalidation": "Changed surrogate, source, targets, topology, loss or timewindow requires reevaluation. Numerical derivative localization cannot retrospectively explain all historicalNLL outcomes or certify taskimprovement."
+    },
+    {
+      "id": "IB_FLY_RESET_SG_20261008",
+      "parent": "IB_FLY_W32_NORM_FIX_20261008",
+      "title": "Remove reset-surrogate membrane self-amplification",
+      "status": "active",
+      "time": "2026-10-08",
+      "confidence": "I",
+      "motivation": "User asks why biological learning avoids time-unrolled memory and exploding gradients, and how to repair S14/W32. Forward state is finite while a real 480-tick surrogate backward has norm2.447e20 and suppresses read credit under shared clipping.",
+      "action": "Register three explanations: reset-surrogate local gain; delayed E/I plus ALIF/STP Jacobian amplification; downstream cross-group clipping starvation. Optional detach_reset defaultsFalse and removes only the reset-mask derivative. Preserve attached spikes in ring, ALIF and STP. Paired backward-only diagnostics restore the exact same complete individual and32 fresh OWT targets; suppress both optimizers, compare pre-update scores/objective/full terminal physical hashes and FP64 group gradients. Full W32 checkpoint parity is tested for both reset conventions. Implemented candidate and CLI saved-mode inheritance. 91affectedtests passed. Three full-source real backward-only runs completed, no parameters changed and no PT written.",
+      "conclusion": "Analytically at fixed incoming current and threshold, current direct membrane derivative alpha*((1-s)-v*psi) can exceed1 for negative subthreshold v. Detached reset makes this branch alpha*(1-s), bounded for passive alpha. This is a surrogate convention with SpikingJelly precedent, not a full recurrent contraction theorem, hybrid saltation derivative or biological learning reproduction. Real paired result pending. Exploratory real norm fell from2.447144e20 to1.2523405e14 (ratio1.954million) while postclipread remains4.924e-15. Exact GPUforwardgate FAILED: pairedmaxscorediff9.54e-7, unchangedbaseline-repeatmaxdiff5.25e-6; samebaseline normrepeat relative2.67e-7. FP32atomicforward nondeterminism means the registered exactcriterion is unsatisfied; CPU exactforward contracts pass. DefaultFalse retained, no fullstability orNLLgain claim.",
+      "invalidation": "Any forward mismatch invalidates the minimal intervention. Persistently extreme full-window norm redirects investigation to augmented feedback; no task performance or unlimited exact credit claim from a numerical gate. Retain baselineFalse and source checkpoint; serialize any explicit continuation choice.",
+      "review": {
+        "experiment_approval_committee": {
+          "reviewer": "/root/rtc_contract_review",
+          "status": "accepted",
+          "concerns": "Local derivative valid; whole Jacobian remains unconstrained. Keep attached spike transmission and ALIF/STP. Paired same weights/state/targets with current clipped read gradients; preserve original default."
+        },
+        "conclusion_reviewer": {
+          "reviewer": "/root/rtc_contract_review",
+          "status": "accepted",
+          "concerns": "Retain failed GPU exact-hash criterion. Baseline repeat confirms atomic nondeterminism. Large candidate norm reduction is exploratory contributing-cause evidence only; residualreadcredit remains suppressed. Audit original/recomputed spike decisions within a single checkpointed backward before augmented-feedback attribution."
+        }
+      },
+      "artifacts": [
+        "docs/information_boltzmann/FLY_RESET_SURROGATE_20261008.md",
+        "tests/test_fly_reset_gradient.py",
+        "scripts/ib/check_fly_s14_w32_update.py",
+        "results/published/fly_w32_reset_comparison_20261008.json"
+      ]
+    },
+    {
+      "id": "IB_MEDIUM_TIMEVALUE_20261008",
+      "parent": "IB_MEDIUM_TIMEREAD_20261007",
+      "title": "Continuous cadence utility versus solver resolution",
+      "status": "active",
+      "time": "2026-10-08",
+      "confidence": "O",
+      "motivation": "User authorizes no-training verification of dynamic-information utility and internal-time value, keeping continued physical evolution distinct from extra solver iterations.",
+      "action": "Preregistered1024 actual OWT continuous counterfactual trajectories at saved duration and exp(+/-epsilon), epsilon2^-8/2^-9; prefix512 selects one sign and each trajectory carries its own state through subsequent512. Fixed-duration1/2-substep control. Implemented diagnostic with per-arm parameter hashes, actual corpus/checkpoint fingerprints and saved carry provenance. Double numerical contract matches full four-event trajectory time gradient to full replay finite differences and checks elapsed/resolution separation; dynamic-read tests11 passed. Real tests remain unexecuted because mature full checkpoint is missing.",
+      "conclusion": "Numerical method captures accumulated persistent-state consequences of time scaling, rather than only immediate event sensitivity. Existing32-target data supports timing sensitivity and a local cadence direction; no new real-text transfer benefit has been measured. Current duration couples dynamics dose and elapsed interval, so the planned intervention tests cadence utility, not an autonomous content-dependent internal clock.",
+      "invalidation": "Two held-out blocks with opposite effects, shrinking-epsilon instability or numerical refinement effects comparable to intervention make utility ambiguous. Missing checkpoint must be restored before a real task result. Never replace it with random weights, treat numerical contracts as capability tests, select a held-out best clock or call scheduler scaling independent external/internal time control.",
+      "review": {
+        "experiment_approval_committee": {
+          "reviewer": "/root/rtc_contract_review",
+          "status": "accepted",
+          "concerns": "Use full continuous replay and prefix-only sign instead of immediate derivatives for persistent-clock effects. Minimal scalar before adding untrained content policy; retain explicit cadence/time semantics."
+        },
+        "conclusion_reviewer": {
+          "reviewer": "/root/rtc_contract_review",
+          "status": "accepted",
+          "concerns": "Script continuous forks, direction/held-out split and fixed-duration resolution accepted. Numeric derivative contract accepted. Add per-arm fingerprints and actual data/carry provenance; implemented with saved live carry preserved across legitimate phase bridges. No new language/internal-clock utility claim."
+        }
+      },
+      "artifacts": [
+        "docs/information_boltzmann/MEDIUM_CONTINUOUS_TIME_VALUE_20261008.md",
+        "scripts/ib/audit_medium_continuous_time.py",
+        "tests/test_medium_dynamic_read.py"
+      ],
+      "execution_blocker": "Attached Gemini cleanup explicitly deleted both medium_v8_joint_bptt32_96k and recovered PT files. Real-data continuation needs backup restoration or a separately authorized new starting checkpoint; numerical checks remain valid within their recorded scope."
+    },
+    {
+      "id": "IB_MEDIUM_DYNREACH_20261008",
+      "parent": "IB_MEDIUM_DYNOBS_20261008",
+      "title": "Production-subspace reachability of measured field motion",
+      "status": "active",
+      "time": "2026-10-08",
+      "confidence": "D",
+      "motivation": "User asks whether dynamic information can actually be used within the model's reachable capacity, beyond sensitivity alone, without new training.",
+      "action": "Derived actual motion_merge weight subspace before correction/RMS/decoder, rank-one separation of distinct measurements and a mean-response-zero CE descent direction. Deterministic production gradient/finite-difference contract passes; dynamic tests10 passed, affected interface suite49 passed1 skipped. Prepared no-update1024 real OWT diagnostic with512 direction targets/512 subsequent targets, same-size field and partition-local shuffled-motion controls. Mature complete checkpoint is now missing; real-text diagnostic not executed.",
+      "conclusion": "Measured motion distinctions can enter the production function class when downstream sensitivity is nonzero. G=mean(v*m^T); D=-G*P is a legal shared no-bias weight direction with derivative -||G*P||^2 and zero response to train feature mean. Actual production numerical test confirms the derivative and lower local CE. This establishes conditional expression/local optimization reachability.",
+      "invalidation": "No real-text transfer or language improvement claimed. Arbitrary multiple-state corrections are limited by measurement matrix rank and128-dimensional base; pooling can alias physical states. Negative/flat held-out direction would show no local transfer at that saved individual, while joint representation adaptation remains a separate candidate. Restore the same complete state before the registered real-data check; never replace it silently with random weights.",
+      "review": {
+        "experiment_approval_committee": {
+          "reviewer": "/root/rtc_contract_review",
+          "status": "accepted",
+          "concerns": "Actual insertion point, train-only mean projection and perturbation size, matched field control, partition-local permutation, zero optimizer updates and restricted scope."
+        },
+        "conclusion_reviewer": {
+          "reviewer": "/root/rtc_contract_review",
+          "status": "accepted",
+          "concerns": "Proof and actual-production numerical descent accepted. Mark shuffled features outside production parameter subspace and name projected-train/raw-held cosine correctly; both corrected. Real1024-target transfer remains pending missing checkpoint."
+        }
+      },
+      "artifacts": [
+        "docs/information_boltzmann/MEDIUM_DYNAMIC_REACHABILITY_20261008.md",
+        "scripts/ib/audit_medium_dynamic_reachability.py",
+        "tests/test_medium_dynamic_read.py"
+      ],
+      "execution_blocker": "Attached Gemini cleanup explicitly deleted both medium_v8_joint_bptt32_96k and recovered PT files. Real-data continuation needs backup restoration or a separately authorized new starting checkpoint; numerical checks remain valid within their recorded scope."
+    },
+    {
+      "id": "IB_MEDIUM_DYNOBS_20261008",
+      "parent": "IB_MEDIUM_DYNREAD_20261008",
+      "title": "Retest the same hidden-flux blind direction on three read arms",
+      "status": "active",
+      "time": "2026-10-08",
+      "confidence": "O",
+      "motivation": "User asks to rerun the original no-training diagnostic and verify a concrete structural change after repair.",
+      "action": "CPU32 real OWT inputs, events0/8/16/24 preselected, reused original read_observability. Arms share all original weights and full physical trajectory: instantaneous, zero-migrated dynamic, and dynamic with only3 new projections reset to standard fan-in seed711. Flux+/−1%, raw16-probe response, independent-state task flux partials, nonempty remote-boundary control and old field-jet replication. No optimization; all parameters unchanged.",
+      "conclusion": "Old and zero-migrated final features remain exactly blind immediately; active dynamic feature change0.1225%..0.1608% for1%flux perturbations. Immediate task flux-gradient mean0->1.09958. Raw motion measurements respond at all16 probes in both dynamic arms. Selected-probe remote response exactly0 with local/incident edges held. Old physical field-jet errors reproduce exactly. Tested flux blind direction has an observable, learnable output path in activated candidate.",
+      "invalidation": "Random new projection initialization demonstrates a structural path, not learned usefulness or NLL gain. Zero migration preserves predictions until added weights learn. Four selected states/two perturbations do not establish every possible hidden direction or a primary bottleneck. Original physical jet is a reference, not dynamic-read forecasting accuracy.",
+      "review": {
+        "experiment_approval_committee": {
+          "reviewer": "/root/rtc_contract_review",
+          "status": "accepted",
+          "concerns": "Three controls, independent Markov partials, selected-probe rather than global-feature remote control, nonempty perturbation, equal old weights and physics; no task superiority claim."
+        },
+        "conclusion_reviewer": {
+          "reviewer": "/root/rtc_contract_review",
+          "status": "accepted",
+          "concerns": "Tested flux blindness repaired, not all hidden-state sufficiency. Verify complete physical continuation equality. Keep sensitivity separate from usefulness."
+        }
+      },
+      "artifacts": [
+        "docs/information_boltzmann/MEDIUM_DYNAMIC_OBSERVABILITY_RETEST_20261008.md",
+        "scripts/ib/audit_medium_dynamic_observability.py",
+        "results/published/medium_dynamic_observability_retest_20261008.json"
+      ]
+    },
+    {
+      "id": "IB_MEDIUM_DYNREAD_20261008",
+      "parent": "IB_MEDIUM_READCLOSE_20261008",
+      "title": "Finite-aperture analytic field-motion read branch",
+      "status": "active",
+      "time": "2026-10-08",
+      "confidence": "O",
+      "motivation": "Existing hidden local physical state changes future read while field-only measurement aliases it; user authorizes adding local dynamic information without training.",
+      "action": "Implemented explicit dynamic read R(f,tau_ref*field_rhs), analytic same-state transport/collision/response generators, additive local policy/key/moment projections, strict weights-only zero migration, schema6 continuation guards and CLI selection. Existing field-only default and loss remain intact. Zero optimizer updates.",
+      "conclusion": "Double-precision field RHS and parameter VJPs match native zero-time JVP. Compact-probe state gradients are exactly zero outside local sites/incident edges. Exact legacy logits survive migration; all three new layers receive task gradient. Fullgraph tracing and native CUDA graph read/backward parity pass. Adds180224 parameters(1.28%). Concurrent GPU native read/decode forward1.07->2.91ms, with backward4.50->8.91ms; this is only a fixed-state component measurement.",
+      "invalidation": "No language gain claimed. New capacity requires matched-size field-only control for attribution. Motion support includes incident edge stores, not purely footprint-local hidden state. Zero-projection weights-only migration is not optimizer resume; full BPTT32 cost not measured. Temporal history and autonomous scheduling remain separate candidates.",
+      "review": {
+        "experiment_approval_committee": {
+          "reviewer": "/root/rtc_contract_review",
+          "status": "accepted",
+          "concerns": "Only numerical/interface and no-update real-state calibration; preserve local support and explicit architecture migration."
+        },
+        "conclusion_reviewer": {
+          "reviewer": "/root/rtc_contract_review",
+          "status": "accepted",
+          "concerns": "Production contracts accepted. Correct pending-carry target and complete source fingerprints. Component timing is not full training speed or NLL improvement."
+        }
+      },
+      "artifacts": [
+        "docs/information_boltzmann/MEDIUM_DYNAMIC_READ_20261008.md",
+        "results/published/medium_dynamic_read_20261008.json",
+        "results/published/medium_dynamic_read_gpu_initial_20261008.json",
+        "tests/test_medium_dynamic_read.py",
+        "scripts/ib/audit_medium_dynamic_read.py"
+      ]
+    },
+    {
+      "id": "IB_MEDIUM_READCLOSE_20261008",
+      "parent": "IB_MEDIUM_TIMEREAD_20261007",
+      "title": "Existing dynamic observation versus new temporal memory",
+      "status": "active",
+      "time": "2026-10-08",
+      "confidence": "O",
+      "motivation": "Distinguish omitted current physical-state information from additional history/synchrony before changing architecture or training.",
+      "action": "CPU read-only4 preselected actual events from complete last individual,16 local probes and2 deterministic VJP directions each. Boundary-only admissible flux perturbations plus autonomous full-state first-order JVP response checks. Zero optimizer updates, every parameter unchanged,6.31s. No fitted probe/regression or production change.",
+      "conclusion": "Existing dynamics exposes usable first-order time information: halving short duration reduces jet read-feature errors3.925..4.085 versus roughly2 for held snapshots. Strict local state has boundary blind directions; one neighbor halo contains nearly all sampled short-time sensitivities. This supports a motion/state-aware finite read candidate. History remains a distinct external-memory or partial-observer candidate; physical initial-value sufficiency does not establish linguistic sufficiency.",
+      "invalidation": "Full-state JVP is an offline reference, not an accepted local-only readout. Two VJP projections per probe do not certify full Jacobian or exact halo closure; outside-halo perturbation effects approach FP32 precision but are not zero. Fixed-weight physical future does not encompass online optimizer/pending-credit evolution. No NLL improvement or CTM redundancy claim.",
+      "review": {
+        "experiment_approval_committee": {
+          "reviewer": "/root/rtc_contract_review",
+          "status": "accepted",
+          "concerns": "Read-only closure/JVP tests, fixed-parameter physical scope, incident-edge boundary masks, no fitting or task capability claims."
+        },
+        "conclusion_reviewer": {
+          "reviewer": "/root/rtc_contract_review",
+          "status": "accepted",
+          "concerns": "Probe ordering and masks verified; full oracle jet and sampled supports motivate a local motion-aware candidate, not its acceptance. Keep temporal memory/linguistic benefit open."
+        }
+      },
+      "artifacts": [
+        "docs/information_boltzmann/MEDIUM_READ_CLOSURE_PREREG_20261008.md",
+        "docs/information_boltzmann/MEDIUM_READ_CLOSURE_RESULTS_20261008.md",
+        "results/published/medium_read_closure_20261008.json",
+        "scripts/ib/audit_medium_read_closure.py"
+      ]
+    },
+    {
+      "id": "IB_MEDIUM_TIMEREAD_20261007",
+      "parent": "IB_MEDIUM_CHAIN_AUDIT_20261007",
+      "title": "Read-only timing, observability and32-event credit audit",
+      "status": "active",
+      "time": "2026-10-07",
+      "confidence": "O",
+      "motivation": "User requires measuring whether internal time, read representation and supervision obstruct the medium before any new training. Treat CTM as a candidate, not a presumed cure.",
+      "action": "CPU complete-last snapshot, next32 real OWT events, zero updates and all weights unchanged. Predetermined delayed-read forks, fixed-duration solver refinement, hidden-flux sensitivity, independent Markov-state suffix VJPs and common-cadence finite difference completed. No production model changes or training launched.",
+      "conclusion": "Single-event waiting2/4 times worsens mean CE by+.061386/+.445992; common32-event cadence+1% locally improves CE from6.755676 to6.752816 with derivative finite-difference agreement. Field-only read is instantaneously blind to hidden flux that changes future next-label output. Task reaches all156854 medium parameters; one difficult terminal-token credit remains nonzero at lag32. These establish local timing sensitivity/read aliasing/tape truncation, not a primary NLL bottleneck or CTM necessity.",
+      "invalidation": "A32-target frozen mechanism fork is not active-learning evaluation or convergence. Additional wait changes arrival schedule/compute; label-best time is an oracle. Gradient at stored graph nodes can differ from independent state partials; report uses suffix clones. No stable phase-locking or lifetime-credit claim.",
+      "review": {
+        "experiment_approval_committee": {
+          "reviewer": "/root/rtc_contract_review",
+          "status": "accepted",
+          "concerns": "Read-only CPU scope only; preserve full state, future-token causality, separate splitting from timing, no capability claims."
+        },
+        "conclusion_reviewer": {
+          "reviewer": "/root/rtc_contract_review",
+          "status": "accepted",
+          "concerns": "Corrected carry-token observability alignment and Markov-component partials; final findings are window/checkpoint-specific. CTM benefit remains untested."
+        }
+      },
+      "artifacts": [
+        "docs/information_boltzmann/MEDIUM_TIME_READ_CREDIT_PREREG_20261007.md",
+        "docs/information_boltzmann/MEDIUM_TIME_READ_CREDIT_RESULTS_20261007.md",
+        "results/published/medium_time_read_credit_20261007.json",
+        "scripts/ib/audit_medium_time_read_credit.py"
+      ]
+    },
+    {
+      "id": "IB_MEDIUM_SHARED_PRIOR_20261007",
+      "parent": "IB_MEDIUM_CHAIN_AUDIT_20261007",
+      "title": "One causal categorical forecast for output and innovation write",
+      "status": "active",
+      "time": "2026-10-07",
+      "confidence": "I",
+      "motivation": "Remove duplicate vocabulary prediction ownership while preserving the learned spatial medium; larger auxiliary gradients motivate a candidate, not a proven root cause.",
+      "action": "Design only: use issued read/decoder probabilities as next observation's write prior, score each target once, remove port classifier and port CE, keep explicit action complexity KL. Cache probabilities with timestamp/revision/scoring status and translate with current embedding. No implementation or new training launched.",
+      "invalidation": "Forecast cache leakage, duplicate CE, stale expected-feature chart or changed continuation invalidates implementation. Loss of paired predictive gain rejects benefit at matched budget. Sequential decoder dependence can offset saved classifier work; speed benefit is unproven.",
+      "conclusion": "Theory feasible under explicit causal forecast ledger,32-step tape and full checkpoint cache continuity. Medium already has local time scales and input-free advance API; current training is fixed .005 per token. CTM's temporal synchrony is a separate readout candidate, not evidence this loss change improves NLL.",
+      "review": {
+        "theoretical_reviewer": {
+          "reviewer": "/root/rtc_contract_review",
+          "status": "accepted",
+          "concerns": "Must truly bypass old port logits/CE; probability cache avoids stale embedding expectation; short captured throughput calibration needed before claims."
+        },
+        "experiment_approval_committee": {
+          "status": "pending",
+          "concerns": "Matched graph/init/exposure/live protocol and unique target-scoring numerical checks required; no expensive experiment approved by this design."
+        }
+      },
+      "artifacts": [
+        "docs/information_boltzmann/MEDIUM_SHARED_PREDICTION_CTM_DESIGN_20261007.md"
+      ]
+    },
+    {
+      "id": "IB_MEDIUM_CTM_READ_20261007",
+      "parent": "IB_MEDIUM_CHAIN_AUDIT_20261007",
+      "title": "CTM-inspired temporal relations at existing finite read apertures",
+      "status": "active",
+      "time": "2026-10-07",
+      "confidence": "I",
+      "motivation": "Test whether histories with identical instantaneous field but different coactivity need an additional observable temporal relation, without replacing the heterogeneous physical medium.",
+      "action": "Later separate candidate: selected local feature-pair exponential second moments with learned positive time scales, bounded updates for bounded activities and O(P) state/work per tick. Preserve current read apertures and instantaneous path; no new per-token solver loop. Source review of CTM paper and official implementation complete; no implementation/training.",
+      "invalidation": "If present state is sufficient or traces capture only background means, predictive benefit may vanish. Forward constant lifetime storage is not exact lifelong O(1) parameter credit; coactivity is not proof of phase-locking. Compare separately from shared-prediction repair.",
+      "conclusion": "CTM offers direct task learning from temporal activity relations; its standard source uses configured discrete iterations and per-input initialization, RL variant carries episode histories. Proposed bounded EMA adaptation differs from original alpha/sqrt(beta); exact convex-update bound is established, task usefulness untested.",
+      "sources": [
+        "https://arxiv.org/html/2505.05522v4",
+        "https://github.com/SakanaAI/continuous-thought-machines"
+      ],
+      "artifacts": [
+        "docs/information_boltzmann/MEDIUM_SHARED_PREDICTION_CTM_DESIGN_20261007.md"
+      ]
+    },
+    {
+      "id": "IB_MEDIUM_V8_JOINT_20261007",
+      "parent": "IB_LOCAL_STP_20261004",
+      "title": "First joint live-stream training of latest heterogeneous 3D medium",
+      "status": "partially_reusable",
+      "time": "2026-10-07",
+      "confidence": "O",
+      "motivation": "Test next-token learning in the complete existing medium before transferring a fly plateau claim. Latest compact contact ports, conductance/activity feedback, STP and normalized decoder have not undergone sufficient joint training.",
+      "action": "Keep architecture fixed; BPTT32 captured joint learner and true active A->B->A evaluation with per-token scores, identical-target train-only prior, all state and optimizer/pending-gradient continuity. Register 3000 fresh update groups/96000 targets. CPU32 readiness, CUDA score/gradient/Adam parity and real live GPU calibration pass. Return phase is1bridge+127matched A in128 real events, preserving capture alignment. Formal run encountered a Windows telemetry replacement lock after14k; isolated retry fix tested. Recover full saved state at10016fresh/10784events/337updates into medium_v8_joint_bptt32_96k_recovered, excluding uncommitted parent log tail.",
+      "invalidation": "Nonfinite state/gradient, causal scoring mismatch, lost persistent state or VRAM >3900MiB blocks launch. No paired predictive gain invalidates usefulness at this budget, not infinite-stream mathematical capacity. Old frozen warm-local scores are not new live B results.",
+      "conclusion": "Registered96k unique fresh targets completed:103296actual events/3228optimizer updates. Pooled4864fresh-B targets NLL7.378615 vs same-target locked prior7.460323, gain+.081708;14of19Bsegments positive, first5gain+.029294/last5+.132081. Final spatial share91.93%, allocated GPU peak778.56MiB. Positive paired gain supports usefulness at this budget, not convergence or superiority to GDN; online bias changes are part of fixed-prior gain. Final CPU real-next96target decomposition shows conditional term improves over current bias-only by+.355to+.567, a local numerical observation rather than new live evaluation. Keep complete last.pt; best ranks cumulative lifetime B gain. No new training launched.",
+      "prediction": {
+        "id": "P-20261007-32",
+        "registered_before_result": true,
+        "expected_observation": "Useful existing medium develops positive pooled fresh-B gain against its same-target fixed prior, with learning curves supporting conditional prediction. Each B segment and actual A revisit gap are reported separately.",
+        "falsifying_observation": "Spatial structure and response fitting without predictive gains fail task usefulness. Training gains with negative fresh-B gain direct investigation to generalization/calibration. Lack of convergence at budget remains inconclusive."
+      },
+      "review": {
+        "hypothesis_collaborator": {
+          "reviewer": "/root/rtc_contract_review",
+          "status": "reviewed",
+          "concerns": "CE-to-medium readiness proves current path only; state-dependent orthogonality does not certify long Jacobian stability. Random embeddings differ from fly GPT2 transfer."
+        },
+        "experiment_approval_committee": {
+          "reviewer": "/root/rtc_contract_review",
+          "status": "approved",
+          "concerns": "Conditional on per-token production scores, complete state/gradient continuation, CUDA parity and actual memory/speed calibration. 3000 updates are a minimum check, not convergence."
+        },
+        "conclusion_reviewer": {
+          "reviewer": "/root/rtc_contract_review",
+          "status": "accepted",
+          "concerns": "No common data/CE/capture failure found. Fixed-prior gain includes online frequency adaptation; auxiliary gradient size does not prove harm. Source manifest omits imported helper;257is boundary gap while matched pair lag384."
+        }
+      },
+      "artifacts": [
+        "docs/information_boltzmann/MEDIUM_FIRST_JOINT_STREAM_20261007.md",
+        "results/published/medium_readiness_20261007.json",
+        "scripts/ib/train_medium_active_stream.py",
+        "tests/test_active_medium_training.py"
+      ]
+    },
+    {
+      "id": "IB_MEDIUM_CHAIN_AUDIT_20261007",
+      "parent": "IB_MEDIUM_V8_JOINT_20261007",
+      "title": "Audit actual medium learning graph and competing port credit",
+      "status": "active",
+      "time": "2026-10-07",
+      "confidence": "O",
+      "motivation": "Investigate the proposed shared NLL7 failure through real production wiring before further architecture changes.",
+      "action": "Independent data/loss, operator and execution reviews; CPU actual final checkpoint on three real future32target windows without optimizer updates. Preserve completed run and full checkpoint. Record active versus nominal parameter paths and separate task/auxiliary gradients.",
+      "invalidation": "A target/gradient/reset error invalidates production comparison. Gradient amplitude alone cannot establish auxiliary harm; loss changes require matched live task evaluation with identical exposure and initialization.",
+      "conclusion": "Data hashes/splits, causal targets, loss means, graph gradients and complete continuation pass actual source/numerical checks.149382legacy source parameters bypassed by compact W4, which retains eight state-conditioned local packet modes. Writer auxiliary norm2.05-2.33x task and active source3.16-3.39x task; directions mixed. All156854medium parameters receive task credit. BPTT32 truncates credit despite persistent roughly199token plasticity; readout immediately sees field while other state affects later evolution. These are concrete design/optimization limits, not proven sole root cause. Next candidate should address objective credit sharing while keeping graph fixed; no new run or mechanism approved by this audit.",
+      "review": {
+        "data_loss": {
+          "reviewer": "/root/data_loss_review",
+          "status": "accepted"
+        },
+        "operators": {
+          "reviewer": "/root/medium_operator_review",
+          "status": "accepted"
+        },
+        "execution_and_conclusions": {
+          "reviewer": "/root/rtc_contract_review",
+          "status": "accepted"
+        }
+      },
+      "artifacts": [
+        "docs/information_boltzmann/MEDIUM_LEARNING_CHAIN_AUDIT_20261007.md",
+        "scripts/ib/audit_medium_learning_chain.py",
+        "results/published/medium_learning_chain_audit_20261007.json"
+      ]
+    },
+    {
+      "id": "IB_FLY_STREAM_OBS_20261007",
+      "parent": "IB_FLY_HX1_AUDIT_20261007",
+      "title": "One-tick persistent delayed predictive motor observer",
+      "status": "active",
+      "time": "2026-10-07",
+      "confidence": "I",
+      "motivation": "Implement continuing prediction/arrival correction without per-token14-horizon blocking and preserve never-reset inference/training identity.",
+      "action": "Separate source/CLI; actual E/I-delay coarse graph and fixed full-local-state projections, content-dependent innovation gate, motor-only one-step forecast zeroadapter, timestamped arrival replay, complete state restoration.12CPU numerical/interface tests pass; independent calibration approved.",
+      "conclusion": "Registered100000freshtargets/3125freshupdates completed. First-pass current-stream NLL 7.280358 versus locked prior 7.476812. Last1000freshupdates paired gain 0.088411.20fresh active contexts mean paired gain -0.086059, positive in3/20. Predictive observer suffered a large finite instability near25k. Budget completed, convergence unknown; auxiliary mechanism benefit not isolated. No continued training.",
+      "prediction": {
+        "id": "P-20261007-STREAM",
+        "registered_before_result": true,
+        "expected_observation": "At matched real targets, useful continuing forecast improves first-pass NLL; original forecastbeatsstatepersistence, without extra physical ticks/per-tokenrollouts. Forward partition/resume equivalence and one-delayedge support are required.",
+        "falsifying_observation": "ImprovedMSEwithouttaskbenefit rejects task-usefulness for budget; failedcausal/stateinterfaces blocktraining; nonfiniteorGPUbudgetexcess haltscalibration."
+      },
+      "review": {
+        "hypothesis_collaborator": {
+          "reviewer": "/root/stream_observer_review",
+          "status": "reviewed",
+          "concerns": "Useone-stepforecast; currenttokenreachabilityrequiresrealone-delayedge; ROMcoarseningisapproximate."
+        },
+        "experiment_approval_committee": {
+          "reviewer": "/root/stream_observer_review",
+          "status": "approved",
+          "concerns": "12CPUchecksverified. One32targetrealcalibrationunder3900MiB, continuousresume99968morefirsttargets, jointactiveevaluation; no infinitecredit claims."
+        }
+      },
+      "artifacts": [
+        "docs/information_boltzmann/FLY_STREAMING_OBSERVER.md",
+        "information_boltzmann/core/fly_streaming_observer.py",
+        "information_boltzmann/core/fly_streaming_learning.py",
+        "scripts/ib/train_fly_streaming_observer.py",
+        "tests/test_fly_streaming_observer.py",
+        "tests/test_fly_streaming_learning.py",
+        "results/published/fly_streaming_observer_preregistered_20261007.json",
+        "results/published/fly_streaming_observer_execution_20261007.json",
+        "results/published/fly_streaming_observer_budget_result_20261007.json"
+      ],
+      "invalidation": "Reassess with source changes, failed continuation/causality, unmatched data/init/budget or task objective. Core continuous execution and reduced forecast usefulness are distinct claims."
+    },
+    {
+      "id": "IB_FLY_HX1_100K_20261007",
+      "parent": "IB_FLY_HX1_AUDIT_20261007",
+      "title": "HX-1 100k Graph-Constrained Distributed State Observer completion and lifelong evaluation",
+      "status": "active",
+      "time": "2026-10-07",
+      "confidence": "O",
+      "motivation": "Complete 100,000 continuous tokens training of HX-1 to test closed-loop predict-arrive-correct Kalman graph observer under Data Processing Inequality and physical connectome conduction latency.",
+      "action": "Trained HX-1 on 100,000 real OWT tokens with 4-node macro connectome graph, Kalman innovation filtering, and strict Node 3 motor delay attention over k=0..14 horizons. Recorded 20 lifelong active evaluations.",
+      "conclusion": "Completed 100,000 tokens / 3,352 updates. Readout delay attention spontaneously suppressed k=0 (3.58e-10) and k=1 (4.24e-8) in accordance with connectome conduction latency, concentrating on k>=7 and k=14. Observer MSE converged to 0.0171 with mean Kalman gain 0.5199 without representation collapse. Fresh B NLL reached 7.2623; A-revisit memory achieved up to 5.8894 NLL with positive savings in 19/20 (95%) checkpoints.",
+      "artifacts": [
+        "results/published/fly_hx1_graph_observer_declaration_20261007.json",
+        "results/q8_fly_bptt32_hx1_graph_observer_100k/lifelong_evaluation.jsonl"
+      ],
+      "invalidation": "Reassess architecture or biological claims when matched-target reference/baseline accounting, loaded source provenance, true graph delay semantics or continuous inference/checkpoint contracts differ. Fixed budget completion alone does not establish convergence or causal superiority."
+    },
+    {
+      "id": "IB_FLY_HX1_AUDIT_20261007",
+      "parent": "IB_FLY_HX0_REVIEW_20261007",
+      "title": "HX1 observer source closure and matched fresh-stream interim audit",
+      "status": "active",
+      "time": "2026-10-07",
+      "confidence": "O",
+      "motivation": "Evaluate claimed HX1 predictive and biological timing advantage against same-stage HX0 and the actual graph-observer implementation.",
+      "action": "Independent source audit and CPU-only recomputation of existing matching-context active logs; preserve ongoing run and production source.",
+      "conclusion": "Matched 2816 Fresh-B targets at 11 common stages: HX0 7.334612, HX1 7.673027, fixed unigram 7.253359; HX1 currently worse by 0.338415. Higher throughput observed. Hardcoded delay-free macro graph, h-only observations, static gain, missing prior persistence at generation/resume, decoder scale mismatch, and unaligned long-horizon targets leave the intended observer unimplemented. No unique cause or final capability verdict.",
+      "review": {
+        "conclusion_reviewer": {
+          "reviewer": "/root/hx1_source_review",
+          "status": "reviewed",
+          "concerns": "Independent review confirms source gaps; current same-learner active eval remains interpretable. Interim comparison does not reject distributed predictive readout as a theory."
+        }
+      },
+      "artifacts": [
+        "results/published/fly_hx1_source_training_audit_20261007.json"
+      ],
+      "invalidation": "Reassess with changed loaded implementation, matched completed-budget evidence or different target/reference provenance. This source/log audit provides no authorization or result for a new repair experiment."
+    },
+    {
+      "id": "IB_FLY_REPAIR_20261007",
+      "parent": "IB_FLY_PIPELINE_20261007",
+      "title": "Distinguish motor observability, background calibration and event-credit repair",
+      "status": "active",
+      "time": "2026-10-07",
+      "confidence": "I",
+      "motivation": "The completed causal pipeline has a finite training-flow advantage but repeated active context-transfer deficits; user requests a harness-derived clean repair rather than another blind training run.",
+      "action": "Independent implementation approval followed by the fixed44-window realOWT numerical diagnosis. First report serialization failed; one independently approved representation-only recovery reused the same checkpoint/moments/targets/endpoints. Both attempts total88windows/2816ticks/6back/4forkupdates. Production/checkpoints unchanged.",
+      "conclusion": "All numerical controls pass; C_reset locally_unsupported and not selected. Joint followingNLL7.85275261→7.85251398 improves, but body-only7.85501869→7.85504409 and matchedbody/commonhead7.85275264→7.85277513 fail required gain above0.000108099floor. Originalbody fixedeventfitΔ=-0.000282541 agrees with its own derivative (Taylor remainder3.43e-7); hardfitΔ=+0.000135057 andhard-minus-fixed+0.000417598 identify a local event-associated counterfactual, while the same body update improves followingrisk. No global cause or capability inference.",
+      "prediction": {
+        "id": "P-20261007-11",
+        "registered_before_result": true,
+        "expected_observation": "If reset feedback causes misleading body credit, a predeclared reset-only-excluded candidate must preserve complete forward identity while improving the implicated finite actual-update direction relative to the same saved-Adam baseline. Background-only gains instead favor calibration; valid baseline body updates weaken the reset hypothesis.",
+        "falsifying_observation": "Candidate changes forward physiology/deadlines or fails its finite-step direction prediction; reject that local repair rationale rather than append another mechanism. Identity/provenance failure invalidates the diagnostic itself."
+      },
+      "review": {
+        "hypothesis_collaborator": {
+          "reviewer": "/root/harness_hypotheses",
+          "status": "reviewed",
+          "concerns": "Approved scientific scope: all gates can support checkpoint/window/saved-Adam local usefulness only;44forwards reuse96realpositions and numericaltau is not a statistical confidence interval."
+        },
+        "necessity_auditor": {
+          "reviewer": "/root/diagnosis_review",
+          "status": "reviewed",
+          "concerns": "Reset-only exclusion isolates a learning operator; pre-reset observability and missing cross-window credit remain separate."
+        },
+        "experiment_approval_committee": {
+          "reviewer": "/root/diagnosis_review",
+          "status": "approved",
+          "concerns": "Independent fixedbudget execution and one report recovery approved with fresh hashes; restore same targets/fullstate/moments, no scientific endpoint changes. Consumed approvals; no extra retries, production modifications or longtrain authorized."
+        },
+        "conclusion_reviewer": {
+          "reviewer": "/root/repair_result_review",
+          "status": "accepted",
+          "concerns": "Independent reviewer of all36reportfields/12replays/8identities and source/data/approval/ledger locks accepts localunsupported/noadoption. Reject unique reset cause, absentmotorinfo or longterm claims. No additionalGPU."
+        }
+      },
+      "artifacts": [
+        "docs/information_boltzmann/FLY_PIPELINE_REPAIR_HYPOTHESES_20261007.md",
+        "docs/information_boltzmann/FLY_PIPELINE_REPAIR_NECESSITY_20261007.md",
+        "docs/information_boltzmann/FLY_PIPELINE_REPAIR_DECISION_20261007.md",
+        "scripts/ib/diagnose_fly_pipeline_repair.py",
+        "tests/test_fly_pipeline_repair_instrument.py",
+        "results/published/fly_pipeline_repair_preregistered_20261007.json",
+        "results/published/fly_pipeline_repair_execution_approval_20261007.json",
+        "results/published/fly_pipeline_repair_cpu_verification_20261007.json",
+        "results/published/fly_pipeline_repair_hypothesis_review_20261007.json",
+        "results/published/fly_pipeline_repair_diagnostic_20261007.json",
+        "results/published/fly_pipeline_repair_execution_history_20261007.json",
+        "results/published/fly_pipeline_repair_execution_final_20261007.json",
+        "results/published/fly_pipeline_repair_result_review_20261007.json"
+      ],
+      "invalidation": "A short checkpoint-fork operator diagnosis is not an active capability benchmark, cannot establish unique global cause, and does not authorize sufficient-training claims. Reopen on unmatched state/source/targets, incomplete event instrumentation or failed candidate predictions."
+    },
+    {
+      "id": "IB_FLY_PIPELINE_20261007",
+      "parent": "IB_FLY_FRESH_RESP_20261007",
+      "title": "Seal motor prediction before same-tick sensory assimilation",
+      "status": "active",
+      "time": "2026-10-07",
+      "confidence": "I",
+      "motivation": "Align the probability issue deadline and causal input information set with delayed old-ring transmission while retaining one-tick continuous throughput.",
+      "action": "Implement motor-only pre-observation pipeline with unchanged native COBA body and multi-hop acceptance for total delays1..14. Matched GPT-2/prior initialization is locked separately from new exposure. Independent final entry and experiment review precede real OWT training.",
+      "conclusion": "Approved fixed-budget run completed:96000freshtrain tokens,98304actualevents/physicalticks,3072jointupdates. Registered last1000freshupdate risk NLL7.38905 versus lockedreference7.45343 (gain0.06438;256/128/512pairedblockintervals upperbounds below0). FinalactiveB7.45264 versus7.35920 (worse0.09343); all6Bchecks worse than respective reference. Numeric interface acceptance remains valid; transferable predictive advantage not established.",
+      "invalidation": "Finite same-trajectory training risk advantage does not establish motor semantic utility or timing-specific benefit. New-context B consistently misses reference. Bias/background adaptation, motor discrimination, surrogate quality and truncated credit remain competing causal explanations.14tickwithinwindowcredit exists; crossboundary source derivatives remain detached.",
+      "prediction": {
+        "id": "P-20261007-10",
+        "registered_before_result": true,
+        "expected_observation": "For identical initial states/parameters/input, the split tick and native noGamma tick have equal full physical state within replay floor. Replacing the not-yet-observed token leaves the sealed motor probability unchanged.",
+        "falsifying_observation": "Changed sealed probabilities or full-state mismatch above numerical floor implies current-input leakage or incorrect old-state/update ordering."
+      },
+      "review": {
+        "hypothesis_collaborator": {
+          "reviewer": "/root/harness_hypotheses",
+          "status": "reviewed",
+          "concerns": "Legitimate deadline shift, not instantaneous propagation. Retrain target/deadline; preserve old writer snapshot and postcommit updates."
+        },
+        "conclusion_reviewer": {
+          "reviewer": "/root/diagnosis_review",
+          "status": "accepted",
+          "concerns": "Independent fulljournal/terminal-risk recomputation exact; primary finite trajectory riskgain0.06438supported. All6activeBremain worse afterexcludingfirst32targets. Contexttransfer limitation observed; prior/background,motor-conditioning,credit/optimization causal hypotheses remain open."
+        },
+        "experiment_approval_committee": {
+          "reviewer": "/root/harness_plan",
+          "status": "approved",
+          "concerns": "Fixed3000newupdates,unique last1000freshupdatepaired-risk endpoint with256/128/512weightedblocks; finalBdirectiononly. Complete-candidate risk does not establish motor-use attribution."
+        }
+      },
+      "artifacts": [
+        "docs/information_boltzmann/FLY_PIPELINED_PREDICTION_DESIGN_20261007.md",
+        "information_boltzmann/core/fly_pipeline.py",
+        "tests/test_fly_pipeline.py",
+        "scripts/ib/train_fly_pipeline_stream.py",
+        "tests/test_fly_pipeline_multihop.py",
+        "tests/test_fly_pipeline_stream_cli.py",
+        "results/published/fly_pipeline14_preregistered_20261007.json",
+        "results/published/fly_pipeline_implementation_approval_20261007.json",
+        "results/published/fly_pipeline14_experiment_approval_20261007.json",
+        "results/published/fly_pipeline14_execution_20261007.json",
+        "results/published/fly_pipeline14_final_20261007.json"
+      ],
+      "issues": [
+        "Fixed-budget run complete and independently audited; training riskgain observed, activeBcontexttransfer advantage unestablished. No nexttraining launched.",
+        "Prior/background adaptation versus useful conditional motor information remains unisolated; no unique rootcause assigned.",
+        "SixactiveBchecks worse than lockedreference; riskgain limited to continuously adapted freshtrainingstream at thisbudget."
+      ]
+    },
+    {
+      "id": "IB_FLY_FRESH_RESP_20261007",
+      "parent": "IB_FLY_TUNING_20261007",
+      "title": "Identify untrained anatomy-prior response before selecting clock or predictive feedback",
+      "status": "active",
+      "time": "2026-10-07",
+      "confidence": "O",
+      "motivation": "User requires measurement on new weights rather than relying on a known-deficient trained checkpoint to prescribe architecture. Separate anatomical access, effective stimulus, writer adaptation and finite driven recurrence.",
+      "action": "Executed preregistered fresh seeds0/1/2 on unchanged COBA anatomical prior, ALIF/STP, sensory-only write and motor-only observation, no Gamma. Real OWT current packets; rest and128token no-update backgrounds, three impulses at two amplitudes; five fixed six-cycle native/fixed-packet cadences with replay controls. 32838ticks, no optimizer or checkpoint reads/writes.",
+      "conclusion": "All36 impulse conditions have motor contrast within numerical noise at tick0 and first resolved response at tick1. Nine native resting contrast peaks at43-53ticks; text-conditioned peaks at5-31ticks, with writer baseline and physical state jointly changed. Native cycle6 input energy is88.45-89.95% of cycle1; fixed packets retain constant energy but still have substantial cycle5-to6 motor changes. Actual driven motor and complete final boundary do not repeat within6cycles. All parameters and source hashes unchanged,148.1seconds,536MiB reserved.",
+      "invalidation": "These are responses of one fixed graph/physical prior under three initialized interfaces, not a physiological population or whole parameter-space proof. Random embedding tokens are current labels, not learned semantics. Contrast peaks are not axonal delays or optimal deadlines. Cadence differences confound elapsed time/input rate; no resonance or optimal settle selected. Fixedpacket p16seed1 replay relative error0.000353 is below actualcyclechange0.259; specific threshold flips not localized.",
+      "prediction": {
+        "id": "P-20261007-05",
+        "registered_before_result": true,
+        "expected_observation": "Delayed-only disjoint sensory/motor interface has no resolved same-tick motor contrast and later response if sensory pulse actually triggers spikes. Repetition may change the imposed writer source separately from recurrent material adaptation.",
+        "falsifying_observation": "Same-tick motor response above numerical replay floor contradicts the stipulated delayed interface. No later response despite verified sensory spikes questions effective transmission."
+      },
+      "review": {
+        "hypothesis_collaborator": {
+          "reviewer": "/root/harness_hypotheses",
+          "status": "reviewed",
+          "concerns": "Five competing mechanisms; distinguish first-tick versus static equilibrium calibration, genuine quiet counterfactuals and finite-horizon recurrence."
+        },
+        "experiment_approval_committee": {
+          "reviewer": "/root/harness_plan",
+          "status": "approved",
+          "concerns": "Fixed32838tick budget; CPU vocabulary layout amendment preserves exact initialization/physics after pre-trajectory OOM. Source and final finite gates added; no post-result sweep."
+        },
+        "conclusion_reviewer": {
+          "reviewer": "/root/diagnosis_review",
+          "status": "accepted",
+          "concerns": "Tick0 within numerical noise; contrast peaks not delay. Background changes port and body together. No full six-cycle locking; preserve amplified replay error and fixed-physical-prior scope."
+        }
+      },
+      "artifacts": [
+        "scripts/ib/measure_fly_fresh_response.py",
+        "results/published/fly_fresh_response_preregistered_20261007.json",
+        "results/published/fly_fresh_response_20261007.json",
+        "results/published/fly_fresh_response_summary_20261007.json",
+        "docs/information_boltzmann/FLY_FRESH_RESPONSE_20261007.md"
+      ]
+    },
+    {
+      "id": "IB_FLY_TUNING_20261007",
+      "parent": "IB_FLY_LEARN_CONTRACT_20261006",
+      "title": "Identify input-to-motor material response before predictive feedback design",
+      "status": "active",
+      "time": "2026-10-07",
+      "confidence": "O",
+      "motivation": "Distinguish delayed reachability, observation filtering, driven entrainment and useful conditional response before modifying clocks or learning objectives.",
+      "action": "Executed independently reviewed frozen checkpoint diagnosis: 9542 physical ticks, three real-token 128tick quiet impulses and five six-cycle real-phrase cadences with explicit quiet and same-input controls. No optimizer or new checkpoint.",
+      "conclusion": "Current 1.5M individual has motor response at tick1 for three inputs and between distinct real tokens, above replay noise; Gamma and output probabilities retain sensitivity. Late 96-121tick maxima are trajectory differences, not transmission delays. Six-cycle driven-minus-quiet motor differences do not repeat, but actual driven-state phase locking was not measured. Nonzero chemical topology reaches 99.83% motor targets from some sensory source and 98.40% sensory targets from some motor source. Source unchanged; 58.4s, 730MiB peak reserved.",
+      "invalidation": "User clarified architecture design must establish feasibility over allowed parameter space. Current learned response cannot select correct architecture, certify semantic utility, universal delay, resonance or optimization root cause. Earlier best weights lack complete original state, so no healthy-state comparison was invented.",
+      "prediction": {
+        "id": "P-20261007-01",
+        "registered_before_result": true,
+        "expected_observation": "Current one-tick read remains below identical-input response floor immediately; stimulus contrast resolves at later physical ticks. Read filtering may shift observed response centroid.",
+        "falsifying_observation": "Immediate motor sensitivity beyond repeat noise contradicts assumed disjoint delayed-only physical interface. Lack of later resolved contrast weakens this accessible-response hypothesis."
+      },
+      "review": {
+        "hypothesis_collaborator": {
+          "reviewer": "/root/harness_hypotheses",
+          "status": "reviewed",
+          "concerns": "Separate passive entrainment, time-stamped prediction and representation learning; PC residual needs motor-generated prior before input arrival."
+        },
+        "experiment_approval_committee": {
+          "reviewer": "/root/harness_plan",
+          "status": "approved",
+          "concerns": "Plan and script independently reviewed; runtime complete-state, quiet identity, hash and VRAM gates. Scope current mature individual only; retained older best weights lack original complete state."
+        },
+        "conclusion_reviewer": {
+          "reviewer": "/root/diagnosis_review",
+          "status": "accepted",
+          "concerns": "Narrow periodic results to driven-minus-quiet motor differences; no actual full-state locking conclusion. Motor arrival at tick1 and between-token sensitivity accepted; topology lower bounds are direction-specific. Current learned individual only."
+        }
+      },
+      "artifacts": [
+        "scripts/ib/measure_fly_tuning_contract.py",
+        "results/published/fly_tuning_preregistered_20261007.json",
+        "results/published/fly_tuning_response_20261007.json",
+        "docs/information_boltzmann/FLY_TUNING_BOUNDARY_20261007.md"
+      ]
+    },
+    {
+      "id": "IB_FLY_LEARN_CONTRACT_20261006",
+      "parent": "IB_FLY_CAUSAL_READ_20261006",
+      "title": "Current dynamics are present; predictive learning direction remains unresolved",
+      "status": "active",
+      "time": "2026-10-06",
+      "confidence": "O",
+      "motivation": "Explain persistent first-pass prediction deficit after already-tested timing and centering repairs, instead of repeating a clock/Gamma training sweep.",
+      "action": "Independently approved CPU-only current-cache decomposition and frozen Gamma kernel algebra; inspect hard-spike/reset backward contract. No physical rollout, GPU allocation or training. Correct an overstrong local-surrogate stability comment only.",
+      "conclusion": "Current 1.5M cache has 79.21% feature and 21.59% logit temporal variation, mixed common/covariance gradients, and full-minus-common retrospective NLL +0.063382 on 127 targets. Retire the blanket permanent background-collapse explanation. Some Gamma kernels cross the 32tick backward window (21.35% have M32<0.5), indicating a history-body-credit risk, not actual lost-gradient mass. One-tick latest-input physical access remains absent; earlier two-tick prediction deficit has another explanation. Hard-forward/ATan-reset derivatives differ mathematically; SG harm, Adam interference and short-window learning remain competing hypotheses.",
+      "invalidation": "Do not claim a root cause, capability gain, semantic motor sufficiency or Gamma superiority from this cache/kernel audit. Body learning effects require same-target directional/branch checks; historical sequential-stage NLL comparisons remain descriptive.",
+      "prediction": {
+        "id": "P-20261006-05",
+        "registered_before_result": true,
+        "expected_observation": "Low variation, full approximately common-only and all four common/covariance ratios above one if current cached decoder remains uniformly background dominated. Prior history was visible, so this is not a blind prediction.",
+        "falsifying_observation": "High variation or mixed/covariance-heavy gradients oppose the blanket explanation; kernel tail alone cannot decide prediction or gradient causation."
+      },
+      "theory_package": {
+        "core_theory": "Dynamics must supply target-weighted probability value and updates must change the generating process in a useful direction.",
+        "auxiliary_assumptions": "Task-relevant motor differences, faithful update direction and sufficient within-window body credit are unconfirmed.",
+        "implementation": "Sensory-only write, motor-only read, exact continuing cache match; fixed-tick hard thresholds with ATan backward, per-motor two-stage Gamma and full-state detach at 32-event boundaries.",
+        "optimization": "Original Adam moments, clipping and positivity clamp can rotate realized displacement; no optimizer operation in the new CPU audit.",
+        "measurement": "127 cached retrospective NLL targets, 128 cached decoder-gradient targets, four full blocks; fixed historical-train reference, current-checkpoint hashes. Frozen kernel mass is not gradient coverage.",
+        "baseline_relation": "Common uses retrospective mean; it is not a deployable predictor. Full/common are the same cached head with no extra fit. Historical two-tick/single-tick stages use different continuing texts."
+      },
+      "review": {
+        "hypothesis_collaborator": {
+          "reviewer": "/root/harness_hypotheses",
+          "status": "reviewed",
+          "concerns": "Six orthogonal explanations; centering reverses the old permanent-background claim; finite ATan factors are nonzero and sparse edge arrival is a different issue."
+        },
+        "experiment_approval_committee": {
+          "reviewer": "/root/harness_plan",
+          "status": "approved",
+          "concerns": "CPU audit approved and executed. Three-window directional/branch probe has design approval only; no GPU execution before Gamma interface, source, identity and memory gates. Kernel mass is not task gradient mass."
+        },
+        "conclusion_reviewer": {
+          "reviewer": "/root/diagnosis_review",
+          "status": "accepted",
+          "concerns": "Accept dynamics-present and locally harmful varying output on this cache. Narrow Gamma conclusion to frozen observation kernels crossing backward window; existing trace still trains current head/decay. SG mismatch is a candidate, not established root cause."
+        }
+      },
+      "artifacts": [
+        "docs/information_boltzmann/FLY_PREDICTIVE_LEARNING_CONTRACT_20261006.md",
+        "results/published/fly_current_read_contract_preregistered_20261006.json",
+        "results/published/fly_prediction_decomposition_gamma_1500k.json",
+        "results/published/fly_gamma_kernel_contract_1500k.json"
+      ]
+    },
+    {
+      "id": "IB_FLY_CAUSAL_READ_20261006",
+      "parent": "IB_FLY_GEN_CLOSE_20261006",
+      "title": "Retain causal/gain identities; withdraw duplicate pulse-quiet repair",
+      "status": "partially_reusable",
+      "time": "2026-10-06",
+      "confidence": "D",
+      "motivation": "Resolve latest-word motor access and compulsory observation filtering with one minimal candidate; compare rather than assume Gamma, tri-scale, gain and variational proposals.",
+      "action": "Preregister input plus one quiet tick followed by the original centered motor head; independent hypothesis, necessity and experiment reviews; CPU scalar identity checks only. Zero GPU, production or training changes.",
+      "conclusion": "User historical correction verified: input plus quiet has already run for 500896 new tokens /15653 joint updates, followed by input-clock and centered direct-motor continuation. Candidate C is a return to an existing protocol, not a new root repair. Proposed new training approval withdrawn; retain causal ordering and static gain redundancy only. Prior prediction quality remained deficient after arrival restoration and before Gamma.",
+      "invalidation": "Do not launch the retired budget or present a duplicate protocol as novel. Reuse only derived causal/gain identities; any renewed capability proposal requires complete historical evidence and independent preregistration.",
+      "prediction": {
+        "id": "P-20261006-02",
+        "registered_before_result": true,
+        "expected_observation": "Matchedjointcontinuedlearning C improves firstpasspreupdateNLL over B if compulsorylowpass is recoverableobstruction.",
+        "falsifying_observation": "PositivepairedblockCI opposesGamma deletion under thismigration/budget; intervaloverlaporongoingimprovement is inconclusive."
+      },
+      "review": {
+        "hypothesis_collaborator": {
+          "reviewer": "/root/harness_hypotheses",
+          "status": "reviewed",
+          "concerns": "NoGamma necessity proof; quiet1actualresponse remainsauxiliary; O1replacementlearningrule outofscope."
+        },
+        "experiment_approval_committee": {
+          "reviewer": "/root/harness_plan",
+          "status": "unreviewed",
+          "concerns": "Prior conditional approval retired after user identified already tested protocol. Reassessment required before any launch."
+        },
+        "conclusion_reviewer": {
+          "reviewer": "/root/diagnosis_review",
+          "status": "accepted",
+          "concerns": "Independent historical review accepts withdrawal: candidate duplicates existing two-tick/input-clock/centered raw-motor protocol. Keep causal ordering and static gain identities; current-token reachability alone insufficient and post-added Gamma cannot explain pre-Gamma deficit. No paired timing-ineffectiveness claim."
+        }
+      },
+      "theory_package": {
+        "core_theory": "Read after shortestlegalphysicalarrival; normalizedcategoricallikelihood learns motor information.",
+        "auxiliary_assumptions": "Quiet1activates some realpaths; rawmotor accessiblehistory suffices better than compulsoryGamma.",
+        "implementation": "Existingphysicaltick/centering/head reused; Gamma retired; numericalinterfaces pending.",
+        "optimization": "Same namedAdam andtrainability; hotobservation-mapchange explicitlyadaptation.",
+        "measurement": "Neverresetactuallearner pretargetpreupdate firstpass/B/revisit; pairedblocks withtimecorrelation.",
+        "baseline_relation": "B/Csame2coreticks/perword/32eventcredit andprojection; actualGamma cost/parameterdifferencescharged; historic1ticknotnewarm."
+      },
+      "false_win_checklist": [
+        {
+          "path": "Extra capacity / training budget",
+          "closed": false,
+          "evidence": "Planned safeguard: Same768 read projection and original trainability; retire Gamma parameters explicitly; charge96k fresh train plus active eval and both physical ticks.",
+          "residual_risk": "Await implementation and actualstream records; no confirmed capability."
+        },
+        {
+          "path": "Optimization change",
+          "closed": false,
+          "evidence": "Planned safeguard: Restore shared Adam moments by parameter name, source LRs/weight decay/clipping; declare changed observation distribution and migration losses.",
+          "residual_risk": "Await implementation and actualstream records; no confirmed capability."
+        },
+        {
+          "path": "Data leakage",
+          "closed": false,
+          "evidence": "Planned safeguard: Both quiet source and future target unavailable before scored logits; one shared train/eval/generate event interface.",
+          "residual_risk": "Await implementation and actualstream records; no confirmed capability."
+        },
+        {
+          "path": "Metric averaging",
+          "closed": false,
+          "evidence": "Planned safeguard: First-pass/replay/freshB separated; final1000-update window registered before results, full trace retained.",
+          "residual_risk": "Await implementation and actualstream records; no confirmed capability."
+        },
+        {
+          "path": "Hidden recurrence / extra passes",
+          "closed": false,
+          "evidence": "Planned safeguard: Both B/C advance input+quiet with64physical ticks per32-token window; record total core plus Gamma costs.",
+          "residual_risk": "Await implementation and actualstream records; no confirmed capability."
+        },
+        {
+          "path": "Implementation asymmetry",
+          "closed": false,
+          "evidence": "Planned safeguard: Eager/graph, activation flags and effective trainability validated symmetrically.",
+          "residual_risk": "Await implementation and actualstream records; no confirmed capability."
+        },
+        {
+          "path": "Baseline bypass",
+          "closed": false,
+          "evidence": "Planned safeguard: Sensory-only injection and motor-only output; no embedding/token skip to decoder.",
+          "residual_risk": "Await implementation and actualstream records; no confirmed capability."
+        },
+        {
+          "path": "Reachability mistaken for discovery",
+          "closed": false,
+          "evidence": "Planned safeguard: Real-input response gate proves opportunity only; capability requires joint active NLL evidence.",
+          "residual_risk": "Await implementation and actualstream records; no confirmed capability."
+        },
+        {
+          "path": "Serialization mistaken for generation",
+          "closed": false,
+          "evidence": "Planned safeguard: No autonomous topology/generation claim.",
+          "residual_risk": "Await implementation and actualstream records; no confirmed capability."
+        },
+        {
+          "path": "Handwritten scaffold substitution",
+          "closed": false,
+          "evidence": "Planned safeguard: No Sudoku rules, manual world rules or label-dependent quiet control.",
+          "residual_risk": "Await implementation and actualstream records; no confirmed capability."
+        },
+        {
+          "path": "Teacher or oracle leakage",
+          "closed": false,
+          "evidence": "Planned safeguard: No target-dependent update prior to its prediction; testsplit unused for choices.",
+          "residual_risk": "Await implementation and actualstream records; no confirmed capability."
+        },
+        {
+          "path": "Vocabulary / codebook leakage",
+          "closed": false,
+          "evidence": "Planned safeguard: Same GPT2 tokenizer/pretrainedembedding/provenance; no class/source IDs.",
+          "residual_risk": "Await implementation and actualstream records; no confirmed capability."
+        },
+        {
+          "path": "Search-budget mismatch",
+          "closed": false,
+          "evidence": "Planned safeguard: Only preregistered B/C; same data/updates; no best alpha sweep for final claim.",
+          "residual_risk": "Await implementation and actualstream records; no confirmed capability."
+        },
+        {
+          "path": "Macro prior not charged",
+          "closed": false,
+          "evidence": "Planned safeguard: Full source checkpoint, pretrained embedding and bias counted; no validation frequency prior.",
+          "residual_risk": "Await implementation and actualstream records; no confirmed capability."
+        },
+        {
+          "path": "Offline corpus contamination",
+          "closed": false,
+          "evidence": "Planned safeguard: Record manifest/splits/hash and actual new cursors; old audit words not reused as independent confirmation.",
+          "residual_risk": "Await implementation and actualstream records; no confirmed capability."
+        },
+        {
+          "path": "Lineage discontinuity",
+          "closed": false,
+          "evidence": "Planned safeguard: Complete source brain/Adam/RNG/cursor/previous-token recovery; archive retiredGamma; no cold reset.",
+          "residual_risk": "Await implementation and actualstream records; no confirmed capability."
+        }
+      ],
+      "artifacts": [
+        "docs/information_boltzmann/FLY_CAUSAL_MOTOR_READ_DESIGN.md",
+        "results/published/fly_causal_motor_read_preregistered_20261006.json"
+      ],
+      "issues": [
+        "Historical review was incomplete in the initial design approval.",
+        "Motor observability and conditional predictive learning remain open; no new remedy claimed.",
+        "Original future experiment budget is inactive; no new training started."
+      ]
+    },
+    {
+      "id": "IB_FLY_GEN_CLOSE_20261006",
+      "parent": "IB_FLY_GLM_REVIEW_20261006",
+      "title": "Define generative posterior learning and forward historical credit before production changes",
+      "status": "active",
+      "time": "2026-10-06",
+      "confidence": "D",
+      "motivation": "User requests an elegant learning principle derived from existing evidence, rather than further training or time-credit patches; preserve sensory input, motor output and never-reset life.",
+      "action": "Specify normalized augmented arrival observer, measure-form variational objective, restricted posterior local scores and fixed-model forward conditional-statistic recursion. Six CPU probability-identity checks; independent mathematical and lifecycle review. Zero training updates or GPU allocation.",
+      "conclusion": "Current-slice local prediction cannot assign credit to unrelated delayed factors. Historical posterior statistics admit a fixed-model forward recursion without replaying the time computation graph. Exact continuous-state conditional statistics are functions; finite posterior/statistic projection and hard-event inference remain prerequisites for a production learner. This specifies a generative learning reference, not a proven NLL repair or full action active-inference system.",
+      "artifacts": [
+        "docs/information_boltzmann/FLY_GENERATIVE_LEARNING_CLOSURE.md",
+        "tests/test_fly_variational_identities.py",
+        "results/published/fly_generative_closure_20261006.json"
+      ],
+      "review": "harness_hypotheses and harness_plan reviewed generative, timing and inference boundaries. diagnosis_review required measure KL, augmented arrival posterior, entropy-aware inference and regular-support score conditions; revisions incorporated. Final review recorded in published report.",
+      "invalidation": "Reject production closure if normalized observer and physical predictive execution diverge without declaration, posterior evidence changes an already scored prediction, finite statistics are replaced by unconditioned EMA, or hard-event surrogate gradients are presented as exact likelihood scores. Capability benefit requires later genuine pre-update stream predictions."
+    },
+    {
+      "id": "IB_FLY_LEARN_FIX_20261006",
+      "parent": "IB_FLY_GLM_REVIEW_20261006",
+      "title": "Repair shared plasticity contracts; separate implementation readiness from prediction retention",
+      "status": "active",
+      "time": "2026-10-06",
+      "confidence": "I",
+      "motivation": "User requests all concrete upgrade defects repaired while preserving sensory/motor locality and continuing life, with actual NLL direction checked.",
+      "action": "Repair causal edge coverage, COBA positivity and signed history, empty delay gradients, optional state layouts, centering/DAN inheritance and mode archives. Optional delayed-pulse DAN EMA is an explicit opt-in rule revision. 80 numerical/interface tests and one finite saved-Adam OWT update with crossed controls; no production continuation.",
+      "conclusion": "Implementation contracts pass including CUDA Graph and DAN gate persistence. Mature centered1300k cursor fork: fitted NLL8.161176->8.113891 but following same-state7.198421->7.271419. Body-only7.273256; head-only7.196492; edge-only7.302045, writer-only7.255010, cell-only7.251920. Thus this finite update's interference is body-side despite small relative parameter motion; long-run capability cause remains open. DAN0 and frozen STP activation retained. .844s/32, allocated2774MiB/reserved3012MiB. Source checkpoint untouched and no checkpoint files written.",
+      "artifacts": [
+        "docs/information_boltzmann/FLY_LEARNER_REPAIR_20261006.md",
+        "results/published/fly_repaired_update_20261006.json",
+        "tests/test_fly_learning_repairs.py"
+      ],
+      "review": "diagnosis_review independently reviewed design and diff; strict sign metadata, actual diagnostic clamp/local update and in-place best archive fixes incorporated.",
+      "invalidation": "Reject acceptance if continuing eager/Graph values, optimizer coverage, signs or complete lifecycle state diverge. Reject a long-run harm inference unless sufficient same-protocol joint learning verifies it."
+    },
+    {
+      "id": "IB_FLY_GLM_REVIEW_20261006",
+      "parent": "IB_FLY_CONDITIONAL_READ_20261005",
+      "title": "Separate centered conditional progress from DAN implementation readiness",
+      "status": "active",
+      "time": "2026-10-06",
+      "confidence": "I",
+      "action": "Read-only commit/artifact review, exact active B unigram comparison and bounded skipped-interface-test reproduction. No production training or state changes.",
+      "conclusion": "100k centered saved127-target A-head full7.861199/common7.949809 yields conditional benefit.088610 but excess over unigram.554337. Decoder covariance dominant, local symptom improved. Fresh B final9.170039/reference7.942650; last5 mean excess.913524 vs first5 1.113226 on differing texts. DAN has vector indexing errors, wrong COBA inhibitory clamp, unrelated DAN weights in BPTT coverage, absent gate EMA/persistence, and incomplete optional-layout handling. Direct CPU test reaches backward error expected8 gradients got4 for empty inhibitory-delay fixture. Keep DAN disabled; repair shared learner numerical/interface contracts before any continuation. Old level0 broadcast record and routed frozen benchmark retain distinct provenance.",
+      "artifacts": [
+        "docs/information_boltzmann/FLY_GLM_REVIEW_20261006.md",
+        "results/published/fly_centered_active_review_20261006.json",
+        "results/published/fly_prediction_decomposition_centered_100k.json"
+      ],
+      "review": "diagnosis_review independently confirmed code blockers and restricted causal/capability interpretations.",
+      "motivation": "Audit the GLM learner continuation against the predictive regression and complete-individual lifecycle before attributing poor NLL to connectome capacity.",
+      "invalidation": "Invalidate any claimed repair or causal attribution if optimizer/state lineage changes, matched controls fail, or independent review finds the evidence does not distinguish the proposed mechanism."
+    },
     {
       "id": "IB_FLY_NLL_ONSET_20261005",
       "parent": "IB_FLY_CONDITIONAL_READ_20261005",
@@ -2314,7 +3698,7 @@
         "Firing rate must grow for any routing to exist; the vital-sign suite monitors it per validation.",
         "The wiring remains frozen; a plateau would motivate level-2 plasticity (surprise-gated local rules) as the next rung rather than abandoning the topology.",
         "The 0.583-nat premium over the broadcast shortcut is the optimization cost of the 1000-update blind period plus the harder solution class; level-2 plasticity (the wiring itself adapting) is the registered rung to close it while keeping the computation in the substrate.",
-        "CENTERED-READ ACCEPTANCE (100k centered tokens on the same individual): the registered criterion is MET - content_variation_excess_over_common_background flipped from +0.43 at 20k centered tokens to -0.0886 at 100k (the temporal variation now IMPROVES the prediction), the read-residual excess flipped negative (-0.23), the head-vs-unigram excess fell 1.46 -> 0.55, and the conditional-dominant gradient structure held (common:covariance 0.39-0.51). The replay NLL (7.90) remains 0.60 above the window unigram - the catch-up continues, but the starvation disease is cured: supervision now changes the conditional pathway every update."
+        "CENTERED-READ LOCAL ACCEPTANCE (100k centered tokens): cached127-target A-revisit saved-head content variation excess changes from +.4285 at20k to -.08861 at100k; decoder covariance gradient dominates, ratios .1916-.5115. Full saved head7.86120 remains .55434 above same-text unigram7.30686. This describes the current2333-motor/BPTT trainable-edge continuation, not the old149210-neuron frozen routed benchmark. Local background dominance improved; fresh active predictive quality and actual update contributions require separate acceptance. See IB_FLY_GLM_REVIEW_20261006."
       ],
       "invalidation": "If NLL plateaus at the unigram floor with near-zero wiring-perturbation deltas through 3000 updates, the direct-brain approach (frozen topology + gradient-trained I/O) is falsified at this budget, and the ladder must move to plasticity or learned dynamics.",
       "artifacts": [
@@ -2841,6 +4225,541 @@
         "results/published/fly_bptt32_credit_structure.json"
       ],
       "invalidation": "Revise if an identical-protocol rerun contradicts this outcome, or if the recorded measurements prove irreproducible on the retained artifacts."
+    },
+    {
+      "id": "IB_FLY_LEJEPA_REVIEW_20261007",
+      "parent": "IB_FLY_BPTT32_20261004",
+      "title": "Audit token-conditioned LeJEPA gain versus motor-only physical routing",
+      "status": "active",
+      "time": "2026-10-07",
+      "confidence": "O",
+      "motivation": "Assess externally completed100k candidate before revising the one-tick motor-only prediction plan.",
+      "action": "Read actual config/progress/20active evaluation records and predictor/learning code; factor the decoder route and auxiliary objective algebra. No new training.",
+      "conclusion": "First-pass NLL6.35688 beats fixed train unigram7.47681 by1.11993; final freshB6.88219 differs from best55k window6.01637. Code adds a causal direct observed-token embedding-to-predictor-to-decoder path and retains BPTT32 with readout-level one-step prediction loss. Physical scratch coexists with pretrained GPT-2 interfaces and offline bias. Gains are real; their assignment to deep credit repair is unestablished. Review is pending independent conclusion audit.",
+      "artifacts": [
+        "docs/information_boltzmann/FLY_LEJEPA_RESULT_REVIEW_20261007.md",
+        "information_boltzmann/core/lejepa_predictor.py",
+        "results/q8_fly_bptt32_lejepa_scratch_100k/config.json",
+        "results/q8_fly_bptt32_lejepa_scratch_100k/progress.json",
+        "results/q8_fly_bptt32_lejepa_scratch_100k/lifelong_evaluation.jsonl"
+      ],
+      "invalidation": "Revise if checked code or data do not belong to this run, pre-update scoring leaks future labels, or matched full training demonstrates/disproves deep physical contribution. No causal benefit assigned from alpha/low rank/single100-update failure."
+    },
+    {
+      "id": "IB_FLY_EVENT_READ_20261007",
+      "parent": "IB_FLY_REPAIR_20261007",
+      "title": "Close finite event effects through the actual motor measurement",
+      "status": "active",
+      "time": "2026-10-07",
+      "confidence": "I",
+      "motivation": "Reset-only learning change failed its body usefulness gates. The remaining question is how finite event-path differences traverse motor measurement and affect correctly labeled probabilities.",
+      "action": "Offline reconstruction: independent competing hypotheses, necessity audit, exact CE and measurement-map derivations, and committee design review. No GPU, disposable update, production edit or training performed in this follow-up.",
+      "conclusion": "Attribution unresolved. Exact finite risk contrast is KL(pF||pH) minus correct-target logit alignment. RMSNorm suppresses radial changes but the observed near-common normalized head does not locate raw-motor versus projection/normalization loss. Prior local event fit reversal coexists with following benefit. C_reset stays locally unsupported; no replacement remedy selected.",
+      "prediction": {
+        "id": "P-20261007-12",
+        "registered_before_result": true,
+        "expected_observation": "For a future fixed-state/head actual-Adam three-trajectory trace, surviving upstream contrasts with downstream attenuation nominate a measurement-map candidate; resolved logits with adverse KL-minus-alignment nominate task/event alignment. These are distinct prospective stage observables, not blind predictions of already known NLL.",
+        "falsifying_observation": "A asserted attenuation stage passes the contrast without resolved loss, or the asserted adverse event task term is favorable on the registered comparison. Identity, reconstruction or replay failure makes attribution ambiguous rather than selecting a repair."
+      },
+      "review": {
+        "hypothesis_collaborator": {
+          "reviewer": "/root/harness_hypotheses",
+          "status": "reviewed",
+          "concerns": "Seven orthogonal explanations; one Adam direction leaves optimizer-specific attribution and longer historical credit open."
+        },
+        "necessity_auditor": {
+          "reviewer": "/root/diagnosis_review",
+          "status": "reviewed",
+          "concerns": "Final-document math signed off; causal state/head/target/displacement and task-weighted contrasts necessary, pulse decoder/stochastic model only possible."
+        },
+        "experiment_approval_committee": {
+          "reviewer": "/root/harness_plan",
+          "status": "approved",
+          "concerns": "DESIGN ONLY: future ceiling13windows416ticks/1backward/1disposablejointupdate. New code/protocol locks, reconstruction, stage/pulse identity, per-field replay floors and independent implementation approval required before execution."
+        },
+        "conclusion_reviewer": {
+          "reviewer": "/root/repair_result_review",
+          "status": "accepted",
+          "concerns": "Independent final math/scope review accepts offline attribution-unresolved and narrow design only. Hybrid path identity includes endpoint conventions/jumps. No new experiment; next step seal/review future measurement protocol, not run it."
+        }
+      },
+      "artifacts": [
+        "docs/information_boltzmann/FLY_EVENT_OBSERVABLE_CLOSURE_20261007.md",
+        "results/published/fly_pipeline_event_hypothesis_review_20261007.json",
+        "results/published/fly_pipeline_event_necessity_review_20261007.json",
+        "results/published/fly_pipeline_event_plan_review_20261007.json",
+        "results/published/fly_pipeline_event_conclusion_review_20261007.json"
+      ],
+      "invalidation": "Finite causal geometry is not semantic information loss, global learning failure or capability. New stage predictions are exploratory/data-informed. Do not sum endpoint H/F as individual event causes, use retrospective common logits as an online model, revive rejected reset-detach, or execute from design-only approval.",
+      "issues": [
+        "Next single action is preparation of the design-reviewed read-chain measurement under a new source-locked execution review; current authority remains offline.",
+        "No unique optimizer/event-credit cause, missing-motor-information claim, NLL improvement or long-run conclusion follows from this reconstruction."
+      ]
+    },
+    {
+      "id": "IB_FLY_LEWM14_AUDIT_20261007",
+      "parent": "IB_FLY_LEJEPA_REVIEW_20261007",
+      "title": "Audit motor-only quiet-response predictor and teacher-assisted readout",
+      "status": "active",
+      "time": "2026-10-07",
+      "confidence": "O",
+      "motivation": "User supplied new motor-only internal world-model run and CX/LAL analogy; distinguish actual predictive-response learning from latency/credit claims.",
+      "action": "Read-only current predictor/learner/generation/capture source and active logs. No new GPU work or modification to external candidate.",
+      "conclusion": "Observed first-pass NLL improves over matched fixed unigram in this live candidate. Direct token embedding is absent from predictor. Quiet teacher supervises only last-window anchor and is mixed into its CE readout; k-step teacher is used before another k-labeled transition. Autonomous generation uses no teacher. Full-state sufficiency and biological CX/LAL interpretation remain open.",
+      "artifacts": [
+        "results/published/fly_lewm14_source_audit_20261007.json",
+        "information_boltzmann/core/lejepa_predictor.py",
+        "information_boltzmann/core/fly_bptt_learning.py"
+      ],
+      "issues": [
+        "Pending independent source/conclusion review because reviewer quota is exhausted.",
+        "Active fresh B windows differ in content; local 6.2629 revisit is replay performance rather than fresh capability or monotonic improvement.",
+        "Earlier event diagnostic implementation remains unfinished/unapproved; no run launched."
+      ],
+      "invalidation": "Revise if locked source differs from executed run, active scores use a different teacher path, or timing/leakage/matched training evidence changes. No causal delay-compensation or full brain simulation claimed."
+    },
+    {
+      "id": "IB_FLY_HX0_REVIEW_20261007",
+      "parent": "IB_FLY_LEWM14_AUDIT_20261007",
+      "title": "HX-0 clean-v2 autonomous-path interim training review",
+      "status": "active",
+      "time": "2026-10-07",
+      "confidence": "O",
+      "motivation": "Determine whether clean-v2 learns continuously or shows oscillatory weak gain rather than selecting isolated low-NLL windows.",
+      "action": "Independent CPU-only source review and exact matched-unigram accounting of all logged fresh targets and active B windows; preserve running training.",
+      "conclusion": "Fresh-training gain oscillates, weakened around 25k-30k and recovered in the 30k-35k segment and latest 4096-token tail. This is observed learning with variable gain, not evidence of a final plateau. Fresh-B aggregate at snapshot remains slightly worse than matched fixed unigram; sustained new-context predictive improvement is not established.",
+      "artifacts": [
+        "results/published/fly_hx0_training_review_20261007.json"
+      ],
+      "issues": [
+        "Fresh B windows differ in content and update the learner.",
+        "A revisit is active replay, separate from fresh traffic.",
+        "EMA includes fresh training, B, and A replay.",
+        "Roughly one thousand optimizer updates is an interim budget, not a converged architecture verdict.",
+        "No causal attribution of NLL gain to the latent predictor or the physical brain is made."
+      ],
+      "invalidation": "Revise with later registered-budget evidence, a different loaded source version, or changed evaluation/reference accounting. This is an interim observational finding, not a converged capability or causal-mechanism verdict."
+    },
+    {
+      "id": "IB_FLY_TASK_STATE_20261007",
+      "parent": "IB_FLY_STREAM_OBS_20261007",
+      "title": "Task-state versus physical-state forecasting mismatch",
+      "status": "active",
+      "time": "2026-10-07",
+      "confidence": "S",
+      "motivation": "Repeated mechanism upgrades have not established matched fresh-language gains; reconstruct shared assumptions before adding modules.",
+      "action": "Code-level causal/objective review and competing H1 availability, H2 objective mismatch, H3 optimization, H4 measurement hypotheses. No new training launched; independent review pending.",
+      "conclusion": "The present auxiliary forecasts a fixed random physical projection one tick ahead. Physical MSE and task conditional entropy are distinct objectives; reduced-state closure and timely task-relevant information are not guaranteed by the construction. These are missing assumptions, not an established unique root cause.",
+      "invalidation": "Revise dominant-cause claims if matched joint-training controls show physical forecasting adds task benefit, or causal/readable-state evidence rejects the proposed information bottleneck. Preserve alternative optimization and measurement explanations.",
+      "artifacts": [
+        "docs/information_boltzmann/FLY_TASK_STATE_MISMATCH_20261007.md"
+      ]
+    },
+    {
+      "id": "IB_FLY_HX11_SOURCE_20261007",
+      "parent": "IB_FLY_HX1_AUDIT_20261007",
+      "title": "HX-1.1 multi-horizon quiet surrogate source review",
+      "status": "active",
+      "time": "2026-10-07",
+      "confidence": "I",
+      "motivation": "Assess Gemini fourteen-horizon quiet-rollout repair against actual causal supervision and continuous-life task contracts.",
+      "action": "Read pasted proposal and current graph observer, shared learner and dedicated delay script. No GPU training or source edits. Independent mechanism review pending.",
+      "conclusion": "Multi-horizon quiet latent surrogate is a useful candidate structure. Current A is literal4x4; physical teacher is window-final anchor only; encoder targets receive gradients while SIGReg acts downstream. Synthetic100-node repeated4-target script has an unconditional PASS and does not carry returned physical state. These implementation facts establish evidence boundaries, not language superiority or failure.",
+      "invalidation": "Update on source changes, actual graph/delay construction, timestamped real-data continuation checks or matched-budget task evaluation. Learned-target alignment alone does not establish physical forecast fidelity.",
+      "artifacts": [
+        "docs/information_boltzmann/HX11_QUIET_ROLLOUT_REVIEW_20261007.md"
+      ]
+    },
+    {
+      "id": "IB_FLY_QUERY_LIFT_20261007",
+      "parent": "IB_FLY_HX11_SOURCE_20261007",
+      "title": "Adjoint query is steering, not inverse state lifting",
+      "status": "active",
+      "time": "2026-10-07",
+      "confidence": "S",
+      "motivation": "Review latent-to-physical expert querying before claiming strict DAgger or guaranteed error recovery.",
+      "action": "Affine counterexample and nonlinear Jacobian/image analysis; propose student-error-guided, re-encoded physical query pairs on counterfactual copies. No implementation or training; independent review pending.",
+      "conclusion": "W transpose changes an affine embedding by WWtranspose delta, so the queried teacher state generally differs from the alleged student state. Real graph aggregates and regional SIGReg are viable fixes; strict DAgger requires additional attainable-state and context contracts.",
+      "invalidation": "An exact admissible lift and sufficient-state/context construction would permit stronger on-policy labels. Real matched-budget NLL decides auxiliary usefulness; projection consistency alone does not establish restoring dynamics.",
+      "artifacts": [
+        "docs/information_boltzmann/FLY_ADJOINT_QUERY_REVIEW_20261007.md"
+      ]
+    },
+    {
+      "id": "IB_FLY_RTC_DAGGER_20261007",
+      "parent": "IB_FLY_QUERY_LIFT_20261007",
+      "title": "Timestamped tick drafts with physical query aggregation",
+      "status": "active",
+      "time": "2026-10-07",
+      "confidence": "I",
+      "motivation": "Keep continuous output available while a real delayed connectome supplies matching motor-response corrections.",
+      "action": "Independent student/learner/OWT CLI plus timestamped scheduler and continuous sensory inbox.24 focused numerical/interface tests pass. Live physical input, quiet teacher queries and speculative ticks counted separately; complete source query relabeling and full continuation verified.",
+      "conclusion": "Implementation ready after independent review, GPU calibration pending. One attempted calibration failed before model initialization with Windows1455 while Gemini job15752 occupied about2745MiB. No GPU training updates or task-performance claim. Asynchronous writer conditioning and per-horizon readout require later task validation.",
+      "prediction": {
+        "id": "P-20261007-RTC",
+        "registered_before_result": true,
+        "expected_observation": "Same-source query labeling and exact timestamp/revision continuation hold; joint gradients finite within numerical budget. Task usefulness requires subsequent adequate matched active training.",
+        "falsifying_observation": "Mismatched source/control, stale overwrite, state reset, nonfinite gradient or memory excess blocks formal training; prediction-MSE gain alone does not establish language improvement."
+      },
+      "review": {
+        "experiment_approval_committee": {
+          "reviewer": "/root/rtc_contract_review",
+          "status": "approved",
+          "concerns": "Final continuous inbox ready after preserving earlier unconsumed outputs and refreshing suffix on arrival. Approve32target calibration once resources available; no capability claim from CPU tests. Runtime per-horizon and lagged writer differ from synchronous mixed CE."
+        }
+      },
+      "artifacts": [
+        "information_boltzmann/core/fly_rtc_student.py",
+        "information_boltzmann/core/fly_rtc_learning.py",
+        "information_boltzmann/runtime/fly_rtc.py",
+        "scripts/ib/train_fly_rtc_dagger.py",
+        "tests/test_fly_rtc.py",
+        "docs/information_boltzmann/FLY_RTC_TICK_DAGGER_V1.md",
+        "results\\published\\fly_rtc_tick_dagger_preregistered_20261007.json",
+        "information_boltzmann/runtime/fly_rtc_flow.py"
+      ],
+      "invalidation": "Any unmatched source/control, stale committed-output mutation, state reset or nonfinite calibration invalidates this implementation. Auxiliary accuracy without matched active NLL gain invalidates the task-usefulness claim for the tested budget."
+    },
+    {
+      "id": "IB_FLY_RTC_CPU_20261007",
+      "parent": "IB_FLY_RTC_DAGGER_20261007",
+      "title": "CPU waiting coverage and held-out physical response",
+      "status": "active",
+      "time": "2026-10-07",
+      "confidence": "O",
+      "motivation": "Use user-authorized bounded numerical tasks to separate response availability from forecast quality before long training.",
+      "action": "Event-blocked teacher test plus fresh fixed COBA/ALIF/STP oracle on256 real induced neurons/5901edges,120 student updates, entire lanes held out. Closed-form oracle read and ambient observable row-space checks; no CUDA or checkpoint.",
+      "conclusion": "25 regression tests pass; continuous drafts available before teacher arrival, with suffix correction. Held-out latent error/persistence0.8815 but motor response error3.3620. True-code least-squares motor read error7.7410;81.87% of linear motor observable coefficient energy outside codec row space. Useful drafts remain unestablished; preserve motor observable before next bounded check.",
+      "prediction": {
+        "id": "P-20261007-RTC-CPU",
+        "registered_before_result": true,
+        "expected_observation": "Drafts remain available during blocked teacher; if local response learning succeeds, heldout response-delta error beats persistence.",
+        "falsifying_observation": "Lost outputs or stale suffix fail runtime; error>=persistence fails useful draft claim at this declared budget."
+      },
+      "issues": [
+        "Induced graph drops128055boundaryedges; results do not describe full-brain performance.",
+        "120updates and fixed numerical oracle do not establish capacity, convergence, joint language ability or DAgger gain.",
+        "Decoded response variation is small; report relative error and raw nonzero response.",
+        "Ambient codec nullspace need not be visited on nonlinear physical trajectories.",
+        "Repeated instrumented runs share same seed/budget and are not independent evidence."
+      ],
+      "artifacts": [
+        "scripts/ib/check_fly_rtc_cpu.py",
+        "tests/test_fly_rtc.py",
+        "results/published/fly_rtc_cpu_response_20261007.json",
+        "results/published/fly_rtc_cpu_response_20261007_preregistered.json"
+      ],
+      "review": {
+        "experiment_approval_committee": {
+          "reviewer": "/root/rtc_contract_review",
+          "status": "approved",
+          "concerns": "Numerical scope, nonzero response, complete-lane split, held-response baseline and declared induced-graph boundary."
+        },
+        "result_reviewer": {
+          "reviewer": "/root/rtc_contract_review",
+          "status": "passed",
+          "concerns": "Ambient observable mismatch is proved; reachable-manifold impossibility and language conclusions remain unknown. Revised motor-observable basis must stay consistent across weight updates."
+        }
+      },
+      "invalidation": "Revise on changed source/control alignment or observed leakage. Stronger language conclusions require matched joint real-stream learning; ambient row-space mismatch alone is not a reachability impossibility proof."
+    },
+    {
+      "id": "IB_FLY_RTC_SURFACE_20261007",
+      "parent": "IB_FLY_RTC_CPU_20261007",
+      "title": "Lossless motor observation with paired CPU future forecast",
+      "status": "active",
+      "time": "2026-10-07",
+      "confidence": "O",
+      "motivation": "Preserve the actual motor observable instead of reconstructing it from an insufficient random codec before long RTC training.",
+      "action": "New experimental MotorSurfaceForecaster and paired CPU script on unchanged real256neuron5901edge oracle. Complete motor versus zero head input, same18310parameters/initialization/120updates. Original learner/runtime untouched;27tests pass.",
+      "conclusion": "Zero-tick native read exact and read-weight revision preserves raw-history semantics. Complete motor heldout feature MSE/persistence1.309 versuszero2.114 (38.1%lower). Full14tick prediction still worse than persistence, whileticks3-5 have partial gain. Training/heldout gap0.341/1.309 leaves generalization and dynamics closure unresolved; no task capability verdict.",
+      "prediction": {
+        "id": "P-20261007-RTC-SURFACE",
+        "registered_before_result": true,
+        "expected_observation": "Native motor read at zero tick exact; if observable preservation helps future prediction, complete-input matched arm reduces heldout response error; useful drafts require error below persistence.",
+        "falsifying_observation": "Nonzero zero-tick mismatch invalidates interface; worse-than-persistence aggregate blocks useful full-horizon draft claim for this budget."
+      },
+      "review": {
+        "experiment_approval_committee": {
+          "reviewer": "/root/rtc_contract_review",
+          "status": "approved",
+          "concerns": "Future motor inputs autonomous, teacher/read fixed, lanes heldout, same capacity and raw coordinate semantics."
+        },
+        "result_reviewer": {
+          "reviewer": "/root/rtc_contract_review",
+          "status": "passed",
+          "concerns": "Preserve partial improvement and failed persistence threshold; later drift is not an isolated root cause because train-heldout gap is also present."
+        }
+      },
+      "artifacts": [
+        "information_boltzmann/core/fly_rtc_surface.py",
+        "scripts/ib/check_fly_rtc_surface_cpu.py",
+        "tests/test_fly_rtc_surface.py",
+        "results/published/fly_rtc_surface_cpu_20261007.json",
+        "results/published/fly_rtc_surface_cpu_20261007_preregistered.json",
+        "docs/information_boltzmann/FLY_RTC_SURFACE_CPU_20261007.md"
+      ],
+      "issues": [
+        "Induced graph is a different boundary-value system from full brain.",
+        "Frozen oracle/120updates establish neither language gains nor convergence.",
+        "Old15695parameter student used different output loss, so comparison with3.362 is descriptive; paired arms isolate complete motor input.",
+        "No DAgger performance contribution tested."
+      ],
+      "invalidation": "Revise on unmatched source, future-label input, or unequal budget; later matched real-stream joint training decides task use. Observable preservation does not imply closed dynamics."
+    },
+    {
+      "id": "IB_FLY_RTC_FLUX_20261007",
+      "parent": "IB_FLY_RTC_SURFACE_20261007",
+      "title": "Physical motor closure and autonomous exact reference",
+      "status": "active",
+      "time": "2026-10-07",
+      "confidence": "O",
+      "motivation": "Lower14tickCPUresponseerror and establish exact-coupling feasibility before costly production training.",
+      "action": "Retain complete motor-local COBA/ALIF/STP state and known origin pulse queue; integrate actual motor-to-motor edges; learn only unknown outside arrivals. Fixed120updates, real256neuron5901edgegraph, sameheldoutlanes. Addall256nodeexact-local autonomous reference.32tests pass.",
+      "conclusion": "Hybrid heldoutresponseMSE/hold .189243beforelearnedfit and.191515after120, comparedsurface1.30937. Improvement comesprimarilyfromretainedphysicalstate/queue/equations; no learnedheldoutgain. Trueboundarylocalidentitymax3.17e-8. Complete-origin-state autonomous14tickreference hasallfielderror0, withoutfutureteacherinputs, atfullsimulationcost.",
+      "prediction": {
+        "id": "P-20261007-RTC-FLUX",
+        "registered_before_result": true,
+        "expected_observation": "Actual external arrivals close exact local equations; complete causal state reproduces teacher under declared zero drive; autonomous compressed forecast must beat hold for useful drafts.",
+        "falsifying_observation": "Localidentity>2e-6 invalidates equations/queue; complete-state discrepancy invalidates autonomous numerical ceiling. Noheldoutfitgain rejects improvement attribution to learned component."
+      },
+      "review": {
+        "experiment_approval_committee": {
+          "reviewer": "/root/rtc_contract_review",
+          "status": "approved",
+          "concerns": "Known arrivals from origin only, localmotorfeedback autonomous, truefutureflux loss-only; complete-state control explicitly retainsfullcost."
+        },
+        "result_reviewer": {
+          "reviewer": "/root/rtc_contract_review",
+          "status": "passed",
+          "concerns": "Exactreference deterministic inducedgraph only; 120learningnoheldoutgain; gain ishybridstructural, not parameter-matchedpurelearning. Sourcefingerprintadded."
+        }
+      },
+      "artifacts": [
+        "information_boltzmann/core/fly_rtc_motor_flux.py",
+        "scripts/ib/check_fly_rtc_flux_cpu.py",
+        "scripts/ib/check_fly_rtc_closed_reference_cpu.py",
+        "tests/test_fly_rtc_motor_flux.py",
+        "docs/information_boltzmann/FLY_RTC_FLUX_CPU_20261007.md",
+        "results/published/fly_rtc_flux_cpu_20261007.json",
+        "results/published/fly_rtc_flux_cpu_20261007_preregistered.json",
+        "results/published/fly_rtc_closed_reference_cpu_20261007.json",
+        "results/published/fly_rtc_closed_reference_cpu_20261007_preregistered.json"
+      ],
+      "issues": [
+        "Compressedupstreamstate leavesunknownfutureflux; noexactfastsurrogateclaim.",
+        "Knownfuturezero-drive isassaycondition; unknownfutureinputsremainunknown.",
+        "Dropped128055boundaryedges changesfullbrainboundary-valueproblem.",
+        "No language training or speed comparison; productionunchanged."
+      ],
+      "invalidation": "Futurelabelinput orgraphmismatch invalidates numericalclaim; noheldoutlearningbenefit mustremainvisible. Nexttarget isupstreamclosure/physicallyobservablearrivalrepresentation, notmorebath/readpatches."
+    },
+    {
+      "id": "IB_FLY_RTC_CAUSAL_20261007",
+      "parent": "IB_FLY_RTC_FLUX_20261007",
+      "title": "Lossless causal response and fused delay transmission",
+      "status": "active",
+      "time": "2026-10-07",
+      "confidence": "O",
+      "motivation": "Repair upstream state insufficiency and obtain accurate14tickresponse before promoting fastsurrogates.",
+      "action": "Extract MotorPhysicalDomain; compile shortest sum-delay ancestors<=H; retainall-domain originoutside-arrivalprefix; propagatefixedphysicalstate autonomously. Fuse8signed delaytransmissions inone sparse CSRoperator. Registered samegraphCPUhorizons1/2/4/7/14; nolearningupdates;44tests.",
+      "conclusion": "Alltestedmotorpulse decisionsmatch. Scatterreadoutresponse error0; fusedH14maxh3.725e-8 andresponseMSE/hold2.62e-15. H14domain255/256nodes5899/5901edges, so compressionadvantage negligible. MatchedCPUbatch8H14median7full30.706ms vsfused11.849ms (~2.59x); sameinterface scatter37.385ms. Numericalphysicalforecast repaired; learnedcheapstudent/production/GPU/language remainunpromoted.",
+      "prediction": {
+        "id": "P-20261007-RTC-CAUSAL",
+        "registered_before_result": true,
+        "expected_observation": "Originstate+allretainednodependingqueues+sumdelay<=H closesmotorresponses atfixedrevision/zero-drive. CSRfusionsamepulse decisions and<=2e-6stateerror.",
+        "falsifying_observation": "Any motorfield>2e-6 or pulseflip blocksnumericalpromotion. Domainnearwholegraph blocksstructuralcompactspeedclaims; matchedCPUtimingdecidesfusionbenefit."
+      },
+      "review": {
+        "experiment_approval_committee": {
+          "reviewer": "/root/rtc_contract_review",
+          "status": "approved",
+          "concerns": "Correctcostsumd notsum(d+1); includeoutsideoriginarrivalstoallintermediates; exactnessonlymotorwithinH. Fusionblocklayout andfixedrevisionchecked."
+        },
+        "result_reviewer": {
+          "reviewer": "/root/rtc_contract_review",
+          "status": "passed",
+          "concerns": "Matchedoutput/immutableorigin CPUtimingfair; floatprecisiontol wording; noGPU/task/productionclaim. Recompileweights/delays/outputsurfacechange."
+        }
+      },
+      "artifacts": [
+        "information_boltzmann/core/fly_rtc_motor_flux.py",
+        "information_boltzmann/core/fly_rtc_causal.py",
+        "scripts/ib/check_fly_rtc_causal_cpu.py",
+        "tests/test_fly_rtc_causal.py",
+        "docs/information_boltzmann/FLY_RTC_CAUSAL_REPAIR_20261007.md",
+        "results/published/fly_rtc_causal_cpu_20261007.json",
+        "results/published/fly_rtc_causal_cpu_20261007_preregistered.json",
+        "results/published/fly_rtc_causal_fused_cpu_20261007.json",
+        "results/published/fly_rtc_causal_fused_cpu_20261007_preregistered.json"
+      ],
+      "issues": [
+        "Nearlyallinducedgraphretained forH>=4; exactforecastdoesnotestablishcompactlearnedclosure.",
+        "CPUfusedspeed fromspecificmachine/precision/batch; nofullbrainGPUmeasurement.",
+        "Declaredzerofuturedrive/fixedparameterrevision isresponseboundarycondition, notunknownstimulusprediction.",
+        "Originalscatterreportfulltimingreturnedonlyfinalstate; correctedfusionreportfullreturnsalltickmotorfields.",
+        "No productionlearning/runtime switch orlanguageevaluation."
+      ],
+      "invalidation": "Invalidateexactnessifglobalcouplings/unknowncontrols/revisionmismatch used; independentlyvalidate largerrealgraph andrealstream jointlearnerbeforecapabilityclaims. Preserveactualmotorreadsurface andpendingintermediatearrivals."
+    },
+    {
+      "id": "IB_FLY_RTC_JOINT_20261007",
+      "parent": "IB_FLY_RTC_CAUSAL_20261007",
+      "title": "Joint language learning through exact causal motor-response drafts",
+      "status": "active",
+      "time": "2026-10-07",
+      "confidence": "O",
+      "motivation": "Exact differentiable sensory-to-motor response improves pre-update language NLL at matched real-data budget",
+      "action": "User stopped exact H14 continuation for wall-time cost. Graceful pause saved full last.pt at 9632 fresh train targets / 10016 total events / 313 optimizer updates; serial queue stopped and H0 arm not launched.",
+      "conclusion": "Execution ~4.29 token/s, GPU idle after stop. First-pass cumulative NLL7.27423 vs paired prior7.43708; only Fresh B NLL7.70769 vs prior7.51213. Budget-limited, unmatched incomplete comparison: task usefulness and convergence remain inconclusive. Exact physical draft retained as reference rather than cheap production claim.",
+      "prediction": {
+        "id": "P-20261007-RTC-JOINT",
+        "registered_before_result": true,
+        "expected_observation": "H14 improves matched fresh-stream/pre-update NLL if useful delayed response is the missing path; numerical fidelity alone does not guarantee NLL gain",
+        "falsifying_observation": "CUDA parity failure blocks promotion; nonfinite or >3900MiB stops execution; no task gain after matched budget limits task-usefulness claim."
+      },
+      "review": {
+        "experiment_approval_committee": {
+          "reviewer": "/root/rtc_contract_review",
+          "status": "approved",
+          "concerns": "Conditional short CUDA checkpoint parity then32-token fullgraph update; matchedH0/H14 adequate jointbudget; STPtrainexplicit; no cheap-runtime or unlimitedcreditclaims."
+        },
+        "result_reviewer": {
+          "reviewer": "/root/rtc_contract_review",
+          "status": "passed",
+          "concerns": "H14resource/numericalgatepassed; H0sameconfigurationcalibrationcomplete; sourcebackendresumeidentityfixed. Exactreferencecostmustremainvisible; taskgainpendingadequatebudget."
+        }
+      },
+      "artifacts": [
+        "information_boltzmann/core/fly_causal_rtc_learning.py",
+        "scripts/ib/train_fly_rtc_dagger.py",
+        "tests/test_fly_causal_rtc_learning.py",
+        "tests/test_fly_rtc_training_cli.py",
+        "docs/information_boltzmann/FLY_CAUSAL_RTC_JOINT_TRAINING_20261007.md",
+        "results/published/fly_causal_rtc_joint_preregistered_20261007.json",
+        "scripts/ib/run_fly_causal_rtc_comparison.py",
+        "results/fly_causal_rtc_h14_joint_100k/calibration.json",
+        "results/fly_causal_rtc_h0_joint_100k/calibration.json",
+        "results/published/fly_causal_rtc_joint_execution_20261007.json"
+      ],
+      "invalidation": "Reassess with input leakage, detached/stale weights, changed source/data/init, physical-clock mutation, or unmatched evaluation. CPU exactness does not establish fullbrain task gain.",
+      "execution_status": "stopped_by_user"
+    },
+    {
+      "id": "IB_FLY_HX1_CONTRACT_20261007",
+      "parent": "IB_FLY_HX1_AUDIT_20261007",
+      "title": "Gemini HX-1 nine-channel source contract review",
+      "status": "active",
+      "time": "2026-10-07",
+      "confidence": "O",
+      "motivation": "Handoff minimal source fixes for cheap learned physical-response surrogate after user stops costly exact training.",
+      "action": "Re-audit Gemini fixes:35CPU tests pass. Added window-partition numerical counterexample and independent review, no production changes or training.",
+      "conclusion": "Zero-region norm lock removed;9to1 replaced with separate channel projections; query indices aligned. Delay fix remains incomplete: prior misused as past posterior, no persistent4tick history; single-tick calls omit tier3/4 and drafts/queries omit initial history. Same8tick input whole vs single default next-prior maxdifference0.00023928; isolatedtier4contract0.335516. Task capability remains unjudged.",
+      "review": {
+        "conclusion_reviewer": {
+          "reviewer": "/root/rtc_contract_review",
+          "status": "accepted",
+          "concerns": "Three fixes confirmed. Persist prior separately from last4posterior states and supply timestamp-aligned history for live, drafts and queries. Complete zero-discrepancy test assertion. No new task-performance inference."
+        }
+      },
+      "artifacts": [
+        "docs/information_boltzmann/FLY_HX1_9CHANNEL_SOURCE_REVIEW_20261007.md",
+        "results/published/fly_hx1_9channel_contract_audit_20261007.json",
+        "docs/information_boltzmann/FLY_HX1_FIX_REAUDIT_20261007.md",
+        "results/published/fly_hx1_history_reaudit_20261007.json"
+      ],
+      "invalidation": "Re-audit against changed source hashes/history API; do not extrapolate numerical contract counterexamples into negative model-capability claims."
+    },
+    {
+      "id": "IB_FLY_HX1_REPAIRED_20261007",
+      "parent": "IB_FLY_HX1_CONTRACT_20261007",
+      "title": "Repaired HX-1 live-stream interim paired assessment",
+      "status": "active",
+      "time": "2026-10-07",
+      "confidence": "O",
+      "motivation": "Judge real predictive benefit of repaired lightweight observer using existing active evaluation rather than low latent loss or minimum segment NLL.",
+      "action": "Read15existing B evaluations through75008train tokens; recalculate frozen training-count prior for exactly matched validation targets. No new model execution, current process unchanged.",
+      "conclusion": "Bmean7.419592 vsprior7.367745, netgain−.051847;4/15positive. Best6.913963 vsprior6.932509 only+.018545. Training cumulativegain+.247782 is separate. A2gap256events. Attentionterminal~.999994; single-stepauxiliarylossdown, multi-hopOPDwithoutsame improvement under moving encoder metric. Taskadvantage and convergence unestablished.",
+      "review": {
+        "conclusion_reviewer": {
+          "reviewer": "/root/rtc_contract_review",
+          "status": "accepted",
+          "concerns": "Changing B text prevents raw trend attribution; moving latent encoder prevents physical fidelity inference. Native motor anchor+conditional residual is candidate, not proven cause/fix."
+        }
+      },
+      "artifacts": [
+        "docs/information_boltzmann/FLY_HX1_REPAIRED_PROGRESS_20261007.md",
+        "results/published/fly_hx1_repaired_paired_progress_20261007.json"
+      ],
+      "invalidation": "Reassess source/data/count mismatch or changed evaltargets; finalrunbudget and matchedmodelcomparison needed before architecture-capability claims."
+    },
+    {
+      "id": "IB_FLY_CTM_S14_REVIEW_20261008",
+      "parent": "IB_FLY_HX1_REPAIRED_20261007",
+      "title": "Actual S14 budget, paired live benefit and accumulation credit contract",
+      "status": "active",
+      "time": "2026-10-08",
+      "confidence": "O",
+      "motivation": "Separate useful internal evolution from inherited meter totals and optimizer aggregation claims.",
+      "action": "Read existing source and completed logs; CPU training-count prior recomputation on matched B targets. No model execution or new training.",
+      "conclusion": "S14 resumes 85k and adds 15k targets/3750 training updates. Stage train gain +0.432070; fresh B gains +0.263113,+0.167782,+0.154205. Tail6.679499 covers512train targets; inherited phase begins18144 acrossS4/S14. CTM scores use entropy-selected CE; true train objective adds label-best tick CE. All15ticks computed. Accum8x4 preserves physical state but only4token credit; incremental S14vsS4 advantage unestablished.",
+      "review": {
+        "conclusion_reviewer": {
+          "reviewer": "/root/rtc_contract_review",
+          "status": "accepted",
+          "concerns": "Partial checkpoint parity omits true loss/full state/None gradient parity. Single finite update does not certify stability; individual spectral radii do not bound time-varying Jacobian products."
+        }
+      },
+      "artifacts": [
+        "scripts/ib/audit_fly_ctm_s14_report.py",
+        "results/published/fly_ctm_s14_review_20261008.json",
+        "docs/information_boltzmann/FLY_CTM_S14_REVIEW_20261008.md"
+      ],
+      "invalidation": "Recompute if data cursors, loss/scoring implementation, training-count prior or inherited meter semantics change. No S14 causality/brain-region activation claim from selected tick alone."
+    },
+    {
+      "id": "IB_FLY_W32_NORM_FIX_20261008",
+      "parent": "IB_FLY_CTM_S14_REVIEW_20261008",
+      "title": "FP64 norm repair permits one true S14 W32 update within GPU budget",
+      "status": "active",
+      "time": "2026-10-08",
+      "confidence": "O",
+      "motivation": "Preserve full32token surrogate credit while distinguishing gradient-entry overflow from FP32 norm reduction overflow.",
+      "action": "Implemented bounded FP64 norm/common-direction clipping, full-state and true-loss checkpoint parity, numerical tests and one fully restored realOWT GPU update. No long training or source checkpoint modification.",
+      "conclusion": "52 affected CPU tests pass. Corrected calibration restores all parameters exactly;32events/480ticks/1update, all gradient entries finite but legacy FP32 normInf vs FP64 2.4471433608e20. Clipped norm1.000000032, parameters finite, allocated2158.67MiB/reserved2640MiB. Calibration update8.71s includes diagnostics/first-call overhead. One-window pre-update NLL6.661265 is not convergence evidence. Long-chain amplification remains.",
+      "prediction": {
+        "id": "P-20261008-W32-NORM",
+        "registered_before_result": true,
+        "expected_observation": "If Inf is FP32 norm reduction overflow while entries are finite, FP64 norm and common clipping permit the same full480tick update; actual NaN/Inf entries remain rejected.",
+        "falsifying_observation": "Nonfinite gradient entries or >3900MiB block update and require a separate numerical repair; parity failure blocks deployment."
+      },
+      "review": {
+        "experiment_approval_committee": {
+          "reviewer": "/root/rtc_contract_review",
+          "status": "approved",
+          "concerns": "Single real update only; preserve all state and optimizer history, full480tick graph, source immutable; zero/huge finite and actual nonfinite gradients distinguished."
+        },
+        "result_reviewer": {
+          "reviewer": "/root/rtc_contract_review",
+          "status": "accepted",
+          "concerns": "Numerical fix confirmed; 2.447e20 finite surrogate amplification remains. Current read gradient after global clipping~2.52e-21; restored Adam deltas need not indicate fresh read credit. Timing includes diagnostics and first-call overhead. Resource figures are PyTorch allocation/reservation; calibration guard extended to whole-board stage snapshots."
+        }
+      },
+      "artifacts": [
+        "information_boltzmann/core/gradient_norms.py",
+        "information_boltzmann/core/fly_bptt_learning.py",
+        "tests/test_gradient_norms.py",
+        "tests/test_fly_bptt_learning.py",
+        "scripts/ib/check_fly_s14_w32_update.py",
+        "results/published/fly_s14_w32_update_20261008.json",
+        "docs/information_boltzmann/FLY_S14_W32_NUMERICAL_REPAIR_20261008.md"
+      ],
+      "issues": [
+        "Initial calibration omitted nonpersistent E/I buffers and was invalidated; corrected report verifies every source parameter exactly before execution.",
+        "Large surrogate gradient amplification and unequal group credit remain; Adam history contributes to update sizes.",
+        "Global clipping shrinks fresh read projection norm from0.6167 to~2.52e-21; optimizer credit efficacy remains unresolved."
+      ],
+      "invalidation": "Reassess with changed loss, checkpoint/state provenance, parameter clipping or execution; numerical update success alone establishes neither long-run stability nor capability advantage."
     }
   ],
   "status_migration_note": "Normalize historical workflow labels for repository validator; original labels retained as legacy_status. No new experimental conclusions introduced.",

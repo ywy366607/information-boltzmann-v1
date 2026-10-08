@@ -1,0 +1,367 @@
+{
+  "date": "2026-10-07",
+  "reviewer": "/root/repair_result_review",
+  "role": "Independent offline conclusion reviewer under research-theory-discovery",
+  "status": "accepted_offline_attribution_unresolved_and_narrow_measurement_design",
+  "stage": "EXPLORE_result_informed_offline",
+  "execution_authorized": false,
+  "production_changes_authorized": false,
+  "training_authorized": false,
+  "independence": {
+    "generated_followup_hypotheses": false,
+    "authored_followup_closure_or_plan": false,
+    "execution_code_written": false,
+    "gpu_runs": 0,
+    "model_construction": false,
+    "numerical_experiments": false,
+    "training_updates": 0,
+    "only_written_artifact": "results/published/fly_pipeline_event_conclusion_review_20261007.json",
+    "activity": "Read all completed role reviews and frozen closure, inspect relevant source text, derive mathematical identities analytically, recheck existing scalar accounting/hashes, and write this file."
+  },
+  "sources": {
+    "input_sha256": {
+      "docs/information_boltzmann/FLY_EVENT_OBSERVABLE_CLOSURE_20261007.md": "9f3e02f017c1f23c5077c79a1f8fb5d2d3b19abd9befef79e6e8b247d811e976",
+      "results/published/fly_pipeline_event_hypothesis_review_20261007.json": "15e9e7ca9560dbc8c30653f5255cc85e6005c31378060d88642620eb580dbc31",
+      "results/published/fly_pipeline_event_necessity_review_20261007.json": "113575ac662dd6ee98dd568f8424a1fd5849cb131f32086c8b4e4235f18b8ae8",
+      "results/published/fly_pipeline_event_plan_review_20261007.json": "041a41f74061801e6dafe170b4ed8703306fb4f7548e91c9e2815747be9c5d42",
+      "results/published/fly_pipeline_repair_result_review_20261007.json": "b62d013196a61afb80b9026fc2846cca7a57738e7c0f1246cc00d0f45c747ce3",
+      "results/published/fly_pipeline_repair_diagnostic_20261007.json": "24f4c81d142909212880cedfdfbbae5a96ce5f6479bac9fd835f69a8635867bf"
+    },
+    "source_and_review_cross_locks": [
+      {
+        "path": "results/published/fly_pipeline_repair_result_review_20261007.json",
+        "sha256": "b62d013196a61afb80b9026fc2846cca7a57738e7c0f1246cc00d0f45c747ce3",
+        "expected": "b62d013196a61afb80b9026fc2846cca7a57738e7c0f1246cc00d0f45c747ce3",
+        "passed": true
+      },
+      {
+        "path": "results/published/fly_pipeline_repair_diagnostic_20261007.json",
+        "sha256": "24f4c81d142909212880cedfdfbbae5a96ce5f6479bac9fd835f69a8635867bf",
+        "expected": "24f4c81d142909212880cedfdfbbae5a96ce5f6479bac9fd835f69a8635867bf",
+        "passed": true
+      },
+      {
+        "path": "information_boltzmann/core/fly_pipeline.py",
+        "sha256": "17f857ac6f6d145f2bf1a1083ce98edf3b37d4de5f39b508f4eedcfef51db04c",
+        "expected": "17f857ac6f6d145f2bf1a1083ce98edf3b37d4de5f39b508f4eedcfef51db04c",
+        "passed": true
+      },
+      {
+        "path": "information_boltzmann/core/fly_reservoir.py",
+        "sha256": "a24915ab6cff4855cc63c6e3421549cc0f806d69929a8cfb515feb7481406ff0",
+        "expected": "a24915ab6cff4855cc63c6e3421549cc0f806d69929a8cfb515feb7481406ff0",
+        "passed": true
+      },
+      {
+        "path": "information_boltzmann/core/fly_bptt_learning.py",
+        "sha256": "17e620f100b7f2163a04eb83525e47ed454828a99c20c78814d20b9e877f9e33",
+        "expected": "17e620f100b7f2163a04eb83525e47ed454828a99c20c78814d20b9e877f9e33",
+        "passed": true
+      },
+      {
+        "path": "scripts/ib/diagnose_fly_pipeline_repair.py",
+        "sha256": "c9e88111a410b08caccf90aef0766971d63669b539195e0c95dd2892d48b37f7",
+        "expected": "c9e88111a410b08caccf90aef0766971d63669b539195e0c95dd2892d48b37f7",
+        "passed": true
+      },
+      {
+        "path": "docs/information_boltzmann/FLY_EVENT_OBSERVABLE_CLOSURE_20261007.md",
+        "sha256": "9f3e02f017c1f23c5077c79a1f8fb5d2d3b19abd9befef79e6e8b247d811e976",
+        "expected": "9f3e02f017c1f23c5077c79a1f8fb5d2d3b19abd9befef79e6e8b247d811e976",
+        "passed": true
+      },
+      {
+        "path": "results/published/fly_pipeline_event_hypothesis_review_20261007.json",
+        "sha256": "15e9e7ca9560dbc8c30653f5255cc85e6005c31378060d88642620eb580dbc31",
+        "expected": "15e9e7ca9560dbc8c30653f5255cc85e6005c31378060d88642620eb580dbc31",
+        "passed": true
+      },
+      {
+        "path": "results/published/fly_pipeline_repair_result_review_20261007.json",
+        "sha256": "b62d013196a61afb80b9026fc2846cca7a57738e7c0f1246cc00d0f45c747ce3",
+        "expected": "b62d013196a61afb80b9026fc2846cca7a57738e7c0f1246cc00d0f45c747ce3",
+        "passed": true
+      },
+      {
+        "path": "results/published/fly_pipeline_repair_diagnostic_20261007.json",
+        "sha256": "24f4c81d142909212880cedfdfbbae5a96ce5f6479bac9fd835f69a8635867bf",
+        "expected": "24f4c81d142909212880cedfdfbbae5a96ce5f6479bac9fd835f69a8635867bf",
+        "passed": true
+      },
+      {
+        "path": "information_boltzmann/core/fly_pipeline.py",
+        "sha256": "17f857ac6f6d145f2bf1a1083ce98edf3b37d4de5f39b508f4eedcfef51db04c",
+        "expected": "17f857ac6f6d145f2bf1a1083ce98edf3b37d4de5f39b508f4eedcfef51db04c",
+        "passed": true
+      },
+      {
+        "path": "information_boltzmann/core/fly_reservoir.py",
+        "sha256": "a24915ab6cff4855cc63c6e3421549cc0f806d69929a8cfb515feb7481406ff0",
+        "expected": "a24915ab6cff4855cc63c6e3421549cc0f806d69929a8cfb515feb7481406ff0",
+        "passed": true
+      },
+      {
+        "path": "information_boltzmann/core/fly_bptt_learning.py",
+        "sha256": "17e620f100b7f2163a04eb83525e47ed454828a99c20c78814d20b9e877f9e33",
+        "expected": "17e620f100b7f2163a04eb83525e47ed454828a99c20c78814d20b9e877f9e33",
+        "passed": true
+      }
+    ],
+    "all_cross_locks_match": true,
+    "final_doc_bound_by_plan_and_necessity_signoff": true,
+    "necessity_review_update_lineage": {
+      "plan_review_read_pre_final_signoff_sha256": "ca3ba8cbb06cb5a2aea2d4a937fff17d18a34e9a4fed62051757806aa2044c53",
+      "reconstructed_prior_without_final_signoff_sha256": "0ea0c072b8f02efade2c3ab59453892885e87c64ca8d2baff7df31ff0ec1f9c8",
+      "exact_serialization_match": false,
+      "interpretation": "The committee captured an earlier necessity-review hash; the current necessity final-version signoff and committee both bind the identical frozen root document. Reconstruction of the earlier whole-file byte serialization did not reproduce its hash, so no exact append-only byte-equivalence is claimed. This reviewer independently audited the current final mathematical conditions and narrower plan; the final necessity hash is recorded among inputs."
+    },
+    "previous_report_and_review_preserved": true
+  },
+  "role_completion": {
+    "hypothesis_status": "competing_explanations_attribution_unresolved",
+    "necessity_status": "accepted_as_offline_design_scope_only",
+    "necessity_final_document_sha256": "9f3e02f017c1f23c5077c79a1f8fb5d2d3b19abd9befef79e6e8b247d811e976",
+    "necessity_final_verdict": "accepted_final_offline_math_and_narrow_design_scope",
+    "plan_status": "approved_design_only",
+    "plan_execution_authorized": false,
+    "conclusion_status": "independent_accepted_with_explicit_math_and_scope_boundaries"
+  },
+  "existing_observations_recomputed": {
+    "ordinary_actual_body_fixed_fit_delta": -0.0002825409173965454,
+    "fixed_event_dot_actual_body_displacement": -0.0002828841329426128,
+    "fixed_event_taylor_remainder": 3.432155460674109e-07,
+    "hard_fit_delta": 0.00013505667448043823,
+    "event_tape_endpoint_contrast": 0.00041759759187698364,
+    "exact_branch_reconstruction_error": 0.0,
+    "following_delta": -0.0005512535572052002,
+    "normalized_projected_feature_variation_fit": 0.00011065653891157786,
+    "normalized_projected_feature_variation_following": 6.436811656879634e-05,
+    "full_minus_retrospective_common_fit": -0.00086192786693573,
+    "full_minus_retrospective_common_following": -0.0002996399998664856,
+    "different_real_prefix_B_minus_A": -0.0005932003259658813,
+    "C_reset_status": "locally_unsupported",
+    "prior_budget_cumulative": {
+      "forward_windows": 88,
+      "physical_ticks": 2816,
+      "backwards": 6,
+      "disposable_updates": 4
+    },
+    "scope": "Immutable preceding diagnosis: one available outcome report, 96 unique positions, reused deterministic counterfactuals. No new outcome or NLL decomposition terms were measured in this offline followup."
+  },
+  "formula_audit": [
+    {
+      "object": "Exact finite CE contrast",
+      "verdict": "accepted_exact",
+      "formula": "CE(a_H,y)-CE(a_F,y)=log E_{p_F}[exp(delta)]-delta_y, delta=a_H-a_F, p_F=softmax(a_F)",
+      "independent_derivation": "CE(a,y)=logsumexp(a)-a_y. The logsumexp difference is log(sum_j exp(a_Fj)*exp(delta_j)/sum_j exp(a_Fj))=log E_pF exp(delta).",
+      "assumptions": [
+        "Identical target for each paired term.",
+        "Finite complete logits and the actual softmax vocabulary.",
+        "Matched parameters/initial state/event-tape intervention defines the scientific contrast; the algebra alone does not ensure an identifying intervention."
+      ],
+      "boundary": "A finite event-path task contrast is not a sum of individual spike causal effects. NLL scalars determine the total contrast but not its alignment and KL components."
+    },
+    {
+      "object": "KL minus correct-target alignment",
+      "verdict": "accepted_exact",
+      "formula": "CE_H-CE_F=KL(p_F||p_H)-A, A=delta_y-E_pF[delta]",
+      "independent_derivation": "log p_Hj-log p_Fj=delta_j-log E_pF exp(delta). Averaging its negative under p_F gives KL(p_F||p_H)=log E_pF exp(delta)-E_pF delta; subtract A to obtain the CE contrast.",
+      "sign_rule": "Exact benefit iff A>KL. A<=0 implies nonbenefit because KL>=0; positive A can still be outweighed by KL. Event/task sign is local to the matched target and reference branch.",
+      "gauge": "Adding one scalar to all vocabulary logits per event leaves probabilities, A, KL and CE differences invariant. A vocabulary-vector time mean is not this gauge and must be retained.",
+      "boundary": "KL is a probability divergence/finite softmax curvature contribution, not thermodynamic entropy flow. A/KL for B-A or C-A must use the corresponding A reference distribution, not B-C p_F indiscriminately."
+    },
+    {
+      "object": "RMSNorm Jacobian",
+      "verdict": "accepted_with_fixed_gain_and_epsilon",
+      "formula": "J(r)=D_gamma[I/rho-r*r^T/(d*rho^3)], rho=sqrt(r^T*r/d+epsilon)",
+      "independent_derivation": "d(r/rho)=dr/rho-r*(r^T dr)/(d*rho^3), since d rho=(r^T dr)/(d rho). Multiplying by fixed D_gamma gives the displayed Jacobian.",
+      "eigenspace_boundary": "Before D_gamma and for r nonzero, tangential gain is1/rho and radial gain isepsilon/rho^3. At positive epsilon both are positive, so there is no exact radial null in this pre-gain Jacobian. At r=0 the Jacobian is I/sqrt(epsilon) before gain. Anisotropic or zero gain changes the full-map singular directions.",
+      "finite_boundary": "Exact finite normalization endpoints and the actual epsilon/gain are needed; a local radial/tangent linearization cannot assign an entire finite event contrast. Directional codes may remain useful despite radial attenuation."
+    },
+    {
+      "object": "Smooth current-head task differential",
+      "verdict": "accepted_first_order_only",
+      "formula": "d CE=(p-onehot(y))^T W_dec J_norm(r) W_read d h",
+      "conditions": "Fixed W_read/W_dec/b/gain/epsilon, a differentiable read branch and correct sealed target. Changed head/gain requires additional terms; finite threshold changes use the exact CE identity instead.",
+      "boundary": "Task alignment weights the observed contrast. State/logit norm, low rank, spike count or physical energy alone cannot replace this signed task effect."
+    },
+    {
+      "object": "Finite hybrid parameter-path closure",
+      "verdict": "accepted_conditional_telescope",
+      "formula": "Delta L=sum_intervals integral grad L_E(vartheta(lambda)) dot Delta d lambda + sum_boundaries[L_plus-L_minus]",
+      "independent_derivation": "For the scalar path f(lambda)=L(vartheta0+lambda*Delta), integrate its derivative on every absolutely continuous fixed-event interval and telescope the one-sided endpoint values across all boundaries.",
+      "assumptions": [
+        "The parameter path is feasible/differentiable and the same complete entering state and head define the loss.",
+        "There are finitely many event/other discontinuity boundaries for this finite unroll, integrable path derivatives on intervals, and finite one-sided loss limits.",
+        "Within intervals the complete path loss is piecewise C1 or absolutely continuous with the appropriate almost-everywhere chain derivative.",
+        "Simultaneous crossings and induced cascades are grouped as one aggregate boundary. Other discontinuities are included; continuous clamp/gate breakpoints contribute zero jump.",
+        "Endpoint values L(0),L(1) match the chosen one-sided branch values, or any endpoint convention jumps are explicitly included."
+      ],
+      "boundary": "Finite/transverse boundary conditions are a mathematical hypothesis, not measured properties of this saved step. The endpoint H/F event-tape contrast includes downstream continuous trajectory consequences and is generally not the path jump sum. The narrower planned trace does not enumerate path boundaries or claim to estimate that sum."
+    },
+    {
+      "object": "Fixed-event endpoint loss identity",
+      "verdict": "accepted_exact",
+      "formula": "L_hard(theta0+d)-L_hard(theta0)=[L_fixed_old_events(theta0+d)-L_hard(theta0)]+[L_hard(theta0+d)-L_fixed_old_events(theta0+d)]",
+      "boundary": "This is exact endpoint accounting for a defined intervention. Holding all original events fixed is an artificial counterfactual; it does not isolate reset, clamp, optimizer moments or biological event-credit law."
+    }
+  ],
+  "necessity_vs_cause": {
+    "necessary_for_claimed_local_identification": [
+      "Matched complete state/targets/prediction timestamp and event-tape intervention.",
+      "Actual post-Adam/post-clamp displacement and identical head/bias.",
+      "Task-weighted probabilities through the implemented motor measurement.",
+      "Resolution/reconstruction/replay gates before interpreting a contrast."
+    ],
+    "useful_first_measurement": "Trace v,s,p,h,r,z and actual centered logits for A/B/C and compute exact paired CE, alignment and KL.",
+    "possible_only": [
+      "Pre-reset/pulse observable.",
+      "Learning-operator/event-credit changes.",
+      "Normalization/calibration changes.",
+      "Longer historical credit or coadaptation."
+    ],
+    "not_established": [
+      "Necessity of any new mechanism.",
+      "Unique root cause of the previous plateau.",
+      "Motor semantic information absence.",
+      "Global harmful event credit or optimizer-history dominance."
+    ],
+    "conditional_information_note": "A Bayes conditional improvement I(Y;M|C) requires an explicitly defined baseline C and comparison distribution/decoder class. Deterministic motor M adds no information conditional on complete past; current-head/local losses do not estimate this mutual information."
+  },
+  "narrow_plan_review": {
+    "verdict": "accepted_design_only",
+    "trajectory_count": 3,
+    "unique_real_target_positions": 64,
+    "window_events": 32,
+    "proposed_not_executed_budget": {
+      "forward_windows": 13,
+      "physical_ticks": 416,
+      "backwards": 1,
+      "disposable_optimizer_updates": 1,
+      "vram_limit_mib": 3900
+    },
+    "budget_arithmetic": "1 reconstruction observe + 3 trajectories * 2 windows * 2 evaluations =13windows;13*32=416ticks; only reconstruction performs1backward/1disposable update.",
+    "current_followup_actual_budget": {
+      "forward_windows": 0,
+      "physical_ticks": 0,
+      "backwards": 0,
+      "optimizer_updates": 0
+    },
+    "lineage": "The old displacement staging was removed; future reconstruction conformance must be verified against actual source learner/moments, norms/dots/clamp/risk/event counts. It cannot claim bytewise recovery of removed coordinates without their original bytes.",
+    "timing": "Native motor pulse is derived from the same old STP state and sealed motor spike; validate against the motor committed pulse. No extra integration, direct token-to-head path or substitute head is permitted.",
+    "minimum_identifiable_output": "Geometric propagation/resolution and signed current-head task effect for the specified single finite direction on fit32/following32.",
+    "unidentified_after_trace": [
+      "Current SG versus bundled saved-Adam direction.",
+      "Unique moments/clamp/reset contribution.",
+      "Lost semantic information or a superior alternative read.",
+      "Entering-state parameter tangent/full-history credit.",
+      "Global or long-run task/capability effects."
+    ],
+    "centering": "Per-event all-vocabulary scalar gauge only; retain any retrospective time-common vector.",
+    "finite_map": "Keep exact r/z endpoints and implemented gain/epsilon; local Jacobian and coordinate-dependent norms are descriptive.",
+    "new_execution_gate": "A separate immutable preregistration, independently reviewed implementation, numerical/reconstruction resource gates and final source/data/code locks are mandatory before execution."
+  },
+  "accepted_claims": [
+    {
+      "claim": "Existing attribution remains unresolved while the finite fixed-event descent and local event-associated hard-fit reversal are measured.",
+      "support": {
+        "ordinary_actual_body_fixed_fit_delta": -0.0002825409173965454,
+        "fixed_event_dot_actual_body_displacement": -0.0002828841329426128,
+        "fixed_event_taylor_remainder": 3.432155460674109e-07,
+        "hard_fit_delta": 0.00013505667448043823,
+        "event_tape_endpoint_contrast": 0.00041759759187698364,
+        "exact_branch_reconstruction_error": 0.0,
+        "following_delta": -0.0005512535572052002,
+        "normalized_projected_feature_variation_fit": 0.00011065653891157786,
+        "normalized_projected_feature_variation_following": 6.436811656879634e-05,
+        "full_minus_retrospective_common_fit": -0.00086192786693573,
+        "full_minus_retrospective_common_following": -0.0002996399998664856,
+        "different_real_prefix_B_minus_A": -0.0005932003259658813,
+        "C_reset_status": "locally_unsupported",
+        "prior_budget_cumulative": {
+          "forward_windows": 88,
+          "physical_ticks": 2816,
+          "backwards": 6,
+          "disposable_updates": 4
+        },
+        "scope": "Immutable preceding diagnosis: one available outcome report, 96 unique positions, reused deterministic counterfactuals. No new outcome or NLL decomposition terms were measured in this offline followup."
+      },
+      "strength": "local_observation_and_exact_endpoint_accounting"
+    },
+    {
+      "claim": "The same actual body step can worsen retrospective hard fit and improve conditional following32.",
+      "support": "The risks have different targets and entering states/horizons; the two observed signs do not logically contradict each other.",
+      "strength": "local_observation"
+    },
+    {
+      "claim": "The chosen observable/read geometry and the task-weighted finite event contrast are useful missing identifying objects.",
+      "support": "The current record measures projected normalized feature variation and total loss contrasts, not a stage-wise propagated contrast or its A/KL terms.",
+      "strength": "identification_requirement_for_narrow_question"
+    },
+    {
+      "claim": "A/B/C with fixed original head and old-fit-terminal following start is an adequate first measurement DESIGN for these particular contrasts.",
+      "support": "It can test geometric propagation/attenuation and current-head signed task effect while leaving event-credit versus saved-optimizer, entering-state derivative history and population heterogeneity open.",
+      "strength": "design_sufficiency_for_declared_scope"
+    },
+    {
+      "claim": "The narrower first trace does not require an extra current-SG direction or scale search.",
+      "support": "Those are required only for optimizer-specific direction attribution, an explicitly deferred question; the necessity appendix and plan committee agree on this narrower scope.",
+      "strength": "minimality_scope_decision"
+    },
+    {
+      "claim": "Alternative observables and learning laws remain possible directions, conditional on a future distinguishing result.",
+      "support": "Non-injectivity of reset and projection null directions are possible contrast losses; sufficient semantic information and usefulness require an adequate matched decoder/calibration and independent task evidence.",
+      "strength": "possible_not_selected"
+    }
+  ],
+  "rejected_claims": [
+    {
+      "claim": "Offline formulas establish reset/RMSNorm/Adam as the global or unique root cause.",
+      "reason": "They establish conditional mathematical objects and local task contrast; competing implementation/optimizer/read/state/horizon explanations remain open.",
+      "affirmative_boundary": "Use the three-trajectory design to resolve a particular propagation stage and task sign."
+    },
+    {
+      "claim": "Low normalized-feature variation or a nearly common current head proves absent motor information or a globally defective read.",
+      "reason": "The observed object is RMSNorm(W_read h), and current-head loss does not estimate Bayes information or decoder-class adequacy. Raw cross-stage norm ratios also depend on coordinates.",
+      "affirmative_boundary": "Report current-coordinate variation and measure resolution at each map with its own floors."
+    },
+    {
+      "claim": "The endpoint hard/fixed difference is the sum of individual spike penalties or parameter-path jumps.",
+      "reason": "It is a full event-tape counterfactual and includes recurrent downstream continuous interactions.",
+      "affirmative_boundary": "Use the exact endpoint CE/KL-minus-alignment decomposition; conditional path accounting remains separate."
+    },
+    {
+      "claim": "A positive loss contrast with surviving logits proves a universally wrong surrogate gradient or optimizer.",
+      "reason": "One actual saved-Adam direction cannot distinguish the proxy from optimizer transformation and clamps; fit/following/task heterogeneity remains.",
+      "affirmative_boundary": "Identify local current-head event/read task alignment and reserve optimizer attribution for a separately controlled comparison."
+    },
+    {
+      "claim": "A geometric loss witness selects a pulse/pre-reset decoder or guarantees NLL improvement.",
+      "reason": "Resolved lost variation need not be predictive and the existing head is calibrated for the current observable.",
+      "affirmative_boundary": "A witness only nominates a matched read-surface/head calibration comparison for separate review."
+    },
+    {
+      "claim": "The approved-design-only plan authorizes implementation, GPU execution, extra recovery or production/training changes.",
+      "reason": "All review roles explicitly deny execution authority and the earlier88-window recovery budget is consumed.",
+      "affirmative_boundary": "Before any measurement, independently seal and approve a new bounded source/data/code/target/budget implementation protocol."
+    },
+    {
+      "claim": "The three-trajectory trace would prove long-run convergence, semantic capacity or independent capability gain.",
+      "reason": "It reuses64 real positions at one checkpoint and conditions on an old entering state; it is not primary active evaluation or independent held-out capability training.",
+      "affirmative_boundary": "Capability claims require sufficiently trained real-data continuous evaluation with independent validation."
+    },
+    {
+      "claim": "C_reset may be revived using this offline reinterpretation.",
+      "reason": "Its registered conjunction remains locally_unsupported; no endpoint or mechanism was reselected.",
+      "affirmative_boundary": "Retain the local rejection and treat the new question as event/read attribution only."
+    }
+  ],
+  "next_single_action": {
+    "action": "Seal the existing three-trajectory read-chain/task-contrast measurement as one separately reviewed implementation-and-budget protocol; stop at review before any execution.",
+    "question": "Where does this actual event/update contrast become unresolved or change current-head task alignment?",
+    "scope": "A/B/C at scale1 with original head/bias and old-fit-terminal following state; no extra SG arm, scale search, new decoder, reset revival or training.",
+    "future_decision_rule": "A resolved geometric-loss witness nominates a matched read comparison only. A resolved adverse B-C contrast with surviving read stages supports local event/read alignment, not a unique gradient/optimizer cause. Mixed or within-floor effects retain attribution_unresolved.",
+    "stop_condition": "No execution under this offline review. Future reconstruction/interface/memory/nonfinite/event/state/field-repeat failure yields invalid/ambiguous output and stops without adaptive budget expansion."
+  },
+  "summary": "Accept the frozen mathematical closure and narrower single next design. Existing results support local fixed-event descent plus event-associated hard-fit reversal and following benefit; attribution remains unresolved. The completed independent reviews select no mechanism and grant no execution."
+}

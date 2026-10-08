@@ -1,0 +1,107 @@
+{
+  "checkpoint": "D:\\information-boltzmann-v1\\results\\medium_v8_joint_bptt32_96k_recovered\\last.pt",
+  "optimizer_updates": 0,
+  "mode": "weights-only explicit migration; fixed real physical state",
+  "old_parameters": 14067511,
+  "dynamic_parameters": 14247735,
+  "exact_migration": true,
+  "new_projection_ce_gradient_norms": {
+    "motion_policy": 9.032721519470215,
+    "motion_keys": 2.2084410190582275,
+    "motion_merge": 25.167634963989258
+  },
+  "cpu_read_decode_ms": {
+    "instantaneous": 5.079633333176996,
+    "dynamic": 17.640889999650728
+  },
+  "cpu_calibration_seconds": 0.6825643999909516,
+  "timing_scope": "one native read and vocabulary decode at fixed state; includes coefficient preparation",
+  "source_hashes": {
+    "information_boltzmann\\core\\plastic_medium.py": "e597bf6f69d1255469d134573e036b14663b2e57f9059a9a1a3856f740048626",
+    "information_boltzmann\\core\\readout_probes.py": "a3dd4cadbb5c8a03ee175972d3525fb06e975fd440ad0bd9301be0915eacbb9b",
+    "information_boltzmann\\core\\plastic_ports.py": "e8bb0ae091375385297fd36f5ff0ebb18562a73226097081300ac887a272b258",
+    "information_boltzmann\\core\\conductance_response.py": "cb5906b37aecab485b9c61ad7251a8f95ff41fc37d25fdca3f7d137818584a2e",
+    "information_boltzmann\\runtime\\optimization.py": "61b6086d6c594d6ef6b45047b6407db34f7488474681fa5a4a6c19963e353e1b",
+    "information_boltzmann\\runtime\\continuous.py": "6fffa7a2e42e240edeeec5021ad9224c5eacaf41b047c2b98afffae4802fa1e5",
+    "information_boltzmann\\runtime\\training.py": "2694def3ab8abcbcfa4b5f3c0d9c0102f8a28ffa2bc791ae075da5b283e744d4",
+    "scripts\\ib\\audit_medium_dynamic_read.py": "bb60e9f9087723a04fb53ce7ed8f8fc8bfc63d889386f45e8976f9a3e7e5e121"
+  },
+  "all_candidate_parameters_unchanged": true,
+  "prior_gpu_calibration": {
+    "artifact": "results/published/medium_dynamic_read_gpu_initial_20261008.json",
+    "scope": "Same production model code. Initial graph-parity/backward timing used the following corpus token instead of pending carry as its arbitrary CE target. Corrected real issued-prediction target and current source fingerprints are used in this CPU acceptance report.",
+    "recalibration": "Further GPU calibration deferred when another job raised occupancy above 2900 MiB; no other process stopped."
+  },
+  "independent_review": {
+    "reviewer": "/root/rtc_contract_review",
+    "status": "accepted",
+    "scope": "Numerical, locality, migration, gradients and continuation; target alignment and source fingerprints corrected after review."
+  },
+  "validation": {
+    "new_tests": {
+      "passed": 9
+    },
+    "full_repository_cpu": {
+      "passed": 1019,
+      "skipped": 85,
+      "failed": 12,
+      "failure_records": [
+        {
+          "test": "tests.test_adaptive_force.test_acceptance_6_backward_compatibility_old_checkpoints",
+          "message": "FileNotFoundError: [Errno 2] No such file or directory: 'results/ib_local_bpe_256_3000_v2/age_003000.pt'"
+        },
+        {
+          "test": "tests.test_ctm_settle_forward.test_ctm_forward",
+          "message": "RuntimeError: Attempting to deserialize object on a CUDA device but torch.cuda.is_available() is False. If you are running on a CPU-only machine, please use torch.load with map_location=torch.device('cpu') to map your storages to the CPU."
+        },
+        {
+          "test": "tests.test_fly_causal_rtc_learning.test_actual_clock_excludes_branch_ticks_and_resume_is_complete",
+          "message": "AttributeError: 'NoneType' object has no attribute 'mean'"
+        },
+        {
+          "test": "tests.test_fly_one_update_diagnostic.test_checkpointed_event_preserves_forward_state_and_all_surrogate_gradients",
+          "message": "AttributeError: 'tuple' object has no attribute 'h'"
+        },
+        {
+          "test": "tests.test_fly_online_learning.test_rmsnorm_matches_actual_forward_epsilon",
+          "message": "AttributeError: 'tuple' object has no attribute 'h'"
+        },
+        {
+          "test": "tests.test_fly_online_learning.test_writer_old_baseline_reset_alif_matches_autograd",
+          "message": "AttributeError: 'tuple' object has no attribute 'h'"
+        },
+        {
+          "test": "tests.test_fly_online_learning.test_physical_local_sensitivities_match_autograd",
+          "message": "AttributeError: 'tuple' object has no attribute 'h'"
+        },
+        {
+          "test": "tests.test_fly_pipeline.test_pipeline_assimilates_every_target_once_and_continues_windows",
+          "message": "AttributeError: 'NoneType' object has no attribute 'mean'"
+        },
+        {
+          "test": "tests.test_fly_pipeline_stream_cli.test_strict_full_pipeline_restore_retains_weights_physics_and_adam",
+          "message": "AttributeError: 'NoneType' object has no attribute 'mean'"
+        },
+        {
+          "test": "tests.test_fly_read_gamma_trace.test_predict_fly_next_matches_bptt_scoring",
+          "message": "AssertionError: Scalars are not close!\n\nExpected 3.453303098678589 but got 3.464688777923584.\nAbsolute difference: 0.011385679244995117 (up to 1e-05 allowed)\nRelative difference: 0.003297040230656806 (up to 1e-05 allowed)"
+        },
+        {
+          "test": "tests.test_fly_rtc.test_joint_update_query_replay_and_complete_resume",
+          "message": "AttributeError: 'NoneType' object has no attribute 'mean'"
+        },
+        {
+          "test": "tests.test_fly_streaming_learning.test_streaming_observer_survives_updates_and_full_resume",
+          "message": "AttributeError: 'NoneType' object has no attribute 'mean'"
+        }
+      ]
+    },
+    "deslice_gate_script": "passed",
+    "tree_strict_validator": "passed",
+    "affected_suite": {
+      "passed": 68,
+      "skipped": 5,
+      "failed": 0
+    }
+  }
+}

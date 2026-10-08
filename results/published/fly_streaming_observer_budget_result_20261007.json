@@ -1,0 +1,30 @@
+{
+  "status": "budget_completed",
+  "fresh_train_targets": 100000,
+  "fresh_optimizer_updates": 3125,
+  "first_pass_train_nll": 7.280357515563965,
+  "first_pass_fixed_unigram_nll": 7.476811781008602,
+  "first_pass_gain": 0.1964542654446373,
+  "last1000_fresh_updates": {
+    "tokens": 32000,
+    "nll": 7.370053437829018,
+    "gain_over_paired_unigram": 0.08841112407073524
+  },
+  "fresh_B": {
+    "contexts": 20,
+    "targets": 5120,
+    "mean_nll": 7.560628038225696,
+    "mean_unigram_nll": 7.474569172726911,
+    "mean_gain": -0.08605886549878536,
+    "positive_contexts": 3,
+    "first10_mean_gain": -0.08734465481620104,
+    "last10_mean_gain": -0.08477307618136969
+  },
+  "observer_instability": {
+    "max_forecast_mse": 118280944.0,
+    "max_preclip_gradient": 17701369856.0
+  },
+  "interpretation": "Current-stream conditional gains observed, but no sustained matched fresh-context advantage. No convergence or architecture impossibility claim. Auxiliary usefulness not identified without matched controls.",
+  "review_status": "descriptive source/log audit; independent mechanism review pending",
+  "continued_training": false
+}

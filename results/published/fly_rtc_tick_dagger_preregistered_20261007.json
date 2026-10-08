@@ -1,0 +1,38 @@
+{
+  "version": "fly-rtc-tick-dagger-v1",
+  "date": "2026-10-07",
+  "scope": "Independent implementation and one real32-token numerical calibration; no capability run.",
+  "user_authorization": "Implement one version of RTC + tick drafts + DAgger-inspired physical query aggregation.",
+  "independent_review": {
+    "reviewer": "/root/rtc_contract_review",
+    "status": "approved_calibration",
+    "budget": "32 real OWT targets, one optimizer update, <=3900MiB dedicated CUDA",
+    "note": "CE horizon mixture versus runtime horizon-specific outputs require separate task validation.",
+    "runtime_status": "Final implementation ready; concurrent admission, arrival suffix correction, continuation reviewed."
+  },
+  "tests": {
+    "command": "pytest tests/test_fly_rtc.py tests/test_fly_streaming_observer.py tests/test_fly_streaming_learning.py -q",
+    "passed": 24
+  },
+  "predictions": [
+    "One real tick per token; query and speculative ticks separately counted.",
+    "Student training sources and labels share actual full source and control scenario.",
+    "New-input/model revisions preserve executed prefix and reject stale suffix overwrite.",
+    "Calibration gradients finite and memory <=3900MiB; no NLL gain claim from one update."
+  ],
+  "failure_action": "Stop calibration on nonfinite or memory excess; repair explicit implementation contradiction before any formal run.",
+  "performance_status": "Unknown; >=3000 joint real-data updates and matched active evaluation needed.",
+  "initial_graph_scope": "Fixed initial E/I-delay graph; physical synapses continue plasticity.",
+  "calibration": {
+    "status": "blocked_before_model_initialization",
+    "error": "Windows1455 loading cufft64_11.dll during torch import",
+    "external_gpu_job": {
+      "pid": 15752,
+      "route": "q8_fly_bptt32_hx1_dagger_query_100k",
+      "observed_device_usage_mib": 2745
+    },
+    "our_gpu_updates": 0,
+    "checkpoint_created": false,
+    "action": "Do not contend with active external training; keep code ready for later single-window calibration."
+  }
+}

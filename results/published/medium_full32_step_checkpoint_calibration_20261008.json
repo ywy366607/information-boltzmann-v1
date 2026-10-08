@@ -1,0 +1,105 @@
+{
+  "arguments": [
+    "--output",
+    "E:/ib_checkpoints/medium_pathway_full32_step_calibration_20261008",
+    "--pretrained-embedding",
+    "data/gpt2_model.safetensors",
+    "--steps",
+    "2",
+    "--shape",
+    "8",
+    "8",
+    "8",
+    "--material-initialization",
+    "spectral-xavier",
+    "--material-bandwidth",
+    "runtime",
+    "--channels",
+    "768",
+    "--tokens",
+    "32",
+    "--chunk-tokens",
+    "32",
+    "--event-duration",
+    "0.899332940578461",
+    "--intrinsic-time-reference",
+    "0.899332940578461",
+    "--solver-max-step",
+    "0.00831809360533953",
+    "--observer-max-step",
+    "0.0332723744213581",
+    "--activation-checkpointing",
+    "--anisotropic-transport",
+    "--temporal-read",
+    "--temporal-time-reference",
+    "0.899332940578461",
+    "--write-aperture-budget",
+    "0.125",
+    "--read-aperture-budget",
+    "0.25",
+    "--structure-config",
+    "configs/information_boltzmann/medium_pathway_structure_20261008.json",
+    "--structure-dual-lr",
+    "0.0625",
+    "--execution",
+    "eager",
+    "--vram-limit-mib",
+    "3072",
+    "--lr",
+    "0.000002",
+    "--calibrate-only"
+  ],
+  "event_function_calls": 32,
+  "purpose": "full real-data BPTT execution/resources, not capability evidence",
+  "status": "failed",
+  "error": "OutOfMemoryError: CUDA out of memory. Tried to allocate 20.00 MiB. GPU 0 has a total capacity of 4.00 GiB of which 364.75 MiB is free. 2.81 GiB allowed; Of the allocated memory 2.79 GiB is allocated by PyTorch, and 11.67 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)",
+  "seconds": 67.74762200000077,
+  "memory": {
+    "sample_count": 102,
+    "sampled_peak_dedicated_mib": 2980.6484375,
+    "sampled_peak_shared_mib": 80.0,
+    "counter_errors": [],
+    "cap_exceeded": false,
+    "last_sample": {
+      "seconds": 8201.7966119,
+      "dedicated_bytes": 3125436416,
+      "shared_bytes": 83886080,
+      "rows": [
+        {
+          "Name": "pid_26228_luid_0x00000000_0x00018DBD_phys_0",
+          "DedicatedUsage": 3125436416,
+          "SharedUsage": 83886080
+        }
+      ]
+    },
+    "peak_is_sampled": true
+  },
+  "peak_allocated_mib": 2852.33056640625,
+  "peak_reserved_mib": 2864.0,
+  "final_progress": {
+    "status": "failed",
+    "pid": 26228,
+    "memory": {
+      "total_dedicated_mib": 749.0,
+      "allocated_mib": 483.43359375,
+      "peak_allocated_mib": 610.419921875,
+      "reserved_mib": 644.0
+    },
+    "step": 0,
+    "fresh_training_tokens": 0,
+    "events": 0,
+    "optimizer_updates": 0,
+    "physical_elapsed": 0.0,
+    "pending_gradient_events": 0,
+    "loss_components": {
+      "component_events": {}
+    },
+    "last_loss_components": {},
+    "health": {
+      "protocol": "persistent_medium_health_v1",
+      "status": "no_observations"
+    },
+    "phases": {},
+    "error": "OutOfMemoryError: CUDA out of memory. Tried to allocate 20.00 MiB. GPU 0 has a total capacity of 4.00 GiB of which 364.75 MiB is free. 2.81 GiB allowed; Of the allocated memory 2.79 GiB is allocated by PyTorch, and 11.67 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)"
+  }
+}

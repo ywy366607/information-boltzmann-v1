@@ -1,0 +1,165 @@
+{
+  "scope": "instrumented_production_chunk_forward_backward_excludes_optimizer",
+  "checkpoint": "results\\q8_predictive_ports_k16_unified_bath_3000\\BBest.pt",
+  "K": 16,
+  "dt": 4.0,
+  "chunk_tokens": 32,
+  "medians": {
+    "total_graph_ms": 478.3801574707031,
+    "write_forward_ms": 13.630415990948677,
+    "write_backward_ms": 59.584144115448,
+    "transport_forward_ms": 24.610992120578885,
+    "transport_backward_ms": 41.4621277153492,
+    "collision_forward_ms": 42.82639976218343,
+    "collision_backward_ms": 65.16326370835304,
+    "bath_forward_ms": 70.72758420556784,
+    "bath_backward_ms": 86.59019182622433,
+    "read_forward_ms": 5.700704000890255,
+    "read_backward_ms": 6.720159977674484,
+    "decoder_forward_ms": 0.3454879969358444,
+    "decoder_backward_ms": 0.491567999124527,
+    "unassigned_ms": 60.52711805142462
+  },
+  "backward_nodes": {
+    "write": [
+      "CompiledFunctionBackward"
+    ],
+    "transport": [
+      "CompiledFunctionBackward"
+    ],
+    "collision": [
+      "CompiledFunctionBackward"
+    ],
+    "bath": [
+      "CompiledFunctionBackward"
+    ],
+    "read": [
+      "CompiledFunctionBackward"
+    ],
+    "decoder": [
+      "CompiledFunctionBackward"
+    ]
+  },
+  "samples": [
+    {
+      "total_graph_ms": 478.9438171386719,
+      "write_forward_ms": 13.641535967588425,
+      "write_backward_ms": 59.638240337371826,
+      "transport_forward_ms": 24.64969616755843,
+      "transport_backward_ms": 41.62803178280592,
+      "collision_forward_ms": 42.80988773703575,
+      "collision_backward_ms": 65.21398384869099,
+      "bath_forward_ms": 70.81984013319016,
+      "bath_backward_ms": 86.7006716877222,
+      "read_forward_ms": 5.6888319700956345,
+      "read_backward_ms": 6.719327986240387,
+      "decoder_forward_ms": 0.3458879888057709,
+      "decoder_backward_ms": 0.492000013589859
+    },
+    {
+      "total_graph_ms": 478.9383850097656,
+      "write_forward_ms": 13.614303946495056,
+      "write_backward_ms": 59.59596788883209,
+      "transport_forward_ms": 24.735488146543503,
+      "transport_backward_ms": 41.34559974074364,
+      "collision_forward_ms": 42.9168638586998,
+      "collision_backward_ms": 65.16931197047234,
+      "bath_forward_ms": 71.04022419452667,
+      "bath_backward_ms": 86.64662382006645,
+      "read_forward_ms": 5.709151983261108,
+      "read_backward_ms": 6.7380479872226715,
+      "decoder_forward_ms": 0.34540799260139465,
+      "decoder_backward_ms": 0.48979198932647705
+    },
+    {
+      "total_graph_ms": 477.8373107910156,
+      "write_forward_ms": 13.673280090093613,
+      "write_backward_ms": 59.577311992645264,
+      "transport_forward_ms": 24.63881614431739,
+      "transport_backward_ms": 41.346079647541046,
+      "collision_forward_ms": 42.81036776304245,
+      "collision_backward_ms": 65.0318398475647,
+      "bath_forward_ms": 70.66793613135815,
+      "bath_backward_ms": 86.5225597769022,
+      "read_forward_ms": 5.682944029569626,
+      "read_backward_ms": 6.718112006783485,
+      "decoder_forward_ms": 0.3457280099391937,
+      "decoder_backward_ms": 0.491456001996994
+    },
+    {
+      "total_graph_ms": 478.2962951660156,
+      "write_forward_ms": 13.63078397512436,
+      "write_backward_ms": 59.59097623825073,
+      "transport_forward_ms": 24.603776145726442,
+      "transport_backward_ms": 41.61641574651003,
+      "collision_forward_ms": 42.842431761324406,
+      "collision_backward_ms": 65.16630382835865,
+      "bath_forward_ms": 70.63321594893932,
+      "bath_backward_ms": 86.49033576250076,
+      "read_forward_ms": 5.723424032330513,
+      "read_backward_ms": 6.700575977563858,
+      "decoder_forward_ms": 0.3449600040912628,
+      "decoder_backward_ms": 0.49353599548339844
+    },
+    {
+      "total_graph_ms": 478.0605773925781,
+      "write_forward_ms": 13.630048006772995,
+      "write_backward_ms": 59.55916786193848,
+      "transport_forward_ms": 24.60912011936307,
+      "transport_backward_ms": 41.40118367224932,
+      "collision_forward_ms": 42.73318383842707,
+      "collision_backward_ms": 65.16022358834743,
+      "bath_forward_ms": 70.88553626835346,
+      "bath_backward_ms": 86.5337598323822,
+      "read_forward_ms": 5.699616000056267,
+      "read_backward_ms": 6.7209919691085815,
+      "decoder_forward_ms": 0.34435200691223145,
+      "decoder_backward_ms": 0.48931199312210083
+    },
+    {
+      "total_graph_ms": 479.06292724609375,
+      "write_forward_ms": 13.647871971130371,
+      "write_backward_ms": 59.54332780838013,
+      "transport_forward_ms": 24.6128641217947,
+      "transport_backward_ms": 41.50841572880745,
+      "collision_forward_ms": 43.428959764540195,
+      "collision_backward_ms": 65.09999967366457,
+      "bath_forward_ms": 70.78723227977753,
+      "bath_backward_ms": 86.71443164348602,
+      "read_forward_ms": 5.747040033340454,
+      "read_backward_ms": 6.72716797888279,
+      "decoder_forward_ms": 0.3461120128631592,
+      "decoder_backward_ms": 0.48947200179100037
+    },
+    {
+      "total_graph_ms": 478.4640197753906,
+      "write_forward_ms": 13.628959953784943,
+      "write_backward_ms": 59.556480050086975,
+      "transport_forward_ms": 24.553120151162148,
+      "transport_backward_ms": 41.455455623567104,
+      "collision_forward_ms": 42.77484778314829,
+      "collision_backward_ms": 65.32838375866413,
+      "bath_forward_ms": 70.66249611973763,
+      "bath_backward_ms": 86.83868773281574,
+      "read_forward_ms": 5.701792001724243,
+      "read_backward_ms": 6.7503680139780045,
+      "decoder_forward_ms": 0.3455680012702942,
+      "decoder_backward_ms": 0.49167999625205994
+    },
+    {
+      "total_graph_ms": 478.0257263183594,
+      "write_forward_ms": 13.62678411602974,
+      "write_backward_ms": 59.6800639629364,
+      "transport_forward_ms": 24.569504160434008,
+      "transport_backward_ms": 41.46879980713129,
+      "collision_forward_ms": 42.84710379689932,
+      "collision_backward_ms": 65.11404798179865,
+      "bath_forward_ms": 70.56780804693699,
+      "bath_backward_ms": 86.50959973037243,
+      "read_forward_ms": 5.696831971406937,
+      "read_backward_ms": 6.716063976287842,
+      "decoder_forward_ms": 0.3442240059375763,
+      "decoder_backward_ms": 0.49273601174354553
+    }
+  ]
+}

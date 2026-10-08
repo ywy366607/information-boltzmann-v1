@@ -1,0 +1,390 @@
+{
+  "arguments": [
+    "--output",
+    "E:/ib_checkpoints/medium_pathway_full32_completed_grad_20261008",
+    "--pretrained-embedding",
+    "data/gpt2_model.safetensors",
+    "--steps",
+    "2",
+    "--shape",
+    "8",
+    "8",
+    "8",
+    "--material-initialization",
+    "spectral-xavier",
+    "--material-bandwidth",
+    "runtime",
+    "--channels",
+    "768",
+    "--tokens",
+    "32",
+    "--chunk-tokens",
+    "32",
+    "--event-duration",
+    "0.899332940578461",
+    "--intrinsic-time-reference",
+    "0.899332940578461",
+    "--solver-max-step",
+    "0.00831809360533953",
+    "--observer-max-step",
+    "0.0332723744213581",
+    "--activation-checkpointing",
+    "--anisotropic-transport",
+    "--temporal-read",
+    "--temporal-time-reference",
+    "0.899332940578461",
+    "--write-aperture-budget",
+    "0.125",
+    "--read-aperture-budget",
+    "0.25",
+    "--structure-config",
+    "configs/information_boltzmann/medium_pathway_structure_20261008.json",
+    "--structure-dual-lr",
+    "0.0625",
+    "--execution",
+    "eager",
+    "--vram-limit-mib",
+    "3072",
+    "--lr",
+    "0.000002",
+    "--calibrate-only"
+  ],
+  "event_function_calls": 162,
+  "physical_step_calls": 25300,
+  "memory_breadcrumbs": [
+    {
+      "completed_events": 0,
+      "physical_step_calls": 0,
+      "allocated_mib": 686.12451171875,
+      "seconds": 4.004796000001079
+    },
+    {
+      "completed_events": 6,
+      "physical_step_calls": 698,
+      "allocated_mib": 768.04296875,
+      "seconds": 13.333013000001301
+    },
+    {
+      "completed_events": 19,
+      "physical_step_calls": 2133,
+      "allocated_mib": 897.07861328125,
+      "seconds": 19.701775800000178
+    },
+    {
+      "completed_events": 32,
+      "physical_step_calls": 3584,
+      "allocated_mib": 1035.46337890625,
+      "seconds": 26.18532420000156
+    },
+    {
+      "completed_events": 32,
+      "physical_step_calls": 3629,
+      "allocated_mib": 1156.935546875,
+      "seconds": 30.985648000001675
+    },
+    {
+      "completed_events": 32,
+      "physical_step_calls": 3681,
+      "allocated_mib": 1287.8642578125,
+      "seconds": 31.40473259999999
+    },
+    {
+      "completed_events": 34,
+      "physical_step_calls": 3809,
+      "allocated_mib": 1414.19482421875,
+      "seconds": 32.70200020000084
+    },
+    {
+      "completed_events": 34,
+      "physical_step_calls": 3824,
+      "allocated_mib": 1546.21142578125,
+      "seconds": 32.923638199999914
+    },
+    {
+      "completed_events": 34,
+      "physical_step_calls": 3852,
+      "allocated_mib": 1682.0830078125,
+      "seconds": 33.43950920000134
+    },
+    {
+      "completed_events": 34,
+      "physical_step_calls": 3876,
+      "allocated_mib": 1798.455078125,
+      "seconds": 33.84995030000027
+    },
+    {
+      "completed_events": 34,
+      "physical_step_calls": 3904,
+      "allocated_mib": 1933.38916015625,
+      "seconds": 34.328713300001255
+    },
+    {
+      "completed_events": 160,
+      "physical_step_calls": 25085,
+      "allocated_mib": 2050.046875,
+      "seconds": 356.1005165000006
+    },
+    {
+      "completed_events": 162,
+      "physical_step_calls": 25204,
+      "allocated_mib": 2183.2890625,
+      "seconds": 357.33800040000096
+    },
+    {
+      "completed_events": 162,
+      "physical_step_calls": 25224,
+      "allocated_mib": 2318.26611328125,
+      "seconds": 357.69603890000144
+    },
+    {
+      "completed_events": 162,
+      "physical_step_calls": 25248,
+      "allocated_mib": 2435.26318359375,
+      "seconds": 358.10477060000085
+    },
+    {
+      "completed_events": 162,
+      "physical_step_calls": 25276,
+      "allocated_mib": 2571.140625,
+      "seconds": 358.5780083000009
+    },
+    {
+      "completed_events": 162,
+      "physical_step_calls": 25300,
+      "allocated_mib": 2688.5693359375,
+      "seconds": 358.9735666000015
+    }
+  ],
+  "purpose": "full real-data BPTT execution/resources, not capability evidence",
+  "status": "failed",
+  "error": "OutOfMemoryError: CUDA out of memory. Tried to allocate 20.00 MiB. GPU 0 has a total capacity of 4.00 GiB of which 360.75 MiB is free. 2.81 GiB allowed; Of the allocated memory 2.79 GiB is allocated by PyTorch, and 12.06 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)",
+  "seconds": 358.9942346000007,
+  "memory": {
+    "sample_count": 564,
+    "sampled_peak_dedicated_mib": 2924.6484375,
+    "sampled_peak_shared_mib": 80.0,
+    "counter_errors": [],
+    "cap_exceeded": false,
+    "last_sample": {
+      "seconds": 10973.1229957,
+      "dedicated_bytes": 3066716160,
+      "shared_bytes": 83886080,
+      "rows": [
+        {
+          "Name": "pid_25016_luid_0x00000000_0x00018DBD_phys_0",
+          "DedicatedUsage": 3066716160,
+          "SharedUsage": 83886080
+        }
+      ]
+    },
+    "peak_is_sampled": true
+  },
+  "peak_allocated_mib": 2852.06787109375,
+  "peak_reserved_mib": 2868.0,
+  "final_progress": {
+    "status": "failed",
+    "pid": 25016,
+    "memory": {
+      "total_dedicated_mib": 2161.0,
+      "allocated_mib": 1227.412109375,
+      "peak_allocated_mib": 2194.07861328125,
+      "reserved_mib": 2040.0
+    },
+    "step": 1,
+    "fresh_training_tokens": 32,
+    "events": 32,
+    "optimizer_updates": 1,
+    "physical_elapsed": 28.778654098510977,
+    "pending_gradient_events": 0,
+    "loss_components": {
+      "task_nll": 8.360246658325195,
+      "port_objective": 10.826465606689453,
+      "joint_objective": 19.18671226501465,
+      "port_nll": 10.826266288757324,
+      "write_action_kl": 0.00019954363233409822,
+      "structural_kl": 0.0,
+      "structural_maintenance": 3.0968456268310547,
+      "structural_objective": 8.360246658325195,
+      "component_events": {
+        "task_nll": 32,
+        "port_objective": 32,
+        "joint_objective": 32,
+        "port_nll": 32,
+        "write_action_kl": 32,
+        "structural_kl": 32,
+        "structural_maintenance": 32,
+        "structural_objective": 32
+      }
+    },
+    "last_loss_components": {
+      "task_nll": 8.360246658325195,
+      "port_objective": 10.826465606689453,
+      "joint_objective": 19.18671226501465,
+      "port_nll": 10.826266288757324,
+      "write_action_kl": 0.00019954363233409822,
+      "structural_kl": 0.0,
+      "structural_maintenance": 3.0968456268310547,
+      "structural_objective": 8.360246658325195
+    },
+    "health": {
+      "protocol": "persistent_medium_health_v1",
+      "events": 32,
+      "window_events": 32,
+      "energy": {
+        "write_work": 7.451317936182022,
+        "response_source_work": 55562.16296386719,
+        "dissipated_energy": 55562.29650878906,
+        "balance_residual": -0.0003662109375,
+        "initial_energy": 0.0,
+        "current_energy": 7.31740140914917,
+        "cumulative_balance_residual": -0.00037160515785217285,
+        "max_abs_write_residual": 7.227063179016113e-07,
+        "max_abs_evolution_residual": 0.0003662109375,
+        "max_abs_continuity_residual": 0.0
+      },
+      "structure": {
+        "field_dc_energy": 3.3279552459716797,
+        "field_ac_energy": 0.06051483750343323,
+        "flux_dc_energy": 0.02703605778515339,
+        "flux_ac_energy": 3.9018959999084473,
+        "field_spatial_fraction": 0.017859044351181356,
+        "latest_operator_changes": {
+          "transport_energy_change": -4.291534423828125e-06,
+          "transport_spatial_energy_change": -0.012886762619018555,
+          "collision_energy_change": 2.193450927734375e-05,
+          "collision_spatial_energy_change": -0.0005130767822265625,
+          "bath_energy_change": -0.23859834671020508,
+          "bath_spatial_energy_change": -0.21996068954467773
+        },
+        "window_operator_changes": {
+          "transport_energy_change": -5.0187110900878906e-05,
+          "transport_spatial_energy_change": -0.38502074778079987,
+          "collision_energy_change": 0.00041493773460388184,
+          "collision_spatial_energy_change": -0.019253551959991455,
+          "bath_energy_change": -0.13428115844726562,
+          "bath_spatial_energy_change": -2.987140417098999
+        }
+      },
+      "representation_segments": [
+        {
+          "phase": "train_first_pass",
+          "novel": true,
+          "samples": 32,
+          "status": "measured",
+          "variance": 210.19457825676085,
+          "temporal_roughness": 268.69091368123276,
+          "roughness_to_variance": 1.27829611928913,
+          "spectral_entropy": 1.8589862460234117,
+          "normalized_spectral_entropy": 0.5413492058431031,
+          "effective_rank": 6.41722798244532,
+          "participation_rank": 2.927421583771044,
+          "rank_bound": 31
+        }
+      ],
+      "predictive_risk": {
+        "blocks": [
+          {
+            "phase": "train_first_pass",
+            "novel": true,
+            "segment": 0,
+            "event_midpoint": 16.5,
+            "mean_nll": 8.360246479511261
+          }
+        ],
+        "by_phase": {
+          "train_first_pass/first_pass": {
+            "segment": 0,
+            "complete_blocks": 1,
+            "slope_nats_per_event": null,
+            "slope_hac_standard_error": null,
+            "hac_lags": null
+          }
+        }
+      },
+      "decoding": {
+        "feature_rms_before_norm": {
+          "latest": 0.5093740820884705,
+          "window_mean": 0.7097929324954748
+        },
+        "feature_rms_after_norm": {
+          "latest": 0.9999997615814209,
+          "window_mean": 0.9999998360872269
+        },
+        "logit_standard_deviation": {
+          "latest": 1.5803308486938477,
+          "window_mean": 1.5198895558714867
+        },
+        "prediction_entropy_nats": {
+          "latest": 7.037322044372559,
+          "window_mean": 7.692852273583412
+        }
+      },
+      "recent_optimizer_updates": [
+        {
+          "event": 32,
+          "gradient_norm_before_clip": 20.754345325968057,
+          "actual_update_norm": 0.014772895567461957,
+          "parameter_norm": 3008.984518811889,
+          "relative_update_norm": 4.909595072724103e-06
+        }
+      ],
+      "interpretation": "Descriptive health measurements; no noise-expulsion, criticality or convergence verdict."
+    },
+    "phases": {
+      "train_first_pass": {
+        "events": 32,
+        "nll_sum": 267.52788734436035,
+        "prior_sum": 263.0625325246244,
+        "nll": 8.360246479511261,
+        "fixed_unigram_nll": 8.220704141394512,
+        "gain": -0.13954233811674932
+      }
+    },
+    "train_prequential_nll": 8.360246479511261,
+    "fixed_unigram_nll": 8.220704141394512,
+    "seconds_per_group": 334.97564989999955,
+    "tokens_per_second": 0.09552933178740895,
+    "gradient_norm_before_clip": 20.754345325968057,
+    "lr": 2e-06,
+    "physical_time": 28.778654098510977,
+    "field_energy": 3.388469934463501,
+    "dc_energy": 3.3279552459716797,
+    "spatial_energy": 0.06051483750343323,
+    "dc_share": 0.9821410179138184,
+    "spatial_share": 0.017859045416116714,
+    "temporal_read": {
+      "physical_time": 28.778654098510977,
+      "rates": [
+        0.7707332372665405,
+        0.19268330931663513,
+        0.04817082732915878,
+        0.012042710557579994
+      ],
+      "frequencies": [
+        -2.223674300694256e-06,
+        0.21832574903964996,
+        0.4366537034511566,
+        0.8733141422271729
+      ],
+      "dimensionless_frequencies": [
+        -1.9998235529783415e-06,
+        0.19634753465652466,
+        0.3926970660686493,
+        0.7854001522064209
+      ],
+      "real_power_per_mode": [
+        0.004608659073710442,
+        0.0008869475568644702,
+        5.441766916192137e-06,
+        8.344899242729298e-07
+      ],
+      "imag_power_per_mode": [
+        0.0,
+        0.0011323450598865747,
+        3.670592559501529e-05,
+        8.385637784158462e-07
+      ]
+    },
+    "error": "OutOfMemoryError: CUDA out of memory. Tried to allocate 20.00 MiB. GPU 0 has a total capacity of 4.00 GiB of which 360.75 MiB is free. 2.81 GiB allowed; Of the allocated memory 2.79 GiB is allocated by PyTorch, and 12.06 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)"
+  }
+}

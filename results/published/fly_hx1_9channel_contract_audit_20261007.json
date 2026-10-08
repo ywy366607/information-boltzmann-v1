@@ -1,0 +1,35 @@
+{
+  "date": "2026-10-07",
+  "scope": "CPU numerical and source contract audit; no capability study, no training, production code unchanged",
+  "source_sha256": {
+    "information_boltzmann/core/fly_graph_observer.py": "4c7ee01d4ec73290120d8a67d13040c0928917245ddc76bf405e16f00acfb7e0",
+    "information_boltzmann/core/fly_bptt_learning.py": "54d0684bcce21bd39b53a3f2c0d8c5469f3771edcd064df0e135ef7477f01765"
+  },
+  "zero_motor_reachability": {
+    "incoming_message_norm": 5.4772257804870605,
+    "motor_output_norm": 0.0,
+    "motor_output_source_gradient_norm": 0.0
+  },
+  "delayed_message_history": {
+    "tier1_vs_tier4_one_step_max_difference": 0.0,
+    "single_history_length": 1
+  },
+  "auxiliary_compression": {
+    "projected_auxiliary_difference": 0.0,
+    "coba_drive_difference_at_same_voltage": 0.012000001966953278,
+    "scope": "admissible coefficient counterexample; not a measured trained-checkpoint error"
+  },
+  "query_timestamp": {
+    "quiet_origin_tick": 1,
+    "student_sim_0_tick": 2,
+    "compared_quiet_state_0_tick": 1,
+    "perfect_increment_predictor_false_discrepancy": 1,
+    "scope": "index algebra following collect_student_error_guided_queries"
+  },
+  "independent_review": "rtc_contract_review confirmed all four source findings",
+  "existing_tests": {
+    "command": "python -m pytest tests/test_fly_graph_observer.py -q",
+    "passed": 10,
+    "elapsed_seconds": 4.91
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "scope": "one numerical update on a lifecycle fork; fitted replay is not validation; fresh same-state scores diagnose this update only, not long-run capability",
+  "checkpoint": "C:\\Users\\85750\\.codex\\training-artifacts\\q8_fly_bptt32_centered_100k\\last.pt",
+  "train_cursor": 1300000,
+  "fit_range": [
+    1300001,
+    1300033
+  ],
+  "following_range": [
+    1300033,
+    1300065
+  ],
+  "optimizer_updates": 1,
+  "physical_ticks_per_event": 2,
+  "read_centering": true,
+  "dan_plastic_lr": 0.0,
+  "learn_stp": false,
+  "fit_nll_before": 8.161175727844238,
+  "fit_nll_after": 8.113890647888184,
+  "fit_improvement": 0.04728507995605469,
+  "following_same_state_nll_before": 7.198420524597168,
+  "following_same_state_nll_after": 7.271418571472168,
+  "following_same_state_improvement": -0.072998046875,
+  "following_same_state_body_update_only_nll": 7.273256301879883,
+  "following_same_state_head_update_only_nll": 7.1964921951293945,
+  "following_same_state_component_only_nll": {
+    "transmission_edges": 7.302044868469238,
+    "sensory_writer": 7.25501012802124,
+    "cell_biophysics": 7.251920223236084
+  },
+  "actual_body_update_scales": {
+    "transmission_edges": {
+      "update_norm": 0.1123328082325372,
+      "relative_parameter_update_norm": 0.00044594344848477083
+    },
+    "sensory_writer": {
+      "update_norm": 0.16739109109242375,
+      "relative_parameter_update_norm": 0.00018726236899057943
+    },
+    "cell_biophysics": {
+      "update_norm": 0.0009609900926272534,
+      "relative_parameter_update_norm": 2.676503538305414e-05
+    }
+  },
+  "eager_capture_max_score_error": 1.9073486328125e-06,
+  "captured_update_seconds": 0.8444200000012643,
+  "tokens_per_second": 37.89583382671193,
+  "peak_allocated_mib": 2773.92578125,
+  "peak_reserved_mib": 3012.0,
+  "gradients": {
+    "grad_norm_before_clip": 6.883378505706787,
+    "synapse_grad_norm": 0.6546041965484619,
+    "writer_grad_norm": 0.20012028515338898,
+    "writer_gate_grad_norm": 0.4735998809337616,
+    "read_grad_norm": 0.756572425365448,
+    "decoder_grad_norm": 0.7330010533332825,
+    "read_norm_grad_norm": 0.6109851002693176,
+    "writer_total_grad_norm": 0.5141448976216207,
+    "writer_gradient_rms": 0.00014706236485789219,
+    "synapse_gradient_rms": 0.00013008732134696217,
+    "read_gradient_rms": 0.0005652135037290313,
+    "decoder_gradient_rms": 0.00011798470429672406
+  },
+  "dan_wiring_trainable": false,
+  "all_continuing_state_finite": true,
+  "source_checkpoint_modified": false,
+  "model_checkpoints_written": 0
+}

@@ -1,0 +1,399 @@
+{
+  "scope": "One real 32-target optimizer update, full 480-tick surrogate BPTT",
+  "source_checkpoint": "E:\\ib_checkpoints\\q8_fly_ctm_settle14_100k\\last.pt",
+  "source_checkpoint_bytes": 1124511859,
+  "source_checkpoint_modified": false,
+  "window": 32,
+  "settle_ticks": 14,
+  "optimizer_updates": 0,
+  "device": "NVIDIA GeForce GTX 1650",
+  "status": "passed",
+  "detach_reset": true,
+  "backward_only": true,
+  "all_restored_parameters_exact": true,
+  "source_train_tokens": 100000,
+  "target_interval": [
+    100001,
+    100033
+  ],
+  "target_sha256": "c6ad6a38e7335bee762df1271dbef34aebb32490da6a24830c2b1dd549a5370d",
+  "trainable_parameters": 77984427,
+  "vram_peak_allocated_mib": 2151.73583984375,
+  "vram_reserved_mib": 2634.0,
+  "last_stage": "after_optimizer_update",
+  "board_memory_snapshots_mib": {
+    "restored": 1357.0,
+    "backward_before_clip": 2711.0,
+    "after_clip": 2711.0,
+    "after_optimizer_update": 2711.0
+  },
+  "seconds_to_clip_including_group_norms": 7.815901399997529,
+  "gradients_before_clip": {
+    "log_tau_m": {
+      "entries_finite": true,
+      "min": -37469487628288.0,
+      "max": 297494937600.0,
+      "fp32_norm": 37932870139904.0,
+      "fp64_norm": 37932868983930.1
+    },
+    "log_tau_s_e": {
+      "entries_finite": true,
+      "min": -1129800531968.0,
+      "max": 159419200.0,
+      "fp32_norm": 1310321016832.0,
+      "fp64_norm": 1310320917934.384
+    },
+    "log_tau_s_i": {
+      "entries_finite": true,
+      "min": -67254329344.0,
+      "max": 17732511744.0,
+      "fp32_norm": 75673755648.0,
+      "fp64_norm": 75673758185.91316
+    },
+    "log_threshold": {
+      "entries_finite": true,
+      "min": -83213078757376.0,
+      "max": 89838960640.0,
+      "fp32_norm": 86585433391104.0,
+      "fp64_norm": 86585431021898.4
+    },
+    "log_g_e": {
+      "entries_finite": true,
+      "min": 34583263313920.0,
+      "max": 34583263313920.0,
+      "fp32_norm": 34583263313920.0,
+      "fp64_norm": 34583263313920.0
+    },
+    "log_g_i": {
+      "entries_finite": true,
+      "min": -36532526252032.0,
+      "max": -36532526252032.0,
+      "fp32_norm": 36532526252032.0,
+      "fp64_norm": 36532526252032.0
+    },
+    "log_tau_a": {
+      "entries_finite": true,
+      "min": -14846558208.0,
+      "max": 19772778496.0,
+      "fp32_norm": 25142992896.0,
+      "fp64_norm": 25142993378.025192
+    },
+    "log_beta": {
+      "entries_finite": true,
+      "min": -90252967936.0,
+      "max": 10773357568.0,
+      "fp32_norm": 109179060224.0,
+      "fp64_norm": 109179060995.83563
+    },
+    "edge_weight_e": {
+      "entries_finite": true,
+      "min": -987177680896.0,
+      "max": 3917593182208.0,
+      "fp32_norm": 26974441439232.0,
+      "fp64_norm": 26974440149218.24
+    },
+    "edge_weight_i": {
+      "entries_finite": true,
+      "min": -754460327936.0,
+      "max": 428938428416.0,
+      "fp32_norm": 5895724466176.0,
+      "fp64_norm": 5895724331762.274
+    },
+    "topographic_writer.gate_linear.weight": {
+      "entries_finite": true,
+      "min": -6102614278144.0,
+      "max": 5372648095744.0,
+      "fp32_norm": 33697768144896.0,
+      "fp64_norm": 33697768547332.008
+    },
+    "topographic_writer.gate_linear.bias": {
+      "entries_finite": true,
+      "min": -10073975816192.0,
+      "max": 8921019318272.0,
+      "fp32_norm": 13505513127936.0,
+      "fp64_norm": 13505513153013.682
+    },
+    "topographic_writer.proj_vis.weight": {
+      "entries_finite": true,
+      "min": -216884960.0,
+      "max": 180737152.0,
+      "fp32_norm": 1386545536.0,
+      "fp64_norm": 1386545519.1230378
+    },
+    "topographic_writer.proj_chemo.weight": {
+      "entries_finite": true,
+      "min": -1984373981184.0,
+      "max": 2345935831040.0,
+      "fp32_norm": 17459648135168.0,
+      "fp64_norm": 17459648979840.166
+    },
+    "topographic_writer.proj_mech.weight": {
+      "entries_finite": true,
+      "min": -4097021575168.0,
+      "max": 4789984821248.0,
+      "fp32_norm": 42779749122048.0,
+      "fp64_norm": 42779749117394.195
+    },
+    "output_read.weight": {
+      "entries_finite": true,
+      "min": -0.005270566791296005,
+      "max": 0.005164444912225008,
+      "fp32_norm": 0.6166666150093079,
+      "fp64_norm": 0.6166666336048227
+    },
+    "read_norm.weight": {
+      "entries_finite": true,
+      "min": -0.08352735638618469,
+      "max": 0.07359634339809418,
+      "fp32_norm": 0.4538441300392151,
+      "fp64_norm": 0.45384411474239666
+    },
+    "decoder.weight": {
+      "entries_finite": true,
+      "min": -0.023741867393255234,
+      "max": 0.02682141400873661,
+      "fp32_norm": 0.6891499161720276,
+      "fp64_norm": 0.6891499289423673
+    },
+    "decoder.bias": {
+      "entries_finite": true,
+      "min": -0.03124132938683033,
+      "max": 0.039355628192424774,
+      "fp32_norm": 0.16193702816963196,
+      "fp64_norm": 0.16193702984981428
+    }
+  },
+  "legacy_total_fp32_norm": 125234057314304.0,
+  "stable_total_fp64_norm": 125234048750262.0,
+  "all_gradient_entries_finite": true,
+  "total_norm_after_clip": 1.0000000427117353,
+  "parameter_norms_after_clip": {
+    "log_tau_m": 0.3028958294176729,
+    "log_tau_s_e": 0.010462976437710837,
+    "log_tau_s_i": 0.000604258673522616,
+    "log_threshold": 0.6913889353913715,
+    "log_g_e": 0.27614906430244446,
+    "log_g_i": 0.29171401262283325,
+    "log_tau_a": 0.00020076803570603314,
+    "log_beta": 0.0008718001784472142,
+    "edge_weight_e": 0.2153922283050389,
+    "edge_weight_i": 0.04707764799307909,
+    "topographic_writer.gate_linear.weight": 0.2690783347369226,
+    "topographic_writer.gate_linear.bias": 0.10784218603860664,
+    "topographic_writer.proj_vis.weight": 1.1071634003509897e-05,
+    "topographic_writer.proj_chemo.weight": 0.1394161533330945,
+    "topographic_writer.proj_mech.weight": 0.34159839510431445,
+    "output_read.weight": 4.92411331736255e-15,
+    "read_norm.weight": 3.623967530336698e-15,
+    "decoder.weight": 5.5028959878938505e-15,
+    "decoder.bias": 1.2930751312405711e-15
+  },
+  "seconds_update_including_gradient_diagnostics": 8.07708979997551,
+  "pre_update_nll": 6.661264520138502,
+  "metrics": {
+    "grad_norm_before_clip": 125234048750262.0,
+    "synapse_grad_norm": 27611229359807.41,
+    "writer_grad_norm": 46205478884748.42,
+    "writer_gate_grad_norm": 36303422574129.06,
+    "read_grad_norm": 0.6166666336048227,
+    "decoder_grad_norm": 0.6891499289423673,
+    "read_norm_grad_norm": 0.45384411474239666,
+    "writer_total_grad_norm": 58761252280433.2,
+    "writer_gradient_rms": 16807652399.832594,
+    "synapse_gradient_rms": 5487088053.289051,
+    "read_gradient_rms": 0.0004606939096996681,
+    "decoder_gradient_rms": 0.0001109263761799859,
+    "ctm_k_min": 7.53125,
+    "ctm_k_cert": 5.5625,
+    "ctm_loss_min": 6.306412220001221,
+    "ctm_loss_cert": 6.661264419555664,
+    "ctm_loss_tick0": 6.931705951690674,
+    "ctm_loss_tickS": 6.588442802429199,
+    "ctm_cert_mean": 0.40734878182411194,
+    "ctm_entropy_mean": 6.415393352508545
+  },
+  "suppressed_update_calls": 1,
+  "events": 32,
+  "physical_ticks": 480,
+  "all_parameters_finite": true,
+  "pre_update_scores": [
+    10.89795970916748,
+    10.590323448181152,
+    4.94002103805542,
+    8.901418685913086,
+    9.495193481445312,
+    4.330831527709961,
+    7.116230010986328,
+    7.213644027709961,
+    6.393064498901367,
+    5.670518398284912,
+    9.07097053527832,
+    4.127157688140869,
+    0.6363785862922668,
+    0.7013874650001526,
+    3.8333513736724854,
+    4.660412788391113,
+    4.250136375427246,
+    10.113761901855469,
+    11.479012489318848,
+    8.192594528198242,
+    6.880336284637451,
+    6.142414093017578,
+    8.069897651672363,
+    5.624642372131348,
+    9.243158340454102,
+    3.1199724674224854,
+    11.458139419555664,
+    3.049144744873047,
+    7.6619415283203125,
+    10.334481239318848,
+    2.457563877105713,
+    6.504404067993164
+  ],
+  "pre_update_training_loss": 6.483838081359863,
+  "pre_update_physical_state_hashes": {
+    "h": [
+      "4bbd8d0c509b514684840a437e9063fec97cdc649392e02c6639b855ea84b7ea"
+    ],
+    "ring": [
+      "86373ec38e52ac8a237398f869d6f39c01e22f8e87a9478fe3fb592ba5bb60b7",
+      "490fd71f899b7c0bbfab7b9e4c9e8e005c75faf2c7b1ebc70136099a333d21eb",
+      "dd647bc05964783b0062522693d07e154ebeecac422a0e4562eb1a19b3ca9d22",
+      "3a60ca682dc12efd54b88d2ca045203981c9ef4447c8ab194d252c3531e60bf0"
+    ],
+    "ge": [
+      "675c04861f996d2688855a94c310d1d2d31cd2ba0c00ccb3e24df981acd95e25"
+    ],
+    "gi": [
+      "89216e4cf034c7d1ce54433bdd36409f98d4cc52e353aebfcbb38831beab9963"
+    ],
+    "b": [
+      "93c8f35cdd2e393f2b2eb31fab3d427acd72ba25edeb71fba867cf63c1f4b48b"
+    ],
+    "x": [
+      "1e1c8f61b82c6b454140f4bd940741bfa5ca8523ac88d2ff26fbf8e417492ef7"
+    ],
+    "u": [
+      "3f86c2d17f3afada4560fb368b10ab83621f5b5359125d8103b683da97c45ab7"
+    ],
+    "baseline": [
+      "1291e3e90ab0170940b270178b3b29820777f0a56b3ba86e2b2b5e9efd791c2c"
+    ],
+    "h_mean": [
+      "e633ae203a1153dedd4afdcf6eea73de8d0436dc79eba2c1324c7fb494227ebc"
+    ],
+    "dan_gate": [
+      "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    ],
+    "gamma_z1": [
+      "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    ],
+    "gamma_z2": [
+      "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    ],
+    "observer_prior": [
+      "cc9cb441b8cfd124d346fc2a3eb6dc7721f704f6ba5a2ddc2ec6921db462c64b"
+    ],
+    "observer_history": [
+      "617173b8b399669a64123c8ae718033d4b2acad0699a47e975112ea1b966682d"
+    ]
+  },
+  "parameter_updates": {
+    "log_tau_m": {
+      "delta_l2": 0.0,
+      "delta_max_abs": 0.0,
+      "original_l2": 16.289777400472094
+    },
+    "log_tau_s_e": {
+      "delta_l2": 0.0,
+      "delta_max_abs": 0.0,
+      "original_l2": 8.976436983346302
+    },
+    "log_tau_s_i": {
+      "delta_l2": 0.0,
+      "delta_max_abs": 0.0,
+      "original_l2": 12.718744790343154
+    },
+    "log_threshold": {
+      "delta_l2": 0.0,
+      "delta_max_abs": 0.0,
+      "original_l2": 11.844059039095697
+    },
+    "log_g_e": {
+      "delta_l2": 0.0,
+      "delta_max_abs": 0.0,
+      "original_l2": 0.05205654725432396
+    },
+    "log_g_i": {
+      "delta_l2": 0.0,
+      "delta_max_abs": 0.0,
+      "original_l2": 0.08801691979169846
+    },
+    "log_tau_a": {
+      "delta_l2": 0.0,
+      "delta_max_abs": 0.0,
+      "original_l2": 20.27860677572825
+    },
+    "log_beta": {
+      "delta_l2": 0.0,
+      "delta_max_abs": 0.0,
+      "original_l2": 15.632218987413854
+    },
+    "edge_weight_e": {
+      "delta_l2": 0.0,
+      "delta_max_abs": 0.0,
+      "original_l2": 59.70328218753434
+    },
+    "edge_weight_i": {
+      "delta_l2": 0.0,
+      "delta_max_abs": 0.0,
+      "original_l2": 59.87231646804718
+    },
+    "topographic_writer.gate_linear.weight": {
+      "delta_l2": 0.0,
+      "delta_max_abs": 0.0,
+      "original_l2": 2.3308169759363833
+    },
+    "topographic_writer.gate_linear.bias": {
+      "delta_l2": 0.0,
+      "delta_max_abs": 0.0,
+      "original_l2": 0.13107321954231413
+    },
+    "topographic_writer.proj_vis.weight": {
+      "delta_l2": 0.0,
+      "delta_max_abs": 0.0,
+      "original_l2": 443.669863812197
+    },
+    "topographic_writer.proj_chemo.weight": {
+      "delta_l2": 0.0,
+      "delta_max_abs": 0.0,
+      "original_l2": 491.82197136575184
+    },
+    "topographic_writer.proj_mech.weight": {
+      "delta_l2": 0.0,
+      "delta_max_abs": 0.0,
+      "original_l2": 576.4799252392585
+    },
+    "output_read.weight": {
+      "delta_l2": 0.0,
+      "delta_max_abs": 0.0,
+      "original_l2": 27.885643015304623
+    },
+    "read_norm.weight": {
+      "delta_l2": 0.0,
+      "delta_max_abs": 0.0,
+      "original_l2": 4.052351318454157
+    },
+    "decoder.weight": {
+      "delta_l2": 0.0,
+      "delta_max_abs": 0.0,
+      "original_l2": 887.5018028140254
+    },
+    "decoder.bias": {
+      "delta_l2": 0.0,
+      "delta_max_abs": 0.0,
+      "original_l2": 3099.3317419671785
+    }
+  },
+  "seconds_including_diagnostics": 8.454155499988701
+}

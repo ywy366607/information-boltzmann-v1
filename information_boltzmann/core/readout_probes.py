@@ -155,6 +155,10 @@ class PredictivePhysicalReadAgent(nn.Module):
     ``compact_probes`` instead has exact finite support. Each head/query's
     policy and measurement use that port's local observations; a remote field
     cannot enter through the controller or a shared writer-precision side path.
+    ``compact_key_execution='support'`` projects only a fixed-capacity padded
+    union of each head's live footprints, using the same learned weight rows.
+    ``dense`` preserves the reference execution and the state dictionary is
+    identical between both choices.
     """
 
     def __init__(
@@ -168,6 +172,10 @@ class PredictivePhysicalReadAgent(nn.Module):
         atlas_shape: Tuple[int, int, int] = (4, 4, 4),
         aperture_type: str = "atlas",
         port_radius=None,
+        dynamic: bool = False,
+        aperture_budget: float | None = None,
+        coordinate_reflector: torch.Tensor | None = None,
+        compact_key_execution: str = 'dense',
     ):
         super().__init__()
         if d % heads:
@@ -179,8 +187,19 @@ class PredictivePhysicalReadAgent(nn.Module):
         self.head_dim = d // heads
         self.nodes = math.prod(shape)
         self.aperture_type = str(aperture_type)
+        self.dynamic = bool(dynamic)
+        if compact_key_execution not in ('dense', 'support'):
+            raise ValueError('Compact key execution must be dense or support')
+        if compact_key_execution == 'support' and self.aperture_type != 'compact_probes':
+            raise ValueError('Support key execution requires compact probes')
+        self.compact_key_execution = compact_key_execution
+        self.compact_key_capacity = self.nodes
+        if self.dynamic and self.aperture_type != 'compact_probes':
+            raise ValueError('Dynamic measurement requires finite compact probes')
         if self.aperture_type not in ("atlas", "learned_probes", "compact_probes"):
             raise ValueError("Unknown physical read aperture")
+        if aperture_budget is not None and self.aperture_type != 'compact_probes':
+            raise ValueError('Aperture budget requires compact read probes')
         self.atlas_shape = tuple(atlas_shape)
         self.atlas_size = math.prod(self.atlas_shape)
         self.nullity = int(nullspace.shape[1])
@@ -193,6 +212,26 @@ class PredictivePhysicalReadAgent(nn.Module):
             raise RuntimeError("Kinetic coordinate decomposition is incomplete")
         self.register_buffer("nullspace", nullspace.detach(), persistent=False)
         self.register_buffer("invariant_basis", invariant_basis, persistent=False)
+        # The plastic medium supplies N=(I-2ww^T)[:, 1:]. Keep the QR
+        # complement above, including its sign, and factor only this fixed N.
+        # Other callers may supply arbitrary SVD bases and retain dense math.
+        reflector = None
+        if coordinate_reflector is not None:
+            if coordinate_reflector.requires_grad:
+                raise ValueError('Coordinate reflector must be fixed, not learnable')
+            if coordinate_reflector.shape != (d,):
+                raise ValueError('Coordinate reflector must have shape [d]')
+            candidate = coordinate_reflector.detach().to(nullspace)
+            tolerance = 32 * torch.finfo(nullspace.dtype).eps
+            if self.nullity == d - 1 and bool(torch.isfinite(candidate).all()):
+                expected = (torch.eye(d, dtype=nullspace.dtype, device=nullspace.device)[:, 1:]
+                            - 2 * candidate[:, None] * candidate[None, 1:])
+                unit = torch.allclose(candidate.square().sum(), candidate.new_tensor(1.),
+                                      atol=tolerance, rtol=tolerance)
+                if unit and torch.allclose(nullspace.detach(), expected,
+                                           atol=tolerance, rtol=tolerance):
+                    reflector = candidate.clone()
+        self.register_buffer('coordinate_reflector', reflector, persistent=False)
 
         coordinates = torus_grid(self.shape).reshape(self.nodes, 3)
         anchors = torus_grid(self.atlas_shape).reshape(self.atlas_size, 3)
@@ -250,9 +289,20 @@ class PredictivePhysicalReadAgent(nn.Module):
                 (1, heads, 1, 1), 0.5 * math.log(6.0)))
             if self.aperture_type == 'compact_probes':
                 from .local_ports import CompactTorusPorts
-                geometry = CompactTorusPorts(shape, heads * queries, port_radius)
+                geometry = CompactTorusPorts(shape, heads * queries, port_radius,
+                                             aperture_budget=aperture_budget)
                 self.physical_radius = geometry.physical_radius
+                self.aperture_budget = geometry.aperture_budget
+                self.aperture_volume = geometry.aperture_volume
                 self.register_buffer('port_radius', geometry.radius, persistent=False)
+                # Integer grid counts, with one extra endpoint when the width
+                # is integral, bound support even at floating-point boundaries.
+                # Only this capacity is fixed; selected sites follow the live
+                # footprint on every call. All buffers remain nonpersistent.
+                roundoff = 32 * torch.finfo(torch.float32).eps
+                per_probe = math.prod(min(n, math.floor(2 * r * n + roundoff * n) + 1)
+                                      for n, r in zip(self.shape, self.physical_radius))
+                self.compact_key_capacity = min(self.nodes, self.queries * per_probe)
                 with torch.no_grad():
                     self.probe_coords.copy_(geometry.centers.reshape(heads, queries, 3))
                     self.probe_log_scale.zero_()
@@ -283,22 +333,40 @@ class PredictivePhysicalReadAgent(nn.Module):
             self.correction[-1].weight.zero_()
             self.correction[-1].bias.zero_()
 
+        # Independent additive paths keep legacy migration trainable even when
+        # their weights start at zero. Fresh branches use fan-in initialization.
+        if self.dynamic:
+            self.motion_policy = nn.Linear(2 * d, d, bias=False)
+            self.motion_keys = nn.Linear(d, d, bias=False)
+            self.motion_merge = nn.Linear(2 * queries * d, d, bias=False)
+
     def physical_coordinates(self, flat_field: torch.Tensor) -> torch.Tensor:
         """Return the exact [invariant, collision] local coordinates of f."""
         c = self.invariant_basis.to(dtype=flat_field.dtype)
-        n = self.nullspace.to(dtype=flat_field.dtype)
         invariant = torch.einsum("dk,bnd->bnk", c, flat_field)
-        collision = torch.einsum("dk,bnd->bnk", n, flat_field)
+        if self.coordinate_reflector is None:
+            n = self.nullspace.to(dtype=flat_field.dtype)
+            collision = torch.einsum("dk,bnd->bnk", n, flat_field)
+        else:
+            w = self.coordinate_reflector.to(dtype=flat_field.dtype)
+            collision = (flat_field[..., 1:]
+                         - 2 * (flat_field * w).sum(-1, keepdim=True) * w[1:])
         return torch.cat((invariant, collision), dim=-1)
 
     def reconstruct_physical_coordinates(self, coordinates: torch.Tensor) -> torch.Tensor:
         """Invert :meth:`physical_coordinates` exactly up to numerical error."""
         invariant_dim = self.invariant_basis.shape[1]
         c = self.invariant_basis.to(dtype=coordinates.dtype)
-        n = self.nullspace.to(dtype=coordinates.dtype)
-        return (
-            torch.einsum("dk,bnk->bnd", c, coordinates[..., :invariant_dim])
-            + torch.einsum("dk,bnk->bnd", n, coordinates[..., invariant_dim:]))
+        invariant = torch.einsum("dk,bnk->bnd", c, coordinates[..., :invariant_dim])
+        free = coordinates[..., invariant_dim:]
+        if self.coordinate_reflector is None:
+            n = self.nullspace.to(dtype=coordinates.dtype)
+            collision = torch.einsum("dk,bnk->bnd", n, free)
+        else:
+            w = self.coordinate_reflector.to(dtype=coordinates.dtype)
+            collision = (F.pad(free, (1, 0))
+                         - 2 * (free * w[1:]).sum(-1, keepdim=True) * w)
+        return invariant + collision
 
     @staticmethod
     def _categorical_kl(posterior: torch.Tensor, prior: torch.Tensor) -> torch.Tensor:
@@ -312,11 +380,19 @@ class PredictivePhysicalReadAgent(nn.Module):
         field: torch.Tensor,
         precision: torch.Tensor,
         return_diag: bool = False,
+        *, motion: torch.Tensor | None = None,
     ) -> Tuple[torch.Tensor, Optional[Dict[str, torch.Tensor]]]:
         if precision.ndim != 2 or precision.shape != (field.shape[0], self.d):
             raise ValueError("precision must be [batch, d]")
+        if self.dynamic:
+            if motion is None or motion.shape != field.shape:
+                raise ValueError('Dynamic measurement requires field-shaped motion')
+            if motion.device != field.device or motion.dtype != field.dtype:
+                raise ValueError('Motion must share field device and dtype')
+        elif motion is not None:
+            raise ValueError('Enable dynamic measurement before supplying motion')
         if self.aperture_type == 'compact_probes':
-            return self._forward_compact(field, return_diag)
+            return self._forward_compact(field, return_diag, motion)
         batch = field.shape[0]
         flat = field.reshape(batch, self.nodes, self.d)
         kinetic = self.physical_coordinates(flat)
@@ -417,13 +493,41 @@ class PredictivePhysicalReadAgent(nn.Module):
         footprint = self.footprint()
         return footprint / footprint.sum(-1, keepdim=True).clamp_min(torch.finfo(footprint.dtype).tiny)
 
-    def _forward_compact(self, field, return_diag):
+    def _support_keys(self, kinetic, normalized_motion, footprint):
+        """Project each head's bounded support with the original weight rows.
+
+        Fixed padding makes this path capturable without a variable-length
+        nonzero or host synchronization. Top-k selects the exact live union;
+        zero-padding never changes the downstream native attention mask.
+        """
+        batch = kinetic.shape[0]
+        support = (footprint > 0).any(dim=1)
+        capacity = self.compact_key_capacity
+        torch._assert_async((support.sum(-1) <= capacity).all(),
+                            'Compact key support exceeds its geometric capacity')
+        sites = support.to(dtype=kinetic.dtype).topk(capacity, dim=-1, sorted=False).indices
+        valid = support.gather(1, sites)
+        local = F.rms_norm(kinetic[:, sites, :], (self.d,))
+        weights = self.k_proj.weight.reshape(self.heads, self.head_dim, self.d)
+        keys = torch.einsum('bhkd,hcd->bhkc', local, weights)
+        if self.dynamic:
+            moving = normalized_motion[:, sites, :]
+            motion_weights = self.motion_keys.weight.reshape(self.heads, self.head_dim, self.d)
+            keys = keys + torch.einsum('bhkd,hcd->bhkc', moving, motion_weights)
+        keys = keys * valid[None, :, :, None]
+        index = sites[None, :, :, None].expand(batch, -1, -1, self.head_dim)
+        return kinetic.new_zeros(batch, self.heads, self.nodes, self.head_dim).scatter(
+            2, index, keys)
+
+    def _forward_compact(self, field, return_diag, motion=None):
         """Each query sees only its own footprint, including its controller.
 
         Shared dynamic writer precision is intentionally absent here: it may
         contain observations from distant write ports. Local second moments
         provide the read policy's evidence instead. Locality includes the
-        full derivative, not only a mask on the final value attention.
+        full derivative, not only a mask on the final value attention. In dynamic
+        mode the supplied local physical derivative includes incident edge stores;
+        its causal support is therefore larger than the measurement footprint.
         """
         batch, eps = field.shape[0], torch.finfo(field.dtype).eps
         kinetic = self.physical_coordinates(field.reshape(batch, self.nodes, self.d))
@@ -438,13 +542,31 @@ class PredictivePhysicalReadAgent(nn.Module):
             energy[..., :invariant_dim]), -1))
         posterior_state = self.posterior_features(torch.cat((
             F.rms_norm(mean, (self.d,)), energy), -1))
+        normalized_motion = None
+        if self.dynamic:
+            local_motion = self.physical_coordinates(motion.reshape(batch, self.nodes, self.d))
+            # Only the new path is normalized jointly with f. Original field
+            # keys/values stay identical under explicit zero-weight migration.
+            scale = (kinetic.square() + local_motion.square()).mean(-1, keepdim=True)
+            normalized_motion = local_motion / scale.clamp_min(eps * eps).sqrt()
+            motion_mean = torch.einsum('hqn,bnd->bhqd', local_weights, normalized_motion)
+            motion_energy = torch.einsum(
+                'hqn,bnd->bhqd', local_weights, normalized_motion.square()).clamp_min(eps * eps).sqrt()
+            posterior_state = posterior_state + self.motion_policy(
+                torch.cat((motion_mean, motion_energy), -1))
         prior_logits = self.action_prior(prior_state)
         posterior_logits = prior_logits + self.action_posterior(posterior_state)
         prior_action, posterior_action = prior_logits.softmax(-1), posterior_logits.softmax(-1)
         aperture = torch.logsumexp(posterior_logits[..., :, None]
                                   + self.anchor_log_kernel[None, None, None], dim=-2)
-        keys = self.k_proj(F.rms_norm(kinetic, (self.d,))).reshape(
-            batch, self.nodes, self.heads, self.head_dim).transpose(1, 2)
+        if self.compact_key_execution == 'support' and self.compact_key_capacity < self.nodes:
+            keys = self._support_keys(kinetic, normalized_motion, footprint)
+        else:
+            keys = self.k_proj(F.rms_norm(kinetic, (self.d,)))
+            if self.dynamic:
+                keys = keys + self.motion_keys(normalized_motion)
+            keys = keys.reshape(
+                batch, self.nodes, self.heads, self.head_dim).transpose(1, 2)
         query = self.q_proj(posterior_state)
         scores = torch.einsum('bhqd,bhnd->bhqn', F.normalize(query, dim=-1),
                               F.normalize(keys, dim=-1)) * self.head_log_scale.exp() + aperture
@@ -458,6 +580,15 @@ class PredictivePhysicalReadAgent(nn.Module):
         measurement = torch.cat((measured_mean.transpose(1, 2).reshape(batch, -1),
                                  variance.transpose(1, 2).reshape(batch, -1)), -1)
         base = self.merge(measurement)
+        if self.dynamic:
+            moving_values = normalized_motion.reshape(
+                batch, self.nodes, self.heads, self.head_dim).transpose(1, 2)
+            moving_mean = torch.einsum('bhqn,bhnd->bhqd', attention, moving_values)
+            moving_variance = (torch.einsum('bhqn,bhnd->bhqd', attention, moving_values.square())
+                               - moving_mean.square()).clamp_min(0)
+            moving_measurement = torch.cat((moving_mean.transpose(1, 2).reshape(batch, -1),
+                                           moving_variance.transpose(1, 2).reshape(batch, -1)), -1)
+            base = base + self.motion_merge(moving_measurement)
         feature = base + self.correction(base)
         if not return_diag:
             return feature, None

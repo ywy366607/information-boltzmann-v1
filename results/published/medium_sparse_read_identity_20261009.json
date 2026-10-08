@@ -1,0 +1,78 @@
+{
+  "scope": "CPU actual-reader identity, no capability or GPU speed claim",
+  "production_changed": false,
+  "cases": [
+    {
+      "dtype": "torch.float32",
+      "placement": "birth",
+      "head_site_count": 128,
+      "union_sites": 128,
+      "dense_key_mac_d768": 603979776,
+      "sparse_key_mac_d768": 37748736,
+      "maximum_feature_absolute_error": 0.0,
+      "maximum_input_and_parameter_gradient_absolute_error": 1.1920928955078125e-07,
+      "compared_input_and_parameter_gradients": 28,
+      "passed": true
+    },
+    {
+      "dtype": "torch.float32",
+      "placement": "overlap_wrap",
+      "head_site_count": 36,
+      "union_sites": 9,
+      "dense_key_mac_d768": 603979776,
+      "sparse_key_mac_d768": 10616832,
+      "maximum_feature_absolute_error": 0.0,
+      "maximum_input_and_parameter_gradient_absolute_error": 1.1920928955078125e-07,
+      "compared_input_and_parameter_gradients": 28,
+      "passed": true
+    },
+    {
+      "dtype": "torch.float32",
+      "placement": "support_boundary",
+      "head_site_count": 124,
+      "union_sites": 124,
+      "dense_key_mac_d768": 603979776,
+      "sparse_key_mac_d768": 36569088,
+      "maximum_feature_absolute_error": 0.0,
+      "maximum_input_and_parameter_gradient_absolute_error": 1.1920928955078125e-07,
+      "compared_input_and_parameter_gradients": 28,
+      "passed": true
+    },
+    {
+      "dtype": "torch.float64",
+      "placement": "birth",
+      "head_site_count": 128,
+      "union_sites": 128,
+      "dense_key_mac_d768": 603979776,
+      "sparse_key_mac_d768": 37748736,
+      "maximum_feature_absolute_error": 0.0,
+      "maximum_input_and_parameter_gradient_absolute_error": 3.3306690738754696e-16,
+      "compared_input_and_parameter_gradients": 28,
+      "passed": true
+    },
+    {
+      "dtype": "torch.float64",
+      "placement": "overlap_wrap",
+      "head_site_count": 33,
+      "union_sites": 9,
+      "dense_key_mac_d768": 603979776,
+      "sparse_key_mac_d768": 9732096,
+      "maximum_feature_absolute_error": 0.0,
+      "maximum_input_and_parameter_gradient_absolute_error": 2.220446049250313e-16,
+      "compared_input_and_parameter_gradients": 28,
+      "passed": true
+    },
+    {
+      "dtype": "torch.float64",
+      "placement": "support_boundary",
+      "head_site_count": 124,
+      "union_sites": 124,
+      "dense_key_mac_d768": 603979776,
+      "sparse_key_mac_d768": 36569088,
+      "maximum_feature_absolute_error": 0.0,
+      "maximum_input_and_parameter_gradient_absolute_error": 3.3306690738754696e-16,
+      "compared_input_and_parameter_gradients": 28,
+      "passed": true
+    }
+  ]
+}

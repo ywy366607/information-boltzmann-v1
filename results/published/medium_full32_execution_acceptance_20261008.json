@@ -1,0 +1,115 @@
+{
+  "status": "accepted for authorized new-birth production restart",
+  "scope": "deterministic first-order complete physical event and BPTT32 execution/resources; capability not measured",
+  "resource_report": "results/published/medium_full32_adam_staging_calibration_20261008.json",
+  "configuration": {
+    "vocab_size": 50257,
+    "shape": [
+      8,
+      8,
+      8
+    ],
+    "channels": 768,
+    "bath_type": "conductance",
+    "write_exchange": "contact_mode",
+    "port_scope": "compact",
+    "activity_adaptation": true,
+    "short_term_plasticity": true,
+    "pre_decoder_norm": true,
+    "medium_execution": "fused",
+    "port_execution": "fused",
+    "anisotropic_transport": true,
+    "structure_options": {
+      "resource_density": 4.0,
+      "speed_reference": 4.336272229225239,
+      "structure_time": 179.86658811569214,
+      "prior_std": 0.06201736729460423,
+      "initial_std": 0.06201736729460423,
+      "maintenance_supply": 3.1314593937283974,
+      "initial_dual": 0.0
+    },
+    "material_reference_shape": null,
+    "intrinsic_time_reference": 0.899332940578461,
+    "solver_max_step": 0.00831809360533953,
+    "observer_max_step": 0.0332723744213581,
+    "write_aperture_budget": 0.125,
+    "read_aperture_budget": 0.25,
+    "max_evolution_steps": 4096,
+    "write_port_radius": [
+      0.1875,
+      0.1875,
+      0.25
+    ],
+    "read_port_radius": [
+      0.125,
+      0.1875,
+      0.25
+    ],
+    "read_mode": "temporal",
+    "temporal_time_reference": 0.899332940578461,
+    "temporal_rates": [
+      0.7707347849552861,
+      0.19268369623882153,
+      0.04817092405970538,
+      0.012042731014926346
+    ],
+    "temporal_frequencies": [
+      0.0,
+      0.21832797620319327,
+      0.43665595240638655,
+      0.8733119048127731
+    ]
+  },
+  "source_hashes": {
+    "scripts/ib/train_medium_active_stream.py": "54e1c878fc3eeb10c9900dccc254f9c957f9a65e1271ae151a533724a60f528c",
+    "information_boltzmann/runtime/active_medium_training.py": "b3c7c754a1fd30f648910166d3a911ead2ce30fde3461a3835ba282b679043d7",
+    "information_boltzmann/runtime/medium_health.py": "1554c48a2282f36aa481b7ca3ac66e821ef78cd394f9f4d1e386c10a4f924075",
+    "information_boltzmann/runtime/lifelong_evaluation.py": "c3461c04a66699b7f78b38f35ebd69aff8efdfd690f7b6ae6591989610c11d05",
+    "information_boltzmann/runtime/training.py": "626bf42b7495ac1d3d76819054dcc9d4130ca077d1fbf84dd3a19e9e8e3d8bb1",
+    "information_boltzmann/runtime/optimization.py": "2ecd2e12bb8da2860f459f74aa6c662b3594d054f1f1d37ddbe4eacbe74dace3",
+    "information_boltzmann/runtime/optimizer_storage.py": "66fee6743a9115c601d04cadb4a957871743db4bf74b031fc87fc45dc96bd6ca",
+    "information_boltzmann/core/state_checkpoint.py": "a217eee19d12770b65bab0c3f11d2a6338003cf905fe4f9d8cc5e121eae21ca3",
+    "information_boltzmann/core/plastic_medium.py": "19aa359e14c94ef4e1729065bc3496a3c8113e99ebd46f45267ddfa25b15c308",
+    "information_boltzmann/core/gradient_norms.py": "2eabd9e725b5d77a4a9e4eb87feefab20c9fb8bfe7027f4ea118e85dabe078df",
+    "information_boltzmann/core/plastic_ports.py": "1b4b3d6dcb6a58f134e8ee55b7af702aff8bc57e556cc1403c760eded882f774",
+    "information_boltzmann/core/conductance_response.py": "cb5906b37aecab485b9c61ad7251a8f95ff41fc37d25fdca3f7d137818584a2e",
+    "information_boltzmann/core/conduction_plasticity.py": "4497b11d532e17642634f75c631b3ed718e7c928cadd976308e3fe8a6f969a55",
+    "information_boltzmann/core/short_term_plasticity.py": "26a54a9075d707b8080e1cb95d73a737caaf6496960e587171397259fef53896",
+    "information_boltzmann/core/local_ports.py": "eaa65943199099b5fdf58ae5f91213b4a0b2cb09b260c4d70733cff73e401050",
+    "information_boltzmann/core/mode_port.py": "b5ceabce8368bec7389dba399b4231a80c68318d075aea5252868b0a7fce5e27",
+    "information_boltzmann/core/torus3d.py": "9dff61f52c07d3256fc886ecaaf492dcd0b2be068d0ac73956e5dc949d284fd8",
+    "information_boltzmann/core/readout_probes.py": "a590a043f626150e65c4492fda3c6741c280f009e360a9bbc0edb0dfb6d70102",
+    "information_boltzmann/core/structural_posterior.py": "d78a3a617ade1a393c168326dd169ec664494904ec2a8a44568415743421c4ac",
+    "information_boltzmann/core/intrinsic_time.py": "02cc57d946283a5aefc64bb9eeac6ac94d99a08ecbcaef8b12793b94cd995d40",
+    "information_boltzmann/core/temporal_probes.py": "f1caedd20d98c89192e74792b4a8b1ced1e43c8bb2803c4e01c3d63a0e73c747"
+  },
+  "source_hashes_match_calibration": true,
+  "event_count": 64,
+  "optimizer_updates": 2,
+  "pending_gradient_events": 0,
+  "sampled_peak_dedicated_mib": 2490.64453125,
+  "sampled_peak_shared_mib": 80.0,
+  "peak_allocated_mib": 2331.38037109375,
+  "peak_reserved_mib": 2816.0,
+  "seconds_per_group": [
+    344.6619278999988,
+    321.28071400000044
+  ],
+  "warm_tokens_per_second": 0.09960137227533662,
+  "finite_gradient_norms": [
+    20.754345325968057,
+    16.908573340876984
+  ],
+  "numerical_regression": {
+    "passed": 35,
+    "cuda_opt_in_skipped": 2,
+    "scope": "active trainer/accounting/structural integration/event VJP and Adam storage contracts; not added to historical263 count"
+  },
+  "independent_reviews": [
+    "scratch/medium_event_vjp_execution_review_20261008.md",
+    "scratch/medium_optimizer_staging_review_20261008.md"
+  ],
+  "stopping": "dedicated cap3072MiB, allocator2880MiB, nonfinite values, STOP or registered fresh budget",
+  "calibration_checkpoints": [],
+  "production_state_policy": "fresh initialized individual; never inherit calibration updates; paused original preserved"
+}

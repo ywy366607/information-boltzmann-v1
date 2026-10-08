@@ -1,0 +1,2084 @@
+{
+  "purpose": "real OWT update execution measurement only",
+  "architecture": "PlasticMedium3D-W4-learned-read-conductance-v3",
+  "shape": [
+    8,
+    8,
+    4
+  ],
+  "channels": 128,
+  "vocab_size": 50257,
+  "parameters": 14354610,
+  "parameter_bytes": 57418440,
+  "parameter_gradient_adam_moment_floor_bytes": 229673760,
+  "tokens_per_update": 128,
+  "bptt_chunk_tokens": 8,
+  "event_duration": 0.005,
+  "substeps": 1,
+  "precision": "FP32",
+  "backend": "eager, quiet diagnostics",
+  "warmup_updates": 1,
+  "requested_measured_updates": 1,
+  "completed_updates": 2,
+  "completed_tokens": 256,
+  "data": "data\\ib_owt_gpt2\\train.npy",
+  "data_offset": 0,
+  "allocator_fraction": 0.4,
+  "pytorch": "2.9.1+cu126",
+  "measurements": [
+    {
+      "stage": "forward_0",
+      "wall_seconds": 0.6679181999934372,
+      "cuda_seconds": 0.6674336547851563
+    },
+    {
+      "stage": "backward_0",
+      "wall_seconds": 0.5705617000057828,
+      "cuda_seconds": 0.5700023803710937
+    },
+    {
+      "stage": "forward_8",
+      "wall_seconds": 0.2652435000054538,
+      "cuda_seconds": 0.2651061096191406
+    },
+    {
+      "stage": "backward_8",
+      "wall_seconds": 0.555660900005023,
+      "cuda_seconds": 0.5553541259765625
+    },
+    {
+      "stage": "forward_16",
+      "wall_seconds": 0.26448440000240225,
+      "cuda_seconds": 0.2643701477050781
+    },
+    {
+      "stage": "backward_16",
+      "wall_seconds": 0.5606508000055328,
+      "cuda_seconds": 0.5600911865234375
+    },
+    {
+      "stage": "forward_24",
+      "wall_seconds": 0.26337749999947846,
+      "cuda_seconds": 0.26326568603515627
+    },
+    {
+      "stage": "backward_24",
+      "wall_seconds": 0.5617086999991443,
+      "cuda_seconds": 0.561135498046875
+    },
+    {
+      "stage": "forward_32",
+      "wall_seconds": 0.26593060001323465,
+      "cuda_seconds": 0.2658392333984375
+    },
+    {
+      "stage": "backward_32",
+      "wall_seconds": 0.5609365999989677,
+      "cuda_seconds": 0.5605297241210937
+    },
+    {
+      "stage": "forward_40",
+      "wall_seconds": 0.26359769998816773,
+      "cuda_seconds": 0.2634647216796875
+    },
+    {
+      "stage": "backward_40",
+      "wall_seconds": 0.5594770000025164,
+      "cuda_seconds": 0.5589765625
+    },
+    {
+      "stage": "forward_48",
+      "wall_seconds": 0.3420773000107147,
+      "cuda_seconds": 0.34197622680664064
+    },
+    {
+      "stage": "backward_48",
+      "wall_seconds": 0.5623360000026878,
+      "cuda_seconds": 0.5617909545898437
+    },
+    {
+      "stage": "forward_56",
+      "wall_seconds": 0.26918459999433253,
+      "cuda_seconds": 0.2690284729003906
+    },
+    {
+      "stage": "backward_56",
+      "wall_seconds": 0.5622868000064045,
+      "cuda_seconds": 0.561635986328125
+    },
+    {
+      "stage": "forward_64",
+      "wall_seconds": 0.26596540000173263,
+      "cuda_seconds": 0.2658560791015625
+    },
+    {
+      "stage": "backward_64",
+      "wall_seconds": 0.5526295000017853,
+      "cuda_seconds": 0.5522701416015625
+    },
+    {
+      "stage": "forward_72",
+      "wall_seconds": 0.25834310000936966,
+      "cuda_seconds": 0.2582212219238281
+    },
+    {
+      "stage": "backward_72",
+      "wall_seconds": 0.5450118000007933,
+      "cuda_seconds": 0.5443798828125
+    },
+    {
+      "stage": "forward_80",
+      "wall_seconds": 0.26039930000843015,
+      "cuda_seconds": 0.2602836608886719
+    },
+    {
+      "stage": "backward_80",
+      "wall_seconds": 0.5577319000003627,
+      "cuda_seconds": 0.5574339599609375
+    },
+    {
+      "stage": "forward_88",
+      "wall_seconds": 0.2664909000013722,
+      "cuda_seconds": 0.26638369750976565
+    },
+    {
+      "stage": "backward_88",
+      "wall_seconds": 0.5639934999926481,
+      "cuda_seconds": 0.5637975463867188
+    },
+    {
+      "stage": "forward_96",
+      "wall_seconds": 0.2632478000014089,
+      "cuda_seconds": 0.26313851928710935
+    },
+    {
+      "stage": "backward_96",
+      "wall_seconds": 0.5624334999884013,
+      "cuda_seconds": 0.561866943359375
+    },
+    {
+      "stage": "forward_104",
+      "wall_seconds": 0.26313500000105705,
+      "cuda_seconds": 0.2630098571777344
+    },
+    {
+      "stage": "backward_104",
+      "wall_seconds": 0.5572780999937095,
+      "cuda_seconds": 0.55692626953125
+    },
+    {
+      "stage": "forward_112",
+      "wall_seconds": 0.26828350000141654,
+      "cuda_seconds": 0.26810202026367186
+    },
+    {
+      "stage": "backward_112",
+      "wall_seconds": 0.5592084000090836,
+      "cuda_seconds": 0.55880322265625
+    },
+    {
+      "stage": "forward_120",
+      "wall_seconds": 0.2650238000060199,
+      "cuda_seconds": 0.2649039611816406
+    },
+    {
+      "stage": "backward_120",
+      "wall_seconds": 0.5582767000014428,
+      "cuda_seconds": 0.557723388671875
+    },
+    {
+      "stage": "adamw_step_0",
+      "wall_seconds": 0.09696150000672787,
+      "cuda_seconds": 0.09678572845458984
+    },
+    {
+      "stage": "forward_128",
+      "wall_seconds": 0.26572519999172073,
+      "cuda_seconds": 0.26561053466796875
+    },
+    {
+      "stage": "backward_128",
+      "wall_seconds": 0.5477085000020452,
+      "cuda_seconds": 0.547209228515625
+    },
+    {
+      "stage": "forward_136",
+      "wall_seconds": 0.2672688000020571,
+      "cuda_seconds": 0.2671271057128906
+    },
+    {
+      "stage": "backward_136",
+      "wall_seconds": 0.5590948000026401,
+      "cuda_seconds": 0.5585440063476562
+    },
+    {
+      "stage": "forward_144",
+      "wall_seconds": 0.26283399999374524,
+      "cuda_seconds": 0.2627086486816406
+    },
+    {
+      "stage": "backward_144",
+      "wall_seconds": 0.5640365999861388,
+      "cuda_seconds": 0.5635449829101562
+    },
+    {
+      "stage": "forward_152",
+      "wall_seconds": 0.2635934999998426,
+      "cuda_seconds": 0.26349472045898437
+    },
+    {
+      "stage": "backward_152",
+      "wall_seconds": 0.555701000004774,
+      "cuda_seconds": 0.5554000244140626
+    },
+    {
+      "stage": "forward_160",
+      "wall_seconds": 0.26350380000076257,
+      "cuda_seconds": 0.2633585205078125
+    },
+    {
+      "stage": "backward_160",
+      "wall_seconds": 0.5547889000008581,
+      "cuda_seconds": 0.5541437377929688
+    },
+    {
+      "stage": "forward_168",
+      "wall_seconds": 0.2623697999952128,
+      "cuda_seconds": 0.26225286865234376
+    },
+    {
+      "stage": "backward_168",
+      "wall_seconds": 0.5536576000013156,
+      "cuda_seconds": 0.5530641479492188
+    },
+    {
+      "stage": "forward_176",
+      "wall_seconds": 0.2674782999965828,
+      "cuda_seconds": 0.2673495178222656
+    },
+    {
+      "stage": "backward_176",
+      "wall_seconds": 0.5534348000073805,
+      "cuda_seconds": 0.5528822021484375
+    },
+    {
+      "stage": "forward_184",
+      "wall_seconds": 0.2614885999937542,
+      "cuda_seconds": 0.2613682861328125
+    },
+    {
+      "stage": "backward_184",
+      "wall_seconds": 0.5525401000049897,
+      "cuda_seconds": 0.5523230590820313
+    },
+    {
+      "stage": "forward_192",
+      "wall_seconds": 0.2618568000034429,
+      "cuda_seconds": 0.2617474975585937
+    },
+    {
+      "stage": "backward_192",
+      "wall_seconds": 0.5575615999987349,
+      "cuda_seconds": 0.5571433715820312
+    },
+    {
+      "stage": "forward_200",
+      "wall_seconds": 0.2688231999927666,
+      "cuda_seconds": 0.26866549682617186
+    },
+    {
+      "stage": "backward_200",
+      "wall_seconds": 0.5593298000021605,
+      "cuda_seconds": 0.5589282836914062
+    },
+    {
+      "stage": "forward_208",
+      "wall_seconds": 0.26862039999105036,
+      "cuda_seconds": 0.2684700927734375
+    },
+    {
+      "stage": "backward_208",
+      "wall_seconds": 0.5591722999961348,
+      "cuda_seconds": 0.5586799926757813
+    },
+    {
+      "stage": "forward_216",
+      "wall_seconds": 0.26655279999249615,
+      "cuda_seconds": 0.26641839599609374
+    },
+    {
+      "stage": "backward_216",
+      "wall_seconds": 0.5593673999974271,
+      "cuda_seconds": 0.5589033203125
+    },
+    {
+      "stage": "forward_224",
+      "wall_seconds": 0.26008759999240283,
+      "cuda_seconds": 0.2599826354980469
+    },
+    {
+      "stage": "backward_224",
+      "wall_seconds": 0.5537782000028528,
+      "cuda_seconds": 0.5531463623046875
+    },
+    {
+      "stage": "forward_232",
+      "wall_seconds": 0.2645343999902252,
+      "cuda_seconds": 0.26442355346679686
+    },
+    {
+      "stage": "backward_232",
+      "wall_seconds": 0.5532689000101527,
+      "cuda_seconds": 0.5529472045898437
+    },
+    {
+      "stage": "forward_240",
+      "wall_seconds": 0.26238469999225345,
+      "cuda_seconds": 0.2622712707519531
+    },
+    {
+      "stage": "backward_240",
+      "wall_seconds": 0.5535844999976689,
+      "cuda_seconds": 0.553079833984375
+    },
+    {
+      "stage": "forward_248",
+      "wall_seconds": 0.26385380000283476,
+      "cuda_seconds": 0.26377664184570315
+    },
+    {
+      "stage": "backward_248",
+      "wall_seconds": 0.5634667000122136,
+      "cuda_seconds": 0.5630888671875
+    },
+    {
+      "stage": "adamw_step_1",
+      "wall_seconds": 0.043454600003315136,
+      "cuda_seconds": 0.04329471969604492
+    }
+  ],
+  "memory_samples": [
+    {
+      "stage": "model_and_initial_state",
+      "windows": {
+        "dedicated_bytes": 124387328,
+        "shared_bytes": 81788928,
+        "rows": [
+          {
+            "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 124387328,
+            "SharedUsage": 81788928
+          }
+        ]
+      },
+      "total_gpu": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2020605952,
+        "free_bytes": 2106589184,
+        "utilization_percent": 100
+      },
+      "allocated_bytes": 58449920,
+      "reserved_bytes": 62914560,
+      "peak_allocated_bytes": 58449920,
+      "peak_reserved_bytes": 62914560,
+      "shared_growth_bytes": 2097152
+    },
+    {
+      "stage": "forward_0",
+      "windows": {
+        "dedicated_bytes": 361365504,
+        "shared_bytes": 81788928,
+        "rows": [
+          {
+            "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 361365504,
+            "SharedUsage": 81788928
+          }
+        ]
+      },
+      "total_gpu": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2257584128,
+        "free_bytes": 1869611008,
+        "utilization_percent": 100
+      },
+      "allocated_bytes": 272254976,
+      "reserved_bytes": 289406976,
+      "peak_allocated_bytes": 274498048,
+      "peak_reserved_bytes": 289406976,
+      "shared_growth_bytes": 2097152
+    },
+    {
+      "stage": "backward_0",
+      "windows": {
+        "dedicated_bytes": 533336064,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 533336064,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "total_gpu": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2429550592,
+        "free_bytes": 1697644544,
+        "utilization_percent": 100
+      },
+      "allocated_bytes": 133363712,
+      "reserved_bytes": 450887680,
+      "peak_allocated_bytes": 347865600,
+      "peak_reserved_bytes": 450887680,
+      "shared_growth_bytes": 4194304
+    },
+    {
+      "stage": "forward_8",
+      "windows": {
+        "dedicated_bytes": 535433216,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 535433216,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "total_gpu": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2431647744,
+        "free_bytes": 1695547392,
+        "utilization_percent": 100
+      },
+      "allocated_bytes": 337600512,
+      "reserved_bytes": 452984832,
+      "peak_allocated_bytes": 347865600,
+      "peak_reserved_bytes": 452984832,
+      "shared_growth_bytes": 4194304
+    },
+    {
+      "stage": "backward_8",
+      "windows": {
+        "dedicated_bytes": 564797440,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 564797440,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "total_gpu": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2461007872,
+        "free_bytes": 1666187264,
+        "utilization_percent": 100
+      },
+      "allocated_bytes": 133363712,
+      "reserved_bytes": 482344960,
+      "peak_allocated_bytes": 378758656,
+      "peak_reserved_bytes": 482344960,
+      "shared_growth_bytes": 4194304
+    },
+    {
+      "stage": "forward_16",
+      "windows": {
+        "dedicated_bytes": 564797440,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 564797440,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "total_gpu": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2461007872,
+        "free_bytes": 1666187264,
+        "utilization_percent": 100
+      },
+      "allocated_bytes": 337600512,
+      "reserved_bytes": 482344960,
+      "peak_allocated_bytes": 378758656,
+      "peak_reserved_bytes": 482344960,
+      "shared_growth_bytes": 4194304
+    },
+    {
+      "stage": "backward_16",
+      "windows": {
+        "dedicated_bytes": 564797440,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 564797440,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "total_gpu": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2461007872,
+        "free_bytes": 1666187264,
+        "utilization_percent": 100
+      },
+      "allocated_bytes": 133363712,
+      "reserved_bytes": 482344960,
+      "peak_allocated_bytes": 378758656,
+      "peak_reserved_bytes": 482344960,
+      "shared_growth_bytes": 4194304
+    },
+    {
+      "stage": "forward_24",
+      "windows": {
+        "dedicated_bytes": 564797440,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 564797440,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "total_gpu": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2461007872,
+        "free_bytes": 1666187264,
+        "utilization_percent": 100
+      },
+      "allocated_bytes": 337600512,
+      "reserved_bytes": 482344960,
+      "peak_allocated_bytes": 378758656,
+      "peak_reserved_bytes": 482344960,
+      "shared_growth_bytes": 4194304
+    },
+    {
+      "stage": "backward_24",
+      "windows": {
+        "dedicated_bytes": 566894592,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 566894592,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "total_gpu": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2463105024,
+        "free_bytes": 1664090112,
+        "utilization_percent": 100
+      },
+      "allocated_bytes": 133363712,
+      "reserved_bytes": 484442112,
+      "peak_allocated_bytes": 378758656,
+      "peak_reserved_bytes": 484442112,
+      "shared_growth_bytes": 4194304
+    },
+    {
+      "stage": "forward_32",
+      "windows": {
+        "dedicated_bytes": 566894592,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 566894592,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "total_gpu": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2463105024,
+        "free_bytes": 1664090112,
+        "utilization_percent": 100
+      },
+      "allocated_bytes": 337600512,
+      "reserved_bytes": 484442112,
+      "peak_allocated_bytes": 378758656,
+      "peak_reserved_bytes": 484442112,
+      "shared_growth_bytes": 4194304
+    },
+    {
+      "stage": "backward_32",
+      "windows": {
+        "dedicated_bytes": 566894592,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 566894592,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "total_gpu": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2463105024,
+        "free_bytes": 1664090112,
+        "utilization_percent": 100
+      },
+      "allocated_bytes": 133363712,
+      "reserved_bytes": 484442112,
+      "peak_allocated_bytes": 378758656,
+      "peak_reserved_bytes": 484442112,
+      "shared_growth_bytes": 4194304
+    },
+    {
+      "stage": "forward_40",
+      "windows": {
+        "dedicated_bytes": 566894592,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 566894592,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "total_gpu": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2463105024,
+        "free_bytes": 1664090112,
+        "utilization_percent": 100
+      },
+      "allocated_bytes": 337600512,
+      "reserved_bytes": 484442112,
+      "peak_allocated_bytes": 378758656,
+      "peak_reserved_bytes": 484442112,
+      "shared_growth_bytes": 4194304
+    },
+    {
+      "stage": "backward_40",
+      "windows": {
+        "dedicated_bytes": 566894592,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 566894592,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "total_gpu": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2463105024,
+        "free_bytes": 1664090112,
+        "utilization_percent": 100
+      },
+      "allocated_bytes": 133363712,
+      "reserved_bytes": 484442112,
+      "peak_allocated_bytes": 378758656,
+      "peak_reserved_bytes": 484442112,
+      "shared_growth_bytes": 4194304
+    },
+    {
+      "stage": "forward_48",
+      "windows": {
+        "dedicated_bytes": 566894592,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 566894592,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "total_gpu": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2463105024,
+        "free_bytes": 1664090112,
+        "utilization_percent": 100
+      },
+      "allocated_bytes": 337600512,
+      "reserved_bytes": 484442112,
+      "peak_allocated_bytes": 378758656,
+      "peak_reserved_bytes": 484442112,
+      "shared_growth_bytes": 4194304
+    },
+    {
+      "stage": "backward_48",
+      "windows": {
+        "dedicated_bytes": 566894592,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 566894592,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "total_gpu": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2463105024,
+        "free_bytes": 1664090112,
+        "utilization_percent": 100
+      },
+      "allocated_bytes": 133363712,
+      "reserved_bytes": 484442112,
+      "peak_allocated_bytes": 378758656,
+      "peak_reserved_bytes": 484442112,
+      "shared_growth_bytes": 4194304
+    },
+    {
+      "stage": "forward_56",
+      "windows": {
+        "dedicated_bytes": 566894592,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 566894592,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "total_gpu": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2463105024,
+        "free_bytes": 1664090112,
+        "utilization_percent": 100
+      },
+      "allocated_bytes": 337600512,
+      "reserved_bytes": 484442112,
+      "peak_allocated_bytes": 378758656,
+      "peak_reserved_bytes": 484442112,
+      "shared_growth_bytes": 4194304
+    },
+    {
+      "stage": "backward_56",
+      "windows": {
+        "dedicated_bytes": 566894592,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 566894592,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "total_gpu": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2463105024,
+        "free_bytes": 1664090112,
+        "utilization_percent": 100
+      },
+      "allocated_bytes": 133363712,
+      "reserved_bytes": 484442112,
+      "peak_allocated_bytes": 378758656,
+      "peak_reserved_bytes": 484442112,
+      "shared_growth_bytes": 4194304
+    },
+    {
+      "stage": "forward_64",
+      "windows": {
+        "dedicated_bytes": 566894592,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 566894592,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "total_gpu": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2463105024,
+        "free_bytes": 1664090112,
+        "utilization_percent": 100
+      },
+      "allocated_bytes": 337600512,
+      "reserved_bytes": 484442112,
+      "peak_allocated_bytes": 378758656,
+      "peak_reserved_bytes": 484442112,
+      "shared_growth_bytes": 4194304
+    },
+    {
+      "stage": "backward_64",
+      "windows": {
+        "dedicated_bytes": 566894592,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 566894592,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "total_gpu": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2463105024,
+        "free_bytes": 1664090112,
+        "utilization_percent": 100
+      },
+      "allocated_bytes": 133363712,
+      "reserved_bytes": 484442112,
+      "peak_allocated_bytes": 378758656,
+      "peak_reserved_bytes": 484442112,
+      "shared_growth_bytes": 4194304
+    },
+    {
+      "stage": "forward_72",
+      "windows": {
+        "dedicated_bytes": 566894592,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 566894592,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "total_gpu": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2463105024,
+        "free_bytes": 1664090112,
+        "utilization_percent": 100
+      },
+      "allocated_bytes": 337600512,
+      "reserved_bytes": 484442112,
+      "peak_allocated_bytes": 378758656,
+      "peak_reserved_bytes": 484442112,
+      "shared_growth_bytes": 4194304
+    },
+    {
+      "stage": "backward_72",
+      "windows": {
+        "dedicated_bytes": 566894592,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 566894592,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "total_gpu": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2463105024,
+        "free_bytes": 1664090112,
+        "utilization_percent": 100
+      },
+      "allocated_bytes": 133363712,
+      "reserved_bytes": 484442112,
+      "peak_allocated_bytes": 378758656,
+      "peak_reserved_bytes": 484442112,
+      "shared_growth_bytes": 4194304
+    },
+    {
+      "stage": "forward_80",
+      "windows": {
+        "dedicated_bytes": 566894592,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 566894592,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "total_gpu": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2463105024,
+        "free_bytes": 1664090112,
+        "utilization_percent": 100
+      },
+      "allocated_bytes": 337600512,
+      "reserved_bytes": 484442112,
+      "peak_allocated_bytes": 378758656,
+      "peak_reserved_bytes": 484442112,
+      "shared_growth_bytes": 4194304
+    },
+    {
+      "stage": "backward_80",
+      "windows": {
+        "dedicated_bytes": 566894592,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 566894592,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "total_gpu": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2463105024,
+        "free_bytes": 1664090112,
+        "utilization_percent": 100
+      },
+      "allocated_bytes": 133363712,
+      "reserved_bytes": 484442112,
+      "peak_allocated_bytes": 378758656,
+      "peak_reserved_bytes": 484442112,
+      "shared_growth_bytes": 4194304
+    },
+    {
+      "stage": "forward_88",
+      "windows": {
+        "dedicated_bytes": 566894592,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 566894592,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "total_gpu": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2463105024,
+        "free_bytes": 1664090112,
+        "utilization_percent": 100
+      },
+      "allocated_bytes": 337600512,
+      "reserved_bytes": 484442112,
+      "peak_allocated_bytes": 378758656,
+      "peak_reserved_bytes": 484442112,
+      "shared_growth_bytes": 4194304
+    },
+    {
+      "stage": "backward_88",
+      "windows": {
+        "dedicated_bytes": 566894592,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 566894592,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "total_gpu": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2463105024,
+        "free_bytes": 1664090112,
+        "utilization_percent": 100
+      },
+      "allocated_bytes": 133363712,
+      "reserved_bytes": 484442112,
+      "peak_allocated_bytes": 378758656,
+      "peak_reserved_bytes": 484442112,
+      "shared_growth_bytes": 4194304
+    },
+    {
+      "stage": "forward_96",
+      "windows": {
+        "dedicated_bytes": 566894592,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 566894592,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "total_gpu": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2463105024,
+        "free_bytes": 1664090112,
+        "utilization_percent": 100
+      },
+      "allocated_bytes": 337600512,
+      "reserved_bytes": 484442112,
+      "peak_allocated_bytes": 378758656,
+      "peak_reserved_bytes": 484442112,
+      "shared_growth_bytes": 4194304
+    },
+    {
+      "stage": "backward_96",
+      "windows": {
+        "dedicated_bytes": 566894592,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 566894592,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "total_gpu": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2463105024,
+        "free_bytes": 1664090112,
+        "utilization_percent": 100
+      },
+      "allocated_bytes": 133363712,
+      "reserved_bytes": 484442112,
+      "peak_allocated_bytes": 378758656,
+      "peak_reserved_bytes": 484442112,
+      "shared_growth_bytes": 4194304
+    },
+    {
+      "stage": "forward_104",
+      "windows": {
+        "dedicated_bytes": 566894592,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 566894592,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "total_gpu": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2463105024,
+        "free_bytes": 1664090112,
+        "utilization_percent": 100
+      },
+      "allocated_bytes": 337600512,
+      "reserved_bytes": 484442112,
+      "peak_allocated_bytes": 378758656,
+      "peak_reserved_bytes": 484442112,
+      "shared_growth_bytes": 4194304
+    },
+    {
+      "stage": "backward_104",
+      "windows": {
+        "dedicated_bytes": 566894592,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 566894592,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "total_gpu": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2463105024,
+        "free_bytes": 1664090112,
+        "utilization_percent": 100
+      },
+      "allocated_bytes": 133363712,
+      "reserved_bytes": 484442112,
+      "peak_allocated_bytes": 378758656,
+      "peak_reserved_bytes": 484442112,
+      "shared_growth_bytes": 4194304
+    },
+    {
+      "stage": "forward_112",
+      "windows": {
+        "dedicated_bytes": 566894592,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 566894592,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "total_gpu": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2463105024,
+        "free_bytes": 1664090112,
+        "utilization_percent": 100
+      },
+      "allocated_bytes": 337600512,
+      "reserved_bytes": 484442112,
+      "peak_allocated_bytes": 378758656,
+      "peak_reserved_bytes": 484442112,
+      "shared_growth_bytes": 4194304
+    },
+    {
+      "stage": "backward_112",
+      "windows": {
+        "dedicated_bytes": 566894592,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 566894592,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "total_gpu": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2463105024,
+        "free_bytes": 1664090112,
+        "utilization_percent": 100
+      },
+      "allocated_bytes": 133363712,
+      "reserved_bytes": 484442112,
+      "peak_allocated_bytes": 378758656,
+      "peak_reserved_bytes": 484442112,
+      "shared_growth_bytes": 4194304
+    },
+    {
+      "stage": "forward_120",
+      "windows": {
+        "dedicated_bytes": 566894592,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 566894592,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "total_gpu": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2463105024,
+        "free_bytes": 1664090112,
+        "utilization_percent": 100
+      },
+      "allocated_bytes": 337600512,
+      "reserved_bytes": 484442112,
+      "peak_allocated_bytes": 378758656,
+      "peak_reserved_bytes": 484442112,
+      "shared_growth_bytes": 4194304
+    },
+    {
+      "stage": "backward_120",
+      "windows": {
+        "dedicated_bytes": 566894592,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 566894592,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "total_gpu": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2463105024,
+        "free_bytes": 1664090112,
+        "utilization_percent": 100
+      },
+      "allocated_bytes": 133363712,
+      "reserved_bytes": 484442112,
+      "peak_allocated_bytes": 378758656,
+      "peak_reserved_bytes": 484442112,
+      "shared_growth_bytes": 4194304
+    },
+    {
+      "stage": "adamw_step_0_with_moments_allocated",
+      "windows": {
+        "dedicated_bytes": 594157568,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 594157568,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "total_gpu": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2490368000,
+        "free_bytes": 1636827136,
+        "utilization_percent": 100
+      },
+      "allocated_bytes": 247015424,
+      "reserved_bytes": 511705088,
+      "peak_allocated_bytes": 378758656,
+      "peak_reserved_bytes": 511705088,
+      "shared_growth_bytes": 4194304
+    },
+    {
+      "stage": "forward_128",
+      "windows": {
+        "dedicated_bytes": 596254720,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 596254720,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "total_gpu": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2492465152,
+        "free_bytes": 1634729984,
+        "utilization_percent": 100
+      },
+      "allocated_bytes": 394426368,
+      "reserved_bytes": 513802240,
+      "peak_allocated_bytes": 396669440,
+      "peak_reserved_bytes": 513802240,
+      "shared_growth_bytes": 4194304
+    },
+    {
+      "stage": "backward_128",
+      "windows": {
+        "dedicated_bytes": 652877824,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 652877824,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "total_gpu": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2549088256,
+        "free_bytes": 1578106880,
+        "utilization_percent": 100
+      },
+      "allocated_bytes": 247015424,
+      "reserved_bytes": 570425344,
+      "peak_allocated_bytes": 461517312,
+      "peak_reserved_bytes": 570425344,
+      "shared_growth_bytes": 4194304
+    },
+    {
+      "stage": "forward_136",
+      "windows": {
+        "dedicated_bytes": 654974976,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 654974976,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "total_gpu": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2551185408,
+        "free_bytes": 1576009728,
+        "utilization_percent": 100
+      },
+      "allocated_bytes": 451252224,
+      "reserved_bytes": 572522496,
+      "peak_allocated_bytes": 461517312,
+      "peak_reserved_bytes": 572522496,
+      "shared_growth_bytes": 4194304
+    },
+    {
+      "stage": "backward_136",
+      "windows": {
+        "dedicated_bytes": 686432256,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 686432256,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "total_gpu": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2582642688,
+        "free_bytes": 1544552448,
+        "utilization_percent": 100
+      },
+      "allocated_bytes": 247015424,
+      "reserved_bytes": 603979776,
+      "peak_allocated_bytes": 492410368,
+      "peak_reserved_bytes": 603979776,
+      "shared_growth_bytes": 4194304
+    },
+    {
+      "stage": "forward_144",
+      "windows": {
+        "dedicated_bytes": 686432256,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 686432256,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "total_gpu": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2582642688,
+        "free_bytes": 1544552448,
+        "utilization_percent": 100
+      },
+      "allocated_bytes": 451252224,
+      "reserved_bytes": 603979776,
+      "peak_allocated_bytes": 492410368,
+      "peak_reserved_bytes": 603979776,
+      "shared_growth_bytes": 4194304
+    },
+    {
+      "stage": "backward_144",
+      "windows": {
+        "dedicated_bytes": 686432256,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 686432256,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "total_gpu": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2582642688,
+        "free_bytes": 1544552448,
+        "utilization_percent": 100
+      },
+      "allocated_bytes": 247015424,
+      "reserved_bytes": 603979776,
+      "peak_allocated_bytes": 492410368,
+      "peak_reserved_bytes": 603979776,
+      "shared_growth_bytes": 4194304
+    },
+    {
+      "stage": "forward_152",
+      "windows": {
+        "dedicated_bytes": 686432256,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 686432256,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "total_gpu": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2582642688,
+        "free_bytes": 1544552448,
+        "utilization_percent": 100
+      },
+      "allocated_bytes": 451252224,
+      "reserved_bytes": 603979776,
+      "peak_allocated_bytes": 492410368,
+      "peak_reserved_bytes": 603979776,
+      "shared_growth_bytes": 4194304
+    },
+    {
+      "stage": "backward_152",
+      "windows": {
+        "dedicated_bytes": 686432256,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 686432256,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "total_gpu": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2582642688,
+        "free_bytes": 1544552448,
+        "utilization_percent": 100
+      },
+      "allocated_bytes": 247015424,
+      "reserved_bytes": 603979776,
+      "peak_allocated_bytes": 492410368,
+      "peak_reserved_bytes": 603979776,
+      "shared_growth_bytes": 4194304
+    },
+    {
+      "stage": "forward_160",
+      "windows": {
+        "dedicated_bytes": 686432256,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 686432256,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "total_gpu": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2582642688,
+        "free_bytes": 1544552448,
+        "utilization_percent": 100
+      },
+      "allocated_bytes": 451252224,
+      "reserved_bytes": 603979776,
+      "peak_allocated_bytes": 492410368,
+      "peak_reserved_bytes": 603979776,
+      "shared_growth_bytes": 4194304
+    },
+    {
+      "stage": "backward_160",
+      "windows": {
+        "dedicated_bytes": 686432256,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 686432256,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "total_gpu": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2582642688,
+        "free_bytes": 1544552448,
+        "utilization_percent": 100
+      },
+      "allocated_bytes": 247015424,
+      "reserved_bytes": 603979776,
+      "peak_allocated_bytes": 492410368,
+      "peak_reserved_bytes": 603979776,
+      "shared_growth_bytes": 4194304
+    },
+    {
+      "stage": "forward_168",
+      "windows": {
+        "dedicated_bytes": 686432256,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 686432256,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "total_gpu": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2582642688,
+        "free_bytes": 1544552448,
+        "utilization_percent": 100
+      },
+      "allocated_bytes": 451252224,
+      "reserved_bytes": 603979776,
+      "peak_allocated_bytes": 492410368,
+      "peak_reserved_bytes": 603979776,
+      "shared_growth_bytes": 4194304
+    },
+    {
+      "stage": "backward_168",
+      "windows": {
+        "dedicated_bytes": 686432256,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 686432256,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "total_gpu": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2582642688,
+        "free_bytes": 1544552448,
+        "utilization_percent": 100
+      },
+      "allocated_bytes": 247015424,
+      "reserved_bytes": 603979776,
+      "peak_allocated_bytes": 492410368,
+      "peak_reserved_bytes": 603979776,
+      "shared_growth_bytes": 4194304
+    },
+    {
+      "stage": "forward_176",
+      "windows": {
+        "dedicated_bytes": 686432256,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 686432256,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "total_gpu": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2582642688,
+        "free_bytes": 1544552448,
+        "utilization_percent": 100
+      },
+      "allocated_bytes": 451252224,
+      "reserved_bytes": 603979776,
+      "peak_allocated_bytes": 492410368,
+      "peak_reserved_bytes": 603979776,
+      "shared_growth_bytes": 4194304
+    },
+    {
+      "stage": "backward_176",
+      "windows": {
+        "dedicated_bytes": 686432256,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 686432256,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "total_gpu": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2582642688,
+        "free_bytes": 1544552448,
+        "utilization_percent": 100
+      },
+      "allocated_bytes": 247015424,
+      "reserved_bytes": 603979776,
+      "peak_allocated_bytes": 492410368,
+      "peak_reserved_bytes": 603979776,
+      "shared_growth_bytes": 4194304
+    },
+    {
+      "stage": "forward_184",
+      "windows": {
+        "dedicated_bytes": 686432256,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 686432256,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "total_gpu": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2582642688,
+        "free_bytes": 1544552448,
+        "utilization_percent": 100
+      },
+      "allocated_bytes": 451252224,
+      "reserved_bytes": 603979776,
+      "peak_allocated_bytes": 492410368,
+      "peak_reserved_bytes": 603979776,
+      "shared_growth_bytes": 4194304
+    },
+    {
+      "stage": "backward_184",
+      "windows": {
+        "dedicated_bytes": 686432256,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 686432256,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "total_gpu": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2582642688,
+        "free_bytes": 1544552448,
+        "utilization_percent": 100
+      },
+      "allocated_bytes": 247015424,
+      "reserved_bytes": 603979776,
+      "peak_allocated_bytes": 492410368,
+      "peak_reserved_bytes": 603979776,
+      "shared_growth_bytes": 4194304
+    },
+    {
+      "stage": "forward_192",
+      "windows": {
+        "dedicated_bytes": 686432256,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 686432256,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "total_gpu": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2582642688,
+        "free_bytes": 1544552448,
+        "utilization_percent": 100
+      },
+      "allocated_bytes": 451252224,
+      "reserved_bytes": 603979776,
+      "peak_allocated_bytes": 492410368,
+      "peak_reserved_bytes": 603979776,
+      "shared_growth_bytes": 4194304
+    },
+    {
+      "stage": "backward_192",
+      "windows": {
+        "dedicated_bytes": 686432256,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 686432256,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "total_gpu": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2582642688,
+        "free_bytes": 1544552448,
+        "utilization_percent": 100
+      },
+      "allocated_bytes": 247015424,
+      "reserved_bytes": 603979776,
+      "peak_allocated_bytes": 492410368,
+      "peak_reserved_bytes": 603979776,
+      "shared_growth_bytes": 4194304
+    },
+    {
+      "stage": "forward_200",
+      "windows": {
+        "dedicated_bytes": 686432256,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 686432256,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "total_gpu": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2582642688,
+        "free_bytes": 1544552448,
+        "utilization_percent": 100
+      },
+      "allocated_bytes": 451252224,
+      "reserved_bytes": 603979776,
+      "peak_allocated_bytes": 492410368,
+      "peak_reserved_bytes": 603979776,
+      "shared_growth_bytes": 4194304
+    },
+    {
+      "stage": "backward_200",
+      "windows": {
+        "dedicated_bytes": 686432256,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 686432256,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "total_gpu": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2582642688,
+        "free_bytes": 1544552448,
+        "utilization_percent": 100
+      },
+      "allocated_bytes": 247015424,
+      "reserved_bytes": 603979776,
+      "peak_allocated_bytes": 492410368,
+      "peak_reserved_bytes": 603979776,
+      "shared_growth_bytes": 4194304
+    },
+    {
+      "stage": "forward_208",
+      "windows": {
+        "dedicated_bytes": 686432256,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 686432256,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "total_gpu": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2582642688,
+        "free_bytes": 1544552448,
+        "utilization_percent": 100
+      },
+      "allocated_bytes": 451252224,
+      "reserved_bytes": 603979776,
+      "peak_allocated_bytes": 492410368,
+      "peak_reserved_bytes": 603979776,
+      "shared_growth_bytes": 4194304
+    },
+    {
+      "stage": "backward_208",
+      "windows": {
+        "dedicated_bytes": 686432256,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 686432256,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "total_gpu": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2582642688,
+        "free_bytes": 1544552448,
+        "utilization_percent": 100
+      },
+      "allocated_bytes": 247015424,
+      "reserved_bytes": 603979776,
+      "peak_allocated_bytes": 492410368,
+      "peak_reserved_bytes": 603979776,
+      "shared_growth_bytes": 4194304
+    },
+    {
+      "stage": "forward_216",
+      "windows": {
+        "dedicated_bytes": 686432256,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 686432256,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "total_gpu": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2582642688,
+        "free_bytes": 1544552448,
+        "utilization_percent": 100
+      },
+      "allocated_bytes": 451252224,
+      "reserved_bytes": 603979776,
+      "peak_allocated_bytes": 492410368,
+      "peak_reserved_bytes": 603979776,
+      "shared_growth_bytes": 4194304
+    },
+    {
+      "stage": "backward_216",
+      "windows": {
+        "dedicated_bytes": 686432256,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 686432256,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "total_gpu": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2582642688,
+        "free_bytes": 1544552448,
+        "utilization_percent": 99
+      },
+      "allocated_bytes": 247015424,
+      "reserved_bytes": 603979776,
+      "peak_allocated_bytes": 492410368,
+      "peak_reserved_bytes": 603979776,
+      "shared_growth_bytes": 4194304
+    },
+    {
+      "stage": "forward_224",
+      "windows": {
+        "dedicated_bytes": 686432256,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 686432256,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "total_gpu": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2582642688,
+        "free_bytes": 1544552448,
+        "utilization_percent": 99
+      },
+      "allocated_bytes": 451252224,
+      "reserved_bytes": 603979776,
+      "peak_allocated_bytes": 492410368,
+      "peak_reserved_bytes": 603979776,
+      "shared_growth_bytes": 4194304
+    },
+    {
+      "stage": "backward_224",
+      "windows": {
+        "dedicated_bytes": 686432256,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 686432256,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "total_gpu": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2582642688,
+        "free_bytes": 1544552448,
+        "utilization_percent": 100
+      },
+      "allocated_bytes": 247015424,
+      "reserved_bytes": 603979776,
+      "peak_allocated_bytes": 492410368,
+      "peak_reserved_bytes": 603979776,
+      "shared_growth_bytes": 4194304
+    },
+    {
+      "stage": "forward_232",
+      "windows": {
+        "dedicated_bytes": 686432256,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 686432256,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "total_gpu": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2582642688,
+        "free_bytes": 1544552448,
+        "utilization_percent": 100
+      },
+      "allocated_bytes": 451252224,
+      "reserved_bytes": 603979776,
+      "peak_allocated_bytes": 492410368,
+      "peak_reserved_bytes": 603979776,
+      "shared_growth_bytes": 4194304
+    },
+    {
+      "stage": "backward_232",
+      "windows": {
+        "dedicated_bytes": 686432256,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 686432256,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "total_gpu": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2582642688,
+        "free_bytes": 1544552448,
+        "utilization_percent": 100
+      },
+      "allocated_bytes": 247015424,
+      "reserved_bytes": 603979776,
+      "peak_allocated_bytes": 492410368,
+      "peak_reserved_bytes": 603979776,
+      "shared_growth_bytes": 4194304
+    },
+    {
+      "stage": "forward_240",
+      "windows": {
+        "dedicated_bytes": 686432256,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 686432256,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "total_gpu": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2582642688,
+        "free_bytes": 1544552448,
+        "utilization_percent": 100
+      },
+      "allocated_bytes": 451252224,
+      "reserved_bytes": 603979776,
+      "peak_allocated_bytes": 492410368,
+      "peak_reserved_bytes": 603979776,
+      "shared_growth_bytes": 4194304
+    },
+    {
+      "stage": "backward_240",
+      "windows": {
+        "dedicated_bytes": 686432256,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 686432256,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "total_gpu": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2582642688,
+        "free_bytes": 1544552448,
+        "utilization_percent": 100
+      },
+      "allocated_bytes": 247015424,
+      "reserved_bytes": 603979776,
+      "peak_allocated_bytes": 492410368,
+      "peak_reserved_bytes": 603979776,
+      "shared_growth_bytes": 4194304
+    },
+    {
+      "stage": "forward_248",
+      "windows": {
+        "dedicated_bytes": 686432256,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 686432256,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "total_gpu": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2582642688,
+        "free_bytes": 1544552448,
+        "utilization_percent": 100
+      },
+      "allocated_bytes": 451252224,
+      "reserved_bytes": 603979776,
+      "peak_allocated_bytes": 492410368,
+      "peak_reserved_bytes": 603979776,
+      "shared_growth_bytes": 4194304
+    },
+    {
+      "stage": "backward_248",
+      "windows": {
+        "dedicated_bytes": 686432256,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 686432256,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "total_gpu": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2582642688,
+        "free_bytes": 1544552448,
+        "utilization_percent": 99
+      },
+      "allocated_bytes": 247015424,
+      "reserved_bytes": 603979776,
+      "peak_allocated_bytes": 492410368,
+      "peak_reserved_bytes": 603979776,
+      "shared_growth_bytes": 4194304
+    },
+    {
+      "stage": "adamw_step_1_with_moments_allocated",
+      "windows": {
+        "dedicated_bytes": 686432256,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 686432256,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "total_gpu": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2582642688,
+        "free_bytes": 1544552448,
+        "utilization_percent": 100
+      },
+      "allocated_bytes": 247015424,
+      "reserved_bytes": 603979776,
+      "peak_allocated_bytes": 492410368,
+      "peak_reserved_bytes": 603979776,
+      "shared_growth_bytes": 4194304
+    }
+  ],
+  "update_timings": [
+    {
+      "update": 0,
+      "warmup": true,
+      "execution_wall_seconds": 13.759846000059042,
+      "execution_cuda_seconds": 13.749886772155758,
+      "phases_wall_seconds": {
+        "forward": 4.712702600038028,
+        "backward": 8.950181900014286,
+        "graph_forward_backward": 0,
+        "adamw": 0.09696150000672787
+      }
+    },
+    {
+      "update": 1,
+      "warmup": false,
+      "execution_wall_seconds": 13.174921999961953,
+      "execution_cuda_seconds": 13.165349132537841,
+      "phases_wall_seconds": {
+        "forward": 4.23097569993115,
+        "backward": 8.900491700027487,
+        "graph_forward_backward": 0,
+        "adamw": 0.043454600003315136
+      }
+    }
+  ],
+  "memory_policy": "total dedicated VRAM limit; shared usage recorded, growth permitted",
+  "vram_limit_bytes": 4294967296,
+  "cuda_initialization_memory": {
+    "dedicated_bytes": 53080064,
+    "shared_bytes": 79691776,
+    "rows": [
+      {
+        "Name": "pid_13428_luid_0x00000000_0x000178A0_phys_0",
+        "DedicatedUsage": 53080064,
+        "SharedUsage": 79691776
+      }
+    ]
+  },
+  "last_chunk_nll": 10.829366683959961,
+  "unclipped_gradient_norm": 0.5597748756408691,
+  "status": "completed",
+  "measured_seconds_per_update": 13.174921999961953,
+  "peak_allocated_bytes": 492410368,
+  "peak_reserved_bytes": 603979776,
+  "execution_wall_seconds_excluding_memory_queries": 26.934768000020995,
+  "execution_cuda_seconds": 26.915235904693603
+}

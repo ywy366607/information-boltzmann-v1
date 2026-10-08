@@ -1,0 +1,73 @@
+{
+  "scope": "One restored real OWT window; diagnostic derivatives only, no training benefit",
+  "source_reports": {
+    "all": "fly_w32_state_adjoints_20261008.json",
+    "active_only": "fly_w32_pulse_active_credit_20261008.json",
+    "silent_only": "fly_w32_pulse_silent_credit_20261008.json"
+  },
+  "target_sha256": "c6ad6a38e7335bee762df1271dbef34aebb32490da6a24830c2b1dd549a5370d",
+  "optimizer_updates": 0,
+  "physical_ticks_per_arm": 480,
+  "arms": {
+    "all": {
+      "gradient_norm": 125234046841342.48,
+      "pre_update_training_loss": 6.4838385581970215,
+      "max_score_difference_from_all": 0.0,
+      "direct_read_raw_norms": {
+        "output_read.weight": 0.6166666553149633,
+        "read_norm.weight": 0.4538441212883956,
+        "decoder.weight": 0.6891499347587593,
+        "decoder.bias": 0.16193703095225986
+      },
+      "current_read_norm_after_clip": 4.9241134903064555e-15,
+      "board_peak_stage_snapshot_mib": 2711.0
+    },
+    "active_only": {
+      "gradient_norm": 2.14232914801893,
+      "pre_update_training_loss": 6.4838385581970215,
+      "max_score_difference_from_all": 9.5367431640625e-07,
+      "direct_read_raw_norms": {
+        "output_read.weight": 0.6166666500739236,
+        "read_norm.weight": 0.4538441138449647,
+        "decoder.weight": 0.6891499339640194,
+        "decoder.bias": 0.16193702974971216
+      },
+      "current_read_norm_after_clip": 0.28784856371990103,
+      "board_peak_stage_snapshot_mib": 2711.0,
+      "covered_physical_ticks": 480,
+      "pulse_hooks_fired": 479,
+      "last_unused_pulse_hook_fired": false,
+      "spike_pulse_mask_disagreements": 0,
+      "first_h_adjoint_norm": 0.12151541220240779,
+      "last_h_adjoint_norm": 0.07462102024037617
+    },
+    "silent_only": {
+      "gradient_norm": 27913402505730.887,
+      "pre_update_training_loss": 6.483838081359863,
+      "max_score_difference_from_all": 9.5367431640625e-07,
+      "direct_read_raw_norms": {
+        "output_read.weight": 0.616666658764901,
+        "read_norm.weight": 0.4538441199073852,
+        "decoder.weight": 0.6891499367068347,
+        "decoder.bias": 0.16193703188603778
+      },
+      "current_read_norm_after_clip": 2.2092135902718207e-14,
+      "board_peak_stage_snapshot_mib": 2711.0,
+      "covered_physical_ticks": 480,
+      "pulse_hooks_fired": 479,
+      "last_unused_pulse_hook_fired": false,
+      "spike_pulse_mask_disagreements": 0,
+      "first_h_adjoint_norm": 15337588715912.096,
+      "last_h_adjoint_norm": 0.07462101587625994
+    }
+  },
+  "norm_reduction_all_to_active_only": 58456958846473.15,
+  "conclusion": "Extreme surrogate amplification in this window depends on silent transmitted-pulse feedback; active-only is a diagnostic, not an approved learner.",
+  "limitations": [
+    "Interventions remove mixed paths as well; their gradients do not add to the baseline.",
+    "GPU floating scores differ within existing baseline reduction variation; CPU forward/state/direct-read contracts are exact.",
+    "Silent neurons need first-firing credit; no production active-only mask is deployed.",
+    "No NLL improvement or biological learning claim; augmented small-gain calibration remains to be implemented and task-validated."
+  ],
+  "reviewer": "/root/rtc_contract_review"
+}

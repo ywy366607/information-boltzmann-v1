@@ -1,0 +1,25 @@
+{
+  "date": "2026-10-07",
+  "scope": "CPU window-partition interface counterexample, no training or checkpoint capability conclusion",
+  "source_sha256": {
+    "information_boltzmann/core/fly_graph_observer.py": "1a8f1959359b1a2cca0ab17accc44ac1d224712688b70858af3914c0ec3c3eda",
+    "information_boltzmann/core/fly_bptt_learning.py": "3fc1fa78e6bdd021d6f4dc47537612cd21277f044045a4d156f83ef87b4f8f46",
+    "tests/test_fly_graph_observer.py": "4663134a8fe094a25e114c50f95d3fa8b1dc9781b7670db9c06d30efe1549a06"
+  },
+  "partition_check": {
+    "default_mlp_readout_max_difference": 6.4373016357421875e-06,
+    "default_mlp_next_prior_max_difference": 0.00023928284645080566,
+    "tier4_contract_readout_max_difference": 0.11656159162521362,
+    "tier4_contract_next_prior_max_difference": 0.3355160355567932
+  },
+  "existing_tests": {
+    "passed": 35,
+    "elapsed_seconds": 9.82,
+    "command": "python -m pytest tests/test_fly_graph_observer.py tests/test_fly_bptt_learning.py -q"
+  },
+  "independent_review": {
+    "reviewer": "/root/rtc_contract_review",
+    "status": "accepted",
+    "finding": "Three fixes valid; separate posterior history missing across boundaries, drafts and queries; current prior incorrectly serves as past state."
+  }
+}

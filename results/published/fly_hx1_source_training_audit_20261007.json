@@ -1,0 +1,356 @@
+{
+  "snapshot_time": "2026-10-07T14:23:35.105908+08:00",
+  "status": "interim_readonly_audit",
+  "runs": [
+    "q8_fly_bptt32_lewm14_clean_v2_100k",
+    "q8_fly_bptt32_hx1_graph_observer_100k"
+  ],
+  "scope": "CPU source and existing log review; no GPU jobs, production edits, training or checkpoint mutations",
+  "objective": "Improve causal never-reset active fresh-stream predictive NLL using a persistent graph-constrained predictive readout",
+  "current_disk_source_hashes": {
+    "information_boltzmann/core/fly_graph_observer.py": "13748a7cf0af34d8750d8dfc0be708c513feafaa8c68406f17b46ccaf80af980",
+    "information_boltzmann/core/fly_bptt_learning.py": "cf96f7f7bce0d9234e18b36982ad03463b8d29f5b7ff33c84da0007a19f7eb30",
+    "scripts/ib/train_fly_bptt_stream.py": "19a9945ab2944b59b355b11ead8924c781d6ac67bc7e16b52c205509860f6cd1",
+    "information_boltzmann/runtime/lifelong_evaluation.py": "d7cd585da1ede80b5fffe56bc9da6684cb0768ce83de25d4dfb6d6d71152d23c"
+  },
+  "source_provenance_limit": "Current-disk audit; exact source hashes loaded by the running processes were not recorded at launch.",
+  "fixed_reference_counts_sha256": "d4de1245c61786d8fd223427b29a7ae6db3157d84fac1f11790d2bfcb4c6a750",
+  "matched_fresh_B_nodes": [
+    {
+      "train_tokens": 5024,
+      "validation_target_interval": [
+        0,
+        256
+      ],
+      "targets": 256,
+      "hx0_nll": 7.689156551845372,
+      "hx1_nll": 8.297566808760166,
+      "unigram_nll": 7.512127477933757,
+      "hx1_minus_hx0": 0.6084102569147944,
+      "hx0_gain_over_unigram": -0.1770290739116147,
+      "hx1_gain_over_unigram": -0.7854393308264092
+    },
+    {
+      "train_tokens": 10016,
+      "validation_target_interval": [
+        256,
+        512
+      ],
+      "targets": 256,
+      "hx0_nll": 7.686782433651388,
+      "hx1_nll": 8.100260238163173,
+      "unigram_nll": 7.560355754282792,
+      "hx1_minus_hx0": 0.4134778045117855,
+      "hx0_gain_over_unigram": -0.12642667936859553,
+      "hx1_gain_over_unigram": -0.539904483880381
+    },
+    {
+      "train_tokens": 15008,
+      "validation_target_interval": [
+        512,
+        768
+      ],
+      "targets": 256,
+      "hx0_nll": 6.865166158415377,
+      "hx1_nll": 7.382939927279949,
+      "unigram_nll": 6.9325085301065625,
+      "hx1_minus_hx0": 0.517773768864572,
+      "hx0_gain_over_unigram": 0.0673423716911854,
+      "hx1_gain_over_unigram": -0.45043139717338665
+    },
+    {
+      "train_tokens": 20000,
+      "validation_target_interval": [
+        768,
+        1024
+      ],
+      "targets": 256,
+      "hx0_nll": 7.452559224329889,
+      "hx1_nll": 8.111807810142636,
+      "unigram_nll": 7.423662122637301,
+      "hx1_minus_hx0": 0.6592485858127475,
+      "hx0_gain_over_unigram": -0.028897101692587412,
+      "hx1_gain_over_unigram": -0.6881456875053349
+    },
+    {
+      "train_tokens": 25024,
+      "validation_target_interval": [
+        1024,
+        1280
+      ],
+      "targets": 256,
+      "hx0_nll": 7.106109390035272,
+      "hx1_nll": 7.529431638307869,
+      "unigram_nll": 7.2051752651361785,
+      "hx1_minus_hx0": 0.4233222482725978,
+      "hx0_gain_over_unigram": 0.09906587510090681,
+      "hx1_gain_over_unigram": -0.324256373171691
+    },
+    {
+      "train_tokens": 30016,
+      "validation_target_interval": [
+        1280,
+        1536
+      ],
+      "targets": 256,
+      "hx0_nll": 7.345160434022546,
+      "hx1_nll": 7.450563101097941,
+      "unigram_nll": 7.3592044443753455,
+      "hx1_minus_hx0": 0.10540266707539558,
+      "hx0_gain_over_unigram": 0.014044010352799674,
+      "hx1_gain_over_unigram": -0.09135865672259591
+    },
+    {
+      "train_tokens": 35008,
+      "validation_target_interval": [
+        1536,
+        1792
+      ],
+      "targets": 256,
+      "hx0_nll": 7.497912667691708,
+      "hx1_nll": 7.83415056951344,
+      "unigram_nll": 7.404972866968463,
+      "hx1_minus_hx0": 0.3362379018217325,
+      "hx0_gain_over_unigram": -0.09293980072324448,
+      "hx1_gain_over_unigram": -0.429177702544977
+    },
+    {
+      "train_tokens": 40000,
+      "validation_target_interval": [
+        1792,
+        2048
+      ],
+      "targets": 256,
+      "hx0_nll": 7.293288136832416,
+      "hx1_nll": 7.467395841144025,
+      "unigram_nll": 7.099170317044387,
+      "hx1_minus_hx0": 0.17410770431160927,
+      "hx0_gain_over_unigram": -0.1941178197880289,
+      "hx1_gain_over_unigram": -0.36822552409963816
+    },
+    {
+      "train_tokens": 45024,
+      "validation_target_interval": [
+        2048,
+        2304
+      ],
+      "targets": 256,
+      "hx0_nll": 7.553212278522551,
+      "hx1_nll": 7.438954366371036,
+      "unigram_nll": 7.143001550036594,
+      "hx1_minus_hx0": -0.11425791215151548,
+      "hx0_gain_over_unigram": -0.4102107284859571,
+      "hx1_gain_over_unigram": -0.2959528163344416
+    },
+    {
+      "train_tokens": 50016,
+      "validation_target_interval": [
+        2304,
+        2560
+      ],
+      "targets": 256,
+      "hx0_nll": 7.242989236488938,
+      "hx1_nll": 7.527976025827229,
+      "unigram_nll": 7.172803130986355,
+      "hx1_minus_hx0": 0.2849867893382907,
+      "hx0_gain_over_unigram": -0.0701861055025832,
+      "hx1_gain_over_unigram": -0.3551728948408739
+    },
+    {
+      "train_tokens": 55008,
+      "validation_target_interval": [
+        2560,
+        2816
+      ],
+      "targets": 256,
+      "hx0_nll": 6.94839408993721,
+      "hx1_nll": 7.262253352440894,
+      "unigram_nll": 6.97396224092614,
+      "hx1_minus_hx0": 0.31385926250368357,
+      "hx0_gain_over_unigram": 0.025568150988929617,
+      "hx1_gain_over_unigram": -0.28829111151475395
+    }
+  ],
+  "matched_fresh_B_pool": {
+    "hx0_nll": 7.334611872888424,
+    "hx1_nll": 7.673027243549851,
+    "unigram_nll": 7.253358518221262,
+    "hx1_minus_hx0": 0.3384153706614267,
+    "targets": 2816,
+    "evaluation_nodes": 11,
+    "hx1_worse_nodes": 10
+  },
+  "matched_train_snapshots_55040": {
+    "hx0": {
+      "bptt_train_tokens": 55040,
+      "bptt_optimizer_updates": 1852,
+      "first_pass_train_nll": 7.274285632818071,
+      "first_pass_fixed_unigram_nll": 7.490634855412636,
+      "first_pass_gain_over_fixed_unigram": 0.2163492225945648,
+      "recent_first_pass_train_nll": 7.225510864984244,
+      "recent_first_pass_fixed_unigram_nll": 7.313378065427886,
+      "recent_first_pass_gain_over_fixed_unigram": 0.08786720044364227,
+      "speed_tokens_per_sec": 35.71949386458471,
+      "vram_peak_mib": 2447.86962890625,
+      "read_norm_mean": 0.090043805539608,
+      "read_norm_grad_norm": 0.044804949313402176,
+      "attn_k0_immediate": 0.06739695370197296,
+      "attn_k1_fast": 0.06699122488498688,
+      "attn_k4_median": 0.06668753921985626,
+      "attn_k7_mid": 0.06653396785259247,
+      "attn_k14_recurrent": 0.06652364879846573
+    },
+    "hx1": {
+      "bptt_train_tokens": 55040,
+      "bptt_optimizer_updates": 1852,
+      "first_pass_train_nll": 7.555630866469014,
+      "first_pass_fixed_unigram_nll": 7.490634855412636,
+      "first_pass_gain_over_fixed_unigram": -0.06499601105637826,
+      "recent_first_pass_train_nll": 7.358399941818789,
+      "recent_first_pass_fixed_unigram_nll": 7.313378065427886,
+      "recent_first_pass_gain_over_fixed_unigram": -0.04502187639090227,
+      "speed_tokens_per_sec": 42.759034182073826,
+      "vram_peak_mib": 2363.36181640625,
+      "obs_mse": 0.0027638673782348633,
+      "obs_sigreg": 0.3969801664352417,
+      "obs_gain_mean": 0.5153957605361938,
+      "read_norm_mean": 0.10000000894069672,
+      "read_norm_grad_norm": 0.0,
+      "attn_k0_immediate": 7.229783659568056e-05,
+      "attn_k1_fast": 0.0003408369957469404,
+      "attn_k4_median": 0.024821044877171516,
+      "attn_k7_mid": 0.09292459487915039,
+      "attn_k14_recurrent": 0.022998018190264702
+    }
+  },
+  "latest_logged_snapshots": {
+    "hx0": {
+      "bptt_train_tokens": 58368,
+      "bptt_optimizer_updates": 1956,
+      "first_pass_train_nll": 7.259617391483564,
+      "first_pass_fixed_unigram_nll": 7.488291127359658,
+      "first_pass_gain_over_fixed_unigram": 0.2286737358760942,
+      "recent_first_pass_train_nll": 7.0508281799266115,
+      "recent_first_pass_fixed_unigram_nll": 7.4357070068494755,
+      "recent_first_pass_gain_over_fixed_unigram": 0.384878826922864,
+      "speed_tokens_per_sec": 35.92906364156142,
+      "vram_peak_mib": 2447.86962890625,
+      "read_norm_mean": 0.09349781274795532,
+      "read_norm_grad_norm": 0.3520127832889557,
+      "attn_k0_immediate": 0.06716970354318619,
+      "attn_k1_fast": 0.06669646501541138,
+      "attn_k4_median": 0.06651714444160461,
+      "attn_k7_mid": 0.06638467311859131,
+      "attn_k14_recurrent": 0.06668411940336227
+    },
+    "hx1": {
+      "bptt_train_tokens": 87424,
+      "bptt_optimizer_updates": 2936,
+      "first_pass_train_nll": 7.525518078707761,
+      "first_pass_fixed_unigram_nll": 7.4778620555275035,
+      "first_pass_gain_over_fixed_unigram": -0.04765602318025797,
+      "recent_first_pass_train_nll": 7.905829236347927,
+      "recent_first_pass_fixed_unigram_nll": 7.637279524075918,
+      "recent_first_pass_gain_over_fixed_unigram": -0.26854971227200863,
+      "speed_tokens_per_sec": 42.89426382521168,
+      "vram_peak_mib": 2363.36181640625,
+      "obs_mse": 0.006325407885015011,
+      "obs_sigreg": 0.3860979974269867,
+      "obs_gain_mean": 0.5193378925323486,
+      "read_norm_mean": 0.10000000894069672,
+      "read_norm_grad_norm": 0.0,
+      "attn_k0_immediate": 0.001381468609906733,
+      "attn_k1_fast": 0.005814744625240564,
+      "attn_k4_median": 0.045692380517721176,
+      "attn_k7_mid": 0.08988731354475021,
+      "attn_k14_recurrent": 0.12039342522621155
+    }
+  },
+  "observed_progress": [
+    "Observer and physical model receive joint CE and auxiliary gradients.",
+    "HX1 throughput is higher and logged peak GPU allocation is lower than HX0.",
+    "Same-stage first-pass and matched-context Fresh-B NLL currently favor HX0."
+  ],
+  "implementation_findings": [
+    {
+      "id": "decoder_scale",
+      "status": "source_verified",
+      "source": "information_boltzmann/core/fly_graph_observer.py:181",
+      "finding": "HX1 feeds delay-attention LayerNorm output with default gain1 directly to decoder, bypassing model.read_norm initialized0.1. Logged read_norm gradient is zero.",
+      "implication": "Changed decoder feature scale confounds architecture comparison; initialize and apply the same decoder contract. Its contribution to NLL is a causal hypothesis, not yet isolated."
+    },
+    {
+      "id": "graph_and_delay",
+      "status": "independently_source_verified",
+      "source": "information_boltzmann/core/fly_graph_observer.py:34",
+      "finding": "4x4 macro adjacency is hardcoded and all-positive; graph path is not used to derive it. Transition uses A.T times latent H without actual delay queues.",
+      "implication": "Attention index k measures latent-network iteration depth, not measured physical ticks. Use actual region/delay-resolved edge aggregates A_d to implement the intended causal observer."
+    },
+    {
+      "id": "state_observability",
+      "status": "independently_source_verified",
+      "source": "information_boltzmann/core/fly_graph_observer.py:104",
+      "finding": "Regional encoders observe h only; conductance, ALIF, STP and in-flight pulse states are absent.",
+      "implication": "Identical h with different hidden physical states can yield different futures. Add already-existing local dynamic states or explicitly model uncertainty over missing states."
+    },
+    {
+      "id": "carry_state",
+      "status": "independently_source_verified",
+      "source": "information_boltzmann/core/fly_bptt_learning.py:446",
+      "finding": "learner carries observer_prior across training windows, but state_dict omits it and predict_fly_next resets to None and discards returned prior per token.",
+      "implication": "Unify and serialize observer state across training, inference and resume. Current same-learner active evaluation remains measurable."
+    },
+    {
+      "id": "prediction_target",
+      "status": "independently_source_verified",
+      "source": "information_boltzmann/core/fly_graph_observer.py:297",
+      "finding": "obs_mse is one-step latent innovation between jointly learned encoders/predictor. Fourteen-hop rollouts do not receive timestamp-matched real future state targets. SIGReg constrains final readout only.",
+      "implication": "Low MSE does not establish 14-tick physical simulation accuracy or absence of regional collapse. Timestamp-align future observed latent targets and report improvement relative to persistence prediction."
+    },
+    {
+      "id": "gain_semantics",
+      "status": "independently_source_verified",
+      "source": "information_boltzmann/core/fly_graph_observer.py:247",
+      "finding": "sigmoid(raw_gain[4,d]) is a learned time/content-independent coordinate gate, initialized0.5; no covariance update.",
+      "implication": "Describe it as innovation mixing gain. Mean0.519 does not certify optimal Kalman balance."
+    }
+  ],
+  "revisit_interpretation": {
+    "source": "scripts/ib/train_fly_bptt_stream.py:777",
+    "recent_A_tokens": 128,
+    "actual_intervening_events": 256,
+    "all_actual_bridges_scored": true,
+    "claim_supported": "Short-gap active revisit savings under continued learning",
+    "claim_unestablished": "Memory retained across tens of thousands of intervening tokens"
+  },
+  "competition_hypotheses": [
+    {
+      "id": "H_output_scale",
+      "mechanism": "Decoder scale change makes pretrained logits overconfident",
+      "prediction_to_preregister": "Holding causal readout and weights fixed, matched-scale decoder must improve same-target loss if excess gain is the immediate cause; joint trained benefit is judged separately."
+    },
+    {
+      "id": "H_observer_misspecification",
+      "mechanism": "Missing delay/hidden physical states makes the desired transition nonidentifiable from h alone",
+      "mathematical_check": "Construct two physical states with identical h but different ring or conductance: next physical h can differ. A single deterministic h-only exact predictor cannot represent both."
+    },
+    {
+      "id": "H_measurement",
+      "mechanism": "Changing context difficulty and short-gap replay are mistaken for architecture/general memory gains",
+      "observed_check": "Exact same Fresh-B target intervals reverse the claimed HX1 advantage; logged actual replay gap is256."
+    }
+  ],
+  "review": {
+    "source_reviewer": "/root/hx1_source_review",
+    "source_status": "independently_reviewed",
+    "quantitative_review": "Primary CPU exact-target recomputation independently reviewed by /root/hx1_source_review.",
+    "conclusion_status": "independently_accepted",
+    "conclusion_scope": "Matching-context whole-system interim comparison supports current HX1 underperformance, without assigning unique cause or rejecting the core predictive-observer direction."
+  },
+  "decision": "Keep graph predictive observer as a candidate, preserve HX0 baseline, fix decoder/carry-state interface before delay/state/target closure. Register minimal coupled repair and a matched-budget real-stream comparison before any new training.",
+  "limits": [
+    "Snapshot is interim; HX1 has not reached its registered100k budget at audit time.",
+    "Architecture changed decoder path, parameter count and graph model together; no unique NLL cause identified.",
+    "Active B comparisons are different continually adapting individuals exposed to the same contexts, not a frozen-weight paired ablation."
+  ]
+}

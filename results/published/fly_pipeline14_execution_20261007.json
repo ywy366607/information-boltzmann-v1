@@ -1,0 +1,29 @@
+{
+  "date": "2026-10-07",
+  "status": "launched_after_independent_approvals",
+  "runtime": "D:/conda_envs/vox/python.exe",
+  "output": "F:\\fly_checkpoints\\q8_fly_pipeline14_joint_96k",
+  "pid": 10020,
+  "implementation_approval": "results/published/fly_pipeline_implementation_approval_20261007.json",
+  "design_approval": "results/published/fly_pipeline14_experiment_approval_20261007.json",
+  "preregistration": "results/published/fly_pipeline14_preregistered_20261007.json",
+  "calibration": {
+    "actual_observed_tokens": 32,
+    "actual_updates": 1,
+    "physical_ticks": 32,
+    "seconds_per_window": 0.5258172000176273,
+    "tokens_per_second": 60.8576516685404,
+    "cuda_peak_allocated_mib": 1646.4306640625,
+    "cuda_peak_reserved_mib": 2426.0,
+    "cuda_device_used_mib": 3340.9375,
+    "NLL": 8.34039369225502,
+    "fixed_reference_NLL": 8.30150316154027,
+    "claim": "Execution feasibility of first real update only, not predictive capability or convergence"
+  },
+  "continuation": "Complete last.pt from calibration; next fresh cursor32. No reconsumed warm-up/calibration targets. CUDA capture setup work separately counted.",
+  "checkpoints": [
+    "last.pt complete continuation",
+    "best.pt monitoring weights only"
+  ],
+  "capability_claim": "None before registered terminal endpoint"
+}

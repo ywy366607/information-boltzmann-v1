@@ -1,0 +1,72 @@
+{
+  "experiment": "q8_fly_reservoir_topographic_coba_alif_stp_3000",
+  "dataset": "OpenWebText (OWT)",
+  "connectome": "MaleCNS v1.0",
+  "neurons": 165122,
+  "synapses": 25324061,
+  "delays": "biological 3D distance delays (1ms, 2ms, 3ms, 4ms, 4-bin ring buffer)",
+  "conductance_coupling": "COBA Ohmic non-linear (I = g_E*g_e*(E_E - V) + g_I*g_i*(E_I - V))",
+  "neuron_model": "Adaptive Leaky Integrate-and-Fire (ALIF) with Tsodyks-Markram (TM) Short-Term Plasticity (STP)",
+  "plasticity": "27-superclass learned membrane timescales (tau_m), 27-superclass learned thresholds, 27-superclass ALIF adaptation (tau_a, beta), 27-superclass TM STP (U_0, tau_fac, tau_rec), global learned conductance gains (g_e, g_i)",
+  "steps_completed": 3000,
+  "tokens_per_step": 128,
+  "chunk_tokens": 32,
+  "validation_trajectory": [
+    {"step": 0, "val_nll": 10.8213},
+    {"step": 500, "val_nll": 7.6820},
+    {"step": 1000, "val_nll": 7.5886},
+    {"step": 1500, "val_nll": 7.5755},
+    {"step": 2000, "val_nll": 7.5243},
+    {"step": 2500, "val_nll": 7.5187},
+    {"step": 3000, "val_nll": 7.5159}
+  ],
+  "best_validation_nll": 7.51588,
+  "baseline_comparison": {
+    "pure_lif": 8.40,
+    "topographic_coba_lif": 7.63,
+    "topographic_coba_alif": 7.5969,
+    "topographic_coba_alif_stp": 7.51588,
+    "stp_gain_over_alif": 0.0810,
+    "firing_rate_alif_baseline": 0.142,
+    "firing_rate_alif_stp": 0.0148,
+    "spike_energy_reduction_pct": 89.6
+  },
+  "anatomical_triad_specialization": {
+    "sensory_input_circuits": {
+      "neurons": 15896,
+      "tau_m_weighted_ms": 12.77,
+      "threshold_weighted": 0.0984,
+      "adaptation_beta_weighted": 0.0493,
+      "adaptation_fatigue_b_weighted": 0.1326,
+      "vesicle_release_prob_u_weighted": 0.793,
+      "transmitter_pool_x_weighted": 0.087,
+      "short_term_depression_pct": 91.3,
+      "ei_conductance_ratio": 0.701,
+      "functional_role": "High-pass transient edge filtering, sensory adaptation via strong short-term depression"
+    },
+    "central_association_circuits": {
+      "neurons": 134701,
+      "tau_m_weighted_ms": 33.96,
+      "threshold_weighted": 0.1093,
+      "adaptation_beta_weighted": 0.0521,
+      "adaptation_fatigue_b_weighted": 0.0003,
+      "vesicle_release_prob_u_weighted": 0.259,
+      "transmitter_pool_x_weighted": 0.994,
+      "short_term_depression_pct": 0.6,
+      "ei_conductance_ratio": 1.767,
+      "functional_role": "Long-window spatiotemporal evidence integration, working memory maintenance, high-threshold sparse coding pattern separation"
+    },
+    "motor_descending_circuits": {
+      "neurons": 2295,
+      "tau_m_weighted_ms": 45.14,
+      "threshold_weighted": 0.1027,
+      "adaptation_beta_weighted": 0.0501,
+      "adaptation_fatigue_b_weighted": 0.0007,
+      "vesicle_release_prob_u_weighted": 0.269,
+      "transmitter_pool_x_weighted": 0.976,
+      "short_term_depression_pct": 2.4,
+      "ei_conductance_ratio": 4.303,
+      "functional_role": "Low-pass smoothing filter to eliminate discrete spike jitter, high excitatory drive for robust command execution"
+    }
+  }
+}

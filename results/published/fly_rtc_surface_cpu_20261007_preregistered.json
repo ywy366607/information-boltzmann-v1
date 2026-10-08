@@ -1,0 +1,31 @@
+{
+  "scope": "Bounded numerical assay, not joint language learning",
+  "independent_review": "rtc_contract_review approved paired CPU assay",
+  "graph_sha256": "a5baa052b8c6029f139f35ab18563e391fb1c704e420206a219eac5a1fad2542",
+  "seed": 11,
+  "updates_per_arm": 120,
+  "horizon": 14,
+  "lr": 0.002,
+  "train_lanes": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "heldout_lanes": [
+    4,
+    5,
+    6,
+    7
+  ],
+  "arms": [
+    "complete_motor_input",
+    "same_parameters_zero_motor_input"
+  ],
+  "prediction": "Complete surface guarantees exact zero-tick read; future response gain requires heldout error below persistence.",
+  "failure_action": "If exact read passes but future prediction fails, retain observable repair and investigate dynamics/fit before long task training.",
+  "loss": "train-normalized latent and full raw motor MSE; identical across paired arms",
+  "old_comparison_limit": "Prior student used latent and decoded-feature MSE; paired arms isolate input preservation, old comparison is descriptive.",
+  "future_teacher_use": "Labels only; every future motor input is an autonomous draft",
+  "stopping": "Fixed budget; no tuning or model selection using heldout results"
+}

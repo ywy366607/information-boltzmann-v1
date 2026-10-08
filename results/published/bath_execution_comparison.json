@@ -1,0 +1,42 @@
+{
+  "scope": "isolated_compiled_captured_bath_forward_backward_not_capability",
+  "checkpoint": "results\\q8_predictive_ports_k16_unified_bath_3000\\BBest.pt",
+  "shape": [
+    8,
+    8,
+    4
+  ],
+  "channels": 128,
+  "dt": 4.0,
+  "gpu": "NVIDIA GeForce GTX 1650",
+  "rows": [
+    {
+      "bath": "unified",
+      "median_forward_backward_ms": 0.4291836738586426,
+      "samples_ms": [
+        0.4901270294189453,
+        0.66840576171875,
+        0.6693468475341797,
+        0.6101036834716796,
+        0.3680710220336914,
+        0.36824031829833986,
+        0.36818561553955076,
+        0.36747264862060547
+      ]
+    },
+    {
+      "bath": "quadratic",
+      "median_forward_backward_ms": 0.1013366413116455,
+      "samples_ms": [
+        0.10146559715270996,
+        0.10163200378417969,
+        0.10118975639343261,
+        0.10128191947937011,
+        0.10121248245239257,
+        0.10148384094238282,
+        0.1013913631439209,
+        0.10125344276428222
+      ]
+    }
+  ]
+}

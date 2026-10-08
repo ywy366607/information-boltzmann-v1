@@ -1,0 +1,120 @@
+{
+  "scope": "fresh-weight real OWT numerical/interface acceptance; no predictive-quality claim",
+  "seed": 990,
+  "initialization": "new random model with saved architecture settings; not restored trained individual",
+  "constructor": {
+    "vocab_size": 50257,
+    "shape": [
+      8,
+      8,
+      4
+    ],
+    "channels": 128,
+    "bath_type": "conductance",
+    "write_exchange": "contact_mode",
+    "port_scope": "compact",
+    "activity_adaptation": true,
+    "short_term_plasticity": true,
+    "pre_decoder_norm": true,
+    "medium_execution": "native",
+    "port_execution": "native",
+    "read_mode": "dynamic"
+  },
+  "model_parameters": 14247735,
+  "added_parameters": 32904,
+  "data": "data\\ib_owt_gpt2\\train.npy",
+  "offset": 96001,
+  "input_sha256": "a618ac93642abef9028e9689124fbd3fe93c419c31b9dc1fe889b0ce55f3ac5e",
+  "burn_in_tokens": 64,
+  "score_tokens": 32,
+  "gradient_boundary": "no-grad burn-in; connected full score tape; physical and temporal state retained",
+  "optimizer_updates": 0,
+  "parameter_deltas": {},
+  "physical_advances": 96,
+  "duration": 0.005,
+  "elapsed_physical": 0.4800000000000003,
+  "elapsed_filter": 0.4800000000000003,
+  "bank_state_bytes": 131080,
+  "num_probes": 16,
+  "num_modes": 4,
+  "num_input_channels": 256,
+  "diagnostic_half_lives": [
+    0.004999999888241291,
+    0.019999999552965164,
+    0.07999999821186066,
+    0.3199999928474426
+  ],
+  "diagnostic_angular_frequencies": [
+    0.0,
+    39.2699089050293,
+    78.5398178100586,
+    157.0796356201172
+  ],
+  "gradient_norms": {
+    "filter_log_rates": 0.0024200975365342753,
+    "filter_frequencies": 0.0001769097449158962,
+    "temporal_mix": 0.2924446384686196,
+    "temporal_projection": 0.608404974671697,
+    "probe_coordinates": 0.9918484439401016,
+    "physical_medium": 0.20032360656556722,
+    "write_agent": 0.47377587911674307,
+    "source_writer": 0.03728934533584184,
+    "readout": 2.460957838552324,
+    "decoder": 2.0353715152141403
+  },
+  "isolated_temporal_branch_gradient_norms": {
+    "filter_log_rates": 0.0024200975365342753,
+    "filter_frequencies": 0.0001769097449158962,
+    "temporal_mix": 0.2924446384686196,
+    "temporal_projection": 0.6084049746716964,
+    "probe_coordinates": 0.7759993487172409,
+    "physical_medium": 0.0884825574791389,
+    "write_agent": 0.31543714730675243,
+    "source_writer": 0.011427777491889418
+  },
+  "isolated_credit_contract": "base feature detached only for auxiliary audit; temporal signals remain attached to physical trajectory",
+  "filter_state_finite": true,
+  "real_power_per_mode": [
+    1.8798238905879572,
+    0.39551983426801707,
+    0.0010052804600436975,
+    1.0397932508507587e-05
+  ],
+  "imaginary_power_per_mode": [
+    0.0,
+    0.4686904807713748,
+    0.023487392383656974,
+    0.0003714917612192077
+  ],
+  "same_signal_chunk_replay_maxdiff": 0.0,
+  "untrained_nll_for_gradient_only": 10.869047164916992,
+  "baseline_untrained_nll_for_provenance_only": 10.873361587524414,
+  "timing_cpu_ms": {
+    "burn_in_total": 1491.210799984401,
+    "mean_write_and_advance": 28.87181874939415,
+    "mean_probe_field_rhs_and_pool": 7.088793751790945,
+    "mean_bank_update": 0.993981252577214
+  },
+  "limitations": [
+    "endpoint ZOH samples; not exact integration of varying physical waveform",
+    "fixed coordinates and weights during audit; no moving-probe history transport",
+    "new weights; NLL values used only to exercise actual CE derivative, not rank architectures",
+    "positive-rate contraction is per finite fixed parameter instance, not lifetime guarantee"
+  ],
+  "elapsed_seconds": 7.722146999993129,
+  "analytic_sampled_transfer": {
+    "absolute_error": 2.3895600220792272e-15,
+    "measured_phase_radians": -0.22304891824516762,
+    "reference_phase_radians": -0.22304891824517004,
+    "scope": "ZOH held sampled input reference, numerical coverage only"
+  },
+  "affected_cpu_tests": "49 passed",
+  "source_hashes": {
+    "information_boltzmann/core/temporal_probes.py": "96901d30813083a48fe71d6e353b8e22721b3e9f221151656a98c1d7d664460e",
+    "tests/test_temporal_probes.py": "8d41b180db3e3dacc3a6affd0991068959f40be5f146feb32ea6a10998c3e141",
+    "scripts/ib/audit_medium_temporal_probes.py": "03b6c36fbc4343d3dfd0f500d8891a8e5c5a1e4ab11c4ef75a5f943625b44d85",
+    "information_boltzmann/core/plastic_ports.py": "e8bb0ae091375385297fd36f5ff0ebb18562a73226097081300ac887a272b258",
+    "information_boltzmann/core/plastic_medium.py": "e597bf6f69d1255469d134573e036b14663b2e57f9059a9a1a3856f740048626",
+    "information_boltzmann/core/readout_probes.py": "a3dd4cadbb5c8a03ee175972d3525fb06e975fd440ad0bd9301be0915eacbb9b"
+  }
+}

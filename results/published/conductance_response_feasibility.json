@@ -1,0 +1,56 @@
+{
+  "purpose": "analytic/numerical feasibility, no task capability or training",
+  "fixed_point_residual": 2.220446049250313e-16,
+  "actual_ei_jacobian": [
+    [
+      -2.0,
+      1.0,
+      -1.0
+    ],
+    [
+      15.0,
+      -6.0,
+      0.0
+    ],
+    [
+      20.0,
+      0.0,
+      -2.0
+    ]
+  ],
+  "excitation_only_eigenvalues": [
+    [
+      0.358898943540674,
+      0.0
+    ],
+    [
+      -8.358898943540673,
+      0.0
+    ]
+  ],
+  "closed_loop_eigenvalues": [
+    [
+      -1.1833296388163492,
+      3.6788876479143453
+    ],
+    [
+      -1.1833296388163492,
+      -3.6788876479143453
+    ],
+    [
+      -7.633340722367309,
+      0.0
+    ]
+  ],
+  "electrical_ledger_max_residual": 1.7763568394002505e-15,
+  "source_work": 0.7876593275453031,
+  "joule_heat": 4.191099761783371,
+  "bound": {
+    "minimum_release_rate": 1.0,
+    "source_squared_bound": 32.0,
+    "storage_bound_without_extra_boundary_power": 16.0
+  },
+  "scope": "local inhibition-stabilized damped oscillation; no autonomous limit-cycle claim",
+  "response_parameters_d128": 66112,
+  "receptor_state_bytes_d128_8x8x4_fp32": 262144
+}

@@ -1,0 +1,16 @@
+{
+  "date": "2026-10-04",
+  "tests_passed": 16,
+  "execution": "CUDA Graph forward/backward; optimizers once per 32 observed events",
+  "calibration": "first real 32-event update saved and resumed",
+  "first_window_seconds": 0.7032268999901135,
+  "observed_window_seconds": 0.669,
+  "observed_training_tokens_per_second": 44.7810870690292,
+  "observed_train_tokens": 1024,
+  "optimizer_updates": 32,
+  "peak_allocated_mib_including_setup": 1914.15625,
+  "reserved_mib": 2144,
+  "nvidia_smi_dedicated_mib": 2293,
+  "capability_claim": null,
+  "run": "results/q8_fly_bptt32_continuous_100k"
+}

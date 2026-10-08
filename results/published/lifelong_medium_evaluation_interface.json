@@ -1,0 +1,71 @@
+{
+  "scope": "Numerical/interface and real-data execution evidence only; no capability claim",
+  "protocol": "live_prequential_A_B_A_v1",
+  "broader_cpu_tests_passed": 46,
+  "broader_optional_checks_skipped": 7,
+  "production_execution": {
+    "shape": [
+      8,
+      8,
+      4
+    ],
+    "channels": 128,
+    "real_owt_events": 256,
+    "optimizer_updates": 2,
+    "mean_seconds_per_128_tokens": 2.7525162999954773,
+    "times": [
+      2.793181699991692,
+      2.7118508999992628
+    ],
+    "memory": {
+      "eligibility_mib": 0.5,
+      "allocated_mib": 259.65869140625,
+      "reserved_mib": 548.0,
+      "peak_allocated_mib": 315.17041015625,
+      "total_dedicated_mib": 657.0
+    },
+    "ledger": {
+      "events": 256,
+      "optimizer_updates": 2,
+      "pending_gradient_events": 0,
+      "novel_events": 256,
+      "prequential_nll": 10.823027823120356,
+      "novel_prequential_nll": 10.823027823120356,
+      "window_nll": 10.819776356220245
+    }
+  },
+  "ABA_interface_evidence": {
+    "source": "tests/test_lifelong_evaluation.py",
+    "real_corpus": "data/ib_owt_gpt2",
+    "numerical_fixture_only": true,
+    "first_train_group_actual_events": 7,
+    "first_train_group_optimizer_updates": 3,
+    "after_resume_actual_events": 14,
+    "after_resume_optimizer_updates": 7,
+    "fresh_B_start_positions": [
+      0,
+      2
+    ],
+    "actual_intervening_events_per_revisit": 3,
+    "pending_gradient_events_after_first_group": 1,
+    "checkpoint_fixture_files_removed": true
+  },
+  "source_hashes": {
+    "scripts\\ib\\train_online_plastic.py": "5a59a5b56ec0a1fc6d9a08cfc768079189264a490772e5be5619c254cc1fda97",
+    "information_boltzmann/runtime/online_credit.py": "5e9ccecbfacf9a90ad6c708f0d2485e9a7e299181aaa3f9b5eb3231f831f85bb",
+    "information_boltzmann/runtime/local_credit.py": "3c73f831e5b047748ddc73773db8f6b8e28e04862d587d206d7eec2586dece8e",
+    "information_boltzmann/runtime/lifelong_evaluation.py": "5af7681f855c3bc9f86894eda48cf00e367637f94a9c521540c10589c00fc6b5",
+    "information_boltzmann/runtime/training.py": "59897bd4ed14259276b743d9fea37cc8691ed23c93b48a5ef5caf63f86245142",
+    "information_boltzmann/core/plastic_medium.py": "f9f2311b347ae38fa7f7143a3f5fe1e87ee4f57f59461ae723b44d58c1d22616",
+    "information_boltzmann/core/plastic_ports.py": "817a00b0ae7286f6fa36bbb1ba6d52a02711e5d258070d66ae05789f4e291b1d",
+    "information_boltzmann/core/conductance_response.py": "9b51219dd53480960af3e114a8b3872f5f8648a861835b88e1205ffb872afff0",
+    "information_boltzmann/core/conduction_plasticity.py": "4497b11d532e17642634f75c631b3ed718e7c928cadd976308e3fe8a6f969a55",
+    "information_boltzmann/core/short_term_plasticity.py": "dc15996f5f2f507251d1fb5cc374e95e63988a2809f31dfdf2581a6d78555e13",
+    "information_boltzmann/core/torus3d.py": "e3832ce75bae5a3c728245cde0592cb48d4b84063104a39e9be7cb5af97950bc",
+    "information_boltzmann/core/local_ports.py": "b0dbad0acaf96f09d35a3c791439cfeca8316179c0ed45788b169513edf841a2",
+    "information_boltzmann/core/readout_probes.py": "b2c3fc7ddafb0baf73e744dd96b4cfa2051e1cf87cb5cfd30fe73500f9faa2af",
+    "information_boltzmann/core/mode_port.py": "b5ceabce8368bec7389dba399b4231a80c68318d075aea5252868b0a7fce5e27"
+  },
+  "cuda_enabled_test_set_passed": 16,
+  "distinct_cuda_checks_passed": 2
+}

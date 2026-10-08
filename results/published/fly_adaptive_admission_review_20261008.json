@@ -1,0 +1,35 @@
+{
+  "date": "2026-10-08",
+  "scope": "source and numerical/interface review; no GPU training",
+  "optimizer_updates": 0,
+  "new_checkpoints": 0,
+  "tests": "tests/test_mcr2_rate_distortion.py: 5 passed",
+  "source_hashes": {
+    "information_boltzmann/core/mcr2_rate_distortion.py": "1ceb4133f994fb97621f3c8b71c0937db35f147fcf4d31060c8e1e870b9a8420",
+    "scripts/ib/smoke_test_mcr2_dual_engine.py": "59272a9331c052dca5a6d352b9ed81661076140a0377cdda763bc70804a5b5d4",
+    "scripts/ib/benchmark_admission_criteria.py": "f72a340650a262cb3e4d06ce96048d1c202aa20fd07c98074dc0a3904859206e",
+    "information_boltzmann/core/fly_bptt_learning.py": "c74a5eba213fd2732ea0c5109807bc44d6eeccb136db636b8823c944e3bde1f9",
+    "scripts/ib/train_fly_bptt_stream.py": "f3193847763a2f2719eae4bb2208b1e3b01b3fbf37f4fe18880aef2c848af476"
+  },
+  "checks": {
+    "uniform_logits_static_membrane_admitted_at_total_tick": 2,
+    "fixed_rank": 8,
+    "scales": [
+      1,
+      10,
+      100
+    ],
+    "coding_rates": [
+      6.4377522468566895,
+      23.975845336914062,
+      42.38663864135742
+    ],
+    "mcr_losses": [
+      -0.3218876123428345,
+      -1.1987923383712769,
+      -2.1193320751190186
+    ],
+    "nonzero_singleton_rate": 2.774538040161133
+  },
+  "report": "docs/information_boltzmann/FLY_ADAPTIVE_ADMISSION_REVIEW_20261008.md"
+}

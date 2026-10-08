@@ -1,0 +1,210 @@
+{
+  "arguments": [
+    "--output",
+    "E:/ib_checkpoints/medium_pathway_full32_complete_recompute_20261008",
+    "--pretrained-embedding",
+    "data/gpt2_model.safetensors",
+    "--steps",
+    "2",
+    "--shape",
+    "8",
+    "8",
+    "8",
+    "--material-initialization",
+    "spectral-xavier",
+    "--material-bandwidth",
+    "runtime",
+    "--channels",
+    "768",
+    "--tokens",
+    "32",
+    "--chunk-tokens",
+    "32",
+    "--event-duration",
+    "0.899332940578461",
+    "--intrinsic-time-reference",
+    "0.899332940578461",
+    "--solver-max-step",
+    "0.00831809360533953",
+    "--observer-max-step",
+    "0.0332723744213581",
+    "--activation-checkpointing",
+    "--anisotropic-transport",
+    "--temporal-read",
+    "--temporal-time-reference",
+    "0.899332940578461",
+    "--write-aperture-budget",
+    "0.125",
+    "--read-aperture-budget",
+    "0.25",
+    "--structure-config",
+    "configs/information_boltzmann/medium_pathway_structure_20261008.json",
+    "--structure-dual-lr",
+    "0.0625",
+    "--execution",
+    "eager",
+    "--vram-limit-mib",
+    "3072",
+    "--lr",
+    "0.000002",
+    "--calibrate-only"
+  ],
+  "event_function_calls": 35,
+  "physical_step_calls": 4405,
+  "memory_breadcrumbs": [
+    {
+      "completed_events": 0,
+      "physical_step_calls": 0,
+      "allocated_mib": 686.12451171875,
+      "seconds": 4.610490999999456
+    },
+    {
+      "completed_events": 6,
+      "physical_step_calls": 678,
+      "allocated_mib": 768.1123046875,
+      "seconds": 35.40062489999946
+    },
+    {
+      "completed_events": 19,
+      "physical_step_calls": 2133,
+      "allocated_mib": 899.591796875,
+      "seconds": 53.06484399999863
+    },
+    {
+      "completed_events": 32,
+      "physical_step_calls": 3584,
+      "allocated_mib": 1048.96630859375,
+      "seconds": 69.89665979999882
+    },
+    {
+      "completed_events": 32,
+      "physical_step_calls": 3625,
+      "allocated_mib": 1160.232421875,
+      "seconds": 70.34865170000012
+    },
+    {
+      "completed_events": 32,
+      "physical_step_calls": 3676,
+      "allocated_mib": 1281.20556640625,
+      "seconds": 70.83565099999942
+    },
+    {
+      "completed_events": 33,
+      "physical_step_calls": 3696,
+      "allocated_mib": 1442.42578125,
+      "seconds": 71.12863789999938
+    },
+    {
+      "completed_events": 33,
+      "physical_step_calls": 3732,
+      "allocated_mib": 1536.2802734375,
+      "seconds": 72.33571109999866
+    },
+    {
+      "completed_events": 33,
+      "physical_step_calls": 3781,
+      "allocated_mib": 1666.90771484375,
+      "seconds": 72.754030099999
+    },
+    {
+      "completed_events": 34,
+      "physical_step_calls": 3836,
+      "allocated_mib": 1793.2451171875,
+      "seconds": 73.3956922999987
+    },
+    {
+      "completed_events": 34,
+      "physical_step_calls": 3940,
+      "allocated_mib": 1925.87255859375,
+      "seconds": 74.56742739999936
+    },
+    {
+      "completed_events": 34,
+      "physical_step_calls": 4041,
+      "allocated_mib": 2057.5595703125,
+      "seconds": 75.59791930000029
+    },
+    {
+      "completed_events": 34,
+      "physical_step_calls": 4089,
+      "allocated_mib": 2181.1572265625,
+      "seconds": 76.0024672999989
+    },
+    {
+      "completed_events": 34,
+      "physical_step_calls": 4141,
+      "allocated_mib": 2310.2109375,
+      "seconds": 76.4808983999992
+    },
+    {
+      "completed_events": 35,
+      "physical_step_calls": 4220,
+      "allocated_mib": 2437.259765625,
+      "seconds": 77.30024009999943
+    },
+    {
+      "completed_events": 35,
+      "physical_step_calls": 4316,
+      "allocated_mib": 2560.21875,
+      "seconds": 78.2424534999991
+    },
+    {
+      "completed_events": 35,
+      "physical_step_calls": 4401,
+      "allocated_mib": 2689.1630859375,
+      "seconds": 79.08212249999997
+    }
+  ],
+  "purpose": "full real-data BPTT execution/resources, not capability evidence",
+  "status": "failed",
+  "error": "OutOfMemoryError: CUDA out of memory. Tried to allocate 20.00 MiB. GPU 0 has a total capacity of 4.00 GiB of which 364.75 MiB is free. 2.81 GiB allowed; Of the allocated memory 2.79 GiB is allocated by PyTorch, and 11.67 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)",
+  "seconds": 79.1260616999989,
+  "memory": {
+    "sample_count": 112,
+    "sampled_peak_dedicated_mib": 2936.6484375,
+    "sampled_peak_shared_mib": 80.0,
+    "counter_errors": [],
+    "cap_exceeded": false,
+    "last_sample": {
+      "seconds": 8855.5034528,
+      "dedicated_bytes": 3079299072,
+      "shared_bytes": 83886080,
+      "rows": [
+        {
+          "Name": "pid_6044_luid_0x00000000_0x00018DBD_phys_0",
+          "DedicatedUsage": 3079299072,
+          "SharedUsage": 83886080
+        }
+      ]
+    },
+    "peak_is_sampled": true
+  },
+  "peak_allocated_mib": 2852.33056640625,
+  "peak_reserved_mib": 2864.0,
+  "final_progress": {
+    "status": "failed",
+    "pid": 6044,
+    "memory": {
+      "total_dedicated_mib": 749.0,
+      "allocated_mib": 483.43359375,
+      "peak_allocated_mib": 610.419921875,
+      "reserved_mib": 644.0
+    },
+    "step": 0,
+    "fresh_training_tokens": 0,
+    "events": 0,
+    "optimizer_updates": 0,
+    "physical_elapsed": 0.0,
+    "pending_gradient_events": 0,
+    "loss_components": {
+      "component_events": {}
+    },
+    "last_loss_components": {},
+    "health": {
+      "protocol": "persistent_medium_health_v1",
+      "status": "no_observations"
+    },
+    "phases": {},
+    "error": "OutOfMemoryError: CUDA out of memory. Tried to allocate 20.00 MiB. GPU 0 has a total capacity of 4.00 GiB of which 364.75 MiB is free. 2.81 GiB allowed; Of the allocated memory 2.79 GiB is allocated by PyTorch, and 11.67 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "seed": 11,
+  "optimizer_updates": 120,
+  "train_lanes": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "heldout_lanes": [
+    4,
+    5,
+    6,
+    7
+  ],
+  "horizon": 14,
+  "stopping": "fixed bounded budget; no validation tuning",
+  "baseline": "hold current true response across horizon",
+  "review": "rtc_contract_review approved bounded mechanism test",
+  "forecast_prediction": "If reduced dynamics are learnable at this budget, heldout response-delta error is below persistence.",
+  "failure_action": "Retain timing implementation; reconsider codec/training sufficiency before expensive language run.",
+  "timestamp_prediction": "Outputs available while teacher blocked; arrivals change only uncommitted suffix."
+}

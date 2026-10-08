@@ -1,0 +1,53 @@
+{
+  "scope": "Real-OWT joint execution calibration; not a capability claim",
+  "credit": "local-receptors",
+  "shape": [
+    8,
+    8,
+    4
+  ],
+  "channels": 128,
+  "parameters": 14067383,
+  "updates": 3,
+  "events": 384,
+  "seconds_per_128_tokens": [
+    2.8112827999866568,
+    2.7944904000032693,
+    2.812201399996411
+  ],
+  "mean_seconds_per_128_tokens": 2.805991533328779,
+  "memory": {
+    "eligibility_mib": 0.5,
+    "allocated_mib": 261.37109375,
+    "reserved_mib": 550.0,
+    "peak_allocated_mib": 315.7412109375,
+    "total_dedicated_mib": 661.0
+  },
+  "retained_allocated_mib": [
+    261.37109375,
+    261.37109375,
+    261.37109375
+  ],
+  "history_gradient_norm": [
+    1.1536651527421782e-06,
+    3.6462029129324947e-06,
+    5.1478173190844245e-06
+  ],
+  "kinetic_credit_scope": "local receptor closing kinetics at frozen voltage/current inputs",
+  "current_credit": "exact joint CE + W4 gradients for all model parameters",
+  "source_hashes": {
+    "scripts\\ib\\train_online_plastic.py": "b79d929d6435b421ca94bbde62ed0f5cc50178c0f819f2c181a7342c1d3e49e7",
+    "information_boltzmann/runtime/online_credit.py": "5e9ccecbfacf9a90ad6c708f0d2485e9a7e299181aaa3f9b5eb3231f831f85bb",
+    "information_boltzmann/runtime/local_credit.py": "d5a486ebe354d9dead1ac1bc0c87f01f73a1322b322b3e3a3e0fbcff8691fb6a",
+    "information_boltzmann/runtime/training.py": "59897bd4ed14259276b743d9fea37cc8691ed23c93b48a5ef5caf63f86245142",
+    "information_boltzmann/core/plastic_medium.py": "f9f2311b347ae38fa7f7143a3f5fe1e87ee4f57f59461ae723b44d58c1d22616",
+    "information_boltzmann/core/plastic_ports.py": "817a00b0ae7286f6fa36bbb1ba6d52a02711e5d258070d66ae05789f4e291b1d",
+    "information_boltzmann/core/conductance_response.py": "9b51219dd53480960af3e114a8b3872f5f8648a861835b88e1205ffb872afff0",
+    "information_boltzmann/core/conduction_plasticity.py": "4497b11d532e17642634f75c631b3ed718e7c928cadd976308e3fe8a6f969a55",
+    "information_boltzmann/core/short_term_plasticity.py": "dc15996f5f2f507251d1fb5cc374e95e63988a2809f31dfdf2581a6d78555e13",
+    "information_boltzmann/core/torus3d.py": "e3832ce75bae5a3c728245cde0592cb48d4b84063104a39e9be7cb5af97950bc",
+    "information_boltzmann/core/local_ports.py": "b0dbad0acaf96f09d35a3c791439cfeca8316179c0ed45788b169513edf841a2",
+    "information_boltzmann/core/readout_probes.py": "b2c3fc7ddafb0baf73e744dd96b4cfa2051e1cf87cb5cfd30fe73500f9faa2af",
+    "information_boltzmann/core/mode_port.py": "b5ceabce8368bec7389dba399b4231a80c68318d075aea5252868b0a7fce5e27"
+  }
+}

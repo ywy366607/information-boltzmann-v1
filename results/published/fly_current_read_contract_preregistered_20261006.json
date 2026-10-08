@@ -1,0 +1,29 @@
+{
+  "date": "2026-10-06",
+  "scope": "CPU-only retrospective diagnostic refresh; no physical rollout, optimizer update, GPU allocation or capability experiment",
+  "checkpoint": "artifacts/active_training/q8_fly_bptt32_gamma_2333_wide115_100k/last.pt",
+  "prediction_is_blind": false,
+  "prior_evidence": "1.1M background dominance was relieved in the 1.2M centered cached head. Recheck the current individual before extending that historical explanation.",
+  "predictions": [
+    {
+      "id": "P-20261006-05",
+      "hypothesis": "Current cached readout is still background dominated",
+      "support_pattern": "Low temporal variation, full approximately common-only, and common/covariance decoder gradient ratios above one across all four blocks",
+      "opposing_pattern": "High temporal variation and covariance-dominated decoder gradients; retire the old blanket explanation for this cache",
+      "mixed_pattern": "Leave unresolved; do not force a binary root-cause conclusion"
+    },
+    {
+      "id": "P-20261006-06",
+      "hypothesis": "Frozen Gamma observation kernels extend beyond the BPTT window",
+      "mathematical_prediction": "For decay a, g_n=(n+1)(1-a)^2 a^n and M_K=1-a^K*(1+K*(1-a)); mean lag=2*a/(1-a)",
+      "scope": "Per-filter input kernel mass, not task relevance or actual parameter-gradient coverage"
+    }
+  ],
+  "controls": "Exact replay-target/event-cache match; exclude first bridge for 127-target NLL; label 128-target gradient blocks; checkpoint/reference source hashes and before-after source integrity; fixed train-only unigram is an offline reference",
+  "approval": {
+    "reviewer": "/root/harness_plan",
+    "status": "approved",
+    "conditions": "CPU cache only; common uses retrospective mean; saved decoder differs from event-time decoder; gradients precede clip/Adam; body update GPU probe design only"
+  },
+  "stopping_rule": "Stop on cache/provenance mismatch; no new training or model change is authorized by a low rank, large norm, kernel tail or one cached NLL"
+}

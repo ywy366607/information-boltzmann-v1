@@ -1,0 +1,134 @@
+{
+  "date": "2026-10-08",
+  "scope": "Numerical, causal-interface and checkpoint validation; no capability training",
+  "paused_individual": {
+    "directory": "results/medium_d768_xavier_8x8x8_budget_birth_160k",
+    "step": 1237,
+    "fresh_training_tokens": 39584,
+    "events": 42272,
+    "optimizer_updates": 1321,
+    "pending_events": 0
+  },
+  "cpu_regression": {
+    "passed": 263,
+    "skipped": 21,
+    "groups": [
+      {
+        "files": [
+          "tests/test_intrinsic_medium_time.py",
+          "tests/test_medium_interval_causality.py",
+          "tests/test_medium_interval_refinement.py",
+          "tests/test_medium_structural_integration.py",
+          "tests/test_structural_posterior.py",
+          "tests/test_structural_resource.py",
+          "tests/test_anisotropic_medium.py",
+          "tests/test_medium_time_coordinates_and_material_bandwidth.py",
+          "tests/test_port_aperture_budget.py",
+          "tests/test_active_medium_training.py",
+          "tests/test_active_medium_accounting.py",
+          "tests/test_medium_decoder.py",
+          "tests/test_port_execution_equivalence.py",
+          "tests/test_plastic_training_execution.py",
+          "tests/test_continuous_runtime.py",
+          "tests/test_temporal_probes.py"
+        ],
+        "passed": 140,
+        "skipped": 7,
+        "seconds": 63.89
+      },
+      {
+        "files": [
+          "tests/test_plastic_medium.py",
+          "tests/test_plastic_ports.py",
+          "tests/test_compact_ports.py",
+          "tests/test_conductance_response.py",
+          "tests/test_conduction_plasticity.py",
+          "tests/test_short_term_plasticity.py",
+          "tests/test_local_activity_adaptation.py",
+          "tests/test_medium_dynamic_read.py",
+          "tests/test_medium_temporal_read.py",
+          "tests/test_medium_health.py",
+          "tests/test_field_energy_statistics.py",
+          "tests/test_gradient_norms.py",
+          "tests/test_material_initialization.py",
+          "tests/test_port_event_timing.py",
+          "tests/test_fused_medium_execution.py",
+          "tests/test_local_medium_credit.py",
+          "tests/test_continuous_cuda_graph.py"
+        ],
+        "passed": 123,
+        "skipped": 14,
+        "seconds": 19.99
+      }
+    ]
+  },
+  "syntax_check": "passed for changed production modules and training/audit entrypoints",
+  "independent_reviews": {
+    "intrinsic_time_and_refinement": "free_energy_review; analytic and full nonlinear refinement verified",
+    "posterior_numerical": "learning_path_audit and posterior_numerical_review; accepted",
+    "integration": "integration_final_review; four reproducible bugs fixed and independently rechecked",
+    "gpu_calibration": "medium_bottleneck_audit; one immutable real OWT next-token interval accepted"
+  },
+  "functional_contracts": [
+    "pre-observation compact-aperture clock, target-independent schedule",
+    "whole differentiable physical interval; separate solver and observer resolution",
+    "disjoint numerical ports: full/tiny remote response >1000, transport blocked response zero",
+    "full nonlinear refinement and gradient convergence",
+    "nested recomputation retains complete interval credit",
+    "finite total physical aperture budget with learnable positions and allowed overlap",
+    "runtime complete Fourier basis and explicit continuous zero-residual expansion",
+    "Gaussian coefficient posterior, simplex idle capacity, normalized directions, bounded fast gain",
+    "one KL/evidence per optimizer window, actual-time OU after optimizer update",
+    "writer auxiliary exact block gradient, full pending state/noise/optimizer resume",
+    "structural law/bandwidth continuation guards, buffer-aware cache, B1, None-gradient semantics",
+    "active-graph optimizer filtering, health clone reduction, endpoint RHS reuse, split objective ledger"
+  ],
+  "real_text_gradient_audit": "results/published/medium_objective_gradients_d768_20261008.json",
+  "long_interval_gpu_audit": "results/published/medium_d768_long_interval_calibration_20261008.json",
+  "gpu_acceptance": {
+    "shape": [
+      8,
+      8,
+      8
+    ],
+    "channels": 768,
+    "tokens": 1,
+    "optimizer_updates": 0,
+    "observer_intervals": 21,
+    "physical_solver_steps": 84,
+    "physical_duration": 0.06773389875888824,
+    "sampled_peak_dedicated_mib": 2498.64453125,
+    "peak_allocated_mib": 2362.60888671875,
+    "dedicated_limit_mib": 3072,
+    "all_checked_gradients_finite": true,
+    "clock_difference": 0.0,
+    "execution": "native eager FP32 with observer checkpoint",
+    "forward_seconds": 4.365154600000096,
+    "backward_seconds": 6.52704840000024,
+    "production_BPTT32_or_structural_aux_gpu_cost_accepted": false
+  },
+  "next_decision": "Keep training paused. Calibrate fused complete BPTT32 and structural cost within 3GB before matched real OWT capability comparison.",
+  "claims_not_made": [
+    "NLL improvement",
+    "old model learned only via overlap",
+    "auxiliary gradient conflict is root cause",
+    "functional neural pathways already emerged",
+    "toy numerical propagation is language capability",
+    "single-event resource result guarantees full-window production throughput"
+  ],
+  "source_sha256": {
+    "information_boltzmann/core/intrinsic_time.py": "02cc57d946283a5aefc64bb9eeac6ac94d99a08ecbcaef8b12793b94cd995d40",
+    "information_boltzmann/core/structural_posterior.py": "d78a3a617ade1a393c168326dd169ec664494904ec2a8a44568415743421c4ac",
+    "information_boltzmann/core/plastic_ports.py": "05d4819241eb1bbbedcd1bebe55bf5aac034da0f82d60023545cbe8cdb0757a5",
+    "information_boltzmann/core/plastic_medium.py": "cad4f654d6cfdc91d374f76d0fbab16bffe7ad5cbc8357c2beffd5707a867734",
+    "information_boltzmann/core/local_ports.py": "eaa65943199099b5fdf58ae5f91213b4a0b2cb09b260c4d70733cff73e401050",
+    "information_boltzmann/core/temporal_probes.py": "f1caedd20d98c89192e74792b4a8b1ced1e43c8bb2803c4e01c3d63a0e73c747",
+    "information_boltzmann/core/readout_probes.py": "a590a043f626150e65c4492fda3c6741c280f009e360a9bbc0edb0dfb6d70102",
+    "information_boltzmann/core/torus3d.py": "9dff61f52c07d3256fc886ecaaf492dcd0b2be068d0ac73956e5dc949d284fd8",
+    "information_boltzmann/runtime/training.py": "3818ddaf4151a12c91f1a044695532527e9eedabebb0df236aaada9a8f88692a",
+    "information_boltzmann/runtime/continuous.py": "4c651c5de4dd4a373c738864635e5e6fc2979fc93b96d23814f6ad29c311e0ad",
+    "information_boltzmann/runtime/active_medium_training.py": "23e98c975bef03aab5a31ccca9c3469c5b830fb80b15e3395cdf398fd622ce38",
+    "information_boltzmann/runtime/optimization.py": "2ecd2e12bb8da2860f459f74aa6c662b3594d054f1f1d37ddbe4eacbe74dace3",
+    "scripts/ib/train_medium_active_stream.py": "120a92ca440fe5edc7ceaaf95a67cc890aec3001f46b891474214ddcc570ab7b"
+  }
+}

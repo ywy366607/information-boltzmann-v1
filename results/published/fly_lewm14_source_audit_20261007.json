@@ -1,0 +1,95 @@
+{
+  "date": "2026-10-07",
+  "status": "read_only_source_audit_pending_independent_review",
+  "training_modified": false,
+  "new_gpu_runs": 0,
+  "scope": "Live external Gemini candidate source/log review; no causal intervention or independent capability validation",
+  "sources": {
+    "results\\q8_fly_bptt32_lewm14_clean_100k\\config.json": "3f0d439fb93b4295210ffa4291d98e97f4ef2547fbb2b66492323ae2c692c6cb",
+    "information_boltzmann\\core\\lejepa_predictor.py": "bfa5af38153de73f69d125a42ef31b01034d06f6623372658d323523746a48c7",
+    "information_boltzmann\\core\\fly_bptt_learning.py": "29246288f6e97d57400f7b73a60d6a9d289991b27524c63ca68bb5570d44bcbe",
+    "scripts\\ib\\train_fly_bptt_stream.py": "7f5f2b29ad9c7b64f2063c4d52270c891766126f4e6c23914cd44ee64d13e645"
+  },
+  "snapshot": {
+    "bptt_train_tokens": 57216,
+    "bptt_optimizer_updates": 1920,
+    "first_pass_train_nll": 7.258572330385847,
+    "first_pass_fixed_unigram_nll": 7.490764850134087,
+    "first_pass_gain_over_fixed_unigram": 0.23219251974824023,
+    "speed_tokens_per_sec": 37.018871336802924,
+    "vram_peak_mib": 2447.0302734375
+  },
+  "fresh_B": {
+    "evaluations": 11,
+    "scored_tokens": 2816,
+    "pooled_nll": 7.326641202819618,
+    "curve": [
+      {
+        "train_tokens": 5024,
+        "B_nll": 7.697985156439245,
+        "A_revisit_nll": 7.509279990568757
+      },
+      {
+        "train_tokens": 10016,
+        "B_nll": 7.676639216020703,
+        "A_revisit_nll": 7.229181330651045
+      },
+      {
+        "train_tokens": 15008,
+        "B_nll": 6.8365874560549855,
+        "A_revisit_nll": 6.873597931116819
+      },
+      {
+        "train_tokens": 20000,
+        "B_nll": 7.450326029211283,
+        "A_revisit_nll": 7.210907185450196
+      },
+      {
+        "train_tokens": 25024,
+        "B_nll": 7.118575971573591,
+        "A_revisit_nll": 7.217673847451806
+      },
+      {
+        "train_tokens": 30016,
+        "B_nll": 7.372760700061917,
+        "A_revisit_nll": 6.683741632848978
+      },
+      {
+        "train_tokens": 35008,
+        "B_nll": 7.487583855167031,
+        "A_revisit_nll": 7.266846597194672
+      },
+      {
+        "train_tokens": 40000,
+        "B_nll": 7.296989311464131,
+        "A_revisit_nll": 6.262864556163549
+      },
+      {
+        "train_tokens": 45024,
+        "B_nll": 7.467675372026861,
+        "A_revisit_nll": 7.3339422810822725
+      },
+      {
+        "train_tokens": 50016,
+        "B_nll": 7.244008364155889,
+        "A_revisit_nll": 7.100830972194672
+      },
+      {
+        "train_tokens": 55008,
+        "B_nll": 6.943921798840165,
+        "A_revisit_nll": 6.820419006049633
+      }
+    ]
+  },
+  "findings": [
+    "Predictor takes only normalized motor latents, not token embedding; useful removal of previous explicit token-to-predictor bypass.",
+    "Actual teacher models 14 quiet zero-external-drive continuations of complete state; auxiliary supervise only window-final anchor.",
+    "Current student anchor input at rollout hop k mixes already-k-step teacher latent before another transition; its resulting k-labeled output is compared to k-step teacher.",
+    "Main CE head consumes teacher-mixed anchor rollout during training/active learner, whereas predict_fly_next uses no teacher. Future token labels are not provided by quiet teacher, but this creates an additional-physical-computation/training-generation discrepancy.",
+    "768-dimensional single normalized motor observation need not be sufficient for autonomous full-state dynamics: hidden ring/ge/gi/ALIF/STP may differ at identical motor z.",
+    "SIGReg regularizes attended decoder readout rather than every raw encoder representation or all physical trajectory endpoints.",
+    "Existing graphs are explicitly disabled when use_latent_predictor is enabled; measured current speed is eager."
+  ],
+  "decision": "Treat as promising motor-response model candidate with observed same-stream marginal gain. Prioritize autonomous teacher-free student CE and correct temporal transition supervision before attributing delay compensation; preserve ongoing external run. No new training approval issued.",
+  "review": "Independent agents returned usage-limit errors; this audit is explicitly pending independent review. Existing event diagnostic also remains unapproved and unexecuted."
+}

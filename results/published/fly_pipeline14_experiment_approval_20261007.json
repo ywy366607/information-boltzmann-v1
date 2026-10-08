@@ -1,0 +1,50 @@
+{
+  "status": "approved",
+  "date": "2026-10-07",
+  "reviewer": "/root/harness_plan",
+  "role": "production experiment necessity and protocol approval committee",
+  "preregistration": "results/published/fly_pipeline14_preregistered_20261007.json",
+  "prereg_sha256": "576d735b65eb7938f411981c2b7e8ce2fb0623add9fd1497b2ca5a3f4015ad41",
+  "script_sha256": "72b9b570f2e94f2c0eaa8f4bd5c52570f12ec60de7e595bbf3c9f066413ec504",
+  "source_hashes": {
+    "scripts/ib/train_fly_pipeline_stream.py": "72b9b570f2e94f2c0eaa8f4bd5c52570f12ec60de7e595bbf3c9f066413ec504",
+    "information_boltzmann/core/fly_pipeline.py": "17f857ac6f6d145f2bf1a1083ce98edf3b37d4de5f39b508f4eedcfef51db04c",
+    "information_boltzmann/core/fly_reservoir.py": "ae20d3d54a9e7c67ef4d3596ee3503c3e40b92cbe81ee7a4800345cb365de9ca",
+    "information_boltzmann/core/fly_bptt_learning.py": "c3201313989784cefe74a89cfdf4e3e785e7a523e18b58671cea0c4be9a99021",
+    "information_boltzmann/core/triton_synapse.py": "f5b6d600a86233fdeebcb1b6958f0441c39041b2cf78b1737c401aa4db28a5b7",
+    "information_boltzmann/runtime/prequential_meter.py": "59888c68ca9f005a3ce1e31e4ca3e24e9b132f662702923984fff888c5e190d1",
+    "information_boltzmann/runtime/lifelong_evaluation.py": "d7cd585da1ede80b5fffe56bc9da6684cb0768ce83de25d4dfb6d6d71152d23c"
+  },
+  "source_verification": "All seven current source SHA256 values match the preregistration; preregistration SHA256 verified directly.",
+  "necessity": "Numerical causality gates establish the one-tick interface. A single real-stream joint-learning run is useful and sufficient to test this complete candidate against its locked frequency reference within the declared budget; no additional architecture arm is needed for that estimand.",
+  "approved_budget": {
+    "seed": 0,
+    "new_train_updates": 3000,
+    "new_train_tokens": 96000,
+    "fresh_B_tokens": 1536,
+    "A_revisit_tokens": 768,
+    "total_events": 98304,
+    "actual_optimizer_updates": 3072,
+    "live_physical_ticks": 98304,
+    "calibration": "First real32-target update counts toward3000; resume starts at event32, without reset or repeated targets.",
+    "setup_work": "CUDA capture warmup and capture forwards/backwards are recorded separately from live exposure.",
+    "extension": "No automatic extension or alternative terminal endpoint approved."
+  },
+  "approved_decision": "Unique last1000 fresh-update primary risk uses all32000 targets paired with the locked reference. All three preregistered block interval upper bounds must be below zero to support a complete-candidate budget risk advantage. Final B is a separate direction check. Otherwise report unresolved or adverse budget-specific risk; do not infer a unique failure mechanism.",
+  "concerns": [
+    "Block bootstrap is descriptive conditional uncertainty for one evolving trajectory, assuming selected block lengths adequately capture dependence; it is not across-seed inference or a convergence certificate.",
+    "Blocks do not cross active-evaluation insertions; actual-token-weighted partial blocks retain every target.",
+    "Final B contains256 unseen targets and is not a second bootstrap significance confirmation.",
+    "GPT-2 table and10,940,858-token static training prior are charged as external/offline provenance, separately from96,000 new training targets.",
+    "Bias adaptation can contribute to risk advantage. This run does not isolate motor use, timing benefit, Gamma necessity or a causal advantage over the competing complete route.",
+    "Complete physical state survives32-event boundaries while derivative history is detached. A14-tick path has18 within-window source positions; not every event receives complete14-tick credit.",
+    "Best B is monitoring only. The fixed terminal endpoint, all actual bridge scores, phase-specific curves and true exposure/update counts remain authoritative.",
+    "This reviewer previously authored the entry's initial bookkeeping. This approval covers scientific experiment scope; independent implementation approval remains the responsibility of/root/diagnosis_review."
+  ],
+  "launch_conditions": [
+    "Separate independent implementation approval must cover the same locked source hashes before production execution.",
+    "Existing source/provenance, full-continuation, finite-value, memory and storage gates remain active; stop on invalidity without adding configurations or resetting the live individual."
+  ],
+  "production_results_seen": false,
+  "training_launched_by_reviewer": false
+}

@@ -1,0 +1,132 @@
+{
+  "date": "2026-10-07",
+  "status": "completed",
+  "output": "F:\\fly_checkpoints\\q8_fly_pipeline14_joint_96k",
+  "actual_fresh_train_tokens": 96000,
+  "actual_events": 98304,
+  "actual_updates": 3072,
+  "physical_ticks": 98304,
+  "risk": {
+    "primary_endpoint": "Last1000 fresh-training optimizer updates only",
+    "primary_tokens": 32000,
+    "primary_model_nll": 7.3890500361323355,
+    "primary_fixed_reference_nll": 7.453428898136084,
+    "primary_model_minus_reference": -0.06437886200374779,
+    "primary_256_token_interval": {
+      "block_tokens": 256,
+      "actual_blocks": 126,
+      "partial_block_tokens": [
+        128,
+        128
+      ],
+      "model_minus_reference": -0.06437886200374777,
+      "paired_percentile_95_interval": [
+        -0.09107503366272694,
+        -0.03838571778986229
+      ],
+      "bootstrap_samples": 5000,
+      "bootstrap_seed": 0,
+      "scope": "Conditional descriptive interval on this finite evolving trajectory; block dependence assumption"
+    },
+    "sensitivity_128_512": [
+      {
+        "block_tokens": 128,
+        "actual_blocks": 250,
+        "partial_block_tokens": [],
+        "model_minus_reference": -0.06437886200374779,
+        "paired_percentile_95_interval": [
+          -0.0855716659833826,
+          -0.04437121282635602
+        ],
+        "bootstrap_samples": 5000,
+        "bootstrap_seed": 0,
+        "scope": "Conditional descriptive interval on this finite evolving trajectory; block dependence assumption"
+      },
+      {
+        "block_tokens": 512,
+        "actual_blocks": 64,
+        "partial_block_tokens": [
+          128,
+          128
+        ],
+        "model_minus_reference": -0.06437886200374777,
+        "paired_percentile_95_interval": [
+          -0.0995111896166187,
+          -0.03154844149308985
+        ],
+        "bootstrap_samples": 5000,
+        "bootstrap_seed": 0,
+        "scope": "Conditional descriptive interval on this finite evolving trajectory; block dependence assumption"
+      }
+    ],
+    "budget_risk_advantage_supported": true,
+    "early1000_model_nll": 7.357647829480469,
+    "last1000_model_nll": 7.3890500361323355,
+    "curve_scope": "Different fresh stream segments; full journal retained; no strict monotonicity or convergence inferred",
+    "attribution": "Complete candidate risk only; bias adaptation can contribute; motor use and timing benefit require separate evidence"
+  },
+  "final_B": {
+    "tokens": 256,
+    "model_nll": 7.452635740861297,
+    "fixed_reference_nll": 7.3592044443753455,
+    "model_minus_reference": 0.09343129648595151,
+    "scope": "One256-token block, direction check only, no bootstrap significance claim"
+  },
+  "active_B_curve": [
+    {
+      "train_updates": 500,
+      "model_nll": 7.598155232146382,
+      "fixed_reference_nll": 7.512127477933762,
+      "A1_nll": 7.480775162577629,
+      "A2_nll": 7.552036162465811
+    },
+    {
+      "train_updates": 1000,
+      "model_nll": 7.586304290220141,
+      "fixed_reference_nll": 7.560355754282794,
+      "A1_nll": 7.480775162577629,
+      "A2_nll": 7.599773434922099
+    },
+    {
+      "train_updates": 1500,
+      "model_nll": 7.142237449064851,
+      "fixed_reference_nll": 6.9325085301065625,
+      "A1_nll": 7.480775162577629,
+      "A2_nll": 7.301811223849654
+    },
+    {
+      "train_updates": 2000,
+      "model_nll": 7.633357394486666,
+      "fixed_reference_nll": 7.423662122637305,
+      "A1_nll": 7.480775162577629,
+      "A2_nll": 8.013864371925592
+    },
+    {
+      "train_updates": 2500,
+      "model_nll": 7.219945658929646,
+      "fixed_reference_nll": 7.205175265136179,
+      "A1_nll": 7.480775162577629,
+      "A2_nll": 7.637183850631118
+    },
+    {
+      "train_updates": 3000,
+      "model_nll": 7.452635740861297,
+      "fixed_reference_nll": 7.359204444375351,
+      "A1_nll": 7.480775162577629,
+      "A2_nll": 7.544392887502909
+    }
+  ],
+  "observations": "Primary finite training-stream paired risk advantage0.06438nats. Every activeB checkpoint is worse than its matched fixed reference. New-context advantage is unestablished.",
+  "working_hypotheses": [
+    "Faster adaptation to recent lexical/background statistics than acquisition of stable conditional motor representations.",
+    "ATan-surrogate and truncated temporal credit can limit effective learning despite nonzero local/path gradients.",
+    "Physical response reachability may carry insufficient readable lexical discrimination on next-word timescale."
+  ],
+  "attribution_status": "Undetermined; decoder bias adaptation, motor content, plasticity and surrogate quality were not isolated by this risk run.",
+  "review_status": "Independently audited by /root/diagnosis_review: fulljournal,98304eventcontinuity,sourcehashes and terminalrisk exactly reproduced.",
+  "independent_additional_observation": {
+    "all_six_B_gaps_positive_after_first32_removed": true,
+    "final_B_remaining224_model_minus_reference": 0.09808,
+    "scope": "Descriptive existing-score audit; no new training or causal attribution"
+  }
+}

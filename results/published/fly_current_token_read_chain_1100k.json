@@ -1,0 +1,991 @@
+{
+  "scope": "CPU checkpoint-fork interface diagnostic; production state and checkpoints untouched",
+  "validation_reference": [
+    {
+      "bptt_train_tokens": 200000,
+      "validation_range": [
+        13816,
+        14072
+      ],
+      "model_nll": 7.644018732942641,
+      "fixed_unigram_nll": 7.175926783126236,
+      "gain_over_fixed_unigram": -0.468091949816405,
+      "gain_per_32_token_block": [
+        -0.47215109849761155,
+        -0.6611445893895247,
+        -0.5584268847041965,
+        -0.4230331197703264,
+        -0.1404395775787042,
+        -0.28571057572812975,
+        -0.3885326481891568,
+        -0.8152971046735904
+      ],
+      "scope": "different fresh text; unigram adjusts only marginal token difficulty"
+    },
+    {
+      "bptt_train_tokens": 300000,
+      "validation_range": [
+        14072,
+        14328
+      ],
+      "model_nll": 7.752445877529681,
+      "fixed_unigram_nll": 7.2439547677332925,
+      "gain_over_fixed_unigram": -0.5084911097963885,
+      "gain_per_32_token_block": [
+        -0.6975088517341956,
+        -0.21455774844603015,
+        -0.23730336483357314,
+        -0.515316820435644,
+        -0.6704523974146628,
+        -1.0023280607960483,
+        -0.16546920532744053,
+        -0.5649924293835131
+      ],
+      "scope": "different fresh text; unigram adjusts only marginal token difficulty"
+    },
+    {
+      "bptt_train_tokens": 400000,
+      "validation_range": [
+        14328,
+        14584
+      ],
+      "model_nll": 7.907499546185136,
+      "fixed_unigram_nll": 7.325595958606164,
+      "gain_over_fixed_unigram": -0.581903587578972,
+      "gain_per_32_token_block": [
+        -0.7953248691543002,
+        -0.1134943928537028,
+        -0.36334538461616683,
+        -0.7981879319609853,
+        -0.609107728974867,
+        -0.7775528668878167,
+        -0.6245336188414082,
+        -0.5736819073425283
+      ],
+      "scope": "different fresh text; unigram adjusts only marginal token difficulty"
+    },
+    {
+      "bptt_train_tokens": 500000,
+      "validation_range": [
+        14584,
+        14840
+      ],
+      "model_nll": 8.136853742413223,
+      "fixed_unigram_nll": 7.411544136892472,
+      "gain_over_fixed_unigram": -0.7253096055207511,
+      "gain_per_32_token_block": [
+        -0.5446394782361945,
+        -1.0151881706548542,
+        -0.965738702448304,
+        -0.6874851503368151,
+        -0.37680304822323135,
+        -0.4580324998803224,
+        -0.8263572273903024,
+        -0.9282325669959842
+      ],
+      "scope": "different fresh text; unigram adjusts only marginal token difficulty"
+    },
+    {
+      "bptt_train_tokens": 600000,
+      "validation_range": [
+        14840,
+        15096
+      ],
+      "model_nll": 8.837140184827149,
+      "fixed_unigram_nll": 8.111937670541153,
+      "gain_over_fixed_unigram": -0.7252025142859965,
+      "gain_per_32_token_block": [
+        -0.7716430009559722,
+        -0.520702557578645,
+        -0.6248170660230346,
+        -0.6433506203620722,
+        -1.0641295212759587,
+        -0.7347612077232252,
+        -0.3254040227277202,
+        -1.1168121176413437
+      ],
+      "scope": "different fresh text; unigram adjusts only marginal token difficulty"
+    },
+    {
+      "bptt_train_tokens": 700000,
+      "validation_range": [
+        15096,
+        15352
+      ],
+      "model_nll": 8.937017563730478,
+      "fixed_unigram_nll": 8.253069259945669,
+      "gain_over_fixed_unigram": -0.68394830378481,
+      "gain_per_32_token_block": [
+        -0.7849433001957647,
+        -0.8007252825892412,
+        -0.7221707369274815,
+        -0.7641652642339375,
+        -0.3742579437516024,
+        -0.34562820639093783,
+        -1.1111821818617755,
+        -0.5685135143277388
+      ],
+      "scope": "different fresh text; unigram adjusts only marginal token difficulty"
+    },
+    {
+      "bptt_train_tokens": 800000,
+      "validation_range": [
+        15352,
+        15608
+      ],
+      "model_nll": 8.585720401257277,
+      "fixed_unigram_nll": 8.074540302594567,
+      "gain_over_fixed_unigram": -0.5111800986627099,
+      "gain_per_32_token_block": [
+        -0.6302491091097766,
+        -0.27242512659802454,
+        -0.8943138172442342,
+        -0.33461876844984406,
+        -0.2932658031224578,
+        -0.3934665071833436,
+        -0.401895884038571,
+        -0.8692057735554273
+      ],
+      "scope": "different fresh text; unigram adjusts only marginal token difficulty"
+    },
+    {
+      "bptt_train_tokens": 900000,
+      "validation_range": [
+        15608,
+        15864
+      ],
+      "model_nll": 8.068895320408046,
+      "fixed_unigram_nll": 7.7401218253143576,
+      "gain_over_fixed_unigram": -0.3287734950936881,
+      "gain_per_32_token_block": [
+        -0.34590152454724254,
+        -0.7122403545183216,
+        -0.6243714155948188,
+        -0.28468458012056747,
+        -0.3749605757225656,
+        -0.2775684344285996,
+        0.018961962927942097,
+        -0.029423038745331198
+      ],
+      "scope": "different fresh text; unigram adjusts only marginal token difficulty"
+    },
+    {
+      "bptt_train_tokens": 1000000,
+      "validation_range": [
+        15864,
+        16120
+      ],
+      "model_nll": 7.853374890983105,
+      "fixed_unigram_nll": 7.754541207704436,
+      "gain_over_fixed_unigram": -0.09883368327867006,
+      "gain_per_32_token_block": [
+        -0.05695584873589654,
+        0.16834250177374716,
+        0.08158415108945247,
+        -0.09986907952344187,
+        -0.7476575958456371,
+        0.010417141356213397,
+        -0.43904501492357945,
+        0.2925142785797813
+      ],
+      "scope": "different fresh text; unigram adjusts only marginal token difficulty"
+    },
+    {
+      "bptt_train_tokens": 1100000,
+      "validation_range": [
+        16120,
+        16376
+      ],
+      "model_nll": 8.035376783460379,
+      "fixed_unigram_nll": 7.650819588583993,
+      "gain_over_fixed_unigram": -0.38455719487638573,
+      "gain_per_32_token_block": [
+        0.09347369233312913,
+        -0.18558900154944608,
+        -0.2252666217341985,
+        -0.35236794421259454,
+        -0.7474784203030663,
+        -0.3782727075378317,
+        -0.46389549888960224,
+        -0.8170610571174752
+      ],
+      "scope": "different fresh text; unigram adjusts only marginal token difficulty"
+    }
+  ],
+  "checkpoint_bptt_tokens": 1100000,
+  "checkpoint_train_cursor": 1200000,
+  "checkpoint_events": 1231256,
+  "injected_neurons": 15912,
+  "read_neurons": 2333,
+  "input_output_overlap": 0,
+  "settle_ticks": 1,
+  "physical_ticks_per_input": 2,
+  "writer_baseline_clock": "input",
+  "parameter_storage": "read-only mapped checkpoint tensors; no parameter initialization/copy",
+  "changed_real_token_ids": [
+    8108,
+    13084
+  ],
+  "events": [
+    {
+      "lag_after_changed_input": 0,
+      "drive_difference_norm": 170.73291015625,
+      "full_membrane_difference_norm": 87.25072479248047,
+      "motor_membrane_difference_norm": 0.21940024197101593,
+      "logits_difference_norm": 0.7272785902023315,
+      "logits_difference_max": 0.0172882080078125,
+      "motor_relative_difference": 0.03848540410399437,
+      "latent_relative_difference": 0.0013494861777871847,
+      "normalized_latent_relative_difference": 0.0012784027494490147,
+      "motor_spike_fraction_a": 0.04329190030694008,
+      "physical_trace": [
+        {
+          "physical_tick_after_input": 0,
+          "difference_norms": {
+            "motor_v_pre": 0.0,
+            "motor_h_post": 0.0,
+            "motor_spikes": 0.0,
+            "motor_transmitted_pulse": 0.0,
+            "motor_ge": 0.0,
+            "motor_gi": 0.0,
+            "sensory_spikes": 64.69930267333984,
+            "sensory_transmitted_pulse": 8.500218391418457
+          },
+          "motor_spike_fraction_a": 0.042434632778167725,
+          "sensory_spike_fraction_a": 0.3642534017562866,
+          "motor_pre_reset_energy_fraction_removed_a": 0.11557234823703766
+        },
+        {
+          "physical_tick_after_input": 1,
+          "difference_norms": {
+            "motor_v_pre": 0.0273909755051136,
+            "motor_h_post": 0.21940024197101593,
+            "motor_spikes": 1.4142135381698608,
+            "motor_transmitted_pulse": 0.36041343212127686,
+            "motor_ge": 0.041519924998283386,
+            "motor_gi": 0.003520913189277053,
+            "sensory_spikes": 6.0,
+            "sensory_transmitted_pulse": 1.0416338443756104
+          },
+          "motor_spike_fraction_a": 0.04329190030694008,
+          "sensory_spike_fraction_a": 0.0006284565315581858,
+          "motor_pre_reset_energy_fraction_removed_a": 0.11312170326709747
+        }
+      ]
+    },
+    {
+      "lag_after_changed_input": 1,
+      "drive_difference_norm": 8.331765174865723,
+      "full_membrane_difference_norm": 56.47393035888672,
+      "motor_membrane_difference_norm": 0.49471861124038696,
+      "logits_difference_norm": 1.901843786239624,
+      "logits_difference_max": 0.03707122802734375,
+      "motor_relative_difference": 0.0869598537683487,
+      "latent_relative_difference": 0.0021996849682182074,
+      "normalized_latent_relative_difference": 0.0020680322777479887,
+      "motor_spike_fraction_a": 0.04029146954417229,
+      "physical_trace": [
+        {
+          "physical_tick_after_input": 0,
+          "difference_norms": {
+            "motor_v_pre": 0.20765817165374756,
+            "motor_h_post": 0.3219231963157654,
+            "motor_spikes": 2.2360680103302,
+            "motor_transmitted_pulse": 0.6114287376403809,
+            "motor_ge": 0.043419644236564636,
+            "motor_gi": 0.014783140271902084,
+            "sensory_spikes": 38.444766998291016,
+            "sensory_transmitted_pulse": 7.384629249572754
+          },
+          "motor_spike_fraction_a": 0.03986283764243126,
+          "sensory_spike_fraction_a": 0.4560708999633789,
+          "motor_pre_reset_energy_fraction_removed_a": 0.10684327036142349
+        },
+        {
+          "physical_tick_after_input": 1,
+          "difference_norms": {
+            "motor_v_pre": 0.29505211114883423,
+            "motor_h_post": 0.49471861124038696,
+            "motor_spikes": 3.0,
+            "motor_transmitted_pulse": 0.3409216105937958,
+            "motor_ge": 0.05178694427013397,
+            "motor_gi": 0.031051242724061012,
+            "sensory_spikes": 8.124038696289062,
+            "sensory_transmitted_pulse": 1.325318455696106
+          },
+          "motor_spike_fraction_a": 0.04029146954417229,
+          "sensory_spike_fraction_a": 0.002073906594887376,
+          "motor_pre_reset_energy_fraction_removed_a": 0.11058630794286728
+        }
+      ]
+    },
+    {
+      "lag_after_changed_input": 2,
+      "drive_difference_norm": 7.92517614364624,
+      "full_membrane_difference_norm": 40.68366241455078,
+      "motor_membrane_difference_norm": 0.5010392665863037,
+      "logits_difference_norm": 11.37986946105957,
+      "logits_difference_max": 0.11603546142578125,
+      "motor_relative_difference": 0.08760138601064682,
+      "latent_relative_difference": 0.007357571739703417,
+      "normalized_latent_relative_difference": 0.005568068940192461,
+      "motor_spike_fraction_a": 0.03771967440843582,
+      "physical_trace": [
+        {
+          "physical_tick_after_input": 0,
+          "difference_norms": {
+            "motor_v_pre": 0.45465120673179626,
+            "motor_h_post": 0.42994362115859985,
+            "motor_spikes": 3.464101552963257,
+            "motor_transmitted_pulse": 0.8623048663139343,
+            "motor_ge": 0.04990783706307411,
+            "motor_gi": 0.035712651908397675,
+            "sensory_spikes": 29.068883895874023,
+            "sensory_transmitted_pulse": 6.091030120849609
+          },
+          "motor_spike_fraction_a": 0.035147879272699356,
+          "sensory_spike_fraction_a": 0.1882227212190628,
+          "motor_pre_reset_energy_fraction_removed_a": 0.10306628048419952
+        },
+        {
+          "physical_tick_after_input": 1,
+          "difference_norms": {
+            "motor_v_pre": 0.3981351852416992,
+            "motor_h_post": 0.5010392665863037,
+            "motor_spikes": 3.464101552963257,
+            "motor_transmitted_pulse": 0.7509297728538513,
+            "motor_ge": 0.04707781970500946,
+            "motor_gi": 0.05023312568664551,
+            "sensory_spikes": 8.66025447845459,
+            "sensory_transmitted_pulse": 1.1431524753570557
+          },
+          "motor_spike_fraction_a": 0.03771967440843582,
+          "sensory_spike_fraction_a": 0.0029537456575781107,
+          "motor_pre_reset_energy_fraction_removed_a": 0.105770044028759
+        }
+      ]
+    },
+    {
+      "lag_after_changed_input": 3,
+      "drive_difference_norm": 7.538427829742432,
+      "full_membrane_difference_norm": 30.33502769470215,
+      "motor_membrane_difference_norm": 0.475349098443985,
+      "logits_difference_norm": 11.968669891357422,
+      "logits_difference_max": 0.110321044921875,
+      "motor_relative_difference": 0.0836787298321724,
+      "latent_relative_difference": 0.008616034872829914,
+      "normalized_latent_relative_difference": 0.0063783242367208,
+      "motor_spike_fraction_a": 0.045863695442676544,
+      "physical_trace": [
+        {
+          "physical_tick_after_input": 0,
+          "difference_norms": {
+            "motor_v_pre": 0.4307994842529297,
+            "motor_h_post": 0.6414410471916199,
+            "motor_spikes": 3.605551242828369,
+            "motor_transmitted_pulse": 0.5710146427154541,
+            "motor_ge": 0.04495043307542801,
+            "motor_gi": 0.0432904027402401,
+            "sensory_spikes": 26.438608169555664,
+            "sensory_transmitted_pulse": 5.555280685424805
+          },
+          "motor_spike_fraction_a": 0.03643377497792244,
+          "sensory_spike_fraction_a": 0.3121543526649475,
+          "motor_pre_reset_energy_fraction_removed_a": 0.10548899322748184
+        },
+        {
+          "physical_tick_after_input": 1,
+          "difference_norms": {
+            "motor_v_pre": 0.5975157618522644,
+            "motor_h_post": 0.475349098443985,
+            "motor_spikes": 4.123105525970459,
+            "motor_transmitted_pulse": 0.8829383254051208,
+            "motor_ge": 0.041677623987197876,
+            "motor_gi": 0.06783934682607651,
+            "sensory_spikes": 8.485280990600586,
+            "sensory_transmitted_pulse": 1.4292290210723877
+          },
+          "motor_spike_fraction_a": 0.045863695442676544,
+          "sensory_spike_fraction_a": 0.0024509804788976908,
+          "motor_pre_reset_energy_fraction_removed_a": 0.12134090065956116
+        }
+      ]
+    },
+    {
+      "lag_after_changed_input": 4,
+      "drive_difference_norm": 7.1705522537231445,
+      "full_membrane_difference_norm": 22.041048049926758,
+      "motor_membrane_difference_norm": 0.5799416303634644,
+      "logits_difference_norm": 8.919151306152344,
+      "logits_difference_max": 0.10978889465332031,
+      "motor_relative_difference": 0.1021173968911171,
+      "latent_relative_difference": 0.006079165730625391,
+      "normalized_latent_relative_difference": 0.005113213323056698,
+      "motor_spike_fraction_a": 0.035576511174440384,
+      "physical_trace": [
+        {
+          "physical_tick_after_input": 0,
+          "difference_norms": {
+            "motor_v_pre": 0.4425691068172455,
+            "motor_h_post": 0.6279285550117493,
+            "motor_spikes": 4.0,
+            "motor_transmitted_pulse": 0.5225643515586853,
+            "motor_ge": 0.03811534494161606,
+            "motor_gi": 0.05923398584127426,
+            "sensory_spikes": 25.84569549560547,
+            "sensory_transmitted_pulse": 5.584649085998535
+          },
+          "motor_spike_fraction_a": 0.0420060008764267,
+          "sensory_spike_fraction_a": 0.30750375986099243,
+          "motor_pre_reset_energy_fraction_removed_a": 0.11578132957220078
+        },
+        {
+          "physical_tick_after_input": 1,
+          "difference_norms": {
+            "motor_v_pre": 0.5614956021308899,
+            "motor_h_post": 0.5799416303634644,
+            "motor_spikes": 4.4721360206604,
+            "motor_transmitted_pulse": 0.4877564311027527,
+            "motor_ge": 0.041978590190410614,
+            "motor_gi": 0.05323336645960808,
+            "sensory_spikes": 7.416198253631592,
+            "sensory_transmitted_pulse": 0.9274340867996216
+          },
+          "motor_spike_fraction_a": 0.035576511174440384,
+          "sensory_spike_fraction_a": 0.002325289184227586,
+          "motor_pre_reset_energy_fraction_removed_a": 0.0961194708943367
+        }
+      ]
+    },
+    {
+      "lag_after_changed_input": 5,
+      "drive_difference_norm": 6.820627689361572,
+      "full_membrane_difference_norm": 17.420963287353516,
+      "motor_membrane_difference_norm": 0.6748582720756531,
+      "logits_difference_norm": 10.659395217895508,
+      "logits_difference_max": 0.1191864013671875,
+      "motor_relative_difference": 0.11917513608932495,
+      "latent_relative_difference": 0.005741558503359556,
+      "normalized_latent_relative_difference": 0.0052159009501338005,
+      "motor_spike_fraction_a": 0.045435063540935516,
+      "physical_trace": [
+        {
+          "physical_tick_after_input": 0,
+          "difference_norms": {
+            "motor_v_pre": 0.5238268971443176,
+            "motor_h_post": 0.6082009077072144,
+            "motor_spikes": 4.242640495300293,
+            "motor_transmitted_pulse": 0.790208637714386,
+            "motor_ge": 0.04337189719080925,
+            "motor_gi": 0.05459194630384445,
+            "sensory_spikes": 23.194826126098633,
+            "sensory_transmitted_pulse": 4.720717906951904
+          },
+          "motor_spike_fraction_a": 0.0420060008764267,
+          "sensory_spike_fraction_a": 0.45110607147216797,
+          "motor_pre_reset_energy_fraction_removed_a": 0.11440995335578918
+        },
+        {
+          "physical_tick_after_input": 1,
+          "difference_norms": {
+            "motor_v_pre": 0.5554102063179016,
+            "motor_h_post": 0.6748582720756531,
+            "motor_spikes": 4.358899116516113,
+            "motor_transmitted_pulse": 0.9981998801231384,
+            "motor_ge": 0.04147716239094734,
+            "motor_gi": 0.04929625242948532,
+            "sensory_spikes": 8.717798233032227,
+            "sensory_transmitted_pulse": 1.8082300424575806
+          },
+          "motor_spike_fraction_a": 0.045435063540935516,
+          "sensory_spike_fraction_a": 0.003393665188923478,
+          "motor_pre_reset_energy_fraction_removed_a": 0.11525789648294449
+        }
+      ]
+    },
+    {
+      "lag_after_changed_input": 6,
+      "drive_difference_norm": 6.487782001495361,
+      "full_membrane_difference_norm": 14.090189933776855,
+      "motor_membrane_difference_norm": 0.7517777681350708,
+      "logits_difference_norm": 3.901346206665039,
+      "logits_difference_max": 0.05241584777832031,
+      "motor_relative_difference": 0.13248437643051147,
+      "latent_relative_difference": 0.004122573882341385,
+      "normalized_latent_relative_difference": 0.0033827577717602253,
+      "motor_spike_fraction_a": 0.042434632778167725,
+      "physical_trace": [
+        {
+          "physical_tick_after_input": 0,
+          "difference_norms": {
+            "motor_v_pre": 0.6183220148086548,
+            "motor_h_post": 0.8073907494544983,
+            "motor_spikes": 5.0,
+            "motor_transmitted_pulse": 0.975476086139679,
+            "motor_ge": 0.03771862015128136,
+            "motor_gi": 0.05067187175154686,
+            "sensory_spikes": 20.19900894165039,
+            "sensory_transmitted_pulse": 4.056912422180176
+          },
+          "motor_spike_fraction_a": 0.03943420574069023,
+          "sensory_spike_fraction_a": 0.40258923172950745,
+          "motor_pre_reset_energy_fraction_removed_a": 0.10764029622077942
+        },
+        {
+          "physical_tick_after_input": 1,
+          "difference_norms": {
+            "motor_v_pre": 0.7034665942192078,
+            "motor_h_post": 0.7517777681350708,
+            "motor_spikes": 5.099019527435303,
+            "motor_transmitted_pulse": 0.8263548016548157,
+            "motor_ge": 0.03879500553011894,
+            "motor_gi": 0.052366308867931366,
+            "sensory_spikes": 7.141428470611572,
+            "sensory_transmitted_pulse": 1.233974814414978
+          },
+          "motor_spike_fraction_a": 0.042434632778167725,
+          "sensory_spike_fraction_a": 0.0023881348315626383,
+          "motor_pre_reset_energy_fraction_removed_a": 0.11898504942655563
+        }
+      ]
+    },
+    {
+      "lag_after_changed_input": 7,
+      "drive_difference_norm": 6.171178817749023,
+      "full_membrane_difference_norm": 12.692696571350098,
+      "motor_membrane_difference_norm": 0.8793736100196838,
+      "logits_difference_norm": 9.752986907958984,
+      "logits_difference_max": 0.10975837707519531,
+      "motor_relative_difference": 0.15620458126068115,
+      "latent_relative_difference": 0.0062662288546562195,
+      "normalized_latent_relative_difference": 0.005542523693293333,
+      "motor_spike_fraction_a": 0.04629232734441757,
+      "physical_trace": [
+        {
+          "physical_tick_after_input": 0,
+          "difference_norms": {
+            "motor_v_pre": 0.6747652888298035,
+            "motor_h_post": 0.8270835280418396,
+            "motor_spikes": 5.385164737701416,
+            "motor_transmitted_pulse": 0.7230105400085449,
+            "motor_ge": 0.037330515682697296,
+            "motor_gi": 0.057957153767347336,
+            "sensory_spikes": 20.0,
+            "sensory_transmitted_pulse": 3.2539596557617188
+          },
+          "motor_spike_fraction_a": 0.03986283764243126,
+          "sensory_spike_fraction_a": 0.20230014622211456,
+          "motor_pre_reset_energy_fraction_removed_a": 0.11259382218122482
+        },
+        {
+          "physical_tick_after_input": 1,
+          "difference_norms": {
+            "motor_v_pre": 0.754615843296051,
+            "motor_h_post": 0.8793736100196838,
+            "motor_spikes": 5.385164737701416,
+            "motor_transmitted_pulse": 0.8887290358543396,
+            "motor_ge": 0.03984308987855911,
+            "motor_gi": 0.051062922924757004,
+            "sensory_spikes": 5.916079998016357,
+            "sensory_transmitted_pulse": 0.6484450101852417
+          },
+          "motor_spike_fraction_a": 0.04629232734441757,
+          "sensory_spike_fraction_a": 0.0015082956524565816,
+          "motor_pre_reset_energy_fraction_removed_a": 0.1254584789276123
+        }
+      ]
+    },
+    {
+      "lag_after_changed_input": 8,
+      "drive_difference_norm": 5.870025157928467,
+      "full_membrane_difference_norm": 12.210700035095215,
+      "motor_membrane_difference_norm": 0.7575667500495911,
+      "logits_difference_norm": 11.160239219665527,
+      "logits_difference_max": 0.10468292236328125,
+      "motor_relative_difference": 0.13372354209423065,
+      "latent_relative_difference": 0.0065698628313839436,
+      "normalized_latent_relative_difference": 0.005124525632709265,
+      "motor_spike_fraction_a": 0.04157736897468567,
+      "physical_trace": [
+        {
+          "physical_tick_after_input": 0,
+          "difference_norms": {
+            "motor_v_pre": 0.7958491444587708,
+            "motor_h_post": 0.7477832436561584,
+            "motor_spikes": 5.196152210235596,
+            "motor_transmitted_pulse": 0.7812345027923584,
+            "motor_ge": 0.039186060428619385,
+            "motor_gi": 0.049224741756916046,
+            "sensory_spikes": 20.248456954956055,
+            "sensory_transmitted_pulse": 3.3850326538085938
+          },
+          "motor_spike_fraction_a": 0.036862410604953766,
+          "sensory_spike_fraction_a": 0.2831825017929077,
+          "motor_pre_reset_energy_fraction_removed_a": 0.10832885652780533
+        },
+        {
+          "physical_tick_after_input": 1,
+          "difference_norms": {
+            "motor_v_pre": 0.6689099669456482,
+            "motor_h_post": 0.7575667500495911,
+            "motor_spikes": 5.099019527435303,
+            "motor_transmitted_pulse": 0.7099912166595459,
+            "motor_ge": 0.04281138628721237,
+            "motor_gi": 0.05005502328276634,
+            "sensory_spikes": 5.830951690673828,
+            "sensory_transmitted_pulse": 0.8398580551147461
+          },
+          "motor_spike_fraction_a": 0.04157736897468567,
+          "sensory_spike_fraction_a": 0.0017596782417967916,
+          "motor_pre_reset_energy_fraction_removed_a": 0.10703565180301666
+        }
+      ]
+    },
+    {
+      "lag_after_changed_input": 9,
+      "drive_difference_norm": 5.583568572998047,
+      "full_membrane_difference_norm": 12.733633995056152,
+      "motor_membrane_difference_norm": 0.873883068561554,
+      "logits_difference_norm": 10.568650245666504,
+      "logits_difference_max": 0.13018035888671875,
+      "motor_relative_difference": 0.15422916412353516,
+      "latent_relative_difference": 0.008252430707216263,
+      "normalized_latent_relative_difference": 0.006698437500745058,
+      "motor_spike_fraction_a": 0.04886412248015404,
+      "physical_trace": [
+        {
+          "physical_tick_after_input": 0,
+          "difference_norms": {
+            "motor_v_pre": 0.6883614659309387,
+            "motor_h_post": 0.816861093044281,
+            "motor_spikes": 5.196152210235596,
+            "motor_transmitted_pulse": 0.7480376362800598,
+            "motor_ge": 0.037984464317560196,
+            "motor_gi": 0.05000244081020355,
+            "sensory_spikes": 20.4939022064209,
+            "sensory_transmitted_pulse": 2.950747489929199
+          },
+          "motor_spike_fraction_a": 0.03600514307618141,
+          "sensory_spike_fraction_a": 0.2313348352909088,
+          "motor_pre_reset_energy_fraction_removed_a": 0.09875746816396713
+        },
+        {
+          "physical_tick_after_input": 1,
+          "difference_norms": {
+            "motor_v_pre": 0.7459981441497803,
+            "motor_h_post": 0.873883068561554,
+            "motor_spikes": 6.082762718200684,
+            "motor_transmitted_pulse": 0.8220647573471069,
+            "motor_ge": 0.036266300827264786,
+            "motor_gi": 0.050188567489385605,
+            "sensory_spikes": 6.633249759674072,
+            "sensory_transmitted_pulse": 0.7211337089538574
+          },
+          "motor_spike_fraction_a": 0.04886412248015404,
+          "sensory_spike_fraction_a": 0.001571141299791634,
+          "motor_pre_reset_energy_fraction_removed_a": 0.13137511909008026
+        }
+      ]
+    },
+    {
+      "lag_after_changed_input": 10,
+      "drive_difference_norm": 5.311090469360352,
+      "full_membrane_difference_norm": 13.524109840393066,
+      "motor_membrane_difference_norm": 0.891498327255249,
+      "logits_difference_norm": 9.104729652404785,
+      "logits_difference_max": 0.09925270080566406,
+      "motor_relative_difference": 0.15775369107723236,
+      "latent_relative_difference": 0.006472651846706867,
+      "normalized_latent_relative_difference": 0.005287183448672295,
+      "motor_spike_fraction_a": 0.04114873707294464,
+      "physical_trace": [
+        {
+          "physical_tick_after_input": 0,
+          "difference_norms": {
+            "motor_v_pre": 0.7942243218421936,
+            "motor_h_post": 0.9479947686195374,
+            "motor_spikes": 6.4031243324279785,
+            "motor_transmitted_pulse": 0.9344807267189026,
+            "motor_ge": 0.032790835946798325,
+            "motor_gi": 0.04449496790766716,
+            "sensory_spikes": 19.05255889892578,
+            "sensory_transmitted_pulse": 3.098646402359009
+          },
+          "motor_spike_fraction_a": 0.04329190030694008,
+          "sensory_spike_fraction_a": 0.2132352888584137,
+          "motor_pre_reset_energy_fraction_removed_a": 0.11946158111095428
+        },
+        {
+          "physical_tick_after_input": 1,
+          "difference_norms": {
+            "motor_v_pre": 0.846041202545166,
+            "motor_h_post": 0.891498327255249,
+            "motor_spikes": 6.082762718200684,
+            "motor_transmitted_pulse": 1.019985556602478,
+            "motor_ge": 0.03149634599685669,
+            "motor_gi": 0.04561307281255722,
+            "sensory_spikes": 5.4772257804870605,
+            "sensory_transmitted_pulse": 0.7187732458114624
+          },
+          "motor_spike_fraction_a": 0.04114873707294464,
+          "sensory_spike_fraction_a": 0.0015082956524565816,
+          "motor_pre_reset_energy_fraction_removed_a": 0.11371177434921265
+        }
+      ]
+    },
+    {
+      "lag_after_changed_input": 11,
+      "drive_difference_norm": 5.051908016204834,
+      "full_membrane_difference_norm": 12.759735107421875,
+      "motor_membrane_difference_norm": 0.8776218891143799,
+      "logits_difference_norm": 14.622293472290039,
+      "logits_difference_max": 0.14029884338378906,
+      "motor_relative_difference": 0.156538188457489,
+      "latent_relative_difference": 0.008378750644624233,
+      "normalized_latent_relative_difference": 0.0062051438726484776,
+      "motor_spike_fraction_a": 0.04629232734441757,
+      "physical_trace": [
+        {
+          "physical_tick_after_input": 0,
+          "difference_norms": {
+            "motor_v_pre": 0.8040705323219299,
+            "motor_h_post": 1.048007845878601,
+            "motor_spikes": 6.633249759674072,
+            "motor_transmitted_pulse": 0.8561012148857117,
+            "motor_ge": 0.03982526808977127,
+            "motor_gi": 0.04458511248230934,
+            "sensory_spikes": 19.02629852294922,
+            "sensory_transmitted_pulse": 2.986206531524658
+          },
+          "motor_spike_fraction_a": 0.04500642791390419,
+          "sensory_spike_fraction_a": 0.332139253616333,
+          "motor_pre_reset_energy_fraction_removed_a": 0.11953465640544891
+        },
+        {
+          "physical_tick_after_input": 1,
+          "difference_norms": {
+            "motor_v_pre": 0.9531329870223999,
+            "motor_h_post": 0.8776218891143799,
+            "motor_spikes": 6.78233003616333,
+            "motor_transmitted_pulse": 0.7506911158561707,
+            "motor_ge": 0.042411185801029205,
+            "motor_gi": 0.04437355697154999,
+            "sensory_spikes": 6.4031243324279785,
+            "sensory_transmitted_pulse": 1.0882200002670288
+          },
+          "motor_spike_fraction_a": 0.04629232734441757,
+          "sensory_spike_fraction_a": 0.001696832594461739,
+          "motor_pre_reset_energy_fraction_removed_a": 0.12548203766345978
+        }
+      ]
+    },
+    {
+      "lag_after_changed_input": 12,
+      "drive_difference_norm": 4.805375576019287,
+      "full_membrane_difference_norm": 13.579485893249512,
+      "motor_membrane_difference_norm": 0.8318703770637512,
+      "logits_difference_norm": 17.03236198425293,
+      "logits_difference_max": 0.17961883544921875,
+      "motor_relative_difference": 0.14714930951595306,
+      "latent_relative_difference": 0.012067611329257488,
+      "normalized_latent_relative_difference": 0.008706822991371155,
+      "motor_spike_fraction_a": 0.04114873707294464,
+      "physical_trace": [
+        {
+          "physical_tick_after_input": 0,
+          "difference_norms": {
+            "motor_v_pre": 0.7835829854011536,
+            "motor_h_post": 0.7496232390403748,
+            "motor_spikes": 5.4772257804870605,
+            "motor_transmitted_pulse": 0.6425596475601196,
+            "motor_ge": 0.03526410833001137,
+            "motor_gi": 0.044516392052173615,
+            "sensory_spikes": 17.52141571044922,
+            "sensory_transmitted_pulse": 1.7962664365768433
+          },
+          "motor_spike_fraction_a": 0.03086155094206333,
+          "sensory_spike_fraction_a": 0.17898441851139069,
+          "motor_pre_reset_energy_fraction_removed_a": 0.08648507297039032
+        },
+        {
+          "physical_tick_after_input": 1,
+          "difference_norms": {
+            "motor_v_pre": 0.6784204244613647,
+            "motor_h_post": 0.8318703770637512,
+            "motor_spikes": 5.291502475738525,
+            "motor_transmitted_pulse": 0.5355218052864075,
+            "motor_ge": 0.03272833302617073,
+            "motor_gi": 0.047359541058540344,
+            "sensory_spikes": 5.5677642822265625,
+            "sensory_transmitted_pulse": 0.4103240966796875
+          },
+          "motor_spike_fraction_a": 0.04114873707294464,
+          "sensory_spike_fraction_a": 0.0016339869471266866,
+          "motor_pre_reset_energy_fraction_removed_a": 0.11801568418741226
+        }
+      ]
+    },
+    {
+      "lag_after_changed_input": 13,
+      "drive_difference_norm": 4.570873260498047,
+      "full_membrane_difference_norm": 14.308429718017578,
+      "motor_membrane_difference_norm": 0.9361403584480286,
+      "logits_difference_norm": 23.00969696044922,
+      "logits_difference_max": 0.24734878540039062,
+      "motor_relative_difference": 0.16504718363285065,
+      "latent_relative_difference": 0.011827385053038597,
+      "normalized_latent_relative_difference": 0.009576612152159214,
+      "motor_spike_fraction_a": 0.044149164110422134,
+      "physical_trace": [
+        {
+          "physical_tick_after_input": 0,
+          "difference_norms": {
+            "motor_v_pre": 0.7354472279548645,
+            "motor_h_post": 0.7701781392097473,
+            "motor_spikes": 5.291502475738525,
+            "motor_transmitted_pulse": 0.6783339381217957,
+            "motor_ge": 0.029693718999624252,
+            "motor_gi": 0.04486438259482384,
+            "sensory_spikes": 20.880613327026367,
+            "sensory_transmitted_pulse": 2.465384006500244
+          },
+          "motor_spike_fraction_a": 0.04114873707294464,
+          "sensory_spike_fraction_a": 0.20839618146419525,
+          "motor_pre_reset_energy_fraction_removed_a": 0.11034015566110611
+        },
+        {
+          "physical_tick_after_input": 1,
+          "difference_norms": {
+            "motor_v_pre": 0.6969464421272278,
+            "motor_h_post": 0.9361403584480286,
+            "motor_spikes": 6.082762718200684,
+            "motor_transmitted_pulse": 0.8643348217010498,
+            "motor_ge": 0.030103864148259163,
+            "motor_gi": 0.04129771143198013,
+            "sensory_spikes": 7.4833149909973145,
+            "sensory_transmitted_pulse": 0.6866379976272583
+          },
+          "motor_spike_fraction_a": 0.044149164110422134,
+          "sensory_spike_fraction_a": 0.002325289184227586,
+          "motor_pre_reset_energy_fraction_removed_a": 0.11383958160877228
+        }
+      ]
+    },
+    {
+      "lag_after_changed_input": 14,
+      "drive_difference_norm": 4.347814559936523,
+      "full_membrane_difference_norm": 14.607138633728027,
+      "motor_membrane_difference_norm": 1.0175052881240845,
+      "logits_difference_norm": 3.2800121307373047,
+      "logits_difference_max": 0.05471038818359375,
+      "motor_relative_difference": 0.17987963557243347,
+      "latent_relative_difference": 0.005683063063770533,
+      "normalized_latent_relative_difference": 0.004689455032348633,
+      "motor_spike_fraction_a": 0.04500642791390419,
+      "physical_trace": [
+        {
+          "physical_tick_after_input": 0,
+          "difference_norms": {
+            "motor_v_pre": 0.8530274629592896,
+            "motor_h_post": 0.9128150939941406,
+            "motor_spikes": 6.480740547180176,
+            "motor_transmitted_pulse": 0.8097303509712219,
+            "motor_ge": 0.030213613063097,
+            "motor_gi": 0.04262414947152138,
+            "sensory_spikes": 18.11077117919922,
+            "sensory_transmitted_pulse": 2.5113649368286133
+          },
+          "motor_spike_fraction_a": 0.042434632778167725,
+          "sensory_spike_fraction_a": 0.2259301096200943,
+          "motor_pre_reset_energy_fraction_removed_a": 0.11525565385818481
+        },
+        {
+          "physical_tick_after_input": 1,
+          "difference_norms": {
+            "motor_v_pre": 0.8123612999916077,
+            "motor_h_post": 1.0175052881240845,
+            "motor_spikes": 7.071067810058594,
+            "motor_transmitted_pulse": 0.9180002808570862,
+            "motor_ge": 0.02821105532348156,
+            "motor_gi": 0.039381690323352814,
+            "sensory_spikes": 5.385164737701416,
+            "sensory_transmitted_pulse": 0.8117082715034485
+          },
+          "motor_spike_fraction_a": 0.04500642791390419,
+          "sensory_spike_fraction_a": 0.0011312217684462667,
+          "motor_pre_reset_energy_fraction_removed_a": 0.12170498818159103
+        }
+      ]
+    },
+    {
+      "lag_after_changed_input": 15,
+      "drive_difference_norm": 4.1356401443481445,
+      "full_membrane_difference_norm": 14.629657745361328,
+      "motor_membrane_difference_norm": 0.9192630052566528,
+      "logits_difference_norm": 6.657419681549072,
+      "logits_difference_max": 0.07608413696289062,
+      "motor_relative_difference": 0.16224919259548187,
+      "latent_relative_difference": 0.005018997006118298,
+      "normalized_latent_relative_difference": 0.004099711775779724,
+      "motor_spike_fraction_a": 0.042434632778167725,
+      "physical_trace": [
+        {
+          "physical_tick_after_input": 0,
+          "difference_norms": {
+            "motor_v_pre": 0.9146438837051392,
+            "motor_h_post": 0.9570713639259338,
+            "motor_spikes": 6.0,
+            "motor_transmitted_pulse": 0.6920964121818542,
+            "motor_ge": 0.030181342735886574,
+            "motor_gi": 0.043754417449235916,
+            "sensory_spikes": 21.14237403869629,
+            "sensory_transmitted_pulse": 2.821908950805664
+          },
+          "motor_spike_fraction_a": 0.036862410604953766,
+          "sensory_spike_fraction_a": 0.2464177906513214,
+          "motor_pre_reset_energy_fraction_removed_a": 0.10830970108509064
+        },
+        {
+          "physical_tick_after_input": 1,
+          "difference_norms": {
+            "motor_v_pre": 0.8670201301574707,
+            "motor_h_post": 0.9192630052566528,
+            "motor_spikes": 6.7082037925720215,
+            "motor_transmitted_pulse": 0.7659677267074585,
+            "motor_ge": 0.03460908681154251,
+            "motor_gi": 0.03775279223918915,
+            "sensory_spikes": 6.082762718200684,
+            "sensory_transmitted_pulse": 0.6040053367614746
+          },
+          "motor_spike_fraction_a": 0.042434632778167725,
+          "sensory_spike_fraction_a": 0.0008169934735633433,
+          "motor_pre_reset_energy_fraction_removed_a": 0.11331477016210556
+        }
+      ]
+    }
+  ],
+  "actual_trajectory_variation": {
+    "motor_membrane": {
+      "observed_events": 16,
+      "temporal_variation_energy_fraction": 0.07729700207710266,
+      "total_rms": 0.11730451881885529,
+      "centered_rms": 0.032613400369882584,
+      "scope": "Short real-token checkpoint trajectory mechanism diagnostic; not intrinsic dimension or capability."
+    },
+    "projected_latent": {
+      "observed_events": 16,
+      "temporal_variation_energy_fraction": 0.00034406399936415255,
+      "total_rms": 11.238324165344238,
+      "centered_rms": 0.20845924317836761,
+      "scope": "Short real-token checkpoint trajectory mechanism diagnostic; not intrinsic dimension or capability."
+    },
+    "normalized_latent": {
+      "observed_events": 16,
+      "temporal_variation_energy_fraction": 0.00020306286751292646,
+      "total_rms": 0.19848959147930145,
+      "centered_rms": 0.002828479278832674,
+      "scope": "Short real-token checkpoint trajectory mechanism diagnostic; not intrinsic dimension or capability."
+    }
+  },
+  "first_nonzero_output_lag": 0
+}

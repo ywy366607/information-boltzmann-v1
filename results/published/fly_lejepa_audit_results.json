@@ -1,0 +1,23 @@
+{
+  "config": {
+    "train_tokens": 512,
+    "val_tokens": 256,
+    "epochs": 50,
+    "lambda_sigreg": 1.0,
+    "d_latent": 128
+  },
+  "baselines": {
+    "unigram_train_nll": 7.392487525939941,
+    "unigram_val_nll": 7.341493606567383
+  },
+  "representation": {
+    "mean_val_std": 0.898621678352356,
+    "dead_dims": 0,
+    "effective_rank": 50.49733352661133
+  },
+  "downstream_probe": {
+    "final_train_nll": 1.9432628154754639,
+    "final_val_nll": 9.029924392700195,
+    "val_gap_vs_unigram": 1.6884307861328125
+  }
+}

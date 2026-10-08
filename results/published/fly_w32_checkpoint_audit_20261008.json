@@ -1,0 +1,29 @@
+{
+  "scope": "One real 32-target derivative diagnostic; optimizer steps suppressed, full 480-tick surrogate BPTT",
+  "source_checkpoint": "E:\\ib_checkpoints\\q8_fly_ctm_settle14_100k\\last.pt",
+  "source_checkpoint_bytes": 1124511859,
+  "source_checkpoint_modified": false,
+  "window": 32,
+  "settle_ticks": 14,
+  "optimizer_updates": 0,
+  "device": "NVIDIA GeForce GTX 1650",
+  "status": "failed",
+  "detach_reset": true,
+  "backward_only": true,
+  "all_restored_parameters_exact": true,
+  "source_train_tokens": 100000,
+  "target_interval": [
+    100001,
+    100033
+  ],
+  "target_sha256": "c6ad6a38e7335bee762df1271dbef34aebb32490da6a24830c2b1dd549a5370d",
+  "trainable_parameters": 77984427,
+  "vram_peak_allocated_mib": 1282.73046875,
+  "vram_reserved_mib": 1298.0,
+  "last_stage": "restored",
+  "board_memory_snapshots_mib": {
+    "restored": 1357.0
+  },
+  "error": "AcceleratorError: CUDA error: unknown error\nSearch for `cudaErrorUnknown' in https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__TYPES.html for more information.\nCUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.\nFor debugging consider passing CUDA_LAUNCH_BLOCKING=1\nCompile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.\n",
+  "seconds_including_diagnostics": 3.2574822999886237
+}

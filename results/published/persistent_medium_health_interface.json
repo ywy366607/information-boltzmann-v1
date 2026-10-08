@@ -1,0 +1,201 @@
+{
+  "scope": "Implementation, numerical accounting and real-OWT execution only; no trained capability or convergence claim.",
+  "protocol": "persistent_medium_health_v1",
+  "verification": {
+    "cuda_enabled_affected_suite_passed": 66,
+    "additional_quadratic_bath_and_forward_ad_reference_checks_passed": 2,
+    "latest_health_cpu_suite_passed": 8,
+    "unique_verified_checks": 68,
+    "properties": [
+      "complete-state/parameter/gradient and stochastic-credit RNG equivalence",
+      "actual incident/reflected and conductance work/Joule-energy closure",
+      "stage-local transport/collision/bath energy and spatial changes",
+      "checkpoint pending-gradient and health-ledger continuity",
+      "phase-separated trends and representation statistics",
+      "complete-state JVP/finite-difference agreement without changing life or RNG",
+      "CUDA Graph actual-event measurement and changed-parameter replay"
+    ]
+  },
+  "real_owt_execution": {
+    "shape": [
+      8,
+      8,
+      4
+    ],
+    "channels": 128,
+    "credit": "local-receptors",
+    "event_duration": 0.005,
+    "substeps": 1,
+    "updates_per_arm": 2,
+    "observations_per_arm": 256,
+    "identical_prequential_scores_and_field_statistics": true,
+    "monitoring_off_seconds_per_128": [
+      2.841826800024137,
+      2.803961600002367
+    ],
+    "complete_monitoring_seconds_per_128_during_affected_test_process": [
+      3.1646500999922864,
+      3.1890084000187926
+    ],
+    "complete_monitoring_seconds_per_128_during_other_training": [
+      6.7945851999975275,
+      6.68973160002497
+    ],
+    "peak_monitored_tensor_mib": 362.40966796875,
+    "total_dedicated_gpu_mib_during_other_training": 2499.0,
+    "timing_interpretation": "Short event-loop timing includes actual health capture, host observations and optimizer displacement. Excludes setup and summary/file serialization. Last monitored arm overlapped a separately owned GPU training task; no isolated overhead ratio inferred.",
+    "health_after_256_events": {
+      "protocol": "persistent_medium_health_v1",
+      "events": 256,
+      "window_events": 256,
+      "energy": {
+        "write_work": 24.657941110432148,
+        "response_source_work": 120.76265566330403,
+        "dissipated_energy": 139.17287935083732,
+        "balance_residual": -6.780168041586876e-05,
+        "initial_energy": 0.0,
+        "current_energy": 6.247649669647217,
+        "cumulative_balance_residual": -6.775325164198875e-05,
+        "max_abs_write_residual": 1.1473894119262695e-06,
+        "max_abs_evolution_residual": 1.7881393432617188e-06,
+        "max_abs_continuity_residual": 0.0
+      },
+      "structure": {
+        "field_dc_energy": 0.4234386086463928,
+        "field_ac_energy": 2.567042589187622,
+        "flux_dc_energy": 0.00047521531814709306,
+        "flux_ac_energy": 3.256692886352539,
+        "field_spatial_fraction": 0.85840452401002,
+        "latest_operator_changes": {
+          "transport_energy_change": 0.0,
+          "transport_spatial_energy_change": -1.430511474609375e-06,
+          "collision_energy_change": 0.0,
+          "collision_spatial_energy_change": 1.0967254638671875e-05,
+          "bath_energy_change": -0.09022951126098633,
+          "bath_spatial_energy_change": -0.0852665901184082
+        },
+        "window_operator_changes": {
+          "transport_energy_change": -7.02887773513794e-05,
+          "transport_spatial_energy_change": -0.00017209351062774658,
+          "collision_energy_change": -1.0862946510314941e-05,
+          "collision_spatial_energy_change": -0.0020089372992515564,
+          "bath_energy_change": -18.41021028906107,
+          "bath_spatial_energy_change": -17.537471875548363
+        }
+      },
+      "representation_segments": [
+        {
+          "phase": "stream",
+          "novel": true,
+          "samples": 256,
+          "status": "measured",
+          "variance": 0.88122032536106,
+          "temporal_roughness": 0.03667718713511337,
+          "roughness_to_variance": 0.04162090464729774,
+          "spectral_entropy": 2.814245897545019,
+          "normalized_spectral_entropy": 0.5800140857471869,
+          "effective_rank": 16.680592160759467,
+          "participation_rank": 9.750122899607506,
+          "rank_bound": 128
+        }
+      ],
+      "predictive_risk": {
+        "blocks": [
+          {
+            "phase": "stream",
+            "novel": true,
+            "segment": 0,
+            "event_midpoint": 16.5,
+            "mean_nll": 10.824761867523193
+          },
+          {
+            "phase": "stream",
+            "novel": true,
+            "segment": 0,
+            "event_midpoint": 48.5,
+            "mean_nll": 10.825241029262543
+          },
+          {
+            "phase": "stream",
+            "novel": true,
+            "segment": 0,
+            "event_midpoint": 80.5,
+            "mean_nll": 10.82926407456398
+          },
+          {
+            "phase": "stream",
+            "novel": true,
+            "segment": 0,
+            "event_midpoint": 112.5,
+            "mean_nll": 10.825850188732147
+          },
+          {
+            "phase": "stream",
+            "novel": true,
+            "segment": 0,
+            "event_midpoint": 144.5,
+            "mean_nll": 10.812928855419159
+          },
+          {
+            "phase": "stream",
+            "novel": true,
+            "segment": 0,
+            "event_midpoint": 176.5,
+            "mean_nll": 10.821310818195343
+          },
+          {
+            "phase": "stream",
+            "novel": true,
+            "segment": 0,
+            "event_midpoint": 208.5,
+            "mean_nll": 10.822825133800507
+          },
+          {
+            "phase": "stream",
+            "novel": true,
+            "segment": 0,
+            "event_midpoint": 240.5,
+            "mean_nll": 10.822040617465973
+          }
+        ],
+        "by_phase": {
+          "stream/first_pass": {
+            "segment": 0,
+            "complete_blocks": 8,
+            "slope_nats_per_event": -2.52638876970194e-05,
+            "slope_hac_standard_error": 1.2431196827196479e-05,
+            "hac_lags": 2
+          }
+        }
+      },
+      "recent_optimizer_updates": [
+        {
+          "event": 128,
+          "gradient_norm_before_clip": 1.162534236907959,
+          "actual_update_norm": 0.263891339302063,
+          "parameter_norm": 2537.7646484375,
+          "relative_update_norm": 0.00010398574522696435
+        },
+        {
+          "event": 256,
+          "gradient_norm_before_clip": 1.0090631246566772,
+          "actual_update_norm": 0.22665554285049438,
+          "parameter_norm": 2537.761962890625,
+          "relative_update_norm": 8.931315824156627e-05
+        }
+      ],
+      "interpretation": "Descriptive health measurements; no noise-expulsion, criticality or convergence verdict."
+    },
+    "checkpoint_assets_created": false
+  },
+  "source_sha256": {
+    "information_boltzmann/runtime/medium_health.py": "8a897d52ae4a6874307ac6dff577091d56c2654b52d0e3381b7e4e205fca4870",
+    "information_boltzmann/runtime/training.py": "36f1c0b181d3401bc7ffb06f2fa5106aab35b33a7cef8af9e0324b08f1da1b4b",
+    "information_boltzmann/runtime/lifelong_evaluation.py": "d7cd585da1ede80b5fffe56bc9da6684cb0768ce83de25d4dfb6d6d71152d23c",
+    "information_boltzmann/runtime/local_credit.py": "91c569f84d58db4c70e1b7418b472dad3583f2cdd965c4bb781608283106c293",
+    "information_boltzmann/runtime/online_credit.py": "eba89ffb590472fcce74b7b16e226b844e8dd8fe5a91223e0ef5b9c7bd135fb2",
+    "information_boltzmann/core/plastic_medium.py": "344bc0e86f26708ea6bbb808158cce591ce4e762fcf687c9ffe44329bf6b690c",
+    "scripts/ib/train_online_plastic.py": "0b4684e03561a008de44798dccd5033d23e1f83a84d4607c7375e4ed6ae06dd5",
+    "tests/test_medium_health.py": "b009cecb78d4fa1d5270962172c81e379330fe81fc39351ecff19d59deb83a04"
+  }
+}

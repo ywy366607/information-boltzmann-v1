@@ -1,0 +1,2420 @@
+{
+  "purpose": "Retest a diagnosed structural blind direction, not task improvement",
+  "original_tool": "scripts/ib/audit_medium_time_read_credit.py::read_observability",
+  "checkpoint": "D:\\information-boltzmann-v1\\results\\medium_v8_joint_bptt32_96k_recovered\\last.pt",
+  "checkpoint_step": 3000,
+  "corpus_offset": 96001,
+  "actual_forward_events": 32,
+  "selected_events": [
+    0,
+    8,
+    16,
+    24
+  ],
+  "optimizer_updates": 0,
+  "active_initialization": "seed711 standard fan-in for ONLY 3 new additive paths",
+  "original_weights_equal": true,
+  "selected_physical_transitions_equal": true,
+  "parameters_unchanged": {
+    "old_instantaneous": true,
+    "zero_migrated": true,
+    "active_fanin_711": true
+  },
+  "summary": {
+    "old_instantaneous": {
+      "immediate_feature_max_abs_change_mean": 0.0,
+      "immediate_feature_max_abs_change_max": 0.0,
+      "immediate_flux_task_gradient_norm_mean": 0.0,
+      "immediate_flux_task_gradient_norm_max": 0.0
+    },
+    "zero_migrated": {
+      "immediate_feature_max_abs_change_mean": 0.0,
+      "immediate_feature_max_abs_change_max": 0.0,
+      "immediate_flux_task_gradient_norm_mean": 0.0,
+      "immediate_flux_task_gradient_norm_max": 0.0
+    },
+    "active_fanin_711": {
+      "immediate_feature_max_abs_change_mean": 0.0021215416491031647,
+      "immediate_feature_max_abs_change_max": 0.00247994065284729,
+      "immediate_flux_task_gradient_norm_mean": 1.0995838542779286,
+      "immediate_flux_task_gradient_norm_max": 2.899792194366455
+    }
+  },
+  "samples": [
+    {
+      "event": 0,
+      "observed": 17840,
+      "target": 257,
+      "original_diagnostic": {
+        "old_instantaneous": {
+          "state_credit": {
+            "field": {
+              "current": {
+                "connected": true,
+                "norm": 0.3175867199897766,
+                "rms": 0.0017544364091008902,
+                "relative_direction_sensitivity": 0.2414901852607727
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.25355204939842224,
+                "rms": 0.001400692155584693,
+                "relative_direction_sensitivity": 0.1977071613073349
+              }
+            },
+            "flux_x": {
+              "current": {
+                "connected": false,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.03228743001818657,
+                "rms": 0.00017836476035881788,
+                "relative_direction_sensitivity": 0.012576550245285034
+              }
+            },
+            "flux_y": {
+              "current": {
+                "connected": false,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.07102097570896149,
+                "rms": 0.0003923394833691418,
+                "relative_direction_sensitivity": 0.06430477648973465
+              }
+            },
+            "flux_z": {
+              "current": {
+                "connected": false,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.00907569658011198,
+                "rms": 5.0136652134824544e-05,
+                "relative_direction_sensitivity": 0.0016422111075371504
+              }
+            },
+            "conduction": {
+              "current": {
+                "connected": false,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.06216833367943764,
+                "rms": 0.002243306487798691,
+                "relative_direction_sensitivity": 0.024708539247512817
+              }
+            },
+            "receptors": {
+              "current": {
+                "connected": false,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.004401547368615866,
+                "rms": 1.7193555322592147e-05,
+                "relative_direction_sensitivity": 0.003051396692171693
+              }
+            },
+            "transmission": {
+              "current": {
+                "connected": false,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.15616776049137115,
+                "rms": 0.003984701354056597,
+                "relative_direction_sensitivity": 0.08781896531581879
+              }
+            },
+            "precision": {
+              "current": {
+                "connected": false,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              },
+              "evolved": {
+                "connected": false,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              }
+            }
+          },
+          "flux_perturbations": [
+            {
+              "flux_scale": 0.99,
+              "current_feature_max_difference": 0.0,
+              "current_nll_difference": 0.0,
+              "evolved_feature_relative_difference": 0.002345148241147399,
+              "evolved_nll_difference": 0.0009341239929199219
+            },
+            {
+              "flux_scale": 1.01,
+              "current_feature_max_difference": 0.0,
+              "current_nll_difference": 0.0,
+              "evolved_feature_relative_difference": 0.0023474686313420534,
+              "evolved_nll_difference": -0.0009279251098632812
+            }
+          ]
+        },
+        "zero_migrated": {
+          "state_credit": {
+            "field": {
+              "current": {
+                "connected": true,
+                "norm": 0.3175867199897766,
+                "rms": 0.0017544364091008902,
+                "relative_direction_sensitivity": 0.2414901852607727
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.25355204939842224,
+                "rms": 0.001400692155584693,
+                "relative_direction_sensitivity": 0.1977071613073349
+              }
+            },
+            "flux_x": {
+              "current": {
+                "connected": true,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.03228743001818657,
+                "rms": 0.00017836476035881788,
+                "relative_direction_sensitivity": 0.012576550245285034
+              }
+            },
+            "flux_y": {
+              "current": {
+                "connected": true,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.07102097570896149,
+                "rms": 0.0003923394833691418,
+                "relative_direction_sensitivity": 0.06430477648973465
+              }
+            },
+            "flux_z": {
+              "current": {
+                "connected": true,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.00907569658011198,
+                "rms": 5.0136652134824544e-05,
+                "relative_direction_sensitivity": 0.0016422111075371504
+              }
+            },
+            "conduction": {
+              "current": {
+                "connected": true,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.06216833367943764,
+                "rms": 0.002243306487798691,
+                "relative_direction_sensitivity": 0.024708539247512817
+              }
+            },
+            "receptors": {
+              "current": {
+                "connected": true,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.004401547368615866,
+                "rms": 1.7193555322592147e-05,
+                "relative_direction_sensitivity": 0.003051396692171693
+              }
+            },
+            "transmission": {
+              "current": {
+                "connected": true,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.15616776049137115,
+                "rms": 0.003984701354056597,
+                "relative_direction_sensitivity": 0.08781896531581879
+              }
+            },
+            "precision": {
+              "current": {
+                "connected": false,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              },
+              "evolved": {
+                "connected": false,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              }
+            }
+          },
+          "flux_perturbations": [
+            {
+              "flux_scale": 0.99,
+              "current_feature_max_difference": 0.0,
+              "current_nll_difference": 0.0,
+              "evolved_feature_relative_difference": 0.002345148241147399,
+              "evolved_nll_difference": 0.0009341239929199219
+            },
+            {
+              "flux_scale": 1.01,
+              "current_feature_max_difference": 0.0,
+              "current_nll_difference": 0.0,
+              "evolved_feature_relative_difference": 0.0023474686313420534,
+              "evolved_nll_difference": -0.0009279251098632812
+            }
+          ]
+        },
+        "active_fanin_711": {
+          "state_credit": {
+            "field": {
+              "current": {
+                "connected": true,
+                "norm": 0.4099586308002472,
+                "rms": 0.0022647245787084103,
+                "relative_direction_sensitivity": 0.22297099232673645
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.5109160542488098,
+                "rms": 0.0028224412817507982,
+                "relative_direction_sensitivity": 0.21023385226726532
+              }
+            },
+            "flux_x": {
+              "current": {
+                "connected": true,
+                "norm": 0.8158427476882935,
+                "rms": 0.004506939090788364,
+                "relative_direction_sensitivity": 0.11950692534446716
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.6833481192588806,
+                "rms": 0.0037750049959868193,
+                "relative_direction_sensitivity": 0.10743486136198044
+              }
+            },
+            "flux_y": {
+              "current": {
+                "connected": true,
+                "norm": 0.8504562973976135,
+                "rms": 0.004698155447840691,
+                "relative_direction_sensitivity": 0.17269247770309448
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.7366991639137268,
+                "rms": 0.004069730173796415,
+                "relative_direction_sensitivity": 0.13329406082630157
+              }
+            },
+            "flux_z": {
+              "current": {
+                "connected": true,
+                "norm": 0.28602108359336853,
+                "rms": 0.0015800590626895428,
+                "relative_direction_sensitivity": 0.03533094748854637
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.25641727447509766,
+                "rms": 0.0014165196334943175,
+                "relative_direction_sensitivity": 0.031798288226127625
+              }
+            },
+            "conduction": {
+              "current": {
+                "connected": true,
+                "norm": 0.12461050599813461,
+                "rms": 0.004496494308114052,
+                "relative_direction_sensitivity": 0.09263288229703903
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.15465165674686432,
+                "rms": 0.005580511409789324,
+                "relative_direction_sensitivity": 0.09125753492116928
+              }
+            },
+            "receptors": {
+              "current": {
+                "connected": true,
+                "norm": 0.04900987818837166,
+                "rms": 0.0001914449967443943,
+                "relative_direction_sensitivity": 0.028486289083957672
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.04398215562105179,
+                "rms": 0.00017180555732920766,
+                "relative_direction_sensitivity": 0.025493569672107697
+              }
+            },
+            "transmission": {
+              "current": {
+                "connected": true,
+                "norm": 0.27304524183273315,
+                "rms": 0.0069668907672166824,
+                "relative_direction_sensitivity": 0.17622585594654083
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.3632635176181793,
+                "rms": 0.00926885660737753,
+                "relative_direction_sensitivity": 0.21845713257789612
+              }
+            },
+            "precision": {
+              "current": {
+                "connected": false,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              },
+              "evolved": {
+                "connected": false,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              }
+            }
+          },
+          "flux_perturbations": [
+            {
+              "flux_scale": 0.99,
+              "current_feature_max_difference": 0.001922696828842163,
+              "current_nll_difference": 0.0006756782531738281,
+              "evolved_feature_relative_difference": 0.0031144344247877598,
+              "evolved_nll_difference": 0.001468658447265625
+            },
+            {
+              "flux_scale": 1.01,
+              "current_feature_max_difference": 0.0018856227397918701,
+              "current_nll_difference": -0.0006642341613769531,
+              "evolved_feature_relative_difference": 0.003095870139077306,
+              "evolved_nll_difference": -0.0014619827270507812
+            }
+          ]
+        }
+      },
+      "raw_motion_measurement": {
+        "zero_migrated": {
+          "perturbations": [
+            {
+              "scale": 0.99,
+              "per_probe_relative_change": [
+                [
+                  0.0017203660681843758,
+                  0.0018786092987284064,
+                  0.001693115453235805,
+                  0.0013144221156835556
+                ],
+                [
+                  0.002284635789692402,
+                  0.0026700955349951982,
+                  0.001847837120294571,
+                  0.0019194164779037237
+                ],
+                [
+                  0.0008055609650909901,
+                  0.00205015717074275,
+                  0.0027956136036664248,
+                  0.001685134251601994
+                ],
+                [
+                  0.0015668608248233795,
+                  0.00107879179995507,
+                  0.0025344539899379015,
+                  0.0023598673287779093
+                ]
+              ],
+              "responding_probes": 16,
+              "feature_relative_change": 0.0
+            },
+            {
+              "scale": 1.01,
+              "per_probe_relative_change": [
+                [
+                  0.0016872265841811895,
+                  0.0018433029763400555,
+                  0.0016621118411421776,
+                  0.00128947792109102
+                ],
+                [
+                  0.00224366900511086,
+                  0.0026182702276855707,
+                  0.0018130490789189935,
+                  0.0018780592363327742
+                ],
+                [
+                  0.0007900417549535632,
+                  0.002011100063100457,
+                  0.0027436695527285337,
+                  0.0016529979184269905
+                ],
+                [
+                  0.0015380055410787463,
+                  0.0010581810493022203,
+                  0.0024892559740692377,
+                  0.002313118427991867
+                ]
+              ],
+              "responding_probes": 16,
+              "feature_relative_change": 0.0
+            }
+          ],
+          "remote_flux_control": {
+            "probe": 0,
+            "held_aperture_sites": 12,
+            "held_local_and_incident_edges": true,
+            "external_flux_perturbation_norm": 0.639104425907135,
+            "raw_probe_max_change": 0.0
+          }
+        },
+        "active_fanin_711": {
+          "perturbations": [
+            {
+              "scale": 0.99,
+              "per_probe_relative_change": [
+                [
+                  0.001840026117861271,
+                  0.0020321779884397984,
+                  0.0019677767995744944,
+                  0.0015226352261379361
+                ],
+                [
+                  0.002149438951164484,
+                  0.0025358181446790695,
+                  0.0017886041896417737,
+                  0.002078726189211011
+                ],
+                [
+                  0.0009715237538330257,
+                  0.0025304968003183603,
+                  0.002619575010612607,
+                  0.0018070968799293041
+                ],
+                [
+                  0.0016682915156707168,
+                  0.001110733370296657,
+                  0.0032806764356791973,
+                  0.002298271283507347
+                ]
+              ],
+              "responding_probes": 16,
+              "feature_relative_change": 0.0012484054313972592
+            },
+            {
+              "scale": 1.01,
+              "per_probe_relative_change": [
+                [
+                  0.0018040280556306243,
+                  0.001995489001274109,
+                  0.0019307974725961685,
+                  0.0014928991440683603
+                ],
+                [
+                  0.0021088169887661934,
+                  0.0024875160306692123,
+                  0.0017567900940775871,
+                  0.002034874865785241
+                ],
+                [
+                  0.0009536193683743477,
+                  0.002481702947989106,
+                  0.002569247502833605,
+                  0.001770988223142922
+                ],
+                [
+                  0.0016385330818593502,
+                  0.0010896826861426234,
+                  0.0032191062346100807,
+                  0.002253068843856454
+                ]
+              ],
+              "responding_probes": 16,
+              "feature_relative_change": 0.0012246334226801991
+            }
+          ],
+          "remote_flux_control": {
+            "probe": 0,
+            "held_aperture_sites": 12,
+            "held_local_and_incident_edges": true,
+            "external_flux_perturbation_norm": 0.639104425907135,
+            "raw_probe_max_change": 0.0
+          }
+        }
+      },
+      "zero_migration_exact": true,
+      "unchanged_physical_jet": {
+        "autonomous_derivative_norm": 4136.4228515625,
+        "samples": [
+          {
+            "epsilon": 0.00125,
+            "field_hold_error": 0.07810550928115845,
+            "field_jet_error": 0.006214774213731289,
+            "feature_hold_error": 0.05122361332178116,
+            "feature_jet_error": 0.006865619216114283,
+            "probe_hold_error": 0.09080567210912704,
+            "probe_jet_error": 0.012080270797014236,
+            "field_hold_error_halving_ratio": 1.995398445597778,
+            "field_jet_error_halving_ratio": 4.00995599035228,
+            "feature_hold_error_halving_ratio": 1.9143610204860293,
+            "feature_jet_error_halving_ratio": 3.924888659360201
+          },
+          {
+            "epsilon": 0.000625,
+            "field_hold_error": 0.03914281353354454,
+            "field_jet_error": 0.001549836015328765,
+            "feature_hold_error": 0.026757551357150078,
+            "feature_jet_error": 0.0017492519691586494,
+            "probe_hold_error": 0.04691997915506363,
+            "probe_jet_error": 0.002930085640400648,
+            "field_hold_error_halving_ratio": 1.9981443513249926,
+            "field_jet_error_halving_ratio": 4.006509793317599,
+            "feature_hold_error_halving_ratio": 1.9566589852822387,
+            "feature_jet_error_halving_ratio": 3.9622368239156676
+          },
+          {
+            "epsilon": 0.0003125,
+            "field_hold_error": 0.019589582458138466,
+            "field_jet_error": 0.0003868294588755816,
+            "feature_hold_error": 0.013675122521817684,
+            "feature_jet_error": 0.00044148092274554074,
+            "probe_hold_error": 0.023810798302292824,
+            "probe_jet_error": 0.0007201438420452178
+          }
+        ],
+        "meaning": "Existing-state first-order jet forecasts physical read response; it is not a fitted language readout."
+      }
+    },
+    {
+      "event": 8,
+      "observed": 11259,
+      "target": 262,
+      "original_diagnostic": {
+        "old_instantaneous": {
+          "state_credit": {
+            "field": {
+              "current": {
+                "connected": true,
+                "norm": 0.4536696970462799,
+                "rms": 0.0025061960332095623,
+                "relative_direction_sensitivity": 0.4626562297344208
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.36402586102485657,
+                "rms": 0.0020109794568270445,
+                "relative_direction_sensitivity": 0.3644315004348755
+              }
+            },
+            "flux_x": {
+              "current": {
+                "connected": false,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.05378199368715286,
+                "rms": 0.0002971066569443792,
+                "relative_direction_sensitivity": 0.022428929805755615
+              }
+            },
+            "flux_y": {
+              "current": {
+                "connected": false,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.10849172621965408,
+                "rms": 0.0005993383820168674,
+                "relative_direction_sensitivity": 0.12688226997852325
+              }
+            },
+            "flux_z": {
+              "current": {
+                "connected": false,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.013426673598587513,
+                "rms": 7.417263259412721e-05,
+                "relative_direction_sensitivity": 0.0025365049950778484
+              }
+            },
+            "conduction": {
+              "current": {
+                "connected": false,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.10899562388658524,
+                "rms": 0.003933040890842676,
+                "relative_direction_sensitivity": 0.04312291741371155
+              }
+            },
+            "receptors": {
+              "current": {
+                "connected": false,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.008094877935945988,
+                "rms": 3.162063876516186e-05,
+                "relative_direction_sensitivity": 0.0061034574173390865
+              }
+            },
+            "transmission": {
+              "current": {
+                "connected": false,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.2729073464870453,
+                "rms": 0.00696337316185236,
+                "relative_direction_sensitivity": 0.1539801061153412
+              }
+            },
+            "precision": {
+              "current": {
+                "connected": false,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              },
+              "evolved": {
+                "connected": false,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              }
+            }
+          },
+          "flux_perturbations": [
+            {
+              "flux_scale": 0.99,
+              "current_feature_max_difference": 0.0,
+              "current_nll_difference": 0.0,
+              "evolved_feature_relative_difference": 0.0024981533642858267,
+              "evolved_nll_difference": -0.00064849853515625
+            },
+            {
+              "flux_scale": 1.01,
+              "current_feature_max_difference": 0.0,
+              "current_nll_difference": 0.0,
+              "evolved_feature_relative_difference": 0.002498037414625287,
+              "evolved_nll_difference": 0.0006363391876220703
+            }
+          ]
+        },
+        "zero_migrated": {
+          "state_credit": {
+            "field": {
+              "current": {
+                "connected": true,
+                "norm": 0.4536696970462799,
+                "rms": 0.0025061960332095623,
+                "relative_direction_sensitivity": 0.4626562297344208
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.36402586102485657,
+                "rms": 0.0020109794568270445,
+                "relative_direction_sensitivity": 0.3644315004348755
+              }
+            },
+            "flux_x": {
+              "current": {
+                "connected": true,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.05378199368715286,
+                "rms": 0.0002971066569443792,
+                "relative_direction_sensitivity": 0.022428929805755615
+              }
+            },
+            "flux_y": {
+              "current": {
+                "connected": true,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.10849172621965408,
+                "rms": 0.0005993383820168674,
+                "relative_direction_sensitivity": 0.12688226997852325
+              }
+            },
+            "flux_z": {
+              "current": {
+                "connected": true,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.013426673598587513,
+                "rms": 7.417263259412721e-05,
+                "relative_direction_sensitivity": 0.0025365049950778484
+              }
+            },
+            "conduction": {
+              "current": {
+                "connected": true,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.10899562388658524,
+                "rms": 0.003933040890842676,
+                "relative_direction_sensitivity": 0.04312291741371155
+              }
+            },
+            "receptors": {
+              "current": {
+                "connected": true,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.008094877935945988,
+                "rms": 3.162063876516186e-05,
+                "relative_direction_sensitivity": 0.0061034574173390865
+              }
+            },
+            "transmission": {
+              "current": {
+                "connected": true,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.2729073464870453,
+                "rms": 0.00696337316185236,
+                "relative_direction_sensitivity": 0.1539801061153412
+              }
+            },
+            "precision": {
+              "current": {
+                "connected": false,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              },
+              "evolved": {
+                "connected": false,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              }
+            }
+          },
+          "flux_perturbations": [
+            {
+              "flux_scale": 0.99,
+              "current_feature_max_difference": 0.0,
+              "current_nll_difference": 0.0,
+              "evolved_feature_relative_difference": 0.0024981533642858267,
+              "evolved_nll_difference": -0.00064849853515625
+            },
+            {
+              "flux_scale": 1.01,
+              "current_feature_max_difference": 0.0,
+              "current_nll_difference": 0.0,
+              "evolved_feature_relative_difference": 0.002498037414625287,
+              "evolved_nll_difference": 0.0006363391876220703
+            }
+          ]
+        },
+        "active_fanin_711": {
+          "state_credit": {
+            "field": {
+              "current": {
+                "connected": true,
+                "norm": 0.47764095664024353,
+                "rms": 0.0026386200916022062,
+                "relative_direction_sensitivity": 0.37505418062210083
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.6938128471374512,
+                "rms": 0.003832812886685133,
+                "relative_direction_sensitivity": 0.3663991093635559
+              }
+            },
+            "flux_x": {
+              "current": {
+                "connected": true,
+                "norm": 0.8662941455841064,
+                "rms": 0.00478564715012908,
+                "relative_direction_sensitivity": 0.11841316521167755
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.9242216348648071,
+                "rms": 0.0051056575030088425,
+                "relative_direction_sensitivity": 0.12918753921985626
+              }
+            },
+            "flux_y": {
+              "current": {
+                "connected": true,
+                "norm": 0.9746707081794739,
+                "rms": 0.00538434786722064,
+                "relative_direction_sensitivity": 0.19401919841766357
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 1.0419338941574097,
+                "rms": 0.005755930207669735,
+                "relative_direction_sensitivity": 0.24478277564048767
+              }
+            },
+            "flux_z": {
+              "current": {
+                "connected": true,
+                "norm": 0.3197896480560303,
+                "rms": 0.0017666060011833906,
+                "relative_direction_sensitivity": 0.03651178628206253
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.3553018867969513,
+                "rms": 0.00196278584189713,
+                "relative_direction_sensitivity": 0.04044593498110771
+              }
+            },
+            "conduction": {
+              "current": {
+                "connected": true,
+                "norm": 0.14264748990535736,
+                "rms": 0.005147348623722792,
+                "relative_direction_sensitivity": 0.11672988533973694
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.2055930197238922,
+                "rms": 0.007418699562549591,
+                "relative_direction_sensitivity": 0.1379241943359375
+              }
+            },
+            "receptors": {
+              "current": {
+                "connected": true,
+                "norm": 0.05325087904930115,
+                "rms": 0.0002080114500131458,
+                "relative_direction_sensitivity": 0.031075427308678627
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.05885259062051773,
+                "rms": 0.00022989322314970195,
+                "relative_direction_sensitivity": 0.034535910934209824
+              }
+            },
+            "transmission": {
+              "current": {
+                "connected": true,
+                "norm": 0.31280478835105896,
+                "rms": 0.00798137579113245,
+                "relative_direction_sensitivity": 0.2017340362071991
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.4647546112537384,
+                "rms": 0.011858455836772919,
+                "relative_direction_sensitivity": 0.29045379161834717
+              }
+            },
+            "precision": {
+              "current": {
+                "connected": false,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              },
+              "evolved": {
+                "connected": false,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              }
+            }
+          },
+          "flux_perturbations": [
+            {
+              "flux_scale": 0.99,
+              "current_feature_max_difference": 0.00203019380569458,
+              "current_nll_difference": 0.00011992454528808594,
+              "evolved_feature_relative_difference": 0.0041299136355519295,
+              "evolved_nll_difference": 0.0008614063262939453
+            },
+            {
+              "flux_scale": 1.01,
+              "current_feature_max_difference": 0.001990705728530884,
+              "current_nll_difference": -0.00011587142944335938,
+              "evolved_feature_relative_difference": 0.0040956344455480576,
+              "evolved_nll_difference": -0.0008196830749511719
+            }
+          ]
+        }
+      },
+      "raw_motion_measurement": {
+        "zero_migrated": {
+          "perturbations": [
+            {
+              "scale": 0.99,
+              "per_probe_relative_change": [
+                [
+                  0.0009920187294483185,
+                  0.0017432024469599128,
+                  0.0017195765394717455,
+                  0.002106636529788375
+                ],
+                [
+                  0.0020349863916635513,
+                  0.0018367624143138528,
+                  0.0021649389527738094,
+                  0.0031727366149425507
+                ],
+                [
+                  0.001159445964731276,
+                  0.0014878069050610065,
+                  0.001993790501728654,
+                  0.0021941077429801226
+                ],
+                [
+                  0.0012431665090844035,
+                  0.0009702062816359103,
+                  0.0022867603693157434,
+                  0.002468019025400281
+                ]
+              ],
+              "responding_probes": 16,
+              "feature_relative_change": 0.0
+            },
+            {
+              "scale": 1.01,
+              "per_probe_relative_change": [
+                [
+                  0.0009725053678266704,
+                  0.0017122766003012657,
+                  0.0016897035529837012,
+                  0.0020654858089983463
+                ],
+                [
+                  0.0019975220784544945,
+                  0.0017995465314015746,
+                  0.0021258420310914516,
+                  0.0031100453343242407
+                ],
+                [
+                  0.0011373403249308467,
+                  0.0014603128656744957,
+                  0.001954870531335473,
+                  0.002150084124878049
+                ],
+                [
+                  0.0012210835702717304,
+                  0.0009509841911494732,
+                  0.002246380317956209,
+                  0.002420133911073208
+                ]
+              ],
+              "responding_probes": 16,
+              "feature_relative_change": 0.0
+            }
+          ],
+          "remote_flux_control": {
+            "probe": 0,
+            "held_aperture_sites": 12,
+            "held_local_and_incident_edges": true,
+            "external_flux_perturbation_norm": 0.6314867734909058,
+            "raw_probe_max_change": 0.0
+          }
+        },
+        "active_fanin_711": {
+          "perturbations": [
+            {
+              "scale": 0.99,
+              "per_probe_relative_change": [
+                [
+                  0.0010567500721663237,
+                  0.0016789737856015563,
+                  0.0017244862392544746,
+                  0.0020552780479192734
+                ],
+                [
+                  0.001783618237823248,
+                  0.0019117032643407583,
+                  0.0011818116763606668,
+                  0.0032502308022230864
+                ],
+                [
+                  0.0016414568526670337,
+                  0.0011268510716035962,
+                  0.0020881297532469034,
+                  0.002349053742364049
+                ],
+                [
+                  0.0014752375427633524,
+                  0.0009404601296409965,
+                  0.0025695725344121456,
+                  0.0029395781457424164
+                ]
+              ],
+              "responding_probes": 16,
+              "feature_relative_change": 0.0012844310840591788
+            },
+            {
+              "scale": 1.01,
+              "per_probe_relative_change": [
+                [
+                  0.0010359273292124271,
+                  0.001649194280616939,
+                  0.0016948548145592213,
+                  0.0020166474860161543
+                ],
+                [
+                  0.0017498272936791182,
+                  0.001871795393526554,
+                  0.0011582091683521867,
+                  0.0031866072677075863
+                ],
+                [
+                  0.0016104949172586203,
+                  0.0011056764051318169,
+                  0.0020469219889491796,
+                  0.0023030296433717012
+                ],
+                [
+                  0.0014476386131718755,
+                  0.0009218157501891255,
+                  0.002525469521060586,
+                  0.0028832920361310244
+                ]
+              ],
+              "responding_probes": 16,
+              "feature_relative_change": 0.0012603485956788063
+            }
+          ],
+          "remote_flux_control": {
+            "probe": 0,
+            "held_aperture_sites": 12,
+            "held_local_and_incident_edges": true,
+            "external_flux_perturbation_norm": 0.6314867734909058,
+            "raw_probe_max_change": 0.0
+          }
+        }
+      },
+      "zero_migration_exact": true,
+      "unchanged_physical_jet": {
+        "autonomous_derivative_norm": 4004.179443359375,
+        "samples": [
+          {
+            "epsilon": 0.00125,
+            "field_hold_error": 0.07509166747331619,
+            "field_jet_error": 0.006094758398830891,
+            "feature_hold_error": 0.07104811817407608,
+            "feature_jet_error": 0.006515925284475088,
+            "probe_hold_error": 0.08170758932828903,
+            "probe_jet_error": 0.011599872261285782,
+            "field_hold_error_halving_ratio": 2.004240498129271,
+            "field_jet_error_halving_ratio": 4.007086586269667,
+            "feature_hold_error_halving_ratio": 1.978428386794,
+            "feature_jet_error_halving_ratio": 3.95816876137318
+          },
+          {
+            "epsilon": 0.000625,
+            "field_hold_error": 0.037466395646333694,
+            "field_jet_error": 0.0015209949342533946,
+            "feature_hold_error": 0.03591139242053032,
+            "feature_jet_error": 0.001646196935325861,
+            "probe_hold_error": 0.040623072534799576,
+            "probe_jet_error": 0.0028566522523760796,
+            "field_hold_error_halving_ratio": 2.002367646858264,
+            "field_jet_error_halving_ratio": 4.005030333354612,
+            "feature_hold_error_halving_ratio": 1.9910918287889523,
+            "feature_jet_error_halving_ratio": 3.9804422230673113
+          },
+          {
+            "epsilon": 0.0003125,
+            "field_hold_error": 0.018711047247052193,
+            "field_jet_error": 0.00037977113970555365,
+            "feature_hold_error": 0.01803603023290634,
+            "feature_jet_error": 0.0004135713679715991,
+            "probe_hold_error": 0.020255908370018005,
+            "probe_jet_error": 0.0007091012666933239
+          }
+        ],
+        "meaning": "Existing-state first-order jet forecasts physical read response; it is not a fitted language readout."
+      }
+    },
+    {
+      "event": 16,
+      "observed": 447,
+      "target": 247,
+      "original_diagnostic": {
+        "old_instantaneous": {
+          "state_credit": {
+            "field": {
+              "current": {
+                "connected": true,
+                "norm": 1.1883234977722168,
+                "rms": 0.006564625073224306,
+                "relative_direction_sensitivity": 0.9924144744873047
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.889160692691803,
+                "rms": 0.004911970347166061,
+                "relative_direction_sensitivity": 0.6972838640213013
+              }
+            },
+            "flux_x": {
+              "current": {
+                "connected": false,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.1365242600440979,
+                "rms": 0.0007541977684013546,
+                "relative_direction_sensitivity": 0.06152897700667381
+              }
+            },
+            "flux_y": {
+              "current": {
+                "connected": false,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.26667261123657227,
+                "rms": 0.0014731736155226827,
+                "relative_direction_sensitivity": 0.20086906850337982
+              }
+            },
+            "flux_z": {
+              "current": {
+                "connected": false,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.03278772532939911,
+                "rms": 0.00018112844554707408,
+                "relative_direction_sensitivity": 0.005037376191467047
+              }
+            },
+            "conduction": {
+              "current": {
+                "connected": false,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.2914033830165863,
+                "rms": 0.010515113361179829,
+                "relative_direction_sensitivity": 0.10365932434797287
+              }
+            },
+            "receptors": {
+              "current": {
+                "connected": false,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.016100669279694557,
+                "rms": 6.289329030551016e-05,
+                "relative_direction_sensitivity": 0.012362780049443245
+              }
+            },
+            "transmission": {
+              "current": {
+                "connected": false,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.7010998129844666,
+                "rms": 0.017888925969600677,
+                "relative_direction_sensitivity": 0.41163885593414307
+              }
+            },
+            "precision": {
+              "current": {
+                "connected": false,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              },
+              "evolved": {
+                "connected": false,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              }
+            }
+          },
+          "flux_perturbations": [
+            {
+              "flux_scale": 0.99,
+              "current_feature_max_difference": 0.0,
+              "current_nll_difference": 0.0,
+              "evolved_feature_relative_difference": 0.0020893344189971685,
+              "evolved_nll_difference": -0.00035309791564941406
+            },
+            {
+              "flux_scale": 1.01,
+              "current_feature_max_difference": 0.0,
+              "current_nll_difference": 0.0,
+              "evolved_feature_relative_difference": 0.002097821794450283,
+              "evolved_nll_difference": 0.00038504600524902344
+            }
+          ]
+        },
+        "zero_migrated": {
+          "state_credit": {
+            "field": {
+              "current": {
+                "connected": true,
+                "norm": 1.1883234977722168,
+                "rms": 0.006564625073224306,
+                "relative_direction_sensitivity": 0.9924144744873047
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.889160692691803,
+                "rms": 0.004911970347166061,
+                "relative_direction_sensitivity": 0.6972838640213013
+              }
+            },
+            "flux_x": {
+              "current": {
+                "connected": true,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.1365242600440979,
+                "rms": 0.0007541977684013546,
+                "relative_direction_sensitivity": 0.06152897700667381
+              }
+            },
+            "flux_y": {
+              "current": {
+                "connected": true,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.26667261123657227,
+                "rms": 0.0014731736155226827,
+                "relative_direction_sensitivity": 0.20086906850337982
+              }
+            },
+            "flux_z": {
+              "current": {
+                "connected": true,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.03278772532939911,
+                "rms": 0.00018112844554707408,
+                "relative_direction_sensitivity": 0.005037376191467047
+              }
+            },
+            "conduction": {
+              "current": {
+                "connected": true,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.2914033830165863,
+                "rms": 0.010515113361179829,
+                "relative_direction_sensitivity": 0.10365932434797287
+              }
+            },
+            "receptors": {
+              "current": {
+                "connected": true,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.016100669279694557,
+                "rms": 6.289329030551016e-05,
+                "relative_direction_sensitivity": 0.012362780049443245
+              }
+            },
+            "transmission": {
+              "current": {
+                "connected": true,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.7010998129844666,
+                "rms": 0.017888925969600677,
+                "relative_direction_sensitivity": 0.41163885593414307
+              }
+            },
+            "precision": {
+              "current": {
+                "connected": false,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              },
+              "evolved": {
+                "connected": false,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              }
+            }
+          },
+          "flux_perturbations": [
+            {
+              "flux_scale": 0.99,
+              "current_feature_max_difference": 0.0,
+              "current_nll_difference": 0.0,
+              "evolved_feature_relative_difference": 0.0020893344189971685,
+              "evolved_nll_difference": -0.00035309791564941406
+            },
+            {
+              "flux_scale": 1.01,
+              "current_feature_max_difference": 0.0,
+              "current_nll_difference": 0.0,
+              "evolved_feature_relative_difference": 0.002097821794450283,
+              "evolved_nll_difference": 0.00038504600524902344
+            }
+          ]
+        },
+        "active_fanin_711": {
+          "state_credit": {
+            "field": {
+              "current": {
+                "connected": true,
+                "norm": 1.6275357007980347,
+                "rms": 0.008990952745079994,
+                "relative_direction_sensitivity": 1.0705358982086182
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 2.3346688747406006,
+                "rms": 0.012897355481982231,
+                "relative_direction_sensitivity": 1.1384801864624023
+              }
+            },
+            "flux_x": {
+              "current": {
+                "connected": true,
+                "norm": 2.656646251678467,
+                "rms": 0.014676043763756752,
+                "relative_direction_sensitivity": 0.3863736093044281
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 2.9383010864257812,
+                "rms": 0.01623198203742504,
+                "relative_direction_sensitivity": 0.44749704003334045
+              }
+            },
+            "flux_y": {
+              "current": {
+                "connected": true,
+                "norm": 2.899792194366455,
+                "rms": 0.016019243746995926,
+                "relative_direction_sensitivity": 0.6787934303283691
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 3.2806143760681152,
+                "rms": 0.018123017624020576,
+                "relative_direction_sensitivity": 0.7280732989311218
+              }
+            },
+            "flux_z": {
+              "current": {
+                "connected": true,
+                "norm": 0.9306520223617554,
+                "rms": 0.005141176749020815,
+                "relative_direction_sensitivity": 0.13264048099517822
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 1.0688765048980713,
+                "rms": 0.005904768127948046,
+                "relative_direction_sensitivity": 0.1651189774274826
+              }
+            },
+            "conduction": {
+              "current": {
+                "connected": true,
+                "norm": 0.3453439176082611,
+                "rms": 0.012461524456739426,
+                "relative_direction_sensitivity": 0.23557499051094055
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.5238913297653198,
+                "rms": 0.018904300406575203,
+                "relative_direction_sensitivity": 0.32538512349128723
+              }
+            },
+            "receptors": {
+              "current": {
+                "connected": true,
+                "norm": 0.16126911342144012,
+                "rms": 0.0006299578817561269,
+                "relative_direction_sensitivity": 0.09622498601675034
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.1898229718208313,
+                "rms": 0.000741496856790036,
+                "relative_direction_sensitivity": 0.11461806297302246
+              }
+            },
+            "transmission": {
+              "current": {
+                "connected": true,
+                "norm": 0.7689464688301086,
+                "rms": 0.01962006837129593,
+                "relative_direction_sensitivity": 0.4883900284767151
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 1.1479874849319458,
+                "rms": 0.02929149568080902,
+                "relative_direction_sensitivity": 0.74016273021698
+              }
+            },
+            "precision": {
+              "current": {
+                "connected": false,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              },
+              "evolved": {
+                "connected": false,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              }
+            }
+          },
+          "flux_perturbations": [
+            {
+              "flux_scale": 0.99,
+              "current_feature_max_difference": 0.0021353065967559814,
+              "current_nll_difference": -0.002347588539123535,
+              "evolved_feature_relative_difference": 0.003947226330637932,
+              "evolved_nll_difference": -0.001361846923828125
+            },
+            {
+              "flux_scale": 1.01,
+              "current_feature_max_difference": 0.0020949244499206543,
+              "current_nll_difference": 0.0022984743118286133,
+              "evolved_feature_relative_difference": 0.003904780140146613,
+              "evolved_nll_difference": 0.0013616085052490234
+            }
+          ]
+        }
+      },
+      "raw_motion_measurement": {
+        "zero_migrated": {
+          "perturbations": [
+            {
+              "scale": 0.99,
+              "per_probe_relative_change": [
+                [
+                  0.0017594710225239396,
+                  0.0027818300295621157,
+                  0.0012887880438938737,
+                  0.001620928873308003
+                ],
+                [
+                  0.00308661418966949,
+                  0.002104508224874735,
+                  0.0017393269808962941,
+                  0.0030184786301106215
+                ],
+                [
+                  0.0008788606501184404,
+                  0.0012176316231489182,
+                  0.002199264708906412,
+                  0.00276349950581789
+                ],
+                [
+                  0.0014308103127405047,
+                  0.0007088611600920558,
+                  0.0026676813140511513,
+                  0.0022299729753285646
+                ]
+              ],
+              "responding_probes": 16,
+              "feature_relative_change": 0.0
+            },
+            {
+              "scale": 1.01,
+              "per_probe_relative_change": [
+                [
+                  0.001725893933326006,
+                  0.002731580985710025,
+                  0.0012636759784072638,
+                  0.0015916293486952782
+                ],
+                [
+                  0.003022089833393693,
+                  0.0020626652985811234,
+                  0.001701164641417563,
+                  0.0029591459315270185
+                ],
+                [
+                  0.000860750675201416,
+                  0.001194473123177886,
+                  0.002155677415430546,
+                  0.002706015482544899
+                ],
+                [
+                  0.0014044431736692786,
+                  0.0006943141925148666,
+                  0.0026180308777838945,
+                  0.0021843044087290764
+                ]
+              ],
+              "responding_probes": 16,
+              "feature_relative_change": 0.0
+            }
+          ],
+          "remote_flux_control": {
+            "probe": 0,
+            "held_aperture_sites": 12,
+            "held_local_and_incident_edges": true,
+            "external_flux_perturbation_norm": 0.6397279500961304,
+            "raw_probe_max_change": 0.0
+          }
+        },
+        "active_fanin_711": {
+          "perturbations": [
+            {
+              "scale": 0.99,
+              "per_probe_relative_change": [
+                [
+                  0.0017036612844094634,
+                  0.0030166292563080788,
+                  0.001566017046570778,
+                  0.0016177878715097904
+                ],
+                [
+                  0.0029646502807736397,
+                  0.0022767488844692707,
+                  0.0011823740787804127,
+                  0.0030167396180331707
+                ],
+                [
+                  0.0009243214153684676,
+                  0.0012261397205293179,
+                  0.0025268245954066515,
+                  0.0028094262816011906
+                ],
+                [
+                  0.0016892551211640239,
+                  0.0007553250761702657,
+                  0.0026541268453001976,
+                  0.002320807194337249
+                ]
+              ],
+              "responding_probes": 16,
+              "feature_relative_change": 0.0016080052591860294
+            },
+            {
+              "scale": 1.01,
+              "per_probe_relative_change": [
+                [
+                  0.0016712486976757646,
+                  0.002961196703836322,
+                  0.0015351127367466688,
+                  0.0015887395711615682
+                ],
+                [
+                  0.0029032579623162746,
+                  0.002231498248875141,
+                  0.0011586948530748487,
+                  0.002957972465083003
+                ],
+                [
+                  0.0009056697599589825,
+                  0.001203380525112152,
+                  0.002478956012055278,
+                  0.00275111710652709
+                ],
+                [
+                  0.0016571041196584702,
+                  0.0007402939954772592,
+                  0.002605301793664694,
+                  0.0022771430667489767
+                ]
+              ],
+              "responding_probes": 16,
+              "feature_relative_change": 0.0015761525137349963
+            }
+          ],
+          "remote_flux_control": {
+            "probe": 0,
+            "held_aperture_sites": 12,
+            "held_local_and_incident_edges": true,
+            "external_flux_perturbation_norm": 0.6397279500961304,
+            "raw_probe_max_change": 0.0
+          }
+        }
+      },
+      "zero_migration_exact": true,
+      "unchanged_physical_jet": {
+        "autonomous_derivative_norm": 4086.934326171875,
+        "samples": [
+          {
+            "epsilon": 0.00125,
+            "field_hold_error": 0.07799050956964493,
+            "field_jet_error": 0.006015140563249588,
+            "feature_hold_error": 0.04737043008208275,
+            "feature_jet_error": 0.0061225020326673985,
+            "probe_hold_error": 0.10001145303249359,
+            "probe_jet_error": 0.011237186379730701,
+            "field_hold_error_halving_ratio": 2.003275986975282,
+            "field_jet_error_halving_ratio": 4.002810894812619,
+            "feature_hold_error_halving_ratio": 1.9700735855055023,
+            "feature_jet_error_halving_ratio": 4.084988947469274
+          },
+          {
+            "epsilon": 0.000625,
+            "field_hold_error": 0.03893148526549339,
+            "field_jet_error": 0.0015027291374281049,
+            "feature_hold_error": 0.024045005440711975,
+            "feature_jet_error": 0.001498780562542379,
+            "probe_hold_error": 0.04961002245545387,
+            "probe_jet_error": 0.0027523001190274954,
+            "field_hold_error_halving_ratio": 2.0021624046967115,
+            "field_jet_error_halving_ratio": 4.003062378716235,
+            "feature_hold_error_halving_ratio": 1.9829640134292188,
+            "feature_jet_error_halving_ratio": 4.0444745502874255
+          },
+          {
+            "epsilon": 0.0003125,
+            "field_hold_error": 0.019444718956947327,
+            "field_jet_error": 0.000375394884031266,
+            "feature_hold_error": 0.012125790119171143,
+            "feature_jet_error": 0.000370574853150174,
+            "probe_hold_error": 0.024680517613887787,
+            "probe_jet_error": 0.0006808351608924568
+          }
+        ],
+        "meaning": "Existing-state first-order jet forecasts physical read response; it is not a fitted language readout."
+      }
+    },
+    {
+      "event": 24,
+      "observed": 82,
+      "target": 6393,
+      "original_diagnostic": {
+        "old_instantaneous": {
+          "state_credit": {
+            "field": {
+              "current": {
+                "connected": true,
+                "norm": 0.459820419549942,
+                "rms": 0.0025401737075299025,
+                "relative_direction_sensitivity": 0.3950711488723755
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.4714875817298889,
+                "rms": 0.0026046286802738905,
+                "relative_direction_sensitivity": 0.3580223619937897
+              }
+            },
+            "flux_x": {
+              "current": {
+                "connected": false,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.06712073087692261,
+                "rms": 0.0003707935393322259,
+                "relative_direction_sensitivity": 0.0366784892976284
+              }
+            },
+            "flux_y": {
+              "current": {
+                "connected": false,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.1378621906042099,
+                "rms": 0.0007615888607688248,
+                "relative_direction_sensitivity": 0.11087550967931747
+              }
+            },
+            "flux_z": {
+              "current": {
+                "connected": false,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.01686461828649044,
+                "rms": 9.316481009591371e-05,
+                "relative_direction_sensitivity": 0.0027077060658484697
+              }
+            },
+            "conduction": {
+              "current": {
+                "connected": false,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.10934615880250931,
+                "rms": 0.003945689648389816,
+                "relative_direction_sensitivity": 0.04261422157287598
+              }
+            },
+            "receptors": {
+              "current": {
+                "connected": false,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.008717390708625317,
+                "rms": 3.405233292141929e-05,
+                "relative_direction_sensitivity": 0.006703351624310017
+              }
+            },
+            "transmission": {
+              "current": {
+                "connected": false,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.2527409791946411,
+                "rms": 0.006448817439377308,
+                "relative_direction_sensitivity": 0.15447336435317993
+              }
+            },
+            "precision": {
+              "current": {
+                "connected": false,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              },
+              "evolved": {
+                "connected": false,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              }
+            }
+          },
+          "flux_perturbations": [
+            {
+              "flux_scale": 0.99,
+              "current_feature_max_difference": 0.0,
+              "current_nll_difference": 0.0,
+              "evolved_feature_relative_difference": 0.00463635940104723,
+              "evolved_nll_difference": 0.0030908584594726562
+            },
+            {
+              "flux_scale": 1.01,
+              "current_feature_max_difference": 0.0,
+              "current_nll_difference": 0.0,
+              "evolved_feature_relative_difference": 0.004643599968403578,
+              "evolved_nll_difference": -0.00307464599609375
+            }
+          ]
+        },
+        "zero_migrated": {
+          "state_credit": {
+            "field": {
+              "current": {
+                "connected": true,
+                "norm": 0.459820419549942,
+                "rms": 0.0025401737075299025,
+                "relative_direction_sensitivity": 0.3950711488723755
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.4714875817298889,
+                "rms": 0.0026046286802738905,
+                "relative_direction_sensitivity": 0.3580223619937897
+              }
+            },
+            "flux_x": {
+              "current": {
+                "connected": true,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.06712073087692261,
+                "rms": 0.0003707935393322259,
+                "relative_direction_sensitivity": 0.0366784892976284
+              }
+            },
+            "flux_y": {
+              "current": {
+                "connected": true,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.1378621906042099,
+                "rms": 0.0007615888607688248,
+                "relative_direction_sensitivity": 0.11087550967931747
+              }
+            },
+            "flux_z": {
+              "current": {
+                "connected": true,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.01686461828649044,
+                "rms": 9.316481009591371e-05,
+                "relative_direction_sensitivity": 0.0027077060658484697
+              }
+            },
+            "conduction": {
+              "current": {
+                "connected": true,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.10934615880250931,
+                "rms": 0.003945689648389816,
+                "relative_direction_sensitivity": 0.04261422157287598
+              }
+            },
+            "receptors": {
+              "current": {
+                "connected": true,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.008717390708625317,
+                "rms": 3.405233292141929e-05,
+                "relative_direction_sensitivity": 0.006703351624310017
+              }
+            },
+            "transmission": {
+              "current": {
+                "connected": true,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.2527409791946411,
+                "rms": 0.006448817439377308,
+                "relative_direction_sensitivity": 0.15447336435317993
+              }
+            },
+            "precision": {
+              "current": {
+                "connected": false,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              },
+              "evolved": {
+                "connected": false,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              }
+            }
+          },
+          "flux_perturbations": [
+            {
+              "flux_scale": 0.99,
+              "current_feature_max_difference": 0.0,
+              "current_nll_difference": 0.0,
+              "evolved_feature_relative_difference": 0.00463635940104723,
+              "evolved_nll_difference": 0.0030908584594726562
+            },
+            {
+              "flux_scale": 1.01,
+              "current_feature_max_difference": 0.0,
+              "current_nll_difference": 0.0,
+              "evolved_feature_relative_difference": 0.004643599968403578,
+              "evolved_nll_difference": -0.00307464599609375
+            }
+          ]
+        },
+        "active_fanin_711": {
+          "state_credit": {
+            "field": {
+              "current": {
+                "connected": true,
+                "norm": 0.4541041851043701,
+                "rms": 0.0025085965171456337,
+                "relative_direction_sensitivity": 0.2397819310426712
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.7010136842727661,
+                "rms": 0.0038725922349840403,
+                "relative_direction_sensitivity": 0.2704327404499054
+              }
+            },
+            "flux_x": {
+              "current": {
+                "connected": true,
+                "norm": 1.04378342628479,
+                "rms": 0.005766145419329405,
+                "relative_direction_sensitivity": 0.1812029927968979
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 1.0080609321594238,
+                "rms": 0.005568807478994131,
+                "relative_direction_sensitivity": 0.1809624582529068
+              }
+            },
+            "flux_y": {
+              "current": {
+                "connected": true,
+                "norm": 1.2005681991577148,
+                "rms": 0.006632269360125065,
+                "relative_direction_sensitivity": 0.22565530240535736
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 1.183911919593811,
+                "rms": 0.0065402560867369175,
+                "relative_direction_sensitivity": 0.2323206216096878
+              }
+            },
+            "flux_z": {
+              "current": {
+                "connected": true,
+                "norm": 0.3504895269870758,
+                "rms": 0.0019362007733434439,
+                "relative_direction_sensitivity": 0.037181150168180466
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.35931310057640076,
+                "rms": 0.0019849445670843124,
+                "relative_direction_sensitivity": 0.037702519446611404
+              }
+            },
+            "conduction": {
+              "current": {
+                "connected": true,
+                "norm": 0.22069256007671356,
+                "rms": 0.007963556796312332,
+                "relative_direction_sensitivity": 0.1777416467666626
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.24538053572177887,
+                "rms": 0.008854406885802746,
+                "relative_direction_sensitivity": 0.18349222838878632
+              }
+            },
+            "receptors": {
+              "current": {
+                "connected": true,
+                "norm": 0.06002386286854744,
+                "rms": 0.0002344684035051614,
+                "relative_direction_sensitivity": 0.03542592376470566
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.06186889111995697,
+                "rms": 0.00024167592346202582,
+                "relative_direction_sensitivity": 0.03666764497756958
+              }
+            },
+            "transmission": {
+              "current": {
+                "connected": true,
+                "norm": 0.4805523157119751,
+                "rms": 0.012261541560292244,
+                "relative_direction_sensitivity": 0.3121064007282257
+              },
+              "evolved": {
+                "connected": true,
+                "norm": 0.5501933097839355,
+                "rms": 0.014038469642400742,
+                "relative_direction_sensitivity": 0.3465948700904846
+              }
+            },
+            "precision": {
+              "current": {
+                "connected": false,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              },
+              "evolved": {
+                "connected": false,
+                "norm": 0.0,
+                "rms": 0.0,
+                "relative_direction_sensitivity": 0.0
+              }
+            }
+          },
+          "flux_perturbations": [
+            {
+              "flux_scale": 0.99,
+              "current_feature_max_difference": 0.00247994065284729,
+              "current_nll_difference": -0.00047016143798828125,
+              "evolved_feature_relative_difference": 0.004825456999242306,
+              "evolved_nll_difference": 0.00012969970703125
+            },
+            {
+              "flux_scale": 1.01,
+              "current_feature_max_difference": 0.0024329423904418945,
+              "current_nll_difference": 0.000461578369140625,
+              "evolved_feature_relative_difference": 0.004791757091879845,
+              "evolved_nll_difference": -0.0001506805419921875
+            }
+          ]
+        }
+      },
+      "raw_motion_measurement": {
+        "zero_migrated": {
+          "perturbations": [
+            {
+              "scale": 0.99,
+              "per_probe_relative_change": [
+                [
+                  0.0024427883327007294,
+                  0.0015272808959707618,
+                  0.002254463965073228,
+                  0.0015812134370207787
+                ],
+                [
+                  0.0031650655437260866,
+                  0.003041174029931426,
+                  0.0008329783449880779,
+                  0.0028311985079199076
+                ],
+                [
+                  0.0009745988063514233,
+                  0.0007733039674349129,
+                  0.002290537115186453,
+                  0.002093204529955983
+                ],
+                [
+                  0.0009504774934612215,
+                  0.000846301147248596,
+                  0.003234011586755514,
+                  0.001967583317309618
+                ]
+              ],
+              "responding_probes": 16,
+              "feature_relative_change": 0.0
+            },
+            {
+              "scale": 1.01,
+              "per_probe_relative_change": [
+                [
+                  0.0023955886717885733,
+                  0.0015001751016825438,
+                  0.002217301167547703,
+                  0.0015508815413340926
+                ],
+                [
+                  0.0031041011679917574,
+                  0.002979893470183015,
+                  0.0008158195996657014,
+                  0.002777241636067629
+                ],
+                [
+                  0.0009580550249665976,
+                  0.000757709436584264,
+                  0.0022434797137975693,
+                  0.0020488137379288673
+                ],
+                [
+                  0.0009313445771113038,
+                  0.0008300101035274565,
+                  0.003174426266923547,
+                  0.0019290506606921554
+                ]
+              ],
+              "responding_probes": 16,
+              "feature_relative_change": 0.0
+            }
+          ],
+          "remote_flux_control": {
+            "probe": 0,
+            "held_aperture_sites": 12,
+            "held_local_and_incident_edges": true,
+            "external_flux_perturbation_norm": 0.6358464956283569,
+            "raw_probe_max_change": 0.0
+          }
+        },
+        "active_fanin_711": {
+          "perturbations": [
+            {
+              "scale": 0.99,
+              "per_probe_relative_change": [
+                [
+                  0.0024898734409362078,
+                  0.0014741318300366402,
+                  0.002131655113771558,
+                  0.001591471373103559
+                ],
+                [
+                  0.002758132992312312,
+                  0.003188798436895013,
+                  0.0008517483365722001,
+                  0.002939129015430808
+                ],
+                [
+                  0.0009193125297315419,
+                  0.0006461773300543427,
+                  0.00230963877402246,
+                  0.002523095579817891
+                ],
+                [
+                  0.001236066105775535,
+                  0.0008928406750783324,
+                  0.0031194037292152643,
+                  0.002096992451697588
+                ]
+              ],
+              "responding_probes": 16,
+              "feature_relative_change": 0.00147476966958493
+            },
+            {
+              "scale": 1.01,
+              "per_probe_relative_change": [
+                [
+                  0.0024416667874902487,
+                  0.0014473774936050177,
+                  0.0020951805636286736,
+                  0.0015620461199432611
+                ],
+                [
+                  0.002706297906115651,
+                  0.0031228354200720787,
+                  0.0008344366797246039,
+                  0.0028830391820520163
+                ],
+                [
+                  0.0009038560674525797,
+                  0.0006317982915788889,
+                  0.0022629264276474714,
+                  0.0024642825592309237
+                ],
+                [
+                  0.0012125590583309531,
+                  0.0008755543967708945,
+                  0.003063786309212446,
+                  0.002054639393463731
+                ]
+              ],
+              "responding_probes": 16,
+              "feature_relative_change": 0.0014465977437794209
+            }
+          ],
+          "remote_flux_control": {
+            "probe": 0,
+            "held_aperture_sites": 12,
+            "held_local_and_incident_edges": true,
+            "external_flux_perturbation_norm": 0.6358464956283569,
+            "raw_probe_max_change": 0.0
+          }
+        }
+      },
+      "zero_migration_exact": true,
+      "unchanged_physical_jet": {
+        "autonomous_derivative_norm": 3998.0068359375,
+        "samples": [
+          {
+            "epsilon": 0.00125,
+            "field_hold_error": 0.07541380822658539,
+            "field_jet_error": 0.006441193632781506,
+            "feature_hold_error": 0.08295413106679916,
+            "feature_jet_error": 0.007473733741790056,
+            "probe_hold_error": 0.08908133953809738,
+            "probe_jet_error": 0.009529810398817062,
+            "field_hold_error_halving_ratio": 1.995969163241001,
+            "field_jet_error_halving_ratio": 4.014182769148531,
+            "feature_hold_error_halving_ratio": 2.01167590378175,
+            "feature_jet_error_halving_ratio": 3.9328061647869528
+          },
+          {
+            "epsilon": 0.000625,
+            "field_hold_error": 0.037783052772283554,
+            "field_jet_error": 0.0016046089585870504,
+            "feature_hold_error": 0.041236329823732376,
+            "feature_jet_error": 0.0019003564957529306,
+            "probe_hold_error": 0.04424389824271202,
+            "probe_jet_error": 0.0023353651631623507,
+            "field_hold_error_halving_ratio": 1.9981205397912165,
+            "field_jet_error_halving_ratio": 4.009048035183443,
+            "feature_hold_error_halving_ratio": 2.0064358683016086,
+            "feature_jet_error_halving_ratio": 3.973385469814028
+          },
+          {
+            "epsilon": 0.0003125,
+            "field_hold_error": 0.01890929602086544,
+            "field_jet_error": 0.00040024687768891454,
+            "feature_hold_error": 0.020552029833197594,
+            "feature_jet_error": 0.0004782713658642024,
+            "probe_hold_error": 0.022047068923711777,
+            "probe_jet_error": 0.0005776152829639614
+          }
+        ],
+        "meaning": "Existing-state first-order jet forecasts physical read response; it is not a fitted language readout."
+      }
+    }
+  ],
+  "elapsed_seconds": 7.653828799986513,
+  "script_sha256": "ac657ff620ede3bbca368add149aff9e71ae38cec3f336edd4b85bd1e8ed4a4c",
+  "preregistration": "docs/information_boltzmann/MEDIUM_DYNAMIC_OBSERVABILITY_RETEST_20261008.md"
+}

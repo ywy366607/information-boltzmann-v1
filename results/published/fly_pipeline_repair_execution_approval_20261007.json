@@ -1,0 +1,94 @@
+{
+  "status": "approved",
+  "date": "2026-10-07",
+  "reviewer": "/root/diagnosis_review",
+  "reviewer_role": "Independent serialization-only recovery and finite-diagnostic execution reviewer; no diagnostic NLL outcomes seen",
+  "prereg_sha256": "283f289d29b792001fb67d50830f334740ba5f6d80b3c82723a363c5abbe4e22",
+  "protocol_sha256": "283f289d29b792001fb67d50830f334740ba5f6d80b3c82723a363c5abbe4e22",
+  "script_sha256": "c9e88111a410b08caccf90aef0766971d63669b539195e0c95dd2892d48b37f7",
+  "source_hashes": {
+    "scripts/ib/train_fly_pipeline_stream.py": "72b9b570f2e94f2c0eaa8f4bd5c52570f12ec60de7e595bbf3c9f066413ec504",
+    "information_boltzmann/core/fly_pipeline.py": "17f857ac6f6d145f2bf1a1083ce98edf3b37d4de5f39b508f4eedcfef51db04c",
+    "information_boltzmann/core/fly_reservoir.py": "a24915ab6cff4855cc63c6e3421549cc0f806d69929a8cfb515feb7481406ff0",
+    "information_boltzmann/core/fly_bptt_learning.py": "17e620f100b7f2163a04eb83525e47ed454828a99c20c78814d20b9e877f9e33",
+    "information_boltzmann/core/triton_synapse.py": "f5b6d600a86233fdeebcb1b6958f0441c39041b2cf78b1737c401aa4db28a5b7",
+    "information_boltzmann/runtime/prequential_meter.py": "59888c68ca9f005a3ce1e31e4ca3e24e9b132f662702923984fff888c5e190d1",
+    "information_boltzmann/runtime/lifelong_evaluation.py": "d7cd585da1ede80b5fffe56bc9da6684cb0768ce83de25d4dfb6d6d71152d23c",
+    "scripts/ib/diagnose_fly_harness_update.py": "3c8fb2db406d3e2b8573e77980d3761f7a3020cd327e9c3b47943998d2c2cfec",
+    "scripts/ib/diagnose_fly_pipeline_repair.py": "c9e88111a410b08caccf90aef0766971d63669b539195e0c95dd2892d48b37f7"
+  },
+  "source_checkpoint_sha256": "ef7ba2d97b1e86cfc6f6630500552596c73be64be9819b408b20912ccc9eb968",
+  "scope": "Authorize exactly ONE full replay to recover the unavailable report after serialization failure. Same checkpoint, complete state, moments, targets and scientific gates. Replay alone:44windows/1408ticks/3backwards/2fork updates. Including the lost first attempt, total maximum:88windows/2816ticks/6backwards/4fork updates. No production/core changes, checkpoint writes, capability claims, additional retries or long training authorized.",
+  "execution_authorized": true,
+  "production_modification_authorized": false,
+  "long_training_authorized": false,
+  "execution_conditions": [
+    "Use D:/conda_envs/vox/python.exe and cwd D:/information-boltzmann-v1; default sensory-partition resolution depends on repository-root cwd.",
+    "The source, script, all source hashes, registered data and checkpoint must pass the existing locks before execution; preserve this protocol status as preregistered, not executed.",
+    "Require runtime identity, full gradient coverage, finite-value, exact ledger and 3900 MiB device-memory gates; partial or aborted output cannot support candidate selection.",
+    "Do not run this diagnostic concurrently with another GPU model. Resource availability is an execution gate, separate from this scientific and implementation approval.",
+    "All six actual selection parameter points require both fit and future replay stability; numerical failures are ambiguous and cannot select C_reset.",
+    "This recovery approval is consumed by one launched replay. Record the actual replay ledger even if serialization or another gate fails; any further retry requires a separate review, not a new output filename under this approval."
+  ],
+  "review_findings": [
+    "Ordinary instrumentation calls the production begin function. C_reset changes only membrane reset spike gradients in begin and finish; pulse, STP and ALIF event paths retain their original surrogate derivatives.",
+    "All 64 begin/finish hard-event calls per 32-event window are covered. The future window always starts from the old-parameter fit terminal state; both candidate forks restore the same complete physical state, parameters, optimizer layouts, moments and counters.",
+    "Gradients are recorded before the actual global clip, and actual post-Adam/post-clamp FP32 displacements are used in both gradient-direction ledgers. Matched controls use the same ordinary head+bias displacement.",
+    "Selection requires raw body future improvement over ordinary body and nonworsening relative to old future. Small unresolved radii, relative norm mismatch, raw-head mismatch or updated-point hard/continuous replay instability are marked ambiguous.",
+    "Same-window common/content algebra is retrospective; a local finite-step result cannot identify the global plateau cause or establish long-history credit or held-out capability.",
+    "Serialization-only fix recursively converts NumPy scalar values to native JSON values; unknown types still fail and allow_nan=False remains. Every scientific protocol field and every non-diagnostic source dependency is identical to the archived first-attempt protocol."
+  ],
+  "validation": {
+    "runtime": "D:/conda_envs/vox/python.exe",
+    "cpu_tests": {
+      "command": "-m pytest tests/test_fly_pipeline_repair_instrument.py -q",
+      "result": "8 passed",
+      "elapsed_seconds": 3.55,
+      "test_sha256": "fea59368a70a2899a8d9fc6797bec32a05df69e7b6afaf0d4dc86a89eb337145"
+    },
+    "independent_cpu_oracle": "32 events and 64 hard calls: ordinary all-trainable-gradient equality; original/reset/fixed scores and every physical field exactly equal; all gradients finite. No GPU or capability training.",
+    "source_validation": "Independently recomputed every source/data/checkpoint SHA256; verified exact fit/future/B target indices, complete saved physical field keys, four ring slots, events98304/updates3072 and optimizer states14+5.",
+    "budget_validation": "Previous attempt is reported as44windows/1408ticks/3backwards/2fork updates, report serialization failed after ledger/source/resource gates. One recovery replay adds the same counts. Maximum aggregate88windows/2816ticks/6backwards/4fork updates.",
+    "gpu_runs_performed_by_reviewer": 0,
+    "diagnostic_outcomes_seen": false,
+    "recovery_checks": "Compared current and archived protocols: only script/source hash, execution metadata and execution_recovery changed. Independently rehashed every source/data/checkpoint/history lock. Checked nested NumPy scalar output and retained unknown/nonfinite rejection. GPU not invoked."
+  },
+  "concerns": [],
+  "blocking_issues": [],
+  "maximum_additional_executions": 1,
+  "execution_recovery": {
+    "history_path": "D:\\information-boltzmann-v1\\results\\published\\fly_pipeline_repair_execution_history_20261007.json",
+    "history_sha256": "09dee8477903ce01a95bf8f257d9a4c1b4da08fecbfc8c22c59d19ac506bbab1",
+    "previous_attempt": {
+      "attempt": 1,
+      "status": "report_serialization_failed",
+      "command": "diagnose_fly_pipeline_repair.py with original approved locks",
+      "protocol_sha256": "4c7a186ebd822dcf704d2cf5028482e5f92807ecfce5f841b2fd5718f9d8ca23",
+      "script_sha256": "48fcbfa3e784c9cd1485ec73b59c2c306a752d0d50e7e5cab74e49e245d89b42",
+      "forward_windows": 44,
+      "physical_ticks": 1408,
+      "backwards": 3,
+      "disposable_updates": 2,
+      "completion_evidence": "Traceback reached final write_json after exact-budget ledger, unchanged-source and final memory checks.",
+      "error": "TypeError: Object of type float32 is not JSON serializable; partial report serialization failed too.",
+      "outcome_report_saved": false,
+      "new_nll_values_seen": false,
+      "scientific_interpretation": "No scientific negative or positive result; report unavailable.",
+      "source_or_production_changed": false
+    },
+    "allowed_replay_budget": {
+      "forward_windows": 44,
+      "physical_ticks": 1408,
+      "backwards": 3,
+      "disposable_updates": 2
+    },
+    "cumulative_maximum_budget": {
+      "forward_windows": 88,
+      "physical_ticks": 2816,
+      "backwards": 6,
+      "disposable_updates": 4
+    },
+    "report_loss_interpretation": "Unavailable scientific outcome, not a negative result. Replaying the same targets is neither a new independent sample nor an adaptive endpoint.",
+    "prior_nll_outcomes_seen_by_reviewer": false
+  }
+}

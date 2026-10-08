@@ -1,0 +1,35 @@
+{
+  "scope": "Read-only prediction decomposition of cached real motor features.\n\nThis is a retrospective head diagnostic, not a new prequential capability\nscore: cached features used the read projection active at each event, whereas\nthe decoder below is the saved end-of-encounter decoder. No physical evolution,\ntraining, target-conditioned fitting, reset, or CUDA allocation occurs.\n",
+  "checkpoint_tokens": 100000,
+  "cached_events": 128,
+  "scored_matched_targets": 127,
+  "actual_active_replay_nll_matched": 7.634793125738309,
+  "retrospective_head_nll": {
+    "fixed_train_unigram": 7.466521739959717,
+    "learned_bias_only": 8.104562759399414,
+    "saved_head_full": 7.589846611022949,
+    "common_read_background_only": 7.589443206787109,
+    "variation_without_common_background": 8.104917526245117,
+    "residual_with_fixed_unigram_bias": 8.129166603088379
+  },
+  "exact_additive_excess_decomposition": {
+    "bias_excess_over_unigram": 0.6380410194396973,
+    "read_residual_excess_over_bias": -0.5147161483764648,
+    "content_variation_excess_over_common_background": 0.00040340423583984375
+  },
+  "per_32_event_block_full_minus_common": [
+    0.002405516803264618,
+    -0.002198539674282074,
+    0.0006380081176757812,
+    0.0007415935397148132
+  ],
+  "feature_temporal_variation_energy_fraction": 0.0011717891320586205,
+  "logit_temporal_variation_energy_fraction": 3.722583642229438e-05,
+  "read_norm_gain_min_max_mean": [
+    -0.1341438591480255,
+    0.33460551500320435,
+    0.11339440196752548
+  ],
+  "bias_delta_from_train_prior_centered_rms": 1.5924535989761353,
+  "decision_rule": "If bias matches the reference but full head is worse, excess arises in read residuals. If full exceeds common-only, event variation harms this snapshot; this alone does not locate its upstream cause."
+}

@@ -1,0 +1,60 @@
+{
+  "date": "2026-10-07",
+  "route": "fly-causal-rtc-joint-v1",
+  "status": "registered_before_gpu_results",
+  "parent": "IB_FLY_RTC_CAUSAL_20261007",
+  "objective": "Exact differentiable sensory-to-motor response improves pre-update language NLL at matched real-data budget",
+  "arms": [
+    {
+      "name": "h14",
+      "read_horizon": 14
+    },
+    {
+      "name": "h0",
+      "read_horizon": 0
+    }
+  ],
+  "shared": {
+    "fresh_tokens_per_arm": 100000,
+    "fresh_optimizer_updates_per_arm": 3125,
+    "calibration_tokens": 32,
+    "window": 32,
+    "seed": 11,
+    "max_horizon_head": 14,
+    "lr": 0.0002,
+    "lr_decoder": 2e-05,
+    "lr_sensory": 0.0002,
+    "lr_synapse": 0.0002,
+    "learn_stp": true,
+    "actual_physical_ticks_per_token": 1,
+    "checkpoint_branch": true,
+    "checkpoint_policy": "best.pt and last.pt only",
+    "evaluation": "Actual active learner, pre-update, never reset, scored bridge transitions; fresh B versus fixed train-only prior; replay separately"
+  },
+  "calibration": {
+    "cuda_plain_vs_checkpoint_horizon": 2,
+    "cuda_plain_vs_checkpoint_tokens": 2,
+    "forward_absolute_tolerance": 2e-05,
+    "gradient_l2_tolerance": "1e-6 + 2e-3 * reference gradient norm",
+    "dedicated_cuda_limit_mib": 3900,
+    "require_finite_update": true
+  },
+  "hypotheses": [
+    "Delayed current-input access is task useful",
+    "Reduced upstream state was insufficient for faithful physical response",
+    "Exact physical forecast may still be insufficient for language optimization/task"
+  ],
+  "prediction": "H14 improves matched fresh-stream/pre-update NLL if useful delayed response is the missing path; numerical fidelity alone does not guarantee NLL gain",
+  "decision": {
+    "benefit": "Retain exact response as trainable reference and seek a faithful cheaper runtime",
+    "no_benefit": "Do not promote exact response for language; distinguish adequate budget result from convergence",
+    "ambiguous": "Preserve curves and provenance, no architecture superiority conclusion",
+    "resource_failure": "Stop before formal budget; repair execution and rerun gate"
+  },
+  "review": {
+    "reviewer": "/root/rtc_contract_review",
+    "status": "approved conditional GPU parity and resource gate"
+  },
+  "cost": "H14 runs 15 physical steps/event forward plus checkpoint branch recomputation; not a compact surrogate or nonblocking wall-clock implementation",
+  "evidence_scope": "CPU numerical/interface tests passed; GPU language gains unknown"
+}

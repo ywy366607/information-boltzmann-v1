@@ -1,0 +1,94 @@
+{
+  "status": "approved",
+  "date": "2026-10-07",
+  "reviewer": {
+    "identity": "/root/diagnosis_review",
+    "role": "independent implementation reviewer",
+    "method": "Direct source/doc review and independent numerical/interface tests; no production training"
+  },
+  "script_sha256": "72b9b570f2e94f2c0eaa8f4bd5c52570f12ec60de7e595bbf3c9f066413ec504",
+  "source_hashes": {
+    "scripts/ib/train_fly_pipeline_stream.py": "72b9b570f2e94f2c0eaa8f4bd5c52570f12ec60de7e595bbf3c9f066413ec504",
+    "information_boltzmann/core/fly_pipeline.py": "17f857ac6f6d145f2bf1a1083ce98edf3b37d4de5f39b508f4eedcfef51db04c",
+    "information_boltzmann/core/fly_reservoir.py": "ae20d3d54a9e7c67ef4d3596ee3503c3e40b92cbe81ee7a4800345cb365de9ca",
+    "information_boltzmann/core/fly_bptt_learning.py": "c3201313989784cefe74a89cfdf4e3e785e7a523e18b58671cea0c4be9a99021",
+    "information_boltzmann/core/triton_synapse.py": "f5b6d600a86233fdeebcb1b6958f0441c39041b2cf78b1737c401aa4db28a5b7",
+    "information_boltzmann/runtime/prequential_meter.py": "59888c68ca9f005a3ce1e31e4ca3e24e9b132f662702923984fff888c5e190d1",
+    "information_boltzmann/runtime/lifelong_evaluation.py": "d7cd585da1ede80b5fffe56bc9da6684cb0768ce83de25d4dfb6d6d71152d23c"
+  },
+  "preregistered_snapshot_sha256": "576d735b65eb7938f411981c2b7e8ce2fb0623add9fd1497b2ca5a3f4015ad41",
+  "endpoints": {
+    "primary": "Unique primary: all32000targets in last1000freshtrainingupdates; model-minus-locked-unigram paired risk",
+    "interval": {
+      "level": 0.95,
+      "method": "paired percentile block bootstrap conditional on finite evolving trajectory and dependence captured by blocks",
+      "main_block_tokens": 256,
+      "sensitivity_blocks": [
+        128,
+        512
+      ],
+      "samples": 5000,
+      "seed": 0,
+      "active_evaluation_boundaries": "Never form blocks across insertion boundaries",
+      "partial_blocks": "Retain every target; resample final partial blocks with actual token weights",
+      "acceptance": "95% interval upper bound below0 at256,128and512 supports complete-candidate budget risk advantage"
+    },
+    "finalB": "256unseen-validationtokens; fullcurve/mean/reference difference; direction check only, no one-block bootstrap significance",
+    "learning_curve": "Prespecified first1000 and last1000freshupdate mean and complete curve; no strict monotonicity requirement; continued improvement implies unestablished convergence",
+    "monitor_only": "BestB never replaces fixed terminal endpoint",
+    "attribution": "Risk advantage may include adaptation of static bias; it alone does not establish motor-conditioning utility or timing-specific benefit"
+  },
+  "runtime": {
+    "approved_interpreter": "D:/conda_envs/vox/python.exe",
+    "safetensors": "Initializer independently verified in approved interpreter",
+    "execution_directory": "D:/information-boltzmann-v1"
+  },
+  "scope": [
+    "Pre-observation current-token CE with disjoint sensory write and motor-only read; current/future observations cannot affect sealed features.",
+    "Native COBA/ALIF/STP one-tick physical formulas and complete persistent state; cumulative multi-hop acceptance through 14 ticks, without waiting or a path cutoff.",
+    "Joint BPTT32/AdamW cadence, strict full continuation, active B/A revisit bookkeeping and counted first-window calibration.",
+    "Independent GPT-2 input/decoder tables, frozen input embedding, declared train-only static prior and initial read-norm gain 0.1; predictor/Gamma/DAN excluded.",
+    "Fixed 3000 fresh-train updates; unique last1000 primary paired risk with weighted partial blocks and no blocks crossing active-evaluation insertions; final B direction only."
+  ],
+  "test_provenance": {
+    "independent_final": {
+      "interpreter": "D:/conda_envs/vox/python.exe",
+      "suite": "tests/test_fly_pipeline_multihop.py + tests/test_fly_pipeline_stream_cli.py",
+      "passed": 18,
+      "seconds": 5.4
+    },
+    "independent_affected_cpu": {
+      "interpreter": "D:/conda_envs/vox/python.exe",
+      "suite": "pipeline + multihop + stream CLI + BPTT learner + learning repairs, explicit CUDA-test exclusion",
+      "passed": 54,
+      "deselected": 13,
+      "seconds": 7.28,
+      "scope": "Before final reporting-only addition; final addition covered by independent_final"
+    },
+    "executor_reported_normal_cuda": {
+      "reported_by": "/root",
+      "interpreter": "D:/conda_envs/vox/python.exe",
+      "passed": 48,
+      "seconds": 11.73,
+      "scope": "Pipeline, multihop, CLI and BPTT regression including CUDA Graph; not independently rerun by this reviewer"
+    },
+    "resolved_environment_attempts": [
+      "Repository .venv lacked safetensors; approved vox interpreter includes it and initializer test passed.",
+      "Reviewer CUDA_VISIBLE_DEVICES masking attempt caused Windows/Triton Invalid device id failures in that child process; explicit test exclusion then passed. No source modification."
+    ]
+  },
+  "concerns": [
+    "No blocking implementation defect found in the reviewed source.",
+    "For a 14-tick source-to-loss path, only source positions0..17 of a32-event window retain the full within-window derivative; cross-boundary values persist but historical source derivatives detach.",
+    "Numerical reachability and risk advantage do not certify motor semantic utility, NLL improvement, global regression cause, convergence or isolated timing benefit.",
+    "Block intervals are conditional descriptive evidence for one evolving trajectory under a block-dependence assumption, not seed-population uncertainty.",
+    "The inactive Gemini optional predictor has a separate eager/Graph auxiliary-objective concern; the reviewed pipeline explicitly excludes it."
+  ],
+  "execution_conditions": [
+    "Separate experiment/budget committee approval must precede production.",
+    "Use the reviewed source hashes, approved runtime and registered data/initialization provenance.",
+    "Enforce existing3900MiB runtime memory gate; calibration is actual update1 and any continuation resumes at event32 with full state.",
+    "Changes to model/learning source or budget/endpoints require renewed review."
+  ],
+  "production_training_started_by_reviewer": false
+}

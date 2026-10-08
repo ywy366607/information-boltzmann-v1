@@ -1,0 +1,65 @@
+{
+  "date": "2026-10-07",
+  "scope": "Bounded frozen mature-checkpoint response diagnosis, no training or production state changes",
+  "checkpoint": "artifacts/active_training/q8_fly_bptt32_gamma_2333_wide115_100k/last.pt",
+  "checkpoint_sha256": "8f1789c41a12cbeb954a869b658e2e713a2b1ec39f66c8190ed0399fa65c81f8",
+  "script_sha256": "7a965f29a717f9681d05289ee1c103c8d107d82163ee347a5b29e7bf321bd52d",
+  "prediction_is_blind": false,
+  "prior_access": "Existing 33tick driven-token response report and historical delay/Gamma audits were visible; new explicit quiet, real-token, replay-floor design registered before its execution",
+  "execution": {
+    "impulse_ticks": 128,
+    "distinct_tokens": 3,
+    "phrase_tokens": 8,
+    "intervals": [
+      1,
+      2,
+      4,
+      8,
+      16
+    ],
+    "cycles": 6,
+    "tail_ticks": 128
+  },
+  "token_selection": "First three distinct token ids among train[cursor:cursor+128]; phrase=train[cursor:cursor+8]. No target-driven selection",
+  "initial_state": "All fields of saved learner physical state, independently cloned for diagnostic counterfactuals; production individual never reset",
+  "hypotheses": [
+    {
+      "id": "P-20261007-01",
+      "mechanism": "Delayed physical access",
+      "prediction": "Motor token contrast absent at tick0 within identical-replay floor, resolves later. A later norm peak alone does not select optimal predictive deadline"
+    },
+    {
+      "id": "P-20261007-02",
+      "mechanism": "Observation filtering",
+      "prediction": "Raw/centered motor differences resolve before Gamma/logit differences and have different centroids. Mixed filter responses may prevent a single global lag"
+    },
+    {
+      "id": "P-20261007-03",
+      "mechanism": "Periodic forced entrainment",
+      "prediction": "Same-phase trajectories become more similar across repeated cycles, above same-input replay floor. Persistent drift means six cycles did not establish locking"
+    },
+    {
+      "id": "P-20261007-04",
+      "mechanism": "Common amplitude vs input-specific response",
+      "prediction": "Different real token perturbations produce motor/normalized/logit contrasts above numerical floor. This proves sensitivity, not semantic sufficiency"
+    }
+  ],
+  "controls": [
+    "Explicit zero sensory drive on quiet tick, input-clock baseline held",
+    "All-field quiet substep equivalence versus native settle1; same-input numerical replay",
+    "Actual drive squared norm per event and per tick recorded; not thermodynamic power",
+    "Same-input replays on each stimulus condition",
+    "Raw, centered, Gamma, projection, normalization and logit contrasts; no labels used to select peak",
+    "Hash source before/after; no optimizer/checkpoint writes",
+    "Full-length quiet control also replayed for each periodic condition; combined stimulus/control numerical bound recorded"
+  ],
+  "stopping": "No extra intervals or cycles after outcomes. Stop on nonfinite, source hash change, missing state, interface mismatch above max(1e-5,8*identical-replay-floor), reserved VRAM>3900MiB or total device usage>4GiB",
+  "approval": {
+    "reviewer": "/root/harness_plan",
+    "status": "approved",
+    "implementation_reviewer": "/root/diagnosis_review",
+    "conditions": "Independent design and implementation passed. Runtime all-field/native quiet equivalence, source hash and VRAM gates must pass. Corrected tick count and added full quiet replay control."
+  },
+  "claim_limits": "No active-learning capability, semantic decoding, intrinsic Hz, asymptotic stability, endogenous resonance, learned clock or PC implementation claim",
+  "checkpoint_scope": "Current 1.5M learned individual has known predictive deficits. Its response cannot establish universal biological delay or topology-level causation. Older retained best weight files lack full mature state; no invented healthy baseline."
+}

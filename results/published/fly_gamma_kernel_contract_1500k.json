@@ -1,0 +1,61 @@
+{
+  "scope": "CPU read-only frozen Gamma kernel algebra; kernel mass is not task or gradient coverage; no physical rollout or parameter update",
+  "checkpoint": "artifacts\\active_training\\q8_fly_bptt32_gamma_2333_wide115_100k\\last.pt",
+  "bptt_train_tokens": 1500000,
+  "checkpoint_sha256": "8f1789c41a12cbeb954a869b658e2e713a2b1ec39f66c8190ed0399fa65c81f8",
+  "reference_train_sha256": "6dd24ac1b43aef10d914418b7e6d6f28eedbc5ae8dc653003196375e37ceedb9",
+  "decomposition_script_sha256": "ac948446c2864dd2377adb74a79e7909b8e7c46b06c6946dd3a16726553b9b69",
+  "cached_target_sha256": "f806f62cc83767be12d089668ca179c344ed8d100e78e9604d01231c41c4b310",
+  "physical_ticks_per_event": 1,
+  "BPTT_events": 32,
+  "Gamma_filters": 2333,
+  "decay": {
+    "min": 0.49258652329444885,
+    "p10": 0.6459674715995789,
+    "median": 0.7939704656600952,
+    "mean": 0.8076139256338986,
+    "p90": 0.9857237339019775,
+    "max": 0.991450846195221
+  },
+  "mean_lag_physical_ticks": {
+    "min": 1.941558692893345,
+    "p10": 3.6491989351647915,
+    "median": 7.70734611621471,
+    "mean": 35.6043440990914,
+    "p90": 138.09266117336674,
+    "max": 231.9412818707253
+  },
+  "mass_first_32_ticks": {
+    "min": 0.03238670827930845,
+    "p10": 0.08044260613416185,
+    "median": 0.9952777455268242,
+    "mean": 0.7790317393884327,
+    "p90": 0.9999895846146872,
+    "max": 0.9999999975116679
+  },
+  "mass_first_64_ticks": {
+    "min": 0.10692635677363205,
+    "p10": 0.23756431767450567,
+    "median": 0.9999945130014187,
+    "mean": 0.8439566912743243,
+    "p90": 0.9999999999831157,
+    "max": 1.0
+  },
+  "mean_mass_since_boundary_over_read_positions": {
+    "min": 0.011988350772305496,
+    "p10": 0.030669763007706467,
+    "median": 0.7597890190742542,
+    "mean": 0.5991098390028269,
+    "p90": 0.8859631753183224,
+    "max": 0.9393262909269505
+  },
+  "fraction_filters_with_less_than_half_mass_at_32_ticks": 0.21345906558079725,
+  "fraction_filters_with_less_than_half_mass_at_64_ticks": 0.18688384054864982,
+  "source_stat_unchanged": true,
+  "readout_column_energy_weighted_M32": 0.7866504308920398,
+  "readout_weight_scope": "column-energy weighting is geometric, not task-Jacobian or gradient weighting",
+  "kernel_identity_max_errors": [
+    5.551115123125783e-16,
+    8.881784197001252e-16
+  ]
+}

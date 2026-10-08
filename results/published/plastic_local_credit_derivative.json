@@ -1,0 +1,25 @@
+{
+  "scope": "Numerical audit, real OWT events; no capability or convergence claim",
+  "shape": [
+    8,
+    8,
+    4
+  ],
+  "channels": 128,
+  "dtype": "float64",
+  "event_duration": 0.005,
+  "events": 2,
+  "target_parameter_rows": "medium.conductance_response.log_parameters.bias[closing_E, closing_I]",
+  "full_history_norm": 2.913205247937291e-06,
+  "local_history_norm": 2.2999751295740727e-06,
+  "relative_error_to_full_history": 0.21076014189535167,
+  "cosine_to_full_history": 0.9999306348006193,
+  "eligibility_bytes": 1048576,
+  "local_feedback_gradient_norm": 1.3685960203206477e-05,
+  "omitted_paths": [
+    "past voltage/current feedback into opening rates",
+    "past cross-site/transport/collision/port sensitivity",
+    "past STP, structural conduction, precision sensitivity"
+  ],
+  "status": "Conditional receptor derivative verified separately; full-history approximation measured here"
+}

@@ -1,0 +1,60 @@
+{
+  "status": "production_compiling",
+  "baseline": "medium_d768_pretrained_tensor_temporal_160k",
+  "baseline_stopped_fresh_tokens": 30016,
+  "changes": [
+    "non-DC Xavier random directions normalized to unit material variance on fixed 8x8x4 reference grid",
+    "runtime grid enlargement; D768 and material spectral bandwidth retained"
+  ],
+  "hypothesis": "Initial spatial heterogeneity may accelerate functional differentiation; a finer grid may retain finer field structure. Neither implies a task gain without real-data comparison.",
+  "prediction": "Nonzero initial material spatial variance and unchanged reference values at coincident fine-grid sites; numerical tests verify this. Task gain remains unknown.",
+  "grid_selection": "8x8x8 passed three complete eager BPTT32 AdamW updates; 12x8x8 failed on update two after lazy optimizer allocation. Compiled production memory remains pending.",
+  "fixed": [
+    "OWT corpus",
+    "pretrained GPT2 embedding",
+    "D768",
+    "BPTT32",
+    "physical event duration 0.005",
+    "physical port radii",
+    "active A-B-A evaluation"
+  ],
+  "confounding": "Initialization and grid are upgraded together by user request; capability results apply to the combined candidate, not an isolated attribution.",
+  "tests": "16 passed: material initialization and plastic medium",
+  "review_status": "Numerical implementation checked; architecture-benefit hypothesis has not had independent review.",
+  "selected_grid": [
+    8,
+    8,
+    8
+  ],
+  "production_run": "medium_d768_xavier_8x8x8_160k",
+  "production_pid": 5228,
+  "calibration": [
+    {
+      "shape": [
+        8,
+        8,
+        8
+      ],
+      "complete_updates": 3,
+      "result": "passed",
+      "observed_dedicated_mib": 2723,
+      "memory_report_caveat": "first-step telemetry was stale; compiled production cap is separately reduced"
+    },
+    {
+      "shape": [
+        12,
+        8,
+        8
+      ],
+      "complete_updates": 1,
+      "result": "OOM on second update"
+    }
+  ],
+  "tensor_audit": {
+    "enabled": true,
+    "factor": "B=diag(c) T; A=B B^T; T unit lower triangular with three learned shears",
+    "initial_shear": "zero; off-axis directions are learnable",
+    "energy": "fixed Euclidean activity-energy metric",
+    "dashboard": "principal eigensystem reconstructed from material+conduction telemetry; transient STP excluded"
+  }
+}

@@ -518,7 +518,7 @@ class PredictiveImpedanceWriteAgent(nn.Module):
 
     def __init__(self, d: int, vocab_size: int, port_modes: int = 8,
                  exchange: str = 'global', local_shape=None, port_radius=None,
-                 activity_adaptation: bool = False) -> None:
+                 activity_adaptation: bool = False, aperture_budget: float | None = None) -> None:
         super().__init__()
         if exchange not in ('global', 'contact_mode'):
             raise ValueError('exchange must be global or contact_mode')
@@ -532,13 +532,16 @@ class PredictiveImpedanceWriteAgent(nn.Module):
         self.activity_adaptation = bool(activity_adaptation)
         if activity_adaptation and local_shape is None:
             raise ValueError('Activity competition requires local write ports')
+        if aperture_budget is not None and local_shape is None:
+            raise ValueError('Aperture budget requires compact write ports')
         if activity_adaptation:
             self.log_activity_sensitivity = nn.Parameter(torch.zeros(()))
         if local_shape is not None:
             if exchange != 'contact_mode':
                 raise ValueError('Compact spatial ports require contact-mode exchange')
             from .local_ports import CompactTorusPorts
-            self.local_ports = CompactTorusPorts(local_shape, self.port_modes, port_radius)
+            self.local_ports = CompactTorusPorts(local_shape, self.port_modes, port_radius,
+                                                  aperture_budget=aperture_budget)
             self.local_content = nn.Linear(d, d, bias=False)
             nn.init.normal_(self.local_content.weight, std=1 / math.sqrt(d))
         self.port_prior = nn.Sequential(
@@ -764,7 +767,8 @@ class PredictiveImpedanceWriteAgent(nn.Module):
             prior_mean, prior_std, posterior_mean, posterior_std)
         if not return_diag:
             return field_next, posterior_precision, reflected, {
-                "_write_free_energy": port_nll + policy_kl}
+                "_write_free_energy": port_nll + policy_kl,
+                "port_nll": port_nll.detach(), "write_action_kl": policy_kl.detach()}
 
         innovation_energy = writer.energy(innovation)
         incident_energy = writer.energy(unit_mode)

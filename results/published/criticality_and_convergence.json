@@ -1,0 +1,26 @@
+{
+  "architecture": "FlyReservoir-MaleCNS-Topographic-COBA-ALIF-STP",
+  "tokens_evaluated": 300,
+  "critical_dissipation": {
+    "finite_time_lyapunov_exponent": 5.449379190256012,
+    "lyapunov_std": 0.5106233422946286,
+    "branching_ratio": 0.8180454884666821,
+    "branching_criticality_deficit": 0.18195451153331788,
+    "population_susceptibility": 108.63608097128092,
+    "is_critical_dissipation": false,
+    "dynamical_regime": "Supercritical / Expansive"
+  },
+  "stream_convergence": {
+    "mean_prequential_loss": 7.314641547997793,
+    "loss_trend_slope_per_token": 0.003277718555365815,
+    "loss_trend_slope_per_10k_tokens": 32.77718555365815,
+    "error_lag1_autocorrelation": -0.0057072440018965595,
+    "is_martingale_difference": true,
+    "gradient_drift_to_noise_ratio_dnr": 0.009177614340549142,
+    "gradient_drift_power": 0.02560335397720337,
+    "gradient_noise_power": 2.7897613723079364,
+    "is_loss_stationary": false,
+    "is_drift_converged": true,
+    "convergence_verdict": false
+  }
+}

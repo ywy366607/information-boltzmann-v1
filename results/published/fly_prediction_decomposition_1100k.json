@@ -1,0 +1,86 @@
+{
+  "scope": "Read-only prediction decomposition of cached real motor features.\n\nThis is a retrospective head diagnostic, not a new prequential capability\nscore: cached features used the read projection active at each event, whereas\nthe decoder below is the saved end-of-encounter decoder. No physical evolution,\ntraining, target-conditioned fitting, reset, or CUDA allocation occurs.\n",
+  "checkpoint_tokens": 1100000,
+  "cached_events": 128,
+  "scored_matched_targets": 127,
+  "actual_active_replay_nll_matched": 7.75552938866803,
+  "retrospective_head_nll": {
+    "fixed_train_unigram": 7.440678119659424,
+    "learned_bias_only": 8.319743156433105,
+    "saved_head_full": 7.709641456604004,
+    "common_read_background_only": 7.709649085998535,
+    "variation_without_common_background": 8.318828582763672,
+    "residual_with_fixed_unigram_bias": 9.800674438476562
+  },
+  "exact_additive_excess_decomposition": {
+    "bias_excess_over_unigram": 0.8790650367736816,
+    "read_residual_excess_over_bias": -0.6101016998291016,
+    "content_variation_excess_over_common_background": -7.62939453125e-06
+  },
+  "per_32_event_block_full_minus_common": [
+    -0.0072999149560928345,
+    0.014320440590381622,
+    -0.010640151798725128,
+    -0.0006800591945648193
+  ],
+  "feature_temporal_variation_energy_fraction": 0.001411949284374714,
+  "logit_temporal_variation_energy_fraction": 0.0004762423050124198,
+  "read_norm_gain_min_max_mean": [
+    -0.2795166075229645,
+    0.3978600800037384,
+    0.1891903281211853
+  ],
+  "bias_delta_from_train_prior_centered_rms": 1.8397531509399414,
+  "saved_head_ce_gradient_decomposition": [
+    {
+      "events": [
+        0,
+        32
+      ],
+      "decoder_gradient_norm": 0.9299484882784472,
+      "common_background_gradient_norm": 0.9296815226268168,
+      "conditional_covariance_gradient_norm": 0.023116784309552534,
+      "common_to_covariance_norm_ratio": 40.21673214481847,
+      "common_covariance_cosine": -0.0008824145649801722,
+      "relative_squared_norm_identity_error": 2.1824352400567208e-15
+    },
+    {
+      "events": [
+        32,
+        64
+      ],
+      "decoder_gradient_norm": 0.8869133209896642,
+      "common_background_gradient_norm": 0.8861855129304641,
+      "conditional_covariance_gradient_norm": 0.021956871642236083,
+      "common_to_covariance_norm_ratio": 40.36028116254065,
+      "common_covariance_cosine": 0.020772359962014455,
+      "relative_squared_norm_identity_error": 2.117089085590275e-15
+    },
+    {
+      "events": [
+        64,
+        96
+      ],
+      "decoder_gradient_norm": 1.0063892430568853,
+      "common_background_gradient_norm": 1.005226872740239,
+      "conditional_covariance_gradient_norm": 0.023806062611270874,
+      "common_to_covariance_norm_ratio": 42.22566701409576,
+      "common_covariance_cosine": 0.03701374183896379,
+      "relative_squared_norm_identity_error": 1.0961708720037111e-15
+    },
+    {
+      "events": [
+        96,
+        128
+      ],
+      "decoder_gradient_norm": 0.9414342265565359,
+      "common_background_gradient_norm": 0.9404414902592854,
+      "conditional_covariance_gradient_norm": 0.02871347339495437,
+      "common_to_covariance_norm_ratio": 32.75262025333873,
+      "common_covariance_cosine": 0.019326177993125675,
+      "relative_squared_norm_identity_error": 1.7537121011762574e-15
+    }
+  ],
+  "gradient_scope": "Exact saved decoder weight-gradient algebra on cached feature/target pairs, before clip/Adam. Not the motor projection gradient or actual optimizer displacement.",
+  "decision_rule": "If bias matches the reference but full head is worse, excess arises in read residuals. If full exceeds common-only, event variation harms this snapshot; this alone does not locate its upstream cause."
+}

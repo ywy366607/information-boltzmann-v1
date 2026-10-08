@@ -1,0 +1,556 @@
+{
+  "arguments": [
+    "--output",
+    "E:/ib_checkpoints/medium_pathway_full32_lifetime_gc_20261008",
+    "--pretrained-embedding",
+    "data/gpt2_model.safetensors",
+    "--steps",
+    "2",
+    "--shape",
+    "8",
+    "8",
+    "8",
+    "--material-initialization",
+    "spectral-xavier",
+    "--material-bandwidth",
+    "runtime",
+    "--channels",
+    "768",
+    "--tokens",
+    "32",
+    "--chunk-tokens",
+    "32",
+    "--event-duration",
+    "0.899332940578461",
+    "--intrinsic-time-reference",
+    "0.899332940578461",
+    "--solver-max-step",
+    "0.00831809360533953",
+    "--observer-max-step",
+    "0.0332723744213581",
+    "--activation-checkpointing",
+    "--anisotropic-transport",
+    "--temporal-read",
+    "--temporal-time-reference",
+    "0.899332940578461",
+    "--write-aperture-budget",
+    "0.125",
+    "--read-aperture-budget",
+    "0.25",
+    "--structure-config",
+    "configs/information_boltzmann/medium_pathway_structure_20261008.json",
+    "--structure-dual-lr",
+    "0.0625",
+    "--execution",
+    "eager",
+    "--vram-limit-mib",
+    "3072",
+    "--lr",
+    "0.000002",
+    "--calibrate-only"
+  ],
+  "event_function_calls": 32,
+  "physical_step_calls": 4528,
+  "memory_breadcrumbs": [
+    {
+      "completed_events": 0,
+      "physical_step_calls": 0,
+      "allocated_mib": 686.12451171875,
+      "seconds": 6.699832600001173
+    },
+    {
+      "completed_events": 6,
+      "physical_step_calls": 678,
+      "allocated_mib": 768.1083984375,
+      "seconds": 57.204548700001396
+    },
+    {
+      "completed_events": 19,
+      "physical_step_calls": 2133,
+      "allocated_mib": 899.587890625,
+      "seconds": 86.79029470000023
+    },
+    {
+      "completed_events": 32,
+      "physical_step_calls": 3584,
+      "allocated_mib": 1038.1748046875,
+      "seconds": 113.53044410000075
+    },
+    {
+      "completed_events": 32,
+      "physical_step_calls": 3629,
+      "allocated_mib": 1160.20947265625,
+      "seconds": 115.14559360000021
+    },
+    {
+      "completed_events": 32,
+      "physical_step_calls": 3680,
+      "allocated_mib": 1280.6826171875,
+      "seconds": 117.71133140000165
+    },
+    {
+      "completed_events": 32,
+      "physical_step_calls": 4035,
+      "allocated_mib": 1412.6748046875,
+      "seconds": 144.98311680000006
+    },
+    {
+      "completed_events": 32,
+      "physical_step_calls": 4080,
+      "allocated_mib": 1545.21484375,
+      "seconds": 151.36664420000125
+    },
+    {
+      "completed_events": 32,
+      "physical_step_calls": 4128,
+      "allocated_mib": 1668.736328125,
+      "seconds": 157.29722500000025
+    },
+    {
+      "completed_events": 32,
+      "physical_step_calls": 4185,
+      "allocated_mib": 1794.630859375,
+      "seconds": 162.07042980000006
+    },
+    {
+      "completed_events": 32,
+      "physical_step_calls": 4237,
+      "allocated_mib": 1924.6220703125,
+      "seconds": 164.16640760000155
+    },
+    {
+      "completed_events": 32,
+      "physical_step_calls": 4280,
+      "allocated_mib": 2052.0087890625,
+      "seconds": 165.66227680000156
+    },
+    {
+      "completed_events": 32,
+      "physical_step_calls": 4332,
+      "allocated_mib": 2185.94873046875,
+      "seconds": 175.1086847000006
+    },
+    {
+      "completed_events": 32,
+      "physical_step_calls": 4388,
+      "allocated_mib": 2304.26220703125,
+      "seconds": 181.0507531000003
+    },
+    {
+      "completed_events": 32,
+      "physical_step_calls": 4437,
+      "allocated_mib": 2435.0029296875,
+      "seconds": 182.25957870000093
+    },
+    {
+      "completed_events": 32,
+      "physical_step_calls": 4484,
+      "allocated_mib": 2570.783203125,
+      "seconds": 184.21783529999993
+    }
+  ],
+  "purpose": "full real-data BPTT execution/resources, not capability evidence",
+  "backward_gc": [
+    {
+      "physical_step_calls": 3584,
+      "before_mib": 1038.1748046875,
+      "after_mib": 1038.1748046875
+    },
+    {
+      "physical_step_calls": 3616,
+      "before_mib": 1119.8857421875,
+      "after_mib": 1119.8857421875
+    },
+    {
+      "physical_step_calls": 3648,
+      "before_mib": 1201.0341796875,
+      "after_mib": 1201.0341796875
+    },
+    {
+      "physical_step_calls": 3680,
+      "before_mib": 1280.6826171875,
+      "after_mib": 1280.6826171875
+    },
+    {
+      "physical_step_calls": 3712,
+      "before_mib": 1138.80419921875,
+      "after_mib": 1138.80419921875
+    },
+    {
+      "physical_step_calls": 3744,
+      "before_mib": 1221.89013671875,
+      "after_mib": 1221.89013671875
+    },
+    {
+      "physical_step_calls": 3776,
+      "before_mib": 1300.60107421875,
+      "after_mib": 1300.60107421875
+    },
+    {
+      "physical_step_calls": 3808,
+      "before_mib": 1369.91552734375,
+      "after_mib": 1369.91552734375
+    },
+    {
+      "physical_step_calls": 3840,
+      "before_mib": 1326.34033203125,
+      "after_mib": 1326.34033203125
+    },
+    {
+      "physical_step_calls": 3840,
+      "before_mib": 1317.32275390625,
+      "after_mib": 1317.32275390625
+    },
+    {
+      "physical_step_calls": 3840,
+      "before_mib": 1307.8671875,
+      "after_mib": 1307.8671875
+    },
+    {
+      "physical_step_calls": 3840,
+      "before_mib": 1298.34912109375,
+      "after_mib": 1298.34912109375
+    },
+    {
+      "physical_step_calls": 3840,
+      "before_mib": 1289.33056640625,
+      "after_mib": 1289.33056640625
+    },
+    {
+      "physical_step_calls": 3872,
+      "before_mib": 1247.19189453125,
+      "after_mib": 1247.19189453125
+    },
+    {
+      "physical_step_calls": 3872,
+      "before_mib": 1238.17431640625,
+      "after_mib": 1238.17431640625
+    },
+    {
+      "physical_step_calls": 3872,
+      "before_mib": 1229.15625,
+      "after_mib": 1229.15625
+    },
+    {
+      "physical_step_calls": 3872,
+      "before_mib": 1219.63818359375,
+      "after_mib": 1219.63818359375
+    },
+    {
+      "physical_step_calls": 3872,
+      "before_mib": 1210.11962890625,
+      "after_mib": 1210.11962890625
+    },
+    {
+      "physical_step_calls": 3904,
+      "before_mib": 1165.60595703125,
+      "after_mib": 1165.60595703125
+    },
+    {
+      "physical_step_calls": 3904,
+      "before_mib": 1156.08837890625,
+      "after_mib": 1156.08837890625
+    },
+    {
+      "physical_step_calls": 3904,
+      "before_mib": 1146.0703125,
+      "after_mib": 1146.0703125
+    },
+    {
+      "physical_step_calls": 3904,
+      "before_mib": 1136.55224609375,
+      "after_mib": 1136.55224609375
+    },
+    {
+      "physical_step_calls": 3904,
+      "before_mib": 1127.03369140625,
+      "after_mib": 1127.03369140625
+    },
+    {
+      "physical_step_calls": 3936,
+      "before_mib": 1153.50927734375,
+      "after_mib": 1153.50927734375
+    },
+    {
+      "physical_step_calls": 3968,
+      "before_mib": 1236.15771484375,
+      "after_mib": 1236.15771484375
+    },
+    {
+      "physical_step_calls": 4000,
+      "before_mib": 1317.24365234375,
+      "after_mib": 1317.24365234375
+    },
+    {
+      "physical_step_calls": 4032,
+      "before_mib": 1385.12060546875,
+      "after_mib": 1385.12060546875
+    },
+    {
+      "physical_step_calls": 4064,
+      "before_mib": 1505.541015625,
+      "after_mib": 1505.541015625
+    },
+    {
+      "physical_step_calls": 4064,
+      "before_mib": 1496.0234375,
+      "after_mib": 1496.0234375
+    },
+    {
+      "physical_step_calls": 4064,
+      "before_mib": 1486.00537109375,
+      "after_mib": 1486.00537109375
+    },
+    {
+      "physical_step_calls": 4064,
+      "before_mib": 1476.9873046875,
+      "after_mib": 1476.9873046875
+    },
+    {
+      "physical_step_calls": 4064,
+      "before_mib": 1467.96875,
+      "after_mib": 1467.96875
+    },
+    {
+      "physical_step_calls": 4096,
+      "before_mib": 1586.826171875,
+      "after_mib": 1586.826171875
+    },
+    {
+      "physical_step_calls": 4096,
+      "before_mib": 1577.30859375,
+      "after_mib": 1577.30859375
+    },
+    {
+      "physical_step_calls": 4096,
+      "before_mib": 1567.79052734375,
+      "after_mib": 1567.79052734375
+    },
+    {
+      "physical_step_calls": 4096,
+      "before_mib": 1557.7724609375,
+      "after_mib": 1557.7724609375
+    },
+    {
+      "physical_step_calls": 4096,
+      "before_mib": 1547.75390625,
+      "after_mib": 1547.75390625
+    },
+    {
+      "physical_step_calls": 4128,
+      "before_mib": 1668.736328125,
+      "after_mib": 1668.736328125
+    },
+    {
+      "physical_step_calls": 4128,
+      "before_mib": 1659.21875,
+      "after_mib": 1659.21875
+    },
+    {
+      "physical_step_calls": 4128,
+      "before_mib": 1649.20068359375,
+      "after_mib": 1649.20068359375
+    },
+    {
+      "physical_step_calls": 4128,
+      "before_mib": 1638.6826171875,
+      "after_mib": 1638.6826171875
+    },
+    {
+      "physical_step_calls": 4128,
+      "before_mib": 1629.6640625,
+      "after_mib": 1629.6640625
+    },
+    {
+      "physical_step_calls": 4160,
+      "before_mib": 1724.00146484375,
+      "after_mib": 1724.00146484375
+    },
+    {
+      "physical_step_calls": 4192,
+      "before_mib": 1804.64990234375,
+      "after_mib": 1804.64990234375
+    },
+    {
+      "physical_step_calls": 4224,
+      "before_mib": 1884.79833984375,
+      "after_mib": 1884.79833984375
+    },
+    {
+      "physical_step_calls": 4256,
+      "before_mib": 1954.17529296875,
+      "after_mib": 1954.17529296875
+    },
+    {
+      "physical_step_calls": 4288,
+      "before_mib": 2073.033203125,
+      "after_mib": 2073.033203125
+    },
+    {
+      "physical_step_calls": 4288,
+      "before_mib": 2063.515625,
+      "after_mib": 2063.515625
+    },
+    {
+      "physical_step_calls": 4288,
+      "before_mib": 2053.56005859375,
+      "after_mib": 2053.56005859375
+    },
+    {
+      "physical_step_calls": 4288,
+      "before_mib": 2043.0419921875,
+      "after_mib": 2043.0419921875
+    },
+    {
+      "physical_step_calls": 4288,
+      "before_mib": 2034.0234375,
+      "after_mib": 2034.0234375
+    },
+    {
+      "physical_step_calls": 4320,
+      "before_mib": 2154.443359375,
+      "after_mib": 2154.443359375
+    },
+    {
+      "physical_step_calls": 4320,
+      "before_mib": 2143.92578125,
+      "after_mib": 2143.92578125
+    },
+    {
+      "physical_step_calls": 4320,
+      "before_mib": 2134.90771484375,
+      "after_mib": 2134.90771484375
+    },
+    {
+      "physical_step_calls": 4320,
+      "before_mib": 2126.3896484375,
+      "after_mib": 2126.3896484375
+    },
+    {
+      "physical_step_calls": 4320,
+      "before_mib": 2116.37109375,
+      "after_mib": 2116.37109375
+    },
+    {
+      "physical_step_calls": 4352,
+      "before_mib": 2237.666015625,
+      "after_mib": 2237.666015625
+    },
+    {
+      "physical_step_calls": 4352,
+      "before_mib": 2227.1484375,
+      "after_mib": 2227.1484375
+    },
+    {
+      "physical_step_calls": 4352,
+      "before_mib": 2217.06787109375,
+      "after_mib": 2217.06787109375
+    },
+    {
+      "physical_step_calls": 4352,
+      "before_mib": 2207.6123046875,
+      "after_mib": 2207.6123046875
+    },
+    {
+      "physical_step_calls": 4352,
+      "before_mib": 2197.71875,
+      "after_mib": 2197.71875
+    },
+    {
+      "physical_step_calls": 4384,
+      "before_mib": 2293.99365234375,
+      "after_mib": 2293.99365234375
+    },
+    {
+      "physical_step_calls": 4416,
+      "before_mib": 2374.64208984375,
+      "after_mib": 2374.64208984375
+    },
+    {
+      "physical_step_calls": 4448,
+      "before_mib": 2455.29052734375,
+      "after_mib": 2455.29052734375
+    },
+    {
+      "physical_step_calls": 4480,
+      "before_mib": 2523.16748046875,
+      "after_mib": 2523.16748046875
+    },
+    {
+      "physical_step_calls": 4512,
+      "before_mib": 2641.087890625,
+      "after_mib": 2641.087890625
+    },
+    {
+      "physical_step_calls": 4512,
+      "before_mib": 2631.0703125,
+      "after_mib": 2631.0703125
+    },
+    {
+      "physical_step_calls": 4512,
+      "before_mib": 2622.05224609375,
+      "after_mib": 2622.05224609375
+    },
+    {
+      "physical_step_calls": 4512,
+      "before_mib": 2613.0341796875,
+      "after_mib": 2613.0341796875
+    },
+    {
+      "physical_step_calls": 4512,
+      "before_mib": 2603.515625,
+      "after_mib": 2603.515625
+    }
+  ],
+  "status": "failed",
+  "error": "OutOfMemoryError: CUDA out of memory. Tried to allocate 20.00 MiB. GPU 0 has a total capacity of 4.00 GiB of which 364.75 MiB is free. 2.81 GiB allowed; Of the allocated memory 2.78 GiB is allocated by PyTorch, and 19.36 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)",
+  "seconds": 189.08758920000037,
+  "memory": {
+    "sample_count": 168,
+    "sampled_peak_dedicated_mib": 2980.6484375,
+    "sampled_peak_shared_mib": 80.0,
+    "counter_errors": [],
+    "cap_exceeded": false,
+    "last_sample": {
+      "seconds": 9233.979042,
+      "dedicated_bytes": 3125436416,
+      "shared_bytes": 83886080,
+      "rows": [
+        {
+          "Name": "pid_29124_luid_0x00000000_0x00018DBD_phys_0",
+          "DedicatedUsage": 3125436416,
+          "SharedUsage": 83886080
+        }
+      ]
+    },
+    "peak_is_sampled": true
+  },
+  "peak_allocated_mib": 2853.13525390625,
+  "peak_reserved_mib": 2868.0,
+  "final_progress": {
+    "status": "failed",
+    "pid": 29124,
+    "memory": {
+      "total_dedicated_mib": 749.0,
+      "allocated_mib": 483.43359375,
+      "peak_allocated_mib": 610.419921875,
+      "reserved_mib": 644.0
+    },
+    "step": 0,
+    "fresh_training_tokens": 0,
+    "events": 0,
+    "optimizer_updates": 0,
+    "physical_elapsed": 0.0,
+    "pending_gradient_events": 0,
+    "loss_components": {
+      "component_events": {}
+    },
+    "last_loss_components": {},
+    "health": {
+      "protocol": "persistent_medium_health_v1",
+      "status": "no_observations"
+    },
+    "phases": {},
+    "error": "OutOfMemoryError: CUDA out of memory. Tried to allocate 20.00 MiB. GPU 0 has a total capacity of 4.00 GiB of which 364.75 MiB is free. 2.81 GiB allowed; Of the allocated memory 2.78 GiB is allocated by PyTorch, and 19.36 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)"
+  }
+}

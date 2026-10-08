@@ -1,0 +1,116 @@
+{
+  "purpose": "one real OWT training update; execution measurement only",
+  "architecture": "PlasticMedium3D-W4-learned-read-conductance-v3",
+  "shape": [
+    8,
+    8,
+    4
+  ],
+  "channels": 128,
+  "vocab_size": 50257,
+  "parameters": 14354610,
+  "parameter_bytes": 57418440,
+  "parameter_gradient_adam_moment_floor_bytes": 229673760,
+  "tokens_per_update": 128,
+  "bptt_chunk_tokens": 8,
+  "event_duration": 0.005,
+  "substeps": 1,
+  "precision": "FP32",
+  "backend": "eager, quiet diagnostics",
+  "warmup_updates": 0,
+  "completed_updates": 0,
+  "completed_tokens": 0,
+  "data": "data\\ib_owt_gpt2\\train.npy",
+  "data_offset": 0,
+  "allocator_fraction": 0.3,
+  "pytorch": "2.9.1+cu126",
+  "measurements": [
+    {
+      "stage": "forward_0",
+      "wall_seconds": 0.7010439000005135,
+      "cuda_seconds": 0.7006103515625
+    }
+  ],
+  "memory_samples": [
+    {
+      "stage": "model_and_initial_state",
+      "windows": {
+        "dedicated_bytes": 124387328,
+        "shared_bytes": 81788928,
+        "rows": [
+          {
+            "Name": "pid_22828_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 124387328,
+            "SharedUsage": 81788928
+          }
+        ]
+      },
+      "allocated_bytes": 58448896,
+      "reserved_bytes": 62914560,
+      "peak_allocated_bytes": 58448896,
+      "peak_reserved_bytes": 62914560,
+      "shared_growth_bytes": 0
+    },
+    {
+      "stage": "forward_0",
+      "windows": {
+        "dedicated_bytes": 361369600,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_22828_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 361369600,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "allocated_bytes": 272253952,
+      "reserved_bytes": 289406976,
+      "peak_allocated_bytes": 274497024,
+      "peak_reserved_bytes": 289406976,
+      "shared_growth_bytes": 2097152
+    }
+  ],
+  "no_model_driver_initialization_control": {
+    "operation": "one uploaded float plus one CUDA scalar addition",
+    "before": {
+      "dedicated_bytes": 53080064,
+      "shared_bytes": 79691776,
+      "rows": [
+        {
+          "Name": "pid_22828_luid_0x00000000_0x000178A0_phys_0",
+          "DedicatedUsage": 53080064,
+          "SharedUsage": 79691776
+        }
+      ]
+    },
+    "after": {
+      "dedicated_bytes": 63569920,
+      "shared_bytes": 81788928,
+      "rows": [
+        {
+          "Name": "pid_22828_luid_0x00000000_0x000178A0_phys_0",
+          "DedicatedUsage": 63569920,
+          "SharedUsage": 81788928
+        }
+      ]
+    }
+  },
+  "cuda_initialization_memory": {
+    "dedicated_bytes": 61472768,
+    "shared_bytes": 81788928,
+    "rows": [
+      {
+        "Name": "pid_22828_luid_0x00000000_0x000178A0_phys_0",
+        "DedicatedUsage": 61472768,
+        "SharedUsage": 81788928
+      }
+    ]
+  },
+  "status": "stopped_shared_memory_growth",
+  "error": "Shared growth at forward_0: 2097152",
+  "peak_allocated_bytes": 274497024,
+  "peak_reserved_bytes": 289406976,
+  "execution_wall_seconds_excluding_memory_queries": 0.7010439000005135,
+  "execution_cuda_seconds": 0.7006103515625
+}

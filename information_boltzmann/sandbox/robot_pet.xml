@@ -1,0 +1,294 @@
+<mujoco model="robot_pet">
+  <compiler angle="degree" coordinate="local" inertiafromgeom="true"/>
+  <!-- Information Boltzmann Unified Cold Bath: Fluid Viscous Dissipation on Free Base -->
+  <option timestep="0.002" gravity="0 0 -9.81" iterations="50" solver="Newton" density="1.2" viscosity="0.0005">
+    <flag contact="enable" energy="enable"/>
+  </option>
+
+  <visual>
+    <global offwidth="1024" offheight="1024"/>
+  </visual>
+  <default>
+    <!-- Joint-level Hill-type muscle damping (internal thermal bath dissipation) -->
+    <joint damping="0.5" frictionloss="0.08" armature="0.01"/>
+    <!-- Inelastic Ground Impact Dissipation: Critical damping solref (zeta=1.0) and high impedance solimp -->
+    <geom friction="1.5 0.08 0.05" condim="4" solref="0.006 1.0" solimp="0.95 0.99 0.001 0.5 2"/>
+  </default>
+
+  <asset>
+    <texture type="skybox" builtin="gradient" rgb1="0.1 0.12 0.15" rgb2="0.02 0.02 0.04" width="256" height="256"/>
+    <texture name="plane" type="2d" builtin="checker" rgb1="0.18 0.20 0.25" rgb2="0.12 0.14 0.18" width="512" height="512"/>
+    <material name="mat_plane" texture="plane" texrepeat="20 20" reflectance="0.0"/>
+    
+    <material name="mat_body" rgba="0.92 0.94 0.96 1" specular="0.3" shininess="0.5"/>
+    <texture name="screen_face_tex" type="2d" builtin="flat" rgb1="0.06 0.08 0.11" width="256" height="256"/>
+    <material name="mat_screen" texture="screen_face_tex" texrepeat="1 1" texuniform="false" rgba="1 1 1 1" emission="0.95" specular="0.3"/>
+    <material name="mat_eye" rgba="1.0 1.0 1.0 1" emission="1.0"/>
+    <material name="mat_boot" rgba="0.88 0.90 0.94 1" specular="0.2"/>
+    <material name="mat_joint" rgba="0.28 0.32 0.38 1" specular="0.6" shininess="0.8"/>
+    <material name="mat_accent" rgba="0.20 0.85 1.0 1" emission="0.7"/>
+    <material name="mat_sole" rgba="0.15 0.17 0.20 1" specular="0.1"/>
+  </asset>
+
+  <worldbody>
+    <!-- Lighting: Key light + Fill light + Subtle rim light -->
+    <light directional="true" pos="3 2 5" dir="-0.5 -0.4 -0.8" diffuse="0.95 0.95 0.98" specular="0.3 0.3 0.3"/>
+    <light directional="true" pos="-3 -2 4" dir="0.5 0.4 -0.7" diffuse="0.45 0.48 0.55" specular="0.1 0.1 0.1"/>
+    <light directional="true" pos="0 -4 3" dir="0 0.8 -0.6" diffuse="0.35 0.35 0.4" specular="0.05 0.05 0.05"/>
+
+    <!-- Ground plane: Unified Cold Bath Dissipation Sink -->
+    <geom name="ground" type="plane" pos="0 0 0" size="30 30 0.1" material="mat_plane"/>
+
+    <!-- Robot Root at nominal height z=0.64 -->
+    <body name="robot_root" pos="0 0 0.64">
+      <freejoint name="root"/>
+
+      <!-- Torso / Head: Width=0.76 (x), Depth=0.66 (y), Height=0.74 (z) -->
+      <geom name="torso_geom" type="box" size="0.38 0.33 0.37" pos="0 0 0.37" mass="2.2" material="mat_body"/>
+
+      <!-- Front screen visor: slightly protruding at +y -->
+      <geom name="screen_geom" type="box" size="0.30 0.015 0.26" pos="0 0.34 0.38" mass="0.1" material="mat_screen"/>
+
+      <!-- Screen Eyes (joints preserved for compatibility, geoms recessed for OLED screen) -->
+      <body name="eye_left" pos="-0.11 0.33 0.40">
+        <joint name="eye_roll_l" type="hinge" axis="0 1 0" range="-180 180" damping="0.05"/>
+        <geom name="eye_l" type="capsule" size="0.001 0.001" pos="0 0 0" mass="0.001" rgba="0 0 0 0"/>
+      </body>
+
+      <body name="eye_right" pos="0.11 0.33 0.40">
+        <joint name="eye_roll_r" type="hinge" axis="0 1 0" range="-180 180" damping="0.05"/>
+        <geom name="eye_r" type="capsule" size="0.001 0.001" pos="0 0 0" mass="0.001" rgba="0 0 0 0"/>
+      </body>
+
+      <!-- Top Loop Antenna Ear Receptors (Sites for spatial hearing) -->
+      <geom name="socket_l" type="cylinder" size="0.045 0.018" pos="-0.18 0.0 0.75" mass="0.02" material="mat_joint"/>
+      <geom name="socket_r" type="cylinder" size="0.045 0.018" pos="0.18 0.0 0.75" mass="0.02" material="mat_joint"/>
+
+      <!-- Left Loop Antenna -->
+      <body name="ear_left" pos="-0.18 0.0 0.76">
+        <geom name="antenna_l_strut1" type="capsule" size="0.012 0.22" pos="-0.03 0 0.24" mass="0.02" material="mat_body"/>
+        <geom name="antenna_l_strut2" type="capsule" size="0.012 0.22" pos="0.03 0 0.24" mass="0.02" material="mat_body"/>
+        <geom name="antenna_l_bridge" type="capsule" size="0.012 0.03" pos="0 0 0.46" euler="0 90 0" mass="0.01" material="mat_body"/>
+        <site name="left_ear_sensor" pos="0 0 0.46" size="0.02" rgba="0 0.8 1 0.8"/>
+      </body>
+
+      <!-- Right Loop Antenna -->
+      <body name="ear_right" pos="0.18 0.0 0.76">
+        <geom name="antenna_r_strut1" type="capsule" size="0.012 0.22" pos="-0.03 0 0.24" mass="0.02" material="mat_body"/>
+        <geom name="antenna_r_strut2" type="capsule" size="0.012 0.22" pos="0.03 0 0.24" mass="0.02" material="mat_body"/>
+        <geom name="antenna_r_bridge" type="capsule" size="0.012 0.03" pos="0 0 0.46" euler="0 90 0" mass="0.01" material="mat_body"/>
+        <site name="right_ear_sensor" pos="0 0 0.46" size="0.02" rgba="0 0.8 1 0.8"/>
+      </body>
+
+      <!-- Mouth / Vocalization site: on the front face -->
+      <site name="mouth_emitter" pos="0 0.35 0.25" size="0.005" rgba="0 0 0 0"/>
+
+      <!-- IMU / Vestibular site at center of mass -->
+      <site name="vestibular_site" pos="0 0 0.37" size="0.02"/>
+
+      <!-- ================= ARMS (Continuous Articulated Structure) ================= -->
+      <body name="upper_arm_l" pos="-0.40 0.0 0.44">
+        <joint name="shoulder_pitch_l" type="hinge" axis="1 0 0" range="-60 90" damping="0.3"/>
+        <joint name="shoulder_roll_l" type="hinge" axis="0 1 0" range="0 45" damping="0.3"/>
+        <geom name="shoulder_l_joint" type="sphere" size="0.046" pos="0 0 0" mass="0.06" material="mat_joint"/>
+        <geom name="upper_arm_l_geom" type="capsule" fromto="0 0 0  0 0.02 -0.18" size="0.038" mass="0.15" material="mat_body"/>
+
+        <body name="forearm_l" pos="0 0.02 -0.18">
+          <joint name="elbow_pitch_l" type="hinge" axis="1 0 0" range="-90 10" damping="0.2"/>
+          <geom name="elbow_l_joint" type="sphere" size="0.040" pos="0 0 0" mass="0.04" material="mat_joint"/>
+          <geom name="forearm_l_geom" type="capsule" fromto="0 0 0  0 0.03 -0.15" size="0.034" mass="0.12" material="mat_body"/>
+          <geom name="hand_l_geom" type="sphere" size="0.046" pos="0 0.03 -0.17" mass="0.05" material="mat_joint"/>
+        </body>
+      </body>
+
+      <body name="upper_arm_r" pos="0.40 0.0 0.44">
+        <joint name="shoulder_pitch_r" type="hinge" axis="1 0 0" range="-60 90" damping="0.3"/>
+        <joint name="shoulder_roll_r" type="hinge" axis="0 1 0" range="-45 0" damping="0.3"/>
+        <geom name="shoulder_r_joint" type="sphere" size="0.046" pos="0 0 0" mass="0.06" material="mat_joint"/>
+        <geom name="upper_arm_r_geom" type="capsule" fromto="0 0 0  0 0.02 -0.18" size="0.038" mass="0.15" material="mat_body"/>
+
+        <body name="forearm_r" pos="0 0.02 -0.18">
+          <joint name="elbow_pitch_r" type="hinge" axis="1 0 0" range="-90 10" damping="0.2"/>
+          <geom name="elbow_r_joint" type="sphere" size="0.040" pos="0 0 0" mass="0.04" material="mat_joint"/>
+          <geom name="forearm_r_geom" type="capsule" fromto="0 0 0  0 0.03 -0.15" size="0.034" mass="0.12" material="mat_body"/>
+          <geom name="hand_r_geom" type="sphere" size="0.046" pos="0 0.03 -0.17" mass="0.05" material="mat_joint"/>
+        </body>
+      </body>
+
+      <!-- First-person screen visor eye camera -->
+      <camera name="first_person_eyes" pos="0 0.36 0.40" fovy="80" xyaxes="1 0 0 0 0 1"/>
+
+      <!-- ================= LEFT LEG (Clearly Visible Articulated Knee Sphere & Chunky Boot) ================= -->
+      <body name="hip_yaw_link_l" pos="-0.165 0.0 0.0">
+        <joint name="hip_yaw_l" type="hinge" axis="0 0 1" range="-35 35" damping="0.5"/>
+        <geom name="hip_yaw_l_geom" type="sphere" size="0.050" mass="0.06" material="mat_joint"/>
+        
+        <body name="hip_roll_link_l" pos="0 0 0">
+          <joint name="hip_roll_l" type="hinge" axis="0 1 0" range="-25 25" damping="0.5"/>
+          <geom name="hip_roll_l_geom" type="sphere" size="0.046" mass="0.05" material="mat_joint"/>
+          
+          <body name="thigh_l" pos="0 0 0">
+            <joint name="hip_pitch_l" type="hinge" axis="1 0 0" range="-50 50" damping="0.5"/>
+            <!-- White Thigh Armor -->
+            <geom name="thigh_l_geom" type="capsule" fromto="0 0 0  0 0.03 -0.22" size="0.042" mass="0.25" material="mat_body"/>
+
+            <!-- PROMINENT VISIBLE KNEE JOINT: Dark Metallic Sphere (radius 0.052 > 0.042) -->
+            <body name="shin_l" pos="0 0.03 -0.22">
+              <joint name="knee_pitch_l" type="hinge" axis="1 0 0" range="-10 85" damping="0.5"/>
+              <geom name="knee_l_joint" type="sphere" size="0.052" mass="0.08" material="mat_joint"/>
+              <!-- White Shin Armor -->
+              <geom name="shin_l_geom" type="capsule" fromto="0 0 0  0 -0.03 -0.22" size="0.040" mass="0.22" material="mat_body"/>
+
+              <!-- Ankle Joint: Dark Metallic Sphere -->
+              <body name="ankle_pitch_link_l" pos="0 -0.03 -0.22">
+                <joint name="ankle_pitch_l" type="hinge" axis="1 0 0" range="-50 50" damping="0.4"/>
+                <geom name="ankle_pitch_l_geom" type="sphere" size="0.045" mass="0.05" material="mat_joint"/>
+                
+                <body name="boot_l" pos="0 0 0">
+                  <joint name="ankle_roll_l" type="hinge" axis="0 1 0" range="-25 25" damping="0.4"/>
+                  <!-- Anatomical Cyber Boot: Narrow Heel (w=0.130), Tapering Midfoot (w=0.170), Wide Forefoot (w=0.210) -->
+                  <!-- 1. Metallic Ankle Interface Collar -->
+                  <geom name="boot_l_collar" type="cylinder" size="0.048 0.010" pos="0 0 -0.010" mass="0.03" material="mat_joint"/>
+
+                  <!-- 2. Sculpted Upper Armor (White Polymer Chassis) -->
+                  <geom name="boot_l_heel" type="cylinder" size="0.065 0.088" pos="0 -0.065 -0.098" mass="0.13" material="mat_boot"/>
+                  <geom name="boot_l_mid" type="box" size="0.085 0.065 0.088" pos="0 0.000 -0.098" mass="0.18" material="mat_boot"/>
+                  <geom name="boot_l_fore" type="cylinder" size="0.105 0.088" pos="0 0.065 -0.098" mass="0.15" material="mat_boot"/>
+
+                  <!-- 3. Luminous Cyan Accent Stripe (Tech Runner Illumination) -->
+                  <geom name="boot_l_accent_h" type="cylinder" size="0.066 0.0015" pos="0 -0.065 -0.1875" mass="0.002" material="mat_accent"/>
+                  <geom name="boot_l_accent_m" type="box" size="0.086 0.065 0.0015" pos="0 0.000 -0.1875" mass="0.004" material="mat_accent"/>
+                  <geom name="boot_l_accent_t" type="cylinder" size="0.106 0.0015" pos="0 0.065 -0.1875" mass="0.004" material="mat_accent"/>
+
+                  <!-- 4. High-Friction Vulcanized Rubber Outsole (Coplanar Ground Flat Plane at z = -0.200) -->
+                  <geom name="boot_l_sole_h" type="cylinder" size="0.065 0.0055" pos="0 -0.065 -0.1945" mass="0.015" material="mat_sole"/>
+                  <geom name="boot_l_sole_m" type="box" size="0.085 0.065 0.0055" pos="0 0.000 -0.1945" mass="0.020" material="mat_sole"/>
+                  <geom name="boot_l_sole_t" type="cylinder" size="0.105 0.0055" pos="0 0.065 -0.1945" mass="0.015" material="mat_sole"/>
+
+                  <site name="boot_l_sole" pos="0 0.02 -0.20" size="0.11 0.13 0.01"/>
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+
+      <!-- ================= RIGHT LEG (Clearly Visible Articulated Knee Sphere & Chunky Boot) ================= -->
+      <body name="hip_yaw_link_r" pos="0.165 0.0 0.0">
+        <joint name="hip_yaw_r" type="hinge" axis="0 0 1" range="-35 35" damping="0.5"/>
+        <geom name="hip_yaw_r_geom" type="sphere" size="0.050" mass="0.06" material="mat_joint"/>
+        
+        <body name="hip_roll_link_r" pos="0 0 0">
+          <joint name="hip_roll_r" type="hinge" axis="0 1 0" range="-25 25" damping="0.5"/>
+          <geom name="hip_roll_r_geom" type="sphere" size="0.046" mass="0.05" material="mat_joint"/>
+          
+          <body name="thigh_r" pos="0 0 0">
+            <joint name="hip_pitch_r" type="hinge" axis="1 0 0" range="-50 50" damping="0.5"/>
+            <!-- White Thigh Armor -->
+            <geom name="thigh_r_geom" type="capsule" fromto="0 0 0  0 0.03 -0.22" size="0.042" mass="0.25" material="mat_body"/>
+
+            <!-- PROMINENT VISIBLE KNEE JOINT: Dark Metallic Sphere (radius 0.052 > 0.042) -->
+            <body name="shin_r" pos="0 0.03 -0.22">
+              <joint name="knee_pitch_r" type="hinge" axis="1 0 0" range="-10 85" damping="0.5"/>
+              <geom name="knee_r_joint" type="sphere" size="0.052" mass="0.08" material="mat_joint"/>
+              <!-- White Shin Armor -->
+              <geom name="shin_r_geom" type="capsule" fromto="0 0 0  0 -0.03 -0.22" size="0.040" mass="0.22" material="mat_body"/>
+
+              <!-- Ankle Joint: Dark Metallic Sphere -->
+              <body name="ankle_pitch_link_r" pos="0 -0.03 -0.22">
+                <joint name="ankle_pitch_r" type="hinge" axis="1 0 0" range="-50 50" damping="0.4"/>
+                <geom name="ankle_pitch_r_geom" type="sphere" size="0.045" mass="0.05" material="mat_joint"/>
+                
+                <body name="boot_r" pos="0 0 0">
+                  <joint name="ankle_roll_r" type="hinge" axis="0 1 0" range="-25 25" damping="0.4"/>
+                  <!-- Anatomical Cyber Boot: Narrow Heel (w=0.130), Tapering Midfoot (w=0.170), Wide Forefoot (w=0.210) -->
+                  <!-- 1. Metallic Ankle Interface Collar -->
+                  <geom name="boot_r_collar" type="cylinder" size="0.048 0.010" pos="0 0 -0.010" mass="0.03" material="mat_joint"/>
+
+                  <!-- 2. Sculpted Upper Armor (White Polymer Chassis) -->
+                  <geom name="boot_r_heel" type="cylinder" size="0.065 0.088" pos="0 -0.065 -0.098" mass="0.13" material="mat_boot"/>
+                  <geom name="boot_r_mid" type="box" size="0.085 0.065 0.088" pos="0 0.000 -0.098" mass="0.18" material="mat_boot"/>
+                  <geom name="boot_r_fore" type="cylinder" size="0.105 0.088" pos="0 0.065 -0.098" mass="0.15" material="mat_boot"/>
+
+                  <!-- 3. Luminous Cyan Accent Stripe (Tech Runner Illumination) -->
+                  <geom name="boot_r_accent_h" type="cylinder" size="0.066 0.0015" pos="0 -0.065 -0.1875" mass="0.002" material="mat_accent"/>
+                  <geom name="boot_r_accent_m" type="box" size="0.086 0.065 0.0015" pos="0 0.000 -0.1875" mass="0.004" material="mat_accent"/>
+                  <geom name="boot_r_accent_t" type="cylinder" size="0.106 0.0015" pos="0 0.065 -0.1875" mass="0.004" material="mat_accent"/>
+
+                  <!-- 4. High-Friction Vulcanized Rubber Outsole (Coplanar Ground Flat Plane at z = -0.200) -->
+                  <geom name="boot_r_sole_h" type="cylinder" size="0.065 0.0055" pos="0 -0.065 -0.1945" mass="0.015" material="mat_sole"/>
+                  <geom name="boot_r_sole_m" type="box" size="0.085 0.065 0.0055" pos="0 0.000 -0.1945" mass="0.020" material="mat_sole"/>
+                  <geom name="boot_r_sole_t" type="cylinder" size="0.105 0.0055" pos="0 0.065 -0.1945" mass="0.015" material="mat_sole"/>
+
+                  <site name="boot_r_sole" pos="0 0.02 -0.20" size="0.11 0.13 0.01"/>
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+
+    </body>
+
+    <!-- Interactive Curiosity Target: Radiant Ether Toy Ball -->
+    <body name="toy_ball" pos="0 1.2 0.10">
+      <freejoint name="toy_ball_joint"/>
+      <geom name="toy_ball_geom" type="sphere" size="0.10" mass="0.15" rgba="1.0 0.5 0.1 1.0"/>
+      <site name="toy_ball_site" pos="0 0 0" size="0.04" rgba="1 0.8 0.2 0.8"/>
+    </body>
+  </worldbody>
+
+  <!-- Actuators: Joint Motors with Responsive Damping -->
+  <actuator>
+    <!-- Left Leg -->
+    <position name="motor_hip_yaw_l" joint="hip_yaw_l" kp="80" kv="8" ctrlrange="-0.6 0.6"/>
+    <position name="motor_hip_roll_l" joint="hip_roll_l" kp="140" kv="12" ctrlrange="-0.44 0.44"/>
+    <position name="motor_hip_pitch_l" joint="hip_pitch_l" kp="120" kv="10" ctrlrange="-0.85 0.85"/>
+    <position name="motor_knee_l" joint="knee_pitch_l" kp="120" kv="10" ctrlrange="-0.15 1.4"/>
+    <position name="motor_ankle_pitch_l" joint="ankle_pitch_l" kp="150" kv="12" ctrlrange="-0.85 0.85"/>
+    <position name="motor_ankle_roll_l" joint="ankle_roll_l" kp="90" kv="8" ctrlrange="-0.40 0.40"/>
+
+    <!-- Right Leg -->
+    <position name="motor_hip_yaw_r" joint="hip_yaw_r" kp="80" kv="8" ctrlrange="-0.6 0.6"/>
+    <position name="motor_hip_roll_r" joint="hip_roll_r" kp="140" kv="12" ctrlrange="-0.44 0.44"/>
+    <position name="motor_hip_pitch_r" joint="hip_pitch_r" kp="120" kv="10" ctrlrange="-0.85 0.85"/>
+    <position name="motor_knee_r" joint="knee_pitch_r" kp="120" kv="10" ctrlrange="-0.15 1.4"/>
+    <position name="motor_ankle_pitch_r" joint="ankle_pitch_r" kp="150" kv="12" ctrlrange="-0.85 0.85"/>
+    <position name="motor_ankle_roll_r" joint="ankle_roll_r" kp="90" kv="8" ctrlrange="-0.40 0.40"/>
+
+    <!-- Arms -->
+    <position name="motor_shoulder_pitch_l" joint="shoulder_pitch_l" kp="30" kv="4" ctrlrange="-1.0 1.5"/>
+    <position name="motor_shoulder_roll_l" joint="shoulder_roll_l" kp="25" kv="3" ctrlrange="0.0 0.8"/>
+    <position name="motor_elbow_l" joint="elbow_pitch_l" kp="20" kv="2" ctrlrange="-1.5 0.2"/>
+
+    <position name="motor_shoulder_pitch_r" joint="shoulder_pitch_r" kp="30" kv="4" ctrlrange="-1.0 1.5"/>
+    <position name="motor_shoulder_roll_r" joint="shoulder_roll_r" kp="25" kv="3" ctrlrange="-0.8 0.0"/>
+    <position name="motor_elbow_r" joint="elbow_pitch_r" kp="20" kv="2" ctrlrange="-1.5 0.2"/>
+  </actuator>
+
+  <!-- Sensors -->
+  <sensor>
+    <touch name="touch_boot_l" site="boot_l_sole"/>
+    <touch name="touch_boot_r" site="boot_r_sole"/>
+    <accelerometer name="accel" site="vestibular_site"/>
+    <gyro name="gyro" site="vestibular_site"/>
+  </sensor>
+
+  <!-- Contact Exclusions: Ignore internal joint overlap within the kinematic chain -->
+  <contact>
+    <exclude body1="robot_root" body2="upper_arm_l"/>
+    <exclude body1="robot_root" body2="forearm_l"/>
+    <exclude body1="robot_root" body2="upper_arm_r"/>
+    <exclude body1="robot_root" body2="forearm_r"/>
+    <exclude body1="robot_root" body2="hip_yaw_link_l"/>
+    <exclude body1="robot_root" body2="hip_roll_link_l"/>
+    <exclude body1="robot_root" body2="thigh_l"/>
+    <exclude body1="robot_root" body2="hip_yaw_link_r"/>
+    <exclude body1="robot_root" body2="hip_roll_link_r"/>
+    <exclude body1="robot_root" body2="thigh_r"/>
+    <exclude body1="hip_yaw_link_l" body2="thigh_l"/>
+    <exclude body1="hip_yaw_link_r" body2="thigh_r"/>
+    <exclude body1="shin_l" body2="boot_l"/>
+    <exclude body1="shin_r" body2="boot_r"/>
+  </contact>
+</mujoco>

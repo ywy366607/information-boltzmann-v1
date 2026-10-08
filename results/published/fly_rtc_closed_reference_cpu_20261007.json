@@ -1,0 +1,46 @@
+{
+  "preregistration": {
+    "purpose": "Independent local-equation implementation with all upstream physical states retained",
+    "horizon": 14,
+    "seed": 11,
+    "updates": 0,
+    "prediction": "Complete causal state plus known zero future drive reproduces original physical integration within2e-6",
+    "approval": "rtc_contract_review approved deterministic autonomous full-state ceiling",
+    "scope": "Numerical reproducibility, not learned predictive ability or acceleration",
+    "stop": "Any physical field error exceeding2e-6 fails closure"
+  },
+  "device": "cpu",
+  "neurons": 256,
+  "graph_sha256": "a5baa052b8c6029f139f35ab18563e391fb1c704e420206a219eac5a1fad2542",
+  "maximum_absolute_error": {
+    "h": 0.0,
+    "ge": 0.0,
+    "gi": 0.0,
+    "b": 0.0,
+    "x": 0.0,
+    "u": 0.0,
+    "mean": 0.0,
+    "ring": 0.0
+  },
+  "motor_max_error_by_tick": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "future_teacher_inputs": 0,
+  "retained_state": "All neuron h/ge/gi/b/x/u/mean and four pulse slots",
+  "learned_updates": 0,
+  "passed": true,
+  "compute_limit": "Retains all physical nodes and edges; duplicates full simulation arithmetic"
+}

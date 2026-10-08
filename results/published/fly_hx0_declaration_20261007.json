@@ -1,0 +1,29 @@
+{
+  "date": "2026-10-07",
+  "name": "回响",
+  "codename": "HX-0",
+  "quote": "生生不息的回响",
+  "lineage": "Information Boltzmann MaleCNS_v1 Connectome Individual",
+  "status": "active_continuous_learning",
+  "architecture": {
+    "connectome_neurons": 165122,
+    "connectome_synapses": 25320000,
+    "synapse_model": "COBA-ALIF with 4-tier axonal delay ring buffer",
+    "internal_world_model": "LeWM-14 (768-dim residual MLP neurodynamics response emulator)",
+    "delay_mechanism": "Dynamic Delay Attention over horizons k=0..14 (probabilities strictly sum to 1.0)",
+    "readout_path": "100% Autonomous Student Rollout (zero teacher injection into Decoder)",
+    "transition_supervision": "In-Policy DAgger Markov Distillation P(s_in^{(k-1)}) -> z^{*(k)} on anchor token quiet physical trajectory",
+    "regularizer": "Exact SIGReg anti-collapse"
+  },
+  "verification": {
+    "unit_tests_passed": 8,
+    "leak_bypass_audit": "PASSED (zero bigram embedding bypass, zero future token leakage, zero train/gen decoder asymmetry)",
+    "test_suite": "tests/test_fly_predictor_no_leak_and_bypass.py"
+  },
+  "execution": {
+    "task_id": "task-10950",
+    "output_dir": "results/q8_fly_bptt32_lewm14_clean_v2_100k",
+    "checkpoint_dir": "F:/fly_checkpoints/q8_fly_bptt32_lewm14_clean_v2_100k",
+    "budget_tokens": 100000
+  }
+}

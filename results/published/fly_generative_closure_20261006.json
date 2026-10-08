@@ -1,0 +1,95 @@
+{
+  "date": "2026-10-06",
+  "stage": "restricted mathematical specification and reference probability identities",
+  "production_learner_changed": false,
+  "training_updates": 0,
+  "training_tokens": 0,
+  "gpu_work_performed": false,
+  "checkpoint_changes": false,
+  "claim": "A shared normalized generative objective defines posterior local scores; fixed-model forward conditional-statistic recursion can reweight historical credit without replaying the temporal computation graph.",
+  "scope": "Mathematical reference only. Finite full-brain inference, hard-event inference and finite conditional-statistic projection remain unimplemented. No capability, NLL improvement or complete active-inference policy claim.",
+  "prior_empirical_evidence": {
+    "source": "results/published/fly_repaired_update_20261006.json",
+    "interpretation": "One body update worsened following-window predictions despite improving its fitted window; it does not uniquely establish the cause of historical long-run regression."
+  },
+  "test": {
+    "command": "D:/conda_envs/vox/python.exe -m pytest tests/test_fly_variational_identities.py -q",
+    "result": "6 passed in 0.22s",
+    "checks": [
+      "Gaussian posterior free energy equals negative marginal log evidence",
+      "Posterior local score equals marginal likelihood finite difference",
+      "Posterior cross-covariance contributes to local score",
+      "Regular prior expected local score is zero",
+      "Unobserved current transition factor expected score is zero in the reference model",
+      "Forward conditional statistics equal direct complete-path posterior expectation"
+    ],
+    "does_not_test": [
+      "Gamma arrival hard-event posterior inference",
+      "Full-brain inference communication",
+      "Finite-size exact unlimited-history credit",
+      "Real-world learning capability"
+    ]
+  },
+  "reviews": [
+    {
+      "role": "harness_hypotheses",
+      "scope": "generative model and competing causal explanations",
+      "result": "restricted normalized arrival construction and posterior message conditions identified"
+    },
+    {
+      "role": "harness_plan",
+      "scope": "physical state, observer and causal interfaces",
+      "result": "restricted observer construction accepted; hard events, historical credit and finite representation require explicit handling"
+    },
+    {
+      "role": "diagnosis_review",
+      "scope": "actual specification and six reference tests",
+      "result": "accepted after four necessary revisions; final conditional-kernel and zero-score interpretation clarifications incorporated",
+      "tests_rerun_by_reviewer": false
+    }
+  ],
+  "mathematical_conditions": [
+    "Measure-form KL with absolute continuity and finite KL",
+    "Augmented posterior includes latent arrival quantities and deterministic event support",
+    "Variational inference includes entropy/KL, not only continuous evidence forces",
+    "Prior zero-score identity restricted to common support and derivative/integral interchange",
+    "Forward-statistic identity assumes fixed model parameters, complete Markov state and exact filtering",
+    "Changing-parameter online EM has approximation error and no per-event NLL monotonicity guarantee"
+  ],
+  "implementation_prerequisites": [
+    "Declare correspondence between observer predictive distribution and physical execution",
+    "Define hard-event posterior inference",
+    "Define finite posterior and conditional-statistic projections with stated cost and approximation",
+    "Keep posterior learning workspace out of already scored predictions and physical motor shortcuts",
+    "Preserve full individual state and sensory/motor locality"
+  ],
+  "harness_validation": {
+    "strict_tree": "passed; errors=[], warnings=[]",
+    "false_victory": "exit 0; no confirmed nodes to check; not a capability audit pass"
+  },
+  "false_win_checklist": [
+    {"path": "Extra capacity / training budget", "closed": false, "residual_risk": "No capability experiment performed"},
+    {"path": "Optimization change", "closed": false, "residual_risk": "No capability experiment performed"},
+    {"path": "Data leakage", "closed": false, "residual_risk": "No capability experiment performed"},
+    {"path": "Metric averaging", "closed": false, "residual_risk": "No capability experiment performed"},
+    {"path": "Hidden recurrence / extra passes", "closed": false, "residual_risk": "No production inference implementation"},
+    {"path": "Implementation asymmetry", "closed": false, "residual_risk": "No production inference implementation"},
+    {"path": "Baseline bypass", "closed": false, "residual_risk": "No capability experiment performed"},
+    {"path": "Reachability mistaken for discovery", "closed": false, "residual_risk": "Generative specification is not a discovery or learning benefit"},
+    {"path": "Serialization mistaken for generation", "closed": false, "residual_risk": "No generative capability experiment"},
+    {"path": "Handwritten scaffold substitution", "closed": false, "residual_risk": "Observer remains a declared design hypothesis"},
+    {"path": "Teacher or oracle leakage", "closed": false, "residual_risk": "Causal lifecycle specified but production unimplemented"},
+    {"path": "Vocabulary / codebook leakage", "closed": false, "residual_risk": "No capability experiment performed"},
+    {"path": "Search-budget mismatch", "closed": false, "residual_risk": "Finite inference cost not yet established"},
+    {"path": "Macro prior not charged", "closed": false, "residual_risk": "Finite inference cost not yet established"},
+    {"path": "Offline corpus contamination", "closed": false, "residual_risk": "No capability experiment performed"},
+    {"path": "Lineage discontinuity", "closed": false, "residual_risk": "Production integration pending; current checkpoints unchanged"}
+  ],
+  "artifacts": {
+    "specification": "docs/information_boltzmann/FLY_GENERATIVE_LEARNING_CLOSURE.md",
+    "specification_sha256": "3319FCF37749E60D6AFDABC253D953A29A3F0CE611F68782F1EACCE3834AC639",
+    "tests": "tests/test_fly_variational_identities.py",
+    "tests_sha256": "4CC1AF684DEEFC1C33D2E8DF5CC5E28A0B4DF30EE94BEB87BF129EB4DF3A1007",
+    "research_node": "IB_FLY_GEN_CLOSE_20261006"
+  }
+}

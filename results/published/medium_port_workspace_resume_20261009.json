@@ -1,0 +1,504 @@
+{
+  "recorded_at": "2026-10-09T00:57:08.412797+08:00",
+  "status": "running_first_active_evaluation",
+  "pid": 18248,
+  "managed_tool_session": 15898,
+  "logical_output": "results/medium_d768_streaming_pathway_8x8x8_160k",
+  "physical_output": "E:\\ib_checkpoints\\medium_d768_streaming_pathway_8x8x8_160k",
+  "arguments": [
+    "-X",
+    "utf8",
+    "-u",
+    "scripts/ib/train_medium_active_stream.py",
+    "--output",
+    "results/medium_d768_streaming_pathway_8x8x8_160k",
+    "--steps",
+    "5000",
+    "--lr",
+    "2e-4",
+    "--warmup",
+    "100",
+    "--decay",
+    "500",
+    "--save-every",
+    "100",
+    "--pretrained-embedding",
+    "data/gpt2_model.safetensors",
+    "--data-dir",
+    "data/ib_owt_gpt2",
+    "--channels",
+    "768",
+    "--shape",
+    "8",
+    "8",
+    "8",
+    "--material-initialization",
+    "spectral-xavier",
+    "--material-field-std",
+    "1",
+    "--tokens",
+    "32",
+    "--chunk-tokens",
+    "32",
+    "--event-duration",
+    ".03327237442135811",
+    "--intrinsic-time-reference",
+    ".03327237442135811",
+    "--solver-max-step",
+    "0.008318093605339527",
+    "--observer-max-step",
+    "0.03327237442135811",
+    "--max-evolution-steps",
+    "4096",
+    "--material-bandwidth",
+    "runtime",
+    "--temporal-time-reference",
+    "0.899332940578461",
+    "--write-aperture-budget",
+    ".125",
+    "--read-aperture-budget",
+    ".25",
+    "--structure-config",
+    "configs/information_boltzmann/medium_pathway_structure_20261008.json",
+    "--structure-dual-lr",
+    ".0625",
+    "--min-lr",
+    "1e-6",
+    "--seed",
+    "449",
+    "--device",
+    "cuda",
+    "--execution",
+    "eager",
+    "--vram-limit-mib",
+    "3072",
+    "--activation-checkpointing",
+    "--anisotropic-transport",
+    "--temporal-read",
+    "--temporal-half-life-events",
+    "1",
+    "4",
+    "16",
+    "64",
+    "--temporal-frequency-fractions",
+    "0",
+    ".0625",
+    ".125",
+    ".25",
+    "--validate-every-tokens",
+    "5000",
+    "--eval-tokens",
+    "256",
+    "--eval-block-tokens",
+    "16",
+    "--replay-tokens",
+    "128",
+    "--optimizer-state-offload",
+    "--checkpoint-granularity",
+    "event",
+    "--temporal-physical-reference",
+    ".899332940578461",
+    "--resume",
+    "results/medium_d768_streaming_pathway_8x8x8_160k/last.pt",
+    "--allow-execution-change",
+    "--read-key-execution",
+    "support"
+  ],
+  "checkpoint_resumed": {
+    "step": 157,
+    "fresh_training_tokens": 5024,
+    "optimizer_updates": 157
+  },
+  "confirmed_progress": {
+    "status": "failed",
+    "pid": 18248,
+    "memory": {
+      "total_dedicated_mib": 1351.0,
+      "allocated_mib": 1203.24462890625,
+      "peak_allocated_mib": 1216.54833984375,
+      "reserved_mib": 1246.0
+    },
+    "step": 158,
+    "fresh_training_tokens": 5056,
+    "events": 5184,
+    "optimizer_updates": 162,
+    "physical_elapsed": 173.39225495234132,
+    "pending_gradient_events": 0,
+    "loss_components": {
+      "task_nll": 6.904709868960911,
+      "port_objective": 7.8006996696377975,
+      "joint_objective": 14.705409314897326,
+      "port_nll": 7.799236583121029,
+      "write_action_kl": 0.0014630358946081366,
+      "structural_kl": 8.245017995675598e-06,
+      "structural_maintenance": 3.128770391146342,
+      "structural_objective": 6.904709624655453,
+      "component_events": {
+        "task_nll": 5184,
+        "port_objective": 5184,
+        "joint_objective": 5184,
+        "port_nll": 5184,
+        "write_action_kl": 5184,
+        "structural_kl": 5184,
+        "structural_maintenance": 5184,
+        "structural_objective": 5184
+      }
+    },
+    "last_loss_components": {
+      "task_nll": 5.977741241455078,
+      "port_objective": 7.591505527496338,
+      "joint_objective": 13.569246292114258,
+      "port_nll": 7.5870442390441895,
+      "write_action_kl": 0.004461303818970919,
+      "structural_kl": 3.0864444852340966e-05,
+      "structural_maintenance": 3.1256930828094482,
+      "structural_objective": 5.977741241455078
+    },
+    "health": {
+      "protocol": "persistent_medium_health_v1",
+      "events": 5184,
+      "window_events": 256,
+      "energy": {
+        "write_work": 1324.64946334064,
+        "response_source_work": 340410.7600607872,
+        "dissipated_energy": 341726.85219717026,
+        "balance_residual": 0.0001087188720703125,
+        "initial_energy": 0.0,
+        "current_energy": 8.557402610778809,
+        "cumulative_balance_residual": 7.565319538116455e-05,
+        "max_abs_write_residual": 1.4826655387878418e-06,
+        "max_abs_evolution_residual": 1.52587890625e-05,
+        "max_abs_continuity_residual": 0.0
+      },
+      "structure": {
+        "field_dc_energy": 2.5287909507751465,
+        "field_ac_energy": 1.2485036849975586,
+        "flux_dc_energy": 0.011850470677018166,
+        "flux_ac_energy": 4.768257141113281,
+        "field_spatial_fraction": 0.330528541028719,
+        "latest_operator_changes": {
+          "transport_energy_change": 0.0,
+          "transport_spatial_energy_change": -0.00010919570922851562,
+          "collision_energy_change": -9.5367431640625e-07,
+          "collision_spatial_energy_change": -3.0040740966796875e-05,
+          "bath_energy_change": -0.35224342346191406,
+          "bath_spatial_energy_change": -0.3399477005004883
+        },
+        "window_operator_changes": {
+          "transport_energy_change": -0.0003032684326171875,
+          "transport_spatial_energy_change": -0.07620525360107422,
+          "collision_energy_change": 0.0001773834228515625,
+          "collision_spatial_energy_change": -0.003692150115966797,
+          "bath_energy_change": -91.68308544158936,
+          "bath_spatial_energy_change": -90.14425086975098
+        }
+      },
+      "representation_segments": [
+        {
+          "phase": "train_first_pass",
+          "novel": true,
+          "samples": 128,
+          "status": "measured",
+          "variance": 351.0021826728887,
+          "temporal_roughness": 173.52781835900683,
+          "roughness_to_variance": 0.49437817462441114,
+          "spectral_entropy": 3.4582882663976804,
+          "normalized_spectral_entropy": 0.7139047697115077,
+          "effective_rank": 31.762560912637184,
+          "participation_rank": 12.853131505073542,
+          "rank_bound": 127
+        },
+        {
+          "phase": "fresh_B",
+          "novel": true,
+          "samples": 128,
+          "status": "measured",
+          "variance": 505.308469471366,
+          "temporal_roughness": 211.90291930216165,
+          "roughness_to_variance": 0.41935358717388255,
+          "spectral_entropy": 3.0676835717588773,
+          "normalized_spectral_entropy": 0.6332710766547931,
+          "effective_rank": 21.492060153877542,
+          "participation_rank": 8.75767457778795,
+          "rank_bound": 127
+        }
+      ],
+      "predictive_risk": {
+        "blocks": [
+          {
+            "phase": "train_first_pass",
+            "novel": true,
+            "segment": 0,
+            "event_midpoint": 4944.5,
+            "mean_nll": 7.2842813059687614
+          },
+          {
+            "phase": "train_first_pass",
+            "novel": true,
+            "segment": 0,
+            "event_midpoint": 4976.5,
+            "mean_nll": 7.0112118273973465
+          },
+          {
+            "phase": "train_first_pass",
+            "novel": true,
+            "segment": 0,
+            "event_midpoint": 5008.5,
+            "mean_nll": 7.391037479043007
+          },
+          {
+            "phase": "train_first_pass",
+            "novel": true,
+            "segment": 0,
+            "event_midpoint": 5040.5,
+            "mean_nll": 6.798809934407473
+          },
+          {
+            "phase": "fresh_B",
+            "novel": true,
+            "segment": 1,
+            "event_midpoint": 5072.5,
+            "mean_nll": 8.527715630829334
+          },
+          {
+            "phase": "fresh_B",
+            "novel": true,
+            "segment": 1,
+            "event_midpoint": 5104.5,
+            "mean_nll": 7.990897566080093
+          },
+          {
+            "phase": "fresh_B",
+            "novel": true,
+            "segment": 1,
+            "event_midpoint": 5136.5,
+            "mean_nll": 5.809948001988232
+          },
+          {
+            "phase": "fresh_B",
+            "novel": true,
+            "segment": 1,
+            "event_midpoint": 5168.5,
+            "mean_nll": 5.977741110138595
+          }
+        ],
+        "by_phase": {
+          "train_first_pass/first_pass": {
+            "segment": 0,
+            "complete_blocks": 4,
+            "slope_nats_per_event": -0.0033643389469943867,
+            "slope_hac_standard_error": 0.0022577713971258517,
+            "hac_lags": 1
+          },
+          "fresh_B/first_pass": {
+            "segment": 1,
+            "complete_blocks": 4,
+            "slope_nats_per_event": -0.030721478519262737,
+            "slope_hac_standard_error": 0.0053756230842059395,
+            "hac_lags": 1
+          }
+        }
+      },
+      "decoding": {
+        "feature_rms_before_norm": {
+          "latest": 1.2134252786636353,
+          "window_mean": 1.1565821031108499
+        },
+        "feature_rms_after_norm": {
+          "latest": 1.0012404918670654,
+          "window_mean": 1.0012292359024286
+        },
+        "logit_standard_deviation": {
+          "latest": 1.5953259468078613,
+          "window_mean": 1.5903498465195298
+        },
+        "prediction_entropy_nats": {
+          "latest": 6.470234394073486,
+          "window_mean": 6.956753235310316
+        }
+      },
+      "recent_optimizer_updates": [
+        {
+          "event": 4960,
+          "gradient_norm_before_clip": 9.236816302950402,
+          "actual_update_norm": 1.1848219685915176,
+          "parameter_norm": 3013.2371078111278,
+          "relative_update_norm": 0.0003932056875046898
+        },
+        {
+          "event": 4992,
+          "gradient_norm_before_clip": 8.066543140070488,
+          "actual_update_norm": 1.1634654579238128,
+          "parameter_norm": 3013.2843678463555,
+          "relative_update_norm": 0.0003861120677287292
+        },
+        {
+          "event": 5024,
+          "gradient_norm_before_clip": 7.6321037644994005,
+          "actual_update_norm": 1.1551808675635324,
+          "parameter_norm": 3013.3319024039433,
+          "relative_update_norm": 0.00038335666464154336
+        },
+        {
+          "event": 5056,
+          "gradient_norm_before_clip": 8.182634250648956,
+          "actual_update_norm": 1.1326696066976538,
+          "parameter_norm": 3013.3784863317546,
+          "relative_update_norm": 0.00037588029908465796
+        },
+        {
+          "event": 5088,
+          "gradient_norm_before_clip": 9.248644433967097,
+          "actual_update_norm": 1.134413476460881,
+          "parameter_norm": 3013.425816066516,
+          "relative_update_norm": 0.0003764530954810938
+        },
+        {
+          "event": 5120,
+          "gradient_norm_before_clip": 8.730969093616867,
+          "actual_update_norm": 1.1472156663624002,
+          "parameter_norm": 3013.4737490065777,
+          "relative_update_norm": 0.00038069542392416445
+        },
+        {
+          "event": 5152,
+          "gradient_norm_before_clip": 9.389996104587127,
+          "actual_update_norm": 1.1550117746704978,
+          "parameter_norm": 3013.52222313698,
+          "relative_update_norm": 0.00038327634214960844
+        },
+        {
+          "event": 5184,
+          "gradient_norm_before_clip": 9.315150303213489,
+          "actual_update_norm": 1.1568465830775243,
+          "parameter_norm": 3013.5709764095195,
+          "relative_update_norm": 0.0003838789901195008
+        }
+      ],
+      "interpretation": "Descriptive health measurements; no noise-expulsion, criticality or convergence verdict."
+    },
+    "phases": {
+      "train_first_pass": {
+        "events": 5056,
+        "nll_sum": 34888.21423214674,
+        "prior_sum": 36939.93310723664,
+        "nll": 6.900358827560669,
+        "fixed_unigram_nll": 7.3061576557034495,
+        "gain": 0.40579882814278095
+      },
+      "fresh_B": {
+        "events": 128,
+        "nll_sum": 905.8016738891602,
+        "prior_sum": 972.7188654953703,
+        "nll": 7.076575577259064,
+        "fixed_unigram_nll": 7.599366136682581,
+        "gain": 0.5227905594235169
+      }
+    },
+    "train_prequential_nll": 6.798809934407473,
+    "fixed_unigram_nll": 7.3984082314835415,
+    "seconds_per_group": 64.66426429999774,
+    "tokens_per_second": 0.49486374501288677,
+    "gradient_norm_before_clip": 8.182634250648956,
+    "lr": 0.0002,
+    "physical_time": 169.05653582513332,
+    "field_energy": 3.749347686767578,
+    "dc_energy": 2.495969772338867,
+    "spatial_energy": 1.2533777952194214,
+    "dc_share": 0.6657077670097351,
+    "spatial_share": 0.3342922329902649,
+    "temporal_read": {
+      "physical_time": 169.05653582513332,
+      "rates": [
+        0.7735416293144226,
+        0.19384880363941193,
+        0.04798141494393349,
+        0.011949945241212845
+      ],
+      "frequencies": [
+        -0.014138770289719105,
+        0.21416908502578735,
+        0.44129514694213867,
+        0.8733500838279724
+      ],
+      "dimensionless_frequencies": [
+        -0.012715461663901806,
+        0.19260931015014648,
+        0.39687126874923706,
+        0.7854325175285339
+      ],
+      "real_power_per_mode": [
+        0.07357172667980194,
+        0.01888766884803772,
+        0.005310753360390663,
+        0.00013923448568675667
+      ],
+      "imag_power_per_mode": [
+        2.1334391931304708e-05,
+        0.007517938502132893,
+        0.0030261632055044174,
+        0.0001994133781408891
+      ]
+    },
+    "evaluation_phase": "fresh_B",
+    "evaluation_completed_events": 128,
+    "evaluation_total_events": 256,
+    "error": "OutOfMemoryError: CUDA out of memory. Tried to allocate 148.00 MiB. GPU 0 has a total capacity of 4.00 GiB of which 464.75 MiB is free. 2.81 GiB allowed; Of the allocated memory 1.48 GiB is allocated by PyTorch, and 1.22 GiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)"
+  },
+  "first_completed_active_evaluation": null,
+  "continuity": "same individual, full physical/temporal state, posterior, optimizer moments, RNG, carry and stream cursors",
+  "prior_failure": "first active evaluation compiled forward AD and exceeded Dynamo variant limit; pre-evaluation checkpoint intact",
+  "resume_repair": "native complete-state JVP; preserve birth characteristic-scale metadata rather than remeasure learned material",
+  "cpu_regression": {
+    "passed": 108,
+    "optional_cuda_skipped": 13
+  },
+  "gpu_identity": {
+    "passed": true,
+    "maximum_absolute_differences": {
+      "state": 0.0,
+      "input_gradient": 3.3813194022513926e-08,
+      "parameter_gradient": 1.1138617992401123e-06
+    },
+    "parameter_tensors": 101,
+    "state_tensors": 11
+  },
+  "gpu_memory": {
+    "sample_count": 219,
+    "sampled_peak_dedicated_mib": 2952.6484375,
+    "sampled_peak_shared_mib": 80.0,
+    "counter_errors": [],
+    "cap_exceeded": false,
+    "last_sample": {
+      "seconds": 18941.3714779,
+      "dedicated_bytes": 3077201920,
+      "shared_bytes": 83886080,
+      "rows": [
+        {
+          "Name": "pid_37228_luid_0x00000000_0x00018DBD_phys_0",
+          "DedicatedUsage": 3077201920,
+          "SharedUsage": 83886080
+        }
+      ]
+    },
+    "peak_is_sampled": true
+  },
+  "matched_timing_cpu_threads": 2,
+  "warm_complete_update_seconds": {
+    "dense": 12.0727670999986,
+    "support": 11.576492200001667,
+    "dense_aux_omitted": 11.598658399998385
+  },
+  "matched_score_max_difference": 1.1175870895385742e-07,
+  "timing_interpretation": "about4 percent in one matched warm window; support and dense_aux_omitted differ0.2 percent, so key sparsity has no separately resolved end-to-end gain",
+  "dashboard": {
+    "url": "http://127.0.0.1:8085/",
+    "registry": "present/medium_dashboard_runs.json",
+    "current_run": "medium_d768_streaming_pathway_8x8x8_160k",
+    "server_pid": 17972,
+    "status": "current run verified in actual browser; evaluation counters and state snapshots update"
+  },
+  "launch_review": "Start-Process compound background launch rejected by automatic review with generic blocked-by-policy reason; direct tool-managed authorized training accepted",
+  "capability_claim": "none; numerical and resource acceptance only, early live trajectory is not convergence evidence",
+  "report": "docs/information_boltzmann/MEDIUM_PORT_WORKSPACE_ACCEPTANCE_20261009.md"
+}

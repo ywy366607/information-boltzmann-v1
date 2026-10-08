@@ -1,0 +1,223 @@
+{
+  "date": "2026-10-08",
+  "source": "results\\q8_fly_ctm_settle14_100k\\lifelong_evaluation.jsonl",
+  "source_modified": false,
+  "reference": {
+    "train": "D:\\information-boltzmann-v1\\data\\ib_owt_gpt2\\train.npy",
+    "tokens": 10940858,
+    "vocab_size": 50257,
+    "smoothing": "add one",
+    "frozen": true,
+    "validation_labels_used_for_prior": false,
+    "counts_sha256": "d4de1245c61786d8fd223427b29a7ae6db3157d84fac1f11790d2bfcb4c6a750"
+  },
+  "evaluation_only_backfill": true,
+  "training_changed": false,
+  "events": [
+    {
+      "bptt_train_tokens": 90000,
+      "fresh_validation_interval": [
+        4352,
+        4608
+      ],
+      "generalization": {
+        "protocol": "live_adaptation_speed_quality_v2",
+        "definition": "generalization = recovery time AND adapted predictive NLL",
+        "scored_tokens": 256,
+        "block_tokens": 16,
+        "confirmation_blocks": 2,
+        "plateau_blocks": 4,
+        "plateau_tolerance_nll": 0.1,
+        "status": "plateau_unconfirmed",
+        "plateau_status": "still_changing",
+        "plateau_nll": null,
+        "plateau_estimate_nll": 7.606972560286522,
+        "recovery_tokens": null,
+        "half_recovery_tokens": null,
+        "adaptation_mean_nll": 7.646942652994767,
+        "adaptation_cumulative_nll": 1957.6173191666603,
+        "comparison": "same target order, exposure and optimizer budgets; lower time and NLL preferred",
+        "appl_h": 2094.232994677048,
+        "log_appl_h": 7.646942652994767,
+        "log_gain_over_reference": 0.26311282445691564,
+        "gain_ratio_over_reference": 1.3009734922994873,
+        "reference_mean_nll": 7.9100554774516825,
+        "initial_block_nll": 6.514224048703909,
+        "plateau_interval_tokens": [
+          192,
+          256
+        ],
+        "trailing_unblocked_tokens": 0,
+        "plateau_trend_nll": -0.15581067055463793,
+        "plateau_half_window_drift_nll": 0.06516493111848831,
+        "plateau_block_std_nll": 0.7312461987665528,
+        "plateau_reference_nll": 7.772190276182126,
+        "plateau_estimate_gain_over_reference": 0.1652177158956043
+      }
+    },
+    {
+      "bptt_train_tokens": 95000,
+      "fresh_validation_interval": [
+        4608,
+        4864
+      ],
+      "generalization": {
+        "protocol": "live_adaptation_speed_quality_v2",
+        "definition": "generalization = recovery time AND adapted predictive NLL",
+        "scored_tokens": 256,
+        "block_tokens": 16,
+        "confirmation_blocks": 2,
+        "plateau_blocks": 4,
+        "plateau_tolerance_nll": 0.1,
+        "status": "plateau_unconfirmed",
+        "plateau_status": "still_changing",
+        "plateau_nll": null,
+        "plateau_estimate_nll": 7.5932284677401185,
+        "recovery_tokens": null,
+        "half_recovery_tokens": null,
+        "adaptation_mean_nll": 7.648424740182236,
+        "adaptation_cumulative_nll": 1957.9967334866524,
+        "comparison": "same target order, exposure and optimizer budgets; lower time and NLL preferred",
+        "appl_h": 2097.3391317804617,
+        "log_appl_h": 7.648424740182236,
+        "log_gain_over_reference": 0.16778213634209838,
+        "gain_ratio_over_reference": 1.1826789198225016,
+        "reference_mean_nll": 7.816206876524334,
+        "initial_block_nll": 7.60307989269495,
+        "plateau_interval_tokens": [
+          192,
+          256
+        ],
+        "trailing_unblocked_tokens": 0,
+        "plateau_trend_nll": -0.7332220818847417,
+        "plateau_half_window_drift_nll": -0.030040336772799492,
+        "plateau_block_std_nll": 0.9422885448794376,
+        "plateau_reference_nll": 7.756701347741928,
+        "plateau_estimate_gain_over_reference": 0.1634728800018097
+      }
+    },
+    {
+      "bptt_train_tokens": 100000,
+      "fresh_validation_interval": [
+        4864,
+        5120
+      ],
+      "generalization": {
+        "protocol": "live_adaptation_speed_quality_v2",
+        "definition": "generalization = recovery time AND adapted predictive NLL",
+        "scored_tokens": 256,
+        "block_tokens": 16,
+        "confirmation_blocks": 2,
+        "plateau_blocks": 4,
+        "plateau_tolerance_nll": 0.1,
+        "status": "plateau_unconfirmed",
+        "plateau_status": "still_changing",
+        "plateau_nll": null,
+        "plateau_estimate_nll": 7.521211235783994,
+        "recovery_tokens": null,
+        "half_recovery_tokens": null,
+        "adaptation_mean_nll": 7.591035559074953,
+        "adaptation_cumulative_nll": 1943.305103123188,
+        "comparison": "same target order, exposure and optimizer budgets; lower time and NLL preferred",
+        "appl_h": 1980.3632353791097,
+        "log_appl_h": 7.591035559074953,
+        "log_gain_over_reference": 0.15420466641342045,
+        "gain_ratio_over_reference": 1.1667296527173747,
+        "reference_mean_nll": 7.745240225488374,
+        "initial_block_nll": 9.516531318426132,
+        "plateau_interval_tokens": [
+          192,
+          256
+        ],
+        "trailing_unblocked_tokens": 0,
+        "plateau_trend_nll": -1.208854737505317,
+        "plateau_half_window_drift_nll": -1.1285993587225676,
+        "plateau_block_std_nll": 1.113367205752404,
+        "plateau_reference_nll": 7.691818311465232,
+        "plateau_estimate_gain_over_reference": 0.17060707568123767
+      }
+    },
+    {
+      "bptt_train_tokens": 105024,
+      "fresh_validation_interval": [
+        5120,
+        5376
+      ],
+      "generalization": {
+        "protocol": "live_adaptation_speed_quality_v2",
+        "definition": "generalization = recovery time AND adapted predictive NLL",
+        "scored_tokens": 256,
+        "block_tokens": 16,
+        "confirmation_blocks": 2,
+        "plateau_blocks": 4,
+        "plateau_tolerance_nll": 0.1,
+        "status": "plateau_unconfirmed",
+        "plateau_status": "still_changing",
+        "plateau_nll": null,
+        "plateau_estimate_nll": 7.261287789791822,
+        "recovery_tokens": null,
+        "half_recovery_tokens": null,
+        "adaptation_mean_nll": 7.780898697907105,
+        "adaptation_cumulative_nll": 1991.910066664219,
+        "comparison": "same target order, exposure and optimizer budgets; lower time and NLL preferred",
+        "appl_h": 2394.425719271144,
+        "log_appl_h": 7.780898697907105,
+        "log_gain_over_reference": 0.016395625713457207,
+        "gain_ratio_over_reference": 1.016530771574792,
+        "reference_mean_nll": 7.797294323620562,
+        "initial_block_nll": 8.185766130685806,
+        "plateau_interval_tokens": [
+          192,
+          256
+        ],
+        "trailing_unblocked_tokens": 0,
+        "plateau_trend_nll": 1.8585952654480933,
+        "plateau_half_window_drift_nll": 1.4553635343909264,
+        "plateau_block_std_nll": 0.9556339419917315,
+        "plateau_reference_nll": 7.508290422646455,
+        "plateau_estimate_gain_over_reference": 0.24700263285463286
+      }
+    },
+    {
+      "bptt_train_tokens": 110016,
+      "fresh_validation_interval": [
+        5376,
+        5632
+      ],
+      "generalization": {
+        "protocol": "live_adaptation_speed_quality_v2",
+        "definition": "generalization = recovery time AND adapted predictive NLL",
+        "scored_tokens": 256,
+        "block_tokens": 16,
+        "confirmation_blocks": 2,
+        "plateau_blocks": 4,
+        "plateau_tolerance_nll": 0.1,
+        "status": "plateau_unconfirmed",
+        "plateau_status": "still_changing",
+        "plateau_nll": null,
+        "plateau_estimate_nll": 8.232271089218557,
+        "recovery_tokens": null,
+        "half_recovery_tokens": null,
+        "adaptation_mean_nll": 7.507858790806495,
+        "adaptation_cumulative_nll": 1922.0118504464626,
+        "comparison": "same target order, exposure and optimizer budgets; lower time and NLL preferred",
+        "appl_h": 1822.3074209937965,
+        "log_appl_h": 7.507858790806495,
+        "log_gain_over_reference": 0.33556040556153377,
+        "gain_ratio_over_reference": 1.3987240183447096,
+        "reference_mean_nll": 7.843419196368028,
+        "initial_block_nll": 8.529072046279907,
+        "plateau_interval_tokens": [
+          192,
+          256
+        ],
+        "trailing_unblocked_tokens": 0,
+        "plateau_trend_nll": 1.0623817775398492,
+        "plateau_half_window_drift_nll": 1.441691743209958,
+        "plateau_block_std_nll": 1.1074639775900923,
+        "plateau_reference_nll": 8.318531723847038,
+        "plateau_estimate_gain_over_reference": 0.08626063462848066
+      }
+    }
+  ]
+}

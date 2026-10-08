@@ -1,0 +1,13 @@
+{
+  "scope": "Single saved-checkpoint CPU fork, 32 real continuing OWT targets plus 32 immediate fresh targets; no production changes or new training arm",
+  "hypotheses": [
+    {"id": "conditional_path", "prediction": "Full/common predictive difference stays small despite motor variation, and actual R/decoder displacement has predominantly common-gradient inner product."},
+    {"id": "marginal_calibration", "prediction": "Head update improves effective common NLL while conditional gain remains small; excess over fixed train-only unigram can persist."},
+    {"id": "optimizer_or_surrogate", "prediction": "Saved-Adam displacement can oppose the current gradient, or first-order predicted gain disagrees with finite hard-spike replay; measure both before blaming missing capacity."}
+  ],
+  "registered_update": "Full parameter coverage of both existing AdamW optimizers with stored moments/steps/LR/betas/eps/decay, global norm clip1, postupdate excitatory/inhibitory edge clamp0..5; all existing STP params included when enabled",
+  "state_rules": "Fitted replay starts at saved complete initial state; fresh comparison starts at the common old-parameter terminal after first32, matching production. No reset/burn-in substitution.",
+  "measures": "Full/common and fixed previous128-event common scores; mean/covariance linear gradient identities; actual rounded optimizer displacement inner products; 2x2 body/head crossed scores; hard-spike support changes",
+  "stop": "Exactly one joint update on a fork. No additional training based on this result alone.",
+  "review": "diagnosis_review reviewed plan and identified coverage, checkpoint recomputation purity, surrogate discontinuity and retrospective-common interpretation requirements"
+}

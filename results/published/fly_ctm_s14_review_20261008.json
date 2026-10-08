@@ -1,0 +1,72 @@
+{
+  "scope": "Existing log/source review; no training or new model execution",
+  "run": "results\\q8_fly_ctm_settle14_100k",
+  "measurement": "Active score-before-update B stream; Laplace-smoothed training-only unigram on exactly matched targets",
+  "training_count_sha256": "d4de1245c61786d8fd223427b29a7ae6db3157d84fac1f11790d2bfcb4c6a750",
+  "s14_stage": {
+    "start_train_tokens": 85000,
+    "end_train_tokens": 100000,
+    "new_training_targets": 15000,
+    "train_prequential_nll": 7.091829985543092,
+    "paired_train_unigram_nll": 7.523899978666512,
+    "paired_train_gain": 0.4320699931234202,
+    "new_training_updates": 3750
+  },
+  "fresh_B": [
+    {
+      "train_tokens": 90000,
+      "validation_target_interval": [
+        4352,
+        4608
+      ],
+      "validation_targets": 256,
+      "model_active_prequential_nll": 7.646942652994767,
+      "fixed_training_unigram_nll": 7.910055477451682,
+      "paired_gain": 0.26311282445691475
+    },
+    {
+      "train_tokens": 95000,
+      "validation_target_interval": [
+        4608,
+        4864
+      ],
+      "validation_targets": 256,
+      "model_active_prequential_nll": 7.648424740182236,
+      "fixed_training_unigram_nll": 7.816206876524335,
+      "paired_gain": 0.16778213634209926
+    },
+    {
+      "train_tokens": 100000,
+      "validation_target_interval": [
+        4864,
+        5120
+      ],
+      "validation_targets": 256,
+      "model_active_prequential_nll": 7.591035559074953,
+      "fixed_training_unigram_nll": 7.74524022548837,
+      "paired_gain": 0.1542046664134169
+    }
+  ],
+  "reported_recent_training_tail": {
+    "targets": 512,
+    "nll": 6.679498517129105,
+    "gain": 0.6869358798744258
+  },
+  "inherited_phase_start": 18144,
+  "physical_ticks_per_token": 15,
+  "credit_tokens": 4,
+  "time_selection": "Minimum predictive entropy after all ticks; persistent state still advances to final tick",
+  "training_loss": "0.5 * (label-minimum-tick CE + entropy-selected-tick CE)",
+  "evaluation_score": "Entropy-selected-tick CE (no label-based time selection)",
+  "gradient_accumulation_proposal": {
+    "chunks": 8,
+    "tokens_per_chunk": 4,
+    "tokens_per_update": 32,
+    "credit_tokens": 4,
+    "status": "Attachment one-update test; not integrated into production CLI",
+    "equivalence": "Mean of detached-boundary chunk objectives at fixed parameters; different from full BPTT32",
+    "stability": "One finite update does not establish a universal stability bound"
+  },
+  "conclusion": "All three fresh B segments beat the paired unigram. Incremental benefit of S14 over S4 remains unidentified because training lineage, credit window and data intervals differ.",
+  "review": "/root/rtc_contract_review independently confirmed scoring/credit distinction"
+}

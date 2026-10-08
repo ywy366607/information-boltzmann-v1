@@ -1,0 +1,3979 @@
+{
+  "protocol": "recorded active pre-update four-pillar trajectory; state never reset",
+  "timing_boundary_bptt_targets": 600928,
+  "new_timing_fresh_training_targets": 500896,
+  "new_timing_fresh_training_updates": 15653,
+  "capability_assessment": "sufficient_minimum_updates; convergence and capability require validation evidence",
+  "current_progress": {
+    "status": "running",
+    "bptt_train_tokens": 1101824,
+    "tokens_streamed": 1201824,
+    "target_bptt_tokens": 30182144,
+    "ema_stream_loss": 7.169067044955715,
+    "fresh_budget_tokens_processed": 919680,
+    "fresh_training_budget": 30000000,
+    "lr": 0.0002,
+    "lr_decoder": 0.0001,
+    "lr_synapse": 0.0002,
+    "lr_sensory": 0.0002,
+    "best_live_nll": 7.853374890983105,
+    "speed_tokens_per_sec": 39.18552829767365,
+    "field_energy": 0.26612210273742676,
+    "firing_rate": 0.023867201060056686,
+    "read_norm_mean": 0.18867707252502441,
+    "vram_allocated_mib": 1615.85009765625,
+    "vram_reserved_mib": 2912.0,
+    "vram_peak_mib": 2731.0390625,
+    "setup_peak_mib": 2731.0390625,
+    "events": 1233080,
+    "physical_ticks": 1735896,
+    "physical_ticks_per_input": 2,
+    "settle_ticks": 1,
+    "writer_baseline_clock": "input",
+    "bptt_optimizer_updates": 34984,
+    "grad_norm_before_clip": 2.418137550354004,
+    "synapse_grad_norm": 0.23402059078216553,
+    "writer_grad_norm": 0.04621162638068199,
+    "writer_gate_grad_norm": 0.19193942844867706,
+    "read_grad_norm": 0.0809275284409523,
+    "decoder_grad_norm": 0.8902761936187744,
+    "read_norm_grad_norm": 0.869472861289978,
+    "writer_total_grad_norm": 0.19742405781958935,
+    "writer_gradient_rms": 5.646977915583059e-05,
+    "synapse_gradient_rms": 4.6506136006159444e-05,
+    "read_gradient_rms": 6.04586294248657e-05,
+    "decoder_gradient_rms": 0.00014329989427554725,
+    "first_pass_measurement_start_bptt_tokens": 827392,
+    "first_pass_measurement_start_train_cursor": 927392,
+    "first_pass_measured_train_targets": 274432,
+    "first_pass_train_nll": 7.862851941832967,
+    "first_pass_fixed_unigram_nll": 7.564718514410319,
+    "first_pass_gain_over_fixed_unigram": -0.29813342742264765,
+    "recent_first_pass_measured_targets": 4096,
+    "recent_first_pass_train_nll": 8.157162565854378,
+    "recent_first_pass_fixed_unigram_nll": 7.650469470471812,
+    "recent_first_pass_gain_over_fixed_unigram": -0.5066930953825661,
+    "phase_first_pass_measurement_start_bptt_tokens": 943712,
+    "phase_first_pass_measurement_start_train_cursor": 1043712,
+    "phase_first_pass_measured_train_targets": 158112,
+    "phase_first_pass_train_nll": 7.857149367475348,
+    "phase_first_pass_fixed_unigram_nll": 7.599320074824254,
+    "phase_first_pass_gain_over_fixed_unigram": -0.2578292926510944,
+    "phase_recent_first_pass_measured_targets": 4096,
+    "phase_recent_first_pass_train_nll": 8.157162565854378,
+    "phase_recent_first_pass_fixed_unigram_nll": 7.650469470471812,
+    "phase_recent_first_pass_gain_over_fixed_unigram": -0.5066930953825661
+  },
+  "new_timing_validation": {
+    "encounters": 5,
+    "fresh_targets": 1280,
+    "weighted_model_nll": 8.296076991967857,
+    "weighted_fixed_unigram_nll": 7.894618436828604,
+    "weighted_gain_over_fixed_unigram": -0.40145855513925266
+  },
+  "current_implementation_phase": {
+    "writer_baseline_clock": "input",
+    "start_bptt_train_tokens": 943712,
+    "fresh_training_updates": 4941,
+    "encounters": 2,
+    "fresh_validation_targets": 512,
+    "weighted_model_nll": 7.944375837221742,
+    "weighted_fixed_unigram_nll": 7.7026803981442145,
+    "weighted_gain_over_fixed_unigram": -0.24169543907752722
+  },
+  "encounters": [
+    {
+      "bptt_train_tokens": 105024,
+      "timing": "legacy_one_tick",
+      "physical_ticks_per_input": 1,
+      "writer_baseline_clock": "physical",
+      "actual_exposure": {
+        "input_events": 384,
+        "physical_ticks": 384,
+        "optimizer_updates": 12
+      },
+      "first_pass": {
+        "tokens": 256,
+        "validation_range": [
+          9720,
+          9976
+        ],
+        "model_nll": 7.43038044963032,
+        "fixed_unigram_nll": 6.9507489503659805,
+        "gain_over_fixed_unigram": -0.47963149926433846,
+        "gain_per_optimizer_window": [
+          -0.584048935939848,
+          -0.2888533096766402,
+          -0.8853354892326113,
+          0.03612079226832207,
+          -0.3350428379861825,
+          -0.8371888458869374,
+          -0.6631790762169778,
+          -0.2795242914438325
+        ]
+      },
+      "adaptation": {
+        "recorded_recovery": {
+          "tokens": 256,
+          "block_tokens": 16,
+          "confirmation_blocks": 2,
+          "block_curve": [
+            {
+              "end_token": 16,
+              "mean_nll": 7.143473580479622
+            },
+            {
+              "end_token": 32,
+              "mean_nll": 7.5988867580890656
+            },
+            {
+              "end_token": 48,
+              "mean_nll": 7.128629446029663
+            },
+            {
+              "end_token": 64,
+              "mean_nll": 7.076658949255943
+            },
+            {
+              "end_token": 80,
+              "mean_nll": 7.747473821043968
+            },
+            {
+              "end_token": 96,
+              "mean_nll": 9.965602740645409
+            },
+            {
+              "end_token": 112,
+              "mean_nll": 6.1257942616939545
+            },
+            {
+              "end_token": 128,
+              "mean_nll": 6.193718373775482
+            },
+            {
+              "end_token": 144,
+              "mean_nll": 7.613736122846603
+            },
+            {
+              "end_token": 160,
+              "mean_nll": 6.726897552609444
+            },
+            {
+              "end_token": 176,
+              "mean_nll": 8.11681441962719
+            },
+            {
+              "end_token": 192,
+              "mean_nll": 8.423974856734276
+            },
+            {
+              "end_token": 208,
+              "mean_nll": 7.094138294458389
+            },
+            {
+              "end_token": 224,
+              "mean_nll": 7.904953628778458
+            },
+            {
+              "end_token": 240,
+              "mean_nll": 6.1701913475990295
+            },
+            {
+              "end_token": 256,
+              "mean_nll": 7.855143040418625
+            }
+          ],
+          "half_recovery_tokens": 128,
+          "status": "observed_recovery",
+          "initial_block_nll": 7.143473580479622,
+          "observed_late_nll": 7.012667194008827,
+          "observed_drop": 0.13080638647079468,
+          "threshold_nll": 7.0780703872442245
+        },
+        "reference_relative_block_curve": [
+          0.4765018224452854,
+          0.6915960494344104,
+          0.14999650820400318,
+          0.42771011114927715,
+          0.3792978589685021,
+          1.3913731194967205,
+          -0.16883165132177613,
+          0.09659006678513202,
+          0.6169090063139062,
+          0.0531766696584588,
+          0.9578770860108576,
+          0.7165006057630172,
+          0.5384075095944256,
+          0.7879506428395301,
+          0.025511453437486536,
+          0.5335371294501785
+        ],
+        "reference_relative_opening_to_late_drop": 0.19697753100145288,
+        "scope": "descriptive trajectory; reference controls marginal difficulty only"
+      },
+      "revisit": {
+        "matched_pairs": 127,
+        "matched_nll_gain": 0.1034315908987691,
+        "first_return_window_matched_pairs": 31,
+        "first_return_window_preupdate_nll_gain": 0.1187744140625,
+        "return_bridge_nll": 17.946945190429688,
+        "B_exposure_events": 256,
+        "intervening_events_before_first_matched_pair": 257,
+        "intervening_physical_ticks_before_first_matched_pair": 257,
+        "scope": "first window precedes return update; later replay scores include relearning"
+      },
+      "health": {
+        "field_energy": 0.26476219296455383,
+        "firing_rate": 0.008514916524291039,
+        "centered_effective_rank": 1.0588594675064087,
+        "read_norm_mean": 0.11346902698278427,
+        "vram_peak_mib": 1914.15625,
+        "vram_reserved_mib": 2390.0
+      },
+      "health_scope": "field energy, activity and centered representation structure; FTLE not measured in this branch"
+    },
+    {
+      "bptt_train_tokens": 110016,
+      "timing": "legacy_one_tick",
+      "physical_ticks_per_input": 1,
+      "writer_baseline_clock": "physical",
+      "actual_exposure": {
+        "input_events": 384,
+        "physical_ticks": 384,
+        "optimizer_updates": 12
+      },
+      "first_pass": {
+        "tokens": 256,
+        "validation_range": [
+          9976,
+          10232
+        ],
+        "model_nll": 7.793720257468522,
+        "fixed_unigram_nll": 7.2539508828978665,
+        "gain_over_fixed_unigram": -0.5397693745706555,
+        "gain_per_optimizer_window": [
+          -0.3230723000303846,
+          -0.3321853305725231,
+          -0.19804302104947794,
+          -0.17225164863109788,
+          -0.9205135395936759,
+          -1.1547819317005872,
+          -0.7371603908521762,
+          -0.48014683413532067
+        ]
+      },
+      "adaptation": {
+        "recorded_recovery": {
+          "tokens": 256,
+          "block_tokens": 16,
+          "confirmation_blocks": 2,
+          "block_curve": [
+            {
+              "end_token": 16,
+              "mean_nll": 6.943025127053261
+            },
+            {
+              "end_token": 32,
+              "mean_nll": 7.548403635621071
+            },
+            {
+              "end_token": 48,
+              "mean_nll": 8.093962237238884
+            },
+            {
+              "end_token": 64,
+              "mean_nll": 6.8903950452804565
+            },
+            {
+              "end_token": 80,
+              "mean_nll": 6.731471985578537
+            },
+            {
+              "end_token": 96,
+              "mean_nll": 8.264055252075195
+            },
+            {
+              "end_token": 112,
+              "mean_nll": 6.9299784898757935
+            },
+            {
+              "end_token": 128,
+              "mean_nll": 5.9263764172792435
+            },
+            {
+              "end_token": 144,
+              "mean_nll": 9.35773529112339
+            },
+            {
+              "end_token": 160,
+              "mean_nll": 7.564398303627968
+            },
+            {
+              "end_token": 176,
+              "mean_nll": 9.823642879724503
+            },
+            {
+              "end_token": 192,
+              "mean_nll": 8.763128206133842
+            },
+            {
+              "end_token": 208,
+              "mean_nll": 8.419792920351028
+            },
+            {
+              "end_token": 224,
+              "mean_nll": 8.253224700689316
+            },
+            {
+              "end_token": 240,
+              "mean_nll": 8.256905600428581
+            },
+            {
+              "end_token": 256,
+              "mean_nll": 6.933028027415276
+            }
+          ],
+          "half_recovery_tokens": null,
+          "status": "no_observed_improvement",
+          "initial_block_nll": 6.943025127053261,
+          "observed_late_nll": 7.594966813921928,
+          "observed_drop": -0.6519416868686676
+        },
+        "reference_relative_block_curve": [
+          0.3154339978899291,
+          0.33071060217084014,
+          0.6172104636356841,
+          0.04716019750936215,
+          -0.30328567725789346,
+          0.6993717193568493,
+          0.2155845110418423,
+          0.12891878622035335,
+          1.318081779343908,
+          0.5229452998434436,
+          1.495488613099908,
+          0.8140752503012664,
+          0.865423324974036,
+          0.6088974567303165,
+          0.8763635921498341,
+          0.08393007612080741
+        ],
+        "reference_relative_opening_to_late_drop": -0.16471283624539163,
+        "scope": "descriptive trajectory; reference controls marginal difficulty only"
+      },
+      "revisit": {
+        "matched_pairs": 127,
+        "matched_nll_gain": 0.3291546509960505,
+        "first_return_window_matched_pairs": 31,
+        "first_return_window_preupdate_nll_gain": 0.3809620949529832,
+        "return_bridge_nll": 3.756898880004883,
+        "B_exposure_events": 256,
+        "intervening_events_before_first_matched_pair": 257,
+        "intervening_physical_ticks_before_first_matched_pair": 257,
+        "scope": "first window precedes return update; later replay scores include relearning"
+      },
+      "health": {
+        "field_energy": 0.36022257804870605,
+        "firing_rate": 0.010919199325144291,
+        "centered_effective_rank": 1.0312505960464478,
+        "read_norm_mean": 0.11439242959022522,
+        "vram_peak_mib": 1914.15625,
+        "vram_reserved_mib": 2390.0
+      },
+      "health_scope": "field energy, activity and centered representation structure; FTLE not measured in this branch"
+    },
+    {
+      "bptt_train_tokens": 115008,
+      "timing": "legacy_one_tick",
+      "physical_ticks_per_input": 1,
+      "writer_baseline_clock": "physical",
+      "actual_exposure": {
+        "input_events": 384,
+        "physical_ticks": 384,
+        "optimizer_updates": 12
+      },
+      "first_pass": {
+        "tokens": 256,
+        "validation_range": [
+          10232,
+          10488
+        ],
+        "model_nll": 8.288244026713073,
+        "fixed_unigram_nll": 7.61510917569045,
+        "gain_over_fixed_unigram": -0.6731348510226228,
+        "gain_per_optimizer_window": [
+          -0.5825409544072513,
+          -1.1362513422544245,
+          -0.4102194100527593,
+          -0.8263380063079836,
+          -0.7187217199527471,
+          -0.5086810698883761,
+          -0.7251618038508452,
+          -0.4771645014665957
+        ]
+      },
+      "adaptation": {
+        "recorded_recovery": {
+          "tokens": 256,
+          "block_tokens": 16,
+          "confirmation_blocks": 2,
+          "block_curve": [
+            {
+              "end_token": 16,
+              "mean_nll": 7.57509770989418
+            },
+            {
+              "end_token": 32,
+              "mean_nll": 9.324688747525215
+            },
+            {
+              "end_token": 48,
+              "mean_nll": 8.329845800995827
+            },
+            {
+              "end_token": 64,
+              "mean_nll": 9.546152949333191
+            },
+            {
+              "end_token": 80,
+              "mean_nll": 7.092523589730263
+            },
+            {
+              "end_token": 96,
+              "mean_nll": 8.10179290175438
+            },
+            {
+              "end_token": 112,
+              "mean_nll": 9.136483758687973
+            },
+            {
+              "end_token": 128,
+              "mean_nll": 8.553822219371796
+            },
+            {
+              "end_token": 144,
+              "mean_nll": 8.880498826503754
+            },
+            {
+              "end_token": 160,
+              "mean_nll": 8.449439138174057
+            },
+            {
+              "end_token": 176,
+              "mean_nll": 7.306376665830612
+            },
+            {
+              "end_token": 192,
+              "mean_nll": 8.327201932668686
+            },
+            {
+              "end_token": 208,
+              "mean_nll": 6.0565516501665115
+            },
+            {
+              "end_token": 224,
+              "mean_nll": 10.628615602850914
+            },
+            {
+              "end_token": 240,
+              "mean_nll": 7.690176233649254
+            },
+            {
+              "end_token": 256,
+              "mean_nll": 7.61263670027256
+            }
+          ],
+          "half_recovery_tokens": null,
+          "status": "no_observed_improvement",
+          "initial_block_nll": 7.57509770989418,
+          "observed_late_nll": 7.651406466960907,
+          "observed_drop": -0.07630875706672668
+        },
+        "reference_relative_block_curve": [
+          0.41355571765412846,
+          0.7515261911603739,
+          0.9606063357903243,
+          1.311896348718525,
+          0.3415198955834598,
+          0.47891892452205886,
+          0.7514139791700609,
+          0.9012620334459062,
+          0.8529313217330238,
+          0.5845121181724704,
+          0.467974166851038,
+          0.5493879729257145,
+          -0.041134404426014154,
+          1.4914580121277043,
+          0.3383846139948169,
+          0.6159443889383744
+        ],
+        "reference_relative_opening_to_late_drop": -0.0636087838124672,
+        "scope": "descriptive trajectory; reference controls marginal difficulty only"
+      },
+      "revisit": {
+        "matched_pairs": 127,
+        "matched_nll_gain": 0.12303419188251645,
+        "first_return_window_matched_pairs": 31,
+        "first_return_window_preupdate_nll_gain": 0.1227820304132277,
+        "return_bridge_nll": 5.460831642150879,
+        "B_exposure_events": 256,
+        "intervening_events_before_first_matched_pair": 257,
+        "intervening_physical_ticks_before_first_matched_pair": 257,
+        "scope": "first window precedes return update; later replay scores include relearning"
+      },
+      "health": {
+        "field_energy": 0.1299397498369217,
+        "firing_rate": 0.007606497034430504,
+        "centered_effective_rank": 1.245194435119629,
+        "read_norm_mean": 0.11629810929298401,
+        "vram_peak_mib": 1914.15625,
+        "vram_reserved_mib": 2390.0
+      },
+      "health_scope": "field energy, activity and centered representation structure; FTLE not measured in this branch"
+    },
+    {
+      "bptt_train_tokens": 120000,
+      "timing": "legacy_one_tick",
+      "physical_ticks_per_input": 1,
+      "writer_baseline_clock": "physical",
+      "actual_exposure": {
+        "input_events": 384,
+        "physical_ticks": 384,
+        "optimizer_updates": 12
+      },
+      "first_pass": {
+        "tokens": 256,
+        "validation_range": [
+          10488,
+          10744
+        ],
+        "model_nll": 8.320903335697949,
+        "fixed_unigram_nll": 7.536073693201548,
+        "gain_over_fixed_unigram": -0.7848296424964025,
+        "gain_per_optimizer_window": [
+          -0.8855119954926729,
+          -0.8838010921439117,
+          -1.2761157689802463,
+          -1.140571308345015,
+          -0.26209189207009276,
+          -0.38070132045819977,
+          -0.7758672615438885,
+          -0.6739765009371917
+        ]
+      },
+      "adaptation": {
+        "recorded_recovery": {
+          "tokens": 256,
+          "block_tokens": 16,
+          "confirmation_blocks": 2,
+          "block_curve": [
+            {
+              "end_token": 16,
+              "mean_nll": 8.953368112444878
+            },
+            {
+              "end_token": 32,
+              "mean_nll": 8.304097667336464
+            },
+            {
+              "end_token": 48,
+              "mean_nll": 6.641084060072899
+            },
+            {
+              "end_token": 64,
+              "mean_nll": 10.746626436710358
+            },
+            {
+              "end_token": 80,
+              "mean_nll": 8.94481611251831
+            },
+            {
+              "end_token": 96,
+              "mean_nll": 9.479476600885391
+            },
+            {
+              "end_token": 112,
+              "mean_nll": 8.662531927227974
+            },
+            {
+              "end_token": 128,
+              "mean_nll": 9.049612626433372
+            },
+            {
+              "end_token": 144,
+              "mean_nll": 6.88041128218174
+            },
+            {
+              "end_token": 160,
+              "mean_nll": 7.774478480219841
+            },
+            {
+              "end_token": 176,
+              "mean_nll": 7.678155481815338
+            },
+            {
+              "end_token": 192,
+              "mean_nll": 7.444722607731819
+            },
+            {
+              "end_token": 208,
+              "mean_nll": 8.961346819996834
+            },
+            {
+              "end_token": 224,
+              "mean_nll": 7.912897899746895
+            },
+            {
+              "end_token": 240,
+              "mean_nll": 6.127528935670853
+            },
+            {
+              "end_token": 256,
+              "mean_nll": 9.573298320174217
+            }
+          ],
+          "half_recovery_tokens": 48,
+          "status": "observed_recovery",
+          "initial_block_nll": 8.953368112444878,
+          "observed_late_nll": 7.850413627922535,
+          "observed_drop": 1.1029544845223427,
+          "threshold_nll": 8.401890870183706
+        },
+        "reference_relative_block_curve": [
+          0.8983151006426735,
+          0.8727088903426721,
+          0.2848770929173893,
+          1.4827250913704342,
+          1.1749948601799987,
+          1.3772366777804939,
+          1.0366919530942773,
+          1.244450663595753,
+          0.012799800641477233,
+          0.5113839834987083,
+          0.5900134599183651,
+          0.17138918099803455,
+          0.9949050821185332,
+          0.5568294409692439,
+          -0.24987874101785687,
+          1.5978317428922402
+        ],
+        "reference_relative_opening_to_late_drop": 0.22433859970548187,
+        "scope": "descriptive trajectory; reference controls marginal difficulty only"
+      },
+      "revisit": {
+        "matched_pairs": 127,
+        "matched_nll_gain": 0.09423268498398188,
+        "first_return_window_matched_pairs": 31,
+        "first_return_window_preupdate_nll_gain": 0.09751439863635648,
+        "return_bridge_nll": 3.2411158084869385,
+        "B_exposure_events": 256,
+        "intervening_events_before_first_matched_pair": 257,
+        "intervening_physical_ticks_before_first_matched_pair": 257,
+        "scope": "first window precedes return update; later replay scores include relearning"
+      },
+      "health": {
+        "field_energy": 0.09378565102815628,
+        "firing_rate": 0.011500587686896324,
+        "centered_effective_rank": 1.1532342433929443,
+        "read_norm_mean": 0.11649929732084274,
+        "vram_peak_mib": 1914.15625,
+        "vram_reserved_mib": 2390.0
+      },
+      "health_scope": "field energy, activity and centered representation structure; FTLE not measured in this branch"
+    },
+    {
+      "bptt_train_tokens": 125024,
+      "timing": "legacy_one_tick",
+      "physical_ticks_per_input": 1,
+      "writer_baseline_clock": "physical",
+      "actual_exposure": {
+        "input_events": 384,
+        "physical_ticks": 384,
+        "optimizer_updates": 12
+      },
+      "first_pass": {
+        "tokens": 256,
+        "validation_range": [
+          10744,
+          11000
+        ],
+        "model_nll": 8.132383410818875,
+        "fixed_unigram_nll": 7.5367041152686,
+        "gain_over_fixed_unigram": -0.5956792955502753,
+        "gain_per_optimizer_window": [
+          0.12348622301172418,
+          -0.5116750092866256,
+          -0.4999877645407891,
+          -0.33161904008848947,
+          -0.887670356438216,
+          -0.5511418034806972,
+          -0.8166347137322296,
+          -1.2901918998468802
+        ]
+      },
+      "adaptation": {
+        "recorded_recovery": {
+          "tokens": 256,
+          "block_tokens": 16,
+          "confirmation_blocks": 2,
+          "block_curve": [
+            {
+              "end_token": 16,
+              "mean_nll": 6.25841997563839
+            },
+            {
+              "end_token": 32,
+              "mean_nll": 6.866681754589081
+            },
+            {
+              "end_token": 48,
+              "mean_nll": 7.935008481144905
+            },
+            {
+              "end_token": 64,
+              "mean_nll": 7.5342914164066315
+            },
+            {
+              "end_token": 80,
+              "mean_nll": 8.74621930718422
+            },
+            {
+              "end_token": 96,
+              "mean_nll": 8.415599688887596
+            },
+            {
+              "end_token": 112,
+              "mean_nll": 7.428337022662163
+            },
+            {
+              "end_token": 128,
+              "mean_nll": 7.644347667694092
+            },
+            {
+              "end_token": 144,
+              "mean_nll": 9.333857774734497
+            },
+            {
+              "end_token": 160,
+              "mean_nll": 7.595590680837631
+            },
+            {
+              "end_token": 176,
+              "mean_nll": 8.892236769199371
+            },
+            {
+              "end_token": 192,
+              "mean_nll": 8.277236178517342
+            },
+            {
+              "end_token": 208,
+              "mean_nll": 8.806290119886398
+            },
+            {
+              "end_token": 224,
+              "mean_nll": 8.653629511594772
+            },
+            {
+              "end_token": 240,
+              "mean_nll": 7.66858945786953
+            },
+            {
+              "end_token": 256,
+              "mean_nll": 10.061798766255379
+            }
+          ],
+          "half_recovery_tokens": null,
+          "status": "no_observed_improvement",
+          "initial_block_nll": 6.25841997563839,
+          "observed_late_nll": 8.865194112062454,
+          "observed_drop": -2.6067741364240646
+        },
+        "reference_relative_block_curve": [
+          -0.18119569023181512,
+          -0.06577675579163325,
+          0.3822697791920442,
+          0.641080239381207,
+          0.7170754985719376,
+          0.2829000305096404,
+          0.3886385653512401,
+          0.27459951482573886,
+          1.449075741729282,
+          0.3262649711471498,
+          0.6518831341992867,
+          0.45040047276210765,
+          1.0337667003085766,
+          0.5995027271558826,
+          0.7350356386343284,
+          1.845348161059432
+        ],
+        "reference_relative_opening_to_late_drop": -1.4713875900786952,
+        "scope": "descriptive trajectory; reference controls marginal difficulty only"
+      },
+      "revisit": {
+        "matched_pairs": 127,
+        "matched_nll_gain": 0.17616529539814146,
+        "first_return_window_matched_pairs": 31,
+        "first_return_window_preupdate_nll_gain": 0.2037437500492219,
+        "return_bridge_nll": 5.229175567626953,
+        "B_exposure_events": 256,
+        "intervening_events_before_first_matched_pair": 257,
+        "intervening_physical_ticks_before_first_matched_pair": 257,
+        "scope": "first window precedes return update; later replay scores include relearning"
+      },
+      "health": {
+        "field_energy": 0.1313755363225937,
+        "firing_rate": 0.012075919657945633,
+        "centered_effective_rank": 2.1056711673736572,
+        "read_norm_mean": 0.11789141595363617,
+        "vram_peak_mib": 1914.15625,
+        "vram_reserved_mib": 2390.0
+      },
+      "health_scope": "field energy, activity and centered representation structure; FTLE not measured in this branch"
+    },
+    {
+      "bptt_train_tokens": 130016,
+      "timing": "legacy_one_tick",
+      "physical_ticks_per_input": 1,
+      "writer_baseline_clock": "physical",
+      "actual_exposure": {
+        "input_events": 384,
+        "physical_ticks": 384,
+        "optimizer_updates": 12
+      },
+      "first_pass": {
+        "tokens": 256,
+        "validation_range": [
+          11000,
+          11256
+        ],
+        "model_nll": 7.788130700588226,
+        "fixed_unigram_nll": 7.335197250979727,
+        "gain_over_fixed_unigram": -0.45293344960850046,
+        "gain_per_optimizer_window": [
+          -0.4198368988066964,
+          -0.6313693080203627,
+          -0.3411758925923899,
+          -0.03908506481213088,
+          0.14252685123068107,
+          -0.549901354872659,
+          -0.934170965469983,
+          -0.8504549635244628
+        ]
+      },
+      "adaptation": {
+        "recorded_recovery": {
+          "tokens": 256,
+          "block_tokens": 16,
+          "confirmation_blocks": 2,
+          "block_curve": [
+            {
+              "end_token": 16,
+              "mean_nll": 8.398358151316643
+            },
+            {
+              "end_token": 32,
+              "mean_nll": 7.748871356248856
+            },
+            {
+              "end_token": 48,
+              "mean_nll": 8.466909542679787
+            },
+            {
+              "end_token": 64,
+              "mean_nll": 8.273006036877632
+            },
+            {
+              "end_token": 80,
+              "mean_nll": 8.299197807908058
+            },
+            {
+              "end_token": 96,
+              "mean_nll": 6.612970530986786
+            },
+            {
+              "end_token": 112,
+              "mean_nll": 6.718664512038231
+            },
+            {
+              "end_token": 128,
+              "mean_nll": 6.2872747629880905
+            },
+            {
+              "end_token": 144,
+              "mean_nll": 6.522647425532341
+            },
+            {
+              "end_token": 160,
+              "mean_nll": 6.185466423630714
+            },
+            {
+              "end_token": 176,
+              "mean_nll": 6.44304583966732
+            },
+            {
+              "end_token": 192,
+              "mean_nll": 8.410072401165962
+            },
+            {
+              "end_token": 208,
+              "mean_nll": 10.029409617185593
+            },
+            {
+              "end_token": 224,
+              "mean_nll": 8.603114768862724
+            },
+            {
+              "end_token": 240,
+              "mean_nll": 9.611306592822075
+            },
+            {
+              "end_token": 256,
+              "mean_nll": 7.999775439500809
+            }
+          ],
+          "half_recovery_tokens": null,
+          "status": "no_observed_improvement",
+          "initial_block_nll": 8.398358151316643,
+          "observed_late_nll": 8.805541016161442,
+          "observed_drop": -0.40718286484479904
+        },
+        "reference_relative_block_curve": [
+          0.5574667685421222,
+          0.2822070290712706,
+          0.41840357954695684,
+          0.8443350364937685,
+          0.6208267222757351,
+          0.061525062909044664,
+          0.11080586919517282,
+          -0.032635739570911065,
+          -0.22181311026257003,
+          -0.0632405921987921,
+          0.0560410619847565,
+          1.0437616477605616,
+          1.247412090340228,
+          0.6209298405997379,
+          1.0910684781483921,
+          0.6098414489005333
+        ],
+        "reference_relative_opening_to_late_drop": -0.2929881949823405,
+        "scope": "descriptive trajectory; reference controls marginal difficulty only"
+      },
+      "revisit": {
+        "matched_pairs": 127,
+        "matched_nll_gain": 0.1828018286096768,
+        "first_return_window_matched_pairs": 31,
+        "first_return_window_preupdate_nll_gain": 0.16666486955458118,
+        "return_bridge_nll": 8.333345413208008,
+        "B_exposure_events": 256,
+        "intervening_events_before_first_matched_pair": 257,
+        "intervening_physical_ticks_before_first_matched_pair": 257,
+        "scope": "first window precedes return update; later replay scores include relearning"
+      },
+      "health": {
+        "field_energy": 0.09444078803062439,
+        "firing_rate": 0.013226584531366825,
+        "centered_effective_rank": 1.16368567943573,
+        "read_norm_mean": 0.1191646009683609,
+        "vram_peak_mib": 1914.15625,
+        "vram_reserved_mib": 2390.0
+      },
+      "health_scope": "field energy, activity and centered representation structure; FTLE not measured in this branch"
+    },
+    {
+      "bptt_train_tokens": 135008,
+      "timing": "legacy_one_tick",
+      "physical_ticks_per_input": 1,
+      "writer_baseline_clock": "physical",
+      "actual_exposure": {
+        "input_events": 384,
+        "physical_ticks": 384,
+        "optimizer_updates": 12
+      },
+      "first_pass": {
+        "tokens": 256,
+        "validation_range": [
+          11256,
+          11512
+        ],
+        "model_nll": 7.441960224881768,
+        "fixed_unigram_nll": 7.106278382108931,
+        "gain_over_fixed_unigram": -0.335681842772838,
+        "gain_per_optimizer_window": [
+          -0.34763971986783637,
+          -0.5946719014914584,
+          -0.8311953192549818,
+          -0.36498590540563197,
+          0.04175945222734548,
+          -0.1678637249580753,
+          0.02356571527881919,
+          -0.44442333871088496
+        ]
+      },
+      "adaptation": {
+        "recorded_recovery": {
+          "tokens": 256,
+          "block_tokens": 16,
+          "confirmation_blocks": 2,
+          "block_curve": [
+            {
+              "end_token": 16,
+              "mean_nll": 6.9845694452524185
+            },
+            {
+              "end_token": 32,
+              "mean_nll": 8.15001268684864
+            },
+            {
+              "end_token": 48,
+              "mean_nll": 8.30301058292389
+            },
+            {
+              "end_token": 64,
+              "mean_nll": 8.491204395890236
+            },
+            {
+              "end_token": 80,
+              "mean_nll": 8.122968420386314
+            },
+            {
+              "end_token": 96,
+              "mean_nll": 8.657021671533585
+            },
+            {
+              "end_token": 112,
+              "mean_nll": 6.687147095799446
+            },
+            {
+              "end_token": 128,
+              "mean_nll": 8.483582124114037
+            },
+            {
+              "end_token": 144,
+              "mean_nll": 6.9572087824344635
+            },
+            {
+              "end_token": 160,
+              "mean_nll": 6.03924398124218
+            },
+            {
+              "end_token": 176,
+              "mean_nll": 7.010935306549072
+            },
+            {
+              "end_token": 192,
+              "mean_nll": 7.318990409374237
+            },
+            {
+              "end_token": 208,
+              "mean_nll": 6.343390420079231
+            },
+            {
+              "end_token": 224,
+              "mean_nll": 7.099398598074913
+            },
+            {
+              "end_token": 240,
+              "mean_nll": 6.730087384581566
+            },
+            {
+              "end_token": 256,
+              "mean_nll": 7.692592293024063
+            }
+          ],
+          "half_recovery_tokens": null,
+          "status": "no_observed_improvement",
+          "initial_block_nll": 6.9845694452524185,
+          "observed_late_nll": 7.2113398388028145,
+          "observed_drop": -0.22677039355039597
+        },
+        "reference_relative_block_curve": [
+          0.18108505550412105,
+          0.5141943842315516,
+          0.6083079704514971,
+          0.5810358325314198,
+          0.7343537608041144,
+          0.9280368777058492,
+          0.09873852006219111,
+          0.6312332907490729,
+          0.1715634733192728,
+          -0.25508237777396375,
+          0.27625339091103884,
+          0.05947405900511171,
+          -0.22519178737627882,
+          0.17806035681864044,
+          0.343882343030846,
+          0.5449643343909241
+        ],
+        "reference_relative_opening_to_late_drop": -0.263338283206764,
+        "scope": "descriptive trajectory; reference controls marginal difficulty only"
+      },
+      "revisit": {
+        "matched_pairs": 127,
+        "matched_nll_gain": 0.21681305742639256,
+        "first_return_window_matched_pairs": 31,
+        "first_return_window_preupdate_nll_gain": 0.16801737969921482,
+        "return_bridge_nll": 5.856054306030273,
+        "B_exposure_events": 256,
+        "intervening_events_before_first_matched_pair": 257,
+        "intervening_physical_ticks_before_first_matched_pair": 257,
+        "scope": "first window precedes return update; later replay scores include relearning"
+      },
+      "health": {
+        "field_energy": 0.37111347913742065,
+        "firing_rate": 0.022910334169864655,
+        "centered_effective_rank": 1.8586034774780273,
+        "read_norm_mean": 0.11982379853725433,
+        "vram_peak_mib": 2203.44384765625,
+        "vram_reserved_mib": 2390.0
+      },
+      "health_scope": "field energy, activity and centered representation structure; FTLE not measured in this branch"
+    },
+    {
+      "bptt_train_tokens": 140000,
+      "timing": "legacy_one_tick",
+      "physical_ticks_per_input": 1,
+      "writer_baseline_clock": "physical",
+      "actual_exposure": {
+        "input_events": 384,
+        "physical_ticks": 384,
+        "optimizer_updates": 12
+      },
+      "first_pass": {
+        "tokens": 256,
+        "validation_range": [
+          11512,
+          11768
+        ],
+        "model_nll": 7.80264088511467,
+        "fixed_unigram_nll": 7.365006586236898,
+        "gain_over_fixed_unigram": -0.43763429887777194,
+        "gain_per_optimizer_window": [
+          -0.3154344311515446,
+          -0.8193536300057176,
+          -0.30306783062127257,
+          -0.17374465541401368,
+          -1.2932978255999612,
+          -0.054568947688638986,
+          -0.7980871809799251,
+          0.2564801104388985
+        ]
+      },
+      "adaptation": {
+        "recorded_recovery": {
+          "tokens": 256,
+          "block_tokens": 16,
+          "confirmation_blocks": 2,
+          "block_curve": [
+            {
+              "end_token": 16,
+              "mean_nll": 6.958806797862053
+            },
+            {
+              "end_token": 32,
+              "mean_nll": 8.26871107518673
+            },
+            {
+              "end_token": 48,
+              "mean_nll": 7.867303341627121
+            },
+            {
+              "end_token": 64,
+              "mean_nll": 10.59777146577835
+            },
+            {
+              "end_token": 80,
+              "mean_nll": 6.911771222949028
+            },
+            {
+              "end_token": 96,
+              "mean_nll": 8.83706346154213
+            },
+            {
+              "end_token": 112,
+              "mean_nll": 7.143713608384132
+            },
+            {
+              "end_token": 128,
+              "mean_nll": 6.757335528731346
+            },
+            {
+              "end_token": 144,
+              "mean_nll": 7.94867467880249
+            },
+            {
+              "end_token": 160,
+              "mean_nll": 10.691269308328629
+            },
+            {
+              "end_token": 176,
+              "mean_nll": 7.30559179186821
+            },
+            {
+              "end_token": 192,
+              "mean_nll": 6.380062475800514
+            },
+            {
+              "end_token": 208,
+              "mean_nll": 8.308063015341759
+            },
+            {
+              "end_token": 224,
+              "mean_nll": 8.354274958372116
+            },
+            {
+              "end_token": 240,
+              "mean_nll": 6.065902993083
+            },
+            {
+              "end_token": 256,
+              "mean_nll": 6.445938438177109
+            }
+          ],
+          "half_recovery_tokens": 256,
+          "status": "observed_recovery",
+          "initial_block_nll": 6.958806797862053,
+          "observed_late_nll": 6.2559207156300545,
+          "observed_drop": 0.7028860822319984,
+          "threshold_nll": 6.607363756746054
+        },
+        "reference_relative_block_curve": [
+          -0.03451404269485411,
+          0.6653829049979434,
+          0.39080674376070784,
+          1.2479005162507275,
+          0.10256251144158843,
+          0.5035731498009568,
+          0.4130634065424664,
+          -0.0655740957144392,
+          0.4339484818628291,
+          2.1526471693370928,
+          0.3112087323295101,
+          -0.20207083695223213,
+          0.7574340123925073,
+          0.8387403495673429,
+          -0.4228878139531853,
+          -0.09007240692461174
+        ],
+        "reference_relative_opening_to_late_drop": 0.2219660677440444,
+        "scope": "descriptive trajectory; reference controls marginal difficulty only"
+      },
+      "revisit": {
+        "matched_pairs": 127,
+        "matched_nll_gain": 0.1505450226190522,
+        "first_return_window_matched_pairs": 31,
+        "first_return_window_preupdate_nll_gain": 0.14806435954186223,
+        "return_bridge_nll": 18.059783935546875,
+        "B_exposure_events": 256,
+        "intervening_events_before_first_matched_pair": 257,
+        "intervening_physical_ticks_before_first_matched_pair": 257,
+        "scope": "first window precedes return update; later replay scores include relearning"
+      },
+      "health": {
+        "field_energy": 0.16321296989917755,
+        "firing_rate": 0.013698962517082691,
+        "centered_effective_rank": 1.9461500644683838,
+        "read_norm_mean": 0.12063708156347275,
+        "vram_peak_mib": 2203.44384765625,
+        "vram_reserved_mib": 2390.0
+      },
+      "health_scope": "field energy, activity and centered representation structure; FTLE not measured in this branch"
+    },
+    {
+      "bptt_train_tokens": 145024,
+      "timing": "legacy_one_tick",
+      "physical_ticks_per_input": 1,
+      "writer_baseline_clock": "physical",
+      "actual_exposure": {
+        "input_events": 384,
+        "physical_ticks": 384,
+        "optimizer_updates": 12
+      },
+      "first_pass": {
+        "tokens": 256,
+        "validation_range": [
+          11768,
+          12024
+        ],
+        "model_nll": 7.259371100924909,
+        "fixed_unigram_nll": 6.892340047700603,
+        "gain_over_fixed_unigram": -0.3670310532243065,
+        "gain_per_optimizer_window": [
+          -0.5118354154878003,
+          -0.18793922726609036,
+          -0.19315723776029278,
+          -0.28728514918857684,
+          0.007907431132180148,
+          -0.279614848988913,
+          -0.11725382518983822,
+          -1.367070153045121
+        ]
+      },
+      "adaptation": {
+        "recorded_recovery": {
+          "tokens": 256,
+          "block_tokens": 16,
+          "confirmation_blocks": 2,
+          "block_curve": [
+            {
+              "end_token": 16,
+              "mean_nll": 8.482174217700958
+            },
+            {
+              "end_token": 32,
+              "mean_nll": 8.23749227821827
+            },
+            {
+              "end_token": 48,
+              "mean_nll": 6.769776776432991
+            },
+            {
+              "end_token": 64,
+              "mean_nll": 7.173522979021072
+            },
+            {
+              "end_token": 80,
+              "mean_nll": 7.039531484246254
+            },
+            {
+              "end_token": 96,
+              "mean_nll": 6.676517561078072
+            },
+            {
+              "end_token": 112,
+              "mean_nll": 6.5588658452034
+            },
+            {
+              "end_token": 128,
+              "mean_nll": 6.635433956980705
+            },
+            {
+              "end_token": 144,
+              "mean_nll": 6.310610219836235
+            },
+            {
+              "end_token": 160,
+              "mean_nll": 6.838913232088089
+            },
+            {
+              "end_token": 176,
+              "mean_nll": 7.133400201797485
+            },
+            {
+              "end_token": 192,
+              "mean_nll": 7.170783117413521
+            },
+            {
+              "end_token": 208,
+              "mean_nll": 6.059412881731987
+            },
+            {
+              "end_token": 224,
+              "mean_nll": 7.611925184726715
+            },
+            {
+              "end_token": 240,
+              "mean_nll": 8.986772328615189
+            },
+            {
+              "end_token": 256,
+              "mean_nll": 8.464805349707603
+            }
+          ],
+          "half_recovery_tokens": null,
+          "status": "no_observed_improvement",
+          "initial_block_nll": 8.482174217700958,
+          "observed_late_nll": 8.725788839161396,
+          "observed_drop": -0.24361462146043777
+        },
+        "reference_relative_block_curve": [
+          0.5470738155497721,
+          0.47659701542582844,
+          0.060468479671893366,
+          0.3154099748602874,
+          0.21925719170748464,
+          0.1670572838131009,
+          0.4154045386227198,
+          0.1591657597544339,
+          -0.03844888178956468,
+          0.022634019525204385,
+          0.06792955426859362,
+          0.4913001437092325,
+          -0.15194075789581038,
+          0.3864484082754868,
+          1.3135891686565027,
+          1.4205511374337396
+        ],
+        "reference_relative_opening_to_late_drop": -0.819996337495349,
+        "scope": "descriptive trajectory; reference controls marginal difficulty only"
+      },
+      "revisit": {
+        "matched_pairs": 127,
+        "matched_nll_gain": 0.2087596138631265,
+        "first_return_window_matched_pairs": 31,
+        "first_return_window_preupdate_nll_gain": 0.2763484139596262,
+        "return_bridge_nll": 7.781991004943848,
+        "B_exposure_events": 256,
+        "intervening_events_before_first_matched_pair": 257,
+        "intervening_physical_ticks_before_first_matched_pair": 257,
+        "scope": "first window precedes return update; later replay scores include relearning"
+      },
+      "health": {
+        "field_energy": 0.15624676644802094,
+        "firing_rate": 0.014631605707108974,
+        "centered_effective_rank": 1.416054368019104,
+        "read_norm_mean": 0.12210075557231903,
+        "vram_peak_mib": 2203.44384765625,
+        "vram_reserved_mib": 2390.0
+      },
+      "health_scope": "field energy, activity and centered representation structure; FTLE not measured in this branch"
+    },
+    {
+      "bptt_train_tokens": 150016,
+      "timing": "legacy_one_tick",
+      "physical_ticks_per_input": 1,
+      "writer_baseline_clock": "physical",
+      "actual_exposure": {
+        "input_events": 384,
+        "physical_ticks": 384,
+        "optimizer_updates": 12
+      },
+      "first_pass": {
+        "tokens": 256,
+        "validation_range": [
+          12024,
+          12280
+        ],
+        "model_nll": 8.621061452664435,
+        "fixed_unigram_nll": 7.906569366042361,
+        "gain_over_fixed_unigram": -0.7144920866220744,
+        "gain_per_optimizer_window": [
+          -0.6620448934902579,
+          -1.0929739530740195,
+          -1.2644725734807483,
+          -0.8405612637501276,
+          -0.227200020167468,
+          -0.7396783214495235,
+          -0.42197372901787905,
+          -0.46703193854657143
+        ]
+      },
+      "adaptation": {
+        "recorded_recovery": {
+          "tokens": 256,
+          "block_tokens": 16,
+          "confirmation_blocks": 2,
+          "block_curve": [
+            {
+              "end_token": 16,
+              "mean_nll": 7.081939697265625
+            },
+            {
+              "end_token": 32,
+              "mean_nll": 9.575956001877785
+            },
+            {
+              "end_token": 48,
+              "mean_nll": 9.768348962068558
+            },
+            {
+              "end_token": 64,
+              "mean_nll": 8.853497639298439
+            },
+            {
+              "end_token": 80,
+              "mean_nll": 10.53412289917469
+            },
+            {
+              "end_token": 96,
+              "mean_nll": 9.559367194771767
+            },
+            {
+              "end_token": 112,
+              "mean_nll": 9.427849128842354
+            },
+            {
+              "end_token": 128,
+              "mean_nll": 7.924978286027908
+            },
+            {
+              "end_token": 144,
+              "mean_nll": 7.279922232031822
+            },
+            {
+              "end_token": 160,
+              "mean_nll": 8.098639577627182
+            },
+            {
+              "end_token": 176,
+              "mean_nll": 9.210302516818047
+            },
+            {
+              "end_token": 192,
+              "mean_nll": 8.017906680703163
+            },
+            {
+              "end_token": 208,
+              "mean_nll": 8.472131296992302
+            },
+            {
+              "end_token": 224,
+              "mean_nll": 7.293805718421936
+            },
+            {
+              "end_token": 240,
+              "mean_nll": 8.44047924876213
+            },
+            {
+              "end_token": 256,
+              "mean_nll": 8.39773616194725
+            }
+          ],
+          "half_recovery_tokens": null,
+          "status": "no_observed_improvement",
+          "initial_block_nll": 7.081939697265625,
+          "observed_late_nll": 8.41910770535469,
+          "observed_drop": -1.3371680080890656
+        },
+        "reference_relative_block_curve": [
+          0.4486565843556857,
+          0.8754332026248302,
+          1.0805425419846038,
+          1.105405364163435,
+          1.772648145802215,
+          0.7562970011592817,
+          1.1501925741748222,
+          0.530929953325433,
+          0.08836371078079536,
+          0.36603632955414056,
+          0.7608234298302481,
+          0.7185332130687991,
+          0.3886876201222089,
+          0.4552598379135492,
+          0.5092952153862234,
+          0.42476866170691946
+        ],
+        "reference_relative_opening_to_late_drop": -0.018375354190885762,
+        "scope": "descriptive trajectory; reference controls marginal difficulty only"
+      },
+      "revisit": {
+        "matched_pairs": 127,
+        "matched_nll_gain": 0.08820439511396753,
+        "first_return_window_matched_pairs": 31,
+        "first_return_window_preupdate_nll_gain": 0.0838595974829889,
+        "return_bridge_nll": 3.2052881717681885,
+        "B_exposure_events": 256,
+        "intervening_events_before_first_matched_pair": 257,
+        "intervening_physical_ticks_before_first_matched_pair": 257,
+        "scope": "first window precedes return update; later replay scores include relearning"
+      },
+      "health": {
+        "field_energy": 0.21059930324554443,
+        "firing_rate": 0.017314471304416656,
+        "centered_effective_rank": 2.343526601791382,
+        "read_norm_mean": 0.12267401069402695,
+        "vram_peak_mib": 2203.44384765625,
+        "vram_reserved_mib": 2390.0
+      },
+      "health_scope": "field energy, activity and centered representation structure; FTLE not measured in this branch"
+    },
+    {
+      "bptt_train_tokens": 155008,
+      "timing": "legacy_one_tick",
+      "physical_ticks_per_input": 1,
+      "writer_baseline_clock": "physical",
+      "actual_exposure": {
+        "input_events": 384,
+        "physical_ticks": 384,
+        "optimizer_updates": 12
+      },
+      "first_pass": {
+        "tokens": 256,
+        "validation_range": [
+          12280,
+          12536
+        ],
+        "model_nll": 8.310904056765139,
+        "fixed_unigram_nll": 7.712089531984054,
+        "gain_over_fixed_unigram": -0.5988145247810851,
+        "gain_per_optimizer_window": [
+          -0.7327270890971294,
+          0.003324892569678259,
+          -0.6873568926841546,
+          -0.6308276396207518,
+          -0.8435182420613829,
+          -0.4842643708885954,
+          -0.9168552889153931,
+          -0.4982915675509519
+        ]
+      },
+      "adaptation": {
+        "recorded_recovery": {
+          "tokens": 256,
+          "block_tokens": 16,
+          "confirmation_blocks": 2,
+          "block_curve": [
+            {
+              "end_token": 16,
+              "mean_nll": 9.365816548466682
+            },
+            {
+              "end_token": 32,
+              "mean_nll": 8.236560299992561
+            },
+            {
+              "end_token": 48,
+              "mean_nll": 6.681368589401245
+            },
+            {
+              "end_token": 64,
+              "mean_nll": 5.858574822545052
+            },
+            {
+              "end_token": 80,
+              "mean_nll": 6.865955010056496
+            },
+            {
+              "end_token": 96,
+              "mean_nll": 10.857909128069878
+            },
+            {
+              "end_token": 112,
+              "mean_nll": 9.630768284201622
+            },
+            {
+              "end_token": 128,
+              "mean_nll": 7.781559199094772
+            },
+            {
+              "end_token": 144,
+              "mean_nll": 7.933596506714821
+            },
+            {
+              "end_token": 160,
+              "mean_nll": 8.54472041130066
+            },
+            {
+              "end_token": 176,
+              "mean_nll": 8.02328908443451
+            },
+            {
+              "end_token": 192,
+              "mean_nll": 7.873278051614761
+            },
+            {
+              "end_token": 208,
+              "mean_nll": 10.659209206700325
+            },
+            {
+              "end_token": 224,
+              "mean_nll": 8.313431367278099
+            },
+            {
+              "end_token": 240,
+              "mean_nll": 9.247671782970428
+            },
+            {
+              "end_token": 256,
+              "mean_nll": 7.100756615400314
+            }
+          ],
+          "half_recovery_tokens": 48,
+          "status": "observed_recovery",
+          "initial_block_nll": 9.365816548466682,
+          "observed_late_nll": 8.174214199185371,
+          "observed_drop": 1.191602349281311,
+          "threshold_nll": 8.770015373826027
+        },
+        "reference_relative_block_curve": [
+          0.8629683025503446,
+          0.602485875643914,
+          0.19487883879033693,
+          -0.20152862392969348,
+          -0.08196320292165807,
+          1.456676988289967,
+          1.1164552042444904,
+          0.14520007499701315,
+          0.7165376519429325,
+          0.970498832179833,
+          0.7419490694474743,
+          0.2265796723297167,
+          1.4938611665973969,
+          0.33984941123338924,
+          0.8167385989180571,
+          0.1798445361838466
+        ],
+        "reference_relative_opening_to_late_drop": 0.3646767349993928,
+        "scope": "descriptive trajectory; reference controls marginal difficulty only"
+      },
+      "revisit": {
+        "matched_pairs": 127,
+        "matched_nll_gain": 0.18593630077332024,
+        "first_return_window_matched_pairs": 31,
+        "first_return_window_preupdate_nll_gain": 0.16773328473491053,
+        "return_bridge_nll": 18.160470962524414,
+        "B_exposure_events": 256,
+        "intervening_events_before_first_matched_pair": 257,
+        "intervening_physical_ticks_before_first_matched_pair": 257,
+        "scope": "first window precedes return update; later replay scores include relearning"
+      },
+      "health": {
+        "field_energy": 0.23975533246994019,
+        "firing_rate": 0.020663509145379066,
+        "centered_effective_rank": 1.6805915832519531,
+        "read_norm_mean": 0.12299489974975586,
+        "vram_peak_mib": 2203.44384765625,
+        "vram_reserved_mib": 2390.0
+      },
+      "health_scope": "field energy, activity and centered representation structure; FTLE not measured in this branch"
+    },
+    {
+      "bptt_train_tokens": 160000,
+      "timing": "legacy_one_tick",
+      "physical_ticks_per_input": 1,
+      "writer_baseline_clock": "physical",
+      "actual_exposure": {
+        "input_events": 384,
+        "physical_ticks": 384,
+        "optimizer_updates": 12
+      },
+      "first_pass": {
+        "tokens": 256,
+        "validation_range": [
+          12536,
+          12792
+        ],
+        "model_nll": 9.767424168996513,
+        "fixed_unigram_nll": 8.577032420572731,
+        "gain_over_fixed_unigram": -1.1903917484237818,
+        "gain_per_optimizer_window": [
+          -1.0511952110482834,
+          -1.0186552618337696,
+          -1.5849719798954578,
+          -0.7707834987635678,
+          -1.3752988549782714,
+          -1.0692861391378525,
+          -1.39087693440145,
+          -1.262066107331603
+        ]
+      },
+      "adaptation": {
+        "recorded_recovery": {
+          "tokens": 256,
+          "block_tokens": 16,
+          "confirmation_blocks": 2,
+          "block_curve": [
+            {
+              "end_token": 16,
+              "mean_nll": 9.160117223858833
+            },
+            {
+              "end_token": 32,
+              "mean_nll": 10.612561374902725
+            },
+            {
+              "end_token": 48,
+              "mean_nll": 9.248900696635246
+            },
+            {
+              "end_token": 64,
+              "mean_nll": 9.513103529810905
+            },
+            {
+              "end_token": 80,
+              "mean_nll": 10.939844965934753
+            },
+            {
+              "end_token": 96,
+              "mean_nll": 10.073192715644836
+            },
+            {
+              "end_token": 112,
+              "mean_nll": 8.547748118638992
+            },
+            {
+              "end_token": 128,
+              "mean_nll": 8.97437809407711
+            },
+            {
+              "end_token": 144,
+              "mean_nll": 8.413808017969131
+            },
+            {
+              "end_token": 160,
+              "mean_nll": 10.704062268137932
+            },
+            {
+              "end_token": 176,
+              "mean_nll": 10.485745623707771
+            },
+            {
+              "end_token": 192,
+              "mean_nll": 8.045662835240364
+            },
+            {
+              "end_token": 208,
+              "mean_nll": 11.73929938673973
+            },
+            {
+              "end_token": 224,
+              "mean_nll": 9.18485963344574
+            },
+            {
+              "end_token": 240,
+              "mean_nll": 10.494576930999756
+            },
+            {
+              "end_token": 256,
+              "mean_nll": 10.140925288200378
+            }
+          ],
+          "half_recovery_tokens": null,
+          "status": "no_observed_improvement",
+          "initial_block_nll": 9.160117223858833,
+          "observed_late_nll": 10.317751109600067,
+          "observed_drop": -1.1576338857412338
+        },
+        "reference_relative_block_curve": [
+          0.726032939790519,
+          1.3763574823060478,
+          0.8746797750967883,
+          1.1626307485707508,
+          1.7734558301385954,
+          1.3964881296523202,
+          0.7646044434880626,
+          0.7769625540390728,
+          1.0435167685557118,
+          1.707080941400831,
+          1.4461472670130133,
+          0.6924250112626918,
+          1.9738278147702406,
+          0.8079260540326597,
+          1.1645110537155587,
+          1.3596211609476472
+        ],
+        "reference_relative_opening_to_late_drop": -0.5360331675410841,
+        "scope": "descriptive trajectory; reference controls marginal difficulty only"
+      },
+      "revisit": {
+        "matched_pairs": 127,
+        "matched_nll_gain": 0.24579600649555838,
+        "first_return_window_matched_pairs": 31,
+        "first_return_window_preupdate_nll_gain": 0.2971980341019169,
+        "return_bridge_nll": 7.403904914855957,
+        "B_exposure_events": 256,
+        "intervening_events_before_first_matched_pair": 257,
+        "intervening_physical_ticks_before_first_matched_pair": 257,
+        "scope": "first window precedes return update; later replay scores include relearning"
+      },
+      "health": {
+        "field_energy": 0.13233962655067444,
+        "firing_rate": 0.011185669340193272,
+        "centered_effective_rank": 1.9670454263687134,
+        "read_norm_mean": 0.12364743649959564,
+        "vram_peak_mib": 2203.44384765625,
+        "vram_reserved_mib": 2390.0
+      },
+      "health_scope": "field energy, activity and centered representation structure; FTLE not measured in this branch"
+    },
+    {
+      "bptt_train_tokens": 165024,
+      "timing": "legacy_one_tick",
+      "physical_ticks_per_input": 1,
+      "writer_baseline_clock": "physical",
+      "actual_exposure": {
+        "input_events": 384,
+        "physical_ticks": 384,
+        "optimizer_updates": 12
+      },
+      "first_pass": {
+        "tokens": 256,
+        "validation_range": [
+          12792,
+          13048
+        ],
+        "model_nll": 8.471454797312617,
+        "fixed_unigram_nll": 7.803433846103522,
+        "gain_over_fixed_unigram": -0.6680209512090945,
+        "gain_per_optimizer_window": [
+          -0.9750589319131309,
+          -1.265603250314069,
+          -0.5560112316624962,
+          -0.12394808423262321,
+          -0.25614239182823534,
+          -0.6673967450896425,
+          -0.9748574606517685,
+          -0.5251495139807909
+        ]
+      },
+      "adaptation": {
+        "recorded_recovery": {
+          "tokens": 256,
+          "block_tokens": 16,
+          "confirmation_blocks": 2,
+          "block_curve": [
+            {
+              "end_token": 16,
+              "mean_nll": 7.6911065727472305
+            },
+            {
+              "end_token": 32,
+              "mean_nll": 9.036511957645416
+            },
+            {
+              "end_token": 48,
+              "mean_nll": 10.083765611052513
+            },
+            {
+              "end_token": 64,
+              "mean_nll": 9.529025614261627
+            },
+            {
+              "end_token": 80,
+              "mean_nll": 7.076365679502487
+            },
+            {
+              "end_token": 96,
+              "mean_nll": 8.386566758155823
+            },
+            {
+              "end_token": 112,
+              "mean_nll": 7.901551261544228
+            },
+            {
+              "end_token": 128,
+              "mean_nll": 7.846532389521599
+            },
+            {
+              "end_token": 144,
+              "mean_nll": 6.632237508893013
+            },
+            {
+              "end_token": 160,
+              "mean_nll": 8.856666684150696
+            },
+            {
+              "end_token": 176,
+              "mean_nll": 8.551849126815796
+            },
+            {
+              "end_token": 192,
+              "mean_nll": 8.422494053840637
+            },
+            {
+              "end_token": 208,
+              "mean_nll": 9.54920881986618
+            },
+            {
+              "end_token": 224,
+              "mean_nll": 10.629168763756752
+            },
+            {
+              "end_token": 240,
+              "mean_nll": 8.034470096230507
+            },
+            {
+              "end_token": 256,
+              "mean_nll": 7.315755859017372
+            }
+          ],
+          "half_recovery_tokens": null,
+          "status": "right_censored",
+          "initial_block_nll": 7.6911065727472305,
+          "observed_late_nll": 7.6751129776239395,
+          "observed_drop": 0.015993595123291016,
+          "threshold_nll": 7.683109775185585
+        },
+        "reference_relative_block_curve": [
+          0.6265138594890599,
+          1.3236040043372017,
+          1.5979283660004564,
+          0.9332781346276814,
+          0.2687855521164306,
+          0.8432369112085618,
+          0.13302128106616817,
+          0.11487488739907833,
+          0.06725787537582723,
+          0.4450269082806435,
+          0.9130223147339633,
+          0.42177117544532167,
+          0.5507493871559026,
+          1.3989655341476341,
+          0.6515607649352749,
+          0.39873826302630677
+        ],
+        "reference_relative_opening_to_late_drop": 0.101364345508269,
+        "scope": "descriptive trajectory; reference controls marginal difficulty only"
+      },
+      "revisit": {
+        "matched_pairs": 127,
+        "matched_nll_gain": 0.2762102404917319,
+        "first_return_window_matched_pairs": 31,
+        "first_return_window_preupdate_nll_gain": 0.3040157364260766,
+        "return_bridge_nll": 8.543798446655273,
+        "B_exposure_events": 256,
+        "intervening_events_before_first_matched_pair": 257,
+        "intervening_physical_ticks_before_first_matched_pair": 257,
+        "scope": "first window precedes return update; later replay scores include relearning"
+      },
+      "health": {
+        "field_energy": 0.2314087599515915,
+        "firing_rate": 0.0180896557867527,
+        "centered_effective_rank": 1.5708340406417847,
+        "read_norm_mean": 0.12465015053749084,
+        "vram_peak_mib": 2203.44384765625,
+        "vram_reserved_mib": 2390.0
+      },
+      "health_scope": "field energy, activity and centered representation structure; FTLE not measured in this branch"
+    },
+    {
+      "bptt_train_tokens": 170016,
+      "timing": "legacy_one_tick",
+      "physical_ticks_per_input": 1,
+      "writer_baseline_clock": "physical",
+      "actual_exposure": {
+        "input_events": 384,
+        "physical_ticks": 384,
+        "optimizer_updates": 12
+      },
+      "first_pass": {
+        "tokens": 256,
+        "validation_range": [
+          13048,
+          13304
+        ],
+        "model_nll": 7.948709789663553,
+        "fixed_unigram_nll": 7.62030045298139,
+        "gain_over_fixed_unigram": -0.32840933668216343,
+        "gain_per_optimizer_window": [
+          -0.5557469711753859,
+          -0.1679398725802182,
+          -0.1463110820035576,
+          -1.0363794644201703,
+          -0.5498663839110393,
+          -0.046401126727389025,
+          -0.3336373226815486,
+          0.2090075300420015
+        ]
+      },
+      "adaptation": {
+        "recorded_recovery": {
+          "tokens": 256,
+          "block_tokens": 16,
+          "confirmation_blocks": 2,
+          "block_curve": [
+            {
+              "end_token": 16,
+              "mean_nll": 9.065658450126648
+            },
+            {
+              "end_token": 32,
+              "mean_nll": 6.824956193566322
+            },
+            {
+              "end_token": 48,
+              "mean_nll": 7.206201046705246
+            },
+            {
+              "end_token": 64,
+              "mean_nll": 8.348478958010674
+            },
+            {
+              "end_token": 80,
+              "mean_nll": 7.220140531659126
+            },
+            {
+              "end_token": 96,
+              "mean_nll": 8.371348515152931
+            },
+            {
+              "end_token": 112,
+              "mean_nll": 10.157423824071884
+            },
+            {
+              "end_token": 128,
+              "mean_nll": 9.487573772668839
+            },
+            {
+              "end_token": 144,
+              "mean_nll": 8.875099539756775
+            },
+            {
+              "end_token": 160,
+              "mean_nll": 9.071355193853378
+            },
+            {
+              "end_token": 176,
+              "mean_nll": 8.122725993394852
+            },
+            {
+              "end_token": 192,
+              "mean_nll": 6.87818717956543
+            },
+            {
+              "end_token": 208,
+              "mean_nll": 6.076959386467934
+            },
+            {
+              "end_token": 224,
+              "mean_nll": 8.490032747387886
+            },
+            {
+              "end_token": 240,
+              "mean_nll": 5.667868077754974
+            },
+            {
+              "end_token": 256,
+              "mean_nll": 7.315347224473953
+            }
+          ],
+          "half_recovery_tokens": 48,
+          "status": "observed_recovery",
+          "initial_block_nll": 9.065658450126648,
+          "observed_late_nll": 6.491607651114464,
+          "observed_drop": 2.574050799012184,
+          "threshold_nll": 7.778633050620556
+        },
+        "reference_relative_block_curve": [
+          0.7980781613924194,
+          0.3134157809583524,
+          -0.3551054253225957,
+          0.6909851704830321,
+          -0.03241988467932683,
+          0.32504204868644204,
+          1.002623840697496,
+          1.0701350881428446,
+          0.5499856568869643,
+          0.5497471109351142,
+          0.19696053072463585,
+          -0.1041582772698578,
+          -0.22550887047476612,
+          0.8927835158378632,
+          -0.17583288945292633,
+          -0.24218217063107667
+        ],
+        "reference_relative_opening_to_late_drop": 1.0070856914344208,
+        "scope": "descriptive trajectory; reference controls marginal difficulty only"
+      },
+      "revisit": {
+        "matched_pairs": 127,
+        "matched_nll_gain": 0.21945363142358976,
+        "first_return_window_matched_pairs": 31,
+        "first_return_window_preupdate_nll_gain": 0.19497587603907432,
+        "return_bridge_nll": 8.252738952636719,
+        "B_exposure_events": 256,
+        "intervening_events_before_first_matched_pair": 257,
+        "intervening_physical_ticks_before_first_matched_pair": 257,
+        "scope": "first window precedes return update; later replay scores include relearning"
+      },
+      "health": {
+        "field_energy": 0.1358659565448761,
+        "firing_rate": 0.018016980960965157,
+        "centered_effective_rank": 2.304037094116211,
+        "read_norm_mean": 0.12457114458084106,
+        "vram_peak_mib": 2203.44384765625,
+        "vram_reserved_mib": 2390.0
+      },
+      "health_scope": "field energy, activity and centered representation structure; FTLE not measured in this branch"
+    },
+    {
+      "bptt_train_tokens": 175008,
+      "timing": "legacy_one_tick",
+      "physical_ticks_per_input": 1,
+      "writer_baseline_clock": "physical",
+      "actual_exposure": {
+        "input_events": 384,
+        "physical_ticks": 384,
+        "optimizer_updates": 12
+      },
+      "first_pass": {
+        "tokens": 256,
+        "validation_range": [
+          13304,
+          13560
+        ],
+        "model_nll": 7.481872770935297,
+        "fixed_unigram_nll": 7.147394241831407,
+        "gain_over_fixed_unigram": -0.33447852910389075,
+        "gain_per_optimizer_window": [
+          -0.2935019993715465,
+          -0.5700629613172249,
+          -0.20336991365834622,
+          -0.07925858192301494,
+          -0.9277380616368148,
+          -0.3038018751789357,
+          -0.09365879004806318,
+          -0.20443604969718
+        ]
+      },
+      "adaptation": {
+        "recorded_recovery": {
+          "tokens": 256,
+          "block_tokens": 16,
+          "confirmation_blocks": 2,
+          "block_curve": [
+            {
+              "end_token": 16,
+              "mean_nll": 6.6115966737270355
+            },
+            {
+              "end_token": 32,
+              "mean_nll": 7.760276228189468
+            },
+            {
+              "end_token": 48,
+              "mean_nll": 7.40947425365448
+            },
+            {
+              "end_token": 64,
+              "mean_nll": 8.308003023266792
+            },
+            {
+              "end_token": 80,
+              "mean_nll": 8.576606065034866
+            },
+            {
+              "end_token": 96,
+              "mean_nll": 6.383986636996269
+            },
+            {
+              "end_token": 112,
+              "mean_nll": 7.913489371538162
+            },
+            {
+              "end_token": 128,
+              "mean_nll": 7.454528301954269
+            },
+            {
+              "end_token": 144,
+              "mean_nll": 7.0749241560697556
+            },
+            {
+              "end_token": 160,
+              "mean_nll": 9.468168467283249
+            },
+            {
+              "end_token": 176,
+              "mean_nll": 7.069845125079155
+            },
+            {
+              "end_token": 192,
+              "mean_nll": 7.136983260512352
+            },
+            {
+              "end_token": 208,
+              "mean_nll": 8.140243217349052
+            },
+            {
+              "end_token": 224,
+              "mean_nll": 6.4200751185417175
+            },
+            {
+              "end_token": 240,
+              "mean_nll": 6.575409382581711
+            },
+            {
+              "end_token": 256,
+              "mean_nll": 7.406355053186417
+            }
+          ],
+          "half_recovery_tokens": null,
+          "status": "no_observed_improvement",
+          "initial_block_nll": 6.6115966737270355,
+          "observed_late_nll": 6.990882217884064,
+          "observed_drop": -0.3792855441570282
+        },
+        "reference_relative_block_curve": [
+          -0.05503629823018999,
+          0.642040296973283,
+          0.2008319657891809,
+          0.9392939568452688,
+          0.6155953041315132,
+          -0.20885547681482078,
+          0.21607957442432024,
+          -0.05756241057829037,
+          0.6161679163180499,
+          1.2393082069555796,
+          0.20563545781205075,
+          0.40196829254582067,
+          0.5107192012663834,
+          -0.32340162117025706,
+          -0.20177840316116144,
+          0.6106505025555214
+        ],
+        "reference_relative_opening_to_late_drop": -0.25947234792736995,
+        "scope": "descriptive trajectory; reference controls marginal difficulty only"
+      },
+      "revisit": {
+        "matched_pairs": 127,
+        "matched_nll_gain": 0.1660356840749425,
+        "first_return_window_matched_pairs": 31,
+        "first_return_window_preupdate_nll_gain": 0.19735107883330313,
+        "return_bridge_nll": 9.448107719421387,
+        "B_exposure_events": 256,
+        "intervening_events_before_first_matched_pair": 257,
+        "intervening_physical_ticks_before_first_matched_pair": 257,
+        "scope": "first window precedes return update; later replay scores include relearning"
+      },
+      "health": {
+        "field_energy": 0.5737017393112183,
+        "firing_rate": 0.026095855981111526,
+        "centered_effective_rank": 2.0628573894500732,
+        "read_norm_mean": 0.12419034540653229,
+        "vram_peak_mib": 2203.44384765625,
+        "vram_reserved_mib": 2390.0
+      },
+      "health_scope": "field energy, activity and centered representation structure; FTLE not measured in this branch"
+    },
+    {
+      "bptt_train_tokens": 180000,
+      "timing": "legacy_one_tick",
+      "physical_ticks_per_input": 1,
+      "writer_baseline_clock": "physical",
+      "actual_exposure": {
+        "input_events": 384,
+        "physical_ticks": 384,
+        "optimizer_updates": 12
+      },
+      "first_pass": {
+        "tokens": 256,
+        "validation_range": [
+          13560,
+          13816
+        ],
+        "model_nll": 7.872487303800881,
+        "fixed_unigram_nll": 7.520890000526702,
+        "gain_over_fixed_unigram": -0.3515973032741798,
+        "gain_per_optimizer_window": [
+          -0.6968910958471829,
+          -0.7805214155982811,
+          0.16333298513203637,
+          -0.17696226622263667,
+          0.10464104810637063,
+          -1.1956048702305548,
+          -0.20307336968040934,
+          -0.027699441852780116
+        ]
+      },
+      "adaptation": {
+        "recorded_recovery": {
+          "tokens": 256,
+          "block_tokens": 16,
+          "confirmation_blocks": 2,
+          "block_curve": [
+            {
+              "end_token": 16,
+              "mean_nll": 7.8305873572826385
+            },
+            {
+              "end_token": 32,
+              "mean_nll": 10.68182222545147
+            },
+            {
+              "end_token": 48,
+              "mean_nll": 8.967370420694351
+            },
+            {
+              "end_token": 64,
+              "mean_nll": 8.539709955453873
+            },
+            {
+              "end_token": 80,
+              "mean_nll": 7.41984948515892
+            },
+            {
+              "end_token": 96,
+              "mean_nll": 7.330153465270996
+            },
+            {
+              "end_token": 112,
+              "mean_nll": 6.579515919089317
+            },
+            {
+              "end_token": 128,
+              "mean_nll": 7.7579891085624695
+            },
+            {
+              "end_token": 144,
+              "mean_nll": 5.882999449968338
+            },
+            {
+              "end_token": 160,
+              "mean_nll": 6.709508806467056
+            },
+            {
+              "end_token": 176,
+              "mean_nll": 8.902942508459091
+            },
+            {
+              "end_token": 192,
+              "mean_nll": 10.641249597072601
+            },
+            {
+              "end_token": 208,
+              "mean_nll": 7.253991663455963
+            },
+            {
+              "end_token": 224,
+              "mean_nll": 7.99720524251461
+            },
+            {
+              "end_token": 240,
+              "mean_nll": 6.288282513618469
+            },
+            {
+              "end_token": 256,
+              "mean_nll": 7.17661914229393
+            }
+          ],
+          "half_recovery_tokens": 160,
+          "status": "observed_recovery",
+          "initial_block_nll": 7.8305873572826385,
+          "observed_late_nll": 6.7324508279562,
+          "observed_drop": 1.098136529326439,
+          "threshold_nll": 7.281519092619419
+        },
+        "reference_relative_block_curve": [
+          -0.1457671859976086,
+          1.5395493776919746,
+          0.7981624168400535,
+          0.7628804143565087,
+          -0.32948038817746633,
+          0.0028144179133936242,
+          0.01978042414345829,
+          0.33414410830181507,
+          -0.10686543343916743,
+          -0.10241666277357384,
+          0.8444172226771867,
+          1.5467925177839232,
+          0.10739128935547751,
+          0.2987554500053412,
+          -0.09175373294021075,
+          0.14715261664577098
+        ],
+        "reference_relative_opening_to_late_drop": -0.17346662785038872,
+        "scope": "descriptive trajectory; reference controls marginal difficulty only"
+      },
+      "revisit": {
+        "matched_pairs": 127,
+        "matched_nll_gain": 0.1560925723999504,
+        "first_return_window_matched_pairs": 31,
+        "first_return_window_preupdate_nll_gain": 0.13894326456131473,
+        "return_bridge_nll": 5.496501922607422,
+        "B_exposure_events": 256,
+        "intervening_events_before_first_matched_pair": 257,
+        "intervening_physical_ticks_before_first_matched_pair": 257,
+        "scope": "first window precedes return update; later replay scores include relearning"
+      },
+      "health": {
+        "field_energy": 0.11585287004709244,
+        "firing_rate": 0.015970010310411453,
+        "centered_effective_rank": 2.6163082122802734,
+        "read_norm_mean": 0.12496443837881088,
+        "vram_peak_mib": 2203.44384765625,
+        "vram_reserved_mib": 2390.0
+      },
+      "health_scope": "field energy, activity and centered representation structure; FTLE not measured in this branch"
+    },
+    {
+      "bptt_train_tokens": 200000,
+      "timing": "legacy_one_tick",
+      "physical_ticks_per_input": 1,
+      "writer_baseline_clock": "physical",
+      "actual_exposure": {
+        "input_events": 384,
+        "physical_ticks": 384,
+        "optimizer_updates": 12
+      },
+      "first_pass": {
+        "tokens": 256,
+        "validation_range": [
+          13816,
+          14072
+        ],
+        "model_nll": 7.644018732942641,
+        "fixed_unigram_nll": 7.175926783126236,
+        "gain_over_fixed_unigram": -0.468091949816405,
+        "gain_per_optimizer_window": [
+          -0.47215109849761155,
+          -0.6611445893895247,
+          -0.5584268847041965,
+          -0.4230331197703264,
+          -0.1404395775787042,
+          -0.28571057572812975,
+          -0.3885326481891568,
+          -0.8152971046735904
+        ]
+      },
+      "adaptation": {
+        "recorded_recovery": {
+          "tokens": 256,
+          "block_tokens": 16,
+          "confirmation_blocks": 2,
+          "block_curve": [
+            {
+              "end_token": 16,
+              "mean_nll": 6.2047809809446335
+            },
+            {
+              "end_token": 32,
+              "mean_nll": 7.2686560451984406
+            },
+            {
+              "end_token": 48,
+              "mean_nll": 9.347914040088654
+            },
+            {
+              "end_token": 64,
+              "mean_nll": 8.257843509316444
+            },
+            {
+              "end_token": 80,
+              "mean_nll": 8.686842620372772
+            },
+            {
+              "end_token": 96,
+              "mean_nll": 8.333892688155174
+            },
+            {
+              "end_token": 112,
+              "mean_nll": 7.847593650221825
+            },
+            {
+              "end_token": 128,
+              "mean_nll": 7.888217106461525
+            },
+            {
+              "end_token": 144,
+              "mean_nll": 7.1736790984869
+            },
+            {
+              "end_token": 160,
+              "mean_nll": 7.122122704982758
+            },
+            {
+              "end_token": 176,
+              "mean_nll": 6.780727103352547
+            },
+            {
+              "end_token": 192,
+              "mean_nll": 6.094420000910759
+            },
+            {
+              "end_token": 208,
+              "mean_nll": 7.186768755316734
+            },
+            {
+              "end_token": 224,
+              "mean_nll": 7.103178024291992
+            },
+            {
+              "end_token": 240,
+              "mean_nll": 7.841062366962433
+            },
+            {
+              "end_token": 256,
+              "mean_nll": 9.166601032018661
+            }
+          ],
+          "half_recovery_tokens": null,
+          "status": "no_observed_improvement",
+          "initial_block_nll": 6.2047809809446335,
+          "observed_late_nll": 8.503831699490547,
+          "observed_drop": -2.2990507185459137
+        },
+        "reference_relative_block_curve": [
+          0.23751701634700972,
+          0.7067851806482133,
+          0.3690377160823558,
+          0.9532514626966934,
+          0.9288990651679714,
+          0.18795470424042166,
+          0.24339590564841063,
+          0.6026703338922423,
+          0.5292108298385807,
+          -0.2483316746811723,
+          0.2824112662820214,
+          0.2890098851742381,
+          0.35271727980430756,
+          0.42434801657400606,
+          0.4905545137237243,
+          1.1400396956234564
+        ],
+        "reference_relative_opening_to_late_drop": -0.5777800883265807,
+        "scope": "descriptive trajectory; reference controls marginal difficulty only"
+      },
+      "revisit": {
+        "matched_pairs": 127,
+        "matched_nll_gain": 0.1897765933059332,
+        "first_return_window_matched_pairs": 31,
+        "first_return_window_preupdate_nll_gain": 0.1764205655743999,
+        "return_bridge_nll": 9.2744779586792,
+        "B_exposure_events": 256,
+        "intervening_events_before_first_matched_pair": 257,
+        "intervening_physical_ticks_before_first_matched_pair": 257,
+        "scope": "first window precedes return update; later replay scores include relearning"
+      },
+      "health": {
+        "field_energy": 0.1756972223520279,
+        "firing_rate": 0.017223628237843513,
+        "centered_effective_rank": 1.561953067779541,
+        "read_norm_mean": 0.12786516547203064,
+        "vram_peak_mib": 2203.44384765625,
+        "vram_reserved_mib": 2390.0
+      },
+      "health_scope": "field energy, activity and centered representation structure; FTLE not measured in this branch"
+    },
+    {
+      "bptt_train_tokens": 300000,
+      "timing": "legacy_one_tick",
+      "physical_ticks_per_input": 1,
+      "writer_baseline_clock": "physical",
+      "actual_exposure": {
+        "input_events": 384,
+        "physical_ticks": 384,
+        "optimizer_updates": 12
+      },
+      "first_pass": {
+        "tokens": 256,
+        "validation_range": [
+          14072,
+          14328
+        ],
+        "model_nll": 7.752445877529681,
+        "fixed_unigram_nll": 7.2439547677332925,
+        "gain_over_fixed_unigram": -0.5084911097963885,
+        "gain_per_optimizer_window": [
+          -0.6975088517341956,
+          -0.21455774844603015,
+          -0.23730336483357314,
+          -0.515316820435644,
+          -0.6704523974146628,
+          -1.0023280607960483,
+          -0.16546920532744053,
+          -0.5649924293835131
+        ]
+      },
+      "adaptation": {
+        "recorded_recovery": {
+          "tokens": 256,
+          "block_tokens": 16,
+          "confirmation_blocks": 2,
+          "block_curve": [
+            {
+              "end_token": 16,
+              "mean_nll": 9.28725416958332
+            },
+            {
+              "end_token": 32,
+              "mean_nll": 6.889138579368591
+            },
+            {
+              "end_token": 48,
+              "mean_nll": 7.670285657048225
+            },
+            {
+              "end_token": 64,
+              "mean_nll": 6.726310163736343
+            },
+            {
+              "end_token": 80,
+              "mean_nll": 7.592787280678749
+            },
+            {
+              "end_token": 96,
+              "mean_nll": 7.32083286345005
+            },
+            {
+              "end_token": 112,
+              "mean_nll": 7.638409435749054
+            },
+            {
+              "end_token": 128,
+              "mean_nll": 6.990663915872574
+            },
+            {
+              "end_token": 144,
+              "mean_nll": 7.8925428837537766
+            },
+            {
+              "end_token": 160,
+              "mean_nll": 8.701112180948257
+            },
+            {
+              "end_token": 176,
+              "mean_nll": 10.797948181629181
+            },
+            {
+              "end_token": 192,
+              "mean_nll": 7.45209713280201
+            },
+            {
+              "end_token": 208,
+              "mean_nll": 6.258401975035667
+            },
+            {
+              "end_token": 224,
+              "mean_nll": 7.113456174731255
+            },
+            {
+              "end_token": 240,
+              "mean_nll": 7.421436816453934
+            },
+            {
+              "end_token": 256,
+              "mean_nll": 8.286456629633904
+            }
+          ],
+          "half_recovery_tokens": 48,
+          "status": "observed_recovery",
+          "initial_block_nll": 9.28725416958332,
+          "observed_late_nll": 7.853946723043919,
+          "observed_drop": 1.433307446539402,
+          "threshold_nll": 8.57060044631362
+        },
+        "reference_relative_block_curve": [
+          1.3529649711981822,
+          0.04205273227020917,
+          0.2658461485315312,
+          0.16326934836052906,
+          0.4112090500364939,
+          0.06339767963065238,
+          0.7522288205589605,
+          0.27840482031232755,
+          0.567056748921265,
+          0.7738480459080604,
+          1.66554452465639,
+          0.3391115969357066,
+          -0.24782674746205274,
+          0.5787651581169337,
+          0.46078300657831234,
+          0.6692018521887138
+        ],
+        "reference_relative_opening_to_late_drop": 0.7879725418146691,
+        "scope": "descriptive trajectory; reference controls marginal difficulty only"
+      },
+      "revisit": {
+        "matched_pairs": 127,
+        "matched_nll_gain": 0.16170102780259502,
+        "first_return_window_matched_pairs": 31,
+        "first_return_window_preupdate_nll_gain": 0.10237141578428206,
+        "return_bridge_nll": 5.571515083312988,
+        "B_exposure_events": 256,
+        "intervening_events_before_first_matched_pair": 257,
+        "intervening_physical_ticks_before_first_matched_pair": 257,
+        "scope": "first window precedes return update; later replay scores include relearning"
+      },
+      "health": {
+        "field_energy": 0.1642814725637436,
+        "firing_rate": 0.023509889841079712,
+        "centered_effective_rank": 3.2561960220336914,
+        "read_norm_mean": 0.14576606452465057,
+        "vram_peak_mib": 2203.44384765625,
+        "vram_reserved_mib": 2390.0
+      },
+      "health_scope": "field energy, activity and centered representation structure; FTLE not measured in this branch"
+    },
+    {
+      "bptt_train_tokens": 400000,
+      "timing": "legacy_one_tick",
+      "physical_ticks_per_input": 1,
+      "writer_baseline_clock": "physical",
+      "actual_exposure": {
+        "input_events": 384,
+        "physical_ticks": 384,
+        "optimizer_updates": 12
+      },
+      "first_pass": {
+        "tokens": 256,
+        "validation_range": [
+          14328,
+          14584
+        ],
+        "model_nll": 7.907499546185136,
+        "fixed_unigram_nll": 7.325595958606164,
+        "gain_over_fixed_unigram": -0.581903587578972,
+        "gain_per_optimizer_window": [
+          -0.7953248691543002,
+          -0.1134943928537028,
+          -0.36334538461616683,
+          -0.7981879319609853,
+          -0.609107728974867,
+          -0.7775528668878167,
+          -0.6245336188414082,
+          -0.5736819073425283
+        ]
+      },
+      "adaptation": {
+        "recorded_recovery": {
+          "tokens": 256,
+          "block_tokens": 16,
+          "confirmation_blocks": 2,
+          "block_curve": [
+            {
+              "end_token": 16,
+              "mean_nll": 7.053638458251953
+            },
+            {
+              "end_token": 32,
+              "mean_nll": 10.215283334255219
+            },
+            {
+              "end_token": 48,
+              "mean_nll": 6.060927018523216
+            },
+            {
+              "end_token": 64,
+              "mean_nll": 7.863928630948067
+            },
+            {
+              "end_token": 80,
+              "mean_nll": 7.241749495267868
+            },
+            {
+              "end_token": 96,
+              "mean_nll": 7.32370226085186
+            },
+            {
+              "end_token": 112,
+              "mean_nll": 7.830659002065659
+            },
+            {
+              "end_token": 128,
+              "mean_nll": 8.398752361536026
+            },
+            {
+              "end_token": 144,
+              "mean_nll": 8.21260578930378
+            },
+            {
+              "end_token": 160,
+              "mean_nll": 8.101044908165932
+            },
+            {
+              "end_token": 176,
+              "mean_nll": 8.002555713057518
+            },
+            {
+              "end_token": 192,
+              "mean_nll": 7.743883207440376
+            },
+            {
+              "end_token": 208,
+              "mean_nll": 7.5642334669828415
+            },
+            {
+              "end_token": 224,
+              "mean_nll": 8.282861039042473
+            },
+            {
+              "end_token": 240,
+              "mean_nll": 8.823940515518188
+            },
+            {
+              "end_token": 256,
+              "mean_nll": 7.800227537751198
+            }
+          ],
+          "half_recovery_tokens": null,
+          "status": "no_observed_improvement",
+          "initial_block_nll": 7.053638458251953,
+          "observed_late_nll": 8.312084026634693,
+          "observed_drop": -1.25844556838274
+        },
+        "reference_relative_block_curve": [
+          0.23523935222263814,
+          1.3554103860859623,
+          -0.005524925538710285,
+          0.2325137112461159,
+          0.208340673570198,
+          0.5183500956621355,
+          0.6965951534474544,
+          0.8997807104745161,
+          0.7252930159195289,
+          0.4929224420302052,
+          0.888509996265253,
+          0.6665957375103805,
+          0.4123976239342999,
+          0.8366696137485164,
+          0.3256361099055139,
+          0.8217277047795427
+        ],
+        "reference_relative_opening_to_late_drop": -0.3384425551198902,
+        "scope": "descriptive trajectory; reference controls marginal difficulty only"
+      },
+      "revisit": {
+        "matched_pairs": 127,
+        "matched_nll_gain": 0.13083888226606716,
+        "first_return_window_matched_pairs": 31,
+        "first_return_window_preupdate_nll_gain": 0.1303204567201676,
+        "return_bridge_nll": 3.3360981941223145,
+        "B_exposure_events": 256,
+        "intervening_events_before_first_matched_pair": 257,
+        "intervening_physical_ticks_before_first_matched_pair": 257,
+        "scope": "first window precedes return update; later replay scores include relearning"
+      },
+      "health": {
+        "field_energy": 0.2582622468471527,
+        "firing_rate": 0.020772520452737808,
+        "centered_effective_rank": 3.9300661087036133,
+        "read_norm_mean": 0.15032167732715607,
+        "vram_peak_mib": 2203.44384765625,
+        "vram_reserved_mib": 2390.0
+      },
+      "health_scope": "field energy, activity and centered representation structure; FTLE not measured in this branch"
+    },
+    {
+      "bptt_train_tokens": 500000,
+      "timing": "legacy_one_tick",
+      "physical_ticks_per_input": 1,
+      "writer_baseline_clock": "physical",
+      "actual_exposure": {
+        "input_events": 384,
+        "physical_ticks": 384,
+        "optimizer_updates": 12
+      },
+      "first_pass": {
+        "tokens": 256,
+        "validation_range": [
+          14584,
+          14840
+        ],
+        "model_nll": 8.136853742413223,
+        "fixed_unigram_nll": 7.411544136892472,
+        "gain_over_fixed_unigram": -0.7253096055207511,
+        "gain_per_optimizer_window": [
+          -0.5446394782361945,
+          -1.0151881706548542,
+          -0.965738702448304,
+          -0.6874851503368151,
+          -0.37680304822323135,
+          -0.4580324998803224,
+          -0.8263572273903024,
+          -0.9282325669959842
+        ]
+      },
+      "adaptation": {
+        "recorded_recovery": {
+          "tokens": 256,
+          "block_tokens": 16,
+          "confirmation_blocks": 2,
+          "block_curve": [
+            {
+              "end_token": 16,
+              "mean_nll": 7.641087770462036
+            },
+            {
+              "end_token": 32,
+              "mean_nll": 8.27644445002079
+            },
+            {
+              "end_token": 48,
+              "mean_nll": 7.888731852173805
+            },
+            {
+              "end_token": 64,
+              "mean_nll": 10.148111522197723
+            },
+            {
+              "end_token": 80,
+              "mean_nll": 8.504325091838837
+            },
+            {
+              "end_token": 96,
+              "mean_nll": 8.50475911796093
+            },
+            {
+              "end_token": 112,
+              "mean_nll": 6.823606222867966
+            },
+            {
+              "end_token": 128,
+              "mean_nll": 8.52543331682682
+            },
+            {
+              "end_token": 144,
+              "mean_nll": 6.984330669045448
+            },
+            {
+              "end_token": 160,
+              "mean_nll": 7.1171731650829315
+            },
+            {
+              "end_token": 176,
+              "mean_nll": 9.374920219182968
+            },
+            {
+              "end_token": 192,
+              "mean_nll": 6.037220984697342
+            },
+            {
+              "end_token": 208,
+              "mean_nll": 10.210511326789856
+            },
+            {
+              "end_token": 224,
+              "mean_nll": 7.017616868019104
+            },
+            {
+              "end_token": 240,
+              "mean_nll": 7.550266519188881
+            },
+            {
+              "end_token": 256,
+              "mean_nll": 9.585120782256126
+            }
+          ],
+          "half_recovery_tokens": null,
+          "status": "no_observed_improvement",
+          "initial_block_nll": 7.641087770462036,
+          "observed_late_nll": 8.567693650722504,
+          "observed_drop": -0.9266058802604675
+        },
+        "reference_relative_block_curve": [
+          0.030171017787529952,
+          1.059107938684859,
+          0.3762473171021594,
+          1.6541290242075488,
+          0.9324488584091872,
+          0.9990285464874207,
+          -0.004673308775120816,
+          1.3796436094487512,
+          0.40760330682229473,
+          0.34600278962416786,
+          0.8418143645038006,
+          0.07425063525684425,
+          1.2931216757521855,
+          0.3595927790284189,
+          0.7144369260209693,
+          1.1420282079709994
+        ],
+        "reference_relative_opening_to_late_drop": -0.8980615492084544,
+        "scope": "descriptive trajectory; reference controls marginal difficulty only"
+      },
+      "revisit": {
+        "matched_pairs": 127,
+        "matched_nll_gain": 0.24623779049069863,
+        "first_return_window_matched_pairs": 31,
+        "first_return_window_preupdate_nll_gain": 0.22157405268761418,
+        "return_bridge_nll": 15.852849960327148,
+        "B_exposure_events": 256,
+        "intervening_events_before_first_matched_pair": 257,
+        "intervening_physical_ticks_before_first_matched_pair": 257,
+        "scope": "first window precedes return update; later replay scores include relearning"
+      },
+      "health": {
+        "field_energy": 0.22213409841060638,
+        "firing_rate": 0.023194970563054085,
+        "centered_effective_rank": 2.6101043224334717,
+        "read_norm_mean": 0.16573107242584229,
+        "vram_peak_mib": 2203.44384765625,
+        "vram_reserved_mib": 2390.0
+      },
+      "health_scope": "field energy, activity and centered representation structure; FTLE not measured in this branch"
+    },
+    {
+      "bptt_train_tokens": 600000,
+      "timing": "legacy_one_tick",
+      "physical_ticks_per_input": 1,
+      "writer_baseline_clock": "physical",
+      "actual_exposure": {
+        "input_events": 384,
+        "physical_ticks": 384,
+        "optimizer_updates": 12
+      },
+      "first_pass": {
+        "tokens": 256,
+        "validation_range": [
+          14840,
+          15096
+        ],
+        "model_nll": 8.837140184827149,
+        "fixed_unigram_nll": 8.111937670541153,
+        "gain_over_fixed_unigram": -0.7252025142859965,
+        "gain_per_optimizer_window": [
+          -0.7716430009559722,
+          -0.520702557578645,
+          -0.6248170660230346,
+          -0.6433506203620722,
+          -1.0641295212759587,
+          -0.7347612077232252,
+          -0.3254040227277202,
+          -1.1168121176413437
+        ]
+      },
+      "adaptation": {
+        "recorded_recovery": {
+          "tokens": 256,
+          "block_tokens": 16,
+          "confirmation_blocks": 2,
+          "block_curve": [
+            {
+              "end_token": 16,
+              "mean_nll": 8.150465250015259
+            },
+            {
+              "end_token": 32,
+              "mean_nll": 9.915143236517906
+            },
+            {
+              "end_token": 48,
+              "mean_nll": 9.141716614365578
+            },
+            {
+              "end_token": 64,
+              "mean_nll": 7.251679062843323
+            },
+            {
+              "end_token": 80,
+              "mean_nll": 9.264686897397041
+            },
+            {
+              "end_token": 96,
+              "mean_nll": 7.090441092848778
+            },
+            {
+              "end_token": 112,
+              "mean_nll": 8.327179282903671
+            },
+            {
+              "end_token": 128,
+              "mean_nll": 9.302991539239883
+            },
+            {
+              "end_token": 144,
+              "mean_nll": 10.02056522667408
+            },
+            {
+              "end_token": 160,
+              "mean_nll": 8.862432926893234
+            },
+            {
+              "end_token": 176,
+              "mean_nll": 8.308151885867119
+            },
+            {
+              "end_token": 192,
+              "mean_nll": 8.901027143001556
+            },
+            {
+              "end_token": 208,
+              "mean_nll": 8.736067488789558
+            },
+            {
+              "end_token": 224,
+              "mean_nll": 7.76651905477047
+            },
+            {
+              "end_token": 240,
+              "mean_nll": 9.889604151248932
+            },
+            {
+              "end_token": 256,
+              "mean_nll": 10.465572103857994
+            }
+          ],
+          "half_recovery_tokens": null,
+          "status": "no_observed_improvement",
+          "initial_block_nll": 8.150465250015259,
+          "observed_late_nll": 10.177588127553463,
+          "observed_drop": -2.027122877538204
+        },
+        "reference_relative_block_curve": [
+          0.5745377718971965,
+          0.9687482300147476,
+          0.711541371014598,
+          0.329863744142692,
+          0.9148681588481435,
+          0.33476597319792556,
+          0.9271371592791602,
+          0.3595640814449844,
+          1.1736380382203713,
+          0.9546210043315462,
+          0.5822065766207359,
+          0.8873158388257142,
+          0.597355190174476,
+          0.053452855280964245,
+          1.1022114781603733,
+          1.131412757122314
+        ],
+        "reference_relative_opening_to_late_drop": -0.5422743457441472,
+        "scope": "descriptive trajectory; reference controls marginal difficulty only"
+      },
+      "revisit": {
+        "matched_pairs": 127,
+        "matched_nll_gain": 0.2000874703324686,
+        "first_return_window_matched_pairs": 31,
+        "first_return_window_preupdate_nll_gain": 0.2770925260359241,
+        "return_bridge_nll": 4.013568878173828,
+        "B_exposure_events": 256,
+        "intervening_events_before_first_matched_pair": 257,
+        "intervening_physical_ticks_before_first_matched_pair": 257,
+        "scope": "first window precedes return update; later replay scores include relearning"
+      },
+      "health": {
+        "field_energy": 0.2545904219150543,
+        "firing_rate": 0.029148144647479057,
+        "centered_effective_rank": 2.573484420776367,
+        "read_norm_mean": 0.1748044788837433,
+        "vram_peak_mib": 2203.44384765625,
+        "vram_reserved_mib": 2390.0
+      },
+      "health_scope": "field energy, activity and centered representation structure; FTLE not measured in this branch"
+    },
+    {
+      "bptt_train_tokens": 700000,
+      "timing": "pulse_plus_1_quiet",
+      "physical_ticks_per_input": 2,
+      "writer_baseline_clock": "physical",
+      "actual_exposure": {
+        "input_events": 384,
+        "physical_ticks": 768,
+        "optimizer_updates": 12
+      },
+      "first_pass": {
+        "tokens": 256,
+        "validation_range": [
+          15096,
+          15352
+        ],
+        "model_nll": 8.937017563730478,
+        "fixed_unigram_nll": 8.253069259945669,
+        "gain_over_fixed_unigram": -0.68394830378481,
+        "gain_per_optimizer_window": [
+          -0.7849433001957647,
+          -0.8007252825892412,
+          -0.7221707369274815,
+          -0.7641652642339375,
+          -0.3742579437516024,
+          -0.34562820639093783,
+          -1.1111821818617755,
+          -0.5685135143277388
+        ]
+      },
+      "adaptation": {
+        "recorded_recovery": {
+          "tokens": 256,
+          "block_tokens": 16,
+          "confirmation_blocks": 2,
+          "block_curve": [
+            {
+              "end_token": 16,
+              "mean_nll": 9.132438063621521
+            },
+            {
+              "end_token": 32,
+              "mean_nll": 9.555508106946945
+            },
+            {
+              "end_token": 48,
+              "mean_nll": 8.282555148005486
+            },
+            {
+              "end_token": 64,
+              "mean_nll": 9.760851681232452
+            },
+            {
+              "end_token": 80,
+              "mean_nll": 8.973864689469337
+            },
+            {
+              "end_token": 96,
+              "mean_nll": 8.370729252696037
+            },
+            {
+              "end_token": 112,
+              "mean_nll": 8.45782071352005
+            },
+            {
+              "end_token": 128,
+              "mean_nll": 10.028290316462517
+            },
+            {
+              "end_token": 144,
+              "mean_nll": 7.337721332907677
+            },
+            {
+              "end_token": 160,
+              "mean_nll": 9.051373735070229
+            },
+            {
+              "end_token": 176,
+              "mean_nll": 8.636369675397873
+            },
+            {
+              "end_token": 192,
+              "mean_nll": 8.994831025600433
+            },
+            {
+              "end_token": 208,
+              "mean_nll": 10.913145303726196
+            },
+            {
+              "end_token": 224,
+              "mean_nll": 8.4551662504673
+            },
+            {
+              "end_token": 240,
+              "mean_nll": 7.933995217084885
+            },
+            {
+              "end_token": 256,
+              "mean_nll": 9.107620507478714
+            }
+          ],
+          "half_recovery_tokens": 112,
+          "status": "observed_recovery",
+          "initial_block_nll": 9.132438063621521,
+          "observed_late_nll": 8.5208078622818,
+          "observed_drop": 0.6116302013397217,
+          "threshold_nll": 8.82662296295166
+        },
+        "reference_relative_block_curve": [
+          0.9419079494696583,
+          0.6279786509218712,
+          0.3429118036967627,
+          1.2585387614817198,
+          0.7539988426455106,
+          0.6903426312094523,
+          0.6029183557462394,
+          0.9254121727216356,
+          0.2575979540047567,
+          0.49091793349844803,
+          0.5520176058351532,
+          0.1392388069467224,
+          1.478388034114479,
+          0.7439763296090718,
+          0.2679804630354973,
+          0.8690465656199803
+        ],
+        "reference_relative_opening_to_late_drop": 0.3733944351419195,
+        "scope": "descriptive trajectory; reference controls marginal difficulty only"
+      },
+      "revisit": {
+        "matched_pairs": 127,
+        "matched_nll_gain": 0.1018411174533874,
+        "first_return_window_matched_pairs": 31,
+        "first_return_window_preupdate_nll_gain": 0.12883640104724514,
+        "return_bridge_nll": 3.6322288513183594,
+        "B_exposure_events": 256,
+        "intervening_events_before_first_matched_pair": 257,
+        "intervening_physical_ticks_before_first_matched_pair": 514,
+        "scope": "first window precedes return update; later replay scores include relearning"
+      },
+      "health": {
+        "field_energy": 1.4473459720611572,
+        "firing_rate": 0.013178135268390179,
+        "centered_effective_rank": 5.109134674072266,
+        "read_norm_mean": 0.18592339754104614,
+        "vram_peak_mib": 2731.0390625,
+        "vram_reserved_mib": 2912.0
+      },
+      "health_scope": "field energy, activity and centered representation structure; FTLE not measured in this branch"
+    },
+    {
+      "bptt_train_tokens": 800000,
+      "timing": "pulse_plus_1_quiet",
+      "physical_ticks_per_input": 2,
+      "writer_baseline_clock": "physical",
+      "actual_exposure": {
+        "input_events": 384,
+        "physical_ticks": 768,
+        "optimizer_updates": 12
+      },
+      "first_pass": {
+        "tokens": 256,
+        "validation_range": [
+          15352,
+          15608
+        ],
+        "model_nll": 8.585720401257277,
+        "fixed_unigram_nll": 8.074540302594567,
+        "gain_over_fixed_unigram": -0.5111800986627099,
+        "gain_per_optimizer_window": [
+          -0.6302491091097766,
+          -0.27242512659802454,
+          -0.8943138172442342,
+          -0.33461876844984406,
+          -0.2932658031224578,
+          -0.3934665071833436,
+          -0.401895884038571,
+          -0.8692057735554273
+        ]
+      },
+      "adaptation": {
+        "recorded_recovery": {
+          "tokens": 256,
+          "block_tokens": 16,
+          "confirmation_blocks": 2,
+          "block_curve": [
+            {
+              "end_token": 16,
+              "mean_nll": 9.068484425544739
+            },
+            {
+              "end_token": 32,
+              "mean_nll": 8.723065286874771
+            },
+            {
+              "end_token": 48,
+              "mean_nll": 9.110119760036469
+            },
+            {
+              "end_token": 64,
+              "mean_nll": 6.393736153841019
+            },
+            {
+              "end_token": 80,
+              "mean_nll": 10.688648700714111
+            },
+            {
+              "end_token": 96,
+              "mean_nll": 9.060958921909332
+            },
+            {
+              "end_token": 112,
+              "mean_nll": 9.417172580957413
+            },
+            {
+              "end_token": 128,
+              "mean_nll": 7.1125093549489975
+            },
+            {
+              "end_token": 144,
+              "mean_nll": 7.1708043068647385
+            },
+            {
+              "end_token": 160,
+              "mean_nll": 7.793123722076416
+            },
+            {
+              "end_token": 176,
+              "mean_nll": 9.324770420789719
+            },
+            {
+              "end_token": 192,
+              "mean_nll": 7.910042986273766
+            },
+            {
+              "end_token": 208,
+              "mean_nll": 8.941795438528061
+            },
+            {
+              "end_token": 224,
+              "mean_nll": 8.058932349085808
+            },
+            {
+              "end_token": 240,
+              "mean_nll": 9.04621009528637
+            },
+            {
+              "end_token": 256,
+              "mean_nll": 9.551151916384697
+            }
+          ],
+          "half_recovery_tokens": null,
+          "status": "no_observed_improvement",
+          "initial_block_nll": 9.068484425544739,
+          "observed_late_nll": 9.298681005835533,
+          "observed_drop": -0.23019658029079437
+        },
+        "reference_relative_block_curve": [
+          0.7977646221849084,
+          0.4627335960346447,
+          0.642949875752187,
+          -0.09809962255613802,
+          1.012191593065887,
+          0.7764360414225816,
+          0.3533709825800399,
+          0.3158665543196484,
+          0.30776237181255994,
+          0.2787692344323557,
+          0.45416003049560527,
+          0.3327729838710819,
+          0.11280579368977214,
+          0.6909859743873699,
+          0.8165683564238347,
+          0.9218431906870199
+        ],
+        "reference_relative_opening_to_late_drop": -0.07144115137051887,
+        "scope": "descriptive trajectory; reference controls marginal difficulty only"
+      },
+      "revisit": {
+        "matched_pairs": 127,
+        "matched_nll_gain": 0.1216216913358433,
+        "first_return_window_matched_pairs": 31,
+        "first_return_window_preupdate_nll_gain": 0.11136311869467458,
+        "return_bridge_nll": 18.29133415222168,
+        "B_exposure_events": 256,
+        "intervening_events_before_first_matched_pair": 257,
+        "intervening_physical_ticks_before_first_matched_pair": 514,
+        "scope": "first window precedes return update; later replay scores include relearning"
+      },
+      "health": {
+        "field_energy": 0.7873658537864685,
+        "firing_rate": 0.01934327371418476,
+        "centered_effective_rank": 3.1300013065338135,
+        "read_norm_mean": 0.1886279284954071,
+        "vram_peak_mib": 2731.0390625,
+        "vram_reserved_mib": 2912.0
+      },
+      "health_scope": "field energy, activity and centered representation structure; FTLE not measured in this branch"
+    },
+    {
+      "bptt_train_tokens": 900000,
+      "timing": "pulse_plus_1_quiet",
+      "physical_ticks_per_input": 2,
+      "writer_baseline_clock": "physical",
+      "actual_exposure": {
+        "input_events": 384,
+        "physical_ticks": 768,
+        "optimizer_updates": 12
+      },
+      "first_pass": {
+        "tokens": 256,
+        "validation_range": [
+          15608,
+          15864
+        ],
+        "model_nll": 8.068895320408046,
+        "fixed_unigram_nll": 7.7401218253143576,
+        "gain_over_fixed_unigram": -0.3287734950936881,
+        "gain_per_optimizer_window": [
+          -0.34590152454724254,
+          -0.7122403545183216,
+          -0.6243714155948188,
+          -0.28468458012056747,
+          -0.3749605757225656,
+          -0.2775684344285996,
+          0.018961962927942097,
+          -0.029423038745331198
+        ]
+      },
+      "adaptation": {
+        "recorded_recovery": {
+          "tokens": 256,
+          "block_tokens": 16,
+          "confirmation_blocks": 2,
+          "block_curve": [
+            {
+              "end_token": 16,
+              "mean_nll": 9.57874196767807
+            },
+            {
+              "end_token": 32,
+              "mean_nll": 7.086191177368164
+            },
+            {
+              "end_token": 48,
+              "mean_nll": 8.352677375078201
+            },
+            {
+              "end_token": 64,
+              "mean_nll": 7.743764087557793
+            },
+            {
+              "end_token": 80,
+              "mean_nll": 9.307588338851929
+            },
+            {
+              "end_token": 96,
+              "mean_nll": 9.310303777456284
+            },
+            {
+              "end_token": 112,
+              "mean_nll": 8.140404909849167
+            },
+            {
+              "end_token": 128,
+              "mean_nll": 7.168083429336548
+            },
+            {
+              "end_token": 144,
+              "mean_nll": 7.750538498163223
+            },
+            {
+              "end_token": 160,
+              "mean_nll": 9.215126514434814
+            },
+            {
+              "end_token": 176,
+              "mean_nll": 7.717691108584404
+            },
+            {
+              "end_token": 192,
+              "mean_nll": 7.256662145256996
+            },
+            {
+              "end_token": 208,
+              "mean_nll": 7.370616182684898
+            },
+            {
+              "end_token": 224,
+              "mean_nll": 6.581505686044693
+            },
+            {
+              "end_token": 240,
+              "mean_nll": 7.998064279556274
+            },
+            {
+              "end_token": 256,
+              "mean_nll": 8.524365648627281
+            }
+          ],
+          "half_recovery_tokens": 48,
+          "status": "observed_recovery",
+          "initial_block_nll": 9.57874196767807,
+          "observed_late_nll": 8.261214964091778,
+          "observed_drop": 1.3175270035862923,
+          "threshold_nll": 8.919978465884924
+        },
+        "reference_relative_block_curve": [
+          0.45505498143920475,
+          0.23674806765528023,
+          0.8657780795407111,
+          0.558702629495932,
+          0.873271420400954,
+          0.3754714107886838,
+          0.3680309531235909,
+          0.20133820711754402,
+          -0.010291341875917737,
+          0.7602124933210489,
+          0.5136957679946361,
+          0.04144110086256306,
+          0.2011386971257993,
+          -0.2390626229816835,
+          -0.32346896569642036,
+          0.38231504318708276
+        ],
+        "reference_relative_opening_to_late_drop": 0.42563194269387356,
+        "scope": "descriptive trajectory; reference controls marginal difficulty only"
+      },
+      "revisit": {
+        "matched_pairs": 127,
+        "matched_nll_gain": 0.1725802778259037,
+        "first_return_window_matched_pairs": 31,
+        "first_return_window_preupdate_nll_gain": 0.16562176519824612,
+        "return_bridge_nll": 8.129922866821289,
+        "B_exposure_events": 256,
+        "intervening_events_before_first_matched_pair": 257,
+        "intervening_physical_ticks_before_first_matched_pair": 514,
+        "scope": "first window precedes return update; later replay scores include relearning"
+      },
+      "health": {
+        "field_energy": 5.193034648895264,
+        "firing_rate": 0.01697532832622528,
+        "centered_effective_rank": 2.4791533946990967,
+        "read_norm_mean": 0.18780791759490967,
+        "vram_peak_mib": 2731.0390625,
+        "vram_reserved_mib": 2912.0
+      },
+      "health_scope": "field energy, activity and centered representation structure; FTLE not measured in this branch"
+    },
+    {
+      "bptt_train_tokens": 1000000,
+      "timing": "pulse_plus_1_quiet",
+      "physical_ticks_per_input": 2,
+      "writer_baseline_clock": "input",
+      "actual_exposure": {
+        "input_events": 384,
+        "physical_ticks": 768,
+        "optimizer_updates": 12
+      },
+      "first_pass": {
+        "tokens": 256,
+        "validation_range": [
+          15864,
+          16120
+        ],
+        "model_nll": 7.853374890983105,
+        "fixed_unigram_nll": 7.754541207704436,
+        "gain_over_fixed_unigram": -0.09883368327867006,
+        "gain_per_optimizer_window": [
+          -0.05695584873589654,
+          0.16834250177374716,
+          0.08158415108945247,
+          -0.09986907952344187,
+          -0.7476575958456371,
+          0.010417141356213397,
+          -0.43904501492357945,
+          0.2925142785797813
+        ]
+      },
+      "adaptation": {
+        "recorded_recovery": {
+          "tokens": 256,
+          "block_tokens": 16,
+          "confirmation_blocks": 2,
+          "block_curve": [
+            {
+              "end_token": 16,
+              "mean_nll": 7.774767622351646
+            },
+            {
+              "end_token": 32,
+              "mean_nll": 6.588172495365143
+            },
+            {
+              "end_token": 48,
+              "mean_nll": 7.35276173055172
+            },
+            {
+              "end_token": 64,
+              "mean_nll": 7.666100442409515
+            },
+            {
+              "end_token": 80,
+              "mean_nll": 7.446804463863373
+            },
+            {
+              "end_token": 96,
+              "mean_nll": 7.586099401116371
+            },
+            {
+              "end_token": 112,
+              "mean_nll": 7.3165449649095535
+            },
+            {
+              "end_token": 128,
+              "mean_nll": 7.319071754813194
+            },
+            {
+              "end_token": 144,
+              "mean_nll": 8.670595332980156
+            },
+            {
+              "end_token": 160,
+              "mean_nll": 9.852191269397736
+            },
+            {
+              "end_token": 176,
+              "mean_nll": 8.34986911714077
+            },
+            {
+              "end_token": 192,
+              "mean_nll": 7.930871278047562
+            },
+            {
+              "end_token": 208,
+              "mean_nll": 9.68818612396717
+            },
+            {
+              "end_token": 224,
+              "mean_nll": 6.791555151343346
+            },
+            {
+              "end_token": 240,
+              "mean_nll": 7.156029567122459
+            },
+            {
+              "end_token": 256,
+              "mean_nll": 8.16437754034996
+            }
+          ],
+          "half_recovery_tokens": 48,
+          "status": "observed_recovery",
+          "initial_block_nll": 7.774767622351646,
+          "observed_late_nll": 7.66020355373621,
+          "observed_drop": 0.11456406861543655,
+          "threshold_nll": 7.717485588043928
+        },
+        "reference_relative_block_curve": [
+          0.0029357184526321023,
+          0.11097597901916098,
+          -0.4681132534633472,
+          0.13142824991585286,
+          -0.18229663195034715,
+          0.019128329771442215,
+          0.44847227699728065,
+          -0.24873411795039693,
+          0.32573861068694027,
+          1.169576581004334,
+          -0.03514048514224197,
+          0.014306202429815174,
+          0.9733943937299429,
+          -0.09530436388278388,
+          -0.47190322222500314,
+          -0.11312533493455945
+        ],
+        "reference_relative_opening_to_late_drop": 0.29544999703241337,
+        "scope": "descriptive trajectory; reference controls marginal difficulty only"
+      },
+      "revisit": {
+        "matched_pairs": 127,
+        "matched_nll_gain": 0.11722616886529397,
+        "first_return_window_matched_pairs": 31,
+        "first_return_window_preupdate_nll_gain": 0.1260582708543347,
+        "return_bridge_nll": 7.247607231140137,
+        "B_exposure_events": 256,
+        "intervening_events_before_first_matched_pair": 257,
+        "intervening_physical_ticks_before_first_matched_pair": 514,
+        "scope": "first window precedes return update; later replay scores include relearning"
+      },
+      "health": {
+        "field_energy": 0.4227258563041687,
+        "firing_rate": 0.023588620126247406,
+        "centered_effective_rank": 2.7417757511138916,
+        "read_norm_mean": 0.1836329698562622,
+        "vram_peak_mib": 2731.0390625,
+        "vram_reserved_mib": 2912.0
+      },
+      "health_scope": "field energy, activity and centered representation structure; FTLE not measured in this branch"
+    },
+    {
+      "bptt_train_tokens": 1100000,
+      "timing": "pulse_plus_1_quiet",
+      "physical_ticks_per_input": 2,
+      "writer_baseline_clock": "input",
+      "actual_exposure": {
+        "input_events": 384,
+        "physical_ticks": 768,
+        "optimizer_updates": 12
+      },
+      "first_pass": {
+        "tokens": 256,
+        "validation_range": [
+          16120,
+          16376
+        ],
+        "model_nll": 8.035376783460379,
+        "fixed_unigram_nll": 7.650819588583993,
+        "gain_over_fixed_unigram": -0.38455719487638573,
+        "gain_per_optimizer_window": [
+          0.09347369233312913,
+          -0.18558900154944608,
+          -0.2252666217341985,
+          -0.35236794421259454,
+          -0.7474784203030663,
+          -0.3782727075378317,
+          -0.46389549888960224,
+          -0.8170610571174752
+        ]
+      },
+      "adaptation": {
+        "recorded_recovery": {
+          "tokens": 256,
+          "block_tokens": 16,
+          "confirmation_blocks": 2,
+          "block_curve": [
+            {
+              "end_token": 16,
+              "mean_nll": 7.854548409581184
+            },
+            {
+              "end_token": 32,
+              "mean_nll": 7.207367539405823
+            },
+            {
+              "end_token": 48,
+              "mean_nll": 8.87089204788208
+            },
+            {
+              "end_token": 64,
+              "mean_nll": 7.109125196933746
+            },
+            {
+              "end_token": 80,
+              "mean_nll": 8.25915341079235
+            },
+            {
+              "end_token": 96,
+              "mean_nll": 7.387282580137253
+            },
+            {
+              "end_token": 112,
+              "mean_nll": 8.431807667016983
+            },
+            {
+              "end_token": 128,
+              "mean_nll": 8.128237441182137
+            },
+            {
+              "end_token": 144,
+              "mean_nll": 7.914015546441078
+            },
+            {
+              "end_token": 160,
+              "mean_nll": 8.079796254634857
+            },
+            {
+              "end_token": 176,
+              "mean_nll": 7.183268249034882
+            },
+            {
+              "end_token": 192,
+              "mean_nll": 8.463096618652344
+            },
+            {
+              "end_token": 208,
+              "mean_nll": 7.242788270115852
+            },
+            {
+              "end_token": 224,
+              "mean_nll": 9.013865441083908
+            },
+            {
+              "end_token": 240,
+              "mean_nll": 8.712060257792473
+            },
+            {
+              "end_token": 256,
+              "mean_nll": 8.708723604679108
+            }
+          ],
+          "half_recovery_tokens": null,
+          "status": "no_observed_improvement",
+          "initial_block_nll": 7.854548409581184,
+          "observed_late_nll": 8.71039193123579,
+          "observed_drop": -0.8558435216546059
+        },
+        "reference_relative_block_curve": [
+          -0.10649325045198657,
+          -0.0804541342142717,
+          0.227242369272443,
+          0.1439356338264491,
+          0.535167960979969,
+          -0.08463471751157195,
+          0.5450721451287427,
+          0.15966374329644648,
+          0.6868477377272504,
+          0.808109102878882,
+          0.14316482581303971,
+          0.6133805892626236,
+          0.04277060566808821,
+          0.8850203921111164,
+          0.675227365723022,
+          0.9588947485119284
+        ],
+        "reference_relative_opening_to_late_drop": -0.9235543075694618,
+        "scope": "descriptive trajectory; reference controls marginal difficulty only"
+      },
+      "revisit": {
+        "matched_pairs": 127,
+        "matched_nll_gain": 0.18433143961148,
+        "first_return_window_matched_pairs": 31,
+        "first_return_window_preupdate_nll_gain": 0.2045229865658668,
+        "return_bridge_nll": 8.513335227966309,
+        "B_exposure_events": 256,
+        "intervening_events_before_first_matched_pair": 257,
+        "intervening_physical_ticks_before_first_matched_pair": 514,
+        "scope": "first window precedes return update; later replay scores include relearning"
+      },
+      "health": {
+        "field_energy": 0.16584347188472748,
+        "firing_rate": 0.022946670651435852,
+        "centered_effective_rank": 2.182058334350586,
+        "read_norm_mean": 0.1891903281211853,
+        "vram_peak_mib": 2731.0390625,
+        "vram_reserved_mib": 2912.0
+      },
+      "health_scope": "field energy, activity and centered representation structure; FTLE not measured in this branch"
+    }
+  ],
+  "interpretation": "Historical and repaired timing use different fresh texts and different continuous histories. Reference-relative scores and matched A pairs improve attribution; no paired architecture comparison or asymptotic superiority is asserted. Health is descriptive, not proof of NESS or criticality. First-return-window gains precede return updates; full replay includes relearning.",
+  "reference": {
+    "train": "data\\ib_owt_gpt2\\train.npy",
+    "tokens": 10940858,
+    "smoothing": "add one",
+    "frozen": true,
+    "validation_labels_used_for_prior": false
+  }
+}

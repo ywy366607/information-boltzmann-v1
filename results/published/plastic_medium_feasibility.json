@@ -1,0 +1,71 @@
+{
+  "purpose": "mathematical feasibility; no training or capability verdict",
+  "reference_shape": [
+    8,
+    8,
+    4
+  ],
+  "channels": 128,
+  "material_basis_columns": 256,
+  "material_basis_rank": 256,
+  "material_basis_min_singular_value": 11.313708498984743,
+  "medium_parameters": 135060,
+  "spatial_heterogeneity": {
+    "shape": [
+      8,
+      8,
+      4
+    ],
+    "sites": 256,
+    "scope": "operator representation and spectrum; no learned anatomical claim",
+    "weak_boundary_speed": 0.01,
+    "compartment": {
+      "speed_synthesis_max_error": 8.43769498715119e-15,
+      "contrast_rayleigh_quotient": 0.0064000000000102395,
+      "first_nonzero_eigenvalue": 0.006399679999936064,
+      "homogeneous_first_nonzero_eigenvalue": 32.00000000000001,
+      "analytic_rayleigh_quotient": 0.0064
+    },
+    "localized_resonance": {
+      "speed_synthesis_max_error": 1.0436096431476471e-14,
+      "strong_internal_speed": 4.0,
+      "top_squared_wave_frequency": 2048.022400072381,
+      "two_cell_mode_energy_fraction": 0.9999999999588416,
+      "mode_ipr": 0.4999999999588416,
+      "plane_wave_ipr": 0.00390625
+    }
+  },
+  "witness": {
+    "shape": [
+      2,
+      2,
+      2
+    ],
+    "channels": 3,
+    "angular_rate_in_model_units": 1.3,
+    "power_per_cell": 1.0,
+    "supply_radius_squared": 1.0,
+    "bath_rate": 1.0,
+    "source": "u=P*projection(f)/(R\u00b2+|projection(f)|\u00b2)",
+    "scope": "admissible orthogonal-boundary actions; not the default W4 actor",
+    "external_periodic_driver": false,
+    "orbit_radius_squared": 3.0,
+    "rotating_rhs_residual": 4.440892098500626e-16,
+    "neutral_phase_directions": 1,
+    "continuous_transverse_gap": 0.12499999999999933,
+    "incidence_rank": 7,
+    "laplacian_gap": 15.999999999999996,
+    "integration_duration": 0.005,
+    "discrete_orbit_radius_squared": 2.9967870129717022,
+    "rotating_map_residual": 3.885780586188048e-16,
+    "neutral_map_directions": 1,
+    "discrete_transverse_spectral_radius": 0.9993750682178326,
+    "passed": true
+  },
+  "remaining_closure": [
+    "The W4 policy must be shown to include a compatible energy-supplying feedback. Its innovation-only action can vanish exactly on perfectly predicted input.",
+    "A two-plane witness is a proof configuration, not a prescribed allocation of production brain regions.",
+    "Connectivity proves rotational control feasibility under independent controls; it does not prove the finite shared MLP can realize every spatial/time policy.",
+    "The stability certificate is local to an open neighborhood of the driven orbit, not a claim for every arbitrary input stream or trained parameter setting."
+  ]
+}

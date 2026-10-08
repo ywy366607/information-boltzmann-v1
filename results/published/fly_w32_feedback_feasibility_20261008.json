@@ -1,0 +1,423 @@
+{
+  "scope": "One real 32-target forward-only block feasibility diagnostic, full 480-tick surrogate BPTT",
+  "source_checkpoint": "E:\\ib_checkpoints\\q8_fly_ctm_settle14_100k\\last.pt",
+  "source_checkpoint_bytes": 1124511859,
+  "source_checkpoint_modified": false,
+  "window": 32,
+  "settle_ticks": 14,
+  "optimizer_updates": 0,
+  "device": "NVIDIA GeForce GTX 1650",
+  "status": "passed",
+  "detach_reset": true,
+  "backward_only": false,
+  "forward_only": true,
+  "pulse_credit_path": "all",
+  "all_restored_parameters_exact": true,
+  "source_train_tokens": 100000,
+  "target_interval": [
+    100001,
+    100033
+  ],
+  "target_sha256": "c6ad6a38e7335bee762df1271dbef34aebb32490da6a24830c2b1dd549a5370d",
+  "trainable_parameters": 77984427,
+  "vram_peak_allocated_mib": 1992.15478515625,
+  "vram_reserved_mib": 2186.0,
+  "last_stage": "after_optimizer_update",
+  "board_memory_snapshots_mib": {
+    "restored": 1357.0,
+    "after_optimizer_update": 2255.0
+  },
+  "feedback_bound": {
+    "original_ticks": 480,
+    "blocks": [
+      "h",
+      "ge",
+      "gi",
+      "b",
+      "x",
+      "u",
+      "p0",
+      "p1",
+      "p2",
+      "p3"
+    ],
+    "certificate": {
+      "passive_envelope": [
+        [
+          0.9797064065933228,
+          11.873030662536621,
+          14.18133544921875,
+          0.0,
+          0.0,
+          0.0,
+          3.339409112930298,
+          1.4973095655441284,
+          4.432131290435791,
+          0.3974807560443878
+        ],
+        [
+          0.0,
+          0.9190172553062439,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          4.064914703369141,
+          2.153320074081421,
+          5.217269420623779,
+          0.4952988922595978
+        ],
+        [
+          0.0,
+          0.0,
+          0.9590636491775513,
+          0.0,
+          0.0,
+          0.0,
+          1.279104232788086,
+          0.8130641579627991,
+          0.42514675855636597,
+          0.2736899256706238
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.9813330173492432,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.9950125217437744,
+          0.7462549209594727,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.9900498390197754,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          2.236025094985962,
+          1.7142754793167114,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ]
+      ],
+      "event_envelope": [
+        0.0,
+        0.0,
+        0.0,
+        0.023033618927001953,
+        0.6218798756599426,
+        0.18563434481620789,
+        1.4285646677017212,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "margin_envelope": [
+        0.9797064065933228,
+        11.873030662536621,
+        14.18133544921875,
+        0.05438998341560364,
+        0.0,
+        0.0,
+        3.339409112930298,
+        1.6396677494049072,
+        4.432131290435791,
+        0.3974807560443878
+      ],
+      "max_surrogate_derivative": 1.0,
+      "passive_envelope_spectral_radius": 0.9950125217437744,
+      "feasible": true,
+      "inverse_metric_weights": [
+        4599905085.482693,
+        5045468.345969977,
+        2334939.381299132,
+        53.57052174468357,
+        15238.017542588223,
+        100.50088656730726,
+        34245.87582855551,
+        34246.87582855551,
+        34247.87582855551,
+        34248.87582855551
+      ],
+      "metric_condition_number": 85866348.42583357,
+      "passive_weighted_row_sums": [
+        0.9999999997826042,
+        0.9999998018023437,
+        0.999999571723357,
+        0.9813330173492432,
+        0.9999343746653917,
+        0.9900498390197754,
+        0.9999707994035543,
+        0.9999708002562042,
+        0.9999708011088043,
+        0.9999708019613547
+      ],
+      "event_weighted_row_sums": [
+        0.0,
+        0.0,
+        0.0,
+        1977814.8453503577,
+        187727.27014310917,
+        8496455.119041136,
+        191884.9697478246,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "surrogate_coefficient": 1.5217761184791383e-10,
+      "weighted_state_transition_bound": 1.0,
+      "scope": "Observed fixed-drive 10N trajectory only; additional forcing/observation contracts required"
+    }
+  },
+  "seconds_update_including_gradient_diagnostics": 6.890388400002848,
+  "pre_update_nll": 6.6612646989524364,
+  "metrics": {},
+  "suppressed_update_calls": 0,
+  "events": 32,
+  "physical_ticks": 480,
+  "all_parameters_finite": true,
+  "pre_update_scores": [
+    10.89795970916748,
+    10.590323448181152,
+    4.940021514892578,
+    8.901418685913086,
+    9.495193481445312,
+    4.330831527709961,
+    7.116230010986328,
+    7.213644027709961,
+    6.393064498901367,
+    5.670518398284912,
+    9.07097053527832,
+    4.127157211303711,
+    0.6363785862922668,
+    0.7013872265815735,
+    3.8333513736724854,
+    4.66041374206543,
+    4.250136375427246,
+    10.113761901855469,
+    11.479012489318848,
+    8.192594528198242,
+    6.880335807800293,
+    6.142414093017578,
+    8.069897651672363,
+    5.6246418952941895,
+    9.243158340454102,
+    3.1199724674224854,
+    11.458141326904297,
+    3.049149990081787,
+    7.661943435668945,
+    10.334480285644531,
+    2.457563638687134,
+    6.504402160644531
+  ],
+  "pre_update_training_loss": 6.483838081359863,
+  "pre_update_physical_state_hashes": {
+    "h": [
+      "f1153de8f64a00825b228100de5248443efb9ac103c64a870ddd74eaa8a10779"
+    ],
+    "ring": [
+      "86373ec38e52ac8a237398f869d6f39c01e22f8e87a9478fe3fb592ba5bb60b7",
+      "2892c478caf1e186149ce48bd6fd4b371360df4911869d9e76bde027c70370d6",
+      "b6eb6d19f79f59466fe5b2eb617aa4977065c391dba2c1f8fdbc2de76ccd8bbe",
+      "93f111a149b23849a3e5f745e0efd9546e44a736ebbf938dc007047568584e74"
+    ],
+    "ge": [
+      "8f8ab6c4cd6cb6820fe23556a3a3612a46a3687c154aa55faea59162c5164911"
+    ],
+    "gi": [
+      "d8a30f4c1af614d2cfb3302631743727061acf50f6250ec53db48c13c98ce8dd"
+    ],
+    "b": [
+      "5c443c538f18306633b5b8de21c99ed60985308e970bda6de89d37fdb087ad78"
+    ],
+    "x": [
+      "d8b6aa2e5f234bba6e5c73e0fd9325e8ed53abf115d13fe6743eac16e93fd7f3"
+    ],
+    "u": [
+      "2e5d1c3bb1bf20b8a62a31fde1bce4d03f1afdbda95c3b3a546070dbcffe19d2"
+    ],
+    "baseline": [
+      "1291e3e90ab0170940b270178b3b29820777f0a56b3ba86e2b2b5e9efd791c2c"
+    ],
+    "h_mean": [
+      "b62002b5e515ad3316d8e52f6f6fd6dbd988df56720c3fd1e40c3f7cc0a0d64e"
+    ],
+    "dan_gate": [
+      "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    ],
+    "gamma_z1": [
+      "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    ],
+    "gamma_z2": [
+      "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    ],
+    "observer_prior": [
+      "cc9cb441b8cfd124d346fc2a3eb6dc7721f704f6ba5a2ddc2ec6921db462c64b"
+    ],
+    "observer_history": [
+      "617173b8b399669a64123c8ae718033d4b2acad0699a47e975112ea1b966682d"
+    ]
+  },
+  "parameter_updates": {
+    "log_tau_m": {
+      "delta_l2": 0.0,
+      "delta_max_abs": 0.0,
+      "original_l2": 16.289777400472094
+    },
+    "log_tau_s_e": {
+      "delta_l2": 0.0,
+      "delta_max_abs": 0.0,
+      "original_l2": 8.976436983346302
+    },
+    "log_tau_s_i": {
+      "delta_l2": 0.0,
+      "delta_max_abs": 0.0,
+      "original_l2": 12.718744790343154
+    },
+    "log_threshold": {
+      "delta_l2": 0.0,
+      "delta_max_abs": 0.0,
+      "original_l2": 11.844059039095697
+    },
+    "log_g_e": {
+      "delta_l2": 0.0,
+      "delta_max_abs": 0.0,
+      "original_l2": 0.05205654725432396
+    },
+    "log_g_i": {
+      "delta_l2": 0.0,
+      "delta_max_abs": 0.0,
+      "original_l2": 0.08801691979169846
+    },
+    "log_tau_a": {
+      "delta_l2": 0.0,
+      "delta_max_abs": 0.0,
+      "original_l2": 20.27860677572825
+    },
+    "log_beta": {
+      "delta_l2": 0.0,
+      "delta_max_abs": 0.0,
+      "original_l2": 15.632218987413854
+    },
+    "edge_weight_e": {
+      "delta_l2": 0.0,
+      "delta_max_abs": 0.0,
+      "original_l2": 59.70328218753434
+    },
+    "edge_weight_i": {
+      "delta_l2": 0.0,
+      "delta_max_abs": 0.0,
+      "original_l2": 59.87231646804718
+    },
+    "topographic_writer.gate_linear.weight": {
+      "delta_l2": 0.0,
+      "delta_max_abs": 0.0,
+      "original_l2": 2.3308169759363833
+    },
+    "topographic_writer.gate_linear.bias": {
+      "delta_l2": 0.0,
+      "delta_max_abs": 0.0,
+      "original_l2": 0.13107321954231413
+    },
+    "topographic_writer.proj_vis.weight": {
+      "delta_l2": 0.0,
+      "delta_max_abs": 0.0,
+      "original_l2": 443.669863812197
+    },
+    "topographic_writer.proj_chemo.weight": {
+      "delta_l2": 0.0,
+      "delta_max_abs": 0.0,
+      "original_l2": 491.82197136575184
+    },
+    "topographic_writer.proj_mech.weight": {
+      "delta_l2": 0.0,
+      "delta_max_abs": 0.0,
+      "original_l2": 576.4799252392585
+    },
+    "output_read.weight": {
+      "delta_l2": 0.0,
+      "delta_max_abs": 0.0,
+      "original_l2": 27.885643015304623
+    },
+    "read_norm.weight": {
+      "delta_l2": 0.0,
+      "delta_max_abs": 0.0,
+      "original_l2": 4.052351318454157
+    },
+    "decoder.weight": {
+      "delta_l2": 0.0,
+      "delta_max_abs": 0.0,
+      "original_l2": 887.5018028140254
+    },
+    "decoder.bias": {
+      "delta_l2": 0.0,
+      "delta_max_abs": 0.0,
+      "original_l2": 3099.3317419671785
+    }
+  },
+  "seconds_including_diagnostics": 7.34485720001976
+}

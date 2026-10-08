@@ -1,0 +1,36 @@
+{
+  "checkpoint_tokens": 1100000,
+  "physical_ticks_per_input": 2,
+  "parameters": {
+    "logit_u0": {
+      "count": 27,
+      "in_adam_names": false,
+      "physical_min_max_mean": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "identical_to_legacy_100k": true
+    },
+    "log_tau_fac": {
+      "count": 27,
+      "in_adam_names": false,
+      "physical_min_max_mean": [
+        100.00000762939453,
+        100.00000762939453,
+        100.00000762939453
+      ],
+      "identical_to_legacy_100k": true
+    },
+    "log_tau_rec": {
+      "count": 27,
+      "in_adam_names": false,
+      "physical_min_max_mean": [
+        200.00001525878906,
+        200.00001525878906,
+        200.00001525878906
+      ],
+      "identical_to_legacy_100k": true
+    }
+  }
+}

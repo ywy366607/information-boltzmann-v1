@@ -1,0 +1,69 @@
+{
+  "num_tokens": 32,
+  "arm_a_fixed_14": {
+    "total_ticks": 448,
+    "mean_ticks_per_token": 14.0,
+    "mean_nll": 8.787328265607357,
+    "accuracy": 0.0625,
+    "throughput_tokens_per_tick": 0.07142857142857142
+  },
+  "arm_b_blind_1tick": {
+    "total_ticks": 32,
+    "mean_ticks_per_token": 1.0,
+    "mean_nll": 9.184852570295334,
+    "accuracy": 0.03125,
+    "throughput_tokens_per_tick": 1.0,
+    "aliasing_retention_pct": 23.76565550651331
+  },
+  "arm_c_adaptive_agent": {
+    "total_ticks": 189,
+    "mean_ticks_per_token": 5.90625,
+    "mean_nll": 9.126867350190878,
+    "accuracy": 0.0625,
+    "throughput_tokens_per_tick": 0.1693121693121693,
+    "speedup_vs_fixed_14": 2.3703703703703702,
+    "ticks_saved_pct": 57.8125,
+    "settle_ticks_distribution": [
+      6,
+      9,
+      6,
+      4,
+      6,
+      12,
+      4,
+      10,
+      8,
+      7,
+      7,
+      4,
+      6,
+      4,
+      10,
+      6,
+      6,
+      6,
+      7,
+      5,
+      4,
+      5,
+      4,
+      5,
+      4,
+      4,
+      5,
+      4,
+      6,
+      6,
+      5,
+      4
+    ],
+    "aliasing_retention_pct": 94.00389245756756
+  },
+  "counterfactual_analysis": {
+    "clean_dist": 1.4640928506851196,
+    "arm_b_jammed_dist": 0.3479512631893158,
+    "arm_b_retention_pct": 23.76565550651331,
+    "arm_c_adaptive_dist": 1.376304268836975,
+    "arm_c_retention_pct": 94.00389245756756
+  }
+}

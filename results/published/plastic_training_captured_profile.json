@@ -1,0 +1,23 @@
+{
+  "purpose": "actual captured forward attribution; total backward only",
+  "fusion": "none",
+  "chunk_tokens": 8,
+  "replays": 20,
+  "median_chunk": {
+    "forward_ms": 58.84428787231445,
+    "backward_ms": 160.6600341796875,
+    "prepare_forward_ms": 0.9681759774684906,
+    "write_forward_ms": 15.818080067634583,
+    "medium_forward_ms": 33.877007603645325,
+    "read_forward_ms": 5.8368000239133835,
+    "decode_forward_ms": 0.9506880044937134
+  },
+  "total_gpu_memory": {
+    "total_bytes": 4294967296,
+    "used_bytes": 3247439872,
+    "free_bytes": 879755264,
+    "utilization_percent": 100
+  },
+  "peak_allocated_bytes": 427255296,
+  "note": "External events add instrumentation overhead; not production update throughput."
+}

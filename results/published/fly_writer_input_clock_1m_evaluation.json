@@ -1,0 +1,244 @@
+{
+  "checkpoint_bptt_targets": 1000000,
+  "writer_baseline_clock": "input",
+  "phase_start_targets": 943712,
+  "phase_fresh_training_targets": 56288,
+  "phase_fresh_training_updates": 1759,
+  "phase_complete_train_nll": 7.856999079393453,
+  "phase_complete_reference_nll": 7.497459438111573,
+  "latest_active_encounter": {
+    "bptt_train_tokens": 1000000,
+    "timing": "pulse_plus_1_quiet",
+    "physical_ticks_per_input": 2,
+    "writer_baseline_clock": "input",
+    "actual_exposure": {
+      "input_events": 384,
+      "physical_ticks": 768,
+      "optimizer_updates": 12
+    },
+    "first_pass": {
+      "tokens": 256,
+      "validation_range": [
+        15864,
+        16120
+      ],
+      "model_nll": 7.853374890983105,
+      "fixed_unigram_nll": 7.754541207704436,
+      "gain_over_fixed_unigram": -0.09883368327867006,
+      "gain_per_optimizer_window": [
+        -0.05695584873589654,
+        0.16834250177374716,
+        0.08158415108945247,
+        -0.09986907952344187,
+        -0.7476575958456371,
+        0.010417141356213397,
+        -0.43904501492357945,
+        0.2925142785797813
+      ]
+    },
+    "adaptation": {
+      "recorded_recovery": {
+        "tokens": 256,
+        "block_tokens": 16,
+        "confirmation_blocks": 2,
+        "block_curve": [
+          {
+            "end_token": 16,
+            "mean_nll": 7.774767622351646
+          },
+          {
+            "end_token": 32,
+            "mean_nll": 6.588172495365143
+          },
+          {
+            "end_token": 48,
+            "mean_nll": 7.35276173055172
+          },
+          {
+            "end_token": 64,
+            "mean_nll": 7.666100442409515
+          },
+          {
+            "end_token": 80,
+            "mean_nll": 7.446804463863373
+          },
+          {
+            "end_token": 96,
+            "mean_nll": 7.586099401116371
+          },
+          {
+            "end_token": 112,
+            "mean_nll": 7.3165449649095535
+          },
+          {
+            "end_token": 128,
+            "mean_nll": 7.319071754813194
+          },
+          {
+            "end_token": 144,
+            "mean_nll": 8.670595332980156
+          },
+          {
+            "end_token": 160,
+            "mean_nll": 9.852191269397736
+          },
+          {
+            "end_token": 176,
+            "mean_nll": 8.34986911714077
+          },
+          {
+            "end_token": 192,
+            "mean_nll": 7.930871278047562
+          },
+          {
+            "end_token": 208,
+            "mean_nll": 9.68818612396717
+          },
+          {
+            "end_token": 224,
+            "mean_nll": 6.791555151343346
+          },
+          {
+            "end_token": 240,
+            "mean_nll": 7.156029567122459
+          },
+          {
+            "end_token": 256,
+            "mean_nll": 8.16437754034996
+          }
+        ],
+        "half_recovery_tokens": 48,
+        "status": "observed_recovery",
+        "initial_block_nll": 7.774767622351646,
+        "observed_late_nll": 7.66020355373621,
+        "observed_drop": 0.11456406861543655,
+        "threshold_nll": 7.717485588043928
+      },
+      "reference_relative_block_curve": [
+        0.0029357184526321023,
+        0.11097597901916098,
+        -0.4681132534633472,
+        0.13142824991585286,
+        -0.18229663195034715,
+        0.019128329771442215,
+        0.44847227699728065,
+        -0.24873411795039693,
+        0.32573861068694027,
+        1.169576581004334,
+        -0.03514048514224197,
+        0.014306202429815174,
+        0.9733943937299429,
+        -0.09530436388278388,
+        -0.47190322222500314,
+        -0.11312533493455945
+      ],
+      "reference_relative_opening_to_late_drop": 0.29544999703241337,
+      "scope": "descriptive trajectory; reference controls marginal difficulty only"
+    },
+    "revisit": {
+      "matched_pairs": 127,
+      "matched_nll_gain": 0.11722616886529397,
+      "first_return_window_matched_pairs": 31,
+      "first_return_window_preupdate_nll_gain": 0.1260582708543347,
+      "return_bridge_nll": 7.247607231140137,
+      "B_exposure_events": 256,
+      "intervening_events_before_first_matched_pair": 257,
+      "intervening_physical_ticks_before_first_matched_pair": 514,
+      "scope": "first window precedes return update; later replay scores include relearning"
+    },
+    "health": {
+      "field_energy": 0.4227258563041687,
+      "firing_rate": 0.023588620126247406,
+      "centered_effective_rank": 2.7417757511138916,
+      "read_norm_mean": 0.1836329698562622,
+      "vram_peak_mib": 2731.0390625,
+      "vram_reserved_mib": 2912.0
+    },
+    "health_scope": "field energy, activity and centered representation structure; FTLE not measured in this branch"
+  },
+  "previous_active_encounter_target": 900000,
+  "descriptive_raw_nll_improvement": 0.21552042942494154,
+  "descriptive_reference_relative_deficit_reduction": 0.22993981181501802,
+  "h_regions": {
+    "whole": {
+      "min": -11.869675636291504,
+      "max": 0.24128177762031555,
+      "mean": -0.12105536460876465,
+      "finite": true,
+      "neurons": 165122,
+      "mean_square": 0.4227258350062637,
+      "fraction_of_total_square": 1.0
+    },
+    "sensory": {
+      "min": -11.869675636291504,
+      "max": 0.1288374960422516,
+      "mean": -1.2131915092468262,
+      "finite": true,
+      "neurons": 15912,
+      "mean_square": 4.352763315320267,
+      "fraction_of_total_square": 0.9922613879520976
+    },
+    "non_sensory": {
+      "min": -0.1950569897890091,
+      "max": 0.24128177762031555,
+      "mean": -0.0045881555415689945,
+      "finite": true,
+      "neurons": 149210,
+      "mean_square": 0.003620169254930591,
+      "fraction_of_total_square": 0.007738612047902371
+    },
+    "output": {
+      "min": -0.1950569897890091,
+      "max": 0.24128177762031555,
+      "mean": -0.010739324614405632,
+      "finite": true,
+      "neurons": 2333,
+      "mean_square": 0.0170962360106578,
+      "fraction_of_total_square": 0.0005714148364855096
+    }
+  },
+  "physical_states": {
+    "ge": {
+      "min": 0.0,
+      "max": 0.7929324507713318,
+      "mean": 0.007377113681286573,
+      "finite": true
+    },
+    "gi": {
+      "min": 0.0,
+      "max": 0.9684785008430481,
+      "mean": 0.00997247826308012,
+      "finite": true
+    },
+    "b": {
+      "min": 0.0,
+      "max": 0.9999985694885254,
+      "mean": 0.03222915902733803,
+      "finite": true
+    },
+    "x": {
+      "min": 0.005097746849060059,
+      "max": 1.0,
+      "mean": 0.7762301564216614,
+      "finite": true
+    },
+    "u": {
+      "min": 0.25,
+      "max": 0.971014678478241,
+      "mean": 0.3786236643791199,
+      "finite": true
+    },
+    "baseline": {
+      "min": -8.890585899353027,
+      "max": 4.273712158203125,
+      "mean": -0.6411812901496887,
+      "finite": true
+    },
+    "ring_finite": true
+  },
+  "model_forward_executed": false,
+  "gpu_allocated": false,
+  "state_never_modified": true,
+  "minimum_3000_joint_updates_met": false,
+  "interpretation": "First post-clock encounter and exact live checkpoint. Different fresh text and continuous history from 900k; deficit reduction is descriptive, not a paired causal estimate. Prediction remains worse than the fixed unigram mean. Physical finiteness and representation rank do not certify NESS or criticality. Platform breakthrough remains pending."
+}

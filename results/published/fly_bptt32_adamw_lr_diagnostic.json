@@ -1,0 +1,283 @@
+{
+  "scope": "paired finite-step diagnostic; not active-learning capability evaluation",
+  "checkpoint": "results\\q8_fly_bptt32_adamw_continuous_100k\\last.pt",
+  "train_cursor": 234464,
+  "saved_events": 258040,
+  "saved_optimizer_updates": 4514,
+  "lr": 0.0002,
+  "window": 32,
+  "windows": 3,
+  "state_policy": "same saved continuing physical state, then original-weight rollout; no cold/reset state",
+  "optimizer_policy": "same saved Adam moments and same clipped gradient per alternative",
+  "next_window_policy": "same original-weight post-window physical state, as retained by actual learner before updating parameters",
+  "gradient_policy": "existing ATan surrogate; finite-step response may differ from its linear prediction",
+  "source_checkpoint_modified": false,
+  "peak_allocated_mib": 2203.44384765625,
+  "reserved_mib": 3084.0,
+  "raw_report": "results\\fly_bptt32_adamw_lr_diagnostic\\report.json",
+  "arms": {
+    "half": {
+      "lr": 0.0001,
+      "only": null,
+      "mean_same_window_nll_reduction": 0.009974479675292969,
+      "mean_next_window_nll_reduction": 0.0016420682271321614,
+      "same_window_changes": [
+        0.012486457824707031,
+        0.009926795959472656,
+        0.007510185241699219
+      ],
+      "next_window_changes": [
+        0.0024003982543945312,
+        0.0010151863098144531,
+        0.0015106201171875
+      ]
+    },
+    "current": {
+      "lr": 0.0002,
+      "only": null,
+      "mean_same_window_nll_reduction": 0.019848187764485676,
+      "mean_next_window_nll_reduction": 0.003346125284830729,
+      "same_window_changes": [
+        0.024614334106445312,
+        0.019843101501464844,
+        0.015087127685546875
+      ],
+      "next_window_changes": [
+        0.004993438720703125,
+        0.002033233642578125,
+        0.0030117034912109375
+      ]
+    },
+    "double": {
+      "lr": 0.0004,
+      "only": null,
+      "mean_same_window_nll_reduction": 0.03931299845377604,
+      "mean_next_window_nll_reduction": 0.006739616394042969,
+      "same_window_changes": [
+        0.04834938049316406,
+        0.039704322814941406,
+        0.029885292053222656
+      ],
+      "next_window_changes": [
+        0.010016441345214844,
+        0.0038242340087890625,
+        0.006378173828125
+      ]
+    },
+    "writer_only": {
+      "lr": 0.0002,
+      "only": "writer",
+      "mean_same_window_nll_reduction": 0.0001277923583984375,
+      "mean_next_window_nll_reduction": 3.4968058268229164e-05,
+      "same_window_changes": [
+        0.000225067138671875,
+        0.00011444091796875,
+        4.38690185546875e-05
+      ],
+      "next_window_changes": [
+        8.296966552734375e-05,
+        2.86102294921875e-05,
+        -6.67572021484375e-06
+      ]
+    },
+    "synapse_only": {
+      "lr": 0.0002,
+      "only": "synapse",
+      "mean_same_window_nll_reduction": 0.0002848307291666667,
+      "mean_next_window_nll_reduction": 3.8464864095052086e-05,
+      "same_window_changes": [
+        0.0005235671997070312,
+        0.000209808349609375,
+        0.00012111663818359375
+      ],
+      "next_window_changes": [
+        0.0002689361572265625,
+        -0.00015354156494140625,
+        0.0
+      ]
+    },
+    "read_decoder_only": {
+      "lr": 0.0002,
+      "only": "read_decoder",
+      "mean_same_window_nll_reduction": 0.019408226013183594,
+      "mean_next_window_nll_reduction": 0.0032410621643066406,
+      "same_window_changes": [
+        0.02378082275390625,
+        0.019537925720214844,
+        0.014905929565429688
+      ],
+      "next_window_changes": [
+        0.004673957824707031,
+        0.0020318031311035156,
+        0.003017425537109375
+      ]
+    },
+    "physiology_only": {
+      "lr": 0.0002,
+      "only": "physiology",
+      "mean_same_window_nll_reduction": 1.9073486328125e-05,
+      "mean_next_window_nll_reduction": -3.147125244140625e-05,
+      "same_window_changes": [
+        7.915496826171875e-05,
+        -6.67572021484375e-06,
+        -1.52587890625e-05
+      ],
+      "next_window_changes": [
+        -6.67572021484375e-06,
+        -1.811981201171875e-05,
+        -6.961822509765625e-05
+      ]
+    }
+  },
+  "groups": {
+    "physiology": {
+      "elements": 164,
+      "gradient_l2": 0.07023085399213036,
+      "gradient_rms": 0.005484108334300212,
+      "active_gradient_rms": 0.005956903287809536,
+      "nonzero_gradient_fraction": 0.8475609756097561,
+      "gradient_to_weight_l2": 0.001948803484611765
+    },
+    "synapse": {
+      "elements": 25321395,
+      "gradient_l2": 0.02184243547402749,
+      "gradient_rms": 4.34067477338536e-06,
+      "active_gradient_rms": 1.2427239411997636e-05,
+      "nonzero_gradient_fraction": 0.12064538045132715,
+      "gradient_to_weight_l2": 0.0007930937811763944
+    },
+    "writer": {
+      "elements": 12222723,
+      "gradient_l2": 0.00839379053485626,
+      "gradient_rms": 2.4009003918700837e-06,
+      "active_gradient_rms": 2.4202144706982807e-06,
+      "nonzero_gradient_fraction": 0.9841030513413419,
+      "gradient_to_weight_l2": 9.607535203718839e-06
+    },
+    "read_decoder": {
+      "elements": 40440145,
+      "gradient_l2": 0.927758042556994,
+      "gradient_rms": 0.00014589095789512273,
+      "active_gradient_rms": 0.00014590065603043201,
+      "nonzero_gradient_fraction": 0.9998670627911942,
+      "gradient_to_weight_l2": 0.0002161484532772481
+    }
+  },
+  "parameters": {
+    "log_tau_m": {
+      "mean_gradient_l2": 0.003325547221852834,
+      "mean_gradient_rms": 0.0006400018612465154,
+      "mean_relative_update": 2.5665081972139857e-05,
+      "mean_gradient_squared_share": 1.400175823303295e-05
+    },
+    "log_tau_s_e": {
+      "mean_gradient_l2": 0.0006916249142215706,
+      "mean_gradient_rms": 0.00013310327680135853,
+      "mean_relative_update": 1.960303494972779e-05,
+      "mean_gradient_squared_share": 6.386847507684985e-07
+    },
+    "log_tau_s_i": {
+      "mean_gradient_l2": 0.00041767048941568667,
+      "mean_gradient_rms": 8.038072316556981e-05,
+      "mean_relative_update": 1.7761148234379593e-05,
+      "mean_gradient_squared_share": 2.7620259726126694e-07
+    },
+    "log_threshold": {
+      "mean_gradient_l2": 0.06743669381493,
+      "mean_gradient_rms": 0.012978197775769404,
+      "mean_relative_update": 3.5583478064754736e-05,
+      "mean_gradient_squared_share": 0.00588614966596529
+    },
+    "log_g_e": {
+      "mean_gradient_l2": 0.014624135103076696,
+      "mean_gradient_rms": 0.014624135103076696,
+      "mean_relative_update": 0.0006466832807306369,
+      "mean_gradient_squared_share": 0.00031226609745086656
+    },
+    "log_g_i": {
+      "mean_gradient_l2": 0.010870601089360813,
+      "mean_gradient_rms": 0.010870601089360813,
+      "mean_relative_update": 0.0055468537608210355,
+      "mean_gradient_squared_share": 0.00018673315849704499
+    },
+    "log_tau_a": {
+      "mean_gradient_l2": 4.587191651301758e-06,
+      "mean_gradient_rms": 8.828054449011579e-07,
+      "mean_relative_update": 1.699138510598715e-05,
+      "mean_gradient_squared_share": 2.8993544688510522e-11
+    },
+    "log_beta": {
+      "mean_gradient_l2": 0.00014634531346545548,
+      "mean_gradient_rms": 2.8164168707973627e-05,
+      "mean_relative_update": 2.6428487903541616e-05,
+      "mean_gradient_squared_share": 2.4694720483736966e-08
+    },
+    "edge_weight_e": {
+      "mean_gradient_l2": 0.021474679640470052,
+      "mean_gradient_rms": 5.451188890989511e-06,
+      "mean_relative_update": 0.003079143232832873,
+      "mean_gradient_squared_share": 0.000545796793088803
+    },
+    "edge_weight_i": {
+      "mean_gradient_l2": 0.0039726913957735446,
+      "mean_gradient_rms": 1.2688913111807468e-06,
+      "mean_relative_update": 0.002618790003289612,
+      "mean_gradient_squared_share": 1.918012277796211e-05
+    },
+    "topographic_writer.gate_linear.weight": {
+      "mean_gradient_l2": 0.007376655123540011,
+      "mean_gradient_rms": 0.00015368031507375022,
+      "mean_relative_update": 0.0007405976438633397,
+      "mean_gradient_squared_share": 8.559622800419073e-05
+    },
+    "topographic_writer.gate_linear.bias": {
+      "mean_gradient_l2": 0.003612942033342097,
+      "mean_gradient_rms": 0.002085933055516574,
+      "mean_relative_update": 0.0011488008095062066,
+      "mean_gradient_squared_share": 2.149171885481217e-05
+    },
+    "topographic_writer.proj_vis.weight": {
+      "mean_gradient_l2": 2.639582824459202e-07,
+      "mean_gradient_rms": 1.4862515903486498e-10,
+      "mean_relative_update": 3.669939276378593e-06,
+      "mean_gradient_squared_share": 8.710613969324941e-14
+    },
+    "topographic_writer.proj_chemo.weight": {
+      "mean_gradient_l2": 0.0005980436321153236,
+      "mean_gradient_rms": 3.0558538259560493e-07,
+      "mean_relative_update": 0.0001088771030503984,
+      "mean_gradient_squared_share": 5.432481204666345e-07
+    },
+    "topographic_writer.proj_mech.weight": {
+      "mean_gradient_l2": 0.0013144209315511636,
+      "mean_gradient_rms": 5.744144519232993e-07,
+      "mean_relative_update": 0.00019518907019781988,
+      "mean_gradient_squared_share": 1.97862557816944e-06
+    },
+    "output_read.weight": {
+      "mean_gradient_l2": 0.0449830217211049,
+      "mean_gradient_rms": 3.36055220397753e-05,
+      "mean_relative_update": 0.0009551316450187875,
+      "mean_gradient_squared_share": 0.0023493195664244385
+    },
+    "read_norm.weight": {
+      "mean_gradient_l2": 0.729771837750203,
+      "mean_gradient_rms": 0.026333372935755474,
+      "mean_relative_update": 0.0005915557823060395,
+      "mean_gradient_squared_share": 0.6116580036447583
+    },
+    "decoder.weight": {
+      "mean_gradient_l2": 0.5391140343517189,
+      "mean_gradient_rms": 8.677642362988587e-05,
+      "mean_relative_update": 0.0001480465525903947,
+      "mean_gradient_squared_share": 0.3390094714686215
+    },
+    "decoder.bias": {
+      "mean_gradient_l2": 0.18496396382316782,
+      "mean_gradient_rms": 0.0008250662903865405,
+      "mean_relative_update": 4.165819792821263e-06,
+      "mean_gradient_squared_share": 0.03990852829247607
+    }
+  },
+  "decision": "Keep production LR 0.0002. No local overshoot at tested scales; half/current/double all improve the three fitting windows and subsequent windows. Most immediate loss reduction comes from read/decoder; this short local derivative/update check is not a long-run superiority claim."
+}

@@ -1,0 +1,150 @@
+{
+  "date": "2026-10-07",
+  "reviewer": "/root/harness_plan",
+  "role": "Independent minimal experiment-design committee reviewer",
+  "status": "approved_design_only",
+  "execution_authorized": false,
+  "production_changes_authorized": false,
+  "input_sha256": {
+    "docs/information_boltzmann/FLY_EVENT_OBSERVABLE_CLOSURE_20261007.md": "9f3e02f017c1f23c5077c79a1f8fb5d2d3b19abd9befef79e6e8b247d811e976",
+    "results/published/fly_pipeline_event_hypothesis_review_20261007.json": "15e9e7ca9560dbc8c30653f5255cc85e6005c31378060d88642620eb580dbc31",
+    "results/published/fly_pipeline_event_necessity_review_20261007.json": "ca3ba8cbb06cb5a2aea2d4a937fff17d18a34e9a4fed62051757806aa2044c53",
+    "results/published/fly_pipeline_repair_result_review_20261007.json": "b62d013196a61afb80b9026fc2846cca7a57738e7c0f1246cc00d0f45c747ce3",
+    "results/published/fly_pipeline_repair_diagnostic_20261007.json": "24f4c81d142909212880cedfdfbbae5a96ce5f6479bac9fd835f69a8635867bf",
+    "information_boltzmann/core/fly_pipeline.py": "17f857ac6f6d145f2bf1a1083ce98edf3b37d4de5f39b508f4eedcfef51db04c",
+    "information_boltzmann/core/fly_reservoir.py": "a24915ab6cff4855cc63c6e3421549cc0f806d69929a8cfb515feb7481406ff0",
+    "information_boltzmann/core/fly_bptt_learning.py": "17e620f100b7f2163a04eb83525e47ed454828a99c20c78814d20b9e877f9e33"
+  },
+  "verdict": {
+    "approved_object": "One fixed actual-Adam body displacement, old/new hard and new fixed-old-event trajectories, frozen original head, same mature state and real fit32/following32.",
+    "necessity": "The existing report already establishes fixed-event fit descent and local hard-event reversal. The missing object is its causal motor-to-probability contrast: where that particular contrast is attenuated and whether surviving logits align with its actual targets.",
+    "sufficiency": "Three trajectories plus per-point numerical repeats distinguish resolved read-stage geometric attenuation from adverse current-head task alignment for this direction and these targets. These phenomena may coexist.",
+    "scope_choice": "Do not add the proposed negative-SG direction/scales. That is needed only for optimizer-versus-proxy attribution, which this first trace explicitly leaves open.",
+    "launch_gate": "Design only. A separate immutable preregistration, independent implementation review, source/data/code locks and idle-device resource gate must pass before any new execution."
+  },
+  "fixed_estimand": {
+    "checkpoint": "F:/fly_checkpoints/q8_fly_pipeline14_joint_96k/last.pt",
+    "expected_checkpoint_sha256": "ef7ba2d97b1e86cfc6f6630500552596c73be64be9819b408b20912ccc9eb968",
+    "fit": "train[96000:96032]",
+    "following": "train[96032:96064]",
+    "unique_target_positions": 64,
+    "A": "Old body/head/bias, native hard events.",
+    "B": "Reconstructed ordinary saved-Adam actual post-clamp body displacement at scale1; original head and bias restored; native hard events.",
+    "C": "Exactly B parameters and same original head/bias, but force every A begin-motor and finish-body event. Remaining COBA/ALIF/STP/delay dynamics evolve normally.",
+    "fit_start": "Same complete source entering physical state for A/B/C and every replay.",
+    "following_start": "Same OLD-parameter A-fit terminal complete state for every trajectory/replay; a B/C-produced fit terminal is never substituted.",
+    "state_lineage": "Preserve all h/ring/ge/gi/b/x/u/baseline/h_mean and empty DAN/Gamma fields, saved life counters, RNG and both optimizer moment sets in the disposable reconstruction. Production/source remains unchanged.",
+    "meaning": "A conditional finite-parameter replay, distinct from deployment with a continuously changed body or primary active-learning evaluation."
+  },
+  "minimum_budget": {
+    "reconstruction_observe_fit32": {
+      "window_forwards": 1,
+      "physical_ticks": 32,
+      "backwards": 1,
+      "disposable_optimizer_updates": 1
+    },
+    "A_fit_and_following_initial_plus_one_replay": {
+      "window_forwards": 4,
+      "physical_ticks": 128
+    },
+    "B_fit_and_following_initial_plus_one_replay": {
+      "window_forwards": 4,
+      "physical_ticks": 128
+    },
+    "C_fit_and_following_initial_plus_one_replay": {
+      "window_forwards": 4,
+      "physical_ticks": 128
+    },
+    "total_window_forwards": 13,
+    "total_physical_ticks": 416,
+    "total_backwards": 1,
+    "total_disposable_optimizer_updates": 1,
+    "window_events": 32,
+    "scales": [
+      1.0
+    ],
+    "vram_limit_mib": 3900,
+    "no_additional_tape_only_pass": "Capture A masks within the registered A forwards. Telemetry/CPU algebra must not re-integrate a physical tick.",
+    "repeat_role": "One full duplicate of each fit/following parameter/event point; no outcomes chosen from repeats. Any stage or hard-mask instability makes attribution ambiguous.",
+    "hard_ceiling": "Stop after this bounded trace. No extra windows, direction/scales search, second Adam reconstruction or recovery without a new reviewed execution amendment."
+  },
+  "reconstruction_gate": {
+    "procedure": "Use the original learner.observe(fit32), both source Adam states, original raw gradient, unchanged global clipping, both AdamW steps and original edge clamps. Stage real FP32 parameters with bounded CPU/disk chunks. Restore old head/bias before all B/C traces.",
+    "required_accounting": [
+      "Raw full/body gradient norms and SG dot actual post-clamp displacement",
+      "Original clipping coefficient",
+      "Actual body/head/bias displacement norms and changed-coordinate counts",
+      "Original clamp correction counts/norms/directional ledger",
+      "Reconstructed observe scores and every terminal physical field versus A fit",
+      "B hard-fit/following risks and hard-mask change counts versus immutable prior body_1 control",
+      "C fixed-event fit risk versus immutable prior fixed-event body_1 control"
+    ],
+    "comparison_floors": "Register quantity-specific FP32 relative/absolute precision floors and known original replay error before launch. Norm/dot reproduction must use relative scales plus recorded reduction error, not a generic1-unit tolerance for tiny quantities. Risk reproduction uses prior and current replay floors.",
+    "lineage_limit": "Removed displacement/tape bytes cannot be hash-compared. Matching reconstruction program, state/moments/RNG and recorded norms/dots/clamps/risks/counts establishes audited reconstruction conformance, not a claim of independent bitwise proof of every removed coordinate.",
+    "stop": "If reconstruction conformance fails, do not interpret attenuation or alignment and do not substitute a newly convenient direction."
+  },
+  "native_causal_observables": {
+    "timestamp": "Before accepting the current target, using the same prepared old-state arrival context as the issued prediction.",
+    "record": [
+      "Motor pre-reset voltage v",
+      "Effective motor threshold and begin threshold margin",
+      "Actual begin spike s",
+      "Native motor transmitted STP pulse p",
+      "Post-reset motor h",
+      "Existing learned projection r",
+      "Actual RMSNorm output z with gain and effective epsilon",
+      "Actual current-head logits and per-target CE"
+    ],
+    "pulse_equation": "u_active=u_old+u0*(1-u_old)*s; p=min((u_active*x_old/norm)*s,3). Use the actual source parameters/old motor STP fields; no second integration or alternative learning equation.",
+    "pulse_identity": "Because sensory and motor are disjoint, the sealed motor spike/pulse must agree with finish motor spike/committed ring pulse before current-target drive can reach motor. Validate against the original commit; failure blocks attribution.",
+    "full_event_tape": "Every begin-motor and finish-body SpikeFn call, stage/order/mask/margin:64 calls per32-event window. C uses the corresponding A fit/following tape, never the other window tape.",
+    "full_state_repeats": "Compare every terminal field and each of four ring slots; compare every collected intermediate motor/read/logit array and all hard masks on each repeated parameter point.",
+    "resources": "Stream CPU/disk telemetry in bounded chunks. Do not hold full extra decoder/gradient/device snapshots. Do not launch while another GPU model is active."
+  },
+  "exact_probability_accounting": {
+    "contrasts": [
+      "B-A:actual body update total",
+      "C-A:continuous fixed-A-event response",
+      "B-C:finite changed-event-path response"
+    ],
+    "gauge": "Center each issued logit contrast across vocabulary to remove the scalar softmax gauge; keep centered raw norms distinct from probability changes.",
+    "formula": "For reference logits a_F and changed logits a_H, delta=a_H-a_F, p_F=softmax(a_F), A=delta_y-E_pF[delta]. Exactly CE_H-CE_F=KL(p_F||p_H)-A.",
+    "numerics": "Compute FP64 log_softmax/logsumexp, target gain, expected delta and KL stably; cross-check exact CE difference per target and window. Do not exponentiate uncentered large logits or clamp KL/loss residuals to create a biological effect. Tiny negative numerical KL is reported with its floor; materially negative KL invalidates the computation.",
+    "decision": "Resolved A>0 is target alignment; resolved KL-A>0 is adverse finite risk. Favorable alignment can coexist with larger curvature cost. Neither voltage norm nor spike count substitutes for these signed task terms.",
+    "common_vs_content": "For actual update/event delta logits, report mean-delta and centered-time residual. Split the linear alignment using whole-window empirical means and covariance; retain exact total KL. Optionally compute shared-only CE offline from reference logits+mean(delta), with total-minus-shared as an order-defined interaction-containing residual. This costs no physical forwards.",
+    "common_limit": "This is retrospective accounting. A near-common baseline head does not establish that the update-induced contrast is common; shared-only CE is not a legal new online predictor or a unigram capability comparison."
+  },
+  "attenuation_rules": {
+    "field_resolution": "For each field coordinate/summary, tau_X=max(predeclared FP32 error bound for that computation,10*maximum repeat error over all A/B/C points). Register scale conventions before execution; use each field own physical/coordinate units. Discrete hard masks must repeat exactly.",
+    "risk_resolution": "Use tau_L=max(predeclared stable CE/decomposition error bound,10*largest risk/decomposition replay error across all registered points). Keep this separate from stage-field floors and reconstruction floors.",
+    "resolved_contrast": "Upstream/downstream differences must be compared with their own floors. No universal variation-fraction threshold is supplied.",
+    "reset": "A resolved paired v/s/p contrast with h contrast below its resolved floor is a witness of geometric loss at the implemented post-reset observable. Partial-coordinate witnesses and whole-vector loss are reported separately; this does not certify lost target information.",
+    "projection": "Report delta_h and exact W_read*delta_h; if a projection-null claim is made, use a numerically audited row/null-space decomposition with a preregistered rank tolerance and conditioning report. Raw ||delta_r||/||delta_h|| alone is coordinate-scale dependent and is not a scale-invariant bottleneck claim.",
+    "normalization": "Separate projected radial/directional differences and compute the actual finite RMSNorm map with gain/epsilon. Report output attenuation against the exact finite map and repeat floors; a local Jacobian is descriptive for finite event jumps.",
+    "decoder_alignment": "If resolved z/centered-logit contrasts survive but their exact signed task effect is adverse or unresolved, this supports current-head local alignment/calibration weakness rather than absence of upstream variation.",
+    "mixed_result": "Report coexisting losses/alignment and unresolved stages. Do not force a single winner from three coupled trajectories."
+  },
+  "binding_next_action": {
+    "geometric_witness": "A resolved geometric-loss witness makes that read stage eligible for a separately reviewed matched read-surface/head-calibration comparison. It does not select a new observable or mandate production replacement.",
+    "adverse_event_alignment": "If B-C remains resolved and adverse while read-stage contrasts survive, retain event/read task alignment as a local candidate explanation. SG-versus-Adam and unique reset/optimizer attribution remain open.",
+    "beneficial_event_alignment": "If B-C is favorable or within its new floor, withdraw the claim of an adverse event effect for that registered window; retain measured stage geometry only.",
+    "failure_or_ambiguity": "Mark reconstruction/interface/nonfinite/memory/replay failure as invalid or ambiguous. Stop without architecture adoption, broader search or negative capability conclusion.",
+    "excluded_claims": [
+      "Motor lacks semantic information",
+      "Alternative observable/read head is superior",
+      "SG is globally wrong or Adam moments are the unique cause",
+      "Clamp/reset is the unique mechanism",
+      "Current direction identifies the long-run plateau",
+      "Exact full-history gradient or native biological event-credit law",
+      "Independent generalization/convergence/capability gain from64 reused targets",
+      "Reopen the rejected C_reset candidate"
+    ],
+    "affirmative_scope": "The valid output is one audited finite event/read contrast, its geometric propagation and signed current-head task effect on two fixed real OWT windows."
+  },
+  "review_activity": {
+    "gpu_runs": 0,
+    "training_updates": 0,
+    "production_modified": false,
+    "only_written_artifact": "results/published/fly_pipeline_event_plan_review_20261007.json"
+  }
+}

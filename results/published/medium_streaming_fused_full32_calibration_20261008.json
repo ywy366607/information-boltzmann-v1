@@ -1,0 +1,389 @@
+{
+  "arguments": [
+    "--output",
+    "E:/ib_checkpoints/medium_streaming_fused_full32_calibration_20261008",
+    "--pretrained-embedding",
+    "data/gpt2_model.safetensors",
+    "--steps",
+    "2",
+    "--shape",
+    "8",
+    "8",
+    "8",
+    "--material-initialization",
+    "spectral-xavier",
+    "--material-bandwidth",
+    "runtime",
+    "--channels",
+    "768",
+    "--tokens",
+    "32",
+    "--chunk-tokens",
+    "32",
+    "--event-duration",
+    ".03327237442135811",
+    "--intrinsic-time-reference",
+    ".03327237442135811",
+    "--solver-max-step",
+    "0.008318093605339527",
+    "--observer-max-step",
+    "0.03327237442135811",
+    "--activation-checkpointing",
+    "--anisotropic-transport",
+    "--temporal-read",
+    "--temporal-time-reference",
+    "0.899332940578461",
+    "--write-aperture-budget",
+    "0.125",
+    "--read-aperture-budget",
+    "0.25",
+    "--structure-config",
+    "configs/information_boltzmann/medium_pathway_structure_20261008.json",
+    "--structure-dual-lr",
+    "0.0625",
+    "--execution",
+    "eager",
+    "--vram-limit-mib",
+    "3072",
+    "--lr",
+    "0.000002",
+    "--calibrate-only",
+    "--optimizer-state-offload",
+    "--checkpoint-granularity",
+    "event",
+    "--temporal-physical-reference",
+    ".899332940578461"
+  ],
+  "event_function_calls": 256,
+  "physical_step_calls": 1280,
+  "memory_breadcrumbs": [
+    {
+      "completed_events": 0,
+      "physical_step_calls": 0,
+      "allocated_mib": 662.02880859375,
+      "seconds": 18.750754999999117
+    },
+    {
+      "completed_events": 10,
+      "physical_step_calls": 41,
+      "allocated_mib": 770.7041015625,
+      "seconds": 44.3110772
+    },
+    {
+      "completed_events": 23,
+      "physical_step_calls": 93,
+      "allocated_mib": 898.73974609375,
+      "seconds": 44.78160690000004
+    },
+    {
+      "completed_events": 32,
+      "physical_step_calls": 129,
+      "allocated_mib": 1115.03076171875,
+      "seconds": 116.07529769999928
+    },
+    {
+      "completed_events": 32,
+      "physical_step_calls": 130,
+      "allocated_mib": 1245.224609375,
+      "seconds": 116.08226569999897
+    },
+    {
+      "completed_events": 32,
+      "physical_step_calls": 131,
+      "allocated_mib": 1376.35546875,
+      "seconds": 116.09136129999933
+    },
+    {
+      "completed_events": 33,
+      "physical_step_calls": 135,
+      "allocated_mib": 1447.78466796875,
+      "seconds": 160.68704929999876
+    },
+    {
+      "completed_events": 96,
+      "physical_step_calls": 386,
+      "allocated_mib": 1596.62890625,
+      "seconds": 451.2984689999994
+    },
+    {
+      "completed_events": 96,
+      "physical_step_calls": 387,
+      "allocated_mib": 1771.94873046875,
+      "seconds": 451.3068203999992
+    },
+    {
+      "completed_events": 97,
+      "physical_step_calls": 391,
+      "allocated_mib": 1872.38623046875,
+      "seconds": 492.9101735999993
+    },
+    {
+      "completed_events": 224,
+      "physical_step_calls": 1091,
+      "allocated_mib": 1980.41552734375,
+      "seconds": 539.4522066999998
+    },
+    {
+      "completed_events": 224,
+      "physical_step_calls": 1092,
+      "allocated_mib": 2155.89111328125,
+      "seconds": 539.4591499999988
+    },
+    {
+      "completed_events": 224,
+      "physical_step_calls": 1093,
+      "allocated_mib": 2331.22021484375,
+      "seconds": 539.4672978999988
+    },
+    {
+      "completed_events": 225,
+      "physical_step_calls": 1099,
+      "allocated_mib": 2434.1650390625,
+      "seconds": 539.6384636999992
+    }
+  ],
+  "purpose": "full real-data BPTT execution/resources, not capability evidence",
+  "status": "completed",
+  "seconds": 544.9682013000001,
+  "memory": {
+    "sample_count": 762,
+    "sampled_peak_dedicated_mib": 2916.6484375,
+    "sampled_peak_shared_mib": 80.0,
+    "counter_errors": [],
+    "cap_exceeded": false,
+    "last_sample": {
+      "seconds": 15891.0131763,
+      "dedicated_bytes": 3058327552,
+      "shared_bytes": 83886080,
+      "rows": [
+        {
+          "Name": "pid_13492_luid_0x00000000_0x00018DBD_phys_0",
+          "DedicatedUsage": 3058327552,
+          "SharedUsage": 83886080
+        }
+      ]
+    },
+    "peak_is_sampled": true
+  },
+  "peak_allocated_mib": 2757.82373046875,
+  "peak_reserved_mib": 2790.0,
+  "final_progress": {
+    "status": "completed",
+    "pid": 13492,
+    "memory": {
+      "total_dedicated_mib": 2917.0,
+      "allocated_mib": 1227.9697265625,
+      "peak_allocated_mib": 2757.82373046875,
+      "reserved_mib": 2790.0
+    },
+    "step": 2,
+    "fresh_training_tokens": 64,
+    "events": 64,
+    "optimizer_updates": 2,
+    "physical_elapsed": 2.1294373124837875,
+    "pending_gradient_events": 0,
+    "loss_components": {
+      "task_nll": 8.252032279968262,
+      "port_objective": 10.823471546173096,
+      "joint_objective": 19.0755033493042,
+      "port_nll": 10.823272705078125,
+      "write_action_kl": 0.00019933425937779248,
+      "structural_kl": 1.3910563673169563e-11,
+      "structural_maintenance": 3.122350335121155,
+      "structural_objective": 8.252032279968262,
+      "component_events": {
+        "task_nll": 64,
+        "port_objective": 64,
+        "joint_objective": 64,
+        "port_nll": 64,
+        "write_action_kl": 64,
+        "structural_kl": 64,
+        "structural_maintenance": 64,
+        "structural_objective": 64
+      }
+    },
+    "last_loss_components": {
+      "task_nll": 8.219465255737305,
+      "port_objective": 10.823260307312012,
+      "joint_objective": 19.042724609375,
+      "port_nll": 10.823068618774414,
+      "write_action_kl": 0.000192310762940906,
+      "structural_kl": 2.7821127346339125e-11,
+      "structural_maintenance": 3.147855043411255,
+      "structural_objective": 8.219465255737305
+    },
+    "health": {
+      "protocol": "persistent_medium_health_v1",
+      "events": 64,
+      "window_events": 64,
+      "energy": {
+        "write_work": 14.655662700533867,
+        "response_source_work": 3305.184567928314,
+        "dissipated_energy": 3312.6523489952087,
+        "balance_residual": -1.9073486328125e-06,
+        "initial_energy": 0.0,
+        "current_energy": 7.187870025634766,
+        "cumulative_balance_residual": -1.1608004570007324e-05,
+        "max_abs_write_residual": 7.450580596923828e-07,
+        "max_abs_evolution_residual": 7.62939453125e-06,
+        "max_abs_continuity_residual": 0.0
+      },
+      "structure": {
+        "field_dc_energy": 3.1908364295959473,
+        "field_ac_energy": 0.7836574912071228,
+        "flux_dc_energy": 0.013326169922947884,
+        "flux_ac_energy": 3.200049877166748,
+        "field_spatial_fraction": 0.1971716416787927,
+        "latest_operator_changes": {
+          "transport_energy_change": 4.76837158203125e-07,
+          "transport_spatial_energy_change": -0.0003190040588378906,
+          "collision_energy_change": 4.76837158203125e-07,
+          "collision_spatial_energy_change": 7.2479248046875e-05,
+          "bath_energy_change": -0.22243118286132812,
+          "bath_spatial_energy_change": -0.20923471450805664
+        },
+        "window_operator_changes": {
+          "transport_energy_change": -2.9101967811584473e-05,
+          "transport_spatial_energy_change": -0.011531800031661987,
+          "collision_energy_change": 3.3915042877197266e-05,
+          "collision_spatial_energy_change": 0.002152368426322937,
+          "bath_energy_change": -7.4677960723638535,
+          "bath_spatial_energy_change": -9.744389802217484
+        }
+      },
+      "representation_segments": [
+        {
+          "phase": "train_first_pass",
+          "novel": true,
+          "samples": 64,
+          "status": "measured",
+          "variance": 296.90373863383496,
+          "temporal_roughness": 131.95841537957733,
+          "roughness_to_variance": 0.44444848012614224,
+          "spectral_entropy": 2.969089132472832,
+          "normalized_spectral_entropy": 0.7166286709336057,
+          "effective_rank": 19.47417312299892,
+          "participation_rank": 9.56043325996813,
+          "rank_bound": 63
+        }
+      ],
+      "predictive_risk": {
+        "blocks": [
+          {
+            "phase": "train_first_pass",
+            "novel": true,
+            "segment": 0,
+            "event_midpoint": 16.5,
+            "mean_nll": 8.284598909318447
+          },
+          {
+            "phase": "train_first_pass",
+            "novel": true,
+            "segment": 0,
+            "event_midpoint": 48.5,
+            "mean_nll": 8.219464898109436
+          }
+        ],
+        "by_phase": {
+          "train_first_pass/first_pass": {
+            "segment": 0,
+            "complete_blocks": 2,
+            "slope_nats_per_event": null,
+            "slope_hac_standard_error": null,
+            "hac_lags": null
+          }
+        }
+      },
+      "decoding": {
+        "feature_rms_before_norm": {
+          "latest": 0.5525943636894226,
+          "window_mean": 0.8491025026887655
+        },
+        "feature_rms_after_norm": {
+          "latest": 0.9999997615814209,
+          "window_mean": 0.9999998174607754
+        },
+        "logit_standard_deviation": {
+          "latest": 1.5630861520767212,
+          "window_mean": 1.4857681971043348
+        },
+        "prediction_entropy_nats": {
+          "latest": 7.286693572998047,
+          "window_mean": 8.019934952259064
+        }
+      },
+      "recent_optimizer_updates": [
+        {
+          "event": 32,
+          "gradient_norm_before_clip": 12.85483963782062,
+          "actual_update_norm": 0.015545901248611646,
+          "parameter_norm": 3008.984520187161,
+          "relative_update_norm": 5.166494258881957e-06
+        },
+        {
+          "event": 64,
+          "gradient_norm_before_clip": 12.585027365793666,
+          "actual_update_norm": 0.012999354358899408,
+          "parameter_norm": 3008.98497189897,
+          "relative_update_norm": 4.320179223326436e-06
+        }
+      ],
+      "interpretation": "Descriptive health measurements; no noise-expulsion, criticality or convergence verdict."
+    },
+    "phases": {
+      "train_first_pass": {
+        "events": 64,
+        "nll_sum": 528.1300418376923,
+        "prior_sum": 520.3743567155159,
+        "nll": 8.252031903713942,
+        "fixed_unigram_nll": 8.130849323679936,
+        "gain": -0.12118258003400584
+      }
+    },
+    "train_prequential_nll": 8.219464898109436,
+    "fixed_unigram_nll": 8.040994505965363,
+    "seconds_per_group": 14.84574690000045,
+    "tokens_per_second": 2.155499498647591,
+    "gradient_norm_before_clip": 12.585027365793666,
+    "lr": 2e-06,
+    "physical_time": 2.1294373124837875,
+    "field_energy": 3.974493980407715,
+    "dc_energy": 3.1908364295959473,
+    "spatial_energy": 0.7836574912071228,
+    "dc_share": 0.8028283715248108,
+    "spatial_share": 0.1971716433763504,
+    "temporal_read": {
+      "physical_time": 2.1294373124837875,
+      "rates": [
+        0.770736575126648,
+        0.19268396496772766,
+        0.04817073419690132,
+        0.012042772956192493
+      ],
+      "frequencies": [
+        -4.4343619265418965e-06,
+        0.218331977725029,
+        0.4366602301597595,
+        0.8733078837394714
+      ],
+      "dimensionless_frequencies": [
+        -3.987967829743866e-06,
+        0.19635313749313354,
+        0.39270293712615967,
+        0.785394549369812
+      ],
+      "real_power_per_mode": [
+        0.047145288437604904,
+        0.007720915134996176,
+        0.0005248833913356066,
+        1.4526329323416576e-05
+      ],
+      "imag_power_per_mode": [
+        1.1175672746163018e-13,
+        0.00038971294998191297,
+        0.0001298858260270208,
+        2.354261050641071e-05
+      ]
+    }
+  }
+}

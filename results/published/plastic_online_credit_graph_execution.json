@@ -1,0 +1,87 @@
+{
+  "protocol": "Joint numerical execution calibration only, no capability conclusion",
+  "updates": 3,
+  "events": 384,
+  "mean_seconds_per_128_event_update": 14.778005000000121,
+  "rows": [
+    {
+      "loss": 21.65146255493164,
+      "token_nll": 10.826279640197754,
+      "local_gradient_norm": 10.5971040725708,
+      "history_gradient_norm": 805.1487426757812,
+      "step": 1,
+      "events": 128,
+      "data_offset": 128,
+      "lr": 0.0001,
+      "gradient_norm_before_clip": 199.79483032226562,
+      "seconds_per_update": 14.801283500011778,
+      "seconds_per_token": 0.11563502734384201,
+      "memory": {
+        "eligibility_mib": 54.42208480834961,
+        "allocated_mib": 315.23876953125,
+        "reserved_mib": 818.0,
+        "peak_allocated_mib": 628.38037109375,
+        "total_dedicated_mib": 2009.0
+      },
+      "physical_time": 0.6400000000000005,
+      "field_energy": 2.758047580718994,
+      "dc_energy": 0.2734266519546509,
+      "spatial_energy": 2.484621047973633,
+      "dc_share": 0.09913776069879532,
+      "spatial_share": 0.9008622765541077
+    },
+    {
+      "loss": 21.64360237121582,
+      "token_nll": 10.820003509521484,
+      "local_gradient_norm": 9.928616523742676,
+      "history_gradient_norm": 1916.502685546875,
+      "step": 2,
+      "events": 256,
+      "data_offset": 256,
+      "lr": 0.0001,
+      "gradient_norm_before_clip": 147.46546936035156,
+      "seconds_per_update": 14.792325699992944,
+      "seconds_per_token": 0.11556504453119487,
+      "memory": {
+        "eligibility_mib": 54.42208480834961,
+        "allocated_mib": 315.23876953125,
+        "reserved_mib": 818.0,
+        "peak_allocated_mib": 628.38037109375,
+        "total_dedicated_mib": 2009.0
+      },
+      "physical_time": 1.2799999999999947,
+      "field_energy": 2.9912242889404297,
+      "dc_energy": 0.4239615499973297,
+      "spatial_energy": 2.567262649536133,
+      "dc_share": 0.14173512160778046,
+      "spatial_share": 0.8582648634910583
+    },
+    {
+      "loss": 21.644325256347656,
+      "token_nll": 10.82121467590332,
+      "local_gradient_norm": 9.293973922729492,
+      "history_gradient_norm": 3427.8056640625,
+      "step": 3,
+      "events": 384,
+      "data_offset": 384,
+      "lr": 0.0001,
+      "gradient_norm_before_clip": 89.07469177246094,
+      "seconds_per_update": 14.740405799995642,
+      "seconds_per_token": 0.11515942031246595,
+      "memory": {
+        "eligibility_mib": 54.42208480834961,
+        "allocated_mib": 315.23876953125,
+        "reserved_mib": 818.0,
+        "peak_allocated_mib": 628.38037109375,
+        "total_dedicated_mib": 2009.0
+      },
+      "physical_time": 1.919999999999981,
+      "field_energy": 3.1237709522247314,
+      "dc_energy": 0.3452126383781433,
+      "spatial_energy": 2.7785582542419434,
+      "dc_share": 0.11051151156425476,
+      "spatial_share": 0.8894884586334229
+    }
+  ],
+  "source_config": "results\\plastic_online_uoro_graph_execution_20261004\\config.json"
+}

@@ -1,0 +1,5214 @@
+{
+  "scope": "One real 32-target derivative diagnostic; optimizer steps suppressed, full 480-tick surrogate BPTT",
+  "source_checkpoint": "E:\\ib_checkpoints\\q8_fly_ctm_settle14_100k\\last.pt",
+  "source_checkpoint_bytes": 1124511859,
+  "source_checkpoint_modified": false,
+  "window": 32,
+  "settle_ticks": 14,
+  "optimizer_updates": 0,
+  "device": "NVIDIA GeForce GTX 1650",
+  "status": "passed",
+  "detach_reset": true,
+  "backward_only": true,
+  "pulse_credit_path": "active_only",
+  "all_restored_parameters_exact": true,
+  "source_train_tokens": 100000,
+  "target_interval": [
+    100001,
+    100033
+  ],
+  "target_sha256": "c6ad6a38e7335bee762df1271dbef34aebb32490da6a24830c2b1dd549a5370d",
+  "trainable_parameters": 77984427,
+  "vram_peak_allocated_mib": 2151.73583984375,
+  "vram_reserved_mib": 2634.0,
+  "last_stage": "after_optimizer_update",
+  "board_memory_snapshots_mib": {
+    "restored": 1357.0,
+    "backward_before_clip": 2711.0,
+    "after_clip": 2711.0,
+    "after_optimizer_update": 2711.0
+  },
+  "seconds_to_clip_including_group_norms": 14.101828099985141,
+  "gradients_before_clip": {
+    "log_tau_m": {
+      "entries_finite": true,
+      "min": -0.005740192253142595,
+      "max": 0.3663593828678131,
+      "fp32_norm": 0.47210076451301575,
+      "fp64_norm": 0.47210076648768473
+    },
+    "log_tau_s_e": {
+      "entries_finite": true,
+      "min": -2.1925872715655714e-05,
+      "max": 0.05066744238138199,
+      "fp32_norm": 0.05766566842794418,
+      "fp64_norm": 0.05766566820367213
+    },
+    "log_tau_s_i": {
+      "entries_finite": true,
+      "min": -0.004394420888274908,
+      "max": 0.0007449872209690511,
+      "fp32_norm": 0.004741895943880081,
+      "fp64_norm": 0.004741895843239824
+    },
+    "log_threshold": {
+      "entries_finite": true,
+      "min": -0.5418631434440613,
+      "max": 0.206421360373497,
+      "fp32_norm": 0.6022401452064514,
+      "fp64_norm": 0.6022401880792236
+    },
+    "log_g_e": {
+      "entries_finite": true,
+      "min": 1.153886079788208,
+      "max": 1.153886079788208,
+      "fp32_norm": 1.153886079788208,
+      "fp64_norm": 1.153886079788208
+    },
+    "log_g_i": {
+      "entries_finite": true,
+      "min": -0.8624340891838074,
+      "max": -0.8624340891838074,
+      "fp32_norm": 0.8624340891838074,
+      "fp64_norm": 0.8624340891838074
+    },
+    "log_tau_a": {
+      "entries_finite": true,
+      "min": -0.0004321066662669182,
+      "max": 1.4745673070137855e-05,
+      "fp32_norm": 0.000555233214981854,
+      "fp64_norm": 0.0005552332170859741
+    },
+    "log_beta": {
+      "entries_finite": true,
+      "min": -0.008550678379833698,
+      "max": 0.0029752217233181,
+      "fp32_norm": 0.009648767299950123,
+      "fp64_norm": 0.00964876709240466
+    },
+    "edge_weight_e": {
+      "entries_finite": true,
+      "min": -0.012088518589735031,
+      "max": 0.013651935383677483,
+      "fp32_norm": 0.6682389974594116,
+      "fp64_norm": 0.6682390524453387
+    },
+    "edge_weight_i": {
+      "entries_finite": true,
+      "min": -0.002902053063735366,
+      "max": 0.003936303313821554,
+      "fp32_norm": 0.2547942101955414,
+      "fp64_norm": 0.2547942029890629
+    },
+    "topographic_writer.gate_linear.weight": {
+      "entries_finite": true,
+      "min": -0.05278008058667183,
+      "max": 0.04608944430947304,
+      "fp32_norm": 0.3783782422542572,
+      "fp64_norm": 0.3783782456735519
+    },
+    "topographic_writer.gate_linear.bias": {
+      "entries_finite": true,
+      "min": -0.13713157176971436,
+      "max": 0.15975847840309143,
+      "fp32_norm": 0.21175414323806763,
+      "fp64_norm": 0.21175414216245683
+    },
+    "topographic_writer.proj_vis.weight": {
+      "entries_finite": true,
+      "min": -3.4543597848823993e-06,
+      "max": 3.093759914918337e-06,
+      "fp32_norm": 2.4020071577979252e-05,
+      "fp64_norm": 2.4020071061093327e-05
+    },
+    "topographic_writer.proj_chemo.weight": {
+      "entries_finite": true,
+      "min": -0.0032082695979624987,
+      "max": 0.003745529567822814,
+      "fp32_norm": 0.07342032343149185,
+      "fp64_norm": 0.07342032640111731
+    },
+    "topographic_writer.proj_mech.weight": {
+      "entries_finite": true,
+      "min": -0.027170654386281967,
+      "max": 0.021804623305797577,
+      "fp32_norm": 0.3647567629814148,
+      "fp64_norm": 0.36475675433751065
+    },
+    "output_read.weight": {
+      "entries_finite": true,
+      "min": -0.005270566791296005,
+      "max": 0.00516444630920887,
+      "fp32_norm": 0.6166666746139526,
+      "fp64_norm": 0.6166666500739236
+    },
+    "read_norm.weight": {
+      "entries_finite": true,
+      "min": -0.08352735638618469,
+      "max": 0.07359633594751358,
+      "fp32_norm": 0.4538441300392151,
+      "fp64_norm": 0.4538441138449647
+    },
+    "decoder.weight": {
+      "entries_finite": true,
+      "min": -0.023741867393255234,
+      "max": 0.02682141587138176,
+      "fp32_norm": 0.6891499161720276,
+      "fp64_norm": 0.6891499339640194
+    },
+    "decoder.bias": {
+      "entries_finite": true,
+      "min": -0.03124132938683033,
+      "max": 0.039355628192424774,
+      "fp32_norm": 0.16193702816963196,
+      "fp64_norm": 0.16193702974971216
+    }
+  },
+  "legacy_total_fp32_norm": 2.142329216003418,
+  "stable_total_fp64_norm": 2.14232914801893,
+  "all_gradient_entries_finite": true,
+  "total_norm_after_clip": 0.99999956004644,
+  "parameter_norms_after_clip": {
+    "log_tau_m": 0.22036788690563938,
+    "log_tau_s_e": 0.026917265852321355,
+    "log_tau_s_i": 0.002213429112906668,
+    "log_threshold": 0.28111456868518464,
+    "log_g_e": 0.5386126637458801,
+    "log_g_i": 0.4025682508945465,
+    "log_tau_a": 0.00025917257733521675,
+    "log_beta": 0.004503865802953926,
+    "edge_weight_e": 0.31192160523639284,
+    "edge_weight_i": 0.11893321193076983,
+    "topographic_writer.gate_linear.weight": 0.17661995284218124,
+    "topographic_writer.gate_linear.bias": 0.09884290911225815,
+    "topographic_writer.proj_vis.weight": 1.1212123998806002e-05,
+    "topographic_writer.proj_chemo.weight": 0.03427124768566172,
+    "topographic_writer.proj_mech.weight": 0.17026169293618698,
+    "output_read.weight": 0.28784856371990103,
+    "read_norm.weight": 0.2118460208005646,
+    "decoder.weight": 0.32168241721375074,
+    "decoder.bias": 0.07558920354523617
+  },
+  "pulse_credit_intervention": {
+    "scope": "Diagnostic pulse-route backward intervention; physical forward unchanged",
+    "path": "active_only",
+    "initial_four_ring_slots": "Preserved source state; not masked by future emission hooks",
+    "nonadditivity": "Both arms delete mixed active/silent recurrent paths; their gradients do not sum to all",
+    "original_ticks": 480,
+    "ticks_with_hook": 479,
+    "ticks_without_hook": 1,
+    "spike_pulse_mask_disagreements": 0,
+    "cpu_mask_bytes": 79258560,
+    "extra_gpu_history_bytes": 0,
+    "ticks": [
+      {
+        "segment": 0,
+        "tick": 0,
+        "nonzero_pulse_fraction": 0.041902350988965734,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.12151541220240779,
+        "ge_adjoint_norm": 0.5686336566226148
+      },
+      {
+        "segment": 0,
+        "tick": 1,
+        "nonzero_pulse_fraction": 0.029784038468526303,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06985940610192659,
+        "ge_adjoint_norm": 0.5439647292467668
+      },
+      {
+        "segment": 0,
+        "tick": 2,
+        "nonzero_pulse_fraction": 0.030904422184808808,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07289400874149501,
+        "ge_adjoint_norm": 0.5502422965629944
+      },
+      {
+        "segment": 0,
+        "tick": 3,
+        "nonzero_pulse_fraction": 0.029426726904955125,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07622073627910501,
+        "ge_adjoint_norm": 0.5546232128052874
+      },
+      {
+        "segment": 0,
+        "tick": 4,
+        "nonzero_pulse_fraction": 0.02977798234033018,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07976758596907821,
+        "ge_adjoint_norm": 0.556712414582376
+      },
+      {
+        "segment": 0,
+        "tick": 5,
+        "nonzero_pulse_fraction": 0.02882717021353908,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.08364746116849758,
+        "ge_adjoint_norm": 0.5558436693872296
+      },
+      {
+        "segment": 0,
+        "tick": 6,
+        "nonzero_pulse_fraction": 0.029202650161698623,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.08789242862396757,
+        "ge_adjoint_norm": 0.5516649009913935
+      },
+      {
+        "segment": 0,
+        "tick": 7,
+        "nonzero_pulse_fraction": 0.028663654752243795,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.09249721332908324,
+        "ge_adjoint_norm": 0.5437224540895863
+      },
+      {
+        "segment": 0,
+        "tick": 8,
+        "nonzero_pulse_fraction": 0.028857450854519687,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.09748478741550576,
+        "ge_adjoint_norm": 0.5317837338567661
+      },
+      {
+        "segment": 0,
+        "tick": 9,
+        "nonzero_pulse_fraction": 0.02696188272913361,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.11196307380448535,
+        "ge_adjoint_norm": 0.5159609759692356
+      },
+      {
+        "segment": 0,
+        "tick": 10,
+        "nonzero_pulse_fraction": 0.028766608931577863,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.0735435102624274,
+        "ge_adjoint_norm": 0.4977486164993787
+      },
+      {
+        "segment": 0,
+        "tick": 11,
+        "nonzero_pulse_fraction": 0.027276801395331937,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07694229736042497,
+        "ge_adjoint_norm": 0.4939748488944251
+      },
+      {
+        "segment": 0,
+        "tick": 12,
+        "nonzero_pulse_fraction": 0.027313138164508668,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.08058335334273178,
+        "ge_adjoint_norm": 0.4867367113120432
+      },
+      {
+        "segment": 0,
+        "tick": 13,
+        "nonzero_pulse_fraction": 0.027210183985174597,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.0845325526601925,
+        "ge_adjoint_norm": 0.4756466188879079
+      },
+      {
+        "segment": 0,
+        "tick": 14,
+        "nonzero_pulse_fraction": 0.02780974067659064,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.08892903514946134,
+        "ge_adjoint_norm": 0.46062833111721674
+      },
+      {
+        "segment": 1,
+        "tick": 0,
+        "nonzero_pulse_fraction": 0.04789186177493005,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.09665698946100328,
+        "ge_adjoint_norm": 0.4420004278119817
+      },
+      {
+        "segment": 1,
+        "tick": 1,
+        "nonzero_pulse_fraction": 0.030298809365196643,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.050885343296258746,
+        "ge_adjoint_norm": 0.4211421529308212
+      },
+      {
+        "segment": 1,
+        "tick": 2,
+        "nonzero_pulse_fraction": 0.029505456571504704,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.052868337836419255,
+        "ge_adjoint_norm": 0.4288213951215388
+      },
+      {
+        "segment": 1,
+        "tick": 3,
+        "nonzero_pulse_fraction": 0.030528942236649266,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.05505301015735995,
+        "ge_adjoint_norm": 0.4359940920223138
+      },
+      {
+        "segment": 1,
+        "tick": 4,
+        "nonzero_pulse_fraction": 0.029027022444011095,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.057424982594458725,
+        "ge_adjoint_norm": 0.44253860544099105
+      },
+      {
+        "segment": 1,
+        "tick": 5,
+        "nonzero_pulse_fraction": 0.030298809365196643,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06000526988068439,
+        "ge_adjoint_norm": 0.44829552344606893
+      },
+      {
+        "segment": 1,
+        "tick": 6,
+        "nonzero_pulse_fraction": 0.028699991521420526,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06277601441548057,
+        "ge_adjoint_norm": 0.4531983398554275
+      },
+      {
+        "segment": 1,
+        "tick": 7,
+        "nonzero_pulse_fraction": 0.030298809365196643,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.0659256704480725,
+        "ge_adjoint_norm": 0.45727275308508974
+      },
+      {
+        "segment": 1,
+        "tick": 8,
+        "nonzero_pulse_fraction": 0.028191276752946307,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06938488348697874,
+        "ge_adjoint_norm": 0.46076054465772065
+      },
+      {
+        "segment": 1,
+        "tick": 9,
+        "nonzero_pulse_fraction": 0.029656859776407748,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07319468016055114,
+        "ge_adjoint_norm": 0.464072746582914
+      },
+      {
+        "segment": 1,
+        "tick": 10,
+        "nonzero_pulse_fraction": 0.026913433703564638,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07751225147999376,
+        "ge_adjoint_norm": 0.46849418340012045
+      },
+      {
+        "segment": 1,
+        "tick": 11,
+        "nonzero_pulse_fraction": 0.028893787623696418,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.09070794962640623,
+        "ge_adjoint_norm": 0.4760671332259135
+      },
+      {
+        "segment": 1,
+        "tick": 12,
+        "nonzero_pulse_fraction": 0.02744031685662722,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.055335590122433734,
+        "ge_adjoint_norm": 0.49001975411844123
+      },
+      {
+        "segment": 1,
+        "tick": 13,
+        "nonzero_pulse_fraction": 0.0282457819067114,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.057314302917418194,
+        "ge_adjoint_norm": 0.5015529888225835
+      },
+      {
+        "segment": 1,
+        "tick": 14,
+        "nonzero_pulse_fraction": 0.0270708930366638,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.05940588720971043,
+        "ge_adjoint_norm": 0.512769771253214
+      },
+      {
+        "segment": 2,
+        "tick": 0,
+        "nonzero_pulse_fraction": 0.04420367970349196,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.061781851876305124,
+        "ge_adjoint_norm": 0.5235744464939106
+      },
+      {
+        "segment": 2,
+        "tick": 1,
+        "nonzero_pulse_fraction": 0.029953610058017707,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06422624522603175,
+        "ge_adjoint_norm": 0.5337114044946901
+      },
+      {
+        "segment": 2,
+        "tick": 2,
+        "nonzero_pulse_fraction": 0.030958927338573902,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06692677007821979,
+        "ge_adjoint_norm": 0.5427595793172766
+      },
+      {
+        "segment": 2,
+        "tick": 3,
+        "nonzero_pulse_fraction": 0.028742384418793378,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06983312733543978,
+        "ge_adjoint_norm": 0.5507235116079238
+      },
+      {
+        "segment": 2,
+        "tick": 4,
+        "nonzero_pulse_fraction": 0.030323033877981128,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07288251206509713,
+        "ge_adjoint_norm": 0.5571207229309143
+      },
+      {
+        "segment": 2,
+        "tick": 5,
+        "nonzero_pulse_fraction": 0.029317716597424933,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07620971792761728,
+        "ge_adjoint_norm": 0.5616839642852614
+      },
+      {
+        "segment": 2,
+        "tick": 6,
+        "nonzero_pulse_fraction": 0.02977798234033018,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07989633921800855,
+        "ge_adjoint_norm": 0.5643723386078431
+      },
+      {
+        "segment": 2,
+        "tick": 7,
+        "nonzero_pulse_fraction": 0.028463802521771782,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.08404934589099114,
+        "ge_adjoint_norm": 0.5650435555493538
+      },
+      {
+        "segment": 2,
+        "tick": 8,
+        "nonzero_pulse_fraction": 0.029002797931226607,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.09317433922264,
+        "ge_adjoint_norm": 0.5637426230908248
+      },
+      {
+        "segment": 2,
+        "tick": 9,
+        "nonzero_pulse_fraction": 0.027930863240513075,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07755217635646336,
+        "ge_adjoint_norm": 0.5611521407325877
+      },
+      {
+        "segment": 2,
+        "tick": 10,
+        "nonzero_pulse_fraction": 0.02863943023945931,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.08100734460747805,
+        "ge_adjoint_norm": 0.5601123933516878
+      },
+      {
+        "segment": 2,
+        "tick": 11,
+        "nonzero_pulse_fraction": 0.027464541369411708,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.08475538835568155,
+        "ge_adjoint_norm": 0.5557911679311037
+      },
+      {
+        "segment": 2,
+        "tick": 12,
+        "nonzero_pulse_fraction": 0.02787030195855186,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.0887746592040139,
+        "ge_adjoint_norm": 0.5477699512290838
+      },
+      {
+        "segment": 2,
+        "tick": 13,
+        "nonzero_pulse_fraction": 0.02691948983176076,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.09320622629323591,
+        "ge_adjoint_norm": 0.5356180568526034
+      },
+      {
+        "segment": 2,
+        "tick": 14,
+        "nonzero_pulse_fraction": 0.027634112958903116,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.10247197226738902,
+        "ge_adjoint_norm": 0.5193781881223944
+      },
+      {
+        "segment": 3,
+        "tick": 0,
+        "nonzero_pulse_fraction": 0.04027325250420901,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.10084716856943535,
+        "ge_adjoint_norm": 0.49961639474881686
+      },
+      {
+        "segment": 3,
+        "tick": 1,
+        "nonzero_pulse_fraction": 0.03080146800547474,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.05846893871925557,
+        "ge_adjoint_norm": 0.48093119340427964
+      },
+      {
+        "segment": 3,
+        "tick": 2,
+        "nonzero_pulse_fraction": 0.029408558520366758,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06074042630982715,
+        "ge_adjoint_norm": 0.4875179545399363
+      },
+      {
+        "segment": 3,
+        "tick": 3,
+        "nonzero_pulse_fraction": 0.029347997238405543,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06321566730218596,
+        "ge_adjoint_norm": 0.4930104411202182
+      },
+      {
+        "segment": 3,
+        "tick": 4,
+        "nonzero_pulse_fraction": 0.02820338900933855,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06581208868371055,
+        "ge_adjoint_norm": 0.497238510338991
+      },
+      {
+        "segment": 3,
+        "tick": 5,
+        "nonzero_pulse_fraction": 0.02934194111020942,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06860595920832825,
+        "ge_adjoint_norm": 0.4998387101262228
+      },
+      {
+        "segment": 3,
+        "tick": 6,
+        "nonzero_pulse_fraction": 0.02736158719007764,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07159875012839516,
+        "ge_adjoint_norm": 0.5007621394555276
+      },
+      {
+        "segment": 3,
+        "tick": 7,
+        "nonzero_pulse_fraction": 0.028687879265028284,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07483365588360842,
+        "ge_adjoint_norm": 0.4999352058878659
+      },
+      {
+        "segment": 3,
+        "tick": 8,
+        "nonzero_pulse_fraction": 0.027676505856275967,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07847524464916435,
+        "ge_adjoint_norm": 0.4974762066706625
+      },
+      {
+        "segment": 3,
+        "tick": 9,
+        "nonzero_pulse_fraction": 0.027930863240513075,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.08252504801410672,
+        "ge_adjoint_norm": 0.49382808585077426
+      },
+      {
+        "segment": 3,
+        "tick": 10,
+        "nonzero_pulse_fraction": 0.02699216337011422,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.0916383628007973,
+        "ge_adjoint_norm": 0.4898417342292286
+      },
+      {
+        "segment": 3,
+        "tick": 11,
+        "nonzero_pulse_fraction": 0.02772495488184494,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06485739561747884,
+        "ge_adjoint_norm": 0.48756147088092244
+      },
+      {
+        "segment": 3,
+        "tick": 12,
+        "nonzero_pulse_fraction": 0.02659245890917019,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.0674376187218266,
+        "ge_adjoint_norm": 0.49086497964628967
+      },
+      {
+        "segment": 3,
+        "tick": 13,
+        "nonzero_pulse_fraction": 0.027603832317922506,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07018551715150322,
+        "ge_adjoint_norm": 0.49255126418664663
+      },
+      {
+        "segment": 3,
+        "tick": 14,
+        "nonzero_pulse_fraction": 0.026392606678698173,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07311797623015122,
+        "ge_adjoint_norm": 0.49255547612447526
+      },
+      {
+        "segment": 4,
+        "tick": 0,
+        "nonzero_pulse_fraction": 0.04483957316408474,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.0765795772255329,
+        "ge_adjoint_norm": 0.4909455155531971
+      },
+      {
+        "segment": 4,
+        "tick": 1,
+        "nonzero_pulse_fraction": 0.02948123205872022,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.08023043411722429,
+        "ge_adjoint_norm": 0.4880057339746324
+      },
+      {
+        "segment": 4,
+        "tick": 2,
+        "nonzero_pulse_fraction": 0.03098315185135839,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.08441474627906198,
+        "ge_adjoint_norm": 0.48384527828000873
+      },
+      {
+        "segment": 4,
+        "tick": 3,
+        "nonzero_pulse_fraction": 0.030298809365196643,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.09174219367481634,
+        "ge_adjoint_norm": 0.4801534839031911
+      },
+      {
+        "segment": 4,
+        "tick": 4,
+        "nonzero_pulse_fraction": 0.029257155315463718,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.05925461401126069,
+        "ge_adjoint_norm": 0.47932447098799164
+      },
+      {
+        "segment": 4,
+        "tick": 5,
+        "nonzero_pulse_fraction": 0.028742384418793378,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06177211106756375,
+        "ge_adjoint_norm": 0.4910014818817258
+      },
+      {
+        "segment": 4,
+        "tick": 6,
+        "nonzero_pulse_fraction": 0.029172369520718014,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06473651232079443,
+        "ge_adjoint_norm": 0.5037446647124056
+      },
+      {
+        "segment": 4,
+        "tick": 7,
+        "nonzero_pulse_fraction": 0.028439578008987294,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06810895678694344,
+        "ge_adjoint_norm": 0.5183051812132891
+      },
+      {
+        "segment": 4,
+        "tick": 8,
+        "nonzero_pulse_fraction": 0.029166313392521893,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.08189885132697453,
+        "ge_adjoint_norm": 0.5357589119092238
+      },
+      {
+        "segment": 4,
+        "tick": 9,
+        "nonzero_pulse_fraction": 0.02817310836835794,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06869076305734585,
+        "ge_adjoint_norm": 0.5578412027352437
+      },
+      {
+        "segment": 4,
+        "tick": 10,
+        "nonzero_pulse_fraction": 0.02857281282930197,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07136495348079414,
+        "ge_adjoint_norm": 0.5670324329654225
+      },
+      {
+        "segment": 4,
+        "tick": 11,
+        "nonzero_pulse_fraction": 0.02801564903525878,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07420177011017365,
+        "ge_adjoint_norm": 0.5748911433610243
+      },
+      {
+        "segment": 4,
+        "tick": 12,
+        "nonzero_pulse_fraction": 0.027785516163806156,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07720666135217565,
+        "ge_adjoint_norm": 0.5811080906652814
+      },
+      {
+        "segment": 4,
+        "tick": 13,
+        "nonzero_pulse_fraction": 0.02678019888324996,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.08042388298811737,
+        "ge_adjoint_norm": 0.5853315144929153
+      },
+      {
+        "segment": 4,
+        "tick": 14,
+        "nonzero_pulse_fraction": 0.02765228134349148,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.08388386723570873,
+        "ge_adjoint_norm": 0.5872161291351881
+      },
+      {
+        "segment": 5,
+        "tick": 0,
+        "nonzero_pulse_fraction": 0.04582672206005257,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.08794877434303719,
+        "ge_adjoint_norm": 0.5863993381883361
+      },
+      {
+        "segment": 5,
+        "tick": 1,
+        "nonzero_pulse_fraction": 0.03131018277394896,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.09229697183296531,
+        "ge_adjoint_norm": 0.5824202118054275
+      },
+      {
+        "segment": 5,
+        "tick": 2,
+        "nonzero_pulse_fraction": 0.03129807051755672,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.09742388368358504,
+        "ge_adjoint_norm": 0.5742377382383484
+      },
+      {
+        "segment": 5,
+        "tick": 3,
+        "nonzero_pulse_fraction": 0.031255677620183865,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.10454425907430277,
+        "ge_adjoint_norm": 0.5621457326032839
+      },
+      {
+        "segment": 5,
+        "tick": 4,
+        "nonzero_pulse_fraction": 0.030637952544179455,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.1127144123368952,
+        "ge_adjoint_norm": 0.5460536541443293
+      },
+      {
+        "segment": 5,
+        "tick": 5,
+        "nonzero_pulse_fraction": 0.0313222950303412,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.13793256285657707,
+        "ge_adjoint_norm": 0.5256112447656976
+      },
+      {
+        "segment": 5,
+        "tick": 6,
+        "nonzero_pulse_fraction": 0.02919053790530638,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07572966790020745,
+        "ge_adjoint_norm": 0.5041512274541009
+      },
+      {
+        "segment": 5,
+        "tick": 7,
+        "nonzero_pulse_fraction": 0.030855973159239835,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07954968226541809,
+        "ge_adjoint_norm": 0.501304357585996
+      },
+      {
+        "segment": 5,
+        "tick": 8,
+        "nonzero_pulse_fraction": 0.029735589442957327,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.08360503786326677,
+        "ge_adjoint_norm": 0.49530196152468065
+      },
+      {
+        "segment": 5,
+        "tick": 9,
+        "nonzero_pulse_fraction": 0.029572073981662044,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.08808473261978923,
+        "ge_adjoint_norm": 0.4857712759613062
+      },
+      {
+        "segment": 5,
+        "tick": 10,
+        "nonzero_pulse_fraction": 0.028809001828950714,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.09362047039916496,
+        "ge_adjoint_norm": 0.4730534548153581
+      },
+      {
+        "segment": 5,
+        "tick": 11,
+        "nonzero_pulse_fraction": 0.029287435956444327,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.11507758531236745,
+        "ge_adjoint_norm": 0.45822359573947424
+      },
+      {
+        "segment": 5,
+        "tick": 12,
+        "nonzero_pulse_fraction": 0.027567495548745775,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.0909096195222051,
+        "ge_adjoint_norm": 0.443699694717343
+      },
+      {
+        "segment": 5,
+        "tick": 13,
+        "nonzero_pulse_fraction": 0.027979312266082048,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.09604953001246345,
+        "ge_adjoint_norm": 0.41920657870086875
+      },
+      {
+        "segment": 5,
+        "tick": 14,
+        "nonzero_pulse_fraction": 0.027676505856275967,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.10172322096248951,
+        "ge_adjoint_norm": 0.38920613496761897
+      },
+      {
+        "segment": 6,
+        "tick": 0,
+        "nonzero_pulse_fraction": 0.03903174622400407,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.11153803490476655,
+        "ge_adjoint_norm": 0.35550312746902857
+      },
+      {
+        "segment": 6,
+        "tick": 1,
+        "nonzero_pulse_fraction": 0.02904519082859946,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07057858244869863,
+        "ge_adjoint_norm": 0.323542995278695
+      },
+      {
+        "segment": 6,
+        "tick": 2,
+        "nonzero_pulse_fraction": 0.0300626203655479,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.03789128311004194,
+        "ge_adjoint_norm": 0.31604022195758275
+      },
+      {
+        "segment": 6,
+        "tick": 3,
+        "nonzero_pulse_fraction": 0.02860309347028258,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.039321498925114114,
+        "ge_adjoint_norm": 0.3229734454881401
+      },
+      {
+        "segment": 6,
+        "tick": 4,
+        "nonzero_pulse_fraction": 0.02932982885381718,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.040886985355753275,
+        "ge_adjoint_norm": 0.3296837616299058
+      },
+      {
+        "segment": 6,
+        "tick": 5,
+        "nonzero_pulse_fraction": 0.027967200009689806,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.042489639220573104,
+        "ge_adjoint_norm": 0.3361716768743177
+      },
+      {
+        "segment": 6,
+        "tick": 6,
+        "nonzero_pulse_fraction": 0.02857886895749809,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.04423691372426801,
+        "ge_adjoint_norm": 0.34220184568100737
+      },
+      {
+        "segment": 6,
+        "tick": 7,
+        "nonzero_pulse_fraction": 0.02728891365172418,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.04608044300600199,
+        "ge_adjoint_norm": 0.3479480052738517
+      },
+      {
+        "segment": 6,
+        "tick": 8,
+        "nonzero_pulse_fraction": 0.02816705224016182,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.048016127536121694,
+        "ge_adjoint_norm": 0.3533238717616211
+      },
+      {
+        "segment": 6,
+        "tick": 9,
+        "nonzero_pulse_fraction": 0.027010331754702584,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.05011211219123086,
+        "ge_adjoint_norm": 0.3585604445107088
+      },
+      {
+        "segment": 6,
+        "tick": 10,
+        "nonzero_pulse_fraction": 0.027585663933334142,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.05235715445519009,
+        "ge_adjoint_norm": 0.36402668962211293
+      },
+      {
+        "segment": 6,
+        "tick": 11,
+        "nonzero_pulse_fraction": 0.026786255011446082,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.05479420616828295,
+        "ge_adjoint_norm": 0.37017724600629026
+      },
+      {
+        "segment": 6,
+        "tick": 12,
+        "nonzero_pulse_fraction": 0.02751299039498068,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.05749359691939386,
+        "ge_adjoint_norm": 0.3779272463260514
+      },
+      {
+        "segment": 6,
+        "tick": 13,
+        "nonzero_pulse_fraction": 0.026483448601639998,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06046847377722654,
+        "ge_adjoint_norm": 0.3885968418941232
+      },
+      {
+        "segment": 6,
+        "tick": 14,
+        "nonzero_pulse_fraction": 0.026901321447172395,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06381226790808844,
+        "ge_adjoint_norm": 0.4041243473649119
+      },
+      {
+        "segment": 7,
+        "tick": 0,
+        "nonzero_pulse_fraction": 0.043882704909097514,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06943821990848038,
+        "ge_adjoint_norm": 0.4271753144159928
+      },
+      {
+        "segment": 7,
+        "tick": 1,
+        "nonzero_pulse_fraction": 0.029941497801625465,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.05667950585349305,
+        "ge_adjoint_norm": 0.46101600268605275
+      },
+      {
+        "segment": 7,
+        "tick": 2,
+        "nonzero_pulse_fraction": 0.02854253218832136,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.059194677212131556,
+        "ge_adjoint_norm": 0.4734574889148746
+      },
+      {
+        "segment": 7,
+        "tick": 3,
+        "nonzero_pulse_fraction": 0.029347997238405543,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.061938514646476914,
+        "ge_adjoint_norm": 0.4864649574864626
+      },
+      {
+        "segment": 7,
+        "tick": 4,
+        "nonzero_pulse_fraction": 0.028500139290948513,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06501793952287262,
+        "ge_adjoint_norm": 0.5003874446921424
+      },
+      {
+        "segment": 7,
+        "tick": 5,
+        "nonzero_pulse_fraction": 0.029463063674131856,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07023941285903264,
+        "ge_adjoint_norm": 0.5157218204735848
+      },
+      {
+        "segment": 7,
+        "tick": 6,
+        "nonzero_pulse_fraction": 0.028003536778866536,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07079727127549013,
+        "ge_adjoint_norm": 0.5332974907584944
+      },
+      {
+        "segment": 7,
+        "tick": 7,
+        "nonzero_pulse_fraction": 0.02878477731616623,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07369524939709304,
+        "ge_adjoint_norm": 0.5395696975483684
+      },
+      {
+        "segment": 7,
+        "tick": 8,
+        "nonzero_pulse_fraction": 0.027579607805138018,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07677564082013258,
+        "ge_adjoint_norm": 0.5439305817059593
+      },
+      {
+        "segment": 7,
+        "tick": 9,
+        "nonzero_pulse_fraction": 0.028282118675888132,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.08003843425597573,
+        "ge_adjoint_norm": 0.5459128897056087
+      },
+      {
+        "segment": 7,
+        "tick": 10,
+        "nonzero_pulse_fraction": 0.026640907934739163,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.08348265437859291,
+        "ge_adjoint_norm": 0.5449831804401898
+      },
+      {
+        "segment": 7,
+        "tick": 11,
+        "nonzero_pulse_fraction": 0.028033817419847142,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.08715479830102812,
+        "ge_adjoint_norm": 0.5406326236078663
+      },
+      {
+        "segment": 7,
+        "tick": 12,
+        "nonzero_pulse_fraction": 0.026513729242620607,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.09106653645296041,
+        "ge_adjoint_norm": 0.5323456461970153
+      },
+      {
+        "segment": 7,
+        "tick": 13,
+        "nonzero_pulse_fraction": 0.02784002131757125,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.09531705205340542,
+        "ge_adjoint_norm": 0.5195617206111027
+      },
+      {
+        "segment": 7,
+        "tick": 14,
+        "nonzero_pulse_fraction": 0.026465280217051634,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.09986264836184053,
+        "ge_adjoint_norm": 0.5019237685113127
+      },
+      {
+        "segment": 8,
+        "tick": 0,
+        "nonzero_pulse_fraction": 0.04497886411259554,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.10877138678623106,
+        "ge_adjoint_norm": 0.47947921242871855
+      },
+      {
+        "segment": 8,
+        "tick": 1,
+        "nonzero_pulse_fraction": 0.02915420113612965,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06445321957364844,
+        "ge_adjoint_norm": 0.45314044851442903
+      },
+      {
+        "segment": 8,
+        "tick": 2,
+        "nonzero_pulse_fraction": 0.0304259880573152,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06742654502029369,
+        "ge_adjoint_norm": 0.45472183174391845
+      },
+      {
+        "segment": 8,
+        "tick": 3,
+        "nonzero_pulse_fraction": 0.02904519082859946,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07080121558191001,
+        "ge_adjoint_norm": 0.4547515326151989
+      },
+      {
+        "segment": 8,
+        "tick": 4,
+        "nonzero_pulse_fraction": 0.02970530880197672,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07426132256037031,
+        "ge_adjoint_norm": 0.4530766021943688
+      },
+      {
+        "segment": 8,
+        "tick": 5,
+        "nonzero_pulse_fraction": 0.02904519082859946,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07825944637044809,
+        "ge_adjoint_norm": 0.44967806506536423
+      },
+      {
+        "segment": 8,
+        "tick": 6,
+        "nonzero_pulse_fraction": 0.029226874674483108,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.0826340571811934,
+        "ge_adjoint_norm": 0.4456286440162237
+      },
+      {
+        "segment": 8,
+        "tick": 7,
+        "nonzero_pulse_fraction": 0.028881675367304176,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.0912247391096541,
+        "ge_adjoint_norm": 0.4423167185006032
+      },
+      {
+        "segment": 8,
+        "tick": 8,
+        "nonzero_pulse_fraction": 0.028857450854519687,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.0499270666297627,
+        "ge_adjoint_norm": 0.4430186694482774
+      },
+      {
+        "segment": 8,
+        "tick": 9,
+        "nonzero_pulse_fraction": 0.027198071728782355,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.05170035960655495,
+        "ge_adjoint_norm": 0.45427693303218447
+      },
+      {
+        "segment": 8,
+        "tick": 10,
+        "nonzero_pulse_fraction": 0.028506195419144634,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.05356257545161399,
+        "ge_adjoint_norm": 0.4653579854317647
+      },
+      {
+        "segment": 8,
+        "tick": 11,
+        "nonzero_pulse_fraction": 0.027815796804786765,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.05554561216093453,
+        "ge_adjoint_norm": 0.4761490949591838
+      },
+      {
+        "segment": 8,
+        "tick": 12,
+        "nonzero_pulse_fraction": 0.02806409806082775,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.05760684698136426,
+        "ge_adjoint_norm": 0.48652699384982134
+      },
+      {
+        "segment": 8,
+        "tick": 13,
+        "nonzero_pulse_fraction": 0.026665132447523648,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.0597833958151252,
+        "ge_adjoint_norm": 0.49625802112387185
+      },
+      {
+        "segment": 8,
+        "tick": 14,
+        "nonzero_pulse_fraction": 0.027900582599532465,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.062087060353106405,
+        "ge_adjoint_norm": 0.5052287503127515
+      },
+      {
+        "segment": 9,
+        "tick": 0,
+        "nonzero_pulse_fraction": 0.036760698150458446,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.0646732690812211,
+        "ge_adjoint_norm": 0.513271674193675
+      },
+      {
+        "segment": 9,
+        "tick": 1,
+        "nonzero_pulse_fraction": 0.029584186238054287,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06732458826000427,
+        "ge_adjoint_norm": 0.5200677410315593
+      },
+      {
+        "segment": 9,
+        "tick": 2,
+        "nonzero_pulse_fraction": 0.028451690265379536,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07018140570025735,
+        "ge_adjoint_norm": 0.5250223853578628
+      },
+      {
+        "segment": 9,
+        "tick": 3,
+        "nonzero_pulse_fraction": 0.029360109494797785,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07322690412035783,
+        "ge_adjoint_norm": 0.5280430821798323
+      },
+      {
+        "segment": 9,
+        "tick": 4,
+        "nonzero_pulse_fraction": 0.02823972577851528,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07650377521160252,
+        "ge_adjoint_norm": 0.528737909594626
+      },
+      {
+        "segment": 9,
+        "tick": 5,
+        "nonzero_pulse_fraction": 0.02893618052106927,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.08005935121787093,
+        "ge_adjoint_norm": 0.5266964435129994
+      },
+      {
+        "segment": 9,
+        "tick": 6,
+        "nonzero_pulse_fraction": 0.02787030195855186,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.08396834547847627,
+        "ge_adjoint_norm": 0.521462739191991
+      },
+      {
+        "segment": 9,
+        "tick": 7,
+        "nonzero_pulse_fraction": 0.028445634137183415,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.08812970804370836,
+        "ge_adjoint_norm": 0.5126038969199923
+      },
+      {
+        "segment": 9,
+        "tick": 8,
+        "nonzero_pulse_fraction": 0.02717384721599787,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.09269592669797663,
+        "ge_adjoint_norm": 0.4995241401330052
+      },
+      {
+        "segment": 9,
+        "tick": 9,
+        "nonzero_pulse_fraction": 0.027167791087801745,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.09765727628184048,
+        "ge_adjoint_norm": 0.48250659298574883
+      },
+      {
+        "segment": 9,
+        "tick": 10,
+        "nonzero_pulse_fraction": 0.026465280217051634,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.10314331283790261,
+        "ge_adjoint_norm": 0.4621286626495661
+      },
+      {
+        "segment": 9,
+        "tick": 11,
+        "nonzero_pulse_fraction": 0.02806409806082775,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.10928363188190984,
+        "ge_adjoint_norm": 0.44053918514312096
+      },
+      {
+        "segment": 9,
+        "tick": 12,
+        "nonzero_pulse_fraction": 0.02692554595995688,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.11650794716374875,
+        "ge_adjoint_norm": 0.4222283890087088
+      },
+      {
+        "segment": 9,
+        "tick": 13,
+        "nonzero_pulse_fraction": 0.02699821949831034,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.10285147024921472,
+        "ge_adjoint_norm": 0.415793639859421
+      },
+      {
+        "segment": 9,
+        "tick": 14,
+        "nonzero_pulse_fraction": 0.02615641767904943,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.1140885996397244,
+        "ge_adjoint_norm": 0.4194751368871152
+      },
+      {
+        "segment": 10,
+        "tick": 0,
+        "nonzero_pulse_fraction": 0.041205896246411744,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.1573085581897597,
+        "ge_adjoint_norm": 0.4446913804644035
+      },
+      {
+        "segment": 10,
+        "tick": 1,
+        "nonzero_pulse_fraction": 0.028433521880791172,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.05314934150186722,
+        "ge_adjoint_norm": 0.4825641564636915
+      },
+      {
+        "segment": 10,
+        "tick": 2,
+        "nonzero_pulse_fraction": 0.02955390559707368,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.05494105987450494,
+        "ge_adjoint_norm": 0.4965312427607317
+      },
+      {
+        "segment": 10,
+        "tick": 3,
+        "nonzero_pulse_fraction": 0.02805804193263163,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.05683684161097076,
+        "ge_adjoint_norm": 0.5107900685951161
+      },
+      {
+        "segment": 10,
+        "tick": 4,
+        "nonzero_pulse_fraction": 0.028851394726323566,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.05886259250053063,
+        "ge_adjoint_norm": 0.5252647400836286
+      },
+      {
+        "segment": 10,
+        "tick": 5,
+        "nonzero_pulse_fraction": 0.028306343188672617,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06097124886935742,
+        "ge_adjoint_norm": 0.5398600680842724
+      },
+      {
+        "segment": 10,
+        "tick": 6,
+        "nonzero_pulse_fraction": 0.028451690265379536,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06328184004839874,
+        "ge_adjoint_norm": 0.5543976263606132
+      },
+      {
+        "segment": 10,
+        "tick": 7,
+        "nonzero_pulse_fraction": 0.02786424583035574,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06564630795811702,
+        "ge_adjoint_norm": 0.5688015231241776
+      },
+      {
+        "segment": 10,
+        "tick": 8,
+        "nonzero_pulse_fraction": 0.028869563110911933,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06812881365998327,
+        "ge_adjoint_norm": 0.5827397706859637
+      },
+      {
+        "segment": 10,
+        "tick": 9,
+        "nonzero_pulse_fraction": 0.026877096934387907,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07073998633555059,
+        "ge_adjoint_norm": 0.5961405185922372
+      },
+      {
+        "segment": 10,
+        "tick": 10,
+        "nonzero_pulse_fraction": 0.028154939983769577,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07351828138491512,
+        "ge_adjoint_norm": 0.6087859854931756
+      },
+      {
+        "segment": 10,
+        "tick": 11,
+        "nonzero_pulse_fraction": 0.026871040806191786,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07657718552031498,
+        "ge_adjoint_norm": 0.6204294939716374
+      },
+      {
+        "segment": 10,
+        "tick": 12,
+        "nonzero_pulse_fraction": 0.027670449728079843,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07970315479769818,
+        "ge_adjoint_norm": 0.6307338490817004
+      },
+      {
+        "segment": 10,
+        "tick": 13,
+        "nonzero_pulse_fraction": 0.026216978961010648,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.083042988283791,
+        "ge_adjoint_norm": 0.6390344973277229
+      },
+      {
+        "segment": 10,
+        "tick": 14,
+        "nonzero_pulse_fraction": 0.026622739550150796,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.08661012873013359,
+        "ge_adjoint_norm": 0.6451403037590597
+      },
+      {
+        "segment": 11,
+        "tick": 0,
+        "nonzero_pulse_fraction": 0.04363440365305653,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.09048514073187731,
+        "ge_adjoint_norm": 0.6485697961066554
+      },
+      {
+        "segment": 11,
+        "tick": 1,
+        "nonzero_pulse_fraction": 0.030335146134373374,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.09485001932271525,
+        "ge_adjoint_norm": 0.6485271659839263
+      },
+      {
+        "segment": 11,
+        "tick": 2,
+        "nonzero_pulse_fraction": 0.029129976623345162,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.09968960198501316,
+        "ge_adjoint_norm": 0.6440050370712148
+      },
+      {
+        "segment": 11,
+        "tick": 3,
+        "nonzero_pulse_fraction": 0.029717421058368963,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.10517485414326395,
+        "ge_adjoint_norm": 0.6345182200302547
+      },
+      {
+        "segment": 11,
+        "tick": 4,
+        "nonzero_pulse_fraction": 0.028379016727026078,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.111235243228181,
+        "ge_adjoint_norm": 0.6190591653030062
+      },
+      {
+        "segment": 11,
+        "tick": 5,
+        "nonzero_pulse_fraction": 0.0301474061602936,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.11807334711107055,
+        "ge_adjoint_norm": 0.5962551362858067
+      },
+      {
+        "segment": 11,
+        "tick": 6,
+        "nonzero_pulse_fraction": 0.02820338900933855,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.1256253926608547,
+        "ge_adjoint_norm": 0.5651430128884968
+      },
+      {
+        "segment": 11,
+        "tick": 7,
+        "nonzero_pulse_fraction": 0.02882111408534296,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.14750932310933956,
+        "ge_adjoint_norm": 0.5253249408749486
+      },
+      {
+        "segment": 11,
+        "tick": 8,
+        "nonzero_pulse_fraction": 0.027410036215646614,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07062369409404917,
+        "ge_adjoint_norm": 0.47853940085088964
+      },
+      {
+        "segment": 11,
+        "tick": 9,
+        "nonzero_pulse_fraction": 0.028590981213890334,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07418274385136907,
+        "ge_adjoint_norm": 0.47658640770477795
+      },
+      {
+        "segment": 11,
+        "tick": 10,
+        "nonzero_pulse_fraction": 0.02681047952423057,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07814522617470208,
+        "ge_adjoint_norm": 0.47166495784336226
+      },
+      {
+        "segment": 11,
+        "tick": 11,
+        "nonzero_pulse_fraction": 0.02827606254769201,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.08262068327611372,
+        "ge_adjoint_norm": 0.4641152826059316
+      },
+      {
+        "segment": 11,
+        "tick": 12,
+        "nonzero_pulse_fraction": 0.026622739550150796,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.08803669250960061,
+        "ge_adjoint_norm": 0.45425407557889214
+      },
+      {
+        "segment": 11,
+        "tick": 13,
+        "nonzero_pulse_fraction": 0.027918750984120833,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.10743676122203562,
+        "ge_adjoint_norm": 0.4434795074617562
+      },
+      {
+        "segment": 11,
+        "tick": 14,
+        "nonzero_pulse_fraction": 0.026459224088855513,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.055425271977544564,
+        "ge_adjoint_norm": 0.43479061261925117
+      },
+      {
+        "segment": 12,
+        "tick": 0,
+        "nonzero_pulse_fraction": 0.038529087583725974,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.058558333108113175,
+        "ge_adjoint_norm": 0.4404760925349256
+      },
+      {
+        "segment": 12,
+        "tick": 1,
+        "nonzero_pulse_fraction": 0.029747701699349573,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06100136487487668,
+        "ge_adjoint_norm": 0.44524020700204536
+      },
+      {
+        "segment": 12,
+        "tick": 2,
+        "nonzero_pulse_fraction": 0.030868085415632077,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.0637919017658833,
+        "ge_adjoint_norm": 0.4473435916810062
+      },
+      {
+        "segment": 12,
+        "tick": 3,
+        "nonzero_pulse_fraction": 0.029281379828248206,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06710073332240868,
+        "ge_adjoint_norm": 0.4475201294638396
+      },
+      {
+        "segment": 12,
+        "tick": 4,
+        "nonzero_pulse_fraction": 0.02974164557115345,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07120357116547087,
+        "ge_adjoint_norm": 0.4453163831025285
+      },
+      {
+        "segment": 12,
+        "tick": 5,
+        "nonzero_pulse_fraction": 0.028706047649616647,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07647505948026509,
+        "ge_adjoint_norm": 0.4398055416679693
+      },
+      {
+        "segment": 12,
+        "tick": 6,
+        "nonzero_pulse_fraction": 0.029039134700403337,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.0821785876297798,
+        "ge_adjoint_norm": 0.430020011786639
+      },
+      {
+        "segment": 12,
+        "tick": 7,
+        "nonzero_pulse_fraction": 0.027942975496905317,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.08886401515829458,
+        "ge_adjoint_norm": 0.41476501379382597
+      },
+      {
+        "segment": 12,
+        "tick": 8,
+        "nonzero_pulse_fraction": 0.028869563110911933,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.10940022507144963,
+        "ge_adjoint_norm": 0.3949614034602567
+      },
+      {
+        "segment": 12,
+        "tick": 9,
+        "nonzero_pulse_fraction": 0.02736158719007764,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.04373784096049404,
+        "ge_adjoint_norm": 0.3732085604899603
+      },
+      {
+        "segment": 12,
+        "tick": 10,
+        "nonzero_pulse_fraction": 0.028675767008636038,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.04512768641972882,
+        "ge_adjoint_norm": 0.38173715661757257
+      },
+      {
+        "segment": 12,
+        "tick": 11,
+        "nonzero_pulse_fraction": 0.027270745267135816,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.046638138669920545,
+        "ge_adjoint_norm": 0.3892592252415937
+      },
+      {
+        "segment": 12,
+        "tick": 12,
+        "nonzero_pulse_fraction": 0.02799142452247429,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.04829363000193201,
+        "ge_adjoint_norm": 0.3965237415390328
+      },
+      {
+        "segment": 12,
+        "tick": 13,
+        "nonzero_pulse_fraction": 0.026428943447874904,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.05007962692378459,
+        "ge_adjoint_norm": 0.40343470563357287
+      },
+      {
+        "segment": 12,
+        "tick": 14,
+        "nonzero_pulse_fraction": 0.02762805683070699,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.05201574001853077,
+        "ge_adjoint_norm": 0.40986530230377605
+      },
+      {
+        "segment": 13,
+        "tick": 0,
+        "nonzero_pulse_fraction": 0.03954046099247829,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.05489072758006754,
+        "ge_adjoint_norm": 0.4158175761081761
+      },
+      {
+        "segment": 13,
+        "tick": 1,
+        "nonzero_pulse_fraction": 0.030195855185862576,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.057317353440415775,
+        "ge_adjoint_norm": 0.4214149012279
+      },
+      {
+        "segment": 13,
+        "tick": 2,
+        "nonzero_pulse_fraction": 0.029535737212485313,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.060826464246257796,
+        "ge_adjoint_norm": 0.4256318227510151
+      },
+      {
+        "segment": 13,
+        "tick": 3,
+        "nonzero_pulse_fraction": 0.030934702825789417,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06502710288625377,
+        "ge_adjoint_norm": 0.42900303091307984
+      },
+      {
+        "segment": 13,
+        "tick": 4,
+        "nonzero_pulse_fraction": 0.02893618052106927,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07034242012570556,
+        "ge_adjoint_norm": 0.430698777330835
+      },
+      {
+        "segment": 13,
+        "tick": 5,
+        "nonzero_pulse_fraction": 0.029656859776407748,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07765331207950608,
+        "ge_adjoint_norm": 0.4306930353557187
+      },
+      {
+        "segment": 13,
+        "tick": 6,
+        "nonzero_pulse_fraction": 0.028263950291299765,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.09821631314837102,
+        "ge_adjoint_norm": 0.4298300738180071
+      },
+      {
+        "segment": 13,
+        "tick": 7,
+        "nonzero_pulse_fraction": 0.0296992526737806,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.05646316255085236,
+        "ge_adjoint_norm": 0.4302738537133642
+      },
+      {
+        "segment": 13,
+        "tick": 8,
+        "nonzero_pulse_fraction": 0.028215501265730792,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.05882325002321289,
+        "ge_adjoint_norm": 0.43326144336127353
+      },
+      {
+        "segment": 13,
+        "tick": 9,
+        "nonzero_pulse_fraction": 0.028330567701457105,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.061418205519208326,
+        "ge_adjoint_norm": 0.43432308070993947
+      },
+      {
+        "segment": 13,
+        "tick": 10,
+        "nonzero_pulse_fraction": 0.02707694916485992,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06420308566181396,
+        "ge_adjoint_norm": 0.4332624691915747
+      },
+      {
+        "segment": 13,
+        "tick": 11,
+        "nonzero_pulse_fraction": 0.028118603214592846,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06724538922272229,
+        "ge_adjoint_norm": 0.42957537169641086
+      },
+      {
+        "segment": 13,
+        "tick": 12,
+        "nonzero_pulse_fraction": 0.027519046523176802,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07055263504477387,
+        "ge_adjoint_norm": 0.42301641875284196
+      },
+      {
+        "segment": 13,
+        "tick": 13,
+        "nonzero_pulse_fraction": 0.02768861811266821,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07432372641930263,
+        "ge_adjoint_norm": 0.41332139432151893
+      },
+      {
+        "segment": 13,
+        "tick": 14,
+        "nonzero_pulse_fraction": 0.02662879567834692,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07845031665419674,
+        "ge_adjoint_norm": 0.40069555275427776
+      },
+      {
+        "segment": 14,
+        "tick": 0,
+        "nonzero_pulse_fraction": 0.042005305168299804,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.08553945289601009,
+        "ge_adjoint_norm": 0.38539436399139504
+      },
+      {
+        "segment": 14,
+        "tick": 1,
+        "nonzero_pulse_fraction": 0.029226874674483108,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.054995129331677946,
+        "ge_adjoint_norm": 0.36946657749624656
+      },
+      {
+        "segment": 14,
+        "tick": 2,
+        "nonzero_pulse_fraction": 0.030625840287787212,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.05810958276656457,
+        "ge_adjoint_norm": 0.3696601046022094
+      },
+      {
+        "segment": 14,
+        "tick": 3,
+        "nonzero_pulse_fraction": 0.02926321144365984,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.0616810031687332,
+        "ge_adjoint_norm": 0.36963092171913975
+      },
+      {
+        "segment": 14,
+        "tick": 4,
+        "nonzero_pulse_fraction": 0.02985065587868364,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06602807724253155,
+        "ge_adjoint_norm": 0.3691418583971192
+      },
+      {
+        "segment": 14,
+        "tick": 5,
+        "nonzero_pulse_fraction": 0.028918012136480906,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07207124671392018,
+        "ge_adjoint_norm": 0.3700285553802967
+      },
+      {
+        "segment": 14,
+        "tick": 6,
+        "nonzero_pulse_fraction": 0.02908152759777619,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.045626087294029824,
+        "ge_adjoint_norm": 0.374018073185691
+      },
+      {
+        "segment": 14,
+        "tick": 7,
+        "nonzero_pulse_fraction": 0.027458485241215587,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.04725654203219621,
+        "ge_adjoint_norm": 0.38050863242022404
+      },
+      {
+        "segment": 14,
+        "tick": 8,
+        "nonzero_pulse_fraction": 0.028772665059773984,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.04901132943763047,
+        "ge_adjoint_norm": 0.3864060180866207
+      },
+      {
+        "segment": 14,
+        "tick": 9,
+        "nonzero_pulse_fraction": 0.027634112958903116,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.051005471737774054,
+        "ge_adjoint_norm": 0.391599323580485
+      },
+      {
+        "segment": 14,
+        "tick": 10,
+        "nonzero_pulse_fraction": 0.02808832257361224,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.05301610494145813,
+        "ge_adjoint_norm": 0.39589637787216875
+      },
+      {
+        "segment": 14,
+        "tick": 11,
+        "nonzero_pulse_fraction": 0.0272949697799203,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.055149834755089513,
+        "ge_adjoint_norm": 0.39896000139267446
+      },
+      {
+        "segment": 14,
+        "tick": 12,
+        "nonzero_pulse_fraction": 0.028112547086396725,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.05743953938581426,
+        "ge_adjoint_norm": 0.40083532969431684
+      },
+      {
+        "segment": 14,
+        "tick": 13,
+        "nonzero_pulse_fraction": 0.026646964062935284,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.05989176945592205,
+        "ge_adjoint_norm": 0.4014721893930931
+      },
+      {
+        "segment": 14,
+        "tick": 14,
+        "nonzero_pulse_fraction": 0.027597776189726385,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06263096141886007,
+        "ge_adjoint_norm": 0.40093814171936476
+      },
+      {
+        "segment": 15,
+        "tick": 0,
+        "nonzero_pulse_fraction": 0.03912258814694589,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06615618758468168,
+        "ge_adjoint_norm": 0.39967672529298925
+      },
+      {
+        "segment": 15,
+        "tick": 1,
+        "nonzero_pulse_fraction": 0.030201911314058697,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06982825171066655,
+        "ge_adjoint_norm": 0.3981139314536177
+      },
+      {
+        "segment": 15,
+        "tick": 2,
+        "nonzero_pulse_fraction": 0.028893787623696418,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07459724327037955,
+        "ge_adjoint_norm": 0.3966557202379793
+      },
+      {
+        "segment": 15,
+        "tick": 3,
+        "nonzero_pulse_fraction": 0.029099695982364556,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.08291474398179226,
+        "ge_adjoint_norm": 0.3979292826334171
+      },
+      {
+        "segment": 15,
+        "tick": 4,
+        "nonzero_pulse_fraction": 0.027973256137885927,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.054248095244506495,
+        "ge_adjoint_norm": 0.40573769228899814
+      },
+      {
+        "segment": 15,
+        "tick": 5,
+        "nonzero_pulse_fraction": 0.029771926212134057,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.0612829958759484,
+        "ge_adjoint_norm": 0.4184990206340051
+      },
+      {
+        "segment": 15,
+        "tick": 6,
+        "nonzero_pulse_fraction": 0.02766439359988372,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.04960219170790643,
+        "ge_adjoint_norm": 0.43548460441478104
+      },
+      {
+        "segment": 15,
+        "tick": 7,
+        "nonzero_pulse_fraction": 0.028584925085694213,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.05097510323360151,
+        "ge_adjoint_norm": 0.4461861623347528
+      },
+      {
+        "segment": 15,
+        "tick": 8,
+        "nonzero_pulse_fraction": 0.026967938857329732,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.052429117421843204,
+        "ge_adjoint_norm": 0.4571454106576664
+      },
+      {
+        "segment": 15,
+        "tick": 9,
+        "nonzero_pulse_fraction": 0.02805198580443551,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.054097136591143756,
+        "ge_adjoint_norm": 0.46834228768721536
+      },
+      {
+        "segment": 15,
+        "tick": 10,
+        "nonzero_pulse_fraction": 0.026883153062584028,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.05571573192347137,
+        "ge_adjoint_norm": 0.47974677161213813
+      },
+      {
+        "segment": 15,
+        "tick": 11,
+        "nonzero_pulse_fraction": 0.027603832317922506,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.057395010288107604,
+        "ge_adjoint_norm": 0.49099452873616517
+      },
+      {
+        "segment": 15,
+        "tick": 12,
+        "nonzero_pulse_fraction": 0.026507673114424486,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.059181943350744115,
+        "ge_adjoint_norm": 0.5022050255994189
+      },
+      {
+        "segment": 15,
+        "tick": 13,
+        "nonzero_pulse_fraction": 0.028185220624750186,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06107450809286731,
+        "ge_adjoint_norm": 0.5133815030178952
+      },
+      {
+        "segment": 15,
+        "tick": 14,
+        "nonzero_pulse_fraction": 0.026489504729836123,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06305739947208552,
+        "ge_adjoint_norm": 0.5244085608451752
+      },
+      {
+        "segment": 16,
+        "tick": 0,
+        "nonzero_pulse_fraction": 0.0397403132229503,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06539350724124493,
+        "ge_adjoint_norm": 0.5352130254402475
+      },
+      {
+        "segment": 16,
+        "tick": 1,
+        "nonzero_pulse_fraction": 0.02799142452247429,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06773162213557914,
+        "ge_adjoint_norm": 0.5455882858235814
+      },
+      {
+        "segment": 16,
+        "tick": 2,
+        "nonzero_pulse_fraction": 0.02930560434103269,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07022320201396501,
+        "ge_adjoint_norm": 0.5549292527347663
+      },
+      {
+        "segment": 16,
+        "tick": 3,
+        "nonzero_pulse_fraction": 0.02787635808674798,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07286604430332842,
+        "ge_adjoint_norm": 0.5633050914076071
+      },
+      {
+        "segment": 16,
+        "tick": 4,
+        "nonzero_pulse_fraction": 0.028070154189023873,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07571805099317701,
+        "ge_adjoint_norm": 0.5704773278369037
+      },
+      {
+        "segment": 16,
+        "tick": 5,
+        "nonzero_pulse_fraction": 0.02766439359988372,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07877601705724552,
+        "ge_adjoint_norm": 0.5761814511372209
+      },
+      {
+        "segment": 16,
+        "tick": 6,
+        "nonzero_pulse_fraction": 0.02859703734208646,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.08206427462282878,
+        "ge_adjoint_norm": 0.5800035124854218
+      },
+      {
+        "segment": 16,
+        "tick": 7,
+        "nonzero_pulse_fraction": 0.027573551676941897,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.08560689963954832,
+        "ge_adjoint_norm": 0.5814589485624291
+      },
+      {
+        "segment": 16,
+        "tick": 8,
+        "nonzero_pulse_fraction": 0.027979312266082048,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.08943329962928956,
+        "ge_adjoint_norm": 0.5802834467965743
+      },
+      {
+        "segment": 16,
+        "tick": 9,
+        "nonzero_pulse_fraction": 0.0262593718583835,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.09361203717265822,
+        "ge_adjoint_norm": 0.5763264439891639
+      },
+      {
+        "segment": 16,
+        "tick": 10,
+        "nonzero_pulse_fraction": 0.027785516163806156,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.09816748996995972,
+        "ge_adjoint_norm": 0.5696438873723956
+      },
+      {
+        "segment": 16,
+        "tick": 11,
+        "nonzero_pulse_fraction": 0.026665132447523648,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.10325831288394205,
+        "ge_adjoint_norm": 0.5608430148958493
+      },
+      {
+        "segment": 16,
+        "tick": 12,
+        "nonzero_pulse_fraction": 0.026428943447874904,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.11005347318939247,
+        "ge_adjoint_norm": 0.5514574179107942
+      },
+      {
+        "segment": 16,
+        "tick": 13,
+        "nonzero_pulse_fraction": 0.02608374414069597,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.1535964703619382,
+        "ge_adjoint_norm": 0.5446208338099767
+      },
+      {
+        "segment": 16,
+        "tick": 14,
+        "nonzero_pulse_fraction": 0.027591720061530264,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07757664056477956,
+        "ge_adjoint_norm": 0.5459640058007978
+      },
+      {
+        "segment": 17,
+        "tick": 0,
+        "nonzero_pulse_fraction": 0.042096147091241626,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.08282881944937916,
+        "ge_adjoint_norm": 0.5495469293814915
+      },
+      {
+        "segment": 17,
+        "tick": 1,
+        "nonzero_pulse_fraction": 0.030014171339978926,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06764917484188392,
+        "ge_adjoint_norm": 0.5530697756632761
+      },
+      {
+        "segment": 17,
+        "tick": 2,
+        "nonzero_pulse_fraction": 0.029396446263974516,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06997072234564634,
+        "ge_adjoint_norm": 0.563690460966351
+      },
+      {
+        "segment": 17,
+        "tick": 3,
+        "nonzero_pulse_fraction": 0.029608410750838775,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07240575927446398,
+        "ge_adjoint_norm": 0.5738176814614848
+      },
+      {
+        "segment": 17,
+        "tick": 4,
+        "nonzero_pulse_fraction": 0.02860309347028258,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07510511499927476,
+        "ge_adjoint_norm": 0.5831963563997388
+      },
+      {
+        "segment": 17,
+        "tick": 5,
+        "nonzero_pulse_fraction": 0.029014910187618852,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.0778834088069885,
+        "ge_adjoint_norm": 0.5917254913091667
+      },
+      {
+        "segment": 17,
+        "tick": 6,
+        "nonzero_pulse_fraction": 0.027737067138237183,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.08086182421137243,
+        "ge_adjoint_norm": 0.598935550621473
+      },
+      {
+        "segment": 17,
+        "tick": 7,
+        "nonzero_pulse_fraction": 0.028948292777461512,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.08410929375485626,
+        "ge_adjoint_norm": 0.604881617826054
+      },
+      {
+        "segment": 17,
+        "tick": 8,
+        "nonzero_pulse_fraction": 0.027718898753648816,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.08858149272051938,
+        "ge_adjoint_norm": 0.6094983435867919
+      },
+      {
+        "segment": 17,
+        "tick": 9,
+        "nonzero_pulse_fraction": 0.028548588316517486,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.0845600634344617,
+        "ge_adjoint_norm": 0.612695702129354
+      },
+      {
+        "segment": 17,
+        "tick": 10,
+        "nonzero_pulse_fraction": 0.026725693729484867,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.08797563725383806,
+        "ge_adjoint_norm": 0.6146752633046023
+      },
+      {
+        "segment": 17,
+        "tick": 11,
+        "nonzero_pulse_fraction": 0.028270006419495886,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.09160288766406027,
+        "ge_adjoint_norm": 0.6137548032074691
+      },
+      {
+        "segment": 17,
+        "tick": 12,
+        "nonzero_pulse_fraction": 0.02688920919078015,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.09553792622614217,
+        "ge_adjoint_norm": 0.6093018441611215
+      },
+      {
+        "segment": 17,
+        "tick": 13,
+        "nonzero_pulse_fraction": 0.027210183985174597,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.09996339192934173,
+        "ge_adjoint_norm": 0.6009301002348342
+      },
+      {
+        "segment": 17,
+        "tick": 14,
+        "nonzero_pulse_fraction": 0.02641077506328654,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.10484664276930362,
+        "ge_adjoint_norm": 0.5882346135881882
+      },
+      {
+        "segment": 18,
+        "tick": 0,
+        "nonzero_pulse_fraction": 0.04881239326074054,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.12619882164604135,
+        "ge_adjoint_norm": 0.5710294181117135
+      },
+      {
+        "segment": 18,
+        "tick": 1,
+        "nonzero_pulse_fraction": 0.02981431910950691,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07003690059838821,
+        "ge_adjoint_norm": 0.5499827932610972
+      },
+      {
+        "segment": 18,
+        "tick": 2,
+        "nonzero_pulse_fraction": 0.03057739126221824,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07273359025855997,
+        "ge_adjoint_norm": 0.5590883929495662
+      },
+      {
+        "segment": 18,
+        "tick": 3,
+        "nonzero_pulse_fraction": 0.029747701699349573,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07569095120414172,
+        "ge_adjoint_norm": 0.5671526447842451
+      },
+      {
+        "segment": 18,
+        "tick": 4,
+        "nonzero_pulse_fraction": 0.030335146134373374,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07883509220461123,
+        "ge_adjoint_norm": 0.5735942026842131
+      },
+      {
+        "segment": 18,
+        "tick": 5,
+        "nonzero_pulse_fraction": 0.029475175930524098,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.08226178722032192,
+        "ge_adjoint_norm": 0.5778903089796377
+      },
+      {
+        "segment": 18,
+        "tick": 6,
+        "nonzero_pulse_fraction": 0.02948728818691634,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.0860264419392849,
+        "ge_adjoint_norm": 0.5794882388049696
+      },
+      {
+        "segment": 18,
+        "tick": 7,
+        "nonzero_pulse_fraction": 0.028342679957849348,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.09006722232632339,
+        "ge_adjoint_norm": 0.5777913706675848
+      },
+      {
+        "segment": 18,
+        "tick": 8,
+        "nonzero_pulse_fraction": 0.030117125519312993,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.09459784383955899,
+        "ge_adjoint_norm": 0.5720679810664325
+      },
+      {
+        "segment": 18,
+        "tick": 9,
+        "nonzero_pulse_fraction": 0.028590981213890334,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.09951714238300356,
+        "ge_adjoint_norm": 0.5617966391882832
+      },
+      {
+        "segment": 18,
+        "tick": 10,
+        "nonzero_pulse_fraction": 0.029184481777110256,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.10522403104611655,
+        "ge_adjoint_norm": 0.5461288222669003
+      },
+      {
+        "segment": 18,
+        "tick": 11,
+        "nonzero_pulse_fraction": 0.02762805683070699,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.11191472399389193,
+        "ge_adjoint_norm": 0.5250476171704763
+      },
+      {
+        "segment": 18,
+        "tick": 12,
+        "nonzero_pulse_fraction": 0.029063359213187825,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.14983222502766347,
+        "ge_adjoint_norm": 0.49895762559185286
+      },
+      {
+        "segment": 18,
+        "tick": 13,
+        "nonzero_pulse_fraction": 0.02780368454839452,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.08082726046481839,
+        "ge_adjoint_norm": 0.47035325999411975
+      },
+      {
+        "segment": 18,
+        "tick": 14,
+        "nonzero_pulse_fraction": 0.02813071547098509,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.08477102502532356,
+        "ge_adjoint_norm": 0.4595722971199511
+      },
+      {
+        "segment": 19,
+        "tick": 0,
+        "nonzero_pulse_fraction": 0.04981165441310061,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.09106915211456545,
+        "ge_adjoint_norm": 0.4458501447114027
+      },
+      {
+        "segment": 19,
+        "tick": 1,
+        "nonzero_pulse_fraction": 0.032545632925957774,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.056930149539962296,
+        "ge_adjoint_norm": 0.43001466844798286
+      },
+      {
+        "segment": 19,
+        "tick": 2,
+        "nonzero_pulse_fraction": 0.031461585978852,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.05941922093148481,
+        "ge_adjoint_norm": 0.4354297043033632
+      },
+      {
+        "segment": 19,
+        "tick": 3,
+        "nonzero_pulse_fraction": 0.03237000520827025,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06219584385689989,
+        "ge_adjoint_norm": 0.4397179430651362
+      },
+      {
+        "segment": 19,
+        "tick": 4,
+        "nonzero_pulse_fraction": 0.031152723440849794,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06544947443474532,
+        "ge_adjoint_norm": 0.44261449693645133
+      },
+      {
+        "segment": 19,
+        "tick": 5,
+        "nonzero_pulse_fraction": 0.032418454233839225,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.0690719615445788,
+        "ge_adjoint_norm": 0.44382819906759946
+      },
+      {
+        "segment": 19,
+        "tick": 6,
+        "nonzero_pulse_fraction": 0.030698513826140673,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07332353604178563,
+        "ge_adjoint_norm": 0.4428087078100257
+      },
+      {
+        "segment": 19,
+        "tick": 7,
+        "nonzero_pulse_fraction": 0.031304126645752835,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.0838858138388431,
+        "ge_adjoint_norm": 0.4402039936151151
+      },
+      {
+        "segment": 19,
+        "tick": 8,
+        "nonzero_pulse_fraction": 0.03040176354453071,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.04935838628762063,
+        "ge_adjoint_norm": 0.4370459790296816
+      },
+      {
+        "segment": 19,
+        "tick": 9,
+        "nonzero_pulse_fraction": 0.030898366056612687,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.05118717051761188,
+        "ge_adjoint_norm": 0.45028876355524533
+      },
+      {
+        "segment": 19,
+        "tick": 10,
+        "nonzero_pulse_fraction": 0.029935441673429344,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.0531018960569529,
+        "ge_adjoint_norm": 0.46368436858539785
+      },
+      {
+        "segment": 19,
+        "tick": 11,
+        "nonzero_pulse_fraction": 0.0302866971088044,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.055163411152533856,
+        "ge_adjoint_norm": 0.4770105215521616
+      },
+      {
+        "segment": 19,
+        "tick": 12,
+        "nonzero_pulse_fraction": 0.028772665059773984,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.05733285937409366,
+        "ge_adjoint_norm": 0.49027509427752547
+      },
+      {
+        "segment": 19,
+        "tick": 13,
+        "nonzero_pulse_fraction": 0.02970530880197672,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.05972537955855449,
+        "ge_adjoint_norm": 0.503283108779231
+      },
+      {
+        "segment": 19,
+        "tick": 14,
+        "nonzero_pulse_fraction": 0.027821852932982886,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06219768522840022,
+        "ge_adjoint_norm": 0.5159895606714572
+      },
+      {
+        "segment": 20,
+        "tick": 0,
+        "nonzero_pulse_fraction": 0.04759511149332009,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06512423370161007,
+        "ge_adjoint_norm": 0.528068283981635
+      },
+      {
+        "segment": 20,
+        "tick": 1,
+        "nonzero_pulse_fraction": 0.031285958261164475,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06806827113230464,
+        "ge_adjoint_norm": 0.5394832202173522
+      },
+      {
+        "segment": 20,
+        "tick": 2,
+        "nonzero_pulse_fraction": 0.03158270854277443,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07129124277923286,
+        "ge_adjoint_norm": 0.5495039341836322
+      },
+      {
+        "segment": 20,
+        "tick": 3,
+        "nonzero_pulse_fraction": 0.03092259056939717,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07501895375277662,
+        "ge_adjoint_norm": 0.5581012341650023
+      },
+      {
+        "segment": 20,
+        "tick": 4,
+        "nonzero_pulse_fraction": 0.030262472596019913,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07880073264274115,
+        "ge_adjoint_norm": 0.564638133662828
+      },
+      {
+        "segment": 20,
+        "tick": 5,
+        "nonzero_pulse_fraction": 0.029644747520015505,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.08290209628853319,
+        "ge_adjoint_norm": 0.568090960031806
+      },
+      {
+        "segment": 20,
+        "tick": 6,
+        "nonzero_pulse_fraction": 0.029535737212485313,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.08733601797315665,
+        "ge_adjoint_norm": 0.5682891625260843
+      },
+      {
+        "segment": 20,
+        "tick": 7,
+        "nonzero_pulse_fraction": 0.029129976623345162,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.0920122792924974,
+        "ge_adjoint_norm": 0.5645619652158163
+      },
+      {
+        "segment": 20,
+        "tick": 8,
+        "nonzero_pulse_fraction": 0.02945095141773961,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.09707336314657368,
+        "ge_adjoint_norm": 0.5562350492828838
+      },
+      {
+        "segment": 20,
+        "tick": 9,
+        "nonzero_pulse_fraction": 0.027888470343140223,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.10263883715090319,
+        "ge_adjoint_norm": 0.5430961271470235
+      },
+      {
+        "segment": 20,
+        "tick": 10,
+        "nonzero_pulse_fraction": 0.029499400443308583,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.1091640713223761,
+        "ge_adjoint_norm": 0.525164058989532
+      },
+      {
+        "segment": 20,
+        "tick": 11,
+        "nonzero_pulse_fraction": 0.028106490958200604,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.08686853759158933,
+        "ge_adjoint_norm": 0.503003753291218
+      },
+      {
+        "segment": 20,
+        "tick": 12,
+        "nonzero_pulse_fraction": 0.02802776129165102,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.09143612324405985,
+        "ge_adjoint_norm": 0.4911274192366176
+      },
+      {
+        "segment": 20,
+        "tick": 13,
+        "nonzero_pulse_fraction": 0.027228352369762964,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.09649189577400688,
+        "ge_adjoint_norm": 0.4752756709914981
+      },
+      {
+        "segment": 20,
+        "tick": 14,
+        "nonzero_pulse_fraction": 0.027761291651021668,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.10284632058963672,
+        "ge_adjoint_norm": 0.4564500778576071
+      },
+      {
+        "segment": 21,
+        "tick": 0,
+        "nonzero_pulse_fraction": 0.04316808178195516,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.09865402707070631,
+        "ge_adjoint_norm": 0.4369866981982245
+      },
+      {
+        "segment": 21,
+        "tick": 1,
+        "nonzero_pulse_fraction": 0.03055316674943375,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07101854858068635,
+        "ge_adjoint_norm": 0.41958586435874307
+      },
+      {
+        "segment": 21,
+        "tick": 2,
+        "nonzero_pulse_fraction": 0.029178425648914135,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.04829993702837258,
+        "ge_adjoint_norm": 0.416904654561757
+      },
+      {
+        "segment": 21,
+        "tick": 3,
+        "nonzero_pulse_fraction": 0.030644008672375576,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.05005032276636462,
+        "ge_adjoint_norm": 0.4265855134679579
+      },
+      {
+        "segment": 21,
+        "tick": 4,
+        "nonzero_pulse_fraction": 0.028699991521420526,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.05195362040811942,
+        "ge_adjoint_norm": 0.4359241983876516
+      },
+      {
+        "segment": 21,
+        "tick": 5,
+        "nonzero_pulse_fraction": 0.02963869139181938,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.053836881619390826,
+        "ge_adjoint_norm": 0.4446701155620383
+      },
+      {
+        "segment": 21,
+        "tick": 6,
+        "nonzero_pulse_fraction": 0.028045929676239388,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.055857361379939297,
+        "ge_adjoint_norm": 0.4522958609542449
+      },
+      {
+        "segment": 21,
+        "tick": 7,
+        "nonzero_pulse_fraction": 0.02937222175119003,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.05807124963938906,
+        "ge_adjoint_norm": 0.45899356177643563
+      },
+      {
+        "segment": 21,
+        "tick": 8,
+        "nonzero_pulse_fraction": 0.0282457819067114,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06036171162597818,
+        "ge_adjoint_norm": 0.4644386588795656
+      },
+      {
+        "segment": 21,
+        "tick": 9,
+        "nonzero_pulse_fraction": 0.0282457819067114,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06272682909566518,
+        "ge_adjoint_norm": 0.4681896213220205
+      },
+      {
+        "segment": 21,
+        "tick": 10,
+        "nonzero_pulse_fraction": 0.027343418805489274,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06529153601431677,
+        "ge_adjoint_norm": 0.4699614089416886
+      },
+      {
+        "segment": 21,
+        "tick": 11,
+        "nonzero_pulse_fraction": 0.02820944513753467,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.068012079537639,
+        "ge_adjoint_norm": 0.4696403625234154
+      },
+      {
+        "segment": 21,
+        "tick": 12,
+        "nonzero_pulse_fraction": 0.027028500139290947,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07097115062958191,
+        "ge_adjoint_norm": 0.4668210913327817
+      },
+      {
+        "segment": 21,
+        "tick": 13,
+        "nonzero_pulse_fraction": 0.028009592907062657,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07416966517740121,
+        "ge_adjoint_norm": 0.4613624949483793
+      },
+      {
+        "segment": 21,
+        "tick": 14,
+        "nonzero_pulse_fraction": 0.026459224088855513,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07769150969342313,
+        "ge_adjoint_norm": 0.45317996388711834
+      },
+      {
+        "segment": 22,
+        "tick": 0,
+        "nonzero_pulse_fraction": 0.04284105085936459,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.08223721422449448,
+        "ge_adjoint_norm": 0.4426033953849124
+      },
+      {
+        "segment": 22,
+        "tick": 1,
+        "nonzero_pulse_fraction": 0.02909363985416843,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.09617697538912508,
+        "ge_adjoint_norm": 0.43039684480928375
+      },
+      {
+        "segment": 22,
+        "tick": 2,
+        "nonzero_pulse_fraction": 0.029438839161347367,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.047912845643271355,
+        "ge_adjoint_norm": 0.41754000846987593
+      },
+      {
+        "segment": 22,
+        "tick": 3,
+        "nonzero_pulse_fraction": 0.02882717021353908,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.049664964441344356,
+        "ge_adjoint_norm": 0.42623916274236184
+      },
+      {
+        "segment": 22,
+        "tick": 4,
+        "nonzero_pulse_fraction": 0.029027022444011095,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.05141211234602522,
+        "ge_adjoint_norm": 0.43481163794019073
+      },
+      {
+        "segment": 22,
+        "tick": 5,
+        "nonzero_pulse_fraction": 0.028397185111614442,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.05328177742843886,
+        "ge_adjoint_norm": 0.44278580379034854
+      },
+      {
+        "segment": 22,
+        "tick": 6,
+        "nonzero_pulse_fraction": 0.028918012136480906,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.055202570233404066,
+        "ge_adjoint_norm": 0.4502465668937107
+      },
+      {
+        "segment": 22,
+        "tick": 7,
+        "nonzero_pulse_fraction": 0.02776734777921779,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.05723439455260344,
+        "ge_adjoint_norm": 0.45692876179396125
+      },
+      {
+        "segment": 22,
+        "tick": 8,
+        "nonzero_pulse_fraction": 0.028488027034556267,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.05935683228823797,
+        "ge_adjoint_norm": 0.46293723288544225
+      },
+      {
+        "segment": 22,
+        "tick": 9,
+        "nonzero_pulse_fraction": 0.02762805683070699,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06165596641777234,
+        "ge_adjoint_norm": 0.4683074120057117
+      },
+      {
+        "segment": 22,
+        "tick": 10,
+        "nonzero_pulse_fraction": 0.02780974067659064,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06406041718777354,
+        "ge_adjoint_norm": 0.4732132943966547
+      },
+      {
+        "segment": 22,
+        "tick": 11,
+        "nonzero_pulse_fraction": 0.027010331754702584,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06674412214682685,
+        "ge_adjoint_norm": 0.4778869228859688
+      },
+      {
+        "segment": 22,
+        "tick": 12,
+        "nonzero_pulse_fraction": 0.027967200009689806,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06990742450667797,
+        "ge_adjoint_norm": 0.48302303377994404
+      },
+      {
+        "segment": 22,
+        "tick": 13,
+        "nonzero_pulse_fraction": 0.026907377575368516,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.0800902361745809,
+        "ge_adjoint_norm": 0.48951798947444597
+      },
+      {
+        "segment": 22,
+        "tick": 14,
+        "nonzero_pulse_fraction": 0.02750693426678456,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06116214566076914,
+        "ge_adjoint_norm": 0.4988371108391416
+      },
+      {
+        "segment": 23,
+        "tick": 0,
+        "nonzero_pulse_fraction": 0.038862174634512664,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06366862118787675,
+        "ge_adjoint_norm": 0.5059927592376308
+      },
+      {
+        "segment": 23,
+        "tick": 1,
+        "nonzero_pulse_fraction": 0.029796150724918546,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.0660546267130132,
+        "ge_adjoint_norm": 0.5121745079866921
+      },
+      {
+        "segment": 23,
+        "tick": 2,
+        "nonzero_pulse_fraction": 0.0282457819067114,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06862155802922655,
+        "ge_adjoint_norm": 0.5167170861780297
+      },
+      {
+        "segment": 23,
+        "tick": 3,
+        "nonzero_pulse_fraction": 0.02937222175119003,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07138740589795373,
+        "ge_adjoint_norm": 0.5200422571277522
+      },
+      {
+        "segment": 23,
+        "tick": 4,
+        "nonzero_pulse_fraction": 0.02817310836835794,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07444298306698133,
+        "ge_adjoint_norm": 0.5221559221434087
+      },
+      {
+        "segment": 23,
+        "tick": 5,
+        "nonzero_pulse_fraction": 0.028475914778164024,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.08049756761870976,
+        "ge_adjoint_norm": 0.5231975695115968
+      },
+      {
+        "segment": 23,
+        "tick": 6,
+        "nonzero_pulse_fraction": 0.027718898753648816,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06548144219747679,
+        "ge_adjoint_norm": 0.5236612244573245
+      },
+      {
+        "segment": 23,
+        "tick": 7,
+        "nonzero_pulse_fraction": 0.02776734777921779,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06777577640781268,
+        "ge_adjoint_norm": 0.5292634552223903
+      },
+      {
+        "segment": 23,
+        "tick": 8,
+        "nonzero_pulse_fraction": 0.02699216337011422,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07014369659318724,
+        "ge_adjoint_norm": 0.5334086786651805
+      },
+      {
+        "segment": 23,
+        "tick": 9,
+        "nonzero_pulse_fraction": 0.02806409806082775,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07266753195750898,
+        "ge_adjoint_norm": 0.5356911494398856
+      },
+      {
+        "segment": 23,
+        "tick": 10,
+        "nonzero_pulse_fraction": 0.027234408497959085,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07535094431187882,
+        "ge_adjoint_norm": 0.535934377797493
+      },
+      {
+        "segment": 23,
+        "tick": 11,
+        "nonzero_pulse_fraction": 0.027924807112316954,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07825635187046577,
+        "ge_adjoint_norm": 0.5337732859323268
+      },
+      {
+        "segment": 23,
+        "tick": 12,
+        "nonzero_pulse_fraction": 0.026144305422657187,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.0814594491760442,
+        "ge_adjoint_norm": 0.5289285019145163
+      },
+      {
+        "segment": 23,
+        "tick": 13,
+        "nonzero_pulse_fraction": 0.027046668523879314,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.08719234189676991,
+        "ge_adjoint_norm": 0.5212051541670578
+      },
+      {
+        "segment": 23,
+        "tick": 14,
+        "nonzero_pulse_fraction": 0.026580346652777948,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.08630115816261805,
+        "ge_adjoint_norm": 0.5104001449761502
+      },
+      {
+        "segment": 24,
+        "tick": 0,
+        "nonzero_pulse_fraction": 0.04253218832136239,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.10268277644447045,
+        "ge_adjoint_norm": 0.4971700160601267
+      },
+      {
+        "segment": 24,
+        "tick": 1,
+        "nonzero_pulse_fraction": 0.02882717021353908,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.055372515480111996,
+        "ge_adjoint_norm": 0.48120887001916635
+      },
+      {
+        "segment": 24,
+        "tick": 2,
+        "nonzero_pulse_fraction": 0.029438839161347367,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.05725768524487187,
+        "ge_adjoint_norm": 0.49174376078607107
+      },
+      {
+        "segment": 24,
+        "tick": 3,
+        "nonzero_pulse_fraction": 0.029184481777110256,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.05927756441771598,
+        "ge_adjoint_norm": 0.5021260954768043
+      },
+      {
+        "segment": 24,
+        "tick": 4,
+        "nonzero_pulse_fraction": 0.029075471469580068,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06129528522994371,
+        "ge_adjoint_norm": 0.5120560654293872
+      },
+      {
+        "segment": 24,
+        "tick": 5,
+        "nonzero_pulse_fraction": 0.028185220624750186,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06346615868272189,
+        "ge_adjoint_norm": 0.5212471048818877
+      },
+      {
+        "segment": 24,
+        "tick": 6,
+        "nonzero_pulse_fraction": 0.028657598624047674,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06579173549908034,
+        "ge_adjoint_norm": 0.5296977330005741
+      },
+      {
+        "segment": 24,
+        "tick": 7,
+        "nonzero_pulse_fraction": 0.027961143881493684,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06816239173954525,
+        "ge_adjoint_norm": 0.5371055271631248
+      },
+      {
+        "segment": 24,
+        "tick": 8,
+        "nonzero_pulse_fraction": 0.028312399316868738,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.0706979070277868,
+        "ge_adjoint_norm": 0.5431009893705633
+      },
+      {
+        "segment": 24,
+        "tick": 9,
+        "nonzero_pulse_fraction": 0.027313138164508668,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.0734189455607565,
+        "ge_adjoint_norm": 0.5476408905035366
+      },
+      {
+        "segment": 24,
+        "tick": 10,
+        "nonzero_pulse_fraction": 0.02768861811266821,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07631423657983345,
+        "ge_adjoint_norm": 0.5504150682689435
+      },
+      {
+        "segment": 24,
+        "tick": 11,
+        "nonzero_pulse_fraction": 0.026471336345247756,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07942405065594817,
+        "ge_adjoint_norm": 0.5511373926544816
+      },
+      {
+        "segment": 24,
+        "tick": 12,
+        "nonzero_pulse_fraction": 0.027573551676941897,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.08281306993081902,
+        "ge_adjoint_norm": 0.5496401170994375
+      },
+      {
+        "segment": 24,
+        "tick": 13,
+        "nonzero_pulse_fraction": 0.026422887319678783,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.08669444731475881,
+        "ge_adjoint_norm": 0.5458715354342015
+      },
+      {
+        "segment": 24,
+        "tick": 14,
+        "nonzero_pulse_fraction": 0.027416092343842735,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.10085257259245861,
+        "ge_adjoint_norm": 0.5400329629965648
+      },
+      {
+        "segment": 25,
+        "tick": 0,
+        "nonzero_pulse_fraction": 0.045045481522752874,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06644866540150728,
+        "ge_adjoint_norm": 0.5328560008345131
+      },
+      {
+        "segment": 25,
+        "tick": 1,
+        "nonzero_pulse_fraction": 0.030044451980959532,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06911482151299683,
+        "ge_adjoint_norm": 0.5407546479643521
+      },
+      {
+        "segment": 25,
+        "tick": 2,
+        "nonzero_pulse_fraction": 0.029075471469580068,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07210498868824469,
+        "ge_adjoint_norm": 0.5465916499120926
+      },
+      {
+        "segment": 25,
+        "tick": 3,
+        "nonzero_pulse_fraction": 0.029977834570802196,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.0754892547912199,
+        "ge_adjoint_norm": 0.5506880632740652
+      },
+      {
+        "segment": 25,
+        "tick": 4,
+        "nonzero_pulse_fraction": 0.02819733288114243,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07928803581167215,
+        "ge_adjoint_norm": 0.5526019597826358
+      },
+      {
+        "segment": 25,
+        "tick": 5,
+        "nonzero_pulse_fraction": 0.029747701699349573,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.08314941868472288,
+        "ge_adjoint_norm": 0.5515244050478373
+      },
+      {
+        "segment": 25,
+        "tick": 6,
+        "nonzero_pulse_fraction": 0.028590981213890334,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.08751908056663416,
+        "ge_adjoint_norm": 0.5468079824066417
+      },
+      {
+        "segment": 25,
+        "tick": 7,
+        "nonzero_pulse_fraction": 0.029354053366601664,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.09229770525917841,
+        "ge_adjoint_norm": 0.538586708899462
+      },
+      {
+        "segment": 25,
+        "tick": 8,
+        "nonzero_pulse_fraction": 0.02768256198447209,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.09761309933880959,
+        "ge_adjoint_norm": 0.526531053489424
+      },
+      {
+        "segment": 25,
+        "tick": 9,
+        "nonzero_pulse_fraction": 0.028590981213890334,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.10462477603633977,
+        "ge_adjoint_norm": 0.511102856383063
+      },
+      {
+        "segment": 25,
+        "tick": 10,
+        "nonzero_pulse_fraction": 0.027161734959605624,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.14235198479122407,
+        "ge_adjoint_norm": 0.49401231540062873
+      },
+      {
+        "segment": 25,
+        "tick": 11,
+        "nonzero_pulse_fraction": 0.02813071547098509,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07288266255364961,
+        "ge_adjoint_norm": 0.4788808915271088
+      },
+      {
+        "segment": 25,
+        "tick": 12,
+        "nonzero_pulse_fraction": 0.027373699446469883,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07619396482463552,
+        "ge_adjoint_norm": 0.4753801699106143
+      },
+      {
+        "segment": 25,
+        "tick": 13,
+        "nonzero_pulse_fraction": 0.02750087813858844,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07982018665308861,
+        "ge_adjoint_norm": 0.4697904857198377
+      },
+      {
+        "segment": 25,
+        "tick": 14,
+        "nonzero_pulse_fraction": 0.026507673114424486,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.0842355303368445,
+        "ge_adjoint_norm": 0.4625357592820553
+      },
+      {
+        "segment": 26,
+        "tick": 0,
+        "nonzero_pulse_fraction": 0.04021269122224779,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.10817225883107223,
+        "ge_adjoint_norm": 0.4548252337044679
+      },
+      {
+        "segment": 26,
+        "tick": 1,
+        "nonzero_pulse_fraction": 0.02908152759777619,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.05239898647415075,
+        "ge_adjoint_norm": 0.44904661173187804
+      },
+      {
+        "segment": 26,
+        "tick": 2,
+        "nonzero_pulse_fraction": 0.029808262981310788,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.05422056008480256,
+        "ge_adjoint_norm": 0.4603216018248164
+      },
+      {
+        "segment": 26,
+        "tick": 3,
+        "nonzero_pulse_fraction": 0.028972517290246,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.05628029908977916,
+        "ge_adjoint_norm": 0.47155999553699707
+      },
+      {
+        "segment": 26,
+        "tick": 4,
+        "nonzero_pulse_fraction": 0.029287435956444327,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.05834470092508111,
+        "ge_adjoint_norm": 0.4827715613372488
+      },
+      {
+        "segment": 26,
+        "tick": 5,
+        "nonzero_pulse_fraction": 0.028488027034556267,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.060559043739632765,
+        "ge_adjoint_norm": 0.4936614569227219
+      },
+      {
+        "segment": 26,
+        "tick": 6,
+        "nonzero_pulse_fraction": 0.028633374111263186,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06289591652301277,
+        "ge_adjoint_norm": 0.5043214209525023
+      },
+      {
+        "segment": 26,
+        "tick": 7,
+        "nonzero_pulse_fraction": 0.02725257688254745,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06538869125745862,
+        "ge_adjoint_norm": 0.5146439109306539
+      },
+      {
+        "segment": 26,
+        "tick": 8,
+        "nonzero_pulse_fraction": 0.02853041993192912,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06806059811806127,
+        "ge_adjoint_norm": 0.5246921196184012
+      },
+      {
+        "segment": 26,
+        "tick": 9,
+        "nonzero_pulse_fraction": 0.027410036215646614,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07093171975448782,
+        "ge_adjoint_norm": 0.5344105984917701
+      },
+      {
+        "segment": 26,
+        "tick": 10,
+        "nonzero_pulse_fraction": 0.02744031685662722,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07406003786174387,
+        "ge_adjoint_norm": 0.54401620531491
+      },
+      {
+        "segment": 26,
+        "tick": 11,
+        "nonzero_pulse_fraction": 0.026846816293407297,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07755042271459321,
+        "ge_adjoint_norm": 0.5538924017200264
+      },
+      {
+        "segment": 26,
+        "tick": 12,
+        "nonzero_pulse_fraction": 0.027603832317922506,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.08157059863517864,
+        "ge_adjoint_norm": 0.5646720278367805
+      },
+      {
+        "segment": 26,
+        "tick": 13,
+        "nonzero_pulse_fraction": 0.0262593718583835,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.0966614317584428,
+        "ge_adjoint_norm": 0.5773855206630905
+      },
+      {
+        "segment": 26,
+        "tick": 14,
+        "nonzero_pulse_fraction": 0.027119342062232772,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07061459083904036,
+        "ge_adjoint_norm": 0.5936466627265117
+      },
+      {
+        "segment": 27,
+        "tick": 0,
+        "nonzero_pulse_fraction": 0.04568743111154177,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07370137349656798,
+        "ge_adjoint_norm": 0.6077887969283078
+      },
+      {
+        "segment": 27,
+        "tick": 1,
+        "nonzero_pulse_fraction": 0.030195855185862576,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07693605034427148,
+        "ge_adjoint_norm": 0.6212560553275961
+      },
+      {
+        "segment": 27,
+        "tick": 2,
+        "nonzero_pulse_fraction": 0.029614466879034896,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.08045402533374098,
+        "ge_adjoint_norm": 0.6332938698130102
+      },
+      {
+        "segment": 27,
+        "tick": 3,
+        "nonzero_pulse_fraction": 0.03021402357045094,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.08429941999787419,
+        "ge_adjoint_norm": 0.6438652589845574
+      },
+      {
+        "segment": 27,
+        "tick": 4,
+        "nonzero_pulse_fraction": 0.028845338598127445,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.08838475667452651,
+        "ge_adjoint_norm": 0.6524752415536129
+      },
+      {
+        "segment": 27,
+        "tick": 5,
+        "nonzero_pulse_fraction": 0.030195855185862576,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.09302246700656659,
+        "ge_adjoint_norm": 0.6583681140097594
+      },
+      {
+        "segment": 27,
+        "tick": 6,
+        "nonzero_pulse_fraction": 0.028651542495851553,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.09782429922005421,
+        "ge_adjoint_norm": 0.660984599371526
+      },
+      {
+        "segment": 27,
+        "tick": 7,
+        "nonzero_pulse_fraction": 0.02916025726432577,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.1030022964737881,
+        "ge_adjoint_norm": 0.6589002725199433
+      },
+      {
+        "segment": 27,
+        "tick": 8,
+        "nonzero_pulse_fraction": 0.02809437870180836,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.10870664315080308,
+        "ge_adjoint_norm": 0.6516348774528089
+      },
+      {
+        "segment": 27,
+        "tick": 9,
+        "nonzero_pulse_fraction": 0.029039134700403337,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.11497180259436947,
+        "ge_adjoint_norm": 0.6383461762363186
+      },
+      {
+        "segment": 27,
+        "tick": 10,
+        "nonzero_pulse_fraction": 0.027670449728079843,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.1218584630892486,
+        "ge_adjoint_norm": 0.6180825473120183
+      },
+      {
+        "segment": 27,
+        "tick": 11,
+        "nonzero_pulse_fraction": 0.028494083162752388,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.12970598848673398,
+        "ge_adjoint_norm": 0.5903859298395029
+      },
+      {
+        "segment": 27,
+        "tick": 12,
+        "nonzero_pulse_fraction": 0.027700730369060452,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.15011445041707874,
+        "ge_adjoint_norm": 0.5560242367438237
+      },
+      {
+        "segment": 27,
+        "tick": 13,
+        "nonzero_pulse_fraction": 0.028100434830004482,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.09587531432263717,
+        "ge_adjoint_norm": 0.518122932408768
+      },
+      {
+        "segment": 27,
+        "tick": 14,
+        "nonzero_pulse_fraction": 0.027373699446469883,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.1155600979103762,
+        "ge_adjoint_norm": 0.5027570749451713
+      },
+      {
+        "segment": 28,
+        "tick": 0,
+        "nonzero_pulse_fraction": 0.04232022383449813,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.08257304921890979,
+        "ge_adjoint_norm": 0.4853118541439063
+      },
+      {
+        "segment": 28,
+        "tick": 1,
+        "nonzero_pulse_fraction": 0.02948123205872022,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.057982470599646625,
+        "ge_adjoint_norm": 0.4780409210169648
+      },
+      {
+        "segment": 28,
+        "tick": 2,
+        "nonzero_pulse_fraction": 0.030389651288138468,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.060178282638260416,
+        "ge_adjoint_norm": 0.4871273338298145
+      },
+      {
+        "segment": 28,
+        "tick": 3,
+        "nonzero_pulse_fraction": 0.029771926212134057,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06254364630755138,
+        "ge_adjoint_norm": 0.4953339360007969
+      },
+      {
+        "segment": 28,
+        "tick": 4,
+        "nonzero_pulse_fraction": 0.03002628359637117,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06503884081170255,
+        "ge_adjoint_norm": 0.5023923895150465
+      },
+      {
+        "segment": 28,
+        "tick": 5,
+        "nonzero_pulse_fraction": 0.028524363803732997,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06769391828897772,
+        "ge_adjoint_norm": 0.5079384515349317
+      },
+      {
+        "segment": 28,
+        "tick": 6,
+        "nonzero_pulse_fraction": 0.029784038468526303,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07051100409480446,
+        "ge_adjoint_norm": 0.5116122729418996
+      },
+      {
+        "segment": 28,
+        "tick": 7,
+        "nonzero_pulse_fraction": 0.028336623829653226,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07363911498133212,
+        "ge_adjoint_norm": 0.5130067713068436
+      },
+      {
+        "segment": 28,
+        "tick": 8,
+        "nonzero_pulse_fraction": 0.028960405033853758,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07685752510802242,
+        "ge_adjoint_norm": 0.5116470478028907
+      },
+      {
+        "segment": 28,
+        "tick": 9,
+        "nonzero_pulse_fraction": 0.027519046523176802,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.080312167890281,
+        "ge_adjoint_norm": 0.5066347916420606
+      },
+      {
+        "segment": 28,
+        "tick": 10,
+        "nonzero_pulse_fraction": 0.028560700572909728,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.08402181916196458,
+        "ge_adjoint_norm": 0.49759853441107194
+      },
+      {
+        "segment": 28,
+        "tick": 11,
+        "nonzero_pulse_fraction": 0.0274342607284311,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.08807047806868529,
+        "ge_adjoint_norm": 0.48385368883550894
+      },
+      {
+        "segment": 28,
+        "tick": 12,
+        "nonzero_pulse_fraction": 0.027900582599532465,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.09240449213823414,
+        "ge_adjoint_norm": 0.4648277879680219
+      },
+      {
+        "segment": 28,
+        "tick": 13,
+        "nonzero_pulse_fraction": 0.027161734959605624,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.09723813554731559,
+        "ge_adjoint_norm": 0.43996972838300596
+      },
+      {
+        "segment": 28,
+        "tick": 14,
+        "nonzero_pulse_fraction": 0.028263950291299765,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.10429380914597938,
+        "ge_adjoint_norm": 0.4095154129897506
+      },
+      {
+        "segment": 29,
+        "tick": 0,
+        "nonzero_pulse_fraction": 0.04662613098194063,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.08999642365612452,
+        "ge_adjoint_norm": 0.37484416692806205
+      },
+      {
+        "segment": 29,
+        "tick": 1,
+        "nonzero_pulse_fraction": 0.030232191955039303,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.05002180104195488,
+        "ge_adjoint_norm": 0.3553105041396352
+      },
+      {
+        "segment": 29,
+        "tick": 2,
+        "nonzero_pulse_fraction": 0.02966897203279999,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.05231131734919304,
+        "ge_adjoint_norm": 0.35820710699162267
+      },
+      {
+        "segment": 29,
+        "tick": 3,
+        "nonzero_pulse_fraction": 0.030637952544179455,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.05485686494635388,
+        "ge_adjoint_norm": 0.36055212099889816
+      },
+      {
+        "segment": 29,
+        "tick": 4,
+        "nonzero_pulse_fraction": 0.02916025726432577,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.05759486746247423,
+        "ge_adjoint_norm": 0.36256694642086196
+      },
+      {
+        "segment": 29,
+        "tick": 5,
+        "nonzero_pulse_fraction": 0.030044451980959532,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06070783036407167,
+        "ge_adjoint_norm": 0.36474940390203486
+      },
+      {
+        "segment": 29,
+        "tick": 6,
+        "nonzero_pulse_fraction": 0.028518307675536876,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06426846391681817,
+        "ge_adjoint_norm": 0.3682081898087791
+      },
+      {
+        "segment": 29,
+        "tick": 7,
+        "nonzero_pulse_fraction": 0.029584186238054287,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07378476102694158,
+        "ge_adjoint_norm": 0.3746405362361115
+      },
+      {
+        "segment": 29,
+        "tick": 8,
+        "nonzero_pulse_fraction": 0.028554644444713607,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.0444929475157272,
+        "ge_adjoint_norm": 0.3867348822114642
+      },
+      {
+        "segment": 29,
+        "tick": 9,
+        "nonzero_pulse_fraction": 0.028621261854870943,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.04645702522137694,
+        "ge_adjoint_norm": 0.3981414172670276
+      },
+      {
+        "segment": 29,
+        "tick": 10,
+        "nonzero_pulse_fraction": 0.02717990334419399,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.04855064596101084,
+        "ge_adjoint_norm": 0.4092797020975212
+      },
+      {
+        "segment": 29,
+        "tick": 11,
+        "nonzero_pulse_fraction": 0.02853647606012524,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.05077370377246816,
+        "ge_adjoint_norm": 0.41995673572316067
+      },
+      {
+        "segment": 29,
+        "tick": 12,
+        "nonzero_pulse_fraction": 0.02817916449655406,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.053166273813926045,
+        "ge_adjoint_norm": 0.4299941390400151
+      },
+      {
+        "segment": 29,
+        "tick": 13,
+        "nonzero_pulse_fraction": 0.02799142452247429,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.055734015052450486,
+        "ge_adjoint_norm": 0.4391818845304578
+      },
+      {
+        "segment": 29,
+        "tick": 14,
+        "nonzero_pulse_fraction": 0.026610627293758553,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.058494750389114836,
+        "ge_adjoint_norm": 0.44728309243269304
+      },
+      {
+        "segment": 30,
+        "tick": 0,
+        "nonzero_pulse_fraction": 0.045681374983345645,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06140592763456994,
+        "ge_adjoint_norm": 0.4540526286776554
+      },
+      {
+        "segment": 30,
+        "tick": 1,
+        "nonzero_pulse_fraction": 0.030274584852412155,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06485287119947988,
+        "ge_adjoint_norm": 0.45921040956204884
+      },
+      {
+        "segment": 30,
+        "tick": 2,
+        "nonzero_pulse_fraction": 0.0308741415438282,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06883552288802179,
+        "ge_adjoint_norm": 0.46202351343691334
+      },
+      {
+        "segment": 30,
+        "tick": 3,
+        "nonzero_pulse_fraction": 0.0299233294170371,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07353520924036504,
+        "ge_adjoint_norm": 0.4622181055729406
+      },
+      {
+        "segment": 30,
+        "tick": 4,
+        "nonzero_pulse_fraction": 0.03058950351861048,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07923011962429753,
+        "ge_adjoint_norm": 0.45917571268236784
+      },
+      {
+        "segment": 30,
+        "tick": 5,
+        "nonzero_pulse_fraction": 0.02959629849444653,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.08540791935106341,
+        "ge_adjoint_norm": 0.45191057330331164
+      },
+      {
+        "segment": 30,
+        "tick": 6,
+        "nonzero_pulse_fraction": 0.029438839161347367,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.09375222907719213,
+        "ge_adjoint_norm": 0.43932259187422845
+      },
+      {
+        "segment": 30,
+        "tick": 7,
+        "nonzero_pulse_fraction": 0.02877872118797011,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.11820476174723528,
+        "ge_adjoint_norm": 0.42172666962118915
+      },
+      {
+        "segment": 30,
+        "tick": 8,
+        "nonzero_pulse_fraction": 0.029832487494095276,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06359440139956359,
+        "ge_adjoint_norm": 0.4000071970020771
+      },
+      {
+        "segment": 30,
+        "tick": 9,
+        "nonzero_pulse_fraction": 0.028766608931577863,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06920651448013927,
+        "ge_adjoint_norm": 0.40142384274483783
+      },
+      {
+        "segment": 30,
+        "tick": 10,
+        "nonzero_pulse_fraction": 0.028633374111263186,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.0941605772042397,
+        "ge_adjoint_norm": 0.40084619012968664
+      },
+      {
+        "segment": 30,
+        "tick": 11,
+        "nonzero_pulse_fraction": 0.027749179394629425,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.05560819162681789,
+        "ge_adjoint_norm": 0.3994190387079557
+      },
+      {
+        "segment": 30,
+        "tick": 12,
+        "nonzero_pulse_fraction": 0.028590981213890334,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.05864146993146423,
+        "ge_adjoint_norm": 0.4033759082915329
+      },
+      {
+        "segment": 30,
+        "tick": 13,
+        "nonzero_pulse_fraction": 0.02731919429270479,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06190130990206103,
+        "ge_adjoint_norm": 0.40468249613423035
+      },
+      {
+        "segment": 30,
+        "tick": 14,
+        "nonzero_pulse_fraction": 0.027646225215295358,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06540027000814845,
+        "ge_adjoint_norm": 0.40271147058155776
+      },
+      {
+        "segment": 31,
+        "tick": 0,
+        "nonzero_pulse_fraction": 0.038056709584428486,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.06909666811696526,
+        "ge_adjoint_norm": 0.3966599504791862
+      },
+      {
+        "segment": 31,
+        "tick": 1,
+        "nonzero_pulse_fraction": 0.030347258390765616,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07370342264942144,
+        "ge_adjoint_norm": 0.38560698895994233
+      },
+      {
+        "segment": 31,
+        "tick": 2,
+        "nonzero_pulse_fraction": 0.029208706289894745,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.07895607119982878,
+        "ge_adjoint_norm": 0.3683992129555155
+      },
+      {
+        "segment": 31,
+        "tick": 3,
+        "nonzero_pulse_fraction": 0.02982643136589915,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.0849509836153167,
+        "ge_adjoint_norm": 0.34343603686242913
+      },
+      {
+        "segment": 31,
+        "tick": 4,
+        "nonzero_pulse_fraction": 0.0280217051634549,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.09168789863256745,
+        "ge_adjoint_norm": 0.30890327780892196
+      },
+      {
+        "segment": 31,
+        "tick": 5,
+        "nonzero_pulse_fraction": 0.02927532370005208,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.10623238524856074,
+        "ge_adjoint_norm": 0.26248250200911644
+      },
+      {
+        "segment": 31,
+        "tick": 6,
+        "nonzero_pulse_fraction": 0.028330567701457105,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.03373730343420627,
+        "ge_adjoint_norm": 0.20261162698452984
+      },
+      {
+        "segment": 31,
+        "tick": 7,
+        "nonzero_pulse_fraction": 0.028481970906360145,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.035838417648849895,
+        "ge_adjoint_norm": 0.19937829853628997
+      },
+      {
+        "segment": 31,
+        "tick": 8,
+        "nonzero_pulse_fraction": 0.027343418805489274,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.038096451821153135,
+        "ge_adjoint_norm": 0.1935003903894292
+      },
+      {
+        "segment": 31,
+        "tick": 9,
+        "nonzero_pulse_fraction": 0.028148883855573455,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.04057620829615448,
+        "ge_adjoint_norm": 0.1842655006413374
+      },
+      {
+        "segment": 31,
+        "tick": 10,
+        "nonzero_pulse_fraction": 0.02681047952423057,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.043294262152199184,
+        "ge_adjoint_norm": 0.17091433963770747
+      },
+      {
+        "segment": 31,
+        "tick": 11,
+        "nonzero_pulse_fraction": 0.027095117549448287,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.046352522526905464,
+        "ge_adjoint_norm": 0.15247955004655717
+      },
+      {
+        "segment": 31,
+        "tick": 12,
+        "nonzero_pulse_fraction": 0.026616683421954675,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.04963926325587559,
+        "ge_adjoint_norm": 0.12782561434807138
+      },
+      {
+        "segment": 31,
+        "tick": 13,
+        "nonzero_pulse_fraction": 0.02783396518937513,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 1,
+        "h_adjoint_norm": 0.05414692742869525,
+        "ge_adjoint_norm": 0.09543678016224187
+      },
+      {
+        "segment": 31,
+        "tick": 14,
+        "nonzero_pulse_fraction": 0.026537953755405096,
+        "spike_pulse_mask_disagreements": 0,
+        "pulse_requires_grad": true,
+        "hook_calls": 0,
+        "h_adjoint_norm": 0.07462102024037617,
+        "ge_adjoint_norm": 0.05402395187836251
+      }
+    ]
+  },
+  "seconds_update_including_gradient_diagnostics": 14.345602299988968,
+  "pre_update_nll": 6.661264697089791,
+  "metrics": {
+    "grad_norm_before_clip": 2.14232914801893,
+    "synapse_grad_norm": 0.7151667757172979,
+    "writer_grad_norm": 0.3720726202512697,
+    "writer_gate_grad_norm": 0.4336010995396031,
+    "read_grad_norm": 0.6166666500739236,
+    "decoder_grad_norm": 0.6891499339640194,
+    "read_norm_grad_norm": 0.4538441138449647,
+    "writer_total_grad_norm": 0.5713562358656797,
+    "writer_gradient_rms": 0.00016342669082470944,
+    "synapse_gradient_rms": 0.00014212272188285523,
+    "read_gradient_rms": 0.0004606939220032599,
+    "decoder_gradient_rms": 0.00011092637698827689,
+    "ctm_k_min": 7.53125,
+    "ctm_k_cert": 5.5625,
+    "ctm_loss_min": 6.306412696838379,
+    "ctm_loss_cert": 6.6612653732299805,
+    "ctm_loss_tick0": 6.931706428527832,
+    "ctm_loss_tickS": 6.588442802429199,
+    "ctm_cert_mean": 0.40734875202178955,
+    "ctm_entropy_mean": 6.415393829345703
+  },
+  "suppressed_update_calls": 1,
+  "events": 32,
+  "physical_ticks": 480,
+  "all_parameters_finite": true,
+  "pre_update_scores": [
+    10.89795970916748,
+    10.590324401855469,
+    4.940021514892578,
+    8.901418685913086,
+    9.495193481445312,
+    4.330831527709961,
+    7.116230010986328,
+    7.213644027709961,
+    6.393064498901367,
+    5.670518398284912,
+    9.07097053527832,
+    4.127157211303711,
+    0.6363784074783325,
+    0.7013875842094421,
+    3.8333513736724854,
+    4.6604132652282715,
+    4.250136375427246,
+    10.113761901855469,
+    11.479012489318848,
+    8.192594528198242,
+    6.880336284637451,
+    6.142414093017578,
+    8.069897651672363,
+    5.624642372131348,
+    9.243158340454102,
+    3.1199727058410645,
+    11.458139419555664,
+    3.049149990081787,
+    7.661943435668945,
+    10.334480285644531,
+    2.457563638687134,
+    6.504402160644531
+  ],
+  "pre_update_training_loss": 6.4838385581970215,
+  "pre_update_physical_state_hashes": {
+    "h": [
+      "d97d66d59fb73c4d5683babf313673b3fb5002b30b3de1a14e6b79582854f41b"
+    ],
+    "ring": [
+      "86373ec38e52ac8a237398f869d6f39c01e22f8e87a9478fe3fb592ba5bb60b7",
+      "2892c478caf1e186149ce48bd6fd4b371360df4911869d9e76bde027c70370d6",
+      "b6eb6d19f79f59466fe5b2eb617aa4977065c391dba2c1f8fdbc2de76ccd8bbe",
+      "93f111a149b23849a3e5f745e0efd9546e44a736ebbf938dc007047568584e74"
+    ],
+    "ge": [
+      "a23a4c4d8e6e551509eeedaed5f004d353df41f1ac608afca48a784275abd6c6"
+    ],
+    "gi": [
+      "eb08e8c8fb64dd30533ae08c2aeb1bfc88bd4e6320e2e8f0194cd582e6ffdc4f"
+    ],
+    "b": [
+      "5c443c538f18306633b5b8de21c99ed60985308e970bda6de89d37fdb087ad78"
+    ],
+    "x": [
+      "d8b6aa2e5f234bba6e5c73e0fd9325e8ed53abf115d13fe6743eac16e93fd7f3"
+    ],
+    "u": [
+      "2e5d1c3bb1bf20b8a62a31fde1bce4d03f1afdbda95c3b3a546070dbcffe19d2"
+    ],
+    "baseline": [
+      "1291e3e90ab0170940b270178b3b29820777f0a56b3ba86e2b2b5e9efd791c2c"
+    ],
+    "h_mean": [
+      "dfa2ad7b07ac436af807b23c38ee957edcc0f3494a1952bb4c3271666b81e873"
+    ],
+    "dan_gate": [
+      "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    ],
+    "gamma_z1": [
+      "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    ],
+    "gamma_z2": [
+      "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    ],
+    "observer_prior": [
+      "cc9cb441b8cfd124d346fc2a3eb6dc7721f704f6ba5a2ddc2ec6921db462c64b"
+    ],
+    "observer_history": [
+      "617173b8b399669a64123c8ae718033d4b2acad0699a47e975112ea1b966682d"
+    ]
+  },
+  "parameter_updates": {
+    "log_tau_m": {
+      "delta_l2": 0.0,
+      "delta_max_abs": 0.0,
+      "original_l2": 16.289777400472094
+    },
+    "log_tau_s_e": {
+      "delta_l2": 0.0,
+      "delta_max_abs": 0.0,
+      "original_l2": 8.976436983346302
+    },
+    "log_tau_s_i": {
+      "delta_l2": 0.0,
+      "delta_max_abs": 0.0,
+      "original_l2": 12.718744790343154
+    },
+    "log_threshold": {
+      "delta_l2": 0.0,
+      "delta_max_abs": 0.0,
+      "original_l2": 11.844059039095697
+    },
+    "log_g_e": {
+      "delta_l2": 0.0,
+      "delta_max_abs": 0.0,
+      "original_l2": 0.05205654725432396
+    },
+    "log_g_i": {
+      "delta_l2": 0.0,
+      "delta_max_abs": 0.0,
+      "original_l2": 0.08801691979169846
+    },
+    "log_tau_a": {
+      "delta_l2": 0.0,
+      "delta_max_abs": 0.0,
+      "original_l2": 20.27860677572825
+    },
+    "log_beta": {
+      "delta_l2": 0.0,
+      "delta_max_abs": 0.0,
+      "original_l2": 15.632218987413854
+    },
+    "edge_weight_e": {
+      "delta_l2": 0.0,
+      "delta_max_abs": 0.0,
+      "original_l2": 59.70328218753434
+    },
+    "edge_weight_i": {
+      "delta_l2": 0.0,
+      "delta_max_abs": 0.0,
+      "original_l2": 59.87231646804718
+    },
+    "topographic_writer.gate_linear.weight": {
+      "delta_l2": 0.0,
+      "delta_max_abs": 0.0,
+      "original_l2": 2.3308169759363833
+    },
+    "topographic_writer.gate_linear.bias": {
+      "delta_l2": 0.0,
+      "delta_max_abs": 0.0,
+      "original_l2": 0.13107321954231413
+    },
+    "topographic_writer.proj_vis.weight": {
+      "delta_l2": 0.0,
+      "delta_max_abs": 0.0,
+      "original_l2": 443.669863812197
+    },
+    "topographic_writer.proj_chemo.weight": {
+      "delta_l2": 0.0,
+      "delta_max_abs": 0.0,
+      "original_l2": 491.82197136575184
+    },
+    "topographic_writer.proj_mech.weight": {
+      "delta_l2": 0.0,
+      "delta_max_abs": 0.0,
+      "original_l2": 576.4799252392585
+    },
+    "output_read.weight": {
+      "delta_l2": 0.0,
+      "delta_max_abs": 0.0,
+      "original_l2": 27.885643015304623
+    },
+    "read_norm.weight": {
+      "delta_l2": 0.0,
+      "delta_max_abs": 0.0,
+      "original_l2": 4.052351318454157
+    },
+    "decoder.weight": {
+      "delta_l2": 0.0,
+      "delta_max_abs": 0.0,
+      "original_l2": 887.5018028140254
+    },
+    "decoder.bias": {
+      "delta_l2": 0.0,
+      "delta_max_abs": 0.0,
+      "original_l2": 3099.3317419671785
+    }
+  },
+  "seconds_including_diagnostics": 14.712156499997946
+}

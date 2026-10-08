@@ -1,0 +1,32 @@
+{
+  "purpose": "actual dynamics execution only; no language/capability benchmark",
+  "shape": [
+    8,
+    8,
+    4
+  ],
+  "channels": 128,
+  "device": "cpu",
+  "ticks": 32,
+  "warmup": 3,
+  "threads": 1,
+  "step_duration": 0.005,
+  "pytorch": "2.9.1+cu126",
+  "measurements": {
+    "reference_monitored": {
+      "seconds_per_tick": 0.010650537500168866,
+      "coefficient_preparations_during_measurement": 32,
+      "physical_time_per_wall_second": 0.4694598746702431,
+      "maximum_state_difference": 0.0,
+      "speedup_over_reference": 1.0
+    },
+    "cached_quiet": {
+      "seconds_per_tick": 0.009802268749808718,
+      "coefficient_preparations_during_measurement": 0,
+      "physical_time_per_wall_second": 0.510085994132488,
+      "maximum_state_difference": 0.0,
+      "speedup_over_reference": 1.086538001763796
+    }
+  },
+  "status": "completed"
+}

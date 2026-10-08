@@ -1,0 +1,819 @@
+{
+  "candidate": "medium_d768_pathway_vfe_8x8x8_160k",
+  "initialization": "fresh repaired individual; paused baseline remains immutable",
+  "structure_options": {
+    "resource_density": 4.0,
+    "speed_reference": 4.336272229225239,
+    "structure_time": 179.86658811569214,
+    "prior_std": 0.06201736729460423,
+    "initial_std": 0.06201736729460423,
+    "maintenance_supply": 3.1314593937283974,
+    "initial_dual": 0.0
+  },
+  "derived_scales": {
+    "reference_capacity": 6.259217739105225,
+    "reference_capacity_source": "saved old birth trace(A) budget, no validation fit",
+    "basis_row_squared_norm": 260.0,
+    "gauss_hermite_order": 32,
+    "prior_active_fraction_second_moments": [
+      0.102329579501427,
+      0.10232957950142745,
+      0.10232957950142738
+    ],
+    "prior_expected_mean_traceA": 6.259217739105225,
+    "actual_birth_U_mean": 0.5005762577056885,
+    "actual_birth_U_min": 0.08515053242444992,
+    "actual_birth_U_max": 0.8882875442504883,
+    "neutral_cell_rotation_time": 0.03327237442135811,
+    "neutral_domain_crossing_reference": 0.8993329405784607,
+    "solver_max_step": 0.008318093605339527,
+    "observer_max_step": 0.03327237442135811,
+    "birth_observers": 28,
+    "birth_solver_substeps": 4,
+    "birth_total_solver_steps": 112,
+    "write_radius": [
+      0.11357003450393677,
+      0.11357003450393677,
+      0.15142671763896942
+    ],
+    "read_radius": [
+      0.0866701528429985,
+      0.13000522553920746,
+      0.173340305685997
+    ],
+    "birth_utilization_squared_axis_sum_mean": 0.20331332087516785
+  },
+  "budgets": {
+    "dedicated_vram_mib": 3072,
+    "write_aperture": 0.125,
+    "read_aperture": 0.25,
+    "fresh_groups": 5000,
+    "fresh_targets": 160000,
+    "bptt_window": 32
+  },
+  "prior_semantics": {
+    "resource_density": "three directional slots and one idle slot; chosen nondimensional resource unit",
+    "logit_field_std": "one natural-log unit before simplex; coefficient std from exact basis row norm",
+    "maintenance_supply": "Gaussian prior expected active resource, 4 * E(sum active fractions) = 3.1314593937283976",
+    "initial_dual": "zero initial Lagrange multiplier",
+    "dual_lr": "1/resource_density squared: nondimensional projected dual step; engineering optimization choice",
+    "structure_time": "200 birth intervals; preserves historical 6.25-window slow/fast ratio; declared engineering prior",
+    "clock": "fixed birth geometric reference, learned local pre-input multiplier; not inverse learned speed each event",
+    "solver": "quarter birth cell rotation scale; separate numerical precision, not biological K"
+  },
+  "port_coverage": {
+    "port_write_coverage": 0.125,
+    "port_read_coverage": 0.25,
+    "port_shared_coverage": 0.125,
+    "port_write_aperture_volume": 0.1249999925494194,
+    "port_read_aperture_volume": 0.24999994039535522,
+    "port_total_aperture_volume": 0.3749999403953552
+  },
+  "material_birth_rng": "CPU spectral-Xavier with seed449 on both CPU and CUDA execution; independent calibration matches constructor random-number order",
+  "runtime_validation": "CPU birth math/source review passed; first complete full-BPTT GPU resource attempt failed before update0 with allocator OOM; successful resource harness remains required; no task performance claim",
+  "source_provenance": {
+    "reviewed_utc": "2026-10-08T13:34:17.894971+00:00",
+    "paused_baseline_config": {
+      "path": "results/medium_d768_xavier_8x8x8_budget_birth_160k/config.json",
+      "sha256": "cbe9ac253f25bcf7824009f7213ad724ea51231ee0ae762da928bfce6c8dd6dc",
+      "step": 1237,
+      "fresh_targets": 39584,
+      "events": 42272,
+      "optimizer_updates": 1321,
+      "state_policy": "immutable; no migration or reset of the paused individual"
+    },
+    "structure_config": {
+      "path": "configs/information_boltzmann/medium_pathway_structure_20261008.json",
+      "sha256": "391397e61fbb3da7174ae86bd75a78cadd3a5bafeac4e8cfa85773076c772404"
+    },
+    "calibration_config": {
+      "path": "E:/ib_checkpoints/medium_pathway_full32_calibration_20261008/config.json",
+      "sha256": "c674b95cc171fa4a33738a55c6d907482b0aadc761adbd1a41d1404fcac5b551"
+    },
+    "calibration_source_hashes": {
+      "scripts/ib/train_medium_active_stream.py": "9f9b8ff3dd32602062559d73eda84af6dafbd07ddc919407cb0f08cf4e9334c6",
+      "information_boltzmann/runtime/active_medium_training.py": "23e98c975bef03aab5a31ccca9c3469c5b830fb80b15e3395cdf398fd622ce38",
+      "information_boltzmann/runtime/medium_health.py": "1023a09077140f27f3bb171b4ca0e695c1444ff53e578d97ae891b34dc152760",
+      "information_boltzmann/runtime/lifelong_evaluation.py": "c3461c04a66699b7f78b38f35ebd69aff8efdfd690f7b6ae6591989610c11d05",
+      "information_boltzmann/runtime/training.py": "e1adffde46102ea61787d1ebf28b50f6fca22aadba4a20aaf18bcfad4f648bd9",
+      "information_boltzmann/runtime/optimization.py": "2ecd2e12bb8da2860f459f74aa6c662b3594d054f1f1d37ddbe4eacbe74dace3",
+      "information_boltzmann/core/plastic_medium.py": "034e153ac743a8184e4baeb3e6149dda8f201f87da053c7e481c32e3d9d8abec",
+      "information_boltzmann/core/gradient_norms.py": "2eabd9e725b5d77a4a9e4eb87feefab20c9fb8bfe7027f4ea118e85dabe078df",
+      "information_boltzmann/core/plastic_ports.py": "05d4819241eb1bbbedcd1bebe55bf5aac034da0f82d60023545cbe8cdb0757a5",
+      "information_boltzmann/core/conductance_response.py": "cb5906b37aecab485b9c61ad7251a8f95ff41fc37d25fdca3f7d137818584a2e",
+      "information_boltzmann/core/conduction_plasticity.py": "4497b11d532e17642634f75c631b3ed718e7c928cadd976308e3fe8a6f969a55",
+      "information_boltzmann/core/short_term_plasticity.py": "dc15996f5f2f507251d1fb5cc374e95e63988a2809f31dfdf2581a6d78555e13",
+      "information_boltzmann/core/local_ports.py": "eaa65943199099b5fdf58ae5f91213b4a0b2cb09b260c4d70733cff73e401050",
+      "information_boltzmann/core/mode_port.py": "b5ceabce8368bec7389dba399b4231a80c68318d075aea5252868b0a7fce5e27",
+      "information_boltzmann/core/torus3d.py": "9dff61f52c07d3256fc886ecaaf492dcd0b2be068d0ac73956e5dc949d284fd8",
+      "information_boltzmann/core/readout_probes.py": "a590a043f626150e65c4492fda3c6741c280f009e360a9bbc0edb0dfb6d70102",
+      "information_boltzmann/core/structural_posterior.py": "d78a3a617ade1a393c168326dd169ec664494904ec2a8a44568415743421c4ac",
+      "information_boltzmann/core/intrinsic_time.py": "02cc57d946283a5aefc64bb9eeac6ac94d99a08ecbcaef8b12793b94cd995d40",
+      "information_boltzmann/core/temporal_probes.py": "f1caedd20d98c89192e74792b4a8b1ced1e43c8bb2803c4e01c3d63a0e73c747"
+    },
+    "current_sources_match_calibration": false,
+    "pretrained_vocabulary": {
+      "path": "data\\gpt2_model.safetensors",
+      "sha256": "248dfc3911869ec493c76e65bf2fcf7f615828b0254c12b473182f0f81d3a707",
+      "method": "direct word table",
+      "source_width": 768,
+      "medium_width": 768,
+      "retained_squared_norm_fraction": 1.0,
+      "decoder_global_scale": 0.13919440827071458,
+      "decoder_initialization_rms": 0.020001685246825218,
+      "embedding_frozen": true,
+      "decoder_trainable": true
+    },
+    "data_sha256": {
+      "train.npy": "6dd24ac1b43aef10d914418b7e6d6f28eedbc5ae8dc653003196375e37ceedb9",
+      "validation.npy": "542a39693215fa5163b92d14a13f9a8545fc4747ff3e819427bc4291db9de624"
+    },
+    "manifest_sha256": "caf2298208a1935275f06b5822da55b61cff7521ae7403db55404ed4cb4c055d",
+    "prior_counts_sha256": "d4de1245c61786d8fd223427b29a7ae6db3157d84fac1f11790d2bfcb4c6a750",
+    "calibration_constructor": {
+      "vocab_size": 50257,
+      "shape": [
+        8,
+        8,
+        8
+      ],
+      "channels": 768,
+      "bath_type": "conductance",
+      "write_exchange": "contact_mode",
+      "port_scope": "compact",
+      "activity_adaptation": true,
+      "short_term_plasticity": true,
+      "pre_decoder_norm": true,
+      "medium_execution": "fused",
+      "port_execution": "fused",
+      "anisotropic_transport": true,
+      "structure_options": {
+        "resource_density": 4.0,
+        "speed_reference": 4.336272229225239,
+        "structure_time": 179.86658811569214,
+        "prior_std": 0.06201736729460423,
+        "initial_std": 0.06201736729460423,
+        "maintenance_supply": 3.1314593937283974,
+        "initial_dual": 0.0
+      },
+      "material_reference_shape": null,
+      "intrinsic_time_reference": 0.899332940578461,
+      "solver_max_step": 0.00831809360533953,
+      "observer_max_step": 0.0332723744213581,
+      "write_aperture_budget": 0.125,
+      "read_aperture_budget": 0.25,
+      "max_evolution_steps": 4096,
+      "write_port_radius": [
+        0.1875,
+        0.1875,
+        0.25
+      ],
+      "read_port_radius": [
+        0.125,
+        0.1875,
+        0.25
+      ],
+      "read_mode": "temporal",
+      "temporal_time_reference": 0.899332940578461,
+      "temporal_rates": [
+        0.7707347849552861,
+        0.19268369623882153,
+        0.04817092405970538,
+        0.012042731014926346
+      ],
+      "temporal_frequencies": [
+        0.0,
+        0.21832797620319327,
+        0.43665595240638655,
+        0.8733119048127731
+      ]
+    },
+    "dataset_revision_source": "data/ib_owt_gpt2/manifest.json; real OWT train/validation files are identified above",
+    "changed_since_calibration_config": [
+      {
+        "path": "information_boltzmann/runtime/training.py",
+        "calibration_sha256": "e1adffde46102ea61787d1ebf28b50f6fca22aadba4a20aaf18bcfad4f648bd9",
+        "current_sha256_at_review": "6e94ad71a35321c9d79f0a8c9569737cae8e7b20ad5dd01012588a32ef27b388"
+      },
+      {
+        "path": "information_boltzmann/core/plastic_ports.py",
+        "calibration_sha256": "05d4819241eb1bbbedcd1bebe55bf5aac034da0f82d60023545cbe8cdb0757a5",
+        "current_sha256_at_review": "3a7485e73fb221089b26421162cb3d0e6f5ce4121fc622f015cb23d154e0eb46"
+      }
+    ]
+  },
+  "cpu_birth_reproduction_review": {
+    "device": "cpu only; no optimizer, training forward, GPU allocation or checkpoint load",
+    "seed": 449,
+    "threads": 1,
+    "initialization_order": "torch.manual_seed; full constructor; CPU spectral-Xavier field_std1; transfer to requested device only afterwards",
+    "material_coefficients_sha256": "baa652c4e143f1cf4657731ea7fb50b0ba7072cf79baee0b26d22a557a295526",
+    "STP_parameters_map_weight_sha256": "c2c5f11e16975a0bd67a26c4a503d124715ae442c3c12caf025b637a473ca0fe",
+    "U_mean": 0.5005761981010437,
+    "U_min": 0.08515053242444992,
+    "U_max": 0.8882875442504883,
+    "prior_expected_mean_traceA_recomputed": 6.259218130301891,
+    "capacity_absolute_difference": 3.9119666617182247e-07,
+    "FP32_basis_row_squared_norm_range": [
+      259.9999694824219,
+      260.0000305175781
+    ],
+    "neutral_cell_and_domain_times_match_plan_exactly": true,
+    "schedule": {
+      "observer_intervals": 28,
+      "solver_substeps_per_interval": 4,
+      "physical_microsteps_per_initial_event": 112
+    },
+    "interpretation": "reproducible birth and scalar capacity/time identities; not transport-arrival or language evidence"
+  },
+  "calibration_harness": {
+    "entrypoint": "scripts/ib/train_medium_active_stream.py",
+    "arguments_semantics": "normalized reconstruction from saved config and standard defaults; original process argv was not separately saved",
+    "arguments": [
+      "--output",
+      "E:/ib_checkpoints/medium_pathway_full32_calibration_20261008",
+      "--steps",
+      "2",
+      "--lr",
+      "2e-6",
+      "--calibrate-only",
+      "--pretrained-embedding",
+      "data/gpt2_model.safetensors",
+      "--data-dir",
+      "data/ib_owt_gpt2",
+      "--channels",
+      "768",
+      "--shape",
+      "8",
+      "8",
+      "8",
+      "--material-initialization",
+      "spectral-xavier",
+      "--material-field-std",
+      "1",
+      "--tokens",
+      "32",
+      "--chunk-tokens",
+      "32",
+      "--event-duration",
+      "0.899332940578461",
+      "--intrinsic-time-reference",
+      "0.899332940578461",
+      "--solver-max-step",
+      "0.00831809360533953",
+      "--observer-max-step",
+      "0.0332723744213581",
+      "--max-evolution-steps",
+      "4096",
+      "--material-bandwidth",
+      "runtime",
+      "--temporal-time-reference",
+      "0.899332940578461",
+      "--write-aperture-budget",
+      ".125",
+      "--read-aperture-budget",
+      ".25",
+      "--structure-config",
+      "configs/information_boltzmann/medium_pathway_structure_20261008.json",
+      "--structure-dual-lr",
+      ".0625",
+      "--min-lr",
+      "1e-6",
+      "--seed",
+      "449",
+      "--device",
+      "cuda",
+      "--execution",
+      "eager",
+      "--vram-limit-mib",
+      "3072",
+      "--activation-checkpointing",
+      "--anisotropic-transport",
+      "--temporal-read",
+      "--temporal-half-life-events",
+      "1",
+      "4",
+      "16",
+      "64",
+      "--temporal-frequency-fractions",
+      "0",
+      ".0625",
+      ".125",
+      ".25",
+      "--validate-every-tokens",
+      "5000",
+      "--eval-tokens",
+      "256",
+      "--eval-block-tokens",
+      "16",
+      "--replay-tokens",
+      "128"
+    ],
+    "planned_full_BPTT_updates": 2,
+    "planned_fresh_targets": 64,
+    "learning_rate": 2e-06,
+    "state_boundary": "two sequential full-window resource calibration updates in one fresh calibration individual; discard the entire individual; no state, optimizer, score or experience inherited by formal training",
+    "checkpoint_policy": "calibrate_only prevents .pt saves; config, progress and metrics remain separate execution evidence",
+    "capability_interpretation": "none; resource/finiteness evidence only"
+  },
+  "resource_attempts": [
+    {
+      "report": "results/published/medium_full32_backward_gc_calibration_20261008.json",
+      "status": "failed",
+      "error": "OutOfMemoryError: CUDA out of memory. Tried to allocate 20.00 MiB. GPU 0 has a total capacity of 4.00 GiB of which 364.75 MiB is free. 2.81 GiB allowed; Of the allocated memory 2.79 GiB is allocated by PyTorch, and 11.67 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)",
+      "seconds": 117.68089900000086,
+      "committed_events": 0,
+      "optimizer_updates": 0,
+      "peak_allocated_mib": 2852.33056640625,
+      "memory": {
+        "sample_count": 125,
+        "sampled_peak_dedicated_mib": 2936.6484375,
+        "sampled_peak_shared_mib": 80.0,
+        "counter_errors": [],
+        "cap_exceeded": false,
+        "last_sample": {
+          "seconds": 8623.0513014,
+          "dedicated_bytes": 3079299072,
+          "shared_bytes": 83886080,
+          "rows": [
+            {
+              "Name": "pid_30656_luid_0x00000000_0x00018DBD_phys_0",
+              "DedicatedUsage": 3079299072,
+              "SharedUsage": 83886080
+            }
+          ]
+        },
+        "peak_is_sampled": true
+      }
+    },
+    {
+      "report": "results/published/medium_full32_backward_memory_trace_20261008.json",
+      "status": "failed",
+      "error": "OutOfMemoryError: CUDA out of memory. Tried to allocate 20.00 MiB. GPU 0 has a total capacity of 4.00 GiB of which 364.75 MiB is free. 2.81 GiB allowed; Of the allocated memory 2.79 GiB is allocated by PyTorch, and 11.67 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)",
+      "seconds": 71.10679750000054,
+      "committed_events": 0,
+      "optimizer_updates": 0,
+      "peak_allocated_mib": 2852.33056640625,
+      "memory": {
+        "sample_count": 105,
+        "sampled_peak_dedicated_mib": 2980.6484375,
+        "sampled_peak_shared_mib": 80.0,
+        "counter_errors": [],
+        "cap_exceeded": false,
+        "last_sample": {
+          "seconds": 8412.1169107,
+          "dedicated_bytes": 3125436416,
+          "shared_bytes": 83886080,
+          "rows": [
+            {
+              "Name": "pid_2612_luid_0x00000000_0x00018DBD_phys_0",
+              "DedicatedUsage": 3125436416,
+              "SharedUsage": 83886080
+            }
+          ]
+        },
+        "peak_is_sampled": true
+      }
+    },
+    {
+      "report": "results/published/medium_full32_complete_recompute_calibration_20261008.json",
+      "status": "failed",
+      "error": "OutOfMemoryError: CUDA out of memory. Tried to allocate 20.00 MiB. GPU 0 has a total capacity of 4.00 GiB of which 364.75 MiB is free. 2.81 GiB allowed; Of the allocated memory 2.79 GiB is allocated by PyTorch, and 11.67 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)",
+      "seconds": 79.1260616999989,
+      "committed_events": 0,
+      "optimizer_updates": 0,
+      "peak_allocated_mib": 2852.33056640625,
+      "memory": {
+        "sample_count": 112,
+        "sampled_peak_dedicated_mib": 2936.6484375,
+        "sampled_peak_shared_mib": 80.0,
+        "counter_errors": [],
+        "cap_exceeded": false,
+        "last_sample": {
+          "seconds": 8855.5034528,
+          "dedicated_bytes": 3079299072,
+          "shared_bytes": 83886080,
+          "rows": [
+            {
+              "Name": "pid_6044_luid_0x00000000_0x00018DBD_phys_0",
+              "DedicatedUsage": 3079299072,
+              "SharedUsage": 83886080
+            }
+          ]
+        },
+        "peak_is_sampled": true
+      }
+    },
+    {
+      "report": "results/published/medium_full32_completed_grad_calibration_20261008.json",
+      "status": "failed",
+      "error": "OutOfMemoryError: CUDA out of memory. Tried to allocate 20.00 MiB. GPU 0 has a total capacity of 4.00 GiB of which 360.75 MiB is free. 2.81 GiB allowed; Of the allocated memory 2.79 GiB is allocated by PyTorch, and 12.06 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)",
+      "seconds": 358.9942346000007,
+      "committed_events": 32,
+      "optimizer_updates": 1,
+      "peak_allocated_mib": 2852.06787109375,
+      "memory": {
+        "sample_count": 564,
+        "sampled_peak_dedicated_mib": 2924.6484375,
+        "sampled_peak_shared_mib": 80.0,
+        "counter_errors": [],
+        "cap_exceeded": false,
+        "last_sample": {
+          "seconds": 10973.1229957,
+          "dedicated_bytes": 3066716160,
+          "shared_bytes": 83886080,
+          "rows": [
+            {
+              "Name": "pid_25016_luid_0x00000000_0x00018DBD_phys_0",
+              "DedicatedUsage": 3066716160,
+              "SharedUsage": 83886080
+            }
+          ]
+        },
+        "peak_is_sampled": true
+      }
+    },
+    {
+      "report": "results/published/medium_full32_event_vjp_calibration_20261008.json",
+      "status": "failed",
+      "error": "OutOfMemoryError: CUDA out of memory. Tried to allocate 20.00 MiB. GPU 0 has a total capacity of 4.00 GiB of which 352.75 MiB is free. 2.81 GiB allowed; Of the allocated memory 2.79 GiB is allocated by PyTorch, and 6.80 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)",
+      "seconds": 893.4996191999999,
+      "committed_events": 32,
+      "optimizer_updates": 1,
+      "peak_allocated_mib": 2861.1962890625,
+      "memory": {
+        "sample_count": 1326,
+        "sampled_peak_dedicated_mib": 2992.6484375,
+        "sampled_peak_shared_mib": 80.0,
+        "counter_errors": [],
+        "cap_exceeded": false,
+        "last_sample": {
+          "seconds": 10470.2350651,
+          "dedicated_bytes": 3138019328,
+          "shared_bytes": 83886080,
+          "rows": [
+            {
+              "Name": "pid_13492_luid_0x00000000_0x00018DBD_phys_0",
+              "DedicatedUsage": 3138019328,
+              "SharedUsage": 83886080
+            }
+          ]
+        },
+        "peak_is_sampled": true
+      }
+    },
+    {
+      "report": "results/published/medium_full32_execution_calibration_20261008.json",
+      "status": "failed",
+      "error": "OutOfMemoryError: CUDA out of memory. Tried to allocate 20.00 MiB. GPU 0 has a total capacity of 4.00 GiB of which 350.75 MiB is free. 2.81 GiB allowed; Of the allocated memory 2.77 GiB is allocated by PyTorch, and 44.71 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)",
+      "seconds": 162.36070540000037,
+      "committed_events": 0,
+      "optimizer_updates": 0,
+      "peak_allocated_mib": 2839.27392578125,
+      "memory": {
+        "sample_count": 242,
+        "sampled_peak_dedicated_mib": 2994.6484375,
+        "sampled_peak_shared_mib": 80.0,
+        "counter_errors": [],
+        "cap_exceeded": false,
+        "last_sample": {
+          "seconds": 7801.2062495,
+          "dedicated_bytes": 3140116480,
+          "shared_bytes": 83886080,
+          "rows": [
+            {
+              "Name": "pid_24096_luid_0x00000000_0x00018DBD_phys_0",
+              "DedicatedUsage": 3140116480,
+              "SharedUsage": 83886080
+            }
+          ]
+        },
+        "peak_is_sampled": true
+      }
+    },
+    {
+      "report": "results/published/medium_full32_lifetime_calibration_20261008.json",
+      "status": "failed",
+      "error": "OutOfMemoryError: CUDA out of memory. Tried to allocate 20.00 MiB. GPU 0 has a total capacity of 4.00 GiB of which 364.75 MiB is free. 2.81 GiB allowed; Of the allocated memory 2.78 GiB is allocated by PyTorch, and 19.36 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)",
+      "seconds": 92.20590420000008,
+      "committed_events": 0,
+      "optimizer_updates": 0,
+      "peak_allocated_mib": 2853.13525390625,
+      "memory": {
+        "sample_count": 122,
+        "sampled_peak_dedicated_mib": 2984.6484375,
+        "sampled_peak_shared_mib": 80.0,
+        "counter_errors": [],
+        "cap_exceeded": false,
+        "last_sample": {
+          "seconds": 9015.9691767,
+          "dedicated_bytes": 3129630720,
+          "shared_bytes": 83886080,
+          "rows": [
+            {
+              "Name": "pid_30800_luid_0x00000000_0x00018DBD_phys_0",
+              "DedicatedUsage": 3129630720,
+              "SharedUsage": 83886080
+            }
+          ]
+        },
+        "peak_is_sampled": true
+      }
+    },
+    {
+      "report": "results/published/medium_full32_lifetime_gc_calibration_20261008.json",
+      "status": "failed",
+      "error": "OutOfMemoryError: CUDA out of memory. Tried to allocate 20.00 MiB. GPU 0 has a total capacity of 4.00 GiB of which 364.75 MiB is free. 2.81 GiB allowed; Of the allocated memory 2.78 GiB is allocated by PyTorch, and 19.36 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)",
+      "seconds": 189.08758920000037,
+      "committed_events": 0,
+      "optimizer_updates": 0,
+      "peak_allocated_mib": 2853.13525390625,
+      "memory": {
+        "sample_count": 168,
+        "sampled_peak_dedicated_mib": 2980.6484375,
+        "sampled_peak_shared_mib": 80.0,
+        "counter_errors": [],
+        "cap_exceeded": false,
+        "last_sample": {
+          "seconds": 9233.979042,
+          "dedicated_bytes": 3125436416,
+          "shared_bytes": 83886080,
+          "rows": [
+            {
+              "Name": "pid_29124_luid_0x00000000_0x00018DBD_phys_0",
+              "DedicatedUsage": 3125436416,
+              "SharedUsage": 83886080
+            }
+          ]
+        },
+        "peak_is_sampled": true
+      }
+    },
+    {
+      "report": "results/published/medium_full32_step_checkpoint_calibration_20261008.json",
+      "status": "failed",
+      "error": "OutOfMemoryError: CUDA out of memory. Tried to allocate 20.00 MiB. GPU 0 has a total capacity of 4.00 GiB of which 364.75 MiB is free. 2.81 GiB allowed; Of the allocated memory 2.79 GiB is allocated by PyTorch, and 11.67 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)",
+      "seconds": 67.74762200000077,
+      "committed_events": 0,
+      "optimizer_updates": 0,
+      "peak_allocated_mib": 2852.33056640625,
+      "memory": {
+        "sample_count": 102,
+        "sampled_peak_dedicated_mib": 2980.6484375,
+        "sampled_peak_shared_mib": 80.0,
+        "counter_errors": [],
+        "cap_exceeded": false,
+        "last_sample": {
+          "seconds": 8201.7966119,
+          "dedicated_bytes": 3125436416,
+          "shared_bytes": 83886080,
+          "rows": [
+            {
+              "Name": "pid_26228_luid_0x00000000_0x00018DBD_phys_0",
+              "DedicatedUsage": 3125436416,
+              "SharedUsage": 83886080
+            }
+          ]
+        },
+        "peak_is_sampled": true
+      }
+    },
+    {
+      "report": "results/published/medium_full32_adam_staging_calibration_20261008.json",
+      "status": "completed",
+      "events": 64,
+      "optimizer_updates": 2,
+      "peak_dedicated_mib": 2490.64453125,
+      "seconds": 670.1975622999998
+    }
+  ],
+  "formal_reopen": {
+    "arguments": [
+      "--output",
+      "results/medium_d768_pathway_vfe_8x8x8_160k",
+      "--steps",
+      "5000",
+      "--lr",
+      "2e-4",
+      "--warmup",
+      "100",
+      "--decay",
+      "500",
+      "--save-every",
+      "2",
+      "--pretrained-embedding",
+      "data/gpt2_model.safetensors",
+      "--data-dir",
+      "data/ib_owt_gpt2",
+      "--channels",
+      "768",
+      "--shape",
+      "8",
+      "8",
+      "8",
+      "--material-initialization",
+      "spectral-xavier",
+      "--material-field-std",
+      "1",
+      "--tokens",
+      "32",
+      "--chunk-tokens",
+      "32",
+      "--event-duration",
+      "0.899332940578461",
+      "--intrinsic-time-reference",
+      "0.899332940578461",
+      "--solver-max-step",
+      "0.00831809360533953",
+      "--observer-max-step",
+      "0.0332723744213581",
+      "--max-evolution-steps",
+      "4096",
+      "--material-bandwidth",
+      "runtime",
+      "--temporal-time-reference",
+      "0.899332940578461",
+      "--write-aperture-budget",
+      ".125",
+      "--read-aperture-budget",
+      ".25",
+      "--structure-config",
+      "configs/information_boltzmann/medium_pathway_structure_20261008.json",
+      "--structure-dual-lr",
+      ".0625",
+      "--min-lr",
+      "1e-6",
+      "--seed",
+      "449",
+      "--device",
+      "cuda",
+      "--execution",
+      "eager",
+      "--vram-limit-mib",
+      "3072",
+      "--activation-checkpointing",
+      "--anisotropic-transport",
+      "--temporal-read",
+      "--temporal-half-life-events",
+      "1",
+      "4",
+      "16",
+      "64",
+      "--temporal-frequency-fractions",
+      "0",
+      ".0625",
+      ".125",
+      ".25",
+      "--validate-every-tokens",
+      "5000",
+      "--eval-tokens",
+      "256",
+      "--eval-block-tokens",
+      "16",
+      "--replay-tokens",
+      "128",
+      "--optimizer-state-offload"
+    ],
+    "logical_output": "results/medium_d768_pathway_vfe_8x8x8_160k",
+    "physical_output": "E:/ib_checkpoints/medium_d768_pathway_vfe_8x8x8_160k",
+    "storage": "verified Windows directory junction; use E-backed storage because D has limited free space",
+    "initialization": "new birth with identical seed/constructor/CPU initialization and pretrained vocabulary; calibrate_only false; never resume calibration state",
+    "fresh_groups": 5000,
+    "fresh_targets": 160000,
+    "all_phase_counts": "actual events and optimizer updates additionally include active validation, scored return bridges and A replay; publish actual ledger, not 5000 as the total update count",
+    "release_condition": "complete full-BPTT resource/finiteness harness succeeds inside dedicated VRAM cap; record actual source hashes, peak memory and timing before launch",
+    "numerical_scope": "neutral quarter-cell solver reference is an initialization scale, not a uniform accuracy guarantee for all q samples or future learned factors; record actual sample scale and refinement evidence",
+    "checkpoint_cadence": "Overwrite last.pt every two complete fresh groups and at active-evaluation boundaries; best.pt only on the registered pooled fresh-stream improvement. At measured full-interval cost, historical250-group cadence risks losing many hours after reboot.",
+    "execution_storage": "eager full-event first-order VJP; serialized exact writer auxiliary; completed decoder zero released; idle nonscalar Adam moments synchronously staged on CPU only through physics/backward and restored before optimizer update",
+    "release_condition_met": true,
+    "estimated_days_at_measured_warm_rate_including_registered_live_eval": 20.0,
+    "status": "paused by latest user steering; usable schedule design required",
+    "actual_process_receipt": "results/published/medium_pathway_training_process_20261008.json"
+  },
+  "latest_execution_contract": {
+    "status": "accepted for authorized new-birth production restart",
+    "scope": "deterministic first-order complete physical event and BPTT32 execution/resources; capability not measured",
+    "resource_report": "results/published/medium_full32_adam_staging_calibration_20261008.json",
+    "configuration": {
+      "vocab_size": 50257,
+      "shape": [
+        8,
+        8,
+        8
+      ],
+      "channels": 768,
+      "bath_type": "conductance",
+      "write_exchange": "contact_mode",
+      "port_scope": "compact",
+      "activity_adaptation": true,
+      "short_term_plasticity": true,
+      "pre_decoder_norm": true,
+      "medium_execution": "fused",
+      "port_execution": "fused",
+      "anisotropic_transport": true,
+      "structure_options": {
+        "resource_density": 4.0,
+        "speed_reference": 4.336272229225239,
+        "structure_time": 179.86658811569214,
+        "prior_std": 0.06201736729460423,
+        "initial_std": 0.06201736729460423,
+        "maintenance_supply": 3.1314593937283974,
+        "initial_dual": 0.0
+      },
+      "material_reference_shape": null,
+      "intrinsic_time_reference": 0.899332940578461,
+      "solver_max_step": 0.00831809360533953,
+      "observer_max_step": 0.0332723744213581,
+      "write_aperture_budget": 0.125,
+      "read_aperture_budget": 0.25,
+      "max_evolution_steps": 4096,
+      "write_port_radius": [
+        0.1875,
+        0.1875,
+        0.25
+      ],
+      "read_port_radius": [
+        0.125,
+        0.1875,
+        0.25
+      ],
+      "read_mode": "temporal",
+      "temporal_time_reference": 0.899332940578461,
+      "temporal_rates": [
+        0.7707347849552861,
+        0.19268369623882153,
+        0.04817092405970538,
+        0.012042731014926346
+      ],
+      "temporal_frequencies": [
+        0.0,
+        0.21832797620319327,
+        0.43665595240638655,
+        0.8733119048127731
+      ]
+    },
+    "source_hashes": {
+      "scripts/ib/train_medium_active_stream.py": "54e1c878fc3eeb10c9900dccc254f9c957f9a65e1271ae151a533724a60f528c",
+      "information_boltzmann/runtime/active_medium_training.py": "b3c7c754a1fd30f648910166d3a911ead2ce30fde3461a3835ba282b679043d7",
+      "information_boltzmann/runtime/medium_health.py": "1554c48a2282f36aa481b7ca3ac66e821ef78cd394f9f4d1e386c10a4f924075",
+      "information_boltzmann/runtime/lifelong_evaluation.py": "c3461c04a66699b7f78b38f35ebd69aff8efdfd690f7b6ae6591989610c11d05",
+      "information_boltzmann/runtime/training.py": "626bf42b7495ac1d3d76819054dcc9d4130ca077d1fbf84dd3a19e9e8e3d8bb1",
+      "information_boltzmann/runtime/optimization.py": "2ecd2e12bb8da2860f459f74aa6c662b3594d054f1f1d37ddbe4eacbe74dace3",
+      "information_boltzmann/runtime/optimizer_storage.py": "66fee6743a9115c601d04cadb4a957871743db4bf74b031fc87fc45dc96bd6ca",
+      "information_boltzmann/core/state_checkpoint.py": "a217eee19d12770b65bab0c3f11d2a6338003cf905fe4f9d8cc5e121eae21ca3",
+      "information_boltzmann/core/plastic_medium.py": "19aa359e14c94ef4e1729065bc3496a3c8113e99ebd46f45267ddfa25b15c308",
+      "information_boltzmann/core/gradient_norms.py": "2eabd9e725b5d77a4a9e4eb87feefab20c9fb8bfe7027f4ea118e85dabe078df",
+      "information_boltzmann/core/plastic_ports.py": "1b4b3d6dcb6a58f134e8ee55b7af702aff8bc57e556cc1403c760eded882f774",
+      "information_boltzmann/core/conductance_response.py": "cb5906b37aecab485b9c61ad7251a8f95ff41fc37d25fdca3f7d137818584a2e",
+      "information_boltzmann/core/conduction_plasticity.py": "4497b11d532e17642634f75c631b3ed718e7c928cadd976308e3fe8a6f969a55",
+      "information_boltzmann/core/short_term_plasticity.py": "26a54a9075d707b8080e1cb95d73a737caaf6496960e587171397259fef53896",
+      "information_boltzmann/core/local_ports.py": "eaa65943199099b5fdf58ae5f91213b4a0b2cb09b260c4d70733cff73e401050",
+      "information_boltzmann/core/mode_port.py": "b5ceabce8368bec7389dba399b4231a80c68318d075aea5252868b0a7fce5e27",
+      "information_boltzmann/core/torus3d.py": "9dff61f52c07d3256fc886ecaaf492dcd0b2be068d0ac73956e5dc949d284fd8",
+      "information_boltzmann/core/readout_probes.py": "a590a043f626150e65c4492fda3c6741c280f009e360a9bbc0edb0dfb6d70102",
+      "information_boltzmann/core/structural_posterior.py": "d78a3a617ade1a393c168326dd169ec664494904ec2a8a44568415743421c4ac",
+      "information_boltzmann/core/intrinsic_time.py": "02cc57d946283a5aefc64bb9eeac6ac94d99a08ecbcaef8b12793b94cd995d40",
+      "information_boltzmann/core/temporal_probes.py": "f1caedd20d98c89192e74792b4a8b1ced1e43c8bb2803c4e01c3d63a0e73c747"
+    },
+    "source_hashes_match_calibration": true,
+    "event_count": 64,
+    "optimizer_updates": 2,
+    "pending_gradient_events": 0,
+    "sampled_peak_dedicated_mib": 2490.64453125,
+    "sampled_peak_shared_mib": 80.0,
+    "peak_allocated_mib": 2331.38037109375,
+    "peak_reserved_mib": 2816.0,
+    "seconds_per_group": [
+      344.6619278999988,
+      321.28071400000044
+    ],
+    "warm_tokens_per_second": 0.09960137227533662,
+    "finite_gradient_norms": [
+      20.754345325968057,
+      16.908573340876984
+    ],
+    "numerical_regression": {
+      "passed": 35,
+      "cuda_opt_in_skipped": 2,
+      "scope": "active trainer/accounting/structural integration/event VJP and Adam storage contracts; not added to historical263 count"
+    },
+    "independent_reviews": [
+      "scratch/medium_event_vjp_execution_review_20261008.md",
+      "scratch/medium_optimizer_staging_review_20261008.md"
+    ],
+    "stopping": "dedicated cap3072MiB, allocator2880MiB, nonfinite values, STOP or registered fresh budget",
+    "calibration_checkpoints": [],
+    "production_state_policy": "fresh initialized individual; never inherit calibration updates; paused original preserved",
+    "operational_acceptance": "numerically/resource executable but rejected as operationally unusable at321s/32targets; no capability conclusion"
+  },
+  "usable_successor_design": {
+    "status": "design_registered_no_execution",
+    "artifact": "docs/information_boltzmann/MEDIUM_STREAMING_EXECUTION_DESIGN_20261008.md",
+    "selection": "persistent local-cadence medium; finite recent physical route; deep signals span later arrivals; exact reader algebra first",
+    "grid_contract": "birth physical input/material reference is frozen; numerical refinement changes solver counts only",
+    "equivalence_boundary": "reader rearrangement same mathematical operator; cadence change new stimulus protocol",
+    "training_status": "paused before first update; birth preserved",
+    "capability_claim": null,
+    "measured_successor_throughput": null
+  }
+}

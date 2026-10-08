@@ -1,0 +1,250 @@
+{
+  "date": "2026-10-07",
+  "reviewer": "/root/diagnosis_review",
+  "role": "Independent offline mathematical necessity and identifiability review",
+  "status": "accepted_as_offline_design_scope_only",
+  "scope": {
+    "gpu_runs": 0,
+    "training_runs": 0,
+    "model_construction": false,
+    "numerical_experiments": false,
+    "production_changes": false,
+    "tree_changes": false,
+    "only_written_artifact": "results/published/fly_pipeline_event_necessity_review_20261007.json",
+    "new_measurement_execution_approved": false
+  },
+  "input_sha256": {
+    "results/published/fly_pipeline_repair_result_review_20261007.json": "b62d013196a61afb80b9026fc2846cca7a57738e7c0f1246cc00d0f45c747ce3",
+    "results/published/fly_pipeline_repair_diagnostic_20261007.json": "24f4c81d142909212880cedfdfbbae5a96ce5f6479bac9fd835f69a8635867bf",
+    "information_boltzmann/core/fly_pipeline.py": "17f857ac6f6d145f2bf1a1083ce98edf3b37d4de5f39b508f4eedcfef51db04c",
+    "information_boltzmann/core/fly_reservoir.py": "a24915ab6cff4855cc63c6e3421549cc0f806d69929a8cfb515feb7481406ff0",
+    "information_boltzmann/core/fly_bptt_learning.py": "17e620f100b7f2163a04eb83525e47ed454828a99c20c78814d20b9e877f9e33",
+    "scripts/ib/diagnose_fly_pipeline_repair.py": "c9e88111a410b08caccf90aef0766971d63669b539195e0c95dd2892d48b37f7"
+  },
+  "decision": {
+    "C_reset": "remains_rejected_locally_unsupported",
+    "reason": "Registered body fit/body future/matched-direction improvements failed while all numerical gates passed. Joint improvement cannot substitute for the conjunction. No reset-detach rescue, endpoint change or production adoption proposed.",
+    "next_action": "Submit the single finite-direction event/read/optimizer factorization measurement below to independent plan review; do not execute at this stage."
+  },
+  "evidence_ledger": {
+    "measured": {
+      "checkpoint_scope": "One mature pipeline individual, saved Adam histories, fit32/following32 and real B32 prefix; 96 unique targets, one available report.",
+      "ordinary_body_fit_delta": 0.00013505667448043823,
+      "ordinary_body_fixed_event_fit_delta": -0.0002825409173965454,
+      "fixed_event_gradient_dot_actual_body_step": -0.0002828841329426128,
+      "fixed_event_taylor_remainder": 3.432155460674109e-07,
+      "hard_minus_fixed_event_fit": 0.00041759759187698364,
+      "ordinary_body_future_delta": -0.0005512535572052002,
+      "decision_floor": 0.00010809893137775362,
+      "fit_common_vs_cov_decoder_norm_ratio": 112.50350396060666,
+      "future_common_vs_cov_decoder_norm_ratio": 120.22561449524251,
+      "interpretation": "Fixed-event descent was already measured and closely predicted by its derivative. The event-path counterfactual contrast reverses the fit sign of this actual body step; the same body step improves following32. These are local facts, not a single-cause diagnosis."
+    },
+    "code_facts": [
+      "Prediction seals post-reset motor2333 features before the current token is accepted; current-token leakage through the writer is excluded by the pipeline ordering.",
+      "Both sealed motor prediction and full-body commit apply hard thresholds, each with ATan surrogate backward. Event paths also affect transmitted STP pulses and ALIF adaptation.",
+      "Physical state persists across 32-event updates but its incoming gradient is detached. The finite diagnosis conditions on the saved incoming state rather than differentiating its entire generation history.",
+      "Common head, RMS normalization, Adam moments, global clipping and post-update clamps are distinct parts of the learning/read operator."
+    ],
+    "not_identified": "The current records do not identify global motor information absence, a necessary alternative observable, harmful surrogate credit in all directions, long-window sufficiency, optimizer-history dominance or a long-run plateau cause."
+  },
+  "three_problem_reconstructions": [
+    {
+      "object": "Event task credit",
+      "question": "Does the current proxy favor finite event changes that lower hard-forward prediction risk through the legal motor read?"
+    },
+    {
+      "object": "Chosen observable and head",
+      "question": "Does the task signal reach motor state but disappear under reset/projection/normalization or fail to align with the trained probability head?"
+    },
+    {
+      "object": "Optimization and parameter-time",
+      "question": "Does the actual saved-Adam/clipped/clamped displacement select a different event/read direction than current-gradient descent, while continuing a state generated under old parameters?"
+    }
+  ],
+  "mathematical_objects_required": [
+    {
+      "object": "Causal estimand",
+      "definition": "Fix complete incoming state S0, real aligned observations/targets, body theta and head eta. Fit risk and following risk must each specify their incoming state. Following begins at the OLD-parameter fit terminal for every direction.",
+      "necessity": "Without this binding, trajectory/label alignment can impersonate a learning-direction effect."
+    },
+    {
+      "object": "Two-stage event tape E",
+      "definition": "Record every begin-motor and finish-body hard mask, its stage/time and threshold margin. Distinguish edge/path arrival from the issued target prediction.",
+      "necessity": "Motor event counts or membrane statistics alone do not specify which finite branch changed or when it could influence a loss."
+    },
+    {
+      "object": "Observable/read map",
+      "definition": "m_t = v_t,motor*(1-E_t,begin); q_t = RMSNorm(R m_t); ell_t=b+D q_t. Also retain v_pre and the full physical state for auditing, without substituting them into the prediction.",
+      "necessity": "A large state response is not a task effect until it traverses this actual read map and changes target-aligned probabilities."
+    },
+    {
+      "object": "Actual parameter displacement and current proxy",
+      "definition": "Retain raw g_SG, fixed-event g_E, optimizer moments, actual copied FP32 delta after clip/Adam/decay/clamp, and coordinate coverage. Use g dot delta and realized hard losses.",
+      "necessity": "Norms or a surrogate descent sign cannot establish the direction selected by Adam or its finite hard-forward benefit."
+    },
+    {
+      "object": "Same-head task alignment and curvature",
+      "definition": "For baseline logits ell and finite change d, a=softmax(ell)-onehot(y); CE(ell+d,y)-CE(ell,y)=a dot d + KL(softmax(ell)||softmax(ell+d)).",
+      "necessity": "This exact identity separates target alignment from the nonnegative probability-curvature cost. Raw logit/membrane norms are not adequate task metrics."
+    },
+    {
+      "object": "Conditional information estimand",
+      "definition": "For an explicitly declared baseline variable C and causal motor observable M, Bayes risk reduction from observing (C,M) instead of C equals I(Y;M|C). Thus positive conditional information is necessary for that Bayes improvement; a finite learned head also needs realizability/calibration/data. C must specify the same comparison distribution and is not the full past Bayes oracle: deterministic M adds no information conditional on the complete past.",
+      "necessity": "Current-head loss and low covariance do not estimate this mutual information or the infimum risk over all decoders."
+    }
+  ],
+  "branch_closure": {
+    "definition": "L(theta,eta;E) denotes an explicitly defined replay with every hard event forced to tape E; ordinary hard replay uses E(theta). All states, other forward nonlinearities and inputs evolve under that replay.",
+    "exact_identity": "L(theta+d,eta;E(theta+d))-L(theta,eta;E(theta)) = [L(theta+d,eta;E(theta))-L(theta,eta;E(theta))] + [L(theta+d,eta;E(theta+d))-L(theta+d,eta;E(theta))].",
+    "terms": [
+      "First bracket is the finite fixed-hard-event response; it still contains continuous/nonlinear/clamp effects. Taylor agreement needs a sufficiently small feasible realized step and control of remaining branch changes.",
+      "Second bracket is an event-tape intervention contrast, including the resulting cascade and interactions. It is not an additive causal effect per spike, a natural alternative physical trajectory or proof of which surrogate term is wrong."
+    ],
+    "writer_limit": "With all begin/finish spikes fixed, sensory-only writing cannot change motor output through a chemical event path. A zero ordinary fixed-event writer derivative is expected; useful writer learning requires finite event changes rather than the infinitesimal derivative of its locally constant hard map.",
+    "surrogate_limit": "g_SG dot d<0 describes a proxy linear prediction. Hard loss is piecewise smooth with discontinuities at event crossings; neither that sign nor a small fixed-event Taylor remainder bounds the event contrast.",
+    "reset_limit": "Restoring one local fixed-event reset partial is not equivalent to recovering task-relevant event credit. C_reset failed the registered local tests and remains rejected.",
+    "expected_event_credit_limit": "An expected-gradient claim additionally requires a declared probability law for event/state/observation randomness and the target-conditioned downstream loss difference across boundaries. Under appropriate continuous-density and regularity assumptions, event-boundary probability and loss jumps contribute to that derivative. A Cauchy-shaped local backward alone neither declares that objective nor identifies its conditional expected gradient. The present deterministic discrete-stream finite comparison does not estimate such a population boundary term."
+  },
+  "common_head_covariance": {
+    "decoder_identity": "At fixed actual q_t and target residual a_t, G_D=mean(a)*mean(q)^T + mean[(a-mean(a))*(q-mean(q))^T]. For R, substitute a_t=partial CE/partial(Rm_t), q_t=m_t.",
+    "what_it_identifies": "These are exact finite-window gradient components in the chosen coordinates. With the same actual displacement, their directional inner products identify corresponding first-order contributions; neither component norm alone identifies actual finite gain.",
+    "event_logit_identity": "For each hard-versus-fixed tape logit change d_t at one parameter point, mean(a_t dot d_t)=mean(a) dot mean(d) + mean[(a-mean(a)) dot (d-mean(d))]. Pair this alignment decomposition with the exact KL term and actual losses.",
+    "gauge_limit": "b+D*mean(q) jointly represents the common prediction. Bias-only loss is not a uniquely identifiable marginal-fit quality. Translating q with the compensating decoder bias changes mean attribution while preserving logits; centering before nonlinear RMSNorm is generally NOT the same reparameterization.",
+    "covariance_limit": "Nonzero covariance is not sufficient for useful prediction; zero linear covariance does not rule out nonlinear task information. A small covariance norm can coexist with a well-directed small conditional effect. The empirical mean is window- and coordinate-dependent.",
+    "online_limit": "A common feature computed using the entire scored window is a retrospective counterfactual, not an admissible online baseline. Use a past-only fixed reference for operational risk; label whole-window algebra as descriptive.",
+    "interaction_limit": "Mean/centered alignment splits linearly, but finite CE curvature and body/head interactions do not split additively without a separately specified intervention/order. Softmax also has a scalar-logit gauge; probability KL is preferable to raw logit energy."
+  },
+  "strength_distinctions": {
+    "possible": [
+      "Positive-delay recurrent paths can carry causal history to motor predictions; 1..14 arrival checks establish interface possibility under their numerical conditions.",
+      "Surrogate updates can cause useful finite hard-event crossings even where exact within-event writer derivatives vanish.",
+      "Alternative motor observables or head calibration could expose additional useful signal; this is a candidate possibility, not a necessity proof."
+    ],
+    "useful": [
+      "A feasible direction is locally useful only if hard-forward risk improves beyond repeat/roundoff floors on the registered target/state estimand. Transfer usefulness requires separately specified future/independent risk.",
+      "A head is useful when its causal conditional predictions beat an appropriate matched baseline on independent data; descriptive mean removal or high variance is insufficient."
+    ],
+    "necessary": [
+      "Timing/label alignment, complete state, actual finite displacements, all-stage hard-event coverage and task-aligned probability changes are required to distinguish the proposed local explanations.",
+      "Task-dependent observable information is necessary for conditional Bayes improvement over the corresponding nuisance baseline.",
+      "Neither reset detach, pre-reset read, surrogate-gradient equality to hard infinitesimal derivatives nor longer BPTT is derived as necessary for improving NLL."
+    ]
+  },
+  "competing_predictions": [
+    {
+      "hypothesis": "Finite event credit is misdirected through the current observable",
+      "binding_prediction": "At feasible norm-resolved current-gradient steps, fixed-event task risk descends but hard event contrast reliably reverses it beyond floors, with event logit target alignment adverse or KL cost dominant. If hard event contrasts instead preserve descent, this local rationale weakens.",
+      "limit": "This concerns tested directions/states/targets, not intrinsic all-event or long-run failure."
+    },
+    {
+      "hypothesis": "Saved optimizer transformation rather than raw proxy direction selects the adverse event pattern",
+      "binding_prediction": "At matched realized body radius and fixed head, negative-current-SG and saved-Adam directions produce distinguishable hard event task outcomes, while their own fixed-event Taylor checks remain valid. If outcomes agree within floors, the local optimizer-versus-direction distinction is unresolved.",
+      "limit": "A difference identifies the bundled optimizer map, not moments alone; preconditioning, decay and clamps require additional isolated controls for unique attribution."
+    },
+    {
+      "hypothesis": "The actual read/target alignment limits usefulness of event changes",
+      "binding_prediction": "Motor/pre-voltage event responses can be large yet their propagated fixed-head logit contrast has weak or adverse target alignment. If logits instead deliver positive conditional risk benefit beyond curvature, the current read realizes locally useful task effects.",
+      "limit": "A current-head failure does not prove absent motor information; diagnosing read information loss needs separate fixed-feature calibration and independent data."
+    },
+    {
+      "hypothesis": "Short-window/parameter-time effects are decisive",
+      "binding_prediction": "Fit and following directions differ under a shared old-state bridge, or benefits depend on credited source/loss positions relative to the 32-event boundary.",
+      "limit": "The finite fixed-S0 design can observe fit/future differences but cannot identify full-history derivatives or establish that longer BPTT is necessary."
+    }
+  ],
+  "one_viable_identifying_measurement_design": {
+    "status": "proposal_only_requires_independent_plan_and_budget_approval",
+    "name": "Fixed-head finite event/read factorization across current-gradient and actual-Adam directions",
+    "source": "Same complete mature pipeline checkpoint, fixed contiguous real OWT fit32/following32, same saved moments; no persistent update or model modification. C_reset is excluded.",
+    "directions": "Compute ordinary raw body SG and the ordinary actual saved-Adam post-clamp body displacement once. Project a predeclared negative-SG proposal into the same feasible parameter constraints; choose r as the smaller realized body norm and rescale both feasible endpoint displacements inward. Record every copied FP32 displacement and require resolved matching. This is a diagnostic direction comparison, not an optimizer replacement.",
+    "fixed_design": "Lock positive scales {1/4,1/2,1} and zero baseline before execution. Keep the original head AND bias fixed everywhere. For each direction/scale run ordinary hard and fully fixed-old-event replay on both windows. Following always starts at the original fit terminal, independent of direction. No selection of a favorable scale or extension after outcomes.",
+    "observable_accounting": [
+      "Record actual motor pre/post reset, projected and normalized features, and logits at each real prediction. Preserve all begin/finish masks and margins, full state and replay noise.",
+      "For each parameter point compute exact hard-minus-fixed CE and per-event logit alignment plus KL. Split the alignment into common and covariance terms using the same head and explicitly retrospective window means; retain a past-only baseline separately if making online-risk comparisons.",
+      "Compare finite fixed-event response to g_E dot realized displacement. Keep current-proxy dot, actual-Adam direction, clamp correction and finite hard-event residual separate.",
+      "Repeat every hard selection parameter point for scores, every physical state field and all hard masks. Unresolved norm or replay gates yield ambiguous, not success/failure."
+    ],
+    "identified_if_completed": "Local finite event-mediated task response through the CURRENT legal motor read, and whether current-SG versus bundled saved-Adam direction changes that response at matched steps.",
+    "not_identified": "Intrinsic semantic information lost by post-reset motor, adequacy of every decoder, unique optimizer-history contribution, biological event credit, whole-history gradient correctness or long-run NLL mechanism.",
+    "why_minimal": "The old ordinary fixed-event Taylor result is reused as prior evidence rather than relabeled unmeasured. Only one new gradient direction comparison and its hard/fixed responses are proposed; no rejected reset variant, added read head or longer training is bundled.",
+    "stop_rules": "Reject the local event-misdirection claim if both directions preserve hard task descent on the predeclared points. If only optimizer directions differ, retain optimizer-map interaction as local evidence. If signals reach motor but fixed-head task alignment is weak, request a separately reviewed adequate fixed-feature decoding/calibration design instead of declaring absent information. Stop on any numerical ambiguity without expanding the search."
+  },
+  "final_claim": "Existing evidence localizes a measured finite event-path/task-loss discrepancy and demonstrates smooth fixed-event descent. The mathematically missing identifying objects are the event-tape contrast propagated through the chosen read, its target-aligned probability effect, and the actual optimizer displacement. These objects support a narrow identifying measurement; they do not force a new mechanism. C_reset remains rejected.",
+  "independent_math_audit_of_root_closure": {
+    "date": "2026-10-07",
+    "reviewer": "/root/diagnosis_review",
+    "document": "D:\\information-boltzmann-v1\\docs\\information_boltzmann\\FLY_EVENT_OBSERVABLE_CLOSURE_20261007.md",
+    "document_sha256": "b85548b4f613032f82fc8e46ed76dedc18b1e0ffa0d2f94079832c29a1510498",
+    "verdict": "accepted_math_and_narrow_offline_measurement_scope_with_design_clarifications",
+    "execution_approval": false,
+    "formula_audit": [
+      {
+        "formula": "ell_H-ell_F=log E_pF exp(delta)-delta_y",
+        "verdict": "correct_exact",
+        "conditions": "Same target and finite logits, delta=a_H-a_F, pF=softmax(a_F). Evaluate log expectation with stable logsumexp in any eventual implementation. Adding a scalar multiple of the all-ones vector to delta cancels exactly."
+      },
+      {
+        "formula": "ell_H-ell_F=KL(pF||pH)-A, A=delta_y-E_pF delta",
+        "verdict": "correct_exact_optional_equivalent_form",
+        "derivation": "log pH-log pF=delta-log E_pF exp(delta), hence KL(pF||pH)=log E_pF exp(delta)-E_pF delta. A measures correct-target advantage relative to the baseline probability average; event contrast helps iff A>KL. This is an exact task sign criterion, not a claim that all individual event effects add independently."
+      },
+      {
+        "formula": "J_RMS(r)=D_gamma*(I/rho-rr^T/(d*rho^3))",
+        "verdict": "correct_for_fixed_gain_and_fixed_epsilon",
+        "conditions": "rho=sqrt(r^T r/d+epsilon). Before D_gamma, tangent gain is1/rho and radial gain epsilon/rho^3. At epsilon>0 this pre-gain Jacobian has no exact null direction; the radial direction is attenuated, not mathematically removed. Unequal/zero gains change the full-map singular directions. A finite contrast need not follow the local radial/tangent linearization throughout its path."
+      },
+      {
+        "formula": "delta ell=(p-onehot(y))^T W_dec J_RMS W_read delta h",
+        "verdict": "correct_first_order_with_fixed_head_on_a_smooth_read_branch",
+        "conditions": "This is the leading differential of scalar loss. It is not an exact finite loss equation, and theta-dependent head/gain changes need extra terms. The proposed fixed-head trace satisfies the relevant restriction."
+      },
+      {
+        "formula": "Delta L=sum_interval integral grad L_E(theta(lambda)) dot Delta dlambda + sum_boundary jumps",
+        "verdict": "correct_conditional_telescope",
+        "conditions": "The full finite-unroll hard loss must be piecewise C1 or suitably absolutely continuous within the stated finite event partition, with integrable derivatives and one-sided boundary limits. A differentiable feasible straight parameter path and finite crossings are assumptions, not established properties of this particular update. Group simultaneous/induced cascade changes into the aggregate boundary. Continuous clamp breakpoints may be partitioned and have zero loss jump; other discontinuities require their own boundary accounting."
+      },
+      {
+        "formula": "Endpoint H/F contrast versus path jump sum",
+        "verdict": "correctly_distinguished",
+        "reason": "The endpoint fixed-tape trajectory is an artificial replay at theta1. Endpoint H/F also contains the changed events' downstream continuous consequences; it is not generally equal to the sum of loss jumps along the hard parameter path. Neither quantity isolates a reset mechanism."
+      }
+    ],
+    "necessity_usefulness_boundary": {
+      "necessary_for_claimed_local_attribution": "Matched causal issue information, full initial state, target/parameter binding, original actual displacement, all-stage event tape, and exact task effects through the implemented read. Geometry must be evaluated on the actual contrast rather than inferred from the Jacobian alone.",
+      "useful_first_trace": "A/B/C with original versus actual-Adam hard versus fixed-event replay can locate resolution/attenuation of these particular contrasts and explain their issued probability loss sign. It reuses an already measured event-path discrepancy and can distinguish geometric suppression from an adverse contrast that reaches the head.",
+      "not_necessary_now": "An SG-versus-Adam arm is not required for this narrower descriptive read-chain/task-alignment question. It IS required, or needs an equivalent separately controlled intervention, before identifying optimizer-specific direction selection. Its omission leaves optimizer history/preconditioning/clip/clamp and short-window effects explicitly unresolved.",
+      "possible_only": "Pulse/pre-reset read, alternative learning or stochastic formulations remain candidate possibilities. No current formula or attenuation trace makes any of them a chosen repair, a necessary mechanism, or a promised NLL improvement.",
+      "C_reset": "Remains rejected under the completed registered local conjunction; this audit does not revive it."
+    },
+    "minimal_design_clarifications_before_execution": [
+      "Trace the current implemented pre-observation motor variables. A hypothetical emitted motor pulse must use the same old STP state and sealed hard spike; do not integrate a second tick or feed that pulse/pre-voltage to the saved decoder.",
+      "Retain or exactly reconstruct complete hard-versus-fixed logit contrasts for the CE/KL identity. Per-event centering across vocabulary is a softmax gauge and is legal; centering across time drops a potentially task-relevant common vector unless that vector is separately retained. Specify which centering is used.",
+      "For projection attenuation verify Delta r=W_read Delta h and use actual fixed learned gains. Cross-layer raw or relative norms use different coordinates; attenuation alone does not establish loss of semantic information. Preserve probability KL and target alignment as the task measures.",
+      "Finite normalization attribution needs both exact endpoint q differences and the local radial/tangent prediction; a large nonlinear contrast cannot be assigned entirely to a local radial direction.",
+      "Reconstruct the unavailable original actual body displacement with one disposable saved-Adam update, including global clip and clamp. Count its backward/update and verify norms, dot products, clamp accounting and recorded risks beyond numerical floors before comparing traces.",
+      "A/F/B must have the same head and bias and fixed old-fit terminal for following32. This measures the conditional continuation used in the previous report, not deployment from an updated-body fit terminal.",
+      "Numerically unresolved differences or unstable event/full-state replays are ambiguous. A measured contrast loss only nominates a read candidate; task usefulness of another observable requires a separate matched calibration/joint-learning and independent-data test."
+    ],
+    "plan_verdict": "Accept the narrower first trace as a useful identifying measurement DESIGN for attenuation and current-head task sign. Do not require an optimizer arm now or infer an optimizer cause from this trace. A separate budget, implementation and source-locked execution review remains mandatory.",
+    "activity": "Read existing text and apply analytical identities only; no GPU, model construction, new measurement or experiment. Appended only this section to the independent necessity review JSON.",
+    "final_version_signoff": {
+      "date": "2026-10-07",
+      "reviewer": "/root/diagnosis_review",
+      "document": "D:\\information-boltzmann-v1\\docs\\information_boltzmann\\FLY_EVENT_OBSERVABLE_CLOSURE_20261007.md",
+      "document_sha256": "9f3e02f017c1f23c5077c79a1f8fb5d2d3b19abd9befef79e6e8b247d811e976",
+      "verdict": "accepted_final_offline_math_and_narrow_design_scope",
+      "verified_clarifications": [
+        "Hybrid identity now states finite boundaries, one-sided limits and piecewise C1/absolutely-continuous interval regularity.",
+        "Exact KL-minus-target-advantage identity is present.",
+        "Logit centering is explicitly the per-event vocabulary scalar gauge; temporal means retain the full common vector.",
+        "Exact finite feature endpoints are retained alongside local radial/tangent predictions, with coordinate-unit and replay-floor limits.",
+        "Optimizer-direction and inherited-state alternatives remain open; narrower read-chain trace does not require an optimizer arm or select a remedy."
+      ],
+      "prior_mathematical_boundaries_retained": "The epsilon>0 radial gain is attenuation, not an exact RMS null; finite effects and cross-layer norms remain restricted as in the independent audit.",
+      "C_reset": "remains_rejected_locally_unsupported",
+      "no_new_scope": "Signoff binds the frozen document only. It does not authorize implementation, GPU measurements, production changes or training.",
+      "activity": "Read final text and verify SHA256 only; no new derivations or experiments."
+    }
+  }
+}

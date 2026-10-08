@@ -1,0 +1,134 @@
+{
+  "scope": "CPU checkpoint-fork interface diagnostic; production state and checkpoints untouched",
+  "validation_reference": [
+    {
+      "bptt_train_tokens": 200000,
+      "validation_range": [
+        13816,
+        14072
+      ],
+      "model_nll": 7.644018732942641,
+      "fixed_unigram_nll": 7.175926783126236,
+      "gain_over_fixed_unigram": -0.468091949816405,
+      "gain_per_32_token_block": [
+        -0.47215109849761155,
+        -0.6611445893895247,
+        -0.5584268847041965,
+        -0.4230331197703264,
+        -0.1404395775787042,
+        -0.28571057572812975,
+        -0.3885326481891568,
+        -0.8152971046735904
+      ],
+      "scope": "different fresh text; unigram adjusts only marginal token difficulty"
+    },
+    {
+      "bptt_train_tokens": 300000,
+      "validation_range": [
+        14072,
+        14328
+      ],
+      "model_nll": 7.752445877529681,
+      "fixed_unigram_nll": 7.2439547677332925,
+      "gain_over_fixed_unigram": -0.5084911097963885,
+      "gain_per_32_token_block": [
+        -0.6975088517341956,
+        -0.21455774844603015,
+        -0.23730336483357314,
+        -0.515316820435644,
+        -0.6704523974146628,
+        -1.0023280607960483,
+        -0.16546920532744053,
+        -0.5649924293835131
+      ],
+      "scope": "different fresh text; unigram adjusts only marginal token difficulty"
+    },
+    {
+      "bptt_train_tokens": 400000,
+      "validation_range": [
+        14328,
+        14584
+      ],
+      "model_nll": 7.907499546185136,
+      "fixed_unigram_nll": 7.325595958606164,
+      "gain_over_fixed_unigram": -0.581903587578972,
+      "gain_per_32_token_block": [
+        -0.7953248691543002,
+        -0.1134943928537028,
+        -0.36334538461616683,
+        -0.7981879319609853,
+        -0.609107728974867,
+        -0.7775528668878167,
+        -0.6245336188414082,
+        -0.5736819073425283
+      ],
+      "scope": "different fresh text; unigram adjusts only marginal token difficulty"
+    },
+    {
+      "bptt_train_tokens": 500000,
+      "validation_range": [
+        14584,
+        14840
+      ],
+      "model_nll": 8.136853742413223,
+      "fixed_unigram_nll": 7.411544136892472,
+      "gain_over_fixed_unigram": -0.7253096055207511,
+      "gain_per_32_token_block": [
+        -0.5446394782361945,
+        -1.0151881706548542,
+        -0.965738702448304,
+        -0.6874851503368151,
+        -0.37680304822323135,
+        -0.4580324998803224,
+        -0.8263572273903024,
+        -0.9282325669959842
+      ],
+      "scope": "different fresh text; unigram adjusts only marginal token difficulty"
+    },
+    {
+      "bptt_train_tokens": 600000,
+      "validation_range": [
+        14840,
+        15096
+      ],
+      "model_nll": 8.837140184827149,
+      "fixed_unigram_nll": 8.111937670541153,
+      "gain_over_fixed_unigram": -0.7252025142859965,
+      "gain_per_32_token_block": [
+        -0.7716430009559722,
+        -0.520702557578645,
+        -0.6248170660230346,
+        -0.6433506203620722,
+        -1.0641295212759587,
+        -0.7347612077232252,
+        -0.3254040227277202,
+        -1.1168121176413437
+      ],
+      "scope": "different fresh text; unigram adjusts only marginal token difficulty"
+    }
+  ],
+  "checkpoint_bptt_tokens": 600928,
+  "checkpoint_train_cursor": 700928,
+  "checkpoint_events": 730264,
+  "injected_neurons": 15912,
+  "read_neurons": 2333,
+  "input_output_overlap": 0,
+  "settle_ticks": 0,
+  "physical_ticks_per_input": 1,
+  "changed_real_token_ids": [
+    345,
+    460
+  ],
+  "events": [
+    {
+      "lag_after_changed_input": 0,
+      "drive_difference_norm": 153.00341796875,
+      "full_membrane_difference_norm": 137.1312713623047,
+      "motor_membrane_difference_norm": 0.0,
+      "logits_difference_norm": 0.0,
+      "logits_difference_max": 0.0,
+      "motor_spike_fraction_a": 0.027003858238458633
+    }
+  ],
+  "first_nonzero_output_lag": null
+}

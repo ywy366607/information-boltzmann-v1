@@ -1,0 +1,61 @@
+{
+  "purpose": "isolated captured STP component execution, not whole-update attribution",
+  "shape": [
+    8,
+    8,
+    4
+  ],
+  "channels": 128,
+  "repeats": 100,
+  "variants": {
+    "original": {
+      "captured_forward_backward_ms": 1.224614715576172,
+      "timings_ms": [
+        1.2444371032714843,
+        1.224614715576172,
+        1.2861410522460937
+      ],
+      "max_gradient_error": 0.0,
+      "max_state_error": 0.0,
+      "total_gpu_memory": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2461007872,
+        "free_bytes": 1666187264,
+        "utilization_percent": 100
+      }
+    },
+    "shared_energy_native": {
+      "captured_forward_backward_ms": 0.9125580596923828,
+      "timings_ms": [
+        0.9485836791992187,
+        0.9182617950439453,
+        0.9125580596923828
+      ],
+      "max_gradient_error": 1.430511474609375e-06,
+      "max_state_error": 0.0,
+      "total_gpu_memory": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2461007872,
+        "free_bytes": 1666187264,
+        "utilization_percent": 100
+      }
+    },
+    "fused": {
+      "captured_forward_backward_ms": 0.15931039810180664,
+      "timings_ms": [
+        0.16814655303955078,
+        0.15931039810180664,
+        0.16195104598999024
+      ],
+      "max_gradient_error": 4.76837158203125e-07,
+      "max_state_error": 7.450580596923828e-09,
+      "total_gpu_memory": {
+        "total_bytes": 4294967296,
+        "used_bytes": 2461007872,
+        "free_bytes": 1666187264,
+        "utilization_percent": 100
+      }
+    }
+  },
+  "interpretation": "Component timing only; production speed measured separately on real OWT."
+}

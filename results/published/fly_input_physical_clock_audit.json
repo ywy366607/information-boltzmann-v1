@@ -1,0 +1,62 @@
+{
+  "checkpoint_train_targets": 900000,
+  "physical_ticks_per_input": 2,
+  "writer_decay_from_implementation": 0.9512,
+  "current_physical_clock_baseline": {
+    "baseline_carry_per_input": 0.90478144,
+    "baseline_packet_coefficient_per_input": 0.046418559999999956,
+    "stationary_baseline_fraction_of_constant_packet": 0.48749487494874927,
+    "stationary_innovation_fraction_of_constant_packet": 0.5125051250512507,
+    "baseline_efold_in_input_events": 9.993817104072287
+  },
+  "input_event_clock_baseline_counterfactual": {
+    "baseline_carry_per_input": 0.9512,
+    "baseline_packet_coefficient_per_input": 0.048799999999999955,
+    "stationary_baseline_fraction_of_constant_packet": 1.0,
+    "stationary_innovation_fraction_of_constant_packet": 0.0,
+    "baseline_efold_in_input_events": 19.987634208144584
+  },
+  "recent_already_observed_packet_mean": {
+    "tokens": 128,
+    "packet_mean_norm": 196.14971923828125,
+    "packet_mean_rms": 1.5549819469451904,
+    "stationary_pulse_innovation_mean_norm_physical_clock": 100.52773638698304,
+    "scope": "mean of actual retained training-token packets at saved weights; stationary filter value is analytic, not measured deployed NLL"
+  },
+  "time_constants": {
+    "log_tau_m": {
+      "physical_tick_tau_min": 3.030724287033081,
+      "physical_tick_tau_max": 86.41211700439453,
+      "physical_tick_tau_mean_over_classes": 30.94502067565918,
+      "source_free_efold_input_events_mean_over_classes": 15.47251033782959,
+      "input_event_time_ratio_to_one_tick_at_same_parameters": 0.5,
+      "scope": "free component only; recurrent input, reset and conductance gating also affect memory"
+    },
+    "log_tau_s_e": {
+      "physical_tick_tau_min": 0.7576810121536255,
+      "physical_tick_tau_max": 12.388884544372559,
+      "physical_tick_tau_mean_over_classes": 6.187606334686279,
+      "source_free_efold_input_events_mean_over_classes": 3.0938031673431396,
+      "input_event_time_ratio_to_one_tick_at_same_parameters": 0.5,
+      "scope": "free component only; recurrent input, reset and conductance gating also affect memory"
+    },
+    "log_tau_s_i": {
+      "physical_tick_tau_min": 1.515362024307251,
+      "physical_tick_tau_max": 27.05872917175293,
+      "physical_tick_tau_mean_over_classes": 13.069693565368652,
+      "source_free_efold_input_events_mean_over_classes": 6.534846782684326,
+      "input_event_time_ratio_to_one_tick_at_same_parameters": 0.5,
+      "scope": "free component only; recurrent input, reset and conductance gating also affect memory"
+    },
+    "log_tau_a": {
+      "physical_tick_tau_min": 34.065773010253906,
+      "physical_tick_tau_max": 58.753929138183594,
+      "physical_tick_tau_mean_over_classes": 48.36906814575195,
+      "source_free_efold_input_events_mean_over_classes": 24.184534072875977,
+      "input_event_time_ratio_to_one_tick_at_same_parameters": 0.5,
+      "scope": "free component only; recurrent input, reset and conductance gating also affect memory"
+    }
+  },
+  "finding": "Quiet ticks currently advance physical forgetting and also decay the packet baseline toward a fictitious zero packet. Since quiet source is exactly zero, baseline subtraction is applied only at pulses. The input-innovation filter therefore loses zero DC response at pulse times.",
+  "scope": "Implementation and analytic clock audit only. No learning, model evolution, GPU allocation or state modification; NLL causation is unproven."
+}

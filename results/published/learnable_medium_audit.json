@@ -1,0 +1,36 @@
+{
+  "date": "2026-10-03",
+  "scope": "conductance plastic-medium parameterization audit; numerical/interface verification only",
+  "repairs": [
+    "Activate direct initial electrical-coefficient gradient to material without changing uniform initial coefficients",
+    "Condition conduction content metric on local material; preserve shared-axis quadratic control"
+  ],
+  "parameters": {
+    "previous": 14354610,
+    "current": 14357682,
+    "added": 3072,
+    "extra_persistent_state": 0
+  },
+  "validation": {
+    "cpu_passed": 66,
+    "cpu_cuda_opt_in_skipped": 1,
+    "explicit_cuda_passed": 5
+  },
+  "preserved": [
+    "positive material coefficients",
+    "Cauchy-Schwarz evidence bound",
+    "conservative transport",
+    "analytic structural invariant interval",
+    "full persistent continuation",
+    "CUDA Graph training"
+  ],
+  "fixed_budgets": [
+    "periodic local adjacency",
+    "material basis bandwidth",
+    "grid and channel widths",
+    "collision layers"
+  ],
+  "performance_provenance": "Prior 3.067339s/update graph measurement belongs to previous parameterization. New revision passed capture regressions; latency not remeasured.",
+  "capability_claim": null,
+  "boundary_scale": "Learned per-channel nn.Parameter; initialization packet_radius*sqrt(D/64), default packet_radius1.25."
+}

@@ -1,0 +1,80 @@
+{
+  "scope": "Optional causal local temporal read integrated into joint BPTT, full CUDA training capture and continuous runtime; implementation acceptance only",
+  "opt_in": "scripts/ib/train_medium_active_stream.py --temporal-read",
+  "history_contract": "sensor_trajectory_endpoint_hold_v1",
+  "learning": "rates, frequencies, mix, projection, sensor positions, writer and medium jointly trainable",
+  "persistence": "explicit complex history and FP64 clock; retained through reads, observations, detach, optimizer updates and complete checkpoints",
+  "parameters": 14280639,
+  "added_parameters": 32904,
+  "batch1_fp32_history_bytes": 131080,
+  "cpu_checks": {
+    "passed": 94,
+    "skipped_opt_in_cuda": 13,
+    "deslice_required_check": "passed"
+  },
+  "cuda_checks": {
+    "passed": 2,
+    "tests": [
+      "test_temporal_cuda_graph_matches_chunk_gradients_updated_weights_and_ownership",
+      "test_temporal_runtime_cuda_graph_retains_history"
+    ]
+  },
+  "full_suite_attempt": {
+    "passed": 410,
+    "skipped": 6,
+    "failed": 3,
+    "stopped_at_maxfail": 3,
+    "failures": [
+      {
+        "test": "tests/test_adaptive_force.py::test_acceptance_6_backward_compatibility_old_checkpoints",
+        "reason": "Removed historical checkpoint missing"
+      },
+      {
+        "test": "tests/test_ctm_settle_forward.py::test_ctm_forward",
+        "reason": "Removed fly checkpoint missing"
+      },
+      {
+        "test": "tests/test_fly_one_update_diagnostic.py::test_checkpointed_event_preserves_forward_state_and_all_surrogate_gradients",
+        "reason": "Legacy fly diagnostic flattens returned tuple as a physical state"
+      }
+    ]
+  },
+  "calibration": {
+    "source_config": "results\\medium_temporal_read_calibration_20261008\\config.json",
+    "source_progress": "results\\medium_temporal_read_calibration_20261008\\progress.json",
+    "dataset": "actual OWT train.npy",
+    "target_indices": [
+      1,
+      32
+    ],
+    "optimizer_updates": 1,
+    "physical_events": 32,
+    "physical_time": 0.16000000000000006,
+    "group_seconds": 0.38036559999454767,
+    "tokens_per_second": 84.12958480067257,
+    "memory": {
+      "total_dedicated_mib": 3059.0,
+      "allocated_mib": 264.123046875,
+      "peak_allocated_mib": 1038.87451171875,
+      "reserved_mib": 1402.0
+    },
+    "gradient_norm_before_clip": 5.984529479065156,
+    "checkpoint_files_created": 0,
+    "interpretation": "single completed actual optimizer group, excludes compilation/capture; not NLL improvement or steady-state throughput evidence",
+    "code_provenance": "Saved config hashes identify the measured revision; later changes expose temporal telemetry and metadata only"
+  },
+  "final_source_sha256": {
+    "information_boltzmann/core/temporal_probes.py": "61c6c8d52bf14eb6c48b2a0cfceb9b8727b6e24ac430ba800b8abad451d93471",
+    "information_boltzmann/core/plastic_ports.py": "acb01703c19c80def31fd025f386d4ef9ffdf2c00cd5393ce3ceec614375a74a",
+    "information_boltzmann/runtime/training.py": "89c0ab7634b8514f355723066617096e5e41e1240115fb50f4850ae8d4252193",
+    "information_boltzmann/runtime/continuous.py": "a3379b018db8aea5c1197a4de09079f2e8c8dcd9f36173b0d1058f16605fe694",
+    "information_boltzmann/runtime/online_credit.py": "5b18fabd363846f9f7b7c3fda15c2641e64eea1dd64237b84efed753578da08d",
+    "information_boltzmann/runtime/local_credit.py": "006159e2eed3389abcdf6e7c3c455f5d1e334d6c16c5b0cd8b58de08941190f8",
+    "scripts/ib/train_medium_active_stream.py": "af5be1d30fe5520413dc068ff69babc672c97a7be5c118f807e708b09a38b6f1",
+    "scripts/ib/train_plastic_conductance.py": "88c3aaede51a084fd5e7770dc0889ad2bfa7fd43e1dc072394efb19ebc29fbf0",
+    "tests/test_medium_temporal_read.py": "1c5bfc11233335ae3f3d59e3288a09c075ccd83cd5b2c21a6be91d49f1bcac49",
+    "docs/information_boltzmann/MEDIUM_TEMPORAL_READ_INTEGRATION_20261008.md": "31ffaa60ee02136129080f51da6ef962094398df87cb5948daa717d784bf55df"
+  },
+  "production_default": "legacy instantaneous mode unchanged; new runs explicitly select temporal read",
+  "long_training_started": false
+}

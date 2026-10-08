@@ -1,0 +1,26 @@
+{
+  "purpose": "execution equivalence and speed; no capability training",
+  "checkpoint": "results\\medium_d768_pretrained_tensor_temporal_160k\\last.pt",
+  "tokens_per_update": 32,
+  "compile_and_first_backward_seconds": 1075.8773459999938,
+  "gradient_relative_l2_error": 7.478564195825368e-07,
+  "eager": {
+    "seconds_per_32_tokens": [
+      17.73071559998789,
+      16.977758499997435
+    ],
+    "tokens_per_second": 1.843930096599293
+  },
+  "compiled": {
+    "seconds_per_32_tokens": [
+      4.416565199993784,
+      3.391004900011467
+    ],
+    "tokens_per_second": 8.197172638892727
+  },
+  "memory": {
+    "dedicated_mib": 2341.0,
+    "peak_allocated_mib": 1968.05810546875
+  },
+  "cosine_diagnostic_status": "Excluded: FP32 dot reduction exceeded one. Relative L2 gradient error is the validated criterion; future dot reductions use FP64."
+}

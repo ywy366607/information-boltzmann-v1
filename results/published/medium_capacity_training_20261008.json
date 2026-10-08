@@ -1,0 +1,67 @@
+{
+  "protocol": "medium_structural_capacity_trial_v1",
+  "authorization": "User requested constraint-enabled training after reboot",
+  "run": "results\\medium_d768_xavier_8x8x8_budget_birth_160k",
+  "baseline": "results/medium_d768_xavier_8x8x8_160k",
+  "fresh_individual": true,
+  "seed": 449,
+  "training_groups": 5000,
+  "fresh_training_tokens": 160000,
+  "constructor": {
+    "vocab_size": 50257,
+    "shape": [
+      8,
+      8,
+      8
+    ],
+    "channels": 768,
+    "bath_type": "conductance",
+    "write_exchange": "contact_mode",
+    "port_scope": "compact",
+    "activity_adaptation": true,
+    "short_term_plasticity": true,
+    "pre_decoder_norm": true,
+    "medium_execution": "fused",
+    "port_execution": "fused",
+    "anisotropic_transport": true,
+    "write_port_radius": [
+      0.1875,
+      0.1875,
+      0.25
+    ],
+    "read_port_radius": [
+      0.125,
+      0.1875,
+      0.25
+    ],
+    "read_mode": "temporal",
+    "temporal_rates": [
+      138.62943611198907,
+      34.657359027997266,
+      8.664339756999317,
+      2.166084939249829
+    ],
+    "temporal_frequencies": [
+      0.0,
+      39.269908169872416,
+      78.53981633974483,
+      157.07963267948966
+    ],
+    "transport_capacity_budget": 6.259217739105225
+  },
+  "data_sha256": {
+    "train.npy": "6dd24ac1b43aef10d914418b7e6d6f28eedbc5ae8dc653003196375e37ceedb9",
+    "validation.npy": "542a39693215fa5163b92d14a13f9a8545fc4747ff3e819427bc4291db9de624"
+  },
+  "primary_comparison": "Aligned real OWT prequential excess NLL, active recovery AG and recovered platform, and A-B-A revisit; compare at matched fresh traffic and actual optimizer updates",
+  "hypothesis": "A fixed slow structural capacity creates allocation competition; useful spatial allocation may improve predictions and recovery. Concentrated channels are not guaranteed by the quadratic budget.",
+  "acceptance": "Positive capability claim requires sufficient matched joint learning and aligned active evaluations; a spatial image or initial short loss change alone is descriptive.",
+  "stopping": "fresh budget, STOP file, nonfinite state/gradient/loss, dedicated GPU cap",
+  "review_status": "Constitutive numerical prototype independently reviewed previously; real-data benefit currently undecided",
+  "birth_capacity": 6.259217739105225,
+  "new_neural_parameters": 0,
+  "visualization_fix": "Refresh by snapshot wall_time; actual learned port IDs and coordinates plus selected-query aperture. Attention is distributed within aperture; additional temporal history is distinct.",
+  "reboot_recovery": "Second reboot occurred before first update; no learned state was lost. Recreated same seed449 birth, now atomically saved complete initial last.pt before compilation.",
+  "runtime_pid": 18140,
+  "dashboard": "http://127.0.0.1:8085/"
+}

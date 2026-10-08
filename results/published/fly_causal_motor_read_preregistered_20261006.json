@@ -1,0 +1,310 @@
+{
+  "stage": "training_plan_withdrawn_after_historical_duplicate_identified",
+  "date": "2026-10-06",
+  "recorded_utc": "2026-10-06T11:56:14.456907+00:00",
+  "research_node": "IB_FLY_CAUSAL_READ_20261006",
+  "design": "docs/information_boltzmann/FLY_CAUSAL_MOTOR_READ_DESIGN.md",
+  "design_sha256": "02be05d6391157c1307c1e554ee42d9297fe3e32f2297b4f274c4f304063b03f",
+  "unique_candidate": {
+    "id": "C",
+    "event": "input1+quiet1",
+    "read": "centered raw motor -> original768projection -> RMSNorm -> decoder+bias",
+    "retired": [
+      "read Gamma z1/z2",
+      "logit_read_gamma"
+    ],
+    "added_parameters": 0,
+    "excluded_new_modules": [
+      "tri-scale head",
+      "log_alpha",
+      "latent VFE layer"
+    ]
+  },
+  "comparison": {
+    "id": "B",
+    "event": "input1+quiet1",
+    "read": "originalGamma z2 -> original768projection -> RMSNorm -> decoder+bias",
+    "scope": "samecorephysicaltick/eventcredit/projection; actualGamma parameter/cost difference reported"
+  },
+  "source": {
+    "checkpoint": "artifacts\\active_training\\q8_fly_bptt32_gamma_2333_wide115_100k\\last.pt",
+    "exists": true,
+    "checkpoint_bytes": 1126558319,
+    "checkpoint_sha256": "must_pin_before_launch",
+    "config_sha256": "ef8c39d5875facab48697be41062770e275b489c057a7064b9ec11a6bce269fc",
+    "audit_train_tokens": 1500000,
+    "d_model": 768,
+    "original_trainable_parameters": 77986760,
+    "motor_neurons": 2333,
+    "trainability": {
+      "embedding": "fixed",
+      "stp_parameters": "fixed",
+      "dan_plastic_lr": 0.0
+    },
+    "original_flags": {
+      "settle_ticks": 0,
+      "use_read_gamma_trace": true,
+      "read_centering": true,
+      "window": 32,
+      "writer_baseline_clock": "input",
+      "lr": 0.0002,
+      "lr_synapse": 0.0002,
+      "lr_sensory": 0.0002
+    },
+    "restore": "allnativephysicalstates, sharedweights, namedAdam, RNG, cursor, previous_token, time, pendingupdatecadence; no coldreset"
+  },
+  "dataset": {
+    "revision": "433fe0f44ed7894fea29c08b3202aa348ccc6369",
+    "token_counts": {
+      "train": 31000387,
+      "validation": 371722,
+      "test": 325029
+    },
+    "files": {
+      "train.npy": "0a1816c467f1d9a643e2e81d7ffbf47dd9219c954f3afcd040a4cd5db84880a3",
+      "validation.npy": "4f6ffab72f48594e745c0bdf10bddce6a79167491abd4ef64099368c8c6fcc33",
+      "test.npy": "d6ff91db0c788a67ca85e28b08c1652d97c64ed15923524abb88ac3b4ad30d43",
+      "tokenizer.json": "0822604b7eb40de39854dfc285a8c18aae58dfdbbef81457cf5a889e84b9be0b"
+    },
+    "source_manifest_sha256": "3614c380d4c72688ac8ccde42f32ea0655d16bec1ba0874a924fd777af904d2d",
+    "boundary_policy": "encode_ordinary(document) followed by GPT2 EOT; no state reset"
+  },
+  "predictions": [
+    {
+      "id": "P-20261006-01",
+      "class": "D+A",
+      "statement": "Inputmotorstructuralblindness, followed by actualquiettick accessibility on realOWT inputs; singlezeroresponse permitted.",
+      "falsification": "Wholepredefinedpairset noresponse above repeaterror => fail applicabilitygate; do nottrain."
+    },
+    {
+      "id": "P-20261006-02",
+      "class": "A",
+      "statement": "Ifcompulsorylowpass isprimaryobstruction, C firstpassNLL lower than B aftermatchedcontinuedlearning.",
+      "falsification": "PositivepairedCI contradicts currentwarmmigrationbudget; crossingzero inconclusive."
+    },
+    {
+      "id": "P-20261006-03",
+      "class": "A",
+      "statement": "Raw motor differences are available to existinghead as nonconstant vocabularylogit changes.",
+      "falsification": "Motorresponse but headconstant => observability/tasksignal hypothesis needs revision."
+    },
+    {
+      "id": "P-20261006-04",
+      "class": "D",
+      "statement": "PostRMSstaticalpha exactlyabsorbable into affinegain or decoderweight; noexpression expansion.",
+      "falsification": "Identityerror beyond tolerance => different placement/implementation."
+    }
+  ],
+  "plan": {
+    "arms": [
+      "B",
+      "C"
+    ],
+    "execution": "sequential, noGPUallocatedthisturn",
+    "minimum_new_joint_train_updates_per_arm": 3000,
+    "window_tokens": 32,
+    "new_train_tokens_per_arm": 96000,
+    "eval_every_new_train_updates": 500,
+    "freshB_each_eval": 256,
+    "A_replay_each_eval": 128,
+    "actual_exposure_per_arm_if_cadencealigned": 98304,
+    "actual_total_updates_per_arm_if_cadencealigned": 3072,
+    "max_new_train_updates_per_arm": 3000,
+    "main_estimand": "C-B preupdatefirstpassNLL, preselected final1000-newtrainupdates",
+    "statistics": "Singlefixed3000endpoint final1000updates. Pairedcontiguous256tokenblockbootstrap95pctCI and128/512sensitivity; conditionaltrajectoryuncertainty, not across-seedgeneralizationguarantee. Nooptionalendpointselection.",
+    "extension": "Noneinthisapproval. Fixed3000newtrainupdates singleprimaryendpoint; continuedimprovement=>budgetlimited; newextensionrequiresseparatepreregistrationandapproval.",
+    "vram_limit_mib": 3900,
+    "capability_gate": "atleast3000 jointupdates plusconvergence/stoppingevidence; frozen511targetsnotconfirmation",
+    "fresh_train_cursor": "pin_source_checkpoint_before_launch",
+    "freshB_cursor": "pin_source_checkpoint_before_launch",
+    "native_physical_ticks_per_arm_if_aligned": 196608,
+    "bootstrap": {
+      "replicates": 10000,
+      "seed": 20261006,
+      "pairing": "same event and phase IDs, identical stream schedule",
+      "boundary_rule": "Never construct a block across fresh B, replay A or return-to-training boundaries. Resample paired blocks within each uninterrupted same-phase fragment and aggregate using original token weights.",
+      "main_block_tokens": 256,
+      "sensitivity_block_tokens": [
+        128,
+        512
+      ]
+    },
+    "curve_stability": "Report both preselected 500-update halves within final1000. Budget gain stable only if C-B mean same direction in both; if either arm last500-vs-prior500 NLL difference CI upper<0, still-improving/budgetlimited. Crossing zero is no detected trend, not proven convergence.",
+    "approval_active": false
+  },
+  "numerical_identities": {
+    "scope": "CPUscalararithmetic only; noflyexecution/learning/capability",
+    "postRMSalpha_max_error": 4.440892098500626e-16,
+    "gamma_discrete_impulse_checks": [
+      {
+        "decay": 0.0,
+        "mass_error": 0.0,
+        "mean_lag_error": 0.0
+      },
+      {
+        "decay": 0.2,
+        "mass_error": 2.220446049250313e-16,
+        "mean_lag_error": 1.1102230246251565e-16
+      },
+      {
+        "decay": 0.7,
+        "mass_error": 0.0,
+        "mean_lag_error": 8.881784197001252e-16
+      },
+      {
+        "decay": 0.95,
+        "mass_error": 0.0,
+        "mean_lag_error": 0.0
+      },
+      {
+        "decay": 0.99,
+        "mass_error": 0.0,
+        "mean_lag_error": 0.0
+      }
+    ],
+    "counts": {
+      "scale_cases": 5,
+      "gamma_cases": 5
+    }
+  },
+  "review": {
+    "hypothesis_collaborator": {
+      "reviewer": "/root/harness_hypotheses",
+      "status": "reviewed",
+      "concerns": "NoGamma necessity proof; quiet1actualresponse remainsauxiliary; O1replacementlearningrule outofscope."
+    },
+    "experiment_approval_committee": {
+      "reviewer": "/root/harness_plan",
+      "status": "unreviewed",
+      "concerns": "Prior conditional approval retired after user identified already tested protocol. Reassessment required before any launch."
+    },
+    "conclusion_reviewer": {
+      "reviewer": "/root/diagnosis_review",
+      "status": "accepted",
+      "concerns": "Independent historical review accepts withdrawal: candidate duplicates existing two-tick/input-clock/centered raw-motor protocol. Keep causal ordering and static gain identities; current-token reachability alone insufficient and post-added Gamma cannot explain pre-Gamma deficit. No paired timing-ineffectiveness claim."
+    }
+  },
+  "false_win_checklist": [
+    {
+      "path": "Extra capacity / training budget",
+      "closed": false,
+      "evidence": "Planned safeguard: Same768 read projection and original trainability; retire Gamma parameters explicitly; charge96k fresh train plus active eval and both physical ticks.",
+      "residual_risk": "Await implementation and actualstream records; no confirmed capability."
+    },
+    {
+      "path": "Optimization change",
+      "closed": false,
+      "evidence": "Planned safeguard: Restore shared Adam moments by parameter name, source LRs/weight decay/clipping; declare changed observation distribution and migration losses.",
+      "residual_risk": "Await implementation and actualstream records; no confirmed capability."
+    },
+    {
+      "path": "Data leakage",
+      "closed": false,
+      "evidence": "Planned safeguard: Both quiet source and future target unavailable before scored logits; one shared train/eval/generate event interface.",
+      "residual_risk": "Await implementation and actualstream records; no confirmed capability."
+    },
+    {
+      "path": "Metric averaging",
+      "closed": false,
+      "evidence": "Planned safeguard: First-pass/replay/freshB separated; final1000-update window registered before results, full trace retained.",
+      "residual_risk": "Await implementation and actualstream records; no confirmed capability."
+    },
+    {
+      "path": "Hidden recurrence / extra passes",
+      "closed": false,
+      "evidence": "Planned safeguard: Both B/C advance input+quiet with64physical ticks per32-token window; record total core plus Gamma costs.",
+      "residual_risk": "Await implementation and actualstream records; no confirmed capability."
+    },
+    {
+      "path": "Implementation asymmetry",
+      "closed": false,
+      "evidence": "Planned safeguard: Eager/graph, activation flags and effective trainability validated symmetrically.",
+      "residual_risk": "Await implementation and actualstream records; no confirmed capability."
+    },
+    {
+      "path": "Baseline bypass",
+      "closed": false,
+      "evidence": "Planned safeguard: Sensory-only injection and motor-only output; no embedding/token skip to decoder.",
+      "residual_risk": "Await implementation and actualstream records; no confirmed capability."
+    },
+    {
+      "path": "Reachability mistaken for discovery",
+      "closed": false,
+      "evidence": "Planned safeguard: Real-input response gate proves opportunity only; capability requires joint active NLL evidence.",
+      "residual_risk": "Await implementation and actualstream records; no confirmed capability."
+    },
+    {
+      "path": "Serialization mistaken for generation",
+      "closed": false,
+      "evidence": "Planned safeguard: No autonomous topology/generation claim.",
+      "residual_risk": "Await implementation and actualstream records; no confirmed capability."
+    },
+    {
+      "path": "Handwritten scaffold substitution",
+      "closed": false,
+      "evidence": "Planned safeguard: No Sudoku rules, manual world rules or label-dependent quiet control.",
+      "residual_risk": "Await implementation and actualstream records; no confirmed capability."
+    },
+    {
+      "path": "Teacher or oracle leakage",
+      "closed": false,
+      "evidence": "Planned safeguard: No target-dependent update prior to its prediction; testsplit unused for choices.",
+      "residual_risk": "Await implementation and actualstream records; no confirmed capability."
+    },
+    {
+      "path": "Vocabulary / codebook leakage",
+      "closed": false,
+      "evidence": "Planned safeguard: Same GPT2 tokenizer/pretrainedembedding/provenance; no class/source IDs.",
+      "residual_risk": "Await implementation and actualstream records; no confirmed capability."
+    },
+    {
+      "path": "Search-budget mismatch",
+      "closed": false,
+      "evidence": "Planned safeguard: Only preregistered B/C; same data/updates; no best alpha sweep for final claim.",
+      "residual_risk": "Await implementation and actualstream records; no confirmed capability."
+    },
+    {
+      "path": "Macro prior not charged",
+      "closed": false,
+      "evidence": "Planned safeguard: Full source checkpoint, pretrained embedding and bias counted; no validation frequency prior.",
+      "residual_risk": "Await implementation and actualstream records; no confirmed capability."
+    },
+    {
+      "path": "Offline corpus contamination",
+      "closed": false,
+      "evidence": "Planned safeguard: Record manifest/splits/hash and actual new cursors; old audit words not reused as independent confirmation.",
+      "residual_risk": "Await implementation and actualstream records; no confirmed capability."
+    },
+    {
+      "path": "Lineage discontinuity",
+      "closed": false,
+      "evidence": "Planned safeguard: Complete source brain/Adam/RNG/cursor/previous-token recovery; archive retiredGamma; no cold reset.",
+      "residual_risk": "Await implementation and actualstream records; no confirmed capability."
+    }
+  ],
+  "harness_runtime": {
+    "native_claude_workflow": "unavailable in thisCodexsession; not executed",
+    "fallback": "independent role reviewers and deterministiclocalvalidators",
+    "capability_status": "active hypothetical, not confirmed"
+  },
+  "execution": {
+    "training_updates": 0,
+    "model_probes": 0,
+    "gpu_allocations": 0,
+    "production_code_changed": false,
+    "launch_authorization": "Withdrawn: historical duplication. No repeated training authorized by this design."
+  },
+  "history_correction": {
+    "input_plus_quiet_started_at_cumulative_train_tokens": 600928,
+    "already_executed_new_tokens": 500896,
+    "already_executed_joint_updates": 15653,
+    "input_clock_correction_at_cumulative_tokens": 943712,
+    "centered_raw_motor_config": "results/q8_fly_bptt32_centered_100k/config.json",
+    "finding": "Candidate C returns to an already tested event/readout protocol. Delayed arrival is real, but access restored before Gamma and conditional predictive deficit persisted. The new launch is withdrawn; retain causality and gain identities only.",
+    "sources": [
+      "docs/information_boltzmann/FLY_PULSE_QUIET_TIMING.md",
+      "results/published/fly_pulse_quiet_live_summary.json",
+      "docs/information_boltzmann/FLY_CONDITIONAL_READOUT_DIAGNOSIS_20261005.md"
+    ]
+  }
+}

@@ -30,7 +30,7 @@ from information_boltzmann.core.fly_bptt_learning import FlyBPTTLearner, FlyPhys
 
 def flatten_state(state):
     return (state.h, *state.ring, state.ge, state.gi, state.b,
-            state.x, state.u, state.baseline)
+            state.x, state.u, state.baseline, state.h_mean, state.dan_gate)
 
 
 def unflatten_state(values):
@@ -110,7 +110,8 @@ def continuing_motor_window(model, initial, inputs, options):
     with torch.no_grad():
         for i, token in enumerate(inputs):
             state = ORIGINAL_EVENT(model, state, torch.tensor([int(token)]), **options)
-            hs.append(state.h[:, model.read_indices].clone())
+            read_input = state.h - state.h_mean if model.read_centering else state.h
+            hs.append(read_input[:, model.read_indices].clone())
             spikes.append((state.ring[0]>0).clone())
             if (i+1)%8 == 0:
                 print(f'Continuation {i+1}/{len(inputs)}', flush=True)
@@ -158,6 +159,7 @@ def main():
             raise ValueError('Saved Adam ordering mismatch')
     learner.optimizer.load_state_dict(old['optimizer'])
     learner.sgd.load_state_dict(old['sgd'])
+    learner.load_edge_signs(old)
     parameter_names = {id(p): n for n, p in model.named_parameters()}
     ledger = []
     for optimizer in (learner.optimizer, learner.sgd):
@@ -233,8 +235,8 @@ def main():
         learner.optimizer.step()
         learner.sgd.step()
         with torch.no_grad():
-            for edge in learner.edges:
-                edge.clamp_(0., 5.)
+            learner.clamp_edges()
+            learner._dan_update(terminal)
         updates = {}
         for name, p in model.named_parameters():
             if p.requires_grad:

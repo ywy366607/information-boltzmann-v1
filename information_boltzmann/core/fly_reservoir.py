@@ -24,6 +24,8 @@ import torch.nn.functional as Fn
 from information_boltzmann.core.triton_synapse import (
     execute_synaptic_transmission,
     execute_delayed_synaptic_transmission,
+    build_incoming_layout,
+    IncomingDelayedTransmission,
 )
 
 
@@ -33,16 +35,24 @@ class SpikeFn(torch.autograd.Function):
     Surrogate: S_tilde(x) = (1 / pi) * arctan(pi * x) + 0.5
     Derivative: d/dx = 1 / (1 + (pi * x)^2)
 
+    Optional detached width sets a unit-peak proxy on x/width. Deliberately
+    omit the CDF chain-rule factor1/width: this is a different learning rule.
+
     Properties:
-    - Unit peak gain at x = 0: d/dx = 1.0 (prevents gradient vanishing/explosion).
-    - Heavy-tailed Cauchy/polynomial decay: prevents subthreshold dead neurons.
+    - Unit peak gain bounds this local surrogate factor, not the recurrent
+      Jacobian; reset, transmission and state feedback can amplify gradients.
+    - Cauchy tails keep subthreshold credit at ordinary finite voltages;
+      learning still requires an active downstream credit path.
     - Zero exponentials: fast, numerically stable, no exp() underflow/overflow.
     """
 
     @staticmethod
-    def forward(ctx, voltage_minus_threshold: torch.Tensor) -> torch.Tensor:
+    def forward(ctx, voltage_minus_threshold: torch.Tensor,
+                width: torch.Tensor | None = None) -> torch.Tensor:
         spike = (voltage_minus_threshold >= 0).to(voltage_minus_threshold.dtype)
-        ctx.save_for_backward(voltage_minus_threshold)
+        ctx.argument_count = len(ctx.needs_input_grad)
+        ctx.save_for_backward(voltage_minus_threshold if width is None else
+                              voltage_minus_threshold / width.detach())
         return spike
 
     @staticmethod
@@ -50,7 +60,8 @@ class SpikeFn(torch.autograd.Function):
         (v_diff,) = ctx.saved_tensors
         pi_x = math.pi * v_diff
         grad = 1.0 / (1.0 + pi_x * pi_x)
-        return grad_output * grad
+        result = grad_output * grad
+        return result if ctx.argument_count == 1 else (result, None)
 
 
 class SynapticTransmission(torch.autograd.Function):
@@ -242,8 +253,30 @@ class FlyReservoirLM(nn.Module):
                  use_stp: bool = False,
                  synapse_model: str = "auto",
                  E_E: float = 1.0, E_I: float = -0.2,
-                 decoder_bias: bool = True):
+                 decoder_bias: bool = True,
+                 use_read_gamma_trace: bool = False,
+                 init_read_gamma: float = 0.7,
+                 use_latent_predictor: bool = False,
+                 use_graph_observer: bool = False,
+                 lambda_obs: float = 1.0,
+                 lambda_sigreg: float = 0.2,
+                 max_horizon: int = 14,
+                 dagger_beta: float = 0.5,
+                 obs_init_gamma: float = 0.0,
+                 detach_reset: bool = False,
+                 surrogate_mode: str = 'absolute',
+                 transmission_mode: str = 'atomic'):
         super().__init__()
+        # Optional surrogate-gradient convention: the spike remains attached
+        # in axonal transmission, ALIF and STP; only its hard-reset mask is
+        # detached. Forward physics is identical for both conventions.
+        self.detach_reset = bool(detach_reset)
+        if surrogate_mode not in ('absolute', 'threshold'):
+            raise ValueError('surrogate_mode must be absolute or threshold')
+        self.surrogate_mode = surrogate_mode
+        if transmission_mode not in ('atomic', 'incoming'):
+            raise ValueError('transmission_mode must be atomic or incoming')
+        self.transmission_mode = transmission_mode
         packed = np.load(graph_npz, allow_pickle=False)
         self.n_neurons = int(packed["neuron_body_ids"].shape[0])
 
@@ -487,12 +520,128 @@ class FlyReservoirLM(nn.Module):
 
         self.read_norm = nn.RMSNorm(d_model)
         self.decoder = nn.Linear(d_model, vocab_size, bias=decoder_bias)
-        self.decoder.weight = nn.Parameter(self.embedding.weight.clone())
         if self.decoder.bias is not None:
             nn.init.zeros_(self.decoder.bias)
 
         nn.init.normal_(self.embedding.weight, std=0.02)
+        # Clone the initialized embedding; keep independent trainable storage.
+        self.decoder.weight = nn.Parameter(self.embedding.weight.detach().clone())
         nn.init.normal_(self.output_read.weight, std=1e-3)
+
+        self.use_read_gamma_trace = bool(use_read_gamma_trace)
+        if self.use_read_gamma_trace:
+            num_read = self.n_read if self.read_surface != "all" else self.n_neurons
+            use_anatomical = (
+                (isinstance(init_read_gamma, str) and init_read_gamma == "anatomical")
+                or (init_read_gamma is None and "coords_um" in packed)
+            )
+            if use_anatomical and "coords_um" in packed:
+                coords = packed["coords_um"]
+                if len(coords) == self.n_neurons and self.n_injection > 0:
+                    sens_idx = self.injection_index.cpu().numpy()
+                    sens_center = np.median(coords[sens_idx], axis=0)
+                    read_idx = self.read_indices.cpu().numpy() if self.read_surface != "all" else np.arange(self.n_neurons)
+                    dists_um = np.linalg.norm(coords[read_idx] - sens_center, axis=1)
+                    d_min, d_max = float(dists_um.min()), float(dists_um.max())
+                    norm_dist = (dists_um - d_min) / max(d_max - d_min, 1e-6)
+                    # Causal fruit fly conduction & reverberation time: tau in [1.0, 115.0] ticks
+                    # Covering 1.5x margin over the 75-tick connectome limit, distributed across
+                    # Weber-Fechner logarithmic multi-scale timescales:
+                    tau_min, tau_max = 1.0, 115.0
+                    tau = tau_min * (tau_max / tau_min) ** norm_dist
+                    init_gamma_arr = np.clip(tau / (1.0 + tau), 0.01, 0.994)
+                    u = (init_gamma_arr - 0.005) / 0.990
+                    init_logit_arr = np.log(u / (1.0 - u))
+                    self.logit_read_gamma = nn.Parameter(
+                        torch.from_numpy(init_logit_arr).float().unsqueeze(0)
+                    )
+                else:
+                    init_gamma = 0.7
+                    u = (init_gamma - 0.005) / 0.990
+                    init_logit = math.log(u / (1.0 - u))
+                    self.logit_read_gamma = nn.Parameter(
+                        torch.full((1, num_read), init_logit, dtype=torch.float32)
+                    )
+            else:
+                init_val = 0.7 if (init_read_gamma is None or isinstance(init_read_gamma, str)) else float(init_read_gamma)
+                init_gamma = max(0.01, min(0.99, init_val))
+                u = (init_gamma - 0.005) / 0.990
+                init_logit = math.log(u / (1.0 - u))
+                self.logit_read_gamma = nn.Parameter(
+                    torch.full((1, num_read), init_logit, dtype=torch.float32)
+                )
+        else:
+            self.logit_read_gamma = None
+
+        self.use_latent_predictor = bool(use_latent_predictor)
+        if self.use_latent_predictor:
+            from .lejepa_predictor import LeJEPAPredictor
+            d_emb = self.embedding.embedding_dim
+            d_out = self.output_read.out_features
+            self.latent_predictor = LeJEPAPredictor(
+                d_model=d_out,
+                d_emb=d_emb,
+                max_horizon=max_horizon,
+                dagger_beta=dagger_beta,
+                lambda_sigreg=lambda_sigreg,
+            )
+        else:
+            self.latent_predictor = None
+
+        self.use_graph_observer = bool(use_graph_observer)
+        if self.use_graph_observer:
+            from .fly_graph_observer import FlyGraphObserver
+            d_out = self.output_read.out_features
+            self.graph_observer = FlyGraphObserver(
+                graph_npz_path=graph_npz,
+                d_model=d_out,
+                max_horizon=max_horizon,
+                lambda_obs=lambda_obs,
+                lambda_sigreg=lambda_sigreg,
+                output_read=self.output_read,
+                read_indices=self.read_indices,
+                init_gamma=obs_init_gamma,
+            )
+        else:
+            self.graph_observer = None
+
+        self._incoming_layout_names = {}
+        if self.transmission_mode == 'incoming':
+            if not self.has_delays:
+                raise ValueError('Incoming transmission currently requires delay tiers')
+            kinds = ('e', 'i') if self.synapse_model == 'coba' else ('cuba',)
+            for kind in kinds:
+                suffix = '' if kind == 'cuba' else '_' + kind
+                layouts = build_incoming_layout(
+                    getattr(self, 'edge_pre' + suffix), getattr(self, 'edge_post' + suffix),
+                    self.delay_splits if kind == 'cuba' else getattr(self, 'splits_' + kind),
+                    self.n_neurons)
+                names = []
+                for tier, tensors in enumerate(layouts):
+                    tier_names = []
+                    for name, tensor in zip(('order', 'source', 'offsets'), tensors):
+                        key = f'incoming_{kind}_{tier}_{name}'
+                        self.register_buffer(key, tensor, persistent=False)
+                        tier_names.append(key)
+                    names.append(tuple(tier_names))
+                self._incoming_layout_names[kind] = tuple(names)
+
+    def transmit(self, ring, kind):
+        suffix = '' if kind == 'cuba' else '_' + kind
+        args = (getattr(self, 'edge_pre' + suffix), getattr(self, 'edge_post' + suffix),
+                getattr(self, 'edge_weight' + suffix),
+                self.delay_splits if kind == 'cuba' else getattr(self, 'splits_' + kind))
+        if self.transmission_mode == 'incoming':
+            layouts = tuple(tuple(getattr(self, key) for key in names)
+                            for names in self._incoming_layout_names[kind])
+            return IncomingDelayedTransmission.apply(*ring, *args, layouts)
+        return execute_delayed_synaptic_transmission(ring, *args)
+
+    def get_read_gamma_decay(self) -> torch.Tensor:
+        """Computes per-neuron [1, n_read] continuous Gamma decay factors in (0.005, 0.995)."""
+        if not getattr(self, "use_read_gamma_trace", False) or getattr(self, "logit_read_gamma", None) is None:
+            return torch.tensor(0.0)
+        return 0.005 + 0.990 * torch.sigmoid(self.logit_read_gamma)
 
     def get_decay_rates(self) -> tuple[torch.Tensor, ...]:
         """Computes per-neuron [1, N] decay rates."""
@@ -526,6 +675,20 @@ class FlyReservoirLM(nn.Module):
                 device = self.edge_pre.device
                 leak_t = torch.full((1, self.n_neurons), self.leak, device=device)
                 return leak_t, torch.zeros_like(leak_t)
+
+    def spike(self, margin: torch.Tensor, base_threshold) -> torch.Tensor:
+        """Preserve hard events; optionally set proxy width from the base threshold.
+
+        The threshold-width rule has unit peak, with no 1/threshold multiplier.
+        This deliberately changes surrogate learning geometry, not physical
+        dynamics or the exact derivative of a normalized smooth CDF. Width is
+        detached; the threshold in margin still receives its original credit.
+        """
+        if self.surrogate_mode == 'threshold':
+            width = torch.as_tensor(base_threshold, dtype=margin.dtype,
+                                    device=margin.device).detach()
+            return SpikeFn.apply(margin, width)
+        return SpikeFn.apply(margin)
 
     def get_thresholds(self) -> torch.Tensor:
         """Computes per-neuron [1, N] firing thresholds."""
@@ -572,6 +735,138 @@ class FlyReservoirLM(nn.Module):
             ones = torch.ones((1, self.n_neurons), device=dev)
             return ones, ones, ones, ones
 
+    def prepare_coba_tick(self, h, spike_ring=None, ge=None, gi=None, b=None,
+                          x=None, u=None, *, base_rates=None, thresholds=None,
+                          conductance_gains=None, alif_params=None, stp_params=None):
+        """Consume old delayed pulses once; no current input is accepted here.
+
+        The returned context retains the original state for a single later commit.
+        Coefficients are shared by the motor prediction and sensory integration.
+        """
+        if self.synapse_model != 'coba':
+            raise ValueError('A split physical tick currently requires COBA')
+        base_rates = self.get_decay_rates() if base_rates is None else base_rates
+        thresholds = self.get_thresholds() if thresholds is None else thresholds
+        conductance_gains = (self.get_conductance_gains() if conductance_gains is None
+                             else conductance_gains)
+        if self.use_alif and alif_params is None:
+            alif_params = self.get_alif_params()
+        if self.use_stp and stp_params is None:
+            stp_params = self.get_stp_params()
+        if spike_ring is None:
+            spike_ring = tuple(torch.zeros_like(h) for _ in range(4))
+        delta_ge = self.transmit(spike_ring, 'e')
+        delta_gi = self.transmit(spike_ring, 'i')
+
+        leak_m, leak_se, leak_si = base_rates
+        if ge is None:
+            ge = torch.zeros_like(h)
+        if gi is None:
+            gi = torch.zeros_like(h)
+
+        ge_next = leak_se * ge + (1.0 - leak_se) * delta_ge
+        gi_next = leak_si * gi + (1.0 - leak_si) * delta_gi
+        g_e, g_i = conductance_gains
+        G_E = g_e * ge_next
+        G_I = g_i * gi_next
+
+        # Exact continuous-time exponential integrator (GDN physical forget gate):
+        # Biological membrane passive leak conductance: g_L = -log(leak_m)
+        g_L = -torch.log(leak_m.clamp(min=1e-5, max=1.0 - 1e-7))
+        g_total = g_L + G_E + G_I
+
+        # alpha(t) = exp(-Delta_t / tau_eff) = exp(-g_total) = leak_m * exp(-(G_E + G_I))
+        # Guaranteed alpha in (0, 1] strictly, eliminating negative coefficient ringing!
+        alpha = torch.exp(-g_total.clamp(min=1e-5, max=20.0))
+
+        # Steady-state drive: i_drive = G_E * E_E + G_I * E_I + drive
+        base_current = G_E * self.E_E + G_I * self.E_I
+
+        # Integration multiplier: beta = (1 - alpha) / g_total
+        beta_int = (1.0 - alpha) / g_total.clamp_min(1e-5)
+
+        # ALIF activity-dependent threshold: theta_t = theta_0 + beta * b_t
+        if getattr(self, "use_alif", False):
+            if b is None:
+                b = torch.zeros_like(h)
+            rho_a, beta_a = alif_params
+            eff_threshold = thresholds + beta_a * b
+        else:
+            eff_threshold = thresholds
+
+        return dict(h=h, spike_ring=spike_ring, ge_next=ge_next, gi_next=gi_next,
+                    b=b, x=x, u=u, alpha=alpha, beta_int=beta_int,
+                    base_current=base_current, eff_threshold=eff_threshold,
+                    thresholds=thresholds,
+                    alif_params=alif_params, stp_params=stp_params,
+                    g_total=g_total, leak_se=leak_se, leak_si=leak_si, g_e=g_e, g_i=g_i)
+
+    def finish_coba_tick(self, context, drive, *, return_biophysics=False):
+        """Integrate from the old state and commit one full new pulse ring."""
+        h, spike_ring = context['h'], context['spike_ring']
+        if drive.shape != h.shape:
+            raise ValueError('drive must have the full physical-state shape')
+        ge_next, gi_next = context['ge_next'], context['gi_next']
+        b, x, u = context['b'], context['x'], context['u']
+        alpha, beta_int = context['alpha'], context['beta_int']
+        eff_threshold = context['eff_threshold']
+        alif_params, stp_params = context['alif_params'], context['stp_params']
+        if self.use_alif:
+            rho_a, beta_a = alif_params
+        i_drive = context['base_current'] + drive
+        v_pre = alpha * h + beta_int * i_drive
+        g_total, leak_se, leak_si = (context[k] for k in ('g_total', 'leak_se', 'leak_si'))
+        g_e, g_i = context['g_e'], context['g_i']
+        spike_next = self.spike(v_pre - eff_threshold, context['thresholds'])
+        reset_spike = spike_next.detach() if self.detach_reset else spike_next
+        h_next = v_pre * (1.0 - reset_spike)
+
+        # ALIF slow adaptation state update: b_{t+1} = rho * b_t + (1 - rho) * s_t
+        if getattr(self, "use_alif", False):
+            b_next = rho_a * b + (1.0 - rho_a) * spike_next
+
+        # STP dynamic synapse update:
+        if getattr(self, "use_stp", False):
+            u0, rho_fac, rho_rec, norm = stp_params
+            if x is None:
+                x = torch.ones_like(h)
+            if u is None:
+                u = u0.expand_as(h).clone()
+
+            u_active = u + u0 * (1.0 - u) * spike_next
+            transmitted_pulse = torch.clamp((u_active * x / norm) * spike_next, max=3.0)
+            x_post = x - u_active * x * spike_next
+
+            u_next = u0 + (u_active - u0) * rho_fac
+            x_next = 1.0 + (x_post - 1.0) * rho_rec
+        else:
+            transmitted_pulse = spike_next
+
+        next_spike_ring = (transmitted_pulse, spike_ring[0], spike_ring[1], spike_ring[2])
+
+        ret = [h_next, spike_next, next_spike_ring, ge_next, gi_next]
+        if getattr(self, "use_alif", False):
+            ret.append(b_next)
+        if getattr(self, "use_stp", False):
+            ret.extend([x_next, u_next])
+
+        if return_biophysics:
+            biophysics = {
+                "v_pre": v_pre,
+                "alpha_eff": alpha,
+                "beta_int": beta_int,
+                "eff_threshold": eff_threshold,
+                "g_total": g_total,
+                "delayed_pulses": (spike_ring[0], spike_ring[1], spike_ring[2], spike_ring[3]),
+                "transmitted_pulse": transmitted_pulse,
+                "leak_se": leak_se,
+                "leak_si": leak_si,
+                "g_e": g_e,
+                "g_i": g_i,
+            }
+            return tuple(ret), biophysics
+        return tuple(ret)
+
     def step(self, h: torch.Tensor, token: torch.Tensor,
              spike_ring: tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor] | list[torch.Tensor] | None = None,
              i_syn: torch.Tensor | None = None,
@@ -612,110 +907,20 @@ class FlyReservoirLM(nn.Module):
             stp_params = self.get_stp_params()
 
         if self.synapse_model == "coba":
-            if spike_ring is None:
-                spike_ring = tuple(torch.zeros_like(h) for _ in range(4))
-            delta_ge = execute_delayed_synaptic_transmission(
-                spike_ring, self.edge_pre_e, self.edge_post_e, self.edge_weight_e, self.splits_e)
-            delta_gi = execute_delayed_synaptic_transmission(
-                spike_ring, self.edge_pre_i, self.edge_post_i, self.edge_weight_i, self.splits_i)
-
-            leak_m, leak_se, leak_si = base_rates
-            if ge is None:
-                ge = torch.zeros_like(h)
-            if gi is None:
-                gi = torch.zeros_like(h)
-
-            ge_next = leak_se * ge + (1.0 - leak_se) * delta_ge
-            gi_next = leak_si * gi + (1.0 - leak_si) * delta_gi
-            g_e, g_i = conductance_gains
-            G_E = g_e * ge_next
-            G_I = g_i * gi_next
-
-            # Exact continuous-time exponential integrator (GDN physical forget gate):
-            # Biological membrane passive leak conductance: g_L = -log(leak_m)
-            g_L = -torch.log(leak_m.clamp(min=1e-5, max=1.0 - 1e-7))
-            g_total = g_L + G_E + G_I
-
-            # alpha(t) = exp(-Delta_t / tau_eff) = exp(-g_total) = leak_m * exp(-(G_E + G_I))
-            # Guaranteed alpha in (0, 1] strictly, eliminating negative coefficient ringing!
-            alpha = torch.exp(-g_total.clamp(min=1e-5, max=20.0))
-
-            # Steady-state drive: i_drive = G_E * E_E + G_I * E_I + drive
-            i_drive = G_E * self.E_E + G_I * self.E_I + drive
-
-            # Integration multiplier: beta = (1 - alpha) / g_total
-            beta_int = (1.0 - alpha) / g_total.clamp_min(1e-5)
-
-            # Pre-spike membrane potential (before reset): V_pre = alpha * h + beta * i_drive
-            v_pre = alpha * h + beta_int * i_drive
-
-            # ALIF activity-dependent threshold: theta_t = theta_0 + beta * b_t
-            if getattr(self, "use_alif", False):
-                if b is None:
-                    b = torch.zeros_like(h)
-                rho_a, beta_a = alif_params
-                eff_threshold = thresholds + beta_a * b
-            else:
-                eff_threshold = thresholds
-
-            spike_next = SpikeFn.apply(v_pre - eff_threshold)
-            h_next = v_pre * (1.0 - spike_next)
-
-            # ALIF slow adaptation state update: b_{t+1} = rho * b_t + (1 - rho) * s_t
-            if getattr(self, "use_alif", False):
-                b_next = rho_a * b + (1.0 - rho_a) * spike_next
-
-            # STP dynamic synapse update:
-            if getattr(self, "use_stp", False):
-                u0, rho_fac, rho_rec, norm = stp_params
-                if x is None:
-                    x = torch.ones_like(h)
-                if u is None:
-                    u = u0.expand_as(h).clone()
-
-                u_active = u + u0 * (1.0 - u) * spike_next
-                transmitted_pulse = torch.clamp((u_active * x / norm) * spike_next, max=3.0)
-                x_post = x - u_active * x * spike_next
-
-                u_next = u0 + (u_active - u0) * rho_fac
-                x_next = 1.0 + (x_post - 1.0) * rho_rec
-            else:
-                transmitted_pulse = spike_next
-
-            next_spike_ring = (transmitted_pulse, spike_ring[0], spike_ring[1], spike_ring[2])
-
-            ret = [h_next, spike_next, next_spike_ring, ge_next, gi_next]
-            if getattr(self, "use_alif", False):
-                ret.append(b_next)
-            if getattr(self, "use_stp", False):
-                ret.extend([x_next, u_next])
-
-            if return_biophysics:
-                biophysics = {
-                    "v_pre": v_pre,
-                    "alpha_eff": alpha,
-                    "beta_int": beta_int,
-                    "eff_threshold": eff_threshold,
-                    "g_total": g_total,
-                    "delayed_pulses": (spike_ring[0], spike_ring[1], spike_ring[2], spike_ring[3]),
-                    "transmitted_pulse": transmitted_pulse,
-                    "leak_se": leak_se,
-                    "leak_si": leak_si,
-                    "g_e": g_e,
-                    "g_i": g_i,
-                }
-                return tuple(ret), biophysics
-            return tuple(ret)
+            context = self.prepare_coba_tick(
+                h, spike_ring, ge, gi, b, x, u, base_rates=base_rates,
+                thresholds=thresholds, conductance_gains=conductance_gains,
+                alif_params=alif_params, stp_params=stp_params)
+            return self.finish_coba_tick(context, drive, return_biophysics=return_biophysics)
 
         else:
             user_passed_i_syn = (i_syn is not None)
             if self.has_delays:
                 if spike_ring is None:
                     spike_ring = tuple(torch.zeros_like(h) for _ in range(4))
-                current = execute_delayed_synaptic_transmission(
-                    spike_ring, self.edge_pre, self.edge_post, self.edge_weight, self.delay_splits)
+                current = self.transmit(spike_ring, 'cuba')
             else:
-                spikes_now = SpikeFn.apply(h - self.threshold)
+                spikes_now = self.spike(h - self.threshold, self.threshold)
                 current = execute_synaptic_transmission(
                     spikes_now, self.edge_pre, self.edge_post, self.edge_weight)
 
@@ -754,8 +959,9 @@ class FlyReservoirLM(nn.Module):
             else:
                 eff_threshold = thresholds
 
-            spike_next = SpikeFn.apply(v_pre - eff_threshold)
-            h_next = v_pre * (1.0 - spike_next)
+            spike_next = self.spike(v_pre - eff_threshold, thresholds)
+            reset_spike = spike_next.detach() if self.detach_reset else spike_next
+            h_next = v_pre * (1.0 - reset_spike)
 
             if getattr(self, "use_alif", False):
                 b_next = rho_a * b + (1.0 - rho_a) * spike_next
@@ -1033,7 +1239,10 @@ def load_fly_reservoir_checkpoint(
                            vocab_size=saved.get("vocab_size", 50257),
                            d_model=saved.get("d_model", 128),
                            leak=saved.get("leak", 0.9),
-                           threshold=saved.get("threshold", 1.0))
+                           threshold=saved.get("threshold", 1.0),
+                           detach_reset=saved.get('config', {}).get('detach_reset', False),
+                           surrogate_mode=saved.get('config', {}).get('surrogate_mode', 'absolute'),
+                           transmission_mode=saved.get('config', {}).get('transmission_mode', 'atomic'))
     model.load_state_dict(saved["model"])
     return model, {"state": saved.get("state"), "config": saved.get("config"),
                    "meta": meta}

@@ -1,0 +1,19 @@
+{
+  "scope": "isolated_two_vocabulary_GEMMs_plus_probability_and_backward",
+  "rows": [
+    {
+      "dtype": "torch.float32",
+      "median_ms": 2.0073980000006486,
+      "loss": 8.231034278869629,
+      "loss_scale": 1.0,
+      "relative_gradient_error": 0.0
+    },
+    {
+      "dtype": "torch.float16",
+      "median_ms": 1.8227210000031846,
+      "loss": 8.230789184570312,
+      "loss_scale": 16384.0,
+      "relative_gradient_error": 0.0004982412792742252
+    }
+  ]
+}

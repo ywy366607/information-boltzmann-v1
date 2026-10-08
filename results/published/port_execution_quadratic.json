@@ -1,0 +1,58 @@
+{
+  "kind": "execution_benchmark_not_capability_training",
+  "checkpoint": "results\\q8_predictive_ports_k16_unified_bath_3000\\BBest.pt",
+  "source_sha256": "446533228ee5ceb0891369ce0cf447ead9201deb8402e307cb373324adbde415",
+  "torch": "2.9.1+cu126",
+  "gpu": "NVIDIA GeForce GTX 1650",
+  "compiled": true,
+  "K": 16,
+  "dt": 4.0,
+  "shape": [
+    8,
+    8,
+    4
+  ],
+  "channels": 128,
+  "bath": "quadratic",
+  "bath_replaced_for_timing": true,
+  "tokens_per_update": 128,
+  "bptt_chunk_tokens": 32,
+  "start_data_offset": 320000,
+  "warmup_updates": 2,
+  "timed_updates": 8,
+  "wall_ms": [
+    1129.1466000002401,
+    1131.942699999854,
+    1128.5199000003558,
+    1128.958700000112,
+    1128.6965999997847,
+    1128.4371000001556,
+    1129.5608999998876,
+    1129.410900000039
+  ],
+  "cuda_event_ms": [
+    1129.10986328125,
+    1131.8934326171875,
+    1128.4803466796875,
+    1128.911376953125,
+    1128.6177978515625,
+    1128.3841552734375,
+    1129.4976806640625,
+    1129.375732421875
+  ],
+  "median_wall_ms": 1129.052650000176,
+  "mean_wall_ms": 1129.3341750000536,
+  "tokens_per_second": 113.36938095843452,
+  "peak_allocated_mib": 181.93115234375,
+  "peak_reserved_mib": 1114.0,
+  "joint_losses": [
+    15.81904411315918,
+    16.287616729736328,
+    15.731729507446289,
+    16.74362564086914,
+    15.748283386230469,
+    16.595184326171875,
+    15.923171997070312,
+    17.586618423461914
+  ]
+}

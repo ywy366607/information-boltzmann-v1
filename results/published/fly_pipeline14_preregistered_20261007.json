@@ -1,0 +1,154 @@
+{
+  "status": "preregistered_pending_independent_review",
+  "date": "2026-10-07",
+  "hypothesis": "Correct pre-observation motor deadline permits conditional prediction with delayed physical state and one new observation per tick. Useful learned discrimination remains to be established.",
+  "alternative_hypotheses": [
+    "Correct timing still lacks motor semantic discrimination.",
+    "Surrogate credit/window boundaries or plasticity interference limit learning.",
+    "Read/decoder scale rather than timing controls predictive risk."
+  ],
+  "numerical_predictions": [
+    "Exact earliest contrast follows known cumulative path delay 1..14 with no earlier response.",
+    "A 14-tick within-window loss has historical source and path-edge surrogate gradients.",
+    "Full-state continuation preserves delayed responses while TBPTT detach removes preboundary source derivative.",
+    "Changed current/future input cannot alter the sealed current-target score."
+  ],
+  "test_result": {
+    "suite": "test_fly_pipeline_multihop + test_fly_pipeline + test_fly_pipeline_stream_cli + test_fly_bptt_learning",
+    "passed": 49,
+    "scope": "49 tests accumulated: prior48 full affected suite, then18 multihop/CLI tests passed after terminal reporting (one new); numerical/interface only"
+  },
+  "physical_contract": {
+    "ticks_per_observed_event": 1,
+    "ring_slots_per_edge": 4,
+    "acceptance_total_path_delays": [
+      1,
+      14
+    ],
+    "cumulative_path_cutoff": null,
+    "Gamma": false,
+    "latent_predictor": false,
+    "read_surface": "motor output only",
+    "write_surface": "disjoint topographic sensory only",
+    "never_reset": true
+  },
+  "credit_contract": {
+    "window": 32,
+    "surrogate": "existing ATan",
+    "detach": "optimizer boundaries",
+    "complete_14_tick_source_positions_in_window": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17
+    ],
+    "crossboundary_physical_values": "retained",
+    "crossboundary_source_derivative": "truncated"
+  },
+  "budget": {
+    "fresh_train_tokens": 96000,
+    "fresh_train_updates": 3000,
+    "active_B_tokens": 1536,
+    "A_revisit_tokens": 768,
+    "total_events": 98304,
+    "total_updates": 3072,
+    "physical_ticks": 98304
+  },
+  "initialization": {
+    "seed": 0,
+    "d_model": 768,
+    "input_embedding": "fixed GPT-2 wte",
+    "decoder": "independent GPT-2 wte copy; trainable",
+    "bias": "declared original training-only log frequency",
+    "read_norm_initial_gain": 0.1,
+    "external_pretraining_budget": "Inherited GPT-2 artifact; not counted as new exposure",
+    "prior_reference_tokens": 10940858
+  },
+  "endpoints": {
+    "primary": "Unique primary: all32000targets in last1000freshtrainingupdates; model-minus-locked-unigram paired risk",
+    "interval": {
+      "level": 0.95,
+      "method": "paired percentile block bootstrap conditional on finite evolving trajectory and dependence captured by blocks",
+      "main_block_tokens": 256,
+      "sensitivity_blocks": [
+        128,
+        512
+      ],
+      "samples": 5000,
+      "seed": 0,
+      "active_evaluation_boundaries": "Never form blocks across insertion boundaries",
+      "partial_blocks": "Retain every target; resample final partial blocks with actual token weights",
+      "acceptance": "95% interval upper bound below0 at256,128and512 supports complete-candidate budget risk advantage"
+    },
+    "finalB": "256unseen-validationtokens; fullcurve/mean/reference difference; direction check only, no one-block bootstrap significance",
+    "learning_curve": "Prespecified first1000 and last1000freshupdate mean and complete curve; no strict monotonicity requirement; continued improvement implies unestablished convergence",
+    "monitor_only": "BestB never replaces fixed terminal endpoint",
+    "attribution": "Risk advantage may include adaptation of static bias; it alone does not establish motor-conditioning utility or timing-specific benefit"
+  },
+  "decision": "Retain corrected causal interface if learned conditional prediction beats its locked reference; report budget-limited inconclusive if useful motor conditioning remains unestablished. Do not uniquely attribute failure to credit delay or add a timing patch.",
+  "source_hashes": {
+    "scripts/ib/train_fly_pipeline_stream.py": "72b9b570f2e94f2c0eaa8f4bd5c52570f12ec60de7e595bbf3c9f066413ec504",
+    "information_boltzmann/core/fly_pipeline.py": "17f857ac6f6d145f2bf1a1083ce98edf3b37d4de5f39b508f4eedcfef51db04c",
+    "information_boltzmann/core/fly_reservoir.py": "ae20d3d54a9e7c67ef4d3596ee3503c3e40b92cbe81ee7a4800345cb365de9ca",
+    "information_boltzmann/core/fly_bptt_learning.py": "c3201313989784cefe74a89cfdf4e3e785e7a523e18b58671cea0c4be9a99021",
+    "information_boltzmann/core/triton_synapse.py": "f5b6d600a86233fdeebcb1b6958f0441c39041b2cf78b1737c401aa4db28a5b7",
+    "information_boltzmann/runtime/prequential_meter.py": "59888c68ca9f005a3ce1e31e4ca3e24e9b132f662702923984fff888c5e190d1",
+    "information_boltzmann/runtime/lifelong_evaluation.py": "d7cd585da1ede80b5fffe56bc9da6684cb0768ce83de25d4dfb6d6d71152d23c"
+  },
+  "provenance": {
+    "graph": {
+      "path": "D:\\information-boltzmann-v1\\data\\malecns_v1\\fly_reservoir_coba.npz",
+      "sha256": "99ae28836addcc9c4aef9ef755295f13105a8497135bf2e28cc8f1be0e47e359"
+    },
+    "sensory_partitions": {
+      "path": "D:\\information-boltzmann-v1\\data\\malecns_v1\\sensory_partitions.npz",
+      "sha256": "1abcacb1f9b182031236a2cc5932a61c6b904dda3aaed55b462a3f36636a39f5"
+    },
+    "train": {
+      "path": "D:\\information-boltzmann-v1\\data\\ib_owt_gpt2_31m\\train.npy",
+      "sha256": "0a1816c467f1d9a643e2e81d7ffbf47dd9219c954f3afcd040a4cd5db84880a3"
+    },
+    "validation": {
+      "path": "D:\\information-boltzmann-v1\\data\\ib_owt_gpt2_31m\\validation.npy",
+      "sha256": "4f6ffab72f48594e745c0bdf10bddce6a79167491abd4ef64099368c8c6fcc33"
+    },
+    "reference_train": {
+      "path": "D:\\information-boltzmann-v1\\data\\ib_owt_gpt2\\train.npy",
+      "sha256": "6dd24ac1b43aef10d914418b7e6d6f28eedbc5ae8dc653003196375e37ceedb9"
+    },
+    "pretrained_embedding": {
+      "path": "D:\\information-boltzmann-v1\\data\\gpt2_model.safetensors",
+      "sha256": "248dfc3911869ec493c76e65bf2fcf7f615828b0254c12b473182f0f81d3a707"
+    }
+  },
+  "reference": {
+    "train": "D:\\information-boltzmann-v1\\data\\ib_owt_gpt2\\train.npy",
+    "file_sha256": "6dd24ac1b43aef10d914418b7e6d6f28eedbc5ae8dc653003196375e37ceedb9",
+    "tokens": 10940858,
+    "vocab_size": 50257,
+    "smoothing": "add one",
+    "frozen": true,
+    "validation_labels_used_for_prior": false,
+    "counts_sha256": "d4de1245c61786d8fd223427b29a7ae6db3157d84fac1f11790d2bfcb4c6a750",
+    "scope": "Offline full training-corpus frequency reference; its data budget is separate"
+  },
+  "review_status": {
+    "core": "independently approved by diagnosis_review",
+    "production_implementation": "pending final source lock",
+    "experiment_committee": "pending"
+  }
+}

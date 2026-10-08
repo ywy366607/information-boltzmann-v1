@@ -1,0 +1,321 @@
+{
+  "date": "2026-10-04",
+  "scope": "Completed continuous BPTT32 execution, active-learning records and fixed-weight accumulated-learning attribution. No matched frozen-brain training control.",
+  "progress": {
+    "status": "completed",
+    "bptt_train_tokens": 100000,
+    "tokens_streamed": 200000,
+    "target_bptt_tokens": 100000,
+    "ema_stream_loss": 7.853963963248101,
+    "best_live_nll": 7.030318535864353,
+    "speed_tokens_per_sec": 42.06198330563485,
+    "field_energy": 0.1614234745502472,
+    "firing_rate": 0.013032788410782814,
+    "read_norm_mean": 0.11339439451694489,
+    "vram_allocated_mib": 1326.5625,
+    "vram_reserved_mib": 2144.0,
+    "vram_peak_mib": 1914.15625,
+    "setup_peak_mib": 1914.15625,
+    "events": 221272,
+    "bptt_optimizer_updates": 3365,
+    "grad_norm_before_clip": 0.929355263710022,
+    "synapse_grad_norm": 0.048269737511873245,
+    "writer_grad_norm": 0.001698829815723002
+  },
+  "active_aggregate": {
+    "fresh_validation_mean": 7.984412704221905,
+    "first5_mean": 8.66368544101715,
+    "middle10_mean": 7.58252295423299,
+    "last5_mean": 8.108919467404485,
+    "matched_revisit_gain_mean": 0.14811110083512427,
+    "positive_revisits": 20,
+    "rank_median": 1.1097594499588013,
+    "recovery_status_counts": {
+      "no_observed_improvement": 11,
+      "observed_recovery": 9
+    }
+  },
+  "parameter_displacements": [
+    {
+      "name": "log_tau_m",
+      "elements": 27,
+      "fraction_changed": 0.8888888888888888,
+      "relative_l2_change": 0.03100277948475688,
+      "delta_l2": 0.5246496622323674,
+      "max_abs_change": 0.3088493347167969
+    },
+    {
+      "name": "log_tau_s_e",
+      "elements": 27,
+      "fraction_changed": 0.8518518518518519,
+      "relative_l2_change": 0.00717538147938975,
+      "delta_l2": 0.06956325733342852,
+      "max_abs_change": 0.043790340423583984
+    },
+    {
+      "name": "log_tau_s_i",
+      "elements": 27,
+      "fraction_changed": 0.8888888888888888,
+      "relative_l2_change": 0.003579214105909345,
+      "delta_l2": 0.04549903853083686,
+      "max_abs_change": 0.034757137298583984
+    },
+    {
+      "name": "log_threshold",
+      "elements": 27,
+      "fraction_changed": 1.0,
+      "relative_l2_change": 0.07094073030816564,
+      "delta_l2": 0.799589565965686,
+      "max_abs_change": 0.29941892623901367
+    },
+    {
+      "name": "log_g_e",
+      "elements": 1,
+      "fraction_changed": 1.0,
+      "relative_l2_change": 2.396731278210112,
+      "delta_l2": 0.19611965119838715,
+      "max_abs_change": 0.19611965119838715
+    },
+    {
+      "name": "log_g_i",
+      "elements": 1,
+      "fraction_changed": 1.0,
+      "relative_l2_change": 0.9775369946548325,
+      "delta_l2": 0.0691768218530342,
+      "max_abs_change": 0.0691768218530342
+    },
+    {
+      "name": "log_tau_a",
+      "elements": 27,
+      "fraction_changed": 0.6296296296296297,
+      "relative_l2_change": 0.005852230645419822,
+      "delta_l2": 0.11870065362564948,
+      "max_abs_change": 0.0922703742980957
+    },
+    {
+      "name": "log_beta",
+      "elements": 27,
+      "fraction_changed": 0.6296296296296297,
+      "relative_l2_change": 0.026136561584970342,
+      "delta_l2": 0.407113397085963,
+      "max_abs_change": 0.254608154296875
+    },
+    {
+      "name": "logit_u0",
+      "elements": 27,
+      "fraction_changed": 0.0,
+      "relative_l2_change": 0.0,
+      "delta_l2": 0.0,
+      "max_abs_change": 0
+    },
+    {
+      "name": "log_tau_fac",
+      "elements": 27,
+      "fraction_changed": 0.0,
+      "relative_l2_change": 0.0,
+      "delta_l2": 0.0,
+      "max_abs_change": 0
+    },
+    {
+      "name": "log_tau_rec",
+      "elements": 27,
+      "fraction_changed": 0.0,
+      "relative_l2_change": 0.0,
+      "delta_l2": 0.0,
+      "max_abs_change": 0
+    },
+    {
+      "name": "edge_weight_e",
+      "elements": 15519257,
+      "fraction_changed": 0.07180356636918894,
+      "relative_l2_change": 5.905433981572129e-06,
+      "delta_l2": 9.902778626647402e-05,
+      "max_abs_change": 6.195157766342163e-06
+    },
+    {
+      "name": "edge_weight_i",
+      "elements": 9802138,
+      "fraction_changed": 0.027243750292028128,
+      "relative_l2_change": 3.986637466916244e-07,
+      "delta_l2": 6.912987233450223e-06,
+      "max_abs_change": 5.848705768585205e-07
+    },
+    {
+      "name": "topographic_writer.gate_linear.weight",
+      "elements": 2304,
+      "fraction_changed": 1.0,
+      "relative_l2_change": 0.18659324578063682,
+      "delta_l2": 0.7897796233291972,
+      "max_abs_change": 0.11898875329643488
+    },
+    {
+      "name": "topographic_writer.gate_linear.bias",
+      "elements": 3,
+      "fraction_changed": 1.0,
+      "relative_l2_change": 0.349820283599518,
+      "delta_l2": 0.07349907608545103,
+      "max_abs_change": 0.05685987323522568
+    },
+    {
+      "name": "topographic_writer.proj_vis.weight",
+      "elements": 3154176,
+      "fraction_changed": 4.755600194789384e-06,
+      "relative_l2_change": 1.1834295765888854e-14,
+      "delta_l2": 5.247406210526641e-12,
+      "max_abs_change": 3.637978807091713e-12
+    },
+    {
+      "name": "topographic_writer.proj_chemo.weight",
+      "elements": 3830016,
+      "fraction_changed": 0.009468628851681038,
+      "relative_l2_change": 7.423248997710236e-08,
+      "delta_l2": 3.630069354299464e-05,
+      "max_abs_change": 4.172325134277344e-06
+    },
+    {
+      "name": "topographic_writer.proj_mech.weight",
+      "elements": 5236224,
+      "fraction_changed": 0.039910439278380755,
+      "relative_l2_change": 2.473678379956897e-07,
+      "delta_l2": 0.0001414312487240799,
+      "max_abs_change": 1.195073127746582e-05
+    },
+    {
+      "name": "embedding.weight",
+      "elements": 38597376,
+      "fraction_changed": 0.0,
+      "relative_l2_change": 0.0,
+      "delta_l2": 0.0,
+      "max_abs_change": 0
+    },
+    {
+      "name": "output_read.weight",
+      "elements": 1791744,
+      "fraction_changed": 0.991493762501786,
+      "relative_l2_change": 0.563499011220017,
+      "delta_l2": 67.82118815549256,
+      "max_abs_change": 0.3383907526731491
+    },
+    {
+      "name": "read_norm.weight",
+      "elements": 768,
+      "fraction_changed": 1.0,
+      "relative_l2_change": 0.43078354025079046,
+      "delta_l2": 1.2342075418314018,
+      "max_abs_change": 0.1490972936153412
+    },
+    {
+      "name": "decoder.weight",
+      "elements": 38597376,
+      "fraction_changed": 0.9999574841564359,
+      "relative_l2_change": 0.49279319156933665,
+      "delta_l2": 548.0653326644335,
+      "max_abs_change": 1.4848800599575043
+    },
+    {
+      "name": "decoder.bias",
+      "elements": 50257,
+      "fraction_changed": 0.9858129215830631,
+      "relative_l2_change": 0.027917938299410833,
+      "delta_l2": 111.63799339590486,
+      "max_abs_change": 0.7424259185791016
+    }
+  ],
+  "intervention": {
+    "scope": "fixed-weight paired mechanism intervention; not active evaluation or frozen-brain training comparison",
+    "checkpoint": "results\\q8_fly_bptt32_continuous_100k\\last.pt",
+    "origin": {
+      "checkpoint": "results\\q8_fly_online_local_credit_first_revisit_100k\\last.pt",
+      "train_tokens": 100000,
+      "events": 113592,
+      "old_optimizer_updates": 28398,
+      "migration": "physical/weights/Adam moments retained; local eligibility and pending replay study archived; BPTT credit starts at this boundary"
+    },
+    "train_tokens_added": 100000,
+    "updates": 3365,
+    "validation_cursor": 9720,
+    "burn_in_events": 256,
+    "score_events": 1024,
+    "state_policy": "same saved full physical state per arm; no reset; real unscored burn-in",
+    "rollback_physical_names": [
+      "log_tau_m",
+      "log_tau_s_e",
+      "log_tau_s_i",
+      "log_threshold",
+      "log_g_e",
+      "log_g_i",
+      "log_tau_a",
+      "log_beta",
+      "logit_u0",
+      "log_tau_fac",
+      "log_tau_rec"
+    ],
+    "peak_allocated_mib": 691.37939453125
+  },
+  "intervention_arms": {
+    "learned": {
+      "nll": 8.213205337524414,
+      "nll_increase_on_rollback": 0.0,
+      "paired_128_event_blocks": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "read_feature_relative_l2_difference": 0.0,
+      "seconds": 10.345631000003777
+    },
+    "rollback_edges": {
+      "nll": 8.213197708129883,
+      "nll_increase_on_rollback": -8.311355486512184e-06,
+      "paired_128_event_blocks": [
+        -6.2175095081329346e-06,
+        -8.372589945793152e-06,
+        -1.989305019378662e-06,
+        -5.846843123435974e-06,
+        -7.729977369308472e-06,
+        -5.5553391575813293e-05,
+        -3.926455974578857e-06,
+        2.3145228624343872e-05
+      ],
+      "read_feature_relative_l2_difference": 0.0009721508831717074,
+      "seconds": 9.884254500007955
+    },
+    "rollback_physiology": {
+      "nll": 8.212746620178223,
+      "nll_increase_on_rollback": -0.0004593278281390667,
+      "paired_128_event_blocks": [
+        -0.019168060272932053,
+        -0.051674872636795044,
+        0.034939587116241455,
+        -0.011060120537877083,
+        0.012980218976736069,
+        -0.06708270311355591,
+        0.044071655720472336,
+        0.053319673985242844
+      ],
+      "read_feature_relative_l2_difference": 0.8654229640960693,
+      "seconds": 9.855938299995614
+    },
+    "rollback_both": {
+      "nll": 8.21335220336914,
+      "nll_increase_on_rollback": 0.00014726119115948677,
+      "paired_128_event_blocks": [
+        -0.019052870571613312,
+        -0.05322951078414917,
+        0.036158543080091476,
+        -0.012137340381741524,
+        0.01274963840842247,
+        -0.06687871366739273,
+        0.0474696010351181,
+        0.05609874427318573
+      ],
+      "read_feature_relative_l2_difference": 0.8711799383163452,
+      "seconds": 9.847535400011111
+    }
+  }
+}

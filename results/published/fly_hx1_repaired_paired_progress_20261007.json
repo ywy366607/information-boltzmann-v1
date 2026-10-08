@@ -1,0 +1,225 @@
+{
+  "scope": "read-only completed 100k run accounting; frozen training-count prior, same validation targets, no new model runs",
+  "run": "results/q8_fly_bptt32_hx1_repaired_100k",
+  "summary": {
+    "all": {
+      "fresh_B_nll": 7.518009936949238,
+      "fresh_B_fixed_prior_nll": 7.474569172726912,
+      "paired_B_gain": -0.04344076422232805
+    },
+    "first5": {
+      "fresh_B_nll": 7.3485683655366305,
+      "fresh_B_fixed_prior_nll": 7.326765830019317,
+      "paired_B_gain": -0.021802535517311837
+    },
+    "last5": {
+      "fresh_B_nll": 7.813262983970344,
+      "fresh_B_fixed_prior_nll": 7.79504152550644,
+      "paired_B_gain": -0.018221458463904126
+    },
+    "positive_B_contexts": 7,
+    "contexts": 20
+  },
+  "evaluations": [
+    {
+      "tokens": 5024,
+      "fresh_B_nll": 7.665981280617416,
+      "fresh_B_fixed_prior_nll": 7.512127477933757,
+      "paired_B_gain": -0.1538538026836589,
+      "cumulative_train_gain": 0.24239500553982565,
+      "recent_train_gain": 0.22264470974897055,
+      "A2_saving": 0.2399641964584589,
+      "actual_revisit_gap": 256
+    },
+    {
+      "tokens": 10016,
+      "fresh_B_nll": 7.589761429466307,
+      "fresh_B_fixed_prior_nll": 7.560355754282792,
+      "paired_B_gain": -0.029405675183515,
+      "cumulative_train_gain": 0.19619447743547244,
+      "recent_train_gain": 0.13157370410899105,
+      "A2_saving": 0.25881252624094486,
+      "actual_revisit_gap": 256
+    },
+    {
+      "tokens": 15008,
+      "fresh_B_nll": 6.913963161408901,
+      "fresh_B_fixed_prior_nll": 6.9325085301065625,
+      "paired_B_gain": 0.018545368697661324,
+      "cumulative_train_gain": 0.17017091755080307,
+      "recent_train_gain": 0.11710035852418699,
+      "A2_saving": 0.12527191638946533,
+      "actual_revisit_gap": 256
+    },
+    {
+      "tokens": 20000,
+      "fresh_B_nll": 7.477139932103455,
+      "fresh_B_fixed_prior_nll": 7.423662122637301,
+      "paired_B_gain": -0.05347780946615366,
+      "cumulative_train_gain": 0.15713454731454696,
+      "recent_train_gain": 0.10481468672317629,
+      "A2_saving": 0.276215273886919,
+      "actual_revisit_gap": 256
+    },
+    {
+      "tokens": 25024,
+      "fresh_B_nll": 7.095996024087071,
+      "fresh_B_fixed_prior_nll": 7.2051752651361785,
+      "paired_B_gain": 0.10917924104910703,
+      "cumulative_train_gain": 0.15744608532683632,
+      "recent_train_gain": 0.1350479838849079,
+      "A2_saving": 0.3083165902644396,
+      "actual_revisit_gap": 256
+    },
+    {
+      "tokens": 30016,
+      "fresh_B_nll": 7.261622866615653,
+      "fresh_B_fixed_prior_nll": 7.3592044443753455,
+      "paired_B_gain": 0.09758157775969245,
+      "cumulative_train_gain": 0.14356672051443442,
+      "recent_train_gain": 0.07447129571574074,
+      "A2_saving": 0.23513824865221977,
+      "actual_revisit_gap": 256
+    },
+    {
+      "tokens": 35008,
+      "fresh_B_nll": 7.4305489687249064,
+      "fresh_B_fixed_prior_nll": 7.404972866968463,
+      "paired_B_gain": -0.025576101756443315,
+      "cumulative_train_gain": 0.16299020144334053,
+      "recent_train_gain": 0.2801111767374618,
+      "A2_saving": 0.274369677528739,
+      "actual_revisit_gap": 256
+    },
+    {
+      "tokens": 40000,
+      "fresh_B_nll": 7.201520138420165,
+      "fresh_B_fixed_prior_nll": 7.099170317044387,
+      "paired_B_gain": -0.10234982137577742,
+      "cumulative_train_gain": 0.2001258804036901,
+      "recent_train_gain": 0.4494490612456419,
+      "A2_saving": 0.19503294490277767,
+      "actual_revisit_gap": 256
+    },
+    {
+      "tokens": 45024,
+      "fresh_B_nll": 7.374658333137631,
+      "fresh_B_fixed_prior_nll": 7.143001550036594,
+      "paired_B_gain": -0.23165678310103743,
+      "cumulative_train_gain": 0.2581675888388842,
+      "recent_train_gain": 0.6923865073655211,
+      "A2_saving": 0.35257300548255444,
+      "actual_revisit_gap": 256
+    },
+    {
+      "tokens": 50016,
+      "fresh_B_nll": 7.182731752283871,
+      "fresh_B_fixed_prior_nll": 7.172803130986355,
+      "paired_B_gain": -0.009928621297516038,
+      "cumulative_train_gain": 0.2714462417398751,
+      "recent_train_gain": 0.3146987631706324,
+      "A2_saving": 0.16667895950376987,
+      "actual_revisit_gap": 256
+    },
+    {
+      "tokens": 55008,
+      "fresh_B_nll": 7.070092867128551,
+      "fresh_B_fixed_prior_nll": 6.97396224092614,
+      "paired_B_gain": -0.0961306262024113,
+      "cumulative_train_gain": 0.26212747807598097,
+      "recent_train_gain": 0.16256177602326272,
+      "A2_saving": 0.16262279450893402,
+      "actual_revisit_gap": 256
+    },
+    {
+      "tokens": 60000,
+      "fresh_B_nll": 7.3321613892912865,
+      "fresh_B_fixed_prior_nll": 7.304086030077094,
+      "paired_B_gain": -0.028075359214192908,
+      "cumulative_train_gain": 0.27307298430135707,
+      "recent_train_gain": 0.4017756991113357,
+      "A2_saving": 0.2741694748401642,
+      "actual_revisit_gap": 256
+    },
+    {
+      "tokens": 65024,
+      "fresh_B_nll": 7.927344089373946,
+      "fresh_B_fixed_prior_nll": 7.756028820158063,
+      "paired_B_gain": -0.17131526921588325,
+      "cumulative_train_gain": 0.27216280171253365,
+      "recent_train_gain": 0.2727575669852804,
+      "A2_saving": 0.09902418032288551,
+      "actual_revisit_gap": 256
+    },
+    {
+      "tokens": 70016,
+      "fresh_B_nll": 7.61003918107599,
+      "fresh_B_fixed_prior_nll": 7.6504276228545836,
+      "paired_B_gain": 0.040388441778593354,
+      "cumulative_train_gain": 0.25801222479189684,
+      "recent_train_gain": 0.07563065978733619,
+      "A2_saving": 0.23464268445968628,
+      "actual_revisit_gap": 256
+    },
+    {
+      "tokens": 75008,
+      "fresh_B_nll": 8.160322405397892,
+      "fresh_B_fixed_prior_nll": 8.018689653482387,
+      "paired_B_gain": -0.1416327519155054,
+      "cumulative_train_gain": 0.24778203343903876,
+      "recent_train_gain": 0.07270614481916926,
+      "A2_saving": 0.06962978281080723,
+      "actual_revisit_gap": 256
+    },
+    {
+      "tokens": 80000,
+      "fresh_B_nll": 7.895533591508865,
+      "fresh_B_fixed_prior_nll": 7.923520493135873,
+      "paired_B_gain": 0.02798690162700801,
+      "cumulative_train_gain": 0.23957810201127142,
+      "recent_train_gain": 0.1221549987752848,
+      "A2_saving": 0.4274803940206766,
+      "actual_revisit_gap": 256
+    },
+    {
+      "tokens": 85024,
+      "fresh_B_nll": 7.7357442090287805,
+      "fresh_B_fixed_prior_nll": 7.5801845549319395,
+      "paired_B_gain": -0.15555965409684092,
+      "cumulative_train_gain": 0.24047647020918114,
+      "recent_train_gain": 0.25419791497366084,
+      "A2_saving": 0.1291825119405985,
+      "actual_revisit_gap": 256
+    },
+    {
+      "tokens": 90016,
+      "fresh_B_nll": 7.827071625739336,
+      "fresh_B_fixed_prior_nll": 7.910055477451682,
+      "paired_B_gain": 0.08298385171234557,
+      "cumulative_train_gain": 0.2328664283255751,
+      "recent_train_gain": 0.10802947221949122,
+      "A2_saving": 0.14712537452578545,
+      "actual_revisit_gap": 256
+    },
+    {
+      "tokens": 95008,
+      "fresh_B_nll": 7.804102816618979,
+      "fresh_B_fixed_prior_nll": 7.816206876524335,
+      "paired_B_gain": 0.012104059905356124,
+      "cumulative_train_gain": 0.22445951428388514,
+      "recent_train_gain": 0.06973520885597484,
+      "A2_saving": -0.16778170689940453,
+      "actual_revisit_gap": 256
+    },
+    {
+      "tokens": 100000,
+      "fresh_B_nll": 7.8038626769557595,
+      "fresh_B_fixed_prior_nll": 7.74524022548837,
+      "paired_B_gain": -0.058622451467389425,
+      "cumulative_train_gain": 0.21597335120475386,
+      "recent_train_gain": 0.045207948406397414,
+      "A2_saving": 0.18441606685519218,
+      "actual_revisit_gap": 256
+    }
+  ]
+}

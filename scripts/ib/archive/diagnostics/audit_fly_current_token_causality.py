@@ -57,12 +57,14 @@ def load_mapped_model(saved: dict) -> FlyReservoirLM:
         model = FlyReservoirLM(ROOT / cfg['graph'], vocab_size=50257,
             d_model=cfg['d_model'], injection='topographic', read_surface='output',
             synapse_model='coba', use_alif=True, use_stp=True,
-            decoder_bias=cfg['decoder_bias'])
+            decoder_bias=cfg['decoder_bias'],
+            read_centering=saved['learner'].get('read_centering', cfg.get('read_centering', False)))
     model.load_state_dict({name: tensor for name, tensor in saved['model'].items()
                            if name not in ('edge_weight_e', 'edge_weight_i')}, strict=True, assign=True)
     for name in ('edge_weight_e', 'edge_weight_i'):
         setattr(model, name, saved['model'][name].detach())
     model.requires_grad_(False)
+    model.dan_plastic_lr = saved['learner'].get('dan_plastic_lr', cfg.get('dan_plastic_lr', 0.0))
     return model
 
 

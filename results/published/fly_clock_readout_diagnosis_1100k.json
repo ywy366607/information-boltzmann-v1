@@ -1,0 +1,224 @@
+{
+  "scope": "Distinguish sensory pulse depletion, physical latency, and read geometry.\n\nRead-only CPU forks of one mature individual. An eight-tick quiet pulse response\nand one real 32-event continuing window diagnose mechanisms, not capabilities.\nThe continuing production learner, weights, optimizer and cursors are untouched.\n",
+  "checkpoint_tokens": 1100000,
+  "input_pair": [
+    8108,
+    13084
+  ],
+  "normal_read_tick_after_input": 1,
+  "physical_ticks_per_input": 2,
+  "writer_baseline_clock": "input",
+  "preregistration": "results/published/fly_clock_readout_preregistered.json",
+  "sensory_pulse_conversion": {
+    "changed_spike_decisions": 4186,
+    "pulse_to_spike_contrast_norm_ratio": 0.1313803642988205,
+    "pre_input_resource_x_mean_on_changed_neurons": 0.05354645103216171,
+    "pre_input_release_u_mean_on_changed_neurons": 0.8114712238311768,
+    "scope": "Same pre-input x/u and STP parameters; pulse attenuation is exact amplitude accounting, not semantic information loss."
+  },
+  "first_arrival_filter_identity": {
+    "e_max_abs_residual": 1.5599653124809265e-08,
+    "i_max_abs_residual": 2.7939677238464355e-09,
+    "e_response_to_arrival_norm_ratio": 0.09684713184833527,
+    "i_response_to_arrival_norm_ratio": 0.05909976363182068
+  },
+  "quiet_pulse_response": [
+    {
+      "tick_after_input": 0,
+      "difference_norms": {
+        "arrival_e": 0.0,
+        "arrival_i": 0.0,
+        "ge": 0.0,
+        "gi": 0.0,
+        "v_pre": 0.0,
+        "h_post": 0.0,
+        "spike_sensory": 64.69930267333984,
+        "pulse_sensory": 8.500218391418457
+      },
+      "read_response": {
+        "motor_relative_contrast": 0.0,
+        "projected_relative_contrast": 0.0,
+        "normalized_relative_contrast": 0.0,
+        "projected_difference_tangent_fraction": 0.0,
+        "probability_fisher_squared_contrast": 0.0,
+        "symmetrized_probability_kl": 0.0,
+        "max_logits_contrast": 0.0
+      }
+    },
+    {
+      "tick_after_input": 1,
+      "difference_norms": {
+        "arrival_e": 0.42871609330177307,
+        "arrival_i": 0.05957575887441635,
+        "ge": 0.041519924998283386,
+        "gi": 0.003520913189277053,
+        "v_pre": 0.0273909755051136,
+        "h_post": 0.21940024197101593,
+        "spike_sensory": 6.0,
+        "pulse_sensory": 1.0416338443756104
+      },
+      "read_response": {
+        "motor_relative_contrast": 0.03848540410399437,
+        "projected_relative_contrast": 0.0013494861777871847,
+        "normalized_relative_contrast": 0.0012784027494490147,
+        "projected_difference_tangent_fraction": 0.9739940762519836,
+        "probability_fisher_squared_contrast": 7.901269782450981e-06,
+        "symmetrized_probability_kl": 3.943708179576788e-06,
+        "max_logits_contrast": 0.0172882080078125
+      }
+    },
+    {
+      "tick_after_input": 2,
+      "difference_norms": {
+        "arrival_e": 0.2098548859357834,
+        "arrival_i": 0.258963406085968,
+        "ge": 0.043419644236564636,
+        "gi": 0.014783140271902084,
+        "v_pre": 0.20765817165374756,
+        "h_post": 0.3219231963157654,
+        "spike_sensory": 7.211102485656738,
+        "pulse_sensory": 1.131335973739624
+      },
+      "read_response": {
+        "motor_relative_contrast": 0.056427840143442154,
+        "projected_relative_contrast": 0.004225896205753088,
+        "normalized_relative_contrast": 0.0030383006669580936,
+        "projected_difference_tangent_fraction": 0.931748628616333,
+        "probability_fisher_squared_contrast": 5.5004256864776835e-05,
+        "symmetrized_probability_kl": 2.7634663638309576e-05,
+        "max_logits_contrast": 0.05937957763671875
+      }
+    },
+    {
+      "tick_after_input": 3,
+      "difference_norms": {
+        "arrival_e": 0.24501660466194153,
+        "arrival_i": 0.5962119698524475,
+        "ge": 0.04642016440629959,
+        "gi": 0.03133229538798332,
+        "v_pre": 0.29562821984291077,
+        "h_post": 0.4788792133331299,
+        "spike_sensory": 6.082762718200684,
+        "pulse_sensory": 0.7651395797729492
+      },
+      "read_response": {
+        "motor_relative_contrast": 0.08401679992675781,
+        "projected_relative_contrast": 0.0049928463995456696,
+        "normalized_relative_contrast": 0.003784188302233815,
+        "projected_difference_tangent_fraction": 0.9387593865394592,
+        "probability_fisher_squared_contrast": 5.848025102750398e-05,
+        "symmetrized_probability_kl": 2.938495708804112e-05,
+        "max_logits_contrast": 0.0711822509765625
+      }
+    },
+    {
+      "tick_after_input": 4,
+      "difference_norms": {
+        "arrival_e": 0.11652491241693497,
+        "arrival_i": 0.7273125052452087,
+        "ge": 0.04241365194320679,
+        "gi": 0.03062092512845993,
+        "v_pre": 0.4414193332195282,
+        "h_post": 0.3590441644191742,
+        "spike_sensory": 6.0,
+        "pulse_sensory": 0.8526583909988403
+      },
+      "read_response": {
+        "motor_relative_contrast": 0.06300351023674011,
+        "projected_relative_contrast": 0.006116504315286875,
+        "normalized_relative_contrast": 0.004488576203584671,
+        "projected_difference_tangent_fraction": 0.9444665908813477,
+        "probability_fisher_squared_contrast": 8.873959450284019e-05,
+        "symmetrized_probability_kl": 4.462981814867817e-05,
+        "max_logits_contrast": 0.08234786987304688
+      }
+    },
+    {
+      "tick_after_input": 5,
+      "difference_norms": {
+        "arrival_e": 0.12287264317274094,
+        "arrival_i": 0.6346974968910217,
+        "ge": 0.03791217505931854,
+        "gi": 0.03713614493608475,
+        "v_pre": 0.333602637052536,
+        "h_post": 0.4481443464756012,
+        "spike_sensory": 5.656854152679443,
+        "pulse_sensory": 0.8767756819725037
+      },
+      "read_response": {
+        "motor_relative_contrast": 0.07833009213209152,
+        "projected_relative_contrast": 0.004767796956002712,
+        "normalized_relative_contrast": 0.00377934193238616,
+        "projected_difference_tangent_fraction": 0.9940138459205627,
+        "probability_fisher_squared_contrast": 7.520660437876359e-05,
+        "symmetrized_probability_kl": 3.781937266467139e-05,
+        "max_logits_contrast": 0.07816696166992188
+      }
+    },
+    {
+      "tick_after_input": 6,
+      "difference_norms": {
+        "arrival_e": 0.1174326092004776,
+        "arrival_i": 0.6052682399749756,
+        "ge": 0.0364459827542305,
+        "gi": 0.04005103185772896,
+        "v_pre": 0.401694655418396,
+        "h_post": 0.5424219965934753,
+        "spike_sensory": 6.082762718200684,
+        "pulse_sensory": 0.7480964660644531
+      },
+      "read_response": {
+        "motor_relative_contrast": 0.0944966971874237,
+        "projected_relative_contrast": 0.009650977328419685,
+        "normalized_relative_contrast": 0.007094633765518665,
+        "projected_difference_tangent_fraction": 0.9256977438926697,
+        "probability_fisher_squared_contrast": 0.0003463982429821044,
+        "symmetrized_probability_kl": 0.0001754386321408674,
+        "max_logits_contrast": 0.16406631469726562
+      }
+    },
+    {
+      "tick_after_input": 7,
+      "difference_norms": {
+        "arrival_e": 0.13893631100654602,
+        "arrival_i": 0.6062069535255432,
+        "ge": 0.03501391410827637,
+        "gi": 0.042446568608284,
+        "v_pre": 0.487755686044693,
+        "h_post": 0.563937246799469,
+        "spike_sensory": 5.099019527435303,
+        "pulse_sensory": 0.7289222478866577
+      },
+      "read_response": {
+        "motor_relative_contrast": 0.0989646464586258,
+        "projected_relative_contrast": 0.0033554367255419493,
+        "normalized_relative_contrast": 0.0026296130381524563,
+        "projected_difference_tangent_fraction": 0.6801026463508606,
+        "probability_fisher_squared_contrast": 1.480794799135765e-05,
+        "symmetrized_probability_kl": 7.413435014314018e-06,
+        "max_logits_contrast": 0.0249481201171875
+      }
+    }
+  ],
+  "motor_projection_gradient": {
+    "total_norm": 0.10863845412933595,
+    "common_norm": 0.10607757593607257,
+    "covariance_norm": 0.023882461863391536,
+    "common_to_covariance_norm_ratio": 4.441651641394417,
+    "common_covariance_cosine": -0.0040480060060161015,
+    "relative_identity_error": 1.1035959012243111e-16,
+    "scope": "Unclipped saved-head gradient; Adam moments and actual update displacement excluded."
+  },
+  "same_head_real_window": {
+    "events": 32,
+    "full_nll": 9.287055969238281,
+    "common_read_background_nll": 9.279897689819336,
+    "conditional_gain_nll": -0.0071582794189453125,
+    "scope": "Fixed mature-head real continuation diagnosis; not primary active-learning performance."
+  },
+  "real_window_variation": {
+    "motor": 0.08137848973274231,
+    "projected": 0.000437311886344105,
+    "normalized": 0.00024697722983546555
+  }
+}

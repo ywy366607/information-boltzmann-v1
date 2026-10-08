@@ -1,0 +1,206 @@
+{
+  "status": "second repaired-timing active encounter; predictive goal remains incomplete",
+  "fresh_training_since_timing_repair": 199072,
+  "fresh_training_updates_since_timing_repair": 6221,
+  "new_encounter": {
+    "bptt_train_tokens": 800000,
+    "timing": "pulse_plus_1_quiet",
+    "physical_ticks_per_input": 2,
+    "actual_exposure": {
+      "input_events": 384,
+      "physical_ticks": 768,
+      "optimizer_updates": 12
+    },
+    "first_pass": {
+      "tokens": 256,
+      "validation_range": [
+        15352,
+        15608
+      ],
+      "model_nll": 8.585720401257277,
+      "fixed_unigram_nll": 8.074540302594567,
+      "gain_over_fixed_unigram": -0.5111800986627099,
+      "gain_per_optimizer_window": [
+        -0.6302491091097766,
+        -0.27242512659802454,
+        -0.8943138172442342,
+        -0.33461876844984406,
+        -0.2932658031224578,
+        -0.3934665071833436,
+        -0.401895884038571,
+        -0.8692057735554273
+      ]
+    },
+    "adaptation": {
+      "recorded_recovery": {
+        "tokens": 256,
+        "block_tokens": 16,
+        "confirmation_blocks": 2,
+        "block_curve": [
+          {
+            "end_token": 16,
+            "mean_nll": 9.068484425544739
+          },
+          {
+            "end_token": 32,
+            "mean_nll": 8.723065286874771
+          },
+          {
+            "end_token": 48,
+            "mean_nll": 9.110119760036469
+          },
+          {
+            "end_token": 64,
+            "mean_nll": 6.393736153841019
+          },
+          {
+            "end_token": 80,
+            "mean_nll": 10.688648700714111
+          },
+          {
+            "end_token": 96,
+            "mean_nll": 9.060958921909332
+          },
+          {
+            "end_token": 112,
+            "mean_nll": 9.417172580957413
+          },
+          {
+            "end_token": 128,
+            "mean_nll": 7.1125093549489975
+          },
+          {
+            "end_token": 144,
+            "mean_nll": 7.1708043068647385
+          },
+          {
+            "end_token": 160,
+            "mean_nll": 7.793123722076416
+          },
+          {
+            "end_token": 176,
+            "mean_nll": 9.324770420789719
+          },
+          {
+            "end_token": 192,
+            "mean_nll": 7.910042986273766
+          },
+          {
+            "end_token": 208,
+            "mean_nll": 8.941795438528061
+          },
+          {
+            "end_token": 224,
+            "mean_nll": 8.058932349085808
+          },
+          {
+            "end_token": 240,
+            "mean_nll": 9.04621009528637
+          },
+          {
+            "end_token": 256,
+            "mean_nll": 9.551151916384697
+          }
+        ],
+        "half_recovery_tokens": null,
+        "status": "no_observed_improvement",
+        "initial_block_nll": 9.068484425544739,
+        "observed_late_nll": 9.298681005835533,
+        "observed_drop": -0.23019658029079437
+      },
+      "reference_relative_block_curve": [
+        0.7977646221849084,
+        0.4627335960346447,
+        0.642949875752187,
+        -0.09809962255613802,
+        1.012191593065887,
+        0.7764360414225816,
+        0.3533709825800399,
+        0.3158665543196484,
+        0.30776237181255994,
+        0.2787692344323557,
+        0.45416003049560527,
+        0.3327729838710819,
+        0.11280579368977214,
+        0.6909859743873699,
+        0.8165683564238347,
+        0.9218431906870199
+      ],
+      "reference_relative_opening_to_late_drop": -0.07144115137051887,
+      "scope": "descriptive trajectory; reference controls marginal difficulty only"
+    },
+    "revisit": {
+      "matched_pairs": 127,
+      "matched_nll_gain": 0.1216216913358433,
+      "first_return_window_matched_pairs": 31,
+      "first_return_window_preupdate_nll_gain": 0.11136311869467458,
+      "return_bridge_nll": 18.29133415222168,
+      "B_exposure_events": 256,
+      "intervening_events_before_first_matched_pair": 257,
+      "intervening_physical_ticks_before_first_matched_pair": 514,
+      "scope": "first window precedes return update; later replay scores include relearning"
+    },
+    "health": {
+      "field_energy": 0.7873658537864685,
+      "firing_rate": 0.01934327371418476,
+      "centered_effective_rank": 3.1300013065338135,
+      "read_norm_mean": 0.1886279284954071,
+      "vram_peak_mib": 2731.0390625,
+      "vram_reserved_mib": 2912.0
+    },
+    "health_scope": "field energy, activity and centered representation structure; FTLE not measured in this branch"
+  },
+  "new_timing_aggregate": {
+    "encounters": 2,
+    "fresh_targets": 512,
+    "weighted_model_nll": 8.761368982493877,
+    "weighted_fixed_unigram_nll": 8.163804781270118,
+    "weighted_gain_over_fixed_unigram": -0.5975642012237596
+  },
+  "previous_repaired_encounter": {
+    "bptt_train_tokens": 700000,
+    "first_pass": {
+      "tokens": 256,
+      "validation_range": [
+        15096,
+        15352
+      ],
+      "model_nll": 8.937017563730478,
+      "fixed_unigram_nll": 8.253069259945669,
+      "gain_over_fixed_unigram": -0.68394830378481,
+      "gain_per_optimizer_window": [
+        -0.7849433001957647,
+        -0.8007252825892412,
+        -0.7221707369274815,
+        -0.7641652642339375,
+        -0.3742579437516024,
+        -0.34562820639093783,
+        -1.1111821818617755,
+        -0.5685135143277388
+      ]
+    },
+    "revisit": {
+      "matched_pairs": 127,
+      "matched_nll_gain": 0.1018411174533874,
+      "first_return_window_matched_pairs": 31,
+      "first_return_window_preupdate_nll_gain": 0.12883640104724514,
+      "return_bridge_nll": 3.6322288513183594,
+      "B_exposure_events": 256,
+      "intervening_events_before_first_matched_pair": 257,
+      "intervening_physical_ticks_before_first_matched_pair": 514,
+      "scope": "first window precedes return update; later replay scores include relearning"
+    },
+    "health": {
+      "field_energy": 1.4473459720611572,
+      "firing_rate": 0.013178135268390179,
+      "centered_effective_rank": 5.109134674072266,
+      "read_norm_mean": 0.18592339754104614,
+      "vram_peak_mib": 2731.0390625,
+      "vram_reserved_mib": 2912.0
+    }
+  },
+  "raw_nll_improvement": 0.35129716247320175,
+  "marginal_reference_nll_improvement": 0.17852895735110152,
+  "reference_relative_gap_reduction": 0.17276820512210012,
+  "interpretation": "Reference-relative deficit has narrowed across the first two repaired encounters; both still underperform the fixed marginal reference on all eight blocks. First-return pre-update savings remain positive. Context-recovery and representation rank vary by encounter. Different text and persistent history mean this is not a paired causal architecture comparison. Long registered learning continues unchanged."
+}

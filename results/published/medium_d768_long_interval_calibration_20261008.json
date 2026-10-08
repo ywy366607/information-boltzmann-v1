@@ -1,0 +1,646 @@
+{
+  "purpose": "Same D768/one-token/full-interval resource calibration; preserve both explicit attempts",
+  "adjustment": "First attempt reached the 2048 MiB allocator protection line while sampled dedicated usage was 2124.64 MiB. The authorized second attempt increases only the allocator budget to 2700 MiB, retaining a 3072 MiB dedicated cap and 372 MiB driver headroom.",
+  "first_attempt": {
+    "purpose": "D768 full-long-interval numerical/resource calibration; no NLL or capability comparison",
+    "checkpoint": "results\\medium_d768_xavier_8x8x8_budget_birth_160k\\last.pt",
+    "checkpoint_sha256_before_after": "eb35a0ea1702b36c02003c5c600b002ad2c518f69247544fd7426b2584433544",
+    "checkpoint_step": 1237,
+    "saved_optimizer_updates": 1321,
+    "saved_pending_events": 0,
+    "optimizer_updates_executed": 0,
+    "optimizer_instantiated": false,
+    "checkpoint_written": false,
+    "window_tokens": 1,
+    "execution": "Native eager FP32 arithmetic; nonreentrant activation checkpoint per observer interval; no compilation of the adaptive event; one complete first-order joint backward.",
+    "saved_constructor": {
+      "vocab_size": 50257,
+      "shape": [
+        8,
+        8,
+        8
+      ],
+      "channels": 768,
+      "bath_type": "conductance",
+      "write_exchange": "contact_mode",
+      "port_scope": "compact",
+      "activity_adaptation": true,
+      "short_term_plasticity": true,
+      "pre_decoder_norm": true,
+      "medium_execution": "fused",
+      "port_execution": "fused",
+      "anisotropic_transport": true,
+      "write_port_radius": [
+        0.1875,
+        0.1875,
+        0.25
+      ],
+      "read_port_radius": [
+        0.125,
+        0.1875,
+        0.25
+      ],
+      "read_mode": "temporal",
+      "temporal_rates": [
+        138.62943611198907,
+        34.657359027997266,
+        8.664339756999317,
+        2.166084939249829
+      ],
+      "temporal_frequencies": [
+        0.0,
+        39.269908169872416,
+        78.53981633974483,
+        157.07963267948966
+      ],
+      "transport_capacity_budget": 6.259217739105225
+    },
+    "dataset_source": "openwebtext",
+    "dataset_revision": "433fe0f44ed7894fea29c08b3202aa348ccc6369",
+    "dataset_split": "train; next unconsumed target only",
+    "train_sha256": "6dd24ac1b43aef10d914418b7e6d6f28eedbc5ae8dc653003196375e37ceedb9",
+    "manifest_sha256": "caf2298208a1935275f06b5822da55b61cff7521ae7403db55404ed4cb4c055d",
+    "vram_cap_mib": 3072,
+    "driver_headroom_mib": 1024,
+    "tensor_allocator_cap_mib": 2048,
+    "gpu_name": "NVIDIA GeForce GTX 1650",
+    "source_hashes": {
+      "scripts/ib/audit_medium_long_interval.py": "34f3eb817664167103c5096b6904ccfbeb01068dbd73ac63571f82fedaec3912",
+      "scripts/ib/audit_medium_objective_gradients.py": "2cdd626c7958337fdba0e83d519a7db91fa3134c0dfc2ee5136a16f681080cad",
+      "information_boltzmann/core/intrinsic_time.py": "02cc57d946283a5aefc64bb9eeac6ac94d99a08ecbcaef8b12793b94cd995d40",
+      "information_boltzmann/core/plastic_ports.py": "05d4819241eb1bbbedcd1bebe55bf5aac034da0f82d60023545cbe8cdb0757a5",
+      "information_boltzmann/core/plastic_medium.py": "cad4f654d6cfdc91d374f76d0fbab16bffe7ad5cbc8357c2beffd5707a867734",
+      "information_boltzmann/core/temporal_probes.py": "f1caedd20d98c89192e74792b4a8b1ced1e43c8bb2803c4e01c3d63a0e73c747",
+      "information_boltzmann/runtime/training.py": "3818ddaf4151a12c91f1a044695532527e9eedabebb0df236aaada9a8f88692a"
+    },
+    "attempts": 1,
+    "fallback_permitted": false,
+    "time_reference": {
+      "chosen": "torus_crossing_time",
+      "reference_duration": 0.06773389875888824,
+      "cell_crossing_time": 0.0033491961658000946,
+      "torus_crossing_time": 0.06773389875888824,
+      "max_singular_speed": 25.571401596069336,
+      "max_resolved_rotation_rate": 211.1273193359375,
+      "cell_spacing": [
+        0.125,
+        0.125,
+        0.125
+      ],
+      "domain_lengths": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "factor_shape": [
+        1,
+        8,
+        8,
+        8,
+        3,
+        3
+      ],
+      "factor_sha256": "49ea00e06dd425c8d6c110f3e6b4a0729f91c720a2a9fbd03813b586ba61b44b",
+      "old_event_duration": 0.005,
+      "duration_to_old_ratio": 13.546779751777649,
+      "interpretation": "Global fastest-speed crossing estimates are reference scales only; they do not establish arrival through slow channels or useful propagation."
+    },
+    "resolution": {
+      "solver_max_step": 0.0008372990414500237,
+      "observer_max_step": 0.0033491961658000946,
+      "solver_divisor_of_characteristic_cell": 4.0,
+      "observer_count": 21,
+      "solver_substeps": 4,
+      "total_solver_steps": 84,
+      "actual_observer_interval": 0.00322542375042325,
+      "actual_solver_step": 0.0008063559376058125,
+      "max_evolution_steps": 4096,
+      "choice": "One observer per characteristic cell scale; solver at most one quarter of that scale. Declared numerical resolution, not an accuracy/convergence claim."
+    },
+    "material_coefficients_shape": [
+      256,
+      8
+    ],
+    "material_reference_shape": [
+      8,
+      8,
+      4
+    ],
+    "structure_posterior_enabled": false,
+    "frequency_time_reference": 1.0,
+    "candidate_constructor": {
+      "vocab_size": 50257,
+      "shape": [
+        8,
+        8,
+        8
+      ],
+      "channels": 768,
+      "bath_type": "conductance",
+      "write_exchange": "contact_mode",
+      "port_scope": "compact",
+      "activity_adaptation": true,
+      "short_term_plasticity": true,
+      "pre_decoder_norm": true,
+      "medium_execution": "fused",
+      "port_execution": "fused",
+      "anisotropic_transport": true,
+      "write_port_radius": [
+        0.1875,
+        0.1875,
+        0.25
+      ],
+      "read_port_radius": [
+        0.125,
+        0.1875,
+        0.25
+      ],
+      "read_mode": "temporal",
+      "temporal_rates": [
+        138.62943611198907,
+        34.657359027997266,
+        8.664339756999317,
+        2.166084939249829
+      ],
+      "temporal_frequencies": [
+        0.0,
+        39.269908169872416,
+        78.53981633974483,
+        157.07963267948966
+      ],
+      "transport_capacity_budget": 6.259217739105225,
+      "intrinsic_time_reference": 0.06773389875888824,
+      "intrinsic_max_duration": null,
+      "solver_max_step": 0.0008372990414500237,
+      "observer_max_step": 0.0033491961658000946,
+      "max_evolution_steps": 4096
+    },
+    "candidate_added_parameters": {
+      "intrinsic_time_reference": 0.06773389875888824,
+      "intrinsic_max_duration": null,
+      "solver_max_step": 0.0008372990414500237,
+      "observer_max_step": 0.0033491961658000946,
+      "max_evolution_steps": 4096
+    },
+    "target_source_interval": [
+      39585,
+      39586
+    ],
+    "input_token_ids": [
+      393
+    ],
+    "target_token_ids": [
+      645
+    ],
+    "target_min": 645,
+    "target_max": 645,
+    "carry_matches_train_predecessor": true,
+    "input_target_sha256": "71ce7c626afb065eb4b1211cbae39f39f4dc2e98b6a644b0a3e44540ec4895e3",
+    "parameter_count": 119201631,
+    "trainable_parameter_count": 80604255,
+    "initial_physical_time": [
+      211.35999999988027
+    ],
+    "initial_temporal_time": [
+      211.35999999988027
+    ],
+    "memory": {
+      "peak_allocated_mib": 2015.76123046875,
+      "peak_reserved_mib": 2048.0,
+      "sample_count": 8,
+      "sampled_peak_dedicated_mib": 2124.64453125,
+      "sampled_peak_shared_mib": 80.0,
+      "counter_errors": [],
+      "cap_exceeded": false,
+      "last_sample": {
+        "seconds": 5913.9190183,
+        "dedicated_bytes": 2227851264,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_29244_luid_0x00000000_0x00018DBD_phys_0",
+            "DedicatedUsage": 2227851264,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "peak_is_sampled": true
+    },
+    "status": "safe_failure_without_retry",
+    "error_type": "OutOfMemoryError",
+    "error": "CUDA out of memory. Tried to allocate 20.00 MiB. GPU 0 has a total capacity of 4.00 GiB of which 1.19 GiB is free. 2.00 GiB allowed; Of the allocated memory 1.97 GiB is allocated by PyTorch, and 30.24 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)",
+    "completed_full_backward": false,
+    "checkpoint_immutable": true,
+    "elapsed_seconds": 10.05697070000042,
+    "cuda_allocated_after_release_mib": 18.25,
+    "cuda_reserved_after_release_mib": 44.0,
+    "forward_completed": true,
+    "forward_completion_evidence": "Process stdout: FULL INTERVAL FORWARD: 21 observers, 84 solver steps; BACKWARD. OOM occurred during joint.backward().",
+    "forward_endpoint_recording_limitation": "The initial script recorded endpoint clocks and losses only after successful backward; this attempt did not persist those tensors. No actual endpoint clock, loss or elapsed forward-only timing is inferred retrospectively.",
+    "post_process_gpu_status": {
+      "compute_processes": [],
+      "total_dedicated_mib": 0,
+      "gpu_utilization_percent": 0,
+      "evidence": "nvidia-smi immediately after process exit"
+    },
+    "script_provenance": "source_hashes identifies the exact script executed; the current script was subsequently amended to record forward endpoints before backward, without rerunning this attempt.",
+    "gradient_acceptance": "Incomplete: no final intrinsic-head/material gradient norm is reported because the full joint backward did not finish."
+  },
+  "second_attempt": {
+    "purpose": "D768 full-long-interval numerical/resource calibration; no NLL or capability comparison",
+    "checkpoint": "results\\medium_d768_xavier_8x8x8_budget_birth_160k\\last.pt",
+    "checkpoint_sha256_before_after": "eb35a0ea1702b36c02003c5c600b002ad2c518f69247544fd7426b2584433544",
+    "checkpoint_step": 1237,
+    "saved_optimizer_updates": 1321,
+    "saved_pending_events": 0,
+    "optimizer_updates_executed": 0,
+    "optimizer_instantiated": false,
+    "checkpoint_written": false,
+    "window_tokens": 1,
+    "execution": "Native eager FP32 arithmetic; nonreentrant activation checkpoint per observer interval; no compilation of the adaptive event; one complete first-order joint backward.",
+    "saved_constructor": {
+      "vocab_size": 50257,
+      "shape": [
+        8,
+        8,
+        8
+      ],
+      "channels": 768,
+      "bath_type": "conductance",
+      "write_exchange": "contact_mode",
+      "port_scope": "compact",
+      "activity_adaptation": true,
+      "short_term_plasticity": true,
+      "pre_decoder_norm": true,
+      "medium_execution": "fused",
+      "port_execution": "fused",
+      "anisotropic_transport": true,
+      "write_port_radius": [
+        0.1875,
+        0.1875,
+        0.25
+      ],
+      "read_port_radius": [
+        0.125,
+        0.1875,
+        0.25
+      ],
+      "read_mode": "temporal",
+      "temporal_rates": [
+        138.62943611198907,
+        34.657359027997266,
+        8.664339756999317,
+        2.166084939249829
+      ],
+      "temporal_frequencies": [
+        0.0,
+        39.269908169872416,
+        78.53981633974483,
+        157.07963267948966
+      ],
+      "transport_capacity_budget": 6.259217739105225
+    },
+    "dataset_source": "openwebtext",
+    "dataset_revision": "433fe0f44ed7894fea29c08b3202aa348ccc6369",
+    "dataset_split": "train; next unconsumed target only",
+    "train_sha256": "6dd24ac1b43aef10d914418b7e6d6f28eedbc5ae8dc653003196375e37ceedb9",
+    "manifest_sha256": "caf2298208a1935275f06b5822da55b61cff7521ae7403db55404ed4cb4c055d",
+    "vram_cap_mib": 3072,
+    "driver_headroom_mib": 372,
+    "tensor_allocator_cap_mib": 2700,
+    "gpu_name": "NVIDIA GeForce GTX 1650",
+    "source_hashes": {
+      "scripts/ib/audit_medium_long_interval.py": "c2b3f02958d49e33629aa2bc5576b5ae24fc381c4a0e12ddfc3636f23820887c",
+      "scripts/ib/audit_medium_objective_gradients.py": "2cdd626c7958337fdba0e83d519a7db91fa3134c0dfc2ee5136a16f681080cad",
+      "information_boltzmann/core/intrinsic_time.py": "02cc57d946283a5aefc64bb9eeac6ac94d99a08ecbcaef8b12793b94cd995d40",
+      "information_boltzmann/core/plastic_ports.py": "05d4819241eb1bbbedcd1bebe55bf5aac034da0f82d60023545cbe8cdb0757a5",
+      "information_boltzmann/core/plastic_medium.py": "cad4f654d6cfdc91d374f76d0fbab16bffe7ad5cbc8357c2beffd5707a867734",
+      "information_boltzmann/core/temporal_probes.py": "f1caedd20d98c89192e74792b4a8b1ced1e43c8bb2803c4e01c3d63a0e73c747",
+      "information_boltzmann/runtime/training.py": "3818ddaf4151a12c91f1a044695532527e9eedabebb0df236aaada9a8f88692a"
+    },
+    "attempts": 1,
+    "fallback_permitted": false,
+    "time_reference": {
+      "chosen": "torus_crossing_time",
+      "reference_duration": 0.06773389875888824,
+      "cell_crossing_time": 0.0033491961658000946,
+      "torus_crossing_time": 0.06773389875888824,
+      "max_singular_speed": 25.571401596069336,
+      "max_resolved_rotation_rate": 211.1273193359375,
+      "cell_spacing": [
+        0.125,
+        0.125,
+        0.125
+      ],
+      "domain_lengths": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "factor_shape": [
+        1,
+        8,
+        8,
+        8,
+        3,
+        3
+      ],
+      "factor_sha256": "49ea00e06dd425c8d6c110f3e6b4a0729f91c720a2a9fbd03813b586ba61b44b",
+      "old_event_duration": 0.005,
+      "duration_to_old_ratio": 13.546779751777649,
+      "interpretation": "Global fastest-speed crossing estimates are reference scales only; they do not establish arrival through slow channels or useful propagation."
+    },
+    "resolution": {
+      "solver_max_step": 0.0008372990414500237,
+      "observer_max_step": 0.0033491961658000946,
+      "solver_divisor_of_characteristic_cell": 4.0,
+      "observer_count": 21,
+      "solver_substeps": 4,
+      "total_solver_steps": 84,
+      "actual_observer_interval": 0.00322542375042325,
+      "actual_solver_step": 0.0008063559376058125,
+      "max_evolution_steps": 4096,
+      "choice": "One observer per characteristic cell scale; solver at most one quarter of that scale. Declared numerical resolution, not an accuracy/convergence claim."
+    },
+    "material_coefficients_shape": [
+      256,
+      8
+    ],
+    "material_reference_shape": [
+      8,
+      8,
+      4
+    ],
+    "structure_posterior_enabled": false,
+    "frequency_time_reference": 1.0,
+    "candidate_constructor": {
+      "vocab_size": 50257,
+      "shape": [
+        8,
+        8,
+        8
+      ],
+      "channels": 768,
+      "bath_type": "conductance",
+      "write_exchange": "contact_mode",
+      "port_scope": "compact",
+      "activity_adaptation": true,
+      "short_term_plasticity": true,
+      "pre_decoder_norm": true,
+      "medium_execution": "fused",
+      "port_execution": "fused",
+      "anisotropic_transport": true,
+      "write_port_radius": [
+        0.1875,
+        0.1875,
+        0.25
+      ],
+      "read_port_radius": [
+        0.125,
+        0.1875,
+        0.25
+      ],
+      "read_mode": "temporal",
+      "temporal_rates": [
+        138.62943611198907,
+        34.657359027997266,
+        8.664339756999317,
+        2.166084939249829
+      ],
+      "temporal_frequencies": [
+        0.0,
+        39.269908169872416,
+        78.53981633974483,
+        157.07963267948966
+      ],
+      "transport_capacity_budget": 6.259217739105225,
+      "intrinsic_time_reference": 0.06773389875888824,
+      "intrinsic_max_duration": null,
+      "solver_max_step": 0.0008372990414500237,
+      "observer_max_step": 0.0033491961658000946,
+      "max_evolution_steps": 4096
+    },
+    "candidate_added_parameters": {
+      "intrinsic_time_reference": 0.06773389875888824,
+      "intrinsic_max_duration": null,
+      "solver_max_step": 0.0008372990414500237,
+      "observer_max_step": 0.0033491961658000946,
+      "max_evolution_steps": 4096
+    },
+    "target_source_interval": [
+      39585,
+      39586
+    ],
+    "input_token_ids": [
+      393
+    ],
+    "target_token_ids": [
+      645
+    ],
+    "target_min": 645,
+    "target_max": 645,
+    "carry_matches_train_predecessor": true,
+    "input_target_sha256": "71ce7c626afb065eb4b1211cbae39f39f4dc2e98b6a644b0a3e44540ec4895e3",
+    "parameter_count": 119201631,
+    "trainable_parameter_count": 80604255,
+    "initial_physical_time": [
+      211.35999999988027
+    ],
+    "initial_temporal_time": [
+      211.35999999988027
+    ],
+    "forward_completed": true,
+    "forward_seconds": 4.365154600000096,
+    "requested_duration": 0.06773389875888824,
+    "task_nll": 7.053452491760254,
+    "port_objective": 5.31690788269043,
+    "joint_objective": 12.370360374450684,
+    "objective_scale": "One task CE plus one W4 port objective, weights 1:1",
+    "logits": {
+      "shape": [
+        1,
+        50257
+      ],
+      "finite": true,
+      "minimum": -17.63068962097168,
+      "maximum": -2.096864700317383
+    },
+    "final_physical_time": [
+      211.42773389863913
+    ],
+    "final_temporal_time": [
+      211.42773389863913
+    ],
+    "physical_time_increment": [
+      0.06773389875885982
+    ],
+    "temporal_time_increment": [
+      0.06773389875885982
+    ],
+    "clock_difference_max": 0.0,
+    "status": "completed_full_interval_one_forward_one_backward",
+    "port_nll": 5.31566047668457,
+    "write_action_kl": 0.0012472567614167929,
+    "duration_gradient": {
+      "connected": true,
+      "finite": true,
+      "norm": 17.55315399169922
+    },
+    "duration_gradient_value": 17.55315399169922,
+    "full_interval_entry_field_gradient": {
+      "connected": true,
+      "finite": true,
+      "norm": 2.5614298437739302
+    },
+    "endpoint_field_gradient": {
+      "connected": true,
+      "finite": true,
+      "norm": 11.132999988711692
+    },
+    "initial_field_gradient": {
+      "connected": true,
+      "finite": true,
+      "norm": 2.581302616603142
+    },
+    "gradients": {
+      "medium": {
+        "parameter_count": 925521,
+        "connected_parameter_count": 925521,
+        "finite": true,
+        "norm": 28.689670139247347,
+        "unused_names": []
+      },
+      "material": {
+        "parameter_count": 2048,
+        "connected_parameter_count": 2048,
+        "finite": true,
+        "norm": 22.398785843670076,
+        "unused_names": []
+      },
+      "write": {
+        "parameter_count": 18941554,
+        "connected_parameter_count": 18941554,
+        "finite": true,
+        "norm": 19.997058116231273,
+        "unused_names": []
+      },
+      "read": {
+        "parameter_count": 15588280,
+        "connected_parameter_count": 15588280,
+        "finite": true,
+        "norm": 19.261244193724195,
+        "unused_names": []
+      },
+      "temporal": {
+        "parameter_count": 1179784,
+        "connected_parameter_count": 1179784,
+        "finite": true,
+        "norm": 7.84461137835574,
+        "unused_names": []
+      },
+      "decoder": {
+        "parameter_count": 38648401,
+        "connected_parameter_count": 38648401,
+        "finite": true,
+        "norm": 27.610478788871987,
+        "unused_names": []
+      },
+      "intrinsic_time_head": {
+        "parameter_count": 5,
+        "connected_parameter_count": 5,
+        "finite": true,
+        "norm": 1.6926883133819228,
+        "unused_names": []
+      },
+      "all_trainable": {
+        "parameter_count": 80604255,
+        "connected_parameter_count": 75284313,
+        "finite": true,
+        "norm": 49.200790627172246,
+        "unused_names": [
+          "source.address.weight",
+          "source.address.bias",
+          "source.width.weight",
+          "source.width.bias",
+          "source.content.0.weight",
+          "source.content.0.bias",
+          "source.content.2.weight",
+          "source.content.2.bias",
+          "source.state_content.weight",
+          "source.neighbor_content.weight",
+          "source.angle.0.weight",
+          "source.angle.0.bias",
+          "source.angle.2.weight",
+          "source.angle.2.bias"
+        ]
+      }
+    },
+    "intrinsic_head_gradient_values": {
+      "head.weight": [
+        [
+          0.024661561474204063,
+          0.006201211363077164,
+          0.7583547830581665,
+          0.9358730912208557
+        ]
+      ],
+      "head.bias": [
+        1.1889435052871704
+      ]
+    },
+    "backward_seconds": 6.52704840000024,
+    "forward_backward_seconds": 10.892203000000336,
+    "resource_rate_one_token_per_second": 0.09180879203224263,
+    "rate_scope": "This single checkpointed long interval only; no extrapolation to BPTT32 throughput.",
+    "parameter_hash_before_after": "11c9be3c27074d8f3e6c523b12439935f3ad4c027eb6328b9e800c4626975278",
+    "parameters_unchanged": true,
+    "initial_belief_hash_before_after": "5520ff28d5d93a8eef31f972c933902a8112455045d21fa435a075986999164b",
+    "initial_belief_unchanged": true,
+    "memory": {
+      "peak_allocated_mib": 2362.60888671875,
+      "peak_reserved_mib": 2688.0,
+      "sample_count": 21,
+      "sampled_peak_dedicated_mib": 2498.64453125,
+      "sampled_peak_shared_mib": 80.0,
+      "counter_errors": [],
+      "cap_exceeded": false,
+      "last_sample": {
+        "seconds": 6052.2027856,
+        "dedicated_bytes": 1529503744,
+        "shared_bytes": 83886080,
+        "rows": [
+          {
+            "Name": "pid_31736_luid_0x00000000_0x00018DBD_phys_0",
+            "DedicatedUsage": 1529503744,
+            "SharedUsage": 83886080
+          }
+        ]
+      },
+      "peak_is_sampled": true
+    },
+    "completed_full_backward": true,
+    "checkpoint_immutable": true,
+    "elapsed_seconds": 17.04922600000009,
+    "cuda_allocated_after_release_mib": 18.25,
+    "cuda_reserved_after_release_mib": 44.0,
+    "post_process_gpu_status": {
+      "compute_processes": [],
+      "total_dedicated_mib": 0,
+      "gpu_utilization_percent": 0,
+      "evidence": "nvidia-smi immediately after second process exit"
+    }
+  },
+  "latest_status": "completed_full_interval_one_forward_one_backward",
+  "optimizer_updates_executed_total": 0,
+  "checkpoint_immutable": true,
+  "same_checkpoint_and_physics_verified": {
+    "checkpoint_sha256": true,
+    "saved_constructor": true,
+    "candidate_constructor": true,
+    "actual_B_time_reference": true,
+    "solver_and_observer_resolution": true,
+    "model_dimension_and_precision": true,
+    "changed_only_allocator_protection": true
+  },
+  "resource_acceptance": "One D768 next-token interval of duration 0.06773389875888824 and 84 solver steps completed a full first-order task-plus-port backward within the declared dedicated-memory budget. This is numerical/resource acceptance for that interval only, not production BPTT32 throughput or predictive-quality evidence."
+}

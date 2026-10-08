@@ -1,0 +1,41 @@
+{
+  "date": "2026-10-08",
+  "status": "numerical and interface acceptance; no capacity claim",
+  "transport": "B=diag(speed) T; A=B B^T; exact skew edge flows",
+  "extra_parameters_default_material_width_8": 27,
+  "extra_persistent_state_bytes": 0,
+  "double_precision_checks": {
+    "energy_absolute_error": 1.7763568394002505e-15,
+    "field_integral_absolute_error": 1.7763568394002505e-15,
+    "tensor_min_eigenvalue": 0.013602601912597637,
+    "plane_wave_grid_sizes": [
+      4,
+      8,
+      16
+    ],
+    "plane_wave_rms_errors": [
+      0.002826841719608862,
+      0.0007510601942410429,
+      0.00019243404284083066
+    ],
+    "refinement": "same constant B, fixed physical horizon .02, splitting steps 4*n"
+  },
+  "tests": {
+    "affected_cpu": "56 passed, 4 skipped",
+    "new_suite_cuda_enabled": "10 passed",
+    "deslice": "standalone checks passed",
+    "full_suite": "53 passed, 2 skipped, stopped at 3 failures: missing historical PT; two fly graph allocations exhausted host memory"
+  },
+  "training": {
+    "launched": false,
+    "optimizer_updates": 0
+  },
+  "scope": "reciprocal directional material; no diode, literal axon, learned useful topology or NLL gain claimed",
+  "source_hashes": {
+    "information_boltzmann/core/plastic_medium.py": "161c977f90bed22c6c3c6ac1e7d0aae279da4a4a5c357ea14e032d678f767488",
+    "information_boltzmann/core/plastic_ports.py": "e4e09aaffe5164a58f7208d452414dcea4862c6e529bf4636aee9489c3afe145",
+    "information_boltzmann/runtime/continuous.py": "74ef3cf143ac8b26faab2fe6b228ba40fdcb24d596ab4ba5bee25231f5b37e99",
+    "scripts/ib/train_medium_active_stream.py": "b314cb6332d35c927222d630973a0045bc00035adb6ff3747b58084e3f5c0e4d",
+    "tests/test_anisotropic_medium.py": "308f92535cec83936d17b32919f2f475206e3ab7116c8318d2a3be855492f9bf"
+  }
+}

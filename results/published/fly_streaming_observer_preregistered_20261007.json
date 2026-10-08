@@ -1,0 +1,86 @@
+{
+  "registered_at": "2026-10-07T15:01:41.843254+08:00",
+  "registered_before_gpu_update": true,
+  "route": "continuous-predict-arrive-correct-v1",
+  "source_sha256": {
+    "information_boltzmann/core/fly_streaming_observer.py": "71dee95c1300cb1dc7b0d65c290ff20c0892f0472ed652b57473d5568cd7b859",
+    "information_boltzmann/core/fly_streaming_learning.py": "3953232dc9d7704c7ce3c82b35048b865777a406e97951a7a42c1d8bd5ad5455",
+    "scripts/ib/train_fly_streaming_observer.py": "c870d0eca366f3fb6e27e1d1d48c32dbcbc145e456c857f5ad7f3be7f7f3b939",
+    "information_boltzmann/core/fly_reservoir.py": "ea3331583f909889c9790685ca592a9653ce296230781cd3d84d2587bf18f7f4",
+    "information_boltzmann/core/fly_bptt_learning.py": "b989bedf561937080cecb01420046d7a3f0516a65d4b8d9ad508fa7d1c2fd786",
+    "information_boltzmann/core/triton_synapse.py": "f5b6d600a86233fdeebcb1b6958f0441c39041b2cf78b1737c401aa4db28a5b7"
+  },
+  "objective": "Never-reset real OWT first-pass NLL benefit from one-tick persistent predictive motor readout",
+  "hypotheses": [
+    "Correcting delayed reduced state improves useful motor prediction without a per-token horizon loop",
+    "Persistent full-interface state restores identical training and generation execution",
+    "Shared decoder scale avoids the unintended HX1 gain change"
+  ],
+  "implementation_scope": "Independent modules and CLI; shared physical core unchanged by this route",
+  "cpu_acceptance": {
+    "tests": 12,
+    "passed": 12,
+    "seconds": 5.47,
+    "coverage": [
+      "real sign/delay aggregates",
+      "delayed arrivals",
+      "one-tick edge deletion sensitivity",
+      "hidden-state observations",
+      "partition and checkpoint identity",
+      "detached-source predictor learning",
+      "unchanged issued scoring",
+      "zero adapter baseline",
+      "training-generation parity",
+      "joint updates",
+      "complete optimizer resume",
+      "explicit CLI and reset rejection"
+    ]
+  },
+  "review": {
+    "reviewer": "/root/stream_observer_review",
+    "hypothesis_status": "reviewed",
+    "necessity_status": "reviewed",
+    "calibration_status": "approved",
+    "formal_plan_status": "reviewed",
+    "conditions": "One real 32-target joint GPU update under3900MiB; retain its full state, then3124 more fresh updates to total100000 targets. Source hashes must match on resume."
+  },
+  "calibration": {
+    "targets": 32,
+    "max_reserved_or_allocated_mib": 3900,
+    "capability_claim": false,
+    "output": "results/fly_streaming_predict_arrive_correct_100k",
+    "checkpoint_directory": "F:/fly_checkpoints/fly_streaming_predict_arrive_correct_100k"
+  },
+  "formal_budget": {
+    "total_first_pass_targets": 100000,
+    "window_targets": 32,
+    "fresh_optimizer_updates": 3125,
+    "gamma": false,
+    "physical_ticks_per_input": 1,
+    "serial_horizon_rollouts": 0,
+    "observer_latent_dim": 128,
+    "samples_per_region": 64,
+    "fixed_resource_budgets_not_biological_constants": true
+  },
+  "evaluation": {
+    "primary": "All-first-pass and final1000fresh-update NLL paired with train-only unigram; every activeB paired same target prior",
+    "secondary": "HX0 matching55040train prefix and11common activeBcontexts",
+    "active_eval_targets": 256,
+    "revisit_targets": 128,
+    "actual_revisit_interval": "256freshB events plus scored bridge in matched pairs",
+    "never_reset": true,
+    "pre_update_scores": true
+  },
+  "predictions": [
+    "Deleting actual one-delay sensory-motor graph support removes that immediate forecast sensitivity",
+    "Partitioned, resumed and generation forward values match same-parameter continuous processing",
+    "Predictor learns from delayed arrived evidence after source detachment",
+    "Useful predictor must improve NLL; MSE alone is insufficient"
+  ],
+  "decision_rule": "Report full bounded real-data outcome; noconvergenceclaimfromfixedbudget; if forecast improves but NLLfails retainforecast finding andrejecttaskbenefitforthatbudget; no rescue modules withoutnewregisteredhypothesis",
+  "constraints": [
+    "Reduced regional observation, not exact whole-brain physical prediction",
+    "Static initial A_d magnitudes differ from subsequently learned body synapses",
+    "BPTT32 physical credit remains truncated; fixed-size arrival replay is not infinite exact credit"
+  ]
+}

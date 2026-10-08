@@ -1,0 +1,59 @@
+{
+  "architecture": "FlyReservoir-MaleCNS-Topographic-COBA-ALIF-STP",
+  "eval_paradigm": "Tri-Pillar Biological Life-Form Suite (Unbroken Continuum)",
+  "warm_tokens": 1000,
+  "pillar_1_prequential_tracker": {
+    "total_tokens": 5000.0,
+    "ema_nll": 10.088731179891308,
+    "mean_cumulative_nll": 10.37761358757019,
+    "window_mean_nll": 10.05162788105011,
+    "window_std_nll": 1.171055028238565
+  },
+  "pillar_2_environmental_shock": {
+    "n_tokens": 1000,
+    "shock_surprise_initial": 10.673541688919068,
+    "plateau_surprise": 10.545856418609619,
+    "delta_shock": 0.1276852703094491,
+    "half_life_tokens": 2.0,
+    "elasticity_score": 0.04256175676981636,
+    "post_shock_snr_db": 25.304136614329945
+  },
+  "pillar_3_unbroken_lifecycle_savings": {
+    "n_tokens": 500,
+    "actual_intervening_tokens": 3000,
+    "nll_initial_mean": 10.519321731567382,
+    "nll_relearn_mean": 10.05162788105011,
+    "initial_opening_nll": 10.238707351684571,
+    "relearn_opening_nll": 9.435323333740234,
+    "retention_immediate_drop": 0.803384017944337,
+    "savings_ratio": 0.04446045690510377,
+    "acceleration_factor": 0.3333333333333333,
+    "thermodynamic_shift": {
+      "initial_snr_db": 31.02951398970547,
+      "final_snr_db": 18.261041715898447,
+      "delta_snr_db": -12.768472273807024,
+      "initial_spectral_entropy": 0.32930201292037964,
+      "final_spectral_entropy": 0.8576741814613342,
+      "net_entropy_accumulated": 51551.91986463283,
+      "entropy_balance_ratio": 0.006478330887570178
+    }
+  },
+  "thermodynamic_entropy_and_noise_audit": {
+    "total_steps": 5000,
+    "cumulative_entropy_inflow_nats": 51888.06793785095,
+    "cumulative_entropy_dissipated_nats": 336.14807321811963,
+    "net_entropy_accumulated_nats": 51551.91986463283,
+    "entropy_balance_ratio": 0.006478330887570178,
+    "mean_inflow_rate_nats_per_step": 10.37761358757019,
+    "mean_dissipation_rate_nats_per_step": 0.06722961464362393,
+    "spectral_entropy_nats": 0.8576741814613342,
+    "max_possible_spectral_entropy_nats": 4.852030263919617,
+    "spectral_entropy_ratio": 0.17676604118468112,
+    "signal_power": 0.5744218779727817,
+    "noise_power": 0.008572881110012531,
+    "initial_snr_db": 16.50794748985967,
+    "final_snr_db": 18.261041715898447,
+    "delta_snr_db": 1.753094226038776,
+    "noise_expelled": true
+  }
+}

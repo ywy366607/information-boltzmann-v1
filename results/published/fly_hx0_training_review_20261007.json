@@ -1,0 +1,227 @@
+{
+  "snapshot_time": "2026-10-07T13:25:50.287431+08:00",
+  "status": "interim_observation_independently_source_reviewed",
+  "scope": "CPU-only source/log/accounting review; no training modification or new GPU runs",
+  "run": "q8_fly_bptt32_lewm14_clean_v2_100k",
+  "objective": "Continuous first-pass predictive improvement under the actual never-reset active learner",
+  "source_hashes_current_disk": {
+    "information_boltzmann/core/lejepa_predictor.py": "d033ef4786b977e66fdff316390a6de68f056341aa67548141f0c661a68c1658",
+    "information_boltzmann/core/fly_bptt_learning.py": "29246288f6e97d57400f7b73a60d6a9d289991b27524c63ca68bb5570d44bcbe",
+    "scripts/ib/train_fly_bptt_stream.py": "7f5f2b29ad9c7b64f2063c4d52270c891766126f4e6c23914cd44ee64d13e645"
+  },
+  "source_provenance_limit": "Current disk source reviewed; launched process does not log source hashes, so loaded-version equality is not certified.",
+  "snapshot": {
+    "bptt_train_tokens": 35712,
+    "bptt_optimizer_updates": 1200,
+    "first_pass_train_nll": 7.376755831609597,
+    "first_pass_fixed_unigram_nll": 7.478584716674428,
+    "first_pass_gain_over_fixed_unigram": 0.10182888506483079,
+    "recent_first_pass_train_nll": 7.5586706098984,
+    "recent_first_pass_fixed_unigram_nll": 7.782546004008666,
+    "recent_first_pass_gain_over_fixed_unigram": 0.2238753941102667,
+    "speed_tokens_per_sec": 35.741736248886966,
+    "vram_peak_mib": 2447.86962890625,
+    "grad_norm_before_clip": 1.020137906074524,
+    "jepa_mse": 0.007866788655519485,
+    "jepa_sigreg": 0.21018339693546295,
+    "attn_k0_immediate": 0.07626868784427643,
+    "attn_k1_fast": 0.06958995014429092,
+    "attn_k4_median": 0.0659240260720253,
+    "attn_k7_mid": 0.06554936617612839,
+    "attn_k14_recurrent": 0.06548544019460678
+  },
+  "registered_budget_tokens": 100000,
+  "fixed_reference_counts_sha256": "d4de1245c61786d8fd223427b29a7ae6db3157d84fac1f11790d2bfcb4c6a750",
+  "fresh_train_nonoverlapping_segments": [
+    {
+      "train_interval": [
+        0,
+        5120
+      ],
+      "targets": 5120,
+      "model_nll": 7.068559993011877,
+      "fixed_unigram_nll": 7.3112471273411845,
+      "gain_over_unigram": 0.24268713432930725
+    },
+    {
+      "train_interval": [
+        5120,
+        10112
+      ],
+      "targets": 4992,
+      "model_nll": 7.454994216131476,
+      "fixed_unigram_nll": 7.554625100984674,
+      "gain_over_unigram": 0.09963088485319706
+    },
+    {
+      "train_interval": [
+        10112,
+        15104
+      ],
+      "targets": 4992,
+      "model_nll": 7.436293053369109,
+      "fixed_unigram_nll": 7.46037678062831,
+      "gain_over_unigram": 0.02408372725920006
+    },
+    {
+      "train_interval": [
+        15104,
+        20096
+      ],
+      "targets": 4992,
+      "model_nll": 7.54833607060405,
+      "fixed_unigram_nll": 7.6023034747653995,
+      "gain_over_unigram": 0.05396740416135041
+    },
+    {
+      "train_interval": [
+        20096,
+        25088
+      ],
+      "targets": 4992,
+      "model_nll": 7.354546756220934,
+      "fixed_unigram_nll": 7.457640368662082,
+      "gain_over_unigram": 0.10309361244114768
+    },
+    {
+      "train_interval": [
+        25088,
+        30080
+      ],
+      "targets": 4992,
+      "model_nll": 7.3632505391843805,
+      "fixed_unigram_nll": 7.364249248185604,
+      "gain_over_unigram": 0.000998709001222755
+    },
+    {
+      "train_interval": [
+        30080,
+        35072
+      ],
+      "targets": 4992,
+      "model_nll": 7.426136433839422,
+      "fixed_unigram_nll": 7.554142347305042,
+      "gain_over_unigram": 0.12800591346562074
+    }
+  ],
+  "fresh_B_paired_with_exact_target_unigram": [
+    {
+      "train_tokens": 5024,
+      "validation_target_interval": [
+        0,
+        256
+      ],
+      "targets": 256,
+      "model_nll": 7.689156551845372,
+      "fixed_unigram_nll": 7.512127477933757,
+      "gain_over_unigram": -0.17702907391161496,
+      "A_revisit_nll": 7.507125781849027,
+      "matched_A_revisit_gain": 0.35984941730349096
+    },
+    {
+      "train_tokens": 10016,
+      "validation_target_interval": [
+        256,
+        512
+      ],
+      "targets": 256,
+      "model_nll": 7.686782433651388,
+      "fixed_unigram_nll": 7.560355754282792,
+      "gain_over_unigram": -0.12642667936859592,
+      "A_revisit_nll": 7.5287257842719555,
+      "matched_A_revisit_gain": -0.0429839036596098
+    },
+    {
+      "train_tokens": 15008,
+      "validation_target_interval": [
+        512,
+        768
+      ],
+      "targets": 256,
+      "model_nll": 6.865166158415377,
+      "fixed_unigram_nll": 6.9325085301065625,
+      "gain_over_unigram": 0.06734237169118523,
+      "A_revisit_nll": 6.944410426542163,
+      "matched_A_revisit_gain": 0.14707721124483886
+    },
+    {
+      "train_tokens": 20000,
+      "validation_target_interval": [
+        768,
+        1024
+      ],
+      "targets": 256,
+      "model_nll": 7.452559224329889,
+      "fixed_unigram_nll": 7.423662122637301,
+      "gain_over_unigram": -0.028897101692587877,
+      "A_revisit_nll": 7.230017054826021,
+      "matched_A_revisit_gain": 0.1633374578370823
+    },
+    {
+      "train_tokens": 25024,
+      "validation_target_interval": [
+        1024,
+        1280
+      ],
+      "targets": 256,
+      "model_nll": 7.106109390035272,
+      "fixed_unigram_nll": 7.2051752651361785,
+      "gain_over_unigram": 0.0990658751009066,
+      "A_revisit_nll": 7.208520732820034,
+      "matched_A_revisit_gain": 0.21131361375643554
+    },
+    {
+      "train_tokens": 30016,
+      "validation_target_interval": [
+        1280,
+        1536
+      ],
+      "targets": 256,
+      "model_nll": 7.345160434022546,
+      "fixed_unigram_nll": 7.3592044443753455,
+      "gain_over_unigram": 0.014044010352799318,
+      "A_revisit_nll": 6.5485632456839085,
+      "matched_A_revisit_gain": 0.09739086196178537
+    },
+    {
+      "train_tokens": 35008,
+      "validation_target_interval": [
+        1536,
+        1792
+      ],
+      "targets": 256,
+      "model_nll": 7.497912667691708,
+      "fixed_unigram_nll": 7.404972866968463,
+      "gain_over_unigram": -0.09293980072324458,
+      "A_revisit_nll": 7.274228014051914,
+      "matched_A_revisit_gain": 0.3379144011520019
+    }
+  ],
+  "fresh_B_pooled": {
+    "model_nll": 7.377549551427364,
+    "fixed_unigram_nll": 7.342572351634343,
+    "gain_over_unigram": -0.03497719979302174,
+    "targets": 1792
+  },
+  "implementation_findings": [
+    "Autonomous student-only CE readout and correctly indexed 0->1..13->14 quiet teacher targets in current code.",
+    "Teacher targets remain differentiable; auxiliary objective jointly trains teacher/readout/student.",
+    "Mixed student/teacher latent input uses the original teacher next-state target, not an expert query at the mixed state; describe as interpolated trajectory consistency rather than certified on-policy DAgger.",
+    "Deterministic motor-only rollout can process existing motor history; unavailable current-input information cannot be recovered from absent motor response.",
+    "Logged mean hop weights are broadly near 1/15 with some shifts; per-token specialization and distinct horizon utility are not resolved by their means."
+  ],
+  "interpretation": "Fresh-training gain oscillates, weakened around 25k-30k and recovered in the 30k-35k segment and latest 4096-token tail. This is observed learning with variable gain, not evidence of a final plateau. Fresh-B aggregate at snapshot remains slightly worse than matched fixed unigram; sustained new-context predictive improvement is not established.",
+  "evidence_limits": [
+    "Fresh B windows differ in content and update the learner.",
+    "A revisit is active replay, separate from fresh traffic.",
+    "EMA includes fresh training, B, and A replay.",
+    "Roughly one thousand optimizer updates is an interim budget, not a converged architecture verdict.",
+    "No causal attribution of NLL gain to the latent predictor or the physical brain is made."
+  ],
+  "review": {
+    "reviewer": "/root/hx0_review",
+    "scope": "Independent read-only source and active-evaluation semantics review",
+    "status": "source_review_completed"
+  },
+  "next_action": "Preserve the running registered 100k-token comparison and unchanged architecture. Judge gain using matched first-pass segments and pooled fresh B, not the single best window. If registered-budget gain stays negligible, prioritize whether the motor observation contains the required information and whether autonomous horizons contribute to CE before extending training."
+}

@@ -1,0 +1,82 @@
+{
+  "checkpoint_bptt_targets": 900000,
+  "model_forward_executed": false,
+  "gpu_allocated": false,
+  "state_never_modified": true,
+  "h_regions": {
+    "whole": {
+      "neurons": 165122,
+      "mean_square": 5.193034321841637,
+      "fraction_of_total_square": 1.0,
+      "min": -36.49566650390625,
+      "max": 0.23219901323318481,
+      "mean": -0.4131811857223511,
+      "finite": true
+    },
+    "sensory": {
+      "neurons": 15912,
+      "mean_square": 53.85600443003144,
+      "fraction_of_total_square": 0.9993848623772909,
+      "min": -36.49566650390625,
+      "max": 0.13630138337612152,
+      "mean": -4.257829189300537,
+      "finite": true
+    },
+    "non_sensory": {
+      "neurons": 149210,
+      "mean_square": 0.0035350901445920704,
+      "fraction_of_total_square": 0.0006151376227092064,
+      "min": -0.19352133572101593,
+      "max": 0.23219901323318481,
+      "mean": -0.0031816079281270504,
+      "finite": true
+    },
+    "output": {
+      "neurons": 2333,
+      "mean_square": 0.016304668497770243,
+      "fraction_of_total_square": 4.436092351986307e-05,
+      "min": -0.19352133572101593,
+      "max": 0.23219901323318481,
+      "mean": -0.01909492537379265,
+      "finite": true
+    }
+  },
+  "physical_states": {
+    "ge": {
+      "min": 0.0,
+      "max": 0.547005832195282,
+      "mean": 0.005219602957367897,
+      "finite": true
+    },
+    "gi": {
+      "min": 0.0,
+      "max": 0.7431131601333618,
+      "mean": 0.008373099379241467,
+      "finite": true
+    },
+    "b": {
+      "min": 0.0,
+      "max": 0.9999985694885254,
+      "mean": 0.024078231304883957,
+      "finite": true
+    },
+    "x": {
+      "min": 0.005097746849060059,
+      "max": 1.0,
+      "mean": 0.822884202003479,
+      "finite": true
+    },
+    "u": {
+      "min": 0.25,
+      "max": 0.971014678478241,
+      "mean": 0.34820571541786194,
+      "finite": true
+    },
+    "baseline": {
+      "min": -4.189643383026123,
+      "max": 1.8711109161376953,
+      "mean": -0.38183146715164185,
+      "finite": true
+    }
+  }
+}

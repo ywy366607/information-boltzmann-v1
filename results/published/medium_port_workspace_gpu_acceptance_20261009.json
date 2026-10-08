@@ -1,0 +1,155 @@
+{
+  "scope": "actual D7688^3 real OWT, full32 credit, execution only",
+  "checkpoint": "results\\medium_d768_streaming_pathway_8x8x8_160k\\last.pt",
+  "checkpoint_step": 157,
+  "checkpoint_cursor": 5025,
+  "production_checkpoint_written": false,
+  "runs": [
+    {
+      "read_key_execution": "dense",
+      "auxiliary_final_read": true,
+      "forward_backward_seconds": 52.60110710000299,
+      "peak_allocated_mib": 2509.69140625
+    },
+    {
+      "read_key_execution": "support",
+      "auxiliary_final_read": false,
+      "forward_backward_seconds": 16.850422499999695,
+      "peak_allocated_mib": 2511.484375
+    }
+  ],
+  "identity": {
+    "passed": true,
+    "maximum_absolute_differences": {
+      "state": 0.0,
+      "input_gradient": 3.3813194022513926e-08,
+      "parameter_gradient": 1.1138617992401123e-06
+    },
+    "parameter_tensors": 101,
+    "state_tensors": 11
+  },
+  "conditional_response": {
+    "scope": "conditional_complete_physical_state_one_event",
+    "directions": 1,
+    "duration": 0.03386548161506653,
+    "direction_durations": [
+      0.03386548161506653
+    ],
+    "nominal_event_duration": 0.03327237442135811,
+    "duration_policy": "model.event_time from pre-observation physical state; clock JVP included",
+    "state_shapes": [
+      [
+        1,
+        8,
+        8,
+        8,
+        768
+      ],
+      [
+        1,
+        8,
+        8,
+        8,
+        768
+      ],
+      [
+        1,
+        8,
+        8,
+        8,
+        768
+      ],
+      [
+        1,
+        8,
+        8,
+        8,
+        768
+      ],
+      [
+        1,
+        8,
+        8,
+        8,
+        3
+      ],
+      [
+        1,
+        8,
+        8,
+        8,
+        2,
+        768
+      ],
+      [
+        1,
+        8,
+        8,
+        8,
+        3,
+        2
+      ],
+      [
+        1,
+        768
+      ],
+      [
+        1,
+        16,
+        4,
+        1536
+      ],
+      [
+        1,
+        16,
+        4,
+        1536
+      ]
+    ],
+    "metric": "sum of component mean-square distances in model coordinates",
+    "gains": [
+      0.9206094145774841
+    ],
+    "log_gain_per_physical_time": [
+      -2.4425880613370636
+    ],
+    "claim": "Directional local response, not maximal Lyapunov exponent or criticality."
+  },
+  "complete_updates": [
+    {
+      "window": 1,
+      "tokens": 32,
+      "seconds": 83.19500840000183,
+      "optimizer_updates": 158,
+      "prequential_nll": 6.831868514418602
+    },
+    {
+      "window": 2,
+      "tokens": 32,
+      "seconds": 13.931861100001697,
+      "optimizer_updates": 159,
+      "prequential_nll": 6.029312581755221
+    }
+  ],
+  "status": "passed",
+  "memory": {
+    "sample_count": 219,
+    "sampled_peak_dedicated_mib": 2952.6484375,
+    "sampled_peak_shared_mib": 80.0,
+    "counter_errors": [],
+    "cap_exceeded": false,
+    "last_sample": {
+      "seconds": 18941.3714779,
+      "dedicated_bytes": 3077201920,
+      "shared_bytes": 83886080,
+      "rows": [
+        {
+          "Name": "pid_37228_luid_0x00000000_0x00018DBD_phys_0",
+          "DedicatedUsage": 3077201920,
+          "SharedUsage": 83886080
+        }
+      ]
+    },
+    "peak_is_sampled": true
+  }
+}

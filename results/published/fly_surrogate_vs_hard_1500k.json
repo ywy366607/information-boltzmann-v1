@@ -1,0 +1,255 @@
+{
+  "checkpoint": "artifacts\\active_training\\q8_fly_bptt32_gamma_2333_wide115_100k\\last.pt",
+  "bptt_train_tokens": 1500000,
+  "windows": [
+    {
+      "window": 1,
+      "base_fit_nll": 6.875419780611992,
+      "base_follow_nll": 6.385040268301964,
+      "grad_norm_before_clip": 35.43029022216797,
+      "body_disp_norm": 0.16682060161104584,
+      "body_grad_norm": 35.420120976219934,
+      "controls": {
+        "full_adam": {
+          "fit_nll": 6.86703709512949,
+          "following_nll": 6.350628927350044,
+          "fixed_branch_nll": 6.868176430463791,
+          "delta_fit": -0.008382685482501984,
+          "delta_following": -0.034411340951919556,
+          "spikes_changed": 3563
+        },
+        "head_only_adam": {
+          "fit_nll": 6.867498971521854,
+          "following_nll": 6.383149556815624,
+          "fixed_branch_nll": 6.867498852312565,
+          "delta_fit": -0.007920809090137482,
+          "delta_following": -0.001890711486339569,
+          "spikes_changed": 0
+        },
+        "body_only_adam": {
+          "fit_nll": 6.875018358230591,
+          "following_nll": 6.352688081562519,
+          "fixed_branch_nll": 6.876134663820267,
+          "delta_fit": -0.000401422381401062,
+          "delta_following": -0.03235218673944473,
+          "spikes_changed": 3563
+        },
+        "body_pure_sg": {
+          "fit_nll": 6.781926155090332,
+          "following_nll": 6.53223379701376,
+          "fixed_branch_nll": 6.880485072731972,
+          "delta_fit": -0.09349362552165985,
+          "delta_following": 0.1471935287117958,
+          "spikes_changed": 46988
+        }
+      },
+      "body_fractions": [
+        {
+          "fraction": 0.125,
+          "delta_hard_fit": 0.0008069276809692383,
+          "delta_fixed_fit": 3.962963819503784e-05,
+          "spikes_changed": 419
+        },
+        {
+          "fraction": 0.25,
+          "delta_hard_fit": -0.0009574368596076965,
+          "delta_fixed_fit": 9.118765592575073e-05,
+          "spikes_changed": 788
+        },
+        {
+          "fraction": 0.5,
+          "delta_hard_fit": -0.0006343796849250793,
+          "delta_fixed_fit": 0.00024066120386123657,
+          "spikes_changed": 1768
+        }
+      ],
+      "body_subcomponents": {
+        "edges": {
+          "delta_fit": 0.0019784048199653625,
+          "delta_following": -0.027118057012557983,
+          "delta_fixed_fit": 0.0006694123148918152,
+          "spikes_changed": 1514
+        },
+        "writer": {
+          "delta_fit": 0.0007479414343833923,
+          "delta_following": 0.0009468048810958862,
+          "delta_fixed_fit": 2.2351741790771484e-08,
+          "spikes_changed": 2069
+        },
+        "cells": {
+          "delta_fit": -0.0005638748407363892,
+          "delta_following": -0.003050006926059723,
+          "delta_fixed_fit": 3.304332494735718e-05,
+          "spikes_changed": 1198
+        }
+      },
+      "elapsed_sec": 5.977880499995081
+    },
+    {
+      "window": 2,
+      "base_fit_nll": 6.350629039108753,
+      "base_follow_nll": 7.467226080596447,
+      "grad_norm_before_clip": 28.04149627685547,
+      "body_disp_norm": 0.16608071767456478,
+      "body_grad_norm": 28.023814966178055,
+      "controls": {
+        "full_adam": {
+          "fit_nll": 6.30155124515295,
+          "following_nll": 7.457975134253502,
+          "fixed_branch_nll": 6.3018359541893005,
+          "delta_fit": -0.04907779395580292,
+          "delta_following": -0.009250946342945099,
+          "spikes_changed": 3335
+        },
+        "head_only_adam": {
+          "fit_nll": 6.339757353067398,
+          "following_nll": 7.466056667268276,
+          "fixed_branch_nll": 6.339757569134235,
+          "delta_fit": -0.010871686041355133,
+          "delta_following": -0.0011694133281707764,
+          "spikes_changed": 0
+        },
+        "body_only_adam": {
+          "fit_nll": 6.312502093613148,
+          "following_nll": 7.459204152226448,
+          "fixed_branch_nll": 6.312788747251034,
+          "delta_fit": -0.03812694549560547,
+          "delta_following": -0.008021928369998932,
+          "spikes_changed": 3335
+        },
+        "body_pure_sg": {
+          "fit_nll": 7.172339327633381,
+          "following_nll": 7.749970868229866,
+          "fixed_branch_nll": 6.3494788855314255,
+          "delta_fit": 0.8217102885246277,
+          "delta_following": 0.28274478763341904,
+          "spikes_changed": 52513
+        }
+      },
+      "body_fractions": [
+        {
+          "fraction": 0.125,
+          "delta_hard_fit": -0.005346067249774933,
+          "delta_fixed_fit": -0.004898324608802795,
+          "spikes_changed": 550
+        },
+        {
+          "fraction": 0.25,
+          "delta_hard_fit": -0.011429771780967712,
+          "delta_fixed_fit": -0.00975547730922699,
+          "spikes_changed": 1012
+        },
+        {
+          "fraction": 0.5,
+          "delta_hard_fit": -0.020105846226215363,
+          "delta_fixed_fit": -0.019341863691806793,
+          "spikes_changed": 2083
+        }
+      ],
+      "body_subcomponents": {
+        "edges": {
+          "delta_fit": -0.03855685889720917,
+          "delta_following": -0.0005700364708900452,
+          "delta_fixed_fit": -0.03735446184873581,
+          "spikes_changed": 1316
+        },
+        "writer": {
+          "delta_fit": -0.0005523413419723511,
+          "delta_following": 0.00034484267234802246,
+          "delta_fixed_fit": 3.725290298461914e-08,
+          "spikes_changed": 1956
+        },
+        "cells": {
+          "delta_fit": 0.00378253310918808,
+          "delta_following": -0.006073333323001862,
+          "delta_fixed_fit": -0.0004605203866958618,
+          "spikes_changed": 791
+        }
+      },
+      "elapsed_sec": 5.395321800009697
+    },
+    {
+      "window": 3,
+      "base_fit_nll": 7.4579752162098885,
+      "base_follow_nll": 6.479920633137226,
+      "grad_norm_before_clip": 15.845954895019531,
+      "body_disp_norm": 0.15994240766507192,
+      "body_grad_norm": 15.819388482878631,
+      "controls": {
+        "full_adam": {
+          "fit_nll": 7.426027059555054,
+          "following_nll": 6.494372077286243,
+          "fixed_branch_nll": 7.437061108648777,
+          "delta_fit": -0.03194815665483475,
+          "delta_following": 0.014451444149017334,
+          "spikes_changed": 3077
+        },
+        "head_only_adam": {
+          "fit_nll": 7.442200921475887,
+          "following_nll": 6.4792826771736145,
+          "fixed_branch_nll": 7.442200809717178,
+          "delta_fit": -0.01577429473400116,
+          "delta_following": -0.0006379559636116028,
+          "spikes_changed": 0
+        },
+        "body_only_adam": {
+          "fit_nll": 7.441844090819359,
+          "following_nll": 6.495066784322262,
+          "fixed_branch_nll": 7.453034646809101,
+          "delta_fit": -0.016131125390529633,
+          "delta_following": 0.015146151185035706,
+          "spikes_changed": 3077
+        },
+        "body_pure_sg": {
+          "fit_nll": 7.4771424531936646,
+          "following_nll": 6.4643261805176735,
+          "fixed_branch_nll": 7.452598117291927,
+          "delta_fit": 0.019167236983776093,
+          "delta_following": -0.015594452619552612,
+          "spikes_changed": 55045
+        }
+      },
+      "body_fractions": [
+        {
+          "fraction": 0.125,
+          "delta_hard_fit": -0.0004599541425704956,
+          "delta_fixed_fit": -0.0006420537829399109,
+          "spikes_changed": 360
+        },
+        {
+          "fraction": 0.25,
+          "delta_hard_fit": -0.006001010537147522,
+          "delta_fixed_fit": -0.0012782812118530273,
+          "spikes_changed": 849
+        },
+        {
+          "fraction": 0.5,
+          "delta_hard_fit": -0.007341563701629639,
+          "delta_fixed_fit": -0.002530008554458618,
+          "spikes_changed": 1975
+        }
+      ],
+      "body_subcomponents": {
+        "edges": {
+          "delta_fit": -0.010817773640155792,
+          "delta_following": 0.028331302106380463,
+          "delta_fixed_fit": -0.004915714263916016,
+          "spikes_changed": 1485
+        },
+        "writer": {
+          "delta_fit": 0.0009261146187782288,
+          "delta_following": -0.0012120231986045837,
+          "delta_fixed_fit": -8.940696716308594e-08,
+          "spikes_changed": 1510
+        },
+        "cells": {
+          "delta_fit": -0.008009485900402069,
+          "delta_following": -0.01549607515335083,
+          "delta_fixed_fit": -3.168731927871704e-05,
+          "spikes_changed": 1077
+        }
+      },
+      "elapsed_sec": 5.228298899994115
+    }
+  ]
+}

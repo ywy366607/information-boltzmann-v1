@@ -1,0 +1,151 @@
+{
+  "purpose": "untrained real-OWT interface/gradient readiness, not performance evaluation",
+  "architecture": "PlasticMedium3D-W4-learned-read-conductance-v3-contact-port-v4-compact-ports-v5-activity-feedback-v6-stp-v7-pre-decoder-rms-v8",
+  "constructor": {
+    "vocab_size": 50257,
+    "shape": [
+      8,
+      8,
+      4
+    ],
+    "channels": 128,
+    "bath_type": "conductance",
+    "write_exchange": "contact_mode",
+    "port_scope": "compact",
+    "activity_adaptation": true,
+    "short_term_plasticity": true,
+    "pre_decoder_norm": true
+  },
+  "parameters": 14067511,
+  "trainable_parameters": 14067511,
+  "physical_state_bytes": 796168,
+  "device": "cpu",
+  "optimizer_updates": 0,
+  "tokens": 32,
+  "data_offset": 0,
+  "event_duration": 0.005,
+  "initialization": "random learned embeddings and decoder; zero decoder bias; no GPT-2 transfer",
+  "nll": 10.837312698364258,
+  "write_objective": 10.825922012329102,
+  "task_gradient_groups": {
+    "medium": {
+      "parameters": 156854,
+      "with_gradient": 156854,
+      "nonzero_gradient": 136078,
+      "finite": true,
+      "gradient_norm": 0.6009229038044807,
+      "gradient_rms": 0.0015172982539153846
+    },
+    "source": {
+      "parameters": 6582406,
+      "with_gradient": 6433024,
+      "nonzero_gradient": 6433024,
+      "finite": true,
+      "gradient_norm": 0.054484056395015946,
+      "gradient_rms": 2.1236214377208468e-05
+    },
+    "write_agent": {
+      "parameters": 577394,
+      "with_gradient": 445810,
+      "nonzero_gradient": 412914,
+      "finite": true,
+      "gradient_norm": 2.2518027404910193,
+      "gradient_rms": 0.00296342684030086
+    },
+    "readout": {
+      "parameters": 267576,
+      "with_gradient": 267576,
+      "nonzero_gradient": 234040,
+      "finite": true,
+      "gradient_norm": 14.04433737315171,
+      "gradient_rms": 0.027150490188031434
+    },
+    "decoder": {
+      "parameters": 6483153,
+      "with_gradient": 6483153,
+      "nonzero_gradient": 6483153,
+      "finite": true,
+      "gradient_norm": 2.1850180898927416,
+      "gradient_rms": 0.0008581474205681497
+    },
+    "read_norm": {
+      "parameters": 128,
+      "with_gradient": 128,
+      "nonzero_gradient": 128,
+      "finite": true,
+      "gradient_norm": 0.041653124967945404,
+      "gradient_rms": 0.003681650890305611
+    }
+  },
+  "write_gradient_groups": {
+    "medium": {
+      "parameters": 156854,
+      "with_gradient": 156854,
+      "nonzero_gradient": 136078,
+      "finite": true,
+      "gradient_norm": 0.000704943387941462,
+      "gradient_rms": 1.7799444235874716e-06
+    },
+    "source": {
+      "parameters": 6582406,
+      "with_gradient": 6433024,
+      "nonzero_gradient": 6433024,
+      "finite": true,
+      "gradient_norm": 0.001136684774939099,
+      "gradient_rms": 4.430448677482065e-07
+    },
+    "write_agent": {
+      "parameters": 577394,
+      "with_gradient": 577394,
+      "nonzero_gradient": 577394,
+      "finite": true,
+      "gradient_norm": 0.7773687308066438,
+      "gradient_rms": 0.001023036041416617
+    },
+    "readout": {
+      "parameters": 267576,
+      "with_gradient": 267576,
+      "nonzero_gradient": 0,
+      "finite": true,
+      "gradient_norm": 0.0,
+      "gradient_rms": 0.0
+    },
+    "decoder": {
+      "parameters": 6483153,
+      "with_gradient": 6483153,
+      "nonzero_gradient": 0,
+      "finite": true,
+      "gradient_norm": 0.0,
+      "gradient_rms": 0.0
+    },
+    "read_norm": {
+      "parameters": 128,
+      "with_gradient": 128,
+      "nonzero_gradient": 0,
+      "finite": true,
+      "gradient_norm": 0.0,
+      "gradient_rms": 0.0
+    }
+  },
+  "task_write_gradient_cosine": -6.016699664849696e-05,
+  "evolved_field": {
+    "field_energy": 1.3793885707855225,
+    "dc_energy": 0.11217738687992096,
+    "spatial_energy": 1.2672111988067627,
+    "dc_share": 0.08132399618625641,
+    "spatial_share": 0.9186760187149048
+  },
+  "full_state_finite": true,
+  "full_state_elapsed": 0.16000000000000006,
+  "cpu_forward_seconds": 1.4518842000106815,
+  "cpu_two_objective_backward_seconds": 4.970806099998299,
+  "gpu_speed": null,
+  "gpu_speed_note": "CPU timings do not estimate production CUDA throughput",
+  "manifest_sha256": "caf2298208a1935275f06b5822da55b61cff7521ae7403db55404ed4cb4c055d",
+  "source_hashes": {
+    "scripts/ib/audit_medium_training_readiness.py": "a7fc59c834a39ad56735bec7f259174ba6b35be628b19b8e74b459c2a4ee42c6",
+    "information_boltzmann/core/plastic_ports.py": "a2273595c307197e36afaa8eea13e2daa8b9c0f6cb4cdd50e4c0135339fe2497",
+    "information_boltzmann/runtime/training.py": "894ad7cf97613776a1de529e1dbf21069b0d1b93fe0dcb4b6ead906a3ea88082"
+  },
+  "unigram_representability": "Decoder bias can equal log train-only frequencies while decoder weight is zero; no architecture-imposed NLL=7 floor."
+}

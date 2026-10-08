@@ -1,0 +1,33 @@
+{
+  "date": "2026-10-07",
+  "scope": "CPU numerical/interface verification only; no capability or NLL claim",
+  "command": "python -m pytest tests/test_fly_pipeline_repair_instrument.py tests/test_fly_pipeline.py tests/test_fly_pipeline_multihop.py -q",
+  "passed": 23,
+  "failed": 0,
+  "gpu_diagnostic_executed": true,
+  "identities": [
+    "Original reset surrogate derivative matches1-s-v*phi",
+    "Candidate reset partial matches1-s at begin and finish",
+    "Candidate forward reset equals original",
+    "Transmitted spike derivative retained",
+    "Instrumentation restores globals",
+    "Equal-score but changed-event replay marked unstable",
+    "All-repeat state-floor maximum and fixed44-window budget",
+    "Continuous-state replay drift is detected even at identical hard events/scores",
+    "Sub-resolution matched radius and relative unmatched body norm cannot support direction",
+    "Nested NumPy scalar/boolean and error reports retain exact scalar values under native JSON conversion"
+  ],
+  "script_sha256": "c9e88111a410b08caccf90aef0766971d63669b539195e0c95dd2892d48b37f7",
+  "prereg_sha256": "283f289d29b792001fb67d50830f334740ba5f6d80b3c82723a363c5abbe4e22",
+  "test_sha256": "fea59368a70a2899a8d9fc6797bec32a05df69e7b6afaf0d4dc86a89eb337145",
+  "seconds": 6.75,
+  "focused_repair_tests": 7,
+  "output_recovery_test": {
+    "command": "python -m pytest tests/test_fly_pipeline_repair_instrument.py -q",
+    "passed": 8,
+    "seconds": 3.4,
+    "numerical_representation_only": true
+  },
+  "gpu_diagnostic_scope": "Separate approved real-data finite-update fork; report and result review linked below, not a CPU capability test",
+  "diagnostic_report": "results/published/fly_pipeline_repair_diagnostic_20261007.json"
+}

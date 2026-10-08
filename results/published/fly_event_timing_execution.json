@@ -1,0 +1,73 @@
+{
+  "scope": "matched checkpoint forks; numerical/resource calibration only; production stays paused",
+  "checkpoint": "results\\q8_fly_bptt32_adamw_continuous_100k\\last.pt",
+  "checkpoint_bptt_tokens": 600928,
+  "checkpoint_train_cursor": 700928,
+  "window_tokens": 32,
+  "arms": [
+    {
+      "settle_ticks": 0,
+      "physical_ticks_per_input": 1,
+      "windows": [
+        {
+          "window_index": 0,
+          "seconds": 0.7099735999945551,
+          "numeric_preupdate_nll": 6.524578981101513,
+          "grad_norm_before_clip": 1.5861972570419312
+        },
+        {
+          "window_index": 1,
+          "seconds": 0.6835525000060443,
+          "numeric_preupdate_nll": 7.125138707458973,
+          "grad_norm_before_clip": 1.370290994644165
+        },
+        {
+          "window_index": 2,
+          "seconds": 0.6827955000044312,
+          "numeric_preupdate_nll": 6.313003659248352,
+          "grad_norm_before_clip": 1.2403711080551147
+        }
+      ],
+      "median_seconds_per_window": 0.6835525000060443,
+      "tokens_per_second": 46.81425347682445,
+      "setup_seconds": 2.7508841000089888,
+      "vram_peak_mib": 2203.44384765625,
+      "vram_reserved_mib": 2390.0,
+      "input_events_executed": 96,
+      "physical_ticks_executed": 96,
+      "optimizer_updates_executed": 3
+    },
+    {
+      "settle_ticks": 1,
+      "physical_ticks_per_input": 2,
+      "windows": [
+        {
+          "window_index": 0,
+          "seconds": 1.2112636999809183,
+          "numeric_preupdate_nll": 6.514790765941143,
+          "grad_norm_before_clip": 1.4540245532989502
+        },
+        {
+          "window_index": 1,
+          "seconds": 1.2115659000119194,
+          "numeric_preupdate_nll": 7.167947255074978,
+          "grad_norm_before_clip": 4.258153915405273
+        },
+        {
+          "window_index": 2,
+          "seconds": 1.2115848000103142,
+          "numeric_preupdate_nll": 6.388444051146507,
+          "grad_norm_before_clip": 1.7240535020828247
+        }
+      ],
+      "median_seconds_per_window": 1.2115659000119194,
+      "tokens_per_second": 26.412100241254052,
+      "setup_seconds": 2.8850814000179525,
+      "vram_peak_mib": 2748.2890625,
+      "vram_reserved_mib": 2934.0,
+      "input_events_executed": 96,
+      "physical_ticks_executed": 192,
+      "optimizer_updates_executed": 3
+    }
+  ]
+}

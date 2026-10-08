@@ -1,0 +1,249 @@
+{
+  "purpose": "real-corpus credit/wiring audit; no optimizer update or capability claim",
+  "checkpoint": "D:\\information-boltzmann-v1\\results\\medium_v8_joint_bptt32_96k_recovered\\last.pt",
+  "checkpoint_step": 3000,
+  "fresh_training_tokens": 96000,
+  "actual_events": 103296,
+  "optimizer_updates": 0,
+  "event_duration": 0.005,
+  "samples": [
+    {
+      "offset": 96001,
+      "task_nll": 6.755675315856934,
+      "dynamic_bias_only_nll": 7.282258987426758,
+      "gain_over_dynamic_bias": 0.5265836715698242,
+      "write_loss": 7.194586753845215,
+      "groups": {
+        "medium": {
+          "parameters": 156854,
+          "connected_parameters": 156854,
+          "task_norm": 3.3228383422606567,
+          "auxiliary_norm": 0.7737716167773399,
+          "cosine": 0.10895750458517448,
+          "auxiliary_along_task_ratio": 0.02537235212759002,
+          "total_norm": 3.4928873966229044
+        },
+        "source": {
+          "parameters": 6582406,
+          "connected_parameters": 6433024,
+          "task_norm": 0.0767811443696442,
+          "auxiliary_norm": 0.24244988462560446,
+          "cosine": 0.0924918817744811,
+          "auxiliary_along_task_ratio": 0.29205928420485594,
+          "total_norm": 0.2609997522213292
+        },
+        "write_agent": {
+          "parameters": 577394,
+          "connected_parameters": 577394,
+          "task_norm": 0.9133868139762659,
+          "auxiliary_norm": 1.8727775081109388,
+          "cosine": -0.03585894680459426,
+          "auxiliary_along_task_ratio": -0.07352397474169775,
+          "total_norm": 2.053994296335319
+        },
+        "readout": {
+          "parameters": 267576,
+          "connected_parameters": 267576,
+          "task_norm": 1.8037051113209475,
+          "auxiliary_norm": 0.0,
+          "cosine": null,
+          "auxiliary_along_task_ratio": 0.0,
+          "total_norm": 1.8037051113209475
+        },
+        "decoder": {
+          "parameters": 6483153,
+          "connected_parameters": 6483153,
+          "task_norm": 2.0201049053020497,
+          "auxiliary_norm": 0.0,
+          "cosine": null,
+          "auxiliary_along_task_ratio": 0.0,
+          "total_norm": 2.0201049053020497
+        },
+        "read_norm": {
+          "parameters": 128,
+          "connected_parameters": 128,
+          "task_norm": 0.061840667717250476,
+          "auxiliary_norm": 0.0,
+          "cosine": null,
+          "auxiliary_along_task_ratio": 0.0,
+          "total_norm": 0.061840667717250476
+        }
+      },
+      "disconnected_parameters": [
+        "source.address.weight",
+        "source.address.bias",
+        "source.width.weight",
+        "source.width.bias",
+        "source.content.0.weight",
+        "source.content.0.bias",
+        "source.content.2.weight",
+        "source.content.2.bias",
+        "source.state_content.weight",
+        "source.neighbor_content.weight",
+        "source.angle.0.weight",
+        "source.angle.0.bias",
+        "source.angle.2.weight",
+        "source.angle.2.bias"
+      ]
+    },
+    {
+      "offset": 96033,
+      "task_nll": 7.281692981719971,
+      "dynamic_bias_only_nll": 7.8487548828125,
+      "gain_over_dynamic_bias": 0.5670619010925293,
+      "write_loss": 7.855515003204346,
+      "groups": {
+        "medium": {
+          "parameters": 156854,
+          "connected_parameters": 156854,
+          "task_norm": 2.9470857908970776,
+          "auxiliary_norm": 1.225347383240502,
+          "cosine": 0.280526194186257,
+          "auxiliary_along_task_ratio": 0.11663794757461528,
+          "total_norm": 3.4946910335866845
+        },
+        "source": {
+          "parameters": 6582406,
+          "connected_parameters": 6433024,
+          "task_norm": 0.06568222615962412,
+          "auxiliary_norm": 0.22238818403696098,
+          "cosine": 0.07194498813844763,
+          "auxiliary_along_task_ratio": 0.24359276775709135,
+          "total_norm": 0.2363735456122064
+        },
+        "write_agent": {
+          "parameters": 577394,
+          "connected_parameters": 577394,
+          "task_norm": 0.8723677712415095,
+          "auxiliary_norm": 1.9983197965620165,
+          "cosine": 0.2943969609557219,
+          "auxiliary_along_task_ratio": 0.6743707121232555,
+          "total_norm": 2.404315743108841
+        },
+        "readout": {
+          "parameters": 267576,
+          "connected_parameters": 267576,
+          "task_norm": 1.6207849425183185,
+          "auxiliary_norm": 0.0,
+          "cosine": null,
+          "auxiliary_along_task_ratio": 0.0,
+          "total_norm": 1.6207849425183185
+        },
+        "decoder": {
+          "parameters": 6483153,
+          "connected_parameters": 6483153,
+          "task_norm": 1.8895398015293015,
+          "auxiliary_norm": 0.0,
+          "cosine": null,
+          "auxiliary_along_task_ratio": 0.0,
+          "total_norm": 1.8895398015293015
+        },
+        "read_norm": {
+          "parameters": 128,
+          "connected_parameters": 128,
+          "task_norm": 0.06008261460764778,
+          "auxiliary_norm": 0.0,
+          "cosine": null,
+          "auxiliary_along_task_ratio": 0.0,
+          "total_norm": 0.06008261460764778
+        }
+      },
+      "disconnected_parameters": [
+        "source.address.weight",
+        "source.address.bias",
+        "source.width.weight",
+        "source.width.bias",
+        "source.content.0.weight",
+        "source.content.0.bias",
+        "source.content.2.weight",
+        "source.content.2.bias",
+        "source.state_content.weight",
+        "source.neighbor_content.weight",
+        "source.angle.0.weight",
+        "source.angle.0.bias",
+        "source.angle.2.weight",
+        "source.angle.2.bias"
+      ]
+    },
+    {
+      "offset": 96065,
+      "task_nll": 7.691559791564941,
+      "dynamic_bias_only_nll": 8.046758651733398,
+      "gain_over_dynamic_bias": 0.35519886016845703,
+      "write_loss": 8.596327781677246,
+      "groups": {
+        "medium": {
+          "parameters": 156854,
+          "connected_parameters": 156854,
+          "task_norm": 3.2907534892025825,
+          "auxiliary_norm": 4.1098368189456345,
+          "cosine": -0.09263248534891386,
+          "auxiliary_along_task_ratio": -0.11568912717605619,
+          "total_norm": 5.021375164920032
+        },
+        "source": {
+          "parameters": 6582406,
+          "connected_parameters": 6433024,
+          "task_norm": 0.06381518033679157,
+          "auxiliary_norm": 0.20649010107569413,
+          "cosine": 0.01502826863435287,
+          "auxiliary_along_task_ratio": 0.04862775115454961,
+          "total_norm": 0.21704054961659533
+        },
+        "write_agent": {
+          "parameters": 577394,
+          "connected_parameters": 577394,
+          "task_norm": 0.854916981231376,
+          "auxiliary_norm": 1.9905098559282806,
+          "cosine": -0.01713921577483644,
+          "auxiliary_along_task_ratio": -0.03990536937698311,
+          "total_norm": 2.152830744763121
+        },
+        "readout": {
+          "parameters": 267576,
+          "connected_parameters": 267576,
+          "task_norm": 1.8217368309561814,
+          "auxiliary_norm": 0.0,
+          "cosine": null,
+          "auxiliary_along_task_ratio": 0.0,
+          "total_norm": 1.8217368309561814
+        },
+        "decoder": {
+          "parameters": 6483153,
+          "connected_parameters": 6483153,
+          "task_norm": 2.0009382690369257,
+          "auxiliary_norm": 0.0,
+          "cosine": null,
+          "auxiliary_along_task_ratio": 0.0,
+          "total_norm": 2.0009382690369257
+        },
+        "read_norm": {
+          "parameters": 128,
+          "connected_parameters": 128,
+          "task_norm": 0.06422527288752064,
+          "auxiliary_norm": 0.0,
+          "cosine": null,
+          "auxiliary_along_task_ratio": 0.0,
+          "total_norm": 0.06422527288752064
+        }
+      },
+      "disconnected_parameters": [
+        "source.address.weight",
+        "source.address.bias",
+        "source.width.weight",
+        "source.width.bias",
+        "source.content.0.weight",
+        "source.content.0.bias",
+        "source.content.2.weight",
+        "source.content.2.bias",
+        "source.state_content.weight",
+        "source.neighbor_content.weight",
+        "source.angle.0.weight",
+        "source.angle.0.bias",
+        "source.angle.2.weight",
+        "source.angle.2.bias"
+      ]
+    }
+  ],
+  "source_sha256": "58436d43e025f0d3ef9a7fabbf020a1bf8205a1fe1e207be6376075d1ac66bf7"
+}

@@ -1,0 +1,4528 @@
+{
+  "purpose": "Read-only mechanism audit, not active evaluation or training benefit",
+  "checkpoint": "D:\\information-boltzmann-v1\\results\\medium_v8_joint_bptt32_96k_recovered\\last.pt",
+  "checkpoint_step": 3000,
+  "checkpoint_actual_events": 103296,
+  "corpus_offset": 96001,
+  "corpus_sha256": "6dd24ac1b43aef10d914418b7e6d6f28eedbc5ae8dc653003196375e37ceedb9",
+  "elapsed_at_entry": 516.4799999996028,
+  "duration": 0.005,
+  "optimizer_updates": 0,
+  "parameters_unchanged": true,
+  "device": "cpu",
+  "timing": {
+    "events": [
+      {
+        "event": 0,
+        "observed": 17840,
+        "target": 257,
+        "current_bias_only_nll": 4.026637077331543,
+        "times": [
+          {
+            "duration_multiple": 0.0,
+            "nll": 4.1029953956604,
+            "entropy": 7.138209342956543,
+            "feature_relative_to_default": 0.16094698011875153
+          },
+          {
+            "duration_multiple": 0.5,
+            "nll": 4.047171592712402,
+            "entropy": 7.056784629821777,
+            "feature_relative_to_default": 0.07343067973852158
+          },
+          {
+            "duration_multiple": 1.0,
+            "nll": 4.004594802856445,
+            "entropy": 7.004519462585449,
+            "feature_relative_to_default": 0.0
+          },
+          {
+            "duration_multiple": 2.0,
+            "nll": 3.9738192558288574,
+            "entropy": 6.982369899749756,
+            "feature_relative_to_default": 0.12824596464633942
+          },
+          {
+            "duration_multiple": 4.0,
+            "nll": 4.049032211303711,
+            "entropy": 7.123574733734131,
+            "feature_relative_to_default": 0.33807244896888733
+          }
+        ],
+        "fixed_duration_resolution": [
+          {
+            "substeps": 1,
+            "nll": 4.004594802856445,
+            "field_relative_to_one": 0.0,
+            "feature_relative_to_one": 0.0
+          },
+          {
+            "substeps": 2,
+            "nll": 4.004983901977539,
+            "field_relative_to_one": 0.005873310845345259,
+            "feature_relative_to_one": 0.0022280889097601175
+          },
+          {
+            "substeps": 4,
+            "nll": 4.005127906799316,
+            "field_relative_to_one": 0.008352762088179588,
+            "feature_relative_to_one": 0.003229232272133231
+          }
+        ]
+      },
+      {
+        "event": 1,
+        "observed": 257,
+        "target": 3094,
+        "current_bias_only_nll": 9.587794303894043,
+        "times": [
+          {
+            "duration_multiple": 0.0,
+            "nll": 9.644035339355469,
+            "entropy": 7.324893951416016,
+            "feature_relative_to_default": 0.12530112266540527
+          },
+          {
+            "duration_multiple": 0.5,
+            "nll": 9.64835262298584,
+            "entropy": 7.296548366546631,
+            "feature_relative_to_default": 0.06702332943677902
+          },
+          {
+            "duration_multiple": 1.0,
+            "nll": 9.655233383178711,
+            "entropy": 7.290665149688721,
+            "feature_relative_to_default": 0.0
+          },
+          {
+            "duration_multiple": 2.0,
+            "nll": 9.670103073120117,
+            "entropy": 7.327890872955322,
+            "feature_relative_to_default": 0.1530623883008957
+          },
+          {
+            "duration_multiple": 4.0,
+            "nll": 9.678471565246582,
+            "entropy": 7.340214729309082,
+            "feature_relative_to_default": 0.46154946088790894
+          }
+        ],
+        "fixed_duration_resolution": [
+          {
+            "substeps": 1,
+            "nll": 9.655233383178711,
+            "field_relative_to_one": 0.0,
+            "feature_relative_to_one": 0.0
+          },
+          {
+            "substeps": 2,
+            "nll": 9.6559476852417,
+            "field_relative_to_one": 0.005721384659409523,
+            "feature_relative_to_one": 0.0018941528396680951
+          },
+          {
+            "substeps": 4,
+            "nll": 9.65621280670166,
+            "field_relative_to_one": 0.00809540506452322,
+            "feature_relative_to_one": 0.0027000794652849436
+          }
+        ]
+      },
+      {
+        "event": 2,
+        "observed": 3094,
+        "target": 2665,
+        "current_bias_only_nll": 9.943299293518066,
+        "times": [
+          {
+            "duration_multiple": 0.0,
+            "nll": 10.240699768066406,
+            "entropy": 7.245143890380859,
+            "feature_relative_to_default": 0.1789788156747818
+          },
+          {
+            "duration_multiple": 0.5,
+            "nll": 10.153076171875,
+            "entropy": 7.248876571655273,
+            "feature_relative_to_default": 0.09435316920280457
+          },
+          {
+            "duration_multiple": 1.0,
+            "nll": 10.089842796325684,
+            "entropy": 7.260848045349121,
+            "feature_relative_to_default": 0.0
+          },
+          {
+            "duration_multiple": 2.0,
+            "nll": 10.1636381149292,
+            "entropy": 7.262905597686768,
+            "feature_relative_to_default": 0.19330061972141266
+          },
+          {
+            "duration_multiple": 4.0,
+            "nll": 10.239677429199219,
+            "entropy": 7.3222737312316895,
+            "feature_relative_to_default": 0.5958142280578613
+          }
+        ],
+        "fixed_duration_resolution": [
+          {
+            "substeps": 1,
+            "nll": 10.089842796325684,
+            "field_relative_to_one": 0.0,
+            "feature_relative_to_one": 0.0
+          },
+          {
+            "substeps": 2,
+            "nll": 10.09356689453125,
+            "field_relative_to_one": 0.005771838128566742,
+            "feature_relative_to_one": 0.0026636032853275537
+          },
+          {
+            "substeps": 4,
+            "nll": 10.095110893249512,
+            "field_relative_to_one": 0.008170170709490776,
+            "feature_relative_to_one": 0.0037214818876236677
+          }
+        ]
+      },
+      {
+        "event": 3,
+        "observed": 2665,
+        "target": 286,
+        "current_bias_only_nll": 3.893986940383911,
+        "times": [
+          {
+            "duration_multiple": 0.0,
+            "nll": 3.6678555011749268,
+            "entropy": 7.061150550842285,
+            "feature_relative_to_default": 0.20100732147693634
+          },
+          {
+            "duration_multiple": 0.5,
+            "nll": 3.7320024967193604,
+            "entropy": 7.05598258972168,
+            "feature_relative_to_default": 0.10590564459562302
+          },
+          {
+            "duration_multiple": 1.0,
+            "nll": 3.7935194969177246,
+            "entropy": 7.058070659637451,
+            "feature_relative_to_default": 0.0
+          },
+          {
+            "duration_multiple": 2.0,
+            "nll": 3.8993430137634277,
+            "entropy": 7.086990833282471,
+            "feature_relative_to_default": 0.25143203139305115
+          },
+          {
+            "duration_multiple": 4.0,
+            "nll": 3.8800275325775146,
+            "entropy": 7.339582443237305,
+            "feature_relative_to_default": 0.6350554823875427
+          }
+        ],
+        "fixed_duration_resolution": [
+          {
+            "substeps": 1,
+            "nll": 3.7935194969177246,
+            "field_relative_to_one": 0.0,
+            "feature_relative_to_one": 0.0
+          },
+          {
+            "substeps": 2,
+            "nll": 3.796085834503174,
+            "field_relative_to_one": 0.005587595049291849,
+            "feature_relative_to_one": 0.003982363268733025
+          },
+          {
+            "substeps": 4,
+            "nll": 3.797072410583496,
+            "field_relative_to_one": 0.007920744828879833,
+            "feature_relative_to_one": 0.0056111617013812065
+          }
+        ]
+      },
+      {
+        "event": 4,
+        "observed": 286,
+        "target": 1171,
+        "current_bias_only_nll": 7.827648162841797,
+        "times": [
+          {
+            "duration_multiple": 0.0,
+            "nll": 7.168745040893555,
+            "entropy": 6.631548881530762,
+            "feature_relative_to_default": 0.2778715491294861
+          },
+          {
+            "duration_multiple": 0.5,
+            "nll": 7.219660758972168,
+            "entropy": 6.608540058135986,
+            "feature_relative_to_default": 0.1456674188375473
+          },
+          {
+            "duration_multiple": 1.0,
+            "nll": 7.277424335479736,
+            "entropy": 6.642621040344238,
+            "feature_relative_to_default": 0.0
+          },
+          {
+            "duration_multiple": 2.0,
+            "nll": 7.409671306610107,
+            "entropy": 6.8797407150268555,
+            "feature_relative_to_default": 0.31161653995513916
+          },
+          {
+            "duration_multiple": 4.0,
+            "nll": 7.362209796905518,
+            "entropy": 7.295074939727783,
+            "feature_relative_to_default": 0.7304944396018982
+          }
+        ],
+        "fixed_duration_resolution": [
+          {
+            "substeps": 1,
+            "nll": 7.277424335479736,
+            "field_relative_to_one": 0.0,
+            "feature_relative_to_one": 0.0
+          },
+          {
+            "substeps": 2,
+            "nll": 7.280105113983154,
+            "field_relative_to_one": 0.005603397265076637,
+            "feature_relative_to_one": 0.005277369171380997
+          },
+          {
+            "substeps": 4,
+            "nll": 7.281218528747559,
+            "field_relative_to_one": 0.00792013294994831,
+            "feature_relative_to_one": 0.007477997336536646
+          }
+        ]
+      },
+      {
+        "event": 5,
+        "observed": 1171,
+        "target": 4459,
+        "current_bias_only_nll": 9.743032455444336,
+        "times": [
+          {
+            "duration_multiple": 0.0,
+            "nll": 9.426986694335938,
+            "entropy": 6.751986026763916,
+            "feature_relative_to_default": 0.30544111132621765
+          },
+          {
+            "duration_multiple": 0.5,
+            "nll": 9.431970596313477,
+            "entropy": 6.83567476272583,
+            "feature_relative_to_default": 0.15548379719257355
+          },
+          {
+            "duration_multiple": 1.0,
+            "nll": 9.421850204467773,
+            "entropy": 6.951629638671875,
+            "feature_relative_to_default": 0.0
+          },
+          {
+            "duration_multiple": 2.0,
+            "nll": 9.403411865234375,
+            "entropy": 7.182890892028809,
+            "feature_relative_to_default": 0.2951658070087433
+          },
+          {
+            "duration_multiple": 4.0,
+            "nll": 9.512596130371094,
+            "entropy": 7.278728008270264,
+            "feature_relative_to_default": 0.6651315093040466
+          }
+        ],
+        "fixed_duration_resolution": [
+          {
+            "substeps": 1,
+            "nll": 9.421850204467773,
+            "field_relative_to_one": 0.0,
+            "feature_relative_to_one": 0.0
+          },
+          {
+            "substeps": 2,
+            "nll": 9.421405792236328,
+            "field_relative_to_one": 0.005659195128828287,
+            "feature_relative_to_one": 0.005468254443258047
+          },
+          {
+            "substeps": 4,
+            "nll": 9.421377182006836,
+            "field_relative_to_one": 0.008030121214687824,
+            "feature_relative_to_one": 0.007912767119705677
+          }
+        ]
+      },
+      {
+        "event": 6,
+        "observed": 4459,
+        "target": 13,
+        "current_bias_only_nll": 3.2965457439422607,
+        "times": [
+          {
+            "duration_multiple": 0.0,
+            "nll": 2.924579381942749,
+            "entropy": 6.914607524871826,
+            "feature_relative_to_default": 0.27382636070251465
+          },
+          {
+            "duration_multiple": 0.5,
+            "nll": 2.8877718448638916,
+            "entropy": 7.005273818969727,
+            "feature_relative_to_default": 0.13119710981845856
+          },
+          {
+            "duration_multiple": 1.0,
+            "nll": 2.8534018993377686,
+            "entropy": 7.073378086090088,
+            "feature_relative_to_default": 0.0
+          },
+          {
+            "duration_multiple": 2.0,
+            "nll": 2.8080410957336426,
+            "entropy": 7.149302959442139,
+            "feature_relative_to_default": 0.19912491738796234
+          },
+          {
+            "duration_multiple": 4.0,
+            "nll": 2.9363346099853516,
+            "entropy": 7.17744255065918,
+            "feature_relative_to_default": 0.4311840236186981
+          }
+        ],
+        "fixed_duration_resolution": [
+          {
+            "substeps": 1,
+            "nll": 2.8534018993377686,
+            "field_relative_to_one": 0.0,
+            "feature_relative_to_one": 0.0
+          },
+          {
+            "substeps": 2,
+            "nll": 2.853360891342163,
+            "field_relative_to_one": 0.005586108658462763,
+            "feature_relative_to_one": 0.002983088605105877
+          },
+          {
+            "substeps": 4,
+            "nll": 2.8535521030426025,
+            "field_relative_to_one": 0.007930007763206959,
+            "feature_relative_to_one": 0.0043081557378172874
+          }
+        ]
+      },
+      {
+        "event": 7,
+        "observed": 13,
+        "target": 11259,
+        "current_bias_only_nll": 11.443500518798828,
+        "times": [
+          {
+            "duration_multiple": 0.0,
+            "nll": 11.142849922180176,
+            "entropy": 5.523382663726807,
+            "feature_relative_to_default": 0.2181616723537445
+          },
+          {
+            "duration_multiple": 0.5,
+            "nll": 11.092663764953613,
+            "entropy": 5.493156433105469,
+            "feature_relative_to_default": 0.11750128120183945
+          },
+          {
+            "duration_multiple": 1.0,
+            "nll": 11.039587020874023,
+            "entropy": 5.677016258239746,
+            "feature_relative_to_default": 0.0
+          },
+          {
+            "duration_multiple": 2.0,
+            "nll": 11.010489463806152,
+            "entropy": 6.599700927734375,
+            "feature_relative_to_default": 0.32032302021980286
+          },
+          {
+            "duration_multiple": 4.0,
+            "nll": 11.806550979614258,
+            "entropy": 7.159207344055176,
+            "feature_relative_to_default": 1.1250488758087158
+          }
+        ],
+        "fixed_duration_resolution": [
+          {
+            "substeps": 1,
+            "nll": 11.039587020874023,
+            "field_relative_to_one": 0.0,
+            "feature_relative_to_one": 0.0
+          },
+          {
+            "substeps": 2,
+            "nll": 11.037120819091797,
+            "field_relative_to_one": 0.0054115052334964275,
+            "feature_relative_to_one": 0.003437452483922243
+          },
+          {
+            "substeps": 4,
+            "nll": 11.036389350891113,
+            "field_relative_to_one": 0.007704541087150574,
+            "feature_relative_to_one": 0.004627627320587635
+          }
+        ]
+      },
+      {
+        "event": 8,
+        "observed": 11259,
+        "target": 262,
+        "current_bias_only_nll": 3.212116003036499,
+        "times": [
+          {
+            "duration_multiple": 0.0,
+            "nll": 3.674175500869751,
+            "entropy": 7.206425666809082,
+            "feature_relative_to_default": 0.25699880719184875
+          },
+          {
+            "duration_multiple": 0.5,
+            "nll": 3.716090440750122,
+            "entropy": 7.191044807434082,
+            "feature_relative_to_default": 0.12595394253730774
+          },
+          {
+            "duration_multiple": 1.0,
+            "nll": 3.745114326477051,
+            "entropy": 7.159226894378662,
+            "feature_relative_to_default": 0.0
+          },
+          {
+            "duration_multiple": 2.0,
+            "nll": 3.7318859100341797,
+            "entropy": 7.07777738571167,
+            "feature_relative_to_default": 0.22345049679279327
+          },
+          {
+            "duration_multiple": 4.0,
+            "nll": 3.575047016143799,
+            "entropy": 6.984278678894043,
+            "feature_relative_to_default": 0.4614183008670807
+          }
+        ],
+        "fixed_duration_resolution": [
+          {
+            "substeps": 1,
+            "nll": 3.745114326477051,
+            "field_relative_to_one": 0.0,
+            "feature_relative_to_one": 0.0
+          },
+          {
+            "substeps": 2,
+            "nll": 3.7416019439697266,
+            "field_relative_to_one": 0.005531314294785261,
+            "feature_relative_to_one": 0.003694667015224695
+          },
+          {
+            "substeps": 4,
+            "nll": 3.740387439727783,
+            "field_relative_to_one": 0.007836971431970596,
+            "feature_relative_to_one": 0.005097610875964165
+          }
+        ]
+      },
+      {
+        "event": 9,
+        "observed": 262,
+        "target": 17881,
+        "current_bias_only_nll": 13.711565971374512,
+        "times": [
+          {
+            "duration_multiple": 0.0,
+            "nll": 13.8449068069458,
+            "entropy": 7.541905879974365,
+            "feature_relative_to_default": 0.1997518241405487
+          },
+          {
+            "duration_multiple": 0.5,
+            "nll": 13.82252311706543,
+            "entropy": 7.491724014282227,
+            "feature_relative_to_default": 0.10320740938186646
+          },
+          {
+            "duration_multiple": 1.0,
+            "nll": 13.805126190185547,
+            "entropy": 7.437575340270996,
+            "feature_relative_to_default": 0.0
+          },
+          {
+            "duration_multiple": 2.0,
+            "nll": 13.818765640258789,
+            "entropy": 7.317160129547119,
+            "feature_relative_to_default": 0.22964172065258026
+          },
+          {
+            "duration_multiple": 4.0,
+            "nll": 13.93836784362793,
+            "entropy": 7.17648983001709,
+            "feature_relative_to_default": 0.5347203016281128
+          }
+        ],
+        "fixed_duration_resolution": [
+          {
+            "substeps": 1,
+            "nll": 13.805126190185547,
+            "field_relative_to_one": 0.0,
+            "feature_relative_to_one": 0.0
+          },
+          {
+            "substeps": 2,
+            "nll": 13.804771423339844,
+            "field_relative_to_one": 0.005801077000796795,
+            "feature_relative_to_one": 0.004546542186290026
+          },
+          {
+            "substeps": 4,
+            "nll": 13.804720878601074,
+            "field_relative_to_one": 0.008225805126130581,
+            "feature_relative_to_one": 0.006262972019612789
+          }
+        ]
+      },
+      {
+        "event": 10,
+        "observed": 17881,
+        "target": 1590,
+        "current_bias_only_nll": 10.543875694274902,
+        "times": [
+          {
+            "duration_multiple": 0.0,
+            "nll": 10.59433364868164,
+            "entropy": 7.407327651977539,
+            "feature_relative_to_default": 0.20673874020576477
+          },
+          {
+            "duration_multiple": 0.5,
+            "nll": 10.630024909973145,
+            "entropy": 7.352695941925049,
+            "feature_relative_to_default": 0.10973476618528366
+          },
+          {
+            "duration_multiple": 1.0,
+            "nll": 10.661762237548828,
+            "entropy": 7.293291091918945,
+            "feature_relative_to_default": 0.0
+          },
+          {
+            "duration_multiple": 2.0,
+            "nll": 10.663440704345703,
+            "entropy": 7.201755523681641,
+            "feature_relative_to_default": 0.21158240735530853
+          },
+          {
+            "duration_multiple": 4.0,
+            "nll": 10.5185546875,
+            "entropy": 7.185161590576172,
+            "feature_relative_to_default": 0.39851921796798706
+          }
+        ],
+        "fixed_duration_resolution": [
+          {
+            "substeps": 1,
+            "nll": 10.661762237548828,
+            "field_relative_to_one": 0.0,
+            "feature_relative_to_one": 0.0
+          },
+          {
+            "substeps": 2,
+            "nll": 10.666892051696777,
+            "field_relative_to_one": 0.005814514122903347,
+            "feature_relative_to_one": 0.005894885864108801
+          },
+          {
+            "substeps": 4,
+            "nll": 10.669092178344727,
+            "field_relative_to_one": 0.008258734829723835,
+            "feature_relative_to_one": 0.008262828923761845
+          }
+        ]
+      },
+      {
+        "event": 11,
+        "observed": 1590,
+        "target": 286,
+        "current_bias_only_nll": 3.893986940383911,
+        "times": [
+          {
+            "duration_multiple": 0.0,
+            "nll": 3.4765007495880127,
+            "entropy": 7.150218486785889,
+            "feature_relative_to_default": 0.18177802860736847
+          },
+          {
+            "duration_multiple": 0.5,
+            "nll": 3.5623652935028076,
+            "entropy": 7.101288318634033,
+            "feature_relative_to_default": 0.09032738208770752
+          },
+          {
+            "duration_multiple": 1.0,
+            "nll": 3.6317052841186523,
+            "entropy": 7.075803756713867,
+            "feature_relative_to_default": 0.0
+          },
+          {
+            "duration_multiple": 2.0,
+            "nll": 3.7105040550231934,
+            "entropy": 7.089187145233154,
+            "feature_relative_to_default": 0.15770043432712555
+          },
+          {
+            "duration_multiple": 4.0,
+            "nll": 3.731799364089966,
+            "entropy": 7.122193813323975,
+            "feature_relative_to_default": 0.29939690232276917
+          }
+        ],
+        "fixed_duration_resolution": [
+          {
+            "substeps": 1,
+            "nll": 3.6317052841186523,
+            "field_relative_to_one": 0.0,
+            "feature_relative_to_one": 0.0
+          },
+          {
+            "substeps": 2,
+            "nll": 3.633971691131592,
+            "field_relative_to_one": 0.005825635511428118,
+            "feature_relative_to_one": 0.00475308345630765
+          },
+          {
+            "substeps": 4,
+            "nll": 3.6349880695343018,
+            "field_relative_to_one": 0.008250211365520954,
+            "feature_relative_to_one": 0.006823083385825157
+          }
+        ]
+      },
+      {
+        "event": 12,
+        "observed": 286,
+        "target": 4453,
+        "current_bias_only_nll": 10.773237228393555,
+        "times": [
+          {
+            "duration_multiple": 0.0,
+            "nll": 9.24972915649414,
+            "entropy": 7.011627197265625,
+            "feature_relative_to_default": 0.17512719333171844
+          },
+          {
+            "duration_multiple": 0.5,
+            "nll": 9.216176986694336,
+            "entropy": 7.012301921844482,
+            "feature_relative_to_default": 0.08815126121044159
+          },
+          {
+            "duration_multiple": 1.0,
+            "nll": 9.173784255981445,
+            "entropy": 7.033616542816162,
+            "feature_relative_to_default": 0.0
+          },
+          {
+            "duration_multiple": 2.0,
+            "nll": 9.139602661132812,
+            "entropy": 7.093770503997803,
+            "feature_relative_to_default": 0.15700562298297882
+          },
+          {
+            "duration_multiple": 4.0,
+            "nll": 9.363110542297363,
+            "entropy": 7.073919773101807,
+            "feature_relative_to_default": 0.3265746235847473
+          }
+        ],
+        "fixed_duration_resolution": [
+          {
+            "substeps": 1,
+            "nll": 9.173784255981445,
+            "field_relative_to_one": 0.0,
+            "feature_relative_to_one": 0.0
+          },
+          {
+            "substeps": 2,
+            "nll": 9.171595573425293,
+            "field_relative_to_one": 0.005999259650707245,
+            "feature_relative_to_one": 0.004484365228563547
+          },
+          {
+            "substeps": 4,
+            "nll": 9.170914649963379,
+            "field_relative_to_one": 0.008484197780489922,
+            "feature_relative_to_one": 0.006415479816496372
+          }
+        ]
+      },
+      {
+        "event": 13,
+        "observed": 4453,
+        "target": 367,
+        "current_bias_only_nll": 8.07444953918457,
+        "times": [
+          {
+            "duration_multiple": 0.0,
+            "nll": 8.435798645019531,
+            "entropy": 6.9192352294921875,
+            "feature_relative_to_default": 0.1406193971633911
+          },
+          {
+            "duration_multiple": 0.5,
+            "nll": 8.424721717834473,
+            "entropy": 6.952723503112793,
+            "feature_relative_to_default": 0.07130861282348633
+          },
+          {
+            "duration_multiple": 1.0,
+            "nll": 8.414340019226074,
+            "entropy": 6.9863200187683105,
+            "feature_relative_to_default": 0.0
+          },
+          {
+            "duration_multiple": 2.0,
+            "nll": 8.38964557647705,
+            "entropy": 7.023920059204102,
+            "feature_relative_to_default": 0.1459973305463791
+          },
+          {
+            "duration_multiple": 4.0,
+            "nll": 8.31296443939209,
+            "entropy": 7.101840019226074,
+            "feature_relative_to_default": 0.3138342499732971
+          }
+        ],
+        "fixed_duration_resolution": [
+          {
+            "substeps": 1,
+            "nll": 8.414340019226074,
+            "field_relative_to_one": 0.0,
+            "feature_relative_to_one": 0.0
+          },
+          {
+            "substeps": 2,
+            "nll": 8.413167953491211,
+            "field_relative_to_one": 0.00592133728787303,
+            "feature_relative_to_one": 0.0032511225435882807
+          },
+          {
+            "substeps": 4,
+            "nll": 8.412782669067383,
+            "field_relative_to_one": 0.008385575376451015,
+            "feature_relative_to_one": 0.0045029460452497005
+          }
+        ]
+      },
+      {
+        "event": 14,
+        "observed": 367,
+        "target": 21115,
+        "current_bias_only_nll": 13.774650573730469,
+        "times": [
+          {
+            "duration_multiple": 0.0,
+            "nll": 14.270965576171875,
+            "entropy": 7.076507568359375,
+            "feature_relative_to_default": 0.16097261011600494
+          },
+          {
+            "duration_multiple": 0.5,
+            "nll": 14.28056812286377,
+            "entropy": 7.094301223754883,
+            "feature_relative_to_default": 0.08584094792604446
+          },
+          {
+            "duration_multiple": 1.0,
+            "nll": 14.318574905395508,
+            "entropy": 7.089001655578613,
+            "feature_relative_to_default": 0.0
+          },
+          {
+            "duration_multiple": 2.0,
+            "nll": 14.402870178222656,
+            "entropy": 7.073329925537109,
+            "feature_relative_to_default": 0.16436930000782013
+          },
+          {
+            "duration_multiple": 4.0,
+            "nll": 14.26594066619873,
+            "entropy": 7.081883907318115,
+            "feature_relative_to_default": 0.32584699988365173
+          }
+        ],
+        "fixed_duration_resolution": [
+          {
+            "substeps": 1,
+            "nll": 14.318574905395508,
+            "field_relative_to_one": 0.0,
+            "feature_relative_to_one": 0.0
+          },
+          {
+            "substeps": 2,
+            "nll": 14.31990909576416,
+            "field_relative_to_one": 0.005630047060549259,
+            "feature_relative_to_one": 0.003346577752381563
+          },
+          {
+            "substeps": 4,
+            "nll": 14.320425033569336,
+            "field_relative_to_one": 0.007969288155436516,
+            "feature_relative_to_one": 0.004696722608059645
+          }
+        ]
+      },
+      {
+        "event": 15,
+        "observed": 21115,
+        "target": 447,
+        "current_bias_only_nll": 4.334470748901367,
+        "times": [
+          {
+            "duration_multiple": 0.0,
+            "nll": 5.371337413787842,
+            "entropy": 6.942900657653809,
+            "feature_relative_to_default": 0.1252775639295578
+          },
+          {
+            "duration_multiple": 0.5,
+            "nll": 5.416871070861816,
+            "entropy": 6.943687438964844,
+            "feature_relative_to_default": 0.05924941226840019
+          },
+          {
+            "duration_multiple": 1.0,
+            "nll": 5.452949523925781,
+            "entropy": 6.961098670959473,
+            "feature_relative_to_default": 0.0
+          },
+          {
+            "duration_multiple": 2.0,
+            "nll": 5.474760055541992,
+            "entropy": 7.023892402648926,
+            "feature_relative_to_default": 0.10213972628116608
+          },
+          {
+            "duration_multiple": 4.0,
+            "nll": 5.309988975524902,
+            "entropy": 6.997636795043945,
+            "feature_relative_to_default": 0.3677535355091095
+          }
+        ],
+        "fixed_duration_resolution": [
+          {
+            "substeps": 1,
+            "nll": 5.452949523925781,
+            "field_relative_to_one": 0.0,
+            "feature_relative_to_one": 0.0
+          },
+          {
+            "substeps": 2,
+            "nll": 5.45327091217041,
+            "field_relative_to_one": 0.00581073435023427,
+            "feature_relative_to_one": 0.0028296129312366247
+          },
+          {
+            "substeps": 4,
+            "nll": 5.453235626220703,
+            "field_relative_to_one": 0.008195672184228897,
+            "feature_relative_to_one": 0.004016009159386158
+          }
+        ]
+      },
+      {
+        "event": 16,
+        "observed": 447,
+        "target": 247,
+        "current_bias_only_nll": 4.857735633850098,
+        "times": [
+          {
+            "duration_multiple": 0.0,
+            "nll": 1.1888071298599243,
+            "entropy": 5.367705821990967,
+            "feature_relative_to_default": 0.17793238162994385
+          },
+          {
+            "duration_multiple": 0.5,
+            "nll": 1.120237112045288,
+            "entropy": 5.161688327789307,
+            "feature_relative_to_default": 0.08761758357286453
+          },
+          {
+            "duration_multiple": 1.0,
+            "nll": 1.0658864974975586,
+            "entropy": 4.9819231033325195,
+            "feature_relative_to_default": 0.0
+          },
+          {
+            "duration_multiple": 2.0,
+            "nll": 1.1274440288543701,
+            "entropy": 5.044257640838623,
+            "feature_relative_to_default": 0.18072563409805298
+          },
+          {
+            "duration_multiple": 4.0,
+            "nll": 4.043992042541504,
+            "entropy": 7.068422317504883,
+            "feature_relative_to_default": 0.8747774362564087
+          }
+        ],
+        "fixed_duration_resolution": [
+          {
+            "substeps": 1,
+            "nll": 1.0658864974975586,
+            "field_relative_to_one": 0.0,
+            "feature_relative_to_one": 0.0
+          },
+          {
+            "substeps": 2,
+            "nll": 1.0654157400131226,
+            "field_relative_to_one": 0.006110425107181072,
+            "feature_relative_to_one": 0.005983396898955107
+          },
+          {
+            "substeps": 4,
+            "nll": 1.065477728843689,
+            "field_relative_to_one": 0.008625119924545288,
+            "feature_relative_to_one": 0.008292476646602154
+          }
+        ]
+      },
+      {
+        "event": 17,
+        "observed": 247,
+        "target": 82,
+        "current_bias_only_nll": 5.202781677246094,
+        "times": [
+          {
+            "duration_multiple": 0.0,
+            "nll": 0.9729241132736206,
+            "entropy": 4.714470386505127,
+            "feature_relative_to_default": 0.1425626277923584
+          },
+          {
+            "duration_multiple": 0.5,
+            "nll": 0.9558278918266296,
+            "entropy": 4.6405348777771,
+            "feature_relative_to_default": 0.08171158283948898
+          },
+          {
+            "duration_multiple": 1.0,
+            "nll": 0.9877665638923645,
+            "entropy": 4.709874629974365,
+            "feature_relative_to_default": 0.0
+          },
+          {
+            "duration_multiple": 2.0,
+            "nll": 1.408558964729309,
+            "entropy": 5.626771926879883,
+            "feature_relative_to_default": 0.2706359326839447
+          },
+          {
+            "duration_multiple": 4.0,
+            "nll": 3.9267349243164062,
+            "entropy": 6.9760942459106445,
+            "feature_relative_to_default": 0.8649195432662964
+          }
+        ],
+        "fixed_duration_resolution": [
+          {
+            "substeps": 1,
+            "nll": 0.9877665638923645,
+            "field_relative_to_one": 0.0,
+            "feature_relative_to_one": 0.0
+          },
+          {
+            "substeps": 2,
+            "nll": 0.9890699982643127,
+            "field_relative_to_one": 0.0059646787121891975,
+            "feature_relative_to_one": 0.004638977348804474
+          },
+          {
+            "substeps": 4,
+            "nll": 0.9895403385162354,
+            "field_relative_to_one": 0.008452890440821648,
+            "feature_relative_to_one": 0.006472510751336813
+          }
+        ]
+      },
+      {
+        "event": 18,
+        "observed": 82,
+        "target": 3645,
+        "current_bias_only_nll": 9.26974105834961,
+        "times": [
+          {
+            "duration_multiple": 0.0,
+            "nll": 9.378564834594727,
+            "entropy": 6.659302234649658,
+            "feature_relative_to_default": 0.30090954899787903
+          },
+          {
+            "duration_multiple": 0.5,
+            "nll": 9.31254768371582,
+            "entropy": 6.723934650421143,
+            "feature_relative_to_default": 0.16210435330867767
+          },
+          {
+            "duration_multiple": 1.0,
+            "nll": 9.230631828308105,
+            "entropy": 6.773804187774658,
+            "feature_relative_to_default": 0.0
+          },
+          {
+            "duration_multiple": 2.0,
+            "nll": 9.08826732635498,
+            "entropy": 6.864251136779785,
+            "feature_relative_to_default": 0.3131836950778961
+          },
+          {
+            "duration_multiple": 4.0,
+            "nll": 9.038155555725098,
+            "entropy": 6.996603965759277,
+            "feature_relative_to_default": 0.6484602689743042
+          }
+        ],
+        "fixed_duration_resolution": [
+          {
+            "substeps": 1,
+            "nll": 9.230631828308105,
+            "field_relative_to_one": 0.0,
+            "feature_relative_to_one": 0.0
+          },
+          {
+            "substeps": 2,
+            "nll": 9.230798721313477,
+            "field_relative_to_one": 0.0058264280669391155,
+            "feature_relative_to_one": 0.004778028465807438
+          },
+          {
+            "substeps": 4,
+            "nll": 9.231075286865234,
+            "field_relative_to_one": 0.008267982862889767,
+            "feature_relative_to_one": 0.006770980078727007
+          }
+        ]
+      },
+      {
+        "event": 19,
+        "observed": 3645,
+        "target": 11,
+        "current_bias_only_nll": 3.2196624279022217,
+        "times": [
+          {
+            "duration_multiple": 0.0,
+            "nll": 2.9860002994537354,
+            "entropy": 6.859587669372559,
+            "feature_relative_to_default": 0.24336253106594086
+          },
+          {
+            "duration_multiple": 0.5,
+            "nll": 2.858194351196289,
+            "entropy": 6.877811431884766,
+            "feature_relative_to_default": 0.11474736779928207
+          },
+          {
+            "duration_multiple": 1.0,
+            "nll": 2.768040180206299,
+            "entropy": 6.908257007598877,
+            "feature_relative_to_default": 0.0
+          },
+          {
+            "duration_multiple": 2.0,
+            "nll": 2.6859095096588135,
+            "entropy": 7.002469062805176,
+            "feature_relative_to_default": 0.19794362783432007
+          },
+          {
+            "duration_multiple": 4.0,
+            "nll": 2.615039825439453,
+            "entropy": 7.015776634216309,
+            "feature_relative_to_default": 0.41055959463119507
+          }
+        ],
+        "fixed_duration_resolution": [
+          {
+            "substeps": 1,
+            "nll": 2.768040180206299,
+            "field_relative_to_one": 0.0,
+            "feature_relative_to_one": 0.0
+          },
+          {
+            "substeps": 2,
+            "nll": 2.768031597137451,
+            "field_relative_to_one": 0.005956720560789108,
+            "feature_relative_to_one": 0.002416948787868023
+          },
+          {
+            "substeps": 4,
+            "nll": 2.7681663036346436,
+            "field_relative_to_one": 0.008493096567690372,
+            "feature_relative_to_one": 0.0034445691853761673
+          }
+        ]
+      },
+      {
+        "event": 20,
+        "observed": 11,
+        "target": 340,
+        "current_bias_only_nll": 5.20676326751709,
+        "times": [
+          {
+            "duration_multiple": 0.0,
+            "nll": 4.1401777267456055,
+            "entropy": 6.772563934326172,
+            "feature_relative_to_default": 0.2591356337070465
+          },
+          {
+            "duration_multiple": 0.5,
+            "nll": 4.201552391052246,
+            "entropy": 6.843969821929932,
+            "feature_relative_to_default": 0.13365072011947632
+          },
+          {
+            "duration_multiple": 1.0,
+            "nll": 4.291295051574707,
+            "entropy": 6.916756629943848,
+            "feature_relative_to_default": 0.0
+          },
+          {
+            "duration_multiple": 2.0,
+            "nll": 4.554647922515869,
+            "entropy": 7.0083465576171875,
+            "feature_relative_to_default": 0.27351993322372437
+          },
+          {
+            "duration_multiple": 4.0,
+            "nll": 5.003129959106445,
+            "entropy": 6.9607086181640625,
+            "feature_relative_to_default": 0.6428089141845703
+          }
+        ],
+        "fixed_duration_resolution": [
+          {
+            "substeps": 1,
+            "nll": 4.291295051574707,
+            "field_relative_to_one": 0.0,
+            "feature_relative_to_one": 0.0
+          },
+          {
+            "substeps": 2,
+            "nll": 4.290534973144531,
+            "field_relative_to_one": 0.005907159764319658,
+            "feature_relative_to_one": 0.0033567543141543865
+          },
+          {
+            "substeps": 4,
+            "nll": 4.290119171142578,
+            "field_relative_to_one": 0.008447309955954552,
+            "feature_relative_to_one": 0.004757588263601065
+          }
+        ]
+      },
+      {
+        "event": 21,
+        "observed": 340,
+        "target": 447,
+        "current_bias_only_nll": 4.334470748901367,
+        "times": [
+          {
+            "duration_multiple": 0.0,
+            "nll": 4.281155586242676,
+            "entropy": 6.629979610443115,
+            "feature_relative_to_default": 0.3095974922180176
+          },
+          {
+            "duration_multiple": 0.5,
+            "nll": 4.323901176452637,
+            "entropy": 6.696222305297852,
+            "feature_relative_to_default": 0.1531526893377304
+          },
+          {
+            "duration_multiple": 1.0,
+            "nll": 4.421757698059082,
+            "entropy": 6.751769542694092,
+            "feature_relative_to_default": 0.0
+          },
+          {
+            "duration_multiple": 2.0,
+            "nll": 4.632474422454834,
+            "entropy": 6.790426254272461,
+            "feature_relative_to_default": 0.271376371383667
+          },
+          {
+            "duration_multiple": 4.0,
+            "nll": 4.781386375427246,
+            "entropy": 6.841350078582764,
+            "feature_relative_to_default": 0.6288428902626038
+          }
+        ],
+        "fixed_duration_resolution": [
+          {
+            "substeps": 1,
+            "nll": 4.421757698059082,
+            "field_relative_to_one": 0.0,
+            "feature_relative_to_one": 0.0
+          },
+          {
+            "substeps": 2,
+            "nll": 4.427806854248047,
+            "field_relative_to_one": 0.005718214903026819,
+            "feature_relative_to_one": 0.0053173694759607315
+          },
+          {
+            "substeps": 4,
+            "nll": 4.429768085479736,
+            "field_relative_to_one": 0.008128011599183083,
+            "feature_relative_to_one": 0.007433176971971989
+          }
+        ]
+      },
+      {
+        "event": 22,
+        "observed": 447,
+        "target": 247,
+        "current_bias_only_nll": 4.857735633850098,
+        "times": [
+          {
+            "duration_multiple": 0.0,
+            "nll": 0.9321438670158386,
+            "entropy": 4.160051345825195,
+            "feature_relative_to_default": 0.2886390686035156
+          },
+          {
+            "duration_multiple": 0.5,
+            "nll": 0.9085466265678406,
+            "entropy": 4.251738548278809,
+            "feature_relative_to_default": 0.1504141241312027
+          },
+          {
+            "duration_multiple": 1.0,
+            "nll": 0.9508509635925293,
+            "entropy": 4.52825927734375,
+            "feature_relative_to_default": 0.0
+          },
+          {
+            "duration_multiple": 2.0,
+            "nll": 1.3911768198013306,
+            "entropy": 5.7420148849487305,
+            "feature_relative_to_default": 0.32496967911720276
+          },
+          {
+            "duration_multiple": 4.0,
+            "nll": 4.362367630004883,
+            "entropy": 6.874029636383057,
+            "feature_relative_to_default": 1.1102358102798462
+          }
+        ],
+        "fixed_duration_resolution": [
+          {
+            "substeps": 1,
+            "nll": 0.9508509635925293,
+            "field_relative_to_one": 0.0,
+            "feature_relative_to_one": 0.0
+          },
+          {
+            "substeps": 2,
+            "nll": 0.9584954380989075,
+            "field_relative_to_one": 0.00592808099463582,
+            "feature_relative_to_one": 0.00633041700348258
+          },
+          {
+            "substeps": 4,
+            "nll": 0.9618843197822571,
+            "field_relative_to_one": 0.008362093940377235,
+            "feature_relative_to_one": 0.008947936818003654
+          }
+        ]
+      },
+      {
+        "event": 23,
+        "observed": 247,
+        "target": 82,
+        "current_bias_only_nll": 5.202781677246094,
+        "times": [
+          {
+            "duration_multiple": 0.0,
+            "nll": 1.0110535621643066,
+            "entropy": 4.747997283935547,
+            "feature_relative_to_default": 0.24559210240840912
+          },
+          {
+            "duration_multiple": 0.5,
+            "nll": 1.077567458152771,
+            "entropy": 4.961814880371094,
+            "feature_relative_to_default": 0.12156663835048676
+          },
+          {
+            "duration_multiple": 1.0,
+            "nll": 1.2176741361618042,
+            "entropy": 5.270619869232178,
+            "feature_relative_to_default": 0.0
+          },
+          {
+            "duration_multiple": 2.0,
+            "nll": 2.028790235519409,
+            "entropy": 6.202685832977295,
+            "feature_relative_to_default": 0.30483877658843994
+          },
+          {
+            "duration_multiple": 4.0,
+            "nll": 5.255551338195801,
+            "entropy": 6.762838363647461,
+            "feature_relative_to_default": 1.0595779418945312
+          }
+        ],
+        "fixed_duration_resolution": [
+          {
+            "substeps": 1,
+            "nll": 1.2176741361618042,
+            "field_relative_to_one": 0.0,
+            "feature_relative_to_one": 0.0
+          },
+          {
+            "substeps": 2,
+            "nll": 1.217358112335205,
+            "field_relative_to_one": 0.006092323921620846,
+            "feature_relative_to_one": 0.004760203417390585
+          },
+          {
+            "substeps": 4,
+            "nll": 1.2173736095428467,
+            "field_relative_to_one": 0.008649460040032864,
+            "feature_relative_to_one": 0.006786285433918238
+          }
+        ]
+      },
+      {
+        "event": 24,
+        "observed": 82,
+        "target": 6393,
+        "current_bias_only_nll": 10.477506637573242,
+        "times": [
+          {
+            "duration_multiple": 0.0,
+            "nll": 10.154902458190918,
+            "entropy": 6.5701751708984375,
+            "feature_relative_to_default": 0.3338637948036194
+          },
+          {
+            "duration_multiple": 0.5,
+            "nll": 10.056645393371582,
+            "entropy": 6.639290809631348,
+            "feature_relative_to_default": 0.17725691199302673
+          },
+          {
+            "duration_multiple": 1.0,
+            "nll": 9.95374584197998,
+            "entropy": 6.68035888671875,
+            "feature_relative_to_default": 0.0
+          },
+          {
+            "duration_multiple": 2.0,
+            "nll": 9.730413436889648,
+            "entropy": 6.748805999755859,
+            "feature_relative_to_default": 0.3670256435871124
+          },
+          {
+            "duration_multiple": 4.0,
+            "nll": 9.478790283203125,
+            "entropy": 6.8206071853637695,
+            "feature_relative_to_default": 0.6034579873085022
+          }
+        ],
+        "fixed_duration_resolution": [
+          {
+            "substeps": 1,
+            "nll": 9.95374584197998,
+            "field_relative_to_one": 0.0,
+            "feature_relative_to_one": 0.0
+          },
+          {
+            "substeps": 2,
+            "nll": 9.959815979003906,
+            "field_relative_to_one": 0.0059136380441486835,
+            "feature_relative_to_one": 0.004260830115526915
+          },
+          {
+            "substeps": 4,
+            "nll": 9.962624549865723,
+            "field_relative_to_one": 0.008424160070717335,
+            "feature_relative_to_one": 0.00618876563385129
+          }
+        ]
+      },
+      {
+        "event": 25,
+        "observed": 6393,
+        "target": 612,
+        "current_bias_only_nll": 6.604648590087891,
+        "times": [
+          {
+            "duration_multiple": 0.0,
+            "nll": 7.140642166137695,
+            "entropy": 6.7348103523254395,
+            "feature_relative_to_default": 0.2718430757522583
+          },
+          {
+            "duration_multiple": 0.5,
+            "nll": 7.228277206420898,
+            "entropy": 6.760497093200684,
+            "feature_relative_to_default": 0.12969592213630676
+          },
+          {
+            "duration_multiple": 1.0,
+            "nll": 7.287724018096924,
+            "entropy": 6.78695821762085,
+            "feature_relative_to_default": 0.0
+          },
+          {
+            "duration_multiple": 2.0,
+            "nll": 7.34378719329834,
+            "entropy": 6.820193290710449,
+            "feature_relative_to_default": 0.17621341347694397
+          },
+          {
+            "duration_multiple": 4.0,
+            "nll": 7.256227493286133,
+            "entropy": 6.877136707305908,
+            "feature_relative_to_default": 0.3255501687526703
+          }
+        ],
+        "fixed_duration_resolution": [
+          {
+            "substeps": 1,
+            "nll": 7.287724018096924,
+            "field_relative_to_one": 0.0,
+            "feature_relative_to_one": 0.0
+          },
+          {
+            "substeps": 2,
+            "nll": 7.286786079406738,
+            "field_relative_to_one": 0.006115748547017574,
+            "feature_relative_to_one": 0.00398052204400301
+          },
+          {
+            "substeps": 4,
+            "nll": 7.2863922119140625,
+            "field_relative_to_one": 0.008621305227279663,
+            "feature_relative_to_one": 0.0057679289020597935
+          }
+        ]
+      },
+      {
+        "event": 26,
+        "observed": 612,
+        "target": 815,
+        "current_bias_only_nll": 7.476715087890625,
+        "times": [
+          {
+            "duration_multiple": 0.0,
+            "nll": 7.8464131355285645,
+            "entropy": 6.8765788078308105,
+            "feature_relative_to_default": 0.1316838264465332
+          },
+          {
+            "duration_multiple": 0.5,
+            "nll": 7.831296920776367,
+            "entropy": 6.880833148956299,
+            "feature_relative_to_default": 0.06230060011148453
+          },
+          {
+            "duration_multiple": 1.0,
+            "nll": 7.829130172729492,
+            "entropy": 6.88561487197876,
+            "feature_relative_to_default": 0.0
+          },
+          {
+            "duration_multiple": 2.0,
+            "nll": 7.833530426025391,
+            "entropy": 6.9061598777771,
+            "feature_relative_to_default": 0.13397245109081268
+          },
+          {
+            "duration_multiple": 4.0,
+            "nll": 7.736706733703613,
+            "entropy": 6.988186836242676,
+            "feature_relative_to_default": 0.43671083450317383
+          }
+        ],
+        "fixed_duration_resolution": [
+          {
+            "substeps": 1,
+            "nll": 7.829130172729492,
+            "field_relative_to_one": 0.0,
+            "feature_relative_to_one": 0.0
+          },
+          {
+            "substeps": 2,
+            "nll": 7.829922676086426,
+            "field_relative_to_one": 0.006273453589528799,
+            "feature_relative_to_one": 0.0038739407900720835
+          },
+          {
+            "substeps": 4,
+            "nll": 7.830303192138672,
+            "field_relative_to_one": 0.008889894932508469,
+            "feature_relative_to_one": 0.005464507732540369
+          }
+        ]
+      },
+      {
+        "event": 27,
+        "observed": 815,
+        "target": 783,
+        "current_bias_only_nll": 7.175575256347656,
+        "times": [
+          {
+            "duration_multiple": 0.0,
+            "nll": 7.9005632400512695,
+            "entropy": 6.7960524559021,
+            "feature_relative_to_default": 0.13841396570205688
+          },
+          {
+            "duration_multiple": 0.5,
+            "nll": 7.9037766456604,
+            "entropy": 6.802308082580566,
+            "feature_relative_to_default": 0.07325099408626556
+          },
+          {
+            "duration_multiple": 1.0,
+            "nll": 7.901576042175293,
+            "entropy": 6.818772792816162,
+            "feature_relative_to_default": 0.0
+          },
+          {
+            "duration_multiple": 2.0,
+            "nll": 7.86765193939209,
+            "entropy": 6.876646518707275,
+            "feature_relative_to_default": 0.16714288294315338
+          },
+          {
+            "duration_multiple": 4.0,
+            "nll": 7.6172943115234375,
+            "entropy": 6.975689888000488,
+            "feature_relative_to_default": 0.525458812713623
+          }
+        ],
+        "fixed_duration_resolution": [
+          {
+            "substeps": 1,
+            "nll": 7.901576042175293,
+            "field_relative_to_one": 0.0,
+            "feature_relative_to_one": 0.0
+          },
+          {
+            "substeps": 2,
+            "nll": 7.900827884674072,
+            "field_relative_to_one": 0.005826939828693867,
+            "feature_relative_to_one": 0.0036631517577916384
+          },
+          {
+            "substeps": 4,
+            "nll": 7.900485992431641,
+            "field_relative_to_one": 0.008325750008225441,
+            "feature_relative_to_one": 0.005185676738619804
+          }
+        ]
+      },
+      {
+        "event": 28,
+        "observed": 783,
+        "target": 307,
+        "current_bias_only_nll": 5.502113342285156,
+        "times": [
+          {
+            "duration_multiple": 0.0,
+            "nll": 5.426919937133789,
+            "entropy": 6.827192306518555,
+            "feature_relative_to_default": 0.1768084317445755
+          },
+          {
+            "duration_multiple": 0.5,
+            "nll": 5.408668041229248,
+            "entropy": 6.851324081420898,
+            "feature_relative_to_default": 0.09154772758483887
+          },
+          {
+            "duration_multiple": 1.0,
+            "nll": 5.397820472717285,
+            "entropy": 6.880324840545654,
+            "feature_relative_to_default": 0.0
+          },
+          {
+            "duration_multiple": 2.0,
+            "nll": 5.409688949584961,
+            "entropy": 6.939570903778076,
+            "feature_relative_to_default": 0.20258338749408722
+          },
+          {
+            "duration_multiple": 4.0,
+            "nll": 5.44683837890625,
+            "entropy": 7.024497985839844,
+            "feature_relative_to_default": 0.5322965383529663
+          }
+        ],
+        "fixed_duration_resolution": [
+          {
+            "substeps": 1,
+            "nll": 5.397820472717285,
+            "field_relative_to_one": 0.0,
+            "feature_relative_to_one": 0.0
+          },
+          {
+            "substeps": 2,
+            "nll": 5.3967742919921875,
+            "field_relative_to_one": 0.005519314669072628,
+            "feature_relative_to_one": 0.002773475833237171
+          },
+          {
+            "substeps": 4,
+            "nll": 5.3963518142700195,
+            "field_relative_to_one": 0.007845226675271988,
+            "feature_relative_to_one": 0.004000685643404722
+          }
+        ]
+      },
+      {
+        "event": 29,
+        "observed": 307,
+        "target": 257,
+        "current_bias_only_nll": 4.026637077331543,
+        "times": [
+          {
+            "duration_multiple": 0.0,
+            "nll": 3.735002279281616,
+            "entropy": 6.895092964172363,
+            "feature_relative_to_default": 0.2676880657672882
+          },
+          {
+            "duration_multiple": 0.5,
+            "nll": 3.7048428058624268,
+            "entropy": 6.922305583953857,
+            "feature_relative_to_default": 0.13822270929813385
+          },
+          {
+            "duration_multiple": 1.0,
+            "nll": 3.6839828491210938,
+            "entropy": 6.947500228881836,
+            "feature_relative_to_default": 0.0
+          },
+          {
+            "duration_multiple": 2.0,
+            "nll": 3.6648406982421875,
+            "entropy": 6.989710807800293,
+            "feature_relative_to_default": 0.2588339149951935
+          },
+          {
+            "duration_multiple": 4.0,
+            "nll": 3.811936855316162,
+            "entropy": 7.099992275238037,
+            "feature_relative_to_default": 0.47176939249038696
+          }
+        ],
+        "fixed_duration_resolution": [
+          {
+            "substeps": 1,
+            "nll": 3.6839828491210938,
+            "field_relative_to_one": 0.0,
+            "feature_relative_to_one": 0.0
+          },
+          {
+            "substeps": 2,
+            "nll": 3.6837079524993896,
+            "field_relative_to_one": 0.005974258296191692,
+            "feature_relative_to_one": 0.0027624282520264387
+          },
+          {
+            "substeps": 4,
+            "nll": 3.683427572250366,
+            "field_relative_to_one": 0.008354867808520794,
+            "feature_relative_to_one": 0.003909513354301453
+          }
+        ]
+      },
+      {
+        "event": 30,
+        "observed": 257,
+        "target": 1336,
+        "current_bias_only_nll": 8.316332817077637,
+        "times": [
+          {
+            "duration_multiple": 0.0,
+            "nll": 8.304473876953125,
+            "entropy": 7.354674339294434,
+            "feature_relative_to_default": 0.26658347249031067
+          },
+          {
+            "duration_multiple": 0.5,
+            "nll": 8.30450439453125,
+            "entropy": 7.386796951293945,
+            "feature_relative_to_default": 0.12310828268527985
+          },
+          {
+            "duration_multiple": 1.0,
+            "nll": 8.306540489196777,
+            "entropy": 7.4055986404418945,
+            "feature_relative_to_default": 0.0
+          },
+          {
+            "duration_multiple": 2.0,
+            "nll": 8.32072925567627,
+            "entropy": 7.417667388916016,
+            "feature_relative_to_default": 0.19930151104927063
+          },
+          {
+            "duration_multiple": 4.0,
+            "nll": 8.322822570800781,
+            "entropy": 7.269975662231445,
+            "feature_relative_to_default": 0.6337247490882874
+          }
+        ],
+        "fixed_duration_resolution": [
+          {
+            "substeps": 1,
+            "nll": 8.306540489196777,
+            "field_relative_to_one": 0.0,
+            "feature_relative_to_one": 0.0
+          },
+          {
+            "substeps": 2,
+            "nll": 8.307914733886719,
+            "field_relative_to_one": 0.006162454839795828,
+            "feature_relative_to_one": 0.003601920558139682
+          },
+          {
+            "substeps": 4,
+            "nll": 8.308539390563965,
+            "field_relative_to_one": 0.008679676800966263,
+            "feature_relative_to_one": 0.005065048113465309
+          }
+        ]
+      },
+      {
+        "event": 31,
+        "observed": 1336,
+        "target": 39723,
+        "current_bias_only_nll": 13.220276832580566,
+        "times": [
+          {
+            "duration_multiple": 0.0,
+            "nll": 13.62322998046875,
+            "entropy": 7.533728122711182,
+            "feature_relative_to_default": 0.2431768923997879
+          },
+          {
+            "duration_multiple": 0.5,
+            "nll": 13.596267700195312,
+            "entropy": 7.52840518951416,
+            "feature_relative_to_default": 0.1231166198849678
+          },
+          {
+            "duration_multiple": 1.0,
+            "nll": 13.548385620117188,
+            "entropy": 7.518379211425781,
+            "feature_relative_to_default": 0.0
+          },
+          {
+            "duration_multiple": 2.0,
+            "nll": 13.388069152832031,
+            "entropy": 7.463176250457764,
+            "feature_relative_to_default": 0.31783151626586914
+          },
+          {
+            "duration_multiple": 4.0,
+            "nll": 13.275718688964844,
+            "entropy": 7.126420497894287,
+            "feature_relative_to_default": 0.9024749994277954
+          }
+        ],
+        "fixed_duration_resolution": [
+          {
+            "substeps": 1,
+            "nll": 13.548385620117188,
+            "field_relative_to_one": 0.0,
+            "feature_relative_to_one": 0.0
+          },
+          {
+            "substeps": 2,
+            "nll": 13.550725936889648,
+            "field_relative_to_one": 0.005744086112827063,
+            "feature_relative_to_one": 0.005536980461329222
+          },
+          {
+            "substeps": 4,
+            "nll": 13.551460266113281,
+            "field_relative_to_one": 0.008211484178900719,
+            "feature_relative_to_one": 0.007800043560564518
+          }
+        ]
+      }
+    ],
+    "predetermined_time_summary": [
+      {
+        "duration_multiple": 0.0,
+        "nll": 6.758108397945762,
+        "gain_over_current_bias": 0.5241501946002245,
+        "difference_from_default": 0.002432800829410553,
+        "improved_events": 16
+      },
+      {
+        "duration_multiple": 0.5,
+        "nll": 6.752333290874958,
+        "gain_over_current_bias": 0.5299253016710281,
+        "difference_from_default": -0.0033423062413930893,
+        "improved_events": 15
+      },
+      {
+        "duration_multiple": 1.0,
+        "nll": 6.755675597116351,
+        "gain_over_current_bias": 0.526582995429635,
+        "difference_from_default": 0.0,
+        "improved_events": 0
+      },
+      {
+        "duration_multiple": 2.0,
+        "nll": 6.817061632871628,
+        "gain_over_current_bias": 0.46519695967435837,
+        "difference_from_default": 0.06138603575527668,
+        "improved_events": 13
+      },
+      {
+        "duration_multiple": 4.0,
+        "nll": 7.201667711138725,
+        "gain_over_current_bias": 0.0805908814072609,
+        "difference_from_default": 0.44599211402237415,
+        "improved_events": 12
+      }
+    ],
+    "fixed_duration_resolution_summary": [
+      {
+        "substeps": 1,
+        "mean_nll": 6.755675597116351,
+        "mean_feature_relative": 0.0
+      },
+      {
+        "substeps": 2,
+        "mean_nll": 6.756617017090321,
+        "mean_feature_relative": 0.004024080484668957
+      },
+      {
+        "substeps": 4,
+        "mean_nll": 6.757049923762679,
+        "mean_feature_relative": 0.005686057796992827
+      }
+    ],
+    "descriptive_only": {
+      "label_selected_min_nll": 6.650065507739782,
+      "entropy_selected_nll": 6.748214077204466,
+      "entropy_selected_counts": {
+        "0.0": 18,
+        "0.5": 4,
+        "1.0": 3,
+        "2.0": 2,
+        "4.0": 5
+      },
+      "warning": "Post-hoc label minimum is an oracle; additional durations change external-arrival timing and compute."
+    }
+  },
+  "read_observability": {
+    "state_credit": {
+      "field": {
+        "current": {
+          "connected": true,
+          "norm": 0.3175867199897766,
+          "rms": 0.0017544364091008902,
+          "relative_direction_sensitivity": 0.2414901852607727
+        },
+        "evolved": {
+          "connected": true,
+          "norm": 0.25355204939842224,
+          "rms": 0.001400692155584693,
+          "relative_direction_sensitivity": 0.1977071613073349
+        }
+      },
+      "flux_x": {
+        "current": {
+          "connected": false,
+          "norm": 0.0,
+          "rms": 0.0,
+          "relative_direction_sensitivity": 0.0
+        },
+        "evolved": {
+          "connected": true,
+          "norm": 0.03228743001818657,
+          "rms": 0.00017836476035881788,
+          "relative_direction_sensitivity": 0.012576550245285034
+        }
+      },
+      "flux_y": {
+        "current": {
+          "connected": false,
+          "norm": 0.0,
+          "rms": 0.0,
+          "relative_direction_sensitivity": 0.0
+        },
+        "evolved": {
+          "connected": true,
+          "norm": 0.07102097570896149,
+          "rms": 0.0003923394833691418,
+          "relative_direction_sensitivity": 0.06430477648973465
+        }
+      },
+      "flux_z": {
+        "current": {
+          "connected": false,
+          "norm": 0.0,
+          "rms": 0.0,
+          "relative_direction_sensitivity": 0.0
+        },
+        "evolved": {
+          "connected": true,
+          "norm": 0.00907569658011198,
+          "rms": 5.0136652134824544e-05,
+          "relative_direction_sensitivity": 0.0016422111075371504
+        }
+      },
+      "conduction": {
+        "current": {
+          "connected": false,
+          "norm": 0.0,
+          "rms": 0.0,
+          "relative_direction_sensitivity": 0.0
+        },
+        "evolved": {
+          "connected": true,
+          "norm": 0.06216833367943764,
+          "rms": 0.002243306487798691,
+          "relative_direction_sensitivity": 0.024708539247512817
+        }
+      },
+      "receptors": {
+        "current": {
+          "connected": false,
+          "norm": 0.0,
+          "rms": 0.0,
+          "relative_direction_sensitivity": 0.0
+        },
+        "evolved": {
+          "connected": true,
+          "norm": 0.004401547368615866,
+          "rms": 1.7193555322592147e-05,
+          "relative_direction_sensitivity": 0.003051396692171693
+        }
+      },
+      "transmission": {
+        "current": {
+          "connected": false,
+          "norm": 0.0,
+          "rms": 0.0,
+          "relative_direction_sensitivity": 0.0
+        },
+        "evolved": {
+          "connected": true,
+          "norm": 0.15616776049137115,
+          "rms": 0.003984701354056597,
+          "relative_direction_sensitivity": 0.08781896531581879
+        }
+      },
+      "precision": {
+        "current": {
+          "connected": false,
+          "norm": 0.0,
+          "rms": 0.0,
+          "relative_direction_sensitivity": 0.0
+        },
+        "evolved": {
+          "connected": false,
+          "norm": 0.0,
+          "rms": 0.0,
+          "relative_direction_sensitivity": 0.0
+        }
+      }
+    },
+    "flux_perturbations": [
+      {
+        "flux_scale": 0.99,
+        "current_feature_max_difference": 0.0,
+        "current_nll_difference": 0.0,
+        "evolved_feature_relative_difference": 0.002345148241147399,
+        "evolved_nll_difference": 0.0009341239929199219
+      },
+      {
+        "flux_scale": 1.01,
+        "current_feature_max_difference": 0.0,
+        "current_nll_difference": 0.0,
+        "evolved_feature_relative_difference": 0.0023474686313420534,
+        "evolved_nll_difference": -0.0009279251098632812
+      }
+    ],
+    "alignment": {
+      "observed": 17840,
+      "target": 257,
+      "state": "after assimilating observed token, before advance"
+    }
+  },
+  "supervision": {
+    "task_nll": 6.755675315856934,
+    "auxiliary_loss": 7.194586753845215,
+    "terminal_loss_graph_node_credit": [
+      {
+        "state_after_events": 0,
+        "lag": 32,
+        "components": {
+          "field": {
+            "connected": true,
+            "norm": 0.47124144434928894,
+            "rms": 0.0026032663881778717,
+            "relative_direction_sensitivity": 0.27083614468574524
+          },
+          "flux_x": {
+            "connected": true,
+            "norm": 0.2967766523361206,
+            "rms": 0.001639474998228252,
+            "relative_direction_sensitivity": 0.13988053798675537
+          },
+          "flux_y": {
+            "connected": true,
+            "norm": 0.244299054145813,
+            "rms": 0.0013495750026777387,
+            "relative_direction_sensitivity": 0.10181297361850739
+          },
+          "flux_z": {
+            "connected": true,
+            "norm": 0.13962936401367188,
+            "rms": 0.0007713506929576397,
+            "relative_direction_sensitivity": 0.02145618386566639
+          },
+          "conduction": {
+            "connected": true,
+            "norm": 2.8727030754089355,
+            "rms": 0.1036597490310669,
+            "relative_direction_sensitivity": 1.1208938360214233
+          },
+          "receptors": {
+            "connected": true,
+            "norm": 0.0680646151304245,
+            "rms": 0.0002658774610608816,
+            "relative_direction_sensitivity": 0.04755165055394173
+          },
+          "transmission": {
+            "connected": true,
+            "norm": 6.860784530639648,
+            "rms": 0.17505647242069244,
+            "relative_direction_sensitivity": 3.9242217540740967
+          },
+          "precision": {
+            "connected": true,
+            "norm": 0.010318264365196228,
+            "rms": 0.0009120143367908895,
+            "relative_direction_sensitivity": 0.009637204930186272
+          }
+        }
+      },
+      {
+        "state_after_events": 1,
+        "lag": 31,
+        "components": {
+          "field": {
+            "connected": true,
+            "norm": 0.4812285900115967,
+            "rms": 0.002658437704667449,
+            "relative_direction_sensitivity": 0.2834472358226776
+          },
+          "flux_x": {
+            "connected": true,
+            "norm": 0.2910109758377075,
+            "rms": 0.0016076238825917244,
+            "relative_direction_sensitivity": 0.11973460018634796
+          },
+          "flux_y": {
+            "connected": true,
+            "norm": 0.2449701875448227,
+            "rms": 0.0013532821321859956,
+            "relative_direction_sensitivity": 0.11170271784067154
+          },
+          "flux_z": {
+            "connected": true,
+            "norm": 0.14112608134746552,
+            "rms": 0.0007796189747750759,
+            "relative_direction_sensitivity": 0.02185085043311119
+          },
+          "conduction": {
+            "connected": true,
+            "norm": 2.8047165870666504,
+            "rms": 0.10120649635791779,
+            "relative_direction_sensitivity": 1.0878264904022217
+          },
+          "receptors": {
+            "connected": true,
+            "norm": 0.06768736243247986,
+            "rms": 0.0002644038759171963,
+            "relative_direction_sensitivity": 0.04722001031041145
+          },
+          "transmission": {
+            "connected": true,
+            "norm": 6.694796085357666,
+            "rms": 0.1708212047815323,
+            "relative_direction_sensitivity": 3.834911584854126
+          },
+          "precision": {
+            "connected": true,
+            "norm": 0.03330300375819206,
+            "rms": 0.002943597501143813,
+            "relative_direction_sensitivity": 0.0347692146897316
+          }
+        }
+      },
+      {
+        "state_after_events": 2,
+        "lag": 30,
+        "components": {
+          "field": {
+            "connected": true,
+            "norm": 0.4753943383693695,
+            "rms": 0.002626208122819662,
+            "relative_direction_sensitivity": 0.2641531229019165
+          },
+          "flux_x": {
+            "connected": true,
+            "norm": 0.2890765964984894,
+            "rms": 0.00159693812020123,
+            "relative_direction_sensitivity": 0.10494865477085114
+          },
+          "flux_y": {
+            "connected": true,
+            "norm": 0.2707589566707611,
+            "rms": 0.0014957465464249253,
+            "relative_direction_sensitivity": 0.14734838902950287
+          },
+          "flux_z": {
+            "connected": true,
+            "norm": 0.14317812025547028,
+            "rms": 0.0007909549167379737,
+            "relative_direction_sensitivity": 0.022359220311045647
+          },
+          "conduction": {
+            "connected": true,
+            "norm": 2.7180490493774414,
+            "rms": 0.0980791449546814,
+            "relative_direction_sensitivity": 1.0479127168655396
+          },
+          "receptors": {
+            "connected": true,
+            "norm": 0.06677631288766861,
+            "rms": 0.0002608452341519296,
+            "relative_direction_sensitivity": 0.0465579479932785
+          },
+          "transmission": {
+            "connected": true,
+            "norm": 6.477283954620361,
+            "rms": 0.16527125239372253,
+            "relative_direction_sensitivity": 3.719174385070801
+          },
+          "precision": {
+            "connected": true,
+            "norm": 0.032138001173734665,
+            "rms": 0.002840624889358878,
+            "relative_direction_sensitivity": 0.035997580736875534
+          }
+        }
+      },
+      {
+        "state_after_events": 3,
+        "lag": 29,
+        "components": {
+          "field": {
+            "connected": true,
+            "norm": 0.4630669951438904,
+            "rms": 0.0025581091176718473,
+            "relative_direction_sensitivity": 0.2434452623128891
+          },
+          "flux_x": {
+            "connected": true,
+            "norm": 0.29172152280807495,
+            "rms": 0.0016115494072437286,
+            "relative_direction_sensitivity": 0.09975315630435944
+          },
+          "flux_y": {
+            "connected": true,
+            "norm": 0.29965099692344666,
+            "rms": 0.001655353931710124,
+            "relative_direction_sensitivity": 0.17038679122924805
+          },
+          "flux_z": {
+            "connected": true,
+            "norm": 0.14552100002765656,
+            "rms": 0.0008038978558033705,
+            "relative_direction_sensitivity": 0.022826455533504486
+          },
+          "conduction": {
+            "connected": true,
+            "norm": 2.623136520385742,
+            "rms": 0.09465428441762924,
+            "relative_direction_sensitivity": 1.0057178735733032
+          },
+          "receptors": {
+            "connected": true,
+            "norm": 0.0666273757815361,
+            "rms": 0.00026026336126960814,
+            "relative_direction_sensitivity": 0.04639982059597969
+          },
+          "transmission": {
+            "connected": true,
+            "norm": 6.236682891845703,
+            "rms": 0.1591321974992752,
+            "relative_direction_sensitivity": 3.5917351245880127
+          },
+          "precision": {
+            "connected": true,
+            "norm": 0.029191287234425545,
+            "rms": 0.0025801698211580515,
+            "relative_direction_sensitivity": 0.02842569723725319
+          }
+        }
+      },
+      {
+        "state_after_events": 4,
+        "lag": 28,
+        "components": {
+          "field": {
+            "connected": true,
+            "norm": 0.45799916982650757,
+            "rms": 0.0025301126297563314,
+            "relative_direction_sensitivity": 0.24810238182544708
+          },
+          "flux_x": {
+            "connected": true,
+            "norm": 0.29726269841194153,
+            "rms": 0.0016421604668721557,
+            "relative_direction_sensitivity": 0.098695769906044
+          },
+          "flux_y": {
+            "connected": true,
+            "norm": 0.314085990190506,
+            "rms": 0.0017350965645164251,
+            "relative_direction_sensitivity": 0.16983838379383087
+          },
+          "flux_z": {
+            "connected": true,
+            "norm": 0.14791397750377655,
+            "rms": 0.0008171169902198017,
+            "relative_direction_sensitivity": 0.023241057991981506
+          },
+          "conduction": {
+            "connected": true,
+            "norm": 2.5240392684936523,
+            "rms": 0.09107841551303864,
+            "relative_direction_sensitivity": 0.9636300206184387
+          },
+          "receptors": {
+            "connected": true,
+            "norm": 0.06661821156740189,
+            "rms": 0.0002602274180389941,
+            "relative_direction_sensitivity": 0.046383604407310486
+          },
+          "transmission": {
+            "connected": true,
+            "norm": 5.986815452575684,
+            "rms": 0.1527567058801651,
+            "relative_direction_sensitivity": 3.4582245349884033
+          },
+          "precision": {
+            "connected": true,
+            "norm": 0.02179831452667713,
+            "rms": 0.0019267171155661345,
+            "relative_direction_sensitivity": 0.02342952787876129
+          }
+        }
+      },
+      {
+        "state_after_events": 5,
+        "lag": 27,
+        "components": {
+          "field": {
+            "connected": true,
+            "norm": 0.4606066942214966,
+            "rms": 0.0025445171631872654,
+            "relative_direction_sensitivity": 0.26850584149360657
+          },
+          "flux_x": {
+            "connected": true,
+            "norm": 0.3041447103023529,
+            "rms": 0.0016801783349364996,
+            "relative_direction_sensitivity": 0.0992819145321846
+          },
+          "flux_y": {
+            "connected": true,
+            "norm": 0.3147687315940857,
+            "rms": 0.0017388685373589396,
+            "relative_direction_sensitivity": 0.15244977176189423
+          },
+          "flux_z": {
+            "connected": true,
+            "norm": 0.15031109750270844,
+            "rms": 0.0008303593494929373,
+            "relative_direction_sensitivity": 0.023619763553142548
+          },
+          "conduction": {
+            "connected": true,
+            "norm": 2.4381730556488037,
+            "rms": 0.0879799872636795,
+            "relative_direction_sensitivity": 0.9282698035240173
+          },
+          "receptors": {
+            "connected": true,
+            "norm": 0.06669493019580841,
+            "rms": 0.0002605272165965289,
+            "relative_direction_sensitivity": 0.04649367183446884
+          },
+          "transmission": {
+            "connected": true,
+            "norm": 5.7708258628845215,
+            "rms": 0.1472456157207489,
+            "relative_direction_sensitivity": 3.342956781387329
+          },
+          "precision": {
+            "connected": true,
+            "norm": 0.03167014196515083,
+            "rms": 0.0027992716059088707,
+            "relative_direction_sensitivity": 0.03326242044568062
+          }
+        }
+      },
+      {
+        "state_after_events": 6,
+        "lag": 26,
+        "components": {
+          "field": {
+            "connected": true,
+            "norm": 0.46170175075531006,
+            "rms": 0.0025505663361400366,
+            "relative_direction_sensitivity": 0.27319905161857605
+          },
+          "flux_x": {
+            "connected": true,
+            "norm": 0.3122022747993469,
+            "rms": 0.0017246910138055682,
+            "relative_direction_sensitivity": 0.10574822872877121
+          },
+          "flux_y": {
+            "connected": true,
+            "norm": 0.31799250841140747,
+            "rms": 0.0017566774040460587,
+            "relative_direction_sensitivity": 0.12496454268693924
+          },
+          "flux_z": {
+            "connected": true,
+            "norm": 0.15272344648838043,
+            "rms": 0.0008436861098743975,
+            "relative_direction_sensitivity": 0.023996194824576378
+          },
+          "conduction": {
+            "connected": true,
+            "norm": 2.3684518337249756,
+            "rms": 0.08546414226293564,
+            "relative_direction_sensitivity": 0.8994370698928833
+          },
+          "receptors": {
+            "connected": true,
+            "norm": 0.06690039485692978,
+            "rms": 0.00026132981292903423,
+            "relative_direction_sensitivity": 0.046752989292144775
+          },
+          "transmission": {
+            "connected": true,
+            "norm": 5.597962856292725,
+            "rms": 0.14283491671085358,
+            "relative_direction_sensitivity": 3.250061273574829
+          },
+          "precision": {
+            "connected": true,
+            "norm": 0.029732275754213333,
+            "rms": 0.0026279864832758904,
+            "relative_direction_sensitivity": 0.03589536249637604
+          }
+        }
+      },
+      {
+        "state_after_events": 7,
+        "lag": 25,
+        "components": {
+          "field": {
+            "connected": true,
+            "norm": 0.4491145610809326,
+            "rms": 0.00248103030025959,
+            "relative_direction_sensitivity": 0.2605432868003845
+          },
+          "flux_x": {
+            "connected": true,
+            "norm": 0.3215096592903137,
+            "rms": 0.0017761068884283304,
+            "relative_direction_sensitivity": 0.11418714374303818
+          },
+          "flux_y": {
+            "connected": true,
+            "norm": 0.33766433596611023,
+            "rms": 0.0018653498264029622,
+            "relative_direction_sensitivity": 0.14912846684455872
+          },
+          "flux_z": {
+            "connected": true,
+            "norm": 0.15514622628688812,
+            "rms": 0.0008570699137635529,
+            "relative_direction_sensitivity": 0.024387143552303314
+          },
+          "conduction": {
+            "connected": true,
+            "norm": 2.3181240558624268,
+            "rms": 0.08364810049533844,
+            "relative_direction_sensitivity": 0.8785572648048401
+          },
+          "receptors": {
+            "connected": true,
+            "norm": 0.06668803095817566,
+            "rms": 0.00026050032465718687,
+            "relative_direction_sensitivity": 0.0467616505920887
+          },
+          "transmission": {
+            "connected": true,
+            "norm": 5.478643894195557,
+            "rms": 0.13979043066501617,
+            "relative_direction_sensitivity": 3.1843438148498535
+          },
+          "precision": {
+            "connected": true,
+            "norm": 0.030833572149276733,
+            "rms": 0.002725328551605344,
+            "relative_direction_sensitivity": 0.033580537885427475
+          }
+        }
+      },
+      {
+        "state_after_events": 8,
+        "lag": 24,
+        "components": {
+          "field": {
+            "connected": true,
+            "norm": 0.4286282956600189,
+            "rms": 0.0023678599391132593,
+            "relative_direction_sensitivity": 0.25150027871131897
+          },
+          "flux_x": {
+            "connected": true,
+            "norm": 0.3299480378627777,
+            "rms": 0.0018227231921628118,
+            "relative_direction_sensitivity": 0.11639914661645889
+          },
+          "flux_y": {
+            "connected": true,
+            "norm": 0.36641332507133484,
+            "rms": 0.0020241665188223124,
+            "relative_direction_sensitivity": 0.1896786242723465
+          },
+          "flux_z": {
+            "connected": true,
+            "norm": 0.15725630521774292,
+            "rms": 0.0008687267545610666,
+            "relative_direction_sensitivity": 0.024872587993741035
+          },
+          "conduction": {
+            "connected": true,
+            "norm": 2.2752580642700195,
+            "rms": 0.08210130035877228,
+            "relative_direction_sensitivity": 0.8611081838607788
+          },
+          "receptors": {
+            "connected": true,
+            "norm": 0.06688132137060165,
+            "rms": 0.00026125533622689545,
+            "relative_direction_sensitivity": 0.047064125537872314
+          },
+          "transmission": {
+            "connected": true,
+            "norm": 5.37453031539917,
+            "rms": 0.13713394105434418,
+            "relative_direction_sensitivity": 3.129213809967041
+          },
+          "precision": {
+            "connected": true,
+            "norm": 0.04374558478593826,
+            "rms": 0.0038666001055389643,
+            "relative_direction_sensitivity": 0.04737563803792
+          }
+        }
+      },
+      {
+        "state_after_events": 9,
+        "lag": 23,
+        "components": {
+          "field": {
+            "connected": true,
+            "norm": 0.4173388183116913,
+            "rms": 0.0023054934572428465,
+            "relative_direction_sensitivity": 0.23205780982971191
+          },
+          "flux_x": {
+            "connected": true,
+            "norm": 0.33412250876426697,
+            "rms": 0.001845784136094153,
+            "relative_direction_sensitivity": 0.11309179663658142
+          },
+          "flux_y": {
+            "connected": true,
+            "norm": 0.385966420173645,
+            "rms": 0.0021321841049939394,
+            "relative_direction_sensitivity": 0.19998358190059662
+          },
+          "flux_z": {
+            "connected": true,
+            "norm": 0.1587015986442566,
+            "rms": 0.0008767109829932451,
+            "relative_direction_sensitivity": 0.025260217487812042
+          },
+          "conduction": {
+            "connected": true,
+            "norm": 2.2138237953186035,
+            "rms": 0.07988449186086655,
+            "relative_direction_sensitivity": 0.8394415378570557
+          },
+          "receptors": {
+            "connected": true,
+            "norm": 0.067267507314682,
+            "rms": 0.00026276378775946796,
+            "relative_direction_sensitivity": 0.04756055027246475
+          },
+          "transmission": {
+            "connected": true,
+            "norm": 5.236982345581055,
+            "rms": 0.13362433016300201,
+            "relative_direction_sensitivity": 3.0477254390716553
+          },
+          "precision": {
+            "connected": true,
+            "norm": 0.043072666972875595,
+            "rms": 0.0038071218878030777,
+            "relative_direction_sensitivity": 0.04026419296860695
+          }
+        }
+      },
+      {
+        "state_after_events": 10,
+        "lag": 22,
+        "components": {
+          "field": {
+            "connected": true,
+            "norm": 0.4312055706977844,
+            "rms": 0.002382097067311406,
+            "relative_direction_sensitivity": 0.21925047039985657
+          },
+          "flux_x": {
+            "connected": true,
+            "norm": 0.33246132731437683,
+            "rms": 0.0018366071162745357,
+            "relative_direction_sensitivity": 0.11238893866539001
+          },
+          "flux_y": {
+            "connected": true,
+            "norm": 0.38221976161003113,
+            "rms": 0.0021114866249263287,
+            "relative_direction_sensitivity": 0.2053835541009903
+          },
+          "flux_z": {
+            "connected": true,
+            "norm": 0.1593410223722458,
+            "rms": 0.0008802431984804571,
+            "relative_direction_sensitivity": 0.02559756301343441
+          },
+          "conduction": {
+            "connected": true,
+            "norm": 2.155815362930298,
+            "rms": 0.07779128849506378,
+            "relative_direction_sensitivity": 0.8199421763420105
+          },
+          "receptors": {
+            "connected": true,
+            "norm": 0.06784815341234207,
+            "rms": 0.00026503202388994396,
+            "relative_direction_sensitivity": 0.04824097082018852
+          },
+          "transmission": {
+            "connected": true,
+            "norm": 5.118721008300781,
+            "rms": 0.13060683012008667,
+            "relative_direction_sensitivity": 2.9710588455200195
+          },
+          "precision": {
+            "connected": true,
+            "norm": 0.029668474569916725,
+            "rms": 0.0026223475579172373,
+            "relative_direction_sensitivity": 0.034376513212919235
+          }
+        }
+      },
+      {
+        "state_after_events": 11,
+        "lag": 21,
+        "components": {
+          "field": {
+            "connected": true,
+            "norm": 0.46649661660194397,
+            "rms": 0.002577054314315319,
+            "relative_direction_sensitivity": 0.23476678133010864
+          },
+          "flux_x": {
+            "connected": true,
+            "norm": 0.32688355445861816,
+            "rms": 0.001805793959647417,
+            "relative_direction_sensitivity": 0.1189250648021698
+          },
+          "flux_y": {
+            "connected": true,
+            "norm": 0.3542163670063019,
+            "rms": 0.0019567881245166063,
+            "relative_direction_sensitivity": 0.20596666634082794
+          },
+          "flux_z": {
+            "connected": true,
+            "norm": 0.15942105650901794,
+            "rms": 0.0008806855767033994,
+            "relative_direction_sensitivity": 0.025903286412358284
+          },
+          "conduction": {
+            "connected": true,
+            "norm": 2.10555362701416,
+            "rms": 0.0759776160120964,
+            "relative_direction_sensitivity": 0.8040907979011536
+          },
+          "receptors": {
+            "connected": true,
+            "norm": 0.06814976036548615,
+            "rms": 0.00026621020515449345,
+            "relative_direction_sensitivity": 0.04877157881855965
+          },
+          "transmission": {
+            "connected": true,
+            "norm": 5.033965110778809,
+            "rms": 0.12844423949718475,
+            "relative_direction_sensitivity": 2.9051530361175537
+          },
+          "precision": {
+            "connected": true,
+            "norm": 0.030933605507016182,
+            "rms": 0.002734170062467456,
+            "relative_direction_sensitivity": 0.03342396393418312
+          }
+        }
+      },
+      {
+        "state_after_events": 12,
+        "lag": 20,
+        "components": {
+          "field": {
+            "connected": true,
+            "norm": 0.504106879234314,
+            "rms": 0.002784824464470148,
+            "relative_direction_sensitivity": 0.27423980832099915
+          },
+          "flux_x": {
+            "connected": true,
+            "norm": 0.322020560503006,
+            "rms": 0.0017789296107366681,
+            "relative_direction_sensitivity": 0.1290045529603958
+          },
+          "flux_y": {
+            "connected": true,
+            "norm": 0.3170505166053772,
+            "rms": 0.0017514743376523256,
+            "relative_direction_sensitivity": 0.1777493953704834
+          },
+          "flux_z": {
+            "connected": true,
+            "norm": 0.1594220995903015,
+            "rms": 0.0008806910482235253,
+            "relative_direction_sensitivity": 0.026156514883041382
+          },
+          "conduction": {
+            "connected": true,
+            "norm": 2.0562925338745117,
+            "rms": 0.07420006394386292,
+            "relative_direction_sensitivity": 0.7892001867294312
+          },
+          "receptors": {
+            "connected": true,
+            "norm": 0.06787625700235367,
+            "rms": 0.00026514168712310493,
+            "relative_direction_sensitivity": 0.04884208366274834
+          },
+          "transmission": {
+            "connected": true,
+            "norm": 4.95447301864624,
+            "rms": 0.12641595304012299,
+            "relative_direction_sensitivity": 2.8404927253723145
+          },
+          "precision": {
+            "connected": true,
+            "norm": 0.022498397156596184,
+            "rms": 0.001988596050068736,
+            "relative_direction_sensitivity": 0.025576112791895866
+          }
+        }
+      },
+      {
+        "state_after_events": 13,
+        "lag": 19,
+        "components": {
+          "field": {
+            "connected": true,
+            "norm": 0.524407148361206,
+            "rms": 0.0028969678096473217,
+            "relative_direction_sensitivity": 0.30003759264945984
+          },
+          "flux_x": {
+            "connected": true,
+            "norm": 0.3223648965358734,
+            "rms": 0.001780831371434033,
+            "relative_direction_sensitivity": 0.13709332048892975
+          },
+          "flux_y": {
+            "connected": true,
+            "norm": 0.2998768985271454,
+            "rms": 0.0016566021367907524,
+            "relative_direction_sensitivity": 0.14137029647827148
+          },
+          "flux_z": {
+            "connected": true,
+            "norm": 0.15975885093212128,
+            "rms": 0.0008825515396893024,
+            "relative_direction_sensitivity": 0.026373712345957756
+          },
+          "conduction": {
+            "connected": true,
+            "norm": 2.0125656127929688,
+            "rms": 0.07262220233678818,
+            "relative_direction_sensitivity": 0.7775522470474243
+          },
+          "receptors": {
+            "connected": true,
+            "norm": 0.06717013567686081,
+            "rms": 0.0002623836335260421,
+            "relative_direction_sensitivity": 0.04844963923096657
+          },
+          "transmission": {
+            "connected": true,
+            "norm": 4.885810852050781,
+            "rms": 0.12466400116682053,
+            "relative_direction_sensitivity": 2.783674478530884
+          },
+          "precision": {
+            "connected": true,
+            "norm": 0.020398681983351707,
+            "rms": 0.0018030059291049838,
+            "relative_direction_sensitivity": 0.02347591333091259
+          }
+        }
+      },
+      {
+        "state_after_events": 14,
+        "lag": 18,
+        "components": {
+          "field": {
+            "connected": true,
+            "norm": 0.5178020596504211,
+            "rms": 0.002860479988157749,
+            "relative_direction_sensitivity": 0.29087913036346436
+          },
+          "flux_x": {
+            "connected": true,
+            "norm": 0.3292747437953949,
+            "rms": 0.0018190037226304412,
+            "relative_direction_sensitivity": 0.1419224590063095
+          },
+          "flux_y": {
+            "connected": true,
+            "norm": 0.3193748891353607,
+            "rms": 0.0017643142491579056,
+            "relative_direction_sensitivity": 0.15715046226978302
+          },
+          "flux_z": {
+            "connected": true,
+            "norm": 0.16049285233020782,
+            "rms": 0.0008866064017638564,
+            "relative_direction_sensitivity": 0.026529433205723763
+          },
+          "conduction": {
+            "connected": true,
+            "norm": 1.9746283292770386,
+            "rms": 0.07125326991081238,
+            "relative_direction_sensitivity": 0.7685478329658508
+          },
+          "receptors": {
+            "connected": true,
+            "norm": 0.06638507544994354,
+            "rms": 0.0002593169629108161,
+            "relative_direction_sensitivity": 0.04787726327776909
+          },
+          "transmission": {
+            "connected": true,
+            "norm": 4.826930046081543,
+            "rms": 0.12316162884235382,
+            "relative_direction_sensitivity": 2.735074043273926
+          },
+          "precision": {
+            "connected": true,
+            "norm": 0.028258493170142174,
+            "rms": 0.0024977214634418488,
+            "relative_direction_sensitivity": 0.037448860704898834
+          }
+        }
+      },
+      {
+        "state_after_events": 15,
+        "lag": 17,
+        "components": {
+          "field": {
+            "connected": true,
+            "norm": 0.4957897961139679,
+            "rms": 0.0027388776652514935,
+            "relative_direction_sensitivity": 0.27229470014572144
+          },
+          "flux_x": {
+            "connected": true,
+            "norm": 0.3403680622577667,
+            "rms": 0.0018802854465320706,
+            "relative_direction_sensitivity": 0.14854300022125244
+          },
+          "flux_y": {
+            "connected": true,
+            "norm": 0.35575562715530396,
+            "rms": 0.001965290866792202,
+            "relative_direction_sensitivity": 0.19114218652248383
+          },
+          "flux_z": {
+            "connected": true,
+            "norm": 0.16124068200588226,
+            "rms": 0.0008907378069125116,
+            "relative_direction_sensitivity": 0.026618340983986855
+          },
+          "conduction": {
+            "connected": true,
+            "norm": 1.939392328262329,
+            "rms": 0.06998179107904434,
+            "relative_direction_sensitivity": 0.7600178718566895
+          },
+          "receptors": {
+            "connected": true,
+            "norm": 0.06591977924108505,
+            "rms": 0.0002574993122834712,
+            "relative_direction_sensitivity": 0.04748586192727089
+          },
+          "transmission": {
+            "connected": true,
+            "norm": 4.770559310913086,
+            "rms": 0.12172327935695648,
+            "relative_direction_sensitivity": 2.6902477741241455
+          },
+          "precision": {
+            "connected": true,
+            "norm": 0.03244246542453766,
+            "rms": 0.0028675359208136797,
+            "relative_direction_sensitivity": 0.03696717694401741
+          }
+        }
+      },
+      {
+        "state_after_events": 16,
+        "lag": 16,
+        "components": {
+          "field": {
+            "connected": true,
+            "norm": 0.47651246190071106,
+            "rms": 0.002632384654134512,
+            "relative_direction_sensitivity": 0.25022244453430176
+          },
+          "flux_x": {
+            "connected": true,
+            "norm": 0.35209015011787415,
+            "rms": 0.0019450418185442686,
+            "relative_direction_sensitivity": 0.1557329148054123
+          },
+          "flux_y": {
+            "connected": true,
+            "norm": 0.3824756145477295,
+            "rms": 0.0021128999069333076,
+            "relative_direction_sensitivity": 0.2079874873161316
+          },
+          "flux_z": {
+            "connected": true,
+            "norm": 0.16154929995536804,
+            "rms": 0.0008924424764700234,
+            "relative_direction_sensitivity": 0.026560865342617035
+          },
+          "conduction": {
+            "connected": true,
+            "norm": 1.8882591724395752,
+            "rms": 0.06813668459653854,
+            "relative_direction_sensitivity": 0.742544412612915
+          },
+          "receptors": {
+            "connected": true,
+            "norm": 0.06453307718038559,
+            "rms": 0.00025208271108567715,
+            "relative_direction_sensitivity": 0.046467531472444534
+          },
+          "transmission": {
+            "connected": true,
+            "norm": 4.673351287841797,
+            "rms": 0.11924296617507935,
+            "relative_direction_sensitivity": 2.6229610443115234
+          },
+          "precision": {
+            "connected": true,
+            "norm": 0.03490711376070976,
+            "rms": 0.0030853820499032736,
+            "relative_direction_sensitivity": 0.042033154517412186
+          }
+        }
+      },
+      {
+        "state_after_events": 17,
+        "lag": 15,
+        "components": {
+          "field": {
+            "connected": true,
+            "norm": 0.4753004014492035,
+            "rms": 0.002625689608976245,
+            "relative_direction_sensitivity": 0.27586424350738525
+          },
+          "flux_x": {
+            "connected": true,
+            "norm": 0.36139044165611267,
+            "rms": 0.001996419858187437,
+            "relative_direction_sensitivity": 0.15343378484249115
+          },
+          "flux_y": {
+            "connected": true,
+            "norm": 0.3882749080657959,
+            "rms": 0.0021449371706694365,
+            "relative_direction_sensitivity": 0.21206726133823395
+          },
+          "flux_z": {
+            "connected": true,
+            "norm": 0.1610613912343979,
+            "rms": 0.0008897470543161035,
+            "relative_direction_sensitivity": 0.026386767625808716
+          },
+          "conduction": {
+            "connected": true,
+            "norm": 1.8170362710952759,
+            "rms": 0.06556665152311325,
+            "relative_direction_sensitivity": 0.7168763279914856
+          },
+          "receptors": {
+            "connected": true,
+            "norm": 0.06294245272874832,
+            "rms": 0.0002458693634252995,
+            "relative_direction_sensitivity": 0.04521425813436508
+          },
+          "transmission": {
+            "connected": true,
+            "norm": 4.52224063873291,
+            "rms": 0.11538732051849365,
+            "relative_direction_sensitivity": 2.527111291885376
+          },
+          "precision": {
+            "connected": true,
+            "norm": 0.03954124450683594,
+            "rms": 0.0034949854016304016,
+            "relative_direction_sensitivity": 0.04649018868803978
+          }
+        }
+      },
+      {
+        "state_after_events": 18,
+        "lag": 14,
+        "components": {
+          "field": {
+            "connected": true,
+            "norm": 0.49378305673599243,
+            "rms": 0.0027277932967990637,
+            "relative_direction_sensitivity": 0.29782792925834656
+          },
+          "flux_x": {
+            "connected": true,
+            "norm": 0.3658486008644104,
+            "rms": 0.0020210477523505688,
+            "relative_direction_sensitivity": 0.13695424795150757
+          },
+          "flux_y": {
+            "connected": true,
+            "norm": 0.37415555119514465,
+            "rms": 0.002066937740892172,
+            "relative_direction_sensitivity": 0.18980590999126434
+          },
+          "flux_z": {
+            "connected": true,
+            "norm": 0.15976403653621674,
+            "rms": 0.0008825802942737937,
+            "relative_direction_sensitivity": 0.026059221476316452
+          },
+          "conduction": {
+            "connected": true,
+            "norm": 1.7371371984481812,
+            "rms": 0.06268354505300522,
+            "relative_direction_sensitivity": 0.6882450580596924
+          },
+          "receptors": {
+            "connected": true,
+            "norm": 0.061307597905397415,
+            "rms": 0.00023948316811583936,
+            "relative_direction_sensitivity": 0.044075462967157364
+          },
+          "transmission": {
+            "connected": true,
+            "norm": 4.350922584533691,
+            "rms": 0.11101604998111725,
+            "relative_direction_sensitivity": 2.4187865257263184
+          },
+          "precision": {
+            "connected": true,
+            "norm": 0.03529582545161247,
+            "rms": 0.003119739471003413,
+            "relative_direction_sensitivity": 0.044708214700222015
+          }
+        }
+      },
+      {
+        "state_after_events": 19,
+        "lag": 13,
+        "components": {
+          "field": {
+            "connected": true,
+            "norm": 0.517104983329773,
+            "rms": 0.0028566301334649324,
+            "relative_direction_sensitivity": 0.31509825587272644
+          },
+          "flux_x": {
+            "connected": true,
+            "norm": 0.36450934410095215,
+            "rms": 0.0020136500243097544,
+            "relative_direction_sensitivity": 0.11606508493423462
+          },
+          "flux_y": {
+            "connected": true,
+            "norm": 0.3553960621356964,
+            "rms": 0.001963305287063122,
+            "relative_direction_sensitivity": 0.16863921284675598
+          },
+          "flux_z": {
+            "connected": true,
+            "norm": 0.15793199837207794,
+            "rms": 0.0008724596700631082,
+            "relative_direction_sensitivity": 0.025663577020168304
+          },
+          "conduction": {
+            "connected": true,
+            "norm": 1.636709451675415,
+            "rms": 0.059059664607048035,
+            "relative_direction_sensitivity": 0.6511123776435852
+          },
+          "receptors": {
+            "connected": true,
+            "norm": 0.06026375666260719,
+            "rms": 0.00023540561960544437,
+            "relative_direction_sensitivity": 0.04357980564236641
+          },
+          "transmission": {
+            "connected": true,
+            "norm": 4.119879245758057,
+            "rms": 0.10512086004018784,
+            "relative_direction_sensitivity": 2.281364917755127
+          },
+          "precision": {
+            "connected": true,
+            "norm": 0.046233948320150375,
+            "rms": 0.004086542408913374,
+            "relative_direction_sensitivity": 0.050393082201480865
+          }
+        }
+      },
+      {
+        "state_after_events": 20,
+        "lag": 12,
+        "components": {
+          "field": {
+            "connected": true,
+            "norm": 0.5309199094772339,
+            "rms": 0.0029329468961805105,
+            "relative_direction_sensitivity": 0.3292274475097656
+          },
+          "flux_x": {
+            "connected": true,
+            "norm": 0.3601968586444855,
+            "rms": 0.001989825861528516,
+            "relative_direction_sensitivity": 0.11435487121343613
+          },
+          "flux_y": {
+            "connected": true,
+            "norm": 0.3556898534297943,
+            "rms": 0.0019649281166493893,
+            "relative_direction_sensitivity": 0.16170398890972137
+          },
+          "flux_z": {
+            "connected": true,
+            "norm": 0.15584255754947662,
+            "rms": 0.0008609169162809849,
+            "relative_direction_sensitivity": 0.025205422192811966
+          },
+          "conduction": {
+            "connected": true,
+            "norm": 1.536833643913269,
+            "rms": 0.055455710738897324,
+            "relative_direction_sensitivity": 0.6126886010169983
+          },
+          "receptors": {
+            "connected": true,
+            "norm": 0.05974900349974632,
+            "rms": 0.00023339492327068,
+            "relative_direction_sensitivity": 0.04352905601263046
+          },
+          "transmission": {
+            "connected": true,
+            "norm": 3.883775472640991,
+            "rms": 0.09909655153751373,
+            "relative_direction_sensitivity": 2.1445438861846924
+          },
+          "precision": {
+            "connected": true,
+            "norm": 0.036824844777584076,
+            "rms": 0.00325488718226552,
+            "relative_direction_sensitivity": 0.04278331622481346
+          }
+        }
+      },
+      {
+        "state_after_events": 21,
+        "lag": 11,
+        "components": {
+          "field": {
+            "connected": true,
+            "norm": 0.5258830189704895,
+            "rms": 0.00290512153878808,
+            "relative_direction_sensitivity": 0.3174709379673004
+          },
+          "flux_x": {
+            "connected": true,
+            "norm": 0.36035826802253723,
+            "rms": 0.001990717835724354,
+            "relative_direction_sensitivity": 0.13774609565734863
+          },
+          "flux_y": {
+            "connected": true,
+            "norm": 0.3790968060493469,
+            "rms": 0.002094234572723508,
+            "relative_direction_sensitivity": 0.19188471138477325
+          },
+          "flux_z": {
+            "connected": true,
+            "norm": 0.15336565673351288,
+            "rms": 0.0008472340414300561,
+            "relative_direction_sensitivity": 0.024670297279953957
+          },
+          "conduction": {
+            "connected": true,
+            "norm": 1.4397008419036865,
+            "rms": 0.05195073410868645,
+            "relative_direction_sensitivity": 0.5746633410453796
+          },
+          "receptors": {
+            "connected": true,
+            "norm": 0.05953660234808922,
+            "rms": 0.00023256533313542604,
+            "relative_direction_sensitivity": 0.04376763105392456
+          },
+          "transmission": {
+            "connected": true,
+            "norm": 3.6411380767822266,
+            "rms": 0.09290552884340286,
+            "relative_direction_sensitivity": 2.011413812637329
+          },
+          "precision": {
+            "connected": true,
+            "norm": 0.03783890977501869,
+            "rms": 0.0033445185981690884,
+            "relative_direction_sensitivity": 0.04991380497813225
+          }
+        }
+      },
+      {
+        "state_after_events": 22,
+        "lag": 10,
+        "components": {
+          "field": {
+            "connected": true,
+            "norm": 0.5140435099601746,
+            "rms": 0.0028397177811712027,
+            "relative_direction_sensitivity": 0.3010908365249634
+          },
+          "flux_x": {
+            "connected": true,
+            "norm": 0.37233293056488037,
+            "rms": 0.002056869911029935,
+            "relative_direction_sensitivity": 0.16228900849819183
+          },
+          "flux_y": {
+            "connected": true,
+            "norm": 0.39918798208236694,
+            "rms": 0.0022052244748920202,
+            "relative_direction_sensitivity": 0.2096942961215973
+          },
+          "flux_z": {
+            "connected": true,
+            "norm": 0.15018951892852783,
+            "rms": 0.000829688215162605,
+            "relative_direction_sensitivity": 0.024067217484116554
+          },
+          "conduction": {
+            "connected": true,
+            "norm": 1.35454523563385,
+            "rms": 0.04887793958187103,
+            "relative_direction_sensitivity": 0.5401903390884399
+          },
+          "receptors": {
+            "connected": true,
+            "norm": 0.059922799468040466,
+            "rms": 0.00023407397384289652,
+            "relative_direction_sensitivity": 0.044553641229867935
+          },
+          "transmission": {
+            "connected": true,
+            "norm": 3.4182403087615967,
+            "rms": 0.08721818029880524,
+            "relative_direction_sensitivity": 1.894978404045105
+          },
+          "precision": {
+            "connected": true,
+            "norm": 0.03350307047367096,
+            "rms": 0.002961281221359968,
+            "relative_direction_sensitivity": 0.044956814497709274
+          }
+        }
+      },
+      {
+        "state_after_events": 23,
+        "lag": 9,
+        "components": {
+          "field": {
+            "connected": true,
+            "norm": 0.5126042366027832,
+            "rms": 0.0028317656833678484,
+            "relative_direction_sensitivity": 0.3033578395843506
+          },
+          "flux_x": {
+            "connected": true,
+            "norm": 0.39671990275382996,
+            "rms": 0.0021915901452302933,
+            "relative_direction_sensitivity": 0.17855042219161987
+          },
+          "flux_y": {
+            "connected": true,
+            "norm": 0.39525043964385986,
+            "rms": 0.00218347180634737,
+            "relative_direction_sensitivity": 0.19404026865959167
+          },
+          "flux_z": {
+            "connected": true,
+            "norm": 0.14600595831871033,
+            "rms": 0.0008065770380198956,
+            "relative_direction_sensitivity": 0.023315832018852234
+          },
+          "conduction": {
+            "connected": true,
+            "norm": 1.245334267616272,
+            "rms": 0.0449371300637722,
+            "relative_direction_sensitivity": 0.49704521894454956
+          },
+          "receptors": {
+            "connected": true,
+            "norm": 0.06002594158053398,
+            "rms": 0.00023447677085641772,
+            "relative_direction_sensitivity": 0.04498033598065376
+          },
+          "transmission": {
+            "connected": true,
+            "norm": 3.123760461807251,
+            "rms": 0.07970436662435532,
+            "relative_direction_sensitivity": 1.7442528009414673
+          },
+          "precision": {
+            "connected": true,
+            "norm": 0.03297272324562073,
+            "rms": 0.00291440449655056,
+            "relative_direction_sensitivity": 0.03301457315683365
+          }
+        }
+      },
+      {
+        "state_after_events": 24,
+        "lag": 8,
+        "components": {
+          "field": {
+            "connected": true,
+            "norm": 0.5161336064338684,
+            "rms": 0.0028512643184512854,
+            "relative_direction_sensitivity": 0.33199596405029297
+          },
+          "flux_x": {
+            "connected": true,
+            "norm": 0.42553696036338806,
+            "rms": 0.002350783674046397,
+            "relative_direction_sensitivity": 0.18856671452522278
+          },
+          "flux_y": {
+            "connected": true,
+            "norm": 0.3789903521537781,
+            "rms": 0.002093645976856351,
+            "relative_direction_sensitivity": 0.15891723334789276
+          },
+          "flux_z": {
+            "connected": true,
+            "norm": 0.14073926210403442,
+            "rms": 0.0007774823461659253,
+            "relative_direction_sensitivity": 0.02231890708208084
+          },
+          "conduction": {
+            "connected": true,
+            "norm": 1.1389498710632324,
+            "rms": 0.04109831526875496,
+            "relative_direction_sensitivity": 0.45320138335227966
+          },
+          "receptors": {
+            "connected": true,
+            "norm": 0.0584866888821125,
+            "rms": 0.00022846418141853064,
+            "relative_direction_sensitivity": 0.04383928328752518
+          },
+          "transmission": {
+            "connected": true,
+            "norm": 2.836139678955078,
+            "rms": 0.07236558198928833,
+            "relative_direction_sensitivity": 1.5971760749816895
+          },
+          "precision": {
+            "connected": true,
+            "norm": 0.026303080841898918,
+            "rms": 0.0023248859215527773,
+            "relative_direction_sensitivity": 0.03277051821351051
+          }
+        }
+      },
+      {
+        "state_after_events": 25,
+        "lag": 7,
+        "components": {
+          "field": {
+            "connected": true,
+            "norm": 0.515399694442749,
+            "rms": 0.0028472095727920532,
+            "relative_direction_sensitivity": 0.35687923431396484
+          },
+          "flux_x": {
+            "connected": true,
+            "norm": 0.4458934962749481,
+            "rms": 0.0024632387794554234,
+            "relative_direction_sensitivity": 0.1928451955318451
+          },
+          "flux_y": {
+            "connected": true,
+            "norm": 0.3761783838272095,
+            "rms": 0.002078112680464983,
+            "relative_direction_sensitivity": 0.13083575665950775
+          },
+          "flux_z": {
+            "connected": true,
+            "norm": 0.13422979414463043,
+            "rms": 0.0007415225263684988,
+            "relative_direction_sensitivity": 0.02113940753042698
+          },
+          "conduction": {
+            "connected": true,
+            "norm": 1.0192214250564575,
+            "rms": 0.036777984350919724,
+            "relative_direction_sensitivity": 0.40353596210479736
+          },
+          "receptors": {
+            "connected": true,
+            "norm": 0.05540129542350769,
+            "rms": 0.00021641187777277082,
+            "relative_direction_sensitivity": 0.04128457233309746
+          },
+          "transmission": {
+            "connected": true,
+            "norm": 2.5211071968078613,
+            "rms": 0.06432735919952393,
+            "relative_direction_sensitivity": 1.4308722019195557
+          },
+          "precision": {
+            "connected": true,
+            "norm": 0.027402207255363464,
+            "rms": 0.0024220356717705727,
+            "relative_direction_sensitivity": 0.029970714822411537
+          }
+        }
+      },
+      {
+        "state_after_events": 26,
+        "lag": 6,
+        "components": {
+          "field": {
+            "connected": true,
+            "norm": 0.5185460448265076,
+            "rms": 0.002864591311663389,
+            "relative_direction_sensitivity": 0.3638826012611389
+          },
+          "flux_x": {
+            "connected": true,
+            "norm": 0.4452756643295288,
+            "rms": 0.0024598264135420322,
+            "relative_direction_sensitivity": 0.18873773515224457
+          },
+          "flux_y": {
+            "connected": true,
+            "norm": 0.39490005373954773,
+            "rms": 0.002181537449359894,
+            "relative_direction_sensitivity": 0.1623380035161972
+          },
+          "flux_z": {
+            "connected": true,
+            "norm": 0.12601742148399353,
+            "rms": 0.0006961553590372205,
+            "relative_direction_sensitivity": 0.019778454676270485
+          },
+          "conduction": {
+            "connected": true,
+            "norm": 0.8934518098831177,
+            "rms": 0.03223966807126999,
+            "relative_direction_sensitivity": 0.3506750464439392
+          },
+          "receptors": {
+            "connected": true,
+            "norm": 0.05125753954052925,
+            "rms": 0.0002002252876991406,
+            "relative_direction_sensitivity": 0.03790134936571121
+          },
+          "transmission": {
+            "connected": true,
+            "norm": 2.1918537616729736,
+            "rms": 0.055926285684108734,
+            "relative_direction_sensitivity": 1.2556540966033936
+          },
+          "precision": {
+            "connected": true,
+            "norm": 0.019633423537015915,
+            "rms": 0.0017353658331558108,
+            "relative_direction_sensitivity": 0.02002745494246483
+          }
+        }
+      },
+      {
+        "state_after_events": 27,
+        "lag": 5,
+        "components": {
+          "field": {
+            "connected": true,
+            "norm": 0.5339061617851257,
+            "rms": 0.0029494452755898237,
+            "relative_direction_sensitivity": 0.34859803318977356
+          },
+          "flux_x": {
+            "connected": true,
+            "norm": 0.4172412157058716,
+            "rms": 0.0023049560841172934,
+            "relative_direction_sensitivity": 0.17014876008033752
+          },
+          "flux_y": {
+            "connected": true,
+            "norm": 0.4268476068973541,
+            "rms": 0.0023580242414027452,
+            "relative_direction_sensitivity": 0.21773988008499146
+          },
+          "flux_z": {
+            "connected": true,
+            "norm": 0.11533144116401672,
+            "rms": 0.0006371231866069138,
+            "relative_direction_sensitivity": 0.018110962584614754
+          },
+          "conduction": {
+            "connected": true,
+            "norm": 0.7652912139892578,
+            "rms": 0.02761506848037243,
+            "relative_direction_sensitivity": 0.297781378030777
+          },
+          "receptors": {
+            "connected": true,
+            "norm": 0.0461094006896019,
+            "rms": 0.0001801152975531295,
+            "relative_direction_sensitivity": 0.03369460999965668
+          },
+          "transmission": {
+            "connected": true,
+            "norm": 1.862321376800537,
+            "rms": 0.04751809686422348,
+            "relative_direction_sensitivity": 1.0767037868499756
+          },
+          "precision": {
+            "connected": true,
+            "norm": 0.03583505004644394,
+            "rms": 0.003167400835081935,
+            "relative_direction_sensitivity": 0.038085781037807465
+          }
+        }
+      },
+      {
+        "state_after_events": 28,
+        "lag": 4,
+        "components": {
+          "field": {
+            "connected": true,
+            "norm": 0.5624361634254456,
+            "rms": 0.0031070541590452194,
+            "relative_direction_sensitivity": 0.33810797333717346
+          },
+          "flux_x": {
+            "connected": true,
+            "norm": 0.36440348625183105,
+            "rms": 0.002013067016378045,
+            "relative_direction_sensitivity": 0.13907606899738312
+          },
+          "flux_y": {
+            "connected": true,
+            "norm": 0.46015465259552,
+            "rms": 0.0025420221500098705,
+            "relative_direction_sensitivity": 0.27786800265312195
+          },
+          "flux_z": {
+            "connected": true,
+            "norm": 0.10112479329109192,
+            "rms": 0.000558641564566642,
+            "relative_direction_sensitivity": 0.016047922894358635
+          },
+          "conduction": {
+            "connected": true,
+            "norm": 0.6365327835083008,
+            "rms": 0.022968899458646774,
+            "relative_direction_sensitivity": 0.2469508945941925
+          },
+          "receptors": {
+            "connected": true,
+            "norm": 0.03983232378959656,
+            "rms": 0.00015559542225673795,
+            "relative_direction_sensitivity": 0.028652498498558998
+          },
+          "transmission": {
+            "connected": true,
+            "norm": 1.5364516973495483,
+            "rms": 0.03920336440205574,
+            "relative_direction_sensitivity": 0.8965400457382202
+          },
+          "precision": {
+            "connected": true,
+            "norm": 0.038356706500053406,
+            "rms": 0.003390285652130842,
+            "relative_direction_sensitivity": 0.03873369097709656
+          }
+        }
+      },
+      {
+        "state_after_events": 29,
+        "lag": 3,
+        "components": {
+          "field": {
+            "connected": true,
+            "norm": 0.6148887872695923,
+            "rms": 0.0033968165516853333,
+            "relative_direction_sensitivity": 0.36989545822143555
+          },
+          "flux_x": {
+            "connected": true,
+            "norm": 0.29469138383865356,
+            "rms": 0.0016279576811939478,
+            "relative_direction_sensitivity": 0.10864000767469406
+          },
+          "flux_y": {
+            "connected": true,
+            "norm": 0.4639461636543274,
+            "rms": 0.0025629678275436163,
+            "relative_direction_sensitivity": 0.3223404586315155
+          },
+          "flux_z": {
+            "connected": true,
+            "norm": 0.08234288543462753,
+            "rms": 0.00045488515752367675,
+            "relative_direction_sensitivity": 0.013269035145640373
+          },
+          "conduction": {
+            "connected": true,
+            "norm": 0.493188738822937,
+            "rms": 0.017796415835618973,
+            "relative_direction_sensitivity": 0.19004735350608826
+          },
+          "receptors": {
+            "connected": true,
+            "norm": 0.03337929770350456,
+            "rms": 0.00013038817269261926,
+            "relative_direction_sensitivity": 0.023948026821017265
+          },
+          "transmission": {
+            "connected": true,
+            "norm": 1.1886422634124756,
+            "rms": 0.030328823253512383,
+            "relative_direction_sensitivity": 0.695368766784668
+          },
+          "precision": {
+            "connected": true,
+            "norm": 0.05950560048222542,
+            "rms": 0.005259602330625057,
+            "relative_direction_sensitivity": 0.0667254701256752
+          }
+        }
+      },
+      {
+        "state_after_events": 30,
+        "lag": 2,
+        "components": {
+          "field": {
+            "connected": true,
+            "norm": 0.7036997079849243,
+            "rms": 0.003887434024363756,
+            "relative_direction_sensitivity": 0.4022092819213867
+          },
+          "flux_x": {
+            "connected": true,
+            "norm": 0.21227970719337463,
+            "rms": 0.0011726925149559975,
+            "relative_direction_sensitivity": 0.07896962761878967
+          },
+          "flux_y": {
+            "connected": true,
+            "norm": 0.39533817768096924,
+            "rms": 0.0021839577239006758,
+            "relative_direction_sensitivity": 0.29941338300704956
+          },
+          "flux_z": {
+            "connected": true,
+            "norm": 0.05851101502776146,
+            "rms": 0.00032323115738108754,
+            "relative_direction_sensitivity": 0.00951438583433628
+          },
+          "conduction": {
+            "connected": true,
+            "norm": 0.3282669186592102,
+            "rms": 0.01184531208127737,
+            "relative_direction_sensitivity": 0.12557870149612427
+          },
+          "receptors": {
+            "connected": true,
+            "norm": 0.02601032890379429,
+            "rms": 0.00010160300735151395,
+            "relative_direction_sensitivity": 0.019077129662036896
+          },
+          "transmission": {
+            "connected": true,
+            "norm": 0.7891372442245483,
+            "rms": 0.020135246217250824,
+            "relative_direction_sensitivity": 0.4633174538612366
+          },
+          "precision": {
+            "connected": true,
+            "norm": 0.09084814041852951,
+            "rms": 0.008029917255043983,
+            "relative_direction_sensitivity": 0.1038898304104805
+          }
+        }
+      },
+      {
+        "state_after_events": 31,
+        "lag": 1,
+        "components": {
+          "field": {
+            "connected": true,
+            "norm": 0.8036169409751892,
+            "rms": 0.004439403302967548,
+            "relative_direction_sensitivity": 0.5182134509086609
+          },
+          "flux_x": {
+            "connected": true,
+            "norm": 0.11442296206951141,
+            "rms": 0.0006321044638752937,
+            "relative_direction_sensitivity": 0.04596012458205223
+          },
+          "flux_y": {
+            "connected": true,
+            "norm": 0.23191502690315247,
+            "rms": 0.0012811629567295313,
+            "relative_direction_sensitivity": 0.18565921485424042
+          },
+          "flux_z": {
+            "connected": true,
+            "norm": 0.030296161770820618,
+            "rms": 0.00016736438556108624,
+            "relative_direction_sensitivity": 0.004911483731120825
+          },
+          "conduction": {
+            "connected": true,
+            "norm": 0.1457543969154358,
+            "rms": 0.0052594589069485664,
+            "relative_direction_sensitivity": 0.0557587705552578
+          },
+          "receptors": {
+            "connected": true,
+            "norm": 0.014535441994667053,
+            "rms": 5.677914305124432e-05,
+            "relative_direction_sensitivity": 0.010657083243131638
+          },
+          "transmission": {
+            "connected": true,
+            "norm": 0.3505645990371704,
+            "rms": 0.008944838307797909,
+            "relative_direction_sensitivity": 0.20591425895690918
+          },
+          "precision": {
+            "connected": true,
+            "norm": 0.12008403241634369,
+            "rms": 0.010614029131829739,
+            "relative_direction_sensitivity": 0.12827441096305847
+          }
+        }
+      },
+      {
+        "state_after_events": 32,
+        "lag": 0,
+        "components": {
+          "field": {
+            "connected": true,
+            "norm": 0.854539692401886,
+            "rms": 0.004720713011920452,
+            "relative_direction_sensitivity": 0.5754361152648926
+          },
+          "flux_x": {
+            "connected": false,
+            "norm": 0.0,
+            "rms": 0.0,
+            "relative_direction_sensitivity": 0.0
+          },
+          "flux_y": {
+            "connected": false,
+            "norm": 0.0,
+            "rms": 0.0,
+            "relative_direction_sensitivity": 0.0
+          },
+          "flux_z": {
+            "connected": false,
+            "norm": 0.0,
+            "rms": 0.0,
+            "relative_direction_sensitivity": 0.0
+          },
+          "conduction": {
+            "connected": false,
+            "norm": 0.0,
+            "rms": 0.0,
+            "relative_direction_sensitivity": 0.0
+          },
+          "receptors": {
+            "connected": false,
+            "norm": 0.0,
+            "rms": 0.0,
+            "relative_direction_sensitivity": 0.0
+          },
+          "transmission": {
+            "connected": false,
+            "norm": 0.0,
+            "rms": 0.0,
+            "relative_direction_sensitivity": 0.0
+          },
+          "precision": {
+            "connected": true,
+            "norm": 0.0821656733751297,
+            "rms": 0.0072624883614480495,
+            "relative_direction_sensitivity": 0.10233508050441742
+          }
+        }
+      }
+    ],
+    "terminal_loss_independent_state_credit": [
+      {
+        "lag": 0,
+        "state_after_events": 32,
+        "terminal_nll": 13.548385620117188,
+        "components": {
+          "field": {
+            "connected": true,
+            "norm": 0.8545394539833069,
+            "rms": 0.00472071161493659,
+            "relative_direction_sensitivity": 0.575435996055603
+          },
+          "flux_x": {
+            "connected": false,
+            "norm": 0.0,
+            "rms": 0.0,
+            "relative_direction_sensitivity": 0.0
+          },
+          "flux_y": {
+            "connected": false,
+            "norm": 0.0,
+            "rms": 0.0,
+            "relative_direction_sensitivity": 0.0
+          },
+          "flux_z": {
+            "connected": false,
+            "norm": 0.0,
+            "rms": 0.0,
+            "relative_direction_sensitivity": 0.0
+          },
+          "conduction": {
+            "connected": false,
+            "norm": 0.0,
+            "rms": 0.0,
+            "relative_direction_sensitivity": 0.0
+          },
+          "receptors": {
+            "connected": false,
+            "norm": 0.0,
+            "rms": 0.0,
+            "relative_direction_sensitivity": 0.0
+          },
+          "transmission": {
+            "connected": false,
+            "norm": 0.0,
+            "rms": 0.0,
+            "relative_direction_sensitivity": 0.0
+          },
+          "precision": {
+            "connected": false,
+            "norm": 0.0,
+            "rms": 0.0,
+            "relative_direction_sensitivity": 0.0
+          }
+        }
+      },
+      {
+        "lag": 1,
+        "state_after_events": 31,
+        "terminal_nll": 13.548385620117188,
+        "components": {
+          "field": {
+            "connected": true,
+            "norm": 0.8036150336265564,
+            "rms": 0.004439393058419228,
+            "relative_direction_sensitivity": 0.5182107090950012
+          },
+          "flux_x": {
+            "connected": true,
+            "norm": 0.11442266404628754,
+            "rms": 0.0006321028340607882,
+            "relative_direction_sensitivity": 0.04595929756760597
+          },
+          "flux_y": {
+            "connected": true,
+            "norm": 0.23191393911838531,
+            "rms": 0.00128115713596344,
+            "relative_direction_sensitivity": 0.1856531947851181
+          },
+          "flux_z": {
+            "connected": true,
+            "norm": 0.03029605560004711,
+            "rms": 0.00016736378893256187,
+            "relative_direction_sensitivity": 0.004911351948976517
+          },
+          "conduction": {
+            "connected": true,
+            "norm": 0.14575429260730743,
+            "rms": 0.005259455181658268,
+            "relative_direction_sensitivity": 0.0557587631046772
+          },
+          "receptors": {
+            "connected": true,
+            "norm": 0.014537906274199486,
+            "rms": 5.67887764191255e-05,
+            "relative_direction_sensitivity": 0.010658659040927887
+          },
+          "transmission": {
+            "connected": true,
+            "norm": 0.35056430101394653,
+            "rms": 0.008944829925894737,
+            "relative_direction_sensitivity": 0.20591412484645844
+          },
+          "precision": {
+            "connected": true,
+            "norm": 0.04337524250149727,
+            "rms": 0.0038338659796863794,
+            "relative_direction_sensitivity": 0.04865564778447151
+          }
+        }
+      },
+      {
+        "lag": 2,
+        "state_after_events": 30,
+        "terminal_nll": 13.548385620117188,
+        "components": {
+          "field": {
+            "connected": true,
+            "norm": 0.7036973237991333,
+            "rms": 0.0038874205201864243,
+            "relative_direction_sensitivity": 0.40220001339912415
+          },
+          "flux_x": {
+            "connected": true,
+            "norm": 0.2122793048620224,
+            "rms": 0.001172690186649561,
+            "relative_direction_sensitivity": 0.07896879315376282
+          },
+          "flux_y": {
+            "connected": true,
+            "norm": 0.39533868432044983,
+            "rms": 0.0021839605178683996,
+            "relative_direction_sensitivity": 0.29940712451934814
+          },
+          "flux_z": {
+            "connected": true,
+            "norm": 0.058511000126600266,
+            "rms": 0.00032323107006959617,
+            "relative_direction_sensitivity": 0.009514284320175648
+          },
+          "conduction": {
+            "connected": true,
+            "norm": 0.3282666802406311,
+            "rms": 0.011845303699374199,
+            "relative_direction_sensitivity": 0.12557865679264069
+          },
+          "receptors": {
+            "connected": true,
+            "norm": 0.0260133296251297,
+            "rms": 0.0001016147289192304,
+            "relative_direction_sensitivity": 0.019078757613897324
+          },
+          "transmission": {
+            "connected": true,
+            "norm": 0.7891364097595215,
+            "rms": 0.020135225728154182,
+            "relative_direction_sensitivity": 0.4633170962333679
+          },
+          "precision": {
+            "connected": true,
+            "norm": 0.05906681343913078,
+            "rms": 0.005220817867666483,
+            "relative_direction_sensitivity": 0.060905229300260544
+          }
+        }
+      },
+      {
+        "lag": 4,
+        "state_after_events": 28,
+        "terminal_nll": 13.548385620117188,
+        "components": {
+          "field": {
+            "connected": true,
+            "norm": 0.5624327659606934,
+            "rms": 0.0031070352997630835,
+            "relative_direction_sensitivity": 0.33810505270957947
+          },
+          "flux_x": {
+            "connected": true,
+            "norm": 0.3644026517868042,
+            "rms": 0.002013062359765172,
+            "relative_direction_sensitivity": 0.13907572627067566
+          },
+          "flux_y": {
+            "connected": true,
+            "norm": 0.46015608310699463,
+            "rms": 0.002542029833421111,
+            "relative_direction_sensitivity": 0.27786675095558167
+          },
+          "flux_z": {
+            "connected": true,
+            "norm": 0.10112479329109192,
+            "rms": 0.000558641564566642,
+            "relative_direction_sensitivity": 0.01604784093797207
+          },
+          "conduction": {
+            "connected": true,
+            "norm": 0.6365323066711426,
+            "rms": 0.022968880832195282,
+            "relative_direction_sensitivity": 0.24695082008838654
+          },
+          "receptors": {
+            "connected": true,
+            "norm": 0.03983714058995247,
+            "rms": 0.00015561425243504345,
+            "relative_direction_sensitivity": 0.028655370697379112
+          },
+          "transmission": {
+            "connected": true,
+            "norm": 1.5364503860473633,
+            "rms": 0.039203327149152756,
+            "relative_direction_sensitivity": 0.8965392708778381
+          },
+          "precision": {
+            "connected": true,
+            "norm": 0.026284338906407356,
+            "rms": 0.0023232290986925364,
+            "relative_direction_sensitivity": 0.024114953354001045
+          }
+        }
+      },
+      {
+        "lag": 8,
+        "state_after_events": 24,
+        "terminal_nll": 13.548385620117188,
+        "components": {
+          "field": {
+            "connected": true,
+            "norm": 0.516124963760376,
+            "rms": 0.002851216122508049,
+            "relative_direction_sensitivity": 0.33200982213020325
+          },
+          "flux_x": {
+            "connected": true,
+            "norm": 0.4255390465259552,
+            "rms": 0.0023507955484092236,
+            "relative_direction_sensitivity": 0.18857890367507935
+          },
+          "flux_y": {
+            "connected": true,
+            "norm": 0.3789900243282318,
+            "rms": 0.0020936443470418453,
+            "relative_direction_sensitivity": 0.15888237953186035
+          },
+          "flux_z": {
+            "connected": true,
+            "norm": 0.14073927700519562,
+            "rms": 0.0007774826372042298,
+            "relative_direction_sensitivity": 0.022318802773952484
+          },
+          "conduction": {
+            "connected": true,
+            "norm": 1.1389491558074951,
+            "rms": 0.04109828919172287,
+            "relative_direction_sensitivity": 0.4532012343406677
+          },
+          "receptors": {
+            "connected": true,
+            "norm": 0.05848759785294533,
+            "rms": 0.00022846771753393114,
+            "relative_direction_sensitivity": 0.04383952170610428
+          },
+          "transmission": {
+            "connected": true,
+            "norm": 2.836137533187866,
+            "rms": 0.07236552238464355,
+            "relative_direction_sensitivity": 1.597174882888794
+          },
+          "precision": {
+            "connected": true,
+            "norm": 0.009049253538250923,
+            "rms": 0.0007998485816642642,
+            "relative_direction_sensitivity": 0.008485107682645321
+          }
+        }
+      },
+      {
+        "lag": 16,
+        "state_after_events": 16,
+        "terminal_nll": 13.548385620117188,
+        "components": {
+          "field": {
+            "connected": true,
+            "norm": 0.4765069782733917,
+            "rms": 0.0026323541533201933,
+            "relative_direction_sensitivity": 0.25025999546051025
+          },
+          "flux_x": {
+            "connected": true,
+            "norm": 0.35209089517593384,
+            "rms": 0.001945045660249889,
+            "relative_direction_sensitivity": 0.1557452529668808
+          },
+          "flux_y": {
+            "connected": true,
+            "norm": 0.3824841380119324,
+            "rms": 0.0021129471715539694,
+            "relative_direction_sensitivity": 0.20798717439174652
+          },
+          "flux_z": {
+            "connected": true,
+            "norm": 0.16154903173446655,
+            "rms": 0.0008924411959014833,
+            "relative_direction_sensitivity": 0.026560872793197632
+          },
+          "conduction": {
+            "connected": true,
+            "norm": 1.8882582187652588,
+            "rms": 0.06813665479421616,
+            "relative_direction_sensitivity": 0.7425441741943359
+          },
+          "receptors": {
+            "connected": true,
+            "norm": 0.06451904773712158,
+            "rms": 0.00025202787946909666,
+            "relative_direction_sensitivity": 0.04645846411585808
+          },
+          "transmission": {
+            "connected": true,
+            "norm": 4.6733479499816895,
+            "rms": 0.11924289166927338,
+            "relative_direction_sensitivity": 2.622959613800049
+          },
+          "precision": {
+            "connected": true,
+            "norm": 0.010266657918691635,
+            "rms": 0.0009074529516510665,
+            "relative_direction_sensitivity": 0.01124524511396885
+          }
+        }
+      },
+      {
+        "lag": 24,
+        "state_after_events": 8,
+        "terminal_nll": 13.548385620117188,
+        "components": {
+          "field": {
+            "connected": true,
+            "norm": 0.42862188816070557,
+            "rms": 0.0023678240831941366,
+            "relative_direction_sensitivity": 0.25158050656318665
+          },
+          "flux_x": {
+            "connected": true,
+            "norm": 0.32994794845581055,
+            "rms": 0.0018227226100862026,
+            "relative_direction_sensitivity": 0.11640660464763641
+          },
+          "flux_y": {
+            "connected": true,
+            "norm": 0.3664260804653168,
+            "rms": 0.002024237532168627,
+            "relative_direction_sensitivity": 0.1896301656961441
+          },
+          "flux_z": {
+            "connected": true,
+            "norm": 0.15725575387477875,
+            "rms": 0.0008687235531397164,
+            "relative_direction_sensitivity": 0.02487255446612835
+          },
+          "conduction": {
+            "connected": true,
+            "norm": 2.275256872177124,
+            "rms": 0.0821012556552887,
+            "relative_direction_sensitivity": 0.8611079454421997
+          },
+          "receptors": {
+            "connected": true,
+            "norm": 0.06683508306741714,
+            "rms": 0.00026107471785508096,
+            "relative_direction_sensitivity": 0.04703599214553833
+          },
+          "transmission": {
+            "connected": true,
+            "norm": 5.3745269775390625,
+            "rms": 0.13713385164737701,
+            "relative_direction_sensitivity": 3.129211902618408
+          },
+          "precision": {
+            "connected": true,
+            "norm": 0.028233090415596962,
+            "rms": 0.002495476044714451,
+            "relative_direction_sensitivity": 0.028388813138008118
+          }
+        }
+      },
+      {
+        "lag": 31,
+        "state_after_events": 1,
+        "terminal_nll": 13.548385620117188,
+        "components": {
+          "field": {
+            "connected": true,
+            "norm": 0.4811839163303375,
+            "rms": 0.002658191602677107,
+            "relative_direction_sensitivity": 0.2834441363811493
+          },
+          "flux_x": {
+            "connected": true,
+            "norm": 0.29100993275642395,
+            "rms": 0.0016076179454103112,
+            "relative_direction_sensitivity": 0.11973542720079422
+          },
+          "flux_y": {
+            "connected": true,
+            "norm": 0.24498076736927032,
+            "rms": 0.0013533406890928745,
+            "relative_direction_sensitivity": 0.11179478466510773
+          },
+          "flux_z": {
+            "connected": true,
+            "norm": 0.1411256343126297,
+            "rms": 0.0007796165300533175,
+            "relative_direction_sensitivity": 0.021850809454917908
+          },
+          "conduction": {
+            "connected": true,
+            "norm": 2.804715394973755,
+            "rms": 0.1012064516544342,
+            "relative_direction_sensitivity": 1.0878260135650635
+          },
+          "receptors": {
+            "connected": true,
+            "norm": 0.06759681552648544,
+            "rms": 0.00026405014796182513,
+            "relative_direction_sensitivity": 0.047166310250759125
+          },
+          "transmission": {
+            "connected": true,
+            "norm": 6.694792747497559,
+            "rms": 0.17082110047340393,
+            "relative_direction_sensitivity": 3.834909677505493
+          },
+          "precision": {
+            "connected": true,
+            "norm": 0.011099777184426785,
+            "rms": 0.000981090939603746,
+            "relative_direction_sensitivity": 0.012153838761150837
+          }
+        }
+      },
+      {
+        "lag": 32,
+        "state_after_events": 0,
+        "terminal_nll": 13.548385620117188,
+        "components": {
+          "field": {
+            "connected": true,
+            "norm": 0.4712413549423218,
+            "rms": 0.0026032659225165844,
+            "relative_direction_sensitivity": 0.27083608508110046
+          },
+          "flux_x": {
+            "connected": true,
+            "norm": 0.29677659273147583,
+            "rms": 0.0016394744161516428,
+            "relative_direction_sensitivity": 0.13988052308559418
+          },
+          "flux_y": {
+            "connected": true,
+            "norm": 0.2442990243434906,
+            "rms": 0.001349574769847095,
+            "relative_direction_sensitivity": 0.1018129363656044
+          },
+          "flux_z": {
+            "connected": true,
+            "norm": 0.1396293342113495,
+            "rms": 0.000771350518334657,
+            "relative_direction_sensitivity": 0.021456176415085793
+          },
+          "conduction": {
+            "connected": true,
+            "norm": 2.87270188331604,
+            "rms": 0.10365970432758331,
+            "relative_direction_sensitivity": 1.1208933591842651
+          },
+          "receptors": {
+            "connected": true,
+            "norm": 0.06806459277868271,
+            "rms": 0.00026587737374939024,
+            "relative_direction_sensitivity": 0.047551631927490234
+          },
+          "transmission": {
+            "connected": true,
+            "norm": 6.860780715942383,
+            "rms": 0.17505638301372528,
+            "relative_direction_sensitivity": 3.9242196083068848
+          },
+          "precision": {
+            "connected": true,
+            "norm": 0.010318266227841377,
+            "rms": 0.0009120145114138722,
+            "relative_direction_sensitivity": 0.009637204930186272
+          }
+        }
+      }
+    ],
+    "graph_node_warning": "Graph-node sensitivities include dependencies between components created inside the same step; independent suffix replay is the Markov component partial.",
+    "parameter_groups": {
+      "medium": {
+        "parameters": 156854,
+        "connected_parameters": 156854,
+        "task_norm": 3.3228383422606567,
+        "auxiliary_norm": 0.7737716167773399,
+        "cosine": 0.10895750458517448,
+        "auxiliary_along_task_ratio": 0.02537235212759002,
+        "total_norm": 3.4928873966229044
+      },
+      "source": {
+        "parameters": 6582406,
+        "connected_parameters": 6433024,
+        "task_norm": 0.0767811443696442,
+        "auxiliary_norm": 0.24244988462560446,
+        "cosine": 0.0924918817744811,
+        "auxiliary_along_task_ratio": 0.29205928420485594,
+        "total_norm": 0.2609997522213292
+      },
+      "write_agent": {
+        "parameters": 577394,
+        "connected_parameters": 577394,
+        "task_norm": 0.9133868139762659,
+        "auxiliary_norm": 1.8727775081109388,
+        "cosine": -0.03585894680459426,
+        "auxiliary_along_task_ratio": -0.07352397474169775,
+        "total_norm": 2.053994296335319
+      },
+      "readout": {
+        "parameters": 267576,
+        "connected_parameters": 267576,
+        "task_norm": 1.8037051113209475,
+        "auxiliary_norm": 0.0,
+        "cosine": null,
+        "auxiliary_along_task_ratio": 0.0,
+        "total_norm": 1.8037051113209475
+      },
+      "decoder": {
+        "parameters": 6483153,
+        "connected_parameters": 6483153,
+        "task_norm": 2.0201049053020497,
+        "auxiliary_norm": 0.0,
+        "cosine": null,
+        "auxiliary_along_task_ratio": 0.0,
+        "total_norm": 2.0201049053020497
+      },
+      "read_norm": {
+        "parameters": 128,
+        "connected_parameters": 128,
+        "task_norm": 0.061840667717250476,
+        "auxiliary_norm": 0.0,
+        "cosine": null,
+        "auxiliary_along_task_ratio": 0.0,
+        "total_norm": 0.061840667717250476
+      }
+    },
+    "disconnected_parameters": [
+      "source.address.weight",
+      "source.address.bias",
+      "source.width.weight",
+      "source.width.bias",
+      "source.content.0.weight",
+      "source.content.0.bias",
+      "source.content.2.weight",
+      "source.content.2.bias",
+      "source.state_content.weight",
+      "source.neighbor_content.weight",
+      "source.angle.0.weight",
+      "source.angle.0.bias",
+      "source.angle.2.weight",
+      "source.angle.2.bias"
+    ],
+    "task_elasticity_per_event": [
+      -0.004021028056740761,
+      0.0032734854612499475,
+      -0.0025439909659326077,
+      -6.298220250755548e-05,
+      -0.00735348928719759,
+      -0.01004045456647873,
+      -0.008540176786482334,
+      -0.004850392695516348,
+      -0.007677700836211443,
+      -0.008100253529846668,
+      -0.008630000054836273,
+      -0.009458850137889385,
+      -0.017197275534272194,
+      -0.01721809059381485,
+      -0.0256703682243824,
+      -0.03653523698449135,
+      -0.013089287094771862,
+      -0.010703016072511673,
+      -0.016938025131821632,
+      -0.016289804130792618,
+      -0.007947713136672974,
+      -0.020136700943112373,
+      0.004940505139529705,
+      0.0013128509745001793,
+      -0.007673168089240789,
+      -0.0023975663352757692,
+      -0.011162259615957737,
+      -0.010790467262268066,
+      -0.013400985859334469,
+      -0.009641168639063835,
+      -0.0038512160535901785,
+      -0.0038578736130148172
+    ],
+    "auxiliary_elasticity_per_event": [
+      -0.014545389451086521,
+      -0.01096602063626051,
+      -0.013224482536315918,
+      -0.024999728426337242,
+      -0.011705296114087105,
+      -0.0005201171734370291,
+      -0.004438532050698996,
+      -0.012464497238397598,
+      -0.00016209499153774232,
+      0.005662711802870035,
+      0.0035486214328557253,
+      0.0005828773719258606,
+      0.0019099353812634945,
+      0.0009312089532613754,
+      0.0028638658113777637,
+      -0.010411511175334454,
+      0.010909031145274639,
+      0.009922148659825325,
+      0.005704759620130062,
+      0.00014791043940931559,
+      0.010840358212590218,
+      0.005632075946778059,
+      0.0182504802942276,
+      0.010304099880158901,
+      0.0021098670549690723,
+      0.0018303963588550687,
+      0.0033944074530154467,
+      0.0054293107241392136,
+      0.0019952936563640833,
+      0.0012354435166344047,
+      0.0022132934536784887,
+      0.0
+    ],
+    "uniform_duration_elasticity": {
+      "analytic_task": -0.30625268816947937,
+      "central_difference_task": -0.3053903579711914,
+      "analytic_auxiliary": 0.001980428583920002,
+      "central_difference_auxiliary": 0.0019311904907226562,
+      "no_update_finite_difference": [
+        {
+          "duration_multiplier": 0.99,
+          "task_nll": 6.758923530578613,
+          "auxiliary_loss": 7.1944580078125
+        },
+        {
+          "duration_multiplier": 1.01,
+          "task_nll": 6.7528157234191895,
+          "auxiliary_loss": 7.1944966316223145
+        }
+      ]
+    },
+    "exact_detach_contract": {
+      "all_previous_state_gradients_absent": true,
+      "forward_field_difference": 0.0,
+      "note": "This confirms truncation only; the extra read uses a diagnostic label, not a valid stream forecast."
+    }
+  },
+  "elapsed_seconds": 21.56802430000971,
+  "script_sha256": "dcfeb64c398b9d0f13631c851c3723cc6a2dc1c933cbe3ba784b419ecc1e23f3",
+  "preregistration": "docs/information_boltzmann/MEDIUM_TIME_READ_CREDIT_PREREG_20261007.md"
+}

@@ -1,0 +1,249 @@
+{
+  "date": "2026-10-04",
+  "scope": "BPTT gradient structure, not capability evidence",
+  "snapshots": [
+    {
+      "checkpoint_bptt_tokens": 80000,
+      "checkpoint_updates": 2692,
+      "completed_windows": 6,
+      "measured_real_tokens": 192,
+      "largest_replay_state_error": 7.450580596923828e-09,
+      "edges": {
+        "e": {
+          "norm": 0.06978665665292526,
+          "exact_zero_fraction": 0.9305617852710346,
+          "fraction_with_any_arriving_pulse": 0.07104260854756127,
+          "fraction_for_90pct_power": 0.0010261767042069089,
+          "fraction_for_99pct_power": 0.004134154102867167,
+          "power_share_top_1pct": 0.999322772026062,
+          "inactive_edge_max_abs_gradient": 0.0
+        },
+        "i": {
+          "norm": 0.00500296680485858,
+          "exact_zero_fraction": 0.980690947219882,
+          "fraction_with_any_arriving_pulse": 0.019581340315755605,
+          "fraction_for_90pct_power": 0.00012512576337937704,
+          "fraction_for_99pct_power": 0.0004956061626555349,
+          "power_share_top_1pct": 1.0000000596046448,
+          "inactive_edge_max_abs_gradient": 0.0
+        }
+      },
+      "h_credit_norm_ratio_to_lag1": {
+        "2": {
+          "median": 0.9795994908068866,
+          "min": 0.9770318717468962,
+          "max": 0.9803756177587745
+        },
+        "4": {
+          "median": 0.94351523833121,
+          "min": 0.9367568017949801,
+          "max": 0.9469194695041822
+        },
+        "8": {
+          "median": 0.8913007353619953,
+          "min": 0.87414341102695,
+          "max": 0.9131314465670051
+        },
+        "16": {
+          "median": 0.9485530863026845,
+          "min": 0.8614131992299522,
+          "max": 1.0711085552378574
+        },
+        "24": {
+          "median": 1.2444560142116292,
+          "min": 1.0451282458070124,
+          "max": 1.594281929264246
+        },
+        "32": {
+          "median": 1.8207751617104655,
+          "min": 1.42154575996024,
+          "max": 2.543698873916704
+        }
+      },
+      "spatial_support_lag16": {
+        "h": {
+          "fraction_for_90pct_power": 0.007845714078075605,
+          "fraction_for_99pct_power": 0.026771114690955777,
+          "credit_power_on_currently_spiking_neurons": 2.9517483252412137e-06,
+          "spiking_fraction": 0.008418018192609102
+        },
+        "ge": {
+          "fraction_for_90pct_power": 0.005177989607684015,
+          "fraction_for_99pct_power": 0.015555165271738471,
+          "credit_power_on_currently_spiking_neurons": 4.439752979463127e-06,
+          "spiking_fraction": 0.008418018192609102
+        },
+        "gi": {
+          "fraction_for_90pct_power": 0.005765434042707816,
+          "fraction_for_99pct_power": 0.016472668693450904,
+          "credit_power_on_currently_spiking_neurons": 7.0777335708229175e-06,
+          "spiking_fraction": 0.008418018192609102
+        },
+        "b": {
+          "fraction_for_90pct_power": 0.008369569167040129,
+          "fraction_for_99pct_power": 0.03885611850631654,
+          "credit_power_on_currently_spiking_neurons": 3.941721360671109e-05,
+          "spiking_fraction": 0.008418018192609102
+        },
+        "x": {
+          "fraction_for_90pct_power": 0.000702510870750112,
+          "fraction_for_99pct_power": 0.0032067198798464164,
+          "credit_power_on_currently_spiking_neurons": 0.02154671342395101,
+          "spiking_fraction": 0.008418018192609102
+        },
+        "u": {
+          "fraction_for_90pct_power": 0.00037547994815954265,
+          "fraction_for_99pct_power": 0.002319497099114594,
+          "credit_power_on_currently_spiking_neurons": 0.0015047132408140301,
+          "spiking_fraction": 0.008418018192609102
+        },
+        "ring0": {
+          "fraction_for_90pct_power": 0.008151548551979748,
+          "fraction_for_99pct_power": 0.0389984375189254,
+          "credit_power_on_currently_spiking_neurons": 0.00031227890805645694,
+          "spiking_fraction": 0.008418018192609102
+        }
+      },
+      "physical_parameter_grad_norms": {
+        "log_threshold": 0.7370999048595519,
+        "log_tau_m": 0.01631539878067121,
+        "log_beta": 0.00019443308352848232,
+        "log_tau_a": 9.470447951513706e-06,
+        "log_tau_s_e": 0.0005861189999212515,
+        "log_tau_s_i": 6.282767571268065e-05,
+        "log_g_e": 0.03037932045640571,
+        "log_g_i": 0.0015970180974949515,
+        "topographic_writer.gate_linear.weight": 0.010754396830183024,
+        "topographic_writer.gate_linear.bias": 0.004661567243737376
+      }
+    },
+    {
+      "checkpoint_bptt_tokens": 95008,
+      "checkpoint_updates": 3197,
+      "completed_windows": 2,
+      "measured_real_tokens": 64,
+      "largest_replay_state_error": 1.862645149230957e-09,
+      "edges": {
+        "e": {
+          "norm": 0.06830631821660148,
+          "exact_zero_fraction": 0.9439750562800784,
+          "fraction_with_any_arriving_pulse": 0.05672349520341083,
+          "fraction_for_90pct_power": 0.0008252972420006963,
+          "fraction_for_99pct_power": 0.003820221547977458,
+          "power_share_top_1pct": 0.9995509386062622,
+          "inactive_edge_max_abs_gradient": 0.0
+        },
+        "i": {
+          "norm": 0.005149960957604856,
+          "exact_zero_fraction": 0.9830576757846095,
+          "fraction_with_any_arriving_pulse": 0.017011645826655368,
+          "fraction_for_90pct_power": 9.283688925824141e-05,
+          "fraction_for_99pct_power": 0.00038904777712780623,
+          "power_share_top_1pct": 1.0000000596046448,
+          "inactive_edge_max_abs_gradient": 0.0
+        }
+      },
+      "h_credit_norm_ratio_to_lag1": {
+        "2": {
+          "median": 0.978641623972693,
+          "min": 0.9781152058192245,
+          "max": 0.9791680421261616
+        },
+        "4": {
+          "median": 0.9418077059626915,
+          "min": 0.940294311402784,
+          "max": 0.9433211005225989
+        },
+        "8": {
+          "median": 0.9006794691825911,
+          "min": 0.8965790865029614,
+          "max": 0.9047798518622209
+        },
+        "16": {
+          "median": 1.0360795203529922,
+          "min": 0.9432512415245848,
+          "max": 1.1289077991813994
+        },
+        "24": {
+          "median": 1.5335881980114159,
+          "min": 1.2296916795544828,
+          "max": 1.837484716468349
+        },
+        "32": {
+          "median": 2.480525602723644,
+          "min": 1.8045260609644798,
+          "max": 3.156525144482808
+        }
+      },
+      "spatial_support_lag16": {
+        "h": {
+          "fraction_for_90pct_power": 0.007085669989462338,
+          "fraction_for_99pct_power": 0.024590908540351984,
+          "credit_power_on_currently_spiking_neurons": 6.762788876145228e-06,
+          "spiking_fraction": 0.014904131490655396
+        },
+        "ge": {
+          "fraction_for_90pct_power": 0.005611002773706714,
+          "fraction_for_99pct_power": 0.015107011785225468,
+          "credit_power_on_currently_spiking_neurons": 2.0140496460598536e-05,
+          "spiking_fraction": 0.014904131490655396
+        },
+        "gi": {
+          "fraction_for_90pct_power": 0.0061106333498867505,
+          "fraction_for_99pct_power": 0.015903392643015466,
+          "credit_power_on_currently_spiking_neurons": 3.87950091864612e-05,
+          "spiking_fraction": 0.014904131490655396
+        },
+        "b": {
+          "fraction_for_90pct_power": 0.00552621697896101,
+          "fraction_for_99pct_power": 0.03265464323348796,
+          "credit_power_on_currently_spiking_neurons": 2.0432707512643595e-05,
+          "spiking_fraction": 0.014904131490655396
+        },
+        "x": {
+          "fraction_for_90pct_power": 0.0002785818970215962,
+          "fraction_for_99pct_power": 0.0022407674325650123,
+          "credit_power_on_currently_spiking_neurons": 0.10150064134946535,
+          "spiking_fraction": 0.014904131490655396
+        },
+        "u": {
+          "fraction_for_90pct_power": 3.633676917672993e-05,
+          "fraction_for_99pct_power": 0.0005026586402780974,
+          "credit_power_on_currently_spiking_neurons": 0.002325760755786637,
+          "spiking_fraction": 0.014904131490655396
+        },
+        "ring0": {
+          "fraction_for_90pct_power": 0.004638994198229188,
+          "fraction_for_99pct_power": 0.030671261249258123,
+          "credit_power_on_currently_spiking_neurons": 0.0005498708445461468,
+          "spiking_fraction": 0.014904131490655396
+        }
+      },
+      "physical_parameter_grad_norms": {
+        "log_threshold": 0.9039263514802187,
+        "log_tau_m": 0.020460250590258276,
+        "log_beta": 0.00016216335810951107,
+        "log_tau_a": 1.1726493518853528e-05,
+        "log_tau_s_e": 0.00307928971734513,
+        "log_tau_s_i": 0.00017208742650505937,
+        "log_g_e": 0.034846076652956685,
+        "log_g_i": 0.002375823992932788,
+        "topographic_writer.gate_linear.weight": 0.0026179264478512782,
+        "topographic_writer.gate_linear.bias": 0.0007772862428714844
+      }
+    }
+  ],
+  "sensory_input_credit": {
+    "0": 0.0,
+    "1": 4.4069754065140585e-05,
+    "2": 0.0001180218181180524,
+    "4": 0.00035511544658078497,
+    "8": 0.0011031167463604796,
+    "16": 0.003507683683438635,
+    "24": 0.008313527420733827,
+    "31": 0.01635971078613198
+  },
+  "tests": "5 passed: tests/test_fly_bptt_credit.py and tests/test_fly_bptt_learning.py",
+  "live_training_modified": false,
+  "documentation": "docs/information_boltzmann/FLY_BPTT32_CREDIT_STRUCTURE.md"
+}

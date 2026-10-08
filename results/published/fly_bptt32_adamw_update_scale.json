@@ -1,0 +1,185 @@
+{
+  "scope": "short actual-update/resource calibration, not capability/convergence evidence",
+  "checkpoint": "results\\q8_fly_bptt32_continuous_100k\\last.pt",
+  "lr": 0.0002,
+  "window": 32,
+  "optimizer": "AdamW for every currently trainable parameter",
+  "existing_adam_moments": "retained",
+  "new_plasticity_moments": "zero if source used SGD",
+  "fixed_parameters": [
+    "embedding.weight",
+    "logit_u0",
+    "log_tau_fac",
+    "log_tau_rec"
+  ],
+  "starting_train_cursor": 200000,
+  "starting_events": 221272,
+  "ending_events": 221528,
+  "actual_updates": 8,
+  "actual_targets": 256,
+  "status": "completed",
+  "raw_report": "results/fly_bptt32_adamw_update_scale/report.json",
+  "median_training_seconds_per_32_events": 0.6816638000018429,
+  "peak_allocated_mib": 2222.2236328125,
+  "reserved_mib": 3000.0,
+  "measurement_notes": [
+    "Training timing excludes capture, parameter copies and displacement statistics.",
+    "Memory includes two full trainable-parameter copies used only for measurement.",
+    "Old SGD counterfactual uses the same clipped gradients and exact add_/edge clamp arithmetic, not a separate training trajectory.",
+    "New projection/edge AdamW moments start at zero; early update scales include this transient.",
+    "Calibration writes reports only and leaves production checkpoints unchanged."
+  ],
+  "parameters": {
+    "edge_weight_e": {
+      "first_update": {
+        "elements": 15519257,
+        "weight_l2": 16.768924225098715,
+        "update_l2": 0.16846641490958153,
+        "relative_l2_update": 0.010046346005752186,
+        "clipped_gradient_l2": 0.05773291632382513,
+        "fraction_changed": 0.07343753634597326,
+        "fraction_nonzero_gradient": 0.07344945701975295,
+        "old_sgd_lr": 1e-05,
+        "old_sgd_update_l2": 5.776891141481588e-07,
+        "old_sgd_fraction_changed": 0.014140303237455246,
+        "old_sgd_nonzero_gradient_but_no_represented_update_fraction": 0.8074825354576487,
+        "adamw_to_old_sgd_update_l2_ratio": 291621.2384545216
+      },
+      "median_relative_l2_update": 0.006321068154931396,
+      "cumulative": {
+        "elements": 15519257,
+        "weight_l2": 16.768924225098715,
+        "update_l2": 0.7261180213066716,
+        "relative_l2_update": 0.04330140750590679,
+        "clipped_gradient_l2": 0.05185816556265443,
+        "fraction_changed": 0.09246061199965952,
+        "fraction_nonzero_gradient": 0.06842518298395342
+      }
+    },
+    "edge_weight_i": {
+      "first_update": {
+        "elements": 9802138,
+        "weight_l2": 17.340396046737258,
+        "update_l2": 0.04705639400175682,
+        "relative_l2_update": 0.002713686231555875,
+        "clipped_gradient_l2": 0.003933279178316851,
+        "fraction_changed": 0.020067050678127567,
+        "fraction_nonzero_gradient": 0.020183861928897553,
+        "old_sgd_lr": 1e-05,
+        "old_sgd_update_l2": 3.9635272721428196e-08,
+        "old_sgd_fraction_changed": 0.0009532614211307778,
+        "old_sgd_nonzero_gradient_but_no_represented_update_fraction": 0.9527711086962015,
+        "adamw_to_old_sgd_update_l2_ratio": 1187235.2773371106
+      },
+      "median_relative_l2_update": 0.001662642577767989,
+      "cumulative": {
+        "elements": 9802138,
+        "weight_l2": 17.340396046737258,
+        "update_l2": 0.18552835810770937,
+        "relative_l2_update": 0.01069919958042816,
+        "clipped_gradient_l2": 0.00397192083863639,
+        "fraction_changed": 0.024595144447058386,
+        "fraction_nonzero_gradient": 0.01803412684049133
+      }
+    },
+    "topographic_writer.proj_vis.weight": {
+      "first_update": {
+        "elements": 3154176,
+        "weight_l2": 443.4067150493398,
+        "update_l2": 0.0022493411181911207,
+        "relative_l2_update": 5.072862096688875e-06,
+        "clipped_gradient_l2": 1.2850903232020798e-07,
+        "fraction_changed": 0.8224369851270189,
+        "fraction_nonzero_gradient": 0.9824689554419284,
+        "old_sgd_lr": 0.0001,
+        "old_sgd_update_l2": 1.464821375527116e-14,
+        "old_sgd_fraction_changed": 6.340800259719179e-07,
+        "old_sgd_nonzero_gradient_but_no_represented_update_fraction": 0.9999993546055349,
+        "adamw_to_old_sgd_update_l2_ratio": 153557365817.5008
+      },
+      "median_relative_l2_update": 2.852648300018294e-06,
+      "cumulative": {
+        "elements": 3154176,
+        "weight_l2": 443.4067150493398,
+        "update_l2": 0.0072105445344915016,
+        "relative_l2_update": 1.6261694488973066e-05,
+        "clipped_gradient_l2": 2.002318309825899e-07,
+        "fraction_changed": 0.9170689904431458,
+        "fraction_nonzero_gradient": 0.9824689554419284
+      }
+    },
+    "topographic_writer.proj_chemo.weight": {
+      "first_update": {
+        "elements": 3830016,
+        "weight_l2": 489.0135509418603,
+        "update_l2": 0.19003694999585777,
+        "relative_l2_update": 0.00038861285056383154,
+        "clipped_gradient_l2": 0.0010925156897338977,
+        "fraction_changed": 0.9777309024296504,
+        "fraction_nonzero_gradient": 0.9789452576699419,
+        "old_sgd_lr": 0.0001,
+        "old_sgd_update_l2": 4.7862835503628625e-08,
+        "old_sgd_fraction_changed": 0.0007759758705968852,
+        "old_sgd_nonzero_gradient_but_no_represented_update_fraction": 0.9992073347671719,
+        "adamw_to_old_sgd_update_l2_ratio": 3970449.0550178643
+      },
+      "median_relative_l2_update": 0.0002232276107742651,
+      "cumulative": {
+        "elements": 3830016,
+        "weight_l2": 489.0135509418603,
+        "update_l2": 0.7630672444920104,
+        "relative_l2_update": 0.0015604214709844162,
+        "clipped_gradient_l2": 0.0008818493238052413,
+        "fraction_changed": 0.9787418642637524,
+        "fraction_nonzero_gradient": 0.9783436936033688
+      }
+    },
+    "topographic_writer.proj_mech.weight": {
+      "first_update": {
+        "elements": 5236224,
+        "weight_l2": 571.7446898133203,
+        "update_l2": 0.3396545798245944,
+        "relative_l2_update": 0.0005940668726376709,
+        "clipped_gradient_l2": 0.006194292588425482,
+        "fraction_changed": 0.9879800787743229,
+        "fraction_nonzero_gradient": 0.9888530360809622,
+        "old_sgd_lr": 0.0001,
+        "old_sgd_update_l2": 5.77099741590569e-07,
+        "old_sgd_fraction_changed": 0.002676547069032952,
+        "old_sgd_nonzero_gradient_but_no_represented_update_fraction": 0.9972932812345496,
+        "adamw_to_old_sgd_update_l2_ratio": 588554.3786390513
+      },
+      "median_relative_l2_update": 0.0003615338764481736,
+      "cumulative": {
+        "elements": 5236224,
+        "weight_l2": 571.7446898133203,
+        "update_l2": 1.4757367550536649,
+        "relative_l2_update": 0.0025811114319846257,
+        "clipped_gradient_l2": 0.003099462068588924,
+        "fraction_changed": 0.9883954544343405,
+        "fraction_nonzero_gradient": 0.9881196831915517
+      }
+    },
+    "output_read.weight": {
+      "first_update": {
+        "elements": 1791744,
+        "weight_l2": 129.73138810769672,
+        "update_l2": 0.0710846682792953,
+        "relative_l2_update": 0.0005479373135226476,
+        "clipped_gradient_l2": 0.034327761154638106,
+        "fraction_changed": 0.9258141788112587,
+        "fraction_nonzero_gradient": 0.9271324474924989
+      },
+      "median_relative_l2_update": 0.0005418781332865388,
+      "cumulative": {
+        "elements": 1791744,
+        "weight_l2": 129.73138810769672,
+        "update_l2": 0.5152960849331217,
+        "relative_l2_update": 0.003972023212342011,
+        "clipped_gradient_l2": 0.03710840224912866,
+        "fraction_changed": 0.931969634054865,
+        "fraction_nonzero_gradient": 0.9327437401771682
+      }
+    }
+  }
+}

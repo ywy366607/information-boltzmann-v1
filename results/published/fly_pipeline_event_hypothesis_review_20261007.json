@@ -1,0 +1,224 @@
+{
+  "date": "2026-10-07",
+  "reviewer": "/root/harness_hypotheses",
+  "stage": "EXPLORE_result_informed",
+  "status": "competing_explanations_attribution_unresolved",
+  "scope": {
+    "offline_only": true,
+    "new_experiments": false,
+    "gpu_runs": 0,
+    "training": false,
+    "production_modified": false,
+    "tree_modified": false,
+    "prior_candidate": "C_reset remains locally_unsupported and unselected; no replacement fix is selected.",
+    "prediction_status": "Prospective discriminators for measurements not yet performed; known diagnostic outcomes are observations, not fresh blind predictions."
+  },
+  "sources": [
+    "results/published/fly_pipeline_repair_result_review_20261007.json (selected conclusion, branch, learning-operator and readout sections)",
+    "results/published/fly_pipeline_repair_diagnostic_20261007.json (selected protocol/context fields)",
+    "docs/information_boltzmann/FLY_PIPELINE_REPAIR_HYPOTHESES_20261007.md",
+    "information_boltzmann/core/fly_pipeline.py:begin_fly_prediction",
+    "scripts/ib/diagnose_fly_pipeline_repair.py:head_algebra"
+  ],
+  "evidence_labels": {
+    "O1": {
+      "kind": "O",
+      "claim": "Original actual post-Adam/post-clamp body displacement: SG dot=-0.001452395578; fixed-event dot=-0.000282884133; fixed-event fit delta=-0.000282540917, remainder=3.43216e-7; hard fit delta=+0.000135056674; hard-minus-fixed fit=+0.000417597592."
+    },
+    "O2": {
+      "kind": "O",
+      "claim": "Original hard following delta=-0.000551253557 from the actual old-parameter terminal full state. This does not contradict O1: different state/targets and exposure horizon define different risks."
+    },
+    "O3": {
+      "kind": "O",
+      "claim": "Hard event changes: fit 3519 (152 begin motor,3367 finish body); following 2902 (107,2795). Replays at selection points are stable. Counts identify changed event patterns, not causal per-event loss or semantic information."
+    },
+    "O4": {
+      "kind": "O",
+      "claim": "Normalized PROJECTED readout variation fractions: fit1.10657e-4; following6.43681e-5. Decoder common/covariance norms fit0.470412/0.0041813; following0.426488/0.0035474. Whole-window common-only NLL is close to full: fit difference+0.000861928; following+0.000299640."
+    },
+    "O5": {
+      "kind": "O",
+      "claim": "Real B versus A prefix on common following targets changes NLL by-0.000593200326. C_reset failed required body-direction gains; joint gain coexists with different clip factors0.843084 versus1 and changed head displacement."
+    },
+    "D1": {
+      "kind": "D",
+      "claim": "Define L(theta,S), with every hard event sequence S externally fixed in the counterfactual. At delta, hard-minus-fixed=L(theta+delta,S(theta+delta))-L(theta+delta,S(theta)). This is an exact finite event-path intervention contrast, including recurrent consequences, not a sum of isolated event penalties."
+    },
+    "D2": {
+      "kind": "D",
+      "claim": "The observed near-common object is q_t=RMSNorm(W_read h_post,t), not raw motor, pre-reset voltage, spike packets, full state, mutual information or semantic rank."
+    },
+    "K": {
+      "kind": "K",
+      "claim": "Sense-only write, actual motor-only pre-observation read, never-reset production, all physical delays/COBA/ALIF/STP persistent, no token-to-decoder shortcut,4GB, real OWT; capability claims require sufficient separately approved joint training."
+    }
+  },
+  "problem_reformulations": [
+    {
+      "id": "Q1",
+      "axis": "piecewise event geometry",
+      "question": "Why does a post-clamp body step improve the smooth fixed-event branch but cross to a worse hard-fit branch? Is the missing term in event credit, or does saved optimizer geometry select fragile boundaries?"
+    },
+    {
+      "id": "Q2",
+      "axis": "observable hierarchy",
+      "question": "At which map does temporal distinction become nearly common: full physical motor state, post-reset voltage, learned spatial projection, or RMS-normalized decoder coordinates? Small decoder covariance cannot answer this hierarchy."
+    },
+    {
+      "id": "Q3",
+      "axis": "probability versus history",
+      "question": "Does following descent reflect conditional history use, a shared vocabulary recalibration that happens to align with following targets, or a longer old-state response horizon? Fit descent and following descent are separate estimands."
+    },
+    {
+      "id": "Q4",
+      "axis": "temporal learning closure",
+      "question": "Can a finite-window update improve carried-state future while omitting parameter credit from the entering state? Value continuity, derivative continuity and forecast usefulness require separate objects."
+    }
+  ],
+  "hypotheses": [
+    {
+      "id": "E1",
+      "family": "event_credit",
+      "orthogonal_axis": "learning signal for threshold-dependent event route",
+      "claim": "The surrogate credits event changes with the wrong sign or allocation on this fit trajectory; recurrent event-route effects overturn valid within-branch descent.",
+      "classification": "possible",
+      "current_support": "O1 establishes a local event-associated reversal; O3 shows reproducible changes. It does not isolate reset or prove event credit is globally wrong.",
+      "assumptions": "Fixed-event intervention covers all event calls; same full initial state and realized displacement. Attribution to a particular event pathway additionally needs an identifying intervention.",
+      "prediction": {
+        "support": "For predeclared directions/scales, stable fixed-event Taylor descent persists while hard-minus-fixed loss turns positive at identified event-boundary crossings; a predeclared motor/bulk event partition localizes a positive contrast beyond that partition's repeat floor.",
+        "falsification": "With resolvable crossings and controls, hard-minus-fixed contrasts do not oppose descent on independent predeclared real windows, or reversal is accounted for without the asserted event pathway.",
+        "ambiguous": "Inside-floor differences, unmatched continuous states, hybrid intervention outside its defined scope. Counts alone cannot test sign attribution.",
+        "discriminator": "Compare boundary locations and loss jumps along a predeclared parameter line, then conditional event partitions; an event partition contrast is order-dependent under recurrence, so do not sum partitions as independent causes."
+      }
+    },
+    {
+      "id": "E2",
+      "family": "optimizer_execution_geometry",
+      "orthogonal_axis": "saved moments, clamp and coordinate allocation",
+      "claim": "Saved Adam moments and constraints concentrate the actual step into event-sensitive coordinates. The failure can arise from displacement geometry even when its SG and fixed-event dot products are negative.",
+      "classification": "possible",
+      "current_support": "Small ordinary-body SG cosine-0.008905, logged clamp corrections and large changed-coordinate count leave this route open. Fixed-event descent rules out the claim that this actual step is simply uphill on that branch.",
+      "assumptions": "Use realized FP32 post-clamp directions with matched feasible norm and identical frozen head; distinguish global clipping from moment and clamp effects.",
+      "prediction": {
+        "support": "A preregistered current-gradient direction and saved-Adam direction matched in body norm have comparable within-branch descent, but only the latter produces the harmful registered event contrast; a separately isolated clamp contrast explains an additional part if asserted.",
+        "falsification": "Matched directions retain the same event reversal across declared cases and clamp isolation is unresolved or negligible; deprioritize the specified moment/clamp mechanism.",
+        "ambiguous": "Matching Euclidean norms alone does not match functional movement; inconsistent event-margin distributions can explain differences unless explicitly reported.",
+        "discriminator": "Direction-by-event-branch comparison separates E2 from E1; do not use raw gradient norms or candidate joint head gain as attribution."
+      }
+    },
+    {
+      "id": "E3",
+      "family": "upstream_physical_observability",
+      "orthogonal_axis": "motor dynamics before learned read map",
+      "claim": "A dominant tonic physical motor mode makes available pre-observation motor signals weakly history-dependent on these windows, before projection or normalization.",
+      "classification": "possible",
+      "current_support": "O4 is compatible but measures only projected normalized features. O5 excludes complete history insensitivity of the current predictor in this local pair.",
+      "assumptions": "Compare field-specific causal differences and repeat floors; a large tonic energy is not lack of information.",
+      "prediction": {
+        "support": "Across predeclared real-prefix contrasts with common future inputs, pre-reset voltage, post-reset voltage and emitted motor packets all have unresolved or very small causal variation before learned readout; attenuation is already upstream.",
+        "falsification": "Resolvable upstream motor variations survive appropriate field-scale controls while q is nearly common; this moves attribution toward E4/E5.",
+        "ambiguous": "Motor nonzero response proves access, not semantic usefulness; no universal threshold for 'small' is assumed.",
+        "discriminator": "Record paired causal trajectories at each motor-only observable and report variation with units, not one mixed-state norm."
+      }
+    },
+    {
+      "id": "E4",
+      "family": "learned_projection_and_normalization",
+      "orthogonal_axis": "spatial/readout geometry",
+      "claim": "Motor variations exist but W_read suppresses their directions or RMSNorm removes predominantly radial variation, yielding the observed near-common q.",
+      "classification": "possible",
+      "current_support": "D2 identifies a potential measurement bottleneck; raw motor covariance and projected pre-normalization covariance were not supplied by O4.",
+      "assumptions": "Linear W_read and pointwise RMSNorm remain fixed; radial suppression is approximate with nonzero epsilon. Lost variation is not automatically target-relevant.",
+      "prediction": {
+        "support": "Raw h_post has resolvable centered/causal variation; projection sharply attenuates it, or projected variation is mostly radial and disappears at normalization. The stage accounting quantitatively reproduces q variation.",
+        "falsification": "The same near-common fraction is already present before W_read and neither map causes resolvable additional attenuation.",
+        "ambiguous": "Variation recovered from a map without a causal task association establishes geometric loss only.",
+        "discriminator": "At identical prediction timestamps decompose centered motor modes into projection output and nullspace, then projected radial/tangential components. This separates E4 from upstream E3 and reset loss E5."
+      }
+    },
+    {
+      "id": "E5",
+      "family": "post_reset_observation_loss",
+      "orthogonal_axis": "motor observation map versus actual emitted events",
+      "claim": "h_post=v_pre*(1-s) collapses event-bearing motor states even when emitted pulses or pre-reset voltage preserve distinctions; the chosen read surface misses part of the physical code.",
+      "classification": "possible",
+      "current_support": "Non-injectivity is mathematical; reset discarded energy is observed. Neither proves that discarded distinctions predict words. C_reset keeps this forward read map unchanged, so its rejection does not test E5.",
+      "assumptions": "All compared observables come from actual motor before current-token assimilation; no head trained on h_post can be naively treated as calibrated for another surface.",
+      "prediction": {
+        "support": "Identified history-dependent differences remain in v_pre or transmitted motor pulses and are erased specifically at reset, beyond per-field floors. Task usefulness additionally requires a future independently approved matched-exposure read-surface comparison.",
+        "falsification": "Relevant observed distinctions are retained in non-spiking h_post and reset introduces no resolvable additional attenuation on the declared routes.",
+        "ambiguous": "More voltage energy or spike variation without predictive association tests only observation geometry.",
+        "discriminator": "Separate v_pre->h_post loss from h_post->W_read loss using exactly the same sealed motor timestamp."
+      }
+    },
+    {
+      "id": "E6",
+      "family": "probability_calibration",
+      "orthogonal_axis": "target vocabulary distribution and shared logit movement",
+      "claim": "A nearly common vocabulary-logit shift induced by body movement is unfavorable for fit targets but favorable for following targets. This can produce the sign split without improved conditional history use.",
+      "classification": "possible",
+      "current_support": "Whole-window common logits capture much of local head risk; following and fit differ in targets. Bias alone is not the fixed unigram and common includes W_read/decoder terms.",
+      "assumptions": "Work in logits modulo the all-vocabulary constant gauge. Whole-window means are retrospective accounting only, never replacement online predictions.",
+      "prediction": {
+        "support": "Registered body-induced delta logits are predominantly a shared vocabulary vector; its exact cross-entropy response reproduces the fit/following signs within a declared residual floor, while centered time-varying residual makes little difference.",
+        "falsification": "A resolved causal time-varying logit component is needed to obtain following benefit and shared shift alone fails the preregistered accounting on common targets/prefix controls.",
+        "ambiguous": "Baseline common-only risk similarity does not establish that UPDATE-induced delta logits are common. Future mean fitting or alpha searches cannot establish online conditional gain.",
+        "discriminator": "Decompose actual update-induced logits, not only baseline decoder gradient, and hold common future targets fixed for history contrasts."
+      }
+    },
+    {
+      "id": "E7",
+      "family": "temporal_state_and_credit",
+      "orthogonal_axis": "entering-state sensitivity and parameter exposure horizon",
+      "claim": "Fit replay applies new parameters across a historical window whereas following uses old-parameter terminal state; persistent fields and truncated entering-state credit yield different effective update consequences at these horizons.",
+      "classification": "possible",
+      "current_support": "O2 and O5 show context/horizon dependence. The existing fixed-event fit check validates its local branch derivative only; it does not measure omitted entering-state parameter sensitivity.",
+      "assumptions": "Never replace actual old-state continuation with a newly evolved prefix. A full-history derivative claim requires known entering-state parameter sensitivity.",
+      "prediction": {
+        "support": "For common scored targets, preregistered real-prefix/phase contrasts show a resolved dependence of step effect on carried fields and parameter exposure horizon; on a smooth fixed-event reference the entering-state tangent term changes the projected credit relative to the32-event derivative.",
+        "falsification": "With sufficiently covered history and matched complete states, entering-state tangent contribution and registered horizon interactions are below their floors, while the event reversal remains.",
+        "ambiguous": "No entering-state tangent means credit omission remains untested. Longer scoring with different targets cannot isolate horizon.",
+        "discriminator": "Keep future targets and full physical state ledger explicit; separate a value-state contrast from the derivative-history term dL/dz_enter * dz_enter/dtheta."
+      }
+    }
+  ],
+  "necessity_and_closure": {
+    "classification": "All seven explanations remain possible; observations identify a local event-path contrast, not a unique causal repair.",
+    "required_objects": [
+      "L(theta,S) with a complete event intervention definition",
+      "actual post-Adam/post-clamp displacement and separate head/body/bias",
+      "full old-state following start and precise prediction timestamps",
+      "the observable chain v_pre -> h_post -> W_read -> RMSNorm -> decoder",
+      "logit changes modulo the constant gauge and same-target risks",
+      "separate numerical floors for scores, states, event patterns and realized displacement"
+    ],
+    "information_boundary": "A small variance fraction or covariance-gradient norm has no universal information or usefulness bound: small-amplitude features may still carry decodable distinctions. A claimed semantic bottleneck needs a causal task criterion.",
+    "priority_boundary": "The within-fixed-event original Taylor response is already measured and accurate; do not present that check as missing. Candidate fixed-event finite response and isolated clamp effects remain unmeasured, but C_reset is not rescued or revived."
+  },
+  "decision": {
+    "next_single_action": "Offline seal a discriminating attribution plan around the event-path contrast and the explicit observable hierarchy, with independent necessity/implementation review before requesting any new measurement.",
+    "rule": "First separate event-credit from saved-step geometry and localize the near-common map; only then discuss candidate architecture or learning-operator changes.",
+    "stop": "Current records cannot uniquely distinguish E1/E2 or E3/E4/E5, nor conditional benefit from E6/E7. Mark attribution unresolved and stop before execution.",
+    "review_scope": "This is an independent competing-hypothesis supplement, not independent confirmation of hypotheses generated here and not an execution approval."
+  },
+  "proposed_three_trajectory_discriminator": {
+    "status": "reasonable_proposed_measurement_component_not_execution_approved",
+    "trajectories": [
+      "T0: theta_old hard, original complete initial state and registered targets",
+      "TH: theta_old+saved actual body displacement hard, same initial state/targets and OLD head/bias",
+      "TF: same new parameters as TH, every hard event fixed to T0, same initial state/targets and OLD head/bias"
+    ],
+    "chain": "Record pre-observation motor prepotential, hard spike and STP transmitted pulse, post-reset voltage, W_read projection, RMS-normalized q and decoder logits; all state and delayed-ring fields remain in trajectory dynamics.",
+    "exact_task_accounting": "For each target y, let ell_F be TF logits, p_F=softmax(ell_F), d=ell_H-ell_F. Then CE(ell_H,y)-CE(ell_F,y)=log(sum_v p_F(v)*exp(d_v))-d_y. Use a stable log-sum-exp evaluation. For TH-versus-T0 or TF-versus-T0, use the corresponding reference branch probabilities, not p_F indiscriminately.",
+    "supports": "Quantifies task-weighted finite event-path contrast after the actual trained motor observation chain; localizes recorded signal attenuation or cancellation at chain stages without head substitution or training.",
+    "boundaries": [
+      "The exact CE identity is mathematical accounting; it does not require a first-order surrogate or assign a signed penalty to each changed spike.",
+      "Intermediate variation and energy are not semantic benefits. Stage attenuation localizes the map but does not prove unique information loss or independent causal shares.",
+      "Holding T0 events under new parameters is a defined intervention, not a naturally admissible threshold trajectory or an online predictor.",
+      "These three trajectories contain one saved-Adam direction; E1 event-credit versus E2 saved-step geometry remains unresolved without an additional preregistered direction comparison.",
+      "TH fit and TH following still have distinct states/targets; preserve actual old-parameter terminal state for following and report horizons separately.",
+      "No new measurement was performed; future plan still requires separate review and approval."
+    ]
+  }
+}

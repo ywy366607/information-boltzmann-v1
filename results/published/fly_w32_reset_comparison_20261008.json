@@ -1,0 +1,22 @@
+{
+  "scope": "Numerical candidate diagnostic, no optimizer updates or NLL improvement claim",
+  "baseline_fp64_norm": 2.4471440189122164e+20,
+  "baseline_repeat_fp64_norm": 2.4471433653184387e+20,
+  "candidate_fp64_norm": 125234048750262.0,
+  "baseline_to_candidate_norm_ratio": 1954056.4593517517,
+  "baseline_repeat_relative_norm_difference": 2.670843123867675e-07,
+  "paired_max_score_abs_difference": 9.5367431640625e-07,
+  "baseline_repeat_max_score_abs_difference": 5.245208740234375e-06,
+  "original_bitwise_gate_passed": false,
+  "baseline_repeat_bitwise_passed": false,
+  "baseline_clipped_read_norm": 2.5199441902570362e-21,
+  "candidate_clipped_read_norm": 4.92411331736255e-15,
+  "optimizer_updates": 0,
+  "all_weights_unchanged": true,
+  "decision": "Local analytic and CPU equality contracts pass; real GPU exact-hash criterion fails even baseline self-repetition with atomic float32 reductions. Exploratory paired norm effect merits follow-up but global gradient still extreme. Keep production baseline default; no full stability or learning claim.",
+  "reports": [
+    "fly_w32_reset_baseline_20261008.json",
+    "fly_w32_reset_detached_20261008.json",
+    "fly_w32_reset_baseline_repeat_20261008.json"
+  ]
+}

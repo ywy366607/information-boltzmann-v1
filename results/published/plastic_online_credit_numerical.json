@@ -1,0 +1,112 @@
+{
+  "schema": 1,
+  "protocol": "Numerical derivatives and live-memory audit on real OWT; frozen weights",
+  "parameters": 14067383,
+  "shape": [
+    8,
+    8,
+    4
+  ],
+  "channels": 128,
+  "events": 64,
+  "event_duration": 0.005,
+  "rank": 1,
+  "derivative_compression": {
+    "exact_two_event_history_norm": 0.253738671541214,
+    "samples": 16,
+    "rank_one_norm_mean": 7491.588813781738,
+    "rank_one_relative_error_mean": 29524.909606933594,
+    "rank_one_cosine_mean": -0.0884931858163327,
+    "sample_mean_relative_error": 9079.390625,
+    "claim": "Finite-sample derivative variance only; not a convergence/capability verdict."
+  },
+  "eligibility_bytes_min": 57065692,
+  "eligibility_bytes_max": 57065692,
+  "all_persisted_tensors_graph_free": true,
+  "live_memory": [
+    {
+      "event": 8,
+      "allocated_mib": 134.267578125
+    },
+    {
+      "event": 16,
+      "allocated_mib": 134.267578125
+    },
+    {
+      "event": 24,
+      "allocated_mib": 134.267578125
+    },
+    {
+      "event": 32,
+      "allocated_mib": 134.267578125
+    },
+    {
+      "event": 40,
+      "allocated_mib": 134.267578125
+    },
+    {
+      "event": 48,
+      "allocated_mib": 134.267578125
+    },
+    {
+      "event": 56,
+      "allocated_mib": 134.267578125
+    },
+    {
+      "event": 64,
+      "allocated_mib": 134.267578125
+    }
+  ],
+  "event_metrics": [
+    {
+      "loss": 21.638641357421875,
+      "token_nll": 10.812455177307129,
+      "local_gradient_norm": 6.796873092651367,
+      "history_gradient_norm": 133.85324096679688
+    },
+    {
+      "loss": 21.633377075195312,
+      "token_nll": 10.811029434204102,
+      "local_gradient_norm": 8.717597961425781,
+      "history_gradient_norm": 74.90008544921875
+    },
+    {
+      "loss": 21.66802215576172,
+      "token_nll": 10.841279983520508,
+      "local_gradient_norm": 7.940899848937988,
+      "history_gradient_norm": 367.6679382324219
+    },
+    {
+      "loss": 21.630352020263672,
+      "token_nll": 10.804152488708496,
+      "local_gradient_norm": 9.693490982055664,
+      "history_gradient_norm": 98.6717529296875
+    },
+    {
+      "loss": 21.625484466552734,
+      "token_nll": 10.804235458374023,
+      "local_gradient_norm": 10.210865020751953,
+      "history_gradient_norm": 334.3211975097656
+    },
+    {
+      "loss": 21.648536682128906,
+      "token_nll": 10.821572303771973,
+      "local_gradient_norm": 14.583329200744629,
+      "history_gradient_norm": 689.9996337890625
+    },
+    {
+      "loss": 21.643970489501953,
+      "token_nll": 10.824631690979004,
+      "local_gradient_norm": 11.973426818847656,
+      "history_gradient_norm": 14.422962188720703
+    },
+    {
+      "loss": 21.652719497680664,
+      "token_nll": 10.822484970092773,
+      "local_gradient_norm": 9.526581764221191,
+      "history_gradient_norm": 193.6065673828125
+    }
+  ],
+  "seconds_per_event": 0.4095205078124309,
+  "peak_allocated_mib": 553.48486328125
+}

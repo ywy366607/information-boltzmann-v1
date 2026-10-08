@@ -1,0 +1,32 @@
+{
+  "graph": "data\\malecns_v1\\fly_reservoir_coba.npz",
+  "partitions": "data\\malecns_v1\\sensory_partitions.npz",
+  "input_nodes": 15912,
+  "output_nodes": 2333,
+  "input_output_overlap": 0,
+  "edges": 25321395,
+  "horizon_basis": "maximum configured single-edge delay; all paths within horizon included",
+  "earliest_possible_arrival": [
+    {
+      "quiet_delay_ticks": 1,
+      "output_nodes_reachable": 1424,
+      "output_fraction_reachable": 0.6103729104157737
+    },
+    {
+      "quiet_delay_ticks": 2,
+      "output_nodes_reachable": 2319,
+      "output_fraction_reachable": 0.9939991427346764
+    },
+    {
+      "quiet_delay_ticks": 3,
+      "output_nodes_reachable": 2329,
+      "output_fraction_reachable": 0.9982854693527646
+    },
+    {
+      "quiet_delay_ticks": 4,
+      "output_nodes_reachable": 2329,
+      "output_fraction_reachable": 0.9982854693527646
+    }
+  ],
+  "scope": "Static anatomical reachability with positive delays, independent of learned weights/thresholds/filters. Actual functional arrival can be later or absent. The input pulse creates a ring entry; delay d requires d subsequent quiet ticks. This report does not prescribe a new token interval or claim causal language value."
+}

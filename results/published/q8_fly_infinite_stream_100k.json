@@ -1,0 +1,38 @@
+{
+  "experiment": "q8_fly_infinite_stream_100k",
+  "architecture": "FlyReservoir-InfiniteStream-O1-MaleCNS-Topographic-COBA-ALIF-STP",
+  "dataset": "OpenWebText (Tokenized GPT-2)",
+  "learning_paradigm": "Continuous Infinite Streaming (Strictly O(1) memory, zero chunking, closed autograd tape)",
+  "tokens_streamed": 100000,
+  "throughput_tokens_per_sec": 73.8,
+  "vram_mb": 685.3,
+  "final_ema_stream_loss": 7.2111,
+  "best_live_branch_nll": 7.5446,
+  "best_cold_start_reference_nll": 7.5159,
+  "plasticity_scope": "Readout layer + 27-superclass hyperparameters (internal 25.32M synapses frozen)",
+  "tri_pillar_biological_evaluation": {
+    "pillar_1_prequential_stream": {
+      "metric": "Continuous Non-Repeating Prequential NLL",
+      "final_ema_nll": 7.2111,
+      "stable_regime_nll_range": [6.66, 7.55]
+    },
+    "pillar_2_environmental_shock": {
+      "metric": "Plastic Re-adaptation Half-Life (Plasticity Active)",
+      "shock_surprise_initial": 9.1856,
+      "plateau_surprise": 7.4714,
+      "delta_shock_absorbed": 1.7142,
+      "half_life_tokens": 2.0,
+      "homeostatic_elasticity_score": 0.5714
+    },
+    "pillar_3_ebbinghaus_savings": {
+      "metric": "Savings Effect and Relearning Acceleration",
+      "n_tokens": 500,
+      "intervening_tokens": 50000,
+      "nll_initial_mean": 7.0295,
+      "nll_relearn_mean": 6.9009,
+      "retention_immediate_recall_drop": 2.2730,
+      "ebbinghaus_savings_ratio_pct": 1.83,
+      "relearning_acceleration_factor": 4.0
+    }
+  }
+}

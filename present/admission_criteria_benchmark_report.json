@@ -1,0 +1,88 @@
+{
+  "results": [
+    {
+      "name": "Crit 1: Unconstrained Free Energy (dF/dt >= 0, No Guard)",
+      "mean_ticks": 6.583333333333333,
+      "min_ticks": 3,
+      "max_ticks": 14,
+      "premature_exit_count": 0,
+      "premature_rate_pct": 0.0,
+      "mean_nll": 9.16397232313951,
+      "accuracy": 0.08333333333333333,
+      "aliasing_retention_pct": 97.65530849513435
+    },
+    {
+      "name": "Crit 2: Constrained Free Energy (dF/dt >= 0 + t >= 3 Guard)",
+      "mean_ticks": 6.291666666666667,
+      "min_ticks": 4,
+      "max_ticks": 12,
+      "premature_exit_count": 0,
+      "premature_rate_pct": 0.0,
+      "mean_nll": 9.170403356353441,
+      "accuracy": 0.08333333333333333,
+      "aliasing_retention_pct": 94.00389245756756
+    },
+    {
+      "name": "Crit 3: Pure Phase-Flux Threshold (Flux <= 0.036, No Guard)",
+      "mean_ticks": 7.041666666666667,
+      "min_ticks": 4,
+      "max_ticks": 11,
+      "premature_exit_count": 0,
+      "premature_rate_pct": 0.0,
+      "mean_nll": 9.081264197826385,
+      "accuracy": 0.08333333333333333,
+      "aliasing_retention_pct": 97.65530849513435
+    },
+    {
+      "name": "Crit 4: Pure Output Certainty (Cert >= 0.58 or dH/dt >= 0)",
+      "mean_ticks": 2.7083333333333335,
+      "min_ticks": 1,
+      "max_ticks": 8,
+      "premature_exit_count": 15,
+      "premature_rate_pct": 62.5,
+      "mean_nll": 9.35392459233602,
+      "accuracy": 0.08333333333333333,
+      "aliasing_retention_pct": 63.121679969248554
+    },
+    {
+      "name": "Crit 5: MCR^2 Volume Expansion Rate (d R(Z) / dt <= 0.02)",
+      "mean_ticks": 6.583333333333333,
+      "min_ticks": 4,
+      "max_ticks": 11,
+      "premature_exit_count": 0,
+      "premature_rate_pct": 0.0,
+      "mean_nll": 9.106615314881006,
+      "accuracy": 0.08333333333333333,
+      "aliasing_retention_pct": 97.65530849513435
+    }
+  ],
+  "mean_trajectory": {
+    "flux": [
+      0.4671281621488993,
+      0.053772610354900684,
+      0.05068834095647369,
+      0.047945210522507116,
+      0.045466453178308414,
+      0.043269963574566986,
+      0.04125289924866153
+    ],
+    "ent": [
+      0.5983452899480188,
+      0.5988231664608902,
+      0.5897610886695661,
+      0.5821379484428322,
+      0.5805155425945061,
+      0.5886595080920088,
+      0.5933209239991444
+    ],
+    "fe": [
+      4.335370587139213,
+      1.0290040493000956,
+      0.9952678163213555,
+      0.9656996326228892,
+      0.9442471680209734,
+      0.9348192166885447,
+      0.9233441179884365
+    ]
+  }
+}

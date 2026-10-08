@@ -1,0 +1,100 @@
+{
+  "date": "2026-10-07",
+  "reviewer": "/root/harness_hypotheses",
+  "role": "Independent prospective hypothesis, necessity and scientific conclusion-scope review",
+  "stage": "EXPLORE",
+  "status": "approved_scientific_scope_not_execution",
+  "revision": "Final protocol scope review; replaces earlier conditional control requests",
+  "sources_reviewed": [
+    {
+      "path": "docs/information_boltzmann/FLY_PIPELINE_REPAIR_DECISION_20261007.md",
+      "sha256": "E488630A831EEA9BFFB561BAFDADD2F6A446EB44A0264718C6B6931106056EF0"
+    },
+    {
+      "path": "results/published/fly_pipeline_repair_preregistered_20261007.json",
+      "sha256": "A720F2A50288FAB592FABB9ADE3260D8A281A825A44E1CA92CF062608D3B1DE5"
+    }
+  ],
+  "prospective_results_seen": false,
+  "experiments_executed": false,
+  "core_modified": false,
+  "execution_approved": false,
+  "verdict": {
+    "scientific_scope": "Approved for a bounded paired mechanism diagnosis. No scientific blocker to this limited scope.",
+    "present_classification": "possible",
+    "conditional_upgrade": "useful_local_only",
+    "upgrade_rule": "Only after ALL registered fixed-scale1 fit, joint-following, raw body-following, matched-norm/common-head, gradient, identity and replay gates pass may C_reset be called locally useful at this checkpoint, these fit32/follow32 windows and these saved Adam moments. A positive finding permits follow-up design review only.",
+    "necessity": "Not established. Fixed-event reset partial 1-s justifies isolating the operator; it does not derive necessity of this surrogate convention or an exact hard-event expected-loss gradient.",
+    "execution_authority": "diagnosis_review separately audits implementation, source locking, resource limits and execution approval."
+  },
+  "sampling_scope": {
+    "unique_real_positions": 96,
+    "window_forwards": 44,
+    "physical_forward_ticks": 1408,
+    "interpretation": "The 44 forwards are deterministic paired counterfactuals and repeated controls over 96 real OWT positions, not 44 independent samples, 1408 new independent observations, or additional production training exposure.",
+    "following": "Following32 is held out from the fit-gradient update but used for candidate selection. It supports this local transfer comparison, not an independent post-selection capability validation.",
+    "uncertainty": "The registered tau is a numerical decision floor, not a population confidence interval or calibrated error probability."
+  },
+  "control_review": [
+    {
+      "id": "same_moments_actual_Adam",
+      "finding": "Both operators start from identical parameters, complete state, saved optimizer histories and options; actual post-clip/post-clamp displacements are compared. Baseline actual Adam alone would not select C_reset.",
+      "supports": "Local usefulness of the registered learning operator with its saved optimizer."
+    },
+    {
+      "id": "raw_body_following",
+      "finding": "Apply each actual body displacement with the OLD head and bias, then score from the common old-parameter terminal state. This blocks a benefit attributable solely to changed head displacement through global clipping.",
+      "supports": "A body-update benefit in the actual old-state continuation case.",
+      "limit": "Saved Adam geometry and body-group allocation remain part of the intervention; no exact-gradient or universal body-learning conclusion."
+    },
+    {
+      "id": "matched_norm_common_head",
+      "finding": "Both body directions are scaled down to the same registered radius and use the SAME ordinary head AND bias displacement. A persistent advantage restricts the total-step-amplitude and head-movement alternatives.",
+      "supports": "A restricted direction-related local effect, conditional on resolvable realized matching.",
+      "limit": "Euclidean norm in mixed parameter coordinates does not match function-space displacement, individual group norms, event-crossing geometry or all optimizer interactions; it does not isolate a unique reset root cause."
+    },
+    {
+      "id": "raw_head_gradient_equality",
+      "finding": "Identical loss and motor features imply identical raw head gradients. Equality is a necessary negative control for a backward-only body intervention.",
+      "limit": "Actual head displacement can differ because altered body gradients change global clipping. Gradient equality alone does not imply equal joint updates or beneficial body credit."
+    },
+    {
+      "id": "hard_event_local_repeats",
+      "finding": "Repeat fit and following scores, states and hard masks at EACH selection parameter point, not only theta_old. Parameter-point event instability makes selection ambiguous.",
+      "supports": "Numerical repeatability of this discontinuous finite-step comparison.",
+      "limit": "Stable replay neither proves exact hard-forward derivatives across event boundaries nor estimates robustness across states, seeds or real-text populations."
+    },
+    {
+      "id": "old_state_continuation",
+      "finding": "Following starts from the actual terminal full state evolved under theta_old, including all delayed rings, COBA, ALIF and STP fields. Both candidate and original have identical forward physiology before their disposable updates.",
+      "supports": "The immediate online update effect under physically carried old state.",
+      "limit": "Fit replay is retrospective. Re-evolving a prefix under new parameters would be a separate synchronization counterfactual and cannot replace this estimand. No repeated-update or long-life conclusion."
+    }
+  ],
+  "execution_precheck": {
+    "item": "matched_radius_quantization_resolution",
+    "required": "Before execution, implementation review must bind an explicit resolvability gate in addition to radius>0 and the existing absolute realized-norm tolerance. Record r, realized FP32 body steps, absolute and relative norm errors, and the matching resolution; an unresolved radius must make direction selection ambiguous rather than successful.",
+    "reason": "64*float32eps*max(1,r) can be large relative to a tiny radius; absolute tolerance alone can accept poorly resolved relative matching.",
+    "authority": "Implementation reviewer seals the gate and amended source/protocol hashes; this scientific review supplies no execution approval."
+  },
+  "prospective_outcomes": {
+    "support": "All preregistered selection and numerical gates pass: report locally useful C_reset and request follow-up design review.",
+    "registered_negative": "Resolvable controls pass but registered loss inequalities fail: do not select C_reset for this registered repair case. Do not switch to scale0.1 or a different endpoint after results.",
+    "ambiguous": "Within-floor changes, unstable event/state replay, unresolved matching radius, identity/provenance/coverage failures or nonfinite values: no candidate selection.",
+    "nonworse": "Nonworse within tau means no numerically distinguishable harm in the registered comparison; it does not demonstrate equivalence or expected noninferiority.",
+    "false_negative_boundary": "The conjunction is deliberately conservative. Failure does not refute reset-only in every state or budget; it removes this local selection rationale."
+  },
+  "remaining_competitors": [
+    "Marginal/head calibration remains open.",
+    "Motor semantic sufficiency and post-reset observation loss remain open; C_reset preserves the read feature forward.",
+    "Cross-window credit truncation and old-context physical carryover remain open.",
+    "Long-run head/body coadaptation and optimizer-history effects remain open."
+  ],
+  "prohibited_conclusions": [
+    "C_reset is mathematically necessary or the unique current root cause.",
+    "The candidate repairs full event credit, long-history credit, recurrent stability or capacity.",
+    "The candidate improves OWT generalization, the six active B checks, convergence or long-run NLL.",
+    "The 44 replay windows provide independent statistical replication."
+  ],
+  "overall_comment": "Final prospective criteria are reasonable and falsifiable for possible-to-locally-useful promotion. The sealed raw-body and matched-norm/common-head comparisons strengthen attribution; the quantization-resolution gate must be checked before execution. No new diagnosis results were accessed."
+}

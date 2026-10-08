@@ -1,0 +1,83 @@
+{
+  "status": "training_launched",
+  "candidate": "8x8x4 D768 anisotropic persistent medium with local temporal read",
+  "fresh_training_tokens": 160000,
+  "training_groups": 5000,
+  "tokens_per_update": 32,
+  "bptt_tokens": 32,
+  "seed": 449,
+  "event_duration": 0.005,
+  "cadence_provenance": "Retained from prior medium real-data run and temporal-read GPU calibration; no optimality claim",
+  "data": "data/ib_owt_gpt2",
+  "evaluation": {
+    "continuous_state": true,
+    "learning_active": true,
+    "score_before_update": true,
+    "every_fresh_tokens": 5000,
+    "B_tokens": 256,
+    "measurement_block_tokens": 16,
+    "return_events": 128,
+    "AG": "confirmed stable tail and recovery only; matched tail reference"
+  },
+  "fly_reference": "results/q8_fly_ctm_settle14_100k",
+  "fly_reported_120k": {
+    "B_mean_nll": 6.5504,
+    "tail_nll": 5.9189,
+    "tail_reference_nll": 6.7184,
+    "recovery_tokens": 224,
+    "revisit_saving_nll": 0.4235
+  },
+  "comparison_limits": [
+    "Fly resumes an existing learned individual; medium body begins fresh. Both use the same pretrained GPT2 word table.",
+    "Compare exact same validation targets and aggregate gains; single easy windows do not certify architecture superiority."
+  ],
+  "checkpoints": [
+    "best.pt",
+    "last.pt"
+  ],
+  "capability_verdict": "pending sufficient real-data learning and live evaluation",
+  "initialization": {
+    "embedding": "direct GPT2 wte.weight, 768 dimensions, frozen",
+    "decoder": "same pretrained word directions, one global scale matching original decoder initialization RMS",
+    "body": "new random learned medium",
+    "activation_checkpointing": true
+  },
+  "execution": "compiled full event with exact activation recomputation; unchanged learning policy",
+  "pid": 29376,
+  "output": "results/medium_d768_pretrained_tensor_temporal_160k",
+  "calibration": {
+    "complete_update_passed": true,
+    "dedicated_mib_after_update": 2573,
+    "torch_peak_allocated_mib": 2093.4794921875,
+    "cold_seconds_per_32_tokens": 11.989959900005488
+  },
+  "execution_continuation": {
+    "checkpoint_step": 32,
+    "checkpoint_fresh_targets": 1024,
+    "benchmark": "results/published/medium_d768_event_fusion_benchmark_20261008.json",
+    "gradient_relative_l2_error": 7.478564195825368e-07,
+    "initial_compile_seconds": 1075.8773459999938,
+    "live_before_tokens_per_second": 3.9164635206391925,
+    "live_after_tokens_per_second": 19.442600382896526,
+    "live_after_step_range": [
+      45,
+      73
+    ]
+  },
+  "evaluation_interface_repair": {
+    "failure": "temporal history omitted by legacy credit-state reconstruction in health JVP",
+    "tests": "9 passed,1 skipped",
+    "continuation_checkpoint_step": 32,
+    "lost_unsaved_updates": 125,
+    "archive": "metrics_interrupted_before_eval_repair.jsonl",
+    "protection": "save complete individual before evaluation"
+  },
+  "live_dashboard": {
+    "url": "http://127.0.0.1:8085/",
+    "sampling_groups": 10,
+    "server_pid": 3512,
+    "resumed_step": 434,
+    "resumed_fresh_targets": 13888,
+    "learning_policy_changed": false
+  }
+}

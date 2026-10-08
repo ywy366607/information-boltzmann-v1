@@ -1,0 +1,51 @@
+{
+  "purpose": "matched execution only, no capability claim",
+  "eager_seconds": 13.174921999961953,
+  "graph_seconds": 3.067338999986532,
+  "speedup": 4.295228535228679,
+  "graph_equivalence": {
+    "two_chunk_gradient_accumulation": "passed",
+    "max_state_absolute_error": 0.0,
+    "max_gradient_absolute_error": 0.0,
+    "eager_losses": [
+      21.65193748474121,
+      21.644847869873047
+    ],
+    "graph_losses": [
+      21.65193748474121,
+      21.644847869873047
+    ]
+  },
+  "capture_setup_seconds": 3.315021500005969,
+  "graph_memory": {
+    "allocated_MiB": 403.880859375,
+    "reserved_MiB": 932.0,
+    "process_dedicated_peak_MiB": 1124.63671875,
+    "card_dedicated_peak_MiB": 2937.0,
+    "shared_growth_MiB": 4.0
+  },
+  "configuration": {
+    "shape": [
+      8,
+      8,
+      4
+    ],
+    "channels": 128,
+    "vocab_size": 50257,
+    "parameters": 14354610,
+    "tokens_per_update": 128,
+    "bptt_chunk_tokens": 8,
+    "event_duration": 0.005,
+    "substeps": 1,
+    "precision": "FP32",
+    "warmup_updates": 1,
+    "requested_measured_updates": 1
+  },
+  "background": "independent fly job retained, aggregate GPU utilization100%",
+  "validation": "63 CPU passed,1 opt-in skipped;5 CUDA passed",
+  "memory_policy": "total dedicated VRAM limit; shared usage recorded, growth permitted",
+  "sources": [
+    "conductance_training_graph.json",
+    "conductance_training_eager_warm.json"
+  ]
+}

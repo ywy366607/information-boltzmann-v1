@@ -1,0 +1,50 @@
+{
+  "scope": "Observed pre-clipping logged samples, not a guarantee about unlogged updates",
+  "runs": [
+    {
+      "run": "cbim_torus3d_w2_8x8x4_arm_c_continuous_q8_3000",
+      "metric": "grad_norm_dynamics",
+      "logged_samples": 301,
+      "median": 5.9967265129089355,
+      "p95": 15.375528335571289,
+      "max": 35.21845245361328,
+      "max_step": 100
+    },
+    {
+      "run": "q8_predictive_ports_k16_unified_bath_3000",
+      "metric": "grad_norm",
+      "logged_samples": 296,
+      "median": 5.404430866241455,
+      "p95": 15.165732860565186,
+      "max": 22.79241943359375,
+      "max_step": 510
+    },
+    {
+      "run": "q8_w4_quadratic_k64_3000",
+      "metric": "grad_norm",
+      "logged_samples": 19,
+      "median": 6.214505672454834,
+      "p95": 26.11267986297606,
+      "max": 32.77444076538086,
+      "max_step": 630
+    },
+    {
+      "run": "q8_w2_modern_3000",
+      "metric": "grad_norm_dynamics",
+      "logged_samples": 301,
+      "median": 3.4590566158294678,
+      "p95": 12.541078567504883,
+      "max": 25630.123046875,
+      "max_step": 1650
+    },
+    {
+      "run": "q8_w4_quadratic_k16_3000_execv2",
+      "metric": "grad_norm_dynamics",
+      "logged_samples": 69,
+      "median": 356944.0,
+      "p95": 35198604902.39994,
+      "max": 317433020416.0,
+      "max_step": 650
+    }
+  ]
+}

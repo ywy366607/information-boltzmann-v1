@@ -1,0 +1,70 @@
+{
+  "date": "2026-10-07",
+  "name": "回响",
+  "codename": "HX-1",
+  "quote": "生生不息的回响",
+  "lineage": "Information Boltzmann MaleCNS_v1 Connectome Individual",
+  "status": "completed_100k_continuous_learning",
+  "paradigm": "Lifelong Active Stream Evaluation (Zero Physical Reset, Zero Evaluation-Only Update)",
+  "architecture": {
+    "connectome_neurons": 165122,
+    "connectome_synapses": 25320000,
+    "macro_regions": {
+      "node_0_sensory": 15878,
+      "node_1_central_hub": 133200,
+      "node_2_premotor_vnc": 13344,
+      "node_3_motor_output": 2700
+    },
+    "macro_adjacency_matrix": [
+      [0.27, 0.36, 0.33, 0.04],
+      [0.01, 0.95, 0.02, 0.03],
+      [0.01, 0.08, 0.76, 0.15],
+      [0.01, 0.32, 0.48, 0.19]
+    ],
+    "efference_copy_feedback": "32% motor-to-central hub, 48% motor-to-premotor",
+    "observer_model": "Graph-Constrained Distributed State Observer (FlyGraphObserver)",
+    "closed_loop_mechanism": "Kalman Innovation Filtering: eps_{i,t} = E_i(S_{i,t}) - z_hat_{i,t|t-1}, Z_t = z_hat_{i,t|t-1} + K * eps_{i,t}",
+    "propagation_horizon": 14,
+    "readout_path": "Strict Motor Node (Node 3) Dynamic Delay Attention over k=0..14 (zero direct sensory bypass)",
+    "regularizer": "Exact SIGReg anti-collapse"
+  },
+  "execution": {
+    "task_id": "task-11188",
+    "output_dir": "results/q8_fly_bptt32_hx1_graph_observer_100k",
+    "checkpoint_dir": "F:/fly_checkpoints/q8_fly_bptt32_hx1_graph_observer_100k",
+    "total_tokens_streamed": 100000,
+    "total_optimizer_updates": 3352,
+    "speed_tokens_per_sec": 43.2,
+    "vram_peak_mib": 2363.36
+  },
+  "key_scientific_discoveries": {
+    "data_processing_inequality_spontaneous_adaptation": {
+      "attn_k0_immediate": 3.58e-10,
+      "attn_k1_fast": 4.24e-8,
+      "attn_k4_median": 0.00079,
+      "attn_k7_mid": 0.03887,
+      "attn_k14_recurrent": 0.37558,
+      "finding": "Readout attention autonomously suppressed instantaneous k=0,1 motor readouts by 10^-8 to 10^-10 due to physical connectome conduction latency, shifting weight to k>=7 propagated graph states."
+    },
+    "closed_loop_observer_convergence": {
+      "final_obs_mse": 0.0171,
+      "final_kalman_gain_mean": 0.5199,
+      "representation_collapse": false,
+      "finding": "Adaptive Kalman gain balanced prior graph rollout and physical sensory innovation, achieving tight trajectory tracking without collapse."
+    },
+    "lifelong_active_evaluation": {
+      "best_fresh_b_nll": 7.2623,
+      "best_a2_revisit_nll": 5.8894,
+      "final_a2_revisit_nll": 6.8459,
+      "revisit_positive_saving_rate": "19/20 (95.0%)",
+      "max_revisit_saving_nats": 1.4911,
+      "final_revisit_saving_nats": 0.5101,
+      "finding": "Continuous individual stably retains historical sequence memory across 100,000 tokens while maintaining positive relearning acceleration."
+    },
+    "biophysical_medium_health": {
+      "firing_rate_range": [0.0104, 0.0291],
+      "field_energy_range": [0.2049, 0.5814],
+      "health_verdict": "Critical, asynchronous, non-epileptic, non-quenched"
+    }
+  }
+}

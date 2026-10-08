@@ -1,0 +1,46 @@
+{
+  "purpose": "actual dynamics execution only; no language/capability benchmark",
+  "shape": [
+    8,
+    8,
+    4
+  ],
+  "channels": 128,
+  "device": "cuda",
+  "ticks": 32,
+  "warmup": 3,
+  "threads": 1,
+  "step_duration": 0.005,
+  "pytorch": "2.9.1+cu126",
+  "windows_gpu_memory_before": {
+    "dedicated_bytes": 53080064,
+    "shared_bytes": 79691776,
+    "rows": [
+      {
+        "Name": "pid_13240_luid_0x00000000_0x000178A0_phys_0",
+        "DedicatedUsage": 53080064,
+        "SharedUsage": 79691776
+      }
+    ]
+  },
+  "measurements": {
+    "reference_monitored": {
+      "seconds_per_tick": 0.024896368749978137,
+      "coefficient_preparations_during_measurement": 32,
+      "physical_time_per_wall_second": 0.20083250092463348,
+      "windows_gpu_memory": {
+        "dedicated_bytes": 107610112,
+        "shared_bytes": 81788928,
+        "rows": [
+          {
+            "Name": "pid_13240_luid_0x00000000_0x000178A0_phys_0",
+            "DedicatedUsage": 107610112,
+            "SharedUsage": 81788928
+          }
+        ]
+      },
+      "shared_growth_bytes": 2097152
+    }
+  },
+  "status": "stopped_shared_memory_growth"
+}

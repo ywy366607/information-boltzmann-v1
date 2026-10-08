@@ -1,0 +1,73 @@
+{
+  "checkpoint": "D:\\information-boltzmann-v1\\results\\medium_v8_joint_bptt32_96k_recovered\\last.pt",
+  "optimizer_updates": 0,
+  "mode": "weights-only explicit migration; fixed real physical state",
+  "old_parameters": 14067511,
+  "dynamic_parameters": 14247735,
+  "exact_migration": true,
+  "new_projection_ce_gradient_norms": {
+    "motion_policy": 4.845973491668701,
+    "motion_keys": 1.9144153594970703,
+    "motion_merge": 18.353313446044922
+  },
+  "cpu_read_decode_ms": {
+    "instantaneous": 5.931223333269979,
+    "dynamic": 19.378373333408188
+  },
+  "cpu_calibration_seconds": 0.7602824000059627,
+  "timing_scope": "one native read and vocabulary decode at fixed state; includes coefficient preparation",
+  "source_hashes": {
+    "information_boltzmann\\core\\plastic_medium.py": "e597bf6f69d1255469d134573e036b14663b2e57f9059a9a1a3856f740048626",
+    "information_boltzmann\\core\\readout_probes.py": "a3dd4cadbb5c8a03ee175972d3525fb06e975fd440ad0bd9301be0915eacbb9b"
+  },
+  "gpu_other_job_mib_before": 2605.0,
+  "gpu_graphs": {
+    "read_decode_forward": {
+      "instantaneous": {
+        "median_ms": 1.0722036997477213,
+        "round_ms": [
+          1.1823317209879558,
+          1.0231807708740235,
+          0.9928864161173503,
+          1.1212266286214192
+        ]
+      },
+      "dynamic": {
+        "median_ms": 2.9096538543701174,
+        "round_ms": [
+          2.9357396443684896,
+          2.8835680643717447,
+          2.787123107910156,
+          3.1070238749186196
+        ]
+      },
+      "native_graph_output_gradient_parity": true
+    },
+    "read_decode_backward": {
+      "instantaneous": {
+        "median_ms": 4.50124282836914,
+        "round_ms": [
+          4.573252360026042,
+          4.502961222330729,
+          4.428811645507812,
+          4.499524434407552
+        ]
+      },
+      "dynamic": {
+        "median_ms": 8.91285909016927,
+        "round_ms": [
+          8.46588592529297,
+          8.855347696940104,
+          9.110323079427083,
+          8.970370483398437
+        ]
+      },
+      "native_graph_output_gradient_parity": true
+    }
+  },
+  "gpu_allocated_peak_mib": 374.888671875,
+  "gpu_reserved_peak_mib": 608.0,
+  "gpu_combined_mib_after": 3065.0,
+  "gpu_timing_limit": "Concurrent GPU workload; read-only graphs, no fused compile, no full BPTT32 capture",
+  "all_candidate_parameters_unchanged": true
+}

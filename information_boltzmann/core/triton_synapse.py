@@ -9,6 +9,7 @@ retaining an edge-sized activation for each time step.
 from __future__ import annotations
 
 import torch
+import numpy as np
 
 try:
     import triton
@@ -134,6 +135,7 @@ if HAS_TRITON:
 
         @staticmethod
         def forward(ctx, s1, s2, s3, s4, edge_pre, edge_post, edge_weight, delay_splits):
+            delay_splits = _canonical_delay_splits(delay_splits, edge_weight.numel())
             ctx.save_for_backward(edge_pre, edge_post, edge_weight, s1, s2, s3, s4)
             ctx.delay_splits = delay_splits
             n_neurons = s1.shape[-1]
@@ -209,11 +211,24 @@ class PyTorchSynapticTransmission(torch.autograd.Function):
         return grad_spikes, None, None, grad_weight
 
 
+def _canonical_delay_splits(delay_splits, n_edges):
+    """Four slots, including empty tiers; metadata is constant during capture."""
+    if isinstance(delay_splits, torch.Tensor):
+        delay_splits = delay_splits.cpu().tolist()
+    splits = tuple(int(x) for x in delay_splits)
+    if (not splits or len(splits) > 5 or splits[0] != 0
+            or splits[-1] != n_edges
+            or any(a > b for a, b in zip(splits, splits[1:]))):
+        raise ValueError('Delay splits must partition all edges into at most four tiers')
+    return splits + (n_edges,) * (5 - len(splits))
+
+
 class PyTorchDelayedSynapticTransmission(torch.autograd.Function):
     """Fallback PyTorch multi-delay transmission for CPU or platforms without Triton."""
 
     @staticmethod
     def forward(ctx, s1, s2, s3, s4, edge_pre, edge_post, edge_weight, delay_splits):
+        delay_splits = _canonical_delay_splits(delay_splits, edge_weight.numel())
         spikes_list = [s1, s2, s3, s4]
         current = torch.zeros_like(s1).t()
         for k in range(len(delay_splits) - 1):
@@ -252,6 +267,57 @@ class PyTorchDelayedSynapticTransmission(torch.autograd.Function):
         return *grad_spikes, None, None, grad_weight, None
 
 
+def build_incoming_layout(edge_pre, edge_post, delay_splits, n_neurons):
+    """Stable incoming-row layout; original trainable edge order is unchanged.
+
+    Cache topology only. Returned int32 indices are moved with the model;
+    weights are gathered afresh every call. Construct outside CUDA capture.
+    """
+    pre = edge_pre.detach().cpu().numpy()
+    post = edge_post.detach().cpu().numpy()
+    splits = _canonical_delay_splits(delay_splits, len(pre))
+    layouts = []
+    for start, end in zip(splits, splits[1:]):
+        order = np.argsort(post[start:end], kind='stable') + start
+        counts = np.bincount(post[start:end].astype(np.int64), minlength=n_neurons)
+        offsets = np.concatenate(([0], np.cumsum(counts))).astype(np.int32)
+        layouts.append(tuple(torch.from_numpy(value) for value in (
+            order.astype(np.int32), pre[order].astype(np.int32), offsets)))
+    return tuple(layouts)
+
+
+class IncomingDelayedTransmission(torch.autograd.Function):
+    """Fixed incoming summation order forward; complete original edge VJP.
+
+    Use two-dimensional[E,B] data: each output row is reduced in its fixed
+    offset order, avoiding CUDA atomic forward summation. No edge-sized
+    activation is retained per tick. Backward may still use CUDA atomics.
+    """
+    @staticmethod
+    def forward(ctx, s1, s2, s3, s4, edge_pre, edge_post, edge_weight,
+                delay_splits, layouts):
+        ctx.delay_splits = _canonical_delay_splits(delay_splits, edge_weight.numel())
+        ctx.save_for_backward(edge_pre, edge_post, edge_weight, s1, s2, s3, s4)
+        ctx.s_shape = s1.shape
+        current = torch.zeros_like(s1).t()
+        for pulse, (order, source, offsets) in zip((s1, s2, s3, s4), layouts):
+            if not order.numel():
+                continue
+            contribution = torch.index_select(pulse, 1, source).t().contiguous()
+            contribution.mul_(torch.index_select(edge_weight, 0, order)[:, None])
+            current.add_(torch.segment_reduce(contribution, 'sum', offsets=offsets,
+                                             axis=0, unsafe=True))
+        return current.t()
+
+    @staticmethod
+    def backward(ctx, grad_current):
+        if HAS_TRITON and grad_current.is_cuda and ctx.s_shape[0] == 1:
+            result = TritonDelayedSynapticTransmission.backward(ctx, grad_current)
+        else:
+            result = PyTorchDelayedSynapticTransmission.backward(ctx, grad_current)
+        return (*result, None)
+
+
 def execute_synaptic_transmission(spikes: torch.Tensor, edge_pre: torch.Tensor,
                                   edge_post: torch.Tensor, edge_weight: torch.Tensor) -> torch.Tensor:
     if HAS_TRITON and spikes.is_cuda and edge_pre.is_cuda:
@@ -272,10 +338,7 @@ def execute_delayed_synaptic_transmission(
     delay_splits: list[int] | tuple[int, ...] | torch.Tensor,
 ) -> torch.Tensor:
     """Execute biological multi-delay synaptic transmission along segmented edges."""
-    if isinstance(delay_splits, torch.Tensor):
-        delay_splits = tuple(int(x) for x in delay_splits.cpu().tolist())
-    elif not isinstance(delay_splits, (tuple, list)):
-        delay_splits = tuple(int(x) for x in delay_splits)
+    delay_splits = _canonical_delay_splits(delay_splits, edge_weight.numel())
     s1, s2, s3, s4 = spikes_ring[0], spikes_ring[1], spikes_ring[2], spikes_ring[3]
     if HAS_TRITON and s1.is_cuda and edge_pre.is_cuda:
         if s1.shape[0] == 1:

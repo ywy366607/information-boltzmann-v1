@@ -1,0 +1,1462 @@
+{
+  "date": "2026-10-07",
+  "reviewer": "/root/repair_result_review",
+  "role": "Independent conclusion reviewer under research-theory-discovery; did not generate candidate, preregistration or execution code",
+  "status": "accepted_local_unsupported_conclusion_with_branch_accounting_refinement",
+  "independence": {
+    "candidate_generated": false,
+    "protocol_written": false,
+    "execution_code_written": false,
+    "gpu_runs_performed": 0,
+    "no_extra_GPU": true,
+    "production_modified": false,
+    "new_experiments": false,
+    "review_actions": "Read all report fields, inspect locked source logic, CPU-only JSON/arithmetic/array/hash verification, write this review JSON."
+  },
+  "verdict": {
+    "candidate": "C_reset",
+    "recomputed_status": "locally_unsupported",
+    "matches_report_status": true,
+    "selected_for_followup_review": false,
+    "production_adoption_supported": false,
+    "parent_proposed_conclusion": "Accepted with refinement: the report already contains an original-body fixed-event finite response and Taylor prediction that closely agree. Further design should use that known result rather than present fixed-event Taylor as wholly unmeasured. Candidate finite fixed-event fit and isolating clamp interventions are not measured here.",
+    "scope": "One mature checkpoint, fit32/following32, 96 unique real OWT positions including B32, saved Adam moments and current numerical gates."
+  },
+  "provenance": {
+    "all_content_hashes_pass": true,
+    "locks": [
+      {
+        "kind": "source",
+        "path": "scripts/ib/train_fly_pipeline_stream.py",
+        "sha256": "72b9b570f2e94f2c0eaa8f4bd5c52570f12ec60de7e595bbf3c9f066413ec504",
+        "expected": "72b9b570f2e94f2c0eaa8f4bd5c52570f12ec60de7e595bbf3c9f066413ec504",
+        "passed": true
+      },
+      {
+        "kind": "source",
+        "path": "information_boltzmann/core/fly_pipeline.py",
+        "sha256": "17f857ac6f6d145f2bf1a1083ce98edf3b37d4de5f39b508f4eedcfef51db04c",
+        "expected": "17f857ac6f6d145f2bf1a1083ce98edf3b37d4de5f39b508f4eedcfef51db04c",
+        "passed": true
+      },
+      {
+        "kind": "source",
+        "path": "information_boltzmann/core/fly_reservoir.py",
+        "sha256": "a24915ab6cff4855cc63c6e3421549cc0f806d69929a8cfb515feb7481406ff0",
+        "expected": "a24915ab6cff4855cc63c6e3421549cc0f806d69929a8cfb515feb7481406ff0",
+        "passed": true
+      },
+      {
+        "kind": "source",
+        "path": "information_boltzmann/core/fly_bptt_learning.py",
+        "sha256": "17e620f100b7f2163a04eb83525e47ed454828a99c20c78814d20b9e877f9e33",
+        "expected": "17e620f100b7f2163a04eb83525e47ed454828a99c20c78814d20b9e877f9e33",
+        "passed": true
+      },
+      {
+        "kind": "source",
+        "path": "information_boltzmann/core/triton_synapse.py",
+        "sha256": "f5b6d600a86233fdeebcb1b6958f0441c39041b2cf78b1737c401aa4db28a5b7",
+        "expected": "f5b6d600a86233fdeebcb1b6958f0441c39041b2cf78b1737c401aa4db28a5b7",
+        "passed": true
+      },
+      {
+        "kind": "source",
+        "path": "information_boltzmann/runtime/prequential_meter.py",
+        "sha256": "59888c68ca9f005a3ce1e31e4ca3e24e9b132f662702923984fff888c5e190d1",
+        "expected": "59888c68ca9f005a3ce1e31e4ca3e24e9b132f662702923984fff888c5e190d1",
+        "passed": true
+      },
+      {
+        "kind": "source",
+        "path": "information_boltzmann/runtime/lifelong_evaluation.py",
+        "sha256": "d7cd585da1ede80b5fffe56bc9da6684cb0768ce83de25d4dfb6d6d71152d23c",
+        "expected": "d7cd585da1ede80b5fffe56bc9da6684cb0768ce83de25d4dfb6d6d71152d23c",
+        "passed": true
+      },
+      {
+        "kind": "source",
+        "path": "scripts/ib/diagnose_fly_harness_update.py",
+        "sha256": "3c8fb2db406d3e2b8573e77980d3761f7a3020cd327e9c3b47943998d2c2cfec",
+        "expected": "3c8fb2db406d3e2b8573e77980d3761f7a3020cd327e9c3b47943998d2c2cfec",
+        "passed": true
+      },
+      {
+        "kind": "source",
+        "path": "scripts/ib/diagnose_fly_pipeline_repair.py",
+        "sha256": "c9e88111a410b08caccf90aef0766971d63669b539195e0c95dd2892d48b37f7",
+        "expected": "c9e88111a410b08caccf90aef0766971d63669b539195e0c95dd2892d48b37f7",
+        "passed": true
+      },
+      {
+        "kind": "data_train",
+        "path": "D:\\information-boltzmann-v1\\data\\ib_owt_gpt2_31m\\train.npy",
+        "sha256": "0a1816c467f1d9a643e2e81d7ffbf47dd9219c954f3afcd040a4cd5db84880a3",
+        "expected": "0a1816c467f1d9a643e2e81d7ffbf47dd9219c954f3afcd040a4cd5db84880a3",
+        "passed": true
+      },
+      {
+        "kind": "data_validation",
+        "path": "D:\\information-boltzmann-v1\\data\\ib_owt_gpt2_31m\\validation.npy",
+        "sha256": "4f6ffab72f48594e745c0bdf10bddce6a79167491abd4ef64099368c8c6fcc33",
+        "expected": "4f6ffab72f48594e745c0bdf10bddce6a79167491abd4ef64099368c8c6fcc33",
+        "passed": true
+      },
+      {
+        "kind": "data_reference_train",
+        "path": "D:\\information-boltzmann-v1\\data\\ib_owt_gpt2\\train.npy",
+        "sha256": "6dd24ac1b43aef10d914418b7e6d6f28eedbc5ae8dc653003196375e37ceedb9",
+        "expected": "6dd24ac1b43aef10d914418b7e6d6f28eedbc5ae8dc653003196375e37ceedb9",
+        "passed": true
+      },
+      {
+        "kind": "data_graph",
+        "path": "D:\\information-boltzmann-v1\\data\\malecns_v1\\fly_reservoir_coba.npz",
+        "sha256": "99ae28836addcc9c4aef9ef755295f13105a8497135bf2e28cc8f1be0e47e359",
+        "expected": "99ae28836addcc9c4aef9ef755295f13105a8497135bf2e28cc8f1be0e47e359",
+        "passed": true
+      },
+      {
+        "kind": "data_sensory_partitions",
+        "path": "D:\\information-boltzmann-v1\\data\\malecns_v1\\sensory_partitions.npz",
+        "sha256": "1abcacb1f9b182031236a2cc5932a61c6b904dda3aaed55b462a3f36636a39f5",
+        "expected": "1abcacb1f9b182031236a2cc5932a61c6b904dda3aaed55b462a3f36636a39f5",
+        "passed": true
+      },
+      {
+        "kind": "checkpoint",
+        "path": "F:\\fly_checkpoints\\q8_fly_pipeline14_joint_96k\\last.pt",
+        "sha256": "ef7ba2d97b1e86cfc6f6630500552596c73be64be9819b408b20912ccc9eb968",
+        "expected": "ef7ba2d97b1e86cfc6f6630500552596c73be64be9819b408b20912ccc9eb968",
+        "passed": true
+      }
+    ],
+    "input_sha256": {
+      "fly_pipeline_repair_preregistered_20261007.json": "283f289d29b792001fb67d50830f334740ba5f6d80b3c82723a363c5abbe4e22",
+      "fly_pipeline_repair_execution_approval_20261007.json": "9496cc70b45ee803c41fa24744e22432f75522bcd2a18e194b81ff3b57a956cb",
+      "fly_pipeline_repair_hypothesis_review_20261007.json": "abfb0224250bbd7b9d31db7436b6889919aefd0b61511a65d2c6e58ec6c4b5db",
+      "fly_pipeline_repair_diagnostic_20261007.json": "24f4c81d142909212880cedfdfbbae5a96ce5f6479bac9fd835f69a8635867bf",
+      "fly_pipeline_repair_execution_history_20261007.json": "09dee8477903ce01a95bf8f257d9a4c1b4da08fecbfc8c22c59d19ac506bbab1",
+      "docs/information_boltzmann/FLY_PIPELINE_REPAIR_DECISION_20261007.md": "5110ae2ff1e8d71bba7d2737e01b0781bbf7e771b233a20a9b59a3d7149e8b07",
+      "fly_pipeline_repair_execution_final_20261007.json": "db2eb47d99cba62494953a6f320e266a9e171a6f869ea9e022e148372667c83b"
+    },
+    "report_sha256": "24f4c81d142909212880cedfdfbbae5a96ce5f6479bac9fd835f69a8635867bf",
+    "report_protocol_and_approval_match": true,
+    "source_checkpoint_report_matches": true,
+    "approval_source_manifest_matches": true,
+    "recovery_history_lock_matches": true,
+    "recovery_protocol_changed_fields": [
+      "execution",
+      "execution_recovery",
+      "script_sha256",
+      "source_hashes"
+    ],
+    "only_allowed_recovery_metadata_changed": true,
+    "unchanged_scientific_fields": true,
+    "non_diagnostic_source_dependencies_unchanged": true,
+    "exact_targets_verified_against_locked_real_arrays": {
+      "fit_train_96000_96032": true,
+      "future_train_96032_96064": true,
+      "B_validation_1536_1568": true
+    },
+    "hypothesis_review_hash_note": "Prospective hypothesis review references an earlier amended-protocol hash; final independently approved execution binds the current hash. The original review remains the scope record, not the final execution authority."
+  },
+  "budget": {
+    "attempt1": {
+      "attempt": 1,
+      "status": "report_serialization_failed",
+      "command": "diagnose_fly_pipeline_repair.py with original approved locks",
+      "protocol_sha256": "4c7a186ebd822dcf704d2cf5028482e5f92807ecfce5f841b2fd5718f9d8ca23",
+      "script_sha256": "48fcbfa3e784c9cd1485ec73b59c2c306a752d0d50e7e5cab74e49e245d89b42",
+      "forward_windows": 44,
+      "physical_ticks": 1408,
+      "backwards": 3,
+      "disposable_updates": 2,
+      "completion_evidence": "Traceback reached final write_json after exact-budget ledger, unchanged-source and final memory checks.",
+      "error": "TypeError: Object of type float32 is not JSON serializable; partial report serialization failed too.",
+      "outcome_report_saved": false,
+      "new_nll_values_seen": false,
+      "scientific_interpretation": "No scientific negative or positive result; report unavailable.",
+      "source_or_production_changed": false
+    },
+    "attempt2_actual": {
+      "forward_windows": 44,
+      "physical_ticks": 1408,
+      "backwards": 3,
+      "disposable_updates": 2
+    },
+    "attempt2_by_role": {
+      "baseline_and_two_identity_fit_future": 6,
+      "B_prefix_then_same_future": 2,
+      "ordinary_observe": 1,
+      "ordinary_registered_masks_fit_future": 10,
+      "selection_control_repeats": 12,
+      "ordinary_body_two_scales_fixed_fit": 2,
+      "fixed_event_backward": 1,
+      "reset_candidate_future_identity": 1,
+      "reset_candidate_observe": 1,
+      "reset_candidate_registered_masks_fit_future": 4,
+      "two_body_matched_norm_fit_future": 4
+    },
+    "cumulative_actual": {
+      "forward_windows": 88,
+      "physical_ticks": 2816,
+      "backwards": 6,
+      "disposable_updates": 4
+    },
+    "cumulative_matches_approved_maximum": true,
+    "unique_real_positions": 96,
+    "available_scientific_outcome_reports": 1,
+    "independent_statistical_replications": 0,
+    "resource_report": {
+      "cuda_peak_allocated_mib": 2231.94482421875,
+      "cuda_peak_reserved_mib": 2412.0,
+      "cuda_device_used_mib": 2254.9375
+    },
+    "memory_gate_mib": 3900,
+    "resource_gate_pass": true,
+    "history_note": "The immutable recovery-approval history still records attempt1 and retains its approved hash. The separate execution_final append ledger records attempt2 and cumulative actual compute; both are verified here.",
+    "execution_final_cross_audit": {
+      "path": "D:\\information-boltzmann-v1\\results\\published\\fly_pipeline_repair_execution_final_20261007.json",
+      "sha256": "db2eb47d99cba62494953a6f320e266a9e171a6f869ea9e022e148372667c83b",
+      "cumulative_actual_matches": true,
+      "original_approval_history_lock_preserved": true,
+      "attempt2_report_hash_matches": true,
+      "attempt2_protocol_hash_matches": true,
+      "attempt2_budget_matches": true,
+      "additional_replays_remaining": 0
+    }
+  },
+  "numerical_audit": {
+    "all_json_numbers_finite": true,
+    "mean_identities": {
+      "baseline_fit": {
+        "length": 32,
+        "mean_error": 0.0
+      },
+      "baseline_future": {
+        "length": 32,
+        "mean_error": 0.0
+      },
+      "ordinary_full_1_fit": {
+        "length": 32,
+        "mean_error": 0.0
+      },
+      "ordinary_full_1_future": {
+        "length": 32,
+        "mean_error": 0.0
+      },
+      "ordinary_body_1_fit": {
+        "length": 32,
+        "mean_error": 0.0
+      },
+      "ordinary_body_1_future": {
+        "length": 32,
+        "mean_error": 0.0
+      },
+      "ordinary_body_0.1_fit": {
+        "length": 32,
+        "mean_error": 0.0
+      },
+      "ordinary_body_0.1_future": {
+        "length": 32,
+        "mean_error": 0.0
+      },
+      "ordinary_head_1_fit": {
+        "length": 32,
+        "mean_error": 0.0
+      },
+      "ordinary_head_1_future": {
+        "length": 32,
+        "mean_error": 0.0
+      },
+      "ordinary_bias_1_fit": {
+        "length": 32,
+        "mean_error": 0.0
+      },
+      "ordinary_bias_1_future": {
+        "length": 32,
+        "mean_error": 0.0
+      },
+      "candidate_full_1_fit": {
+        "length": 32,
+        "mean_error": 0.0
+      },
+      "candidate_full_1_future": {
+        "length": 32,
+        "mean_error": 0.0
+      },
+      "candidate_body_1_fit": {
+        "length": 32,
+        "mean_error": 0.0
+      },
+      "candidate_body_1_future": {
+        "length": 32,
+        "mean_error": 0.0
+      },
+      "matched_ordinary_fit": {
+        "length": 32,
+        "mean_error": 0.0
+      },
+      "matched_ordinary_future": {
+        "length": 32,
+        "mean_error": 0.0
+      },
+      "matched_reset_fit": {
+        "length": 32,
+        "mean_error": 0.0
+      },
+      "matched_reset_future": {
+        "length": 32,
+        "mean_error": 0.0
+      }
+    },
+    "all_mean_arrays_32_and_consistent": true,
+    "identity_controls": [
+      {
+        "name": "repeat_0_fit",
+        "passed": true,
+        "max_score_error": 9.5367431640625e-07,
+        "score_floor": 0.00010136512719327584,
+        "hard_mask_changes": 0,
+        "hard_calls": 64,
+        "physical_field_count": 12,
+        "ring_slot_count": 4,
+        "all_state_errors_below_minimum_possible_registered_floor": true
+      },
+      {
+        "name": "repeat_0_future",
+        "passed": true,
+        "max_score_error": 9.5367431640625e-07,
+        "score_floor": 0.00010800130985444412,
+        "hard_mask_changes": 0,
+        "hard_calls": 64,
+        "physical_field_count": 12,
+        "ring_slot_count": 4,
+        "all_state_errors_below_minimum_possible_registered_floor": true
+      },
+      {
+        "name": "repeat_1_fit",
+        "passed": true,
+        "max_score_error": 0.0,
+        "score_floor": 0.00010136512719327584,
+        "hard_mask_changes": 0,
+        "hard_calls": 64,
+        "physical_field_count": 12,
+        "ring_slot_count": 4,
+        "all_state_errors_below_minimum_possible_registered_floor": true
+      },
+      {
+        "name": "repeat_1_future",
+        "passed": true,
+        "max_score_error": 2.384185791015625e-07,
+        "score_floor": 0.00010800130985444412,
+        "hard_mask_changes": 0,
+        "hard_calls": 64,
+        "physical_field_count": 12,
+        "ring_slot_count": 4,
+        "all_state_errors_below_minimum_possible_registered_floor": true
+      },
+      {
+        "name": "ordinary_observe_identity",
+        "passed": true,
+        "max_score_error": 9.5367431640625e-07,
+        "score_floor": 0.00010136512719327584,
+        "hard_mask_changes": 0,
+        "hard_calls": 64,
+        "physical_field_count": 12,
+        "ring_slot_count": 4,
+        "all_state_errors_below_minimum_possible_registered_floor": true
+      },
+      {
+        "name": "fixed_backward_identity",
+        "passed": true,
+        "max_score_error": 9.5367431640625e-07,
+        "score_floor": 0.00010136512719327584,
+        "hard_mask_changes": 0,
+        "hard_calls": 64,
+        "physical_field_count": 12,
+        "ring_slot_count": 4,
+        "all_state_errors_below_minimum_possible_registered_floor": true
+      },
+      {
+        "name": "reset_observe_identity",
+        "passed": true,
+        "max_score_error": 9.5367431640625e-07,
+        "score_floor": 0.00010136512719327584,
+        "hard_mask_changes": 0,
+        "hard_calls": 64,
+        "physical_field_count": 12,
+        "ring_slot_count": 4,
+        "all_state_errors_below_minimum_possible_registered_floor": true
+      },
+      {
+        "name": "reset_forward_future",
+        "passed": true,
+        "max_score_error": 9.5367431640625e-07,
+        "score_floor": 0.00010800130985444412,
+        "hard_mask_changes": 0,
+        "hard_calls": 64,
+        "physical_field_count": 12,
+        "ring_slot_count": 4,
+        "all_state_errors_below_minimum_possible_registered_floor": true
+      }
+    ],
+    "all_identity_controls_pass": true,
+    "selection_replays": [
+      {
+        "point": "ordinary_joint",
+        "side": "fit",
+        "max_score_error": 4.76837158203125e-07,
+        "continuous_state_recomputed": true,
+        "hard_masks_recomputed": true,
+        "physical_field_count": 12,
+        "ring_slot_count": 4,
+        "matches_report": true
+      },
+      {
+        "point": "ordinary_joint",
+        "side": "future",
+        "max_score_error": 9.5367431640625e-07,
+        "continuous_state_recomputed": true,
+        "hard_masks_recomputed": true,
+        "physical_field_count": 12,
+        "ring_slot_count": 4,
+        "matches_report": true
+      },
+      {
+        "point": "ordinary_body",
+        "side": "fit",
+        "max_score_error": 0.0,
+        "continuous_state_recomputed": true,
+        "hard_masks_recomputed": true,
+        "physical_field_count": 12,
+        "ring_slot_count": 4,
+        "matches_report": true
+      },
+      {
+        "point": "ordinary_body",
+        "side": "future",
+        "max_score_error": 1.9073486328125e-06,
+        "continuous_state_recomputed": true,
+        "hard_masks_recomputed": true,
+        "physical_field_count": 12,
+        "ring_slot_count": 4,
+        "matches_report": true
+      },
+      {
+        "point": "candidate_joint",
+        "side": "fit",
+        "max_score_error": 4.76837158203125e-07,
+        "continuous_state_recomputed": true,
+        "hard_masks_recomputed": true,
+        "physical_field_count": 12,
+        "ring_slot_count": 4,
+        "matches_report": true
+      },
+      {
+        "point": "candidate_joint",
+        "side": "future",
+        "max_score_error": 9.5367431640625e-07,
+        "continuous_state_recomputed": true,
+        "hard_masks_recomputed": true,
+        "physical_field_count": 12,
+        "ring_slot_count": 4,
+        "matches_report": true
+      },
+      {
+        "point": "candidate_body",
+        "side": "fit",
+        "max_score_error": 9.5367431640625e-07,
+        "continuous_state_recomputed": true,
+        "hard_masks_recomputed": true,
+        "physical_field_count": 12,
+        "ring_slot_count": 4,
+        "matches_report": true
+      },
+      {
+        "point": "candidate_body",
+        "side": "future",
+        "max_score_error": 1.9073486328125e-06,
+        "continuous_state_recomputed": true,
+        "hard_masks_recomputed": true,
+        "physical_field_count": 12,
+        "ring_slot_count": 4,
+        "matches_report": true
+      },
+      {
+        "point": "matched_ordinary",
+        "side": "fit",
+        "max_score_error": 4.76837158203125e-07,
+        "continuous_state_recomputed": true,
+        "hard_masks_recomputed": true,
+        "physical_field_count": 12,
+        "ring_slot_count": 4,
+        "matches_report": true
+      },
+      {
+        "point": "matched_ordinary",
+        "side": "future",
+        "max_score_error": 9.5367431640625e-07,
+        "continuous_state_recomputed": true,
+        "hard_masks_recomputed": true,
+        "physical_field_count": 12,
+        "ring_slot_count": 4,
+        "matches_report": true
+      },
+      {
+        "point": "matched_candidate",
+        "side": "fit",
+        "max_score_error": 0.0,
+        "continuous_state_recomputed": true,
+        "hard_masks_recomputed": true,
+        "physical_field_count": 12,
+        "ring_slot_count": 4,
+        "matches_report": true
+      },
+      {
+        "point": "matched_candidate",
+        "side": "future",
+        "max_score_error": 2.384185791015625e-07,
+        "continuous_state_recomputed": true,
+        "hard_masks_recomputed": true,
+        "physical_field_count": 12,
+        "ring_slot_count": 4,
+        "matches_report": true
+      }
+    ],
+    "norm": {
+      "radius": 0.16884584994062696,
+      "candidate_actual_norm": 0.16884586068736365,
+      "absolute_error": 1.0746736694988712e-08,
+      "relative_error": 6.364821343709484e-08,
+      "relative_error_limit": 7.62939453125e-06,
+      "absolute_error_limit": 1.2881916041612774e-06,
+      "radius_resolution_limit": 7.62939453125e-05
+    },
+    "tau": {
+      "maximum_replay_score_error": 1.9073486328125e-06,
+      "maximum_registered_control_score": 14.168743133544922,
+      "ten_repeat_error": 1.9073486328125e-05,
+      "scaled_FP32_floor": 0.00010809893137775362,
+      "recomputed": 0.00010809893137775362,
+      "reported": 0.00010809893137775362,
+      "matches_report": true,
+      "interpretation": "Numerical decision floor, not confidence interval, noninferiority test or population uncertainty."
+    },
+    "recomputed_checks": {
+      "joint_future_improved": true,
+      "joint_fit_nonworse": true,
+      "body_fit_improved": false,
+      "body_fit_nonworse_than_old": true,
+      "body_future_improved": false,
+      "body_future_nonworse_than_old": true,
+      "matched_body_future_improved": false,
+      "matched_body_fit_nonworse": true,
+      "matched_norm_valid": true,
+      "matched_radius_resolved": true,
+      "raw_head_gradients_equal": true,
+      "selection_replays_stable": true
+    },
+    "matches_every_reported_check": true,
+    "failed_predictive_checks": [
+      "body_fit_improved",
+      "body_future_improved",
+      "matched_body_future_improved"
+    ],
+    "raw_head_gradient_equality": {
+      "maximum_absolute_error": 3.91155481338501e-08,
+      "rms_error": 1.0271768907343078e-11,
+      "floor": 7.62939453125e-06,
+      "passed": true
+    },
+    "direction_ledger_arithmetic": {
+      "ordinary_surrogate_direction": {
+        "sum_component_dot_minus_full": 6.938893903907228e-18,
+        "body": {
+          "gradient_dot_actual_displacement": -0.0014523955782111608,
+          "gradient_norm": 0.9659247726706421,
+          "displacement_norm": 0.16884584994062696,
+          "direction_cosine": -0.008905354720443003,
+          "relative_displacement_norm": 0.00019257348149789212,
+          "changed_coordinates": 15497557,
+          "float64_accumulation_floor": 2.5313064167580157e-17
+        },
+        "head_displacement_norm": 0.51926655934321,
+        "bias_displacement_norm": 0.023711342102392813
+      },
+      "ordinary_fixed_derivative_direction": {
+        "sum_component_dot_minus_full": 0.0,
+        "body": {
+          "gradient_dot_actual_displacement": -0.0002828841329426128,
+          "gradient_norm": 0.0475325214738898,
+          "displacement_norm": 0.16884584994062696,
+          "direction_cosine": -0.03524742091441364,
+          "relative_displacement_norm": 0.00019257348149789212,
+          "changed_coordinates": 15497557,
+          "float64_accumulation_floor": 7.137589811449777e-18
+        },
+        "head_displacement_norm": 0.51926655934321,
+        "bias_displacement_norm": 0.023711342102392813
+      },
+      "candidate_surrogate_direction": {
+        "sum_component_dot_minus_full": -3.469446951953614e-18,
+        "body": {
+          "gradient_dot_actual_displacement": -0.001046542239786715,
+          "gradient_norm": 0.4812048888088676,
+          "displacement_norm": 0.17026138281195152,
+          "direction_cosine": -0.012773519476295882,
+          "relative_displacement_norm": 0.00019418793689197813,
+          "changed_coordinates": 15496740,
+          "float64_accumulation_floor": 1.8621061628400054e-17
+        },
+        "head_displacement_norm": 0.5283854491100586,
+        "bias_displacement_norm": 0.024133950146529685
+      },
+      "candidate_original_surrogate_direction": {
+        "sum_component_dot_minus_full": -6.938893903907228e-18,
+        "body": {
+          "gradient_dot_actual_displacement": -0.0013485347292431908,
+          "gradient_norm": 0.9659247726706421,
+          "displacement_norm": 0.17026138281195152,
+          "direction_cosine": -0.008199788956475766,
+          "relative_displacement_norm": 0.00019418793689197813,
+          "changed_coordinates": 15496740,
+          "float64_accumulation_floor": 2.408180637552852e-17
+        },
+        "head_displacement_norm": 0.5283854491100586,
+        "bias_displacement_norm": 0.024133950146529685
+      },
+      "ordinary_candidate_surrogate_direction": {
+        "sum_component_dot_minus_full": -3.469446951953614e-18,
+        "body": {
+          "gradient_dot_actual_displacement": -0.001063475038575975,
+          "gradient_norm": 0.4812048888088676,
+          "displacement_norm": 0.16884584994062696,
+          "direction_cosine": -0.013089012404508812,
+          "relative_displacement_norm": 0.00019257348149789212,
+          "changed_coordinates": 15497557,
+          "float64_accumulation_floor": 1.889642649678668e-17
+        },
+        "head_displacement_norm": 0.51926655934321,
+        "bias_displacement_norm": 0.023711342102392813
+      },
+      "candidate_fixed_derivative_direction": {
+        "sum_component_dot_minus_full": 0.0,
+        "body": {
+          "gradient_dot_actual_displacement": -0.0002977924595751796,
+          "gradient_norm": 0.0475325214738898,
+          "displacement_norm": 0.17026138281195152,
+          "direction_cosine": -0.03679651490108241,
+          "relative_displacement_norm": 0.00019418793689197813,
+          "changed_coordinates": 15496740,
+          "float64_accumulation_floor": 7.246627380347532e-18
+        },
+        "head_displacement_norm": 0.5283854491100586,
+        "bias_displacement_norm": 0.024133950146529685
+      }
+    }
+  },
+  "selection_effects": {
+    "joint_fit_candidate_minus_ordinary": -0.0015237778425216675,
+    "joint_future_candidate_minus_ordinary": -0.00023862719535827637,
+    "raw_body_fit_candidate_minus_ordinary": -7.733702659606934e-05,
+    "raw_body_future_candidate_minus_ordinary": 2.539902925491333e-05,
+    "candidate_body_fit_minus_old": 5.7719647884368896e-05,
+    "candidate_body_future_minus_old": -0.0005258545279502869,
+    "matched_fit_candidate_minus_ordinary": -7.56978988647461e-05,
+    "matched_future_candidate_minus_ordinary": 2.2485852241516113e-05,
+    "comparison_rule": "Negative delta is lower NLL; improvement must be strictly below -tau. Inside-floor positive differences are failed improvement gates, not established harm."
+  },
+  "body_branch_accounting": {
+    "old_fit_nll": 7.192931480705738,
+    "surrogate_dot_actual_post_clamp_body_displacement": -0.0014523955782111608,
+    "fixed_event_dot_actual_post_clamp_body_displacement": -0.0002828841329426128,
+    "actual_hard_fit_delta": 0.00013505667448043823,
+    "actual_fixed_event_fit_delta": -0.0002825409173965454,
+    "fixed_event_taylor_remainder": 3.432155460674109e-07,
+    "hard_minus_fixed_event_fit": 0.00041759759187698364,
+    "hard_future_delta": -0.0005512535572052002,
+    "fit_excess_above_tau": 2.6957743102684617e-05,
+    "branch_identity_error": 0.0,
+    "hard_fit_event_changes": {
+      "begin_motor_changes": 152,
+      "finish_body_changes": 3367,
+      "changed_by_call": [
+        0,
+        7,
+        0,
+        14,
+        0,
+        12,
+        0,
+        16,
+        0,
+        17,
+        1,
+        20,
+        1,
+        26,
+        0,
+        25,
+        0,
+        34,
+        1,
+        44,
+        2,
+        47,
+        6,
+        61,
+        9,
+        78,
+        4,
+        86,
+        4,
+        99,
+        5,
+        111,
+        6,
+        111,
+        5,
+        100,
+        6,
+        102,
+        4,
+        102,
+        5,
+        119,
+        6,
+        147,
+        9,
+        163,
+        11,
+        181,
+        11,
+        201,
+        9,
+        201,
+        11,
+        161,
+        8,
+        192,
+        7,
+        216,
+        7,
+        234,
+        3,
+        200,
+        11,
+        240
+      ],
+      "total_changes": 3519,
+      "total_calls": 64,
+      "first_changed_call": 1
+    },
+    "hard_future_event_changes": {
+      "begin_motor_changes": 107,
+      "finish_body_changes": 2795,
+      "changed_by_call": [
+        0,
+        5,
+        0,
+        9,
+        0,
+        8,
+        0,
+        11,
+        0,
+        15,
+        0,
+        22,
+        0,
+        35,
+        0,
+        38,
+        1,
+        37,
+        1,
+        45,
+        2,
+        51,
+        5,
+        61,
+        6,
+        73,
+        5,
+        75,
+        3,
+        65,
+        3,
+        82,
+        3,
+        95,
+        2,
+        101,
+        2,
+        115,
+        2,
+        104,
+        2,
+        99,
+        4,
+        91,
+        3,
+        99,
+        4,
+        109,
+        6,
+        126,
+        4,
+        154,
+        4,
+        148,
+        7,
+        154,
+        9,
+        163,
+        7,
+        182,
+        9,
+        201,
+        13,
+        222
+      ],
+      "total_changes": 2902,
+      "total_calls": 64,
+      "first_changed_call": 1
+    },
+    "finding": "On this recorded body step the fixed-event fit response decreases and closely agrees with its derivative-dot-step; the measured hard-minus-fixed event-path counterfactual contrast offsets that decrease and reverses the hard fit sign. This supports a local event-associated finite-step difference under the registered intervention, not a unique event-credit/reset mechanism, causal global bottleneck, or long-run root cause.",
+    "scale_0p1_descriptive_only": {
+      "hard_fit_delta": 4.887580871582031e-06,
+      "fixed_event_fit_delta": -2.8252601623535156e-05,
+      "fixed_event_linear_prediction": -2.8288413294261283e-05,
+      "fixed_event_remainder_using_nominal_scale": 3.5811670726126535e-08,
+      "hard_minus_fixed_event_fit": 3.314018249511719e-05,
+      "future_delta": 1.6257166862487793e-05,
+      "interpretation": "No endpoint substitution. The scale0.1 control has no separately measured FP32 realized body norm; its nominal scaled Taylor comparison is descriptive."
+    }
+  },
+  "learning_operator_accounting": {
+    "ordinary_grad_norm": 1.1861207485198975,
+    "candidate_grad_norm": 0.8398987054824829,
+    "ordinary_clip_factor": 0.8430837738603567,
+    "candidate_clip_factor": 1.0,
+    "ordinary_clamp": {
+      "calls": 1,
+      "changed_coordinates": 454915,
+      "unclamped_edge_displacement_square": 0.010018813946272609,
+      "clamp_correction_square": 0.00019652046673351847,
+      "raw_gradient_dot_unclamped_edge_displacement": -0.0011596249384622512,
+      "raw_gradient_dot_clamp_correction": 3.157644691963074e-05
+    },
+    "candidate_clamp": {
+      "calls": 1,
+      "changed_coordinates": 454325,
+      "unclamped_edge_displacement_square": 0.01038682282973282,
+      "clamp_correction_square": 0.00019533618722146023,
+      "raw_gradient_dot_unclamped_edge_displacement": -0.0008866078569580484,
+      "raw_gradient_dot_clamp_correction": 1.4796398969833437e-05
+    },
+    "directions": {
+      "ordinary_surrogate_direction": {
+        "sum_component_dot_minus_full": 6.938893903907228e-18,
+        "body": {
+          "gradient_dot_actual_displacement": -0.0014523955782111608,
+          "gradient_norm": 0.9659247726706421,
+          "displacement_norm": 0.16884584994062696,
+          "direction_cosine": -0.008905354720443003,
+          "relative_displacement_norm": 0.00019257348149789212,
+          "changed_coordinates": 15497557,
+          "float64_accumulation_floor": 2.5313064167580157e-17
+        },
+        "head_displacement_norm": 0.51926655934321,
+        "bias_displacement_norm": 0.023711342102392813
+      },
+      "ordinary_fixed_derivative_direction": {
+        "sum_component_dot_minus_full": 0.0,
+        "body": {
+          "gradient_dot_actual_displacement": -0.0002828841329426128,
+          "gradient_norm": 0.0475325214738898,
+          "displacement_norm": 0.16884584994062696,
+          "direction_cosine": -0.03524742091441364,
+          "relative_displacement_norm": 0.00019257348149789212,
+          "changed_coordinates": 15497557,
+          "float64_accumulation_floor": 7.137589811449777e-18
+        },
+        "head_displacement_norm": 0.51926655934321,
+        "bias_displacement_norm": 0.023711342102392813
+      },
+      "candidate_surrogate_direction": {
+        "sum_component_dot_minus_full": -3.469446951953614e-18,
+        "body": {
+          "gradient_dot_actual_displacement": -0.001046542239786715,
+          "gradient_norm": 0.4812048888088676,
+          "displacement_norm": 0.17026138281195152,
+          "direction_cosine": -0.012773519476295882,
+          "relative_displacement_norm": 0.00019418793689197813,
+          "changed_coordinates": 15496740,
+          "float64_accumulation_floor": 1.8621061628400054e-17
+        },
+        "head_displacement_norm": 0.5283854491100586,
+        "bias_displacement_norm": 0.024133950146529685
+      },
+      "candidate_original_surrogate_direction": {
+        "sum_component_dot_minus_full": -6.938893903907228e-18,
+        "body": {
+          "gradient_dot_actual_displacement": -0.0013485347292431908,
+          "gradient_norm": 0.9659247726706421,
+          "displacement_norm": 0.17026138281195152,
+          "direction_cosine": -0.008199788956475766,
+          "relative_displacement_norm": 0.00019418793689197813,
+          "changed_coordinates": 15496740,
+          "float64_accumulation_floor": 2.408180637552852e-17
+        },
+        "head_displacement_norm": 0.5283854491100586,
+        "bias_displacement_norm": 0.024133950146529685
+      },
+      "ordinary_candidate_surrogate_direction": {
+        "sum_component_dot_minus_full": -3.469446951953614e-18,
+        "body": {
+          "gradient_dot_actual_displacement": -0.001063475038575975,
+          "gradient_norm": 0.4812048888088676,
+          "displacement_norm": 0.16884584994062696,
+          "direction_cosine": -0.013089012404508812,
+          "relative_displacement_norm": 0.00019257348149789212,
+          "changed_coordinates": 15497557,
+          "float64_accumulation_floor": 1.889642649678668e-17
+        },
+        "head_displacement_norm": 0.51926655934321,
+        "bias_displacement_norm": 0.023711342102392813
+      },
+      "candidate_fixed_derivative_direction": {
+        "sum_component_dot_minus_full": 0.0,
+        "body": {
+          "gradient_dot_actual_displacement": -0.0002977924595751796,
+          "gradient_norm": 0.0475325214738898,
+          "displacement_norm": 0.17026138281195152,
+          "direction_cosine": -0.03679651490108241,
+          "relative_displacement_norm": 0.00019418793689197813,
+          "changed_coordinates": 15496740,
+          "float64_accumulation_floor": 7.246627380347532e-18
+        },
+        "head_displacement_norm": 0.5283854491100586,
+        "bias_displacement_norm": 0.024133950146529685
+      }
+    },
+    "fixed_missing_gradient_names": [
+      "log_threshold",
+      "log_tau_a",
+      "log_beta"
+    ],
+    "candidate_fixed_event_finite_fit_measured": false,
+    "interpretation": "All directional summaries use actual post-Adam/post-clamp displacements. Fixed-event derivative norms are not exact expected hard-event loss gradients. Original and candidate clamp corrections are logged, but no separate fixed-event clamp isolation is available; their individual causal shares remain open."
+  },
+  "retrospective_and_context_scope": {
+    "fit_head_means": {
+      "full": 7.192931465804577,
+      "bias": 7.256118215620518,
+      "common": 7.193793393671513,
+      "content_without_common": 7.255256332457066,
+      "fixed_train_frequency": 7.266299843788147
+    },
+    "future_head_means": {
+      "full": 7.85556997358799,
+      "bias": 8.001678496599197,
+      "common": 7.855869613587856,
+      "content_without_common": 8.001378878951073,
+      "fixed_train_frequency": 7.945488125085831
+    },
+    "fit_normalized_feature_variation_fraction": 0.00011065653891157786,
+    "future_normalized_feature_variation_fraction": 6.436811656879634e-05,
+    "fit_decoder_gradient": {
+      "full_norm": 0.47039442492965694,
+      "common_norm": 0.4704121635841067,
+      "covariance_norm": 0.004181311221638239,
+      "common_covariance_inner": -1.7086003254920207e-05,
+      "relative_identity_error": 3.208812589267383e-16
+    },
+    "future_decoder_gradient": {
+      "full_norm": 0.4264919052625123,
+      "common_norm": 0.4264883915497304,
+      "covariance_norm": 0.0035474003883474194,
+      "common_covariance_inner": -4.793460871754299e-06,
+      "relative_identity_error": 5.917274928450764e-16
+    },
+    "paired_B_minus_A_future": -0.0005932003259658813,
+    "paired_B_minus_A_recomputed": -0.0005932003259658813,
+    "interpretation": "Common/content algebra is retrospective. Frozen-head response after real A/B prefixes is a local causal-history observation. Neither identifies general motor semantic sufficiency, missing information, global bottlenecks or independent post-selection performance."
+  },
+  "reset_partial_statistics": {
+    "fit": {
+      "record_count": 64,
+      "stages": [
+        "begin_motor",
+        "finish_motor"
+      ],
+      "statistics": {
+        "pre_energy": {
+          "min": 9.336759044573164,
+          "mean": 9.524119059783605,
+          "max": 9.688395924365693
+        },
+        "post_energy": {
+          "min": 9.208484717520651,
+          "mean": 9.359561582310127,
+          "max": 9.525256540240534
+        },
+        "reset_discarded_energy": {
+          "min": 0.060640156378949484,
+          "mean": 0.16455747747348307,
+          "max": 0.3046157526788495
+        },
+        "ordinary_reset_v_jacobian_negative_fraction": {
+          "min": 0.0021431632339954376,
+          "mean": 0.004902486078208312,
+          "max": 0.01028718426823616
+        },
+        "ordinary_reset_v_jacobian_min": {
+          "min": -0.22533729672431946,
+          "mean": -0.16317867068573833,
+          "max": -0.11534915119409561
+        },
+        "ordinary_reset_v_jacobian_abs_mean": {
+          "min": 1.0041067600250244,
+          "mean": 1.0083233788609505,
+          "max": 1.0109189748764038
+        }
+      },
+      "pre_post_energy_identity_max_error": 2.3314683517128287e-15
+    },
+    "future": {
+      "record_count": 64,
+      "stages": [
+        "begin_motor",
+        "finish_motor"
+      ],
+      "statistics": {
+        "pre_energy": {
+          "min": 9.198895104666995,
+          "mean": 9.354474188521985,
+          "max": 9.56382151131822
+        },
+        "post_energy": {
+          "min": 9.049097242436446,
+          "mean": 9.198480906056385,
+          "max": 9.387246541263536
+        },
+        "reset_discarded_energy": {
+          "min": 0.025759908003903598,
+          "mean": 0.15599328246560376,
+          "max": 0.24660158592205944
+        },
+        "ordinary_reset_v_jacobian_negative_fraction": {
+          "min": 0.0008572653168812394,
+          "mean": 0.004647985366318608,
+          "max": 0.008144020102918148
+        },
+        "ordinary_reset_v_jacobian_min": {
+          "min": -0.22209258377552032,
+          "mean": -0.16193117760121822,
+          "max": -0.11356915533542633
+        },
+        "ordinary_reset_v_jacobian_abs_mean": {
+          "min": 1.0048635005950928,
+          "mean": 1.0077227130532265,
+          "max": 1.0106098651885986
+        }
+      },
+      "pre_post_energy_identity_max_error": 2.1094237467877974e-15
+    }
+  },
+  "complete_report_field_coverage": {
+    "scope": "bounded interpretation",
+    "protocol_sha256": "content locks",
+    "source_sha256": "content locks",
+    "parameter_groups": "partition coverage",
+    "controls": "all means, fixed-event controls, event changes and selected repeats",
+    "candidate_controls": "all means, event changes and selected repeats",
+    "execution_ledger": "per-role and total budget",
+    "complete": "report validity",
+    "baseline": "mean identities and local reset statistics",
+    "head_algebra_fit": "retrospective decomposition and norm/dot identity",
+    "head_algebra_future": "retrospective decomposition and norm/dot identity",
+    "repeat_identity": "all field/ring/score/mask gates",
+    "context_contrast": "same future targets and paired mean contrast",
+    "ordinary_observe_identity": "all field/ring/score/mask gates",
+    "ordinary_metrics": "raw gradient norms and clipping",
+    "ordinary_clamp": "actual displacement vs clamp accounting",
+    "ordinary_clip_factor": "clipping attribution limit",
+    "ordinary_surrogate_direction": "all groups and actual displacement dots",
+    "fixed_backward_identity": "all field/ring/score/mask gates",
+    "fixed_event_missing_gradient_names": "fixed event no-threshold derivative semantics",
+    "ordinary_fixed_derivative_direction": "all groups and finite fixed-event response",
+    "reset_forward_identity": "all field/ring/score/mask gates",
+    "reset_observe_identity": "all field/ring/score/mask gates",
+    "candidate_metrics": "raw gradient norms and clipping",
+    "candidate_clamp": "actual displacement vs clamp accounting",
+    "candidate_clip_factor": "clipping attribution limit",
+    "raw_head_gradient_equality": "raw head/bias numerical equality",
+    "candidate_surrogate_direction": "candidate SG dot candidate actual displacement",
+    "candidate_original_surrogate_direction": "original SG dot candidate actual displacement",
+    "ordinary_candidate_surrogate_direction": "candidate SG dot original actual displacement",
+    "candidate_fixed_derivative_direction": "fixed derivative dot candidate actual displacement",
+    "matched_norm": "radius, norm, scores, repeats and common head",
+    "decision_floor": "recomputed numerical floor",
+    "candidate_selection": "all preregistered checks independently recomputed",
+    "source_unchanged": "source locks independently recomputed",
+    "resources": "recorded memory budget"
+  },
+  "accepted_claims": [
+    {
+      "claim": "C_reset is locally unsupported under the registered conjunction and is not selected.",
+      "basis": "Identity/replay/head/norm controls pass; body fit improvement, raw-body future improvement and matched/common-head future improvement all fail.",
+      "strength": "registered_local_decision"
+    },
+    {
+      "claim": "Joint following-window NLL is locally lower for the candidate.",
+      "basis": {
+        "candidate_minus_ordinary": -0.00023862719535827637,
+        "tau": 0.00010809893137775362
+      },
+      "strength": "local_finite_step_observation"
+    },
+    {
+      "claim": "Joint benefit does not establish a beneficial reset-body direction.",
+      "basis": "Raw head gradients agree within floor while global clip factors and actual head/bias displacements differ; raw-body and common-head comparisons do not show registered candidate advantage. This leaves global clipping/head movement as a live explanation rather than uniquely proving it.",
+      "strength": "attribution_boundary"
+    },
+    {
+      "claim": "Original body finite hard-fit response differs in sign from its SG prediction while fixed-event response decreases.",
+      "basis": {
+        "old_fit_nll": 7.192931480705738,
+        "surrogate_dot_actual_post_clamp_body_displacement": -0.0014523955782111608,
+        "fixed_event_dot_actual_post_clamp_body_displacement": -0.0002828841329426128,
+        "actual_hard_fit_delta": 0.00013505667448043823,
+        "actual_fixed_event_fit_delta": -0.0002825409173965454,
+        "fixed_event_taylor_remainder": 3.432155460674109e-07,
+        "hard_minus_fixed_event_fit": 0.00041759759187698364,
+        "hard_future_delta": -0.0005512535572052002,
+        "fit_excess_above_tau": 2.6957743102684617e-05,
+        "branch_identity_error": 0.0,
+        "hard_fit_event_changes": {
+          "begin_motor_changes": 152,
+          "finish_body_changes": 3367,
+          "changed_by_call": [
+            0,
+            7,
+            0,
+            14,
+            0,
+            12,
+            0,
+            16,
+            0,
+            17,
+            1,
+            20,
+            1,
+            26,
+            0,
+            25,
+            0,
+            34,
+            1,
+            44,
+            2,
+            47,
+            6,
+            61,
+            9,
+            78,
+            4,
+            86,
+            4,
+            99,
+            5,
+            111,
+            6,
+            111,
+            5,
+            100,
+            6,
+            102,
+            4,
+            102,
+            5,
+            119,
+            6,
+            147,
+            9,
+            163,
+            11,
+            181,
+            11,
+            201,
+            9,
+            201,
+            11,
+            161,
+            8,
+            192,
+            7,
+            216,
+            7,
+            234,
+            3,
+            200,
+            11,
+            240
+          ],
+          "total_changes": 3519,
+          "total_calls": 64,
+          "first_changed_call": 1
+        },
+        "hard_future_event_changes": {
+          "begin_motor_changes": 107,
+          "finish_body_changes": 2795,
+          "changed_by_call": [
+            0,
+            5,
+            0,
+            9,
+            0,
+            8,
+            0,
+            11,
+            0,
+            15,
+            0,
+            22,
+            0,
+            35,
+            0,
+            38,
+            1,
+            37,
+            1,
+            45,
+            2,
+            51,
+            5,
+            61,
+            6,
+            73,
+            5,
+            75,
+            3,
+            65,
+            3,
+            82,
+            3,
+            95,
+            2,
+            101,
+            2,
+            115,
+            2,
+            104,
+            2,
+            99,
+            4,
+            91,
+            3,
+            99,
+            4,
+            109,
+            6,
+            126,
+            4,
+            154,
+            4,
+            148,
+            7,
+            154,
+            9,
+            163,
+            7,
+            182,
+            9,
+            201,
+            13,
+            222
+          ],
+          "total_changes": 2902,
+          "total_calls": 64,
+          "first_changed_call": 1
+        },
+        "finding": "On this recorded body step the fixed-event fit response decreases and closely agrees with its derivative-dot-step; the measured hard-minus-fixed event-path counterfactual contrast offsets that decrease and reverses the hard fit sign. This supports a local event-associated finite-step difference under the registered intervention, not a unique event-credit/reset mechanism, causal global bottleneck, or long-run root cause.",
+        "scale_0p1_descriptive_only": {
+          "hard_fit_delta": 4.887580871582031e-06,
+          "fixed_event_fit_delta": -2.8252601623535156e-05,
+          "fixed_event_linear_prediction": -2.8288413294261283e-05,
+          "fixed_event_remainder_using_nominal_scale": 3.5811670726126535e-08,
+          "hard_minus_fixed_event_fit": 3.314018249511719e-05,
+          "future_delta": 1.6257166862487793e-05,
+          "interpretation": "No endpoint substitution. The scale0.1 control has no separately measured FP32 realized body norm; its nominal scaled Taylor comparison is descriptive."
+        }
+      },
+      "strength": "local_branch_algebra"
+    },
+    {
+      "claim": "Original body following-window prediction improves at full scale.",
+      "basis": {
+        "future_delta": -0.0005512535572052002,
+        "tau": 0.00010809893137775362
+      },
+      "strength": "local_finite_step_observation"
+    },
+    {
+      "claim": "Real-prefix history changes affect this same-target frozen-head future score.",
+      "basis": {
+        "B_minus_A_future_nll": -0.0005932003259658813,
+        "same_targets_match": true
+      },
+      "strength": "one_paired_context_observation"
+    },
+    {
+      "claim": "The original local motor reset partial has negative values and absolute mean above one.",
+      "basis": {
+        "fit": {
+          "record_count": 64,
+          "stages": [
+            "begin_motor",
+            "finish_motor"
+          ],
+          "statistics": {
+            "pre_energy": {
+              "min": 9.336759044573164,
+              "mean": 9.524119059783605,
+              "max": 9.688395924365693
+            },
+            "post_energy": {
+              "min": 9.208484717520651,
+              "mean": 9.359561582310127,
+              "max": 9.525256540240534
+            },
+            "reset_discarded_energy": {
+              "min": 0.060640156378949484,
+              "mean": 0.16455747747348307,
+              "max": 0.3046157526788495
+            },
+            "ordinary_reset_v_jacobian_negative_fraction": {
+              "min": 0.0021431632339954376,
+              "mean": 0.004902486078208312,
+              "max": 0.01028718426823616
+            },
+            "ordinary_reset_v_jacobian_min": {
+              "min": -0.22533729672431946,
+              "mean": -0.16317867068573833,
+              "max": -0.11534915119409561
+            },
+            "ordinary_reset_v_jacobian_abs_mean": {
+              "min": 1.0041067600250244,
+              "mean": 1.0083233788609505,
+              "max": 1.0109189748764038
+            }
+          },
+          "pre_post_energy_identity_max_error": 2.3314683517128287e-15
+        },
+        "future": {
+          "record_count": 64,
+          "stages": [
+            "begin_motor",
+            "finish_motor"
+          ],
+          "statistics": {
+            "pre_energy": {
+              "min": 9.198895104666995,
+              "mean": 9.354474188521985,
+              "max": 9.56382151131822
+            },
+            "post_energy": {
+              "min": 9.049097242436446,
+              "mean": 9.198480906056385,
+              "max": 9.387246541263536
+            },
+            "reset_discarded_energy": {
+              "min": 0.025759908003903598,
+              "mean": 0.15599328246560376,
+              "max": 0.24660158592205944
+            },
+            "ordinary_reset_v_jacobian_negative_fraction": {
+              "min": 0.0008572653168812394,
+              "mean": 0.004647985366318608,
+              "max": 0.008144020102918148
+            },
+            "ordinary_reset_v_jacobian_min": {
+              "min": -0.22209258377552032,
+              "mean": -0.16193117760121822,
+              "max": -0.11356915533542633
+            },
+            "ordinary_reset_v_jacobian_abs_mean": {
+              "min": 1.0048635005950928,
+              "mean": 1.0077227130532265,
+              "max": 1.0106098651885986
+            }
+          },
+          "pre_post_energy_identity_max_error": 2.1094237467877974e-15
+        }
+      },
+      "strength": "partial_Jacobian_observation_only"
+    },
+    {
+      "claim": "The recovery is one effective outcome report after one lost report, with full cumulative compute counted.",
+      "basis": "Attempt1 reached final serialization after completion gates but its NLL outcome was unavailable; attempt2 uses the identical scientific protocol and one independently approved formatting recovery.",
+      "strength": "execution_provenance"
+    }
+  ],
+  "rejected_claims": [
+    {
+      "claim": "Adopt C_reset or call it locally useful on the strength of joint NLL.",
+      "reason": "The sealed selection is a conjunction; three required improvements fail.",
+      "viable_boundary": "Retain locally_unsupported for this checkpoint/windows/Adam state."
+    },
+    {
+      "claim": "The candidate body is proven harmful relative to original body.",
+      "reason": "Raw-body candidate-minus-original and matched candidate-minus-original are positive but inside tau.",
+      "viable_boundary": "Report no registered distinguishable direction benefit, not proven harm or equivalence."
+    },
+    {
+      "claim": "Reset is the unique cause of SG/hard disagreement or the long-run plateau.",
+      "reason": "Finite hard branch changes, local fixed-event derivatives, optimizer history, output feature and clipping are different objects; C_reset fails its local identifying improvement tests.",
+      "viable_boundary": "Use the existing fixed-event/hard branch algebra to define a narrower prospective attribution problem."
+    },
+    {
+      "claim": "The joint gain is proved to come solely from global clipping/head displacement.",
+      "reason": "Different clip/head steps and failed body-direction gates constrain attribution but do not exhaust interacting nonlinear contributions.",
+      "viable_boundary": "Treat clip/head movement as a supported remaining competitor."
+    },
+    {
+      "claim": "Motor contains no information, common background is the global bottleneck, or retrospective common logits are a legal online predictor.",
+      "reason": "Whole-window common/content algebra is retrospective and uses one saved head; local low variation and covariance norms do not establish semantic information absence or global necessity.",
+      "viable_boundary": "Report algebraic local decomposition and paired context response only."
+    },
+    {
+      "claim": "Partial reset Jacobian or local reset energy statistics prove global recurrent instability, noise expulsion, or thermodynamic entropy flow.",
+      "reason": "The stats are motor-index reset partials and squared-membrane accounting; begin_motor/finish_motor duplicate the same motor observation within a tick.",
+      "viable_boundary": "Keep partial-Jacobian/reset algebra findings with their recorded scope."
+    },
+    {
+      "claim": "44 forwards or the two executions are independent statistical replications.",
+      "reason": "All branches reuse 96 unique positions; the lost first attempt and recovery reuse the same source and targets.",
+      "viable_boundary": "Record 96 unique real positions, 88 cumulative forwards, and one available local report."
+    },
+    {
+      "claim": "Scale0.1 rescues the candidate or failed reporting counts as scientific negative evidence.",
+      "reason": "Scale0.1 is descriptive by preregistration; attempt1 outcome was never available.",
+      "viable_boundary": "Preserve the full-scale gates and classify first failure as report loss."
+    },
+    {
+      "claim": "Local rejection refutes reset detachment in all states or establishes OWT generalization, convergence, long-history learning or a new capability.",
+      "reason": "This is one checkpoint, two scored windows, saved Adam moments and numerical floors, with following32 used for selection.",
+      "viable_boundary": "A new capability claim requires separately reviewed sufficient continuous real-data training and independent active validation."
+    }
+  ],
+  "next_single_action": {
+    "action": "Reconstruct and independently review the competing explanations for this recorded event-associated loss difference and the chosen motor observable, using existing fixed-event Taylor, hard-branch, common-head and real-prefix evidence.",
+    "purpose": "Make the distinction between finite event-path contrast and information available to the current head explicit before proposing another mechanism or experiment.",
+    "current_authority": "Offline argument/design review only. No new GPU, retry, production change, mechanism addition, endpoint substitution or training.",
+    "decision_rule": "Retain C_reset as locally_unsupported. Upgrade a new explanation only when it supplies a distinguishable prospective prediction and separately approved identifying measurement; the current records support only the stated local counterfactuals.",
+    "stop_condition": "If existing records cannot distinguish event credit from motor-observable/optimizer interactions, mark the attribution unresolved and stop before running anything."
+  }
+}

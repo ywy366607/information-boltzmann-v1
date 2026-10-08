@@ -1,0 +1,98 @@
+{
+  "scope": "3D plastic medium expression head and optimizer repair; execution only",
+  "pre_decoder_norm": true,
+  "decoder_bias_retained": true,
+  "architecture": {
+    "vocab_size": 50257,
+    "shape": [
+      8,
+      8,
+      4
+    ],
+    "channels": 128,
+    "bath_type": "conductance",
+    "port_scope": "compact",
+    "write_exchange": "contact_mode",
+    "activity_adaptation": true,
+    "short_term_plasticity": true,
+    "medium_execution": "native",
+    "port_execution": "native",
+    "pre_decoder_norm": true
+  },
+  "optimizer_groups": [
+    {
+      "name": "prediction_weights",
+      "weight_decay": 0.01,
+      "parameters": 13806592
+    },
+    {
+      "name": "physical_scales_norms_biases",
+      "weight_decay": 0.0,
+      "parameters": 260919
+    }
+  ],
+  "checks": {
+    "cpu_expression_optimizer": "6 tests included in CUDA-native group",
+    "cuda_native_and_health": "25 passed, 2 fused cases deselected",
+    "credit_state_and_lifelong": "57 passed, 3 opt-in GPU cases skipped",
+    "deslice_shared_api": "ALL UNIT TESTS PASSED",
+    "full_repository": "Attempted 868-case suite, terminated before final summary; observed historical checkpoint FileNotFoundError independently reproduced in test_adaptive_force.py::test_acceptance_6_backward_compatibility_old_checkpoints",
+    "cuda_fused_training_and_evaluation": "2 passed; captured norm gradient and updated norm gain agree with eager reference",
+    "distinct_affected_checks_passed": 84
+  },
+  "execution": {
+    "real_owt_events": 256,
+    "optimizer_updates": 2,
+    "continuous_no_reset": true,
+    "parameters": 14067511,
+    "seconds_per_128_events": [
+      3.1415655000018887,
+      3.0818951999826822
+    ],
+    "memory": {
+      "eligibility_mib": 0.5,
+      "allocated_mib": 259.662109375,
+      "reserved_mib": 620.0,
+      "peak_allocated_mib": 362.5361328125,
+      "total_dedicated_mib": 735.0
+    },
+    "decoder": {
+      "feature_rms_before_norm": {
+        "latest": 0.12077675014734268,
+        "window_mean": 0.09533523240679642
+      },
+      "feature_rms_after_norm": {
+        "latest": 1.0000100135803223,
+        "window_mean": 0.999987680464983
+      },
+      "logit_standard_deviation": {
+        "latest": 0.22618097066879272,
+        "window_mean": 0.22606810159049928
+      },
+      "prediction_entropy_nats": {
+        "latest": 10.799365997314453,
+        "window_mean": 10.799351502209902
+      }
+    }
+  },
+  "capability_claim": null,
+  "long_training_started": false,
+  "source_hashes": {
+    "scripts\\ib\\train_online_plastic.py": "4ecfd69446b43fa61b8edf6e24c5fbd46d764831b069dbcbe5bda95f1602fa4a",
+    "information_boltzmann/runtime/online_credit.py": "eba89ffb590472fcce74b7b16e226b844e8dd8fe5a91223e0ef5b9c7bd135fb2",
+    "information_boltzmann/runtime/local_credit.py": "91c569f84d58db4c70e1b7418b472dad3583f2cdd965c4bb781608283106c293",
+    "information_boltzmann/runtime/lifelong_evaluation.py": "d7cd585da1ede80b5fffe56bc9da6684cb0768ce83de25d4dfb6d6d71152d23c",
+    "information_boltzmann/runtime/medium_health.py": "c1c00757e4543b32c271c245c3141f7a6fb9af8e00f8ffe3fcd5ca334c356172",
+    "information_boltzmann/runtime/training.py": "894ad7cf97613776a1de529e1dbf21069b0d1b93fe0dcb4b6ead906a3ea88082",
+    "information_boltzmann/runtime/optimization.py": "8012f023f5ac8a4fffcfe281e8eceb86cc320c1190542370bba14f59e4049745",
+    "information_boltzmann/core/plastic_medium.py": "344bc0e86f26708ea6bbb808158cce591ce4e762fcf687c9ffe44329bf6b690c",
+    "information_boltzmann/core/plastic_ports.py": "a2273595c307197e36afaa8eea13e2daa8b9c0f6cb4cdd50e4c0135339fe2497",
+    "information_boltzmann/core/conductance_response.py": "9b51219dd53480960af3e114a8b3872f5f8648a861835b88e1205ffb872afff0",
+    "information_boltzmann/core/conduction_plasticity.py": "4497b11d532e17642634f75c631b3ed718e7c928cadd976308e3fe8a6f969a55",
+    "information_boltzmann/core/short_term_plasticity.py": "dc15996f5f2f507251d1fb5cc374e95e63988a2809f31dfdf2581a6d78555e13",
+    "information_boltzmann/core/torus3d.py": "e3832ce75bae5a3c728245cde0592cb48d4b84063104a39e9be7cb5af97950bc",
+    "information_boltzmann/core/local_ports.py": "b0dbad0acaf96f09d35a3c791439cfeca8316179c0ed45788b169513edf841a2",
+    "information_boltzmann/core/readout_probes.py": "b2c3fc7ddafb0baf73e744dd96b4cfa2051e1cf87cb5cfd30fe73500f9faa2af",
+    "information_boltzmann/core/mode_port.py": "b5ceabce8368bec7389dba399b4231a80c68318d075aea5252868b0a7fce5e27"
+  }
+}
