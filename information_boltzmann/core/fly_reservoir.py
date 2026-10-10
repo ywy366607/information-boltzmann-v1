@@ -18,6 +18,7 @@ from pathlib import Path
 import numpy as np
 import torch
 import math
+import os
 from torch import nn
 import torch.nn.functional as Fn
 
@@ -27,6 +28,18 @@ from information_boltzmann.core.triton_synapse import (
     build_incoming_layout,
     IncomingDelayedTransmission,
 )
+
+
+# Fuse the elementwise parts of one physical tick with torch.compile (the synaptic transmission kernels are excluded).
+COMPILE_TICK = os.environ.get('FLY_COMPILE_TICK', '1') != '0'
+
+
+def _compile(fn):
+    import torch._inductor.config as config
+    config.compile_threads = 1
+    if os.name == 'nt':
+        config.use_static_cuda_launcher = False
+    return torch.compile(fn, dynamic=False)
 
 
 class SpikeFn(torch.autograd.Function):
@@ -757,52 +770,55 @@ class FlyReservoirLM(nn.Module):
             spike_ring = tuple(torch.zeros_like(h) for _ in range(4))
         delta_ge = self.transmit(spike_ring, 'e')
         delta_gi = self.transmit(spike_ring, 'i')
-
-        leak_m, leak_se, leak_si = base_rates
         if ge is None:
             ge = torch.zeros_like(h)
         if gi is None:
             gi = torch.zeros_like(h)
+        if self.use_alif and b is None:
+            b = torch.zeros_like(h)
+        coefficients = self._coba_coefficients_fn(h)
+        context = coefficients(h, ge, gi, b, delta_ge, delta_gi, base_rates, thresholds, conductance_gains, alif_params)
+        context.update(spike_ring=spike_ring, x=x, u=u, alif_params=alif_params, stp_params=stp_params)
+        return context
 
+    def _coba_coefficients_fn(self, h):
+        """Elementwise conductance/integration coefficients; fused by torch.compile on CUDA unless FLY_COMPILE_TICK=0."""
+        if COMPILE_TICK and h.is_cuda:
+            if getattr(self, '_compiled_coefficients', None) is None:
+                self._compiled_coefficients = _compile(self._coba_coefficients)
+            return self._compiled_coefficients
+        return self._coba_coefficients
+
+    def _coba_coefficients(self, h, ge, gi, b, delta_ge, delta_gi, base_rates, thresholds, conductance_gains, alif_params):
+        leak_m, leak_se, leak_si = base_rates
         ge_next = leak_se * ge + (1.0 - leak_se) * delta_ge
         gi_next = leak_si * gi + (1.0 - leak_si) * delta_gi
         g_e, g_i = conductance_gains
         G_E = g_e * ge_next
         G_I = g_i * gi_next
-
-        # Exact continuous-time exponential integrator (GDN physical forget gate):
-        # Biological membrane passive leak conductance: g_L = -log(leak_m)
         g_L = -torch.log(leak_m.clamp(min=1e-5, max=1.0 - 1e-7))
         g_total = g_L + G_E + G_I
-
-        # alpha(t) = exp(-Delta_t / tau_eff) = exp(-g_total) = leak_m * exp(-(G_E + G_I))
-        # Guaranteed alpha in (0, 1] strictly, eliminating negative coefficient ringing!
         alpha = torch.exp(-g_total.clamp(min=1e-5, max=20.0))
-
-        # Steady-state drive: i_drive = G_E * E_E + G_I * E_I + drive
         base_current = G_E * self.E_E + G_I * self.E_I
-
-        # Integration multiplier: beta = (1 - alpha) / g_total
         beta_int = (1.0 - alpha) / g_total.clamp_min(1e-5)
-
-        # ALIF activity-dependent threshold: theta_t = theta_0 + beta * b_t
-        if getattr(self, "use_alif", False):
-            if b is None:
-                b = torch.zeros_like(h)
+        if self.use_alif:
             rho_a, beta_a = alif_params
             eff_threshold = thresholds + beta_a * b
         else:
             eff_threshold = thresholds
-
-        return dict(h=h, spike_ring=spike_ring, ge_next=ge_next, gi_next=gi_next,
-                    b=b, x=x, u=u, alpha=alpha, beta_int=beta_int,
-                    base_current=base_current, eff_threshold=eff_threshold,
-                    thresholds=thresholds,
-                    alif_params=alif_params, stp_params=stp_params,
+        return dict(h=h, ge_next=ge_next, gi_next=gi_next, b=b, alpha=alpha, beta_int=beta_int,
+                    base_current=base_current, eff_threshold=eff_threshold, thresholds=thresholds,
                     g_total=g_total, leak_se=leak_se, leak_si=leak_si, g_e=g_e, g_i=g_i)
 
     def finish_coba_tick(self, context, drive, *, return_biophysics=False):
         """Integrate from the old state and commit one full new pulse ring."""
+        if COMPILE_TICK and not return_biophysics and drive.is_cuda:
+            if getattr(self, '_compiled_finish', None) is None:
+                self._compiled_finish = _compile(self._finish_coba_tick)
+            return self._compiled_finish(context, drive)
+        return self._finish_coba_tick(context, drive, return_biophysics=return_biophysics)
+
+    def _finish_coba_tick(self, context, drive, *, return_biophysics=False):
         h, spike_ring = context['h'], context['spike_ring']
         if drive.shape != h.shape:
             raise ValueError('drive must have the full physical-state shape')

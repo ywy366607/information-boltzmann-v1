@@ -199,3 +199,48 @@ def test_physical_ticks_and_state_continuity(fly_model_and_state):
     expected_added = learner.last_adaptive_metrics["adaptive_total_ticks"]
     assert learner.physical_ticks - initial_physical_ticks == expected_added
     assert "adaptive_ticks_mean" in metrics
+
+
+def _window_gradients(learner, model, start, ids, targets, reuse):
+    import information_boltzmann.core.triton_synapse as ts
+    old, compute, calls = ts.REUSE_TRANSMISSION, ts.IncomingDelayedTransmission._compute, [0]
+
+    def counted(*a):
+        calls[0] += 1
+        return compute(*a)
+    ts.REUSE_TRANSMISSION = reuse
+    ts.IncomingDelayedTransmission._compute = staticmethod(counted)
+    try:
+        model.zero_grad(set_to_none=True)
+        learner.state = start.detached()
+        scores, _, _ = learner.forward_window(ids, targets)
+        scores.mean().backward()
+    finally:
+        ts.REUSE_TRANSMISSION = old
+        ts.IncomingDelayedTransmission._compute = staticmethod(compute)
+    grads = {n: p.grad.clone() for n, p in model.named_parameters() if p.grad is not None}
+    return scores.detach().clone(), grads, calls[0]
+
+
+def test_checkpoint_recompute_reuses_transmission_exactly(fly_model_and_state):
+    """Checkpoint recompute replays the recorded synaptic transmission outputs instead of recomputing them; the window
+    forward is bitwise identical (the event-driven forward is deterministic); gradients agree to the run-to-run noise
+    of the rest of the backward (atomic reductions elsewhere differ by ~1e-10 relative between two identical runs)."""
+    import dataclasses
+    model, state, device = fly_model_and_state
+    if device != "cuda":
+        pytest.skip("event-driven transmission and fused AdamW need CUDA")
+    torch.manual_seed(0)
+    start = dataclasses.replace(state, h=torch.rand_like(state.h))   # near threshold: real spiking traffic
+    learner = FlyBPTTLearner(model, start, lr=2e-4, settle_ticks=14, writer_baseline_clock="physical",
+                             use_checkpointing=True, adaptive_admission=True, min_settle_ticks=3,
+                             flux_baseline=0.048, lambda_mcr2=0.0)
+    ids = torch.tensor([[50, 101, 205, 307]], device=device)
+    targets = torch.tensor([[101, 205, 307, 409]], device=device)
+    s0, g0, c0 = _window_gradients(learner, model, start, ids, targets, reuse=False)
+    s1, g1, c1 = _window_gradients(learner, model, start, ids, targets, reuse=True)
+    assert c0 > 0 and c1 * 2 == c0                      # the recompute pass no longer transmits
+    assert torch.equal(s0, s1)
+    assert g0.keys() == g1.keys() and 'edge_weight_e' in g0
+    for name in g0:
+        assert torch.allclose(g0[name], g1[name], rtol=1e-6, atol=1e-6 * float(g0[name].abs().max())), name

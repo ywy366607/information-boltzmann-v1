@@ -342,7 +342,26 @@ def advance_token_and_read_latent(model, state, token, *, settle_ticks=0,
     return next_state, torch.stack(token_latents, dim=0)
 
 
-def advance_fly_token_adaptive(
+def advance_fly_token_adaptive(model, state, token, schedule_box=None, **kwargs):
+    """Record this token's synaptic transmission outputs on its first forward and replay them when a checkpoint
+    recomputes it (same values; the transmission kernels are skipped). The cache rides on the token's schedule box."""
+    from . import triton_synapse as ts
+    if not (ts.REUSE_TRANSMISSION and schedule_box is not None and torch.is_grad_enabled()):
+        return _advance_fly_token_adaptive(model, state, token, schedule_box, **kwargs)
+    replay = len(schedule_box) > 1 and schedule_box[0] is not None
+    previous = ts.TRANSMISSION_RECORD, ts.TRANSMISSION_REPLAY
+    record = None if replay else []
+    ts.TRANSMISSION_RECORD, ts.TRANSMISSION_REPLAY = record, (iter(schedule_box[1]) if replay else None)
+    try:
+        result = _advance_fly_token_adaptive(model, state, token, schedule_box, **kwargs)
+    finally:
+        ts.TRANSMISSION_RECORD, ts.TRANSMISSION_REPLAY = previous
+    if record is not None:
+        schedule_box.append(record)
+    return result
+
+
+def _advance_fly_token_adaptive(
     model, state, token, schedule_box=None, *,
     min_settle_ticks=3,
     max_settle_ticks=14,
@@ -1010,7 +1029,9 @@ class FlyBPTTLearner:
         if not torch.isfinite(loss).item():
             raise FloatingPointError('Non-finite BPTT training loss')
         if self.runner is None:
-            loss.backward()
+            from .triton_synapse import direct_edge_grad
+            with direct_edge_grad():
+                loss.backward()
         def norm(parameters):
             active = [p for p in parameters if p.requires_grad and p.numel()]
             if any(p.grad is None for p in active):

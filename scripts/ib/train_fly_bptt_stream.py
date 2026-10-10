@@ -128,6 +128,14 @@ def resolve_learning_modes(args, previous_config, previous_learner):
                                    previous_config.get('flux_baseline', 0.048)))
 
 
+def disable_alif(model):
+    """beta = clamp(exp(log_beta), 1e-4, 2): log_beta = -20 sits below the clamp, so beta = 1e-4 and its gradient is 0."""
+    if not getattr(model, 'use_alif', False):
+        raise ValueError('This model has no ALIF to disable')
+    with torch.no_grad():
+        model.log_beta.fill_(-20.0)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--resume', type=Path, default=None,
@@ -203,6 +211,9 @@ def main():
     parser.add_argument('--learn-stp', action='store_true', default=None,
                         help='Jointly learn existing STP release/recovery parameters; resumes inherit activation')
     parser.add_argument('--plasticity-optimizer', choices=('adamw', 'sgd'), default='adamw')
+    parser.add_argument('--disable-alif', action='store_true',
+                        help='Ablation: ALIF strength beta held at its lower clamp (1e-4) with zero gradient; '
+                             'all other state, weights and the learner are unchanged')
     parser.add_argument('--validate-every-tokens', type=int, default=5000)
     parser.add_argument('--log-every-tokens', type=int, default=128)
     parser.add_argument('--eval-tokens', type=int, default=256)
@@ -351,6 +362,8 @@ def main():
             for p_name, _ in model.graph_observer.named_parameters():
                 names.append(f'graph_observer.{p_name}')
 
+        if args.disable_alif:
+            disable_alif(model)
         learner = FlyBPTTLearner(model, physical, adam_names=names,
             lr=args.lr, lr_synapse=args.lr_synapse, lr_sensory=args.lr_sensory,
             plasticity_optimizer=args.plasticity_optimizer, lr_decoder=args.lr_decoder,
@@ -476,6 +489,8 @@ def main():
                 full_name = f'graph_observer.{p_name}'
                 if full_name not in names:
                     newly_trainable.append(full_name)
+        if args.disable_alif:
+            disable_alif(model)
         learner = FlyBPTTLearner(model, physical, adam_names=names,
             lr=args.lr, lr_synapse=args.lr_synapse, lr_sensory=args.lr_sensory,
             plasticity_optimizer=args.plasticity_optimizer, lr_decoder=args.lr_decoder,
@@ -917,6 +932,7 @@ def main():
                     'centered_effective_rank': effective_rank,
                     'health_scope': 'field energy, activity and centered representation structure; FTLE not measured in this branch',
                     **health(), **prediction_accounting()}
+                log(report, 'lifelong_evaluation.jsonl')
                 ag_val = report['recovery'].get('ag')
                 ag_str = f" AG={ag_val:.4f}" if ag_val is not None else ""
                 print(f'[ACTIVE EVAL {trained}] fresh B NLL={live:.4f}{ag_str}; A revisit={np.mean(A2):.4f}', flush=True)
