@@ -1,0 +1,55 @@
+{
+  "scope": "actual D7688^3 real OWT, full32 credit, execution only",
+  "checkpoint": "results\\medium_d768_streaming_pathway_8x8x8_160k\\last.pt",
+  "checkpoint_step": 305,
+  "checkpoint_cursor": 9761,
+  "production_checkpoint_written": false,
+  "runs": [],
+  "timing_policy": {
+    "read_key_execution": "support",
+    "auxiliary_final_read": false,
+    "first_update_includes_compilation": true,
+    "health_update_snapshot": true,
+    "segment_graph": true,
+    "optimizer_state_offload": true,
+    "shared_credit": true,
+    "deferred_writer_credit": true,
+    "port_execution": "native",
+    "credit_history_offload": true,
+    "fused_optimizer": true
+  },
+  "timing_rng": "restored checkpoint CPU/CUDA RNG before both windows",
+  "complete_updates": [
+    {
+      "window": 1,
+      "tokens": 32,
+      "seconds": 29.01990350000051,
+      "optimizer_updates": 318,
+      "prequential_nll": 8.892727001570165
+    }
+  ],
+  "status": "failed",
+  "error": "OutOfMemoryError: CUDA out of memory. Tried to allocate 148.00 MiB. GPU 0 has a total capacity of 4.00 GiB of which 0 bytes is free. 3.62 GiB allowed; Of the allocated memory 2.59 GiB is allocated by PyTorch, with 74.97 MiB allocated in private pools (e.g., CUDA Graphs), and 1010.49 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)",
+  "memory": {
+    "sample_count": 66,
+    "sampled_peak_dedicated_mib": 3756.65625,
+    "sampled_peak_shared_mib": 80.0,
+    "counter_errors": [],
+    "cap_exceeded": false,
+    "last_sample": {
+      "seconds": 29861.7907577,
+      "dedicated_bytes": 3939139584,
+      "shared_bytes": 83886080,
+      "rows": [
+        {
+          "Name": "pid_31556_luid_0x00000000_0x00018DBD_phys_0",
+          "DedicatedUsage": 3939139584,
+          "SharedUsage": 83886080
+        }
+      ]
+    },
+    "peak_is_sampled": true
+  },
+  "component_spans": [],
+  "span_semantics": "Inclusive nested host/stream spans, instrumentation overhead; warm windows only"
+}

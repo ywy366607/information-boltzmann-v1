@@ -1,0 +1,605 @@
+{
+  "scope": "actual D7688^3 real OWT, full32 credit, execution only",
+  "checkpoint": "results\\medium_d768_streaming_pathway_8x8x8_160k\\last.pt",
+  "checkpoint_step": 305,
+  "checkpoint_cursor": 9761,
+  "production_checkpoint_written": false,
+  "runs": [
+    {
+      "physical_execution": "separate",
+      "port_execution": "native",
+      "auxiliary_final_read": false,
+      "forward_backward_seconds": 29.774051000000327,
+      "peak_allocated_mib": 2567.03515625
+    },
+    {
+      "physical_execution": "shared",
+      "port_execution": "fused",
+      "auxiliary_final_read": false,
+      "forward_backward_seconds": 17.609014199999365,
+      "peak_allocated_mib": 2698.88916015625
+    }
+  ],
+  "identity": {
+    "passed": true,
+    "maximum_absolute_differences": {
+      "state": 2.861061830117251e-06,
+      "input_gradient": 9.313225746154785e-08,
+      "parameter_gradient": 1.2345612049102783e-05
+    },
+    "parameter_tensors": 101,
+    "state_tensors": 11
+  },
+  "conditional_response": {
+    "scope": "conditional_complete_physical_state_one_event",
+    "directions": 1,
+    "duration": 0.034957725554704666,
+    "direction_durations": [
+      0.034957725554704666
+    ],
+    "nominal_event_duration": 0.03327237442135811,
+    "duration_policy": "model.event_time from pre-observation physical state; clock JVP included",
+    "state_shapes": [
+      [
+        1,
+        8,
+        8,
+        8,
+        768
+      ],
+      [
+        1,
+        8,
+        8,
+        8,
+        768
+      ],
+      [
+        1,
+        8,
+        8,
+        8,
+        768
+      ],
+      [
+        1,
+        8,
+        8,
+        8,
+        768
+      ],
+      [
+        1,
+        8,
+        8,
+        8,
+        3
+      ],
+      [
+        1,
+        8,
+        8,
+        8,
+        2,
+        768
+      ],
+      [
+        1,
+        8,
+        8,
+        8,
+        3,
+        2
+      ],
+      [
+        1,
+        768
+      ],
+      [
+        1,
+        16,
+        4,
+        1536
+      ],
+      [
+        1,
+        16,
+        4,
+        1536
+      ]
+    ],
+    "metric": "sum of component mean-square distances in model coordinates",
+    "gains": [
+      0.9233652949333191
+    ],
+    "log_gain_per_physical_time": [
+      -2.2807649053696832
+    ],
+    "claim": "Directional local response, not maximal Lyapunov exponent or criticality."
+  },
+  "timing_policy": {
+    "read_key_execution": "support",
+    "auxiliary_final_read": false,
+    "first_update_includes_compilation": true,
+    "health_update_snapshot": true,
+    "segment_graph": true,
+    "optimizer_state_offload": true,
+    "shared_credit": true,
+    "deferred_writer_credit": false,
+    "port_execution": "fused",
+    "credit_history_offload": false,
+    "fused_optimizer": true
+  },
+  "timing_rng": "restored checkpoint CPU/CUDA RNG before both windows",
+  "complete_updates": [
+    {
+      "window": 1,
+      "tokens": 32,
+      "seconds": 29.943316400000185,
+      "optimizer_updates": 318,
+      "prequential_nll": 8.892726863268763
+    },
+    {
+      "window": 2,
+      "tokens": 32,
+      "seconds": 9.759984399999666,
+      "optimizer_updates": 319,
+      "prequential_nll": 5.176382063422352
+    },
+    {
+      "window": 3,
+      "tokens": 32,
+      "seconds": 9.884430100002646,
+      "optimizer_updates": 320,
+      "prequential_nll": 7.237543946132064
+    },
+    {
+      "window": 4,
+      "tokens": 32,
+      "seconds": 9.742856500000926,
+      "optimizer_updates": 321,
+      "prequential_nll": 6.17916144663468
+    },
+    {
+      "window": 5,
+      "tokens": 32,
+      "seconds": 10.265128399998503,
+      "optimizer_updates": 322,
+      "prequential_nll": 6.978376077488065
+    }
+  ],
+  "segment_replays": 1536,
+  "rhs_segment_replays": 512,
+  "status": "passed",
+  "memory": {
+    "sample_count": 188,
+    "sampled_peak_dedicated_mib": 3458.65234375,
+    "sampled_peak_shared_mib": 80.0,
+    "counter_errors": [],
+    "cap_exceeded": false,
+    "last_sample": {
+      "seconds": 30841.1307099,
+      "dedicated_bytes": 2194300928,
+      "shared_bytes": 83886080,
+      "rows": [
+        {
+          "Name": "pid_20308_luid_0x00000000_0x00018DBD_phys_0",
+          "DedicatedUsage": 2194300928,
+          "SharedUsage": 83886080
+        }
+      ]
+    },
+    "peak_is_sampled": true
+  },
+  "component_spans": [
+    {
+      "optimizer_offload": {
+        "calls": 1,
+        "host_seconds": 0.10940739999932703,
+        "stream_seconds": 0.10934703826904296
+      },
+      "main.forward.write": {
+        "calls": 32,
+        "host_seconds": 0.17550990000381717,
+        "stream_seconds": 0.1728421759605407
+      },
+      "main.forward.physical_step": {
+        "calls": 64,
+        "host_seconds": 0.3387917999898491,
+        "stream_seconds": 0.9010328645706177
+      },
+      "main.forward.endpoint_rhs": {
+        "calls": 64,
+        "host_seconds": 0.04960489999211859,
+        "stream_seconds": 0.0900767041444779
+      },
+      "main.forward.read": {
+        "calls": 32,
+        "host_seconds": 0.09081549999973504,
+        "stream_seconds": 0.045183103919029244
+      },
+      "chunk_forward_including_auxiliary": {
+        "calls": 1,
+        "host_seconds": 1.8065185000014026,
+        "stream_seconds": 1.8064678955078124
+      },
+      "main.backward.write": {
+        "calls": 32,
+        "host_seconds": 0.15287159999206779,
+        "stream_seconds": 0.18086211204528813
+      },
+      "main.backward.physical_step": {
+        "calls": 64,
+        "host_seconds": 1.4011293999974441,
+        "stream_seconds": 1.3550721902847294
+      },
+      "main.backward.endpoint_rhs": {
+        "calls": 64,
+        "host_seconds": 0.09386640000593616,
+        "stream_seconds": 0.10742617595195768
+      },
+      "main.backward.read": {
+        "calls": 32,
+        "host_seconds": 0.12421689998518559,
+        "stream_seconds": 0.12136320066452028
+      },
+      "shared_auxiliary_vjp": {
+        "calls": 32,
+        "host_seconds": 2.5874910000020463,
+        "stream_seconds": 2.611084406852722
+      },
+      "shared_task_vjp": {
+        "calls": 32,
+        "host_seconds": 2.401173700010986,
+        "stream_seconds": 2.4697189178466803
+      },
+      "shared_event_replay_and_vjps": {
+        "calls": 32,
+        "host_seconds": 7.5144838000051095,
+        "stream_seconds": 7.456557876586914
+      },
+      "main_backward": {
+        "calls": 1,
+        "host_seconds": 7.568404300000111,
+        "stream_seconds": 7.57251611328125
+      },
+      "optimizer_restore": {
+        "calls": 1,
+        "host_seconds": 0.16228100000080303,
+        "stream_seconds": 0.15817222595214844
+      },
+      "gradient_clip": {
+        "calls": 1,
+        "host_seconds": 0.015771299997140886,
+        "stream_seconds": 0.018192127227783204
+      },
+      "health_snapshot": {
+        "calls": 1,
+        "host_seconds": 0.0036432999986573122,
+        "stream_seconds": 0.009578623771667481
+      },
+      "optimizer_step": {
+        "calls": 1,
+        "host_seconds": 0.0015681000004406087,
+        "stream_seconds": 0.032616416931152345
+      },
+      "health_update_norms": {
+        "calls": 1,
+        "host_seconds": 0.03270680000059656,
+        "stream_seconds": 0.03256579208374023
+      },
+      "gradient_clear": {
+        "calls": 1,
+        "host_seconds": 0.0006155000010039657,
+        "stream_seconds": 0.0020316479206085205
+      }
+    },
+    {
+      "optimizer_offload": {
+        "calls": 1,
+        "host_seconds": 0.11225150000245776,
+        "stream_seconds": 0.11220992279052734
+      },
+      "main.forward.write": {
+        "calls": 32,
+        "host_seconds": 0.15825959999710904,
+        "stream_seconds": 0.1733328633308411
+      },
+      "main.forward.physical_step": {
+        "calls": 64,
+        "host_seconds": 0.32577639999362873,
+        "stream_seconds": 0.8986418218612672
+      },
+      "main.forward.endpoint_rhs": {
+        "calls": 64,
+        "host_seconds": 0.051690100011910545,
+        "stream_seconds": 0.09026041591167451
+      },
+      "main.forward.read": {
+        "calls": 32,
+        "host_seconds": 0.09119189999910304,
+        "stream_seconds": 0.04534579193592071
+      },
+      "chunk_forward_including_auxiliary": {
+        "calls": 1,
+        "host_seconds": 1.8378736000013305,
+        "stream_seconds": 1.8377977294921874
+      },
+      "main.backward.write": {
+        "calls": 32,
+        "host_seconds": 0.15143119999629562,
+        "stream_seconds": 0.18747574377059936
+      },
+      "main.backward.physical_step": {
+        "calls": 64,
+        "host_seconds": 1.4104677999857813,
+        "stream_seconds": 1.3705754556655887
+      },
+      "main.backward.endpoint_rhs": {
+        "calls": 64,
+        "host_seconds": 0.09046920001128456,
+        "stream_seconds": 0.1053944001197815
+      },
+      "main.backward.read": {
+        "calls": 32,
+        "host_seconds": 0.12981800000852672,
+        "stream_seconds": 0.12686399912834173
+      },
+      "shared_auxiliary_vjp": {
+        "calls": 32,
+        "host_seconds": 2.6165098000165017,
+        "stream_seconds": 2.6340013360977177
+      },
+      "shared_task_vjp": {
+        "calls": 32,
+        "host_seconds": 2.430205200002092,
+        "stream_seconds": 2.4767286987304686
+      },
+      "shared_event_replay_and_vjps": {
+        "calls": 32,
+        "host_seconds": 7.61211529999855,
+        "stream_seconds": 7.5586031036376955
+      },
+      "main_backward": {
+        "calls": 1,
+        "host_seconds": 7.666603899997426,
+        "stream_seconds": 7.67148486328125
+      },
+      "optimizer_restore": {
+        "calls": 1,
+        "host_seconds": 0.1462649999994028,
+        "stream_seconds": 0.14131832885742188
+      },
+      "gradient_clip": {
+        "calls": 1,
+        "host_seconds": 0.019354700001713354,
+        "stream_seconds": 0.022025152206420897
+      },
+      "health_snapshot": {
+        "calls": 1,
+        "host_seconds": 0.0056827000007615425,
+        "stream_seconds": 0.011806367874145508
+      },
+      "optimizer_step": {
+        "calls": 1,
+        "host_seconds": 0.0008677000005263835,
+        "stream_seconds": 0.03225276947021485
+      },
+      "health_update_norms": {
+        "calls": 1,
+        "host_seconds": 0.03227109999716049,
+        "stream_seconds": 0.03218592071533203
+      },
+      "gradient_clear": {
+        "calls": 1,
+        "host_seconds": 0.0006088000009185635,
+        "stream_seconds": 0.0020208959579467774
+      }
+    },
+    {
+      "optimizer_offload": {
+        "calls": 1,
+        "host_seconds": 0.10522710000077495,
+        "stream_seconds": 0.10516470336914062
+      },
+      "main.forward.write": {
+        "calls": 32,
+        "host_seconds": 0.14735349999682512,
+        "stream_seconds": 0.16751737594604493
+      },
+      "main.forward.physical_step": {
+        "calls": 64,
+        "host_seconds": 0.32749340000736993,
+        "stream_seconds": 0.9052071084976198
+      },
+      "main.forward.endpoint_rhs": {
+        "calls": 64,
+        "host_seconds": 0.050379300002532545,
+        "stream_seconds": 0.09046435177326201
+      },
+      "main.forward.read": {
+        "calls": 32,
+        "host_seconds": 0.09801790000346955,
+        "stream_seconds": 0.04469033598899843
+      },
+      "chunk_forward_including_auxiliary": {
+        "calls": 1,
+        "host_seconds": 1.7946731000010914,
+        "stream_seconds": 1.79460986328125
+      },
+      "main.backward.write": {
+        "calls": 32,
+        "host_seconds": 0.15407350000168663,
+        "stream_seconds": 0.1842051515579223
+      },
+      "main.backward.physical_step": {
+        "calls": 64,
+        "host_seconds": 1.4008948000082455,
+        "stream_seconds": 1.3653024597167966
+      },
+      "main.backward.endpoint_rhs": {
+        "calls": 64,
+        "host_seconds": 0.09118160000798525,
+        "stream_seconds": 0.10572627198696137
+      },
+      "main.backward.read": {
+        "calls": 32,
+        "host_seconds": 0.128700100009155,
+        "stream_seconds": 0.12583702516555786
+      },
+      "shared_auxiliary_vjp": {
+        "calls": 32,
+        "host_seconds": 2.599085700006981,
+        "stream_seconds": 2.6154757604599
+      },
+      "shared_task_vjp": {
+        "calls": 32,
+        "host_seconds": 2.3384505000030913,
+        "stream_seconds": 2.423874237060547
+      },
+      "shared_event_replay_and_vjps": {
+        "calls": 32,
+        "host_seconds": 7.535804100007226,
+        "stream_seconds": 7.479876464843749
+      },
+      "main_backward": {
+        "calls": 1,
+        "host_seconds": 7.588810099998227,
+        "stream_seconds": 7.59448779296875
+      },
+      "optimizer_restore": {
+        "calls": 1,
+        "host_seconds": 0.1350170999976399,
+        "stream_seconds": 0.1292939453125
+      },
+      "gradient_clip": {
+        "calls": 1,
+        "host_seconds": 0.018269000000145752,
+        "stream_seconds": 0.02044735908508301
+      },
+      "health_snapshot": {
+        "calls": 1,
+        "host_seconds": 0.004401099999086,
+        "stream_seconds": 0.010409600257873535
+      },
+      "optimizer_step": {
+        "calls": 1,
+        "host_seconds": 0.0008385000000998843,
+        "stream_seconds": 0.03221948623657227
+      },
+      "health_update_norms": {
+        "calls": 1,
+        "host_seconds": 0.03702809999958845,
+        "stream_seconds": 0.03695574569702149
+      },
+      "gradient_clear": {
+        "calls": 1,
+        "host_seconds": 0.000495300002512522,
+        "stream_seconds": 0.0019758720397949217
+      }
+    },
+    {
+      "optimizer_offload": {
+        "calls": 1,
+        "host_seconds": 0.10945709999941755,
+        "stream_seconds": 0.10940223693847656
+      },
+      "main.forward.write": {
+        "calls": 32,
+        "host_seconds": 0.15317359999608016,
+        "stream_seconds": 0.17422771072387697
+      },
+      "main.forward.physical_step": {
+        "calls": 64,
+        "host_seconds": 0.3505483000044478,
+        "stream_seconds": 0.8968708486557007
+      },
+      "main.forward.endpoint_rhs": {
+        "calls": 64,
+        "host_seconds": 0.052298400001745904,
+        "stream_seconds": 0.09085091185569764
+      },
+      "main.forward.read": {
+        "calls": 32,
+        "host_seconds": 0.09806119999848306,
+        "stream_seconds": 0.04423843204975129
+      },
+      "chunk_forward_including_auxiliary": {
+        "calls": 1,
+        "host_seconds": 1.8275300999994215,
+        "stream_seconds": 1.82747509765625
+      },
+      "main.backward.write": {
+        "calls": 32,
+        "host_seconds": 0.16541830000642221,
+        "stream_seconds": 0.18876342487335204
+      },
+      "main.backward.physical_step": {
+        "calls": 64,
+        "host_seconds": 1.5098120999864477,
+        "stream_seconds": 1.4639907169342041
+      },
+      "main.backward.endpoint_rhs": {
+        "calls": 64,
+        "host_seconds": 0.09201559997381992,
+        "stream_seconds": 0.10475510406494142
+      },
+      "main.backward.read": {
+        "calls": 32,
+        "host_seconds": 0.1322247000061907,
+        "stream_seconds": 0.12919705605506895
+      },
+      "shared_auxiliary_vjp": {
+        "calls": 32,
+        "host_seconds": 2.788689199998771,
+        "stream_seconds": 2.7995714282989512
+      },
+      "shared_task_vjp": {
+        "calls": 32,
+        "host_seconds": 2.4874765999884403,
+        "stream_seconds": 2.5713322601318356
+      },
+      "shared_event_replay_and_vjps": {
+        "calls": 32,
+        "host_seconds": 7.98953590000383,
+        "stream_seconds": 7.934989700317384
+      },
+      "main_backward": {
+        "calls": 1,
+        "host_seconds": 8.046007400000235,
+        "stream_seconds": 8.0499970703125
+      },
+      "optimizer_restore": {
+        "calls": 1,
+        "host_seconds": 0.1511294000010821,
+        "stream_seconds": 0.14708419799804687
+      },
+      "gradient_clip": {
+        "calls": 1,
+        "host_seconds": 0.020119400000112364,
+        "stream_seconds": 0.022601408004760744
+      },
+      "health_snapshot": {
+        "calls": 1,
+        "host_seconds": 0.006261200000153622,
+        "stream_seconds": 0.012786591529846191
+      },
+      "optimizer_step": {
+        "calls": 1,
+        "host_seconds": 0.001131699998950353,
+        "stream_seconds": 0.03239219284057617
+      },
+      "health_update_norms": {
+        "calls": 1,
+        "host_seconds": 0.03913059999831603,
+        "stream_seconds": 0.039041057586669925
+      },
+      "gradient_clear": {
+        "calls": 1,
+        "host_seconds": 0.0006313999983831309,
+        "stream_seconds": 0.0020453760623931885
+      }
+    }
+  ],
+  "span_semantics": "Inclusive nested host/stream spans, instrumentation overhead; warm windows only"
+}

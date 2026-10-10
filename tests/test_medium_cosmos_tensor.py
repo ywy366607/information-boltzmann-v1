@@ -18,6 +18,14 @@ def test_material_tensor_view_recovers_oblique_principal_axis():
     assert 'material_principal_axis' not in snapshot
 
 
+def test_actual_row_speed_uses_active_factor_instead_of_legacy_speed():
+    report = material_tensor_view({'speed': [[100., 100., 100.]],
+                                  'effective_transport_factor': [[[2., 0., 0.],
+                                                                 [1., 2., 0.],
+                                                                 [0., 0., 3.]]]})
+    np.testing.assert_allclose(report['effective_row_speed'], [[2., np.sqrt(5.), 3.]])
+
+
 def test_material_tensor_view_isotropic_and_empty():
     assert material_tensor_view(None) is None
     report = material_tensor_view({'speed': [[1., 1., 1.]], 'shear': None})

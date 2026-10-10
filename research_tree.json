@@ -4,6 +4,145 @@
   "source_of_truth": "docs/NORTH_STAR.md",
   "nodes": [
     {
+      "id": "IB_FLUX_JUNCTION_20261009",
+      "parent": "IB_HOPF_RECOMPOSE_20261009",
+      "title": "Gen3 capacity-paid persistent flux junctions with executable CK edits",
+      "status": "active",
+      "confidence": "I",
+      "time": "2026-10-09",
+      "motivation": "Allow learned branching to alter subsequent physical propagation while preserving the finite-state individual, existing capacity updater and complete task credit.",
+      "action": "Replace the production pooled readout adapter with state/material-conditioned local skew couplings between the existing q0/q1/q2 stores. Compile decorated CK forest edges to executable pair masks; use a smooth angle allocation, squared coupling-capacity accounting, fixed constitutive lengths, full32 conditional VJP, validated zero-birth adoption and complete checkpoint receipts. GPU execution acceptance is in progress on an immutable Gen2 checkpoint.",
+      "conclusion": "Zero new activity-state elements and 36 new parameters at material width8. Fifteen junction numerical/interface checks and four full-state checkpoint-VJP checks pass; broader affected suite previously passed77 with1 skip. Separate spatial transport/junction maxima require the solver bound M=1+max_a[(1/ell_a)/(2sqrt(2)n_a) sin(theta_max,a)], with M=1 at exact zero birth. Frozen rotations preserve local wave energy; this is distinct from the squared coupling-capacity budget and does not bound the full state-dependent Jacobian. Explicit CK cuts/grafts change the physical operator; autonomous discrete tree selection and real language benefit remain open.",
+      "theory_package": {
+        "core_theory": "Existing persistent flux coordinates admit local skew coupling without resizing memory; B'_a=cos(theta_a)B_a and ell_a omega_a=||B_a||sin(theta_a) partition the paid squared coupling norm.",
+        "auxiliary_assumptions": "The existing edge-origin flux stores share a local endpoint energy metric. Fixed constitutive lengths are independent of runtime refinement. Task value is inherited from the real likelihood/structural objective rather than raw traffic magnitude.",
+        "implementation": "LocalFluxJunction, prepared topology snapshots, split energy ledger, bounded solver reservation and atomic validation of topology/counters/migration.",
+        "optimization": "Gen2 Fourier simplex natural-gradient capacity learning remains the single structural-mean owner; new junction gate parameters enter the retained physical Adam group with zero birth and preserved old moments.",
+        "measurement": "Full-state numerical invariants and direct-autograd VJP parity first; actual D7688^3 full32 disposable updates for speed/memory; matched real OWT active recovery/platform and revisit evidence for capability.",
+        "baseline_relation": "Continue from actual Gen2 last.pt step2813/fresh90016, not the uncheckpointed93824-token log. Zero gate is the exact Gen2 physics control. Preserve data, RNG, clocks, OU state and learning/evaluation cadence."
+      },
+      "prediction": {
+        "id": "P-20261009-31",
+        "registered_before_result": true,
+        "expected_observation": "The compiled real D7688^3 candidate completes full32 credit and complete disposable learner updates below3900MiB. Zero birth preserves the same first-window likelihood; warm time and replay counts will quantify its actual execution cost. Real task benefit has unknown effect size and requires matched adequate training.",
+        "falsifying_observation": "Changed source-state/cursor/old optimizer moments, missing gate credit, stale compiled topology, failed full-state gradient parity, exceeded dedicated-memory cap or an execution cost that prevents the authorized comparison. No adequate matched task gain rejects benefit rather than the numerical invariants."
+      },
+      "review": {
+        "hypothesis_collaborator": {
+          "reviewer": "/root/review_flow_plasticity",
+          "status": "accepted",
+          "concerns": "Persistent flux coupling is a viable physical alternative to discarded readout residuals. CK representation is bounded many-to-one control and does not itself generate a learned hard topology."
+        },
+        "experiment_approval_committee": {
+          "reviewer": "/root/review_flow_plasticity",
+          "status": "reviewed",
+          "concerns": "Disposable full32 resource calibration is within user authorization. Preserve source checkpoint and exact exposure; do not interpret a few updates as language or memory superiority."
+        },
+        "conclusion_reviewer": {
+          "reviewer": "/root/review_flow_plasticity",
+          "status": "accepted",
+          "concerns": "CPU numerical/interface scope accepted after correcting the separated-spatial-maxima bound. GPU and task results are pending."
+        }
+      },
+      "artifacts": [
+        "information_boltzmann/core/medium_junction.py",
+        "tests/test_medium_junction.py",
+        "tests/test_state_checkpoint_vjp_model.py",
+        "tests/test_checkpoint_receipt.py",
+        "docs/information_boltzmann/MEDIUM_GEN3_PHYSICAL_JUNCTION_20261009.md",
+        "results/published/medium_gen3_source_continuation_audit_20261009.json"
+      ],
+      "next_action": "Finish actual GPU credit/resource acceptance, preserve a distinct physical-junction output namespace, then run matched real-OWT comparisons. AG remains unavailable until recovery and platform are confirmed.",
+      "invalidation": "Reject on lost state/auxiliary history, duplicated resource ownership, inconsistent saved forest/mask/length, silently changed continuation, discrete-schedule gradients presented as planner credit, aggregate energy presented as Jacobian stability, CK coproduct presented as wave cloning, or adequate matched task evidence showing no benefit for the added cost."
+    },
+    {
+      "id": "IB_CAPACITY_GROW_20261009",
+      "parent": "IB_RIVERBED_VALUE_20261009",
+      "title": "Value-driven capacity growth in the existing continuous material chart",
+      "status": "active",
+      "confidence": "I",
+      "time": "2026-10-09",
+      "motivation": "Close signed task-credit to finite capacity updates while retaining continuous off-grid material queries, physical state and active-stream continuation.",
+      "action": "Implemented volume-weighted simplex Fisher pullback and opt-in full-state continuation; Gemini ran the Gen2 continuation, reviewed via CPU source/log/checkpoint inspection on 2026-10-09.",
+      "conclusion": "Prior numerical acceptance remains valid. Gen2 logs report 93,824 fresh tokens after a retained 86,048-token source, with 255 capacity updates and bounded installed-allocation KL. Last new-flow NLL 6.521468 vs Gen1 last 6.663675 is on different text/exposure, so the observed 0.142207 difference is exploratory. Material capacity CV changed from 1.1284% to 1.1805% in saved snapshots. Latest complete Gen2 checkpoint is only 90,016 tokens despite logs reaching 93,824; repeated step IDs and unmatched checkpoint/material/activity snapshots require explicit provenance.",
+      "next_action": "Preserve or locate the complete Gen2 terminal state, use committed-run provenance, and compare the capacity rule from the same source individual under matched OWT exposure and actual continuous learning. Confirm recovery/platform before reporting AG.",
+      "review": {
+        "implementation_reviewer": {
+          "reviewer": "/root/review_flow_plasticity",
+          "status": "accepted",
+          "concerns": "Numerical/interface scope only. Real FP32 sample reconstruction, valid sub-ULP no-op, RNG continuation, exact variance-freeze parameter counts and prospective OU/dual validation repaired. No arbitrary optimizer rollback or task-benefit claim."
+        }
+      },
+      "artifacts": [
+        "information_boltzmann/core/capacity_growth.py",
+        "tests/test_capacity_growth.py",
+        "configs/information_boltzmann/medium_capacity_growth_20261009.json",
+        "scripts/ib/check_medium_capacity_growth.py",
+        "results/published/medium_capacity_growth_geometry_20261009.json",
+        "docs/information_boltzmann/MEDIUM_CAPACITY_GROWTH_20261009.md",
+        "docs/information_boltzmann/MEDIUM_GEN2_GEN3_REVIEW_20261009.md",
+        "results/published/medium_gen2_gen3_review_20261009.json"
+      ],
+      "invalidation": "Reject on lost mean task VJP, dual update ownership, repeated evidence commit, invalid capacities/prior, unrelated resume changes or changed physical state representation. The runtime-site KL guard is not a continuum supremum proof. Reject benefit only on adequate converged real-data evidence; constructed credit and numerical descent are not language improvement."
+    },
+    {
+      "id": "IB_RIVERBED_VALUE_20261009",
+      "parent": "IB_STRUCT_VFE_20261008",
+      "title": "Value-guided riverbed plasticity and composable structural operations",
+      "status": "active",
+      "confidence": "D",
+      "time": "2026-10-09",
+      "motivation": "User proposes constructal flow-structure coevolution and Hopf descriptions of local branching/reorganization for finite persistent media.",
+      "action": "Read current structural posterior and wave contracts, verify 64 normalized dashboard tracers, consult primary transport/erosion/rooted-tree papers and obtain independent theoretical review. No production modification or experiment.",
+      "conclusion": "Current system already has fast state-dependent conduction and STP alongside Adam/KL/OU slow structure. Derived local simplex mirror step and frozen-objective exact-gradient replicator descent; task usefulness, approximate traces, finite Fourier projection and changing-stream objectives do not inherit that proof automatically. Resistive flow closure cannot substitute for phase-bearing wave transport. Hopf cuts/grafting can organize valid branching operations but do not themselves prove memory or energy preservation.",
+      "next_action": "Close continuous local-state representation and signed task-credit-to-capacity interface with one update owner. Start with capacity competition at fixed directions; preserve current working individual. Register any later real-OWT experiment with matched exposure, active four-pillar endpoints and convergence evidence.",
+      "artifacts": [
+        "docs/information_boltzmann/MEDIUM_RIVERBED_PLASTICITY_20261009.md"
+      ],
+      "invalidation": "Reject raw current as semantic value, attractive shape as task evidence, or algebraic inverse as physical rollback. Reject candidate on broken resource/paired-energy/continuation invariants or dedicated-memory guard; no task improvement with higher cost at adequate converged budget rejects benefit. Fixed short training remains inconclusive."
+    },
+    {
+      "id": "IB_SHARED_CREDIT_20261009",
+      "parent": "IB_SEGMENT_GRAPH_20261009",
+      "title": "Shared primal full32 credit and bounded optimizer workspace",
+      "status": "active",
+      "confidence": "I",
+      "time": "2026-10-09",
+      "motivation": "Remove duplicated full physical writer replay while preserving complete task/writer credit and the same continuous individual under4GiB.",
+      "action": "Paused complete step305; numerical scopes, compiled workspace ownership, exact optional factor-GEMMs/history staging, fused AdamW and bounded monitor workspace; immutable real OWT checkpoint/RNG identity and matched160-target full-learner timing.",
+      "conclusion": "Original inclusive auxiliary35.9percent and main backward43.2percent. Matched4 warm updates10.4059s to9.4029s per32, throughput1.1067x, NLLmaxdiff2.7381e-7. Full11-state/101-parameter/entry-VJP parity passes combinedFP32 atol5e-6 rtol5e-4; maxstate2.8611e-6, entry9.3132e-8, parameter1.2346e-5. Warm sampled dedicated3356.65MiB, identity3458.65.65 broad CPU checks and33 final affected checks, CUDA fused-Adam parity and Deslice checks pass. CLI restores317updates/cursor9761/pending0 without writes or exposures. Deferred-GEMM0.1percent speed difference unresolved, optional disabled; history offload slower, disabled. No capability claim. Retained-workspace batch copying passes bounded full GPU identity but matched warm8.83185s lazy versus8.99225s batching has no speed gain; helper removed. Unlimited prefetch fails Adam-restoration memory acceptance and is rejected.",
+      "next_action": "Same individual resumed from step305/update317/cursor9761 with selected shared-credit and fused-Adam execution. Preserve full32 BPTT, adaptive physical interval, active evaluation and3900MiB guard. Observe actual complete updates and next active evaluation through the same HTML run.",
+      "artifacts": [
+        "docs/information_boltzmann/MEDIUM_SHARED_CREDIT_SPEED_20261009.md",
+        "results/published/medium_speed_optimization_20261009.json",
+        "results/published/medium_speed_resume_arguments_20261009.json",
+        "scripts/ib/profile_medium_execution.py",
+        "results/published/medium_workspace_batched_timing_20261009.json"
+      ],
+      "invalidation": "Reject on changed parameter credit scope, full-state or derivative tolerance failure, None semantics, stale parameter versions, RNG/cadence/cursors changed, unflushed factor credit, unbounded workspaces or dedicated use above3900MiB. Repeat matched warm timing if execution/data changes; finite audit is not long-run stability or capability proof."
+    },
+    {
+      "id": "IB_SEGMENT_GRAPH_20261009",
+      "parent": "IB_PORT_WORKSPACE_20261009",
+      "title": "Bounded forward CUDA segments and fused endpoint RHS",
+      "status": "active",
+      "confidence": "I",
+      "time": "2026-10-09",
+      "motivation": "Reduce repeated physical launch overhead while keeping the same full-state intrinsic-time OWT individual and BPTT32 below4GiB.",
+      "action": "Forward-only graph microsteps with owned outputs and bounded variant caches; compiled analytic RHS forward/backward; native full-state forward AD; original Adam CPU staging retained. Resume complete step211 with3900MiB guard.",
+      "conclusion": "Real next32 OWT full-credit identity:11 state maxerror1.4305e-6, incoming gradients2.9802e-8,101 parameter gradient tensors1.2517e-6; None semantics match and complete-state JVP works. Same saved checkpoint/RNG/next128targets and health collector:3 warm complete updates mean11.2378s to10.1448s, throughput1.1077x; median1.0661x. Sampled dedicated peak3344.65MiB. GPU-resident Adam candidate rejected at second window allocator fragmentation; CPU staging adopted.63 CPU regressions and2 CUDA ownership/current-parameter tests plus deslice checks pass. Production continuation confirmed beyondstep221; this is an execution result, not language superiority evidence.",
+      "next_action": "Continue authorized5000freshgroups/160k real OWT with the same primary active four-pillar assessment. Track actual graph replay counters and3900MiB limit.",
+      "artifacts": [
+        "docs/information_boltzmann/MEDIUM_SEGMENT_GRAPH_ACCEPTANCE_20261009.md",
+        "results/published/medium_segment_graph_acceptance_20261009.json",
+        "results/published/medium_segment_rhs_identity_20261009.json",
+        "results/published/medium_segment_graph_baseline_health_20261009.json",
+        "results/published/medium_segment_graph_optimized_health_20261009.json",
+        "results/published/medium_segment_graph_live_memory_20261009.json"
+      ],
+      "invalidation": "Reject execution equivalence if full-state/parameter derivatives exceed the declared FP32 tolerance, None semantics differ, clock or learning cadence changes, past outputs are overwritten, graph variants grow unbounded, or actual dedicated use exceeds3900MiB. Reject speed claim if repeated matched warm complete updates eliminate the measured gain."
+    },
+    {
       "id": "IB_PORT_WORKSPACE_20261009",
       "parent": "IB_CAUSAL_EVOLVE_20261008",
       "title": "Exact finite-port workspace before approximate spatial compression",
@@ -11,9 +150,9 @@
       "confidence": "I",
       "time": "2026-10-09",
       "motivation": "Assess Transolver-inspired finite workspaces against actual D7688^3 computation, preserve full persistent state and finite physical propagation while reducing avoidable read computation.",
-      "action": "Implemented exact per-head live finite-support keys and unused auxiliary final-read omission; native diagnostic forward AD and birth-scale resume metadata repairs. Accepted CPU and full D7688^3/BPTT32 execution and resumed the existing real OWT individual; current8085 dashboard attached with active evaluation progress.",
-      "conclusion": "108 affected CPU regressions passed,13 optional CUDA tests skipped. Real saved-step157 full32 identity:11 outgoing state tensors exactly equal, maximum input-gradient error3.3813e-8 and named parameter-gradient error1.1139e-6; None semantics retained. Complete-state CUDA JVP succeeds. Sampled dedicated peak2952.65MiB below3072MiB. Identical checkpoint/RNG/next64targets warm second complete updates: dense+oldaux12.0728s, support+auxomitted11.5765s, dense+auxomitted11.5987s. The optimized paths differ0.2percent; only about4percent joint saving is seen in one warm window, with no separately resolved key-sparsity throughput gain. Implemented padded key MAC ratio7.11x is not full-update speed. Calibration writes no production checkpoint or cursor. No language-capability improvement is inferred.",
-      "next_action": "Continue the same5000-fresh-group/160k OWT individual and primary active four-pillar assessment. Verify real dashboard and evaluation progression; inspect>=3000 actual-update learning/recovery/platform/revisit evidence before capability claims. Approximate Slice and extra physical/model changes remain separate.",
+      "action": "Implemented exact per-head live finite-support keys and unused auxiliary final-read omission; native diagnostic forward AD, birth-scale resume metadata, and optimizer-host boundary cache-release repairs. Resumed existing real OWT individual; current8085 dashboard attached with active evaluation progress.",
+      "conclusion": "108 affected CPU regressions passed,13 optional CUDA tests skipped. Real saved-step157 full32 identity:11 outgoing state tensors exactly equal, maximum input-gradient error3.3813e-8 and named parameter-gradient error1.1139e-6; None semantics retained. Complete-state CUDA JVP succeeds. Sampled dedicated peak2952.65MiB below3072MiB. Identical checkpoint/RNG/next64targets warm second complete updates: dense+oldaux12.0728s, support+auxomitted11.5765s, dense+auxomitted11.5987s. The optimized paths differ0.2percent; only about4percent joint saving is seen in one warm window, with no separately resolved key-sparsity throughput gain. Implemented padded key MAC ratio7.11x is not full-update speed. Calibration writes no production checkpoint or cursor. No language-capability improvement is inferred. The two-window resource test did not cover allocator fragmentation over active evaluation: two production attempts OOM at fresh-B128, including max_split128. Complete pre-evaluation checkpoints preserved; idle-cache release at moment-staging boundaries is now validated by the actual continuation record, whose status and measurements take precedence over the short audit. Full B256 plus bridge/revisit128 now completed at fresh5120 and update172, followed by8 warm updates. Active B meanNLL=6.954048, same-target fixed prior=7.512127; this is one early active assessment, not established convergence or superiority.",
+      "next_action": "Continue the same5000-fresh-group/160k OWT individual and primary active four-pillar assessment. First complete fresh-B256 plus bridge/revisit128 and subsequent warm training verified; current8085 follows real progression. Inspect>=3000 actual-update learning/recovery/platform/revisit evidence before capability claims. Approximate Slice and extra physical/model changes remain separate.",
       "review": {
         "reviewer": "medium_bottleneck_audit and free_energy_review",
         "status": "accepted",
@@ -44,7 +183,7 @@
       "motivation": "User paused the current individual and requires causal long-time propagation/credit first, then finite ports, material bandwidth and structural competition, preserving full continuous learning state.",
       "action": "Gracefully saved step1237/fresh39584/events42272/1321 updates. Implemented pre-input local clock, differentiable interval execution and independently sampled temporal history, nested checkpoints, finite total aperture budgets, full-grid material basis and explicit expansion, Gaussian simplex resource posterior with bounded fast utilization, whole-window KL/actual-time OU, exact writer auxiliary block gradients, cache/resume/accounting/execution repairs. Full32 execution now uses deterministic first-order event VJP, explicit shared coefficient/table/duration inputs, serialized writer auxiliary credit, completed decoder-zero release and idle Adam moment host staging; all physical intervals and32-event credit remain.",
       "conclusion": "263 CPU numerical regressions passed and21 opt-in tests skipped; independent final review closed four replay/cache/state-contract bugs. Disjoint numerical ports support remote response and write/material/time credit; blocked transport gives zero response. One real D7688^3/84-step interval completed forward/backward within2498.64MiB sampled dedicated memory, no updates, exact clock agreement. The real8-target old-checkpoint task/port material gradient cosine is+.3418, so that window does not support auxiliary-conflict root-cause attribution. Functional neural pathways and language improvements remain untested. Latest execution regression:35 passed,2 CUDA opt-in skipped; three actual-medium AdamW updates with host-state copying are bitwise equal to resident-state reference. First complete D7688^3/112-step-per-event/BPTT32 update succeeds; the subsequent second-window acceptance passed as recorded below. Warm execution is about335-345s per32targets, not previous tiny-interval throughput. Same-source two-window GPU acceptance now passed:64 actual targets,2 AdamW updates,pending0, sampled dedicated peak2490.64MiB, raw gradient norms20.7543/16.9086 finite, warm321.28s/32targets. Calibration creates no checkpoints and is not language-capability evidence. The formal new birth was launched and then user requested usable alternatives after seeing~5.5min/32 cost. It was paused before update1; birth checkpoint is retained. Numerical/resource acceptance did not establish operational acceptability. Independent design discussion identified two distinct costs: a removable fixed Householder read-coordinate GEMM, and the optional assumption that each input waits a full-domain traversal. Selected successor is a persistent local-cadence pipeline with finite recent-input physical reachability and deep propagation across later inputs. Freeze birth physical timing across numerical grid refinement. Nominal112-to4 microsteps changes stimulus timing; it is not old-trajectory equivalence or a measured28x speedup. Design only, production remains paused.",
-      "next_action": "Continue registered same-individual real OWT long training. Step157 first-evaluation compiler failure repaired and exact checkpoint resumed; current8085 now follows the live run and reports real evaluation counters. Execution acceptance and small timing saving are recorded in IB_PORT_WORKSPACE_20261009. Await>=3000-update active learning/recovery/platform/revisit evidence for capability conclusions.",
+      "next_action": "Continue registered same-individual real OWT long training. Step157 compiler failure and subsequent allocator fragmentation repaired; first complete active B/revisit and subsequent warm updates verified. Current8085 follows real run/counters. Execution acceptance and small timing saving recorded in IB_PORT_WORKSPACE_20261009. Await>=3000-update active learning/recovery/platform/revisit evidence for capability conclusions.",
       "review": {
         "reviewer": "integration_final_review",
         "status": "accepted",
@@ -125,7 +264,7 @@
       "time": "2026-10-08",
       "motivation": "User requests a complete mechanism for useful brain-like pathways and a code-grounded learning bottleneck audit, with live prediction and adaptation stronger than the fly reference as the capability goal.",
       "action": "Derived a single conditional-VFE candidate on the existing continuous Fourier basis: Gaussian coefficient posterior, persistent affine-Gaussian prior, local simplex capacity with idle reserve, normalized transport directions and bounded fast utilization. Three independent math/code/learning reviews; CPU numerical identities only. Production and current training unchanged.",
-      "conclusion": "Paired skew transport retains fixed-coordinate energy; actual row norm is capacity, so unbounded baseline or fast-gain compensation cannot evade its cost in the proposed candidate. Existing six transport degrees express local SPD direction shapes. Current D768 geometry provides a feasible direct write/read path (276 shared sites; no causal performance attribution yet), task/port gradients share clipping, BPTT32 spans0.16 physical time, and runtime8^3 retains256 slow material basis degrees. Functional pathway emergence and superiority to fly remain hypotheses.",
+      "conclusion": "Paired skew transport retains fixed-coordinate energy; actual row norm is capacity, so unbounded baseline or fast-gain compensation cannot evade its cost in the proposed candidate. Existing six transport degrees express local SPD direction shapes. Current D768 geometry provides a feasible direct write/read path (276 shared sites; no causal performance attribution yet), task/port gradients share clipping, BPTT32 spans0.16 physical time, and runtime8^3 retains256 slow material basis degrees. Functional pathway emergence and superiority to fly remain hypotheses. 2026-10-09 stage comparison: D768 current medium80.609M versus same fly individual50k CTM-S4 stage77.984M; same exact validation intervals20k..50k,7/7 medium B NLL wins, pooled6.08071 versus7.26020. At50016 versus50000fresh targets B6.25498 versus7.24883. Actual update counts1683 versus4921 and live logged group sizes32 versus8; training recipe differs. Same counts hash and score-before-update verified. Fly S<=14 begins85k; later120k score is a future-stage anchor. Current evidence is budget-limited stage predictive advantage, not causal architecture or ceiling superiority. AG remains unconfirmed under shared stable-tail criterion.",
       "next_action": "Implementation and causal numerical acceptance are recorded in IB_CAUSAL_EVOLVE_20261008. Keep previous full-state individual paused; complete fused-window resource acceptance before matched active real-data capability comparisons.",
       "prediction": {
         "id": "P-20261008-12",
@@ -151,7 +290,8 @@
         "results/published/medium_structural_vfe_math_20261008.json",
         "scratch/medium_structure_math_review_20261008.md",
         "scratch/medium_structure_code_review_20261008.md",
-        "scratch/medium_learning_review_20261008.md"
+        "scratch/medium_learning_review_20261008.md",
+        "results/published/medium_vs_fly_matched_50k_20261009.json"
       ],
       "invalidation": "Do not infer semantic utility from anisotropy, high flow, shape, low rank, or conservation. Reject causal root-cause claims unsupported by current D768 attribution. Cost, prior scales, birth history, basis bandwidth, finite-window credit and inference approximation must remain explicit."
     },
@@ -4760,6 +4900,38 @@
         "Global clipping shrinks fresh read projection norm from0.6167 to~2.52e-21; optimizer credit efficacy remains unresolved."
       ],
       "invalidation": "Reassess with changed loss, checkpoint/state provenance, parameter clipping or execution; numerical update success alone establishes neither long-run stability nor capability advantage."
+    },
+    {
+      "id": "IB_HOPF_RECOMPOSE_20261009",
+      "parent": "IB_RIVERBED_VALUE_20261009",
+      "title": "State-continuous local branching with CK structural bookkeeping",
+      "status": "partially_reusable",
+      "confidence": "D",
+      "time": "2026-10-09",
+      "motivation": "User proposes rooted-tree grafting, cuts and graph extensions to support learned routes and continuous memory during local reorganization.",
+      "action": "Implemented CK ledger and wave split/merge numerical interfaces; reviewed Gemini LocalHopfBranchPathway and opt-in readout/CLI integration with an independent implementation reviewer. No Gen3 production training launched by this review.",
+      "conclusion": "18 affected capacity/Hopf numerical tests pass. Paired Cayley transformation conserves main plus residual energy. Current runtime applies it to pooled readout features and discards residual; material B, field/flux evolution and persistent physical state are unchanged. CK cuts/grafting do not yet compile actual local couplings. It is a readout-transform control, with physical persistent branching still required. Large per-token dense solve, non-identity adoption and compile-time Python checks require repair before use.",
+      "next_action": "Retain CK algebra and pooled readout adapter as a legacy numerical/control branch; the production physical mechanism and acceptance now live in child IB_FLUX_JUNCTION_20261009.",
+      "review": {
+        "theory_reviewer": {
+          "reviewer": "/root/review_flow_plasticity",
+          "status": "accepted",
+          "concerns": "Conditional algebra and wave-state interface only; requires energy/volume normalization, idle state budget, separate capacity/storage accounting, full residual retention, ordered overlaps and moving-basis connection if applicable. No predictive-benefit or biological-equivalence claim."
+        },
+        "implementation_reviewer": {
+          "reviewer": "/root/review_flow_plasticity",
+          "status": "revision_required",
+          "concerns": "Physical branching claim not yet met: only pooled readout integration, discarded residual, fixed tree labels without physical evaluator, Python allclose in compiled path, dense 1536 solve at D768, no exact-identity migration and silent left auxiliary selection."
+        }
+      },
+      "artifacts": [
+        "docs/information_boltzmann/MEDIUM_HOPF_RECOMPOSITION_20261009.md",
+        "information_boltzmann/core/hopf_recomposition.py",
+        "tests/test_hopf_recomposition.py",
+        "docs/information_boltzmann/MEDIUM_GEN2_GEN3_REVIEW_20261009.md",
+        "results/published/medium_gen2_gen3_review_20261009.json"
+      ],
+      "invalidation": "Reject physical signal cloning inferred from coproduct, dissipative memory rollback inferred from antipode, arbitrary edit commutativity inferred from coassociativity, principal-axis streamline shapes as branch generation, or task benefit from pure coordinate relabeling. Reject edits with unaccounted state loss, energy/resource/storage change or incompatible ports."
     }
   ],
   "status_migration_note": "Normalize historical workflow labels for repository validator; original labels retained as legacy_status. No new experimental conclusions introduced.",

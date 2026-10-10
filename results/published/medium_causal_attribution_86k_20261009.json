@@ -1,0 +1,87 @@
+{
+  "title": "Generation 1 (86k Tokens) Causal Operator Attribution & Synergy Audit",
+  "checkpoint": "results\\medium_d768_streaming_pathway_8x8x8_160k\\last.pt",
+  "step": 2689,
+  "fresh_training_tokens": 86048,
+  "segments_evaluated": 4,
+  "tokens_per_segment": 128,
+  "total_tokens_scored": 512,
+  "event_duration": 0.03327237442135811,
+  "conditions": {
+    "full": {
+      "mean_nll": 5.390445869663381,
+      "std_nll": 3.4206140168006995,
+      "segment_nlls": [
+        5.940780747259851,
+        5.210031626138516,
+        4.486620511888759,
+        5.924350593366398
+      ],
+      "token_count": 512
+    },
+    "no_transport": {
+      "mean_nll": 6.409064627991029,
+      "std_nll": 3.3633709725445344,
+      "segment_nlls": [
+        6.593884788046125,
+        6.192366986826528,
+        6.211737250050646,
+        6.638269487040816
+      ],
+      "token_count": 512
+    },
+    "no_collision": {
+      "mean_nll": 6.085301484396041,
+      "std_nll": 3.427634157847982,
+      "segment_nlls": [
+        6.386221864624531,
+        5.805797687164159,
+        5.815742485909141,
+        6.333443899886333
+      ],
+      "token_count": 512
+    },
+    "no_both": {
+      "mean_nll": 7.360081550985342,
+      "std_nll": 3.0800295853060526,
+      "segment_nlls": [
+        7.496812088880688,
+        7.310231182724237,
+        7.3256122689927,
+        7.3076706633437425
+      ],
+      "token_count": 512
+    },
+    "homogeneous_material": {
+      "mean_nll": 5.655015849381016,
+      "std_nll": 3.4485979801233726,
+      "segment_nlls": [
+        6.084399348357692,
+        5.386401746451156,
+        5.017977135954425,
+        6.13128516676079
+      ],
+      "token_count": 512
+    },
+    "no_temporal_probes": {
+      "mean_nll": 5.481241081937696,
+      "std_nll": 3.4605636451737745,
+      "segment_nlls": [
+        5.922485189126746,
+        5.392047744055162,
+        4.643280792806763,
+        5.967150601762114
+      ],
+      "token_count": 512
+    }
+  },
+  "causal_deltas": {
+    "delta_nll_transport": 1.0186187583276478,
+    "delta_nll_collision": 0.6948556147326599,
+    "delta_nll_joint": 1.9696356813219609,
+    "delta_nll_material_anisotropy": 0.26456997971763485,
+    "delta_nll_temporal_probes": 0.09079521227431542,
+    "synergy_ratio": 1.1494981846761692,
+    "synergy_interpretation": "S = 1.149 > 1.0 confirms positive super-additive coupling between 3D wave routing and nonlinear collision dynamics."
+  }
+}

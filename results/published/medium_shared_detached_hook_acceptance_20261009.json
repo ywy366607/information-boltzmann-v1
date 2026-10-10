@@ -1,0 +1,637 @@
+{
+  "scope": "actual D7688^3 real OWT, full32 credit, execution only",
+  "checkpoint": "results\\medium_d768_streaming_pathway_8x8x8_160k\\last.pt",
+  "checkpoint_step": 305,
+  "checkpoint_cursor": 9761,
+  "production_checkpoint_written": false,
+  "runs": [
+    {
+      "physical_execution": "separate",
+      "auxiliary_final_read": false,
+      "forward_backward_seconds": 26.791439500000706,
+      "peak_allocated_mib": 2567.03515625
+    },
+    {
+      "physical_execution": "shared",
+      "auxiliary_final_read": false,
+      "forward_backward_seconds": 8.675060300000041,
+      "peak_allocated_mib": 2319.4619140625
+    }
+  ],
+  "identity": {
+    "passed": true,
+    "maximum_absolute_differences": {
+      "state": 0.0,
+      "input_gradient": 0.0,
+      "parameter_gradient": 3.5762786865234375e-07
+    },
+    "parameter_tensors": 101,
+    "state_tensors": 11
+  },
+  "conditional_response": {
+    "scope": "conditional_complete_physical_state_one_event",
+    "directions": 1,
+    "duration": 0.034957725554704666,
+    "direction_durations": [
+      0.034957725554704666
+    ],
+    "nominal_event_duration": 0.03327237442135811,
+    "duration_policy": "model.event_time from pre-observation physical state; clock JVP included",
+    "state_shapes": [
+      [
+        1,
+        8,
+        8,
+        8,
+        768
+      ],
+      [
+        1,
+        8,
+        8,
+        8,
+        768
+      ],
+      [
+        1,
+        8,
+        8,
+        8,
+        768
+      ],
+      [
+        1,
+        8,
+        8,
+        8,
+        768
+      ],
+      [
+        1,
+        8,
+        8,
+        8,
+        3
+      ],
+      [
+        1,
+        8,
+        8,
+        8,
+        2,
+        768
+      ],
+      [
+        1,
+        8,
+        8,
+        8,
+        3,
+        2
+      ],
+      [
+        1,
+        768
+      ],
+      [
+        1,
+        16,
+        4,
+        1536
+      ],
+      [
+        1,
+        16,
+        4,
+        1536
+      ]
+    ],
+    "metric": "sum of component mean-square distances in model coordinates",
+    "gains": [
+      0.9233652949333191
+    ],
+    "log_gain_per_physical_time": [
+      -2.2807649053696832
+    ],
+    "claim": "Directional local response, not maximal Lyapunov exponent or criticality."
+  },
+  "timing_policy": {
+    "read_key_execution": "support",
+    "auxiliary_final_read": false,
+    "first_update_includes_compilation": true,
+    "health_update_snapshot": true,
+    "segment_graph": true,
+    "optimizer_state_offload": true,
+    "shared_credit": true,
+    "deferred_writer_credit": true,
+    "port_execution": "native",
+    "credit_history_offload": true,
+    "fused_optimizer": true
+  },
+  "timing_rng": "restored checkpoint CPU/CUDA RNG before both windows",
+  "complete_updates": [
+    {
+      "window": 1,
+      "tokens": 32,
+      "seconds": 22.968249099998502,
+      "optimizer_updates": 318,
+      "prequential_nll": 8.892727001570165
+    },
+    {
+      "window": 2,
+      "tokens": 32,
+      "seconds": 10.926203999999416,
+      "optimizer_updates": 319,
+      "prequential_nll": 5.176381804747507
+    },
+    {
+      "window": 3,
+      "tokens": 32,
+      "seconds": 11.007561799997347,
+      "optimizer_updates": 320,
+      "prequential_nll": 7.237544193863869
+    },
+    {
+      "window": 4,
+      "tokens": 32,
+      "seconds": 11.092149700001755,
+      "optimizer_updates": 321,
+      "prequential_nll": 6.17916152626276
+    },
+    {
+      "window": 5,
+      "tokens": 32,
+      "seconds": 10.770960900001228,
+      "optimizer_updates": 322,
+      "prequential_nll": 6.97837602160871
+    },
+    {
+      "window": 6,
+      "tokens": 32,
+      "seconds": 10.772714000002452,
+      "optimizer_updates": 323,
+      "prequential_nll": 6.073162943124771
+    }
+  ],
+  "segment_replays": 1728,
+  "rhs_segment_replays": 576,
+  "status": "passed",
+  "memory": {
+    "sample_count": 187,
+    "sampled_peak_dedicated_mib": 2936.6484375,
+    "sampled_peak_shared_mib": 80.0,
+    "counter_errors": [],
+    "cap_exceeded": false,
+    "last_sample": {
+      "seconds": 30234.8976604,
+      "dedicated_bytes": 2827640832,
+      "shared_bytes": 83886080,
+      "rows": [
+        {
+          "Name": "pid_34416_luid_0x00000000_0x00018DBD_phys_0",
+          "DedicatedUsage": 2827640832,
+          "SharedUsage": 83886080
+        }
+      ]
+    },
+    "peak_is_sampled": true
+  },
+  "component_spans": [
+    {
+      "optimizer_offload": {
+        "calls": 1,
+        "host_seconds": 0.1278353000016068,
+        "stream_seconds": 0.12775823974609374
+      },
+      "main.forward.write": {
+        "calls": 32,
+        "host_seconds": 0.4052497000157018,
+        "stream_seconds": 0.4027145586013795
+      },
+      "main.forward.physical_step": {
+        "calls": 64,
+        "host_seconds": 0.29892499998095445,
+        "stream_seconds": 0.8924819192886353
+      },
+      "main.forward.endpoint_rhs": {
+        "calls": 64,
+        "host_seconds": 0.04297479999877396,
+        "stream_seconds": 0.09030217587947843
+      },
+      "main.forward.read": {
+        "calls": 32,
+        "host_seconds": 0.19992880000791047,
+        "stream_seconds": 0.08529955196380615
+      },
+      "chunk_forward_including_auxiliary": {
+        "calls": 1,
+        "host_seconds": 2.1585408999999345,
+        "stream_seconds": 2.15849853515625
+      },
+      "main.backward.write": {
+        "calls": 32,
+        "host_seconds": 0.5024608000057924,
+        "stream_seconds": 0.5000085773468017
+      },
+      "main.backward.physical_step": {
+        "calls": 64,
+        "host_seconds": 1.2797678999959317,
+        "stream_seconds": 1.2925072937011717
+      },
+      "main.backward.endpoint_rhs": {
+        "calls": 64,
+        "host_seconds": 0.08175170001049992,
+        "stream_seconds": 0.09660665583610532
+      },
+      "main.backward.read": {
+        "calls": 32,
+        "host_seconds": 0.2826671000002534,
+        "stream_seconds": 0.28056243181228635
+      },
+      "main_backward": {
+        "calls": 1,
+        "host_seconds": 8.383594099999755,
+        "stream_seconds": 8.3878232421875
+      },
+      "optimizer_restore": {
+        "calls": 1,
+        "host_seconds": 0.13924640000186628,
+        "stream_seconds": 0.139076416015625
+      },
+      "gradient_clip": {
+        "calls": 1,
+        "host_seconds": 0.017517600001156097,
+        "stream_seconds": 0.01997132873535156
+      },
+      "health_snapshot": {
+        "calls": 1,
+        "host_seconds": 0.006807999998272862,
+        "stream_seconds": 0.01291811180114746
+      },
+      "optimizer_step": {
+        "calls": 1,
+        "host_seconds": 0.0010919000014837366,
+        "stream_seconds": 0.032319774627685545
+      },
+      "health_update_norms": {
+        "calls": 1,
+        "host_seconds": 0.023852000002079876,
+        "stream_seconds": 0.02480175971984863
+      },
+      "gradient_clear": {
+        "calls": 1,
+        "host_seconds": 0.0007059999988996424,
+        "stream_seconds": 0.0021410560607910156
+      }
+    },
+    {
+      "optimizer_offload": {
+        "calls": 1,
+        "host_seconds": 0.1146273000013025,
+        "stream_seconds": 0.11458755493164062
+      },
+      "main.forward.write": {
+        "calls": 32,
+        "host_seconds": 0.3921170999929018,
+        "stream_seconds": 0.38965708732604987
+      },
+      "main.forward.physical_step": {
+        "calls": 64,
+        "host_seconds": 0.29339729999992414,
+        "stream_seconds": 0.8925596475601197
+      },
+      "main.forward.endpoint_rhs": {
+        "calls": 64,
+        "host_seconds": 0.04288760000054026,
+        "stream_seconds": 0.09016435170173645
+      },
+      "main.forward.read": {
+        "calls": 32,
+        "host_seconds": 0.20298459999321494,
+        "stream_seconds": 0.08449135994911192
+      },
+      "chunk_forward_including_auxiliary": {
+        "calls": 1,
+        "host_seconds": 2.135977099998854,
+        "stream_seconds": 2.135932861328125
+      },
+      "main.backward.write": {
+        "calls": 32,
+        "host_seconds": 0.48918249999405816,
+        "stream_seconds": 0.48683920097351074
+      },
+      "main.backward.physical_step": {
+        "calls": 64,
+        "host_seconds": 1.2761048000211304,
+        "stream_seconds": 1.28654154586792
+      },
+      "main.backward.endpoint_rhs": {
+        "calls": 64,
+        "host_seconds": 0.08150069999464904,
+        "stream_seconds": 0.09756380796432497
+      },
+      "main.backward.read": {
+        "calls": 32,
+        "host_seconds": 0.29472210001040366,
+        "stream_seconds": 0.29243964624404906
+      },
+      "main_backward": {
+        "calls": 1,
+        "host_seconds": 8.486743500001467,
+        "stream_seconds": 8.4907412109375
+      },
+      "optimizer_restore": {
+        "calls": 1,
+        "host_seconds": 0.15823099999761325,
+        "stream_seconds": 0.15777996826171875
+      },
+      "gradient_clip": {
+        "calls": 1,
+        "host_seconds": 0.01535159999912139,
+        "stream_seconds": 0.01806876754760742
+      },
+      "health_snapshot": {
+        "calls": 1,
+        "host_seconds": 0.005286900002829498,
+        "stream_seconds": 0.011105055809020997
+      },
+      "optimizer_step": {
+        "calls": 1,
+        "host_seconds": 0.00146399999721325,
+        "stream_seconds": 0.032841758728027345
+      },
+      "health_update_norms": {
+        "calls": 1,
+        "host_seconds": 0.021784299999126233,
+        "stream_seconds": 0.021717151641845702
+      },
+      "gradient_clear": {
+        "calls": 1,
+        "host_seconds": 0.0005005999992135912,
+        "stream_seconds": 0.0019836800098419188
+      }
+    },
+    {
+      "optimizer_offload": {
+        "calls": 1,
+        "host_seconds": 0.11131019999811542,
+        "stream_seconds": 0.11121907043457031
+      },
+      "main.forward.write": {
+        "calls": 32,
+        "host_seconds": 0.36814369998683105,
+        "stream_seconds": 0.3654300785064699
+      },
+      "main.forward.physical_step": {
+        "calls": 64,
+        "host_seconds": 0.290355000001,
+        "stream_seconds": 0.8925753240585327
+      },
+      "main.forward.endpoint_rhs": {
+        "calls": 64,
+        "host_seconds": 0.04306080000606016,
+        "stream_seconds": 0.09009395170211791
+      },
+      "main.forward.read": {
+        "calls": 32,
+        "host_seconds": 0.1941167999902973,
+        "stream_seconds": 0.08219615912437439
+      },
+      "chunk_forward_including_auxiliary": {
+        "calls": 1,
+        "host_seconds": 2.1067662999994354,
+        "stream_seconds": 2.10671923828125
+      },
+      "main.backward.write": {
+        "calls": 32,
+        "host_seconds": 0.5556190999886894,
+        "stream_seconds": 0.5529938249588014
+      },
+      "main.backward.physical_step": {
+        "calls": 64,
+        "host_seconds": 1.2716366999775346,
+        "stream_seconds": 1.2836549415588379
+      },
+      "main.backward.endpoint_rhs": {
+        "calls": 64,
+        "host_seconds": 0.08656940000219038,
+        "stream_seconds": 0.09864646422863003
+      },
+      "main.backward.read": {
+        "calls": 32,
+        "host_seconds": 0.2831164000017452,
+        "stream_seconds": 0.2802581753730774
+      },
+      "main_backward": {
+        "calls": 1,
+        "host_seconds": 8.627296599999681,
+        "stream_seconds": 8.6315361328125
+      },
+      "optimizer_restore": {
+        "calls": 1,
+        "host_seconds": 0.14338499999939813,
+        "stream_seconds": 0.1409700164794922
+      },
+      "gradient_clip": {
+        "calls": 1,
+        "host_seconds": 0.016303500000503846,
+        "stream_seconds": 0.019086687088012696
+      },
+      "health_snapshot": {
+        "calls": 1,
+        "host_seconds": 0.0040234000007330906,
+        "stream_seconds": 0.010347392082214356
+      },
+      "optimizer_step": {
+        "calls": 1,
+        "host_seconds": 0.0008874000013747718,
+        "stream_seconds": 0.03227475357055664
+      },
+      "health_update_norms": {
+        "calls": 1,
+        "host_seconds": 0.0179675999970641,
+        "stream_seconds": 0.01883510398864746
+      },
+      "gradient_clear": {
+        "calls": 1,
+        "host_seconds": 0.00046010000005480833,
+        "stream_seconds": 0.0019474560022354126
+      }
+    },
+    {
+      "optimizer_offload": {
+        "calls": 1,
+        "host_seconds": 0.11993620000066585,
+        "stream_seconds": 0.11986470031738282
+      },
+      "main.forward.write": {
+        "calls": 32,
+        "host_seconds": 0.37049959999058046,
+        "stream_seconds": 0.36815983963012694
+      },
+      "main.forward.physical_step": {
+        "calls": 64,
+        "host_seconds": 0.2810373000065738,
+        "stream_seconds": 0.8917064619064332
+      },
+      "main.forward.endpoint_rhs": {
+        "calls": 64,
+        "host_seconds": 0.043960899998637615,
+        "stream_seconds": 0.09003996765613557
+      },
+      "main.forward.read": {
+        "calls": 32,
+        "host_seconds": 0.1911052000032214,
+        "stream_seconds": 0.08039084792137148
+      },
+      "chunk_forward_including_auxiliary": {
+        "calls": 1,
+        "host_seconds": 2.097963800002617,
+        "stream_seconds": 2.097907958984375
+      },
+      "main.backward.write": {
+        "calls": 32,
+        "host_seconds": 0.5043296000039845,
+        "stream_seconds": 0.5017678060531615
+      },
+      "main.backward.physical_step": {
+        "calls": 64,
+        "host_seconds": 1.2375455999936094,
+        "stream_seconds": 1.253835651397705
+      },
+      "main.backward.endpoint_rhs": {
+        "calls": 64,
+        "host_seconds": 0.07963519997429103,
+        "stream_seconds": 0.09362854409217833
+      },
+      "main.backward.read": {
+        "calls": 32,
+        "host_seconds": 0.2684789000049932,
+        "stream_seconds": 0.2660218906402588
+      },
+      "main_backward": {
+        "calls": 1,
+        "host_seconds": 8.268584800000099,
+        "stream_seconds": 8.2723466796875
+      },
+      "optimizer_restore": {
+        "calls": 1,
+        "host_seconds": 0.16528570000082254,
+        "stream_seconds": 0.1651199951171875
+      },
+      "gradient_clip": {
+        "calls": 1,
+        "host_seconds": 0.017455900000641122,
+        "stream_seconds": 0.019818016052246094
+      },
+      "health_snapshot": {
+        "calls": 1,
+        "host_seconds": 0.006250399997952627,
+        "stream_seconds": 0.012377920150756836
+      },
+      "optimizer_step": {
+        "calls": 1,
+        "host_seconds": 0.0009336000002804212,
+        "stream_seconds": 0.0324450569152832
+      },
+      "health_update_norms": {
+        "calls": 1,
+        "host_seconds": 0.027179500000784174,
+        "stream_seconds": 0.026867712020874023
+      },
+      "gradient_clear": {
+        "calls": 1,
+        "host_seconds": 0.0005424000009952579,
+        "stream_seconds": 0.0019895999431610105
+      }
+    },
+    {
+      "optimizer_offload": {
+        "calls": 1,
+        "host_seconds": 0.12905050000335905,
+        "stream_seconds": 0.12898918151855468
+      },
+      "main.forward.write": {
+        "calls": 32,
+        "host_seconds": 0.402037100000598,
+        "stream_seconds": 0.3995770215988159
+      },
+      "main.forward.physical_step": {
+        "calls": 64,
+        "host_seconds": 0.2827492000069469,
+        "stream_seconds": 0.8902728948593143
+      },
+      "main.forward.endpoint_rhs": {
+        "calls": 64,
+        "host_seconds": 0.04201449998799944,
+        "stream_seconds": 0.0902233598232269
+      },
+      "main.forward.read": {
+        "calls": 32,
+        "host_seconds": 0.19485329999952228,
+        "stream_seconds": 0.079212735414505
+      },
+      "chunk_forward_including_auxiliary": {
+        "calls": 1,
+        "host_seconds": 2.1448632999999973,
+        "stream_seconds": 2.144819091796875
+      },
+      "main.backward.write": {
+        "calls": 32,
+        "host_seconds": 0.5113065000114148,
+        "stream_seconds": 0.5081770858764648
+      },
+      "main.backward.physical_step": {
+        "calls": 64,
+        "host_seconds": 1.218241400001716,
+        "stream_seconds": 1.2319786262512207
+      },
+      "main.backward.endpoint_rhs": {
+        "calls": 64,
+        "host_seconds": 0.08456279999518301,
+        "stream_seconds": 0.09788819146156312
+      },
+      "main.backward.read": {
+        "calls": 32,
+        "host_seconds": 0.28145109999968554,
+        "stream_seconds": 0.279220929145813
+      },
+      "main_backward": {
+        "calls": 1,
+        "host_seconds": 8.2384458000015,
+        "stream_seconds": 8.242470703125
+      },
+      "optimizer_restore": {
+        "calls": 1,
+        "host_seconds": 0.14521979999699397,
+        "stream_seconds": 0.14506063842773437
+      },
+      "gradient_clip": {
+        "calls": 1,
+        "host_seconds": 0.017078500000934582,
+        "stream_seconds": 0.01942745590209961
+      },
+      "health_snapshot": {
+        "calls": 1,
+        "host_seconds": 0.004072399999131449,
+        "stream_seconds": 0.010096351623535156
+      },
+      "optimizer_step": {
+        "calls": 1,
+        "host_seconds": 0.0009577999990142416,
+        "stream_seconds": 0.03232294464111328
+      },
+      "health_update_norms": {
+        "calls": 1,
+        "host_seconds": 0.02252990000124555,
+        "stream_seconds": 0.023366592407226563
+      },
+      "gradient_clear": {
+        "calls": 1,
+        "host_seconds": 0.00042269999903510325,
+        "stream_seconds": 0.0019205119609832764
+      }
+    }
+  ],
+  "span_semantics": "Inclusive nested host/stream spans, instrumentation overhead; warm windows only"
+}

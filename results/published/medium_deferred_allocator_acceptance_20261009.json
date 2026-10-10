@@ -1,0 +1,150 @@
+{
+  "scope": "actual D7688^3 real OWT, full32 credit, execution only",
+  "checkpoint": "results\\medium_d768_streaming_pathway_8x8x8_160k\\last.pt",
+  "checkpoint_step": 305,
+  "checkpoint_cursor": 9761,
+  "production_checkpoint_written": false,
+  "runs": [],
+  "timing_policy": {
+    "read_key_execution": "support",
+    "auxiliary_final_read": false,
+    "first_update_includes_compilation": true,
+    "health_update_snapshot": true,
+    "segment_graph": true,
+    "optimizer_state_offload": true,
+    "shared_credit": true,
+    "deferred_writer_credit": true,
+    "port_execution": "native",
+    "credit_history_offload": true,
+    "fused_optimizer": true
+  },
+  "timing_rng": "restored checkpoint CPU/CUDA RNG before both windows",
+  "complete_updates": [
+    {
+      "window": 1,
+      "tokens": 32,
+      "seconds": 27.1593466000013,
+      "optimizer_updates": 318,
+      "prequential_nll": 8.892727001570165
+    },
+    {
+      "window": 2,
+      "tokens": 32,
+      "seconds": 11.358999299998686,
+      "optimizer_updates": 319,
+      "prequential_nll": 5.176381804747507
+    }
+  ],
+  "status": "failed",
+  "error": "OutOfMemoryError: CUDA out of memory. Tried to allocate 148.00 MiB. GPU 0 has a total capacity of 4.00 GiB of which 0 bytes is free. 3.62 GiB allowed; Of the allocated memory 3.52 GiB is allocated by PyTorch, with 74.97 MiB allocated in private pools (e.g., CUDA Graphs), and 101.32 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)",
+  "memory": {
+    "sample_count": 76,
+    "sampled_peak_dedicated_mib": 3802.65625,
+    "sampled_peak_shared_mib": 80.0,
+    "counter_errors": [],
+    "cap_exceeded": false,
+    "last_sample": {
+      "seconds": 30095.2858876,
+      "dedicated_bytes": 3987374080,
+      "shared_bytes": 83886080,
+      "rows": [
+        {
+          "Name": "pid_30476_luid_0x00000000_0x00018DBD_phys_0",
+          "DedicatedUsage": 3987374080,
+          "SharedUsage": 83886080
+        }
+      ]
+    },
+    "peak_is_sampled": true
+  },
+  "component_spans": [
+    {
+      "optimizer_offload": {
+        "calls": 1,
+        "host_seconds": 0.13078170000153477,
+        "stream_seconds": 0.1307163543701172
+      },
+      "main.forward.write": {
+        "calls": 32,
+        "host_seconds": 0.37982979999651434,
+        "stream_seconds": 0.37722128200531
+      },
+      "main.forward.physical_step": {
+        "calls": 64,
+        "host_seconds": 0.2883531999941624,
+        "stream_seconds": 0.8900934419631958
+      },
+      "main.forward.endpoint_rhs": {
+        "calls": 64,
+        "host_seconds": 0.04480349999721511,
+        "stream_seconds": 0.09059119987487795
+      },
+      "main.forward.read": {
+        "calls": 32,
+        "host_seconds": 0.2032214999999269,
+        "stream_seconds": 0.07991843199729921
+      },
+      "chunk_forward_including_auxiliary": {
+        "calls": 1,
+        "host_seconds": 2.0991517000002204,
+        "stream_seconds": 2.0991005859375
+      },
+      "main.backward.write": {
+        "calls": 32,
+        "host_seconds": 0.5058210000024701,
+        "stream_seconds": 0.5027220172882081
+      },
+      "main.backward.physical_step": {
+        "calls": 64,
+        "host_seconds": 1.2456766000104835,
+        "stream_seconds": 1.2688289318084718
+      },
+      "main.backward.endpoint_rhs": {
+        "calls": 64,
+        "host_seconds": 0.07732029999533552,
+        "stream_seconds": 0.09191296005249026
+      },
+      "main.backward.read": {
+        "calls": 32,
+        "host_seconds": 0.3005753000070399,
+        "stream_seconds": 0.29797430467605596
+      },
+      "main_backward": {
+        "calls": 1,
+        "host_seconds": 8.899545199998101,
+        "stream_seconds": 8.9041826171875
+      },
+      "optimizer_restore": {
+        "calls": 1,
+        "host_seconds": 0.12577080000119167,
+        "stream_seconds": 0.12559286499023437
+      },
+      "gradient_clip": {
+        "calls": 1,
+        "host_seconds": 0.014761800000997027,
+        "stream_seconds": 0.017515392303466798
+      },
+      "health_snapshot": {
+        "calls": 1,
+        "host_seconds": 0.0030029000008653384,
+        "stream_seconds": 0.009085760116577149
+      },
+      "optimizer_step": {
+        "calls": 1,
+        "host_seconds": 0.00108639999962179,
+        "stream_seconds": 0.03225574493408203
+      },
+      "health_update_norms": {
+        "calls": 1,
+        "host_seconds": 0.0203789000006509,
+        "stream_seconds": 0.021055328369140626
+      },
+      "gradient_clear": {
+        "calls": 1,
+        "host_seconds": 0.0004516000008152332,
+        "stream_seconds": 0.00194159996509552
+      }
+    }
+  ],
+  "span_semantics": "Inclusive nested host/stream spans, instrumentation overhead; warm windows only"
+}

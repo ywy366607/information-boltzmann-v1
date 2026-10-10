@@ -28,6 +28,13 @@ from information_boltzmann.core.variational_rolling_stream import (
 
 
 def run_rolling_stream_pilot(args: argparse.Namespace) -> dict:
+    # Keep ablation arms comparable: model initialization and any stochastic
+    # tensor operations must start from the same state for a given seed.
+    np.random.seed(args.seed)
+    torch.manual_seed(args.seed)
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed_all(args.seed)
+
     device = torch.device(args.device if torch.cuda.is_available() and args.device == "cuda" else "cpu")
     print(f"=== Variational Rolling Stream Pilot Experiment ===")
     print(f"Device: {device} ({torch.cuda.get_device_name(0) if device.type == 'cuda' else 'CPU'})")
@@ -36,6 +43,7 @@ def run_rolling_stream_pilot(args: argparse.Namespace) -> dict:
     print(f"Inner Max Steps: {args.inner_max_steps}, Inner LR: {args.inner_lr}")
     print(f"Plateau Delta: {args.plateau_delta}, Patience: {args.plateau_patience}")
     print(f"KL Weight: {args.kl_weight}, Retention Rho: {args.retention}")
+    print(f"Seed: {args.seed}")
     print(f"Number of Windows: {args.num_windows} (Total stream length: {args.num_windows * args.stride + (args.window_size - args.stride)} tokens)\n")
 
     if device.type == "cuda":
@@ -73,16 +81,21 @@ def run_rolling_stream_pilot(args: argparse.Namespace) -> dict:
         plateau_patience=args.plateau_patience,
         kl_weight=args.kl_weight,
         retention=args.retention,
+        adaptive_retention=args.adaptive_retention,
+        retention_min=args.retention_min,
+        retention_max=args.retention_max,
+        error_sensitivity=args.error_sensitivity,
+        multi_scale_retention=args.multi_scale_retention,
         outer_lr=args.outer_lr,
         device=device,
     )
 
-    print("-" * 105)
+    print("-" * 125)
     print(
         f"{'Win':>4} | {'Tokens':>13} | {'Preq NLL':>9} | {'Plat NLL':>9} | {'Gain (nats)':>11} | "
-        f"{'KL (nats)':>9} | {'FE':>8} | {'Steps':>5} | {'Plat?':>5} | {'Time':>7}"
+        f"{'KL (nats)':>9} | {'FE':>8} | {'Steps':>5} | {'Plat?':>5} | {'Prec':>6} | {'Rho':>6} | {'Time':>7}"
     )
-    print("-" * 105)
+    print("-" * 125)
 
     reports = []
     t0_total = time.perf_counter()
@@ -99,7 +112,7 @@ def run_rolling_stream_pilot(args: argparse.Namespace) -> dict:
         print(
             f"{rep.window_idx:4d} | {tok_range:>13} | {rep.prequential_nll:9.4f} | {rep.plateau_nll:9.4f} | "
             f"{rep.adaptation_gain:+11.4f} | {rep.final_kl:9.4f} | {rep.final_free_energy:8.4f} | "
-            f"{rep.inner_steps_taken:5d} | {plat_str:>5} | {rep.wall_time_ms:6.1f}ms"
+            f"{rep.inner_steps_taken:5d} | {plat_str:>5} | {rep.precision_ratio:6.2f} | {rep.retention_mean:6.3f} | {rep.wall_time_ms:6.1f}ms"
         )
 
     t_total = time.perf_counter() - t0_total
@@ -131,6 +144,10 @@ def run_rolling_stream_pilot(args: argparse.Namespace) -> dict:
     print(f"Mean Belief KL Divergence: {np.mean(kls):.4f} nats")
     print(f"Mean Inner Steps to Plateau: {np.mean(steps):.2f} / {args.inner_max_steps} steps")
     print(f"Plateau Trigger Rate: {plateau_counts}/{args.num_windows} ({plateau_counts / args.num_windows * 100:.1f}%)")
+    rhos = [r.retention_mean for r in reports]
+    precs = [r.precision_ratio for r in reports]
+    print(f"Mean Retention Rho: {np.mean(rhos):.4f} (range: [{min(rhos):.4f}, {max(rhos):.4f}])")
+    print(f"Mean Precision Ratio Pi_rel: {np.mean(precs):.4f} (range: [{min(precs):.4f}, {max(precs):.4f}])")
 
     summary_result = {
         "device": str(device),
@@ -146,6 +163,10 @@ def run_rolling_stream_pilot(args: argparse.Namespace) -> dict:
         "plateau_delta": args.plateau_delta,
         "kl_weight": args.kl_weight,
         "retention": args.retention,
+        "seed": args.seed,
+        "adaptive_retention": args.adaptive_retention,
+        "error_sensitivity": args.error_sensitivity,
+        "multi_scale_retention": args.multi_scale_retention,
         "total_tokens_processed": total_tokens_processed,
         "total_elapsed_s": t_total,
         "tokens_per_sec": tokens_per_sec,
@@ -156,6 +177,8 @@ def run_rolling_stream_pilot(args: argparse.Namespace) -> dict:
         "mean_kl_divergence": float(np.mean(kls)),
         "mean_inner_steps": float(np.mean(steps)),
         "plateau_trigger_rate": float(plateau_counts / args.num_windows),
+        "mean_retention": float(np.mean(rhos)),
+        "mean_precision_ratio": float(np.mean(precs)),
         "window_telemetry": [
             {
                 "window": r.window_idx,
@@ -169,6 +192,8 @@ def run_rolling_stream_pilot(args: argparse.Namespace) -> dict:
                 "inner_steps": r.inner_steps_taken,
                 "plateau_reached": r.plateau_reached,
                 "wall_time_ms": r.wall_time_ms,
+                "retention_mean": r.retention_mean,
+                "precision_ratio": r.precision_ratio,
             }
             for r in reports
         ],
@@ -202,6 +227,12 @@ def main():
     parser.add_argument("--plateau-patience", type=int, default=2)
     parser.add_argument("--kl-weight", type=float, default=0.1)
     parser.add_argument("--retention", type=float, default=0.90)
+    parser.add_argument("--seed", type=int, default=20261009)
+    parser.add_argument("--adaptive-retention", action=argparse.BooleanOptionalAction, default=True)
+    parser.add_argument("--retention-min", type=float, default=0.10)
+    parser.add_argument("--retention-max", type=float, default=0.98)
+    parser.add_argument("--error-sensitivity", type=float, default=1.0)
+    parser.add_argument("--multi-scale-retention", action=argparse.BooleanOptionalAction, default=True)
     parser.add_argument("--outer-lr", type=float, default=1e-4)
     parser.add_argument("--device", type=str, default="cuda")
     parser.add_argument("--report-out", type=str, default="results/published/rolling_vfe_pilot_verification_20261009.json")

@@ -1,0 +1,1269 @@
+{
+  "comparison": "D768, approx50000 monotone fresh OWT GPT2 targets; same exact live B targets and frozen add-one training-only prior",
+  "medium_run": "medium_d768_streaming_pathway_8x8x8_160k",
+  "fly_same_individual_50k_stage": "q8_fly_ctm_settle4_100k",
+  "fly_champion_later_stage": "q8_fly_ctm_settle14_100k",
+  "snapshot": {
+    "status": "training",
+    "pid": 23820,
+    "memory": {
+      "total_dedicated_mib": 2059.0,
+      "allocated_mib": 1330.37841796875,
+      "peak_allocated_mib": 2984.15478515625,
+      "reserved_mib": 1926.0,
+      "inactive_split_mib": 271.62158203125
+    },
+    "step": 1689,
+    "fresh_training_tokens": 54048,
+    "events": 57888,
+    "optimizer_updates": 1809,
+    "physical_elapsed": 2060.3940048627555,
+    "pending_gradient_events": 0,
+    "loss_components": {
+      "task_nll": 6.1932713899775855,
+      "port_objective": 6.7883140644096684,
+      "joint_objective": 12.981631472204324,
+      "port_nll": 6.786449979325564,
+      "write_action_kl": 0.0018640785591349659,
+      "structural_kl": 0.00033909833270103244,
+      "structural_maintenance": 3.1356885455602304,
+      "structural_objective": 6.193317393165323,
+      "component_events": {
+        "task_nll": 57888,
+        "port_objective": 57888,
+        "joint_objective": 57888,
+        "port_nll": 57888,
+        "write_action_kl": 57888,
+        "structural_kl": 57888,
+        "structural_maintenance": 57888,
+        "structural_objective": 57888
+      }
+    },
+    "last_loss_components": {
+      "task_nll": 5.644092559814453,
+      "port_objective": 5.229564666748047,
+      "joint_objective": 10.87370777130127,
+      "port_nll": 5.228873252868652,
+      "write_action_kl": 0.0006909814546816051,
+      "structural_kl": 0.0005260652396827936,
+      "structural_maintenance": 3.1336050033569336,
+      "structural_objective": 5.644143104553223
+    },
+    "health": {
+      "protocol": "persistent_medium_health_v1",
+      "events": 57888,
+      "window_events": 256,
+      "energy": {
+        "write_work": 27981.750932380557,
+        "response_source_work": 4378835.407666683,
+        "dissipated_energy": 4406799.413575649,
+        "balance_residual": -0.07664299011230469,
+        "initial_energy": 0.0,
+        "current_energy": 17.667409896850586,
+        "cumulative_balance_residual": -0.07761351764202118,
+        "max_abs_write_residual": 3.2978132367134094e-06,
+        "max_abs_evolution_residual": 1.52587890625e-05,
+        "max_abs_continuity_residual": 0.0
+      },
+      "structure": {
+        "field_dc_energy": 3.2056467533111572,
+        "field_ac_energy": 3.541349411010742,
+        "flux_dc_energy": 0.024094754830002785,
+        "flux_ac_energy": 10.896318435668945,
+        "field_spatial_fraction": 0.5248779345299454,
+        "latest_operator_changes": {
+          "transport_energy_change": 0.0,
+          "transport_spatial_energy_change": -0.0007572174072265625,
+          "collision_energy_change": -3.814697265625e-06,
+          "collision_spatial_energy_change": 0.0021266937255859375,
+          "bath_energy_change": -0.5280685424804688,
+          "bath_spatial_energy_change": -0.5315074920654297
+        },
+        "window_operator_changes": {
+          "transport_energy_change": -0.00092315673828125,
+          "transport_spatial_energy_change": -0.20203304290771484,
+          "collision_energy_change": 0.000225067138671875,
+          "collision_spatial_energy_change": 0.3437213897705078,
+          "bath_energy_change": -135.95517539978027,
+          "bath_spatial_energy_change": -135.65423965454102
+        }
+      },
+      "representation_segments": [
+        {
+          "phase": "train_first_pass",
+          "novel": true,
+          "samples": 256,
+          "status": "measured",
+          "variance": 1524.0851013649037,
+          "temporal_roughness": 1155.5429672973487,
+          "roughness_to_variance": 0.7581879556873138,
+          "spectral_entropy": 3.679517599608783,
+          "normalized_spectral_entropy": 0.6640214040755545,
+          "effective_rank": 39.627273248878865,
+          "participation_rank": 16.55524951932329,
+          "rank_bound": 255
+        }
+      ],
+      "predictive_risk": {
+        "blocks": [
+          {
+            "phase": "train_first_pass",
+            "novel": true,
+            "segment": 0,
+            "event_midpoint": 57648.5,
+            "mean_nll": 5.979459051042795
+          },
+          {
+            "phase": "train_first_pass",
+            "novel": true,
+            "segment": 0,
+            "event_midpoint": 57680.5,
+            "mean_nll": 6.683291111141443
+          },
+          {
+            "phase": "train_first_pass",
+            "novel": true,
+            "segment": 0,
+            "event_midpoint": 57712.5,
+            "mean_nll": 4.300005736993626
+          },
+          {
+            "phase": "train_first_pass",
+            "novel": true,
+            "segment": 0,
+            "event_midpoint": 57744.5,
+            "mean_nll": 5.152562661358388
+          },
+          {
+            "phase": "train_first_pass",
+            "novel": true,
+            "segment": 0,
+            "event_midpoint": 57776.5,
+            "mean_nll": 6.7590365265496075
+          },
+          {
+            "phase": "train_first_pass",
+            "novel": true,
+            "segment": 0,
+            "event_midpoint": 57808.5,
+            "mean_nll": 5.638092448236421
+          },
+          {
+            "phase": "train_first_pass",
+            "novel": true,
+            "segment": 0,
+            "event_midpoint": 57840.5,
+            "mean_nll": 6.775129933434073
+          },
+          {
+            "phase": "train_first_pass",
+            "novel": true,
+            "segment": 0,
+            "event_midpoint": 57872.5,
+            "mean_nll": 5.644092808710411
+          }
+        ],
+        "by_phase": {
+          "train_first_pass/first_pass": {
+            "segment": 0,
+            "complete_blocks": 8,
+            "slope_nats_per_event": 0.0013885284278482468,
+            "slope_hac_standard_error": 0.002629577411873139,
+            "hac_lags": 2
+          }
+        }
+      },
+      "decoding": {
+        "feature_rms_before_norm": {
+          "latest": 1.4192936420440674,
+          "window_mean": 1.5049369628541172
+        },
+        "feature_rms_after_norm": {
+          "latest": 1.0332906246185303,
+          "window_mean": 1.0339832212775946
+        },
+        "logit_standard_deviation": {
+          "latest": 1.5121822357177734,
+          "window_mean": 1.5529640135355294
+        },
+        "prediction_entropy_nats": {
+          "latest": 5.446176528930664,
+          "window_mean": 5.239588392316364
+        }
+      },
+      "recent_optimizer_updates": [
+        {
+          "event": 57664,
+          "gradient_norm_before_clip": 8.70133541077372,
+          "actual_update_norm": 0.7247783872980976,
+          "parameter_norm": 3058.9727738669408,
+          "relative_update_norm": 0.00023693522004835732
+        },
+        {
+          "event": 57696,
+          "gradient_norm_before_clip": 8.476691637449436,
+          "actual_update_norm": 0.712457516550285,
+          "parameter_norm": 3059.0029936846454,
+          "relative_update_norm": 0.00023290513870733814
+        },
+        {
+          "event": 57728,
+          "gradient_norm_before_clip": 8.231454239015989,
+          "actual_update_norm": 0.680686424789158,
+          "parameter_norm": 3059.0323524113205,
+          "relative_update_norm": 0.0002225169093921476
+        },
+        {
+          "event": 57760,
+          "gradient_norm_before_clip": 9.400865953926113,
+          "actual_update_norm": 0.6553661470460986,
+          "parameter_norm": 3059.060888603092,
+          "relative_update_norm": 0.00021423769284480279
+        },
+        {
+          "event": 57792,
+          "gradient_norm_before_clip": 8.84511291790085,
+          "actual_update_norm": 0.6433121801596445,
+          "parameter_norm": 3059.088854224744,
+          "relative_update_norm": 0.00021029535617156085
+        },
+        {
+          "event": 57824,
+          "gradient_norm_before_clip": 7.443056133899308,
+          "actual_update_norm": 0.6256057213338504,
+          "parameter_norm": 3059.116445752241,
+          "relative_update_norm": 0.0002045053636982469
+        },
+        {
+          "event": 57856,
+          "gradient_norm_before_clip": 8.822981099409885,
+          "actual_update_norm": 0.6090574116860707,
+          "parameter_norm": 3059.1430319840633,
+          "relative_update_norm": 0.00019909412711933755
+        },
+        {
+          "event": 57888,
+          "gradient_norm_before_clip": 7.605481392537705,
+          "actual_update_norm": 0.6133471769866828,
+          "parameter_norm": 3059.1698349411936,
+          "relative_update_norm": 0.0002004946472670986
+        }
+      ],
+      "interpretation": "Descriptive health measurements; no noise-expulsion, criticality or convergence verdict."
+    },
+    "phases": {
+      "train_first_pass": {
+        "events": 54048,
+        "nll_sum": 336318.3105793735,
+        "prior_sum": 404991.88343564305,
+        "nll": 6.222585675314045,
+        "fixed_unigram_nll": 7.493189080736439,
+        "gain": 1.2706034054223938
+      },
+      "fresh_B": {
+        "events": 2560,
+        "nll_sum": 15997.837032515556,
+        "prior_sum": 18640.123253633898,
+        "nll": 6.249155090826389,
+        "fixed_unigram_nll": 7.281298145950741,
+        "gain": 1.0321430551243522
+      },
+      "revisit_bridge": {
+        "events": 10,
+        "nll_sum": 85.94643926620483,
+        "prior_sum": 77.77950454053445,
+        "nll": 8.594643926620483,
+        "fixed_unigram_nll": 7.777950454053444,
+        "gain": -0.8166934725670387
+      },
+      "revisit_A": {
+        "events": 1270,
+        "nll_sum": 6113.999886158854,
+        "prior_sum": 9405.068357472082,
+        "nll": 4.814173138707759,
+        "fixed_unigram_nll": 7.405565635804789,
+        "gain": 2.5913924970970306
+      }
+    },
+    "execution_detail": {
+      "mode": "bounded_forward_segments_and_fused_rhs",
+      "backward": "complete event VJP recomputation",
+      "credit_execution": "shared_primal_two_full_cotangent_lanes",
+      "linear_weight_credit": "per_event_outer_product",
+      "credit_history_storage": "gpu",
+      "vram_limit_mib": 3900,
+      "segments": {
+        "advance": {
+          "graphs": 1,
+          "replays": 286464
+        },
+        "rhs": {
+          "graphs": 1,
+          "replays": 95941
+        }
+      }
+    },
+    "train_prequential_nll": 5.644092808710411,
+    "fixed_unigram_nll": 7.535034861485778,
+    "seconds_per_group": 8.041107199998805,
+    "tokens_per_second": 3.979551472713205,
+    "gradient_norm_before_clip": 7.605481392537705,
+    "lr": 0.0002,
+    "physical_time": 2060.3940048627555,
+    "field_energy": 6.74699592590332,
+    "dc_energy": 3.2056467533111572,
+    "spatial_energy": 3.541349411010742,
+    "dc_share": 0.4751220941543579,
+    "spatial_share": 0.5248779654502869,
+    "temporal_read": {
+      "physical_time": 2060.3940048627555,
+      "rates": [
+        0.8286662697792053,
+        0.19467693567276,
+        0.047333333641290665,
+        0.011469605378806591
+      ],
+      "frequencies": [
+        0.03531601279973984,
+        0.12388858944177628,
+        0.4150726795196533,
+        0.8605658411979675
+      ],
+      "dimensionless_frequencies": [
+        0.03176085278391838,
+        0.11141709238290787,
+        0.3732885420322418,
+        0.7739351987838745
+      ],
+      "real_power_per_mode": [
+        0.12290845811367035,
+        0.033690448850393295,
+        0.00318057625554502,
+        0.0007582238758914173
+      ],
+      "imag_power_per_mode": [
+        0.00013988264254294336,
+        0.010310404002666473,
+        0.002950074849650264,
+        0.0005452785408124328
+      ]
+    },
+    "evaluation_phase": null,
+    "evaluation_completed_events": 0,
+    "evaluation_total_events": 0
+  },
+  "trainable_parameters": {
+    "medium": 80609351,
+    "fly": 77984427
+  },
+  "prior_hash": "d4de1245c61786d8fd223427b29a7ae6db3157d84fac1f11790d2bfcb4c6a750",
+  "prior_hash_equal": true,
+  "pairs": [
+    {
+      "medium_fresh_tokens": 20000,
+      "fly_fresh_tokens": 20000,
+      "validation_target_indices": [
+        768,
+        1024
+      ],
+      "scored_targets": 256,
+      "reference_nll": 7.423662122637301,
+      "medium_nll": 6.729801508481614,
+      "fly_nll": 7.46358248591423,
+      "medium_advantage_nats": 0.733780977432616,
+      "medium_gain_over_prior": 0.6938606141556871,
+      "fly_gain_over_prior": -0.03992036327692894,
+      "medium_updates": 673,
+      "fly_updates": 883,
+      "medium_first_pass": {
+        "events": 20000,
+        "nll_sum": 132182.70281713363,
+        "prior_sum": 149629.59609550954,
+        "nll": 6.609135140856681,
+        "fixed_unigram_nll": 7.481479804775477,
+        "gain": 0.8723446639187954
+      },
+      "fly_first_pass": {
+        "first_pass_measured_train_targets": 20000,
+        "first_pass_train_nll": 7.3605620883822445,
+        "first_pass_fixed_unigram_nll": 7.481479804775618,
+        "first_pass_gain_over_fixed_unigram": 0.12091771639337384
+      },
+      "medium_revisit": {
+        "scored_tokens_per_encounter": 127,
+        "actual_intervening_events": 257,
+        "initial_nll": 6.814194097586974,
+        "revisit_nll": 5.059333202993776,
+        "nll_saving": 1.7548608945931976,
+        "relative_nll_saving": 0.25753021846187574,
+        "opening_nll_saving": 1.2780174789950252,
+        "initial_threshold_tokens": null,
+        "revisit_threshold_tokens": null,
+        "relearning_acceleration": null
+      },
+      "fly_revisit": {
+        "scored_tokens_per_encounter": 128,
+        "actual_intervening_events": 256,
+        "initial_nll": 7.362361367791891,
+        "revisit_nll": 6.908186430111527,
+        "nll_saving": 0.45417493768036366,
+        "relative_nll_saving": 0.06168875921619957,
+        "opening_nll_saving": 0.5015812069177628,
+        "initial_threshold_tokens": 48,
+        "revisit_threshold_tokens": 32,
+        "relearning_acceleration": 1.5,
+        "shared_threshold_nll": 7.16608776897192
+      },
+      "medium_recovery": {
+        "protocol": "live_adaptation_speed_quality_v2",
+        "definition": "generalization = recovery time AND adapted predictive NLL",
+        "scored_tokens": 256,
+        "block_tokens": 16,
+        "confirmation_blocks": 2,
+        "plateau_blocks": 4,
+        "plateau_tolerance_nll": 0.1,
+        "status": "plateau_unconfirmed",
+        "plateau_status": "still_changing",
+        "plateau_nll": null,
+        "plateau_estimate_nll": 6.039859243668616,
+        "recovery_tokens": null,
+        "half_recovery_tokens": null,
+        "adaptation_mean_nll": 6.729801508481614,
+        "adaptation_cumulative_nll": 1722.8291861712933,
+        "comparison": "same target order, exposure and optimizer budgets; lower time and NLL preferred",
+        "appl_h": 836.9811158124537,
+        "log_appl_h": 6.729801508481614,
+        "log_gain_over_reference": 0.6938606141556907,
+        "gain_ratio_over_reference": 2.0014273763000507,
+        "reference_mean_nll": 7.423662122637305,
+        "initial_block_nll": 6.585402302443981,
+        "plateau_interval_tokens": [
+          192,
+          256
+        ],
+        "trailing_unblocked_tokens": 0,
+        "plateau_trend_nll": -0.3635640302672982,
+        "plateau_half_window_drift_nll": 0.15385434869676828,
+        "plateau_block_std_nll": 1.0397302471911545,
+        "plateau_reference_nll": 7.052910472717626,
+        "plateau_estimate_gain_over_reference": 1.01305122904901
+      },
+      "fly_recovery": {
+        "protocol": "live_adaptation_speed_quality_v2",
+        "definition": "generalization = recovery time AND adapted predictive NLL",
+        "scored_tokens": 256,
+        "block_tokens": 16,
+        "confirmation_blocks": 2,
+        "plateau_blocks": 4,
+        "plateau_tolerance_nll": 0.1,
+        "status": "plateau_unconfirmed",
+        "plateau_status": "still_changing",
+        "plateau_nll": null,
+        "plateau_estimate_nll": 6.940951574593782,
+        "recovery_tokens": null,
+        "half_recovery_tokens": null,
+        "adaptation_mean_nll": 7.46358248591423,
+        "adaptation_cumulative_nll": 1910.677116394043,
+        "comparison": "same target order, exposure and optimizer budgets; lower time and NLL preferred",
+        "appl_h": 1743.3825265764633,
+        "log_appl_h": 7.46358248591423,
+        "log_gain_over_reference": -0.039920363276925386,
+        "gain_ratio_over_reference": 0.9608659563215699,
+        "reference_mean_nll": 7.423662122637305,
+        "initial_block_nll": 7.2736267894506454,
+        "plateau_interval_tokens": [
+          192,
+          256
+        ],
+        "trailing_unblocked_tokens": 0,
+        "plateau_trend_nll": -0.837457649409771,
+        "plateau_half_window_drift_nll": -0.3041764572262764,
+        "plateau_block_std_nll": 0.8295296688319775,
+        "plateau_reference_nll": 7.052910472717626,
+        "plateau_estimate_gain_over_reference": 0.1119588981238433
+      }
+    },
+    {
+      "medium_fresh_tokens": 25024,
+      "fly_fresh_tokens": 25000,
+      "validation_target_indices": [
+        1024,
+        1280
+      ],
+      "scored_targets": 256,
+      "reference_nll": 7.2051752651361785,
+      "medium_nll": 6.196366182906786,
+      "fly_nll": 7.123533830046654,
+      "medium_advantage_nats": 0.9271676471398678,
+      "medium_gain_over_prior": 1.0088090822293925,
+      "fly_gain_over_prior": 0.0816414350895247,
+      "medium_updates": 842,
+      "fly_updates": 1556,
+      "medium_first_pass": {
+        "events": 25024,
+        "nll_sum": 163706.65208877157,
+        "prior_sum": 187069.18128576747,
+        "nll": 6.541985777204746,
+        "fixed_unigram_nll": 7.4755906843737,
+        "gain": 0.9336049071689535
+      },
+      "fly_first_pass": {
+        "first_pass_measured_train_targets": 25000,
+        "first_pass_train_nll": 7.322379768371582,
+        "first_pass_fixed_unigram_nll": 7.47632423849934,
+        "first_pass_gain_over_fixed_unigram": 0.1539444701277581
+      },
+      "medium_revisit": {
+        "scored_tokens_per_encounter": 127,
+        "actual_intervening_events": 257,
+        "initial_nll": 6.7294519131812525,
+        "revisit_nll": 5.086187140796128,
+        "nll_saving": 1.6432647723851241,
+        "relative_nll_saving": 0.24418998658217533,
+        "opening_nll_saving": 2.2011820897459984,
+        "initial_threshold_tokens": 48,
+        "revisit_threshold_tokens": 32,
+        "relearning_acceleration": 1.5,
+        "shared_threshold_nll": 7.00501548149623
+      },
+      "fly_revisit": {
+        "scored_tokens_per_encounter": 128,
+        "actual_intervening_events": 256,
+        "initial_nll": 7.434030424803495,
+        "revisit_nll": 6.935170201584697,
+        "nll_saving": 0.49886022321879864,
+        "relative_nll_saving": 0.06710494774871534,
+        "opening_nll_saving": 0.29627059400081635,
+        "initial_threshold_tokens": null,
+        "revisit_threshold_tokens": null,
+        "relearning_acceleration": null
+      },
+      "medium_recovery": {
+        "protocol": "live_adaptation_speed_quality_v2",
+        "definition": "generalization = recovery time AND adapted predictive NLL",
+        "scored_tokens": 256,
+        "block_tokens": 16,
+        "confirmation_blocks": 2,
+        "plateau_blocks": 4,
+        "plateau_tolerance_nll": 0.1,
+        "status": "plateau_unconfirmed",
+        "plateau_status": "still_changing",
+        "plateau_nll": null,
+        "plateau_estimate_nll": 6.511099757743068,
+        "recovery_tokens": null,
+        "half_recovery_tokens": null,
+        "adaptation_mean_nll": 6.196366182906786,
+        "adaptation_cumulative_nll": 1586.2697428241372,
+        "comparison": "same target order, exposure and optimizer budgets; lower time and NLL preferred",
+        "appl_h": 490.9617305515956,
+        "log_appl_h": 6.196366182906786,
+        "log_gain_over_reference": 1.0088090822293934,
+        "gain_ratio_over_reference": 2.7423331762270076,
+        "reference_mean_nll": 7.205175265136179,
+        "initial_block_nll": 6.222405434586108,
+        "plateau_interval_tokens": [
+          192,
+          256
+        ],
+        "trailing_unblocked_tokens": 0,
+        "plateau_trend_nll": 0.380106566241011,
+        "plateau_half_window_drift_nll": 0.18849539407528937,
+        "plateau_block_std_nll": 0.2877883725976677,
+        "plateau_reference_nll": 7.3855393638947735,
+        "plateau_estimate_gain_over_reference": 0.8744396061517055
+      },
+      "fly_recovery": {
+        "protocol": "live_adaptation_speed_quality_v2",
+        "definition": "generalization = recovery time AND adapted predictive NLL",
+        "scored_tokens": 256,
+        "block_tokens": 16,
+        "confirmation_blocks": 2,
+        "plateau_blocks": 4,
+        "plateau_tolerance_nll": 0.1,
+        "status": "plateau_unconfirmed",
+        "plateau_status": "still_changing",
+        "plateau_nll": null,
+        "plateau_estimate_nll": 7.148708716034889,
+        "recovery_tokens": null,
+        "half_recovery_tokens": null,
+        "adaptation_mean_nll": 7.123533830046654,
+        "adaptation_cumulative_nll": 1823.6246604919434,
+        "comparison": "same target order, exposure and optimizer budgets; lower time and NLL preferred",
+        "appl_h": 1240.8275686293714,
+        "log_appl_h": 7.123533830046654,
+        "log_gain_over_reference": 0.0816414350895256,
+        "gain_ratio_over_reference": 1.0850666732338072,
+        "reference_mean_nll": 7.205175265136179,
+        "initial_block_nll": 7.022660404443741,
+        "plateau_interval_tokens": [
+          192,
+          256
+        ],
+        "trailing_unblocked_tokens": 0,
+        "plateau_trend_nll": 0.46155109405517575,
+        "plateau_half_window_drift_nll": 0.32519255578517914,
+        "plateau_block_std_nll": 0.24080498436076783,
+        "plateau_reference_nll": 7.3855393638947735,
+        "plateau_estimate_gain_over_reference": 0.23683064785988428
+      }
+    },
+    {
+      "medium_fresh_tokens": 30016,
+      "fly_fresh_tokens": 30000,
+      "validation_target_indices": [
+        1280,
+        1536
+      ],
+      "scored_targets": 256,
+      "reference_nll": 7.3592044443753455,
+      "medium_nll": 5.679014214256313,
+      "fly_nll": 7.186331894248724,
+      "medium_advantage_nats": 1.5073176799924113,
+      "medium_gain_over_prior": 1.6801902301190328,
+      "fly_gain_over_prior": 0.1728725501266215,
+      "medium_updates": 1010,
+      "fly_updates": 2229,
+      "medium_first_pass": {
+        "events": 30016,
+        "nll_sum": 195651.43163502496,
+        "prior_sum": 223907.18171693647,
+        "nll": 6.518237994237238,
+        "fixed_unigram_nll": 7.4595942736186185,
+        "gain": 0.9413562793813802
+      },
+      "fly_first_pass": {
+        "first_pass_measured_train_targets": 30000,
+        "first_pass_train_nll": 7.307932638724645,
+        "first_pass_fixed_unigram_nll": 7.459973420971816,
+        "first_pass_gain_over_fixed_unigram": 0.15204078224717135
+      },
+      "medium_revisit": {
+        "scored_tokens_per_encounter": 127,
+        "actual_intervening_events": 257,
+        "initial_nll": 5.26159988601846,
+        "revisit_nll": 3.9973998512398072,
+        "nll_saving": 1.2642000347786526,
+        "relative_nll_saving": 0.24026913147424706,
+        "opening_nll_saving": 1.446105919778347,
+        "initial_threshold_tokens": 48,
+        "revisit_threshold_tokens": 32,
+        "relearning_acceleration": 1.5,
+        "shared_threshold_nll": 5.873329993337393
+      },
+      "fly_revisit": {
+        "scored_tokens_per_encounter": 128,
+        "actual_intervening_events": 256,
+        "initial_nll": 6.40037090331316,
+        "revisit_nll": 6.165141573175788,
+        "nll_saving": 0.23522933013737202,
+        "relative_nll_saving": 0.036752452895441615,
+        "opening_nll_saving": 0.519938662648201,
+        "initial_threshold_tokens": 64,
+        "revisit_threshold_tokens": 64,
+        "relearning_acceleration": 1.0,
+        "shared_threshold_nll": 6.669291820377111
+      },
+      "medium_recovery": {
+        "protocol": "live_adaptation_speed_quality_v2",
+        "definition": "generalization = recovery time AND adapted predictive NLL",
+        "scored_tokens": 256,
+        "block_tokens": 16,
+        "confirmation_blocks": 2,
+        "plateau_blocks": 4,
+        "plateau_tolerance_nll": 0.1,
+        "status": "plateau_unconfirmed",
+        "plateau_status": "still_changing",
+        "plateau_nll": null,
+        "plateau_estimate_nll": 5.914246330037713,
+        "recovery_tokens": null,
+        "half_recovery_tokens": null,
+        "adaptation_mean_nll": 5.679014214256313,
+        "adaptation_cumulative_nll": 1453.827638849616,
+        "comparison": "same target order, exposure and optimizer budgets; lower time and NLL preferred",
+        "appl_h": 292.6607868444019,
+        "log_appl_h": 5.679014214256313,
+        "log_gain_over_reference": 1.6801902301190381,
+        "gain_ratio_over_reference": 5.366576758562247,
+        "reference_mean_nll": 7.359204444375351,
+        "initial_block_nll": 7.303572546690702,
+        "plateau_interval_tokens": [
+          192,
+          256
+        ],
+        "trailing_unblocked_tokens": 0,
+        "plateau_trend_nll": -2.6692979190498587,
+        "plateau_half_window_drift_nll": -1.662499513477087,
+        "plateau_block_std_nll": 1.1586026928895843,
+        "plateau_reference_nll": 7.776872494574176,
+        "plateau_estimate_gain_over_reference": 1.8626261645364632
+      },
+      "fly_recovery": {
+        "protocol": "live_adaptation_speed_quality_v2",
+        "definition": "generalization = recovery time AND adapted predictive NLL",
+        "scored_tokens": 256,
+        "block_tokens": 16,
+        "confirmation_blocks": 2,
+        "plateau_blocks": 4,
+        "plateau_tolerance_nll": 0.1,
+        "status": "plateau_unconfirmed",
+        "plateau_status": "still_changing",
+        "plateau_nll": null,
+        "plateau_estimate_nll": 7.344503507018089,
+        "recovery_tokens": null,
+        "half_recovery_tokens": null,
+        "adaptation_mean_nll": 7.186331894248724,
+        "adaptation_cumulative_nll": 1839.7009649276733,
+        "comparison": "same target order, exposure and optimizer budgets; lower time and NLL preferred",
+        "appl_h": 1321.2478292729586,
+        "log_appl_h": 7.186331894248724,
+        "log_gain_over_reference": 0.17287255012662683,
+        "gain_ratio_over_reference": 1.188714593904727,
+        "reference_mean_nll": 7.359204444375351,
+        "initial_block_nll": 7.897264778614044,
+        "plateau_interval_tokens": [
+          192,
+          256
+        ],
+        "trailing_unblocked_tokens": 0,
+        "plateau_trend_nll": -0.37139133810997005,
+        "plateau_half_window_drift_nll": -0.16857396066188812,
+        "plateau_block_std_nll": 0.35867271458388644,
+        "plateau_reference_nll": 7.776872494574176,
+        "plateau_estimate_gain_over_reference": 0.432368987556087
+      }
+    },
+    {
+      "medium_fresh_tokens": 35008,
+      "fly_fresh_tokens": 35000,
+      "validation_target_indices": [
+        1536,
+        1792
+      ],
+      "scored_targets": 256,
+      "reference_nll": 7.404972866968463,
+      "medium_nll": 5.978716374287615,
+      "fly_nll": 7.385606063529849,
+      "medium_advantage_nats": 1.4068896892422345,
+      "medium_gain_over_prior": 1.4262564926808485,
+      "fly_gain_over_prior": 0.019366803438614077,
+      "medium_updates": 1178,
+      "fly_updates": 2902,
+      "medium_first_pass": {
+        "events": 35008,
+        "nll_sum": 226424.59654092696,
+        "prior_sum": 261561.93098596393,
+        "nll": 6.467795833550245,
+        "fixed_unigram_nll": 7.471490258968348,
+        "gain": 1.0036944254181037
+      },
+      "fly_first_pass": {
+        "first_pass_measured_train_targets": 35000,
+        "first_pass_train_nll": 7.288320421504975,
+        "first_pass_fixed_unigram_nll": 7.4711211666084125,
+        "first_pass_gain_over_fixed_unigram": 0.18280074510343838
+      },
+      "medium_revisit": {
+        "scored_tokens_per_encounter": 127,
+        "actual_intervening_events": 257,
+        "initial_nll": 6.863502174381196,
+        "revisit_nll": 5.275690200760609,
+        "nll_saving": 1.5878119736205871,
+        "relative_nll_saving": 0.23134136673654396,
+        "opening_nll_saving": 1.2944724634289742,
+        "initial_threshold_tokens": null,
+        "revisit_threshold_tokens": null,
+        "relearning_acceleration": null
+      },
+      "fly_revisit": {
+        "scored_tokens_per_encounter": 128,
+        "actual_intervening_events": 256,
+        "initial_nll": 7.439496165141463,
+        "revisit_nll": 7.0828632321208715,
+        "nll_saving": 0.35663293302059174,
+        "relative_nll_saving": 0.047937780342119485,
+        "opening_nll_saving": 0.3975648283958435,
+        "initial_threshold_tokens": null,
+        "revisit_threshold_tokens": null,
+        "relearning_acceleration": null
+      },
+      "medium_recovery": {
+        "protocol": "live_adaptation_speed_quality_v2",
+        "definition": "generalization = recovery time AND adapted predictive NLL",
+        "scored_tokens": 256,
+        "block_tokens": 16,
+        "confirmation_blocks": 2,
+        "plateau_blocks": 4,
+        "plateau_tolerance_nll": 0.1,
+        "status": "plateau_unconfirmed",
+        "plateau_status": "still_changing",
+        "plateau_nll": null,
+        "plateau_estimate_nll": 5.453127228305675,
+        "recovery_tokens": null,
+        "half_recovery_tokens": null,
+        "adaptation_mean_nll": 5.978716374287615,
+        "adaptation_cumulative_nll": 1530.5513918176293,
+        "comparison": "same target order, exposure and optimizer budgets; lower time and NLL preferred",
+        "appl_h": 394.9330963742477,
+        "log_appl_h": 5.978716374287615,
+        "log_gain_over_reference": 1.4262564926808565,
+        "gain_ratio_over_reference": 4.163085444237205,
+        "reference_mean_nll": 7.404972866968471,
+        "initial_block_nll": 7.139712825417519,
+        "plateau_interval_tokens": [
+          192,
+          256
+        ],
+        "trailing_unblocked_tokens": 0,
+        "plateau_trend_nll": -0.7765923557337374,
+        "plateau_half_window_drift_nll": -1.8565166837070137,
+        "plateau_block_std_nll": 2.1548652774289225,
+        "plateau_reference_nll": 7.707095575523166,
+        "plateau_estimate_gain_over_reference": 2.2539683472174907
+      },
+      "fly_recovery": {
+        "protocol": "live_adaptation_speed_quality_v2",
+        "definition": "generalization = recovery time AND adapted predictive NLL",
+        "scored_tokens": 256,
+        "block_tokens": 16,
+        "confirmation_blocks": 2,
+        "plateau_blocks": 4,
+        "plateau_tolerance_nll": 0.1,
+        "status": "plateau_unconfirmed",
+        "plateau_status": "still_changing",
+        "plateau_nll": null,
+        "plateau_estimate_nll": 7.499215506017208,
+        "recovery_tokens": null,
+        "half_recovery_tokens": null,
+        "adaptation_mean_nll": 7.385606063529849,
+        "adaptation_cumulative_nll": 1890.7151522636414,
+        "comparison": "same target order, exposure and optimizer budgets; lower time and NLL preferred",
+        "appl_h": 1612.6048398696612,
+        "log_appl_h": 7.385606063529849,
+        "log_gain_over_reference": 0.01936680343862207,
+        "gain_ratio_over_reference": 1.0195555565218617,
+        "reference_mean_nll": 7.404972866968471,
+        "initial_block_nll": 7.767733335494995,
+        "plateau_interval_tokens": [
+          192,
+          256
+        ],
+        "trailing_unblocked_tokens": 0,
+        "plateau_trend_nll": 0.5376940637826919,
+        "plateau_half_window_drift_nll": 0.21385106444358826,
+        "plateau_block_std_nll": 0.34014055938150023,
+        "plateau_reference_nll": 7.707095575523166,
+        "plateau_estimate_gain_over_reference": 0.20788006950595772
+      }
+    },
+    {
+      "medium_fresh_tokens": 40000,
+      "fly_fresh_tokens": 40000,
+      "validation_target_indices": [
+        1792,
+        2048
+      ],
+      "scored_targets": 256,
+      "reference_nll": 7.099170317044387,
+      "medium_nll": 6.243142878403887,
+      "fly_nll": 7.184491673484445,
+      "medium_advantage_nats": 0.9413487950805575,
+      "medium_gain_over_prior": 0.8560274386405,
+      "fly_gain_over_prior": -0.08532135644005745,
+      "medium_updates": 1346,
+      "fly_updates": 3575,
+      "medium_first_pass": {
+        "events": 40000,
+        "nll_sum": 256755.24786388036,
+        "prior_sum": 299888.2036993957,
+        "nll": 6.418881196597009,
+        "fixed_unigram_nll": 7.497205092484893,
+        "gain": 1.0783238958878836
+      },
+      "fly_first_pass": {
+        "first_pass_measured_train_targets": 40000,
+        "first_pass_train_nll": 7.269579548281431,
+        "first_pass_fixed_unigram_nll": 7.497205092485101,
+        "first_pass_gain_over_fixed_unigram": 0.22762554420366943
+      },
+      "medium_revisit": {
+        "scored_tokens_per_encounter": 127,
+        "actual_intervening_events": 257,
+        "initial_nll": 5.488271595924858,
+        "revisit_nll": 4.233676090132533,
+        "nll_saving": 1.2545955057923246,
+        "relative_nll_saving": 0.2285957398179574,
+        "opening_nll_saving": 1.1391254970803857,
+        "initial_threshold_tokens": null,
+        "revisit_threshold_tokens": 32,
+        "relearning_acceleration": null,
+        "shared_threshold_nll": 5.070075750350952
+      },
+      "fly_revisit": {
+        "scored_tokens_per_encounter": 128,
+        "actual_intervening_events": 256,
+        "initial_nll": 6.593192348256707,
+        "revisit_nll": 6.390197956934571,
+        "nll_saving": 0.20299439132213593,
+        "relative_nll_saving": 0.03078848312013971,
+        "opening_nll_saving": 0.015163421630859375,
+        "initial_threshold_tokens": null,
+        "revisit_threshold_tokens": null,
+        "relearning_acceleration": null
+      },
+      "medium_recovery": {
+        "protocol": "live_adaptation_speed_quality_v2",
+        "definition": "generalization = recovery time AND adapted predictive NLL",
+        "scored_tokens": 256,
+        "block_tokens": 16,
+        "confirmation_blocks": 2,
+        "plateau_blocks": 4,
+        "plateau_tolerance_nll": 0.1,
+        "status": "plateau_unconfirmed",
+        "plateau_status": "still_changing",
+        "plateau_nll": null,
+        "plateau_estimate_nll": 6.228981732623652,
+        "recovery_tokens": null,
+        "half_recovery_tokens": null,
+        "adaptation_mean_nll": 6.243142878403887,
+        "adaptation_cumulative_nll": 1598.244576871395,
+        "comparison": "same target order, exposure and optimizer budgets; lower time and NLL preferred",
+        "appl_h": 514.4728984640916,
+        "log_appl_h": 6.243142878403887,
+        "log_gain_over_reference": 0.8560274386404991,
+        "gain_ratio_over_reference": 2.3537915149877984,
+        "reference_mean_nll": 7.099170317044386,
+        "initial_block_nll": 6.0973449647426605,
+        "plateau_interval_tokens": [
+          192,
+          256
+        ],
+        "trailing_unblocked_tokens": 0,
+        "plateau_trend_nll": 1.2253825985826552,
+        "plateau_half_window_drift_nll": 0.7850072546862066,
+        "plateau_block_std_nll": 0.5592029556273583,
+        "plateau_reference_nll": 7.252131594552676,
+        "plateau_estimate_gain_over_reference": 1.0231498619290242
+      },
+      "fly_recovery": {
+        "protocol": "live_adaptation_speed_quality_v2",
+        "definition": "generalization = recovery time AND adapted predictive NLL",
+        "scored_tokens": 256,
+        "block_tokens": 16,
+        "confirmation_blocks": 2,
+        "plateau_blocks": 4,
+        "plateau_tolerance_nll": 0.1,
+        "status": "plateau_unconfirmed",
+        "plateau_status": "still_changing",
+        "plateau_nll": null,
+        "plateau_estimate_nll": 7.279810920357704,
+        "recovery_tokens": null,
+        "half_recovery_tokens": null,
+        "adaptation_mean_nll": 7.184491673484445,
+        "adaptation_cumulative_nll": 1839.2298684120178,
+        "comparison": "same target order, exposure and optimizer budgets; lower time and NLL preferred",
+        "appl_h": 1318.818677356179,
+        "log_appl_h": 7.184491673484445,
+        "log_gain_over_reference": -0.08532135644005834,
+        "gain_ratio_over_reference": 0.9182171619858764,
+        "reference_mean_nll": 7.099170317044386,
+        "initial_block_nll": 6.412890255451202,
+        "plateau_interval_tokens": [
+          192,
+          256
+        ],
+        "trailing_unblocked_tokens": 0,
+        "plateau_trend_nll": 1.2029715478420258,
+        "plateau_half_window_drift_nll": 0.6471568793058395,
+        "plateau_block_std_nll": 0.6053180940158479,
+        "plateau_reference_nll": 7.252131594552676,
+        "plateau_estimate_gain_over_reference": -0.0276793258050283
+      }
+    },
+    {
+      "medium_fresh_tokens": 45024,
+      "fly_fresh_tokens": 45000,
+      "validation_target_indices": [
+        2048,
+        2304
+      ],
+      "scored_targets": 256,
+      "reference_nll": 7.143001550036594,
+      "medium_nll": 5.482916404027492,
+      "fly_nll": 7.2290415754541755,
+      "medium_advantage_nats": 1.7461251714266837,
+      "medium_gain_over_prior": 1.6600851460091022,
+      "fly_gain_over_prior": -0.08604002541758149,
+      "medium_updates": 1515,
+      "fly_updates": 4248,
+      "medium_first_pass": {
+        "events": 45024,
+        "nll_sum": 283494.75792278536,
+        "prior_sum": 337892.5664178372,
+        "nll": 6.296525362535212,
+        "fixed_unigram_nll": 7.504721180211381,
+        "gain": 1.2081958176761698
+      },
+      "fly_first_pass": {
+        "first_pass_measured_train_targets": 45000,
+        "first_pass_train_nll": 7.220205321047041,
+        "first_pass_fixed_unigram_nll": 7.5043581722867065,
+        "first_pass_gain_over_fixed_unigram": 0.28415285123966555
+      },
+      "medium_revisit": {
+        "scored_tokens_per_encounter": 127,
+        "actual_intervening_events": 257,
+        "initial_nll": 6.806533143569634,
+        "revisit_nll": 4.8723227909700135,
+        "nll_saving": 1.9342103525996208,
+        "relative_nll_saving": 0.2841696810698609,
+        "opening_nll_saving": 1.5668597305193543,
+        "initial_threshold_tokens": 80,
+        "revisit_threshold_tokens": 32,
+        "relearning_acceleration": 2.5,
+        "shared_threshold_nll": 7.251498938654549
+      },
+      "fly_revisit": {
+        "scored_tokens_per_encounter": 128,
+        "actual_intervening_events": 256,
+        "initial_nll": 7.636332143098116,
+        "revisit_nll": 7.014729192480445,
+        "nll_saving": 0.621602950617671,
+        "relative_nll_saving": 0.08140072209660097,
+        "opening_nll_saving": 0.5183082967996597,
+        "initial_threshold_tokens": null,
+        "revisit_threshold_tokens": 128,
+        "relearning_acceleration": null,
+        "shared_threshold_nll": 7.0667077377438545
+      },
+      "medium_recovery": {
+        "protocol": "live_adaptation_speed_quality_v2",
+        "definition": "generalization = recovery time AND adapted predictive NLL",
+        "scored_tokens": 256,
+        "block_tokens": 16,
+        "confirmation_blocks": 2,
+        "plateau_blocks": 4,
+        "plateau_tolerance_nll": 0.1,
+        "status": "plateau_unconfirmed",
+        "plateau_status": "still_changing",
+        "plateau_nll": null,
+        "plateau_estimate_nll": 5.266150529729202,
+        "recovery_tokens": null,
+        "half_recovery_tokens": null,
+        "adaptation_mean_nll": 5.482916404027492,
+        "adaptation_cumulative_nll": 1403.626599431038,
+        "comparison": "same target order, exposure and optimizer budgets; lower time and NLL preferred",
+        "appl_h": 240.54721826750628,
+        "log_appl_h": 5.482916404027492,
+        "log_gain_over_reference": 1.6600851460091075,
+        "gain_ratio_over_reference": 5.259758672841089,
+        "reference_mean_nll": 7.143001550036599,
+        "initial_block_nll": 6.48563625710085,
+        "plateau_interval_tokens": [
+          192,
+          256
+        ],
+        "trailing_unblocked_tokens": 0,
+        "plateau_trend_nll": -0.225292242038995,
+        "plateau_half_window_drift_nll": -0.36172066116705537,
+        "plateau_block_std_nll": 0.6979673992547539,
+        "plateau_reference_nll": 6.667246672007455,
+        "plateau_estimate_gain_over_reference": 1.4010961422782522
+      },
+      "fly_recovery": {
+        "protocol": "live_adaptation_speed_quality_v2",
+        "definition": "generalization = recovery time AND adapted predictive NLL",
+        "scored_tokens": 256,
+        "block_tokens": 16,
+        "confirmation_blocks": 2,
+        "plateau_blocks": 4,
+        "plateau_tolerance_nll": 0.1,
+        "status": "recovery_right_censored",
+        "plateau_status": "observed_stable_tail",
+        "plateau_nll": 6.701507814228535,
+        "plateau_estimate_nll": 6.701507814228535,
+        "recovery_tokens": null,
+        "half_recovery_tokens": null,
+        "adaptation_mean_nll": 7.2290415754541755,
+        "adaptation_cumulative_nll": 1850.634643316269,
+        "comparison": "same target order, exposure and optimizer budgets; lower time and NLL preferred",
+        "appl_h": 1378.9002986787075,
+        "log_appl_h": 7.2290415754541755,
+        "log_gain_over_reference": -0.08604002541757616,
+        "gain_ratio_over_reference": 0.9175575048628797,
+        "reference_mean_nll": 7.143001550036599,
+        "initial_block_nll": 7.433607339859009,
+        "plateau_interval_tokens": [
+          192,
+          256
+        ],
+        "trailing_unblocked_tokens": 0,
+        "plateau_trend_nll": 0.06721245646476745,
+        "plateau_half_window_drift_nll": 0.08213344216346741,
+        "plateau_block_std_nll": 0.49232796221369773,
+        "plateau_reference_nll": 6.667246672007455,
+        "plateau_estimate_gain_over_reference": -0.03426114222108012,
+        "recovery_threshold_nll": 6.801507814228534
+      }
+    },
+    {
+      "medium_fresh_tokens": 50016,
+      "fly_fresh_tokens": 50000,
+      "validation_target_indices": [
+        2304,
+        2560
+      ],
+      "scored_targets": 256,
+      "reference_nll": 7.172803130986355,
+      "medium_nll": 6.254983411970898,
+      "fly_nll": 7.248833893798292,
+      "medium_advantage_nats": 0.9938504818273941,
+      "medium_gain_over_prior": 0.9178197190154576,
+      "fly_gain_over_prior": -0.07603076281193655,
+      "medium_updates": 1683,
+      "fly_updates": 4921,
+      "medium_first_pass": {
+        "events": 50016,
+        "nll_sum": 312323.5069388412,
+        "prior_sum": 375544.151466546,
+        "nll": 6.244471907766338,
+        "fixed_unigram_nll": 7.508480315629918,
+        "gain": 1.2640084078635798
+      },
+      "fly_first_pass": {
+        "first_pass_measured_train_targets": 50000,
+        "first_pass_train_nll": 7.193502264153957,
+        "first_pass_fixed_unigram_nll": 7.507801301089259,
+        "first_pass_gain_over_fixed_unigram": 0.31429903693530126
+      },
+      "medium_revisit": {
+        "scored_tokens_per_encounter": 127,
+        "actual_intervening_events": 257,
+        "initial_nll": 6.424096916134902,
+        "revisit_nll": 4.8001455595995495,
+        "nll_saving": 1.6239513565353523,
+        "relative_nll_saving": 0.2527906066386702,
+        "opening_nll_saving": 2.2139690332114697,
+        "initial_threshold_tokens": 48,
+        "revisit_threshold_tokens": 32,
+        "relearning_acceleration": 1.5,
+        "shared_threshold_nll": 7.014419304672629
+      },
+      "fly_revisit": {
+        "scored_tokens_per_encounter": 128,
+        "actual_intervening_events": 256,
+        "initial_nll": 7.269810885190964,
+        "revisit_nll": 6.816904244944453,
+        "nll_saving": 0.4529066402465105,
+        "relative_nll_saving": 0.0622996453964309,
+        "opening_nll_saving": 0.47443506121635437,
+        "initial_threshold_tokens": 64,
+        "revisit_threshold_tokens": 64,
+        "relearning_acceleration": 1.0,
+        "shared_threshold_nll": 7.717920236289501
+      },
+      "medium_recovery": {
+        "protocol": "live_adaptation_speed_quality_v2",
+        "definition": "generalization = recovery time AND adapted predictive NLL",
+        "scored_tokens": 256,
+        "block_tokens": 16,
+        "confirmation_blocks": 2,
+        "plateau_blocks": 4,
+        "plateau_tolerance_nll": 0.1,
+        "status": "plateau_unconfirmed",
+        "plateau_status": "still_changing",
+        "plateau_nll": null,
+        "plateau_estimate_nll": 6.230016437184531,
+        "recovery_tokens": null,
+        "half_recovery_tokens": null,
+        "adaptation_mean_nll": 6.254983411970898,
+        "adaptation_cumulative_nll": 1601.2757534645498,
+        "comparison": "same target order, exposure and optimizer budgets; lower time and NLL preferred",
+        "appl_h": 520.6007389455956,
+        "log_appl_h": 6.254983411970898,
+        "log_gain_over_reference": 0.9178197190154584,
+        "gain_ratio_over_reference": 2.5038253915952877,
+        "reference_mean_nll": 7.172803130986356,
+        "initial_block_nll": 6.61088190972805,
+        "plateau_interval_tokens": [
+          192,
+          256
+        ],
+        "trailing_unblocked_tokens": 0,
+        "plateau_trend_nll": 1.7549064464634283,
+        "plateau_half_window_drift_nll": 1.2765508979791775,
+        "plateau_block_std_nll": 0.818277919461938,
+        "plateau_reference_nll": 7.150377142757551,
+        "plateau_estimate_gain_over_reference": 0.9203607055730201
+      },
+      "fly_recovery": {
+        "protocol": "live_adaptation_speed_quality_v2",
+        "definition": "generalization = recovery time AND adapted predictive NLL",
+        "scored_tokens": 256,
+        "block_tokens": 16,
+        "confirmation_blocks": 2,
+        "plateau_blocks": 4,
+        "plateau_tolerance_nll": 0.1,
+        "status": "plateau_unconfirmed",
+        "plateau_status": "still_changing",
+        "plateau_nll": null,
+        "plateau_estimate_nll": 7.2251134142279625,
+        "recovery_tokens": null,
+        "half_recovery_tokens": null,
+        "adaptation_mean_nll": 7.248833893798292,
+        "adaptation_cumulative_nll": 1855.7014768123627,
+        "comparison": "same target order, exposure and optimizer budgets; lower time and NLL preferred",
+        "appl_h": 1406.463805409597,
+        "log_appl_h": 7.248833893798292,
+        "log_gain_over_reference": -0.07603076281193566,
+        "gain_ratio_over_reference": 0.926787695525263,
+        "reference_mean_nll": 7.172803130986356,
+        "initial_block_nll": 7.246390447020531,
+        "plateau_interval_tokens": [
+          192,
+          256
+        ],
+        "trailing_unblocked_tokens": 0,
+        "plateau_trend_nll": 1.731736645102501,
+        "plateau_half_window_drift_nll": 1.304716557264328,
+        "plateau_block_std_nll": 0.8009924347204078,
+        "plateau_reference_nll": 7.150377142757551,
+        "plateau_estimate_gain_over_reference": -0.07473627147041118
+      }
+    }
+  ],
+  "aggregate": {
+    "paired_evaluations": 7,
+    "same_target_B_tokens": 1792,
+    "medium_mean_nll": 6.080705853476372,
+    "fly_mean_nll": 7.260203059496624,
+    "mean_medium_advantage_nats": 1.1794972060202522,
+    "medium_wins": 7
+  },
+  "speed": {
+    "medium_d768_streaming_pathway_8x8x8_160k": {
+      "matching_stage_logged_groups": 157,
+      "median_group_update_tokens_per_second": 3.6761072009835023,
+      "timing_scope": "Training consume/observe only; excluding active evaluation and telemetry after the group",
+      "actual_logged_group_tokens": [
+        32
+      ]
+    },
+    "q8_fly_ctm_settle4_100k": {
+      "matching_stage_logged_groups": 78,
+      "median_group_update_tokens_per_second": 13.43602983414857,
+      "timing_scope": "Training consume/observe only; excluding active evaluation and telemetry after the group",
+      "actual_logged_group_tokens": [
+        8
+      ]
+    }
+  },
+  "scope_notes": [
+    "Same data budget, nearby fresh milestones differ0..24targets; actual optimizer budgets differ and are explicitly recorded.",
+    "Medium fullBPTT32; fly same-stage logged groups mostly8tokens despite last rewritten config reporting32. History and update ledger retained.",
+    "Both B streams are active learner and predict before learning the target; identical256validation target intervals verified against the same counts hash.",
+    "A revisit means use each run own recent A;127 medium paired targets versus128 fly incl bridge. Not an exact same-A paired comparison.",
+    "Modern adaptiveS<=14 begins at85k in this fly lineage. Its120k result is later budget and different B interval; compare that stage when matching exposure.",
+    "AG requires confirmed tail and sustained recovery. Same-stage curves currently do not certify AG; emit null, not invented speed.",
+    "Single individual, budget-limited, in-progress results. Evidence for stage predictive advantage, not final architecture ceiling or causal mechanism."
+  ]
+}

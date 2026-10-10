@@ -1,0 +1,149 @@
+{
+  "scope": "actual D7688^3 real OWT, full32 credit, execution only",
+  "checkpoint": "results\\medium_d768_streaming_pathway_8x8x8_160k\\last.pt",
+  "checkpoint_step": 211,
+  "checkpoint_cursor": 6753,
+  "production_checkpoint_written": false,
+  "runs": [
+    {
+      "physical_execution": "fused",
+      "auxiliary_final_read": false,
+      "forward_backward_seconds": 31.96568330000082,
+      "peak_allocated_mib": 2512.21484375
+    },
+    {
+      "physical_execution": "segment",
+      "auxiliary_final_read": false,
+      "forward_backward_seconds": 32.1304807000015,
+      "peak_allocated_mib": 2564.70947265625
+    }
+  ],
+  "identity": {
+    "passed": true,
+    "maximum_absolute_differences": {
+      "state": 0.0,
+      "input_gradient": 0.0,
+      "parameter_gradient": 0.0
+    },
+    "parameter_tensors": 101,
+    "state_tensors": 11
+  },
+  "conditional_response": {
+    "scope": "conditional_complete_physical_state_one_event",
+    "directions": 1,
+    "duration": 0.034365538507699966,
+    "direction_durations": [
+      0.034365538507699966
+    ],
+    "nominal_event_duration": 0.03327237442135811,
+    "duration_policy": "model.event_time from pre-observation physical state; clock JVP included",
+    "state_shapes": [
+      [
+        1,
+        8,
+        8,
+        8,
+        768
+      ],
+      [
+        1,
+        8,
+        8,
+        8,
+        768
+      ],
+      [
+        1,
+        8,
+        8,
+        8,
+        768
+      ],
+      [
+        1,
+        8,
+        8,
+        8,
+        768
+      ],
+      [
+        1,
+        8,
+        8,
+        8,
+        3
+      ],
+      [
+        1,
+        8,
+        8,
+        8,
+        2,
+        768
+      ],
+      [
+        1,
+        8,
+        8,
+        8,
+        3,
+        2
+      ],
+      [
+        1,
+        768
+      ],
+      [
+        1,
+        16,
+        4,
+        1536
+      ],
+      [
+        1,
+        16,
+        4,
+        1536
+      ]
+    ],
+    "metric": "sum of component mean-square distances in model coordinates",
+    "gains": [
+      0.9210933446884155
+    ],
+    "log_gain_per_physical_time": [
+      -2.3917534826612834
+    ],
+    "claim": "Directional local response, not maximal Lyapunov exponent or criticality."
+  },
+  "timing_policy": {
+    "read_key_execution": "support",
+    "auxiliary_final_read": false,
+    "first_update_includes_compilation": true,
+    "health_update_snapshot": false,
+    "segment_graph": true
+  },
+  "timing_rng": "restored checkpoint CPU/CUDA RNG before both windows",
+  "complete_updates": [],
+  "status": "failed",
+  "error": "FailOnRecompileLimitHit: recompile_limit reached with fullgraph=True. Excessive recompilations can degrade performance due to the compilation overhead of each recompilation. To monitor recompilations, enable TORCH_LOGS=recompiles. If recompilations are expected, consider increasing torch._dynamo.config.cache_size_limit to an appropriate value.",
+  "memory": {
+    "sample_count": 139,
+    "sampled_peak_dedicated_mib": 3026.6484375,
+    "sampled_peak_shared_mib": 80.0,
+    "counter_errors": [],
+    "cap_exceeded": false,
+    "last_sample": {
+      "seconds": 25276.0505092,
+      "dedicated_bytes": 1625972736,
+      "shared_bytes": 83886080,
+      "rows": [
+        {
+          "Name": "pid_22072_luid_0x00000000_0x00018DBD_phys_0",
+          "DedicatedUsage": 1625972736,
+          "SharedUsage": 83886080
+        }
+      ]
+    },
+    "peak_is_sampled": true
+  }
+}

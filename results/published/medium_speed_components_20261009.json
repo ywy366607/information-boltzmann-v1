@@ -1,0 +1,454 @@
+{
+  "scope": "actual D7688^3 real OWT, full32 credit, execution only",
+  "checkpoint": "results\\medium_d768_streaming_pathway_8x8x8_160k\\last.pt",
+  "checkpoint_step": 305,
+  "checkpoint_cursor": 9761,
+  "production_checkpoint_written": false,
+  "runs": [],
+  "timing_policy": {
+    "read_key_execution": "support",
+    "auxiliary_final_read": false,
+    "first_update_includes_compilation": true,
+    "health_update_snapshot": true,
+    "segment_graph": true,
+    "optimizer_state_offload": true
+  },
+  "timing_rng": "restored checkpoint CPU/CUDA RNG before both windows",
+  "complete_updates": [
+    {
+      "window": 1,
+      "tokens": 32,
+      "seconds": 63.027358899998944,
+      "optimizer_updates": 318,
+      "prequential_nll": 8.892726863268763
+    },
+    {
+      "window": 2,
+      "tokens": 32,
+      "seconds": 10.561153300001024,
+      "optimizer_updates": 319,
+      "prequential_nll": 5.176381901372224
+    },
+    {
+      "window": 3,
+      "tokens": 32,
+      "seconds": 10.370739199999662,
+      "optimizer_updates": 320,
+      "prequential_nll": 7.237544201314449
+    },
+    {
+      "window": 4,
+      "tokens": 32,
+      "seconds": 10.406889000001684,
+      "optimizer_updates": 321,
+      "prequential_nll": 6.179161492269486
+    }
+  ],
+  "segment_replays": 1536,
+  "rhs_segment_replays": 512,
+  "status": "passed",
+  "memory": {
+    "sample_count": 150,
+    "sampled_peak_dedicated_mib": 3344.65234375,
+    "sampled_peak_shared_mib": 80.0,
+    "counter_errors": [],
+    "cap_exceeded": false,
+    "last_sample": {
+      "seconds": 27159.3614733,
+      "dedicated_bytes": 3211423744,
+      "shared_bytes": 83886080,
+      "rows": [
+        {
+          "Name": "pid_25664_luid_0x00000000_0x00018DBD_phys_0",
+          "DedicatedUsage": 3211423744,
+          "SharedUsage": 83886080
+        }
+      ]
+    },
+    "peak_is_sampled": true
+  },
+  "component_spans": [
+    {
+      "optimizer_offload": {
+        "calls": 1,
+        "host_seconds": 0.15363559999968857,
+        "stream_seconds": 0.15352951049804686
+      },
+      "aux.forward.write": {
+        "calls": 32,
+        "host_seconds": 0.0756527999874379,
+        "stream_seconds": 0.14202947092056276
+      },
+      "aux.forward.physical_step": {
+        "calls": 64,
+        "host_seconds": 0.16491149999274057,
+        "stream_seconds": 0.6766679344177244
+      },
+      "aux.forward.endpoint_rhs": {
+        "calls": 64,
+        "host_seconds": 0.0410898999980418,
+        "stream_seconds": 0.09014499187469484
+      },
+      "aux.backward.write": {
+        "calls": 32,
+        "host_seconds": 0.09445309999136953,
+        "stream_seconds": 0.14683971166610718
+      },
+      "aux.backward.physical_step": {
+        "calls": 64,
+        "host_seconds": 0.7184462000295753,
+        "stream_seconds": 0.8162202215194699
+      },
+      "aux.backward.endpoint_rhs": {
+        "calls": 64,
+        "host_seconds": 0.07095430000481429,
+        "stream_seconds": 0.08144892835617067
+      },
+      "aux.backward.event_vjp": {
+        "calls": 32,
+        "host_seconds": 2.64610110000649,
+        "stream_seconds": 2.614781829833984
+      },
+      "auxiliary_complete": {
+        "calls": 1,
+        "host_seconds": 3.7752084999992803,
+        "stream_seconds": 3.775145751953125
+      },
+      "main.forward.write": {
+        "calls": 32,
+        "host_seconds": 0.14871419999326463,
+        "stream_seconds": 0.16468806552886966
+      },
+      "main.forward.physical_step": {
+        "calls": 64,
+        "host_seconds": 0.3115370000086841,
+        "stream_seconds": 0.8964055051803588
+      },
+      "main.forward.endpoint_rhs": {
+        "calls": 64,
+        "host_seconds": 0.04550970001582755,
+        "stream_seconds": 0.09059094429016117
+      },
+      "main.forward.read": {
+        "calls": 32,
+        "host_seconds": 0.09412700000029872,
+        "stream_seconds": 0.0448412481546402
+      },
+      "main.backward.write": {
+        "calls": 32,
+        "host_seconds": 0.15054969999255263,
+        "stream_seconds": 0.1687151989936829
+      },
+      "main.backward.physical_step": {
+        "calls": 64,
+        "host_seconds": 1.1934488999977475,
+        "stream_seconds": 1.2132121858596798
+      },
+      "main.backward.endpoint_rhs": {
+        "calls": 64,
+        "host_seconds": 0.0796115999983158,
+        "stream_seconds": 0.09038064002990723
+      },
+      "main.backward.read": {
+        "calls": 32,
+        "host_seconds": 0.11732839999604039,
+        "stream_seconds": 0.11473520064353943
+      },
+      "main.backward.event_vjp": {
+        "calls": 32,
+        "host_seconds": 4.479282999989664,
+        "stream_seconds": 4.426802406311034
+      },
+      "main_backward": {
+        "calls": 1,
+        "host_seconds": 4.542626600003132,
+        "stream_seconds": 4.5532783203125
+      },
+      "optimizer_restore": {
+        "calls": 1,
+        "host_seconds": 0.19489749999775086,
+        "stream_seconds": 0.18421180725097655
+      },
+      "gradient_clip": {
+        "calls": 1,
+        "host_seconds": 0.01688310000099591,
+        "stream_seconds": 0.0195096321105957
+      },
+      "health_snapshot": {
+        "calls": 1,
+        "host_seconds": 0.004429399999935413,
+        "stream_seconds": 0.010804800033569336
+      },
+      "optimizer_step": {
+        "calls": 1,
+        "host_seconds": 0.01592740000342019,
+        "stream_seconds": 0.04168499374389648
+      },
+      "health_update_norms": {
+        "calls": 1,
+        "host_seconds": 0.013000899998587556,
+        "stream_seconds": 0.01651910400390625
+      },
+      "gradient_clear": {
+        "calls": 1,
+        "host_seconds": 0.0014014999978826381,
+        "stream_seconds": 0.0022308480739593505
+      }
+    },
+    {
+      "optimizer_offload": {
+        "calls": 1,
+        "host_seconds": 0.14228359999833629,
+        "stream_seconds": 0.14219573974609376
+      },
+      "aux.forward.write": {
+        "calls": 32,
+        "host_seconds": 0.09274969999751193,
+        "stream_seconds": 0.14223564815521245
+      },
+      "aux.forward.physical_step": {
+        "calls": 64,
+        "host_seconds": 0.15959119998660753,
+        "stream_seconds": 0.6781471719741824
+      },
+      "aux.forward.endpoint_rhs": {
+        "calls": 64,
+        "host_seconds": 0.04018720000749454,
+        "stream_seconds": 0.09055363178253172
+      },
+      "aux.backward.write": {
+        "calls": 32,
+        "host_seconds": 0.09628159999556374,
+        "stream_seconds": 0.14932124757766724
+      },
+      "aux.backward.physical_step": {
+        "calls": 64,
+        "host_seconds": 0.6918229999719188,
+        "stream_seconds": 0.8018269443511964
+      },
+      "aux.backward.endpoint_rhs": {
+        "calls": 64,
+        "host_seconds": 0.06885710000278777,
+        "stream_seconds": 0.07857030379772187
+      },
+      "aux.backward.event_vjp": {
+        "calls": 32,
+        "host_seconds": 2.59624459999759,
+        "stream_seconds": 2.571980224609375
+      },
+      "auxiliary_complete": {
+        "calls": 1,
+        "host_seconds": 3.7275119999976596,
+        "stream_seconds": 3.727455810546875
+      },
+      "main.forward.write": {
+        "calls": 32,
+        "host_seconds": 0.15275720000863657,
+        "stream_seconds": 0.1567634253501892
+      },
+      "main.forward.physical_step": {
+        "calls": 64,
+        "host_seconds": 0.3104081999808841,
+        "stream_seconds": 0.8951250238418582
+      },
+      "main.forward.endpoint_rhs": {
+        "calls": 64,
+        "host_seconds": 0.04439019999699667,
+        "stream_seconds": 0.09049814403057097
+      },
+      "main.forward.read": {
+        "calls": 32,
+        "host_seconds": 0.08847499999319552,
+        "stream_seconds": 0.044429279923439015
+      },
+      "main.backward.write": {
+        "calls": 32,
+        "host_seconds": 0.1590215000032913,
+        "stream_seconds": 0.16821094369888306
+      },
+      "main.backward.physical_step": {
+        "calls": 64,
+        "host_seconds": 1.1644663999941258,
+        "stream_seconds": 1.1847141189575197
+      },
+      "main.backward.endpoint_rhs": {
+        "calls": 64,
+        "host_seconds": 0.0814230999967549,
+        "stream_seconds": 0.08823372828960421
+      },
+      "main.backward.read": {
+        "calls": 32,
+        "host_seconds": 0.10984450000614743,
+        "stream_seconds": 0.1071557114124298
+      },
+      "main.backward.event_vjp": {
+        "calls": 32,
+        "host_seconds": 4.434214899993094,
+        "stream_seconds": 4.371224609375002
+      },
+      "main_backward": {
+        "calls": 1,
+        "host_seconds": 4.49301099999866,
+        "stream_seconds": 4.49784423828125
+      },
+      "optimizer_restore": {
+        "calls": 1,
+        "host_seconds": 0.16400879999855533,
+        "stream_seconds": 0.15916688537597656
+      },
+      "gradient_clip": {
+        "calls": 1,
+        "host_seconds": 0.015993900000466965,
+        "stream_seconds": 0.01861903953552246
+      },
+      "health_snapshot": {
+        "calls": 1,
+        "host_seconds": 0.004641400002583396,
+        "stream_seconds": 0.010640416145324707
+      },
+      "optimizer_step": {
+        "calls": 1,
+        "host_seconds": 0.015733299998828443,
+        "stream_seconds": 0.04105686569213867
+      },
+      "health_update_norms": {
+        "calls": 1,
+        "host_seconds": 0.013031999998929678,
+        "stream_seconds": 0.016522079467773437
+      },
+      "gradient_clear": {
+        "calls": 1,
+        "host_seconds": 0.0012179000004834961,
+        "stream_seconds": 0.0021125121116638184
+      }
+    },
+    {
+      "optimizer_offload": {
+        "calls": 1,
+        "host_seconds": 0.1366636999991897,
+        "stream_seconds": 0.1366231689453125
+      },
+      "aux.forward.write": {
+        "calls": 32,
+        "host_seconds": 0.10142730001098244,
+        "stream_seconds": 0.14939036846160889
+      },
+      "aux.forward.physical_step": {
+        "calls": 64,
+        "host_seconds": 0.17792299999928218,
+        "stream_seconds": 0.6787966060638427
+      },
+      "aux.forward.endpoint_rhs": {
+        "calls": 64,
+        "host_seconds": 0.04816709999431623,
+        "stream_seconds": 0.09071836829185485
+      },
+      "aux.backward.write": {
+        "calls": 32,
+        "host_seconds": 0.09115659998860792,
+        "stream_seconds": 0.14690576076507567
+      },
+      "aux.backward.physical_step": {
+        "calls": 64,
+        "host_seconds": 0.6878930999882868,
+        "stream_seconds": 0.8043411207199098
+      },
+      "aux.backward.endpoint_rhs": {
+        "calls": 64,
+        "host_seconds": 0.0695922000122664,
+        "stream_seconds": 0.07694064033031463
+      },
+      "aux.backward.event_vjp": {
+        "calls": 32,
+        "host_seconds": 2.583611699999892,
+        "stream_seconds": 2.557650077819824
+      },
+      "auxiliary_complete": {
+        "calls": 1,
+        "host_seconds": 3.7347196000009717,
+        "stream_seconds": 3.73458740234375
+      },
+      "main.forward.write": {
+        "calls": 32,
+        "host_seconds": 0.15884470001401496,
+        "stream_seconds": 0.16188790369033815
+      },
+      "main.forward.physical_step": {
+        "calls": 64,
+        "host_seconds": 0.3091500000009546,
+        "stream_seconds": 0.9002484779357911
+      },
+      "main.forward.endpoint_rhs": {
+        "calls": 64,
+        "host_seconds": 0.045301199996174546,
+        "stream_seconds": 0.09071494400501251
+      },
+      "main.forward.read": {
+        "calls": 32,
+        "host_seconds": 0.0881012000136252,
+        "stream_seconds": 0.0446069118976593
+      },
+      "main.backward.write": {
+        "calls": 32,
+        "host_seconds": 0.1612685999898531,
+        "stream_seconds": 0.17231526422500612
+      },
+      "main.backward.physical_step": {
+        "calls": 64,
+        "host_seconds": 1.2028822000102082,
+        "stream_seconds": 1.2241759634017948
+      },
+      "main.backward.endpoint_rhs": {
+        "calls": 64,
+        "host_seconds": 0.07998239999142243,
+        "stream_seconds": 0.08898851144313813
+      },
+      "main.backward.read": {
+        "calls": 32,
+        "host_seconds": 0.11004939999838825,
+        "stream_seconds": 0.10744217634201052
+      },
+      "main.backward.event_vjp": {
+        "calls": 32,
+        "host_seconds": 4.435402100014471,
+        "stream_seconds": 4.38624201965332
+      },
+      "main_backward": {
+        "calls": 1,
+        "host_seconds": 4.505109900001116,
+        "stream_seconds": 4.51313037109375
+      },
+      "optimizer_restore": {
+        "calls": 1,
+        "host_seconds": 0.1534222000009322,
+        "stream_seconds": 0.14533010864257812
+      },
+      "gradient_clip": {
+        "calls": 1,
+        "host_seconds": 0.014779500001168344,
+        "stream_seconds": 0.017473760604858397
+      },
+      "health_snapshot": {
+        "calls": 1,
+        "host_seconds": 0.005265300002065487,
+        "stream_seconds": 0.011248127937316894
+      },
+      "optimizer_step": {
+        "calls": 1,
+        "host_seconds": 0.01518690000011702,
+        "stream_seconds": 0.041001472473144535
+      },
+      "health_update_norms": {
+        "calls": 1,
+        "host_seconds": 0.01500339999984135,
+        "stream_seconds": 0.018493280410766602
+      },
+      "gradient_clear": {
+        "calls": 1,
+        "host_seconds": 0.0013360000011743978,
+        "stream_seconds": 0.002174432039260864
+      }
+    }
+  ],
+  "span_semantics": "Inclusive nested host/stream spans, instrumentation overhead; warm windows only"
+}

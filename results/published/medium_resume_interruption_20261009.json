@@ -1,0 +1,51 @@
+{
+  "recorded_at": "2026-10-09T02:12:58.102580+08:00",
+  "status": "running_confirmed_updates",
+  "checkpoint": "D:\\information-boltzmann-v1\\results\\medium_d768_streaming_pathway_8x8x8_160k\\best.pt",
+  "checkpoint_step": 160,
+  "retained_fresh_tokens": 5120,
+  "retained_optimizer_updates": 172,
+  "retained_events": 5504,
+  "retained_validation_cursor": 256,
+  "next_evaluation_fresh_token": 10000,
+  "previous_uncommitted_step": 178,
+  "uncommitted_fresh_tokens_to_repeat": 576,
+  "archive": "D:\\information-boltzmann-v1\\results\\medium_d768_streaming_pathway_8x8x8_160k\\interrupted_segments\\20261009_021258",
+  "log_reconciliation": {
+    "metrics.jsonl": {
+      "retained": 157,
+      "archived": 18
+    },
+    "lifelong_evaluation.jsonl": {
+      "retained": 1,
+      "archived": 0
+    }
+  },
+  "interruption_reason": "Previous process absent; progress remained training with no recorded exception. Another fly GPU probe observed; no causal attribution to that probe is established.",
+  "saving_policy": "every10freshgroups and immediately after every completed active evaluation; existing last/best only",
+  "resumed_pid": 23688,
+  "confirmed_at": "2026-10-09T02:19:49.285977+08:00",
+  "confirmed_progress": {
+    "status": "training",
+    "step": 181,
+    "fresh_training_tokens": 5792,
+    "events": 6176,
+    "optimizer_updates": 193,
+    "seconds_per_group": 11.913205199998629,
+    "memory": {
+      "total_dedicated_mib": 2191.0,
+      "allocated_mib": 1225.7626953125,
+      "peak_allocated_mib": 2764.57958984375,
+      "reserved_mib": 2070.0,
+      "inactive_split_mib": 164.2373046875
+    },
+    "error": null
+  },
+  "training_session": 46410,
+  "dashboard_session": 48578,
+  "stopped_authorized_fly_probe": {
+    "pid": 15424,
+    "script": "scripts/ib/test_fly_rolling_vfe.py"
+  },
+  "log_path": "E:/ib_execution_cache/medium_streaming_resume_20261009_0213.log"
+}

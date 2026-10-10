@@ -1,0 +1,625 @@
+{
+  "scope": "actual D7688^3 real OWT, full32 credit, execution only",
+  "checkpoint": "results\\medium_d768_streaming_pathway_8x8x8_160k\\last.pt",
+  "checkpoint_step": 305,
+  "checkpoint_cursor": 9761,
+  "production_checkpoint_written": false,
+  "runs": [
+    {
+      "physical_execution": "separate",
+      "port_execution": "native",
+      "auxiliary_final_read": false,
+      "forward_backward_seconds": 31.347751099998277,
+      "peak_allocated_mib": 2567.046875
+    },
+    {
+      "physical_execution": "shared",
+      "port_execution": "fused",
+      "auxiliary_final_read": false,
+      "forward_backward_seconds": 43.21756230000028,
+      "peak_allocated_mib": 2588.73486328125
+    }
+  ],
+  "identity": {
+    "passed": true,
+    "maximum_absolute_differences": {
+      "state": 2.861061830117251e-06,
+      "input_gradient": 1.1175870895385742e-07,
+      "parameter_gradient": 1.2345612049102783e-05
+    },
+    "parameter_tensors": 101,
+    "state_tensors": 11
+  },
+  "conditional_response": {
+    "scope": "conditional_complete_physical_state_one_event",
+    "directions": 1,
+    "duration": 0.034957725554704666,
+    "direction_durations": [
+      0.034957725554704666
+    ],
+    "nominal_event_duration": 0.03327237442135811,
+    "duration_policy": "model.event_time from pre-observation physical state; clock JVP included",
+    "state_shapes": [
+      [
+        1,
+        8,
+        8,
+        8,
+        768
+      ],
+      [
+        1,
+        8,
+        8,
+        8,
+        768
+      ],
+      [
+        1,
+        8,
+        8,
+        8,
+        768
+      ],
+      [
+        1,
+        8,
+        8,
+        8,
+        768
+      ],
+      [
+        1,
+        8,
+        8,
+        8,
+        3
+      ],
+      [
+        1,
+        8,
+        8,
+        8,
+        2,
+        768
+      ],
+      [
+        1,
+        8,
+        8,
+        8,
+        3,
+        2
+      ],
+      [
+        1,
+        768
+      ],
+      [
+        1,
+        16,
+        4,
+        1536
+      ],
+      [
+        1,
+        16,
+        4,
+        1536
+      ]
+    ],
+    "metric": "sum of component mean-square distances in model coordinates",
+    "gains": [
+      0.9233652949333191
+    ],
+    "log_gain_per_physical_time": [
+      -2.2807649053696832
+    ],
+    "claim": "Directional local response, not maximal Lyapunov exponent or criticality."
+  },
+  "timing_policy": {
+    "read_key_execution": "support",
+    "auxiliary_final_read": false,
+    "first_update_includes_compilation": true,
+    "health_update_snapshot": true,
+    "segment_graph": true,
+    "optimizer_state_offload": true,
+    "shared_credit": true,
+    "deferred_writer_credit": true,
+    "port_execution": "fused",
+    "credit_history_offload": false,
+    "fused_optimizer": true
+  },
+  "timing_rng": "restored checkpoint CPU/CUDA RNG before both windows",
+  "complete_updates": [
+    {
+      "window": 1,
+      "tokens": 32,
+      "seconds": 43.945269499999995,
+      "optimizer_updates": 318,
+      "prequential_nll": 8.892726863268763
+    },
+    {
+      "window": 2,
+      "tokens": 32,
+      "seconds": 9.73340459999963,
+      "optimizer_updates": 319,
+      "prequential_nll": 5.176382089732215
+    },
+    {
+      "window": 3,
+      "tokens": 32,
+      "seconds": 9.639926200001355,
+      "optimizer_updates": 320,
+      "prequential_nll": 7.237544000148773
+    },
+    {
+      "window": 4,
+      "tokens": 32,
+      "seconds": 9.818227100000513,
+      "optimizer_updates": 321,
+      "prequential_nll": 6.179161401465535
+    },
+    {
+      "window": 5,
+      "tokens": 32,
+      "seconds": 9.445277299997542,
+      "optimizer_updates": 322,
+      "prequential_nll": 6.978376068174839
+    }
+  ],
+  "segment_replays": 1536,
+  "rhs_segment_replays": 512,
+  "status": "passed",
+  "memory": {
+    "sample_count": 246,
+    "sampled_peak_dedicated_mib": 3380.65234375,
+    "sampled_peak_shared_mib": 80.0,
+    "counter_errors": [],
+    "cap_exceeded": false,
+    "last_sample": {
+      "seconds": 31008.5156939,
+      "dedicated_bytes": 1688883200,
+      "shared_bytes": 83886080,
+      "rows": [
+        {
+          "Name": "pid_5660_luid_0x00000000_0x00018DBD_phys_0",
+          "DedicatedUsage": 1688883200,
+          "SharedUsage": 83886080
+        }
+      ]
+    },
+    "peak_is_sampled": true
+  },
+  "component_spans": [
+    {
+      "optimizer_offload": {
+        "calls": 1,
+        "host_seconds": 0.11426489999939804,
+        "stream_seconds": 0.11419709014892578
+      },
+      "main.forward.write": {
+        "calls": 32,
+        "host_seconds": 0.15249869999388466,
+        "stream_seconds": 0.1821744956970215
+      },
+      "main.forward.physical_step": {
+        "calls": 64,
+        "host_seconds": 0.37198460001673084,
+        "stream_seconds": 0.9080362205505372
+      },
+      "main.forward.endpoint_rhs": {
+        "calls": 64,
+        "host_seconds": 0.05676240000320831,
+        "stream_seconds": 0.09079324781894686
+      },
+      "main.forward.read": {
+        "calls": 32,
+        "host_seconds": 0.10483529998964514,
+        "stream_seconds": 0.04705887997150421
+      },
+      "chunk_forward_including_auxiliary": {
+        "calls": 1,
+        "host_seconds": 2.156209500000841,
+        "stream_seconds": 2.1561533203125
+      },
+      "main.backward.write": {
+        "calls": 32,
+        "host_seconds": 0.14687489999778336,
+        "stream_seconds": 0.18176569461822503
+      },
+      "main.backward.physical_step": {
+        "calls": 64,
+        "host_seconds": 1.2885215999922366,
+        "stream_seconds": 1.2586775064468385
+      },
+      "main.backward.endpoint_rhs": {
+        "calls": 64,
+        "host_seconds": 0.08388320000449312,
+        "stream_seconds": 0.09857964754104612
+      },
+      "main.backward.read": {
+        "calls": 32,
+        "host_seconds": 0.11213989998941543,
+        "stream_seconds": 0.10982022309303285
+      },
+      "shared_auxiliary_vjp": {
+        "calls": 32,
+        "host_seconds": 2.5205064000037964,
+        "stream_seconds": 2.533543714523315
+      },
+      "shared_task_vjp": {
+        "calls": 32,
+        "host_seconds": 2.3086729000024206,
+        "stream_seconds": 2.396666900634766
+      },
+      "shared_event_replay_and_vjps": {
+        "calls": 32,
+        "host_seconds": 7.1579255999859015,
+        "stream_seconds": 7.154967361450197
+      },
+      "main_backward": {
+        "calls": 1,
+        "host_seconds": 7.212157800000568,
+        "stream_seconds": 7.2158515625
+      },
+      "linear_weight_gradient_gemms": {
+        "calls": 1,
+        "host_seconds": 0.00425349999932223,
+        "stream_seconds": 0.002087007999420166
+      },
+      "optimizer_restore": {
+        "calls": 1,
+        "host_seconds": 0.13478649999888148,
+        "stream_seconds": 0.13324290466308594
+      },
+      "gradient_clip": {
+        "calls": 1,
+        "host_seconds": 0.016366399999242276,
+        "stream_seconds": 0.01895974349975586
+      },
+      "health_snapshot": {
+        "calls": 1,
+        "host_seconds": 0.005112800001370488,
+        "stream_seconds": 0.011084927558898925
+      },
+      "optimizer_step": {
+        "calls": 1,
+        "host_seconds": 0.0010513000015635043,
+        "stream_seconds": 0.032464897155761716
+      },
+      "health_update_norms": {
+        "calls": 1,
+        "host_seconds": 0.029339599997911137,
+        "stream_seconds": 0.029417343139648437
+      },
+      "gradient_clear": {
+        "calls": 1,
+        "host_seconds": 0.0005668000012519769,
+        "stream_seconds": 0.0020448000431060793
+      }
+    },
+    {
+      "optimizer_offload": {
+        "calls": 1,
+        "host_seconds": 0.10724909999771626,
+        "stream_seconds": 0.10717046356201172
+      },
+      "main.forward.write": {
+        "calls": 32,
+        "host_seconds": 0.15269580000313,
+        "stream_seconds": 0.16494304037094118
+      },
+      "main.forward.physical_step": {
+        "calls": 64,
+        "host_seconds": 0.29848670001956634,
+        "stream_seconds": 0.8974602565765383
+      },
+      "main.forward.endpoint_rhs": {
+        "calls": 64,
+        "host_seconds": 0.050512999994680285,
+        "stream_seconds": 0.09025343978404995
+      },
+      "main.forward.read": {
+        "calls": 32,
+        "host_seconds": 0.09317390002615866,
+        "stream_seconds": 0.044733824014663706
+      },
+      "chunk_forward_including_auxiliary": {
+        "calls": 1,
+        "host_seconds": 1.8780428999998549,
+        "stream_seconds": 1.8779879150390626
+      },
+      "main.backward.write": {
+        "calls": 32,
+        "host_seconds": 0.15256959999896935,
+        "stream_seconds": 0.18940668773651123
+      },
+      "main.backward.physical_step": {
+        "calls": 64,
+        "host_seconds": 1.3178273999910743,
+        "stream_seconds": 1.2843023052215574
+      },
+      "main.backward.endpoint_rhs": {
+        "calls": 64,
+        "host_seconds": 0.08558499999344349,
+        "stream_seconds": 0.10193743991851804
+      },
+      "main.backward.read": {
+        "calls": 32,
+        "host_seconds": 0.12680839999666205,
+        "stream_seconds": 0.12415356850624089
+      },
+      "shared_auxiliary_vjp": {
+        "calls": 32,
+        "host_seconds": 2.6033930999983568,
+        "stream_seconds": 2.6087577333450316
+      },
+      "shared_task_vjp": {
+        "calls": 32,
+        "host_seconds": 2.3112734999958775,
+        "stream_seconds": 2.4229157104492187
+      },
+      "shared_event_replay_and_vjps": {
+        "calls": 32,
+        "host_seconds": 7.369761100002506,
+        "stream_seconds": 7.363644119262695
+      },
+      "main_backward": {
+        "calls": 1,
+        "host_seconds": 7.416264299998147,
+        "stream_seconds": 7.420259765625
+      },
+      "linear_weight_gradient_gemms": {
+        "calls": 1,
+        "host_seconds": 0.006087099998694612,
+        "stream_seconds": 0.0021237759590148927
+      },
+      "optimizer_restore": {
+        "calls": 1,
+        "host_seconds": 0.12502800000220304,
+        "stream_seconds": 0.12497235107421875
+      },
+      "gradient_clip": {
+        "calls": 1,
+        "host_seconds": 0.014738199999555945,
+        "stream_seconds": 0.01757481575012207
+      },
+      "health_snapshot": {
+        "calls": 1,
+        "host_seconds": 0.0032928000000538304,
+        "stream_seconds": 0.009272671699523926
+      },
+      "optimizer_step": {
+        "calls": 1,
+        "host_seconds": 0.001026300000376068,
+        "stream_seconds": 0.03240345764160156
+      },
+      "health_update_norms": {
+        "calls": 1,
+        "host_seconds": 0.027324999999109423,
+        "stream_seconds": 0.027512256622314452
+      },
+      "gradient_clear": {
+        "calls": 1,
+        "host_seconds": 0.00048209999658865854,
+        "stream_seconds": 0.001978752017021179
+      }
+    },
+    {
+      "optimizer_offload": {
+        "calls": 1,
+        "host_seconds": 0.11703589999888209,
+        "stream_seconds": 0.11696166229248046
+      },
+      "main.forward.write": {
+        "calls": 32,
+        "host_seconds": 0.14214469998478307,
+        "stream_seconds": 0.16649017667770383
+      },
+      "main.forward.physical_step": {
+        "calls": 64,
+        "host_seconds": 0.3096203000022797,
+        "stream_seconds": 0.8959135684967039
+      },
+      "main.forward.endpoint_rhs": {
+        "calls": 64,
+        "host_seconds": 0.04418719999739551,
+        "stream_seconds": 0.09012534391880038
+      },
+      "main.forward.read": {
+        "calls": 32,
+        "host_seconds": 0.09030949998486903,
+        "stream_seconds": 0.04466617608070373
+      },
+      "chunk_forward_including_auxiliary": {
+        "calls": 1,
+        "host_seconds": 1.8902026999967347,
+        "stream_seconds": 1.8901446533203126
+      },
+      "main.backward.write": {
+        "calls": 32,
+        "host_seconds": 0.15764369999305927,
+        "stream_seconds": 0.1872548184394836
+      },
+      "main.backward.physical_step": {
+        "calls": 64,
+        "host_seconds": 1.351745799969649,
+        "stream_seconds": 1.3232040719985965
+      },
+      "main.backward.endpoint_rhs": {
+        "calls": 64,
+        "host_seconds": 0.08981309999944642,
+        "stream_seconds": 0.1026111671924591
+      },
+      "main.backward.read": {
+        "calls": 32,
+        "host_seconds": 0.12419500000032713,
+        "stream_seconds": 0.12103344082832339
+      },
+      "shared_auxiliary_vjp": {
+        "calls": 32,
+        "host_seconds": 2.6500681999968947,
+        "stream_seconds": 2.6609572916030877
+      },
+      "shared_task_vjp": {
+        "calls": 32,
+        "host_seconds": 2.3615053000066837,
+        "stream_seconds": 2.4624748916625983
+      },
+      "shared_event_replay_and_vjps": {
+        "calls": 32,
+        "host_seconds": 7.507230099989101,
+        "stream_seconds": 7.511982238769531
+      },
+      "main_backward": {
+        "calls": 1,
+        "host_seconds": 7.556791400002112,
+        "stream_seconds": 7.5684716796875
+      },
+      "linear_weight_gradient_gemms": {
+        "calls": 1,
+        "host_seconds": 0.004890999996860046,
+        "stream_seconds": 0.0021359999179840087
+      },
+      "optimizer_restore": {
+        "calls": 1,
+        "host_seconds": 0.1391223999999056,
+        "stream_seconds": 0.13022067260742187
+      },
+      "gradient_clip": {
+        "calls": 1,
+        "host_seconds": 0.015366300001915079,
+        "stream_seconds": 0.01796816062927246
+      },
+      "health_snapshot": {
+        "calls": 1,
+        "host_seconds": 0.003636899997218279,
+        "stream_seconds": 0.009520671844482421
+      },
+      "optimizer_step": {
+        "calls": 1,
+        "host_seconds": 0.0010819000017363578,
+        "stream_seconds": 0.032322528839111325
+      },
+      "health_update_norms": {
+        "calls": 1,
+        "host_seconds": 0.026045399998110952,
+        "stream_seconds": 0.026461856842041016
+      },
+      "gradient_clear": {
+        "calls": 1,
+        "host_seconds": 0.00061450000066543,
+        "stream_seconds": 0.002071903944015503
+      }
+    },
+    {
+      "optimizer_offload": {
+        "calls": 1,
+        "host_seconds": 0.11075909999999567,
+        "stream_seconds": 0.11071206665039063
+      },
+      "main.forward.write": {
+        "calls": 32,
+        "host_seconds": 0.1532560999985435,
+        "stream_seconds": 0.16402486419677736
+      },
+      "main.forward.physical_step": {
+        "calls": 64,
+        "host_seconds": 0.3109178000158863,
+        "stream_seconds": 0.8965894775390625
+      },
+      "main.forward.endpoint_rhs": {
+        "calls": 64,
+        "host_seconds": 0.045024699975328986,
+        "stream_seconds": 0.09156367993354801
+      },
+      "main.forward.read": {
+        "calls": 32,
+        "host_seconds": 0.08667920000880258,
+        "stream_seconds": 0.044729119658470144
+      },
+      "chunk_forward_including_auxiliary": {
+        "calls": 1,
+        "host_seconds": 1.8717098999986774,
+        "stream_seconds": 1.8716527099609375
+      },
+      "main.backward.write": {
+        "calls": 32,
+        "host_seconds": 0.14546379999956116,
+        "stream_seconds": 0.1826641917228699
+      },
+      "main.backward.physical_step": {
+        "calls": 64,
+        "host_seconds": 1.305635999993683,
+        "stream_seconds": 1.2725260410308843
+      },
+      "main.backward.endpoint_rhs": {
+        "calls": 64,
+        "host_seconds": 0.08263729999453062,
+        "stream_seconds": 0.09862057578563689
+      },
+      "main.backward.read": {
+        "calls": 32,
+        "host_seconds": 0.11806879999494413,
+        "stream_seconds": 0.11572080016136167
+      },
+      "shared_auxiliary_vjp": {
+        "calls": 32,
+        "host_seconds": 2.5166455000180576,
+        "stream_seconds": 2.528140305519104
+      },
+      "shared_task_vjp": {
+        "calls": 32,
+        "host_seconds": 2.2437595000010333,
+        "stream_seconds": 2.3595445251464846
+      },
+      "shared_event_replay_and_vjps": {
+        "calls": 32,
+        "host_seconds": 7.131829399997514,
+        "stream_seconds": 7.133554809570312
+      },
+      "main_backward": {
+        "calls": 1,
+        "host_seconds": 7.186627699997189,
+        "stream_seconds": 7.18957177734375
+      },
+      "linear_weight_gradient_gemms": {
+        "calls": 1,
+        "host_seconds": 0.004470200001378544,
+        "stream_seconds": 0.0020963521003723143
+      },
+      "optimizer_restore": {
+        "calls": 1,
+        "host_seconds": 0.14128469999923254,
+        "stream_seconds": 0.140732421875
+      },
+      "gradient_clip": {
+        "calls": 1,
+        "host_seconds": 0.015075100000103703,
+        "stream_seconds": 0.01769308853149414
+      },
+      "health_snapshot": {
+        "calls": 1,
+        "host_seconds": 0.00356879999890225,
+        "stream_seconds": 0.009760576248168945
+      },
+      "optimizer_step": {
+        "calls": 1,
+        "host_seconds": 0.0011696000001393259,
+        "stream_seconds": 0.032497665405273435
+      },
+      "health_update_norms": {
+        "calls": 1,
+        "host_seconds": 0.04907350000212318,
+        "stream_seconds": 0.048995872497558594
+      },
+      "gradient_clear": {
+        "calls": 1,
+        "host_seconds": 0.0006120000034570694,
+        "stream_seconds": 0.0020107839107513428
+      }
+    }
+  ],
+  "span_semantics": "Inclusive nested host/stream spans, instrumentation overhead; warm windows only"
+}

@@ -1,0 +1,194 @@
+{
+  "scope": "actual D7688^3 real OWT, full32 credit, execution only",
+  "checkpoint": "results\\medium_d768_streaming_pathway_8x8x8_160k\\last.pt",
+  "checkpoint_step": 305,
+  "checkpoint_cursor": 9761,
+  "production_checkpoint_written": false,
+  "runs": [
+    {
+      "physical_execution": "separate",
+      "port_execution": "native",
+      "auxiliary_final_read": false,
+      "forward_backward_seconds": 27.076778700000432,
+      "peak_allocated_mib": 2567.03515625
+    },
+    {
+      "physical_execution": "shared",
+      "port_execution": "fused",
+      "auxiliary_final_read": false,
+      "forward_backward_seconds": 13.244949299998552,
+      "peak_allocated_mib": 2723.71435546875
+    }
+  ],
+  "identity": {
+    "passed": true,
+    "maximum_absolute_differences": {
+      "state": 2.861061830117251e-06,
+      "input_gradient": 1.0803341865539551e-07,
+      "parameter_gradient": 1.2345612049102783e-05
+    },
+    "parameter_tensors": 101,
+    "state_tensors": 11
+  },
+  "conditional_response": {
+    "scope": "conditional_complete_physical_state_one_event",
+    "directions": 1,
+    "duration": 0.034957725554704666,
+    "direction_durations": [
+      0.034957725554704666
+    ],
+    "nominal_event_duration": 0.03327237442135811,
+    "duration_policy": "model.event_time from pre-observation physical state; clock JVP included",
+    "state_shapes": [
+      [
+        1,
+        8,
+        8,
+        8,
+        768
+      ],
+      [
+        1,
+        8,
+        8,
+        8,
+        768
+      ],
+      [
+        1,
+        8,
+        8,
+        8,
+        768
+      ],
+      [
+        1,
+        8,
+        8,
+        8,
+        768
+      ],
+      [
+        1,
+        8,
+        8,
+        8,
+        3
+      ],
+      [
+        1,
+        8,
+        8,
+        8,
+        2,
+        768
+      ],
+      [
+        1,
+        8,
+        8,
+        8,
+        3,
+        2
+      ],
+      [
+        1,
+        768
+      ],
+      [
+        1,
+        16,
+        4,
+        1536
+      ],
+      [
+        1,
+        16,
+        4,
+        1536
+      ]
+    ],
+    "metric": "sum of component mean-square distances in model coordinates",
+    "gains": [
+      0.9233652949333191
+    ],
+    "log_gain_per_physical_time": [
+      -2.2807649053696832
+    ],
+    "claim": "Directional local response, not maximal Lyapunov exponent or criticality."
+  },
+  "timing_policy": {
+    "read_key_execution": "support",
+    "auxiliary_final_read": false,
+    "first_update_includes_compilation": true,
+    "health_update_snapshot": true,
+    "segment_graph": true,
+    "optimizer_state_offload": true,
+    "shared_credit": true,
+    "deferred_writer_credit": false,
+    "port_execution": "fused",
+    "credit_history_offload": false,
+    "fused_optimizer": true
+  },
+  "timing_rng": "restored checkpoint CPU/CUDA RNG before both windows",
+  "complete_updates": [
+    {
+      "window": 1,
+      "tokens": 32,
+      "seconds": 29.727795499999047,
+      "optimizer_updates": 318,
+      "prequential_nll": 8.892726863268763
+    },
+    {
+      "window": 2,
+      "tokens": 32,
+      "seconds": 9.080614200000127,
+      "optimizer_updates": 319,
+      "prequential_nll": 5.176381894154474
+    },
+    {
+      "window": 3,
+      "tokens": 32,
+      "seconds": 9.082337899999402,
+      "optimizer_updates": 320,
+      "prequential_nll": 7.237544100731611
+    },
+    {
+      "window": 4,
+      "tokens": 32,
+      "seconds": 9.072367799999483,
+      "optimizer_updates": 321,
+      "prequential_nll": 6.17916171066463
+    },
+    {
+      "window": 5,
+      "tokens": 32,
+      "seconds": 9.018332100000407,
+      "optimizer_updates": 322,
+      "prequential_nll": 6.978376170620322
+    }
+  ],
+  "segment_replays": 1536,
+  "rhs_segment_replays": 512,
+  "status": "passed",
+  "memory": {
+    "sample_count": 175,
+    "sampled_peak_dedicated_mib": 3486.65234375,
+    "sampled_peak_shared_mib": 80.0,
+    "counter_errors": [],
+    "cap_exceeded": false,
+    "last_sample": {
+      "seconds": 32292.7617082,
+      "dedicated_bytes": 2477420544,
+      "shared_bytes": 83886080,
+      "rows": [
+        {
+          "Name": "pid_13584_luid_0x00000000_0x00018DBD_phys_0",
+          "DedicatedUsage": 2477420544,
+          "SharedUsage": 83886080
+        }
+      ]
+    },
+    "peak_is_sampled": true
+  }
+}

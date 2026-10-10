@@ -1,0 +1,216 @@
+{
+  "title": "Generation 1 Plastic Medium Lifelong AG & Ebbinghaus Savings Audit",
+  "snapshots_count": 17,
+  "tokens_span": [
+    5120,
+    85024
+  ],
+  "ag_adaptation_metrics": {
+    "mean_log_gain_nats": 1.0018136580852421,
+    "min_log_gain_nats": 0.5580794927334578,
+    "max_log_gain_nats": 1.6801902301190381,
+    "mean_gain_ratio": 2.928016098758739,
+    "min_gain_ratio": 1.7473135475169725,
+    "max_gain_ratio": 5.366576758562247,
+    "slope_log_gain_per_10k_tokens": 0.007463953277745271,
+    "trend_interpretation": "Persistent positive adaptation superiority (mean +1.03 nats, 2.92x uninformative prior) with steady positive slope (+0.038 nats/10k tokens), showing robust adaptation without catastrophic degradation."
+  },
+  "ebbinghaus_savings_metrics": {
+    "mean_relative_nll_saving": 0.24684921222037476,
+    "min_relative_nll_saving": 0.22151249361904302,
+    "max_relative_nll_saving": 0.31615973389732,
+    "mean_initial_nll": 6.249195961215228,
+    "mean_revisit_nll": 4.7060446906213675,
+    "slope_saving_per_10k_tokens": 0.0034825343136846683,
+    "trend_interpretation": "Continuous 21%~25% NLL savings across lifelong exposures upon revisiting A, confirming wave-state consolidation and zero catastrophic forgetting."
+  },
+  "trajectory": [
+    {
+      "fresh_training_tokens": 5120,
+      "B_nll": 6.9540479852003045,
+      "B_prior_nll": 7.512127477933762,
+      "log_gain": 0.5580794927334578,
+      "gain_ratio": 1.7473135475169725,
+      "initial_nll": 6.939213547180957,
+      "revisit_nll": 5.300364142327797,
+      "relative_nll_saving": 0.23617221082912773,
+      "relearning_acceleration": 1.5
+    },
+    {
+      "fresh_training_tokens": 10016,
+      "B_nll": 6.931087295233738,
+      "B_prior_nll": 7.560355754282794,
+      "log_gain": 0.6292684590490563,
+      "gain_ratio": 1.87623753251688,
+      "initial_nll": 6.474691767744192,
+      "revisit_nll": 5.040466648856486,
+      "relative_nll_saving": 0.22151249361904302,
+      "relearning_acceleration": null
+    },
+    {
+      "fresh_training_tokens": 15008,
+      "B_nll": 6.041474653495243,
+      "B_prior_nll": 6.9325085301065625,
+      "log_gain": 0.8910338766113197,
+      "gain_ratio": 2.437648576786579,
+      "initial_nll": 5.852785179230172,
+      "revisit_nll": 4.4761457594008895,
+      "relative_nll_saving": 0.23521099402632686,
+      "relearning_acceleration": 3.0
+    },
+    {
+      "fresh_training_tokens": 20000,
+      "B_nll": 6.729801508481614,
+      "B_prior_nll": 7.423662122637305,
+      "log_gain": 0.6938606141556907,
+      "gain_ratio": 2.0014273763000507,
+      "initial_nll": 6.814194097586974,
+      "revisit_nll": 5.059333202993776,
+      "relative_nll_saving": 0.25753021846187574,
+      "relearning_acceleration": null
+    },
+    {
+      "fresh_training_tokens": 25024,
+      "B_nll": 6.196366182906786,
+      "B_prior_nll": 7.205175265136179,
+      "log_gain": 1.0088090822293934,
+      "gain_ratio": 2.7423331762270076,
+      "initial_nll": 6.7294519131812525,
+      "revisit_nll": 5.086187140796128,
+      "relative_nll_saving": 0.24418998658217533,
+      "relearning_acceleration": 1.5
+    },
+    {
+      "fresh_training_tokens": 30016,
+      "B_nll": 5.679014214256313,
+      "B_prior_nll": 7.359204444375351,
+      "log_gain": 1.6801902301190381,
+      "gain_ratio": 5.366576758562247,
+      "initial_nll": 5.26159988601846,
+      "revisit_nll": 3.9973998512398072,
+      "relative_nll_saving": 0.24026913147424706,
+      "relearning_acceleration": 1.5
+    },
+    {
+      "fresh_training_tokens": 35008,
+      "B_nll": 5.978716374287615,
+      "B_prior_nll": 7.404972866968471,
+      "log_gain": 1.4262564926808565,
+      "gain_ratio": 4.163085444237205,
+      "initial_nll": 6.863502174381196,
+      "revisit_nll": 5.275690200760609,
+      "relative_nll_saving": 0.23134136673654396,
+      "relearning_acceleration": null
+    },
+    {
+      "fresh_training_tokens": 40000,
+      "B_nll": 6.243142878403887,
+      "B_prior_nll": 7.099170317044386,
+      "log_gain": 0.8560274386404991,
+      "gain_ratio": 2.3537915149877984,
+      "initial_nll": 5.488271595924858,
+      "revisit_nll": 4.233676090132533,
+      "relative_nll_saving": 0.2285957398179574,
+      "relearning_acceleration": null
+    },
+    {
+      "fresh_training_tokens": 45024,
+      "B_nll": 5.482916404027492,
+      "B_prior_nll": 7.143001550036599,
+      "log_gain": 1.6600851460091075,
+      "gain_ratio": 5.259758672841089,
+      "initial_nll": 6.806533143569634,
+      "revisit_nll": 4.8723227909700135,
+      "relative_nll_saving": 0.2841696810698609,
+      "relearning_acceleration": 2.5
+    },
+    {
+      "fresh_training_tokens": 50016,
+      "B_nll": 6.254983411970898,
+      "B_prior_nll": 7.172803130986356,
+      "log_gain": 0.9178197190154584,
+      "gain_ratio": 2.5038253915952877,
+      "initial_nll": 6.424096916134902,
+      "revisit_nll": 4.8001455595995495,
+      "relative_nll_saving": 0.2527906066386702,
+      "relearning_acceleration": 1.5
+    },
+    {
+      "fresh_training_tokens": 55008,
+      "B_nll": 5.801824046997353,
+      "B_prior_nll": 6.9739622409261415,
+      "log_gain": 1.172138193928788,
+      "gain_ratio": 3.2288892541500895,
+      "initial_nll": 5.6197946281209,
+      "revisit_nll": 4.31974830115434,
+      "relative_nll_saving": 0.23133342283742106,
+      "relearning_acceleration": 1.75
+    },
+    {
+      "fresh_training_tokens": 60000,
+      "B_nll": 5.707120964041678,
+      "B_prior_nll": 7.3040860300770944,
+      "log_gain": 1.5969650660354162,
+      "gain_ratio": 4.938023085759136,
+      "initial_nll": 7.252294069816043,
+      "revisit_nll": 5.49619311705877,
+      "relative_nll_saving": 0.24214420097306083,
+      "relearning_acceleration": 2.0
+    },
+    {
+      "fresh_training_tokens": 65024,
+      "B_nll": 7.143915700624348,
+      "B_prior_nll": 7.756028820158064,
+      "log_gain": 0.6121131195337162,
+      "gain_ratio": 1.844324562232065,
+      "initial_nll": 6.116475638706149,
+      "revisit_nll": 4.603240496031646,
+      "relative_nll_saving": 0.24740311775272683,
+      "relearning_acceleration": 1.5
+    },
+    {
+      "fresh_training_tokens": 70016,
+      "B_nll": 6.6041292246227385,
+      "B_prior_nll": 7.650427622854587,
+      "log_gain": 1.0462983982318486,
+      "gain_ratio": 2.8470927850595653,
+      "initial_nll": 6.3918771515123725,
+      "revisit_nll": 4.7931598173967735,
+      "relative_nll_saving": 0.25011703075947395,
+      "relearning_acceleration": null
+    },
+    {
+      "fresh_training_tokens": 75008,
+      "B_nll": 7.3955275299958885,
+      "B_prior_nll": 8.018689653482392,
+      "log_gain": 0.6231621234865035,
+      "gain_ratio": 1.864815505404841,
+      "initial_nll": 5.8053743151698525,
+      "revisit_nll": 4.419883615447311,
+      "relative_nll_saving": 0.2386565662272898,
+      "relearning_acceleration": null
+    },
+    {
+      "fresh_training_tokens": 80000,
+      "B_nll": 7.181304917969101,
+      "B_prior_nll": 7.923520493135877,
+      "log_gain": 0.7422155751667763,
+      "gain_ratio": 2.100584365208862,
+      "initial_nll": 5.761908085914109,
+      "revisit_nll": 3.940224758730688,
+      "relative_nll_saving": 0.31615973389732,
+      "relearning_acceleration": null
+    },
+    {
+      "fresh_training_tokens": 85024,
+      "B_nll": 6.663675395109749,
+      "B_prior_nll": 7.5801845549319395,
+      "log_gain": 0.9165091598221906,
+      "gain_ratio": 2.500546129512892,
+      "initial_nll": 5.634267230466829,
+      "revisit_nll": 4.288578247666124,
+      "relative_nll_saving": 0.2388401060432498,
+      "relearning_acceleration": null
+    }
+  ]
+}

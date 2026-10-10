@@ -29,14 +29,16 @@ DECODE_KEYS = ('feature_rms_before_norm', 'feature_rms_after_norm',
 def spatial_medium_snapshot(model, belief):
     """Bounded read-only spatial telemetry; one record per actual training site."""
     state = belief.medium
-    material = model.medium.material_field()
-    speed = model.medium.edge_log_speeds(state, material=material).exp()
+    prepared = model.medium.prepare_evolution()
+    material = prepared.material
+    speed = model.medium.edge_log_speeds(
+        state, material=material, baseline_log_speed=prepared.baseline_log_speed).exp()
     field_energy = .5 * state.field.square().sum(-1)
     flux_energy = .5 * sum(x.square().sum(-1) for x in state.flux)
     shear = (None if model.medium.transport_shear is None else
              model.medium.transport_shear(material))
     ports = model.port_snapshot(belief)
-    factor = model.medium.current_transport_factor(state)
+    factor = model.medium.current_transport_factor(state, prepared)
     energy_current = model.medium.transport_energy_current(state, factor)
     from ..core.local_ports import balanced_grid
     def initial_ports(count):
@@ -51,6 +53,47 @@ def spatial_medium_snapshot(model, belief):
         return ((current - initial + .5).remainder(1.) - .5).norm(dim=-1)
     def values(tensor):
         return tensor.detach().cpu().tolist()
+    hopf_telemetry = None
+    junction = getattr(model.medium, 'hopf_pathway', None)
+    if junction is not None:
+        from ..core.medium_junction import PAIRS, OWNERS
+        full_factor = model.medium.utilized_structural_factor(
+            state, prepared.structural_factor)
+        allocation = junction.allocate(state, full_factor,
+            material_logits=prepared.junction_material_logits,
+            route_mask=prepared.junction_route_mask)
+        scale = torch.stack([q.abs().amax(-1) for q in state.flux], -1).amax(-1)
+        scale = scale.clamp_min(torch.finfo(state.field.dtype).tiny)[..., None]
+        energy = torch.stack([(q / scale).square().mean(-1) for q in state.flux], -1)
+        energy_shares = energy / (energy.sum(-1, keepdim=True)
+                                  + torch.finfo(energy.dtype).eps)
+        residual = (allocation.transport_row_capacity.square()
+                    + allocation.junction_row_capacity.square()
+                    - allocation.full_row_capacity.square())
+        hopf_telemetry = {
+            **junction.descriptions(),
+            'pairs': [list(pair) for pair in PAIRS],
+            'resource_owner_rows': list(OWNERS),
+            'route_mask': values(prepared.junction_route_mask),
+            'physical_length': values(junction.inverse_length.reciprocal()),
+            'signed_fraction': values(allocation.signed_fraction[0].reshape(-1, 3)),
+            'squared_junction_share': values(allocation.signed_fraction[0].square().reshape(-1, 3)),
+            'rates': values(allocation.rates[0].reshape(-1, 3)),
+            'flux_energy_shares': values(energy_shares[0].reshape(-1, 3)),
+            'full_row_capacity': values(allocation.full_row_capacity[0].reshape(-1, 3)),
+            'transport_row_capacity': values(allocation.transport_row_capacity[0].reshape(-1, 3)),
+            'junction_row_capacity': values(allocation.junction_row_capacity[0].reshape(-1, 3)),
+            'capacity_balance_error': float(residual.abs().max()),
+            'capacity_metric': 'squared_coupling_norm',
+            'capacity_scope': ('transport row norm squared plus local junction coefficient squared '
+                               'equals original row norm squared; not electric consumption or power'),
+            'fraction_meaning': 'signed turning amplitude kappa; kappa squared is the capacity share',
+            'rate_unit': 'radians per unit physical time',
+            'scope': ('instantaneous allocation recomputed from this state and prepared material; '
+                      'not the frozen allocation tape of an earlier microstep'),
+            'meaning': ('local rotation of the three persistent flux stores; '
+                        'no particle duplication, feature split or discarded residual'),
+        }
     return {'protocol': 'medium_spatial_snapshot_v1',
             'shape': list(model.medium.shape),
             'physical_time': float(state.elapsed[0]),
@@ -64,6 +107,7 @@ def spatial_medium_snapshot(model, belief):
             'transport_energy_current': values(energy_current[0].reshape(-1, 3)),
             'energy_current_scope': 'instantaneous discrete conservative transport generator; display traces frozen snapshots',
             'transport_capacity_budget': model.medium.transport_capacity_limit,
+            'hopf_branch': hopf_telemetry,
             'write_initial_coords': values(write_initial),
             'read_initial_coords': values(read_initial),
             'write_port_displacement': values(drift(write_coords, write_initial)),
@@ -167,7 +211,11 @@ def representation_summary(features):
     centered = z - z.mean(0)
     variance = float(np.mean(np.sum(centered ** 2, axis=1)))
     roughness = float(0.5 * np.mean(np.sum(np.diff(z, axis=0) ** 2, axis=1)))
-    eigenvalues = np.linalg.svd(centered, compute_uv=False) ** 2
+    # Nonzero singular values squared are the eigenvalues of either Gram
+    # matrix. Use the smaller symmetric problem for the live D768 monitor.
+    gram = (centered @ centered.T if centered.shape[0] <= centered.shape[1]
+            else centered.T @ centered)
+    eigenvalues = np.maximum(np.linalg.eigvalsh(gram), 0.0)
     total = float(eigenvalues.sum())
     bound = min(z.shape[0] - 1, z.shape[1])
     if total == 0:

@@ -1,0 +1,162 @@
+{
+  "scope": "Execution performance only; same saved step305, real next160 OWT targets, complete BPTT32 and actual AdamW/health updates. Source checkpoint and production cursor unchanged.",
+  "selected_execution": "shared primal with two complete adjoint lanes; fused ports, bounded physical forward CUDA graphs, fused AdamW, host-staged moments; GPU field history retained",
+  "warmup_policy": "Exclude first compile/capture update; compare following4 same-target complete updates without profiling instrumentation",
+  "component_semantics": "Original warm inclusive execution phases, including host scheduling and CUDA waiting. Auxiliary includes full physical replay; main backward includes writer/readout/physics. No exclusive five-operator kernel attribution inferred.",
+  "original_component_breakdown": [
+    {
+      "phase": "writer_auxiliary_complete_replay_and_vjp",
+      "seconds": 3.7458133666659705,
+      "fraction": 0.35857935637979615
+    },
+    {
+      "phase": "main_backward_complete_credit",
+      "seconds": 4.513582500000969,
+      "fraction": 0.4320763875264864
+    },
+    {
+      "phase": "optimizer_moment_host_staging",
+      "seconds": 0.31497046666481765,
+      "fraction": 0.03015150413535962
+    },
+    {
+      "phase": "main_forward_decode_and_other",
+      "seconds": 1.8718941666690334,
+      "fraction": 0.1791927519583579
+    }
+  ],
+  "executions": {
+    "baseline": {
+      "mean_warm_seconds_per_32": 10.405917674999728,
+      "warm_seconds": [
+        10.341889400002401,
+        10.136796699996921,
+        10.545512699998653,
+        10.599471900000935
+      ],
+      "peak_dedicated_mib": 3344.65234375,
+      "status": "passed"
+    },
+    "shared": {
+      "mean_warm_seconds_per_32": 9.402937224999732,
+      "warm_seconds": [
+        9.684770200001367,
+        9.168446299998323,
+        8.91706300000078,
+        9.84146939999846
+      ],
+      "peak_dedicated_mib": 3356.65234375,
+      "status": "passed"
+    },
+    "deferred": {
+      "mean_warm_seconds_per_32": 9.393117175000043,
+      "warm_seconds": [
+        9.669322199999442,
+        9.325135700000828,
+        9.254076400000486,
+        9.323934399999416
+      ],
+      "peak_dedicated_mib": 3256.65234375,
+      "status": "passed"
+    }
+  },
+  "throughput_ratio": 1.1066667176436482,
+  "wall_time_reduction_fraction": 0.09638558379235129,
+  "same_target_max_nll_difference": 2.738088369369507e-07,
+  "full_credit_identity": {
+    "passed": true,
+    "maximum_absolute_differences": {
+      "state": 2.861061830117251e-06,
+      "input_gradient": 9.313225746154785e-08,
+      "parameter_gradient": 1.2345612049102783e-05
+    },
+    "parameter_tensors": 101,
+    "state_tensors": 11
+  },
+  "identity_peak_dedicated_mib": 3458.65234375,
+  "tolerance": {
+    "atol": 5e-06,
+    "rtol": 0.0005
+  },
+  "not_adopted": {
+    "deferred_weight_gemms": "Exact CPU/AOT/GPU gradient and pending-credit tests pass;9.3931s vs9.4029s is unresolved0.1percent gain. Keep optional, disabled for selected continuation. Saves sampled100MiB.",
+    "credit_history_offload": "Exact GPU identity, approx300MiB history saving; added transfers slow execution, disabled.",
+    "native_ports_with_deferred_credit": "Loses compiler fusion, slower; disabled.",
+    "unsafe_workspace_reuse": "Rejected for boundary-gradient NaN. Safe first-VJP workspace ownership and detached pack hook retained.",
+    "batched_saved_workspace": {
+      "scope": "Exact execution prefetch hint only; real saved step305, next160OWT targets, full32credit, health and actual optimizer",
+      "unbounded": "Full GPU identity passed, complete update failed OOM restoring Adam moments; rejected",
+      "bounded": "32MiB bound passed full11state/101parameter gradient identity and five complete updates",
+      "matched_lazy_warm_seconds": 8.831847850000486,
+      "matched_batched_warm_seconds": 8.992245025000557,
+      "selection": "No speed gain; experimental helper removed. Original private-buffer ownership retained",
+      "sources": [
+        "medium_batched_workspace_acceptance_20261009.json",
+        "medium_bounded_workspace_acceptance_20261009.json",
+        "medium_workspace_lazy_timing_20261009.json",
+        "medium_workspace_batched_timing_20261009.json"
+      ]
+    }
+  },
+  "checks": {
+    "broad_cpu": "65 passed,5 optional CUDA skipped; final affected suite recorded separately",
+    "fused_optimizer_cuda": "1 passed, saved moments/None groups/staging/update parity and version invalidation",
+    "deslice": "all standalone interface checks passed",
+    "continuation": {
+      "step": 305,
+      "cursor": 9761,
+      "val_cursor": 256,
+      "next_eval": 10000,
+      "optimizer_updates": 317,
+      "pending_events": 0,
+      "targets_consumed": 0,
+      "production_files_written": false
+    }
+  },
+  "production": {
+    "status": "training",
+    "pid": 23820,
+    "resumed_from_step": 305,
+    "verified_step": 319,
+    "fresh_training_tokens": 10208,
+    "optimizer_updates": 343,
+    "pending_events": 0,
+    "STOP_file_retained": false,
+    "last_checkpoint_preserved": true,
+    "html_url": "http://127.0.0.1:8085/",
+    "html_api_verified": true,
+    "warm_live_seconds_per_32": [
+      8.058519800000795,
+      8.280946300001233,
+      8.042093600000953,
+      7.9627459999974235,
+      8.054966499999864,
+      7.943347099997482,
+      8.04362620000029,
+      8.684386699998868,
+      8.37956579999809,
+      8.403293700001086,
+      8.29604229999677,
+      8.388313600000401,
+      8.456513600001927
+    ],
+    "warm_live_mean_seconds_per_32": 8.230335476922706,
+    "warm_live_semantics": "Live group timing; excludes first compile/capture update. Not a new matched baseline acceleration claim.",
+    "gradient_finite": true,
+    "active_evaluation_completed": {
+      "fresh_training_tokens": 10016,
+      "B_nll": 6.931087295233738,
+      "B_prior_nll": 7.560355754282794,
+      "reset": false,
+      "learning_active": true,
+      "optimizer_updates": 337
+    },
+    "vram_guard_mib": 3900,
+    "acceptance_sampled_dedicated_peak_mib": 3458.65234375
+  },
+  "artifact_sources": {
+    "baseline": "results/published/medium_speed_final_baseline_20261009.json",
+    "shared": "results/published/medium_speed_final_shared_20261009.json",
+    "deferred": "results/published/medium_speed_final_deferred_20261009.json"
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "scope": "actual D7688^3 real OWT, full32 credit, execution only",
+  "checkpoint": "results\\medium_d768_capacity_growth_gen2\\last.pt",
+  "checkpoint_step": 2813,
+  "checkpoint_cursor": 90017,
+  "production_checkpoint_written": false,
+  "runs": [],
+  "junction_enabled": false,
+  "junction": null,
+  "source_data_sha256": {
+    "train.npy": "6dd24ac1b43aef10d914418b7e6d6f28eedbc5ae8dc653003196375e37ceedb9",
+    "validation.npy": "542a39693215fa5163b92d14a13f9a8545fc4747ff3e819427bc4291db9de624"
+  },
+  "timing_policy": {
+    "read_key_execution": "support",
+    "auxiliary_final_read": false,
+    "first_update_includes_compilation": true,
+    "health_update_snapshot": true,
+    "segment_graph": true,
+    "optimizer_state_offload": true,
+    "shared_credit": true,
+    "deferred_writer_credit": false,
+    "port_execution": "fused",
+    "credit_history_offload": false,
+    "fused_optimizer": true
+  },
+  "timing_rng": "restored checkpoint CPU/CUDA RNG before both windows",
+  "complete_updates": [],
+  "status": "failed",
+  "error": "InductorError: OSError: [Errno 28] No space left on device",
+  "memory": {
+    "sample_count": 600,
+    "sampled_peak_dedicated_mib": 2960.65234375,
+    "sampled_peak_shared_mib": 82.0,
+    "counter_errors": [],
+    "cap_exceeded": false,
+    "last_sample": {
+      "seconds": 68691.484217,
+      "dedicated_bytes": 3062525952,
+      "shared_bytes": 85983232,
+      "rows": [
+        {
+          "Name": "pid_29056_luid_0x00000000_0x00018DBD_phys_0",
+          "DedicatedUsage": 3062525952,
+          "SharedUsage": 85983232
+        }
+      ]
+    },
+    "peak_is_sampled": true
+  }
+}

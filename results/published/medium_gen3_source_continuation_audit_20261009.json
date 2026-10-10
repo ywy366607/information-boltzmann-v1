@@ -1,0 +1,45 @@
+{
+  "protocol": "gen3_checkpoint_source_exact_diff_audit_v1",
+  "source_checkpoint": "results/medium_d768_capacity_growth_gen2/last.pt",
+  "source_step": 2813,
+  "source_fresh_training_tokens": 90016,
+  "evidence": "inverse only the declared edits plus original line endings; each recovered file matches its embedded Gen2 SHA256 exactly",
+  "records": [
+    {
+      "path": "information_boltzmann/runtime/active_medium_training.py",
+      "before_sha256": "b21143cf6115263437c1c211c759fc56b1d95d064fa70bf34b19841a270061db",
+      "after_sha256": "834a488950ae7128f7d41bcc9ad13a77c005f3df430b28f40e52542b7d8a5a76",
+      "reconstructed_saved_source": "scratch/gen3_checkpoint_source_20261009/active_medium_training.py",
+      "exact_reconstruction_verified": true,
+      "changes": [
+        "pending_gradients[name] -> pending_gradients.get(name): inherited entries preserved; only identity-initialized new junction gate gradients may be absent at a completed window"
+      ]
+    },
+    {
+      "path": "information_boltzmann/runtime/medium_health.py",
+      "before_sha256": "09e13a70a0c736a40f25eba2661868591f6d52c3ae5427e0e958b65187b0bd3a",
+      "after_sha256": "73baf9babed2034b080c21986923c1bd07f4c6f3d15fed3e1daba5978339402d",
+      "reconstructed_saved_source": "scratch/gen3_checkpoint_source_20261009/medium_health.py",
+      "exact_reconstruction_verified": true,
+      "changes": [
+        "spatial snapshot reuses prepared material/baseline speed/transport factor",
+        "adds read-only junction topology, allocation, rates, capacity identity and flux-share telemetry",
+        "representation Gram optimization was already present in the saved Gen2 source"
+      ]
+    },
+    {
+      "path": "information_boltzmann/runtime/training.py",
+      "before_sha256": "74ed91c34c8078b9da4c463b28dd6e62627debdf3fc37a049c9e97b4c3afe412",
+      "after_sha256": "506fb41bf23cfe457c1b216924c48f2b48d545283c4d9dfde9f75591649fd49e",
+      "reconstructed_saved_source": "scratch/gen3_checkpoint_source_20261009/training.py",
+      "exact_reconstruction_verified": true,
+      "changes": [
+        "event schedule uses explicit effective_solver_max_step derived from the new material/content gate rate bound",
+        "adds junction_energy_change and junction_spatial_energy_change diagnostics",
+        "existing deterministic replay schedule and BPTT/cotangent execution unchanged"
+      ]
+    }
+  ],
+  "solver_scope": "declared additional local-junction angular-rate budget; original physical event clock and configured solver/observer limits remain; integer integration schedule is held fixed for conditional VJP replay, not a planner gradient",
+  "review": "root explicitly approved these three exact diffs on 2026-10-09; no GPU/no data targets consumed"
+}

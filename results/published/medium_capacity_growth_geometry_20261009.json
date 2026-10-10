@@ -1,0 +1,37 @@
+{
+  "scope": "numerical geometry and cost only; constructed credit; no language run or capability claim",
+  "source_checkpoint": "results\\medium_d768_streaming_pathway_8x8x8_160k\\last.pt",
+  "source_step": 2344,
+  "shape": [
+    8,
+    8,
+    8
+  ],
+  "coefficient_count": 512,
+  "metric_dimension": 1536,
+  "one_float64_metric_mib": 18.0,
+  "cpu_threads": 1,
+  "cuda_initialized": false,
+  "timings_seconds": [
+    0.21173950000229524,
+    0.23487610000302084,
+    0.23013790000550216
+  ],
+  "median_seconds_per_update": 0.23013790000550216,
+  "gradient_scope": "constructed numerical sensitivity, not observed task value",
+  "new_learnable_parameters": 0,
+  "resource_sum_max_error": 4.76837158203125e-07,
+  "acceptance": {
+    "gradient_norm": 22.64215338063776,
+    "update_norm": 0.010794450590048217,
+    "capacity_kl": 1.8836763815981654e-06,
+    "max_site_kl": 0.0003712223535424653,
+    "gradient_dot_update": -0.24436801008197925,
+    "solve_residual": 1.1667314773050082e-15,
+    "step_fraction": 0.00390625
+  },
+  "configuration": {
+    "step_size": 1.0,
+    "max_capacity_kl": 0.001
+  }
+}

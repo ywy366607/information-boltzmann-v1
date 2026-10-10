@@ -18,13 +18,13 @@ def single_cpu_thread():
     torch.set_num_threads(previous)
 
 
-def numerical_model(intrinsic_clock=False):
+def numerical_model(intrinsic_clock=False, hopf=False):
     torch.manual_seed(624)
     model = PlasticMediumPorts3D(
         vocab_size=11, shape=(2, 2, 2), channels=4, material_width=2,
         hidden=4, heads=1, queries=1, anisotropic_transport=True,
         bath_type='conductance', short_term_plasticity=True,
-        activity_adaptation=True, material_reference_shape=None,
+        activity_adaptation=True, material_reference_shape=None, hopf_recomposition=hopf,
         read_mode='temporal', temporal_rates=[1., 4.],
         temporal_frequencies=[0., 3.], temporal_time_reference=.02,
         intrinsic_time_reference=.006 if intrinsic_clock else None,
@@ -35,6 +35,9 @@ def numerical_model(intrinsic_clock=False):
             initial_dual=.1)).double()
     with torch.no_grad():
         model.medium.material.coefficients.normal_(std=.03)
+        if hopf:
+            model.hopf_pathway.gate.weight.normal_(std=.02)
+            model.hopf_pathway.gate.bias.copy_(torch.tensor([.12, -.17, .08]))
         if intrinsic_clock:
             model.intrinsic_time.head.weight.fill_(.03)
     posterior = model.medium.structural_posterior
@@ -115,10 +118,11 @@ def assert_gradients_equal(left, right, label):
                                    msg=label)
 
 
-@pytest.mark.parametrize('scale,pending,intrinsic_clock',
-                         [(.37, False, False), (-1.25, True, False), (.63, False, True)])
-def test_vjp_32_events_matches_all_parameter_state_and_duration_gradients(scale, pending, intrinsic_clock):
-    reference = numerical_model(intrinsic_clock)
+@pytest.mark.parametrize('scale,pending,intrinsic_clock,hopf',
+                         [(.37, False, False, False), (-1.25, True, False, False),
+                          (.63, False, True, False), (.37, True, True, True)])
+def test_vjp_32_events_matches_all_parameter_state_and_duration_gradients(scale, pending, intrinsic_clock, hopf):
+    reference = numerical_model(intrinsic_clock, hopf)
     checked = copy.deepcopy(reference)
     left_state, right_state = leaf_belief(reference), leaf_belief(checked)
     left_duration = torch.tensor(.2, dtype=torch.float64, requires_grad=True)
@@ -153,7 +157,11 @@ def test_vjp_32_events_matches_all_parameter_state_and_duration_gradients(scale,
                                              (*right_leaves, right_duration))):
         assert_gradients_equal(left, right, f'initial state/duration {index}')
     if intrinsic_clock:
-        assert left_duration.grad is None and right_duration.grad is None
+        if pending:
+            torch.testing.assert_close(left_duration.grad, torch.tensor(.0002, dtype=torch.float64), atol=0, rtol=0)
+            torch.testing.assert_close(right_duration.grad, left_duration.grad, atol=0, rtol=0)
+        else:
+            assert left_duration.grad is None and right_duration.grad is None
         assert reference.intrinsic_time.head.bias.grad.abs().max() > 0
     else:
         assert left_duration.grad is not None and left_duration.grad.abs() > 0

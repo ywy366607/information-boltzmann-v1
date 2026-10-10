@@ -1,0 +1,232 @@
+{
+  "scope": "Execution acceptance only; same real OWT checkpoint/RNG/next128 targets and full BPTT32 including fourth-pillar collection; no capability claim",
+  "checkpoint_step": 211,
+  "fresh_tokens_restored": 6752,
+  "events_restored": 7136,
+  "optimizer_updates_restored": 223,
+  "adopted": "bounded forward-only microstep CUDA graphs and fused/graph RHS; ordinary complete reverse VJP; optimizer CPU staging retained",
+  "baseline_warm_seconds": [
+    12.150009400000272,
+    10.864462000001367,
+    10.698981699999422
+  ],
+  "optimized_warm_seconds": [
+    10.190486200001033,
+    10.03738710000107,
+    10.206514699999389
+  ],
+  "baseline_mean_seconds": 11.237817700000354,
+  "optimized_mean_seconds": 10.144796000000497,
+  "throughput_ratio": 1.107742107381933,
+  "wall_time_reduction_fraction": 0.09726280752888727,
+  "median_throughput_ratio": 1.0661377471862203,
+  "first_update_excluded": "compilation/capture warmup in both arms",
+  "matched_update_nll_max_difference": 1.9371509552001953e-07,
+  "sampled_peak_dedicated_mib": 3344.65234375,
+  "total_dedicated_limit_mib": 3900,
+  "allocator_budget_mib": 3708,
+  "identity_report": "medium_segment_rhs_identity_20261009.json",
+  "resource_reports": [
+    "medium_segment_graph_baseline_health_20261009.json",
+    "medium_segment_graph_optimized_health_20261009.json"
+  ],
+  "rejected_candidate": {
+    "keep_Adam_moments_on_gpu": "second complete window OOM allocating148MiB under3708MiB allocator cap; no production checkpoint written; keep CPU staging",
+    "report": "medium_segment_graph_gpu_moments_20261009.json"
+  },
+  "tests": {
+    "focused_CPU": "63 passed,7 optional CUDA skipped; empty CUDA_VISIBLE_DEVICES caused2 compiler environment failures, repeated successfully with normal device visibility",
+    "CUDA_buffer_ownership_and_mutable_parameters": "2 passed",
+    "deslice_scatter_and_gate": "all passed"
+  },
+  "resume_status": "running_confirmed_updates",
+  "pid": 31500,
+  "managed_tool_session": 20863,
+  "dashboard": "http://127.0.0.1:8085/",
+  "log": "E:/ib_execution_cache/medium_segment_resume_20261009.log",
+  "confirmed_progress": {
+    "status": "training",
+    "step": 236,
+    "fresh_training_tokens": 7552,
+    "events": 7936,
+    "optimizer_updates": 248,
+    "physical_elapsed": 267.606853235513,
+    "seconds_per_group": 10.044208800001797,
+    "memory": {
+      "total_dedicated_mib": 2497.0,
+      "allocated_mib": 1387.53369140625,
+      "peak_allocated_mib": 2880.6298828125,
+      "reserved_mib": 2362.0,
+      "inactive_split_mib": 212.46630859375
+    },
+    "execution_detail": {
+      "mode": "bounded_forward_segments_and_fused_rhs",
+      "backward": "complete event VJP recomputation",
+      "vram_limit_mib": 3900,
+      "segments": {
+        "advance": {
+          "graphs": 2,
+          "replays": 9600
+        },
+        "rhs": {
+          "graphs": 1,
+          "replays": 3208
+        }
+      }
+    },
+    "gradient_norm_before_clip": 11.720629217293315
+  },
+  "live_memory": {
+    "pid": 31500,
+    "samples": [
+      {
+        "time": "2026-10-09T02:46:40.9331257+08:00",
+        "total_dedicated_mib": 2497,
+        "process_dedicated_mib": 2496.6484375,
+        "process_shared_mib": 80.0
+      },
+      {
+        "time": "2026-10-09T02:46:41.6116151+08:00",
+        "total_dedicated_mib": 2057,
+        "process_dedicated_mib": 1908.64453125,
+        "process_shared_mib": 80.0
+      },
+      {
+        "time": "2026-10-09T02:46:42.2105570+08:00",
+        "total_dedicated_mib": 2215,
+        "process_dedicated_mib": 2214.6484375,
+        "process_shared_mib": 80.0
+      },
+      {
+        "time": "2026-10-09T02:46:42.8220340+08:00",
+        "total_dedicated_mib": 2627,
+        "process_dedicated_mib": 2240.6484375,
+        "process_shared_mib": 80.0
+      },
+      {
+        "time": "2026-10-09T02:46:43.4105716+08:00",
+        "total_dedicated_mib": 2779,
+        "process_dedicated_mib": 2778.6484375,
+        "process_shared_mib": 80.0
+      },
+      {
+        "time": "2026-10-09T02:46:43.9913816+08:00",
+        "total_dedicated_mib": 2779,
+        "process_dedicated_mib": 2778.6484375,
+        "process_shared_mib": 80.0
+      },
+      {
+        "time": "2026-10-09T02:46:44.5878654+08:00",
+        "total_dedicated_mib": 2779,
+        "process_dedicated_mib": 2778.6484375,
+        "process_shared_mib": 80.0
+      },
+      {
+        "time": "2026-10-09T02:46:45.1855031+08:00",
+        "total_dedicated_mib": 2779,
+        "process_dedicated_mib": 2778.6484375,
+        "process_shared_mib": 80.0
+      },
+      {
+        "time": "2026-10-09T02:46:45.7850077+08:00",
+        "total_dedicated_mib": 2779,
+        "process_dedicated_mib": 2778.6484375,
+        "process_shared_mib": 80.0
+      },
+      {
+        "time": "2026-10-09T02:46:46.3835834+08:00",
+        "total_dedicated_mib": 2779,
+        "process_dedicated_mib": 2778.6484375,
+        "process_shared_mib": 80.0
+      },
+      {
+        "time": "2026-10-09T02:46:46.9817400+08:00",
+        "total_dedicated_mib": 2779,
+        "process_dedicated_mib": 2778.6484375,
+        "process_shared_mib": 80.0
+      },
+      {
+        "time": "2026-10-09T02:46:47.5666508+08:00",
+        "total_dedicated_mib": 3177,
+        "process_dedicated_mib": 3176.65234375,
+        "process_shared_mib": 80.0
+      },
+      {
+        "time": "2026-10-09T02:46:48.1593741+08:00",
+        "total_dedicated_mib": 3177,
+        "process_dedicated_mib": 3176.65234375,
+        "process_shared_mib": 80.0
+      },
+      {
+        "time": "2026-10-09T02:46:48.7401877+08:00",
+        "total_dedicated_mib": 3177,
+        "process_dedicated_mib": 3176.65234375,
+        "process_shared_mib": 80.0
+      },
+      {
+        "time": "2026-10-09T02:46:49.3416963+08:00",
+        "total_dedicated_mib": 3325,
+        "process_dedicated_mib": 3324.65234375,
+        "process_shared_mib": 80.0
+      },
+      {
+        "time": "2026-10-09T02:46:49.9376946+08:00",
+        "total_dedicated_mib": 3325,
+        "process_dedicated_mib": 3324.65234375,
+        "process_shared_mib": 80.0
+      },
+      {
+        "time": "2026-10-09T02:46:50.5249786+08:00",
+        "total_dedicated_mib": 3325,
+        "process_dedicated_mib": 3324.65234375,
+        "process_shared_mib": 80.0
+      },
+      {
+        "time": "2026-10-09T02:46:51.1134220+08:00",
+        "total_dedicated_mib": 3325,
+        "process_dedicated_mib": 3324.65234375,
+        "process_shared_mib": 80.0
+      },
+      {
+        "time": "2026-10-09T02:46:51.7145062+08:00",
+        "total_dedicated_mib": 2497,
+        "process_dedicated_mib": 2496.6484375,
+        "process_shared_mib": 80.0
+      },
+      {
+        "time": "2026-10-09T02:46:52.3178473+08:00",
+        "total_dedicated_mib": 1723,
+        "process_dedicated_mib": 1720.64453125,
+        "process_shared_mib": 80.0
+      },
+      {
+        "time": "2026-10-09T02:46:52.9168068+08:00",
+        "total_dedicated_mib": 1741,
+        "process_dedicated_mib": 1738.64453125,
+        "process_shared_mib": 80.0
+      },
+      {
+        "time": "2026-10-09T02:46:53.5200528+08:00",
+        "total_dedicated_mib": 2781,
+        "process_dedicated_mib": 2780.6484375,
+        "process_shared_mib": 80.0
+      },
+      {
+        "time": "2026-10-09T02:46:54.1152035+08:00",
+        "total_dedicated_mib": 2781,
+        "process_dedicated_mib": 2780.6484375,
+        "process_shared_mib": 80.0
+      },
+      {
+        "time": "2026-10-09T02:46:54.7177582+08:00",
+        "total_dedicated_mib": 2781,
+        "process_dedicated_mib": 2780.6484375,
+        "process_shared_mib": 80.0
+      }
+    ],
+    "peak_total_dedicated_mib": 3325.0,
+    "peak_process_dedicated_mib": 3324.65234375,
+    "limit_mib": 3900
+  },
+  "windows_first_rhs_initialization": "Dynamic CUDA launcher is configured by RHS before any graph/compiled call, including startup dashboard snapshots; verified by actual resumed updates."
+}

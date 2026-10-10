@@ -1,11 +1,25 @@
 {
-  "active_run": "medium_d768_streaming_pathway_8x8x8_160k",
+  "active_run": "medium_d768_physical_junction_gen3",
   "runs": {
+    "medium_d768_hopf_gen3": {
+      "path": "../results/medium_d768_hopf_gen3",
+      "label": "Gen 3 (Hopf分岔 · 极限环/树重组)"
+    },
+    "medium_d768_capacity_growth_gen2": {
+      "path": "../results/medium_d768_capacity_growth_gen2",
+      "label": "Gen 2 (容量生长 · 93k tokens 验证通过)"
+    },
     "medium_d768_streaming_pathway_8x8x8_160k": {
-      "path": "../results/medium_d768_streaming_pathway_8x8x8_160k"
+      "path": "../results/medium_d768_streaming_pathway_8x8x8_160k",
+      "label": "Gen 1 (基线 · 86k tokens 终态)"
     },
     "medium_d768_pathway_vfe_8x8x8_160k": {
-      "path": "../results/medium_d768_pathway_vfe_8x8x8_160k"
+      "path": "../results/medium_d768_pathway_vfe_8x8x8_160k",
+      "label": "历史对照 (VFE)"
+    },
+    "medium_d768_physical_junction_gen3": {
+      "path": "../results/medium_d768_physical_junction_gen3",
+      "label": "Gen 3 (物理三相持存通量交汇 · 真实流训练)"
     }
   }
 }

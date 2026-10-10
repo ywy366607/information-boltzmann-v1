@@ -118,6 +118,19 @@ def test_spectral_structure_reports_constant_and_rank_instead_of_health_verdict(
     assert slow['roughness_to_variance'] < fast['roughness_to_variance']
 
 
+@pytest.mark.parametrize('shape', [(32, 96), (96, 32), (20, 20)])
+def test_smaller_gram_representation_spectrum_matches_svd(shape):
+    values = np.random.default_rng(42).normal(size=shape)
+    centered = values - values.mean(0)
+    energy = np.linalg.svd(centered, compute_uv=False) ** 2
+    p = energy[energy > 0] / energy.sum()
+    expected_entropy = -np.sum(p * np.log(p))
+    actual = representation_summary(values)
+    assert actual['spectral_entropy'] == pytest.approx(expected_entropy, abs=2e-12)
+    assert actual['effective_rank'] == pytest.approx(np.exp(expected_entropy), rel=2e-12)
+    assert actual['participation_rank'] == pytest.approx(1 / np.sum(p ** 2), rel=2e-12)
+
+
 def test_loss_trend_keeps_replay_context_changes_and_partial_blocks_separate():
     rows = [{'phase': 'stream', 'novel': True, 'event': i + 1, 'nll': 8 - i / 10}
             for i in range(12)]

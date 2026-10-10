@@ -34,7 +34,8 @@ class StructuralPosterior(nn.Module):
                  speed_reference: float, structure_time: float, prior_std: float,
                  initial_std: float, maintenance_supply: float, initial_dual: float,
                  initial_mean: torch.Tensor | None = None,
-                 stationary_mean: torch.Tensor | None = None):
+                 stationary_mean: torch.Tensor | None = None,
+                 capacity_growth: dict | None = None):
         super().__init__()
         if not isinstance(coefficient_count, Integral) or isinstance(coefficient_count, bool) or coefficient_count < 1:
             raise ValueError('Positive coefficient count required')
@@ -87,6 +88,12 @@ class StructuralPosterior(nn.Module):
         for name in ('window_duration', 'elapsed'):
             self.register_buffer(name, torch.zeros((), dtype=torch.float64, device=mean.device))
         self.register_buffer('window_maintenance', mean.new_zeros(()))
+        self.capacity_growth = None
+        if capacity_growth is not None:
+            from .capacity_growth import SpectralCapacityGrowth
+            self.capacity_growth = SpectralCapacityGrowth(**capacity_growth).to(mean.device)
+            # Mean keeps its full task VJP, but has an independent update owner.
+            self.log_std.requires_grad_(False)
 
     @staticmethod
     def _event_count(value: int) -> int:
@@ -101,6 +108,13 @@ class StructuralPosterior(nn.Module):
         torch._assert_async((torch.isfinite(variance) & (variance > 0)).all(),
                             'Posterior variance must be finite and positive')
         return variance
+
+    def window_is_active(self) -> bool:
+        """Host-side window flag. During CUDA-graph capture a device read is illegal, so the capturing
+        code declares the (necessarily active) window through ``capture_window_active``."""
+        if torch.cuda.is_available() and torch.cuda.is_current_stream_capturing():
+            return bool(getattr(self, 'capture_window_active', False))
+        return bool(self.window_active)
 
     @torch.no_grad()
     def begin_window(self, noise: torch.Tensor) -> None:
@@ -175,6 +189,14 @@ class StructuralPosterior(nn.Module):
         """Volume-weighted installed capacity of one grid; idle is uncharged."""
         if allocation.ndim < 2 or allocation.shape[-1] != 4:
             raise ValueError('Allocation must have shape [...,4] for one individual')
+        if isinstance(cell_volume, (int, float)):
+            # A host scalar is validated on the host and multiplied in place: building a device tensor from it
+            # would be a host-to-device copy, which a CUDA graph capture forbids.
+            if not math.isfinite(cell_volume) or cell_volume <= 0:
+                raise RuntimeError('Finite positive quadrature volumes required')      # same exception class as the device-side assert
+            torch._assert_async((torch.isfinite(allocation) & (allocation >= 0)).all(),
+                                'Finite nonnegative allocation required')
+            return (allocation[..., :3].sum(-1) * float(cell_volume)).sum()
         volume = torch.as_tensor(cell_volume, dtype=allocation.dtype, device=allocation.device)
         if volume.numel() != 1 and volume.shape != allocation.shape[:-1]:
             raise ValueError('Cell volume must be scalar or match the spatial grid')
@@ -233,8 +255,9 @@ class StructuralPosterior(nn.Module):
         self.window_evidence_recorded.fill_(True)
 
     @torch.no_grad()
-    def commit_window(self, *, dual_learning_rate: float | None = None) -> None:
-        """Call only after the optimizer step; advance OU prior and ledger once."""
+    def validate_window_commit(self, *, posterior_mean: torch.Tensor | None = None,
+                               dual_learning_rate: float | None = None):
+        """Pure prospective OU/dual validation, also usable before a growth step."""
         if not bool(self.window_active) or not bool(self.window_evidence_recorded):
             raise RuntimeError('Record one active evidence window before committing')
         if dual_learning_rate is not None and (not math.isfinite(dual_learning_rate) or dual_learning_rate < 0):
@@ -243,14 +266,18 @@ class StructuralPosterior(nn.Module):
         interval = self.window_duration / self.structure_time.double()
         rho = (-interval).exp()
         relaxation = -torch.expm1(-2 * interval)
-        next_mean = (self.stationary_mean + rho * (self.mean - self.stationary_mean)).to(self.prior_mean)
+        mean = self.mean if posterior_mean is None else posterior_mean
+        if mean.shape != self.mean.shape or mean.dtype != self.mean.dtype or mean.device != self.mean.device:
+            raise ValueError('Prospective mean must match posterior coefficient storage')
+        next_mean = (self.stationary_mean + rho * (mean - self.stationary_mean)).to(self.prior_mean)
         next_variance = (rho.square() * variance + relaxation * self.stationary_variance).to(self.prior_variance)
         next_dual = self.dual.clone()
         if dual_learning_rate is not None:
             next_dual = (next_dual + dual_learning_rate * (self.window_maintenance - self.maintenance_supply)).clamp_min(0)
         next_elapsed = self.elapsed + self.window_duration
-        # Validate all prospective state before writing any buffer. A failed
-        # optimizer step remains inspectable/recoverable as an active window.
+        # Validate every prospective buffer before mutation. Optimizer failures
+        # are fatal and resume from the last completed checkpoint; no in-place
+        # rollback of an arbitrary optimizer is claimed here.
         valid = (torch.isfinite(next_mean).all()
                  & (torch.isfinite(next_variance) & (next_variance > 0)).all()
                  & torch.isfinite(next_dual) & (next_dual >= 0)
@@ -258,6 +285,13 @@ class StructuralPosterior(nn.Module):
                  & torch.isfinite(interval) & (interval >= 0))
         if not bool(valid):
             raise FloatingPointError('Structural commit would produce invalid prior/dual/clock state')
+        return next_mean, next_variance, next_dual, next_elapsed
+
+    @torch.no_grad()
+    def commit_window(self, *, dual_learning_rate: float | None = None) -> None:
+        """Call only after the optimizer step; advance OU prior and ledger once."""
+        next_mean, next_variance, next_dual, next_elapsed = self.validate_window_commit(
+            dual_learning_rate=dual_learning_rate)
         self.prior_mean.copy_(next_mean)
         self.prior_variance.copy_(next_variance)
         self.dual.copy_(next_dual)

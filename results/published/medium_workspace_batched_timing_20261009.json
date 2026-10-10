@@ -1,0 +1,82 @@
+{
+  "scope": "actual D7688^3 real OWT, full32 credit, execution only",
+  "checkpoint": "results\\medium_d768_streaming_pathway_8x8x8_160k\\last.pt",
+  "checkpoint_step": 305,
+  "checkpoint_cursor": 9761,
+  "production_checkpoint_written": false,
+  "runs": [],
+  "timing_policy": {
+    "read_key_execution": "support",
+    "auxiliary_final_read": false,
+    "first_update_includes_compilation": true,
+    "health_update_snapshot": true,
+    "segment_graph": true,
+    "optimizer_state_offload": true,
+    "shared_credit": true,
+    "deferred_writer_credit": false,
+    "port_execution": "fused",
+    "credit_history_offload": false,
+    "fused_optimizer": true
+  },
+  "timing_rng": "restored checkpoint CPU/CUDA RNG before both windows",
+  "complete_updates": [
+    {
+      "window": 1,
+      "tokens": 32,
+      "seconds": 35.1430569999975,
+      "optimizer_updates": 318,
+      "prequential_nll": 8.892726863268763
+    },
+    {
+      "window": 2,
+      "tokens": 32,
+      "seconds": 8.950136600000405,
+      "optimizer_updates": 319,
+      "prequential_nll": 5.176381967961788
+    },
+    {
+      "window": 3,
+      "tokens": 32,
+      "seconds": 8.91053820000161,
+      "optimizer_updates": 320,
+      "prequential_nll": 7.237544228322804
+    },
+    {
+      "window": 4,
+      "tokens": 32,
+      "seconds": 8.988272899998265,
+      "optimizer_updates": 321,
+      "prequential_nll": 6.179161562118679
+    },
+    {
+      "window": 5,
+      "tokens": 32,
+      "seconds": 9.120032400001946,
+      "optimizer_updates": 322,
+      "prequential_nll": 6.978376131504774
+    }
+  ],
+  "segment_replays": 960,
+  "rhs_segment_replays": 320,
+  "status": "passed",
+  "memory": {
+    "sample_count": 118,
+    "sampled_peak_dedicated_mib": 3366.65234375,
+    "sampled_peak_shared_mib": 80.0,
+    "counter_errors": [],
+    "cap_exceeded": false,
+    "last_sample": {
+      "seconds": 32463.1514308,
+      "dedicated_bytes": 2146066432,
+      "shared_bytes": 83886080,
+      "rows": [
+        {
+          "Name": "pid_20924_luid_0x00000000_0x00018DBD_phys_0",
+          "DedicatedUsage": 2146066432,
+          "SharedUsage": 83886080
+        }
+      ]
+    },
+    "peak_is_sampled": true
+  }
+}

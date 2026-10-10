@@ -1,0 +1,83 @@
+{
+  "protocol": "medium_gen2_gen3_source_review_v1",
+  "date": "2026-10-09",
+  "scope": "CPU-only source review, existing logs/checkpoint header/material snapshots; no new training or GPU experiment",
+  "runs": {
+    "medium_d768_streaming_pathway_8x8x8_160k": {
+      "progress_status": "stopped",
+      "logged_step": 2689,
+      "logged_fresh_tokens": 86048,
+      "checkpoint_step": 2689,
+      "checkpoint_fresh_tokens": 86048,
+      "checkpoint_events": 92576,
+      "checkpoint_optimizer_updates": 2893,
+      "metrics_rows": 2686,
+      "unique_logged_steps": 2686,
+      "last_fresh_eval_tokens": 85024,
+      "last_fresh_B_nll": 6.663675395109749,
+      "last_fresh_B_prior_nll": 7.5801845549319395,
+      "B_source_start": 4096,
+      "checkpoint_material_total_capacity_cv": 0.011283937792133774,
+      "checkpoint_material_total_capacity_max": 3.2962413325689335,
+      "AG_status": "plateau_unconfirmed",
+      "AG_value": null,
+      "capacity_growth": null
+    },
+    "medium_d768_capacity_growth_gen2": {
+      "progress_status": "completed",
+      "logged_step": 2932,
+      "logged_fresh_tokens": 93824,
+      "checkpoint_step": 2813,
+      "checkpoint_fresh_tokens": 90016,
+      "checkpoint_events": 96928,
+      "checkpoint_optimizer_updates": 3029,
+      "metrics_rows": 302,
+      "unique_logged_steps": 243,
+      "last_fresh_eval_tokens": 90016,
+      "last_fresh_B_nll": 6.521468059578183,
+      "last_fresh_B_prior_nll": 7.9100554774516825,
+      "B_source_start": 4352,
+      "checkpoint_material_total_capacity_cv": 0.011805295316747105,
+      "checkpoint_material_total_capacity_max": 3.3737964704542045,
+      "AG_status": "plateau_unconfirmed",
+      "AG_value": null,
+      "capacity_growth": {
+        "step_size": 1.0,
+        "max_capacity_kl": 0.001,
+        "solve_rtol": 1e-09,
+        "max_backtracks": 32,
+        "updates": 255,
+        "zero_updates": 0,
+        "last_gradient_norm": 1.5100984579763241,
+        "last_update_norm": 0.011371556193843594,
+        "last_capacity_kl": 9.090687914683043e-06,
+        "last_max_site_kl": 0.0006523601047759963,
+        "last_gradient_dot_update": -0.01716899011594324,
+        "last_solve_residual": 1.3895368256518753e-15,
+        "last_step_fraction": 0.0625
+      }
+    }
+  },
+  "source_hashes": {
+    "information_boltzmann/core/hopf_recomposition.py": "71251f5aad28fd46ea4fe8acdebd8fbfab2f26bddb56cd5a16ae65f2663bdcb5",
+    "information_boltzmann/core/plastic_ports.py": "b8706604358b857feec1a5ea6f7fb32dc3c496e0ead32fdc92cfcce4b7cb04be",
+    "scripts/ib/train_medium_active_stream.py": "20a242302c0ebb6f3804550849a08f0b6a3edcad6810f510d873ed5b834e12f2"
+  },
+  "validation": {
+    "command": "python -B -X utf8 -m pytest -q -p no:cacheprovider tests/test_hopf_recomposition.py tests/test_capacity_growth.py",
+    "passed": 18,
+    "seconds": 14.21
+  },
+  "independent_reviewer": "/root/review_flow_plasticity",
+  "findings": [
+    "Gen2 signed task-gradient natural capacity updates executed; positive task-gradient descent and bounded installed-allocation KL are recorded.",
+    "Fresh B NLL changed from 6.663675 to 6.521468 on different B slices and unequal training exposure; the 0.142207 difference is observational and not a paired Gen2 causal effect.",
+    "Gen2 progress extends past its latest complete checkpoint; resume must use checkpoint counters, not progress counters.",
+    "Gen2 metrics contain repeated step IDs after restarts; retain provenance and select a committed continuation when comparing curves.",
+    "Gen3 currently applies a dense paired Cayley map to the pooled readout feature; residual is discarded and physical material/transport/persistent state are unchanged.",
+    "Training CLI includes opt-in Hopf adoption; this adds readout weights but does not establish physical branching or exact-identity adoption.",
+    "CK coproduct remains a structural ledger, not an evaluator changing physical couplings.",
+    "Existing frozen causal audit resets belief for each short segment; preserve as a cold-start diagnostic, separate from never-reset primary evaluation.",
+    "AG recovery/platform conditions are unconfirmed in every existing Gen1/Gen2 evaluation; reference gain ratio must not be relabeled AG."
+  ]
+}

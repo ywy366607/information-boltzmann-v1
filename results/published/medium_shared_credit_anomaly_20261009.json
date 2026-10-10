@@ -1,0 +1,37 @@
+{
+  "scope": "actual D7688^3 real OWT, full32 credit, execution only",
+  "checkpoint": "results\\medium_d768_streaming_pathway_8x8x8_160k\\last.pt",
+  "checkpoint_step": 305,
+  "checkpoint_cursor": 9761,
+  "production_checkpoint_written": false,
+  "runs": [
+    {
+      "physical_execution": "separate",
+      "auxiliary_final_read": false,
+      "forward_backward_seconds": 53.61971619999895,
+      "peak_allocated_mib": 2566.3515625
+    }
+  ],
+  "status": "failed",
+  "error": "RuntimeError: Function 'CompiledFunctionBackward' returned nan values in its 0th output.",
+  "memory": {
+    "sample_count": 93,
+    "sampled_peak_dedicated_mib": 2884.6484375,
+    "sampled_peak_shared_mib": 80.0,
+    "counter_errors": [],
+    "cap_exceeded": false,
+    "last_sample": {
+      "seconds": 28060.4540954,
+      "dedicated_bytes": 3024773120,
+      "shared_bytes": 83886080,
+      "rows": [
+        {
+          "Name": "pid_21244_luid_0x00000000_0x00018DBD_phys_0",
+          "DedicatedUsage": 3024773120,
+          "SharedUsage": 83886080
+        }
+      ]
+    },
+    "peak_is_sampled": true
+  }
+}

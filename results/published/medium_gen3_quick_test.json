@@ -1,0 +1,110 @@
+{
+  "scope": "actual D7688^3 real OWT, full32 credit, execution only",
+  "checkpoint": "results\\medium_d768_capacity_growth_gen2\\last.pt",
+  "checkpoint_step": 2813,
+  "checkpoint_cursor": 90017,
+  "production_checkpoint_written": false,
+  "runs": [],
+  "junction_enabled": true,
+  "junction": {
+    "protocol": "capacity_paid_persistent_flux_junction_v2",
+    "persistent_modes": 3,
+    "added_state_elements": 0,
+    "inverse_physical_length": [
+      8.0,
+      8.0,
+      8.0
+    ],
+    "forest": [
+      {
+        "label": "q0",
+        "children": [
+          {
+            "label": "q1",
+            "children": []
+          }
+        ]
+      },
+      {
+        "label": "q0",
+        "children": [
+          {
+            "label": "q2",
+            "children": []
+          }
+        ]
+      },
+      {
+        "label": "q1",
+        "children": [
+          {
+            "label": "q2",
+            "children": []
+          }
+        ]
+      }
+    ],
+    "capacity_metric": "squared_coupling_norm",
+    "capacity": "transport row squared plus local junction capacity squared equals paid row norm squared",
+    "state": "all existing field/flux and physical auxiliary stores retained",
+    "initialization": "exact zero utilization; unchanged baseline physics"
+  },
+  "source_data_sha256": {
+    "train.npy": "6dd24ac1b43aef10d914418b7e6d6f28eedbc5ae8dc653003196375e37ceedb9",
+    "validation.npy": "542a39693215fa5163b92d14a13f9a8545fc4747ff3e819427bc4291db9de624"
+  },
+  "runtime_restoration": {
+    "verified_data_sha256": {
+      "train.npy": "6dd24ac1b43aef10d914418b7e6d6f28eedbc5ae8dc653003196375e37ceedb9",
+      "validation.npy": "542a39693215fa5163b92d14a13f9a8545fc4747ff3e819427bc4291db9de624"
+    },
+    "verified_manifest_sha256": "caf2298208a1935275f06b5822da55b61cff7521ae7403db55404ed4cb4c055d",
+    "structural_dual_learning_rate": 0.0625,
+    "verified_prior_counts_sha256": "d4de1245c61786d8fd223427b29a7ae6db3157d84fac1f11790d2bfcb4c6a750"
+  },
+  "timing_policy": {
+    "read_key_execution": "support",
+    "auxiliary_final_read": false,
+    "first_update_includes_compilation": true,
+    "health_update_snapshot": false,
+    "segment_graph": false,
+    "optimizer_state_offload": true,
+    "shared_credit": true,
+    "deferred_writer_credit": false,
+    "port_execution": "fused",
+    "credit_history_offload": false,
+    "fused_optimizer": true
+  },
+  "timing_rng": "restored checkpoint CPU/CUDA RNG before both windows",
+  "complete_updates": [
+    {
+      "window": 1,
+      "tokens": 32,
+      "seconds": 474.41923959999986,
+      "optimizer_updates": 3030,
+      "prequential_nll": 5.0521221198141575
+    }
+  ],
+  "status": "failed",
+  "error": "OSError: [Errno 22] Invalid argument",
+  "memory": {
+    "sample_count": 647,
+    "sampled_peak_dedicated_mib": 3138.65234375,
+    "sampled_peak_shared_mib": 80.0,
+    "counter_errors": [],
+    "cap_exceeded": false,
+    "last_sample": {
+      "seconds": 71005.3881304,
+      "dedicated_bytes": 1628069888,
+      "shared_bytes": 83886080,
+      "rows": [
+        {
+          "Name": "pid_41280_luid_0x00000000_0x00018DBD_phys_0",
+          "DedicatedUsage": 1628069888,
+          "SharedUsage": 83886080
+        }
+      ]
+    },
+    "peak_is_sampled": true
+  }
+}

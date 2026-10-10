@@ -14,14 +14,26 @@ from ..core.temporal_probes import TemporalProbeState
 
 
 def training_event(model, current, token, table, prepared, event_duration, substeps, diagnostics,
-                   activation_checkpointing=False, read_feature=True):
+                   activation_checkpointing=False, read_feature=True, schedule_box=None):
     """Tensor event shared by eager and compiled execution, with detached audit outputs."""
     duration = model.event_time(current, event_duration)
     written, full_write = model.assimilate(current, token, token_features=table,
         diagnostics=diagnostics)
-    outgoing, full_evolution, motion = model.advance(written, duration,
-        substeps=substeps, prepared=prepared, diagnostics=diagnostics, return_motion=True,
-        activation_checkpointing=activation_checkpointing)
+    if schedule_box is not None and model.solver_max_step is not None:
+        from ..core.intrinsic_time import EvolutionSchedule
+        if 'schedule' not in schedule_box and getattr(model, 'fixed_schedule', None) is not None:
+            schedule_box['schedule'] = model.fixed_schedule      # fixed clock: planned once, no device read
+        if 'schedule' not in schedule_box:
+            schedule_box['schedule'] = EvolutionSchedule.for_duration(duration,
+                solver_max_step=model.effective_solver_max_step, observer_max_step=model.observer_max_step,
+                max_steps=model.max_evolution_steps)
+        outgoing, full_evolution, motion = model.advance_interval(written, duration,
+            substeps=substeps, prepared=prepared, diagnostics=diagnostics, return_motion=True,
+            activation_checkpointing=activation_checkpointing, schedule=schedule_box['schedule'])
+    else:
+        outgoing, full_evolution, motion = model.advance(written, duration,
+            substeps=substeps, prepared=prepared, diagnostics=diagnostics, return_motion=True,
+            activation_checkpointing=activation_checkpointing)
     # Writer auxiliary credit needs the complete recurrent trajectory, but its
     # unused expression feature cannot affect a later writer or event clock.
     # Temporal/RHS sampling remains part of advance(), even when this is omitted.
@@ -36,7 +48,8 @@ def training_event(model, current, token, table, prepared, event_duration, subst
         write.update({key: full_write[key].detach() for key in ('incident_energy', 'reflected_energy')})
         keys = ('bath_out_energy', 'response_source_work', 'transport_energy_change',
                 'transport_spatial_energy_change', 'collision_energy_change',
-                'collision_spatial_energy_change', 'bath_energy_change', 'bath_spatial_energy_change')
+                'collision_spatial_energy_change', 'bath_energy_change', 'bath_spatial_energy_change',
+                'junction_energy_change', 'junction_spatial_energy_change')
         evolution = {key: full_evolution[key].detach() for key in keys if key in full_evolution}
     return written, outgoing, write, evolution, feature
 
@@ -100,19 +113,23 @@ def _writer_auxiliary_gradients(model, ids, initial, event_duration, substeps,
         belief, objectives = initial, []
         replay_parameters = parameters
 
-        def event_step(current, token, shared_table, coefficients, physical_duration):
+        def event_step(current, token, shared_table, coefficients, physical_duration, schedule_box):
             operation = compiled_training_event if compile_event else training_event
             return operation(model, current, token, shared_table, coefficients, physical_duration,
                              substeps, False,
                              activation_checkpointing and checkpoint_granularity == 'nested',
-                             read_feature)
+                             read_feature, **({} if compile_event else {'schedule_box': schedule_box}))
 
         for token in ids.unbind(1):
+            schedule_box = {}
+            def scheduled_step(current, token, shared_table, coefficients, physical_duration,
+                               box=schedule_box):
+                return event_step(current, token, shared_table, coefficients, physical_duration, box)
             if activation_checkpointing:
-                result = checkpoint_state_vjp(event_step, belief, token, table, prepared,
+                result = checkpoint_state_vjp(scheduled_step, belief, token, table, prepared,
                                               event_duration, parameters=replay_parameters)
             else:
-                result = event_step(belief, token, table, prepared, event_duration)
+                result = scheduled_step(belief, token, table, prepared, event_duration)
             belief = result[1]
             objectives.append(result[2]['_write_free_energy'])
             del result
@@ -143,9 +160,9 @@ def quiet_training_chunk(model: PlasticMediumPorts3D, ids: torch.Tensor,
                          checkpoint_granularity: str = 'nested'):
     """The same CE plus W4 objective, reusing parameter graphs within a chunk.
 
-    Structural candidates route the exact first-order writer auxiliary through
-    a separate complete replay. Its CPU gradients outlive its freed graph; the
-    main task retains the entire declared BPTT chunk and physical intervals.
+    Structural candidates route exact writer credit through a separate complete
+    replay or two cotangent lanes on one shared primal. Both retain the entire
+    declared BPTT chunk and physical intervals, with the same parameter scope.
     """
     if ids.ndim != 2 or ids.shape != targets.shape or ids.shape[1] < 1:
         raise ValueError('Nonempty matching [B,L] observations and targets required')
@@ -154,36 +171,62 @@ def quiet_training_chunk(model: PlasticMediumPorts3D, ids: torch.Tensor,
     posterior = model.medium.structural_posterior
     if posterior is not None and ids.shape[0] != 1:
         raise ValueError('Structural evidence requires one persistent individual, B=1')
-    if posterior is not None and not bool(posterior.window_active):
+    if posterior is not None and not posterior.window_is_active():
         raise ValueError('Learner must begin one structural evidence window before execution')
     local_parameters, local_grads = (), None
+    shared_credit = False
     if posterior is not None and torch.is_grad_enabled():
         local_parameters = tuple(p for name, p in model.learning_named_parameters()
                                  if name.startswith(('source.', 'write_agent.')))
         if local_parameters:
-            local_grads = _writer_auxiliary_gradients(model, ids, belief, event_duration,
-                substeps, activation_checkpointing, compile_event, local_parameters,
-                checkpoint_granularity)
+            # A shared primal trajectory has two independent recurrent
+            # cotangent lanes. Live external prefixes retain the older general
+            # replay contract; production enters at detached BPTT boundaries.
+            shared_credit = (getattr(model, 'shared_credit_execution', False)
+                and activation_checkpointing and checkpoint_granularity == 'event'
+                and not any(x.grad_fn is not None for x in belief_tensors(belief))
+                and not (isinstance(event_duration, torch.Tensor)
+                         and event_duration.requires_grad))
+            if not shared_credit:
+                local_grads = _writer_auxiliary_gradients(model, ids, belief, event_duration,
+                    substeps, activation_checkpointing, compile_event, local_parameters,
+                    checkpoint_granularity)
             # Drop any Python checkpoint cycles before constructing the main
             # graph; allocator blocks can then be reused without empty_cache().
             gc.collect()
     table = F.normalize(model.source.embedding.weight, dim=-1)
+    if getattr(model, 'deferred_writer_credit', False) and not shared_credit:
+        raise ValueError('Deferred port credit requires a shared-credit detached event checkpoint window')
     prepared = model.medium.prepare_evolution()
     replay_parameters = tuple(p for _, p in model.learning_named_parameters()
                               if p.requires_grad) if posterior is not None else ()
     features, objectives, port_nlls, policy_kls = [], [], [], []
+    auxiliary_state, auxiliary_objectives = belief.detach(), []
     for index in range(ids.shape[1]):
         if health_capture is not None and hasattr(health_capture, 'select'):
             health_capture.select(index)
         incoming = belief
-        def event_step(current, token, shared_table, coefficients, physical_duration):
+        schedule_box = {}
+        def event_step(current, token, shared_table, coefficients, physical_duration,
+                       box=schedule_box):
             operation = compiled_training_event if compile_event else training_event
             return operation(model, current, token, shared_table, coefficients, physical_duration,
                              substeps, health_capture is not None,
-                             activation_checkpointing and checkpoint_granularity == 'nested')
+                             activation_checkpointing and checkpoint_granularity == 'nested',
+                             **({} if compile_event else {'schedule_box': box}))
         if activation_checkpointing:
             arguments = (belief, ids[:, index], table, prepared, event_duration)
-            if posterior is not None:
+            if shared_credit:
+                from ..core.shared_credit import checkpoint_shared_credit
+                result, (auxiliary_state, auxiliary_objective) = checkpoint_shared_credit(
+                    event_step, belief, auxiliary_state, *arguments[1:],
+                    parameters=replay_parameters, auxiliary_parameters=local_parameters,
+                    shared_auxiliary_tensors=(table,),
+                    history_offload=model.credit_history_offload)
+                written, belief, info, evolution_info, feature = result
+                auxiliary_objectives.append(auxiliary_objective)
+                del result
+            elif posterior is not None:
                 written, belief, info, evolution_info, feature = checkpoint_state_vjp(
                     event_step, *arguments, parameters=replay_parameters)
             else:
@@ -218,7 +261,9 @@ def quiet_training_chunk(model: PlasticMediumPorts3D, ids: torch.Tensor,
         # Use L (not the chunk length) so total structural evidence is counted once.
         window_events = getattr(model, '_structural_window_events', ids.shape[1])
         main_objective = posterior.objective(nll, structure_maintenance, window_events)
-        if local_grads is not None and port_objective.requires_grad:
+        if shared_credit:
+            auxiliary = torch.stack(auxiliary_objectives).mean()
+        elif local_grads is not None and port_objective.requires_grad:
             # Exact block objective: auxiliary credit trains its local writer.
             # It supplies no duplicate likelihood evidence to q or the medium.
             auxiliary = _WriterAuxiliaryGradient.apply(port_objective.detach(),
@@ -283,9 +328,13 @@ class CapturedPlasticChunk:
     def __init__(self, model: PlasticMediumPorts3D, ids: torch.Tensor,
                  targets: torch.Tensor, belief: PlasticBelief, *,
                  event_duration: float, substeps: int = 1, loss_scale: float = 1.0,
-                 health_capture=None, activation_checkpointing: bool = False, compile_event: bool = False):
-        if model.solver_max_step is not None or model.medium.structural_posterior is not None:
-            raise ValueError('Adaptive interval schedules require eager orchestration, not a fixed CUDA graph')
+                 health_capture=None, activation_checkpointing: bool = False, compile_event: bool = False,
+                 checkpoint_granularity: str = 'nested'):
+        posterior = model.medium.structural_posterior
+        if model.solver_max_step is not None and model.intrinsic_time is not None:
+            raise ValueError('An adaptive clock plans its interval on the host; capture needs a fixed clock')
+        if posterior is not None and compile_event:
+            raise ValueError('Structural evidence windows cannot use the compiled whole-event path')
         if not belief.medium.field.is_cuda:
             raise ValueError('CUDA training capture requires CUDA state')
         if not math.isfinite(event_duration) or event_duration <= 0 or substeps < 1:
@@ -294,6 +343,7 @@ class CapturedPlasticChunk:
             raise ValueError('Positive finite loss scaling required')
         self.model = model
         self.health_capture = health_capture
+        self.checkpoint_granularity = checkpoint_granularity
         self.ids, self.targets = ids.clone(), targets.clone()
         self.input = clone_belief(belief)
         # Keep the physical clock in FP64; the dynamics casts locally to field
@@ -306,9 +356,23 @@ class CapturedPlasticChunk:
                 model, self.ids, self.targets, self.input,
                 event_duration=self.duration, substeps=substeps, return_token_nll=True,
                 return_loss_components=True,
-                health_capture=health_capture, activation_checkpointing=activation_checkpointing, compile_event=compile_event)
+                health_capture=health_capture, activation_checkpointing=activation_checkpointing, compile_event=compile_event,
+                checkpoint_granularity=checkpoint_granularity)
             (loss * loss_scale).backward()
             return loss, output, nll, token_nll, components
+
+        if model.solver_max_step is not None:
+            # Fixed clock: plan the solver/observer schedule once on the host, never inside the graph.
+            from ..core.intrinsic_time import EvolutionSchedule
+            model.fixed_schedule = EvolutionSchedule.for_duration(
+                event_duration, solver_max_step=model.effective_solver_max_step,
+                observer_max_step=model.observer_max_step, max_steps=model.max_evolution_steps)
+        if posterior is not None:
+            # One structural window with a static sampling buffer; real windows rewrite the buffers in place.
+            if bool(posterior.window_active):
+                raise ValueError('Capture must be built before any structural window begins')
+            posterior.begin_window(torch.zeros_like(posterior.mean))
+            model._structural_window_events = int(round(ids.shape[1] / loss_scale))
 
         current = torch.cuda.current_stream()
         warm = torch.cuda.Stream()
@@ -323,9 +387,19 @@ class CapturedPlasticChunk:
         self.zero_grad()
         torch.cuda.empty_cache()
         self.graph = torch.cuda.CUDAGraph()
-        with torch.cuda.graph(self.graph):
-            self.loss, self.output, self.nll, self.token_nll, self.loss_components = backward()
+        if posterior is not None:
+            posterior.capture_window_active = True
+        try:
+            with torch.cuda.graph(self.graph):
+                self.loss, self.output, self.nll, self.token_nll, self.loss_components = backward()
+        finally:
+            if posterior is not None:
+                posterior.capture_window_active = False
         self.zero_grad()
+        if posterior is not None:
+            with torch.no_grad():
+                posterior.window_active.fill_(False)
+                posterior.window_evidence_recorded.fill_(False)
 
     def zero_grad(self):
         for parameter in self.active_parameters:

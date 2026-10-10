@@ -1,0 +1,71 @@
+{
+  "scope": "actual D7688^3 real OWT, full32 credit, execution only",
+  "checkpoint": "results\\medium_d768_streaming_pathway_8x8x8_160k\\last.pt",
+  "checkpoint_step": 305,
+  "checkpoint_cursor": 9761,
+  "production_checkpoint_written": false,
+  "runs": [],
+  "timing_policy": {
+    "read_key_execution": "support",
+    "auxiliary_final_read": false,
+    "first_update_includes_compilation": true,
+    "health_update_snapshot": true,
+    "segment_graph": true,
+    "optimizer_state_offload": true,
+    "shared_credit": true
+  },
+  "timing_rng": "restored checkpoint CPU/CUDA RNG before both windows",
+  "complete_updates": [
+    {
+      "window": 1,
+      "tokens": 32,
+      "seconds": 77.01886749999903,
+      "optimizer_updates": 318,
+      "prequential_nll": 8.892726863268763
+    },
+    {
+      "window": 2,
+      "tokens": 32,
+      "seconds": 8.134036499999638,
+      "optimizer_updates": 319,
+      "prequential_nll": 5.172454791376367
+    },
+    {
+      "window": 3,
+      "tokens": 32,
+      "seconds": 7.9395584000012605,
+      "optimizer_updates": 320,
+      "prequential_nll": 7.237164932303131
+    },
+    {
+      "window": 4,
+      "tokens": 32,
+      "seconds": 8.009284199997637,
+      "optimizer_updates": 321,
+      "prequential_nll": 6.183832585345954
+    }
+  ],
+  "segment_replays": 768,
+  "rhs_segment_replays": 256,
+  "status": "passed",
+  "memory": {
+    "sample_count": 163,
+    "sampled_peak_dedicated_mib": 3400.65234375,
+    "sampled_peak_shared_mib": 80.0,
+    "counter_errors": [],
+    "cap_exceeded": false,
+    "last_sample": {
+      "seconds": 27624.6846333,
+      "dedicated_bytes": 3565842432,
+      "shared_bytes": 83886080,
+      "rows": [
+        {
+          "Name": "pid_26756_luid_0x00000000_0x00018DBD_phys_0",
+          "DedicatedUsage": 3565842432,
+          "SharedUsage": 83886080
+        }
+      ]
+    },
+    "peak_is_sampled": true
+  }
+}

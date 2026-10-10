@@ -1,0 +1,54 @@
+{
+  "scope": "actual D7688^3 real OWT, full32 credit, execution only",
+  "checkpoint": "results\\medium_d768_streaming_pathway_8x8x8_160k\\last.pt",
+  "checkpoint_step": 211,
+  "checkpoint_cursor": 6753,
+  "production_checkpoint_written": false,
+  "runs": [],
+  "timing_policy": {
+    "read_key_execution": "support",
+    "auxiliary_final_read": false,
+    "first_update_includes_compilation": true,
+    "health_update_snapshot": false,
+    "segment_graph": true
+  },
+  "timing_rng": "restored checkpoint CPU/CUDA RNG before both windows",
+  "complete_updates": [
+    {
+      "window": 1,
+      "tokens": 32,
+      "seconds": 40.13262920000125,
+      "optimizer_updates": 224,
+      "prequential_nll": 5.578441666788422
+    },
+    {
+      "window": 2,
+      "tokens": 32,
+      "seconds": 10.030792699999438,
+      "optimizer_updates": 225,
+      "prequential_nll": 6.283333137864247
+    }
+  ],
+  "segment_replays": 768,
+  "status": "passed",
+  "memory": {
+    "sample_count": 83,
+    "sampled_peak_dedicated_mib": 3032.6484375,
+    "sampled_peak_shared_mib": 80.0,
+    "counter_errors": [],
+    "cap_exceeded": false,
+    "last_sample": {
+      "seconds": 25373.4184084,
+      "dedicated_bytes": 2060079104,
+      "shared_bytes": 83886080,
+      "rows": [
+        {
+          "Name": "pid_12836_luid_0x00000000_0x00018DBD_phys_0",
+          "DedicatedUsage": 2060079104,
+          "SharedUsage": 83886080
+        }
+      ]
+    },
+    "peak_is_sampled": true
+  }
+}

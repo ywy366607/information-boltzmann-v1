@@ -77,26 +77,40 @@ class VariationalGaussianBelief:
 
     def transition(
         self,
-        retention: float = 0.90,
-        base_mean: float = 0.0,
-        base_log_std: float = 0.0,
+        retention: float | torch.Tensor = 0.90,
+        base_mean: float | torch.Tensor = 0.0,
+        base_log_std: float | torch.Tensor = 0.0,
     ) -> "VariationalGaussianBelief":
         """Compute continuous temporal Ornstein-Uhlenbeck state transition to form next prior.
 
         Carries over posterior belief with exponential retention rho, relaxing toward
         resting baseline (base_mean, exp(base_log_std)) to prevent unbounded overconfidence.
+        Supports scalar retention or multi-scale vector retention across latent dimensions.
 
         Formulas:
             mu_next = rho * mu_q + (1 - rho) * mu_0
             var_next = rho^2 * var_q + (1 - rho^2) * var_0
             log_std_next = 0.5 * log(var_next)
         """
-        rho = float(retention)
-        rho_sq = rho * rho
-        base_var = math.exp(2.0 * base_log_std)
+        if isinstance(retention, torch.Tensor):
+            rho = retention.detach().to(self.mean.device)
+            rho_sq = rho * rho
+        else:
+            rho = float(retention)
+            rho_sq = rho * rho
+
+        if isinstance(base_mean, torch.Tensor):
+            b_mean = base_mean.detach().to(self.mean.device)
+        else:
+            b_mean = float(base_mean)
+
+        if isinstance(base_log_std, torch.Tensor):
+            base_var = torch.exp(2.0 * base_log_std.detach().to(self.mean.device))
+        else:
+            base_var = math.exp(2.0 * float(base_log_std))
 
         with torch.no_grad():
-            mu_next = rho * self.mean.detach() + (1.0 - rho) * base_mean
+            mu_next = rho * self.mean.detach() + (1.0 - rho) * b_mean
             var_next = rho_sq * self.var.detach() + (1.0 - rho_sq) * base_var
             log_std_next = 0.5 * torch.log(var_next.clamp_min(1e-8))
 
@@ -155,6 +169,21 @@ class VariationalBeliefModulator(nn.Module):
         nn.init.zeros_(self.readout_bottleneck.bias)
         nn.init.normal_(self.readout_head.weight, std=0.02)
 
+        # GDN-style channel-wise learnable forget gate parameters
+        # 1. Per-channel learnable base logit bias
+        clamped_r = 0.90
+        logit_center = math.log(clamped_r / (1.0 - clamped_r))
+        spread = torch.linspace(-1.0, 1.0, latent_dim)
+        self.channel_retention_bias = nn.Parameter(logit_center + spread)
+
+        # 2. Per-channel learnable surprise sensitivity
+        self.channel_sensitivity = nn.Parameter(torch.ones(latent_dim))
+
+        # 3. Content projection: hidden features -> latent channel gate offsets
+        self.content_gate_proj = nn.Linear(hidden_dim, latent_dim)
+        nn.init.zeros_(self.content_gate_proj.weight)
+        nn.init.zeros_(self.content_gate_proj.bias)
+
     def modulate_features(self, h: torch.Tensor, z: torch.Tensor) -> torch.Tensor:
         """Apply FiLM modulation: h_mod = h * (1 + tanh(gamma)) + beta."""
         # z: (latent_dim,) or (batch, latent_dim)
@@ -175,6 +204,30 @@ class VariationalBeliefModulator(nn.Module):
         h_mid = F.gelu(self.readout_bottleneck(z))
         bias = self.readout_head(h_mid)  # (batch, vocab_size)
         return bias.unsqueeze(1)  # (batch, 1, vocab_size)
+
+    def compute_channel_retention(
+        self,
+        log_precision_ratio: float = 0.0,
+        content_feat: Optional[torch.Tensor] = None,
+        retention_min: float = 0.10,
+        retention_max: float = 0.98,
+    ) -> torch.Tensor:
+        """Compute GDN-style channel-wise, content-dependent and surprise-modulated retention vector.
+
+        Formulation:
+            logits_d = channel_retention_bias_d + channel_sensitivity_d * log_precision_ratio + content_gate_proj(h)_d
+            rho_d = clamp(sigmoid(logits_d), retention_min, retention_max)
+        """
+        logits = self.channel_retention_bias + self.channel_sensitivity * float(log_precision_ratio)
+        if content_feat is not None:
+            if content_feat.ndim == 3:
+                c_vec = content_feat.mean(dim=(0, 1))
+            elif content_feat.ndim == 2:
+                c_vec = content_feat.mean(dim=0)
+            else:
+                c_vec = content_feat
+            logits = logits + self.content_gate_proj(c_vec)
+        return torch.sigmoid(logits).clamp(min=retention_min, max=retention_max)
 
 
 class RollingStreamTransformer(nn.Module):
@@ -233,16 +286,21 @@ class RollingStreamTransformer(nn.Module):
                 nn.init.normal_(p, std=0.02)
 
     def forward(
-        self, tokens: torch.Tensor, z: Optional[torch.Tensor] = None
-    ) -> torch.Tensor:
+        self,
+        tokens: torch.Tensor,
+        z: Optional[torch.Tensor] = None,
+        return_features: bool = False,
+    ) -> torch.Tensor | Tuple[torch.Tensor, torch.Tensor]:
         """Forward pass conditioned on tokens and optional latent belief z.
 
         Args:
             tokens: (batch, seq_len)
             z: optional latent belief tensor of shape (latent_dim,) or (batch, latent_dim)
+            return_features: whether to return normalized hidden features alongside logits
 
         Returns:
-            logits: (batch, seq_len, vocab_size)
+            logits: (batch, seq_len, vocab_size) if not return_features
+            (logits, h): tuple of logits and normalized representations if return_features
         """
         b, t = tokens.shape
         device = tokens.device
@@ -262,7 +320,62 @@ class RollingStreamTransformer(nn.Module):
         if z is not None:
             logits = logits + self.modulator.compute_logits_bias(z)
 
+        if return_features:
+            return logits, h
         return logits
+
+
+def compute_friston_adaptive_retention(
+    base_retention: float | torch.Tensor,
+    prediction_error: float,
+    baseline_error: float,
+    error_sensitivity: float = 1.0,
+    retention_min: float = 0.10,
+    retention_max: float = 0.98,
+) -> Tuple[torch.Tensor | float, float]:
+    """Compute Friston precision-weighted adaptive retention.
+
+    In Active Inference and predictive coding (Friston 2008, 2010),
+    optimal belief precision Pi* is inversely proportional to squared prediction error:
+        Pi* = 1 / error^2
+
+    When encountering high surprise / unexpected uncertainty (prediction_error > baseline_error),
+    precision collapses (Pi_rel < 1.0), triggering neuromodulatory reset by lowering retention rho.
+    Conversely, during consistent, low-error streams (prediction_error < baseline_error),
+    precision is high (Pi_rel > 1.0), consolidating prior retention.
+
+    Parameters:
+        base_retention: Nominal retention scalar or multi-scale tensor across latent dims.
+        prediction_error: Current window's prequential prediction error (e.g. NLL).
+        baseline_error: Running expected prediction error baseline.
+        error_sensitivity: Exponent scale kappa regulating responsiveness to surprise shocks.
+        retention_min: Minimal retention floor (prevents complete numerical collapse).
+        retention_max: Maximum retention ceiling (preserves headroom for future learning).
+
+    Returns:
+        (effective_retention, precision_ratio)
+    """
+    eps = 1e-4
+    curr_err = max(float(prediction_error), eps)
+    base_err = max(float(baseline_error), eps)
+
+    # Relative precision ratio Pi_rel = (base_err / curr_err)^2
+    precision_ratio = (base_err / curr_err) ** 2
+    log_precision_ratio = math.log(max(precision_ratio, 1e-8))
+
+    if isinstance(base_retention, torch.Tensor):
+        clamped_base = base_retention.clamp(1e-4, 1.0 - 1e-4)
+        logit_base = torch.log(clamped_base / (1.0 - clamped_base))
+        modulated_logit = logit_base + error_sensitivity * log_precision_ratio
+        effective_rho = torch.sigmoid(modulated_logit).clamp(min=retention_min, max=retention_max)
+    else:
+        clamped_base = max(1e-4, min(1.0 - 1e-4, float(base_retention)))
+        logit_base = math.log(clamped_base / (1.0 - clamped_base))
+        modulated_logit = logit_base + error_sensitivity * log_precision_ratio
+        effective_rho = 1.0 / (1.0 + math.exp(-modulated_logit))
+        effective_rho = max(retention_min, min(retention_max, effective_rho))
+
+    return effective_rho, precision_ratio
 
 
 @dataclass
@@ -290,6 +403,8 @@ class WindowAssimilationReport:
     inner_steps_taken: int
     plateau_reached: bool
     wall_time_ms: float
+    retention_mean: float = 0.90
+    precision_ratio: float = 1.0
 
 
 class VariationalRollingStreamLearner:
@@ -301,6 +416,7 @@ class VariationalRollingStreamLearner:
     - Strictly frozen prior during inner posterior optimization.
     - Plateau detection for inner loop early stopping.
     - Single-counting outer update on model structural parameters.
+    - Friston-style precision-adaptive retention based on prediction error surprisal.
     """
 
     def __init__(
@@ -315,6 +431,11 @@ class VariationalRollingStreamLearner:
         plateau_patience: int = 2,
         kl_weight: float = 0.1,
         retention: float = 0.90,
+        adaptive_retention: bool = True,
+        retention_min: float = 0.10,
+        retention_max: float = 0.98,
+        error_sensitivity: float = 1.0,
+        multi_scale_retention: bool = True,
         outer_lr: float = 1e-4,
         device: torch.device | str = "cpu",
     ):
@@ -331,7 +452,24 @@ class VariationalRollingStreamLearner:
         self.plateau_patience = plateau_patience
         self.kl_weight = kl_weight
         self.retention = retention
+        self.adaptive_retention = adaptive_retention
+        self.retention_min = retention_min
+        self.retention_max = retention_max
+        self.error_sensitivity = error_sensitivity
+        self.multi_scale_retention = multi_scale_retention
         self.device = torch.device(device)
+
+        # Baseline error tracker for Friston precision dynamics
+        self.running_error_baseline: Optional[float] = None
+        self.error_ema_beta = 0.85
+
+        if self.multi_scale_retention:
+            clamped_r = max(1e-3, min(1.0 - 1e-3, retention))
+            logit_base = math.log(clamped_r / (1.0 - clamped_r))
+            spread = torch.linspace(-1.0, 1.0, latent_dim, device=self.device)
+            self.base_retention = torch.sigmoid(logit_base + spread)
+        else:
+            self.base_retention = float(retention)
 
         # Initialize current prior as resting standard normal
         self.current_prior = VariationalGaussianBelief.standard_normal(
@@ -343,6 +481,11 @@ class VariationalRollingStreamLearner:
             self.model.parameters(), lr=outer_lr, weight_decay=1e-2
         )
 
+        # Previous state tracking for empirical Bayes GDN channel gate learning
+        self.previous_posterior: Optional[VariationalGaussianBelief] = None
+        self.previous_content_feat: Optional[torch.Tensor] = None
+        self.previous_log_prec_ratio: float = 0.0
+
         # Telemetry
         self.total_windows = 0
         self.total_tokens_seen = 0
@@ -352,17 +495,26 @@ class VariationalRollingStreamLearner:
         self,
         tokens: torch.Tensor,
         z: Optional[torch.Tensor] = None,
-    ) -> torch.Tensor:
+        return_features: bool = False,
+    ) -> torch.Tensor | Tuple[torch.Tensor, Optional[torch.Tensor]]:
         """Compute cross-entropy NLL strictly over the target segment B (indices prompt_size..window_size).
 
         Tokens shape: (1, seq_len)
         Prompt: tokens[0 : prompt_size]
         Target: tokens[prompt_size : window_size]
         """
-        logits = self.model(tokens, z=z)  # (1, seq_len, vocab_size)
-        # Position t predicts token t+1.
-        # Target tokens are at indices [prompt_size .. seq_len - 1].
-        # Corresponding logits are at indices [prompt_size - 1 .. seq_len - 2].
+        if return_features:
+            out = self.model(tokens, z=z, return_features=True)
+            if isinstance(out, tuple):
+                logits, h = out
+                feat = h[:, self.prompt_size:].mean(dim=1).squeeze(0)
+            else:
+                logits = out
+                feat = None
+        else:
+            logits = self.model(tokens, z=z)
+            feat = None
+
         p_start = self.prompt_size - 1
         p_end = tokens.shape[1] - 1
 
@@ -374,6 +526,8 @@ class VariationalRollingStreamLearner:
             target_tokens.view(-1),
             reduction="mean",
         )
+        if return_features:
+            return nll, feat
         return nll
 
     def evaluate_prequential(self, tokens: torch.Tensor) -> float:
@@ -399,6 +553,27 @@ class VariationalRollingStreamLearner:
         # Initialize posterior parameters from prior
         mu_q = frozen_prior.mean.clone().detach().requires_grad_(True)
         log_std_q = frozen_prior.log_std.clone().detach().requires_grad_(True)
+
+        # Explicit no-inner-loop mode: carry the predictive prior directly into
+        # the outer update and temporal transition. This is different from a
+        # one-step inner update and is useful for measuring sample efficiency
+        # supplied by the persistent state alone.
+        if self.inner_max_steps <= 0:
+            with torch.no_grad():
+                nll_target = self.compute_target_nll(tokens, z=frozen_prior.mean)
+            return (
+                frozen_prior,
+                [
+                    AssimilationStepResult(
+                        step=0,
+                        free_energy=float(nll_target.item()),
+                        nll_target=float(nll_target.item()),
+                        kl_divergence=0.0,
+                        delta_fe=0.0,
+                        plateau_triggered=True,
+                    )
+                ],
+            )
 
         # Fast inner optimizer for variational parameters
         inner_opt = torch.optim.Adam([mu_q, log_std_q], lr=self.inner_lr)
@@ -475,25 +650,61 @@ class VariationalRollingStreamLearner:
         tokens: torch.Tensor,
         converged_q: VariationalGaussianBelief,
         prior: VariationalGaussianBelief,
-    ) -> float:
+        prev_posterior: Optional[VariationalGaussianBelief] = None,
+        prev_content_feat: Optional[torch.Tensor] = None,
+        log_precision_ratio: float = 0.0,
+    ) -> Tuple[float, Optional[torch.Tensor]]:
         """Single-counting outer update on slow model parameters using converged posterior.
 
         Computes gradient of F_B(q*) w.r.t model weights theta, steps optimizer once,
-        and clears gradients.
+        and clears gradients. Also optimizes GDN-style channel-wise forget gate parameters.
         """
         self.model.train()
         self.outer_optimizer.zero_grad()
 
         # Evaluate at converged posterior mean
         z_star = converged_q.mean
-        nll_target = self.compute_target_nll(tokens, z=z_star)
+        nll_out = self.compute_target_nll(tokens, z=z_star, return_features=True)
+        if isinstance(nll_out, tuple):
+            nll_target, feat = nll_out
+        else:
+            nll_target, feat = nll_out, None
 
-        # Structural update on weights
-        nll_target.backward()
+        total_loss = nll_target
+
+        # Empirical Bayes alignment for channel-wise GDN forget gate:
+        if (
+            self.adaptive_retention
+            and self.multi_scale_retention
+            and prev_posterior is not None
+            and hasattr(self.model, "modulator")
+            and hasattr(self.model.modulator, "compute_channel_retention")
+        ):
+            rho_vec = self.model.modulator.compute_channel_retention(
+                log_precision_ratio=log_precision_ratio,
+                content_feat=prev_content_feat,
+                retention_min=self.retention_min,
+                retention_max=self.retention_max,
+            )
+            rho_sq = rho_vec * rho_vec
+            mu_pred = rho_vec * prev_posterior.mean.detach()
+            var_pred = rho_sq * prev_posterior.var.detach() + (1.0 - rho_sq) * 1.0
+
+            var_q = converged_q.var.detach()
+            mu_q = converged_q.mean.detach()
+            kl_gate = 0.5 * torch.sum(
+                (var_q + (mu_q - mu_pred).pow(2)) / (var_pred + 1e-8)
+                - 1.0
+                + torch.log(var_pred.clamp_min(1e-8) / var_q.clamp_min(1e-8))
+            )
+            total_loss = total_loss + (0.05 / self.latent_dim) * kl_gate
+
+        # Structural update on weights and gate parameters
+        total_loss.backward()
         torch.nn.utils.clip_grad_norm_(self.model.parameters(), max_norm=1.0)
         self.outer_optimizer.step()
 
-        return float(nll_target.item())
+        return float(nll_target.item()), (feat.detach() if feat is not None else None)
 
     def step(self, window_tokens: torch.Tensor) -> WindowAssimilationReport:
         """Process a single rolling window: prequential eval -> inner assimilate -> outer update -> transition.
@@ -523,6 +734,15 @@ class VariationalRollingStreamLearner:
         # 1. Prequential Evaluation (before any adaptation to target B)
         prequential_nll = self.evaluate_prequential(tokens)
 
+        # Update running error baseline for Friston precision dynamics
+        if self.running_error_baseline is None:
+            self.running_error_baseline = prequential_nll
+        else:
+            self.running_error_baseline = (
+                self.error_ema_beta * self.running_error_baseline
+                + (1.0 - self.error_ema_beta) * prequential_nll
+            )
+
         # 2. Inner Assimilation Loop (digest target B into posterior q, holding prior frozen)
         prior_for_window = self.current_prior
         converged_q, inner_steps = self.inner_assimilation_loop(
@@ -536,16 +756,63 @@ class VariationalRollingStreamLearner:
         plateau_reached = last_step.plateau_triggered
         adaptation_gain = prequential_nll - plateau_nll
 
-        # 3. Outer Evidence Update (single-counting evidence into slow weights)
-        self.outer_evidence_update(
-            tokens=tokens, converged_q=converged_q, prior=prior_for_window
+        # 3. Outer Evidence Update (single-counting evidence into slow weights & channel gate)
+        _, current_feat = self.outer_evidence_update(
+            tokens=tokens,
+            converged_q=converged_q,
+            prior=prior_for_window,
+            prev_posterior=self.previous_posterior,
+            prev_content_feat=self.previous_content_feat,
+            log_precision_ratio=self.previous_log_prec_ratio,
         )
 
-        # 4. Continuous Temporal State Transition (posterior q -> next prior p)
+        # 4. Continuous Temporal State Transition with GDN channel-wise adaptation
+        if self.adaptive_retention:
+            eps = 1e-4
+            curr_err = max(float(prequential_nll), eps)
+            base_err = max(float(self.running_error_baseline), eps)
+            precision_ratio = (base_err / curr_err) ** 2
+            log_precision_ratio = math.log(max(precision_ratio, 1e-8))
+
+            if hasattr(self.model, "modulator") and hasattr(self.model.modulator, "compute_channel_retention"):
+                effective_retention = self.model.modulator.compute_channel_retention(
+                    log_precision_ratio=log_precision_ratio,
+                    content_feat=current_feat,
+                    retention_min=self.retention_min,
+                    retention_max=self.retention_max,
+                ).detach()
+                retention_mean_val = float(effective_retention.mean().item())
+            else:
+                effective_retention, precision_ratio = compute_friston_adaptive_retention(
+                    base_retention=self.base_retention,
+                    prediction_error=prequential_nll,
+                    baseline_error=self.running_error_baseline,
+                    error_sensitivity=self.error_sensitivity,
+                    retention_min=self.retention_min,
+                    retention_max=self.retention_max,
+                )
+                if isinstance(effective_retention, torch.Tensor):
+                    retention_mean_val = float(effective_retention.mean().item())
+                else:
+                    retention_mean_val = float(effective_retention)
+        else:
+            effective_retention = self.base_retention
+            precision_ratio = 1.0
+            log_precision_ratio = 0.0
+            if isinstance(effective_retention, torch.Tensor):
+                retention_mean_val = float(effective_retention.mean().item())
+            else:
+                retention_mean_val = float(effective_retention)
+
         next_prior = converged_q.transition(
-            retention=self.retention, base_mean=0.0, base_log_std=0.0
+            retention=effective_retention, base_mean=0.0, base_log_std=0.0
         )
         self.current_prior = next_prior
+
+        # Save for next window's empirical Bayes GDN gate alignment
+        self.previous_posterior = converged_q.detach()
+        self.previous_content_feat = current_feat
+        self.previous_log_prec_ratio = log_precision_ratio
 
         # 5. Advance Stream Position
         self.total_tokens_seen += self.stride
@@ -563,9 +830,11 @@ class VariationalRollingStreamLearner:
             adaptation_gain=adaptation_gain,
             final_kl=final_kl,
             final_free_energy=final_fe,
-            inner_steps_taken=len(inner_steps),
+            inner_steps_taken=(0 if self.inner_max_steps <= 0 else len(inner_steps)),
             plateau_reached=plateau_reached,
             wall_time_ms=wall_time_ms,
+            retention_mean=retention_mean_val,
+            precision_ratio=precision_ratio,
         )
 
         self.history.append(report)

@@ -179,3 +179,95 @@ def test_stream_continuous_rolling_steps():
 
     assert learner.total_windows == 3
     assert learner.total_tokens_seen == 24
+
+
+def test_friston_adaptive_retention_dynamics():
+    """Verify Friston precision-weighted retention responds inversely to prediction error."""
+    from information_boltzmann.core.variational_rolling_stream import compute_friston_adaptive_retention
+
+    base_r = 0.90
+    baseline_err = 5.0
+
+    # Case 1: Neutral / Expected error (error == baseline) -> precision == 1.0, retention == base
+    rho_neutral, prec_neutral = compute_friston_adaptive_retention(
+        base_retention=base_r, prediction_error=5.0, baseline_error=baseline_err
+    )
+    assert math.isclose(prec_neutral, 1.0, abs_tol=1e-5)
+    assert math.isclose(rho_neutral, base_r, abs_tol=1e-4)
+
+    # Case 2: Surprise / Shock (error = 10.0 > baseline = 5.0) -> precision < 1.0, retention collapses
+    rho_shock, prec_shock = compute_friston_adaptive_retention(
+        base_retention=base_r, prediction_error=10.0, baseline_error=baseline_err
+    )
+    assert prec_shock < 1.0
+    assert rho_shock < base_r
+    assert prec_shock == 0.25  # (5 / 10)^2
+
+    # Case 3: High certainty / predictability (error = 2.5 < baseline = 5.0) -> precision > 1.0, retention rises
+    rho_calm, prec_calm = compute_friston_adaptive_retention(
+        base_retention=base_r, prediction_error=2.5, baseline_error=baseline_err
+    )
+    assert prec_calm > 1.0
+    assert rho_calm > base_r
+    assert prec_calm == 4.0  # (5 / 2.5)^2
+
+
+def test_multiscale_tensor_retention_transition():
+    """Verify multi-scale vector retention across latent dimensions in OU transition."""
+    dim = 8
+    mu = torch.ones(dim) * 2.0
+    log_std = torch.zeros(dim)
+    belief = VariationalGaussianBelief(mean=mu, log_std=log_std)
+
+    # Multi-scale spectrum from fast (0.3) to slow (0.9)
+    rho_vec = torch.linspace(0.3, 0.9, dim)
+    trans = belief.transition(retention=rho_vec, base_mean=0.0, base_log_std=0.0)
+
+    # mu_next = rho_vec * mu
+    expected_mu = rho_vec * 2.0
+    assert torch.allclose(trans.mean, expected_mu, atol=1e-5)
+    # var_next = rho_vec^2 * 1 + (1 - rho_vec^2) * 1 = 1.0
+    expected_log_std = torch.zeros(dim)
+    assert torch.allclose(trans.log_std, expected_log_std, atol=1e-5)
+
+
+def test_gdn_channel_gate_parameter_learning():
+    """Verify that GDN-style channel-wise retention bias actively trains and updates."""
+    vocab_size = 100
+    model = RollingStreamTransformer(
+        vocab_size=vocab_size,
+        dim=32,
+        num_layers=1,
+        num_heads=2,
+        max_len=16,
+        latent_dim=8,
+    )
+    learner = VariationalRollingStreamLearner(
+        model=model,
+        latent_dim=8,
+        window_size=16,
+        stride=8,
+        inner_lr=0.05,
+        inner_max_steps=5,
+        adaptive_retention=True,
+        outer_lr=1e-3,
+        device="cpu",
+    )
+
+    initial_bias = learner.model.modulator.channel_retention_bias.clone().detach()
+
+    # Stream 4 windows
+    stream_tokens = torch.randint(0, vocab_size, (40,))
+    for w_idx in range(4):
+        start = w_idx * 8
+        window = stream_tokens[start : start + 16]
+        learner.step(window)
+
+    final_bias = learner.model.modulator.channel_retention_bias.detach()
+
+    # Channel bias MUST have changed due to empirical Bayes alignment
+    assert not torch.equal(initial_bias, final_bias)
+    diff = (final_bias - initial_bias).abs().sum().item()
+    assert diff > 1e-4
+
+
