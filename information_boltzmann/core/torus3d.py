@@ -518,7 +518,8 @@ class PredictiveImpedanceWriteAgent(nn.Module):
 
     def __init__(self, d: int, vocab_size: int, port_modes: int = 8,
                  exchange: str = 'global', local_shape=None, port_radius=None,
-                 activity_adaptation: bool = False, aperture_budget: float | None = None) -> None:
+                 activity_adaptation: bool = False, aperture_budget: float | None = None,
+                 split: bool = False) -> None:
         super().__init__()
         if exchange not in ('global', 'contact_mode'):
             raise ValueError('exchange must be global or contact_mode')
@@ -584,6 +585,17 @@ class PredictiveImpedanceWriteAgent(nn.Module):
             for mode in range(self.port_modes)
         ])
         self.register_buffer("channel_permutations", permutations, persistent=False)
+        # Split write: port p carries only its own block of d/port_modes channels (the token is divided over space,
+        # like sensory neurons that each receive a different projection), scaled by the port count so a uniform gate
+        # writes every channel with unit weight. Default: every port carries the whole (channel-rolled) innovation.
+        self.predict = True
+        self.split = bool(split)
+        if self.split:
+            if local_shape is None or d % self.port_modes:
+                raise ValueError('Split writes need compact local ports and channels divisible by the port count')
+            block = torch.arange(d) // (d // self.port_modes)
+            self.register_buffer("split_mask", self.port_modes * (block[None] == torch.arange(self.port_modes)[:, None]).float(),
+                                 persistent=False)
 
     def initial_precision(self, batch_size: int, *, device: torch.device,
                           dtype: torch.dtype) -> torch.Tensor:
@@ -633,7 +645,10 @@ class PredictiveImpedanceWriteAgent(nn.Module):
                 torch.finfo(field.dtype).eps) * math.sqrt(ports.coordinates.shape[0])
             local_state = ports.observe(field.flatten(1, 3))
             modulation = 1.0 + self.local_content(F.rms_norm(local_state, (self.d,))).tanh()
-            feature_by_mode = port_feature[:, self.channel_permutations] * modulation
+            if self.split:
+                feature_by_mode = port_feature[:, None, :] * self.split_mask.to(port_feature) * modulation
+            else:
+                feature_by_mode = port_feature[:, self.channel_permutations] * modulation
             packet = torch.einsum('bp,pn,bpd->bnd', gate, basis, feature_by_mode)
             packet = packet.reshape_as(field) * writer.channel_scale
             support = torch.einsum('bp,pn->bn', gate, footprint).reshape(field.shape[:-1])
@@ -694,8 +709,9 @@ class PredictiveImpedanceWriteAgent(nn.Module):
         port_logits = port_logits + self.port_logit_bias
         port_probability = torch.softmax(port_logits, dim=-1)
         expected_feature = port_probability @ token_features
-        predicted_feature = (expected_feature if predicted_feature is None
-                             else predicted_feature)
+        if predicted_feature is None:
+            # predict=False: the periphery writes the observed feature itself (no outside predictive-coding loop).
+            predicted_feature = expected_feature if self.predict else torch.zeros_like(expected_feature)
         observed_feature = token_features[token_ids]
         # The chart depends only on the pre-event belief and is linear in
         # port features: P(phi_observed) - P(E[phi]) = P(phi_observed-E[phi]).

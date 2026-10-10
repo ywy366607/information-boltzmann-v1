@@ -60,12 +60,23 @@ class PlasticMediumPorts3D(nn.Module):
                  write_aperture_budget: float | None = None,
                  read_aperture_budget: float | None = None,
                  structure_options: dict | None = None,
-                 read_key_execution: str = 'dense'):
+                 read_key_execution: str = 'dense', medium_segment_graph: bool = False,
+                 shared_credit_execution: bool = False, deferred_writer_credit: bool = False,
+                 credit_history_offload: bool = False,
+                 hopf_recomposition: bool = False,
+                 hopf_epsilon: float = 1e-4,
+                 hopf_coupled: bool = True,
+                 collision_options: dict | None = None, plasticity_options: dict | None = None,
+                 write_split: bool = False, read_correction: bool = True, write_prediction: bool = True):
         super().__init__()
         if port_execution not in ('native', 'fused'):
             raise ValueError('port_execution must be native or fused')
         self.port_execution = port_execution
+        self.shared_credit_execution = bool(shared_credit_execution)
+        self.deferred_writer_credit = bool(deferred_writer_credit)
+        self.credit_history_offload = bool(credit_history_offload)
         self.read_key_execution = read_key_execution
+        self.medium_segment_graph = bool(medium_segment_graph)
         if port_scope not in ('global', 'compact'):
             raise ValueError('port_scope must be global or compact')
         self.port_scope = port_scope
@@ -116,7 +127,10 @@ class PlasticMediumPorts3D(nn.Module):
                                       anisotropic_transport=anisotropic_transport,
                                       transport_capacity_budget=transport_capacity_budget,
                                       material_reference_shape=material_reference_shape,
-                                      structure_options=structure_options)
+                                      structure_options=structure_options,
+                                      hopf_recomposition=hopf_recomposition,
+                                      collision_options=collision_options, plasticity_options=plasticity_options)
+        self.medium.segment_graph_enabled = self.medium_segment_graph
         if anisotropic_transport:
             self.architecture += '-tensor-transport'
         self.source = FullRankTorusWrite(vocab_size, tuple(shape), channels,
@@ -125,7 +139,7 @@ class PlasticMediumPorts3D(nn.Module):
             channels, vocab_size, port_modes, exchange=write_exchange,
             local_shape=tuple(shape) if port_scope == 'compact' else None,
             port_radius=write_port_radius, activity_adaptation=activity_adaptation,
-            aperture_budget=write_aperture_budget)
+            aperture_budget=write_aperture_budget, split=write_split)
         if write_exchange == 'contact_mode':
             self.architecture += '-contact-port-v4'
         # The new wave collision protects channel mean rather than D3Q8 moments.
@@ -137,6 +151,10 @@ class PlasticMediumPorts3D(nn.Module):
             port_radius=read_port_radius, dynamic=read_mode in ('dynamic', 'temporal'),
             aperture_budget=read_aperture_budget, coordinate_reflector=w,
             compact_key_execution=read_key_execution)
+        if not read_correction:
+            # No nonlinear computation between the medium and the linear decoder.
+            self.readout.correction = None
+        self.write_agent.predict = bool(write_prediction)
         self.temporal_readout = None
         if read_mode == 'temporal':
             if temporal_rates is None or temporal_frequencies is None:
@@ -170,6 +188,24 @@ class PlasticMediumPorts3D(nn.Module):
             self.architecture += '-intrinsic-interval-v11'
         if structure_options is not None:
             self.architecture += '-structural-posterior-v12'
+        if deferred_writer_credit:
+            if not shared_credit_execution:
+                raise ValueError('Deferred port credit requires shared credit')
+            from .deferred_linear_credit import DeferredWriterCredit
+            self.deferred_credit = DeferredWriterCredit(self.write_agent, self.readout)
+        self.hopf_recomposition = bool(hopf_recomposition)
+        if hopf_recomposition:
+            if not hopf_coupled:
+                raise ValueError('Physical junction generation requires coupled flux modes')
+            self.architecture += '-physical-junction-gen3'
+            self.register_load_state_dict_pre_hook(self._validate_junction_load)
+
+    def _validate_junction_load(self, module, saved, prefix, *args):
+        self.hopf_pathway.validate_checkpoint(saved, prefix + 'medium.hopf_pathway.')
+
+    def flush_deferred_credit(self):
+        if self.deferred_writer_credit:
+            self.deferred_credit.flush()
 
     def learning_named_parameters(self):
         """Parameters on this graph, excluding unused legacy writer machinery."""
@@ -326,6 +362,23 @@ class PlasticMediumPorts3D(nn.Module):
             })
         return info
 
+    @property
+    def effective_solver_max_step(self):
+        """Reserve junction rotation rates without changing physical duration."""
+        if self.solver_max_step is None or self.hopf_pathway is None:
+            return self.solver_max_step
+        junction = self.hopf_pathway
+        tensors = (*self.medium.material.parameters(), *self.medium.material.buffers(),
+                   self.medium.coordinates, *junction.gate.parameters(),
+                   junction.inverse_length, junction.route_mask)
+        key = tuple((id(value), value._version) for value in tensors)
+        cached = getattr(self, '_junction_solver_cache', None)
+        if cached is None or cached[0] != key:
+            with torch.no_grad():
+                multiplier = junction.solver_rate_multiplier(self.medium.shape, self.medium.material_field())
+            self._junction_solver_cache = (key, multiplier)
+        return self.solver_max_step / self._junction_solver_cache[1]
+
     def advance(self, belief: PlasticBelief, duration: float | torch.Tensor, *,
                 substeps: int = 1, prepared: EvolutionCoefficients | None = None,
                 diagnostics: bool = True, return_motion: bool = False,
@@ -354,7 +407,7 @@ class PlasticMediumPorts3D(nn.Module):
         if self.solver_max_step is None or self.observer_max_step is None:
             raise ValueError('Interval execution requires explicit numerical resolution')
         schedule = (EvolutionSchedule.for_duration(duration,
-            solver_max_step=self.solver_max_step, observer_max_step=self.observer_max_step,
+            solver_max_step=self.effective_solver_max_step, observer_max_step=self.observer_max_step,
             max_steps=self.max_evolution_steps) if schedule is None else schedule)
         duration = torch.as_tensor(duration, device=belief.medium.field.device,
                                    dtype=belief.medium.elapsed.dtype)
@@ -439,6 +492,11 @@ class PlasticMediumPorts3D(nn.Module):
         operation = (self.native_read if motion is None and self.read_mode in ('dynamic', 'temporal')
                      else self._quiet_operation('read', belief, diagnostics))
         return operation(belief, decode=decode, diagnostics=diagnostics, prepared=prepared, motion=motion)
+
+    @property
+    def hopf_pathway(self):
+        """Compatibility access to the physical operator, never a read adapter."""
+        return self.medium.hopf_pathway
 
     def native_read(self, belief: PlasticBelief, *, decode: bool = True,
                     diagnostics: bool = False,

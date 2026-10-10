@@ -23,6 +23,13 @@ class ActiveMediumTrainer:
         if min(chunk_tokens, tokens_per_update, substeps) < 1:
             raise ValueError('Positive BPTT and optimizer cadence required')
         self.model, self.optimizer, self.belief = model, optimizer, belief.detach()
+        posterior = getattr(getattr(model, 'medium', None), 'structural_posterior', None)
+        if posterior is not None and posterior.capacity_growth is not None:
+            owned = {id(p) for group in optimizer.param_groups for p in group['params']}
+            if id(posterior.mean) in owned or id(posterior.log_std) in owned:
+                raise ValueError('Capacity growth owns mean and freezes log_std; Adam must exclude both')
+            if compile_event:      # a captured chunk is fine: propose/apply/commit stay on the host between replays
+                raise ValueError('Capacity transactions cannot use the compiled whole-event path')
         self.carry_token = int(carry_token)
         self.event_duration, self.substeps = event_duration, substeps
         self.chunk_tokens, self.tokens_per_update = chunk_tokens, tokens_per_update
@@ -30,7 +37,7 @@ class ActiveMediumTrainer:
         self.activation_checkpointing = activation_checkpointing
         if checkpoint_granularity not in ('nested', 'event'):
             raise ValueError('Checkpoint granularity must be nested or event')
-        if captured is not None and checkpoint_granularity != 'nested':
+        if captured is not None and checkpoint_granularity != getattr(captured, 'checkpoint_granularity', 'nested'):
             raise ValueError('Captured execution owns its checkpoint policy')
         self.checkpoint_granularity = checkpoint_granularity
         if optimizer_state_offload and captured is not None:
@@ -38,6 +45,17 @@ class ActiveMediumTrainer:
         self.optimizer_state_offload = optimizer_state_offload
         self.captured = captured
         self.health = health
+        # Scale of the riverbed sampling noise drawn per structural window; 0 evaluates credit at the posterior mean.
+        self.structure_noise = 1.0
+        self.structural_gravity = 0.0      # linear e-folding rate per window of the installed-capacity self-gravity; 0 = off
+        self.structural_gravity_screening = 0.0     # kappa^2 (lattice Laplacian units): finite-range force
+        self.structural_gravity_diffusion = 0.0     # D: weak diffusion; with the screening it selects the structure scale
+        self.channel_growth = 0.0          # unified riverbed: share relaxation rate per window toward the through-flow target; 0 = off
+        self.channel_mu = 2.0              # Tero feedback exponent of the channel target
+        self.freeze_structure = False      # control runs: the task no longer moves the installed riverbed (OU still applies)
+        self.skip_unstable_structure = False   # opt-in: skip (count) a window whose structural step has no represented descent
+        self.skipped_structure_windows = 0
+        self._channel_flow = None          # EMA of the through-flow snapshots (not checkpointed; rebuilt after a resume)
         self.health_capture = None if health is None else ChunkHealthCapture(model, chunk_tokens)
         if captured is not None and health is not None:
             self.health_capture = captured.health_capture
@@ -80,6 +98,9 @@ class ActiveMediumTrainer:
         no full-size copy; their values still count in the parameter norm.
         """
         optimized = {id(p) for group in self.optimizer.param_groups for p in group['params']}
+        posterior = getattr(getattr(self.model, 'medium', None), 'structural_posterior', None)
+        if posterior is not None and posterior.capacity_growth is not None:
+            optimized.add(id(posterior.mean))
         return [(p, p.detach().clone()) for p in self.model.parameters()
                 if p.requires_grad and p.grad is not None and id(p) in optimized]
 
@@ -99,7 +120,15 @@ class ActiveMediumTrainer:
                 self._parameter_norm_cache[id(parameter)] = (version, norm)
             norms.append(self._parameter_norm_cache[id(parameter)][1])
         parameter_norm = torch.stack(norms).sum().sqrt()
-        changes = [torch.linalg.vector_norm(p - old).double().square() for p, old in before]
+        changes = []
+        for parameter, old in before:
+            # Keep the actual-update metric, but bound its difference workspace
+            # to4MiB instead of allocating another148MiB vocabulary matrix.
+            current, previous = parameter.reshape(-1), old.reshape(-1)
+            terms = [torch.linalg.vector_norm(current[left:left + 1048576]
+                                              - previous[left:left + 1048576]).double().square()
+                     for left in range(0, current.numel(), 1048576)]
+            changes.append(torch.stack(terms).sum())
         update_norm = (torch.stack(changes).sum().sqrt() if changes
                        else parameter_norm.new_zeros(()))
         return update_norm, parameter_norm
@@ -118,12 +147,12 @@ class ActiveMediumTrainer:
             observed = torch.cat((scored.new_tensor([self.carry_token]), scored[:-1]))[None]
             posterior = getattr(getattr(self.model, 'medium', None), 'structural_posterior', None)
             if posterior is not None:
-                if self.captured is not None or self.compile_event:
+                if self.compile_event:
                     raise ValueError('Structural evidence windows use eager chunk orchestration')
                 if not bool(posterior.window_active):
                     if self.pending:
                         raise ValueError('Pending gradients require the saved structural sample')
-                    posterior.begin_window(torch.randn_like(posterior.mean))
+                    posterior.begin_window(self.structure_noise * torch.randn_like(posterior.mean))
                     self._structural_window_start = float(self.belief.medium.elapsed.item())
                 self.model._structural_window_events = self.tokens_per_update
             if self.captured is not None and count == self.chunk_tokens:
@@ -149,6 +178,8 @@ class ActiveMediumTrainer:
                     evolved = evolved.detach()
                     del chunk
                     (loss * (count / self.tokens_per_update)).backward()
+                    if getattr(self.model, 'deferred_writer_credit', False):
+                        self.model.flush_deferred_credit()
             if not bool(torch.isfinite(loss)):
                 raise FloatingPointError('Nonfinite joint likelihood')
             self._record_loss_components(loss, nll, count, components)
@@ -180,9 +211,12 @@ class ActiveMediumTrainer:
             self.events += count
             self.pending += count
             if self.pending == self.tokens_per_update:
-                self.last_gradient_norm = float(stable_clip_grad_norm_(
-                    self.model.parameters(), 1.0, error_if_nonfinite=True))
+                growth = None if posterior is None else posterior.capacity_growth
+                if growth is None:
+                    self.last_gradient_norm = float(stable_clip_grad_norm_(
+                        self.model.parameters(), 1.0, error_if_nonfinite=True))
                 before = self._health_update_snapshot() if self.health is not None else None
+                proposal = None
                 if posterior is not None:
                     if self._structural_window_start is None:
                         raise ValueError('Missing physical start of the structural evidence window')
@@ -193,16 +227,67 @@ class ActiveMediumTrainer:
                     duration = float(self.belief.medium.elapsed.item()) - self._structural_window_start
                     posterior.record_window_evidence(self.tokens_per_update, duration, maintenance)
                     del prepared, maintenance
+                    if growth is not None and not self.freeze_structure:
+                        basis = self.model.medium.material.basis(self.model.medium.coordinates)
+                        try:
+                            proposal = growth.propose(posterior, basis,
+                                                      1 / math.prod(self.model.medium.shape))
+                        except FloatingPointError:
+                            if not self.skip_unstable_structure:
+                                raise
+                            # A heavy-tailed credit window with no represented descent inside the KL allowance:
+                            # skip this window's structural step instead of ending the individual.
+                            proposal = None
+                            self.skipped_structure_windows += 1
+                        del basis
+                    if growth is not None and proposal is None:
+                        ordinary = [p for group in self.optimizer.param_groups for p in group['params']]
+                        self.last_gradient_norm = float(stable_clip_grad_norm_(ordinary, 1.0, error_if_nonfinite=True))
+                    if proposal is not None:
+                        # Variance is frozen under this rule. Validate the
+                        # candidate OU/dual transition before Adam can mutate
+                        # any ordinary parameter. Fatal optimizer failures
+                        # still resume from a completed checkpoint.
+                        posterior.validate_window_commit(
+                            posterior_mean=proposal['mean'],
+                            dual_learning_rate=getattr(self.model, 'structure_dual_learning_rate', None))
+                        # Independent geometric trust region owns structural
+                        # credit; the ordinary clip owns only Adam's parameters.
+                        ordinary = [p for group in self.optimizer.param_groups for p in group['params']]
+                        norm = float(stable_clip_grad_norm_(ordinary, 1.0, error_if_nonfinite=True))
+                        self.last_gradient_norm = math.hypot(norm, proposal['gradient_norm'])
+                if self.optimizer_state_offload and self.belief.medium.field.is_cuda:
+                    # Restoring moments and taking the health snapshot can
+                    # leave fragmented replay blocks. Adam's largest temporary
+                    # must get one contiguous vocabulary-sized allocation.
+                    torch.cuda.empty_cache()
                 self.optimizer.step()
                 if posterior is not None:
+                    if growth is not None and proposal is not None:
+                        growth.apply(posterior, proposal)
                     posterior.commit_window(dual_learning_rate=getattr(
                         self.model, 'structure_dual_learning_rate', None))
+                    if self.structural_gravity:
+                        self.model.medium.structural_gravity_step(self.structural_gravity, self.structural_gravity_screening,
+                                                                   self.structural_gravity_diffusion)
+                    if self.channel_growth:
+                        # One snapshot of the through-flow per window, time-averaged across windows (EMA 0.9).
+                        flow = self.model.medium.through_flow(self.belief.medium)
+                        self._channel_flow = flow if self._channel_flow is None else 0.9 * self._channel_flow + 0.1 * flow
+                        self.model.medium.channel_growth_step(self._channel_flow, self.channel_growth, self.channel_mu)
                     self._structural_window_start = None
                 if before is not None:
                     update_norm, parameter_norm = self._health_update_norms(before)
                     self.health.record_update(self.last_gradient_norm, float(update_norm), float(parameter_norm))
                     del before
                 self.optimizer.zero_grad(set_to_none=False)
+                if growth is not None:
+                    # This parameter is deliberately absent from Adam.
+                    if self.captured is None:
+                        posterior.mean.grad = None
+                    else:                       # a captured graph accumulates into this fixed address
+                        posterior.mean.grad.zero_()
+                    del proposal
                 self.optimizer_updates += 1
                 self.pending = 0
                 if self.captured is None:
@@ -223,7 +308,7 @@ class ActiveMediumTrainer:
 
     def summary(self):
         elapsed = getattr(getattr(self.belief, 'medium', None), 'elapsed', None)
-        return {'events': self.events, 'optimizer_updates': self.optimizer_updates,
+        result = {'events': self.events, 'optimizer_updates': self.optimizer_updates,
                 'physical_elapsed': None if elapsed is None else float(elapsed.mean().detach()),
                 'pending_gradient_events': self.pending,
                 'loss_components': {**{name: value / self.loss_component_events[name]
@@ -236,8 +321,14 @@ class ActiveMediumTrainer:
                     'fixed_unigram_nll': values['prior_sum'] / values['events'],
                     'gain': (values['prior_sum'] - values['nll_sum']) / values['events']}
                     for phase, values in self.phase_totals.items()}}
+        posterior = getattr(getattr(self.model, 'medium', None), 'structural_posterior', None)
+        if posterior is not None and posterior.capacity_growth is not None:
+            result['capacity_growth'] = posterior.capacity_growth.summary()
+        return result
 
     def state_dict(self):
+        if getattr(self.model, 'deferred_writer_credit', False):
+            self.model.deferred_credit.assert_flushed()
         return {'health': None if self.health is None else self.health.state_dict(),
                 'version': 1, 'events': self.events, 'optimizer_updates': self.optimizer_updates,
                 'pending': self.pending, 'carry_token': self.carry_token,
@@ -273,7 +364,7 @@ class ActiveMediumTrainer:
         self._parameter_norm_cache.clear()
         self.recent = deque(saved['recent'], maxlen=128)
         for name, parameter in self.model.named_parameters():
-            gradient = saved['pending_gradients'][name]
+            gradient = saved['pending_gradients'].get(name)
             # The decoder participates in every eager CE window. At a completed
             # update its saved zero gradient carries no pending credit. Let the
             # first backward own that large buffer instead of allocating both a

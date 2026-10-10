@@ -456,7 +456,7 @@ class PredictivePhysicalReadAgent(nn.Module):
             variance.transpose(1, 2).reshape(batch, self.queries * self.d),
         ), dim=-1)
         base = self.merge(measurement)
-        feature = base + self.correction(base)
+        feature = base if self.correction is None else base + self.correction(base)
 
         if not return_diag:
             return feature, None
@@ -589,7 +589,7 @@ class PredictivePhysicalReadAgent(nn.Module):
             moving_measurement = torch.cat((moving_mean.transpose(1, 2).reshape(batch, -1),
                                            moving_variance.transpose(1, 2).reshape(batch, -1)), -1)
             base = base + self.motion_merge(moving_measurement)
-        feature = base + self.correction(base)
+        feature = base if self.correction is None else base + self.correction(base)
         if not return_diag:
             return feature, None
         return feature, {

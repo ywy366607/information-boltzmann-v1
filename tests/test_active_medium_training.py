@@ -133,6 +133,24 @@ def test_finite_large_medium_gradient_uses_stable_clip_without_losing_direction(
     torch.testing.assert_close(model.weight, torch.tensor([[-.1/math.sqrt(5), -.2/math.sqrt(5)]]))
 
 
+def test_bounded_update_norm_workspace_measures_same_actual_parameter_change():
+    class Belief:
+        def detach(self):
+            return self
+    torch.set_num_threads(1)
+    model = torch.nn.Linear(1048593, 2, bias=False)
+    learner = ActiveMediumTrainer(model, torch.optim.SGD(model.parameters(), lr=.1),
+        Belief(), carry_token=0, event_duration=1.)
+    parameter = model.weight
+    previous = parameter.detach().clone()
+    with torch.no_grad():
+        parameter.add_(torch.linspace(-.001, .002, parameter.numel()).reshape_as(parameter))
+    change, magnitude = learner._health_update_norms([(parameter, previous)])
+    expected = torch.linalg.vector_norm((parameter.detach() - previous).double())
+    torch.testing.assert_close(change, expected, atol=1e-6, rtol=3e-6)
+    torch.testing.assert_close(magnitude, torch.linalg.vector_norm(parameter).double(), atol=0, rtol=0)
+
+
 @pytest.mark.skipif(os.environ.get('IB_ENABLE_RUNTIME_CUDA_TESTS') != '1',
                     reason='Opt-in CUDA allocation')
 def test_capture_token_scores_gradients_and_adam_update_match_eager():
