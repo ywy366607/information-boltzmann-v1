@@ -32,6 +32,8 @@ def load(fork):
         fl.attach_read_bank(model)
     if cfg.get('intrinsic'):
         fl.attach_intrinsic_drive(model, graph, graph.parent / 'body-annotations.feather')
+    if cfg.get('predictive_writer'):
+        fl.attach_predictive_writer(model)
     if cfg.get('precision'):
         fl.attach_precision(model, graph, graph.parent / 'body-annotations.feather')
     edges = ('edge_weight_e', 'edge_weight_i')

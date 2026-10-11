@@ -46,6 +46,9 @@ class FlyPhysicalState:
     read_bank: torch.Tensor = field(default_factory=lambda: torch.empty(0))
     # Optional neuromodulator "concentration": slow trace of the modulatory cells' spikes [1, n_modulatory].
     modulator: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    # Optional top-down prediction of the next input: the expected word embedding of the brain's last spoken
+    # prediction [1, d_model] (predictive-coding writer).
+    expected_input: torch.Tensor = field(default_factory=lambda: torch.empty(0))
 
     def detached(self):
         return FlyPhysicalState(**{
@@ -167,7 +170,7 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
         bank = decay * bank + (1.0 - decay) * motor_now
     return FlyPhysicalState(h, ring, ge, gi, b, x, u, next_baseline, h_mean, dan_gate, gz1, gz2,
                             current.observer_prior, getattr(current, 'observer_history', torch.empty(0)), bank,
-                            modulator)
+                            modulator, getattr(current, 'expected_input', torch.empty(0)))
 
 
 def extract_fly_motor_latent(model, state):
@@ -311,11 +314,7 @@ def advance_fly_input_event(model, state, token, *, settle_ticks=0,
         raise ValueError('writer_baseline_clock must be input or physical')
     if not 0.0 <= h_mean_decay < 1.0:
         raise ValueError('h_mean_decay must be in [0, 1)')
-    if model.topographic_writer is not None:
-        drive, baseline = model.topographic_writer.forward_with_state(
-            model.embedding(token), state.h, state.baseline)
-    else:
-        drive, baseline = None, state.baseline
+    drive, baseline = write_input(model, state, token)
     options = dict(base_rates=base_rates, thresholds=thresholds,
                    conductance_gains=conductance_gains,
                    alif_params=alif_params, stp_params=stp_params)
@@ -466,10 +465,7 @@ def _advance_fly_token_go(model, state, token, schedule_box=None, *, max_ticks=1
     options = dict(base_rates=base_rates, thresholds=thresholds, conductance_gains=conductance_gains,
                    alif_params=alif_params, stp_params=stp_params)
     writer = model.topographic_writer
-    if writer is not None:
-        drive, baseline = writer.forward_with_state(model.embedding(token), state.h, state.baseline)
-    else:
-        drive, baseline = None, state.baseline
+    drive, baseline = write_input(model, state, token)
     current = step_fly_physical_tick(model, state, token, drive, baseline, options,
                                      h_mean_decay=h_mean_decay, base_rates=base_rates)
     replay = schedule_box is not None and len(schedule_box) > 0 and schedule_box[0] is not None
@@ -527,6 +523,7 @@ def _advance_fly_token_go(model, state, token, schedule_box=None, *, max_ticks=1
             current = step_fly_physical_tick(model, current, None, quiet_source, baseline, options,
                                              h_mean_decay=h_mean_decay, base_rates=base_rates)
         after = read_fly_motor(model, current)
+    current = expect_next(model, current, after if silence_after else latents[-1])
     lookahead = current.h.new_zeros(0)
     if physical:
         # Counterfactual: what the read would have been one quiet tick later, had the go neurons not fired.  Not part
@@ -656,6 +653,39 @@ def motor_feature(model, state, motor):
     return gain[0] * motor + (gain[1:] * bank).sum(0, keepdim=True)
 
 
+PREDICTIVE_PARAMETER_NAMES = ('writer_prediction_logit',)
+
+
+def attach_predictive_writer(model, beta=0.5):
+    """Predictive-coding writer: the written innovation becomes input - expected input, where the expected input mixes
+    the slow sensory adaptation baseline and the brain's own top-down prediction (its last spoken prediction turned
+    into an expected word embedding and sent through the same sensory projection, like an efference copy):
+    reference = (1 - beta) * baseline + beta * packet(expected), beta learnable (start 0.5)."""
+    model.writer_prediction_logit = nn.Parameter(torch.tensor(math.log(beta / (1 - beta)), device=model.read_indices.device))
+    return model
+
+
+def write_input(model, state, token):
+    """Sensory drive of one input word through the writer; predictive when a top-down expectation is available."""
+    writer = model.topographic_writer
+    if writer is None:
+        return None, state.baseline
+    expected = getattr(state, 'expected_input', torch.empty(0))
+    if getattr(model, 'writer_prediction_logit', None) is not None and expected.numel():
+        return writer.forward_with_state(model.embedding(token), state.h, state.baseline, expected=expected,
+                                         beta=torch.sigmoid(model.writer_prediction_logit))
+    return writer.forward_with_state(model.embedding(token), state.h, state.baseline)
+
+
+def expect_next(model, state, latent):
+    """After speaking a prediction, keep its expected word embedding as the top-down prediction of the next input."""
+    if getattr(model, 'writer_prediction_logit', None) is None:
+        return state
+    probs = torch.softmax(model.decoder(model.read_norm(latent)).float(), -1)
+    expected = probs @ model.embedding.weight.float()
+    return FlyPhysicalState(**{**state.state_dict(), 'expected_input': expected.to(latent.dtype)})
+
+
 def read_fly_motor(model, state):
     """Linear motor read: the Gamma integrator of the motor membranes when enabled, else the membranes now."""
     if getattr(model, 'use_read_gamma_trace', False) and state.gamma_z2.numel() > 0:
@@ -699,10 +729,7 @@ def _advance_fly_token_stream(model, state, token, schedule_box=None, *, ticks, 
         if read_after is not None and tick == read_after:
             latent = read_fly_motor(model, current)
         if tick == 0 or (hold_input and writer is not None):
-            if writer is not None:
-                drive, baseline = writer.forward_with_state(embedding, current.h, current.baseline)
-            else:
-                drive, baseline = None, current.baseline
+            drive, baseline = write_input(model, current, token)
             current = step_fly_physical_tick(model, current, token, drive, baseline, options,
                                              h_mean_decay=h_mean_decay, base_rates=base_rates)
         else:
@@ -712,7 +739,8 @@ def _advance_fly_token_stream(model, state, token, schedule_box=None, *, ticks, 
                         if writer_baseline_clock == 'physical' and writer is not None else current.baseline)
             current = step_fly_physical_tick(model, current, None, quiet_source, baseline, options,
                                              h_mean_decay=h_mean_decay, base_rates=base_rates)
-    return current, (latent if latent is not None else read_fly_motor(model, current))
+    latent = latent if latent is not None else read_fly_motor(model, current)
+    return expect_next(model, current, latent), latent
 
 
 def _advance_fly_token_adaptive(
@@ -739,11 +767,7 @@ def _advance_fly_token_adaptive(
     if writer_baseline_clock not in ('input', 'physical'):
         raise ValueError('writer_baseline_clock must be input or physical')
 
-    if model.topographic_writer is not None:
-        drive, baseline = model.topographic_writer.forward_with_state(
-            model.embedding(token), state.h, state.baseline)
-    else:
-        drive, baseline = None, state.baseline
+    drive, baseline = write_input(model, state, token)
     options = dict(base_rates=base_rates, thresholds=thresholds,
                    conductance_gains=conductance_gains,
                    alif_params=alif_params, stp_params=stp_params)
@@ -802,7 +826,7 @@ def _advance_fly_token_adaptive(
     else:
         latent = read_fly_motor(model, curr_state)
 
-    return curr_state, latent
+    return expect_next(model, curr_state, latent), latent
 
 
 def predict_fly_next(model, state, token, *, settle_ticks, writer_baseline_clock,
@@ -994,8 +1018,9 @@ class FlyBPTTLearner:
         # entries are ~0.04 at their natural scale, where the base rate already moves them ~1% per step.)
         go_scalars = ('go_drive', 'go_reset', 'go_logit_leak')
         bank_names = [name for name in READ_BANK_PARAMETER_NAMES + INTRINSIC_PARAMETER_NAMES + PRECISION_PARAMETER_NAMES
-                      + go_scalars if name in named and name in self.adam_names
-                      + list(READ_BANK_PARAMETER_NAMES + INTRINSIC_PARAMETER_NAMES + PRECISION_PARAMETER_NAMES)]
+                      + PREDICTIVE_PARAMETER_NAMES + go_scalars if name in named and name in self.adam_names
+                      + list(READ_BANK_PARAMETER_NAMES + INTRINSIC_PARAMETER_NAMES + PRECISION_PARAMETER_NAMES
+                             + PREDICTIVE_PARAMETER_NAMES)]
         self.adam_names = [name for name in self.adam_names if name not in bank_names]
         decayed = [named[name] for name in self.adam_names
                    if name in ('output_read.weight', 'decoder.weight') or (('latent_predictor' in name or 'graph_observer' in name) and name.endswith('.weight'))]
@@ -1103,7 +1128,8 @@ class FlyBPTTLearner:
         """
         newly_trainable = set(newly_trainable)
         allowed_new = (set(STP_PARAMETER_NAMES) | {'logit_read_gamma'} | set(GO_PARAMETER_NAMES)
-                       | set(READ_BANK_PARAMETER_NAMES) | set(INTRINSIC_PARAMETER_NAMES) | set(PRECISION_PARAMETER_NAMES))
+                       | set(READ_BANK_PARAMETER_NAMES) | set(INTRINSIC_PARAMETER_NAMES) | set(PRECISION_PARAMETER_NAMES)
+                       | set(PREDICTIVE_PARAMETER_NAMES))
         if getattr(self.model, 'latent_predictor', None) is not None:
             allowed_new.update(f'latent_predictor.{n}' for n, _ in self.model.latent_predictor.named_parameters())
         if getattr(self.model, 'graph_observer', None) is not None:

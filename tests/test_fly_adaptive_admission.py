@@ -570,3 +570,33 @@ def test_precision_starts_neutral_and_learns_through_the_modulators(fly_model_an
             model._buffers.pop(b, None)
         for p in model.parameters():
             p.requires_grad_(False)
+
+
+def test_predictive_writer_injects_surprise(fly_model_and_state):
+    """With a top-down expectation, a correctly predicted word writes a smaller innovation than a wrong one; the
+    expectation survives the ticks of a token and is renewed by the spoken prediction; beta learns."""
+    import dataclasses
+    from information_boltzmann.core.fly_bptt_learning import (attach_predictive_writer, write_input, expect_next,
+                                                              advance_fly_token_stream, read_fly_motor)
+    model, state, device = fly_model_and_state
+    attach_predictive_writer(model)
+    try:
+        start = dataclasses.replace(state, h=torch.rand_like(state.h))
+        right, wrong = torch.tensor([464], device=device), torch.tensor([31337], device=device)
+        primed = dataclasses.replace(start, expected_input=model.embedding(right).detach())
+        inj = model.topographic_writer.injection_index
+        d_right, _ = write_input(model, primed, right)
+        d_wrong, _ = write_input(model, primed, wrong)
+        assert d_right[0, inj].norm() < d_wrong[0, inj].norm()
+        model.writer_prediction_logit.grad = None
+        d_wrong[0, inj].square().sum().backward()
+        assert model.writer_prediction_logit.grad is not None
+        with torch.no_grad():
+            after, latent = advance_fly_token_stream(model, start, right, ticks=3, writer_baseline_clock='physical')
+            assert after.expected_input.shape == (1, model.embedding.embedding_dim)
+            again = expect_next(model, after, latent)
+            assert torch.allclose(again.expected_input, after.expected_input)
+    finally:
+        delattr(model, 'writer_prediction_logit')
+        for p in model.parameters():
+            p.requires_grad_(False)

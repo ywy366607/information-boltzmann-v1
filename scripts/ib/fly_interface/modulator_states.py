@@ -38,6 +38,8 @@ def read(tokens, nexts, s, gap_every=0, gap=0, trace=False):
     with torch.no_grad():
         for i, tok in enumerate(tokens):
             g = gap if (gap_every and i % gap_every == 0) else 0
+            drive, _ = fl.write_input(model, s, torch.tensor([int(tok)], device='cuda'))
+            innovation = float(drive[0, model.topographic_writer.injection_index].norm())
             s, lat, _, _, _, after = fl.advance_fly_token_go(model, s, torch.tensor([int(tok)], device='cuda'), [],
                                                               max_ticks=max_ticks, writer_baseline_clock='physical',
                                                               silence_after=g, **opts)
@@ -46,7 +48,7 @@ def read(tokens, nexts, s, gap_every=0, gap=0, trace=False):
             out.append(ce)
             if trace:
                 gn, da = gains(s)
-                rows.append((ce, da, float(gn.mean()), lat.shape[0]))
+                rows.append((ce, da, float(gn.mean()), lat.shape[0], innovation))
     return np.array(out), rows, s
 
 
@@ -76,12 +78,12 @@ def worlds():
 
 
 report = {'fork': str(fork), 'precision': has_precision}
-if '--only-episodes' in sys.argv:
+if '--only-episodes' in sys.argv or '--only-tracking' in sys.argv:
     report['worlds_full'] = {}
 else:
     report['worlds_full'] = worlds()
 if report['worlds_full']: print('worlds (full):', {k: round(v, 4) for k, v in report['worlds_full'].items()}, flush=True)
-if has_precision and '--only-episodes' not in sys.argv:
+if has_precision and '--only-episodes' not in sys.argv and '--only-tracking' not in sys.argv:
     saved_u, saved_b = model.precision_u.detach().clone(), model.precision_b.detach().clone()
     model.precision_u.data.zero_(); model.precision_b.data.zero_()
     report['worlds_neutral_precision'] = worlds()
@@ -116,9 +118,18 @@ _, rows, _ = read(inputs, targets, start(), trace=True)
 a = np.array(rows[BURN:])
 report['surprise_tracking'] = {'spearman_error_vs_dopamine_after': float(spearmanr(a[:, 0], a[:, 1]).correlation),
                                'spearman_error_vs_gain_after': float(spearmanr(a[:, 0], a[:, 2]).correlation),
-                               'spearman_error_vs_ticks': float(spearmanr(a[:, 0], a[:, 3]).correlation)} if has_precision else {}
+                               'spearman_error_vs_ticks': float(spearmanr(a[:, 0], a[:, 3]).correlation)} if has_precision else {
+                               'spearman_error_vs_ticks': float(spearmanr(a[:, 0], a[:, 3]).correlation)}
+# is surprise a neural signal?  the innovation written for word i vs the error of the prediction it met (row i-1)
+report['surprise_tracking']['spearman_prediction_error_vs_written_innovation'] = float(
+    spearmanr(a[:-1, 0], a[1:, 4]).correlation)
+report['surprise_tracking']['spearman_prediction_error_vs_dopamine_next_word'] = float(
+    spearmanr(a[:-1, 0], a[1:, 1]).correlation) if has_precision else None
 print('surprise tracking:', report['surprise_tracking'], flush=True)
 
+if '--only-tracking' in sys.argv:
+    json.dump(report, open(fork / 'modulator_tracking.json', 'w'), indent=1)
+    sys.exit()
 # 3. chaos episodes
 rng = np.random.default_rng(7)
 report['episodes'] = {}
@@ -136,7 +147,7 @@ for Lc in (8, 16, 32):
     z = (a - mu) / sd
     after = z[pre + Lc:]
     persist = {}
-    for j, name in ((0, 'error'), (1, 'dopamine'), (2, 'gain'), (3, 'ticks')):
+    for j, name in ((0, 'error'), (1, 'dopamine'), (2, 'gain'), (3, 'ticks'), (4, 'innovation')):
         inside = float(z[pre:pre + Lc, j].mean())
         back = next((t for t in range(len(after)) if abs(after[t:t + 4, j].mean()) < 1.0), len(after))
         persist[name] = {'z_during_chaos': inside, 'z_first_8_after': float(after[:8, j].mean()),

@@ -228,18 +228,26 @@ class BiologicalTopographicWriter(nn.Module):
         if hasattr(self, "_a_adapt_eval"):
             self._a_adapt_eval.zero_()
 
+    def packet(self, token_emb: torch.Tensor) -> torch.Tensor:
+        """The gated sensory projection of a word embedding onto the injection neurons."""
+        gates = 3.0 * torch.softmax(self.gate_linear(token_emb), dim=-1)
+        return torch.cat((gates[:, :1] * self.proj_vis(token_emb),
+                          gates[:, 1:2] * self.proj_chemo(token_emb),
+                          gates[:, 2:3] * self.proj_mech(token_emb)), dim=-1)
+
     def forward_with_state(self, token_emb: torch.Tensor, h: torch.Tensor,
-                           baseline: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
+                           baseline: torch.Tensor, expected: torch.Tensor | None = None,
+                           beta: torch.Tensor | None = None) -> tuple[torch.Tensor, torch.Tensor]:
         """Functional writer for BPTT; baseline is a continuing physical state.
 
         Unlike the legacy buffer API, this retains the adaptation dependency
         within a training window. The caller detaches only at window boundaries.
+        With `expected` (a top-down expected word embedding) the innovation is taken against
+        (1 - beta) * baseline + beta * packet(expected): predictive coding.
         """
-        gates = 3.0 * torch.softmax(self.gate_linear(token_emb), dim=-1)
-        packet = torch.cat((gates[:, :1] * self.proj_vis(token_emb),
-                            gates[:, 1:2] * self.proj_chemo(token_emb),
-                            gates[:, 2:3] * self.proj_mech(token_emb)), dim=-1)
-        drive = torch.zeros_like(h).index_copy(1, self.injection_index, packet - baseline)
+        packet = self.packet(token_emb)
+        reference = baseline if expected is None else (1.0 - beta) * baseline + beta * self.packet(expected)
+        drive = torch.zeros_like(h).index_copy(1, self.injection_index, packet - reference)
         next_baseline = self.lambda_adapt * baseline + (1.0 - self.lambda_adapt) * packet
         return drive, next_baseline
 

@@ -1,0 +1,109 @@
+{
+ "fork": "scratch\\fly_stream\\pc_gb",
+ "precision": true,
+ "worlds_full": {
+  "read": 7.375682753782409,
+  "listen_k4": 7.743941060927075,
+  "gap16_after": 8.036609505613646
+ },
+ "worlds_neutral_precision": {
+  "read": 7.377969495719299,
+  "listen_k4": 7.745228378451429,
+  "gap16_after": 8.033005736768246
+ },
+ "worlds_modulators_silenced": {
+  "read": 7.370037535438314,
+  "listen_k4": 7.739749717448528,
+  "gap16_after": 8.029755084464947
+ },
+ "surprise_tracking": {
+  "spearman_error_vs_dopamine_after": -0.04244525476286954,
+  "spearman_error_vs_gain_after": -0.06389075514303902,
+  "spearman_error_vs_ticks": 0.025628341199244873,
+  "spearman_prediction_error_vs_written_innovation": 0.316582958808351,
+  "spearman_prediction_error_vs_dopamine_next_word": -0.038324149989277
+ },
+ "episodes": {
+  "8": {
+   "error": {
+    "z_during_chaos": -0.02529764422325209,
+    "z_first_8_after": -0.11906540915017166,
+    "words_until_back": 0
+   },
+   "dopamine": {
+    "z_during_chaos": -0.03459297982698001,
+    "z_first_8_after": -0.23791154491683292,
+    "words_until_back": 0
+   },
+   "gain": {
+    "z_during_chaos": 0.03162371754998647,
+    "z_first_8_after": -0.09916622910915829,
+    "words_until_back": 0
+   },
+   "ticks": {
+    "z_during_chaos": 0.1665809987326631,
+    "z_first_8_after": 0.1665809987326631,
+    "words_until_back": 0
+   },
+   "innovation": {
+    "z_during_chaos": -0.21091021293267528,
+    "z_first_8_after": 0.48606085287441986,
+    "words_until_back": 0
+   }
+  },
+  "16": {
+   "error": {
+    "z_during_chaos": 0.29212427298715316,
+    "z_first_8_after": -0.7631563444885359,
+    "words_until_back": 0
+   },
+   "dopamine": {
+    "z_during_chaos": -0.1690399581822154,
+    "z_first_8_after": 0.24039200089976365,
+    "words_until_back": 0
+   },
+   "gain": {
+    "z_during_chaos": -0.07944566142667667,
+    "z_first_8_after": 0.3145080556128137,
+    "words_until_back": 0
+   },
+   "ticks": {
+    "z_during_chaos": 0.33316199746532615,
+    "z_first_8_after": 0.2776349978877718,
+    "words_until_back": 0
+   },
+   "innovation": {
+    "z_during_chaos": -0.11632103330139429,
+    "z_first_8_after": 0.7766691935528356,
+    "words_until_back": 0
+   }
+  },
+  "32": {
+   "error": {
+    "z_during_chaos": 0.5180899375924555,
+    "z_first_8_after": 0.657118905867935,
+    "words_until_back": 0
+   },
+   "dopamine": {
+    "z_during_chaos": 0.0587726751497466,
+    "z_first_8_after": -0.4077392786555415,
+    "words_until_back": 0
+   },
+   "gain": {
+    "z_during_chaos": 0.04347601890523707,
+    "z_first_8_after": -0.2373789766718311,
+    "words_until_back": 0
+   },
+   "ticks": {
+    "z_during_chaos": 0.2221079983102175,
+    "z_first_8_after": -0.27763499788777185,
+    "words_until_back": 0
+   },
+   "innovation": {
+    "z_during_chaos": 0.28648798662613045,
+    "z_first_8_after": -0.2170349678707573,
+    "words_until_back": 0
+   }
+  }
+ }
+}
