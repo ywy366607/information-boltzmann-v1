@@ -647,3 +647,59 @@ def test_dopamine_modulation_along_the_connectome(fly_model_and_state):
         model._buffers.pop('synapse_share', None)
         for p in model.parameters():
             p.requires_grad_(False)
+
+
+def test_dopamine_scales_learning_at_the_chosen_end_of_each_synapse():
+    """site='post' scales a synapse's update by the dopamine at its receiving neuron, site='pre' by the dopamine at its
+    presynaptic terminal (as at the fly's Kenyon-cell -> output-neuron synapses)."""
+    from types import SimpleNamespace
+    from information_boltzmann.core.fly_bptt_learning import dopamine_edge_scale
+    model = SimpleNamespace(edge_pre_e=torch.tensor([0, 0, 2]), edge_post_e=torch.tensor([1, 2, 1]))
+    local = torch.tensor([4.0, 0.5, 1.0])
+    assert torch.equal(dopamine_edge_scale(model, '_e', local, 'post'), torch.tensor([0.5, 1.0, 0.5]))
+    assert torch.equal(dopamine_edge_scale(model, '_e', local, 'pre'), torch.tensor([4.0, 4.0, 1.0]))
+    with pytest.raises(ValueError):
+        dopamine_edge_scale(model, '_e', local, 'both')
+
+
+def test_adapted_dopamine_starts_with_an_effect(fly_model_and_state):
+    """Adapted receptors: the phasic part is each target's own relative change; a nonzero starting sensitivity changes
+    the dynamics as soon as the concentration departs from its slow mean, and the learner's plasticity scaling runs."""
+    import dataclasses
+    from information_boltzmann.core.fly_bptt_learning import (attach_dopamine_modulation, attach_go_neuron,
+                                                              step_fly_physical_tick, DOPAMINE_PARAMETER_NAMES)
+    model, state, device = fly_model_and_state
+    if device != "cuda" or not model.has_dopamine:
+        pytest.skip("needs CUDA and the dopaminergic projections")
+    attach_go_neuron(model)
+    try:
+        torch.manual_seed(5)
+        start = dataclasses.replace(state, h=torch.rand_like(state.h))
+        opts = dict(base_rates=model.get_decay_rates(), thresholds=model.get_thresholds())
+        attach_dopamine_modulation(model, adapted=True, sensitivity_init=4.0)
+        assert model.dopamine_adapted and torch.all(model.dopamine_sensitivity == 4.0)
+        with torch.no_grad():
+            s1 = step_fly_physical_tick(model, start, None, torch.zeros_like(start.h), start.baseline, opts)
+            s2 = step_fly_physical_tick(model, s1, None, torch.zeros_like(s1.h), s1.baseline, opts)
+            s3 = step_fly_physical_tick(model, s2, None, torch.zeros_like(s2.h), s2.baseline, opts)
+            model.dopamine_sensitivity.zero_()
+            s3_off = step_fly_physical_tick(model, s2, None, torch.zeros_like(s2.h), s2.baseline, opts)
+            model.dopamine_sensitivity.fill_(4.0)
+        assert torch.isfinite(s3.h).all()
+        assert not torch.equal(s3.h, s3_off.h)               # dopamine acts from the start
+        learner = FlyBPTTLearner(model, start, lr=2e-4, writer_baseline_clock="physical", use_checkpointing=True,
+                                 go_neuron=True, go_max_ticks=10, lambda_mcr2=0.0)
+        learner.previous_token = 50
+        learner.state = s3.detached()
+        _, metrics = learner.observe(np.array([101, 205, 307], dtype=np.int64))
+        assert 'dopamine_plasticity_spread' in metrics
+    finally:
+        for name in ('go_read', 'go_drive', 'go_reset', 'go_logit_leak') + DOPAMINE_PARAMETER_NAMES:
+            if hasattr(model, name):
+                delattr(model, name)
+        for name in ('dopamine_adapted', 'dopamine_site'):
+            if hasattr(model, name):
+                delattr(model, name)
+        model._buffers.pop('synapse_share', None)
+        for p in model.parameters():
+            p.requires_grad_(False)

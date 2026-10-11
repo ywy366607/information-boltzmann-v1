@@ -136,6 +136,10 @@ def resolve_learning_modes(args, previous_config, previous_learner):
         args.go_neuron = None
     if getattr(args, 'dopamine_modulation', None) is None:
         args.dopamine_modulation = bool(previous_config.get('dopamine_modulation', False))
+    if getattr(args, 'dopamine_site', None) is None:
+        args.dopamine_site = previous_config.get('dopamine_site') or 'post'
+    if getattr(args, 'dopamine_adapted', None) is None:
+        args.dopamine_adapted = bool(previous_config.get('dopamine_adapted', False))
     if getattr(args, 'predictive_writer', None) is None:
         args.predictive_writer = bool(previous_config.get('predictive_writer', False))
     if getattr(args, 'precision', None) is None:
@@ -216,10 +220,24 @@ def main():
                         help='Dopamine as a neuromodulator along the connectome projections: its phasic part scales '
                              'target thresholds (per-superclass sensitivity, start 0) and its concentration scales the '
                              'learning of synapses onto the targets (omitted = inherit)')
+    parser.add_argument('--dopamine-site', choices=('post', 'pre'), default=None,
+                        help='Which end of a synapse the dopamine scales its learning by: post = the receiving neuron, '
+                             'pre = the presynaptic terminal as at the fly mushroom body (omitted = inherit, else post)')
+    parser.add_argument('--dopamine-adapted', action=argparse.BooleanOptionalAction, default=None,
+                        help='Receptors adapt to each target own slow dopamine level: threshold and plasticity see the '
+                             'relative change of that target (omitted = inherit, else off)')
+    parser.add_argument('--dopamine-sensitivity-init', type=float, default=None,
+                        help='Set every dopamine sensitivity to this value at start, also over a loaded checkpoint '
+                             '(pass it only on the first segment of a run; omitted = keep)')
     parser.add_argument('--mixed-world', action='store_true',
                         help='Training windows alternate worlds: self-paced reading (go neuron), being spoken to '
                              '(external pace, k ticks per word, k random 3..8), and reading with silent gaps (each word '
                              'with probability 1/4 is followed by 8..32 silent ticks). Evaluation stays self-paced reading.')
+    parser.add_argument('--world-mix', type=float, nargs=3, default=(0.5, 0.25, 0.25), metavar=('READ', 'LISTEN', 'GAP'),
+                        help='Mixed world: fractions of windows that are self-paced reading, being spoken to, reading with gaps')
+    parser.add_argument('--gap-prob', type=float, default=0.25, help='Mixed world, gap windows: chance a word is followed by silence')
+    parser.add_argument('--gap-range', type=int, nargs=2, default=(8, 32), metavar=('MIN', 'MAX'),
+                        help='Mixed world, gap windows: silence length in ticks (inclusive)')
     parser.add_argument('--read-bank', action=argparse.BooleanOptionalAction, default=None,
                         help='Read without a window: learnable exponential filters of the motor membranes along the '
                              'whole tick stream, starting as the plain read (omitted = inherit)')
@@ -520,7 +538,9 @@ def main():
         if args.predictive_writer:
             attach_predictive_writer(model)
         if args.dopamine_modulation:
-            attach_dopamine_modulation(model)
+            attach_dopamine_modulation(model, site=args.dopamine_site or 'post', adapted=bool(args.dopamine_adapted),
+                                       sensitivity_init=float(args.dopamine_sensitivity_init or 0.0))
+            print(f'Dopamine scales learning at the {args.dopamine_site or "post"}synaptic end', flush=True)
         if args.precision:
             n_mod, n_da = attach_precision(model, args.graph, args.graph.parent / 'body-annotations.feather')
             print(f'Precision carried by {n_mod} neuromodulatory cells ({n_da} dopaminergic)', flush=True)
@@ -537,6 +557,9 @@ def main():
             unexpected = [k for k in loaded.unexpected_keys if not k.startswith('latent_predictor.') and not k.startswith('graph_observer.')]
             if unexpected or missing:
                 raise ValueError(f'Weight migration mismatch: unexpected={unexpected}, missing={missing}')
+            if args.dopamine_modulation and args.dopamine_sensitivity_init is not None:
+                model.dopamine_sensitivity.fill_(float(args.dopamine_sensitivity_init))
+                print(f'Dopamine sensitivities set to {args.dopamine_sensitivity_init}', flush=True)
         previous_settle_ticks = old.get('settle_ticks', 0)
         previous_writer_clock = old.get('writer_baseline_clock', 'physical')
         if args.writer_baseline_clock is None:
@@ -1005,13 +1028,15 @@ def main():
     world_counts = {'read': 0, 'listen': 0, 'gap': 0}
 
     def sample_world(n):
-        # The world, not the model: its pace and its silences.  Fractions 1/2 read, 1/4 listen, 1/4 gaps.
+        # The world, not the model: its pace and its silences.  Default fractions 1/2 read, 1/4 listen, 1/4 gaps.
+        mix = np.asarray(args.world_mix, dtype=np.float64) / np.sum(args.world_mix)
         u = world_rng.random()
-        if u < 0.5:
+        if u < mix[0]:
             return {'mode': 'read'}
-        if u < 0.75:
+        if u < mix[0] + mix[1]:
             return {'mode': 'listen', 'k': int(world_rng.integers(3, 9))}
-        gaps = np.where(world_rng.random(n) < 0.25, world_rng.integers(8, 33, n), 0).tolist()
+        lo, hi = args.gap_range
+        gaps = np.where(world_rng.random(n) < args.gap_prob, world_rng.integers(lo, hi + 1, n), 0).tolist()
         return {'mode': 'gap', 'gaps': gaps}
 
     def observe(values, training=False):

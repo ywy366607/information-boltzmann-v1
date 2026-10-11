@@ -104,10 +104,16 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
     if getattr(model, 'dopamine_sensitivity', None) is not None and dopamine.numel():
         # Dopamine modulates excitability where it is delivered: the phasic part (concentration minus its slow mean)
         # scales the threshold, theta * exp(-s_class * phasic); s starts at 0 for every superclass.
-        # relative to the tonic level (mean slow concentration over the targets): dimensionless, parameter-free
         tonic = dopamine[1:2]
+        # the tonic level: mean slow concentration over the targets
         level = tonic[tonic > 0].mean().detach().clamp_min(1e-12) if bool((tonic > 0).any()) else tonic.new_tensor(1.0)
-        phasic = (dopamine[0:1] - tonic) / level
+        if getattr(model, 'dopamine_adapted', False):
+            # adapted receptors with half-saturation at the tonic level: a target's relative change
+            # (fast - slow) / (slow + level), bounded for targets that receive only a trace of dopamine
+            phasic = (dopamine[0:1] - tonic) / (tonic.detach() + level)
+        else:
+            # relative to the tonic level: dimensionless, parameter-free
+            phasic = (dopamine[0:1] - tonic) / level
         s_class = model.dopamine_sensitivity[model.superclass_id].unsqueeze(0)
         thresholds = options.get('thresholds')
         thresholds = (thresholds if thresholds is not None else model.get_thresholds()).expand_as(current.h)
@@ -680,17 +686,40 @@ PREDICTIVE_PARAMETER_NAMES = ('writer_prediction_logit',)
 DOPAMINE_PARAMETER_NAMES = ('dopamine_sensitivity', 'dopamine_logit_fast', 'dopamine_logit_slow')
 
 
-def attach_dopamine_modulation(model, tau_fast=50.0, tau_slow=500.0):
+DOPAMINE_SITES = ('post', 'pre')
+
+
+def dopamine_edge_scale(model, edge_suffix, local, site='post'):
+    """Per-synapse scaling of the update by the dopamine at one end of each synapse: 'post' (the receiving neuron) or
+    'pre' (the presynaptic terminal: in the fly dopamine acts on the Kenyon-cell axons and changes their output
+    synapses onto the mushroom-body output neurons)."""
+    if site not in DOPAMINE_SITES:
+        raise ValueError(f'dopamine site must be one of {DOPAMINE_SITES}')
+    return local[getattr(model, f'edge_{site}{edge_suffix}').long()]
+
+
+def attach_dopamine_modulation(model, tau_fast=50.0, tau_slow=500.0, site='post', adapted=False, sensitivity_init=0.0):
     """Dopamine acts as a neuromodulator along the connectome's own projections (241,701 modulatory synapses of the
     392 dopaminergic cells onto 39,850 targets): the dopamine delivered to each neuron forms a fast concentration and a
     slow mean (time constants learnable, start 50 / 500 ticks); the phasic part (difference) scales that neuron's
     threshold with a per-superclass sensitivity starting at 0, and the concentration scales how much the synapses onto
-    that neuron learn (FlyBPTTLearner).  Nothing changes at the start."""
+    that neuron learn (FlyBPTTLearner); with site='pre' it scales how much the synapses *from* that neuron learn
+    (dopamine at the presynaptic terminal, as at the fly's Kenyon-cell -> output-neuron synapses).  Nothing changes at
+    the start.
+
+    adapted=True: every target's receptors adapt to its own slow level, so both the threshold modulation and the
+    plasticity scaling see the relative change (fast - slow) / slow of that target, not a fixed map of how much
+    dopamine each target receives.  sensitivity_init sets the starting sensitivity of every superclass (positive =
+    more excitable with more dopamine, as through the D1-like receptors that dominate in the fly)."""
     if not getattr(model, 'has_dopamine', False):
         raise ValueError('the graph has no dopaminergic projections')
+    if site not in DOPAMINE_SITES:
+        raise ValueError(f'dopamine site must be one of {DOPAMINE_SITES}')
+    model.dopamine_site = site
+    model.dopamine_adapted = bool(adapted)
     device = model.read_indices.device
     n_class = int(model.superclass_id.max()) + 1
-    model.dopamine_sensitivity = nn.Parameter(torch.zeros(n_class, device=device))
+    model.dopamine_sensitivity = nn.Parameter(torch.full((n_class,), float(sensitivity_init), device=device))
     model.dopamine_logit_fast = nn.Parameter(torch.tensor(math.log(math.exp(-1 / tau_fast) / (1 - math.exp(-1 / tau_fast))), device=device))
     model.dopamine_logit_slow = nn.Parameter(torch.tensor(math.log(math.exp(-1 / tau_slow) / (1 - math.exp(-1 / tau_slow))), device=device))
     return model
@@ -1660,20 +1689,26 @@ class FlyBPTTLearner:
         local = None
         if getattr(self.model, 'dopamine_sensitivity', None) is not None and next_state.dopamine.numel():
             # A fixed rule (never learned from the loss): the update of every synapse is scaled by the dopamine
-            # concentration at its postsynaptic neuron relative to the mean over the dopamine targets, within [1/4, 4];
-            # neurons that receive no dopamine keep the plain update.
+            # concentration at its postsynaptic neuron (or, with model.dopamine_site == 'pre', at its presynaptic
+            # terminal) relative to the mean over the dopamine targets (adapted: relative to that neuron's own slow
+            # level), within [1/4, 4]; neurons that receive no dopamine keep the plain update.
             conc = next_state.dopamine[0].detach()
             targets = conc > 0
             local = torch.ones_like(conc)
             if bool(targets.any()):
-                local[targets] = (conc[targets] / conc[targets].mean().clamp_min(1e-9)).clamp(0.25, 4.0)
+                level = conc[targets].mean().clamp_min(1e-9)
+                if getattr(self.model, 'dopamine_adapted', False):
+                    slow = next_state.dopamine[1].detach()[targets]
+                    local[targets] = (1.0 + (conc[targets] - slow) / (slow + level)).clamp(0.25, 4.0)
+                else:
+                    local[targets] = (conc[targets] / level).clamp(0.25, 4.0)
             before = [w.detach().clone() for w in self.edges]
         self.sgd.step()
         if local is not None:
             with torch.no_grad():
+                site = getattr(self.model, 'dopamine_site', 'post')
                 for name, w, old in zip(self.edge_names, self.edges, before):
-                    post = getattr(self.model, 'edge_post' + name[len('edge_weight'):]).long()
-                    w.copy_(old + (w - old) * local[post])
+                    w.copy_(old + (w - old) * dopamine_edge_scale(self.model, name[len('edge_weight'):], local, site))
             self.last_dopamine_plasticity_spread = float(local[local != 1].std()) if bool((local != 1).any()) else 0.0
         for group, rate in zip(self.sgd.param_groups, base_rates):
             group['lr'] = rate

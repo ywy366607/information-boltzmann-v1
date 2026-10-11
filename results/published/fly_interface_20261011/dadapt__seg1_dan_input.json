@@ -1,0 +1,138 @@
+{
+ "fork": "scratch\\fly_stream\\dadapt",
+ "groups": [
+  "core: other (clock)",
+  "Kenyon cells",
+  "MB output neurons",
+  "central complex",
+  "dopamine cells",
+  "rest of the brain"
+ ],
+ "weights_onto_dopamine_cells": {
+  "exc": {
+   "core: other (clock)": {
+    "birth": 38.56440995870071,
+    "learned": 368.5205383300781,
+    "ratio": 9.555975022688877
+   },
+   "Kenyon cells": {
+    "birth": 69.92311965164845,
+    "learned": 410.17559814453125,
+    "ratio": 5.866094078582223
+   },
+   "MB output neurons": {
+    "birth": 1.0637086863061995,
+    "learned": 10.206951141357422,
+    "ratio": 9.595626389779472
+   },
+   "central complex": {
+    "birth": 5.9168420566711575,
+    "learned": 24.41813087463379,
+    "ratio": 4.126885700304047
+   },
+   "dopamine cells": {
+    "birth": 0.0,
+    "learned": 0.0,
+    "ratio": 0.0
+   },
+   "rest of the brain": {
+    "birth": 6.371553261997178,
+    "learned": 44.64529800415039,
+    "ratio": 7.0069724238883975
+   }
+  },
+  "inh": {
+   "core: other (clock)": {
+    "birth": 21.24192079128261,
+    "learned": 49.816287994384766,
+    "ratio": 2.345187541365312
+   },
+   "Kenyon cells": {
+    "birth": 0.0,
+    "learned": 0.0,
+    "ratio": 0.0
+   },
+   "MB output neurons": {
+    "birth": 1.8621293750838959,
+    "learned": 3.5603206157684326,
+    "ratio": 1.9119620061887628
+   },
+   "central complex": {
+    "birth": 3.977710633807874,
+    "learned": 7.617680072784424,
+    "ratio": 1.9150915624779867
+   },
+   "dopamine cells": {
+    "birth": 0.0,
+    "learned": 0.0,
+    "ratio": 0.0
+   },
+   "rest of the brain": {
+    "birth": 2.2476598731736885,
+    "learned": 5.0872344970703125,
+    "ratio": 2.263347118390806
+   }
+  }
+ },
+ "drive": {
+  "core: other (clock)": {
+   "share_of_mean_drive_exc": 0.6478232741355896,
+   "share_of_mean_drive_inh": 0.8315008878707886,
+   "share_of_net_drive_variance": 0.5071540191541684,
+   "spearman_word_drive_with_rarity": 0.12363496703066888
+  },
+  "Kenyon cells": {
+   "share_of_mean_drive_exc": 0.2465316206216812,
+   "share_of_mean_drive_inh": 0.0,
+   "share_of_net_drive_variance": 0.45290798515948166,
+   "spearman_word_drive_with_rarity": 0.09189935276161094
+  },
+  "MB output neurons": {
+   "share_of_mean_drive_exc": 0.02492309920489788,
+   "share_of_mean_drive_inh": 0.06282050907611847,
+   "share_of_net_drive_variance": 0.010423926944393872,
+   "spearman_word_drive_with_rarity": 0.0536840786969801
+  },
+  "central complex": {
+   "share_of_mean_drive_exc": 0.00794404000043869,
+   "share_of_mean_drive_inh": 0.04999200999736786,
+   "share_of_net_drive_variance": 0.004488329360349784,
+   "spearman_word_drive_with_rarity": 0.018859700538023112
+  },
+  "dopamine cells": {
+   "share_of_mean_drive_exc": 0.0,
+   "share_of_mean_drive_inh": 0.0,
+   "share_of_net_drive_variance": 0.0,
+   "spearman_word_drive_with_rarity": NaN
+  },
+  "rest of the brain": {
+   "share_of_mean_drive_exc": 0.07277786731719971,
+   "share_of_mean_drive_inh": 0.05568648874759674,
+   "share_of_net_drive_variance": 0.025121247728137404,
+   "spearman_word_drive_with_rarity": 0.1702023372458795
+  }
+ },
+ "dopamine_cells": {
+  "rate_min": 0.0,
+  "rate_median": 0.11495130509138107,
+  "rate_mean": 0.14465069770812988,
+  "rate_max": 1.0,
+  "share_silent(<1%)": 0.05357142857142857,
+  "share_tonic(>50%)": 0.002551020408163265,
+  "population_period_ticks": 120,
+  "autocorr_at_period": 0.41729938983917236,
+  "corr_net_drive_with_spikes_lag0..4": [
+   -0.08872292079926176,
+   -0.00032336592396947135,
+   0.003571618961400275,
+   -0.094924200336318,
+   0.14706556899279685
+  ],
+  "spearman_word_spikes_with_rarity": 0.021982469190924673
+ },
+ "signal_at_targets": {
+  "phasic_temporal_sd_rel_tonic": 0.0019139139422919543,
+  "concentration_spread_across_targets_sd": 2.4354746341705322,
+  "concentration_temporal_sd_per_target_mean": 0.010419826954603195
+ }
+}
