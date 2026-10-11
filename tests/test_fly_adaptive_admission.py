@@ -1,4 +1,5 @@
 import math
+import numpy as np
 import pytest
 import torch
 import torch.nn.functional as F
@@ -337,13 +338,13 @@ def test_giant_fiber_go_halts_on_its_own_spike_and_learns(fly_model_and_state):
         start = dataclasses.replace(state, h=torch.rand_like(state.h))
         with torch.no_grad():
             box = []
-            s1, lat, pulse, _, later = advance_fly_token_go(model, start.detached(), torch.tensor([77], device=device),
+            s1, lat, pulse, _, later, _ = advance_fly_token_go(model, start.detached(), torch.tensor([77], device=device),
                                                             box, max_ticks=12, writer_baseline_clock='physical')
             assert box[0] == lat.shape[0] == pulse.shape[0] and later.shape == lat[-1:].shape
             # silent before the realized tick, firing on it (unless the ceiling ended the token)
             assert torch.all(pulse[:-1] == 0) and (bool(pulse[-1] > 0) or box[0] == 12)
             again = [box[0]]
-            s2, lat2, _, _, _ = advance_fly_token_go(model, start.detached(), torch.tensor([77], device=device), again,
+            s2, lat2, _, _, _, _ = advance_fly_token_go(model, start.detached(), torch.tensor([77], device=device), again,
                                                       max_ticks=12, writer_baseline_clock='physical')
             assert torch.equal(lat, lat2) and torch.equal(s1.h, s2.h)
         learner = FlyBPTTLearner(model, start, lr=2e-4, writer_baseline_clock="physical", use_checkpointing=True,
@@ -481,5 +482,91 @@ def test_intrinsic_drive_makes_annotated_pacemakers_fire_alone(fly_model_and_sta
     finally:
         delattr(model, 'intrinsic_kappa')
         model._buffers.pop('intrinsic_index', None)
+        for p in model.parameters():
+            p.requires_grad_(False)
+
+
+def test_mixed_world_listen_and_gap_windows(fly_model_and_state):
+    """Listen: every word takes exactly k ticks.  Gap: a silent stretch after the act; the word after it is scored at
+    the end of the silence and the loss reaches the read through the gap."""
+    import dataclasses
+    from information_boltzmann.core.fly_bptt_learning import attach_go_neuron, attach_read_bank
+    model, state, device = fly_model_and_state
+    if device != "cuda":
+        pytest.skip("fused AdamW needs CUDA")
+    attach_go_neuron(model)
+    attach_read_bank(model)
+    try:
+        start = dataclasses.replace(state, h=torch.rand_like(state.h))
+        learner = FlyBPTTLearner(model, start, lr=2e-4, writer_baseline_clock="physical", use_checkpointing=True,
+                                 go_neuron=True, go_max_ticks=12, lambda_mcr2=0.0)
+        learner.previous_token = 50
+        tokens = np.array([101, 205, 307], dtype=np.int64)
+        learner.world = {'mode': 'listen', 'k': 3}
+        before = learner.physical_ticks
+        scores, _ = learner.observe(tokens)
+        assert all(np.isfinite(scores)) and learner.physical_ticks - before == 9
+        learner.world = {'mode': 'gap', 'gaps': [0, 5, 0]}
+        before = learner.physical_ticks
+        scores, metrics = learner.observe(tokens)
+        assert all(np.isfinite(scores)) and metrics['world_gap_ticks'] == 5
+        assert learner.physical_ticks - before == metrics['adaptive_total_ticks'] >= 5 + 3
+    finally:
+        for name in ('go_read', 'go_drive', 'go_reset', 'go_logit_leak', 'read_bank_gain', 'read_bank_logit_decay',
+                     'read_bank_decay'):
+            if hasattr(model, name):
+                delattr(model, name)
+        model._buffers.pop('synapse_share', None)
+        for p in model.parameters():
+            p.requires_grad_(False)
+
+
+def test_precision_starts_neutral_and_learns_through_the_modulators(fly_model_and_state):
+    """Neuromodulatory precision: gains start at exactly 1 (the drive is unchanged), the concentration trace follows the
+    modulatory spikes, the loss reaches u, b and the trace's time constant, and dopamine sets the synapses' learning
+    rate within [1/4, 4]."""
+    import dataclasses
+    from information_boltzmann.core.fly_bptt_learning import (attach_precision, attach_go_neuron, attach_read_bank,
+                                                              attach_intrinsic_drive, step_fly_physical_tick,
+                                                              PRECISION_PARAMETER_NAMES)
+    model, state, device = fly_model_and_state
+    if device != "cuda":
+        pytest.skip("fused AdamW needs CUDA")
+    graph, notes = "data/malecns_v1/fly_reservoir_coba.npz", "data/malecns_v1/body-annotations.feather"
+    attach_go_neuron(model)
+    attach_read_bank(model)
+    attach_intrinsic_drive(model, graph, notes)
+    n_mod, n_da = attach_precision(model, graph, notes)
+    try:
+        assert 300 < n_mod < 600 and 300 < n_da <= n_mod
+        start = dataclasses.replace(state, h=torch.rand_like(state.h))
+        opts = dict(base_rates=model.get_decay_rates(), thresholds=model.get_thresholds())
+        drive = torch.zeros_like(start.h)
+        drive[0, model.topographic_writer.injection_index] = 1.0
+        with torch.no_grad():
+            s1 = step_fly_physical_tick(model, start, None, drive, start.baseline, opts)
+            assert s1.modulator.shape == (1, n_mod) and float(s1.modulator.max()) <= 1.0
+            gain = 2 * torch.sigmoid(s1.modulator @ model.precision_u.T + model.precision_b)
+            assert torch.allclose(gain, torch.ones_like(gain))
+        learner = FlyBPTTLearner(model, start, lr=2e-4, writer_baseline_clock="physical", use_checkpointing=True,
+                                 go_neuron=True, go_max_ticks=12, lambda_mcr2=0.0)
+        learner.previous_token = 50
+        model.zero_grad(set_to_none=True)
+        learner.state = start.detached()
+        learner.forward_window(torch.tensor([[50, 101, 205]], device=device), torch.tensor([[101, 205, 307]], device=device))
+        learner.last_train_loss.mean().backward()
+        for name in PRECISION_PARAMETER_NAMES:
+            assert getattr(model, name).grad is not None and torch.isfinite(getattr(model, name).grad).all(), name
+        learner.state = start.detached()
+        _, metrics = learner.observe(np.array([101, 205, 307], dtype=np.int64))
+        assert 0.25 <= metrics['dopamine_plasticity'] <= 4.0
+    finally:
+        for name in ('go_read', 'go_drive', 'go_reset', 'go_logit_leak', 'read_bank_gain', 'read_bank_logit_decay',
+                     'read_bank_decay', 'intrinsic_kappa', 'precision_u', 'precision_b', 'modulator_logit_decay',
+                     'precision_scale'):
+            if hasattr(model, name):
+                delattr(model, name)
+        for b in ('synapse_share', 'intrinsic_index', 'modulatory_index', 'dopamine_mask'):
+            model._buffers.pop(b, None)
         for p in model.parameters():
             p.requires_grad_(False)

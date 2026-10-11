@@ -1,0 +1,92 @@
+{
+ "fork": "scratch\\fly_stream\\precision_gb",
+ "precision": true,
+ "worlds_full": {
+  "read": 7.343877037676672,
+  "listen_k4": 7.7386609246023,
+  "gap16_after": 8.045872919261456
+ },
+ "worlds_neutral_precision": {
+  "read": 7.346934127660158,
+  "listen_k4": 7.739783796404178,
+  "gap16_after": 8.046860727171103
+ },
+ "worlds_modulators_silenced": {
+  "read": 7.3451575459524365,
+  "listen_k4": 7.739544753838952,
+  "gap16_after": 8.030694543073574
+ },
+ "surprise_tracking": {
+  "spearman_error_vs_dopamine_after": -0.014310437198956296,
+  "spearman_error_vs_gain_after": 0.028084604620915006,
+  "spearman_error_vs_ticks": 0.07418066654571949
+ },
+ "episodes": {
+  "8": {
+   "error": {
+    "z_during_chaos": 0.013264354124392239,
+    "z_first_8_after": -0.12061707658067666,
+    "words_until_back": 0
+   },
+   "dopamine": {
+    "z_during_chaos": -0.8079035280409651,
+    "z_first_8_after": 0.09614760695509873,
+    "words_until_back": 0
+   },
+   "gain": {
+    "z_during_chaos": -0.5131394100836024,
+    "z_first_8_after": -0.1559065332171622,
+    "words_until_back": 0
+   },
+   "ticks": {
+    "z_during_chaos": 0.43811134864582735,
+    "z_first_8_after": 0.850451441488959,
+    "words_until_back": 0
+   }
+  },
+  "16": {
+   "error": {
+    "z_during_chaos": 0.3219308360506523,
+    "z_first_8_after": -0.7995330849683118,
+    "words_until_back": 0
+   },
+   "dopamine": {
+    "z_during_chaos": -0.2622869819521842,
+    "z_first_8_after": 0.08946172343398398,
+    "words_until_back": 0
+   },
+   "gain": {
+    "z_during_chaos": -0.02642871774260247,
+    "z_first_8_after": -0.1926751550263756,
+    "words_until_back": 0
+   },
+   "ticks": {
+    "z_during_chaos": 0.12885627901347863,
+    "z_first_8_after": 0.02577125580269575,
+    "words_until_back": 0
+   }
+  },
+  "32": {
+   "error": {
+    "z_during_chaos": 0.5202974900487267,
+    "z_first_8_after": 0.6864649641013784,
+    "words_until_back": 0
+   },
+   "dopamine": {
+    "z_during_chaos": -0.049000779614176274,
+    "z_first_8_after": -0.41749793445161215,
+    "words_until_back": 0
+   },
+   "gain": {
+    "z_during_chaos": -0.0033956236393455352,
+    "z_first_8_after": -0.03651285312033738,
+    "words_until_back": 0
+   },
+   "ticks": {
+    "z_during_chaos": 0.20617004642156583,
+    "z_first_8_after": 0.2319413022242616,
+    "words_until_back": 0
+   }
+  }
+ }
+}

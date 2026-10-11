@@ -25,7 +25,7 @@ from information_boltzmann.core.fly_reservoir import FlyReservoirLM
 from information_boltzmann.core.fly_bptt_learning import (
     FlyPhysicalState, FlyBPTTLearner, FlyBPTTGraph, STP_PARAMETER_NAMES,
     GO_PARAMETER_NAMES, attach_go_neuron, attach_connectome_go, READ_BANK_PARAMETER_NAMES, attach_read_bank,
-    INTRINSIC_PARAMETER_NAMES, attach_intrinsic_drive,
+    INTRINSIC_PARAMETER_NAMES, attach_intrinsic_drive, PRECISION_PARAMETER_NAMES, attach_precision,
 )
 from information_boltzmann.runtime.lifelong_evaluation import recovery_summary, savings_summary
 from information_boltzmann.runtime.prequential_meter import FirstPassPredictionMeter
@@ -133,6 +133,8 @@ def resolve_learning_modes(args, previous_config, previous_learner):
         args.go_neuron = previous_go if isinstance(previous_go, str) else ('virtual' if previous_go else 'none')
     if args.go_neuron == 'none':
         args.go_neuron = None
+    if getattr(args, 'precision', None) is None:
+        args.precision = bool(previous_config.get('precision', False))
     if getattr(args, 'intrinsic', None) is None:
         args.intrinsic = bool(previous_config.get('intrinsic', False))
     if getattr(args, 'read_bank', None) is None:
@@ -198,6 +200,14 @@ def main():
     parser.add_argument('--intrinsic', action=argparse.BooleanOptionalAction, default=None,
                         help='Release the spontaneously active cells annotated in the connectome (clock, dopaminergic, '
                              'octopaminergic, serotonergic, DPM, APL) with a learnable intrinsic current (omitted = inherit)')
+    parser.add_argument('--precision', action=argparse.BooleanOptionalAction, default=None,
+                        help='Precision carried by the neuromodulatory cells: their concentration trace scales the '
+                             'written innovation per sensory pathway (attention) and dopamine scales the synaptic '
+                             'learning rate (omitted = inherit)')
+    parser.add_argument('--mixed-world', action='store_true',
+                        help='Training windows alternate worlds: self-paced reading (go neuron), being spoken to '
+                             '(external pace, k ticks per word, k random 3..8), and reading with silent gaps (each word '
+                             'with probability 1/4 is followed by 8..32 silent ticks). Evaluation stays self-paced reading.')
     parser.add_argument('--read-bank', action=argparse.BooleanOptionalAction, default=None,
                         help='Read without a window: learnable exponential filters of the motor membranes along the '
                              'whole tick stream, starting as the plain read (omitted = inherit)')
@@ -495,6 +505,9 @@ def main():
         if args.intrinsic:
             released = attach_intrinsic_drive(model, args.graph, args.graph.parent / 'body-annotations.feather')
             print(f'Released {int(model.intrinsic_index.numel())} spontaneously active cells: {released}', flush=True)
+        if args.precision:
+            n_mod, n_da = attach_precision(model, args.graph, args.graph.parent / 'body-annotations.feather')
+            print(f'Precision carried by {n_mod} neuromodulatory cells ({n_da} dopaminergic)', flush=True)
         weights = {key: value for key, value in saved['model'].items()
                    if key not in ('edge_weight_e', 'edge_weight_i')}
         if args.reinit_read_gamma:
@@ -504,7 +517,7 @@ def main():
             for name in ('edge_weight_e', 'edge_weight_i'):
                 getattr(model, name).copy_(saved['model'][name])
             loaded = model.load_state_dict(weights, strict=False)
-            missing = [k for k in loaded.missing_keys if k != 'logit_read_gamma' and not k.startswith('latent_predictor.') and not k.startswith('graph_observer.') and k not in GO_PARAMETER_NAMES and k not in READ_BANK_PARAMETER_NAMES and k not in INTRINSIC_PARAMETER_NAMES]
+            missing = [k for k in loaded.missing_keys if k != 'logit_read_gamma' and not k.startswith('latent_predictor.') and not k.startswith('graph_observer.') and k not in GO_PARAMETER_NAMES and k not in READ_BANK_PARAMETER_NAMES and k not in INTRINSIC_PARAMETER_NAMES and k not in PRECISION_PARAMETER_NAMES]
             unexpected = [k for k in loaded.unexpected_keys if not k.startswith('latent_predictor.') and not k.startswith('graph_observer.')]
             if unexpected or missing:
                 raise ValueError(f'Weight migration mismatch: unexpected={unexpected}, missing={missing}')
@@ -551,6 +564,8 @@ def main():
             newly_trainable += [name for name in READ_BANK_PARAMETER_NAMES if name not in names]
         if args.intrinsic:
             newly_trainable += [name for name in INTRINSIC_PARAMETER_NAMES if name not in names]
+        if args.precision:
+            newly_trainable += [name for name in PRECISION_PARAMETER_NAMES if name not in names]
         if args.use_latent_predictor and model.latent_predictor is not None:
             for p_name, _ in model.latent_predictor.named_parameters():
                 full_name = f'latent_predictor.{p_name}'
@@ -858,7 +873,7 @@ def main():
             'physical_ticks_per_input': learner.stream_ticks or 1+learner.settle_ticks,
             'settle_ticks': learner.settle_ticks,
             'stream_ticks': learner.stream_ticks, 'hold_input': learner.hold_input, 'read_lag': learner.read_lag,
-            'go_neuron': learner.go_neuron,
+            'go_neuron': learner.go_neuron, 'world_windows': dict(world_counts),
             'writer_baseline_clock': learner.writer_baseline_clock,
             'bptt_optimizer_updates': learner.updates,
             'stp_learning_enabled': learner.learn_stp,
@@ -878,7 +893,14 @@ def main():
                     row[f'obs_metric_{k}'] = float(v)
         if getattr(learner, 'go_neuron', False):
             for k_go, v_go in getattr(learner, 'last_adaptive_metrics', {}).items():
-                row[k_go] = float(v_go)
+                row[k_go] = float(v_go) if isinstance(v_go, (int, float)) else v_go
+            if getattr(model, 'precision_u', None) is not None and learner.state.modulator.numel():
+                m = learner.state.modulator.detach()
+                gain = 2 * torch.sigmoid(m @ model.precision_u.detach().T + model.precision_b.detach())[0]
+                row.update(attention_gain_visual=float(gain[0]), attention_gain_chemo=float(gain[1]),
+                           attention_gain_mechano=float(gain[2]), modulator_mean=float(m.mean()),
+                           dopamine_level=float(m[0, model.dopamine_mask].mean()),
+                           modulator_tau=float(-1 / torch.log(torch.sigmoid(model.modulator_logit_decay.detach()))))
             if getattr(model, 'intrinsic_kappa', None) is not None:
                 kap = model.intrinsic_kappa.detach()
                 spikes = (learner.state.ring[0][0, model.intrinsic_index] > 0).float()
@@ -948,11 +970,29 @@ def main():
                 'model': dict(model.named_parameters()), 'config': config,
                 'bptt_train_tokens': trained, 'best_live_nll': best})
 
-    def observe(values):
+    world_rng = np.random.default_rng(1234)
+    world_counts = {'read': 0, 'listen': 0, 'gap': 0}
+
+    def sample_world(n):
+        # The world, not the model: its pace and its silences.  Fractions 1/2 read, 1/4 listen, 1/4 gaps.
+        u = world_rng.random()
+        if u < 0.5:
+            return {'mode': 'read'}
+        if u < 0.75:
+            return {'mode': 'listen', 'k': int(world_rng.integers(3, 9))}
+        gaps = np.where(world_rng.random(n) < 0.25, world_rng.integers(8, 33, n), 0).tolist()
+        return {'mode': 'gap', 'gaps': gaps}
+
+    def observe(values, training=False):
         nonlocal last_grad
         scores = []
         for left in range(0, len(values), args.window):
+            world = sample_world(min(args.window, len(values) - left)) if (training and args.mixed_world) else None
+            learner.world = world
+            if world is not None:
+                world_counts[world['mode']] += 1
             chunk, last_grad = learner.observe(np.array(values[left:left+args.window], dtype=np.int64))
+            learner.world = None
             scores.extend(chunk)
             if max(torch.cuda.memory_reserved(), torch.cuda.max_memory_allocated()) / 2**20 > args.vram_limit_mib:
                 raise MemoryError('CUDA allocation/reservation exceeded the registered 3900 MiB budget')
@@ -962,7 +1002,7 @@ def main():
         while trained < target:
             values = np.array(train[cursor+1:cursor+args.window+1], dtype=np.int64)
             begin = time.perf_counter()
-            scores = observe(values)
+            scores = observe(values, training=True)
             torch.cuda.synchronize()
             seconds = time.perf_counter() - begin
             cursor += args.window

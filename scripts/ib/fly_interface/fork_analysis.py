@@ -74,7 +74,7 @@ fl.step_fly_physical_tick = step
 
 def advance(state, token):
     if cfg.get('go_neuron'):
-        state, lat, _, _, _ = fl.advance_fly_token_go(model, state, token, [], max_ticks=max_ticks,
+        state, lat, _, _, _, _ = fl.advance_fly_token_go(model, state, token, [], max_ticks=max_ticks,
                                                       writer_baseline_clock='physical', **opts)
         return state, lat[-1:], lat.shape[0]
     box = [None]

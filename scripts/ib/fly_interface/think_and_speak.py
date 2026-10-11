@@ -49,7 +49,7 @@ log_freq = np.log(counts / counts.sum())
 
 
 def advance(state, token):
-    state, lat, _, _, _ = fl.advance_fly_token_go(model, state, torch.tensor([int(token)], device='cuda'), [],
+    state, lat, _, _, _, _ = fl.advance_fly_token_go(model, state, torch.tensor([int(token)], device='cuda'), [],
                                                   max_ticks=max_ticks, writer_baseline_clock='physical', **opts)
     return state, lat
 
