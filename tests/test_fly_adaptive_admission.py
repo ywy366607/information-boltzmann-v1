@@ -600,3 +600,50 @@ def test_predictive_writer_injects_surprise(fly_model_and_state):
         delattr(model, 'writer_prediction_logit')
         for p in model.parameters():
             p.requires_grad_(False)
+
+
+def test_dopamine_modulation_along_the_connectome(fly_model_and_state):
+    """Dopamine delivered along the graph's modulatory projections: no effect at the start (sensitivity 0), a fast and a
+    slow concentration per neuron, gradients into the sensitivities and into the synapses onto the dopamine cells, and a
+    postsynaptic plasticity scaling within [1/4, 4]."""
+    import dataclasses
+    from information_boltzmann.core.fly_bptt_learning import (attach_dopamine_modulation, attach_go_neuron,
+                                                              step_fly_physical_tick, DOPAMINE_PARAMETER_NAMES)
+    model, state, device = fly_model_and_state
+    if device != "cuda" or not model.has_dopamine:
+        pytest.skip("needs CUDA and the dopaminergic projections")
+    attach_go_neuron(model)
+    try:
+        torch.manual_seed(5)
+        start = dataclasses.replace(state, h=torch.rand_like(state.h))
+        opts = dict(base_rates=model.get_decay_rates(), thresholds=model.get_thresholds())
+        with torch.no_grad():
+            plain = step_fly_physical_tick(model, start, None, torch.zeros_like(start.h), start.baseline, opts)
+        attach_dopamine_modulation(model)
+        with torch.no_grad():
+            s1 = step_fly_physical_tick(model, start, None, torch.zeros_like(start.h), start.baseline, opts)
+            s2 = step_fly_physical_tick(model, s1, None, torch.zeros_like(s1.h), s1.baseline, opts)
+        assert torch.equal(plain.h, s1.h)                     # sensitivity 0: nothing changes
+        assert s2.dopamine.shape == (2, model.n_neurons)
+        learner = FlyBPTTLearner(model, start, lr=2e-4, writer_baseline_clock="physical", use_checkpointing=True,
+                                 go_neuron=True, go_max_ticks=10, lambda_mcr2=0.0)
+        learner.previous_token = 50
+        model.dopamine_sensitivity.data.fill_(0.5)
+        model.zero_grad(set_to_none=True)
+        learner.state = s2.detached()
+        learner.forward_window(torch.tensor([[50, 101, 205]], device=device), torch.tensor([[101, 205, 307]], device=device))
+        learner.last_train_loss.mean().backward()
+        for name in DOPAMINE_PARAMETER_NAMES:
+            assert getattr(model, name).grad is not None and torch.isfinite(getattr(model, name).grad).all(), name
+        onto_dan = torch.isin(model.edge_post_e.long(), model.dan_indices)
+        assert model.edge_weight_e.grad[onto_dan].abs().sum() > 0
+        learner.state = s2.detached()
+        _, metrics = learner.observe(np.array([101, 205, 307], dtype=np.int64))
+        assert 'dopamine_plasticity_spread' in metrics
+    finally:
+        for name in ('go_read', 'go_drive', 'go_reset', 'go_logit_leak') + DOPAMINE_PARAMETER_NAMES:
+            if hasattr(model, name):
+                delattr(model, name)
+        model._buffers.pop('synapse_share', None)
+        for p in model.parameters():
+            p.requires_grad_(False)

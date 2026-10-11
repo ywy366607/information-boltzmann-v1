@@ -32,6 +32,8 @@ def load(fork):
         fl.attach_read_bank(model)
     if cfg.get('intrinsic'):
         fl.attach_intrinsic_drive(model, graph, graph.parent / 'body-annotations.feather')
+    if cfg.get('dopamine_modulation'):
+        fl.attach_dopamine_modulation(model)
     if cfg.get('predictive_writer'):
         fl.attach_predictive_writer(model)
     if cfg.get('precision'):

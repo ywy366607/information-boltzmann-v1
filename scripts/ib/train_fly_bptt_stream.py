@@ -26,7 +26,7 @@ from information_boltzmann.core.fly_bptt_learning import (
     FlyPhysicalState, FlyBPTTLearner, FlyBPTTGraph, STP_PARAMETER_NAMES,
     GO_PARAMETER_NAMES, attach_go_neuron, attach_connectome_go, READ_BANK_PARAMETER_NAMES, attach_read_bank,
     INTRINSIC_PARAMETER_NAMES, attach_intrinsic_drive, PRECISION_PARAMETER_NAMES, attach_precision,
-    PREDICTIVE_PARAMETER_NAMES, attach_predictive_writer,
+    PREDICTIVE_PARAMETER_NAMES, attach_predictive_writer, DOPAMINE_PARAMETER_NAMES, attach_dopamine_modulation,
 )
 from information_boltzmann.runtime.lifelong_evaluation import recovery_summary, savings_summary
 from information_boltzmann.runtime.prequential_meter import FirstPassPredictionMeter
@@ -134,6 +134,8 @@ def resolve_learning_modes(args, previous_config, previous_learner):
         args.go_neuron = previous_go if isinstance(previous_go, str) else ('virtual' if previous_go else 'none')
     if args.go_neuron == 'none':
         args.go_neuron = None
+    if getattr(args, 'dopamine_modulation', None) is None:
+        args.dopamine_modulation = bool(previous_config.get('dopamine_modulation', False))
     if getattr(args, 'predictive_writer', None) is None:
         args.predictive_writer = bool(previous_config.get('predictive_writer', False))
     if getattr(args, 'precision', None) is None:
@@ -210,6 +212,10 @@ def main():
     parser.add_argument('--predictive-writer', action=argparse.BooleanOptionalAction, default=None,
                         help='Predictive-coding writer: the innovation is taken against a mix of the adaptation '
                              'baseline and the brain own spoken prediction (learnable mix, start 1/2; omitted = inherit)')
+    parser.add_argument('--dopamine-modulation', action=argparse.BooleanOptionalAction, default=None,
+                        help='Dopamine as a neuromodulator along the connectome projections: its phasic part scales '
+                             'target thresholds (per-superclass sensitivity, start 0) and its concentration scales the '
+                             'learning of synapses onto the targets (omitted = inherit)')
     parser.add_argument('--mixed-world', action='store_true',
                         help='Training windows alternate worlds: self-paced reading (go neuron), being spoken to '
                              '(external pace, k ticks per word, k random 3..8), and reading with silent gaps (each word '
@@ -513,6 +519,8 @@ def main():
             print(f'Released {int(model.intrinsic_index.numel())} spontaneously active cells: {released}', flush=True)
         if args.predictive_writer:
             attach_predictive_writer(model)
+        if args.dopamine_modulation:
+            attach_dopamine_modulation(model)
         if args.precision:
             n_mod, n_da = attach_precision(model, args.graph, args.graph.parent / 'body-annotations.feather')
             print(f'Precision carried by {n_mod} neuromodulatory cells ({n_da} dopaminergic)', flush=True)
@@ -525,7 +533,7 @@ def main():
             for name in ('edge_weight_e', 'edge_weight_i'):
                 getattr(model, name).copy_(saved['model'][name])
             loaded = model.load_state_dict(weights, strict=False)
-            missing = [k for k in loaded.missing_keys if k != 'logit_read_gamma' and not k.startswith('latent_predictor.') and not k.startswith('graph_observer.') and k not in GO_PARAMETER_NAMES and k not in READ_BANK_PARAMETER_NAMES and k not in INTRINSIC_PARAMETER_NAMES and k not in PRECISION_PARAMETER_NAMES and k not in PREDICTIVE_PARAMETER_NAMES]
+            missing = [k for k in loaded.missing_keys if k != 'logit_read_gamma' and not k.startswith('latent_predictor.') and not k.startswith('graph_observer.') and k not in GO_PARAMETER_NAMES and k not in READ_BANK_PARAMETER_NAMES and k not in INTRINSIC_PARAMETER_NAMES and k not in PRECISION_PARAMETER_NAMES and k not in PREDICTIVE_PARAMETER_NAMES and k not in DOPAMINE_PARAMETER_NAMES]
             unexpected = [k for k in loaded.unexpected_keys if not k.startswith('latent_predictor.') and not k.startswith('graph_observer.')]
             if unexpected or missing:
                 raise ValueError(f'Weight migration mismatch: unexpected={unexpected}, missing={missing}')
@@ -576,6 +584,8 @@ def main():
             newly_trainable += [name for name in PRECISION_PARAMETER_NAMES if name not in names]
         if args.predictive_writer:
             newly_trainable += [name for name in PREDICTIVE_PARAMETER_NAMES if name not in names]
+        if args.dopamine_modulation:
+            newly_trainable += [name for name in DOPAMINE_PARAMETER_NAMES if name not in names]
         if args.use_latent_predictor and model.latent_predictor is not None:
             for p_name, _ in model.latent_predictor.named_parameters():
                 full_name = f'latent_predictor.{p_name}'
@@ -904,6 +914,15 @@ def main():
         if getattr(learner, 'go_neuron', False):
             for k_go, v_go in getattr(learner, 'last_adaptive_metrics', {}).items():
                 row[k_go] = float(v_go) if isinstance(v_go, (int, float)) else v_go
+            if getattr(model, 'dopamine_sensitivity', None) is not None and learner.state.dopamine.numel():
+                dop = learner.state.dopamine.detach()
+                sens = model.dopamine_sensitivity.detach()
+                row.update(dopamine_sensitivity_absmax=float(sens.abs().max()), dopamine_sensitivity_mean=float(sens.mean()),
+                           dopamine_concentration=float(dop[0].mean()),
+                           dopamine_phasic_sd=float(((dop[0] - dop[1]) / dop[1][dop[1] > 0].mean().clamp_min(1e-12))[dop[1] > 0].std()),
+                           dopamine_tau_fast=float(-1 / torch.log(torch.sigmoid(model.dopamine_logit_fast.detach()))),
+                           dopamine_tau_slow=float(-1 / torch.log(torch.sigmoid(model.dopamine_logit_slow.detach()))),
+                           dopamine_cells_firing=float((learner.state.ring[0][0, model.dan_indices] > 0).float().mean()))
             if getattr(model, 'writer_prediction_logit', None) is not None:
                 row['writer_prediction_beta'] = float(torch.sigmoid(model.writer_prediction_logit.detach()))
             if getattr(model, 'precision_u', None) is not None and learner.state.modulator.numel():

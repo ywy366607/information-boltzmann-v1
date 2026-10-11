@@ -49,6 +49,9 @@ class FlyPhysicalState:
     # Optional top-down prediction of the next input: the expected word embedding of the brain's last spoken
     # prediction [1, d_model] (predictive-coding writer).
     expected_input: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    # Optional dopamine at every neuron along the connectome's modulatory projections: fast concentration and its slow
+    # mean [2, N]; the phasic component is their difference.
+    dopamine: torch.Tensor = field(default_factory=lambda: torch.empty(0))
 
     def detached(self):
         return FlyPhysicalState(**{
@@ -97,6 +100,18 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
         current_in = kappa * thresholds.expand_as(current.h)[0, idx].detach() * g_leak
         source = (torch.zeros_like(current.h) if source is None else source).index_add(
             1, idx, current_in.unsqueeze(0))
+    dopamine = getattr(current, 'dopamine', torch.empty(0))
+    if getattr(model, 'dopamine_sensitivity', None) is not None and dopamine.numel():
+        # Dopamine modulates excitability where it is delivered: the phasic part (concentration minus its slow mean)
+        # scales the threshold, theta * exp(-s_class * phasic); s starts at 0 for every superclass.
+        # relative to the tonic level (mean slow concentration over the targets): dimensionless, parameter-free
+        tonic = dopamine[1:2]
+        level = tonic[tonic > 0].mean().detach().clamp_min(1e-12) if bool((tonic > 0).any()) else tonic.new_tensor(1.0)
+        phasic = (dopamine[0:1] - tonic) / level
+        s_class = model.dopamine_sensitivity[model.superclass_id].unsqueeze(0)
+        thresholds = options.get('thresholds')
+        thresholds = (thresholds if thresholds is not None else model.get_thresholds()).expand_as(current.h)
+        options = {**options, 'thresholds': thresholds * torch.exp(-s_class * phasic)}
     modulator = getattr(current, 'modulator', torch.empty(0))
     if getattr(model, 'precision_u', None) is not None and source is not None:
         # Precision = attention: each sensory pathway's written innovation is scaled by a gain set by the current
@@ -161,6 +176,14 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
         if modulator.numel() != model.modulatory_index.numel():
             modulator = h.new_zeros(1, model.modulatory_index.numel())
         modulator = rho * modulator + (1.0 - rho) * (ring[0][:, model.modulatory_index] > 0).float()
+    if getattr(model, 'dopamine_sensitivity', None) is not None:
+        arrival = execute_delayed_synaptic_transmission(ring, model.dan_edge_pre, model.dan_edge_post,
+                                                        model.dan_edge_weight, model.dan_delay_splits) / model.dan_scale
+        fast, slow = torch.sigmoid(model.dopamine_logit_fast), torch.sigmoid(model.dopamine_logit_slow)
+        if dopamine.numel() != 2 * h.numel():
+            dopamine = torch.cat([arrival, arrival], 0).detach()
+        conc = fast * dopamine[0:1] + (1.0 - fast) * arrival
+        dopamine = torch.cat([conc, slow * dopamine[1:2] + (1.0 - slow) * conc], 0)
     bank = getattr(current, 'read_bank', torch.empty(0))
     if getattr(model, 'read_bank_gain', None) is not None:
         motor_now = h[:, model.read_indices] if model.read_surface != 'all' else h
@@ -170,7 +193,7 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
         bank = decay * bank + (1.0 - decay) * motor_now
     return FlyPhysicalState(h, ring, ge, gi, b, x, u, next_baseline, h_mean, dan_gate, gz1, gz2,
                             current.observer_prior, getattr(current, 'observer_history', torch.empty(0)), bank,
-                            modulator, getattr(current, 'expected_input', torch.empty(0)))
+                            modulator, getattr(current, 'expected_input', torch.empty(0)), dopamine)
 
 
 def extract_fly_motor_latent(model, state):
@@ -654,6 +677,23 @@ def motor_feature(model, state, motor):
 
 
 PREDICTIVE_PARAMETER_NAMES = ('writer_prediction_logit',)
+DOPAMINE_PARAMETER_NAMES = ('dopamine_sensitivity', 'dopamine_logit_fast', 'dopamine_logit_slow')
+
+
+def attach_dopamine_modulation(model, tau_fast=50.0, tau_slow=500.0):
+    """Dopamine acts as a neuromodulator along the connectome's own projections (241,701 modulatory synapses of the
+    392 dopaminergic cells onto 39,850 targets): the dopamine delivered to each neuron forms a fast concentration and a
+    slow mean (time constants learnable, start 50 / 500 ticks); the phasic part (difference) scales that neuron's
+    threshold with a per-superclass sensitivity starting at 0, and the concentration scales how much the synapses onto
+    that neuron learn (FlyBPTTLearner).  Nothing changes at the start."""
+    if not getattr(model, 'has_dopamine', False):
+        raise ValueError('the graph has no dopaminergic projections')
+    device = model.read_indices.device
+    n_class = int(model.superclass_id.max()) + 1
+    model.dopamine_sensitivity = nn.Parameter(torch.zeros(n_class, device=device))
+    model.dopamine_logit_fast = nn.Parameter(torch.tensor(math.log(math.exp(-1 / tau_fast) / (1 - math.exp(-1 / tau_fast))), device=device))
+    model.dopamine_logit_slow = nn.Parameter(torch.tensor(math.log(math.exp(-1 / tau_slow) / (1 - math.exp(-1 / tau_slow))), device=device))
+    return model
 
 
 def attach_predictive_writer(model, beta=0.5):
@@ -1018,9 +1058,10 @@ class FlyBPTTLearner:
         # entries are ~0.04 at their natural scale, where the base rate already moves them ~1% per step.)
         go_scalars = ('go_drive', 'go_reset', 'go_logit_leak')
         bank_names = [name for name in READ_BANK_PARAMETER_NAMES + INTRINSIC_PARAMETER_NAMES + PRECISION_PARAMETER_NAMES
-                      + PREDICTIVE_PARAMETER_NAMES + go_scalars if name in named and name in self.adam_names
-                      + list(READ_BANK_PARAMETER_NAMES + INTRINSIC_PARAMETER_NAMES + PRECISION_PARAMETER_NAMES
-                             + PREDICTIVE_PARAMETER_NAMES)]
+                      + PREDICTIVE_PARAMETER_NAMES + DOPAMINE_PARAMETER_NAMES + go_scalars if name in named
+                      and name in self.adam_names + list(READ_BANK_PARAMETER_NAMES + INTRINSIC_PARAMETER_NAMES
+                                                         + PRECISION_PARAMETER_NAMES + PREDICTIVE_PARAMETER_NAMES
+                                                         + DOPAMINE_PARAMETER_NAMES)]
         self.adam_names = [name for name in self.adam_names if name not in bank_names]
         decayed = [named[name] for name in self.adam_names
                    if name in ('output_read.weight', 'decoder.weight') or (('latent_predictor' in name or 'graph_observer' in name) and name.endswith('.weight'))]
@@ -1129,7 +1170,7 @@ class FlyBPTTLearner:
         newly_trainable = set(newly_trainable)
         allowed_new = (set(STP_PARAMETER_NAMES) | {'logit_read_gamma'} | set(GO_PARAMETER_NAMES)
                        | set(READ_BANK_PARAMETER_NAMES) | set(INTRINSIC_PARAMETER_NAMES) | set(PRECISION_PARAMETER_NAMES)
-                       | set(PREDICTIVE_PARAMETER_NAMES))
+                       | set(PREDICTIVE_PARAMETER_NAMES) | set(DOPAMINE_PARAMETER_NAMES))
         if getattr(self.model, 'latent_predictor', None) is not None:
             allowed_new.update(f'latent_predictor.{n}' for n, _ in self.model.latent_predictor.named_parameters())
         if getattr(self.model, 'graph_observer', None) is not None:
@@ -1616,7 +1657,24 @@ class FlyBPTTLearner:
             plasticity = min(4.0, max(0.25, level / max(self.dopamine_mean, 1e-6)))
         base_rates = [group['lr'] for group in self.sgd.param_groups]
         self.sgd.param_groups[1]['lr'] = base_rates[1] * plasticity
+        local = None
+        if getattr(self.model, 'dopamine_sensitivity', None) is not None and next_state.dopamine.numel():
+            # A fixed rule (never learned from the loss): the update of every synapse is scaled by the dopamine
+            # concentration at its postsynaptic neuron relative to the mean over the dopamine targets, within [1/4, 4];
+            # neurons that receive no dopamine keep the plain update.
+            conc = next_state.dopamine[0].detach()
+            targets = conc > 0
+            local = torch.ones_like(conc)
+            if bool(targets.any()):
+                local[targets] = (conc[targets] / conc[targets].mean().clamp_min(1e-9)).clamp(0.25, 4.0)
+            before = [w.detach().clone() for w in self.edges]
         self.sgd.step()
+        if local is not None:
+            with torch.no_grad():
+                for name, w, old in zip(self.edge_names, self.edges, before):
+                    post = getattr(self.model, 'edge_post' + name[len('edge_weight'):]).long()
+                    w.copy_(old + (w - old) * local[post])
+            self.last_dopamine_plasticity_spread = float(local[local != 1].std()) if bool((local != 1).any()) else 0.0
         for group, rate in zip(self.sgd.param_groups, base_rates):
             group['lr'] = rate
         self.last_plasticity = plasticity
@@ -1646,6 +1704,8 @@ class FlyBPTTLearner:
         self.sgd.zero_grad(set_to_none=True)
         if getattr(self.model, 'precision_u', None) is not None:
             group_norms['dopamine_plasticity'] = float(getattr(self, 'last_plasticity', 1.0))
+        if getattr(self.model, 'dopamine_sensitivity', None) is not None:
+            group_norms['dopamine_plasticity_spread'] = float(getattr(self, 'last_dopamine_plasticity_spread', 0.0))
         return values, {'grad_norm_before_clip': float(grad_norm), **group_norms, **getattr(self, 'last_ctm_metrics', {}), **getattr(self, 'last_adaptive_metrics', {})}
 
     @torch.no_grad()
