@@ -24,6 +24,8 @@ sys.path.insert(0, str(ROOT))
 from information_boltzmann.core.fly_reservoir import FlyReservoirLM
 from information_boltzmann.core.fly_bptt_learning import (
     FlyPhysicalState, FlyBPTTLearner, FlyBPTTGraph, STP_PARAMETER_NAMES,
+    GO_PARAMETER_NAMES, attach_go_neuron, attach_connectome_go, READ_BANK_PARAMETER_NAMES, attach_read_bank,
+    INTRINSIC_PARAMETER_NAMES, attach_intrinsic_drive,
 )
 from information_boltzmann.runtime.lifelong_evaluation import recovery_summary, savings_summary
 from information_boltzmann.runtime.prequential_meter import FirstPassPredictionMeter
@@ -120,6 +122,32 @@ def resolve_learning_modes(args, previous_config, previous_learner):
     if getattr(args, 'adaptive_admission', None) is None:
         args.adaptive_admission = bool(previous_learner.get('adaptive_admission',
                                        previous_config.get('adaptive_admission', False)))
+    if getattr(args, 'stream_ticks', None) is None:
+        args.stream_ticks = int(previous_learner.get('stream_ticks', previous_config.get('stream_ticks', 0)))
+    if getattr(args, 'hold_input', None) is None:
+        args.hold_input = bool(previous_learner.get('hold_input', previous_config.get('hold_input', False)))
+    if getattr(args, 'read_lag', None) is None:
+        args.read_lag = int(previous_learner.get('read_lag', previous_config.get('read_lag', 0)))
+    if getattr(args, 'go_neuron', None) is None:
+        previous_go = previous_config.get('go_neuron', 'none')
+        args.go_neuron = previous_go if isinstance(previous_go, str) else ('virtual' if previous_go else 'none')
+    if args.go_neuron == 'none':
+        args.go_neuron = None
+    if getattr(args, 'intrinsic', None) is None:
+        args.intrinsic = bool(previous_config.get('intrinsic', False))
+    if getattr(args, 'read_bank', None) is None:
+        args.read_bank = bool(previous_config.get('read_bank', False))
+    if getattr(args, 'go_max_ticks', None) is None:
+        args.go_max_ticks = int(previous_learner.get('go_max_ticks', previous_config.get('go_max_ticks', 32)))
+    if getattr(args, 'go_tick_cost', None) is None:
+        args.go_tick_cost = float(previous_learner.get('go_tick_cost', previous_config.get('go_tick_cost', 0.0)))
+    if getattr(args, 'go_reference_energy', None) is None:
+        args.go_reference_energy = float(previous_learner.get('go_reference_energy',
+                                                              previous_config.get('go_reference_energy', 0.07)))
+    if args.go_neuron and args.stream_ticks:
+        raise ValueError('The go neuron (self-paced) and the streaming clock (externally paced) exclude each other')
+    if args.stream_ticks or args.go_neuron:
+        args.adaptive_admission = False          # the streaming clock never waits for settling
     if getattr(args, 'min_settle_ticks', None) is None:
         args.min_settle_ticks = int(previous_learner.get('min_settle_ticks',
                                     previous_config.get('min_settle_ticks', 3)))
@@ -157,6 +185,29 @@ def main():
                         help='Quiet physical ticks after each input pulse; default retains checkpoint timing')
     parser.add_argument('--adaptive-admission', action=argparse.BooleanOptionalAction, default=None,
                         help='Enable event-driven adaptive admission settling based on causal relaxation')
+    parser.add_argument('--stream-ticks', type=int, default=None,
+                        help='Streaming clock: every token occupies exactly this many physical ticks and the next token '
+                             'arrives regardless of settling (0 = serial pulse-settle-read; omitted = inherit)')
+    parser.add_argument('--hold-input', action=argparse.BooleanOptionalAction, default=None,
+                        help='Streaming: keep the token on the sensory surface for all its ticks (omitted = inherit)')
+    parser.add_argument('--go-neuron', choices=('none', 'giant_fiber', 'virtual'), default=None,
+                        help='Self-paced body: the spike of a go neuron is the act of speaking the prediction and taking '
+                             'the next input. giant_fiber = the connectome DNp01 pair (nothing added); virtual = an added '
+                             'leaky integrator of the motor surface (omitted = inherit)')
+    parser.add_argument('--go-max-ticks', type=int, default=None, help='Safety ceiling for one token (default 32)')
+    parser.add_argument('--intrinsic', action=argparse.BooleanOptionalAction, default=None,
+                        help='Release the spontaneously active cells annotated in the connectome (clock, dopaminergic, '
+                             'octopaminergic, serotonergic, DPM, APL) with a learnable intrinsic current (omitted = inherit)')
+    parser.add_argument('--read-bank', action=argparse.BooleanOptionalAction, default=None,
+                        help='Read without a window: learnable exponential filters of the motor membranes along the '
+                             'whole tick stream, starting as the plain read (omitted = inherit)')
+    parser.add_argument('--go-tick-cost', type=float, default=None,
+                        help='Optional energy prior: nats per tick of average activity (default 0 = no prior)')
+    parser.add_argument('--go-reference-energy', type=float, default=None,
+                        help='Average share of synapses carrying a spike per tick in the champion (0.07)')
+    parser.add_argument('--read-lag', type=int, default=None,
+                        help='Streaming: read the prediction of each token this many ticks after it began to be sensed '
+                             '(output lags input; must stay below the sensory->read arrival, 1 for MaleCNS; omitted = inherit)')
     parser.add_argument('--min-settle-ticks', type=int, default=3,
                         help='Minimum physical quiet ticks per token ensuring causal signal arrival (default: 3)')
     parser.add_argument('--flux-baseline', type=float, default=0.048,
@@ -228,6 +279,8 @@ def main():
                         help='Replace an unfinished target with current count + additional fresh tokens')
     global _CHECKPOINT_DIR
     args = parser.parse_args()
+    if isinstance(args.init_read_gamma, str) and args.init_read_gamma != 'anatomical':
+        args.init_read_gamma = float(args.init_read_gamma)      # a numeric decay, not the anatomical schedule
     _CHECKPOINT_DIR = str(args.checkpoint_dir) if args.checkpoint_dir else None
     if args.settle_ticks is not None and args.settle_ticks < 0:
         parser.error('settle-ticks must be nonnegative')
@@ -375,7 +428,11 @@ def main():
             eps_mcr2=float(args.eps_mcr2 or 0.5),
             adaptive_admission=bool(args.adaptive_admission),
             min_settle_ticks=args.min_settle_ticks,
-            flux_baseline=args.flux_baseline)
+            flux_baseline=args.flux_baseline,
+            stream_ticks=int(args.stream_ticks or 0), hold_input=bool(args.hold_input),
+            read_lag=int(args.read_lag or 0), go_neuron=bool(args.go_neuron),
+            go_tick_cost=float(args.go_tick_cost or 0.0), go_reference_energy=float(args.go_reference_energy or 0.07),
+            go_max_ticks=int(args.go_max_ticks or 32))
         learner.previous_token = int(train[0])
 
         initial_stp = {name: getattr(model, name).detach().clone() for name in STP_PARAMETER_NAMES}
@@ -429,6 +486,15 @@ def main():
             detach_reset=args.detach_reset, surrogate_mode=args.surrogate_mode,
             transmission_mode=args.transmission_mode).cuda()
         model.dan_plastic_lr = args.dan_plastic_lr
+        if args.go_neuron == 'virtual':
+            attach_go_neuron(model)
+        elif args.go_neuron == 'giant_fiber':
+            attach_connectome_go(model, args.graph)
+        if args.read_bank:
+            attach_read_bank(model)
+        if args.intrinsic:
+            released = attach_intrinsic_drive(model, args.graph, args.graph.parent / 'body-annotations.feather')
+            print(f'Released {int(model.intrinsic_index.numel())} spontaneously active cells: {released}', flush=True)
         weights = {key: value for key, value in saved['model'].items()
                    if key not in ('edge_weight_e', 'edge_weight_i')}
         if args.reinit_read_gamma:
@@ -438,7 +504,7 @@ def main():
             for name in ('edge_weight_e', 'edge_weight_i'):
                 getattr(model, name).copy_(saved['model'][name])
             loaded = model.load_state_dict(weights, strict=False)
-            missing = [k for k in loaded.missing_keys if k != 'logit_read_gamma' and not k.startswith('latent_predictor.') and not k.startswith('graph_observer.')]
+            missing = [k for k in loaded.missing_keys if k != 'logit_read_gamma' and not k.startswith('latent_predictor.') and not k.startswith('graph_observer.') and k not in GO_PARAMETER_NAMES and k not in READ_BANK_PARAMETER_NAMES and k not in INTRINSIC_PARAMETER_NAMES]
             unexpected = [k for k in loaded.unexpected_keys if not k.startswith('latent_predictor.') and not k.startswith('graph_observer.')]
             if unexpected or missing:
                 raise ValueError(f'Weight migration mismatch: unexpected={unexpected}, missing={missing}')
@@ -479,6 +545,12 @@ def main():
         newly_trainable = list(stp_newly_trainable)
         if (args.reinit_read_gamma or (args.use_read_gamma_trace and 'logit_read_gamma' not in names)):
             newly_trainable.append('logit_read_gamma')
+        if args.go_neuron == 'virtual':
+            newly_trainable += [name for name in GO_PARAMETER_NAMES if name not in names]
+        if args.read_bank:
+            newly_trainable += [name for name in READ_BANK_PARAMETER_NAMES if name not in names]
+        if args.intrinsic:
+            newly_trainable += [name for name in INTRINSIC_PARAMETER_NAMES if name not in names]
         if args.use_latent_predictor and model.latent_predictor is not None:
             for p_name, _ in model.latent_predictor.named_parameters():
                 full_name = f'latent_predictor.{p_name}'
@@ -502,7 +574,11 @@ def main():
             eps_mcr2=float(args.eps_mcr2 or 0.5),
             adaptive_admission=bool(args.adaptive_admission),
             min_settle_ticks=args.min_settle_ticks,
-            flux_baseline=args.flux_baseline)
+            flux_baseline=args.flux_baseline,
+            stream_ticks=int(args.stream_ticks or 0), hold_input=bool(args.hold_input),
+            read_lag=int(args.read_lag or 0), go_neuron=bool(args.go_neuron),
+            go_tick_cost=float(args.go_tick_cost or 0.0), go_reference_energy=float(args.go_reference_energy or 0.07),
+            go_max_ticks=int(args.go_max_ticks or 32))
         learner.load_edge_signs(old)
         learner.load_adam_state(old['optimizer'], newly_trainable=newly_trainable)
         initial_stp = {name: getattr(model, name).detach().clone() for name in STP_PARAMETER_NAMES}
@@ -779,13 +855,19 @@ def main():
             'vram_peak_mib': torch.cuda.max_memory_allocated() / 2**20,
             'setup_peak_mib': setup_peak_mib,
             'events': learner.events, 'physical_ticks': learner.physical_ticks,
-            'physical_ticks_per_input': 1+learner.settle_ticks,
+            'physical_ticks_per_input': learner.stream_ticks or 1+learner.settle_ticks,
             'settle_ticks': learner.settle_ticks,
+            'stream_ticks': learner.stream_ticks, 'hold_input': learner.hold_input, 'read_lag': learner.read_lag,
+            'go_neuron': learner.go_neuron,
             'writer_baseline_clock': learner.writer_baseline_clock,
             'bptt_optimizer_updates': learner.updates,
             'stp_learning_enabled': learner.learn_stp,
             'use_checkpointing': getattr(learner, 'use_checkpointing', False),
             'sensory_resource_mean': float(learner.state.x[:, model.topographic_writer.injection_index].mean())}
+        if getattr(model, 'use_read_gamma_trace', False) and getattr(model, 'logit_read_gamma', None) is not None:
+            decay = model.get_read_gamma_decay().detach()
+            row['read_gamma_decay_mean'] = float(decay.mean())
+            row['read_gamma_decay_min'], row['read_gamma_decay_max'] = float(decay.min()), float(decay.max())
         if getattr(model, 'latent_predictor', None) is not None:
             row['predictor_mix_alpha'] = float(model.latent_predictor.mix_alpha.item())
         if getattr(model, 'graph_observer', None) is not None:
@@ -794,6 +876,24 @@ def main():
             if learner.last_jepa_metrics:
                 for k, v in learner.last_jepa_metrics.items():
                     row[f'obs_metric_{k}'] = float(v)
+        if getattr(learner, 'go_neuron', False):
+            for k_go, v_go in getattr(learner, 'last_adaptive_metrics', {}).items():
+                row[k_go] = float(v_go)
+            if getattr(model, 'intrinsic_kappa', None) is not None:
+                kap = model.intrinsic_kappa.detach()
+                spikes = (learner.state.ring[0][0, model.intrinsic_index] > 0).float()
+                row.update(intrinsic_kappa_mean=float(kap.mean()), intrinsic_kappa_min=float(kap.min()),
+                           intrinsic_kappa_max=float(kap.max()), intrinsic_firing=float(spikes.mean()))
+            if getattr(model, 'read_bank_gain', None) is not None:
+                gain = model.read_bank_gain.detach().abs().mean(1)
+                row['read_bank_gain_now'] = float(gain[0])
+                row['read_bank_gain_filters'] = float(gain[1:].mean())
+                row['read_bank_tau_mean'] = float((-1 / torch.log(model.read_bank_decay().detach())).mean())
+            if learner.go_neuron == 'virtual':
+                row['go_leak'] = float(torch.sigmoid(model.go_logit_leak.detach()))
+                row['go_drive'] = float(model.go_drive.detach())
+                row['go_reset'] = float(model.go_reset.detach())
+                row['go_read_norm'] = float(model.go_read.weight.detach().norm())
         if getattr(learner, 'adaptive_admission', False):
             row['adaptive_admission'] = True
             for k_ad, v_ad in getattr(learner, 'last_adaptive_metrics', {}).items():
@@ -921,7 +1021,7 @@ def main():
                     'fresh_validation_cursor': val_cursor, 'live_prequential_nll': live,
                     'B_curve': B, 'A1_curve': recent_scores, 'A2_replay_curve': A2,
                     'replay_tokens': recent_a, 'actual_intervening_events': args.eval_tokens,
-                    'actual_intervening_physical_ticks': args.eval_tokens*(1+learner.settle_ticks),
+                    'actual_intervening_physical_ticks': learner.physical_ticks - physical_start,
                     'A2_prequential_nll': float(np.mean(A2)),
                     'matched_revisit_nll_change': float(np.mean(recent_scores[1:])-np.mean(A2[1:])),
                     'bridge_scoring': 'all actual bridges scored; first A token excluded from matched gap',

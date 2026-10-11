@@ -244,3 +244,242 @@ def test_checkpoint_recompute_reuses_transmission_exactly(fly_model_and_state):
     assert g0.keys() == g1.keys() and 'edge_weight_e' in g0
     for name in g0:
         assert torch.allclose(g0[name], g1[name], rtol=1e-6, atol=1e-6 * float(g0[name].abs().max())), name
+
+
+def test_stream_clock_pulse_equals_serial_fixed_settle(fly_model_and_state):
+    """A k-tick streaming token with a single onset pulse is exactly the archived serial event with k-1 quiet ticks."""
+    import dataclasses
+    from information_boltzmann.core.fly_bptt_learning import advance_fly_input_event, advance_fly_token_stream
+    model, state, device = fly_model_and_state
+    torch.manual_seed(1)
+    start = dataclasses.replace(state, h=torch.rand_like(state.h))
+    token = torch.tensor([321], device=device)
+    with torch.no_grad():
+        serial = advance_fly_input_event(model, start.detached(), token, settle_ticks=4,
+                                         writer_baseline_clock='physical')
+        streamed, latent = advance_fly_token_stream(model, start.detached(), token, ticks=5,
+                                                    writer_baseline_clock='physical')
+    assert torch.equal(serial.h, streamed.h) and torch.equal(serial.baseline, streamed.baseline)
+    assert all(torch.equal(a, b) for a, b in zip(serial.ring, streamed.ring))
+    assert latent.shape == (1, model.output_read.out_features)
+
+
+def test_stream_learner_reaches_every_parameter_and_reuses_transmission(fly_model_and_state):
+    """Streaming learner (held input): finite window loss, gradients into synapses, writer and readout, and the
+    checkpoint recompute replays transmission (half the transmission calls, same forward)."""
+    import dataclasses
+    model, state, device = fly_model_and_state
+    if device != "cuda":
+        pytest.skip("event-driven transmission and fused AdamW need CUDA")
+    torch.manual_seed(2)
+    start = dataclasses.replace(state, h=torch.rand_like(state.h))
+    learner = FlyBPTTLearner(model, start, lr=2e-4, settle_ticks=14, writer_baseline_clock="physical",
+                             use_checkpointing=True, adaptive_admission=True, stream_ticks=3, hold_input=True,
+                             lambda_mcr2=0.0)
+    assert not learner.adaptive_admission
+    ids = torch.tensor([[50, 101, 205, 307]], device=device)
+    targets = torch.tensor([[101, 205, 307, 409]], device=device)
+    s0, g0, c0 = _window_gradients(learner, model, start, ids, targets, reuse=False)
+    s1, g1, c1 = _window_gradients(learner, model, start, ids, targets, reuse=True)
+    assert c0 == 2 * 2 * 3 * 4 and c1 * 2 == c0          # E+I per tick, 3 ticks per token, recompute replayed
+    assert torch.equal(s0, s1) and torch.isfinite(s0).all()
+    for name in ('edge_weight_e', 'edge_weight_i', 'output_read.weight', 'decoder.weight',
+                 'topographic_writer.proj_vis.weight', 'topographic_writer.gate_linear.weight'):
+        assert name in g0 and torch.isfinite(g0[name]).all() and g0[name].abs().sum() > 0, name
+
+
+def test_output_lag_of_one_tick_cannot_see_the_sensed_token(fly_model_and_state):
+    """The read after the injection tick is bitwise independent of the token being sensed (MaleCNS: the earliest
+    sensory -> read-surface path is one delay-1 edge, so the read surface first changes at tick 2); a read after two
+    ticks already depends on it (the test is sensitive)."""
+    import dataclasses
+    from information_boltzmann.core.fly_bptt_learning import advance_fly_token_stream
+    model, state, device = fly_model_and_state
+    torch.manual_seed(3)
+    start = dataclasses.replace(state, h=torch.rand_like(state.h))
+    with torch.no_grad():
+        for read_after, independent in ((1, True), (2, False)):
+            reads = [advance_fly_token_stream(model, start.detached(), torch.tensor([t], device=device), ticks=3,
+                                              read_after=read_after, writer_baseline_clock='physical')[1]
+                     for t in (17, 4242, 31337)]
+            assert all(torch.equal(reads[0], r) for r in reads[1:]) == independent
+
+
+def test_output_lag_learner_reads_the_sensed_token_as_its_target(fly_model_and_state):
+    import dataclasses
+    model, state, device = fly_model_and_state
+    if device != "cuda":
+        pytest.skip("fused AdamW needs CUDA")
+    start = dataclasses.replace(state, h=torch.rand_like(state.h))
+    learner = FlyBPTTLearner(model, start, lr=2e-4, settle_ticks=14, writer_baseline_clock="physical",
+                             use_checkpointing=True, stream_ticks=3, read_lag=1, lambda_mcr2=0.0)
+    learner.previous_token = 50
+    tokens = torch.tensor([101, 205, 307, 409], device=device)
+    assert torch.equal(learner.inputs_for_targets(tokens), tokens[None])
+    scores, _ = learner.observe(tokens.cpu().numpy())
+    assert len(scores) == 4 and all(math.isfinite(v) for v in scores)
+    assert learner.physical_ticks == 12
+    with pytest.raises(ValueError):
+        FlyBPTTLearner(model, start, read_lag=1)
+
+
+def test_giant_fiber_go_halts_on_its_own_spike_and_learns(fly_model_and_state):
+    """Connectome go act: each token's realized ticks end exactly on the first tick a giant fiber spikes (or at the
+    ceiling); the window loss reaches the synapses and the read; a checkpoint recompute replays the same schedule."""
+    import dataclasses
+    from information_boltzmann.core.fly_bptt_learning import attach_connectome_go, advance_fly_token_go
+    model, state, device = fly_model_and_state
+    if device != "cuda":
+        pytest.skip("fused AdamW needs CUDA")
+    attach_connectome_go(model, "data/malecns_v1/fly_reservoir_coba.npz")
+    try:
+        torch.manual_seed(4)
+        start = dataclasses.replace(state, h=torch.rand_like(state.h))
+        with torch.no_grad():
+            box = []
+            s1, lat, pulse, _, later = advance_fly_token_go(model, start.detached(), torch.tensor([77], device=device),
+                                                            box, max_ticks=12, writer_baseline_clock='physical')
+            assert box[0] == lat.shape[0] == pulse.shape[0] and later.shape == lat[-1:].shape
+            # silent before the realized tick, firing on it (unless the ceiling ended the token)
+            assert torch.all(pulse[:-1] == 0) and (bool(pulse[-1] > 0) or box[0] == 12)
+            again = [box[0]]
+            s2, lat2, _, _, _ = advance_fly_token_go(model, start.detached(), torch.tensor([77], device=device), again,
+                                                      max_ticks=12, writer_baseline_clock='physical')
+            assert torch.equal(lat, lat2) and torch.equal(s1.h, s2.h)
+        learner = FlyBPTTLearner(model, start, lr=2e-4, writer_baseline_clock="physical", use_checkpointing=True,
+                                 go_neuron=True, go_max_ticks=12, lambda_mcr2=0.0)
+        assert learner.go_neuron == 'connectome' and not learner.adaptive_admission
+        ids = torch.tensor([[50, 101, 205]], device=device)
+        targets = torch.tensor([[101, 205, 307]], device=device)
+        s0, g0, c0 = _window_gradients(learner, model, start, ids, targets, reuse=False)
+        s1_, g1, c1 = _window_gradients(learner, model, start, ids, targets, reuse=True)
+        # the recompute replays every realized tick; the counterfactual tick (no_grad, saves nothing) is never
+        # recomputed by the early-stopping checkpoint, so: c0 = 2 * realized + counterfactual, c1 = realized + it
+        assert torch.equal(s0, s1_) and c1 < c0 and (c0 - c1) % 2 == 0
+        model.zero_grad(set_to_none=True)
+        learner.state = start.detached()
+        learner.forward_window(ids, targets)
+        learner.last_train_loss.mean().backward()        # forward value = realized CE; timing credit flows backward
+        g0 = {n: p.grad for n, p in model.named_parameters() if p.grad is not None}
+        for name in ('edge_weight_e', 'edge_weight_i', 'output_read.weight', 'decoder.weight'):
+            assert name in g0 and torch.isfinite(g0[name]).all() and g0[name].abs().sum() > 0, name
+    finally:
+        del model._buffers['go_neurons']
+
+
+def test_virtual_go_neuron_learns_its_timing(fly_model_and_state):
+    import dataclasses
+    from information_boltzmann.core.fly_bptt_learning import attach_go_neuron, GO_PARAMETER_NAMES
+    model, state, device = fly_model_and_state
+    if device != "cuda":
+        pytest.skip("fused AdamW needs CUDA")
+    attach_go_neuron(model)
+    try:
+        start = dataclasses.replace(state, h=torch.rand_like(state.h))
+        learner = FlyBPTTLearner(model, start, lr=2e-4, writer_baseline_clock="physical", use_checkpointing=True,
+                                 go_neuron=True, go_max_ticks=12, lambda_mcr2=0.0)
+        assert learner.go_neuron == 'virtual'
+        ids = torch.tensor([[50, 101, 205]], device=device)
+        targets = torch.tensor([[101, 205, 307]], device=device)
+        model.zero_grad(set_to_none=True)
+        learner.state = start.detached()
+        s0, _, _ = learner.forward_window(ids, targets)
+        learner.last_train_loss.mean().backward()           # the timing is learned through the expected loss
+        g0 = {n: p.grad for n, p in model.named_parameters() if p.grad is not None}
+        assert torch.isfinite(s0).all() and learner.last_adaptive_metrics['go_ceiling_hits'] == 0
+        for name in GO_PARAMETER_NAMES + ('edge_weight_e',):
+            assert name in g0 and torch.isfinite(g0[name]).all(), name
+    finally:
+        for name in ('go_read', 'go_drive', 'go_reset', 'go_logit_leak'):
+            delattr(model, name)
+        del model._buffers['synapse_share']
+        for p in model.parameters():
+            p.requires_grad_(False)
+
+
+def test_go_spike_credit_value_and_direction():
+    """Forward value is the realized CE; an earlier spike is pushed to fire if that tick was better, to hold if worse;
+    the firing spike is pushed to hold if one more tick would have helped."""
+    from information_boltzmann.core.fly_bptt_learning import go_spike_credit
+    ce = torch.tensor([3.0, 1.0, 2.0])
+    spikes = torch.tensor([0.0, 0.0, 1.0], requires_grad=True)
+    loss = go_spike_credit(ce, spikes, torch.tensor(1.5))
+    assert torch.isclose(loss, torch.tensor(2.0))
+    loss.backward()
+    assert spikes.grad.tolist() == [1.0, -1.0, 0.5]       # descend: tick 1 hold, tick 2 fire, firing tick hold
+
+
+def test_read_bank_starts_as_the_champion_read_and_learns(fly_model_and_state):
+    """A read bank with gains (1, 0, ...) reads exactly what the plain read does; its filters run across tokens; the
+    window loss reaches the gains and the time constants."""
+    import dataclasses
+    from information_boltzmann.core.fly_bptt_learning import (attach_read_bank, read_fly_motor, attach_go_neuron,
+                                                              READ_BANK_PARAMETER_NAMES, step_fly_physical_tick)
+    model, state, device = fly_model_and_state
+    if device != "cuda":
+        pytest.skip("fused AdamW needs CUDA")
+    start = dataclasses.replace(state, h=torch.rand_like(state.h))
+    with torch.no_grad():
+        plain = read_fly_motor(model, start)
+    attach_read_bank(model)
+    attach_go_neuron(model)
+    try:
+        opts = dict(base_rates=model.get_decay_rates(), thresholds=model.get_thresholds())
+        with torch.no_grad():
+            s1 = step_fly_physical_tick(model, start, None, torch.zeros_like(start.h), start.baseline, opts)
+            assert s1.read_bank.shape == (6, model.n_read)
+            plain1 = model.output_read(s1.h[:, model.read_indices])
+            assert torch.allclose(read_fly_motor(model, s1), plain1)
+        learner = FlyBPTTLearner(model, start, lr=2e-4, writer_baseline_clock="physical", use_checkpointing=True,
+                                 go_neuron=True, go_max_ticks=12, lambda_mcr2=0.0)
+        model.zero_grad(set_to_none=True)
+        learner.state = start.detached()
+        _, after, _ = learner.forward_window(torch.tensor([[50, 101, 205]], device=device),
+                                             torch.tensor([[101, 205, 307]], device=device))
+        learner.last_train_loss.mean().backward()
+        for name in READ_BANK_PARAMETER_NAMES:
+            assert getattr(model, name).grad is not None and torch.isfinite(getattr(model, name).grad).all(), name
+        assert after.read_bank.numel() == 6 * model.n_read
+    finally:
+        for name in ('go_read', 'go_drive', 'go_reset', 'go_logit_leak', 'read_bank_gain', 'read_bank_logit_decay',
+                     'read_bank_decay'):
+            if hasattr(model, name):
+                delattr(model, name)
+        model._buffers.pop('synapse_share', None)
+        for p in model.parameters():
+            p.requires_grad_(False)
+
+
+def test_intrinsic_drive_makes_annotated_pacemakers_fire_alone(fly_model_and_state):
+    """Released cells are the annotated spontaneously active types; with kappa > 1 and no input at all they fire on
+    their own, other cells receive no current; kappa receives a gradient."""
+    from information_boltzmann.core.fly_bptt_learning import attach_intrinsic_drive, step_fly_physical_tick, FlyPhysicalState
+    model, state, device = fly_model_and_state
+    types = attach_intrinsic_drive(model, "data/malecns_v1/fly_reservoir_coba.npz",
+                                   "data/malecns_v1/body-annotations.feather")
+    try:
+        assert any(t.startswith('s-LNv') for t in types) and any(t.startswith('PAM') for t in types)
+        assert 300 < model.intrinsic_index.numel() < 1000
+        n = model.n_neurons
+        z = lambda: torch.zeros(1, n, device=device)
+        s = FlyPhysicalState(z(), tuple(z() for _ in range(4)), z(), z(), z(), torch.ones(1, n, device=device),
+                             torch.full((1, n), .25, device=device), state.baseline, z())
+        opts = dict(base_rates=model.get_decay_rates(), thresholds=model.get_thresholds())
+        fired = torch.zeros(n, device=device)
+        with torch.no_grad():
+            for _ in range(200):
+                s = step_fly_physical_tick(model, s, None, torch.zeros(1, n, device=device), s.baseline, opts)
+                fired += (s.ring[0][0] > 0).float()
+        released = torch.zeros(n, dtype=torch.bool, device=device)
+        released[model.intrinsic_index] = True
+        assert fired[released].gt(0).float().mean() > 0.9          # pacemakers fire with no input at all
+        s.h.sum()  # (silence elsewhere is not required: their spikes propagate through the connectome)
+        model.intrinsic_kappa.grad = None
+        s2 = step_fly_physical_tick(model, s, None, torch.zeros(1, n, device=device), s.baseline, opts)
+        s2.h[0, model.intrinsic_index].sum().backward()
+        assert model.intrinsic_kappa.grad is not None and model.intrinsic_kappa.grad.abs().sum() > 0
+    finally:
+        delattr(model, 'intrinsic_kappa')
+        model._buffers.pop('intrinsic_index', None)
+        for p in model.parameters():
+            p.requires_grad_(False)

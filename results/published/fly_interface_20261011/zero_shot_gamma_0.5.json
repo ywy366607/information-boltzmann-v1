@@ -1,0 +1,52 @@
+{
+ "scope": "Causal audit of the CTM-S14 champion with adaptive admission (fixed weights, paired, no reset).",
+ "checkpoint": "E:\\ib_checkpoints\\q8_fly_ctm_settle14_100k\\last.pt",
+ "bptt_train_tokens": 121984,
+ "validation_cursor": 6144,
+ "burn_in": 256,
+ "score_tokens": 768,
+ "arms": {
+  "full": {
+   "nll": 6.678853408200666,
+   "delta_vs_full": 0.0,
+   "delta_blocks_128": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "mean_quiet_ticks": 6.243489583333333,
+   "seconds": 17.527152400005434
+  },
+  "stream_4": {
+   "nll": 7.069192020688206,
+   "delta_vs_full": 0.39033861248753965,
+   "delta_blocks_128": [
+    0.40028985077515244,
+    0.268005539663136,
+    0.2555614304728806,
+    0.5080832820385695,
+    0.3759965072385967,
+    0.5340950647369027
+   ],
+   "mean_quiet_ticks": 3.0,
+   "seconds": 7.829304799997772
+  },
+  "streamlag_3": {
+   "nll": 7.157378862301509,
+   "delta_vs_full": 0.4785254541008423,
+   "delta_blocks_128": [
+    0.4580439389683306,
+    0.34949227701872587,
+    0.27947348775342107,
+    0.6378182424232364,
+    0.4493080717511475,
+    0.6970167066901922
+   ],
+   "mean_quiet_ticks": 2.0,
+   "seconds": 6.315669499999785
+  }
+ }
+}

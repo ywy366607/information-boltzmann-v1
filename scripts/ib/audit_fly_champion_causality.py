@@ -5,6 +5,12 @@ stream, then scores the same next tokens through the champion's own read path (a
 motor latent -> read_norm -> decoder). Arms change exactly one mechanism during burn-in and scoring:
   full              adaptive admission as trained (3..14 quiet ticks)
   fixed_K           K quiet ticks for every token (K = 14, 6, 3, 0); terminal read
+  silence_<class>   every outgoing edge of one superclass zeroed (its spikes reach nobody); silence_<class>_half: a
+                    random half of that class
+  stream_K          streaming clock: every token occupies exactly K ticks (one onset pulse); read just before the next
+  streamhold_K      streaming clock with the token held on the sensory surface for all K ticks
+  streamlag_K       streaming clock, output lags input by one tick: the token's prediction is read after its own injection
+                    tick (bitwise blind to it: the read surface first changes at tick 2)
   no_inhibition     inhibitory edge weights zeroed
   no_edges          all connectome edges zeroed (sensory drive cannot reach the motor surface)
   no_alif           ALIF adaptation strength beta = 0
@@ -19,6 +25,7 @@ This is a mechanism diagnostic of one checkpoint, not active evaluation or a tra
 from __future__ import annotations
 
 import argparse
+import math
 import json
 import sys
 import time
@@ -32,7 +39,8 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 from information_boltzmann.core.fly_reservoir import FlyReservoirLM  # noqa: E402
 from information_boltzmann.core.fly_bptt_learning import (  # noqa: E402
-    FlyPhysicalState, advance_fly_token_adaptive, advance_fly_input_event, extract_fly_motor_latent)
+    FlyPhysicalState, advance_fly_token_adaptive, advance_fly_input_event, extract_fly_motor_latent,
+    advance_fly_token_stream)
 from scripts.ib.inspect_fly_bptt_credit import move_state  # noqa: E402
 
 
@@ -42,6 +50,8 @@ def main():
     ap.add_argument('--burn-in', type=int, default=256)
     ap.add_argument('--score-tokens', type=int, default=768)
     ap.add_argument('--arms', default='full,fixed_14,fixed_6,fixed_3,fixed_0,no_inhibition,no_edges,no_alif,static_stp,no_memory')
+    ap.add_argument('--read-gamma', type=float, default=None,
+                    help='read through a second-order Gamma integrator of the motor membranes with this uniform decay')
     ap.add_argument('--out', type=Path, default=Path('results/q8_fly_ctm_settle14_100k/champion_causality.json'))
     args = ap.parse_args()
     torch.set_num_threads(4)
@@ -58,6 +68,11 @@ def main():
     if result.unexpected_keys or [k for k in result.missing_keys if not k.startswith(('graph_observer', 'latent_predictor'))]:
         raise ValueError(f'checkpoint/model mismatch: {result}')
     model = model.to(dev).eval().requires_grad_(False)
+    if args.read_gamma is not None:          # untrained integrator in front of the trained linear read (zero-shot)
+        u = (args.read_gamma - 0.005) / 0.990
+        model.use_read_gamma_trace = True
+        model.logit_read_gamma = torch.nn.Parameter(torch.full((1, model.n_read), math.log(u / (1 - u)), device=dev),
+                                                    requires_grad=False)
     tensors = {**dict(model.named_parameters()), **dict(model.named_buffers())}
     for name in edges:                                       # trained connectome weights (non-persistent buffers)
         if tensors[name].shape != saved['model'][name].shape:
@@ -107,6 +122,21 @@ def main():
             for name in rollback:
                 originals[name] = tensors[name].detach().clone()
                 tensors[name].copy_(birth[name].to(tensors[name]))
+            if arm.startswith('silence_'):
+                cls = arm[len('silence_'):]
+                half = cls.endswith('_half')
+                cls = cls[:-len('_half')] if half else cls
+                graph = np.load(ROOT / cfg['graph'])
+                class_names = [str(x) for x in graph['superclass_names']]
+                members = np.flatnonzero(graph['superclass_id'] == class_names.index(cls))
+                if half:
+                    members = np.sort(np.random.default_rng(0).choice(members, len(members) // 2, replace=False))
+                silent = torch.zeros(model.n_neurons, dtype=torch.bool, device=dev)
+                silent[torch.as_tensor(members, device=dev)] = True
+                for name, pre_name in (('edge_weight_e', 'edge_pre_e'), ('edge_weight_i', 'edge_pre_i')):
+                    originals[name] = tensors[name].clone()
+                    tensors[name].mul_((~silent[getattr(model, pre_name).long()]).float())
+                print(f'  {arm}: {len(members)} neurons silenced', flush=True)
             if arm in ('no_inhibition', 'no_edges'):
                 for name in (['edge_weight_i'] if arm == 'no_inhibition' else ['edge_weight_e', 'edge_weight_i']):
                     originals[name] = tensors[name].clone(); tensors[name].zero_()
@@ -121,7 +151,18 @@ def main():
                     if anchor is None:
                         anchor = move_state(state, dev)
                     state = move_state(anchor, dev)
-                if arm.startswith('fixed_'):
+                if arm.startswith('streamlag'):
+                    k = int(arm.split('_')[1])
+                    target = torch.tensor([int(targets[i])], device=dev)
+                    state, z = advance_fly_token_stream(model, state, target, ticks=k, read_after=1,
+                                                        writer_baseline_clock=clock, **options)
+                    used = k - 1
+                elif arm.startswith('stream'):
+                    k = int(arm.split('_')[1])
+                    state, z = advance_fly_token_stream(model, state, token, ticks=k, hold_input=arm.startswith('streamhold'),
+                                                        writer_baseline_clock=clock, **options)
+                    used = k - 1
+                elif arm.startswith('fixed_'):
                     k = int(arm.split('_')[1])
                     state = advance_fly_input_event(model, state, token, settle_ticks=k, writer_baseline_clock=clock, **options)
                     z = extract_fly_motor_latent(model, state)

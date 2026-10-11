@@ -8,6 +8,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field, fields
 import math
+import numpy as np
 import torch
 from torch import nn
 import torch.nn.functional as F
@@ -41,6 +42,8 @@ class FlyPhysicalState:
     observer_prior: torch.Tensor = field(default_factory=lambda: torch.empty(0))
     # Persistent recent 4-tick posterior history [H, 4, d_model] for multi-tier delays.
     observer_history: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    # Optional read bank: exponential filters of the motor membranes along the whole tick stream [F, n_read].
+    read_bank: torch.Tensor = field(default_factory=lambda: torch.empty(0))
 
     def detached(self):
         return FlyPhysicalState(**{
@@ -77,6 +80,18 @@ class FlyPhysicalState:
 def step_fly_physical_tick(model, current, token, source, next_baseline, options, *,
                            h_mean_decay=0.99, base_rates=None):
     """Atomic physical step on the connectome with optional sensory drive."""
+    kappa = getattr(model, 'intrinsic_kappa', None)
+    if kappa is not None:
+        # Intrinsic (pacemaker / tonic) current of the annotated spontaneously active cells, in units of their own
+        # rheobase: the membrane alone would settle at kappa * threshold (kappa > 1 fires on its own).
+        idx = model.intrinsic_index
+        rates = base_rates if base_rates is not None else model.get_decay_rates()
+        thresholds = options.get('thresholds')
+        thresholds = thresholds if thresholds is not None else model.get_thresholds()
+        g_leak = -torch.log(rates[0].expand_as(current.h)[0, idx].detach().clamp(1e-5, 1 - 1e-7))
+        current_in = kappa * thresholds.expand_as(current.h)[0, idx].detach() * g_leak
+        source = (torch.zeros_like(current.h) if source is None else source).index_add(
+            1, idx, current_in.unsqueeze(0))
     dan_gate = current.dan_gate
     if getattr(model, 'dan_plastic_lr', 0.0) > 0.0 and model.has_dopamine:
         with torch.no_grad():
@@ -128,8 +143,15 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
         decay = model.get_read_gamma_decay()
         gz1 = decay * gz1 + (1.0 - decay) * motor
         gz2 = decay * gz2 + (1.0 - decay) * gz1
+    bank = getattr(current, 'read_bank', torch.empty(0))
+    if getattr(model, 'read_bank_gain', None) is not None:
+        motor_now = h[:, model.read_indices] if model.read_surface != 'all' else h
+        decay = model.read_bank_decay()
+        if bank.numel() != decay.numel() * motor_now.numel():
+            bank = motor_now.expand(decay.numel(), -1)
+        bank = decay * bank + (1.0 - decay) * motor_now
     return FlyPhysicalState(h, ring, ge, gi, b, x, u, next_baseline, h_mean, dan_gate, gz1, gz2,
-                            current.observer_prior, getattr(current, 'observer_history', torch.empty(0)))
+                            current.observer_prior, getattr(current, 'observer_history', torch.empty(0)), bank)
 
 
 def extract_fly_motor_latent(model, state):
@@ -342,23 +364,291 @@ def advance_token_and_read_latent(model, state, token, *, settle_ticks=0,
     return next_state, torch.stack(token_latents, dim=0)
 
 
-def advance_fly_token_adaptive(model, state, token, schedule_box=None, **kwargs):
+def _with_transmission_reuse(inner, model, state, token, schedule_box, **kwargs):
     """Record this token's synaptic transmission outputs on its first forward and replay them when a checkpoint
-    recomputes it (same values; the transmission kernels are skipped). The cache rides on the token's schedule box."""
+    recomputes it (same values; the transmission kernels are skipped). The cache rides on the token's schedule box,
+    whose first entry is the token's tick count once known."""
     from . import triton_synapse as ts
     if not (ts.REUSE_TRANSMISSION and schedule_box is not None and torch.is_grad_enabled()):
-        return _advance_fly_token_adaptive(model, state, token, schedule_box, **kwargs)
+        return inner(model, state, token, schedule_box, **kwargs)
     replay = len(schedule_box) > 1 and schedule_box[0] is not None
     previous = ts.TRANSMISSION_RECORD, ts.TRANSMISSION_REPLAY
     record = None if replay else []
     ts.TRANSMISSION_RECORD, ts.TRANSMISSION_REPLAY = record, (iter(schedule_box[1]) if replay else None)
     try:
-        result = _advance_fly_token_adaptive(model, state, token, schedule_box, **kwargs)
+        result = inner(model, state, token, schedule_box, **kwargs)
     finally:
         ts.TRANSMISSION_RECORD, ts.TRANSMISSION_REPLAY = previous
     if record is not None:
         schedule_box.append(record)
     return result
+
+
+def advance_fly_token_adaptive(model, state, token, schedule_box=None, **kwargs):
+    return _with_transmission_reuse(_advance_fly_token_adaptive, model, state, token, schedule_box, **kwargs)
+
+
+def advance_fly_token_stream(model, state, token, schedule_box=None, **kwargs):
+    return _with_transmission_reuse(_advance_fly_token_stream, model, state, token, schedule_box, **kwargs)
+
+
+GO_PARAMETER_NAMES = ('go_read.weight', 'go_drive', 'go_reset', 'go_logit_leak')
+
+
+def attach_go_neuron(model, *, leak=0.85, reset=-20.0, drive=1.2):
+    """Give the body a "go" neuron: a leaky integrator of the motor surface whose firing is the act of speaking the
+    current prediction and then moving to the next input (a saccade).  Its membrane G starts at `reset` after every
+    firing and integrates G <- leak * G + drive + w . motor; the firing probability per tick is sigmoid(G).
+    Initial values (w = 0) put its firing at 6-9 ticks after an input (mean 7.9; the champion's flux rule averages
+    7.2); the brain's own motor state then learns to hasten or delay it.  Also stores each neuron's share of all
+    synapses, so the energy of a tick (synaptic events) can be read from its spikes."""
+    device = model.edge_pre_e.device if hasattr(model, 'edge_pre_e') else model.edge_pre.device
+    width = model.n_read if model.read_surface != 'all' else model.n_neurons
+    model.go_read = nn.Linear(width, 1, bias=False).to(device)
+    nn.init.zeros_(model.go_read.weight)
+    model.go_drive = nn.Parameter(torch.tensor([drive], device=device))
+    model.go_reset = nn.Parameter(torch.tensor([reset], device=device))
+    model.go_logit_leak = nn.Parameter(torch.tensor([math.log(leak / (1 - leak))], device=device))
+    if hasattr(model, 'edge_pre_e'):
+        pre = torch.cat([model.edge_pre_e.long(), model.edge_pre_i.long()])
+    else:
+        pre = model.edge_pre.long()
+    out_degree = torch.bincount(pre, minlength=model.n_neurons).float()
+    model.register_buffer('synapse_share', (out_degree / out_degree.sum()).unsqueeze(0), persistent=False)
+    return model
+
+
+GIANT_FIBER_BODY_IDS = (10001, 10010)        # MaleCNS DNp01 (GF) right and left
+
+
+def attach_connectome_go(model, graph_npz, body_ids=GIANT_FIBER_BODY_IDS):
+    """Use existing connectome neurons as the go act (default: the two giant fibers, DNp01): their own spike -- the
+    membrane integrating its synapses and crossing threshold -- is the act of speaking the prediction and taking the
+    next input.  Nothing is added to the brain; only their indices are recorded."""
+    import numpy as np
+    ids = np.load(graph_npz)['neuron_body_ids']
+    index = [int(np.flatnonzero(ids == b)[0]) for b in body_ids]
+    model.register_buffer('go_neurons', torch.as_tensor(index, dtype=torch.long, device=model.read_indices.device),
+                          persistent=False)
+    return model
+
+
+def advance_fly_token_go(model, state, token, schedule_box=None, **kwargs):
+    return _with_transmission_reuse(_advance_fly_token_go, model, state, token, schedule_box, **kwargs)
+
+
+def _advance_fly_token_go(model, state, token, schedule_box=None, *, max_ticks=14, writer_baseline_clock='physical',
+                          base_rates=None, thresholds=None, conductance_gains=None, alif_params=None,
+                          stp_params=None, h_mean_decay=0.99):
+    """Self-paced token: the input pulse at tick 1, then ticks run until the go neuron fires (sampled from its
+    firing probability) or max_ticks.  Returns the motor read, go firing probability and energy (share of synapses
+    carrying a spike) of every realized tick.  The prediction is read at the firing tick and the next token is
+    injected only afterwards, so the read can never see the token it predicts.  The realized tick count is stored in
+    schedule_box[0] and replayed exactly by a checkpoint recompute."""
+    if writer_baseline_clock not in ('input', 'physical'):
+        raise ValueError('writer_baseline_clock must be input or physical')
+    options = dict(base_rates=base_rates, thresholds=thresholds, conductance_gains=conductance_gains,
+                   alif_params=alif_params, stp_params=stp_params)
+    writer = model.topographic_writer
+    if writer is not None:
+        drive, baseline = writer.forward_with_state(model.embedding(token), state.h, state.baseline)
+    else:
+        drive, baseline = None, state.baseline
+    current = step_fly_physical_tick(model, state, token, drive, baseline, options,
+                                     h_mean_decay=h_mean_decay, base_rates=base_rates)
+    replay = schedule_box is not None and len(schedule_box) > 0 and schedule_box[0] is not None
+    target = schedule_box[0] if replay else None
+    physical = getattr(model, 'go_neurons', None) is not None
+    if physical:            # connectome go neurons: the hazard is the surrogate CDF of their own membrane
+        go_threshold = (thresholds if thresholds is not None else model.get_thresholds())
+        go_threshold = go_threshold.expand_as(current.h)[0, model.go_neurons]
+    else:
+        leak = torch.sigmoid(model.go_logit_leak)
+        go = model.go_reset
+    share = getattr(model, 'synapse_share', None)
+    quiet_source = torch.zeros_like(current.h)
+    latents, hazards, energy = [], [], []
+    for tick in range(1, max_ticks + 1):
+        if tick > 1:
+            baseline = (writer.lambda_adapt * current.baseline
+                        if writer_baseline_clock == 'physical' and writer is not None else current.baseline)
+            current = step_fly_physical_tick(model, current, None, quiet_source, baseline, options,
+                                             h_mean_decay=h_mean_decay, base_rates=base_rates)
+        read_in = (current.h - current.h_mean if getattr(model, 'read_centering', False)
+                   and current.h_mean.numel() == current.h.numel() else current.h)
+        motor = read_in[:, model.read_indices] if model.read_surface != 'all' else read_in
+        latents.append(model.output_read(motor_feature(model, current, motor)))
+        if physical:
+            # The act is the go neurons' own spike.  Their transmitted pulse is zero or positive in the forward pass and
+            # carries the spike's ATan surrogate gradient backward, exactly like every other spike in the network.
+            hazard = current.ring[0][0, model.go_neurons].sum().reshape(1)
+            fired = bool((hazard.detach() > 0).item())
+        else:
+            go = leak * go + model.go_drive + model.go_read(motor).squeeze(-1)
+            hazard = torch.sigmoid(go)
+            fired = None
+        hazards.append(hazard)
+        energy.append(((current.ring[0] > 0).float() * share).sum(-1).detach() if share is not None
+                      else current.h.new_zeros(1))
+        if replay:
+            if tick == target:
+                break
+        elif tick == max_ticks or (fired if physical else bool(torch.bernoulli(hazard.detach()).item())):
+            target = tick
+            break
+    if not replay and schedule_box is not None:
+        if len(schedule_box) == 0:
+            schedule_box.append(target)
+        else:
+            schedule_box[0] = target
+    lookahead = current.h.new_zeros(0)
+    if physical:
+        # Counterfactual: what the read would have been one quiet tick later, had the go neurons not fired.  Not part
+        # of the realized life (the next input comes next); used only as the baseline of the firing tick's credit.
+        with torch.no_grad():
+            baseline = (writer.lambda_adapt * current.baseline
+                        if writer_baseline_clock == 'physical' and writer is not None else current.baseline)
+            later = step_fly_physical_tick(model, current, None, quiet_source, baseline, options,
+                                           h_mean_decay=h_mean_decay, base_rates=base_rates)
+            read_in = (later.h - later.h_mean if getattr(model, 'read_centering', False)
+                       and later.h_mean.numel() == later.h.numel() else later.h)
+            later_motor = read_in[:, model.read_indices] if model.read_surface != 'all' else read_in
+            lookahead = model.output_read(motor_feature(model, later, later_motor))
+    return current, torch.cat(latents, 0), torch.cat(hazards, 0), torch.cat(energy, 0), lookahead
+
+
+def go_spike_credit(ce, spikes, ce_later):
+    """Realized-life objective for a go act that is a real spike.  Forward value: the prediction error at the tick
+    the go neurons actually fired (nothing counterfactual enters the value).  Backward: the spike at an earlier tick t
+    gets credit CE_t - CE_fire (fire then if that would have been better, hold otherwise); the firing spike gets
+    CE_fire - CE_next (hold if one more tick would have helped), through the network's own surrogate gradient."""
+    credit = torch.cat([ce[:-1].detach() - ce[-1].detach(), (ce[-1].detach() - ce_later).reshape(1)])
+    return ce[-1] + ((spikes - spikes.detach()) * credit).sum()
+
+
+def go_free_energy(ce, hazard, energy, tick_cost, reference_energy, entropy_term=True):
+    """Variational free energy of one token's halting.  q(t) is the go neuron's first-firing distribution truncated to
+    the realized ticks (the unrealized tail mass sits on the realized last tick).  The prior is the Boltzmann
+    distribution of the energy spent, p(t) ~ exp(-E(t) / B), with B set so that one tick of average activity
+    (reference_energy) costs `tick_cost` nats.  F = E_q[CE] + E_q[E(t)] / B - H(q), up to the normalizer."""
+    tau = ce.numel()
+    survive = torch.cumprod(torch.cat([hazard.new_ones(1), 1 - hazard[:-1]]), 0)        # P(not fired before t)
+    q = survive * hazard
+    q = torch.cat([q[:-1], survive[-1:]]) if tau > 1 else survive
+    expected = (q * ce).sum()
+    if tick_cost:
+        expected = expected + (q * torch.cumsum(energy, 0) / reference_energy * tick_cost).sum()
+    if entropy_term:
+        expected = expected + (q * torch.log(q.clamp_min(1e-12))).sum()
+    return expected, q
+
+
+READ_BANK_PARAMETER_NAMES = ('read_bank_gain', 'read_bank_logit_decay')
+INTRINSIC_PARAMETER_NAMES = ('intrinsic_kappa',)
+# Cell types known to be spontaneously / tonically active, as annotated in the MaleCNS connectome: circadian clock
+# neurons (pacemakers), dopaminergic PAM / PPL, octopaminergic OA-*, serotonergic 5-HT*, DPM and APL.
+INTRINSIC_TYPE_PATTERN = r'^(s-LNv|l-LNv|5thsLNv|LNd|DN1|DN2|DN3|LPN|LN-DN1|PAM\d|PPL\d|OA-|5-HT|DPM$|APL$)'
+
+
+def attach_intrinsic_drive(model, graph_npz, annotations, kappa=1.2, pattern=INTRINSIC_TYPE_PATTERN):
+    """Release the spontaneously active cells the connectome already contains: each selected neuron gets a learnable
+    intrinsic current kappa (in units of its rheobase, start 1.2 = slow pacemaking, period ~1.8 tau_m).  Every other
+    neuron is unchanged.  Returns the selected cell types."""
+    import numpy as np
+    import pandas as pd
+    ids = np.load(graph_npz)['neuron_body_ids']
+    table = pd.read_feather(annotations)[['bodyId', 'type']]
+    table = table[table['type'].astype(str).str.contains(pattern, regex=True)]
+    position = {int(b): i for i, b in enumerate(ids)}
+    chosen = sorted(position[int(b)] for b in table['bodyId'] if int(b) in position)
+    device = model.read_indices.device
+    model.register_buffer('intrinsic_index', torch.as_tensor(chosen, dtype=torch.long, device=device), persistent=False)
+    model.intrinsic_kappa = nn.Parameter(torch.full((len(chosen),), float(kappa), device=device))
+    return table['type'].astype(str).value_counts().to_dict()
+
+
+def attach_read_bank(model, taus=(1, 2, 4, 8, 16, 32)):
+    """A read without a window: every motor membrane also passes through exponential filters (initial time constants
+    `taus`, learnable) that run along the whole tick stream across token boundaries and are never reset.  The read is
+    output_read(sum_k g_k * f_k) with per-neuron gains; f_0 is the membrane now.  Gains start at (1, 0, ..., 0), so the
+    read starts exactly as the champion's."""
+    device = model.read_indices.device
+    width = model.n_read if model.read_surface != 'all' else model.n_neurons
+    gain = torch.zeros(1 + len(taus), width, device=device)
+    gain[0] = 1.0
+    model.read_bank_gain = nn.Parameter(gain)
+    decay = torch.tensor([math.exp(-1.0 / t) for t in taus], device=device)
+    model.read_bank_logit_decay = nn.Parameter(torch.log(decay / (1 - decay)))
+    model.read_bank_decay = lambda: torch.sigmoid(model.read_bank_logit_decay)[:, None]
+    return model
+
+
+def motor_feature(model, state, motor):
+    """The read's input: the membranes now, or the gained sum of the membrane filters when a read bank is attached."""
+    gain = getattr(model, 'read_bank_gain', None)
+    bank = getattr(state, 'read_bank', torch.empty(0))
+    if gain is None or bank.numel() == 0:
+        return motor
+    return gain[0] * motor + (gain[1:] * bank).sum(0, keepdim=True)
+
+
+def read_fly_motor(model, state):
+    """Linear motor read: the Gamma integrator of the motor membranes when enabled, else the membranes now."""
+    if getattr(model, 'use_read_gamma_trace', False) and state.gamma_z2.numel() > 0:
+        return model.output_read(state.gamma_z2)
+    read_in = (state.h - state.h_mean
+               if getattr(model, 'read_centering', False) and state.h_mean.numel() == state.h.numel() else state.h)
+    motor = read_in[:, model.read_indices] if model.read_surface != 'all' else read_in
+    return model.output_read(motor_feature(model, state, motor))
+
+
+def _advance_fly_token_stream(model, state, token, schedule_box=None, *, ticks, hold_input=False, read_after=None,
+                              writer_baseline_clock='physical', base_rates=None, thresholds=None,
+                              conductance_gains=None, alif_params=None, stp_params=None, h_mean_decay=0.99):
+    """Streaming clock: every token occupies exactly `ticks` physical ticks, whatever the brain is doing, and the
+    prediction of the next token is read just before it arrives.  Nothing waits for the brain to settle, so the
+    processing of a token continues while the next ones are being sensed (latency and throughput decouple).
+
+    hold_input=False: the token is one sensory pulse at its first tick (the archived event form), quiet afterwards.
+    hold_input=True: the token stays on the sensory surface for all its ticks; the writer's own adaptation turns the
+    held stimulus into a decaying innovation.
+    read_after=None: read after the last tick (the prediction of the NEXT token, read just before it arrives).
+    read_after=D (1 <= D <= ticks): read after D ticks of THIS token's window -- output lags input.  The read is the
+    prediction of this very token, made while it is being sensed: leak-free only while D is below the earliest
+    sensory -> read-surface arrival (MaleCNS: direct sensory->motor edges of delay 1, so the read surface first changes
+    at tick 2 and D = 1 is the maximum; verified bitwise in tests).
+    """
+    if not isinstance(ticks, int) or ticks < 1:
+        raise ValueError('ticks must be a positive integer')
+    if writer_baseline_clock not in ('input', 'physical'):
+        raise ValueError('writer_baseline_clock must be input or physical')
+    options = dict(base_rates=base_rates, thresholds=thresholds, conductance_gains=conductance_gains,
+                   alif_params=alif_params, stp_params=stp_params)
+    writer = model.topographic_writer
+    embedding = model.embedding(token) if writer is not None else None
+    if read_after is not None and not 1 <= read_after <= ticks:
+        raise ValueError('read_after must lie inside the token window')
+    current = state
+    quiet_source = None
+    latent = None
+    for tick in range(ticks):
+        if read_after is not None and tick == read_after:
+            latent = read_fly_motor(model, current)
+        if tick == 0 or (hold_input and writer is not None):
+            if writer is not None:
+                drive, baseline = writer.forward_with_state(embedding, current.h, current.baseline)
+            else:
+                drive, baseline = None, current.baseline
+            current = step_fly_physical_tick(model, current, token, drive, baseline, options,
+                                             h_mean_decay=h_mean_decay, base_rates=base_rates)
+        else:
+            if quiet_source is None:
+                quiet_source = torch.zeros_like(current.h)
+            baseline = (writer.lambda_adapt * current.baseline
+                        if writer_baseline_clock == 'physical' and writer is not None else current.baseline)
+            current = step_fly_physical_tick(model, current, None, quiet_source, baseline, options,
+                                             h_mean_decay=h_mean_decay, base_rates=base_rates)
+    return current, (latent if latent is not None else read_fly_motor(model, current))
 
 
 def _advance_fly_token_adaptive(
@@ -446,22 +736,26 @@ def _advance_fly_token_adaptive(
     if getattr(model, 'use_read_gamma_trace', False) and curr_state.gamma_z2.numel() > 0:
         latent = model.output_read(curr_state.gamma_z2)
     else:
-        read_in = (curr_state.h - curr_state.h_mean
-                   if getattr(model, 'read_centering', False)
-                   and curr_state.h_mean.numel() == curr_state.h.numel() else curr_state.h)
-        motor = read_in[:, model.read_indices] if model.read_surface != 'all' else read_in
-        latent = model.output_read(motor)
+        latent = read_fly_motor(model, curr_state)
 
     return curr_state, latent
 
 
 def predict_fly_next(model, state, token, *, settle_ticks, writer_baseline_clock,
-                     adaptive_admission=False, min_settle_ticks=3, flux_baseline=0.048):
+                     adaptive_admission=False, min_settle_ticks=3, flux_baseline=0.048,
+                     stream_ticks=0, hold_input=False):
     """Label-free generation/read interface with the same event order as BPTT.
 
     The caller must supply the checkpoint's timing explicitly. Sampling or
     teacher-forcing the next token happens only after this function returns.
     """
+    if stream_ticks:
+        next_state, z = advance_fly_token_stream(
+            model, state, token, ticks=stream_ticks, hold_input=hold_input,
+            writer_baseline_clock=writer_baseline_clock, base_rates=model.get_decay_rates(),
+            thresholds=model.get_thresholds(), conductance_gains=model.get_conductance_gains(),
+            alif_params=model.get_alif_params(), stp_params=model.get_stp_params())
+        return model.decoder(model.read_norm(z)), next_state
     if adaptive_admission:
         rates, thresholds = model.get_decay_rates(), model.get_thresholds()
         gains, alif, stp = model.get_conductance_gains(), model.get_alif_params(), model.get_stp_params()
@@ -527,8 +821,28 @@ class FlyBPTTLearner:
                  writer_baseline_clock='input', learn_stp=False,
                  lambda_jepa=0.1, use_ctm_loss=True, use_checkpointing=False,
                  lambda_mcr2=0.0, eps_mcr2=0.5,
-                 adaptive_admission=False, min_settle_ticks=3, flux_baseline=0.048):
-        self.adaptive_admission = bool(adaptive_admission)
+                 adaptive_admission=False, min_settle_ticks=3, flux_baseline=0.048,
+                 stream_ticks=0, hold_input=False, read_lag=0, go_neuron=False, go_tick_cost=0.0,
+                 go_reference_energy=0.07, go_max_ticks=32, lr_read_bank=None):
+        if not isinstance(stream_ticks, int) or stream_ticks < 0:
+            raise ValueError('stream_ticks must be a nonnegative integer')
+        if read_lag and not (stream_ticks and 1 <= read_lag <= stream_ticks):
+            raise ValueError('read_lag needs the streaming clock and must lie inside the token window')
+        # Output lag: the prediction of a token is read read_lag ticks after that token began to be sensed.
+        self.read_lag = int(read_lag)
+        # Streaming clock (stream_ticks > 0) replaces the serial pulse-settle-read event and adaptive admission.
+        self.stream_ticks = stream_ticks
+        self.hold_input = bool(hold_input)
+        # Go neuron (self-paced body): the brain's own motor act decides when to speak and take the next input.
+        # go_neuron: False, 'virtual' (attach_go_neuron) or 'connectome' (attach_connectome_go, e.g. giant fibers).
+        self.go_neuron = ('connectome' if getattr(model, 'go_neurons', None) is not None else 'virtual') if go_neuron else False
+        if self.go_neuron and stream_ticks:
+            raise ValueError('the go neuron (self-paced) replaces the streaming clock')
+        if self.go_neuron == 'virtual' and not hasattr(model, 'go_read'):
+            raise ValueError('a virtual go neuron needs attach_go_neuron(model)')
+        self.go_tick_cost, self.go_reference_energy = float(go_tick_cost), float(go_reference_energy)
+        self.go_max_ticks = int(go_max_ticks)          # safety ceiling only; the act decides
+        self.adaptive_admission = bool(adaptive_admission) and stream_ticks == 0 and not self.go_neuron
         self.min_settle_ticks = int(min_settle_ticks)
         self.flux_baseline = float(flux_baseline)
         self.last_adaptive_metrics = {}
@@ -591,6 +905,8 @@ class FlyBPTTLearner:
         if getattr(model, 'use_read_gamma_trace', False) and getattr(model, 'logit_read_gamma', None) is not None:
             if 'logit_read_gamma' not in self.adam_names:
                 self.adam_names.append('logit_read_gamma')
+        if self.go_neuron == 'virtual':
+            self.adam_names += [name for name in GO_PARAMETER_NAMES if name not in self.adam_names]
         if learn_stp:
             if not getattr(model, 'use_stp', False):
                 raise ValueError('STP learning requires an STP-enabled model')
@@ -610,6 +926,12 @@ class FlyBPTTLearner:
                 full_name = f'graph_observer.{p_name}'
                 if full_name in named and full_name not in self.adam_names:
                     self.adam_names.append(full_name)
+        # O(1) scalars/gains: the go neuron's drive, reset and leak, the read bank, intrinsic currents.  (go_read.weight
+        # entries are ~0.04 at their natural scale, where the base rate already moves them ~1% per step.)
+        go_scalars = ('go_drive', 'go_reset', 'go_logit_leak')
+        bank_names = [name for name in READ_BANK_PARAMETER_NAMES + INTRINSIC_PARAMETER_NAMES + go_scalars
+                      if name in named and name in self.adam_names + list(READ_BANK_PARAMETER_NAMES + INTRINSIC_PARAMETER_NAMES)]
+        self.adam_names = [name for name in self.adam_names if name not in bank_names]
         decayed = [named[name] for name in self.adam_names
                    if name in ('output_read.weight', 'decoder.weight') or (('latent_predictor' in name or 'graph_observer' in name) and name.endswith('.weight'))]
         undecayed = [named[name] for name in self.adam_names
@@ -625,6 +947,14 @@ class FlyBPTTLearner:
                  'weight_decay': 1e-4, 'lr': lr},
                 {'params': [model.decoder.weight], 'weight_decay': 1e-4, 'lr': lr_decoder},
                 {'params': undecayed, 'weight_decay': 0.0, 'lr': lr}]
+        if bank_names:
+            # Gains are O(1) where synapses are ~1e-3; Adam steps ~lr per update, so the bank takes a scale-matched
+            # rate (calibrated on a frozen-brain probe: 1e-2 moves the gains, 2e-4 leaves them at ~0.01 per 4k tokens).
+            for n in bank_names:
+                named[n].requires_grad_(True)
+            adam_groups.append({'params': [named[n] for n in bank_names], 'weight_decay': 0.0,
+                                'lr': lr_read_bank if lr_read_bank is not None else 50 * lr})
+            self.adam_names += bank_names
         parameter_names = {id(p): n for n, p in named.items()}
         for group in adam_groups:
             group['parameter_names'] = [parameter_names[id(p)] for p in group['params']]
@@ -707,7 +1037,8 @@ class FlyBPTTLearner:
         Requested learning rates remain those of the destination optimizer.
         """
         newly_trainable = set(newly_trainable)
-        allowed_new = set(STP_PARAMETER_NAMES) | {'logit_read_gamma'}
+        allowed_new = (set(STP_PARAMETER_NAMES) | {'logit_read_gamma'} | set(GO_PARAMETER_NAMES)
+                       | set(READ_BANK_PARAMETER_NAMES) | set(INTRINSIC_PARAMETER_NAMES))
         if getattr(self.model, 'latent_predictor', None) is not None:
             allowed_new.update(f'latent_predictor.{n}' for n, _ in self.model.latent_predictor.named_parameters())
         if getattr(self.model, 'graph_observer', None) is not None:
@@ -770,6 +1101,67 @@ class FlyBPTTLearner:
         latents = []
         h_list = []
         state_list = []
+
+        if self.go_neuron:
+            go = dict(max_ticks=self.go_max_ticks, writer_baseline_clock=self.writer_baseline_clock, base_rates=rates,
+                      thresholds=thresholds, conductance_gains=gains, alif_params=alif, stp_params=stp)
+            free_energy, realized, features, ticks, expected, energies = [], [], [], [], [], []
+            for token, target in zip(input_ids.unbind(1), targets.flatten()):
+                box = [None]
+                if self.use_checkpointing and m.training and torch.is_grad_enabled():
+                    state, lat, hazard, energy, later = checkpoint(advance_fly_token_go, m, state, token, box,
+                                                                   use_reentrant=False, **go)
+                else:
+                    state, lat, hazard, energy, later = advance_fly_token_go(m, state, token, box, **go)
+                ce = F.cross_entropy(m.decoder(m.read_norm(lat)), target.expand(lat.size(0)), reduction='none')
+                if self.go_neuron == 'connectome':
+                    with torch.no_grad():
+                        ce_later = F.cross_entropy(m.decoder(m.read_norm(later)), target.reshape(1))
+                    f = go_spike_credit(ce, hazard, ce_later)
+                    q = torch.zeros_like(ce)
+                    q[-1] = 1.0
+                else:
+                    f, q = go_free_energy(ce, hazard, energy, self.go_tick_cost, self.go_reference_energy,
+                                          entropy_term=bool(self.go_tick_cost))
+                free_energy.append(f)
+                realized.append(ce[-1])
+                features.append(lat[-1:])
+                ticks.append(lat.size(0))
+                expected.append(float((q.detach() * torch.arange(1, q.numel() + 1, device=q.device)).sum()))
+                energies.append(float(energy.mean()))
+            scores = torch.stack(realized)
+            self.last_train_loss = torch.stack(free_energy)
+            self.last_adaptive_metrics = {
+                'go_ticks_mean': float(np.mean(ticks)), 'go_ticks_min': int(min(ticks)),
+                'go_ticks_max': int(max(ticks)), 'go_expected_ticks_mean': float(np.mean(expected)),
+                'go_energy_per_tick': float(np.mean(energies)), 'adaptive_total_ticks': int(sum(ticks)),
+                'go_ceiling_hits': int(sum(t == self.go_max_ticks for t in ticks))}
+            self.last_ctm_metrics = {}
+            self.last_jepa_loss = None
+            self.last_jepa_metrics = {}
+            return scores, state, torch.cat(features, 0)
+
+        if self.stream_ticks:
+            stream = dict(ticks=self.stream_ticks, hold_input=self.hold_input, read_after=self.read_lag or None,
+                          writer_baseline_clock=self.writer_baseline_clock, base_rates=rates,
+                          thresholds=thresholds, conductance_gains=gains, alif_params=alif, stp_params=stp)
+            for token in input_ids.unbind(1):
+                box = [self.stream_ticks]
+                if self.use_checkpointing and m.training and torch.is_grad_enabled():
+                    state, token_lat = checkpoint(advance_fly_token_stream, m, state, token, box,
+                                                  use_reentrant=False, **stream)
+                else:
+                    state, token_lat = advance_fly_token_stream(m, state, token, box, **stream)
+                latents.append(token_lat)
+            features = torch.cat(latents, dim=0)
+            logits = m.decoder(m.read_norm(features))
+            scores = F.cross_entropy(logits, targets.flatten(), reduction='none')
+            self.last_train_loss = scores
+            self.last_adaptive_metrics = {}
+            self.last_ctm_metrics = {}
+            self.last_jepa_loss = None
+            self.last_jepa_metrics = {}
+            return scores, state, features
 
         if self.adaptive_admission:
             window_ticks = []
@@ -995,7 +1387,12 @@ class FlyBPTTLearner:
         return scores, state, features
 
     def inputs_for_targets(self, tokens):
-        """Archived post-write next-token protocol; subclasses may align events."""
+        """Archived post-write next-token protocol; subclasses may align events.
+
+        With an output lag the sensed token IS the target: its prediction is read before its signal can reach the
+        read surface."""
+        if getattr(self, 'read_lag', 0):
+            return tokens[None]
         if self.previous_token is None:
             raise ValueError('A continuing previous token is required')
         return torch.cat((tokens.new_tensor([self.previous_token]), tokens[:-1]))[None]
@@ -1096,7 +1493,11 @@ class FlyBPTTLearner:
             self.ema = value if self.events == 0 else .99 * self.ema + .01 * value
             self.events += 1
         self.previous_token = int(tokens[-1].item())
-        if self.adaptive_admission and getattr(self, 'last_adaptive_metrics', None):
+        if getattr(self, 'go_neuron', False):
+            self.physical_ticks += self.last_adaptive_metrics['adaptive_total_ticks']
+        elif getattr(self, 'stream_ticks', 0):
+            self.physical_ticks += len(values) * self.stream_ticks
+        elif self.adaptive_admission and getattr(self, 'last_adaptive_metrics', None):
             self.physical_ticks += self.last_adaptive_metrics.get('adaptive_total_ticks', len(values) * (1 + self.settle_ticks))
         else:
             self.physical_ticks += len(values) * (1 + self.settle_ticks)
@@ -1170,7 +1571,14 @@ class FlyBPTTLearner:
                 'eps_mcr2': getattr(self, 'eps_mcr2', 0.5),
                 'adaptive_admission': getattr(self, 'adaptive_admission', False),
                 'min_settle_ticks': getattr(self, 'min_settle_ticks', 3),
-                'flux_baseline': getattr(self, 'flux_baseline', 0.048)}
+                'flux_baseline': getattr(self, 'flux_baseline', 0.048),
+                'stream_ticks': getattr(self, 'stream_ticks', 0),
+                'hold_input': getattr(self, 'hold_input', False),
+                'read_lag': getattr(self, 'read_lag', 0),
+                'go_neuron': getattr(self, 'go_neuron', False),
+                'go_tick_cost': getattr(self, 'go_tick_cost', 0.0),
+                'go_max_ticks': getattr(self, 'go_max_ticks', 32),
+                'go_reference_energy': getattr(self, 'go_reference_energy', 0.07)}
 
     def load_edge_signs(self, saved):
         masks = saved.get('edge_positive')
