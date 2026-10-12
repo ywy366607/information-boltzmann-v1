@@ -289,6 +289,9 @@ def main():
                         help='Closed-loop odour world alongside the text stream; acts from the act head (omitted = inherit)')
     parser.add_argument('--odour-drive', type=float, default=32.0, help='Odour whiff current, rheobase units')
     parser.add_argument('--odour-receptors', type=int, default=8, help='Receptor types per odour')
+    parser.add_argument('--outcome-dopamine', action=argparse.BooleanOptionalAction, default=True,
+                        help='Contact also drives the dopamine cells directly (an electrode); --no-outcome-dopamine: '
+                             'the outcome enters only through the taste receptors')
     parser.add_argument('--act-lambda', type=float, default=1.0, help='Weight of the act fitness in the BPTT loss')
     parser.add_argument('--act-init', type=Path, default=Path('scratch/fly_stream/act_init.pt'),
                         help='Initial act head (act_calibrate.py) for a lineage that gets the odour world now')
@@ -609,9 +612,11 @@ def main():
         if getattr(args, 'odour_world', False):
             learner.odour_world = OdourWorld(model, args.graph, args.graph.parent / 'body-annotations.feather',
                                              seed=int(getattr(args, 'odour_seed_value', 0)),
-                                             odour_drive=args.odour_drive, receptors=args.odour_receptors)
+                                             odour_drive=args.odour_drive, receptors=args.odour_receptors,
+                                             outcome_dopamine=bool(args.outcome_dopamine))
             learner.act_lambda = float(args.act_lambda)
             print(f'Odour world: {len(learner.odour_world.pool)} receptor types, {args.odour_receptors} per odour, '
+                  f'outcome dopamine electrode {bool(args.outcome_dopamine)}, '
                   f'drive {args.odour_drive}, act lambda {args.act_lambda}', flush=True)
         learner.previous_token = int(train[0])
 
@@ -861,9 +866,11 @@ def main():
         if getattr(args, 'odour_world', False):
             learner.odour_world = OdourWorld(model, args.graph, args.graph.parent / 'body-annotations.feather',
                                              seed=int(getattr(args, 'odour_seed_value', 0)),
-                                             odour_drive=args.odour_drive, receptors=args.odour_receptors)
+                                             odour_drive=args.odour_drive, receptors=args.odour_receptors,
+                                             outcome_dopamine=bool(args.outcome_dopamine))
             learner.act_lambda = float(args.act_lambda)
             print(f'Odour world: {len(learner.odour_world.pool)} receptor types, {args.odour_receptors} per odour, '
+                  f'outcome dopamine electrode {bool(args.outcome_dopamine)}, '
                   f'drive {args.odour_drive}, act lambda {args.act_lambda}', flush=True)
         learner.load_edge_signs(old)
         learner.load_adam_state(old['optimizer'], newly_trainable=newly_trainable)

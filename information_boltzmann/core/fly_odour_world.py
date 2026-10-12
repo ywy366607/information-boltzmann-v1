@@ -42,7 +42,8 @@ def cells_of(types, ann_type):
 
 
 class OdourWorld:
-    def __init__(self, model, graph_npz, annotations, *, seed=0, odour_drive=32.0, outcome_drive=8.0, receptors=8):
+    def __init__(self, model, graph_npz, annotations, *, seed=0, odour_drive=32.0, outcome_drive=8.0, receptors=8,
+                 outcome_dopamine=True):
         import pandas as pd
         graph = np.load(graph_npz, allow_pickle=True)
         typ = pd.read_feather(annotations).set_index('bodyId').reindex(graph['neuron_body_ids'])['type'].astype(str).values
@@ -65,6 +66,9 @@ class OdourWorld:
             self.rheobase = (model.get_thresholds().expand(1, model.n_neurons)
                              * -torch.log(rates0.clamp(1e-5, 1 - 1e-7)))[0].float()
         self.odour_drive, self.outcome_drive = float(odour_drive), float(outcome_drive)
+        # outcome_dopamine=False: no electrode in the midbrain -- the outcome reaches the brain only through the taste
+        # receptors; whether and how the dopamine cells answer is the brain's own (evolved) business
+        self.outcome_dopamine = bool(outcome_dopamine)
         self.fitness_rate = 0.0              # running fitness per tick (evolution's bookkeeping, never seen by the brain)
         self.moves_in_gap = 0
         self.rng = np.random.default_rng(seed)
@@ -175,7 +179,8 @@ class OdourWorld:
         valence = self.valence[self.odour]
         self.phase, self.steps, self.distance = 'contact', 0, 0.0
         self.pending += [(self.tick + k, 'taste', valence) for k in range(TASTE_TICKS)]
-        self.pending += [(self.tick + DOPAMINE_DELAY + k, 'dopamine', valence) for k in range(DOPAMINE_TICKS)]
+        if self.outcome_dopamine:
+            self.pending += [(self.tick + DOPAMINE_DELAY + k, 'dopamine', valence) for k in range(DOPAMINE_TICKS)]
         self.outcomes[self.odour] += 1
 
     def _end(self, outcome):
