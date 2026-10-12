@@ -162,3 +162,12 @@ Predictions (sustained noisy input, arms as before):
   main context; the 16-word alphabet's information gain fades).
 - The rest as in the M3 predictions above.  Zero-shot check first (no training): CE by tick for clear vs noisy words
   at fixed16 must fall with ticks for noisy words, or accumulation is absent and the run is pointless.
+Pilot (passive arm, 1 chunk, sustained noisy input), before the M3 results: no accumulation was grown -- CE by tick at
+fixed16 is flat for noisy words (8.71 -> 8.68) and for clear ones (8.06 -> 8.00), while the same brain under pulse
+input improves 7.76 -> 7.45.  So sustained input does not add evidence for this brain; it disturbs the settling that
+is its thinking.  Revised prediction for M3 (written before its results): the rational eye policy is "glance, then
+close to think": look at a word's first tick(s) and close for the rest of its interval (a clear word is fully given by
+a glance; the remaining ticks become pulse-like settling, worth up to ~0.3 nats).  Signatures: eye open fraction high
+at word onsets, low within words; perception and answer CE better than the forced-open arm; at fast pace fewer
+within-word closures (no time to think).  If the eyes stay open within words, the straight-through gradient through
+the drive did not find the settling benefit (cause to check: the benefit only shows ticks later, through BPTT).
