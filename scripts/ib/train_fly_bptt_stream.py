@@ -22,8 +22,9 @@ import torch
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 from information_boltzmann.core.fly_reservoir import FlyReservoirLM
-from information_boltzmann.core.fly_odour_world import OdourWorld, attach_act_head, ACT_PARAMETER_NAMES
-ACT_STATE_NAMES = ACT_PARAMETER_NAMES + ('act_mu', 'act_sigma', 'act_w_scale')
+from information_boltzmann.core.fly_odour_world import (OdourWorld, attach_act_head, ACT_PARAMETER_NAMES,
+                                                        attach_sense_head, SENSE_PARAMETER_NAMES)
+ACT_STATE_NAMES = ACT_PARAMETER_NAMES + ('act_mu', 'act_sigma', 'act_w_scale') + SENSE_PARAMETER_NAMES
 from information_boltzmann.core.fly_bptt_learning import (
     FlyPhysicalState, FlyBPTTLearner, FlyBPTTGraph, STP_PARAMETER_NAMES,
     GO_PARAMETER_NAMES, attach_go_neuron, attach_connectome_go, READ_BANK_PARAMETER_NAMES, attach_read_bank,
@@ -169,6 +170,8 @@ def resolve_learning_modes(args, previous_config, previous_learner):
         args.relative_edge_rate = float(previous_config.get('relative_edge_rate') or 0.0)
     if getattr(args, 'odour_world', None) is None:
         args.odour_world = bool(previous_config.get('odour_world', False))
+    if getattr(args, 'sense_prediction', None) is None:
+        args.sense_prediction = bool(previous_config.get('sense_prediction', False))
     if getattr(args, 'compartment_memory', None) is None:
         args.compartment_memory = bool(previous_config.get('compartment_memory', False))
     args.kc_dendritic_newly = bool(args.kc_dendritic_only) and not bool(previous_config.get('kc_dendritic_only', False))
@@ -293,6 +296,10 @@ def main():
                         help='Contact also drives the dopamine cells directly (an electrode); --no-outcome-dopamine: '
                              'the outcome enters only through the taste receptors')
     parser.add_argument('--act-lambda', type=float, default=1.0, help='Weight of the act fitness in the BPTT loss')
+    parser.add_argument('--sense-prediction', action=argparse.BooleanOptionalAction, default=None,
+                        help='The brain also predicts its other senses (odour levels, taste) one tick ahead, and the world '
+                             'sends gusts (world-caused odour rises) to test self vs world (omitted = inherit)')
+    parser.add_argument('--sense-lambda', type=float, default=1.0, help='Weight of the sense prediction error')
     parser.add_argument('--act-init', type=Path, default=Path('scratch/fly_stream/act_init.pt'),
                         help='Initial act head (act_calibrate.py) for a lineage that gets the odour world now')
     parser.add_argument('--relative-edge-rate', type=float, default=None,
@@ -613,7 +620,9 @@ def main():
             learner.odour_world = OdourWorld(model, args.graph, args.graph.parent / 'body-annotations.feather',
                                              seed=int(getattr(args, 'odour_seed_value', 0)),
                                              odour_drive=args.odour_drive, receptors=args.odour_receptors,
-                                             outcome_dopamine=bool(args.outcome_dopamine))
+                                             outcome_dopamine=bool(args.outcome_dopamine),
+                                             gusts=bool(getattr(args, 'sense_prediction', False)))
+            learner.sense_lambda = float(getattr(args, 'sense_lambda', 1.0))
             learner.act_lambda = float(args.act_lambda)
             print(f'Odour world: {len(learner.odour_world.pool)} receptor types, {args.odour_receptors} per odour, '
                   f'outcome dopamine electrode {bool(args.outcome_dopamine)}, '
@@ -767,6 +776,16 @@ def main():
                 else:
                     attach_act_head(model, torch.load(args.act_init, map_location='cpu'))
                     print(f'Act head initialized from {args.act_init}', flush=True)
+                if args.sense_prediction:
+                    from information_boltzmann.core.fly_odour_world import INNATE
+                    import pandas as _pd
+                    _typ = _pd.read_feather(args.graph.parent / 'body-annotations.feather')['type'].astype(str)
+                    size = len({t[4:] for t in _typ if t.startswith('ORN_')} - set(INNATE)) + 2
+                    attach_sense_head(model, size)
+                    sense_state = {k: v for k, v in saved['model'].items() if k in SENSE_PARAMETER_NAMES}
+                    if sense_state:
+                        model.load_state_dict(sense_state, strict=False)
+                    print(f'Sense prediction: {size} channels{" (carried over)" if sense_state else ""}', flush=True)
             if args.dopamine_modulation and args.dopamine_sensitivity_init is not None:
                 model.dopamine_sensitivity.fill_(float(args.dopamine_sensitivity_init))
                 print(f'Dopamine sensitivities set to {args.dopamine_sensitivity_init}', flush=True)
@@ -867,7 +886,9 @@ def main():
             learner.odour_world = OdourWorld(model, args.graph, args.graph.parent / 'body-annotations.feather',
                                              seed=int(getattr(args, 'odour_seed_value', 0)),
                                              odour_drive=args.odour_drive, receptors=args.odour_receptors,
-                                             outcome_dopamine=bool(args.outcome_dopamine))
+                                             outcome_dopamine=bool(args.outcome_dopamine),
+                                             gusts=bool(getattr(args, 'sense_prediction', False)))
+            learner.sense_lambda = float(getattr(args, 'sense_lambda', 1.0))
             learner.act_lambda = float(args.act_lambda)
             print(f'Odour world: {len(learner.odour_world.pool)} receptor types, {args.odour_receptors} per odour, '
                   f'outcome dopamine electrode {bool(args.outcome_dopamine)}, '

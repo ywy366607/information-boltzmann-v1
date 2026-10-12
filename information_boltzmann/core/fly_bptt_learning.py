@@ -1624,6 +1624,8 @@ class FlyBPTTLearner:
         if getattr(model, 'act_w', None) is not None:
             # the act head, when attached, always learns (fly_odour_world.attach_act_head)
             self.adam_names += [n for n in ('act_w', 'act_b', 'act_logit_leak') if n not in self.adam_names]
+        if getattr(model, 'sense_head', None) is not None:
+            self.adam_names += [n for n in ('sense_head.weight', 'sense_head.bias') if n not in self.adam_names]
         if getattr(model, 'use_read_gamma_trace', False) and getattr(model, 'logit_read_gamma', None) is not None:
             if 'logit_read_gamma' not in self.adam_names:
                 self.adam_names.append('logit_read_gamma')
@@ -1978,12 +1980,31 @@ class FlyBPTTLearner:
                 h = torch.cat(hazards, 0)
                 J, self.act_carry = act_return(h[:, 0], h[:, 1], records, getattr(self, 'act_carry', {}))
                 self.last_act_loss = -float(getattr(self, 'act_lambda', 1.0)) * J
+                if getattr(m, 'sense_head', None) is not None and reads:
+                    # the brain's expectation of its other senses: after tick t it predicts what tick t + 1 brings
+                    # (odour levels, taste); scored against what came.  Self-caused rises (its own approach) vs
+                    # world-caused (gusts) tell whether it models its own effect on its input.
+                    pred = m.sense_head(m.read_norm(torch.cat(reads, 0)))[:-1]
+                    target = torch.as_tensor(np.stack([r['sense'] for r in records[1:]]), device=pred.device)
+                    err = ((pred - target) ** 2).sum(1)
+                    self.last_act_loss = self.last_act_loss + float(getattr(self, 'sense_lambda', 1.0)) * err.mean()
+                    with torch.no_grad():
+                        ramp = np.array([r['ramp'] or '' for r in records[1:]])
+                        sense_metrics = {'sense_err': float(err.mean())}
+                        for kind in ('self', 'world'):
+                            sel = torch.as_tensor(ramp == kind, device=err.device)
+                            sense_metrics[f'sense_err_{kind}_ramp'] = float(err[sel].mean()) if bool(sel.any()) else None
+                            sense_metrics[f'{kind}_ramp_ticks'] = int(sel.sum())
+                        on = torch.as_tensor(target.sum(1) > 0)
+                        sense_metrics['sense_err_on_input'] = float(err[on].mean()) if bool(on.any()) else None
                 self.act_g = act_g.detach()
                 acts = h.detach().round()
                 self.last_adaptive_metrics.update({
                     'act_return': float(J.detach()), 'acts_approach': int(acts[:, 0].sum()), 'acts_avoid': int(acts[:, 1].sum()),
                     'live_ticks': int(sum(r['live'] for r in records)), 'gap_ticks': int(sum(r.get('gap', False) for r in records)),
                     'act_g_mean': float(act_g.detach().mean())})
+                if getattr(m, 'sense_head', None) is not None and reads:
+                    self.last_adaptive_metrics.update(sense_metrics)
             self.last_ctm_metrics = {}
             self.last_jepa_loss = None
             self.last_jepa_metrics = {}

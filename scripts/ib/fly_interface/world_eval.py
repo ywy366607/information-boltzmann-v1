@@ -49,7 +49,7 @@ def load(fork):
         fl.attach_tied_writer(model, graph, graph.parent / 'body-annotations.feather', convert=False)
     edges = ('edge_weight_e', 'edge_weight_i')
     from information_boltzmann.core import fly_odour_world as ow
-    act = ow.ACT_PARAMETER_NAMES + ('act_mu', 'act_sigma', 'act_w_scale')
+    act = ow.ACT_PARAMETER_NAMES + ('act_mu', 'act_sigma', 'act_w_scale') + ow.SENSE_PARAMETER_NAMES
     late = fl.COMPARTMENT_PARAMETER_NAMES + fl.TASTE_PARAMETER_NAMES + act
     with torch.no_grad():
         for k in edges:
@@ -65,6 +65,9 @@ def load(fork):
             init = torch.load(ROOT / cfg.get('act_init', 'scratch/fly_stream/act_init.pt'), map_location='cpu')
             ow.attach_act_head(model, init)            # constants (mu, sigma, read scale) from the init; learned below
             model.load_state_dict({k: v for k, v in saved['model'].items() if k in act}, strict=False)
+        if 'sense_head.weight' in saved['model']:
+            ow.attach_sense_head(model, saved['model']['sense_head.weight'].shape[0])
+            model.load_state_dict({k: v for k, v in saved['model'].items() if k in ow.SENSE_PARAMETER_NAMES}, strict=False)
     model.eval().requires_grad_(False)
     return model, cfg, L
 

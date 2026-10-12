@@ -31,7 +31,7 @@ SWEET_TASTE, BITTER_TASTE = ('LgAG3', 'LB1b', 'PhG13'), ('LgAG1', 'PhG8', 'dorsa
 SWEET_DOPAMINE, BITTER_DOPAMINE = ('PAM01', 'PAM02', 'PAM11'), ('PPL101', 'PPL103', 'PPL106')
 SEGMENT, REVERSE_P, GAP, MOVE = 3000, 0.25, 64, 16
 APPROACH, D_MIN, CONTACT_ODOUR, FADE = 8, 0.25, 6, math.exp(-1 / 4)
-LEAVE, DRIFT = 1 / 48, 1 / 96
+LEAVE, DRIFT, GUST = 1 / 48, 1 / 96, 1 / 96
 BOUND, SOFT = 1.0, 0.25
 TASTE_TICKS, DOPAMINE_DELAY, DOPAMINE_TICKS = 4, 3, 4
 REWARD = {'sweet': 1.0, 'bitter': -1.5}
@@ -43,7 +43,7 @@ def cells_of(types, ann_type):
 
 class OdourWorld:
     def __init__(self, model, graph_npz, annotations, *, seed=0, odour_drive=32.0, outcome_drive=8.0, receptors=8,
-                 outcome_dopamine=True):
+                 outcome_dopamine=True, gusts=False):
         import pandas as pd
         graph = np.load(graph_npz, allow_pickle=True)
         typ = pd.read_feather(annotations).set_index('bodyId').reindex(graph['neuron_body_ids'])['type'].astype(str).values
@@ -69,6 +69,10 @@ class OdourWorld:
         # outcome_dopamine=False: no electrode in the midbrain -- the outcome reaches the brain only through the taste
         # receptors; whether and how the dopamine cells answer is the brain's own (evolved) business
         self.outcome_dopamine = bool(outcome_dopamine)
+        # gusts=True: now and then the source is carried towards the fly by the world -- the same rise of the odour as an
+        # approach, but not caused by the fly (exafference vs the reafference of its own approach); then it leaves
+        self.gusts = bool(gusts)
+        self.sense_types = {g: i for i, g in enumerate(self.pool)}
         self.fitness_rate = 0.0              # running fitness per tick (evolution's bookkeeping, never seen by the brain)
         self.moves_in_gap = 0
         self.rng = np.random.default_rng(seed)
@@ -114,15 +118,19 @@ class OdourWorld:
         id; gap ticks carry the value of moving."""
         current = None
         cells, amounts = [], []
-        if self.phase in ('present', 'approach', 'contact', 'avoid') and self.amplitude > 0:
+        sense = np.zeros(len(self.pool) + 2, np.float32)       # what reaches the senses: odour types, sweet, bitter
+        if self.phase in ('present', 'approach', 'contact', 'avoid', 'gust') and self.amplitude > 0:
             if self.rng.random() < self.whiff_p or self.phase == 'contact':
                 level = self.odour_drive * self.amplitude / max(self.distance, D_MIN)
                 for g in self.odours[self.odour]:
                     cells.append(self.receptor_t[g]); amounts.append(level)
+                    sense[self.sense_types[g]] = level / self.odour_drive
         for when, kind, valence in self.pending:
             if when == self.tick:
                 cells.append(self.taste_t[valence] if kind == 'taste' else self.dopamine_t[valence])
                 amounts.append(self.outcome_drive)
+                if kind == 'taste':
+                    sense[len(self.pool) + (valence == 'bitter')] = 1.0
         if cells:
             idx = torch.cat(cells)
             amt = torch.cat([torch.full((len(c),), a, device=self.device) for c, a in zip(cells, amounts)])
@@ -130,7 +138,8 @@ class OdourWorld:
         live, gap = self.phase == 'present', self.phase == 'gap'
         return current, {'live': live, 'value': self.value() if live else 0.0,
                          'encounter': self.encounter_id if live else 0,
-                         'gap': gap, 'move_value': MOVE * self.fitness_rate if gap else 0.0}
+                         'gap': gap, 'move_value': MOVE * self.fitness_rate if gap else 0.0, 'sense': sense,
+                         'ramp': 'self' if self.phase == 'approach' else ('world' if self.phase == 'gust' else None)}
 
     def observe(self, act):
         """After the tick: the realized act (None, 'approach' or 'avoid'); advance the world."""
@@ -161,11 +170,20 @@ class OdourWorld:
                 elif u < DRIFT + LEAVE:
                     self.enc['act'], self.enc['latency'] = 'none', self.tick - self.enc['start']
                     self._end(None)
+                elif self.gusts and u < DRIFT + LEAVE + GUST:
+                    self.enc['act'], self.enc['latency'] = 'gust', self.tick - self.enc['start']
+                    self.phase, self.steps = 'gust', 0
         elif self.phase == 'approach':
             self.steps += 1
             self.distance = max(0.0, 1.0 - self.steps / APPROACH)
             if self.steps >= APPROACH:
                 self._contact()
+        elif self.phase == 'gust':
+            # carried in by the world over the same APPROACH ticks as an approach, then carried away: no contact
+            self.steps += 1
+            self.distance = max(0.0, 1.0 - self.steps / APPROACH)
+            if self.steps >= APPROACH:
+                self._end(None)
         elif self.phase == 'avoid':
             self.amplitude *= FADE
             if self.amplitude < 0.05:
@@ -276,4 +294,15 @@ def attach_act_head(model, init):
 
 
 ACT_PARAMETER_NAMES = ('act_w', 'act_b', 'act_logit_leak')
+SENSE_PARAMETER_NAMES = ('sense_head.weight', 'sense_head.bias')
+
+
+def attach_sense_head(model, size):
+    """The expectation of the other senses, read from the same output surface as the expectation of the next word:
+    a linear read of the motor latent predicting what the next tick brings to the senses (every olfactory receptor
+    type's odour level, sweet, bitter).  Zero at the start."""
+    head = torch.nn.Linear(model.output_read.out_features, size).to(model.read_indices.device)
+    torch.nn.init.zeros_(head.weight); torch.nn.init.zeros_(head.bias)
+    model.sense_head = head
+    return model
 ACT_RAW_SD = 0.02
