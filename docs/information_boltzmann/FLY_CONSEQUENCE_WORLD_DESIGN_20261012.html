@@ -116,6 +116,7 @@ a{color:var(--accent)} ol.plain{padding-left:20px} ol.plain li{margin-bottom:6px
   <a href="#compartment">隔室规则</a>
   <a href="#level1">第一层与 SIGReg</a>
   <a href="#cost">代价与顺序</a>
+  <a href="#phase0-results">检查结果</a>
 </nav>
 
 <main>
@@ -315,6 +316,37 @@ flowchart LR
 <li>结果写进实验记录和路线图，然后决定是否进入书架交给大脑。</li>
 </ol>
 <p>全部是一次一个 torch 进程。每一步的预言已写在上面；你确认后我再写代码。</p>
+</section>
+
+<section id="phase0-results">
+<h2>零样本检查的结果（2026-10-12）</h2>
+<p>个体：稳态出生的新生对照（b2_control），固定权重。脚本 <span class="path">scratch/fly_stream/taste_phase0.py</span>、<span class="path">word_path.py</span>。</p>
+<div class="tablebox"><table>
+<thead><tr><th>检查</th><th>结果</th><th>判定</th></tr></thead>
+<tbody>
+<tr><td>a. 味觉 → 多巴胺细胞</td><td>糖味细胞（二级 6 个 + 只投向它们的味觉感觉神经元 44 个）驱动到 2–20 倍阈电流（13–240 Hz），苦味 4 个（83–500 Hz）：392 个多巴胺细胞的放电在 12 个位置上一次都没变。糖味最多波及 200–460 个神经元；苦味（DNg28 是下行神经元）几乎不波及</td><td><span class="chip no">不通过</span></td></tr>
+<tr><td>b. 蘑菇体 → “是 / 否”</td><td>“是 − 否” logit 差在不同位置几乎不变（均值 −4.14，标准差 0.022，P(是) ≈ 1.6%）。静默全部 MBON 或驱动到 20 倍：变化 &lt; 0.0001；驱动 97 个随机核心细胞到 20 倍：变化为自然标准差的 1%</td><td><span class="chip no">不通过</span>（MBON 是否真的被驱动起来待确认，见下）</td></tr>
+<tr><td>c. 提示词的 Kenyon 编码</td><td>从同一状态读 8 个不同的词，活动的 Kenyon 细胞集合 93–99% 相同；同一个词在不同上下文只有 13% 相同。Kenyon 活动由状态决定，不由词决定</td><td><span class="chip no">不通过</span></td></tr>
+<tr><td>d. 延迟</td><td>静默之后的提示词都用满 32 拍</td><td>需要固定读出时刻</td></tr>
+<tr><td>时钟</td><td>读出潜变量 128 次读数的有效秩：文本 1.23、重复同一词 1.11、静默 1.04；静默时的方差是读文本时的 1.38 倍</td><td>读出被一个与输入无关的方向主导</td></tr>
+</tbody></table></div>
+
+<h3>词在哪里丢了（每细胞放电次数变化，16 拍）</h3>
+<div class="tablebox"><table>
+<thead><tr><th>层</th><th>新生（稳态）</th><th>成年（无稳态）</th></tr></thead>
+<tbody>
+<tr><td>嗅觉受体神经元（文本写入处）</td><td class="num">0.149</td><td class="num">0.652</td></tr>
+<tr><td>投射神经元 ALPN</td><td class="num">0.0136</td><td class="num">0.390</td></tr>
+<tr><td>Kenyon 细胞</td><td class="num">0.000036</td><td class="num">0.0061</td></tr>
+<tr><td>MBON</td><td class="num">0</td><td class="num">0.024</td></tr>
+<tr><td>多巴胺细胞</td><td class="num">0</td><td class="num">0.024</td></tr>
+<tr><td>读出面</td><td class="num">0.010</td><td class="num">0.216</td></tr>
+</tbody></table></div>
+<p>连接组里的路很近（糖味到 PAM 2 跳，MBON 到读出面 1–2 跳），但信号走不通。成年个体里蘑菇体也只收到很弱的词信号（Kenyon 0.006，读出面 0.22），这本身就能解释被动阅读里“蘑菇体不被使用”。</p>
+
+<h3>原因：加性稳态电流让回路的进出口变聋</h3>
+<p>稳态的内在驱动 b（单位：自身阈电流）中位数：MBON −19.7，多巴胺细胞 −8.6，嗅觉受体神经元 −11.3，投射神经元 −1.2，Kenyon 细胞 0.73。这些细胞平时受到大量持续兴奋输入，稳态用一个很大的反向电流把它们压回 1–2 Hz。在电导型神经元里，这是“高电导状态”：巨大的兴奋电导被巨大的反向电流抵消，额外输入被分流，细胞变聋。</p>
+<p class="cap">出路（第一性原理）：真实神经元的稳态主要是突触缩放（Turrigiano 1998），按比例缩小输入突触的强度，而不是加一个反向电流。按比例缩放减少电导负荷，保留输入的相对结构和细胞的增益。先零样本比较两种稳态下的“词的路径”，再决定是否重新孕育。</p>
 </section>
 
 <footer>
