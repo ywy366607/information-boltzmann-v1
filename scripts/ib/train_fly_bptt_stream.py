@@ -33,7 +33,8 @@ from information_boltzmann.core.fly_bptt_learning import (
     ONLINE_DA_PARAMETER_NAMES, attach_online_da_plasticity, attach_kenyon_dendritic_only, attach_homeostasis,
     attach_regime_homeostasis, attach_tied_writer, REGIME_KENYON_Z,
     attach_compartment_memory, attach_taste_heads, COMPARTMENT_PARAMETER_NAMES, TASTE_PARAMETER_NAMES,
-    renormalize_kenyon_inputs,
+    renormalize_kenyon_inputs, pin_kenyon_to_dopamine, pin_sensory_terminals, pin_modulatory_fast_edges,
+    reset_inputs_to_birth,
 )
 from information_boltzmann.runtime.lifelong_evaluation import recovery_summary, savings_summary
 from information_boltzmann.runtime.prequential_meter import FirstPassPredictionMeter
@@ -164,6 +165,11 @@ def resolve_learning_modes(args, previous_config, previous_learner):
     if getattr(args, 'tied_writer', None) is None:
         args.tied_writer = bool(previous_config.get('tied_writer', False))
     args.kc_renorm_newly = bool(args.kc_renorm) and not bool(previous_config.get('kc_renorm', False))
+    if getattr(args, 'connectome_v2', None) is None:
+        args.connectome_v2 = bool(previous_config.get('connectome_v2', False))
+    args.al_reset_newly = bool(args.al_reset) and not bool(previous_config.get('al_reset', False))
+    if previous_config.get('al_reset'):
+        args.al_reset = True
     if getattr(args, 'kc_renorm', None) is None:
         args.kc_renorm = bool(previous_config.get('kc_renorm', False))
     if getattr(args, 'relative_edge_rate', None) is None:
@@ -306,6 +312,11 @@ def main():
                         help='Exploration trial: the fitness counts the lifetime value of tasting an odour of unknown valence')
     parser.add_argument('--act-init', type=Path, default=Path('scratch/fly_stream/act_init.pt'),
                         help='Initial act head (act_calibrate.py) for a lineage that gets the odour world now')
+    parser.add_argument('--connectome-v2', action=argparse.BooleanOptionalAction, default=None,
+                        help='Pin the point-model artifacts of the audit: Kenyon->dopamine terminal synapses, synapses onto '
+                             'sensory terminals, fast edges of octopamine/serotonin neurons (omitted = inherit)')
+    parser.add_argument('--al-reset', action='store_true',
+                        help='Once: every input of the antennal-lobe cells back to its birth weight')
     parser.add_argument('--relative-edge-rate', type=float, default=None,
                         help='Relative plasticity: each synapse moves by this fraction of its birth weight per full Adam '
                              'step (omitted = inherit; 0 = absolute steps)')
@@ -740,6 +751,16 @@ def main():
                                                             rescale=getattr(args, 'kc_dendritic_newly', True))
                 print(f'Kenyon -> Kenyon: {n_kk} edges, {n_zero} axo-axonal pinned at 0'
                       f'{" (weights rescaled now)" if getattr(args, "kc_dendritic_newly", True) else ""}', flush=True)
+            if args.connectome_v2:
+                ann_path = args.graph.parent / 'body-annotations.feather'
+                pins = {'kenyon_to_dopamine': pin_kenyon_to_dopamine(model, args.graph, ann_path),
+                        'sensory_terminals': pin_sensory_terminals(model, args.graph),
+                        'octopamine_serotonin_fast': pin_modulatory_fast_edges(model, args.graph,
+                                                                               args.graph.parent / 'modulatory_neurons.feather')}
+                print(f'Connectome v2 pins: {pins}', flush=True)
+            if args.al_reset_newly:
+                n_al = reset_inputs_to_birth(model, args.graph, args.graph.parent / 'body-annotations.feather')
+                print(f'Antennal-lobe inputs reset to birth now: {n_al} edges', flush=True)
             if args.kc_renorm and args.kc_renorm_newly:
                 if not args.kc_dendritic_only:
                     raise ValueError('--kc-renorm needs --kc-dendritic-only (the axo-axonal inputs cut first)')

@@ -1151,6 +1151,91 @@ def pin_kenyon_to_dopamine(model, graph_npz, annotations):
     return int(edges.numel())
 
 
+def pin_edges(model, suffix, edges):
+    """Pin edges of the excitatory ('e') or inhibitory ('i') list at 0 for good (merged into pinned_zero_edges_*, which
+    the learner re-zeroes after every update)."""
+    w = getattr(model, f'edge_weight_{suffix}')
+    edges = edges.to(w.device)
+    with torch.no_grad():
+        w[edges] = 0.0
+    name = f'pinned_zero_edges_{suffix}'
+    old = getattr(model, name, None)
+    model.register_buffer(name, edges if old is None else torch.unique(torch.cat([old.to(w.device), edges])), persistent=False)
+    return int(edges.numel())
+
+
+def pin_sensory_terminals(model, graph_npz):
+    """Synapses onto sensory neurons sit on their axon terminals (their dendrites are peripheral): they modulate
+    release, they do not make the sensory cell fire.  As somatic input they formed self-exciting loops (receptor ->
+    receptor ~43% of olfactory receptor input).  Removed from the membrane (release modulation can be added later)."""
+    e, i = sensory_axonal_edges(model, graph_npz)
+    return pin_edges(model, 'e', e) + pin_edges(model, 'i', i)
+
+
+def pin_modulatory_fast_edges(model, graph_npz, modulatory_feather, transmitters=('octopamine', 'serotonin')):
+    """Octopamine and serotonin act through metabotropic receptors (volume transmission), not fast synapses; as fast
+    excitation they drove e.g. the Kenyon cells directly (OA-VPM3/VPM4/VUMa2: ~half of the non-PN Kenyon drive).  Their
+    fast output edges are removed (as dopamine's were); their modulation is not modelled yet."""
+    import numpy as np
+    import pandas as pd
+    ids = np.load(graph_npz, allow_pickle=True)['neuron_body_ids']
+    table = pd.read_feather(modulatory_feather)
+    bodies = set(int(b) for b in table[table.consensusNt.isin(transmitters)].bodyId)
+    mask = torch.as_tensor(np.array([int(b) in bodies for b in ids]), device=model.edge_pre_e.device)
+    n = 0
+    for sfx in ('e', 'i'):
+        edges = torch.nonzero(mask[getattr(model, f'edge_pre_{sfx}').long()]).squeeze(1)
+        n += pin_edges(model, sfx, edges)
+    return n
+
+
+def apply_connectome_fixes(model, graph_npz, annotations, *, kenyon_dendritic=True, kenyon_renorm=True, reset_al=False):
+    """The high-severity point-model fixes of the audit (FLY_CONNECTOME_AUDIT_20261012.md) in one call: Kenyon
+    axo-axonal input cut and the Kenyon inputs renormalized over dendritic partners (only when asked: they rescale the
+    learned weights, once per lineage), Kenyon -> dopamine terminal synapses, synapses onto sensory terminals and the
+    fast edges of octopamine / serotonin neurons pinned at 0 (idempotent: call on every load), optionally the antennal
+    lobe's inputs back to birth (once).  Returns the counts."""
+    from pathlib import Path
+    graph_npz = Path(graph_npz); folder = graph_npz.parent
+    dend = folder / 'kc_kc_dendritic_synapses.feather'
+    done = {}
+    if kenyon_dendritic:
+        done['kenyon_axo_axonal'] = attach_kenyon_dendritic_only(model, graph_npz, annotations, dend, rescale=kenyon_renorm)[1]
+    else:
+        done['kenyon_axo_axonal'] = attach_kenyon_dendritic_only(model, graph_npz, annotations, dend, rescale=False)[1]
+    if kenyon_renorm:
+        done['kenyon_renorm_factor'] = renormalize_kenyon_inputs(model, graph_npz, annotations, dend)
+    done['kenyon_to_dopamine'] = pin_kenyon_to_dopamine(model, graph_npz, annotations)
+    done['sensory_terminals'] = pin_sensory_terminals(model, graph_npz)
+    done['octopamine_serotonin_fast'] = pin_modulatory_fast_edges(model, graph_npz, folder / 'modulatory_neurons.feather')
+    if reset_al:
+        done['antennal_lobe_reset'] = reset_inputs_to_birth(model, graph_npz, annotations)
+    return done
+
+
+ANTENNAL_LOBE_CLASSES = ('olfactory', 'ALLN', 'ALPN', 'ALIN', 'ALON')
+
+
+def reset_inputs_to_birth(model, graph_npz, annotations, classes=ANTENNAL_LOBE_CLASSES):
+    """Every synapse onto the cells of the given classes back to its birth weight (the rest of the brain keeps what it
+    learned).  For the antennal lobe of a lineage trained with absolute Adam steps: its excitation grew 5-8x (inhibition
+    1.3-2x) into a self-sustaining excitatory loop that drowns odours.  Returns the number of edges reset."""
+    import numpy as np
+    import pandas as pd
+    graph = np.load(graph_npz, allow_pickle=True)
+    cls = pd.read_feather(annotations).set_index('bodyId').reindex(graph['neuron_body_ids'])['class'].astype(str).values
+    target = torch.as_tensor(np.isin(cls, list(classes)), device=model.edge_post_e.device)
+    n = 0
+    with torch.no_grad():
+        for sfx in ('e', 'i'):
+            w = getattr(model, f'edge_weight_{sfx}')
+            birth = torch.as_tensor(np.abs(graph[f'edge_weight_{sfx}']), dtype=w.dtype, device=w.device)
+            sel = target[getattr(model, f'edge_post_{sfx}').long()]
+            w[sel] = birth[sel]
+            n += int(sel.sum())
+    return n
+
+
 SENSORY_SUPERCLASSES = ('cb_sensory', 'ol_sensory', 'vnc_sensory', 'sensory_ascending', 'sensory_descending')
 
 

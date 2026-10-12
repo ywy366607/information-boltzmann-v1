@@ -1,7 +1,8 @@
-"""Minimal neuPrint HTTPS client: token from NEUPRINT_TOKEN, Cypher on the server, prints the bytes received."""
+"""Minimal neuPrint HTTPS client: token from NEUPRINT_TOKEN or NEUPRINT_APPLICATION_CREDENTIALS, Cypher on the server, prints the bytes received."""
 import os, sys, json, requests
 URL = 'https://neuprint.janelia.org'
-H = {'Authorization': 'Bearer ' + os.environ['NEUPRINT_TOKEN'], 'Content-Type': 'application/json'}
+TOKEN = os.environ.get('NEUPRINT_TOKEN') or os.environ['NEUPRINT_APPLICATION_CREDENTIALS']     # never printed or stored
+H = {'Authorization': 'Bearer ' + TOKEN, 'Content-Type': 'application/json'}
 def cypher(q, dataset='male-cns:v1.0'):
     r = requests.post(URL + '/api/custom/custom', headers=H, data=json.dumps({'cypher': q, 'dataset': dataset}), timeout=600)
     print(f'[{r.status_code}, {len(r.content)} bytes]', file=sys.stderr)

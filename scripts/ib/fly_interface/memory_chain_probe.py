@@ -14,7 +14,7 @@ Measured per presentation (odour window minus the matched window before it):
       the spread over repeated presentations of the same odour (a d' over the output surface)
 Usage: python memory_chain_probe.py <checkpoint dir> [out .jsonl]
 """
-import sys, json, numpy as np, pandas as pd, torch
+import sys, os, json, numpy as np, pandas as pd, torch
 from pathlib import Path
 sys.path.insert(0, 'D:/information-boltzmann-v1')
 exec(open('D:/information-boltzmann-v1/scripts/ib/fly_interface/world_eval.py', encoding='utf-8').read().split('def evaluate(fork):')[0])
@@ -44,6 +44,14 @@ if getattr(model, 'comp_pre', None) is None:
     fl.attach_compartment_memory(model, graph, ann, eta=-2.0, forget=0.02)
 if getattr(model, 'taste_valence', None) is None:
     fl.attach_taste_heads(model, graph, ann)
+if os.environ.get('AL_RESET'):
+    print('antennal-lobe inputs reset to birth:', fl.reset_inputs_to_birth(model, ROOT / cfg['graph'], (ROOT / cfg['graph']).parent / 'body-annotations.feather'), flush=True)
+if os.environ.get('CONNECTOME_V2'):
+    # the full set; the Kenyon fixes above already ran in this script, so only the pins (idempotent) are added here
+    print('connectome v2 pins:', {k: v for k, v in {
+        'kenyon_to_dopamine': fl.pin_kenyon_to_dopamine(model, ROOT / cfg['graph'], (ROOT / cfg['graph']).parent / 'body-annotations.feather'),
+        'sensory_terminals': fl.pin_sensory_terminals(model, ROOT / cfg['graph']),
+        'octopamine_serotonin_fast': fl.pin_modulatory_fast_edges(model, ROOT / cfg['graph'], (ROOT / cfg['graph']).parent / 'modulatory_neurons.feather')}.items()}, flush=True)
 model.eval().requires_grad_(False)
 world = ow.OdourWorld(model, graph, ann, seed=0)
 opts = dict(base_rates=model.get_decay_rates(), thresholds=model.get_thresholds(), conductance_gains=model.get_conductance_gains(),
@@ -100,7 +108,7 @@ def present(cells, outcome=None, ticks=24):
     return acc_m / ticks, acc_o / ticks, drove & ~ctrl
 
 
-rep = {'checkpoint': str(fork), 'no_chemo_writer': NO_CHEMO_WRITER, 'kc_dan_pin': KC_DAN_PIN}
+rep = {'checkpoint': str(fork), 'no_chemo_writer': NO_CHEMO_WRITER, 'kc_dan_pin': KC_DAN_PIN, 'al_reset': bool(os.environ.get('AL_RESET')), 'connectome_v2': bool(os.environ.get('CONNECTOME_V2'))}
 kc_all = torch.as_tensor(np.flatnonzero(pd.read_feather(ann).set_index('bodyId').reindex(np.load(graph, allow_pickle=True)['neuron_body_ids'])['class'].astype(str).values == 'Kenyon_Cell'), device='cuda')
 gr = np.load(graph, allow_pickle=True); typ_all = pd.read_feather(ann).set_index('bodyId').reindex(gr['neuron_body_ids'])['type'].astype(str).values
 with torch.no_grad():

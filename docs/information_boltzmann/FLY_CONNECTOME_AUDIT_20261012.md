@@ -236,3 +236,22 @@ Other items:
 
 All numbers were recomputed from `connectome-weights.feather`, the annotation and NT feathers, `fly_reservoir_coba.npz` /
 `fly_reservoir_full.npz`, `kc_kc_dendritic_synapses.feather`, and the checkpoint's `model` and `learner.physical` tensors. Neither GPU nor torch was used.
+
+## Status 2026-10-13: fixes graded by the active route
+
+Principle (user): the fly brain is a prior for an evolving infinite-stream information life, not a replica; fix what
+blocks the main mechanisms on the way to activeness, coarse-grained, without slowing compute or raising memory;
+biological limits with faster digital equivalents need not be copied.
+
+| Artifact | Blocks | Fix | State |
+|---|---|---|---|
+| Kenyon axo-axonal KC->KC as somatic; sqrt(K_in) counted axo-axonal and dopamine partners | odours never reach Kenyon cells | `attach_kenyon_dendritic_only` + `renormalize_kenyon_inputs` (once per lineage) | done |
+| Kenyon->dopamine terminal synapses as somatic (80% of DAN excitation) | teaching signal follows text, not outcomes (outcome burst indistinguishable from odour-only) | `pin_kenyon_to_dopamine` | done: outcome burst 2.4x, pairing writes odour-specific depression (7x) |
+| Absolute Adam steps vs birth weights (median 7.4e-4 vs lr 2e-4) | saturated DNs, antennal lobe grown into a self-exciting loop (E x5-8, I x1.3-2) | relative plasticity (`--relative-edge-rate 0.02`); antennal-lobe inputs back to birth once (`--al-reset`) | done: PN baseline 0.12 -> 0.017 |
+| Compartment rule: signed fast-slow phasic (integrates to ~0), forgetting tied to the rate | memory not written / not kept | rectified phasic, depression x (1 + phi), slow forgetting | done |
+| Synapses onto sensory terminals as somatic | receptor self-excitation | pinned (`pin_sensory_terminals`); release modulation later if needed | done (coarse) |
+| Octopamine / serotonin as fast excitation (OA-VPM3/4, VUMa2 drive Kenyon cells) | Kenyon background | fast edges pinned (`pin_modulatory_fast_edges`, neuPrint consensus NT); modulation not modelled yet | done (coarse) |
+| APL as a spiking point (29-45% firing, STP depletes it) | Kenyon sparseness / specificity (d' 0.32) | graded APL | conditional: only if evolution does not sharpen the Kenyon code |
+| No gap junctions; global sqrt(K_in) single-synapse dilution; weak inhibitory driving force; unclear-NT cells excitatory; soma-distance delays | not on the active route now | none | deferred |
+
+Cost: pins and resets zero weights only -- same speed and memory (smoke run: 3.1 GB peak).

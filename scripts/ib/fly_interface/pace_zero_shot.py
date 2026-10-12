@@ -13,7 +13,7 @@ sum_{t<=K} p CE_t (geometric only; its expectation is the expected arrival CE), 
 firing per tick (whole brain, Kenyon), mean |h|, non-finite ticks, Kenyon burst onsets and the realized ticks.
 Usage: python pace_zero_shot.py <checkpoint dir> [out .jsonl]
 """
-import sys, json, math, time, numpy as np, pandas as pd, torch, torch.nn.functional as F
+import sys, os, json, math, time, numpy as np, pandas as pd, torch, torch.nn.functional as F
 from pathlib import Path
 sys.path.insert(0, 'D:/information-boltzmann-v1')
 exec(open('D:/information-boltzmann-v1/scripts/ib/fly_interface/world_eval.py', encoding='utf-8').read().split('def evaluate(fork):')[0])
@@ -48,6 +48,8 @@ if SENSORY_PIN:
     _se, _si = fl.sensory_axonal_edges(model, graph)
     with torch.no_grad():
         model.edge_weight_e[_se] = 0.0; model.edge_weight_i[_si] = 0.0
+if os.environ.get('AL_RESET'):
+    print('antennal-lobe inputs reset to birth:', fl.reset_inputs_to_birth(model, ROOT / cfg['graph'], (ROOT / cfg['graph']).parent / 'body-annotations.feather'), flush=True)
 writer = model.topographic_writer
 physical_clock = cfg.get('writer_baseline_clock', 'physical') == 'physical'
 quiet = torch.zeros(1, N, device='cuda')
