@@ -28,6 +28,8 @@ from information_boltzmann.core.fly_bptt_learning import (
     INTRINSIC_PARAMETER_NAMES, attach_intrinsic_drive, PRECISION_PARAMETER_NAMES, attach_precision,
     PREDICTIVE_PARAMETER_NAMES, attach_predictive_writer, DOPAMINE_PARAMETER_NAMES, attach_dopamine_modulation,
     ONLINE_DA_PARAMETER_NAMES, attach_online_da_plasticity, attach_kenyon_dendritic_only, attach_homeostasis,
+    attach_regime_homeostasis, attach_tied_writer, REGIME_KENYON_Z,
+    attach_compartment_memory, attach_taste_heads, COMPARTMENT_PARAMETER_NAMES, TASTE_PARAMETER_NAMES,
 )
 from information_boltzmann.runtime.lifelong_evaluation import recovery_summary, savings_summary
 from information_boltzmann.runtime.prequential_meter import FirstPassPredictionMeter
@@ -149,6 +151,16 @@ def resolve_learning_modes(args, previous_config, previous_learner):
         args.homeostasis = bool(previous_config.get('homeostasis', False))
     if getattr(args, 'homeostasis_seed', None) is None:
         args.homeostasis_seed = int(previous_config.get('homeostasis_seed') or 0)
+    if getattr(args, 'regime_homeostasis', None) is None:
+        args.regime_homeostasis = bool(previous_config.get('regime_homeostasis', False))
+    if getattr(args, 'regime_seed', None) is None:
+        args.regime_seed = int(previous_config.get('regime_seed') or 0)
+    if getattr(args, 'regime_kenyon_z', None) is None:
+        args.regime_kenyon_z = previous_config.get('regime_kenyon_z')
+    if getattr(args, 'tied_writer', None) is None:
+        args.tied_writer = bool(previous_config.get('tied_writer', False))
+    if getattr(args, 'compartment_memory', None) is None:
+        args.compartment_memory = bool(previous_config.get('compartment_memory', False))
     args.kc_dendritic_newly = bool(args.kc_dendritic_only) and not bool(previous_config.get('kc_dendritic_only', False))
     if getattr(args, 'kc_dendritic_only', None) is None:
         args.kc_dendritic_only = bool(previous_config.get('kc_dendritic_only', False))
@@ -253,6 +265,20 @@ def main():
                              '(duty cycle / tau_m, log-normal across neurons; omitted = inherit, else off)')
     parser.add_argument('--homeostasis-seed', type=int, default=None,
                         help='The individual: seed of the neurons\' target duty cycles (omitted = inherit, else 0)')
+    parser.add_argument('--regime-homeostasis', action=argparse.BooleanOptionalAction, default=None,
+                        help='Regime homeostasis (attach_regime_homeostasis): each neuron keeps its threshold at a fixed '
+                             'place in its own free-membrane distribution (omitted = inherit, else off)')
+    parser.add_argument('--regime-seed', type=int, default=None, help='The individual of the regime homeostasis')
+    parser.add_argument('--regime-kenyon-z', type=float, default=None,
+                        help='Kenyon cells at a sparser quantile (omitted = inherit, else none)')
+    parser.add_argument('--compartment-memory', action=argparse.BooleanOptionalAction, default=None,
+                        help='Three-factor memory per Kenyon -> MBON synapse, dopamine at its MBON (omitted = inherit)')
+    parser.add_argument('--taste-every', type=int, default=0,
+                        help='Taste world as a learning task: one episode after every N text windows (0 = off)')
+    parser.add_argument('--taste-drive', type=float, default=8.0,
+                        help='Dopamine-cell drive during pairing, in rheobase units of each driven cell')
+    parser.add_argument('--tied-writer', action=argparse.BooleanOptionalAction, default=None,
+                        help='The writer drives chemosensory cells by receptor type (attach_tied_writer; omitted = inherit)')
     parser.add_argument('--bookshelf', choices=('progress', 'random', 'surprise', 'anti'), default=None,
                         help='Curious shelf v1: training text comes from a shelf of books (topic books, a repeated passage, '
                              'noise, a hidden pair) chosen after every 64-token segment by this selector (default: off)')
@@ -618,6 +644,11 @@ def main():
         if args.precision:
             n_mod, n_da = attach_precision(model, args.graph, args.graph.parent / 'body-annotations.feather')
             print(f'Precision carried by {n_mod} neuromodulatory cells ({n_da} dopaminergic)', flush=True)
+        if args.tied_writer:
+            # a tied lineage: the writer's chemosensory rows are per receptor type (shapes before loading)
+            attach_tied_writer(model, args.graph, args.graph.parent / 'body-annotations.feather',
+                               convert=not bool(previous_config.get('tied_writer', False)))
+            print('Writer tied by chemosensory receptor type', flush=True)
         weights = {key: value for key, value in saved['model'].items()
                    if key not in ('edge_weight_e', 'edge_weight_i')}
         if args.reinit_read_gamma:
@@ -640,6 +671,20 @@ def main():
             if args.homeostasis:
                 attach_homeostasis(model, args.graph, seed=args.homeostasis_seed)
                 print(f'Homeostatic intrinsic plasticity, individual {args.homeostasis_seed}', flush=True)
+            if args.regime_homeostasis:
+                attach_regime_homeostasis(model, args.graph, seed=args.regime_seed, kenyon_z=args.regime_kenyon_z,
+                                          annotations=args.graph.parent / 'body-annotations.feather')
+                print(f'Regime homeostasis, individual {args.regime_seed}'
+                      f'{f", Kenyon z {args.regime_kenyon_z}" if args.regime_kenyon_z is not None else ""}', flush=True)
+            if args.compartment_memory or args.taste_every:
+                comp_state = {k: v for k, v in saved['model'].items() if k in COMPARTMENT_PARAMETER_NAMES + TASTE_PARAMETER_NAMES}
+                n_comp = attach_compartment_memory(model, args.graph, args.graph.parent / 'body-annotations.feather',
+                                                   affinity=args.dopamine_affinity)
+                attach_taste_heads(model, args.graph, args.graph.parent / 'body-annotations.feather')
+                if comp_state:
+                    model.load_state_dict(comp_state, strict=False)
+                args.compartment_memory = True
+                print(f'Compartment memory on {n_comp} Kenyon -> MBON synapses; taste heads on the MBONs', flush=True)
             if args.dopamine_modulation and args.dopamine_sensitivity_init is not None:
                 model.dopamine_sensitivity.fill_(float(args.dopamine_sensitivity_init))
                 print(f'Dopamine sensitivities set to {args.dopamine_sensitivity_init}', flush=True)
@@ -738,6 +783,13 @@ def main():
             old_kind = old.get('plasticity_optimizer_kind', 'sgd')
             if old_kind == args.plasticity_optimizer:
                 learner.sgd.load_state_dict(old['sgd'])
+                for group in learner.sgd.param_groups:
+                    for param in group['params']:
+                        moments = learner.sgd.state.get(param)
+                        if moments and any(isinstance(v, torch.Tensor) and v.dim() > 0 and v.shape != param.shape
+                                           for v in moments.values()):
+                            learner.sgd.state.pop(param)      # a reshaped parameter (e.g. the writer just tied) starts afresh
+                            print(f'Plasticity moments reset for a reshaped parameter {tuple(param.shape)}', flush=True)
             else:
                 print(f'Plasticity optimizer migration: {old_kind} -> {args.plasticity_optimizer}; '
                       'new plasticity moments start at zero; existing Adam moments retained.', flush=True)

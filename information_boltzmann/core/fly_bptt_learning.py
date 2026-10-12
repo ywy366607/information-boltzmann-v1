@@ -956,6 +956,58 @@ def attach_compartment_memory(model, graph_npz, annotations, eta=-0.02, tau_trac
     return int(edges.numel())
 
 
+COMPARTMENT_PARAMETER_NAMES = ('comp_weight', 'comp_eta', 'comp_logit_trace', 'comp_logit_forget')
+TASTE_PARAMETER_NAMES = ('taste_gain', 'taste_bias')
+TASTE_YES, TASTE_NO = 3763, 645            # GPT-2 " yes", " no"
+
+
+def taste_token_ticks(model, state, token, per_tick_drive, hold, options):
+    """One word on a fixed clock for a taste episode: len(per_tick_drive) ticks, the word written at the first tick
+    (or every tick when held), per_tick_drive[k] the external current at tick k (None: none).  Returns the state and
+    every tick's transmitted pulses of the MBONs (differentiable) [ticks, n_MBON]."""
+    writer = model.topographic_writer
+    quiet, acts = None, []
+    for k, drive in enumerate(per_tick_drive):
+        model.external_drive = drive
+        if k == 0 or (hold and writer is not None):
+            source, baseline = write_input(model, state, token)
+            state = step_fly_physical_tick(model, state, token, source, baseline, options, base_rates=options['base_rates'])
+        else:
+            quiet = torch.zeros_like(state.h) if quiet is None else quiet
+            baseline = writer.lambda_adapt * state.baseline if writer is not None else state.baseline
+            state = step_fly_physical_tick(model, state, None, quiet, baseline, options, base_rates=options['base_rates'])
+        acts.append(state.ring[0][0, model.taste_mbon])
+    model.external_drive = None
+    return state, torch.stack(acts)
+
+
+def attach_taste_heads(model, graph_npz, annotations):
+    """The act of the taste world read from the MBONs (the fly's approach / avoid output): every MBON's valence
+    v_j = (Q_j - P_j) / (Q_j + P_j) from the PPL1 (Q) and PAM (P) dopamine it receives (PPL1 compartments +: approach;
+    PAM compartments -: avoid), fixed by the connectome; a learned gain and bias make the go logit."""
+    import pandas as pd
+    graph = np.load(graph_npz, allow_pickle=True)
+    ann = pd.read_feather(annotations).set_index('bodyId').reindex(graph['neuron_body_ids'])
+    typ, cls = ann['type'].astype(str).values, ann['class'].astype(str).values
+    n = len(cls)
+    is_dan = np.zeros(n, bool); is_dan[graph['dan_indices']] = True
+    pam = np.char.startswith(typ.astype(str), 'PAM') & is_dan
+    ppl1 = np.char.startswith(typ.astype(str), 'PPL1') & is_dan
+    mbon = np.flatnonzero(cls == 'MBON')
+    pre, post, w = graph['dan_edge_pre'], graph['dan_edge_post'], np.abs(graph['dan_edge_weight']).astype(np.float64)
+    P = np.bincount(post[pam[pre]], weights=w[pam[pre]], minlength=n)[mbon]
+    Q = np.bincount(post[ppl1[pre]], weights=w[ppl1[pre]], minlength=n)[mbon]
+    v = np.where(P + Q > 0, (Q - P) / np.maximum(P + Q, 1e-12), 0.0)
+    device = model.read_indices.device
+    model.register_buffer('taste_mbon', torch.as_tensor(mbon, device=device), persistent=False)
+    model.register_buffer('taste_valence', torch.as_tensor(v, dtype=torch.float32, device=device), persistent=False)
+    model.register_buffer('taste_pam', torch.as_tensor(pam, device=device), persistent=False)
+    model.register_buffer('taste_ppl1', torch.as_tensor(ppl1, device=device), persistent=False)
+    model.taste_gain = nn.Parameter(torch.tensor(1.0, device=device))
+    model.taste_bias = nn.Parameter(torch.tensor(0.0, device=device))
+    return int(len(mbon))
+
+
 TIED_WRITER_SCALE = 0.1             # birth scale of the tied rows: the input gain the regime-gestated newborn chose for
                                     # its written sensory neurons (on the 1/10 rail: the untied drive was ~10x too big)
 
@@ -1612,7 +1664,8 @@ class FlyBPTTLearner:
         newly_trainable = set(newly_trainable)
         allowed_new = (set(STP_PARAMETER_NAMES) | {'logit_read_gamma'} | set(GO_PARAMETER_NAMES)
                        | set(READ_BANK_PARAMETER_NAMES) | set(INTRINSIC_PARAMETER_NAMES) | set(PRECISION_PARAMETER_NAMES)
-                       | set(PREDICTIVE_PARAMETER_NAMES) | set(DOPAMINE_PARAMETER_NAMES) | set(ONLINE_DA_PARAMETER_NAMES))
+                       | set(PREDICTIVE_PARAMETER_NAMES) | set(DOPAMINE_PARAMETER_NAMES) | set(ONLINE_DA_PARAMETER_NAMES)
+                       | set(COMPARTMENT_PARAMETER_NAMES) | set(TASTE_PARAMETER_NAMES))
         if getattr(self.model, 'latent_predictor', None) is not None:
             allowed_new.update(f'latent_predictor.{n}' for n, _ in self.model.latent_predictor.named_parameters())
         if getattr(self.model, 'graph_observer', None) is not None:
@@ -2032,6 +2085,11 @@ class FlyBPTTLearner:
                 'mcr2_R_cluster': float(mcr2_out['R_cluster'].item()),
             }
             loss = loss + self.lambda_mcr2 * self.last_mcr2_loss
+        return self._finish_update(loss, scores, next_state, features, tokens)
+
+    def _finish_update(self, loss, scores, next_state, features, tokens, ticks=None):
+        """Backward, one parameter update and the move to the next state (shared by the text window and the taste
+        episode).  ticks: physical ticks this update covered when the clock is the caller's own."""
         if not torch.isfinite(loss).item():
             raise FloatingPointError('Non-finite BPTT training loss')
         if self.runner is None:
@@ -2139,7 +2197,9 @@ class FlyBPTTLearner:
             self.ema = value if self.events == 0 else .99 * self.ema + .01 * value
             self.events += 1
         self.previous_token = int(tokens[-1].item())
-        if getattr(self, 'go_neuron', False):
+        if ticks is not None:
+            self.physical_ticks += int(ticks)
+        elif getattr(self, 'go_neuron', False):
             self.physical_ticks += self.last_adaptive_metrics['adaptive_total_ticks']
         elif getattr(self, 'stream_ticks', 0):
             self.physical_ticks += len(values) * self.stream_ticks
@@ -2167,13 +2227,65 @@ class FlyBPTTLearner:
             group_norms['online_da_memory_mean'] = float(phi.mean())
         return values, {'grad_norm_before_clip': float(grad_norm), **group_norms, **getattr(self, 'last_ctm_metrics', {}), **getattr(self, 'last_adaptive_metrics', {})}
 
+    def observe_taste(self, tokens, drives, held, targets, read_windows, baseline_window, token_ticks=8):
+        """One taste episode as one update (design: FLY_CONSEQUENCE_WORLD_DESIGN_20261012.html).  tokens: the episode's
+        input words on a fixed clock of token_ticks ticks each; drives: {tick: external current} (the dopamine cells
+        driven during pairing); held: words held on the sensory surface for all their ticks (a sustained odour);
+        targets: 1 (go: the cue was sweet) or 0 for each test; read_windows: (start, end) ticks of each test's read;
+        baseline_window: (start, end) of the pre-test baseline.  Two heads, both trained: the MBONs' valence balance
+        A = sum v_j (n_j(read) - n_j(baseline) * len(read) / len(baseline)) / sum |v_j| (v_j fixed by the connectome,
+        gain and bias learned) and the text read's logit(yes) - logit(no) at the end of each read window."""
+        m = self.model
+        rates, thresholds = m.get_decay_rates(), m.get_thresholds()
+        gains, alif, stp = m.get_conductance_gains(), m.get_alif_params(), m.get_stp_params()
+        opts = dict(base_rates=rates, thresholds=thresholds, conductance_gains=gains, alif_params=alif, stp_params=stp)
+        state, acts, reads, t = self.state, [], {}, 0
+        ends = {end for _, end in read_windows}
+        for i, token in enumerate(tokens):
+            tok = torch.tensor([int(token)], device=state.h.device)
+            per_tick = [drives.get(t + k) for k in range(token_ticks)]
+            hold = int(token) in held
+            if self.use_checkpointing and m.training and torch.is_grad_enabled():
+                state, act = checkpoint(taste_token_ticks, m, state, tok, per_tick, hold, opts, use_reentrant=False)
+            else:
+                state, act = taste_token_ticks(m, state, tok, per_tick, hold, opts)
+            acts.append(act)
+            t += token_ticks
+            if t in ends:
+                reads[t] = read_fly_motor(m, state)
+        A = torch.cat(acts, 0)                                        # ticks x n_MBON (transmitted pulses)
+        b0, b1 = baseline_window
+        base = A[b0:b1].sum(0)
+        loss, out = 0.0, []
+        for (r0, r1), target in zip(read_windows, targets):
+            dn = A[r0:r1].sum(0) - base * ((r1 - r0) / (b1 - b0))
+            a = (m.taste_valence * dn).sum() / m.taste_valence.abs().sum()
+            logit_mb = m.taste_gain * a + m.taste_bias
+            lg = m.decoder(m.read_norm(reads[r1])).float().reshape(-1)
+            logit_text = lg[TASTE_YES] - lg[TASTE_NO]
+            y = torch.tensor(float(target), device=a.device)
+            loss = loss + F.binary_cross_entropy_with_logits(logit_mb, y) + F.binary_cross_entropy_with_logits(logit_text, y)
+            out.append({'target': int(target), 'mb_logit': float(logit_mb.detach()), 'text_logit': float(logit_text.detach())})
+        loss = loss / len(read_windows)
+        token_tensor = torch.as_tensor(list(tokens), device=state.h.device)
+        empty = torch.empty(0, device=state.h.device)
+        _, metrics = self._finish_update(loss, empty, state, [], token_tensor, ticks=t)
+        metrics.update(taste_loss=float(loss.detach()),
+                       taste_mb_correct=float(np.mean([(o['mb_logit'] > 0) == bool(o['target']) for o in out])),
+                       taste_text_correct=float(np.mean([(o['text_logit'] > 0) == bool(o['target']) for o in out])),
+                       taste_tests=out)
+        return metrics
+
     @torch.no_grad()
     def clamp_edges(self):
-        """Retain conductance positivity or each signed edge's original sign.
+        """Retain conductance positivity or each signed edge's original sign (and keep the plastic Kenyon -> MBON
+        weights excitatory).
 
         Initially zero signed edges belong to the nonnegative class. Their
         mask is saved, so a clamped negative edge reaching zero stays negative.
         """
+        if getattr(self.model, 'comp_weight', None) is not None:
+            self.model.comp_weight.clamp_(min=0.0)
         for name, weight in zip(self.edge_names, self.edges):
             if self.model.synapse_model == 'coba':
                 weight.clamp_(0.0, 5.0)
