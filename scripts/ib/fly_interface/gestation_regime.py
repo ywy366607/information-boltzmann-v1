@@ -9,7 +9,8 @@ with u above threshold (target q* ~ 0.16), and the median distance of the membra
 NLL of the words read.  At the end the state goes into <out>/last.pt with config regime_homeostasis = true.
 With 'tie' as the fifth argument the writer is first tied by sensory cell type (attach_tied_writer, convert from
 the newborn's per-cell rows); a newborn that already has regime homeostasis keeps its regime state.
-Usage: python gestation_regime.py <newborn dir> <out dir> <ticks> [seed] [tie]
+'kenyon' among the trailing arguments puts the Kenyon cells at the sparse quantile (REGIME_KENYON_Z).
+Usage: python gestation_regime.py <newborn dir> <out dir> <ticks> [seed] [tie] [kenyon]
 """
 import sys, json, shutil, numpy as np, pandas as pd, torch, torch.nn.functional as F
 from pathlib import Path
@@ -19,6 +20,7 @@ exec(open('D:/information-boltzmann-v1/scratch/fly_stream/world_eval.py', encodi
 src, out, TOTAL = Path(sys.argv[1]), Path(sys.argv[2]), int(sys.argv[3])
 SEED = int(sys.argv[4]) if len(sys.argv) > 4 else 0
 TIE = len(sys.argv) > 5 and sys.argv[5] == 'tie'
+KENYON = 'kenyon' in sys.argv[5:]          # Kenyon cells at the sparse quantile (REGIME_KENYON_Z)
 REPORT = 5000
 model, cfg, L = load(src)
 for name in ('homeostasis_target',):
@@ -27,6 +29,9 @@ graph = ROOT / cfg['graph']
 KEEP = bool(cfg.get('regime_homeostasis'))
 if not KEEP:
     fl.attach_regime_homeostasis(model, graph, seed=SEED)
+if KENYON:
+    fl.attach_regime_homeostasis(model, graph, seed=int(cfg.get('regime_seed') or SEED), kenyon_z=fl.REGIME_KENYON_Z,
+                                 annotations=graph.parent / 'body-annotations.feather')
 if TIE and not cfg.get('tied_writer'):
     print('tied writer', fl.attach_tied_writer(model, graph, graph.parent / 'body-annotations.feather', convert=True), flush=True)
 opts = dict(base_rates=model.get_decay_rates(), thresholds=model.get_thresholds(), conductance_gains=model.get_conductance_gains(),
@@ -99,12 +104,15 @@ saved = torch.load(src / 'last.pt', map_location='cpu', weights_only=False)
 saved['learner']['physical'] = {k: (tuple(t.detach().cpu() for t in v) if isinstance(v, tuple) else v.detach().cpu())
                                 for k, v in s.state_dict().items()}
 saved['config'] = {**saved['config'], 'homeostasis': False, 'regime_homeostasis': True, 'regime_seed': SEED}
+if KENYON:
+    saved['config']['regime_kenyon_z'] = fl.REGIME_KENYON_Z
 if TIE:
     saved['model'] = {k: v for k, v in saved['model'].items() if not k.startswith('topographic_writer.proj_')}
     saved['model'].update({k: v.detach().cpu() for k, v in model.named_parameters() if k.startswith('topographic_writer.proj_')})
     saved['config']['tied_writer'] = True
 torch.save(saved, out / 'last.pt')
 config = json.load(open(src / 'config.json'))
-config.update(homeostasis=False, regime_homeostasis=True, regime_seed=SEED, **({'tied_writer': True} if TIE else {}))
+config.update(homeostasis=False, regime_homeostasis=True, regime_seed=SEED, **({'tied_writer': True} if TIE or cfg.get('tied_writer') else {}),
+              **({'regime_kenyon_z': fl.REGIME_KENYON_Z} if KENYON else {}))
 json.dump(config, open(out / 'config.json', 'w'))
 print('gestated state written to', out / 'last.pt', flush=True)

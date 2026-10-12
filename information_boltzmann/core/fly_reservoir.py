@@ -758,7 +758,7 @@ class FlyReservoirLM(nn.Module):
 
     def prepare_coba_tick(self, h, spike_ring=None, ge=None, gi=None, b=None,
                           x=None, u=None, *, base_rates=None, thresholds=None,
-                          conductance_gains=None, alif_params=None, stp_params=None):
+                          conductance_gains=None, alif_params=None, stp_params=None, extra_delta_ge=None):
         """Consume old delayed pulses once; no current input is accepted here.
 
         The returned context retains the original state for a single later commit.
@@ -777,6 +777,9 @@ class FlyReservoirLM(nn.Module):
         if spike_ring is None:
             spike_ring = tuple(torch.zeros_like(h) for _ in range(4))
         delta_ge = self.transmit(spike_ring, 'e')
+        if extra_delta_ge is not None:
+            # excitation carried outside the static edge list (e.g. plastic synapses with their own state)
+            delta_ge = delta_ge + extra_delta_ge
         delta_gi = self.transmit(spike_ring, 'i')
         if ge is None:
             ge = torch.zeros_like(h)
@@ -905,7 +908,8 @@ class FlyReservoirLM(nn.Module):
              alif_params: tuple[torch.Tensor, torch.Tensor] | None = None,
              stp_params: tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor] | None = None,
              return_biophysics: bool = False,
-             sensory_drive: torch.Tensor | None = None):
+             sensory_drive: torch.Tensor | None = None,
+             extra_delta_ge: torch.Tensor | None = None):
         """One LIF event with continuous physical synaptic conductance (COBA) or current (CUBA).
         h: [B, N]; token: [B]"""
         if sensory_drive is not None:
@@ -934,7 +938,7 @@ class FlyReservoirLM(nn.Module):
             context = self.prepare_coba_tick(
                 h, spike_ring, ge, gi, b, x, u, base_rates=base_rates,
                 thresholds=thresholds, conductance_gains=conductance_gains,
-                alif_params=alif_params, stp_params=stp_params)
+                alif_params=alif_params, stp_params=stp_params, extra_delta_ge=extra_delta_ge)
             return self.finish_coba_tick(context, drive, return_biophysics=return_biophysics)
 
         else:

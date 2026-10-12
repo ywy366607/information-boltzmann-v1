@@ -1,0 +1,76 @@
+{
+ "fork": "scratch\\fly_stream\\regime_kc",
+ "hold": true,
+ "affinity_K": 0.076081782579422,
+ "plastic_edges": 61210,
+ "drive_rheobase": 8.0,
+ "episodes_per_eta": 40,
+ "eta=0.1": {
+  "tests": 80,
+  "accuracy_sign_A": 0.5,
+  "accuracy_frozen": 0.5,
+  "accuracy_sign_dA_paired": 0.4875,
+  "accuracy_text_head_median_split": 0.475,
+  "pam_type_effect_sweet_min_med_mean_max": [
+   -0.09999996423721313,
+   0.0,
+   0.003749994933605194,
+   0.09999990463256836
+  ],
+  "pam_type_effect_bitter_min_med_mean_max": [
+   -0.09999996423721313,
+   0.0,
+   0.004375003278255463,
+   0.1249997615814209
+  ],
+  "dA_sweet_mean": -0.004854546813294292,
+  "dA_bitter_mean": -0.005122441565617919,
+  "phi_sd_end": 0.05877691134810448,
+  "phi_absmax_end": 0.5642080307006836,
+  "kc_jaccard_same_cue_paired_vs_test_median": 0.004681565877884897,
+  "kc_jaccard_other_cue_median": 0.000684985814694447,
+  "kc_active_fraction_test": 0.0022145668044686317,
+  "plastic_input_change_pam_type_sweet_vs_bitter": [
+   -0.00029603307775687425,
+   -4.777046151502873e-05
+  ],
+  "plastic_input_change_ppl1_type_sweet_vs_bitter": [
+   -4.043756052851677e-05,
+   -9.605334334992222e-05
+  ]
+ },
+ "eta=0.5": {
+  "tests": 80,
+  "accuracy_sign_A": 0.4875,
+  "accuracy_frozen": 0.475,
+  "accuracy_sign_dA_paired": 0.475,
+  "accuracy_text_head_median_split": 0.525,
+  "pam_type_effect_sweet_min_med_mean_max": [
+   -0.15000009536743164,
+   0.0,
+   0.012499988079071045,
+   0.125
+  ],
+  "pam_type_effect_bitter_min_med_mean_max": [
+   -0.15000009536743164,
+   0.0,
+   0.009999993070960046,
+   0.15000009536743164
+  ],
+  "dA_sweet_mean": 0.007308150129392743,
+  "dA_bitter_mean": 0.007720305118709803,
+  "phi_sd_end": 0.07279185950756073,
+  "phi_absmax_end": 0.6725820899009705,
+  "kc_jaccard_same_cue_paired_vs_test_median": 0.0024521735994662915,
+  "kc_jaccard_other_cue_median": 0.0,
+  "kc_active_fraction_test": 0.0012303149560466409,
+  "plastic_input_change_pam_type_sweet_vs_bitter": [
+   -0.0004745742626255378,
+   -0.0004647306683182251
+  ],
+  "plastic_input_change_ppl1_type_sweet_vs_bitter": [
+   -2.9545371944550425e-05,
+   -0.00030125832709018143
+  ]
+ }
+}

@@ -37,7 +37,8 @@ def load(fork):
         if cfg.get('online_da_plasticity'):
             fl.attach_online_da_plasticity(model, graph, graph.parent / 'body-annotations.feather')
     if cfg.get('regime_homeostasis'):
-        fl.attach_regime_homeostasis(model, graph, seed=int(cfg.get('regime_seed') or 0))
+        fl.attach_regime_homeostasis(model, graph, seed=int(cfg.get('regime_seed') or 0), kenyon_z=cfg.get('regime_kenyon_z'),
+                                     annotations=graph.parent / 'body-annotations.feather')
     elif cfg.get('homeostasis'):
         fl.attach_homeostasis(model, graph, seed=int(cfg.get('homeostasis_seed') or 0))
     if cfg.get('predictive_writer'):

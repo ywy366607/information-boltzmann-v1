@@ -928,11 +928,68 @@ def test_tied_writer(fly_model_and_state):
             delattr(model, 'tied_writer')
 
 
+def test_compartment_memory_and_external_drive(fly_model_and_state):
+    """Off: no compartment fields.  On with phi = 0: the Kenyon -> MBON synapses moved out of the static list give the
+    same tick (float tolerance: a different summation order).  phi follows w (eta p - kappa phi) with the dopamine at
+    the synapse's MBON and the Kenyon trace.  An external drive acts exactly like the same current in the source."""
+    import dataclasses
+    from information_boltzmann.core.fly_bptt_learning import (attach_compartment_memory, attach_dopamine_modulation,
+                                                              step_fly_physical_tick, dopamine_occupancy)
+    model, state, device = fly_model_and_state
+    if device != "cuda":
+        pytest.skip("needs CUDA")
+    if not getattr(model, 'has_dopamine', False):
+        pytest.skip("needs dopamine projections")
+    graph, ann = 'data/malecns_v1/fly_reservoir_coba.npz', 'data/malecns_v1/body-annotations.feather'
+    w0 = model.edge_weight_e.detach().clone()
+    try:
+        attach_dopamine_modulation(model)
+        opts = dict(base_rates=model.get_decay_rates(), thresholds=model.get_thresholds())
+        torch.manual_seed(2)
+        start = dataclasses.replace(state, h=torch.rand_like(state.h))
+        with torch.no_grad():
+            ref1 = step_fly_physical_tick(model, start, None, torch.zeros_like(start.h), start.baseline, opts)
+            ref2 = step_fly_physical_tick(model, ref1, None, torch.zeros_like(ref1.h), ref1.baseline, opts)
+        assert ref2.comp_memory.numel() == 0
+        drive = torch.zeros_like(start.h); drive[0, :50] = 0.3
+        model.external_drive = drive
+        with torch.no_grad():
+            ext = step_fly_physical_tick(model, start, None, torch.zeros_like(start.h), start.baseline, opts)
+        del model.external_drive
+        with torch.no_grad():
+            src = step_fly_physical_tick(model, start, None, drive.clone(), start.baseline, opts)
+        assert torch.equal(ext.h, src.h)
+        n = attach_compartment_memory(model, graph, ann)
+        assert n > 1000 and float(model.edge_weight_e[model.pinned_zero_edges_e].abs().max()) == 0.0
+        with torch.no_grad():
+            s1 = step_fly_physical_tick(model, start, None, torch.zeros_like(start.h), start.baseline, opts)
+            s2 = step_fly_physical_tick(model, s1, None, torch.zeros_like(s1.h), s1.baseline, opts)
+        torch.testing.assert_close(s2.h, ref2.h, atol=1e-5, rtol=1e-4)
+        assert s2.comp_memory.shape == (1, n) and s2.comp_trace.shape == (1, model.comp_kc.numel())
+        d = s2.dopamine[:, model.comp_post.long()]
+        p = dopamine_occupancy(d[0:1], model.comp_affinity) - dopamine_occupancy(d[1:2], model.comp_affinity)
+        w = dopamine_occupancy(d[1:2], model.comp_affinity) / 0.5 * s2.comp_trace[:, model.comp_edge_kc]
+        expected = s1.comp_memory + w * (model.comp_eta * p - torch.sigmoid(model.comp_logit_forget) * s1.comp_memory)
+        torch.testing.assert_close(s2.comp_memory, expected)
+    finally:
+        with torch.no_grad():
+            model.edge_weight_e.copy_(w0)
+        for name in ('pinned_zero_edges_e', 'comp_pre', 'comp_post', 'comp_kc', 'comp_edge_kc'):
+            model._buffers.pop(name, None)
+        for name in ('comp_weight', 'comp_eta', 'comp_logit_trace', 'comp_logit_forget', 'dopamine_sensitivity',
+                     'dopamine_logit_fast', 'dopamine_logit_slow'):
+            model._parameters.pop(name, None)
+        for name in ('comp_splits', 'comp_affinity', 'external_drive', 'dopamine_site', 'dopamine_adapted', 'dopamine_affinity'):
+            if hasattr(model, name):
+                delattr(model, name)
+
+
 def test_regime_homeostasis(fly_model_and_state):
     """Off: no regime field.  On: the split tick equals model.step bitwise at unit gain and zero drive; the quantile
     targets are fixed by the seed (median q* ~ 0.16); b follows eta_b (q* - [u > theta]) and the log gain
     eta_s log(kappa theta / sd) from the neuron's own free membrane; the state is [4, N] at any age and detached."""
     import dataclasses
+    import numpy as np
     from information_boltzmann.core.fly_bptt_learning import (attach_regime_homeostasis, step_fly_physical_tick,
                                                               REGIME_LOG_GAIN_MAX)
     model, state, device = fly_model_and_state
@@ -954,6 +1011,14 @@ def test_regime_homeostasis(fly_model_and_state):
         attach_regime_homeostasis(model, graph, seed=4)
         assert not torch.equal(q3, model.regime_quantile)
         assert abs(float(model.regime_quantile.median()) - 0.1587) < 0.01
+        import pandas as pd
+        ann = 'data/malecns_v1/body-annotations.feather'
+        attach_regime_homeostasis(model, graph, seed=4, kenyon_z=1.645, annotations=ann)
+        kc = torch.as_tensor(pd.read_feather(ann).set_index('bodyId').reindex(np.load(graph, allow_pickle=True)['neuron_body_ids'])['class'].astype(str).values == 'Kenyon_Cell', device=device)
+        q_all = model.regime_quantile[0]
+        assert abs(float(q_all[kc].median()) - 0.05) < 0.01
+        attach_regime_homeostasis(model, graph, seed=4)
+        assert torch.equal(model.regime_quantile[0][~kc], q_all[~kc])
         with torch.no_grad():
             s1 = step_fly_physical_tick(model, start, None, torch.zeros_like(start.h), start.baseline, opts)
             assert torch.equal(s1.h, off.h) and torch.equal(s1.ring[0], off.ring[0])
@@ -969,6 +1034,6 @@ def test_regime_homeostasis(fly_model_and_state):
     finally:
         for n in names:
             model._buffers.pop(n, None)
-        for a in ('regime_kappa', 'regime_seed'):
+        for a in ('regime_kappa', 'regime_seed', 'regime_kenyon_z'):
             if hasattr(model, a):
                 delattr(model, a)

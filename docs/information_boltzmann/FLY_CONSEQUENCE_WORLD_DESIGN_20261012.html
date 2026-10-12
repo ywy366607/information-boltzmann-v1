@@ -119,6 +119,7 @@ a{color:var(--accent)} ol.plain{padding-left:20px} ol.plain li{margin-bottom:6px
   <a href="#phase0-results">检查结果</a>
   <a href="#regime">工作区间稳态</a>
   <a href="#tied">共享写入器</a>
+  <a href="#episodes">配对与爆发</a>
 </nav>
 
 <main>
@@ -435,7 +436,36 @@ flowchart LR
 </tbody></table></div>
 <p>尾部比降到 1.8–3.1（嗅觉受体 1.8、投射 2.2、Kenyon 2.6、MBON 2.9、多巴胺 3.1、核心 3.0），只靠把输入改成协同；嗅觉受体增益离开下限（log s −0.46）。</p>
 <p><strong>对照预言：</strong>1 差一点（0.024 对 ≥ 0.03）；2 不成立：同一状态下不同词的 Kenyon 活动集合 Jaccard 0.63（原 0.91），同一个词跨上下文 0.03——Kenyon 自发放电约 5.4 Hz、输入增益顶在上限，活动集合主要是背景；3 成立；4 成立（MBON → 动作 0.2–0.7%，味觉 → 多巴胺 ≈ 0）。</p>
+<h3>Kenyon 细胞的稀疏分位数（预言，孕育 10 万拍，从共享写入器个体继续）</h3>
+<p>只把 Kenyon 细胞的 z 均值从 1 移到 1.645（q* = 0.05；稀疏扩展编码在激活比例 0.05–0.1 附近维度最高），同一份逐神经元抽样只平移，其他神经元不变（测试 <span class="path">test_regime_homeostasis</span>）。预言：Kenyon 占空比降到约 0.05–0.08；同一状态下不同词的 Kenyon 活动集合 Jaccard &lt; 0.5；同一个词跨上下文 &gt; 0.3；Kenyon 对词的响应相对于背景提高。</p>
 <p class="cap">下一步：Kenyon 细胞的阈值位置取更高的分位数（约 0.05，稀疏扩展编码理论：编码维度在激活比例 0.05–0.1 附近最高），重新孕育；输出端按设计 (A) 由任务学习建立。</p>
+</section>
+
+<section id="episodes">
+<h2>Kenyon 稀疏化、零样本配对与群体爆发</h2>
+<h3>Kenyon 细胞稀疏分位数（孕育 10 万拍）</h3>
+<p>Kenyon 细胞高于阈值的时间比例 0.054（目标 0.05），平均 2.2 Hz，占空比 0.09。读一个词后每细胞放电变化：投射神经元 0.048（共享写入器 0.024）、Kenyon 0.018（0.011）、MBON 0.029（0.0009；成年 0.024）、多巴胺 0.016（0.0023）、读出面 0.0028。同一状态下不同词 Kenyon 集合 Jaccard 0.29（预言 &lt; 0.5，成立）；同一个词跨上下文 0（预言 &gt; 0.3，不成立）。</p>
+<h3>A0 零样本配对（隔室记忆，固定权重，每档 40 轮 = 80 次测试）</h3>
+<p>实现：<span class="path">attach_compartment_memory</span>（61,210 条 Kenyon→MBON 突触移出静态边表、按原延迟单独传递、记忆 φ 按突触、多巴胺取其 MBON 处）、外部驱动接口（直接驱动多巴胺细胞，加在输入增益之后），测试 27 项通过。</p>
+<div class="tablebox"><table>
+<thead><tr><th>条件</th><th>正确率（记忆 / 冻结）</th><th>配对 vs 测试的 Kenyon 集合 Jaccard</th><th>测试块活跃 Kenyon</th><th>记忆对 MBON 输入的改变</th></tr></thead>
+<tbody>
+<tr><td>脉冲提示，η 0.02 / 0.1 / 0.5</td><td>48–53% / 48–55%</td><td>—</td><td>—</td><td>—</td></tr>
+<tr><td>持续提示，η 0.1</td><td>50% / 50%</td><td class="num">0.005</td><td class="num">0.2%</td><td>≈ 0</td></tr>
+<tr><td>持续提示，η 0.5</td><td>49% / 48%</td><td class="num">0.003</td><td class="num">0.1%</td><td>≈ 0</td></tr>
+</tbody></table></div>
+<p>记忆被写入（φ 标准差 0.04–0.13，最大 0.4–0.7），但测试时提示词几乎不激活 Kenyon 细胞，激活的几个与配对时不是同一批，记忆无从调取。按块统计：每次运行的第一个 32 拍块有 8–38% 的 Kenyon 放电，之后 ≤ 0.2%，读普通文本也一样，与多巴胺驱动和呈现方式无关。</p>
+<h3>原因：群体爆发</h3>
+<p>流式时钟上读 4,096 拍文本：Kenyon 每拍放电比例中位 0.02%、第 99 百分位 3.4%，每 400–1,000 拍爆发一次、持续几十拍、峰值 8%；投射神经元、MBON 相同。类似未成熟网络的群体爆发（真实果蝇蛹期也有全脑周期活动，羽化前停止）。成年谱系（BPTT 训练）没有爆发。</p>
+<div class="tablebox"><table>
+<thead><tr><th>抑制整体倍数</th><th>Kenyon 每拍中位</th><th>p99 / 中位</th><th>爆发峰值</th></tr></thead>
+<tbody>
+<tr><td>1</td><td class="num">0.02%</td><td class="num">137</td><td class="num">8%</td></tr>
+<tr><td>2</td><td class="num">0.05%</td><td class="num">52</td><td class="num">4.8%</td></tr>
+<tr><td>4</td><td class="num">0.12%</td><td class="num">12</td><td class="num">2.9%</td></tr>
+<tr><td>8</td><td class="num">0.17%</td><td class="num">8</td><td class="num">2.1%</td></tr>
+</tbody></table></div>
+<p>抑制不足是原因之一，但整体放大解决不了。按用户原则（第一性原理 = 尊重果蝇本身的生物机制），下一步在果蝇自有、而模型缺失或失真的机制中找：APL 在果蝇中是不放电的分级、局部抑制，模型中是单一隔室的放电神经元（每个脉冲同时抑制全部 Kenyon，79% 的 Kenyon 抑制来自它）；反转电位比例（模型兴奋 10θ、抑制 −2θ；一般神经元约 4–4.5θ 与氯离子型的 −0.7θ）；其他分级神经元；电突触；递质不明的 3,602 个细胞。神经递质符号已核对：GABA、谷氨酸、组胺为抑制性，符合果蝇。</p>
 </section>
 
 <footer>

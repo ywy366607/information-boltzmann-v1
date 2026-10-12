@@ -61,6 +61,10 @@ class FlyPhysicalState:
     # Optional regime homeostasis [4, N] (never reset): the free membrane u (integrated like h but never reset), its
     # running mean and second moment, and the log input gain log s of every neuron.
     regime: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    # Optional compartment memory (never reset): the Kenyon cells' presynaptic activity trace [1, n_KC] and the memory
+    # phi of every plastic Kenyon -> MBON synapse [1, n_edges] (its efficacy is (1 + phi) times its weight).
+    comp_trace: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    comp_memory: torch.Tensor = field(default_factory=lambda: torch.empty(0))
 
     def detached(self):
         return FlyPhysicalState(**{
@@ -145,6 +149,23 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
         gains_ = options.get('conductance_gains')
         gains_ = gains_ if gains_ is not None else model.get_conductance_gains()
         options = {**options, 'conductance_gains': (gains_[0] * gain, gains_[1] * gain)}
+    external = getattr(model, 'external_drive', None)
+    if external is not None:
+        # a current the world injects directly (e.g. driving the dopamine cells, as optogenetics does); added after the
+        # input gain, so it is the nominal current
+        if source is None:
+            source = (model.topographic_writer(model.embedding(token), current.h)
+                      if token is not None and model.injection_mode == 'topographic' else torch.zeros_like(current.h))
+        source = source + external
+    comp_on = getattr(model, 'comp_pre', None) is not None
+    extra_ge = None
+    comp_memory = getattr(current, 'comp_memory', torch.empty(0))
+    if comp_on:
+        if comp_memory.numel() != model.comp_pre.numel():
+            comp_memory = current.h.new_zeros(1, model.comp_pre.numel())
+        # the plastic Kenyon -> MBON synapses, outside the static edge list: efficacy (1 + phi) * w, same delays
+        extra_ge = execute_delayed_synaptic_transmission(current.ring, model.comp_pre, model.comp_post,
+                                                         model.comp_weight * (1.0 + comp_memory[0]), model.comp_splits)
     dopamine = getattr(current, 'dopamine', torch.empty(0))
     if getattr(model, 'dopamine_sensitivity', None) is not None and dopamine.numel():
         # Dopamine modulates excitability where it is delivered: the phasic part (concentration minus its slow mean)
@@ -198,14 +219,14 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
         # the same COBA tick as model.step, in its two halves, so the integration coefficients are at hand for the
         # free membrane
         context = model.prepare_coba_tick(current.h, current.ring, current.ge, current.gi, current.b, current.x,
-                                          current.u, **options)
+                                          current.u, **options, extra_delta_ge=extra_ge)
         ret = model.finish_coba_tick(context, source)
     else:
         ret = model.step(
             current.h, token, spike_ring=current.ring, ge=current.ge,
             gi=current.gi, b=current.b, x=current.x, u=current.u,
             i_syn=current.ge if model.synapse_model == 'cuba' else None,
-            sensory_drive=source, **options)
+            sensory_drive=source, **options, **({'extra_delta_ge': extra_ge} if extra_ge is not None else {}))
     h = ret[0]
     if model.synapse_model == 'coba':
         ring, ge, gi = ret[2:5]
@@ -292,6 +313,24 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
             log_gain = (regime[3:4] + model.regime_eta_s * torch.log(model.regime_kappa * theta_static / sd)).clamp(
                 -REGIME_LOG_GAIN_MAX, REGIME_LOG_GAIN_MAX)
             regime = torch.cat([u_free, mean, second, log_gain], 0).detach()
+    comp_trace = getattr(current, 'comp_trace', torch.empty(0))
+    if comp_on:
+        # Compartment memory (attach_compartment_memory): e <- l e + (1 - l) s at each Kenyon cell; at each plastic
+        # synapse k -> j, with the dopamine delivered to its MBON j (the MBON marks the compartment):
+        # phi <- phi + w (eta p_j - kappa phi), w = occ(D_slow,j) / 0.5 * e_k, p_j = occ(D_fast,j) - occ(D_slow,j).
+        spikes_c = ret[1] if ret[1].shape == h.shape else (ring[0] > 0).to(h.dtype)
+        if comp_trace.numel() != model.comp_kc.numel():
+            comp_trace = h.new_zeros(1, model.comp_kc.numel())
+        lam_c = torch.sigmoid(model.comp_logit_trace)
+        comp_trace = lam_c * comp_trace + (1.0 - lam_c) * spikes_c[:, model.comp_kc]
+        if dopamine.numel() == 2 * h.numel():
+            d_post = dopamine[:, model.comp_post]
+            phasic_c = (dopamine_occupancy(d_post[0:1], model.comp_affinity)
+                        - dopamine_occupancy(d_post[1:2], model.comp_affinity))
+            window_c = (dopamine_occupancy(d_post[1:2].detach(), model.comp_affinity) / 0.5
+                        * comp_trace[:, model.comp_edge_kc])
+            kappa_c = torch.sigmoid(model.comp_logit_forget)
+            comp_memory = comp_memory + window_c * (model.comp_eta * phasic_c - kappa_c * comp_memory)
     bank = getattr(current, 'read_bank', torch.empty(0))
     if getattr(model, 'read_bank_gain', None) is not None:
         motor_now = h[:, model.read_indices] if model.read_surface != 'all' else h
@@ -302,7 +341,7 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
     return FlyPhysicalState(h, ring, ge, gi, b, x, u, next_baseline, h_mean, dan_gate, gz1, gz2,
                             current.observer_prior, getattr(current, 'observer_history', torch.empty(0)), bank,
                             modulator, getattr(current, 'expected_input', torch.empty(0)), dopamine, da_trace, da_memory,
-                            homeostasis, regime)
+                            homeostasis, regime, comp_trace, comp_memory)
 
 
 def extract_fly_motor_latent(model, state):
@@ -834,8 +873,12 @@ REGIME_KAPPA = 0.5                  # free-membrane SD = theta / 2: +-2 SD spans
 REGIME_LOG_GAIN_MAX = math.log(10.0)  # input gain within [1/10, 10] (E_E / theta): a safety rail for input-free cells
 
 
+REGIME_KENYON_Z = 1.645             # Kenyon cells: q* = P(Z > 1.645) = 0.05, the coding level where a sparse expansion
+                                    # code has the most dimensions (Litwin-Kumar et al. 2017: f ~ 0.05-0.1 for a few claws)
+
+
 def attach_regime_homeostasis(model, graph_npz, seed=0, z_mean=REGIME_Z_MEAN, z_sd=REGIME_Z_SD, kappa=REGIME_KAPPA,
-                              windows=REGIME_WINDOWS):
+                              windows=REGIME_WINDOWS, kenyon_z=None, annotations=None):
     """Regime homeostasis (replaces the rate homeostasis of attach_homeostasis; design and measurements:
     docs/information_boltzmann/FLY_CONSEQUENCE_WORLD_DESIGN_20261012.html).  What is regulated is where each neuron's
     threshold sits inside the distribution of its own free membrane u (integrated like the membrane, never reset),
@@ -845,11 +888,18 @@ def attach_regime_homeostasis(model, graph_npz, seed=0, z_mean=REGIME_Z_MEAN, z_
     E/I and short-term plasticity are kept, and the writer's drive for sensory neurons) keeps the running SD of u at
     theta / 2.  A neuron is then fluctuation-driven by construction; its rate follows from q* and its input's
     correlation time.  Time scales: eta_b = 1 / (100 q* tau_m), eta_s = eta_b / 3 (the slower knob does not fight
-    the faster), running moments over 100 tau_m."""
+    the faster), running moments over 100 tau_m.  kenyon_z (with the annotations) moves the Kenyon cells' mean z: an
+    expansion layer codes best when sparse, so their thresholds sit further out in their own distribution (the same
+    per-neuron draw, only shifted; every other neuron is unchanged)."""
     import numpy as np
-    tau_m = torch.as_tensor(np.load(graph_npz)['tau_m'], dtype=torch.float32).clamp_min(1.0)
+    graph = np.load(graph_npz, allow_pickle=True)
+    tau_m = torch.as_tensor(graph['tau_m'], dtype=torch.float32).clamp_min(1.0)
     gen = torch.Generator().manual_seed(int(seed))
     z = z_mean + z_sd * torch.randn(tau_m.numel(), generator=gen)
+    if kenyon_z is not None:
+        import pandas as pd
+        cls = pd.read_feather(annotations).set_index('bodyId').reindex(graph['neuron_body_ids'])['class'].astype(str).values
+        z = torch.where(torch.as_tensor(cls == 'Kenyon_Cell'), z + (float(kenyon_z) - z_mean), z)
     q = 0.5 * torch.erfc(z / math.sqrt(2.0))
     eta_b = 1.0 / (windows * q * tau_m)
     device = model.read_indices.device
@@ -858,7 +908,52 @@ def attach_regime_homeostasis(model, graph_npz, seed=0, z_mean=REGIME_Z_MEAN, z_
         model.register_buffer(name, value.unsqueeze(0).to(device), persistent=False)
     model.regime_kappa = float(kappa)
     model.regime_seed = int(seed)
+    model.regime_kenyon_z = None if kenyon_z is None else float(kenyon_z)
     return model
+
+
+def attach_compartment_memory(model, graph_npz, annotations, eta=-0.02, tau_trace=50.0, forget=0.02, affinity=None):
+    """Three-factor memory per Kenyon -> MBON synapse (the fly's own plastic site; design:
+    FLY_CONSEQUENCE_WORLD_DESIGN_20261012.html).  A Kenyon cell's axon passes through compartments, each with its own
+    dopamine cells and its own MBONs; in the connectome the MBONs separate cleanly by their dopamine source (51
+    PPL1-dominated, 40 PAM-dominated, 6 mixed), while every Kenyon cell receives a PAM/PPL1 mixture.  So the memory
+    lives on the synapse and reads the dopamine delivered to its MBON: phi <- phi + w (eta p - kappa phi), w = occ(slow
+    dopamine) / 0.5 * presynaptic trace (no postsynaptic factor, as in the fly), efficacy (1 + phi) * weight; eta < 0:
+    dopamine after Kenyon activity depresses (eta = -kappa keeps phi in (-1, 1)).  The excitatory Kenyon -> MBON edges
+    leave the static edge list (pinned at 0) and are transmitted separately with the same delays.  Needs
+    attach_dopamine_modulation (the dopamine state).  affinity: receptor half-saturation (default the model's)."""
+    import pandas as pd
+    if getattr(model, 'dopamine_sensitivity', None) is None:
+        raise ValueError('compartment memory needs attach_dopamine_modulation first')
+    graph = np.load(graph_npz, allow_pickle=True)
+    cls = pd.read_feather(annotations).set_index('bodyId').reindex(graph['neuron_body_ids'])['class'].astype(str).values
+    device = model.edge_pre_e.device
+    kc = torch.as_tensor(cls == 'Kenyon_Cell', device=device)
+    mbon = torch.as_tensor(cls == 'MBON', device=device)
+    pre, post = model.edge_pre_e.long(), model.edge_post_e.long()
+    edges = torch.nonzero(kc[pre] & mbon[post]).squeeze(1)              # ascending: already grouped by delay tier
+    splits = torch.as_tensor(model.splits_e, device=device)
+    tier = torch.searchsorted(splits[1:], edges, right=True)
+    comp_splits = tuple([0] + [int((tier <= d).sum()) for d in range(4)])
+    kc_index = torch.nonzero(kc).squeeze(1)
+    with torch.no_grad():
+        weight = model.edge_weight_e[edges].detach().clone()
+        model.edge_weight_e[edges] = 0.0
+    pinned = getattr(model, 'pinned_zero_edges_e', None)
+    pinned = edges if pinned is None else torch.unique(torch.cat([pinned.to(device), edges]))
+    model.register_buffer('pinned_zero_edges_e', pinned, persistent=False)
+    model.register_buffer('comp_pre', pre[edges].to(model.edge_pre_e.dtype), persistent=False)
+    model.register_buffer('comp_post', post[edges].to(model.edge_post_e.dtype), persistent=False)
+    model.register_buffer('comp_kc', kc_index, persistent=False)
+    model.register_buffer('comp_edge_kc', torch.searchsorted(kc_index, pre[edges]), persistent=False)
+    model.comp_splits = comp_splits
+    model.comp_weight = nn.Parameter(weight)
+    model.comp_eta = nn.Parameter(torch.tensor(float(eta), device=device))
+    lam = math.exp(-1.0 / tau_trace)
+    model.comp_logit_trace = nn.Parameter(torch.tensor(math.log(lam / (1 - lam)), device=device))
+    model.comp_logit_forget = nn.Parameter(torch.tensor(math.log(forget / (1 - forget)), device=device))
+    model.comp_affinity = float(affinity if affinity is not None else model.dopamine_affinity)
+    return int(edges.numel())
 
 
 TIED_WRITER_SCALE = 0.1             # birth scale of the tied rows: the input gain the regime-gestated newborn chose for
