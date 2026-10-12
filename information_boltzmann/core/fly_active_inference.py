@@ -7,8 +7,8 @@ chooses which cells act):
                        meanwhile is written with gain e ~ 0 -- it is missed (the world never waits; the word is still
                        scored by the language objective).
   channel 1  OUTPUT -- commit the expectation standing on the output surface: a leaky integrator racing to a bound
-                       (forward: the realized crossing, taped for checkpoint recompute; backward: a sigmoid,
-                       straight through); reset after a commit.
+                       (forward: the realized crossing, taped for checkpoint recompute; backward: straight through
+                       with the soft crossing's slope at the bound); reset after a commit.
 Objective terms (evolution's fitness for BPTT, nothing injected into the brain):
   perception VFE = the survival-weighted language CE (accuracy) + SIGReg on the read latents (complexity);
   epistemic value of looking = mean over word onsets of the information gain of seeing the word with gain e,
@@ -58,8 +58,10 @@ def ai_step(model, h, g, taped=None):
     x = (h.index_select(1, model.read_indices) - model.ai_mu) / model.ai_sigma
     g = torch.sigmoid(model.ai_logit_leak) * g + x @ (model.ai_w * model.ai_w_scale).T + model.ai_b
     committed = (float(g[0, 1].detach()) >= BOUND) if taped is None else bool(taped)
-    soft = torch.sigmoid((g[0, 1:2] - BOUND) / SOFT)
-    hazard = float(committed) + soft - soft.detach()
+    # straight-through with the slope the soft crossing has AT the bound, everywhere: a sigmoid's slope vanishes far
+    # from the bound, which makes any habit absorbing (an integrator that crosses every tick could never learn to wait)
+    u = (g[0, 1:2] - BOUND) / (4.0 * SOFT)
+    hazard = float(committed) + u - u.detach()
     if committed:
         g = torch.cat([g[:, :1], g[:, 1:] * 0.0], 1)
     return hazard, g, committed
@@ -96,7 +98,8 @@ def eye_act(model, g, forced=None, taped=None, sample=False):
         look = bool(torch.rand(()) < float(soft.detach()))
     else:
         look = float(soft.detach()) >= 0.5
-    return float(look) + soft - soft.detach(), look
+    u = 0.25 * g[0, 0:1]                                  # the slope of p at p = 1/2, everywhere (see ai_step)
+    return float(look) + u - u.detach(), look
 
 
 def pragmatic_value(hz, eyes, logp, intervals, answers, asks, main_onset, miss_value, depth=0):

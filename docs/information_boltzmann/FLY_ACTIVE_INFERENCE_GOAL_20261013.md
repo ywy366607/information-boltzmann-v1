@@ -127,3 +127,10 @@ Revisions before launch (colleague review of M3):
 - Arm depth0 (questions close at the next main onset whatever the eyes do) attributes closures to the kept-open rule.
 - Expected weak points, stated now: in clean text P2 may fail (closing has no value there); on noise the eyes may
   stay open because predicting the 16-word alphabet requires knowing a stretch is running (looking tells it).
+Revision during M2 (first launch stopped after 23 windows): the output integrator went to crossing the bound on every
+tick, and the straight-through slope of sigmoid((g - bound)/0.25) is ~0 there, so the habit was absorbing (it could
+never learn to wait again).  Both acts now pass gradients with the soft crossing's slope at the bound, everywhere
+(output: (g - bound)/(4 x 0.25); eyes: 0.25 G).  Theory note: for this adult, answering at once is near-optimal on
+average (CE 7.91 -> 7.74 from tick 1 to 2 vs a 2.9-nat miss risk per 1/mu: at mu = 16 the value of committing at tick
+1, 2, 3 is -7.91, -7.93, -8.00), so difficulty scaling can only come from the words where thinking pays or where any
+answer is worse than silence (CE > log V); the head must be able to keep learning to find them.
