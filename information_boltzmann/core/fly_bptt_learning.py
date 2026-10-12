@@ -1359,7 +1359,8 @@ def _advance_fly_token_stream(model, state, token, schedule_box=None, *, ticks, 
                                              h_mean_decay=h_mean_decay, base_rates=base_rates)
         if world is not None:
             model.external_drive = None
-            hazard, act_g, act = act_step(model, current.h, act_g, world_tape[tick][2] if replay else None)
+            hazard, act_g, act = act_step(model, current.h, act_g, world_tape[tick][2] if replay else None,
+                                          noise=record.get('noise'))
             hazards.append(hazard)
             if not replay:
                 world.observe(act)

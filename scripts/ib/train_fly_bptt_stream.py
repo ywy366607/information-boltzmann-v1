@@ -300,6 +300,10 @@ def main():
                         help='The brain also predicts its other senses (odour levels, taste) one tick ahead, and the world '
                              'sends gusts (world-caused odour rises) to test self vs world (omitted = inherit)')
     parser.add_argument('--sense-lambda', type=float, default=1.0, help='Weight of the sense prediction error')
+    parser.add_argument('--levy-scale', type=float, default=0.0,
+                        help='Exploration trial: heavy-tailed (Cauchy x scale, clipped at 1.5) spontaneous pushes into the act integrators (0.005: a jump past the bound ~1/300 ticks)')
+    parser.add_argument('--info-value', action=argparse.BooleanOptionalAction, default=False,
+                        help='Exploration trial: the fitness counts the lifetime value of tasting an odour of unknown valence')
     parser.add_argument('--act-init', type=Path, default=Path('scratch/fly_stream/act_init.pt'),
                         help='Initial act head (act_calibrate.py) for a lineage that gets the odour world now')
     parser.add_argument('--relative-edge-rate', type=float, default=None,
@@ -621,7 +625,8 @@ def main():
                                              seed=int(getattr(args, 'odour_seed_value', 0)),
                                              odour_drive=args.odour_drive, receptors=args.odour_receptors,
                                              outcome_dopamine=bool(args.outcome_dopamine),
-                                             gusts=bool(getattr(args, 'sense_prediction', False)))
+                                             gusts=bool(getattr(args, 'sense_prediction', False)),
+                                             levy_scale=float(args.levy_scale or 0.0), info_value=bool(args.info_value))
             learner.sense_lambda = float(getattr(args, 'sense_lambda', 1.0))
             learner.act_lambda = float(args.act_lambda)
             print(f'Odour world: {len(learner.odour_world.pool)} receptor types, {args.odour_receptors} per odour, '
@@ -887,7 +892,8 @@ def main():
                                              seed=int(getattr(args, 'odour_seed_value', 0)),
                                              odour_drive=args.odour_drive, receptors=args.odour_receptors,
                                              outcome_dopamine=bool(args.outcome_dopamine),
-                                             gusts=bool(getattr(args, 'sense_prediction', False)))
+                                             gusts=bool(getattr(args, 'sense_prediction', False)),
+                                             levy_scale=float(args.levy_scale or 0.0), info_value=bool(args.info_value))
             learner.sense_lambda = float(getattr(args, 'sense_lambda', 1.0))
             learner.act_lambda = float(args.act_lambda)
             print(f'Odour world: {len(learner.odour_world.pool)} receptor types, {args.odour_receptors} per odour, '

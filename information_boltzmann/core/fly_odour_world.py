@@ -43,7 +43,7 @@ def cells_of(types, ann_type):
 
 class OdourWorld:
     def __init__(self, model, graph_npz, annotations, *, seed=0, odour_drive=32.0, outcome_drive=8.0, receptors=8,
-                 outcome_dopamine=True, gusts=False):
+                 outcome_dopamine=True, gusts=False, levy_scale=0.0, info_value=False):
         import pandas as pd
         graph = np.load(graph_npz, allow_pickle=True)
         typ = pd.read_feather(annotations).set_index('bodyId').reindex(graph['neuron_body_ids'])['type'].astype(str).values
@@ -73,6 +73,12 @@ class OdourWorld:
         # approach, but not caused by the fly (exafference vs the reafference of its own approach); then it leaves
         self.gusts = bool(gusts)
         self.sense_types = {g: i for i, g in enumerate(self.pool)}
+        # exploration trials: levy_scale > 0 -- heavy-tailed spontaneous pushes into the act integrators (Cauchy x scale, clipped
+        # at +-1.5: tiny almost always, rarely a jump to the bound -- with scale 0.005 about 1 / 300 ticks; per channel; drawn by the world's rng and taped, so a recompute replays them);
+        # info_value -- evolution's bookkeeping counts the lifetime value of tasting an odour whose valence is unknown
+        # in this life segment: the expected sugar its future encounters would bring, P(sweet) x encounters left
+        self.levy_scale = float(levy_scale)
+        self.info_value = bool(info_value)
         self.fitness_rate = 0.0              # running fitness per tick (evolution's bookkeeping, never seen by the brain)
         self.moves_in_gap = 0
         self.rng = np.random.default_rng(seed)
@@ -136,7 +142,12 @@ class OdourWorld:
             amt = torch.cat([torch.full((len(c),), a, device=self.device) for c, a in zip(cells, amounts)])
             current = (idx, amt * self.rheobase[idx])         # sparse: materialized per tick by dense()
         live, gap = self.phase == 'present', self.phase == 'gap'
-        return current, {'live': live, 'value': self.value() if live else 0.0,
+        info = 0.0
+        if live and self.info_value and self.outcomes[self.odour] == 0:
+            left = max(0, SEGMENT - (self.tick - self.segment_start))
+            info = 0.5 * left / (2 * (GAP + 40)) * REWARD['sweet']      # ~ future encounters with this odour x P(sweet)
+        noise = np.clip(self.rng.standard_cauchy(2) * self.levy_scale, -1.5, 1.5).astype(np.float32) if self.levy_scale else None
+        return current, {'live': live, 'value': self.value() if live else 0.0, 'info': info, 'noise': noise,
                          'encounter': self.encounter_id if live else 0,
                          'gap': gap, 'move_value': MOVE * self.fitness_rate if gap else 0.0, 'sense': sense,
                          'ramp': 'self' if self.phase == 'approach' else ('world' if self.phase == 'gust' else None)}
@@ -223,13 +234,15 @@ def dense(spec, n, device):
     return current
 
 
-def act_step(model, h, g, taped=None):
+def act_step(model, h, g, taped=None, noise=None):
     """One tick of the act head: x = (h_out - mu) / sigma over all output cells, m = W x + b, G <- lambda G + m.
     Forward: the realized act (the first integrator at the bound and above the other; on a checkpoint recompute the
     taped act); backward: sig((G - B) / SOFT) (straight through).  Both integrators reset after an act.  Returns the
     hazards [2], the new G [1, 2] and the act (None / 'approach' / 'avoid')."""
     x = (h[:, model.read_indices] - model.act_mu) / model.act_sigma
     g = torch.sigmoid(model.act_logit_leak) * g + x @ (model.act_w * model.act_w_scale).T + model.act_b
+    if noise is not None:
+        g = g + torch.as_tensor(noise, device=g.device).unsqueeze(0)
     if taped is None:
         a, v = (float(t) for t in g[0].detach())
         act = 'approach' if (a >= BOUND and a > v) else ('avoid' if (v >= BOUND and v > a) else None)
@@ -265,7 +278,7 @@ def act_return(h_app, h_av, records, carry):
                 J = J + S * value * tail
             current, value = rec['encounter'], rec['value']
             S = h_app.new_tensor(carry.get(current, 1.0))
-        J = J + S * (h_app[t] * value + (1 - h_app[t] - h_av[t]) * DRIFT * value)
+        J = J + S * (h_app[t] * (value + rec.get('info', 0.0)) + (1 - h_app[t] - h_av[t]) * DRIFT * value)
         S = S * (1 - h_app[t] - h_av[t]) * (1 - DRIFT - LEAVE)
     carry = {}
     if current:
