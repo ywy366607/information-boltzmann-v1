@@ -289,6 +289,44 @@ def test_stream_learner_reaches_every_parameter_and_reuses_transmission(fly_mode
         assert name in g0 and torch.isfinite(g0[name]).all() and g0[name].abs().sum() > 0, name
 
 
+def test_world_pace_reads_every_tick_and_scores_with_the_arrival_hazard(fly_model_and_state):
+    """read_every: one read per tick, the last is the arrival read, the state is unchanged.  With a world pace the
+    window's training loss per word is sum_{t<=K} CE_t / pace (the survival-weighted estimator of the arrival CE),
+    the reported scores stay the arrival CEs, and the physical tick count is the realized sum of intervals."""
+    import dataclasses
+    from information_boltzmann.core.fly_bptt_learning import advance_fly_token_stream
+    model, state, device = fly_model_and_state
+    torch.manual_seed(3)
+    start = dataclasses.replace(state, h=torch.rand_like(state.h))
+    token = torch.tensor([321], device=device)
+    with torch.no_grad():
+        plain, latent = advance_fly_token_stream(model, start.detached(), token, ticks=4, hold_input=True,
+                                                 writer_baseline_clock='physical')
+        every, last, reads = advance_fly_token_stream(model, start.detached(), token, ticks=4, hold_input=True,
+                                                      writer_baseline_clock='physical', read_every=True)
+    assert torch.equal(plain.h, every.h) and reads.shape == (4, model.output_read.out_features)
+    assert torch.equal(reads[-1:], last) and torch.equal(last, latent)
+    if device != "cuda":
+        return
+    learner = FlyBPTTLearner(model, start, lr=2e-4, settle_ticks=14, writer_baseline_clock="physical",
+                             use_checkpointing=True, stream_ticks=1, hold_input=True, lambda_mcr2=0.0)
+    learner.stream_pace_mean, learner.pace_seed = 3.0, 5
+    ids = torch.tensor([[50, 101, 205, 307]], device=device)
+    targets = torch.tensor([[101, 205, 307, 409]], device=device)
+    scores, _, _ = learner.forward_window(ids, targets)
+    intervals = np.random.default_rng(5).geometric(1 / 3.0, size=4)
+    assert learner.last_adaptive_metrics['adaptive_total_ticks'] == int(intervals.sum())
+    assert torch.isfinite(learner.last_train_loss).all() and learner.last_train_loss.shape == scores.shape
+    loss = learner.last_train_loss.detach()
+    with torch.no_grad():
+        s, expected = start.detached(), []
+        for tok, tgt, k in zip(ids[0], targets[0], intervals):
+            s, _, r = advance_fly_token_stream(model, s, tok.reshape(1), ticks=int(k), hold_input=True,
+                                               writer_baseline_clock='physical', read_every=True)
+            expected.append(F.cross_entropy(model.decoder(model.read_norm(r)), tgt.expand(int(k)), reduction='sum') / 3.0)
+    assert torch.allclose(loss, torch.stack(expected), rtol=1e-4, atol=1e-4)
+
+
 def test_output_lag_of_one_tick_cannot_see_the_sensed_token(fly_model_and_state):
     """The read after the injection tick is bitwise independent of the token being sensed (MaleCNS: the earliest
     sensory -> read-surface path is one delay-1 edge, so the read surface first changes at tick 2); a read after two

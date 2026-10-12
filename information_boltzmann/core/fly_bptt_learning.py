@@ -477,8 +477,10 @@ def advance_fly_input_event(model, state, token, *, settle_ticks=0,
                             base_rates=None, thresholds=None,
                             conductance_gains=None, alif_params=None,
                             stp_params=None, h_mean_decay=0.99,
-                            return_ticks=False):
-    """One token pulse followed by quiet physical ticks, before next-token read."""
+                            return_ticks=False, hold_input=False):
+    """One token pulse followed by quiet physical ticks, before next-token read.  hold_input=True: the token stays on
+    the sensory surface for all its ticks (the world keeps sending it; the writer's own adaptation turns it into a
+    decaying innovation) instead of quiet ticks."""
     if not isinstance(settle_ticks, int) or settle_ticks < 0:
         raise ValueError('settle_ticks must be a nonnegative integer')
     if writer_baseline_clock not in ('input', 'physical'):
@@ -496,11 +498,16 @@ def advance_fly_input_event(model, state, token, *, settle_ticks=0,
     if settle_ticks:
         quiet_source = torch.zeros_like(state.h)
         for _ in range(settle_ticks):
-            quiet_baseline = (model.topographic_writer.lambda_adapt * state.baseline
-                              if writer_baseline_clock == 'physical'
-                              and model.topographic_writer is not None else state.baseline)
-            state = step_fly_physical_tick(model, state, None, quiet_source, quiet_baseline, options,
-                                           h_mean_decay=h_mean_decay, base_rates=base_rates)
+            if hold_input and model.topographic_writer is not None:
+                held, held_baseline = write_input(model, state, token)
+                state = step_fly_physical_tick(model, state, token, held, held_baseline, options,
+                                               h_mean_decay=h_mean_decay, base_rates=base_rates)
+            else:
+                quiet_baseline = (model.topographic_writer.lambda_adapt * state.baseline
+                                  if writer_baseline_clock == 'physical'
+                                  and model.topographic_writer is not None else state.baseline)
+                state = step_fly_physical_tick(model, state, None, quiet_source, quiet_baseline, options,
+                                               h_mean_decay=h_mean_decay, base_rates=base_rates)
             if return_ticks:
                 tick_states.append(state)
     if return_ticks:
@@ -513,11 +520,11 @@ def advance_token_and_read_latent(model, state, token, *, settle_ticks=0,
                                   base_rates=None, thresholds=None,
                                   conductance_gains=None, alif_params=None,
                                   stp_params=None, h_mean_decay=0.99,
-                                  use_ctm=False):
+                                  use_ctm=False, hold_input=False):
     """Atomic token advancement plus motor latent extraction for gradient checkpointing."""
     next_state, tick_states = advance_fly_input_event(
         model, state, token,
-        settle_ticks=settle_ticks,
+        settle_ticks=settle_ticks, hold_input=hold_input,
         writer_baseline_clock=writer_baseline_clock,
         base_rates=base_rates,
         thresholds=thresholds,
@@ -1231,7 +1238,8 @@ def read_fly_motor(model, state):
 
 def _advance_fly_token_stream(model, state, token, schedule_box=None, *, ticks, hold_input=False, read_after=None,
                               writer_baseline_clock='physical', base_rates=None, thresholds=None,
-                              conductance_gains=None, alif_params=None, stp_params=None, h_mean_decay=0.99):
+                              conductance_gains=None, alif_params=None, stp_params=None, h_mean_decay=0.99,
+                              read_every=False):
     """Streaming clock: every token occupies exactly `ticks` physical ticks, whatever the brain is doing, and the
     prediction of the next token is read just before it arrives.  Nothing waits for the brain to settle, so the
     processing of a token continues while the next ones are being sensed (latency and throughput decouple).
@@ -1244,6 +1252,8 @@ def _advance_fly_token_stream(model, state, token, schedule_box=None, *, ticks, 
     prediction of this very token, made while it is being sensed: leak-free only while D is below the earliest
     sensory -> read-surface arrival (MaleCNS: direct sensory->motor edges of delay 1, so the read surface first changes
     at tick 2 and D = 1 is the maximum; verified bitwise in tests).
+    read_every=True: also return the motor read after every tick ([ticks * B, d]): each is the expectation that would
+    meet the next word had it arrived then.
     """
     if not isinstance(ticks, int) or ticks < 1:
         raise ValueError('ticks must be a positive integer')
@@ -1258,6 +1268,7 @@ def _advance_fly_token_stream(model, state, token, schedule_box=None, *, ticks, 
     current = state
     quiet_source = None
     latent = None
+    reads = []
     for tick in range(ticks):
         if read_after is not None and tick == read_after:
             latent = read_fly_motor(model, current)
@@ -1272,6 +1283,11 @@ def _advance_fly_token_stream(model, state, token, schedule_box=None, *, ticks, 
                         if writer_baseline_clock == 'physical' and writer is not None else current.baseline)
             current = step_fly_physical_tick(model, current, None, quiet_source, baseline, options,
                                              h_mean_decay=h_mean_decay, base_rates=base_rates)
+        if read_every:
+            reads.append(read_fly_motor(model, current))
+    if read_every:
+        latent = reads[-1]
+        return expect_next(model, current, latent), latent, torch.cat(reads, 0)
     latent = latent if latent is not None else read_fly_motor(model, current)
     return expect_next(model, current, latent), latent
 
@@ -1695,7 +1711,8 @@ class FlyBPTTLearner:
             old_by_name.pop(name, None)
             old_options.pop(name, None)
         for name in list(old_by_name):
-            if name not in self.adam_names and (name.startswith('graph_observer.') or name.startswith('latent_predictor.')):
+            if name not in self.adam_names and (name.startswith('graph_observer.') or name.startswith('latent_predictor.')
+                                                or name not in dict(self.model.named_parameters())):
                 old_by_name.pop(name, None)
                 old_options.pop(name, None)
         if set(old_by_name) != set(self.adam_names) - newly_trainable:
@@ -1807,19 +1824,55 @@ class FlyBPTTLearner:
             stream = dict(ticks=self.stream_ticks, hold_input=self.hold_input, read_after=self.read_lag or None,
                           writer_baseline_clock=self.writer_baseline_clock, base_rates=rates,
                           thresholds=thresholds, conductance_gains=gains, alif_params=alif, stp_params=stp)
+            pace = float(getattr(self, 'stream_pace_mean', 0.0) or 0.0)
+            pace_min = float(getattr(self, 'stream_pace_min', 0.0) or 0.0)
+            if pace > 0 and getattr(self, 'pace_rng', None) is None:
+                self.pace_rng = np.random.default_rng(int(getattr(self, 'pace_seed', 0)))
+            if pace > 0 and 0 < pace_min < pace:
+                # the world's tempo changes from stretch to stretch: this window's mean interval, log-uniform
+                pace = float(math.exp(self.pace_rng.uniform(math.log(pace_min), math.log(pace))))
+            total_ticks = 0
+            reads, intervals = [], []
+            if pace > 0:
+                stream['read_every'] = True
             for token in input_ids.unbind(1):
-                box = [self.stream_ticks]
+                # the world's pace: a fixed clock, or (pace > 0) a memoryless interval k >= 1 with mean `pace` drawn per
+                # word, so that elapsed time tells nothing about when the next word comes; the read is the expectation
+                # standing just before the next word arrives
+                k = int(self.pace_rng.geometric(1.0 / pace)) if pace > 0 else self.stream_ticks
+                stream['ticks'] = k
+                total_ticks += k
+                box = [k]
                 if self.use_checkpointing and m.training and torch.is_grad_enabled():
-                    state, token_lat = checkpoint(advance_fly_token_stream, m, state, token, box,
-                                                  use_reentrant=False, **stream)
+                    out = checkpoint(advance_fly_token_stream, m, state, token, box, use_reentrant=False, **stream)
                 else:
-                    state, token_lat = advance_fly_token_stream(m, state, token, box, **stream)
+                    out = advance_fly_token_stream(m, state, token, box, **stream)
+                state, token_lat = out[0], out[1]
+                if pace > 0:
+                    reads.append(out[2])
+                    intervals.append(k)
                 latents.append(token_lat)
             features = torch.cat(latents, dim=0)
             logits = m.decoder(m.read_norm(features))
             scores = F.cross_entropy(logits, targets.flatten(), reduction='none')
             self.last_train_loss = scores
             self.last_adaptive_metrics = {}
+            if pace > 0:
+                # every tick before the next word arrives carries an expectation that would have met it had it come
+                # then: each scores with the arrival hazard p = 1/pace.  P(K >= t) = (1-p)^(t-1), so the expectation of
+                # sum_{t<=K} p CE_t is the expected arrival CE -- no imposed read time, no imposed waiting cost, and
+                # the world never pauses (no counterfactual branch past the real arrival)
+                tick_targets = torch.repeat_interleave(targets.flatten(), torch.as_tensor(intervals, device=targets.device))
+                tick_ce = F.cross_entropy(m.decoder(m.read_norm(torch.cat(reads, 0))), tick_targets, reduction='none')
+                owner = torch.repeat_interleave(torch.arange(len(intervals), device=targets.device),
+                                                torch.as_tensor(intervals, device=targets.device))
+                self.last_train_loss = torch.zeros_like(scores).index_add(0, owner, tick_ce) / pace
+                with torch.no_grad():
+                    onset = torch.cat([torch.arange(1, k + 1, device=targets.device) for k in intervals])
+                    early = tick_ce[onset <= 2].mean() if bool((onset <= 2).any()) else tick_ce.new_tensor(float('nan'))
+                self.last_adaptive_metrics = {'stream_pace_mean': pace, 'adaptive_total_ticks': total_ticks,
+                                              'survival_ce': float(self.last_train_loss.detach().mean()),
+                                              'ce_ticks_1_2': float(early)}
             self.last_ctm_metrics = {}
             self.last_jepa_loss = None
             self.last_jepa_metrics = {}
@@ -1895,6 +1948,7 @@ class FlyBPTTLearner:
                     alif_params=alif,
                     stp_params=stp,
                     use_ctm=use_ctm,
+                    hold_input=self.hold_input,
                     use_reentrant=False
                 )
                 for k in range(token_lat.size(0)):
@@ -1903,7 +1957,7 @@ class FlyBPTTLearner:
                 state_list.append(state)
             else:
                 state, tick_states = advance_fly_input_event(
-                    m, state, token,
+                    m, state, token, hold_input=self.hold_input,
                     settle_ticks=self.settle_ticks, writer_baseline_clock=self.writer_baseline_clock,
                     base_rates=rates,
                     thresholds=thresholds, conductance_gains=gains,
@@ -2202,7 +2256,8 @@ class FlyBPTTLearner:
         elif getattr(self, 'go_neuron', False):
             self.physical_ticks += self.last_adaptive_metrics['adaptive_total_ticks']
         elif getattr(self, 'stream_ticks', 0):
-            self.physical_ticks += len(values) * self.stream_ticks
+            self.physical_ticks += (self.last_adaptive_metrics.get('adaptive_total_ticks', len(values) * self.stream_ticks)
+                                    if getattr(self, 'last_adaptive_metrics', None) else len(values) * self.stream_ticks)
         elif self.adaptive_admission and getattr(self, 'last_adaptive_metrics', None):
             self.physical_ticks += self.last_adaptive_metrics.get('adaptive_total_ticks', len(values) * (1 + self.settle_ticks))
         else:

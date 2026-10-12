@@ -275,6 +275,14 @@ def main():
                         help='Three-factor memory per Kenyon -> MBON synapse, dopamine at its MBON (omitted = inherit)')
     parser.add_argument('--taste-every', type=int, default=0,
                         help='Taste world as a learning task: one episode after every N text windows (0 = off)')
+    parser.add_argument('--stream-pace-min', type=float, default=0.0,
+                        help='With --stream-pace-mean M: each window\'s mean interval is log-uniform in [this, M] '
+                             '(the world\'s tempo varies; 0 = fixed mean)')
+    parser.add_argument('--stream-pace-mean', type=float, default=0.0,
+                        help='With --stream-ticks: the world sets each word\'s interval, memoryless (geometric, >= 1 tick) '
+                             'with this mean; the read is the expectation standing when the next word arrives (0 = fixed clock)')
+    parser.add_argument('--tied-writer-scale', type=float, default=0.1,
+                        help='Scale of the tied rows when the writer is tied now (1: each cell keeps its drive size)')
     parser.add_argument('--taste-drive', type=float, default=8.0,
                         help='Dopamine-cell drive during pairing, in rheobase units of each driven cell')
     parser.add_argument('--tied-writer', action=argparse.BooleanOptionalAction, default=None,
@@ -568,6 +576,8 @@ def main():
             read_lag=int(args.read_lag or 0), go_neuron=bool(args.go_neuron),
             go_tick_cost=float(args.go_tick_cost or 0.0), go_reference_energy=float(args.go_reference_energy or 0.07),
             go_max_ticks=int(args.go_max_ticks or 32))
+        learner.stream_pace_mean = float(args.stream_pace_mean or 0.0)
+        learner.stream_pace_min = float(getattr(args, 'stream_pace_min', 0.0) or 0.0)
         learner.previous_token = int(train[0])
 
         initial_stp = {name: getattr(model, name).detach().clone() for name in STP_PARAMETER_NAMES}
@@ -644,13 +654,20 @@ def main():
         if args.precision:
             n_mod, n_da = attach_precision(model, args.graph, args.graph.parent / 'body-annotations.feather')
             print(f'Precision carried by {n_mod} neuromodulatory cells ({n_da} dopaminergic)', flush=True)
-        if args.tied_writer:
+        tie_now = bool(args.tied_writer) and not bool(previous_config.get('tied_writer', False))
+        if args.tied_writer and not tie_now:
             # a tied lineage: the writer's chemosensory rows are per receptor type (shapes before loading)
-            attach_tied_writer(model, args.graph, args.graph.parent / 'body-annotations.feather',
-                               convert=not bool(previous_config.get('tied_writer', False)))
+            attach_tied_writer(model, args.graph, args.graph.parent / 'body-annotations.feather', convert=False)
             print('Writer tied by chemosensory receptor type', flush=True)
         weights = {key: value for key, value in saved['model'].items()
-                   if key not in ('edge_weight_e', 'edge_weight_i')}
+                   if key not in ('edge_weight_e', 'edge_weight_i')
+                   and key not in COMPARTMENT_PARAMETER_NAMES + TASTE_PARAMETER_NAMES}      # loaded after attaching
+        if not args.go_neuron:
+            dropped = [k for k in weights if k in GO_PARAMETER_NAMES]
+            for k in dropped:
+                weights.pop(k)
+            if dropped:
+                print(f'Go neuron off: its {len(dropped)} parameters are not carried over', flush=True)
         if args.reinit_read_gamma:
             weights.pop('logit_read_gamma', None)
             print('Re-initializing logit_read_gamma with full-causal anatomical distribution [1.0, 115.0] ticks.', flush=True)
@@ -676,6 +693,11 @@ def main():
                                           annotations=args.graph.parent / 'body-annotations.feather')
                 print(f'Regime homeostasis, individual {args.regime_seed}'
                       f'{f", Kenyon z {args.regime_kenyon_z}" if args.regime_kenyon_z is not None else ""}', flush=True)
+            if tie_now:
+                # tie the writer now, from the per-cell rows just loaded
+                attach_tied_writer(model, args.graph, args.graph.parent / 'body-annotations.feather', convert=True,
+                                   scale=args.tied_writer_scale)
+                print(f'Writer tied now by chemosensory receptor type (scale {args.tied_writer_scale})', flush=True)
             if args.compartment_memory or args.taste_every:
                 comp_state = {k: v for k, v in saved['model'].items() if k in COMPARTMENT_PARAMETER_NAMES + TASTE_PARAMETER_NAMES}
                 n_comp = attach_compartment_memory(model, args.graph, args.graph.parent / 'body-annotations.feather',
@@ -739,6 +761,10 @@ def main():
             newly_trainable += [name for name in DOPAMINE_PARAMETER_NAMES if name not in names]
         if args.online_da_plasticity:
             newly_trainable += [name for name in ONLINE_DA_PARAMETER_NAMES if name not in names]
+        if args.compartment_memory:
+            extra = [name for name in COMPARTMENT_PARAMETER_NAMES + TASTE_PARAMETER_NAMES if name not in names]
+            names = list(names) + extra
+            newly_trainable += extra
         if args.use_latent_predictor and model.latent_predictor is not None:
             for p_name, _ in model.latent_predictor.named_parameters():
                 full_name = f'latent_predictor.{p_name}'
@@ -767,6 +793,8 @@ def main():
             read_lag=int(args.read_lag or 0), go_neuron=bool(args.go_neuron),
             go_tick_cost=float(args.go_tick_cost or 0.0), go_reference_energy=float(args.go_reference_energy or 0.07),
             go_max_ticks=int(args.go_max_ticks or 32))
+        learner.stream_pace_mean = float(args.stream_pace_mean or 0.0)
+        learner.stream_pace_min = float(getattr(args, 'stream_pace_min', 0.0) or 0.0)
         learner.load_edge_signs(old)
         learner.load_adam_state(old['optimizer'], newly_trainable=newly_trainable)
         initial_stp = {name: getattr(model, name).detach().clone() for name in STP_PARAMETER_NAMES}
@@ -1202,6 +1230,51 @@ def main():
                 raise MemoryError('CUDA allocation/reservation exceeded the registered 3900 MiB budget')
         return scores
 
+    taste = None
+    if args.taste_every:
+        import tiktoken
+        enc = tiktoken.get_encoding('gpt2')
+        nouns = ('apple bread river stone cloud horse candle garden window mountain flower tree bird fish table chair door '
+                 'house water fire light paper music island forest ocean train ship coin glass shirt shoe hat road bridge '
+                 'moon star sun rain snow wind sand rock grass leaf milk cheese honey sugar salt egg wolf bear lion tiger '
+                 'mouse snake king queen ring sword wheel tower').split()
+        taste = {'pool': [enc.encode(' ' + w)[0] for w in nouns if len(enc.encode(' ' + w)) == 1],
+                 'rng': np.random.default_rng(int(args.seed) + 7919 if hasattr(args, 'seed') else 7919), 'windows': 0,
+                 'log': open(args.output / 'taste.jsonl', 'a')}
+        print(f'Taste world: one episode after every {args.taste_every} text windows, {len(taste["pool"])} cues', flush=True)
+
+    def taste_episode():
+        # 256 ticks: cue A 32 | distractors 32 | cue B 32 | distractors 32 (last 32: baseline) | test X1 32 | '?' 32 |
+        # test X2 32 | '?' 32; one tick per token here (a held cue = the same word every tick).  Sweet cue: PAM cells
+        # driven, bitter: PPL1, during ticks 16-40 of the cue's block; read windows 128-192 and 192-256.
+        rng, tpt = taste['rng'], 1
+        a, b = (int(c) for c in rng.choice(taste['pool'], 2, replace=False))
+        sweet_first = bool(rng.integers(2)); order = int(rng.integers(2))
+        at = int(rng.integers(0, len(train) - 128))
+        d1, d2 = [int(x) for x in train[at:at + 32]], [int(x) for x in train[at + 32:at + 64]]
+        x1, x2 = (a, b) if order == 0 else (b, a)
+        tokens = [a] * 32 + d1 + [b] * 32 + d2 + [x1] * 32 + [30] * 32 + [x2] * 32 + [30] * 32
+        with torch.no_grad():
+            rates0 = model.get_decay_rates()[0].expand(1, model.n_neurons)
+            rheobase = model.get_thresholds().expand(1, model.n_neurons) * -torch.log(rates0.clamp(1e-5, 1 - 1e-7))
+            sweet = args.taste_drive * rheobase * model.taste_pam.float().unsqueeze(0)
+            bitter = args.taste_drive * rheobase * model.taste_ppl1.float().unsqueeze(0)
+        va, vb = (sweet, bitter) if sweet_first else (bitter, sweet)
+        drives = {t: va for t in range(16, 41)}
+        drives.update({64 + t: vb for t in range(16, 41)})
+        sweet_cue = a if sweet_first else b
+        targets = [int(x1 == sweet_cue), int(x2 == sweet_cue)]
+        metrics = learner.observe_taste(tokens, drives, held=(a, b), targets=targets, read_windows=((128, 192), (192, 256)),
+                                        baseline_window=(96, 128), token_ticks=tpt)
+        row = {'bptt_train_tokens': trained, 'taste_loss': metrics['taste_loss'], 'mb_correct': metrics['taste_mb_correct'],
+               'text_correct': metrics['taste_text_correct'], 'tests': metrics['taste_tests'],
+               'comp_eta': float(model.comp_eta.detach()), 'taste_gain': float(model.taste_gain.detach()),
+               'taste_bias': float(model.taste_bias.detach())}
+        taste['log'].write(json.dumps(row) + '\n'); taste['log'].flush()
+        if torch.cuda.memory_reserved() / 2**20 > 0.9 * args.vram_limit_mib:
+            torch.cuda.empty_cache()
+        return row
+
     shelf = probe_fn = None
     if getattr(args, 'bookshelf', None):
         import information_boltzmann.core.fly_bptt_learning as fly_learning
@@ -1220,6 +1293,10 @@ def main():
                 values = np.array(train[cursor+1:cursor+args.window+1], dtype=np.int64)
             begin = time.perf_counter()
             scores = observe(values, training=True)
+            if taste is not None:
+                taste['windows'] += 1
+                if taste['windows'] % args.taste_every == 0:
+                    taste_episode()
             torch.cuda.synchronize()
             seconds = time.perf_counter() - begin
             cursor += args.window

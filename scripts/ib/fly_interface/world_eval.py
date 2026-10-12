@@ -48,10 +48,16 @@ def load(fork):
     if cfg.get('tied_writer'):
         fl.attach_tied_writer(model, graph, graph.parent / 'body-annotations.feather', convert=False)
     edges = ('edge_weight_e', 'edge_weight_i')
+    late = fl.COMPARTMENT_PARAMETER_NAMES + fl.TASTE_PARAMETER_NAMES
     with torch.no_grad():
         for k in edges:
             getattr(model, k).copy_(saved['model'][k])
-        assert not model.load_state_dict({k: v for k, v in saved['model'].items() if k not in edges}, strict=False).unexpected_keys
+        assert not model.load_state_dict({k: v for k, v in saved['model'].items() if k not in edges and k not in late}, strict=False).unexpected_keys
+        if cfg.get('compartment_memory'):
+            # the plastic Kenyon -> MBON synapses live outside the edge list: attach, then load their own weights
+            fl.attach_compartment_memory(model, graph, graph.parent / 'body-annotations.feather', affinity=cfg.get('dopamine_affinity'))
+            fl.attach_taste_heads(model, graph, graph.parent / 'body-annotations.feather')
+            model.load_state_dict({k: v for k, v in saved['model'].items() if k in late}, strict=False)
     model.eval().requires_grad_(False)
     return model, cfg, L
 
