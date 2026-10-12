@@ -1352,7 +1352,7 @@ def main():
                 # cached blocks from a long window (fragmentation), not memory in use: give them back between windows
                 torch.cuda.empty_cache()
             if max(torch.cuda.memory_reserved(), torch.cuda.max_memory_allocated()) / 2**20 > args.vram_limit_mib:
-                raise MemoryError('CUDA allocation/reservation exceeded the registered 3900 MiB budget')
+                raise MemoryError(f'CUDA allocation/reservation exceeded the registered {args.vram_limit_mib:.0f} MiB budget')
         return scores
 
     taste = None

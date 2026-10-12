@@ -13,7 +13,7 @@ COMMON="--extend-budget --additional-tokens 4096 --validate-every-tokens 4096 --
   --window 32 --no-graph --go-neuron none --stream-ticks 8 --no-hold-input --stream-pace-mean 16 --stream-pace-min 4 \
   --no-homeostasis --no-ctm-loss --kc-dendritic-only --kc-renorm --connectome-v2 --dopamine-modulation \
   --dopamine-site pre --compartment-memory --comp-rate 2.0 --relative-edge-rate 0.02 --odour-world \
-  --act-lambda 0.0003 --info-value --vram-limit-mib 4050"
+  --act-lambda 0.0003 --info-value --vram-limit-mib 4090"
 for chunk in $(seq 1 $CHUNKS); do
   [ -f $out/STOP ] && break
   RESUME=""; AL=""; [ -f $out/last.pt ] || { RESUME="--resume E:/ib_checkpoints/q8_fly_ctm_settle14_100k/last.pt"; AL="--al-reset"; }
