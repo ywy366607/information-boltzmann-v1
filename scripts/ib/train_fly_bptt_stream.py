@@ -753,7 +753,10 @@ def main():
             if args.odour_world:
                 act_state = {k: v for k, v in saved['model'].items() if k in ACT_STATE_NAMES}
                 if act_state:
-                    attach_act_head(model, {k: act_state[k] for k in ('act_mu', 'act_sigma', 'act_w', 'act_b')})
+                    # the normalization (mu, sigma) and the read scale are constants of the initial head (buffers are
+                    # not in the saved parameters): rebuild them from the same init, then load the learned parameters
+                    init = torch.load(previous_config.get('act_init') or args.act_init, map_location='cpu')
+                    attach_act_head(model, {**init, **{k: act_state[k] for k in ('act_mu', 'act_sigma') if k in act_state}})
                     model.load_state_dict(act_state, strict=False)
                     print('Act head carried over', flush=True)
                 else:
@@ -1366,6 +1369,11 @@ def main():
                     for row in world.log:
                         handle.write(json.dumps({'bptt_train_tokens': trained, **row}) + '\n')
                 world.log.clear()
+            if world is not None and world.acts:
+                with open(args.output / 'odour_acts.jsonl', 'a') as handle:
+                    for tick, act, phase in world.acts:
+                        handle.write(json.dumps({'bptt_train_tokens': trained, 'tick': tick, 'act': act, 'phase': phase}) + chr(10))
+                world.acts.clear()
             if taste is not None:
                 taste['windows'] += 1
                 if taste['windows'] % args.taste_every == 0:

@@ -71,6 +71,7 @@ class OdourWorld:
         self.tick = 0
         self.encounter_id = 0
         self.log = []                       # one row per finished encounter
+        self.acts = []                      # one row per act: (tick, act, phase) -- for the interval statistics
         self._new_segment()
         self._new_gap()
 
@@ -129,6 +130,8 @@ class OdourWorld:
 
     def observe(self, act):
         """After the tick: the realized act (None, 'approach' or 'avoid'); advance the world."""
+        if act is not None:
+            self.acts.append((self.tick, act, self.phase))
         self.pending = [p for p in self.pending if p[0] > self.tick]
         self.tick += 1
         if self.reverse and not self.reversed and self.tick - self.segment_start >= SEGMENT // 2:
@@ -256,8 +259,9 @@ def attach_act_head(model, init):
     device = model.read_indices.device
     model.register_buffer('act_mu', init['act_mu'].to(device), persistent=True)
     model.register_buffer('act_sigma', init['act_sigma'].to(device), persistent=True)
-    # W = act_w * act_w_scale with act_w O(1): an Adam step (~lr) is then a small relative change of the read
-    scale = float(init['act_w'].std())
+    # W = act_w * act_w_scale with act_w of sd ACT_RAW_SD: an Adam step (~lr = 2e-4) is then ~1% of the read's size
+    # (raw W of sd ~6e-4 made every step ~30% and the head spammed; raw sd 1 made it ~0.02% and the head did not learn)
+    scale = float(init['act_w'].std()) / ACT_RAW_SD
     model.register_buffer('act_w_scale', torch.tensor(scale, device=device), persistent=True)
     model.act_w = torch.nn.Parameter((init['act_w'] / scale).to(device).clone())
     model.act_b = torch.nn.Parameter(init['act_b'].to(device).clone())
@@ -267,3 +271,4 @@ def attach_act_head(model, init):
 
 
 ACT_PARAMETER_NAMES = ('act_w', 'act_b', 'act_logit_leak')
+ACT_RAW_SD = 0.02

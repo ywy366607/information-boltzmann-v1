@@ -62,7 +62,8 @@ def load(fork):
             model.load_state_dict({k: v for k, v in saved['model'].items() if k in late}, strict=False)
         if 'act_w' in saved['model']:
             # the act head (odour world): attach with the saved tensors, then load them exactly
-            ow.attach_act_head(model, {k: saved['model'][k] for k in ('act_mu', 'act_sigma', 'act_w', 'act_b')})
+            init = torch.load(ROOT / cfg.get('act_init', 'scratch/fly_stream/act_init.pt'), map_location='cpu')
+            ow.attach_act_head(model, init)            # constants (mu, sigma, read scale) from the init; learned below
             model.load_state_dict({k: v for k, v in saved['model'].items() if k in act}, strict=False)
     model.eval().requires_grad_(False)
     return model, cfg, L
