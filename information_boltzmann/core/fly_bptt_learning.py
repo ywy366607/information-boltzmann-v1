@@ -1422,7 +1422,8 @@ def _advance_fly_token_stream(model, state, token, schedule_box=None, *, ticks, 
                               writer_baseline_clock='physical', base_rates=None, thresholds=None,
                               conductance_gains=None, alif_params=None, stp_params=None, h_mean_decay=0.99,
                               read_every=False, world=None, world_tape=None, act_g=None, fresh=True,
-                              ai_g=None, ai_tape=None, eye_forced=None):
+                              ai_g=None, ai_tape=None, eye_forced=None, eye_binary=False, eye_tape=None,
+                              eye_sample=False):
     """Streaming clock: every token occupies exactly `ticks` physical ticks, whatever the brain is doing, and the
     prediction of the next token is read just before it arrives.  Nothing waits for the brain to settle, so the
     processing of a token continues while the next ones are being sensed (latency and throughput decouple).
@@ -1478,7 +1479,14 @@ def _advance_fly_token_stream(model, state, token, schedule_box=None, *, ticks, 
             model.external_drive = dense(spec, model.n_neurons, current.h.device)
         writes = (tick == 0 and fresh) or (hold_input and writer is not None)
         if ai_g is not None:
-            eye = ai_eye(model, ai_g, eye_forced)
+            if eye_binary:
+                # M3: the eyes as a decision, exactly 0 / 1 forward (taped for the recompute), straight-through
+                from .fly_active_inference import eye_act
+                eye, look = eye_act(model, ai_g, eye_forced, eye_tape[tick] if ai_replay else None, sample=eye_sample)
+                if not ai_replay:
+                    eye_tape.append(look)
+            else:
+                eye = ai_eye(model, ai_g, eye_forced)
             eyes.append(eye)
             onsets.append(writes)
         if writes:
@@ -2078,10 +2086,12 @@ class FlyBPTTLearner:
             world = getattr(self, 'odour_world', None) if torch.is_grad_enabled() else None
             hazards, records = [], []
             ai_on = getattr(m, 'ai_w', None) is not None
+            noise_targets = self.__dict__.pop('noise_mask', None)      # set by observe() for this window only
             ai_eyes, ai_onsets, ai_out, ai_tokens = [], [], [], []
             if ai_on:
                 if getattr(self, 'ai_g', None) is None:
-                    self.ai_g = state.h.new_tensor([[math.log(0.95 / 0.05), 0.0]])     # eyes open at the start
+                    p_open = float(getattr(self, 'eye_init', 0.95))
+                    self.ai_g = state.h.new_tensor([[math.log(p_open / (1 - p_open)), 0.0]])     # eyes open at the start
                 ai_g = self.ai_g
             if world is not None:
                 if getattr(self, 'act_g', None) is None:
@@ -2106,6 +2116,9 @@ class FlyBPTTLearner:
                         stream.update(world=world, world_tape=tape, act_g=act_g)
                     if ai_on:
                         stream.update(ai_g=ai_g, ai_tape=[], eye_forced=getattr(self, 'eye_forced', None))
+                        if getattr(self, 'eye_binary', False):
+                            stream.update(eye_binary=True, eye_tape=[],
+                                          eye_sample=bool(m.training and torch.is_grad_enabled()))
                     if self.use_checkpointing and m.training and torch.is_grad_enabled():
                         out = checkpoint(advance_fly_token_stream, m, state, token, box, use_reentrant=False, **stream)
                     else:
@@ -2167,8 +2180,37 @@ class FlyBPTTLearner:
                         self.sigreg = SIGReg(dim=reads[0].shape[1]).to(e.device)
                     ai_loss = ai_loss + lam_sig * self.sigreg(torch.cat(reads, 0).float())
                 lam_out = float(getattr(self, 'ai_pragmatic', 0.0))
-                commit_tick = []
-                if pace > 0 and ai_out:
+                commit_tick, extended = [], []
+                depth = int(getattr(self, 'ai_depth', 0) or 0)
+                n_words = len(intervals)
+                tnoise = noise_targets if noise_targets is not None else [False] * n_words
+                input_noise = [False] + list(tnoise[:-1])         # input i is the word that arrived as target i - 1
+                if pace > 0 and ai_out and getattr(self, 'eye_binary', False):
+                    # M3: the main speaker's questions stay open while the eyes are closed (the brain is not told the
+                    # answer) and across background words; a later commit answers the oldest open question against its
+                    # own answer, the main speaker's next word (fly_active_inference.pragmatic_value)
+                    from .fly_active_inference import pragmatic_value
+                    hz = torch.cat(ai_out)
+                    logp = F.log_softmax(m.decoder(m.read_norm(torch.cat(reads, 0))).float(), -1)
+                    flat = targets.flatten().tolist()
+                    answers, nxt = [0] * n_words, flat[-1]
+                    for j in range(n_words - 1, -1, -1):
+                        if not tnoise[j]:
+                            nxt = flat[j]
+                        answers[j] = nxt
+                    asks = [not x for x in input_noise]
+                    J_out, commit_tick, extended = pragmatic_value(hz, e_on, logp, intervals, answers, asks, asks,
+                                                                   -math.log(m.decoder.out_features), depth)
+                    J_out = J_out / len(intervals)
+                    if lam_out > 0:
+                        ai_loss = ai_loss - lam_out * J_out
+                    self.last_adaptive_metrics['pragmatic'] = float(J_out.detach())
+                    self.last_adaptive_metrics['questions_extended'] = int(sum(x > 0 for x in extended))
+                    if any(input_noise):
+                        nz = torch.as_tensor(input_noise, device=e_on.device)
+                        self.last_adaptive_metrics['eye_open_noise'] = float((e_on.detach()[nz] >= 0.5).float().mean())
+                        self.last_adaptive_metrics['eye_open_text'] = float((e_on.detach()[~nz] >= 0.5).float().mean())
+                elif pace > 0 and ai_out:
                     # pragmatic value of output: every arriving word is a question; committing at tick t answers it
                     # with the read standing then (value -CE_t); if the word arrives first, the answer is missed (value
                     # -log V).  J = sum_t S_{t-1} h_t (-CE_t) + S_K (-log V), S = P(not committed yet) for this word
@@ -2198,7 +2240,8 @@ class FlyBPTTLearner:
                     # the per-word trace for the analysis: eye at its onset, its arrival CE, its pace
                     self.last_ai_trace = {'eye': e_on.cpu().tolist(), 'token': tok_on.tolist(),
                                           'ce': scores.detach().cpu().tolist(), 'pace': pace,
-                                          'interval': list(intervals), 'commit_tick': commit_tick}
+                                          'interval': list(intervals), 'commit_tick': commit_tick,
+                                          'extended': extended, 'noise': input_noise}
             if world is not None:
                 # the act's fitness, as evolution sees it (never an input to the brain); BPTT through the hazards
                 from .fly_odour_world import act_return
@@ -2475,6 +2518,22 @@ class FlyBPTTLearner:
         tokens = torch.as_tensor(target_tokens, device=self.state.h.device, dtype=torch.long).flatten()
         if tokens.numel() == 0:
             raise ValueError('At least one observed token is required')
+        noise = getattr(self, 'noise_world', None)
+        self.noise_mask = None
+        if noise is not None and tokens.numel() > noise['length'] + 2:
+            # the noisy TV: with probability `rate` per window a stretch of `length` words drawn uniformly from a small
+            # fixed alphabet -- the words are learnable as a set, their order is not
+            if getattr(self, 'noise_rng', None) is None:
+                self.noise_rng = np.random.default_rng(int(noise.get('seed', 0)) + 1 + int(noise.get('offset', 0)))
+            mask = np.zeros(tokens.numel(), bool)
+            if self.noise_rng.random() < noise['rate']:
+                # never at the window's edges: a main word comes before and after the stretch inside the window
+                at = int(self.noise_rng.integers(1, tokens.numel() - noise['length']))
+                draw = self.noise_rng.choice(np.asarray(noise['alphabet']), noise['length'])
+                tokens = tokens.clone()
+                tokens[at:at + noise['length']] = torch.as_tensor(draw, device=tokens.device)
+                mask[at:at + noise['length']] = True
+            self.noise_mask = mask.tolist()
         ids = self.inputs_for_targets(tokens)
         if self.runner is None:
             self.optimizer.zero_grad(set_to_none=True)

@@ -179,6 +179,14 @@ def resolve_learning_modes(args, previous_config, previous_learner):
         args.odour_world = bool(previous_config.get('odour_world', False))
     if getattr(args, 'ai', None) is None:
         args.ai = bool(previous_config.get('ai', False))
+    if getattr(args, 'eye_binary', None) is None:
+        args.eye_binary = bool(previous_config.get('eye_binary', False))
+    if getattr(args, 'ai_depth', None) is None:
+        args.ai_depth = int(previous_config.get('ai_depth') or 0)
+    if getattr(args, 'eye_init', None) is None:
+        args.eye_init = float(previous_config.get('eye_init') or 0.95)
+    if getattr(args, 'noise_rate', None) is None:
+        args.noise_rate = float(previous_config.get('noise_rate') or 0.0)
     for name, default in (('ai_epistemic', 0.0), ('ai_pragmatic', 0.0), ('ai_sigreg', 0.0)):
         if getattr(args, name, None) is None:
             setattr(args, name, float(previous_config.get(name) or default))
@@ -307,6 +315,15 @@ def main():
     parser.add_argument('--ai-pragmatic', type=float, default=None, help='Weight of the pragmatic value of output')
     parser.add_argument('--ai-sigreg', type=float, default=None, help='Weight of SIGReg on the read latents (VFE complexity)')
     parser.add_argument('--eye-forced-open', action='store_true', help='Control: eyes fixed open (gain 1, no gradient)')
+    parser.add_argument('--eye-binary', action=argparse.BooleanOptionalAction, default=None,
+                        help='M3: the eyes as a 0/1 decision (straight-through); omitted = inherit')
+    parser.add_argument('--ai-depth', type=int, default=None,
+                        help='M3: a question stays open over up to this many intervals while the eyes are closed')
+    parser.add_argument('--noise-rate', type=float, default=None, help='Noisy TV: probability per window of a noise stretch')
+    parser.add_argument('--noise-length', type=int, default=8, help='Noisy TV: words per stretch')
+    parser.add_argument('--noise-alphabet', type=int, default=16, help='Noisy TV: alphabet size (random token ids)')
+    parser.add_argument('--noise-seed', type=int, default=7, help='Noisy TV: the alphabet and the draws')
+    parser.add_argument('--eye-init', type=float, default=None, help='M3: the eyes\' initial open probability')
     parser.add_argument('--eye-forced', type=float, default=None, help='Control: eyes fixed at this gain')
     parser.add_argument('--odour-world', action=argparse.BooleanOptionalAction, default=None,
                         help='Closed-loop odour world alongside the text stream; acts from the act head (omitted = inherit)')
@@ -645,6 +662,19 @@ def main():
             learner.ai_epistemic, learner.ai_pragmatic = float(args.ai_epistemic), float(args.ai_pragmatic)
             learner.ai_sigreg = float(args.ai_sigreg)
             learner.eye_forced = 1.0 if args.eye_forced_open else args.eye_forced
+            learner.eye_binary, learner.ai_depth = bool(args.eye_binary), int(args.ai_depth)
+            if args.eye_binary:
+                # a new stretch of the world every chunk (pace and noise schedules seeded by the lifetime so far)
+                learner.pace_seed = int(getattr(args, 'odour_seed_value', 0) or 0)
+                learner.eye_init = float(args.eye_init)
+            if args.noise_rate > 0:
+                import numpy as _np
+                alphabet = _np.random.default_rng(args.noise_seed).choice(50257, args.noise_alphabet, replace=False)
+                learner.noise_world = {'rate': args.noise_rate, 'length': args.noise_length,
+                                       'alphabet': alphabet.tolist(), 'seed': args.noise_seed,
+                                       'offset': int(getattr(args, 'odour_seed_value', 0) or 0)}
+            print(f'M3: binary eyes {learner.eye_binary}, question depth {learner.ai_depth}, noise rate {args.noise_rate}',
+                  flush=True)
             print(f'Active inference: epistemic {args.ai_epistemic}, pragmatic {args.ai_pragmatic}, SIGReg {args.ai_sigreg}'
                   f'{", eyes forced " + str(learner.eye_forced) if learner.eye_forced is not None else ""}', flush=True)
         if getattr(args, 'relative_edge_rate', 0.0):
@@ -814,7 +844,7 @@ def main():
                 ai_state = {k: v for k, v in saved['model'].items() if k in AI_STATE_NAMES}
                 init = torch.load(previous_config.get('act_init') or args.act_init, map_location='cpu')
                 # constants (mu, sigma, read scale) rebuilt from the same init; the learned parameters loaded after
-                attach_ai_head(model, init)
+                attach_ai_head(model, init, eye_open=float(getattr(args, "eye_init", 0.95) or 0.95))
                 if ai_state:
                     model.load_state_dict(ai_state, strict=False)
                 print(f'Act head (eyes + output) {"carried over" if ai_state else "initialized from " + str(args.act_init)}',
@@ -941,6 +971,19 @@ def main():
             learner.ai_epistemic, learner.ai_pragmatic = float(args.ai_epistemic), float(args.ai_pragmatic)
             learner.ai_sigreg = float(args.ai_sigreg)
             learner.eye_forced = 1.0 if args.eye_forced_open else args.eye_forced
+            learner.eye_binary, learner.ai_depth = bool(args.eye_binary), int(args.ai_depth)
+            if args.eye_binary:
+                # a new stretch of the world every chunk (pace and noise schedules seeded by the lifetime so far)
+                learner.pace_seed = int(getattr(args, 'odour_seed_value', 0) or 0)
+                learner.eye_init = float(args.eye_init)
+            if args.noise_rate > 0:
+                import numpy as _np
+                alphabet = _np.random.default_rng(args.noise_seed).choice(50257, args.noise_alphabet, replace=False)
+                learner.noise_world = {'rate': args.noise_rate, 'length': args.noise_length,
+                                       'alphabet': alphabet.tolist(), 'seed': args.noise_seed,
+                                       'offset': int(getattr(args, 'odour_seed_value', 0) or 0)}
+            print(f'M3: binary eyes {learner.eye_binary}, question depth {learner.ai_depth}, noise rate {args.noise_rate}',
+                  flush=True)
             print(f'Active inference: epistemic {args.ai_epistemic}, pragmatic {args.ai_pragmatic}, SIGReg {args.ai_sigreg}'
                   f'{", eyes forced " + str(learner.eye_forced) if learner.eye_forced is not None else ""}', flush=True)
         if getattr(args, 'relative_edge_rate', 0.0):
