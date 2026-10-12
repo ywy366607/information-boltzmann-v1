@@ -1118,6 +1118,54 @@ def attach_kenyon_dendritic_only(model, graph_npz, annotations, dendritic_feathe
     return int(edges.numel()), int((share == 0).sum())
 
 
+SENSORY_SUPERCLASSES = ('cb_sensory', 'ol_sensory', 'vnc_sensory', 'sensory_ascending', 'sensory_descending')
+
+
+def sensory_axonal_edges(model, graph_npz):
+    """Edges whose target is a sensory neuron.  A sensory neuron's dendrites are peripheral, so every connectome synapse
+    onto it sits on its axon terminal (presynaptic modulation of release), not where its spikes are generated.
+    Returns (excitatory edge indices, inhibitory edge indices)."""
+    import numpy as np
+    graph = np.load(graph_npz, allow_pickle=True)
+    names = list(graph['superclass_names'])
+    sensory = np.isin(np.array(names)[graph['superclass_id']], SENSORY_SUPERCLASSES)
+    mask = torch.as_tensor(sensory, device=model.edge_post_e.device)
+    return (torch.nonzero(mask[model.edge_post_e.long()]).squeeze(1),
+            torch.nonzero(mask[model.edge_post_i.long()]).squeeze(1))
+
+
+def renormalize_kenyon_inputs(model, graph_npz, annotations, dendritic_feather):
+    """Undo a birth-normalization artifact, once per lineage: every edge was divided by sqrt(K_in) of its target, and a
+    Kenyon cell's K_in counted its axo-axonal Kenyon partners (median 162 partners; 13 without any Kenyon partner),
+    which do not drive the soma (attach_kenyon_dendritic_only).  With the dendritic partners only (non-Kenyon partners
+    plus Kenyon partners with calyx synapses) every remaining input onto a Kenyon cell is sqrt(K_all / K_dendritic)
+    larger.  Scales the current (learned) weights of all non-pinned edges onto Kenyon cells; returns the median factor."""
+    import numpy as np
+    import pandas as pd
+    graph = np.load(graph_npz, allow_pickle=True)
+    n = model.n_neurons
+    cls = pd.read_feather(annotations).set_index('bodyId').reindex(graph['neuron_body_ids'])['class'].astype(str).values
+    kc = cls == 'Kenyon_Cell'
+    k_all = np.bincount(graph['edge_post'], minlength=n).astype(np.float64)
+    edges, share = kenyon_dendritic_share(model, graph_npz, annotations, dendritic_feather)
+    dead = torch.zeros(model.edge_pre_e.numel(), dtype=torch.bool, device=model.edge_pre_e.device)
+    dead[edges[share == 0]] = True
+    # Kenyon partners without calyx synapses, per target (counted on the excitatory list, where Kenyon edges live)
+    post_e = model.edge_post_e.long()
+    axo_t = torch.bincount(post_e[dead], minlength=n).cpu().numpy().astype(np.float64)
+    k_den = np.maximum(k_all - axo_t, 1.0)
+    factor = torch.as_tensor(np.where(kc, np.sqrt(k_all / k_den), 1.0), dtype=torch.float32, device=post_e.device)
+    with torch.no_grad():
+        for sfx in ('e', 'i'):
+            w = getattr(model, f'edge_weight_{sfx}')
+            post = getattr(model, f'edge_post_{sfx}').long()
+            scale = factor[post]
+            if sfx == 'e':
+                scale = torch.where(dead, torch.ones_like(scale), scale)
+            w.mul_(scale)
+    return float(np.median(factor.cpu().numpy()[kc]))
+
+
 def attach_online_da_plasticity(model, graph_npz=None, annotations=None, eta=-0.02, tau_trace=50.0, forget=0.02,
                                 cell_classes=ONLINE_DA_CELL_CLASSES):
     """O(1) online learning with dopamine as the third factor (design: FLY_ONLINE_DA_LEARNING_DESIGN.md).  The
@@ -1239,7 +1287,7 @@ def read_fly_motor(model, state):
 def _advance_fly_token_stream(model, state, token, schedule_box=None, *, ticks, hold_input=False, read_after=None,
                               writer_baseline_clock='physical', base_rates=None, thresholds=None,
                               conductance_gains=None, alif_params=None, stp_params=None, h_mean_decay=0.99,
-                              read_every=False):
+                              read_every=False, world=None, world_tape=None, act_g=None):
     """Streaming clock: every token occupies exactly `ticks` physical ticks, whatever the brain is doing, and the
     prediction of the next token is read just before it arrives.  Nothing waits for the brain to settle, so the
     processing of a token continues while the next ones are being sensed (latency and throughput decouple).
@@ -1254,6 +1302,10 @@ def _advance_fly_token_stream(model, state, token, schedule_box=None, *, ticks, 
     at tick 2 and D = 1 is the maximum; verified bitwise in tests).
     read_every=True: also return the motor read after every tick ([ticks * B, d]): each is the expectation that would
     meet the next word had it arrived then.
+    world (fly_odour_world.OdourWorld): the odour world runs alongside, every tick: its current is injected, the act
+    head integrates (act_g carried in [1, 2]), the realized act steps the world.  world_tape (a fresh list per token)
+    records each tick's (drive spec, record, act) on the first pass and replays it on a checkpoint recompute.  Then
+    also returned: the act hazards [ticks, 2] and the new act_g.
     """
     if not isinstance(ticks, int) or ticks < 1:
         raise ValueError('ticks must be a positive integer')
@@ -1268,10 +1320,16 @@ def _advance_fly_token_stream(model, state, token, schedule_box=None, *, ticks, 
     current = state
     quiet_source = None
     latent = None
-    reads = []
+    reads, hazards = [], []
+    if world is not None:
+        from .fly_odour_world import act_step, dense
+        replay = len(world_tape) > 0
     for tick in range(ticks):
         if read_after is not None and tick == read_after:
             latent = read_fly_motor(model, current)
+        if world is not None:
+            spec, record = world_tape[tick][:2] if replay else world.drive()
+            model.external_drive = dense(spec, model.n_neurons, current.h.device)
         if tick == 0 or (hold_input and writer is not None):
             drive, baseline = write_input(model, current, token)
             current = step_fly_physical_tick(model, current, token, drive, baseline, options,
@@ -1283,13 +1341,21 @@ def _advance_fly_token_stream(model, state, token, schedule_box=None, *, ticks, 
                         if writer_baseline_clock == 'physical' and writer is not None else current.baseline)
             current = step_fly_physical_tick(model, current, None, quiet_source, baseline, options,
                                              h_mean_decay=h_mean_decay, base_rates=base_rates)
+        if world is not None:
+            model.external_drive = None
+            hazard, act_g, act = act_step(model, current.h, act_g, world_tape[tick][2] if replay else None)
+            hazards.append(hazard)
+            if not replay:
+                world.observe(act)
+                world_tape.append((spec, record, act))
         if read_every:
             reads.append(read_fly_motor(model, current))
+    extra = (torch.stack(hazards), act_g) if world is not None else ()
     if read_every:
         latent = reads[-1]
-        return expect_next(model, current, latent), latent, torch.cat(reads, 0)
+        return (expect_next(model, current, latent), latent, torch.cat(reads, 0), *extra)
     latent = latent if latent is not None else read_fly_motor(model, current)
-    return expect_next(model, current, latent), latent
+    return (expect_next(model, current, latent), latent, *extra)
 
 
 def _advance_fly_token_adaptive(
@@ -1539,6 +1605,9 @@ class FlyBPTTLearner:
             'log_tau_s',
             'topographic_writer.gate_linear.weight', 'topographic_writer.gate_linear.bias'))
         self.adam_names = [name for name in self.adam_names if name in named]
+        if getattr(model, 'act_w', None) is not None:
+            # the act head, when attached, always learns (fly_odour_world.attach_act_head)
+            self.adam_names += [n for n in ('act_w', 'act_b', 'act_logit_leak') if n not in self.adam_names]
         if getattr(model, 'use_read_gamma_trace', False) and getattr(model, 'logit_read_gamma', None) is not None:
             if 'logit_read_gamma' not in self.adam_names:
                 self.adam_names.append('logit_read_gamma')
@@ -1681,7 +1750,8 @@ class FlyBPTTLearner:
         allowed_new = (set(STP_PARAMETER_NAMES) | {'logit_read_gamma'} | set(GO_PARAMETER_NAMES)
                        | set(READ_BANK_PARAMETER_NAMES) | set(INTRINSIC_PARAMETER_NAMES) | set(PRECISION_PARAMETER_NAMES)
                        | set(PREDICTIVE_PARAMETER_NAMES) | set(DOPAMINE_PARAMETER_NAMES) | set(ONLINE_DA_PARAMETER_NAMES)
-                       | set(COMPARTMENT_PARAMETER_NAMES) | set(TASTE_PARAMETER_NAMES))
+                       | set(COMPARTMENT_PARAMETER_NAMES) | set(TASTE_PARAMETER_NAMES)
+                       | {'act_w', 'act_b', 'act_logit_leak'})
         if getattr(self.model, 'latent_predictor', None) is not None:
             allowed_new.update(f'latent_predictor.{n}' for n, _ in self.model.latent_predictor.named_parameters())
         if getattr(self.model, 'graph_observer', None) is not None:
@@ -1835,6 +1905,12 @@ class FlyBPTTLearner:
             reads, intervals = [], []
             if pace > 0:
                 stream['read_every'] = True
+            world = getattr(self, 'odour_world', None) if torch.is_grad_enabled() else None
+            hazards, records = [], []
+            if world is not None:
+                if getattr(self, 'act_g', None) is None:
+                    self.act_g = state.h.new_zeros(1, 2)
+                act_g = self.act_g
             for token in input_ids.unbind(1):
                 # the world's pace: a fixed clock, or (pace > 0) a memoryless interval k >= 1 with mean `pace` drawn per
                 # word, so that elapsed time tells nothing about when the next word comes; the read is the expectation
@@ -1843,6 +1919,9 @@ class FlyBPTTLearner:
                 stream['ticks'] = k
                 total_ticks += k
                 box = [k]
+                if world is not None:
+                    tape = []
+                    stream.update(world=world, world_tape=tape, act_g=act_g)
                 if self.use_checkpointing and m.training and torch.is_grad_enabled():
                     out = checkpoint(advance_fly_token_stream, m, state, token, box, use_reentrant=False, **stream)
                 else:
@@ -1851,6 +1930,9 @@ class FlyBPTTLearner:
                 if pace > 0:
                     reads.append(out[2])
                     intervals.append(k)
+                if world is not None:
+                    hazards.append(out[-2]); act_g = out[-1]
+                    records += [rec for _, rec, _ in tape]
                 latents.append(token_lat)
             features = torch.cat(latents, dim=0)
             logits = m.decoder(m.read_norm(features))
@@ -1873,6 +1955,19 @@ class FlyBPTTLearner:
                 self.last_adaptive_metrics = {'stream_pace_mean': pace, 'adaptive_total_ticks': total_ticks,
                                               'survival_ce': float(self.last_train_loss.detach().mean()),
                                               'ce_ticks_1_2': float(early)}
+            self.last_act_loss = None
+            if world is not None:
+                # the act's fitness, as evolution sees it (never an input to the brain); BPTT through the hazards
+                from .fly_odour_world import act_return
+                h = torch.cat(hazards, 0)
+                J, self.act_carry = act_return(h[:, 0], h[:, 1], records, getattr(self, 'act_carry', {}))
+                self.last_act_loss = -float(getattr(self, 'act_lambda', 1.0)) * J
+                self.act_g = act_g.detach()
+                acts = h.detach().round()
+                self.last_adaptive_metrics.update({
+                    'act_return': float(J.detach()), 'acts_approach': int(acts[:, 0].sum()), 'acts_avoid': int(acts[:, 1].sum()),
+                    'live_ticks': int(sum(r['live'] for r in records)), 'gap_ticks': int(sum(r.get('gap', False) for r in records)),
+                    'act_g_mean': float(act_g.detach().mean())})
             self.last_ctm_metrics = {}
             self.last_jepa_loss = None
             self.last_jepa_metrics = {}
@@ -2128,6 +2223,8 @@ class FlyBPTTLearner:
         if train_loss is None:
             train_loss = scores
         loss = train_loss.mean()
+        if getattr(self, 'last_act_loss', None) is not None:
+            loss = loss + self.last_act_loss
         if getattr(self, 'last_jepa_loss', None) is not None:
             loss = loss + self.lambda_jepa * self.last_jepa_loss
         if getattr(self, 'lambda_mcr2', 0.0) > 0.0 and self.mcr2_criterion is not None and features is not None and features.size(0) >= 2:

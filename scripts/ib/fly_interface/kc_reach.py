@@ -13,6 +13,7 @@ from pathlib import Path
 sys.path.insert(0, 'D:/information-boltzmann-v1')
 exec(open('D:/information-boltzmann-v1/scripts/ib/fly_interface/world_eval.py', encoding='utf-8').read().split('def evaluate(fork):')[0])
 from information_boltzmann.core import fly_odour_world as ow
+POOL12 = ('DM3', 'DM4', 'DM6', 'DL5', 'VA3', 'VA4', 'VA5', 'VM2', 'VM3', 'DC1', 'DC2', 'DC4')
 
 fork = Path(sys.argv[1])
 out = Path(sys.argv[2] if len(sys.argv) > 2 else 'results/published/fly_consequence_20261012/kc_reach.jsonl')
@@ -57,21 +58,21 @@ def tick(drive=None):
     return s, (s.ring[0][0] > 0).float()
 
 
-KC_RENORM = bool(os.environ.get('KC_RENORM'))
-if KC_RENORM:
-    # the birth normalization divided every input of a Kenyon cell by sqrt(K_in) counting its axo-axonal Kenyon
-    # partners (median 162), which are not dendritic input and are pinned at 0; with the real dendritic partners
-    # (median 13) each remaining input onto a Kenyon cell is sqrt(K_all / K_dendritic) larger (median 3.6)
-    kc_mask = cls == 'Kenyon_Cell'
-    k_all = np.bincount(g['edge_post'], minlength=N)
-    k_den = np.bincount(g['edge_post'][~kc_mask[g['edge_pre']]], minlength=N)
-    factor = torch.as_tensor(np.where(kc_mask, np.sqrt(k_all / np.maximum(k_den, 1)), 1.0), dtype=torch.float32, device='cuda')
+KC_FIX = bool(os.environ.get('KC_FIX'))
+if KC_FIX:
+    # the Kenyon fixes as a lineage gets them: axo-axonal Kenyon input cut (calyx share kept), then the birth
+    # normalization redone over the dendritic partners
+    _ann = graph.parent / 'body-annotations.feather'; _dend = graph.parent / 'kc_kc_dendritic_synapses.feather'
+    if not cfg.get('kc_dendritic_only'):
+        fl.attach_kenyon_dendritic_only(model, graph, _ann, _dend, rescale=True)
+    KC_FACTOR = fl.renormalize_kenyon_inputs(model, graph, _ann, _dend)
+SENSORY_PIN = bool(os.environ.get('SENSORY_PIN'))
+if SENSORY_PIN:
+    # option A of the sensory audit: the connectome's synapses onto sensory axon terminals do not act on the membrane
+    _se, _si = fl.sensory_axonal_edges(model, graph)
     with torch.no_grad():
-        for sfx in ('e', 'i'):
-            w = getattr(model, f'edge_weight_{sfx}'); pre_ = getattr(model, f'edge_pre_{sfx}').long(); post_ = getattr(model, f'edge_post_{sfx}').long()
-            keep = ~torch.as_tensor(kc_mask, device='cuda')[pre_]
-            w.mul_(torch.where(keep, factor[post_], torch.ones_like(w)))
-rep = {'checkpoint': str(fork), 'no_chemo_writer': bool(os.environ.get('NO_CHEMO_WRITER')), 'kc_renorm': KC_RENORM}
+        model.edge_weight_e[_se] = 0.0; model.edge_weight_i[_si] = 0.0
+rep = {'checkpoint': str(fork), 'sensory_pin': SENSORY_PIN, 'no_chemo_writer': bool(os.environ.get('NO_CHEMO_WRITER')), 'kc_fix': KC_FIX}
 alpn = cls == 'ALPN'; kc_idx = torch.as_tensor(np.flatnonzero(cls == 'Kenyon_Cell'), device='cuda')
 theta = model.get_thresholds().expand(1, N)[0]
 pre, post = g['edge_pre'], g['edge_post']
@@ -88,25 +89,27 @@ with torch.no_grad():
     rep['kc_rate_median'] = float(r.median()); rep['kc_rate_mean'] = float(r.mean())
     rep['silent_distance_mean_theta'] = float((dist / T)[kc_idx][silent].mean())
     rep['silent_peak_h_over_theta_p90'] = float(torch.quantile(peak[kc_idx][silent], 0.9))
-    gains, rises = [], []
-    for trial in range(8):
-        gl = list(rng.choice(ow.POOL, 6, replace=False))
-        orn = np.concatenate([np.flatnonzero(typ == f'ORN_{x}') for x in gl])
-        pn = np.flatnonzero(alpn & np.array([any(t.startswith(x + '_') for x in gl) for t in typ]))
-        m = np.isin(pre, pn) & (cls[post] == 'Kenyon_Cell')
-        target = np.flatnonzero(np.bincount(post[m], minlength=N) >= 3)
-        tgt = torch.as_tensor(target, device='cuda')
-        drive = torch.zeros(1, N, device='cuda'); idx = torch.as_tensor(orn, device='cuda'); drive[0, idx] = 16.0 * rheobase[idx]
-        res = {}
-        for phase in ('control', 'odour'):
-            for _ in range(60):
-                tick()
-            union = torch.zeros(N, device='cuda'); pk = torch.full((N,), -1e9, device='cuda')
-            for t in range(12):
-                s, sp = tick(drive if (phase == 'odour' and t < 8) else None)
-                union = torch.maximum(union, sp); pk = torch.maximum(pk, s.h[0] / theta)
-            res[phase] = (float(union[kc_idx].mean()), float(pk[tgt].mean()) if len(target) else float('nan'))
-        gains.append(res['odour'][0] - res['control'][0]); rises.append(res['odour'][1] - res['control'][1])
-    rep['odour_kc_extra_fraction'] = float(np.mean(gains)); rep['odour_target_peak_rise_theta'] = float(np.nanmean(rises))
+    for K, level in ((6, 16.0), (6, 32.0), (12, 32.0), (12, 64.0)):
+        gains, rises = [], []
+        for trial in range(8):
+            gl = list(rng.choice(POOL12, K, replace=False))
+            orn = np.concatenate([np.flatnonzero(typ == f'ORN_{x}') for x in gl])
+            pn = np.flatnonzero(alpn & np.array([any(t.startswith(x + '_') for x in gl) for t in typ]))
+            m = np.isin(pre, pn) & (cls[post] == 'Kenyon_Cell')
+            target = np.flatnonzero(np.bincount(post[m], minlength=N) >= 3)
+            tgt = torch.as_tensor(target, device='cuda')
+            drive = torch.zeros(1, N, device='cuda'); idx = torch.as_tensor(orn, device='cuda'); drive[0, idx] = level * rheobase[idx]
+            res = {}
+            for phase in ('control', 'odour'):
+                for _ in range(60):
+                    tick()
+                union = torch.zeros(N, device='cuda'); pk = torch.full((N,), -1e9, device='cuda')
+                for t in range(12):
+                    s, sp = tick(drive if (phase == 'odour' and t < 8) else None)
+                    union = torch.maximum(union, sp); pk = torch.maximum(pk, s.h[0] / theta)
+                res[phase] = (float(union[kc_idx].mean()), float(pk[tgt].mean()) if len(target) else float('nan'))
+            gains.append(res['odour'][0] - res['control'][0]); rises.append(res['odour'][1] - res['control'][1])
+        rep[f'odour_K{K}_L{int(level)}'] = {'kc_extra_fraction': float(np.mean(gains)), 'kc_extra_min_max': [float(np.min(gains)), float(np.max(gains))],
+                                           'target_peak_rise_theta': float(np.nanmean(rises))}
 print(json.dumps(rep), flush=True)
 open(out, 'a').write(json.dumps(rep) + chr(10))

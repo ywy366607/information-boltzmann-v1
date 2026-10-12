@@ -34,20 +34,20 @@ N = model.n_neurons
 graph = ROOT / cfg['graph']; g = np.load(graph, allow_pickle=True)
 ann = pd.read_feather(graph.parent / 'body-annotations.feather').set_index('bodyId').reindex(g['neuron_body_ids'])
 kenyon = torch.as_tensor(ann['class'].astype(str).values == 'Kenyon_Cell', device='cuda')
-KC_RENORM = bool(os.environ.get('KC_RENORM'))
-if KC_RENORM:
-    # the birth normalization divided every input of a Kenyon cell by sqrt(K_in) counting its axo-axonal Kenyon
-    # partners (median 162), which are not dendritic input and are pinned at 0; with the real dendritic partners
-    # (median 13) each remaining input onto a Kenyon cell is sqrt(K_all / K_dendritic) larger (median 3.6)
-    kc_mask = ann['class'].astype(str).values == 'Kenyon_Cell'
-    k_all = np.bincount(g['edge_post'], minlength=N)
-    k_den = np.bincount(g['edge_post'][~kc_mask[g['edge_pre']]], minlength=N)
-    factor = torch.as_tensor(np.where(kc_mask, np.sqrt(k_all / np.maximum(k_den, 1)), 1.0), dtype=torch.float32, device='cuda')
+KC_FIX = bool(os.environ.get('KC_FIX'))
+if KC_FIX:
+    # the Kenyon fixes as a lineage gets them: axo-axonal Kenyon input cut (calyx share kept), then the birth
+    # normalization redone over the dendritic partners
+    _ann = graph.parent / 'body-annotations.feather'; _dend = graph.parent / 'kc_kc_dendritic_synapses.feather'
+    if not cfg.get('kc_dendritic_only'):
+        fl.attach_kenyon_dendritic_only(model, graph, _ann, _dend, rescale=True)
+    KC_FACTOR = fl.renormalize_kenyon_inputs(model, graph, _ann, _dend)
+SENSORY_PIN = bool(os.environ.get('SENSORY_PIN'))
+if SENSORY_PIN:
+    # option A of the sensory audit: the connectome's synapses onto sensory axon terminals do not act on the membrane
+    _se, _si = fl.sensory_axonal_edges(model, graph)
     with torch.no_grad():
-        for sfx in ('e', 'i'):
-            w = getattr(model, f'edge_weight_{sfx}'); pre_ = getattr(model, f'edge_pre_{sfx}').long(); post_ = getattr(model, f'edge_post_{sfx}').long()
-            keep = ~torch.as_tensor(kc_mask, device='cuda')[pre_]
-            w.mul_(torch.where(keep, factor[post_], torch.ones_like(w)))
+        model.edge_weight_e[_se] = 0.0; model.edge_weight_i[_si] = 0.0
 writer = model.topographic_writer
 physical_clock = cfg.get('writer_baseline_clock', 'physical') == 'physical'
 quiet = torch.zeros(1, N, device='cuda')
@@ -113,7 +113,7 @@ def run(name, fixed=None, mu=None, hold=False, native=False):
     a = np.array(arrival); kc = np.array(fire_kc)
     onsets = [u for u in range(50, len(kc)) if kc[u] > 0.01 and kc[u - 50:u].max() <= 0.01]
     d = lambda x: [float(np.min(x)), float(np.median(x)), float(np.mean(x)), float(np.max(x))]
-    rep = {'checkpoint': str(fork), 'no_chemo_writer': bool(os.environ.get('NO_CHEMO_WRITER')), 'kc_renorm': KC_RENORM, 'condition': name, 'hold': hold, 'mu': mu, 'fixed': fixed, 'native': native,
+    rep = {'checkpoint': str(fork), 'sensory_pin': SENSORY_PIN, 'no_chemo_writer': bool(os.environ.get('NO_CHEMO_WRITER')), 'kc_fix': KC_FIX, 'condition': name, 'hold': hold, 'mu': mu, 'fixed': fixed, 'native': native,
            'arrival_ce_min_median_mean_max': d(a), 'survival_ce_mean': float(np.mean(survival)) if survival else None,
            'ticks_min_median_mean_max': d(ticks), 'total_scored_ticks': int(sum(ticks)),
            'ce_by_tick': {t: [float(np.mean(v)), len(v)] for t, v in enumerate(by_tick) if v},

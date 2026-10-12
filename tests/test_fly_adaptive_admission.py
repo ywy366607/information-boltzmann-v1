@@ -327,6 +327,47 @@ def test_world_pace_reads_every_tick_and_scores_with_the_arrival_hazard(fly_mode
     assert torch.allclose(loss, torch.stack(expected), rtol=1e-4, atol=1e-4)
 
 
+def test_odour_world_runs_alongside_text_and_replays_acts(fly_model_and_state):
+    """The odour world steps every tick of the text stream (the world's clock is the brain's), the act objective is
+    finite and reaches the act head through the hazards, and the checkpoint recompute replays the taped acts (the
+    backward pass completes and the world is stepped once per tick, not twice)."""
+    import dataclasses
+    from information_boltzmann.core import fly_odour_world as ow
+    model, state, device = fly_model_and_state
+    if device != "cuda":
+        pytest.skip("event-driven transmission needs CUDA")
+    torch.manual_seed(4)
+    start = dataclasses.replace(state, h=torch.rand_like(state.h))
+    n = model.read_indices.numel()
+    ow.attach_act_head(model, {'act_mu': torch.zeros(n), 'act_sigma': torch.ones(n),
+                               'act_w': torch.randn(2, n) * 0.05, 'act_b': torch.full((2,), 0.3)})
+    try:
+        world = ow.OdourWorld(model, 'data/malecns_v1/fly_reservoir_coba.npz', 'data/malecns_v1/body-annotations.feather',
+                              seed=3)
+        world.countdown = 1
+        learner = FlyBPTTLearner(model, start, lr=2e-4, settle_ticks=14, writer_baseline_clock="physical",
+                                 use_checkpointing=True, stream_ticks=1, lambda_mcr2=0.0)
+        learner.stream_pace_mean, learner.pace_seed = 3.0, 1
+        learner.odour_world, learner.act_lambda = world, 1.0
+        ids = torch.tensor([[50, 101, 205, 307, 409, 511]], device=device)
+        targets = torch.tensor([[101, 205, 307, 409, 511, 613]], device=device)
+        model.zero_grad(set_to_none=True)
+        learner.forward_window(ids, targets)
+        metrics = learner.last_adaptive_metrics
+        assert world.tick == metrics['adaptive_total_ticks']
+        assert metrics['acts_approach'] + metrics['acts_avoid'] > 0
+        loss = learner.last_train_loss.mean() + learner.last_act_loss
+        assert torch.isfinite(loss)
+        loss.backward()
+        assert world.tick == metrics['adaptive_total_ticks']          # the recompute replayed the tape
+        assert model.act_w.grad is not None and torch.isfinite(model.act_w.grad).all() and model.act_w.grad.abs().sum() > 0
+    finally:
+        for name in ('act_w', 'act_b', 'act_logit_leak', 'act_mu', 'act_sigma'):
+            if hasattr(model, name):
+                delattr(model, name)
+        model.external_drive = None
+
+
 def test_output_lag_of_one_tick_cannot_see_the_sensed_token(fly_model_and_state):
     """The read after the injection tick is bitwise independent of the token being sensed (MaleCNS: the earliest
     sensory -> read-surface path is one delay-1 edge, so the read surface first changes at tick 2); a read after two

@@ -22,6 +22,8 @@ import torch
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 from information_boltzmann.core.fly_reservoir import FlyReservoirLM
+from information_boltzmann.core.fly_odour_world import OdourWorld, attach_act_head, ACT_PARAMETER_NAMES
+ACT_STATE_NAMES = ACT_PARAMETER_NAMES + ('act_mu', 'act_sigma')
 from information_boltzmann.core.fly_bptt_learning import (
     FlyPhysicalState, FlyBPTTLearner, FlyBPTTGraph, STP_PARAMETER_NAMES,
     GO_PARAMETER_NAMES, attach_go_neuron, attach_connectome_go, READ_BANK_PARAMETER_NAMES, attach_read_bank,
@@ -30,6 +32,7 @@ from information_boltzmann.core.fly_bptt_learning import (
     ONLINE_DA_PARAMETER_NAMES, attach_online_da_plasticity, attach_kenyon_dendritic_only, attach_homeostasis,
     attach_regime_homeostasis, attach_tied_writer, REGIME_KENYON_Z,
     attach_compartment_memory, attach_taste_heads, COMPARTMENT_PARAMETER_NAMES, TASTE_PARAMETER_NAMES,
+    renormalize_kenyon_inputs,
 )
 from information_boltzmann.runtime.lifelong_evaluation import recovery_summary, savings_summary
 from information_boltzmann.runtime.prequential_meter import FirstPassPredictionMeter
@@ -159,6 +162,11 @@ def resolve_learning_modes(args, previous_config, previous_learner):
         args.regime_kenyon_z = previous_config.get('regime_kenyon_z')
     if getattr(args, 'tied_writer', None) is None:
         args.tied_writer = bool(previous_config.get('tied_writer', False))
+    args.kc_renorm_newly = bool(args.kc_renorm) and not bool(previous_config.get('kc_renorm', False))
+    if getattr(args, 'kc_renorm', None) is None:
+        args.kc_renorm = bool(previous_config.get('kc_renorm', False))
+    if getattr(args, 'odour_world', None) is None:
+        args.odour_world = bool(previous_config.get('odour_world', False))
     if getattr(args, 'compartment_memory', None) is None:
         args.compartment_memory = bool(previous_config.get('compartment_memory', False))
     args.kc_dendritic_newly = bool(args.kc_dendritic_only) and not bool(previous_config.get('kc_dendritic_only', False))
@@ -275,6 +283,17 @@ def main():
                         help='Three-factor memory per Kenyon -> MBON synapse, dopamine at its MBON (omitted = inherit)')
     parser.add_argument('--taste-every', type=int, default=0,
                         help='Taste world as a learning task: one episode after every N text windows (0 = off)')
+    parser.add_argument('--odour-world', action=argparse.BooleanOptionalAction, default=None,
+                        help='Closed-loop odour world alongside the text stream; acts from the act head (omitted = inherit)')
+    parser.add_argument('--odour-drive', type=float, default=32.0, help='Odour whiff current, rheobase units')
+    parser.add_argument('--odour-receptors', type=int, default=8, help='Receptor types per odour')
+    parser.add_argument('--act-lambda', type=float, default=1.0, help='Weight of the act fitness in the BPTT loss')
+    parser.add_argument('--act-init', type=Path, default=Path('scratch/fly_stream/act_init.pt'),
+                        help='Initial act head (act_calibrate.py) for a lineage that gets the odour world now')
+    parser.add_argument('--kc-renorm', action=argparse.BooleanOptionalAction, default=None,
+                        help='Redo the birth normalization of Kenyon inputs over dendritic partners, once (omitted = inherit)')
+    parser.add_argument('--comp-rate', type=float, default=None,
+                        help='Initial compartment-memory rate when it is attached now: eta = -rate, forget = rate')
     parser.add_argument('--stream-pace-min', type=float, default=0.0,
                         help='With --stream-pace-mean M: each window\'s mean interval is log-uniform in [this, M] '
                              '(the world\'s tempo varies; 0 = fixed mean)')
@@ -578,6 +597,13 @@ def main():
             go_max_ticks=int(args.go_max_ticks or 32))
         learner.stream_pace_mean = float(args.stream_pace_mean or 0.0)
         learner.stream_pace_min = float(getattr(args, 'stream_pace_min', 0.0) or 0.0)
+        if getattr(args, 'odour_world', False):
+            learner.odour_world = OdourWorld(model, args.graph, args.graph.parent / 'body-annotations.feather',
+                                             seed=int(getattr(args, 'odour_seed_value', 0)),
+                                             odour_drive=args.odour_drive, receptors=args.odour_receptors)
+            learner.act_lambda = float(args.act_lambda)
+            print(f'Odour world: {len(learner.odour_world.pool)} receptor types, {args.odour_receptors} per odour, '
+                  f'drive {args.odour_drive}, act lambda {args.act_lambda}', flush=True)
         learner.previous_token = int(train[0])
 
         initial_stp = {name: getattr(model, name).detach().clone() for name in STP_PARAMETER_NAMES}
@@ -596,6 +622,7 @@ def main():
         print('Loading archived weights and continuing physical state...', flush=True)
         saved = torch.load(args.resume, map_location='cpu', weights_only=False, mmap=True)
         fmt, previous_config = saved['format'], saved['config']
+        args.odour_seed_value = int(saved.get('bptt_train_tokens', 0) or 0)      # a new life sequence per chunk
         old = saved['learner']
         previous_centering = bool(old.get('read_centering', previous_config.get('read_centering', False)))
         previous_dan_lr = float(old.get('dan_plastic_lr', previous_config.get('dan_plastic_lr', 0.0)))
@@ -661,7 +688,7 @@ def main():
             print('Writer tied by chemosensory receptor type', flush=True)
         weights = {key: value for key, value in saved['model'].items()
                    if key not in ('edge_weight_e', 'edge_weight_i')
-                   and key not in COMPARTMENT_PARAMETER_NAMES + TASTE_PARAMETER_NAMES}      # loaded after attaching
+                   and key not in COMPARTMENT_PARAMETER_NAMES + TASTE_PARAMETER_NAMES + ACT_STATE_NAMES}  # after attaching
         if not args.go_neuron:
             dropped = [k for k in weights if k in GO_PARAMETER_NAMES]
             for k in dropped:
@@ -685,6 +712,12 @@ def main():
                                                             rescale=getattr(args, 'kc_dendritic_newly', True))
                 print(f'Kenyon -> Kenyon: {n_kk} edges, {n_zero} axo-axonal pinned at 0'
                       f'{" (weights rescaled now)" if getattr(args, "kc_dendritic_newly", True) else ""}', flush=True)
+            if args.kc_renorm and args.kc_renorm_newly:
+                if not args.kc_dendritic_only:
+                    raise ValueError('--kc-renorm needs --kc-dendritic-only (the axo-axonal inputs cut first)')
+                factor = renormalize_kenyon_inputs(model, args.graph, args.graph.parent / 'body-annotations.feather',
+                                                   args.graph.parent / 'kc_kc_dendritic_synapses.feather')
+                print(f'Kenyon inputs renormalized over dendritic partners (median factor {factor:.2f})', flush=True)
             if args.homeostasis:
                 attach_homeostasis(model, args.graph, seed=args.homeostasis_seed)
                 print(f'Homeostatic intrinsic plasticity, individual {args.homeostasis_seed}', flush=True)
@@ -700,13 +733,23 @@ def main():
                 print(f'Writer tied now by chemosensory receptor type (scale {args.tied_writer_scale})', flush=True)
             if args.compartment_memory or args.taste_every:
                 comp_state = {k: v for k, v in saved['model'].items() if k in COMPARTMENT_PARAMETER_NAMES + TASTE_PARAMETER_NAMES}
+                rate = {} if args.comp_rate is None else {'eta': -float(args.comp_rate), 'forget': min(float(args.comp_rate), 0.999)}
                 n_comp = attach_compartment_memory(model, args.graph, args.graph.parent / 'body-annotations.feather',
-                                                   affinity=args.dopamine_affinity)
+                                                   affinity=args.dopamine_affinity, **rate)
                 attach_taste_heads(model, args.graph, args.graph.parent / 'body-annotations.feather')
                 if comp_state:
                     model.load_state_dict(comp_state, strict=False)
                 args.compartment_memory = True
                 print(f'Compartment memory on {n_comp} Kenyon -> MBON synapses; taste heads on the MBONs', flush=True)
+            if args.odour_world:
+                act_state = {k: v for k, v in saved['model'].items() if k in ACT_STATE_NAMES}
+                if act_state:
+                    attach_act_head(model, {k: act_state[k] for k in ('act_mu', 'act_sigma', 'act_w', 'act_b')})
+                    model.load_state_dict(act_state, strict=False)
+                    print('Act head carried over', flush=True)
+                else:
+                    attach_act_head(model, torch.load(args.act_init, map_location='cpu'))
+                    print(f'Act head initialized from {args.act_init}', flush=True)
             if args.dopamine_modulation and args.dopamine_sensitivity_init is not None:
                 model.dopamine_sensitivity.fill_(float(args.dopamine_sensitivity_init))
                 print(f'Dopamine sensitivities set to {args.dopamine_sensitivity_init}', flush=True)
@@ -761,6 +804,10 @@ def main():
             newly_trainable += [name for name in DOPAMINE_PARAMETER_NAMES if name not in names]
         if args.online_da_plasticity:
             newly_trainable += [name for name in ONLINE_DA_PARAMETER_NAMES if name not in names]
+        if args.odour_world:
+            extra = [name for name in ACT_PARAMETER_NAMES if name not in names]
+            names = list(names) + extra
+            newly_trainable += extra
         if args.compartment_memory:
             extra = [name for name in COMPARTMENT_PARAMETER_NAMES + TASTE_PARAMETER_NAMES if name not in names]
             names = list(names) + extra
@@ -795,6 +842,13 @@ def main():
             go_max_ticks=int(args.go_max_ticks or 32))
         learner.stream_pace_mean = float(args.stream_pace_mean or 0.0)
         learner.stream_pace_min = float(getattr(args, 'stream_pace_min', 0.0) or 0.0)
+        if getattr(args, 'odour_world', False):
+            learner.odour_world = OdourWorld(model, args.graph, args.graph.parent / 'body-annotations.feather',
+                                             seed=int(getattr(args, 'odour_seed_value', 0)),
+                                             odour_drive=args.odour_drive, receptors=args.odour_receptors)
+            learner.act_lambda = float(args.act_lambda)
+            print(f'Odour world: {len(learner.odour_world.pool)} receptor types, {args.odour_receptors} per odour, '
+                  f'drive {args.odour_drive}, act lambda {args.act_lambda}', flush=True)
         learner.load_edge_signs(old)
         learner.load_adam_state(old['optimizer'], newly_trainable=newly_trainable)
         initial_stp = {name: getattr(model, name).detach().clone() for name in STP_PARAMETER_NAMES}
@@ -1293,6 +1347,12 @@ def main():
                 values = np.array(train[cursor+1:cursor+args.window+1], dtype=np.int64)
             begin = time.perf_counter()
             scores = observe(values, training=True)
+            world = getattr(learner, 'odour_world', None)
+            if world is not None and world.log:
+                with open(args.output / 'odour.jsonl', 'a') as handle:
+                    for row in world.log:
+                        handle.write(json.dumps({'bptt_train_tokens': trained, **row}) + '\n')
+                world.log.clear()
             if taste is not None:
                 taste['windows'] += 1
                 if taste['windows'] % args.taste_every == 0:
