@@ -1139,21 +1139,26 @@ def renormalize_kenyon_inputs(model, graph_npz, annotations, dendritic_feather):
     Kenyon cell's K_in counted its axo-axonal Kenyon partners (median 162 partners; 13 without any Kenyon partner),
     which do not drive the soma (attach_kenyon_dendritic_only).  With the dendritic partners only (non-Kenyon partners
     plus Kenyon partners with calyx synapses) every remaining input onto a Kenyon cell is sqrt(K_all / K_dendritic)
-    larger.  Scales the current (learned) weights of all non-pinned edges onto Kenyon cells; returns the median factor."""
+    larger (the original count also included the dopamine partners, median 35, whose edges now live in the modulatory
+    list).  Scales the current (learned) weights of all non-pinned edges onto Kenyon cells; returns the median factor."""
     import numpy as np
     import pandas as pd
     graph = np.load(graph_npz, allow_pickle=True)
     n = model.n_neurons
     cls = pd.read_feather(annotations).set_index('bodyId').reindex(graph['neuron_body_ids'])['class'].astype(str).values
     kc = cls == 'Kenyon_Cell'
-    k_all = np.bincount(graph['edge_post'], minlength=n).astype(np.float64)
+    # the birth K_in counted every partner, the dopamine cells included (their edges were moved to the modulatory list
+    # afterwards): add them back to the original denominator
+    k_fast = np.bincount(graph['edge_post'], minlength=n).astype(np.float64)
+    k_all = k_fast + np.bincount(np.unique(graph['dan_edge_pre'].astype(np.int64) * n + graph['dan_edge_post']) % n,
+                                 minlength=n)
     edges, share = kenyon_dendritic_share(model, graph_npz, annotations, dendritic_feather)
     dead = torch.zeros(model.edge_pre_e.numel(), dtype=torch.bool, device=model.edge_pre_e.device)
     dead[edges[share == 0]] = True
     # Kenyon partners without calyx synapses, per target (counted on the excitatory list, where Kenyon edges live)
     post_e = model.edge_post_e.long()
     axo_t = torch.bincount(post_e[dead], minlength=n).cpu().numpy().astype(np.float64)
-    k_den = np.maximum(k_all - axo_t, 1.0)
+    k_den = np.maximum(k_fast - axo_t, 1.0)          # dendritic: fast partners without the axo-axonal Kenyon ones
     factor = torch.as_tensor(np.where(kc, np.sqrt(k_all / k_den), 1.0), dtype=torch.float32, device=post_e.device)
     with torch.no_grad():
         for sfx in ('e', 'i'):
@@ -2325,7 +2330,17 @@ class FlyBPTTLearner:
                 else:
                     local[targets] = (conc[targets] / level).clamp(0.25, 4.0)
             before = [w.detach().clone() for w in self.edges]
+        relative = getattr(self, 'edge_step_scale', None)
+        if relative is not None and local is None:
+            before = [w.detach().clone() for w in self.edges]
         self.sgd.step()
+        if relative is not None:
+            # relative plasticity: each synapse moves by (rate x its own birth weight) per full Adam step, not by the
+            # same absolute amount for a 1e-5 single-synapse edge and a 1e-2 claw (the connectome's scale is kept)
+            with torch.no_grad():
+                for w, old, scale in zip(self.edges, before, relative):
+                    w.copy_(old + (w - old) * scale)
+            before = [w.detach().clone() for w in self.edges] if local is not None else before
         if local is not None:
             with torch.no_grad():
                 site = getattr(self.model, 'dopamine_site', 'post')
@@ -2429,6 +2444,23 @@ class FlyBPTTLearner:
         return metrics
 
     @torch.no_grad()
+    def set_relative_edge_steps(self, graph_npz, rate):
+        """Per-synapse step: rate x |birth weight| per full Adam step (Adam's own steps are ~lr whatever the weight;
+        the birth weights' median is 7.4e-4 against lr 2e-4, so every update moved a typical synapse by ~27%).  Stores
+        the multiplier |w0| * rate / lr_group for every edge list."""
+        import numpy as np
+        graph = np.load(graph_npz, allow_pickle=True)
+        lr = self.sgd.param_groups[1]['lr']
+        scales = []
+        for name, w in zip(self.edge_names, self.edges):
+            birth = torch.as_tensor(np.abs(graph[name]), dtype=w.dtype, device=w.device)
+            if birth.shape != w.shape:
+                raise ValueError(f'{name}: birth weights {tuple(birth.shape)} vs {tuple(w.shape)}')
+            scales.append(birth * (float(rate) / lr))
+        self.edge_step_scale = scales
+        self.edge_step_rate = float(rate)
+        return float(torch.cat([s.flatten() for s in scales]).median() * lr)
+
     def clamp_edges(self):
         """Retain conductance positivity or each signed edge's original sign (and keep the plastic Kenyon -> MBON
         weights excitatory).

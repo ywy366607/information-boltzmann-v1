@@ -23,7 +23,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 from information_boltzmann.core.fly_reservoir import FlyReservoirLM
 from information_boltzmann.core.fly_odour_world import OdourWorld, attach_act_head, ACT_PARAMETER_NAMES
-ACT_STATE_NAMES = ACT_PARAMETER_NAMES + ('act_mu', 'act_sigma')
+ACT_STATE_NAMES = ACT_PARAMETER_NAMES + ('act_mu', 'act_sigma', 'act_w_scale')
 from information_boltzmann.core.fly_bptt_learning import (
     FlyPhysicalState, FlyBPTTLearner, FlyBPTTGraph, STP_PARAMETER_NAMES,
     GO_PARAMETER_NAMES, attach_go_neuron, attach_connectome_go, READ_BANK_PARAMETER_NAMES, attach_read_bank,
@@ -165,6 +165,8 @@ def resolve_learning_modes(args, previous_config, previous_learner):
     args.kc_renorm_newly = bool(args.kc_renorm) and not bool(previous_config.get('kc_renorm', False))
     if getattr(args, 'kc_renorm', None) is None:
         args.kc_renorm = bool(previous_config.get('kc_renorm', False))
+    if getattr(args, 'relative_edge_rate', None) is None:
+        args.relative_edge_rate = float(previous_config.get('relative_edge_rate') or 0.0)
     if getattr(args, 'odour_world', None) is None:
         args.odour_world = bool(previous_config.get('odour_world', False))
     if getattr(args, 'compartment_memory', None) is None:
@@ -290,6 +292,9 @@ def main():
     parser.add_argument('--act-lambda', type=float, default=1.0, help='Weight of the act fitness in the BPTT loss')
     parser.add_argument('--act-init', type=Path, default=Path('scratch/fly_stream/act_init.pt'),
                         help='Initial act head (act_calibrate.py) for a lineage that gets the odour world now')
+    parser.add_argument('--relative-edge-rate', type=float, default=None,
+                        help='Relative plasticity: each synapse moves by this fraction of its birth weight per full Adam '
+                             'step (omitted = inherit; 0 = absolute steps)')
     parser.add_argument('--kc-renorm', action=argparse.BooleanOptionalAction, default=None,
                         help='Redo the birth normalization of Kenyon inputs over dendritic partners, once (omitted = inherit)')
     parser.add_argument('--comp-rate', type=float, default=None,
@@ -597,6 +602,10 @@ def main():
             go_max_ticks=int(args.go_max_ticks or 32))
         learner.stream_pace_mean = float(args.stream_pace_mean or 0.0)
         learner.stream_pace_min = float(getattr(args, 'stream_pace_min', 0.0) or 0.0)
+        if getattr(args, 'relative_edge_rate', 0.0):
+            step = learner.set_relative_edge_steps(args.graph, args.relative_edge_rate)
+            print(f'Relative plasticity: {args.relative_edge_rate} of the birth weight per step '
+                  f'(median synapse step {step:.2e})', flush=True)
         if getattr(args, 'odour_world', False):
             learner.odour_world = OdourWorld(model, args.graph, args.graph.parent / 'body-annotations.feather',
                                              seed=int(getattr(args, 'odour_seed_value', 0)),
@@ -842,6 +851,10 @@ def main():
             go_max_ticks=int(args.go_max_ticks or 32))
         learner.stream_pace_mean = float(args.stream_pace_mean or 0.0)
         learner.stream_pace_min = float(getattr(args, 'stream_pace_min', 0.0) or 0.0)
+        if getattr(args, 'relative_edge_rate', 0.0):
+            step = learner.set_relative_edge_steps(args.graph, args.relative_edge_rate)
+            print(f'Relative plasticity: {args.relative_edge_rate} of the birth weight per step '
+                  f'(median synapse step {step:.2e})', flush=True)
         if getattr(args, 'odour_world', False):
             learner.odour_world = OdourWorld(model, args.graph, args.graph.parent / 'body-annotations.feather',
                                              seed=int(getattr(args, 'odour_seed_value', 0)),

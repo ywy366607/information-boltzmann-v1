@@ -55,6 +55,11 @@ class OdourWorld:
         self.dopamine = {'sweet': cells_of(SWEET_DOPAMINE, typ), 'bitter': cells_of(BITTER_DOPAMINE, typ)}
         for name, cells in [*self.receptor.items(), *self.taste.items(), *self.dopamine.items()]:
             assert len(cells), name
+        # the same cell sets as index tensors on the device (no host -> device copy per tick)
+        on = lambda cells: torch.as_tensor(np.asarray(cells), dtype=torch.long, device=self.device)
+        self.receptor_t = {k: on(v) for k, v in self.receptor.items()}
+        self.taste_t = {k: on(v) for k, v in self.taste.items()}
+        self.dopamine_t = {k: on(v) for k, v in self.dopamine.items()}
         with torch.no_grad():
             rates0 = model.get_decay_rates()[0].expand(1, model.n_neurons)
             self.rheobase = (model.get_thresholds().expand(1, model.n_neurons)
@@ -108,14 +113,14 @@ class OdourWorld:
             if self.rng.random() < self.whiff_p or self.phase == 'contact':
                 level = self.odour_drive * self.amplitude / max(self.distance, D_MIN)
                 for g in self.odours[self.odour]:
-                    cells.append(self.receptor[g]); amounts.append(np.full(len(self.receptor[g]), level))
+                    cells.append(self.receptor_t[g]); amounts.append(level)
         for when, kind, valence in self.pending:
             if when == self.tick:
-                source = self.taste[valence] if kind == 'taste' else self.dopamine[valence]
-                cells.append(source); amounts.append(np.full(len(source), self.outcome_drive))
+                cells.append(self.taste_t[valence] if kind == 'taste' else self.dopamine_t[valence])
+                amounts.append(self.outcome_drive)
         if cells:
-            idx = torch.as_tensor(np.concatenate(cells), device=self.device)
-            amt = torch.as_tensor(np.concatenate(amounts), dtype=torch.float32, device=self.device)
+            idx = torch.cat(cells)
+            amt = torch.cat([torch.full((len(c),), a, device=self.device) for c, a in zip(cells, amounts)])
             current = (idx, amt * self.rheobase[idx])         # sparse: materialized per tick by dense()
         live, gap = self.phase == 'present', self.phase == 'gap'
         return current, {'live': live, 'value': self.value() if live else 0.0,
@@ -198,7 +203,7 @@ def act_step(model, h, g, taped=None):
     taped act); backward: sig((G - B) / SOFT) (straight through).  Both integrators reset after an act.  Returns the
     hazards [2], the new G [1, 2] and the act (None / 'approach' / 'avoid')."""
     x = (h[:, model.read_indices] - model.act_mu) / model.act_sigma
-    g = torch.sigmoid(model.act_logit_leak) * g + x @ model.act_w.T + model.act_b
+    g = torch.sigmoid(model.act_logit_leak) * g + x @ (model.act_w * model.act_w_scale).T + model.act_b
     if taped is None:
         a, v = (float(t) for t in g[0].detach())
         act = 'approach' if (a >= BOUND and a > v) else ('avoid' if (v >= BOUND and v > a) else None)
@@ -251,7 +256,10 @@ def attach_act_head(model, init):
     device = model.read_indices.device
     model.register_buffer('act_mu', init['act_mu'].to(device), persistent=True)
     model.register_buffer('act_sigma', init['act_sigma'].to(device), persistent=True)
-    model.act_w = torch.nn.Parameter(init['act_w'].to(device).clone())
+    # W = act_w * act_w_scale with act_w O(1): an Adam step (~lr) is then a small relative change of the read
+    scale = float(init['act_w'].std())
+    model.register_buffer('act_w_scale', torch.tensor(scale, device=device), persistent=True)
+    model.act_w = torch.nn.Parameter((init['act_w'] / scale).to(device).clone())
     model.act_b = torch.nn.Parameter(init['act_b'].to(device).clone())
     lam = math.exp(-1 / 8)
     model.act_logit_leak = torch.nn.Parameter(torch.tensor(math.log(lam / (1 - lam)), device=device))

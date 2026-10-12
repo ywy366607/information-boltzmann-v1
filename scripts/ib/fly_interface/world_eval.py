@@ -48,7 +48,9 @@ def load(fork):
     if cfg.get('tied_writer'):
         fl.attach_tied_writer(model, graph, graph.parent / 'body-annotations.feather', convert=False)
     edges = ('edge_weight_e', 'edge_weight_i')
-    late = fl.COMPARTMENT_PARAMETER_NAMES + fl.TASTE_PARAMETER_NAMES
+    from information_boltzmann.core import fly_odour_world as ow
+    act = ow.ACT_PARAMETER_NAMES + ('act_mu', 'act_sigma', 'act_w_scale')
+    late = fl.COMPARTMENT_PARAMETER_NAMES + fl.TASTE_PARAMETER_NAMES + act
     with torch.no_grad():
         for k in edges:
             getattr(model, k).copy_(saved['model'][k])
@@ -58,6 +60,10 @@ def load(fork):
             fl.attach_compartment_memory(model, graph, graph.parent / 'body-annotations.feather', affinity=cfg.get('dopamine_affinity'))
             fl.attach_taste_heads(model, graph, graph.parent / 'body-annotations.feather')
             model.load_state_dict({k: v for k, v in saved['model'].items() if k in late}, strict=False)
+        if 'act_w' in saved['model']:
+            # the act head (odour world): attach with the saved tensors, then load them exactly
+            ow.attach_act_head(model, {k: saved['model'][k] for k in ('act_mu', 'act_sigma', 'act_w', 'act_b')})
+            model.load_state_dict({k: v for k, v in saved['model'].items() if k in act}, strict=False)
     model.eval().requires_grad_(False)
     return model, cfg, L
 
