@@ -47,3 +47,19 @@ is not imposed, it emerges from feedback.
 Bookshelf -> perception choice; self-generated text -> output; odour world -> test bench for mushroom-body memory only.
 Carried over: connectome v2 fixes, relative plasticity, the fixed compartment-memory rule, the act head, survival-weighted
 reading, the information-value idea (-> epistemic term).
+
+## M1 predictions (written before the run, 2026-10-13)
+Setup: the adult (connectome v2 fixes), world pace mu ~ log-uniform [2, 16] per window, eyes only: objective =
+survival-weighted CE + 0.01 SIGReg on the read latents - 1.0 x epistemic (mean over onsets of e x novelty). Control:
+the same with the eyes forced open. 3 chunks of 4,096 words each. Probe: scripts/ib/fly_interface/eyes_probe.py.
+- P1 (acceptance 1): the eyes stay open. From the definition: with no output act, missing a word can only remove
+  context from every later prediction, and the epistemic term rewards looking; both gradients push e up. Expect open
+  fraction >= 0.99 at every pace and mean e rising from 0.95.
+- P2: no closing with difficulty. The eye is decided before the word is written, from the state; it has no reason to
+  close on hard words. At the fastest pace (mu = 2) a small dip on frequent, low-novelty words is the only possible
+  closing (overlap with the previous word's processing), and it should be weak (|rho| < 0.1).
+- P3 (acceptance 5): language CE within 0.05 nats of the forced-open control, in the same weights (own vs open) and
+  between the arms.
+- P4 (acceptance 2): NOT met in M1 by construction. Closing to think needs a consequence of thinking that undisturbed
+  time improves: an output whose quality is scored when it is committed (M2/M3). If the eyes nevertheless close on hard
+  items in M1, that is a finding to explain (interference between overlapping words), not the acceptance.

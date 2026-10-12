@@ -1001,6 +1001,11 @@ def main():
                           'plasticity_optimizer_migration': f'{old_kind}->{args.plasticity_optimizer}'}
                 best = math.inf
         learner.physical_ticks = old.get('physical_ticks', learner.events)
+        if args.ai and old.get('ai_g') is not None:
+            from information_boltzmann.core.fly_active_inference import Familiarity
+            learner.ai_g = old['ai_g'].to(learner.state.h.device)
+            if old.get('familiarity_n') is not None:
+                learner.familiarity = Familiarity(); learner.familiarity.n = old['familiarity_n'].copy()
         if args.dan_plastic_lr > 0 and old.get('dan_rule') != 'delayed-pulse-ema-terminal-coactivity-v1':
             mode_changed = True
             origin = {**origin, 'dan_rule_migration': {

@@ -1484,7 +1484,12 @@ def _advance_fly_token_stream(model, state, token, schedule_box=None, *, ticks, 
         if writes:
             drive, baseline = write_input(model, current, token)
             if ai_g is not None:
-                drive = drive * eye                # precision of the text input: closed eyes miss the word
+                # precision of the text input: the surface receives e * the word, so the drive and the sensory
+                # adaptation both see e * the packet; closed eyes (e = 0) are exactly a quiet tick, the word missed
+                quiet_baseline = (writer.lambda_adapt * current.baseline
+                                  if writer_baseline_clock == 'physical' and writer is not None else current.baseline)
+                drive = drive * eye
+                baseline = eye * baseline + (1.0 - eye) * quiet_baseline
             current = step_fly_physical_tick(model, current, token, drive, baseline, options,
                                              h_mean_decay=h_mean_decay, base_rates=base_rates)
         else:
@@ -2151,7 +2156,9 @@ class FlyBPTTLearner:
                 tok = np.array(ai_tokens)
                 e_on = e[on]; tok_on = tok[on.cpu().numpy()]
                 nov = torch.as_tensor(self.familiarity.novelty(tok_on), dtype=e.dtype, device=e.device)
-                epistemic = (e_on * nov).sum() / max(1, len(tok_on))
+                prior = torch.as_tensor(1.0 + self.familiarity.n[tok_on], dtype=e.dtype, device=e.device)
+                # information gain of seeing the word with gain e: e pseudo-counts on a count of 1 + n(word)
+                epistemic = (0.5 * torch.log1p(e_on / prior)).sum() / max(1, len(tok_on))
                 ai_loss = -float(getattr(self, 'ai_epistemic', 0.0)) * epistemic
                 lam_sig = float(getattr(self, 'ai_sigreg', 0.0))
                 if lam_sig > 0 and reads:
@@ -2785,7 +2792,10 @@ class FlyBPTTLearner:
                 'go_neuron': getattr(self, 'go_neuron', False),
                 'go_tick_cost': getattr(self, 'go_tick_cost', 0.0),
                 'go_max_ticks': getattr(self, 'go_max_ticks', 32),
-                'go_reference_energy': getattr(self, 'go_reference_energy', 0.07)}
+                'go_reference_energy': getattr(self, 'go_reference_energy', 0.07),
+                # the act head's integrator and the lifetime count of what was seen: never reset across chunks
+                'ai_g': getattr(self, 'ai_g', None),
+                'familiarity_n': (self.familiarity.n if getattr(self, 'familiarity', None) is not None else None)}
 
     def load_edge_signs(self, saved):
         masks = saved.get('edge_positive')

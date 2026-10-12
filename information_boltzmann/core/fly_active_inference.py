@@ -11,8 +11,9 @@ chooses which cells act):
                        straight through); reset after a commit.
 Objective terms (evolution's fitness for BPTT, nothing injected into the brain):
   perception VFE = the survival-weighted language CE (accuracy) + SIGReg on the read latents (complexity);
-  epistemic value of looking = sum over word onsets of e * novelty(word), novelty = 1 / sqrt(1 + n_seen(word)), n_seen
-  counting only what was actually seen (incremented by e);
+  epistemic value of looking = mean over word onsets of the information gain of seeing the word with gain e,
+  0.5 * log(1 + e / (1 + n_seen(word))) (e pseudo-counts added to a count of 1 + n; concave in e, fading as the word
+  becomes familiar), n_seen counting only what was actually seen (incremented by e);
   pragmatic value of output: the accuracy of committed predictions (M2).
 """
 import math
