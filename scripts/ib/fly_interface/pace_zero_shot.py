@@ -21,12 +21,33 @@ exec(open('D:/information-boltzmann-v1/scripts/ib/fly_interface/world_eval.py', 
 fork = Path(sys.argv[1])
 out = Path(sys.argv[2] if len(sys.argv) > 2 else 'results/published/fly_consequence_20261012/pace_zero_shot.jsonl')
 model, cfg, L = load(fork)
+import os
+if os.environ.get('NO_CHEMO_WRITER'):
+    # words are seen and heard, not smelled or tasted: the writer no longer drives the chemosensory cells
+    with torch.no_grad():
+        model.topographic_writer.proj_chemo.weight.zero_()
+        if getattr(model.topographic_writer.proj_chemo, 'bias', None) is not None:
+            model.topographic_writer.proj_chemo.bias.zero_()
 opts = dict(base_rates=model.get_decay_rates(), thresholds=model.get_thresholds(), conductance_gains=model.get_conductance_gains(),
             alif_params=model.get_alif_params(), stp_params=model.get_stp_params())
 N = model.n_neurons
 graph = ROOT / cfg['graph']; g = np.load(graph, allow_pickle=True)
 ann = pd.read_feather(graph.parent / 'body-annotations.feather').set_index('bodyId').reindex(g['neuron_body_ids'])
 kenyon = torch.as_tensor(ann['class'].astype(str).values == 'Kenyon_Cell', device='cuda')
+KC_RENORM = bool(os.environ.get('KC_RENORM'))
+if KC_RENORM:
+    # the birth normalization divided every input of a Kenyon cell by sqrt(K_in) counting its axo-axonal Kenyon
+    # partners (median 162), which are not dendritic input and are pinned at 0; with the real dendritic partners
+    # (median 13) each remaining input onto a Kenyon cell is sqrt(K_all / K_dendritic) larger (median 3.6)
+    kc_mask = ann['class'].astype(str).values == 'Kenyon_Cell'
+    k_all = np.bincount(g['edge_post'], minlength=N)
+    k_den = np.bincount(g['edge_post'][~kc_mask[g['edge_pre']]], minlength=N)
+    factor = torch.as_tensor(np.where(kc_mask, np.sqrt(k_all / np.maximum(k_den, 1)), 1.0), dtype=torch.float32, device='cuda')
+    with torch.no_grad():
+        for sfx in ('e', 'i'):
+            w = getattr(model, f'edge_weight_{sfx}'); pre_ = getattr(model, f'edge_pre_{sfx}').long(); post_ = getattr(model, f'edge_post_{sfx}').long()
+            keep = ~torch.as_tensor(kc_mask, device='cuda')[pre_]
+            w.mul_(torch.where(keep, factor[post_], torch.ones_like(w)))
 writer = model.topographic_writer
 physical_clock = cfg.get('writer_baseline_clock', 'physical') == 'physical'
 quiet = torch.zeros(1, N, device='cuda')
@@ -92,7 +113,7 @@ def run(name, fixed=None, mu=None, hold=False, native=False):
     a = np.array(arrival); kc = np.array(fire_kc)
     onsets = [u for u in range(50, len(kc)) if kc[u] > 0.01 and kc[u - 50:u].max() <= 0.01]
     d = lambda x: [float(np.min(x)), float(np.median(x)), float(np.mean(x)), float(np.max(x))]
-    rep = {'checkpoint': str(fork), 'condition': name, 'hold': hold, 'mu': mu, 'fixed': fixed, 'native': native,
+    rep = {'checkpoint': str(fork), 'no_chemo_writer': bool(os.environ.get('NO_CHEMO_WRITER')), 'kc_renorm': KC_RENORM, 'condition': name, 'hold': hold, 'mu': mu, 'fixed': fixed, 'native': native,
            'arrival_ce_min_median_mean_max': d(a), 'survival_ce_mean': float(np.mean(survival)) if survival else None,
            'ticks_min_median_mean_max': d(ticks), 'total_scored_ticks': int(sum(ticks)),
            'ce_by_tick': {t: [float(np.mean(v)), len(v)] for t, v in enumerate(by_tick) if v},
