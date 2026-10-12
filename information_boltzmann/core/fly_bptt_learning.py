@@ -182,7 +182,13 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
             # receptor occupancy c / (c + K) saturates: the phasic part is the occupancy of the fast concentration minus
             # that of its slow mean, bounded in (-1, 1); its gradient stays finite at both ends (silent and flooded)
             phasic = dopamine_occupancy(dopamine[0:1], model.dopamine_affinity) - dopamine_occupancy(tonic, model.dopamine_affinity)
-        s_class = model.dopamine_sensitivity[model.superclass_id].unsqueeze(0)
+        # per-superclass sensitivity spread to the neurons by a fixed one-hot product (an advanced-index gather here
+        # has a sort-based, synchronizing backward: 2 ms per tick)
+        onehot = getattr(model, '_superclass_onehot', None)
+        if onehot is None or onehot.shape[1] != current.h.shape[1]:
+            onehot = F.one_hot(model.superclass_id.long(), model.dopamine_sensitivity.numel()).T.to(current.h.dtype)
+            model._superclass_onehot = onehot
+        s_class = (model.dopamine_sensitivity.to(onehot.dtype) @ onehot).unsqueeze(0)
         thresholds = options.get('thresholds')
         thresholds = (thresholds if thresholds is not None else model.get_thresholds()).expand_as(current.h)
         options = {**options, 'thresholds': thresholds * torch.exp(-s_class * phasic)}
@@ -322,13 +328,13 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
         if comp_trace.numel() != model.comp_kc.numel():
             comp_trace = h.new_zeros(1, model.comp_kc.numel())
         lam_c = torch.sigmoid(model.comp_logit_trace)
-        comp_trace = lam_c * comp_trace + (1.0 - lam_c) * spikes_c[:, model.comp_kc]
+        comp_trace = lam_c * comp_trace + (1.0 - lam_c) * spikes_c.index_select(1, model.comp_kc)
         if dopamine.numel() == 2 * h.numel():
-            d_post = dopamine[:, model.comp_post]
+            d_post = dopamine.index_select(1, model.comp_post.long())
             phasic_c = (dopamine_occupancy(d_post[0:1], model.comp_affinity)
                         - dopamine_occupancy(d_post[1:2], model.comp_affinity))
             window_c = (dopamine_occupancy(d_post[1:2].detach(), model.comp_affinity) / 0.5
-                        * comp_trace[:, model.comp_edge_kc])
+                        * comp_trace.index_select(1, model.comp_edge_kc))
             kappa_c = torch.sigmoid(model.comp_logit_forget)
             comp_memory = comp_memory + window_c * (model.comp_eta * phasic_c - kappa_c * comp_memory)
     bank = getattr(current, 'read_bank', torch.empty(0))
@@ -1296,7 +1302,7 @@ def read_fly_motor(model, state):
         return model.output_read(state.gamma_z2)
     read_in = (state.h - state.h_mean
                if getattr(model, 'read_centering', False) and state.h_mean.numel() == state.h.numel() else state.h)
-    motor = read_in[:, model.read_indices] if model.read_surface != 'all' else read_in
+    motor = read_in.index_select(1, model.read_indices) if model.read_surface != 'all' else read_in
     return model.output_read(motor_feature(model, state, motor))
 
 

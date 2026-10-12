@@ -239,7 +239,7 @@ def act_step(model, h, g, taped=None, noise=None):
     Forward: the realized act (the first integrator at the bound and above the other; on a checkpoint recompute the
     taped act); backward: sig((G - B) / SOFT) (straight through).  Both integrators reset after an act.  Returns the
     hazards [2], the new G [1, 2] and the act (None / 'approach' / 'avoid')."""
-    x = (h[:, model.read_indices] - model.act_mu) / model.act_sigma
+    x = (h.index_select(1, model.read_indices) - model.act_mu) / model.act_sigma
     g = torch.sigmoid(model.act_logit_leak) * g + x @ (model.act_w * model.act_w_scale).T + model.act_b
     if noise is not None:
         g = g + torch.as_tensor(noise, device=g.device).unsqueeze(0)
