@@ -881,3 +881,49 @@ def test_homeostatic_intrinsic_plasticity(fly_model_and_state):
         model._buffers.pop('homeostasis_target', None)
         if hasattr(model, 'homeostasis_seed'):
             delattr(model, 'homeostasis_seed')
+
+
+def test_regime_homeostasis(fly_model_and_state):
+    """Off: no regime field.  On: the split tick equals model.step bitwise at unit gain and zero drive; the quantile
+    targets are fixed by the seed (median q* ~ 0.16); b follows eta_b (q* - [u > theta]) and the log gain
+    eta_s log(kappa theta / sd) from the neuron's own free membrane; the state is [4, N] at any age and detached."""
+    import dataclasses
+    from information_boltzmann.core.fly_bptt_learning import (attach_regime_homeostasis, step_fly_physical_tick,
+                                                              REGIME_LOG_GAIN_MAX)
+    model, state, device = fly_model_and_state
+    if device != "cuda":
+        pytest.skip("needs CUDA")
+    graph = 'data/malecns_v1/fly_reservoir_coba.npz'
+    names = ('regime_quantile', 'regime_eta_b', 'regime_eta_s', 'regime_window_rate')
+    try:
+        opts = dict(base_rates=model.get_decay_rates(), thresholds=model.get_thresholds())
+        torch.manual_seed(1)
+        start = dataclasses.replace(state, h=torch.rand_like(state.h))
+        with torch.no_grad():
+            off = step_fly_physical_tick(model, start, None, torch.zeros_like(start.h), start.baseline, opts)
+        assert off.regime.numel() == 0
+        attach_regime_homeostasis(model, graph, seed=3)
+        q3 = model.regime_quantile.clone()
+        attach_regime_homeostasis(model, graph, seed=3)
+        assert torch.equal(q3, model.regime_quantile)
+        attach_regime_homeostasis(model, graph, seed=4)
+        assert not torch.equal(q3, model.regime_quantile)
+        assert abs(float(model.regime_quantile.median()) - 0.1587) < 0.01
+        with torch.no_grad():
+            s1 = step_fly_physical_tick(model, start, None, torch.zeros_like(start.h), start.baseline, opts)
+            assert torch.equal(s1.h, off.h) and torch.equal(s1.ring[0], off.ring[0])
+            s2 = step_fly_physical_tick(model, s1, None, torch.zeros_like(s1.h), s1.baseline, opts)
+        theta = model.get_thresholds().expand_as(s2.h)
+        above = (s2.regime[0:1] > theta).float()
+        torch.testing.assert_close(s2.homeostasis, s1.homeostasis + model.regime_eta_b * (model.regime_quantile - above))
+        sd = (s2.regime[2:3] - s2.regime[1:2] ** 2).clamp_min(1e-12).sqrt()
+        expected = (s1.regime[3:4] + model.regime_eta_s * torch.log(model.regime_kappa * theta / sd)).clamp(
+            -REGIME_LOG_GAIN_MAX, REGIME_LOG_GAIN_MAX)
+        torch.testing.assert_close(s2.regime[3:4], expected)
+        assert s2.regime.shape == (4, s2.h.shape[1]) and not s2.regime.requires_grad and not s2.homeostasis.requires_grad
+    finally:
+        for n in names:
+            model._buffers.pop(n, None)
+        for a in ('regime_kappa', 'regime_seed'):
+            if hasattr(model, a):
+                delattr(model, a)

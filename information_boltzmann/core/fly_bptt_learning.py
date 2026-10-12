@@ -58,6 +58,9 @@ class FlyPhysicalState:
     da_memory: torch.Tensor = field(default_factory=lambda: torch.empty(0))
     # Optional homeostatic intrinsic drive of every neuron, in units of its own rheobase [1, N] (never reset).
     homeostasis: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    # Optional regime homeostasis [4, N] (never reset): the free membrane u (integrated like h but never reset), its
+    # running mean and second moment, and the log input gain log s of every neuron.
+    regime: torch.Tensor = field(default_factory=lambda: torch.empty(0))
 
     def detached(self):
         return FlyPhysicalState(**{
@@ -118,6 +121,30 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
         g_leak_ = -torch.log(rates_[0].expand_as(current.h).detach().clamp(1e-5, 1 - 1e-7))
         drive_ = homeostasis * theta_ * g_leak_
         source = drive_ if source is None else source + drive_
+    regime = getattr(current, 'regime', torch.empty(0))
+    regime_on = getattr(model, 'regime_quantile', None) is not None
+    if regime_on:
+        # Regime homeostasis (attach_regime_homeostasis): every input to a neuron -- synaptic conductances and the
+        # writer's sensory drive -- is scaled by its gain s, and its location drive b enters as a current; both are
+        # constants within the tick (detached state), so nothing of the future reaches the present.
+        if homeostatic or model.synapse_model != 'coba':
+            raise ValueError('regime homeostasis needs COBA synapses and excludes the rate homeostasis')
+        theta_static = model.get_thresholds().expand_as(current.h).detach()
+        if homeostasis.numel() != current.h.numel():
+            homeostasis = torch.zeros_like(current.h)
+        if regime.numel() != 4 * current.h.numel():
+            h0 = current.h.detach()
+            regime = torch.cat([h0, h0, h0 * h0 + (model.regime_kappa * theta_static) ** 2, torch.zeros_like(h0)], 0)
+        gain = torch.exp(regime[3:4])
+        if source is None:
+            source = (model.topographic_writer(model.embedding(token), current.h)
+                      if token is not None and model.injection_mode == 'topographic' else torch.zeros_like(current.h))
+        rates_ = base_rates if base_rates is not None else model.get_decay_rates()
+        g_leak_ = -torch.log(rates_[0].expand_as(current.h).detach().clamp(1e-5, 1 - 1e-7))
+        source = source * gain + homeostasis * theta_static * g_leak_
+        gains_ = options.get('conductance_gains')
+        gains_ = gains_ if gains_ is not None else model.get_conductance_gains()
+        options = {**options, 'conductance_gains': (gains_[0] * gain, gains_[1] * gain)}
     dopamine = getattr(current, 'dopamine', torch.empty(0))
     if getattr(model, 'dopamine_sensitivity', None) is not None and dopamine.numel():
         # Dopamine modulates excitability where it is delivered: the phasic part (concentration minus its slow mean)
@@ -167,11 +194,18 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
         stp = options.get('stp_params')
         stp = stp if stp is not None else model.get_stp_params()
         options = {**options, 'stp_params': (online_da_release(stp[0], da_memory), *stp[1:])}
-    ret = model.step(
-        current.h, token, spike_ring=current.ring, ge=current.ge,
-        gi=current.gi, b=current.b, x=current.x, u=current.u,
-        i_syn=current.ge if model.synapse_model == 'cuba' else None,
-        sensory_drive=source, **options)
+    if regime_on:
+        # the same COBA tick as model.step, in its two halves, so the integration coefficients are at hand for the
+        # free membrane
+        context = model.prepare_coba_tick(current.h, current.ring, current.ge, current.gi, current.b, current.x,
+                                          current.u, **options)
+        ret = model.finish_coba_tick(context, source)
+    else:
+        ret = model.step(
+            current.h, token, spike_ring=current.ring, ge=current.ge,
+            gi=current.gi, b=current.b, x=current.x, u=current.u,
+            i_syn=current.ge if model.synapse_model == 'cuba' else None,
+            sensory_drive=source, **options)
     h = ret[0]
     if model.synapse_model == 'coba':
         ring, ge, gi = ret[2:5]
@@ -243,6 +277,21 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
         # ~100 of the neuron's own spikes.  A fixed local rule: no gradient flows through it.
         fired = (ring[0] > 0).to(h.dtype).detach()
         homeostasis = homeostasis.detach() + (model.homeostasis_target - fired) / HOMEOSTASIS_SPIKES
+    if regime_on:
+        # Location: b moves the free membrane until it is above the static threshold a fraction q* of the time
+        # (b <- b + eta_b (q* - [u > theta])).  Width: the input gain moves the free membrane's running SD toward
+        # kappa * theta (log s <- log s + eta_s log(kappa theta / sd)).  Fixed local rules on detached quantities.
+        with torch.no_grad():
+            u_free = context['alpha'] * regime[0:1] + context['beta_int'] * (context['base_current'] + source)
+            above = (u_free > theta_static).to(h.dtype)
+            homeostasis = homeostasis.detach() + model.regime_eta_b * (model.regime_quantile - above)
+            w = model.regime_window_rate
+            mean = regime[1:2] + w * (u_free - regime[1:2])
+            second = regime[2:3] + w * (u_free * u_free - regime[2:3])
+            sd = (second - mean * mean).clamp_min(1e-12).sqrt()
+            log_gain = (regime[3:4] + model.regime_eta_s * torch.log(model.regime_kappa * theta_static / sd)).clamp(
+                -REGIME_LOG_GAIN_MAX, REGIME_LOG_GAIN_MAX)
+            regime = torch.cat([u_free, mean, second, log_gain], 0).detach()
     bank = getattr(current, 'read_bank', torch.empty(0))
     if getattr(model, 'read_bank_gain', None) is not None:
         motor_now = h[:, model.read_indices] if model.read_surface != 'all' else h
@@ -253,7 +302,7 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
     return FlyPhysicalState(h, ring, ge, gi, b, x, u, next_baseline, h_mean, dan_gate, gz1, gz2,
                             current.observer_prior, getattr(current, 'observer_history', torch.empty(0)), bank,
                             modulator, getattr(current, 'expected_input', torch.empty(0)), dopamine, da_trace, da_memory,
-                            homeostasis)
+                            homeostasis, regime)
 
 
 def extract_fly_motor_latent(model, state):
@@ -775,6 +824,40 @@ def attach_homeostasis(model, graph_npz, seed=0, duty_median=HOMEOSTASIS_DUTY_ME
     target = (duty / tau_m.clamp_min(1.0)).clamp(max=0.2)
     model.register_buffer('homeostasis_target', target.unsqueeze(0).to(model.read_indices.device), persistent=False)
     model.homeostasis_seed = int(seed)
+    return model
+
+
+REGIME_WINDOWS = 100.0              # estimates over ~100 of the neuron's own membrane time constants (SD to ~14%)
+REGIME_Z_MEAN = 1.0                 # threshold ~1 SD of the free membrane above its mean (q* = P(z > 1) ~ 0.16) ...
+REGIME_Z_SD = 0.25                  # ... varying from neuron to neuron, drawn once per individual
+REGIME_KAPPA = 0.5                  # free-membrane SD = theta / 2: +-2 SD spans rest to threshold
+REGIME_LOG_GAIN_MAX = math.log(10.0)  # input gain within [1/10, 10] (E_E / theta): a safety rail for input-free cells
+
+
+def attach_regime_homeostasis(model, graph_npz, seed=0, z_mean=REGIME_Z_MEAN, z_sd=REGIME_Z_SD, kappa=REGIME_KAPPA,
+                              windows=REGIME_WINDOWS):
+    """Regime homeostasis (replaces the rate homeostasis of attach_homeostasis; design and measurements:
+    docs/information_boltzmann/FLY_CONSEQUENCE_WORLD_DESIGN_20261012.html).  What is regulated is where each neuron's
+    threshold sits inside the distribution of its own free membrane u (integrated like the membrane, never reset),
+    not its firing rate:  location -- the additive drive b (rheobase units) keeps u above the static threshold a
+    fraction q* of the time, q* = P(Z > z) with z ~ N(1, 0.25) drawn per neuron from `seed` (the individual);
+    width -- a multiplicative gain s on every input of the neuron (excitatory and inhibitory conductances alike, so
+    E/I and short-term plasticity are kept, and the writer's drive for sensory neurons) keeps the running SD of u at
+    theta / 2.  A neuron is then fluctuation-driven by construction; its rate follows from q* and its input's
+    correlation time.  Time scales: eta_b = 1 / (100 q* tau_m), eta_s = eta_b / 3 (the slower knob does not fight
+    the faster), running moments over 100 tau_m."""
+    import numpy as np
+    tau_m = torch.as_tensor(np.load(graph_npz)['tau_m'], dtype=torch.float32).clamp_min(1.0)
+    gen = torch.Generator().manual_seed(int(seed))
+    z = z_mean + z_sd * torch.randn(tau_m.numel(), generator=gen)
+    q = 0.5 * torch.erfc(z / math.sqrt(2.0))
+    eta_b = 1.0 / (windows * q * tau_m)
+    device = model.read_indices.device
+    for name, value in (('regime_quantile', q), ('regime_eta_b', eta_b), ('regime_eta_s', eta_b / 3.0),
+                        ('regime_window_rate', 1.0 / (windows * tau_m))):
+        model.register_buffer(name, value.unsqueeze(0).to(device), persistent=False)
+    model.regime_kappa = float(kappa)
+    model.regime_seed = int(seed)
     return model
 
 

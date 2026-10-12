@@ -36,7 +36,9 @@ def load(fork):
         fl.attach_dopamine_modulation(model, adapted=bool(cfg.get('dopamine_adapted', False)), affinity=cfg.get('dopamine_affinity'))
         if cfg.get('online_da_plasticity'):
             fl.attach_online_da_plasticity(model, graph, graph.parent / 'body-annotations.feather')
-    if cfg.get('homeostasis'):
+    if cfg.get('regime_homeostasis'):
+        fl.attach_regime_homeostasis(model, graph, seed=int(cfg.get('regime_seed') or 0))
+    elif cfg.get('homeostasis'):
         fl.attach_homeostasis(model, graph, seed=int(cfg.get('homeostasis_seed') or 0))
     if cfg.get('predictive_writer'):
         fl.attach_predictive_writer(model)

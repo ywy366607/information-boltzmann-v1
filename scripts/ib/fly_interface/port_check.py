@@ -4,6 +4,7 @@ and then adds k rheobase on top: extra = (max(0, 1 - b) + k) * rheobase, k in (1
 driven cells' own rate, how many other neurons change their spike count, the change of logit(" yes") - logit(" no"),
 and the change in dopamine-cell, Kenyon and MBON firing.  Groups: PAM-type MBONs, PPL1-type MBONs, PAM dopamine
 cells, PPL1 dopamine cells, 5% of Kenyon cells (random), and 97 random core cells as a reference.
+Read surface: change of its total spike count, against the spread of that count across positions.
 Usage: python port_check.py <fork dir>
 """
 import sys, json, numpy as np, pandas as pd, torch
@@ -11,7 +12,7 @@ from pathlib import Path
 sys.path.insert(0, 'D:/information-boltzmann-v1')
 exec(open('D:/information-boltzmann-v1/scratch/fly_stream/world_eval.py', encoding='utf-8').read().split('def evaluate(fork):')[0])
 
-KS, TICKS, POSITIONS = (1.0, 2.0, 5.0), 15, 12
+KS, TICKS, POSITIONS = (1.0, 2.0, 5.0), 150, 12     # 150 ticks >= 3 tau_m for nearly every cell
 YES, NO = 3763, 645
 fork = Path(sys.argv[1])
 model, cfg, L = load(fork)
@@ -38,7 +39,8 @@ kc_rand = np.zeros(N, bool); kc_rand[rng.choice(np.flatnonzero(kc), int(0.05 * k
 groups = {'PAM-type MBONs': mbon & (share > 0.8), 'PPL1-type MBONs': mbon & (share < 0.2), 'PAM dopamine': pam & is_dan,
           'PPL1 dopamine': ppl1 & is_dan, 'Kenyon 5%': kc_rand, 'random core': core_rand}
 T = lambda m: torch.as_tensor(m, device='cuda')
-watch = {'dopamine': T(is_dan), 'Kenyon': T(kc), 'MBON': T(mbon)}
+read = np.zeros(N, bool); read[model.read_indices.cpu().numpy()] = True
+watch = {'dopamine': T(is_dan), 'Kenyon': T(kc), 'MBON': T(mbon), 'read surface': T(read)}
 
 saved_b = L['physical'].get('homeostasis')
 b = (saved_b.reshape(-1).float().cuda() if saved_b is not None and saved_b.numel() == N else torch.zeros(N, device='cuda'))
@@ -97,7 +99,7 @@ with torch.no_grad():
         pos += 24
         s0, c0 = ticks(s, TICKS)
         y0 = yes_no(s0)
-        row = {'yes_minus_no': y0}
+        row = {'yes_minus_no': y0, 'read surface spikes (none)': float(c0[watch['read surface']].sum())}
         for name, m in groups.items():
             mt = T(m)
             for k in KS:
@@ -106,6 +108,7 @@ with torch.no_grad():
                 row[key + '|driven Hz'] = float(c1[mt].mean()) / TICKS * 1000
                 row[key + '|neurons changed'] = float(((c1 - c0).abs() > 0).sum() - mt.sum())
                 row[key + '|d yes-no'] = yes_no(s1) - y0
+                row[key + '|d read surface spikes'] = float(c1[watch['read surface']].sum() - c0[watch['read surface']].sum())
                 for wname, wm in watch.items():
                     rest = wm & ~mt
                     row[key + f'|{wname} dHz'] = float((c1[rest] - c0[rest]).mean()) / TICKS * 1000
@@ -113,7 +116,7 @@ with torch.no_grad():
         print('position', p, {k: round(v, 3) for k, v in row.items() if 'k5' in k and ('Hz' in k or 'yes' in k)}, flush=True)
 R = pd.DataFrame(rows)
 nat = float(R['yes_minus_no'].std())
-out = {'fork': str(fork), 'natural_sd_yes_minus_no': nat,
+out = {'fork': str(fork), 'natural_sd_yes_minus_no': nat, 'natural_sd_read_surface_spikes': float(R['read surface spikes (none)'].std()),
        'b_median_by_group': {n: float(b[T(m)].median()) for n, m in groups.items()},
        'stats_min_med_mean_max': {c: [float(R[c].min()), float(R[c].median()), float(R[c].mean()), float(R[c].max())] for c in R.columns}}
 json.dump(out, open(fork / 'port_check.json', 'w'), indent=1)
