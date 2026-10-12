@@ -1387,16 +1387,18 @@ def attach_predictive_writer(model, beta=0.5):
     return model
 
 
-def write_input(model, state, token):
-    """Sensory drive of one input word through the writer; predictive when a top-down expectation is available."""
+def write_input(model, state, token, emb=None):
+    """Sensory drive of one input word through the writer; predictive when a top-down expectation is available.
+    emb: the sample the senses deliver this tick (default: the word's clean embedding)."""
     writer = model.topographic_writer
     if writer is None:
         return None, state.baseline
+    sample = model.embedding(token) if emb is None else emb
     expected = getattr(state, 'expected_input', torch.empty(0))
     if getattr(model, 'writer_prediction_logit', None) is not None and expected.numel():
-        return writer.forward_with_state(model.embedding(token), state.h, state.baseline, expected=expected,
+        return writer.forward_with_state(sample, state.h, state.baseline, expected=expected,
                                          beta=torch.sigmoid(model.writer_prediction_logit))
-    return writer.forward_with_state(model.embedding(token), state.h, state.baseline)
+    return writer.forward_with_state(sample, state.h, state.baseline)
 
 
 def expect_next(model, state, latent):
@@ -1423,7 +1425,7 @@ def _advance_fly_token_stream(model, state, token, schedule_box=None, *, ticks, 
                               conductance_gains=None, alif_params=None, stp_params=None, h_mean_decay=0.99,
                               read_every=False, world=None, world_tape=None, act_g=None, fresh=True,
                               ai_g=None, ai_tape=None, eye_forced=None, eye_binary=False, eye_tape=None,
-                              eye_sample=False):
+                              eye_sample=False, sense_noise=None):
     """Streaming clock: every token occupies exactly `ticks` physical ticks, whatever the brain is doing, and the
     prediction of the next token is read just before it arrives.  Nothing waits for the brain to settle, so the
     processing of a token continues while the next ones are being sensed (latency and throughput decouple).
@@ -1449,6 +1451,8 @@ def _advance_fly_token_stream(model, state, token, schedule_box=None, *, ticks, 
     word, the world does not wait; after every tick both channels integrate and the output channel may commit (taped in
     ai_tape for the recompute).  Then also returned: the eye gain in force at every tick [ticks], whether the tick
     wrote the word [ticks], the output hazards [ticks], the new ai_g.
+    sense_noise [ticks, d]: with held input, the senses deliver a noisy sample of the word every tick (embedding +
+    sense_noise[tick]); evidence accumulates over the word's ticks (fly_active_inference, sustained noisy input).
     """
     if not isinstance(ticks, int) or ticks < 1:
         raise ValueError('ticks must be a positive integer')
@@ -1490,7 +1494,8 @@ def _advance_fly_token_stream(model, state, token, schedule_box=None, *, ticks, 
             eyes.append(eye)
             onsets.append(writes)
         if writes:
-            drive, baseline = write_input(model, current, token)
+            sample = None if sense_noise is None else model.embedding(token) + sense_noise[tick:tick + 1]
+            drive, baseline = write_input(model, current, token, sample)
             if ai_g is not None:
                 # precision of the text input: the surface receives e * the word, so the drive and the sensory
                 # adaptation both see e * the packet; closed eyes (e = 0) are exactly a quiet tick, the word missed
@@ -2087,6 +2092,7 @@ class FlyBPTTLearner:
             hazards, records = [], []
             ai_on = getattr(m, 'ai_w', None) is not None
             noise_targets = self.__dict__.pop('noise_mask', None)      # set by observe() for this window only
+            sense_sigmas = []
             ai_eyes, ai_onsets, ai_out, ai_tokens = [], [], [], []
             if ai_on:
                 if getattr(self, 'ai_g', None) is None:
@@ -2103,6 +2109,19 @@ class FlyBPTTLearner:
                 # standing just before the next word arrives
                 k = int(self.pace_rng.geometric(1.0 / pace)) if pace > 0 else self.stream_ticks
                 total_ticks += k
+                word_noise = None
+                if float(getattr(self, 'sense_noise_max', 0.0) or 0.0) > 0 and self.hold_input:
+                    # each word is heard over its whole interval as noisy samples; its clarity is drawn per word
+                    # (sigma = max * u, u ~ U(0, 1)), the noise is relative to the word's embedding norm per dimension
+                    if getattr(self, 'sense_rng', None) is None:
+                        self.sense_rng = np.random.default_rng(int(getattr(self, 'pace_seed', 0)) + 17)
+                    sigma = float(self.sense_noise_max) * float(self.sense_rng.random())
+                    with torch.no_grad():
+                        emb = m.embedding(token)
+                        scale = sigma * float(emb.norm()) / math.sqrt(emb.shape[-1])
+                        word_noise = torch.as_tensor(self.sense_rng.standard_normal((k, emb.shape[-1])),
+                                                     dtype=emb.dtype, device=emb.device) * scale
+                    sense_sigmas.append(sigma)
                 seg = int(getattr(self, 'stream_segment_ticks', 16) or k)
                 done = 0
                 while done < k:
@@ -2110,6 +2129,7 @@ class FlyBPTTLearner:
                     n = min(seg, k - done)
                     stream['ticks'] = n
                     stream['fresh'] = done == 0
+                    stream['sense_noise'] = None if word_noise is None else word_noise[done:done + n]
                     box = [n]
                     if world is not None:
                         tape = []
@@ -2191,7 +2211,10 @@ class FlyBPTTLearner:
                     # own answer, the main speaker's next word (fly_active_inference.pragmatic_value)
                     from .fly_active_inference import pragmatic_value
                     hz = torch.cat(ai_out)
-                    logp = F.log_softmax(m.decoder(m.read_norm(torch.cat(reads, 0))).float(), -1)
+                    # the answers' values are evaluated under the beliefs, never trained by them: preferences select
+                    # acts, they do not bend predictions (else the brain trades later-tick accuracy for quick answers)
+                    with torch.no_grad():
+                        logp = F.log_softmax(m.decoder(m.read_norm(torch.cat(reads, 0))).float(), -1)
                     flat = targets.flatten().tolist()
                     answers, nxt = [0] * n_words, flat[-1]
                     for j in range(n_words - 1, -1, -1):
@@ -2199,7 +2222,7 @@ class FlyBPTTLearner:
                             nxt = flat[j]
                         answers[j] = nxt
                     asks = [not x for x in input_noise]
-                    J_out, commit_tick, extended = pragmatic_value(hz, e_on, logp, intervals, answers, asks, asks,
+                    J_out, commit_tick, extended = pragmatic_value(hz, e, on, logp.detach(), intervals, answers, asks,
                                                                    -math.log(m.decoder.out_features), depth)
                     J_out = J_out / len(intervals)
                     if lam_out > 0:
@@ -2207,7 +2230,9 @@ class FlyBPTTLearner:
                     self.last_adaptive_metrics['pragmatic'] = float(J_out.detach())
                     self.last_adaptive_metrics['questions_extended'] = int(sum(x > 0 for x in extended))
                     if any(input_noise):
-                        nz = torch.as_tensor(input_noise, device=e_on.device)
+                        word_of = torch.repeat_interleave(torch.as_tensor(input_noise, device=e.device),
+                                                          torch.as_tensor(intervals, device=e.device))
+                        nz = word_of[on]
                         self.last_adaptive_metrics['eye_open_noise'] = float((e_on.detach()[nz] >= 0.5).float().mean())
                         self.last_adaptive_metrics['eye_open_text'] = float((e_on.detach()[~nz] >= 0.5).float().mean())
                 elif pace > 0 and ai_out:
@@ -2218,7 +2243,7 @@ class FlyBPTTLearner:
                     miss_value = -math.log(m.decoder.out_features)
                     J_out, start = hz.new_zeros(()), 0
                     for k in intervals:
-                        h_w, ce_w = hz[start:start + k], tick_ce[start:start + k]
+                        h_w, ce_w = hz[start:start + k], tick_ce[start:start + k].detach()   # values under beliefs
                         S = torch.cumprod(torch.cat([h_w.new_ones(1), 1 - h_w[:-1]]), 0)
                         J_out = J_out + (S * h_w * (-ce_w)).sum() + torch.prod(1 - h_w) * miss_value
                         hits = torch.nonzero(h_w.detach() > 0.5)
@@ -2241,7 +2266,8 @@ class FlyBPTTLearner:
                     self.last_ai_trace = {'eye': e_on.cpu().tolist(), 'token': tok_on.tolist(),
                                           'ce': scores.detach().cpu().tolist(), 'pace': pace,
                                           'interval': list(intervals), 'commit_tick': commit_tick,
-                                          'extended': extended, 'noise': input_noise}
+                                          'extended': extended, 'noise': input_noise, 'sigma': sense_sigmas,
+                                          'eye_tick': e.detach().cpu().tolist() if self.hold_input else None}
             if world is not None:
                 # the act's fitness, as evolution sees it (never an input to the brain); BPTT through the hazards
                 from .fly_odour_world import act_return

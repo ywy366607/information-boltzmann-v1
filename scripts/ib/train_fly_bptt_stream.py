@@ -183,6 +183,8 @@ def resolve_learning_modes(args, previous_config, previous_learner):
         args.eye_binary = bool(previous_config.get('eye_binary', False))
     if getattr(args, 'ai_depth', None) is None:
         args.ai_depth = int(previous_config.get('ai_depth') or 0)
+    if getattr(args, 'sense_noise', None) is None:
+        args.sense_noise = float(previous_config.get('sense_noise') or 0.0)
     if getattr(args, 'eye_init', None) is None:
         args.eye_init = float(previous_config.get('eye_init') or 0.95)
     if getattr(args, 'noise_rate', None) is None:
@@ -324,6 +326,9 @@ def main():
     parser.add_argument('--noise-alphabet', type=int, default=16, help='Noisy TV: alphabet size (random token ids)')
     parser.add_argument('--noise-seed', type=int, default=7, help='Noisy TV: the alphabet and the draws')
     parser.add_argument('--eye-init', type=float, default=None, help='M3: the eyes\' initial open probability')
+    parser.add_argument('--sense-noise', type=float, default=None,
+                        help='Sustained noisy input (with --hold-input): per-word noise sigma ~ U(0, this) relative to '
+                             'the embedding norm per dimension; omitted = inherit')
     parser.add_argument('--eye-forced', type=float, default=None, help='Control: eyes fixed at this gain')
     parser.add_argument('--odour-world', action=argparse.BooleanOptionalAction, default=None,
                         help='Closed-loop odour world alongside the text stream; acts from the act head (omitted = inherit)')
@@ -663,6 +668,7 @@ def main():
             learner.ai_sigreg = float(args.ai_sigreg)
             learner.eye_forced = 1.0 if args.eye_forced_open else args.eye_forced
             learner.eye_binary, learner.ai_depth = bool(args.eye_binary), int(args.ai_depth)
+            learner.sense_noise_max = float(args.sense_noise)
             if args.eye_binary:
                 # a new stretch of the world every chunk (pace and noise schedules seeded by the lifetime so far)
                 learner.pace_seed = int(getattr(args, 'odour_seed_value', 0) or 0)
@@ -972,6 +978,7 @@ def main():
             learner.ai_sigreg = float(args.ai_sigreg)
             learner.eye_forced = 1.0 if args.eye_forced_open else args.eye_forced
             learner.eye_binary, learner.ai_depth = bool(args.eye_binary), int(args.ai_depth)
+            learner.sense_noise_max = float(args.sense_noise)
             if args.eye_binary:
                 # a new stretch of the world every chunk (pace and noise schedules seeded by the lifetime so far)
                 learner.pace_seed = int(getattr(args, 'odour_seed_value', 0) or 0)

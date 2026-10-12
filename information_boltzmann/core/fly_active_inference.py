@@ -102,59 +102,66 @@ def eye_act(model, g, forced=None, taped=None, sample=False):
     return float(look) + u - u.detach(), look
 
 
-def pragmatic_value(hz, eyes, logp, intervals, answers, asks, main_onset, miss_value, depth=0):
+def pragmatic_value(hz, eyes, writes, logp, intervals, answers, asks, miss_value, depth=0):
     """Pragmatic value of output (EFE).  The main speaker asks a question with every word it says ("what comes
-    next?"); background words (the noisy TV) ask nothing and answer nothing.  Question i (asks[i]) opens at onset i; its
-    answer is the main speaker's next word (answers[i], a token id).  It closes at the first MAIN onset where the eyes
-    are open (the brain is told), or once `depth` + 1 main onsets have passed; while the eyes are closed it stays open
-    and the brain keeps thinking.  A commit answers the oldest open question, valued -CE of the read then against that
-    question's answer (logp [T, V] of every tick's read); a question closing unanswered is worth miss_value (-log V).
-    Expected value along the realized path, differentiable in the hazards and the eyes (straight-through).
+    next?"); background words (the noisy TV) ask nothing and answer nothing.  Question i (asks[i]) opens with word i;
+    its answer is the main speaker's next word (answers[i], a token id).  It closes the first time the brain RECEIVES
+    the next main word -- a tick that writes that word with the eyes open (pulse input: its onset; sustained input:
+    any of its ticks) -- or once `depth` further main words have passed; while the eyes are closed it stays open and
+    the brain keeps thinking.  Within a tick the eye acts before the write and the commit after the read, so a question
+    closed at a tick cannot be answered at that tick.  A commit answers the oldest open question, valued -CE of the read
+    then against that question's answer (logp [T, V] of every tick's read); a question closing unanswered is worth
+    miss_value (-log V).  Expected value along the realized path, differentiable in the hazards and the eyes
+    (straight-through).
 
-    hz [T] output hazards; eyes [n] eye gain at each word's onset; intervals: n interval lengths; main_onset[j]: onset j
-    is a main word (j = 1..n-1; the onset after the window is treated as a closing main onset).  Without background
-    words and with depth 0 (or the eyes always open) this is sum_i [sum_t S h (-CE_t) + S_K miss].
+    hz [T] output hazards; eyes [T] eye gain at every tick; writes [T] (bool) the tick writes its word; intervals: the
+    n interval lengths.  With pulse input and depth 0 (or the eyes always open) this is the per-word value
+    sum_i [sum_t S h (-CE_t) + S_K miss].
     Returns (J summed over questions, answer latency in ticks per question (-1: missed; None: not a question), number
-    of main onsets passed with the eyes closed while the question was open and unanswered)."""
+    of main words passed while the question stayed open and unanswered)."""
     starts, total = [], 0
     for k in intervals:
         starts.append(total); total += k
     n = len(intervals)
-    busy = [hz.new_zeros(k) for k in intervals]              # P(the commit at this tick was taken by an older question)
+    w = torch.as_tensor(writes, dtype=hz.dtype, device=hz.device)
+    told = eyes * w                                            # the tick delivers the word to the brain
+    busy = [hz.new_zeros(k) for k in intervals]                # P(the commit at this tick was taken by an older question)
     J = hz.new_zeros(())
     first, extended = [], []
     for i in range(n):
         if not asks[i]:
             first.append(None); extended.append(0)
             continue
-        alive, S = hz.new_ones(()), hz.new_ones(())           # P(still open), P(not yet answered)
+        alive, S = hz.new_ones(()), hz.new_ones(())            # P(still open), P(not yet answered)
         answer_tick, ext, elapsed, passed = -1, 0, 0, 0
         for j in range(i, n):
             sl = slice(starts[j], starts[j] + intervals[j])
+            if j > i and asks[j]:                              # a main word: hearing it closes the question
+                passed += 1
+                if passed > depth:
+                    J = J + alive * S * miss_value             # kept open as long as allowed
+                    break
+                if float(alive.detach()) > 0.5 and float(S.detach()) > 0.5 and float(told[starts[j]].detach()) < 0.5:
+                    ext += 1
+                keep = torch.cumprod(1.0 - told[sl], 0)
+                a = alive * keep                               # open after the eye at each tick
+                a_before = torch.cat([alive.reshape(1), a[:-1]])
+            else:
+                a = alive.expand(intervals[j]); a_before = a
             h = hz[sl] * (1.0 - busy[j])
-            surv = S * torch.cumprod(torch.cat([h.new_ones(1), 1.0 - h[:-1]]), 0)
-            take = alive * surv * h
-            J = J + (take * logp[sl, int(answers[i])]).sum()      # value -CE of the read against the answer
+            S_before = S * torch.cumprod(torch.cat([h.new_ones(1), 1.0 - h[:-1]]), 0)
+            J = J + ((a_before - a) * S_before).sum() * miss_value   # told before answering: missed
+            take = a * S_before * h
+            J = J + (take * logp[sl, int(answers[i])]).sum()  # value -CE of the read against the answer
             busy[j] = busy[j] + take
-            if answer_tick < 0 and float(alive.detach()) > 0.5:
+            if answer_tick < 0:
                 hits = torch.nonzero(take.detach() > 0.5)
                 if len(hits):
                     answer_tick = elapsed + int(hits[0]) + 1
             S = S * torch.prod(1.0 - h)
+            alive = a[-1]
             elapsed += intervals[j]
-            if j + 1 >= n:
-                J = J + alive * S * miss_value                # window end: closes
-                break
-            if not main_onset[j + 1]:
-                continue                                      # a background word: the question stays open
-            e = eyes[j + 1]
-            J = J + alive * S * e * miss_value                # the brain looks at the main speaker: closes
-            if float(alive.detach()) > 0.5 and float(S.detach()) > 0.5 and float(e.detach()) < 0.5:
-                ext += 1
-            alive = alive * (1.0 - e)
-            passed += 1
-            if passed > depth:
-                J = J + alive * S * miss_value                # kept open as long as allowed
-                break
+        else:
+            J = J + alive * S * miss_value                     # window end: closes
         first.append(answer_tick); extended.append(ext)
     return J, first, extended

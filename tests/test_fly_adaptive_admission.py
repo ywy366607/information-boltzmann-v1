@@ -1207,10 +1207,10 @@ def test_eyes_and_output_acts_both_learn_and_the_world_never_waits(fly_model_and
 
 
 def test_questions_stay_open_while_the_eyes_are_closed():
-    """M3 pragmatic value: with only main words and the eyes open (or depth 0) it is the per-word value
-    sum_i [sum_t S h (-CE) + S_K miss]; with the eyes closed at the next main onset the unanswered question stays open
-    and a later commit answers it against its own answer (the eye then gets a gradient); background words neither ask
-    nor close: a question asked before a background stretch stays open across it."""
+    """M3 pragmatic value: with pulse input, only main words and the eyes open (or depth 0) it is the per-word value
+    sum_i [sum_t S h (-CE) + S_K miss]; with the eyes closed when the next main word is written the unanswered question
+    stays open and a later commit answers it against its own answer (the eye then gets a gradient); background words
+    neither ask nor close; with sustained input a question closes the first tick its answer is received."""
     from information_boltzmann.core.fly_active_inference import pragmatic_value
     torch.manual_seed(0)
     intervals = [3, 2, 4, 1]
@@ -1218,11 +1218,12 @@ def test_questions_stay_open_while_the_eyes_are_closed():
     miss = -math.log(50257)
     logp = torch.log_softmax(torch.randn(T, V) * 2, -1)
     answers = [1, 2, 3, 4]
+    onset = [t in (0, 3, 5, 9) for t in range(T)]
     soft = torch.rand(T, requires_grad=True)
     hard = (soft.detach() > 0.7).float()
     hz = hard + soft - soft.detach()
     main = [True] * 4
-    J0, first0, ext0 = pragmatic_value(hz, torch.ones(4), logp, intervals, answers, main, main, miss, depth=0)
+    J0, first0, ext0 = pragmatic_value(hz, torch.ones(T), onset, logp, intervals, answers, main, miss, depth=0)
     ref, start = 0.0, 0
     for i, k in enumerate(intervals):
         h, c = hz[start:start + k], -logp[start:start + k, answers[i]]
@@ -1230,22 +1231,33 @@ def test_questions_stay_open_while_the_eyes_are_closed():
         ref = ref + (S * h * (-c)).sum() + torch.prod(1 - h) * miss
         start += k
     assert torch.allclose(J0, ref) and ext0 == [0, 0, 0, 0]
-    J2, _, _ = pragmatic_value(hz, torch.ones(4), logp, intervals, answers, main, main, miss, depth=2)
+    J2, _, _ = pragmatic_value(hz, torch.ones(T), onset, logp, intervals, answers, main, miss, depth=2)
     assert torch.allclose(J2, J0)
-    # question 0 unanswered in its interval, eyes closed at onset 1, a commit at the first tick of interval 1
+    # question 0 unanswered in its interval, eyes closed at onset 1 (tick 3), a commit at tick 3
     h = torch.zeros(T); h[3] = 1.0
-    eye_soft = torch.full((4,), 0.4, requires_grad=True)
-    eyes = torch.tensor([1.0, 0.0, 1.0, 1.0]) + eye_soft - eye_soft.detach()
-    J, first, ext = pragmatic_value(h, eyes, logp, intervals, answers, main, main, miss, depth=1)
+    eye_soft = torch.full((T,), 0.4, requires_grad=True)
+    eyes = torch.ones(T); eyes[3] = 0.0
+    eyes = eyes + eye_soft - eye_soft.detach()
+    J, first, ext = pragmatic_value(h, eyes, onset, logp, intervals, answers, main, miss, depth=1)
     # q0 answered 4 ticks after it opened, against its own answer; q1 lost that commit to q0 -> missed; q2, q3 missed
     assert first[0] == 4 and ext[0] == 1 and first[1] == -1
     assert torch.allclose(J, logp[3, answers[0]] + 3 * miss)
     J.backward()
-    assert eye_soft.grad[1].abs() > 0, 'the eye gets no gradient from keeping the question open'
-    # background words 1 and 2 (eyes open on them): question 0 stays open over intervals 0..2, closes at main onset 3;
-    # its answer is the main speaker's next word; a commit at the first tick of interval 2 answers it
+    assert eye_soft.grad[3].abs() > 0, 'the eye gets no gradient from keeping the question open'
+    # background words 1 and 2: question 0 stays open over intervals 0..2 and closes at main word 3; its answer is the
+    # main speaker's next word; a commit at the first tick of interval 2 answers it
     asks = [True, False, False, True]
     h = torch.zeros(T); h[5] = 1.0
-    J, first, ext = pragmatic_value(h, torch.ones(4), logp, intervals, [9 % V, 9 % V, 9 % V, 4], asks, asks, miss, depth=0)
+    J, first, ext = pragmatic_value(h, torch.ones(T), onset, logp, intervals, [9 % V, 9 % V, 9 % V, 4], asks, miss, depth=0)
     assert first == [6, None, None, -1]
     assert torch.allclose(J, logp[5, 9 % V] + miss)
+    # sustained input (every tick writes): eyes closed at ticks 3 and 4 (all of word 1), open again at tick 5 (word 2):
+    # with depth 1, question 0 stays open through word 1 and closes at tick 5; a commit at tick 4 answers it
+    h = torch.zeros(T); h[4] = 1.0
+    eyes = torch.ones(T); eyes[3] = 0.0; eyes[4] = 0.0
+    J, first, ext = pragmatic_value(h, eyes, [True] * T, logp, intervals, answers, main, miss, depth=1)
+    assert first[0] == 5 and ext[0] == 1
+    # eyes reopened at tick 4 (word 1 heard from its 2nd tick): question 0 closes there, before the commit at tick 4
+    eyes = torch.ones(T); eyes[3] = 0.0
+    J, first, ext = pragmatic_value(h, eyes, [True] * T, logp, intervals, answers, main, miss, depth=1)
+    assert first[0] == -1 and first[1] == 2

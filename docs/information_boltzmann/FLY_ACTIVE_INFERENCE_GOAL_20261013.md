@@ -134,3 +134,31 @@ never learn to wait again).  Both acts now pass gradients with the soft crossing
 average (CE 7.91 -> 7.74 from tick 1 to 2 vs a 2.9-nat miss risk per 1/mu: at mu = 16 the value of committing at tick
 1, 2, 3 is -7.91, -7.93, -8.00), so difficulty scaling can only come from the words where thinking pays or where any
 answer is worse than silence (CE > log V); the head must be able to keep learning to find them.
+
+## M3 world revised: sustained noisy input (theory, written before the run, 2026-10-13)
+M2 (pulse input) converged to answering every word at tick 1.  Cause, from the definitions: deliberation time has
+value only if (a) the uncertainty is reducible (epistemic, not aleatoric), (b) something is there to work with --
+evidence still arriving, or a recurrence still refining, (c) the gain differs by item in a way the state can read,
+and for closing the eyes (d) input interferes with the computation in progress.  Next-word difficulty is mostly
+aleatoric (a word with CE 10 is unpredictable, not hard to compute) and a pulse delivers all its evidence at once;
+the read is settled by tick 2.  So with pulse input acceptance 2 and 3 are unreachable by ANY policy (to be checked
+by the hindsight oracle in the M2 probe: gain of the best tick over tick 1, and whether the best tick tracks
+difficulty).  From the fly itself: the mushroom body accumulates evidence over sustained noisy odour input, and harder
+discriminations take longer (DasGupta et al. 2014, FoxP in Kenyon cells sets the accumulation time).  Real senses
+deliver a word over time, not as one sample.  The principled exit is therefore the input format, not a task:
+- Sustained noisy input: a word is heard on every tick of its interval as a noisy sample, embedding + sigma *
+  |embedding| / sqrt(d) * xi_t, with the clarity drawn per word, sigma ~ U(0, sigma_max).  Sensory adaptation
+  (tau ~ 20 ticks) still high-passes the drive.  Eyes act on every tick (a closed tick loses one sample).
+- Question rule, per tick (it reduces to the onset rule for pulse input): a question closes the first tick its
+  answer word is RECEIVED (written with the eyes open), or after `depth` further main words; within a tick the eye
+  acts before the write and the commit after the read.
+Predictions (sustained noisy input, arms as before):
+- P2' (acceptance 3): answer latency grows with the current word's noise (rho(latency, sigma) > 0.2 in fixed16);
+  the hindsight-best tick grows with sigma too (if not, the brain cannot accumulate: say so).
+- P3' (acceptance 2): at fast pace a noisy word may still be unidentified when the next word starts; a brief closure
+  at the next word's first tick(s) costs only a sample or two of that word (it is sustained) and keeps the question
+  open: closures concentrate on open questions about noisy words at fast pace; answer value own > forced open.
+- P4' (acceptance 4): inside background stretches the eyes close (looking only disturbs the open question and the
+  main context; the 16-word alphabet's information gain fades).
+- The rest as in the M3 predictions above.  Zero-shot check first (no training): CE by tick for clear vs noisy words
+  at fixed16 must fall with ticks for noisy words, or accumulation is absent and the run is pointless.
