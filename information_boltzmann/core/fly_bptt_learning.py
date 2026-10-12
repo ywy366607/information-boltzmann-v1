@@ -861,6 +861,65 @@ def attach_regime_homeostasis(model, graph_npz, seed=0, z_mean=REGIME_Z_MEAN, z_
     return model
 
 
+TIED_WRITER_SCALE = 0.1             # birth scale of the tied rows: the input gain the regime-gestated newborn chose for
+                                    # its written sensory neurons (on the 1/10 rail: the untied drive was ~10x too big)
+
+
+class TiedProjection(nn.Module):
+    """One projection row per sensory cell type, shared by every cell of that type (index: cell -> row)."""
+
+    def __init__(self, weight, index):
+        super().__init__()
+        self.weight = nn.Parameter(weight)
+        self.register_buffer('index', index, persistent=False)
+
+    def forward(self, x):
+        return F.linear(x, self.weight)[..., self.index]
+
+
+TIED_WRITER_MODALITIES = ('proj_chemo',)
+
+
+def attach_tied_writer(model, graph_npz, annotations, convert=True, scale=TIED_WRITER_SCALE,
+                       modalities=TIED_WRITER_MODALITIES):
+    """The writer drives sensory cells by type, as a stimulus drives all receptors of one kind together (in the fly
+    the ~35 olfactory receptor neurons of a glomerulus share one receptor and fire together; projection neurons sum
+    them).  Only where a type is a tuning identity: the chemosensory cells (olfactory and gustatory receptor types)
+    get one row per annotated type; visual and mechanosensory types are places on a map (photoreceptors of one type
+    in different ommatidia see different points), so those cells keep their own rows.  Untyped cells keep a row of
+    their own.  Measured on the regime-gestated
+    newborn: driving all receptors of one type together moves the matched projection neurons +25 Hz, the same
+    number scattered across types ~0 Hz (FLY_CONSEQUENCE_WORLD_DESIGN_20261012.html).  convert=True builds the rows
+    from the current per-cell rows (type mean x sqrt(cells), so a cell's drive keeps its size, times `scale`);
+    convert=False makes empty rows of the right shape for loading a tied checkpoint."""
+    import pandas as pd
+    graph = np.load(graph_npz, allow_pickle=True)
+    types = pd.read_feather(annotations).set_index('bodyId').reindex(graph['neuron_body_ids'])['type'].astype(str).values
+    writer = model.topographic_writer
+    counts = {}
+    for name, cells in (('proj_vis', writer.idx_vis), ('proj_chemo', writer.idx_chemo), ('proj_mech', writer.idx_mech)):
+        if name not in modalities:
+            continue
+        labels = types[cells.cpu().numpy()]
+        keys = [t if t not in ('None', 'nan', '') else f'cell{i}' for i, t in enumerate(labels)]
+        uniq = {k: j for j, k in enumerate(dict.fromkeys(keys))}
+        index = torch.as_tensor([uniq[k] for k in keys], dtype=torch.long, device=cells.device)
+        old = getattr(writer, name)
+        if isinstance(old, TiedProjection):
+            raise ValueError('the writer is already tied')
+        if convert:
+            w = old.weight.detach()
+            total = torch.zeros(len(uniq), w.shape[1], device=w.device, dtype=w.dtype).index_add_(0, index, w)
+            n = torch.bincount(index, minlength=len(uniq)).to(w.dtype).unsqueeze(1)
+            rows = total / n * n.sqrt() * scale
+        else:
+            rows = torch.zeros(len(uniq), old.weight.shape[1], device=old.weight.device, dtype=old.weight.dtype)
+        setattr(writer, name, TiedProjection(rows, index))
+        counts[name] = (len(keys), len(uniq))
+    model.tied_writer = True
+    return counts
+
+
 ONLINE_DA_CELL_CLASSES = ('Kenyon_Cell',)
 
 

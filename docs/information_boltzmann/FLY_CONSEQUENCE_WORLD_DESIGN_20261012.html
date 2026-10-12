@@ -118,6 +118,7 @@ a{color:var(--accent)} ol.plain{padding-left:20px} ol.plain li{margin-bottom:6px
   <a href="#cost">代价与顺序</a>
   <a href="#phase0-results">检查结果</a>
   <a href="#regime">工作区间稳态</a>
+  <a href="#tied">共享写入器</a>
 </nav>
 
 <main>
@@ -401,6 +402,40 @@ flowchart LR
 <p>另外：读出潜变量在静默时的方差是读文本时的 2.1 倍，有效秩约 1.1，读出被与输入无关的方向主导；味觉 → 多巴胺、MBON → “是 / 否” 仍不通。</p>
 <p><strong>判断。</strong>新稳态把每个细胞放到了正确的工作区间，这本身是对的；但宽度规则把每个细胞的输入总波动归一到 θ/2，而这个波动主要来自大脑自身的同步背景活动。每个细胞都灵敏，却主要听见大脑自己，单独一小群上游细胞几乎听不见，词在嗅觉受体 → 投射神经元这一步就被淹没。成年个体的信号通路是 BPTT 为下一词预测学出来的，不经过蘑菇体。</p>
 <p class="cap">下一步的问题：蘑菇体回路要零样本接通，还是像进化一样由一个只有蘑菇体 + 在线记忆才能完成的任务，让 BPTT 学出来。正在与子 agent 同事讨论。</p>
+</section>
+
+<section id="tied">
+<h2>协同驱动实验与按类型共享的写入器</h2>
+<p>同事的两个连接组统计：2,635 个嗅觉受体分属 53 种受体类型（每个小球中位约 35 个），而写入器给每个受体独立的一行随机投影，投射神经元汇总自己小球时信号按 √35 而不是 35 累加；出生时的网络抑制 / 兴奋约为平衡所需的 1/4（中位 0.26），宽度规则同步缩放 E 与 I，保留了失衡。</p>
+<div class="tablebox"><table>
+<thead><tr><th>抑制倍数</th><th>协同驱动同类受体（约 154 Hz）→ 对应投射神经元</th><th>分散驱动同样数量 → 对应投射神经元</th><th>Kenyon 响应比例 / 类型间 Jaccard（协同）</th><th>尾部比 核心 / MBON</th></tr></thead>
+<tbody>
+<tr><td>1</td><td class="num">+25 Hz</td><td class="num">≈ 0</td><td class="num">0.3% / 0.003</td><td class="num">3.9 / 4.7</td></tr>
+<tr><td>2</td><td class="num">+35 Hz</td><td class="num">≈ 0</td><td class="num">0.4% / 0.004</td><td class="num">2.7 / 3.5</td></tr>
+<tr><td>4</td><td class="num">+60 Hz</td><td class="num">0.2 Hz</td><td class="num">0.1% / 0.002</td><td class="num">1.8 / 2.0</td></tr>
+</tbody></table></div>
+<p>判读：出生时的连接组本来就能把协同的“气味”送到投射神经元，并在 Kenyon 细胞上产生互不重叠的编码；词丢失的原因是写入方式把每个气味打散了。单一类型只激活约 0.3% 的 Kenyon 细胞，符合 Kenyon 细胞需要多个小球同时输入的结构，一个词应对应多个小球的组合。加强抑制消除重尾，但不是接通的前提（第一次运行时探针电流被细胞的输入增益缩放、受体未被驱动，已修正并重跑）。</p>
+<p><strong>改动（B1）：</strong>写入器按感觉细胞类型共享投影行（<span class="path">attach_tied_writer</span>），只用于类型就是调谐身份的化学感觉细胞（嗅觉与味觉受体类型，4,987 个细胞 → 212 行）；视觉与机械感觉的类型是空间图上的位置（同类型的光感受器在不同小眼看不同的点），保持每个细胞一行；无类型的细胞保留自己的一行；行由原各成员行的均值 × √成员数换算，再乘 0.1（孕育后感觉神经元的输入增益停在 1/10 下限，原写入电流约大 10 倍）。</p>
+<h3>预言（以共享写入器重新孕育 20 万拍）</h3>
+<ol class="plain">
+<li>投射神经元对词的响应 ≥ 0.03（现 0.0027）。</li>
+<li>同一状态下不同词的 Kenyon Jaccard &lt; 0.5（现 0.91）；同一个词跨上下文 &gt; 0.3（现 0.03）。</li>
+<li>感觉神经元的输入增益离开 1/10 下限。</li>
+<li>保留的否定预言：MBON → 动作、味觉 → 多巴胺仍低于自然波动的 5%，输出端需要学习（A）。</li>
+</ol>
+<h3>结果（共享写入器，孕育 19.5 万拍）</h3>
+<div class="tablebox"><table>
+<thead><tr><th>读一个词后每细胞放电变化</th><th>打散写入</th><th>按类型共享</th><th>成年</th></tr></thead>
+<tbody>
+<tr><td>投射神经元</td><td class="num">0.0027</td><td class="num">0.024</td><td class="num">0.39</td></tr>
+<tr><td>Kenyon（特异性中位）</td><td class="num">0.00054</td><td class="num">0.011（0.86）</td><td class="num">0.006</td></tr>
+<tr><td>MBON</td><td class="num">0</td><td class="num">0.0009</td><td class="num">0.024</td></tr>
+<tr><td>多巴胺细胞</td><td class="num">0</td><td class="num">0.0023</td><td class="num">0.024</td></tr>
+<tr><td>读出面</td><td class="num">0.0009</td><td class="num">0.0025</td><td class="num">0.22</td></tr>
+</tbody></table></div>
+<p>尾部比降到 1.8–3.1（嗅觉受体 1.8、投射 2.2、Kenyon 2.6、MBON 2.9、多巴胺 3.1、核心 3.0），只靠把输入改成协同；嗅觉受体增益离开下限（log s −0.46）。</p>
+<p><strong>对照预言：</strong>1 差一点（0.024 对 ≥ 0.03）；2 不成立：同一状态下不同词的 Kenyon 活动集合 Jaccard 0.63（原 0.91），同一个词跨上下文 0.03——Kenyon 自发放电约 5.4 Hz、输入增益顶在上限，活动集合主要是背景；3 成立；4 成立（MBON → 动作 0.2–0.7%，味觉 → 多巴胺 ≈ 0）。</p>
+<p class="cap">下一步：Kenyon 细胞的阈值位置取更高的分位数（约 0.05，稀疏扩展编码理论：编码维度在激活比例 0.05–0.1 附近最高），重新孕育；输出端按设计 (A) 由任务学习建立。</p>
 </section>
 
 <footer>

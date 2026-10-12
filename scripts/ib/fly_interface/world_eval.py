@@ -44,6 +44,8 @@ def load(fork):
         fl.attach_predictive_writer(model)
     if cfg.get('precision'):
         fl.attach_precision(model, graph, graph.parent / 'body-annotations.feather')
+    if cfg.get('tied_writer'):
+        fl.attach_tied_writer(model, graph, graph.parent / 'body-annotations.feather', convert=False)
     edges = ('edge_weight_e', 'edge_weight_i')
     with torch.no_grad():
         for k in edges:

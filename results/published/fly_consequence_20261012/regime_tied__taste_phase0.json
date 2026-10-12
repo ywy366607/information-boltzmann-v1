@@ -1,0 +1,486 @@
+{
+ "fork": "scratch\\fly_stream\\regime_tied",
+ "amps_rheobase": [
+  2.0,
+  5.0,
+  10.0,
+  20.0
+ ],
+ "e_dopamine_sources": {
+  "Kenyon": {
+   "cells": 4064,
+   "receiving": 4061,
+   "pam_share_min_p10_med_p90_max_mean": [
+    0.0,
+    0.6363636383747694,
+    0.7727272648837576,
+    0.8645833322381514,
+    1.0,
+    0.7581533932098438
+   ],
+   "frac_pam_dominated(>0.8)": 0.36050233932528936,
+   "frac_ppl1_dominated(<0.2)": 0.0004924895345973898
+  },
+  "MBON": {
+   "cells": 97,
+   "receiving": 97,
+   "pam_share_min_p10_med_p90_max_mean": [
+    0.0,
+    0.0,
+    0.1481481471767129,
+    0.9959194135689292,
+    1.0,
+    0.43805407344247776
+   ],
+   "frac_pam_dominated(>0.8)": 0.41237113402061853,
+   "frac_ppl1_dominated(<0.2)": 0.5154639175257731
+  }
+ },
+ "taste_cells": {
+  "sugar SEL": 6,
+  "bitter SEL": 4,
+  "sugar GRN": 44,
+  "bitter GRN": 0
+ },
+ "a_taste_dose_response": {
+  "sugar (SEL + GRN)|x2|driven Hz": [
+   54.666666189829506,
+   57.66666531562805,
+   57.83333215448591,
+   62.66666650772095
+  ],
+  "sugar (SEL + GRN)|x2|neurons changed": [
+   21.0,
+   66.5,
+   182.83333333333334,
+   1142.0
+  ],
+  "sugar (SEL + GRN)|x2|PAM dHz": [
+   0.0,
+   0.0,
+   0.08790436097317272,
+   1.0548523316780727
+  ],
+  "sugar (SEL + GRN)|x2|PPL1 dHz": [
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "sugar (SEL + GRN)|x2|other DA dHz": [
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "sugar (SEL + GRN)|x5|driven Hz": [
+   151.33333206176758,
+   155.3333282470703,
+   155.222217241923,
+   160.66665649414062
+  ],
+  "sugar (SEL + GRN)|x5|neurons changed": [
+   138.0,
+   273.0,
+   486.3333333333333,
+   2036.0
+  ],
+  "sugar (SEL + GRN)|x5|PAM dHz": [
+   0.0,
+   0.0,
+   0.202180037740618,
+   2.215189983447393
+  ],
+  "sugar (SEL + GRN)|x5|PPL1 dHz": [
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "sugar (SEL + GRN)|x5|other DA dHz": [
+   0.0,
+   0.0,
+   0.09259259742167263,
+   1.1111111690600715
+  ],
+  "sugar (SEL + GRN)|x10|driven Hz": [
+   289.3333117167155,
+   295.6666628519694,
+   295.0555509991116,
+   300.66665013631183
+  ],
+  "sugar (SEL + GRN)|x10|neurons changed": [
+   167.0,
+   457.5,
+   661.1666666666666,
+   2376.0
+  ],
+  "sugar (SEL + GRN)|x10|PAM dHz": [
+   0.0,
+   0.0,
+   0.24613221175968647,
+   2.426160375277201
+  ],
+  "sugar (SEL + GRN)|x10|PPL1 dHz": [
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "sugar (SEL + GRN)|x10|other DA dHz": [
+   0.0,
+   0.0,
+   0.13888889613250893,
+   1.1111111690600715
+  ],
+  "sugar (SEL + GRN)|x20|driven Hz": [
+   484.6666653951009,
+   488.99998664855957,
+   488.7777646382649,
+   492.6666577657064
+  ],
+  "sugar (SEL + GRN)|x20|neurons changed": [
+   190.0,
+   545.5,
+   764.5833333333334,
+   2679.0
+  ],
+  "sugar (SEL + GRN)|x20|PAM dHz": [
+   0.0,
+   0.0,
+   0.2637130932675467,
+   2.5316456953684487
+  ],
+  "sugar (SEL + GRN)|x20|PPL1 dHz": [
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "sugar (SEL + GRN)|x20|other DA dHz": [
+   0.0,
+   0.0,
+   0.13888889613250893,
+   1.1111111690600715
+  ],
+  "bitter (SEL)|x2|driven Hz": [
+   241.66666666666666,
+   254.16666666666669,
+   260.4166666666667,
+   308.33333333333337
+  ],
+  "bitter (SEL)|x2|neurons changed": [
+   0.0,
+   0.0,
+   1.9166666666666667,
+   10.0
+  ],
+  "bitter (SEL)|x2|PAM dHz": [
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "bitter (SEL)|x2|PPL1 dHz": [
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "bitter (SEL)|x2|other DA dHz": [
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "bitter (SEL)|x5|driven Hz": [
+   508.3333333333333,
+   520.8333333333334,
+   525.6944444444445,
+   575.0
+  ],
+  "bitter (SEL)|x5|neurons changed": [
+   0.0,
+   0.0,
+   1.9166666666666667,
+   10.0
+  ],
+  "bitter (SEL)|x5|PAM dHz": [
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "bitter (SEL)|x5|PPL1 dHz": [
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "bitter (SEL)|x5|other DA dHz": [
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "bitter (SEL)|x10|driven Hz": [
+   641.6666666666667,
+   654.1666666666667,
+   660.4166666666667,
+   691.6666666666666
+  ],
+  "bitter (SEL)|x10|neurons changed": [
+   0.0,
+   0.0,
+   2.0833333333333335,
+   10.0
+  ],
+  "bitter (SEL)|x10|PAM dHz": [
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "bitter (SEL)|x10|PPL1 dHz": [
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "bitter (SEL)|x10|other DA dHz": [
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "bitter (SEL)|x20|driven Hz": [
+   1000.0,
+   1000.0,
+   1000.0,
+   1000.0
+  ],
+  "bitter (SEL)|x20|neurons changed": [
+   0.0,
+   0.0,
+   2.75,
+   17.0
+  ],
+  "bitter (SEL)|x20|PAM dHz": [
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "bitter (SEL)|x20|PPL1 dHz": [
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "bitter (SEL)|x20|other DA dHz": [
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ]
+ },
+ "b_yes_minus_no": {
+  "natural_sd_across_positions": 0.03717550703778383,
+  "none_mean": -3.2334314584732056,
+  "all MBONs silenced": {
+   "delta_min_med_mean_max": [
+    -6.341934204101562e-05,
+    0.0,
+    6.167093912760417e-05,
+    0.0008034706115722656
+   ],
+   "mean_abs_delta_over_natural_sd": 0.0019432372339764053
+  },
+  "PAM-type MBONs driven x2": {
+   "delta_min_med_mean_max": [
+    -3.8623809814453125e-05,
+    0.0,
+    4.172325134277344e-06,
+    6.914138793945312e-05
+   ],
+   "mean_abs_delta_over_natural_sd": 0.0002939440260415355
+  },
+  "PAM-type MBONs driven x5": {
+   "delta_min_med_mean_max": [
+    -3.719329833984375e-05,
+    4.0531158447265625e-05,
+    3.695487976074219e-05,
+    0.0001220703125
+   ],
+   "mean_abs_delta_over_natural_sd": 0.0011886027525752272
+  },
+  "PAM-type MBONs driven x10": {
+   "delta_min_med_mean_max": [
+    -0.00048828125,
+    9.107589721679688e-05,
+    4.665056864420573e-05,
+    0.0002608299255371094
+   ],
+   "mean_abs_delta_over_natural_sd": 0.0038437189732558603
+  },
+  "PAM-type MBONs driven x20": {
+   "delta_min_med_mean_max": [
+    -0.00041961669921875,
+    0.00019478797912597656,
+    0.0002025763193766276,
+    0.0010499954223632812
+   ],
+   "mean_abs_delta_over_natural_sd": 0.0073304295657921825
+  },
+  "PPL1-type MBONs driven x2": {
+   "delta_min_med_mean_max": [
+    -4.4345855712890625e-05,
+    -4.0531158447265625e-06,
+    -8.265177408854166e-06,
+    -9.5367431640625e-07
+   ],
+   "mean_abs_delta_over_natural_sd": 0.00022232857242414318
+  },
+  "PPL1-type MBONs driven x5": {
+   "delta_min_med_mean_max": [
+    -8.487701416015625e-05,
+    -2.0265579223632812e-05,
+    -3.3020973205566406e-05,
+    -1.0013580322265625e-05
+   ],
+   "mean_abs_delta_over_natural_sd": 0.000888245402329149
+  },
+  "PPL1-type MBONs driven x10": {
+   "delta_min_med_mean_max": [
+    -0.00014257431030273438,
+    -2.9802322387695312e-05,
+    -2.566973368326823e-05,
+    0.00014257431030273438
+   ],
+   "mean_abs_delta_over_natural_sd": 0.0014857534407190338
+  },
+  "PPL1-type MBONs driven x20": {
+   "delta_min_med_mean_max": [
+    -0.0002231597900390625,
+    9.775161743164062e-06,
+    1.1920928955078125e-07,
+    0.0001964569091796875
+   ],
+   "mean_abs_delta_over_natural_sd": 0.00164074210899548
+  },
+  "random core cells driven x2": {
+   "delta_min_med_mean_max": [
+    -0.0011138916015625,
+    -0.0001957416534423828,
+    0.00018127759297688803,
+    0.0038881301879882812
+   ],
+   "mean_abs_delta_over_natural_sd": 0.027143325808359094
+  },
+  "random core cells driven x5": {
+   "delta_min_med_mean_max": [
+    -0.00157928466796875,
+    -0.00012159347534179688,
+    0.00024302800496419272,
+    0.004234790802001953
+   ],
+   "mean_abs_delta_over_natural_sd": 0.027171116879912117
+  },
+  "random core cells driven x10": {
+   "delta_min_med_mean_max": [
+    -0.0025010108947753906,
+    -0.0006518363952636719,
+    0.00016482671101888022,
+    0.006439208984375
+   ],
+   "mean_abs_delta_over_natural_sd": 0.049880697888197434
+  },
+  "random core cells driven x20": {
+   "delta_min_med_mean_max": [
+    -0.0028200149536132812,
+    -0.0010914802551269531,
+    -0.00028212865193684894,
+    0.006907463073730469
+   ],
+   "mean_abs_delta_over_natural_sd": 0.05640732415368695
+  }
+ },
+ "c_cue_codes": {
+  "active_fraction": {
+   " apple": 0.008940288713910761,
+   " river": 0.009063320209973753,
+   " stone": 0.008161089238845143,
+   " cloud": 0.010498687664041995,
+   " bread": 0.010129593175853019,
+   " horse": 0.009227362204724409,
+   " candle": 0.007997047244094488,
+   " garden": 0.009063320209973753
+  },
+  "same_word_across_contexts": {
+   " apple": 0.025885305838314516,
+   " river": 0.024391324359568523,
+   " stone": 0.02382616915391046,
+   " cloud": 0.0358253821091358,
+   " bread": 0.02450290963694255,
+   " horse": 0.03543530901435746,
+   " candle": 0.020385490222094002,
+   " garden": 0.027396749921450726
+  },
+  "between_words": {
+   " apple| river": 0.7582785987958403,
+   " apple| stone": 0.7495519713261648,
+   " apple| cloud": 0.6662872568044982,
+   " apple| bread": 0.7770562770562771,
+   " apple| horse": 0.657088122605364,
+   " apple| candle": 0.6146313364055299,
+   " apple| garden": 0.5833333333333334,
+   " river| stone": 0.6883861256775606,
+   " river| cloud": 0.6103896103896104,
+   " river| bread": 0.7496205901378316,
+   " river| horse": 0.6845238095238096,
+   " river| candle": 0.5871956494870844,
+   " river| garden": 0.5291119321291735,
+   " stone| cloud": 0.5880044285216699,
+   " stone| bread": 0.6987734487734487,
+   " stone| horse": 0.5871956494870844,
+   " stone| candle": 0.5873015873015873,
+   " stone| garden": 0.5967741935483871,
+   " cloud| bread": 0.6749452654625069,
+   " cloud| horse": 0.7591991341991342,
+   " cloud| candle": 0.578083793601035,
+   " cloud| garden": 0.5412872568044982,
+   " bread| horse": 0.6008110663283077,
+   " bread| candle": 0.6114718614718614,
+   " bread| garden": 0.5270562770562771,
+   " horse| candle": 0.5633861256775606,
+   " horse| garden": 0.5529214559386973,
+   " candle| garden": 0.5312980030721967
+  },
+  "ticks_per_cue_mean": {
+   " apple": 8.0,
+   " river": 8.0,
+   " stone": 8.0,
+   " cloud": 8.833333333333334,
+   " bread": 8.5,
+   " horse": 8.0,
+   " candle": 7.333333333333333,
+   " garden": 8.166666666666666
+  }
+ },
+ "clock": {
+  "text": {
+   "variance": 0.052149735391139984,
+   "effective_rank": 1.1315847635269165
+  },
+  "repeat": {
+   "variance": 0.05565040931105614,
+   "effective_rank": 1.0877294540405273,
+   "variance_over_text": 1.0671273572849405
+  },
+  "silence": {
+   "variance": 0.08884220570325851,
+   "effective_rank": 1.0688928365707397,
+   "variance_over_text": 1.7035983986670893
+  }
+ }
+}

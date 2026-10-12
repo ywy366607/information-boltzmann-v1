@@ -883,6 +883,51 @@ def test_homeostatic_intrinsic_plasticity(fly_model_and_state):
             delattr(model, 'homeostasis_seed')
 
 
+def test_tied_writer(fly_model_and_state):
+    """Off: per-cell projections.  On: every chemosensory cell of one receptor type gets the same drive (visual and
+    mechanosensory maps stay per cell); an untyped cell (its own row, scale 1) keeps exactly its drive; convert=False
+    builds rows of the same shapes for loading."""
+    import numpy as np
+    import pandas as pd
+    from torch import nn
+    from information_boltzmann.core.fly_bptt_learning import attach_tied_writer, TiedProjection
+    model, state, device = fly_model_and_state
+    writer = model.topographic_writer
+    if writer is None:
+        pytest.skip("needs the topographic writer")
+    graph, ann = 'data/malecns_v1/fly_reservoir_coba.npz', 'data/malecns_v1/body-annotations.feather'
+    saved = {n: getattr(writer, n) for n in ('proj_vis', 'proj_chemo', 'proj_mech')}
+    try:
+        assert all(isinstance(m, nn.Linear) for m in saved.values())
+        emb = torch.randn(1, writer.proj_chemo.in_features, device=device)
+        with torch.no_grad():
+            before = writer.packet(emb)
+        counts = attach_tied_writer(model, graph, ann, convert=True, scale=1.0)
+        assert counts['proj_chemo'][1] < counts['proj_chemo'][0]
+        with torch.no_grad():
+            after = writer.packet(emb)
+        types = pd.read_feather(ann).set_index('bodyId').reindex(np.load(graph, allow_pickle=True)['neuron_body_ids'])['type'].astype(str).values
+        cells = writer.injection_index.cpu().numpy()
+        labels = types[cells]
+        orn = np.flatnonzero(labels == pd.Series(labels[writer.n_vis:writer.n_vis + writer.n_chemo]).value_counts().index[0])
+        assert torch.allclose(after[0, orn], after[0, orn[0]].expand(len(orn)))
+        untyped = writer.n_vis + np.flatnonzero(np.isin(labels[writer.n_vis:writer.n_vis + writer.n_chemo], ['None', 'nan']))
+        if len(untyped):
+            torch.testing.assert_close(after[0, untyped], before[0, untyped])
+        assert isinstance(writer.proj_vis, nn.Linear) and isinstance(writer.proj_mech, nn.Linear)   # maps stay per cell
+        shapes = {n: getattr(writer, n).weight.shape for n in saved}
+        for n, m in saved.items():
+            setattr(writer, n, m)
+        attach_tied_writer(model, graph, ann, convert=False)
+        assert {n: getattr(writer, n).weight.shape for n in saved} == shapes
+        assert isinstance(writer.proj_chemo, TiedProjection)
+    finally:
+        for n, m in saved.items():
+            setattr(writer, n, m)
+        if hasattr(model, 'tied_writer'):
+            delattr(model, 'tied_writer')
+
+
 def test_regime_homeostasis(fly_model_and_state):
     """Off: no regime field.  On: the split tick equals model.step bitwise at unit gain and zero drive; the quantile
     targets are fixed by the seed (median q* ~ 0.16); b follows eta_b (q* - [u > theta]) and the log gain
