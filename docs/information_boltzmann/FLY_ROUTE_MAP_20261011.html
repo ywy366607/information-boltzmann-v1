@@ -349,23 +349,20 @@ html{scroll-behavior:smooth}
 
 <section id="route">
 <h2>往后的路</h2>
-<p>主线没变：<strong>内外交互解耦</strong>，写入、思考、读出互不阻塞。变的是对它前提的认识：解耦要成立，时间必须有代价；时间要被合理分配，多想必须有用；多想要有用，大脑必须能学习和提取。所以下面每一层都依赖上一层。</p>
+<p>主线没变：<strong>内外交互解耦</strong>，写入、思考、读出互不阻塞。一路的否定把它的前提一层层挖了出来：解耦要成立，时间必须有代价；时间要被合理分配，多想必须有用；多想要有用，大脑必须能学习；多巴胺要有用，动作必须有后果。所以下一步先造“动作有后果”的世界，再回到时间和解耦。设计：<code>FLY_CONSEQUENCE_WORLD_DESIGN_20261012.html</code>。</p>
 <div class="layers">
-  <div class="layer now"><div class="n">1</div><div><h3>学习层：O(1) 三因子在线学习 <span class="chip no">规则跑通，没被使用</span></h3>
-    <p>每拍固定计算和内存：资格迹 × 多巴胺第三因子，先只用在有原生多巴胺投射的突触上（Kenyon→MBON 一类），与 BPTT 并存。先读仓库里旧的 <code>dan_plastic_lr</code> 三因子代码，写设计再动手。</p>
-    <p class="crit">标准：学到超出 32 词窗口的东西（重访节省、长程上下文），而不是单窗口 NLL。</p></div></div>
-  <div class="layer"><div class="n">2</div><div><h3>记忆层：让多想有价值</h3>
-    <p>在线写入的记忆让多几拍能提取出上下文。</p>
-    <p class="crit">标准：多想的收益变得可预测，并与熟悉度相关。</p></div></div>
-  <div class="layer"><div class="n">3</div><div><h3>时间精度层：机会成本</h3>
-    <p>每拍代价 = 大脑自己最近的平均收益率（边际价值定理），最终由紧张性多巴胺承载。</p>
-    <p class="crit">标准：熟悉的词快过，陌生的词多想；单位时间信息上升。</p></div></div>
-  <div class="layer"><div class="n">4</div><div><h3>解耦完成</h3>
-    <p>大脑在机会成本下自己决定节奏，采样落在 5 ms 抑制周期上；感知、思考、输出互不阻塞。</p></div></div>
-  <div class="layer now"><div class="n">5</div><div><h3>交互世界 <span class="chip open">提前到现在</span></h3>
-    <p>学习层的否定说明：没有后果，多巴胺回路就没有用处。所以先做交互世界。第一步是好奇书架，由外部选择器按学习进展选书，验证这个世界本身有效；然后把选择交给大脑，让多巴胺预测“这个选择带来的进展”。</p></div></div>
-  <div class="layer"><div class="n">6</div><div><h3>感觉扩展</h3>
-    <p>视觉：89,403 个视叶内在细胞，占全脑 54%。</p></div></div>
+  <div class="layer now"><div class="n">0</div><div><h3>味觉世界 <span class="chip open">下一步</span></h3>
+    <p>提示词 → 说“是 / 否” → 经原生味觉神经元尝到糖或苦。先做零样本检查（味觉能否驱动 PAM / PPL1；蘑菇体能否影响“是 / 否”），再跑 A0 对照、A1 现有规则；A1 如预言失败再加隔室规则（A2，以及放回被动阅读的 A2-读），最后 BPTT + GRPO 工程参照（A3）。</p>
+    <p class="crit">标准：偏好指数习得 ≥ 0.3、反转后 100 次内恢复、读 1,000 词后保持一半以上。实测依据：Kenyon 细胞上 PAM / PPL1 是混合的（效价被冲掉），MBON 上两极分化（隔室藏在连接里）。</p></div></div>
+  <div class="layer"><div class="n">1</div><div><h3>书架交给大脑</h3>
+    <p>世界已验证：按学习进展选能避开噪声，按惊奇选掉进噪声陷阱（0.73）。先用可学性差异大的书标定进展测量，再让大脑自己选，多巴胺预测“这本书带来的进展”。</p>
+    <p class="crit">前提：味觉世界里多巴胺 + 蘑菇体能学到价值。</p></div></div>
+  <div class="layer"><div class="n">2</div><div><h3>自生成闭环</h3>
+    <p>自己说的话成为未来的输入。评价：SIGReg 跨动作分支 + 潜空间预测——不同的动作应带来可区分、可预测的不同未来，同时挡住暗室和噪声电视。</p></div></div>
+  <div class="layer"><div class="n">3</div><div><h3>时间有代价，解耦完成</h3>
+    <p>在有后果的世界里，想得太久会错过机会（例如味觉世界里超时算“否”）。go 神经元在机会成本下自己决定节奏；感知、思考、输出互不阻塞。</p></div></div>
+  <div class="layer"><div class="n">4</div><div><h3>主动推理与感觉扩展</h3>
+    <p>决定看哪里、听什么、想多久、是否探索；视觉（视叶占全脑 54%）。</p></div></div>
 </div>
 </section>
 

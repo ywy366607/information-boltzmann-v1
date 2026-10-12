@@ -1,0 +1,325 @@
+<title>果蝇的第一个后果</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;800&family=Noto+Sans+SC:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a lab atlas — sticky contents rail on the left, one reading column; diagrams scroll inside their own frames. */
+:root{
+  --bg:#f3f6f8; --panel:#ffffff; --ink:#15202b; --muted:#5a6775; --rule:#d3dbe3;
+  --accent:#0d6c8a; --accent-soft:#e1eff4;
+  --ok:#2c7a4e; --ok-soft:#e3f2e9; --no:#a2353f; --no-soft:#f7e4e6; --open:#8a6100; --open-soft:#f6eed9;
+  --inh:#b23a48; --exc:#2f6fb5;
+  --display:"Noto Serif SC","Songti SC","STSong",serif;
+  --body:"Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0e1419; --panel:#151d24; --ink:#e3e9ee; --muted:#93a1ae; --rule:#26323c;
+  --accent:#57b6d3; --accent-soft:#16303a;
+  --ok:#6cc58f; --ok-soft:#163023; --no:#e0808a; --no-soft:#3a1d22; --open:#d9ad4a; --open-soft:#33290f;
+  --inh:#e0808a; --exc:#78a9e6; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0e1419; --panel:#151d24; --ink:#e3e9ee; --muted:#93a1ae; --rule:#26323c;
+  --accent:#57b6d3; --accent-soft:#16303a;
+  --ok:#6cc58f; --ok-soft:#163023; --no:#e0808a; --no-soft:#3a1d22; --open:#d9ad4a; --open-soft:#33290f;
+  --inh:#e0808a; --exc:#78a9e6; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15.5px;line-height:1.75;margin:0}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:20px;padding-block:28px 80px;display:grid;grid-template-columns:200px minmax(0,1fr);gap:48px}
+nav.toc{position:sticky;top:calc(env(safe-area-inset-top,0px) + 24px);align-self:start;font-size:13.5px}
+nav.toc a{display:block;color:var(--muted);text-decoration:none;padding:4px 0 4px 12px;border-left:2px solid var(--rule)}
+nav.toc a:hover,nav.toc a:focus-visible{color:var(--accent);border-left-color:var(--accent);outline:none}
+nav.toc .k{font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--muted);text-transform:uppercase;margin-bottom:8px}
+main{min-width:0;max-width:780px}
+header.top{border-bottom:1px solid var(--rule);padding-bottom:22px;margin-bottom:8px}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(30px,5vw,44px);line-height:1.2;margin:6px 0 10px;text-wrap:balance}
+h2{font-family:var(--display);font-weight:800;font-size:24px;line-height:1.35;margin:56px 0 12px;text-wrap:balance}
+h3{font-family:var(--body);font-weight:700;font-size:16.5px;margin:0 0 4px}
+p{margin:0 0 12px}
+.lede{font-size:17px;color:var(--ink)}
+.meta{display:flex;flex-wrap:wrap;gap:6px 18px;font-family:var(--mono);font-size:12.5px;color:var(--muted)}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+code,.path{font-family:var(--mono);font-size:12.5px;background:var(--accent-soft);color:var(--ink);padding:1px 5px;border-radius:3px;word-break:break-all}
+blockquote{margin:18px 0;padding:14px 18px;border-left:3px solid var(--accent);background:var(--panel);font-family:var(--display);font-size:17px;line-height:1.8}
+blockquote .who{display:block;font-family:var(--body);font-size:12.5px;color:var(--muted);margin-top:6px}
+.tablebox{overflow-x:auto;margin:12px 0 16px;border:1px solid var(--rule);border-radius:6px;background:var(--panel)}
+table{border-collapse:collapse;width:100%;font-size:14px;min-width:560px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--rule);vertical-align:top}
+th{font-weight:700;font-size:12.5px;color:var(--muted);letter-spacing:.04em;background:var(--bg)}
+tr:last-child td{border-bottom:none}
+.figure{overflow-x:auto;border:1px solid var(--rule);border-radius:6px;background:var(--panel);padding:10px;margin:12px 0 6px}
+.figure svg{display:block;min-width:620px;width:100%;height:auto}
+.cap{font-size:13px;color:var(--muted);margin:4px 0 16px}
+svg text{font-family:var(--body);fill:var(--ink)}
+svg .m{fill:var(--muted)} svg .mono{font-family:var(--mono)}
+svg .node{fill:var(--panel);stroke:var(--rule);stroke-width:1.4}
+svg .node.key{stroke:var(--accent);stroke-width:2}
+svg .node.inh{stroke:var(--inh);stroke-width:2}
+svg .line{stroke:var(--muted);stroke-width:1.5;fill:none}
+svg .line.inh{stroke:var(--inh);stroke-width:4}
+svg .line.dash{stroke-dasharray:5 4}
+svg .line.miss{stroke:var(--open);stroke-dasharray:3 4;stroke-width:2}
+svg .ah{fill:var(--muted)} svg .ah.inh{fill:var(--inh)} svg .ah.miss{fill:var(--open)}
+svg .grid{stroke:var(--rule);stroke-width:1}
+svg .bar{fill:var(--accent)} svg .bar.inh{fill:var(--inh)} svg .bar.exc{fill:var(--exc)}
+svg .curve{stroke:var(--accent);stroke-width:2.2;fill:none}
+svg .dot{fill:var(--accent)} svg .dot.o{fill:var(--open)}
+.chip{display:inline-block;font-size:12px;font-weight:700;line-height:1;padding:5px 8px;border-radius:999px;white-space:nowrap}
+.chip.ok{background:var(--ok-soft);color:var(--ok)} .chip.no{background:var(--no-soft);color:var(--no)} .chip.open{background:var(--open-soft);color:var(--open)}
+ol.timeline{list-style:none;margin:16px 0;padding:0;border-left:2px solid var(--rule)}
+ol.timeline>li{position:relative;padding:0 0 22px 22px}
+ol.timeline>li::before{content:"";position:absolute;left:-7px;top:9px;width:12px;height:12px;border-radius:50%;background:var(--bg);border:2px solid var(--accent)}
+ol.timeline>li.no::before{border-color:var(--no)} ol.timeline>li.open::before{border-color:var(--open)} ol.timeline>li.ok::before{border-color:var(--ok)}
+.tl-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 10px;margin-bottom:2px}
+.tl-head .stage{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.tl-head .commit{font-family:var(--mono);font-size:12px;color:var(--accent)}
+ol.timeline p{margin:0 0 4px;font-size:14.5px}
+ol.timeline .why{color:var(--muted);font-size:13.5px}
+.layers{display:grid;gap:10px;margin:14px 0}
+.layer{display:grid;grid-template-columns:44px minmax(0,1fr);gap:14px;padding:14px 16px;background:var(--panel);border:1px solid var(--rule);border-radius:6px}
+.layer .n{font-family:var(--display);font-weight:800;font-size:26px;color:var(--accent);line-height:1.1}
+.layer.now{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
+.layer p{font-size:14.5px;margin:0 0 4px}
+.layer .crit{font-size:13.5px;color:var(--muted)}
+.cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.card{background:var(--panel);border:1px solid var(--rule);border-radius:6px;padding:14px 16px}
+.card ul{margin:0;padding-left:18px;font-size:14.5px}
+.card li{margin-bottom:4px}
+ul.plain{padding-left:18px} ul.plain li{margin-bottom:6px}
+img.fig{display:block;width:100%;height:auto;border-radius:4px}
+details{border:1px solid var(--rule);border-radius:6px;background:var(--panel);padding:10px 14px;margin:10px 0}
+details summary{cursor:pointer;font-weight:700}
+details summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+footer{margin-top:56px;padding-top:16px;border-top:1px solid var(--rule);font-size:13px;color:var(--muted)}
+@media (max-width:900px){
+  .wrap{grid-template-columns:minmax(0,1fr);gap:8px;padding-inline:16px}
+  nav.toc{position:static;display:flex;flex-wrap:wrap;gap:4px 10px;margin-bottom:8px}
+  nav.toc .k{width:100%}
+  nav.toc a{border-left:none;padding:2px 0}
+  .cols{grid-template-columns:minmax(0,1fr)}
+}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+html{scroll-behavior:smooth}
+a{color:var(--accent)} ol.plain{padding-left:20px} ol.plain li{margin-bottom:6px} pre.mermaid{background:var(--panel);border:1px solid var(--rule);border-radius:6px;padding:12px;overflow-x:auto;margin:12px 0 6px}
+</style>
+
+<div class="wrap">
+<nav class="toc" aria-label="目录">
+  <div class="k">目录</div>
+  <a href="#why">为什么问题这么多</a>
+  <a href="#loop">动作有后果的闭环</a>
+  <a href="#ladder">阶梯</a>
+  <a href="#level0">第零层：味觉世界</a>
+  <a href="#phase0">先做的零样本检查</a>
+  <a href="#arms">对照与预言</a>
+  <a href="#compartment">隔室规则</a>
+  <a href="#level1">第一层与 SIGReg</a>
+  <a href="#cost">代价与顺序</a>
+</nav>
+
+<main>
+<header class="top">
+  <div class="eyebrow">设计稿 · 不含代码 · 等确认后再动手</div>
+  <h1>果蝇的第一个后果</h1>
+  <p class="lede">到目前为止，果蝇说什么都不会改变它接下来看到什么。这份设计先解释为什么一路上碰到这么多问题，再设计一个最小的世界：动作改变未来输入，后果短、清楚、经由连接组原生的味觉通路进入大脑。</p>
+  <div class="meta"><span>2026-10-12</span><span>前置提交 5510dd0</span><span>1 拍 = 1 ms</span><span>个体：稳态出生的新生对照（b2_control）</span></div>
+</header>
+
+<section id="why">
+<h2>为什么问题这么多</h2>
+<p>一路上的否定结果看起来很杂：精度门是惰性的，多巴胺没有因果，在线规则没有效果，蘑菇体不被使用，多想没有价值，内在自我模型不存在，新生大脑全静默，核心变成节拍器……但它们只来自四个根源，而且大部分来自第一个。</p>
+
+<div class="tablebox"><table>
+<thead><tr><th>根源</th><th>我们碰到的症状</th><th>修法</th></tr></thead>
+<tbody>
+<tr><td><strong>A. 世界是开环的</strong><br><span class="cap">被动读文本，输出不改变下一个输入</span></td>
+<td>调质细胞的精度门惰性；多巴胺跟踪惊奇但没有因果；在线规则在成年和新生个体都无可测效果；蘑菇体静默损失 ≤ 0.002（新生个体也一样）；成年个体多想几拍没有价值；机会成本没有可分配的东西；找不到内在自我模型</td>
+<td>一个动作有后果的世界（本设计）</td></tr>
+<tr><td><strong>B. 连接组只给了线，没给细胞</strong><br><span class="cap">没有离子通道、静息电位、突触位置、受体类型</span></td>
+<td>新生个体 86% 静默、多巴胺细胞 0 Hz；成年核心 140 Hz 节拍器；Kenyon 轴-轴突触被当成树突输入，Kenyon 细胞变成稠密池；多巴胺把奖赏（PAM）和惩罚（PPL1）混在一起，也不分隔室</td>
+<td>稳态内在可塑性 + 孕育期（已做）；neuPrint 脑区修正（已做）；按隔室的多巴胺（本设计，待验证后才加）</td></tr>
+<tr><td><strong>C. BPTT 是一个太强的老师</strong></td>
+<td>它已经给了逐词的完整答案，标量第三因子加不进新东西；它只看 32 个词；它会找捷径（核心长成时钟、新生个体把思考拍数推到上限）；在线规则用到全部多巴胺靶点时与它形成正反馈、梯度发散</td>
+<td>不替代它。让慢的生物学习去它够不着的地方：窗口之外、行为的后果</td></tr>
+<tr><td><strong>D. 我们自己的测量</strong></td>
+<td>自我模型探针泄漏了拍数；把弱自相关峰读成 8 Hz 心跳；噪声书每次换新探针造成假进展；显存碎片、磁盘写满</td>
+<td>先设计对照再下结论；每个否定结果写原因</td></tr>
+</tbody></table></div>
+
+<p>为什么会这样？因为这个系统<strong>不能拆开做</strong>。我们一直把器官一个个放进罐子里测：多巴胺、蘑菇体、在线规则、go 神经元、好奇心。它们的意义只在闭环里存在，罐子里的每一个都显得没用。A 类的所有否定，其实是同一个缺失前提从不同角度看到的样子。</p>
+
+<p>主线也是沿着这条链走到这里的，每一步都是上一步的前提：</p>
+<blockquote>内外交互解耦 → 时间必须有代价 → 多想必须有用 → 大脑必须能学习和记忆 → 多巴胺要有评价的对象 → 动作必须有后果 → 需要一个会回应的世界</blockquote>
+<p>所以现在不是偏离主线，而是走到了主线最底下的那块地基。</p>
+</section>
+
+<section id="loop">
+<h2>动作有后果的闭环</h2>
+<p>强化学习和主动推理需要的不是“奖励不可微”，而是下面这个环。只要环成立，多巴胺、蘑菇体和在线学习才第一次有对象。</p>
+<pre class="mermaid">
+flowchart LR
+  A[感知] --> B[内部状态]
+  B --> C[动作：说出一个词]
+  C --> D[世界变化]
+  D --> E[未来的感知不同]
+  E --> F[多巴胺评价]
+  F --> G[学习]
+  G --> B
+</pre>
+<p class="cap">被动阅读缺的是 C → D：说什么，下一个词都由数据集决定。</p>
+<p>两种学习并存：BPTT 负责快的、窗口内的调整；多巴胺 + 资格迹负责慢的、窗口外的、带后果的信用分配。</p>
+</section>
+
+<section id="ladder">
+<h2>阶梯</h2>
+<p>每一层只在上一层的机制被证明之后才上。这样任何零结果都能定位到一个原因。</p>
+<div class="layers">
+  <div class="layer now"><div class="n">0</div><div><h3>味觉世界 <span class="chip open">本设计</span></h3>
+    <p>一个提示词，说“是”或“否”，说“是”就尝到糖或苦。一次试验约 6 个词，结果差异最大。</p>
+    <p class="crit">回答：这个大脑能不能从后果里学到价值？现有多巴胺规则缺的隔室是不是必要的？</p></div></div>
+  <div class="layer"><div class="n">2</div><div><h3>书架交给大脑</h3>
+    <p>世界已验证：按学习进展选能避开噪声，按惊奇选会掉进噪声陷阱（噪声占 0.73）。下一步让大脑自己选书，多巴胺预测“这本书带来多少进展”。</p>
+    <p class="crit">前提：先用可学性差异大的书把进展测量标定好（主题书信噪比只有约 0.06）。</p></div></div>
+  <div class="layer"><div class="n">1</div><div><h3>自生成闭环</h3>
+    <p>一部分上下文来自真实文本，一部分来自自己的生成，自己说的话成为未来的输入。最原生，也最难诊断。评价信号的首选方案见下文的 SIGReg 一节。</p></div></div>
+  <div class="layer"><div class="n">3</div><div><h3>主动推理</h3>
+    <p>决定看哪里、听什么、想多久、是否探索；用期望自由能（外部目标 + 信息增益）评价。</p></div></div>
+</div>
+<p class="cap">编号沿用你的分层；执行顺序是 0 → 2 → 1 → 3。书架排在自生成前面，因为它的世界和测量已经验证过。</p>
+</section>
+
+<section id="level0">
+<h2>第零层：味觉世界</h2>
+<p>它是果蝇嗅觉学习实验的文本版：气味 → 接近或回避 → 糖或苦。真实果蝇在这个任务里用的正是蘑菇体和多巴胺。</p>
+
+<h3>一次试验（约 6 个词的时长）</h3>
+<div class="tablebox"><table>
+<thead><tr><th>时段</th><th>世界做什么</th><th>果蝇做什么</th></tr></thead>
+<tbody>
+<tr><td>提示</td><td>写入一个提示词 c（每个个体 4 个常见名词，2 个“甜”、2 个“苦”，映射由个体种子随机决定）</td><td>读，go 神经元决定何时作答</td></tr>
+<tr><td>动作</td><td>—</td><td>说一个词：解码器只在 “ yes” / “ no” 两个词上取 softmax 并采样，不加任何新参数。说出的词作为它的下一个输入（它听见自己）</td></tr>
+<tr><td>后果：说“是”</td><td>再次写入 c，同时刺激味觉神经元：c 甜则刺激糖味投射神经元，c 苦则刺激苦味神经元，持续一个词的时长</td><td>感知结果</td></tr>
+<tr><td>后果：说“否”</td><td>同样时长的静默</td><td>什么也没发生</td></tr>
+<tr><td>间隔</td><td>随机 2–4 个词时长的静默</td><td>—</td></tr>
+</tbody></table></div>
+<p>后果出现时重新写入 c，对应真实实验里“气味在场时被电击或喂糖”。这让资格迹在后果到来时仍然指向正确的提示，不必把信用跨越很长的延迟。</p>
+
+<h3>为什么它满足三个条件</h3>
+<ul class="plain">
+<li><strong>动作改变未来输入。</strong>说“是”和说“否”之后，感知到的东西不同；它还会听见自己的回答。</li>
+<li><strong>试验短。</strong>约 60–90 拍一次。400 次试验约 2,400 个词时长，和书架的一支差不多。</li>
+<li><strong>奖励差异最大。</strong>结果只有糖、苦、无三种。随机策略期望为 0；最优策略每次试验期望 +0.5。</li>
+</ul>
+
+<h3>奖赏从哪里进来</h3>
+<p>不发一个标量奖励，而是走连接组里原生的味觉通路。注释里已标出味觉二级神经元（Yao &amp; Scott 2022）：糖味投射神经元 <span class="path">GNG540</span>、<span class="path">GNG550</span>，糖味局部神经元 <span class="path">GNG056</span>，苦味神经元 <span class="path">DNg28</span>，都在图里。受体级的糖/苦味感受神经元没有直接注释，可以按连接找出投到这些二级神经元的味觉感觉神经元。</p>
+<p>这样多巴胺细胞对后果的反应来自大脑自己的线路，而不是我们写进去的。工程对照支（GRPO）另外拿到标量奖励，但两支感知到的味觉刺激完全相同。</p>
+
+<h3>评价</h3>
+<ul class="plain">
+<li><strong>偏好指数 PI</strong> = P(是 | 甜) − P(是 | 苦)，果蝇行为实验的标准指标，范围 −1 到 1，随机为 0。每 50 次试验一个点，跨个体报告最小 / 中位 / 均值 / 最大。</li>
+<li><strong>习得</strong>：前 200 次试验，映射固定。</li>
+<li><strong>反转</strong>：接下来 200 次，甜苦互换。慢权重背下来的映射此时是错的，测的是在线记忆。</li>
+<li><strong>保持</strong>：反转后固定权重读 1,000 个词的真实文本，再做 20 次不给后果的探查试验。测的是超出 BPTT 32 词窗口的记忆。</li>
+<li><strong>健康</strong>：任务前后各测一次读文本 NLL；放电率是否守在目标附近；Kenyon 细胞稀疏性。</li>
+</ul>
+
+<h3>排除的捷径</h3>
+<ul class="plain">
+<li>不对果蝇自己说出的词算交叉熵，否则它会模仿自己（无论结果好坏都强化原来的选择）。</li>
+<li>后果是感觉刺激，不是文本词，交叉熵够不着它。</li>
+<li>生物路线的各支冻结全部 BPTT 权重：任何学习只可能来自在线规则。</li>
+</ul>
+</section>
+
+<section id="phase0">
+<h2>先做的零样本检查</h2>
+<p>不训练，每项几分钟到十几分钟。任何一项不通过，生物路线的零结果就有了现成的原因，先修它再跑。</p>
+<div class="tablebox"><table>
+<thead><tr><th>检查</th><th>通过标准</th><th>不通过时的出路</th></tr></thead>
+<tbody>
+<tr><td>a. 味觉 → 多巴胺细胞</td><td>刺激糖味神经元时 PAM 的阶段性反应大于 PPL1；苦味反过来</td><td>线路在学习中被冲淡：直接刺激 PAM / PPL1，对应光遗传学的充分性实验（Liu 2012；Aso &amp; Rubin 2016）</td></tr>
+<tr><td>b. 蘑菇体能否影响动作</td><td>刺激或静默 MBON 时，“是” − “否” 的 logit 差明显改变</td><td>蘑菇体够不着输出（被动阅读里静默它几乎无损失，这是真实风险）。动作应改从 MBON 投射的前运动区读出</td></tr>
+<tr><td>c. 提示词的 Kenyon 编码</td><td>4 个提示词两两重叠 ≤ 0.15（被动阅读时测到 0.08–0.15）</td><td>换提示词</td></tr>
+<tr><td>d. 提示到后果的延迟</td><td>延迟 ≤ 资格迹时间常数 50 拍（预计 20–40 拍）</td><td>后果时重新写入提示（已在设计里）</td></tr>
+<tr><td>e. 多巴胺细胞是否也投到同隔室的 MBON</td><td><strong>已通过</strong>：97 个 MBON 都收到 PAM / PPL1 投射，51% 几乎只收 PPL1、41% 几乎只收 PAM</td><td>—</td></tr>
+</tbody></table></div>
+</section>
+
+<section id="arms">
+<h2>对照与预言</h2>
+<p>所有支都从同一个个体出发：稳态出生、读过 16,384 个词的新生对照个体（b2_control），受体亲和常数 K = 0.000554，多巴胺细胞醒着（约 1.8 Hz）。</p>
+<div class="tablebox"><table>
+<thead><tr><th>支</th><th>内容</th><th>预言</th></tr></thead>
+<tbody>
+<tr><td>A0 对照</td><td>冻结权重，无在线规则</td><td>PI 在每个阶段都落在 ±0.1 内。用来排除泄漏</td></tr>
+<tr><td>A1 现有规则</td><td>冻结权重，现有在线规则：每个 Kenyon 细胞一份记忆，收到的全部多巴胺加成一个浓度</td><td><strong>失败或极弱</strong>：PI 在 ±0.1 内，但记忆 φ 在变（标准差 &gt; 0.01）。它学到“发生了点什么”，学不到“好还是坏”。原因已实测：每个 Kenyon 细胞收到的多巴胺都是 PAM 与 PPL1 的混合（PAM 占比中间 80% 在 0.64–0.87，没有一个以 PPL1 为主），糖和苦在几乎每个 Kenyon 细胞上都让浓度升高；而且一个 Kenyon 细胞的所有输出被一起改变，分不出通往接近型还是回避型 MBON</td></tr>
+<tr><td>A2 隔室规则</td><td>冻结权重，记忆按 Kenyon→MBON 边记，多巴胺来自同一隔室的多巴胺细胞。<em>只在 A1 如预言失败后才加</em></td><td>检查 a、b 通过时：前 200 次试验 PI 中位数 ≥ 0.3；反转后 100 次内重新达到 0.3；读 1,000 词后的保持 ≥ 习得末期的一半。检查 b 不通过时：PI ≈ 0，原因是蘑菇体够不着输出</td></tr>
+<tr><td>A2-读 被动阅读对照</td><td>不进味觉世界，只读文本：冻结权重，换上隔室规则，按之前的方法测 A→B→A 重访节省（记忆照写 − 冻结）。之前的现有规则在新生在线个体上测得 +0.002（噪声内）</td><td>仍在噪声内（|差| &lt; 0.01）：之前在线规则无效，主要因为世界没有后果。若 &gt; 0.02 且跨种子一致：缺精度是之前被掩盖的原因，要回头重看被动阅读里的那些否定结果</td></tr>
+<tr><td>A3 工程参照</td><td>BPTT + GRPO：同一状态复制 4 个分支，优势 = 奖励 − 组平均，损失 = −优势 × log 概率</td><td>前 200 次 PI ≥ 0.8；反转比习得慢；读文本 NLL 变差 &gt; 0.1（策略梯度改动了共享的读出）</td></tr>
+</tbody></table></div>
+<p>四组比较各回答一个问题：A0 对 A1，世界本身够不够；A1 对 A2，结构精度是不是必要；A2 对 A2-读，之前的失败是缺后果还是缺精度；A2 对 A3，生物规则离工程最优多远。</p>
+<p>A2 与 A3 的比较是关键：工程路线告诉我们这个任务能不能被这个大脑学会；生物路线告诉我们大脑能不能自己学会。我预期 A3 习得更快，A2 反转更快、对读文本无损。这是两种学习各管一段的直接证据。</p>
+<p>多巴胺反应会不会从后果时刻迁移到提示时刻（类似奖赏预测误差），作为探索性测量记录，不预言。</p>
+</section>
+
+<section id="compartment">
+<h2>隔室规则（A2，不写代码，只定原则）</h2>
+<ul class="plain">
+<li><strong>为什么需要。</strong>真实 Kenyon 细胞的轴突穿过十几个隔室，每个隔室由不同的多巴胺细胞管，并连着不同的 MBON。奖赏性 PAM 支配回避型 MBON 所在的隔室，惩罚性 PPL1 支配接近型 MBON 所在的隔室，效价靠这种分布实现。现在的模型里，一个 Kenyon 细胞只有一份记忆、一种多巴胺浓度，效价在结构上不可能出现。</li>
+<li><strong>记忆放在哪里。</strong>Kenyon→MBON 一共 61,210 条边（全脑 2,556 万条），每条一份记忆，每拍固定计算，O(1)。</li>
+<li><strong>多巴胺从哪里来（已实测）。</strong>代码保留了每条多巴胺投射，但每个神经元把它们加成一个浓度。按投射来源统计：Kenyon 细胞上 PAM 与 PPL1 是混合的（PAM 占比中位 0.77，没有一个以 PPL1 为主），效价在这里被冲掉；MBON 上则两极分化（51% 几乎只收 PPL1，41% 几乎只收 PAM）。隔室其实就藏在连接里：一条 Kenyon→MBON 边上的多巴胺取“送到这个 MBON 的多巴胺”，效价就保留下来了，不需要新的空间数据。</li>
+<li><strong>符号固定为负。</strong>多巴胺使 Kenyon→MBON 突触减弱（Hige 2015；Cohn 2015）。这是生物事实，不是学出来的参数。</li>
+<li><strong>资格迹只看 Kenyon 细胞。</strong>这种可塑性不需要 MBON 同时放电（Hige 2015），所以资格迹就是现有的 Kenyon 突触前迹。</li>
+</ul>
+</section>
+
+<section id="level1">
+<h2>第一层与 SIGReg</h2>
+<p>自生成闭环里，“结果”由什么评价决定了一切。用未来的预测误差会奖励无聊（暗室：生成“的的的的”最好预测）；用学习进展可以避开暗室，但信噪比比书架还差；用真实续文又退回半监督。</p>
+
+<h3>LeJEPA / LeWM 能带来什么</h3>
+<p>LeWM（Maes、Le Lidec、Scieur、LeCun、Balestriero，arXiv:2603.19312，2026 年 3 月）用两项损失端到端训练 JEPA 世界模型：下一嵌入的预测损失，加上 SIGReg。SIGReg 把嵌入投影到许多随机方向，逐个检验是否像高斯，把整个分布推向各向同性高斯，因此不需要 EMA、停止梯度或预训练编码器。它的预测器以动作为条件，规划时在潜空间里展开候选动作，朝一个<em>目标嵌入</em>走。</p>
+
+<h3>直接套用会被时钟骗过</h3>
+<p>LeJEPA 的“批”是很多张不同的图。我们只有一个个体、一条时间流，批只能沿时间取。这时有一个作弊解：内部长出一个时钟，嵌入随时间缓慢转圈，既覆盖各个方向，又完全可预测。两项损失同时满足，输入却可以是“的的的的”。成年核心曾经变成节拍器，训练日志里读出潜变量沿时间的有效秩约 8–10（32 词窗口，上限 32），所以这个风险是真实的。</p>
+
+<h3>换一种用法：SIGReg 跨动作分支</h3>
+<ul class="plain">
+<li>从同一个大脑状态复制几个分支，每支说不同的话，往前走几步。</li>
+<li>要求各分支未来的嵌入彼此分得开（跨分支 SIGReg），每支的未来又能被预测（潜空间预测损失）。</li>
+<li>合起来是：<strong>我的不同动作，应该带来可区分而且可预测的不同未来</strong>，接近“赋能”（可控性）。</li>
+<li>暗室：动作不改变任何东西，分支塌在一起，被惩罚。噪声电视：分支不同但不可预测，也被惩罚。</li>
+<li>LeWM 有外部目标，我们没有；可控性正好替代目标，成为没有目标时的内在价值。</li>
+</ul>
+
+<h3>和果蝇的对应</h3>
+<ul class="plain">
+<li>预测编码写入器比较的就是预测的和实际的感觉活动，本来就是潜空间预测。</li>
+<li>稳态内在可塑性是生物版的防塌缩，但只约束每个神经元自己的平均放电率，挡不住步调一致（节拍器）。SIGReg 约束任意方向的分布。</li>
+<li>生物里对应完整去相关的是抑制，例如蘑菇体里的 APL 抑制神经元让 Kenyon 细胞稀疏而彼此不同。</li>
+</ul>
+<p>它能替换掉三个嫌疑中的“奖励定义会退化”；标量奖励的信用分配方差和进展信号的信噪比仍然存在。</p>
+<p>零成本的准备：用现有检查点，把读出潜变量沿时间的方差分成两部分，一部分与输入相关，一部分与输入无关（时钟）。它告诉我们时钟作弊在这只果蝇身上已经有多大。</p>
+</section>
+
+<section id="cost">
+<h2>代价与顺序</h2>
+<ol class="plain">
+<li>零样本检查 a–e，以及时钟成分的测量。每项几分钟到十几分钟。</li>
+<li>写第零层世界的代码和测试（关闭时逐位不变、不泄漏未来），A0、A1 各跑一次。冻结权重、不做 BPTT，估计每支 10–20 分钟。</li>
+<li>A1 如预言失败，再加隔室规则跑 A2。3 个个体种子，报告最小 / 中位 / 均值 / 最大。</li>
+<li>A2-读：同一条隔室规则放回被动阅读，约十几分钟。</li>
+<li>A3 工程参照，约 1 小时。</li>
+<li>结果写进实验记录和路线图，然后决定是否进入书架交给大脑。</li>
+</ol>
+<p>全部是一次一个 torch 进程。每一步的预言已写在上面；你确认后我再写代码。</p>
+</section>
+
+<footer>
+<p>相关文档：<span class="path">FLY_HOMEOSTASIS_BIRTH_20261012.md</span>（稳态出生、对照、书架两轮）、<span class="path">FLY_CURIOUS_SHELF_DESIGN_20261012.html</span>、<span class="path">FLY_ROUTE_MAP_20261011.html</span>。</p>
+<p>LeWM：<a href="https://arxiv.org/abs/2603.19312">arxiv.org/abs/2603.19312</a></p>
+</footer>
+</main>
+</div>
