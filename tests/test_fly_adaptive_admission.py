@@ -1133,3 +1133,27 @@ def test_relative_and_dopamine_scales_compose_on_the_same_update():
     w2 = [before[0] + 0.5]
     compose_edge_updates(model, ['edge_weight_e'], w2, before, None, local, 'pre')
     assert torch.allclose(w2[0] - before[0], torch.tensor([1.0, 0.25, 0.5]))
+
+
+def test_long_intervals_in_segments_compute_the_same(fly_model_and_state):
+    """Splitting a long word interval into checkpoint segments (no onset write after the first) leaves the forward
+    computation unchanged: same final state, same per-tick reads and the same survival-weighted loss."""
+    import dataclasses
+    model, state, device = fly_model_and_state
+    if device != "cuda":
+        pytest.skip("event-driven transmission needs CUDA")
+    torch.manual_seed(5)
+    start = dataclasses.replace(state, h=torch.rand_like(state.h))
+    ids = torch.tensor([[50, 101, 205]], device=device)
+    targets = torch.tensor([[101, 205, 307]], device=device)
+    results = []
+    for seg in (0, 3):
+        learner = FlyBPTTLearner(model, start, lr=2e-4, settle_ticks=14, writer_baseline_clock="physical",
+                                 use_checkpointing=True, stream_ticks=1, lambda_mcr2=0.0)
+        learner.stream_pace_mean, learner.pace_seed, learner.stream_segment_ticks = 6.0, 7, seg
+        with torch.no_grad():
+            scores, nxt, _ = learner.forward_window(ids, targets)
+        results.append((scores, nxt.h, learner.last_train_loss, learner.last_adaptive_metrics['adaptive_total_ticks']))
+    (s0, h0, l0, t0), (s1, h1, l1, t1) = results
+    assert t0 == t1 and t0 > 9
+    assert torch.allclose(h0, h1, atol=1e-6) and torch.allclose(s0, s1, atol=1e-5) and torch.allclose(l0, l1, atol=1e-5)

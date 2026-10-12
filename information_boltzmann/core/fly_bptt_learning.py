@@ -1421,7 +1421,7 @@ def read_fly_motor(model, state):
 def _advance_fly_token_stream(model, state, token, schedule_box=None, *, ticks, hold_input=False, read_after=None,
                               writer_baseline_clock='physical', base_rates=None, thresholds=None,
                               conductance_gains=None, alif_params=None, stp_params=None, h_mean_decay=0.99,
-                              read_every=False, world=None, world_tape=None, act_g=None):
+                              read_every=False, world=None, world_tape=None, act_g=None, fresh=True):
     """Streaming clock: every token occupies exactly `ticks` physical ticks, whatever the brain is doing, and the
     prediction of the next token is read just before it arrives.  Nothing waits for the brain to settle, so the
     processing of a token continues while the next ones are being sensed (latency and throughput decouple).
@@ -1440,6 +1440,8 @@ def _advance_fly_token_stream(model, state, token, schedule_box=None, *, ticks, 
     head integrates (act_g carried in [1, 2]), the realized act steps the world.  world_tape (a fresh list per token)
     records each tick's (drive spec, record, act) on the first pass and replays it on a checkpoint recompute.  Then
     also returned: the act hazards [ticks, 2] and the new act_g.
+    fresh=False: a continuation segment of the same token (no onset write; quiet or held ticks only) -- long intervals
+    are split into segments so a checkpoint recompute never holds more than one segment's activations.
     """
     if not isinstance(ticks, int) or ticks < 1:
         raise ValueError('ticks must be a positive integer')
@@ -1464,7 +1466,7 @@ def _advance_fly_token_stream(model, state, token, schedule_box=None, *, ticks, 
         if world is not None:
             spec, record = world_tape[tick][:2] if replay else world.drive()
             model.external_drive = dense(spec, model.n_neurons, current.h.device)
-        if tick == 0 or (hold_input and writer is not None):
+        if (tick == 0 and fresh) or (hold_input and writer is not None):
             drive, baseline = write_input(model, current, token)
             current = step_fly_physical_tick(model, current, token, drive, baseline, options,
                                              h_mean_decay=h_mean_decay, base_rates=base_rates)
@@ -2053,23 +2055,31 @@ class FlyBPTTLearner:
                 # word, so that elapsed time tells nothing about when the next word comes; the read is the expectation
                 # standing just before the next word arrives
                 k = int(self.pace_rng.geometric(1.0 / pace)) if pace > 0 else self.stream_ticks
-                stream['ticks'] = k
                 total_ticks += k
-                box = [k]
-                if world is not None:
-                    tape = []
-                    stream.update(world=world, world_tape=tape, act_g=act_g)
-                if self.use_checkpointing and m.training and torch.is_grad_enabled():
-                    out = checkpoint(advance_fly_token_stream, m, state, token, box, use_reentrant=False, **stream)
-                else:
-                    out = advance_fly_token_stream(m, state, token, box, **stream)
-                state, token_lat = out[0], out[1]
+                seg = int(getattr(self, 'stream_segment_ticks', 16) or k)
+                done = 0
+                while done < k:
+                    # a long interval in segments of <= seg ticks, each its own checkpoint (same computation)
+                    n = min(seg, k - done)
+                    stream['ticks'] = n
+                    stream['fresh'] = done == 0
+                    box = [n]
+                    if world is not None:
+                        tape = []
+                        stream.update(world=world, world_tape=tape, act_g=act_g)
+                    if self.use_checkpointing and m.training and torch.is_grad_enabled():
+                        out = checkpoint(advance_fly_token_stream, m, state, token, box, use_reentrant=False, **stream)
+                    else:
+                        out = advance_fly_token_stream(m, state, token, box, **stream)
+                    state, token_lat = out[0], out[1]
+                    if pace > 0:
+                        reads.append(out[2])
+                    if world is not None:
+                        hazards.append(out[-2]); act_g = out[-1]
+                        records += [rec for _, rec, _ in tape]
+                    done += n
                 if pace > 0:
-                    reads.append(out[2])
                     intervals.append(k)
-                if world is not None:
-                    hazards.append(out[-2]); act_g = out[-1]
-                    records += [rec for _, rec, _ in tape]
                 latents.append(token_lat)
             features = torch.cat(latents, dim=0)
             logits = m.decoder(m.read_norm(features))
