@@ -703,3 +703,181 @@ def test_adapted_dopamine_starts_with_an_effect(fly_model_and_state):
         model._buffers.pop('synapse_share', None)
         for p in model.parameters():
             p.requires_grad_(False)
+
+
+def _online_cleanup(model):
+    from information_boltzmann.core.fly_bptt_learning import DOPAMINE_PARAMETER_NAMES, ONLINE_DA_PARAMETER_NAMES
+    for name in ('go_read', 'go_drive', 'go_reset', 'go_logit_leak') + DOPAMINE_PARAMETER_NAMES + ONLINE_DA_PARAMETER_NAMES:
+        if hasattr(model, name):
+            delattr(model, name)
+    for name in ('dopamine_adapted', 'dopamine_site'):
+        if hasattr(model, name):
+            delattr(model, name)
+    for name in ('synapse_share', 'online_da_target'):
+        model._buffers.pop(name, None)
+    for p in model.parameters():
+        p.requires_grad_(False)
+
+
+def _run_ticks(model, state, n, opts):
+    from information_boltzmann.core.fly_bptt_learning import step_fly_physical_tick
+    s = state
+    with torch.no_grad():
+        for _ in range(n):
+            s = step_fly_physical_tick(model, s, None, torch.zeros_like(s.h), s.baseline, opts)
+    return s
+
+
+def test_online_da_plasticity_off_zero_rate_and_constant_memory(fly_model_and_state):
+    """Off: the state carries no online fields.  On with eta = 0: every release probability is exactly its baseline,
+    so the dynamics are bitwise those without the rule.  The persistent state has the same size after 20 and after 120
+    ticks (O(1)); release probabilities move only at the chosen terminals and stay within [0, 1]."""
+    import dataclasses
+    from information_boltzmann.core.fly_bptt_learning import (attach_dopamine_modulation, attach_online_da_plasticity,
+                                                              online_da_release)
+    model, state, device = fly_model_and_state
+    if device != "cuda" or not model.has_dopamine:
+        pytest.skip("needs CUDA and the dopaminergic projections")
+    try:
+        torch.manual_seed(7)
+        start = dataclasses.replace(state, h=torch.rand_like(state.h))
+        opts = dict(base_rates=model.get_decay_rates(), thresholds=model.get_thresholds())
+        attach_dopamine_modulation(model, site='pre')
+        off = _run_ticks(model, start, 12, opts)
+        assert off.da_trace.numel() == 0 and off.da_memory.numel() == 0
+        attach_online_da_plasticity(model, 'data/malecns_v1/fly_reservoir_coba.npz', 'data/malecns_v1/body-annotations.feather', eta=0.0)
+        zero = _run_ticks(model, start, 12, opts)
+        assert torch.equal(off.h, zero.h) and all(torch.equal(a, b) for a, b in zip(off.ring, zero.ring))
+        assert torch.count_nonzero(zero.da_memory) == 0 and zero.da_trace.shape == zero.h.shape
+        with torch.no_grad():
+            model.online_da_eta.fill_(300.0)
+        short, long = _run_ticks(model, start, 20, opts), _run_ticks(model, start, 120, opts)
+        size = lambda s: sum(sum(t.numel() for t in v) if isinstance(v, tuple) else v.numel() for v in s.state_dict().values())
+        assert size(short) == size(long)
+        u0 = model.get_stp_params()[0].expand_as(long.da_memory)
+        release = online_da_release(u0, long.da_memory)
+        outside = model.online_da_target == 0
+        assert torch.equal(release[outside], u0[outside])
+        assert torch.any(release[~outside] != u0[~outside])
+        assert torch.isfinite(release).all() and float(release.min()) >= 0.0 and float(release.max()) <= 1.0
+    finally:
+        _online_cleanup(model)
+
+
+def test_online_da_plasticity_never_sees_the_target_and_is_learnable(fly_model_and_state):
+    """Swapping the targets leaves the written memory and the physical state unchanged up to the run-to-run float
+    atomics noise (no leak); within a window the rule's parameters get finite nonzero gradients."""
+    import dataclasses
+    from information_boltzmann.core.fly_bptt_learning import (attach_dopamine_modulation, attach_go_neuron,
+                                                              attach_online_da_plasticity, ONLINE_DA_PARAMETER_NAMES)
+    model, state, device = fly_model_and_state
+    if device != "cuda" or not model.has_dopamine:
+        pytest.skip("needs CUDA and the dopaminergic projections")
+    attach_go_neuron(model)
+    try:
+        torch.manual_seed(5)
+        start = dataclasses.replace(state, h=torch.rand_like(state.h))
+        attach_dopamine_modulation(model, site='pre')
+        attach_online_da_plasticity(model, 'data/malecns_v1/fly_reservoir_coba.npz', 'data/malecns_v1/body-annotations.feather', eta=30.0)
+        opts = dict(base_rates=model.get_decay_rates(), thresholds=model.get_thresholds())
+        warm = _run_ticks(model, start, 6, opts).detached()
+        learner = FlyBPTTLearner(model, warm, lr=2e-4, writer_baseline_clock="physical", use_checkpointing=True,
+                                 go_neuron=True, go_max_ticks=8, lambda_mcr2=0.0)
+        ids = torch.tensor([[50, 101, 205]], device=device)
+        ends = []
+        for tgt in ([101, 205, 307], [9, 8, 7]):
+            learner.previous_token = 50
+            learner.state = warm.detached()
+            torch.manual_seed(11)
+            with torch.no_grad():
+                _, end, _ = learner.forward_window(ids, torch.tensor([tgt], device=device))
+            ends.append(end)
+        # Dopamine arrival is summed with float atomics, so two identical runs already differ by ~1e-6 once the
+        # memory feeds it back; a leak of the target would be of order one.
+        torch.testing.assert_close(ends[0].da_memory, ends[1].da_memory, rtol=1e-5, atol=1e-5)
+        torch.testing.assert_close(ends[0].h, ends[1].h, rtol=1e-5, atol=1e-5)
+        learner.state = warm.detached()
+        learner.previous_token = 50
+        model.zero_grad(set_to_none=True)
+        torch.manual_seed(11)
+        learner.forward_window(ids, torch.tensor([[101, 205, 307]], device=device))
+        learner.last_train_loss.mean().backward()
+        for name in ONLINE_DA_PARAMETER_NAMES:
+            grad = getattr(model, name).grad
+            assert grad is not None and torch.isfinite(grad).all() and grad.abs().sum() > 0, name
+    finally:
+        _online_cleanup(model)
+
+
+def test_kenyon_axo_axonal_synapses_do_not_drive_somata(fly_model_and_state):
+    """Kenyon -> Kenyon excitatory weights are scaled by their calyx share (neuPrint roiInfo); connections without a
+    calyx synapse are 0 and stay 0 through a learner update."""
+    import os
+    from information_boltzmann.core.fly_bptt_learning import attach_kenyon_dendritic_only, kenyon_dendritic_share
+    model, state, device = fly_model_and_state
+    feather = 'data/malecns_v1/kc_kc_dendritic_synapses.feather'
+    if device != "cuda" or not os.path.exists(feather):
+        pytest.skip("needs CUDA and the neuPrint calyx table")
+    graph, ann = 'data/malecns_v1/fly_reservoir_coba.npz', 'data/malecns_v1/body-annotations.feather'
+    original = model.edge_weight_e.detach().clone()
+    try:
+        edges, share = kenyon_dendritic_share(model, graph, ann, feather)
+        assert edges.numel() > 600_000 and 0.0 < float((share > 0).float().mean()) < 0.1
+        attach_kenyon_dendritic_only(model, graph, ann, feather)
+        torch.testing.assert_close(model.edge_weight_e[edges], original[edges] * share)
+        pinned = model.pinned_zero_edges_e
+        learner = FlyBPTTLearner(model, state, lr=2e-4, writer_baseline_clock="physical", use_checkpointing=True)
+        with torch.no_grad():
+            model.edge_weight_e[pinned] = 0.3
+            learner.clamp_edges()
+        assert torch.count_nonzero(model.edge_weight_e[pinned]) == 0
+        others = torch.ones_like(original, dtype=torch.bool)
+        others[edges] = False
+        assert torch.equal(model.edge_weight_e[others], original[others])
+    finally:
+        with torch.no_grad():
+            model.edge_weight_e.copy_(original)
+        model._buffers.pop('pinned_zero_edges_e', None)
+        for p in model.parameters():
+            p.requires_grad_(False)
+
+
+def test_homeostatic_intrinsic_plasticity(fly_model_and_state):
+    """Off: no homeostasis field.  On: targets are c / tau_m with a log-normal duty cycle fixed by the seed (the
+    individual); a silent neuron's drive grows by nu*/100 per tick, a neuron that fired loses (1 - nu*)/100; the state is
+    one number per neuron at any age; the rule never sees the target word (it uses only the neuron's own spikes)."""
+    import dataclasses
+    import numpy as np
+    from information_boltzmann.core.fly_bptt_learning import attach_homeostasis, step_fly_physical_tick, HOMEOSTASIS_SPIKES
+    model, state, device = fly_model_and_state
+    if device != "cuda":
+        pytest.skip("needs CUDA")
+    graph = 'data/malecns_v1/fly_reservoir_coba.npz'
+    try:
+        opts = dict(base_rates=model.get_decay_rates(), thresholds=model.get_thresholds())
+        with torch.no_grad():
+            off = step_fly_physical_tick(model, state, None, torch.zeros_like(state.h), state.baseline, opts)
+        assert off.homeostasis.numel() == 0
+        attach_homeostasis(model, graph, seed=3)
+        t3 = model.homeostasis_target.clone()
+        attach_homeostasis(model, graph, seed=3)
+        assert torch.equal(t3, model.homeostasis_target)
+        attach_homeostasis(model, graph, seed=4)
+        assert not torch.equal(t3, model.homeostasis_target)
+        tau = torch.as_tensor(np.load(graph)['tau_m'], dtype=torch.float32, device=device)
+        duty = (model.homeostasis_target[0] * tau.clamp_min(1.0))
+        ld = torch.log(duty[model.homeostasis_target[0] < 0.2])
+        assert abs(float(ld.median()) - math.log(0.05)) < 0.05 and abs(float(ld.std()) - 1.0) < 0.05
+        torch.manual_seed(1)
+        start = dataclasses.replace(state, h=torch.rand_like(state.h))
+        with torch.no_grad():
+            s1 = step_fly_physical_tick(model, start, None, torch.zeros_like(start.h), start.baseline, opts)
+            s2 = step_fly_physical_tick(model, s1, None, torch.zeros_like(s1.h), s1.baseline, opts)
+        fired = (s2.ring[0] > 0).float()
+        expected = s1.homeostasis + (model.homeostasis_target - fired) / HOMEOSTASIS_SPIKES
+        torch.testing.assert_close(s2.homeostasis, expected)
+        assert s2.homeostasis.shape == s2.h.shape and not s2.homeostasis.requires_grad
+    finally:
+        model._buffers.pop('homeostasis_target', None)
+        if hasattr(model, 'homeostasis_seed'):
+            delattr(model, 'homeostasis_seed')

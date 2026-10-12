@@ -27,6 +27,7 @@ from information_boltzmann.core.fly_bptt_learning import (
     GO_PARAMETER_NAMES, attach_go_neuron, attach_connectome_go, READ_BANK_PARAMETER_NAMES, attach_read_bank,
     INTRINSIC_PARAMETER_NAMES, attach_intrinsic_drive, PRECISION_PARAMETER_NAMES, attach_precision,
     PREDICTIVE_PARAMETER_NAMES, attach_predictive_writer, DOPAMINE_PARAMETER_NAMES, attach_dopamine_modulation,
+    ONLINE_DA_PARAMETER_NAMES, attach_online_da_plasticity, attach_kenyon_dendritic_only, attach_homeostasis,
 )
 from information_boltzmann.runtime.lifelong_evaluation import recovery_summary, savings_summary
 from information_boltzmann.runtime.prequential_meter import FirstPassPredictionMeter
@@ -140,6 +141,17 @@ def resolve_learning_modes(args, previous_config, previous_learner):
         args.dopamine_site = previous_config.get('dopamine_site') or 'post'
     if getattr(args, 'dopamine_adapted', None) is None:
         args.dopamine_adapted = bool(previous_config.get('dopamine_adapted', False))
+    if getattr(args, 'online_da_plasticity', None) is None:
+        args.online_da_plasticity = bool(previous_config.get('online_da_plasticity', False))
+    if getattr(args, 'dopamine_affinity', None) is None:
+        args.dopamine_affinity = previous_config.get('dopamine_affinity')
+    if getattr(args, 'homeostasis', None) is None:
+        args.homeostasis = bool(previous_config.get('homeostasis', False))
+    if getattr(args, 'homeostasis_seed', None) is None:
+        args.homeostasis_seed = int(previous_config.get('homeostasis_seed') or 0)
+    args.kc_dendritic_newly = bool(args.kc_dendritic_only) and not bool(previous_config.get('kc_dendritic_only', False))
+    if getattr(args, 'kc_dendritic_only', None) is None:
+        args.kc_dendritic_only = bool(previous_config.get('kc_dendritic_only', False))
     if getattr(args, 'predictive_writer', None) is None:
         args.predictive_writer = bool(previous_config.get('predictive_writer', False))
     if getattr(args, 'precision', None) is None:
@@ -226,6 +238,30 @@ def main():
     parser.add_argument('--dopamine-adapted', action=argparse.BooleanOptionalAction, default=None,
                         help='Receptors adapt to each target own slow dopamine level: threshold and plasticity see the '
                              'relative change of that target (omitted = inherit, else off)')
+    parser.add_argument('--online-da-plasticity', action=argparse.BooleanOptionalAction, default=None,
+                        help='O(1) online learning with dopamine as the third factor: every dopamine-receiving terminal '
+                             'writes a release-gain memory from its activity trace and phasic dopamine (needs '
+                             '--dopamine-modulation; omitted = inherit, else off)')
+    parser.add_argument('--kc-dendritic-only', action=argparse.BooleanOptionalAction, default=None,
+                        help='Kenyon -> Kenyon synapses drive the soma only for their calyx (dendritic) share (neuPrint '
+                             'roiInfo); the 97%% that are axo-axonal are removed and kept at 0 (omitted = inherit, else off)')
+    parser.add_argument('--dopamine-affinity', type=float, default=None,
+                        help='Receptor half-saturation concentration K of the dopamine occupancy c / (c + K) '
+                             '(omitted = inherit, else the lineage value 0.0108)')
+    parser.add_argument('--homeostasis', action=argparse.BooleanOptionalAction, default=None,
+                        help='Homeostatic intrinsic plasticity: every neuron drives itself toward its own target rate '
+                             '(duty cycle / tau_m, log-normal across neurons; omitted = inherit, else off)')
+    parser.add_argument('--homeostasis-seed', type=int, default=None,
+                        help='The individual: seed of the neurons\' target duty cycles (omitted = inherit, else 0)')
+    parser.add_argument('--bookshelf', choices=('progress', 'random', 'surprise', 'anti'), default=None,
+                        help='Curious shelf v1: training text comes from a shelf of books (topic books, a repeated passage, '
+                             'noise, a hidden pair) chosen after every 64-token segment by this selector (default: off)')
+    parser.add_argument('--bookshelf-seed', type=int, default=0)
+    parser.add_argument('--world-skip', type=int, default=0,
+                        help='Mixed world: draw and discard this many windows of the world sequence first (resuming a '
+                             'run that crashed, so it sees the same worlds as a run that did not)')
+    parser.add_argument('--online-da-eta', type=float, default=-0.02,
+                        help='Starting write rate eta of the online dopamine plasticity (used when it is first attached)')
     parser.add_argument('--dopamine-sensitivity-init', type=float, default=None,
                         help='Set every dopamine sensitivity to this value at start, also over a loaded checkpoint '
                              '(pass it only on the first segment of a run; omitted = keep)')
@@ -423,6 +459,35 @@ def main():
                 del ref_train, ref_counts
             model.read_norm.weight.fill_(args.read_norm_init)
 
+        # A newborn gets the same blanket and modulation as the resumed lineage (each only when asked for).
+        if args.go_neuron in ('virtual', True):
+            args.go_neuron = 'virtual'
+            attach_go_neuron(model)
+        elif args.go_neuron in ('none', None, False):
+            args.go_neuron = None
+        if args.read_bank:
+            attach_read_bank(model)
+        if args.predictive_writer:
+            attach_predictive_writer(model)
+        if args.dopamine_modulation:
+            attach_dopamine_modulation(model, site=args.dopamine_site or 'post', adapted=bool(args.dopamine_adapted),
+                                       sensitivity_init=float(args.dopamine_sensitivity_init or 0.0),
+                                       affinity=args.dopamine_affinity)
+            print(f'Dopamine scales learning at the {args.dopamine_site or "post"}synaptic end', flush=True)
+            if args.online_da_plasticity:
+                attach_online_da_plasticity(model, args.graph, args.graph.parent / 'body-annotations.feather',
+                                            eta=args.online_da_eta)
+                print(f'Online dopamine plasticity at {int(model.online_da_target.sum())} terminals', flush=True)
+        if args.kc_dendritic_only:
+            n_kk, n_zero = attach_kenyon_dendritic_only(model, args.graph, args.graph.parent / 'body-annotations.feather',
+                                                        args.graph.parent / 'kc_kc_dendritic_synapses.feather', rescale=True)
+            print(f'Kenyon -> Kenyon: {n_kk} edges, {n_zero} axo-axonal pinned at 0 (newborn)', flush=True)
+            args.kc_dendritic_newly = False
+        if args.homeostasis:
+            args.homeostasis_seed = int(args.homeostasis_seed or 0)
+            attach_homeostasis(model, args.graph, seed=args.homeostasis_seed)
+            print(f'Homeostatic intrinsic plasticity, individual {args.homeostasis_seed}', flush=True)
+
         n = model.n_neurons
         h = torch.zeros(1, n, device='cuda')
         ring = tuple(torch.zeros(1, n, device='cuda') for _ in range(4))
@@ -455,6 +520,10 @@ def main():
             for p_name, _ in model.graph_observer.named_parameters():
                 names.append(f'graph_observer.{p_name}')
 
+        named_now = dict(model.named_parameters())
+        for group in (GO_PARAMETER_NAMES, READ_BANK_PARAMETER_NAMES, PREDICTIVE_PARAMETER_NAMES, DOPAMINE_PARAMETER_NAMES,
+                      ONLINE_DA_PARAMETER_NAMES):
+            names.extend(name for name in group if name in named_now and name not in names)
         if args.disable_alif:
             disable_alif(model)
         learner = FlyBPTTLearner(model, physical, adam_names=names,
@@ -539,8 +608,13 @@ def main():
             attach_predictive_writer(model)
         if args.dopamine_modulation:
             attach_dopamine_modulation(model, site=args.dopamine_site or 'post', adapted=bool(args.dopamine_adapted),
-                                       sensitivity_init=float(args.dopamine_sensitivity_init or 0.0))
+                                       sensitivity_init=float(args.dopamine_sensitivity_init or 0.0),
+                                       affinity=args.dopamine_affinity)
             print(f'Dopamine scales learning at the {args.dopamine_site or "post"}synaptic end', flush=True)
+            if args.online_da_plasticity:
+                attach_online_da_plasticity(model, args.graph, args.graph.parent / 'body-annotations.feather',
+                                            eta=args.online_da_eta)
+                print(f'Online dopamine plasticity at {int(model.online_da_target.sum())} terminals', flush=True)
         if args.precision:
             n_mod, n_da = attach_precision(model, args.graph, args.graph.parent / 'body-annotations.feather')
             print(f'Precision carried by {n_mod} neuromodulatory cells ({n_da} dopaminergic)', flush=True)
@@ -553,10 +627,19 @@ def main():
             for name in ('edge_weight_e', 'edge_weight_i'):
                 getattr(model, name).copy_(saved['model'][name])
             loaded = model.load_state_dict(weights, strict=False)
-            missing = [k for k in loaded.missing_keys if k != 'logit_read_gamma' and not k.startswith('latent_predictor.') and not k.startswith('graph_observer.') and k not in GO_PARAMETER_NAMES and k not in READ_BANK_PARAMETER_NAMES and k not in INTRINSIC_PARAMETER_NAMES and k not in PRECISION_PARAMETER_NAMES and k not in PREDICTIVE_PARAMETER_NAMES and k not in DOPAMINE_PARAMETER_NAMES]
+            missing = [k for k in loaded.missing_keys if k != 'logit_read_gamma' and not k.startswith('latent_predictor.') and not k.startswith('graph_observer.') and k not in GO_PARAMETER_NAMES and k not in READ_BANK_PARAMETER_NAMES and k not in INTRINSIC_PARAMETER_NAMES and k not in PRECISION_PARAMETER_NAMES and k not in PREDICTIVE_PARAMETER_NAMES and k not in DOPAMINE_PARAMETER_NAMES and k not in ONLINE_DA_PARAMETER_NAMES]
             unexpected = [k for k in loaded.unexpected_keys if not k.startswith('latent_predictor.') and not k.startswith('graph_observer.')]
             if unexpected or missing:
                 raise ValueError(f'Weight migration mismatch: unexpected={unexpected}, missing={missing}')
+            if args.kc_dendritic_only:
+                n_kk, n_zero = attach_kenyon_dendritic_only(model, args.graph, args.graph.parent / 'body-annotations.feather',
+                                                            args.graph.parent / 'kc_kc_dendritic_synapses.feather',
+                                                            rescale=getattr(args, 'kc_dendritic_newly', True))
+                print(f'Kenyon -> Kenyon: {n_kk} edges, {n_zero} axo-axonal pinned at 0'
+                      f'{" (weights rescaled now)" if getattr(args, "kc_dendritic_newly", True) else ""}', flush=True)
+            if args.homeostasis:
+                attach_homeostasis(model, args.graph, seed=args.homeostasis_seed)
+                print(f'Homeostatic intrinsic plasticity, individual {args.homeostasis_seed}', flush=True)
             if args.dopamine_modulation and args.dopamine_sensitivity_init is not None:
                 model.dopamine_sensitivity.fill_(float(args.dopamine_sensitivity_init))
                 print(f'Dopamine sensitivities set to {args.dopamine_sensitivity_init}', flush=True)
@@ -609,6 +692,8 @@ def main():
             newly_trainable += [name for name in PREDICTIVE_PARAMETER_NAMES if name not in names]
         if args.dopamine_modulation:
             newly_trainable += [name for name in DOPAMINE_PARAMETER_NAMES if name not in names]
+        if args.online_da_plasticity:
+            newly_trainable += [name for name in ONLINE_DA_PARAMETER_NAMES if name not in names]
         if args.use_latent_predictor and model.latent_predictor is not None:
             for p_name, _ in model.latent_predictor.named_parameters():
                 full_name = f'latent_predictor.{p_name}'
@@ -946,6 +1031,11 @@ def main():
                            dopamine_tau_fast=float(-1 / torch.log(torch.sigmoid(model.dopamine_logit_fast.detach()))),
                            dopamine_tau_slow=float(-1 / torch.log(torch.sigmoid(model.dopamine_logit_slow.detach()))),
                            dopamine_cells_firing=float((learner.state.ring[0][0, model.dan_indices] > 0).float().mean()))
+            if getattr(model, 'online_da_eta', None) is not None and learner.state.da_memory.numel():
+                phi = learner.state.da_memory[0][model.online_da_target[0] > 0].detach()
+                row.update(online_da_eta_mean=float(model.online_da_eta.detach().mean()),
+                           online_da_tau_trace=float(-1 / torch.log(torch.sigmoid(model.online_da_logit_trace.detach()))),
+                           online_da_memory_sd=float(phi.std()), online_da_memory_absmax=float(phi.abs().max()))
             if getattr(model, 'writer_prediction_logit', None) is not None:
                 row['writer_prediction_beta'] = float(torch.sigmoid(model.writer_prediction_logit.detach()))
             if getattr(model, 'precision_u', None) is not None and learner.state.modulator.numel():
@@ -1039,6 +1129,9 @@ def main():
         gaps = np.where(world_rng.random(n) < args.gap_prob, world_rng.integers(lo, hi + 1, n), 0).tolist()
         return {'mode': 'gap', 'gaps': gaps}
 
+    for _ in range(int(getattr(args, 'world_skip', 0) or 0)):
+        sample_world(args.window)
+
     def observe(values, training=False):
         nonlocal last_grad
         scores = []
@@ -1050,19 +1143,42 @@ def main():
             chunk, last_grad = learner.observe(np.array(values[left:left+args.window], dtype=np.int64))
             learner.world = None
             scores.extend(chunk)
+            if torch.cuda.memory_reserved() / 2**20 > 0.9 * args.vram_limit_mib:
+                # cached blocks from a long window (fragmentation), not memory in use: give them back between windows
+                torch.cuda.empty_cache()
             if max(torch.cuda.memory_reserved(), torch.cuda.max_memory_allocated()) / 2**20 > args.vram_limit_mib:
                 raise MemoryError('CUDA allocation/reservation exceeded the registered 3900 MiB budget')
         return scores
 
+    shelf = probe_fn = None
+    if getattr(args, 'bookshelf', None):
+        import information_boltzmann.core.fly_bptt_learning as fly_learning
+        from scripts.ib.fly_bookshelf import Bookshelf, make_probe_fn
+        shelf = Bookshelf(train, selector=args.bookshelf, seed=args.bookshelf_seed, log_path=args.output / 'bookshelf.jsonl')
+        shelf_opts = dict(base_rates=model.get_decay_rates(), thresholds=model.get_thresholds(),
+                          conductance_gains=model.get_conductance_gains(), alif_params=model.get_alif_params(),
+                          stp_params=model.get_stp_params())
+        probe_fn = make_probe_fn(fly_learning, model, learner, int(args.go_max_ticks or 32), shelf_opts)
+        print(f'Curious shelf: {len(shelf.books)} books, selector {args.bookshelf}', flush=True)
     try:
         while trained < target:
-            values = np.array(train[cursor+1:cursor+args.window+1], dtype=np.int64)
+            if shelf is not None:
+                values = shelf.next_window(args.window)
+            else:
+                values = np.array(train[cursor+1:cursor+args.window+1], dtype=np.int64)
             begin = time.perf_counter()
             scores = observe(values, training=True)
             torch.cuda.synchronize()
             seconds = time.perf_counter() - begin
             cursor += args.window
             trained += args.window
+            if shelf is not None:
+                with torch.no_grad():
+                    shelf_opts = dict(base_rates=model.get_decay_rates(), thresholds=model.get_thresholds(),
+                                      conductance_gains=model.get_conductance_gains(), alif_params=model.get_alif_params(),
+                                      stp_params=model.get_stp_params())
+                probe_fn = make_probe_fn(fly_learning, model, learner, int(args.go_max_ticks or 32), shelf_opts)
+                shelf.after_window(probe_fn)
             first_pass_meter.record(scores, reference_surprisal[values])
             first_pass_meter.verify_cursor(trained, cursor)
             phase_meter.record(scores, reference_surprisal[values])

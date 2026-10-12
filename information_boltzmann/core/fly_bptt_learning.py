@@ -52,6 +52,12 @@ class FlyPhysicalState:
     # Optional dopamine at every neuron along the connectome's modulatory projections: fast concentration and its slow
     # mean [2, N]; the phasic component is their difference.
     dopamine: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    # Optional online dopamine plasticity (O(1), never reset): presynaptic activity trace e and the release-gain memory
+    # phi written at the terminals that receive dopamine [1, N] each.
+    da_trace: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    da_memory: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    # Optional homeostatic intrinsic drive of every neuron, in units of its own rheobase [1, N] (never reset).
+    homeostasis: torch.Tensor = field(default_factory=lambda: torch.empty(0))
 
     def detached(self):
         return FlyPhysicalState(**{
@@ -100,20 +106,34 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
         current_in = kappa * thresholds.expand_as(current.h)[0, idx].detach() * g_leak
         source = (torch.zeros_like(current.h) if source is None else source).index_add(
             1, idx, current_in.unsqueeze(0))
+    homeostasis = getattr(current, 'homeostasis', torch.empty(0))
+    homeostatic = getattr(model, 'homeostasis_target', None) is not None
+    if homeostatic:
+        if homeostasis.numel() != current.h.numel():
+            homeostasis = torch.zeros_like(current.h)
+        # every neuron's intrinsic drive b (in units of its rheobase: b > 1 fires on its own) enters as a current
+        rates_ = base_rates if base_rates is not None else model.get_decay_rates()
+        theta_ = options.get('thresholds')
+        theta_ = (theta_ if theta_ is not None else model.get_thresholds()).expand_as(current.h).detach()
+        g_leak_ = -torch.log(rates_[0].expand_as(current.h).detach().clamp(1e-5, 1 - 1e-7))
+        drive_ = homeostasis * theta_ * g_leak_
+        source = drive_ if source is None else source + drive_
     dopamine = getattr(current, 'dopamine', torch.empty(0))
     if getattr(model, 'dopamine_sensitivity', None) is not None and dopamine.numel():
         # Dopamine modulates excitability where it is delivered: the phasic part (concentration minus its slow mean)
         # scales the threshold, theta * exp(-s_class * phasic); s starts at 0 for every superclass.
         tonic = dopamine[1:2]
-        # the tonic level: mean slow concentration over the targets
-        level = tonic[tonic > 0].mean().detach().clamp_min(1e-12) if bool((tonic > 0).any()) else tonic.new_tensor(1.0)
+        # receptor affinity: a fixed half-saturation concentration (not the current mean level, whose reciprocal makes
+        # the gradient explode when dopamine fades, as in a silent newborn)
+        level = tonic.new_tensor(DOPAMINE_AFFINITY)
         if getattr(model, 'dopamine_adapted', False):
             # adapted receptors with half-saturation at the tonic level: a target's relative change
             # (fast - slow) / (slow + level), bounded for targets that receive only a trace of dopamine
             phasic = (dopamine[0:1] - tonic) / (tonic.detach() + level)
         else:
-            # relative to the tonic level: dimensionless, parameter-free
-            phasic = (dopamine[0:1] - tonic) / level
+            # receptor occupancy c / (c + K) saturates: the phasic part is the occupancy of the fast concentration minus
+            # that of its slow mean, bounded in (-1, 1); its gradient stays finite at both ends (silent and flooded)
+            phasic = dopamine_occupancy(dopamine[0:1], model.dopamine_affinity) - dopamine_occupancy(tonic, model.dopamine_affinity)
         s_class = model.dopamine_sensitivity[model.superclass_id].unsqueeze(0)
         thresholds = options.get('thresholds')
         thresholds = (thresholds if thresholds is not None else model.get_thresholds()).expand_as(current.h)
@@ -137,6 +157,16 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
             if dan_gate.numel() != current.h.numel():
                 dan_gate = torch.zeros_like(current.h)
             dan_gate = rho * dan_gate + (1.0 - rho) * arrival
+    da_trace = getattr(current, 'da_trace', torch.empty(0))
+    da_memory = getattr(current, 'da_memory', torch.empty(0))
+    online = getattr(model, 'online_da_eta', None) is not None
+    if online and da_memory.numel() == current.h.numel() and model.use_stp:
+        # The memory written at a dopamine-receiving terminal shifts its baseline release probability (in the fly,
+        # dopamine acts on Kenyon terminals through cAMP/PKA, i.e. on release); the vesicle pool x is depleted as
+        # usual, so more release runs the terminal down faster and the output caps itself.
+        stp = options.get('stp_params')
+        stp = stp if stp is not None else model.get_stp_params()
+        options = {**options, 'stp_params': (online_da_release(stp[0], da_memory), *stp[1:])}
     ret = model.step(
         current.h, token, spike_ring=current.ring, ge=current.ge,
         gi=current.gi, b=current.b, x=current.x, u=current.u,
@@ -190,6 +220,29 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
             dopamine = torch.cat([arrival, arrival], 0).detach()
         conc = fast * dopamine[0:1] + (1.0 - fast) * arrival
         dopamine = torch.cat([conc, slow * dopamine[1:2] + (1.0 - slow) * conc], 0)
+    if online and dopamine.numel() == 2 * h.numel():
+        # Three-factor online rule at the dopamine-receiving terminals (fly mushroom body: presynaptic activity and
+        # dopamine, no postsynaptic factor):  e <- l e + (1 - l) s;  p = occ(D_fast) - occ(D_slow), occ(c) = c / (c + K);
+        # phi <- phi + 2 occ(D_slow) e (eta p - kappa phi).  Only this tick's spikes and dopamine enter.
+        spikes = ret[1] if ret[1].shape == h.shape else (ring[0] > 0).to(h.dtype)
+        if da_trace.numel() != h.numel():
+            da_trace, da_memory = torch.zeros_like(h), torch.zeros_like(h)
+        lam = torch.sigmoid(model.online_da_logit_trace)
+        da_trace = lam * da_trace + (1.0 - lam) * spikes
+        tonic = dopamine[1:2]
+        phasic = dopamine_occupancy(dopamine[0:1], model.dopamine_affinity) - dopamine_occupancy(tonic, model.dopamine_affinity)
+        # dopamine opens a plasticity window at an active terminal: window = occupancy of its tonic dopamine / 0.5 * e;
+        # inside it the memory is written (eta p) and the old content can be overwritten (kappa phi); outside it
+        # (terminal silent or no dopamine) the memory stays as it is
+        kappa = torch.sigmoid(model.online_da_logit_forget)
+        window = dopamine_occupancy(tonic.detach(), model.dopamine_affinity) / 0.5 * da_trace     # 1 at the affinity concentration
+        da_memory = da_memory + model.online_da_target * window * (model.online_da_eta * phasic - kappa * da_memory)
+    if homeostatic:
+        # homeostatic intrinsic plasticity (integral control toward the neuron's own target rate nu*):
+        # b <- b + (nu* - s) / N_SPIKES -- about 1/100 of a rheobase per spike above target, a deficit closes within
+        # ~100 of the neuron's own spikes.  A fixed local rule: no gradient flows through it.
+        fired = (ring[0] > 0).to(h.dtype).detach()
+        homeostasis = homeostasis.detach() + (model.homeostasis_target - fired) / HOMEOSTASIS_SPIKES
     bank = getattr(current, 'read_bank', torch.empty(0))
     if getattr(model, 'read_bank_gain', None) is not None:
         motor_now = h[:, model.read_indices] if model.read_surface != 'all' else h
@@ -199,7 +252,8 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
         bank = decay * bank + (1.0 - decay) * motor_now
     return FlyPhysicalState(h, ring, ge, gi, b, x, u, next_baseline, h_mean, dan_gate, gz1, gz2,
                             current.observer_prior, getattr(current, 'observer_history', torch.empty(0)), bank,
-                            modulator, getattr(current, 'expected_input', torch.empty(0)), dopamine)
+                            modulator, getattr(current, 'expected_input', torch.empty(0)), dopamine, da_trace, da_memory,
+                            homeostasis)
 
 
 def extract_fly_motor_latent(model, state):
@@ -684,6 +738,125 @@ def motor_feature(model, state, motor):
 
 PREDICTIVE_PARAMETER_NAMES = ('writer_prediction_logit',)
 DOPAMINE_PARAMETER_NAMES = ('dopamine_sensitivity', 'dopamine_logit_fast', 'dopamine_logit_slow')
+# Receptor half-saturation concentration, in the units of the delivered dopamine: the mean tonic dopamine at the targets
+# of the trained lineage (0.0102-0.0108 in damod2_gb, dasite_pre, l1_*), so trained individuals see the same scale as
+# before, while in a newborn whose dopamine cells are silent the phasic signal goes to 0 instead of blowing up.
+DOPAMINE_AFFINITY = 0.0108
+
+
+def dopamine_occupancy(concentration, affinity=DOPAMINE_AFFINITY):
+    """Receptor occupancy c / (c + K); K = the model's dopamine_affinity when set (attach_dopamine_modulation), else
+    DOPAMINE_AFFINITY."""
+    return concentration / (concentration + affinity)
+ONLINE_DA_PARAMETER_NAMES = ('online_da_eta', 'online_da_logit_trace', 'online_da_logit_forget')
+def online_da_release(u0, memory):
+    """Baseline release probability of every terminal with its memory phi: sigmoid(logit(u0) + phi) -- stays in
+    (0, 1) -- and exactly u0 where phi is 0 (every terminal without dopamine, and every terminal before it learns)."""
+    u0 = u0.expand_as(memory)
+    return torch.where(memory != 0, torch.sigmoid(torch.logit(u0, eps=1e-6) + memory), u0)
+
+
+HOMEOSTASIS_SPIKES = 100.0          # a neuron corrects its excitability over ~100 of its own spikes (1/sqrt(N) = 10%)
+HOMEOSTASIS_DUTY_MEDIAN = 0.05      # median duty cycle nu* x tau_m: fluctuation-driven firing, the middle of 0.01-0.2
+HOMEOSTASIS_DUTY_SIGMA = 1.0        # log-normal spread of the duty cycle across neurons (rates span ~2 decades)
+
+
+def attach_homeostasis(model, graph_npz, seed=0, duty_median=HOMEOSTASIS_DUTY_MEDIAN, duty_sigma=HOMEOSTASIS_DUTY_SIGMA):
+    """Homeostatic intrinsic plasticity for every neuron.  Each neuron has its own target rate nu* = c / tau_m (spikes
+    per tick; tau_m its anatomical membrane time constant in ticks), the duty cycle c drawn once per individual from a
+    log-normal (median 0.05, sigma 1; `seed` makes the individual); its intrinsic drive b (state) integrates
+    (nu* - s) / 100 every tick, so a silent neuron becomes excitable until it fires spontaneously and an over-active one
+    is held down, both on the scale of ~100 of its own spikes.  The connectome carries the wiring; this supplies the
+    one cell property it lacks without fixing any rate by hand."""
+    import numpy as np
+    tau_m = torch.as_tensor(np.load(graph_npz)['tau_m'], dtype=torch.float32)
+    gen = torch.Generator().manual_seed(int(seed))
+    duty = torch.exp(math.log(duty_median) + duty_sigma * torch.randn(tau_m.numel(), generator=gen))
+    target = (duty / tau_m.clamp_min(1.0)).clamp(max=0.2)
+    model.register_buffer('homeostasis_target', target.unsqueeze(0).to(model.read_indices.device), persistent=False)
+    model.homeostasis_seed = int(seed)
+    return model
+
+
+ONLINE_DA_CELL_CLASSES = ('Kenyon_Cell',)
+
+
+def kenyon_dendritic_share(model, graph_npz, annotations, dendritic_feather):
+    """Per excitatory edge: the share of a Kenyon -> Kenyon connection's synapses that lie in the calyx (Kenyon
+    dendrites), from neuPrint male-cns v1.0 roiInfo (data/malecns_v1/kc_kc_dendritic_synapses.feather); 97% of these
+    synapses are axo-axonal (lobes, peduncle) and do not drive the soma in the fly.  Returns (edge index, share) for
+    every Kenyon -> Kenyon excitatory edge (share 0 where no synapse is in the calyx)."""
+    import numpy as np
+    import pandas as pd
+    graph = np.load(graph_npz, allow_pickle=True)
+    ids = graph['neuron_body_ids']
+    table = pd.read_feather(annotations).set_index('bodyId').reindex(ids)
+    kc = torch.as_tensor(table['class'].astype(str).values == 'Kenyon_Cell', device=model.edge_pre_e.device)
+    pre, post = model.edge_pre_e.long(), model.edge_post_e.long()
+    edges = torch.nonzero(kc[pre] & kc[post]).squeeze(1)
+    dend = pd.read_feather(dendritic_feather)
+    pos = {int(b): i for i, b in enumerate(ids)}
+    n = model.n_neurons
+    keys = torch.as_tensor([pos[int(a)] * n + pos[int(b)] for a, b in zip(dend.body_pre, dend.body_post)
+                            if int(a) in pos and int(b) in pos], device=pre.device)
+    vals = torch.as_tensor([d / t for a, b, d, t in zip(dend.body_pre, dend.body_post, dend.dendritic_synapses,
+                                                        dend.total_synapses) if int(a) in pos and int(b) in pos],
+                           dtype=torch.float32, device=pre.device)
+    order = torch.argsort(keys)
+    keys, vals = keys[order], vals[order]
+    edge_keys = pre[edges] * n + post[edges]
+    at = torch.searchsorted(keys, edge_keys).clamp(max=len(keys) - 1)
+    share = torch.where(keys[at] == edge_keys, vals[at], torch.zeros_like(vals[at]))
+    return edges, share
+
+
+def attach_kenyon_dendritic_only(model, graph_npz, annotations, dendritic_feather, rescale=True):
+    """Kenyon -> Kenyon excitation through the soma only for the calyx (dendritic) synapses: with rescale=True the
+    learned weights are scaled once by the calyx share; connections with no calyx synapse are pinned at 0 (the learner
+    keeps them there, so learning cannot regrow an axo-axonal drive)."""
+    edges, share = kenyon_dendritic_share(model, graph_npz, annotations, dendritic_feather)
+    if rescale:
+        with torch.no_grad():
+            model.edge_weight_e[edges] = model.edge_weight_e[edges] * share
+    model.register_buffer('pinned_zero_edges_e', edges[share == 0], persistent=False)
+    return int(edges.numel()), int((share == 0).sum())
+
+
+def attach_online_da_plasticity(model, graph_npz=None, annotations=None, eta=-0.02, tau_trace=50.0, forget=0.02,
+                                cell_classes=ONLINE_DA_CELL_CLASSES):
+    """O(1) online learning with dopamine as the third factor (design: FLY_ONLINE_DA_LEARNING_DESIGN.md).  The
+    terminals of the Kenyon cells that receive the connectome's dopamine projections (the mushroom body's own plastic
+    site; its loop Kenyon -> MBON -> dopamine cells -> Kenyon and MBON -> motor is native) keep a presynaptic activity
+    trace e (time constant learnable, start 50 ticks) and a memory phi.  Dopamine opens a plasticity window at an
+    active terminal, w = (receptor occupancy of the tonic dopamine there / 0.5) * e; phi <- phi + w * (eta * phasic
+    dopamine - kappa * phi), the phasic part being the occupancy of the fast minus that of the slow concentration:
+    written and overwritten only while the terminal is active and dopamine arrives, otherwise kept (eta < 0: the
+    fly's depression after activity-then-dopamine).  eta = -kappa (start 0.02): phi is then the running average of minus
+    the occupancy change met inside the windows, so it stays within (-1, 1) with no imposed bound (each update is a
+    convex mix since window * kappa <= 0.04); both learnable.  phi shifts the
+    terminal's baseline release probability, sigmoid(logit(u0) + phi); the vesicle pool is depleted as usual.  Needs
+    attach_dopamine_modulation.  Within a window the updates are differentiable (BPTT learns eta, the trace time
+    constant and what drives the dopamine cells); across windows phi persists.  cell_classes=None: every dopamine
+    target (all 39,850; includes the core, whose loop through the dopamine cells makes BPTT gradients diverge)."""
+    import numpy as np
+    import pandas as pd
+    if getattr(model, 'dopamine_sensitivity', None) is None:
+        raise ValueError('online dopamine plasticity needs attach_dopamine_modulation first')
+    device = model.read_indices.device
+    receives = torch.zeros(model.n_neurons, dtype=torch.bool, device=device)
+    receives[torch.unique(model.dan_edge_post.long())] = True
+    if cell_classes is not None:
+        graph = np.load(graph_npz, allow_pickle=True)
+        table = pd.read_feather(annotations).set_index('bodyId').reindex(graph['neuron_body_ids'])
+        chosen = np.isin(table['class'].astype(str).values, list(cell_classes))
+        receives &= torch.as_tensor(chosen, device=device)
+    target = receives.float().unsqueeze(0)
+    model.register_buffer('online_da_target', target, persistent=False)
+    model.online_da_eta = nn.Parameter(torch.tensor(float(eta), device=device))
+    lam = math.exp(-1.0 / tau_trace)
+    model.online_da_logit_trace = nn.Parameter(torch.tensor(math.log(lam / (1.0 - lam)), device=device))
+    model.online_da_logit_forget = nn.Parameter(torch.tensor(math.log(forget / (1.0 - forget)), device=device))
+    return model
 
 
 DOPAMINE_SITES = ('post', 'pre')
@@ -698,7 +871,8 @@ def dopamine_edge_scale(model, edge_suffix, local, site='post'):
     return local[getattr(model, f'edge_{site}{edge_suffix}').long()]
 
 
-def attach_dopamine_modulation(model, tau_fast=50.0, tau_slow=500.0, site='post', adapted=False, sensitivity_init=0.0):
+def attach_dopamine_modulation(model, tau_fast=50.0, tau_slow=500.0, site='post', adapted=False, sensitivity_init=0.0,
+                               affinity=None):
     """Dopamine acts as a neuromodulator along the connectome's own projections (241,701 modulatory synapses of the
     392 dopaminergic cells onto 39,850 targets): the dopamine delivered to each neuron forms a fast concentration and a
     slow mean (time constants learnable, start 50 / 500 ticks); the phasic part (difference) scales that neuron's
@@ -717,6 +891,7 @@ def attach_dopamine_modulation(model, tau_fast=50.0, tau_slow=500.0, site='post'
         raise ValueError(f'dopamine site must be one of {DOPAMINE_SITES}')
     model.dopamine_site = site
     model.dopamine_adapted = bool(adapted)
+    model.dopamine_affinity = float(affinity if affinity is not None else DOPAMINE_AFFINITY)
     device = model.read_indices.device
     n_class = int(model.superclass_id.max()) + 1
     model.dopamine_sensitivity = nn.Parameter(torch.full((n_class,), float(sensitivity_init), device=device))
@@ -1087,10 +1262,11 @@ class FlyBPTTLearner:
         # entries are ~0.04 at their natural scale, where the base rate already moves them ~1% per step.)
         go_scalars = ('go_drive', 'go_reset', 'go_logit_leak')
         bank_names = [name for name in READ_BANK_PARAMETER_NAMES + INTRINSIC_PARAMETER_NAMES + PRECISION_PARAMETER_NAMES
-                      + PREDICTIVE_PARAMETER_NAMES + DOPAMINE_PARAMETER_NAMES + go_scalars if name in named
+                      + PREDICTIVE_PARAMETER_NAMES + DOPAMINE_PARAMETER_NAMES + ONLINE_DA_PARAMETER_NAMES + go_scalars
+                      if name in named
                       and name in self.adam_names + list(READ_BANK_PARAMETER_NAMES + INTRINSIC_PARAMETER_NAMES
                                                          + PRECISION_PARAMETER_NAMES + PREDICTIVE_PARAMETER_NAMES
-                                                         + DOPAMINE_PARAMETER_NAMES)]
+                                                         + DOPAMINE_PARAMETER_NAMES + ONLINE_DA_PARAMETER_NAMES)]
         self.adam_names = [name for name in self.adam_names if name not in bank_names]
         decayed = [named[name] for name in self.adam_names
                    if name in ('output_read.weight', 'decoder.weight') or (('latent_predictor' in name or 'graph_observer' in name) and name.endswith('.weight'))]
@@ -1199,7 +1375,7 @@ class FlyBPTTLearner:
         newly_trainable = set(newly_trainable)
         allowed_new = (set(STP_PARAMETER_NAMES) | {'logit_read_gamma'} | set(GO_PARAMETER_NAMES)
                        | set(READ_BANK_PARAMETER_NAMES) | set(INTRINSIC_PARAMETER_NAMES) | set(PRECISION_PARAMETER_NAMES)
-                       | set(PREDICTIVE_PARAMETER_NAMES) | set(DOPAMINE_PARAMETER_NAMES))
+                       | set(PREDICTIVE_PARAMETER_NAMES) | set(DOPAMINE_PARAMETER_NAMES) | set(ONLINE_DA_PARAMETER_NAMES))
         if getattr(self.model, 'latent_predictor', None) is not None:
             allowed_new.update(f'latent_predictor.{n}' for n, _ in self.model.latent_predictor.named_parameters())
         if getattr(self.model, 'graph_observer', None) is not None:
@@ -1741,6 +1917,17 @@ class FlyBPTTLearner:
             group_norms['dopamine_plasticity'] = float(getattr(self, 'last_plasticity', 1.0))
         if getattr(self.model, 'dopamine_sensitivity', None) is not None:
             group_norms['dopamine_plasticity_spread'] = float(getattr(self, 'last_dopamine_plasticity_spread', 0.0))
+        if getattr(self.model, 'online_da_eta', None) is not None and next_state.da_memory.numel():
+            phi = next_state.da_memory[0][self.model.online_da_target[0] > 0].detach()
+            group_norms['online_da_memory_sd'] = float(phi.std())
+            group_norms['online_da_memory_absmax'] = float(phi.abs().max())
+            kc = self.model.online_da_target[0] > 0
+            dop = next_state.dopamine.detach()
+            tonic = dop[1]
+            group_norms['online_da_phasic_abs'] = float((dopamine_occupancy(dop[0], self.model.dopamine_affinity) - dopamine_occupancy(tonic, self.model.dopamine_affinity))[kc].abs().mean())
+            group_norms['online_da_trace_mean'] = float(next_state.da_trace[0][kc].mean())
+            group_norms['online_da_eta'] = float(self.model.online_da_eta.detach())
+            group_norms['online_da_memory_mean'] = float(phi.mean())
         return values, {'grad_norm_before_clip': float(grad_norm), **group_norms, **getattr(self, 'last_ctm_metrics', {}), **getattr(self, 'last_adaptive_metrics', {})}
 
     @torch.no_grad()
@@ -1753,6 +1940,10 @@ class FlyBPTTLearner:
         for name, weight in zip(self.edge_names, self.edges):
             if self.model.synapse_model == 'coba':
                 weight.clamp_(0.0, 5.0)
+                # edges pinned at 0 (Kenyon axo-axonal synapses, attach_kenyon_dendritic_only)
+                pinned = getattr(self.model, 'pinned_zero_edges' + name[len('edge_weight'):], None)
+                if pinned is not None:
+                    weight[pinned] = 0.0
             else:
                 weight.copy_(torch.where(self.edge_positive[name], weight.clamp(0.0, 5.0),
                                          weight.clamp(-5.0, 0.0)))
