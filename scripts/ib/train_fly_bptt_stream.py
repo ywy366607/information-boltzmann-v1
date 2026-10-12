@@ -25,6 +25,7 @@ from information_boltzmann.core.fly_reservoir import FlyReservoirLM
 from information_boltzmann.core.fly_odour_world import (OdourWorld, attach_act_head, ACT_PARAMETER_NAMES,
                                                         attach_sense_head, SENSE_PARAMETER_NAMES)
 ACT_STATE_NAMES = ACT_PARAMETER_NAMES + ('act_mu', 'act_sigma', 'act_w_scale') + SENSE_PARAMETER_NAMES
+from information_boltzmann.core.fly_active_inference import attach_ai_head, AI_PARAMETER_NAMES, AI_STATE_NAMES
 from information_boltzmann.core.fly_bptt_learning import (
     FlyPhysicalState, FlyBPTTLearner, FlyBPTTGraph, STP_PARAMETER_NAMES,
     GO_PARAMETER_NAMES, attach_go_neuron, attach_connectome_go, READ_BANK_PARAMETER_NAMES, attach_read_bank,
@@ -176,6 +177,11 @@ def resolve_learning_modes(args, previous_config, previous_learner):
         args.relative_edge_rate = float(previous_config.get('relative_edge_rate') or 0.0)
     if getattr(args, 'odour_world', None) is None:
         args.odour_world = bool(previous_config.get('odour_world', False))
+    if getattr(args, 'ai', None) is None:
+        args.ai = bool(previous_config.get('ai', False))
+    for name, default in (('ai_epistemic', 0.0), ('ai_pragmatic', 0.0), ('ai_sigreg', 0.0)):
+        if getattr(args, name, None) is None:
+            setattr(args, name, float(previous_config.get(name) or default))
     if getattr(args, 'sense_prediction', None) is None:
         args.sense_prediction = bool(previous_config.get('sense_prediction', False))
     if getattr(args, 'compartment_memory', None) is None:
@@ -294,6 +300,14 @@ def main():
                         help='Three-factor memory per Kenyon -> MBON synapse, dopamine at its MBON (omitted = inherit)')
     parser.add_argument('--taste-every', type=int, default=0,
                         help='Taste world as a learning task: one episode after every N text windows (0 = off)')
+    parser.add_argument('--ai', action=argparse.BooleanOptionalAction, default=None,
+                        help='Unified perception and action: the eyes (text precision) and output (commit) act head '
+                             '(omitted = inherit)')
+    parser.add_argument('--ai-epistemic', type=float, default=None, help='Weight of the epistemic value of looking')
+    parser.add_argument('--ai-pragmatic', type=float, default=None, help='Weight of the pragmatic value of output')
+    parser.add_argument('--ai-sigreg', type=float, default=None, help='Weight of SIGReg on the read latents (VFE complexity)')
+    parser.add_argument('--eye-forced-open', action='store_true', help='Control: eyes fixed open (gain 1, no gradient)')
+    parser.add_argument('--eye-forced', type=float, default=None, help='Control: eyes fixed at this gain')
     parser.add_argument('--odour-world', action=argparse.BooleanOptionalAction, default=None,
                         help='Closed-loop odour world alongside the text stream; acts from the act head (omitted = inherit)')
     parser.add_argument('--odour-drive', type=float, default=32.0, help='Odour whiff current, rheobase units')
@@ -627,6 +641,12 @@ def main():
             go_max_ticks=int(args.go_max_ticks or 32))
         learner.stream_pace_mean = float(args.stream_pace_mean or 0.0)
         learner.stream_pace_min = float(getattr(args, 'stream_pace_min', 0.0) or 0.0)
+        if getattr(args, 'ai', False):
+            learner.ai_epistemic, learner.ai_pragmatic = float(args.ai_epistemic), float(args.ai_pragmatic)
+            learner.ai_sigreg = float(args.ai_sigreg)
+            learner.eye_forced = 1.0 if args.eye_forced_open else args.eye_forced
+            print(f'Active inference: epistemic {args.ai_epistemic}, pragmatic {args.ai_pragmatic}, SIGReg {args.ai_sigreg}'
+                  f'{", eyes forced " + str(learner.eye_forced) if learner.eye_forced is not None else ""}', flush=True)
         if getattr(args, 'relative_edge_rate', 0.0):
             step = learner.set_relative_edge_steps(args.graph, args.relative_edge_rate)
             print(f'Relative plasticity: {args.relative_edge_rate} of the birth weight per step '
@@ -727,7 +747,7 @@ def main():
             print('Writer tied by chemosensory receptor type', flush=True)
         weights = {key: value for key, value in saved['model'].items()
                    if key not in ('edge_weight_e', 'edge_weight_i')
-                   and key not in COMPARTMENT_PARAMETER_NAMES + TASTE_PARAMETER_NAMES + ACT_STATE_NAMES}  # after attaching
+                   and key not in COMPARTMENT_PARAMETER_NAMES + TASTE_PARAMETER_NAMES + ACT_STATE_NAMES + AI_STATE_NAMES}
         if not args.go_neuron:
             dropped = [k for k in weights if k in GO_PARAMETER_NAMES]
             for k in dropped:
@@ -790,6 +810,15 @@ def main():
                     model.load_state_dict(comp_state, strict=False)
                 args.compartment_memory = True
                 print(f'Compartment memory on {n_comp} Kenyon -> MBON synapses; taste heads on the MBONs', flush=True)
+            if args.ai:
+                ai_state = {k: v for k, v in saved['model'].items() if k in AI_STATE_NAMES}
+                init = torch.load(previous_config.get('act_init') or args.act_init, map_location='cpu')
+                # constants (mu, sigma, read scale) rebuilt from the same init; the learned parameters loaded after
+                attach_ai_head(model, init)
+                if ai_state:
+                    model.load_state_dict(ai_state, strict=False)
+                print(f'Act head (eyes + output) {"carried over" if ai_state else "initialized from " + str(args.act_init)}',
+                      flush=True)
             if args.odour_world:
                 act_state = {k: v for k, v in saved['model'].items() if k in ACT_STATE_NAMES}
                 if act_state:
@@ -866,6 +895,10 @@ def main():
             newly_trainable += [name for name in DOPAMINE_PARAMETER_NAMES if name not in names]
         if args.online_da_plasticity:
             newly_trainable += [name for name in ONLINE_DA_PARAMETER_NAMES if name not in names]
+        if args.ai:
+            extra = [name for name in AI_PARAMETER_NAMES if name not in names]
+            names = list(names) + extra
+            newly_trainable += extra
         if args.odour_world:
             extra = [name for name in ACT_PARAMETER_NAMES if name not in names]
             names = list(names) + extra
@@ -904,6 +937,12 @@ def main():
             go_max_ticks=int(args.go_max_ticks or 32))
         learner.stream_pace_mean = float(args.stream_pace_mean or 0.0)
         learner.stream_pace_min = float(getattr(args, 'stream_pace_min', 0.0) or 0.0)
+        if getattr(args, 'ai', False):
+            learner.ai_epistemic, learner.ai_pragmatic = float(args.ai_epistemic), float(args.ai_pragmatic)
+            learner.ai_sigreg = float(args.ai_sigreg)
+            learner.eye_forced = 1.0 if args.eye_forced_open else args.eye_forced
+            print(f'Active inference: epistemic {args.ai_epistemic}, pragmatic {args.ai_pragmatic}, SIGReg {args.ai_sigreg}'
+                  f'{", eyes forced " + str(learner.eye_forced) if learner.eye_forced is not None else ""}', flush=True)
         if getattr(args, 'relative_edge_rate', 0.0):
             step = learner.set_relative_edge_steps(args.graph, args.relative_edge_rate)
             print(f'Relative plasticity: {args.relative_edge_rate} of the birth weight per step '
@@ -1418,6 +1457,11 @@ def main():
                 values = np.array(train[cursor+1:cursor+args.window+1], dtype=np.int64)
             begin = time.perf_counter()
             scores = observe(values, training=True)
+            trace = getattr(learner, 'last_ai_trace', None)
+            if trace is not None:
+                with open(args.output / 'ai_trace.jsonl', 'a') as handle:
+                    handle.write(json.dumps({'bptt_train_tokens': trained, **trace}) + chr(10))
+                learner.last_ai_trace = None
             world = getattr(learner, 'odour_world', None)
             if world is not None and world.log:
                 with open(args.output / 'odour.jsonl', 'a') as handle:

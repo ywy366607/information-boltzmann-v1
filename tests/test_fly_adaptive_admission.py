@@ -1157,3 +1157,50 @@ def test_long_intervals_in_segments_compute_the_same(fly_model_and_state):
     (s0, h0, l0, t0), (s1, h1, l1, t1) = results
     assert t0 == t1 and t0 > 9
     assert torch.allclose(h0, h1, atol=1e-6) and torch.allclose(s0, s1, atol=1e-5) and torch.allclose(l0, l1, atol=1e-5)
+
+
+def test_eyes_and_output_acts_both_learn_and_the_world_never_waits(fly_model_and_state):
+    """The two acts of the active-inference head (eyes = text precision, output = commit) both receive gradient from
+    their objectives (eyes through the language CE and the epistemic value, output through the pragmatic value); with
+    the eyes forced shut the world still advances by the same intervals and every word is still scored."""
+    import dataclasses
+    from information_boltzmann.core import fly_active_inference as ai
+    model, state, device = fly_model_and_state
+    if device != "cuda":
+        pytest.skip("event-driven transmission needs CUDA")
+    torch.manual_seed(6)
+    start = dataclasses.replace(state, h=torch.rand_like(state.h))
+    n = model.read_indices.numel()
+    ai.attach_ai_head(model, {'act_mu': torch.zeros(n), 'act_sigma': torch.ones(n),
+                              'act_w': torch.randn(2, n) * 0.05, 'act_b': torch.tensor([0.0, 0.3])})
+    try:
+        ids = torch.tensor([[50, 101, 205, 307, 409]], device=device)
+        targets = torch.tensor([[101, 205, 307, 409, 511]], device=device)
+        learner = FlyBPTTLearner(model, start, lr=2e-4, settle_ticks=14, writer_baseline_clock="physical",
+                                 use_checkpointing=True, stream_ticks=1, lambda_mcr2=0.0)
+        learner.stream_pace_mean, learner.pace_seed = 4.0, 3
+        learner.ai_epistemic, learner.ai_pragmatic = 1.0, 1.0
+        model.zero_grad(set_to_none=True)
+        scores, _, _ = learner.forward_window(ids, targets)
+        loss = learner.last_train_loss.mean() + learner.last_act_loss
+        assert torch.isfinite(loss)
+        loss.backward()
+        g = model.ai_w.grad
+        assert g is not None and torch.isfinite(g).all()
+        assert g[0].abs().sum() > 0, 'eyes row has no gradient'
+        assert g[1].abs().sum() > 0, 'output row has no gradient'
+        m = learner.last_adaptive_metrics
+        assert 0.0 <= m['eye_mean_onset'] <= 1.0 and 'pragmatic' in m
+        ticks_open = m['adaptive_total_ticks']
+        # eyes forced shut: the world keeps its pace (same intervals), all words scored, nothing written
+        shut = FlyBPTTLearner(model, start, lr=2e-4, settle_ticks=14, writer_baseline_clock="physical",
+                              use_checkpointing=True, stream_ticks=1, lambda_mcr2=0.0)
+        shut.stream_pace_mean, shut.pace_seed, shut.eye_forced = 4.0, 3, 0.0
+        with torch.no_grad():
+            s2, _, _ = shut.forward_window(ids, targets)
+        assert shut.last_adaptive_metrics['adaptive_total_ticks'] == ticks_open
+        assert s2.numel() == scores.numel() and shut.last_adaptive_metrics['eye_mean_onset'] == 0.0
+    finally:
+        for name in ('ai_w', 'ai_b', 'ai_logit_leak', 'ai_mu', 'ai_sigma', 'ai_w_scale'):
+            if hasattr(model, name):
+                delattr(model, name)

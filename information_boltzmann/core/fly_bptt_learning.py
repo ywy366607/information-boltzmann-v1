@@ -1421,7 +1421,8 @@ def read_fly_motor(model, state):
 def _advance_fly_token_stream(model, state, token, schedule_box=None, *, ticks, hold_input=False, read_after=None,
                               writer_baseline_clock='physical', base_rates=None, thresholds=None,
                               conductance_gains=None, alif_params=None, stp_params=None, h_mean_decay=0.99,
-                              read_every=False, world=None, world_tape=None, act_g=None, fresh=True):
+                              read_every=False, world=None, world_tape=None, act_g=None, fresh=True,
+                              ai_g=None, ai_tape=None, eye_forced=None):
     """Streaming clock: every token occupies exactly `ticks` physical ticks, whatever the brain is doing, and the
     prediction of the next token is read just before it arrives.  Nothing waits for the brain to settle, so the
     processing of a token continues while the next ones are being sensed (latency and throughput decouple).
@@ -1442,6 +1443,11 @@ def _advance_fly_token_stream(model, state, token, schedule_box=None, *, ticks, 
     also returned: the act hazards [ticks, 2] and the new act_g.
     fresh=False: a continuation segment of the same token (no onset write; quiet or held ticks only) -- long intervals
     are split into segments so a checkpoint recompute never holds more than one segment's activations.
+    ai_g [1, 2] (fly_active_inference): the eyes / output act head runs: before a tick that writes the word, the eye
+    gain e (from the integrator as it stands; eye_forced fixes it) scales the written drive -- closed eyes miss the
+    word, the world does not wait; after every tick both channels integrate and the output channel may commit (taped in
+    ai_tape for the recompute).  Then also returned: the eye gain in force at every tick [ticks], whether the tick
+    wrote the word [ticks], the output hazards [ticks], the new ai_g.
     """
     if not isinstance(ticks, int) or ticks < 1:
         raise ValueError('ticks must be a positive integer')
@@ -1457,17 +1463,28 @@ def _advance_fly_token_stream(model, state, token, schedule_box=None, *, ticks, 
     quiet_source = None
     latent = None
     reads, hazards = [], []
+    eyes, onsets, out_hazards = [], [], []
     if world is not None:
         from .fly_odour_world import act_step, dense
         replay = len(world_tape) > 0
+    if ai_g is not None:
+        from .fly_active_inference import ai_eye, ai_step
+        ai_replay = len(ai_tape) > 0
     for tick in range(ticks):
         if read_after is not None and tick == read_after:
             latent = read_fly_motor(model, current)
         if world is not None:
             spec, record = world_tape[tick][:2] if replay else world.drive()
             model.external_drive = dense(spec, model.n_neurons, current.h.device)
-        if (tick == 0 and fresh) or (hold_input and writer is not None):
+        writes = (tick == 0 and fresh) or (hold_input and writer is not None)
+        if ai_g is not None:
+            eye = ai_eye(model, ai_g, eye_forced)
+            eyes.append(eye)
+            onsets.append(writes)
+        if writes:
             drive, baseline = write_input(model, current, token)
+            if ai_g is not None:
+                drive = drive * eye                # precision of the text input: closed eyes miss the word
             current = step_fly_physical_tick(model, current, token, drive, baseline, options,
                                              h_mean_decay=h_mean_decay, base_rates=base_rates)
         else:
@@ -1485,9 +1502,16 @@ def _advance_fly_token_stream(model, state, token, schedule_box=None, *, ticks, 
             if not replay:
                 world.observe(act)
                 world_tape.append((spec, record, act))
+        if ai_g is not None:
+            hz, ai_g, committed = ai_step(model, current.h, ai_g, ai_tape[tick] if ai_replay else None)
+            out_hazards.append(hz)
+            if not ai_replay:
+                ai_tape.append(committed)
         if read_every:
             reads.append(read_fly_motor(model, current))
     extra = (torch.stack(hazards), act_g) if world is not None else ()
+    if ai_g is not None:
+        extra = extra + (torch.cat(eyes), torch.tensor(onsets, device=current.h.device), torch.cat(out_hazards), ai_g)
     if read_every:
         latent = reads[-1]
         return (expect_next(model, current, latent), latent, torch.cat(reads, 0), *extra)
@@ -1747,6 +1771,8 @@ class FlyBPTTLearner:
             self.adam_names += [n for n in ('act_w', 'act_b', 'act_logit_leak') if n not in self.adam_names]
         if getattr(model, 'sense_head', None) is not None:
             self.adam_names += [n for n in ('sense_head.weight', 'sense_head.bias') if n not in self.adam_names]
+        if getattr(model, 'ai_w', None) is not None:
+            self.adam_names += [n for n in ('ai_w', 'ai_b', 'ai_logit_leak') if n not in self.adam_names]
         if getattr(model, 'use_read_gamma_trace', False) and getattr(model, 'logit_read_gamma', None) is not None:
             if 'logit_read_gamma' not in self.adam_names:
                 self.adam_names.append('logit_read_gamma')
@@ -1890,7 +1916,7 @@ class FlyBPTTLearner:
                        | set(READ_BANK_PARAMETER_NAMES) | set(INTRINSIC_PARAMETER_NAMES) | set(PRECISION_PARAMETER_NAMES)
                        | set(PREDICTIVE_PARAMETER_NAMES) | set(DOPAMINE_PARAMETER_NAMES) | set(ONLINE_DA_PARAMETER_NAMES)
                        | set(COMPARTMENT_PARAMETER_NAMES) | set(TASTE_PARAMETER_NAMES)
-                       | {'act_w', 'act_b', 'act_logit_leak'})
+                       | {'act_w', 'act_b', 'act_logit_leak', 'ai_w', 'ai_b', 'ai_logit_leak'})
         if getattr(self.model, 'latent_predictor', None) is not None:
             allowed_new.update(f'latent_predictor.{n}' for n, _ in self.model.latent_predictor.named_parameters())
         if getattr(self.model, 'graph_observer', None) is not None:
@@ -2046,6 +2072,12 @@ class FlyBPTTLearner:
                 stream['read_every'] = True
             world = getattr(self, 'odour_world', None) if torch.is_grad_enabled() else None
             hazards, records = [], []
+            ai_on = getattr(m, 'ai_w', None) is not None
+            ai_eyes, ai_onsets, ai_out, ai_tokens = [], [], [], []
+            if ai_on:
+                if getattr(self, 'ai_g', None) is None:
+                    self.ai_g = state.h.new_tensor([[math.log(0.95 / 0.05), 0.0]])     # eyes open at the start
+                ai_g = self.ai_g
             if world is not None:
                 if getattr(self, 'act_g', None) is None:
                     self.act_g = state.h.new_zeros(1, 2)
@@ -2067,6 +2099,8 @@ class FlyBPTTLearner:
                     if world is not None:
                         tape = []
                         stream.update(world=world, world_tape=tape, act_g=act_g)
+                    if ai_on:
+                        stream.update(ai_g=ai_g, ai_tape=[], eye_forced=getattr(self, 'eye_forced', None))
                     if self.use_checkpointing and m.training and torch.is_grad_enabled():
                         out = checkpoint(advance_fly_token_stream, m, state, token, box, use_reentrant=False, **stream)
                     else:
@@ -2074,8 +2108,12 @@ class FlyBPTTLearner:
                     state, token_lat = out[0], out[1]
                     if pace > 0:
                         reads.append(out[2])
+                    if ai_on:
+                        ai_eyes.append(out[-4]); ai_onsets.append(out[-3]); ai_out.append(out[-2]); ai_g = out[-1]
+                        ai_tokens += [int(token[0])] * n
+                    wi = -4 if ai_on else 0
                     if world is not None:
-                        hazards.append(out[-2]); act_g = out[-1]
+                        hazards.append(out[wi - 2]); act_g = out[wi - 1]
                         records += [rec for _, rec, _ in tape]
                     done += n
                 if pace > 0:
@@ -2103,12 +2141,64 @@ class FlyBPTTLearner:
                                               'survival_ce': float(self.last_train_loss.detach().mean()),
                                               'ce_ticks_1_2': float(early)}
             self.last_act_loss = None
+            if ai_on:
+                # perception VFE complexity (SIGReg on the per-tick read latents) and the epistemic value of looking:
+                # each word onset is worth e * novelty(word), novelty from what was actually seen so far
+                from .fly_active_inference import Familiarity
+                if getattr(self, 'familiarity', None) is None:
+                    self.familiarity = Familiarity()
+                e = torch.cat(ai_eyes); on = torch.cat(ai_onsets)
+                tok = np.array(ai_tokens)
+                e_on = e[on]; tok_on = tok[on.cpu().numpy()]
+                nov = torch.as_tensor(self.familiarity.novelty(tok_on), dtype=e.dtype, device=e.device)
+                epistemic = (e_on * nov).sum() / max(1, len(tok_on))
+                ai_loss = -float(getattr(self, 'ai_epistemic', 0.0)) * epistemic
+                lam_sig = float(getattr(self, 'ai_sigreg', 0.0))
+                if lam_sig > 0 and reads:
+                    if getattr(self, 'sigreg', None) is None:
+                        from .sigreg import SIGReg
+                        self.sigreg = SIGReg(dim=reads[0].shape[1]).to(e.device)
+                    ai_loss = ai_loss + lam_sig * self.sigreg(torch.cat(reads, 0).float())
+                lam_out = float(getattr(self, 'ai_pragmatic', 0.0))
+                commit_tick = []
+                if pace > 0 and ai_out:
+                    # pragmatic value of output: every arriving word is a question; committing at tick t answers it
+                    # with the read standing then (value -CE_t); if the word arrives first, the answer is missed (value
+                    # -log V).  J = sum_t S_{t-1} h_t (-CE_t) + S_K (-log V), S = P(not committed yet) for this word
+                    hz = torch.cat(ai_out)
+                    miss_value = -math.log(m.decoder.out_features)
+                    J_out, start = hz.new_zeros(()), 0
+                    for k in intervals:
+                        h_w, ce_w = hz[start:start + k], tick_ce[start:start + k]
+                        S = torch.cumprod(torch.cat([h_w.new_ones(1), 1 - h_w[:-1]]), 0)
+                        J_out = J_out + (S * h_w * (-ce_w)).sum() + torch.prod(1 - h_w) * miss_value
+                        hits = torch.nonzero(h_w.detach() > 0.5)
+                        commit_tick.append(int(hits[0]) + 1 if len(hits) else -1)
+                        start += k
+                    J_out = J_out / len(intervals)
+                    if lam_out > 0:
+                        ai_loss = ai_loss - lam_out * J_out
+                    self.last_adaptive_metrics['pragmatic'] = float(J_out.detach())
+                self.last_act_loss = ai_loss
+                self.familiarity.see(tok_on, e_on.detach().cpu().numpy())
+                self.ai_g = ai_g.detach()
+                with torch.no_grad():
+                    commits = torch.cat(ai_out).detach().round()
+                    self.last_adaptive_metrics.update({
+                        'eye_mean_onset': float(e_on.mean()), 'eye_min_onset': float(e_on.min()),
+                        'eye_closed_frac_onset': float((e_on < 0.5).float().mean()), 'eye_mean_tick': float(e.mean()),
+                        'novelty_mean': float(nov.mean()), 'epistemic': float(epistemic), 'commits': int(commits.sum())})
+                    # the per-word trace for the analysis: eye at its onset, its arrival CE, its pace
+                    self.last_ai_trace = {'eye': e_on.cpu().tolist(), 'token': tok_on.tolist(),
+                                          'ce': scores.detach().cpu().tolist(), 'pace': pace,
+                                          'interval': list(intervals), 'commit_tick': commit_tick}
             if world is not None:
                 # the act's fitness, as evolution sees it (never an input to the brain); BPTT through the hazards
                 from .fly_odour_world import act_return
                 h = torch.cat(hazards, 0)
                 J, self.act_carry = act_return(h[:, 0], h[:, 1], records, getattr(self, 'act_carry', {}))
-                self.last_act_loss = -float(getattr(self, 'act_lambda', 1.0)) * J
+                self.last_act_loss = (self.last_act_loss if self.last_act_loss is not None else 0.0) \
+                    - float(getattr(self, 'act_lambda', 1.0)) * J
                 if getattr(m, 'sense_head', None) is not None and reads:
                     # the brain's expectation of its other senses: after tick t it predicts what tick t + 1 brings
                     # (odour levels, taste); scored against what came.  Self-caused rises (its own approach) vs
