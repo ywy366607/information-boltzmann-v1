@@ -1220,6 +1220,17 @@ def dopamine_edge_scale(model, edge_suffix, local, site='post'):
     return local[getattr(model, f'edge_{site}{edge_suffix}').long()]
 
 
+def compose_edge_updates(model, edge_names, edges, before, relative=None, local=None, site='post'):
+    """Scale every synapse's optimizer update (w - before) by one composed factor: the relative step (rate x its birth
+    weight / lr, set_relative_edge_steps) times the dopamine at its chosen end (dopamine_edge_scale).  In place."""
+    with torch.no_grad():
+        for i, (name, w, old) in enumerate(zip(edge_names, edges, before)):
+            scale = relative[i] if relative is not None else 1.0
+            if local is not None:
+                scale = scale * dopamine_edge_scale(model, name[len('edge_weight'):], local, site)
+            w.copy_(old + (w - old) * scale)
+
+
 def attach_dopamine_modulation(model, tau_fast=50.0, tau_slow=500.0, site='post', adapted=False, sensitivity_init=0.0,
                                affinity=None):
     """Dopamine acts as a neuromodulator along the connectome's own projections (241,701 modulatory synapses of the
@@ -2334,18 +2345,13 @@ class FlyBPTTLearner:
         if relative is not None and local is None:
             before = [w.detach().clone() for w in self.edges]
         self.sgd.step()
-        if relative is not None:
-            # relative plasticity: each synapse moves by (rate x its own birth weight) per full Adam step, not by the
-            # same absolute amount for a 1e-5 single-synapse edge and a 1e-2 claw (the connectome's scale is kept)
-            with torch.no_grad():
-                for w, old, scale in zip(self.edges, before, relative):
-                    w.copy_(old + (w - old) * scale)
-            before = [w.detach().clone() for w in self.edges] if local is not None else before
+        if relative is not None or local is not None:
+            # one composed scale per synapse on its Adam update: relative plasticity (each synapse moves by rate x its
+            # own birth weight per full Adam step, so the connectome's scale is kept) times the dopamine at its
+            # terminal (local, within [1/4, 4]); both multiply the same update from the weights before the step
+            compose_edge_updates(self.model, self.edge_names, self.edges, before, relative, local,
+                                 getattr(self.model, 'dopamine_site', 'post'))
         if local is not None:
-            with torch.no_grad():
-                site = getattr(self.model, 'dopamine_site', 'post')
-                for name, w, old in zip(self.edge_names, self.edges, before):
-                    w.copy_(old + (w - old) * dopamine_edge_scale(self.model, name[len('edge_weight'):], local, site))
             self.last_dopamine_plasticity_spread = float(local[local != 1].std()) if bool((local != 1).any()) else 0.0
         for group, rate in zip(self.sgd.param_groups, base_rates):
             group['lr'] = rate

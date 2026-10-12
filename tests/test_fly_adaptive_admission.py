@@ -1116,3 +1116,20 @@ def test_regime_homeostasis(fly_model_and_state):
         for a in ('regime_kappa', 'regime_seed', 'regime_kenyon_z'):
             if hasattr(model, a):
                 delattr(model, a)
+
+
+def test_relative_and_dopamine_scales_compose_on_the_same_update():
+    """The relative step and the dopamine at the terminal multiply the same optimizer update (neither cancels the
+    other): w = before + (w_adam - before) * relative * dopamine[pre]."""
+    import types
+    from information_boltzmann.core.fly_bptt_learning import compose_edge_updates
+    model = types.SimpleNamespace(edge_pre_e=torch.tensor([0, 1, 2]), edge_post_e=torch.tensor([1, 2, 0]))
+    before = [torch.tensor([1.0, 2.0, 3.0])]
+    w = [before[0] + torch.tensor([0.5, 0.5, 0.5])]                 # the optimizer's raw update
+    relative = [torch.tensor([0.1, 0.2, 0.4])]
+    local = torch.tensor([2.0, 0.5, 1.0])                            # dopamine at neurons 0, 1, 2
+    compose_edge_updates(model, ['edge_weight_e'], w, before, relative, local, 'pre')
+    assert torch.allclose(w[0] - before[0], torch.tensor([0.5 * 0.1 * 2.0, 0.5 * 0.2 * 0.5, 0.5 * 0.4 * 1.0]))
+    w2 = [before[0] + 0.5]
+    compose_edge_updates(model, ['edge_weight_e'], w2, before, None, local, 'pre')
+    assert torch.allclose(w2[0] - before[0], torch.tensor([1.0, 0.25, 0.5]))
