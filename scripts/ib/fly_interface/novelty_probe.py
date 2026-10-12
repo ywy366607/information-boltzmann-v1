@@ -20,7 +20,7 @@ graph = ROOT / cfg['graph']; ann_path = graph.parent / 'body-annotations.feather
 if getattr(model, 'dopamine_sensitivity', None) is None:
     fl.attach_dopamine_modulation(model, site='pre')
 if getattr(model, 'comp_pre', None) is None:
-    fl.attach_compartment_memory(model, graph, ann_path, eta=-2.0, forget=0.999)
+    fl.attach_compartment_memory(model, graph, ann_path, eta=-2.0, forget=0.02)
 model.eval().requires_grad_(False)
 world = ow.OdourWorld(model, graph, ann_path, seed=11)
 g = np.load(graph, allow_pickle=True)

@@ -761,7 +761,7 @@ def main():
                 print(f'Writer tied now by chemosensory receptor type (scale {args.tied_writer_scale})', flush=True)
             if args.compartment_memory or args.taste_every:
                 comp_state = {k: v for k, v in saved['model'].items() if k in COMPARTMENT_PARAMETER_NAMES + TASTE_PARAMETER_NAMES}
-                rate = {} if args.comp_rate is None else {'eta': -float(args.comp_rate), 'forget': min(float(args.comp_rate), 0.999)}
+                rate = {} if args.comp_rate is None else {'eta': -float(args.comp_rate)}      # forgetting stays slow (0.02)
                 n_comp = attach_compartment_memory(model, args.graph, args.graph.parent / 'body-annotations.feather',
                                                    affinity=args.dopamine_affinity, **rate)
                 attach_taste_heads(model, args.graph, args.graph.parent / 'body-annotations.feather')

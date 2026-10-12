@@ -331,12 +331,17 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
         comp_trace = lam_c * comp_trace + (1.0 - lam_c) * spikes_c.index_select(1, model.comp_kc)
         if dopamine.numel() == 2 * h.numel():
             d_post = dopamine.index_select(1, model.comp_post.long())
-            phasic_c = (dopamine_occupancy(d_post[0:1], model.comp_affinity)
-                        - dopamine_occupancy(d_post[1:2], model.comp_affinity))
+            # only dopamine above its own running level teaches (a burst after Kenyon activity): the signed fast - slow
+            # difference integrates to ~0 over a burst and its long undershoot, which the 50-tick trace spans, so a
+            # pairing left almost nothing
+            phasic_c = F.relu(dopamine_occupancy(d_post[0:1], model.comp_affinity)
+                              - dopamine_occupancy(d_post[1:2], model.comp_affinity))
             window_c = (dopamine_occupancy(d_post[1:2].detach(), model.comp_affinity) / 0.5
                         * comp_trace.index_select(1, model.comp_edge_kc))
             kappa_c = torch.sigmoid(model.comp_logit_forget)
-            comp_memory = comp_memory + window_c * (model.comp_eta * phasic_c - kappa_c * comp_memory)
+            # depression scaled by the efficacy left, (1 + phi): phi approaches -1 and never passes it, so forgetting
+            # (kappa, slow) no longer has to equal the learning rate to keep phi bounded
+            comp_memory = comp_memory + window_c * (model.comp_eta * phasic_c * (1.0 + comp_memory) - kappa_c * comp_memory)
     bank = getattr(current, 'read_bank', torch.empty(0))
     if getattr(model, 'read_bank_gain', None) is not None:
         motor_now = h[:, model.read_indices] if model.read_surface != 'all' else h
@@ -1122,6 +1127,28 @@ def attach_kenyon_dendritic_only(model, graph_npz, annotations, dendritic_feathe
             model.edge_weight_e[edges] = model.edge_weight_e[edges] * share
     model.register_buffer('pinned_zero_edges_e', edges[share == 0], persistent=False)
     return int(edges.numel()), int((share == 0).sum())
+
+
+def pin_kenyon_to_dopamine(model, graph_npz, annotations):
+    """Kenyon -> dopamine-neuron synapses sit on the dopamine terminals in the mushroom-body lobes (axo-axonal); the point
+    model made them somatic, so Kenyon activity (mostly text-driven) supplied ~80% of the dopamine cells' excitation and
+    the teaching signal followed the text instead of the outcome (audit, FLY_CONNECTOME_AUDIT_20261012.md).  Pinned at 0
+    like the axo-axonal Kenyon -> Kenyon synapses.  Returns the number of edges pinned."""
+    import numpy as np
+    import pandas as pd
+    graph = np.load(graph_npz, allow_pickle=True)
+    cls = pd.read_feather(annotations).set_index('bodyId').reindex(graph['neuron_body_ids'])['class'].astype(str).values
+    device = model.edge_pre_e.device
+    kc = torch.as_tensor(cls == 'Kenyon_Cell', device=device)
+    dan = torch.zeros(model.n_neurons, dtype=torch.bool, device=device)
+    dan[torch.as_tensor(graph['dan_indices'].astype(np.int64), device=device)] = True
+    edges = torch.nonzero(kc[model.edge_pre_e.long()] & dan[model.edge_post_e.long()]).squeeze(1)
+    with torch.no_grad():
+        model.edge_weight_e[edges] = 0.0
+    pinned = getattr(model, 'pinned_zero_edges_e', None)
+    pinned = edges if pinned is None else torch.unique(torch.cat([pinned.to(device), edges]))
+    model.register_buffer('pinned_zero_edges_e', pinned, persistent=False)
+    return int(edges.numel())
 
 
 SENSORY_SUPERCLASSES = ('cb_sensory', 'ol_sensory', 'vnc_sensory', 'sensory_ascending', 'sensory_descending')
