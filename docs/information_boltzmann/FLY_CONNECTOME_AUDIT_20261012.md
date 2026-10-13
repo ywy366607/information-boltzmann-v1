@@ -334,3 +334,36 @@ Further zero-shot (1% background, receptors 150 Hz, E_E 0.55):
   et al. 2012), a modulatory route this model lacks (OA is fast excitation, its fast edges pinned in v2).  Here
   OA-VPM3/4 respond to taste (+1.5 to +4.5) but to bitter as much as to sugar.  Next: the OA -> PAM wiring and a
   modulatory OA route, then STP.
+
+### Shiu replication (2026-10-13, zero-shot, `shiu_replication_probe.py`)
+
+Test: before our own mechanisms, does this engine reproduce the validated whole-brain LIF (Shiu et al. 2024; code
+github.com/philshiu/Drosophila_brain_model: v_rest = v_reset -52, v_th -45, tau_m 20, tau_syn 5, refractory 2.2 ms,
+w_syn 0.275 mV per synapse with sign, on a spike `v = v_rst; g = 0`, no STP, no adaptation)?  Receptors Poisson
+100 Hz, 1 s, from rest.  Readouts: MN9 (proboscis motor; Shiu: sugar on, bitter off), PPL1, PAM, cells recruited.
+- EPSP per synapse matches exactly (peak 0.616% of threshold, area/peak 31.7 ms vs 31.8).  IPSP at rest is only
+  -0.13% (E_I -0.15 gives a 0.15 driving force vs 0.55; tau_i 10 ms): inhibition is 4.6x weaker in peak, 3.7x in
+  area, than Shiu's equal |PSP|.
+- Three engine differences each break it (drop-one, STP and ALIF off):
+  1. Weak inhibition: sugar or bitter ignite 55k cells (>10 Hz), MN9 ~400-485 Hz for both.
+  2. Spike does not consume the synaptic drive and there is no refractory period (our reset is v only; ge, gi
+     persist): 15k cells, PAM01 800-940 Hz.
+  3. Sensory cells take synaptic input as somatic (their inputs sit on axon terminals; bitter GRNs get 68 synapses
+     per cell from other bitter GRNs and fire 169 Hz under a 100 Hz drive): bitter turns MN9 ON (120 Hz) via GNG117
+     (ACh, 0.85), against Shiu and the static signed route (bitter -> MN9 negative at hops 2 and 3).
+- With all three fixed (inhibitory weights x3.67 = equal PSP area; on a spike h, ge, gi = 0 and 2 ticks refractory;
+  no synapses onto sensory cells): sugar -> MN9 58-88 Hz, bitter -> MN9 0 (net inhibitory, GNG130 / GNG180 / GNG184
+  GABA); PPL1 bitter 59-70 vs sugar 14 Hz; ~2k cells recruited.  Unclear-NT cells are only 1.7% of output synapses
+  (not a cause); dropping <5-synapse connections changes little.
+- STP at the cortical default (u0 0.25, tau_rec 200) on top: 46 cells respond, MN9 0.5 Hz -- it kills transmission;
+  it was only acting as the brake for the missing inhibition / reset.
+- ALIF off: bistable (seeds 11, 13: a sugar cascade of 8-9k cells, PAM 55-63 Hz; seed 12: none, PAM 0).  ALIF on,
+  3 seeds, stable: sugar -> MN9 31-46 Hz, PAM01 16-20 Hz, PAM 15-18 Hz; bitter -> MN9 0, PAM 0.1-0.3 Hz.  The fast
+  connectome alone gives PAM the right valence; the octopamine route is not needed for the sign.
+- On a continuous background (0.2-1% of sensory cells per tick; ALIF on, STP off), 2 seeds: brain 5-6 Hz, saturated
+  0.1%; MN9 sugar +12 to +25 Hz, bitter -28 to -50 (shut off); PPL1 bitter +12 to +24, sugar -9 to +3; PAM01 sugar
+  +1 to +3, bitter -1 to -2 on a 15-20 Hz tone (right sign, weak).
+Root cause of "PAM gets no sugar", in order: missing inhibition strength (biophysical E_I without the larger
+inhibitory conductance), no spike-consumed drive / refractory, somatic input to sensory cells, and the cortical STP
+default that was hiding the first two by suppressing all transmission.  Next: these four as engine options (not
+probe hacks), cell health gate, then a rebirth plan.

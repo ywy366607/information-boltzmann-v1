@@ -21,6 +21,10 @@ if os.environ.get('STP_TAU_REC'):
 if os.environ.get('ALIF_OFF'):
     with torch.no_grad():
         model.log_beta.fill_(-30.0)          # adaptation strength ~0
+if os.environ.get('INTRINSIC_KAPPA'):
+    rel = fl.attach_intrinsic_drive(model, G, 'D:/information-boltzmann-v1/data/malecns_v1/body-annotations.feather',
+                                    kappa=float(os.environ['INTRINSIC_KAPPA']), pattern=os.environ.get('INTRINSIC_PATTERN', r'^(PAM\d|PPL\d|OA-|5-HT|DPM$)'))
+    print('intrinsic drive kappa', os.environ['INTRINSIC_KAPPA'], 'on', int(model.intrinsic_index.numel()), 'cells', flush=True)
 BGS = tuple(float(x) for x in os.environ.get('BGS', '0.0,0.01,0.05').split(','))
 opts = dict(base_rates=model.get_decay_rates(), thresholds=model.get_thresholds(), conductance_gains=model.get_conductance_gains(),
             alif_params=model.get_alif_params(), stp_params=model.get_stp_params())
@@ -97,3 +101,39 @@ with torch.no_grad():
             for k, ix in sets.items():
                 exs[k].append(extra[ix].mean())
         print(f'   {name:>6} strong lines (synapse-weighted):', ' | '.join(f'{k}: {np.mean(v):+.2f} (syn mass median {np.median({"hop1 top100": x1, "hop2 top100": x2, "hop3 top100": x3, "PAM by hop3": x3}[k][sets[k]]):.0f})' for k, v in exs.items()), flush=True)
+
+# path decomposition into PAM01 / PAM11: which last-hop cells carry the sugar signal, and do they fire more?
+with torch.no_grad():
+    bg = BGS[-1]
+    s0 = run(fresh(), 300, bg, seed=0)[0]
+    base = run(s0, 300, bg, None, seed=50)[1]; extra = run(s0, 300, bg, 'sugar', seed=50)[1] - base
+    x1 = A @ S['sugar'].astype(float); x2 = np.maximum(A @ np.maximum(x1, 0), 0)
+    for tgt in ('PAM01', 'PAM11'):
+        cells = np.nonzero(typ == tgt)[0]
+        Ap = A[cells].toarray().sum(0)                           # synapses from each cell onto the target type
+        contrib = np.maximum(x2, 0) * Ap
+        top = np.argsort(-contrib)[:8]
+        print(f'   last hop into {tgt} ({len(cells)} cells, extra spikes {extra[cells].mean():+.2f}, base rate {base[cells].mean() / 300:.4f}):', flush=True)
+        for j in top:
+            print(f'      {typ[j]:>14} syn onto {tgt}: {Ap[j]:4.0f}  2-hop sugar mass {x2[j]:8.1f}  extra spikes {extra[j]:+6.1f}  base rate {base[j] / 300:.3f}', flush=True)
+        fed = Ap > 0
+        print(f'      all presynaptic cells of {tgt}: {fed.sum()} cells, {Ap[fed].sum():.0f} synapses; synapse-weighted extra spikes {np.average(extra[fed], weights=Ap[fed]):+.3f}', flush=True)
+
+# why does PAM01 not follow SMP744?  conductances and membrane under the background, vs typical cells
+with torch.no_grad():
+    bg = BGS[-1]
+    s = run(fresh(), 300, bg, seed=0)[0]
+    gen = torch.Generator(device='cuda').manual_seed(60)
+    acc = {k: torch.zeros(N, device='cuda') for k in ('ge', 'gi', 'v')}
+    for _ in range(200):
+        d = torch.zeros(1, N, device='cuda'); on = sens[torch.rand(sens.numel(), device='cuda', generator=gen) < bg]; d[0, on] = 1.5 * thr[on]
+        model.external_drive = d
+        s = fl.step_fly_physical_tick(model, s, None, quiet, s.baseline, opts, base_rates=opts['base_rates'])
+        acc['ge'] += s.ge[0]; acc['gi'] += s.gi[0]; acc['v'] += s.h[0] / thr
+    model.external_drive = None
+    acc = {k: (v / 200).cpu().numpy() for k, v in acc.items()}
+    for name, m in (('PAM01', typ == 'PAM01'), ('PAM all', groups['PAM']), ('PPL1', groups['PPL1']), ('SMP744', typ == 'SMP744'), ('all cells', np.ones(N, bool))):
+        print(f'   {name:>9}: g_e {np.median(acc["ge"][m]):.4f}  g_i {np.median(acc["gi"][m]):.4f}  g_i/g_e {np.median(acc["gi"][m] / np.maximum(acc["ge"][m], 1e-9)):.2f}  v/theta {np.median(acc["v"][m]):+.2f}', flush=True)
+    pam01 = np.nonzero(typ == 'PAM01')[0]
+    inE = np.isin(post_e, pam01); inI = np.isin(g['edge_post_i'], pam01)
+    print(f'   PAM01 input synapses: excitatory {w_e[inE].sum() / W0 / len(pam01):.0f} per cell, inhibitory {np.abs(g["edge_weight_i"])[inI].sum() / W0 / len(pam01):.0f} per cell', flush=True)
