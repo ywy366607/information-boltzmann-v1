@@ -15,6 +15,8 @@ exec(open('D:/information-boltzmann-v1/scripts/ib/fly_interface/world_eval.py', 
 fork = Path(sys.argv[1])
 out = Path(sys.argv[2]) if len(sys.argv) > 2 else fork / 'taste_pulse.json'
 GAIN = float(sys.argv[3]) if len(sys.argv) > 3 else 1.5
+import os
+ON = int(os.environ.get('TASTE_ON', 20)); WIN = ON + int(os.environ.get('TASTE_AFTER', 20))   # ticks driven, ticks observed
 model, cfg, L = load(fork)
 opts = dict(base_rates=model.get_decay_rates(), thresholds=model.get_thresholds(), conductance_gains=model.get_conductance_gains(),
             alif_params=model.get_alif_params(), stp_params=model.get_stp_params())
@@ -61,14 +63,14 @@ def run(s0, drive, relay=None):
     own = 0.0
     counts['relay'] = 0.0; counts['dan_v_over_theta'] = 0.0
     phi0 = s0.comp_memory.clone() if s0.comp_memory.numel() else None
-    for k in range(40):
-        s = tick(s, drive if (drive is not None and k < 20) else None)
+    for k in range(WIN):
+        s = tick(s, drive if (drive is not None and k < ON) else None)
         spk = (s.ring[0][0] > 0).float()
         for name, m in G.items():
             counts[name] += float(spk[m].sum())
         if relay is not None:
             counts['relay'] += float(spk[relay].sum())
-        counts['dan_v_over_theta'] += float((s.h[0, DANm] / thr.expand(1, -1)[0, DANm]).mean()) / 40
+        counts['dan_v_over_theta'] += float((s.h[0, DANm] / thr.expand(1, -1)[0, DANm]).mean()) / WIN
         if drive is not None:
             own += float(spk[drive[0] > 0].sum())
     dphi = float((s.comp_memory - phi0).abs().mean()) if phi0 is not None else None
@@ -102,7 +104,7 @@ with torch.no_grad():
                                'extra_dan_v_over_theta': stim['dan_v_over_theta'] - base['dan_v_over_theta'],
                                'dphi_stim': dphi, 'dphi_control': dphi0})
 q = lambda v: [float(np.min(v)), float(np.median(v)), float(np.mean(v)), float(np.max(v))]
-rep = {'fork': str(fork), 'gain_x_threshold': GAIN, 'sizes': {k: int(v.sum()) for k, v in {**sets, **groups}.items()}}
+rep = {'fork': str(fork), 'gain_x_threshold': GAIN, 'ticks_on': ON, 'ticks_window': WIN, 'sizes': {k: int(v.sum()) for k, v in {**sets, **groups}.items()}}
 for name, rs in rows.items():
     summ = {k: q([r[k] for r in rs]) for k in rs[0] if rs[0][k] is not None}
     top = sorted(((k[8:], summ[k][2]) for k in summ if k.startswith('extra_t:')), key=lambda z: -abs(z[1]))[:6]

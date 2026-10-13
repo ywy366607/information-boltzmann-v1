@@ -276,3 +276,27 @@ Kenyon cells 70% (intended, renormalized).
 | physiology frozen by the shared Adam rate | `--lr-physiology` (D3 full: moves, healthy) |
 | STP never learned | `--learn-stp` (D3 full) |
 | gap junctions (GF), single-synapse dilution of K_in, APL / CT1 as spiking points, OA / 5-HT modulation, weak inhibitory driving force | still open; the health gate will show whether any of them kills a group the route needs |
+
+## The root under the day's symptoms: the birth synapse scale (2026-10-13, zero-shot)
+Origin: `build_fly_reservoir_graph.py`, commit f26cfc6 (2026-10-02, "Launch level-0 fly reservoir"): W = count x sign /
+sqrt(K_in) x g with g = 1 / (power-iteration estimate of the spectral radius) -- the echo-state-network convention
+for a FIXED reservoir, written by an agent session for level 0 and never revisited when the connectome became a
+learnable spiking brain.  This audit (section a) noted the power iteration is unreliable but graded it "only the
+global scale, Low": that grading was wrong.  Measured: g = 0.0058, so one synapse is 0.35% of a threshold (median;
+~286 coincident synapse-spikes to fire), against 3.9% (~25) in the validated whole-brain LIF of Shiu et al. 2024.
+Consequence in activity (propagation_probe, D1): every sense dies after two synapses -- sugar receptors firing every
+tick give hop-1 +1.8, hop-2 +0.02, hop-3 0 extra spikes per cell; odour (all ORNs) +7.7 / +0.44 / 0 -- so nothing
+sensory except the BPTT-grown text route reaches dopamine cells, mushroom body or motor side; BPTT compensated by
+growing weights (x4.4 mean, DN x5.6 -> saturation) only along the route it was trained on.  This explains: silent
+dopamine, uninformative Kenyon cells, unused memory phi, taste unable to teach, and the DN saturation of section g.
+Zero-shot on the birth connectome (birth_scale_probe, no input otherwise, sugar driven 200 ticks):
+| per-synapse efficacy | spontaneous | hop 1 / 2 / 3 / 4 | PAM | PPL1 | MBON | KC | motor | DN |
+| birth (0.35%, sqrt K) | silent | +0.11 / 0 / 0 / 0 | 0 | 0 | 0 | 0 | 0 | +0.02 |
+| uniform 1% | silent | +9.2 / +9.0 / +1.4 / 0 | +12.8 | +55 | +39 | +6.1 | +20 | +18 |
+| uniform 2% | silent | +24 / +23 / +4.3 / 0 | +35 | +124 | +95 | +18 | +47 | +44 |
+| uniform 3.9% (Shiu) | silent | +44 / +40 / +9.9 / +0.2 | +60 | +169 | +132 | +36 | +75 | +70 |
+With a biological per-synapse scale the senses reach dopamine, mushroom body and motor neurons within 3-4 hops, and
+the network stays quiet without input.  Not yet shown: valence specificity (sugar drives PPL1 more than PAM here:
+broad flooding, every group 100% up -- inhibition and thresholds must make it specific) and stability under
+continuous input (text, noise).  Fixing the scale changes the substrate the adult was trained on (its weights are
+calibrated to 0.35%), so it is a rebirth question, decided with these zero-shot checks first.

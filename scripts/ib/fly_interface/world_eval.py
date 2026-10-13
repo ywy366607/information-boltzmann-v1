@@ -1,3 +1,4 @@
+import numpy as np
 """Specialised measures for the worlds (fixed weights, same fresh text for every individual).
 
 read     self-paced: the go neuron decides when to speak and move on (sampling seeded)
@@ -89,6 +90,14 @@ def load(fork):
     # (INTRINSIC_PATTERN, default PAM / PPL / OA / 5-HT / DPM) with that intrinsic current
     if os.environ.get('ZS_DAN_RENORM') and not cfg.get('dan_renorm'):
         print(f'zero-shot: dopamine inputs renormalized (median x{fl.renormalize_dopamine_inputs(model, graph, graph.parent / "body-annotations.feather"):.2f})', flush=True)
+    if os.environ.get('ZS_DA_INPUT_GAIN'):
+        # dose-response: every excitatory input onto the dopamine cells x gain (how far is the route from working?)
+        gain = float(os.environ['ZS_DA_INPUT_GAIN'])
+        dan_t = torch.zeros(model.n_neurons, dtype=torch.bool, device='cuda')
+        dan_t[torch.as_tensor(np.load(graph, allow_pickle=True)['dan_indices'].astype(np.int64), device='cuda')] = True
+        with torch.no_grad():
+            model.edge_weight_e[dan_t[model.edge_post_e.long()]] *= gain
+        print(f'zero-shot: excitatory inputs onto dopamine cells x{gain}', flush=True)
     if os.environ.get('INTRINSIC_KAPPA') and getattr(model, 'intrinsic_kappa', None) is None:
         released = fl.attach_intrinsic_drive(model, graph, graph.parent / 'body-annotations.feather', kappa=float(os.environ['INTRINSIC_KAPPA']),
                                              pattern=os.environ.get('INTRINSIC_PATTERN', r'^(PAM\d|PPL\d|OA-|5-HT|DPM$)'))

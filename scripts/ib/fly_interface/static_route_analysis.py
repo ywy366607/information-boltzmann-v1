@@ -1,5 +1,6 @@
 """Where does the text go, and does the mushroom body reach action?  Static, from the weights only (no simulation, CPU).
-Linear influence: x_{k+1} = A x_k, A[post, pre] = g_e |w_e| + g_i |w_i| (magnitude of the conductance a spike leaves),
+Linear influence: x_{k+1} = A x_k, A[post, pre] = g_e |w_e| - g_i |w_i| (signed; reported as absolute mass per unit
+source activity -- never shares, never |w|: memory feedback-static-routes-signed-absolute),
 Kenyon -> MBON weights from the compartment memory put back.  For each source distribution (mass 1) and hop k = 1..8:
 the share of the hop-k mass on each group, and the mass landing on the output cells (what the language read and the
 acts read) and on the descending neurons.  Removing the Kenyon cells (they transmit nothing) gives the share of the
@@ -43,7 +44,9 @@ if read_w.shape[1] == len(read_idx):
     read_use[read_idx] = np.linalg.norm(read_w, axis=0)
 
 
-def matrix(trained):
+def matrix(trained, signed=True):
+    """Signed by default (excitation +, inhibition -): |w| counts an inhibited target as driven (memory:
+    feedback-static-routes-signed-absolute).  signed=False only to compare with old reports."""
     we = (M['edge_weight_e'].detach().float().numpy() if trained else g['edge_weight_e']).astype(np.float64).copy()
     wi = (M['edge_weight_i'].detach().float().numpy() if trained else g['edge_weight_i']).astype(np.float64)
     pre_e, post_e = g['edge_pre_e'], g['edge_post_e']
@@ -53,7 +56,7 @@ def matrix(trained):
             we[kc_mbon] = M['comp_weight'].detach().float().numpy()         # the plastic Kenyon -> MBON synapses
     ge = float(np.exp(M['log_g_e'].item())) if trained else 1.0
     gi = float(np.exp(M['log_g_i'].item())) if trained else 1.0
-    A = sp.coo_matrix((np.concatenate([ge * np.abs(we), gi * np.abs(wi)]),
+    A = sp.coo_matrix((np.concatenate([ge * np.abs(we), (-1.0 if signed else 1.0) * gi * np.abs(wi)]),
                        (np.concatenate([post_e, g['edge_post_i']]), np.concatenate([pre_e, g['edge_pre_i']]))),
                       shape=(N, N)).tocsr()
     return A
@@ -67,8 +70,10 @@ def spread(A, x0, hops=8, silence=None):
             x = x * (~silence)
         x = A @ x
         tot = x.sum()
+        # absolute signed mass per unit source activity (shares mislead across weight sets: every excitatory weight
+        # grew 4.4x in training; and a signed total can be ~0)
         rows.append({'hop': k, 'total': float(tot),
-                     **{f'share_{n}': float(x[m].sum() / tot) for n, m in groups.items()},
+                     **{f'mass_{n}': float(x[m].sum()) for n, m in groups.items()},
                      'to_outputs': float(x[is_out].sum()), 'to_descending': float(x[groups['descending']].sum()),
                      'to_read_weighted': float((x * read_use).sum())})
     return rows
@@ -87,15 +92,15 @@ for label, trained in (('birth', False), ('trained', True)):
     print(f'== {label}')
     print('  text -> outputs by hop:', [f"{r['to_outputs']:.2e}" for r in t])
     print('  share through Kenyon cells:', [f"{1 - b['to_outputs'] / max(a['to_outputs'], 1e-30):.3f}" for a, b in zip(t, n)])
-    print('  text share on KC by hop:', [f"{r['share_KC_all']:.4f}" for r in t])
+    print('  text mass on KC by hop (signed, absolute):', [f"{r['mass_KC_all']:.4f}" for r in t])
     for src in ('KC_ab_core', 'MBON', 'ALPN', 'visual_projection', 'cb_intrinsic'):
         r = out[src]
-        print(f'  {src:>18} -> descending (share of hop mass):', [f"{x['share_descending']:.4f}" for x in r][:6],
+        print(f'  {src:>18} -> descending (signed mass):', [f"{x['mass_descending']:.4f}" for x in r][:6],
               '| outputs (abs):', [f"{x['to_outputs']:.1e}" for x in r][:6])
     r = out['KC_ab_core']
-    print('  alpha/beta core route, share by hop: MBON', [f"{x['share_MBON']:.4f}" for x in r][:5],
-          'DAN', [f"{x['share_DAN']:.4f}" for x in r][:5], 'convergence', [f"{x['share_convergence_SMP_SIP_CRE']:.3f}" for x in r][:5],
-          'CX', [f"{x['share_CX']:.3f}" for x in r][:5], 'LAL', [f"{x['share_LAL']:.3f}" for x in r][:5])
+    print('  alpha/beta core route, share by hop: MBON', [f"{x['mass_MBON']:.4f}" for x in r][:5],
+          'DAN', [f"{x['mass_DAN']:.4f}" for x in r][:5], 'convergence', [f"{x['mass_convergence_SMP_SIP_CRE']:.3f}" for x in r][:5],
+          'CX', [f"{x['mass_CX']:.3f}" for x in r][:5], 'LAL', [f"{x['mass_LAL']:.3f}" for x in r][:5])
 rep['read_use_share'] = {n: float(read_use[m].sum() / max(read_use.sum(), 1e-30)) for n, m in groups.items()}
 print('language read weight share:', {n: round(v, 3) for n, v in rep['read_use_share'].items() if v > 0})
 json.dump(rep, open(Path(sys.argv[2]) if len(sys.argv) > 2 else ck / 'static_routes.json', 'w'), indent=1)
