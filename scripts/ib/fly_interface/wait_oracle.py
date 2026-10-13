@@ -20,6 +20,7 @@ model, cfg, L = load(fork)
 opts = dict(base_rates=model.get_decay_rates(), thresholds=model.get_thresholds(), conductance_gains=model.get_conductance_gains(),
             alif_params=model.get_alif_params(), stp_params=model.get_stp_params())
 writer = model.topographic_writer
+HOLD = bool(cfg.get('hold_input'))     # the world holds a word on the senses for all its ticks
 quiet = torch.zeros(1, model.n_neurons, device='cuda')
 val = np.load(ROOT / cfg['data'] / 'validation.npy', mmap_mode='r')
 region, T = 60_000, 16
@@ -34,7 +35,7 @@ with torch.no_grad():
         token = torch.tensor([int(seq[i])], device='cuda'); target = int(seq[i + 1])
         ces = []
         for t in range(T):
-            if t == 0:
+            if t == 0 or HOLD:
                 drive, baseline = fl.write_input(model, s, token)
                 s = fl.step_fly_physical_tick(model, s, token, drive, baseline, opts, base_rates=opts['base_rates'])
             else:
