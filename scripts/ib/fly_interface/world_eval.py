@@ -52,6 +52,8 @@ def load(fork):
     act = ow.ACT_PARAMETER_NAMES + ('act_mu', 'act_sigma', 'act_w_scale') + ow.SENSE_PARAMETER_NAMES
     from information_boltzmann.core import fly_active_inference as fai
     late = fl.COMPARTMENT_PARAMETER_NAMES + fl.TASTE_PARAMETER_NAMES + act + fai.AI_STATE_NAMES
+    if saved['model']['log_tau_m'].numel() > model.n_superclasses:
+        fl.split_kenyon_subtypes(model, graph, graph.parent / 'body-annotations.feather')   # a split lineage
     with torch.no_grad():
         for k in edges:
             getattr(model, k).copy_(saved['model'][k])

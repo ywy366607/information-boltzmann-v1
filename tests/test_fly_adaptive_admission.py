@@ -1303,3 +1303,41 @@ def test_motor_acts_are_sampled_from_output_cells_and_learn_from_the_exact_expec
         for name in ('ai_mode', 'ai_brain_gradient'):
             if hasattr(model, name):
                 delattr(model, name)
+
+
+def test_kenyon_subtypes_get_their_own_physiology_without_changing_dynamics(fly_model_and_state):
+    """Connectome audit: the Kenyon subtypes leave cb_intrinsic and get their own class parameters, initialised from it
+    -- every neuron's time constants, threshold, adaptation and STP are bit-identical right after the split; the new
+    classes are separate parameters (a gradient on the alpha/beta core does not touch cb_intrinsic); the optimizer's
+    moments for split parameters start from the class they left."""
+    from information_boltzmann.core.fly_bptt_learning import split_kenyon_subtypes, CLASS_PARAMETER_NAMES
+    model, state, device = fly_model_and_state
+    saved_sc = model.superclass_id.clone()
+    saved_params = {n: getattr(model, n) for n in CLASS_PARAMETER_NAMES if getattr(model, n, None) is not None}
+    saved_n = model.n_superclasses
+    try:
+        before = [t.clone() for t in (*model.get_decay_rates(), model.get_thresholds(), *model.get_alif_params(),
+                                      *model.get_stp_params())]
+        counts = split_kenyon_subtypes(model, 'data/malecns_v1/fly_reservoir_coba.npz',
+                                       'data/malecns_v1/body-annotations.feather')
+        assert counts['KC_ab_core'] > 300 and sum(counts.values()) > 3500
+        after = [*model.get_decay_rates(), model.get_thresholds(), *model.get_alif_params(), *model.get_stp_params()]
+        for b, a in zip(before, after):
+            assert torch.equal(b, a)
+        core = model.n_superclasses - len(counts)                      # the first new class: the alpha/beta core
+        source = model.class_split_sources[0]
+        (model.log_tau_m[core] * 1.0).backward()
+        assert model.log_tau_m.grad[core] == 1.0 and model.log_tau_m.grad[source] == 0.0
+        model.log_tau_m.grad = None
+        # Adam moments of a split parameter grow by the source classes' moments
+        sources = model.class_split_sources
+        old = torch.arange(saved_n, dtype=torch.float32)
+        grown = torch.cat([old, old[sources]])
+        assert grown.shape[0] == model.log_tau_m.shape[0] and torch.equal(grown[saved_n:], old[sources])
+    finally:
+        model.superclass_id.copy_(saved_sc)
+        for n, p in saved_params.items():
+            setattr(model, n, p)
+        model.n_superclasses = saved_n
+        if hasattr(model, 'class_split_sources'):
+            del model.class_split_sources

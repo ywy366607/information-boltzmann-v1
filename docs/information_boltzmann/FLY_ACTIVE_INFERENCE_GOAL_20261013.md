@@ -224,3 +224,33 @@ Probe: act_probe.py (fixed16 and geo; exact expectations under the hazards).
 - Language: unchanged (brain detached): |survival CE - M1 forced-open| <= 0.02.
 - Risk: only 7% of the motor spike variance is word-locked; if the readout cannot see difficulty, latency stays flat
   -> next step is to let the policy gradient reach the brain (act_brain_grad).
+
+## Connectome audit: why the brain cannot accumulate (read from the model, no simulation; user: "look, don't test")
+- Short-term plasticity was never learned (learn_stp False in the adult's whole life): every synapse of all 27
+  classes has u0 = 0.25, tau_rec = 200 ticks, tau_fac = 100 -- the initial values.  Under sustained firing the
+  resources settle at x* = 1/(1 + u r tau_rec) ~ 1/6 at r = 0.1/tick: sustained signals are cut ~6x, only changes pass.
+  The whole brain is a transient detector -- it settles by tick 2 after a pulse, and sustained input is interference,
+  not evidence (the sustained-input pilot).  Real synapses differ by type (depressing and facilitating).
+- Kenyon cells had no physiology of their own: all 4,064 sit in cb_intrinsic with 32,160 central-brain neurons and
+  share its membrane time constant (43 ticks), threshold, adaptation and STP.  The alpha/beta core (488 cells; FoxP,
+  the evidence accumulators of DasGupta et al. 2014 / Groschner et al. 2018) could not differ from anything.  The
+  connectome records wiring, not channels: the per-neuron tau_m in the graph does not single them out either (40.6 vs
+  39-50 for other subtypes).  A point-model coarse-graining artifact on the active route.
+- Known: mushroom-body output reaches descending neurons with 0.07% of their input; the consequences of an answer do
+  not enter the brain through any receptor.
+Fixes (user: "全部改好"): --learn-stp (evolution sets each class's STP) and --kc-subtypes (alpha/beta core, alpha/beta
+surface+middle, alpha/beta posterior, alpha'/beta', gamma get their own class parameters, initialised from
+cb_intrinsic so the dynamics are unchanged at the split; the optimizer's moments carried from the class they left).
+
+## D2: does evolution grow accumulation once it may? (predictions written before the run)
+Sustained noisy input (each word heard every tick, sigma ~ U(0, 2)), pace mu ~ log-uniform [2, 16], commits from motor
+cells as in D1 (listener-prior miss, habit prior, readout learns), eyes open.  Arms: d2_fixed (--learn-stp
+--kc-subtypes) and d2_control (same world, no fixes).  3 chunks each.
+- Accumulation: in d2_fixed the CE of noisy words falls with ticks at fixed16 (best mean gain on the noisy quartile
+  >= 0.15 nats; the pilot without fixes had 0.03); d2_control stays flat.
+- The fixes are used: STP moves away from the uniform depression in some classes (u0 or tau_rec), and the alpha/beta
+  core's time constants or STP diverge from the other Kenyon subtypes.
+- Adaptivity: the commit's expected latency grows with the word's noise (rho(latency, sigma) > 0.1) in d2_fixed only.
+- Language: d2_fixed no worse than d2_control on clean text (<= 0.05 nats).
+If accumulation does not appear with the fixes, the next suspects are the sensory adaptation (tau 20 ticks, a
+high-pass at the writer) and the weak MB -> DN route; say which before changing anything.

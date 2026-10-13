@@ -1973,9 +1973,16 @@ class FlyBPTTLearner:
             raise ValueError(f'Optimizer parameter coverage changed: extra={set(old_by_name) - (set(self.adam_names) - newly_trainable)}, missing={(set(self.adam_names) - newly_trainable) - set(old_by_name)}')
         destination = self.optimizer.state_dict()
         migrated = {}
+        named = dict(self.model.named_parameters())
+        sources = getattr(self.model, 'class_split_sources', None)
         for group in destination['param_groups']:
             for index, name in zip(group['params'], group['parameter_names']):
                 entry = old_by_name.get(name)
+                if entry is not None and sources and name in CLASS_PARAMETER_NAMES:
+                    # a split class: the new classes start with the moments of the class they left
+                    width = named[name].shape[0]
+                    entry = {k: (torch.cat([v, v[sources]]) if isinstance(v, torch.Tensor) and v.ndim == 1
+                                 and v.shape[0] + len(sources) == width else v) for k, v in entry.items()}
                 if entry is not None:
                     migrated[index] = entry
             retained = [name for name in group['parameter_names'] if name in old_options]
@@ -2984,3 +2991,49 @@ class FlyBPTTGraph:
                     destination.copy_(value)
         self.graph.replay()
         return self.output
+
+
+# Physiology that is learned per cell class (time constants, threshold, adaptation, short-term plasticity, dopamine
+# sensitivity); splitting a class gives its cells their own values.
+CLASS_PARAMETER_NAMES = ('log_tau_m', 'log_tau_s_e', 'log_tau_s_i', 'log_threshold', 'log_tau_a', 'log_beta',
+                         'logit_u0', 'log_tau_fac', 'log_tau_rec', 'dopamine_sensitivity')
+KENYON_SUBTYPES = (('KC_ab_core', ('KCab-c',)), ('KC_ab_surface', ('KCab-s', 'KCab-m')), ('KC_ab_posterior', ('KCab-p',)),
+                   ("KC_apbp", ("KCa'b'",)), ('KC_g', ('KCg',)))
+
+
+def split_kenyon_subtypes(model, graph_npz, annotations):
+    """Connectome audit (point-model coarse-graining): all 4,064 Kenyon cells sat in cb_intrinsic with 32,160 other
+    central-brain neurons, sharing one membrane time constant, threshold, adaptation and STP -- the alpha/beta core
+    (FoxP; the population that accumulates evidence, DasGupta et al. 2014; Groschner et al. 2018) could not differ from
+    anything.  The connectome records wiring, not channels, so these values are for evolution (BPTT) to find.  Each
+    subtype becomes its own class, initialised from the class it leaves (dynamics unchanged at the split).  Records the
+    source class of every new class in model.class_split_sources (for the optimizer's moments).  Returns the counts."""
+    import pandas as pd
+    graph = np.load(graph_npz, allow_pickle=True)
+    ann = pd.read_feather(annotations).set_index('bodyId').reindex(graph['neuron_body_ids'])
+    typ = ann['type'].astype(str).values
+    sc = model.superclass_id
+    sources, counts = [], {}
+    with torch.no_grad():
+        for name, prefixes in KENYON_SUBTYPES:
+            mask = np.zeros(len(typ), bool)
+            for p in prefixes:
+                mask |= np.char.startswith(typ.astype(str), p)
+            if not mask.any():
+                continue
+            m = torch.as_tensor(mask, device=sc.device)
+            sources.append(int(torch.mode(sc[m]).values))
+            sc[m] = model.n_superclasses + len(sources) - 1
+            counts[name] = int(mask.sum())
+        for pname in CLASS_PARAMETER_NAMES:
+            p = getattr(model, pname, None)
+            if p is None:
+                continue
+            grown = torch.cat([p.data, p.data[sources]])
+            setattr(model, pname, nn.Parameter(grown, requires_grad=p.requires_grad))
+    model.n_superclasses += len(sources)
+    model.class_split_sources = sources
+    for attr in ('_compiled_coefficients', '_compiled_finish'):
+        if hasattr(model, attr):
+            setattr(model, attr, None)
+    return counts

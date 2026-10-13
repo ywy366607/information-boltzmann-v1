@@ -183,7 +183,7 @@ def resolve_learning_modes(args, previous_config, previous_learner):
         args.eye_binary = bool(previous_config.get('eye_binary', False))
     if getattr(args, 'ai_depth', None) is None:
         args.ai_depth = int(previous_config.get('ai_depth') or 0)
-    for name, default in (('motor_acts', False), ('act_brain_grad', False), ('miss_prior', False)):
+    for name, default in (('motor_acts', False), ('act_brain_grad', False), ('miss_prior', False), ('kc_subtypes', False)):
         if getattr(args, name, None) is None:
             setattr(args, name, bool(previous_config.get(name, default)))
     for name, default in (('act_tau', 8.0), ('act_habit', 0.2), ('act_gamma_inv', 0.05)):
@@ -332,6 +332,9 @@ def main():
     parser.add_argument('--noise-alphabet', type=int, default=16, help='Noisy TV: alphabet size (random token ids)')
     parser.add_argument('--noise-seed', type=int, default=7, help='Noisy TV: the alphabet and the draws')
     parser.add_argument('--eye-init', type=float, default=None, help='M3: the eyes\' initial open probability')
+    parser.add_argument('--kc-subtypes', action=argparse.BooleanOptionalAction, default=None,
+                        help='Connectome audit: Kenyon subtypes (alpha/beta core, surface, posterior, alpha-prime/beta-prime, '
+                             'gamma) get their own physiology instead of sharing that of cb_intrinsic (omitted = inherit)')
     parser.add_argument('--motor-acts', action=argparse.BooleanOptionalAction, default=None,
                         help='Acts read from the output cells\' spikes through a muscle filter, sampled (diversity first); '
                              'omitted = inherit')
@@ -808,6 +811,11 @@ def main():
             # a tied lineage: the writer's chemosensory rows are per receptor type (shapes before loading)
             attach_tied_writer(model, args.graph, args.graph.parent / 'body-annotations.feather', convert=False)
             print('Writer tied by chemosensory receptor type', flush=True)
+        from information_boltzmann.core.fly_bptt_learning import split_kenyon_subtypes
+        lineage_split = saved['model']['log_tau_m'].numel() > model.n_superclasses
+        if lineage_split:
+            # a lineage whose Kenyon subtypes already have their own physiology: the same split before loading
+            print(f'Kenyon subtypes (carried over): {split_kenyon_subtypes(model, args.graph, args.graph.parent / "body-annotations.feather")}', flush=True)
         weights = {key: value for key, value in saved['model'].items()
                    if key not in ('edge_weight_e', 'edge_weight_i')
                    and key not in COMPARTMENT_PARAMETER_NAMES + TASTE_PARAMETER_NAMES + ACT_STATE_NAMES + AI_STATE_NAMES}
@@ -828,6 +836,9 @@ def main():
             unexpected = [k for k in loaded.unexpected_keys if not k.startswith('latent_predictor.') and not k.startswith('graph_observer.')]
             if unexpected or missing:
                 raise ValueError(f'Weight migration mismatch: unexpected={unexpected}, missing={missing}')
+        if args.kc_subtypes and not lineage_split:
+            print(f'Kenyon subtypes split from cb_intrinsic (own physiology, initialised from it): '
+                  f'{split_kenyon_subtypes(model, args.graph, args.graph.parent / "body-annotations.feather")}', flush=True)
             if args.kc_dendritic_only:
                 n_kk, n_zero = attach_kenyon_dendritic_only(model, args.graph, args.graph.parent / 'body-annotations.feather',
                                                             args.graph.parent / 'kc_kc_dendritic_synapses.feather',
