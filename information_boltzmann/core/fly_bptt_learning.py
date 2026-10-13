@@ -1200,7 +1200,8 @@ TIED_RECEPTOR_CLASSES = ('olfactory', 'gustatory', 'chemosensory', 'hygrosensory
 
 
 CHEMICAL_SENSE_CLASSES = ('olfactory', 'gustatory', 'chemosensory')
-WRITER_SENSE = {'receptor': 'olfactory', 'receptor_all': 'all', 'receptor_text': 'text'}
+TASTE_SENSE_CLASSES = ('gustatory', 'chemosensory')
+WRITER_SENSE = {'receptor': 'olfactory', 'receptor_all': 'all', 'receptor_text': 'text', 'receptor_lang': 'lang'}
 
 
 def attach_receptor_writer(model, graph_npz, annotations, sense_class='olfactory', seed=0, **kw):
@@ -1215,7 +1216,7 @@ def attach_receptor_writer(model, graph_npz, annotations, sense_class='olfactory
     graph = np.load(graph_npz, allow_pickle=True)
     ann = pd.read_feather(annotations).set_index('bodyId').reindex(graph['neuron_body_ids'])
     cls, typ = ann['class'].astype(str).values, ann['type'].astype(str).values
-    if sense_class in ('all', 'text'):
+    if sense_class in ('all', 'text', 'lang'):
         from pathlib import Path
         parts = np.load(Path(graph_npz).parent / 'sensory_partitions.npz')
         cells = np.concatenate([parts['visual_idx'], parts['chemo_idx'], parts['mechano_idx']]).astype(np.int64)
@@ -1223,6 +1224,10 @@ def attach_receptor_writer(model, graph_npz, annotations, sense_class='olfactory
             # the chemical senses are kept for the world (odours, tastes: valence and the mushroom body's teacher);
             # the text goes through every other sense (user 2026-10-13: dedicated smell and taste are fine)
             cells = cells[~np.isin(cls[cells], CHEMICAL_SENSE_CLASSES)]
+        elif sense_class == 'lang':
+            # language through smell too (the mushroom body's main input is olfactory: without it the Kenyon cells
+            # never hear the text), taste kept for the world as the valence / dopamine teacher (user 2026-10-14)
+            cells = cells[~np.isin(cls[cells], TASTE_SENSE_CLASSES)]
     else:
         cells = np.nonzero(cls == sense_class)[0]
     tied = np.isin(cls[cells], TIED_RECEPTOR_CLASSES)
@@ -2999,14 +3004,15 @@ class FlyBPTTLearner:
         eg = getattr(self, 'eg', False)
         if relative is not None and local is None and not eg:
             before = [w.detach().clone() for w in self.edges]
-        if evidence or eg:
+        if (evidence and getattr(self, 'evidence_edges', True)) or eg:
             edge_grads = self._evidence_take(self.edges)
         self.sgd.step()
         if eg:
             self._eg_apply(edge_grads, local)
         if evidence:
-            # raw evidence step; the relative / dopamine scales below multiply it like any other synapse update
-            self._evidence_apply(self.edge_names, self.edges, edge_grads, self.sgd.param_groups[1]['lr'])
+            if getattr(self, 'evidence_edges', True):
+                # raw evidence step; the relative / dopamine scales below multiply it like any other synapse update
+                self._evidence_apply(self.edge_names, self.edges, edge_grads, self.sgd.param_groups[1]['lr'])
             self.evidence_count += 1
         if not eg and (relative is not None or local is not None):
             # one composed scale per synapse on its Adam update: relative plasticity (each synapse moves by rate x its
@@ -3193,7 +3199,7 @@ class FlyBPTTLearner:
         self.dan_gate = dan_drive.detach()
         return applied
 
-    def attach_evidence_plasticity(self, pull_tau=0.0, saved=None, z=3.0, beta=0.99):
+    def attach_evidence_plasticity(self, pull_tau=0.0, saved=None, z=3.0, beta=0.99, edges=True):
         """Evidence-gated plasticity for the synapses and the class physiology (R3 runaway, 2026-10-13).
 
         R3 measured: the gradient on a synapse is noise from update to update (sign flips, |m|/sqrt(v) at the noise
@@ -3215,8 +3221,11 @@ class FlyBPTTLearner:
         self.physio_lr = float(getattr(self, 'physio_lr', 0.0))
         ev = (saved or {}).get('evidence') or {}
         device = self.state.h.device
-        names = list(self.edge_names) + self.physio_names
-        params = list(self.edges) + self.physio_params
+        # edges=False: the synapses learn by another rule (EG); the gate then governs the class physiology only
+        self.evidence_edges = bool(edges)
+        names = (list(self.edge_names) if edges else []) + self.physio_names
+        params = (list(self.edges) if edges else []) + self.physio_params
+        self.evidence_names, self.evidence_params = names, params
         self.evidence_z, self.evidence_beta = float(ev.get('z', z)), float(ev.get('beta', beta))
         self.evidence_count = int(ev.get('count', 0))
         moments = ev.get('moments') or {}
@@ -3231,7 +3240,8 @@ class FlyBPTTLearner:
                 print('evidence plasticity: no birth values in the checkpoint -- the current values become the reference',
                       flush=True)
             self.evidence_birth = {n: p.detach().clone() for n, p in zip(names, params)}
-        self.edge_cap = {n: self.evidence_birth[n].clamp_min(5.0) for n in self.edge_names}
+        if edges:
+            self.edge_cap = {n: self.evidence_birth[n].clamp_min(5.0) for n in self.edge_names}
         self.evidence_passed = {}
         self.evidence = True
 
@@ -3340,7 +3350,7 @@ class FlyBPTTLearner:
     @torch.no_grad()
     def _evidence_pull(self):
         k = 1.0 / self.pull_tau
-        for n, p in zip(list(self.edge_names) + self.physio_names, list(self.edges) + self.physio_params):
+        for n, p in zip(self.evidence_names, self.evidence_params):
             p.lerp_(self.evidence_birth[n].to(p.dtype), k)
 
     def evidence_state(self):
@@ -3469,7 +3479,37 @@ class FlyBPTTGraph:
 # Physiology that is learned per cell class (time constants, threshold, adaptation, short-term plasticity, dopamine
 # sensitivity); splitting a class gives its cells their own values.
 CLASS_PARAMETER_NAMES = ('log_tau_m', 'log_tau_s_e', 'log_tau_s_i', 'log_threshold', 'log_tau_a', 'log_beta',
-                         'logit_u0', 'log_tau_fac', 'log_tau_rec', 'dopamine_sensitivity')
+                         'logit_u0', 'log_tau_fac', 'log_tau_rec', 'dopamine_sensitivity', 'log_input_gain')
+
+
+def attach_input_gain(model):
+    """A learnable input gain per physiology class, 1 at attachment (call before split_by_type so the type classes
+    inherit it).  2026-10-13: with one leak for every cell a big neuron's drive grows with its synapse count (total input
+    ~ size^0.93: motor / descending 21-26 thresholds, they latch); scaling every input by median size / size removed the
+    latching but silenced the output cells and the taste lines.  The mechanism (input conductance grows with the cell)
+    is fixed; how much is a number the individual learns."""
+    model.log_input_gain = nn.Parameter(torch.zeros(model.n_superclasses, device=model.read_indices.device))
+    return model
+
+
+def init_input_gain_from_size(model, graph_npz, exponent=0.5):
+    """Start every non-sensory class at gain (median size / class median size)^exponent (0 = uniform synapses, 1 =
+    inputs inverse to size; 0.5 = halfway, in log).  Classes without size data, and sensory classes, stay at 1."""
+    import pandas as pd
+    from pathlib import Path
+    graph = np.load(graph_npz, allow_pickle=True)
+    size = pd.read_feather(Path(graph_npz).parent / 'neuron_sizes.feather').set_index('bodyId').reindex(
+        graph['neuron_body_ids'])['size'].values.astype(float)
+    sc_name = np.array(graph['superclass_names'])[graph['superclass_id']].astype(str)
+    cls = model.superclass_id.cpu().numpy().astype(np.int64)
+    ok = np.isfinite(size) & (size > 0) & (np.char.find(sc_name, 'sensory') < 0)
+    med = np.median(size[np.isfinite(size) & (size > 0)])
+    gains = np.zeros(model.n_superclasses)
+    df = pd.DataFrame({'c': cls[ok], 's': size[ok]}).groupby('c')['s'].median()
+    gains[df.index.values] = exponent * np.log(med / df.values)
+    with torch.no_grad():
+        model.log_input_gain.copy_(torch.as_tensor(gains, dtype=torch.float32, device=model.log_input_gain.device))
+    return float(np.exp(gains[df.index.values]).min()), float(np.exp(np.median(gains[df.index.values]))), float(np.exp(gains[df.index.values]).max())
 KENYON_SUBTYPES = (('KC_ab_core', ('KCab-c',)), ('KC_ab_surface', ('KCab-s', 'KCab-m')), ('KC_ab_posterior', ('KCab-p',)),
                    ("KC_apbp", ("KCa'b'",)), ('KC_g', ('KCg',)))
 

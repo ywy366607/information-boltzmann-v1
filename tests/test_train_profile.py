@@ -35,8 +35,8 @@ def test_birth_takes_profile_and_command_line_wins():
     m, p = _trainer()
     args = m.apply_profile(p, ['--from-scratch', '--output', 'x', '--no-predictive-writer'], 'mainline')
     assert args.predictive_writer is False and 'predictive_writer' in args.explicit_dests
-    assert args.eg_plasticity is True and args.writer == 'receptor_text' and args.E_E == 0.55
-    assert args.lr_physiology == 0.0 and args.dopamine_adapted is True
+    assert args.eg_plasticity is True and args.writer == 'receptor_lang' and args.E_E == 0.55
+    assert args.lr_physiology == 5e-3 and args.evidence_plasticity is True and args.input_gain_size_exponent == 0.5 and args.dopamine_adapted is True
 
 
 def test_resume_inherits_checkpoint_not_profile():

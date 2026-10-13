@@ -26,7 +26,7 @@ from information_boltzmann.core.fly_odour_world import (OdourWorld, attach_act_h
                                                         attach_sense_head, SENSE_PARAMETER_NAMES)
 ACT_STATE_NAMES = ACT_PARAMETER_NAMES + ('act_mu', 'act_sigma', 'act_w_scale') + SENSE_PARAMETER_NAMES
 from information_boltzmann.core.fly_active_inference import attach_ai_head, AI_PARAMETER_NAMES, AI_STATE_NAMES
-from information_boltzmann.core.fly_bptt_learning import (WRITER_SENSE, 
+from information_boltzmann.core.fly_bptt_learning import (WRITER_SENSE, attach_input_gain, init_input_gain_from_size, 
     FlyPhysicalState, FlyBPTTLearner, FlyBPTTGraph, STP_PARAMETER_NAMES,
     GO_PARAMETER_NAMES, attach_go_neuron, attach_connectome_go, READ_BANK_PARAMETER_NAMES, attach_read_bank,
     INTRINSIC_PARAMETER_NAMES, attach_intrinsic_drive, PRECISION_PARAMETER_NAMES, attach_precision,
@@ -185,6 +185,8 @@ def resolve_learning_modes(args, previous_config, previous_learner):
         args.dopamine_site = previous_config.get('dopamine_site') or 'post'
     if getattr(args, 'dopamine_adapted', None) is None:
         args.dopamine_adapted = bool(previous_config.get('dopamine_adapted', False))
+    if getattr(args, 'input_gain_size_exponent', None) is None:
+        args.input_gain_size_exponent = previous_config.get('input_gain_size_exponent')
     if getattr(args, 'read_extra_classes', None) is None:
         args.read_extra_classes = previous_config.get('read_extra_classes') or ''
     if getattr(args, 'read_spikes', None) is None:
@@ -315,11 +317,13 @@ PROFILES = {
         '--E-E 0.55 --E-I -0.15 --spike-consumes-drive --refractory-ticks 1 --inhibitory-tau-ratio 4 --no-stp '
         '--alif-beta-init 0.2 --surrogate-mode threshold --detach-reset --transmission-mode incoming '
         # senses and world: text through every sensory cell, held for the word, prediction error written (efference)
-        '--writer receptor_text --hold-input --predictive-writer --writer-baseline-clock physical '
+        '--writer receptor_lang --hold-input --predictive-writer --writer-baseline-clock physical '
         '--stream-ticks 8 --stream-pace-mean 16 --stream-pace-min 2 --go-neuron none '
         # learning: synapses by normalized EG with the birth connectome as prior; class physiology frozen at birth;
         # dopamine phasic (adapted), presynaptic site; Kenyon -> MBON three-factor memory
-        '--eg-plasticity --eg-tau 4096 --relative-edge-rate 0.02 --lr-physiology 0 '
+        # class physiology (incl. the per-class input gain, started halfway to inverse-size) learns, evidence-gated
+        '--eg-plasticity --eg-tau 4096 --relative-edge-rate 0.02 --lr-physiology 5e-3 --evidence-plasticity '
+        '--input-gain-size-exponent 0.5 '
         '--dopamine-modulation --dopamine-site pre --dopamine-adapted --compartment-memory --comp-rate 2.0 '
         '--carried-credit --no-homeostasis --no-ctm-loss '
         # budgets and machine
@@ -456,6 +460,9 @@ def main():
     parser.add_argument('--dopamine-site', choices=('post', 'pre'), default=None,
                         help='Which end of a synapse the dopamine scales its learning by: post = the receiving neuron, '
                              'pre = the presynaptic terminal as at the fly mushroom body (omitted = inherit, else post)')
+    parser.add_argument('--input-gain-size-exponent', type=float, default=None,
+                        help='Per-class learnable input gain (input conductance grows with the cell), started at '
+                             '(median size / class size)^this (0 uniform, 1 inverse to size; omitted = inherit, else none)')
     parser.add_argument('--read-extra-classes', default=None,
                         help='Annotation classes whose cells the prediction is also read from (e.g. Kenyon_Cell,MBON; '
                              'the belief where it lives; acts stay on the output cells; omitted = inherit, else none)')
@@ -581,7 +588,7 @@ def main():
                         help='Regex of the cell types released by --intrinsic (default: every annotated tonic type)')
     parser.add_argument('--intrinsic-kappa', type=float, default=None,
                         help='Initial intrinsic current of released cells, in units of their rheobase (default 1.2)')
-    parser.add_argument('--writer', choices=('topographic', 'receptor', 'receptor_all', 'receptor_text'), default=None,
+    parser.add_argument('--writer', choices=('topographic', 'receptor', 'receptor_all', 'receptor_text', 'receptor_lang'), default=None,
                         help='receptor: text through the olfactory receptor neurons only, per receptor type, as a '
                              'bounded transduction conductance around spontaneous firing (ReceptorWriter); inherited')
     parser.add_argument('--stp-init', type=str, default=None, help="birth STP 'u0,tau_fac,tau_rec' (needs --stp)")
@@ -908,10 +915,15 @@ def main():
         args.kc_renorm_newly = False
         args.dan_renorm_newly = False
         from information_boltzmann.core.fly_bptt_learning import split_kenyon_subtypes, split_modulatory_classes, split_by_type
+        if args.input_gain_size_exponent is not None:
+            attach_input_gain(model)                     # before the type split, so every type inherits it
         if args.type_classes:
             if args.kc_subtypes or args.modulatory_classes:
                 raise ValueError('--type-classes already gives every cell type its own physiology (no --kc-subtypes / --modulatory-classes)')
             print(f'Type classes (newborn): {split_by_type(model, args.graph, args.graph.parent / "body-annotations.feather")} cell types with their own physiology', flush=True)
+        if args.input_gain_size_exponent is not None:
+            print(f'Input gain per class from size^{args.input_gain_size_exponent} (min, median, max): '
+                  f'{init_input_gain_from_size(model, args.graph, args.input_gain_size_exponent)}', flush=True)
         if args.kc_subtypes:
             print(f'Kenyon subtypes (newborn): {split_kenyon_subtypes(model, args.graph, args.graph.parent / "body-annotations.feather")}', flush=True)
         if args.modulatory_classes:
@@ -967,6 +979,8 @@ def main():
             names.extend(INTRINSIC_PARAMETER_NAMES)
         if args.graded_types:
             names.extend(GRADED_PARAMETER_NAMES)
+        if args.input_gain_size_exponent is not None:
+            names.append('log_input_gain')
         if args.compartment_memory:
             names.extend(n for n in COMPARTMENT_PARAMETER_NAMES + TASTE_PARAMETER_NAMES if n not in names)
         if args.use_read_gamma_trace:
@@ -1047,8 +1061,8 @@ def main():
             print(f'Active inference: epistemic {args.ai_epistemic}, pragmatic {args.ai_pragmatic}, SIGReg {args.ai_sigreg}'
                   f'{", eyes forced " + str(learner.eye_forced) if learner.eye_forced is not None else ""}', flush=True)
         if args.evidence_plasticity:
-            learner.attach_evidence_plasticity(args.pull_tau, saved=None)
-            print(f'Evidence plasticity: synapses + {len(learner.physio_names)} physiology tensors, significance-gated (|mean| > z se), '
+            learner.attach_evidence_plasticity(args.pull_tau, saved=None, edges=not args.eg_plasticity)
+            print(f'Evidence plasticity: {"" if args.eg_plasticity else "synapses + "}{len(learner.physio_names)} physiology tensors, significance-gated (|mean| > z se), '
                   f'pull to birth tau {args.pull_tau:g} updates; read surface = '
                   f'{"spikes (Gamma)" if args.read_spikes else "membranes"}', flush=True)
         if args.eg_plasticity:
@@ -1169,6 +1183,8 @@ def main():
         from information_boltzmann.core.fly_bptt_learning import split_kenyon_subtypes, split_modulatory_classes
         from information_boltzmann.core.fly_bptt_learning import split_by_type
         lineage_types = bool(previous_config.get('type_classes'))
+        if previous_config.get('input_gain_size_exponent') is not None:
+            attach_input_gain(model)                     # before the split replay (the saved gains load afterwards)
         if lineage_types:
             # a lineage with one physiology class per cell type: the same split before loading (supersedes the others)
             print(f'Type classes (carried over): {split_by_type(model, args.graph, args.graph.parent / "body-annotations.feather", record=False)}', flush=True)
@@ -1448,8 +1464,8 @@ def main():
             print(f'Active inference: epistemic {args.ai_epistemic}, pragmatic {args.ai_pragmatic}, SIGReg {args.ai_sigreg}'
                   f'{", eyes forced " + str(learner.eye_forced) if learner.eye_forced is not None else ""}', flush=True)
         if args.evidence_plasticity:
-            learner.attach_evidence_plasticity(args.pull_tau, saved=old)
-            print(f'Evidence plasticity: synapses + {len(learner.physio_names)} physiology tensors, significance-gated (|mean| > z se), '
+            learner.attach_evidence_plasticity(args.pull_tau, saved=old, edges=not args.eg_plasticity)
+            print(f'Evidence plasticity: {"" if args.eg_plasticity else "synapses + "}{len(learner.physio_names)} physiology tensors, significance-gated (|mean| > z se), '
                   f'pull to birth tau {args.pull_tau:g} updates (step {learner.evidence_count}); read surface = '
                   f'{"spikes (Gamma)" if args.read_spikes else "membranes"}', flush=True)
         if args.eg_plasticity:

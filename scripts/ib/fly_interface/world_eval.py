@@ -75,6 +75,8 @@ def load(fork):
     act = ow.ACT_PARAMETER_NAMES + ('act_mu', 'act_sigma', 'act_w_scale') + ow.SENSE_PARAMETER_NAMES
     from information_boltzmann.core import fly_active_inference as fai
     late = fl.COMPARTMENT_PARAMETER_NAMES + fl.TASTE_PARAMETER_NAMES + act + fai.AI_STATE_NAMES
+    if cfg.get('input_gain_size_exponent') is not None:
+        fl.attach_input_gain(model)
     if cfg.get('type_classes'):
         fl.split_by_type(model, graph, graph.parent / 'body-annotations.feather', record=False)
     elif cfg.get('kc_subtypes') or saved['model']['log_tau_m'].numel() > model.n_superclasses:

@@ -826,6 +826,11 @@ class FlyReservoirLM(nn.Module):
         if getattr(self, "learnable_conductance_gains", False):
             g_e = torch.clamp(torch.exp(self.log_g_e), min=0.01, max=100.0)
             g_i = torch.clamp(torch.exp(self.log_g_i), min=0.01, max=100.0)
+            if getattr(self, "log_input_gain", None) is not None:
+                # per-class input gain: a big cell's leak grows with its membrane, so each synapse moves it less
+                # (attach_input_gain); excitatory and inhibitory alike, learnable per cell type
+                gain = torch.exp(self.log_input_gain)[self.superclass_id].unsqueeze(0)
+                return g_e * gain, g_i * gain
             return g_e, g_i
         else:
             return torch.tensor(1.0), torch.tensor(1.0)
