@@ -415,3 +415,15 @@ evolve within these runs at 2e-4.
 - d3_credit not trained now: at the shared 2e-4 the clocks it gives credit to cannot move (D2b's arithmetic) and the
   memory is barely written; it runs once --lr-physiology and the Kenyon entry are in place.
 - D2 chunk 3 stopped (a step-budget null); D2b continues both lineages from their latest checkpoints.
+
+### Correction: the Kenyon entry is not starved; the share measure misled (static, 2026-10-13 12:20)
+The "text -> Kenyon entry fell ~70x" above is a SHARE of the linearly propagated mass, and all excitatory weights grew
+4.4x in training (sum 27,134 -> 120,006), so every share of a route that grew less looks starved.  In absolute
+weights (D1 checkpoint): text-driven cells -> ALPN x1.21, ORN -> ALPN x1.20, ALPN -> KC x5.5, ALPN -> LH x4.5,
+non-PN -> KC x7.3, KC -> KC x0.15 (95% pinned at 0: the axo-axonal fix).  A Kenyon cell's median excitatory input is
+0.156 at birth, 0.189 trained, and its PN share rose from 26% to 89%.  So the entry did not wither; the PN input to
+the mushroom body is a smaller part of a brain that grew louder elsewhere (hop-1 share on ALPN 7.0% -> 1.5%).
+Consequences: (a) the alpha'3 / PPL104 silence is not explained by the entry; the cause must be found in activity --
+rarity_decode_probe now also reads the Kenyon cells (membranes, spikes since onset, fraction active per word) in
+D3's probes and on D1; (b) "rebirth to restore the entry" is off the table on this evidence; (c) static shares are
+only comparable within one weight set -- across birth / trained, compare absolute weights or simulate.
