@@ -45,15 +45,30 @@ def tick(s, drive):
     return s
 
 
-def run(s0, drive):
+# where does it stop?  the hop-1 relays of each receptor set (its 30 strongest excitatory targets, birth weights) and
+# the dopamine cells' membranes (sub-threshold depolarisation, relative to their thresholds)
+pre_e, post_e, w_e = graph['edge_pre_e'], graph['edge_post_e'], graph['edge_weight_e']
+relays = {}
+for name, m in sets.items():
+    sel = m[pre_e]
+    tot = np.bincount(post_e[sel], weights=w_e[sel], minlength=len(typ))
+    relays[name] = torch.as_tensor(np.argsort(-tot)[:30], device='cuda')
+DANm = torch.as_tensor(dan, device='cuda')
+
+
+def run(s0, drive, relay=None):
     s, counts = s0, {k: 0.0 for k in G}
     own = 0.0
+    counts['relay'] = 0.0; counts['dan_v_over_theta'] = 0.0
     phi0 = s0.comp_memory.clone() if s0.comp_memory.numel() else None
     for k in range(40):
         s = tick(s, drive if (drive is not None and k < 20) else None)
         spk = (s.ring[0][0] > 0).float()
         for name, m in G.items():
             counts[name] += float(spk[m].sum())
+        if relay is not None:
+            counts['relay'] += float(spk[relay].sum())
+        counts['dan_v_over_theta'] += float((s.h[0, DANm] / thr.expand(1, -1)[0, DANm]).mean()) / 40
         if drive is not None:
             own += float(spk[drive[0] > 0].sum())
     dphi = float((s.comp_memory - phi0).abs().mean()) if phi0 is not None else None
@@ -74,14 +89,17 @@ with torch.no_grad():
                 else:
                     s = tick(s, None)
             s = fl.expect_next(model, s, fl.read_fly_motor(model, s))
-        base, _, dphi0 = run(s, None)
         for name, m in sets.items():
+            base, _, dphi0 = run(s, None, relays[name])
             drive = torch.zeros(1, model.n_neurons, device='cuda')
             idx = torch.as_tensor(np.nonzero(m)[0], device='cuda')
             drive[0, idx] = GAIN * thr.expand(1, -1)[0, idx]
-            stim, own, dphi = run(s, drive)
+            stim, own, dphi = run(s, drive, relays[name])
             rows[name].append({'receptor_spikes_per_cell': own / max(1, int(m.sum())),
                                **{f'extra_{k}': stim[k] - base[k] for k in G},
+                               'extra_relay_spikes': stim['relay'] - base['relay'],
+                               'dan_v_over_theta_control': base['dan_v_over_theta'],
+                               'extra_dan_v_over_theta': stim['dan_v_over_theta'] - base['dan_v_over_theta'],
                                'dphi_stim': dphi, 'dphi_control': dphi0})
 q = lambda v: [float(np.min(v)), float(np.median(v)), float(np.mean(v)), float(np.max(v))]
 rep = {'fork': str(fork), 'gain_x_threshold': GAIN, 'sizes': {k: int(v.sum()) for k, v in {**sets, **groups}.items()}}

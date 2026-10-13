@@ -478,3 +478,22 @@ memory revisit, taste pulses and the Kenyon probe on D1), then ONE arm d3_full =
 --lr-physiology 5e-3 --carried-credit (smoked first, start + resume), compared with D1.  Predictions as in D3, plus:
 the STP / threshold / memory-clock parameters move > 0.1 in log space within 3 chunks without runaway (firing rates
 of the read cells within 2x of D1's); carried credit for the dopamine and memory clocks is >= half the in-window one.
+
+### Measurements, 12:25-12:31 (zero-shot)
+- STP sweep (d2_fixed, sustained noisy input): no STP setting accumulates.  Noisy-word CE tick 1 -> 8, mean
+  accumulation: baseline 0.021, tau_rec x0.25 0.043, u0 0.5 0.042, u0 0.1 0.037, tau_fac x4 0.006, tau_rec x4 -0.045
+  (and +0.19 mean CE).  D2b (evolving STP) has no direction to find: dropped for good.  Side finding: noisy words
+  score BETTER than clear ones (CE 7.27 vs 8.03): a clear word held for 8 ticks pushes the read away from the next
+  word -- the adult treats a sustained word as repeated arrivals (a world / read mismatch, not accumulation).
+- Memory revisit (D1, fixed slow weights): live - frozen phi savings 0.0004 nats (min -0.004, max 0.002), total
+  savings ~0.  The memory is written (phi sd 0.20) but not used.
+- Taste pulses (D1): the receptors fire (~14 spikes per cell in 20 ticks) but no dopamine cell fires more (PAM +0,
+  PPL1 +0 / -0.17); MBONs +1-2, Kenyon cells +1-3 spikes; phi unchanged.  In activity the taste -> dopamine line is
+  dead although the signed weights point the right way.  Where it stops (relays? sub-threshold dopamine
+  depolarisation?) is measured next (taste_pulse_probe now records the hop-1 relays and the dopamine cells'
+  membrane / threshold).
+- Kenyon cells: 7% fire per word (sparse), but rarity / difficulty are not decodable from them (R^2 <= 0).
+- d3_full chunk 1: the physiology moves and stays healthy (log tau_m of output classes +0.2-0.3: efferent ascending
+  48 -> 64 ms, descending 45 -> 55 ms; STP <= 0.24; thresholds <= 0.16); carried credit for the memory and dopamine
+  clocks is 3-8x the in-window credit (as predicted) but tiny in absolute (1e-7: the mushroom body is disengaged);
+  for STP 1/5 of in-window; fresh-B NLL 6.81 (no harm).
