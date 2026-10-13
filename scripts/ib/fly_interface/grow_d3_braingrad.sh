@@ -49,5 +49,10 @@ for arm in $ARMS; do
   $PY -u scripts/ib/fly_interface/rarity_decode_probe.py $root/$arm $root/$arm/rarity_decode.json > $root/$arm/rarity_decode.txt 2>&1
   $PY -u scripts/ib/fly_interface/word_novelty_probe.py $root/$arm $root/$arm/word_novelty.json > $root/$arm/word_novelty.txt 2>&1
   $PY -u scripts/ib/fly_interface/commit_tail.py $root/$arm $root/$arm/commit_tail.json > $root/$arm/commit_tail.txt 2>&1
+  $PY -u scripts/ib/fly_interface/memory_revisit.py $root/$arm $root/$arm/memory_revisit.json > $root/$arm/memory_revisit.txt 2>&1
+done
+# the same O(1)-memory probe on D1 (before the brain gradient) and on D2's arms, for comparison
+for f in /e/fly_stream_overflow/d1_commits/d1_habit /e/fly_stream_overflow/d2_accumulate/d2_fixed /e/fly_stream_overflow/d2_accumulate/d2_control; do
+  [ -f $f/last.pt ] && [ ! -f $f/memory_revisit.json ] && $PY -u scripts/ib/fly_interface/memory_revisit.py $f $f/memory_revisit.json > $f/memory_revisit.txt 2>&1
 done
 echo "$(date +%H:%M) done" >> $root/status
