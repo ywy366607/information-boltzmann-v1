@@ -19,6 +19,7 @@ def build_coba_graph(
     inhibitory_scale: float = 1.0,
     no_sensory_input: bool = False,
     nt_overrides: str | Path | None = None,
+    kenyon_claw_scale: float = 1.0,
 ) -> None:
     """excitatory_scale / inhibitory_scale multiply the synapse weights (the source graph is calibrated for E_E 1.0:
     x1.82 keeps the EPSP at 0.617% of threshold under E_E 0.55; inhibition x3.67 more makes an IPSP at rest as large
@@ -95,12 +96,22 @@ def build_coba_graph(
     print("Partitioning and sorting excitatory edges...")
     pre_e, post_e, w_e, delay_e, splits_e = partition_and_sort(exc_mask, is_abs=False)
     w_e = (w_e * excitatory_scale).astype(np.float32)
+    if kenyon_claw_scale != 1.0:
+        # the Kenyon cells' dendritic claws: one PN spike gives ~2-4 mV on a 15-20 mV rest-to-threshold distance
+        # (~15-20%; Gruntman 2013 thesis / Gruntman & Turner 2013, which also find >= 3 active claws are needed to
+        # fire reliably); the uniform 0.617% per synapse gives ~10% for a median claw (16 synapses): x1.8
+        import pandas as pd
+        cls_k = pd.read_feather(source_path.parent / "body-annotations.feather").set_index("bodyId").reindex(
+            data["neuron_body_ids"])["class"].astype(str).values == "Kenyon_Cell"
+        claw = cls_k[post_e] & ~cls_k[pre_e]
+        w_e[claw] *= kenyon_claw_scale
+        print(f"Kenyon claw inputs x{kenyon_claw_scale}: {int(claw.sum()):,} edges")
 
     print("Partitioning and sorting inhibitory edges...")
     pre_i, post_i, w_i, delay_i, splits_i = partition_and_sort(inh_mask, is_abs=True)
     w_i = (w_i * excitatory_scale * inhibitory_scale).astype(np.float32)
     data["coba_conversion"] = np.array(f"excitatory_scale={excitatory_scale} inhibitory_scale={inhibitory_scale} "
-                                       f"no_sensory_input={no_sensory_input}")
+                                       f"no_sensory_input={no_sensory_input} kenyon_claw_scale={kenyon_claw_scale}")
 
     data["edge_pre_e"] = pre_e
     data["edge_post_e"] = post_e
@@ -129,5 +140,7 @@ if __name__ == "__main__":
     ap.add_argument('--inhibitory-scale', type=float, default=1.0)
     ap.add_argument('--no-sensory-input', action='store_true')
     ap.add_argument('--nt-overrides', default=None, help='CSV of literature transmitter corrections (data/malecns_v1/nt_overrides.csv)')
+    ap.add_argument('--kenyon-claw-scale', type=float, default=1.0)
     a = ap.parse_args()
-    build_coba_graph(a.source, a.output, a.excitatory_scale, a.inhibitory_scale, a.no_sensory_input, a.nt_overrides)
+    build_coba_graph(a.source, a.output, a.excitatory_scale, a.inhibitory_scale, a.no_sensory_input, a.nt_overrides,
+                     a.kenyon_claw_scale)

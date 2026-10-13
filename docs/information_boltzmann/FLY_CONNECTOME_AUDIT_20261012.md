@@ -426,3 +426,6 @@ on it.
 - Probes: cell_health saturation = >= 90% of the rate cap (1 / (1 + refractory)); graded cells show as saturated
   there (their ring holds release); taste_pulse TASTE_RATE (Poisson) with MN9 and Hz per cell; kenyon_coding_probe
   (coding level and overlap per olfactory layer); drive_by_class_probe.
+- Kenyon cells: claw inputs x1.8 from the measured claw EPSP (Gruntman & Turner 2013; neuPrint sizes ruled out cell
+  volume as the reason); APL gain 0.025 from the 2-3x effect of blocking APL (Lin et al. 2014).  Newborn: Kenyon
+  coding ~4% per word, consecutive-word overlap ~0.02 (word-specific).

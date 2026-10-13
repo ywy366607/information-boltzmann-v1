@@ -92,13 +92,14 @@ BIOPHYSICS_DEFAULTS = {'E_E': 1.0, 'E_I': -0.2, 'spike_consumes_drive': False, '
 
 
 def graph_is_uniform_synapse(graph_npz):
-    """True for a graph converted with one efficacy per synapse (every weight an integer multiple of the smallest):
+    """True for a graph converted with one efficacy per synapse (weights integer multiples of the smallest):
     it has no sqrt(K_in) birth normalization, so --kc-renorm / --dan-renorm (which undo that normalization) do not
     apply (audit 2026-10-13)."""
     w = np.abs(np.load(graph_npz, mmap_mode='r')['edge_weight_e'][:200_000]).astype(np.float64)
     w = w[w > 0]
     r = w / w.min()
-    return bool(np.abs(r - np.round(r)).max() < 1e-3)
+    # most edges (a few synapse classes, e.g. the Kenyon claws, carry a measured factor on top)
+    return bool((np.abs(r - np.round(r)) < 1e-3).mean() > 0.9)
 
 
 def stp_names(model):
@@ -439,7 +440,7 @@ def main():
     parser.add_argument('--graded-types', type=str, default=None,
                         help='Comma-separated cell types made non-spiking (graded release), e.g. APL,CT1; inherited on resume')
     parser.add_argument('--graded-gain', type=float, default=0.1,
-                        help='Initial release gain of graded cells (learnable; 0.1 gives ~8%% Kenyon coding on the newborn)')
+                        help='Initial release gain of graded cells (learnable); 0.025 makes APL suppress Kenyon coding ~2.6x (blocking APL: 2-3x, Lin et al. 2014)')
     parser.add_argument('--kc-renorm', action=argparse.BooleanOptionalAction, default=None,
                         help='Redo the birth normalization of Kenyon inputs over dendritic partners, once (omitted = inherit)')
     parser.add_argument('--comp-rate', type=float, default=None,

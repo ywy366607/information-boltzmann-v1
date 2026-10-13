@@ -12,7 +12,7 @@ export FLY_REUSE_TRANSMISSION=0 PYTHONIOENCODING=utf-8
 R1="--window 32 --no-graph --go-neuron none --stream-ticks 8 --no-hold-input --stream-pace-mean 16 --stream-pace-min 2 \
   --no-homeostasis --no-ctm-loss --kc-dendritic-only --connectome-v2 --dopamine-modulation --dopamine-site pre \
   --compartment-memory --comp-rate 2.0 --relative-edge-rate 0.02 --kc-subtypes --modulatory-classes --intrinsic \
-  --graded-types APL,CT1 --graded-gain 0.1 --lr-physiology 5e-3 --carried-credit --vram-limit-mib 3800 \
+  --graded-types APL,CT1 --graded-gain 0.025 --lr-physiology 5e-3 --carried-credit --vram-limit-mib 3800 \
   --graph data/malecns_v1/fly_reservoir_coba_shiu.npz --E-E 0.55 --E-I -0.15 --spike-consumes-drive \
   --refractory-ticks 1 --no-stp --surrogate-mode threshold --detach-reset --transmission-mode incoming \
   --writer-baseline-clock physical --validate-every-tokens 4096 --eval-tokens 512 --replay-tokens 128 \

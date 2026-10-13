@@ -114,6 +114,21 @@ def load(fork):
         n = fl.attach_tied_writer(model, graph, graph.parent / 'body-annotations.feather', convert=True,
                                   scale=float(os.environ['ZS_TIED_WRITER']))
         print(f'zero-shot: writer tied by chemosensory receptor type, scale {os.environ["ZS_TIED_WRITER"]}: {n}', flush=True)
+    if os.environ.get('ZS_CLAW_GAIN'):
+        # zero-shot: excitatory inputs onto Kenyon cells from non-Kenyon cells (their dendritic claws) x gain
+        import pandas as pd
+        cls_t = pd.read_feather(graph.parent / 'body-annotations.feather').set_index('bodyId').reindex(
+            np.load(graph, allow_pickle=True)['neuron_body_ids'])['class'].astype(str).values
+        kc_t = torch.as_tensor(cls_t == 'Kenyon_Cell', device='cuda')
+        src = torch.as_tensor(np.isin(cls_t, os.environ.get('ZS_CLAW_FROM', 'ALPN').split(',')), device='cuda')             if os.environ.get('ZS_CLAW_FROM') != 'all' else ~kc_t
+        sel = kc_t[model.edge_post_e.long()] & src[model.edge_pre_e.long()]
+        with torch.no_grad():
+            model.edge_weight_e[sel] *= float(os.environ['ZS_CLAW_GAIN'])
+        print(f'zero-shot: {int(sel.sum())} claw inputs onto Kenyon cells x{os.environ["ZS_CLAW_GAIN"]}', flush=True)
+    if os.environ.get('ZS_GRADED_SCALE') and getattr(model, 'log_graded_gain', None) is not None:
+        with torch.no_grad():
+            model.log_graded_gain.add_(float(np.log(float(os.environ['ZS_GRADED_SCALE']))))
+        print(f'zero-shot: graded gain x{os.environ["ZS_GRADED_SCALE"]} -> {model.log_graded_gain.exp().tolist()}', flush=True)
     if os.environ.get('ZS_SILENCE_OUTPUT'):
         # zero-shot: the output synapses of the given cell types removed (comma-separated types), e.g. APL
         import pandas as pd

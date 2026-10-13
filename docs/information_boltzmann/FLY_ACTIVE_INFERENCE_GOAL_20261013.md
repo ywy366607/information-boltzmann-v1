@@ -521,7 +521,7 @@ weights are calibrated to that substrate and cannot be carried over.
 Newborn (scripts/ib/fly_interface/grow_r1_rebirth.sh): graph fly_reservoir_coba_shiu.npz (uniform synapse, EPSP
 0.617% of threshold, equal-area inhibition, no synapses onto sensory cells, literature transmitters for 149 antennal-
 lobe local neurons: data/malecns_v1/nt_overrides.csv); E_E 0.55 / E_I -0.15; a spike consumes the conductances, 1
-refractory tick; no STP; ALIF; APL and CT1 graded (release 0.1 x relu(v / theta), learnable); intrinsic drive on the
+refractory tick; no STP; ALIF; APL and CT1 graded (release 0.025 x relu(v / theta), learnable); Kenyon claw inputs x1.8; intrinsic drive on the
 annotated pacemaker types without APL (kappa 1.2, learnable); the adult's gradient conventions (surrogate threshold,
 detach-reset, incoming transmission, physical writer clock).  From the first tick: Kenyon axo-axonal cut, Kenyon ->
 dopamine and OA / 5-HT fast edges pinned, Kenyon subtypes and modulatory classes with their own physiology, dopamine
@@ -542,9 +542,15 @@ Predictions (probes at chunks 1, 5, 25; metrics.jsonl every 128 words):
    surface activity, writer drive).
 3. No text-route takeover: median relative growth of the excitatory weights onto the read cells < 2x (old x4.4).
 4. Senses survive: sugar -> MN9 >= +20 Hz, bitter -> PPL1 >= +10 Hz, bitter -> MN9 <= +2 Hz at chunks 5 and 25.
-5. The mushroom body wakes: Kenyon coding 2-20% of cells per word by chunk 5, consecutive-word overlap below 0.5.
-   If it stays < 1% at chunk 5, the next fix is physical: per-class synaptic efficacy from cell size (input
-   resistance; Kenyon cells are tiny), which the uniform PSP ignores.
+5. The mushroom body stays a sparse, word-specific code: Kenyon coding 2-15% of cells per word and consecutive-word
+   overlap < 0.2 at chunks 5 and 25 (birth: ~4%, 0.02).
+Update before launch (2026-10-13, user: 'go'): the Kenyon cells were nearly silent at birth (0.3% per word).  Cell
+size is not the reason (neuPrint volumes: Kenyon median 2.4e8 voxels, about the brain's median, because of the long
+axon).  The measured claw is: one PN spike gives ~2-4 mV on a 15-20 mV rest-to-threshold distance, and >= 3 active
+claws are needed to fire reliably (Gruntman 2013 thesis, Gruntman & Turner 2013); the uniform PSP gives a median claw
+(16 synapses) ~10% of threshold, so the claw inputs are x1.8 (build_coba_graph --kenyon-claw-scale).  APL was then
+calibrated on the literature invariant that blocking it raises Kenyon responses 2-3x (Lin et al. 2014): coding 11.1%
+without APL output, 0.9% at gain 0.1 (12x), 5.0% at 0.02, 3.4% at 0.035 -> gain 0.025.
 6. Dopamine has phasic structure (dopamine_phasic_sd logged > 0.02) and the compartment memory is used at chunk 25
    (memory_revisit live - frozen phi savings > 0.01 nats; old 0.0004).
 Open by design: sugar -> PAM reward (octopamine modulation not modelled).
