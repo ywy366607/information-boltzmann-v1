@@ -41,7 +41,7 @@ per_place = []
 with torch.no_grad():
     for place in range(int(os.environ.get('PATH_PLACES', 4))):
         rng = np.random.default_rng(3000 + place)
-        start = 100_000 + place * 4_000
+        start = (40_000 + place * 4_000) % (len(val) - BURN - SCORE - 1)
         words = np.array(val[start:start + BURN + SCORE + 1], dtype=np.int64)
         s = move_state(fl.FlyPhysicalState(**L['physical']), 'cuda')
         z = None
