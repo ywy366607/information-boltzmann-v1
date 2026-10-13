@@ -348,3 +348,29 @@ geometric-like clock; nothing in the policy varies slowly.
    own physiology; D3 adds the gradient; word_novelty_probe runs after each, to see whether the loop recovers.
 4. The epistemic value of acts (answering to learn) needs the consequence loop (an answer's outcome observed through
    receptors); it stays with that design.
+
+## Credit beyond the 32-word window (user: "should be O(1), not only BPTT"; review 2026-10-13)
+The window is ~215 ticks (64-512).  Within-word answer timing (<= 16 ticks) is inside it: D1's missing difficulty
+adaptation is not a window effect.  What loses credit at the boundary and matters for look / think / speak: the
+compartment memory phi (a look or a thought pays when the content recurs, often > 32 words later -- where learning
+progress and the epistemic value live), STP recovery (the later cost of a thinking burst, tau_rec ~200), and questions
+carried over the boundary (only with closed eyes / depth > 0: at depth 0 with open eyes the window-end miss is exact).
+The slow dopamine tone is detached by design; ALIF, muscles and writer adaptation are much shorter than the window.
+The O(1) learner already exists and is on in every D run: the compartment memory phi on the 61,210 Kenyon -> MBON
+synapses, written online by phasic dopamine x a Kenyon trace (FLY_ONLINE_DA_LEARNING_DESIGN.md sections 9-11; its
+predecessor at Kenyon terminals measured live - frozen revisit savings ~0.002 nats in l1 / b2: nothing, because passive
+reading had no consequences and the mushroom body was unused).  So the missing piece is not a learner but what it
+learns from: the text entry to the Kenyon cells (down ~70x) and dopamine that carries something (outcome, novelty).
+Lessons from the retired whole-brain e-prop (approximate credit on 165k neurons plateaued): keep online credit local
+and exact on few targets, as a residual next to BPTT, never a competitor on the same parameters; long reach comes from
+bootstrapping (a critic), not from longer traces.
+Order: (0) measure phi's own contribution in the D-series (memory_revisit.py: live vs frozen phi, slow weights fixed;
+D1, D2 arms and D3 arms) -- the yardstick for everything below.  (1) Carried questions with exact readout credit,
+when eyes or depth come back: the question's P = alive * S passes to the next window as a leaf, g = dJ_next/dP, the
+old window's readout gets -(lambda/n)(g - miss) dP/dtheta (one step stale).  (2) A readout eligibility longer than
+the window, e <- l e + (a - h)[m, 1] (the acts are sampled: unbiased score function), Delta W ~ delta e with delta read
+from the dopamine cells; the critic is the mushroom body's own MBON -> DAN loop (occ(fast) - occ(slow) is already a
+temporal difference), read per compartment after measuring each loop's sign and gain -- only once dopamine carries
+the outcome (consequence loop) or novelty (alpha'3 recovers); until then delta ~ 0.
+Review also found a real bug, fixed: motor-mode binary eyes took the straight-through slope on the first muscle, not
+the eye's logit, so the eye readout never learned (M3-style eye runs only; D1-D3 keep the eyes open).
