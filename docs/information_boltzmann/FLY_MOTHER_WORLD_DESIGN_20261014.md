@@ -99,3 +99,29 @@
 
 ## 7. 尚待决定
 - 合并规则（交叉 / 变异的粒度）。
+
+## 8. Pipeline (2026-10-14): `information_boltzmann/core/fly_mother_world.py`
+
+**Components**
+- `MotherWorld(mother, gpt2_tokenizer)`: the conversation as the fly's text stream, in GPT-2 ids (the fly's
+  vocabulary).
+  - `next_word()`: the next word heard: her reply word by word, or the fly's own last word (self-hearing).
+  - `speak(id)`: the fly's committed word. A turn ends at an end-of-turn word (`\n . ? !`) or after `max_fly_words`
+    words, and the mother then answers the recent transcript (`history_turns`).
+  - `monitor()`: for the harness. The fly's type/token ratio, repeated bigrams, identical consecutive turns and turn
+    length; the mother's type/token ratio and repeated bigrams.
+- `LocalMother`: gemma-3-270m on the CPU, so it does not compete with the training run for the GPU. It is for the
+  pipeline tests only.
+- `ApiMother(model)`: the API mother. The SDK takes its own standard environment configuration; the key is never read
+  here.
+
+**CPU test with a scripted fly** (babble, then imitation, then a stuck "ma ma ma")
+- The pipeline runs end to end, at about 4 s per mother reply.
+- Without a repetition penalty the 270M base model repeated one line every turn (her repeated bigrams 0.85), as the
+  user predicted. With repetition_penalty 1.3 and no-repeat-3-grams she varies (0.0) but rambles.
+- She does pick up the child's words (the fly said "ba sun"; she answered with "a boy called Ba Sun").
+- The monitor caught the stuck fly: repeated bigrams 0.53, 2 identical consecutive turns.
+
+**Not done yet: the trainer.** In the fly's turn, the next input is the fly's own output. It must be sampled from the
+read inside the forward window and taped for the checkpoint recompute, as the odour world's acts are. This comes after
+the commit act is in place (D4).
