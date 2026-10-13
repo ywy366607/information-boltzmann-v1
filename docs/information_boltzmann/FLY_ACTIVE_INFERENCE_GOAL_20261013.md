@@ -497,3 +497,17 @@ of the read cells within 2x of D1's); carried credit for the dopamine and memory
   48 -> 64 ms, descending 45 -> 55 ms; STP <= 0.24; thresholds <= 0.16); carried credit for the memory and dopamine
   clocks is 3-8x the in-window credit (as predicted) but tiny in absolute (1e-7: the mushroom body is disengaged);
   for STP 1/5 of in-window; fresh-B NLL 6.81 (no harm).
+
+### Why the dopamine end is silent: the Kenyon pin took its drive (static, 13:05)
+Excitatory input onto the 392 dopamine cells: adult 117.9 (57% from Kenyon cells, non-Kenyon 50.8); D1 70.6 and
+d3_full 67.7 (0% from Kenyon cells, non-Kenyon grew to ~70; 73-74% of the edges onto dopamine cells pinned at 0).
+The Kenyon fix (--kc-dendritic-only / connectome v2) pins the Kenyon cells' axo-axonal synapses, rightly for spikes
+(in the fly they sit on the dopamine terminals in the lobes and act on release, not on the soma), but they were most
+of the dopamine cells' drive in this point model: median per cell 0.197 -> 0.038 (PAM 0.18 -> 0.02).  So the dopamine
+cells sit far below threshold, white and nearly silent, and a taste burst cannot lift them.  (Corrects the guess that
+training cut their input: the non-Kenyon input grew.)  In the fly, dopamine neurons are spontaneously active (tonic
+firing, modulated by state), which keeps them near threshold; the model has that mechanism (attach_intrinsic_drive,
+--intrinsic, PAM / PPL among the annotated tonically active types) but no D run used it.  Zero-shot test queued after
+d3_full: taste pulses and the dopamine tone on D1 with the intrinsic drive on PAM / PPL at kappa 0.9 and 1.2.
+Prediction: with kappa 0.9-1.2, sugar adds PAM spikes and bitter PPL1 spikes (signed routes), and the slow dopamine
+tone gains structure (gamma CV > 0.02); if not, the relays are the break (taste_pulse_relay).
