@@ -458,3 +458,14 @@ PAM x12, bitter -> PPL1 x18).  At hops 3-4 both turn net negative on all dopamin
 inhibition in the linear picture; thresholds decide in activity).  So the loop can teach different things for good
 and bad answers; the activity check (taste_pulse_probe) is still the precondition.  Method lesson: static routes must
 be signed and absolute (two wrong conclusions today came from shares and from |w|).
+
+### Queue cut to measurements (user: "don't queue piles of training; what can be read from code or measured?")
+- Read from checkpoints (CPU): the compartment memory IS written -- D1 phi sd 0.20, 45% of the 61k synapses
+  |phi| > 0.01, max 0.82; 30% of Kenyon cells with a live trace (D2: sd 0.24-0.26, 39%).  The earlier "barely
+  written" was wrong; only the rule's own parameters are stuck (comp_eta -2.00 -> -1.98: the step size).  Whether the
+  memory is USED is memory_revisit's question (live vs frozen phi), a measurement.
+- D2b training dropped; stp_sweep_probe.py measures zero-shot whether ANY STP setting (tau_rec x4 / x0.25, u0 0.1 /
+  0.5, tau_fac x4) makes a noisy word's CE fall with ticks on d2_fixed.  Only if one does has evolution a direction
+  worth a training run.
+- Dropped: D2 act probes (the sweep's baseline gives the noisy CE-by-tick), d3_precision, d3_credit.
+- Kept: D3 control (mainline, half done), its probes, D1 Kenyon probe, taste pulse probes on D1 and D3.
