@@ -125,3 +125,24 @@
 **Not done yet: the trainer.** In the fly's turn, the next input is the fly's own output. It must be sampled from the
 read inside the forward window and taped for the checkpoint recompute, as the odour world's acts are. This comes after
 the commit act is in place (D4).
+
+### Trainer integration: two passes per window (design, 2026-10-14)
+
+In the fly's turn the next input is the fly's own output, so a window's words cannot be given in advance.
+
+1. **Live pass** (no gradient, on a copy of the state). Advance word by word with the world's paced intervals.
+   - In the mother's turn the fly hears her words.
+   - In its own turn the fly's word is sampled from its read at the arrival (the expectation it would speak), and it
+     is heard next (self-hearing).
+   - A finished turn calls the mother.
+   - Record the window's words, the speaker of each word, and every interval.
+2. **Training pass**: the usual `forward_window` on the recorded words, with the recorded intervals forced (the pace
+   RNG is not drawn again). It starts from the same state, so it relives exactly the conversation that happened.
+   - The fly's own words are inputs and targets: the self-hearing cross-entropy.
+   - A speaker mask records whose word each one was, for the monitor and for any weighting the harness chooses.
+
+**Cost**: one extra no-grad forward, about +35%. No change inside the forward window.
+
+**Needs**
+- an override for the intervals (`learner.forced_intervals`);
+- the commit act (D4), to replace the fixed turn length.
