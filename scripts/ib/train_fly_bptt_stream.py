@@ -836,9 +836,9 @@ def main():
             unexpected = [k for k in loaded.unexpected_keys if not k.startswith('latent_predictor.') and not k.startswith('graph_observer.')]
             if unexpected or missing:
                 raise ValueError(f'Weight migration mismatch: unexpected={unexpected}, missing={missing}')
-        if args.kc_subtypes and not lineage_split:
-            print(f'Kenyon subtypes split from cb_intrinsic (own physiology, initialised from it): '
-                  f'{split_kenyon_subtypes(model, args.graph, args.graph.parent / "body-annotations.feather")}', flush=True)
+            if args.kc_subtypes and not lineage_split:
+                print(f'Kenyon subtypes split from cb_intrinsic (own physiology, initialised from it): '
+                      f'{split_kenyon_subtypes(model, args.graph, args.graph.parent / "body-annotations.feather")}', flush=True)
             if args.kc_dendritic_only:
                 n_kk, n_zero = attach_kenyon_dendritic_only(model, args.graph, args.graph.parent / 'body-annotations.feather',
                                                             args.graph.parent / 'kc_kc_dendritic_synapses.feather',

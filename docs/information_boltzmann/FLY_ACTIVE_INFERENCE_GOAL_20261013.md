@@ -254,3 +254,43 @@ cells as in D1 (listener-prior miss, habit prior, readout learns), eyes open.  A
 - Language: d2_fixed no worse than d2_control on clean text (<= 0.05 nats).
 If accumulation does not appear with the fixes, the next suspects are the sensory adaptation (tau 20 ticks, a
 high-pass at the writer) and the weak MB -> DN route; say which before changing anything.
+
+## Why the fly's own circuit is not used (static analyses, weights only; 2026-10-13)
+- static_route_analysis.py (D1 weights vs birth): the EXIT works -- from the alpha/beta core the route runs Kenyon ->
+  MBON / DAN -> convergence (SMP/SIP/CRE) -> central complex / LAL -> descending neurons, as in the fly, and training
+  strengthened it.  The ENTRY starved: text spreads into the Kenyon cells with 5-14% of its mass at birth but 0.5% ->
+  0.01% after passive-reading evolution; 0% of the text's influence on the outputs passes through them.
+- rarity_decode_probe.py (CV R^2): the core knows the current word's rarity at tick 1 (0.82); the motor side only by
+  tick 4 (membranes 0.60, muscles 0.32).  The NEXT word's difficulty is unreadable anywhere (0.07, core included): it
+  is the next word's rarity (r = 0.97), aleatoric.  The value of thinking longer is partly readable from the muscles
+  at tick 4 (0.22), not at tick 1.
+- word_novelty_probe.py: new words evoke no dopamine (PPL104, PAM, PPL1 ~ 0), no alpha'3 novelty response, no
+  habituation, no change of phi -- the mushroom body's novelty system is silent for text.
+- taste_route_check.py: the innate taste -> dopamine lines barely exist in the model (sweet receptors -> PAM 0.1% of
+  the spread at birth, ~0.01% trained; no sweet / bitter specificity at the dopamine cells), while olfactory receptors
+  -> Kenyon cells are strong (15-34%).  Caveat: the "sweet" / "bitter" receptor sets of the odour world (15 / 39 cells)
+  are not backed by receptor annotations (receptorType only marks ppk23 / ppk25 / IR52b); of 1,428 gustatory cells
+  only ~220 enter through the labial nerve (the labellum's sugar and bitter receptors).
+Reading: passive next-word evolution rewired the brain around the read (shortcuts), starved the mushroom body of input
+and erased the weak innate outcome lines.  The circuit for "think, then act on what was learned" is anatomically there
+but has no input and no teacher.
+
+## Consequence loop (design, to review with the user before code)
+When: a question's outcome is revealed when its answer word is RECEIVED (the question closes with the eyes open).
+What: the information the answer added over the listener's prior, gain = prior CE(answer) - answer CE (nats); an
+unanswered question gives nothing (silence has no taste).
+How: through receptors only (no dopamine electrode): gain > 0 drives the sugar receptors, gain < 0 the bitter ones, for
+4 ticks, amplitude proportional to |gain| (clipped at 2 nats); the drive is computed from the realized commits word by
+word and passed into the next word's checkpoint segment (replayed exactly on the recompute); no gradient through the
+world.
+Who learns: within life the dopamine-gated compartment memory (Kenyon -> MBON) and the dopamine-scaled plasticity;
+across the lineage BPTT as before.
+Preconditions, in order: (1) the right receptors -- identify the labellar sugar (Gr5a/Gr64) and bitter (Gr66a) GRN
+types from the connectome's own annotations (neuPrint / FlyWire matches), not a guess; (2) the taste -> dopamine line
+must carry the outcome: if it is still ~0.1% with the right receptors, audit it like the Kenyon cells (normalisation
+over thousands of partners at the dopamine cells, sensory-terminal artifacts) and fix what blocks it; (3) then close
+the loop and check: dopamine responds to good vs bad answers, phi changes, the text -> Kenyon entry strengthens over
+chunks, and commit timing starts to depend on state.
+Open question for the adult: the trained weights erased routes that the newborn has (entry 10x, taste lines 10x).  If
+(2) cannot restore them in the adult, the plasticity criterion says: rebirth with the corrected connectome, acts and the
+consequence loop present from the start.
