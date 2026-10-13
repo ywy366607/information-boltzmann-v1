@@ -427,3 +427,21 @@ Consequences: (a) the alpha'3 / PPL104 silence is not explained by the entry; th
 rarity_decode_probe now also reads the Kenyon cells (membranes, spikes since onset, fraction active per word) in
 D3's probes and on D1; (b) "rebirth to restore the entry" is off the table on this evidence; (c) static shares are
 only comparable within one weight set -- across birth / trained, compare absolute weights or simulate.
+
+## Consequence loop, precondition 1 done: the receptors (neuPrint + literature, 2026-10-13)
+neuPrint male-cns v1.0 carries no taste modality for the gustatory neurons (receptorType only ppk23 / ppk25 /
+IR52b on leg and wing bristles; 274 have a flywireType).  The modality comes from Vicente et al. 2025 (bioRxiv
+10.1101/2025.08.25.671814), who typed every GRN in this very maleCNS volume and matched receptor-GAL4 projections:
+sugar = LB3b, LB3c (Gr64f; LB3b also Ir56b, low salt) and dorsal_tpGRN (Gr5a); bitter = LB1a-d (Gr33a); LB1e = Ir94e
+(mild aversion, glutamate); water = LB3a (ppk28); high salt = LB3d (Ir7c / ppk23); LB2, LB4: no receptor match.
+The first taste_route_check used guessed types (dorsal_tpGRN, a Gr5a sugar cell, counted as bitter) and shares; its
+"~0.1% at birth" is void.  Redone in absolute mass (D1 weights, per unit receptor activity, mass on the dopamine
+cells at hop 2 / 3): bitter 8.5e-4 / 1.0e-2, sugar 2.6e-4 / 4.1e-3, water 2.1e-4 / 2.9e-3, ORN 1.1e-4 / 1.6e-3,
+text 6e-5 / 1.0e-3: the taste lines reach dopamine better per unit than odour or text.  Valence is weakly separated
+(top target PAM01 for sugar and bitter alike; PAM/PPL1 at hop 3: sugar 2.9, bitter 2.3).
+Precondition 2 (activity): taste_pulse_probe.py drives each receptor set (1.5 x its thresholds, 20 ticks) from a
+reading state and counts the extra spikes of PAM, PPL1, each dopamine type, MBONs, Kenyon cells and the change of
+phi, vs a control fork; queued on D1 and D3 once the GPU is free.  Predictions: the receptors fire (else the gain is
+too small: raise it); PAM responds to sugar more than PPL1 does and PPL1 to bitter more than PAM does (if both go to
+PAM01 alike, the valence lines are not separated in this brain and the loop would teach the same thing for good and
+bad answers -- then the cause is looked for in the SEZ relays before closing the loop).
