@@ -105,10 +105,37 @@ class FlyPhysicalState:
                    gamma_z1, gamma_z2, observer_prior, observer_history)
 
 
+def dopamine_class_sensitivity(model, like):
+    """Per-class dopamine sensitivity spread to the neurons, [1, N].  A constant within a window (a parameter): computed
+    once per window and passed to every tick as options['dopamine_s_class'] (2026-10-14: per tick it was a sparse
+    product and its backward on every tick of every window)."""
+    # per-superclass sensitivity spread to the neurons by a fixed one-hot product (an advanced-index gather here
+    # has a sort-based, synchronizing backward: 2 ms per tick)
+    n_class = model.dopamine_sensitivity.numel()
+    onehot = getattr(model, '_superclass_onehot', None)
+    if onehot is None or onehot.shape[-1 if n_class <= 256 else 0] != like.shape[1] or             onehot.shape[0 if n_class <= 256 else 1] != n_class:
+        if n_class <= 256:
+            onehot = F.one_hot(model.superclass_id.long(), n_class).T.to(like.dtype)
+        else:
+            # one class per cell type (11.7k classes): a dense [classes, neurons] one-hot would be 14 GB; the
+            # same product as a sparse [neurons, classes] matrix
+            n = like.shape[1]
+            idx = torch.stack([torch.arange(n, device=like.device), model.superclass_id.long()])
+            onehot = torch.sparse_coo_tensor(idx, torch.ones(n, device=like.device, dtype=like.dtype),
+                                             (n, n_class)).coalesce()
+        model._superclass_onehot = onehot
+    if n_class <= 256:
+        return (model.dopamine_sensitivity.to(onehot.dtype) @ onehot).unsqueeze(0)
+    return torch.sparse.mm(onehot, model.dopamine_sensitivity.to(onehot.dtype).unsqueeze(1)).T
+
+
 def step_fly_physical_tick(model, current, token, source, next_baseline, options, *,
                            h_mean_decay=0.99, base_rates=None):
     """Atomic physical step on the connectome with optional sensory drive."""
     credit = getattr(model, 'carried_credit', ())                    # fly_carried_credit (off: ())
+    s_class_window = options.get('dopamine_s_class')
+    if 'dopamine_s_class' in options:                                # a window constant, not a model.step option
+        options = {k: v for k, v in options.items() if k != 'dopamine_s_class'}
     credit_comp, credit_comp_trace = current.credit_comp, current.credit_comp_trace
     credit_dopamine, credit_stp = current.credit_dopamine, current.credit_stp
     kappa = getattr(model, 'intrinsic_kappa', None)
@@ -192,25 +219,7 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
             # receptor occupancy c / (c + K) saturates: the phasic part is the occupancy of the fast concentration minus
             # that of its slow mean, bounded in (-1, 1); its gradient stays finite at both ends (silent and flooded)
             phasic = dopamine_occupancy(dopamine[0:1], model.dopamine_affinity) - dopamine_occupancy(tonic, model.dopamine_affinity)
-        # per-superclass sensitivity spread to the neurons by a fixed one-hot product (an advanced-index gather here
-        # has a sort-based, synchronizing backward: 2 ms per tick)
-        n_class = model.dopamine_sensitivity.numel()
-        onehot = getattr(model, '_superclass_onehot', None)
-        if onehot is None or onehot.shape[-1 if n_class <= 256 else 0] != current.h.shape[1] or                 onehot.shape[0 if n_class <= 256 else 1] != n_class:
-            if n_class <= 256:
-                onehot = F.one_hot(model.superclass_id.long(), n_class).T.to(current.h.dtype)
-            else:
-                # one class per cell type (11.7k classes): a dense [classes, neurons] one-hot would be 14 GB; the
-                # same product as a sparse [neurons, classes] matrix
-                n = current.h.shape[1]
-                idx = torch.stack([torch.arange(n, device=current.h.device), model.superclass_id.long()])
-                onehot = torch.sparse_coo_tensor(idx, torch.ones(n, device=current.h.device, dtype=current.h.dtype),
-                                                 (n, n_class)).coalesce()
-            model._superclass_onehot = onehot
-        if n_class <= 256:
-            s_class = (model.dopamine_sensitivity.to(onehot.dtype) @ onehot).unsqueeze(0)
-        else:
-            s_class = torch.sparse.mm(onehot, model.dopamine_sensitivity.to(onehot.dtype).unsqueeze(1)).T
+        s_class = s_class_window if s_class_window is not None else dopamine_class_sensitivity(model, current.h)
         thresholds = options.get('thresholds')
         thresholds = (thresholds if thresholds is not None else model.get_thresholds()).expand_as(current.h)
         options = {**options, 'thresholds': thresholds * torch.exp(-s_class * phasic)}
@@ -1632,7 +1641,7 @@ def _advance_fly_token_stream(model, state, token, schedule_box=None, *, ticks, 
                               conductance_gains=None, alif_params=None, stp_params=None, h_mean_decay=0.99,
                               read_every=False, world=None, world_tape=None, act_g=None, fresh=True,
                               ai_g=None, ai_tape=None, eye_forced=None, eye_binary=False, eye_tape=None,
-                              eye_sample=False, sense_noise=None):
+                              eye_sample=False, sense_noise=None, dopamine_s_class=None):
     """Streaming clock: every token occupies exactly `ticks` physical ticks, whatever the brain is doing, and the
     prediction of the next token is read just before it arrives.  Nothing waits for the brain to settle, so the
     processing of a token continues while the next ones are being sensed (latency and throughput decouple).
@@ -1667,6 +1676,8 @@ def _advance_fly_token_stream(model, state, token, schedule_box=None, *, ticks, 
         raise ValueError('writer_baseline_clock must be input or physical')
     options = dict(base_rates=base_rates, thresholds=thresholds, conductance_gains=conductance_gains,
                    alif_params=alif_params, stp_params=stp_params)
+    if dopamine_s_class is not None:
+        options['dopamine_s_class'] = dopamine_s_class
     writer = model.topographic_writer
     embedding = model.embedding(token) if writer is not None else None
     if read_after is not None and not 1 <= read_after <= ticks:
@@ -2315,6 +2326,8 @@ class FlyBPTTLearner:
             stream = dict(ticks=self.stream_ticks, hold_input=self.hold_input, read_after=self.read_lag or None,
                           writer_baseline_clock=self.writer_baseline_clock, base_rates=rates,
                           thresholds=thresholds, conductance_gains=gains, alif_params=alif, stp_params=stp)
+            if getattr(m, 'dopamine_sensitivity', None) is not None and os.environ.get('FLY_WINDOW_S_CLASS', '1') != '0':
+                stream['dopamine_s_class'] = dopamine_class_sensitivity(m, state.h)
             pace = float(getattr(self, 'stream_pace_mean', 0.0) or 0.0)
             pace_min = float(getattr(self, 'stream_pace_min', 0.0) or 0.0)
             if pace > 0 and getattr(self, 'pace_rng', None) is None:

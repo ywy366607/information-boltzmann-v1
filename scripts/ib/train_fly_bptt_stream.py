@@ -2047,7 +2047,8 @@ def main():
                 shelf.after_window(probe_fn)
             if args.score_log:
                 with args.score_log.open('a', encoding='utf-8') as out:
-                    out.write(json.dumps({'trained': trained, 'scores': [float(x) for x in scores],
+                    out.write(json.dumps({'trained': trained, 't': round(time.perf_counter(), 3),
+                                          'scores': [float(x) for x in scores],
                                           'unigram': [float(x) for x in reference_surprisal[values]],
                                           **({'word_da': learner.last_word_da}
                                              if getattr(learner, 'last_word_da', None) is not None else {})}) + '\n')

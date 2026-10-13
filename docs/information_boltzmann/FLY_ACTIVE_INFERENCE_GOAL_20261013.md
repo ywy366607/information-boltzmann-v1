@@ -619,3 +619,40 @@ substrate carries no positive causal effect.  Edge change is a symmetric random 
 at noise level (p90 0.18); a late first gradient meets a tiny v and moves the synapse ~23 Adam steps (~46% of its birth
 weight, x up to 4 dopamine local x up to 4 global).  Also: clamp_edges still caps conductance at 5.0 (90 inhibitory
 birth edges up to 14.6 were cut).  Mechanism problem (plasticity rule), not numbers; fix under review before R3b.
+
+## Living causal gates (2026-10-14): the brain is never frozen for a gate
+
+The user's correction: the causal order is measured on the living individual, as the four pillars are. The frozen
+swap probe measured a different organism: the read cannot follow the brain's drift, and the text, world and state
+all differ. It also used 2 places x 512 words, so its noise (about 0.1-0.17) was as large as the effects.
+
+**Method.** From the same checkpoint, several arms continue the same stream with learning on:
+- brain;
+- noedges: every synapse cut, re-cut after every update; under EG the ablated brain keeps its own totals;
+- silenced: the latched cells' outputs cut and their reads zeroed.
+
+All arms see the same words, the same world pace (seeded per process) and the same RNG.
+
+**Metrics.**
+1. Current stream: pre-update scores, paired by 32-word window, with SE.
+2. Fresh B: the trainer's active evaluation (AG), learning on.
+
+Trainer switches: `--ablate`, `--score-log`, `--log-word-dopamine`, `--skip-eval`.
+
+**m_olf** (receptor_lang plus input gain size^0.5, commit e7b4c30), 1024 words per arm:
+
+| gate | c1 | c2 |
+|---|---|---|
+| (1) brain contribution, current stream | brain 7.450 vs unigram 7.541 (noedges arm rerun pending) | **+0.290 +- 0.062** (32 windows; [min -0.13, median +0.15, max +1.17]); noedges 7.945 = unigram 7.946 |
+| (1) fresh B: brain / noedges | 7.165 / -- | 7.027 / 7.280 (+0.25) |
+| (L) latch worth, current stream | -0.026 +- 0.015 (372 cells) | -0.022 +- 0.005 (11 cells) |
+| frozen probe (superseded) | -0.047 | -0.182 |
+
+**Reading.** At c2 the living brain carries +0.29 nats of prediction over the decoder alone. The decoder alone falls
+to unigram. The frozen probe's -0.18 was the measurement, not the brain. Latched cells, measured alive, are mildly
+harmful (silencing them helps by about 0.02); their number collapsed from 372 to 11.
+
+**New chain.** `scripts/ib/fly_interface/grow_mainline_live.sh`:
+- The brain arm costs nothing: the next chunk's first W words are the brain arm, so only the ablated arms run.
+- Surprise -> phasic dopamine is read per word from the living stream.
+- Fresh B / AG for both arms every 5 chunks.
