@@ -460,6 +460,11 @@ def main():
     parser.add_argument('--dopamine-site', choices=('post', 'pre'), default=None,
                         help='Which end of a synapse the dopamine scales its learning by: post = the receiving neuron, '
                              'pre = the presynaptic terminal as at the fly mushroom body (omitted = inherit, else post)')
+    parser.add_argument('--ablate', default=None,
+                        help="Causal gate (never inherited; resume only): 'noedges' (every synapse cut: the read and decoder "
+                             "learn alone) or a bool .npy of cells to silence (outputs cut, reads zeroed); learning continues")
+    parser.add_argument('--score-log', type=Path, default=None,
+                        help='Append every window pre-update word scores (JSONL) for paired comparisons')
     parser.add_argument('--input-gain-size-exponent', type=float, default=None,
                         help='Per-class learnable input gain (input conductance grows with the cell), started at '
                              '(median size / class size)^this (0 uniform, 1 inverse to size; omitted = inherit, else none)')
@@ -1476,6 +1481,15 @@ def main():
             step = learner.set_relative_edge_steps(args.graph, args.relative_edge_rate)
             print(f'Relative plasticity: {args.relative_edge_rate} of the birth weight per step '
                   f'(median synapse step {step:.2e})', flush=True)
+        if args.ablate:
+            # the causal gates: the same individual, still learning, with a part of the brain removed
+            n = model.n_neurons
+            if args.ablate == 'noedges':
+                learner.attach_ablation(pre_cells=torch.ones(n, dtype=torch.bool, device='cuda'))
+            else:
+                cells = torch.as_tensor(np.load(args.ablate), device='cuda')
+                learner.attach_ablation(pre_cells=cells, read_cells=cells)
+            print(f'Living ablation: {args.ablate}', flush=True)
         if getattr(args, 'odour_world', False):
             learner.odour_world = OdourWorld(model, args.graph, args.graph.parent / 'body-annotations.feather',
                                              seed=int(getattr(args, 'odour_seed_value', 0)),
@@ -2026,6 +2040,10 @@ def main():
                                       stp_params=model.get_stp_params())
                 probe_fn = make_probe_fn(fly_learning, model, learner, int(args.go_max_ticks or 32), shelf_opts)
                 shelf.after_window(probe_fn)
+            if args.score_log:
+                with args.score_log.open('a', encoding='utf-8') as out:
+                    out.write(json.dumps({'trained': trained, 'scores': [float(x) for x in scores],
+                                          'unigram': [float(x) for x in reference_surprisal[values]]}) + '\n')
             first_pass_meter.record(scores, reference_surprisal[values])
             first_pass_meter.verify_cursor(trained, cursor)
             phase_meter.record(scores, reference_surprisal[values])

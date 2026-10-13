@@ -3142,6 +3142,27 @@ class FlyBPTTLearner:
         self.edge_step_rate = float(rate)
         return float(torch.cat([s.flatten() for s in scales]).median() * lr)
 
+    @torch.no_grad()
+    def attach_ablation(self, pre_cells=None, read_cells=None):
+        """A living ablation (the causal gates): the individual keeps learning, with a part of its brain removed --
+        pre_cells (bool over neurons): their output synapses cut; read_cells: their read weights zeroed.  Re-applied
+        after every update, so learning cannot regrow what was removed; under EG each cell keeps the input totals of
+        the ablated brain (the remaining synapses are not scaled up to replace the removed ones)."""
+        self.ablate_pre, self.ablate_read = pre_cells, read_cells
+        self._apply_ablation()
+        if getattr(self, 'eg', False):
+            for n, w in zip(self.edge_names, self.edges):
+                post = getattr(self.model, 'edge_post' + n[len('edge_weight'):]).long()
+                self.eg_total[n] = torch.zeros(self.model.n_neurons, device=w.device).index_add_(0, post, w.float())
+
+    @torch.no_grad()
+    def _apply_ablation(self):
+        if getattr(self, 'ablate_pre', None) is not None:
+            for n, w in zip(self.edge_names, self.edges):
+                w[self.ablate_pre[getattr(self.model, 'edge_pre' + n[len('edge_weight'):]).long()]] = 0.0
+        if getattr(self, 'ablate_read', None) is not None and self.model.read_surface != 'all':
+            self.model.output_read.weight[:, self.ablate_read[self.model.read_indices]] = 0.0
+
     def clamp_edges(self):
         """Retain conductance positivity or each signed edge's original sign (and keep the plastic Kenyon -> MBON
         weights excitatory).
@@ -3170,6 +3191,7 @@ class FlyBPTTLearner:
             else:
                 weight.copy_(torch.where(self.edge_positive[name], weight.clamp(0.0, 5.0),
                                          weight.clamp(-5.0, 0.0)))
+        self._apply_ablation()
 
     @torch.no_grad()
     def _dan_update(self, terminal_state):

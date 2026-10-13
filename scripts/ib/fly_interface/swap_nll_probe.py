@@ -34,7 +34,7 @@ train = np.load(ROOT / cfg['data'] / 'train.npy', mmap_mode='r')
 counts = np.bincount(np.asarray(train[:5_000_000], dtype=np.int64), minlength=model.decoder.out_features) + 0.5
 logp = np.log(counts / counts.sum())
 BURN, SCORE = 256, int(os.environ.get('NLL_SCORE', 1024))
-nll, uni = [], []
+nll, uni, nll_words = [], [], []
 with torch.no_grad():
     for place in range(int(os.environ.get('NLL_PLACES', 4))):
         start = 80_000 + place * 4_000
@@ -55,8 +55,12 @@ with torch.no_grad():
                                                writer_baseline_clock='physical', **opts)
             if i >= BURN:
                 out.append(float(F.cross_entropy(model.decoder(model.read_norm(z)).float(), torch.tensor([int(words[i + 1])], device='cuda'))))
+                nll_words.append(out[-1])
                 uni.append(-logp[words[i + 1]])
         nll.append(float(np.mean(out)))
 q = lambda v: [round(float(np.min(v)), 4), round(float(np.median(v)), 4), round(float(np.mean(v)), 4), round(float(np.max(v)), 4)]
 rep = {'fork': str(fork), 'swap': swap or ['none'], 'world': WORLD, 'ticks': K, 'hold': HOLD, 'nll_places_min_median_mean_max': q(nll), 'unigram': round(float(np.mean(uni)), 4)}
+if os.environ.get('NLL_DUMP'):                                   # per-word NLL and unigram, place-major: paired errors
+    np.savez(os.environ['NLL_DUMP'], nll=np.array(nll_words, dtype=np.float32).reshape(len(nll), -1),
+             unigram=np.array(uni, dtype=np.float32).reshape(len(nll), -1))
 print(json.dumps(rep), flush=True)
