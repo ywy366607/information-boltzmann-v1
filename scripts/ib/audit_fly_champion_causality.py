@@ -25,6 +25,7 @@ This is a mechanism diagnostic of one checkpoint, not active evaluation or a tra
 from __future__ import annotations
 
 import argparse
+import os
 import math
 import json
 import sys
@@ -122,7 +123,15 @@ def main():
             for name in rollback:
                 originals[name] = tensors[name].detach().clone()
                 tensors[name].copy_(birth[name].to(tensors[name]))
-            if arm.startswith('silence_'):
+            if arm == 'silence_mask':
+                # a given cell set (bool .npy over the graph's neurons, env AUDIT_MASK, e.g. the latched cells) loses
+                # its output synapses
+                silent = torch.as_tensor(np.load(os.environ['AUDIT_MASK']), device=dev)
+                for name, pre_name in (('edge_weight_e', 'edge_pre_e'), ('edge_weight_i', 'edge_pre_i')):
+                    originals[name] = tensors[name].clone()
+                    tensors[name].mul_((~silent[getattr(model, pre_name).long()]).float())
+                print(f'  {arm}: {int(silent.sum())} neurons silenced', flush=True)
+            elif arm.startswith('silence_'):
                 cls = arm[len('silence_'):]
                 half = cls.endswith('_half')
                 cls = cls[:-len('_half')] if half else cls

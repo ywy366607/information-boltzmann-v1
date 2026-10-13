@@ -63,9 +63,9 @@ def load(fork):
         fl.attach_predictive_writer(model)
     if cfg.get('precision'):
         fl.attach_precision(model, graph, graph.parent / 'body-annotations.feather')
-    if cfg.get('writer') in ('receptor', 'receptor_all'):
+    if cfg.get('writer') in fl.WRITER_SENSE:
         fl.attach_receptor_writer(model, graph, graph.parent / 'body-annotations.feather',
-                                  sense_class='all' if cfg.get('writer') == 'receptor_all' else 'olfactory')
+                                  sense_class=fl.WRITER_SENSE[cfg.get('writer')])
     if cfg.get('tied_writer'):
         fl.attach_tied_writer(model, graph, graph.parent / 'body-annotations.feather', convert=False)
     if cfg.get('graded_types'):
@@ -171,6 +171,16 @@ def load(fork):
             for sfx in ('e', 'i'):
                 getattr(model, f'edge_weight_{sfx}')[quiet_cells[getattr(model, f'edge_pre_{sfx}').long()]] = 0.0
         print(f'zero-shot: output synapses of {os.environ["ZS_SILENCE_OUTPUT"]} removed ({int(quiet_cells.sum())} cells)', flush=True)
+    if os.environ.get('ZS_SILENCE_MASK'):
+        # zero-shot: a set of cells (bool .npy over the graph's neurons, e.g. the latched ones) removed from the brain:
+        # their output synapses cut and, where they are read cells, their read weights zeroed
+        quiet_cells = torch.as_tensor(np.load(os.environ['ZS_SILENCE_MASK']), device='cuda')
+        with torch.no_grad():
+            for sfx in ('e', 'i'):
+                getattr(model, f'edge_weight_{sfx}')[quiet_cells[getattr(model, f'edge_pre_{sfx}').long()]] = 0.0
+            if model.read_surface != 'all':
+                model.output_read.weight[:, quiet_cells[model.read_indices]] = 0.0
+        print(f'zero-shot: {int(quiet_cells.sum())} cells silenced ({os.environ["ZS_SILENCE_MASK"]})', flush=True)
     model.eval().requires_grad_(False)
     return model, cfg, L
 

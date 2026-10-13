@@ -27,7 +27,9 @@ import numpy as np
 import torch
 
 INNATE = ('DA1', 'VA1d', 'VA1v', 'DA2', 'V', 'DM1', 'DL3', 'VL2a')     # pheromone, geosmin, CO2, strong attraction
-SWEET_TASTE, BITTER_TASTE = ('LgAG3', 'LB1b', 'PhG13'), ('LgAG1', 'PhG8', 'dorsal_tpGRN')
+# Vicente et al. 2025 typed this volume's GRNs: sugar = LB3b, LB3c (Gr64f), dorsal_tpGRN (Gr5a); bitter = LB1a-d (Gr33a).
+# (The first sets had LB1b -- bitter -- as sweet and dorsal_tpGRN -- sugar -- as bitter; the dopamine electrode hid it.)
+SWEET_TASTE, BITTER_TASTE = ('LB3b', 'LB3c', 'dorsal_tpGRN'), ('LB1a', 'LB1b', 'LB1c', 'LB1d')
 SWEET_DOPAMINE, BITTER_DOPAMINE = ('PAM01', 'PAM02', 'PAM11'), ('PPL101', 'PPL103', 'PPL106')
 SEGMENT, REVERSE_P, GAP, MOVE = 3000, 0.25, 64, 16
 APPROACH, D_MIN, CONTACT_ODOUR, FADE = 8, 0.25, 6, math.exp(-1 / 4)

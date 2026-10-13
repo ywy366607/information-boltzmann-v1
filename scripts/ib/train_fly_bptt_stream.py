@@ -26,7 +26,7 @@ from information_boltzmann.core.fly_odour_world import (OdourWorld, attach_act_h
                                                         attach_sense_head, SENSE_PARAMETER_NAMES)
 ACT_STATE_NAMES = ACT_PARAMETER_NAMES + ('act_mu', 'act_sigma', 'act_w_scale') + SENSE_PARAMETER_NAMES
 from information_boltzmann.core.fly_active_inference import attach_ai_head, AI_PARAMETER_NAMES, AI_STATE_NAMES
-from information_boltzmann.core.fly_bptt_learning import (
+from information_boltzmann.core.fly_bptt_learning import (WRITER_SENSE, 
     FlyPhysicalState, FlyBPTTLearner, FlyBPTTGraph, STP_PARAMETER_NAMES,
     GO_PARAMETER_NAMES, attach_go_neuron, attach_connectome_go, READ_BANK_PARAMETER_NAMES, attach_read_bank,
     INTRINSIC_PARAMETER_NAMES, attach_intrinsic_drive, PRECISION_PARAMETER_NAMES, attach_precision,
@@ -315,7 +315,7 @@ PROFILES = {
         '--E-E 0.55 --E-I -0.15 --spike-consumes-drive --refractory-ticks 1 --inhibitory-tau-ratio 4 --no-stp '
         '--alif-beta-init 0.2 --surrogate-mode threshold --detach-reset --transmission-mode incoming '
         # senses and world: text through every sensory cell, held for the word, prediction error written (efference)
-        '--writer receptor_all --hold-input --predictive-writer --writer-baseline-clock physical '
+        '--writer receptor_text --hold-input --predictive-writer --writer-baseline-clock physical '
         '--stream-ticks 8 --stream-pace-mean 16 --stream-pace-min 2 --go-neuron none '
         # learning: synapses by normalized EG with the birth connectome as prior; class physiology frozen at birth;
         # dopamine phasic (adapted), presynaptic site; Kenyon -> MBON three-factor memory
@@ -581,7 +581,7 @@ def main():
                         help='Regex of the cell types released by --intrinsic (default: every annotated tonic type)')
     parser.add_argument('--intrinsic-kappa', type=float, default=None,
                         help='Initial intrinsic current of released cells, in units of their rheobase (default 1.2)')
-    parser.add_argument('--writer', choices=('topographic', 'receptor', 'receptor_all'), default=None,
+    parser.add_argument('--writer', choices=('topographic', 'receptor', 'receptor_all', 'receptor_text'), default=None,
                         help='receptor: text through the olfactory receptor neurons only, per receptor type, as a '
                              'bounded transduction conductance around spontaneous firing (ReceptorWriter); inherited')
     parser.add_argument('--stp-init', type=str, default=None, help="birth STP 'u0,tau_fac,tau_rec' (needs --stp)")
@@ -863,11 +863,11 @@ def main():
             print(f'STP at birth: u0 {u0}, tau_fac {tf} ms, tau_rec {tr} ms', flush=True)
         if args.writer is None:
             args.writer = 'topographic'
-        if args.writer in ('receptor', 'receptor_all'):
+        if args.writer in WRITER_SENSE:
             if args.tied_writer:
                 raise ValueError('--writer receptor already ties the rows per receptor type (no --tied-writer)')
             n_cells, n_types = attach_receptor_writer(model, args.graph, args.graph.parent / 'body-annotations.feather',
-                                                      sense_class='all' if args.writer == 'receptor_all' else 'olfactory')
+                                                      sense_class=WRITER_SENSE[args.writer])
             print(f'Receptor writer (newborn): text through {n_cells} sensory cells, {n_types} rows', flush=True)
 
         # A newborn gets the same blanket and modulation as the resumed lineage (each only when asked for).
@@ -1157,9 +1157,9 @@ def main():
         if args.precision:
             n_mod, n_da = attach_precision(model, args.graph, args.graph.parent / 'body-annotations.feather')
             print(f'Precision carried by {n_mod} neuromodulatory cells ({n_da} dopaminergic)', flush=True)
-        if args.writer in ('receptor', 'receptor_all'):
+        if args.writer in WRITER_SENSE:
             n_cells, n_types = attach_receptor_writer(model, args.graph, args.graph.parent / 'body-annotations.feather',
-                                                      sense_class='all' if args.writer == 'receptor_all' else 'olfactory')
+                                                      sense_class=WRITER_SENSE[args.writer])
             print(f'Receptor writer: {n_cells} sensory cells, {n_types} rows', flush=True)
         tie_now = bool(args.tied_writer) and not bool(previous_config.get('tied_writer', False))
         if args.tied_writer and not tie_now:

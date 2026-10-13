@@ -1199,6 +1199,10 @@ def kenyon_dendritic_share(model, graph_npz, annotations, dendritic_feather):
 TIED_RECEPTOR_CLASSES = ('olfactory', 'gustatory', 'chemosensory', 'hygrosensory', 'thermosensory')
 
 
+CHEMICAL_SENSE_CLASSES = ('olfactory', 'gustatory', 'chemosensory')
+WRITER_SENSE = {'receptor': 'olfactory', 'receptor_all': 'all', 'receptor_text': 'text'}
+
+
 def attach_receptor_writer(model, graph_npz, annotations, sense_class='olfactory', seed=0, **kw):
     """Replace the topographic writer by the receptor-transduction writer (ReceptorWriter).  sense_class: one sensory
     class (e.g. 'olfactory'), or 'all' -- every sensory cell of the old writer (data/malecns_v1/sensory_partitions.npz),
@@ -1211,10 +1215,14 @@ def attach_receptor_writer(model, graph_npz, annotations, sense_class='olfactory
     graph = np.load(graph_npz, allow_pickle=True)
     ann = pd.read_feather(annotations).set_index('bodyId').reindex(graph['neuron_body_ids'])
     cls, typ = ann['class'].astype(str).values, ann['type'].astype(str).values
-    if sense_class == 'all':
+    if sense_class in ('all', 'text'):
         from pathlib import Path
         parts = np.load(Path(graph_npz).parent / 'sensory_partitions.npz')
         cells = np.concatenate([parts['visual_idx'], parts['chemo_idx'], parts['mechano_idx']]).astype(np.int64)
+        if sense_class == 'text':
+            # the chemical senses are kept for the world (odours, tastes: valence and the mushroom body's teacher);
+            # the text goes through every other sense (user 2026-10-13: dedicated smell and taste are fine)
+            cells = cells[~np.isin(cls[cells], CHEMICAL_SENSE_CLASSES)]
     else:
         cells = np.nonzero(cls == sense_class)[0]
     tied = np.isin(cls[cells], TIED_RECEPTOR_CLASSES)
