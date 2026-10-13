@@ -166,6 +166,14 @@ def resolve_learning_modes(args, previous_config, previous_learner):
     if getattr(args, 'tied_writer', None) is None:
         args.tied_writer = bool(previous_config.get('tied_writer', False))
     args.kc_renorm_newly = bool(args.kc_renorm) and not bool(previous_config.get('kc_renorm', False))
+    for name in ('modulatory_classes', 'dan_renorm'):
+        if getattr(args, name, None) is None:
+            setattr(args, name, bool(previous_config.get(name, False)))
+    args.dan_renorm_newly = bool(args.dan_renorm) and not bool(previous_config.get('dan_renorm', False))
+    if getattr(args, 'intrinsic_pattern', None) is None:
+        args.intrinsic_pattern = previous_config.get('intrinsic_pattern')
+    if getattr(args, 'intrinsic_kappa', None) is None:
+        args.intrinsic_kappa = previous_config.get('intrinsic_kappa')
     if getattr(args, 'connectome_v2', None) is None:
         args.connectome_v2 = bool(previous_config.get('connectome_v2', False))
     args.al_reset_newly = bool(args.al_reset) and not bool(previous_config.get('al_reset', False))
@@ -387,6 +395,16 @@ def main():
     parser.add_argument('--relative-edge-rate', type=float, default=None,
                         help='Relative plasticity: each synapse moves by this fraction of its birth weight per full Adam '
                              'step (omitted = inherit; 0 = absolute steps)')
+    parser.add_argument('--modulatory-classes', action=argparse.BooleanOptionalAction, default=None,
+                        help='Dopamine (PAM, PPL1, other), octopamine and serotonin cells get their own class physiology '
+                             'instead of cb_intrinsic (after the Kenyon subtypes; omitted = inherit)')
+    parser.add_argument('--dan-renorm', action=argparse.BooleanOptionalAction, default=None,
+                        help='Redo the birth normalization of the inputs of the dopamine cells without their pinned '
+                             'Kenyon partners, once (needs --connectome-v2; omitted = inherit)')
+    parser.add_argument('--intrinsic-pattern', type=str, default=None,
+                        help='Regex of the cell types released by --intrinsic (default: every annotated tonic type)')
+    parser.add_argument('--intrinsic-kappa', type=float, default=None,
+                        help='Initial intrinsic current of released cells, in units of their rheobase (default 1.2)')
     parser.add_argument('--kc-renorm', action=argparse.BooleanOptionalAction, default=None,
                         help='Redo the birth normalization of Kenyon inputs over dendritic partners, once (omitted = inherit)')
     parser.add_argument('--comp-rate', type=float, default=None,
@@ -814,7 +832,9 @@ def main():
         if args.read_bank:
             attach_read_bank(model)
         if args.intrinsic:
-            released = attach_intrinsic_drive(model, args.graph, args.graph.parent / 'body-annotations.feather')
+            released = attach_intrinsic_drive(model, args.graph, args.graph.parent / 'body-annotations.feather',
+                                              **({'kappa': args.intrinsic_kappa} if args.intrinsic_kappa is not None else {}),
+                                              **({'pattern': args.intrinsic_pattern} if args.intrinsic_pattern else {}))
             print(f'Released {int(model.intrinsic_index.numel())} spontaneously active cells: {released}', flush=True)
         if args.predictive_writer:
             attach_predictive_writer(model)
@@ -835,11 +855,18 @@ def main():
             # a tied lineage: the writer's chemosensory rows are per receptor type (shapes before loading)
             attach_tied_writer(model, args.graph, args.graph.parent / 'body-annotations.feather', convert=False)
             print('Writer tied by chemosensory receptor type', flush=True)
-        from information_boltzmann.core.fly_bptt_learning import split_kenyon_subtypes
-        lineage_split = saved['model']['log_tau_m'].numel() > model.n_superclasses
+        from information_boltzmann.core.fly_bptt_learning import split_kenyon_subtypes, split_modulatory_classes
+        lineage_split = bool(previous_config.get('kc_subtypes')) or saved['model']['log_tau_m'].numel() > model.n_superclasses
+        lineage_mod = bool(previous_config.get('modulatory_classes'))
+        if lineage_mod and not lineage_split:
+            raise ValueError('a modulatory-class lineage must also carry the Kenyon split (fixed class order)')
         if lineage_split:
             # a lineage whose Kenyon subtypes already have their own physiology: the same split before loading
-            print(f'Kenyon subtypes (carried over): {split_kenyon_subtypes(model, args.graph, args.graph.parent / "body-annotations.feather")}', flush=True)
+            print(f'Kenyon subtypes (carried over): {split_kenyon_subtypes(model, args.graph, args.graph.parent / "body-annotations.feather", record=False)}', flush=True)
+        if lineage_mod:
+            print(f'Modulatory classes (carried over): {split_modulatory_classes(model, args.graph, args.graph.parent / "body-annotations.feather", record=False)}', flush=True)
+        if saved['model']['log_tau_m'].numel() != model.n_superclasses:
+            raise ValueError(f'class count mismatch: checkpoint {saved["model"]["log_tau_m"].numel()}, model {model.n_superclasses}')
         weights = {key: value for key, value in saved['model'].items()
                    if key not in ('edge_weight_e', 'edge_weight_i')
                    and key not in COMPARTMENT_PARAMETER_NAMES + TASTE_PARAMETER_NAMES + ACT_STATE_NAMES + AI_STATE_NAMES}
@@ -863,6 +890,11 @@ def main():
             if args.kc_subtypes and not lineage_split:
                 print(f'Kenyon subtypes split from cb_intrinsic (own physiology, initialised from it): '
                       f'{split_kenyon_subtypes(model, args.graph, args.graph.parent / "body-annotations.feather")}', flush=True)
+            if args.modulatory_classes and not lineage_mod:
+                if not args.kc_subtypes:
+                    raise ValueError('--modulatory-classes comes after the Kenyon split (--kc-subtypes)')
+                print(f'Modulatory classes split (own physiology, initialised from their class): '
+                      f'{split_modulatory_classes(model, args.graph, args.graph.parent / "body-annotations.feather")}', flush=True)
             if args.kc_dendritic_only:
                 n_kk, n_zero = attach_kenyon_dendritic_only(model, args.graph, args.graph.parent / 'body-annotations.feather',
                                                             args.graph.parent / 'kc_kc_dendritic_synapses.feather',
@@ -885,6 +917,12 @@ def main():
                 factor = renormalize_kenyon_inputs(model, args.graph, args.graph.parent / 'body-annotations.feather',
                                                    args.graph.parent / 'kc_kc_dendritic_synapses.feather')
                 print(f'Kenyon inputs renormalized over dendritic partners (median factor {factor:.2f})', flush=True)
+            if args.dan_renorm and args.dan_renorm_newly:
+                if not args.connectome_v2:
+                    raise ValueError('--dan-renorm needs --connectome-v2 (the Kenyon -> dopamine edges pinned first)')
+                from information_boltzmann.core.fly_bptt_learning import renormalize_dopamine_inputs
+                factor = renormalize_dopamine_inputs(model, args.graph, args.graph.parent / 'body-annotations.feather')
+                print(f'Dopamine inputs renormalized without their Kenyon partners (median factor {factor:.2f})', flush=True)
             if args.homeostasis:
                 attach_homeostasis(model, args.graph, seed=args.homeostasis_seed)
                 print(f'Homeostatic intrinsic plasticity, individual {args.homeostasis_seed}', flush=True)

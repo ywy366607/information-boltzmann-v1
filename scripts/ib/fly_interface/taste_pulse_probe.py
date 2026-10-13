@@ -16,13 +16,6 @@ fork = Path(sys.argv[1])
 out = Path(sys.argv[2]) if len(sys.argv) > 2 else fork / 'taste_pulse.json'
 GAIN = float(sys.argv[3]) if len(sys.argv) > 3 else 1.5
 model, cfg, L = load(fork)
-import os
-if os.environ.get('INTRINSIC_KAPPA') and getattr(model, 'intrinsic_kappa', None) is None:
-    # zero-shot: release the dopamine cells' own tonic activity (attach_intrinsic_drive, the fly's spontaneously
-    # active types; here the dopaminergic PAM / PPL only), kappa in units of their rheobase
-    fl.attach_intrinsic_drive(model, ROOT / cfg['graph'], ROOT / 'data/malecns_v1/body-annotations.feather',
-                              kappa=float(os.environ['INTRINSIC_KAPPA']), pattern=r'^(PAM\d|PPL\d)')
-    print('intrinsic drive on PAM / PPL, kappa', os.environ['INTRINSIC_KAPPA'], flush=True)
 opts = dict(base_rates=model.get_decay_rates(), thresholds=model.get_thresholds(), conductance_gains=model.get_conductance_gains(),
             alif_params=model.get_alif_params(), stp_params=model.get_stp_params())
 writer = model.topographic_writer

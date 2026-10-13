@@ -1337,6 +1337,37 @@ def renormalize_kenyon_inputs(model, graph_npz, annotations, dendritic_feather):
     return float(np.median(factor.cpu().numpy()[kc]))
 
 
+def renormalize_dopamine_inputs(model, graph_npz, annotations):
+    """The same birth-normalization artifact as renormalize_kenyon_inputs, for the dopamine cells, once per lineage:
+    every edge was divided by sqrt(K_in) of its target, and a dopamine cell's K_in counted its Kenyon partners (median
+    319 of 479), whose synapses sit on its terminals in the lobes and are pinned (pin_kenyon_to_dopamine).  Over the
+    remaining partners every remaining input onto a dopamine cell is sqrt(K_all / K_kept) larger (median 2.1).
+    Scales the current weights of all non-pinned edges onto dopamine cells; returns the median factor."""
+    import pandas as pd
+    graph = np.load(graph_npz, allow_pickle=True)
+    n = model.n_neurons
+    cls = pd.read_feather(annotations).set_index('bodyId').reindex(graph['neuron_body_ids'])['class'].astype(str).values
+    kc = cls == 'Kenyon_Cell'
+    dan = np.zeros(n, bool)
+    dan[graph['dan_indices']] = True
+    k_fast = np.bincount(graph['edge_post'], minlength=n).astype(np.float64)
+    k_all = k_fast + np.bincount(np.unique(graph['dan_edge_pre'].astype(np.int64) * n + graph['dan_edge_post']) % n,
+                                 minlength=n)
+    pre, post = graph['edge_pre'], graph['edge_post']
+    k_kc = np.bincount(post[kc[pre]], minlength=n).astype(np.float64)
+    factor = np.where(dan, np.sqrt(k_all / np.maximum(k_fast - k_kc, 1.0)), 1.0)
+    factor_t = torch.as_tensor(factor, dtype=torch.float32, device=model.edge_pre_e.device)
+    pinned = getattr(model, 'pinned_zero_edges_e', None)
+    with torch.no_grad():
+        for sfx in ('e', 'i'):
+            w = getattr(model, f'edge_weight_{sfx}')
+            scale = factor_t[getattr(model, f'edge_post_{sfx}').long()]
+            if sfx == 'e' and pinned is not None:
+                scale[pinned.long()] = 1.0
+            w.mul_(scale)
+    return float(np.median(factor[dan]))
+
+
 def attach_online_da_plasticity(model, graph_npz=None, annotations=None, eta=-0.02, tau_trace=50.0, forget=0.02,
                                 cell_classes=ONLINE_DA_CELL_CLASSES):
     """O(1) online learning with dopamine as the third factor (design: FLY_ONLINE_DA_LEARNING_DESIGN.md).  The
@@ -3103,7 +3134,7 @@ KENYON_SUBTYPES = (('KC_ab_core', ('KCab-c',)), ('KC_ab_surface', ('KCab-s', 'KC
                    ("KC_apbp", ("KCa'b'",)), ('KC_g', ('KCg',)))
 
 
-def split_kenyon_subtypes(model, graph_npz, annotations):
+def split_kenyon_subtypes(model, graph_npz, annotations, record=True):
     """Connectome audit (point-model coarse-graining): all 4,064 Kenyon cells sat in cb_intrinsic with 32,160 other
     central-brain neurons, sharing one membrane time constant, threshold, adaptation and STP -- the alpha/beta core
     (FoxP; the population that accumulates evidence, DasGupta et al. 2014; Groschner et al. 2018) could not differ from
@@ -3113,14 +3144,25 @@ def split_kenyon_subtypes(model, graph_npz, annotations):
     import pandas as pd
     graph = np.load(graph_npz, allow_pickle=True)
     ann = pd.read_feather(annotations).set_index('bodyId').reindex(graph['neuron_body_ids'])
-    typ = ann['type'].astype(str).values
+    typ = ann['type'].astype(str).values.astype(str)
+    groups = []
+    for name, prefixes in KENYON_SUBTYPES:
+        mask = np.zeros(len(typ), bool)
+        for p in prefixes:
+            mask |= np.char.startswith(typ, p)
+        groups.append((name, mask))
+    return split_classes(model, groups, record=record)
+
+
+def split_classes(model, groups, record=True):
+    """Each (name, mask) group leaves its class and becomes its own class, initialised from the class it leaves
+    (dynamics unchanged at the split).  record: the new classes' sources are appended to model.class_split_sources
+    (the optimizer's moments of a checkpoint without them are padded from their source class); a split carried over
+    from a lineage whose checkpoint already has the classes is not recorded."""
     sc = model.superclass_id
     sources, counts = [], {}
     with torch.no_grad():
-        for name, prefixes in KENYON_SUBTYPES:
-            mask = np.zeros(len(typ), bool)
-            for p in prefixes:
-                mask |= np.char.startswith(typ.astype(str), p)
+        for name, mask in groups:
             if not mask.any():
                 continue
             m = torch.as_tensor(mask, device=sc.device)
@@ -3134,8 +3176,25 @@ def split_kenyon_subtypes(model, graph_npz, annotations):
             grown = torch.cat([p.data, p.data[sources]])
             setattr(model, pname, nn.Parameter(grown, requires_grad=p.requires_grad))
     model.n_superclasses += len(sources)
-    model.class_split_sources = sources
+    if record:
+        model.class_split_sources = list(getattr(model, 'class_split_sources', None) or []) + sources
     for attr in ('_compiled_coefficients', '_compiled_finish'):
         if hasattr(model, attr):
             setattr(model, attr, None)
     return counts
+
+
+def split_modulatory_classes(model, graph_npz, annotations, record=True):
+    """Connectome audit (same coarse-graining as the Kenyon cells): 384 of the 392 dopamine cells, the octopaminergic
+    and the serotonergic cells sat in cb_intrinsic with ~32,000 other neurons and shared its physiology -- the cells
+    that are tonically active in the fly and set the brain's state could not differ from anything.  PAM (reward), PPL1
+    (punishment), the other dopamine cells, OA and 5-HT each become a class, initialised from the class they leave."""
+    import pandas as pd
+    graph = np.load(graph_npz, allow_pickle=True)
+    typ = pd.read_feather(annotations).set_index('bodyId').reindex(graph['neuron_body_ids'])['type'].astype(str).values.astype(str)
+    dan = np.zeros(len(typ), bool)
+    dan[graph['dan_indices']] = True
+    pam, ppl1 = dan & np.char.startswith(typ, 'PAM'), dan & np.char.startswith(typ, 'PPL1')
+    groups = [('DAN_PAM', pam), ('DAN_PPL1', ppl1), ('DAN_other', dan & ~pam & ~ppl1),
+              ('OA', ~dan & np.char.startswith(typ, 'OA-')), ('5HT', ~dan & np.char.startswith(typ, '5-HT'))]
+    return split_classes(model, groups, record=record)

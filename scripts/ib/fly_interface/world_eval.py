@@ -31,7 +31,8 @@ def load(fork):
     if cfg.get('read_bank'):
         fl.attach_read_bank(model)
     if cfg.get('intrinsic'):
-        fl.attach_intrinsic_drive(model, graph, graph.parent / 'body-annotations.feather')
+        fl.attach_intrinsic_drive(model, graph, graph.parent / 'body-annotations.feather',
+                                  **({'pattern': cfg['intrinsic_pattern']} if cfg.get('intrinsic_pattern') else {}))
     if cfg.get('dopamine_modulation'):
         fl.attach_dopamine_modulation(model, adapted=bool(cfg.get('dopamine_adapted', False)), affinity=cfg.get('dopamine_affinity'))
         if cfg.get('online_da_plasticity'):
@@ -52,8 +53,10 @@ def load(fork):
     act = ow.ACT_PARAMETER_NAMES + ('act_mu', 'act_sigma', 'act_w_scale') + ow.SENSE_PARAMETER_NAMES
     from information_boltzmann.core import fly_active_inference as fai
     late = fl.COMPARTMENT_PARAMETER_NAMES + fl.TASTE_PARAMETER_NAMES + act + fai.AI_STATE_NAMES
-    if saved['model']['log_tau_m'].numel() > model.n_superclasses:
-        fl.split_kenyon_subtypes(model, graph, graph.parent / 'body-annotations.feather')   # a split lineage
+    if cfg.get('kc_subtypes') or saved['model']['log_tau_m'].numel() > model.n_superclasses:
+        fl.split_kenyon_subtypes(model, graph, graph.parent / 'body-annotations.feather', record=False)   # a split lineage
+    if cfg.get('modulatory_classes'):
+        fl.split_modulatory_classes(model, graph, graph.parent / 'body-annotations.feather', record=False)
     with torch.no_grad():
         for k in edges:
             getattr(model, k).copy_(saved['model'][k])
@@ -80,6 +83,16 @@ def load(fork):
         if 'sense_head.weight' in saved['model']:
             ow.attach_sense_head(model, saved['model']['sense_head.weight'].shape[0])
             model.load_state_dict({k: v for k, v in saved['model'].items() if k in ow.SENSE_PARAMETER_NAMES}, strict=False)
+    import os
+    # zero-shot interventions (measure a fix before training it): ZS_DAN_RENORM=1 renormalizes the dopamine cells'
+    # inputs without their pinned Kenyon partners; INTRINSIC_KAPPA releases the tonically active modulatory cells
+    # (INTRINSIC_PATTERN, default PAM / PPL / OA / 5-HT / DPM) with that intrinsic current
+    if os.environ.get('ZS_DAN_RENORM') and not cfg.get('dan_renorm'):
+        print(f'zero-shot: dopamine inputs renormalized (median x{fl.renormalize_dopamine_inputs(model, graph, graph.parent / "body-annotations.feather"):.2f})', flush=True)
+    if os.environ.get('INTRINSIC_KAPPA') and getattr(model, 'intrinsic_kappa', None) is None:
+        released = fl.attach_intrinsic_drive(model, graph, graph.parent / 'body-annotations.feather', kappa=float(os.environ['INTRINSIC_KAPPA']),
+                                             pattern=os.environ.get('INTRINSIC_PATTERN', r'^(PAM\d|PPL\d|OA-|5-HT|DPM$)'))
+        print(f'zero-shot: intrinsic drive kappa {os.environ["INTRINSIC_KAPPA"]} on {int(model.intrinsic_index.numel())} cells', flush=True)
     model.eval().requires_grad_(False)
     return model, cfg, L
 

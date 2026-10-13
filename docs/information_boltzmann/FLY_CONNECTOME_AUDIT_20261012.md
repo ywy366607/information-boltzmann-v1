@@ -255,3 +255,24 @@ biological limits with faster digital equivalents need not be copied.
 | No gap junctions; global sqrt(K_in) single-synapse dilution; weak inhibitory driving force; unclear-NT cells excitatory; soma-distance delays | not on the active route now | none | deferred |
 
 Cost: pins and resets zero weights only -- same speed and memory (smoke run: 3.1 GB peak).
+
+## Status 2026-10-13 (afternoon): why errors kept coming, and the remaining list
+User: "why do these errors keep happening -- is the over-simplification audit not finished?"  It was not.  Fixes were
+graded by the active route and each was checked only for the thing it fixed: `pin_kenyon_to_dopamine` removed 57% of
+the dopamine cells' excitation (median cell lost 83%) and nobody looked at the dopamine cells afterwards -- they sat
+far below threshold, white and nearly silent, for every D run; the matching renormalization (as for the Kenyon cells)
+was never done.  Static checks used shares and |w| and guessed receptor types (three wrong conclusions in one day).
+New rule: every structural change passes a zero-shot gate before training -- `cell_health_probe.py` (rate, silent and
+saturated fractions, v/theta, text-following per class and for PAM / PPL1 / OA / 5-HT / APL / DPM / read cells / DNs),
+plus taste pulses and the dopamine tone -- and static routes are signed and absolute.
+Pins audited (D1): 1.55M excitatory edges, 7.0% of birth mass, presynaptic Kenyon 27%, sensory 30%; groups losing
+input: all sensory classes 100% (intended: they are driven by the writer), dopamine cells median 83% (side effect),
+Kenyon cells 70% (intended, renormalized).
+| Artifact | State |
+|---|---|
+| dopamine inputs not renormalized after the Kenyon pin (median x2.12 missing) | `renormalize_dopamine_inputs`, `--dan-renorm` (once per lineage); zero-shot gate first |
+| modulatory cells (384 dopamine, OA, 5-HT) share cb_intrinsic physiology | `split_modulatory_classes`, `--modulatory-classes` (after the Kenyon split; carried by config) |
+| tonically active cells silent (no intrinsic drive in the D runs) | `--intrinsic --intrinsic-pattern '^(PAM\d|PPL\d|OA-|5-HT|DPM$)' --intrinsic-kappa`; zero-shot kappa 0.9 / 1.2 first |
+| physiology frozen by the shared Adam rate | `--lr-physiology` (D3 full: moves, healthy) |
+| STP never learned | `--learn-stp` (D3 full) |
+| gap junctions (GF), single-synapse dilution of K_in, APL / CT1 as spiking points, OA / 5-HT modulation, weak inhibitory driving force | still open; the health gate will show whether any of them kills a group the route needs |
