@@ -185,6 +185,14 @@ def resolve_learning_modes(args, previous_config, previous_learner):
         args.dopamine_site = previous_config.get('dopamine_site') or 'post'
     if getattr(args, 'dopamine_adapted', None) is None:
         args.dopamine_adapted = bool(previous_config.get('dopamine_adapted', False))
+    if getattr(args, 'read_spikes', None) is None:
+        args.read_spikes = bool(previous_config.get('read_spikes', False))
+    if args.read_spikes:
+        args.use_read_gamma_trace = True
+    if getattr(args, 'evidence_plasticity', None) is None:
+        args.evidence_plasticity = bool(previous_config.get('evidence_plasticity', False))
+    if getattr(args, 'pull_tau', None) is None:
+        args.pull_tau = float(previous_config.get('pull_tau') or 0.0)
     if getattr(args, 'online_da_plasticity', None) is None:
         args.online_da_plasticity = bool(previous_config.get('online_da_plasticity', False))
     if getattr(args, 'dopamine_affinity', None) is None:
@@ -346,6 +354,15 @@ def main():
     parser.add_argument('--dopamine-site', choices=('post', 'pre'), default=None,
                         help='Which end of a synapse the dopamine scales its learning by: post = the receiving neuron, '
                              'pre = the presynaptic terminal as at the fly mushroom body (omitted = inherit, else post)')
+    parser.add_argument('--read-spikes', action=argparse.BooleanOptionalAction, default=None,
+                        help='The read surface is its output: transmitted pulses through the Gamma (muscle) filter, not '
+                             'the membranes (implies --use-read-gamma-trace; omitted = inherit, else off)')
+    parser.add_argument('--evidence-plasticity', action=argparse.BooleanOptionalAction, default=None,
+                        help='Synapses and class physiology step by gradient / one shared RMS per tensor (bounded), '
+                             'not per-parameter Adam (omitted = inherit, else off)')
+    parser.add_argument('--pull-tau', type=float, default=None,
+                        help='With --evidence-plasticity: unconsolidated change decays to the birth value with this '
+                             'time constant in updates (0 = off; omitted = inherit)')
     parser.add_argument('--dopamine-adapted', action=argparse.BooleanOptionalAction, default=None,
                         help='Receptors adapt to each target own slow dopamine level: threshold and plasticity see the '
                              'relative change of that target (omitted = inherit, else off)')
@@ -654,6 +671,11 @@ def main():
             args.read_centering = False
         if args.use_read_gamma_trace is None:
             args.use_read_gamma_trace = False
+        args.read_spikes = bool(args.read_spikes)
+        if args.read_spikes:
+            args.use_read_gamma_trace = True
+        args.evidence_plasticity = bool(args.evidence_plasticity)
+        args.pull_tau = float(args.pull_tau or 0.0)
         if args.use_latent_predictor is None:
             args.use_latent_predictor = False
         if args.use_graph_observer is None:
@@ -849,6 +871,7 @@ def main():
             print(f'Carried credit beyond the window: {attach_carried_credit(model, mech)}', flush=True)
         if args.disable_alif:
             disable_alif(model)
+        model.read_spikes = bool(args.read_spikes)
         learner = FlyBPTTLearner(model, physical, adam_names=names,
             lr=args.lr, lr_synapse=args.lr_synapse, lr_sensory=args.lr_sensory,
             plasticity_optimizer=args.plasticity_optimizer, lr_decoder=args.lr_decoder,
@@ -902,6 +925,11 @@ def main():
                   flush=True)
             print(f'Active inference: epistemic {args.ai_epistemic}, pragmatic {args.ai_pragmatic}, SIGReg {args.ai_sigreg}'
                   f'{", eyes forced " + str(learner.eye_forced) if learner.eye_forced is not None else ""}', flush=True)
+        if args.evidence_plasticity:
+            learner.attach_evidence_plasticity(args.pull_tau, saved=None)
+            print(f'Evidence plasticity: synapses + {len(learner.physio_names)} physiology tensors, significance-gated (|mean| > z se), '
+                  f'pull to birth tau {args.pull_tau:g} updates; read surface = '
+                  f'{"spikes (Gamma)" if args.read_spikes else "membranes"}', flush=True)
         if getattr(args, 'relative_edge_rate', 0.0):
             step = learner.set_relative_edge_steps(args.graph, args.relative_edge_rate)
             print(f'Relative plasticity: {args.relative_edge_rate} of the birth weight per step '
@@ -1235,6 +1263,7 @@ def main():
             print(f'Carried credit beyond the window: {attach_carried_credit(model, mech)}', flush=True)
         if args.disable_alif:
             disable_alif(model)
+        model.read_spikes = bool(args.read_spikes)
         learner = FlyBPTTLearner(model, physical, adam_names=names,
             lr=args.lr, lr_synapse=args.lr_synapse, lr_sensory=args.lr_sensory,
             plasticity_optimizer=args.plasticity_optimizer, lr_decoder=args.lr_decoder,
@@ -1288,6 +1317,11 @@ def main():
                   flush=True)
             print(f'Active inference: epistemic {args.ai_epistemic}, pragmatic {args.ai_pragmatic}, SIGReg {args.ai_sigreg}'
                   f'{", eyes forced " + str(learner.eye_forced) if learner.eye_forced is not None else ""}', flush=True)
+        if args.evidence_plasticity:
+            learner.attach_evidence_plasticity(args.pull_tau, saved=old)
+            print(f'Evidence plasticity: synapses + {len(learner.physio_names)} physiology tensors, significance-gated (|mean| > z se), '
+                  f'pull to birth tau {args.pull_tau:g} updates (step {learner.evidence_count}); read surface = '
+                  f'{"spikes (Gamma)" if args.read_spikes else "membranes"}', flush=True)
         if getattr(args, 'relative_edge_rate', 0.0):
             step = learner.set_relative_edge_steps(args.graph, args.relative_edge_rate)
             print(f'Relative plasticity: {args.relative_edge_rate} of the birth weight per step '

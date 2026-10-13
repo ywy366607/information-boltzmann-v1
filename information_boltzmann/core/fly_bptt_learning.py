@@ -7,6 +7,7 @@ of the discontinuous hard threshold. Static edge topology remains fixed.
 from __future__ import annotations
 
 from dataclasses import dataclass, field, fields
+import os
 import math
 import numpy as np
 import torch
@@ -289,9 +290,16 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
     h_mean = h_mean_decay * h_mean + (1.0 - h_mean_decay) * h
     gz1, gz2 = current.gamma_z1, current.gamma_z2
     if getattr(model, 'use_read_gamma_trace', False):
-        read_in = (h - h_mean
-                   if getattr(model, 'read_centering', False)
-                   and h_mean.numel() == h.numel() else h)
+        if getattr(model, 'read_spikes', False):
+            # The read surface's OUTPUT, as a muscle sees it: the transmitted pulses (spikes; graded release of
+            # graded cells) through the two-stage Gamma filter.  The membrane read was blind to the reset (detached),
+            # so the gradient asked every read cell for more drive and a cell that latched (membrane pinned at 0 by
+            # reset/refractory) lost its gradient for good; the pulse carries the spike's surrogate gradient instead.
+            read_in = ring[0]
+        else:
+            read_in = (h - h_mean
+                       if getattr(model, 'read_centering', False)
+                       and h_mean.numel() == h.numel() else h)
         motor = read_in[:, model.read_indices] if model.read_surface != "all" else read_in
         if gz1.numel() != motor.numel():
             gz1 = torch.zeros_like(motor)
@@ -417,6 +425,9 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
 
 def extract_fly_motor_latent(model, state):
     """Extract and normalize motor readout latents from current brain state."""
+    if getattr(model, 'use_read_gamma_trace', False) and state.gamma_z2.numel() > 0:
+        lat = model.output_read(state.gamma_z2)
+        return model.read_norm(lat) if hasattr(model, 'read_norm') else lat
     read_in = (state.h - state.h_mean
                if getattr(model, 'read_centering', False)
                and state.h_mean.numel() == state.h.numel() else state.h)
@@ -2007,6 +2018,8 @@ class FlyBPTTLearner:
             physio = set(CLASS_PARAMETER_NAMES) | {'dopamine_logit_fast', 'dopamine_logit_slow', 'comp_logit_trace',
                                                    'comp_logit_forget'}
             moved = [named[n] for n in self.adam_names if n in physio]
+            self.physio_names = [n for n in self.adam_names if n in physio]
+            self.physio_lr = float(lr_physiology)
             moved_ids = {id(p) for p in moved}
             for group in adam_groups:
                 group['params'] = [p for p in group['params'] if id(p) not in moved_ids]
@@ -2897,7 +2910,30 @@ class FlyBPTTLearner:
                    if p.requires_grad and p.grad is not None and not torch.isfinite(p.grad).all()]
             print(f'non-finite gradient in: {bad}', flush=True)
             raise
+        if os.environ.get('FLY_GRAD_PROBE') and hasattr(self.model, 'edge_post_e'):
+            # does the loss push the drive onto the read cells one way?  (grad < 0 = more weight lowers the loss)
+            with torch.no_grad():
+                g = self.model.edge_weight_e.grad
+                if g is not None:
+                    onto = torch.zeros(self.model.n_neurons, dtype=torch.bool, device=g.device)
+                    onto[self.model.read_indices] = True
+                    m = onto[self.model.edge_post_e.long()]
+                    groups = [('onto read', m), ('elsewhere', ~m)]
+                    if os.environ.get('FLY_GRAD_PROBE_MASK'):
+                        lat = torch.as_tensor(np.load(os.environ['FLY_GRAD_PROBE_MASK']), device=g.device)
+                        a, b = lat[self.model.edge_pre_e.long()], lat[self.model.edge_post_e.long()]
+                        groups += [('latched->latched', a & b), ('latched->other', a & ~b)]
+                    for label, sel in groups:
+                        gs = g[sel]; nz = gs != 0
+                        print(f'GRAD PROBE update {self.updates} {label}: edges with gradient {float(nz.float().mean()):.3f}, '
+                              f'push up {float((gs[nz] < 0).float().mean()):.3f}, mean grad / rms '
+                              f'{float(gs.mean() / gs.pow(2).mean().sqrt().clamp_min(1e-30)):+.4f}', flush=True)
+        evidence = getattr(self, 'evidence', False)
+        if evidence:
+            physio_grads = self._evidence_take(self.physio_params)
         self.optimizer.step()
+        if evidence:
+            self._evidence_apply(self.physio_names, self.physio_params, physio_grads, self.physio_lr)
         plasticity = 1.0
         if getattr(self.model, 'dopamine_mask', None) is not None and next_state.modulator.numel():
             # Dopamine sets how much the synapses learn from this window: their learning rate is scaled by the
@@ -2929,7 +2965,13 @@ class FlyBPTTLearner:
         relative = getattr(self, 'edge_step_scale', None)
         if relative is not None and local is None:
             before = [w.detach().clone() for w in self.edges]
+        if evidence:
+            edge_grads = self._evidence_take(self.edges)
         self.sgd.step()
+        if evidence:
+            # raw evidence step; the relative / dopamine scales below multiply it like any other synapse update
+            self._evidence_apply(self.edge_names, self.edges, edge_grads, self.sgd.param_groups[1]['lr'])
+            self.evidence_count += 1
         if relative is not None or local is not None:
             # one composed scale per synapse on its Adam update: relative plasticity (each synapse moves by rate x its
             # own birth weight per full Adam step, so the connectome's scale is kept) times the dopamine at its
@@ -2942,6 +2984,8 @@ class FlyBPTTLearner:
             group['lr'] = rate
         self.last_plasticity = plasticity
         with torch.no_grad():
+            if evidence and self.pull_tau > 0:
+                self._evidence_pull()
             self.clamp_edges()
             if self.model.topographic_writer is not None:
                 self.model.topographic_writer.a_adapt.copy_(next_state.baseline)
@@ -2972,6 +3016,8 @@ class FlyBPTTLearner:
             group_norms['dopamine_plasticity'] = float(getattr(self, 'last_plasticity', 1.0))
         if getattr(self.model, 'dopamine_sensitivity', None) is not None:
             group_norms['dopamine_plasticity_spread'] = float(getattr(self, 'last_dopamine_plasticity_spread', 0.0))
+        if getattr(self, 'evidence', False) and self.evidence_passed:
+            group_norms['evidence_passed'] = dict(self.evidence_passed)
         if getattr(self.model, 'online_da_eta', None) is not None and next_state.da_memory.numel():
             phi = next_state.da_memory[0][self.model.online_da_target[0] > 0].detach()
             group_norms['online_da_memory_sd'] = float(phi.std())
@@ -3063,7 +3109,14 @@ class FlyBPTTLearner:
             self.model.comp_weight.clamp_(min=0.0)
         for name, weight in zip(self.edge_names, self.edges):
             if self.model.synapse_model == 'coba':
-                weight.clamp_(0.0, 5.0)
+                cap = getattr(self, 'edge_cap', {}).get(name)
+                if cap is None:
+                    weight.clamp_(0.0, 5.0)
+                else:
+                    # the conductance bound never cuts a birth synapse (the rescaled graph has inhibitory edges to
+                    # 14.6); learned growth is bounded at 5 as before
+                    weight.clamp_(min=0.0)
+                    torch.minimum(weight, cap, out=weight)
                 # edges pinned at 0 (Kenyon axo-axonal synapses, attach_kenyon_dendritic_only)
                 pinned = getattr(self.model, 'pinned_zero_edges' + name[len('edge_weight'):], None)
                 if pinned is not None:
@@ -3100,8 +3153,93 @@ class FlyBPTTLearner:
         self.dan_gate = dan_drive.detach()
         return applied
 
+    def attach_evidence_plasticity(self, pull_tau=0.0, saved=None, z=3.0, beta=0.99):
+        """Evidence-gated plasticity for the synapses and the class physiology (R3 runaway, 2026-10-13).
+
+        R3 measured: the gradient on a synapse is noise from update to update (sign flips, |m|/sqrt(v) at the noise
+        level, only chance-level synapses significant), yet Adam moves every synapse a full step on it -- a random walk.
+        Latching is an absorbing side of that walk (above threshold is unbounded and nothing pushes back), so the walk
+        ratchets cells into latching, and sorting synapses by the outcome makes the walk look directional (the loops of
+        cells that latched are the ones that happened to grow).  Rule here: a parameter keeps a running mean and second
+        moment of its gradient (EMA beta, ~1/(1-beta) updates) and steps only when the mean is significant, |mean| > z
+        standard errors of that running mean; then by one nominal step (lr; synapses: the relative and dopamine scales
+        below) against the mean's sign.  Pure noise passes ~0.3% of the time at z = 3; consistent evidence moves at
+        the full rate (synaptic tagging / consolidation: change needs repeated agreement).  pull_tau > 0: change decays
+        toward the birth value with that time constant in updates (backstop for anything that drifted).  The birth
+        values and the running moments travel with the learner's checkpoint."""
+        named = dict(self.model.named_parameters())
+        self.physio_names = list(getattr(self, 'physio_names', []))
+        if not self.physio_names:
+            print('evidence plasticity: no separate physiology group (lr_physiology unset); synapses only', flush=True)
+        self.physio_params = [named[n] for n in self.physio_names]
+        self.physio_lr = float(getattr(self, 'physio_lr', 0.0))
+        ev = (saved or {}).get('evidence') or {}
+        device = self.state.h.device
+        names = list(self.edge_names) + self.physio_names
+        params = list(self.edges) + self.physio_params
+        self.evidence_z, self.evidence_beta = float(ev.get('z', z)), float(ev.get('beta', beta))
+        self.evidence_count = int(ev.get('count', 0))
+        moments = ev.get('moments') or {}
+        self.evidence_moments = {n: (moments[n][0].to(device), moments[n][1].to(device)) if n in moments
+                                 else (torch.zeros_like(p, dtype=torch.float32), torch.zeros_like(p, dtype=torch.float32))
+                                 for n, p in zip(names, params)}
+        self.pull_tau = float(pull_tau)
+        if ev.get('birth') is not None:
+            self.evidence_birth = {n: ev['birth'][n].to(device) for n in names}
+        else:
+            if saved is not None:
+                print('evidence plasticity: no birth values in the checkpoint -- the current values become the reference',
+                      flush=True)
+            self.evidence_birth = {n: p.detach().clone() for n, p in zip(names, params)}
+        self.edge_cap = {n: self.evidence_birth[n].clamp_min(5.0) for n in self.edge_names}
+        self.evidence_passed = {}
+        self.evidence = True
+
+    @staticmethod
+    def _evidence_take(params):
+        grads = []
+        for p in params:
+            grads.append(p.grad)
+            p.grad = None                       # the Adam optimizers skip a parameter without a gradient
+        return grads
+
+    @torch.no_grad()
+    def _evidence_apply(self, names, params, grads, lr):
+        beta, c = self.evidence_beta, self.evidence_count + 1
+        correction = 1.0 - beta ** c
+        # the bias-corrected EMA over c updates is a weighted mean with weights beta^k: its effective sample size is
+        # (sum w)^2 / sum w^2, its standard error sd / sqrt(n_eff), and the weighted variance is unbiased by
+        # n_eff / (n_eff - 1) (-> sqrt((1 - beta) / (1 + beta)) for c >> 1 / (1 - beta))
+        n_eff = correction ** 2 / (1.0 - beta) ** 2 / ((1.0 - beta ** (2 * c)) / (1.0 - beta ** 2))
+        se_factor = (1.0 / max(n_eff - 1.0, 1e-6)) ** 0.5
+        for n, p, g in zip(names, params, grads):
+            m, v = self.evidence_moments[n]
+            g = torch.zeros_like(m) if g is None else g.float()
+            m.mul_(beta).add_(g, alpha=1.0 - beta)
+            v.mul_(beta).addcmul_(g, g, value=1.0 - beta)
+            if c < 32:                          # no verdict before ~32 samples (small-sample tails: 2% false at 8)
+                continue
+            mean = m / correction
+            sd = (v / correction - mean * mean).clamp_min(0.0).sqrt()      # se = sd * sqrt(n/(n-1)) / sqrt(n)
+            passed = mean.abs() > self.evidence_z * se_factor * sd
+            self.evidence_passed[n] = float(passed.float().mean())
+            p.sub_((float(lr) * torch.sign(mean) * passed).to(p.dtype))
+
+    @torch.no_grad()
+    def _evidence_pull(self):
+        k = 1.0 / self.pull_tau
+        for n, p in zip(list(self.edge_names) + self.physio_names, list(self.edges) + self.physio_params):
+            p.lerp_(self.evidence_birth[n].to(p.dtype), k)
+
+    def evidence_state(self):
+        if not getattr(self, 'evidence', False):
+            return None
+        return {'z': self.evidence_z, 'beta': self.evidence_beta, 'count': self.evidence_count,
+                'pull_tau': self.pull_tau, 'moments': self.evidence_moments, 'birth': self.evidence_birth}
+
     def state_dict(self):
-        return {'physical': self.state.state_dict(), 'optimizer': self.optimizer.state_dict(),
+        return {'evidence': self.evidence_state(),
+                'physical': self.state.state_dict(), 'optimizer': self.optimizer.state_dict(),
                 'sgd': self.sgd.state_dict(), 'adam_names': self.adam_names,
                 'plasticity_optimizer_kind': self.plasticity_optimizer_kind,
                 'events': self.events, 'updates': self.updates,

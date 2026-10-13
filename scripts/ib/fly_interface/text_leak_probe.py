@@ -5,7 +5,7 @@ gustatory receptors, the olfactory receptors, and the fraction of sensory cells 
 tick (non-physical).  Text -> valence leak = reading - withheld for MN9 / PPL1 / PAM / gustatory.
 Usage: python text_leak_probe.py <checkpoint dir>
 """
-import sys, numpy as np, pandas as pd, torch
+import os, sys, numpy as np, pandas as pd, torch
 from pathlib import Path
 sys.path.insert(0, 'D:/information-boltzmann-v1')
 exec(open('D:/information-boltzmann-v1/scripts/ib/fly_interface/world_eval.py', encoding='utf-8').read().split('def evaluate(fork):')[0])
@@ -73,6 +73,8 @@ for k in list(G) + ['cells >200 Hz', 'brain mean']:
 print(f'sensory cells below E_I at some tick while reading: {np.mean([r[2] for r in rows]):.3f}', flush=True)
 # which cells stay above 200 Hz with the words withheld (in at least 2 of the 4 places), and do they feed the output?
 L2 = np.sum(latched, 0) >= 2
+if os.environ.get('LATCHED_OUT'):
+    np.save(os.environ['LATCHED_OUT'], L2)                    # the latched cells, for attribution
 read_cells = np.zeros(len(typ), bool); read_cells[model.read_indices.cpu().numpy()] = True
 print(f'latched (> 200 Hz without words, >= 2 of 4 places): {int(L2.sum())} cells; read cells among them {int((L2 & read_cells).sum())}; '
       f'motor / descending {int((L2 & np.isin(sc, ["cb_motor", "vnc_motor", "descending_neuron"])).sum())}', flush=True)

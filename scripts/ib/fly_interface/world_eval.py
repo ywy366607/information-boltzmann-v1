@@ -30,7 +30,9 @@ def load(fork):
                            spike_consumes_drive=cfg.get('spike_consumes_drive', False), refractory_ticks=cfg.get('refractory_ticks', 0),
                            inhibitory_tau_ratio=cfg.get('inhibitory_tau_ratio', 2.0),
                            detach_reset=cfg.get('detach_reset', False), surrogate_mode=cfg.get('surrogate_mode', 'absolute'),
-                           transmission_mode=cfg.get('transmission_mode', 'atomic')).cuda()
+                           transmission_mode=cfg.get('transmission_mode', 'atomic'),
+                           use_read_gamma_trace=bool(cfg.get('use_read_gamma_trace', False)), init_read_gamma=0.7).cuda()
+    model.read_spikes = bool(cfg.get('read_spikes', False))
     if cfg.get('go_neuron') == 'virtual':
         fl.attach_go_neuron(model)
     if cfg.get('read_bank'):
