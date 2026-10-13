@@ -7,6 +7,9 @@
 # GOAL section 'D3b'); arm d3_credit adds credit beyond the window at O(1) (--carried-credit, GOAL section 'Credit
 # beyond the 32-word window'); d3_braingrad is the control of both.  Before the run: the tests (incl. the GPU ones)
 # on a free GPU -- if they fail only the control runs -- and a smoke (start + resume) of each new arm.
+# Arm d3_full (2026-10-13 12:25): D3 with every fix found today -- STP learns, Kenyon subtypes own physiology, the
+# class physiology on its own relative rate (5e-3), credit beyond the window; the control without them was stopped
+# (its null would not be interpretable: the clocks that set timing could not move).
 cd /d/information-boltzmann-v1
 PY=/d/conda_envs/vox/python.exe; root=/e/fly_stream_overflow/d3_braingrad
 ARMS=${ARMS:-"d3_braingrad d3_precision d3_credit"}
@@ -18,7 +21,8 @@ COMMON="--extend-budget --additional-tokens 4096 --validate-every-tokens 4096 --
   --dopamine-site pre --compartment-memory --comp-rate 2.0 --relative-edge-rate 0.02 \
   --ai --motor-acts --act-tau 8 --act-habit 0.2 --act-gamma-inv 0.0 --miss-prior --ai-epistemic 0.0 \
   --ai-pragmatic 1.0 --ai-sigreg 0.01 --eye-forced-open --act-brain-grad --vram-limit-mib 3800"
-extra() { case $1 in d3_precision) echo "--act-dopamine-precision";; d3_credit) echo "--carried-credit";; esac; }
+extra() { case $1 in d3_precision) echo "--act-dopamine-precision";; d3_credit) echo "--carried-credit";;
+  d3_full) echo "--learn-stp --kc-subtypes --lr-physiology 5e-3 --carried-credit";; esac; }
 mkdir -p $root
 if $PY -m pytest -q tests/test_fly_adaptive_admission.py > $root/tests.txt 2>&1; then
   echo "$(date +%H:%M) tests passed" >> $root/status

@@ -469,3 +469,12 @@ be signed and absolute (two wrong conclusions today came from shares and from |w
   worth a training run.
 - Dropped: D2 act probes (the sweep's baseline gives the noisy CE-by-tick), d3_precision, d3_credit.
 - Kept: D3 control (mainline, half done), its probes, D1 Kenyon probe, taste pulse probes on D1 and D3.
+
+### D3 control stopped, D3 full instead (12:23)
+The running D3 control had none of today's fixes in its configuration (no STP learning, no Kenyon subtypes, the
+physiology at the shared 2e-4): only synapses could change, so a null would not say whether the brain gradient fails
+or the timing clocks were frozen.  Stopped after chunk 1.  Order now: zero-shot measurements (STP sweep on d2_fixed,
+memory revisit, taste pulses and the Kenyon probe on D1), then ONE arm d3_full = D3 + --learn-stp --kc-subtypes
+--lr-physiology 5e-3 --carried-credit (smoked first, start + resume), compared with D1.  Predictions as in D3, plus:
+the STP / threshold / memory-clock parameters move > 0.1 in log space within 3 chunks without runaway (firing rates
+of the read cells within 2x of D1's); carried credit for the dopamine and memory clocks is >= half the in-window one.
