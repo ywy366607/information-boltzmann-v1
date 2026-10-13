@@ -44,17 +44,90 @@ def attach_ai_head(model, init, eye_open=0.95):
     return model
 
 
+def attach_motor_acts(model, tau_muscle=8.0, eye_open=0.9, habit=0.2, brain_gradient=False):
+    """Acts as the brain's own output cells (diversity first; GOAL section 'Behaviour diversity first').  The output
+    cells' transmitted spikes drive a muscle activation m = lambda m + (1 - lambda) s (the body's low-pass, tau_muscle
+    ticks, no threshold, no learning); the act logits are z = W m + b (W learned: which cells drive which act; starts
+    at zero, so the acts start at their habits); the acts are SAMPLED, look ~ Bernoulli(sigmoid(z_eye)) and commit ~
+    Bernoulli(sigmoid(z_out)) -- no integrator, no bound, no straight-through.  The commit's learning signal is the
+    exact expectation over commit times along the one trajectory (each tick: 'if I answered now', as CTM scores every
+    tick).  brain_gradient=False: the policy reads the muscles detached (the readout learns first).  ai_g carries m."""
+    device = model.read_indices.device
+    n = model.read_indices.numel()
+    model.ai_mode = 'motor'
+    model.ai_brain_gradient = bool(brain_gradient)
+    model.register_buffer('ai_lambda', torch.tensor(math.exp(-1.0 / tau_muscle), device=device), persistent=True)
+    model.ai_w = torch.nn.Parameter(torch.zeros(2, n, device=device))
+    model.ai_b = torch.nn.Parameter(torch.tensor([math.log(eye_open / (1 - eye_open)), math.log(habit / (1 - habit))],
+                                                 device=device))
+    return model
+
+
+def motor_logits(model, m):
+    if getattr(model, 'ai_mu', None) is not None:
+        m = (m - model.ai_mu) / model.ai_sigma                # each muscle's own gain (calibrate_muscles)
+    return m @ model.ai_w.T + model.ai_b
+
+
+def calibrate_muscles(model, state, tokens, ticks=8):
+    """Each muscle's resting mean and spread on text (fixed weights, no gradient): the readout sees standardized
+    muscle activations, as the language read sees normalized membranes.  Stored as frozen parameters (saved with the
+    model).  The spread is floored at its median (silent cells must not blow up)."""
+    import importlib
+    fl = importlib.import_module('information_boltzmann.core.fly_bptt_learning')
+    opts = dict(base_rates=model.get_decay_rates(), thresholds=model.get_thresholds(),
+                conductance_gains=model.get_conductance_gains(), alif_params=model.get_alif_params(),
+                stp_params=model.get_stp_params())
+    writer = model.topographic_writer
+    quiet = torch.zeros_like(state.h)
+    m = state.h.new_zeros(1, model.read_indices.numel())
+    rows, s = [], state
+    with torch.no_grad():
+        for w in tokens:
+            token = torch.tensor([int(w)], device=state.h.device)
+            for t in range(ticks):
+                if t == 0:
+                    drive, baseline = fl.write_input(model, s, token)
+                    s = fl.step_fly_physical_tick(model, s, token, drive, baseline, opts, base_rates=opts['base_rates'])
+                else:
+                    s = fl.step_fly_physical_tick(model, s, None, quiet, writer.lambda_adapt * s.baseline, opts,
+                                                  base_rates=opts['base_rates'])
+                m = model.ai_lambda * m + (1.0 - model.ai_lambda) * s.ring[0].index_select(1, model.read_indices)
+                rows.append(m)
+        M = torch.cat(rows, 0)
+        mu, sd = M.mean(0, keepdim=True), M.std(0, keepdim=True)
+        active = sd[sd > 0]
+        sd = torch.maximum(sd, active.median() if active.numel() else sd.new_tensor(1.0))   # silent cells read 0
+    model.ai_mu = torch.nn.Parameter(mu.clone(), requires_grad=False)
+    model.ai_sigma = torch.nn.Parameter(sd.clone(), requires_grad=False)
+    return float(active.median()) if active.numel() else 0.0
+
+
 def ai_eye(model, g, forced=None):
-    """The eye gain for the coming tick, from the integrator as it stands (before the input is written)."""
+    """The eye gain for the coming tick, from the integrator (or the muscles) as it stands (before the input is
+    written)."""
     if forced is not None:
         return g.new_full((1,), float(forced))
+    if getattr(model, 'ai_mode', None) == 'motor':
+        return torch.sigmoid(motor_logits(model, g)[0, 0:1])
     return torch.sigmoid(g[0, 0:1])
 
 
-def ai_step(model, h, g, taped=None):
-    """After a tick: integrate both channels from the output cells' membranes; the output channel commits when it
-    reaches the bound (forward: the realized crossing or the taped one; backward: straight through) and resets.
-    Returns (output hazard [1], new g [1, 2], committed: bool)."""
+def ai_step(model, state, g, taped=None):
+    """After a tick.  Motor mode: the muscles integrate the output cells' transmitted spikes; the commit hazard is
+    h = sigmoid(z_out) (returned soft: the objective takes the exact expectation over commit times), the realized
+    commit is a sample (taped for the recompute).  Integrator mode (M0-M3): both channels integrate the output cells'
+    membranes; the output commits at the bound (straight-through) and resets.
+    Returns (output hazard [1], new g, committed: bool)."""
+    if getattr(model, 'ai_mode', None) == 'motor':
+        s = state.ring[0].index_select(1, model.read_indices)
+        if not model.ai_brain_gradient:
+            s = s.detach()
+        g = model.ai_lambda * g + (1.0 - model.ai_lambda) * s
+        hazard = torch.sigmoid(motor_logits(model, g)[0, 1:2])
+        committed = bool(torch.rand(()) < float(hazard.detach())) if taped is None else bool(taped)
+        return hazard, g, committed
+    h = state.h
     x = (h.index_select(1, model.read_indices) - model.ai_mu) / model.ai_sigma
     g = torch.sigmoid(model.ai_logit_leak) * g + x @ (model.ai_w * model.ai_w_scale).T + model.ai_b
     committed = (float(g[0, 1].detach()) >= BOUND) if taped is None else bool(taped)
@@ -91,7 +164,8 @@ def eye_act(model, g, forced=None, taped=None, sample=False):
     Returns (gain [1], decision: bool)."""
     if forced is not None:
         return g.new_full((1,), float(forced)), bool(forced >= 0.5)
-    soft = torch.sigmoid(g[0, 0:1])
+    soft = torch.sigmoid(motor_logits(model, g)[0, 0:1]) if getattr(model, 'ai_mode', None) == 'motor' \
+        else torch.sigmoid(g[0, 0:1])
     if taped is not None:
         look = bool(taped)
     elif sample:
@@ -111,8 +185,9 @@ def pragmatic_value(hz, eyes, writes, logp, intervals, answers, asks, miss_value
     the brain keeps thinking.  Within a tick the eye acts before the write and the commit after the read, so a question
     closed at a tick cannot be answered at that tick.  A commit answers the oldest open question, valued -CE of the read
     then against that question's answer (logp [T, V] of every tick's read); a question closing unanswered is worth
-    miss_value (-log V).  Expected value along the realized path, differentiable in the hazards and the eyes
-    (straight-through).
+    miss_value (-log V, or per question: minus the listener's prior CE of its answer -- an answer is worth the
+    information it adds beyond what the listener already expects).  With soft hazards (motor acts) this is the exact
+    expectation over commit times; with 0/1 straight-through hazards, the value along the realized path.
 
     hz [T] output hazards; eyes [T] eye gain at every tick; writes [T] (bool) the tick writes its word; intervals: the
     n interval lengths.  With pulse input and depth 0 (or the eyes always open) this is the per-word value
@@ -123,6 +198,7 @@ def pragmatic_value(hz, eyes, writes, logp, intervals, answers, asks, miss_value
     for k in intervals:
         starts.append(total); total += k
     n = len(intervals)
+    misses = [float(x) for x in miss_value] if hasattr(miss_value, '__len__') else [float(miss_value)] * n
     w = torch.as_tensor(writes, dtype=hz.dtype, device=hz.device)
     told = eyes * w                                            # the tick delivers the word to the brain
     busy = [hz.new_zeros(k) for k in intervals]                # P(the commit at this tick was taken by an older question)
@@ -134,6 +210,7 @@ def pragmatic_value(hz, eyes, writes, logp, intervals, answers, asks, miss_value
             continue
         alive, S = hz.new_ones(()), hz.new_ones(())            # P(still open), P(not yet answered)
         answer_tick, ext, elapsed, passed = -1, 0, 0, 0
+        miss_value = misses[i]
         for j in range(i, n):
             sl = slice(starts[j], starts[j] + intervals[j])
             if j > i and asks[j]:                              # a main word: hearing it closes the question
@@ -165,3 +242,10 @@ def pragmatic_value(hz, eyes, writes, logp, intervals, answers, asks, miss_value
             J = J + alive * S * miss_value                     # window end: closes
         first.append(answer_tick); extended.append(ext)
     return J, first, extended
+
+
+def habit_kl(h, habit):
+    """KL(Bernoulli(h) || Bernoulli(habit)) per decision: the policy prior of active inference (q(pi) ~ E exp(-gamma G)
+    minimises E_q[gamma G] + KL(q || E)); keeps the acts sampled instead of collapsing to 0 / 1."""
+    h = h.clamp(1e-6, 1 - 1e-6)
+    return h * torch.log(h / habit) + (1 - h) * torch.log((1 - h) / (1 - habit))

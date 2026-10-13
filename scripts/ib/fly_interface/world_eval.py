@@ -67,7 +67,14 @@ def load(fork):
             ow.attach_act_head(model, init)            # constants (mu, sigma, read scale) from the init; learned below
             model.load_state_dict({k: v for k, v in saved['model'].items() if k in act}, strict=False)
         if 'ai_w' in saved['model']:
-            fai.attach_ai_head(model, torch.load(ROOT / cfg.get('act_init', 'scratch/fly_stream/act_init.pt'), map_location='cpu'))
+            if cfg.get('motor_acts'):
+                fai.attach_motor_acts(model, tau_muscle=float(cfg.get('act_tau') or 8.0), eye_open=float(cfg.get('eye_init') or 0.9),
+                                      habit=float(cfg.get('act_habit') or 0.2))
+                if 'ai_mu' in saved['model']:
+                    model.ai_mu = torch.nn.Parameter(saved['model']['ai_mu'].cuda().float(), requires_grad=False)
+                    model.ai_sigma = torch.nn.Parameter(saved['model']['ai_sigma'].cuda().float(), requires_grad=False)
+            else:
+                fai.attach_ai_head(model, torch.load(ROOT / cfg.get('act_init', 'scratch/fly_stream/act_init.pt'), map_location='cpu'))
             model.load_state_dict({k: v for k, v in saved['model'].items() if k in fai.AI_STATE_NAMES}, strict=False)
         if 'sense_head.weight' in saved['model']:
             ow.attach_sense_head(model, saved['model']['sense_head.weight'].shape[0])

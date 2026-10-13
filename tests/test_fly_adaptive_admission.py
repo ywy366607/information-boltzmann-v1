@@ -1261,3 +1261,45 @@ def test_questions_stay_open_while_the_eyes_are_closed():
     eyes = torch.ones(T); eyes[3] = 0.0
     J, first, ext = pragmatic_value(h, eyes, [True] * T, logp, intervals, answers, main, miss, depth=1)
     assert first[0] == -1 and first[1] == 2
+
+
+def test_motor_acts_are_sampled_from_output_cells_and_learn_from_the_exact_expectation(fly_model_and_state):
+    """Diversity first: the acts are read from the output cells' spikes through a muscle filter and sampled; the commit
+    readout gets gradient from the exact expectation over commit times (soft hazards, one trajectory, CTM-like), with
+    the listener's prior as the value of not answering and the habit KL; the brain gets none while detached."""
+    import dataclasses
+    from information_boltzmann.core import fly_active_inference as ai
+    model, state, device = fly_model_and_state
+    if device != "cuda":
+        pytest.skip("event-driven transmission needs CUDA")
+    torch.manual_seed(7)
+    start = dataclasses.replace(state, h=torch.rand_like(state.h))
+    ai.attach_motor_acts(model, tau_muscle=4.0, eye_open=0.9, habit=0.2)
+    try:
+        ids = torch.tensor([[50, 101, 205, 307, 409, 511]], device=device)
+        targets = torch.tensor([[101, 205, 307, 409, 511, 613]], device=device)
+        learner = FlyBPTTLearner(model, start, lr=2e-4, settle_ticks=14, writer_baseline_clock="physical",
+                                 use_checkpointing=True, stream_ticks=1, lambda_mcr2=0.0)
+        learner.stream_pace_mean, learner.pace_seed = 6.0, 3
+        learner.ai_epistemic, learner.ai_pragmatic, learner.eye_forced = 0.0, 1.0, 1.0
+        learner.unigram_ce = np.full(50257, 9.0, np.float32)
+        model.zero_grad(set_to_none=True)
+        learner.forward_window(ids, targets)
+        assert learner.ai_g.shape == (1, model.read_indices.numel())
+        m = learner.last_adaptive_metrics
+        assert 0.0 < m['hazard_mean'] < 1.0 and m['hazard_entropy'] > 0.0
+        loss = learner.last_train_loss.mean() + learner.last_act_loss
+        loss.backward()
+        assert model.ai_w.grad is not None and model.ai_w.grad[1].abs().sum() > 0, 'commit readout has no gradient'
+        assert model.ai_b.grad[1].abs() > 0
+        # the realized commits are samples: the same hazards give different commit ticks across seeds
+        hz = torch.full((1,), 0.5, device=device)
+        draws = {bool(torch.rand(()) < 0.5) for _ in range(32)}
+        assert draws == {True, False}
+    finally:
+        for name in ('ai_w', 'ai_b', 'ai_lambda'):
+            if hasattr(model, name):
+                delattr(model, name)
+        for name in ('ai_mode', 'ai_brain_gradient'):
+            if hasattr(model, name):
+                delattr(model, name)

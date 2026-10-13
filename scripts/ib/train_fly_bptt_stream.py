@@ -183,6 +183,12 @@ def resolve_learning_modes(args, previous_config, previous_learner):
         args.eye_binary = bool(previous_config.get('eye_binary', False))
     if getattr(args, 'ai_depth', None) is None:
         args.ai_depth = int(previous_config.get('ai_depth') or 0)
+    for name, default in (('motor_acts', False), ('act_brain_grad', False), ('miss_prior', False)):
+        if getattr(args, name, None) is None:
+            setattr(args, name, bool(previous_config.get(name, default)))
+    for name, default in (('act_tau', 8.0), ('act_habit', 0.2), ('act_gamma_inv', 0.05)):
+        if getattr(args, name, None) is None:
+            setattr(args, name, float(previous_config.get(name) or default))
     if getattr(args, 'sense_noise', None) is None:
         args.sense_noise = float(previous_config.get('sense_noise') or 0.0)
     if getattr(args, 'eye_init', None) is None:
@@ -326,6 +332,16 @@ def main():
     parser.add_argument('--noise-alphabet', type=int, default=16, help='Noisy TV: alphabet size (random token ids)')
     parser.add_argument('--noise-seed', type=int, default=7, help='Noisy TV: the alphabet and the draws')
     parser.add_argument('--eye-init', type=float, default=None, help='M3: the eyes\' initial open probability')
+    parser.add_argument('--motor-acts', action=argparse.BooleanOptionalAction, default=None,
+                        help='Acts read from the output cells\' spikes through a muscle filter, sampled (diversity first); '
+                             'omitted = inherit')
+    parser.add_argument('--act-tau', type=float, default=None, help='Muscle time constant in ticks (motor acts)')
+    parser.add_argument('--act-habit', type=float, default=None, help='Habit (prior) commit hazard per tick')
+    parser.add_argument('--act-gamma-inv', type=float, default=None, help='1/gamma: weight of KL(policy || habit)')
+    parser.add_argument('--act-brain-grad', action=argparse.BooleanOptionalAction, default=None,
+                        help='Let the policy gradient reach the brain through the motor spikes')
+    parser.add_argument('--miss-prior', action=argparse.BooleanOptionalAction, default=None,
+                        help='An unanswered question is worth minus the unigram (listener prior) CE of its answer')
     parser.add_argument('--sense-noise', type=float, default=None,
                         help='Sustained noisy input (with --hold-input): per-word noise sigma ~ U(0, this) relative to '
                              'the embedding norm per dimension; omitted = inherit')
@@ -669,6 +685,17 @@ def main():
             learner.eye_forced = 1.0 if args.eye_forced_open else args.eye_forced
             learner.eye_binary, learner.ai_depth = bool(args.eye_binary), int(args.ai_depth)
             learner.sense_noise_max = float(args.sense_noise)
+            learner.act_habit, learner.act_gamma_inv = float(args.act_habit), float(args.act_gamma_inv)
+            if args.motor_acts and getattr(model, 'ai_mu', None) is None:
+                from information_boltzmann.core.fly_active_inference import calibrate_muscles
+                spread = calibrate_muscles(model, learner.state, np.asarray(train[:128]))
+                print(f'Muscles calibrated on 128 words (median spread {spread:.4f})', flush=True)
+            if args.miss_prior:
+                # the listener's prior: unigram CE of every word from the first 20M training tokens
+                _c = np.bincount(np.asarray(train[:20_000_000], dtype=np.int64), minlength=50257).astype(np.float64) + 0.5
+                learner.unigram_ce = (-np.log(_c / _c.sum())).astype(np.float32)
+                print(f'Miss value: the listener prior (unigram CE, mean over tokens '
+                      f'{float((learner.unigram_ce[np.asarray(train[:200_000])]).mean()):.3f})', flush=True)
             if args.eye_binary:
                 # a new stretch of the world every chunk (pace and noise schedules seeded by the lifetime so far)
                 learner.pace_seed = int(getattr(args, 'odour_seed_value', 0) or 0)
@@ -850,7 +877,16 @@ def main():
                 ai_state = {k: v for k, v in saved['model'].items() if k in AI_STATE_NAMES}
                 init = torch.load(previous_config.get('act_init') or args.act_init, map_location='cpu')
                 # constants (mu, sigma, read scale) rebuilt from the same init; the learned parameters loaded after
-                attach_ai_head(model, init, eye_open=float(getattr(args, "eye_init", 0.95) or 0.95))
+                if args.motor_acts:
+                    from information_boltzmann.core.fly_active_inference import attach_motor_acts
+                    attach_motor_acts(model, tau_muscle=args.act_tau, eye_open=float(args.eye_init or 0.9),
+                                      habit=args.act_habit, brain_gradient=args.act_brain_grad)
+                    ai_state = {k: v for k, v in ai_state.items() if k in ('ai_w', 'ai_b', 'ai_mu', 'ai_sigma')}
+                    if 'ai_mu' in ai_state:
+                        model.ai_mu = torch.nn.Parameter(ai_state['ai_mu'].to(model.read_indices.device).float(), requires_grad=False)
+                        model.ai_sigma = torch.nn.Parameter(ai_state['ai_sigma'].to(model.read_indices.device).float(), requires_grad=False)
+                else:
+                    attach_ai_head(model, init, eye_open=float(getattr(args, "eye_init", 0.95) or 0.95))
                 if ai_state:
                     model.load_state_dict(ai_state, strict=False)
                 print(f'Act head (eyes + output) {"carried over" if ai_state else "initialized from " + str(args.act_init)}',
@@ -979,6 +1015,17 @@ def main():
             learner.eye_forced = 1.0 if args.eye_forced_open else args.eye_forced
             learner.eye_binary, learner.ai_depth = bool(args.eye_binary), int(args.ai_depth)
             learner.sense_noise_max = float(args.sense_noise)
+            learner.act_habit, learner.act_gamma_inv = float(args.act_habit), float(args.act_gamma_inv)
+            if args.motor_acts and getattr(model, 'ai_mu', None) is None:
+                from information_boltzmann.core.fly_active_inference import calibrate_muscles
+                spread = calibrate_muscles(model, learner.state, np.asarray(train[:128]))
+                print(f'Muscles calibrated on 128 words (median spread {spread:.4f})', flush=True)
+            if args.miss_prior:
+                # the listener's prior: unigram CE of every word from the first 20M training tokens
+                _c = np.bincount(np.asarray(train[:20_000_000], dtype=np.int64), minlength=50257).astype(np.float64) + 0.5
+                learner.unigram_ce = (-np.log(_c / _c.sum())).astype(np.float32)
+                print(f'Miss value: the listener prior (unigram CE, mean over tokens '
+                      f'{float((learner.unigram_ce[np.asarray(train[:200_000])]).mean()):.3f})', flush=True)
             if args.eye_binary:
                 # a new stretch of the world every chunk (pace and noise schedules seeded by the lifetime so far)
                 learner.pace_seed = int(getattr(args, 'odour_seed_value', 0) or 0)

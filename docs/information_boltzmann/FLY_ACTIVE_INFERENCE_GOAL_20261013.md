@@ -171,3 +171,56 @@ a glance; the remaining ticks become pulse-like settling, worth up to ~0.3 nats)
 at word onsets, low within words; perception and answer CE better than the forced-open arm; at fast pace fewer
 within-word closures (no time to think).  If the eyes stay open within words, the straight-through gradient through
 the drive did not find the settling benefit (cause to check: the benefit only shows ticks later, through BPTT).
+
+## Behaviour diversity first (user, 2026-10-13, after M1-M3)
+User: before adaptivity, behaviour must be diverse (LLMs learn adaptive thinking length because GRPO samples many
+rollouts and compares them); sources must follow first principles and the fly connectome; no "virtual" neurons unless
+necessary.  Correction: the adult's 6-8 ticks per word was found best by the CTM loss before flux admission existed,
+so thinking has NLL value; my worlds made waiting worthless (memoryless pace, never pausing).
+Diagnosis of M1-M3: every act was a deterministic threshold of an external integrator trained by straight-through
+gradients along ONE trajectory: the alternative (closing, waiting) was never tried, only linearly extrapolated, and the
+policies collapsed (eyes 100% open, answers at tick 1).
+Measured (M2 checkpoint, motor_activity_probe.py): 2,333 output cells, ~10% spike per tick, 865 never fire; only 7% of
+the spike pattern's variance is word-locked (membranes 51%) -- the motor output is mostly intrinsic fluctuation.
+Design (to review, then implement):
+1. Acts are the brain's own output cells: muscle activation m = filter(motor spikes) (a body property, tau ~ 8 ticks;
+   the spikes keep the brain's atan surrogate); act logits = W m + b (W learned: which cells drive which act); the
+   act is SAMPLED: look ~ Bernoulli(sigmoid(eye logit)) at write ticks, commit ~ Bernoulli(sigmoid(out logit)) every
+   tick.  No integrator, no bound, no straight-through.
+2. Learning from compared outcomes (group-relative): commits do not change the brain, so K sampled commit sequences
+   on one brain trajectory are scored and compared for free; eyes change the trajectory, so K real branches of the
+   window (same text, same world) with independently sampled eyes.  Advantage = J_k - mean_k J; policy loss =
+   -sum_k A_k sum_t log p(act_t^k); perception CE trains the brain on every branch.
+3. World with heavy-tailed pace and pauses: interval K ~ discrete Pareto (P(K >= k) = k^-alpha), so the hazard falls
+   with elapsed time and waiting becomes cheap after a few ticks; the survival estimator becomes sum_{t<=K} h(t) CE_t
+   with the hazard h(t) = P(K=t)/P(K>=t) (unbiased for the expected arrival CE).
+4. Diversity measured before training: K branches from one state -> fraction of differing acts, per-word latency
+   spread, inter-act interval tail (power law vs exponential), and whether the spread concentrates on hard items.
+Second source, deferred until measured: probabilistic transmitter release (binomial over a terminal's release sites;
+needs per-edge synapse counts and one extra sparse scatter per tick).
+Review and user notes (2026-10-13): (1) commits do not change the brain, so no branches are needed: along ONE
+trajectory every tick is scored as "if I answered now" (as CTM scores every tick) -- the soft hazards give the exact
+expectation over all commit times (Rao-Blackwell; better than sampling); (2) eyes change the trajectory, but behaviour
+sampled along time already contrasts closed and open stretches -- no branches unless that fails; (3) collapse is
+prevented by active inference's own policy prior, q(pi) ~ E exp(-gamma G): 1/gamma KL(policy || habit) per decision,
+the policy-level twin of SIGReg (the belief-level KL to an isotropic prior); (4) the value of not answering is the
+listener's prior (unigram CE of the answer): an answer is worth the information it adds beyond what the listener
+expects.  Zero-training oracle (wait_oracle.py, M1 forced-open brain, results/.../diversity/wait_oracle.json):
+tick-1 CE 7.76 is WORSE than the unigram prior 7.66; by tick 3 it is 7.49.  With the prior as the miss value the best
+common answer tick is 3-4 at every pace (geometric or heavy-tailed), 64-78% of words are best answered after tick 1,
+and the hardest quartile wants to wait (97%, gain 0.74-1.17 nats): difficulty predicts the value of thinking.  With
+-log V the best common tick is 1 (that was M2).  The pace's tail mattered little; the miss value decided it.
+Acts from motor cells: the readout sees each muscle's standardized activation (calibrate_muscles: mean and spread on
+128 words, spread floored at the median over cells that move); W starts at 0, so the acts start at their habits.
+
+## D1: commits only, sampled from motor cells (predictions written before the run)
+Pulse input, pace mu ~ log-uniform [2, 16], eyes forced open, miss = listener prior, readout learns (brain detached),
+3 chunks.  Arms: d1_habit (1/gamma = 0.05, habit hazard 0.2) and d1_nohabit (1/gamma = 0: expected to collapse).
+Probe: act_probe.py (fixed16 and geo; exact expectations under the hazards).
+- Diversity: latency entropy per word stays >= 0.5 nats with the habit prior; without it the hazards drift to 0 / 1
+  (entropy falls) -- the ablation that shows the prior is what keeps behaviour alive.
+- Adaptivity: expected latency grows with difficulty (rho(expected latency, tick-1 CE) > 0.1; hardest quartile later
+  than easiest), tracks the oracle's best tick, and the expected answer value beats answering at tick 1.
+- Language: unchanged (brain detached): |survival CE - M1 forced-open| <= 0.02.
+- Risk: only 7% of the motor spike variance is word-locked; if the readout cannot see difficulty, latency stays flat
+  -> next step is to let the policy gradient reach the brain (act_brain_grad).

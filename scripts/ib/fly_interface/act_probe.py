@@ -55,8 +55,15 @@ for i in range(len(clean)):
     if (i // 32) % 4 == 1 and 8 <= i % 32 < 16:
         noisy[i] = nrng.choice(alphabet); noise_mask[i] = True
 g0 = L.get('ai_g')
-g0 = torch.tensor([[math.log(0.95 / 0.05), 0.0]]) if g0 is None else g0
+MOTOR = getattr(model, 'ai_mode', None) == 'motor'
+if g0 is None:
+    g0 = torch.zeros(1, model.read_indices.numel()) if MOTOR else torch.tensor([[math.log(0.95 / 0.05), 0.0]])
 LOGV = math.log(50257)
+# the value of not answering: the listener's prior (unigram CE of the answer) if the checkpoint was trained so
+_counts = np.bincount(np.asarray(np.load(ROOT / cfg['data'] / 'train.npy', mmap_mode='r')[:20_000_000], dtype=np.int64),
+                      minlength=50257).astype(np.float64) + 0.5
+UNIGRAM = -np.log(_counts / _counts.sum())
+PRIOR_MISS = bool(cfg.get('miss_prior', False))
 d = lambda x: [float(np.nanmin(x)), float(np.nanmedian(x)), float(np.nanmean(x)), float(np.nanmax(x))] if np.isfinite(x).any() else None
 
 
@@ -76,13 +83,14 @@ def run(name, mode, mu=None, fixed=None, use_noise=False):
     torch.manual_seed(1234 + (mu or 0))
     s = move_state(fl.FlyPhysicalState(**L['physical']), 'cuda')
     g = g0.clone().float().cuda()
-    q_answer = np.full(n_words, LOGV); q_latency = np.full(n_words, -1.0); q_ext = np.zeros(n_words)
+    q_answer = (UNIGRAM[answer_of].copy() if PRIOR_MISS else np.full(n_words, LOGV)); q_latency = np.full(n_words, -1.0); q_ext = np.zeros(n_words)
     q_open_tick = np.zeros(n_words)
     eye_on = np.zeros(n_words); K_of = np.zeros(n_words); ce1 = np.zeros(n_words); ent1 = np.zeros(n_words)
     had_open = np.zeros(n_words, bool); open_hard = np.full(n_words, np.nan)
     n_commits = np.zeros(n_words); arrival = np.zeros(n_words); survival = np.zeros(n_words)
     oracle_ce = np.zeros(n_words); oracle_tick = np.zeros(n_words); tick_curve = []
     sigma_of = np.zeros(n_words); eye_word = np.zeros(n_words)
+    exp_value = np.zeros(n_words); exp_latency = np.zeros(n_words); latency_entropy = np.zeros(n_words); hz_first = np.zeros(n_words)
     open_q, clock = [], 0
     srng = np.random.default_rng(2000 + (mu or 0))
     passed = np.zeros(n_words)
@@ -91,7 +99,7 @@ def run(name, mode, mu=None, fixed=None, use_noise=False):
             token = torch.tensor([int(inputs[i])], device='cuda')
             K = fixed if fixed else int(rng.geometric(1.0 / mu))
             K_of[i] = K
-            ces, q_ces = [], []
+            ces, q_ces, q_hz = [], [], []
             noise = None
             if HOLD and SMAX > 0:
                 # sustained noisy input: the word is heard every tick as a noisy sample; clarity drawn per word
@@ -111,7 +119,8 @@ def run(name, mode, mu=None, fixed=None, use_noise=False):
             for t in range(1, K + 1):
                 clock += 1
                 if t == 1 or HOLD:
-                    forced = 1.0 if mode == 'open' else None
+                    # 'glance' (diagnostic): look at a word's first tick only, then close to settle
+                    forced = 1.0 if mode == 'open' else ((1.0 if t == 1 else 0.0) if mode == 'glance' else None)
                     if BINARY:
                         e, look = eye_act(model, g, forced, sample=(mode == 'own'))
                     else:
@@ -137,7 +146,8 @@ def run(name, mode, mu=None, fixed=None, use_noise=False):
                 else:
                     baseline = writer.lambda_adapt * s.baseline if physical_clock else s.baseline
                     s = fl.step_fly_physical_tick(model, s, None, quiet, baseline, opts, base_rates=opts['base_rates'])
-                _, g, committed = ai_step(model, s.h, g)
+                hz, g, committed = ai_step(model, s, g)
+                q_hz.append(float(hz))
                 lat = fl.read_fly_motor(model, s)
                 logp = torch.log_softmax(model.decoder(model.read_norm(lat)).float(), -1)[0]
                 ces.append(float(-logp[int(targets[i])]))
@@ -156,6 +166,14 @@ def run(name, mode, mu=None, fixed=None, use_noise=False):
             # hindsight oracle within the word's own interval: the best tick to have answered (an upper bound on what
             # waiting could gain; biased up by taking a min over noisy values)
             oracle_ce[i] = min(q_ces); oracle_tick[i] = int(np.argmin(q_ces)) + 1
+            # exact expectations under this word's hazards within its own interval (motor acts: sampled commits)
+            hh = np.clip(np.array(q_hz), 1e-6, 1 - 1e-6); Sb = np.concatenate([[1.0], np.cumprod(1 - hh)])
+            pt = Sb[:-1] * hh; pmiss = Sb[-1]
+            miss_i = UNIGRAM[answer_of[i]] if PRIOR_MISS else LOGV
+            exp_value[i] = float((pt * -np.array(q_ces)).sum() + pmiss * -miss_i)
+            exp_latency[i] = float((pt * np.arange(1, len(hh) + 1)).sum() / max(pt.sum(), 1e-9))
+            p_all = np.concatenate([pt, [pmiss]]); latency_entropy[i] = float(-(p_all * np.log(np.clip(p_all, 1e-12, 1))).sum())
+            hz_first[i] = hh[0]
             if fixed:
                 tick_curve.append(q_ces[:16])
     sl = slice(BURN, BURN + SCORE)
@@ -163,7 +181,8 @@ def run(name, mode, mu=None, fixed=None, use_noise=False):
          'ce1': ce1[sl], 'ent1': ent1[sl], 'n_commits': n_commits[sl], 'arrival': arrival[sl], 'survival': survival[sl],
          'had_open': had_open[sl].astype(float), 'open_hard': open_hard[sl], 'main': main[sl].astype(float),
          'noise': mask[:-1][sl].astype(float), 'oracle_ce': oracle_ce[sl], 'oracle_tick': oracle_tick[sl],
-         'sigma': sigma_of[sl], 'eye_word': eye_word[sl]}
+         'sigma': sigma_of[sl], 'eye_word': eye_word[sl], 'exp_value': exp_value[sl], 'exp_latency': exp_latency[sl],
+         'latency_entropy': latency_entropy[sl], 'hz_first': hz_first[sl], 'prior_ce': UNIGRAM[answer_of[sl]]}
     asked = A['main'] > 0
     answered = asked & (A['latency'] > 0)
     for k in ('answer_ce', 'latency', 'ext', 'ce1', 'ent1'):
@@ -174,6 +193,15 @@ def run(name, mode, mu=None, fixed=None, use_noise=False):
            'questions_extended_frac': float((A['ext'][asked] > 0).mean()),
            'arrival_ce_min_median_mean_max': d(A['arrival']), 'survival_ce_min_median_mean_max': d(A['survival']),
            'eye_min_median_mean_max': d(A['eye']), 'eye_open_frac': float((A['eye'] >= 0.5).mean())}
+    # diversity and adaptivity of the output, exact under the hazards (fixed16: no interruptions)
+    rep['exp_value_mean'] = float(np.nanmean(np.where(asked, A['exp_value'], np.nan)))
+    rep['exp_latency_min_median_mean_max'] = d(A['exp_latency'][asked])
+    rep['latency_entropy_mean'] = float(np.mean(A['latency_entropy'][asked]))
+    rep['rho_exp_latency_ce1'] = float(spearmanr(A['exp_latency'][asked], A['ce1'][asked])[0])
+    rep['rho_exp_latency_oracle_tick'] = float(spearmanr(A['exp_latency'][asked], A['oracle_tick'][asked])[0])
+    hq_ = asked & (A['ce1'] >= np.nanquantile(A['ce1'], 0.75)); eq_ = asked & (A['ce1'] <= np.nanquantile(A['ce1'], 0.25))
+    rep['exp_latency_easy_hard'] = [float(A['exp_latency'][eq_].mean()), float(A['exp_latency'][hq_].mean())]
+    rep['answer_vs_prior_gain'] = float(np.nanmean(np.where(asked, A['prior_ce'] - A['answer_ce'], np.nan)))
     # what waiting could buy at all: the hindsight-best tick per word vs tick 1, and whether it tracks difficulty
     rep['oracle_gain_over_tick1'] = float(np.nanmean(A['ce1'] - A['oracle_ce']))
     rep['oracle_tick_min_median_mean_max'] = d(A['oracle_tick'][asked])

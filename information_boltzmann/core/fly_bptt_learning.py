@@ -1521,7 +1521,7 @@ def _advance_fly_token_stream(model, state, token, schedule_box=None, *, ticks, 
                 world.observe(act)
                 world_tape.append((spec, record, act))
         if ai_g is not None:
-            hz, ai_g, committed = ai_step(model, current.h, ai_g, ai_tape[tick] if ai_replay else None)
+            hz, ai_g, committed = ai_step(model, current, ai_g, ai_tape[tick] if ai_replay else None)
             out_hazards.append(hz)
             if not ai_replay:
                 ai_tape.append(committed)
@@ -1790,7 +1790,8 @@ class FlyBPTTLearner:
         if getattr(model, 'sense_head', None) is not None:
             self.adam_names += [n for n in ('sense_head.weight', 'sense_head.bias') if n not in self.adam_names]
         if getattr(model, 'ai_w', None) is not None:
-            self.adam_names += [n for n in ('ai_w', 'ai_b', 'ai_logit_leak') if n not in self.adam_names]
+            self.adam_names += [n for n in ('ai_w', 'ai_b', 'ai_logit_leak')
+                                if n not in self.adam_names and getattr(model, n, None) is not None]
         if getattr(model, 'use_read_gamma_trace', False) and getattr(model, 'logit_read_gamma', None) is not None:
             if 'logit_read_gamma' not in self.adam_names:
                 self.adam_names.append('logit_read_gamma')
@@ -2095,6 +2096,8 @@ class FlyBPTTLearner:
             sense_sigmas = []
             ai_eyes, ai_onsets, ai_out, ai_tokens = [], [], [], []
             if ai_on:
+                if getattr(self, 'ai_g', None) is None and getattr(m, 'ai_mode', None) == 'motor':
+                    self.ai_g = state.h.new_zeros(1, m.read_indices.numel())         # muscles at rest
                 if getattr(self, 'ai_g', None) is None:
                     p_open = float(getattr(self, 'eye_init', 0.95))
                     self.ai_g = state.h.new_tensor([[math.log(p_open / (1 - p_open)), 0.0]])     # eyes open at the start
@@ -2205,7 +2208,8 @@ class FlyBPTTLearner:
                 n_words = len(intervals)
                 tnoise = noise_targets if noise_targets is not None else [False] * n_words
                 input_noise = [False] + list(tnoise[:-1])         # input i is the word that arrived as target i - 1
-                if pace > 0 and ai_out and getattr(self, 'eye_binary', False):
+                motor = getattr(m, 'ai_mode', None) == 'motor'
+                if pace > 0 and ai_out and (getattr(self, 'eye_binary', False) or motor):
                     # M3: the main speaker's questions stay open while the eyes are closed (the brain is not told the
                     # answer) and across background words; a later commit answers the oldest open question against its
                     # own answer, the main speaker's next word (fly_active_inference.pragmatic_value)
@@ -2222,13 +2226,30 @@ class FlyBPTTLearner:
                             nxt = flat[j]
                         answers[j] = nxt
                     asks = [not x for x in input_noise]
+                    miss = -math.log(m.decoder.out_features)
+                    if getattr(self, 'unigram_ce', None) is not None:
+                        # not answering leaves the listener with its prior: an answer is worth what it adds to that
+                        miss = [-float(self.unigram_ce[a]) for a in answers]
                     J_out, commit_tick, extended = pragmatic_value(hz, e, on, logp.detach(), intervals, answers, asks,
-                                                                   -math.log(m.decoder.out_features), depth)
+                                                                   miss, depth)
                     J_out = J_out / len(intervals)
                     if lam_out > 0:
                         ai_loss = ai_loss - lam_out * J_out
                     self.last_adaptive_metrics['pragmatic'] = float(J_out.detach())
                     self.last_adaptive_metrics['questions_extended'] = int(sum(x > 0 for x in extended))
+                    if motor:
+                        # the policy prior (habit) of active inference keeps the acts sampled: 1/gamma x KL per tick
+                        from .fly_active_inference import habit_kl
+                        habit = float(getattr(self, 'act_habit', 0.2))
+                        kl = habit_kl(hz, habit).mean()
+                        ai_loss = ai_loss + float(getattr(self, 'act_gamma_inv', 0.05)) * kl
+                        with torch.no_grad():
+                            hz_d = hz.detach()
+                            ent = -(hz_d * hz_d.clamp_min(1e-6).log() + (1 - hz_d) * (1 - hz_d).clamp_min(1e-6).log())
+                            self.last_adaptive_metrics.update({'habit_kl': float(kl.detach()),
+                                                               'hazard_mean': float(hz_d.mean()),
+                                                               'hazard_sd': float(hz_d.std()),
+                                                               'hazard_entropy': float(ent.mean())})
                     if any(input_noise):
                         word_of = torch.repeat_interleave(torch.as_tensor(input_noise, device=e.device),
                                                           torch.as_tensor(intervals, device=e.device))
@@ -2267,7 +2288,9 @@ class FlyBPTTLearner:
                                           'ce': scores.detach().cpu().tolist(), 'pace': pace,
                                           'interval': list(intervals), 'commit_tick': commit_tick,
                                           'extended': extended, 'noise': input_noise, 'sigma': sense_sigmas,
-                                          'eye_tick': e.detach().cpu().tolist() if self.hold_input else None}
+                                          'eye_tick': e.detach().cpu().tolist() if self.hold_input else None,
+                                          'hazard': (torch.cat(ai_out).detach().cpu().tolist()
+                                                     if getattr(m, 'ai_mode', None) == 'motor' else None)}
             if world is not None:
                 # the act's fitness, as evolution sees it (never an input to the brain); BPTT through the hazards
                 from .fly_odour_world import act_return
