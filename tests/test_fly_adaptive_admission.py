@@ -1603,3 +1603,53 @@ def test_class_physiology_gets_its_own_relative_rate(fly_model_and_state):
             assert rates[name] == 5e-3, name
     assert rates['output_read.weight'] == 2e-4 or rates['output_read.weight'] == learner.optimizer.defaults['lr']
     assert any(r == 5e-3 for r in rates.values())
+
+
+def test_modulatory_classes_split_without_changing_dynamics_and_dopamine_renorm(fly_model_and_state):
+    """Audit completion: the modulatory cells leave cb_intrinsic with their class's values (bit-identical dynamics at
+    the split, new classes recorded after the Kenyon ones); the dopamine renormalization scales only the edges onto
+    dopamine cells, by >= 1, and leaves pinned edges at 0."""
+    from information_boltzmann.core.fly_bptt_learning import (split_kenyon_subtypes, split_modulatory_classes,
+                                                              renormalize_dopamine_inputs, CLASS_PARAMETER_NAMES)
+    model, state, device = fly_model_and_state
+    saved_sc = model.superclass_id.clone(); saved_n = model.n_superclasses
+    saved_params = {n: getattr(model, n) for n in CLASS_PARAMETER_NAMES if getattr(model, n, None) is not None}
+    saved_sources = getattr(model, 'class_split_sources', None)
+    saved_we, saved_wi = model.edge_weight_e.detach().clone(), model.edge_weight_i.detach().clone()
+    graph, ann = 'data/malecns_v1/fly_reservoir_coba.npz', 'data/malecns_v1/body-annotations.feather'
+    try:
+        before = [t.clone() for t in (*model.get_decay_rates(), model.get_thresholds(), *model.get_stp_params())]
+        model.class_split_sources = None
+        kc = split_kenyon_subtypes(model, graph, ann)
+        mod = split_modulatory_classes(model, graph, ann)
+        assert mod['DAN_PAM'] > 200 and mod['DAN_PPL1'] > 5 and len(model.class_split_sources) == len(kc) + len(mod)
+        after = [*model.get_decay_rates(), model.get_thresholds(), *model.get_stp_params()]
+        for b, a in zip(before, after):
+            assert torch.equal(b, a)
+        import numpy as np
+        g = np.load(graph, allow_pickle=True)
+        dan = torch.zeros(model.n_neurons, dtype=torch.bool, device=device)
+        dan[torch.as_tensor(g['dan_indices'].astype(np.int64), device=device)] = True
+        with torch.no_grad():
+            model.edge_weight_e[0] = 0.0
+        model.register_buffer('pinned_zero_edges_e', torch.tensor([0], device=device), persistent=False)
+        w0 = model.edge_weight_e.detach().clone()
+        factor = renormalize_dopamine_inputs(model, graph, ann)
+        assert factor > 1.0
+        onto = dan[model.edge_post_e.long()]
+        ratio = model.edge_weight_e.detach()[onto] / w0[onto].clamp_min(1e-12)
+        assert float(ratio[w0[onto] > 0].min()) >= 1.0 - 1e-6
+        assert torch.equal(model.edge_weight_e.detach()[~onto], w0[~onto]) and float(model.edge_weight_e[0]) == 0.0
+    finally:
+        with torch.no_grad():
+            model.superclass_id.copy_(saved_sc)
+            model.edge_weight_e.copy_(saved_we); model.edge_weight_i.copy_(saved_wi)
+        model.n_superclasses = saved_n
+        for n, p in saved_params.items():
+            setattr(model, n, p)
+        model.class_split_sources = saved_sources
+        if hasattr(model, 'pinned_zero_edges_e'):
+            delattr(model, 'pinned_zero_edges_e')
+        for attr in ('_compiled_coefficients', '_compiled_finish'):
+            if hasattr(model, attr):
+                setattr(model, attr, None)
