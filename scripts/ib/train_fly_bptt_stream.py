@@ -2013,7 +2013,17 @@ def main():
             else:
                 values = np.array(train[cursor+1:cursor+args.window+1], dtype=np.int64)
             begin = time.perf_counter()
-            scores = observe(values, training=True)
+            if os.environ.get('FLY_TORCH_PROFILE') and trained == start_trained + 2 * args.window:
+                # one window under the torch profiler (speed work): CPU and CUDA time per op, forward and backward
+                from torch.profiler import profile, ProfilerActivity
+                with profile(activities=[ProfilerActivity.CPU, ProfilerActivity.CUDA]) as prof:
+                    scores = observe(values, training=True)
+                    torch.cuda.synchronize()
+                Path(os.environ['FLY_TORCH_PROFILE']).write_text(
+                    prof.key_averages().table(sort_by='self_cuda_time_total', row_limit=45) + '\n\n' +
+                    prof.key_averages().table(sort_by='self_cpu_time_total', row_limit=30), encoding='utf-8')
+            else:
+                scores = observe(values, training=True)
             trace = getattr(learner, 'last_ai_trace', None)
             if trace is not None:
                 with open(args.output / 'ai_trace.jsonl', 'a') as handle:

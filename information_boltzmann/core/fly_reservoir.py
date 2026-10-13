@@ -293,9 +293,15 @@ class ReceptorWriter(nn.Module):
     def conductance(self, innovation):
         return self.g_max * self.gain * torch.sigmoid(innovation[:, self.type_index] + self.offset)
 
-    def forward_with_state(self, token_emb, h, baseline, expected=None, beta=None):
-        packet = self.packet(token_emb)
-        reference = baseline if expected is None else (1.0 - beta) * baseline + beta * self.packet(expected)
+    accepts_packets = True     # a held word's projections can be computed once per word (fly_bptt_learning.word_packets)
+
+    def forward_with_state(self, token_emb, h, baseline, expected=None, beta=None, packets=None):
+        if packets is not None:             # (packet of the word, packet of the expectation or None), once per word
+            packet, expected_packet = packets
+        else:
+            packet = self.packet(token_emb)
+            expected_packet = None if expected is None else self.packet(expected)
+        reference = baseline if expected_packet is None else (1.0 - beta) * baseline + beta * expected_packet
         g = self.conductance(packet - reference)
         current = g * (self.E_E - h.index_select(1, self.injection_index)).clamp_min(0.0)
         drive = torch.zeros_like(h).index_copy(1, self.injection_index, current)

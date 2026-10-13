@@ -1603,12 +1603,28 @@ def attach_predictive_writer(model, beta=0.5):
     return model
 
 
-def write_input(model, state, token, emb=None):
+def word_packets(model, state, token):
+    """A held word's writer projections, once per word: (packet of the word, packet of the expectation or None).
+    Every tick of the word sees the same embedding and the same expectation (updated once per word), so projecting
+    them every tick only repeated two matrix-vector products and their weight gradients (2026-10-14 profile)."""
+    writer = model.topographic_writer
+    if writer is None or not getattr(writer, 'accepts_packets', False) or os.environ.get('FLY_WORD_PACKET', '1') == '0':
+        return None
+    expected = getattr(state, 'expected_input', torch.empty(0))
+    predictive = getattr(model, 'writer_prediction_logit', None) is not None and expected.numel()
+    return writer.packet(model.embedding(token)), (writer.packet(expected) if predictive else None)
+
+
+def write_input(model, state, token, emb=None, packets=None):
     """Sensory drive of one input word through the writer; predictive when a top-down expectation is available.
-    emb: the sample the senses deliver this tick (default: the word's clean embedding)."""
+    emb: the sample the senses deliver this tick (default: the word's clean embedding).  packets: word_packets(...)
+    (a clean held word only)."""
     writer = model.topographic_writer
     if writer is None:
         return None, state.baseline
+    if packets is not None and emb is None:
+        beta = (torch.sigmoid(model.writer_prediction_logit) if packets[1] is not None else None)
+        return writer.forward_with_state(None, state.h, state.baseline, beta=beta, packets=packets)
     sample = model.embedding(token) if emb is None else emb
     expected = getattr(state, 'expected_input', torch.empty(0))
     if getattr(model, 'writer_prediction_logit', None) is not None and expected.numel():
@@ -1685,6 +1701,7 @@ def _advance_fly_token_stream(model, state, token, schedule_box=None, *, ticks, 
     current = state
     quiet_source = None
     latent = None
+    packets = None
     reads, hazards = [], []
     eyes, onsets, out_hazards = [], [], []
     if world is not None:
@@ -1713,7 +1730,9 @@ def _advance_fly_token_stream(model, state, token, schedule_box=None, *, ticks, 
             onsets.append(writes)
         if writes:
             sample = None if sense_noise is None else model.embedding(token) + sense_noise[tick:tick + 1]
-            drive, baseline = write_input(model, current, token, sample)
+            if sample is None and packets is None and hold_input:
+                packets = word_packets(model, current, token)
+            drive, baseline = write_input(model, current, token, sample, packets=packets)
             if ai_g is not None:
                 # precision of the text input: the surface receives e * the word, so the drive and the sensory
                 # adaptation both see e * the packet; closed eyes (e = 0) are exactly a quiet tick, the word missed

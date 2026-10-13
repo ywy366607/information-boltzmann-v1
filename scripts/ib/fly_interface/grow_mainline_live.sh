@@ -16,6 +16,9 @@ root=/e/fly_stream_overflow/$NAME; ckpt=/e/ib_checkpoints/$NAME
 export FLY_REUSE_TRANSMISSION=0 PYTHONIOENCODING=utf-8
 FI=scripts/ib/fly_interface
 LOGS="--log-word-dopamine"
+latch_mask() {   # right after chunk $1 trains (last.pt = $1): the cells that stay > 200 Hz with the words withheld
+  LATCHED_OUT=$root/latched_$1.npy $PY -u $FI/text_leak_probe.py $ckpt > $root/leak_$1.txt 2>&1
+}
 probes() {
   $PY -u $FI/cell_health_probe.py $ckpt $root/cell_health_$1.json > $root/cell_health_$1.txt 2>&1
   $PY -u $FI/kenyon_coding_probe.py $ckpt > $root/coding_$1.txt 2>&1
@@ -38,7 +41,6 @@ gate() {  # $1 = gated checkpoint (c-1), $2 = the chunk trained from it (c), $3 
   head -n $((W / 32)) $root/scores_$2.jsonl > $g/brain_scores.jsonl
   arm $1 noedges "--ablate noedges"
   c1=$($PY $FI/live_gate_report.py $g/brain_scores.jsonl $g/noedges/scores.jsonl noedges)
-  LATCHED_OUT=$root/latched_$1.npy $PY -u $FI/text_leak_probe.py $ckpt > $root/leak_$1.txt 2>&1
   n=$(grep -o "latched (> 200 Hz without words, >= 2 of 4 places): [0-9]*" $root/leak_$1.txt | grep -o "[0-9]*$")
   cl='{}'
   if [ "${n:-0}" -ge 20 ]; then
@@ -74,7 +76,7 @@ if [ ! -f $ckpt/last.pt ]; then
       --score-log $root/scores_c1.jsonl $LOGS $EXTRA >> $root/train.log 2>&1 \
     || { echo "$(date +%H:%M) birth FAILED" >> $root/status; exit 1; }
   echo "$(date +%H:%M) born: chunk 1 done: $(grep 'ACTIVE EVAL' $root/train.log | tail -1)" >> $root/status
-  cp $ckpt/last.pt $ckpt/c1.pt; probes c1
+  cp $ckpt/last.pt $ckpt/c1.pt; latch_mask c1; probes c1
 fi
 done_chunks=$(grep -c "chunk [0-9]* done" $root/status)
 for ((c=done_chunks+1; c<=CHUNKS; c++)); do
@@ -82,10 +84,10 @@ for ((c=done_chunks+1; c<=CHUNKS; c++)); do
       --score-log $root/scores_c$c.jsonl $LOGS $EXTRA >> $root/train.log 2>&1 \
     || { echo "$(date +%H:%M) chunk $c FAILED" >> $root/status; exit 1; }
   echo "$(date +%H:%M) chunk $c done: $(grep 'ACTIVE EVAL' $root/train.log | tail -1)" >> $root/status
-  cp $ckpt/last.pt $ckpt/c$c.pt
+  cp $ckpt/last.pt $ckpt/c$c.pt; latch_mask c$c
   gate c$((c - 1)) c$c $((c - 1))
   if [ $((c % 5)) -eq 0 ] || [ $c -eq $CHUNKS ]; then probes c$c; fi
-  # keep the gated past bounded: c1, every 5th, and the latest two
-  p=$((c - 2)); [ $p -gt 1 ] && [ $((p % 5)) -ne 0 ] && rm -f $ckpt/c$p.pt
+  # keep the gated past bounded: c1, every 10th, and the latest two
+  p=$((c - 2)); [ $p -gt 1 ] && [ $((p % 10)) -ne 0 ] && rm -f $ckpt/c$p.pt
 done
 echo "$(date +%H:%M) $NAME finished" >> $root/status
