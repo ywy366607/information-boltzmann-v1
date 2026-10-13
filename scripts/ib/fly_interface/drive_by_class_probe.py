@@ -15,6 +15,7 @@ model, cfg, L = load(fork)
 opts = dict(base_rates=model.get_decay_rates(), thresholds=model.get_thresholds(), conductance_gains=model.get_conductance_gains(),
             alif_params=model.get_alif_params(), stp_params=model.get_stp_params())
 writer = model.topographic_writer
+HOLD = bool(cfg.get('hold_input'))     # the world holds a word on the senses for all its ticks
 physical_clock = cfg.get('writer_baseline_clock', 'physical') == 'physical'
 quiet = torch.zeros(1, model.n_neurons, device='cuda')
 graph = np.load(ROOT / cfg['graph'], allow_pickle=True)
@@ -22,6 +23,9 @@ ann = pd.read_feather(ROOT / 'data/malecns_v1/body-annotations.feather').set_ind
 typ, cls = ann['type'].astype(str).values, ann['class'].astype(str).values
 sc = np.array(graph['superclass_names'])[graph['superclass_id']].astype(str)
 label = np.where(cls != 'None', cls, np.char.add('sc:', sc))
+import os
+if os.environ.get('BY_TYPE'):
+    label = np.char.add(np.char.add(typ.astype(str), '|'), label.astype(str))
 tgt = (typ == target[5:]) if target.startswith('type:') else (cls == target)
 T = torch.as_tensor(tgt, device='cuda')
 names = np.unique(label); lab_id = torch.as_tensor(np.searchsorted(names, label), device='cuda')
@@ -40,7 +44,7 @@ with torch.no_grad():
         for i, w in enumerate(np.array(val[90_000 + place * 3_000:90_000 + place * 3_000 + 64], dtype=np.int64)):
             token = torch.tensor([int(w)], device='cuda')
             for t in range(TICKS):
-                if t == 0:
+                if t == 0 or HOLD:
                     dr, baseline = fl.write_input(model, s, token)
                     s = fl.step_fly_physical_tick(model, s, token, dr, baseline, opts, base_rates=opts['base_rates'])
                 else:

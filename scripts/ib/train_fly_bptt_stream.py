@@ -35,7 +35,7 @@ from information_boltzmann.core.fly_bptt_learning import (
     attach_regime_homeostasis, attach_tied_writer, REGIME_KENYON_Z,
     attach_compartment_memory, attach_taste_heads, COMPARTMENT_PARAMETER_NAMES, TASTE_PARAMETER_NAMES,
     renormalize_kenyon_inputs, pin_kenyon_to_dopamine, pin_sensory_terminals, pin_modulatory_fast_edges,
-    reset_inputs_to_birth, attach_graded_cells, GRADED_PARAMETER_NAMES,
+    reset_inputs_to_birth, attach_graded_cells, GRADED_PARAMETER_NAMES, attach_receptor_writer,
 )
 from information_boltzmann.runtime.lifelong_evaluation import recovery_summary, savings_summary
 from information_boltzmann.runtime.prequential_meter import FirstPassPredictionMeter
@@ -88,7 +88,8 @@ def atomic_save(path, payload):
 
 # Spike physics of an individual; omitted flags inherit the saved value, and individuals born before these options
 # existed get the values they were born with (audit 2026-10-13: biophysical reversals, Shiu spike semantics, STP).
-BIOPHYSICS_DEFAULTS = {'E_E': 1.0, 'E_I': -0.2, 'spike_consumes_drive': False, 'refractory_ticks': 0, 'use_stp': True}
+BIOPHYSICS_DEFAULTS = {'E_E': 1.0, 'E_I': -0.2, 'spike_consumes_drive': False, 'refractory_ticks': 0, 'use_stp': True,
+                       'inhibitory_tau_ratio': 2.0}
 
 
 def graph_is_uniform_synapse(graph_npz):
@@ -102,13 +103,20 @@ def graph_is_uniform_synapse(graph_npz):
     return bool((np.abs(r - np.round(r)) < 1e-3).mean() > 0.9)
 
 
+def modulatory_pin_kwargs(args):
+    if not getattr(args, 'pin_modulatory_types', False):
+        return {}
+    from information_boltzmann.core.fly_bptt_learning import MODULATORY_TYPE_PATTERN
+    return dict(type_pattern=MODULATORY_TYPE_PATTERN, annotations=args.graph.parent / 'body-annotations.feather')
+
+
 def stp_names(model):
     return STP_PARAMETER_NAMES if getattr(model, 'use_stp', False) else ()
 
 
 def biophysics_kwargs(args):
     return dict(E_E=args.E_E, E_I=args.E_I, spike_consumes_drive=args.spike_consumes_drive,
-                refractory_ticks=args.refractory_ticks, use_stp=args.use_stp)
+                refractory_ticks=args.refractory_ticks, use_stp=args.use_stp, inhibitory_tau_ratio=args.inhibitory_tau_ratio)
 
 
 def resolve_learning_modes(args, previous_config, previous_learner):
@@ -251,6 +259,14 @@ def resolve_learning_modes(args, previous_config, previous_learner):
         args.intrinsic = bool(previous_config.get('intrinsic', False))
     if getattr(args, 'graded_types', None) is None:
         args.graded_types = previous_config.get('graded_types')
+    if getattr(args, 'writer', None) is None:
+        args.writer = previous_config.get('writer', 'topographic')
+    if getattr(args, 'type_classes', None) is None:
+        args.type_classes = bool(previous_config.get('type_classes', False))
+    if getattr(args, 'pin_modulatory_types', None) is None:
+        args.pin_modulatory_types = bool(previous_config.get('pin_modulatory_types', False))
+    if getattr(args, 'intrinsic_jitter', None) is None:
+        args.intrinsic_jitter = previous_config.get('intrinsic_jitter', 0.0)
     if getattr(args, 'read_bank', None) is None:
         args.read_bank = bool(previous_config.get('read_bank', False))
     if getattr(args, 'go_max_ticks', None) is None:
@@ -437,6 +453,19 @@ def main():
                         help='Regex of the cell types released by --intrinsic (default: every annotated tonic type)')
     parser.add_argument('--intrinsic-kappa', type=float, default=None,
                         help='Initial intrinsic current of released cells, in units of their rheobase (default 1.2)')
+    parser.add_argument('--writer', choices=('topographic', 'receptor'), default=None,
+                        help='receptor: text through the olfactory receptor neurons only, per receptor type, as a '
+                             'bounded transduction conductance around spontaneous firing (ReceptorWriter); inherited')
+    parser.add_argument('--stp-init', type=str, default=None, help="birth STP 'u0,tau_fac,tau_rec' (needs --stp)")
+    parser.add_argument('--alif-beta-init', type=float, default=None, help='birth adaptation strength beta (default 0.05)')
+    parser.add_argument('--type-classes', action=argparse.BooleanOptionalAction, default=None,
+                        help='one physiology class per annotated cell type (birth only; inherited)')
+    parser.add_argument('--inhibitory-tau-ratio', type=float, default=None,
+                        help='tau_s_i = tau_m / ratio at birth (2: 10 ms, the old convention; 4: 5 ms as Shiu and fast GluCl / GABA-A)')
+    parser.add_argument('--pin-modulatory-types', action=argparse.BooleanOptionalAction, default=None,
+                        help='connectome v2 also pins the fast edges of OA-* / 5-HT* / PAM / PPL cells by type name')
+    parser.add_argument('--intrinsic-jitter', type=float, default=None,
+                        help='per-cell spread of the birth intrinsic current (kappa x (1 + jitter N(0,1))); desynchronises pacemakers')
     parser.add_argument('--graded-types', type=str, default=None,
                         help='Comma-separated cell types made non-spiking (graded release), e.g. APL,CT1; inherited on resume')
     parser.add_argument('--graded-gain', type=float, default=0.1,
@@ -673,6 +702,29 @@ def main():
                 model.decoder.bias.copy_(torch.from_numpy(prior))
                 del ref_train, ref_counts
             model.read_norm.weight.fill_(args.read_norm_init)
+        if args.alif_beta_init is not None:
+            # birth adaptation strength (threshold += beta x the cell's running rate per tick); 0.2 = +20% of
+            # threshold at a sustained 100 Hz: ends most reverberating strongly coupled pairs (127 -> 9 cells above
+            # 200 Hz without input) while sugar -> MN9 / bitter -> PPL1 keep +42 / +37 Hz (audit 2026-10-13); learnable
+            with torch.no_grad():
+                model.log_beta.fill_(math.log(args.alif_beta_init))
+            print(f'Adaptation at birth: beta {args.alif_beta_init}', flush=True)
+        if args.stp_init:
+            # birth values of the short-term plasticity, 'u0,tau_fac,tau_rec' (ms); e.g. 0.25,5,50: depression only,
+            # which ends the reverberation of strongly coupled pairs (audit 2026-10-13) and spares 100 Hz lines
+            if not model.use_stp:
+                raise ValueError('--stp-init needs --stp')
+            u0, tf, tr = (float(x) for x in args.stp_init.split(','))
+            with torch.no_grad():
+                model.logit_u0.fill_(math.log(u0 / (1 - u0))); model.log_tau_fac.fill_(math.log(tf)); model.log_tau_rec.fill_(math.log(tr))
+            print(f'STP at birth: u0 {u0}, tau_fac {tf} ms, tau_rec {tr} ms', flush=True)
+        if args.writer is None:
+            args.writer = 'topographic'
+        if args.writer == 'receptor':
+            if args.tied_writer:
+                raise ValueError('--writer receptor already ties the rows per receptor type (no --tied-writer)')
+            n_cells, n_types = attach_receptor_writer(model, args.graph, args.graph.parent / 'body-annotations.feather')
+            print(f'Receptor writer (newborn): text through {n_cells} olfactory receptor neurons, {n_types} types', flush=True)
 
         # A newborn gets the same blanket and modulation as the resumed lineage (each only when asked for).
         if args.go_neuron in ('virtual', True):
@@ -704,13 +756,18 @@ def main():
             pins = {'kenyon_to_dopamine': pin_kenyon_to_dopamine(model, args.graph, ann_path),
                     'sensory_terminals': pin_sensory_terminals(model, args.graph),
                     'octopamine_serotonin_fast': pin_modulatory_fast_edges(model, args.graph,
-                                                                           args.graph.parent / 'modulatory_neurons.feather')}
+                                                                           args.graph.parent / 'modulatory_neurons.feather',
+                                                                           **modulatory_pin_kwargs(args))}
             print(f'Connectome v2 pins (newborn): {pins}', flush=True)
         if (args.kc_renorm or args.dan_renorm) and graph_is_uniform_synapse(args.graph):
             raise ValueError('--kc-renorm / --dan-renorm undo a sqrt(K_in) normalization this graph does not have')
         args.kc_renorm_newly = False
         args.dan_renorm_newly = False
-        from information_boltzmann.core.fly_bptt_learning import split_kenyon_subtypes, split_modulatory_classes
+        from information_boltzmann.core.fly_bptt_learning import split_kenyon_subtypes, split_modulatory_classes, split_by_type
+        if args.type_classes:
+            if args.kc_subtypes or args.modulatory_classes:
+                raise ValueError('--type-classes already gives every cell type its own physiology (no --kc-subtypes / --modulatory-classes)')
+            print(f'Type classes (newborn): {split_by_type(model, args.graph, args.graph.parent / "body-annotations.feather")} cell types with their own physiology', flush=True)
         if args.kc_subtypes:
             print(f'Kenyon subtypes (newborn): {split_kenyon_subtypes(model, args.graph, args.graph.parent / "body-annotations.feather")}', flush=True)
         if args.modulatory_classes:
@@ -718,9 +775,12 @@ def main():
                 raise ValueError('--modulatory-classes comes after the Kenyon split (--kc-subtypes)')
             print(f'Modulatory classes (newborn): {split_modulatory_classes(model, args.graph, args.graph.parent / "body-annotations.feather")}', flush=True)
         if args.intrinsic:
+            if not args.intrinsic_pattern:
+                from information_boltzmann.core.fly_bptt_learning import INTRINSIC_TYPE_PATTERN
+                args.intrinsic_pattern = INTRINSIC_TYPE_PATTERN       # saved: a later default change cannot alter the lineage
             released = attach_intrinsic_drive(model, args.graph, args.graph.parent / 'body-annotations.feather',
                                               **({'kappa': args.intrinsic_kappa} if args.intrinsic_kappa is not None else {}),
-                                              **({'pattern': args.intrinsic_pattern} if args.intrinsic_pattern else {}))
+                                              pattern=args.intrinsic_pattern, jitter=float(args.intrinsic_jitter or 0.0))
             print(f'Released {int(model.intrinsic_index.numel())} spontaneously active cells (newborn): {released}', flush=True)
         if args.graded_types:
             print(f'Graded (non-spiking) cells (newborn): {attach_graded_cells(model, args.graph, args.graph.parent / "body-annotations.feather", types=tuple(args.graded_types.split(",")), gain=args.graded_gain)}', flush=True)
@@ -938,14 +998,22 @@ def main():
         if args.precision:
             n_mod, n_da = attach_precision(model, args.graph, args.graph.parent / 'body-annotations.feather')
             print(f'Precision carried by {n_mod} neuromodulatory cells ({n_da} dopaminergic)', flush=True)
+        if args.writer == 'receptor':
+            n_cells, n_types = attach_receptor_writer(model, args.graph, args.graph.parent / 'body-annotations.feather')
+            print(f'Receptor writer: {n_cells} olfactory receptor neurons, {n_types} types', flush=True)
         tie_now = bool(args.tied_writer) and not bool(previous_config.get('tied_writer', False))
         if args.tied_writer and not tie_now:
             # a tied lineage: the writer's chemosensory rows are per receptor type (shapes before loading)
             attach_tied_writer(model, args.graph, args.graph.parent / 'body-annotations.feather', convert=False)
             print('Writer tied by chemosensory receptor type', flush=True)
         from information_boltzmann.core.fly_bptt_learning import split_kenyon_subtypes, split_modulatory_classes
-        lineage_split = bool(previous_config.get('kc_subtypes')) or saved['model']['log_tau_m'].numel() > model.n_superclasses
-        lineage_mod = bool(previous_config.get('modulatory_classes'))
+        from information_boltzmann.core.fly_bptt_learning import split_by_type
+        lineage_types = bool(previous_config.get('type_classes'))
+        if lineage_types:
+            # a lineage with one physiology class per cell type: the same split before loading (supersedes the others)
+            print(f'Type classes (carried over): {split_by_type(model, args.graph, args.graph.parent / "body-annotations.feather", record=False)}', flush=True)
+        lineage_split = not lineage_types and (bool(previous_config.get('kc_subtypes')) or saved['model']['log_tau_m'].numel() > model.n_superclasses)
+        lineage_mod = not lineage_types and bool(previous_config.get('modulatory_classes'))
         if lineage_mod and not lineage_split:
             raise ValueError('a modulatory-class lineage must also carry the Kenyon split (fixed class order)')
         if lineage_split:
@@ -994,7 +1062,8 @@ def main():
                 pins = {'kenyon_to_dopamine': pin_kenyon_to_dopamine(model, args.graph, ann_path),
                         'sensory_terminals': pin_sensory_terminals(model, args.graph),
                         'octopamine_serotonin_fast': pin_modulatory_fast_edges(model, args.graph,
-                                                                               args.graph.parent / 'modulatory_neurons.feather')}
+                                                                               args.graph.parent / 'modulatory_neurons.feather',
+                                                                               **modulatory_pin_kwargs(args))}
                 print(f'Connectome v2 pins: {pins}', flush=True)
             if args.al_reset_newly:
                 n_al = reset_inputs_to_birth(model, args.graph, args.graph.parent / 'body-annotations.feather')

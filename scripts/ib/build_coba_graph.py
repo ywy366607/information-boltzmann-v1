@@ -20,6 +20,7 @@ def build_coba_graph(
     no_sensory_input: bool = False,
     nt_overrides: str | Path | None = None,
     kenyon_claw_scale: float = 1.0,
+    dan_to_gaba_types: tuple = (),
 ) -> None:
     """excitatory_scale / inhibitory_scale multiply the synapse weights (the source graph is calibrated for E_E 1.0:
     x1.82 keeps the EPSP at 0.617% of threshold under E_E 0.55; inhibition x3.67 more makes an IPSP at rest as large
@@ -59,6 +60,29 @@ def build_coba_graph(
             print(applied[-1])
         data["nt_sign"] = sign
         data["nt_overrides_applied"] = np.array("; ".join(applied))
+    if dan_to_gaba_types:
+        # cells the transmitter prediction put in the dopamine list that are not dopaminergic in the fly (DPM:
+        # serotonergic and GABAergic, Lee et al. 2011, Haynes et al. 2015): their edges leave the dopamine list and
+        # become fast inhibition, and they leave dan_indices
+        import pandas as pd
+        typ_d = pd.read_feather(source_path.parent / "body-annotations.feather").set_index("bodyId").reindex(
+            data["neuron_body_ids"])["type"].astype(str).values
+        move_cells = np.nonzero(np.isin(typ_d, list(dan_to_gaba_types)))[0]
+        dpre = data["dan_edge_pre"].astype(np.int64)
+        mv = np.isin(dpre, move_cells)
+        pre = np.concatenate([pre, dpre[mv]]); post = np.concatenate([post, data["dan_edge_post"].astype(np.int64)[mv]])
+        weight = np.concatenate([weight, -np.abs(data["dan_edge_weight"][mv]).astype(np.float32)])
+        delay = np.concatenate([delay, data["dan_edge_delay"].astype(np.int32)[mv]])
+        sign[move_cells] = -1
+        keep = ~mv
+        order = np.lexsort((data["dan_edge_pre"][keep], data["dan_edge_delay"][keep]))
+        for k in ("dan_edge_pre", "dan_edge_post", "dan_edge_weight", "dan_edge_delay"):
+            data[k] = data[k][keep][order]
+        data["dan_delay_splits"] = np.array([0] + [int((data["dan_edge_delay"] <= d).sum()) for d in (1, 2, 3, 4)], dtype=np.int32)
+        data["dan_indices"] = np.setdiff1d(data["dan_indices"], move_cells).astype(np.int32)
+        tot = np.bincount(data["dan_edge_post"], weights=data["dan_edge_weight"], minlength=len(sign))
+        data["dan_scale"] = np.float32(np.mean(tot[tot > 0]))      # same definition as the biological builder
+        print(f"Dopamine list -> fast GABA: {list(dan_to_gaba_types)} ({len(move_cells)} cells, {int(mv.sum()):,} edges)")
     pre_sign = sign[pre]
 
     exc_mask = (pre_sign > 0)
@@ -111,7 +135,7 @@ def build_coba_graph(
     pre_i, post_i, w_i, delay_i, splits_i = partition_and_sort(inh_mask, is_abs=True)
     w_i = (w_i * excitatory_scale * inhibitory_scale).astype(np.float32)
     data["coba_conversion"] = np.array(f"excitatory_scale={excitatory_scale} inhibitory_scale={inhibitory_scale} "
-                                       f"no_sensory_input={no_sensory_input} kenyon_claw_scale={kenyon_claw_scale}")
+                                       f"no_sensory_input={no_sensory_input} kenyon_claw_scale={kenyon_claw_scale} dan_to_gaba={list(dan_to_gaba_types)}")
 
     data["edge_pre_e"] = pre_e
     data["edge_post_e"] = post_e
@@ -141,6 +165,7 @@ if __name__ == "__main__":
     ap.add_argument('--no-sensory-input', action='store_true')
     ap.add_argument('--nt-overrides', default=None, help='CSV of literature transmitter corrections (data/malecns_v1/nt_overrides.csv)')
     ap.add_argument('--kenyon-claw-scale', type=float, default=1.0)
+    ap.add_argument('--dan-to-gaba-types', default='', help='comma-separated types moved from the dopamine list to fast GABA (DPM)')
     a = ap.parse_args()
     build_coba_graph(a.source, a.output, a.excitatory_scale, a.inhibitory_scale, a.no_sensory_input, a.nt_overrides,
-                     a.kenyon_claw_scale)
+                     a.kenyon_claw_scale, tuple(t for t in a.dan_to_gaba_types.split(',') if t))

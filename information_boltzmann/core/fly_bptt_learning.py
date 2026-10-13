@@ -193,11 +193,23 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
             phasic = dopamine_occupancy(dopamine[0:1], model.dopamine_affinity) - dopamine_occupancy(tonic, model.dopamine_affinity)
         # per-superclass sensitivity spread to the neurons by a fixed one-hot product (an advanced-index gather here
         # has a sort-based, synchronizing backward: 2 ms per tick)
+        n_class = model.dopamine_sensitivity.numel()
         onehot = getattr(model, '_superclass_onehot', None)
-        if onehot is None or onehot.shape[1] != current.h.shape[1]:
-            onehot = F.one_hot(model.superclass_id.long(), model.dopamine_sensitivity.numel()).T.to(current.h.dtype)
+        if onehot is None or onehot.shape[-1 if n_class <= 256 else 0] != current.h.shape[1] or                 onehot.shape[0 if n_class <= 256 else 1] != n_class:
+            if n_class <= 256:
+                onehot = F.one_hot(model.superclass_id.long(), n_class).T.to(current.h.dtype)
+            else:
+                # one class per cell type (11.7k classes): a dense [classes, neurons] one-hot would be 14 GB; the
+                # same product as a sparse [neurons, classes] matrix
+                n = current.h.shape[1]
+                idx = torch.stack([torch.arange(n, device=current.h.device), model.superclass_id.long()])
+                onehot = torch.sparse_coo_tensor(idx, torch.ones(n, device=current.h.device, dtype=current.h.dtype),
+                                                 (n, n_class)).coalesce()
             model._superclass_onehot = onehot
-        s_class = (model.dopamine_sensitivity.to(onehot.dtype) @ onehot).unsqueeze(0)
+        if n_class <= 256:
+            s_class = (model.dopamine_sensitivity.to(onehot.dtype) @ onehot).unsqueeze(0)
+        else:
+            s_class = torch.sparse.mm(onehot, model.dopamine_sensitivity.to(onehot.dtype).unsqueeze(1)).T
         thresholds = options.get('thresholds')
         thresholds = (thresholds if thresholds is not None else model.get_thresholds()).expand_as(current.h)
         options = {**options, 'thresholds': thresholds * torch.exp(-s_class * phasic)}
@@ -846,11 +858,12 @@ def attach_precision(model, graph_npz, annotations, tau=8.0, pattern=MODULATORY_
 # Cell types known to be spontaneously / tonically active, as annotated in the MaleCNS connectome: circadian clock
 # neurons (pacemakers), dopaminergic PAM / PPL, octopaminergic OA-*, serotonergic 5-HT* and DPM.  APL is not here
 # (2026-10-13): it is a graded feedback interneuron driven by the Kenyon cells (attach_graded_cells); a pacemaker
-# current on it made it fire at the rate cap and hold the Kenyon layer under constant inhibition.
-INTRINSIC_TYPE_PATTERN = r'^(s-LNv|l-LNv|5thsLNv|LNd|DN1|DN2|DN3|LPN|LN-DN1|PAM\d|PPL\d|OA-|5-HT|DPM$)'
+# current on it made it fire at the rate cap and hold the Kenyon layer under constant inhibition.  DPM is not here
+# either (2026-10-13): it is serotonergic / GABAergic, not dopaminergic (moved to fast GABA in the birth graph).
+INTRINSIC_TYPE_PATTERN = r'^(s-LNv|l-LNv|5thsLNv|LNd|DN1|DN2|DN3|LPN|LN-DN1|PAM\d|PPL\d|OA-|5-HT)'
 
 
-def attach_intrinsic_drive(model, graph_npz, annotations, kappa=1.2, pattern=INTRINSIC_TYPE_PATTERN):
+def attach_intrinsic_drive(model, graph_npz, annotations, kappa=1.2, pattern=INTRINSIC_TYPE_PATTERN, jitter=0.0, seed=0):
     """Release the spontaneously active cells the connectome already contains: each selected neuron gets a learnable
     intrinsic current kappa (in units of its rheobase, start 1.2 = slow pacemaking, period ~1.8 tau_m).  Every other
     neuron is unchanged.  Returns the selected cell types."""
@@ -863,7 +876,12 @@ def attach_intrinsic_drive(model, graph_npz, annotations, kappa=1.2, pattern=INT
     chosen = sorted(position[int(b)] for b in table['bodyId'] if int(b) in position)
     device = model.read_indices.device
     model.register_buffer('intrinsic_index', torch.as_tensor(chosen, dtype=torch.long, device=device), persistent=False)
-    model.intrinsic_kappa = nn.Parameter(torch.full((len(chosen),), float(kappa), device=device))
+    # jitter: each cell's kappa x (1 + jitter * N(0, 1)), fixed at birth -- identical pacemakers started from the same
+    # state fire in lockstep (audit 2026-10-13: 441 cells at one 27 Hz rhythm); different periods desynchronise them
+    k = torch.full((len(chosen),), float(kappa))
+    if jitter > 0:
+        k = k * (1.0 + jitter * torch.randn(len(chosen), generator=torch.Generator().manual_seed(seed)))
+    model.intrinsic_kappa = nn.Parameter(k.to(device))
     return table['type'].astype(str).value_counts().to_dict()
 
 
@@ -1167,6 +1185,27 @@ def kenyon_dendritic_share(model, graph_npz, annotations, dendritic_feather):
     return edges, share
 
 
+def attach_receptor_writer(model, graph_npz, annotations, sense_class='olfactory', seed=0, **kw):
+    """Replace the topographic writer by the receptor-transduction writer (ReceptorWriter) on the cells of one
+    sensory class (default the olfactory receptor neurons), one row per receptor type (untyped cells get their own).
+    Returns (cells, types)."""
+    import pandas as pd
+    from .fly_reservoir import ReceptorWriter
+    graph = np.load(graph_npz, allow_pickle=True)
+    ann = pd.read_feather(annotations).set_index('bodyId').reindex(graph['neuron_body_ids'])
+    cls, typ = ann['class'].astype(str).values, ann['type'].astype(str).values
+    cells = np.nonzero(cls == sense_class)[0]
+    keys = [t if t not in ('None', 'nan', '') else f'cell{c}' for c, t in zip(cells, typ[cells])]
+    uniq = {k: j for j, k in enumerate(dict.fromkeys(keys))}
+    old = model.topographic_writer
+    d_model = model.embedding.weight.shape[1]
+    writer = ReceptorWriter(d_model, cells, [uniq[k] for k in keys], len(uniq), E_E=model.E_E, seed=seed, **kw)
+    model.topographic_writer = writer.to(model.embedding.weight.device)
+    model.receptor_writer = True
+    del old
+    return int(len(cells)), int(len(uniq))
+
+
 GRADED_TYPES = ('APL', 'CT1')
 GRADED_PARAMETER_NAMES = ('log_graded_gain',)
 
@@ -1238,7 +1277,11 @@ def pin_sensory_terminals(model, graph_npz):
     return pin_edges(model, 'e', e) + pin_edges(model, 'i', i)
 
 
-def pin_modulatory_fast_edges(model, graph_npz, modulatory_feather, transmitters=('octopamine', 'serotonin')):
+MODULATORY_TYPE_PATTERN = r'^(OA-|5-HT|PAM\d|PPL\d)'
+
+
+def pin_modulatory_fast_edges(model, graph_npz, modulatory_feather, transmitters=('octopamine', 'serotonin'),
+                              type_pattern=None, annotations=None):
     """Octopamine and serotonin act through metabotropic receptors (volume transmission), not fast synapses; as fast
     excitation they drove e.g. the Kenyon cells directly (OA-VPM3/VPM4/VUMa2: ~half of the non-PN Kenyon drive).  Their
     fast output edges are removed (as dopamine's were); their modulation is not modelled yet."""
@@ -1247,6 +1290,11 @@ def pin_modulatory_fast_edges(model, graph_npz, modulatory_feather, transmitters
     ids = np.load(graph_npz, allow_pickle=True)['neuron_body_ids']
     table = pd.read_feather(modulatory_feather)
     bodies = set(int(b) for b in table[table.consensusNt.isin(transmitters)].bodyId)
+    if type_pattern is not None:
+        # by cell type as well (audit 2026-10-13): OA-AL2i1 / OA-ASM3 and PPL203 have an 'unclear' prediction and
+        # 5-HTPLP01 a glutamate one, so the transmitter alone left their fast edges in place
+        ann = pd.read_feather(annotations)[['bodyId', 'type']]
+        bodies |= set(int(b) for b in ann[ann['type'].astype(str).str.contains(type_pattern, regex=True)].bodyId)
     mask = torch.as_tensor(np.array([int(b) in bodies for b in ids]), device=model.edge_pre_e.device)
     n = 0
     for sfx in ('e', 'i'):
@@ -1964,10 +2012,13 @@ class FlyBPTTLearner:
         self.optimizer = torch.optim.AdamW(adam_groups, lr=lr, fused=state.h.is_cuda)
         # The topographic writer exists only for topographic injection; other
         # injection modes have no sensory projection group to train.
-        self.projections = ([getattr(model.topographic_writer, name).weight
-                             for name in ('proj_vis', 'proj_chemo', 'proj_mech')]
-                            if model.topographic_writer is not None
-                            else [model.input_proj.weight])
+        if model.topographic_writer is None:
+            self.projections = [model.input_proj.weight]
+        elif hasattr(model.topographic_writer, 'proj'):              # receptor writer: one row per receptor type
+            self.projections = [model.topographic_writer.proj.weight]
+        else:
+            self.projections = [getattr(model.topographic_writer, name).weight
+                                for name in ('proj_vis', 'proj_chemo', 'proj_mech')]
         # Layout-generic edge collection: COBA models split excitatory and
         # inhibitory synapses into separate tensors, other models keep a
         # single signed tensor; the signed-aware clamp handles both.
@@ -3208,6 +3259,42 @@ def split_classes(model, groups, record=True):
         if hasattr(model, attr):
             setattr(model, attr, None)
     return counts
+
+
+def split_by_type(model, graph_npz, annotations, record=True):
+    """Every annotated cell type gets its own physiology class (time constants, threshold, adaptation, dopamine
+    sensitivity), initialised from the superclass most of its cells belong to; untyped cells keep their superclass.
+    Audit 2026-10-13: one class for 89k optic-lobe cells (or 32k central-brain cells) let learning move them only
+    together.  Vectorised (11.7k types); supersedes the Kenyon-subtype and modulatory splits.  Returns the number of
+    type classes."""
+    import pandas as pd
+    graph = np.load(graph_npz, allow_pickle=True)
+    typ = pd.read_feather(annotations).set_index('bodyId').reindex(graph['neuron_body_ids'])['type'].astype(str).values
+    typed = ~np.isin(typ, ['None', 'nan', ''])
+    names, inv = np.unique(typ[typed], return_inverse=True)
+    sc = model.superclass_id
+    old = sc.cpu().numpy().astype(np.int64)
+    # source class of each type: the most common superclass among its cells
+    pair = inv.astype(np.int64) * (old.max() + 1) + old[typed]
+    counts = np.bincount(pair, minlength=len(names) * (old.max() + 1)).reshape(len(names), old.max() + 1)
+    sources = counts.argmax(1).tolist()
+    new = old.copy()
+    new[typed] = model.n_superclasses + inv
+    with torch.no_grad():
+        sc.copy_(torch.as_tensor(new, dtype=sc.dtype, device=sc.device))
+        for pname in CLASS_PARAMETER_NAMES:
+            p = getattr(model, pname, None)
+            if p is None:
+                continue
+            grown = torch.cat([p.data, p.data[sources]])
+            setattr(model, pname, nn.Parameter(grown, requires_grad=p.requires_grad))
+    model.n_superclasses += len(sources)
+    if record:
+        model.class_split_sources = list(getattr(model, 'class_split_sources', None) or []) + sources
+    for attr in ('_compiled_coefficients', '_compiled_finish'):
+        if hasattr(model, attr):
+            setattr(model, attr, None)
+    return len(sources)
 
 
 def split_modulatory_classes(model, graph_npz, annotations, record=True):

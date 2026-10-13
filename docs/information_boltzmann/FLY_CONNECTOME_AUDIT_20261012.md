@@ -429,3 +429,16 @@ on it.
 - Kenyon cells: claw inputs x1.8 from the measured claw EPSP (Gruntman & Turner 2013; neuPrint sizes ruled out cell
   volume as the reason); APL gain 0.025 from the 2-3x effect of blocking APL (Lin et al. 2014).  Newborn: Kenyon
   coding ~4% per word, consecutive-word overlap ~0.02 (word-specific).
+
+### Second substrate audit (subagent, 2026-10-13) and what was done
+Confirmed: (1) the writer drove all 15,912 sensory cells (taste, thermo, hygro included) with a one-tick ~10 theta
+volley, half of them below E_I -> ReceptorWriter (olfactory receptors only, per type, bounded conductance, held);
+(2) the visual channel is dead at birth (histaminergic photoreceptors spike, no tonic release, lamina graded in the
+fly) -> deferred: no text enters vision now; needs graded photoreceptors / lamina with a tonic offset before any
+visual world; (3) DPM in the dopamine list and pacemaker set -> fast GABA, out of both; (4) pacemakers in lockstep
+-> kappa spread; (5) modulatory identity by transmitter only -> pins by type; (6) refractory discarded input -> kept.
+Plausible, acted on: per-type physiology (11,751 classes), tau_s_i 5 ms.  Open: glutamate excitatory at iGluR
+targets, voltage read surface, gap junctions, the dopamine learning map.  Found while testing: 31 reciprocal
+one-spike-fires-partner excitatory pairs reverberate at the rate cap (GNG117 L/R drove MN9 at 113 Hz); adaptation x4
+ends most of it (depression-only STP would, but kills 100 Hz lines).  PPL1 ran at ~149 Hz in R1 chunk 1 (old writer);
+to be re-measured on R2.

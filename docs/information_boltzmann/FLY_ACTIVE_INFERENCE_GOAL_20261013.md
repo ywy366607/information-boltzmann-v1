@@ -554,3 +554,32 @@ without APL output, 0.9% at gain 0.1 (12x), 5.0% at 0.02, 3.4% at 0.035 -> gain 
 6. Dopamine has phasic structure (dopamine_phasic_sd logged > 0.02) and the compartment memory is used at chunk 25
    (memory_revisit live - frozen phi savings > 0.01 nats; old 0.0004).
 Open by design: sugar -> PAM reward (octopamine modulation not modelled).
+
+## R2: rebirth after the second substrate audit (plan and predictions, written before the run, 2026-10-13)
+R1 stopped after one chunk: a subagent audit of the substrate (FLY_CONNECTOME_AUDIT, section 'Second substrate
+audit') found, among others, that the text writer drove every receptor -- taste, thermo, hygro included -- as a
+one-tick ~10x threshold volley that also pushed 99.9% of the sensory cells below E_I; DPM sat in the dopamine list and
+the pacemaker set; 441 pacemakers fired in lockstep; modulatory identity came from the transmitter only.
+Changes (scripts/ib/fly_interface/grow_r2_rebirth.sh):
+- Text through the olfactory receptor neurons only (ReceptorWriter, --writer receptor --hold-input): one row per
+  receptor type (57), transduction conductance g_max sigmoid(u + b) towards E_E around spontaneous firing, held for the
+  word, per-cell jitter.  Measured: gustatory receptors 0 Hz while reading (old writer 42 Hz), no sensory cell below
+  E_I (old 99.9%), receptors 25% active per word (consecutive-word overlap 0.15), PNs 7% (0.2).
+- DPM -> fast GABA (out of the dopamine list and the pacemaker set; graph fly_reservoir_coba_r2.npz); dopamine scale
+  recomputed.  Modulatory fast edges pinned by type (OA-*, 5-HT*, PAM, PPL) as well as transmitter.  Pacemaker kappa
+  x (1 + 0.1 N(0,1)).  One physiology class per cell type (11,751).  tau_s_i 5 ms.  Refractory ticks keep input.
+- Strongly coupled pairs: 31 reciprocal excitatory pairs where one spike fires the partner (e.g. GNG117 L/R, 914 /
+  973 synapses) reverberated at the rate cap (R1 smoke: 127 cells > 200 Hz without input; MN9 113 Hz through GNG117).
+  Depression-only STP (u0 0.25, tau_rec 50) ended it but cut 100 Hz lines per hop (bitter -> PPL1 +44 -> +1.3 Hz,
+  Kenyon 0.1%): no depression can stop a 5.6 x threshold connection without killing 100 Hz lines.  Adaptation x4
+  (beta 0.2, +20% threshold at 100 Hz) without STP: 9 cells > 200 Hz, sugar -> MN9 +42, bitter -> PPL1 +37.  Born
+  with that, STP off.
+Predictions (same probes as R1 plus text_leak_probe at chunks 1, 5, 25):
+1. Healthy: whole-brain mean 0.3-20 Hz, < 0.5% of cells >= 450 Hz, < 50 cells > 200 Hz with the words withheld.
+2. Language: first_pass_gain_over_fixed_unigram >= 0.3 nats by chunk 5, >= 0.5 by chunk 25; the narrower text sense
+   (57 receptor types) may cost capacity -- if < 0.3 at chunk 25, the cause is measured (receptor / PN coding) before
+   any other change, and the next step is a second world sense, never the valence senses.
+3. No leak: gustatory receptors 0 Hz while reading; text-driven MN9 / PPL1 / PAM within +-10 Hz.
+4. Senses survive: sugar -> MN9 >= +20 Hz, bitter -> PPL1 >= +10 Hz at chunks 5 and 25.
+5. Mushroom body: Kenyon coding >= 2% per word by chunk 5 (birth 0.6%: PNs only 7% active), overlap < 0.2.
+6. Dopamine has phasic structure (dopamine_phasic_sd > 0.02); compartment memory used at chunk 25 (savings > 0.01).

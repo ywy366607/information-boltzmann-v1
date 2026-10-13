@@ -252,6 +252,62 @@ class BiologicalTopographicWriter(nn.Module):
         return drive, next_baseline
 
 
+class ReceptorWriter(nn.Module):
+    """The text sense as receptor transduction (audit 2026-10-13; replaces TopographicWriter for a new birth).
+
+    Text enters through one sense only -- the olfactory receptor neurons -- so the taste, thermo-, hygro- and
+    nociceptors stay free for the consequences of the world (the valence channel).  A word activates receptor TYPES
+    (one learned row per type, shared by its ~50 cells: receptors of one kind respond alike), as a transduction
+    conductance g = g_max * gain_cell * sigmoid(u + b_cell) driving the cell towards E_E: the current is
+    g (E_E - v) >= 0, so a receptor can never be pushed below rest; u = 0 is the spontaneous firing (~5-15 Hz),
+    u > 0 up to ~190 Hz, u < 0 silences it (odour-evoked inhibition below baseline).  u is the innovation of the
+    word's type pattern against the adapting baseline (and the top-down expectation, predictive mode).  Held for all
+    ticks of a word (hold_input).  Per-cell gain and offset jitter (fixed at birth) keep receptors of one type out of
+    lockstep.  Interface-compatible with TopographicWriter (forward_with_state, packet, lambda_adapt, n_total,
+    injection_index, gate_linear, a_adapt).
+    """
+
+    def __init__(self, d_model, cells, type_index, n_types, E_E, g_max=0.06, p_spont=0.188, jitter=0.15,
+                 gain_jitter=0.2, init_std=0.4, seed=0):
+        super().__init__()
+        gen = torch.Generator().manual_seed(seed)
+        cells = torch.as_tensor(cells, dtype=torch.long)
+        self.register_buffer('injection_index', cells, persistent=False)
+        self.register_buffer('type_index', torch.as_tensor(type_index, dtype=torch.long), persistent=False)
+        self.n_types = int(n_types)
+        self.n_total = self.n_types                       # the adapting baseline lives per receptor type
+        self.E_E = float(E_E)
+        self.g_max = float(g_max)
+        offset = math.log(p_spont / (1.0 - p_spont)) + jitter * torch.randn(cells.numel(), generator=gen)
+        self.register_buffer('offset', offset, persistent=False)
+        self.register_buffer('gain', torch.exp(gain_jitter * torch.randn(cells.numel(), generator=gen)), persistent=False)
+        self.proj = nn.Linear(d_model, self.n_types, bias=False)
+        nn.init.normal_(self.proj.weight, std=init_std)
+        self.gate_linear = nn.Module()                    # interface only (the old modality gate): no parameters
+        self.lambda_adapt = 0.9512
+        self.register_buffer('a_adapt', torch.zeros(1, self.n_types), persistent=False)
+
+    def packet(self, token_emb):
+        return self.proj(token_emb)
+
+    def conductance(self, innovation):
+        return self.g_max * self.gain * torch.sigmoid(innovation[:, self.type_index] + self.offset)
+
+    def forward_with_state(self, token_emb, h, baseline, expected=None, beta=None):
+        packet = self.packet(token_emb)
+        reference = baseline if expected is None else (1.0 - beta) * baseline + beta * self.packet(expected)
+        g = self.conductance(packet - reference)
+        current = g * (self.E_E - h.index_select(1, self.injection_index)).clamp_min(0.0)
+        drive = torch.zeros_like(h).index_copy(1, self.injection_index, current)
+        next_baseline = self.lambda_adapt * baseline + (1.0 - self.lambda_adapt) * packet
+        return drive, next_baseline
+
+    def forward(self, token_emb, h):
+        drive, baseline = self.forward_with_state(token_emb, h, self.a_adapt)
+        self.a_adapt.copy_(baseline.detach())
+        return drive
+
+
 class FlyReservoirLM(nn.Module):
     """Frozen MaleCNS wiring + trained broadcast input / weighted readout."""
 
@@ -288,8 +344,13 @@ class FlyReservoirLM(nn.Module):
                  surrogate_mode: str = 'absolute',
                  transmission_mode: str = 'atomic',
                  spike_consumes_drive: bool = False,
-                 refractory_ticks: int = 0):
+                 refractory_ticks: int = 0,
+                 inhibitory_tau_ratio: float = 2.0):
         super().__init__()
+        # tau_s_i = tau_m / inhibitory_tau_ratio at birth (2: 10 ms, the inherited convention; 4: 5 ms, as tau_s_e,
+        # Shiu et al. 2024 and the fast GluCl / GABA-A IPSPs of the fly).  The conductance filter has unit DC gain,
+        # so the IPSP area (the equal-area calibration of the inhibitory weights) does not depend on it.
+        self.inhibitory_tau_ratio = float(inhibitory_tau_ratio)
         # Spike semantics of the validated whole-brain LIF (Shiu et al. 2024: on a spike v = v_reset and g = 0, then
         # 2.2 ms refractory).  spike_consumes_drive: a spike also zeroes the cell's synaptic conductances (otherwise a
         # strongly driven cell keeps its conductance and refires every tick: the brain ignites).  refractory_ticks
@@ -417,7 +478,7 @@ class FlyReservoirLM(nn.Module):
             self.log_tau_m = nn.Parameter(torch.log(torch.tensor(init_tau_m, dtype=torch.float32)))
             if self.synapse_model == "coba":
                 self.log_tau_s_e = nn.Parameter(torch.log(torch.tensor(init_tau_m / 4.0, dtype=torch.float32)))
-                self.log_tau_s_i = nn.Parameter(torch.log(torch.tensor(init_tau_m / 2.0, dtype=torch.float32)))
+                self.log_tau_s_i = nn.Parameter(torch.log(torch.tensor(init_tau_m / self.inhibitory_tau_ratio, dtype=torch.float32)))
             else:
                 self.log_tau_s = nn.Parameter(torch.log(torch.tensor(init_tau_m / 4.0, dtype=torch.float32)))
 
@@ -688,7 +749,7 @@ class FlyReservoirLM(nn.Module):
                 return leak_m, leak_s_e, leak_s_i
             elif self.has_biological_leak:
                 leak_m = self.lambda_0.unsqueeze(0)
-                return leak_m, torch.pow(leak_m, 4.0), torch.pow(leak_m, 2.0)
+                return leak_m, torch.pow(leak_m, 4.0), torch.pow(leak_m, self.inhibitory_tau_ratio)
             else:
                 device = self.edge_pre_e.device
                 leak_m = torch.full((1, self.n_neurons), self.leak, device=device)
@@ -889,9 +950,9 @@ class FlyReservoirLM(nn.Module):
         if self.refractory_ticks > 0:
             h_next = h_next * free
         if self.spike_consumes_drive:
+            # a spike consumes the drive accumulated so far (Shiu: g = 0 on reset); input arriving during the
+            # refractory ticks is kept (Shiu: on_pre still adds to g while the cell is refractory)
             keep = 1.0 - reset_spike
-            if self.refractory_ticks > 0:
-                keep = keep * free
             ge_next = ge_next * keep
             gi_next = gi_next * keep
 

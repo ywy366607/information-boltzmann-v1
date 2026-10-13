@@ -25,8 +25,10 @@ def load(fork):
     graph = ROOT / cfg['graph']
     model = FlyReservoirLM(graph, vocab_size=50257, d_model=cfg['d_model'], injection='topographic', read_surface='output',
                            synapse_model='coba', use_alif=True, decoder_bias=cfg['decoder_bias'],
-                           E_E=cfg.get('E_E', 1.0), E_I=cfg.get('E_I', -0.2), use_stp=cfg.get('use_stp', True),
+                           E_E=cfg.get('E_E', 1.0), E_I=cfg.get('E_I', -0.2),
+                           use_stp=cfg.get('use_stp', True) or bool(__import__('os').environ.get('ZS_STP')),
                            spike_consumes_drive=cfg.get('spike_consumes_drive', False), refractory_ticks=cfg.get('refractory_ticks', 0),
+                           inhibitory_tau_ratio=cfg.get('inhibitory_tau_ratio', 2.0),
                            detach_reset=cfg.get('detach_reset', False), surrogate_mode=cfg.get('surrogate_mode', 'absolute'),
                            transmission_mode=cfg.get('transmission_mode', 'atomic')).cuda()
     if cfg.get('go_neuron') == 'virtual':
@@ -49,6 +51,8 @@ def load(fork):
         fl.attach_predictive_writer(model)
     if cfg.get('precision'):
         fl.attach_precision(model, graph, graph.parent / 'body-annotations.feather')
+    if cfg.get('writer') == 'receptor':
+        fl.attach_receptor_writer(model, graph, graph.parent / 'body-annotations.feather')
     if cfg.get('tied_writer'):
         fl.attach_tied_writer(model, graph, graph.parent / 'body-annotations.feather', convert=False)
     if cfg.get('graded_types'):
@@ -58,9 +62,11 @@ def load(fork):
     act = ow.ACT_PARAMETER_NAMES + ('act_mu', 'act_sigma', 'act_w_scale') + ow.SENSE_PARAMETER_NAMES
     from information_boltzmann.core import fly_active_inference as fai
     late = fl.COMPARTMENT_PARAMETER_NAMES + fl.TASTE_PARAMETER_NAMES + act + fai.AI_STATE_NAMES
-    if cfg.get('kc_subtypes') or saved['model']['log_tau_m'].numel() > model.n_superclasses:
+    if cfg.get('type_classes'):
+        fl.split_by_type(model, graph, graph.parent / 'body-annotations.feather', record=False)
+    elif cfg.get('kc_subtypes') or saved['model']['log_tau_m'].numel() > model.n_superclasses:
         fl.split_kenyon_subtypes(model, graph, graph.parent / 'body-annotations.feather', record=False)   # a split lineage
-    if cfg.get('modulatory_classes'):
+    if cfg.get('modulatory_classes') and not cfg.get('type_classes'):
         fl.split_modulatory_classes(model, graph, graph.parent / 'body-annotations.feather', record=False)
     with torch.no_grad():
         for k in edges:
@@ -129,6 +135,19 @@ def load(fork):
         with torch.no_grad():
             model.log_graded_gain.add_(float(np.log(float(os.environ['ZS_GRADED_SCALE']))))
         print(f'zero-shot: graded gain x{os.environ["ZS_GRADED_SCALE"]} -> {model.log_graded_gain.exp().tolist()}', flush=True)
+    if os.environ.get('ZS_STP'):
+        # zero-shot short-term plasticity 'u0,tau_fac,tau_rec' on every synapse (tau_fac 5 = depression only)
+        u0, tf, tr = (float(x) for x in os.environ['ZS_STP'].split(','))
+        with torch.no_grad():
+            model.logit_u0.fill_(float(np.log(u0 / (1 - u0)))); model.log_tau_fac.fill_(float(np.log(tf))); model.log_tau_rec.fill_(float(np.log(tr)))
+        print(f'zero-shot: STP u0 {u0} tau_fac {tf} tau_rec {tr}', flush=True)
+    if os.environ.get('ZS_NO_STP'):
+        model.use_stp = False
+        print('zero-shot: STP off', flush=True)
+    if os.environ.get('ZS_ALIF_BETA'):
+        with torch.no_grad():
+            model.log_beta.add_(float(np.log(float(os.environ['ZS_ALIF_BETA']))))
+        print(f'zero-shot: adaptation strength x{os.environ["ZS_ALIF_BETA"]}', flush=True)
     if os.environ.get('ZS_SILENCE_OUTPUT'):
         # zero-shot: the output synapses of the given cell types removed (comma-separated types), e.g. APL
         import pandas as pd
