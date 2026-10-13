@@ -350,6 +350,8 @@ def main():
     parser.add_argument('--epistemic-belief', action=argparse.BooleanOptionalAction, default=None,
                         help='Epistemic value of looking = Bayesian surprise of the brain: how far a word moves its own '
                              'prediction of what comes next (instead of an external word counter)')
+    parser.add_argument('--lr-physiology', type=float, default=None,
+                        help='Adam rate of the class physiology (log / logit space: a relative step); default = --lr')
     parser.add_argument('--carried-credit', action=argparse.BooleanOptionalAction, default=None,
                         help='Credit beyond the BPTT window at O(1): forward sensitivities of the slow states '
                              '(compartment memory, dopamine clocks, STP) carried across windows')
@@ -686,7 +688,7 @@ def main():
             lr=args.lr, lr_synapse=args.lr_synapse, lr_sensory=args.lr_sensory,
             plasticity_optimizer=args.plasticity_optimizer, lr_decoder=args.lr_decoder,
             settle_ticks=args.settle_ticks, writer_baseline_clock=args.writer_baseline_clock,
-            learn_stp=bool(args.learn_stp), lambda_jepa=args.lambda_jepa,
+            learn_stp=bool(args.learn_stp), lambda_jepa=args.lambda_jepa, lr_physiology=args.lr_physiology,
             use_ctm_loss=bool(args.ctm_loss),
             use_checkpointing=bool(args.checkpointing),
             lambda_mcr2=float(args.lambda_mcr2 or 0.0),
@@ -1036,7 +1038,7 @@ def main():
             lr=args.lr, lr_synapse=args.lr_synapse, lr_sensory=args.lr_sensory,
             plasticity_optimizer=args.plasticity_optimizer, lr_decoder=args.lr_decoder,
             settle_ticks=args.settle_ticks, writer_baseline_clock=args.writer_baseline_clock,
-            learn_stp=args.learn_stp, lambda_jepa=args.lambda_jepa,
+            learn_stp=args.learn_stp, lambda_jepa=args.lambda_jepa, lr_physiology=args.lr_physiology,
             use_ctm_loss=bool(args.ctm_loss),
             use_checkpointing=bool(args.checkpointing),
             lambda_mcr2=float(args.lambda_mcr2 or 0.0),

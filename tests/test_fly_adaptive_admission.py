@@ -1589,3 +1589,17 @@ def test_carried_credit_runs_in_the_stream(fly_model_and_state):
             learner.state = next_state.detached()
     finally:
         delattr(model, 'carried_credit')
+
+
+def test_class_physiology_gets_its_own_relative_rate(fly_model_and_state):
+    """--lr-physiology: the class physiology (log / logit space) gets its own Adam rate; everything else keeps lr."""
+    model, state, device = fly_model_and_state
+    learner = FlyBPTTLearner(model, state, lr=2e-4, settle_ticks=14, writer_baseline_clock="physical",
+                             use_checkpointing=True, stream_ticks=1, lambda_mcr2=0.0, learn_stp=True, lr_physiology=5e-3)
+    named = {id(p): n for n, p in model.named_parameters()}
+    rates = {named[id(p)]: g['lr'] for g in learner.optimizer.param_groups for p in g['params']}
+    for name in ('log_tau_m', 'log_threshold', 'logit_u0', 'log_tau_rec'):
+        if name in rates:
+            assert rates[name] == 5e-3, name
+    assert rates['output_read.weight'] == 2e-4 or rates['output_read.weight'] == learner.optimizer.defaults['lr']
+    assert any(r == 5e-3 for r in rates.values())

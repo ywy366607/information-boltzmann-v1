@@ -1753,7 +1753,7 @@ class FlyBPTTLearner:
                  lambda_mcr2=0.0, eps_mcr2=0.5,
                  adaptive_admission=False, min_settle_ticks=3, flux_baseline=0.048,
                  stream_ticks=0, hold_input=False, read_lag=0, go_neuron=False, go_tick_cost=0.0,
-                 go_reference_energy=0.07, go_max_ticks=32, lr_read_bank=None):
+                 go_reference_energy=0.07, go_max_ticks=32, lr_read_bank=None, lr_physiology=None):
         if not isinstance(stream_ticks, int) or stream_ticks < 0:
             raise ValueError('stream_ticks must be a nonnegative integer')
         if read_lag and not (stream_ticks and 1 <= read_lag <= stream_ticks):
@@ -1889,6 +1889,18 @@ class FlyBPTTLearner:
                  'weight_decay': 1e-4, 'lr': lr},
                 {'params': [model.decoder.weight], 'weight_decay': 1e-4, 'lr': lr_decoder},
                 {'params': undecayed, 'weight_decay': 0.0, 'lr': lr}]
+        if lr_physiology is not None:
+            # Class physiology (log time constants, log thresholds, logit release probabilities, dopamine and memory
+            # clocks) lives in log / logit space, where an Adam step of lr is a relative change of ~lr: at the shared
+            # 2e-4 a time constant moves ~1% per 4k-token chunk (D2: STP moved <= 0.016 in two chunks), 100x slower
+            # than the synapses' relative steps (2% of the birth weight).  Their own rate makes them evolvable.
+            physio = set(CLASS_PARAMETER_NAMES) | {'dopamine_logit_fast', 'dopamine_logit_slow', 'comp_logit_trace',
+                                                   'comp_logit_forget'}
+            moved = [named[n] for n in self.adam_names if n in physio]
+            moved_ids = {id(p) for p in moved}
+            for group in adam_groups:
+                group['params'] = [p for p in group['params'] if id(p) not in moved_ids]
+            adam_groups.append({'params': moved, 'weight_decay': 0.0, 'lr': float(lr_physiology)})
         if bank_names:
             # Gains are O(1) where synapses are ~1e-3; Adam steps ~lr per update, so the bank takes a scale-matched
             # rate (calibrated on a frozen-brain probe: 1e-2 moves the gains, 2e-4 leaves them at ~0.01 per 4k tokens).

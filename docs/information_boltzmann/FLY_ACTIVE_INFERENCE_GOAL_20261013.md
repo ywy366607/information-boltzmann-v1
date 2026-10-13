@@ -390,3 +390,18 @@ for the memory's own parameters it is the larger part whenever the memory is wri
 written (text -> Kenyon entry down ~70x), so behaviour and language equal the control's (|diff| < 0.02 nats), and
 memory_revisit live - frozen stays < 0.01 nats.  What it is for: once the entry and dopamine carry something, the
 parameters that decide what the memory keeps learn from consequences arriving long after the window.
+
+## D2b: the physiology needs its own step (found during D2, before its end)
+After two D2 chunks the STP parameters had moved at most 0.016 (mean 0.005) in log / logit space -- tau_rec 200 ->
+~203.  Cause, arithmetic: Adam moves a parameter ~lr per step; the class physiology lives in log / logit space, so
+the shared lr 2e-4 is a 0.02% relative change per step, ~128 steps per chunk -> <= 2.6% per chunk even with a
+consistent sign (noisy gradients cancel most of it).  The synapses take 2% of their birth weight per step (relative
+plasticity), 100x more; the read-bank gains already needed 50x for the same reason.  So D2 cannot answer whether
+evolution grows accumulation: a step-budget null.  D2b continues both D2 lineages for 3 chunks with
+--lr-physiology 5e-3 (0.5% per step; not the synapses' 2%, because one class parameter moves thousands of cells at
+once).  Predictions: tau_rec / u0 of the fixed arm move by > 0.1 in log / logit space and differ between Kenyon
+subtypes; the noisy-word CE falls with ticks more in the fixed arm (ce_by_tick_noisy slope); if the parameters move
+but nothing changes in behaviour, the cause is elsewhere (the read, or the noise level); if thresholds run away
+(silence / saturation), 5e-3 is too large for log_threshold and it needs its own smaller rate.
+Also: the same arithmetic holds for every log-space clock in D1-D3 (dopamine, memory, membrane): none of them could
+evolve within these runs at 2e-4.
