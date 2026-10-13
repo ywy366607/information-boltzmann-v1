@@ -445,3 +445,16 @@ phi, vs a control fork; queued on D1 and D3 once the GPU is free.  Predictions: 
 too small: raise it); PAM responds to sugar more than PPL1 does and PPL1 to bitter more than PAM does (if both go to
 PAM01 alike, the valence lines are not separated in this brain and the loop would teach the same thing for good and
 bad answers -- then the cause is looked for in the SEZ relays before closing the loop).
+
+### Valence is separated; the "weak separation" was the unsigned measure (static, signed, 2026-10-13 12:25)
+The route checks propagated |w| for both excitatory and inhibitory edges, so an inhibited target counted as driven.
+Signed (A = g_e w_e - g_i w_i), per unit receptor activity, at hop 2 (the direct relays, GNG / DNg cells):
+            sugar -> PAM      sugar -> PPL1     bitter -> PAM     bitter -> PPL1
+  birth     +1.2e-5           -1.7e-5           +6.2e-6           +4.9e-6
+  trained   +1.4e-4           -1.7e-5           -1.3e-4           +9.0e-5
+Sugar excites PAM and inhibits PPL1 (PPL106); bitter excites PPL1 (and PPL2) and, after training, inhibits PAM01 /
+PAM08 -- the fly's valence logic (reward PAM, punishment PPL1), already present and strengthened by training (sugar ->
+PAM x12, bitter -> PPL1 x18).  At hops 3-4 both turn net negative on all dopamine cells (long paths are dominated by
+inhibition in the linear picture; thresholds decide in activity).  So the loop can teach different things for good
+and bad answers; the activity check (taste_pulse_probe) is still the precondition.  Method lesson: static routes must
+be signed and absolute (two wrong conclusions today came from shares and from |w|).
