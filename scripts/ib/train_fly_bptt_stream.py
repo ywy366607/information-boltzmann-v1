@@ -183,7 +183,8 @@ def resolve_learning_modes(args, previous_config, previous_learner):
         args.eye_binary = bool(previous_config.get('eye_binary', False))
     if getattr(args, 'ai_depth', None) is None:
         args.ai_depth = int(previous_config.get('ai_depth') or 0)
-    for name, default in (('motor_acts', False), ('act_brain_grad', False), ('miss_prior', False), ('kc_subtypes', False)):
+    for name, default in (('motor_acts', False), ('act_brain_grad', False), ('miss_prior', False), ('kc_subtypes', False),
+                          ('act_dopamine_precision', False), ('epistemic_belief', False)):
         if getattr(args, name, None) is None:
             setattr(args, name, bool(previous_config.get(name, default)))
     for name, default in (('act_tau', 8.0), ('act_habit', 0.2), ('act_gamma_inv', 0.05)):
@@ -343,6 +344,11 @@ def main():
     parser.add_argument('--act-gamma-inv', type=float, default=None, help='1/gamma: weight of KL(policy || habit)')
     parser.add_argument('--act-brain-grad', action=argparse.BooleanOptionalAction, default=None,
                         help='Let the policy gradient reach the brain through the motor spikes')
+    parser.add_argument('--act-dopamine-precision', action=argparse.BooleanOptionalAction, default=None,
+                        help='Policy precision gamma encoded by the dopamine cells of the brain: z = ln E + gamma (W m + b)')
+    parser.add_argument('--epistemic-belief', action=argparse.BooleanOptionalAction, default=None,
+                        help='Epistemic value of looking = Bayesian surprise of the brain: how far a word moves its own '
+                             'prediction of what comes next (instead of an external word counter)')
     parser.add_argument('--miss-prior', action=argparse.BooleanOptionalAction, default=None,
                         help='An unanswered question is worth minus the unigram (listener prior) CE of its answer')
     parser.add_argument('--sense-noise', type=float, default=None,
@@ -689,10 +695,14 @@ def main():
             learner.eye_binary, learner.ai_depth = bool(args.eye_binary), int(args.ai_depth)
             learner.sense_noise_max = float(args.sense_noise)
             learner.act_habit, learner.act_gamma_inv = float(args.act_habit), float(args.act_gamma_inv)
-            if args.motor_acts and getattr(model, 'ai_mu', None) is None:
+            learner.epistemic_source = 'belief' if args.epistemic_belief else 'count'
+            if args.motor_acts and (getattr(model, 'ai_mu', None) is None
+                                    or (getattr(model, 'ai_precision', False) and getattr(model, 'ai_da_ref', None) is None)):
                 from information_boltzmann.core.fly_active_inference import calibrate_muscles
                 spread = calibrate_muscles(model, learner.state, np.asarray(train[:128]))
-                print(f'Muscles calibrated on 128 words (median spread {spread:.4f})', flush=True)
+                print(f'Muscles calibrated on 128 words (median spread {spread:.4f})'
+                      + (f'; dopamine tone {float(model.ai_da_ref):.4f} (gamma = 1)' if getattr(model, 'ai_precision', False) else ''),
+                      flush=True)
             if args.miss_prior:
                 # the listener's prior: unigram CE of every word from the first 20M training tokens
                 _c = np.bincount(np.asarray(train[:20_000_000], dtype=np.int64), minlength=50257).astype(np.float64) + 0.5
@@ -891,11 +901,11 @@ def main():
                 if args.motor_acts:
                     from information_boltzmann.core.fly_active_inference import attach_motor_acts
                     attach_motor_acts(model, tau_muscle=args.act_tau, eye_open=float(args.eye_init or 0.9),
-                                      habit=args.act_habit, brain_gradient=args.act_brain_grad)
-                    ai_state = {k: v for k, v in ai_state.items() if k in ('ai_w', 'ai_b', 'ai_mu', 'ai_sigma')}
-                    if 'ai_mu' in ai_state:
-                        model.ai_mu = torch.nn.Parameter(ai_state['ai_mu'].to(model.read_indices.device).float(), requires_grad=False)
-                        model.ai_sigma = torch.nn.Parameter(ai_state['ai_sigma'].to(model.read_indices.device).float(), requires_grad=False)
+                                      habit=args.act_habit, brain_gradient=args.act_brain_grad,
+                                      dopamine_precision=args.act_dopamine_precision)
+                    from information_boltzmann.core.fly_active_inference import set_motor_constants, MOTOR_CONSTANTS
+                    ai_state = {k: v for k, v in ai_state.items() if k in ('ai_w', 'ai_b') + MOTOR_CONSTANTS}
+                    set_motor_constants(model, ai_state)
                 else:
                     attach_ai_head(model, init, eye_open=float(getattr(args, "eye_init", 0.95) or 0.95))
                 if ai_state:
@@ -1027,10 +1037,14 @@ def main():
             learner.eye_binary, learner.ai_depth = bool(args.eye_binary), int(args.ai_depth)
             learner.sense_noise_max = float(args.sense_noise)
             learner.act_habit, learner.act_gamma_inv = float(args.act_habit), float(args.act_gamma_inv)
-            if args.motor_acts and getattr(model, 'ai_mu', None) is None:
+            learner.epistemic_source = 'belief' if args.epistemic_belief else 'count'
+            if args.motor_acts and (getattr(model, 'ai_mu', None) is None
+                                    or (getattr(model, 'ai_precision', False) and getattr(model, 'ai_da_ref', None) is None)):
                 from information_boltzmann.core.fly_active_inference import calibrate_muscles
                 spread = calibrate_muscles(model, learner.state, np.asarray(train[:128]))
-                print(f'Muscles calibrated on 128 words (median spread {spread:.4f})', flush=True)
+                print(f'Muscles calibrated on 128 words (median spread {spread:.4f})'
+                      + (f'; dopamine tone {float(model.ai_da_ref):.4f} (gamma = 1)' if getattr(model, 'ai_precision', False) else ''),
+                      flush=True)
             if args.miss_prior:
                 # the listener's prior: unigram CE of every word from the first 20M training tokens
                 _c = np.bincount(np.asarray(train[:20_000_000], dtype=np.int64), minlength=50257).astype(np.float64) + 0.5

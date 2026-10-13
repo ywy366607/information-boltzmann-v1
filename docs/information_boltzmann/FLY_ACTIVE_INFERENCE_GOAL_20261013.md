@@ -315,3 +315,36 @@ weight (step geometry, no pull back to birth -- the trained weights drifted far,
 10-1000x) and was introduced because absolute Adam steps had saturated / silenced cells (surrogate gradients ~0).
 If behaviour collapses once the brain gets the gradient (GRPO's entropy collapse), that is the evidence for an
 entropy-keeping term, added then.
+
+## D3b: the fly's own signals for diversity and value (user: "add them all; use what the fly has and learned itself")
+Measured first: D1's waiting is not heavy-tailed (inter-commit intervals from its own hazards: CV 1.01, q99 29 ticks,
+Hill exponent over the top 5% 3.6, vs 0.91 / 25 / 4.1 for a geometric of equal mean).  Sampling alone gives one
+geometric-like clock; nothing in the policy varies slowly.
+1. Policy precision encoded by dopamine (Friston et al. 2014; q(pi) ~ E exp(-gamma G)): z = ln E + gamma (W m + b),
+   ln E the habit (now a frozen constant, not scaled; the learned bias is part of the value), gamma = (d + eps) /
+   (d_ref + eps), d = the population mean spike of the 392 dopamine cells low-passed on the brain's own slow dopamine
+   clock (sigmoid(dopamine_logit_slow) = 0.9982, ~556 ticks), d_ref its mean on text (calibrated with the muscles).
+   The population tone, not the dopamine delivered at the output cells: those get 0.5% of all dopamine (553 of 2333
+   receive any).  gamma is read, never trained: it is one gain redundant with |W|; a gradient into the dopamine cells
+   could only learn to burst into determinism and would open the three-factor plasticity windows brain-wide (review).
+   No new cell, no new parameter.  Arm d3_precision = D3 + this; d3_braingrad is its control.
+   Predictions: if the dopamine tone fluctuates (gamma CV over words > 0.2), the waiting becomes a mixture of clocks
+   -- Hill exponent < 3 and CV > 1.1 (commit_tail.py), latency entropy per word not lower than the control; if gamma's
+   CV < 0.1 the arm equals the control and the cause is a flat dopamine tone (exit: which dopamine types fluctuate,
+   and whether the online three-factor rule / no-homeostasis flatten it).  Language cost <= 0.05 vs the control;
+   report it split by gamma tercile (high tonic dopamine also opens plasticity windows).
+2. Epistemic value of looking from the brain's own belief, not a counter outside it: the Bayesian surprise (Itti &
+   Baldi) of each word, KL(prediction after the word's interval || prediction just before it), evaluated under the
+   beliefs, weighted by the eye gain, per word as the pragmatic value (--epistemic-belief).  The entropy of the
+   prediction was rejected in review: it counts unlearnable noise as information and would reward watching the noisy
+   TV (goal 4); a word the brain has learned to ignore moves nothing and is worth ~0.  Used in eye experiments only
+   (D3 keeps the eyes open).
+3. The fly's familiarity signals.  Long-term familiarity (word rarity) is the brain's own: decodable from the core at
+   tick 1 (R^2 0.82), at the muscles only by tick 4 (0.32); D3's brain gradient is what can route it earlier (no
+   electrode).  Within-life familiarity (alpha'3 novelty loop) is unusable now: PPL104 does not respond to new words
+   (0.0), MBON-alpha'3 at noise level, new words' CE drops 0.017 nats per presentation.  Cause, static: the text
+   reaching alpha'/beta' Kenyon cells fell ~70x during passive training (hop 3: 1.1% -> 0.015%), MBON-alpha'3 ~30x,
+   PPL104 ~40x, and the MBON16 -> PPL104 feedback left PPL104's top inputs.  Exit: D2 gives the Kenyon subtypes their
+   own physiology; D3 adds the gradient; word_novelty_probe runs after each, to see whether the loop recovers.
+4. The epistemic value of acts (answering to learn) needs the consequence loop (an answer's outcome observed through
+   receptors); it stays with that design.

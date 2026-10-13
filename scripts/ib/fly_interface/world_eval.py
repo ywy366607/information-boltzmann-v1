@@ -71,10 +71,9 @@ def load(fork):
         if 'ai_w' in saved['model']:
             if cfg.get('motor_acts'):
                 fai.attach_motor_acts(model, tau_muscle=float(cfg.get('act_tau') or 8.0), eye_open=float(cfg.get('eye_init') or 0.9),
-                                      habit=float(cfg.get('act_habit') or 0.2))
-                if 'ai_mu' in saved['model']:
-                    model.ai_mu = torch.nn.Parameter(saved['model']['ai_mu'].cuda().float(), requires_grad=False)
-                    model.ai_sigma = torch.nn.Parameter(saved['model']['ai_sigma'].cuda().float(), requires_grad=False)
+                                      habit=float(cfg.get('act_habit') or 0.2),
+                                      dopamine_precision=bool(cfg.get('act_dopamine_precision')))
+                fai.set_motor_constants(model, saved['model'])
             else:
                 fai.attach_ai_head(model, torch.load(ROOT / cfg.get('act_init', 'scratch/fly_stream/act_init.pt'), map_location='cpu'))
             model.load_state_dict({k: v for k, v in saved['model'].items() if k in fai.AI_STATE_NAMES}, strict=False)

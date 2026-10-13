@@ -1341,3 +1341,87 @@ def test_kenyon_subtypes_get_their_own_physiology_without_changing_dynamics(fly_
         model.n_superclasses = saved_n
         if hasattr(model, 'class_split_sources'):
             del model.class_split_sources
+
+
+def test_dopamine_encoded_precision_scales_the_value_not_the_habit():
+    """Policy precision (Friston et al. 2014), q(pi) ~ E exp(-gamma G): z = ln E + gamma (W m + b); gamma = the brain's
+    own dopamine tone over its mean (the 392 dopamine cells' slow mean spike on the brain's slow dopamine clock); at
+    W = b = 0 the acts are the habit whatever the tone; gamma scales the learned value; the tone is read, never trained
+    (no gradient reaches the dopamine cells through it); ai_g carries [muscles, tone] and rests at gamma = 1."""
+    import types
+    from information_boltzmann.core import fly_active_inference as ai
+    n_cells, n_out = 12, 4
+    model = torch.nn.Module()
+    model.register_buffer('read_indices', torch.arange(n_out))
+    model.register_buffer('dan_indices', torch.tensor([8, 9, 10, 11]))
+    model.dopamine_logit_slow = torch.nn.Parameter(torch.tensor(2.0))
+    ai.attach_motor_acts(model, tau_muscle=4.0, eye_open=0.9, habit=0.2, dopamine_precision=True)
+    model.ai_mu = torch.nn.Parameter(torch.zeros(1, n_out), requires_grad=False)
+    model.ai_sigma = torch.nn.Parameter(torch.ones(1, n_out), requires_grad=False)
+    model.ai_da_ref = torch.nn.Parameter(torch.tensor(0.25), requires_grad=False)
+    g = ai.motor_rest(model, torch.zeros(1, 1))
+    assert g.shape == (1, n_out + 1) and abs(ai.precision_of(model, g) - 1.0) < 1e-6
+    habit = torch.tensor([math.log(0.9 / 0.1), math.log(0.2 / 0.8)])
+    m = torch.tensor([[0.5, -1.0, 2.0, 0.0]])
+    for tone in (0.0, 0.25, 1.0):           # W = b = 0: the habit, whatever the dopamine
+        z = ai.motor_logits(model, torch.cat([m, torch.tensor([[tone]])], 1))
+        assert torch.allclose(z[0], habit, atol=1e-6)
+    with torch.no_grad():
+        model.ai_w.copy_(torch.randn(2, n_out)); model.ai_b.copy_(torch.tensor([0.3, -0.2]))
+    value = m @ model.ai_w.T + model.ai_b
+    for tone in (0.125, 0.25, 0.75):
+        z = ai.motor_logits(model, torch.cat([m, torch.tensor([[tone]])], 1))
+        gamma = (tone + ai.DA_EPS) / (0.25 + ai.DA_EPS)
+        assert torch.allclose(z, habit + gamma * value, atol=1e-5)
+    # one tick: the tone follows the dopamine cells on the slow clock; no gradient through it into the brain
+    ring0 = torch.zeros(1, n_cells, requires_grad=True)
+    spikes = ring0 + torch.tensor([[1, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0]], dtype=torch.float)
+    state = types.SimpleNamespace(ring=(spikes,))
+    model.ai_brain_gradient = True
+    hz, g2, _ = ai.ai_step(model, state, g)
+    rho = torch.sigmoid(model.dopamine_logit_slow).item()
+    assert abs(float(g2[0, -1]) - (rho * 0.25 + (1 - rho) * 0.5)) < 1e-6
+    hz.sum().backward()
+    assert ring0.grad[0, 8:].abs().sum() == 0 and ring0.grad[0, :n_out].abs().sum() > 0
+    assert model.dopamine_logit_slow.grad is None
+
+
+def test_precision_and_bayesian_surprise_run_in_the_stream(fly_model_and_state):
+    """End to end on the fly: dopamine-encoded precision carries the tone in ai_g and reports gamma; the epistemic
+    value from the brain's own Bayesian surprise is finite and non-negative (a KL between its own predictions)."""
+    import dataclasses
+    from information_boltzmann.core import fly_active_inference as ai
+    model, state, device = fly_model_and_state
+    if device != "cuda":
+        pytest.skip("event-driven transmission needs CUDA")
+    torch.manual_seed(7)
+    start = dataclasses.replace(state, h=torch.rand_like(state.h))
+    added = getattr(model, 'dopamine_logit_slow', None) is None
+    if added:
+        model.dopamine_logit_slow = torch.nn.Parameter(torch.tensor(6.3, device=device))
+    ai.attach_motor_acts(model, tau_muscle=4.0, eye_open=0.9, habit=0.2, dopamine_precision=True)
+    model.ai_da_ref = torch.nn.Parameter(torch.tensor(0.01, device=device), requires_grad=False)
+    try:
+        ids = torch.tensor([[50, 101, 205, 307, 409, 511]], device=device)
+        targets = torch.tensor([[101, 205, 307, 409, 511, 613]], device=device)
+        learner = FlyBPTTLearner(model, start, lr=2e-4, settle_ticks=14, writer_baseline_clock="physical",
+                                 use_checkpointing=True, stream_ticks=1, lambda_mcr2=0.0)
+        learner.stream_pace_mean, learner.pace_seed = 6.0, 3
+        learner.ai_epistemic, learner.ai_pragmatic, learner.eye_forced = 0.1, 1.0, 1.0
+        learner.epistemic_source = 'belief'
+        learner.unigram_ce = np.full(50257, 9.0, np.float32)
+        model.zero_grad(set_to_none=True)
+        learner.forward_window(ids, targets)
+        assert learner.ai_g.shape == (1, model.read_indices.numel() + 1)
+        m = learner.last_adaptive_metrics
+        assert m['gamma'] > 0 and math.isfinite(m['gamma'])
+        assert math.isfinite(m['epistemic']) and m['epistemic'] >= 0
+        (learner.last_train_loss.mean() + learner.last_act_loss).backward()
+        assert model.ai_w.grad is not None and model.ai_w.grad[1].abs().sum() > 0
+        assert getattr(model.dopamine_logit_slow, 'grad', None) is None or added is False
+    finally:
+        for name in ('ai_w', 'ai_b', 'ai_lambda', 'ai_habit', 'ai_da_ref', 'ai_mode', 'ai_brain_gradient', 'ai_precision'):
+            if hasattr(model, name):
+                delattr(model, name)
+        if added:
+            delattr(model, 'dopamine_logit_slow')

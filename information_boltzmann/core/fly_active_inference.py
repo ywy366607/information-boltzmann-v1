@@ -22,7 +22,8 @@ import torch
 
 BOUND, SOFT = 1.0, 0.25
 AI_PARAMETER_NAMES = ('ai_w', 'ai_b', 'ai_logit_leak')
-AI_STATE_NAMES = AI_PARAMETER_NAMES + ('ai_mu', 'ai_sigma', 'ai_w_scale')
+AI_STATE_NAMES = AI_PARAMETER_NAMES + ('ai_mu', 'ai_sigma', 'ai_w_scale', 'ai_da_ref', 'ai_habit')
+MOTOR_CONSTANTS = ('ai_mu', 'ai_sigma', 'ai_da_ref')
 AI_RAW_SD = 0.02            # raw W of sd 0.02: an Adam step (~2e-4) is ~1% of the read
 
 
@@ -44,29 +45,87 @@ def attach_ai_head(model, init, eye_open=0.95):
     return model
 
 
-def attach_motor_acts(model, tau_muscle=8.0, eye_open=0.9, habit=0.2, brain_gradient=False):
+def attach_motor_acts(model, tau_muscle=8.0, eye_open=0.9, habit=0.2, brain_gradient=False, dopamine_precision=False):
     """Acts as the brain's own output cells (diversity first; GOAL section 'Behaviour diversity first').  The output
     cells' transmitted spikes drive a muscle activation m = lambda m + (1 - lambda) s (the body's low-pass, tau_muscle
     ticks, no threshold, no learning); the act logits are z = W m + b (W learned: which cells drive which act; starts
     at zero, so the acts start at their habits); the acts are SAMPLED, look ~ Bernoulli(sigmoid(z_eye)) and commit ~
     Bernoulli(sigmoid(z_out)) -- no integrator, no bound, no straight-through.  The commit's learning signal is the
     exact expectation over commit times along the one trajectory (each tick: 'if I answered now', as CTM scores every
-    tick).  brain_gradient=False: the policy reads the muscles detached (the readout learns first).  ai_g carries m."""
+    tick).  brain_gradient=False: the policy reads the muscles detached (the readout learns first).  ai_g carries m.
+    dopamine_precision: the policy precision gamma of active inference, q(pi) ~ E exp(-gamma G), is encoded by the
+    brain's own dopamine cells (Friston et al. 2014): z = ln E + gamma (W m + b), ln E the habit (frozen, not
+    scaled), W m + b the learned value; gamma = (d + eps) / (d_ref + eps), d the mean transmitted spike of the 392
+    dopamine cells low-passed with the brain's own slow dopamine clock (sigmoid(dopamine_logit_slow), ~556 ticks),
+    d_ref its calibrated mean on text.  The population tone, not the dopamine delivered at the output cells: those
+    receive 0.5% of it.  gamma is read, never trained (detached: it is a gain redundant with |W|; a gradient into the
+    dopamine cells would only learn to burst into determinism and open the plasticity windows brain-wide).  No new
+    cell, no new parameter; ai_g carries [m, d]."""
     device = model.read_indices.device
     n = model.read_indices.numel()
     model.ai_mode = 'motor'
     model.ai_brain_gradient = bool(brain_gradient)
+    model.ai_precision = bool(dopamine_precision)
+    if model.ai_precision and (getattr(model, 'dan_indices', None) is None
+                               or getattr(model, 'dopamine_logit_slow', None) is None):
+        raise ValueError('dopamine-encoded precision needs the dopamine cells and their slow clock (--dopamine-modulation)')
     model.register_buffer('ai_lambda', torch.tensor(math.exp(-1.0 / tau_muscle), device=device), persistent=True)
     model.ai_w = torch.nn.Parameter(torch.zeros(2, n, device=device))
-    model.ai_b = torch.nn.Parameter(torch.tensor([math.log(eye_open / (1 - eye_open)), math.log(habit / (1 - habit))],
-                                                 device=device))
+    prior = torch.tensor([math.log(eye_open / (1 - eye_open)), math.log(habit / (1 - habit))], device=device)
+    if model.ai_precision:
+        model.register_buffer('ai_habit', prior, persistent=True)        # ln E, frozen
+        model.ai_b = torch.nn.Parameter(torch.zeros(2, device=device))  # the value's bias, scaled with W m
+    else:
+        model.ai_b = torch.nn.Parameter(prior)
     return model
 
 
 def motor_logits(model, m):
+    precision = getattr(model, 'ai_precision', False)
+    if precision:
+        m, d = m[:, :-1], m[:, -1:]
     if getattr(model, 'ai_mu', None) is not None:
         m = (m - model.ai_mu) / model.ai_sigma                # each muscle's own gain (calibrate_muscles)
-    return m @ model.ai_w.T + model.ai_b
+    value = m @ model.ai_w.T + model.ai_b
+    if not precision:
+        return value
+    return model.ai_habit + gamma_of(model, d).detach() * value
+
+
+DA_EPS = 1.0 / (392 * 1000)     # one dopamine spike per 1000 ticks over the population: a silent tone reads gamma > 0
+
+
+def gamma_of(model, d):
+    """The precision encoded by the dopamine tone d (the population's slow mean spike)."""
+    return (d + DA_EPS) / (model.ai_da_ref + DA_EPS)
+
+
+def motor_rest(model, like):
+    """ai_g at rest: muscles 0; with dopamine precision, the tone at its mean (gamma = 1)."""
+    g = like.new_zeros(1, model.read_indices.numel())
+    if getattr(model, 'ai_precision', False):
+        g = torch.cat([g, model.ai_da_ref.detach().reshape(1, 1).to(g)], 1)
+    return g
+
+
+def precision_of(model, g):
+    """gamma from ai_g (None without dopamine precision)."""
+    if not getattr(model, 'ai_precision', False) or g is None:
+        return None
+    return float(gamma_of(model, g[0, -1]))
+
+
+def dopamine_rate(model, state):
+    """Mean transmitted spike of the dopamine cells at this tick."""
+    return state.ring[0].index_select(1, model.dan_indices).mean(1, keepdim=True)
+
+
+def set_motor_constants(model, saved):
+    """The calibrated constants (frozen) from a saved state dict."""
+    device = model.read_indices.device
+    for name in MOTOR_CONSTANTS:
+        if name in saved:
+            setattr(model, name, torch.nn.Parameter(saved[name].to(device).float(), requires_grad=False))
 
 
 def calibrate_muscles(model, state, tokens, ticks=8):
@@ -81,7 +140,8 @@ def calibrate_muscles(model, state, tokens, ticks=8):
     writer = model.topographic_writer
     quiet = torch.zeros_like(state.h)
     m = state.h.new_zeros(1, model.read_indices.numel())
-    rows, s = [], state
+    rows, da, s = [], [], state
+    precision = getattr(model, 'ai_precision', False)
     with torch.no_grad():
         for w in tokens:
             token = torch.tensor([int(w)], device=state.h.device)
@@ -94,12 +154,19 @@ def calibrate_muscles(model, state, tokens, ticks=8):
                                                   base_rates=opts['base_rates'])
                 m = model.ai_lambda * m + (1.0 - model.ai_lambda) * s.ring[0].index_select(1, model.read_indices)
                 rows.append(m)
+                if precision:
+                    da.append(dopamine_rate(model, s))
         M = torch.cat(rows, 0)
         mu, sd = M.mean(0, keepdim=True), M.std(0, keepdim=True)
         active = sd[sd > 0]
         sd = torch.maximum(sd, active.median() if active.numel() else sd.new_tensor(1.0))   # silent cells read 0
     model.ai_mu = torch.nn.Parameter(mu.clone(), requires_grad=False)
     model.ai_sigma = torch.nn.Parameter(sd.clone(), requires_grad=False)
+    if precision:
+        ref = torch.cat(da).mean()
+        if float(ref) < 10 * DA_EPS:
+            raise ValueError(f'the dopamine cells are nearly silent on text (tone {float(ref):.2e}): no precision to read')
+        model.ai_da_ref = torch.nn.Parameter(ref.reshape(()).clone(), requires_grad=False)
     return float(active.median()) if active.numel() else 0.0
 
 
@@ -123,7 +190,14 @@ def ai_step(model, state, g, taped=None):
         s = state.ring[0].index_select(1, model.read_indices)
         if not model.ai_brain_gradient:
             s = s.detach()
-        g = model.ai_lambda * g + (1.0 - model.ai_lambda) * s
+        if getattr(model, 'ai_precision', False):
+            # the dopamine tone on the brain's own slow dopamine clock
+            da = dopamine_rate(model, state).detach()             # read, never trained (attach_motor_acts)
+            rho = torch.sigmoid(model.dopamine_logit_slow).detach()
+            g = torch.cat([model.ai_lambda * g[:, :-1] + (1.0 - model.ai_lambda) * s,
+                           rho * g[:, -1:] + (1.0 - rho) * da], 1)
+        else:
+            g = model.ai_lambda * g + (1.0 - model.ai_lambda) * s
         hazard = torch.sigmoid(motor_logits(model, g)[0, 1:2])
         committed = bool(torch.rand(()) < float(hazard.detach())) if taped is None else bool(taped)
         return hazard, g, committed

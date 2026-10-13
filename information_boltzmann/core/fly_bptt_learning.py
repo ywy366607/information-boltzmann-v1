@@ -2103,8 +2103,11 @@ class FlyBPTTLearner:
             sense_sigmas = []
             ai_eyes, ai_onsets, ai_out, ai_tokens = [], [], [], []
             if ai_on:
-                if getattr(self, 'ai_g', None) is None and getattr(m, 'ai_mode', None) == 'motor':
-                    self.ai_g = state.h.new_zeros(1, m.read_indices.numel())         # muscles at rest
+                if getattr(m, 'ai_mode', None) == 'motor':
+                    from .fly_active_inference import motor_rest
+                    rest = motor_rest(m, state.h)
+                    if getattr(self, 'ai_g', None) is None or self.ai_g.shape != rest.shape:
+                        self.ai_g = rest                                            # muscles at rest
                 if getattr(self, 'ai_g', None) is None:
                     p_open = float(getattr(self, 'eye_init', 0.95))
                     self.ai_g = state.h.new_tensor([[math.log(p_open / (1 - p_open)), 0.0]])     # eyes open at the start
@@ -2200,8 +2203,27 @@ class FlyBPTTLearner:
                 e_on = e[on]; tok_on = tok[on.cpu().numpy()]
                 nov = torch.as_tensor(self.familiarity.novelty(tok_on), dtype=e.dtype, device=e.device)
                 prior = torch.as_tensor(1.0 + self.familiarity.n[tok_on], dtype=e.dtype, device=e.device)
-                # information gain of seeing the word with gain e: e pseudo-counts on a count of 1 + n(word)
-                epistemic = (0.5 * torch.log1p(e_on / prior)).sum() / max(1, len(tok_on))
+                if getattr(self, 'epistemic_source', 'count') == 'belief' and reads:
+                    # the brain's own Bayesian surprise (Itti & Baldi): what a word told the brain is how far it moved
+                    # the brain's prediction of what comes next, KL(p after the word's interval || p just before it);
+                    # a background word the brain has learned to ignore moves nothing and is worth ~0 (the entropy of
+                    # the prediction would count unlearnable noise as information).  Evaluated under the beliefs (not
+                    # trained by them), weighted by the eye gain over the word's ticks; per word, as the pragmatic J.
+                    with torch.no_grad():
+                        lp = F.log_softmax(m.decoder(m.read_norm(torch.cat(reads, 0))).float(), -1)
+                    wstart = np.cumsum([0] + list(intervals))
+                    epistemic = e.new_zeros(())
+                    for i in range(1, len(intervals)):
+                        before, after = lp[wstart[i] - 1], lp[wstart[i + 1] - 1]
+                        kl = (after.exp() * (after - before)).sum()
+                        sl = slice(int(wstart[i]), int(wstart[i + 1]))
+                        seen = on[sl]
+                        gain = e[sl][seen].mean() if bool(seen.any()) else e.new_zeros(())
+                        epistemic = epistemic + gain * kl.to(e.dtype)
+                    epistemic = epistemic / max(1, len(intervals))
+                else:
+                    # information gain of seeing the word with gain e: e pseudo-counts on a count of 1 + n(word)
+                    epistemic = (0.5 * torch.log1p(e_on / prior)).sum() / max(1, len(tok_on))
                 ai_loss = -float(getattr(self, 'ai_epistemic', 0.0)) * epistemic
                 lam_sig = float(getattr(self, 'ai_sigreg', 0.0))
                 if lam_sig > 0 and reads:
@@ -2253,6 +2275,10 @@ class FlyBPTTLearner:
                         with torch.no_grad():
                             hz_d = hz.detach()
                             ent = -(hz_d * hz_d.clamp_min(1e-6).log() + (1 - hz_d) * (1 - hz_d).clamp_min(1e-6).log())
+                            from .fly_active_inference import precision_of
+                            gamma = precision_of(m, ai_g)
+                            if gamma is not None:
+                                self.last_adaptive_metrics['gamma'] = gamma
                             self.last_adaptive_metrics.update({'habit_kl': float(kl.detach()),
                                                                'hazard_mean': float(hz_d.mean()),
                                                                'hazard_sd': float(hz_d.std()),
@@ -2297,7 +2323,8 @@ class FlyBPTTLearner:
                                           'extended': extended, 'noise': input_noise, 'sigma': sense_sigmas,
                                           'eye_tick': e.detach().cpu().tolist() if self.hold_input else None,
                                           'hazard': (torch.cat(ai_out).detach().cpu().tolist()
-                                                     if getattr(m, 'ai_mode', None) == 'motor' else None)}
+                                                     if getattr(m, 'ai_mode', None) == 'motor' else None),
+                                          'gamma': self.last_adaptive_metrics.get('gamma')}
             if world is not None:
                 # the act's fitness, as evolution sees it (never an input to the brain); BPTT through the hazards
                 from .fly_odour_world import act_return

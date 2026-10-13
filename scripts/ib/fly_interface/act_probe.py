@@ -24,7 +24,7 @@ from pathlib import Path
 from scipy.stats import spearmanr
 sys.path.insert(0, 'D:/information-boltzmann-v1')
 exec(open('D:/information-boltzmann-v1/scripts/ib/fly_interface/world_eval.py', encoding='utf-8').read().split('def evaluate(fork):')[0])
-from information_boltzmann.core.fly_active_inference import ai_eye, ai_step, eye_act
+from information_boltzmann.core.fly_active_inference import ai_eye, ai_step, eye_act, motor_rest, precision_of
 BURN, SCORE = int(os.environ.get('ACT_BURN', BURN)), int(os.environ.get('ACT_SCORE', SCORE))
 ints = lambda key, default: tuple(int(x) for x in os.environ.get(key, default).split(',') if x)
 MUS, FIXED, NOISY = ints('ACT_MUS', '16,8,4,2'), ints('ACT_FIXED', '16'), ints('ACT_NOISY', '4,2')
@@ -57,7 +57,7 @@ for i in range(len(clean)):
 g0 = L.get('ai_g')
 MOTOR = getattr(model, 'ai_mode', None) == 'motor'
 if g0 is None:
-    g0 = torch.zeros(1, model.read_indices.numel()) if MOTOR else torch.tensor([[math.log(0.95 / 0.05), 0.0]])
+    g0 = motor_rest(model, torch.zeros(1, 1)) if MOTOR else torch.tensor([[math.log(0.95 / 0.05), 0.0]])
 LOGV = math.log(50257)
 # the value of not answering: the listener's prior (unigram CE of the answer) if the checkpoint was trained so
 _counts = np.bincount(np.asarray(np.load(ROOT / cfg['data'] / 'train.npy', mmap_mode='r')[:20_000_000], dtype=np.int64),
@@ -91,6 +91,7 @@ def run(name, mode, mu=None, fixed=None, use_noise=False):
     oracle_ce = np.zeros(n_words); oracle_tick = np.zeros(n_words); tick_curve = []
     sigma_of = np.zeros(n_words); eye_word = np.zeros(n_words)
     exp_value = np.zeros(n_words); exp_latency = np.zeros(n_words); latency_entropy = np.zeros(n_words); hz_first = np.zeros(n_words)
+    gamma_word = np.full(n_words, np.nan)
     open_q, clock = [], 0
     srng = np.random.default_rng(2000 + (mu or 0))
     passed = np.zeros(n_words)
@@ -162,6 +163,9 @@ def run(name, mode, mu=None, fixed=None, use_noise=False):
                         q_answer[q] = float(-logp[int(answer_of[q])]); q_latency[q] = clock - q_open_tick[q] + 1
             s = fl.expect_next(model, s, lat)
             eye_word[i] = eye_sum / (K if HOLD else 1)
+            gw = precision_of(model, g)
+            if gw is not None:
+                gamma_word[i] = gw                              # the dopamine-encoded precision at the word's end
             arrival[i] = ces[-1]; survival[i] = sum(ces) / (mu or K)
             # hindsight oracle within the word's own interval: the best tick to have answered (an upper bound on what
             # waiting could gain; biased up by taking a min over noisy values)
@@ -182,7 +186,7 @@ def run(name, mode, mu=None, fixed=None, use_noise=False):
          'had_open': had_open[sl].astype(float), 'open_hard': open_hard[sl], 'main': main[sl].astype(float),
          'noise': mask[:-1][sl].astype(float), 'oracle_ce': oracle_ce[sl], 'oracle_tick': oracle_tick[sl],
          'sigma': sigma_of[sl], 'eye_word': eye_word[sl], 'exp_value': exp_value[sl], 'exp_latency': exp_latency[sl],
-         'latency_entropy': latency_entropy[sl], 'hz_first': hz_first[sl], 'prior_ce': UNIGRAM[answer_of[sl]]}
+         'latency_entropy': latency_entropy[sl], 'hz_first': hz_first[sl], 'prior_ce': UNIGRAM[answer_of[sl]], 'gamma': gamma_word[sl]}
     asked = A['main'] > 0
     answered = asked & (A['latency'] > 0)
     for k in ('answer_ce', 'latency', 'ext', 'ce1', 'ent1'):
@@ -197,6 +201,12 @@ def run(name, mode, mu=None, fixed=None, use_noise=False):
     rep['exp_value_mean'] = float(np.nanmean(np.where(asked, A['exp_value'], np.nan)))
     rep['exp_latency_min_median_mean_max'] = d(A['exp_latency'][asked])
     rep['latency_entropy_mean'] = float(np.mean(A['latency_entropy'][asked]))
+    if np.isfinite(A['gamma']).any():
+        gm = A['gamma'][asked]
+        rep['gamma_min_median_mean_max'] = d(gm)
+        rep['gamma_cv'] = float(np.std(gm) / max(np.mean(gm), 1e-12))
+        rep['rho_exp_latency_gamma'] = float(spearmanr(A['exp_latency'][asked], gm)[0])
+        rep['rho_latency_entropy_gamma'] = float(spearmanr(A['latency_entropy'][asked], gm)[0])
     rep['rho_exp_latency_ce1'] = float(spearmanr(A['exp_latency'][asked], A['ce1'][asked])[0])
     rep['rho_exp_latency_oracle_tick'] = float(spearmanr(A['exp_latency'][asked], A['oracle_tick'][asked])[0])
     hq_ = asked & (A['ce1'] >= np.nanquantile(A['ce1'], 0.75)); eq_ = asked & (A['ce1'] <= np.nanquantile(A['ce1'], 0.25))
