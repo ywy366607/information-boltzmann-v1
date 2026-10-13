@@ -300,6 +300,92 @@ def resolve_learning_modes(args, previous_config, previous_learner):
                                    previous_config.get('flux_baseline', 0.048)))
 
 
+# The mainline individual (2026-10-13).  A chain names only what it changes; at birth every switch not named comes from
+# here, on a resume from the checkpoint's own config (a switch the checkpoint never had takes the parser default, so an
+# old individual is never silently given a new mechanism).  Switches went missing when each chain carried its own copy
+# of a long flag string (the predictive writer, validated 10-11, was absent from R1-R3).
+PROFILES = {
+    'mainline': (
+        # substrate: Shiu-scale connectome r2 (rescaled, sensory terminals out, antennal-lobe transmitters, DPM GABA)
+        '--graph data/malecns_v1/fly_reservoir_coba_r2.npz --kc-dendritic-only --connectome-v2 --pin-modulatory-types '
+        '--type-classes --intrinsic --intrinsic-jitter 0.1 --graded-types APL,CT1 --graded-gain 0.025 '
+        # neuron engine (Shiu replication)
+        '--E-E 0.55 --E-I -0.15 --spike-consumes-drive --refractory-ticks 1 --inhibitory-tau-ratio 4 --no-stp '
+        '--alif-beta-init 0.2 --surrogate-mode threshold --detach-reset --transmission-mode incoming '
+        # senses and world: text through every sensory cell, held for the word, prediction error written (efference)
+        '--writer receptor_all --hold-input --predictive-writer --writer-baseline-clock physical '
+        '--stream-ticks 8 --stream-pace-mean 16 --stream-pace-min 2 --go-neuron none '
+        # learning: synapses by normalized EG with the birth connectome as prior; class physiology frozen at birth;
+        # dopamine phasic (adapted), presynaptic site; Kenyon -> MBON three-factor memory
+        '--eg-plasticity --eg-tau 4096 --relative-edge-rate 0.02 --lr-physiology 0 '
+        '--dopamine-modulation --dopamine-site pre --dopamine-adapted --compartment-memory --comp-rate 2.0 '
+        '--carried-credit --no-homeostasis --no-ctm-loss '
+        # budgets and machine
+        '--window 32 --no-graph --validate-every-tokens 4096 --eval-tokens 512 --replay-tokens 128 --vram-limit-mib 3800'),
+    'none': '',
+}
+
+
+def _option_groups(tokens):
+    groups, cur = [], None
+    for t in tokens:
+        if t.startswith('--'):
+            cur = [t]
+            groups.append(cur)
+        elif cur is not None:
+            cur.append(t)
+    return groups
+
+
+def explicit_dests(parser, argv):
+    """The destinations the command line names (--x, --no-x, --x=v)."""
+    table = parser._option_string_actions
+    return {table[t.split('=')[0]].dest for t in argv if t.startswith('--') and t.split('=')[0] in table}
+
+
+def apply_profile(parser, argv, name):
+    """Parse argv on top of a profile: profile options whose destination the command line does not name come first."""
+    table = parser._option_string_actions
+    explicit = explicit_dests(parser, argv)
+    tokens = []
+    for group in _option_groups(PROFILES[name].split()):
+        if table[group[0]].dest not in explicit:
+            tokens += group
+    args = parser.parse_args(tokens + argv)
+    args.profile_dests = sorted({table[g[0]].dest for g in _option_groups(PROFILES[name].split())})
+    args.explicit_dests = sorted(explicit)
+    return args
+
+
+def inherit_profile_switches(parser, args, previous_config):
+    """On a resume every profile switch the command line does not name is the checkpoint's own (or, if the
+    checkpoint never had it, the parser default): a chain cannot drop or add a mechanism by omission."""
+    actions = {a.dest: a for a in parser._actions}
+    changed = []
+    for dest in args.profile_dests:
+        if dest in args.explicit_dests:
+            continue
+        value = previous_config.get(dest, actions[dest].default)
+        if actions[dest].type is Path and isinstance(value, str):
+            value = Path(value)
+        if getattr(args, dest) != value:
+            changed.append(dest)
+        setattr(args, dest, value)
+    return changed
+
+
+def print_switches(parser, args, source):
+    """One table of every profile switch: value, where it came from, and whether it differs from the mainline."""
+    main = parser.parse_args(PROFILES['mainline'].split() + ['--from-scratch'])
+    rows = []
+    for dest in args.profile_dests:
+        value = getattr(args, dest)
+        how = 'command line' if dest in args.explicit_dests else source
+        flag = '' if str(value) == str(getattr(main, dest)) else f'   <-- mainline: {getattr(main, dest)}'
+        rows.append(f'  {dest:28s} {str(value):48s} [{how}]{flag}')
+    print('Switches (' + source + '):' + chr(10) + chr(10).join(rows), flush=True)
+
+
 def disable_alif(model):
     """beta = clamp(exp(log_beta), 1e-4, 2): log_beta = -20 sits below the clamp, so beta = 1e-4 and its gradient is 0."""
     if not getattr(model, 'use_alif', False):
@@ -621,8 +707,13 @@ def main():
                              '(for output dirs on drives where large writes are unstable)')
     parser.add_argument('--extend-budget', action='store_true',
                         help='Replace an unfinished target with current count + additional fresh tokens')
+    parser.add_argument('--profile', choices=sorted(PROFILES), default='mainline',
+                        help='Switch set every option not named on the command line comes from at birth '
+                             '(a resume inherits the checkpoint config instead)')
     global _CHECKPOINT_DIR
-    args = parser.parse_args()
+    argv = sys.argv[1:]
+    profile = parser.parse_known_args(argv)[0].profile
+    args = apply_profile(parser, argv, profile)
     if isinstance(args.init_read_gamma, str) and args.init_read_gamma != 'anatomical':
         args.init_read_gamma = float(args.init_read_gamma)      # a numeric decay, not the anatomical schedule
     _CHECKPOINT_DIR = str(args.checkpoint_dir) if args.checkpoint_dir else None
@@ -650,6 +741,7 @@ def main():
         is_scratch_start = False
     elif args.from_scratch:
         is_scratch_start = True
+        print_switches(parser, args, f'profile {profile}')
     elif args.resume is not None:
         is_scratch_start = False
     else:
@@ -980,6 +1072,10 @@ def main():
         print('Loading archived weights and continuing physical state...', flush=True)
         saved = torch.load(args.resume, map_location='cpu', weights_only=False, mmap=True)
         fmt, previous_config = saved['format'], saved['config']
+        changed = inherit_profile_switches(parser, args, previous_config)
+        if changed:
+            print(f'Inherited from the checkpoint (profile values not used): {changed}', flush=True)
+        print_switches(parser, args, 'inherited')
         args.odour_seed_value = int(saved.get('bptt_train_tokens', 0) or 0)      # a new life sequence per chunk
         old = saved['learner']
         previous_centering = bool(old.get('read_centering', previous_config.get('read_centering', False)))
