@@ -308,3 +308,10 @@ trains the predictions as before.  One arm, 3 chunks, pulse world, compared with
   -0.03) and hard / easy words separate.
 - The value of waiting becomes readable earlier from the muscles (R^2 at tick 1 > 0.05; D1: 0.01).
 - Answer value above D1's at fixed16; language cost <= 0.05 nats vs D1.
+Revision before D3 (user): the habit KL is the analogue of GRPO's KL to the reference policy, which long-reasoning
+RL drops (DAPO, Dr. GRPO); D1 showed it inert (d1_habit and d1_nohabit indistinguishable, no collapse without it), so
+D3 runs without it (1/gamma = 0).  The relative plasticity stays: it scales each synapse's step to 2% of its birth
+weight (step geometry, no pull back to birth -- the trained weights drifted far, e.g. the mushroom-body entry fell
+10-1000x) and was introduced because absolute Adam steps had saturated / silenced cells (surrogate gradients ~0).
+If behaviour collapses once the brain gets the gradient (GRPO's entropy collapse), that is the evidence for an
+entropy-keeping term, added then.
