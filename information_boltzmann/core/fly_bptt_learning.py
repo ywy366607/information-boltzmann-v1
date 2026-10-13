@@ -1185,17 +1185,30 @@ def kenyon_dendritic_share(model, graph_npz, annotations, dendritic_feather):
     return edges, share
 
 
+TIED_RECEPTOR_CLASSES = ('olfactory', 'gustatory', 'chemosensory', 'hygrosensory', 'thermosensory')
+
+
 def attach_receptor_writer(model, graph_npz, annotations, sense_class='olfactory', seed=0, **kw):
-    """Replace the topographic writer by the receptor-transduction writer (ReceptorWriter) on the cells of one
-    sensory class (default the olfactory receptor neurons), one row per receptor type (untyped cells get their own).
-    Returns (cells, types)."""
+    """Replace the topographic writer by the receptor-transduction writer (ReceptorWriter).  sense_class: one sensory
+    class (e.g. 'olfactory'), or 'all' -- every sensory cell of the old writer (data/malecns_v1/sensory_partitions.npz),
+    the brain learning which receptors the text uses (user 2026-10-13: shared senses must stay learnable, as in sensory
+    substitution).  Rows: one per receptor type where the type is a tuning identity (TIED_RECEPTOR_CLASSES: receptors of
+    one kind respond alike), one per cell elsewhere (visual and mechanosensory types are places on a map).  Each row's
+    projection is the learned route: a row at zero leaves its receptors at spontaneous firing.  Returns (cells, rows)."""
     import pandas as pd
     from .fly_reservoir import ReceptorWriter
     graph = np.load(graph_npz, allow_pickle=True)
     ann = pd.read_feather(annotations).set_index('bodyId').reindex(graph['neuron_body_ids'])
     cls, typ = ann['class'].astype(str).values, ann['type'].astype(str).values
-    cells = np.nonzero(cls == sense_class)[0]
-    keys = [t if t not in ('None', 'nan', '') else f'cell{c}' for c, t in zip(cells, typ[cells])]
+    if sense_class == 'all':
+        from pathlib import Path
+        parts = np.load(Path(graph_npz).parent / 'sensory_partitions.npz')
+        cells = np.concatenate([parts['visual_idx'], parts['chemo_idx'], parts['mechano_idx']]).astype(np.int64)
+    else:
+        cells = np.nonzero(cls == sense_class)[0]
+    tied = np.isin(cls[cells], TIED_RECEPTOR_CLASSES)
+    keys = [f'{cls[c]}:{t}' if (k and t not in ('None', 'nan', '')) else f'cell{c}'
+            for c, t, k in zip(cells, typ[cells], tied)]
     uniq = {k: j for j, k in enumerate(dict.fromkeys(keys))}
     old = model.topographic_writer
     d_model = model.embedding.weight.shape[1]

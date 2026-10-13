@@ -583,3 +583,19 @@ Predictions (same probes as R1 plus text_leak_probe at chunks 1, 5, 25):
 4. Senses survive: sugar -> MN9 >= +20 Hz, bitter -> PPL1 >= +10 Hz at chunks 5 and 25.
 5. Mushroom body: Kenyon coding >= 2% per word by chunk 5 (birth 0.6%: PNs only 7% active), overlap < 0.2.
 6. Dopamine has phasic structure (dopamine_phasic_sd > 0.02); compartment memory used at chunk 25 (savings > 0.01).
+
+## R3: all senses, learned routing; mechanisms fixed by hand, numbers evolved (2026-10-13)
+R2 stopped after chunk 1 (language gain 0.24 nats, Kenyon 3.7% per word, overlap 0.08; 121 cells above 200 Hz without
+words -- mostly the head-direction ring EPG / PEN / Delta7 / ER6, a legitimate persistent attractor at an
+unbiological rate, plus a few flight motor neurons on the read surface).  User decisions:
+- Text goes into ALL sensory cells and the brain learns the routing (sensory substitution: a shared channel must stay
+  learnable; if sharing breaks a function, fix plasticity, not the inputs).  Writer 'receptor_all': 15,912 cells,
+  11,845 rows (chemosensory per receptor type, visual / mechanosensory per cell), the same bounded transduction.
+- An informatized fly is not calibrated to biological neurons: only mechanism problems are fixed by hand; numbers are
+  learned (evolution); learned structure is judged by causal ablation, not by fly-likeness.  Taste valence is not on
+  the mainline (active input / output thinking) and no longer blocks.
+Checks that can stop the run: non-finite gradients, sensory cells below E_I, text not entering, a structural
+artifact found by audit.  Recorded (not tuned): rates, latches, Kenyon coding, taste lines, text-to-taste routing.
+Evaluation by ablation at chunks 5 and 25: silence the persistent attractor cells, the mushroom body, the latched
+read cells -- does NLL get worse (positive causal role)?  Then R4 = the mainline: D3's acts (eyes, commit) on this
+individual.

@@ -453,7 +453,7 @@ def main():
                         help='Regex of the cell types released by --intrinsic (default: every annotated tonic type)')
     parser.add_argument('--intrinsic-kappa', type=float, default=None,
                         help='Initial intrinsic current of released cells, in units of their rheobase (default 1.2)')
-    parser.add_argument('--writer', choices=('topographic', 'receptor'), default=None,
+    parser.add_argument('--writer', choices=('topographic', 'receptor', 'receptor_all'), default=None,
                         help='receptor: text through the olfactory receptor neurons only, per receptor type, as a '
                              'bounded transduction conductance around spontaneous firing (ReceptorWriter); inherited')
     parser.add_argument('--stp-init', type=str, default=None, help="birth STP 'u0,tau_fac,tau_rec' (needs --stp)")
@@ -720,11 +720,12 @@ def main():
             print(f'STP at birth: u0 {u0}, tau_fac {tf} ms, tau_rec {tr} ms', flush=True)
         if args.writer is None:
             args.writer = 'topographic'
-        if args.writer == 'receptor':
+        if args.writer in ('receptor', 'receptor_all'):
             if args.tied_writer:
                 raise ValueError('--writer receptor already ties the rows per receptor type (no --tied-writer)')
-            n_cells, n_types = attach_receptor_writer(model, args.graph, args.graph.parent / 'body-annotations.feather')
-            print(f'Receptor writer (newborn): text through {n_cells} olfactory receptor neurons, {n_types} types', flush=True)
+            n_cells, n_types = attach_receptor_writer(model, args.graph, args.graph.parent / 'body-annotations.feather',
+                                                      sense_class='all' if args.writer == 'receptor_all' else 'olfactory')
+            print(f'Receptor writer (newborn): text through {n_cells} sensory cells, {n_types} rows', flush=True)
 
         # A newborn gets the same blanket and modulation as the resumed lineage (each only when asked for).
         if args.go_neuron in ('virtual', True):
@@ -998,9 +999,10 @@ def main():
         if args.precision:
             n_mod, n_da = attach_precision(model, args.graph, args.graph.parent / 'body-annotations.feather')
             print(f'Precision carried by {n_mod} neuromodulatory cells ({n_da} dopaminergic)', flush=True)
-        if args.writer == 'receptor':
-            n_cells, n_types = attach_receptor_writer(model, args.graph, args.graph.parent / 'body-annotations.feather')
-            print(f'Receptor writer: {n_cells} olfactory receptor neurons, {n_types} types', flush=True)
+        if args.writer in ('receptor', 'receptor_all'):
+            n_cells, n_types = attach_receptor_writer(model, args.graph, args.graph.parent / 'body-annotations.feather',
+                                                      sense_class='all' if args.writer == 'receptor_all' else 'olfactory')
+            print(f'Receptor writer: {n_cells} sensory cells, {n_types} rows', flush=True)
         tie_now = bool(args.tied_writer) and not bool(previous_config.get('tied_writer', False))
         if args.tied_writer and not tie_now:
             # a tied lineage: the writer's chemosensory rows are per receptor type (shapes before loading)

@@ -51,8 +51,9 @@ def load(fork):
         fl.attach_predictive_writer(model)
     if cfg.get('precision'):
         fl.attach_precision(model, graph, graph.parent / 'body-annotations.feather')
-    if cfg.get('writer') == 'receptor':
-        fl.attach_receptor_writer(model, graph, graph.parent / 'body-annotations.feather')
+    if cfg.get('writer') in ('receptor', 'receptor_all'):
+        fl.attach_receptor_writer(model, graph, graph.parent / 'body-annotations.feather',
+                                  sense_class='all' if cfg.get('writer') == 'receptor_all' else 'olfactory')
     if cfg.get('tied_writer'):
         fl.attach_tied_writer(model, graph, graph.parent / 'body-annotations.feather', convert=False)
     if cfg.get('graded_types'):

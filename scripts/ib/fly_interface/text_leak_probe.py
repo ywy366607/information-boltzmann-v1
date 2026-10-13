@@ -53,6 +53,7 @@ def read(s, words, text=True):
             s = fl.expect_next(model, s, fl.read_fly_motor(model, s))
     rate = allc / n * 1000
     c['cells >200 Hz'] = float((rate > 200).sum()) * n / 1000; c['brain mean'] = float(rate.mean()) * n / 1000
+    read.last_rate = rate.cpu().numpy()
     return s, {k: v / n * 1000 for k, v in c.items()}, float(below[sens].float().mean())
 
 
@@ -65,7 +66,15 @@ with torch.no_grad():
         _, on, below = read(s, words, True)
         _, off, _ = read(s, words, False)
         rows.append((on, off, below))
+        latched = latched + [read.last_rate > 200] if 'latched' in dir() else [read.last_rate > 200]
 for k in list(G) + ['cells >200 Hz', 'brain mean']:
     on = np.mean([r[0][k] for r in rows]); off = np.mean([r[1][k] for r in rows])
     print(f'{k:>10}: reading {on:7.2f} Hz, words withheld {off:7.2f} Hz, text-driven {on - off:+7.2f} Hz', flush=True)
 print(f'sensory cells below E_I at some tick while reading: {np.mean([r[2] for r in rows]):.3f}', flush=True)
+# which cells stay above 200 Hz with the words withheld (in at least 2 of the 4 places), and do they feed the output?
+L2 = np.sum(latched, 0) >= 2
+read_cells = np.zeros(len(typ), bool); read_cells[model.read_indices.cpu().numpy()] = True
+print(f'latched (> 200 Hz without words, >= 2 of 4 places): {int(L2.sum())} cells; read cells among them {int((L2 & read_cells).sum())}; '
+      f'motor / descending {int((L2 & np.isin(sc, ["cb_motor", "vnc_motor", "descending_neuron"])).sum())}', flush=True)
+print('   by superclass:', pd.Series(sc[L2]).value_counts().head(8).to_dict(), flush=True)
+print('   by type:', pd.Series(typ[L2]).value_counts().head(15).to_dict(), flush=True)
