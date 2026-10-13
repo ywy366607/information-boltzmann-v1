@@ -65,6 +65,12 @@ class FlyPhysicalState:
     # phi of every plastic Kenyon -> MBON synapse [1, n_edges] (its efficacy is (1 + phi) times its weight).
     comp_trace: torch.Tensor = field(default_factory=lambda: torch.empty(0))
     comp_memory: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    # Optional carried credit (fly_carried_credit, never reset): the slow states' sensitivities to their parameters,
+    # advanced every tick (forward mode), so credit outlives the BPTT window at O(1) memory.
+    credit_comp: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    credit_comp_trace: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    credit_dopamine: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    credit_stp: torch.Tensor = field(default_factory=lambda: torch.empty(0))
 
     def detached(self):
         return FlyPhysicalState(**{
@@ -252,6 +258,16 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
         offset += 1
     if model.use_stp:
         x, u = ret[offset:offset + 2]
+        if 'stp' in credit and current.u.numel() == h.numel() and current.x.numel() == h.numel():
+            with torch.no_grad():
+                from .fly_carried_credit import stp_step, stp_parameter_slopes
+                if credit_stp.numel() != 5 * h.numel():
+                    credit_stp = h.new_zeros(5, h.shape[1])
+                stp_now = options.get('stp_params') or model.get_stp_params()
+                u0, rho_f, rho_r = (t.detach() for t in stp_now[:3])
+                spk = ret[1].detach() if ret[1].shape == h.shape else (ret[2][0] > 0).to(h.dtype)
+                credit_stp = stp_step(credit_stp, current.u.detach(), current.x.detach(), spk, u0, rho_f, rho_r,
+                                      *stp_parameter_slopes(model))
     h_mean = current.h_mean
     if h_mean.numel() != h.numel():
         h_mean = torch.zeros_like(h)
@@ -273,12 +289,22 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
         if modulator.numel() != model.modulatory_index.numel():
             modulator = h.new_zeros(1, model.modulatory_index.numel())
         modulator = rho * modulator + (1.0 - rho) * (ring[0][:, model.modulatory_index] > 0).float()
+    credit = getattr(model, 'carried_credit', ())
+    credit_comp, credit_comp_trace = current.credit_comp, current.credit_comp_trace
+    credit_dopamine, credit_stp = current.credit_dopamine, current.credit_stp
     if getattr(model, 'dopamine_sensitivity', None) is not None:
         arrival = execute_delayed_synaptic_transmission(ring, model.dan_edge_pre, model.dan_edge_post,
                                                         model.dan_edge_weight, model.dan_delay_splits) / model.dan_scale
         fast, slow = torch.sigmoid(model.dopamine_logit_fast), torch.sigmoid(model.dopamine_logit_slow)
         if dopamine.numel() != 2 * h.numel():
             dopamine = torch.cat([arrival, arrival], 0).detach()
+        if 'dopamine' in credit:
+            with torch.no_grad():
+                from .fly_carried_credit import dopamine_step
+                if credit_dopamine.numel() != 3 * h.numel():
+                    credit_dopamine = h.new_zeros(3, h.shape[1])
+                credit_dopamine = dopamine_step(credit_dopamine, dopamine[0:1].detach(), dopamine[1:2].detach(),
+                                                arrival.detach(), fast.detach(), slow.detach())
         conc = fast * dopamine[0:1] + (1.0 - fast) * arrival
         dopamine = torch.cat([conc, slow * dopamine[1:2] + (1.0 - slow) * conc], 0)
     if online and dopamine.numel() == 2 * h.numel():
@@ -328,6 +354,7 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
         if comp_trace.numel() != model.comp_kc.numel():
             comp_trace = h.new_zeros(1, model.comp_kc.numel())
         lam_c = torch.sigmoid(model.comp_logit_trace)
+        trace_before, memory_before = comp_trace.detach(), comp_memory.detach()
         comp_trace = lam_c * comp_trace + (1.0 - lam_c) * spikes_c.index_select(1, model.comp_kc)
         if dopamine.numel() == 2 * h.numel():
             d_post = dopamine.index_select(1, model.comp_post.long())
@@ -341,6 +368,26 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
             kappa_c = torch.sigmoid(model.comp_logit_forget)
             # depression scaled by the efficacy left, (1 + phi): phi approaches -1 and never passes it, so forgetting
             # (kappa, slow) no longer has to equal the learning rate to keep phi bounded
+            if 'comp' in credit:
+                with torch.no_grad():
+                    from .fly_carried_credit import comp_step, occupancy_slope, COMP_PARAMS
+                    if credit_comp.numel() != len(COMP_PARAMS) * comp_memory.shape[1]:
+                        credit_comp = h.new_zeros(len(COMP_PARAMS), comp_memory.shape[1])
+                        credit_comp_trace = h.new_zeros(1, comp_trace.shape[1])
+                    post = model.comp_post.long()
+                    Sd = credit_dopamine.index_select(1, post)                # [3, E]: dfast/dlf, dslow/dlf, dslow/dls
+                    dpost = d_post.detach()
+                    on = (phasic_c.detach() > 0).float()
+                    a_f = occupancy_slope(dpost[0:1], model.comp_affinity)
+                    a_s = occupancy_slope(dpost[1:2], model.comp_affinity)
+                    dphasic = on * torch.cat([a_f * Sd[0:1] - a_s * Sd[1:2], -a_s * Sd[2:3]], 0)
+                    lam_d = lam_c.detach()
+                    credit_comp, credit_comp_trace = comp_step(
+                        credit_comp, credit_comp_trace, memory_before, trace_before,
+                        spikes_c.detach().index_select(1, model.comp_kc), lam_d, model.comp_eta.detach(),
+                        kappa_c.detach(), phasic_c.detach(),
+                        dopamine_occupancy(d_post[1:2].detach(), model.comp_affinity) / 0.5, model.comp_edge_kc,
+                        dphasic)
             comp_memory = comp_memory + window_c * (model.comp_eta * phasic_c * (1.0 + comp_memory) - kappa_c * comp_memory)
     bank = getattr(current, 'read_bank', torch.empty(0))
     if getattr(model, 'read_bank_gain', None) is not None:
@@ -352,7 +399,8 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
     return FlyPhysicalState(h, ring, ge, gi, b, x, u, next_baseline, h_mean, dan_gate, gz1, gz2,
                             current.observer_prior, getattr(current, 'observer_history', torch.empty(0)), bank,
                             modulator, getattr(current, 'expected_input', torch.empty(0)), dopamine, da_trace, da_memory,
-                            homeostasis, regime, comp_trace, comp_memory)
+                            homeostasis, regime, comp_trace, comp_memory,
+                            credit_comp, credit_comp_trace, credit_dopamine, credit_stp)
 
 
 def extract_fly_motor_latent(model, state):
@@ -2001,6 +2049,12 @@ class FlyBPTTLearner:
     def forward_window(self, input_ids, targets):
         """Every score precedes the single parameter update for this window."""
         m, state = self.model, self.state
+        self._credit = None
+        if getattr(m, 'carried_credit', ()) and m.training and torch.is_grad_enabled():
+            # credit beyond the window: the slow states open the window as leaves (fly_carried_credit)
+            from .fly_carried_credit import open_window
+            state, leaves, start = open_window(state, m.carried_credit)
+            self._credit = (leaves, start)
         rates, thresholds = m.get_decay_rates(), m.get_thresholds()
         gains, alif, stp = m.get_conductance_gains(), m.get_alif_params(), m.get_stp_params()
         latents = []
@@ -2655,6 +2709,12 @@ class FlyBPTTLearner:
             from .triton_synapse import direct_edge_grad
             with direct_edge_grad():
                 loss.backward()
+            if getattr(self, '_credit', None) is not None:
+                from .fly_carried_credit import apply_carried_credit
+                added = apply_carried_credit(self.model, *self._credit)
+                self._credit = None
+                if isinstance(getattr(self, 'last_adaptive_metrics', None), dict):
+                    self.last_adaptive_metrics.update({f'carried_{k}': v for k, v in added.items()})
         def norm(parameters):
             active = [p for p in parameters if p.requires_grad and p.numel()]
             if any(p.grad is None for p in active):

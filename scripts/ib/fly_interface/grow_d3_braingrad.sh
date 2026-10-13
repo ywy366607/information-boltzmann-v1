@@ -4,10 +4,12 @@
 # the policy gradient reaches the brain through the motor spikes (--act-brain-grad), as GRPO updates the whole network.
 # The answers' values stay detached (beliefs are trained by the language objective only).  Compare with D1's d1_habit.
 # Arm d3_precision adds the policy precision encoded by the brain's own dopamine cells (--act-dopamine-precision,
-# GOAL section 'D3b'); d3_braingrad is its control.  Before the run: the tests (incl. the GPU ones) on a free GPU.
+# GOAL section 'D3b'); arm d3_credit adds credit beyond the window at O(1) (--carried-credit, GOAL section 'Credit
+# beyond the 32-word window'); d3_braingrad is the control of both.  Before the run: the tests (incl. the GPU ones)
+# on a free GPU -- if they fail only the control runs -- and a smoke (start + resume) of each new arm.
 cd /d/information-boltzmann-v1
 PY=/d/conda_envs/vox/python.exe; root=/e/fly_stream_overflow/d3_braingrad
-ARMS=${ARMS:-"d3_braingrad d3_precision"}
+ARMS=${ARMS:-"d3_braingrad d3_precision d3_credit"}
 CHUNKS=${1:-3}
 export FLY_REUSE_TRANSMISSION=0 PYTHONIOENCODING=utf-8
 COMMON="--extend-budget --additional-tokens 4096 --validate-every-tokens 4096 --eval-tokens 256 --replay-tokens 128 \
@@ -16,23 +18,29 @@ COMMON="--extend-budget --additional-tokens 4096 --validate-every-tokens 4096 --
   --dopamine-site pre --compartment-memory --comp-rate 2.0 --relative-edge-rate 0.02 \
   --ai --motor-acts --act-tau 8 --act-habit 0.2 --act-gamma-inv 0.0 --miss-prior --ai-epistemic 0.0 \
   --ai-pragmatic 1.0 --ai-sigreg 0.01 --eye-forced-open --act-brain-grad --vram-limit-mib 3800"
+extra() { case $1 in d3_precision) echo "--act-dopamine-precision";; d3_credit) echo "--carried-credit";; esac; }
 mkdir -p $root
-$PY -m pytest -q tests/test_fly_adaptive_admission.py > $root/tests.txt 2>&1 || { echo "$(date +%H:%M) tests FAILED" >> $root/status; exit 1; }
-echo "$(date +%H:%M) tests passed" >> $root/status
-extra() { [ "$1" = d3_precision ] && echo "--act-dopamine-precision"; }
-# smoke of the precision arm (calibrates the dopamine tone; fails loudly if the dopamine cells are silent on text)
-smoke=$root/smoke_precision; rm -rf $smoke
-if [ ! -f $root/d3_precision/last.pt ]; then
-  if $PY -u scripts/ib/train_fly_bptt_stream.py --resume E:/ib_checkpoints/q8_fly_ctm_settle14_100k/last.pt --al-reset \
-       $COMMON --act-dopamine-precision --additional-tokens 64 --validate-every-tokens 64 --eval-tokens 32 \
-       --output $smoke --checkpoint-dir $smoke > $root/smoke_precision.log 2>&1; then
-    grep -h "dopamine tone" $root/smoke_precision.log >> $root/status
+if $PY -m pytest -q tests/test_fly_adaptive_admission.py > $root/tests.txt 2>&1; then
+  echo "$(date +%H:%M) tests passed" >> $root/status
+else
+  echo "$(date +%H:%M) tests FAILED (see tests.txt): running the control only" >> $root/status; ARMS=d3_braingrad
+fi
+# a smoke of every new arm (from the adult, 64 words, then a resume of that): a failing arm is dropped
+keep=""
+for arm in $ARMS; do
+  if [ -z "$(extra $arm)" ] || [ -f $root/$arm/last.pt ]; then keep="$keep $arm"; continue; fi
+  smoke=$root/smoke_$arm; rm -rf $smoke
+  S="$COMMON $(extra $arm) --additional-tokens 64 --validate-every-tokens 64 --eval-tokens 32 --output $smoke --checkpoint-dir $smoke"
+  if $PY -u scripts/ib/train_fly_bptt_stream.py --resume E:/ib_checkpoints/q8_fly_ctm_settle14_100k/last.pt --al-reset $S > $root/smoke_$arm.log 2>&1 \
+     && $PY -u scripts/ib/train_fly_bptt_stream.py $S >> $root/smoke_$arm.log 2>&1; then
+    keep="$keep $arm"; grep -h "dopamine tone\|Carried credit" $root/smoke_$arm.log | head -2 >> $root/status
   else
-    echo "$(date +%H:%M) precision smoke FAILED (see smoke_precision.log): running the control only" >> $root/status
-    ARMS=d3_braingrad
+    echo "$(date +%H:%M) $arm smoke FAILED (see smoke_$arm.log): dropped" >> $root/status
   fi
   rm -rf $smoke
-fi
+done
+ARMS=$keep
+echo "$(date +%H:%M) arms:$ARMS" >> $root/status
 for chunk in $(seq 1 $CHUNKS); do
   for arm in $ARMS; do
     [ -f $root/STOP ] && break 2

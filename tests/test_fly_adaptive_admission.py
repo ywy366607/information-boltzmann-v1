@@ -1394,6 +1394,8 @@ def test_precision_and_bayesian_surprise_run_in_the_stream(fly_model_and_state):
     model, state, device = fly_model_and_state
     if device != "cuda":
         pytest.skip("event-driven transmission needs CUDA")
+    if getattr(model, 'dan_indices', None) is None:
+        pytest.skip("this graph has no dopamine cells")
     torch.manual_seed(7)
     start = dataclasses.replace(state, h=torch.rand_like(state.h))
     added = getattr(model, 'dopamine_logit_slow', None) is None
@@ -1441,3 +1443,149 @@ def test_binary_eye_in_motor_mode_trains_the_eye_readout():
     gain.sum().backward()
     assert torch.allclose(model.ai_w.grad[0], 0.25 * g[0]) and model.ai_w.grad[1].abs().sum() == 0
     assert model.ai_b.grad[0] == 0.25
+
+
+def test_carried_credit_equals_backprop_through_both_windows():
+    """Credit beyond the window (fly_carried_credit): with the spikes and the arriving dopamine fixed, the gradient of
+    the second window's loss through BOTH windows equals the second window's own BPTT (opening states as leaves) plus
+    G . S_0, S advanced by the forward recursions over the first window -- for the compartment memory with its
+    dopamine clocks, and for STP with per-class parameters."""
+    from information_boltzmann.core import fly_carried_credit as cc
+    torch.manual_seed(3)
+    N, E, nkc, K = 7, 6, 3, 0.4
+    post = torch.tensor([4, 4, 5, 6, 5, 6]); edge_kc = torch.tensor([0, 1, 1, 2, 0, 2]); kc = torch.tensor([0, 1, 2])
+    T1, T2 = 23, 17
+    spikes = (torch.rand(T1 + T2, N) < 0.3).float()
+    arrival = torch.rand(T1 + T2, N) * 0.5
+    occ = lambda c: c / (c + K)
+    model = torch.nn.Module()
+    for name, v in (('comp_eta', -0.4), ('comp_logit_forget', -2.0), ('comp_logit_trace', 2.5),
+                    ('dopamine_logit_fast', 1.5), ('dopamine_logit_slow', 3.0)):
+        setattr(model, name, torch.nn.Parameter(torch.tensor(v)))
+    model.carried_credit = ('comp', 'dopamine')
+
+    def tick(st, t):
+        D, tr, phi = st
+        f, s = torch.sigmoid(model.dopamine_logit_fast), torch.sigmoid(model.dopamine_logit_slow)
+        conc = f * D[0:1] + (1 - f) * arrival[t:t + 1]
+        D = torch.cat([conc, s * D[1:2] + (1 - s) * conc], 0)
+        lam = torch.sigmoid(model.comp_logit_trace)
+        tr = lam * tr + (1 - lam) * spikes[t:t + 1, kc]
+        dp = D[:, post]
+        p = F.relu(occ(dp[0:1]) - occ(dp[1:2]))
+        w = occ(dp[1:2].detach()) / 0.5 * tr[:, edge_kc]
+        kap = torch.sigmoid(model.comp_logit_forget)
+        phi = phi + w * (model.comp_eta * p * (1 + phi) - kap * phi)
+        return D, tr, phi
+
+    def sens(st, S, t):
+        D, tr, phi = (x.detach() for x in st)
+        Sd, Sphi, Str = S
+        f, s = torch.sigmoid(model.dopamine_logit_fast).detach(), torch.sigmoid(model.dopamine_logit_slow).detach()
+        Sd = cc.dopamine_step(Sd, D[0:1], D[1:2], arrival[t:t + 1], f, s)
+        new = tick(st, t)
+        Dn = new[0].detach(); dp = Dn[:, post]
+        p = F.relu(occ(dp[0:1]) - occ(dp[1:2]))
+        Sdp = Sd[:, post]
+        on = (p > 0).float()
+        dphasic = on * torch.cat([cc.occupancy_slope(dp[0:1], K) * Sdp[0:1] - cc.occupancy_slope(dp[1:2], K) * Sdp[1:2],
+                                  -cc.occupancy_slope(dp[1:2], K) * Sdp[2:3]], 0)
+        Sphi, Str = cc.comp_step(Sphi, Str, phi, tr, spikes[t:t + 1, kc], torch.sigmoid(model.comp_logit_trace).detach(),
+                                 model.comp_eta.detach(), torch.sigmoid(model.comp_logit_forget).detach(), p,
+                                 occ(dp[1:2]) / 0.5, edge_kc, dphasic)
+        return tuple(x.detach() for x in new), (Sd, Sphi, Str)
+
+    start = (torch.rand(2, N) * 0.3, torch.rand(1, nkc) * 0.1, torch.zeros(1, E))
+    wD, wtr, wphi = torch.randn(2, N), torch.randn(1, nkc), torch.randn(1, E)
+    loss = lambda st: (st[0] * wD).sum() + (st[1] * wtr).sum() + (st[2] * wphi).sum() + (st[2] ** 2).sum()
+    # (a) through both windows
+    st = start
+    for t in range(T1 + T2):
+        st = tick(st, t)
+    full = torch.autograd.grad(loss(st), [getattr(model, n) for n in cc.COMP_PARAMS])
+    # (b) window 1 forward-only with the recursions, then window 2 BPTT from leaves, plus G . S_0
+    st, S = start, (torch.zeros(3, N), torch.zeros(5, E), torch.zeros(1, nkc))
+    with torch.no_grad():
+        for t in range(T1):
+            st, S = sens(st, S, t)
+    leaves = {'dopamine': st[0].clone().requires_grad_(), 'comp_trace': st[1].clone().requires_grad_(),
+              'comp_memory': st[2].clone().requires_grad_()}
+    s2 = (leaves['dopamine'], leaves['comp_trace'], leaves['comp_memory'])
+    for t in range(T1, T1 + T2):
+        s2 = tick(s2, t)
+    model.zero_grad(set_to_none=True)
+    loss(s2).backward()
+    cc.apply_carried_credit(model, leaves, {'credit_dopamine': S[0], 'credit_comp': S[1], 'credit_comp_trace': S[2]})
+    for name, g in zip(cc.COMP_PARAMS, full):
+        assert torch.allclose(getattr(model, name).grad, g, rtol=1e-4, atol=1e-6), (name, getattr(model, name).grad, g)
+    assert all(float(g.abs()) > 0 for g in full)
+
+    # STP, two classes
+    sc = torch.tensor([0, 1, 0, 1, 1, 0, 0])
+    stp = torch.nn.Module()
+    stp.logit_u0 = torch.nn.Parameter(torch.tensor([-1.0, 0.3]))
+    stp.log_tau_fac = torch.nn.Parameter(torch.tensor([4.0, 3.0]))
+    stp.log_tau_rec = torch.nn.Parameter(torch.tensor([5.0, 3.5]))
+    stp.register_buffer('superclass_id', sc); stp.n_superclasses = 2; stp.carried_credit = ('stp',)
+
+    def stp_tick(u, x, t):
+        u0 = torch.sigmoid(stp.logit_u0)[sc]; rf = torch.exp(-1 / torch.exp(stp.log_tau_fac))[sc]
+        rr = torch.exp(-1 / torch.exp(stp.log_tau_rec))[sc]
+        sp = spikes[t]
+        ua = u + u0 * (1 - u) * sp
+        xp = x - ua * x * sp
+        return u0 + (ua - u0) * rf, 1 + (xp - 1) * rr
+
+    u, x = torch.full((N,), 0.3), torch.ones(N)
+    wu, wx = torch.randn(N), torch.randn(N)
+    for t in range(T1 + T2):
+        u, x = stp_tick(u, x, t)
+    full = torch.autograd.grad((u * wu).sum() + (x * wx).sum() + (x * u).sum(), [stp.logit_u0, stp.log_tau_fac, stp.log_tau_rec])
+    u, x, S = torch.full((1, N), 0.3), torch.ones(1, N), torch.zeros(5, N)
+    with torch.no_grad():
+        for t in range(T1):
+            u0 = torch.sigmoid(stp.logit_u0)[sc][None]; rf = torch.exp(-1 / torch.exp(stp.log_tau_fac))[sc][None]
+            rr = torch.exp(-1 / torch.exp(stp.log_tau_rec))[sc][None]
+            S = cc.stp_step(S, u, x, spikes[t][None], u0, rf, rr, *cc.stp_parameter_slopes(stp))
+            u, x = stp_tick(u[0], x[0], t); u, x = u[None], x[None]
+    leaves = {'u': u.clone().requires_grad_(), 'x': x.clone().requires_grad_()}
+    u2, x2 = leaves['u'][0], leaves['x'][0]
+    for t in range(T1, T1 + T2):
+        u2, x2 = stp_tick(u2, x2, t)
+    stp.zero_grad(set_to_none=True)
+    ((u2 * wu).sum() + (x2 * wx).sum() + (x2 * u2).sum()).backward()
+    cc.apply_carried_credit(stp, leaves, {'credit_stp': S})
+    for p, g in zip((stp.logit_u0, stp.log_tau_fac, stp.log_tau_rec), full):
+        assert torch.allclose(p.grad, g, rtol=1e-4, atol=1e-6), (p.grad, g)
+
+
+def test_carried_credit_runs_in_the_stream(fly_model_and_state):
+    """On the fly, two windows with carried credit for STP: the sensitivities are carried in the state (never reset),
+    the second window adds a finite G . S_0 to the STP parameters, and the opening states were leaves."""
+    import dataclasses
+    from information_boltzmann.core import fly_carried_credit as cc
+    model, state, device = fly_model_and_state
+    if device != "cuda":
+        pytest.skip("event-driven transmission needs CUDA")
+    torch.manual_seed(5)
+    start = dataclasses.replace(state, h=torch.rand_like(state.h))
+    model.train()
+    cc.attach_carried_credit(model, ['stp'])
+    try:
+        learner = FlyBPTTLearner(model, start, lr=2e-4, settle_ticks=14, writer_baseline_clock="physical",
+                                 use_checkpointing=True, stream_ticks=4, lambda_mcr2=0.0)
+        for w, ids in enumerate(([[50, 101, 205, 307]], [[409, 511, 613, 715]])):
+            ids = torch.tensor(ids, device=device)
+            model.zero_grad(set_to_none=True)
+            scores, next_state, _ = learner.forward_window(ids, torch.roll(ids, -1, 1))
+            leaves, s0 = learner._credit
+            assert set(leaves) == {'u', 'x'}
+            learner.last_train_loss.mean().backward()
+            assert leaves['u'].grad is not None and torch.isfinite(leaves['u'].grad).all()
+            added = cc.apply_carried_credit(model, leaves, s0)
+            assert next_state.credit_stp.shape == (5, model.n_neurons) and next_state.credit_stp.abs().sum() > 0
+            if w == 1:
+                assert added and all(math.isfinite(v) for v in added.values()) and added.get('log_tau_rec', 0) + added.get('logit_u0', 0) > 0
+            learner.state = next_state.detached()
+    finally:
+        delattr(model, 'carried_credit')

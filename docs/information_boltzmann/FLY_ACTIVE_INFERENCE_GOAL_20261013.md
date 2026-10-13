@@ -374,3 +374,19 @@ temporal difference), read per compartment after measuring each loop's sign and 
 the outcome (consequence loop) or novelty (alpha'3 recovers); until then delta ~ 0.
 Review also found a real bug, fixed: motor-mode binary eyes took the straight-through slope on the first muscle, not
 the eye's logit, so the eye readout never learned (M3-style eye runs only; D1-D3 keep the eyes open).
+
+### Carried credit, implemented (user: "wherever credit needs more than the window, add the O(1) rule too")
+information_boltzmann/core/fly_carried_credit.py, --carried-credit.  Every slow state that outlives the window and has
+trained parameters gets a forward sensitivity S = ds/dtheta, advanced each tick by the state's own local recursion
+(spikes and arriving dopamine held fixed): the compartment memory phi and the Kenyon trace (comp_eta, the forgetting
+and trace clocks, and the dopamine clocks through the phasic dopamine that writes phi: 5 x 61,210 + 4,064 numbers),
+the fast / slow dopamine concentrations (3 x N), STP's u and x (5 x N, per-class parameters, only with --learn-stp).
+The window's opening states are leaves; after the backward, G = dL/ds_0 and the parameters get G . S_0 on top of their
+in-window BPTT gradient.  Test: with spikes and arrivals fixed, BPTT through two windows equals window-2 BPTT + G . S_0
+to 1e-4 for all eight parameters (CPU); a GPU test runs it in the stream.  Off: nothing changes (no fields, no leaves).
+D3 gets the arm d3_credit (= control + --carried-credit).  Predictions: the carried credit is not small next to the
+in-window credit for the slow clocks -- dopamine_logit_slow (tau ~556 > window) carried / in-window norm > 0.5 -- and
+for the memory's own parameters it is the larger part whenever the memory is written at all; but the memory is barely
+written (text -> Kenyon entry down ~70x), so behaviour and language equal the control's (|diff| < 0.02 nats), and
+memory_revisit live - frozen stays < 0.01 nats.  What it is for: once the entry and dopamine carry something, the
+parameters that decide what the memory keeps learn from consequences arriving long after the window.

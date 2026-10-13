@@ -184,7 +184,8 @@ def resolve_learning_modes(args, previous_config, previous_learner):
     if getattr(args, 'ai_depth', None) is None:
         args.ai_depth = int(previous_config.get('ai_depth') or 0)
     for name, default in (('motor_acts', False), ('act_brain_grad', False), ('miss_prior', False), ('kc_subtypes', False),
-                          ('act_dopamine_precision', False), ('epistemic_belief', False)):
+                          ('act_dopamine_precision', False), ('epistemic_belief', False),
+                          ('carried_credit', False)):
         if getattr(args, name, None) is None:
             setattr(args, name, bool(previous_config.get(name, default)))
     for name, default in (('act_tau', 8.0), ('act_habit', 0.2), ('act_gamma_inv', 0.05)):
@@ -349,6 +350,9 @@ def main():
     parser.add_argument('--epistemic-belief', action=argparse.BooleanOptionalAction, default=None,
                         help='Epistemic value of looking = Bayesian surprise of the brain: how far a word moves its own '
                              'prediction of what comes next (instead of an external word counter)')
+    parser.add_argument('--carried-credit', action=argparse.BooleanOptionalAction, default=None,
+                        help='Credit beyond the BPTT window at O(1): forward sensitivities of the slow states '
+                             '(compartment memory, dopamine clocks, STP) carried across windows')
     parser.add_argument('--miss-prior', action=argparse.BooleanOptionalAction, default=None,
                         help='An unanswered question is worth minus the unigram (listener prior) CE of its answer')
     parser.add_argument('--sense-noise', type=float, default=None,
@@ -668,6 +672,14 @@ def main():
         for group in (GO_PARAMETER_NAMES, READ_BANK_PARAMETER_NAMES, PREDICTIVE_PARAMETER_NAMES, DOPAMINE_PARAMETER_NAMES,
                       ONLINE_DA_PARAMETER_NAMES):
             names.extend(name for name in group if name in named_now and name not in names)
+        if getattr(args, 'carried_credit', False):
+            # credit beyond the BPTT window at O(1) memory for every slow state that outlives it and has trained
+            # parameters (fly_carried_credit): compartment memory, dopamine clocks, STP (with --learn-stp)
+            from information_boltzmann.core.fly_carried_credit import attach_carried_credit
+            mech = [m for m, ok in (('comp', getattr(model, 'comp_eta', None) is not None),
+                                    ('dopamine', getattr(model, 'dopamine_logit_slow', None) is not None),
+                                    ('stp', bool(args.learn_stp))) if ok]
+            print(f'Carried credit beyond the window: {attach_carried_credit(model, mech)}', flush=True)
         if args.disable_alif:
             disable_alif(model)
         learner = FlyBPTTLearner(model, physical, adam_names=names,
@@ -1010,6 +1022,14 @@ def main():
                 full_name = f'graph_observer.{p_name}'
                 if full_name not in names:
                     newly_trainable.append(full_name)
+        if getattr(args, 'carried_credit', False):
+            # credit beyond the BPTT window at O(1) memory for every slow state that outlives it and has trained
+            # parameters (fly_carried_credit): compartment memory, dopamine clocks, STP (with --learn-stp)
+            from information_boltzmann.core.fly_carried_credit import attach_carried_credit
+            mech = [m for m, ok in (('comp', getattr(model, 'comp_eta', None) is not None),
+                                    ('dopamine', getattr(model, 'dopamine_logit_slow', None) is not None),
+                                    ('stp', bool(args.learn_stp))) if ok]
+            print(f'Carried credit beyond the window: {attach_carried_credit(model, mech)}', flush=True)
         if args.disable_alif:
             disable_alif(model)
         learner = FlyBPTTLearner(model, physical, adam_names=names,
