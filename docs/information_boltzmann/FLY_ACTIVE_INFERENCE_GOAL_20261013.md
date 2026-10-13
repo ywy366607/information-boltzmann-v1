@@ -294,3 +294,17 @@ chunks, and commit timing starts to depend on state.
 Open question for the adult: the trained weights erased routes that the newborn has (entry 10x, taste lines 10x).  If
 (2) cannot restore them in the adult, the plasticity criterion says: rebirth with the corrected connectome, acts and the
 consequence loop present from the start.
+
+## D3: the reward's gradient reaches the brain (user, 2026-10-13; predictions written before the run)
+User: if an adult cannot learn what it did not learn before maturity, our implementation lost plasticity -- biology
+keeps learning; GRPO grows adaptive thinking length because thinking longer improves the reward and the reward trains
+the whole network.  D1 had sampling and compared outcomes but kept the brain detached from the policy gradient (only the
+readout learned), so nothing asked the brain to make "am I done thinking?" visible to the motor side (readable only
+at tick 4, R^2 0.22).  The relative plasticity (2% of the birth weight per step) lets erased routes regrow if a gradient
+asks.  D3 = D1 + --act-brain-grad: the gradient of the expected answer value w.r.t. the commit hazards flows through
+the motor spikes (atan surrogate) into the brain; the answers' values stay detached (no wishful beliefs); language CE
+trains the predictions as before.  One arm, 3 chunks, pulse world, compared with d1_habit.
+- The expected latency starts to track the value of waiting (rho(expected latency, oracle tick) > 0.1 at fixed16; D1:
+  -0.03) and hard / easy words separate.
+- The value of waiting becomes readable earlier from the muscles (R^2 at tick 1 > 0.05; D1: 0.01).
+- Answer value above D1's at fixed16; language cost <= 0.05 nats vs D1.
