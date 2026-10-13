@@ -65,3 +65,21 @@ def test_refractory_ticks_bounds(tmp_path):
         except ValueError:
             continue
         raise AssertionError(f'refractory_ticks={bad} accepted')
+
+
+def test_graded_cells_release_without_spiking(tmp_path):
+    path = tiny_coba(tmp_path)
+    n = 30
+    with torch.no_grad():
+        model = build(path, spike_consumes_drive=True, refractory_ticks=1)
+        model.attach_graded([0, 1], gain=0.5)
+        h = torch.zeros(1, n); ring = tuple(torch.zeros(1, n) for _ in range(4))
+        ge = torch.zeros(1, n); gi = torch.zeros(1, n)
+        drive = torch.zeros(1, n); drive[0, :4] = 10.0                      # 0, 1 graded; 2, 3 spiking
+        for _ in range(3):
+            h, s, ring, ge, gi = tick(model, h, ring, ge, gi, drive)
+            assert s[0, :2].abs().max() == 0                                # graded cells never spike
+            assert h[0, :2].min() > 0                                       # nor reset
+            thr = model.get_thresholds().expand(1, n)[0, :2]
+            assert torch.allclose(ring[0][0, :2], 0.5 * torch.relu(h[0, :2] / thr))   # they release relu(v / theta) x gain
+        assert model.log_graded_gain.requires_grad

@@ -51,6 +51,8 @@ def load(fork):
         fl.attach_precision(model, graph, graph.parent / 'body-annotations.feather')
     if cfg.get('tied_writer'):
         fl.attach_tied_writer(model, graph, graph.parent / 'body-annotations.feather', convert=False)
+    if cfg.get('graded_types'):
+        fl.attach_graded_cells(model, graph, graph.parent / 'body-annotations.feather', types=tuple(cfg['graded_types'].split(',')))
     edges = ('edge_weight_e', 'edge_weight_i')
     from information_boltzmann.core import fly_odour_world as ow
     act = ow.ACT_PARAMETER_NAMES + ('act_mu', 'act_sigma', 'act_w_scale') + ow.SENSE_PARAMETER_NAMES
@@ -104,6 +106,24 @@ def load(fork):
         released = fl.attach_intrinsic_drive(model, graph, graph.parent / 'body-annotations.feather', kappa=float(os.environ['INTRINSIC_KAPPA']),
                                              pattern=os.environ.get('INTRINSIC_PATTERN', r'^(PAM\d|PPL\d|OA-|5-HT|DPM$)'))
         print(f'zero-shot: intrinsic drive kappa {os.environ["INTRINSIC_KAPPA"]} on {int(model.intrinsic_index.numel())} cells', flush=True)
+    if os.environ.get('ZS_GRADED') and getattr(model, 'graded_mask', None) is None:
+        n = fl.attach_graded_cells(model, graph, graph.parent / 'body-annotations.feather', types=tuple(os.environ['ZS_GRADED'].split(',')),
+                                   gain=float(os.environ.get('ZS_GRADED_GAIN', 1.0)))
+        print(f'zero-shot: graded cells {n}, gain {os.environ.get("ZS_GRADED_GAIN", 1.0)}', flush=True)
+    if os.environ.get('ZS_TIED_WRITER') and not cfg.get('tied_writer'):
+        n = fl.attach_tied_writer(model, graph, graph.parent / 'body-annotations.feather', convert=True,
+                                  scale=float(os.environ['ZS_TIED_WRITER']))
+        print(f'zero-shot: writer tied by chemosensory receptor type, scale {os.environ["ZS_TIED_WRITER"]}: {n}', flush=True)
+    if os.environ.get('ZS_SILENCE_OUTPUT'):
+        # zero-shot: the output synapses of the given cell types removed (comma-separated types), e.g. APL
+        import pandas as pd
+        ann_t = pd.read_feather(graph.parent / 'body-annotations.feather').set_index('bodyId').reindex(
+            np.load(graph, allow_pickle=True)['neuron_body_ids'])['type'].astype(str).values
+        quiet_cells = torch.as_tensor(np.isin(ann_t, os.environ['ZS_SILENCE_OUTPUT'].split(',')), device='cuda')
+        with torch.no_grad():
+            for sfx in ('e', 'i'):
+                getattr(model, f'edge_weight_{sfx}')[quiet_cells[getattr(model, f'edge_pre_{sfx}').long()]] = 0.0
+        print(f'zero-shot: output synapses of {os.environ["ZS_SILENCE_OUTPUT"]} removed ({int(quiet_cells.sum())} cells)', flush=True)
     model.eval().requires_grad_(False)
     return model, cfg, L
 

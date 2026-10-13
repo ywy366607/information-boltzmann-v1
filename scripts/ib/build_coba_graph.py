@@ -18,6 +18,7 @@ def build_coba_graph(
     excitatory_scale: float = 1.0,
     inhibitory_scale: float = 1.0,
     no_sensory_input: bool = False,
+    nt_overrides: str | Path | None = None,
 ) -> None:
     """excitatory_scale / inhibitory_scale multiply the synapse weights (the source graph is calibrated for E_E 1.0:
     x1.82 keeps the EPSP at 0.617% of threshold under E_E 0.55; inhibition x3.67 more makes an IPSP at rest as large
@@ -35,7 +36,28 @@ def build_coba_graph(
     post = data["edge_post"].astype(np.int64)
     weight = data["edge_weight"].astype(np.float32)
     delay = data["edge_delay"].astype(np.int32)
-    sign = data["nt_sign"]
+    sign = data["nt_sign"].copy()
+    if nt_overrides is not None:
+        # literature corrections of the predicted transmitter (data/malecns_v1/nt_overrides.csv: class, type regex,
+        # which predicted transmitter it applies to, the corrected one, the source)
+        import pandas as pd
+        folder = source_path.parent
+        ann = pd.read_feather(folder / "body-annotations.feather").set_index("bodyId").reindex(data["neuron_body_ids"])
+        cls_a, typ_a = ann["class"].astype(str).values, ann["type"].astype(str).values
+        nt = pd.read_feather(folder / "body-neurotransmitters.feather").set_index("body").reindex(data["neuron_body_ids"])
+        nt_a = nt["consensus_nt"].fillna("unclear").astype(str).values
+        signs = {"acetylcholine": 1, "gaba": -1, "glutamate": -1, "histamine": -1}
+        applied = []
+        for r in pd.read_csv(nt_overrides).itertuples():
+            m = (cls_a == r[1]) & pd.Series(typ_a).str.contains(r[2], regex=True).values
+            if r[3] != "any":
+                m &= nt_a == r[3]
+            changed = m & (sign != signs[r[4]])
+            sign[m] = signs[r[4]]
+            applied.append(f"{r[1]} {r[2]} ({r[3]}) -> {r[4]}: {int(m.sum())} cells, {int(changed.sum())} sign changes")
+            print(applied[-1])
+        data["nt_sign"] = sign
+        data["nt_overrides_applied"] = np.array("; ".join(applied))
     pre_sign = sign[pre]
 
     exc_mask = (pre_sign > 0)
@@ -106,5 +128,6 @@ if __name__ == "__main__":
     ap.add_argument('--excitatory-scale', type=float, default=1.0)
     ap.add_argument('--inhibitory-scale', type=float, default=1.0)
     ap.add_argument('--no-sensory-input', action='store_true')
+    ap.add_argument('--nt-overrides', default=None, help='CSV of literature transmitter corrections (data/malecns_v1/nt_overrides.csv)')
     a = ap.parse_args()
-    build_coba_graph(a.source, a.output, a.excitatory_scale, a.inhibitory_scale, a.no_sensory_input)
+    build_coba_graph(a.source, a.output, a.excitatory_scale, a.inhibitory_scale, a.no_sensory_input, a.nt_overrides)

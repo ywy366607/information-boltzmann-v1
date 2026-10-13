@@ -26,7 +26,7 @@ dan = np.zeros(N, bool); dan[g['dan_indices']] = True
 pre_e, post_e = g['edge_pre_e'], g['edge_post_e']
 S = {'sugar': np.isin(typ, ['LB3b', 'LB3c', 'dorsal_tpGRN']), 'bitter': np.isin(typ, ['LB1a', 'LB1b', 'LB1c', 'LB1d'])}
 read = {'MN9': typ == 'MN9', 'MN6': typ == 'MN6', 'MN8': typ == 'MN8', 'PAM01': typ == 'PAM01', 'PAM': dan & np.char.startswith(typ, 'PAM'),
-        'PPL1': dan & np.char.startswith(typ, 'PPL1'), 'SMP744': typ == 'SMP744'}
+        'PPL1': dan & np.char.startswith(typ, 'PPL1'), 'SMP744': typ == 'SMP744', 'OA-VPM3': typ == 'OA-VPM3', 'OA-VPM4': typ == 'OA-VPM4'}
 
 
 def hops(src, k=4):
@@ -68,6 +68,18 @@ if os.environ.get('STP_U0'):
 if os.environ.get('STP_TAU_REC'):
     with torch.no_grad():
         model.log_tau_rec.fill_(math.log(float(os.environ['STP_TAU_REC'])))
+# PINS=1: the training connectome -- Kenyon axo-axonal inputs cut (calyx share kept), Kenyon -> dopamine terminal synapses
+# and the fast edges of octopamine / serotonin cells pinned at 0 (connectome v2); no renormalization (the uniform graph
+# has no sqrt(K) normalization to undo).  INTRINSIC_KAPPA: tonic drive on the modulatory cells.
+if int(os.environ.get('PINS', 0)):
+    from pathlib import Path as _P
+    _ann = f'{ROOT}/data/malecns_v1/body-annotations.feather'
+    print('pins:', fl.attach_kenyon_dendritic_only(model, G, _ann, f'{ROOT}/data/malecns_v1/kc_kc_dendritic_synapses.feather', rescale=True),
+          fl.pin_kenyon_to_dopamine(model, G, _ann), fl.pin_modulatory_fast_edges(model, G, f'{ROOT}/data/malecns_v1/modulatory_neurons.feather'), flush=True)
+if os.environ.get('INTRINSIC_KAPPA'):
+    fl.attach_intrinsic_drive(model, G, f'{ROOT}/data/malecns_v1/body-annotations.feather', kappa=float(os.environ['INTRINSIC_KAPPA']),
+                              pattern=os.environ.get('INTRINSIC_PATTERN', r'^(PAM\d|PPL\d|OA-|5-HT|DPM$)'))
+    print('intrinsic drive on', int(model.intrinsic_index.numel()), 'cells', flush=True)
 beta0 = model.log_beta.detach().clone()
 thr = model.get_thresholds().detach().expand(1, N)[0]; z = torch.zeros(1, N, device='cuda')
 sens = torch.as_tensor(np.nonzero(np.char.find(sc.astype(str), 'sensory') >= 0)[0], device='cuda')
@@ -139,5 +151,8 @@ if os.environ.get('DECOMP'):
             ex = run(opts, name, bg, seed=SEED) - base
             c = ex * Ap
             print(f'   {name} -> {os.environ["DECOMP"]}: signed drive (Hz x synapses) total {c.sum():+.0f} = E {c[Ap > 0].sum():+.0f} + I {c[Ap < 0].sum():+.0f}', flush=True)
-            for j in np.argsort(-np.abs(c))[:10]:
+            cl = ann['class'].astype(str).values
+            by = pd.Series(c[Ap > 0], index=cl[Ap > 0]).groupby(level=0).sum().sort_values(ascending=False)
+            print('      excitatory drive by class:', ', '.join(f'{k} {v:+.0f}' for k, v in by.head(6).items()), flush=True)
+            for j in np.argsort(-np.abs(c))[:6]:
                 print(f'      {typ[j]:>16} syn {Ap[j]:+5.0f} extra {ex[j]:+7.1f} Hz  drive {c[j]:+8.0f}  {"GRN" if S["sugar"][j] or S["bitter"][j] else ""}', flush=True)

@@ -35,7 +35,7 @@ from information_boltzmann.core.fly_bptt_learning import (
     attach_regime_homeostasis, attach_tied_writer, REGIME_KENYON_Z,
     attach_compartment_memory, attach_taste_heads, COMPARTMENT_PARAMETER_NAMES, TASTE_PARAMETER_NAMES,
     renormalize_kenyon_inputs, pin_kenyon_to_dopamine, pin_sensory_terminals, pin_modulatory_fast_edges,
-    reset_inputs_to_birth,
+    reset_inputs_to_birth, attach_graded_cells, GRADED_PARAMETER_NAMES,
 )
 from information_boltzmann.runtime.lifelong_evaluation import recovery_summary, savings_summary
 from information_boltzmann.runtime.prequential_meter import FirstPassPredictionMeter
@@ -89,6 +89,16 @@ def atomic_save(path, payload):
 # Spike physics of an individual; omitted flags inherit the saved value, and individuals born before these options
 # existed get the values they were born with (audit 2026-10-13: biophysical reversals, Shiu spike semantics, STP).
 BIOPHYSICS_DEFAULTS = {'E_E': 1.0, 'E_I': -0.2, 'spike_consumes_drive': False, 'refractory_ticks': 0, 'use_stp': True}
+
+
+def graph_is_uniform_synapse(graph_npz):
+    """True for a graph converted with one efficacy per synapse (every weight an integer multiple of the smallest):
+    it has no sqrt(K_in) birth normalization, so --kc-renorm / --dan-renorm (which undo that normalization) do not
+    apply (audit 2026-10-13)."""
+    w = np.abs(np.load(graph_npz, mmap_mode='r')['edge_weight_e'][:200_000]).astype(np.float64)
+    w = w[w > 0]
+    r = w / w.min()
+    return bool(np.abs(r - np.round(r)).max() < 1e-3)
 
 
 def stp_names(model):
@@ -238,6 +248,8 @@ def resolve_learning_modes(args, previous_config, previous_learner):
         args.precision = bool(previous_config.get('precision', False))
     if getattr(args, 'intrinsic', None) is None:
         args.intrinsic = bool(previous_config.get('intrinsic', False))
+    if getattr(args, 'graded_types', None) is None:
+        args.graded_types = previous_config.get('graded_types')
     if getattr(args, 'read_bank', None) is None:
         args.read_bank = bool(previous_config.get('read_bank', False))
     if getattr(args, 'go_max_ticks', None) is None:
@@ -424,10 +436,14 @@ def main():
                         help='Regex of the cell types released by --intrinsic (default: every annotated tonic type)')
     parser.add_argument('--intrinsic-kappa', type=float, default=None,
                         help='Initial intrinsic current of released cells, in units of their rheobase (default 1.2)')
+    parser.add_argument('--graded-types', type=str, default=None,
+                        help='Comma-separated cell types made non-spiking (graded release), e.g. APL,CT1; inherited on resume')
+    parser.add_argument('--graded-gain', type=float, default=0.1,
+                        help='Initial release gain of graded cells (learnable; 0.1 gives ~8%% Kenyon coding on the newborn)')
     parser.add_argument('--kc-renorm', action=argparse.BooleanOptionalAction, default=None,
                         help='Redo the birth normalization of Kenyon inputs over dendritic partners, once (omitted = inherit)')
     parser.add_argument('--comp-rate', type=float, default=None,
-                        help='Initial compartment-memory rate when it is attached now: eta = -rate, forget = rate')
+                        help='Initial compartment-memory rate when it is attached now: eta = -rate (forgetting stays at its default 0.02)')
     parser.add_argument('--stream-pace-min', type=float, default=0.0,
                         help='With --stream-pace-mean M: each window\'s mean interval is log-uniform in [this, M] '
                              '(the world\'s tempo varies; 0 = fixed mean)')
@@ -681,6 +697,39 @@ def main():
                                                         args.graph.parent / 'kc_kc_dendritic_synapses.feather', rescale=True)
             print(f'Kenyon -> Kenyon: {n_kk} edges, {n_zero} axo-axonal pinned at 0 (newborn)', flush=True)
             args.kc_dendritic_newly = False
+        # a newborn lives on the corrected connectome from its first tick (these were applied only on resume before)
+        if args.connectome_v2:
+            ann_path = args.graph.parent / 'body-annotations.feather'
+            pins = {'kenyon_to_dopamine': pin_kenyon_to_dopamine(model, args.graph, ann_path),
+                    'sensory_terminals': pin_sensory_terminals(model, args.graph),
+                    'octopamine_serotonin_fast': pin_modulatory_fast_edges(model, args.graph,
+                                                                           args.graph.parent / 'modulatory_neurons.feather')}
+            print(f'Connectome v2 pins (newborn): {pins}', flush=True)
+        if (args.kc_renorm or args.dan_renorm) and graph_is_uniform_synapse(args.graph):
+            raise ValueError('--kc-renorm / --dan-renorm undo a sqrt(K_in) normalization this graph does not have')
+        args.kc_renorm_newly = False
+        args.dan_renorm_newly = False
+        from information_boltzmann.core.fly_bptt_learning import split_kenyon_subtypes, split_modulatory_classes
+        if args.kc_subtypes:
+            print(f'Kenyon subtypes (newborn): {split_kenyon_subtypes(model, args.graph, args.graph.parent / "body-annotations.feather")}', flush=True)
+        if args.modulatory_classes:
+            if not args.kc_subtypes:
+                raise ValueError('--modulatory-classes comes after the Kenyon split (--kc-subtypes)')
+            print(f'Modulatory classes (newborn): {split_modulatory_classes(model, args.graph, args.graph.parent / "body-annotations.feather")}', flush=True)
+        if args.intrinsic:
+            released = attach_intrinsic_drive(model, args.graph, args.graph.parent / 'body-annotations.feather',
+                                              **({'kappa': args.intrinsic_kappa} if args.intrinsic_kappa is not None else {}),
+                                              **({'pattern': args.intrinsic_pattern} if args.intrinsic_pattern else {}))
+            print(f'Released {int(model.intrinsic_index.numel())} spontaneously active cells (newborn): {released}', flush=True)
+        if args.graded_types:
+            print(f'Graded (non-spiking) cells (newborn): {attach_graded_cells(model, args.graph, args.graph.parent / "body-annotations.feather", types=tuple(args.graded_types.split(",")), gain=args.graded_gain)}', flush=True)
+        if args.compartment_memory or args.taste_every:
+            rate = {} if args.comp_rate is None else {'eta': -float(args.comp_rate)}
+            n_comp = attach_compartment_memory(model, args.graph, args.graph.parent / 'body-annotations.feather',
+                                               affinity=args.dopamine_affinity, **rate)
+            attach_taste_heads(model, args.graph, args.graph.parent / 'body-annotations.feather')
+            args.compartment_memory = True
+            print(f'Compartment memory on {n_comp} Kenyon -> MBON synapses; taste heads on the MBONs (newborn)', flush=True)
         if args.homeostasis:
             args.homeostasis_seed = int(args.homeostasis_seed or 0)
             attach_homeostasis(model, args.graph, seed=args.homeostasis_seed)
@@ -709,6 +758,12 @@ def main():
         ]
         if args.learn_stp:
             names.extend(STP_PARAMETER_NAMES)
+        if args.intrinsic:
+            names.extend(INTRINSIC_PARAMETER_NAMES)
+        if args.graded_types:
+            names.extend(GRADED_PARAMETER_NAMES)
+        if args.compartment_memory:
+            names.extend(n for n in COMPARTMENT_PARAMETER_NAMES + TASTE_PARAMETER_NAMES if n not in names)
         if args.use_read_gamma_trace:
             names.append('logit_read_gamma')
         if args.use_latent_predictor and model.latent_predictor is not None:
@@ -866,6 +921,8 @@ def main():
                                               **({'kappa': args.intrinsic_kappa} if args.intrinsic_kappa is not None else {}),
                                               **({'pattern': args.intrinsic_pattern} if args.intrinsic_pattern else {}))
             print(f'Released {int(model.intrinsic_index.numel())} spontaneously active cells: {released}', flush=True)
+        if args.graded_types:
+            print(f'Graded (non-spiking) cells: {attach_graded_cells(model, args.graph, args.graph.parent / "body-annotations.feather", types=tuple(args.graded_types.split(",")), gain=args.graded_gain)}', flush=True)
         if args.predictive_writer:
             attach_predictive_writer(model)
         if args.dopamine_modulation:
@@ -913,7 +970,7 @@ def main():
             for name in ('edge_weight_e', 'edge_weight_i'):
                 getattr(model, name).copy_(saved['model'][name])
             loaded = model.load_state_dict(weights, strict=False)
-            missing = [k for k in loaded.missing_keys if k != 'logit_read_gamma' and not k.startswith('latent_predictor.') and not k.startswith('graph_observer.') and k not in GO_PARAMETER_NAMES and k not in READ_BANK_PARAMETER_NAMES and k not in INTRINSIC_PARAMETER_NAMES and k not in PRECISION_PARAMETER_NAMES and k not in PREDICTIVE_PARAMETER_NAMES and k not in DOPAMINE_PARAMETER_NAMES and k not in ONLINE_DA_PARAMETER_NAMES]
+            missing = [k for k in loaded.missing_keys if k != 'logit_read_gamma' and not k.startswith('latent_predictor.') and not k.startswith('graph_observer.') and k not in GO_PARAMETER_NAMES and k not in READ_BANK_PARAMETER_NAMES and k not in INTRINSIC_PARAMETER_NAMES and k not in GRADED_PARAMETER_NAMES and k not in PRECISION_PARAMETER_NAMES and k not in PREDICTIVE_PARAMETER_NAMES and k not in DOPAMINE_PARAMETER_NAMES and k not in ONLINE_DA_PARAMETER_NAMES]
             unexpected = [k for k in loaded.unexpected_keys if not k.startswith('latent_predictor.') and not k.startswith('graph_observer.')]
             if unexpected or missing:
                 raise ValueError(f'Weight migration mismatch: unexpected={unexpected}, missing={missing}')
@@ -941,6 +998,8 @@ def main():
             if args.al_reset_newly:
                 n_al = reset_inputs_to_birth(model, args.graph, args.graph.parent / 'body-annotations.feather')
                 print(f'Antennal-lobe inputs reset to birth now: {n_al} edges', flush=True)
+            if (args.kc_renorm and args.kc_renorm_newly or args.dan_renorm and args.dan_renorm_newly)                     and graph_is_uniform_synapse(args.graph):
+                raise ValueError('--kc-renorm / --dan-renorm undo a sqrt(K_in) normalization this graph does not have')
             if args.kc_renorm and args.kc_renorm_newly:
                 if not args.kc_dendritic_only:
                     raise ValueError('--kc-renorm needs --kc-dendritic-only (the axo-axonal inputs cut first)')
@@ -1062,6 +1121,8 @@ def main():
             newly_trainable += [name for name in READ_BANK_PARAMETER_NAMES if name not in names]
         if args.intrinsic:
             newly_trainable += [name for name in INTRINSIC_PARAMETER_NAMES if name not in names]
+        if args.graded_types:
+            newly_trainable += [name for name in GRADED_PARAMETER_NAMES if name not in names]
         if args.precision:
             newly_trainable += [name for name in PRECISION_PARAMETER_NAMES if name not in names]
         if args.predictive_writer:
@@ -1480,42 +1541,45 @@ def main():
             if learner.last_jepa_metrics:
                 for k, v in learner.last_jepa_metrics.items():
                     row[f'obs_metric_{k}'] = float(v)
+        # the brain's own signals (dopamine, intrinsic drive, graded cells...), logged whatever the go neuron
+        if getattr(model, 'dopamine_sensitivity', None) is not None and learner.state.dopamine.numel():
+            dop = learner.state.dopamine.detach()
+            sens = model.dopamine_sensitivity.detach()
+            row.update(dopamine_sensitivity_absmax=float(sens.abs().max()), dopamine_sensitivity_mean=float(sens.mean()),
+                       dopamine_concentration=float(dop[0].mean()),
+                       dopamine_phasic_sd=float(((dop[0] - dop[1]) / dop[1][dop[1] > 0].mean().clamp_min(1e-12))[dop[1] > 0].std()),
+                       dopamine_tau_fast=float(-1 / torch.log(torch.sigmoid(model.dopamine_logit_fast.detach()))),
+                       dopamine_tau_slow=float(-1 / torch.log(torch.sigmoid(model.dopamine_logit_slow.detach()))),
+                       dopamine_cells_firing=float((learner.state.ring[0][0, model.dan_indices] > 0).float().mean()))
+        if getattr(model, 'online_da_eta', None) is not None and learner.state.da_memory.numel():
+            phi = learner.state.da_memory[0][model.online_da_target[0] > 0].detach()
+            row.update(online_da_eta_mean=float(model.online_da_eta.detach().mean()),
+                       online_da_tau_trace=float(-1 / torch.log(torch.sigmoid(model.online_da_logit_trace.detach()))),
+                       online_da_memory_sd=float(phi.std()), online_da_memory_absmax=float(phi.abs().max()))
+        if getattr(model, 'writer_prediction_logit', None) is not None:
+            row['writer_prediction_beta'] = float(torch.sigmoid(model.writer_prediction_logit.detach()))
+        if getattr(model, 'precision_u', None) is not None and learner.state.modulator.numel():
+            m = learner.state.modulator.detach()
+            gain = 2 * torch.sigmoid(m @ model.precision_u.detach().T + model.precision_b.detach())[0]
+            row.update(attention_gain_visual=float(gain[0]), attention_gain_chemo=float(gain[1]),
+                       attention_gain_mechano=float(gain[2]), modulator_mean=float(m.mean()),
+                       dopamine_level=float(m[0, model.dopamine_mask].mean()),
+                       modulator_tau=float(-1 / torch.log(torch.sigmoid(model.modulator_logit_decay.detach()))))
+        if getattr(model, 'intrinsic_kappa', None) is not None:
+            kap = model.intrinsic_kappa.detach()
+            spikes = (learner.state.ring[0][0, model.intrinsic_index] > 0).float()
+            row.update(intrinsic_kappa_mean=float(kap.mean()), intrinsic_kappa_min=float(kap.min()),
+                       intrinsic_kappa_max=float(kap.max()), intrinsic_firing=float(spikes.mean()))
+        if getattr(model, 'read_bank_gain', None) is not None:
+            gain = model.read_bank_gain.detach().abs().mean(1)
+            row['read_bank_gain_now'] = float(gain[0])
+            row['read_bank_gain_filters'] = float(gain[1:].mean())
+            row['read_bank_tau_mean'] = float((-1 / torch.log(model.read_bank_decay().detach())).mean())
+        if getattr(model, 'log_graded_gain', None) is not None:
+            row['graded_gain'] = [round(float(x), 5) for x in model.log_graded_gain.detach().exp()]
         if getattr(learner, 'go_neuron', False):
             for k_go, v_go in getattr(learner, 'last_adaptive_metrics', {}).items():
                 row[k_go] = float(v_go) if isinstance(v_go, (int, float)) else v_go
-            if getattr(model, 'dopamine_sensitivity', None) is not None and learner.state.dopamine.numel():
-                dop = learner.state.dopamine.detach()
-                sens = model.dopamine_sensitivity.detach()
-                row.update(dopamine_sensitivity_absmax=float(sens.abs().max()), dopamine_sensitivity_mean=float(sens.mean()),
-                           dopamine_concentration=float(dop[0].mean()),
-                           dopamine_phasic_sd=float(((dop[0] - dop[1]) / dop[1][dop[1] > 0].mean().clamp_min(1e-12))[dop[1] > 0].std()),
-                           dopamine_tau_fast=float(-1 / torch.log(torch.sigmoid(model.dopamine_logit_fast.detach()))),
-                           dopamine_tau_slow=float(-1 / torch.log(torch.sigmoid(model.dopamine_logit_slow.detach()))),
-                           dopamine_cells_firing=float((learner.state.ring[0][0, model.dan_indices] > 0).float().mean()))
-            if getattr(model, 'online_da_eta', None) is not None and learner.state.da_memory.numel():
-                phi = learner.state.da_memory[0][model.online_da_target[0] > 0].detach()
-                row.update(online_da_eta_mean=float(model.online_da_eta.detach().mean()),
-                           online_da_tau_trace=float(-1 / torch.log(torch.sigmoid(model.online_da_logit_trace.detach()))),
-                           online_da_memory_sd=float(phi.std()), online_da_memory_absmax=float(phi.abs().max()))
-            if getattr(model, 'writer_prediction_logit', None) is not None:
-                row['writer_prediction_beta'] = float(torch.sigmoid(model.writer_prediction_logit.detach()))
-            if getattr(model, 'precision_u', None) is not None and learner.state.modulator.numel():
-                m = learner.state.modulator.detach()
-                gain = 2 * torch.sigmoid(m @ model.precision_u.detach().T + model.precision_b.detach())[0]
-                row.update(attention_gain_visual=float(gain[0]), attention_gain_chemo=float(gain[1]),
-                           attention_gain_mechano=float(gain[2]), modulator_mean=float(m.mean()),
-                           dopamine_level=float(m[0, model.dopamine_mask].mean()),
-                           modulator_tau=float(-1 / torch.log(torch.sigmoid(model.modulator_logit_decay.detach()))))
-            if getattr(model, 'intrinsic_kappa', None) is not None:
-                kap = model.intrinsic_kappa.detach()
-                spikes = (learner.state.ring[0][0, model.intrinsic_index] > 0).float()
-                row.update(intrinsic_kappa_mean=float(kap.mean()), intrinsic_kappa_min=float(kap.min()),
-                           intrinsic_kappa_max=float(kap.max()), intrinsic_firing=float(spikes.mean()))
-            if getattr(model, 'read_bank_gain', None) is not None:
-                gain = model.read_bank_gain.detach().abs().mean(1)
-                row['read_bank_gain_now'] = float(gain[0])
-                row['read_bank_gain_filters'] = float(gain[1:].mean())
-                row['read_bank_tau_mean'] = float((-1 / torch.log(model.read_bank_decay().detach())).mean())
             if learner.go_neuron == 'virtual':
                 row['go_leak'] = float(torch.sigmoid(model.go_logit_leak.detach()))
                 row['go_drive'] = float(model.go_drive.detach())

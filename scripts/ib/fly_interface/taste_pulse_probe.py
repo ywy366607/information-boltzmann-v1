@@ -17,6 +17,9 @@ out = Path(sys.argv[2]) if len(sys.argv) > 2 else fork / 'taste_pulse.json'
 GAIN = float(sys.argv[3]) if len(sys.argv) > 3 else 1.5
 import os
 ON = int(os.environ.get('TASTE_ON', 20)); WIN = ON + int(os.environ.get('TASTE_AFTER', 20))   # ticks driven, ticks observed
+# TASTE_RATE (Hz): receptors fire Poisson at this rate (each event a 1.5 x threshold kick = one spike, as in the Shiu
+# replication) instead of the tonic current, which pins them at the rate cap; then per-cell rates are reported in Hz
+RATE = float(os.environ['TASTE_RATE']) if os.environ.get('TASTE_RATE') else None
 model, cfg, L = load(fork)
 opts = dict(base_rates=model.get_decay_rates(), thresholds=model.get_thresholds(), conductance_gains=model.get_conductance_gains(),
             alif_params=model.get_alif_params(), stp_params=model.get_stp_params())
@@ -30,7 +33,7 @@ dan = np.zeros(len(typ), bool); dan[graph['dan_indices']] = True
 sets = {'sugar': np.isin(typ, ['LB3b', 'LB3c', 'dorsal_tpGRN']), 'bitter': np.isin(typ, ['LB1a', 'LB1b', 'LB1c', 'LB1d']),
         'water': np.isin(typ, ['LB3a']), 'high_salt': np.isin(typ, ['LB3d'])}
 groups = {'PAM': np.char.startswith(typ.astype(str), 'PAM') & dan, 'PPL1': np.char.startswith(typ.astype(str), 'PPL1') & dan,
-          'DAN_all': dan, 'MBON': cls == 'MBON', 'KC': cls == 'Kenyon_Cell'}
+          'DAN_all': dan, 'MBON': cls == 'MBON', 'KC': cls == 'Kenyon_Cell', 'MN9': typ == 'MN9'}
 dan_types = [t for t in np.unique(typ[dan]) if t not in ('None', 'nan')]
 G = {k: torch.as_tensor(v, device='cuda') for k, v in {**groups, **{f't:{t}': dan & (typ == t) for t in dan_types}}.items()}
 val = np.load(ROOT / cfg['data'] / 'validation.npy', mmap_mode='r')
@@ -63,8 +66,12 @@ def run(s0, drive, relay=None):
     own = 0.0
     counts['relay'] = 0.0; counts['dan_v_over_theta'] = 0.0
     phi0 = s0.comp_memory.clone() if s0.comp_memory.numel() else None
+    gen = torch.Generator(device='cuda').manual_seed(5)
     for k in range(WIN):
-        s = tick(s, drive if (drive is not None and k < ON) else None)
+        d = drive if (drive is not None and k < ON) else None
+        if d is not None and RATE is not None:
+            d = d * (torch.rand(d.shape, device='cuda', generator=gen) < RATE / 1000).float()
+        s = tick(s, d)
         spk = (s.ring[0][0] > 0).float()
         for name, m in G.items():
             counts[name] += float(spk[m].sum())
@@ -110,4 +117,7 @@ for name, rs in rows.items():
     top = sorted(((k[8:], summ[k][2]) for k in summ if k.startswith('extra_t:')), key=lambda z: -abs(z[1]))[:6]
     rep[name] = {'summary': {k: v for k, v in summ.items() if not k.startswith('extra_t:')}, 'top_dopamine_types_mean_extra': top}
     print(name, {k: [round(x, 2) for x in v] for k, v in rep[name]['summary'].items()}, 'top', [(t, round(v, 2)) for t, v in top], flush=True)
+    hz = {g: summ[f'extra_{g}'][2] / max(1, rep['sizes'][g]) / WIN * 1000 for g in ('MN9', 'PAM', 'PPL1', 'MBON', 'KC')}
+    rep[name]['extra_hz_per_cell_mean'] = hz
+    print(f'   {name}: extra Hz per cell over the {WIN}-tick window:', {g: round(v, 2) for g, v in hz.items()}, flush=True)
 json.dump(rep, open(out, 'w'), indent=1)

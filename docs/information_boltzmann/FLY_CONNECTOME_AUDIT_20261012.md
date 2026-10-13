@@ -393,3 +393,36 @@ probe hacks), cell health gate, then a rebirth plan.
   and test_modulatory_classes_split: 26 modulatory cells belong to a superclass other than their group's mode, so the
   split gives them the mode's physiology (decay rate changes by 4.5e-4).  No effect at a birth (uniform values);
   splitting a trained adult would need a split per (group, source superclass).
+
+### Correction: the PAM valence on the bare graph was the Kenyon -> dopamine artifact (2026-10-13)
+On the bare graph (no pins), sugar -> PAM01 excitation is 93% from Kenyon cells (769k of 825k Hz x synapses; the sugar
+cascade recruits the Kenyon cells, whose terminal synapses onto the dopamine cells are somatic in a point model).
+With the training connectome (Kenyon axo-axonal cut, Kenyon -> dopamine and octopamine / serotonin fast edges pinned;
+PINS=1), 2 seeds: MN9 and PPL1 keep their valence (MN9 sugar +28 to +66 Hz, bitter shut; PPL1 bitter +15 to +61, sugar
+-4 to -6 on a background), but PAM is silent (0 Hz tone, 0 response).  An intrinsic drive (kappa 0.9 / 1.0 on the
+modulatory types) gives PAM a 1-2.6 Hz tone and still no sugar response.  OA-VPM4 is not sugar-specific either
+(excitatory drive sugar 61k vs bitter 58k).  So in the fast connectome the reward side has no sugar line; in the fly
+sweet taste reaches PAM through octopamine (volume transmission, OAMB; Burke 2012, Huetteroth 2015) -- not modelled.
+The statement "the fast connectome alone gives PAM the right valence" above is withdrawn.  Also: --kc-renorm and
+--dan-renorm undo the old sqrt(K_in) birth normalization; the uniform-synapse graph has none, so they must not be used
+on it.
+
+### Before the rebirth: APL, the antennal lobe, birth path (2026-10-13)
+- APL was in the pacemaker set (intrinsic drive) and spiked near the cap (443 Hz): constant inhibition, 92% of the
+  Kenyon cells never fired, the same 5% every word (consecutive-word overlap 0.62).  Removed from the pacemaker set;
+  APL and CT1 (the fly's non-spiking giant inhibitory interneurons) are graded: no spike or reset, release
+  gain x relu(v / theta) per tick, gain learnable (FlyReservoirLM.attach_graded, --graded-types APL,CT1).
+- Antennal lobe: while reading, PNs were 72% active per word with 0.95 consecutive-word overlap (LNs 84%, 27% of LNs
+  at the rate cap); their drive was LN -> LN / LN -> PN excitation (9 / 3 thresholds per tick vs 0.5 from the
+  receptors).  maleCNS predicts acetylcholine for most lLN1 / lLN2 local neurons, against the literature (lLN1 90-100%
+  GABAergic, Okada et al. 2009; FlyWire lLN2 / lLN2T / lLN2P / lLN2F GABAergic, lineage ALl1); 67 LNs 'unclear'
+  defaulted to excitatory.  data/malecns_v1/nt_overrides.csv (build_coba_graph.py --nt-overrides): 149 sign changes.
+  After: PNs 12% per word (overlap 0.63), LNs 22%, none at the cap.  A tied writer alone (receptors 7% per word,
+  overlap 0.20) had not helped: the excess was intrinsic to the lobe.
+- Kenyon cells on the corrected newborn: 0.2% per word, v/theta -0.03 (under-driven, not suppressed); the R1
+  prediction and the next physical fix (efficacy from cell size) are in the GOAL document.
+- Birth path: connectome v2 pins, class splits, intrinsic drive, graded cells and the compartment memory were applied
+  only on resume; now at birth.  Brain signals (dopamine, intrinsic, graded gain) were logged only with a go neuron.
+- Probes: cell_health saturation = >= 90% of the rate cap (1 / (1 + refractory)); graded cells show as saturated
+  there (their ring holds release); taste_pulse TASTE_RATE (Poisson) with MN9 and Hz per cell; kenyon_coding_probe
+  (coding level and overlap per olfactory layer); drive_by_class_probe.

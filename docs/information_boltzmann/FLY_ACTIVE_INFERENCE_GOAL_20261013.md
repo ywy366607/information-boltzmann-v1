@@ -511,3 +511,40 @@ firing, modulated by state), which keeps them near threshold; the model has that
 d3_full: taste pulses and the dopamine tone on D1 with the intrinsic drive on PAM / PPL at kappa 0.9 and 1.2.
 Prediction: with kappa 0.9-1.2, sugar adds PAM spikes and bitter PPL1 spikes (signed routes), and the slow dopamine
 tone gains structure (gamma CV > 0.02); if not, the relays are the break (taste_pulse_relay).
+
+## R1: rebirth on the corrected engine (plan and predictions, written before the run, 2026-10-13)
+Why: the adult lineage grew on a broken substrate (birth scale 0.35% per synapse, inhibition 4.6x weak, no
+spike-consumed drive / refractory, somatic sensory input, cortical STP as the only brake, a pacemaker current on the
+graded APL, excitatory-labelled antennal-lobe local neurons; FLY_CONNECTOME_AUDIT sections of 2026-10-13).  It learned
+language by growing its own text route (x4.4) while senses, dopamine and the mushroom body stayed out of use; its
+weights are calibrated to that substrate and cannot be carried over.
+Newborn (scripts/ib/fly_interface/grow_r1_rebirth.sh): graph fly_reservoir_coba_shiu.npz (uniform synapse, EPSP
+0.617% of threshold, equal-area inhibition, no synapses onto sensory cells, literature transmitters for 149 antennal-
+lobe local neurons: data/malecns_v1/nt_overrides.csv); E_E 0.55 / E_I -0.15; a spike consumes the conductances, 1
+refractory tick; no STP; ALIF; APL and CT1 graded (release 0.1 x relu(v / theta), learnable); intrinsic drive on the
+annotated pacemaker types without APL (kappa 1.2, learnable); the adult's gradient conventions (surrogate threshold,
+detach-reset, incoming transmission, physical writer clock).  From the first tick: Kenyon axo-axonal cut, Kenyon ->
+dopamine and OA / 5-HT fast edges pinned, Kenyon subtypes and modulatory classes with their own physiology, dopamine
+modulation (pre), compartment memory (rate 2), relative plasticity 0.02, physiology Adam rate 5e-3, carried credit.
+No --kc-renorm / --dan-renorm (they undo a sqrt(K) normalization this graph does not have; the trainer refuses).
+World: the D-line stream (8 ticks per word, pace mean 16 / min 2), no acts (R2 adds D3's acts).  25 chunks x 4096
+words (~10.5 h).  Plan reviewed by a subagent (no-go on the first draft: APL pacemaker, blind saturation gate, no
+MN9 in the taste gate, brain signals not logged without the go neuron, weak predictions; all fixed).
+Gate on the smoke newborn (96 words; 100 Hz Poisson receptors from the reading state): whole brain 5.8 Hz, none at
+the rate cap; antennal-lobe PNs 12% active per word (consecutive-word overlap 0.63, was 72% / 0.95 before the
+transmitter fix); sugar -> MN9 +68 Hz, PPL1 -3, PAM +0.9; bitter -> MN9 0, PPL1 +45, PAM -1.6; dopamine at 0.35
+receptor occupancy.  Open at birth: the Kenyon cells are nearly silent (0.2% per word, v/theta -0.03: under-driven,
+not suppressed).
+Predictions (probes at chunks 1, 5, 25; metrics.jsonl every 128 words):
+1. Healthy throughout: whole-brain mean 2-20 Hz, < 0.5% of cells at >= 450 Hz, no non-finite gradient.
+2. Language: first_pass_gain_over_fixed_unigram >= 0.3 nats by chunk 5 and >= 0.5 by chunk 25 (the old adult reached
+   ~0.55 in the settle world); < 0.3 at chunk 25 = the corrected brain resists text (cause measured first: read
+   surface activity, writer drive).
+3. No text-route takeover: median relative growth of the excitatory weights onto the read cells < 2x (old x4.4).
+4. Senses survive: sugar -> MN9 >= +20 Hz, bitter -> PPL1 >= +10 Hz, bitter -> MN9 <= +2 Hz at chunks 5 and 25.
+5. The mushroom body wakes: Kenyon coding 2-20% of cells per word by chunk 5, consecutive-word overlap below 0.5.
+   If it stays < 1% at chunk 5, the next fix is physical: per-class synaptic efficacy from cell size (input
+   resistance; Kenyon cells are tiny), which the uniform PSP ignores.
+6. Dopamine has phasic structure (dopamine_phasic_sd logged > 0.02) and the compartment memory is used at chunk 25
+   (memory_revisit live - frozen phi savings > 0.01 nats; old 0.0004).
+Open by design: sugar -> PAM reward (octopamine modulation not modelled).

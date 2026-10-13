@@ -722,6 +722,23 @@ class FlyReservoirLM(nn.Module):
             return SpikeFn.apply(margin, width)
         return SpikeFn.apply(margin)
 
+    def attach_graded(self, index, gain=1.0):
+        """Non-spiking (graded) cells, e.g. the mushroom body's APL and the optic lobe's CT1: they never spike or reset;
+        every tick they release gain * relu(v / threshold) onto their synapses (release grows with depolarization, as
+        in the fly's graded feedback inhibition).  A spiking point model of APL fires near the maximal rate and silences
+        92% of the Kenyon cells; without it they are dense (90% active).  gain is learnable per cell (log space)."""
+        index = torch.as_tensor(index, dtype=torch.long, device=self.edge_pre_e.device)
+        mask = torch.zeros(1, self.n_neurons, device=index.device)
+        mask[0, index] = 1.0
+        self.register_buffer('graded_mask', mask, persistent=False)
+        self.register_buffer('graded_index', index, persistent=False)
+        self.log_graded_gain = nn.Parameter(torch.full((index.numel(),), math.log(gain), device=index.device))
+
+    def graded_release(self, v_pre, thresholds):
+        gain = torch.zeros_like(v_pre).index_put((torch.zeros_like(self.graded_index), self.graded_index),
+                                                 torch.exp(self.log_graded_gain))
+        return gain * torch.relu(v_pre / thresholds)
+
     def get_thresholds(self) -> torch.Tensor:
         """Computes per-neuron [1, N] firing thresholds."""
         if getattr(self, "learnable_thresholds", False):
@@ -856,11 +873,16 @@ class FlyReservoirLM(nn.Module):
         g_total, leak_se, leak_si = (context[k] for k in ('g_total', 'leak_se', 'leak_si'))
         g_e, g_i = context['g_e'], context['g_i']
         spike_next = self.spike(v_pre - eff_threshold, context['thresholds'])
+        graded = getattr(self, 'graded_mask', None)
+        if graded is not None:
+            spike_next = spike_next * (1.0 - graded)                      # graded cells never spike or reset
         if self.refractory_ticks > 0:
             recent = spike_ring[0] > 0
             for k in range(1, self.refractory_ticks):
                 recent = recent | (spike_ring[k] > 0)
             free = (~recent).to(h.dtype)
+            if graded is not None:
+                free = torch.maximum(free, graded)                        # their ring holds release, not spikes
             spike_next = spike_next * free
         reset_spike = spike_next.detach() if self.detach_reset else spike_next
         h_next = v_pre * (1.0 - reset_spike)
@@ -893,6 +915,8 @@ class FlyReservoirLM(nn.Module):
             x_next = 1.0 + (x_post - 1.0) * rho_rec
         else:
             transmitted_pulse = spike_next
+        if graded is not None:
+            transmitted_pulse = transmitted_pulse + graded * self.graded_release(v_pre, context['thresholds'])
 
         next_spike_ring = (transmitted_pulse, spike_ring[0], spike_ring[1], spike_ring[2])
 

@@ -844,8 +844,10 @@ def attach_precision(model, graph_npz, annotations, tau=8.0, pattern=MODULATORY_
     model.precision_scale = scale
     return len(rows), int(sum(r in dopamine for r in rows))
 # Cell types known to be spontaneously / tonically active, as annotated in the MaleCNS connectome: circadian clock
-# neurons (pacemakers), dopaminergic PAM / PPL, octopaminergic OA-*, serotonergic 5-HT*, DPM and APL.
-INTRINSIC_TYPE_PATTERN = r'^(s-LNv|l-LNv|5thsLNv|LNd|DN1|DN2|DN3|LPN|LN-DN1|PAM\d|PPL\d|OA-|5-HT|DPM$|APL$)'
+# neurons (pacemakers), dopaminergic PAM / PPL, octopaminergic OA-*, serotonergic 5-HT* and DPM.  APL is not here
+# (2026-10-13): it is a graded feedback interneuron driven by the Kenyon cells (attach_graded_cells); a pacemaker
+# current on it made it fire at the rate cap and hold the Kenyon layer under constant inhibition.
+INTRINSIC_TYPE_PATTERN = r'^(s-LNv|l-LNv|5thsLNv|LNd|DN1|DN2|DN3|LPN|LN-DN1|PAM\d|PPL\d|OA-|5-HT|DPM$)'
 
 
 def attach_intrinsic_drive(model, graph_npz, annotations, kappa=1.2, pattern=INTRINSIC_TYPE_PATTERN):
@@ -1163,6 +1165,22 @@ def kenyon_dendritic_share(model, graph_npz, annotations, dendritic_feather):
     at = torch.searchsorted(keys, edge_keys).clamp(max=len(keys) - 1)
     share = torch.where(keys[at] == edge_keys, vals[at], torch.zeros_like(vals[at]))
     return edges, share
+
+
+GRADED_TYPES = ('APL', 'CT1')
+GRADED_PARAMETER_NAMES = ('log_graded_gain',)
+
+
+def attach_graded_cells(model, graph_npz, annotations, types=GRADED_TYPES, gain=1.0):
+    """The fly's non-spiking giant inhibitory interneurons (APL in the mushroom body, CT1 in the optic lobe) as graded
+    cells (FlyReservoirLM.attach_graded): release proportional to depolarization instead of spikes.  Returns the
+    number of cells per type."""
+    import pandas as pd
+    graph = np.load(graph_npz, allow_pickle=True)
+    typ = pd.read_feather(annotations).set_index('bodyId').reindex(graph['neuron_body_ids'])['type'].astype(str).values
+    index = np.nonzero(np.isin(typ, list(types)))[0]
+    model.attach_graded(index, gain=gain)
+    return {t: int((typ == t).sum()) for t in types}
 
 
 def attach_kenyon_dendritic_only(model, graph_npz, annotations, dendritic_feather, rescale=True):

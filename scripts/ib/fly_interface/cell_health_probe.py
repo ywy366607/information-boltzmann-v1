@@ -59,6 +59,8 @@ with torch.no_grad():
                 onset.append(1.0 if t == 0 else 0.0)
         s = fl.expect_next(model, s, fl.read_fly_motor(model, s))
 rate = (counts / ticks).cpu().numpy(); v = (vsum / ticks).cpu().numpy()
+# saturated = at >= 90% of the rate cap (one spike per 1 + refractory ticks), so a cell pinned at the cap is seen
+SAT = 0.9 / (1 + int(cfg.get('refractory_ticks') or 0))
 onset = np.array(onset)
 q = lambda x: [float(np.min(x)), float(np.median(x)), float(np.mean(x)), float(np.max(x))]
 rep = {'fork': str(fork), 'ticks': ticks, 'groups': {}}
@@ -68,13 +70,17 @@ for k, m in groups.items():
     p = np.array(pop[k])
     follow = float(np.corrcoef(np.roll(onset, 2), p)[0, 1]) if p.std() > 0 else 0.0     # 2-tick lag
     g = {'n': int(m.sum()), 'rate_min_median_mean_max': q(r), 'silent_frac': float((r == 0).mean()),
-         'saturated_frac': float((r > 0.5).mean()), 'median_v_over_theta': float(np.median(v[m])), 'follows_text': follow}
+         'saturated_frac': float((r >= SAT).mean()), 'median_v_over_theta': float(np.median(v[m])), 'follows_text': follow}
     rep['groups'][k] = g
     if g['silent_frac'] > 0.9:
         flags.append(f'DEAD {k} ({g["silent_frac"]:.0%} silent)')
     if g['saturated_frac'] > 0.2:
         flags.append(f'SATURATED {k} ({g["saturated_frac"]:.0%})')
 rep['flags'] = flags
+rep['whole_brain'] = {'rate_hz_mean': float(rate.mean() * 1000), 'rate_hz_median': float(np.median(rate) * 1000),
+                      'silent_frac': float((rate == 0).mean()), 'saturated_frac': float((rate >= SAT).mean()), 'saturation_rate': SAT}
+print(f"whole brain: mean {rep['whole_brain']['rate_hz_mean']:.1f} Hz, median {rep['whole_brain']['rate_hz_median']:.1f} Hz, "
+      f"silent {rep['whole_brain']['silent_frac']:.2f}, saturated (>= {SAT * 1000:.0f} Hz) {rep['whole_brain']['saturated_frac']:.4f}")
 for k in sorted(groups, key=lambda k: (not k.startswith('class:'), k)):
     g = rep['groups'][k]
     print(f'{k:>38} n {g["n"]:>6}  rate mean {g["rate_min_median_mean_max"][2]:.4f}  silent {g["silent_frac"]:.2f}  '
