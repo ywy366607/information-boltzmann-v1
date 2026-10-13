@@ -12,7 +12,10 @@ sys.path.insert(0, 'D:/information-boltzmann-v1')
 from information_boltzmann.core.fly_reservoir import FlyReservoirLM
 from information_boltzmann.core import fly_bptt_learning as fl
 ROOT = 'D:/information-boltzmann-v1'
-G = f'{ROOT}/data/malecns_v1/fly_reservoir_coba_syn.npz'; W0 = 0.000979; WSCALE = float(os.environ.get('WSCALE', 1.82))
+G = os.environ.get('GRAPH', f'{ROOT}/data/malecns_v1/fly_reservoir_coba_syn.npz'); W0 = 0.000979; WSCALE = float(os.environ.get('WSCALE', 1.82))
+# ENGINE_RESET=1: the engine's own spike semantics (spike_consumes_drive, refractory_ticks 2) instead of the probe's emulation;
+# with GRAPH=fly_reservoir_coba_shiu.npz (weights, inhibition and sensory inputs fixed in the graph) set WSCALE=1
+ENGINE_RESET = bool(int(os.environ.get('ENGINE_RESET', 0)))
 SEED = int(os.environ.get('SEED', 7))
 RATE, T = float(os.environ.get('RATE', 100)), int(os.environ.get('T', 1000))
 g = np.load(G, allow_pickle=True); N = len(g['neuron_body_ids'])
@@ -36,7 +39,8 @@ def hops(src, k=4):
 H = {k: [v] + hops(v) for k, v in S.items()}
 model = FlyReservoirLM(G, d_model=768, read_surface='output', injection='topographic', synapse_model='coba', use_alif=True, use_stp=True,
                        detach_reset=True, surrogate_mode='threshold', transmission_mode='incoming',
-                       E_E=float(os.environ.get('EE', 0.55)), E_I=float(os.environ.get('EI', -0.15))).cuda().eval().requires_grad_(False)
+                       E_E=float(os.environ.get('EE', 0.55)), E_I=float(os.environ.get('EI', -0.15)),
+                       spike_consumes_drive=ENGINE_RESET, refractory_ticks=int(os.environ.get('RFC_TICKS', 1)) if ENGINE_RESET else 0).cuda().eval().requires_grad_(False)
 with torch.no_grad():
     for sfx in ('e', 'i'):
         getattr(model, f'edge_weight_{sfx}').mul_(WSCALE)            # x1.82 keeps the PSP at 0.617% under E_E 0.55 (calibrated)
@@ -58,6 +62,12 @@ if int(os.environ.get('NO_SENSORY_INPUT', 0)):
 # v and g held at 0) -- our engine only resets v and keeps the conductances, so a strongly driven cell refires every tick
 SHIU_RESET, RFC = bool(int(os.environ.get('SHIU_RESET', 0))), int(os.environ.get('RFC', 2))
 import dataclasses
+if os.environ.get('STP_U0'):
+    with torch.no_grad():
+        model.logit_u0.fill_(math.log(float(os.environ['STP_U0']) / (1 - float(os.environ['STP_U0']))))
+if os.environ.get('STP_TAU_REC'):
+    with torch.no_grad():
+        model.log_tau_rec.fill_(math.log(float(os.environ['STP_TAU_REC'])))
 beta0 = model.log_beta.detach().clone()
 thr = model.get_thresholds().detach().expand(1, N)[0]; z = torch.zeros(1, N, device='cuda')
 sens = torch.as_tensor(np.nonzero(np.char.find(sc.astype(str), 'sensory') >= 0)[0], device='cuda')

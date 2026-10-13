@@ -367,3 +367,29 @@ Root cause of "PAM gets no sugar", in order: missing inhibition strength (biophy
 inhibitory conductance), no spike-consumed drive / refractory, somatic input to sensory cells, and the cortical STP
 default that was hiding the first two by suppressing all transmission.  Next: these four as engine options (not
 probe hacks), cell health gate, then a rebirth plan.
+
+### Engine fixes for the rebirth (2026-10-13)
+
+- Graph `data/malecns_v1/fly_reservoir_coba_shiu.npz` (`build_coba_graph.py --source fly_reservoir_biological_syn.npz
+  --excitatory-scale 1.82 --inhibitory-scale 3.67 --no-sensory-input`): EPSP 0.617% of threshold under E_E 0.55,
+  IPSP equal in area under E_I -0.15, no synapses onto sensory neurons.
+- Engine (`FlyReservoirLM(spike_consumes_drive=True, refractory_ticks=1)`): a spike zeroes the cell's conductances;
+  one tick held at reset (Shiu 2.2 ms is closer to 1 tick (2 ms interval) than to 2 (3 ms); with 2 the sugar -> PAM
+  cascade disappeared: PAM 0-1 Hz).  Read from the spike ring, no new state.  Tests: tests/test_fly_spike_semantics.py.
+- Trainer flags `--E-E --E-I --spike-consumes-drive --refractory-ticks --stp/--no-stp`, saved in the config and
+  inherited on resume; individuals born before keep their old physics (E_E 1.0, E_I -0.2, v-only reset, STP on).
+- Gate (engine-native, `shiu_replication_probe.py GRAPH=..._shiu.npz WSCALE=1 ENGINE_RESET=1 RFC_TICKS=1`), ALIF on,
+  STP off, 3 seeds: sugar -> MN9 40-72 Hz, bitter -> MN9 0 (3/3); PPL1 bitter 56-61 Hz; PAM sugar 16-17 Hz in 2/3
+  seeds (a cascade; 0 in the third), bitter 0.2-0.3.  Background 1%: brain 4.4-4.7 Hz, none saturated; bitter shuts
+  MN9 (-47 to -85 Hz), PPL1 bitter +18 to +20.
+- STP: the cortical default leaves 50 cells responding; u0 0.05 with tau_fac 100 is facilitating and runs PAM to
+  120-180 Hz.  No basis for one value brain-wide: born without STP (as Shiu); synapse-specific STP only with evidence.
+- Gradients: on this living brain the 'absolute' surrogate (unit width vs a 0.1 threshold: every cell at rest has
+  gain 0.9) explodes to inf within two windows (anomaly detection: TritonDelayedSynapticTransmissionBackward NaN);
+  the adult's conventions (surrogate threshold, detach-reset, incoming transmission, physical writer clock) are
+  required.  Smoke birth + resume (96 + 64 words) passes: NLL 8.11 -> 7.75.
+- Pre-existing test failures (fail on HEAD too, not from these changes): test_fly_learning_repairs (Namespace fixtures
+  missing later flags: al_reset, ...; a CUBA in-place clamp on a leaf), test_fly_event_observable (archived script),
+  and test_modulatory_classes_split: 26 modulatory cells belong to a superclass other than their group's mode, so the
+  split gives them the mode's physiology (decay rate changes by 4.5e-4).  No effect at a birth (uniform values);
+  splitting a trained adult would need a split per (group, source superclass).

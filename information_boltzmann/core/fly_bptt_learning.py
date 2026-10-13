@@ -2805,8 +2805,16 @@ class FlyBPTTLearner:
                 max(1, sum(p.numel() for p in obs_params))**.5)
             if getattr(self, 'last_jepa_metrics', None):
                 group_norms.update(self.last_jepa_metrics)
-        grad_norm = stable_clip_grad_norm_(self.trainable, self.max_grad_norm,
-                                          error_if_nonfinite=True)
+        try:
+            grad_norm = stable_clip_grad_norm_(self.trainable, self.max_grad_norm,
+                                              error_if_nonfinite=True)
+        except FloatingPointError:
+            # name the parameters (FLY_DETECT_ANOMALY=1 FLY_COMPILE_TICK=0 names the operation); a living brain with the
+            # 'absolute' surrogate (unit width against a 0.1 threshold) explodes to inf through 256 ticks
+            bad = [name for name, p in self.model.named_parameters()
+                   if p.requires_grad and p.grad is not None and not torch.isfinite(p.grad).all()]
+            print(f'non-finite gradient in: {bad}', flush=True)
+            raise
         self.optimizer.step()
         plasticity = 1.0
         if getattr(self.model, 'dopamine_mask', None) is not None and next_state.modulator.numel():

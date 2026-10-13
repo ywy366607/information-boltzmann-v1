@@ -15,7 +15,16 @@ import numpy as np
 def build_coba_graph(
     source_npz: str | Path = "data/malecns_v1/fly_reservoir_biological.npz",
     output_npz: str | Path = "data/malecns_v1/fly_reservoir_coba.npz",
+    excitatory_scale: float = 1.0,
+    inhibitory_scale: float = 1.0,
+    no_sensory_input: bool = False,
 ) -> None:
+    """excitatory_scale / inhibitory_scale multiply the synapse weights (the source graph is calibrated for E_E 1.0:
+    x1.82 keeps the EPSP at 0.617% of threshold under E_E 0.55; inhibition x3.67 more makes an IPSP at rest as large
+    in area as an EPSP, as in the validated whole-brain LIF of Shiu et al. 2024 -- with E_I -0.15 alone it is 3.7x
+    smaller and the brain ignites).  no_sensory_input drops every synapse onto a sensory neuron: those inputs sit on
+    the axon terminals (presynaptic modulation); somatic in a point model, they make receptors excite each other
+    (bitter GRNs fire 169 Hz on a 100 Hz drive and turn the proboscis motor neuron MN9 on).  Audit 2026-10-13."""
     source_path = Path(source_npz)
     output_path = Path(output_npz)
     print(f"Loading {source_path}...")
@@ -31,6 +40,13 @@ def build_coba_graph(
 
     exc_mask = (pre_sign > 0)
     inh_mask = (pre_sign < 0)
+    if no_sensory_input:
+        names = np.array(data["superclass_names"]).astype(str)[data["superclass_id"]]
+        sensory = np.char.find(names, "sensory") >= 0
+        onto = sensory[post]
+        print(f"Dropping {int(onto.sum()):,} edges onto {int(sensory.sum()):,} sensory neurons (axo-axonal)")
+        exc_mask &= ~onto
+        inh_mask &= ~onto
 
     print(f"Total edges: {len(pre):,}")
     print(f"Excitatory edges (ACh): {int(exc_mask.sum()):,}")
@@ -56,9 +72,13 @@ def build_coba_graph(
 
     print("Partitioning and sorting excitatory edges...")
     pre_e, post_e, w_e, delay_e, splits_e = partition_and_sort(exc_mask, is_abs=False)
+    w_e = (w_e * excitatory_scale).astype(np.float32)
 
     print("Partitioning and sorting inhibitory edges...")
     pre_i, post_i, w_i, delay_i, splits_i = partition_and_sort(inh_mask, is_abs=True)
+    w_i = (w_i * excitatory_scale * inhibitory_scale).astype(np.float32)
+    data["coba_conversion"] = np.array(f"excitatory_scale={excitatory_scale} inhibitory_scale={inhibitory_scale} "
+                                       f"no_sensory_input={no_sensory_input}")
 
     data["edge_pre_e"] = pre_e
     data["edge_post_e"] = post_e
@@ -83,5 +103,8 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument('--source', default='data/malecns_v1/fly_reservoir_biological.npz')
     ap.add_argument('--output', default='data/malecns_v1/fly_reservoir_coba.npz')
+    ap.add_argument('--excitatory-scale', type=float, default=1.0)
+    ap.add_argument('--inhibitory-scale', type=float, default=1.0)
+    ap.add_argument('--no-sensory-input', action='store_true')
     a = ap.parse_args()
-    build_coba_graph(a.source, a.output)
+    build_coba_graph(a.source, a.output, a.excitatory_scale, a.inhibitory_scale, a.no_sensory_input)

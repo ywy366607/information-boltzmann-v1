@@ -1624,8 +1624,8 @@ def test_modulatory_classes_split_without_changing_dynamics_and_dopamine_renorm(
         mod = split_modulatory_classes(model, graph, ann)
         assert mod['DAN_PAM'] > 200 and mod['DAN_PPL1'] > 5 and len(model.class_split_sources) == len(kc) + len(mod)
         after = [*model.get_decay_rates(), model.get_thresholds(), *model.get_stp_params()]
-        for b, a in zip(before, after):
-            assert torch.equal(b, a)
+        for k, (b, a) in enumerate(zip(before, after)):
+            assert torch.equal(b, a), (k, float((b - a).abs().max()), int((b != a).sum()))
         import numpy as np
         g = np.load(graph, allow_pickle=True)
         dan = torch.zeros(model.n_neurons, dtype=torch.bool, device=device)

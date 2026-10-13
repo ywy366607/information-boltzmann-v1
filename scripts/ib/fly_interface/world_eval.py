@@ -24,7 +24,9 @@ def load(fork):
     cfg, L = saved['config'], saved['learner']
     graph = ROOT / cfg['graph']
     model = FlyReservoirLM(graph, vocab_size=50257, d_model=cfg['d_model'], injection='topographic', read_surface='output',
-                           synapse_model='coba', use_alif=True, use_stp=True, decoder_bias=cfg['decoder_bias'],
+                           synapse_model='coba', use_alif=True, decoder_bias=cfg['decoder_bias'],
+                           E_E=cfg.get('E_E', 1.0), E_I=cfg.get('E_I', -0.2), use_stp=cfg.get('use_stp', True),
+                           spike_consumes_drive=cfg.get('spike_consumes_drive', False), refractory_ticks=cfg.get('refractory_ticks', 0),
                            detach_reset=cfg.get('detach_reset', False), surrogate_mode=cfg.get('surrogate_mode', 'absolute'),
                            transmission_mode=cfg.get('transmission_mode', 'atomic')).cuda()
     if cfg.get('go_neuron') == 'virtual':

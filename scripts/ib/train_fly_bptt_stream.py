@@ -86,6 +86,20 @@ def atomic_save(path, payload):
     raise type(last_error)(f"atomic_save failed after retries: {last_error}")
 
 
+# Spike physics of an individual; omitted flags inherit the saved value, and individuals born before these options
+# existed get the values they were born with (audit 2026-10-13: biophysical reversals, Shiu spike semantics, STP).
+BIOPHYSICS_DEFAULTS = {'E_E': 1.0, 'E_I': -0.2, 'spike_consumes_drive': False, 'refractory_ticks': 0, 'use_stp': True}
+
+
+def stp_names(model):
+    return STP_PARAMETER_NAMES if getattr(model, 'use_stp', False) else ()
+
+
+def biophysics_kwargs(args):
+    return dict(E_E=args.E_E, E_I=args.E_I, spike_consumes_drive=args.spike_consumes_drive,
+                refractory_ticks=args.refractory_ticks, use_stp=args.use_stp)
+
+
 def resolve_learning_modes(args, previous_config, previous_learner):
     """Omitted flags inherit the continuing individual's algorithm."""
     if getattr(args, 'detach_reset', None) is None:
@@ -94,6 +108,9 @@ def resolve_learning_modes(args, previous_config, previous_learner):
         args.surrogate_mode = previous_config.get('surrogate_mode', 'absolute')
     if getattr(args, 'transmission_mode', None) is None:
         args.transmission_mode = previous_config.get('transmission_mode', 'atomic')
+    for key, old in BIOPHYSICS_DEFAULTS.items():
+        if getattr(args, key, None) is None:
+            setattr(args, key, previous_config.get(key, old))
     if args.read_centering is None:
         args.read_centering = bool(previous_learner.get('read_centering',
                                   previous_config.get('read_centering', False)))
@@ -165,7 +182,7 @@ def resolve_learning_modes(args, previous_config, previous_learner):
         args.regime_kenyon_z = previous_config.get('regime_kenyon_z')
     if getattr(args, 'tied_writer', None) is None:
         args.tied_writer = bool(previous_config.get('tied_writer', False))
-    args.kc_renorm_newly = bool(args.kc_renorm) and not bool(previous_config.get('kc_renorm', False))
+    args.kc_renorm_newly = bool(getattr(args, 'kc_renorm', False)) and not bool(previous_config.get('kc_renorm', False))
     for name in ('modulatory_classes', 'dan_renorm'):
         if getattr(args, name, None) is None:
             setattr(args, name, bool(previous_config.get(name, False)))
@@ -251,6 +268,8 @@ def disable_alif(model):
 
 
 def main():
+    if os.environ.get('FLY_DETECT_ANOMALY'):
+        torch.autograd.set_detect_anomaly(True)
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--resume', type=Path, default=None,
                         help='Resume from a complete lifecycle checkpoint')
@@ -466,6 +485,14 @@ def main():
                         help='Spike proxy width convention; resumes inherit the saved rule')
     parser.add_argument('--transmission-mode', choices=('atomic', 'incoming'), default=None,
                         help='Summation execution order; resumes inherit the saved convention')
+    parser.add_argument('--E-E', dest='E_E', type=float, default=None,
+                        help='Excitatory reversal (rest 0, threshold 0.1 = -55 / -45 mV); 0.55 = ACh near 0 mV')
+    parser.add_argument('--E-I', dest='E_I', type=float, default=None, help='Inhibitory reversal; -0.15 = Cl- near -70 mV')
+    parser.add_argument('--spike-consumes-drive', action=argparse.BooleanOptionalAction, default=None,
+                        help='A spike zeroes the cell conductances (Shiu et al. 2024 g = 0 on reset)')
+    parser.add_argument('--refractory-ticks', type=int, default=None, help='Ticks held at reset after a spike (Shiu: 2.2 ms -> 2)')
+    parser.add_argument('--stp', dest='use_stp', action=argparse.BooleanOptionalAction, default=None,
+                        help='Short-term plasticity (the cortical default kills transmission on the corrected birth)')
     parser.add_argument('--writer-baseline-clock', choices=('input', 'physical'), default=None,
                         help='Packet baseline clock; default reproduces the saved implementation')
     parser.add_argument('--lr', type=float, default=2e-4)
@@ -568,6 +595,9 @@ def main():
             args.detach_reset = False
         if args.surrogate_mode is None:
             args.surrogate_mode = 'absolute'
+        for key, old in BIOPHYSICS_DEFAULTS.items():
+            if getattr(args, key, None) is None:
+                setattr(args, key, old)
         if args.transmission_mode is None:
             args.transmission_mode = 'atomic'
         if args.settle_ticks is None:
@@ -595,7 +625,7 @@ def main():
 
         model = FlyReservoirLM(args.graph, vocab_size=50257, d_model=args.d_model,
             injection='topographic', read_surface='output', synapse_model='coba',
-            use_alif=True, use_stp=True, decoder_bias=args.decoder_bias,
+            use_alif=True, decoder_bias=args.decoder_bias, **biophysics_kwargs(args),
             read_centering=args.read_centering,
             use_read_gamma_trace=args.use_read_gamma_trace,
             init_read_gamma=args.init_read_gamma,
@@ -773,7 +803,7 @@ def main():
                   f'drive {args.odour_drive}, act lambda {args.act_lambda}', flush=True)
         learner.previous_token = int(train[0])
 
-        initial_stp = {name: getattr(model, name).detach().clone() for name in STP_PARAMETER_NAMES}
+        initial_stp = {name: getattr(model, name).detach().clone() for name in stp_names(model)}
         origin = {
             'initialization': 'born from scratch with GPT-2 embedding/unigram prior and LeJEPA Latent Predictor Form B',
             'train_tokens': 0, 'events': 0, 'updates': 0,
@@ -811,7 +841,7 @@ def main():
             raise ValueError('Resume requires a complete lifecycle checkpoint')
         model = FlyReservoirLM(args.graph, vocab_size=50257, d_model=previous_config['d_model'],
             injection='topographic', read_surface='output', synapse_model='coba',
-            use_alif=True, use_stp=True, decoder_bias=previous_config['decoder_bias'],
+            use_alif=True, decoder_bias=previous_config['decoder_bias'], **biophysics_kwargs(args),
             read_centering=args.read_centering,
             use_read_gamma_trace=args.use_read_gamma_trace,
             init_read_gamma=args.init_read_gamma,
@@ -1018,9 +1048,9 @@ def main():
             names = [n for n in old['adam_names']
                      if (args.use_graph_observer or not n.startswith('graph_observer.'))
                      and (args.use_latent_predictor or not n.startswith('latent_predictor.'))]
-        previous_learn_stp = all(name in names for name in STP_PARAMETER_NAMES)
+        previous_learn_stp = model.use_stp and all(name in names for name in STP_PARAMETER_NAMES)
         args.learn_stp = bool(args.learn_stp or previous_learn_stp)
-        stp_newly_trainable = [name for name in STP_PARAMETER_NAMES
+        stp_newly_trainable = [name for name in stp_names(model)
                                 if args.learn_stp and name not in names]
         stp_changed = bool(stp_newly_trainable)
         newly_trainable = list(stp_newly_trainable)
@@ -1143,7 +1173,7 @@ def main():
                   f'drive {args.odour_drive}, act lambda {args.act_lambda}', flush=True)
         learner.load_edge_signs(old)
         learner.load_adam_state(old['optimizer'], newly_trainable=newly_trainable)
-        initial_stp = {name: getattr(model, name).detach().clone() for name in STP_PARAMETER_NAMES}
+        initial_stp = {name: getattr(model, name).detach().clone() for name in stp_names(model)}
         if fmt == 'fly-online-v2':
             learner.events = old['counters']['events']
             learner.previous_token = old['counters']['previous_token']
@@ -1503,12 +1533,13 @@ def main():
             row['lambda_mcr2'] = learner.lambda_mcr2
             for k_mcr, v_mcr in getattr(learner, 'last_mcr2_metrics', {}).items():
                 row[k_mcr] = float(v_mcr)
-        for name in STP_PARAMETER_NAMES:
+        for name in stp_names(model):
             parameter = getattr(model, name).detach()
             row[f'{name}_max_change_since_launch'] = float((parameter-initial_stp[name]).abs().max())
-        row['stp_u0_mean'] = float(model.logit_u0.detach().sigmoid().clamp(.05, .95).mean())
-        row['stp_tau_fac_mean'] = float(model.log_tau_fac.detach().exp().clamp(5, 1000).mean())
-        row['stp_tau_rec_mean'] = float(model.log_tau_rec.detach().exp().clamp(5, 2000).mean())
+        if model.use_stp:
+            row['stp_u0_mean'] = float(model.logit_u0.detach().sigmoid().clamp(.05, .95).mean())
+            row['stp_tau_fac_mean'] = float(model.log_tau_fac.detach().exp().clamp(5, 1000).mean())
+            row['stp_tau_rec_mean'] = float(model.log_tau_rec.detach().exp().clamp(5, 2000).mean())
         return row
 
     def prediction_accounting():

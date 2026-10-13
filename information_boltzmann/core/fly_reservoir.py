@@ -286,8 +286,19 @@ class FlyReservoirLM(nn.Module):
                  obs_init_gamma: float = 0.0,
                  detach_reset: bool = False,
                  surrogate_mode: str = 'absolute',
-                 transmission_mode: str = 'atomic'):
+                 transmission_mode: str = 'atomic',
+                 spike_consumes_drive: bool = False,
+                 refractory_ticks: int = 0):
         super().__init__()
+        # Spike semantics of the validated whole-brain LIF (Shiu et al. 2024: on a spike v = v_reset and g = 0, then
+        # 2.2 ms refractory).  spike_consumes_drive: a spike also zeroes the cell's synaptic conductances (otherwise a
+        # strongly driven cell keeps its conductance and refires every tick: the brain ignites).  refractory_ticks
+        # (0-4): after a spike the cell cannot fire and is held at reset for that many ticks; read from the spike ring
+        # (ring[k] = this cell's output k+1 ticks ago), so it needs no state.  Audit 2026-10-13.
+        self.spike_consumes_drive = bool(spike_consumes_drive)
+        if not 0 <= int(refractory_ticks) <= 4:
+            raise ValueError('refractory_ticks must be in 0..4 (the spike ring holds 4 ticks)')
+        self.refractory_ticks = int(refractory_ticks)
         # Optional surrogate-gradient convention: the spike remains attached
         # in axonal transmission, ALIF and STP; only its hard-reset mask is
         # detached. Forward physics is identical for both conventions.
@@ -845,8 +856,22 @@ class FlyReservoirLM(nn.Module):
         g_total, leak_se, leak_si = (context[k] for k in ('g_total', 'leak_se', 'leak_si'))
         g_e, g_i = context['g_e'], context['g_i']
         spike_next = self.spike(v_pre - eff_threshold, context['thresholds'])
+        if self.refractory_ticks > 0:
+            recent = spike_ring[0] > 0
+            for k in range(1, self.refractory_ticks):
+                recent = recent | (spike_ring[k] > 0)
+            free = (~recent).to(h.dtype)
+            spike_next = spike_next * free
         reset_spike = spike_next.detach() if self.detach_reset else spike_next
         h_next = v_pre * (1.0 - reset_spike)
+        if self.refractory_ticks > 0:
+            h_next = h_next * free
+        if self.spike_consumes_drive:
+            keep = 1.0 - reset_spike
+            if self.refractory_ticks > 0:
+                keep = keep * free
+            ge_next = ge_next * keep
+            gi_next = gi_next * keep
 
         # ALIF slow adaptation state update: b_{t+1} = rho * b_t + (1 - rho) * s_t
         if getattr(self, "use_alif", False):
