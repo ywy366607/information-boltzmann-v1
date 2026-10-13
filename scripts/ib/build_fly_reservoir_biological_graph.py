@@ -21,10 +21,12 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parents[2]
 DATA_DIR = ROOT / "data" / "malecns_v1"
 
-def build():
+def build(delayed_npz=None, output_path=None, tau_m=None):
+    """tau_m: one birth membrane time constant for every neuron (ms); None keeps Scheme B (tau from in-degree, which
+    has no biological basis: audit 2026-10-13)."""
     t0 = time.perf_counter()
-    print("Loading fly_reservoir_delayed.npz...")
-    delayed_npz = DATA_DIR / "fly_reservoir_delayed.npz"
+    delayed_npz = Path(delayed_npz) if delayed_npz is not None else DATA_DIR / "fly_reservoir_delayed.npz"
+    print(f"Loading {delayed_npz}...")
     if not delayed_npz.exists():
         raise FileNotFoundError(f"Missing {delayed_npz}")
     packed = np.load(delayed_npz)
@@ -50,6 +52,9 @@ def build():
     tau_min = 3.0
     tau_max = 78.0
     tau_j = tau_min + (tau_max - tau_min) * (k_in / (k_in + k_mean))
+    if tau_m is not None:
+        tau_j = np.full(n_neurons, float(tau_m), dtype=np.float32)
+        print(f"  Uniform birth tau_m = {tau_m} ms (Scheme B replaced)")
     lambda_0 = np.exp(-1.0 / tau_j).astype(np.float32)
     print(f"  lambda_0 min: {lambda_0.min():.4f}, mean: {lambda_0.mean():.4f}, max: {lambda_0.max():.4f}")
 
@@ -100,7 +105,7 @@ def build():
     dan_scale = float(np.mean(dan_in_weight_sum[dan_in_weight_sum > 0]))
     print(f"  Biological DAN sensitivity scale: {dan_scale:.6f}")
 
-    output_path = DATA_DIR / "fly_reservoir_biological.npz"
+    output_path = Path(output_path) if output_path is not None else DATA_DIR / "fly_reservoir_biological.npz"
     print(f"Saving to {output_path}...")
     np.savez_compressed(
         output_path,
@@ -132,4 +137,10 @@ def build():
     print(f"Successfully generated {output_path} ({output_path.stat().st_size / 1e6:.1f} MB) in {time.perf_counter() - t0:.2f}s")
 
 if __name__ == "__main__":
-    build()
+    import argparse
+    ap = argparse.ArgumentParser()
+    ap.add_argument('--input', default=None)
+    ap.add_argument('--output', default=None)
+    ap.add_argument('--tau-m', type=float, default=None)
+    a = ap.parse_args()
+    build(a.input, a.output, a.tau_m)

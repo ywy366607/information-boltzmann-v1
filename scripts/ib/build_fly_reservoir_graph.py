@@ -39,6 +39,11 @@ def main() -> None:
     parser.add_argument("--data", type=Path, default=Path("data/malecns_v1"))
     parser.add_argument("--output", type=Path,
                         default=Path("data/malecns_v1/fly_reservoir_full.npz"))
+    parser.add_argument("--per-synapse-weight", type=float, default=None,
+                        help="Biological conversion: every synapse has the same efficacy, W = count x sign x this (no "
+                             "sqrt(K_in) normalization, no spectral-radius scaling).  The default (none) keeps the level-0 "
+                             "echo-state convention W = count x sign / sqrt(K_in) x g, g = 1 / spectral radius, which made "
+                             "one synapse ~0.35%% of a threshold and killed every sense after two hops (audit 2026-10-13)")
     args = parser.parse_args()
     data = args.data
 
@@ -110,6 +115,13 @@ def main() -> None:
     raw_synapses = agg_weight.astype(np.float32)
     sign = agg_sign.astype(np.float32)
 
+    if args.per_synapse_weight is not None:
+        edge_weight = (raw_synapses * sign * args.per_synapse_weight).astype(np.float32)
+        radius = None
+        normalization = {"normalization": "uniform per synapse", "per_synapse_weight": args.per_synapse_weight}
+        print(json.dumps(normalization), flush=True)
+    else:
+        edge_weight, radius, normalization = None, None, None
     # Flyvis In-degree Normalization: W_ij = (count_ij * sign_i) / sqrt(max(K_in(j), 1)) * g
     k_in = np.bincount(edge_post, minlength=n_neurons)
     in_degree_norm = np.sqrt(np.maximum(k_in[edge_post], 1.0)).astype(np.float32)
@@ -125,13 +137,12 @@ def main() -> None:
     rho_unscaled = float(norm)
 
     g = 1.0 / max(rho_unscaled, 1e-12)
-    edge_weight = (w_norm * g).astype(np.float32)
-    print(json.dumps({
-        "normalization": "Flyvis in-degree sqrt(K_in)",
-        "unscaled_spectral_radius": rho_unscaled,
-        "scaling_factor_g": g,
-        "target_spectral_radius": 1.0,
-    }), flush=True)
+    if edge_weight is None:
+        edge_weight = (w_norm * g).astype(np.float32)
+        radius = rho_unscaled
+        normalization = {"normalization": "Flyvis in-degree sqrt(K_in)", "unscaled_spectral_radius": rho_unscaled,
+                         "scaling_factor_g": g, "target_spectral_radius": 1.0}
+        print(json.dumps(normalization), flush=True)
 
     superclass_names = sorted(set(superclasses.tolist()))
     superclass_id = np.searchsorted(np.array(superclass_names), superclasses)
@@ -144,6 +155,7 @@ def main() -> None:
         "edges": int(edge_weight.size),
         "raw_rows": int(total_rows),
         "spectral_radius_before_scaling": radius,
+        "conversion": normalization,
         "sign_convention": NT_SIGN,
         "superclasses": superclass_names,
         "weight_digest": digest,

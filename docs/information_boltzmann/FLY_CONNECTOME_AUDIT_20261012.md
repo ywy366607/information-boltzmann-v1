@@ -300,3 +300,26 @@ the network stays quiet without input.  Not yet shown: valence specificity (suga
 broad flooding, every group 100% up -- inhibition and thresholds must make it specific) and stability under
 continuous input (text, noise).  Fixing the scale changes the substrate the adult was trained on (its weights are
 calibrated to 0.35%), so it is a rebirth question, decided with these zero-shot checks first.
+
+### Fixed at birth (2026-10-13 14:30-15:10, zero-shot only)
+1. Per-synapse efficacy (user: "no reason for it, just fix it"): `build_fly_reservoir_graph.py --per-synapse-weight W`
+   (W = count x sign x W; no sqrt(K_in), no spectral radius), Scheme-B tau replaced by a uniform birth tau_m = 20 ms
+   (`build_fly_reservoir_biological_graph.py --tau-m`; synaptic tau_e 5 / tau_i 10 ms by the model's ratios).
+   W calibrated in simulation (`calibrate_synapse.py`) so one synapse's peak PSP = 0.617% of the rest-to-threshold
+   distance, as in Shiu et al. 2024 (0.275 mV into 5 / 20 ms filters -> 0.043 mV of 7 mV): W = 9.79e-4, uniform across
+   cells (p10-p90 0.614-0.617%; the old graph: 0.22% median, K-dependent).  Graphs: data/malecns_v1/*_syn.npz (old kept).
+   Correction to an earlier statement: Shiu's per-synapse PEAK is 0.62% of threshold, not 3.9% (that is the
+   conductance step); the old birth was ~2.8x weaker per synapse at the median and weaker still on high-K cells.
+2. Reversal potentials: E_E = 1.0 (+45 mV in the rest 0 / threshold 0.1 = -55 / -45 mV mapping) has no basis; ACh
+   reverses near 0 mV -> E_E = 0.55; Cl- near -70 mV -> E_I = -0.15.  Weights recalibrated (x1.82) to keep the PSP.
+Zero-shot on the new birth (birth_scale_probe / birth_specificity_probe):
+- quiet without input; under continuous sensory background (1-5% of sensory cells per tick) sparse and stable (rate
+  0.007-0.013, saturated <= 0.1%).
+- From a fully silent brain any input ignites the same global pattern (sugar = bitter = odour): a silent brain is not
+  a living state; specificity is judged on an active background.
+- On a 1% background with receptors at 150 Hz (Poisson): with E_E 0.55 the PPL1 valence is right (sugar -1.0, bitter
+  +1.0 spikes per cell per 300 ticks; PPL101 -1.8 / +2.3), with E_E 1.0 it was inverted.  PAM does not respond to
+  sugar (0); hop-1 cells add only ~0.6 spikes per 300 ticks.  Open causes, in order: (a) STP is the cortical
+  Tsodyks-Markram default everywhere (u0 0.25, tau_rec 200): at 150 Hz the resources settle at ~12%, cutting a
+  sustained line ~8x; (b) the sugar -> PAM route is weak in synapses (PRW072 -> PAM11 8 per edge, PRW044 -> PAM01 3);
+  (c) unclear-NT cells excitatory, OA / 5-HT fast excitatory; (d) no refractory period, no gap junctions.

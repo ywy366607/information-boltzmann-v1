@@ -79,4 +79,9 @@ def build_coba_graph(
 
 
 if __name__ == "__main__":
-    build_coba_graph()
+    import argparse
+    ap = argparse.ArgumentParser()
+    ap.add_argument('--source', default='data/malecns_v1/fly_reservoir_biological.npz')
+    ap.add_argument('--output', default='data/malecns_v1/fly_reservoir_coba.npz')
+    a = ap.parse_args()
+    build_coba_graph(a.source, a.output)
