@@ -1425,3 +1425,19 @@ def test_precision_and_bayesian_surprise_run_in_the_stream(fly_model_and_state):
                 delattr(model, name)
         if added:
             delattr(model, 'dopamine_logit_slow')
+
+
+def test_binary_eye_in_motor_mode_trains_the_eye_readout():
+    """M3 eyes with motor acts: the look's straight-through slope is on the eye's own logit z_eye = W_eye m + b_eye, so
+    the eye row of the readout gets the gradient (not the first output cell's muscle)."""
+    from information_boltzmann.core import fly_active_inference as ai
+    n_out = 5
+    model = torch.nn.Module()
+    model.register_buffer('read_indices', torch.arange(n_out))
+    ai.attach_motor_acts(model, tau_muscle=4.0, eye_open=0.9, habit=0.2)
+    g = torch.tensor([[0.3, -0.2, 1.0, 0.0, 0.5]])                 # muscles, detached
+    gain, look = ai.eye_act(model, g, taped=True)
+    assert float(gain) == 1.0 and look
+    gain.sum().backward()
+    assert torch.allclose(model.ai_w.grad[0], 0.25 * g[0]) and model.ai_w.grad[1].abs().sum() == 0
+    assert model.ai_b.grad[0] == 0.25

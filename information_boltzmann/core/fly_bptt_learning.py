@@ -2236,6 +2236,9 @@ class FlyBPTTLearner:
                 depth = int(getattr(self, 'ai_depth', 0) or 0)
                 n_words = len(intervals)
                 tnoise = noise_targets if noise_targets is not None else [False] * n_words
+                # observe() never puts a noisy stretch at a window's edges, so the first input (the previous window's
+                # last target) and the last target are main words: every question has its answer inside the window
+                assert not tnoise[0] and not tnoise[-1], 'noisy TV at a window edge'
                 input_noise = [False] + list(tnoise[:-1])         # input i is the word that arrived as target i - 1
                 motor = getattr(m, 'ai_mode', None) == 'motor'
                 if pace > 0 and ai_out and (getattr(self, 'eye_binary', False) or motor):

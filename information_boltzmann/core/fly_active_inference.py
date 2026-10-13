@@ -246,7 +246,10 @@ def eye_act(model, g, forced=None, taped=None, sample=False):
         look = bool(torch.rand(()) < float(soft.detach()))
     else:
         look = float(soft.detach()) >= 0.5
-    u = 0.25 * g[0, 0:1]                                  # the slope of p at p = 1/2, everywhere (see ai_step)
+    # the slope of p at p = 1/2, everywhere (see ai_step), on the eye's logit (motor mode: z_eye from the muscles; g
+    # itself is the muscle vector there, whose first entry is one output cell)
+    z = motor_logits(model, g)[0, 0:1] if getattr(model, 'ai_mode', None) == 'motor' else g[0, 0:1]
+    u = 0.25 * z
     return float(look) + u - u.detach(), look
 
 
