@@ -69,3 +69,36 @@ To do in a dedicated session with the GPU free:
 1. Implement (b) behind a switch.
 2. Verify gradients against eager on the full connectome (paired runs within run-to-run noise).
 3. Then deploy between chunks.
+
+## m_main: the mainline from birth with living gates (2026-10-14, night)
+
+Run: `grow_mainline_live.sh m_main 40`, PROFILES['mainline'] (receptor_lang, input gain size^0.5, EG, evidence-gated
+physiology, dopamine, compartment memory). Each gate: 1024 words, paired by window, learning on.
+
+| gate | (1) brain contribution, mean +- se [min, median, max] | fresh B brain / noedges | (2) surprise~phasic DA (next) | DA cells | (L) latched, worth |
+|---|---|---|---|---|---|
+| c1 | +0.091 +- 0.036 [-0.41, +0.08, +0.58] | -- | +0.014 (+0.017) | -0.010 | 111, -0.019 +- 0.007 |
+| c2 | +0.276 +- 0.064 [-0.14, +0.13, +1.22] | -- | +0.000 (-0.013) | -0.060 | 0 |
+| c3 | +0.211 +- 0.045 [-0.33, +0.23, +0.79] | -- | -0.035 (-0.043) | -0.031 | 6 |
+| c4 | +0.295 +- 0.047 [-0.07, +0.25, +0.87] | -- | -0.044 (-0.047) | -0.062 | 141, -0.009 +- 0.005 |
+| c5 | **+0.485 +- 0.038 [+0.15, +0.45, +0.91]** | **6.887 / 7.128 (+0.24)** | +0.016 (+0.009); all four 1024-blocks > 0 | -0.050 | 412, **+0.040 +- 0.018** |
+
+**Reproducible.** m_olf, an independent newborn, gave +0.087 (c1) and +0.290 (c2).
+
+**(1) holds.** At c5 every window is positive, and the brain is worth 0.49 nats on the stream and 0.24 on fresh text.
+
+**(L) latched cells became useful.** Their worth went from mildly harmful to +0.04 at c5, the same sign as the
+champion's +0.10.
+
+**(2) has no stable sign yet.** It is negative at c3-c4 and positive at c5; the dopamine cells' own firing is
+consistently negative. The surprise path probe (c6) locates the break.
+
+**Readiness at c5** (diagnostic probes, fixed weights):
+- Thinking now pays: CE by tick goes 7.71 -> 7.53 (at m_olf c2 it was 7.80 -> 7.75).
+- With the listener-prior miss, the best common answer tick is 7. It beats tick 1 by 0.10 nats, and the hardest
+  quartile gains 0.52.
+- The value of waiting is starting to be readable: output membranes at tick 4 R^2 0.10, muscles 0.05; at c2 both
+  were ~0.
+- Kenyon coding: 3.7% per word, consecutive-word overlap 0.02. MBONs fire at 28.5 Hz.
+
+The precondition the earlier act runs lacked is now present. D4 forks from c5.
