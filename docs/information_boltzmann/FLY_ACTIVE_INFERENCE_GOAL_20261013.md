@@ -599,3 +599,23 @@ artifact found by audit.  Recorded (not tuned): rates, latches, Kenyon coding, t
 Evaluation by ablation at chunks 5 and 25: silence the persistent attractor cells, the mushroom body, the latched
 read cells -- does NLL get worse (positive causal role)?  Then R4 = the mainline: D3's acts (eyes, commit) on this
 individual.
+
+### R3 at chunk 5 (20k words): mainline checks null, the brain runs away; stopped (2026-10-13)
+Mainline preconditions on the c5 state (zero-shot, the world's held input):
+- Thinking value: CE by tick within a word 7.789 -> 7.785 over 16 ticks (unigram 7.66); the per-word oracle "gain" is
+  picking a lucky tick, not accumulation.  No evidence accumulation.
+- Difficulty readable early: from motor cells R2 ~0 for next-word rarity / CE / wait value; the core reads the
+  CURRENT word's rarity (0.55 at tick 4) but not its own coming difficulty.
+- Dopamine tone: raw DA rate CV 0.15 per tick, slow trace (tau 481 ticks) CV 0.001 -> gamma flat.
+Cause found instead: a runaway.  Latched (>200 Hz, words withheld) 6 at birth, 1,159 at c1, 9,520 at c5 (cb/vnc
+intrinsic, descending, leg/flight motor neurons); brain 4 -> 31 Hz; 28% of read cells and 31% of descending
+saturated.  Train NLL best at 2-4k words (6.87) then back to 7.5-7.7; at 8 ticks c5 reads 7.58 vs unigram 7.52 and the
+newborn 7.55.
+Attribution (zero-shot swaps to birth values, swap_runaway_probe / swap_nll_probe): all learned parameters -> 6
+latched (the state is irrelevant); excitatory edges alone -> 2,900; any other single group 8-9k; per-cell input
+conservation -> 5.4-6.7k.  Putting the edges back does not cost language (decoder co-adapted only): the learned
+substrate carries no positive causal effect.  Edge change is a symmetric random walk (17.8% up / 17.5% down >10%,
+3.6% >2x, max x20, uncorrelated with birth weight).  Adam at 740 updates: 48% of edges never had a gradient; |m|/sqrt(v)
+at noise level (p90 0.18); a late first gradient meets a tiny v and moves the synapse ~23 Adam steps (~46% of its birth
+weight, x up to 4 dopamine local x up to 4 global).  Also: clamp_edges still caps conductance at 5.0 (90 inhibitory
+birth edges up to 14.6 were cut).  Mechanism problem (plasticity rule), not numbers; fix under review before R3b.
