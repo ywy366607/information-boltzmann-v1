@@ -10,7 +10,10 @@ src = open('D:/information-boltzmann-v1/scripts/ib/fly_interface/text_leak_probe
 GROUPS = {'edges_e': ['edge_weight_e'], 'edges_i': ['edge_weight_i'], 'threshold': ['log_threshold'],
           'alif': ['log_beta', 'log_tau_a'], 'membrane': ['log_tau_m'],
           'synapse': ['log_tau_s_e', 'log_tau_s_i', 'log_g_e', 'log_g_i'], 'intrinsic': ['intrinsic_kappa'],
-          'dopamine': ['dopamine_sensitivity', 'dopamine_logit_fast', 'dopamine_logit_slow']}
+          'dopamine': ['dopamine_sensitivity', 'dopamine_logit_fast', 'dopamine_logit_slow'],
+          'writer': ['topographic_writer.proj.weight', 'topographic_writer.proj.bias'],
+          'comp': ['comp_weight', 'comp_eta', 'comp_logit_trace', 'comp_logit_forget'],
+          'conductance': ['log_g_e', 'log_g_i'], 'intrinsic_kappa': ['intrinsic_kappa']}
 swap = [g for g in os.environ.get('SWAP', '').split(',') if g]
 birth = torch.load(os.environ['BIRTH'], map_location='cpu', mmap=True, weights_only=False)
 hook = '''model, cfg, L = load(fork)
@@ -32,7 +35,10 @@ inject = hook + '''with torch.no_grad():
         for name in GROUPS[g]:
             p = dict(model.named_parameters()).get(name)
             if p is None:
-                p = dict(model.named_buffers())[name]
+                p = dict(model.named_buffers()).get(name)
+            if p is None or name not in BIRTH['model']:
+                print('  (not in this individual:', name, ')', flush=True)
+                continue
             p.copy_(BIRTH['model'][name].to(p.device, p.dtype))
 print('swapped to birth:', SWAP_GROUPS or 'none', flush=True)
 '''

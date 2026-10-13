@@ -27,7 +27,8 @@ with torch.no_grad():
             params[n].copy_(birth[n].to(params[n].device, params[n].dtype))
 opts = dict(base_rates=model.get_decay_rates(), thresholds=model.get_thresholds(), conductance_gains=model.get_conductance_gains(),
             alif_params=model.get_alif_params(), stp_params=model.get_stp_params())
-K = int(cfg.get('stream_ticks') or 8); HOLD = bool(cfg.get('hold_input'))
+K = int(os.environ.get('NLL_TICKS') or cfg.get('stream_ticks') or 8); HOLD = bool(cfg.get('hold_input'))
+WORLD = os.environ.get('NLL_WORLD', 'train')                     # 'train' (the paced world) or 'fixed' (K ticks per word)
 val = np.load(ROOT / cfg['data'] / 'validation.npy', mmap_mode='r')
 train = np.load(ROOT / cfg['data'] / 'train.npy', mmap_mode='r')
 counts = np.bincount(np.asarray(train[:5_000_000], dtype=np.int64), minlength=model.decoder.out_features) + 0.5
@@ -40,13 +41,22 @@ with torch.no_grad():
         words = np.array(val[start:start + BURN + SCORE + 1], dtype=np.int64)
         s = move_state(fl.FlyPhysicalState(**L['physical']), 'cuda')
         out = []
+        rng = np.random.default_rng(1000 + place)                # the same world for every arm
+        pmean, pmin = float(cfg.get('stream_pace_mean') or 0), float(cfg.get('stream_pace_min') or 0)
         for i in range(BURN + SCORE):
-            s, z = fl.advance_fly_token_stream(model, s, torch.tensor([int(words[i])], device='cuda'), ticks=K, hold_input=HOLD,
+            k = K
+            if WORLD == 'train' and pmean > 0:
+                # the training world: each 32-word stretch has its own mean interval (log-uniform in [min, mean]),
+                # each word a memoryless interval k >= 1; the read is the expectation just before the next word
+                if i % 32 == 0:
+                    pace = float(np.exp(rng.uniform(np.log(pmin), np.log(pmean)))) if 0 < pmin < pmean else pmean
+                k = int(rng.geometric(1.0 / pace))
+            s, z = fl.advance_fly_token_stream(model, s, torch.tensor([int(words[i])], device='cuda'), ticks=k, hold_input=HOLD,
                                                writer_baseline_clock='physical', **opts)
             if i >= BURN:
                 out.append(float(F.cross_entropy(model.decoder(model.read_norm(z)).float(), torch.tensor([int(words[i + 1])], device='cuda'))))
                 uni.append(-logp[words[i + 1]])
         nll.append(float(np.mean(out)))
 q = lambda v: [round(float(np.min(v)), 4), round(float(np.median(v)), 4), round(float(np.mean(v)), 4), round(float(np.max(v)), 4)]
-rep = {'fork': str(fork), 'swap': swap or ['none'], 'ticks': K, 'hold': HOLD, 'nll_places_min_median_mean_max': q(nll), 'unigram': round(float(np.mean(uni)), 4)}
+rep = {'fork': str(fork), 'swap': swap or ['none'], 'world': WORLD, 'ticks': K, 'hold': HOLD, 'nll_places_min_median_mean_max': q(nll), 'unigram': round(float(np.mean(uni)), 4)}
 print(json.dumps(rep), flush=True)

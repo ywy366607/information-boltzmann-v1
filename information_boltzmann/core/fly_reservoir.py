@@ -345,7 +345,8 @@ class FlyReservoirLM(nn.Module):
                  transmission_mode: str = 'atomic',
                  spike_consumes_drive: bool = False,
                  refractory_ticks: int = 0,
-                 inhibitory_tau_ratio: float = 2.0):
+                 inhibitory_tau_ratio: float = 2.0,
+                 extra_read_index=None):
         super().__init__()
         # tau_s_i = tau_m / inhibitory_tau_ratio at birth (2: 10 ms, the inherited convention; 4: 5 ms, as tau_s_e,
         # Shiu et al. 2024 and the fast GluCl / GABA-A IPSPs of the fly).  The conductance filter has unit DC gain,
@@ -588,6 +589,9 @@ class FlyReservoirLM(nn.Module):
             read_mask = np.ones(self.n_neurons, dtype=np.float32)
         else:
             raise ValueError(f"Unknown read surface: {read_surface}")
+        if extra_read_index is not None and len(extra_read_index):
+            # the belief is read where it lives as well (e.g. the mushroom body), the acts stay on the output cells
+            read_mask[np.asarray(extra_read_index, dtype=np.int64)] = 1.0
         self.read_surface = read_surface
         self.read_centering = bool(read_centering)
         self.register_buffer("read_mask",

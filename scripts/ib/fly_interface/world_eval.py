@@ -19,6 +19,15 @@ ROOT = Path('D:/information-boltzmann-v1')
 BURN, SCORE = 256, 1024
 
 
+def _read_extra(graph_npz, classes):
+    import pandas as pd
+    if not classes:
+        return None
+    ids = np.load(graph_npz, allow_pickle=True)['neuron_body_ids']
+    cls = pd.read_feather(Path(graph_npz).parent / 'body-annotations.feather').set_index('bodyId').reindex(ids)['class']
+    return np.flatnonzero(cls.astype(str).isin([c.strip() for c in classes.split(',')]).values)
+
+
 def load(fork):
     saved = torch.load(fork / 'last.pt', map_location='cpu', mmap=True, weights_only=False)
     cfg, L = saved['config'], saved['learner']
@@ -31,7 +40,8 @@ def load(fork):
                            inhibitory_tau_ratio=cfg.get('inhibitory_tau_ratio', 2.0),
                            detach_reset=cfg.get('detach_reset', False), surrogate_mode=cfg.get('surrogate_mode', 'absolute'),
                            transmission_mode=cfg.get('transmission_mode', 'atomic'),
-                           use_read_gamma_trace=bool(cfg.get('use_read_gamma_trace', False)), init_read_gamma=0.7).cuda()
+                           use_read_gamma_trace=bool(cfg.get('use_read_gamma_trace', False)), init_read_gamma=0.7,
+                           extra_read_index=_read_extra(graph, cfg.get('read_extra_classes'))).cuda()
     model.read_spikes = bool(cfg.get('read_spikes', False))
     if cfg.get('go_neuron') == 'virtual':
         fl.attach_go_neuron(model)

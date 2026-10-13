@@ -185,6 +185,8 @@ def resolve_learning_modes(args, previous_config, previous_learner):
         args.dopamine_site = previous_config.get('dopamine_site') or 'post'
     if getattr(args, 'dopamine_adapted', None) is None:
         args.dopamine_adapted = bool(previous_config.get('dopamine_adapted', False))
+    if getattr(args, 'read_extra_classes', None) is None:
+        args.read_extra_classes = previous_config.get('read_extra_classes') or ''
     if getattr(args, 'read_spikes', None) is None:
         args.read_spikes = bool(previous_config.get('read_spikes', False))
     if args.read_spikes:
@@ -386,6 +388,16 @@ def print_switches(parser, args, source):
     print('Switches (' + source + '):' + chr(10) + chr(10).join(rows), flush=True)
 
 
+def read_extra_index(graph_npz, classes):
+    """Indices of the cells of the given annotation classes (e.g. 'Kenyon_Cell,MBON'), read besides the output cells."""
+    if not classes:
+        return None
+    import pandas as pd
+    ids = np.load(graph_npz, allow_pickle=True)['neuron_body_ids']
+    cls = pd.read_feather(Path(graph_npz).parent / 'body-annotations.feather').set_index('bodyId').reindex(ids)['class']
+    return np.flatnonzero(cls.astype(str).isin([c.strip() for c in classes.split(',')]).values)
+
+
 def disable_alif(model):
     """beta = clamp(exp(log_beta), 1e-4, 2): log_beta = -20 sits below the clamp, so beta = 1e-4 and its gradient is 0."""
     if not getattr(model, 'use_alif', False):
@@ -444,6 +456,9 @@ def main():
     parser.add_argument('--dopamine-site', choices=('post', 'pre'), default=None,
                         help='Which end of a synapse the dopamine scales its learning by: post = the receiving neuron, '
                              'pre = the presynaptic terminal as at the fly mushroom body (omitted = inherit, else post)')
+    parser.add_argument('--read-extra-classes', default=None,
+                        help='Annotation classes whose cells the prediction is also read from (e.g. Kenyon_Cell,MBON; '
+                             'the belief where it lives; acts stay on the output cells; omitted = inherit, else none)')
     parser.add_argument('--read-spikes', action=argparse.BooleanOptionalAction, default=None,
                         help='The read surface is its output: transmitted pulses through the Gamma (muscle) filter, not '
                              'the membranes (implies --use-read-gamma-trace; omitted = inherit, else off)')
@@ -774,6 +789,7 @@ def main():
         if args.use_read_gamma_trace is None:
             args.use_read_gamma_trace = False
         args.read_spikes = bool(args.read_spikes)
+        args.read_extra_classes = args.read_extra_classes or ''
         if args.read_spikes:
             args.use_read_gamma_trace = True
         args.evidence_plasticity = bool(args.evidence_plasticity)
@@ -797,6 +813,7 @@ def main():
 
         model = FlyReservoirLM(args.graph, vocab_size=50257, d_model=args.d_model,
             injection='topographic', read_surface='output', synapse_model='coba',
+            extra_read_index=read_extra_index(args.graph, args.read_extra_classes),
             use_alif=True, decoder_bias=args.decoder_bias, **biophysics_kwargs(args),
             read_centering=args.read_centering,
             use_read_gamma_trace=args.use_read_gamma_trace,
@@ -1098,6 +1115,7 @@ def main():
             raise ValueError('Resume requires a complete lifecycle checkpoint')
         model = FlyReservoirLM(args.graph, vocab_size=50257, d_model=previous_config['d_model'],
             injection='topographic', read_surface='output', synapse_model='coba',
+            extra_read_index=read_extra_index(args.graph, args.read_extra_classes),
             use_alif=True, decoder_bias=previous_config['decoder_bias'], **biophysics_kwargs(args),
             read_centering=args.read_centering,
             use_read_gamma_trace=args.use_read_gamma_trace,
