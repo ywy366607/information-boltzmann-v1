@@ -1573,7 +1573,7 @@ def test_carried_credit_runs_in_the_stream(fly_model_and_state):
     cc.attach_carried_credit(model, ['stp'])
     try:
         learner = FlyBPTTLearner(model, start, lr=2e-4, settle_ticks=14, writer_baseline_clock="physical",
-                                 use_checkpointing=True, stream_ticks=4, lambda_mcr2=0.0)
+                                 use_checkpointing=True, stream_ticks=4, lambda_mcr2=0.0, learn_stp=True)
         for w, ids in enumerate(([[50, 101, 205, 307]], [[409, 511, 613, 715]])):
             ids = torch.tensor(ids, device=device)
             model.zero_grad(set_to_none=True)

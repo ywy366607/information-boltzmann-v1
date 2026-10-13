@@ -107,6 +107,9 @@ class FlyPhysicalState:
 def step_fly_physical_tick(model, current, token, source, next_baseline, options, *,
                            h_mean_decay=0.99, base_rates=None):
     """Atomic physical step on the connectome with optional sensory drive."""
+    credit = getattr(model, 'carried_credit', ())                    # fly_carried_credit (off: ())
+    credit_comp, credit_comp_trace = current.credit_comp, current.credit_comp_trace
+    credit_dopamine, credit_stp = current.credit_dopamine, current.credit_stp
     kappa = getattr(model, 'intrinsic_kappa', None)
     if kappa is not None:
         # Intrinsic (pacemaker / tonic) current of the annotated spontaneously active cells, in units of their own
@@ -289,9 +292,6 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
         if modulator.numel() != model.modulatory_index.numel():
             modulator = h.new_zeros(1, model.modulatory_index.numel())
         modulator = rho * modulator + (1.0 - rho) * (ring[0][:, model.modulatory_index] > 0).float()
-    credit = getattr(model, 'carried_credit', ())
-    credit_comp, credit_comp_trace = current.credit_comp, current.credit_comp_trace
-    credit_dopamine, credit_stp = current.credit_dopamine, current.credit_stp
     if getattr(model, 'dopamine_sensitivity', None) is not None:
         arrival = execute_delayed_synaptic_transmission(ring, model.dan_edge_pre, model.dan_edge_post,
                                                         model.dan_edge_weight, model.dan_delay_splits) / model.dan_scale
