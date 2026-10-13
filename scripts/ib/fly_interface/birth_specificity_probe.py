@@ -11,6 +11,17 @@ sc = np.array(g['superclass_names'])[g['superclass_id']]
 dan = np.zeros(N, bool); dan[g['dan_indices']] = True
 model = FlyReservoirLM(G, d_model=768, read_surface='output', injection='topographic', synapse_model='coba', use_alif=True, use_stp=True,
                        detach_reset=True, surrogate_mode='threshold', transmission_mode='incoming', E_E=EE, E_I=EI).cuda().eval().requires_grad_(False)
+import math
+if os.environ.get('STP_U0'):
+    with torch.no_grad():
+        model.logit_u0.fill_(math.log(float(os.environ['STP_U0']) / (1 - float(os.environ['STP_U0']))))
+if os.environ.get('STP_TAU_REC'):
+    with torch.no_grad():
+        model.log_tau_rec.fill_(math.log(float(os.environ['STP_TAU_REC'])))
+if os.environ.get('ALIF_OFF'):
+    with torch.no_grad():
+        model.log_beta.fill_(-30.0)          # adaptation strength ~0
+BGS = tuple(float(x) for x in os.environ.get('BGS', '0.0,0.01,0.05').split(','))
 opts = dict(base_rates=model.get_decay_rates(), thresholds=model.get_thresholds(), conductance_gains=model.get_conductance_gains(),
             alif_params=model.get_alif_params(), stp_params=model.get_stp_params())
 thr = model.get_thresholds().detach().expand(1, N)[0]; z = torch.zeros(1, N, device='cuda')
@@ -37,7 +48,7 @@ sens = torch.as_tensor(np.nonzero(np.char.find(sc.astype(str), 'sensory') >= 0)[
 S = {'sugar': np.isin(typ, ['LB3b', 'LB3c', 'dorsal_tpGRN']), 'bitter': np.isin(typ, ['LB1a', 'LB1b', 'LB1c', 'LB1d'])}
 Si = {k: torch.as_tensor(np.nonzero(v)[0], device='cuda') for k, v in S.items()}
 groups = {'PAM': dan & np.char.startswith(typ, 'PAM'), 'PPL1': dan & np.char.startswith(typ, 'PPL1'), 'MBON': cls == 'MBON', 'KC': cls == 'Kenyon_Cell',
-          'motor': np.isin(sc, ['cb_motor', 'vnc_motor']), 'PAM01': typ == 'PAM01', 'PPL101': typ == 'PPL101', 'PPL102': typ == 'PPL102', 'PPL106': typ == 'PPL106'}
+          'motor': np.isin(sc, ['cb_motor', 'vnc_motor']), 'OA-VPM3': typ == 'OA-VPM3', 'OA-VPM4': typ == 'OA-VPM4', 'OA_all': np.char.startswith(typ, 'OA-'), 'PAM01': typ == 'PAM01', 'PPL101': typ == 'PPL101', 'PPL102': typ == 'PPL102', 'PPL106': typ == 'PPL106'}
 def hops(src, k=3):
     seen = src.copy(); fr = src.copy(); out = []
     for _ in range(k):
@@ -56,7 +67,8 @@ def run(s, T, bg, stim=None, rate=0.15, seed=1):
     model.external_drive = None
     return s, c.cpu().numpy()
 with torch.no_grad():
-    for bg in (0.0, 0.01, 0.05):
+    print('ALIF off' if os.environ.get('ALIF_OFF') else 'ALIF on', 'STP u0', os.environ.get('STP_U0', 'default'), 'tau_rec', os.environ.get('STP_TAU_REC', 'default'), flush=True)
+    for bg in BGS:
         s0, c0 = run(fresh(), 300, bg, seed=0)
         print(f'bg {bg:.2f}: background rate {c0.mean() / 300:.4f}, saturated {(c0 / 300 > 0.5).mean():.4f}', flush=True)
         for name in ('sugar', 'bitter'):
@@ -66,3 +78,22 @@ with torch.no_grad():
                 for k, m in groups.items(): ex[k].append(extra[m].mean())
                 for k, h in enumerate([S[name]] + H[name]): hop[k].append(extra[h].mean())
             print(f'   {name:>6}: hops', ' '.join(f'{np.mean(v):+.2f}' for v in hop), '|', ' '.join(f'{k}:{np.mean(v):+.2f}' for k, v in ex.items()), flush=True)
+
+# strong-line targets: rank cells by the signed 2-hop / 3-hop synapse mass from the stimulus (birth graph, E +, I -)
+import scipy.sparse as sp
+we = np.abs(g['edge_weight_e']) / W0; wi = np.abs(g['edge_weight_i']) / W0
+A = sp.coo_matrix((np.concatenate([we, -wi]), (np.concatenate([post_e, g['edge_post_i']]), np.concatenate([pre_e, g['edge_pre_i']]))), shape=(N, N)).tocsr()
+with torch.no_grad():
+    bg = BGS[-1]
+    s0 = run(fresh(), 300, bg, seed=0)[0]
+    for name in ('sugar', 'bitter'):
+        x1 = A @ S[name].astype(float); x2 = A @ np.maximum(x1, 0); x3 = A @ np.maximum(x2, 0)
+        sets = {'hop1 top100': np.argsort(-x1)[:100], 'hop2 top100': np.argsort(-np.where(x1 > 0, -1e9, x2))[:100],
+                'hop3 top100': np.argsort(-np.where((x1 > 0) | (x2 > 0), -1e9, x3))[:100],
+                'PAM by hop3': np.nonzero(groups['PAM'])[0][np.argsort(-x3[groups['PAM']])[:20]]}
+        exs = {k: [] for k in sets}
+        for rep in range(3):
+            base = run(s0, 300, bg, None, seed=40 + rep)[1]; extra = run(s0, 300, bg, name, seed=40 + rep)[1] - base
+            for k, ix in sets.items():
+                exs[k].append(extra[ix].mean())
+        print(f'   {name:>6} strong lines (synapse-weighted):', ' | '.join(f'{k}: {np.mean(v):+.2f} (syn mass median {np.median({"hop1 top100": x1, "hop2 top100": x2, "hop3 top100": x3, "PAM by hop3": x3}[k][sets[k]]):.0f})' for k, v in exs.items()), flush=True)

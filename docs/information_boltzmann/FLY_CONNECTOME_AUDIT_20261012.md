@@ -323,3 +323,14 @@ Zero-shot on the new birth (birth_scale_probe / birth_specificity_probe):
   Tsodyks-Markram default everywhere (u0 0.25, tau_rec 200): at 150 Hz the resources settle at ~12%, cutting a
   sustained line ~8x; (b) the sugar -> PAM route is weak in synapses (PRW072 -> PAM11 8 per edge, PRW044 -> PAM01 3);
   (c) unclear-NT cells excitatory, OA / 5-HT fast excitatory; (d) no refractory period, no gap junctions.
+Further zero-shot (1% background, receptors 150 Hz, E_E 0.55):
+- Along the synapse-strongest lines a specific signal attenuates 3-5x per hop: sugar hop-1 top100 +17 spikes / 300
+  ticks, hop-2 top100 +4 to +7, hop-3 top100 +0.3 to +1.2 (variants below); PAM never gets a sugar-specific response.
+- STP default (cortical Tsodyks-Markram u0 0.25, tau_rec 200 everywhere): without depression the background runs up
+  (rate 0.15, 11% saturated) -- STP is the brake -- but it cuts a sustained line ~10x at hop 1 (+0.6 vs +6.5).
+  u0 0.1 keeps the background sparse (0.018) and lets hop 1-3 carry +18 / +7 / +1.2 (with ALIF off).  No basis for
+  one value everywhere; the values are for evolution (--learn-stp with --lr-physiology).
+- Biology: sweet-taste reward reaches PAM largely through octopamine (OA-VPM3/4 -> PAM via the OAMB receptor; Burke
+  et al. 2012), a modulatory route this model lacks (OA is fast excitation, its fast edges pinned in v2).  Here
+  OA-VPM3/4 respond to taste (+1.5 to +4.5) but to bitter as much as to sugar.  Next: the OA -> PAM wiring and a
+  modulatory OA route, then STP.
