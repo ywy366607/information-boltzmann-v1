@@ -122,7 +122,10 @@ def main() -> None:
         print(json.dumps(normalization), flush=True)
     else:
         edge_weight, radius, normalization = None, None, None
-    # Flyvis In-degree Normalization: W_ij = (count_ij * sign_i) / sqrt(max(K_in(j), 1)) * g
+    # In-degree normalization W_ij = (count_ij * sign_i) / sqrt(max(K_in(j), 1)) * g: the balanced-network / echo-state
+    # convention (1/sqrt(K) per input, van Vreeswijk & Sompolinsky 1996), g = 1 / spectral radius.  NOT Flyvis: Lappalainen
+    # et al. 2024 use w = sign x alpha_(type pair) x count, alpha trainable per cell-type pair, initialized as 1 / (mean
+    # synapse count of that pair), no sqrt(K_in), and graded (non-spiking) neurons (corrected 2026-10-13)
     k_in = np.bincount(edge_post, minlength=n_neurons)
     in_degree_norm = np.sqrt(np.maximum(k_in[edge_post], 1.0)).astype(np.float32)
     w_norm = (raw_synapses * sign) / in_degree_norm
@@ -140,7 +143,7 @@ def main() -> None:
     if edge_weight is None:
         edge_weight = (w_norm * g).astype(np.float32)
         radius = rho_unscaled
-        normalization = {"normalization": "Flyvis in-degree sqrt(K_in)", "unscaled_spectral_radius": rho_unscaled,
+        normalization = {"normalization": "in-degree sqrt(K_in) (balanced-network convention)", "unscaled_spectral_radius": rho_unscaled,
                          "scaling_factor_g": g, "target_spectral_radius": 1.0}
         print(json.dumps(normalization), flush=True)
 
