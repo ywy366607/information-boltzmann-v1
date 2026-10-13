@@ -44,6 +44,8 @@ def read(s, words, text=True):
                 baseline = writer.lambda_adapt * s.baseline
                 s = fl.step_fly_physical_tick(model, s, None, quiet, baseline, opts, base_rates=opts['base_rates'])
             spk = s.ring[0][0] > 0
+            if getattr(model, 'graded_mask', None) is not None:
+                spk = spk & (model.graded_mask[0] == 0)        # graded cells release every tick: not spikes
             allc += spk.float()
             for k, m in G.items():
                 c[k] += float(spk[m].float().mean())

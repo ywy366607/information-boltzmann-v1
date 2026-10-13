@@ -1242,7 +1242,10 @@ GRADED_TYPES = ('APL', 'CT1')
 GRADED_PARAMETER_NAMES = ('log_graded_gain',)
 
 
-VISUAL_GRADED_TYPES = ('~R1-R6', '~R7*', '~R8*', '~L1', '~L2', '~L3')
+# graded (non-spiking) early visual system: photoreceptors, lamina monopolar cells, and the medulla columnar cells whose
+# recorded responses are graded (Behnia et al. 2014: Tm1, Tm2, Tm4, Tm9; Strother et al. 2017: Mi1, Tm3, Mi4, Mi9)
+VISUAL_GRADED_TYPES = ('~R1-R6', '~R7*', '~R8*', '~L1', '~L2', '~L3', '~L4', '~L5',
+                       '~Mi1', '~Mi4', '~Mi9', '~Tm1', '~Tm2', '~Tm3', '~Tm4', '~Tm9')
 
 
 def attach_graded_cells(model, graph_npz, annotations, types=GRADED_TYPES, gain=1.0, tonic_gain=None):
