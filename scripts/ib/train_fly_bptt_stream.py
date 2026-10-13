@@ -193,6 +193,10 @@ def resolve_learning_modes(args, previous_config, previous_learner):
         args.evidence_plasticity = bool(previous_config.get('evidence_plasticity', False))
     if getattr(args, 'pull_tau', None) is None:
         args.pull_tau = float(previous_config.get('pull_tau') or 0.0)
+    if getattr(args, 'eg_plasticity', None) is None:
+        args.eg_plasticity = bool(previous_config.get('eg_plasticity', False))
+    if getattr(args, 'eg_tau', None) is None:
+        args.eg_tau = float(previous_config.get('eg_tau') or 4096.0)
     if getattr(args, 'online_da_plasticity', None) is None:
         args.online_da_plasticity = bool(previous_config.get('online_da_plasticity', False))
     if getattr(args, 'dopamine_affinity', None) is None:
@@ -360,6 +364,12 @@ def main():
     parser.add_argument('--evidence-plasticity', action=argparse.BooleanOptionalAction, default=None,
                         help='Synapses and class physiology step by gradient / one shared RMS per tensor (bounded), '
                              'not per-parameter Adam (omitted = inherit, else off)')
+    parser.add_argument('--eg-plasticity', action=argparse.BooleanOptionalAction, default=None,
+                        help='Synapses learn by normalized exponentiated gradient: log-space steps rate x momentum / its '
+                             'running RMS, KL pull to the birth connectome (--eg-tau updates), every cell keeps its '
+                             'birth E and I input totals (omitted = inherit, else off)')
+    parser.add_argument('--eg-tau', type=float, default=None,
+                        help='EG: time constant (updates) of the return to the birth connectome (omitted = inherit, else 4096)')
     parser.add_argument('--pull-tau', type=float, default=None,
                         help='With --evidence-plasticity: unconsolidated change decays to the birth value with this '
                              'time constant in updates (0 = off; omitted = inherit)')
@@ -676,6 +686,8 @@ def main():
             args.use_read_gamma_trace = True
         args.evidence_plasticity = bool(args.evidence_plasticity)
         args.pull_tau = float(args.pull_tau or 0.0)
+        args.eg_plasticity = bool(args.eg_plasticity)
+        args.eg_tau = float(args.eg_tau or 4096.0)
         if args.use_latent_predictor is None:
             args.use_latent_predictor = False
         if args.use_graph_observer is None:
@@ -930,7 +942,11 @@ def main():
             print(f'Evidence plasticity: synapses + {len(learner.physio_names)} physiology tensors, significance-gated (|mean| > z se), '
                   f'pull to birth tau {args.pull_tau:g} updates; read surface = '
                   f'{"spikes (Gamma)" if args.read_spikes else "membranes"}', flush=True)
-        if getattr(args, 'relative_edge_rate', 0.0):
+        if args.eg_plasticity:
+            learner.attach_eg_plasticity(args.relative_edge_rate or 0.02, args.eg_tau, saved=None)
+            print(f'EG plasticity: log-space rate {args.relative_edge_rate or 0.02} per update at the running RMS, '
+                  f'KL to birth tau {args.eg_tau:g} updates, per-cell E/I totals kept (update {learner.eg_count})', flush=True)
+        if getattr(args, 'relative_edge_rate', 0.0) and not args.eg_plasticity:
             step = learner.set_relative_edge_steps(args.graph, args.relative_edge_rate)
             print(f'Relative plasticity: {args.relative_edge_rate} of the birth weight per step '
                   f'(median synapse step {step:.2e})', flush=True)
@@ -1322,7 +1338,11 @@ def main():
             print(f'Evidence plasticity: synapses + {len(learner.physio_names)} physiology tensors, significance-gated (|mean| > z se), '
                   f'pull to birth tau {args.pull_tau:g} updates (step {learner.evidence_count}); read surface = '
                   f'{"spikes (Gamma)" if args.read_spikes else "membranes"}', flush=True)
-        if getattr(args, 'relative_edge_rate', 0.0):
+        if args.eg_plasticity:
+            learner.attach_eg_plasticity(args.relative_edge_rate or 0.02, args.eg_tau, saved=old)
+            print(f'EG plasticity: log-space rate {args.relative_edge_rate or 0.02} per update at the running RMS, '
+                  f'KL to birth tau {args.eg_tau:g} updates, per-cell E/I totals kept (update {learner.eg_count})', flush=True)
+        if getattr(args, 'relative_edge_rate', 0.0) and not args.eg_plasticity:
             step = learner.set_relative_edge_steps(args.graph, args.relative_edge_rate)
             print(f'Relative plasticity: {args.relative_edge_rate} of the birth weight per step '
                   f'(median synapse step {step:.2e})', flush=True)

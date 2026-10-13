@@ -2961,18 +2961,21 @@ class FlyBPTTLearner:
                     local[targets] = (1.0 + (conc[targets] - slow) / (slow + level)).clamp(0.25, 4.0)
                 else:
                     local[targets] = (conc[targets] / level).clamp(0.25, 4.0)
-            before = [w.detach().clone() for w in self.edges]
+            before = None if getattr(self, 'eg', False) else [w.detach().clone() for w in self.edges]
         relative = getattr(self, 'edge_step_scale', None)
-        if relative is not None and local is None:
+        eg = getattr(self, 'eg', False)
+        if relative is not None and local is None and not eg:
             before = [w.detach().clone() for w in self.edges]
-        if evidence:
+        if evidence or eg:
             edge_grads = self._evidence_take(self.edges)
         self.sgd.step()
+        if eg:
+            self._eg_apply(edge_grads, local)
         if evidence:
             # raw evidence step; the relative / dopamine scales below multiply it like any other synapse update
             self._evidence_apply(self.edge_names, self.edges, edge_grads, self.sgd.param_groups[1]['lr'])
             self.evidence_count += 1
-        if relative is not None or local is not None:
+        if not eg and (relative is not None or local is not None):
             # one composed scale per synapse on its Adam update: relative plasticity (each synapse moves by rate x its
             # own birth weight per full Adam step, so the connectome's scale is kept) times the dopamine at its
             # terminal (local, within [1/4, 4]); both multiply the same update from the weights before the step
@@ -3016,6 +3019,8 @@ class FlyBPTTLearner:
             group_norms['dopamine_plasticity'] = float(getattr(self, 'last_plasticity', 1.0))
         if getattr(self.model, 'dopamine_sensitivity', None) is not None:
             group_norms['dopamine_plasticity_spread'] = float(getattr(self, 'last_dopamine_plasticity_spread', 0.0))
+        if getattr(self, 'eg', False) and self.eg_moved:
+            group_norms['eg_log_change_mean_p99'] = dict(self.eg_moved)
         if getattr(self, 'evidence', False) and self.evidence_passed:
             group_norms['evidence_passed'] = dict(self.evidence_passed)
         if getattr(self.model, 'online_da_eta', None) is not None and next_state.da_memory.numel():
@@ -3110,7 +3115,9 @@ class FlyBPTTLearner:
         for name, weight in zip(self.edge_names, self.edges):
             if self.model.synapse_model == 'coba':
                 cap = getattr(self, 'edge_cap', {}).get(name)
-                if cap is None:
+                if getattr(self, 'eg', False):
+                    weight.clamp_(min=0.0)
+                elif cap is None:
                     weight.clamp_(0.0, 5.0)
                 else:
                     # the conductance bound never cuts a birth synapse (the rescaled graph has inhibitory edges to
@@ -3195,6 +3202,78 @@ class FlyBPTTLearner:
         self.evidence_passed = {}
         self.evidence = True
 
+    def attach_eg_plasticity(self, rate, tau=0.0, saved=None, momentum=0.9):
+        """Normalized exponentiated gradient on every cell's input, with the birth connectome as its prior
+        (Kivinen & Warmuth 1997; Cornford, Pogodin et al. 2024 'Brain-like learning with exponentiated gradients').
+
+        R3 (2026-10-13): the gradient of synapse j -> i is delta_i x a_j, so a cell's inputs share the sign of its own
+        error (per-cell sign agreement median 0.79, 46% of the synapse momentum variance is the post cell): the noise
+        lives in each cell's gain, and per-parameter Adam turned it into full steps -> every cell's total drive walked
+        and the ones that crossed latched.  Rule: log w <- log w - eta m (m: gradient momentum; one eta per tensor,
+        rate / running RMS of m, so a synapse moves with its own evidence and is never normalised alone) - (log w -
+        log w_birth) / tau (KL to the birth connectome: unsupported change returns, consistent evidence moves far);
+        then every cell's excitatory and inhibitory input totals are rescaled to their birth totals (the normalized
+        EG: learning redistributes what a cell listens to, it cannot change how much it is driven).  Multiplicative:
+        signs never change (Dale), weights stay log-normal, zero stays zero.  The dopamine at the chosen end scales
+        each synapse's step (fixed rule)."""
+        ev = (saved or {}).get('eg') or {}
+        device = self.state.h.device
+        self.eg_rate, self.eg_tau, self.eg_momentum = float(rate), float(tau), float(momentum)
+        self.eg_count = int(ev.get('count', 0))
+        self.eg_rms = {n: torch.as_tensor(v, device=device) for n, v in ev.get('rms', {}).items()}
+        mom = ev.get('mom') or {}
+        self.eg_mom = {n: mom[n].to(device) if n in mom else torch.zeros_like(w, dtype=torch.float32)
+                       for n, w in zip(self.edge_names, self.edges)}
+        if ev.get('birth') is not None:
+            self.eg_birth = {n: ev['birth'][n].to(device) for n in self.edge_names}
+        else:
+            if saved is not None:
+                print('EG plasticity: no birth values in the checkpoint -- the current weights become the prior', flush=True)
+            self.eg_birth = {n: w.detach().clone() for n, w in zip(self.edge_names, self.edges)}
+        self.eg_total = {}
+        for n in self.edge_names:
+            post = getattr(self.model, 'edge_post' + n[len('edge_weight'):]).long()
+            self.eg_total[n] = torch.zeros(self.model.n_neurons, device=device).index_add_(0, post, self.eg_birth[n].float())
+        self.eg_moved = {}
+        self.eg = True
+
+    @torch.no_grad()
+    def _eg_apply(self, grads, local):
+        k = 1.0 / self.eg_tau if self.eg_tau > 0 else 0.0
+        site = getattr(self.model, 'dopamine_site', 'post')
+        for n, w, g in zip(self.edge_names, self.edges, grads):
+            sfx = n[len('edge_weight'):]
+            mom = self.eg_mom[n]
+            mom.mul_(self.eg_momentum)
+            if g is not None:
+                mom.add_(g.float())
+            ms = mom.pow(2).mean()
+            prev = self.eg_rms.get(n)
+            ms = ms if prev is None else 0.99 * prev + 0.01 * ms
+            self.eg_rms[n] = ms
+            dlog = mom * (-self.eg_rate / float(ms.sqrt().clamp_min(1e-30)))
+            if local is not None:
+                dlog.mul_(dopamine_edge_scale(self.model, sfx, local, site))
+            alive = w > 0
+            if k > 0:
+                dlog.add_(torch.where(alive, torch.log(self.eg_birth[n].float().clamp_min(1e-30))
+                                      - torch.log(w.float().clamp_min(1e-30)), torch.zeros_like(dlog)), alpha=k)
+            w.mul_(torch.exp(dlog.clamp_(-1.0, 1.0)).to(w.dtype))   # at most e-fold per update
+            post = getattr(self.model, 'edge_post' + sfx).long()
+            total = torch.zeros(self.model.n_neurons, device=w.device).index_add_(0, post, w.float())
+            w.mul_((self.eg_total[n] / total.clamp_min(1e-30))[post].to(w.dtype))
+            ratio = w.float() / self.eg_birth[n].float().clamp_min(1e-30)
+            lr_ = torch.log(ratio[alive].clamp_min(1e-30))
+            self.eg_moved[n] = [float(lr_.abs().mean()), float(lr_.abs().quantile(0.99)) if lr_.numel() < 2**24 else
+                                float(lr_.abs()[torch.randint(0, lr_.numel(), (1 << 20,), device=lr_.device)].quantile(0.99))]
+        self.eg_count += 1
+
+    def eg_state(self):
+        if not getattr(self, 'eg', False):
+            return None
+        return {'rate': self.eg_rate, 'tau': self.eg_tau, 'count': self.eg_count,
+                'rms': {n: float(v) for n, v in self.eg_rms.items()}, 'mom': self.eg_mom, 'birth': self.eg_birth}
+
     @staticmethod
     def _evidence_take(params):
         grads = []
@@ -3238,7 +3317,7 @@ class FlyBPTTLearner:
                 'pull_tau': self.pull_tau, 'moments': self.evidence_moments, 'birth': self.evidence_birth}
 
     def state_dict(self):
-        return {'evidence': self.evidence_state(),
+        return {'evidence': self.evidence_state(), 'eg': self.eg_state(),
                 'physical': self.state.state_dict(), 'optimizer': self.optimizer.state_dict(),
                 'sgd': self.sgd.state_dict(), 'adam_names': self.adam_names,
                 'plasticity_optimizer_kind': self.plasticity_optimizer_kind,
