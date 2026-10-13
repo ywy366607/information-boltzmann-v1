@@ -12,7 +12,7 @@ COMMON="--extend-budget --additional-tokens 4096 --validate-every-tokens 4096 --
   --window 32 --no-graph --go-neuron none --stream-ticks 8 --no-hold-input --stream-pace-mean 16 --stream-pace-min 2 \
   --no-homeostasis --no-ctm-loss --kc-dendritic-only --kc-renorm --connectome-v2 --dopamine-modulation \
   --dopamine-site pre --compartment-memory --comp-rate 2.0 --relative-edge-rate 0.02 \
-  --ai --motor-acts --act-tau 8 --act-habit 0.2 --act-gamma-inv 0.05 --miss-prior --ai-epistemic 0.0 \
+  --ai --motor-acts --act-tau 8 --act-habit 0.2 --act-gamma-inv 0.0 --miss-prior --ai-epistemic 0.0 \
   --ai-pragmatic 1.0 --ai-sigreg 0.01 --eye-forced-open --act-brain-grad --vram-limit-mib 3800"
 for chunk in $(seq 1 $CHUNKS); do
   for arm in $ARMS; do
