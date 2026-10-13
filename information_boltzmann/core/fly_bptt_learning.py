@@ -1242,16 +1242,38 @@ GRADED_TYPES = ('APL', 'CT1')
 GRADED_PARAMETER_NAMES = ('log_graded_gain',)
 
 
-def attach_graded_cells(model, graph_npz, annotations, types=GRADED_TYPES, gain=1.0):
+VISUAL_GRADED_TYPES = ('~R1-R6', '~R7*', '~R8*', '~L1', '~L2', '~L3')
+
+
+def attach_graded_cells(model, graph_npz, annotations, types=GRADED_TYPES, gain=1.0, tonic_gain=None):
     """The fly's non-spiking giant inhibitory interneurons (APL in the mushroom body, CT1 in the optic lobe) as graded
     cells (FlyReservoirLM.attach_graded): release proportional to depolarization instead of spikes.  Returns the
-    number of cells per type."""
+    number of cells per type.
+
+    A type written '~T' (patterns allowed, e.g. '~R7*') is graded around a tonic operating point: release floor at E_I
+    (photoreceptors and lamina monopolar cells, 2026-10-13: as spiking cells the photoreceptors' histamine onto L1-L3 only
+    ever inhibited silent cells, so the retina sent nothing on); its gain is tonic_gain (default gain).  Cells already
+    graded keep their learned gains when a second call extends the set."""
+    import fnmatch
     import pandas as pd
     graph = np.load(graph_npz, allow_pickle=True)
     typ = pd.read_feather(annotations).set_index('bodyId').reindex(graph['neuron_body_ids'])['type'].astype(str).values
-    index = np.nonzero(np.isin(typ, list(types)))[0]
-    model.attach_graded(index, gain=gain)
-    return {t: int((typ == t).sum()) for t in types}
+    plain = [t for t in types if not t.startswith('~')]
+    tonic = [t[1:] for t in types if t.startswith('~')]
+    match = lambda pats: (np.array([any(fnmatch.fnmatchcase(x, p) for p in pats) for x in typ]) if pats
+                          else np.zeros(len(typ), bool))
+    is_plain = match(plain)
+    is_tonic = match(tonic) & ~is_plain
+    index = np.nonzero(is_plain | is_tonic)[0]
+    gains = np.where(is_tonic[index], float(tonic_gain if tonic_gain is not None else gain), float(gain))
+    floors = np.where(is_tonic[index], float(model.E_I), 0.0)
+    if getattr(model, 'graded_index', None) is not None:
+        old = dict(zip(model.graded_index.tolist(), model.log_graded_gain.detach().exp().tolist()))
+        gains = np.array([old.get(int(i), g) for i, g in zip(index, gains)])
+    model.attach_graded(index, gain=gains, floor=floors)
+    counts = {t: int((typ == t).sum()) for t in plain}
+    counts.update({'~' + p: int(np.array([fnmatch.fnmatchcase(x, p) for x in typ]).sum()) for p in tonic})
+    return counts
 
 
 def attach_kenyon_dendritic_only(model, graph_npz, annotations, dendritic_feather, rescale=True):

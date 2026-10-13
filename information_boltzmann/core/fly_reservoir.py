@@ -787,22 +787,31 @@ class FlyReservoirLM(nn.Module):
             return SpikeFn.apply(margin, width)
         return SpikeFn.apply(margin)
 
-    def attach_graded(self, index, gain=1.0):
+    def attach_graded(self, index, gain=1.0, floor=0.0):
         """Non-spiking (graded) cells, e.g. the mushroom body's APL and the optic lobe's CT1: they never spike or reset;
-        every tick they release gain * relu(v / threshold) onto their synapses (release grows with depolarization, as
-        in the fly's graded feedback inhibition).  A spiking point model of APL fires near the maximal rate and silences
-        92% of the Kenyon cells; without it they are dense (90% active).  gain is learnable per cell (log space)."""
+        every tick they release gain * relu((v - floor) / threshold) onto their synapses (release grows with
+        depolarization, as in the fly's graded feedback inhibition).  A spiking point model of APL fires near the
+        maximal rate and silences 92% of the Kenyon cells; without it they are dense (90% active).  gain is learnable per
+        cell (log space).  floor (per cell or scalar): 0 for the feedback inhibitors (no release at rest); E_I for cells
+        that work around a tonic operating point (photoreceptors, lamina monopolar cells): they release at rest, more when
+        depolarized and less when hyperpolarized, so both directions of a change go on (a spiking point model sends
+        neither: a silent cell inhibited further stays silent)."""
         index = torch.as_tensor(index, dtype=torch.long, device=self.edge_pre_e.device)
         mask = torch.zeros(1, self.n_neurons, device=index.device)
         mask[0, index] = 1.0
         self.register_buffer('graded_mask', mask, persistent=False)
         self.register_buffer('graded_index', index, persistent=False)
-        self.log_graded_gain = nn.Parameter(torch.full((index.numel(),), math.log(gain), device=index.device))
+        gains = torch.as_tensor(gain, dtype=torch.float32, device=index.device).expand(index.numel()).clone()
+        self.log_graded_gain = nn.Parameter(torch.log(gains))
+        floors = torch.zeros(1, self.n_neurons, device=index.device)
+        floors[0, index] = torch.as_tensor(floor, dtype=torch.float32, device=index.device).expand(index.numel())
+        self.register_buffer('graded_floor', floors, persistent=False)
 
     def graded_release(self, v_pre, thresholds):
         gain = torch.zeros_like(v_pre).index_put((torch.zeros_like(self.graded_index), self.graded_index),
                                                  torch.exp(self.log_graded_gain))
-        return gain * torch.relu(v_pre / thresholds)
+        floor = getattr(self, 'graded_floor', None)
+        return gain * torch.relu((v_pre if floor is None else v_pre - floor) / thresholds)
 
     def get_thresholds(self) -> torch.Tensor:
         """Computes per-neuron [1, N] firing thresholds."""

@@ -129,6 +129,12 @@ def load(fork):
         n = fl.attach_graded_cells(model, graph, graph.parent / 'body-annotations.feather', types=tuple(os.environ['ZS_GRADED'].split(',')),
                                    gain=float(os.environ.get('ZS_GRADED_GAIN', 1.0)))
         print(f'zero-shot: graded cells {n}, gain {os.environ.get("ZS_GRADED_GAIN", 1.0)}', flush=True)
+    if os.environ.get('ZS_GRADED_ADD'):
+        # zero-shot: more graded cells on top of the individual's own ('~T' = tonic operating point), learned gains kept
+        types = tuple(filter(None, (cfg.get('graded_types') or '').split(','))) + tuple(os.environ['ZS_GRADED_ADD'].split(','))
+        n = fl.attach_graded_cells(model, graph, graph.parent / 'body-annotations.feather', types=types,
+                                   tonic_gain=float(os.environ.get('ZS_TONIC_GAIN', 1.0)))
+        print(f'zero-shot: graded cells {n}, tonic gain {os.environ.get("ZS_TONIC_GAIN", 1.0)}', flush=True)
     if os.environ.get('ZS_TIED_WRITER') and not cfg.get('tied_writer'):
         n = fl.attach_tied_writer(model, graph, graph.parent / 'body-annotations.feather', convert=True,
                                   scale=float(os.environ['ZS_TIED_WRITER']))
