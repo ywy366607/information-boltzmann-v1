@@ -463,6 +463,10 @@ def main():
     parser.add_argument('--ablate', default=None,
                         help="Causal gate (never inherited; resume only): 'noedges' (every synapse cut: the read and decoder "
                              "learn alone) or a bool .npy of cells to silence (outputs cut, reads zeroed); learning continues")
+    parser.add_argument('--log-word-dopamine', action='store_true',
+                        help='With --score-log: every word phasic dopamine and dopamine-cell firing (living gate 2)')
+    parser.add_argument('--skip-eval', action='store_true',
+                        help='No active evaluation (fresh B / A revisit) in this run: a gate arm that only scores the stream')
     parser.add_argument('--score-log', type=Path, default=None,
                         help='Append every window pre-update word scores (JSONL) for paired comparisons')
     parser.add_argument('--input-gain-size-exponent', type=float, default=None,
@@ -1762,6 +1766,7 @@ def main():
             'phase_first_pass_meter': phase_meter.state_dict(),
             'rng_cpu': torch.get_rng_state(), 'rng_cuda': torch.cuda.get_rng_state()})
     (args.output / 'process.pid').write_text(str(os.getpid()))
+    learner.record_word_da = bool(args.log_word_dopamine)       # birth and resume alike
     if not args.no_graph and not args.use_latent_predictor and not args.use_graph_observer:
         print('Capturing 32-event forward/backward; no physical reset...', flush=True)
         learner.runner = FlyBPTTGraph(learner, args.window)
@@ -2043,7 +2048,9 @@ def main():
             if args.score_log:
                 with args.score_log.open('a', encoding='utf-8') as out:
                     out.write(json.dumps({'trained': trained, 'scores': [float(x) for x in scores],
-                                          'unigram': [float(x) for x in reference_surprisal[values]]}) + '\n')
+                                          'unigram': [float(x) for x in reference_surprisal[values]],
+                                          **({'word_da': learner.last_word_da}
+                                             if getattr(learner, 'last_word_da', None) is not None else {})}) + '\n')
             first_pass_meter.record(scores, reference_surprisal[values])
             first_pass_meter.verify_cursor(trained, cursor)
             phase_meter.record(scores, reference_surprisal[values])
@@ -2074,7 +2081,7 @@ def main():
                 checkpoint()
                 progress('paused')
                 return
-            if trained >= next_eval or trained == target:
+            if not args.skip_eval and (trained >= next_eval or trained == target):
                 if val_cursor + args.eval_tokens > len(val):
                     raise ValueError('Fresh validation stream exhausted')
                 event_start, updates_start = learner.events, learner.updates

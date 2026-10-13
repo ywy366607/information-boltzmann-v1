@@ -2324,6 +2324,7 @@ class FlyBPTTLearner:
                 pace = float(math.exp(self.pace_rng.uniform(math.log(pace_min), math.log(pace))))
             total_ticks = 0
             reads, intervals = [], []
+            word_da = [] if getattr(self, 'record_word_da', False) else None
             if pace > 0:
                 stream['read_every'] = True
             world = getattr(self, 'odour_world', None) if torch.is_grad_enabled() else None
@@ -2400,6 +2401,19 @@ class FlyBPTTLearner:
                 if pace > 0:
                     intervals.append(k)
                 latents.append(token_lat)
+                if word_da is not None:
+                    # the living causal gate (2): each word's phasic dopamine (fast - slow) / slow at the end of its
+                    # ticks and the dopamine cells' firing over the spike ring -- kept on the device, one copy per window
+                    with torch.no_grad():
+                        fast, slow = state.dopamine[0].detach(), state.dopamine[1].detach()
+                        on = slow > 0
+                        phasic = torch.where(on, (fast - slow) / slow.clamp_min(1e-30), torch.zeros_like(fast)).sum()                             / on.sum().clamp_min(1)
+                        dan = getattr(m, 'dan_indices', None)
+                        rate = (torch.stack([r[0] for r in state.ring]).index_select(1, dan).gt(0).float().mean()
+                                if dan is not None else phasic.new_zeros(()))
+                        word_da.append(torch.stack([phasic.float(), rate.float()]))
+            if word_da is not None:
+                self.last_word_da = torch.stack(word_da).cpu().tolist() if word_da else None
             features = torch.cat(latents, dim=0)
             logits = m.decoder(m.read_norm(features))
             scores = F.cross_entropy(logits, targets.flatten(), reduction='none')
@@ -3329,6 +3343,9 @@ class FlyBPTTLearner:
             w.mul_((self.eg_total[n] / total.clamp_min(1e-30))[post].to(w.dtype))
             ratio = w.float() / self.eg_birth[n].float().clamp_min(1e-30)
             lr_ = torch.log(ratio[alive].clamp_min(1e-30))
+            if lr_.numel() == 0:                          # every synapse removed (the living noedges gate)
+                self.eg_moved[n] = [0.0, 0.0]
+                continue
             self.eg_moved[n] = [float(lr_.abs().mean()), float(lr_.abs().quantile(0.99)) if lr_.numel() < 2**24 else
                                 float(lr_.abs()[torch.randint(0, lr_.numel(), (1 << 20,), device=lr_.device)].quantile(0.99))]
         self.eg_count += 1
