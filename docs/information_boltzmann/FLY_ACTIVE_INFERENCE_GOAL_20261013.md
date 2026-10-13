@@ -405,3 +405,13 @@ but nothing changes in behaviour, the cause is elsewhere (the read, or the noise
 (silence / saturation), 5e-3 is too large for log_threshold and it needs its own smaller rate.
 Also: the same arithmetic holds for every log-space clock in D1-D3 (dopamine, memory, membrane): none of them could
 evolve within these runs at 2e-4.
+
+### Pruned before running (2026-10-13 12:10, look before testing)
+- d3_precision not trained.  gamma_tone_probe.py on D1 (2,000 words, zero-shot): the dopamine population's spike is
+  white (raw CV 0.67 per tick, autocorrelation ~7 ticks), so on the brain's own slow clock (~557 ticks) gamma stays in
+  [0.991, 1.008], CV 0.24% over words, 0.008% over 512-tick blocks; with D1's commit value (sd 0.46) it would move the
+  hazard by sd 0.0002.  The prediction's null branch, before training.  Cause: the population tone carries no slow
+  state; the exit is per dopamine type (which compartments, if any, have slow structure), not this readout.
+- d3_credit not trained now: at the shared 2e-4 the clocks it gives credit to cannot move (D2b's arithmetic) and the
+  memory is barely written; it runs once --lr-physiology and the Kenyon entry are in place.
+- D2 chunk 3 stopped (a step-budget null); D2b continues both lineages from their latest checkpoints.
