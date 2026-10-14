@@ -929,3 +929,47 @@ could not start. Now:
 - treatment = chunk 10 from c9 with `--compartment-adapted`, on the same words (`cadapt_ab_v4.sh`, after the c10
   gate, AG and probes);
 - then both MBON probes and both (2) reports, and m_main resumes.
+
+### Change 1 result: one chunk from c9 on the same 4,096 words; treatment (adapted) vs control (m_main's own chunk 10)
+
+| | control c10 | treatment c10 (adapted) |
+|---|---|---|
+| (1) NLL, treatment − control (paired over 128 windows) | | **+0.0022 ± 0.0024** (no harm) |
+| skipped updates (non-finite) | 0 | 0 |
+| phi median / fraction below −0.1 | −0.083 / 47% | **−0.437 / 74%** |
+| Kenyon compartment share of MBON drive | 0.166 | 0.115 |
+| MBON firing, mean fraction of ticks | 1.17% | 0.95% |
+| Kenyon → MBON drive corr, same last 3 vs random (median) | 0.965 vs 0.927 (gap 0.038) | 0.953 vs 0.899 (gap 0.054) |
+| MBON firing corr, same vs random (median) | 0.714 vs 0.642 (gap 0.072) | 0.583 vs 0.497 (gap 0.086) |
+| familiarity, log drive ratio at a repeat vs random (mean) | +0.010 vs +0.012 | +0.000 vs +0.003 |
+| (2) rho(surprise, phasic DA) / residual after rarity | −0.003 / +0.024 | −0.009 / +0.017 |
+| phasic DA sd (word level) | 0.94 | **0.14** |
+
+**Predictions:**
+
+| prediction | result |
+|---|---|
+| 1. (1) not harmed | holds |
+| 2. phi spreads | holds |
+| 3. familiarity appears | fails |
+| 4. MBONs separate contexts | marginal (+0.014) |
+| 5. the DA residual turns positive | fails |
+| (not predicted) phasic DA | 7x smaller |
+
+**Cause, from the failure branch "phi spreads but no familiarity".** The memory now learns, but its depression is
+global rather than pattern-specific: median phi −0.44, Kenyon drive to the MBONs down a third, MBON firing down 20%.
+- The dopamine that teaches it is not novelty-gated. Bursts depress whatever Kenyon cells were active, and over a
+  text stream every cell is active sometimes.
+- The 3-word Kenyon context code rarely recurs exactly (P1: about 9% of 3-grams repeat in 3,000 words). So the
+  memory becomes a usage map of the Kenyon cells, not a record of which contexts were seen.
+- With the drive through the KC → MBON → DAN loop weaker, the DAN bursts shrink (phasic sd 0.94 → 0.14).
+
+**Familiarity needs something that recurs.** In the fly, the same odour recurs. Here it would be the same meaning,
+which needs a semantic Kenyon code (P3 failed: none beyond the senses).
+
+**Decision: change 1 is not adopted into the mainline.**
+- It works as a mechanism and costs nothing in prediction.
+- But it shrinks the DA bursts 7-fold and buys no familiarity while the code it learns from is non-semantic.
+
+**Next: change 2, the JEPA term, on the unchanged mainline** (design above). It is the precondition change 1 lacks.
+Change 1 is retested on top once P3's partial rho is above 0.05.
