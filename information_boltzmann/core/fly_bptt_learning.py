@@ -3119,6 +3119,7 @@ class FlyBPTTLearner:
                 max(1, sum(p.numel() for p in obs_params))**.5)
             if getattr(self, 'last_jepa_metrics', None):
                 group_norms.update(self.last_jepa_metrics)
+        skipped = False
         try:
             grad_norm = stable_clip_grad_norm_(self.trainable, self.max_grad_norm,
                                               error_if_nonfinite=True)
@@ -3128,84 +3129,94 @@ class FlyBPTTLearner:
             bad = [name for name, p in self.model.named_parameters()
                    if p.requires_grad and p.grad is not None and not torch.isfinite(p.grad).all()]
             print(f'non-finite gradient in: {bad}', flush=True)
-            raise
-        if os.environ.get('FLY_GRAD_PROBE') and hasattr(self.model, 'edge_post_e'):
-            # does the loss push the drive onto the read cells one way?  (grad < 0 = more weight lowers the loss)
-            with torch.no_grad():
-                g = self.model.edge_weight_e.grad
-                if g is not None:
-                    onto = torch.zeros(self.model.n_neurons, dtype=torch.bool, device=g.device)
-                    onto[self.model.read_indices] = True
-                    m = onto[self.model.edge_post_e.long()]
-                    groups = [('onto read', m), ('elsewhere', ~m)]
-                    if os.environ.get('FLY_GRAD_PROBE_MASK'):
-                        lat = torch.as_tensor(np.load(os.environ['FLY_GRAD_PROBE_MASK']), device=g.device)
-                        a, b = lat[self.model.edge_pre_e.long()], lat[self.model.edge_post_e.long()]
-                        groups += [('latched->latched', a & b), ('latched->other', a & ~b)]
-                    for label, sel in groups:
-                        gs = g[sel]; nz = gs != 0
-                        print(f'GRAD PROBE update {self.updates} {label}: edges with gradient {float(nz.float().mean()):.3f}, '
-                              f'push up {float((gs[nz] < 0).float().mean()):.3f}, mean grad / rms '
-                              f'{float(gs.mean() / gs.pow(2).mean().sqrt().clamp_min(1e-30)):+.4f}', flush=True)
-        evidence = getattr(self, 'evidence', False)
-        if evidence:
-            physio_grads = self._evidence_take(self.physio_params)
-        self.optimizer.step()
-        if evidence:
-            self._evidence_apply(self.physio_names, self.physio_params, physio_grads, self.physio_lr)
-        plasticity = 1.0
-        if getattr(self.model, 'dopamine_mask', None) is not None and next_state.modulator.numel():
-            # Dopamine sets how much the synapses learn from this window: their learning rate is scaled by the
-            # dopaminergic concentration relative to its own running mean (a fixed rule, never learned from the loss,
-            # which would simply switch learning off).
-            level = float(next_state.modulator[0, self.model.dopamine_mask].mean())
-            self.dopamine_mean = level if getattr(self, 'dopamine_mean', None) is None else (
-                0.99 * self.dopamine_mean + 0.01 * level)
-            plasticity = min(4.0, max(0.25, level / max(self.dopamine_mean, 1e-6)))
-        base_rates = [group['lr'] for group in self.sgd.param_groups]
-        self.sgd.param_groups[1]['lr'] = base_rates[1] * plasticity
-        local = None
-        if getattr(self.model, 'dopamine_sensitivity', None) is not None and next_state.dopamine.numel():
-            # A fixed rule (never learned from the loss): the update of every synapse is scaled by the dopamine
-            # concentration at its postsynaptic neuron (or, with model.dopamine_site == 'pre', at its presynaptic
-            # terminal) relative to the mean over the dopamine targets (adapted: relative to that neuron's own slow
-            # level), within [1/4, 4]; neurons that receive no dopamine keep the plain update.
-            conc = next_state.dopamine[0].detach()
-            targets = conc > 0
-            local = torch.ones_like(conc)
-            if bool(targets.any()):
-                level = conc[targets].mean().clamp_min(1e-9)
-                if getattr(self.model, 'dopamine_adapted', False):
-                    slow = next_state.dopamine[1].detach()[targets]
-                    local[targets] = (1.0 + (conc[targets] - slow) / (slow + level)).clamp(0.25, 4.0)
-                else:
-                    local[targets] = (conc[targets] / level).clamp(0.25, 4.0)
-            before = None if getattr(self, 'eg', False) else [w.detach().clone() for w in self.edges]
-        relative = getattr(self, 'edge_step_scale', None)
-        eg = getattr(self, 'eg', False)
-        if relative is not None and local is None and not eg:
-            before = [w.detach().clone() for w in self.edges]
-        if (evidence and getattr(self, 'evidence_edges', True)) or eg:
-            edge_grads = self._evidence_take(self.edges)
-        self.sgd.step()
-        if eg:
-            self._eg_apply(edge_grads, local)
-        if evidence:
-            if getattr(self, 'evidence_edges', True):
-                # raw evidence step; the relative / dopamine scales below multiply it like any other synapse update
-                self._evidence_apply(self.edge_names, self.edges, edge_grads, self.sgd.param_groups[1]['lr'])
-            self.evidence_count += 1
-        if not eg and (relative is not None or local is not None):
-            # one composed scale per synapse on its Adam update: relative plasticity (each synapse moves by rate x its
-            # own birth weight per full Adam step, so the connectome's scale is kept) times the dopamine at its
-            # terminal (local, within [1/4, 4]); both multiply the same update from the weights before the step
-            compose_edge_updates(self.model, self.edge_names, self.edges, before, relative, local,
-                                 getattr(self.model, 'dopamine_site', 'post'))
-        if local is not None:
-            self.last_dopamine_plasticity_spread = float(local[local != 1].std()) if bool((local != 1).any()) else 0.0
-        for group, rate in zip(self.sgd.param_groups, base_rates):
-            group['lr'] = rate
-        self.last_plasticity = plasticity
+            # FLY_SKIP_NONFINITE (default on, 2026-10-14): a rare backward blow-up in one window (the forward and its
+            # loss finite) skips that window's parameter update instead of killing the run; the brain lives on from
+            # the window's end state.  The count is logged (skipped_updates); a non-finite state still stops the run.
+            if os.environ.get('FLY_SKIP_NONFINITE', '1') != '1' or not bool(torch.isfinite(next_state.h).all()):
+                raise
+            skipped = True
+            grad_norm = float('nan')
+            self.skipped_updates = int(getattr(self, 'skipped_updates', 0)) + 1
+            group_norms['skipped_updates'] = self.skipped_updates
+            print(f'skipped the update of this window (non-finite gradient; {self.skipped_updates} so far)', flush=True)
+        if not skipped:
+            if os.environ.get('FLY_GRAD_PROBE') and hasattr(self.model, 'edge_post_e'):
+                # does the loss push the drive onto the read cells one way?  (grad < 0 = more weight lowers the loss)
+                with torch.no_grad():
+                    g = self.model.edge_weight_e.grad
+                    if g is not None:
+                        onto = torch.zeros(self.model.n_neurons, dtype=torch.bool, device=g.device)
+                        onto[self.model.read_indices] = True
+                        m = onto[self.model.edge_post_e.long()]
+                        groups = [('onto read', m), ('elsewhere', ~m)]
+                        if os.environ.get('FLY_GRAD_PROBE_MASK'):
+                            lat = torch.as_tensor(np.load(os.environ['FLY_GRAD_PROBE_MASK']), device=g.device)
+                            a, b = lat[self.model.edge_pre_e.long()], lat[self.model.edge_post_e.long()]
+                            groups += [('latched->latched', a & b), ('latched->other', a & ~b)]
+                        for label, sel in groups:
+                            gs = g[sel]; nz = gs != 0
+                            print(f'GRAD PROBE update {self.updates} {label}: edges with gradient {float(nz.float().mean()):.3f}, '
+                                  f'push up {float((gs[nz] < 0).float().mean()):.3f}, mean grad / rms '
+                                  f'{float(gs.mean() / gs.pow(2).mean().sqrt().clamp_min(1e-30)):+.4f}', flush=True)
+            evidence = getattr(self, 'evidence', False)
+            if evidence:
+                physio_grads = self._evidence_take(self.physio_params)
+            self.optimizer.step()
+            if evidence:
+                self._evidence_apply(self.physio_names, self.physio_params, physio_grads, self.physio_lr)
+            plasticity = 1.0
+            if getattr(self.model, 'dopamine_mask', None) is not None and next_state.modulator.numel():
+                # Dopamine sets how much the synapses learn from this window: their learning rate is scaled by the
+                # dopaminergic concentration relative to its own running mean (a fixed rule, never learned from the loss,
+                # which would simply switch learning off).
+                level = float(next_state.modulator[0, self.model.dopamine_mask].mean())
+                self.dopamine_mean = level if getattr(self, 'dopamine_mean', None) is None else (
+                    0.99 * self.dopamine_mean + 0.01 * level)
+                plasticity = min(4.0, max(0.25, level / max(self.dopamine_mean, 1e-6)))
+            base_rates = [group['lr'] for group in self.sgd.param_groups]
+            self.sgd.param_groups[1]['lr'] = base_rates[1] * plasticity
+            local = None
+            if getattr(self.model, 'dopamine_sensitivity', None) is not None and next_state.dopamine.numel():
+                # A fixed rule (never learned from the loss): the update of every synapse is scaled by the dopamine
+                # concentration at its postsynaptic neuron (or, with model.dopamine_site == 'pre', at its presynaptic
+                # terminal) relative to the mean over the dopamine targets (adapted: relative to that neuron's own slow
+                # level), within [1/4, 4]; neurons that receive no dopamine keep the plain update.
+                conc = next_state.dopamine[0].detach()
+                targets = conc > 0
+                local = torch.ones_like(conc)
+                if bool(targets.any()):
+                    level = conc[targets].mean().clamp_min(1e-9)
+                    if getattr(self.model, 'dopamine_adapted', False):
+                        slow = next_state.dopamine[1].detach()[targets]
+                        local[targets] = (1.0 + (conc[targets] - slow) / (slow + level)).clamp(0.25, 4.0)
+                    else:
+                        local[targets] = (conc[targets] / level).clamp(0.25, 4.0)
+                before = None if getattr(self, 'eg', False) else [w.detach().clone() for w in self.edges]
+            relative = getattr(self, 'edge_step_scale', None)
+            eg = getattr(self, 'eg', False)
+            if relative is not None and local is None and not eg:
+                before = [w.detach().clone() for w in self.edges]
+            if (evidence and getattr(self, 'evidence_edges', True)) or eg:
+                edge_grads = self._evidence_take(self.edges)
+            self.sgd.step()
+            if eg:
+                self._eg_apply(edge_grads, local)
+            if evidence:
+                if getattr(self, 'evidence_edges', True):
+                    # raw evidence step; the relative / dopamine scales below multiply it like any other synapse update
+                    self._evidence_apply(self.edge_names, self.edges, edge_grads, self.sgd.param_groups[1]['lr'])
+                self.evidence_count += 1
+            if not eg and (relative is not None or local is not None):
+                # one composed scale per synapse on its Adam update: relative plasticity (each synapse moves by rate x its
+                # own birth weight per full Adam step, so the connectome's scale is kept) times the dopamine at its
+                # terminal (local, within [1/4, 4]); both multiply the same update from the weights before the step
+                compose_edge_updates(self.model, self.edge_names, self.edges, before, relative, local,
+                                     getattr(self.model, 'dopamine_site', 'post'))
+            if local is not None:
+                self.last_dopamine_plasticity_spread = float(local[local != 1].std()) if bool((local != 1).any()) else 0.0
+            for group, rate in zip(self.sgd.param_groups, base_rates):
+                group['lr'] = rate
+            self.last_plasticity = plasticity
         with torch.no_grad():
             if evidence and self.pull_tau > 0:
                 self._evidence_pull()
