@@ -698,7 +698,21 @@ def epistemic_credit(learner, state0, previous_token, targets, horizon_ticks=64,
             'speak_said_return': (float(np.mean([r for r, (*_, d) in zip(R, rec['decisions']) if d]))
                                   if any(d for *_, d in rec['decisions']) else None),
             'speak_silent_return': (float(np.mean([r for r, (*_, d) in zip(R, rec['decisions']) if not d]))
-                                    if any(not d for *_, d in rec['decisions']) else None)}
+                                    if any(not d for *_, d in rec['decisions']) else None),
+            # the silences split: a yield after her own words (it buys the reply) vs silence with nothing said
+            **_silence_split(R, rec['decisions'], rec['speakers'])}
+
+
+def _silence_split(R, decisions, speakers):
+    import numpy as np
+    after_speech, pure = [], []
+    for r, (i, t0, n, d) in zip(R, decisions):
+        if d:
+            continue
+        (after_speech if i > 0 and speakers[i - 1] == 'fly' else pure).append(r)
+    return {'yield_after_speech_return': float(np.mean(after_speech)) if after_speech else None,
+            'pure_silence_return': float(np.mean(pure)) if pure else None,
+            'yield_after_speech_n': len(after_speech), 'pure_silence_n': len(pure)}
 
 
 def live_window(learner, world, n, rng, pace_min, pace_mean, temperature=1.0, ticks_per_second=2.0,
