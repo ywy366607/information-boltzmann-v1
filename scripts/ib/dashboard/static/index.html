@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>果蝇养育台</title>
+<style>
+:root {
+  --bg: #0f1214; --panel: #161a1d; --panel2: #1c2125; --line: #2a3137; --fg: #dfe6ea; --dim: #8b979f;
+  --accent: #e3b448; --brain: #5fb3a8; --noedge: #b07a5f; --uni: #6f7c86; --mother: #c98fb6; --fly: #7fb2e5;
+  --good: #8cc97a; --bad: #e07a6a;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body { margin: 0; background: var(--bg); color: var(--fg);
+  font: 13px/1.5 "Segoe UI", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif; }
+header { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; padding: 12px 20px;
+  border-bottom: 1px solid var(--line); background: var(--panel); position: sticky; top: 0; z-index: 5; }
+header h1 { font-size: 15px; margin: 0; letter-spacing: .04em; font-weight: 600; }
+header h1 span { color: var(--accent); }
+select, button, input, textarea { background: var(--panel2); color: var(--fg); border: 1px solid var(--line);
+  border-radius: 6px; padding: 5px 9px; font: inherit; }
+button { cursor: pointer; } button:hover { border-color: var(--accent); }
+nav { display: flex; gap: 4px; flex-wrap: wrap; }
+nav button { border-color: transparent; background: transparent; color: var(--dim); }
+nav button.on { color: var(--fg); background: var(--panel2); border-color: var(--line); }
+.meta { color: var(--dim); font-size: 12px; margin-left: auto; font-variant-numeric: tabular-nums; }
+main { padding: 16px 20px 40px; max-width: 1400px; margin: 0 auto; }
+.tab { display: none; } .tab.on { display: block; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); gap: 14px; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; min-width: 0; }
+.card h2 { font-size: 13px; margin: 0 0 2px; font-weight: 600; }
+.card .sub { color: var(--dim); font-size: 12px; margin: 0 0 10px; }
+canvas.chart { width: 100%; height: 220px; display: block; }
+.legend { display: flex; flex-wrap: wrap; gap: 4px 14px; color: var(--dim); font-size: 12px; margin-top: 6px; }
+.legend i { display: inline-block; width: 10px; height: 3px; margin-right: 5px; vertical-align: middle; }
+.scroll { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; font-size: 12px; }
+th, td { text-align: right; padding: 5px 8px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+th { color: var(--dim); font-weight: 500; } td:first-child, th:first-child { text-align: left; }
+.pos { color: var(--good); } .neg { color: var(--bad); }
+.events { font: 11px/1.6 Consolas, monospace; color: var(--dim); max-height: 220px; overflow: auto; white-space: pre-wrap; }
+#brainWrap { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 14px; }
+#brain { width: 100%; height: 640px; display: block; background: radial-gradient(circle at 50% 40%, #182024, #0b0e10);
+  border-radius: 10px; cursor: grab; }
+.classes { max-height: 560px; overflow: auto; font-size: 12px; }
+.classes div { display: flex; align-items: center; gap: 8px; padding: 2px 0; cursor: pointer; }
+.classes div.off { opacity: .35; }
+.classes b { width: 10px; height: 10px; border-radius: 2px; flex: none; }
+.classes span:last-child { margin-left: auto; color: var(--dim); font-variant-numeric: tabular-nums; }
+.chat { display: flex; flex-direction: column; gap: 8px; max-height: 620px; overflow: auto; padding-right: 4px; }
+.msg { max-width: 78%; padding: 8px 12px; border-radius: 12px; word-break: break-word; }
+.msg.fly { align-self: flex-start; background: #1b2633; border: 1px solid #2a3c52; }
+.msg.mother { align-self: flex-end; background: #2c2030; border: 1px solid #4a3450; }
+.msg small { display: block; color: var(--dim); font-size: 11px; margin-bottom: 2px; }
+.kv { display: grid; grid-template-columns: auto 1fr; gap: 4px 14px; font-variant-numeric: tabular-nums; }
+.kv span:nth-child(odd) { color: var(--dim); }
+textarea { width: 100%; min-height: 460px; font: 12px/1.5 Consolas, monospace; }
+.note { color: var(--dim); font-size: 12px; }
+.empty { color: var(--dim); padding: 24px 0; text-align: center; }
+@media (max-width: 900px) { #brainWrap { grid-template-columns: 1fr; } #brain { height: 420px; } .grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>果蝇养育台 <span>·</span> harness</h1>
+  <label>个体 <select id="run"></select></label>
+  <nav id="tabs">
+    <button data-t="train" class="on">训练</button>
+    <button data-t="brain">大脑</button>
+    <button data-t="talk">交互</button>
+    <button data-t="acts">动作</button>
+    <button data-t="cfg">配置</button>
+  </nav>
+  <span class="meta" id="meta">—</span>
+</header>
+<main>
+  <section class="tab on" id="t-train">
+    <div class="grid">
+      <div class="card"><h2>(1) 大脑承担预测</h2>
+        <p class="sub">活体消融：同一段流、继续学习，去掉突触后的 NLL − 完整大脑；误差棒 = ±1 标准误，细线 = [最小, 最大] 窗口</p>
+        <canvas class="chart" id="cContrib"></canvas>
+        <div class="legend"><span><i style="background:var(--brain)"></i>均值 ± 标准误</span><span><i style="background:var(--dim)"></i>窗口范围</span></div></div>
+      <div class="card"><h2>当前流：逐窗 NLL</h2>
+        <p class="sub">每窗学习前的打分（8 窗滑动平均），对照同一批词的词频基线</p>
+        <canvas class="chart" id="cNll"></canvas>
+        <div class="legend"><span><i style="background:var(--brain)"></i>大脑</span><span><i style="background:var(--uni)"></i>词频基线</span></div></div>
+      <div class="card"><h2>(2) 惊讶 → 多巴胺</h2>
+        <p class="sub">每次门控：惊讶与相位多巴胺（同一个词、下一个词）及多巴胺细胞放电的 Spearman 相关</p>
+        <canvas class="chart" id="cDa"></canvas>
+        <div class="legend"><span><i style="background:var(--accent)"></i>相位多巴胺</span><span><i style="background:var(--mother)"></i>下一个词</span><span><i style="background:var(--fly)"></i>多巴胺细胞</span></div></div>
+      <div class="card"><h2>新鲜文本（AG）</h2>
+        <p class="sub">每段结束时新鲜 B 的 NLL；方块 = 同一检查点的去掉大脑对照（每 5 段）</p>
+        <canvas class="chart" id="cFresh"></canvas>
+        <div class="legend"><span><i style="background:var(--brain)"></i>完整大脑</span><span><i style="background:var(--noedge)"></i>去掉大脑</span></div></div>
+    </div>
+    <div class="card" style="margin-top:14px"><h2>门控记录</h2><p class="sub">因果顺序：(1) 大脑 → (2) 多巴胺 → (L) 锁存</p>
+      <div class="scroll"><table id="gateTable"></table></div></div>
+    <div class="card" style="margin-top:14px"><h2>事件</h2><div class="events" id="events"></div></div>
+  </section>
+
+  <section class="tab" id="t-brain">
+    <div id="brainWrap">
+      <div class="card"><h2>连接组</h2>
+        <p class="sub" id="brainSub">拖动旋转，滚轮缩放；关键细胞全部显示，其余随机采样</p>
+        <canvas id="brain"></canvas>
+        <div style="margin-top:8px; display:flex; gap:12px; flex-wrap:wrap; align-items:center">
+          <label>着色 <select id="colorMode"><option value="class">按类别</option><option value="rate">按放电率（类别均值）</option></select></label>
+          <button id="mbOnly">只看蘑菇体回路</button><button id="allOn">全部</button>
+          <label><input type="checkbox" id="spin" checked> 自转</label>
+        </div></div>
+      <div class="card"><h2>类别</h2><p class="sub" id="healthFile">点击类别切换显示</p><div class="classes" id="classes"></div></div>
+    </div>
+  </section>
+
+  <section class="tab" id="t-talk">
+    <div class="grid">
+      <div class="card"><h2>对话</h2><p class="sub">左：果蝇（自听）；右：妈妈。最近 200 句</p><div class="chat" id="chat"></div></div>
+      <div class="card"><h2>harness 监测</h2><p class="sub">塌缩与暗室信号（最近一窗）</p><div class="kv" id="monitor"></div>
+        <h2 style="margin-top:16px">果蝇每窗说出的词数</h2><canvas class="chart" id="cFly"></canvas></div>
+    </div>
+  </section>
+
+  <section class="tab" id="t-acts">
+    <div class="grid">
+      <div class="card"><h2>(3) 时机的价值</h2><p class="sub">提交时机相对"常数风险"零假设策略的收益（nats/词），每块 1024 词的 [最小, 中位, 均值, 最大]</p>
+        <canvas class="chart" id="cTiming"></canvas></div>
+      <div class="card"><h2>同间隔内：延迟 ~ 事后最佳时刻</h2><p class="sub">按词的间隔分层后的 Spearman（排除"间隔越长两者都越大"的假象）</p>
+        <canvas class="chart" id="cBest"></canvas></div>
+    </div>
+    <div class="card" style="margin-top:14px"><h2>动作记录</h2><div class="scroll"><table id="actTable"></table></div></div>
+  </section>
+
+  <section class="tab" id="t-cfg">
+    <div class="grid">
+      <div class="card"><h2>妈妈与育儿计划</h2>
+        <p class="sub">保存到 data/harness/raising.json。训练器接入后在每段开始时读取；现在只保存。</p>
+        <textarea id="cfgText" spellcheck="false"></textarea>
+        <div style="margin-top:8px; display:flex; gap:10px; align-items:center"><button id="cfgSave">保存</button><span class="note" id="cfgNote"></span></div></div>
+      <div class="card"><h2>字段说明</h2><div class="note" style="line-height:1.9">
+        <b>mother.backend</b>：local（本地小模型，只测管线）/ gemini / api（Anthropic）<br>
+        <b>mother.model</b>：模型名；<b>temperature</b>：妈妈说话的随机性<br>
+        <b>mother.fly_temperature</b>：果蝇说话时从读出采样的温度<br>
+        <b>mother.max_fly_words</b>：果蝇一轮最多说几个词（提交动作接入前的话轮规则）<br>
+        <b>mother.persona</b>：妈妈的性格与说话方式<br>
+        <b>parenting.phases</b>：养育阶段（聆听期 → 咿呀期 → …），每段的词数与世界<br>
+        <b>parenting.topics / revisit_every_words</b>：话题与回访（A→B→A 的节省测量）<br>
+        <b>harness.*</b>：报警阈值（重复率、相同话轮、大脑贡献 ≤ 0）</div></div>
+    </div>
+  </section>
+</main>
+
+<script>
+const $ = s => document.querySelector(s);
+const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const api = async (p) => { const r = await fetch(p, {cache: 'no-store'}); return r.json(); };
+let RUN = null, STATUS = null, WINDOWS = [], BRAIN = null, HEALTH = null;
+
+// ---------- a small canvas chart ----------
+function chart(cv, series, o = {}) {
+  const dpr = window.devicePixelRatio || 1, W = cv.clientWidth, H = cv.clientHeight;
+  cv.width = W * dpr; cv.height = H * dpr;
+  const g = cv.getContext('2d'); g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, W, H);
+  const pts = series.flatMap(s => s.points.flatMap(p => [p, ...(p.lo != null ? [{x: p.x, y: p.lo}, {x: p.x, y: p.hi}] : [])]))
+    .filter(p => p.y != null && isFinite(p.y));
+  if (!pts.length) { g.fillStyle = css('--dim'); g.font = '12px sans-serif'; g.fillText('暂无数据', 12, 20); return; }
+  let x0 = Math.min(...pts.map(p => p.x)), x1 = Math.max(...pts.map(p => p.x));
+  let y0 = Math.min(...pts.map(p => p.y)), y1 = Math.max(...pts.map(p => p.y));
+  if (o.zero) { y0 = Math.min(y0, 0); y1 = Math.max(y1, 0); }
+  if (x0 === x1) { x0 -= 1; x1 += 1; } const pad = (y1 - y0) * 0.08 || 0.1; y0 -= pad; y1 += pad;
+  const L = 46, R = 10, T = 8, B = 22, X = x => L + (x - x0) / (x1 - x0) * (W - L - R), Y = y => T + (1 - (y - y0) / (y1 - y0)) * (H - T - B);
+  g.strokeStyle = css('--line'); g.fillStyle = css('--dim'); g.font = '11px sans-serif'; g.lineWidth = 1;
+  for (let i = 0; i <= 4; i++) { const y = y0 + (y1 - y0) * i / 4; g.beginPath(); g.moveTo(L, Y(y)); g.lineTo(W - R, Y(y)); g.stroke();
+    g.fillText(y.toFixed(Math.abs(y1 - y0) < 0.5 ? 3 : 2), 2, Y(y) + 4); }
+  for (let i = 0; i <= 4; i++) { const x = x0 + (x1 - x0) * i / 4; g.fillText(o.xfmt ? o.xfmt(x) : Math.round(x), X(x) - 10, H - 6); }
+  if (o.zero && y0 < 0 && y1 > 0) { g.strokeStyle = css('--dim'); g.setLineDash([3, 3]); g.beginPath(); g.moveTo(L, Y(0)); g.lineTo(W - R, Y(0)); g.stroke(); g.setLineDash([]); }
+  g.save(); g.beginPath(); g.rect(L, T, W - L - R, H - T - B); g.clip();
+  for (const s of series) {
+    const p = s.points.filter(q => q.y != null && isFinite(q.y)); g.strokeStyle = s.color; g.fillStyle = s.color;
+    if (s.range) for (const q of p) if (q.min != null) { g.globalAlpha = .45; g.beginPath(); g.moveTo(X(q.x), Y(q.min)); g.lineTo(X(q.x), Y(q.max)); g.stroke(); g.globalAlpha = 1; }
+    if (s.err) for (const q of p) if (q.lo != null) { g.lineWidth = 2; g.beginPath(); g.moveTo(X(q.x), Y(q.lo)); g.lineTo(X(q.x), Y(q.hi)); g.stroke();
+      g.beginPath(); g.moveTo(X(q.x) - 4, Y(q.lo)); g.lineTo(X(q.x) + 4, Y(q.lo)); g.moveTo(X(q.x) - 4, Y(q.hi)); g.lineTo(X(q.x) + 4, Y(q.hi)); g.stroke(); }
+    if (!s.dots) { g.lineWidth = s.width || 1.6; g.beginPath(); p.forEach((q, i) => i ? g.lineTo(X(q.x), Y(q.y)) : g.moveTo(X(q.x), Y(q.y))); g.stroke(); }
+    if (s.dots || p.length <= 40) for (const q of p) { g.beginPath(); if (s.square) g.rect(X(q.x) - 3.5, Y(q.y) - 3.5, 7, 7); else g.arc(X(q.x), Y(q.y), s.r || 2.6, 0, 7); g.fill(); }
+  }
+  g.restore();
+}
+const roll = (a, k) => a.map((_, i) => { const s = a.slice(Math.max(0, i - k + 1), i + 1).filter(v => v != null); return s.length ? s.reduce((x, y) => x + y) / s.length : null; });
+const fmt = (v, d = 3, sign = true) => v == null ? '—' : (sign && v > 0 ? '+' : '') + v.toFixed(d);
+const cls = v => v == null ? '' : v > 0 ? 'pos' : v < 0 ? 'neg' : '';
+
+// ---------- training ----------
+function drawTrain() {
+  const st = STATUS; if (!st) return;
+  chart($('#cContrib'), [{color: css('--brain'), err: true, range: true, r: 3.5,
+    points: st.gates.map(g => ({x: g.c, y: g.mean, lo: g.mean - g.se, hi: g.mean + g.se, min: g.min, max: g.max}))}], {zero: true, xfmt: x => 'c' + Math.round(x)});
+  const w = WINDOWS, xs = w.map(r => r.trained / 1000);
+  chart($('#cNll'), [{color: css('--uni'), width: 1.2, points: roll(w.map(r => r.unigram), 8).map((y, i) => ({x: xs[i], y}))},
+                     {color: css('--brain'), points: roll(w.map(r => r.nll), 8).map((y, i) => ({x: xs[i], y}))}], {xfmt: x => x.toFixed(0) + 'k'});
+  chart($('#cDa'), [{color: css('--accent'), points: st.gates.map(g => ({x: g.c, y: g.da}))},
+                    {color: css('--mother'), points: st.gates.map(g => ({x: g.c, y: g.da_next}))},
+                    {color: css('--fly'), points: st.gates.map(g => ({x: g.c, y: g.da_cells}))}], {zero: true, xfmt: x => 'c' + Math.round(x)});
+  chart($('#cFresh'), [{color: css('--brain'), points: st.chunks.map(c => ({x: c.c, y: c.fresh_b}))},
+                       {color: css('--noedge'), dots: true, square: true, points: st.ag.map(a => ({x: a.c + 1, y: a.noedges}))}], {xfmt: x => 'c' + Math.round(x)});
+  $('#gateTable').innerHTML = '<tr><th>门控</th><th>大脑贡献</th><th>± se</th><th>[最小, 中位, 最大]</th><th>大脑 / 去掉 / 词频</th><th>惊讶~DA</th><th>下一个词</th><th>DA 细胞</th><th>锁存</th><th>锁存作用</th></tr>' +
+    st.gates.slice().reverse().map(g => `<tr><td>c${g.c} <span class="note">${g.time}</span></td><td class="${cls(g.mean)}">${fmt(g.mean)}</td><td>${fmt(g.se, 3, false)}</td>
+      <td>[${fmt(g.min, 2)}, ${fmt(g.median, 2)}, ${fmt(g.max, 2)}]</td><td>${g.brain} / ${g.noedges} / ${g.unigram}</td>
+      <td class="${cls(g.da)}">${fmt(g.da)}</td><td class="${cls(g.da_next)}">${fmt(g.da_next)}</td><td class="${cls(g.da_cells)}">${fmt(g.da_cells)}</td>
+      <td>${g.latched}</td><td class="${cls(g.latch_worth)}">${g.latch_worth == null ? '—' : fmt(g.latch_worth) + ' ± ' + g.latch_se}</td></tr>`).join('');
+  $('#events').textContent = st.events.slice().reverse().join('\n');
+}
+
+// ---------- brain ----------
+let rot = {a: 0.6, b: -0.35, z: 1.0}, drag = null, hidden = new Set(), spinOn = true;
+const palette = n => Array.from({length: n}, (_, i) => `hsl(${(i * 137.5) % 360} 55% 60%)`);
+function rateColor(hz) { if (hz == null) return '#3a444b'; const t = Math.max(0, Math.min(1, Math.log10(1 + hz) / 2)); return `hsl(${220 - 200 * t} 70% ${35 + 30 * t}%)`; }
+function classColors() {
+  const pal = palette(BRAIN.classes.length);
+  return BRAIN.classes.map((c, i) => $('#colorMode').value === 'rate' ? rateColor(HEALTH?.classes?.[c]?.mean_hz) : pal[i]);
+}
+function drawBrain() {
+  if (!BRAIN) return; const cv = $('#brain'), dpr = window.devicePixelRatio || 1, W = cv.clientWidth, H = cv.clientHeight;
+  cv.width = W * dpr; cv.height = H * dpr; const g = cv.getContext('2d'); g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, W, H);
+  const ca = Math.cos(rot.a), sa = Math.sin(rot.a), cb = Math.cos(rot.b), sb = Math.sin(rot.b), s = Math.min(W, H) * 0.47 * rot.z;
+  const colors = classColors(), P = BRAIN.points, C = BRAIN.class, order = [];
+  for (let i = 0; i < P.length; i++) { if (hidden.has(C[i])) continue;
+    const [x, y, z] = P[i], x1 = ca * x + sa * z, z1 = -sa * x + ca * z, y1 = cb * -y - sb * z1, z2 = sb * -y + cb * z1;
+    order.push([z2, W / 2 + x1 * s, H / 2 + y1 * s, C[i]]); }
+  order.sort((a, b) => a[0] - b[0]);
+  for (const [z, x, y, c] of order) { g.fillStyle = colors[c]; g.globalAlpha = 0.35 + 0.45 * (z + 1) / 2; g.fillRect(x, y, 1.6, 1.6); }
+  g.globalAlpha = 1;
+}
+function listClasses() {
+  if (!BRAIN) return; const colors = classColors(), counts = {};
+  BRAIN.class.forEach(c => counts[c] = (counts[c] || 0) + 1);
+  $('#classes').innerHTML = BRAIN.classes.map((c, i) => { const hz = HEALTH?.classes?.[c]?.mean_hz;
+    return `<div data-i="${i}" class="${hidden.has(i) ? 'off' : ''}"><b style="background:${colors[i]}"></b><span>${c === 'None' ? '未注释' : c}</span><span>${counts[i] || 0}${hz != null ? ' · ' + hz.toFixed(1) + ' Hz' : ''}</span></div>`; }).join('');
+  $('#classes').querySelectorAll('div').forEach(d => d.onclick = () => { const i = +d.dataset.i; hidden.has(i) ? hidden.delete(i) : hidden.add(i); listClasses(); drawBrain(); });
+  $('#healthFile').textContent = HEALTH?.file ? `放电率来自 ${HEALTH.file}；点击类别切换显示` : '点击类别切换显示';
+  $('#brainSub').textContent = `显示 ${BRAIN.points.length.toLocaleString()} / ${BRAIN.n_total.toLocaleString()} 个细胞；拖动旋转，滚轮缩放`;
+}
+function brainEvents() {
+  const cv = $('#brain');
+  cv.onmousedown = e => { drag = [e.clientX, e.clientY]; cv.style.cursor = 'grabbing'; };
+  window.onmouseup = () => { drag = null; cv.style.cursor = 'grab'; };
+  window.onmousemove = e => { if (!drag) return; rot.a += (e.clientX - drag[0]) * 0.008; rot.b += (e.clientY - drag[1]) * 0.008; drag = [e.clientX, e.clientY]; drawBrain(); };
+  cv.onwheel = e => { e.preventDefault(); rot.z *= e.deltaY < 0 ? 1.1 : 0.9; drawBrain(); };
+  $('#colorMode').onchange = () => { listClasses(); drawBrain(); };
+  $('#spin').onchange = e => spinOn = e.target.checked;
+  $('#mbOnly').onclick = () => { hidden = new Set(BRAIN.classes.map((c, i) => ['Kenyon_Cell', 'MBON', 'DAN', 'ALPN', 'olfactory'].includes(c) ? -1 : i).filter(i => i >= 0)); listClasses(); drawBrain(); };
+  $('#allOn').onclick = () => { hidden = new Set(); listClasses(); drawBrain(); };
+  setInterval(() => { if (spinOn && !drag && $('#t-brain').classList.contains('on')) { rot.a += 0.004; drawBrain(); } }, 50);
+}
+
+// ---------- conversation ----------
+async function drawTalk() {
+  const m = await api(`/api/mother?run=${RUN}`);
+  $('#chat').innerHTML = m.length ? m.map(t => `<div class="msg ${t.who === 'fly' ? 'fly' : 'mother'}"><small>${t.who === 'fly' ? '果蝇' : '妈妈'} · ${t.trained}</small>${t.text.replace(/[<&]/g, c => c === '<' ? '&lt;' : '&amp;')}</div>`).join('')
+    : '<div class="empty">这个个体还没有进入妈妈世界</div>';
+  $('#chat').scrollTop = 1e9;
+  const last = [...WINDOWS].reverse().find(w => w.monitor);
+  const names = {fly_turns: '果蝇话轮数', fly_ttr: '果蝇类型/标记比', fly_repeat_bigrams: '果蝇重复二元组', fly_identical_consecutive_turns: '连续相同话轮',
+                 fly_mean_turn_words: '平均每轮词数', mother_ttr: '妈妈类型/标记比', mother_repeat_bigrams: '妈妈重复二元组'};
+  $('#monitor').innerHTML = last ? Object.entries(last.monitor).map(([k, v]) => `<span>${names[k] || k}</span><span>${v}</span>`).join('') : '<span>—</span><span></span>';
+  chart($('#cFly'), [{color: css('--fly'), points: WINDOWS.filter(w => w.fly_words != null).map(w => ({x: w.trained / 1000, y: w.fly_words}))}], {xfmt: x => x.toFixed(1) + 'k'});
+}
+
+// ---------- acts ----------
+function drawActs() {
+  const a = STATUS?.acts || [];
+  const band = (k, color) => ({color, err: true, points: a.filter(r => r[k]).map(r => ({x: r.c, y: r[k][2], lo: r[k][0], hi: r[k][3]}))});
+  chart($('#cTiming'), [band('timing_value_over_null', css('--accent'))], {zero: true, xfmt: x => 'c' + Math.round(x)});
+  chart($('#cBest'), [band('rho_latency_best_tick_within_k', css('--fly')), band('rho_latency_wait_gain_within_k', css('--mother'))], {zero: true, xfmt: x => 'c' + Math.round(x)});
+  const m = (r, k) => r[k] ? fmt(r[k][2], 3) : '—';
+  $('#actTable').innerHTML = a.length ? '<tr><th>段</th><th>词</th><th>回答率</th><th>延迟</th><th>时机熵</th><th>延迟~难度</th><th>同间隔 ~最佳时刻</th><th>同间隔 ~多等收益</th><th>时机价值 / 零假设</th></tr>' +
+    a.slice().reverse().map(r => `<tr><td>c${r.c}</td><td>${r.words ?? '—'}</td><td>${m(r, 'answered')}</td><td>${m(r, 'latency')}</td><td>${m(r, 'latency_entropy')}</td>
+      <td>${m(r, 'rho_latency_ce')}</td><td>${m(r, 'rho_latency_best_tick_within_k')}</td><td>${m(r, 'rho_latency_wait_gain_within_k')}</td><td>${m(r, 'timing_value_over_null')}</td></tr>`).join('')
+    : '<tr><td class="empty">这个个体没有动作（选 d4_acts 查看）</td></tr>';
+}
+
+// ---------- config ----------
+async function loadCfg() { $('#cfgText').value = JSON.stringify(await api('/api/config'), null, 2); }
+$('#cfgSave').onclick = async () => {
+  try { JSON.parse($('#cfgText').value); } catch (e) { $('#cfgNote').textContent = 'JSON 有误：' + e.message; return; }
+  const r = await fetch('/api/config', {method: 'POST', body: $('#cfgText').value}); const j = await r.json();
+  $('#cfgNote').textContent = j.error ? '保存失败：' + j.error : '已保存 ' + new Date().toLocaleTimeString();
+};
+
+// ---------- wiring ----------
+document.querySelectorAll('#tabs button').forEach(b => b.onclick = () => {
+  document.querySelectorAll('#tabs button').forEach(x => x.classList.toggle('on', x === b));
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('on', t.id === 't-' + b.dataset.t));
+  refreshVisible();
+});
+function refreshVisible() {
+  if ($('#t-train').classList.contains('on')) drawTrain();
+  if ($('#t-brain').classList.contains('on')) { listClasses(); drawBrain(); }
+  if ($('#t-talk').classList.contains('on')) drawTalk();
+  if ($('#t-acts').classList.contains('on')) drawActs();
+}
+async function refresh() {
+  if (!RUN) return;
+  [STATUS, WINDOWS, HEALTH] = await Promise.all([api(`/api/status?run=${RUN}`), api(`/api/windows?run=${RUN}&last=600`), api(`/api/health?run=${RUN}`)]);
+  const lastGate = STATUS.gates.at(-1), lastChunk = STATUS.chunks.at(-1);
+  $('#meta').textContent = `${RUN} · ${lastChunk ? '第 ' + lastChunk.c + ' 段 ' + lastChunk.time : '—'} · ${lastGate ? '大脑贡献 ' + fmt(lastGate.mean) + ' ± ' + lastGate.se : ''} · 刷新于 ${new Date().toLocaleTimeString()}`;
+  refreshVisible();
+}
+(async () => {
+  const runs = await api('/api/runs');
+  $('#run').innerHTML = runs.map(r => `<option>${r.name}</option>`).join('');
+  RUN = (runs.find(r => r.name === 'm_main') || runs[0] || {}).name; $('#run').value = RUN;
+  $('#run').onchange = () => { RUN = $('#run').value; refresh(); };
+  brainEvents(); loadCfg(); await refresh();
+  api('/api/brain').then(b => { BRAIN = b; if ($('#t-brain').classList.contains('on')) { listClasses(); drawBrain(); } });
+  setInterval(refresh, 30000);
+  window.onresize = refreshVisible;
+})();
+</script>
+</body>
+</html>
