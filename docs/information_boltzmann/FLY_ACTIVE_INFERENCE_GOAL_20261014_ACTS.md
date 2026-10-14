@@ -1305,3 +1305,43 @@ and the per-1,024-word median is still about −0.01, so it has to repeat before
 
 **Adopted.** m_main is paused at c12 as the testbed. Mengli's lineage starts once the snapshot on the rule's c12 is
 done (`finish_compartment_check.sh`).
+
+## 2026-10-15 00:45 — Mengli: the mother's voice and the child's end of turn (from chunk 3)
+
+**Why Mengli spoke so little.** In chunks 1–2 her turns averaged 1.6–1.8 words:
+- 13 of 33 turns ended at her own '.', '?' or '!';
+- 20 of 33 ended when she yielded.
+
+A sentence end took the floor away from her, and she babbles these marks often.
+
+**Change 1: the child's end of turn** (`raising.json` `mother.child_end_of_turn = ["\n", "\n\n"]`). Her turn now ends:
+- when she yields (her own act);
+- at a line break;
+- at 16 words (`max_fly_words`, the cap against endless talk).
+
+For an LLM, learning when to stop is hard. For her, stopping is already an act: a yield is the muscles not committing.
+
+**Change 2: the mother's voice** (`--mother-voice`, `attach_mother_voice`). Nothing in her senses said whose word it was:
+- her own words are heard next (self-hearing);
+- they arrive through the same embedding as the mother's words.
+
+The fly hears through Johnston's organ: JO-A and JO-B follow sound and near-field vibration such as courtship song. While a word of the mother's is the input on the senses, these 138 cells receive a steady current of 1.5 × their rheobase. Her own words carry no such current.
+
+The voice is the same in all three passes:
+- the live pass (`live_window`);
+- the training pass (`forward_window`, `voices` from `forced['speakers']`);
+- the epistemic replay (`replay_ce`, the record's `voices`).
+
+The first input of a window takes the voice of the previous window's last word (`learner.last_voice`, kept in `mother_state.json`).
+
+**Biology.**
+- *Babies* hear their own voice mostly through bone conduction, with a different timbre. Their auditory cortex is damped while they speak (speech-induced suppression, via an efference copy of the motor command). The mother's voice arrives through the air, from a place, in her own timbre.
+- *Insects* rely on corollary discharge. The cricket's CDI interneuron inhibits the auditory pathway on every chirp. Flies send efference copies to their visual neurons during voluntary turns.
+
+Here the self side already exists, as her own act: commit/yield is in the brain and self-hearing CE is on. The voice adds the other side: the mother's sound marked in the senses.
+
+**Watch** (status line every chunk, (2) every 5):
+- mean turn words and silent turns;
+- end reasons (end_word against end_yield and end_breath);
+- the epistemic returns;
+- whether familiarity (MBON) separates the mother's words from her own.

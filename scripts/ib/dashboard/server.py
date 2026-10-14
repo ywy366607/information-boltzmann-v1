@@ -41,7 +41,10 @@ NUM = r'([-+]?\d*\.?\d+(?:e[-+]?\d+)?)'
 GATE = re.compile(r'^(\d\d:\d\d) gate c(\d+) \(living\): \(1\) brain contribution ' + NUM + r' \+- ' + NUM
                   + r' \[min ' + NUM + r' med ' + NUM + r' max ' + NUM + r'\].*?\(brain ([\d.]+), noedges ([\d.]+), unigram ([\d.]+)'
                   + r'.*?\(2\) surprise~phasic DA (\S+) next (\S+) DA cells (\S+).*?\(L\) latched (\d+), worth (.*)$')
-CHUNK = re.compile(r'^(\d\d:\d\d) (?:born: )?chunk (\d+) done: \[ACTIVE EVAL (\d+)\] fresh B NLL=([\d.]+); A revisit=([\d.]+)')
+# the mainline chains: 'HH:MM chunk N done: [ACTIVE EVAL words] fresh B ...'; Mengli's lineage: 'MM-DD HH:MM chunk N done:
+# fresh B ...; epistemic {...}; monitor {...}'
+CHUNK = re.compile(r'^(?:\d\d-\d\d )?(\d\d:\d\d) (?:born: )?chunk (\d+) done: (?:\[ACTIVE EVAL (\d+)\] )?'
+                   r'fresh B NLL=([\d.]+); A revisit=([\d.]+)(?:; epistemic (\{.*?\}))?(?:; monitor (\{.*\}))?')
 AG = re.compile(r'^(\d\d:\d\d) gate c(\d+) AG: brain fresh B NLL=([\d.]+);.*?noedges fresh B NLL=([\d.]+)')
 ACTS = re.compile(r'^(\d\d:\d\d) gate c(\d+) acts \(living\): (\{.*\})$')
 # what reading is worth (blind arm - brain, living): the chain's '(1b) reading ...' and the one-off reports
@@ -67,7 +70,8 @@ def runs():
         files = [f for f in files if f.exists()]
         if files:
             out.append({'name': d.name, 'mtime': max(f.stat().st_mtime for f in files),
-                        'mother': (d / 'mother.jsonl').exists(), 'acts': (d / 'ai_trace.jsonl').exists()})
+                        'mother': (d / 'mother.jsonl').exists(), 'acts': (d / 'ai_trace.jsonl').exists(),
+                        'lineage': (d / 'status').exists()})      # a chain keeps a status; one-off tests do not
     return sorted(out, key=lambda r: -r['mtime'])
 
 
@@ -108,8 +112,16 @@ def parse_status(run):
                                  'latch_worth': _f(worth.group(1)) if worth else None,
                                  'latch_se': _f(worth.group(2)) if worth else None})
         elif m := CHUNK.match(line):
-            rep['chunks'].append({'time': m.group(1), 'c': int(m.group(2)), 'words': int(m.group(3)),
-                                  'fresh_b': _f(m.group(4)), 'revisit': _f(m.group(5))})
+            row = {'time': m.group(1), 'c': int(m.group(2)), 'words': int(m.group(3)) if m.group(3) else None,
+                   'fresh_b': _f(m.group(4)), 'revisit': _f(m.group(5))}
+            try:
+                import ast
+                row['epistemic'] = ast.literal_eval(m.group(6)) if m.group(6) else None
+                row['monitor'] = json.loads(m.group(7)) if m.group(7) else None
+            except (ValueError, SyntaxError, json.JSONDecodeError):
+                pass
+            rep['chunks'].append(row)
+            rep['events'].append(line)
         elif m := AG.match(line):
             rep['ag'].append({'time': m.group(1), 'c': int(m.group(2)), 'brain': _f(m.group(3)), 'noedges': _f(m.group(4))})
         elif m := ACTS.match(line):

@@ -35,7 +35,7 @@ from information_boltzmann.core.fly_bptt_learning import (WRITER_SENSE, attach_i
     ONLINE_DA_PARAMETER_NAMES, attach_online_da_plasticity, attach_kenyon_dendritic_only, attach_homeostasis,
     attach_regime_homeostasis, attach_tied_writer, REGIME_KENYON_Z,
     attach_compartment_memory, attach_taste_heads, COMPARTMENT_PARAMETER_NAMES, TASTE_PARAMETER_NAMES,
-    attach_stream_jepa, STREAM_JEPA_PARAMETER_NAMES, attach_apl_kenyon_dendritic_only, attach_compartment_dendritic,
+    attach_stream_jepa, STREAM_JEPA_PARAMETER_NAMES, attach_mother_voice, attach_apl_kenyon_dendritic_only, attach_compartment_dendritic,
     renormalize_kenyon_inputs, pin_kenyon_to_dopamine, pin_sensory_terminals, pin_modulatory_fast_edges,
     reset_inputs_to_birth, attach_graded_cells, GRADED_PARAMETER_NAMES, attach_receptor_writer,
 )
@@ -274,6 +274,10 @@ def resolve_learning_modes(args, previous_config, previous_learner):
         args.compartment_memory = bool(previous_config.get('compartment_memory', False))
     if getattr(args, 'compartment_adapted', None) is None:
         args.compartment_adapted = bool(previous_config.get('compartment_adapted', False))
+    if getattr(args, 'mother_voice', None) is None:
+        args.mother_voice = bool(previous_config.get('mother_voice', False))
+    if getattr(args, 'mother_voice_level', None) is None:
+        args.mother_voice_level = float(previous_config.get('mother_voice_level') or 1.5)
     if getattr(args, 'stream_jepa', None) is None:
         args.stream_jepa = bool(previous_config.get('stream_jepa', False))
     if getattr(args, 'stream_jepa_weight', None) is None:
@@ -573,6 +577,11 @@ def main():
     parser.add_argument('--apl-kc-dendritic-only', action=argparse.BooleanOptionalAction, default=None,
                         help='APL -> Kenyon inhibition on the soma only for its calyx synapses (84.5%% are axonal): '
                              'weights scaled once by the calyx share, axonal-only edges pinned at 0 (omitted = inherit)')
+    parser.add_argument('--mother-voice', action=argparse.BooleanOptionalAction, default=None,
+                        help='The mother’s voice: while her word is on the senses, Johnston’s organ '
+                             '(JO-A / JO-B) carries a steady current, her own words do not (omitted = inherit, else off)')
+    parser.add_argument('--mother-voice-level', type=float, default=None,
+                        help='The voice current in rheobase units (omitted = inherit, else 1.5)')
     parser.add_argument('--stream-jepa', action=argparse.BooleanOptionalAction, default=None,
                         help='JEPA term in the paced stream: the read after word t-1 predicts the Kenyon '
                              'representation (LeJEPA: no stop-gradient, SIGReg) (omitted = inherit, else off)')
@@ -2188,8 +2197,11 @@ def main():
         if saved_talk:
             # a continuing lineage: no new greeting -- the conversation goes on, the mother calls her by name
             opening = f"{family.get('child', {}).get('name', 'little one')}?"
+        # the child's turn ends at a line break or when she yields (her act), or at max_fly_words; by default a
+        # sentence end ends it too
+        child_end = tuple(raising.get('child_end_of_turn') or ('\n', '.', '?', '!'))
         mother_world = MotherWorld(mother, tiktoken.get_encoding('gpt2'), max_fly_words=args.mother_max_fly_words,
-                                   opening=opening,
+                                   opening=opening, end_of_turn=child_end,
                                    history_turns=int(raising.get('history_turns', 20)),
                                    ticks_per_beat=ticks_per_beat,
                                    pause_beats_before_reply=pause_beats,
@@ -2203,6 +2215,13 @@ def main():
             mother_world.silent_beats = int(saved_talk.get('silent_beats', 0))
             print(f'Mother world: the conversation continues ({len(saved_talk["transcript"])} lines restored, '
                   f'from {saved_talk.get("trained")} words)', flush=True)
+        learner.last_voice = bool((saved_talk or {}).get('last_voice', False))
+        if args.mother_voice:
+            args.mother_voice_level = float(args.mother_voice_level or 1.5)
+            n_voice = attach_mother_voice(model, args.graph, args.graph.parent / 'body-annotations.feather',
+                                          level=float(args.mother_voice_level or 1.5))
+            print(f'Mother’s voice on {n_voice} Johnston’s organ cells (JO-A/B), {args.mother_voice_level} x rheobase', flush=True)
+        print(f'Child end of turn: {child_end!r}, or a yield, or {args.mother_max_fly_words} words', flush=True)
         mother_rng = np.random.default_rng(int(trained) + 104729)
         print(f'Mother world ({args.mother_world}): turn-taking, self-hearing, beats ({ticks_per_beat} ticks/beat), '
               f'pause {pause_beats} beat(s), silent call threshold {silent_thresh}, fly T={args.mother_temperature}',
@@ -2250,6 +2269,9 @@ def main():
                     'trained': int(trained), 'transcript': [list(x) for x in mother_world.transcript[cut:]],
                     'history_anchor': max(0, int(getattr(mother_world, 'history_anchor', 0)) - cut),
                     'silent_beats': int(getattr(mother_world, 'silent_beats', 0)),
+                    # whose voice the last word of this window was (the next window's first input; observe() has
+                    # not run yet, so learner.last_voice is still this window's start)
+                    'last_voice': (speakers[-1] == 'mother' if speakers else bool(getattr(learner, 'last_voice', False))),
                     'fly_silent_turns': int(mother_world.stats.get('fly_silent_turns', 0))})
                 try:
                     mon_tmp = Path('data/harness/monitor.tmp')

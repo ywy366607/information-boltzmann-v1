@@ -672,7 +672,7 @@ class MotherWorld:
                    if (u := getattr(self.mother, 'usage', None)) else {})}
 
 
-def replay_ce(learner, state0, previous_token, targets, intervals):
+def replay_ce(learner, state0, previous_token, targets, intervals, voices=None):
     """Per-word CE of a window's targets, relived (no gradient) from its starting state with the CURRENT weights: the
     same intervals and segments as the training pass, eyes as the learner has them (open when forced).  After the
     update this is CE_after; the training pass's scores are CE_before."""
@@ -691,14 +691,15 @@ def replay_ce(learner, state0, previous_token, targets, intervals):
         if getattr(m, 'dopamine_sensitivity', None) is not None:
             opts['dopamine_s_class'] = fl.dopamine_class_sensitivity(m, s.h)
         token = int(previous_token)
-        for target, k in zip(targets, intervals):
+        for j, (target, k) in enumerate(zip(targets, intervals)):
             done, latent = 0, None
+            voice = bool(voices[j]) if voices is not None else False     # the mother's voice, as in the training pass
             while done < k:
                 ticks = min(seg - done % seg, k - done)
                 s, latent = fl.advance_fly_token_stream(
                     m, s, torch.tensor([token], device=s.h.device), [ticks], ticks=ticks,
                     hold_input=learner.hold_input, read_after=learner.read_lag or None,
-                    writer_baseline_clock=learner.writer_baseline_clock, fresh=done == 0, **opts)[:2]
+                    writer_baseline_clock=learner.writer_baseline_clock, fresh=done == 0, voice=voice, **opts)[:2]
                 done += ticks
             logits = m.decoder(m.read_norm(latent)).float()
             out.append(float(F.cross_entropy(logits, torch.tensor([int(target)], device=logits.device))))
@@ -718,7 +719,7 @@ def epistemic_credit(learner, state0, previous_token, targets, horizon_ticks=64,
     if rec is None:
         return {}
     learner.speak_record = None
-    after = replay_ce(learner, state0, previous_token, targets, rec['intervals'])
+    after = replay_ce(learner, state0, previous_token, targets, rec['intervals'], rec.get('voices'))
     before = rec['ce_before'].tolist()
     ig = [(b - a) if who == 'mother' else 0.0 for b, a, who in zip(before, after, rec['speakers'])]
     arrival = np.cumsum(rec['intervals'])                     # the tick at which word j arrives (end of its interval)
@@ -806,6 +807,8 @@ def live_window(learner, world, n, rng, pace_min, pace_mean, temperature=1.0, ti
         targets, intervals, speakers, decisions = [], [], [], []
         tpb = int(getattr(world, 'ticks_per_beat', 8))
         pause = int(getattr(world, 'pause_beats_before_reply', 1)) * tpb
+        # whose voice is on the senses: the mother's words carry it (Johnston's organ, fly_bptt_learning.attach_mother_voice)
+        voice = bool(getattr(learner, 'last_voice', False))
 
         def advance(k, start=0):
             # ticks start .. start + k - 1 of the word's interval, in the training pass's segments (same packets)
@@ -818,7 +821,7 @@ def live_window(learner, world, n, rng, pace_min, pace_mean, temperature=1.0, ti
                 out = fl.advance_fly_token_stream(
                     m, s, torch.tensor([token], device=s.h.device), [ticks], ticks=ticks,
                     hold_input=learner.hold_input, read_after=learner.read_lag or None,
-                    writer_baseline_clock=learner.writer_baseline_clock, fresh=done == 0,
+                    writer_baseline_clock=learner.writer_baseline_clock, fresh=done == 0, voice=voice,
                     **extra_kw, **opts)
                 s, latent = out[0], out[1]
                 if acts:
@@ -885,8 +888,9 @@ def live_window(learner, world, n, rng, pace_min, pace_mean, temperature=1.0, ti
                 world.speak(word)
             targets.append(int(word)); intervals.append(k); speakers.append(who)
             token = int(word)
+            voice = who == 'mother'
             tick0 += k
-    forced = {'pace': pace, 'intervals': intervals}
+    forced = {'pace': pace, 'intervals': intervals, 'speakers': list(speakers)}
     if acts:
-        forced.update(decisions=decisions, speakers=list(speakers))
+        forced.update(decisions=decisions)
     return targets, forced, speakers

@@ -372,8 +372,10 @@ async function refresh() {
 }
 (async () => {
   const runs = await api('/api/runs');
-  $('#run').innerHTML = runs.map(r => `<option>${r.name}</option>`).join('');
-  RUN = (runs.find(r => r.name === 'm_main') || runs[0] || {}).name; $('#run').value = RUN;
+  // this round = the lineage (a run with a status) updated most recently; the page opens on it
+  const current = (runs.find(r => r.lineage) || runs[0] || {}).name;
+  $('#run').innerHTML = runs.map(r => `<option value="${r.name}">${r.name}${r.name === current ? '（本轮）' : ''}</option>`).join('');
+  RUN = current; $('#run').value = RUN;
   $('#run').onchange = () => { RUN = $('#run').value; refresh(); };
   brainEvents(); loadCfg(); await refresh();
   api('/api/brain').then(b => { BRAIN = b; if ($('#t-brain').classList.contains('on')) { listClasses(); drawBrain(); } });

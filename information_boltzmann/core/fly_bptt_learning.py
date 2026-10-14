@@ -1880,6 +1880,34 @@ def read_fly_motor(model, state):
 STEP_GRAD_CLIP = float(os.environ.get('FLY_STEP_GRAD_CLIP', '1000'))
 
 
+def attach_mother_voice(model, graph_npz, annotations, level=1.5, types=('JO-A', 'JO-B')):
+    """Whose voice is it (user, 2026-10-15: like an identity code)?  The fly hears through Johnston's organ: the JO-A /
+    JO-B neurons follow sound and near-field vibration (courtship song).  While a word of the mother's is on the
+    senses, these cells receive a steady current of `level` x their rheobase; her own words do not carry it (she
+    knows them as her own from the act that made them).  Returns the number of voice cells."""
+    import pandas as pd
+    graph = np.load(graph_npz, allow_pickle=True)
+    typ = pd.read_feather(annotations).set_index('bodyId').reindex(graph['neuron_body_ids'])['type'].astype(str)
+    cells = np.flatnonzero(typ.str.match('^(' + '|'.join(types) + ')').values)
+    model.register_buffer('voice_cells', torch.as_tensor(cells, device=model.edge_pre_e.device, dtype=torch.long),
+                          persistent=False)
+    model.voice_level = float(level)
+    return int(cells.size)
+
+
+def mother_voice_drive(model, like):
+    """The voice current [1, n]: level x rheobase on the voice cells (detached: the voice is the world's)."""
+    cells = getattr(model, 'voice_cells', None)
+    if cells is None:
+        return None
+    with torch.no_grad():
+        rates = model.get_decay_rates()[0].expand_as(like)
+        rheo = model.get_thresholds().expand_as(like) * -torch.log(rates.clamp(1e-5, 1 - 1e-7))
+        drive = torch.zeros_like(like)
+        drive[:, cells] = model.voice_level * rheo[:, cells]
+    return drive
+
+
 def clip_state_gradients(model, state, cap=None):
     """Per-tick clipping of the error flowing back through the physical state (2026-10-14).  A window's backward through
     256 ticks can grow past float range in a recurrent loop with gain > 1 (latched cells, the Kenyon -> MBON -> dopamine
@@ -1916,7 +1944,7 @@ def _advance_fly_token_stream(model, state, token, schedule_box=None, *, ticks, 
                               conductance_gains=None, alif_params=None, stp_params=None, h_mean_decay=0.99,
                               read_every=False, world=None, world_tape=None, act_g=None, fresh=True, ai_g_tape=None,
                               ai_g=None, ai_tape=None, eye_forced=None, eye_binary=False, eye_tape=None,
-                              eye_sample=False, sense_noise=None, dopamine_s_class=None):
+                              eye_sample=False, sense_noise=None, dopamine_s_class=None, voice=False):
     """Streaming clock: every token occupies exactly `ticks` physical ticks, whatever the brain is doing, and the
     prediction of the next token is read just before it arrives.  Nothing waits for the brain to settle, so the
     processing of a token continues while the next ones are being sensed (latency and throughput decouple).
@@ -1969,12 +1997,17 @@ def _advance_fly_token_stream(model, state, token, schedule_box=None, *, ticks, 
     if ai_g is not None:
         from .fly_active_inference import ai_eye, ai_step
         ai_replay = len(ai_tape) > 0
+    voice_drive = mother_voice_drive(model, current.h) if voice else None
     for tick in range(ticks):
         if read_after is not None and tick == read_after:
             latent = read_fly_motor(model, current)
         if world is not None:
             spec, record = world_tape[tick][:2] if replay else world.drive()
             model.external_drive = dense(spec, model.n_neurons, current.h.device)
+        if voice_drive is not None:
+            # the mother's voice on Johnston's organ (added to any world drive of this tick)
+            prev = getattr(model, 'external_drive', None)
+            model.external_drive = voice_drive if prev is None else prev + voice_drive
         writes = (tick == 0 and fresh) or (hold_input and writer is not None)
         if ai_g is not None:
             if eye_binary:
@@ -2008,6 +2041,8 @@ def _advance_fly_token_stream(model, state, token, schedule_box=None, *, ticks, 
                         if writer_baseline_clock == 'physical' and writer is not None else current.baseline)
             current = step_fly_physical_tick(model, current, None, quiet_source, baseline, options,
                                              h_mean_decay=h_mean_decay, base_rates=base_rates)
+        if voice_drive is not None:
+            model.external_drive = None
         clip_state_gradients(model, current)
         if world is not None:
             model.external_drive = None
@@ -2621,9 +2656,15 @@ class FlyBPTTLearner:
             # an interactive world (fly_mother_world) lived this window first, without gradient: its pace and its words'
             # intervals are given, so this pass relives exactly what happened (consumed here, once)
             forced = getattr(self, 'forced_world', None)
-            forced_k, forced_speak, g_tape = None, None, None
+            forced_k, forced_speak, g_tape, voices = None, None, None, None
             if forced is not None and pace > 0:
                 pace, forced_k = float(forced['pace']), list(forced['intervals'])
+                if forced.get('speakers') is not None and getattr(m, 'voice_cells', None) is not None:
+                    # the mother's voice on the senses while her word is the input (the same as the live pass): the
+                    # first input is the previous window's last word
+                    sp = list(forced['speakers'])
+                    voices = [bool(getattr(self, 'last_voice', False))] + [w == 'mother' for w in sp[:-1]]
+                    self.last_voice = sp[-1] == 'mother' if sp else bool(getattr(self, 'last_voice', False))
                 if forced.get('decisions') is not None:
                     # v2: the fly's turn-taking decisions in the live pass, credited below (speaking_value)
                     forced_speak = (list(forced['decisions']), forced.get('speakers'))
@@ -2657,7 +2698,9 @@ class FlyBPTTLearner:
                 if getattr(self, 'act_g', None) is None:
                     self.act_g = state.h.new_zeros(1, 2)
                 act_g = self.act_g
-            for token in input_ids.unbind(1):
+            for word_j, token in enumerate(input_ids.unbind(1)):
+                if voices is not None:
+                    stream['voice'] = voices[word_j]
                 # the world's pace: a fixed clock, or (pace > 0) a memoryless interval k >= 1 with mean `pace` drawn per
                 # word, so that elapsed time tells nothing about when the next word comes; the read is the expectation
                 # standing just before the next word arrives
@@ -2830,7 +2873,7 @@ class FlyBPTTLearner:
                         from .fly_active_inference import delayed_speaking_value
                         T_all = sum(intervals)
                         self.speak_record = {'g': torch.cat(g_tape[:T_all], 0), 'decisions': forced_speak[0],
-                                             'speakers': forced_speak[1], 'intervals': list(intervals),
+                                             'speakers': forced_speak[1], 'intervals': list(intervals), 'voices': voices,
                                              'ce_before': scores.detach().float().cpu()}
                         J_out = hz.new_zeros(())
                         pending = getattr(self, 'pending_speak_credit', None)
