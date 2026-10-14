@@ -973,3 +973,24 @@ which needs a semantic Kenyon code (P3 failed: none beyond the senses).
 
 **Next: change 2, the JEPA term, on the unchanged mainline** (design above). It is the precondition change 1 lacks.
 Change 1 is retested on top once P3's partial rho is above 0.05.
+
+### Change 2 built: `--stream-jepa` (default off, reviewed)
+
+**Implementation.**
+- Per word, the Kenyon membranes at the end of its ticks (the integrated context code) go through `jepa_proj` to give
+  z_t ∈ R^32.
+- `jepa_pred` maps the read after word t−1 to the prediction ẑ_t.
+- Loss: 0.95 · mean (ẑ − z)² + 0.05 · N · SIGReg(z), pooled with the last 3 windows' detached z. No stop-gradient,
+  no EMA. Weight 0.5 in the total loss.
+- Logged: `jepa_pred`, `jepa_sigreg`, `jepa_pred_over_mean_pattern`, `jepa_z_std` (about 1 when healthy, falling
+  toward 0 at collapse).
+
+**Review fixes:**
+1. The new parameters had to be allowed to start fresh Adam moments at a resume; without that, the resume crashed.
+2. SIGReg is multiplied by the sample count, as in LeJEPA. Unscaled, it is about 0.01 for a Gaussian and at most 0.2
+   at full collapse, so z could shrink to a constant for free. Scaled, it is 0.5 for a Gaussian and 26 at collapse.
+3. A weight of 0 is no longer turned into 0.5.
+
+**A/B** (`jepa_ab.sh`), mechanism test:
+- control = m_main's chunk 11 from c10; treatment = chunk 11 from c10 with `--stream-jepa`, on the same words;
+- then P2 and P3 on both c11s.

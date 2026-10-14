@@ -1090,6 +1090,26 @@ def attach_compartment_memory(model, graph_npz, annotations, eta=-0.02, tau_trac
 
 
 COMPARTMENT_PARAMETER_NAMES = ('comp_weight', 'comp_eta', 'comp_logit_trace', 'comp_logit_forget')
+STREAM_JEPA_PARAMETER_NAMES = ('jepa_proj.weight', 'jepa_pred.weight', 'jepa_pred.bias')
+
+
+def attach_stream_jepa(model, graph_npz, annotations, dim=32):
+    """Representation prediction for the paced stream (design: FLY_ACTIVE_INFERENCE_GOAL_20261014_ACTS.md, 'the JEPA
+    term').  Each word's Kenyon membranes at the end of its ticks (the integrated ~3-word context code) are projected
+    to z_t in R^dim (jepa_proj, learned); the brain's read at the end of word t-1 predicts it (jepa_pred, learned).
+    The loss (LeJEPA: no stop-gradient, no EMA) is (1 - lam) ||pred - z||^2 + lam SIGReg(z), so the brain learns to
+    predict its own next Kenyon representation and the Kenyon code learns to be predictable, SIGReg keeping z from
+    collapsing.  Returns the number of Kenyon cells."""
+    import pandas as pd
+    graph = np.load(graph_npz, allow_pickle=True)
+    cls = pd.read_feather(annotations).set_index('bodyId').reindex(graph['neuron_body_ids'])['class'].astype(str).values
+    device = model.edge_pre_e.device
+    kc = torch.as_tensor(np.flatnonzero(cls == 'Kenyon_Cell'), device=device, dtype=torch.long)
+    model.register_buffer('jepa_kc', kc, persistent=False)
+    model.jepa_proj = nn.Linear(int(kc.numel()), int(dim), bias=False).to(device)
+    nn.init.normal_(model.jepa_proj.weight, std=1.0 / math.sqrt(kc.numel()))
+    model.jepa_pred = nn.Linear(int(model.output_read.out_features), int(dim)).to(device)
+    return int(kc.numel())
 TASTE_PARAMETER_NAMES = ('taste_gain', 'taste_bias')
 TASTE_YES, TASTE_NO = 3763, 645            # GPT-2 " yes", " no"
 
@@ -2281,7 +2301,8 @@ class FlyBPTTLearner:
                        | set(PREDICTIVE_PARAMETER_NAMES) | set(DOPAMINE_PARAMETER_NAMES) | set(ONLINE_DA_PARAMETER_NAMES)
                        | set(COMPARTMENT_PARAMETER_NAMES) | set(TASTE_PARAMETER_NAMES)
                        | {'act_w', 'act_b', 'act_logit_leak', 'ai_w', 'ai_b', 'ai_logit_leak'}
-                       | {'log_kc_release'})                    # the Kenyon terminal release, switched on at a resume
+                       | {'log_kc_release'}                     # the Kenyon terminal release, switched on at a resume
+                       | set(STREAM_JEPA_PARAMETER_NAMES))      # the stream JEPA term, switched on at a resume
         if getattr(self.model, 'latent_predictor', None) is not None:
             allowed_new.update(f'latent_predictor.{n}' for n, _ in self.model.latent_predictor.named_parameters())
         if getattr(self.model, 'graph_observer', None) is not None:
@@ -2460,6 +2481,8 @@ class FlyBPTTLearner:
                 self.forced_world = None
             total_ticks = 0
             reads, intervals = [], []
+            jepa_kc = ([] if getattr(m, 'jepa_proj', None) is not None and m.training and torch.is_grad_enabled()
+                       else None)
             word_da = [] if getattr(self, 'record_word_da', False) else None
             if pace > 0:
                 stream['read_every'] = True
@@ -2540,6 +2563,8 @@ class FlyBPTTLearner:
                 if pace > 0:
                     intervals.append(k)
                 latents.append(token_lat)
+                if jepa_kc is not None:
+                    jepa_kc.append(state.h.index_select(1, m.jepa_kc))   # the word's integrated Kenyon membranes
                 if word_da is not None:
                     # the living causal gate (2): each word's phasic dopamine (fast - slow) / slow at the end of its
                     # ticks and the dopamine cells' firing over the spike ring -- kept on the device, one copy per window
@@ -2774,6 +2799,29 @@ class FlyBPTTLearner:
             self.last_ctm_metrics = {}
             self.last_jepa_loss = None
             self.last_jepa_metrics = {}
+            if jepa_kc is not None and len(jepa_kc) >= 2:
+                # the JEPA term (attach_stream_jepa): the read after word t-1 predicts word t's Kenyon representation;
+                # SIGReg pools this window's z with the last 3 windows' (detached: the only stop-gradient here)
+                lam_s = float(getattr(self, 'stream_jepa_sigreg', 0.05))
+                z = m.jepa_proj(torch.cat(jepa_kc, 0).float())
+                z_hat = m.jepa_pred(features[:-1].float())
+                pred = (z_hat - z[1:]).pow(2).mean()
+                pool = getattr(self, 'jepa_pool', None) or []
+                if getattr(self, 'jepa_sigreg', None) is None:
+                    from .sigreg import SIGReg
+                    self.jepa_sigreg = SIGReg(dim=z.shape[1]).to(z.device)
+                zs = torch.cat([z] + pool, 0)
+                # the Epps-Pulley statistic times the sample count, as in LeJEPA (unscaled it is ~0.01 for a Gaussian
+                # and at most ~0.2 at full collapse, too weak to stop z from shrinking toward a constant)
+                sig = self.jepa_sigreg(zs) * zs.shape[0]
+                self.jepa_pool = (pool + [z.detach()])[-3:]
+                self.last_jepa_loss = (1.0 - lam_s) * pred + lam_s * sig
+                self.last_jepa_coef = float(getattr(self, 'stream_jepa_weight', 0.5))
+                with torch.no_grad():
+                    base = (z[1:] - z[1:].mean(0, keepdim=True)).pow(2).mean()
+                self.last_jepa_metrics = {'jepa_pred': float(pred.detach()), 'jepa_sigreg': float(sig.detach()),
+                                          'jepa_pred_over_mean_pattern': float(pred.detach() / base.clamp_min(1e-12)),
+                                          'jepa_z_std': float(z.detach().std(0).mean())}      # ~1 healthy, -> 0 collapse
             return scores, state, features
 
         if self.adaptive_admission:
@@ -3045,7 +3093,9 @@ class FlyBPTTLearner:
         if getattr(self, 'last_act_loss', None) is not None:
             loss = loss + self.last_act_loss
         if getattr(self, 'last_jepa_loss', None) is not None:
-            loss = loss + self.lambda_jepa * self.last_jepa_loss
+            coef = getattr(self, 'last_jepa_coef', None)          # the stream JEPA term carries its own weight
+            loss = loss + (self.lambda_jepa if coef is None else coef) * self.last_jepa_loss
+            self.last_jepa_coef = None
         if getattr(self, 'lambda_mcr2', 0.0) > 0.0 and self.mcr2_criterion is not None and features is not None and features.size(0) >= 2:
             mcr2_out = self.mcr2_criterion(features)
             self.last_mcr2_loss = mcr2_out['loss']
@@ -3119,6 +3169,8 @@ class FlyBPTTLearner:
                 max(1, sum(p.numel() for p in obs_params))**.5)
             if getattr(self, 'last_jepa_metrics', None):
                 group_norms.update(self.last_jepa_metrics)
+        if getattr(self.model, 'jepa_proj', None) is not None and getattr(self, 'last_jepa_metrics', None):
+            group_norms.update(self.last_jepa_metrics)
         skipped = False
         try:
             grad_norm = stable_clip_grad_norm_(self.trainable, self.max_grad_norm,

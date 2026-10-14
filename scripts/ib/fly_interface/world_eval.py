@@ -74,7 +74,7 @@ def load(fork):
     from information_boltzmann.core import fly_odour_world as ow
     act = ow.ACT_PARAMETER_NAMES + ('act_mu', 'act_sigma', 'act_w_scale') + ow.SENSE_PARAMETER_NAMES
     from information_boltzmann.core import fly_active_inference as fai
-    late = fl.COMPARTMENT_PARAMETER_NAMES + fl.TASTE_PARAMETER_NAMES + act + fai.AI_STATE_NAMES
+    late = fl.COMPARTMENT_PARAMETER_NAMES + fl.TASTE_PARAMETER_NAMES + act + fai.AI_STATE_NAMES + fl.STREAM_JEPA_PARAMETER_NAMES
     if cfg.get('input_gain_size_exponent') is not None:
         fl.attach_input_gain(model)
     if cfg.get('kc_dan_release'):
@@ -97,6 +97,9 @@ def load(fork):
             model.comp_adapted = bool(cfg.get('compartment_adapted', False))
             fl.attach_taste_heads(model, graph, graph.parent / 'body-annotations.feather')
             model.load_state_dict({k: v for k, v in saved['model'].items() if k in late}, strict=False)
+        if cfg.get('stream_jepa'):
+            fl.attach_stream_jepa(model, graph, graph.parent / 'body-annotations.feather')
+            model.load_state_dict({k: v for k, v in saved['model'].items() if k in fl.STREAM_JEPA_PARAMETER_NAMES}, strict=False)
         if 'act_w' in saved['model']:
             # the act head (odour world): attach with the saved tensors, then load them exactly
             init = torch.load(ROOT / cfg.get('act_init', 'scratch/fly_stream/act_init.pt'), map_location='cpu')
