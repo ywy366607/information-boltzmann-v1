@@ -69,7 +69,8 @@ class GeminiApiMother:
               'often babbles. Answer in one or two short, simple sentences. Respond to what the child said when you '
               'can; ask simple questions, name things, sometimes start a new topic.')
 
-    def __init__(self, model='gemini-3.5-flash', api_key=None, max_tokens=60, temperature=0.7, system=None, retries=5):
+    def __init__(self, model='gemini-3.5-flash', api_key=None, max_tokens=60, temperature=0.7, system=None, retries=5,
+                 plan_path='data/harness/raising.json'):
         import os
         import requests
         try:
@@ -86,8 +87,47 @@ class GeminiApiMother:
         self.max_tokens = max_tokens
         self.temperature = temperature
         self.retries = retries
-        self.system = system or self.SYSTEM
+        self.base_system = system or self.SYSTEM
+        self.plan_path = plan_path
+        self.plan = {}
+        self.plan_mtime = 0.0
         self.url = f'https://generativelanguage.googleapis.com/v1beta/models/{self.model}:generateContent'
+        self._refresh_plan()
+
+    def update_plan(self, plan):
+        """Update plan directly in-memory from caller."""
+        if isinstance(plan, dict):
+            self.plan = plan
+
+    def _refresh_plan(self):
+        """Reload plan if plan_path exists and has been modified by the background agent."""
+        import json, os
+        if self.plan_path and os.path.exists(self.plan_path):
+            try:
+                mt = os.path.getmtime(self.plan_path)
+                if mt != self.plan_mtime:
+                    with open(self.plan_path, encoding='utf-8') as f:
+                        self.plan = json.load(f)
+                    self.plan_mtime = mt
+            except Exception:
+                pass
+
+    def get_system_prompt(self):
+        """Construct the prompt combining base persona with the agent's current topic and intention."""
+        self._refresh_plan()
+        m_cfg = self.plan.get('mother', {}) if isinstance(self.plan, dict) else {}
+        p_cfg = self.plan.get('parenting', {}) if isinstance(self.plan, dict) else {}
+        persona = m_cfg.get('persona') or self.base_system
+        topic = p_cfg.get('current_topic')
+        if not topic and p_cfg.get('topics'):
+            topic = p_cfg['topics'][0]
+        intent = p_cfg.get('intention')
+        parts = [persona]
+        if topic:
+            parts.append(f"Current conversation topic: {topic}.")
+        if intent:
+            parts.append(f"Parenting intention for this phase: {intent}.")
+        return ' '.join(parts)
 
     def reply(self, transcript):
         import time
@@ -103,13 +143,18 @@ class GeminiApiMother:
         if contents[-1]['role'] != 'user':
             contents.append({'role': 'user', 'parts': [{'text': '...'}]})
 
+        system_instruction = self.get_system_prompt()
+        m_cfg = self.plan.get('mother', {}) if isinstance(self.plan, dict) else {}
+        temperature = float(m_cfg.get('temperature', self.temperature))
+        max_tokens = int(m_cfg.get('max_reply_tokens', self.max_tokens))
+
         payload = {
-            'system_instruction': {'parts': [{'text': self.system}]},
+            'system_instruction': {'parts': [{'text': system_instruction}]},
             'contents': contents,
             'generationConfig': {
                 'thinkingConfig': {'thinkingBudget': 0},
-                'maxOutputTokens': self.max_tokens,
-                'temperature': self.temperature,
+                'maxOutputTokens': max_tokens,
+                'temperature': temperature,
             }
         }
         delay = 2.0
@@ -158,6 +203,10 @@ class ApiMother:
             import anthropic
             self.client = anthropic.Anthropic()
             self._backend = None
+
+    def update_plan(self, plan):
+        if self._backend is not None and hasattr(self._backend, 'update_plan'):
+            self._backend.update_plan(plan)
 
     def reply(self, transcript):
         if self._backend is not None:

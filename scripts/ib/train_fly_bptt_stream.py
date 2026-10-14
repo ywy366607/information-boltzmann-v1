@@ -2029,13 +2029,38 @@ def main():
         import tiktoken
         from information_boltzmann.core.fly_mother_world import (MotherWorld, LocalMother, ApiMother, GeminiApiMother,
                                                                  MailboxMother, live_window)
-        # the raising plan (dashboard / the mother agent: data/harness/raising.json) sets the mother's side each chunk
-        raising = {}
-        if Path('data/harness/raising.json').exists():
+        # the raising plan (dashboard / the mother agent: data/harness/raising.json) sets the mother's side
+        raising_path = Path('data/harness/raising.json')
+        raising_mtime = 0.0
+        raising_full = {}
+
+        def refresh_raising_plan():
+            nonlocal raising_mtime, raising_full
+            if not raising_path.exists():
+                return
             try:
-                raising = json.loads(Path('data/harness/raising.json').read_text(encoding='utf-8')).get('mother', {})
+                mt = raising_path.stat().st_mtime
+                if mt != raising_mtime:
+                    raising_full = json.loads(raising_path.read_text(encoding='utf-8'))
+                    raising_mtime = mt
+                    m_cfg = raising_full.get('mother', {})
+                    args.mother_max_fly_words = int(m_cfg.get('max_fly_words', args.mother_max_fly_words))
+                    args.mother_temperature = float(m_cfg.get('fly_temperature', args.mother_temperature))
+                    if mother_world is not None:
+                        mother_world.max_fly_words = args.mother_max_fly_words
+                        mother_world.history_turns = int(m_cfg.get('history_turns', mother_world.history_turns))
+                    if hasattr(mother, 'update_plan'):
+                        mother.update_plan(raising_full)
+            except Exception as error:      # half written or invalid: keep the old plan, try again next window
+                print(f'raising.json not applied ({type(error).__name__}): the previous plan stays', flush=True)
+
+        if raising_path.exists():
+            try:
+                raising_full = json.loads(raising_path.read_text(encoding='utf-8'))
+                raising_mtime = raising_path.stat().st_mtime
             except json.JSONDecodeError:
                 print('raising.json is not valid JSON: ignored', flush=True)
+        raising = raising_full.get('mother', {})
         args.mother_max_fly_words = int(raising.get('max_fly_words', args.mother_max_fly_words))
         args.mother_temperature = float(raising.get('fly_temperature', args.mother_temperature))
         mother = (LocalMother() if args.mother_world == 'local' else
@@ -2062,6 +2087,7 @@ def main():
         while trained < target:
             speakers = None
             if mother_world is not None:
+                refresh_raising_plan()
                 # the mother world: live the window first (the fly's words sampled from its reads, her replies), then
                 # train on exactly what happened (the same words and intervals, learner.forced_world)
                 before = len(mother_world.transcript)
@@ -2074,6 +2100,22 @@ def main():
                 with (args.output / 'mother.jsonl').open('a', encoding='utf-8') as out:
                     for who, text in mother_world.transcript[before:]:
                         out.write(json.dumps({'trained': trained, 'who': who, 'text': text}) + '\n')
+                try:
+                    mon_tmp = Path('data/harness/monitor.tmp')
+                    mon_dst = Path('data/harness/monitor.json')
+                    mon_data = {
+                        'trained': int(trained),
+                        'time': time.strftime('%Y-%m-%d %H:%M:%S'),
+                        'monitor': mother_world.monitor(),
+                        'recent_transcript': [{'who': w, 'text': t} for w, t in mother_world.transcript[-10:]],
+                        'plan_topic': raising_full.get('parenting', {}).get('current_topic') or (raising_full.get('parenting', {}).get('topics') or [None])[0],
+                        'plan_intent': raising_full.get('parenting', {}).get('intention'),
+                        'plan_mtime': round(raising_mtime, 1),
+                    }
+                    mon_tmp.write_text(json.dumps(mon_data, ensure_ascii=False, indent=1), encoding='utf-8')
+                    mon_tmp.replace(mon_dst)
+                except Exception:
+                    pass
             elif shelf is not None:
                 values = shelf.next_window(args.window)
             else:
@@ -2122,13 +2164,21 @@ def main():
                 probe_fn = make_probe_fn(fly_learning, model, learner, int(args.go_max_ticks or 32), shelf_opts)
                 shelf.after_window(probe_fn)
             if args.score_log:
+                plan_meta = {}
+                if mother_world is not None and raising_full:
+                    p_cfg = raising_full.get('parenting', {})
+                    plan_meta = {
+                        'plan_topic': p_cfg.get('current_topic') or (p_cfg.get('topics') or [None])[0],
+                        'plan_intent': p_cfg.get('intention'),
+                        'plan_mtime': round(raising_mtime, 1)
+                    }
                 with args.score_log.open('a', encoding='utf-8') as out:
                     out.write(json.dumps({'trained': trained, 't': round(time.perf_counter(), 3),
                                           'scores': [float(x) for x in scores],
                                           'unigram': [float(x) for x in reference_surprisal[values]],
                                           **({'word_da': learner.last_word_da}
                                              if getattr(learner, 'last_word_da', None) is not None else {}),
-                                          **({'speakers': speakers, 'monitor': mother_world.monitor()}
+                                          **({'speakers': speakers, 'monitor': mother_world.monitor(), **plan_meta}
                                              if speakers is not None else {})}) + '\n')
             first_pass_meter.record(scores, reference_surprisal[values])
             first_pass_meter.verify_cursor(trained, cursor)
