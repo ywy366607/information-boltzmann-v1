@@ -337,3 +337,40 @@ learns. brain - blind is what reading is worth. Chain `grow_acts_v2.sh`.
 2. The blind gate on the mainline: m_main c7, on chunk 8's words.
 3. If reading stays worth about 0.06, the eyes cannot learn to look before the brain makes more of what it reads.
    That is the brain's job (1), not the eyes'.
+
+## (2) Habituation of the Kenyon release: negative, and the precondition it exposes (2026-10-14)
+
+**The arm.** From m_main c6 on the same 2,048 words as the release A/B, with `--kc-dan-release --kc-habituation-tau
+4096 --kc-habituation-use 0.2`.
+
+| | base | release | habituation |
+|---|---|---|---|
+| surprise ~ phasic DA, same word | -0.0035 | +0.0052 | -0.0054 |
+| rarity (unigram CE) ~ DA | +0.0015 | +0.0264 | +0.0151 |
+| residual surprise ~ DA | -0.018 | -0.049 | -0.065 |
+| phasic DA sd | 1.08 | 2.50 | 1.06 |
+| fresh B NLL | 7.5986 | 7.5994 | 7.5891 |
+
+Paired by window:
+- habituation - base: -0.0022 +- 0.0028;
+- habituation - release: -0.0074 +- 0.0028.
+
+The habituation arm costs no language, but surprise still does not reach dopamine.
+
+**Cause (from the numbers).** The phasic variance fell back to the base level: the release was depressed away
+everywhere, not selectively.
+- A Kenyon cell is active for 3.7% of words, so it fires about every 27 words.
+- Over the recovery time (4,096 ticks, about 800 words) it is used about 30 times.
+- Its availability settles near 0.1 for every cell, familiar or not.
+
+Per-cell habituation becomes per-word familiarity only if **a word's Kenyon code repeats when the word repeats**.
+Consecutive different words overlap at chance (0.02 vs the level 0.037), but the same word's codes across its
+occurrences were never measured. If they do not repeat, the code is context-driven, and familiarity cannot be read
+from it at all.
+
+**Exit.**
+1. Measure it first: for words occurring several times, the Kenyon overlap between occurrences of the same word, against
+   different words at the same distance. Only if the same-word overlap is well above chance is habituation the right
+   mechanism, with a recovery scaled to the cell's firing rate.
+2. If it is near chance, the mushroom body does not hold word identity stably. That is a (1) problem as well: memory in
+   KC -> MBON synapses needs a repeatable code.
