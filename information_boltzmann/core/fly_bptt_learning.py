@@ -2643,7 +2643,9 @@ class FlyBPTTLearner:
                                           'eye_tick': e.detach().cpu().tolist() if self.hold_input else None,
                                           'hazard': (torch.cat(ai_out).detach().cpu().tolist()
                                                      if getattr(m, 'ai_mode', None) == 'motor' else None),
-                                          'gamma': self.last_adaptive_metrics.get('gamma')}
+                                          'gamma': self.last_adaptive_metrics.get('gamma'),
+                                          # every tick's read CE against its word's target: the value of waiting
+                                          'tick_ce': tick_ce.detach().cpu().tolist() if pace > 0 else None}
             if world is not None:
                 # the act's fitness, as evolution sees it (never an input to the brain); BPTT through the hazards
                 from .fly_odour_world import act_return

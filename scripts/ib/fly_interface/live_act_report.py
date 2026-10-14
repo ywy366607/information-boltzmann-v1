@@ -20,21 +20,27 @@ def spearman(a, b):
 rows = [json.loads(l) for l in open(sys.argv[1], encoding='utf-8') if l.strip()]
 start = int(sys.argv[2]) if len(sys.argv) > 2 else 0
 rows = [r for r in rows if r.get('hazard') is not None and r['bptt_train_tokens'] > start]
-words = []                                   # (answered, latency, entropy, ce, prev_ce)
+words = []          # (answered, latency, entropy, ce, prev_ce, wait_gain, best_tick, ce_at_commit - ce_tick1)
 for r in rows:
     hz = np.asarray(r['hazard'], float).reshape(-1)
-    if hz.ndim > 1:
-        hz = hz[:, 0]
+    tce = np.asarray(r['tick_ce'], float) if r.get('tick_ce') is not None else None
     pos, prev = 0, float('nan')
     for k, ce in zip(r['interval'], r['ce']):
-        h = np.clip(hz[pos:pos + k], 0.0, 1.0); pos += k
+        h = np.clip(hz[pos:pos + k], 0.0, 1.0)
+        c = tce[pos:pos + k] if tce is not None else None
+        pos += k
         survive = np.concatenate([[1.0], np.cumprod(1.0 - h)[:-1]])
         p = h * survive
         ans = float(p.sum())
         lat = float((p * np.arange(1, k + 1)).sum() / ans) if ans > 1e-9 else float('nan')
         q = p / ans if ans > 1e-9 else p
         ent = float(-(q[q > 0] * np.log(q[q > 0])).sum())
-        words.append((ans, lat, ent, float(ce), prev))
+        if c is not None and k > 1:
+            gain, best = float(c[0] - c.min()), float(np.argmin(c) + 1)
+            value = float((q * c).sum() - c[0]) if ans > 1e-9 else float('nan')
+        else:
+            gain = best = value = float('nan')
+        words.append((ans, lat, ent, float(ce), prev, gain, best, value))
         prev = float(ce)
 w = np.array(words)
 q = lambda v: [round(float(x), 4) for x in (np.nanmin(v), np.nanmedian(v), np.nanmean(v), np.nanmax(v))]
@@ -42,6 +48,10 @@ blocks = [w[i:i + 1024] for i in range(0, len(w) - 1023, 1024)] or [w]
 per = {'answered': [np.nanmean(b[:, 0]) for b in blocks], 'latency': [np.nanmean(b[:, 1]) for b in blocks],
        'latency_entropy': [np.nanmean(b[:, 2]) for b in blocks],
        'rho_latency_ce': [spearman(b[:, 1], b[:, 3]) for b in blocks],
-       'rho_latency_prev_ce': [spearman(b[:, 1], b[:, 4]) for b in blocks]}
+       'rho_latency_prev_ce': [spearman(b[:, 1], b[:, 4]) for b in blocks],
+       # the definition's test (needs tick_ce, words with >= 2 ticks): later where waiting pays, earlier where it does not
+       'rho_latency_wait_gain': [spearman(b[:, 1], b[:, 5]) for b in blocks],
+       'rho_latency_best_tick': [spearman(b[:, 1], b[:, 6]) for b in blocks],
+       'ce_at_commit_minus_tick1': [np.nanmean(b[:, 7]) for b in blocks]}
 print(json.dumps({'words': int(len(w)), **{k: q(v) for k, v in per.items()},
                   'rho_latency_ce_all': round(spearman(w[:, 1], w[:, 3]), 4)}))
