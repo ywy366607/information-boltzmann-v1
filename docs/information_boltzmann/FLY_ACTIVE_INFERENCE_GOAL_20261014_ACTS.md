@@ -548,8 +548,13 @@ surface difference, GPT-2 word fragments included. The mainline config says `lam
 branch switches that term off (`last_jepa_loss = None`), so it never acted.
 
 A JEPA term would instead predict the next input's **representation**:
-- the brain's own PN / Kenyon pattern for the next word, as a stop-gradient target, with SIGReg against collapse
-  (LeJEPA);
+- the brain's own PN / Kenyon pattern for the next word, with SIGReg against collapse. Correction (checked against
+  the abstracts after the user asked): LeJEPA (arXiv 2511.08544) uses **no stop-gradient and no teacher-student / EMA**;
+  SIGReg alone prevents collapse and gradients flow into both sides. LeVLJEPA (arXiv 2607.00784) **does** stop the
+  gradient on its targets, but has no momentum encoder (no EMA) and no teacher. Our existing latent predictor
+  (`fly_bptt_learning.py`, `z_target = graph_observer.encoders(S_q_next).detach()`) stops the gradient, with no EMA,
+  which is the LeVLJEPA choice rather than LeJEPA's. Default for the new term: LeJEPA (no stop-gradient, SIGReg);
+  stop-gradient is the one-change comparison arm;
 - meanings that differ only in wording get close representations;
 - the distance between predicted and actual representation is a semantic surprise, which is what (2) lacks: not
   "this word is rare" but "this meaning was unexpected".
@@ -569,5 +574,5 @@ Missing so far: the mouth's history restarts empty in every process. Persist the
 in the run directory and restore them on resume.
 
 **3. LeVLJEPA** (arXiv 2607.00784): vision-language pretraining with no negatives, using cross-modal prediction with
-stop-gradient targets and SIGReg per modality. When Mengli has several senses (text through smell, taste, later
+stop-gradient targets (no momentum encoder or EMA) and SIGReg per modality. When Mengli has several senses (text through smell, taste, later
 vision), predicting one sense's representation from another follows the same pattern. Later.
