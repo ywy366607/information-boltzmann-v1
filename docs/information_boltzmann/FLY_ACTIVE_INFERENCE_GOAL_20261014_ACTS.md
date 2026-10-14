@@ -896,3 +896,36 @@ existed from 14:20, so it fired at once (16:46):
 
 `cadapt_ab_v2.sh` now waits for the d5b processes themselves to end. **Lesson: queue on a process, or on a line
 stamped after the queue starts, never on a line that may already exist.**
+
+### Evening (while the user was away): two runs died on a non-finite gradient; fixed; the change-1 pair moved to c9
+
+**What happened:**
+- **d5b finished.**
+  - gate c10: (1) +0.926 ± 0.099; reading +0.120 ± 0.022; (2) −0.004 (residual −0.023); latch −0.001 ± 0.013.
+  - c11 acts: answered 0.81–0.97; latency entropy median 0.73; within-k wait-gain rho −0.017; timing value over null
+    0.0025.
+- **The treatment chunk from c7 (adapted)** died 1,536 words in on a non-finite gradient: forward and loss finite,
+  every parameter's gradient inf/NaN.
+- **m_main's own chunks 8 and 9 ran** (gates c7 +0.371 ± 0.058, c8 +0.611 ± 0.068).
+- **m_main chunk 10 died the same way** at 40,576 words, without the change, and so did a c8 gate arm. The chain then
+  stopped for two hours.
+
+**Cause.**
+- This is the known blow-up of BPTT through 256 ticks, noted at the clip: the backward explodes past float range in
+  one window, while the gradient norm before it is ordinary (about 2 to 4).
+- It is not specific to change 1, since the control hit it too. Change 1 may raise the rate (the treatment died
+  sooner), so its count is now a measured cost.
+- None had occurred in m_main c1–c9 or in d5b.
+
+**Fix (no change to semantics for finite windows).** A window whose gradient is non-finite, while its state is finite,
+skips its parameter update instead of killing the run.
+- Default on: `FLY_SKIP_NONFINITE`.
+- Counted as `skipped_updates` and in the treatment's status line.
+- A non-finite state still stops the run.
+
+**The pair moved to c9.** The chain had pruned c7 (it keeps c1, every 10th and the latest two), so the rerun from c7
+could not start. Now:
+- control = m_main's chunk 10 from c9 (resumed 21:30);
+- treatment = chunk 10 from c9 with `--compartment-adapted`, on the same words (`cadapt_ab_v4.sh`, after the c10
+  gate, AG and probes);
+- then both MBON probes and both (2) reports, and m_main resumes.
