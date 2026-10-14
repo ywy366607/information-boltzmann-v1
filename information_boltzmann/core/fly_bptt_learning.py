@@ -2229,7 +2229,8 @@ class FlyBPTTLearner:
                        | set(READ_BANK_PARAMETER_NAMES) | set(INTRINSIC_PARAMETER_NAMES) | set(PRECISION_PARAMETER_NAMES)
                        | set(PREDICTIVE_PARAMETER_NAMES) | set(DOPAMINE_PARAMETER_NAMES) | set(ONLINE_DA_PARAMETER_NAMES)
                        | set(COMPARTMENT_PARAMETER_NAMES) | set(TASTE_PARAMETER_NAMES)
-                       | {'act_w', 'act_b', 'act_logit_leak', 'ai_w', 'ai_b', 'ai_logit_leak'})
+                       | {'act_w', 'act_b', 'act_logit_leak', 'ai_w', 'ai_b', 'ai_logit_leak'}
+                       | {'log_kc_release'})                    # the Kenyon terminal release, switched on at a resume
         if getattr(self.model, 'latent_predictor', None) is not None:
             allowed_new.update(f'latent_predictor.{n}' for n, _ in self.model.latent_predictor.named_parameters())
         if getattr(self.model, 'graph_observer', None) is not None:
