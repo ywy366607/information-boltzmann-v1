@@ -994,3 +994,57 @@ Change 1 is retested on top once P3's partial rho is above 0.05.
 **A/B** (`jepa_ab.sh`), mechanism test:
 - control = m_main's chunk 11 from c10; treatment = chunk 11 from c10 with `--stream-jepa`, on the same words;
 - then P2 and P3 on both c11s.
+
+## Static connectome audit: can the fly's own circuit carry iP-VAE's "explaining away"? (`mb_feedback_audit.py`, `neuprint_apl_kc_rois.py`)
+
+**Kenyon input, raw synapses** (shares):
+
+| source | share |
+|---|---|
+| Kenyon → Kenyon | 0.530 (97% axo-axonal in the lobes; 2.9% in the calyx, already pinned by `kc_dendritic_only`) |
+| ALPN | 0.180 (all in the calyx; median 97 per KC) |
+| DAN | 0.103 (on the axons in the lobes) |
+| APL | 0.090 (median 50 per KC) |
+| DPM | 0.015 |
+| MBON | 0.005 |
+
+**APL.**
+- Of APL → KC synapses, **only 15.5% sit in the calyx**, on the Kenyon dendrites (30,407 of 196,200; per-pair median
+  13%). The other 85% sit on the Kenyon axons in the lobes and peduncle.
+- KC → APL is 13% calyx.
+- The loop is reciprocal per cell: APL → KC vs KC → APL, rho 0.61.
+- APL → ALPN (13,070 synapses) and ALPN → APL sit essentially all in the calyx, on the PN boutons.
+
+**Feedback from the mushroom body to the PNs is tiny** (KC 0.4%, APL 0.3% of ALPN input).
+
+**Phi^T Phi** (cosine overlap of two Kenyon cells' PN input): median 0, mean 0.04; 8.4% of pairs above 0.2.
+
+**Two consequences:**
+1. **A point-model artifact, not fixed until now.** In the model, all APL → KC synapses act on the Kenyon membrane,
+   so the Kenyon cells integrate about 6.5x the dendritic inhibition they really get.
+   - The earlier input-budget probe found the Kenyon drive to be about −0.55 from APL-like cells against +0.42 from
+     PNs.
+   - With 85% of that inhibition axonal, the dendritic budget would be roughly −0.09 vs +0.42.
+   - This fits the margin probe (one word lifts the Kenyon top 1% only to 0.33 θ) and the weak word code. It is the
+     same kind of artifact as Kenyon → Kenyon and Kenyon → DAN, already fixed.
+   - Fix (fly-native, connectome correctness), the same pattern as `attach_kenyon_dendritic_only`: scale each
+     APL → KC edge by its calyx share and pin the edges with no calyx synapse.
+   - The axonal part's real role is presynaptic inhibition of the Kenyon output (gain on KC → MBON). That is a later,
+     separate change: a terminal-local factor like the release.
+2. **iP-VAE in the fly's own terms.** x = PN bouton output in the calyx; z = Kenyon spikes; Phi^T = PN → KC weights.
+   - The explaining-away term Phi^T Phi z needs inhibition onto KC i in proportion to what the KCs sharing its PN
+     boutons are doing.
+   - The calyx APL is non-spiking and local: its branches take input in a microglomerulus (from the PN bouton and the
+     claws around it) and inhibit there, both the claws and the bouton itself.
+   - Inhibition local to a bouton is therefore shared by exactly the KCs that share that bouton:
+     inh_i ≈ Σ_g Phi_gi (Σ_j Phi_gj z_j) = (Phi^T Phi z)_i.
+   - So a **local calyx APL** is the fly's substrate for explaining away. It is computable with the existing PN → KC
+     edge list: two sparse products, no new weights.
+   - Its residual, the Kenyon activity not explained by co-active cells, is the representation-level surprise that
+     KC → DAN release can carry to the dopamine cells.
+
+**Order, one change at a time, after the JEPA A/B:**
+1. The APL → KC dendritic-only fix (correctness). Predicted: Kenyon level up from 3%, the single-word margin up from
+   0.33 θ, same-word repeatability up, and the context code (P1) kept.
+2. The local calyx APL (Phi^T Phi z explaining away).
+3. Kenyon residual → DA through the release, judged by the living (2) gate.
