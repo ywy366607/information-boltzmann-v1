@@ -16,6 +16,9 @@ exec(open('D:/information-boltzmann-v1/scripts/ib/fly_interface/world_eval.py', 
 fork = Path(sys.argv[1])
 N_WORDS = int(sys.argv[2]) if len(sys.argv) > 2 else 3000
 model, cfg, L = load(fork)
+import os
+if os.environ.get('MBON_COMP_ADAPTED') is not None:     # override the checkpoint's setting (zero-shot A/B of the rule)
+    model.comp_adapted = os.environ['MBON_COMP_ADAPTED'] == '1'
 opts = dict(base_rates=model.get_decay_rates(), thresholds=model.get_thresholds(), conductance_gains=model.get_conductance_gains(),
             alif_params=model.get_alif_params(), stp_params=model.get_stp_params())
 writer = model.topographic_writer
@@ -68,6 +71,7 @@ with torch.no_grad():
             fires += (s.ring[0][0][mbon] > 0).float()
         s = fl.expect_next(model, s, fl.read_fly_motor(model, s))
         kc_word.append(kd.cpu().numpy()); fire_word.append((fires / TICKS).cpu().numpy())
+    phi_end = s.comp_memory[0].detach().float().cpu().numpy() if has_comp and s.comp_memory.numel() else None
 
 
 def share(v):
@@ -106,6 +110,25 @@ rep = {'words': len(words) - BURN, 'compartment_memory': has_comp,
 if phi0 is not None:
     rep['phi_at_start'] = q(phi0)
     rep['phi_fraction_below_minus_0.5'] = round(float((phi0 < -0.5).mean()), 4)
+    rep['phi_fraction_below_minus_0.1'] = round(float((phi0 < -0.1).mean()), 4)
+if phi_end is not None:
+    rep['phi_at_end'] = q(phi_end)
+    rep['phi_end_fraction_below_minus_0.1'] = round(float((phi_end < -0.1).mean()), 4)
+# familiarity: the total Kenyon -> MBON drive at a 3-word context's next occurrence over its previous one (< 1: the
+# memory depressed what that context drives), against the same ratio for random word pairs at the same distance
+tot = K.sum(1)
+seen, fam, ctrl = {}, [], []
+for i in range(BURN, len(words)):
+    key = tuple(int(x) for x in words[i - 2:i + 1])
+    if key in seen and tot[seen[key]] > 0:
+        a = seen[key]; fam.append(tot[i] / tot[a])
+        j = int(rng.integers(BURN, len(words) - (i - a)))
+        if tot[j] > 0:
+            ctrl.append(tot[j + (i - a)] / tot[j])
+    seen[key] = i
+rep['familiarity_drive_ratio_repeat'] = q(np.log(np.array(fin(fam)) + 1e-9))
+rep['familiarity_drive_ratio_random'] = q(np.log(np.array(fin(ctrl)) + 1e-9))
+rep['comp_adapted'] = bool(getattr(model, 'comp_adapted', False))
 print(json.dumps(rep), flush=True)
 if len(sys.argv) > 3:
     Path(sys.argv[3]).write_text(json.dumps(rep, indent=1), encoding='utf-8')

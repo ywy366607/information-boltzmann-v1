@@ -271,6 +271,8 @@ def resolve_learning_modes(args, previous_config, previous_learner):
         args.sense_prediction = bool(previous_config.get('sense_prediction', False))
     if getattr(args, 'compartment_memory', None) is None:
         args.compartment_memory = bool(previous_config.get('compartment_memory', False))
+    if getattr(args, 'compartment_adapted', None) is None:
+        args.compartment_adapted = bool(previous_config.get('compartment_adapted', False))
     args.kc_dendritic_newly = bool(args.kc_dendritic_only) and not bool(previous_config.get('kc_dendritic_only', False))
     if getattr(args, 'kc_dendritic_only', None) is None:
         args.kc_dendritic_only = bool(previous_config.get('kc_dendritic_only', False))
@@ -553,6 +555,9 @@ def main():
                         help='Kenyon cells at a sparser quantile (omitted = inherit, else none)')
     parser.add_argument('--compartment-memory', action=argparse.BooleanOptionalAction, default=None,
                         help='Three-factor memory per Kenyon -> MBON synapse, dopamine at its MBON (omitted = inherit)')
+    parser.add_argument('--compartment-adapted', action=argparse.BooleanOptionalAction, default=None,
+                        help='The compartment memory\'s receptors adapt to their own slow dopamine, K_j = max(slow_j, K), '
+                             'as every other target\'s do with --dopamine-adapted (omitted = inherit, else off)')
     parser.add_argument('--taste-every', type=int, default=0,
                         help='Taste world as a learning task: one episode after every N text windows (0 = off)')
     parser.add_argument('--ai', action=argparse.BooleanOptionalAction, default=None,
@@ -998,6 +1003,7 @@ def main():
             attach_taste_heads(model, args.graph, args.graph.parent / 'body-annotations.feather')
             args.compartment_memory = True
             print(f'Compartment memory on {n_comp} Kenyon -> MBON synapses; taste heads on the MBONs (newborn)', flush=True)
+            model.comp_adapted = bool(args.compartment_adapted)
         if args.homeostasis:
             args.homeostasis_seed = int(args.homeostasis_seed or 0)
             attach_homeostasis(model, args.graph, seed=args.homeostasis_seed)
@@ -1340,6 +1346,9 @@ def main():
                     model.load_state_dict(comp_state, strict=False)
                 args.compartment_memory = True
                 print(f'Compartment memory on {n_comp} Kenyon -> MBON synapses; taste heads on the MBONs', flush=True)
+                model.comp_adapted = bool(args.compartment_adapted)
+                if model.comp_adapted:
+                    print('Compartment receptors adapt to their own slow dopamine (K_j = max(slow_j, K))', flush=True)
             if args.ai:
                 ai_state = {k: v for k, v in saved['model'].items() if k in AI_STATE_NAMES}
                 init = torch.load(previous_config.get('act_init') or args.act_init, map_location='cpu')

@@ -852,3 +852,17 @@ K_j = max(slow_j, K).
   check the trace.
 - If phi does not spread: the bursts are too small. Then the dopamine cells' own input (KC → DAN release) comes next,
   as a separate change.
+
+**Built and reviewed (subagent).**
+- With the flag off: bit-identical, so running chains are unchanged.
+- With the flag on: the manual carried-credit slopes match autograd. The flag is saved in the config and inherited on
+  resume. The probes read it via `world_eval.load`.
+- One effect to keep in mind when reading results: once adapted, the window occ(slow)/0.5 is pinned at 1 (it was
+  about 1.87), so learning and forgetting per tick both drop by about 1.9x. Net teaching at the median MBON is
+  about +2.5x, and forgetting is slower.
+
+**Queued:** `cadapt_ab_after_d5b.sh`, after d5b c11.
+1. Zero-shot MBON probe on c7 with the rule off vs on (the same weights; does phi spread and does familiarity appear
+   within the probe stream?).
+2. One treatment chunk from c7 with `--compartment-adapted`, then its MBON probe and (2) report.
+3. m_main resumes; its own chunk 8 from c7 is the control, paired by window.

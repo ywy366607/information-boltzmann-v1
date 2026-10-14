@@ -404,10 +404,15 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
             # only dopamine above its own running level teaches (a burst after Kenyon activity): the signed fast - slow
             # difference integrates to ~0 over a burst and its long undershoot, which the 50-tick trace spans, so a
             # pairing left almost nothing
-            phasic_c = F.relu(dopamine_occupancy(d_post[0:1], model.comp_affinity)
-                              - dopamine_occupancy(d_post[1:2], model.comp_affinity))
-            window_c = (dopamine_occupancy(d_post[1:2].detach(), model.comp_affinity) / 0.5
-                        * comp_trace.index_select(1, model.comp_edge_kc))
+            # comp_adapted: the compartment's receptors adapt to its own slow level (K_j = max(slow_j, K)), the same idea
+            # as dopamine_adapted's relative signal for every other target (there (f - s) / (s + K), here occupancy at
+            # K_j, so the window occ(slow) / 0.5 is 1 once adapted); the MBON compartments get ~15x the affinity in tonic dopamine,
+            # so with the fixed K they sat at occupancy 0.93 and a burst taught nothing (m_main c7)
+            comp_k = (torch.maximum(d_post[1:2], d_post.new_tensor(model.comp_affinity))
+                      if getattr(model, 'comp_adapted', False) else model.comp_affinity)
+            occ_slow_c = dopamine_occupancy(d_post[1:2], comp_k)
+            phasic_c = F.relu(dopamine_occupancy(d_post[0:1], comp_k) - occ_slow_c)
+            window_c = occ_slow_c.detach() / 0.5 * comp_trace.index_select(1, model.comp_edge_kc)
             kappa_c = torch.sigmoid(model.comp_logit_forget)
             # depression scaled by the efficacy left, (1 + phi): phi approaches -1 and never passes it, so forgetting
             # (kappa, slow) no longer has to equal the learning rate to keep phi bounded
@@ -421,15 +426,23 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
                     Sd = credit_dopamine.index_select(1, post)                # [3, E]: dfast/dlf, dslow/dlf, dslow/dls
                     dpost = d_post.detach()
                     on = (phasic_c.detach() > 0).float()
-                    a_f = occupancy_slope(dpost[0:1], model.comp_affinity)
-                    a_s = occupancy_slope(dpost[1:2], model.comp_affinity)
+                    k_c = comp_k.detach() if torch.is_tensor(comp_k) else comp_k
+                    a_f = occupancy_slope(dpost[0:1], k_c)
+                    if torch.is_tensor(comp_k):
+                        # d(phasic)/d(slow) = d occ_slow/ds - d occ_fast/ds: where adapted (slow >= K) occ_slow is 0.5
+                        # and the fast occupancy falls with the slow level through K_j
+                        adapted = (dpost[1:2] >= model.comp_affinity).to(dpost.dtype)
+                        a_s = ((1.0 - adapted) * occupancy_slope(dpost[1:2], model.comp_affinity)
+                               + adapted * dpost[0:1] / (dpost[0:1] + k_c).square())
+                    else:
+                        a_s = occupancy_slope(dpost[1:2], model.comp_affinity)
                     dphasic = on * torch.cat([a_f * Sd[0:1] - a_s * Sd[1:2], -a_s * Sd[2:3]], 0)
                     lam_d = lam_c.detach()
                     credit_comp, credit_comp_trace = comp_step(
                         credit_comp, credit_comp_trace, memory_before, trace_before,
                         spikes_c.detach().index_select(1, model.comp_kc), lam_d, model.comp_eta.detach(),
                         kappa_c.detach(), phasic_c.detach(),
-                        dopamine_occupancy(d_post[1:2].detach(), model.comp_affinity) / 0.5, model.comp_edge_kc,
+                        occ_slow_c.detach() / 0.5, model.comp_edge_kc,
                         dphasic)
             comp_memory = comp_memory + window_c * (model.comp_eta * phasic_c * (1.0 + comp_memory) - kappa_c * comp_memory)
     bank = getattr(current, 'read_bank', torch.empty(0))

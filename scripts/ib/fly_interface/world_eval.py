@@ -94,6 +94,7 @@ def load(fork):
         if cfg.get('compartment_memory'):
             # the plastic Kenyon -> MBON synapses live outside the edge list: attach, then load their own weights
             fl.attach_compartment_memory(model, graph, graph.parent / 'body-annotations.feather', affinity=cfg.get('dopamine_affinity'))
+            model.comp_adapted = bool(cfg.get('compartment_adapted', False))
             fl.attach_taste_heads(model, graph, graph.parent / 'body-annotations.feather')
             model.load_state_dict({k: v for k, v in saved['model'].items() if k in late}, strict=False)
         if 'act_w' in saved['model']:

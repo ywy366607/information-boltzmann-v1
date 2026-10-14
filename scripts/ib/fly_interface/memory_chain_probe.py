@@ -103,7 +103,9 @@ def present(cells, outcome=None, ticks=24):
         s, sp = tick(d); acc_m += sp[mbon]; acc_o += s.h[0, read]; drove |= sp.bool()
         if s.dopamine.numel():
             dp = s.dopamine.index_select(1, mbon)
-            burst = torch.relu(fl.dopamine_occupancy(dp[0], model.comp_affinity) - fl.dopamine_occupancy(dp[1], model.comp_affinity))
+            kc_ = (torch.maximum(dp[1], dp.new_tensor(model.comp_affinity)) if getattr(model, 'comp_adapted', False)
+                   else model.comp_affinity)
+            burst = torch.relu(fl.dopamine_occupancy(dp[0], kc_) - fl.dopamine_occupancy(dp[1], kc_))
             DA_LOG.append(('paired' if outcome is not None else 'odour', float(burst.mean())))
     return acc_m / ticks, acc_o / ticks, drove & ~ctrl
 
