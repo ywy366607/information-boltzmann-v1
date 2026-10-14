@@ -252,6 +252,24 @@ def speaking_value(hz, decisions, ce, n_words, horizon=16, baseline=None, beta=0
                                         'speak_return': (sum(R_all) / len(R_all)) if R_all else None}
 
 
+def delayed_speaking_value(model, g, decisions, advantages, n_words):
+    """The epistemic credit of the previous window's decisions, applied now through the act readout alone: the hazards
+    are recomputed from the stored muscle states g [T, n] (detached) with the current readout, so the gradient reaches
+    ai_w / ai_b only.  J = sum_d A_d log p_d(choice) / n_words (maximize)."""
+    hz = torch.sigmoid(motor_logits(model, g)[:, 1]).clamp(1e-6, 1 - 1e-6)
+    J = hz.new_zeros(())
+    for (i, t0, n, d), A in zip(decisions, advantages):
+        if n <= 0:
+            continue
+        log_quiet = torch.log1p(-hz[t0:t0 + n]).sum()
+        logp = torch.log((-torch.expm1(log_quiet)).clamp_min(1e-12)) if d else log_quiet
+        J = J + float(A) * logp
+    said = [d for *_, d in decisions]
+    return J / max(1, n_words), {'speak_decisions': len(decisions),
+                                 'speak_rate': (sum(said) / len(said)) if said else 0.0,
+                                 'speak_advantage_sd': float(np.std(advantages)) if len(advantages) else 0.0}
+
+
 class Familiarity:
     """Count-based novelty of what was actually seen: novelty(w) = 1 / sqrt(1 + n(w)), n(w) += eye gain at each onset
     of w.  The adult core already encodes long-term familiarity (word rarity); this is its within-life counterpart."""

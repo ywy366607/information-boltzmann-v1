@@ -631,6 +631,70 @@ class MotherWorld:
                 'interruptions': self.stats['interruptions']}
 
 
+def replay_ce(learner, state0, previous_token, targets, intervals):
+    """Per-word CE of a window's targets, relived (no gradient) from its starting state with the CURRENT weights: the
+    same intervals and segments as the training pass, eyes as the learner has them (open when forced).  After the
+    update this is CE_after; the training pass's scores are CE_before."""
+    import torch
+    import torch.nn.functional as F
+    from . import fly_bptt_learning as fl
+    m = learner.model
+    seg = int(getattr(learner, 'stream_segment_ticks', 16) or 16)
+    out = []
+    with torch.no_grad():
+        s = fl.FlyPhysicalState(**{k: (tuple(t.detach().clone() for t in v) if k == 'ring' else v.detach().clone())
+                                   for k, v in state0.state_dict().items()})
+        opts = dict(base_rates=m.get_decay_rates(), thresholds=m.get_thresholds(),
+                    conductance_gains=m.get_conductance_gains(), alif_params=m.get_alif_params(),
+                    stp_params=m.get_stp_params())
+        if getattr(m, 'dopamine_sensitivity', None) is not None:
+            opts['dopamine_s_class'] = fl.dopamine_class_sensitivity(m, s.h)
+        token = int(previous_token)
+        for target, k in zip(targets, intervals):
+            done, latent = 0, None
+            while done < k:
+                ticks = min(seg - done % seg, k - done)
+                s, latent = fl.advance_fly_token_stream(
+                    m, s, torch.tensor([token], device=s.h.device), [ticks], ticks=ticks,
+                    hold_input=learner.hold_input, read_after=learner.read_lag or None,
+                    writer_baseline_clock=learner.writer_baseline_clock, fresh=done == 0, **opts)[:2]
+                done += ticks
+            logits = m.decoder(m.read_norm(latent)).float()
+            out.append(float(F.cross_entropy(logits, torch.tensor([int(target)], device=logits.device))))
+            token = int(target)
+    return out
+
+
+def epistemic_credit(learner, state0, previous_token, targets, horizon_ticks=64, beta=0.98):
+    """After the update: the learning progress of every word (the mother's only), the return of every decision of the
+    window (the progress of the words arriving within horizon_ticks after it), the advantage against a running mean,
+    and the pending credit for the next window (learner.pending_speak_credit).  Returns a metrics dict."""
+    import numpy as np
+    rec = getattr(learner, 'speak_record', None)
+    if rec is None:
+        return {}
+    learner.speak_record = None
+    after = replay_ce(learner, state0, previous_token, targets, rec['intervals'])
+    before = rec['ce_before'].tolist()
+    ig = [(b - a) if who == 'mother' else 0.0 for b, a, who in zip(before, after, rec['speakers'])]
+    arrival = np.cumsum(rec['intervals'])                     # the tick at which word j arrives (end of its interval)
+    R = []
+    for i, t0, n, d in rec['decisions']:
+        end = t0 + n
+        R.append(float(sum(g for g, t in zip(ig, arrival) if end < t <= end + horizon_ticks)))
+    b = getattr(learner, 'speak_epistemic_baseline', None)
+    A = [r - b for r in R] if b is not None else [0.0] * len(R)
+    if R:
+        learner.speak_epistemic_baseline = (float(np.mean(R)) if b is None else beta * b + (1 - beta) * float(np.mean(R)))
+    learner.pending_speak_credit = (rec['g'], rec['decisions'], A)
+    mom = [x for x, who in zip(ig, rec['speakers']) if who == 'mother']
+    return {'ig_mother_mean': float(np.mean(mom)) if mom else None, 'speak_return_ig': float(np.mean(R)) if R else None,
+            'speak_said_return': (float(np.mean([r for r, (*_, d) in zip(R, rec['decisions']) if d]))
+                                  if any(d for *_, d in rec['decisions']) else None),
+            'speak_silent_return': (float(np.mean([r for r, (*_, d) in zip(R, rec['decisions']) if not d]))
+                                    if any(not d for *_, d in rec['decisions']) else None)}
+
+
 def live_window(learner, world, n, rng, pace_min, pace_mean, temperature=1.0, ticks_per_second=2.0,
                 max_wait_ticks=128, speak_act=False, interrupt=False):
     """The live pass of one window (no gradient, on a copy of the state): the conversation as it happens.

@@ -1731,7 +1731,7 @@ def read_fly_motor(model, state):
 def _advance_fly_token_stream(model, state, token, schedule_box=None, *, ticks, hold_input=False, read_after=None,
                               writer_baseline_clock='physical', base_rates=None, thresholds=None,
                               conductance_gains=None, alif_params=None, stp_params=None, h_mean_decay=0.99,
-                              read_every=False, world=None, world_tape=None, act_g=None, fresh=True,
+                              read_every=False, world=None, world_tape=None, act_g=None, fresh=True, ai_g_tape=None,
                               ai_g=None, ai_tape=None, eye_forced=None, eye_binary=False, eye_tape=None,
                               eye_sample=False, sense_noise=None, dopamine_s_class=None):
     """Streaming clock: every token occupies exactly `ticks` physical ticks, whatever the brain is doing, and the
@@ -1836,6 +1836,8 @@ def _advance_fly_token_stream(model, state, token, schedule_box=None, *, ticks, 
         if ai_g is not None:
             hz, ai_g, committed = ai_step(model, current, ai_g, ai_tape[tick] if ai_replay else None)
             out_hazards.append(hz)
+            if ai_g_tape is not None:
+                ai_g_tape.append(ai_g.detach())           # the muscle state of every tick (delayed act credit)
             if not ai_replay:
                 ai_tape.append(committed)
         if read_every:
@@ -2434,12 +2436,14 @@ class FlyBPTTLearner:
             # an interactive world (fly_mother_world) lived this window first, without gradient: its pace and its words'
             # intervals are given, so this pass relives exactly what happened (consumed here, once)
             forced = getattr(self, 'forced_world', None)
-            forced_k, forced_speak = None, None
+            forced_k, forced_speak, g_tape = None, None, None
             if forced is not None and pace > 0:
                 pace, forced_k = float(forced['pace']), list(forced['intervals'])
                 if forced.get('decisions') is not None:
                     # v2: the fly's turn-taking decisions in the live pass, credited below (speaking_value)
                     forced_speak = (list(forced['decisions']), forced.get('speakers'))
+                    if getattr(self, 'speak_credit', 'predict') == 'epistemic':
+                        g_tape = []
                 self.forced_world = None
             total_ticks = 0
             reads, intervals = [], []
@@ -2500,6 +2504,8 @@ class FlyBPTTLearner:
                         stream.update(world=world, world_tape=tape, act_g=act_g)
                     if ai_on:
                         stream.update(ai_g=ai_g, ai_tape=[], eye_forced=getattr(self, 'eye_forced', None))
+                        if g_tape is not None:
+                            stream['ai_g_tape'] = g_tape
                         if getattr(self, 'eye_binary', False):
                             stream.update(eye_binary=True, eye_tape=[],
                                           eye_sample=bool(m.training and torch.is_grad_enabled()))
@@ -2629,7 +2635,21 @@ class FlyBPTTLearner:
                     J_out, commit_tick, extended = pragmatic_value(hz, e, on, logp.detach(), intervals, answers, asks,
                                                                    miss, depth)
                     J_out = J_out / len(intervals)
-                    if forced_speak is not None and motor:
+                    if forced_speak is not None and motor and g_tape is not None:
+                        # the epistemic credit: this window's decisions are valued after the update (trainer:
+                        # fly_mother_world.epistemic_credit); the previous window's arrive now, through the readout
+                        from .fly_active_inference import delayed_speaking_value
+                        T_all = sum(intervals)
+                        self.speak_record = {'g': torch.cat(g_tape[:T_all], 0), 'decisions': forced_speak[0],
+                                             'speakers': forced_speak[1], 'intervals': list(intervals),
+                                             'ce_before': scores.detach().float().cpu()}
+                        J_out = hz.new_zeros(())
+                        pending = getattr(self, 'pending_speak_credit', None)
+                        if pending is not None:
+                            J_out, sstats = delayed_speaking_value(m, *pending, n_words=len(intervals))
+                            self.last_adaptive_metrics.update(sstats)
+                            self.pending_speak_credit = None
+                    elif forced_speak is not None and motor:
                         # mother world v2: speaking is the act; its value is what the following words cost
                         from .fly_active_inference import speaking_value
                         if getattr(self, 'speak_baseline', None) is None:

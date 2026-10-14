@@ -485,6 +485,10 @@ def main():
     parser.add_argument('--mother-api-model', default=None, help='The API mother model id (the SDK reads its own env config)')
     parser.add_argument('--mother-temperature', type=float, default=1.0, help='Sampling temperature of the fly words')
     parser.add_argument('--mother-max-fly-words', type=int, default=16, help='A fly turn ends after this many words')
+    parser.add_argument('--mother-credit', choices=('predict', 'epistemic'), default='predict',
+                        help="Speaking act's credit: 'predict' (-CE of the following words) or 'epistemic' (what the words "
+                             "arriving within --mother-credit-ticks taught: learning progress, applied one window late)")
+    parser.add_argument('--mother-credit-ticks', type=int, default=64, help='Epistemic credit horizon in ticks')
     parser.add_argument('--mother-interrupt', action='store_true',
                         help='With --mother-speak-act: a commit during the mother\'s turn cuts her off (no commit keeps '
                              'listening), both credited like speaking')
@@ -2136,6 +2140,13 @@ def main():
                 # the mother world: live the window first (the fly's words sampled from its reads, her replies), then
                 # train on exactly what happened (the same words and intervals, learner.forced_world)
                 before = len(mother_world.transcript)
+                learner.speak_credit = args.mother_credit
+                if args.mother_credit == 'epistemic':
+                    import information_boltzmann.core.fly_bptt_learning as _fl
+                    window_state0 = _fl.FlyPhysicalState(**{k: (tuple(t.detach().clone() for t in v) if k == 'ring'
+                                                                else v.detach().clone())
+                                                            for k, v in learner.state.state_dict().items()})
+                    window_token0 = int(learner.previous_token)
                 targets_, forced_, speakers = live_window(learner, mother_world, args.window, mother_rng,
                                                           float(args.stream_pace_min or 0), float(args.stream_pace_mean or 0),
                                                           temperature=args.mother_temperature,
@@ -2178,6 +2189,11 @@ def main():
                     prof.key_averages().table(sort_by='self_cpu_time_total', row_limit=30), encoding='utf-8')
             else:
                 scores = observe(values, training=True)
+            if mother_world is not None and args.mother_credit == 'epistemic':
+                # what this window's words taught, now that it was learned: the speaking credit for the next window
+                from information_boltzmann.core.fly_mother_world import epistemic_credit
+                learner.last_epistemic = epistemic_credit(learner, window_state0, window_token0, targets_,
+                                                          horizon_ticks=args.mother_credit_ticks)
             trace = getattr(learner, 'last_ai_trace', None)
             if trace is not None:
                 with open(args.output / 'ai_trace.jsonl', 'a') as handle:
@@ -2225,7 +2241,9 @@ def main():
                                           **({'word_da': learner.last_word_da}
                                              if getattr(learner, 'last_word_da', None) is not None else {}),
                                           **({'speakers': speakers, 'monitor': mother_world.monitor(), **plan_meta}
-                                             if speakers is not None else {})}) + '\n')
+                                             if speakers is not None else {}),
+                                          **({'epistemic': learner.last_epistemic}
+                                             if getattr(learner, 'last_epistemic', None) else {})}) + '\n')
             first_pass_meter.record(scores, reference_surprisal[values])
             first_pass_meter.verify_cursor(trained, cursor)
             phase_meter.record(scores, reference_surprisal[values])
