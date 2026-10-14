@@ -540,3 +540,34 @@ The right test is whether the same context (the same last two or three words) gi
   the same contexts seldom recur, so habituation never had repeats to work on. Habituation over a context code gives
   sequence novelty ("this sequence is new"), which is closer to surprise than word rarity is.
 - **If it does not repeat either:** the code follows slow state drift, and the Kenyon stage needs the fix.
+
+## Three directions from the user (2026-10-14, evening)
+
+**1. A JEPA objective for the brain.** The brain is trained only on next-token CE. CE forces it to separate every
+surface difference, GPT-2 word fragments included. The mainline config says `lambda_jepa: 0.1`, but the paced stream
+branch switches that term off (`last_jepa_loss = None`), so it never acted.
+
+A JEPA term would instead predict the next input's **representation**:
+- the brain's own PN / Kenyon pattern for the next word, as a stop-gradient target, with SIGReg against collapse
+  (LeJEPA);
+- meanings that differ only in wording get close representations;
+- the distance between predicted and actual representation is a semantic surprise, which is what (2) lacks: not
+  "this word is rare" but "this meaning was unexpected".
+
+VL-JEPA (ICLR 2026) predicts text embeddings instead of tokens and reports better results with half the trainable
+parameters. CE stays, because Mengli must still choose words to speak. The JEPA term is added to it.
+
+**First test:** whether contexts with similar meanings already give similar Kenyon codes, as a fly's similar odours
+give overlapping codes. Then derive the term, write predictions, and run a living A/B.
+
+**2. Mengli is always at the beginning.** All four mother-world runs started from the same D4 c8 for 1,024 words.
+That was right for comparing credits, but she never accumulated interaction. Learning to talk needs one **continuous
+raising lineage**, never reset, chunk after chunk: the conversation, the mother's memory and the family all persist,
+and A/B arms fork from the lineage instead of restarting.
+
+Missing so far: the mouth's history restarts empty in every process. Persist the transcript tail and the cache anchor
+in the run directory and restore them on resume.
+
+**3. LeVLJEPA** (arXiv 2607.00784): vision-language pretraining with no negatives, using cross-modal prediction with
+stop-gradient targets and SIGReg per modality. When Mengli has several senses (text through smell, taste, later
+vision), predicting one sense's representation from another follows the same pattern. Later.
