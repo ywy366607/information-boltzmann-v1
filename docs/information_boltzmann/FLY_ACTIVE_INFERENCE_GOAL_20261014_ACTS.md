@@ -866,3 +866,33 @@ K_j = max(slow_j, K).
    within the probe stream?).
 2. One treatment chunk from c7 with `--compartment-adapted`, then its MBON probe and (2) report.
 3. m_main resumes; its own chunk 8 from c7 is the control, paired by window.
+
+### Change 1, zero-shot (m_main c7, same weights, the rule off vs on over the probe's 2,968-word stream)
+
+| | off | on (adapted) |
+|---|---|---|
+| phi at end, median | −0.016 | **−0.184** |
+| phi below −0.1 | 26% | **61%** |
+| Kenyon → MBON drive corr, same last 3 vs random (median) | 0.971 vs 0.925 (gap 0.046) | 0.955 vs 0.887 (gap **0.068**) |
+| MBON firing corr, same vs random | 0.548 vs 0.468 | 0.537 vs 0.465 |
+| familiarity: log drive ratio at a context's repeat (median / mean) | −0.005 / +0.008 | **−0.027 / −0.032** |
+| same ratio, random pairs (median / mean) | +0.041 / −0.018 | +0.061 / −0.014 |
+
+**Reading:**
+- Prediction 2 holds within one probe stream: phi spreads (61% vs 26% below −0.1).
+- The Kenyon → MBON drive becomes a little more context-specific: the gap between same-context and random grows from
+  0.046 to 0.068.
+- A small familiarity effect appears in the predicted direction: a repeated context drives about 3% less than its
+  previous occurrence, while random pairs do not.
+- MBON firing itself does not change yet.
+- Zero-shot means the weights never adjusted to the new memory, and 257 repeat pairs give no error bar here. The
+  treatment chunk (learning on) is the real test.
+
+**Queue incident.** The first A/B queue waited for a status line, "d5b done; m_main resumes from c7", which already
+existed from 14:20, so it fired at once (16:46):
+- the zero-shot probes ran beside d5b (valid);
+- the treatment chunk ran out of GPU memory;
+- the m_main chain it then started beside d5b was stopped. m_main is still at c7.
+
+`cadapt_ab_v2.sh` now waits for the d5b processes themselves to end. **Lesson: queue on a process, or on a line
+stamped after the queue starts, never on a line that may already exist.**
