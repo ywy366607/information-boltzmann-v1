@@ -136,3 +136,34 @@ Living stream, 3,744 words:
 - the commit hazard's spread grew from 0.12 to 0.23 over the chunk.
 
 The acts are becoming state-dependent, but they are not yet adaptive to difficulty. Rerun from c5 for 3 chunks.
+
+## D4 results (fork of m_main c5, 3 chunks, living stream)
+
+| gate | brain contribution | fresh B at chunk end | answered | latency | timing entropy |
+|---|---|---|---|---|---|
+| c5 (acts in chunk 6) | +0.454 +- 0.035 (mainline at c5: +0.485) | 6.938 | 0.71 | 2.0 | 1.05 |
+| c6 (chunk 7) | +0.148 +- 0.035 | 7.517 | 0.58 | 2.3 | 1.14 |
+| c7 (chunk 8) | +0.346 +- 0.056 | 7.742 | 0.62 | 2.2 | 1.07 |
+
+**The brain stays used with acts.** On the same words as the mainline's c5 gate, the language cost was 0.03. The c6
+dip awaits the mainline's c6 gate, which uses the same words, for a paired comparison: text segment or the act
+objective?
+
+**(3) The definition's test** (chunk 8, with every tick's CE in the trace). The pooled correlations are artefacts of
+the interval: a constant-hazard null gives larger ones (latency~wait gain +0.38, ~best tick +0.66 vs the policy's
++0.28 / +0.43). Within words of the same interval, per 1024-word block [min, median, mean, max]:
+- latency ~ wait gain: [-0.04, +0.07, +0.03, +0.07];
+- latency ~ best tick: [-0.03, +0.06, +0.05, +0.11];
+- timing value over the constant-hazard null: [+0.005, +0.007, +0.011, +0.020] nats per word, positive in every block.
+
+The acts read the state a little: commits come later where waiting pays, and the timing beats a state-blind policy
+in every block. The signal is weak; "learned when to speak" is not reached yet.
+
+**Why so weak, from the definitions.** Most of the next word's difficulty is aleatoric. The value of waiting is
+readable only at R^2 0.10, and a word's ticks gain 0.18 nats on average. Pragmatic value in a listening stream is the
+information an answer adds over the listener's prior, and speaking changes nothing in this world. The mother world is
+where speaking has consequences (the next input depends on what was said), so the value of timing becomes large and
+learnable.
+
+Report fixed: `live_act_report.py` now gives the within-interval correlations (average ranks) and the timing value
+over the null.
