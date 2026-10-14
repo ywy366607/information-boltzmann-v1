@@ -1685,10 +1685,19 @@ def word_packets(model, state, token):
 def write_input(model, state, token, emb=None, packets=None):
     """Sensory drive of one input word through the writer; predictive when a top-down expectation is available.
     emb: the sample the senses deliver this tick (default: the word's clean embedding).  packets: word_packets(...)
-    (a clean held word only)."""
+    (a clean held word only).  model.blind_input (living ablation 'blind', every input path): no drive, and the
+    sensory adaptation relaxes as on a quiet tick -- the word never reaches the senses, the rest of the brain lives."""
     writer = model.topographic_writer
     if writer is None:
         return None, state.baseline
+    if getattr(model, 'blind_input', False):
+        drive, _ = _write_input(model, state, token, emb, packets)
+        return drive * 0.0, (writer.lambda_adapt * state.baseline if hasattr(writer, 'lambda_adapt') else state.baseline)
+    return _write_input(model, state, token, emb, packets)
+
+
+def _write_input(model, state, token, emb=None, packets=None):
+    writer = model.topographic_writer
     if packets is not None and emb is None:
         beta = (torch.sigmoid(model.writer_prediction_logit) if packets[1] is not None else None)
         return writer.forward_with_state(None, state.h, state.baseline, beta=beta, packets=packets)
@@ -1800,12 +1809,6 @@ def _advance_fly_token_stream(model, state, token, schedule_box=None, *, ticks, 
             if sample is None and packets is None and hold_input:
                 packets = word_packets(model, current, token)
             drive, baseline = write_input(model, current, token, sample, packets=packets)
-            if getattr(model, 'blind_input', False):
-                # living ablation 'blind' (the causal gates): the word never reaches the senses -- exactly closed eyes
-                # (no drive; the sensory adaptation relaxes as on a quiet tick), the rest of the brain alive and learning
-                drive = drive * 0.0
-                baseline = (writer.lambda_adapt * current.baseline
-                            if writer_baseline_clock == 'physical' and writer is not None else current.baseline)
             if ai_g is not None:
                 # precision of the text input: the surface receives e * the word, so the drive and the sensory
                 # adaptation both see e * the packet; closed eyes (e = 0) are exactly a quiet tick, the word missed
