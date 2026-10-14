@@ -250,3 +250,33 @@ options:
 - a paid tier or a higher quota;
 - an agent mouth through the mailbox: with beats, the latency never reaches the child and only costs wall-clock time;
 - a stronger local model (RAM is the limit).
+
+## 13. First real mother run (DeepSeek mouth, 1,024 words from d4_acts c8, speaking act on, 2026-10-14 13:58-14:08)
+
+**The act learned from the interaction, quickly.**
+- 46 fly turns ended: breath 0, end word 9, **yield 37**.
+- Mean turn 1.74 words; silent turns 39%; fly TTR 0.84.
+- The commit hazard fell from 0.25-0.49 per tick (first windows) to 0.07-0.09 (last windows).
+- The fly's share of the heard words fell from about 0.1-0.3 to 0-0.1.
+
+**It learned silence for the wrong reason.**
+1. Before the prompt fix, the mouth repeated one script: "Mengli, Mama is here... Papa WuYue and Mama Yun love you".
+   Mother TTR was 0.10 and her repeated bigrams 0.78. The fly's gain over the unigram rose from 0.73 (first half) to
+   1.88 (second half): it learned the script.
+2. The return is -CE of the following words, with the fly's own words priced at the prior. A predictable mother is the
+   best return, so listening wins.
+3. She answered silence as fully as speech. Speaking bought nothing.
+4. The return counts words, not time, so silence costs nothing.
+
+In this world speaking has no use. The optimal policy is to keep quiet. This is the mechanical interaction the user
+warned about.
+
+**Exits, one at a time.**
+1. **A contingent mother** (the core finding on infant vocal learning: contingent responsiveness, Goldstein, King &
+   West 2003). After a silent turn she waits in silence too; after 3 silent turns she calls the child's name. Her full
+   answers come only after the child spoke, and they are about what was said. Speaking then buys a reply.
+2. **An epistemic return.** The value is what the mother's words teach: the fly's CE on her words falls as it learns
+   them, i.e. learning progress or information gain. Predictability is not the value, because predictability rewards
+   a script. This is the epistemic term of the action's EFE, deferred so far. Derive it first.
+3. **The mouth prompt** now says: answer her first, names naturally. In the last turns the mother named a cup, milk,
+   a blanket and a spoon, but her opening formula remains. Check in the next run.
