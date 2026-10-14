@@ -1301,6 +1301,73 @@ def attach_apl_kenyon_dendritic_only(model, graph_npz, annotations, dendritic_fe
     return int(edges.numel()), int(zero.numel()), float(share.mean())
 
 
+COMPARTMENT_SHARE_GROUPS = ('Kenyon_Cell', 'MBON', 'DAN', 'ALPN', 'descending_neuron')
+
+
+def compartment_dendritic_share(model, graph_npz, annotations, data_dir, sfx):
+    """Per edge of list sfx ('e' / 'i') into a route target (COMPARTMENT_SHARE_GROUPS): the share of the connection's
+    synapses that land outside the target's axonal territory (data_dir/dendritic_share_<group>.feather from
+    neuprint_dendritic_share.py: the calyx for Kenyon cells, output-enriched primary ROIs otherwise).  Kenyon -> Kenyon
+    edges are left to attach_kenyon_dendritic_only.  Pairs with no synapse in a primary ROI keep share 1.  Returns
+    (edge index, share)."""
+    import numpy as np
+    import pandas as pd
+    from pathlib import Path
+    graph = np.load(graph_npz, allow_pickle=True)
+    ids = np.asarray(graph['neuron_body_ids'], dtype=np.int64)
+    cls = pd.read_feather(annotations).set_index('bodyId').reindex(ids)['class'].astype(str).values
+    tables = [pd.read_feather(Path(data_dir) / f'dendritic_share_{g}.feather') for g in COMPARTMENT_SHARE_GROUPS
+              if (Path(data_dir) / f'dendritic_share_{g}.feather').exists()]
+    t = pd.concat(tables, ignore_index=True)
+    order = np.argsort(ids)
+    def index_of(body):
+        at = np.searchsorted(ids[order], body)
+        at = np.clip(at, 0, len(ids) - 1)
+        ok = ids[order][at] == body
+        return np.where(ok, order[at], -1)
+    a, b = index_of(t.body_pre.values.astype(np.int64)), index_of(t.body_post.values.astype(np.int64))
+    known = (a >= 0) & (b >= 0) & (t.in_primary.values > 0)
+    kc = cls == 'Kenyon_Cell'
+    known &= ~(kc[np.clip(a, 0, None)] & kc[np.clip(b, 0, None)])
+    n = len(ids)
+    keys = a[known] * n + b[known]
+    vals = (t.dendritic.values[known] / t.in_primary.values[known]).clip(0, 1).astype(np.float32)
+    srt = np.argsort(keys)
+    keys, vals = keys[srt], vals[srt]
+    pre, post = getattr(model, f'edge_pre_{sfx}').long(), getattr(model, f'edge_post_{sfx}').long()
+    ek = (pre * n + post).cpu().numpy()
+    at = np.clip(np.searchsorted(keys, ek), 0, max(0, len(keys) - 1))
+    hit = keys[at] == ek
+    edges = np.flatnonzero(hit)
+    device = pre.device
+    return (torch.as_tensor(edges, device=device, dtype=torch.long),
+            torch.as_tensor(vals[at[hit]], device=device, dtype=torch.float32))
+
+
+def attach_compartment_dendritic(model, graph_npz, annotations, data_dir, rescale=True):
+    """The point model puts every synapse on the soma.  Every edge into a route target is scaled once by the share of its
+    synapses outside the target's axonal territory, and edges with none there are pinned at 0 (the general form of
+    attach_kenyon_dendritic_only / attach_apl_kenyon_dendritic_only; compartment audit 2026-10-14: open cases APL ->
+    KC, LH and other intrinsic cells -> PN boutons, intrinsic -> MBON axons, VNC -> DN axons, DPM / MBON -> KC axons).
+    Returns {sfx: (edges, pinned, weighted share)}."""
+    out = {}
+    for sfx in ('e', 'i'):
+        edges, share = compartment_dendritic_share(model, graph_npz, annotations, data_dir, sfx)
+        w = getattr(model, f'edge_weight_{sfx}')
+        before = w[edges].detach().float()
+        if rescale:
+            with torch.no_grad():
+                w[edges] = w[edges] * share.to(w.dtype)
+        zero = edges[share == 0]
+        name = f'pinned_zero_edges_{sfx}'
+        pinned = getattr(model, name, None)
+        pinned = zero if pinned is None else torch.unique(torch.cat([pinned.to(zero.device), zero]))
+        model.register_buffer(name, pinned, persistent=False)
+        out[sfx] = (int(edges.numel()), int(zero.numel()),
+                    float((before * share).sum() / before.sum().clamp_min(1e-12)) if edges.numel() else 1.0)
+    return out
+
+
 TIED_RECEPTOR_CLASSES = ('olfactory', 'gustatory', 'chemosensory', 'hygrosensory', 'thermosensory')
 
 

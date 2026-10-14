@@ -1129,3 +1129,28 @@ APL and DPM inputs are mixed everywhere: they are non-spiking, local cells, for 
    APL fix with one rule.
 2. Built and A/B'd after the APL result (which tests the single largest open case first). Sizes per edge come from a
    per-pair query by target group.
+
+### The general compartment rule, applied to the mainline (user: "fix them first", instead of one A/B per pair)
+
+**`--compartment-dendritic`.** Every edge into Kenyon cells, MBONs, DANs, PNs and DNs is scaled once by the share of
+its synapses outside the target's axonal territory, from per-pair neuPrint tables (`neuprint_dendritic_share.py`):
+- the calyx for Kenyon targets (anatomical truth);
+- output-enriched primary ROIs for the other targets.
+
+Edges with no synapse in the dendritic territory are pinned at 0. Kenyon → Kenyon stays with `kc_dendritic_only`, and
+the separate APL flag is skipped when this one is on. Pinned: 231,886 excitatory and 89,006 inhibitory edges.
+
+Weighted dendritic share kept per target:
+
+| target | excitatory | inhibitory |
+|---|---|---|
+| KC | 0.82 | 0.23 (APL → KC 0.155) |
+| MBON | 0.90 | 0.59 |
+| DAN | 0.32 (mostly KC → DAN, already pinned) | 0.75 |
+| PN | 0.93 | 0.81 |
+| DN | 0.91 | 0.87 |
+
+**Queue `compartment_fix_mainline.sh`:**
+1. control = chunk 13 from c12 without the rule;
+2. the mainline continues from c12 with the rule;
+3. on both c13s: word margin, Kenyon repeat (P1), P3 and (2); paired NLL.

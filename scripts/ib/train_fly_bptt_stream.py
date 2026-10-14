@@ -35,7 +35,7 @@ from information_boltzmann.core.fly_bptt_learning import (WRITER_SENSE, attach_i
     ONLINE_DA_PARAMETER_NAMES, attach_online_da_plasticity, attach_kenyon_dendritic_only, attach_homeostasis,
     attach_regime_homeostasis, attach_tied_writer, REGIME_KENYON_Z,
     attach_compartment_memory, attach_taste_heads, COMPARTMENT_PARAMETER_NAMES, TASTE_PARAMETER_NAMES,
-    attach_stream_jepa, STREAM_JEPA_PARAMETER_NAMES, attach_apl_kenyon_dendritic_only,
+    attach_stream_jepa, STREAM_JEPA_PARAMETER_NAMES, attach_apl_kenyon_dendritic_only, attach_compartment_dendritic,
     renormalize_kenyon_inputs, pin_kenyon_to_dopamine, pin_sensory_terminals, pin_modulatory_fast_edges,
     reset_inputs_to_birth, attach_graded_cells, GRADED_PARAMETER_NAMES, attach_receptor_writer,
 )
@@ -280,6 +280,9 @@ def resolve_learning_modes(args, previous_config, previous_learner):
         args.stream_jepa_weight = float(previous_config.get('stream_jepa_weight') if previous_config.get('stream_jepa_weight') is not None else 0.5)
     args.kc_dendritic_newly = bool(args.kc_dendritic_only) and not bool(previous_config.get('kc_dendritic_only', False))
     args.apl_kc_dendritic_newly = bool(args.apl_kc_dendritic_only) and not bool(previous_config.get('apl_kc_dendritic_only', False))
+    args.compartment_dendritic_newly = bool(args.compartment_dendritic) and not bool(previous_config.get('compartment_dendritic', False))
+    if getattr(args, 'compartment_dendritic', None) is None:
+        args.compartment_dendritic = bool(previous_config.get('compartment_dendritic', False))
     if getattr(args, 'apl_kc_dendritic_only', None) is None:
         args.apl_kc_dendritic_only = bool(previous_config.get('apl_kc_dendritic_only', False))
     if getattr(args, 'kc_dendritic_only', None) is None:
@@ -563,6 +566,10 @@ def main():
                         help='Kenyon cells at a sparser quantile (omitted = inherit, else none)')
     parser.add_argument('--compartment-memory', action=argparse.BooleanOptionalAction, default=None,
                         help='Three-factor memory per Kenyon -> MBON synapse, dopamine at its MBON (omitted = inherit)')
+    parser.add_argument('--compartment-dendritic', action=argparse.BooleanOptionalAction, default=None,
+                        help='Every edge into Kenyon cells, MBONs, DANs, PNs and DNs scaled once by the share of its '
+                             'synapses outside the axonal territory of the target (neuPrint ROI, per pair); edges with none '
+                             'there pinned at 0.  Includes APL -> KC (omitted = inherit)')
     parser.add_argument('--apl-kc-dendritic-only', action=argparse.BooleanOptionalAction, default=None,
                         help='APL -> Kenyon inhibition on the soma only for its calyx synapses (84.5%% are axonal): '
                              'weights scaled once by the calyx share, axonal-only edges pinned at 0 (omitted = inherit)')
@@ -968,7 +975,12 @@ def main():
                                                         args.graph.parent / 'kc_kc_dendritic_synapses.feather', rescale=True)
             print(f'Kenyon -> Kenyon: {n_kk} edges, {n_zero} axo-axonal pinned at 0 (newborn)', flush=True)
             args.kc_dendritic_newly = False
-        if args.apl_kc_dendritic_only:
+        if args.compartment_dendritic:
+            stats = attach_compartment_dendritic(model, args.graph, args.graph.parent / 'body-annotations.feather',
+                                                 args.graph.parent, rescale=True)
+            print(f'Compartment rule (newborn): {stats} (edges, pinned, weighted dendritic share per list)', flush=True)
+            args.compartment_dendritic_newly = False
+        if args.apl_kc_dendritic_only and not args.compartment_dendritic:
             n_ak, n_az, mean_share = attach_apl_kenyon_dendritic_only(model, args.graph, args.graph.parent / 'body-annotations.feather',
                                                                       args.graph.parent / 'apl_kc_dendritic_synapses.feather', rescale=True)
             print(f'APL -> Kenyon: {n_ak} edges, {n_az} axonal-only pinned at 0, mean calyx share {mean_share:.3f} (newborn)', flush=True)
@@ -1324,7 +1336,13 @@ def main():
                                                             rescale=getattr(args, 'kc_dendritic_newly', True))
                 print(f'Kenyon -> Kenyon: {n_kk} edges, {n_zero} axo-axonal pinned at 0'
                       f'{" (weights rescaled now)" if getattr(args, "kc_dendritic_newly", True) else ""}', flush=True)
-            if args.apl_kc_dendritic_only:
+            if args.compartment_dendritic:
+                newly_c = bool(getattr(args, 'compartment_dendritic_newly', False))
+                stats = attach_compartment_dendritic(model, args.graph, args.graph.parent / 'body-annotations.feather',
+                                                     args.graph.parent, rescale=newly_c)
+                print(f'Compartment rule: {stats} (edges, pinned, weighted dendritic share per list)'
+                      f'{" (weights rescaled now)" if newly_c else ""}', flush=True)
+            if args.apl_kc_dendritic_only and not args.compartment_dendritic:
                 newly = bool(getattr(args, 'apl_kc_dendritic_newly', False))
                 n_ak, n_az, mean_share = attach_apl_kenyon_dendritic_only(model, args.graph, args.graph.parent / 'body-annotations.feather',
                                                                           args.graph.parent / 'apl_kc_dendritic_synapses.feather', rescale=newly)
