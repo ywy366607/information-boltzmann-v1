@@ -1073,3 +1073,59 @@ Change 1 is retested on top once P3's partial rho is above 0.05.
   for GPT-2 neighbours), and the Kenyon layer lost most of it (1.28x). If the fix lets the Kenyon code keep the
   senses' meaning, familiarity of meaning may work without JEPA.
 - So: measure P3 after the fix before deciding on JEPA.
+
+### JEPA A/B stopped: the treatment's z collapsed from the start
+
+**What happened.**
+- From the first logged window, z std was 0.02 and SIGReg × N sat at 26, its full-collapse value. Prediction error
+  over the mean pattern was 1.3–22, worse than the mean.
+- The raw Kenyon membranes are small, so z = proj(h) began near 0. There the characteristic function is about 1 and
+  SIGReg has no gradient, so z never left.
+- Paired NLL vs control: +0.0048 ± 0.0029.
+
+**Fix (built, flag-gated).** Standardize each Kenyon cell's membrane over the window's words before the projection,
+so that z starts at std ≈ 1 (checked: 0.99).
+
+**Rerun after the APL fix decision.** The JEPA probes were stopped: the treatment's would have measured a collapsed
+term, and the control's are not needed now.
+
+## Systematic compartment audit (`compartment_audit.py`, neuPrint, user: "check every circuit we use")
+
+**Method.**
+- For each target group and each input class: the share of synapses that land in the target cell's output-enriched
+  primary ROIs, i.e. ROIs holding a larger share of that cell's output sites than of its input sites ("mixed"; > 1.5x
+  is "axonal").
+- The first criterion (more output than input sites in the ROI) found nothing in the mushroom body, because Kenyon
+  axons receive heavy axo-axonal input.
+- Validation against known truths: KC → KC 0.88 (truth 0.97); APL → KC 0.73 (truth 0.845). So "mixed" is a slightly
+  low estimate of the axonal share.
+
+**Point-model artifacts on the route, by size** (share of the target's input × share axonal):
+
+| target ← source | share of input | axonal ("mixed") | status |
+|---|---|---|---|
+| KC ← KC | 0.551 | 0.88 | fixed (`kc_dendritic_only`) |
+| DAN ← KC | 0.588 | 0.87 | fixed (`connectome_v2` pin) |
+| KC ← DAN | 0.108 | 0.91 | modulatory channel (dopamine at the terminals), fine |
+| **KC ← APL** | 0.094 | 0.73 (truth 0.845) | **fix in A/B now** |
+| **ALPN ← cb_intrinsic** (LH and others onto PN boutons) | 0.096 | 0.89 | **open**: 8.5% of PN input |
+| **MBON ← cb_intrinsic** | 0.224 | 0.40 | **open**: about 9% of MBON input |
+| **DN ← VNC intrinsic, DN, AN** | 0.032 / 0.130 / 0.124 | 0.84 / 0.16 / 0.15 | **open**: about 7.7% of DN input |
+| ALPN ← ALPN | 0.105 | 0.18 | open, small |
+| KC ← DPM, MBON | 0.016, 0.005 | 0.93, 0.92 | open, about 2% of KC input |
+| DAN ← MBON, DAN, DPM | 0.024, 0.020, 0.009 | 0.38, 0.71, 0.89 | open, about 3% of DAN input |
+| ALPN ← KC, APL | 0.005, 0.003 | 0.99, 0.99 | open, small (presynaptic on PN boutons in the calyx) |
+
+**Fine:**
+- KC → MBON (0.04 axonal);
+- olfactory and ALLN → ALPN;
+- motor neurons (vnc 2.6% axonal; cb 8%, mixed 32%: unclear).
+
+APL and DPM inputs are mixed everywhere: they are non-spiking, local cells, for which the point concept itself fails.
+
+**Plan.**
+1. One general mechanism instead of pair-by-pair pins: scale every edge by the fraction of its synapses in the target
+   cell's non-axonal ROIs (per pair, from neuPrint). It would replace `kc_dendritic_only`, the KC → DAN pin and the
+   APL fix with one rule.
+2. Built and A/B'd after the APL result (which tests the single largest open case first). Sizes per edge come from a
+   per-pair query by target group.

@@ -2852,7 +2852,11 @@ class FlyBPTTLearner:
                 # the JEPA term (attach_stream_jepa): the read after word t-1 predicts word t's Kenyon representation;
                 # SIGReg pools this window's z with the last 3 windows' (detached: the only stop-gradient here)
                 lam_s = float(getattr(self, 'stream_jepa_sigreg', 0.05))
-                z = m.jepa_proj(torch.cat(jepa_kc, 0).float())
+                # each Kenyon cell's membrane standardized over the window's words: raw membranes are small, so the first
+                # version began with z ~ 0, where SIGReg has no gradient, and stayed collapsed (z std 0.02, 2026-10-14)
+                hk = torch.cat(jepa_kc, 0).float()
+                hk = (hk - hk.mean(0, keepdim=True)) / (hk.std(0, keepdim=True) + 1e-3)
+                z = m.jepa_proj(hk)
                 z_hat = m.jepa_pred(features[:-1].float())
                 pred = (z_hat - z[1:]).pow(2).mean()
                 pool = getattr(self, 'jepa_pool', None) or []
