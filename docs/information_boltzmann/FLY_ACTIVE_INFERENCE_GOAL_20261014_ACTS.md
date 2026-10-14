@@ -691,3 +691,31 @@ turn in the mother transcripts, and `world_eval` gap cost on c7. The brain may b
 Kenyon layer goes silent. If it does not, the options, one at a time:
 1. a shorter pause (half a beat) in the mother world;
 2. the latch carrying the context.
+
+## P2 result (m_main c7, 2,968 words): Kenyon novelty is not rarity, and not yet the brain's surprise either
+
+| measure | vs rarity | vs brain CE | vs CE residual after rarity |
+|---|---|---|---|
+| brain CE (token surprise) | **0.983** | — | — |
+| Kenyon novelty (1 − best cosine to the last 256 words) | −0.119 | −0.102 | 0.031 |
+| Kenyon prediction error (ridge from Kenyon + ALPN at t−1, test half) | −0.019 | −0.018 | −0.033 |
+
+**Distributions and controls:**
+- Novelty: [0.28 | 0.69 | 0.68 | 0.90].
+- Prediction error: [0.29 | 0.69 | 0.69 | 1.08], against 0.698 for predicting the mean pattern. A linear read of
+  the current state barely predicts the next Kenyon pattern.
+- Novelty and prediction error agree with each other (rho 0.54).
+- Kenyon is silent on 0.07% of words.
+
+**Reading:**
+- The Kenyon-level signal is a different quantity from token surprise. Token surprise is rarity (0.98); Kenyon
+  novelty is not (−0.12). So the representation level does escape rarity.
+- But it is unrelated to what the brain finds hard to predict. That fits the MBON finding: the brain's prediction
+  does not run through the Kenyon code (MBONs do not read it), so Kenyon novelty and the CE are unrelated.
+- The next Kenyon pattern is linearly unpredictable from the current state. A JEPA-style term is exactly what would
+  make it predictable: train the brain so that its state predicts its own next Kenyon / PN representation.
+
+**P3, first pass (PPMI co-occurrence) is withdrawn.** GPT-2 small is now downloaded (`F:/ml_cache/huggingface`, 526 MB).
+Co-occurrence is the weaker measure, so P3 is redone with GPT-2 only (`kenyon_gpt2_probe.py`, layer 6, last 3 tokens
+and 512-token context; partial correlation beyond receptor + ALPN overlap). The PPMI numbers stay in the status file
+for the record but are not used.
