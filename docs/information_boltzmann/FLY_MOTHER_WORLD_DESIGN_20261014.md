@@ -165,3 +165,26 @@ Known gaps:
 - **No commit act yet.** The fly speaks one word per arrival in its turn, and the turn ends at an end-of-turn word or
   after 16 words.
 - **Each run opens a new conversation** (a new day). The opening line is not written to mother.jsonl.
+
+## 10. Next: speaking as the act (design, 2026-10-14)
+
+D4 showed that in a listening stream the timing of an answer is worth about 0.01 nats per word: speaking changes
+nothing there, so the act has little to learn. In the mother world speaking changes the next input, and that is the
+point of the design.
+
+**v2 turn rule.** In the fly's turn, at each arrival the fly commits with the probability its motor acts give over the
+word's ticks, 1 - prod(1 - h_t).
+- A commit speaks the word sampled from its read; the fly hears it next.
+- No commit ends the turn: silence yields the floor, and the mother answers what was said.
+- In the mother's turn the fly listens. An interruption (a commit during her turn) is a later option.
+
+**The act's credit.** The world is not differentiable, so the act is a sampled policy. Its return is what the
+following window's words cost the fly: the CE of the stream it then has to predict, the mother's reply and its own
+self-heard words included. It is scored against the policy prior (KL to the habit), as in D1-D4. The world model now
+includes the fly's own effect, so an act whose consequence the fly predicts well is cheap. Saying something that
+draws a predictable, informative reply pays; babbling into confusion costs.
+
+**Harness checks before raising with the API mother:**
+- the dark room (endless silence, or always the same word);
+- collapse (repetition, identical turns);
+- whether the mother's replies depend on what was said (conditionality: a shuffled-turn control).
