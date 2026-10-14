@@ -794,3 +794,61 @@ the same checkpoint, with a living gate:
 - If (1) drops: the term competes with the token objective; lower λ_jepa.
 - If (2) holds but (3) does not: predictability without meaning; the Kenyon code is shaped only by its own
   predictability. Next would be the cross-sense version (LeVLJEPA: predict one sense from another).
+
+## MBON probe (m_main c7, 2,968 words): the readout is naive because the compartment memory cannot learn
+
+**Drive into the MBONs** (shares of |drive|, all ticks):
+
+| source | share |
+|---|---|
+| unannotated cells (`None`) | −0.603 |
+| MBON → MBON | −0.219 |
+| Kenyon (compartment synapses) | **+0.166**, the only real excitation |
+| CX | +0.011 |
+| ALPN | +0.002 |
+
+**The Kenyon → MBON drive is almost the same for every word.** Correlation of the per-MBON drive vector:
+- same last 3 words: [0.19 | 0.97 | 0.94 | 1.00];
+- random pairs: [0.07 | 0.93 | 0.89 | 0.99].
+
+MBON firing: same contexts 0.55 vs random 0.47. The median MBON fires on 0% of ticks; the mean is 1.9%. (The "14% fire
+every word" read earlier was the per-word coding level, not the same cells.)
+
+**The plastic memory phi is nearly untouched.** [−0.84 | −0.009 | −0.067 | 0]; 18% are below −0.1 and 2% below
+−0.5. The learned rule's constants barely moved from birth (eta −2.00 → −2.00, forget 0.020 → 0.027, trace about
+30 ticks).
+
+**Cause: receptor saturation at the compartments.**
+- Tonic dopamine at the MBONs is [0 | 0.156 | 0.77 | 8.2], **14.5 × the affinity K = 0.0108** at the median. K was
+  calibrated on the mean of all targets; other targets have a median of 0.0135.
+- So occupancy sits at 0.93 for both the fast and the slow pool, and the teaching signal
+  relu(occ(fast) − occ(slow)) is [0 | 0 | 0.002 | 0.029].
+- The relative dopamine changes are there at this instant ((fast − slow) / slow from −1.0 to +0.12), but saturated
+  occupancy hides them.
+- **This is a mechanism inconsistency.** m_main runs `dopamine_adapted = True`: every target's receptors adapt to their
+  own slow level, for threshold modulation and plasticity scaling. The compartment rule alone uses the fixed K.
+
+**The fly's view.** Naive MBONs are broadly tuned in the fly too; odour or context specificity is learned, with
+dopamine depressing the active Kenyon → MBON synapses (familiarity, alpha'3). Our MBONs are naive because that
+learning cannot happen.
+
+**Change 1, readout first (fly-native, one change).** A flag `--compartment-adapted`, default off, so running chains
+are unchanged: the compartment rule's receptors adapt as every other target's do,
+K_j = max(slow_j, K).
+- occ(slow) becomes 0.5, so the window factor is the presynaptic trace alone.
+- The teaching signal becomes relu(f/(f+K_j) − 0.5), about the relative burst / 4.
+- At the median MBON the signal grows about 2x; at the dopamine-dense compartments, up to about 100x.
+- Below K nothing changes (newborn safety).
+
+**Predictions for one chunk from c7, paired by window against m_main's own chunk 8:**
+1. (1) is not reduced beyond its error.
+2. phi spreads: the fraction below −0.1 rises well above 18%.
+3. Familiarity appears: the MBON drive at the second occurrence of a 3-word context falls below the first.
+4. Same-context vs random MBON firing separates beyond 0.55 vs 0.47.
+5. (2): the DA residual after rarity turns positive.
+
+**If not:**
+- If phi spreads but no familiarity appears: the bursts are not paired with the right Kenyon activity (timing), so
+  check the trace.
+- If phi does not spread: the bursts are too small. Then the dopamine cells' own input (KC → DAN release) comes next,
+  as a separate change.
