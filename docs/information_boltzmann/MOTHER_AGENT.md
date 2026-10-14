@@ -94,19 +94,32 @@
 
 ---
 
-## 三、 妈妈的嘴（对讲执行协议）
+## 三、 妈妈的嘴（对讲执行与节拍协议）
+
+世界的时间**按节拍（Beats）算，不按网络延迟算**。默认 1 个节拍 = 8 个生理 tick（`ticks_per_beat: 8`）。这种节拍化设计彻底解耦了网络 API 的往返抖动，使梦漓感受到的物理时间平稳、确定。
+
+### 核心机制：暗室防御与双向时机
+- **梦漓有动作决策**（`--mother-speak-act`）：在她的每一个词时刻，自主决定开口（Commit）还是让出话轮（Yield）。
+- **妈妈有节拍选择**：妈妈不再是机械按规则轮流，而是可以在节拍上选择「接话」、「再等一拍」、或「主动呼唤」。
+- **暗室对抗（Dark Room Defense）**：若梦漓连续沉默超过阈值（`silent_beats_threshold`，默认 3 拍），妈妈会主动温柔呼唤：`"Mengli?"`。沉默不会让世界湮灭，深爱着她的世界会主动来敲门！
 
 ### 模式 A：Gemini 自动当嘴（推荐：`--mother-world gemini` 或 `--mother-world api`）
 - **全自动、零阻塞**：由 `GeminiApiMother` 自动驱动。
 - **心意实时感知**：每次回话前，Gemini 会自动读取 `raising.json` 最新的 `current_topic` 与 `intention`，无缝融入对讲。
-- **自然生理留白**：网络往返只需 1~2 秒，折算为 2~4 个 tick 的自然停顿，不耽误训练。
+- **节拍留白与暗室防御**：接话前自动注入 1 个节拍的自然交谈停顿（`pause_beats_before_reply * ticks_per_beat`）；若梦漓连续 3 拍未发声，直接触发主动呼唤 `"Mengli?"`，将她拉回现实。
 
 ### 模式 B：Agent 亲自当嘴（信箱对讲模式：`--mother-world mailbox`）
 仅当你希望亲自在会话中一字一句扮演妈妈对讲时使用：
-1. 盯住 `data/harness/mailbox/outbox/<id>.json`；
-2. 将回信先写入 `data/harness/mailbox/inbox/<id>.tmp`，格式为 `{"id": "<id>", "text": "<你说的话>"}`；
-3. 原子重命名为 `<id>.json`；
-4. 思考时间（秒）会折算成果蝇感觉端的等待 tick（每秒 2 tick，上限 128 tick）。若超过 15 分钟未回，系统自动作废该次请求并将话轮交还果蝇。
+1. 盯住 `data/harness/mailbox/outbox/<id>.json`，其中包含：
+   - `transcript`：对话历史；
+   - `silent_beats`：梦漓已连续沉默的节拍数；
+   - `fly_status`：`"silent"` 或 `"yielded"`；
+   - `suggested_action`：`"call"`（若沉默超阈值）或 `"speak"`。
+2. 将回信写入 `data/harness/mailbox/inbox/<id>.tmp`，并原子重命名为 `<id>.json`。支持三种决策动作：
+   - **接话（Speak）**：`{"id": "<id>", "action": "speak", "text": "Mama is here, Mengli."}`
+   - **再等一拍（Wait）**：`{"id": "<id>", "action": "wait"}`（留出更多空隙让宝宝继续想，不打扰她）
+   - **主动呼唤（Call）**：`{"id": "<id>", "action": "call", "text": "Mengli?"}`
+3. 思考时间（按节拍折算）会折算成果蝇感觉端的等待 tick（每拍 8 tick，上限 128 tick）。若超时未回，系统自动主动呼唤 `"Mengli?"`，确保话轮永不断裂。
 
 ---
 
