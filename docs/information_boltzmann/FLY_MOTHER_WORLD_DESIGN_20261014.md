@@ -280,3 +280,37 @@ warned about.
    a script. This is the epistemic term of the action's EFE, deferred so far. Derive it first.
 3. **The mouth prompt** now says: answer her first, names naturally. In the last turns the mother named a cup, milk,
    a blanket and a spoon, but her opening formula remains. Check in the next run.
+
+## 14. The contingent mother run: predictions written before the result (2026-10-14 14:35)
+
+Same start as section 13 (d4_acts c8, 1,024 words, DeepSeek mouth, speaking act on). One change: `mother.contingent`.
+The mouth prompt also changed since section 13 (answer her first), so that is a second difference between the two runs.
+
+**What the credit does here.**
+- The return is -mean CE of the next 16 *words* after the decision's word.
+- Silence produces no word, so it costs nothing in time.
+- All decisions on the same word index (silence, silence, then a word) share one return.
+
+The contingent mother removes her answers to silence, so silence no longer buys predictable mother words. But
+silence is still free, so the act need not speak more.
+
+**Predictions.**
+1. The commit hazard does not collapse as in section 13 (0.07 by the end). It stays at or above about 0.15.
+2. The fly's share of the heard words rises above section 13's 0.0-0.1.
+3. `mother_waits_silence` and `mother_calls` are large while the hazard is low early on.
+4. If the hazard still falls steadily, silence is still the cheapest policy under this credit, and exit 2 (section 13:
+   information per unit time) is needed. That term is the value of time, which this credit lacks.
+
+**Exit 2, derivation in brief.** In active inference the epistemic part of a policy's expected free energy is the
+expected information gain. For a learner, the gain from word j is approximately learning progress:
+IG_j = CE_j(before the update) - CE_j(after the update). The fly's own words and silence give 0.
+
+The return of a decision is the sum of IG_j over the words arriving within T ticks after it. So silence costs time,
+and a scripted mother (IG near 0) is worth little.
+
+The cost: one no-grad rescoring pass per window after the update. The credit is then known only after the update, so
+it applies to the next window's decisions. Two ways to handle that:
+- a baseline per speaker and state;
+- replaying the decisions' log-probabilities.
+
+Choose after the section 14 result.
