@@ -665,10 +665,13 @@ def replay_ce(learner, state0, previous_token, targets, intervals):
     return out
 
 
-def epistemic_credit(learner, state0, previous_token, targets, horizon_ticks=64, beta=0.98):
+def epistemic_credit(learner, state0, previous_token, targets, horizon_ticks=64, beta=0.98, tau_ticks=0.0):
     """After the update: the learning progress of every word (the mother's only), the return of every decision of the
     window (the progress of the words arriving within horizon_ticks after it), the advantage against a running mean,
-    and the pending credit for the next window (learner.pending_speak_credit).  Returns a metrics dict."""
+    and the pending credit for the next window (learner.pending_speak_credit).  Returns a metrics dict.
+    tau_ticks > 0: the return discounts every later word by exp(-delay / tau_ticks) instead of a flat horizon -- a reply
+    that comes later is worth less, so a silence that only postpones the same reply no longer shares its credit (with
+    the flat horizon the silences before a word earned the reply that word bought)."""
     import numpy as np
     rec = getattr(learner, 'speak_record', None)
     if rec is None:
@@ -681,7 +684,10 @@ def epistemic_credit(learner, state0, previous_token, targets, horizon_ticks=64,
     R = []
     for i, t0, n, d in rec['decisions']:
         end = t0 + n
-        R.append(float(sum(g for g, t in zip(ig, arrival) if end < t <= end + horizon_ticks)))
+        if tau_ticks > 0:
+            R.append(float(sum(g * np.exp(-(t - end) / tau_ticks) for g, t in zip(ig, arrival) if t > end)))
+        else:
+            R.append(float(sum(g for g, t in zip(ig, arrival) if end < t <= end + horizon_ticks)))
     b = getattr(learner, 'speak_epistemic_baseline', None)
     A = [r - b for r in R] if b is not None else [0.0] * len(R)
     if R:

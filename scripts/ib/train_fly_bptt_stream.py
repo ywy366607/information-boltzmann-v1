@@ -489,6 +489,9 @@ def main():
                         help="Speaking act's credit: 'predict' (-CE of the following words) or 'epistemic' (what the words "
                              "arriving within --mother-credit-ticks taught: learning progress, applied one window late)")
     parser.add_argument('--mother-credit-ticks', type=int, default=64, help='Epistemic credit horizon in ticks')
+    parser.add_argument('--mother-credit-tau', type=float, default=0.0,
+                        help='> 0: the epistemic return discounts each later word by exp(-delay/tau) (ticks) instead of the '
+                             'flat horizon')
     parser.add_argument('--mother-interrupt', action='store_true',
                         help='With --mother-speak-act: a commit during the mother\'s turn cuts her off (no commit keeps '
                              'listening), both credited like speaking')
@@ -2193,7 +2196,8 @@ def main():
                 # what this window's words taught, now that it was learned: the speaking credit for the next window
                 from information_boltzmann.core.fly_mother_world import epistemic_credit
                 learner.last_epistemic = epistemic_credit(learner, window_state0, window_token0, targets_,
-                                                          horizon_ticks=args.mother_credit_ticks)
+                                                          horizon_ticks=args.mother_credit_ticks,
+                                                          tau_ticks=args.mother_credit_tau)
             trace = getattr(learner, 'last_ai_trace', None)
             if trace is not None:
                 with open(args.output / 'ai_trace.jsonl', 'a') as handle:
