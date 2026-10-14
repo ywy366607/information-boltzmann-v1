@@ -456,3 +456,14 @@ That is the form surprise should take for (2).
 
 **Limits of the paper.** It is a single-layer image model trained by BPTT through its inference steps, not a
 connectome, and it has no action. We take the principle, not its neuron model.
+
+**Correction (2026-10-14 15:00).** The Kenyon input probe counted every presynaptic cell's output as 0/1 (ring > 0).
+APL is graded: it transmits a small graded output every tick (about 0.014 per tick, from the coding probe). The probe
+counted that as a full spike every tick, so "~97% inhibition" overstates APL by a large factor. **Withdrawn.** The probe
+now uses the transmitted output itself, and it will be rerun.
+
+The homeostasis hypothesis also fails on its premise: m_main has homeostasis off, and its intrinsic drive covers only
+clock and modulatory types (pattern LNv / DN / LPN / PAM / PPL / OA / 5-HT), not the Kenyon cells.
+
+**What stands:** a word's Kenyon code repeats only weakly (0.15 same word vs 0.10 different words), and its ALPN ->
+Kenyon drive repeats (0.44 vs 0.21). The cause is open until the corrected budget is in.

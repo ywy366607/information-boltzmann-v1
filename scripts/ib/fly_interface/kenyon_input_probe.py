@@ -1,8 +1,9 @@
 """What drives the Kenyon cells while reading?  A word's Kenyon code repeats only weakly when the word repeats (m_main
 c7: same word 0.15 vs different words 0.10, level 0.03; the ALPN layer above it repeats, 0.48 vs 0.25), so the Kenyon
 cells fire mostly from something other than the word's projection-neuron input.  This splits the synaptic drive that
-reaches the Kenyon cells, per tick, by the presynaptic cell class (transmitted spikes x edge weight, excitatory and
-inhibitory lists), over the ticks when a Kenyon cell fires and over all ticks; and the per-word reliability of the
+reaches the Kenyon cells, per tick, by the presynaptic cell class (transmitted output x edge weight, excitatory and
+inhibitory lists; graded cells such as APL transmit their graded output, not a 0/1 spike -- the first version counted
+APL's graded output as a full spike every tick and overstated the inhibition), over the ticks when a Kenyon cell fires and over all ticks; and the per-word reliability of the
 ALPN -> Kenyon drive alone (does the word's PN input to the Kenyon cells repeat?).
 Usage: python kenyon_input_probe.py <checkpoint dir> [words=400] [out.json]
 """
@@ -46,7 +47,7 @@ with torch.no_grad():
         token = torch.tensor([int(w)], device='cuda')
         pn_drive = torch.zeros(n_kc, device='cuda')
         for t in range(TICKS):
-            spikes = (s.ring[0][0] > 0).float()
+            spikes = s.ring[0][0].float()        # what each cell transmits now: a spike, or a graded output (APL, CT1)
             for sfx, (pre, post, wt) in sel.items():
                 c = spikes[pre] * wt                                # this tick's transmitted drive per edge
                 drive_all.index_add_(0, cid[pre], c)
