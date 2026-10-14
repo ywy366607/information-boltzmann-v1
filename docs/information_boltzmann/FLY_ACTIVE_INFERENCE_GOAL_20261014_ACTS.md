@@ -1201,3 +1201,19 @@ on the corrected connectome has to re-adapt them; the paired NLL will show the c
 1. control = chunk 12 from c11 without the rule;
 2. the mainline continues from c11 with the rule;
 3. probes and paired NLL on both.
+
+### Speed (user: "speed decides how soon we are back on the mainline")
+
+**Where the time went.** About 70 min per comparison:
+- a 4,096-word chunk is 20–25 min (about 4.5 words/s on a 4 GB GPU);
+- the control and the treatment run serially (one GPU, tight RAM);
+- the three probes reload and re-read each time, about 15 min per arm.
+
+**New rules:**
+1. A mechanism test goes zero-shot first (load, look; about 15 min).
+2. Training comparisons use 1,024 words when the question is not long-term adaptation (about 6 min, 32 paired
+   windows).
+3. One merged probe, `snapshot_probe.py`: one load, P1, P3 and the word margin in about 5 min.
+4. The control is the mainline itself wherever possible, so its chunk is progress, not a test cost.
+
+**Target: about 15–20 min per mechanism comparison.** `compartment_fix_mainline_v3.sh` already uses the merged probe.
