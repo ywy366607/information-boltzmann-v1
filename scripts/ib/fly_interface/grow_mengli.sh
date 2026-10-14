@@ -6,7 +6,8 @@
 # the general compartment rule applied at the first resume (--compartment-dendritic, checked zero-shot healthy).
 # Mother world: DeepSeek mouth, contingent, speaking act, epistemic credit discounted per tick (tau 32, the best
 # behaved of the four earlier runs), beats of 8 ticks.  Eyes continuous (the live pass does not sample binary eyes),
-# no noise stretches (the mother's words are what is worth looking at).
+# no noise stretches (the mother's words are what is worth looking at); word intervals easier than on the text
+# (user: each window's mean interval log-uniform in [4, 8] ticks instead of [2, 16]; no reply pause).
 # Every chunk: 1024 words; checkpoints c1, every 10th and the latest two (on D); every 5 chunks: the snapshot probe
 # (Kenyon code, meaning, margins) on the text, and (2) surprise -> DA from the chunk's own words.
 # Usage: bash grow_mengli.sh [chunks=200]   Never edit while it runs.
@@ -15,7 +16,7 @@ PY=/d/conda_envs/vox/python.exe; FI=scripts/ib/fly_interface; CHUNKS=${1:-200}
 export FLY_REUSE_TRANSMISSION=0 PYTHONIOENCODING=utf-8
 root=/e/fly_stream_overflow/mengli; ckpt=/d/ib_checkpoints/mengli
 MOTHER="--mother-world deepseek --mother-speak-act --mother-credit epistemic --mother-credit-ticks 64 --mother-credit-tau 32"
-FIXED="--compartment-dendritic --no-eye-binary --noise-rate 0 --log-word-dopamine"
+FIXED="--compartment-dendritic --no-eye-binary --noise-rate 0 --log-word-dopamine --stream-pace-mean 8 --stream-pace-min 4"
 mkdir -p $root $ckpt
 if [ ! -f $ckpt/last.pt ]; then
   cp /d/ib_checkpoints/d5b/c11.pt $ckpt/last.pt; cp /d/ib_checkpoints/d5b/birth.pt $ckpt/birth.pt
