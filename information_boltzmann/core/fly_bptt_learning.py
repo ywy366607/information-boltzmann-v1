@@ -1893,6 +1893,8 @@ def clip_state_gradients(model, state, cap=None):
 
     def hook(g):
         # branch-free (no host sync per tick): finite and below the cap -> multiplied by exactly 1
+        if g is None:                    # an undefined gradient (no path back to the loss) passes through untouched
+            return g
         g = torch.nan_to_num(g, nan=0.0, posinf=0.0, neginf=0.0)
         n = g.norm()
         over = n > cap
