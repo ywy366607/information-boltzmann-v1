@@ -2076,6 +2076,7 @@ def main():
                         mother_world.pause_beats_before_reply = int(m_cfg.get('pause_beats_before_reply', getattr(mother_world, 'pause_beats_before_reply', 1)))
                         mother_world.silent_beats_threshold = int(m_cfg.get('silent_beats_threshold', getattr(mother_world, 'silent_beats_threshold', 3)))
                         mother_world.call_prompt = m_cfg.get('call_prompt', getattr(mother_world, 'call_prompt', None))
+                        mother_world.contingent = bool(m_cfg.get('contingent', getattr(mother_world, 'contingent', True)))
                     if hasattr(mother, 'update_plan'):
                         mother.update_plan(raising_full)
             except Exception as error:      # half written or invalid: keep the old plan, try again next window
@@ -2111,7 +2112,8 @@ def main():
                                    ticks_per_beat=ticks_per_beat,
                                    pause_beats_before_reply=pause_beats,
                                    silent_beats_threshold=silent_thresh,
-                                   call_prompt=call_prompt)
+                                   call_prompt=call_prompt,
+                                   contingent=bool(raising.get('contingent', True)))
         mother_rng = np.random.default_rng(int(trained) + 104729)
         print(f'Mother world ({args.mother_world}): turn-taking, self-hearing, beats ({ticks_per_beat} ticks/beat), '
               f'pause {pause_beats} beat(s), silent call threshold {silent_thresh}, fly T={args.mother_temperature}',

@@ -422,8 +422,11 @@ class MotherWorld:
     def __init__(self, mother, gpt2_tokenizer, history_turns=20, max_fly_words=24, end_of_turn=('\n', '.', '?', '!'),
                  opening='Hello, little one.', seed=0, ticks_per_beat=8, pause_beats_before_reply=1,
                  silent_beats_threshold=3, call_prompt=None, max_wait_beats=16, beat_duration_s=1.0,
-                 plan_path='data/harness/raising.json'):
+                 plan_path='data/harness/raising.json', contingent=False):
         self.mother, self.tok = mother, gpt2_tokenizer
+        # contingent mother: silence is met with silence (one beat; her call by name after silent_beats_threshold
+        # silent turns), her answers follow the child's voice -- speaking is what buys a reply (Goldstein et al. 2003)
+        self.contingent = bool(contingent)
         self.pending = None                        # the request an asynchronous mother is thinking about
         self.history_turns, self.max_fly_words = history_turns, max_fly_words
         self.end_ids = {i for s in end_of_turn for i in gpt2_tokenizer.encode(s)}
@@ -536,6 +539,14 @@ class MotherWorld:
         self.stats['fly_turns'] += 1
         history = self.transcript[-self.history_turns:]
 
+        if self.contingent and not had_words:
+            if self.silent_beats >= self.silent_beats_threshold:
+                self.call()                        # a long silence: she calls the child by name
+            else:
+                self.turn = 'fly'                  # she waits with the child: one beat of silence
+                self.stats['mother_waits_silence'] += 1
+            return
+
         # Dark room defense: if synchronous mother and persistently silent, auto-call
         if not getattr(self.mother, 'asynchronous', False) and not had_words and self.silent_beats >= self.silent_beats_threshold:
             call_text = self.get_call_prompt()
@@ -616,6 +627,7 @@ class MotherWorld:
                 # how her turns ended: breath (the length limit), an end word, or her own yield; learning to stop
                 # shows as the yield share rising
                 'fly_turn_ends': {k: self.stats[k] for k in ('end_breath', 'end_word', 'end_yield')},
+                'mother_waits_silence': self.stats['mother_waits_silence'],
                 'interruptions': self.stats['interruptions']}
 
 
