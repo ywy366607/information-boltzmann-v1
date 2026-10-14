@@ -611,3 +611,18 @@ pattern.
 3. Then one change: DA driven by the Kenyon-level prediction error instead of the token error. Judge it by the living
    (2) gate: phasic DA tracks surprise with no cost to (1).
 4. If P1 fails: add the JEPA term first, then repeat P1.
+
+**Corollary (user): a representation-level surprise favours coherence and little silence.**
+- Meaning is built by integrating consecutive words. One word followed by a long silence builds nothing: at gap 32 no
+  Kenyon cell fires.
+- So once surprise and credit live on the integrated code, silence has a natural price: the context decays, and the
+  next words become harder to predict.
+- This is an anti-dark-room pressure. A token-level objective can be lowered by hearing nothing; a semantic one
+  cannot, because the representation it must predict is lost.
+- It also gives "think" (waiting) a natural upper bound: the integration time.
+
+**Measured next** (`context_gap_after_probes.sh`, right after the queued probes): the context repeat probe with quiet
+gaps of 8 ticks (one beat, the mother's pause before every reply) and 16 ticks, to compare with gaps 0 and 32. If one
+beat already erases the context code, the mother world breaks the child's context at every turn boundary. Then:
+- shorten the pause, or let speech overlap as in real conversation (the brain never waits for input);
+- the child's own speech heard back (self-hearing) also bridges the gap.
