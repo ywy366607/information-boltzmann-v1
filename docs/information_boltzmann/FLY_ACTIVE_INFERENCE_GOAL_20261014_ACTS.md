@@ -265,3 +265,28 @@ the main text after a stretch with the eyes forced open vs forced closed.
 
 The default path is unchanged. The first smoke (local mother) died while host RAM was full. It will rerun after
 D5, because active read/think/speak is the precondition for the mother world.
+
+## (3) "Think": why the hard words do not get more thinking, and what to test instead (2026-10-14)
+
+D4 prediction 2 said the expected latency would grow with the tick-1 CE. It did not: within intervals, Spearman
+(latency, CE) is about -0.01 at c7-c8.
+
+**Cause.** The hindsight oracle on D4 c8 (`wait_oracle_c8`, pace geo(mu=8), missed answers priced at the listener
+prior) shows what waiting is worth, by difficulty quartile:
+
+| difficulty quartile (tick-1 CE) | easiest | 2 | 3 | hardest |
+|---|---|---|---|---|
+| gain of the best tick over tick 1 (nats) | 0.415 | 0.346 | 0.164 | 0.158 |
+| fraction of words where waiting pays | 0.74 | 0.80 | 0.61 | 0.65 |
+
+Waiting pays most on the easy words. Hard words are mostly rare words (surprise ~ rarity, rho 0.97), and their
+difficulty is aleatoric: no amount of settling makes an unpredictable word predictable. The reads of easy words keep
+sharpening as the brain settles; CE by tick goes from 7.60 to 7.39 over 8 ticks. This is the M2 finding again, now on a
+brain that carries the prediction.
+
+**Exit.** The criterion for learned thinking is that latency tracks each word's own wait value, not its difficulty.
+- `live_act_report.py` already reports `rho_latency_wait_gain` within intervals: +0.30 at D4 c8.
+- It also reports `ce_at_commit_minus_tick1`: -0.08 nats at c8, so commits land where the read has improved.
+- These are the measures for "think", alongside the timing value over the constant-hazard null.
+- In the mother world, thinking gets a second value. The word said comes from the read at the commit tick, so a
+  settled read says a better word.
