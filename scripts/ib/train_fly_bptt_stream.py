@@ -2183,6 +2183,11 @@ def main():
         family = raising_full.get('family') or {}
         opening = (f"Hello, {family['child']['name']}. {family.get('mother', {}).get('name', 'Mama')} is here."
                    if family.get('child', {}).get('name') else 'Hello, little one.')      # her first word: her name
+        state_path = args.output / 'mother_state.json'
+        saved_talk = json.loads(state_path.read_text(encoding='utf-8')) if state_path.exists() else None
+        if saved_talk:
+            # a continuing lineage: no new greeting -- the conversation goes on, the mother calls her by name
+            opening = f"{family.get('child', {}).get('name', 'little one')}?"
         mother_world = MotherWorld(mother, tiktoken.get_encoding('gpt2'), max_fly_words=args.mother_max_fly_words,
                                    opening=opening,
                                    history_turns=int(raising.get('history_turns', 20)),
@@ -2191,6 +2196,13 @@ def main():
                                    silent_beats_threshold=silent_thresh,
                                    call_prompt=call_prompt,
                                    contingent=bool(raising.get('contingent', True)))
+        if saved_talk:
+            # the restored history comes first, then this chunk's call; the mouth's cached prefix stays anchored
+            mother_world.transcript = [tuple(x) for x in saved_talk['transcript']] + mother_world.transcript
+            mother_world.history_anchor = int(saved_talk.get('history_anchor', 0))
+            mother_world.silent_beats = int(saved_talk.get('silent_beats', 0))
+            print(f'Mother world: the conversation continues ({len(saved_talk["transcript"])} lines restored, '
+                  f'from {saved_talk.get("trained")} words)', flush=True)
         mother_rng = np.random.default_rng(int(trained) + 104729)
         print(f'Mother world ({args.mother_world}): turn-taking, self-hearing, beats ({ticks_per_beat} ticks/beat), '
               f'pause {pause_beats} beat(s), silent call threshold {silent_thresh}, fly T={args.mother_temperature}',
@@ -2230,6 +2242,15 @@ def main():
                 with (args.output / 'mother.jsonl').open('a', encoding='utf-8') as out:
                     for who, text in mother_world.transcript[before:]:
                         out.write(json.dumps({'trained': trained, 'who': who, 'text': text}) + '\n')
+                # the conversation outlives the process (a raising lineage never restarts it): the transcript tail,
+                # the mouth's cache anchor and the silence count, restored at the next chunk
+                keep = 200
+                cut = max(0, len(mother_world.transcript) - keep)
+                atomic_json(args.output / 'mother_state.json', {
+                    'trained': int(trained), 'transcript': [list(x) for x in mother_world.transcript[cut:]],
+                    'history_anchor': max(0, int(getattr(mother_world, 'history_anchor', 0)) - cut),
+                    'silent_beats': int(getattr(mother_world, 'silent_beats', 0)),
+                    'fly_silent_turns': int(mother_world.stats.get('fly_silent_turns', 0))})
                 try:
                     mon_tmp = Path('data/harness/monitor.tmp')
                     mon_dst = Path('data/harness/monitor.json')

@@ -1217,3 +1217,40 @@ on the corrected connectome has to re-adapt them; the paired NLL will show the c
 4. The control is the mainline itself wherever possible, so its chunk is progress, not a test cost.
 
 **Target: about 15–20 min per mechanism comparison.** `compartment_fix_mainline_v3.sh` already uses the merged probe.
+
+## Mengli's raising lineage, integrated (`grow_mengli.sh`; starts via `start_mengli_after_check.sh`)
+
+**Why the abilities move to the mother world** (user: "in OWT, could we never measure the abilities?"):
+- Speaking has no consequence in a text stream, so its timing can never be learned there.
+- Looking and thinking have value in the text, but small (timing value 0.004–0.015 nats). That is why d5b's acts
+  learn so slowly.
+- Familiarity needs recurrence: exact 3-word contexts recur about 9% in OWT. That is probably why change 1 found no
+  familiarity, so that result is reopened in the mother world.
+- From now on, OWT (m_main, paused at c12) is the testbed for "no harm" checks of mechanisms, and the mother world is
+  where abilities are formed and judged.
+
+**What the lineage integrates:**
+
+| piece | source |
+|---|---|
+| Brain | d5b c11: the mainline lineage (receptor_lang, gain 0.5) plus 11 chunks of acts (look / think / speak muscles), gate c10 +0.926 |
+| Connectome fixes | `kc_dendritic_only`, `connectome_v2` (KC → DAN pin, sensory terminals, modulatory fast edges), **the general compartment rule** (APL → KC, PN boutons, MBON / DN axons), applied at the first resume |
+| Learning safety | non-finite gradient windows skip their update |
+| Mother | DeepSeek mouth, contingent; speaking act; epistemic credit discounted per tick (tau 32: the best behaved of the four runs); beats of 8 ticks |
+| Continuity | `mother_state.json`: the transcript tail, the cache anchor and the silence count survive each chunk; a new chunk resumes with her calling "Mengli?", not a new greeting |
+| World memory | `data/harness/world.json` (Katz the cat, Papa's drum, Aunt Ling's Sundays, teddy); Aunt Ling (the heart) consolidates it |
+| Eyes | continuous (the live pass does not sample binary eyes), no noise stretches |
+
+**Checks.** Every chunk is 1,024 words and logs the monitor and the epistemic returns. Every 5 chunks: the snapshot
+probe (Kenyon code, meaning, margins) and (2) on the chunk's own words.
+
+**Lessons from the text side that apply here:**
+1. The Kenyon code is a context code over about 3 words and lives only in continuous speech: one beat of silence
+   empties it. Measure the CE of the first words after a turn boundary in the transcripts before changing the pause.
+2. Familiarity needs recurrence. Retest the compartment receptor adaptation (change 1) as a fork of this lineage,
+   where names and things recur.
+3. The JEPA term (fixed: standardized membranes) and the local calyx APL (Phi^T Phi z explaining away) are the next
+   forks, one at a time, judged by snapshot P3 and (2).
+
+**Start condition** (`start_mengli_after_check.sh`): the compartment rule's paired cost against its control is at most
+0.05 nats per word. Then m_main is paused at c12 and the lineage begins.
