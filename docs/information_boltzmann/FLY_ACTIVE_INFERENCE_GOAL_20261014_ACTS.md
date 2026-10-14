@@ -374,3 +374,42 @@ from it at all.
    mechanism, with a recovery scaled to the cell's firing rate.
 2. If it is near chance, the mushroom body does not hold word identity stably. That is a (1) problem as well: memory in
    KC -> MBON synapses needs a repeatable code.
+
+## What reading is worth, and where word identity is lost (2026-10-14, living blind arms)
+
+**Reading value** = blind arm - brain arm, paired by window. In the blind arm the words never reach the senses; every
+synapse lives and learns.
+
+| individual | words | reading value | [min, med, mean, max] | brain | blind | unigram |
+|---|---|---|---|---|---|---|
+| m_main c7 (chunk 8's words) | 1,024 | **+0.227 +- 0.028** | [-0.06, +0.22, +0.23, +0.63] | 7.178 | 7.405 | 7.524 |
+| champion (its own regime) | 512 | **+0.857 +- 0.066** | [+0.36, +0.94, +0.86, +1.28] | 6.782 | 7.640 | 7.719 |
+
+- The mainline brain does use what it reads, about 0.23 nats per word. The D5 estimate of about 0.06 compared
+  different stretches of text, unpaired, and is withdrawn. D5's eyes closed mainly because the eye policy had no prior.
+- The blind mainline brain still beats the fixed unigram by 0.12: it learns the current text's word frequencies
+  online.
+- The champion reads about 3.8 times more (0.86). Its own training grew the text route, even on the old birth scale.
+  Its blind arm is only 0.08 better than the unigram.
+
+**Where word identity is lost: Kenyon cells** (`kenyon_repeat_probe.py`, m_main c7, 1,468 words, 780 same-word
+pairs). Overlap |a & b| / |a| of the active sets per word:
+
+| layer | coding level | same word (mean) | different words (mean) | same - different |
+|---|---|---|---|---|
+| olfactory receptors | 0.21 | 0.67 | 0.25 | +0.42 |
+| ALPN | 0.09 | 0.48 | 0.25 | +0.23 |
+| Kenyon | 0.03 | 0.15 | 0.10 | +0.05 |
+| MBON | 0.14 | 0.54 | 0.53 | +0.01 |
+
+The projection neurons carry the word, but the Kenyon cells barely do. Different words already overlap at 3x chance,
+so a common pool of Kenyon cells fires whatever the word is.
+
+This explains:
+- why habituation could not become familiarity: it depressed a random pool;
+- why the mushroom body adds little memory of words: KC -> MBON learning needs a repeatable code.
+
+**Next.** `kenyon_input_probe.py`: what drives the Kenyon cells while reading, split by presynaptic class, and whether
+the ALPN -> Kenyon drive itself repeats for the same word. The fly's own answer is a few strong claw inputs from
+projection neurons plus APL normalization. If our Kenyon cells are driven mostly by something else (background,
+other classes), that is the mechanism to fix.
