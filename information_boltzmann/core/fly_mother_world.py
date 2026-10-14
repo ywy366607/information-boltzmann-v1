@@ -189,11 +189,19 @@ class GeminiApiMother:
                     first_line = text.split('\n')[0].strip()
                     return first_line or '...'
                 elif r.status_code in (429, 503):
+                    self.last_status = r.status_code
                     time.sleep(delay)
                     delay = min(delay * 2, 30.0)
-            except Exception:
+                else:
+                    self.last_status = r.status_code
+            except Exception as error:
+                self.last_status = type(error).__name__
                 time.sleep(1.0)
-        return '...'
+        # no answer (quota, rate limit, network): she stays silent -- never a made-up word the child would hear
+        self.failures = getattr(self, 'failures', 0) + 1
+        print(f'Gemini mouth: no answer after {self.retries} tries (last: {getattr(self, "last_status", None)}), '
+              f'{self.failures} so far: she stays silent', flush=True)
+        return ''
 
 
 GeminiMother = GeminiApiMother
@@ -463,7 +471,12 @@ class MotherWorld:
                                                suggested_action=suggested)
             self.turn = 'waiting'
         else:
-            self._say_mother(self.mother.reply(history))
+            text = self.mother.reply(history)
+            if text and str(text).strip():
+                self._say_mother(text)
+            else:                                  # no answer: silence, and the floor goes back to the child
+                self.turn = 'fly'
+                self.stats['mother_silent'] += 1
 
     def wait_for_mother(self, poll_interval_s=0.5):
         """An asynchronous mother is deciding.  The world's clock is beats, not her thinking time (network and agent

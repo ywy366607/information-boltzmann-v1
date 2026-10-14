@@ -226,3 +226,27 @@ rising, and rising where the mother's answer is worth hearing.
 The Gemini agent wrote the first beat version: the 8-tick beat, the pause, the call by name, and the mailbox actions.
 This section changes three things in it: 'wait' is silence, not the word "...", the beats no longer depend on real
 time, and the decisions are segments.
+
+## 12. First v2 run on the GPU (2026-10-14 13:37-13:52, d4_acts c8, Gemini mouth, speaking act on)
+
+**What happened.** Mengli's first turns:
+- "City": Mama answered "Mengli sees the big city, and Mama and Papa love you so much...".
+- "ie".
+- One fully silent yield.
+
+Turn ends: 1 end word, 2 yields. Then every Gemini call failed. After about 4 answers, all requests ended after 5
+retries with backoff (about 60 s each): quota or rate limit on the free tier. The fallback returned the word "...", so
+the mother "said" "..." for the rest of the run, and each window took 26 s, then 89 s, then 353 s. The smoke was stopped
+at 4 windows.
+
+**The pipeline works end to end.** The decisions were credited (speak_decisions 2 and 14 per logged window, speak rate
+0.5 and 0.79, return about -8), and the family names appeared in her words (16 in 3 turns).
+
+**Fixed.** A failed mouth is a silent mother. reply() returns '', the floor goes back to the child, it counts as
+`mother_silent`, and a log line names the last HTTP status. The child never hears a made-up word.
+
+**Open: the mouth's budget.** A 4,096-word chunk needs about 150-250 mother turns. The free tier did not last 5. The
+options:
+- a paid tier or a higher quota;
+- an agent mouth through the mailbox: with beats, the latency never reaches the child and only costs wall-clock time;
+- a stronger local model (RAM is the limit).
