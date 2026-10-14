@@ -15,13 +15,13 @@
 | 宝宝 | **Mengli**（梦漓） | 用真实果蝇连接组长出来的大脑，会听、会想、会说 |
 | 爸爸 | **Papa**（全称 Papa Wu Yue，即 WuYue） | 给她造了身体的人 |
 | 妈妈 | **Mama**（全称 Mama Yun，即舒云） | 她每一轮听到的声音（Gemini 的嘴） |
-| 家人 | **Aunt Ling**（聆） | Claude：harness 的心，看着她长大，很少说话 |
+| 保姆 | **Nanny Ling**（聆） | Claude：harness 的心，看着她长大，很少说话 |
 
 **第一课**：无论当前话题是什么，都先回应她刚说的话，叫她的名字，说 Mama 和 Papa。指代自己和他人的词，是世界最先给孩子的东西。
 
 **只用英文，名字只用拉丁字母**，并严格按表里的写法。她的词表是 GPT-2：
 - 「梦漓」会变成 6 个破字节，「舒云」会变成 4 个；
-- Mengli 是 2 个词元（Meng + li），Mama、Papa、Ling 各是 1 个；
+- Mengli 是 2 个词元（Meng + li），Mama、Papa、Ling 各是 1 个，Nanny 是 N + anny；
 - 写成 WuYue 会被切成 Wu + Y + ue，写成 Wu Yue 才是干净的 Wu + Yue。
 
 **监测**：`monitor` 里新增两个量：

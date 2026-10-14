@@ -70,7 +70,7 @@ def family_prompt(plan):
            if fam.get('mother') else '',
            f"her father is {fam['father'].get('full', 'Papa')} (she calls him {fam['father'].get('name', 'Papa')})"
            if fam.get('father') else '']
-    who += [f"{o['name']} is family too" for o in fam.get('others', []) if o.get('name')]
+    who += [f"{o['name']} is her {o.get('role', 'family')}" for o in fam.get('others', []) if o.get('name')]
     return (f"The child's name is {child}; " + '; '.join(w for w in who if w) + '. ' + fam.get('first_lessons', '') +
             ' ' + fam.get('language', '')).strip()
 
