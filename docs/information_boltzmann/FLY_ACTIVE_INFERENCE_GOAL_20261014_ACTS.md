@@ -626,3 +626,39 @@ gaps of 8 ticks (one beat, the mother's pause before every reply) and 16 ticks, 
 beat already erases the context code, the mother world breaks the child's context at every turn boundary. Then:
 - shorten the pause, or let speech overlap as in real conversation (the brain never waits for input);
 - the child's own speech heard back (self-hearing) also bridges the gap.
+
+## P1 result (m_main c7, 2,968 words, gap 0): the Kenyon code is a context code over about 3 words
+
+Overlap of the active sets between successive occurrences of the same context, against controls at the same
+distance whose contexts differ. Medians are shown; the full [min|median|mean|max] is in the m_main status.
+
+| layer | same last 1 | same last 2 | same last 3 | different (1/2/3) | ratio 1 → 2 → 3 |
+|---|---|---|---|---|---|
+| receptors | 0.669 | 0.742 | 0.823 | 0.221 / 0.232 / 0.225 | 3.0 → 3.2 → 3.7 |
+| ALPN | 0.462 | 0.665 | 0.737 | 0.236 / 0.234 / 0.229 | 2.0 → 2.8 → 3.2 |
+| **Kenyon** | **0.103** | **0.328** | **0.470** | 0.078 / 0.082 / 0.080 | **1.3 → 4.0 → 5.9** |
+| MBON | 0.533 | 0.556 | 0.600 | 0.500 / 0.526 / 0.533 | 1.07 → 1.06 → 1.13 |
+
+**Kenyon (P1 holds).** The Kenyon layer depends on context more than any other layer. Same word alone: 1.3x chance;
+same last 3 words: 5.9x.
+
+**Margin probe agrees** (isolated words, gap 32, 192 words). One word lifts the Kenyon top 1% only to h/θ 0.33
+(median; [0.19 | 0.33 | 0.32 | 0.54]). The top 1% of receptors reaches threshold, and of ALPN 0.98. So a Kenyon
+cell needs about three words of accumulated drive, which is the 3-word context. This is the user's
+potential-accumulation account, measured.
+
+**New defect: the MBONs do not read the context code.**
+- Their overlap is the same for the same and for different contexts (0.53–0.60 vs 0.50–0.53), and 14% of them fire
+  for every word.
+- The fly's own expectation loop (Kenyon → MBON → DAN) therefore cannot yet say "this context was expected".
+- Representation-level surprise through the fly's circuit needs context-specific MBONs. Making them so is the job of
+  DA-gated Kenyon → MBON plasticity, and is a precondition to check before switching the DA signal.
+
+**Next.** P2 / P3 are queued: `kenyon_semantic_probe.py` via `semantic_after_gap.sh`, after the gap sweep.
+- P2: Kenyon novelty and ridge prediction error vs rarity, vs the brain's CE and its residual.
+- P3: same meaning with no shared token (PPMI-SVD contexts from the training text; the local GPT-2 cache has only
+  the tokenizer) vs random.
+
+**d5b at the same time:**
+- gate c8: (1) +0.436 ± 0.037; reading +0.103 ± 0.019; (2) still rarity (0.02, residual −0.001); latch +0.064 ± 0.030.
+- c9 acts: latency follows wait gain (rho 0.23) only between word lengths, not within them (−0.01).
