@@ -207,6 +207,86 @@ class GeminiApiMother:
 GeminiMother = GeminiApiMother
 
 
+class DeepSeekMother(GeminiApiMother):
+    """The mouth through DeepSeek's OpenAI-format API (https://api-docs.deepseek.com/): the same family prompt, plan
+    reload and silence on failure as the Gemini mouth.  The key is read from DEEPSEEK_API_KEY in the environment or .env
+    (the user configures it; it is never printed or stored here).  Default model 'deepseek-flash', thinking off."""
+
+    def __init__(self, model='deepseek-flash', api_key=None, max_tokens=60, temperature=0.7, system=None, retries=5,
+                 plan_path='data/harness/raising.json'):
+        import os
+        import requests
+        try:
+            import dotenv
+            dotenv.load_dotenv()
+        except ImportError:
+            pass
+        self.requests = requests
+        self.api_key = api_key or os.environ.get('DEEPSEEK_API_KEY') or self._user_environment('DEEPSEEK_API_KEY')
+        if not self.api_key:
+            raise ValueError('DEEPSEEK_API_KEY must be set in the environment or .env')
+        self.model = model or 'deepseek-flash'
+        self.max_tokens, self.temperature, self.retries = max_tokens, temperature, retries
+        self.base_system = system or self.SYSTEM
+        self.plan_path, self.plan, self.plan_mtime = plan_path, {}, 0.0
+        self.url = 'https://api.deepseek.com/chat/completions'
+        self.thinking_field = True                 # dropped once if the API refuses it
+        self._refresh_plan()
+
+    @staticmethod
+    def _user_environment(name):
+        """A variable set in the Windows user environment after this process started (HKCU\\Environment)."""
+        try:
+            import winreg
+            with winreg.OpenKey(winreg.HKEY_CURRENT_USER, 'Environment') as key:
+                return winreg.QueryValueEx(key, name)[0] or None
+        except Exception:
+            return None
+
+    def reply(self, transcript):
+        import time
+        messages = [{'role': 'system', 'content': self.get_system_prompt()}]
+        for who, text in transcript:
+            role = 'assistant' if who == 'mother' else 'user'
+            if len(messages) > 1 and messages[-1]['role'] == role:
+                messages[-1]['content'] += ' ' + text
+            else:
+                messages.append({'role': role, 'content': text})
+        if messages[-1]['role'] != 'user':
+            messages.append({'role': 'user', 'content': '...'})
+        m_cfg = self.plan.get('mother', {}) if isinstance(self.plan, dict) else {}
+        delay = 2.0
+        for attempt in range(self.retries):
+            payload = {'model': self.model, 'messages': messages, 'stream': False,
+                       'max_tokens': int(m_cfg.get('max_reply_tokens', self.max_tokens)),
+                       'temperature': float(m_cfg.get('temperature', self.temperature))}
+            if self.thinking_field:
+                payload['thinking'] = {'type': 'disabled'}
+            try:
+                r = self.requests.post(self.url, json=payload, timeout=20,
+                                       headers={'Authorization': f'Bearer {self.api_key}',
+                                                'Content-Type': 'application/json'})
+                if r.status_code == 200:
+                    text = (r.json().get('choices', [{}])[0].get('message', {}).get('content') or '').strip()
+                    return text.splitlines()[0].strip() if text else ''
+                self.last_status = r.status_code
+                if r.status_code == 400 and self.thinking_field:
+                    self.thinking_field = False    # an API that does not know the field: ask again without it
+                    continue
+                if r.status_code in (429, 500, 502, 503):
+                    time.sleep(delay)
+                    delay = min(delay * 2, 30.0)
+                else:
+                    break
+            except Exception as error:
+                self.last_status = type(error).__name__
+                time.sleep(1.0)
+        self.failures = getattr(self, 'failures', 0) + 1
+        print(f'DeepSeek mouth: no answer after {self.retries} tries (last: {getattr(self, "last_status", None)}), '
+              f'{self.failures} so far: she stays silent', flush=True)
+        return ''
+
+
 class ApiMother:
     """A fast API model as the mother.  The SDK reads its own standard environment configuration (the key is never
     read, printed or stored here).  `model` is the user's choice."""

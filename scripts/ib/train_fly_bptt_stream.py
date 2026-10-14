@@ -479,7 +479,7 @@ def main():
                         help='No active evaluation (fresh B / A revisit) in this run: a gate arm that only scores the stream')
     parser.add_argument('--score-log', type=Path, default=None,
                         help='Append every window pre-update word scores (JSONL) for paired comparisons')
-    parser.add_argument('--mother-world', choices=('local', 'api', 'gemini', 'mailbox'), default=None,
+    parser.add_argument('--mother-world', choices=('local', 'api', 'gemini', 'deepseek', 'mailbox'), default=None,
                         help='Train in the mother world: live each window (the fly speaks in its turns, the mother answers), '
                              'then relive it with gradient (never inherited)')
     parser.add_argument('--mother-api-model', default=None, help='The API mother model id (the SDK reads its own env config)')
@@ -2051,7 +2051,7 @@ def main():
         # a mother, her replies come back through the senses; a new conversation each run (each chunk: a new day)
         import tiktoken
         from information_boltzmann.core.fly_mother_world import (MotherWorld, LocalMother, ApiMother, GeminiApiMother,
-                                                                 MailboxMother, live_window)
+                                                                 DeepSeekMother, MailboxMother, live_window)
         # the raising plan (dashboard / the mother agent: data/harness/raising.json) sets the mother's side
         raising_path = Path('data/harness/raising.json')
         raising_mtime = 0.0
@@ -2097,6 +2097,9 @@ def main():
         mother = (LocalMother() if args.mother_world == 'local' else
                   GeminiApiMother(args.mother_api_model or raising.get('model') or 'gemini-3.5-flash')
                   if args.mother_world == 'gemini' else
+                  DeepSeekMother(args.mother_api_model or (raising.get('model') if 'deepseek' in str(raising.get('model'))
+                                                           else None) or 'deepseek-flash')
+                  if args.mother_world == 'deepseek' else
                   MailboxMother(timeout=float(raising.get('mailbox_timeout_s', 900))) if args.mother_world == 'mailbox' else
                   ApiMother(args.mother_api_model))
         family = raising_full.get('family') or {}
