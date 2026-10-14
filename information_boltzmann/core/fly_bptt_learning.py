@@ -3352,7 +3352,9 @@ class FlyBPTTLearner:
                                  for n, p in zip(names, params)}
         self.pull_tau = float(pull_tau)
         if ev.get('birth') is not None:
-            self.evidence_birth = {n: ev['birth'][n].to(device) for n in names}
+            # a parameter switched on at this resume has no saved birth value: its current value is its reference
+            self.evidence_birth = {n: ev['birth'][n].to(device) if n in ev['birth'] else p.detach().clone()
+                                   for n, p in zip(names, params)}
         else:
             if saved is not None:
                 print('evidence plasticity: no birth values in the checkpoint -- the current values become the reference',
