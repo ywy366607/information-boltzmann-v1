@@ -22,7 +22,7 @@ if [ ! -f $ckpt/last.pt ]; then
   for f in config.json progress.json metrics.jsonl lifelong_evaluation.jsonl ai_trace.jsonl; do cp /e/fly_stream_overflow/d5b/$f $root/ 2>/dev/null; done
   echo "$(date '+%m-%d %H:%M') Mengli's lineage begins from d5b c11 (+ the compartment rule); mother: DeepSeek, contingent, speaking act, epistemic credit tau 32" >> $root/status
 fi
-done_chunks=$(grep -c "chunk [0-9]* done" $root/status)
+done_chunks=$(grep -cE "^[0-9-]+ [0-9:]+ chunk [0-9]+ done" $root/status)   # only the chain's own lines
 for ((c=done_chunks+1; c<=CHUNKS; c++)); do
   $PY -u scripts/ib/train_fly_bptt_stream.py --extend-budget --additional-tokens 1024 --output $root --checkpoint-dir $ckpt \
       --score-log $root/scores_c$c.jsonl $MOTHER $FIXED >> $root/train.log 2>&1 \

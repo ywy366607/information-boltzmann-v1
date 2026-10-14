@@ -78,7 +78,7 @@ if [ ! -f $ckpt/last.pt ]; then
   echo "$(date +%H:%M) born: chunk 1 done: $(grep 'ACTIVE EVAL' $root/train.log | tail -1)" >> $root/status
   cp $ckpt/last.pt $ckpt/c1.pt; latch_mask c1; probes c1
 fi
-done_chunks=$(grep -c "chunk [0-9]* done" $root/status)
+done_chunks=$(grep -cE "^[0-9:]+ (born: )?chunk [0-9]+ done" $root/status)   # only the chain's own lines (a "treatment chunk N done" line once shifted the count)
 for ((c=done_chunks+1; c<=CHUNKS; c++)); do
   $PY -u scripts/ib/train_fly_bptt_stream.py --extend-budget --additional-tokens 4096 --output $root --checkpoint-dir $ckpt \
       --score-log $root/scores_c$c.jsonl $LOGS $EXTRA >> $root/train.log 2>&1 \

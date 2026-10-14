@@ -1277,3 +1277,31 @@ way back.
   reaches the child, and the mother's replies differ in length.
 - The child's own silences still last a beat: that is her act.
 - Logged in `mother_notes.md`.
+
+### The compartment rule's comparison: no harm, and the first positive (2) residual
+
+**A counting bug, fixed.** `grow_mainline_live.sh` counted "chunk N done" lines, and the 22:57 "JEPA treatment chunk
+11 done" line matched.
+- So the chain named the rule chunk 13 (saved as c13.pt, scores_c13), pruned c11, and the v3 queue waited forever for
+  "chunk 12 done".
+- Repaired: renumbered to c12 (status line annotated). The scores file had kept 68 windows of the stopped 22:59
+  no-rule run; they are split off into `scores_c12_partial_norule_2259.jsonl`. The paired NLL keys windows by
+  position, the later rows win, so it was unaffected.
+- The counters in `grow_mainline_live.sh` and `grow_mengli.sh` now match only the chain's own lines (`grep -E`).
+
+**Result** (chunk 12 from c11, the same 4,096 words, 128 paired windows):
+
+| | control (no rule) | rule |
+|---|---|---|
+| NLL, rule − control | | **−0.0035 ± 0.0036** [−0.098 \| −0.004 \| −0.0035 \| +0.089]: no harm, if anything better |
+| (2) rho(surprise, phasic DA) | −0.028 | +0.007 |
+| (2) residual after rarity | −0.014 | **+0.107** |
+| (2) rarity part | −0.029 | −0.022 |
+| phasic sd | 0.114 | 0.125 |
+
+The residual is the first clearly positive one: DA follows the part of surprise that is not rarity. It is one chunk
+and the per-1,024-word median is still about −0.01, so it has to repeat before it counts. Mengli's lineage checks
+(2) every 5 chunks.
+
+**Adopted.** m_main is paused at c12 as the testbed. Mengli's lineage starts once the snapshot on the rule's c12 is
+done (`finish_compartment_check.sh`).
