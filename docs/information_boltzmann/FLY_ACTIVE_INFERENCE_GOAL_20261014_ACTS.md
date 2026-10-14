@@ -413,3 +413,20 @@ This explains:
 the ALPN -> Kenyon drive itself repeats for the same word. The fly's own answer is a few strong claw inputs from
 projection neurons plus APL normalization. If our Kenyon cells are driven mostly by something else (background,
 other classes), that is the mechanism to fix.
+
+**Kenyon input probe** (m_main c7, 368 words). Synaptic drive into the Kenyon cells by presynaptic class, as a signed
+share of the absolute total:
+- All ticks: an unannotated-class source -0.976 (inhibition; most likely APL, whose class is missing in the
+  annotations), ALPN +0.023, MBON -0.001.
+- Ticks when a Kenyon cell fires: unannotated -0.962, ALPN +0.036.
+- The ALPN -> Kenyon drive itself repeats for the same word: correlation 0.44 (same word) vs 0.21 (different words).
+
+The word's projection-neuron input does reach the Kenyon cells, and it repeats. But it is only a few percent of their
+synaptic drive, under a wall of inhibition, so it does not decide which Kenyon cells fire. Their spikes then come from
+whatever else drives them: intrinsic or homeostatic current, and fluctuations. That is why the code does not repeat.
+
+**Next probe:** the Kenyon current budget per tick (PN excitation, APL inhibition, intrinsic / homeostatic current,
+threshold), the PN -> Kenyon weights now against birth, and the APL output scale.
+
+In the fly a Kenyon cell needs several coincident claw inputs from projection neurons, and APL normalizes the
+population. Our PN input is far below that.
