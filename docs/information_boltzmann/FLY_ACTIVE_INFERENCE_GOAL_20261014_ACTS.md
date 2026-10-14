@@ -499,3 +499,32 @@ before it. In the fly, odours are usually separated by clean air.
 2. If it is mixing, use the iP-VAE principle: inhibition removes what is already explained, here the predictable
    carry-over of the previous words. That is the innovation, input minus the brain's own expectation (the predictive
    writer), and it is also the form of surprise that (2) needs.
+
+**Temporal mixing, tested** (`kenyon_repeat_probe.py` with a gap of quiet ticks after every word, m_main c7, 968 words,
+461 same-word pairs). Mean overlap of the active sets:
+
+| layer | no gap: level / same / different | 32-tick gap: level / same / different |
+|---|---|---|
+| olfactory receptors | 0.21 / 0.66 / 0.25 | 0.10 / **0.92 / 0.15** |
+| ALPN | 0.094 / 0.47 / 0.26 | 0.017 / **0.75 / 0.07** |
+| Kenyon | 0.031 / 0.15 / 0.10 | **0.000 (silent)** |
+| MBON | 0.15 / 0.54 / 0.52 | 0.058 / 0.52 / 0.50 |
+
+**1. Mixing confirmed.** Separated words have repeatable, word-specific receptor and PN codes (ALPN 0.75 vs 0.07). In
+the continuous stream each word's response carries the words before it.
+
+**2. A single word drives no Kenyon cell.** With the gap the Kenyon cells are silent. In the stream they fire only from
+the summed activity of several consecutive words, so their code is a mixture of the recent words. It cannot repeat
+with a word, and familiarity or surprise cannot be read from it.
+
+An isolated word activates about 1.7% of the ALPN (9.4% in the stream). In the fly an odour activates a sizeable share
+of the projection neurons, and a Kenyon cell fires on several coincident claw inputs. Our word input is too sparse and
+too weak to reach threshold alone.
+
+**Exit.** Make one word's PN pattern drive a small, repeatable set of Kenyon cells on its own. The candidate stages:
+- the word -> receptor write strength;
+- the PN -> Kenyon synaptic efficacy;
+- the Kenyon threshold and the APL inhibition.
+
+**Next probe:** for isolated words, how far below threshold the Kenyon membranes stay, and which stage loses the most.
+Then change one stage.
