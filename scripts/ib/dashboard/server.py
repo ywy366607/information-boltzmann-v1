@@ -172,9 +172,9 @@ DEFAULT_CONFIG = {
     'family': {'child': {'name': 'Mengli', 'zh': '梦漓'},
                'father': {'name': 'Papa', 'full': 'Papa Wu Yue', 'zh': 'WuYue'},
                'mother': {'name': 'Mama', 'full': 'Mama Yun', 'zh': '舒云'},
-               'others': [{'name': 'Nanny Ling', 'zh': '聆', 'role': 'nanny', 'note': 'Claude: the nanny, the heart of the harness'}],
+               'others': [{'name': 'Aunt Ling', 'zh': '聆', 'role': 'aunt', 'note': 'Claude: her aunt, the heart of the harness'}],
                'language': 'English only. Names always in Latin letters exactly as written here (Mengli, Papa, Mama, '
-                           'Nanny Ling); never Chinese characters: her vocabulary is GPT-2.',
+                           'Aunt Ling); never Chinese characters: her vocabulary is GPT-2.',
                'first_lessons': 'Answer what she said, call her by her name, say Mama and Papa: the words for herself '
                                 'and for others come first, whatever the topic.'},
     'parenting': {'phases': [{'name': 'listening', 'words': 40960, 'world': 'text', 'note': 'read to the newborn'},
