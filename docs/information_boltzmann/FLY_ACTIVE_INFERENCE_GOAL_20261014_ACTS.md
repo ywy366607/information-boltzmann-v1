@@ -1154,3 +1154,50 @@ Weighted dendritic share kept per target:
 1. control = chunk 13 from c12 without the rule;
 2. the mainline continues from c12 with the rule;
 3. on both c13s: word margin, Kenyon repeat (P1), P3 and (2); paired NLL.
+
+### Zero-shot sanity of the compartment rule (user: "pause everything, look at the fixed brain alone"; m_main c11, rule off vs on)
+
+The rule was applied at load to the trained weights. Weighted dendritic share: 0.807 excitatory, 0.720 inhibitory.
+
+**Per group** (rate per tick, silent fraction):
+
+| group | rule off | rule on |
+|---|---|---|
+| whole brain | 7.0 Hz, 80% silent | 5.9 Hz, 81% silent |
+| Kenyon | 0.0044, 39% silent, v/θ 0.34 | **0.0067**, 32% silent, v/θ 0.43 |
+| ALPN | 0.0124 | 0.0127 |
+| MBON | 0.0126, 61% | 0.0149, 66% |
+| DAN | 0.0119, 36% | **0.0186**, 25% (PAM 0.011 → 0.019; PPL1 0.021 → 0.017) |
+| descending | 0.0865, 26% | **0.0458**, 43% |
+| read cells | 0.102, 26% | **0.073**, 36% |
+| APL | 0.87 "saturated" | 0.94 "saturated" (a readout artifact of the graded APL in both) |
+
+**No group dies or saturates because of the rule.** Gustatory and chemosensory cells are silent in both: they get no
+text.
+
+**Kenyon code** (3,000 words):
+
+| | rule off | rule on |
+|---|---|---|
+| level | 0.035 | 0.053 |
+| same word vs different (median) | 0.113 vs 0.086 | 0.149 vs 0.118 |
+| same last 3 vs different (median) | 0.448 vs 0.084 | 0.434 vs 0.127 |
+
+The Kenyon layer is more active and broader, but **not more word-specific**: the same/different ratio is 1.32 vs 1.27,
+and context specificity drops from 5.3x to 3.4x.
+
+**Isolated-word margin:** Kenyon top 1% at h/θ 0.346 → 0.301, lower. The excitatory cut onto Kenyon cells includes
+DAN → KC fast edges on the axons. These had given a tonic somatic drive; removed, they no longer prop the margin.
+
+**My earlier hypothesis was wrong.** The excess APL inhibition is not why one word cannot drive a Kenyon cell:
+removing it does not raise the margin. The limit is the PN drive itself. An isolated word activates about 1.2% of the
+PNs, too few claws for a Kenyon cell's coincidence threshold. This is the fly's own design (a KC needs several of its
+about 6 claws), not a defect.
+
+**The read surface is quieter** (DN −47%, read cells −29%). The weights were trained on the wrong wiring, so training
+on the corrected connectome has to re-adapt them; the paired NLL will show the cost.
+
+**Verdict: healthy; resume.** `compartment_fix_mainline_v2.sh`:
+1. control = chunk 12 from c11 without the rule;
+2. the mainline continues from c11 with the rule;
+3. probes and paired NLL on both.

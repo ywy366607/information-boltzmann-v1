@@ -121,6 +121,9 @@ def load(fork):
     # zero-shot interventions (measure a fix before training it): ZS_DAN_RENORM=1 renormalizes the dopamine cells'
     # inputs without their pinned Kenyon partners; INTRINSIC_KAPPA releases the tonically active modulatory cells
     # (INTRINSIC_PATTERN, default PAM / PPL / OA / 5-HT / DPM) with that intrinsic current
+    if os.environ.get('ZS_COMPARTMENT') and not cfg.get('compartment_dendritic'):
+        # the general compartment rule applied now, on the trained weights (--compartment-dendritic, zero-shot)
+        print(f'zero-shot: compartment rule {fl.attach_compartment_dendritic(model, graph, graph.parent / "body-annotations.feather", graph.parent, rescale=True)}', flush=True)
     if os.environ.get('ZS_DAN_RENORM') and not cfg.get('dan_renorm'):
         print(f'zero-shot: dopamine inputs renormalized (median x{fl.renormalize_dopamine_inputs(model, graph, graph.parent / "body-annotations.feather"):.2f})', flush=True)
     if os.environ.get('ZS_DA_INPUT_GAIN'):
