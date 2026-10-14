@@ -336,3 +336,28 @@ request.
 
 The contingent mother also saves calls: she does not call the model when the child is silent (42 of 86 turns in the
 contingent run).
+
+## 16. Discounted epistemic credit (tau 32 ticks) and the next upgrade: the mother's memory (2026-10-14)
+
+**Result** (same start, 1,024 words, contingent mother, DeepSeek).
+- 55 turns: yield 48, end word 7. Silent turns 38%. Mean turn 1.2 words. Mother TTR 0.41.
+- Hazard fell from 0.25 to 0.11 (minimum 0.071): no collapse, but no rise either.
+- The share of spoken turns held: 16/27 in the first half, 15/28 in the second.
+- Returns per window: said 0.367 vs silent 0.401 (mean); learning progress per mother word 0.061.
+
+Both predictions of section 14's exit failed: the hazard did not hold, and silent turns did not fall below 34%.
+
+**The comparison is mis-split.** The "silent" decisions include the yield after her own word, which is what buys the
+reply, so its high return is right. From now on the metrics split pure silence from the yield after speech
+(`yield_after_speech_return`, `pure_silence_return`). Judge with those.
+
+**Next upgrade, from the user: the mother's memory.** The mother invents world elements and forgets them on the next
+turn. "Katz" became "our cat, she sleeps on the chair"; "anth" became Aunt Ling, who visits on Sunday. That is why the
+world drifts. Design:
+- A persistent world memory, `data/harness/world.json`, holding the established facts: a cat called Katz who sleeps
+  on the chair; Papa plays the drum; Aunt Ling visits on Sundays.
+- The **heart** (agent) consolidates it from the transcript at low frequency: it adds, merges and corrects facts. The
+  mouth carries it in its prompt every turn.
+- It goes right after the family block and is append-mostly, so the cached prefix survives.
+- For the child: the same word keeps pointing at the same thing. Stable word-context relations are an anchored world
+  she can learn, and stable representations are also what the Kenyon code needs before it can remember a word.
