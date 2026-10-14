@@ -719,3 +719,43 @@ Kenyon layer goes silent. If it does not, the options, one at a time:
 Co-occurrence is the weaker measure, so P3 is redone with GPT-2 only (`kenyon_gpt2_probe.py`, layer 6, last 3 tokens
 and 512-token context; partial correlation beyond receptor + ALPN overlap). The PPMI numbers stay in the status file
 for the record but are not used.
+
+## P3 result (GPT-2 small, layer 6, m_main c7): the Kenyon code carries no meaning beyond what the senses already share
+
+**Setup.** 600 anchor words, paired with:
+- the nearest context that shares **no** token among the last 3 words (GPT-2 cosine, median 0.46);
+- a random context (median −0.02).
+
+Overlap ratio (neighbour / random, means):
+
+| GPT-2 context | receptors | ALPN | Kenyon | MBON | rho(cosine, Kenyon) beyond receptor + ALPN overlap (20k random pairs) |
+|---|---|---|---|---|---|
+| last 3 tokens | **1.62** | 1.36 | 1.28 | 1.04 | **0.006** |
+| 512-token context | 1.49 | 1.31 | 1.20 | 1.04 | **0.011** |
+
+**Reading:**
+- Words that mean the same already arrive with similar receptor patterns: the writer's embedding is semantic
+  (1.62x).
+- The similarity then shrinks layer by layer: receptors 1.62, ALPN 1.36, Kenyon 1.28, MBON 1.04.
+- Beyond what the senses already share, the Kenyon code adds nothing (rho 0.006 / 0.011).
+- So the brain's own integration builds a **context** code, but no **meaning** of its own. P3 fails.
+
+**Where this leaves the hypothesis (P1–P3 together):**
+
+| prediction | result |
+|---|---|
+| P1: Kenyon is a context code | holds, over about 3 words, and only in continuous speech |
+| P2: Kenyon novelty is not rarity | holds |
+| P2: Kenyon novelty relates to the brain's own CE | fails |
+| P3: Kenyon adds meaning beyond the senses | fails |
+| MBONs read the Kenyon code | fail |
+
+**Two causes, one per change:**
+1. **The readout loop.** MBONs do not read the Kenyon code, although compartment memory (DA-gated Kenyon → MBON,
+   phi) is on in m_main. `mbon_input_probe.py` is queued after d5b c10 to find out why. It splits the MBON drive by
+   class (compartment synapses at comp_weight × (1 + phi)) and asks whether the Kenyon → MBON drive is
+   context-specific.
+2. **The objective.** Nothing in training asks the Kenyon code to be predictable or semantic: CE is token-level, and
+   the paced branch never applies lambda_jepa. The JEPA term (LeJEPA: no stop-gradient, SIGReg) is the change that
+   asks for it. Its prediction: after training, P3's partial rho > 0 and the next-pattern prediction error falls
+   below the mean-pattern 0.698.
