@@ -528,3 +528,15 @@ too weak to reach threshold alone.
 
 **Next probe:** for isolated words, how far below threshold the Kenyon membranes stay, and which stage loses the most.
 Then change one stage.
+
+**Reframing (user, 2026-10-14).** Integration over several words is not a defect in itself. A Kenyon cell summing the
+last few words and firing when the sum warrants is a **context code**, and a context code is what next-word
+prediction needs. Same-word overlap was the wrong test for it.
+
+The right test is whether the same context (the same last two or three words) gives the same Kenyon code.
+`kenyon_repeat_probe.py` now reports same-bigram and same-trigram overlaps against controls at the same distances.
+
+- **If the context code repeats:** the Kenyon cells are fine. (2) failed for a different reason: within 2,048 words
+  the same contexts seldom recur, so habituation never had repeats to work on. Habituation over a context code gives
+  sequence novelty ("this sequence is new"), which is closer to surprise than word rarity is.
+- **If it does not repeat either:** the code follows slow state drift, and the Kenyon stage needs the fix.
