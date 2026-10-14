@@ -281,7 +281,10 @@ def eye_act(model, g, forced=None, taped=None, sample=False):
     if taped is not None:
         look = bool(taped)
     elif sample:
-        look = bool(torch.rand(()) < float(soft.detach()))
+        # the eye policy never becomes certain (model.eye_floor, attach by --eye-floor): a sensory gate is never shut
+        # for good, so a closed-eyes habit still meets what looking would give (without it, p -> 0 is absorbing)
+        floor = float(getattr(model, 'eye_floor', 0.0))
+        look = bool(torch.rand(()) < min(1.0 - floor, max(floor, float(soft.detach()))))
     else:
         look = float(soft.detach()) >= 0.5
     # the slope of p at p = 1/2, everywhere (see ai_step), on the eye's logit (motor mode: z_eye from the muscles; g

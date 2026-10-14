@@ -1800,6 +1800,12 @@ def _advance_fly_token_stream(model, state, token, schedule_box=None, *, ticks, 
             if sample is None and packets is None and hold_input:
                 packets = word_packets(model, current, token)
             drive, baseline = write_input(model, current, token, sample, packets=packets)
+            if getattr(model, 'blind_input', False):
+                # living ablation 'blind' (the causal gates): the word never reaches the senses -- exactly closed eyes
+                # (no drive; the sensory adaptation relaxes as on a quiet tick), the rest of the brain alive and learning
+                drive = drive * 0.0
+                baseline = (writer.lambda_adapt * current.baseline
+                            if writer_baseline_clock == 'physical' and writer is not None else current.baseline)
             if ai_g is not None:
                 # precision of the text input: the surface receives e * the word, so the drive and the sensory
                 # adaptation both see e * the packet; closed eyes (e = 0) are exactly a quiet tick, the word missed

@@ -469,7 +469,10 @@ def main():
                              'pre = the presynaptic terminal as at the fly mushroom body (omitted = inherit, else post)')
     parser.add_argument('--ablate', default=None,
                         help="Causal gate (never inherited; resume only): 'noedges' (every synapse cut: the read and decoder "
-                             "learn alone) or a bool .npy of cells to silence (outputs cut, reads zeroed); learning continues")
+                             "learn alone), 'blind' (the words never reach the senses: what reading is worth) or a bool .npy "
+                             "of cells to silence (outputs cut, reads zeroed); learning continues")
+    parser.add_argument('--eye-floor', type=float, default=0.0,
+                        help='Binary eyes: the sampled open probability is kept in [floor, 1 - floor] (never inherited)')
     parser.add_argument('--log-word-dopamine', action='store_true',
                         help='With --score-log: every word phasic dopamine and dopamine-cell firing (living gate 2)')
     parser.add_argument('--skip-eval', action='store_true',
@@ -1093,6 +1096,7 @@ def main():
                 # a new stretch of the world every chunk (pace and noise schedules seeded by the lifetime so far)
                 learner.pace_seed = int(getattr(args, 'odour_seed_value', 0) or 0)
                 learner.eye_init = float(args.eye_init)
+                model.eye_floor = float(args.eye_floor or 0.0)
             if args.noise_rate > 0:
                 import numpy as _np
                 alphabet = _np.random.default_rng(args.noise_seed).choice(50257, args.noise_alphabet, replace=False)
@@ -1504,6 +1508,7 @@ def main():
                 # a new stretch of the world every chunk (pace and noise schedules seeded by the lifetime so far)
                 learner.pace_seed = int(getattr(args, 'odour_seed_value', 0) or 0)
                 learner.eye_init = float(args.eye_init)
+                model.eye_floor = float(args.eye_floor or 0.0)
             if args.noise_rate > 0:
                 import numpy as _np
                 alphabet = _np.random.default_rng(args.noise_seed).choice(50257, args.noise_alphabet, replace=False)
@@ -1532,6 +1537,8 @@ def main():
             n = model.n_neurons
             if args.ablate == 'noedges':
                 learner.attach_ablation(pre_cells=torch.ones(n, dtype=torch.bool, device='cuda'))
+            elif args.ablate == 'blind':
+                model.blind_input = True       # the words never reach the senses; every synapse and cell stays
             else:
                 cells = torch.as_tensor(np.load(args.ablate), device='cuda')
                 learner.attach_ablation(pre_cells=cells, read_cells=cells)

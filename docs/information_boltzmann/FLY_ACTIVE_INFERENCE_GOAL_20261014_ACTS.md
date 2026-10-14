@@ -290,3 +290,50 @@ brain that carries the prediction.
 - These are the measures for "think", alongside the timing value over the constant-hazard null.
 - In the mother world, thinking gets a second value. The word said comes from the read at the commit tick, so a
   settled read says a better word.
+
+## D5 chunk 9: the eyes closed for good (dark room), and what reading is worth (2026-10-14)
+
+**Result.** Over the first 60% of chunk 9 (D5, forked from D4 c8) the eyes stayed open:
+- mean eye at onset 0.54-1.0;
+- open on noise and on text alike (0.96-1.0).
+
+At about 35,200 words they closed. They stayed at 0.000 for the rest of the chunk, on noise and text alike. "Look" did
+not differentiate.
+
+Living gate c8, on chunk 9's first 1,024 words, with the eyes still open:
+- (1) brain - noedges +0.452 +- 0.040;
+- (L) latched cells worth +0.073 +- 0.026;
+- (2) surprise ~ phasic DA -0.019.
+
+Acts at c9:
+- answered 0.84;
+- latency 1.6 ticks;
+- `rho_latency_wait_gain` +0.29 pooled, but +0.014 within intervals;
+- timing value over the null -0.0003. Weaker than D4.
+
+**Cause 1: no prior on the eye policy.** The commits carry a habit prior (KL to 0.2), which keeps them sampled. The
+eyes carry none. Once p(open) is near 0 the sampled look is never open, and the brain never again meets what looking
+gives: p -> 0 is absorbing.
+
+**Cause 2: looking is worth little to this brain.** Gain over the fixed unigram per window, from `scores_c9`:
+
+| | windows | min | median | mean | max | se |
+|---|---|---|---|---|---|---|
+| eyes open (<= 35,200) | 76 | -1.31 | +0.325 | +0.176 | +1.10 | 0.062 |
+| eyes closed (> 35,328) | 48 | -1.18 | +0.234 | +0.117 | +0.79 | 0.066 |
+
+The blind brain still beats the fixed unigram, because it keeps learning the current text's word frequencies online.
+What reading the current word adds is about 0.06 nats, and that is within the noise. Closing the eyes cost almost
+nothing.
+
+**What this means for gate (1).** The noedges arm is worse than the unigram (8.08 vs 7.82 at c8). So brain - noedges
+measures "a brain" against "a broken brain", not the use of what is read. The gates now add a **blind arm**
+(`--ablate blind`): the words never reach the senses, exactly as with closed eyes, while every synapse lives and
+learns. brain - blind is what reading is worth. Chain `grow_acts_v2.sh`.
+
+**Exit.**
+1. `--eye-floor 0.05`: the sampled open probability stays in [0.05, 0.95]. A sensory gate is never shut for good, and
+   a closed habit still meets the value of looking. d5b runs this from D4 c8 with blind arms in the gates.
+2. The blind gate on the mainline: m_main c7, on chunk 8's words.
+3. If reading stays worth about 0.06, the eyes cannot learn to look before the brain makes more of what it reads.
+   That is the brain's job (1), not the eyes'.
