@@ -759,3 +759,38 @@ Overlap ratio (neighbour / random, means):
    the paced branch never applies lambda_jepa. The JEPA term (LeJEPA: no stop-gradient, SIGReg) is the change that
    asks for it. Its prediction: after training, P3's partial rho > 0 and the next-pattern prediction error falls
    below the mean-pattern 0.698.
+
+## Design: the JEPA term in the stream branch (theory only; built after the MBON probe decides the order)
+
+**Representation.** Per word t, the Kenyon activity transmitted over the word's ticks: surrogate spikes summed per
+cell, differentiable through BPTT. A learned linear projection P maps it to z_t ∈ R^32, and z_t is
+standardised over the window. The Kenyon layer is chosen because it is the integrated context code (P1). The
+receptors would only repeat the input.
+
+**Predictor.** A linear map Q from the brain's read at the end of word t−1 (the same read that predicts the token)
+gives ẑ_t. The prediction therefore has to come from the brain's state. No separate network may learn it.
+
+**Loss.**
+
+  L_jepa = mean_t ||ẑ_t − z_t||² + λ_s · SIGReg({z_t})        (LeJEPA: no stop-gradient, no EMA)
+
+added to the CE as λ_jepa · L_jepa, with λ_jepa set so that L_jepa is about 10% of the CE at the start.
+- Gradients flow into both sides: the brain learns to predict its next Kenyon representation, and the Kenyon code
+  learns to be predictable.
+- SIGReg keeps z isotropic. Without it, both sides could collapse z to a constant.
+
+**Batch size.** A window has 32 words, and SIGReg on 32 samples is noisy in high dimension. Hence z is 32-dimensional,
+and SIGReg pools the last 4 windows' z, as LeWM pools over time. The older windows are detached, so this pool is the
+only stop-gradient in the design.
+
+**Predictions, written before the run.** One change (λ_jepa > 0 in the stream branch) vs the unchanged lineage, from
+the same checkpoint, with a living gate:
+1. Brain contribution (1) is not reduced by more than its error.
+2. The next-pattern prediction error (P2 probe) falls below the mean-pattern 0.698.
+3. The P3 partial rho (Kenyon vs GPT-2, beyond receptor + ALPN overlap) rises above 0.05.
+4. Kenyon novelty and prediction error start to predict the brain's own CE residual (rho > 0.1).
+
+**Failure branches:**
+- If (1) drops: the term competes with the token objective; lower λ_jepa.
+- If (2) holds but (3) does not: predictability without meaning; the Kenyon code is shaped only by its own
+  predictability. Next would be the cross-sense version (LeVLJEPA: predict one sense from another).
