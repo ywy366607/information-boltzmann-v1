@@ -662,3 +662,32 @@ potential-accumulation account, measured.
 **d5b at the same time:**
 - gate c8: (1) +0.436 ± 0.037; reading +0.103 ± 0.019; (2) still rarity (0.02, residual −0.001); latch +0.064 ± 0.030.
 - c9 acts: latency follows wait gain (rho 0.23) only between word lengths, not within them (−0.01).
+
+## Gap sweep (m_main c7): one beat of silence between words leaves the Kenyon layer almost silent
+
+Quiet ticks are inserted after **every** word; the active set is read over each word's own 8 ticks.
+
+| gap (ticks) | receptor level | ALPN level | Kenyon level | Kenyon same last 3 words (mean) | different (mean) |
+|---|---|---|---|---|---|
+| 0 | 0.207 | 0.093 | **0.030** | 0.458 | 0.102 |
+| 8 (one beat) | 0.139 | 0.030 | **0.001** | 0.230 | 0.000 |
+| 16 | 0.112 | 0.021 | **0.000** | 0.750 (of the few that fire) | 0.000 |
+| 32 | 0.097 | 0.017 | 0 | — | — |
+
+**Reading:**
+- With one beat of silence between words, Kenyon activity drops 30-fold. The drive of earlier words decays within
+  8 ticks, so the Kenyon integration window is shorter than one beat. The context code exists only in continuous
+  speech, as the user predicted.
+- The few cells that still fire do so for repeated contexts: sparse but reliable.
+- MBON overlap is again flat (0.50 vs 0.50) at every gap.
+
+**Consequence for the mother world.** Within a turn, words are continuous and Kenyon integration works. The pause
+before every reply (1 beat), and the waits, erase the integrated context at every turn boundary. Across a turn
+boundary, context must be held by memory, not by sensory integration: the latch (L) and slow state are what should
+bridge it, as human working memory bridges conversational gaps of about one word's length.
+
+**Functional test, before changing anything.** CE on the first words after a turn boundary vs on the words within a
+turn in the mother transcripts, and `world_eval` gap cost on c7. The brain may bridge gaps by memory even though the
+Kenyon layer goes silent. If it does not, the options, one at a time:
+1. a shorter pause (half a beat) in the mother world;
+2. the latch carrying the context.
