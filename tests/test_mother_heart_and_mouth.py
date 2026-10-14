@@ -78,3 +78,118 @@ def test_monitor_json_schema(tmp_path):
     assert loaded["trained"] == 1024
     assert loaded["plan_topic"] == "animals"
     assert loaded["monitor"]["fly_turns"] >= 1
+    assert "silent_beats" in loaded["monitor"]
+    assert "mother_calls" in loaded["monitor"]
+    assert "mother_waits" in loaded["monitor"]
+
+
+def test_mother_world_beat_based_rhythm_and_dark_room_call():
+    """Verify that consecutive silent yields trigger a proactive call ('Mengli?')."""
+    class MockMother:
+        asynchronous = False
+        def reply(self, transcript):
+            return "Good baby."
+
+    tok = tiktoken.get_encoding("gpt2")
+    world = MotherWorld(MockMother(), tok, ticks_per_beat=8, pause_beats_before_reply=1,
+                        silent_beats_threshold=3, call_prompt="Mengli?")
+    
+    assert world.ticks_per_beat == 8
+    assert world.silent_beats == 0
+
+    # Pop mother's opening turn so it's fly's turn
+    while world.turn == 'mother':
+        w, who = world.next_word()
+        assert who == 'mother'
+    assert world.turn == 'fly'
+
+    # Fly yields 1st time without speaking
+    world.yield_turn()
+    assert world.silent_beats == 1
+    # Drain mother's reply
+    while world.turn == 'mother':
+        world.next_word()
+
+    # Fly yields 2nd time without speaking
+    world.yield_turn()
+    assert world.silent_beats == 2
+    while world.turn == 'mother':
+        world.next_word()
+
+    # Fly yields 3rd time: threshold reached! Mother proactively calls "Mengli?"
+    world.yield_turn()
+    assert world.stats['mother_calls'] == 1
+    assert world.silent_beats == 0  # reset after call
+    assert world.transcript[-1] == ('mother', 'Mengli?')
+
+    # When fly speaks, silent_beats stays 0
+    while world.turn == 'mother':
+        world.next_word()
+    world.speak(tok.encode("hello")[0])
+    assert world.silent_beats == 0
+
+
+def test_mailbox_mother_actions_speak_wait_call(tmp_path):
+    """Verify MailboxMother protocol with 'speak', 'wait', and 'call' actions."""
+    from information_boltzmann.core.fly_mother_world import MailboxMother
+
+    box_dir = tmp_path / "mailbox"
+    mailbox = MailboxMother(root=str(box_dir), timeout=10.0)
+
+    # 1. Post a request with silent_beats
+    tok = tiktoken.get_encoding("gpt2")
+    world = MotherWorld(mailbox, tok, silent_beats_threshold=3, call_prompt="Mengli?")
+    world.silent_beats = 2
+    world.yield_turn()
+
+    # Outbox should have the request
+    outbox_files = list((box_dir / "outbox").glob("*.json"))
+    assert len(outbox_files) == 1
+    out_data = json.loads(outbox_files[0].read_text(encoding="utf-8"))
+    assert out_data["silent_beats"] == 3
+    assert out_data["fly_status"] == "silent"
+    assert out_data["suggested_action"] == "call"
+    rid = out_data["id"]
+
+    # 2. Agent responds with action="call"
+    inbox_file = box_dir / "inbox" / f"{rid}.json"
+    inbox_file.write_text(json.dumps({"id": rid, "action": "call", "text": "Mengli?"}), encoding="utf-8")
+
+    # wait_for_mother handles "call"
+    beats = world.wait_for_mother(poll_interval_s=0.01)
+    assert beats >= 1
+    assert world.stats['mother_calls'] == 1
+    assert world.transcript[-1] == ('mother', 'Mengli?')
+
+    # Drain mother turn
+    while world.turn == 'mother':
+        world.next_word()
+
+    # 3. Test action="wait" (Agent decides to wait one more beat)
+    world.yield_turn()
+    outbox_files = list((box_dir / "outbox").glob("*.json"))
+    assert len(outbox_files) == 1
+    rid2 = json.loads(outbox_files[0].read_text(encoding="utf-8"))["id"]
+    inbox_file2 = box_dir / "inbox" / f"{rid2}.json"
+    inbox_file2.write_text(json.dumps({"id": rid2, "action": "wait"}), encoding="utf-8")
+
+    beats2 = world.wait_for_mother(poll_interval_s=0.01)
+    assert beats2 >= 1
+    assert world.stats['mother_waits'] == 1
+
+    # Drain
+    while world.turn == 'mother':
+        world.next_word()
+
+    # 4. Test action="speak" (Agent responds with a sentence)
+    world.yield_turn()
+    outbox_files = list((box_dir / "outbox").glob("*.json"))
+    assert len(outbox_files) == 1
+    rid3 = json.loads(outbox_files[0].read_text(encoding="utf-8"))["id"]
+    inbox_file3 = box_dir / "inbox" / f"{rid3}.json"
+    inbox_file3.write_text(json.dumps({"id": rid3, "action": "speak", "text": "Mama loves Mengli."}), encoding="utf-8")
+
+    beats3 = world.wait_for_mother(poll_interval_s=0.01)
+    assert beats3 >= 1
+    assert world.transcript[-1] == ('mother', 'Mama loves Mengli.')
+

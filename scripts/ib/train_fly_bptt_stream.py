@@ -2062,6 +2062,10 @@ def main():
                     if mother_world is not None:
                         mother_world.max_fly_words = args.mother_max_fly_words
                         mother_world.history_turns = int(m_cfg.get('history_turns', mother_world.history_turns))
+                        mother_world.ticks_per_beat = int(m_cfg.get('ticks_per_beat', getattr(mother_world, 'ticks_per_beat', 8)))
+                        mother_world.pause_beats_before_reply = int(m_cfg.get('pause_beats_before_reply', getattr(mother_world, 'pause_beats_before_reply', 1)))
+                        mother_world.silent_beats_threshold = int(m_cfg.get('silent_beats_threshold', getattr(mother_world, 'silent_beats_threshold', 3)))
+                        mother_world.call_prompt = m_cfg.get('call_prompt', getattr(mother_world, 'call_prompt', None))
                     if hasattr(mother, 'update_plan'):
                         mother.update_plan(raising_full)
             except Exception as error:      # half written or invalid: keep the old plan, try again next window
@@ -2076,6 +2080,10 @@ def main():
         raising = raising_full.get('mother', {})
         args.mother_max_fly_words = int(raising.get('max_fly_words', args.mother_max_fly_words))
         args.mother_temperature = float(raising.get('fly_temperature', args.mother_temperature))
+        ticks_per_beat = int(raising.get('ticks_per_beat', 8))
+        pause_beats = int(raising.get('pause_beats_before_reply', 1))
+        silent_thresh = int(raising.get('silent_beats_threshold', 3))
+        call_prompt = raising.get('call_prompt')
         mother = (LocalMother() if args.mother_world == 'local' else
                   GeminiApiMother(args.mother_api_model or raising.get('model') or 'gemini-3.5-flash')
                   if args.mother_world == 'gemini' else
@@ -2086,9 +2094,14 @@ def main():
                    if family.get('child', {}).get('name') else 'Hello, little one.')      # her first word: her name
         mother_world = MotherWorld(mother, tiktoken.get_encoding('gpt2'), max_fly_words=args.mother_max_fly_words,
                                    opening=opening,
-                                   history_turns=int(raising.get('history_turns', 20)))
+                                   history_turns=int(raising.get('history_turns', 20)),
+                                   ticks_per_beat=ticks_per_beat,
+                                   pause_beats_before_reply=pause_beats,
+                                   silent_beats_threshold=silent_thresh,
+                                   call_prompt=call_prompt)
         mother_rng = np.random.default_rng(int(trained) + 104729)
-        print(f'Mother world ({args.mother_world}): turn-taking, self-hearing, the fly words sampled at T={args.mother_temperature}',
+        print(f'Mother world ({args.mother_world}): turn-taking, self-hearing, beats ({ticks_per_beat} ticks/beat), '
+              f'pause {pause_beats} beat(s), silent call threshold {silent_thresh}, fly T={args.mother_temperature}',
               flush=True)
     shelf = probe_fn = None
     if getattr(args, 'bookshelf', None):
