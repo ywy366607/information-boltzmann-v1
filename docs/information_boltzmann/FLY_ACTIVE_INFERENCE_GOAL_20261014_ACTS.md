@@ -467,3 +467,35 @@ clock and modulatory types (pattern LNv / DN / LPN / PAM / PPL / OA / 5-HT), not
 
 **What stands:** a word's Kenyon code repeats only weakly (0.15 same word vs 0.10 different words), and its ALPN ->
 Kenyon drive repeats (0.44 vs 0.21). The cause is open until the corrected budget is in.
+
+**Corrected Kenyon input budget** (graded output counted as transmitted, m_main c7, 368 words). Signed share of the
+absolute synaptic drive into Kenyon cells:
+
+| ticks | unannotated (inhibition, likely APL) | ALPN |
+|---|---|---|
+| all ticks | -0.567 | +0.413 |
+| when a Kenyon cell fires | -0.550 | +0.420 |
+
+The projection-neuron input is a large share, roughly balanced against inhibition. It is not drowned.
+
+Word identity thins at every stage:
+
+| stage | same word | different words |
+|---|---|---|
+| receptor active sets | 0.67 | 0.25 |
+| ALPN active sets | 0.48 | 0.25 |
+| ALPN -> Kenyon drive (correlation) | 0.44 | 0.21 |
+| Kenyon active sets (top ~3%) | 0.15 | 0.10 |
+
+A sparse threshold keeps only the strongest few percent of cells. That turns a moderate input correlation (0.44) into
+a small overlap of the active sets (0.15).
+
+**Likely cause: temporal mixing.** In a continuous word stream each word's response carries the activity of the words
+before it. In the fly, odours are usually separated by clean air.
+
+**Exits.**
+1. Measure the code's repeatability against the interval since the previous word. If longer gaps give more
+   repeatable codes, the cause is mixing.
+2. If it is mixing, use the iP-VAE principle: inhibition removes what is already explained, here the predictable
+   carry-over of the previous words. That is the innovation, input minus the brain's own expectation (the predictive
+   writer), and it is also the form of surprise that (2) needs.
