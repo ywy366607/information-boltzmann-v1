@@ -576,3 +576,38 @@ in the run directory and restore them on resume.
 **3. LeVLJEPA** (arXiv 2607.00784): vision-language pretraining with no negatives, using cross-modal prediction with
 stop-gradient targets (no momentum encoder or EMA) and SIGReg per modality. When Mengli has several senses (text through smell, taste, later
 vision), predicting one sense's representation from another follows the same pattern. Later.
+
+## Hypothesis (user): surprise should live on the integrated representation, not on the token
+
+**The two halves are one mechanism.**
+- **Integration builds the representation.** Kenyon membranes accumulate drive over several words, so the Kenyon
+  code is a context code. The c7 data so far agrees:
+  - at gap 0, same-word Kenyon overlap is 0.099 vs 0.075 for different words, so word identity is weak;
+  - at gap 32, an isolated word drives no Kenyon cell.
+- **Representation prediction gives the error.** If the Kenyon code is the brain's working representation, surprise
+  is the gap between the predicted and the actual Kenyon pattern. That is a JEPA error, and semantic rather than
+  token-level.
+- **The current DA signal is token-level.** It follows token CE, and that is why it reduces to rarity (rho 0.97).
+
+**Fly substrate.** DANs receive Kenyon terminal release (axo-axonal, already implemented) and MBON feedback. The
+MBONs read the same Kenyon code through learned weights. The DAN signal is therefore "Kenyon drive minus what the
+MBON loop expected": representation-level surprise from the fly's own circuit. Habituation per cell failed because
+single cells do not repeat per word. If the code repeats per context, familiarity should be counted per context
+pattern.
+
+**Predictions**, written before the probes:
+- P1 (queued context probe): Kenyon overlap for the same last 2 / 3 words is clearly above the same-last-word 0.10
+  and above its shuffled control.
+  - If not, the Kenyon code is not yet a reliable representation. The fix is a training target that makes it one:
+    the JEPA term (LeJEPA: no stop-gradient, SIGReg), before any surprise read-out.
+- P2: a Kenyon-pattern prediction error (predicted from the state one word earlier) correlates with token rarity
+  well below 0.97, and still predicts the brain's own CE residual.
+- P3: contexts that are neighbours in meaning (GPT-2 embedding of the last words) have higher Kenyon overlap than
+  random context pairs.
+
+**Order.**
+1. P1.
+2. If P1 holds: P2 and P3 on c7.
+3. Then one change: DA driven by the Kenyon-level prediction error instead of the token error. Judge it by the living
+   (2) gate: phasic DA tracks surprise with no cost to (1).
+4. If P1 fails: add the JEPA term first, then repeat P1.
