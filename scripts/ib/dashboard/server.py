@@ -318,6 +318,9 @@ class Handler(SimpleHTTPRequestHandler):
                 return self._json(health(run))
             if u.path == '/api/brain':
                 return self._json(brain_points())
+            if u.path == '/api/world':
+                w = HARNESS / 'world.json'
+                return self._json(json.loads(w.read_text(encoding='utf-8')) if w.exists() else {'facts': []})
             if u.path == '/api/config':
                 return self._json(config('raising'))
         except Exception as exc:                        # a half-written file: report, never crash the server

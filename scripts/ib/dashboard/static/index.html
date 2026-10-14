@@ -126,7 +126,9 @@ textarea { width: 100%; min-height: 460px; font: 12px/1.5 Consolas, monospace; }
 
   <section class="tab" id="t-talk">
     <div class="card" style="margin-bottom:14px"><h2>这个家</h2><p class="sub">raising.json 的 family：不随话题轮换，嘴每一轮都带着；名字只用拉丁字母（她的词表是 GPT-2）</p>
-      <div class="family" id="family"></div></div>
+      <div class="family" id="family"></div>
+      <h2 style="margin-top:14px">世界记忆</h2><p class="sub">data/harness/world.json：心从对话里整理出的事实，嘴每一轮带上，让同一个词总指同一个东西</p>
+      <ul class="note" id="world" style="margin:0; padding-left:18px; line-height:1.8"></ul></div>
     <div class="grid">
       <div class="card"><h2>对话</h2><p class="sub">左：梦漓（她也听得见自己）；右：妈妈；虚线 = 沉默或叫名字。最近 200 句</p><div class="chat" id="chat"></div></div>
       <div class="card"><h2>话轮怎么结束</h2><p class="sub">一口气（词数上限）/ 碰巧说出结束词 / 她自己让出。学会停 = "让出"上升，并且落在妈妈的回应值得听的时候</p>
@@ -288,6 +290,8 @@ function brainEvents() {
 const esc = t => String(t).replace(/[<&]/g, c => c === '<' ? '&lt;' : '&amp;');
 async function drawTalk() {
   const [m, sp, runs, cfg] = await Promise.all([api(`/api/mother?run=${RUN}`), api(`/api/speak?run=${RUN}`), api('/api/mother_runs'), api('/api/config')]);
+  const world = await api('/api/world');
+  $('#world').innerHTML = (world.facts || []).length ? world.facts.map(f => `<li>${esc(f.fact || f)}${f.since ? ` <span style="opacity:.6">— ${esc(f.since)}</span>` : ''}</li>`).join('') : '<li>还没有记忆</li>';
   const fam = cfg.family || {};
   const people = [['child', '自己'], ['mother', '妈妈'], ['father', '爸爸']].filter(([k]) => fam[k]).map(([k, role]) => [fam[k], role])
     .concat((fam.others || []).map(o => [o, o.role === 'aunt' ? '姑姑' : (o.role || '家人')]));
