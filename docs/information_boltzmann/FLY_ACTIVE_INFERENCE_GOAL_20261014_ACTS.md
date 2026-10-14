@@ -179,3 +179,19 @@ The dip from c5 (+0.49) is the text segment: both arms dropped together, so the 
 
 The acts' language cost, paired by window over the whole chunk (4,096 words): **+0.016 +- 0.004 nats**. It is real
 and within the 0.05 acceptance.
+
+### Speed by mechanism (cProfile, 256 words = 8 windows = 2,771 ticks, host time, cumulative)
+
+| mechanism | s | % | per tick |
+|---|---|---|---|
+| compartment memory, carried credit (comp_step) | 2.95 | 2.3 | 1.06 ms |
+| dopamine: carried credit / occupancy / class sensitivity (now once per window) | 1.66 / 0.87 / 0.76 | 1.3 / 0.7 / 0.6 | 0.60 / 0.32 / 0.28 ms |
+| writer incl. predictive (write_input) | 4.16 | 3.2 | 1.50 ms |
+| predictive writer, expectation (once per segment) | 0.22 | 0.2 | 0.08 ms |
+| EG update (once per window) | 0.76 | 0.6 | — |
+| evidence gate (once per window) | 0.20 | 0.2 | — |
+| COBA step incl. synapses | 16.3 | 12.5 | 5.88 ms |
+| backward incl. recompute | 68.4 | 52.6 | 24.7 ms |
+
+The added mechanisms together cost about 9%. The time is in the backward with its recompute and in about 550 launches
+per tick, so CUDA graphs are the lever.
