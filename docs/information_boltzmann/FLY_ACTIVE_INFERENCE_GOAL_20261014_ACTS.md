@@ -102,3 +102,37 @@ consistently negative. The surprise path probe (c6) locates the break.
 - Kenyon coding: 3.7% per word, consecutive-word overlap 0.02. MBONs fire at 28.5 Hz.
 
 The precondition the earlier act runs lacked is now present. D4 forks from c5.
+
+## (2) Where surprise stops on its way to dopamine (m_main c6, surprise_path_probe.py; diagnostic, fixed weights)
+
+Spearman of each word's surprisal with each layer, [min | median | mean | max] over 4 places x 512 words:
+
+| layer | rho |
+|---|---|
+| writer innovation | 0.83 [0.77, 0.84, 0.83, 0.87] |
+| olfactory receptors | 0.52 |
+| ALPN | 0.26 |
+| Kenyon | 0.13 |
+| MBON | 0.06 |
+| DAN spikes | -0.03 |
+| DAN v/theta | +0.02 |
+| phasic DA | -0.04 |
+
+**Cause.** Surprise is strong at the senses: the predictive writer's innovation is the prediction error. Along the
+olfactory path the correlation roughly halves with each synaptic layer, and it is lost between the MBONs and the
+dopamine cells. Their other inputs dominate. Nothing in the objective asks the dopamine cells to carry it either: the
+benefit of surprise-gated plasticity shows only across windows, which BPTT does not see.
+
+**Exit, the fly's own.** The novelty circuit: the alpha'3 compartment's MBON fires to novel odours and habituates
+through dopamine-dependent plasticity (Hattori et al. 2017), fed by Kenyon cells, which already carry surprise (0.13).
+Check that the circuit is present and wired in the model, and that the compartment memory can habituate it to
+familiar words. Only after that consider letting the credit of dopamine-gated plasticity reach the DAN inputs.
+
+## D4, first chunk (lost to a shutdown at 117/128 windows; act trace kept)
+
+Living stream, 3,744 words:
+- answered 0.72; latency 2.0 ticks; timing entropy 1.06;
+- rho(latency, CE) -0.01 [-0.06, 0.02]; rho(latency, previous CE) +0.03;
+- the commit hazard's spread grew from 0.12 to 0.23 over the chunk.
+
+The acts are becoming state-dependent, but they are not yet adaptive to difficulty. Rerun from c5 for 3 chunks.
