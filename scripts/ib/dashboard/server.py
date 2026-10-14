@@ -168,6 +168,15 @@ DEFAULT_CONFIG = {
                'persona': 'A warm, patient mother talking with a very young child who is just learning to speak. '
                           'She answers in one or two short, simple sentences, responds to what the child said, '
                           'asks simple questions, names things, and sometimes starts a new topic.'},
+    # the family is fixed (never rotates with the topics); names in Latin letters: her vocabulary is GPT-2
+    'family': {'child': {'name': 'Mengli', 'zh': '梦漓'},
+               'father': {'name': 'Papa', 'full': 'Papa Wu Yue', 'zh': 'WuYue'},
+               'mother': {'name': 'Mama', 'full': 'Mama Yun', 'zh': '舒云'},
+               'others': [{'name': 'Aunt Ling', 'zh': '聆', 'note': 'Claude: the heart of the harness'}],
+               'language': 'English only. Names always in Latin letters exactly as written here (Mengli, Papa, Mama, '
+                           'Aunt Ling); never Chinese characters: her vocabulary is GPT-2.',
+               'first_lessons': 'Answer what she said, call her by her name, say Mama and Papa: the words for herself '
+                                'and for others come first, whatever the topic.'},
     'parenting': {'phases': [{'name': 'listening', 'words': 40960, 'world': 'text', 'note': 'read to the newborn'},
                              {'name': 'babbling', 'words': 20480, 'world': 'mother', 'note': 'she answers any sound'}],
                   'topics': ['animals', 'food', 'family', 'the weather', 'colours', 'the garden'],

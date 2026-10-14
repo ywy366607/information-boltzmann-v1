@@ -214,20 +214,28 @@ def ai_step(model, state, g, taped=None):
     return hazard, g, committed
 
 
-def speaking_value(hz, intervals, decide, speak, ce, horizon=16, baseline=None, beta=0.98):
+def speaking_value(hz, intervals, decide, speak, ce, horizon=16, baseline=None, beta=0.98, speakers=None, prior=None):
     """Mother world v2: the credit of speaking.  The world is not differentiable, so the act is a sampled policy
     (score function).  At an arrival in the fly's turn its muscles chose: say a word (a commit on any of the decision
     ticks, p = 1 - prod(1 - h_t)) or yield the floor (p = prod(1 - h_t)).  The return is what the words that follow
     cost the fly to predict, R_i = -mean CE(targets i .. i + horizon - 1) -- its own self-heard word or the mother's
     answer, then whatever came of it; the advantage is R_i - b, b a running mean of R (state in `baseline`).
+    With speakers and prior (per word: the listener prior's CE, e.g. the unigram CE of the word), the fly's own words
+    are priced at the prior: its own sample tells it nothing about the world beyond what it already expected, so a
+    turn spent talking to itself is never cheaper than the prior, and only a reply it can predict pays.
     Returns (J, stats), J = mean over the window's words of A_i log p(choice_i): the objective to maximize."""
     J, start, R_all, n_dec = hz.new_zeros(()), 0, [], 0
     b = baseline.get('b') if baseline is not None else None
+    if speakers is not None and prior is not None:
+        ce = ce.clone()
+        for j, who in enumerate(speakers):
+            if who == 'fly':
+                ce[j] = float(prior[j])
     for i, (k, dk, d) in enumerate(zip(intervals, decide, speak)):
         if d is not None and dk > 0:
             h = hz[start:start + dk].clamp(1e-6, 1 - 1e-6)
             log_quiet = torch.log1p(-h).sum()
-            logp = torch.log(-torch.expm1(log_quiet).clamp_min(1e-12)) if d else log_quiet
+            logp = torch.log((-torch.expm1(log_quiet)).clamp_min(1e-12)) if d else log_quiet
             R = -float(ce[i:i + horizon].mean())
             if b is not None:
                 J = J + (R - b) * logp

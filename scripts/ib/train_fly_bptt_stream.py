@@ -27,7 +27,7 @@ from information_boltzmann.core.fly_odour_world import (OdourWorld, attach_act_h
 ACT_STATE_NAMES = ACT_PARAMETER_NAMES + ('act_mu', 'act_sigma', 'act_w_scale') + SENSE_PARAMETER_NAMES
 from information_boltzmann.core.fly_active_inference import attach_ai_head, AI_PARAMETER_NAMES, AI_STATE_NAMES
 from information_boltzmann.core.fly_bptt_learning import (WRITER_SENSE, attach_input_gain, init_input_gain_from_size,
-                                                          attach_kenyon_terminal_release, 
+                                                          attach_kenyon_terminal_release, attach_kenyon_habituation, 
     FlyPhysicalState, FlyBPTTLearner, FlyBPTTGraph, STP_PARAMETER_NAMES,
     GO_PARAMETER_NAMES, attach_go_neuron, attach_connectome_go, READ_BANK_PARAMETER_NAMES, attach_read_bank,
     INTRINSIC_PARAMETER_NAMES, attach_intrinsic_drive, PRECISION_PARAMETER_NAMES, attach_precision,
@@ -190,6 +190,10 @@ def resolve_learning_modes(args, previous_config, previous_learner):
         args.input_gain_size_exponent = previous_config.get('input_gain_size_exponent')
     if getattr(args, 'kc_dan_release', None) is None:
         args.kc_dan_release = bool(previous_config.get('kc_dan_release', False))
+    if getattr(args, 'kc_habituation_tau', None) is None:
+        args.kc_habituation_tau = previous_config.get('kc_habituation_tau')
+    if getattr(args, 'kc_habituation_use', None) is None:
+        args.kc_habituation_use = previous_config.get('kc_habituation_use') or 0.2
     if getattr(args, 'read_extra_classes', None) is None:
         args.read_extra_classes = previous_config.get('read_extra_classes') or ''
     if getattr(args, 'read_spikes', None) is None:
@@ -484,6 +488,11 @@ def main():
     parser.add_argument('--kc-dan-release', action=argparse.BooleanOptionalAction, default=None,
                         help='Kenyon -> dopamine-terminal synapses raise local dopamine release (axo-axonal; learned gain '
                              'per type from 0.1); omitted = inherit, else off')
+    parser.add_argument('--kc-habituation-tau', type=float, default=None,
+                        help='Habituation of the Kenyon terminal release (alpha\'3 novelty): recovery time constant in '
+                             'ticks; omitted = inherit, else off (needs --kc-dan-release)')
+    parser.add_argument('--kc-habituation-use', type=float, default=None,
+                        help='Fraction of a Kenyon cell\'s release availability one spike uses (default 0.2)')
     parser.add_argument('--input-gain-size-exponent', type=float, default=None,
                         help='Per-class learnable input gain (input conductance grows with the cell), started at '
                              '(median size / class size)^this (0 uniform, 1 inverse to size; omitted = inherit, else none)')
@@ -944,6 +953,8 @@ def main():
         args.kc_dan_release = bool(args.kc_dan_release)
         if args.kc_dan_release:
             print(f'Kenyon -> dopamine-terminal release (newborn): {attach_kenyon_terminal_release(model, args.graph, args.graph.parent / "body-annotations.feather")} (edges, dopamine cells)', flush=True)
+        if getattr(args, 'kc_habituation_tau', None):
+            print(f'Kenyon release habituation (tau ticks, use): {attach_kenyon_habituation(model, args.kc_habituation_tau, args.kc_habituation_use or 0.2)}', flush=True)
         if args.type_classes:
             if args.kc_subtypes or args.modulatory_classes:
                 raise ValueError('--type-classes already gives every cell type its own physiology (no --kc-subtypes / --modulatory-classes)')
@@ -1216,6 +1227,8 @@ def main():
             attach_input_gain(model)                     # before the split replay (the saved gains load afterwards)
         if args.kc_dan_release:                          # before the split replay; a new switch starts every type at 0.1
             print(f'Kenyon -> dopamine-terminal release: {attach_kenyon_terminal_release(model, args.graph, args.graph.parent / "body-annotations.feather")} (edges, dopamine cells)', flush=True)
+            if args.kc_habituation_tau:
+                print(f'Kenyon release habituation (tau ticks, use): {attach_kenyon_habituation(model, args.kc_habituation_tau, args.kc_habituation_use)}', flush=True)
         if lineage_types:
             # a lineage with one physiology class per cell type: the same split before loading (supersedes the others)
             print(f'Type classes (carried over): {split_by_type(model, args.graph, args.graph.parent / "body-annotations.feather", record=False)}', flush=True)
@@ -2068,7 +2081,11 @@ def main():
                   if args.mother_world == 'gemini' else
                   MailboxMother(timeout=float(raising.get('mailbox_timeout_s', 900))) if args.mother_world == 'mailbox' else
                   ApiMother(args.mother_api_model))
+        family = raising_full.get('family') or {}
+        opening = (f"Hello, {family['child']['name']}. {family.get('mother', {}).get('name', 'Mama')} is here."
+                   if family.get('child', {}).get('name') else 'Hello, little one.')      # her first word: her name
         mother_world = MotherWorld(mother, tiktoken.get_encoding('gpt2'), max_fly_words=args.mother_max_fly_words,
+                                   opening=opening,
                                    history_turns=int(raising.get('history_turns', 20)))
         mother_rng = np.random.default_rng(int(trained) + 104729)
         print(f'Mother world ({args.mother_world}): turn-taking, self-hearing, the fly words sampled at T={args.mother_temperature}',

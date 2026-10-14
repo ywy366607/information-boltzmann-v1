@@ -79,6 +79,8 @@ def load(fork):
         fl.attach_input_gain(model)
     if cfg.get('kc_dan_release'):
         fl.attach_kenyon_terminal_release(model, graph, graph.parent / 'body-annotations.feather')
+        if cfg.get('kc_habituation_tau'):
+            fl.attach_kenyon_habituation(model, cfg['kc_habituation_tau'], cfg.get('kc_habituation_use') or 0.2)
     if cfg.get('type_classes'):
         fl.split_by_type(model, graph, graph.parent / 'body-annotations.feather', record=False)
     elif cfg.get('kc_subtypes') or saved['model']['log_tau_m'].numel() > model.n_superclasses:

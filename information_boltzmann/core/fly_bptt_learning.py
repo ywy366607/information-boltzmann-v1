@@ -72,6 +72,8 @@ class FlyPhysicalState:
     credit_comp_trace: torch.Tensor = field(default_factory=lambda: torch.empty(0))
     credit_dopamine: torch.Tensor = field(default_factory=lambda: torch.empty(0))
     credit_stp: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    # Optional availability of every Kenyon cell's terminal release [1, N] (attach_kenyon_habituation; never reset).
+    kc_avail: torch.Tensor = field(default_factory=lambda: torch.empty(0))
 
     def detached(self):
         return FlyPhysicalState(**{
@@ -151,6 +153,7 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
         source = (torch.zeros_like(current.h) if source is None else source).index_add(
             1, idx, current_in.unsqueeze(0))
     homeostasis = getattr(current, 'homeostasis', torch.empty(0))
+    kc_avail = getattr(current, 'kc_avail', torch.empty(0))
     homeostatic = getattr(model, 'homeostasis_target', None) is not None
     if homeostatic:
         if homeostasis.numel() != current.h.numel():
@@ -325,7 +328,16 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
         arrival = execute_delayed_synaptic_transmission(ring, model.dan_edge_pre, model.dan_edge_post,
                                                         model.dan_edge_weight, model.dan_delay_splits) / model.dan_scale
         if getattr(model, 'kcd_pre', None) is not None:
-            arrival = arrival + kenyon_terminal_release(model, ring[0])
+            spikes_k = ring[0]
+            if getattr(model, 'kch_tau', None) is not None:
+                # habituation: the release a spike makes is scaled by the cell's availability (detached state)
+                if kc_avail.numel() != h.numel():
+                    kc_avail = torch.ones_like(h).detach()
+                spikes_k = spikes_k * kc_avail
+                fired_k = (ring[0].detach() > 0).float()
+                kc_avail = (kc_avail + (1.0 - kc_avail) / model.kch_tau
+                            - model.kch_use * kc_avail * fired_k).clamp(0.0, 1.0).detach()
+            arrival = arrival + kenyon_terminal_release(model, spikes_k)
         fast, slow = torch.sigmoid(model.dopamine_logit_fast), torch.sigmoid(model.dopamine_logit_slow)
         if dopamine.numel() != 2 * h.numel():
             dopamine = torch.cat([arrival, arrival], 0).detach()
@@ -431,7 +443,7 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
                             current.observer_prior, getattr(current, 'observer_history', torch.empty(0)), bank,
                             modulator, getattr(current, 'expected_input', torch.empty(0)), dopamine, da_trace, da_memory,
                             homeostasis, regime, comp_trace, comp_memory,
-                            credit_comp, credit_comp_trace, credit_dopamine, credit_stp)
+                            credit_comp, credit_comp_trace, credit_dopamine, credit_stp, kc_avail)
 
 
 def extract_fly_motor_latent(model, state):
@@ -1357,6 +1369,21 @@ def attach_kenyon_terminal_release(model, graph_npz, annotations, gain=0.1):
     if getattr(model, 'log_kc_release', None) is None:
         model.log_kc_release = torch.nn.Parameter(torch.full((model.n_superclasses,), float(np.log(gain)), device=device))
     return int(m.sum()), int(np.unique(post[m]).size)
+
+
+def attach_kenyon_habituation(model, tau_ticks, use=0.2):
+    """Habituation of the Kenyon terminal release (needs attach_kenyon_terminal_release): the alpha'3 compartment
+    answers novel odours and its answer fades with familiarity (Hattori et al. 2017).  Every Kenyon cell's release is
+    scaled by an availability a in [0, 1]: a spike uses `use` of it, and it recovers as (1 - a) / tau per tick.  The
+    Kenyon code of a word is sparse and nearly disjoint from other words' (overlap ~0), so the availability is a
+    per-word familiarity: what was met within ~tau ticks releases little.  Fixed constants (a mechanism, not tuned
+    numbers); the release gain per type stays learned."""
+    if getattr(model, 'kcd_pre', None) is None:
+        raise ValueError('Kenyon habituation needs the Kenyon terminal release (--kc-dan-release)')
+    device = model.edge_pre_e.device
+    model.register_buffer('kch_tau', torch.tensor(float(tau_ticks), device=device), persistent=False)
+    model.register_buffer('kch_use', torch.tensor(float(use), device=device), persistent=False)
+    return float(tau_ticks), float(use)
 
 
 def kenyon_terminal_release(model, spikes):
@@ -2403,7 +2430,7 @@ class FlyBPTTLearner:
                 pace, forced_k = float(forced['pace']), list(forced['intervals'])
                 if forced.get('speak') is not None:
                     # v2: the fly's turn-taking decisions in the live pass, credited below (speaking_value)
-                    forced_speak = (list(forced['speak']), list(forced['decide']))
+                    forced_speak = (list(forced['speak']), list(forced['decide']), forced.get('speakers'))
                 self.forced_world = None
             total_ticks = 0
             reads, intervals = [], []
@@ -2598,8 +2625,12 @@ class FlyBPTTLearner:
                         from .fly_active_inference import speaking_value
                         if getattr(self, 'speak_baseline', None) is None:
                             self.speak_baseline = {}
+                        uni = getattr(self, 'unigram_ce', None)
+                        prior = ([float(uni[a]) for a in flat] if uni is not None
+                                 else [math.log(m.decoder.out_features)] * len(flat))
                         J_out, sstats = speaking_value(hz, intervals, forced_speak[1], forced_speak[0],
-                                                       scores.detach(), baseline=self.speak_baseline)
+                                                       scores.detach(), baseline=self.speak_baseline,
+                                                       speakers=forced_speak[2], prior=prior)
                         self.last_adaptive_metrics.update({k_: v for k_, v in sstats.items() if v is not None})
                     if lam_out > 0:
                         ai_loss = ai_loss - lam_out * J_out

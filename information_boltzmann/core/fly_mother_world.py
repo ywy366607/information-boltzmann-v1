@@ -58,6 +58,26 @@ class LocalMother:
         return text.split('\n')[0].strip() or '...'
 
 
+def family_prompt(plan):
+    """The family (data/harness/raising.json 'family'): always in the mouth's instructions, whatever the topic -- the
+    words for herself and for the others are the first thing a child's world gives her.  Names in Latin letters only:
+    her vocabulary is GPT-2, and Chinese characters reach her as broken bytes."""
+    fam = plan.get('family') if isinstance(plan, dict) else None
+    if not fam:
+        return ''
+    child = fam.get('child', {}).get('name', 'the child')
+    who = [f"you are {fam['mother'].get('full', 'Mama')} (she calls you {fam['mother'].get('name', 'Mama')})"
+           if fam.get('mother') else '',
+           f"her father is {fam['father'].get('full', 'Papa')} (she calls him {fam['father'].get('name', 'Papa')})"
+           if fam.get('father') else '']
+    who += [f"{o['name']} is family too" for o in fam.get('others', []) if o.get('name')]
+    return (f"The child's name is {child}; " + '; '.join(w for w in who if w) + '. ' + fam.get('first_lessons', '') +
+            ' ' + fam.get('language', '')).strip()
+
+
+FAMILY_WORDS = (' Meng', ' Mama', ' Papa', ' Ling', ' Wu')     # GPT-2 first tokens of the family's names
+
+
 class GeminiApiMother:
     """A fast Google Gemini model as the mother via Google AI Studio API.
 
@@ -122,7 +142,7 @@ class GeminiApiMother:
         if not topic and p_cfg.get('topics'):
             topic = p_cfg['topics'][0]
         intent = p_cfg.get('intention')
-        parts = [persona]
+        parts = [persona, family_prompt(self.plan)]
         if topic:
             parts.append(f"Current conversation topic: {topic}.")
         if intent:
@@ -303,6 +323,7 @@ class MotherWorld:
         self.pending = None                        # the request an asynchronous mother is thinking about
         self.history_turns, self.max_fly_words = history_turns, max_fly_words
         self.end_ids = {i for s in end_of_turn for i in gpt2_tokenizer.encode(s)}
+        self.family_ids = {gpt2_tokenizer.encode(w)[0] for w in FAMILY_WORDS}
         self.transcript = []                       # [(who, text)]
         self.queue = collections.deque()           # the mother's words still to be heard
         self.fly_words = []                        # the fly's current turn (ids)
@@ -395,7 +416,11 @@ class MotherWorld:
                 'fly_repeat_bigrams': round(repeat_bigrams(fly), 3), 'fly_identical_consecutive_turns': loops,
                 'fly_mean_turn_words': round(len(fly) / max(1, len(self.fly_turns[-last:])), 2),
                 'fly_silent_turns': round(sum(1 for t in recent if not t) / max(1, len(recent)), 3),
-                'mother_ttr': round(ttr(mom), 3), 'mother_repeat_bigrams': round(repeat_bigrams(mom), 3)}
+                'mother_ttr': round(ttr(mom), 3), 'mother_repeat_bigrams': round(repeat_bigrams(mom), 3),
+                # the words for herself and the others: how often she says them, and how often she hears them
+                'fly_family_words': sum(1 for w in fly if w in self.family_ids),
+                'mother_family_words': sum(t.count(n.strip().lower()) for t in [' '.join(mom)]
+                                           for n in FAMILY_WORDS)}
 
 
 def live_window(learner, world, n, rng, pace_min, pace_mean, temperature=1.0, ticks_per_second=2.0,
@@ -447,10 +472,11 @@ def live_window(learner, world, n, rng, pace_min, pace_mean, temperature=1.0, ti
         def advance(k, start=0):
             # ticks start .. start + k - 1 of the word's interval, in the training pass's segments (same packets)
             nonlocal s, ai_g
-            done, latent, committed = start, None, False
+            done, latent, committed, said_read = start, None, False, None
             while done < start + k:
                 ticks = min(seg - done % seg, start + k - done)
-                extra_kw = dict(ai_g=ai_g, ai_tape=[], eye_forced=getattr(learner, 'eye_forced', None)) if acts else {}
+                extra_kw = (dict(ai_g=ai_g, ai_tape=[], eye_forced=getattr(learner, 'eye_forced', None),
+                                 read_every=True) if acts else {})
                 out = fl.advance_fly_token_stream(
                     m, s, torch.tensor([token], device=s.h.device), [ticks], ticks=ticks,
                     hold_input=learner.hold_input, read_after=learner.read_lag or None,
@@ -459,9 +485,14 @@ def live_window(learner, world, n, rng, pace_min, pace_mean, temperature=1.0, ti
                 s, latent = out[0], out[1]
                 if acts:
                     ai_g = out[-1]
-                    committed = committed or any(extra_kw['ai_tape'])
+                    tape = extra_kw['ai_tape']
+                    if not committed and any(tape):
+                        # the word is said from the read standing at the first commit tick
+                        first = tape.index(True)
+                        said_read = out[2][first:first + 1]
+                    committed = committed or any(tape)
                 done += ticks
-            return latent, committed
+            return latent, committed, said_read
 
         for _ in range(n):
             who, said = None, None
@@ -469,7 +500,7 @@ def live_window(learner, world, n, rng, pace_min, pace_mean, temperature=1.0, ti
             if world.turn == 'waiting':
                 extra = min(int(max_wait_ticks), int(round(world.wait_for_mother() * float(ticks_per_second))))
             k = int(rng.geometric(1.0 / pace)) + extra
-            latent, committed = advance(k)
+            latent, committed, said_read = advance(k)
             k_decide = 0
             if world.turn == 'mother':
                 word, who = world.next_word()
@@ -484,7 +515,8 @@ def live_window(learner, world, n, rng, pace_min, pace_mean, temperature=1.0, ti
                         k += wait
                 word, who = world.next_word()
             else:
-                logits = m.decoder(m.read_norm(latent)).float()[0] / max(temperature, 1e-6)
+                read = said_read if said_read is not None else latent
+                logits = m.decoder(m.read_norm(read)).float()[0] / max(temperature, 1e-6)
                 word, who = int(torch.multinomial(torch.softmax(logits, -1), 1)), 'fly'
                 if acts:
                     said, k_decide = 1, k
@@ -494,5 +526,5 @@ def live_window(learner, world, n, rng, pace_min, pace_mean, temperature=1.0, ti
             token = int(word)
     forced = {'pace': pace, 'intervals': intervals}
     if acts:
-        forced.update(speak=speak, decide=decide)
+        forced.update(speak=speak, decide=decide, speakers=list(speakers))
     return targets, forced, speakers
