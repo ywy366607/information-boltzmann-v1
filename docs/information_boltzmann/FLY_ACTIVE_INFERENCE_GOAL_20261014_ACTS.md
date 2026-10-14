@@ -1048,3 +1048,28 @@ Change 1 is retested on top once P3's partial rho is above 0.05.
    0.33 θ, same-word repeatability up, and the context code (P1) kept.
 2. The local calyx APL (Phi^T Phi z explaining away).
 3. Kenyon residual → DA through the release, judged by the living (2) gate.
+
+### APL → Kenyon fix built: `--apl-kc-dendritic-only` (user: "fix it")
+
+**Why it was missed.**
+- The 10-12 audit flagged APL as a compartmentalized giant modelled as one point (row 8, Medium) and listed two fixes:
+  a graded output, or a split by region.
+- 10-13 did the graded output only. The ROI query needed for the split stayed on the to-do list, so the 85% axonal
+  share was not measured until today.
+
+**The fix.**
+- Mirrors `attach_kenyon_dendritic_only`: each APL → KC inhibitory edge is scaled once by its calyx share (per pair,
+  from neuPrint), and the 819 axonal-only edges are pinned at 0.
+- Checked on the graph: 4,633 edges, mean share 0.143, weight-weighted share 0.155 (= neuPrint's 15.5%).
+- Saved in the config; later resumes only pin.
+
+**A/B** (`apl_ab.sh`, after the JEPA A/B):
+- control = m_main's chunk 12 from c11; treatment = chunk 12 from c11 with the fix;
+- word margin, Kenyon repeat (P1) and P3 on both; (1) paired; (2) on both.
+
+**Whether this could make the JEPA term unnecessary:** see the reply of 2026-10-14 23:00 in the status/doc trail.
+- This fix should restore what the senses deliver (word repeatability, excitability).
+- It does not by itself add meaning beyond the senses. But the senses already carry some meaning (receptors 1.62x
+  for GPT-2 neighbours), and the Kenyon layer lost most of it (1.28x). If the fix lets the Kenyon code keep the
+  senses' meaning, familiarity of meaning may work without JEPA.
+- So: measure P3 after the fix before deciding on JEPA.

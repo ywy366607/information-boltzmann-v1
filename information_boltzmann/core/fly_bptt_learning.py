@@ -1252,6 +1252,55 @@ def kenyon_dendritic_share(model, graph_npz, annotations, dendritic_feather):
     return edges, share
 
 
+def apl_kenyon_share(model, graph_npz, annotations, dendritic_feather):
+    """Per inhibitory edge: the share of an APL -> Kenyon connection's synapses that lie in the calyx (Kenyon dendrites),
+    from neuPrint male-cns v1.0 roiInfo (data/malecns_v1/apl_kc_dendritic_synapses.feather): 84.5% of them sit on the
+    Kenyon axons in the lobes and peduncle (presynaptic inhibition of the output) and do not inhibit the soma.  Returns
+    (edge index, share) for every APL -> Kenyon inhibitory edge (share 0 where no synapse is in the calyx)."""
+    import numpy as np
+    import pandas as pd
+    graph = np.load(graph_npz, allow_pickle=True)
+    ids = graph['neuron_body_ids']
+    table = pd.read_feather(annotations).set_index('bodyId').reindex(ids)
+    device = model.edge_pre_i.device
+    kc = torch.as_tensor(table['class'].astype(str).values == 'Kenyon_Cell', device=device)
+    apl = torch.as_tensor(table['type'].astype(str).values == 'APL', device=device)
+    pre, post = model.edge_pre_i.long(), model.edge_post_i.long()
+    edges = torch.nonzero(apl[pre] & kc[post]).squeeze(1)
+    dend = pd.read_feather(dendritic_feather)
+    apl_ids = set(int(b) for b in ids[apl.cpu().numpy()])
+    dend = dend[dend.body_pre.isin(apl_ids)]
+    pos = {int(b): i for i, b in enumerate(ids)}
+    n = model.n_neurons
+    rows = [(pos[int(a)] * n + pos[int(b)], d / t) for a, b, d, t in
+            zip(dend.body_pre, dend.body_post, dend.dendritic_synapses, dend.total_synapses)
+            if int(a) in pos and int(b) in pos and t > 0]
+    keys = torch.as_tensor([r[0] for r in rows], device=device)
+    vals = torch.as_tensor([r[1] for r in rows], dtype=torch.float32, device=device)
+    order = torch.argsort(keys)
+    keys, vals = keys[order], vals[order]
+    edge_keys = pre[edges] * n + post[edges]
+    at = torch.searchsorted(keys, edge_keys).clamp(max=len(keys) - 1)
+    share = torch.where(keys[at] == edge_keys, vals[at], torch.zeros_like(vals[at]))
+    return edges, share
+
+
+def attach_apl_kenyon_dendritic_only(model, graph_npz, annotations, dendritic_feather, rescale=True):
+    """APL -> Kenyon inhibition through the soma only for the calyx (dendritic) synapses, as attach_kenyon_dendritic_only
+    does for Kenyon -> Kenyon: with rescale=True the learned weights are scaled once by the calyx share; connections
+    with no calyx synapse are pinned at 0.  The point model had put all of APL's Kenyon synapses on the membrane, ~6.5x
+    the dendritic inhibition (mb_feedback_audit, 2026-10-14).  Returns (edges, edges pinned, mean share)."""
+    edges, share = apl_kenyon_share(model, graph_npz, annotations, dendritic_feather)
+    if rescale:
+        with torch.no_grad():
+            model.edge_weight_i[edges] = model.edge_weight_i[edges] * share
+    zero = edges[share == 0]
+    pinned = getattr(model, 'pinned_zero_edges_i', None)
+    pinned = zero if pinned is None else torch.unique(torch.cat([pinned.to(zero.device), zero]))
+    model.register_buffer('pinned_zero_edges_i', pinned, persistent=False)
+    return int(edges.numel()), int(zero.numel()), float(share.mean())
+
+
 TIED_RECEPTOR_CLASSES = ('olfactory', 'gustatory', 'chemosensory', 'hygrosensory', 'thermosensory')
 
 
