@@ -146,3 +146,22 @@ In the fly's turn the next input is the fly's own output, so a window's words ca
 **Needs**
 - an override for the intervals (`learner.forced_intervals`);
 - the commit act (D4), to replace the fixed turn length.
+
+## 9. First run on the GPU (2026-10-14, smoke: m_main c6, 512 words, local mother)
+
+The two-pass loop runs end to end:
+- `live_window` lives the window: the fly's words are sampled from its reads in its turns, the mother answers
+  finished turns;
+- `learner.forced_world` makes the training pass relive the same words and intervals;
+- 8-11 s per 32 words, about the speed of plain training.
+
+The fly babbles: at T=1 its words are word salad. The mother picks its words up: the fly said "handguns, films", and
+she answered with "a gun in my pocket" and "these movies". The conditionality is there from the first turns: what the
+fly says changes what it hears next.
+
+The 270M local mother rambles, as expected; the API mother is for real raising.
+
+Known gaps:
+- **No commit act yet.** The fly speaks one word per arrival in its turn, and the turn ends at an end-of-turn word or
+  after 16 words.
+- **Each run opens a new conversation** (a new day). The opening line is not written to mother.jsonl.
