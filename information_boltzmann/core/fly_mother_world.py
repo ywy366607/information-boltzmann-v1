@@ -58,6 +58,25 @@ class LocalMother:
         return text.split('\n')[0].strip() or '...'
 
 
+def world_prompt(path='data/harness/world.json', limit=40):
+    """The world as it has been established (the mother's memory, data/harness/world.json): facts the heart agent
+    consolidated from the conversation -- the cat called Katz who sleeps on the chair, Papa's drum, Aunt Ling's Sunday
+    visits -- so the same word keeps pointing at the same thing and the world stops drifting.  Append-mostly and placed
+    right after the family, so the cached prompt prefix survives.  Format: {"facts": [{"fact": "...", "since": "..."}]}."""
+    import json, os
+    if not os.path.exists(path):
+        return ''
+    try:
+        facts = [f['fact'] if isinstance(f, dict) else str(f) for f in json.load(open(path, encoding='utf-8')).get('facts', [])]
+    except Exception:
+        return ''
+    facts = [f.strip() for f in facts if str(f).strip()][:limit]
+    if not facts:
+        return ''
+    return ('What is true in your home (keep it consistent; build on it when it fits): ' + ' '.join(
+        f if f.endswith('.') else f + '.' for f in facts))
+
+
 def family_prompt(plan):
     """The family (data/harness/raising.json 'family'): always in the mouth's instructions, whatever the topic -- the
     words for herself and for the others are the first thing a child's world gives her.  Names in Latin letters only:
@@ -142,7 +161,7 @@ class GeminiApiMother:
         if not topic and p_cfg.get('topics'):
             topic = p_cfg['topics'][0]
         intent = p_cfg.get('intention')
-        parts = [persona, family_prompt(self.plan)]
+        parts = [persona, family_prompt(self.plan), world_prompt()]
         if topic:
             parts.append(f"Current conversation topic: {topic}.")
         if intent:
