@@ -307,7 +307,9 @@ async function drawTalk() {
   const names = {fly_turns: '梦漓的话轮数', fly_ttr: '梦漓用词多样性', fly_repeat_bigrams: '梦漓重复二元组', fly_identical_consecutive_turns: '连续相同话轮',
                  fly_mean_turn_words: '平均每轮词数', fly_silent_turns: '沉默话轮比例', mother_ttr: '妈妈用词多样性', mother_repeat_bigrams: '妈妈重复二元组',
                  fly_family_words: '梦漓说出家人名字', mother_family_words: '妈妈说出家人名字', silent_beats: '当前连续沉默', mother_calls: '妈妈叫名字',
-                 mother_waits: '妈妈选择等（agent）', mother_waits_silence: '妈妈陪她安静', interruptions: '打断妈妈'};
+                 mother_waits: '妈妈选择等（agent）', mother_waits_silence: '妈妈陪她安静', interruptions: '打断妈妈',
+                 mouth_calls: '嘴的调用次数', mouth_cache_hit_rate: '缓存命中率（输入 token）', mouth_cache_hit_tokens: '命中的输入 token',
+                 mouth_cache_miss_tokens: '未命中的输入 token', mouth_output_tokens: '输出 token'};
   $('#monitor').innerHTML = last ? Object.entries(mon).filter(([k]) => k !== 'fly_turn_ends').map(([k, v]) => `<span>${names[k] || k}</span><span>${v}</span>`).join('') : '<span>—</span><span></span>';
   const sx = r => r.bptt_train_tokens / 1000;
   chart($('#cHazard'), [{color: css('--fly'), points: sp.map(r => ({x: sx(r), y: r.hazard_mean}))},

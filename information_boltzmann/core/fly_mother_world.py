@@ -267,7 +267,14 @@ class DeepSeekMother(GeminiApiMother):
                                        headers={'Authorization': f'Bearer {self.api_key}',
                                                 'Content-Type': 'application/json'})
                 if r.status_code == 200:
-                    text = (r.json().get('choices', [{}])[0].get('message', {}).get('content') or '').strip()
+                    data = r.json()
+                    usage = data.get('usage') or {}
+                    self.usage = getattr(self, 'usage', {'calls': 0, 'cache_hit': 0, 'cache_miss': 0, 'output': 0})
+                    self.usage['calls'] += 1
+                    self.usage['cache_hit'] += int(usage.get('prompt_cache_hit_tokens') or 0)
+                    self.usage['cache_miss'] += int(usage.get('prompt_cache_miss_tokens') or 0)
+                    self.usage['output'] += int(usage.get('completion_tokens') or 0)
+                    text = (data.get('choices', [{}])[0].get('message', {}).get('content') or '').strip()
                     return text.splitlines()[0].strip() if text else ''
                 self.last_status = r.status_code
                 if r.status_code == 400 and self.thinking_field:
@@ -530,6 +537,17 @@ class MotherWorld:
             self.silent_beats = 0
         self._end_fly_turn()
 
+    def cached_history(self):
+        """The conversation the mouth sees, append-only from an anchor so that consecutive requests share their prefix
+        (API prefix caches hit only on an exact prefix; a sliding window shifts it every turn and misses on all of it).
+        When it grows past 2 x history_turns, the anchor jumps once to keep the last history_turns // 2 + 1 turns."""
+        anchor = getattr(self, 'history_anchor', 0)
+        if len(self.transcript) - anchor > 2 * self.history_turns:
+            anchor = len(self.transcript) - (self.history_turns // 2 + 1)
+            self.history_anchor = anchor
+            self.stats['history_rebases'] += 1
+        return self.transcript[anchor:]
+
     def _end_fly_turn(self):
         text = self.tok.decode(self.fly_words).strip()
         had_words = bool(self.fly_words)
@@ -537,7 +555,7 @@ class MotherWorld:
         self.fly_turns.append(list(self.fly_words))
         self.fly_words = []
         self.stats['fly_turns'] += 1
-        history = self.transcript[-self.history_turns:]
+        history = self.cached_history()
 
         if self.contingent and not had_words:
             if self.silent_beats >= self.silent_beats_threshold:
@@ -628,7 +646,11 @@ class MotherWorld:
                 # shows as the yield share rising
                 'fly_turn_ends': {k: self.stats[k] for k in ('end_breath', 'end_word', 'end_yield')},
                 'mother_waits_silence': self.stats['mother_waits_silence'],
-                'interruptions': self.stats['interruptions']}
+                'interruptions': self.stats['interruptions'],
+                **({'mouth_calls': u['calls'], 'mouth_cache_hit_tokens': u['cache_hit'],
+                    'mouth_cache_miss_tokens': u['cache_miss'], 'mouth_output_tokens': u['output'],
+                    'mouth_cache_hit_rate': round(u['cache_hit'] / max(1, u['cache_hit'] + u['cache_miss']), 3)}
+                   if (u := getattr(self.mother, 'usage', None)) else {})}
 
 
 def replay_ce(learner, state0, previous_token, targets, intervals):

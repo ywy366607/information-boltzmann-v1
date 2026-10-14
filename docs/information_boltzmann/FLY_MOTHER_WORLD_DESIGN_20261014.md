@@ -314,3 +314,25 @@ it applies to the next window's decisions. Two ways to handle that:
 - replaying the decisions' log-probabilities.
 
 Choose after the section 14 result.
+
+## 15. Cost: the mouth's prompt cache (2026-10-14)
+
+The interaction stream is endless, so every turn's API cost matters. DeepSeek caches automatically, but only an exact
+prefix from the start of the request hits (https://api-docs.deepseek.com/guides/kv_cache). Prefix units form at the
+end of a user input, at the end of a model output, and at fixed intervals. The cache lives hours to days. The response
+reports `prompt_cache_hit_tokens` and `prompt_cache_miss_tokens`.
+
+**Before.** Each request was system prompt + the last 20 turns. Once the conversation passed 20 turns, every request
+dropped its oldest turn. Everything after the system prompt shifted, and the whole history was billed as a miss.
+
+**Now** (`MotherWorld.cached_history`): the history is append-only from an anchor. When it passes 2 x history_turns,
+the anchor jumps once, keeping the last history_turns / 2 + 1 turns. Consecutive requests share their prefix; in the
+test, 33 of 39 requests shared the previous one's. The stable parts lead: persona, then the family. The topic and
+intention follow, and change only when the heart edits the plan.
+
+**Accounting.** The DeepSeek mouth adds up calls, cache-hit, cache-miss and output tokens. They appear in the monitor
+and on the dashboard: `mouth_cache_hit_rate`, among others. The first real test had 128 tokens hit on the second
+request.
+
+The contingent mother also saves calls: she does not call the model when the child is silent (42 of 86 turns in the
+contingent run).
