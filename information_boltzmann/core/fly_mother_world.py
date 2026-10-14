@@ -87,7 +87,7 @@ class GeminiApiMother:
         self.temperature = temperature
         self.retries = retries
         self.system = system or self.SYSTEM
-        self.url = f'https://generativelanguage.googleapis.com/v1beta/models/{self.model}:generateContent?key={self.api_key}'
+        self.url = f'https://generativelanguage.googleapis.com/v1beta/models/{self.model}:generateContent'
 
     def reply(self, transcript):
         import time
@@ -115,7 +115,8 @@ class GeminiApiMother:
         delay = 2.0
         for attempt in range(self.retries):
             try:
-                r = self.requests.post(self.url, json=payload, headers={'Connection': 'close'}, timeout=12)
+                r = self.requests.post(self.url, json=payload,
+                                       headers={'x-goog-api-key': self.api_key, 'Connection': 'close'}, timeout=12)
                 if r.status_code == 200:
                     data = r.json()
                     parts = data.get('candidates', [{}])[0].get('content', {}).get('parts', [])

@@ -167,3 +167,15 @@ learnable.
 
 Report fixed: `live_act_report.py` now gives the within-interval correlations (average ranks) and the timing value
 over the null.
+
+**D4 vs the mainline, same words** (both chunk 7, trained from c6):
+
+| gate c6 | brain contribution | brain NLL | unigram |
+|---|---|---|---|
+| mainline | +0.161 +- 0.037 | 7.2172 | 7.3638 |
+| D4 | +0.148 +- 0.035 | 7.2247 | 7.3638 |
+
+The dip from c5 (+0.49) is the text segment: both arms dropped together, so the acts did not cause it.
+
+The acts' language cost, paired by window over the whole chunk (4,096 words): **+0.016 +- 0.004 nats**. It is real
+and within the 0.05 acceptance.
