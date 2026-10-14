@@ -472,6 +472,12 @@ def main():
                         help='No active evaluation (fresh B / A revisit) in this run: a gate arm that only scores the stream')
     parser.add_argument('--score-log', type=Path, default=None,
                         help='Append every window pre-update word scores (JSONL) for paired comparisons')
+    parser.add_argument('--mother-world', choices=('local', 'api'), default=None,
+                        help='Train in the mother world: live each window (the fly speaks in its turns, the mother answers), '
+                             'then relive it with gradient (never inherited)')
+    parser.add_argument('--mother-api-model', default=None, help='The API mother model id (the SDK reads its own env config)')
+    parser.add_argument('--mother-temperature', type=float, default=1.0, help='Sampling temperature of the fly words')
+    parser.add_argument('--mother-max-fly-words', type=int, default=16, help='A fly turn ends after this many words')
     parser.add_argument('--kc-dan-release', action=argparse.BooleanOptionalAction, default=None,
                         help='Kenyon -> dopamine-terminal synapses raise local dopamine release (axo-axonal; learned gain '
                              'per type from 0.1); omitted = inherit, else off')
@@ -2012,6 +2018,17 @@ def main():
             torch.cuda.empty_cache()
         return row
 
+    mother_world = mother_rng = None
+    if args.mother_world:
+        # the user's mother world (docs/information_boltzmann/FLY_MOTHER_WORLD_DESIGN_20261014.md): the fly's speech goes to
+        # a mother, her replies come back through the senses; a new conversation each run (each chunk: a new day)
+        import tiktoken
+        from information_boltzmann.core.fly_mother_world import MotherWorld, LocalMother, ApiMother, live_window
+        mother = LocalMother() if args.mother_world == 'local' else ApiMother(args.mother_api_model)
+        mother_world = MotherWorld(mother, tiktoken.get_encoding('gpt2'), max_fly_words=args.mother_max_fly_words)
+        mother_rng = np.random.default_rng(int(trained) + 104729)
+        print(f'Mother world ({args.mother_world}): turn-taking, self-hearing, the fly words sampled at T={args.mother_temperature}',
+              flush=True)
     shelf = probe_fn = None
     if getattr(args, 'bookshelf', None):
         import information_boltzmann.core.fly_bptt_learning as fly_learning
@@ -2024,7 +2041,20 @@ def main():
         print(f'Curious shelf: {len(shelf.books)} books, selector {args.bookshelf}', flush=True)
     try:
         while trained < target:
-            if shelf is not None:
+            speakers = None
+            if mother_world is not None:
+                # the mother world: live the window first (the fly's words sampled from its reads, her replies), then
+                # train on exactly what happened (the same words and intervals, learner.forced_world)
+                before = len(mother_world.transcript)
+                targets_, forced_, speakers = live_window(learner, mother_world, args.window, mother_rng,
+                                                          float(args.stream_pace_min or 0), float(args.stream_pace_mean or 0),
+                                                          temperature=args.mother_temperature)
+                values = np.array(targets_, dtype=np.int64)
+                learner.forced_world = forced_
+                with (args.output / 'mother.jsonl').open('a', encoding='utf-8') as out:
+                    for who, text in mother_world.transcript[before:]:
+                        out.write(json.dumps({'trained': trained, 'who': who, 'text': text}) + '\n')
+            elif shelf is not None:
                 values = shelf.next_window(args.window)
             else:
                 values = np.array(train[cursor+1:cursor+args.window+1], dtype=np.int64)
@@ -2077,7 +2107,9 @@ def main():
                                           'scores': [float(x) for x in scores],
                                           'unigram': [float(x) for x in reference_surprisal[values]],
                                           **({'word_da': learner.last_word_da}
-                                             if getattr(learner, 'last_word_da', None) is not None else {})}) + '\n')
+                                             if getattr(learner, 'last_word_da', None) is not None else {}),
+                                          **({'speakers': speakers, 'monitor': mother_world.monitor()}
+                                             if speakers is not None else {})}) + '\n')
             first_pass_meter.record(scores, reference_surprisal[values])
             first_pass_meter.verify_cursor(trained, cursor)
             phase_meter.record(scores, reference_surprisal[values])

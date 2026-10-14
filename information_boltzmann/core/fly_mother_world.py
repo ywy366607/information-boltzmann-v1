@@ -160,3 +160,56 @@ class MotherWorld:
                 'fly_repeat_bigrams': round(repeat_bigrams(fly), 3), 'fly_identical_consecutive_turns': loops,
                 'fly_mean_turn_words': round(len(fly) / max(1, len(self.fly_turns[-last:])), 2),
                 'mother_ttr': round(ttr(mom), 3), 'mother_repeat_bigrams': round(repeat_bigrams(mom), 3)}
+
+
+def live_window(learner, world, n, rng, pace_min, pace_mean, temperature=1.0):
+    """The live pass of one window (no gradient, on a copy of the state): the conversation as it happens.
+
+    Each of the n words arrives after its interval (the world's pace: a window mean log-uniform in [pace_min,
+    pace_mean], memoryless intervals), advanced exactly as forward_window does (the same window options, segments of
+    stream_segment_ticks, held input, the expectation updated per segment).
+    - In the mother's turn the next word is hers.
+    - In the fly's turn the next word is the fly's own: sampled from its read standing just before the arrival (the
+      word it says), heard next (self-hearing); world.speak() ends the turn at an end-of-turn word, and the mother answers.
+
+    Returns (targets, forced, speakers):
+    - targets: the n words heard after the learner's previous token;
+    - forced: {'pace', 'intervals'}, for learner.forced_world, so the training pass relives this window;
+    - speakers: 'mother' or 'fly' per word.
+    """
+    import math
+    import torch
+    from . import fly_bptt_learning as fl
+    m = learner.model
+    with torch.no_grad():
+        s = fl.FlyPhysicalState(**{k: (tuple(t.detach().clone() for t in v) if k == 'ring' else v.detach().clone())
+                                   for k, v in learner.state.state_dict().items()})
+        opts = dict(base_rates=m.get_decay_rates(), thresholds=m.get_thresholds(),
+                    conductance_gains=m.get_conductance_gains(), alif_params=m.get_alif_params(),
+                    stp_params=m.get_stp_params())
+        if getattr(m, 'dopamine_sensitivity', None) is not None:
+            opts['dopamine_s_class'] = fl.dopamine_class_sensitivity(m, s.h)
+        pace = (float(math.exp(rng.uniform(math.log(pace_min), math.log(pace_mean)))) if 0 < pace_min < pace_mean
+                else float(pace_mean))
+        seg = int(getattr(learner, 'stream_segment_ticks', 16) or 16)
+        token = int(learner.previous_token)
+        targets, intervals, speakers = [], [], []
+        for _ in range(n):
+            k = int(rng.geometric(1.0 / pace))
+            done, latent = 0, None
+            while done < k:
+                ticks = min(seg, k - done)
+                s, latent = fl.advance_fly_token_stream(
+                    m, s, torch.tensor([token], device=s.h.device), [ticks], ticks=ticks,
+                    hold_input=learner.hold_input, read_after=learner.read_lag or None,
+                    writer_baseline_clock=learner.writer_baseline_clock, fresh=done == 0, **opts)[:2]
+                done += ticks
+            if world.turn == 'mother':
+                word, who = world.next_word()
+            else:
+                logits = m.decoder(m.read_norm(latent)).float()[0] / max(temperature, 1e-6)
+                word, who = int(torch.multinomial(torch.softmax(logits, -1), 1)), 'fly'
+                world.speak(word)
+            targets.append(int(word)); intervals.append(k); speakers.append(who)
+            token = int(word)
+    return targets, {'pace': pace, 'intervals': intervals}, speakers

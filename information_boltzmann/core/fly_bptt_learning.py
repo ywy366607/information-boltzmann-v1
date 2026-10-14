@@ -2394,6 +2394,13 @@ class FlyBPTTLearner:
             if pace > 0 and 0 < pace_min < pace:
                 # the world's tempo changes from stretch to stretch: this window's mean interval, log-uniform
                 pace = float(math.exp(self.pace_rng.uniform(math.log(pace_min), math.log(pace))))
+            # an interactive world (fly_mother_world) lived this window first, without gradient: its pace and its words'
+            # intervals are given, so this pass relives exactly what happened (consumed here, once)
+            forced = getattr(self, 'forced_world', None)
+            forced_k = None
+            if forced is not None and pace > 0:
+                pace, forced_k = float(forced['pace']), list(forced['intervals'])
+                self.forced_world = None
             total_ticks = 0
             reads, intervals = [], []
             word_da = [] if getattr(self, 'record_word_da', False) else None
@@ -2423,7 +2430,8 @@ class FlyBPTTLearner:
                 # the world's pace: a fixed clock, or (pace > 0) a memoryless interval k >= 1 with mean `pace` drawn per
                 # word, so that elapsed time tells nothing about when the next word comes; the read is the expectation
                 # standing just before the next word arrives
-                k = int(self.pace_rng.geometric(1.0 / pace)) if pace > 0 else self.stream_ticks
+                k = (forced_k.pop(0) if forced_k else
+                     int(self.pace_rng.geometric(1.0 / pace)) if pace > 0 else self.stream_ticks)
                 total_ticks += k
                 word_noise = None
                 if float(getattr(self, 'sense_noise_max', 0.0) or 0.0) > 0 and self.hold_input:
