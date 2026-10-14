@@ -324,6 +324,8 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
     if getattr(model, 'dopamine_sensitivity', None) is not None:
         arrival = execute_delayed_synaptic_transmission(ring, model.dan_edge_pre, model.dan_edge_post,
                                                         model.dan_edge_weight, model.dan_delay_splits) / model.dan_scale
+        if getattr(model, 'kcd_pre', None) is not None:
+            arrival = arrival + kenyon_terminal_release(model, ring[0])
         fast, slow = torch.sigmoid(model.dopamine_logit_fast), torch.sigmoid(model.dopamine_logit_slow)
         if dopamine.numel() != 2 * h.numel():
             dopamine = torch.cat([arrival, arrival], 0).detach()
@@ -1325,6 +1327,44 @@ def pin_kenyon_to_dopamine(model, graph_npz, annotations):
     pinned = edges if pinned is None else torch.unique(torch.cat([pinned.to(device), edges]))
     model.register_buffer('pinned_zero_edges_e', pinned, persistent=False)
     return int(edges.numel())
+
+
+def attach_kenyon_terminal_release(model, graph_npz, annotations, gain=0.1):
+    """Kenyon -> dopamine-terminal synapses as what they are: axo-axonal input that raises dopamine RELEASE at the
+    terminal in the lobe (Cervantes-Sandoval et al. 2017: functional cholinergic KC -> DAN synapses, local release, a
+    positive feedback needed for learning), not somatic drive (pinned at 0 since connectome v2).  They are ~80% of the
+    mushroom-body dopamine cells' excitatory synapses, and surprise reaches the Kenyon cells (2026-10-14 path probe:
+    0.13) but not the dopamine cells (~0): the point model had cut the fly's own route from the Kenyon code to local
+    dopamine (the alpha'3 novelty habituation, Hattori et al. 2017).
+    Per tick: drive_d = sum_k w_kd s_k (the connectome's own Kenyon -> DAN weights, this tick's Kenyon spikes); the
+    extra release g_d drive_d reaches each of the dopamine cell's targets through its own dopamine edges (local, no
+    delay).  g per cell type (log_kc_release, a class parameter: learned per type), starting at `gain` (0.1: a tenth
+    of a spike per unit drive, so the outcome lines are not swamped at birth).  The dopamine cells' spiking is not
+    touched.  Returns (edges, dopamine cells reached)."""
+    import numpy as np
+    import pandas as pd
+    graph = np.load(graph_npz, allow_pickle=True)
+    cls = pd.read_feather(annotations).set_index('bodyId').reindex(graph['neuron_body_ids'])['class'].astype(str).values
+    pre, post = graph['edge_pre_e'].astype(np.int64), graph['edge_post_e'].astype(np.int64)
+    dan = np.zeros(len(cls), dtype=bool)
+    dan[graph['dan_indices'].astype(np.int64)] = True
+    m = (cls[pre] == 'Kenyon_Cell') & dan[post]
+    device = model.edge_pre_e.device
+    model.register_buffer('kcd_pre', torch.as_tensor(pre[m], device=device), persistent=False)
+    model.register_buffer('kcd_post', torch.as_tensor(post[m], device=device), persistent=False)
+    model.register_buffer('kcd_weight', torch.as_tensor(graph['edge_weight_e'][m], dtype=torch.float32, device=device),
+                          persistent=False)
+    if getattr(model, 'log_kc_release', None) is None:
+        model.log_kc_release = torch.nn.Parameter(torch.full((model.n_superclasses,), float(np.log(gain)), device=device))
+    return int(m.sum()), int(np.unique(post[m]).size)
+
+
+def kenyon_terminal_release(model, spikes):
+    """The dopamine arriving at every cell from the Kenyon-driven release at the dopamine terminals [1, N]."""
+    drive = torch.zeros_like(spikes).index_add(1, model.kcd_post, spikes.index_select(1, model.kcd_pre) * model.kcd_weight)
+    release = drive * torch.exp(model.log_kc_release)[model.superclass_id].unsqueeze(0)
+    pre, post = model.dan_edge_pre.long(), model.dan_edge_post.long()
+    return torch.zeros_like(spikes).index_add(1, post, release.index_select(1, pre) * model.dan_edge_weight) / model.dan_scale
 
 
 def pin_edges(model, suffix, edges):
@@ -3550,7 +3590,8 @@ class FlyBPTTGraph:
 # Physiology that is learned per cell class (time constants, threshold, adaptation, short-term plasticity, dopamine
 # sensitivity); splitting a class gives its cells their own values.
 CLASS_PARAMETER_NAMES = ('log_tau_m', 'log_tau_s_e', 'log_tau_s_i', 'log_threshold', 'log_tau_a', 'log_beta',
-                         'logit_u0', 'log_tau_fac', 'log_tau_rec', 'dopamine_sensitivity', 'log_input_gain')
+                         'logit_u0', 'log_tau_fac', 'log_tau_rec', 'dopamine_sensitivity', 'log_input_gain',
+                         'log_kc_release')
 
 
 def attach_input_gain(model):

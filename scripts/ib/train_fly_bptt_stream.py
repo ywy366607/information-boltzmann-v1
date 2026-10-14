@@ -26,7 +26,8 @@ from information_boltzmann.core.fly_odour_world import (OdourWorld, attach_act_h
                                                         attach_sense_head, SENSE_PARAMETER_NAMES)
 ACT_STATE_NAMES = ACT_PARAMETER_NAMES + ('act_mu', 'act_sigma', 'act_w_scale') + SENSE_PARAMETER_NAMES
 from information_boltzmann.core.fly_active_inference import attach_ai_head, AI_PARAMETER_NAMES, AI_STATE_NAMES
-from information_boltzmann.core.fly_bptt_learning import (WRITER_SENSE, attach_input_gain, init_input_gain_from_size, 
+from information_boltzmann.core.fly_bptt_learning import (WRITER_SENSE, attach_input_gain, init_input_gain_from_size,
+                                                          attach_kenyon_terminal_release, 
     FlyPhysicalState, FlyBPTTLearner, FlyBPTTGraph, STP_PARAMETER_NAMES,
     GO_PARAMETER_NAMES, attach_go_neuron, attach_connectome_go, READ_BANK_PARAMETER_NAMES, attach_read_bank,
     INTRINSIC_PARAMETER_NAMES, attach_intrinsic_drive, PRECISION_PARAMETER_NAMES, attach_precision,
@@ -187,6 +188,8 @@ def resolve_learning_modes(args, previous_config, previous_learner):
         args.dopamine_adapted = bool(previous_config.get('dopamine_adapted', False))
     if getattr(args, 'input_gain_size_exponent', None) is None:
         args.input_gain_size_exponent = previous_config.get('input_gain_size_exponent')
+    if getattr(args, 'kc_dan_release', None) is None:
+        args.kc_dan_release = bool(previous_config.get('kc_dan_release', False))
     if getattr(args, 'read_extra_classes', None) is None:
         args.read_extra_classes = previous_config.get('read_extra_classes') or ''
     if getattr(args, 'read_spikes', None) is None:
@@ -469,6 +472,9 @@ def main():
                         help='No active evaluation (fresh B / A revisit) in this run: a gate arm that only scores the stream')
     parser.add_argument('--score-log', type=Path, default=None,
                         help='Append every window pre-update word scores (JSONL) for paired comparisons')
+    parser.add_argument('--kc-dan-release', action=argparse.BooleanOptionalAction, default=None,
+                        help='Kenyon -> dopamine-terminal synapses raise local dopamine release (axo-axonal; learned gain '
+                             'per type from 0.1); omitted = inherit, else off')
     parser.add_argument('--input-gain-size-exponent', type=float, default=None,
                         help='Per-class learnable input gain (input conductance grows with the cell), started at '
                              '(median size / class size)^this (0 uniform, 1 inverse to size; omitted = inherit, else none)')
@@ -926,6 +932,9 @@ def main():
         from information_boltzmann.core.fly_bptt_learning import split_kenyon_subtypes, split_modulatory_classes, split_by_type
         if args.input_gain_size_exponent is not None:
             attach_input_gain(model)                     # before the type split, so every type inherits it
+        args.kc_dan_release = bool(args.kc_dan_release)
+        if args.kc_dan_release:
+            print(f'Kenyon -> dopamine-terminal release (newborn): {attach_kenyon_terminal_release(model, args.graph, args.graph.parent / "body-annotations.feather")} (edges, dopamine cells)', flush=True)
         if args.type_classes:
             if args.kc_subtypes or args.modulatory_classes:
                 raise ValueError('--type-classes already gives every cell type its own physiology (no --kc-subtypes / --modulatory-classes)')
@@ -990,6 +999,8 @@ def main():
             names.extend(GRADED_PARAMETER_NAMES)
         if args.input_gain_size_exponent is not None:
             names.append('log_input_gain')
+        if args.kc_dan_release:
+            names.append('log_kc_release')
         if args.compartment_memory:
             names.extend(n for n in COMPARTMENT_PARAMETER_NAMES + TASTE_PARAMETER_NAMES if n not in names)
         if args.use_read_gamma_trace:
@@ -1194,6 +1205,8 @@ def main():
         lineage_types = bool(previous_config.get('type_classes'))
         if previous_config.get('input_gain_size_exponent') is not None:
             attach_input_gain(model)                     # before the split replay (the saved gains load afterwards)
+        if args.kc_dan_release:                          # before the split replay; a new switch starts every type at 0.1
+            print(f'Kenyon -> dopamine-terminal release: {attach_kenyon_terminal_release(model, args.graph, args.graph.parent / "body-annotations.feather")} (edges, dopamine cells)', flush=True)
         if lineage_types:
             # a lineage with one physiology class per cell type: the same split before loading (supersedes the others)
             print(f'Type classes (carried over): {split_by_type(model, args.graph, args.graph.parent / "body-annotations.feather", record=False)}', flush=True)
@@ -1386,6 +1399,9 @@ def main():
             newly_trainable += [name for name in DOPAMINE_PARAMETER_NAMES if name not in names]
         if args.online_da_plasticity:
             newly_trainable += [name for name in ONLINE_DA_PARAMETER_NAMES if name not in names]
+        if args.kc_dan_release and 'log_kc_release' not in names:
+            names = list(names) + ['log_kc_release']
+            newly_trainable.append('log_kc_release')
         if args.ai:
             extra = [name for name in AI_PARAMETER_NAMES if name not in names]
             names = list(names) + extra

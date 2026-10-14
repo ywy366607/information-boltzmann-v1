@@ -77,6 +77,8 @@ def load(fork):
     late = fl.COMPARTMENT_PARAMETER_NAMES + fl.TASTE_PARAMETER_NAMES + act + fai.AI_STATE_NAMES
     if cfg.get('input_gain_size_exponent') is not None:
         fl.attach_input_gain(model)
+    if cfg.get('kc_dan_release'):
+        fl.attach_kenyon_terminal_release(model, graph, graph.parent / 'body-annotations.feather')
     if cfg.get('type_classes'):
         fl.split_by_type(model, graph, graph.parent / 'body-annotations.feather', record=False)
     elif cfg.get('kc_subtypes') or saved['model']['log_tau_m'].numel() > model.n_superclasses:
