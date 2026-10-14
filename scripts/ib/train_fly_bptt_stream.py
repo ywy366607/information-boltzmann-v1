@@ -1243,7 +1243,8 @@ def main():
             for name in ('edge_weight_e', 'edge_weight_i'):
                 getattr(model, name).copy_(saved['model'][name])
             loaded = model.load_state_dict(weights, strict=False)
-            missing = [k for k in loaded.missing_keys if k != 'logit_read_gamma' and not k.startswith('latent_predictor.') and not k.startswith('graph_observer.') and k not in GO_PARAMETER_NAMES and k not in READ_BANK_PARAMETER_NAMES and k not in INTRINSIC_PARAMETER_NAMES and k not in GRADED_PARAMETER_NAMES and k not in PRECISION_PARAMETER_NAMES and k not in PREDICTIVE_PARAMETER_NAMES and k not in DOPAMINE_PARAMETER_NAMES and k not in ONLINE_DA_PARAMETER_NAMES]
+            missing = [k for k in loaded.missing_keys if k != 'logit_read_gamma' and not k.startswith('latent_predictor.') and not k.startswith('graph_observer.') and k not in GO_PARAMETER_NAMES and k not in READ_BANK_PARAMETER_NAMES and k not in INTRINSIC_PARAMETER_NAMES and k not in GRADED_PARAMETER_NAMES and k not in PRECISION_PARAMETER_NAMES and k not in PREDICTIVE_PARAMETER_NAMES and k not in DOPAMINE_PARAMETER_NAMES and k not in ONLINE_DA_PARAMETER_NAMES
+                       and not (k == 'log_kc_release' and args.kc_dan_release)]     # a release switched on at this resume
             unexpected = [k for k in loaded.unexpected_keys if not k.startswith('latent_predictor.') and not k.startswith('graph_observer.')]
             if unexpected or missing:
                 raise ValueError(f'Weight migration mismatch: unexpected={unexpected}, missing={missing}')
