@@ -472,7 +472,7 @@ def main():
                         help='No active evaluation (fresh B / A revisit) in this run: a gate arm that only scores the stream')
     parser.add_argument('--score-log', type=Path, default=None,
                         help='Append every window pre-update word scores (JSONL) for paired comparisons')
-    parser.add_argument('--mother-world', choices=('local', 'api', 'gemini'), default=None,
+    parser.add_argument('--mother-world', choices=('local', 'api', 'gemini', 'mailbox'), default=None,
                         help='Train in the mother world: live each window (the fly speaks in its turns, the mother answers), '
                              'then relive it with gradient (never inherited)')
     parser.add_argument('--mother-api-model', default=None, help='The API mother model id (the SDK reads its own env config)')
@@ -2024,11 +2024,24 @@ def main():
         # the user's mother world (docs/information_boltzmann/FLY_MOTHER_WORLD_DESIGN_20261014.md): the fly's speech goes to
         # a mother, her replies come back through the senses; a new conversation each run (each chunk: a new day)
         import tiktoken
-        from information_boltzmann.core.fly_mother_world import MotherWorld, LocalMother, ApiMother, GeminiApiMother, live_window
+        from information_boltzmann.core.fly_mother_world import (MotherWorld, LocalMother, ApiMother, GeminiApiMother,
+                                                                 MailboxMother, live_window)
+        # the raising plan (dashboard / the mother agent: data/harness/raising.json) sets the mother's side each chunk
+        raising = {}
+        if Path('data/harness/raising.json').exists():
+            try:
+                raising = json.loads(Path('data/harness/raising.json').read_text(encoding='utf-8')).get('mother', {})
+            except json.JSONDecodeError:
+                print('raising.json is not valid JSON: ignored', flush=True)
+        args.mother_max_fly_words = int(raising.get('max_fly_words', args.mother_max_fly_words))
+        args.mother_temperature = float(raising.get('fly_temperature', args.mother_temperature))
         mother = (LocalMother() if args.mother_world == 'local' else
-                  GeminiApiMother(args.mother_api_model or 'gemini-2.5-flash') if args.mother_world == 'gemini' else
+                  GeminiApiMother(args.mother_api_model or raising.get('model') or 'gemini-3.5-flash')
+                  if args.mother_world == 'gemini' else
+                  MailboxMother(timeout=float(raising.get('mailbox_timeout_s', 900))) if args.mother_world == 'mailbox' else
                   ApiMother(args.mother_api_model))
-        mother_world = MotherWorld(mother, tiktoken.get_encoding('gpt2'), max_fly_words=args.mother_max_fly_words)
+        mother_world = MotherWorld(mother, tiktoken.get_encoding('gpt2'), max_fly_words=args.mother_max_fly_words,
+                                   history_turns=int(raising.get('history_turns', 20)))
         mother_rng = np.random.default_rng(int(trained) + 104729)
         print(f'Mother world ({args.mother_world}): turn-taking, self-hearing, the fly words sampled at T={args.mother_temperature}',
               flush=True)

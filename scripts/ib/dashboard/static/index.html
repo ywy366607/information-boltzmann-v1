@@ -139,7 +139,7 @@ textarea { width: 100%; min-height: 460px; font: 12px/1.5 Consolas, monospace; }
         <textarea id="cfgText" spellcheck="false"></textarea>
         <div style="margin-top:8px; display:flex; gap:10px; align-items:center"><button id="cfgSave">保存</button><span class="note" id="cfgNote"></span></div></div>
       <div class="card"><h2>字段说明</h2><div class="note" style="line-height:1.9">
-        <b>mother.backend</b>：local（本地小模型，只测管线）/ gemini / api（Anthropic）<br>
+        <b>mother.backend</b>：mailbox（妈妈 agent 会话，见 docs/information_boltzmann/MOTHER_AGENT.md）/ gemini / local（只测管线）/ api<br><b>mother.mailbox_timeout_s</b>：妈妈多久不回就作废这次请求<br>
         <b>mother.model</b>：模型名；<b>temperature</b>：妈妈说话的随机性<br>
         <b>mother.fly_temperature</b>：果蝇说话时从读出采样的温度<br>
         <b>mother.max_fly_words</b>：果蝇一轮最多说几个词（提交动作接入前的话轮规则）<br>

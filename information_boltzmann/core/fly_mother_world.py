@@ -58,6 +58,81 @@ class LocalMother:
         return text.split('\n')[0].strip() or '...'
 
 
+class GeminiApiMother:
+    """A fast Google Gemini model as the mother via Google AI Studio API.
+
+    The API key is read from GEMINI_API_KEY (or GOOGLE_API_KEY) in the environment or .env.
+    Defaults to 'gemini-3.5-flash'. Uses thinkingBudget=0 for immediate conversational replies.
+    """
+
+    SYSTEM = ('You are a warm, patient mother talking with a very young child who is just learning to speak. The child '
+              'often babbles. Answer in one or two short, simple sentences. Respond to what the child said when you '
+              'can; ask simple questions, name things, sometimes start a new topic.')
+
+    def __init__(self, model='gemini-3.5-flash', api_key=None, max_tokens=60, temperature=0.7, system=None, retries=5):
+        import os
+        import requests
+        try:
+            import dotenv
+            dotenv.load_dotenv()
+        except ImportError:
+            pass
+        self.requests = requests
+        self.api_key = api_key or os.environ.get('GEMINI_API_KEY') or os.environ.get('GOOGLE_API_KEY')
+        if not self.api_key:
+            raise ValueError('GEMINI_API_KEY or GOOGLE_API_KEY must be set in environment or .env')
+        raw_model = model or 'gemini-3.5-flash'
+        self.model = raw_model.replace('models/', '')
+        self.max_tokens = max_tokens
+        self.temperature = temperature
+        self.retries = retries
+        self.system = system or self.SYSTEM
+        self.url = f'https://generativelanguage.googleapis.com/v1beta/models/{self.model}:generateContent?key={self.api_key}'
+
+    def reply(self, transcript):
+        import time
+        contents = []
+        for who, text in transcript:
+            role = 'model' if who == 'mother' else 'user'
+            if contents and contents[-1]['role'] == role:
+                contents[-1]['parts'][0]['text'] += ' ' + text
+            else:
+                contents.append({'role': role, 'parts': [{'text': text}]})
+        if not contents or contents[0]['role'] != 'user':
+            contents.insert(0, {'role': 'user', 'parts': [{'text': '...'}]})
+        if contents[-1]['role'] != 'user':
+            contents.append({'role': 'user', 'parts': [{'text': '...'}]})
+
+        payload = {
+            'system_instruction': {'parts': [{'text': self.system}]},
+            'contents': contents,
+            'generationConfig': {
+                'thinkingConfig': {'thinkingBudget': 0},
+                'maxOutputTokens': self.max_tokens,
+                'temperature': self.temperature,
+            }
+        }
+        delay = 2.0
+        for attempt in range(self.retries):
+            try:
+                r = self.requests.post(self.url, json=payload, headers={'Connection': 'close'}, timeout=12)
+                if r.status_code == 200:
+                    data = r.json()
+                    parts = data.get('candidates', [{}])[0].get('content', {}).get('parts', [])
+                    text = ''.join(p.get('text', '') for p in parts).strip()
+                    first_line = text.split('\n')[0].strip()
+                    return first_line or '...'
+                elif r.status_code in (429, 503):
+                    time.sleep(delay)
+                    delay = min(delay * 2, 30.0)
+            except Exception:
+                time.sleep(1.0)
+        return '...'
+
+
+GeminiMother = GeminiApiMother
+
+
 class ApiMother:
     """A fast API model as the mother.  The SDK reads its own standard environment configuration (the key is never
     read, printed or stored here).  `model` is the user's choice."""
@@ -66,13 +141,26 @@ class ApiMother:
               'often babbles. Answer in one or two short, simple sentences. Respond to what the child said when you '
               'can; ask simple questions, name things, sometimes start a new topic.')
 
-    def __init__(self, model, max_tokens=60, system=None):
-        import anthropic
-        self.client = anthropic.Anthropic()
-        self.model, self.max_tokens = model, max_tokens
+    def __init__(self, model=None, max_tokens=60, system=None):
+        import os
+        try:
+            import dotenv
+            dotenv.load_dotenv()
+        except ImportError:
+            pass
+        self.model = model or ('gemini-3.5-flash' if (os.environ.get('GEMINI_API_KEY') or os.environ.get('GOOGLE_API_KEY')) else 'claude-3-5-haiku-latest')
+        self.max_tokens = max_tokens
         self.system = system or self.SYSTEM
+        if 'gemini' in self.model.lower():
+            self._backend = GeminiApiMother(model=self.model, max_tokens=self.max_tokens, system=self.system)
+        else:
+            import anthropic
+            self.client = anthropic.Anthropic()
+            self._backend = None
 
     def reply(self, transcript):
+        if self._backend is not None:
+            return self._backend.reply(transcript)
         messages = []
         for who, text in transcript:
             role = 'assistant' if who == 'mother' else 'user'
@@ -89,6 +177,69 @@ class ApiMother:
         return ''.join(b.text for b in out.content if getattr(b, 'type', '') == 'text').strip() or '...'
 
 
+class MailboxMother:
+    """The mother as an agent session (another Claude Code / Antigravity window: no API key, the user's subscription).
+
+    The trainer posts each finished fly turn as data/harness/mailbox/outbox/<id>.json (and waits for her):
+      {id, time, child_said, transcript, monitor, plan}
+    The agent answers by writing data/harness/mailbox/inbox/<id>.json, atomically (write <id>.tmp, then rename):
+      {id, text}
+    It may also edit data/harness/raising.json (the plan) and keep notes in data/harness/mother_notes.md.
+    While she thinks the fly hears nothing new: the wait becomes the interval before her first word (live_window).
+    An unanswered request expires after `timeout` seconds: she said nothing, and the floor goes back to the fly.
+    Protocol and role: docs/information_boltzmann/MOTHER_AGENT.md."""
+
+    asynchronous = True
+
+    def __init__(self, root='data/harness/mailbox', timeout=900.0, plan='data/harness/raising.json'):
+        import os
+        self.root, self.timeout, self.plan = root, float(timeout), plan
+        for d in ('outbox', 'inbox', 'archive'):
+            os.makedirs(os.path.join(root, d), exist_ok=True)
+        self.sent = {}
+
+    def request(self, transcript, monitor=None):
+        import json, os, time, uuid
+        rid = time.strftime('%Y%m%d-%H%M%S-') + uuid.uuid4().hex[:6]
+        plan = None
+        if os.path.exists(self.plan):
+            try:
+                plan = json.load(open(self.plan, encoding='utf-8'))
+            except Exception:
+                plan = None
+        body = {'id': rid, 'time': time.strftime('%Y-%m-%d %H:%M:%S'),
+                'child_said': transcript[-1][1] if transcript and transcript[-1][0] == 'fly' else '',
+                'transcript': [{'who': w, 'text': t} for w, t in transcript], 'monitor': monitor, 'plan': plan}
+        tmp = os.path.join(self.root, 'outbox', rid + '.tmp')
+        with open(tmp, 'w', encoding='utf-8') as f:
+            json.dump(body, f, ensure_ascii=False, indent=1)
+        os.replace(tmp, os.path.join(self.root, 'outbox', rid + '.json'))
+        self.sent[rid] = time.time()
+        return rid
+
+    def poll(self, rid):
+        """Her answer if it has arrived (str), '' if the request expired unanswered, None while she is still thinking."""
+        import json, os, time
+        reply = os.path.join(self.root, 'inbox', rid + '.json')
+        if os.path.exists(reply):
+            try:
+                text = str(json.load(open(reply, encoding='utf-8')).get('text', '')).strip()
+            except Exception:
+                return None                                # half written: look again later
+            for d, name in (('inbox', reply), ('outbox', os.path.join(self.root, 'outbox', rid + '.json'))):
+                if os.path.exists(name):
+                    os.replace(name, os.path.join(self.root, 'archive', f'{rid}.{d}.json'))
+            self.sent.pop(rid, None)
+            return text or '...'
+        if time.time() - self.sent.get(rid, time.time()) > self.timeout:
+            out = os.path.join(self.root, 'outbox', rid + '.json')
+            if os.path.exists(out):
+                os.replace(out, os.path.join(self.root, 'archive', f'{rid}.expired.json'))
+            self.sent.pop(rid, None)
+            return ''
+        return None
+
+
 class MotherWorld:
     """The conversation as the fly's text stream (GPT-2 token ids, the fly's vocabulary).
 
@@ -99,6 +250,7 @@ class MotherWorld:
     def __init__(self, mother, gpt2_tokenizer, history_turns=20, max_fly_words=24, end_of_turn=('\n', '.', '?', '!'),
                  opening='Hello, little one.', seed=0):
         self.mother, self.tok = mother, gpt2_tokenizer
+        self.pending = None                        # the request an asynchronous mother is thinking about
         self.history_turns, self.max_fly_words = history_turns, max_fly_words
         self.end_ids = {i for s in end_of_turn for i in gpt2_tokenizer.encode(s)}
         self.transcript = []                       # [(who, text)]
@@ -119,7 +271,7 @@ class MotherWorld:
         self.stats['mother_turns'] += 1
 
     def next_word(self):
-        """The id heard next, and whose it is ('mother' or 'fly' for the fly's own previous word)."""
+        """The id heard next, and whose it is ('mother', or 'fly' for its own last word)."""
         if self.turn == 'mother':
             word = self.queue.popleft()
             if not self.queue:
@@ -138,9 +290,31 @@ class MotherWorld:
             self.fly_words = []
             self.stats['fly_turns'] += 1
             history = self.transcript[-self.history_turns:]
-            self._say_mother(self.mother.reply(history))
+            if getattr(self.mother, 'asynchronous', False):
+                self.pending = self.mother.request(history, self.monitor())
+                self.turn = 'waiting'
+            else:
+                self._say_mother(self.mother.reply(history))
             return True
         return False
+
+    def wait_for_mother(self, poll_every=1.0):
+        """An asynchronous mother is thinking: nothing new reaches the fly until her answer arrives (or the request
+        expires and the floor goes back to the fly).  Returns the seconds waited -- the length of the silence."""
+        import time
+        t0 = time.time()
+        while self.turn == 'waiting':
+            text = self.mother.poll(self.pending)
+            if text is None:
+                time.sleep(poll_every)
+                continue
+            self.pending = None
+            if text:
+                self._say_mother(text)
+            else:
+                self.turn = 'fly'
+                self.stats['mother_silent'] += 1
+        return time.time() - t0
 
     # -- harness ----------------------------------------------------------------------------------------------------
     def monitor(self, last=50):
@@ -162,7 +336,8 @@ class MotherWorld:
                 'mother_ttr': round(ttr(mom), 3), 'mother_repeat_bigrams': round(repeat_bigrams(mom), 3)}
 
 
-def live_window(learner, world, n, rng, pace_min, pace_mean, temperature=1.0):
+def live_window(learner, world, n, rng, pace_min, pace_mean, temperature=1.0, ticks_per_second=2.0,
+                max_wait_ticks=128):
     """The live pass of one window (no gradient, on a copy of the state): the conversation as it happens.
 
     Each of the n words arrives after its interval (the world's pace: a window mean log-uniform in [pace_min,
@@ -176,6 +351,9 @@ def live_window(learner, world, n, rng, pace_min, pace_mean, temperature=1.0):
     - targets: the n words heard after the learner's previous token;
     - forced: {'pace', 'intervals'}, for learner.forced_world, so the training pass relives this window;
     - speakers: 'mother' or 'fly' per word.
+    An asynchronous mother (an agent answering through the mailbox) takes real time: while she thinks the fly hears
+    nothing new, so the wait is part of the interval before her first word, ticks_per_second x the seconds waited
+    (at most max_wait_ticks; the held last word fades through the writer's sensory adaptation).
     """
     import math
     import torch
@@ -195,7 +373,11 @@ def live_window(learner, world, n, rng, pace_min, pace_mean, temperature=1.0):
         token = int(learner.previous_token)
         targets, intervals, speakers = [], [], []
         for _ in range(n):
-            k = int(rng.geometric(1.0 / pace))
+            who = None
+            extra = 0
+            if world.turn == 'waiting':
+                extra = min(int(max_wait_ticks), int(round(world.wait_for_mother() * float(ticks_per_second))))
+            k = int(rng.geometric(1.0 / pace)) + extra
             done, latent = 0, None
             while done < k:
                 ticks = min(seg, k - done)
@@ -213,47 +395,3 @@ def live_window(learner, world, n, rng, pace_min, pace_mean, temperature=1.0):
             targets.append(int(word)); intervals.append(k); speakers.append(who)
             token = int(word)
     return targets, {'pace': pace, 'intervals': intervals}, speakers
-
-
-class GeminiApiMother:
-    """The mother through the Gemini API (google-genai).  The SDK reads its key from the environment
-    (GEMINI_API_KEY / GOOGLE_API_KEY), set by the user; nothing here reads, prints or stores it.  The free tier is
-    rate-limited: a refused call (429 / resource exhausted) waits and retries with a growing delay."""
-
-    SYSTEM = ApiMother.SYSTEM
-
-    def __init__(self, model='gemini-2.5-flash', max_tokens=80, temperature=0.9, system=None, retries=6):
-        from google import genai
-        from google.genai import types
-        self.client, self.types = genai.Client(), types
-        self.model, self.max_tokens, self.temperature, self.retries = model, max_tokens, temperature, retries
-        self.system = system or self.SYSTEM
-
-    def reply(self, transcript):
-        import time
-        contents = []
-        for who, text in transcript:
-            role = 'model' if who == 'mother' else 'user'
-            if contents and contents[-1]['role'] == role:
-                contents[-1]['parts'][0]['text'] += ' ' + text
-            else:
-                contents.append({'role': role, 'parts': [{'text': text}]})
-        if not contents or contents[0]['role'] != 'user':
-            contents.insert(0, {'role': 'user', 'parts': [{'text': '...'}]})
-        if contents[-1]['role'] != 'user':
-            contents.append({'role': 'user', 'parts': [{'text': '...'}]})
-        config = self.types.GenerateContentConfig(system_instruction=self.system, max_output_tokens=self.max_tokens,
-                                                  temperature=self.temperature)
-        delay = 5.0
-        for attempt in range(self.retries):
-            try:
-                out = self.client.models.generate_content(model=self.model, contents=contents, config=config)
-                return (out.text or '').strip().split('\n')[0] or '...'
-            except Exception as exc:                      # rate limit or a transient error: wait, then try again
-                if attempt == self.retries - 1:
-                    raise
-                if '429' not in str(exc) and 'RESOURCE_EXHAUSTED' not in str(exc) and 'UNAVAILABLE' not in str(exc):
-                    raise
-                time.sleep(delay)
-                delay = min(delay * 2, 120.0)
-        return '...'

@@ -163,8 +163,8 @@ def brain_points(n_rest=24000, seed=0):
 
 
 DEFAULT_CONFIG = {
-    'mother': {'backend': 'gemini', 'model': 'gemini-2.5-flash', 'temperature': 0.9, 'max_reply_tokens': 80,
-               'history_turns': 20, 'fly_temperature': 1.0, 'max_fly_words': 16,
+    'mother': {'backend': 'mailbox', 'model': 'gemini-3.5-flash', 'temperature': 0.9, 'max_reply_tokens': 80,
+               'history_turns': 20, 'fly_temperature': 1.0, 'max_fly_words': 16, 'mailbox_timeout_s': 900,
                'persona': 'A warm, patient mother talking with a very young child who is just learning to speak. '
                           'She answers in one or two short, simple sentences, responds to what the child said, '
                           'asks simple questions, names things, and sometimes starts a new topic.'},
