@@ -430,3 +430,29 @@ threshold), the PN -> Kenyon weights now against birth, and the APL output scale
 
 In the fly a Kenyon cell needs several coincident claw inputs from projection neurons, and APL normalizes the
 population. Our PN input is far below that.
+
+**Theory for the Kenyon fix: Vafaii, Galor & Yates, "Brain-like variational inference" (arXiv:2410.19315v2, iP-VAE).**
+The model:
+- membrane u = log rate, r = exp(u), Poisson spike counts z;
+- free energy F = ||x - Phi z||^2 / 2 + beta KL(rates), where the KL term is the coding rate;
+- natural-gradient dynamics give u <- u + Phi^T x - Phi^T Phi z: feedforward drive minus "explaining away", plus a
+  homeostatic leak.
+
+Inhibition there removes what co-active cells already explain: it is lateral competition proportional to their
+overlap, which acts as divisive normalization. The result is a sparse code that repeats with the input.
+
+Our Kenyon cells sit under a wall of inhibition (about 97% of their synaptic drive) with the PN drive at 2-4%.
+
+**Hypothesis to test first** (the Kenyon current budget probe): heavy APL inhibition plus Kenyon homeostasis. The
+homeostasis raises intrinsic current to hold the firing rate, so the cells fire from that current and from
+fluctuations, independent of the input. Two mechanisms cancelling each other, as in
+feedback-check-mechanism-interactions.
+
+**If it holds**, the fly's own fix is APL as feedback normalization scaled by Kenyon activity (Papadopoulou et al.
+2011), not a constant subtraction.
+
+The same paper places the prediction error x - Phi z inside the recurrent dynamics, with no dedicated error cells.
+That is the form surprise should take for (2).
+
+**Limits of the paper.** It is a single-layer image model trained by BPTT through its inference steps, not a
+connectome, and it has no action. We take the principle, not its neuron model.
