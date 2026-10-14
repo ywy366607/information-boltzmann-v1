@@ -11,7 +11,7 @@
 # Never edit while it runs.
 cd /d/information-boltzmann-v1
 PY=/d/conda_envs/vox/python.exe; NAME=${1:?name}; CHUNKS=${2:-25}; W=${GATE_WORDS:-1024}
-root=/e/fly_stream_overflow/$NAME; ckpt=/e/ib_checkpoints/$NAME
+root=/e/fly_stream_overflow/$NAME; CKROOT=${CKROOT:-/e/ib_checkpoints}; ckpt=$CKROOT/$NAME   # CKROOT: where this run keeps its checkpoints (E full: /d/ib_checkpoints)
 export FLY_REUSE_TRANSMISSION=0 PYTHONIOENCODING=utf-8
 FI=scripts/ib/fly_interface
 LOGS="--log-word-dopamine"
@@ -26,7 +26,7 @@ probes() {
   done
 }
 arm() {   # $1 = source cN, $2 = arm name, $3 = ablation ('' = brain), $4 = 'eval' for fresh B
-  local o=$root/gate_$1/$2 k=/e/ib_checkpoints/${NAME}_gate
+  local o=$root/gate_$1/$2 k=$CKROOT/${NAME}_gate
   rm -rf $o $k; mkdir -p $o $k
   cp $ckpt/$1.pt $k/last.pt; cp $ckpt/birth.pt $k/birth.pt
   for f in config.json progress.json metrics.jsonl lifelong_evaluation.jsonl; do cp $root/$f $o/ 2>/dev/null; done
