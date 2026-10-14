@@ -1877,6 +1877,38 @@ def read_fly_motor(model, state):
     return model.output_read(motor_feature(model, state, motor))
 
 
+STEP_GRAD_CLIP = float(os.environ.get('FLY_STEP_GRAD_CLIP', '1000'))
+
+
+def clip_state_gradients(model, state, cap=None):
+    """Per-tick clipping of the error flowing back through the physical state (2026-10-14).  A window's backward through
+    256 ticks can grow past float range in a recurrent loop with gain > 1 (latched cells, the Kenyon -> MBON -> dopamine
+    loop); the clip after the backward cannot repair inf / NaN.  At every tick, each state tensor's incoming gradient
+    is capped at norm `cap` (and non-finite entries zeroed) on its way back, so a blow-up stops where it starts.  The
+    cap is far above the ordinary per-tick gradient: the forward and every ordinary update are unchanged.  Counted in
+    model.step_grad_clips.  FLY_STEP_GRAD_CLIP=0 switches it off."""
+    cap = STEP_GRAD_CLIP if cap is None else cap
+    if cap <= 0 or not torch.is_grad_enabled():
+        return
+
+    def hook(g):
+        # branch-free (no host sync per tick): finite and below the cap -> multiplied by exactly 1
+        g = torch.nan_to_num(g, nan=0.0, posinf=0.0, neginf=0.0)
+        n = g.norm()
+        over = n > cap
+        count = getattr(model, 'step_grad_clips', None)
+        model.step_grad_clips = over.float() if count is None else count + over.float()
+        return g * torch.where(over, cap / n.clamp_min(1e-30), torch.ones_like(n))
+
+    for name in ('h', 'ge', 'gi', 'b', 'x', 'u', 'dopamine', 'comp_memory', 'comp_trace'):
+        t = getattr(state, name, None)
+        if torch.is_tensor(t) and t.requires_grad:
+            t.register_hook(hook)
+    for r in getattr(state, 'ring', ()):
+        if torch.is_tensor(r) and r.requires_grad:
+            r.register_hook(hook)
+
+
 def _advance_fly_token_stream(model, state, token, schedule_box=None, *, ticks, hold_input=False, read_after=None,
                               writer_baseline_clock='physical', base_rates=None, thresholds=None,
                               conductance_gains=None, alif_params=None, stp_params=None, h_mean_decay=0.99,
@@ -1974,6 +2006,7 @@ def _advance_fly_token_stream(model, state, token, schedule_box=None, *, ticks, 
                         if writer_baseline_clock == 'physical' and writer is not None else current.baseline)
             current = step_fly_physical_tick(model, current, None, quiet_source, baseline, options,
                                              h_mean_decay=h_mean_decay, base_rates=base_rates)
+        clip_state_gradients(model, current)
         if world is not None:
             model.external_drive = None
             hazard, act_g, act = act_step(model, current.h, act_g, world_tape[tick][2] if replay else None,
@@ -3291,6 +3324,10 @@ class FlyBPTTLearner:
                 group_norms.update(self.last_jepa_metrics)
         if getattr(self.model, 'jepa_proj', None) is not None and getattr(self, 'last_jepa_metrics', None):
             group_norms.update(self.last_jepa_metrics)
+        clips = getattr(self.model, 'step_grad_clips', None)
+        if torch.is_tensor(clips):
+            group_norms['step_grad_clips'] = float(clips)          # per-tick state gradients capped this window
+            self.model.step_grad_clips = None
         skipped = False
         try:
             grad_norm = stable_clip_grad_norm_(self.trainable, self.max_grad_norm,

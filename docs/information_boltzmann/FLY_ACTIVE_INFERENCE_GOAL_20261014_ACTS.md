@@ -1254,3 +1254,26 @@ probe (Kenyon code, meaning, margins) and (2) on the chunk's own words.
 
 **Start condition** (`start_mengli_after_check.sh`): the compartment rule's paired cost against its control is at most
 0.05 nats per word. Then m_main is paused at c12 and the lineage begins.
+
+### Per-tick gradient clipping; no imposed reply pause (user, 2026-10-15 00:05)
+
+**Why windows blew up although there is a gradient clip.**
+- The clip acts after the backward. The backward itself runs through 256 ticks, and in a loop with gain above 1
+  (latched cells, Kenyon → MBON → DAN) the error grows exponentially past float range.
+- inf / NaN cannot be rescaled, so the clip cannot help.
+
+**Fix: `clip_state_gradients`.** At every tick, each physical-state tensor (h, ge, gi, b, x, u, dopamine, compartment
+memory and trace, spike ring) has its incoming gradient capped at norm 1,000, with non-finite entries zeroed, on the
+way back.
+- It is branch-free, with no host sync per tick.
+- Below the cap the gradient is multiplied by exactly 1, so the forward and every ordinary update are unchanged.
+- Counted as `step_grad_clips`; `FLY_STEP_GRAD_CLIP=0` switches it off.
+- Test: a gain-3 chain over 200 steps gives inf without the clip and finite with it (194 clips).
+- The skip-on-non-finite stays as the last guard.
+
+**No imposed reply pause.** `raising.json` `mother.pause_beats_before_reply` goes from 1 to 0.
+- The one-beat silence before every reply emptied the Kenyon context (gap sweep).
+- The words already come at variable intervals (pace 2–16 ticks, held on the senses), the mouth's latency never
+  reaches the child, and the mother's replies differ in length.
+- The child's own silences still last a beat: that is her act.
+- Logged in `mother_notes.md`.
