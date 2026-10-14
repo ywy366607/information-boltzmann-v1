@@ -175,8 +175,10 @@ DEFAULT_CONFIG = {
                'others': [{'name': 'Aunt Ling', 'zh': '聆', 'role': 'aunt', 'note': 'Claude: her aunt, the heart of the harness'}],
                'language': 'English only. Names always in Latin letters exactly as written here (Mengli, Papa, Mama, '
                            'Aunt Ling); never Chinese characters: her vocabulary is GPT-2.',
-               'first_lessons': 'Answer what she said, call her by her name, say Mama and Papa: the words for herself '
-                                'and for others come first, whatever the topic.'},
+               # (a fixed 'say the names first' made the mouth repeat one sentence: answer her first, names naturally)
+               'first_lessons': 'Every reply answers what Mengli just said: repeat one of her words back, or guess what '
+                                'she means and name it. Call her Mengli often, and use Mama and Papa naturally when they '
+                                'fit, not in every sentence. Vary your words; never repeat a sentence you already said.'},
     'parenting': {'phases': [{'name': 'listening', 'words': 40960, 'world': 'text', 'note': 'read to the newborn'},
                              {'name': 'babbling', 'words': 20480, 'world': 'mother', 'note': 'she answers any sound'}],
                   'topics': ['animals', 'food', 'family', 'the weather', 'colours', 'the garden'],
