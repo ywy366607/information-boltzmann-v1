@@ -472,7 +472,7 @@ def main():
                         help='No active evaluation (fresh B / A revisit) in this run: a gate arm that only scores the stream')
     parser.add_argument('--score-log', type=Path, default=None,
                         help='Append every window pre-update word scores (JSONL) for paired comparisons')
-    parser.add_argument('--mother-world', choices=('local', 'api'), default=None,
+    parser.add_argument('--mother-world', choices=('local', 'api', 'gemini'), default=None,
                         help='Train in the mother world: live each window (the fly speaks in its turns, the mother answers), '
                              'then relive it with gradient (never inherited)')
     parser.add_argument('--mother-api-model', default=None, help='The API mother model id (the SDK reads its own env config)')
@@ -2024,8 +2024,10 @@ def main():
         # the user's mother world (docs/information_boltzmann/FLY_MOTHER_WORLD_DESIGN_20261014.md): the fly's speech goes to
         # a mother, her replies come back through the senses; a new conversation each run (each chunk: a new day)
         import tiktoken
-        from information_boltzmann.core.fly_mother_world import MotherWorld, LocalMother, ApiMother, live_window
-        mother = LocalMother() if args.mother_world == 'local' else ApiMother(args.mother_api_model)
+        from information_boltzmann.core.fly_mother_world import MotherWorld, LocalMother, ApiMother, GeminiApiMother, live_window
+        mother = (LocalMother() if args.mother_world == 'local' else
+                  GeminiApiMother(args.mother_api_model or 'gemini-2.5-flash') if args.mother_world == 'gemini' else
+                  ApiMother(args.mother_api_model))
         mother_world = MotherWorld(mother, tiktoken.get_encoding('gpt2'), max_fly_words=args.mother_max_fly_words)
         mother_rng = np.random.default_rng(int(trained) + 104729)
         print(f'Mother world ({args.mother_world}): turn-taking, self-hearing, the fly words sampled at T={args.mother_temperature}',

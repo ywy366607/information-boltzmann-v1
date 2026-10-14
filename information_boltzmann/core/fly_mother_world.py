@@ -213,3 +213,47 @@ def live_window(learner, world, n, rng, pace_min, pace_mean, temperature=1.0):
             targets.append(int(word)); intervals.append(k); speakers.append(who)
             token = int(word)
     return targets, {'pace': pace, 'intervals': intervals}, speakers
+
+
+class GeminiApiMother:
+    """The mother through the Gemini API (google-genai).  The SDK reads its key from the environment
+    (GEMINI_API_KEY / GOOGLE_API_KEY), set by the user; nothing here reads, prints or stores it.  The free tier is
+    rate-limited: a refused call (429 / resource exhausted) waits and retries with a growing delay."""
+
+    SYSTEM = ApiMother.SYSTEM
+
+    def __init__(self, model='gemini-2.5-flash', max_tokens=80, temperature=0.9, system=None, retries=6):
+        from google import genai
+        from google.genai import types
+        self.client, self.types = genai.Client(), types
+        self.model, self.max_tokens, self.temperature, self.retries = model, max_tokens, temperature, retries
+        self.system = system or self.SYSTEM
+
+    def reply(self, transcript):
+        import time
+        contents = []
+        for who, text in transcript:
+            role = 'model' if who == 'mother' else 'user'
+            if contents and contents[-1]['role'] == role:
+                contents[-1]['parts'][0]['text'] += ' ' + text
+            else:
+                contents.append({'role': role, 'parts': [{'text': text}]})
+        if not contents or contents[0]['role'] != 'user':
+            contents.insert(0, {'role': 'user', 'parts': [{'text': '...'}]})
+        if contents[-1]['role'] != 'user':
+            contents.append({'role': 'user', 'parts': [{'text': '...'}]})
+        config = self.types.GenerateContentConfig(system_instruction=self.system, max_output_tokens=self.max_tokens,
+                                                  temperature=self.temperature)
+        delay = 5.0
+        for attempt in range(self.retries):
+            try:
+                out = self.client.models.generate_content(model=self.model, contents=contents, config=config)
+                return (out.text or '').strip().split('\n')[0] or '...'
+            except Exception as exc:                      # rate limit or a transient error: wait, then try again
+                if attempt == self.retries - 1:
+                    raise
+                if '429' not in str(exc) and 'RESOURCE_EXHAUSTED' not in str(exc) and 'UNAVAILABLE' not in str(exc):
+                    raise
+                time.sleep(delay)
+                delay = min(delay * 2, 120.0)
+        return '...'
