@@ -2398,9 +2398,12 @@ class FlyBPTTLearner:
             # an interactive world (fly_mother_world) lived this window first, without gradient: its pace and its words'
             # intervals are given, so this pass relives exactly what happened (consumed here, once)
             forced = getattr(self, 'forced_world', None)
-            forced_k = None
+            forced_k, forced_speak = None, None
             if forced is not None and pace > 0:
                 pace, forced_k = float(forced['pace']), list(forced['intervals'])
+                if forced.get('speak') is not None:
+                    # v2: the fly's turn-taking decisions in the live pass, credited below (speaking_value)
+                    forced_speak = (list(forced['speak']), list(forced['decide']))
                 self.forced_world = None
             total_ticks = 0
             reads, intervals = [], []
@@ -2590,6 +2593,14 @@ class FlyBPTTLearner:
                     J_out, commit_tick, extended = pragmatic_value(hz, e, on, logp.detach(), intervals, answers, asks,
                                                                    miss, depth)
                     J_out = J_out / len(intervals)
+                    if forced_speak is not None and motor:
+                        # mother world v2: speaking is the act; its value is what the following words cost
+                        from .fly_active_inference import speaking_value
+                        if getattr(self, 'speak_baseline', None) is None:
+                            self.speak_baseline = {}
+                        J_out, sstats = speaking_value(hz, intervals, forced_speak[1], forced_speak[0],
+                                                       scores.detach(), baseline=self.speak_baseline)
+                        self.last_adaptive_metrics.update({k_: v for k_, v in sstats.items() if v is not None})
                     if lam_out > 0:
                         ai_loss = ai_loss - lam_out * J_out
                     self.last_adaptive_metrics['pragmatic'] = float(J_out.detach())

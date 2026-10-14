@@ -285,19 +285,30 @@ class MotherWorld:
         self.fly_words.append(int(word_id))
         self.stats['fly_words'] += 1
         if int(word_id) in self.end_ids or len(self.fly_words) >= self.max_fly_words:
-            text = self.tok.decode(self.fly_words).strip()
-            self.transcript.append(('fly', text or '...'))
-            self.fly_turns.append(list(self.fly_words))
-            self.fly_words = []
-            self.stats['fly_turns'] += 1
-            history = self.transcript[-self.history_turns:]
-            if getattr(self.mother, 'asynchronous', False):
-                self.pending = self.mother.request(history, self.monitor())
-                self.turn = 'waiting'
-            else:
-                self._say_mother(self.mother.reply(history))
+            self._end_fly_turn()
             return True
         return False
+
+    def yield_turn(self):
+        """v2: the fly did not commit at an arrival in its turn -- silence yields the floor, and the mother answers
+        what was said (nothing at all is a silent turn: the dark-room signal)."""
+        self.stats['fly_yields'] += 1
+        if not self.fly_words:
+            self.stats['fly_silent_turns'] += 1
+        self._end_fly_turn()
+
+    def _end_fly_turn(self):
+        text = self.tok.decode(self.fly_words).strip()
+        self.transcript.append(('fly', text or '...'))
+        self.fly_turns.append(list(self.fly_words))
+        self.fly_words = []
+        self.stats['fly_turns'] += 1
+        history = self.transcript[-self.history_turns:]
+        if getattr(self.mother, 'asynchronous', False):
+            self.pending = self.mother.request(history, self.monitor())
+            self.turn = 'waiting'
+        else:
+            self._say_mother(self.mother.reply(history))
 
     def wait_for_mother(self, poll_every=1.0):
         """An asynchronous mother is thinking: nothing new reaches the fly until her answer arrives (or the request
@@ -334,11 +345,12 @@ class MotherWorld:
         return {'fly_turns': len(self.fly_turns), 'fly_ttr': round(ttr(fly), 3),
                 'fly_repeat_bigrams': round(repeat_bigrams(fly), 3), 'fly_identical_consecutive_turns': loops,
                 'fly_mean_turn_words': round(len(fly) / max(1, len(self.fly_turns[-last:])), 2),
+                'fly_silent_turns': round(sum(1 for t in recent if not t) / max(1, len(recent)), 3),
                 'mother_ttr': round(ttr(mom), 3), 'mother_repeat_bigrams': round(repeat_bigrams(mom), 3)}
 
 
 def live_window(learner, world, n, rng, pace_min, pace_mean, temperature=1.0, ticks_per_second=2.0,
-                max_wait_ticks=128):
+                max_wait_ticks=128, speak_act=False):
     """The live pass of one window (no gradient, on a copy of the state): the conversation as it happens.
 
     Each of the n words arrives after its interval (the world's pace: a window mean log-uniform in [pace_min,
@@ -355,6 +367,12 @@ def live_window(learner, world, n, rng, pace_min, pace_mean, temperature=1.0, ti
     An asynchronous mother (an agent answering through the mailbox) takes real time: while she thinks the fly hears
     nothing new, so the wait is part of the interval before her first word, ticks_per_second x the seconds waited
     (at most max_wait_ticks; the held last word fades through the writer's sensory adaptation).
+
+    speak_act (v2, motor acts attached): in the fly's turn its muscles decide at each arrival.  A commit on any tick of
+    the interval (probability 1 - prod(1 - h_t)) says the word sampled from the read, heard next; no commit yields the
+    floor and the mother answers (an asynchronous mother's wait is added to this interval, after the decision ticks).
+    forced then also carries, per word, 'speak' (1 said, 0 yielded, None: the mother's turn, no decision) and 'decide'
+    (the decision ticks), for the act's credit in the training pass (fly_active_inference.speaking_value).
     """
     import math
     import torch
@@ -372,27 +390,60 @@ def live_window(learner, world, n, rng, pace_min, pace_mean, temperature=1.0, ti
                 else float(pace_mean))
         seg = int(getattr(learner, 'stream_segment_ticks', 16) or 16)
         token = int(learner.previous_token)
-        targets, intervals, speakers = [], [], []
+        acts = bool(speak_act) and getattr(m, 'ai_mode', None) == 'motor'
+        ai_g = learner.ai_g.detach().clone() if acts and getattr(learner, 'ai_g', None) is not None else None
+        acts = acts and ai_g is not None          # the muscles' state comes from the first trained window
+        targets, intervals, speakers, speak, decide = [], [], [], [], []
+
+        def advance(k, start=0):
+            # ticks start .. start + k - 1 of the word's interval, in the training pass's segments (same packets)
+            nonlocal s, ai_g
+            done, latent, committed = start, None, False
+            while done < start + k:
+                ticks = min(seg - done % seg, start + k - done)
+                extra_kw = dict(ai_g=ai_g, ai_tape=[], eye_forced=getattr(learner, 'eye_forced', None)) if acts else {}
+                out = fl.advance_fly_token_stream(
+                    m, s, torch.tensor([token], device=s.h.device), [ticks], ticks=ticks,
+                    hold_input=learner.hold_input, read_after=learner.read_lag or None,
+                    writer_baseline_clock=learner.writer_baseline_clock, fresh=done == 0,
+                    **extra_kw, **opts)
+                s, latent = out[0], out[1]
+                if acts:
+                    ai_g = out[-1]
+                    committed = committed or any(extra_kw['ai_tape'])
+                done += ticks
+            return latent, committed
+
         for _ in range(n):
-            who = None
+            who, said = None, None
             extra = 0
             if world.turn == 'waiting':
                 extra = min(int(max_wait_ticks), int(round(world.wait_for_mother() * float(ticks_per_second))))
             k = int(rng.geometric(1.0 / pace)) + extra
-            done, latent = 0, None
-            while done < k:
-                ticks = min(seg, k - done)
-                s, latent = fl.advance_fly_token_stream(
-                    m, s, torch.tensor([token], device=s.h.device), [ticks], ticks=ticks,
-                    hold_input=learner.hold_input, read_after=learner.read_lag or None,
-                    writer_baseline_clock=learner.writer_baseline_clock, fresh=done == 0, **opts)[:2]
-                done += ticks
+            latent, committed = advance(k)
+            k_decide = 0
             if world.turn == 'mother':
+                word, who = world.next_word()
+            elif acts and not committed:
+                # silence yields the floor: the mother answers; her wait is more of this interval
+                said, k_decide = 0, k
+                world.yield_turn()
+                if world.turn == 'waiting':
+                    wait = min(int(max_wait_ticks), int(round(world.wait_for_mother() * float(ticks_per_second))))
+                    if wait > 0:
+                        advance(wait, k)
+                        k += wait
                 word, who = world.next_word()
             else:
                 logits = m.decoder(m.read_norm(latent)).float()[0] / max(temperature, 1e-6)
                 word, who = int(torch.multinomial(torch.softmax(logits, -1), 1)), 'fly'
+                if acts:
+                    said, k_decide = 1, k
                 world.speak(word)
             targets.append(int(word)); intervals.append(k); speakers.append(who)
+            speak.append(said); decide.append(k_decide)
             token = int(word)
-    return targets, {'pace': pace, 'intervals': intervals}, speakers
+    forced = {'pace': pace, 'intervals': intervals}
+    if acts:
+        forced.update(speak=speak, decide=decide)
+    return targets, forced, speakers

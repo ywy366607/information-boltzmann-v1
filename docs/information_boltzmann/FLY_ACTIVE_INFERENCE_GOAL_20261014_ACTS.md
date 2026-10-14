@@ -195,3 +195,73 @@ and within the 0.05 acceptance.
 
 The added mechanisms together cost about 9%. The time is in the backward with its recompute and in about 550 launches
 per tick, so CUDA graphs are the lever.
+
+## (2) Kenyon -> dopamine-terminal release: A/B from m_main c6 (2026-10-14)
+
+Both arms trained 2,048 words from m_main c6 on the same stream, learning on. The release arm adds the KC -> DAN
+axo-axonal synapses (Cervantes-Sandoval 2017; 145,727 edges onto 348 dopamine cells) as local release, with a learned
+gain per type that starts at 0.1.
+
+| | base | release |
+|---|---|---|
+| surprise ~ phasic DA, same word | -0.0035 | +0.0052 |
+| next word | +0.0002 | +0.0169 |
+| DA cells | -0.0042 | -0.0210 |
+| per 1,024 words [min, med, mean, max] | [0.021, 0.024, 0.024, 0.027] | [0.002, 0.021, 0.021, 0.039] |
+| phasic DA sd | 1.08 | 2.50 |
+| fresh B NLL | 7.5986 | 7.5994 |
+
+Paired by window, release - base: **+0.0053 +- 0.0025 nats** (64 windows, [min -0.034, med +0.004, max +0.053]).
+That is a small cost.
+
+Taste: under release the PPL1 signs are no longer clean. Bitter gives PPL1 -0.26 Hz (base 0.0) and water gives
++0.26 Hz.
+
+**Verdict: not adopted.** The release more than doubles the phasic variance, but none of the added variance follows
+surprise.
+
+**Cause.** The release follows Kenyon activity, and Kenyon activity codes which word is present, not how unexpected
+it is. Its surprise correlation is only 0.13. Novelty in the fly is a difference: the α'3 compartment habituates to a
+familiar odour, so its MBON/DAN output falls with familiarity (Hattori 2017). Adding more Kenyon drive adds the input
+but never subtracts the expectation.
+
+**Exit.** Look for the subtraction:
+- MBON->DAN feedback sign and strength in α'3 (MBON16/17/28 <-> PPL104);
+- whether the α'3 KC->MBON synapses depress with repetition in our plasticity (habituation).
+
+If the subtraction is there but too weak, the fix is a mechanism, not a gain.
+
+## D5: eyes as an act with a background speaker (launched 2026-10-14 12:15)
+
+The user's priority is active reading, thinking and speaking in the listening stream; the mother world comes after.
+
+**Setup.** Fork d5_eyes from D4 c8 with the same acts, plus:
+- `--eye-binary --eye-init 0.9`: the eyes are a 0/1 sampled act;
+- `--ai-depth 2`: a question stays open across closed eyes;
+- `--noise-rate 0.25`: in a quarter of the windows a background speaker says 8 random words from a 16-word alphabet.
+
+**Control.** d5_open: the same world with the eyes forced open. It runs afterwards on the same stream, because host
+RAM (16 GB, about 6 GB per run) allows only two runs at once.
+
+**Predictions (written before the run):**
+1. Look: the eyes close more during the background speaker than during the main text
+   (`eye_open_noise < eye_open_text` by at least 0.1 within 2 chunks), at a language cost <= 0.02 nats against
+   d5_open on the same words.
+2. Think: commits still land later than tick 1 where waiting pays (ce_at_commit - tick1 < 0, as in D4 c8: -0.08).
+3. Speak: the timing value over the constant-hazard null stays >= D4.
+4. The brain stays used: the living noedges gate stays positive.
+
+**If 1 fails.** Check whether closing ever paid: the hindsight value of skipping the noise, computed from the CE of
+the main text after a stretch with the eyes forced open vs forced closed.
+
+## Mother world v2 code: speaking as the act (written, smoke pending)
+
+- `fly_mother_world.live_window(speak_act=True)`: in the fly's turn its motor commits decide at each arrival. A commit
+  on any decision tick says the sampled word; no commit is `MotherWorld.yield_turn()`.
+- The live pass's segments are aligned with the training pass, so the packets are the same.
+- `fly_active_inference.speaking_value`: a score-function credit, with return = -mean CE of the next 16 words and a
+  running-mean baseline.
+- Trainer flag: `--mother-speak-act`.
+
+The default path is unchanged. The first smoke (local mother) died while host RAM was full. It will rerun after
+D5, because active read/think/speak is the precondition for the mother world.
