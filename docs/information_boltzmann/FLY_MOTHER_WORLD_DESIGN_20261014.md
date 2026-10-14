@@ -188,3 +188,41 @@ draws a predictable, informative reply pays; babbling into confusion costs.
 - the dark room (endless silence, or always the same word);
 - collapse (repetition, identical turns);
 - whether the mother's replies depend on what was said (conditionality: a shuffled-turn control).
+
+## 11. Beats, waiting, interruption, and how a turn ends (2026-10-14)
+
+**Why.** Without the child's own acts the conversation is mechanical. A turn ends at the 16-word limit (a breath) or
+at an end word said by habit. The mother answers by rule. In the first smoke, 5 of 10 fly turns hit the limit and the
+other 5 ended at an end word. Infants start the same way: their utterances are bounded by breath, and caregivers carry
+the turn-taking first (proto-conversation, Bateson 1975). The timing is learned from what follows a pause: contingent
+responses shape vocal development (Goldstein, King & West 2003), and the still-face paradigm (Tronick 1978) shows
+infants already expect an answer. The design gives both sides a timing of their own.
+
+**The clock is beats.** One beat is 8 ticks (`ticks_per_beat`).
+- Her answer comes after her pause, `pause_beats_before_reply` (1 beat).
+- An agent mother may answer `wait`: one beat of silence, then the floor returns to the child, who decides again over
+  that beat.
+- `call` says the child's name.
+- Network and agent latency never reach the child. The simulation simply waits, and only her choice becomes world
+  time.
+- An unanswered request, and a speak with no text, count as a wait.
+- After 3 silent turns, or 8 silent beats in a row, she calls the child by name.
+
+**Interruption** (`--mother-interrupt`).
+- In the mother's turn, a commit cuts her off. The transcript keeps what was heard, marked `--`, so her next reply
+  sees it.
+- No commit keeps listening.
+- Both are decisions with the same credit as speaking.
+
+**Decisions as segments.** forced['decisions'] lists (word index, first tick in the window, ticks, 1 commit / 0
+silent). One word can carry several decisions: silence, her wait, silence again, then a word.
+`fly_active_inference.speaking_value` credits each of them. The return is -mean CE of the next 16 words, with the
+child's own words priced at the listener prior.
+
+**How a turn ends** (monitor `fly_turn_ends`): `end_breath` (the length limit), `end_word` (an end word), `end_yield`
+(her own silence). At first the first two should dominate: that is babbling. Learning to stop shows as the yield share
+rising, and rising where the mother's answer is worth hearing.
+
+The Gemini agent wrote the first beat version: the 8-tick beat, the pause, the call by name, and the mailbox actions.
+This section changes three things in it: 'wait' is silence, not the word "...", the beats no longer depend on real
+time, and the decisions are segments.

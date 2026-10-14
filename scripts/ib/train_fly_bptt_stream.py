@@ -482,6 +482,9 @@ def main():
     parser.add_argument('--mother-api-model', default=None, help='The API mother model id (the SDK reads its own env config)')
     parser.add_argument('--mother-temperature', type=float, default=1.0, help='Sampling temperature of the fly words')
     parser.add_argument('--mother-max-fly-words', type=int, default=16, help='A fly turn ends after this many words')
+    parser.add_argument('--mother-interrupt', action='store_true',
+                        help='With --mother-speak-act: a commit during the mother\'s turn cuts her off (no commit keeps '
+                             'listening), both credited like speaking')
     parser.add_argument('--mother-speak-act', action='store_true',
                         help='v2: in its turn the motor acts decide at each arrival to say a word or yield the floor '
                              '(needs --ai --motor-acts; credit: fly_active_inference.speaking_value)')
@@ -2124,7 +2127,8 @@ def main():
                 targets_, forced_, speakers = live_window(learner, mother_world, args.window, mother_rng,
                                                           float(args.stream_pace_min or 0), float(args.stream_pace_mean or 0),
                                                           temperature=args.mother_temperature,
-                                                          speak_act=args.mother_speak_act)
+                                                          speak_act=args.mother_speak_act,
+                                                          interrupt=args.mother_interrupt)
                 values = np.array(targets_, dtype=np.int64)
                 learner.forced_world = forced_
                 with (args.output / 'mother.jsonl').open('a', encoding='utf-8') as out:

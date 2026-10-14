@@ -367,6 +367,7 @@ class MotherWorld:
         self.transcript.append(('mother', clean_text))
         self.mother_turns.append(clean_text)
         self.queue.extend(self.tok.encode(' ' + clean_text + '\n'))
+        self.mother_heard = []                     # her words the child has heard so far this turn
         self.turn = 'mother'
         self.mother_turn_fresh = True
         self.stats['mother_turns'] += 1
@@ -391,6 +392,7 @@ class MotherWorld:
         """The id heard next, and whose it is ('mother', or 'fly' for its own last word)."""
         if self.turn == 'mother':
             word = self.queue.popleft()
+            self.mother_heard.append(word)
             self.mother_turn_fresh = False
             if not self.queue:
                 self.turn = 'fly'
@@ -403,14 +405,33 @@ class MotherWorld:
         self.stats['fly_words'] += 1
         self.silent_beats = 0                      # Fly spoke: reset silent beats counter
         if int(word_id) in self.end_ids or len(self.fly_words) >= self.max_fly_words:
+            self.stats['end_word' if int(word_id) in self.end_ids else 'end_breath'] += 1
             self._end_fly_turn()
             return True
         return False
+
+    def interrupt(self):
+        """The child spoke during the mother's turn: the rest of her turn is dropped; the transcript keeps what was
+        heard, marked as cut off, so her next reply sees that she was interrupted and by what."""
+        heard = self.tok.decode(getattr(self, 'mother_heard', [])).strip()
+        self.transcript[-1] = ('mother', (heard + ' --') if heard else '--')
+        self.mother_turns[-1] = self.transcript[-1][1]
+        self.queue.clear()
+        self.turn = 'fly'
+        self.mother_turn_fresh = False
+        self.stats['interruptions'] += 1
+
+    def call(self):
+        """She calls the child by name (the floor is hers)."""
+        self._say_mother(self.get_call_prompt())
+        self.silent_beats = 0
+        self.stats['mother_calls'] += 1
 
     def yield_turn(self):
         """v2: the fly did not commit at an arrival in its turn -- silence yields the floor, and the mother answers
         what was said (nothing at all is a silent turn: the dark-room signal)."""
         self.stats['fly_yields'] += 1
+        self.stats['end_yield'] += 1
         if not self.fly_words:
             self.silent_beats += 1
             self.stats['fly_silent_turns'] += 1
@@ -445,50 +466,33 @@ class MotherWorld:
             self._say_mother(self.mother.reply(history))
 
     def wait_for_mother(self, poll_interval_s=0.5):
-        """Wait for an asynchronous mother. Returns the number of beats waited."""
+        """An asynchronous mother is deciding.  The world's clock is beats, not her thinking time (network and agent
+        latency never reach the child): the simulation simply waits, and the child lives only what she chose.
+        Returns the beats of silence before what follows:
+        - 'speak' / 'call': her pause (pause_beats_before_reply), then her words;
+        - 'wait': one beat of silence, and the floor goes back to the child (who may speak, or stay silent again);
+        - expired (she never answered): like 'wait'."""
         import time
-        t0 = time.time()
-        beats = 1
         while self.turn == 'waiting':
             resp = self.mother.poll(self.pending)
             if resp is None:
                 time.sleep(poll_interval_s)
-                beats = max(1, int(round((time.time() - t0) / max(0.1, self.beat_duration_s))))
-                if beats >= self.max_wait_beats:
-                    # Timeout reached
-                    self.pending = None
-                    call_text = self.get_call_prompt()
-                    self._say_mother(call_text)
-                    self.stats['mother_calls'] += 1
-                    return beats
                 continue
-
             self.pending = None
-            beats = max(1, int(round((time.time() - t0) / max(0.1, self.beat_duration_s))))
             act = resp.get('action', 'speak') if isinstance(resp, dict) else 'speak'
-            text = resp.get('text', '') if isinstance(resp, dict) else str(resp)
-
-            if act == 'wait':
-                # Mother chose to wait one more beat; if silent threshold exceeded, call, else gentle prompt
-                self.stats['mother_waits'] += 1
-                if self.silent_beats >= self.silent_beats_threshold:
-                    self._say_mother(self.get_call_prompt())
-                    self.silent_beats = 0
-                    self.stats['mother_calls'] += 1
-                else:
-                    self._say_mother('...')
-            elif act == 'call':
+            text = (resp.get('text', '') if isinstance(resp, dict) else str(resp)).strip()
+            if act in ('wait', 'expired') or (act == 'speak' and not text):
+                self.stats['mother_waits' if act == 'wait' else 'mother_silent'] += 1
+                self.turn = 'fly'
+                return 1
+            if act == 'call':
                 self._say_mother(text or self.get_call_prompt())
                 self.silent_beats = 0
                 self.stats['mother_calls'] += 1
-            else: # speak or expired
-                if text:
-                    self._say_mother(text)
-                else:
-                    self._say_mother(self.get_call_prompt())
-                    self.stats['mother_calls'] += 1
-            return beats
-        return max(1, beats)
+            else:
+                self._say_mother(text)
+            return int(self.pause_beats_before_reply)
+        return 0
 
     # -- harness ----------------------------------------------------------------------------------------------------
     def monitor(self, last=50):
@@ -515,11 +519,15 @@ class MotherWorld:
                                            for n in FAMILY_WORDS),
                 'silent_beats': self.silent_beats,
                 'mother_calls': self.stats['mother_calls'],
-                'mother_waits': self.stats['mother_waits']}
+                'mother_waits': self.stats['mother_waits'],
+                # how her turns ended: breath (the length limit), an end word, or her own yield; learning to stop
+                # shows as the yield share rising
+                'fly_turn_ends': {k: self.stats[k] for k in ('end_breath', 'end_word', 'end_yield')},
+                'interruptions': self.stats['interruptions']}
 
 
 def live_window(learner, world, n, rng, pace_min, pace_mean, temperature=1.0, ticks_per_second=2.0,
-                max_wait_ticks=128, speak_act=False):
+                max_wait_ticks=128, speak_act=False, interrupt=False):
     """The live pass of one window (no gradient, on a copy of the state): the conversation as it happens.
 
     Each of the n words arrives after its interval (the world's pace: a window mean log-uniform in [pace_min,
@@ -540,8 +548,11 @@ def live_window(learner, world, n, rng, pace_min, pace_mean, temperature=1.0, ti
     the interval (probability 1 - prod(1 - h_t)) says the word sampled from the read, heard next; no commit yields the
     floor and the mother answers (an asynchronous mother's wait or synchronous conversational pause is added to this
     interval, after the decision ticks).
-    forced then also carries, per word, 'speak' (1 said, 0 yielded, None: the mother's turn, no decision) and 'decide'
-    (the decision ticks), for the act's credit in the training pass (fly_active_inference.speaking_value).
+    After a yield the mother answers after her pause, or (an agent) waits a beat: the beat passes in silence and the
+    child decides again over it.  interrupt: in the mother's turn the child's commit cuts her off (MotherWorld.interrupt)
+    and its word is heard; no commit keeps listening.
+    forced then also carries 'decisions': (word index, first tick in the window, ticks, 1 commit / 0 silent) for every
+    decision, for the act's credit in the training pass (fly_active_inference.speaking_value).
     """
     import math
     import torch
@@ -562,7 +573,9 @@ def live_window(learner, world, n, rng, pace_min, pace_mean, temperature=1.0, ti
         acts = bool(speak_act) and getattr(m, 'ai_mode', None) == 'motor'
         ai_g = learner.ai_g.detach().clone() if acts and getattr(learner, 'ai_g', None) is not None else None
         acts = acts and ai_g is not None          # the muscles' state comes from the first trained window
-        targets, intervals, speakers, speak, decide = [], [], [], [], []
+        targets, intervals, speakers, decisions = [], [], [], []
+        tpb = int(getattr(world, 'ticks_per_beat', 8))
+        pause = int(getattr(world, 'pause_beats_before_reply', 1)) * tpb
 
         def advance(k, start=0):
             # ticks start .. start + k - 1 of the word's interval, in the training pass's segments (same packets)
@@ -589,46 +602,61 @@ def live_window(learner, world, n, rng, pace_min, pace_mean, temperature=1.0, ti
                 done += ticks
             return latent, committed, said_read
 
-        for _ in range(n):
-            who, said = None, None
+        def say(read):
+            logits = m.decoder(m.read_norm(read)).float()[0] / max(temperature, 1e-6)
+            return int(torch.multinomial(torch.softmax(logits, -1), 1))
+
+        tick0 = 0                                  # ticks of the window before this word's interval
+        for i in range(n):
+            word, who = None, None
             extra = 0
             if world.turn == 'waiting':
-                waited_beats = world.wait_for_mother()
-                extra = min(int(max_wait_ticks), int(waited_beats * getattr(world, 'ticks_per_beat', 8)))
+                extra = min(int(max_wait_ticks), world.wait_for_mother() * tpb)
             elif world.turn == 'mother' and getattr(world, 'mother_turn_fresh', False):
-                extra = min(int(max_wait_ticks), int(getattr(world, 'pause_beats_before_reply', 1) * getattr(world, 'ticks_per_beat', 8)))
+                extra = min(int(max_wait_ticks), pause)
             k = int(rng.geometric(1.0 / pace)) + extra
             latent, committed, said_read = advance(k)
-            k_decide = 0
             if world.turn == 'mother':
-                word, who = world.next_word()
-            elif acts and not committed:
-                # silence yields the floor: the mother answers; her wait is more of this interval
-                said, k_decide = 0, k
-                world.yield_turn()
-                if world.turn == 'waiting':
-                    waited_beats = world.wait_for_mother()
-                    wait = min(int(max_wait_ticks), int(waited_beats * getattr(world, 'ticks_per_beat', 8)))
-                    if wait > 0:
-                        advance(wait, k)
-                        k += wait
-                elif world.turn == 'mother' and getattr(world, 'mother_turn_fresh', False):
-                    wait = min(int(max_wait_ticks), int(getattr(world, 'pause_beats_before_reply', 1) * getattr(world, 'ticks_per_beat', 8)))
-                    if wait > 0:
-                        advance(wait, k)
-                        k += wait
-                word, who = world.next_word()
+                if acts and interrupt:
+                    decisions.append((i, tick0, k, int(committed)))
+                if acts and interrupt and committed:
+                    world.interrupt()                       # she is cut off; the child's word is heard
+                    word, who = say(said_read if said_read is not None else latent), 'fly'
+                    world.speak(word)
+                else:
+                    word, who = world.next_word()
+            elif acts:
+                decisions.append((i, tick0, k, int(committed)))
+                tries = 0
+                while not committed and word is None:
+                    # silence yields the floor: she answers after her pause, or waits a beat and it comes back
+                    world.yield_turn()
+                    gap = (min(int(max_wait_ticks), world.wait_for_mother() * tpb) if world.turn == 'waiting'
+                           else pause if world.turn == 'mother' else 0)
+                    if world.turn != 'mother' and tries >= 8:
+                        world.call()                        # a long silence: she calls the child by name
+                        gap = pause
+                    if world.turn == 'mother':
+                        if gap > 0:
+                            advance(gap, k)
+                            k += gap
+                        word, who = world.next_word()
+                    else:
+                        gap = max(gap, tpb)                 # a beat of silence, and the child decides again
+                        _, committed, said_read = advance(gap, k)
+                        decisions.append((i, tick0 + k, gap, int(committed)))
+                        k += gap
+                        tries += 1
+                if word is None:
+                    word, who = say(said_read if said_read is not None else latent), 'fly'
+                    world.speak(word)
             else:
-                read = said_read if said_read is not None else latent
-                logits = m.decoder(m.read_norm(read)).float()[0] / max(temperature, 1e-6)
-                word, who = int(torch.multinomial(torch.softmax(logits, -1), 1)), 'fly'
-                if acts:
-                    said, k_decide = 1, k
+                word, who = say(latent), 'fly'
                 world.speak(word)
             targets.append(int(word)); intervals.append(k); speakers.append(who)
-            speak.append(said); decide.append(k_decide)
             token = int(word)
+            tick0 += k
     forced = {'pace': pace, 'intervals': intervals}
     if acts:
-        forced.update(speak=speak, decide=decide, speakers=list(speakers))
+        forced.update(decisions=decisions, speakers=list(speakers))
     return targets, forced, speakers

@@ -2428,9 +2428,9 @@ class FlyBPTTLearner:
             forced_k, forced_speak = None, None
             if forced is not None and pace > 0:
                 pace, forced_k = float(forced['pace']), list(forced['intervals'])
-                if forced.get('speak') is not None:
+                if forced.get('decisions') is not None:
                     # v2: the fly's turn-taking decisions in the live pass, credited below (speaking_value)
-                    forced_speak = (list(forced['speak']), list(forced['decide']), forced.get('speakers'))
+                    forced_speak = (list(forced['decisions']), forced.get('speakers'))
                 self.forced_world = None
             total_ticks = 0
             reads, intervals = [], []
@@ -2628,9 +2628,9 @@ class FlyBPTTLearner:
                         uni = getattr(self, 'unigram_ce', None)
                         prior = ([float(uni[a]) for a in flat] if uni is not None
                                  else [math.log(m.decoder.out_features)] * len(flat))
-                        J_out, sstats = speaking_value(hz, intervals, forced_speak[1], forced_speak[0],
-                                                       scores.detach(), baseline=self.speak_baseline,
-                                                       speakers=forced_speak[2], prior=prior)
+                        J_out, sstats = speaking_value(hz, forced_speak[0], scores.detach(), len(intervals),
+                                                       baseline=self.speak_baseline, speakers=forced_speak[1],
+                                                       prior=prior)
                         self.last_adaptive_metrics.update({k_: v for k_, v in sstats.items() if v is not None})
                     if lam_out > 0:
                         ai_loss = ai_loss - lam_out * J_out
