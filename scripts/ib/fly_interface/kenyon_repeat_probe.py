@@ -57,22 +57,31 @@ with torch.no_grad():
 
 BURN = 32
 idx = np.arange(BURN, len(words))
-last = {}
-same_pairs = []                                   # (earlier position, later position) of the same token
-for i in idx:
-    w = int(words[i])
-    if w in last:
-        same_pairs.append((last[w], i))
-    last[w] = i
 rng = np.random.default_rng(0)
-diff_pairs = []                                   # different tokens at the same distances
-for a, b in same_pairs:
-    d = b - a
-    for _ in range(20):
-        j = int(rng.integers(BURN, len(words) - d))
-        if words[j] != words[j + d]:
-            diff_pairs.append((j, j + d))
-            break
+
+
+def pairs_for(n_context):
+    """Successive occurrences of the same context (the last n_context words, the current one included), and
+    control pairs at the same distances whose contexts differ."""
+    last, same = {}, []
+    for i in idx:
+        key = tuple(int(x) for x in words[i - n_context + 1:i + 1])
+        if key in last:
+            same.append((last[key], i))
+        last[key] = i
+    diff = []
+    for a, b in same:
+        d = b - a
+        for _ in range(20):
+            j = int(rng.integers(BURN, len(words) - d))
+            if tuple(words[j - n_context + 1:j + 1]) != tuple(words[j + d - n_context + 1:j + d + 1]):
+                diff.append((j, j + d))
+                break
+    return same, diff
+
+
+same_pairs, diff_pairs = pairs_for(1)
+context_pairs = {n: pairs_for(n) for n in (2, 3)}
 
 
 def overlap(k, pairs):
@@ -96,6 +105,12 @@ for k in LAYERS:
                  'different_word_min_median_mean_max': q(diff),
                  'same_minus_different': round(float(same.mean() - diff.mean()), 4) if same.size and diff.size else None}
     print(f'{k:>20}: level {level:.3f}; same word {q(same)}; different words {q(diff)}', flush=True)
+    for n, (sp, dp) in context_pairs.items():
+        s_n, d_n = overlap(k, sp), overlap(k, dp)
+        report[k][f'same_{n}gram_min_median_mean_max'] = q(s_n)
+        report[k][f'different_{n}gram_min_median_mean_max'] = q(d_n)
+        report[k][f'{n}gram_pairs'] = len(sp)
+        print(f'{k:>20}:   same last-{n} words {q(s_n)} ({len(sp)} pairs); different {q(d_n)}', flush=True)
 print(json.dumps(report), flush=True)
 if len(sys.argv) > 3:
     Path(sys.argv[3]).write_text(json.dumps(report, indent=1), encoding='utf-8')
