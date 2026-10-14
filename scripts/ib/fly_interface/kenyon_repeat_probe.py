@@ -6,7 +6,10 @@ its ticks), and compares, per layer:
 - different words: the same measure between occurrences of two different tokens the same distance apart (control);
 - chance: the layer's coding level.
 A repeatable code has same >> different ~ chance.  Distributions over word pairs as [min | median | mean | max].
-Usage: python kenyon_repeat_probe.py <checkpoint dir> [words=1500] [out.json]
+Usage: python kenyon_repeat_probe.py <checkpoint dir> [words=1500] [out.json] [gap ticks=0]
+gap: quiet ticks after every word (the word off the senses) before the next arrives: if longer gaps make the codes more
+repeatable, a word's code is mixed with the words before it (temporal mixing).  The active set is still read over the
+word's own ticks only.
 """
 import sys, json, numpy as np, pandas as pd, torch
 from pathlib import Path
@@ -30,6 +33,7 @@ LT = {k: torch.as_tensor(v, device='cuda') for k, v in LAYERS.items()}
 val = np.load(ROOT / cfg['data'] / 'validation.npy', mmap_mode='r')
 TICKS = int(cfg.get('stream_ticks') or 8)
 words = np.array(val[40_000:40_000 + N_WORDS], dtype=np.int64)
+GAP = int(sys.argv[4]) if len(sys.argv) > 4 else 0
 sets = {k: [] for k in LAYERS}
 with torch.no_grad():
     s = move_state(fl.FlyPhysicalState(**L['physical']), 'cuda')
@@ -45,6 +49,9 @@ with torch.no_grad():
                 s = fl.step_fly_physical_tick(model, s, None, quiet, baseline, opts, base_rates=opts['base_rates'])
             act |= s.ring[0][0] > 0
         s = fl.expect_next(model, s, fl.read_fly_motor(model, s))
+        for t in range(GAP):
+            baseline = writer.lambda_adapt * s.baseline if physical_clock else s.baseline
+            s = fl.step_fly_physical_tick(model, s, None, quiet, baseline, opts, base_rates=opts['base_rates'])
         for k, m in LT.items():
             sets[k].append(act[m].cpu().numpy())
 
@@ -81,7 +88,7 @@ def q(v):
     return [round(float(x), 4) for x in (v.min(), np.median(v), v.mean(), v.max())] if v.size else None
 
 
-report = {'words': int(len(idx)), 'same_word_pairs': len(same_pairs), 'distinct_tokens': int(len(set(words[idx].tolist())))}
+report = {'gap_ticks': GAP, 'words': int(len(idx)), 'same_word_pairs': len(same_pairs), 'distinct_tokens': int(len(set(words[idx].tolist())))}
 for k in LAYERS:
     level = float(np.mean([x.mean() for x in sets[k][BURN:]]))
     same, diff = overlap(k, same_pairs), overlap(k, diff_pairs)
