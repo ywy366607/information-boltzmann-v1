@@ -59,6 +59,13 @@ th { color: var(--dim); font-weight: 500; } td:first-child, th:first-child { tex
 textarea { width: 100%; min-height: 460px; font: 12px/1.5 Consolas, monospace; }
 .note { color: var(--dim); font-size: 12px; }
 .empty { color: var(--dim); padding: 24px 0; text-align: center; }
+.msg.silent { align-self: flex-start; background: transparent; border: 1px dashed var(--line); color: var(--dim); font-style: italic; padding: 3px 10px; }
+.msg.call { border-style: dashed; }
+.bar { display: flex; height: 22px; border-radius: 6px; overflow: hidden; background: var(--panel2); margin: 6px 0 4px; }
+.bar span { display: flex; align-items: center; justify-content: center; font-size: 11px; color: #111; white-space: nowrap; overflow: hidden; }
+.family { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+.person { border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; background: var(--panel2); min-width: 0; }
+.person b { display: block; font-size: 15px; } .person small { color: var(--dim); display: block; margin-top: 2px; }
 @media (max-width: 900px) { #brainWrap { grid-template-columns: 1fr; } #brain { height: 420px; } .grid { grid-template-columns: 1fr; } }
 </style>
 </head>
@@ -69,7 +76,7 @@ textarea { width: 100%; min-height: 460px; font: 12px/1.5 Consolas, monospace; }
   <nav id="tabs">
     <button data-t="train" class="on">训练</button>
     <button data-t="brain">大脑</button>
-    <button data-t="talk">交互</button>
+    <button data-t="talk">妈妈世界</button>
     <button data-t="acts">动作</button>
     <button data-t="cfg">配置</button>
   </nav>
@@ -95,6 +102,9 @@ textarea { width: 100%; min-height: 460px; font: 12px/1.5 Consolas, monospace; }
         <canvas class="chart" id="cFresh"></canvas>
         <div class="legend"><span><i style="background:var(--brain)"></i>完整大脑</span><span><i style="background:var(--noedge)"></i>去掉大脑</span></div></div>
     </div>
+    <div class="card" style="margin-top:14px"><h2>(1b) 读的价值</h2>
+      <p class="sub">蒙眼活体臂：词进不了感官，其余照常活着、照常学习；蒙眼 NLL − 正常 NLL，逐窗配对。去掉全部突触的对照比词频还差，所以"读"要看这一项</p>
+      <div class="scroll"><table id="readTable"></table></div></div>
     <div class="card" style="margin-top:14px"><h2>门控记录</h2><p class="sub">因果顺序：(1) 大脑 → (2) 多巴胺 → (L) 锁存</p>
       <div class="scroll"><table id="gateTable"></table></div></div>
     <div class="card" style="margin-top:14px"><h2>事件</h2><div class="events" id="events"></div></div>
@@ -115,11 +125,22 @@ textarea { width: 100%; min-height: 460px; font: 12px/1.5 Consolas, monospace; }
   </section>
 
   <section class="tab" id="t-talk">
+    <div class="card" style="margin-bottom:14px"><h2>这个家</h2><p class="sub">raising.json 的 family：不随话题轮换，嘴每一轮都带着；名字只用拉丁字母（她的词表是 GPT-2）</p>
+      <div class="family" id="family"></div></div>
     <div class="grid">
-      <div class="card"><h2>对话</h2><p class="sub">左：果蝇（自听）；右：妈妈。最近 200 句</p><div class="chat" id="chat"></div></div>
-      <div class="card"><h2>harness 监测</h2><p class="sub">塌缩与暗室信号（最近一窗）</p><div class="kv" id="monitor"></div>
-        <h2 style="margin-top:16px">果蝇每窗说出的词数</h2><canvas class="chart" id="cFly"></canvas></div>
+      <div class="card"><h2>对话</h2><p class="sub">左：梦漓（她也听得见自己）；右：妈妈；虚线 = 沉默或叫名字。最近 200 句</p><div class="chat" id="chat"></div></div>
+      <div class="card"><h2>话轮怎么结束</h2><p class="sub">一口气（词数上限）/ 碰巧说出结束词 / 她自己让出。学会停 = "让出"上升，并且落在妈妈的回应值得听的时候</p>
+        <div class="bar" id="endsBar"></div><div class="legend" id="endsLegend"></div>
+        <h2 style="margin-top:16px">harness 监测</h2><p class="sub">塌缩与暗室信号（最近一窗）</p><div class="kv" id="monitor"></div></div>
+      <div class="card"><h2>开口倾向</h2><p class="sub">每个记录窗口：提交 hazard（每 tick）与开口率（决策中开口的比例）</p>
+        <canvas class="chart" id="cHazard"></canvas>
+        <div class="legend"><span><i style="background:var(--fly)"></i>hazard</span><span><i style="background:var(--accent)"></i>开口率</span></div></div>
+      <div class="card"><h2>认知学分</h2><p class="sub">--mother-credit epistemic：决策后 64 tick 内妈妈的话教会了多少（更新前 CE − 更新后 CE）。开口之后 vs 沉默之后</p>
+        <canvas class="chart" id="cEpi"></canvas>
+        <div class="legend"><span><i style="background:var(--fly)"></i>开口之后</span><span><i style="background:var(--dim)"></i>沉默之后</span><span><i style="background:var(--mother)"></i>妈妈每词学到</span></div></div>
     </div>
+    <div class="card" style="margin-top:14px"><h2>妈妈世界运行对照</h2><p class="sub">同一起点（D4 c8，1,024 词）：不随回应 → 随回应 → 认知学分</p>
+      <div class="scroll"><table id="motherRuns"></table></div></div>
   </section>
 
   <section class="tab" id="t-acts">
@@ -135,16 +156,21 @@ textarea { width: 100%; min-height: 460px; font: 12px/1.5 Consolas, monospace; }
   <section class="tab" id="t-cfg">
     <div class="grid">
       <div class="card"><h2>妈妈与育儿计划</h2>
-        <p class="sub">保存到 data/harness/raising.json。训练器接入后在每段开始时读取；现在只保存。</p>
+        <p class="sub">保存到 data/harness/raising.json。训练器每个窗口检查修改时间，改了下一窗就生效；妈妈的心（agent）也改这个文件，改动记进 mother_notes.md。</p>
         <textarea id="cfgText" spellcheck="false"></textarea>
         <div style="margin-top:8px; display:flex; gap:10px; align-items:center"><button id="cfgSave">保存</button><span class="note" id="cfgNote"></span></div></div>
       <div class="card"><h2>字段说明</h2><div class="note" style="line-height:1.9">
-        <b>mother.backend</b>：mailbox（妈妈 agent 会话，见 docs/information_boltzmann/MOTHER_AGENT.md）/ gemini / local（只测管线）/ api<br><b>mother.mailbox_timeout_s</b>：妈妈多久不回就作废这次请求<br>
+        <b>family</b>：这个家（Mengli、Mama、Papa、Aunt Ling）与第一课；嘴每一轮都带着，名字只用拉丁字母<br>
+        <b>mother.backend</b>：deepseek（当前的嘴，deepseek-flash，关闭思考）/ mailbox（agent 当嘴）/ gemini / local<br>
+        <b>mother.contingent</b>：随她回应——她沉默，妈妈安静等一拍；连续沉默 3 次叫她名字；她出声才完整回应<br>
+        <b>mother.ticks_per_beat / pause_beats_before_reply / silent_beats_threshold</b>：节拍（8 tick）、接话前停几拍、几次沉默后叫名字<br>
+        <b>mother.mailbox_timeout_s</b>：agent 当嘴时，多久不回就算沉默<br>
         <b>mother.model</b>：模型名；<b>temperature</b>：妈妈说话的随机性<br>
         <b>mother.fly_temperature</b>：果蝇说话时从读出采样的温度<br>
-        <b>mother.max_fly_words</b>：果蝇一轮最多说几个词（提交动作接入前的话轮规则）<br>
+        <b>mother.max_fly_words</b>：一口气最多几个词（身体的上限；开口还是让出由她的运动细胞决定）<br>
         <b>mother.persona</b>：妈妈的性格与说话方式<br>
         <b>parenting.phases</b>：养育阶段（聆听期 → 咿呀期 → …），每段的词数与世界<br>
+        <b>parenting.current_topic / intention</b>：当前话题与育儿意图，嘴每一轮带上<br>
         <b>parenting.topics / revisit_every_words</b>：话题与回访（A→B→A 的节省测量）<br>
         <b>harness.*</b>：报警阈值（重复率、相同话轮、大脑贡献 ≤ 0）</div></div>
     </div>
@@ -208,6 +234,11 @@ function drawTrain() {
       <td>[${fmt(g.min, 2)}, ${fmt(g.median, 2)}, ${fmt(g.max, 2)}]</td><td>${g.brain} / ${g.noedges} / ${g.unigram}</td>
       <td class="${cls(g.da)}">${fmt(g.da)}</td><td class="${cls(g.da_next)}">${fmt(g.da_next)}</td><td class="${cls(g.da_cells)}">${fmt(g.da_cells)}</td>
       <td>${g.latched}</td><td class="${cls(g.latch_worth)}">${g.latch_worth == null ? '—' : fmt(g.latch_worth) + ' ± ' + g.latch_se}</td></tr>`).join('');
+  const rd = st.reading || [];
+  $('#readTable').innerHTML = rd.length ? '<tr><th>谁</th><th>读的价值</th><th>± se</th><th>[最小, 中位, 最大]</th><th>正常 / 蒙眼 / 词频</th><th>词数</th></tr>' +
+    rd.slice().reverse().map(r => `<tr><td>${r.who === 'champion' ? '冠军' : 'c' + r.c} <span class="note">${r.time}</span></td><td class="${cls(r.mean)}">${fmt(r.mean)}</td><td>${fmt(r.se, 3, false)}</td>
+      <td>[${fmt(r.min, 2)}, ${fmt(r.median, 2)}, ${fmt(r.max, 2)}]</td><td>${r.brain ?? '—'} / ${r.blind ?? '—'} / ${r.unigram ?? '—'}</td><td>${r.words ?? '—'}</td></tr>`).join('')
+    : '<tr><td class="empty">这个个体还没有蒙眼门控（选 m_main 或 d5b）</td></tr>';
   $('#events').textContent = st.events.slice().reverse().join('\n');
 }
 
@@ -254,16 +285,43 @@ function brainEvents() {
 }
 
 // ---------- conversation ----------
+const esc = t => String(t).replace(/[<&]/g, c => c === '<' ? '&lt;' : '&amp;');
 async function drawTalk() {
-  const m = await api(`/api/mother?run=${RUN}`);
-  $('#chat').innerHTML = m.length ? m.map(t => `<div class="msg ${t.who === 'fly' ? 'fly' : 'mother'}"><small>${t.who === 'fly' ? '果蝇' : '妈妈'} · ${t.trained}</small>${t.text.replace(/[<&]/g, c => c === '<' ? '&lt;' : '&amp;')}</div>`).join('')
+  const [m, sp, runs, cfg] = await Promise.all([api(`/api/mother?run=${RUN}`), api(`/api/speak?run=${RUN}`), api('/api/mother_runs'), api('/api/config')]);
+  const fam = cfg.family || {};
+  const people = [['child', '自己'], ['mother', '妈妈'], ['father', '爸爸']].filter(([k]) => fam[k]).map(([k, role]) => [fam[k], role])
+    .concat((fam.others || []).map(o => [o, o.role === 'aunt' ? '姑姑' : (o.role || '家人')]));
+  $('#family').innerHTML = people.length ? people.map(([p, role]) => `<div class="person"><b>${esc(p.name)}</b><small>${role}${p.zh ? ' · ' + esc(p.zh) : ''}${p.full && p.full !== p.name ? ' · ' + esc(p.full) : ''}</small></div>`).join('')
+    : '<div class="empty">raising.json 里还没有 family</div>';
+  $('#chat').innerHTML = m.length ? m.map(t => {
+      const fly = t.who === 'fly', silent = fly && (t.text === '...' || !t.text.trim()), call = !fly && /^\w+\?$/.test(t.text.trim());
+      return silent ? `<div class="msg silent">梦漓 · 沉默，让出话轮 · ${t.trained}</div>`
+        : `<div class="msg ${fly ? 'fly' : 'mother'}${call ? ' call' : ''}"><small>${fly ? '梦漓' : '妈妈'} · ${t.trained}</small>${esc(t.text)}</div>`; }).join('')
     : '<div class="empty">这个个体还没有进入妈妈世界</div>';
   $('#chat').scrollTop = 1e9;
-  const last = [...WINDOWS].reverse().find(w => w.monitor);
-  const names = {fly_turns: '果蝇话轮数', fly_ttr: '果蝇类型/标记比', fly_repeat_bigrams: '果蝇重复二元组', fly_identical_consecutive_turns: '连续相同话轮',
-                 fly_mean_turn_words: '平均每轮词数', mother_ttr: '妈妈类型/标记比', mother_repeat_bigrams: '妈妈重复二元组'};
-  $('#monitor').innerHTML = last ? Object.entries(last.monitor).map(([k, v]) => `<span>${names[k] || k}</span><span>${v}</span>`).join('') : '<span>—</span><span></span>';
-  chart($('#cFly'), [{color: css('--fly'), points: WINDOWS.filter(w => w.fly_words != null).map(w => ({x: w.trained / 1000, y: w.fly_words}))}], {xfmt: x => x.toFixed(1) + 'k'});
+  const last = [...WINDOWS].reverse().find(w => w.monitor), mon = last?.monitor || {};
+  const ends = mon.fly_turn_ends || {}, tot = (ends.end_breath || 0) + (ends.end_word || 0) + (ends.end_yield || 0);
+  const parts = [['end_breath', '一口气', css('--noedge')], ['end_word', '结束词', css('--uni')], ['end_yield', '自己让出', css('--fly')]];
+  $('#endsBar').innerHTML = tot ? parts.map(([k, l, c]) => `<span style="width:${100 * (ends[k] || 0) / tot}%;background:${c}">${ends[k] ? l + ' ' + ends[k] : ''}</span>`).join('') : '';
+  $('#endsLegend').innerHTML = tot ? `<span>${tot} 个话轮</span>` : '<span>没有话轮结束的记录</span>';
+  const names = {fly_turns: '梦漓的话轮数', fly_ttr: '梦漓用词多样性', fly_repeat_bigrams: '梦漓重复二元组', fly_identical_consecutive_turns: '连续相同话轮',
+                 fly_mean_turn_words: '平均每轮词数', fly_silent_turns: '沉默话轮比例', mother_ttr: '妈妈用词多样性', mother_repeat_bigrams: '妈妈重复二元组',
+                 fly_family_words: '梦漓说出家人名字', mother_family_words: '妈妈说出家人名字', silent_beats: '当前连续沉默', mother_calls: '妈妈叫名字',
+                 mother_waits: '妈妈选择等（agent）', mother_waits_silence: '妈妈陪她安静', interruptions: '打断妈妈'};
+  $('#monitor').innerHTML = last ? Object.entries(mon).filter(([k]) => k !== 'fly_turn_ends').map(([k, v]) => `<span>${names[k] || k}</span><span>${v}</span>`).join('') : '<span>—</span><span></span>';
+  const sx = r => r.bptt_train_tokens / 1000;
+  chart($('#cHazard'), [{color: css('--fly'), points: sp.map(r => ({x: sx(r), y: r.hazard_mean}))},
+                        {color: css('--accent'), dots: true, points: sp.filter(r => r.speak_rate != null).map(r => ({x: sx(r), y: r.speak_rate}))}], {xfmt: x => x.toFixed(1) + 'k'});
+  const ep = WINDOWS.filter(w => w.epistemic), ex = w => w.trained / 1000;
+  chart($('#cEpi'), [{color: css('--fly'), points: ep.map(w => ({x: ex(w), y: w.epistemic.speak_said_return}))},
+                     {color: css('--dim'), points: ep.map(w => ({x: ex(w), y: w.epistemic.speak_silent_return}))},
+                     {color: css('--mother'), dots: true, points: ep.map(w => ({x: ex(w), y: w.epistemic.ig_mother_mean}))}], {zero: true, xfmt: x => x.toFixed(1) + 'k'});
+  const pct = v => v == null ? '—' : Math.round(100 * v) + '%';
+  $('#motherRuns').innerHTML = '<tr><th>运行</th><th>学分</th><th>话轮</th><th>一口气 / 结束词 / 让出</th><th>沉默话轮</th><th>每轮词数</th><th>妈妈多样性</th><th>妈妈重复</th><th>hazard 起 → 止</th></tr>' +
+    runs.filter(r => r.monitor).map(r => { const mo = r.monitor, e = mo.fly_turn_ends || {};
+      return `<tr><td>${r.name}</td><td>${r.credit || 'predict'}</td><td>${mo.fly_turns ?? '—'}</td><td>${e.end_breath ?? '—'} / ${e.end_word ?? '—'} / ${e.end_yield ?? '—'}</td>
+        <td>${pct(mo.fly_silent_turns)}</td><td>${mo.fly_mean_turn_words ?? '—'}</td><td>${mo.mother_ttr ?? '—'}</td><td>${mo.mother_repeat_bigrams ?? '—'}</td>
+        <td>${r.hazard_first == null ? '—' : r.hazard_first.toFixed(3) + ' → ' + r.hazard_last.toFixed(3)}</td></tr>`; }).join('');
 }
 
 // ---------- acts ----------

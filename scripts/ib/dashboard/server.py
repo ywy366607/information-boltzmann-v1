@@ -8,8 +8,10 @@ Serves the page (static/index.html) and JSON endpoints read from the runs' own f
 - ai_trace.jsonl: the acts;
 - cell_health_cN.json: firing per class.
 
-The only writes are the harness configuration (data/harness/*.json): the mother and the parenting plan, read by the
-trainer at the start of a chunk once wired.
+- metrics.jsonl: in the mother world the speaking act (hazard, decisions, speak rate) per logged window;
+- data/harness/raising.json: the mother, the family and the parenting plan (the trainer re-reads it every window).
+
+The only writes are the harness configuration (data/harness/*.json).
 
 Run:  python scripts/ib/dashboard/server.py [--port 8765]   then open http://127.0.0.1:8765
 Bound to 127.0.0.1 only.
@@ -42,6 +44,11 @@ GATE = re.compile(r'^(\d\d:\d\d) gate c(\d+) \(living\): \(1\) brain contributio
 CHUNK = re.compile(r'^(\d\d:\d\d) (?:born: )?chunk (\d+) done: \[ACTIVE EVAL (\d+)\] fresh B NLL=([\d.]+); A revisit=([\d.]+)')
 AG = re.compile(r'^(\d\d:\d\d) gate c(\d+) AG: brain fresh B NLL=([\d.]+);.*?noedges fresh B NLL=([\d.]+)')
 ACTS = re.compile(r'^(\d\d:\d\d) gate c(\d+) acts \(living\): (\{.*\})$')
+# what reading is worth (blind arm - brain, living): the chain's '(1b) reading ...' and the one-off reports
+READING_CHAIN = re.compile(r'^(\d\d:\d\d) gate c(\d+) \(living\):.*?\(1b\) reading \(brain - blind\) ' + NUM + r' \+- ' + NUM
+                           + r' \[min ' + NUM + r' med ' + NUM + r' max ' + NUM + r'\]')
+READING_JSON = re.compile(r'^(\d\d:\d\d) (?:gate c(\d+) \(living\): \(1b\) reading|(champion) reading).*?: (\{.*\})$')
+MOTHER_RUN = re.compile(r'^(\d\d:\d\d) (.*?mother.*?) done: (\d+) transcript lines; monitor (\{.*\})$')
 _lock = threading.Lock()
 
 
@@ -66,11 +73,31 @@ def runs():
 
 def parse_status(run):
     path = RUNS / run / 'status'
-    rep = {'chunks': [], 'gates': [], 'ag': [], 'acts': [], 'events': []}
+    rep = {'chunks': [], 'gates': [], 'ag': [], 'acts': [], 'reading': [], 'mother_runs': [], 'events': []}
     if not path.exists():
         return rep
     for line in path.read_text(encoding='utf-8', errors='replace').splitlines():
         line = line.strip()
+        if m := READING_CHAIN.match(line):
+            rep['reading'].append({'time': m.group(1), 'c': int(m.group(2)), 'who': 'gate', 'mean': _f(m.group(3)),
+                                   'se': _f(m.group(4)), 'min': _f(m.group(5)), 'median': _f(m.group(6)),
+                                   'max': _f(m.group(7))})
+        elif m := READING_JSON.match(line):
+            try:
+                d = json.loads(m.group(4))
+                mm = d.get('min_median_mean_max') or [None] * 4
+                rep['reading'].append({'time': m.group(1), 'c': int(m.group(2)) if m.group(2) else None,
+                                       'who': m.group(3) or 'gate', 'mean': d.get('mean'), 'se': d.get('se'),
+                                       'min': mm[0], 'median': mm[1], 'max': mm[3], 'brain': d.get('brain_nll'),
+                                       'blind': d.get('arm_nll'), 'unigram': d.get('unigram'), 'words': d.get('words')})
+            except json.JSONDecodeError:
+                pass
+        if m := MOTHER_RUN.match(line):
+            try:
+                rep['mother_runs'].append({'time': m.group(1), 'name': m.group(2), 'lines': int(m.group(3)),
+                                           'monitor': json.loads(m.group(4))})
+            except json.JSONDecodeError:
+                pass
         if m := GATE.match(line):
             worth = re.match(NUM + r' \+- ' + NUM, m.group(15))
             rep['gates'].append({'time': m.group(1), 'c': int(m.group(2)), 'mean': _f(m.group(3)), 'se': _f(m.group(4)),
@@ -94,6 +121,12 @@ def parse_status(run):
         elif line:
             rep['events'].append(line)
     rep['events'] = rep['events'][-40:]
+    seen, uniq = set(), []                        # the same report can be appended to a status more than once
+    for r in rep['reading']:
+        key = (r['who'], r['c'], r['mean'], r['se'])
+        if key not in seen:
+            seen.add(key); uniq.append(r)
+    rep['reading'] = uniq
     return rep
 
 
@@ -113,7 +146,8 @@ def windows(run, last=400):
             rows.append({'trained': r['trained'], 'nll': float(np.mean(r['scores'])), 'unigram': float(np.mean(r['unigram'])),
                          'phasic': float(np.mean([x[0] for x in da])) if da else None,
                          'fly_words': sum(1 for s in sp if s == 'fly') if sp else None,
-                         'monitor': r.get('monitor')})
+                         'monitor': r.get('monitor'), 'epistemic': r.get('epistemic'),
+                         'topic': r.get('plan_topic')})
     rows.sort(key=lambda r: r['trained'])
     return rows[-last:]
 
@@ -124,6 +158,52 @@ def mother(run, last=200):
         return []
     lines = path.read_text(encoding='utf-8', errors='replace').splitlines()[-last:]
     return [json.loads(l) for l in lines if l.strip()]
+
+
+def speak(run):
+    """The speaking act per logged window (metrics.jsonl): commit hazard, decisions, speak rate, credit."""
+    path = RUNS / run / 'metrics.jsonl'
+    out = []
+    if not path.exists():
+        return out
+    for line in path.read_text(encoding='utf-8', errors='replace').splitlines():
+        try:
+            r = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        if 'speak_decisions' in r or ('hazard_mean' in r and (RUNS / run / 'mother.jsonl').exists()):
+            out.append({k: r.get(k) for k in ('bptt_train_tokens', 'hazard_mean', 'speak_decisions', 'speak_rate',
+                                               'speak_return', 'speak_advantage_sd', 'habit_kl')})
+    return out[-400:]
+
+
+def mother_runs():
+    """Every run that lived in the mother world: its last monitor and how its speaking act moved."""
+    out = []
+    for d in RUNS.iterdir():
+        if not (d / 'mother.jsonl').exists():
+            continue
+        mon, ep = None, None
+        sc = d / 'scores.jsonl'
+        if sc.exists():
+            for line in sc.read_text(encoding='utf-8', errors='replace').splitlines():
+                try:
+                    r = json.loads(line)
+                except json.JSONDecodeError:
+                    continue
+                mon = r.get('monitor') or mon
+                ep = r.get('epistemic') or ep
+        sp = speak(d.name)
+        hz = [r['hazard_mean'] for r in sp if r.get('hazard_mean') is not None]
+        cfg = {}
+        try:
+            cfg = json.loads((d / 'config.json').read_text(encoding='utf-8'))
+        except Exception:
+            pass
+        out.append({'name': d.name, 'mtime': (d / 'mother.jsonl').stat().st_mtime, 'monitor': mon, 'epistemic': ep,
+                    'hazard_first': hz[0] if hz else None, 'hazard_last': hz[-1] if hz else None,
+                    'credit': cfg.get('mother_credit'), 'mouth': cfg.get('mother_world')})
+    return sorted(out, key=lambda r: r['mtime'])
 
 
 def health(run):
@@ -230,6 +310,10 @@ class Handler(SimpleHTTPRequestHandler):
                 return self._json(windows(run, int((q.get('last') or ['400'])[0])))
             if u.path == '/api/mother':
                 return self._json(mother(run))
+            if u.path == '/api/speak':
+                return self._json(speak(run))
+            if u.path == '/api/mother_runs':
+                return self._json(mother_runs())
             if u.path == '/api/health':
                 return self._json(health(run))
             if u.path == '/api/brain':
