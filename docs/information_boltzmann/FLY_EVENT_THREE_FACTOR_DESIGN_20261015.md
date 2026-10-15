@@ -283,3 +283,46 @@ The review said no-go for now. Its findings and what was done:
   much faster than the eligibility window, so the aftermath of a pulse reaches the next word.
   - Prediction: φ_Z drift in the paired arms exceeds 0.1 while τ_fast ≥ τ_e, and falls below it at τ_fast ≈ τ_e / 3.
   - This decides whether the newborn's τ_fast start moves.
+
+## Launch working point measured (2026-10-15 night)
+
+**Setup:** ×2, 16 ticks per word, κ_DAN 1.05, contrast threshold k 2 (background from sub-threshold ticks only), unit
+traces, adapted receptors, tonic forgetting 65536 ticks, rates from `calibrate_comp_rate`.
+
+**Calibrated rates:** depression 0.00065–0.00069, potentiation about 0.0029, r about 9e-6 per tick (three
+conversation starts). One other 128-word text gave 0.0015, so 128 words is a noisy sample.
+
+**Turnover:** over 1024 words the φ correlation at a 256-word lag is 0.99 (median); mean |Δφ| is 0.012 per 256 words.
+The natural stream no longer erases memory.
+
+**Pairing at 4×, pulse after the word, REST 160, TESTS 3, three replicates.** Differences relative to the unpaired
+arm, per replicate:
+
+| | rep 0 | rep 1 | rep 2 |
+|---|---|---|---|
+| forward, post | −0.012 | −0.015 | −0.012 |
+| forward, retest (256 words) | −0.007 | −0.013 | −0.013 |
+| backward, post | +0.009 | +0.005 | +0.006 |
+| backward, retest | +0.009 | +0.001 | +0.005 |
+| φ_Z drift, none arm | +0.011 | +0.013 | +0.014 |
+
+- Signs are right and consistent, persistence holds, and drift is clean.
+- Magnitude is about 0.01, so the MBON output does not move.
+
+**This is the review's ratio R, now measured: about 0.04.**
+- R = one pairing block's write / (the edge's natural write over one memory lifetime).
+- The median edge receives ⟨g e p⟩ ≈ r / η ≈ 0.014 suprathreshold dopamine per tick. Ten 4× pairings deliver about
+  40, which is about 180 words of the edge's ordinary input.
+- With R ≪ 1 no learning rate helps. The quantile threshold lets a fixed share of ordinary, word-locked dopamine
+  through, whether or not it means anything. The blocker is on the dopamine side (gate 2).
+
+**Next, falsifiable:**
+1. Measure whether the ordinary word-onset dopamine at the compartments carries anything: correlation with word
+   surprisal and with word identity, and whether it shrinks as the same word repeats (MBON → DAN feedback,
+   self-limiting).
+   - If yes (r ≥ 0.2): the natural writes are information, and the probe's pulse is simply small against a rich
+     teacher.
+   - If no: the threshold should pass only events beyond the word-locked response. Candidate: the threshold's
+     background is conditioned on the word-onset phase, so the predictable word-locked part never teaches.
+2. Channel noise on the DANs (review): irregular spontaneous firing instead of silence near threshold.
+3. The MBON output effect needs both a larger R and the Kenyon share of MBON drive.
