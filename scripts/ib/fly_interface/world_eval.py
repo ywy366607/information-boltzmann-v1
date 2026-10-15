@@ -258,6 +258,15 @@ def load(fork):
         # zero-shot (2026-10-15): the timing-signed compartment rule, trace-gated forgetting off (attach_comp_timing)
         print(f'zero-shot: compartment timing rule (potentiation start {fl.attach_comp_timing(model):.3f}), '
               f'use-forgetting off', flush=True)
+    if os.environ.get('ZS_COMP_ETA_SCALE') and getattr(model, 'comp_eta', None) is not None:
+        # zero-shot: the compartment learning rate x k (depression; potentiation's softplus target too)
+        k_e = float(os.environ['ZS_COMP_ETA_SCALE'])
+        with torch.no_grad():
+            model.comp_eta.mul_(k_e)
+            if getattr(model, 'comp_eta_pot', None) is not None:
+                import math as _m2
+                model.comp_eta_pot.copy_(torch.tensor(_m2.log(_m2.expm1(k_e * float(torch.nn.functional.softplus(model.comp_eta_pot))))))
+        print(f'zero-shot: compartment learning rate x{k_e}', flush=True)
     if os.environ.get('ZS_COMP_TONIC') and getattr(model, 'comp_eta', None) is not None:
         # zero-shot (2026-10-15): active forgetting of the Kenyon -> MBON memory at this many ticks (tonic dopamine)
         print(f'zero-shot: active forgetting, tau {fl.attach_comp_tonic_forget(model, float(os.environ["ZS_COMP_TONIC"])):.0f} ticks', flush=True)

@@ -128,10 +128,12 @@ def set_motor_constants(model, saved):
             setattr(model, name, torch.nn.Parameter(saved[name].to(device).float(), requires_grad=False))
 
 
-def calibrate_muscles(model, state, tokens, ticks=8):
+def calibrate_muscles(model, state, tokens, ticks=8, hold=False):
     """Each muscle's resting mean and spread on text (fixed weights, no gradient): the readout sees standardized
     muscle activations, as the language read sees normalized membranes.  Stored as frozen parameters (saved with the
-    model).  The spread is floored at its median (silent cells must not blow up)."""
+    model).  The spread is floored at its median (silent cells must not blow up).  hold=True: the word is written on
+    every tick of its interval, as in life with --hold-input (2026-10-15: a newborn calibrated on one written tick per
+    word saw no output spike in 128 words, so every spread fell back to 1 and the acts read nothing)."""
     import importlib
     fl = importlib.import_module('information_boltzmann.core.fly_bptt_learning')
     opts = dict(base_rates=model.get_decay_rates(), thresholds=model.get_thresholds(),
@@ -146,7 +148,7 @@ def calibrate_muscles(model, state, tokens, ticks=8):
         for w in tokens:
             token = torch.tensor([int(w)], device=state.h.device)
             for t in range(ticks):
-                if t == 0:
+                if t == 0 or hold:
                     drive, baseline = fl.write_input(model, s, token)
                     s = fl.step_fly_physical_tick(model, s, token, drive, baseline, opts, base_rates=opts['base_rates'])
                 else:

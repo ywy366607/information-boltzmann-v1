@@ -35,7 +35,7 @@ from information_boltzmann.core.fly_bptt_learning import (WRITER_SENSE, attach_i
     ONLINE_DA_PARAMETER_NAMES, attach_online_da_plasticity, attach_kenyon_dendritic_only, attach_homeostasis,
     attach_regime_homeostasis, attach_tied_writer, REGIME_KENYON_Z,
     attach_compartment_memory, attach_taste_heads, COMPARTMENT_PARAMETER_NAMES, TASTE_PARAMETER_NAMES,
-    attach_stream_jepa, STREAM_JEPA_PARAMETER_NAMES, attach_mother_voice, attach_pacemaker_homeostasis, attach_comp_tonic_forget, COMP_TONIC_PARAMETER_NAMES, attach_reply_reward, attach_apl_kenyon_dendritic_only, attach_compartment_dendritic,
+    attach_stream_jepa, STREAM_JEPA_PARAMETER_NAMES, attach_mother_voice, attach_pacemaker_homeostasis, attach_comp_tonic_forget, attach_comp_timing, COMP_TONIC_PARAMETER_NAMES, attach_reply_reward, attach_apl_kenyon_dendritic_only, attach_compartment_dendritic,
     renormalize_kenyon_inputs, pin_kenyon_to_dopamine, pin_sensory_terminals, pin_modulatory_fast_edges,
     reset_inputs_to_birth, attach_graded_cells, GRADED_PARAMETER_NAMES, attach_receptor_writer,
 )
@@ -282,6 +282,8 @@ def resolve_learning_modes(args, previous_config, previous_learner):
         args.mother_reward_ticks = int(previous_config.get('mother_reward_ticks') or 4)
     if getattr(args, 'pacemaker_homeostasis', None) is None:
         args.pacemaker_homeostasis = bool(previous_config.get('pacemaker_homeostasis', False))
+    if getattr(args, 'comp_timing', None) is None:
+        args.comp_timing = bool(previous_config.get('comp_timing', False))
     if getattr(args, 'comp_tonic_forget', None) is None:
         args.comp_tonic_forget = float(previous_config.get('comp_tonic_forget') or 0.0)
     if getattr(args, 'intrinsic_mbon_kappa', None) is None:
@@ -660,6 +662,9 @@ def main():
     parser.add_argument('--input-gain-kenyon-pooled', action='store_true', default=False,
                         help='Newborn: the Kenyon subtype classes start their input gain from the pooled Kenyon size '
                              '(the body volume is mostly axon; per-subtype size starved the alpha-prime beta-prime cells)')
+    parser.add_argument('--comp-timing', action='store_true', default=None,
+                        help="The fly's timing rule for the Kenyon -> MBON memory: dopamine before Kenyon potentiates, "
+                             'Kenyon before dopamine depresses; use-dependent forgetting off (omitted = inherit)')
     parser.add_argument('--comp-trace-tau', type=float, default=None,
                         help="Newborn: the Kenyon eligibility trace's start time constant in ticks (learnable; default 50). "
                              'Set in word terms, about 2-3 word intervals of the world')
@@ -1143,6 +1148,18 @@ def main():
             args.compartment_memory = True
             print(f'Compartment memory on {n_comp} Kenyon -> MBON synapses; taste heads on the MBONs (newborn)', flush=True)
             model.comp_adapted = bool(args.compartment_adapted)
+        if getattr(args, 'ai', False):
+            # acts from birth (2026-10-15): the same heads a resume attaches (look / speak muscles on the output cells)
+            init = torch.load(args.act_init, map_location='cpu')
+            if args.motor_acts:
+                from information_boltzmann.core.fly_active_inference import attach_motor_acts
+                attach_motor_acts(model, tau_muscle=float(args.act_tau or 8.0), eye_open=float(args.eye_init or 0.9),
+                                  habit=float(args.act_habit if args.act_habit is not None else 0.2),
+                                  brain_gradient=bool(args.act_brain_grad),
+                                  dopamine_precision=bool(args.act_dopamine_precision))
+            else:
+                attach_ai_head(model, init, eye_open=float(getattr(args, 'eye_init', 0.95) or 0.95))
+            print('Act head (eyes + output) attached at birth', flush=True)
         if args.stream_jepa:
             print(f'Stream JEPA term on {attach_stream_jepa(model, args.graph, args.graph.parent / "body-annotations.feather")} Kenyon cells (newborn)', flush=True)
         if args.homeostasis:
@@ -1187,6 +1204,10 @@ def main():
                 print(f'Active forgetting of the compartment memory: tau {attach_comp_tonic_forget(model, args.comp_tonic_forget):.0f} '
                       f'ticks at tonic dopamine (newborn)', flush=True)
                 names.extend(n for n in COMP_TONIC_PARAMETER_NAMES if n not in names)
+            if args.comp_timing:
+                print(f'Compartment timing rule (newborn): dopamine before Kenyon potentiates (start '
+                      f'{attach_comp_timing(model):.3f}), use-dependent forgetting off', flush=True)
+                names.extend(n for n in ('comp_eta_pot',) if n not in names)
         if args.stream_jepa:
             names.extend(n for n in STREAM_JEPA_PARAMETER_NAMES if n not in names)
         if args.use_read_gamma_trace:
@@ -1208,6 +1229,9 @@ def main():
                   f'(kappa out of the gradient)', flush=True)
             names = [n for n in names if n not in INTRINSIC_PARAMETER_NAMES]
         names.extend(n for n in make_sense_gains(model, args)[0] if n not in names)
+        if getattr(args, 'ai', False):
+            named_ai = dict(model.named_parameters())
+            names.extend(n for n in AI_PARAMETER_NAMES if n in named_ai and n not in names)
         if getattr(model, 'mbon_kappa', None) is not None:
             names.extend(n for n in ('mbon_kappa',) if n not in names)
         if getattr(args, 'carried_credit', False):
@@ -1252,7 +1276,8 @@ def main():
             if args.motor_acts and (getattr(model, 'ai_mu', None) is None
                                     or (getattr(model, 'ai_precision', False) and getattr(model, 'ai_da_ref', None) is None)):
                 from information_boltzmann.core.fly_active_inference import calibrate_muscles
-                spread = calibrate_muscles(model, learner.state, np.asarray(train[:128]))
+                spread = calibrate_muscles(model, learner.state, np.asarray(train[:128]),
+                                           ticks=int(round(args.stream_pace_mean or 8)), hold=bool(args.hold_input))
                 print(f'Muscles calibrated on 128 words (median spread {spread:.4f})'
                       + (f'; dopamine tone {float(model.ai_da_ref):.4f} (gamma = 1)' if getattr(model, 'ai_precision', False) else ''),
                       flush=True)
@@ -1510,6 +1535,7 @@ def main():
             if args.compartment_memory or args.taste_every:
                 comp_state = {k: v for k, v in saved['model'].items() if k in COMPARTMENT_PARAMETER_NAMES + TASTE_PARAMETER_NAMES}
                 saved_tonic = {k: v for k, v in saved['model'].items() if k in COMP_TONIC_PARAMETER_NAMES}
+                saved_tonic_all = {k: v for k, v in saved['model'].items() if k in ('comp_eta_pot',)}
                 rate = {} if args.comp_rate is None else {'eta': -float(args.comp_rate)}      # forgetting stays slow (0.02)
                 n_comp = attach_compartment_memory(model, args.graph, args.graph.parent / 'body-annotations.feather',
                                                    affinity=args.dopamine_affinity, **rate)
@@ -1648,6 +1674,15 @@ def main():
                 extra = [name for name in COMP_TONIC_PARAMETER_NAMES if name not in names]
                 names = list(names) + extra
                 newly_trainable += extra
+            if args.comp_timing:
+                attach_comp_timing(model)
+                if 'comp_eta_pot' in saved_tonic_all:
+                    model.load_state_dict({'comp_eta_pot': saved_tonic_all['comp_eta_pot']}, strict=False)
+                print('Compartment timing rule: dopamine before Kenyon potentiates, use-dependent forgetting off', flush=True)
+                if 'comp_eta_pot' not in names:
+                    names = list(names) + ['comp_eta_pot']
+                    if 'comp_eta_pot' not in saved_tonic_all:
+                        newly_trainable.append('comp_eta_pot')
         if args.stream_jepa:
             extra = [name for name in STREAM_JEPA_PARAMETER_NAMES if name not in names]
             names = list(names) + extra
@@ -1717,7 +1752,8 @@ def main():
             if args.motor_acts and (getattr(model, 'ai_mu', None) is None
                                     or (getattr(model, 'ai_precision', False) and getattr(model, 'ai_da_ref', None) is None)):
                 from information_boltzmann.core.fly_active_inference import calibrate_muscles
-                spread = calibrate_muscles(model, learner.state, np.asarray(train[:128]))
+                spread = calibrate_muscles(model, learner.state, np.asarray(train[:128]),
+                                           ticks=int(round(args.stream_pace_mean or 8)), hold=bool(args.hold_input))
                 print(f'Muscles calibrated on 128 words (median spread {spread:.4f})'
                       + (f'; dopamine tone {float(model.ai_da_ref):.4f} (gamma = 1)' if getattr(model, 'ai_precision', False) else ''),
                       flush=True)

@@ -2547,7 +2547,7 @@ class FlyBPTTLearner:
             # than the synapses' relative steps (2% of the birth weight).  Their own rate makes them evolvable.
             physio = set(CLASS_PARAMETER_NAMES) | {'dopamine_logit_fast', 'dopamine_logit_slow', 'comp_logit_trace',
                                                    'comp_logit_forget', 'comp_logit_tonic', 'voice_log_gain',
-                                                   'reward_log_gain', 'mbon_kappa'}
+                                                   'reward_log_gain', 'mbon_kappa', 'comp_eta_pot'}
             moved = [named[n] for n in self.adam_names if n in physio]
             self.physio_names = [n for n in self.adam_names if n in physio]
             self.physio_lr = float(lr_physiology)
