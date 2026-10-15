@@ -657,6 +657,9 @@ def main():
                         help='The reward pulse in rheobase units (omitted = inherit, else 1.0)')
     parser.add_argument('--mother-reward-ticks', type=int, default=None,
                         help='The reward pulse length in ticks (omitted = inherit, else 4)')
+    parser.add_argument('--comp-trace-tau', type=float, default=None,
+                        help="Newborn: the Kenyon eligibility trace's start time constant in ticks (learnable; default 50). "
+                             'Set in word terms, about 2-3 word intervals of the world')
     parser.add_argument('--comp-tonic-forget', type=float, default=None,
                         help='Active forgetting of the Kenyon -> MBON memory: phi relaxes on its own clock (this many ticks '
                              'at tonic dopamine), whether or not the Kenyon cell fires; 0 = off (omitted = inherit)')
@@ -1129,6 +1132,8 @@ def main():
             print(f'Graded (non-spiking) cells (newborn): {attach_graded_cells(model, args.graph, args.graph.parent / "body-annotations.feather", types=tuple(args.graded_types.split(",")), gain=args.graded_gain)}', flush=True)
         if args.compartment_memory or args.taste_every:
             rate = {} if args.comp_rate is None else {'eta': -float(args.comp_rate)}
+            if args.comp_trace_tau:
+                rate['tau_trace'] = float(args.comp_trace_tau)    # newborn: the Kenyon trace's start (learnable)
             n_comp = attach_compartment_memory(model, args.graph, args.graph.parent / 'body-annotations.feather',
                                                affinity=args.dopamine_affinity, **rate)
             attach_taste_heads(model, args.graph, args.graph.parent / 'body-annotations.feather')

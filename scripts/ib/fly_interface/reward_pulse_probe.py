@@ -50,27 +50,33 @@ def run(s, w, ticks, pulse):
 
 rep = {'checkpoint': str(fork), 'pam_cells': n_pam, 'levels': {}}
 places = list(range(20, 400, 19))[:20]
+import os
+WORD_TICKS, FORK = int(os.environ.get('WORD_TICKS', '6')), int(os.environ.get('FORK', '40'))
 with torch.no_grad():
     s = s0
     states = []
     for i, w in enumerate(stream):
         if i in places:
             states.append((s, w))
-        s = run(s, w, 6, 0)[0]
+        s = run(s, w, WORD_TICKS, 0)[0]
     for level in (0.5, 1.0, 2.0, 4.0):
         model.reward_level = level
         rows = []
         for s_p, w in states:
             trace = s_p.comp_trace.index_select(1, model.comp_edge_kc)[0] if comp and s_p.comp_trace.numel() else None
-            s_c, pam_c, ph_c = run(s_p, w, 40, 0)
-            s_r, pam_r, ph_r = run(s_p, w, 40, 4)
-            row = {'pam_extra': (pam_r - pam_c) / 40, 'phasic_extra': (ph_r - ph_c) if ph_c is not None else None}
+            s_c, pam_c, ph_c = run(s_p, w, FORK, 0)
+            s_r, pam_r, ph_r = run(s_p, w, FORK, 4)
+            row = {'pam_extra': (pam_r - pam_c) / FORK, 'phasic_extra': (ph_r - ph_c) if ph_c is not None else None}
             if comp and s_r.comp_memory.numel():
                 dphi = (s_r.comp_memory[0] - s_c.comp_memory[0]).abs()
                 row['dphi_sum'] = float(dphi.sum())
                 if trace is not None:
                     standing = trace > trace.median()
                     row['dphi_share_on_traces'] = float(dphi[standing].sum() / dphi.sum().clamp_min(1e-12))
+                    # review 2026-10-15: traces the reply word itself creates (low at the pulse, high at the end)
+                    after = s_r.comp_trace.index_select(1, model.comp_edge_kc)[0]
+                    created = (~standing) & (after > trace.median())
+                    row['dphi_share_on_reply_traces'] = float(dphi[created].sum() / dphi.sum().clamp_min(1e-12))
             rows.append(row)
         rep['levels'][str(level)] = {k: [float(np.min(v)), float(np.median(v)), float(np.mean(v)), float(np.max(v))]
                                      for k in rows[0] if rows[0][k] is not None
