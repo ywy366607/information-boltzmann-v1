@@ -168,6 +168,24 @@ class GeminiApiMother:
             parts.append(f"Parenting intention for this phase: {intent}.")
         return ' '.join(parts)
 
+    def get_prompt_parts(self):
+        """(stable, volatile): the persona and the family never change within a life, so they head every request and
+        the provider's prefix cache can reuse them with the whole history behind them; the world memory, topic and
+        intention change from time to time and ride in the last turn only (2026-10-15: the old system prompt carried
+        them, so every topic or fact change missed the cache for the entire history)."""
+        self._refresh_plan()
+        m_cfg = self.plan.get('mother', {}) if isinstance(self.plan, dict) else {}
+        p_cfg = self.plan.get('parenting', {}) if isinstance(self.plan, dict) else {}
+        stable = ' '.join([m_cfg.get('persona') or self.base_system, family_prompt(self.plan)])
+        topic = p_cfg.get('current_topic') or ((p_cfg.get('topics') or [None])[0])
+        intent = p_cfg.get('intention')
+        volatile = [world_prompt()]
+        if topic:
+            volatile.append(f"Current conversation topic: {topic}.")
+        if intent:
+            volatile.append(f"Parenting intention for this phase: {intent}.")
+        return stable, ' '.join(v for v in volatile if v)
+
     def reply(self, transcript):
         import time
         contents = []
@@ -264,7 +282,8 @@ class DeepSeekMother(GeminiApiMother):
 
     def reply(self, transcript):
         import time
-        messages = [{'role': 'system', 'content': self.get_system_prompt()}]
+        stable, volatile = self.get_prompt_parts()
+        messages = [{'role': 'system', 'content': stable}]
         for who, text in transcript:
             role = 'assistant' if who == 'mother' else 'user'
             if len(messages) > 1 and messages[-1]['role'] == role:
@@ -273,6 +292,9 @@ class DeepSeekMother(GeminiApiMother):
                 messages.append({'role': role, 'content': text})
         if messages[-1]['role'] != 'user':
             messages.append({'role': 'user', 'content': '...'})
+        if volatile:
+            # the changing context rides in the last turn only: everything before it is a byte-identical prefix
+            messages[-1] = {'role': 'user', 'content': f"[Mother's notes: {volatile}]\n{messages[-1]['content']}"}
         m_cfg = self.plan.get('mother', {}) if isinstance(self.plan, dict) else {}
         delay = 2.0
         for attempt in range(self.retries):
