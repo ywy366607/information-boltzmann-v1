@@ -254,6 +254,10 @@ def load(fork):
         model.register_buffer('mbon_index', mb, persistent=False)
         model.mbon_kappa = torch.nn.Parameter(torch.full((mb.numel(),), k_m, device='cuda'))
         print(f'zero-shot: {mb.numel()} MBONs spontaneously active, kappa {k_m}', flush=True)
+    if os.environ.get('ZS_COMP_TIMING') and getattr(model, 'comp_eta', None) is not None:
+        # zero-shot (2026-10-15): the timing-signed compartment rule, trace-gated forgetting off (attach_comp_timing)
+        print(f'zero-shot: compartment timing rule (potentiation start {fl.attach_comp_timing(model):.3f}), '
+              f'use-forgetting off', flush=True)
     if os.environ.get('ZS_COMP_TONIC') and getattr(model, 'comp_eta', None) is not None:
         # zero-shot (2026-10-15): active forgetting of the Kenyon -> MBON memory at this many ticks (tonic dopamine)
         print(f'zero-shot: active forgetting, tau {fl.attach_comp_tonic_forget(model, float(os.environ["ZS_COMP_TONIC"])):.0f} ticks', flush=True)

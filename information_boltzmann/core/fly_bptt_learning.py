@@ -74,6 +74,7 @@ class FlyPhysicalState:
     credit_stp: torch.Tensor = field(default_factory=lambda: torch.empty(0))
     # Optional availability of every Kenyon cell's terminal release [1, N] (attach_kenyon_habituation; never reset).
     kc_avail: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    comp_da_trace: torch.Tensor = field(default_factory=lambda: torch.empty(0))   # dopamine-before-Kenyon trace per compartment edge
 
     def detached(self):
         return FlyPhysicalState(**{
@@ -399,6 +400,7 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
                 -REGIME_LOG_GAIN_MAX, REGIME_LOG_GAIN_MAX)
             regime = torch.cat([u_free, mean, second, log_gain], 0).detach()
     comp_trace = getattr(current, 'comp_trace', torch.empty(0))
+    comp_da_trace = getattr(current, 'comp_da_trace', torch.empty(0))
     if comp_on:
         # Compartment memory (attach_compartment_memory): e <- l e + (1 - l) s at each Kenyon cell; at each plastic
         # synapse k -> j, with the dopamine delivered to its MBON j (the MBON marks the compartment):
@@ -463,7 +465,18 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
                         tonic_rate=(float(torch.sigmoid(model.comp_logit_tonic.detach()))
                                     if getattr(model, 'comp_logit_tonic', None) is not None else None))
             phi_prev = comp_memory                    # live: BPTT sees the forgetting term too (review 2026-10-15)
-            comp_memory = comp_memory + window_c * (model.comp_eta * phasic_c * (1.0 + comp_memory) - kappa_c * comp_memory)
+            use_forget = kappa_c if getattr(model, 'comp_use_forget', True) else 0.0
+            comp_memory = comp_memory + window_c * (model.comp_eta * phasic_c * (1.0 + comp_memory) - use_forget * comp_memory)
+            eta_pot = getattr(model, 'comp_eta_pot', None)
+            if eta_pot is not None:
+                # timing (Handler et al. 2019): Kenyon activity before dopamine depresses (the term above); dopamine
+                # before Kenyon activity potentiates.  A per-edge trace of the phasic dopamine at the compartment, on
+                # the Kenyon trace's clock, is read when the Kenyon cell fires; potentiation bounded by (1 - phi)
+                if comp_da_trace.numel() != phasic_c.numel():
+                    comp_da_trace = torch.zeros_like(phasic_c)
+                spk_edge = spikes_c.index_select(1, model.comp_kc).index_select(1, model.comp_edge_kc)
+                comp_memory = comp_memory + (occ_slow_c.detach() / 0.5) * torch.nn.functional.softplus(eta_pot)                     * comp_da_trace * spk_edge * (1.0 - phi_prev)
+                comp_da_trace = lam_c * comp_da_trace + (1.0 - lam_c) * phasic_c
             tonic_c = getattr(model, 'comp_logit_tonic', None)
             if tonic_c is not None:
                 # active forgetting (Berry et al. 2012): the dopamine neurons' ongoing activity erodes the memory on
@@ -481,7 +494,8 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
                             current.observer_prior, getattr(current, 'observer_history', torch.empty(0)), bank,
                             modulator, getattr(current, 'expected_input', torch.empty(0)), dopamine, da_trace, da_memory,
                             homeostasis, regime, comp_trace, comp_memory,
-                            credit_comp, credit_comp_trace, credit_dopamine, credit_stp, kc_avail)
+                            credit_comp, credit_comp_trace, credit_dopamine, credit_stp, kc_avail,
+                            comp_da_trace=comp_da_trace)
 
 
 def extract_fly_motor_latent(model, state):
@@ -1135,6 +1149,21 @@ COMPARTMENT_PARAMETER_NAMES = ('comp_weight', 'comp_eta', 'comp_logit_trace', 'c
 COMP_TONIC_PARAMETER_NAMES = ('comp_logit_tonic',)
 SENSE_GAIN_PARAMETER_NAMES = ('voice_log_gain', 'reward_log_gain')
 MBON_TONIC_PARAMETER_NAMES = ('mbon_kappa',)
+
+
+def attach_comp_timing(model, eta_pot=None, use_forget=False):
+    """The fly's timing rule for the Kenyon -> MBON memory (--comp-timing, review 2026-10-15): dopamine before Kenyon
+    activity potentiates (start |eta| of the depression, learnable through softplus, so the sign is fixed), Kenyon before
+    dopamine depresses (the existing term).  use_forget=False drops the trace-gated forgetting: every use of a Kenyon cell
+    without dopamine pulled phi back to one equilibrium, and BPTT (32-word horizon) raised that rate (0.02 -> 0.036 in
+    Mengli), so a paired memory was gone after 256 words; forgetting is left to the tonic dopamine (active forgetting)."""
+    import math as _math
+    if getattr(model, 'comp_eta', None) is None:
+        raise ValueError('the timing rule needs the compartment memory')
+    target = abs(float(model.comp_eta.detach())) if eta_pot is None else float(eta_pot)
+    model.comp_eta_pot = nn.Parameter(torch.tensor(_math.log(_math.expm1(max(target, 1e-3))), device=model.comp_eta.device))
+    model.comp_use_forget = bool(use_forget)
+    return target
 
 
 def attach_comp_tonic_forget(model, tau_ticks=2048.0):
@@ -2055,7 +2084,7 @@ def clip_state_gradients(model, state, cap=None):
         model.step_grad_clips = over.float() if count is None else count + over.float()
         return g * torch.where(over, cap / n.clamp_min(1e-30), torch.ones_like(n))
 
-    for name in ('h', 'ge', 'gi', 'b', 'x', 'u', 'dopamine', 'comp_memory', 'comp_trace'):
+    for name in ('h', 'ge', 'gi', 'b', 'x', 'u', 'dopamine', 'comp_memory', 'comp_trace', 'comp_da_trace'):
         t = getattr(state, name, None)
         if torch.is_tensor(t) and t.requires_grad:
             t.register_hook(hook)

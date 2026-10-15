@@ -1240,12 +1240,14 @@ def main():
         learner.stream_pace_mean = float(args.stream_pace_mean or 0.0)
         learner.stream_pace_min = float(getattr(args, 'stream_pace_min', 0.0) or 0.0)
         if getattr(args, 'ai', False):
-            learner.ai_epistemic, learner.ai_pragmatic = float(args.ai_epistemic), float(args.ai_pragmatic)
-            learner.ai_sigreg = float(args.ai_sigreg)
+            # a newborn's omitted switches take the same defaults a resume would (acts from birth, 2026-10-15)
+            learner.ai_epistemic, learner.ai_pragmatic = float(args.ai_epistemic or 0.0), float(args.ai_pragmatic or 0.0)
+            learner.ai_sigreg = float(args.ai_sigreg or 0.0)
             learner.eye_forced = 1.0 if args.eye_forced_open else args.eye_forced
-            learner.eye_binary, learner.ai_depth = bool(args.eye_binary), int(args.ai_depth)
-            learner.sense_noise_max = float(args.sense_noise)
-            learner.act_habit, learner.act_gamma_inv = float(args.act_habit), float(args.act_gamma_inv)
+            learner.eye_binary, learner.ai_depth = bool(args.eye_binary), int(args.ai_depth or 0)
+            learner.sense_noise_max = float(args.sense_noise or 0.0)
+            learner.act_habit = float(args.act_habit if args.act_habit is not None else 0.2)
+            learner.act_gamma_inv = float(args.act_gamma_inv if args.act_gamma_inv is not None else 0.05)
             learner.epistemic_source = 'belief' if args.epistemic_belief else 'count'
             if args.motor_acts and (getattr(model, 'ai_mu', None) is None
                                     or (getattr(model, 'ai_precision', False) and getattr(model, 'ai_da_ref', None) is None)):
@@ -1703,12 +1705,14 @@ def main():
         learner.stream_pace_mean = float(args.stream_pace_mean or 0.0)
         learner.stream_pace_min = float(getattr(args, 'stream_pace_min', 0.0) or 0.0)
         if getattr(args, 'ai', False):
-            learner.ai_epistemic, learner.ai_pragmatic = float(args.ai_epistemic), float(args.ai_pragmatic)
-            learner.ai_sigreg = float(args.ai_sigreg)
+            # a newborn's omitted switches take the same defaults a resume would (acts from birth, 2026-10-15)
+            learner.ai_epistemic, learner.ai_pragmatic = float(args.ai_epistemic or 0.0), float(args.ai_pragmatic or 0.0)
+            learner.ai_sigreg = float(args.ai_sigreg or 0.0)
             learner.eye_forced = 1.0 if args.eye_forced_open else args.eye_forced
-            learner.eye_binary, learner.ai_depth = bool(args.eye_binary), int(args.ai_depth)
-            learner.sense_noise_max = float(args.sense_noise)
-            learner.act_habit, learner.act_gamma_inv = float(args.act_habit), float(args.act_gamma_inv)
+            learner.eye_binary, learner.ai_depth = bool(args.eye_binary), int(args.ai_depth or 0)
+            learner.sense_noise_max = float(args.sense_noise or 0.0)
+            learner.act_habit = float(args.act_habit if args.act_habit is not None else 0.2)
+            learner.act_gamma_inv = float(args.act_gamma_inv if args.act_gamma_inv is not None else 0.05)
             learner.epistemic_source = 'belief' if args.epistemic_belief else 'count'
             if args.motor_acts and (getattr(model, 'ai_mu', None) is None
                                     or (getattr(model, 'ai_precision', False) and getattr(model, 'ai_da_ref', None) is None)):
