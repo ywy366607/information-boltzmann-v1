@@ -35,7 +35,7 @@ from information_boltzmann.core.fly_bptt_learning import (WRITER_SENSE, attach_i
     ONLINE_DA_PARAMETER_NAMES, attach_online_da_plasticity, attach_kenyon_dendritic_only, attach_homeostasis,
     attach_regime_homeostasis, attach_tied_writer, REGIME_KENYON_Z,
     attach_compartment_memory, attach_taste_heads, COMPARTMENT_PARAMETER_NAMES, TASTE_PARAMETER_NAMES,
-    attach_stream_jepa, STREAM_JEPA_PARAMETER_NAMES, attach_mother_voice, attach_pacemaker_homeostasis, attach_comp_tonic_forget, attach_comp_timing, COMP_TONIC_PARAMETER_NAMES, attach_reply_reward, attach_apl_kenyon_dendritic_only, attach_compartment_dendritic,
+    attach_stream_jepa, STREAM_JEPA_PARAMETER_NAMES, attach_mother_voice, attach_pacemaker_homeostasis, attach_comp_tonic_forget, attach_comp_timing, attach_comp_unit_traces, set_time_scale, COMP_TONIC_PARAMETER_NAMES, attach_reply_reward, attach_apl_kenyon_dendritic_only, attach_compartment_dendritic,
     renormalize_kenyon_inputs, pin_kenyon_to_dopamine, pin_sensory_terminals, pin_modulatory_fast_edges,
     reset_inputs_to_birth, attach_graded_cells, GRADED_PARAMETER_NAMES, attach_receptor_writer,
 )
@@ -282,6 +282,14 @@ def resolve_learning_modes(args, previous_config, previous_learner):
         args.mother_reward_ticks = int(previous_config.get('mother_reward_ticks') or 4)
     if getattr(args, 'pacemaker_homeostasis', None) is None:
         args.pacemaker_homeostasis = bool(previous_config.get('pacemaker_homeostasis', False))
+    if getattr(args, 'dan_kappa', None) is None:
+        args.dan_kappa = previous_config.get('dan_kappa', None)
+    if getattr(args, 'comp_burst_k', None) is None:
+        args.comp_burst_k = previous_config.get('comp_burst_k', None)
+    if getattr(args, 'time_scale', None) is None:
+        args.time_scale = float(previous_config.get('time_scale') or 1.0)
+    if getattr(args, 'comp_unit_traces', None) is None:
+        args.comp_unit_traces = bool(previous_config.get('comp_unit_traces', False))
     if getattr(args, 'comp_timing', None) is None:
         args.comp_timing = bool(previous_config.get('comp_timing', False))
     if getattr(args, 'comp_tonic_forget', None) is None:
@@ -665,6 +673,17 @@ def main():
     parser.add_argument('--comp-timing', action='store_true', default=None,
                         help="The fly's timing rule for the Kenyon -> MBON memory: dopamine before Kenyon potentiates, "
                              'Kenyon before dopamine depresses; use-dependent forgetting off (omitted = inherit)')
+    parser.add_argument('--time-scale', type=float, default=None,
+                        help='Newborn: dynamics k times faster per tick (time constants / k, conductances and sensory drive x k; '
+                             'pair with --stream-pace-mean 32/k; omitted = inherit, 1 for a newborn)')
+    parser.add_argument('--comp-unit-traces', action='store_true', default=None,
+                        help='Newborn: the compartment eligibility is the terminal state (one spike lifts it to ~1, saturating), '
+                             'rates start -1 / +1 (needs --comp-timing, --compartment-adapted; omitted = inherit)')
+    parser.add_argument('--comp-burst-k', type=float, default=None,
+                        help='Newborn: the burst threshold start in sd above edge mean (learnable; default 0.25; omitted = inherit)')
+    parser.add_argument('--dan-kappa', type=float, default=None,
+                        help='Newborn: intrinsic drive kappa for dopamine cells (learnable; start 0.5 = subthreshold / fluctuation-driven; '
+                             'omitted = inherit or kappa)')
     parser.add_argument('--comp-trace-tau', type=float, default=None,
                         help="Newborn: the Kenyon eligibility trace's start time constant in ticks (learnable; default 50). "
                              'Set in word terms, about 2-3 word intervals of the world')
@@ -1133,6 +1152,7 @@ def main():
                 args.intrinsic_pattern = INTRINSIC_TYPE_PATTERN       # saved: a later default change cannot alter the lineage
             released = attach_intrinsic_drive(model, args.graph, args.graph.parent / 'body-annotations.feather',
                                               **({'kappa': args.intrinsic_kappa} if args.intrinsic_kappa is not None else {}),
+                                              **({'dan_kappa': args.dan_kappa} if getattr(args, 'dan_kappa', None) is not None else {}),
                                               pattern=args.intrinsic_pattern, jitter=float(args.intrinsic_jitter or 0.0),
                                               mbon_kappa=float(args.intrinsic_mbon_kappa or 0.0))
             print(f'Released {int(model.intrinsic_index.numel())} spontaneously active cells (newborn): {released}', flush=True)
@@ -1206,8 +1226,10 @@ def main():
                 names.extend(n for n in COMP_TONIC_PARAMETER_NAMES if n not in names)
             if args.comp_timing:
                 print(f'Compartment timing rule (newborn): dopamine before Kenyon potentiates (start '
-                      f'{attach_comp_timing(model):.3f}), use-dependent forgetting off', flush=True)
+                      f'{attach_comp_timing(model, burst_k=args.comp_burst_k):.3f}), use-dependent forgetting off', flush=True)
                 names.extend(n for n in ('comp_eta_pot', 'comp_burst_k') if n not in names)
+                if args.comp_unit_traces:
+                    print(f'Unit eligibility traces (newborn), rates (dep, pot) start {attach_comp_unit_traces(model)}', flush=True)
         if args.stream_jepa:
             names.extend(n for n in STREAM_JEPA_PARAMETER_NAMES if n not in names)
         if args.use_read_gamma_trace:
@@ -1229,6 +1251,10 @@ def main():
                   f'(kappa out of the gradient)', flush=True)
             names = [n for n in names if n not in INTRINSIC_PARAMETER_NAMES]
         names.extend(n for n in make_sense_gains(model, args)[0] if n not in names)
+        args.time_scale = float(args.time_scale or 1.0)
+        if args.time_scale != 1.0:
+            print(f'Time scale x{set_time_scale(model, args.time_scale, birth=True):g} (newborn): time constants / k, '
+                  f'conductances and sensory drive x k', flush=True)
         if getattr(args, 'ai', False):
             named_ai = dict(model.named_parameters())
             names.extend(n for n in AI_PARAMETER_NAMES if n in named_ai and n not in names)
@@ -1395,6 +1421,7 @@ def main():
         if args.intrinsic:
             released = attach_intrinsic_drive(model, args.graph, args.graph.parent / 'body-annotations.feather',
                                               **({'kappa': args.intrinsic_kappa} if args.intrinsic_kappa is not None else {}),
+                                              **({'dan_kappa': args.dan_kappa} if getattr(args, 'dan_kappa', None) is not None else {}),
                                               **({'pattern': args.intrinsic_pattern} if args.intrinsic_pattern else {}),
                                               mbon_kappa=float(args.intrinsic_mbon_kappa or 0.0))
             print(f'Released {int(model.intrinsic_index.numel())} spontaneously active cells: {released}', flush=True)
@@ -1675,10 +1702,13 @@ def main():
                 names = list(names) + extra
                 newly_trainable += extra
             if args.comp_timing:
-                attach_comp_timing(model)
+                attach_comp_timing(model, burst_k=args.comp_burst_k)
                 if saved_tonic_all:
                     model.load_state_dict(saved_tonic_all, strict=False)
                 print('Compartment timing rule: dopamine before Kenyon potentiates, use-dependent forgetting off', flush=True)
+                if args.comp_unit_traces:
+                    model.comp_unit_traces = True
+                    print('Unit eligibility traces (rates from the checkpoint)', flush=True)
                 for n_ in ('comp_eta_pot', 'comp_burst_k'):
                     if n_ not in names:
                         names = list(names) + [n_]
@@ -1704,6 +1734,9 @@ def main():
                   f'(kappa out of the gradient)', flush=True)
             names = [n for n in names if n not in INTRINSIC_PARAMETER_NAMES]
             newly_trainable = [n for n in newly_trainable if n not in INTRINSIC_PARAMETER_NAMES]
+        if float(args.time_scale or 1.0) != 1.0:
+            print(f'Time scale x{set_time_scale(model, args.time_scale, birth=False):g}: sensory drive x k (time constants '
+                  f'carried in the checkpoint)', flush=True)
         sense, sense_new = make_sense_gains(model, args, saved['model'])
         names = list(names) + [n for n in sense if n not in names]
         newly_trainable += sense_new

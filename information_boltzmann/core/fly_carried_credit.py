@@ -41,7 +41,7 @@ def dopamine_step(S, conc, slow, arrival, f, s):
 
 
 def comp_step(S_phi, S_tr, phi, trace, spikes_kc, lam, eta, kappa, phasic, gate, edge_kc, dphasic, tonic=None,
-              tonic_rate=None):
+              tonic_rate=None, unit=False):
     """One tick of the compartment memory's sensitivities.
     trace' = lam trace + (1 - lam) s;  phi' = phi + w (eta p (1 + phi) - kappa phi),  w = gate * trace'[edge_kc]
     (gate = occ(slow dopamine at the MBON) / 0.5, detached in the model too).
@@ -49,8 +49,12 @@ def comp_step(S_phi, S_tr, phi, trace, spikes_kc, lam, eta, kappa, phasic, gate,
     phi, trace: the values before the tick; p, gate at this tick.
     tonic [1, E] (active forgetting, gate x its rate): phi' -= tonic phi, ungated by the trace; it enters keep (the
     carried sensitivities decay with it); tonic_rate sigma: its own row d phi' / d logit = -tonic (1 - sigma) phi."""
-    S_tr_new = lam * S_tr + lam * (1.0 - lam) * (trace - spikes_kc)
-    trace_new = lam * trace + (1.0 - lam) * spikes_kc
+    if unit:      # trace' = lam trace + (1 - lam trace) s  (attach_comp_unit_traces)
+        S_tr_new = lam * (1.0 - spikes_kc) * S_tr + lam * (1.0 - lam) * trace * (1.0 - spikes_kc)
+        trace_new = lam * trace + (1.0 - lam * trace) * spikes_kc
+    else:
+        S_tr_new = lam * S_tr + lam * (1.0 - lam) * (trace - spikes_kc)
+        trace_new = lam * trace + (1.0 - lam) * spikes_kc
     w = gate * trace_new.index_select(1, edge_kc)
     dw_trace = gate * S_tr_new.index_select(1, edge_kc)
     A = eta * phasic * (1.0 + phi) - kappa * phi

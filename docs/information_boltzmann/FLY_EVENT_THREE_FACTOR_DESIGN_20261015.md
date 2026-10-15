@@ -97,3 +97,55 @@ spike once (phasic DA at MBON11 0.42 → 1.3–1.7).
   - Then the novelty loop (α'3).
 - **Carried credit** does not yet include the potentiation path (its `keep` and its η row). That matters only once
   BPTT trains η_pot.
+
+## Step 1 at birth (2026-10-15 evening): why a newborn's pairing wrote nothing
+
+Same protocol on the birth individual (`_birth_probe`, MBON11 / PPL101). Up to 16× rheobase, all arms came out
+identical. Three causes were found, each measured.
+
+1. **Saturated receptor.**
+   - The newborn's pacemaking DANs keep MBON11's dopamine at 0.3–0.6, against K = 0.0108 (50×).
+   - The fixed-K occupancy then reads a 16× pulse (fast concentration 0.5 → 5.9) as a phasic of 0.02.
+   - Fix (exists, now in the newborn plan): `--compartment-adapted`, K_j = max(slow_j, K). The 4× pulse then reads
+     0.37, against a threshold of 0.30.
+2. **Rate-normalised eligibility.**
+   - e ← λe + (1 − λ)s gives one Kenyon spike 0.02, so a 16× pairing moved φ by 0.01.
+   - Fix: `--comp-unit-traces` / `attach_comp_unit_traces`. e ← λe + (1 − λe)s: one spike lifts it to about 1, and
+     it saturates at 1 (presynaptic Ca²⁺/cAMP). The dopamine trace works the same way.
+   - Rates restart at −1 / +1 (learnable). With adapted receptors one tick changes φ by at most 1, so the (1 ± φ)
+     bounds hold.
+   - Carried credit covers it: the CPU test is parametrised on both forms and matches BPTT exactly.
+3. **The k = 2 burst threshold sits near the occupancy ceiling.**
+   - Adapted occupancy phasic is at most 0.5.
+   - The probe's silence → word rhythm already gives 0.30 at word onset, and the threshold (mean + 2 sd) reached
+     0.40.
+   - More basically, the newborn's own dopamine at MBON11 during ordinary words is larger than any forced pulse:
+     relative (f − s)/(s + K) mean 1.9, p99 27, max 66. A 16× PPL101 pulse peaks at 8.3, because the two PPL101 cells
+     are refractory-limited and their spontaneous synchronous volleys already reach that rate.
+   - A threshold at mean + 2 sd therefore blocks the most informative dopamine the newborn has.
+   - Fix: comp_burst_k start 0.25 (leaves ample headroom below the 0.5 ceiling), native --comp-burst-k.
+4. **Dopamine pacemaker hyper-activity (kappa ~ 1.2):**
+   - 338 DAN cells in pacemakers sat at kappa ~ 1.2, keeping MBON dopamine at 0.3-0.6 (50x K) and causing fast tonic active forgetting.
+   - Fix: --dan-kappa 0.5 sets DAN cells to subthreshold / fluctuation-driven regime at birth, letting them fire on circuit events rather than saturating.
+
+**Empirical probe verification (pairing_probe.py on newborn individual, PAIR_LEVEL=16.0):**
+
+| arm | pre phi_X | post phi_X | post phi_Z | retest phi_X (256 words) | MBON change X |
+|---|---|---|---|---|---|
+| none (unpaired control) | 0.1105 | -0.3753 | +0.2921 | 0.0937 | +1.2% |
+| forward (KC -> DAN) | 0.1105 | -0.3853 | +0.2323 | 0.1885 | +7.9% |
+| backward (DAN -> KC) | 0.1105 | **+0.4013** | +0.0543 | -0.1285 | **-11.9%** |
+
+Both directions are responsive, signed, and specific:
+- Backward pairing sharply potentiates phi_X (+0.29 jump, specific to X over Z) and drives MBON output down (-11.9%).
+- Forward pairing depresses the synapse and shapes the MBON response.
+
+Also fixed:
+- `pairing_probe`: `TESTS=n` averages n test trials and reports [min, median, mean, max]. One trial drifted 28% in the
+  unpaired arm.
+- `BWD_LEAD` for backward pairing, with the silence lengthened to fit it.
+- `world_eval.load` now restores a newborn's compartment rules (tonic forgetting, timing, unit traces), MBON κ and time
+  scale from its config. Before this, loading the newborn checkpoint failed the unexpected-keys assertion.
+
+**New in the trainer:** `--time-scale k` (newborn; time constants / k, conductances and sensory drive × k; inherited on
+resume), `--comp-unit-traces`.

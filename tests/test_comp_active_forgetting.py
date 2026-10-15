@@ -1,10 +1,12 @@
 """Active forgetting of the Kenyon -> MBON memory (attach_comp_tonic_forget) keeps the carried credit exact, and a
 repeated pairing leaves a deeper mark than a rare one (familiarity), which the trace-gated forgetting alone did not."""
+import pytest
 import torch
 import torch.nn.functional as F
 
 
-def test_carried_credit_with_active_forgetting():
+@pytest.mark.parametrize('unit', [False, True])
+def test_carried_credit_with_active_forgetting(unit):
     """With active forgetting (phi -= gate x rate x phi each tick, ungated by the trace) the carried credit still equals
     backprop through both windows.  Credit beyond the window (fly_carried_credit): with the spikes and the arriving dopamine fixed, the gradient of
     the second window's loss through BOTH windows equals the second window's own BPTT (opening states as leaves) plus
@@ -30,7 +32,7 @@ def test_carried_credit_with_active_forgetting():
         conc = f * D[0:1] + (1 - f) * arrival[t:t + 1]
         D = torch.cat([conc, s * D[1:2] + (1 - s) * conc], 0)
         lam = torch.sigmoid(model.comp_logit_trace)
-        tr = lam * tr + (1 - lam) * spikes[t:t + 1, kc]
+        tr = (lam * tr + (1 - lam * tr) * spikes[t:t + 1, kc]) if unit else (lam * tr + (1 - lam) * spikes[t:t + 1, kc])
         dp = D[:, post]
         p = F.relu(occ(dp[0:1]) - occ(dp[1:2]))
         w = occ(dp[1:2].detach()) / 0.5 * tr[:, edge_kc]
@@ -53,7 +55,7 @@ def test_carried_credit_with_active_forgetting():
         Sphi, Str = cc.comp_step(Sphi, Str, phi, tr, spikes[t:t + 1, kc], torch.sigmoid(model.comp_logit_trace).detach(),
                                  model.comp_eta.detach(), torch.sigmoid(model.comp_logit_forget).detach(), p,
                                  occ(dp[1:2]) / 0.5, edge_kc, dphasic, tonic=occ(dp[1:2]) / 0.5 * torch.sigmoid(model.comp_logit_tonic).detach(),
-                                 tonic_rate=float(torch.sigmoid(model.comp_logit_tonic)))
+                                 tonic_rate=float(torch.sigmoid(model.comp_logit_tonic)), unit=unit)
         return tuple(x.detach() for x in new), (Sd, Sphi, Str)
 
     start = (torch.rand(2, N) * 0.3, torch.rand(1, nkc) * 0.1, torch.zeros(1, E))

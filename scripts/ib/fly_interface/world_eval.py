@@ -49,6 +49,8 @@ def load(fork):
         fl.attach_read_bank(model)
     if cfg.get('intrinsic'):
         fl.attach_intrinsic_drive(model, graph, graph.parent / 'body-annotations.feather',
+                                  mbon_kappa=float(cfg.get('intrinsic_mbon_kappa') or 0.0),
+                                  dan_kappa=(float(cfg['dan_kappa']) if cfg.get('dan_kappa') is not None else None),
                                   **({'pattern': cfg['intrinsic_pattern']} if cfg.get('intrinsic_pattern') else {}))
     if cfg.get('dopamine_modulation'):
         fl.attach_dopamine_modulation(model, adapted=bool(cfg.get('dopamine_adapted', False)), affinity=cfg.get('dopamine_affinity'))
@@ -74,7 +76,9 @@ def load(fork):
     from information_boltzmann.core import fly_odour_world as ow
     act = ow.ACT_PARAMETER_NAMES + ('act_mu', 'act_sigma', 'act_w_scale') + ow.SENSE_PARAMETER_NAMES
     from information_boltzmann.core import fly_active_inference as fai
-    late = fl.COMPARTMENT_PARAMETER_NAMES + fl.TASTE_PARAMETER_NAMES + act + fai.AI_STATE_NAMES + fl.STREAM_JEPA_PARAMETER_NAMES
+    late = (fl.COMPARTMENT_PARAMETER_NAMES + fl.TASTE_PARAMETER_NAMES + act + fai.AI_STATE_NAMES + fl.STREAM_JEPA_PARAMETER_NAMES
+            + fl.COMP_TONIC_PARAMETER_NAMES + ('comp_eta_pot', 'comp_burst_k'))
+    world_only = ('voice_log_gain', 'reward_log_gain')     # the mother world's senses (its harness attaches them)
     if cfg.get('input_gain_size_exponent') is not None:
         fl.attach_input_gain(model)
     if cfg.get('kc_dan_release'):
@@ -90,12 +94,19 @@ def load(fork):
     with torch.no_grad():
         for k in edges:
             getattr(model, k).copy_(saved['model'][k])
-        assert not model.load_state_dict({k: v for k, v in saved['model'].items() if k not in edges and k not in late}, strict=False).unexpected_keys
+        assert not model.load_state_dict({k: v for k, v in saved['model'].items() if k not in edges and k not in late and k not in world_only}, strict=False).unexpected_keys
         if cfg.get('compartment_memory'):
             # the plastic Kenyon -> MBON synapses live outside the edge list: attach, then load their own weights
             fl.attach_compartment_memory(model, graph, graph.parent / 'body-annotations.feather', affinity=cfg.get('dopamine_affinity'))
             model.comp_adapted = bool(cfg.get('compartment_adapted', False))
             fl.attach_taste_heads(model, graph, graph.parent / 'body-annotations.feather')
+            # the newborn's compartment rules (their learned values load below)
+            if cfg.get('comp_tonic_forget'):
+                fl.attach_comp_tonic_forget(model, float(cfg['comp_tonic_forget']))
+            if cfg.get('comp_timing'):
+                fl.attach_comp_timing(model, burst_k=(float(cfg['comp_burst_k']) if cfg.get('comp_burst_k') is not None else 0.25))
+            if cfg.get('comp_unit_traces'):
+                model.comp_unit_traces = True
             model.load_state_dict({k: v for k, v in saved['model'].items() if k in late}, strict=False)
         if cfg.get('stream_jepa'):
             fl.attach_stream_jepa(model, graph, graph.parent / 'body-annotations.feather')
@@ -254,10 +265,33 @@ def load(fork):
         model.register_buffer('mbon_index', mb, persistent=False)
         model.mbon_kappa = torch.nn.Parameter(torch.full((mb.numel(),), k_m, device='cuda'))
         print(f'zero-shot: {mb.numel()} MBONs spontaneously active, kappa {k_m}', flush=True)
+    if os.environ.get('ZS_COMP_ADAPTED') and getattr(model, 'comp_eta', None) is not None:
+        # zero-shot: the compartment receptors adapt to their own slow dopamine (K_j = max(slow_j, K)); a newborn's
+        # spontaneously firing DANs keep MBON dopamine at ~50x K, saturating the fixed-K receptor (phasic 0.02 at 16x)
+        model.comp_adapted = os.environ['ZS_COMP_ADAPTED'] == '1'
+        print(f'zero-shot: compartment receptors adapted {model.comp_adapted}', flush=True)
     if os.environ.get('ZS_COMP_TIMING') and getattr(model, 'comp_eta', None) is not None:
         # zero-shot (2026-10-15): the timing-signed compartment rule, trace-gated forgetting off (attach_comp_timing)
         print(f'zero-shot: compartment timing rule (potentiation start {fl.attach_comp_timing(model):.3f}), '
               f'use-forgetting off', flush=True)
+    if os.environ.get('ZS_DAN_KAPPA') and getattr(model, 'intrinsic_kappa', None) is not None:
+        # zero-shot: the dopamine cells' intrinsic drive (rheobase units) set to a value; < 1 = fluctuation-driven,
+        # irregular, low-rate firing instead of regular pacemaking (the other pacemakers keep theirs)
+        dan_m = torch.zeros(model.n_neurons, dtype=torch.bool, device=model.intrinsic_kappa.device)
+        dan_m[torch.as_tensor(np.load(graph, allow_pickle=True)['dan_indices'].astype(np.int64), device=dan_m.device)] = True
+        sel_k = dan_m[model.intrinsic_index.long()]
+        with torch.no_grad():
+            model.intrinsic_kappa.reshape(-1)[sel_k] = float(os.environ['ZS_DAN_KAPPA'])
+        print(f'zero-shot: dopamine cells intrinsic kappa {os.environ["ZS_DAN_KAPPA"]} ({int(sel_k.sum())} of {sel_k.numel()} pacemakers)', flush=True)
+    if os.environ.get('ZS_BURST_K') and getattr(model, 'comp_burst_k', None) is not None:
+        # zero-shot: the burst threshold's start, softplus(k) = value (sd above the edge's running mean)
+        import math as _m
+        with torch.no_grad():
+            model.comp_burst_k.fill_(_m.log(_m.expm1(float(os.environ['ZS_BURST_K']))))
+        print(f'zero-shot: burst threshold k {os.environ["ZS_BURST_K"]}', flush=True)
+    if os.environ.get('ZS_COMP_UNIT') and getattr(model, 'comp_eta', None) is not None:
+        # zero-shot: eligibility as the terminal's state (one spike lifts it to ~1), rates restarted (-1 / +1)
+        print(f'zero-shot: unit eligibility traces, rates (dep, pot) {fl.attach_comp_unit_traces(model)}', flush=True)
     if os.environ.get('ZS_COMP_ETA_SCALE') and getattr(model, 'comp_eta', None) is not None:
         # zero-shot: the compartment learning rate x k (depression; potentiation's softplus target too)
         k_e = float(os.environ['ZS_COMP_ETA_SCALE'])
@@ -310,6 +344,8 @@ def load(fork):
         print(f'zero-shot: taste lines restored to birth weights, {int(src.sum())} receptors + {int(sel.sum() - src.sum())} '
               f'cells within {K - 1} hops, {n_restored} output edges', flush=True)
     model.eval().requires_grad_(False)
+    if float(cfg.get('time_scale') or 1.0) != 1.0:
+        fl.set_time_scale(model, float(cfg['time_scale']), birth=False)   # the senses' drive (time constants are in the checkpoint)
     return model, cfg, L
 
 

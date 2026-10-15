@@ -19,7 +19,9 @@ MBON_T = sys.argv[3] if len(sys.argv) > 3 else 'MBON11'
 DAN_T = sys.argv[4] if len(sys.argv) > 4 else 'PPL101'
 OUT = Path(sys.argv[5]) if len(sys.argv) > 5 else None
 REST, WORD, PULSE, LEVEL = 32, 32, 8, float(os.environ.get('PAIR_LEVEL', '2.0'))
-FWD_AT, BWD_LEAD = 16, 4
+TESTS = int(os.environ.get('TESTS', '1'))
+FWD_AT, BWD_LEAD = 16, int(os.environ.get('BWD_LEAD', '4'))
+REST = max(REST, BWD_LEAD + PULSE + 8)       # the backward pulse must fit inside the silence before the word
 model, cfg, L = load(fork)
 graph = ROOT / cfg['graph']
 opts = dict(base_rates=model.get_decay_rates(), thresholds=model.get_thresholds(), conductance_gains=model.get_conductance_gains(),
@@ -78,6 +80,20 @@ def trial(s, w, mode):
     return s, resp, fired
 
 
+def test(s, n):
+    """TESTS=n alternating X / Z test trials (no dopamine): one trial's MBON readout drifts by up to ~30% in the
+    unpaired arm at birth, so the response is the mean over n, with its spread [min, median, mean, max]."""
+    rx, rz, fx, fz = [], [], None, None
+    for _ in range(n):
+        s, r1, f1 = trial(s, X, 'none'); s, r2, f2 = trial(s, Z, 'none')
+        rx.append(r1); rz.append(r2)
+        fx = f1 if fx is None else fx | f1
+        fz = f2 if fz is None else fz | f2
+    spread = lambda v: [round(float(np.min(v)), 4), round(float(np.median(v)), 4), round(float(np.mean(v)), 4), round(float(np.max(v)), 4)]
+    return s, {'X': float(np.mean(rx)), 'Z': float(np.mean(rz)), 'phiX': phi_on(s, fx), 'phiZ': phi_on(s, fz),
+               'X_spread': spread(rx), 'Z_spread': spread(rz)}
+
+
 def phi_on(s, fired_kc):
     fired_all = torch.zeros(model.n_neurons, dtype=torch.bool, device='cuda')
     fired_all[kc[fired_kc]] = True
@@ -96,23 +112,19 @@ with torch.no_grad():
     filler = filler[int(os.environ.get('WARM', '32')):] + filler[:int(os.environ.get('WARM', '32'))]
     for arm in ('none', 'forward', 'backward'):
         s, rows = s_warm, {}
-        for name in ('pre',):
-            s, rx, fx = trial(s, X, 'none'); s, rz, fz = trial(s, Z, 'none')
-            rows[name] = {'X': rx, 'Z': rz, 'phiX': phi_on(s, fx), 'phiZ': phi_on(s, fz)}
+        s, rows['pre'] = test(s, TESTS)
         for k in range(10):
             s, _, _ = trial(s, X, arm)
             s, _, _ = trial(s, Z, 'none')
-        s, rx, fx = trial(s, X, 'none'); s, rz, fz = trial(s, Z, 'none')
-        rows['post'] = {'X': rx, 'Z': rz, 'phiX': phi_on(s, fx), 'phiZ': phi_on(s, fz)}
+        s, rows['post'] = test(s, TESTS)
         for w in filler:
             for t in range(WORD):
                 s = tick(s, w)
             s = fl.expect_next(model, s, fl.read_fly_motor(model, s))
-        s, rx, fx = trial(s, X, 'none'); s, rz, fz = trial(s, Z, 'none')
-        rows['retest'] = {'X': rx, 'Z': rz, 'phiX': phi_on(s, fx), 'phiZ': phi_on(s, fz)}
+        s, rows['retest'] = test(s, TESTS)
         rep['arms'][arm] = rows
         ch = lambda a, b: (b - a) / a if a else None
-        print(arm, json.dumps({k: {kk: (round(vv, 4) if vv is not None else None) for kk, vv in v.items()} for k, v in rows.items()}),
+        print(arm, json.dumps({k: {kk: (round(vv, 4) if isinstance(vv, float) else vv) for kk, vv in v.items()} for k, v in rows.items()}),
               '| MBON change X %s Z %s' % (ch(rows['pre']['X'], rows['post']['X']), ch(rows['pre']['Z'], rows['post']['Z'])), flush=True)
 if OUT:
     OUT.write_text(json.dumps(rep, indent=1), encoding='utf-8')

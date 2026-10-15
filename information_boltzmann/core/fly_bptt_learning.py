@@ -412,7 +412,14 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
             comp_trace = h.new_zeros(1, model.comp_kc.numel())
         lam_c = torch.sigmoid(model.comp_logit_trace)
         trace_before, memory_before = comp_trace.detach(), comp_memory.detach()
-        comp_trace = lam_c * comp_trace + (1.0 - lam_c) * spikes_c.index_select(1, model.comp_kc)
+        unit_c = getattr(model, 'comp_unit_traces', False)
+        if unit_c:
+            # eligibility as the terminal's own state (attach_comp_unit_traces): a spike lifts it to ~1 whatever the
+            # clock, saturating at 1 -- not a firing-rate estimate whose per-spike step is (1 - lam) ~ 0.02
+            s_kc = spikes_c.index_select(1, model.comp_kc)
+            comp_trace = lam_c * comp_trace + (1.0 - lam_c * comp_trace) * s_kc
+        else:
+            comp_trace = lam_c * comp_trace + (1.0 - lam_c) * spikes_c.index_select(1, model.comp_kc)
         if dopamine.numel() == 2 * h.numel():
             d_post = dopamine.index_select(1, model.comp_post.long())
             # only dopamine above its own running level teaches (a burst after Kenyon activity): the signed fast - slow
@@ -480,7 +487,8 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
                         tonic=(occ_slow_c.detach() / 0.5 * torch.sigmoid(model.comp_logit_tonic.detach())
                                if getattr(model, 'comp_logit_tonic', None) is not None else None),
                         tonic_rate=(float(torch.sigmoid(model.comp_logit_tonic.detach()))
-                                    if getattr(model, 'comp_logit_tonic', None) is not None else None))
+                                    if getattr(model, 'comp_logit_tonic', None) is not None else None),
+                        unit=unit_c)
             phi_prev = comp_memory                    # live: BPTT sees the forgetting term too (review 2026-10-15)
             use_forget = kappa_c if getattr(model, 'comp_use_forget', True) else 0.0
             comp_memory = comp_memory + window_c * (model.comp_eta * phasic_c * (1.0 + comp_memory) - use_forget * comp_memory)
@@ -493,7 +501,10 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
                     comp_da_trace = torch.zeros_like(phasic_c)
                 spk_edge = spikes_c.index_select(1, model.comp_kc).index_select(1, model.comp_edge_kc)
                 comp_memory = comp_memory + (occ_slow_c.detach() / 0.5) * torch.nn.functional.softplus(eta_pot)                     * comp_da_trace * spk_edge * (1.0 - phi_prev)
-                comp_da_trace = lam_c * comp_da_trace + (1.0 - lam_c) * phasic_c
+                if unit_c:
+                    comp_da_trace = lam_c * comp_da_trace + (1.0 - lam_c * comp_da_trace) * phasic_c.clamp(max=1.0)
+                else:
+                    comp_da_trace = lam_c * comp_da_trace + (1.0 - lam_c) * phasic_c
             tonic_c = getattr(model, 'comp_logit_tonic', None)
             if tonic_c is not None:
                 # active forgetting (Berry et al. 2012): the dopamine neurons' ongoing activity erodes the memory on
@@ -967,13 +978,14 @@ INTRINSIC_TYPE_PATTERN = r'^(s-LNv|l-LNv|5thsLNv|LNd|DN1|DN2|DN3|LPN|LN-DN1|PAM\
 
 
 def attach_intrinsic_drive(model, graph_npz, annotations, kappa=1.2, pattern=INTRINSIC_TYPE_PATTERN, jitter=0.0, seed=0,
-                           mbon_kappa=0.0):
+                           mbon_kappa=0.0, dan_kappa=None):
     """Release the spontaneously active cells the connectome already contains: each selected neuron gets a learnable
     intrinsic current kappa (in units of its rheobase, start 1.2 = slow pacemaking, period ~1.8 tau_m).  Every other
     neuron is unchanged.  Returns the selected cell types."""
     import numpy as np
     import pandas as pd
-    ids = np.load(graph_npz)['neuron_body_ids']
+    g_loaded = np.load(graph_npz, allow_pickle=True)
+    ids = g_loaded['neuron_body_ids']
     table = pd.read_feather(annotations)[['bodyId', 'type']]
     table = table[table['type'].astype(str).str.contains(pattern, regex=True)]
     position = {int(b): i for i, b in enumerate(ids)}
@@ -986,6 +998,11 @@ def attach_intrinsic_drive(model, graph_npz, annotations, kappa=1.2, pattern=INT
         cls_all = pd.read_feather(annotations).set_index('bodyId').reindex(ids)['class'].astype(str).values
         mbons = [int(i) for i in np.flatnonzero(cls_all == 'MBON') if i not in set(chosen)]
     starts = [float(kappa)] * len(chosen)
+    n_dan_sub = 0
+    if dan_kappa is not None and 'dan_indices' in g_loaded:
+        dan_set = set(int(x) for x in g_loaded['dan_indices'])
+        starts = [float(dan_kappa) if pos in dan_set else s for pos, s in zip(chosen, starts)]
+        n_dan_sub = sum(1 for pos in chosen if pos in dan_set)
     device = model.read_indices.device
     if mbons:
         # their own parameter (review 2026-10-15): learnable by BPTT and outside the pacemakers' homeostat, which
@@ -1002,6 +1019,8 @@ def attach_intrinsic_drive(model, graph_npz, annotations, kappa=1.2, pattern=INT
     released = table['type'].astype(str).value_counts().to_dict()
     if mbons:
         released['MBON (tonic)'] = len(mbons)
+    if n_dan_sub:
+        released['DAN (subthreshold kappa)'] = n_dan_sub
     return released
 
 
@@ -1168,22 +1187,41 @@ SENSE_GAIN_PARAMETER_NAMES = ('voice_log_gain', 'reward_log_gain')
 MBON_TONIC_PARAMETER_NAMES = ('mbon_kappa',)
 
 
-def attach_comp_timing(model, eta_pot=None, use_forget=False):
+def attach_comp_timing(model, eta_pot=None, use_forget=False, burst_k=0.25):
     """The fly's timing rule for the Kenyon -> MBON memory (--comp-timing, review 2026-10-15): dopamine before Kenyon
     activity potentiates (start |eta| of the depression, learnable through softplus, so the sign is fixed), Kenyon before
     dopamine depresses (the existing term).  use_forget=False drops the trace-gated forgetting: every use of a Kenyon cell
     without dopamine pulled phi back to one equilibrium, and BPTT (32-word horizon) raised that rate (0.02 -> 0.036 in
-    Mengli), so a paired memory was gone after 256 words; forgetting is left to the tonic dopamine (active forgetting)."""
+    Mengli), so a paired memory was gone after 256 words; forgetting is left to the tonic dopamine (active forgetting).
+    burst_k: threshold in sd above edge running mean (adapted occupancy ceiling is 0.5; start 0.25 leaves headroom)."""
     import math as _math
     if getattr(model, 'comp_eta', None) is None:
         raise ValueError('the timing rule needs the compartment memory')
     target = abs(float(model.comp_eta.detach())) if eta_pot is None else float(eta_pot)
     model.comp_eta_pot = nn.Parameter(torch.tensor(_math.log(_math.expm1(max(target, 1e-3))), device=model.comp_eta.device))
     model.comp_use_forget = bool(use_forget)
-    # the burst threshold (mean + k sd of each edge's own phasic dopamine), k learnable, start 2
-    model.comp_burst_k = nn.Parameter(torch.tensor(_math.log(_math.expm1(2.0)), device=model.comp_eta.device))
+    # the burst threshold (mean + k sd of each edge's own phasic dopamine), k learnable, start burst_k (default 0.25)
+    start_k = 0.25 if burst_k is None else float(burst_k)
+    model.comp_burst_k = nn.Parameter(torch.tensor(_math.log(_math.expm1(max(start_k, 1e-3))), device=model.comp_eta.device))
     return target
 
+
+def attach_comp_unit_traces(model, eta=-1.0, eta_pot=1.0):
+    """Eligibility as the Kenyon terminal's own state (--comp-unit-traces; 2026-10-15 birth pairing): e <- lam e +
+    (1 - lam e) s, so one spike lifts it to ~1 whatever the clock and it saturates at 1 (presynaptic Ca2+/cAMP
+    coincidence), and the per-edge dopamine trace the same way with the suprathreshold phasic dopamine (<= 1).  The
+    firing-rate form (1 - lam) s gave one spike 0.02, so a 16x rheobase pairing moved phi by 0.01 where one fly pairing
+    depresses strongly (Hige et al. 2015).  Rates restart at depression eta (start -1) and potentiation eta_pot
+    (start 1, softplus): with adapted receptors (gate 1) one tick changes phi by at most |eta| p e <= 1, so the (1 +
+    phi) / (1 - phi) bounds hold.  Both stay learnable.  Needs the compartment memory (and attach_comp_timing for the
+    potentiation path).  Returns (eta, eta_pot)."""
+    import math
+    model.comp_unit_traces = True
+    with torch.no_grad():
+        model.comp_eta.fill_(float(eta))
+        if getattr(model, 'comp_eta_pot', None) is not None:
+            model.comp_eta_pot.fill_(math.log(math.expm1(float(eta_pot))))
+    return float(eta), float(eta_pot)
 
 def attach_comp_tonic_forget(model, tau_ticks=2048.0):
     """Active forgetting of the Kenyon -> MBON memory (--comp-tonic-forget): phi relaxes to 0 at a rate
@@ -1949,7 +1987,31 @@ def write_input(model, state, token, emb=None, packets=None):
     if getattr(model, 'blind_input', False):
         drive, _ = _write_input(model, state, token, emb, packets)
         return drive * 0.0, (writer.lambda_adapt * state.baseline if hasattr(writer, 'lambda_adapt') else state.baseline)
-    return _write_input(model, state, token, emb, packets)
+    drive, baseline = _write_input(model, state, token, emb, packets)
+    k_t = getattr(model, 'time_scale', 1.0)
+    if k_t != 1.0 and drive is not None:
+        drive = drive * k_t       # set_time_scale: one tick carries the charge of k
+    return drive, baseline
+
+
+def set_time_scale(model, k, birth):
+    """A brain whose dynamics run k times faster per tick (--time-scale; user 2026-10-15: absolute time is free, a
+    tick is a compute step).  At birth: membrane, synaptic and adaptation time constants / k, conductance gains x k
+    (thresholds, wiring, delays of 1-4 ticks unchanged; all of these stay learnable, so this is their start).  Always
+    (not a parameter, re-applied on resume): the senses' drive x k.  Zero-shot check (ZS_TIME_SCALE, MENGLI_AUDIT
+    'Fast neurons'): x2 at 16 ticks per word gives the 32-tick Kenyon code (identification 93.5%, sparse); x4 saturates
+    it.  Other per-tick clocks (dopamine, STP, traces, the writer's adaptation) are learnable and keep their start."""
+    import math
+    model.time_scale = float(k)
+    if birth and k != 1.0:
+        with torch.no_grad():
+            for name in ('log_tau_m', 'log_tau_s_e', 'log_tau_s_i', 'log_tau_a'):
+                if getattr(model, name, None) is not None:
+                    getattr(model, name).sub_(math.log(k))
+            for name in ('log_g_e', 'log_g_i'):
+                if getattr(model, name, None) is not None:
+                    getattr(model, name).add_(math.log(k))
+    return model.time_scale
 
 
 def _write_input(model, state, token, emb=None, packets=None):
