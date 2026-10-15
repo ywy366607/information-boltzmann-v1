@@ -860,7 +860,7 @@ def accumulate_speaking_credit(learner, rec, gains, horizon_ticks=64, beta=0.98,
             'credit_clock_ticks': now, 'credit_horizon_ticks': int(horizon_ticks)}
 
 
-def accumulate_speaking_trace(learner, rec, gains, tau_ticks, beta=0.98):
+def accumulate_speaking_trace(learner, rec, gains, tau_ticks, beta=0.98, differential=False, rate_beta=0.98):
     """The speaking credit as a continuous eligibility trace, O(1) and without a horizon (--mother-credit-trace).
 
     Each decision adds the gradient of its own log-probability (on the act readout, at the decision) to a trace E that
@@ -868,6 +868,12 @@ def accumulate_speaking_trace(learner, rec, gains, tau_ticks, beta=0.98):
     progress g adds g E to the credit, and each decision subtracts b x its gradient (b, the running mean return per
     decision).  This is exactly sum_d (R_d - b) grad log p_d with R_d = sum_words g exp(-delay / tau) over every later
     word, never cut off.  The credit is applied in the next window as a linear surrogate (fly_bptt_learning).
+    differential=True (--mother-credit-differential): the average-reward return of an infinite stream (no episodes):
+    every tick after a decision also costs r_bar, her own long-run learning progress per tick, so
+    R_d = sum_words g e^{-delay/tau} - r_bar int_end^inf e^{-(t-end)/tau} dt.  Deferring an ordinary stream by the
+    ticks her own word takes then costs only those ticks (not ~22% of all that follows, as under the plain discount),
+    and a stretch that teaches nothing (a dark room of name calls) is below her average: worth leaving.  r_bar is the
+    eligible progress per physical tick, a slow average over windows (rate_beta), updated after this window is valued.
     Per-decision returns are also tracked, for the said / silent statistics only, until their weight drops below 1e-3.
     """
     import numpy as np
@@ -883,6 +889,7 @@ def accumulate_speaking_trace(learner, rec, gains, tau_ticks, beta=0.98):
     G = {k: torch.zeros_like(p) for k, p in params.items()}
     t_trace = float(tr.get('t', 0.0))
     b = tr.get('baseline')
+    r_bar = float(tr.get('r_bar', 0.0)) if differential else 0.0
     clock = int(getattr(learner, 'speak_credit_clock', 0))
     arrival = clock + np.cumsum(rec['intervals'])
     now = int(arrival[-1]) if len(arrival) else clock
@@ -901,6 +908,15 @@ def accumulate_speaking_trace(learner, rec, gains, tau_ticks, beta=0.98):
     said_now = []
     for t, kind, x in events:
         decay = float(np.exp(-(t - t_trace) / tau_ticks))
+        if r_bar and t > t_trace:
+            # the stretch (t_trace, t] costs r_bar per tick, weighted by the standing trace
+            for k in E:
+                G[k].sub_(r_bar * tau_ticks * (1.0 - decay) * E[k])
+            for item in diag:
+                a = max(t_trace, item['end'])
+                if t > a:
+                    item['return'] -= r_bar * tau_ticks * (float(np.exp(-(a - item['end']) / tau_ticks))
+                                                           - float(np.exp(-(t - item['end']) / tau_ticks)))
         for k in E:
             E[k].mul_(decay)
         t_trace = float(t)
@@ -930,7 +946,12 @@ def accumulate_speaking_trace(learner, rec, gains, tau_ticks, beta=0.98):
     R = [it['return'] for it in ready]
     if R:
         b = float(np.mean(R)) if b is None else beta * b + (1 - beta) * float(np.mean(R))
-    learner.speak_trace = {'E': {k: v.detach() for k, v in E.items()}, 't': t_trace, 'baseline': b, 'diag': diag}
+    if differential:
+        ticks = float(sum(rec['intervals']))
+        rate = float(sum(g for g, on in zip(gains, eligible) if on)) / max(ticks, 1.0)
+        r_bar = rate if 'r_bar' not in tr else rate_beta * float(tr['r_bar']) + (1 - rate_beta) * rate
+    learner.speak_trace = {'E': {k: v.detach() for k, v in E.items()}, 't': t_trace, 'baseline': b, 'diag': diag,
+                           **({'r_bar': r_bar} if differential else {})}
     learner.speak_credit_clock = now
     learner.speak_epistemic_baseline = b
     learner.pending_speak_credit = {'trace': {k: v.detach() for k, v in G.items()}, 'decisions': said_now}
@@ -945,11 +966,12 @@ def accumulate_speaking_trace(learner, rec, gains, tau_ticks, beta=0.98):
             'yield_after_speech_n': sum(1 for it in ready if not it['said'] and it['after_speech']),
             'credit_matured_decisions': len(ready), 'credit_pending_decisions': len(diag),
             'credit_clock_ticks': now, 'credit_trace_tau': float(tau_ticks),
-            'credit_trace_norm': float(sum(v.norm() ** 2 for v in E.values()) ** 0.5)}
+            'credit_trace_norm': float(sum(v.norm() ** 2 for v in E.values()) ** 0.5),
+            **({'credit_r_bar': r_bar} if differential else {})}
 
 
 def epistemic_credit(learner, state0, previous_token, targets, horizon_ticks=64, beta=0.98, tau_ticks=0.0,
-                     trace=False):
+                     trace=False, differential=False):
     """Replay matched real sensory intervals after learning, then advance delayed speaking eligibility (trace=True:
     the continuous O(1) trace, no horizon)."""
     rec = getattr(learner, 'speak_record', None)
@@ -961,7 +983,7 @@ def epistemic_credit(learner, state0, previous_token, targets, horizon_ticks=64,
     before = rec['ce_before'].tolist()
     gains = [b - a for b, a in zip(before, after)]
     if trace:
-        return accumulate_speaking_trace(learner, rec, gains, tau_ticks, beta=beta)
+        return accumulate_speaking_trace(learner, rec, gains, tau_ticks, beta=beta, differential=differential)
     return accumulate_speaking_credit(learner, rec, gains,
                                       horizon_ticks=horizon_ticks, beta=beta, tau_ticks=tau_ticks)
 

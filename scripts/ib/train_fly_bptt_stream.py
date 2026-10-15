@@ -282,6 +282,8 @@ def resolve_learning_modes(args, previous_config, previous_learner):
         args.mother_reward_ticks = int(previous_config.get('mother_reward_ticks') or 4)
     if getattr(args, 'pacemaker_homeostasis', None) is None:
         args.pacemaker_homeostasis = bool(previous_config.get('pacemaker_homeostasis', False))
+    if getattr(args, 'mother_credit_differential', None) is None:
+        args.mother_credit_differential = bool(previous_config.get('mother_credit_differential', False))
     if getattr(args, 'mother_credit_trace', None) is None:
         args.mother_credit_trace = bool(previous_config.get('mother_credit_trace', False))
     if getattr(args, 'mother_voice', None) is None:
@@ -516,6 +518,9 @@ def main():
                         help="Speaking act's credit: 'predict' (-CE of the following words) or 'epistemic' (what the words "
                              "arriving within --mother-credit-ticks taught: learning progress, applied one window late)")
     parser.add_argument('--mother-credit-ticks', type=int, default=64, help='Epistemic credit horizon in ticks')
+    parser.add_argument('--mother-credit-differential', action='store_true', default=None,
+                        help='With --mother-credit-trace: the average-reward return of an infinite stream (each tick '
+                             'after a decision also costs her own long-run learning progress per tick; omitted = inherit)')
     parser.add_argument('--mother-credit-trace', action='store_true', default=None,
                         help='Speaking credit as a continuous O(1) eligibility trace on the act readout (decay '
                              '--mother-credit-tau, carried across windows, no horizon; --mother-credit-ticks unused)')
@@ -2359,7 +2364,8 @@ def main():
                 learner.last_epistemic = epistemic_credit(learner, window_state0, window_token0, targets_,
                                                           horizon_ticks=args.mother_credit_ticks,
                                                           tau_ticks=args.mother_credit_tau,
-                                                          trace=args.mother_credit_trace)
+                                                          trace=args.mother_credit_trace,
+                                                          differential=args.mother_credit_differential)
             # the pacemakers' homeostat, after the update and the replay: next window's three passes share one kappa
             learner.pacemaker_homeostat_step()
             trace = getattr(learner, 'last_ai_trace', None)
