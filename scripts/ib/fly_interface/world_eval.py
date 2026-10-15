@@ -219,6 +219,26 @@ def load(fork):
             before = float(model.intrinsic_kappa.median())
             model.intrinsic_kappa.copy_(birth_sd['intrinsic_kappa'].to(model.intrinsic_kappa.device))
         print(f'zero-shot: intrinsic kappa restored to birth (median {before:.3f} -> {float(model.intrinsic_kappa.median()):.3f})', flush=True)
+    if os.environ.get('ZS_TIME_SCALE'):
+        # zero-shot (2026-10-15, user: drop the biological rate limit): the whole dynamics run k times faster per tick
+        # -- membrane and synaptic time constants / k, conductance gains and the senses' drive x k (one tick carries
+        # the charge of k), thresholds, wiring and learned weights unchanged.  Delays (1-4 ticks) cannot shrink.
+        k_t = float(os.environ['ZS_TIME_SCALE'])
+        import math as _m
+        with torch.no_grad():
+            for name in ('log_tau_m', 'log_tau_s_e', 'log_tau_s_i', 'log_tau_a'):
+                if getattr(model, name, None) is not None:
+                    getattr(model, name).sub_(_m.log(k_t))
+            for name in ('log_g_e', 'log_g_i'):
+                if getattr(model, name, None) is not None:
+                    getattr(model, name).add_(_m.log(k_t))
+        _orig_write_t = fl.write_input
+
+        def _fast_write(*a, **k):
+            drive, baseline = _orig_write_t(*a, **k)
+            return (drive * k_t if drive is not None else drive), baseline
+        fl.write_input = _fast_write
+        print(f'zero-shot: time scale x{k_t} (tau / {k_t}, conductance and input x {k_t})', flush=True)
     if os.environ.get('ZS_KC_POOLED') and getattr(model, 'log_input_gain', None) is not None:
         # zero-shot, at birth only (2026-10-15): the input gains re-initialised from size with the Kenyon subtypes
         # pooled (on birth.pt every other class gets back exactly its birth value)

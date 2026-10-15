@@ -163,3 +163,23 @@ cache them for this model).
   claw drive. Zero-shot at birth with MBON κ 1.0: α'3 goes 0 → 0.0002 spikes per tick. That is not enough, and
   prediction 4 failed.
 - **Still open: α'3 drive.**
+
+## Fast neurons, zero-shot (2026-10-15 16:40; user: drop the biological rate limit)
+
+`ZS_TIME_SCALE=k`: time constants / k (membrane, synapses, ALIF), conductance gains and sensory drive × k. Thresholds,
+wiring and learned weights are unchanged, and delays (1–4 ticks) cannot shrink. Kenyon code on the varied conversation
+(chance about 2%):
+
+| individual | scale | ticks/word | active per word | Jaccard same / different | identification |
+|---|---|---|---|---|---|
+| birth | ×1 | 32 | 2.8% | — | 93.5% |
+| birth | **×2** | **16** | 15.6% | 0.41 / 0.18 | **93.5%** |
+| birth | ×4 | 8 | 30% | 0.39 / 0.29 | 74% |
+| Mengli | ×1 | 8 | 3.4% | 0.07 / 0.05 | 16% |
+| Mengli | ×4 | 8 | 46% | 0.48 / 0.40 | 68% |
+
+- **×2 halves the ticks per word at the same discrimination.**
+- **×4 breaks sparseness** (30–46% of Kenyon cells per word). The feedback inhibition (APL, graded) and the
+  refractory / delay ticks do not compress with the rest, so the code saturates.
+- **Way forward:** start a newborn at about ×2 time scale and 16 ticks per word. Time constants stay learnable, so
+  evolution may compress further if sparseness holds.
