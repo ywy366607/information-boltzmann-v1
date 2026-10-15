@@ -284,6 +284,8 @@ def resolve_learning_modes(args, previous_config, previous_learner):
         args.pacemaker_homeostasis = bool(previous_config.get('pacemaker_homeostasis', False))
     if getattr(args, 'comp_tonic_forget', None) is None:
         args.comp_tonic_forget = float(previous_config.get('comp_tonic_forget') or 0.0)
+    if getattr(args, 'sense_gains_learnable', None) is None:
+        args.sense_gains_learnable = bool(previous_config.get('sense_gains_learnable', False))
     if getattr(args, 'mother_credit_brain_tau', None) is None:
         args.mother_credit_brain_tau = bool(previous_config.get('mother_credit_brain_tau', False))
     if getattr(args, 'mother_credit_differential', None) is None:
@@ -401,6 +403,26 @@ def apply_profile(parser, argv, name):
     args.profile_dests = sorted({table[g[0]].dest for g in _option_groups(PROFILES[name].split())})
     args.explicit_dests = sorted(explicit)
     return args
+
+
+def make_sense_gains(model, args, saved_model=None):
+    """--sense-gains-learnable: Johnston's organ's gain for the mother's voice and the PAM cells' sensitivity to her
+    answer become learnable log gains (start at --mother-voice-level / --mother-reward-level), created before the
+    optimizer so they train and resume.  Returns (names, names new to this individual)."""
+    if not getattr(args, 'sense_gains_learnable', False) or not args.mother_world:
+        return [], []
+    made, new = [], []
+    for name, level, on in (('voice_log_gain', args.mother_voice_level or 1.5, args.mother_voice),
+                            ('reward_log_gain', args.mother_reward_level or 1.0, args.mother_reward)):
+        if not on:
+            continue
+        known = saved_model is not None and name in saved_model
+        value = saved_model[name].float() if known else torch.tensor(math.log(float(level)))
+        setattr(model, name, torch.nn.Parameter(value.to(model.read_indices.device).clone()))
+        made.append(name)
+        if not known:
+            new.append(name)
+    return made, new
 
 
 def inherit_profile_switches(parser, args, previous_config):
@@ -522,6 +544,9 @@ def main():
                         help="Speaking act's credit: 'predict' (-CE of the following words) or 'epistemic' (what the words "
                              "arriving within --mother-credit-ticks taught: learning progress, applied one window late)")
     parser.add_argument('--mother-credit-ticks', type=int, default=64, help='Epistemic credit horizon in ticks')
+    parser.add_argument('--sense-gains-learnable', action='store_true', default=None,
+                        help="The mother's voice gain (Johnston's organ) and the PAM cells' sensitivity to her answer "
+                             'are learnable, starting at their levels (omitted = inherit)')
     parser.add_argument('--mother-credit-brain-tau', action='store_true', default=None,
                         help="The speaking credit decays on the brain's own eligibility clock: the Kenyon trace time "
                              "constant (comp_logit_trace, learnable) instead of --mother-credit-tau (omitted = inherit)")
@@ -1150,6 +1175,7 @@ def main():
             print(f'Pacemaker homeostasis on {attach_pacemaker_homeostasis(model)} spontaneously active cells '
                   f'(kappa out of the gradient)', flush=True)
             names = [n for n in names if n not in INTRINSIC_PARAMETER_NAMES]
+        names.extend(n for n in make_sense_gains(model, args)[0] if n not in names)
         if getattr(args, 'carried_credit', False):
             # credit beyond the BPTT window at O(1) memory for every slow state that outlives it and has trained
             # parameters (fly_carried_credit): compartment memory, dopamine clocks, STP (with --learn-stp)
@@ -1605,6 +1631,9 @@ def main():
                   f'(kappa out of the gradient)', flush=True)
             names = [n for n in names if n not in INTRINSIC_PARAMETER_NAMES]
             newly_trainable = [n for n in newly_trainable if n not in INTRINSIC_PARAMETER_NAMES]
+        sense, sense_new = make_sense_gains(model, args, saved['model'])
+        names = list(names) + [n for n in sense if n not in names]
+        newly_trainable += sense_new
         if getattr(args, 'carried_credit', False):
             # credit beyond the BPTT window at O(1) memory for every slow state that outlives it and has trained
             # parameters (fly_carried_credit): compartment memory, dopamine clocks, STP (with --learn-stp)
@@ -2303,6 +2332,7 @@ def main():
                 origin['mother_world_migration'] = 'legacy transcript only; unread queue and delayed credit unavailable'
         if args.mother_reward:
             n_reward = attach_reply_reward(model, args.graph, args.graph.parent / 'body-annotations.feather',
+                                           learnable=bool(args.sense_gains_learnable),
                                            level=float(args.mother_reward_level or 1.0),
                                            ticks=int(args.mother_reward_ticks or 4))
             print(f'Her answer as a consequence: {n_reward} PAM cells, {args.mother_reward_level} x rheobase for '
@@ -2310,6 +2340,7 @@ def main():
         if args.mother_voice:
             args.mother_voice_level = float(args.mother_voice_level or 1.5)
             n_voice = attach_mother_voice(model, args.graph, args.graph.parent / 'body-annotations.feather',
+                                          learnable=bool(args.sense_gains_learnable),
                                           level=float(args.mother_voice_level or 1.5))
             print(f'Mother’s voice on {n_voice} Johnston’s organ cells (JO-A/B), {args.mother_voice_level} x rheobase', flush=True)
         print(f'Child end of turn: {child_end!r}, or a yield, or {args.mother_max_fly_words} words', flush=True)

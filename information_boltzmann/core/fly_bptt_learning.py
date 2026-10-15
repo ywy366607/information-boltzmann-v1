@@ -1099,6 +1099,7 @@ def attach_compartment_memory(model, graph_npz, annotations, eta=-0.02, tau_trac
 
 COMPARTMENT_PARAMETER_NAMES = ('comp_weight', 'comp_eta', 'comp_logit_trace', 'comp_logit_forget')
 COMP_TONIC_PARAMETER_NAMES = ('comp_logit_tonic',)
+SENSE_GAIN_PARAMETER_NAMES = ('voice_log_gain', 'reward_log_gain')
 
 
 def attach_comp_tonic_forget(model, tau_ticks=2048.0):
@@ -1923,7 +1924,7 @@ def attach_pacemaker_homeostasis(model, tau_windows=16.0, eta=0.05, band=(0.0, 3
     return int(model.intrinsic_index.numel())
 
 
-def attach_reply_reward(model, graph_npz, annotations, level=1.0, ticks=4):
+def attach_reply_reward(model, graph_npz, annotations, level=1.0, ticks=4, learnable=False):
     """Her answer as a consequence (2026-10-15; design docs/information_boltzmann/MENGLI_TRACES_AND_HOMEOSTASIS_DESIGN_20261015.md,
     mechanism B).  When the mother answers the child's own speech (the first word of a normal reply), the reward
     dopamine cells (PAM) receive a short current of `level` x rheobase for the first `ticks` ticks of that word's
@@ -1940,6 +1941,8 @@ def attach_reply_reward(model, graph_npz, annotations, level=1.0, ticks=4):
     model.register_buffer('reward_cells', torch.as_tensor(cells, device=model.edge_pre_e.device, dtype=torch.long),
                           persistent=False)
     model.reward_level, model.reward_ticks = float(level), int(ticks)
+    if learnable and getattr(model, 'reward_log_gain', None) is None:
+        model.reward_log_gain = nn.Parameter(torch.tensor(math.log(float(level)), device=model.edge_pre_e.device))
     return int(cells.size)
 
 
@@ -1952,8 +1955,10 @@ def reply_reward_drive(model, like):
         rates = model.get_decay_rates()[0].expand_as(like)
         rheo = model.get_thresholds().expand_as(like) * -torch.log(rates.clamp(1e-5, 1 - 1e-7))
         drive = torch.zeros_like(like)
-        drive[:, cells] = model.reward_level * rheo[:, cells]
-    return drive
+        drive[:, cells] = rheo[:, cells]
+    gain = getattr(model, 'reward_log_gain', None)
+    # the PAM cells' sensitivity to her answer: learnable (--sense-gains-learnable, start = level), else fixed
+    return drive * (torch.exp(gain) if gain is not None else model.reward_level)
 
 
 def reward_ticks_left(model, rewarded, done):
@@ -1961,7 +1966,7 @@ def reward_ticks_left(model, rewarded, done):
     return max(0, int(getattr(model, 'reward_ticks', 0)) - int(done)) if rewarded else 0
 
 
-def attach_mother_voice(model, graph_npz, annotations, level=1.5, types=('JO-A', 'JO-B')):
+def attach_mother_voice(model, graph_npz, annotations, level=1.5, types=('JO-A', 'JO-B'), learnable=False):
     """Whose voice is it (user, 2026-10-15: like an identity code)?  The fly hears through Johnston's organ: the JO-A /
     JO-B neurons follow sound and near-field vibration (courtship song).  While a word of the mother's is on the
     senses, these cells receive a steady current of `level` x their rheobase; her own words do not carry it (she
@@ -1973,6 +1978,8 @@ def attach_mother_voice(model, graph_npz, annotations, level=1.5, types=('JO-A',
     model.register_buffer('voice_cells', torch.as_tensor(cells, device=model.edge_pre_e.device, dtype=torch.long),
                           persistent=False)
     model.voice_level = float(level)
+    if learnable and getattr(model, 'voice_log_gain', None) is None:
+        model.voice_log_gain = nn.Parameter(torch.tensor(math.log(float(level)), device=model.edge_pre_e.device))
     return int(cells.size)
 
 
@@ -1985,8 +1992,10 @@ def mother_voice_drive(model, like):
         rates = model.get_decay_rates()[0].expand_as(like)
         rheo = model.get_thresholds().expand_as(like) * -torch.log(rates.clamp(1e-5, 1 - 1e-7))
         drive = torch.zeros_like(like)
-        drive[:, cells] = model.voice_level * rheo[:, cells]
-    return drive
+        drive[:, cells] = rheo[:, cells]
+    gain = getattr(model, 'voice_log_gain', None)
+    # Johnston's organ's gain for her voice: learnable (--sense-gains-learnable, start = level), else fixed
+    return drive * (torch.exp(gain) if gain is not None else model.voice_level)
 
 
 def clip_state_gradients(model, state, cap=None):
@@ -2473,7 +2482,8 @@ class FlyBPTTLearner:
             # 2e-4 a time constant moves ~1% per 4k-token chunk (D2: STP moved <= 0.016 in two chunks), 100x slower
             # than the synapses' relative steps (2% of the birth weight).  Their own rate makes them evolvable.
             physio = set(CLASS_PARAMETER_NAMES) | {'dopamine_logit_fast', 'dopamine_logit_slow', 'comp_logit_trace',
-                                                   'comp_logit_forget', 'comp_logit_tonic'}
+                                                   'comp_logit_forget', 'comp_logit_tonic', 'voice_log_gain',
+                                                   'reward_log_gain'}
             moved = [named[n] for n in self.adam_names if n in physio]
             self.physio_names = [n for n in self.adam_names if n in physio]
             self.physio_lr = float(lr_physiology)
