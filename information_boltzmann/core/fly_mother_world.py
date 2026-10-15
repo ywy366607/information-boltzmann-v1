@@ -860,8 +860,98 @@ def accumulate_speaking_credit(learner, rec, gains, horizon_ticks=64, beta=0.98,
             'credit_clock_ticks': now, 'credit_horizon_ticks': int(horizon_ticks)}
 
 
-def epistemic_credit(learner, state0, previous_token, targets, horizon_ticks=64, beta=0.98, tau_ticks=0.0):
-    """Replay matched real sensory intervals after learning, then advance delayed speaking eligibility."""
+def accumulate_speaking_trace(learner, rec, gains, tau_ticks, beta=0.98):
+    """The speaking credit as a continuous eligibility trace, O(1) and without a horizon (--mother-credit-trace).
+
+    Each decision adds the gradient of its own log-probability (on the act readout, at the decision) to a trace E that
+    decays as exp(-dt / tau) on the physical clock, across windows; each later normal-reply word with learning
+    progress g adds g E to the credit, and each decision subtracts b x its gradient (b, the running mean return per
+    decision).  This is exactly sum_d (R_d - b) grad log p_d with R_d = sum_words g exp(-delay / tau) over every later
+    word, never cut off.  The credit is applied in the next window as a linear surrogate (fly_bptt_learning).
+    Per-decision returns are also tracked, for the said / silent statistics only, until their weight drops below 1e-3.
+    """
+    import numpy as np
+    import torch
+    from .fly_active_inference import motor_logits
+    if tau_ticks <= 0:
+        raise ValueError('The continuous speaking trace needs --mother-credit-tau > 0')
+    m = learner.model
+    params = {name: p for name in ('ai_w', 'ai_b', 'ai_habit')
+              if isinstance(p := getattr(m, name, None), torch.nn.Parameter) and p.requires_grad}
+    tr = getattr(learner, 'speak_trace', None) or {}
+    E = {k: tr['E'][k].to(p) if 'E' in tr and k in tr['E'] else torch.zeros_like(p) for k, p in params.items()}
+    G = {k: torch.zeros_like(p) for k, p in params.items()}
+    t_trace = float(tr.get('t', 0.0))
+    b = tr.get('baseline')
+    clock = int(getattr(learner, 'speak_credit_clock', 0))
+    arrival = clock + np.cumsum(rec['intervals'])
+    now = int(arrival[-1]) if len(arrival) else clock
+    sources = rec.get('sources')
+    eligible = [(sources[j] == 'mother_reply' if sources is not None else who == 'mother')
+                for j, who in enumerate(rec['speakers'])]
+    events = []                                   # (time, 0 decision / 1 word, payload): a word at a decision's own
+    for i, t0, n, d in rec['decisions']:          # last tick counts for it (delay 0), as in the horizon form
+        if n > 0:
+            events.append((clock + t0 + n, 0, (i, t0, n, d)))
+    for g, t, on in zip(gains, arrival, eligible):
+        if on:
+            events.append((int(t), 1, float(g)))
+    events.sort(key=lambda e: (e[0], e[1]))
+    diag = list(tr.get('diag', []))
+    said_now = []
+    for t, kind, x in events:
+        decay = float(np.exp(-(t - t_trace) / tau_ticks))
+        for k in E:
+            E[k].mul_(decay)
+        t_trace = float(t)
+        if kind == 0:
+            i, t0, n, d = x
+            with torch.enable_grad():
+                hz = torch.sigmoid(motor_logits(m, rec['g'][t0:t0 + n].detach())[:, 1]).clamp(1e-6, 1 - 1e-6)
+                log_quiet = torch.log1p(-hz).sum()
+                logp = torch.log((-torch.expm1(log_quiet)).clamp_min(1e-12)) if d else log_quiet
+                grads = torch.autograd.grad(logp, list(params.values()), allow_unused=True)
+            for k, gr in zip(params, grads):
+                if gr is not None:
+                    E[k].add_(gr)
+                    if b is not None:
+                        G[k].sub_(b * gr)
+            diag.append({'end': int(t), 'return': 0.0, 'said': bool(d),
+                         'after_speech': i > 0 and rec['speakers'][i - 1] == 'fly'})
+            said_now.append(bool(d))
+        else:
+            for k in E:
+                G[k].add_(x * E[k])
+            for item in diag:
+                item['return'] += x * float(np.exp(-(t - item['end']) / tau_ticks))
+    life = tau_ticks * np.log(1000.0)
+    ready = [it for it in diag if now - it['end'] > life]
+    diag = [it for it in diag if now - it['end'] <= life]
+    R = [it['return'] for it in ready]
+    if R:
+        b = float(np.mean(R)) if b is None else beta * b + (1 - beta) * float(np.mean(R))
+    learner.speak_trace = {'E': {k: v.detach() for k, v in E.items()}, 't': t_trace, 'baseline': b, 'diag': diag}
+    learner.speak_credit_clock = now
+    learner.speak_epistemic_baseline = b
+    learner.pending_speak_credit = {'trace': {k: v.detach() for k, v in G.items()}, 'decisions': said_now}
+    mean = lambda xs: float(np.mean(xs)) if xs else None
+    mom = [g for g, on in zip(gains, eligible) if on]
+    return {'ig_mother_mean': mean(mom), 'speak_return_ig': mean(R),
+            'speak_said_return': mean([it['return'] for it in ready if it['said']]),
+            'speak_silent_return': mean([it['return'] for it in ready if not it['said']]),
+            'pure_silence_return': mean([it['return'] for it in ready if not it['said'] and not it['after_speech']]),
+            'yield_after_speech_return': mean([it['return'] for it in ready if not it['said'] and it['after_speech']]),
+            'pure_silence_n': sum(1 for it in ready if not it['said'] and not it['after_speech']),
+            'yield_after_speech_n': sum(1 for it in ready if not it['said'] and it['after_speech']),
+            'credit_matured_decisions': len(ready), 'credit_pending_decisions': len(diag),
+            'credit_clock_ticks': now, 'credit_trace_tau': float(tau_ticks),
+            'credit_trace_norm': float(sum(v.norm() ** 2 for v in E.values()) ** 0.5)}
+
+
+def epistemic_credit(learner, state0, previous_token, targets, horizon_ticks=64, beta=0.98, tau_ticks=0.0,
+                     trace=False):
+    """Replay matched real sensory intervals after learning, then advance delayed speaking eligibility (trace=True:
+    the continuous O(1) trace, no horizon)."""
     rec = getattr(learner, 'speak_record', None)
     if rec is None:
         return {}
@@ -869,7 +959,10 @@ def epistemic_credit(learner, state0, previous_token, targets, horizon_ticks=64,
     after = replay_ce(learner, state0, previous_token, targets, rec['intervals'], rec.get('voices'),
                       rec.get('quiet_ranges'), rec.get('ai_g0'), rec.get('rewards'))
     before = rec['ce_before'].tolist()
-    return accumulate_speaking_credit(learner, rec, [b - a for b, a in zip(before, after)],
+    gains = [b - a for b, a in zip(before, after)]
+    if trace:
+        return accumulate_speaking_trace(learner, rec, gains, tau_ticks, beta=beta)
+    return accumulate_speaking_credit(learner, rec, gains,
                                       horizon_ticks=horizon_ticks, beta=beta, tau_ticks=tau_ticks)
 
 

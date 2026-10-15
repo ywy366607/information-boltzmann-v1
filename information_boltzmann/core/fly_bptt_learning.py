@@ -2961,7 +2961,15 @@ class FlyBPTTLearner:
                                              'ce_before': scores.detach().float().cpu()}
                         J_out = hz.new_zeros(())
                         pending = getattr(self, 'pending_speak_credit', None)
-                        if pending is not None:
+                        if isinstance(pending, dict):
+                            # the continuous trace (fly_mother_world.accumulate_speaking_trace): its credit is a
+                            # gradient on the readout already, applied as the linear surrogate <G, theta>
+                            J_out = sum((g_ * getattr(m, k_)).sum() for k_, g_ in pending['trace'].items()) / len(intervals)
+                            said_ = pending['decisions']
+                            self.last_adaptive_metrics.update({'speak_decisions': len(said_),
+                                                               'speak_rate': sum(said_) / len(said_) if said_ else 0.0})
+                            self.pending_speak_credit = None
+                        elif pending is not None:
                             J_out, sstats = delayed_speaking_value(m, *pending, n_words=len(intervals))
                             self.last_adaptive_metrics.update(sstats)
                             self.pending_speak_credit = None
@@ -3955,7 +3963,8 @@ class FlyBPTTLearner:
     def interaction_state_dict(self):
         """Delayed policy credit and input clocks belong to the continuous individual."""
         names = ('last_voice', 'last_reward', 'speak_credit', 'speak_epistemic_baseline', 'speak_baseline',
-                 'pending_speak_credit', 'speak_pending_eligibility', 'speak_credit_clock', 'homeo')
+                 'pending_speak_credit', 'speak_pending_eligibility', 'speak_credit_clock', 'homeo',
+                 'speak_trace')
         saved = {name: getattr(self, name) for name in names if hasattr(self, name)}
         for name in ('pace_rng', 'sense_rng'):
             rng = getattr(self, name, None)
