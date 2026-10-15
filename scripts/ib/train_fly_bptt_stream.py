@@ -35,7 +35,7 @@ from information_boltzmann.core.fly_bptt_learning import (WRITER_SENSE, attach_i
     ONLINE_DA_PARAMETER_NAMES, attach_online_da_plasticity, attach_kenyon_dendritic_only, attach_homeostasis,
     attach_regime_homeostasis, attach_tied_writer, REGIME_KENYON_Z,
     attach_compartment_memory, attach_taste_heads, COMPARTMENT_PARAMETER_NAMES, TASTE_PARAMETER_NAMES,
-    attach_stream_jepa, STREAM_JEPA_PARAMETER_NAMES, attach_mother_voice, attach_apl_kenyon_dendritic_only, attach_compartment_dendritic,
+    attach_stream_jepa, STREAM_JEPA_PARAMETER_NAMES, attach_mother_voice, attach_pacemaker_homeostasis, attach_reply_reward, attach_apl_kenyon_dendritic_only, attach_compartment_dendritic,
     renormalize_kenyon_inputs, pin_kenyon_to_dopamine, pin_sensory_terminals, pin_modulatory_fast_edges,
     reset_inputs_to_birth, attach_graded_cells, GRADED_PARAMETER_NAMES, attach_receptor_writer,
 )
@@ -274,6 +274,14 @@ def resolve_learning_modes(args, previous_config, previous_learner):
         args.compartment_memory = bool(previous_config.get('compartment_memory', False))
     if getattr(args, 'compartment_adapted', None) is None:
         args.compartment_adapted = bool(previous_config.get('compartment_adapted', False))
+    if getattr(args, 'mother_reward', None) is None:
+        args.mother_reward = bool(previous_config.get('mother_reward', False))
+    if getattr(args, 'mother_reward_level', None) is None:
+        args.mother_reward_level = float(previous_config.get('mother_reward_level') or 1.0)
+    if getattr(args, 'mother_reward_ticks', None) is None:
+        args.mother_reward_ticks = int(previous_config.get('mother_reward_ticks') or 4)
+    if getattr(args, 'pacemaker_homeostasis', None) is None:
+        args.pacemaker_homeostasis = bool(previous_config.get('pacemaker_homeostasis', False))
     if getattr(args, 'mother_voice', None) is None:
         args.mother_voice = bool(previous_config.get('mother_voice', False))
     if getattr(args, 'mother_voice_level', None) is None:
@@ -577,6 +585,16 @@ def main():
     parser.add_argument('--apl-kc-dendritic-only', action=argparse.BooleanOptionalAction, default=None,
                         help='APL -> Kenyon inhibition on the soma only for its calyx synapses (84.5%% are axonal): '
                              'weights scaled once by the calyx share, axonal-only edges pinned at 0 (omitted = inherit)')
+    parser.add_argument('--mother-reward', action=argparse.BooleanOptionalAction, default=None,
+                        help='Her answer to the child speech as a consequence: a short pulse onto the PAM reward cells at '
+                             'the first word of a normal reply (omitted = inherit, else off)')
+    parser.add_argument('--mother-reward-level', type=float, default=None,
+                        help='The reward pulse in rheobase units (omitted = inherit, else 1.0)')
+    parser.add_argument('--mother-reward-ticks', type=int, default=None,
+                        help='The reward pulse length in ticks (omitted = inherit, else 4)')
+    parser.add_argument('--pacemaker-homeostasis', action=argparse.BooleanOptionalAction, default=None,
+                        help='The spontaneously active modulatory cells keep their own firing: intrinsic_kappa leaves the '
+                             'gradient and an intrinsic homeostat holds each cell near its own set point (omitted = inherit)')
     parser.add_argument('--mother-voice', action=argparse.BooleanOptionalAction, default=None,
                         help='The mother’s voice: while her word is on the senses, Johnston’s organ '
                              '(JO-A / JO-B) carries a steady current, her own words do not (omitted = inherit, else off)')
@@ -1103,6 +1121,11 @@ def main():
         for group in (GO_PARAMETER_NAMES, READ_BANK_PARAMETER_NAMES, PREDICTIVE_PARAMETER_NAMES, DOPAMINE_PARAMETER_NAMES,
                       ONLINE_DA_PARAMETER_NAMES):
             names.extend(name for name in group if name in named_now and name not in names)
+        if getattr(args, 'pacemaker_homeostasis', False) and getattr(model, 'intrinsic_kappa', None) is not None:
+            # the pacemakers' drive belongs to their homeostat, not to the prediction gradient
+            print(f'Pacemaker homeostasis on {attach_pacemaker_homeostasis(model)} spontaneously active cells '
+                  f'(kappa out of the gradient)', flush=True)
+            names = [n for n in names if n not in INTRINSIC_PARAMETER_NAMES]
         if getattr(args, 'carried_credit', False):
             # credit beyond the BPTT window at O(1) memory for every slow state that outlives it and has trained
             # parameters (fly_carried_credit): compartment memory, dopamine clocks, STP (with --learn-stp)
@@ -1541,6 +1564,12 @@ def main():
                 full_name = f'graph_observer.{p_name}'
                 if full_name not in names:
                     newly_trainable.append(full_name)
+        if getattr(args, 'pacemaker_homeostasis', False) and getattr(model, 'intrinsic_kappa', None) is not None:
+            # the pacemakers' drive belongs to their homeostat, not to the prediction gradient
+            print(f'Pacemaker homeostasis on {attach_pacemaker_homeostasis(model)} spontaneously active cells '
+                  f'(kappa out of the gradient)', flush=True)
+            names = [n for n in names if n not in INTRINSIC_PARAMETER_NAMES]
+            newly_trainable = [n for n in newly_trainable if n not in INTRINSIC_PARAMETER_NAMES]
         if getattr(args, 'carried_credit', False):
             # credit beyond the BPTT window at O(1) memory for every slow state that outlives it and has trained
             # parameters (fly_carried_credit): compartment memory, dopamine clocks, STP (with --learn-stp)
@@ -2234,6 +2263,12 @@ def main():
             learner.last_voice = bool((saved_talk or {}).get('last_voice', False))
             if saved_talk:
                 origin['mother_world_migration'] = 'legacy transcript only; unread queue and delayed credit unavailable'
+        if args.mother_reward:
+            n_reward = attach_reply_reward(model, args.graph, args.graph.parent / 'body-annotations.feather',
+                                           level=float(args.mother_reward_level or 1.0),
+                                           ticks=int(args.mother_reward_ticks or 4))
+            print(f'Her answer as a consequence: {n_reward} PAM cells, {args.mother_reward_level} x rheobase for '
+                  f'{args.mother_reward_ticks} ticks at the first word of a normal reply', flush=True)
         if args.mother_voice:
             args.mother_voice_level = float(args.mother_voice_level or 1.5)
             n_voice = attach_mother_voice(model, args.graph, args.graph.parent / 'body-annotations.feather',
@@ -2319,6 +2354,8 @@ def main():
                 learner.last_epistemic = epistemic_credit(learner, window_state0, window_token0, targets_,
                                                           horizon_ticks=args.mother_credit_ticks,
                                                           tau_ticks=args.mother_credit_tau)
+            # the pacemakers' homeostat, after the update and the replay: next window's three passes share one kappa
+            learner.pacemaker_homeostat_step()
             trace = getattr(learner, 'last_ai_trace', None)
             if trace is not None:
                 with open(args.output / 'ai_trace.jsonl', 'a') as handle:
@@ -2376,7 +2413,9 @@ def main():
                                               'monitor': mother_world.monitor(), **plan_meta}
                                              if speakers is not None else {}),
                                           **({'epistemic': learner.last_epistemic}
-                                             if getattr(learner, 'last_epistemic', None) else {})}) + '\n')
+                                             if getattr(learner, 'last_epistemic', None) else {}),
+                                          **({'homeo': learner.last_homeo}
+                                             if getattr(learner, 'last_homeo', None) else {})}) + '\n')
             first_pass_meter.record(scores, reference_surprisal[values])
             first_pass_meter.verify_cursor(trained, cursor)
             phase_meter.record(scores, reference_surprisal[values])

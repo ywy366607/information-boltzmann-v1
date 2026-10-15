@@ -755,7 +755,8 @@ def sensory_segments(ticks, segment_ticks, quiet_ranges=()):
         yield start, end - start, on
 
 
-def replay_ce(learner, state0, previous_token, targets, intervals, voices=None, quiet_ranges=None, ai_g0=None):
+def replay_ce(learner, state0, previous_token, targets, intervals, voices=None, quiet_ranges=None, ai_g0=None,
+              rewards=None):
     """Per-word CE of a window's targets, relived (no gradient) from its starting state with the CURRENT weights: the
     same intervals and segments as the training pass, eyes as the learner has them (open when forced).  After the
     update this is CE_after; the training pass's scores are CE_before."""
@@ -787,6 +788,7 @@ def replay_ce(learner, state0, previous_token, targets, intervals, voices=None, 
                     m, s, token_tensor, [ticks], ticks=ticks, sensory_on=sensory_on,
                     hold_input=learner.hold_input, read_after=learner.read_lag or None,
                     writer_baseline_clock=learner.writer_baseline_clock, fresh=done == 0, voice=voice,
+                    reward_ticks=fl.reward_ticks_left(m, rewards is not None and rewards[j], done),
                     **ai_opts, **opts)
                 s, latent = result[:2]
                 if ai_g is not None:
@@ -865,7 +867,7 @@ def epistemic_credit(learner, state0, previous_token, targets, horizon_ticks=64,
         return {}
     learner.speak_record = None
     after = replay_ce(learner, state0, previous_token, targets, rec['intervals'], rec.get('voices'),
-                      rec.get('quiet_ranges'), rec.get('ai_g0'))
+                      rec.get('quiet_ranges'), rec.get('ai_g0'), rec.get('rewards'))
     before = rec['ce_before'].tolist()
     return accumulate_speaking_credit(learner, rec, [b - a for b, a in zip(before, after)],
                                       horizon_ticks=horizon_ticks, beta=beta, tau_ticks=tau_ticks)
@@ -940,6 +942,10 @@ def live_window(learner, world, n, rng, pace_min, pace_mean, temperature=1.0, ti
         pause = int(getattr(world, 'pause_beats_before_reply', 1)) * tpb
         # whose voice is on the senses: the mother's words carry it (Johnston's organ, fly_bptt_learning.attach_mother_voice)
         voice = bool(getattr(learner, 'last_voice', False))
+        # her answer's reward pulse rides with its first word as the input (fly_bptt_learning.attach_reply_reward)
+        rewarded = bool(getattr(learner, 'last_reward', False))
+        reply_onsets = []
+        prev_who = 'mother' if voice else 'fly'
 
         def advance(k, start=0, sensory_on=True):
             # ticks start .. start + k - 1 of the word's interval, in the training pass's segments (same packets)
@@ -953,7 +959,7 @@ def live_window(learner, world, n, rng, pace_min, pace_mean, temperature=1.0, ti
                     m, s, token_tensor, [ticks], ticks=ticks,
                     hold_input=learner.hold_input, read_after=learner.read_lag or None,
                     writer_baseline_clock=learner.writer_baseline_clock, fresh=done == 0, voice=voice,
-                    sensory_on=sensory_on,
+                    sensory_on=sensory_on, reward_ticks=fl.reward_ticks_left(m, rewarded, done),
                     **extra_kw, **opts)
                 s, latent = out[0], out[1]
                 if motor_on:
@@ -1033,11 +1039,15 @@ def live_window(learner, world, n, rng, pace_min, pace_mean, temperature=1.0, ti
             targets.append(int(word)); intervals.append(k); speakers.append(who)
             quiet_ranges.append(quiet)
             sources.append(world.mother_source if who == 'mother' else 'self_hearing')
+            onset = who == 'mother' and sources[-1] == 'mother_reply' and prev_who != 'mother'
+            reply_onsets.append(onset)
+            prev_who = who
             token = int(word)
             voice = who == 'mother'
+            rewarded = onset
             tick0 += k
     forced = {'pace': pace, 'intervals': intervals, 'speakers': list(speakers),
-              'quiet_ranges': quiet_ranges, 'sources': sources}
+              'quiet_ranges': quiet_ranges, 'sources': sources, 'reply_onsets': reply_onsets}
     if acts:
         forced.update(decisions=decisions)
     return targets, forced, speakers

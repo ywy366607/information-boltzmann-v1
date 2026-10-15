@@ -1880,6 +1880,64 @@ def read_fly_motor(model, state):
 STEP_GRAD_CLIP = float(os.environ.get('FLY_STEP_GRAD_CLIP', '1000'))
 
 
+def attach_pacemaker_homeostasis(model, tau_windows=16.0, eta=0.05, band=(0.0, 3.0), warm_windows=16):
+    """Responsiveness kept alive (2026-10-15; design docs/information_boltzmann/MENGLI_TRACES_AND_HOMEOSTASIS_DESIGN_20261015.md).
+    The spontaneously active modulatory cells (intrinsic_kappa: PAM / PPL / OA / 5-HT / clock cells) pacemake from their
+    own conductances; in m_main the short-window BPTT turned their drive from 1.21 to 0.39 (median) and silenced PPL1.
+    Here kappa leaves the gradient and is owned by an intrinsic homeostat: each cell's firing in the training pass is
+    counted every tick (no gradient), and once per window kappa moves towards the cell's own set point -- its mean rate
+    over the first `warm_windows` windows after switching on (the individual's operating point, not a hand-set rate) --
+    by eta x (log target - log EMA rate), EMA over `tau_windows` windows, kappa clamped to `band` (rheobase units).
+    The same kappa then serves the next window's live pass, training pass and replay alike."""
+    if getattr(model, 'intrinsic_kappa', None) is None:
+        raise ValueError('pacemaker homeostasis needs the intrinsic drive (--intrinsic)')
+    model.intrinsic_kappa.requires_grad_(False)
+    model.register_buffer('homeo_spikes', torch.zeros(model.intrinsic_index.numel(), device=model.intrinsic_kappa.device),
+                          persistent=False)
+    model.homeo_ticks = 0
+    model.pacemaker_homeo = {'tau': float(tau_windows), 'eta': float(eta), 'band': (float(band[0]), float(band[1])),
+                             'warm': int(warm_windows)}
+    return int(model.intrinsic_index.numel())
+
+
+def attach_reply_reward(model, graph_npz, annotations, level=1.0, ticks=4):
+    """Her answer as a consequence (2026-10-15; design docs/information_boltzmann/MENGLI_TRACES_AND_HOMEOSTASIS_DESIGN_20261015.md,
+    mechanism B).  When the mother answers the child's own speech (the first word of a normal reply), the reward
+    dopamine cells (PAM) receive a short current of `level` x rheobase for the first `ticks` ticks of that word's
+    interval -- the infant's social reward of a contingent answer (Goldstein et al. 2003).  Nothing tells the brain
+    to speak: the pulse acts only through the brain's own three-factor paths (Kenyon traces x dopamine -> the
+    compartment memory, carried credit), so it learns which of its own states preceded an answer.  The same pulse,
+    keyed to the word and its tick, is applied in the live pass, the training pass and the replay."""
+    import pandas as pd
+    graph = np.load(graph_npz, allow_pickle=True)
+    typ = pd.read_feather(annotations).set_index('bodyId').reindex(graph['neuron_body_ids'])['type'].astype(str).values
+    dan = np.zeros(len(typ), bool)
+    dan[graph['dan_indices'].astype(np.int64)] = True
+    cells = np.flatnonzero(dan & np.char.startswith(typ.astype(str), 'PAM'))
+    model.register_buffer('reward_cells', torch.as_tensor(cells, device=model.edge_pre_e.device, dtype=torch.long),
+                          persistent=False)
+    model.reward_level, model.reward_ticks = float(level), int(ticks)
+    return int(cells.size)
+
+
+def reply_reward_drive(model, like):
+    """The reward current [1, n]: level x rheobase on the PAM cells (detached: the world's consequence)."""
+    cells = getattr(model, 'reward_cells', None)
+    if cells is None:
+        return None
+    with torch.no_grad():
+        rates = model.get_decay_rates()[0].expand_as(like)
+        rheo = model.get_thresholds().expand_as(like) * -torch.log(rates.clamp(1e-5, 1 - 1e-7))
+        drive = torch.zeros_like(like)
+        drive[:, cells] = model.reward_level * rheo[:, cells]
+    return drive
+
+
+def reward_ticks_left(model, rewarded, done):
+    """Ticks of the reward pulse left in a call that starts `done` ticks into the word's interval."""
+    return max(0, int(getattr(model, 'reward_ticks', 0)) - int(done)) if rewarded else 0
+
+
 def attach_mother_voice(model, graph_npz, annotations, level=1.5, types=('JO-A', 'JO-B')):
     """Whose voice is it (user, 2026-10-15: like an identity code)?  The fly hears through Johnston's organ: the JO-A /
     JO-B neurons follow sound and near-field vibration (courtship song).  While a word of the mother's is on the
@@ -1945,7 +2003,7 @@ def _advance_fly_token_stream(model, state, token, schedule_box=None, *, ticks, 
                               read_every=False, world=None, world_tape=None, act_g=None, fresh=True, ai_g_tape=None,
                               ai_g=None, ai_tape=None, eye_forced=None, eye_binary=False, eye_tape=None,
                               eye_sample=False, sense_noise=None, dopamine_s_class=None, voice=False,
-                              sensory_on=True):
+                              sensory_on=True, reward_ticks=0):
     """Streaming clock: every token occupies exactly `ticks` physical ticks, whatever the brain is doing, and the
     prediction of the next token is read just before it arrives.  Nothing waits for the brain to settle, so the
     processing of a token continues while the next ones are being sensed (latency and throughput decouple).
@@ -2000,6 +2058,7 @@ def _advance_fly_token_stream(model, state, token, schedule_box=None, *, ticks, 
         from .fly_active_inference import ai_eye, ai_step
         ai_replay = len(ai_tape) > 0
     voice_drive = mother_voice_drive(model, current.h) if voice and sensory_on else None
+    reward_drive = reply_reward_drive(model, current.h) if reward_ticks > 0 else None
     for tick in range(ticks):
         if read_after is not None and tick == read_after:
             latent = read_fly_motor(model, current)
@@ -2010,6 +2069,10 @@ def _advance_fly_token_stream(model, state, token, schedule_box=None, *, ticks, 
             # the mother's voice on Johnston's organ (added to any world drive of this tick)
             prev = getattr(model, 'external_drive', None)
             model.external_drive = voice_drive if prev is None else prev + voice_drive
+        if reward_drive is not None and tick < reward_ticks:
+            # her answer to the child's speech reaches the reward dopamine cells (attach_reply_reward)
+            prev = getattr(model, 'external_drive', None)
+            model.external_drive = reward_drive if prev is None else prev + reward_drive
         writes = sensory_on and ((tick == 0 and fresh) or (hold_input and writer is not None))
         if ai_g is not None:
             if eye_binary:
@@ -2043,9 +2106,13 @@ def _advance_fly_token_stream(model, state, token, schedule_box=None, *, ticks, 
                         if writer_baseline_clock == 'physical' and writer is not None else current.baseline)
             current = step_fly_physical_tick(model, current, None, quiet_source, baseline, options,
                                              h_mean_decay=h_mean_decay, base_rates=base_rates)
-        if voice_drive is not None:
+        if voice_drive is not None or reward_drive is not None:
             model.external_drive = None
         clip_state_gradients(model, current)
+        homeo = getattr(model, 'homeo_spikes', None)
+        if homeo is not None and torch.is_grad_enabled():
+            homeo += (current.ring[0][0].detach().index_select(0, model.intrinsic_index) > 0).float()
+            model.homeo_ticks += 1
         if world is not None:
             model.external_drive = None
             hazard, act_g, act = act_step(model, current.h, act_g, world_tape[tick][2] if replay else None,
@@ -2357,7 +2424,7 @@ class FlyBPTTLearner:
         go_scalars = ('go_drive', 'go_reset', 'go_logit_leak')
         bank_names = [name for name in READ_BANK_PARAMETER_NAMES + INTRINSIC_PARAMETER_NAMES + PRECISION_PARAMETER_NAMES
                       + PREDICTIVE_PARAMETER_NAMES + DOPAMINE_PARAMETER_NAMES + ONLINE_DA_PARAMETER_NAMES + go_scalars
-                      if name in named
+                      if name in named and named[name].requires_grad
                       and name in self.adam_names + list(READ_BANK_PARAMETER_NAMES + INTRINSIC_PARAMETER_NAMES
                                                          + PRECISION_PARAMETER_NAMES + PREDICTIVE_PARAMETER_NAMES
                                                          + DOPAMINE_PARAMETER_NAMES + ONLINE_DA_PARAMETER_NAMES)]
@@ -2520,8 +2587,9 @@ class FlyBPTTLearner:
             old_by_name.pop(name, None)
             old_options.pop(name, None)
         for name in list(old_by_name):
+            params_now = dict(self.model.named_parameters())
             if name not in self.adam_names and (name.startswith('graph_observer.') or name.startswith('latent_predictor.')
-                                                or name not in dict(self.model.named_parameters())):
+                                                or name not in params_now or not params_now[name].requires_grad):
                 old_by_name.pop(name, None)
                 old_options.pop(name, None)
         if set(old_by_name) != set(self.adam_names) - newly_trainable:
@@ -2659,6 +2727,7 @@ class FlyBPTTLearner:
             # intervals are given, so this pass relives exactly what happened (consumed here, once)
             forced = getattr(self, 'forced_world', None)
             forced_k, forced_speak, g_tape, voices = None, None, None, None
+            rewards = None
             quiet_ranges = None
             if forced is not None and pace > 0:
                 pace, forced_k = float(forced['pace']), list(forced['intervals'])
@@ -2669,6 +2738,11 @@ class FlyBPTTLearner:
                     sp = list(forced['speakers'])
                     voices = [bool(getattr(self, 'last_voice', False))] + [w == 'mother' for w in sp[:-1]]
                     self.last_voice = sp[-1] == 'mother' if sp else bool(getattr(self, 'last_voice', False))
+                if forced.get('reply_onsets') is not None and getattr(m, 'reward_cells', None) is not None:
+                    # her answer's pulse while its first word is the input (the same as the live pass)
+                    ro = [bool(x) for x in forced['reply_onsets']]
+                    rewards = [bool(getattr(self, 'last_reward', False))] + ro[:-1]
+                    self.last_reward = ro[-1] if ro else bool(getattr(self, 'last_reward', False))
                 if forced.get('decisions') is not None:
                     # v2: the fly's turn-taking decisions in the live pass, credited below (speaking_value)
                     forced_speak = (list(forced['decisions']), forced.get('speakers'))
@@ -2733,6 +2807,7 @@ class FlyBPTTLearner:
                     stream['ticks'] = n
                     stream['fresh'] = done == 0
                     stream['sensory_on'] = sensory_on
+                    stream['reward_ticks'] = reward_ticks_left(m, rewards is not None and rewards[word_j], done)
                     stream['sense_noise'] = None if word_noise is None else word_noise[done:done + n]
                     box = [n]
                     if world is not None:
@@ -2879,7 +2954,7 @@ class FlyBPTTLearner:
                         from .fly_active_inference import delayed_speaking_value
                         T_all = sum(intervals)
                         self.speak_record = {'g': torch.cat(g_tape[:T_all], 0), 'decisions': forced_speak[0],
-                                             'speakers': forced_speak[1], 'intervals': list(intervals), 'voices': voices,
+                                             'speakers': forced_speak[1], 'intervals': list(intervals), 'voices': voices, 'rewards': rewards,
                                              'quiet_ranges': quiet_ranges,
                                              'sources': forced.get('sources') if forced is not None else None,
                                              'ai_g0': ai_g_initial,
@@ -3845,10 +3920,42 @@ class FlyBPTTLearner:
         return {'z': self.evidence_z, 'beta': self.evidence_beta, 'count': self.evidence_count,
                 'pull_tau': self.pull_tau, 'moments': self.evidence_moments, 'birth': self.evidence_birth}
 
+    def pacemaker_homeostat_step(self):
+        """Once per window, after the update and the epistemic replay (attach_pacemaker_homeostasis)."""
+        m = self.model
+        cfg = getattr(m, 'pacemaker_homeo', None)
+        if cfg is None or not getattr(m, 'homeo_ticks', 0):
+            return None
+        with torch.no_grad():
+            rate = m.homeo_spikes / float(m.homeo_ticks)
+            m.homeo_spikes.zero_()
+            m.homeo_ticks = 0
+            h = getattr(self, 'homeo', None) or {'ema': None, 'target': None, 'n': 0, 'sum': None}
+            a = 1.0 / max(cfg['tau'], 1.0)
+            h['ema'] = rate.clone() if h['ema'] is None else (1 - a) * h['ema'].to(rate) + a * rate
+            h['n'] = int(h['n']) + 1
+            moved = 0.0
+            if h['target'] is None:
+                h['sum'] = rate.clone() if h['sum'] is None else h['sum'].to(rate) + rate
+                if h['n'] >= cfg['warm']:
+                    h['target'] = h['sum'] / h['n']           # the cell's own operating point
+            else:
+                eps = 1.0 / 2000.0                            # a cell silent at its set point is not pushed
+                step = cfg['eta'] * (torch.log(h['target'].to(rate) + eps) - torch.log(h['ema'] + eps))
+                m.intrinsic_kappa.add_(step).clamp_(*cfg['band'])
+                moved = float(step.abs().mean())
+            self.homeo = h
+            k = m.intrinsic_kappa
+            stats = {'homeo_kappa_median': float(k.median()), 'homeo_rate_median': float(rate.median()),
+                     'homeo_at_band': float(((k <= cfg['band'][0] + 1e-6) | (k >= cfg['band'][1] - 1e-6)).float().mean()),
+                     'homeo_step': moved, 'homeo_windows': h['n'], 'homeo_target_set': h['target'] is not None}
+        self.last_homeo = stats
+        return stats
+
     def interaction_state_dict(self):
         """Delayed policy credit and input clocks belong to the continuous individual."""
-        names = ('last_voice', 'speak_credit', 'speak_epistemic_baseline', 'speak_baseline',
-                 'pending_speak_credit', 'speak_pending_eligibility', 'speak_credit_clock')
+        names = ('last_voice', 'last_reward', 'speak_credit', 'speak_epistemic_baseline', 'speak_baseline',
+                 'pending_speak_credit', 'speak_pending_eligibility', 'speak_credit_clock', 'homeo')
         saved = {name: getattr(self, name) for name in names if hasattr(self, name)}
         for name in ('pace_rng', 'sense_rng'):
             rng = getattr(self, name, None)
