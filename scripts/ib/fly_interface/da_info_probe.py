@@ -12,8 +12,8 @@ exec(open('D:/information-boltzmann-v1/scripts/ib/fly_interface/world_eval.py', 
 fork, RUN = Path(sys.argv[1]), Path(sys.argv[2])
 N_WORDS = int(sys.argv[3]) if len(sys.argv) > 3 else 512
 OUT = Path(sys.argv[4]) if len(sys.argv) > 4 else None
-WT = int(os.environ.get('WORD_TICKS', '16'))
 model, cfg, L = load(fork)
+WT = int(os.environ.get('WORD_TICKS') or round(float(cfg.get('stream_pace_mean') or 16)))   # the individual's own word interval
 opts = dict(base_rates=model.get_decay_rates(), thresholds=model.get_thresholds(), conductance_gains=model.get_conductance_gains(),
             alif_params=model.get_alif_params(), stp_params=model.get_stp_params())
 s = move_state(fl.FlyPhysicalState(**L['physical']), 'cuda')

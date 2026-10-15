@@ -113,6 +113,16 @@ def run_probes(root, args, c, note):
     da = subprocess.run([sys.executable, str(fi / 'live_da_report.py'), str(out / f'scores_c{c}.jsonl')], cwd=root,
                         capture_output=True, text=True, env=env)
     note(f'c{c} (2) surprise~DA: {da.stdout.strip()[:600] or "FAILED"}')
+    # gate 2 at the compartments (da_info_probe): does the ordinary words' dopamine carry anything (surprisal, word
+    # identity, decline over repeats), and how much of the memory it writes per word
+    if run([sys.executable, '-u', str(fi / 'da_info_probe.py'), str(args.checkpoint_dir), str(out), '256',
+            str(out / f'da_info_c{c}.json')], out / f'da_info_c{c}.txt') == 0:
+        r = json.loads((out / f'da_info_c{c}.json').read_text(encoding='utf-8'))
+        note(f'c{c} (2b) compartment dopamine: surprisal rho {r["spearman drive~surprisal"]}, identity eta2 '
+             f'{r["identity eta2 (>=3 occurrences)"]}, repeat trend {r["repeat trend (spearman occurrence~relative drive)"]}, '
+             f'edges written per word (median) {r["edges written share"][1]}')
+    else:
+        note(f'c{c} da_info probe FAILED')
     trace = out / 'ai_trace.jsonl'
     if trace.exists():
         act = subprocess.run([sys.executable, str(fi / 'live_act_report.py'), str(trace)], cwd=root,
