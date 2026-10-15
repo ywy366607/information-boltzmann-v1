@@ -48,6 +48,9 @@ stream, who = stream[-N_TOK:], who[-N_TOK:]
 meng = set(tok.encode(' Mengli')) | set(tok.encode('Mengli'))
 voice_on = getattr(model, 'voice_cells', None) is not None
 sets, resid = [], []
+counts = torch.zeros(model.n_neurons, device='cuda')
+vsum = torch.zeros(model.n_neurons, device='cuda')
+nt = 0
 with torch.no_grad():
     for w, wh in zip(stream, who):
         fired = torch.zeros(kc.size, dtype=torch.bool, device='cuda')
@@ -57,6 +60,9 @@ with torch.no_grad():
                                               hold_input=bool(cfg.get('hold_input')), fresh=t == 0, **kw, **opts)
             s = out[0]
             fired |= s.ring[0][0].index_select(0, kc_t) > 0
+            counts += (s.ring[0][0] > 0).float()
+            vsum += s.h[0] / model.get_thresholds().reshape(-1)[:model.n_neurons]
+            nt += 1
         sets.append(fired.cpu().numpy())
         s = fl.expect_next(model, s, fl.read_fly_motor(model, s))      # the brain's prediction of the next word
         resid.append(float(s.expected_input.float().norm()) if s.expected_input.numel() else None)
@@ -100,3 +106,4 @@ rep = {'checkpoint': str(src), 'tokens': len(stream), 'ticks': TICKS, 'kenyon': 
 print(json.dumps(rep, indent=1))
 if OUT:
     OUT.write_text(json.dumps(rep, indent=1), encoding='utf-8')
+    np.savez_compressed(OUT.with_suffix('.cells.npz'), rate=(counts / nt).cpu().numpy(), v_over_theta=(vsum / nt).cpu().numpy())

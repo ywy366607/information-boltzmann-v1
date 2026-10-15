@@ -2103,3 +2103,44 @@ The same check matters most for Mengli: her BPTT in the mother world faces the s
   - the PPL1 silencing is found.
 
   The active parts (3) can only be tested in the mother world, so the GPU goes to Mengli.
+
+## 2026-10-15 12:30 — Mengli: why familiarity and novelty cannot form (Claude)
+
+**Speaking collapse, decomposed** (logit = w·(m−μ)/σ + b, Shapley, c1 → last):
+- Total −8.87, made of w −8.14, muscle state −0.72, calibration 0, bias 0.
+- The speak readout was trained by the epistemic credit alone; the habit KL pulls the other way.
+- The plain discount costs speaking about 22% of everything that follows, because her own word delays the stream. The
+  predicted bias of 0.03–0.09 matches the measured silent − said gaps (0.08, 0.13, 0.03, 0.06).
+- Fix: the average-reward credit (3ce88c8, `--mother-credit-differential`).
+- The "speaking homeostasis" was withdrawn: a fixed behaviour rate is not a fly mechanism.
+
+**Active inference is not aligned.**
+- m_main (OWT) has no acts.
+- Mengli has acts and the pragmatic term, but `ai_epistemic` = 0 (and it covers the eye only) and dopamine precision
+  is off.
+- Speaking has no epistemic value, so silence was absorbing.
+
+**The familiarity chain, measured:**
+1. **Compartment rule.** Learning and forgetting are both gated by the Kenyon trace, so every fired edge settles at one
+   equilibrium: φ −0.104 for the name and for other words.
+   - Added active forgetting at tonic dopamine (Berry 2012; d9b6e06, `--comp-tonic-forget`). Carried credit stays
+     exact.
+   - Zero-shot over 600 words: φ −0.111 → −0.092, still no name-specific mark.
+2. **Kenyon code (`kc_code_probe.py`).** Selective overall: Jaccard 0.25 for the same token vs 0.034 for different
+   tokens, 2.8% active per word. But "Mengli" is weak (1.4% active) and unstable (Jaccard 0.078).
+3. **α'β' Kenyon cells.** Only 15.5% are ever active (αβ 44%, γ 50%), at v/θ 0.18 vs 0.35 / 0.41. The PN types devoted
+   to α'β' are the VP (thermo/hygro) PNs, 50–75% of whose Kenyon output goes to α'β', and they are silent: text never
+   reaches those receptors. So MBON-α'3 is undriven since birth.
+4. **After true silence a word reaches no Kenyon cell** (gap 0 / 4 / 8 / 24 ticks):
+
+   | layer | gap 0 | gap 4 | gap 8 | gap 24 |
+   |---|---|---|---|---|
+   | sensory | 0.024 | 0.019 | 0.016 | 0.011 |
+   | ALPN | 0.014 | 0.011 | 0.008 | 0.0024 |
+   | KC | 0.0045 | 0.0003 | 0 | 0 |
+
+   - The writer drive is unchanged (about 1.2).
+   - A single word cannot drive the calyx from rest. Kenyon responses exist only on activity carried from the previous
+     words. A fly does the opposite: the onset after clean air is strongest.
+   - This matches the writer-gain dose–response (×1 evokes about 4 Hz in receptor cells).
+   - A sudden ×4 on the adult cost 0.13 nats, because the brain is calibrated to ×1.
