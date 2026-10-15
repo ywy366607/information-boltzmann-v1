@@ -566,6 +566,8 @@ def main():
     parser.add_argument('--mother-world', choices=('local', 'api', 'gemini', 'deepseek', 'siliconflow', 'mailbox'), default=None,
                         help='Train in the mother world: live each window (the fly speaks in its turns, the mother answers), '
                              'then relive it with gradient (never inherited)')
+    parser.add_argument('--mother-fallback', choices=('siliconflow',), default=None,
+                        help='A second mouth that answers a turn the primary leaves silent after its retries (outage)')
     parser.add_argument('--mother-api-model', default=None, help='The API mother model id (the SDK reads its own env config)')
     parser.add_argument('--mother-temperature', type=float, default=1.0, help='Sampling temperature of the fly words')
     parser.add_argument('--mother-max-fly-words', type=int, default=16, help='A fly turn ends after this many words')
@@ -2377,7 +2379,7 @@ def main():
         # a mother, her replies come back through the senses; a new conversation each run (each chunk: a new day)
         import tiktoken
         from information_boltzmann.core.fly_mother_world import (MotherWorld, LocalMother, ApiMother, GeminiApiMother,
-                                                                 DeepSeekMother, SiliconFlowMother, MailboxMother, live_window)
+                                                                 DeepSeekMother, SiliconFlowMother, FallbackMother, MailboxMother, live_window)
         # the raising plan (dashboard / the mother agent: data/harness/raising.json) sets the mother's side
         raising_path = Path('data/harness/raising.json')
         raising_mtime = 0.0
@@ -2432,6 +2434,9 @@ def main():
                   if args.mother_world == 'siliconflow' else
                   MailboxMother(timeout=float(raising.get('mailbox_timeout_s', 900))) if args.mother_world == 'mailbox' else
                   ApiMother(args.mother_api_model))
+        if args.mother_fallback == 'siliconflow' and args.mother_world in ('deepseek', 'gemini', 'api'):
+            mother = FallbackMother(mother, SiliconFlowMother('zai-org/GLM-5.3-Flash'))
+            print(f'Mouth: {mother.name}', flush=True)
         family = raising_full.get('family') or {}
         opening = (f"Hello, {family['child']['name']}. {family.get('mother', {}).get('name', 'Mama')} is here."
                    if family.get('child', {}).get('name') else 'Hello, little one.')      # her first word: her name

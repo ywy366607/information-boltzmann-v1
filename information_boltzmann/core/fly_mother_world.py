@@ -364,6 +364,32 @@ class SiliconFlowMother(DeepSeekMother):
         self.name = 'SiliconFlow'
 
 
+class FallbackMother:
+    """One mother, two mouths (2026-10-15): the primary answers; when it stays silent after its own retries (an outage,
+    not a choice), the fallback answers that turn.  DeepSeek answers in ~1.1 s with ~20 tokens; GLM-5.3-Flash on
+    SiliconFlow reasons first whatever the thinking switch (50-240 hidden tokens, 3-19 s), so it is the reserve."""
+
+    def __init__(self, primary, fallback):
+        self.primary, self.fallback = primary, fallback
+        self.name = f'{primary.name} (fallback {fallback.name})'
+        self.fallback_turns = 0
+
+    def __getattr__(self, name):          # plan, usage, failures, ...: the primary's
+        return getattr(self.__dict__['primary'], name)
+
+    def update_plan(self, plan):
+        for m in (self.primary, self.fallback):
+            if hasattr(m, 'update_plan'):
+                m.update_plan(plan)
+
+    def reply(self, transcript):
+        text = self.primary.reply(transcript)
+        if text:
+            return text
+        self.fallback_turns += 1
+        return self.fallback.reply(transcript)
+
+
 class ApiMother:
     """A fast API model as the mother.  The SDK reads its own standard environment configuration (the key is never
     read, printed or stored here).  `model` is the user's choice."""
