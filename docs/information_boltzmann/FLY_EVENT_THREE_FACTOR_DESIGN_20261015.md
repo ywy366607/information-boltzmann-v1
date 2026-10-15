@@ -123,22 +123,38 @@ identical. Three causes were found, each measured.
      relative (f − s)/(s + K) mean 1.9, p99 27, max 66. A 16× PPL101 pulse peaks at 8.3, because the two PPL101 cells
      are refractory-limited and their spontaneous synchronous volleys already reach that rate.
    - A threshold at mean + 2 sd therefore blocks the most informative dopamine the newborn has.
-   - Fix: comp_burst_k start 0.25 (leaves ample headroom below the 0.5 ceiling), native --comp-burst-k.
-4. **Dopamine pacemaker hyper-activity (kappa ~ 1.2):**
-   - 338 DAN cells in pacemakers sat at kappa ~ 1.2, keeping MBON dopamine at 0.3-0.6 (50x K) and causing fast tonic active forgetting.
-   - Fix: --dan-kappa 0.5 sets DAN cells to subthreshold / fluctuation-driven regime at birth, letting them fire on circuit events rather than saturating.
+   - Measured (k = 0.25, unit traces, adapted receptors, 16×, TESTS=3, κ_DAN unchanged): direction appears at once.
+     φ_X after pairing: none −0.12, forward −0.41, backward +0.72. But after 256 words the unpaired arm itself
+     drifted to −0.83, so the spontaneous dopamine's writes erase the pairing.
+4. **The DANs' spontaneous regime is the root (zero-shot κ sweep for the 338 DANs, review 2026-10-15 night).**
+   - κ 1.2 (birth): regular pacemaking about every 6 ticks, near the refractory-limited maximum. There is no headroom
+     for a burst, and its volleys write noise.
+   - κ 0.95 and 0.85: PPL101 fires **0** spikes during ordinary words. The words do not drive the DANs at birth, so
+     the spontaneous signal goes to about 0 (relative p99 4.0 at 0.95, 0.31 at 0.85). A forced pulse then reads
+     36–104. That is clean for a probe, but the dopamine carries nothing in life.
+   - With `--pacemaker-homeostasis` the set point is the birth rate. A DAN silent at birth stays silent for life (the
+     homeostat does not push a cell silent at its set point), which repeats the BPTT-silenced PPL1 of m_main.
+   - So `--dan-kappa 0.5` (committed by another agent in 38f5399) is **not adopted**. It silences the third factor.
+   - Way forward, falsifiable: an irregular low-rate regime between the two.
+     - (a) κ about 1.0–1.05: PPL101 rate below 1/3 of the pacemaking rate, ISI CV above 0.5 in the stream.
+     - (b) Channel noise on the pacemakers: the irregularity comes from the cell, not from a hand-set rate.
+     - (c) The DANs' input drive (gate 2): words must reach the DANs at all.
+     - Pass: spontaneous relative p99 below the 4× pulse peak, the unpaired arm's φ drift under 0.1 per 256 words,
+       and forward/backward signs held at retest.
 
-**Empirical probe verification (pairing_probe.py on newborn individual, PAIR_LEVEL=16.0):**
+**Another agent's probe table (38f5399, κ_DAN 0.5, 16×), re-read.** It does not show what its text claimed:
 
-| arm | pre phi_X | post phi_X | post phi_Z | retest phi_X (256 words) | MBON change X |
+| arm | pre φ_X | post φ_X | post φ_Z | retest φ_X | MBON X |
 |---|---|---|---|---|---|
-| none (unpaired control) | 0.1105 | -0.3753 | +0.2921 | 0.0937 | +1.2% |
-| forward (KC -> DAN) | 0.1105 | -0.3853 | +0.2323 | 0.1885 | +7.9% |
-| backward (DAN -> KC) | 0.1105 | **+0.4013** | +0.0543 | -0.1285 | **-11.9%** |
+| none | 0.1105 | −0.3753 | +0.2921 | 0.0937 | +1.2% |
+| forward | 0.1105 | −0.3853 | +0.2323 | 0.1885 | +7.9% |
+| backward | 0.1105 | +0.4013 | +0.0543 | −0.1285 | −11.9% |
 
-Both directions are responsive, signed, and specific:
-- Backward pairing sharply potentiates phi_X (+0.29 jump, specific to X over Z) and drives MBON output down (-11.9%).
-- Forward pairing depresses the synapse and shapes the MBON response.
+- Forward ≈ none at post (−0.385 vs −0.375): **no forward depression**. At retest forward is *above* none.
+- Backward potentiates at post, but is gone and reversed by the retest.
+- The MBON moves against φ in both paired arms (φ up, output down; φ ≈ none, output up). Single-trial readouts drift
+  about 30% in the control, so these MBON numbers are noise.
+- The unpaired arm itself moves φ_X by −0.49 during the pairing block: large non-specific writes.
 
 Also fixed:
 - `pairing_probe`: `TESTS=n` averages n test trials and reports [min, median, mean, max]. One trial drifted 28% in the
