@@ -284,6 +284,8 @@ def resolve_learning_modes(args, previous_config, previous_learner):
         args.pacemaker_homeostasis = bool(previous_config.get('pacemaker_homeostasis', False))
     if getattr(args, 'comp_tonic_forget', None) is None:
         args.comp_tonic_forget = float(previous_config.get('comp_tonic_forget') or 0.0)
+    if getattr(args, 'mother_credit_brain_tau', None) is None:
+        args.mother_credit_brain_tau = bool(previous_config.get('mother_credit_brain_tau', False))
     if getattr(args, 'mother_credit_differential', None) is None:
         args.mother_credit_differential = bool(previous_config.get('mother_credit_differential', False))
     if getattr(args, 'mother_credit_trace', None) is None:
@@ -520,6 +522,9 @@ def main():
                         help="Speaking act's credit: 'predict' (-CE of the following words) or 'epistemic' (what the words "
                              "arriving within --mother-credit-ticks taught: learning progress, applied one window late)")
     parser.add_argument('--mother-credit-ticks', type=int, default=64, help='Epistemic credit horizon in ticks')
+    parser.add_argument('--mother-credit-brain-tau', action='store_true', default=None,
+                        help="The speaking credit decays on the brain's own eligibility clock: the Kenyon trace time "
+                             "constant (comp_logit_trace, learnable) instead of --mother-credit-tau (omitted = inherit)")
     parser.add_argument('--mother-credit-differential', action='store_true', default=None,
                         help='With --mother-credit-trace: the average-reward return of an infinite stream (each tick '
                              'after a decision also costs her own long-run learning progress per tick; omitted = inherit)')
@@ -2386,7 +2391,11 @@ def main():
                 from information_boltzmann.core.fly_mother_world import epistemic_credit
                 learner.last_epistemic = epistemic_credit(learner, window_state0, window_token0, targets_,
                                                           horizon_ticks=args.mother_credit_ticks,
-                                                          tau_ticks=args.mother_credit_tau,
+                                                          tau_ticks=(float(-1.0 / torch.log(torch.sigmoid(
+                                                              model.comp_logit_trace.detach())))
+                                                              if args.mother_credit_brain_tau
+                                                              and getattr(model, 'comp_logit_trace', None) is not None
+                                                              else args.mother_credit_tau),
                                                           trace=args.mother_credit_trace,
                                                           differential=args.mother_credit_differential)
             # the pacemakers' homeostat, after the update and the replay: next window's three passes share one kappa

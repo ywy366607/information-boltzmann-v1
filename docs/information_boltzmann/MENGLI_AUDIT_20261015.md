@@ -48,3 +48,26 @@ identification" asks whether the most similar non-neighbour set belongs to the s
   many internal steps as the brain's own chain needs (about 15–25 here). The other way to meet it is to shorten the
   chain itself (learnable time constants, delays).
 - **Both credit spans are recorded:** ticks and tokens.
+
+## Birth check for a newborn at 32 ticks (2026-10-15 14:10; Mengli's birth.pt, varied conversation, 300 tokens)
+
+| word held | Kenyon active per word | ever active (ab / a'b' / g) | identification (chance 1.7%) |
+|---|---|---|---|
+| 8 ticks | 0.4% | 31% / 4% / 32% | 12% |
+| 32 ticks | **2.8%** (fly-like sparse) | 61% / 21% / 61% | **93.5%** |
+
+Layer rates at birth (32 ticks, spikes per tick): olfactory receptors 0.027, ALPN 0.008, ALLN 0.012, Kenyon 0.001,
+**MBON 0.0001**, DAN 0.020.
+
+- At 32 ticks the newborn already has a sparse, word-selective Kenyon code.
+- **The MBONs are silent at birth (B1).** So the compartment memory (φ) cannot shape any output, and the
+  KC → MBON → DAN loop is dead from the start. Mengli's MBONs (0.025) were revived by training.
+- MBON-α'3 stays silent in Mengli too, even in a 32-tick stream: max v/θ 0.075. Its total KC weight is about a quarter
+  of an average MBON's, and its α'β' partners are the quietest Kenyon cells.
+- **Proposed fix (fly mechanism, init + learnable):** MBONs are spontaneously active in the fly. They join the
+  spontaneously active cells, with their own learnable intrinsic current (κ, the same mechanism as the pacemakers).
+  - Initial κ: a low spontaneous rate.
+  - Kenyon input modulates around that baseline, so novelty (MBON-α'3) and familiarity (its depression) become visible
+    from birth.
+- **Prediction:** at birth α'3 fires above its baseline for a new word and less for a repeated one once active
+  forgetting runs. If it still cannot rise above baseline, its KC efficacy (comp_weight init) is the next suspect.
