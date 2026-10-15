@@ -71,3 +71,18 @@ Layer rates at birth (32 ticks, spikes per tick): olfactory receptors 0.027, ALP
     from birth.
 - **Prediction:** at birth α'3 fires above its baseline for a new word and less for a repeated one once active
   forgetting runs. If it still cannot rise above baseline, its KC efficacy (comp_weight init) is the next suspect.
+
+## H1 GPU (2026-10-15 14:40)
+
+- A fresh process allocates up to 8.3 GB: WDDM falls back to shared system memory beyond the dedicated 4 GB.
+  "Free 3.3 GB" is therefore not the limit by itself.
+- Training nevertheless fails inside kernels: `cudaErrorMemoryAllocation` at a peak of only 2.1–2.8 GB, even with a
+  4-word window and even in the no-grad live pass. Setup alone takes 1.45 GB: edges, Adam, grads, plasticity state.
+- The same 8-tick configuration passed at 09:20 (peak 2.84 GB), so the environment changed between 09:30 and 11:50.
+  - In that interval the in-app browser pane was opened (11:44). The Electron GPU process may keep its dedicated
+    memory after the tab closes; WDDM counters show nothing per process.
+  - The fix for that is outside the project: restart the desktop app or free the GPU.
+- Independently, the 32-tick newborn needs a smaller footprint per BPTT tick, which the speed work covers:
+  - finer tick checkpointing;
+  - analytic advance through silence;
+  - event-driven, merged kernels.

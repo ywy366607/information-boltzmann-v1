@@ -219,6 +219,22 @@ def load(fork):
             before = float(model.intrinsic_kappa.median())
             model.intrinsic_kappa.copy_(birth_sd['intrinsic_kappa'].to(model.intrinsic_kappa.device))
         print(f'zero-shot: intrinsic kappa restored to birth (median {before:.3f} -> {float(model.intrinsic_kappa.median()):.3f})', flush=True)
+    if os.environ.get('ZS_MBON_KAPPA'):
+        import pandas as pd
+        # zero-shot (2026-10-15): the MBONs join the spontaneously active cells with intrinsic current kappa (x their
+        # rheobase), appended to the pacemakers' (MBONs are tonically active in the fly; at birth they were silent)
+        k_m = float(os.environ['ZS_MBON_KAPPA'])
+        ids_ = np.load(graph, allow_pickle=True)['neuron_body_ids']
+        cls_ = pd.read_feather(graph.parent / 'body-annotations.feather').set_index('bodyId').reindex(ids_)['class'].astype(str).values
+        mb = torch.as_tensor(np.nonzero(cls_ == 'MBON')[0], dtype=torch.long, device='cuda')
+        with torch.no_grad():
+            if getattr(model, 'intrinsic_kappa', None) is None:
+                model.register_buffer('intrinsic_index', mb, persistent=False)
+                model.intrinsic_kappa = torch.nn.Parameter(torch.full((mb.numel(),), k_m, device='cuda'))
+            else:
+                model.intrinsic_index = torch.cat([model.intrinsic_index, mb])
+                model.intrinsic_kappa = torch.nn.Parameter(torch.cat([model.intrinsic_kappa.detach(), torch.full((mb.numel(),), k_m, device='cuda')]))
+        print(f'zero-shot: {mb.numel()} MBONs spontaneously active, kappa {k_m}', flush=True)
     if os.environ.get('ZS_COMP_TONIC') and getattr(model, 'comp_eta', None) is not None:
         # zero-shot (2026-10-15): active forgetting of the Kenyon -> MBON memory at this many ticks (tonic dopamine)
         print(f'zero-shot: active forgetting, tau {fl.attach_comp_tonic_forget(model, float(os.environ["ZS_COMP_TONIC"])):.0f} ticks', flush=True)
