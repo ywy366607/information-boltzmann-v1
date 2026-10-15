@@ -152,6 +152,16 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
         current_in = kappa * thresholds.expand_as(current.h)[0, idx].detach() * g_leak
         source = (torch.zeros_like(current.h) if source is None else source).index_add(
             1, idx, current_in.unsqueeze(0))
+    mbon_k = getattr(model, 'mbon_kappa', None)
+    if mbon_k is not None:
+        # the MBONs' tonic current (attach_intrinsic_drive mbon_kappa): same form, their own learnable kappa
+        idx_m = model.mbon_index
+        rates = base_rates if base_rates is not None else model.get_decay_rates()
+        thresholds = options.get('thresholds')
+        thresholds = thresholds if thresholds is not None else model.get_thresholds()
+        g_leak_m = -torch.log(rates[0].expand_as(current.h)[0, idx_m].detach().clamp(1e-5, 1 - 1e-7))
+        source = (torch.zeros_like(current.h) if source is None else source).index_add(
+            1, idx_m, (mbon_k * thresholds.expand_as(current.h)[0, idx_m].detach() * g_leak_m).unsqueeze(0))
     homeostasis = getattr(current, 'homeostasis', torch.empty(0))
     kc_avail = getattr(current, 'kc_avail', torch.empty(0))
     homeostatic = getattr(model, 'homeostasis_target', None) is not None
@@ -943,10 +953,14 @@ def attach_intrinsic_drive(model, graph_npz, annotations, kappa=1.2, pattern=INT
     mbons = []
     if mbon_kappa and mbon_kappa > 0:
         cls_all = pd.read_feather(annotations).set_index('bodyId').reindex(ids)['class'].astype(str).values
-        mbons = [i for i in np.flatnonzero(cls_all == 'MBON') if i not in set(chosen)]
-    starts = [float(kappa)] * len(chosen) + [float(mbon_kappa)] * len(mbons)
-    chosen = list(chosen) + list(mbons)
+        mbons = [int(i) for i in np.flatnonzero(cls_all == 'MBON') if i not in set(chosen)]
+    starts = [float(kappa)] * len(chosen)
     device = model.read_indices.device
+    if mbons:
+        # their own parameter (review 2026-10-15): learnable by BPTT and outside the pacemakers' homeostat, which
+        # would freeze it and undo the familiarity the Kenyon memory writes into the MBONs' output
+        model.register_buffer('mbon_index', torch.as_tensor(mbons, dtype=torch.long, device=device), persistent=False)
+        model.mbon_kappa = nn.Parameter(torch.full((len(mbons),), float(mbon_kappa), device=device))
     model.register_buffer('intrinsic_index', torch.as_tensor(chosen, dtype=torch.long, device=device), persistent=False)
     # jitter: each cell's kappa x (1 + jitter * N(0, 1)), fixed at birth -- identical pacemakers started from the same
     # state fire in lockstep (audit 2026-10-13: 441 cells at one 27 Hz rhythm); different periods desynchronise them
@@ -1120,6 +1134,7 @@ def attach_compartment_memory(model, graph_npz, annotations, eta=-0.02, tau_trac
 COMPARTMENT_PARAMETER_NAMES = ('comp_weight', 'comp_eta', 'comp_logit_trace', 'comp_logit_forget')
 COMP_TONIC_PARAMETER_NAMES = ('comp_logit_tonic',)
 SENSE_GAIN_PARAMETER_NAMES = ('voice_log_gain', 'reward_log_gain')
+MBON_TONIC_PARAMETER_NAMES = ('mbon_kappa',)
 
 
 def attach_comp_tonic_forget(model, tau_ticks=2048.0):
@@ -2503,7 +2518,7 @@ class FlyBPTTLearner:
             # than the synapses' relative steps (2% of the birth weight).  Their own rate makes them evolvable.
             physio = set(CLASS_PARAMETER_NAMES) | {'dopamine_logit_fast', 'dopamine_logit_slow', 'comp_logit_trace',
                                                    'comp_logit_forget', 'comp_logit_tonic', 'voice_log_gain',
-                                                   'reward_log_gain'}
+                                                   'reward_log_gain', 'mbon_kappa'}
             moved = [named[n] for n in self.adam_names if n in physio]
             self.physio_names = [n for n in self.adam_names if n in physio]
             self.physio_lr = float(lr_physiology)

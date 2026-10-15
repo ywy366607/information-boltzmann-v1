@@ -227,13 +227,8 @@ def load(fork):
         ids_ = np.load(graph, allow_pickle=True)['neuron_body_ids']
         cls_ = pd.read_feather(graph.parent / 'body-annotations.feather').set_index('bodyId').reindex(ids_)['class'].astype(str).values
         mb = torch.as_tensor(np.nonzero(cls_ == 'MBON')[0], dtype=torch.long, device='cuda')
-        with torch.no_grad():
-            if getattr(model, 'intrinsic_kappa', None) is None:
-                model.register_buffer('intrinsic_index', mb, persistent=False)
-                model.intrinsic_kappa = torch.nn.Parameter(torch.full((mb.numel(),), k_m, device='cuda'))
-            else:
-                model.intrinsic_index = torch.cat([model.intrinsic_index, mb])
-                model.intrinsic_kappa = torch.nn.Parameter(torch.cat([model.intrinsic_kappa.detach(), torch.full((mb.numel(),), k_m, device='cuda')]))
+        model.register_buffer('mbon_index', mb, persistent=False)
+        model.mbon_kappa = torch.nn.Parameter(torch.full((mb.numel(),), k_m, device='cuda'))
         print(f'zero-shot: {mb.numel()} MBONs spontaneously active, kappa {k_m}', flush=True)
     if os.environ.get('ZS_COMP_TONIC') and getattr(model, 'comp_eta', None) is not None:
         # zero-shot (2026-10-15): active forgetting of the Kenyon -> MBON memory at this many ticks (tonic dopamine)

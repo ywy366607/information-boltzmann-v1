@@ -1200,6 +1200,8 @@ def main():
                   f'(kappa out of the gradient)', flush=True)
             names = [n for n in names if n not in INTRINSIC_PARAMETER_NAMES]
         names.extend(n for n in make_sense_gains(model, args)[0] if n not in names)
+        if getattr(model, 'mbon_kappa', None) is not None:
+            names.extend(n for n in ('mbon_kappa',) if n not in names)
         if getattr(args, 'carried_credit', False):
             # credit beyond the BPTT window at O(1) memory for every slow state that outlives it and has trained
             # parameters (fly_carried_credit): compartment memory, dopamine clocks, STP (with --learn-stp)
@@ -1659,6 +1661,10 @@ def main():
         sense, sense_new = make_sense_gains(model, args, saved['model'])
         names = list(names) + [n for n in sense if n not in names]
         newly_trainable += sense_new
+        if getattr(model, 'mbon_kappa', None) is not None and 'mbon_kappa' not in names:
+            names = list(names) + ['mbon_kappa']
+            if 'mbon_kappa' not in saved['model']:
+                newly_trainable.append('mbon_kappa')
         if getattr(args, 'carried_credit', False):
             # credit beyond the BPTT window at O(1) memory for every slow state that outlives it and has trained
             # parameters (fly_carried_credit): compartment memory, dopamine clocks, STP (with --learn-stp)
