@@ -75,6 +75,7 @@ class FlyPhysicalState:
     # Optional availability of every Kenyon cell's terminal release [1, N] (attach_kenyon_habituation; never reset).
     kc_avail: torch.Tensor = field(default_factory=lambda: torch.empty(0))
     comp_da_trace: torch.Tensor = field(default_factory=lambda: torch.empty(0))   # dopamine-before-Kenyon trace per compartment edge
+    comp_p_stats: torch.Tensor = field(default_factory=lambda: torch.empty(0))    # running mean / second moment of the phasic dopamine per edge
 
     def detached(self):
         return FlyPhysicalState(**{
@@ -401,6 +402,7 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
             regime = torch.cat([u_free, mean, second, log_gain], 0).detach()
     comp_trace = getattr(current, 'comp_trace', torch.empty(0))
     comp_da_trace = getattr(current, 'comp_da_trace', torch.empty(0))
+    comp_p_stats = getattr(current, 'comp_p_stats', torch.empty(0))
     if comp_on:
         # Compartment memory (attach_compartment_memory): e <- l e + (1 - l) s at each Kenyon cell; at each plastic
         # synapse k -> j, with the dopamine delivered to its MBON j (the MBON marks the compartment):
@@ -423,7 +425,22 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
             comp_k = (torch.maximum(d_post[1:2], d_post.new_tensor(model.comp_affinity))
                       if getattr(model, 'comp_adapted', False) else model.comp_affinity)
             occ_slow_c = dopamine_occupancy(d_post[1:2], comp_k)
-            phasic_c = F.relu(dopamine_occupancy(d_post[0:1], comp_k) - occ_slow_c)
+            phasic_raw_c = dopamine_occupancy(d_post[0:1], comp_k) - occ_slow_c
+            phasic_c = F.relu(phasic_raw_c)
+            burst_k = getattr(model, 'comp_burst_k', None)
+            if burst_k is not None:
+                # only a burst above the compartment's own fluctuation teaches (cAMP threshold; 2026-10-15: a newborn's
+                # pacemaking DANs give phasic p > 0 80% of the time, p99 0.61, and wrote noise into every edge).  Each edge
+                # keeps a slow mean / second moment of its phasic dopamine (detached, ~1000 ticks); the threshold is
+                # mean + k sd, k learnable (start 2)
+                with torch.no_grad():
+                    if comp_p_stats.numel() != 2 * phasic_raw_c.numel():
+                        comp_p_stats = torch.cat([phasic_raw_c.detach(), phasic_raw_c.detach() ** 2 + 1e-6], 0)
+                    a_s = 1.0 / 1000.0
+                    comp_p_stats = torch.cat([(1 - a_s) * comp_p_stats[0:1] + a_s * phasic_raw_c.detach(),
+                                              (1 - a_s) * comp_p_stats[1:2] + a_s * phasic_raw_c.detach() ** 2], 0)
+                    sd_p = (comp_p_stats[1:2] - comp_p_stats[0:1] ** 2).clamp_min(1e-8).sqrt()
+                phasic_c = F.relu(phasic_raw_c - comp_p_stats[0:1] - F.softplus(burst_k) * sd_p)
             window_c = occ_slow_c.detach() / 0.5 * comp_trace.index_select(1, model.comp_edge_kc)
             kappa_c = torch.sigmoid(model.comp_logit_forget)
             # depression scaled by the efficacy left, (1 + phi): phi approaches -1 and never passes it, so forgetting
@@ -495,7 +512,7 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
                             modulator, getattr(current, 'expected_input', torch.empty(0)), dopamine, da_trace, da_memory,
                             homeostasis, regime, comp_trace, comp_memory,
                             credit_comp, credit_comp_trace, credit_dopamine, credit_stp, kc_avail,
-                            comp_da_trace=comp_da_trace)
+                            comp_da_trace=comp_da_trace, comp_p_stats=comp_p_stats)
 
 
 def extract_fly_motor_latent(model, state):
@@ -1163,6 +1180,8 @@ def attach_comp_timing(model, eta_pot=None, use_forget=False):
     target = abs(float(model.comp_eta.detach())) if eta_pot is None else float(eta_pot)
     model.comp_eta_pot = nn.Parameter(torch.tensor(_math.log(_math.expm1(max(target, 1e-3))), device=model.comp_eta.device))
     model.comp_use_forget = bool(use_forget)
+    # the burst threshold (mean + k sd of each edge's own phasic dopamine), k learnable, start 2
+    model.comp_burst_k = nn.Parameter(torch.tensor(_math.log(_math.expm1(2.0)), device=model.comp_eta.device))
     return target
 
 
@@ -2084,7 +2103,7 @@ def clip_state_gradients(model, state, cap=None):
         model.step_grad_clips = over.float() if count is None else count + over.float()
         return g * torch.where(over, cap / n.clamp_min(1e-30), torch.ones_like(n))
 
-    for name in ('h', 'ge', 'gi', 'b', 'x', 'u', 'dopamine', 'comp_memory', 'comp_trace', 'comp_da_trace'):
+    for name in ('h', 'ge', 'gi', 'b', 'x', 'u', 'dopamine', 'comp_memory', 'comp_trace', 'comp_da_trace', 'comp_p_stats'):
         t = getattr(state, name, None)
         if torch.is_tensor(t) and t.requires_grad:
             t.register_hook(hook)
@@ -2547,7 +2566,7 @@ class FlyBPTTLearner:
             # than the synapses' relative steps (2% of the birth weight).  Their own rate makes them evolvable.
             physio = set(CLASS_PARAMETER_NAMES) | {'dopamine_logit_fast', 'dopamine_logit_slow', 'comp_logit_trace',
                                                    'comp_logit_forget', 'comp_logit_tonic', 'voice_log_gain',
-                                                   'reward_log_gain', 'mbon_kappa', 'comp_eta_pot'}
+                                                   'reward_log_gain', 'mbon_kappa', 'comp_eta_pot', 'comp_burst_k'}
             moved = [named[n] for n in self.adam_names if n in physio]
             self.physio_names = [n for n in self.adam_names if n in physio]
             self.physio_lr = float(lr_physiology)

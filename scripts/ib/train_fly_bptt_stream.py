@@ -1207,7 +1207,7 @@ def main():
             if args.comp_timing:
                 print(f'Compartment timing rule (newborn): dopamine before Kenyon potentiates (start '
                       f'{attach_comp_timing(model):.3f}), use-dependent forgetting off', flush=True)
-                names.extend(n for n in ('comp_eta_pot',) if n not in names)
+                names.extend(n for n in ('comp_eta_pot', 'comp_burst_k') if n not in names)
         if args.stream_jepa:
             names.extend(n for n in STREAM_JEPA_PARAMETER_NAMES if n not in names)
         if args.use_read_gamma_trace:
@@ -1535,7 +1535,7 @@ def main():
             if args.compartment_memory or args.taste_every:
                 comp_state = {k: v for k, v in saved['model'].items() if k in COMPARTMENT_PARAMETER_NAMES + TASTE_PARAMETER_NAMES}
                 saved_tonic = {k: v for k, v in saved['model'].items() if k in COMP_TONIC_PARAMETER_NAMES}
-                saved_tonic_all = {k: v for k, v in saved['model'].items() if k in ('comp_eta_pot',)}
+                saved_tonic_all = {k: v for k, v in saved['model'].items() if k in ('comp_eta_pot', 'comp_burst_k')}
                 rate = {} if args.comp_rate is None else {'eta': -float(args.comp_rate)}      # forgetting stays slow (0.02)
                 n_comp = attach_compartment_memory(model, args.graph, args.graph.parent / 'body-annotations.feather',
                                                    affinity=args.dopamine_affinity, **rate)
@@ -1676,13 +1676,14 @@ def main():
                 newly_trainable += extra
             if args.comp_timing:
                 attach_comp_timing(model)
-                if 'comp_eta_pot' in saved_tonic_all:
-                    model.load_state_dict({'comp_eta_pot': saved_tonic_all['comp_eta_pot']}, strict=False)
+                if saved_tonic_all:
+                    model.load_state_dict(saved_tonic_all, strict=False)
                 print('Compartment timing rule: dopamine before Kenyon potentiates, use-dependent forgetting off', flush=True)
-                if 'comp_eta_pot' not in names:
-                    names = list(names) + ['comp_eta_pot']
-                    if 'comp_eta_pot' not in saved_tonic_all:
-                        newly_trainable.append('comp_eta_pot')
+                for n_ in ('comp_eta_pot', 'comp_burst_k'):
+                    if n_ not in names:
+                        names = list(names) + [n_]
+                        if n_ not in saved_tonic_all:
+                            newly_trainable.append(n_)
         if args.stream_jepa:
             extra = [name for name in STREAM_JEPA_PARAMETER_NAMES if name not in names]
             names = list(names) + extra

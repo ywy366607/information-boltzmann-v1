@@ -48,7 +48,7 @@ for r in lines:
     t = r['text'].strip()
     if t and t != '...' and not t.startswith('Mengli'):
         filler += tok.encode(' ' + t)
-    if len(filler) >= 256:
+    if len(filler) >= 288:
         break
 
 
@@ -87,8 +87,15 @@ def phi_on(s, fired_kc):
 
 rep = {'mbon': MBON_T, 'dan': DAN_T, 'level': LEVEL, 'arms': {}}
 with torch.no_grad():
+    # warm-up: the brain listens to WARM ordinary words first (the burst threshold's statistics settle, ~1000 ticks)
+    s_warm = s0
+    for w in filler[:int(os.environ.get('WARM', '32'))]:
+        for t in range(WORD):
+            s_warm = tick(s_warm, w)
+        s_warm = fl.expect_next(model, s_warm, fl.read_fly_motor(model, s_warm))
+    filler = filler[int(os.environ.get('WARM', '32')):] + filler[:int(os.environ.get('WARM', '32'))]
     for arm in ('none', 'forward', 'backward'):
-        s, rows = s0, {}
+        s, rows = s_warm, {}
         for name in ('pre',):
             s, rx, fx = trial(s, X, 'none'); s, rz, fz = trial(s, Z, 'none')
             rows[name] = {'X': rx, 'Z': rz, 'phiX': phi_on(s, fx), 'phiZ': phi_on(s, fz)}
