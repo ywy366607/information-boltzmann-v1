@@ -4261,7 +4261,9 @@ class FlyBPTTLearner:
                 step = cfg['eta'] * (torch.log(h['target'].to(rate) + eps) - torch.log(h['ema'] + eps))
                 mask = getattr(m, 'homeo_mask', None)
                 if mask is not None:
-                    step = step * mask.reshape(step.shape) if step.numel() == mask.numel() else step
+                    if step.numel() != mask.numel():
+                        raise ValueError(f'homeostat mask {mask.numel()} != pacemakers {step.numel()}')
+                    step = step * mask.reshape(step.shape)
                 m.intrinsic_kappa.add_(step).clamp_(*cfg['band'])
                 moved = float(step.abs().mean())
             self.homeo = h

@@ -33,7 +33,7 @@ for i, r in enumerate(rows):
         pairs['residual_same'] += [(s[j] - u[j], da[j + 1, 0]) for j in range(len(s) - 1)]
     if (i + 1) % 32 == 0:
         blocks.append(spearman(*zip(*pairs['same'][-31 * 32:])))
-rep = {'words': len(rows) * 32}
+rep = {'words': sum(len(r['scores']) + 1 for r in rows)}
 for k, v in pairs.items():
     rep[f'rho_surprise_{k}'] = round(spearman(*zip(*v)), 4) if v else None
 if blocks:
@@ -41,4 +41,15 @@ if blocks:
     rep['rho_same_per_1024_min_median_mean_max'] = [round(float(x), 4) for x in (np.nanmin(b), np.nanmedian(b), np.nanmean(b), np.nanmax(b))]
 ph = np.concatenate([np.array(r['word_da'])[:, 0] for r in rows]) if rows else np.zeros(0)
 rep['phasic_sd'] = round(float(ph.std()), 4) if ph.size else None
+# B (her answer's dopamine pulse): phasic dopamine on the words that carried it against all other words
+# (reply_onsets per word, aligned with word_da; written since 2026-10-16)
+on, off = [], []
+for r in rows:
+    ro = r.get('reply_onsets')
+    if ro and len(ro) == len(r['word_da']):
+        da = np.array(r['word_da'])[:, 0]
+        on += list(da[np.array(ro, bool)]); off += list(da[~np.array(ro, bool)])
+if on and off:
+    rep['B_onset_words'] = len(on)
+    rep['B_phasic_onset_over_other'] = round(float(np.mean(on) / max(abs(np.mean(off)), 1e-9)), 3)
 print(json.dumps(rep))

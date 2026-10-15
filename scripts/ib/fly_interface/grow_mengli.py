@@ -72,7 +72,7 @@ def main():
                    '--mother-credit-ticks', '64', '--mother-credit-tau', '32',
                    '--mother-voice', '--mother-voice-level', '1.5',
                    '--compartment-dendritic', '--no-eye-binary', '--noise-rate', '0',
-                   '--log-word-dopamine', '--stream-pace-mean', '8', '--stream-pace-min', '4'] + args.extra.split()
+                   '--log-word-dopamine'] + args.extra.split()     # the word interval is a profile switch: inherited
         with (args.output / 'train.log').open('a', encoding='utf-8') as log:
             result = subprocess.run(command, cwd=root, stdout=log, stderr=subprocess.STDOUT)
         progress = json.loads((args.output / 'progress.json').read_text(encoding='utf-8'))

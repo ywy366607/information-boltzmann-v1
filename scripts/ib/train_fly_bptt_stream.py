@@ -2627,6 +2627,9 @@ def main():
                                               'quiet_ticks': [sum(b - a for a, b in ranges)
                                                               for ranges in forced_.get('quiet_ranges', [])],
                                               'reply_pulses': sum(bool(x) for x in (forced_.get('reply_onsets') or [])),
+                                              # per word, aligned with sources / word_da: the word that carried her
+                                              # answer's dopamine pulse (B), so B-locked writes can be compared
+                                              'reply_onsets': [bool(x) for x in (forced_.get('reply_onsets') or [])],
                                               'monitor': mother_world.monitor(), **plan_meta}
                                              if speakers is not None else {}),
                                           **({'epistemic': learner.last_epistemic}

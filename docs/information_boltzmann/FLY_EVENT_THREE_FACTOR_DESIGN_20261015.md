@@ -347,3 +347,34 @@ correlation over 256 words), and that is also why one pairing leaves only 0.01.
   - the repeat trend turns negative (≤ −0.2).
 - If none moves by 8k words, the route to the DANs is missing a fly path (SEZ / LH valence inputs, MBON → DAN), and
   that is the next audit.
+
+## Fourth review (launch decision): conditional go
+
+**Must-fix, done.** `grow_newborn.sh` judged the birth by `last.pt`, but a checkpoint is written after the first
+window. Birth now requires all of: exit code 0, `progress.json` completed, and 1024 words trained, before writing a
+`born` marker. A checkpoint without the marker stops the chain.
+
+**Corrections to my reading of gate 2:**
+- **The 34% of edges written per word are the threshold's own false positives, not information.**
+  - With the background estimated from sub-threshold ticks (a censored estimate), k = softplus(2) = 2.13 settles at
+    1.92 sd. That gives 2.7% of ticks above threshold.
+  - Over 16 ticks per word, 1 − 0.973^16 ≈ 36%, which matches the measured 34%.
+  - Prediction: about 20% at 8 ticks per word and about 58% at 32.
+  - So a per-tick quantile threshold writes per tick, not per event. If gate 2 fails, the next fix is a threshold
+    judged per word (the word-onset phase or the word's integral).
+- **What the memory holds instead:** the calibration balances the median edge's noise writes against forgetting, so φ
+  becomes (Kenyon use frequency) × (uniform noise dopamine). That is a familiarity memory, reversible on the
+  4096-word forgetting clock.
+- **BPTT does not reach the DAN input synapses through carried credit.** COMP_PARAMS holds only the compartment
+  parameters and the dopamine clocks, so the DAN inputs see φ's long effects only within the 8-word window.
+- **Revised order of predictions:** the repeat trend should turn negative first (frequency memory → MBON → DAN), and
+  the surprisal correlation later. It may not reach 0.2 within 8k words.
+
+**Also done:**
+- Per-word `reply_onsets` in the score log; `live_da_report` reports `B_phasic_onset_over_other`. Prediction: at most
+  1.2 at 8k words (B is 1× rheobase for 4 ticks).
+- `grow_mengli.py` no longer hard-codes the word interval; it is inherited as a profile switch.
+- The homeostat mask raises on a shape mismatch.
+- The chain only runs the chunks that are left after a restart.
+- **Stop rule from c2:** surprisal ρ < 0.1 and repeat trend > −0.1 and B ratio < 1.2 → STOP. The next fix is then the
+  per-word threshold.
