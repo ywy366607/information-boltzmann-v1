@@ -268,6 +268,8 @@ class DeepSeekMother(GeminiApiMother):
         self.plan_path, self.plan, self.plan_mtime = plan_path, {}, 0.0
         self.url = 'https://api.deepseek.com/chat/completions'
         self.thinking_field = True                 # dropped once if the API refuses it
+        self.thinking_off = {'thinking': {'type': 'disabled'}}
+        self.name = 'DeepSeek'
         self._refresh_plan()
 
     @staticmethod
@@ -299,10 +301,10 @@ class DeepSeekMother(GeminiApiMother):
         delay = 2.0
         for attempt in range(self.retries):
             payload = {'model': self.model, 'messages': messages, 'stream': False,
-                       'max_tokens': int(m_cfg.get('max_reply_tokens', self.max_tokens)),
+                       'max_tokens': max(int(m_cfg.get('max_reply_tokens', self.max_tokens)), getattr(self, 'min_tokens', 0)),
                        'temperature': float(m_cfg.get('temperature', self.temperature))}
             if self.thinking_field:
-                payload['thinking'] = {'type': 'disabled'}
+                payload.update(self.thinking_off)
             try:
                 r = self.requests.post(self.url, json=payload, timeout=20,
                                        headers={'Authorization': f'Bearer {self.api_key}',
@@ -312,8 +314,14 @@ class DeepSeekMother(GeminiApiMother):
                     usage = data.get('usage') or {}
                     self.usage = getattr(self, 'usage', {'calls': 0, 'cache_hit': 0, 'cache_miss': 0, 'output': 0})
                     self.usage['calls'] += 1
-                    self.usage['cache_hit'] += int(usage.get('prompt_cache_hit_tokens') or 0)
-                    self.usage['cache_miss'] += int(usage.get('prompt_cache_miss_tokens') or 0)
+                    hit = usage.get('prompt_cache_hit_tokens')
+                    if hit is None:     # OpenAI format (SiliconFlow): cached tokens inside prompt_tokens_details
+                        hit = int((usage.get('prompt_tokens_details') or {}).get('cached_tokens') or 0)
+                        miss = int(usage.get('prompt_tokens') or 0) - hit
+                    else:
+                        miss = int(usage.get('prompt_cache_miss_tokens') or 0)
+                    self.usage['cache_hit'] += int(hit or 0)
+                    self.usage['cache_miss'] += int(miss or 0)
                     self.usage['output'] += int(usage.get('completion_tokens') or 0)
                     text = (data.get('choices', [{}])[0].get('message', {}).get('content') or '').strip()
                     return text.splitlines()[0].strip() if text else ''
@@ -330,9 +338,30 @@ class DeepSeekMother(GeminiApiMother):
                 self.last_status = type(error).__name__
                 time.sleep(1.0)
         self.failures = getattr(self, 'failures', 0) + 1
-        print(f'DeepSeek mouth: no answer after {self.retries} tries (last: {getattr(self, "last_status", None)}), '
+        print(f'{getattr(self, "name", "DeepSeek")} mouth: no answer after {self.retries} tries (last: {getattr(self, "last_status", None)}), '
               f'{self.failures} so far: she stays silent', flush=True)
         return ''
+
+
+class SiliconFlowMother(DeepSeekMother):
+    """The mouth through SiliconFlow's OpenAI-format API (https://api-docs.siliconflow.cn/docs/api/chat-completions-post):
+    the same family prompt (stable prefix: persona + family; the changing notes ride in the last turn), plan reload and
+    silence on failure.  The key is read from the user environment variable 'SiliconFlow' (or SILICONFLOW_API_KEY);
+    it is never printed or stored here.  Default model zai-org/GLM-5.3-Flash, thinking off."""
+
+    def __init__(self, model='zai-org/GLM-5.3-Flash', **kwargs):
+        import os
+        key = (kwargs.pop('api_key', None) or os.environ.get('SiliconFlow') or os.environ.get('SILICONFLOW_API_KEY')
+               or self._user_environment('SiliconFlow') or self._user_environment('SILICONFLOW_API_KEY'))
+        if not key:
+            raise ValueError("The SiliconFlow key must be set (user environment variable 'SiliconFlow')")
+        super().__init__(model=model, api_key=key, **kwargs)
+        self.url = 'https://api.siliconflow.cn/v1/chat/completions'
+        # GLM-5.3-Flash still reasons a little with thinking disabled (enable_thinking is ignored): the token budget
+        # leaves room for it, so the reply itself is never cut to ''
+        self.thinking_off = {'thinking': {'type': 'disabled'}}
+        self.min_tokens = 400
+        self.name = 'SiliconFlow'
 
 
 class ApiMother:
