@@ -2144,3 +2144,30 @@ The same check matters most for Mengli: her BPTT in the mother world faces the s
      words. A fly does the opposite: the onset after clean air is strongest.
    - This matches the writer-gain dose–response (×1 evokes about 4 Hz in receptor cells).
    - A sudden ×4 on the adult cost 0.13 nats, because the brain is calibrated to ×1.
+
+## 2026-10-15 13:00 — Temporal reachability audit (`reach_audit.py`, Mengli last, from rest, 8 words held 64 ticks)
+
+| path (from rest) | onset | t50 (ticks) |
+|---|---|---|
+| receptors | 4 | 6 |
+| ALPN | 6 | 12 |
+| Kenyon ab / a'b' / g | 15 / 15 / 17 | 25 / 20 / 19 |
+| MBON | 22–26 | about 21 |
+| output read (acts) | 5 | 5 |
+| descending | 10 | 10 |
+| voice JO | 3 | 5–7 |
+| reward pulse → PAM / PPL1 / MBON | 1 / 13 / 19 | — |
+| MBON-α'3 | never | — |
+
+Clocks: words 4–8 ticks (mother world; mainline pace 2–16); Kenyon trace τ 26; dopamine fast τ 36 and slow τ 1620;
+mother credit τ 32; BPTT window 32 words.
+
+**Not reachable:**
+1. A word ends before it reaches the Kenyon cells (15–25 ticks) or the MBONs (≥ 22). The next-word prediction and the
+   acts can only use the receptor → output route (5 ticks). Words held 32 ticks give a stable Kenyon code: the name's
+   Jaccard rises from 0.078 to 0.74, and a'b' Kenyon cells ever active rise from 15% to 41%.
+2. The phasic dopamine's fast clock (36 ticks) smears 4–9 words together, while gate (2) correlates per word.
+3. The speaking credit (τ 32) and the Kenyon trace (τ 26) cover 3–4 words at this pace.
+
+**BPTT window:** in ticks it is enough at 32 ticks per word (16 words = 512 ticks, against a mushroom-body round trip
+of about 40). In words, a shorter window loses language context. Prefer finer tick checkpointing over a smaller window.
