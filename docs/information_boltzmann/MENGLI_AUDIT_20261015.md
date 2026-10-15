@@ -23,3 +23,28 @@ There are two audit classes:
 | W1 | The mother's mouth: DeepSeek is down | status page | SiliconFlow `glm-5.3-flash`, key from the user env, stable-prefix prompt | 🔍 |
 | A | Pacemaker homeostasis (rate set point per cell, κ out of the gradient) | m_main PPL1 silenced by BPTT | 710edd6 | ✅ |
 | B | Her answer as a PAM pulse | calibration: 98% of φ on standing traces | 710edd6; level / ticks to become learnable? | 🔍 |
+
+## T1 refined (2026-10-15 13:40): late arrival vs no code; discriminability
+
+Probe: `kc_code_probe.py`, run on the lineage's early, varied conversation (`KC_FROM=start`, 600 tokens). Pairs within 4
+words are excluded, because neighbours share lingering activity. Values are the Kenyon set per word; "nearest-neighbour
+identification" asks whether the most similar non-neighbour set belongs to the same token (chance 1.9%).
+
+| word held | read window | active | Jaccard same / different | identification |
+|---|---|---|---|---|
+| 8 ticks | the word's ticks | 3.4% | 0.067 / 0.054 | 16% |
+| 8 ticks | delayed by 13 ticks (pipelined) | 3.4% | 0.082 / 0.052 | 30% |
+| 32 ticks | the word's ticks | 16% | 0.51 / 0.21 | **99%** |
+
+- **Pipelining is partly there.** Aligning the read window to the latency doubles identification at 8 ticks, so part
+  of the gap is late arrival.
+- **Most of it is a missing code.** At 8 ticks a word leaves a weak, smeared set (30%). At 32 ticks words are clearly
+  distinguishable (99%), even though more cells are recruited (different-token overlap 0.21).
+- **Separate the three clocks** (user / GPT):
+  - stimulus duration (how long a word is held);
+  - arrival interval;
+  - the internal step.
+- **Absolute time is free.** A tick is a computing step, not 5 ms. What must hold is the ratio: an input has to last as
+  many internal steps as the brain's own chain needs (about 15–25 here). The other way to meet it is to shorten the
+  chain itself (learnable time constants, delays).
+- **Both credit spans are recorded:** ticks and tokens.

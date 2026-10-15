@@ -35,6 +35,18 @@ import tiktoken
 tok = tiktoken.get_encoding('gpt2')
 lines = [json.loads(l) for l in (RUN / 'mother.jsonl').read_text(encoding='utf-8').splitlines() if l.strip()]
 stream, who = [], []
+import os as _os
+if _os.environ.get('KC_FROM') == 'start':
+    # the lineage's early, varied conversation (the recent stream is dominated by repeated name calls)
+    for r in lines:
+        t = r['text'].strip()
+        if not t or t == '...' or t.startswith('Mengli'):
+            continue
+        ids_ = tok.encode(' ' + t)
+        stream += ids_; who += [r['who']] * len(ids_)
+        if len(stream) >= N_TOK:
+            break
+    lines = []
 for r in lines[::-1]:
     t = r['text'].strip()
     if not t or t == '...':
@@ -47,7 +59,7 @@ for r in lines[::-1]:
 stream, who = stream[-N_TOK:], who[-N_TOK:]
 meng = set(tok.encode(' Mengli')) | set(tok.encode('Mengli'))
 voice_on = getattr(model, 'voice_cells', None) is not None
-sets, resid = [], []
+sets, resid, ticks_kc = [], [], []
 counts = torch.zeros(model.n_neurons, device='cuda')
 vsum = torch.zeros(model.n_neurons, device='cuda')
 nt = 0
@@ -60,12 +72,20 @@ with torch.no_grad():
                                               hold_input=bool(cfg.get('hold_input')), fresh=t == 0, **kw, **opts)
             s = out[0]
             fired |= s.ring[0][0].index_select(0, kc_t) > 0
+            ticks_kc.append((s.ring[0][0].index_select(0, kc_t) > 0).cpu().numpy())
             counts += (s.ring[0][0] > 0).float()
             vsum += s.h[0] / model.get_thresholds().reshape(-1)[:model.n_neurons]
             nt += 1
         sets.append(fired.cpu().numpy())
         s = fl.expect_next(model, s, fl.read_fly_motor(model, s))      # the brain's prediction of the next word
         resid.append(float(s.expected_input.float().norm()) if s.expected_input.numel() else None)
+import os
+LAG = int(os.environ.get('KC_LAG', '0'))
+if LAG:
+    # delay-aligned: word i's set read from the ticks [onset_i + LAG, onset_i + LAG + TICKS) (pipelined processing)
+    T = np.array(ticks_kc)
+    sets = [T[i * TICKS + LAG:i * TICKS + LAG + TICKS].any(0) for i in range(len(stream)) if (i * TICKS + LAG + TICKS) <= len(T)]
+    stream, who = stream[:len(sets)], who[:len(sets)]
 S = np.array(sets)
 dist = lambda v: [float(np.min(v)), float(np.median(v)), float(np.mean(v)), float(np.max(v))] if len(v) else None
 
@@ -83,6 +103,8 @@ same, diff, same_m = [], [], []
 for w, idx in by_tok.items():
     for a in range(len(idx)):
         for b in range(a + 1, min(len(idx), a + 6)):
+            if idx[b] - idx[a] <= 4:
+                continue                      # neighbours share lingering activity, not a code
             j = jacc(S[idx[a]], S[idx[b]])
             if j is not None:
                 (same_m if w in meng else same).append(j)
@@ -93,6 +115,17 @@ for _ in range(4000):
         if j is not None:
             diff.append(j)
 ever = S.any(0)
+# discriminability: for each word with another occurrence, is its most similar other set the same token? (chance:
+# the share of same-token candidates)
+hits, chance = [], []
+for i, w in enumerate(stream):
+    if sum(abs(k - i) > 4 for k in by_tok[w]) < 1 or not S[i].any():
+        continue
+    inter = (S & S[i]).sum(1); union = (S | S[i]).sum(1)
+    sim = np.where(union > 0, inter / np.maximum(union, 1), 0.0); sim[max(0, i - 4):i + 5] = -1
+    hits.append(stream[int(np.argmax(sim))] == w)
+    chance.append(sum(abs(k - i) > 4 for k in by_tok[w]) / max(1, len(stream) - 9))
+nn_id = {'accuracy': float(np.mean(hits)) if hits else None, 'chance': float(np.mean(chance)) if chance else None, 'n': len(hits)}
 rep = {'checkpoint': str(src), 'tokens': len(stream), 'ticks': TICKS, 'kenyon': int(kc.size),
        'subtypes': {k: int((sub == k).sum()) for k in ("ab", "a'b'", 'g')},
        'active_fraction_per_word': dist(S.mean(1)),
@@ -101,6 +134,8 @@ rep = {'checkpoint': str(src), 'tokens': len(stream), 'ticks': TICKS, 'kenyon': 
        'ever_active_by_subtype': {k: float(ever[sub == k].mean()) if (sub == k).any() else None for k in ("ab", "a'b'", 'g')},
        'jaccard_same_token': dist(same), 'jaccard_same_mengli': dist(same_m), 'jaccard_different_tokens': dist(diff),
        'n_pairs': {'same': len(same), 'mengli': len(same_m), 'different': len(diff)},
+       'lag_ticks': LAG,
+       'nn_identification': nn_id,
        'active_fraction_mengli': dist([S[i].mean() for i, w in enumerate(stream) if w in meng]),
        'active_fraction_other': dist([S[i].mean() for i, w in enumerate(stream) if w not in meng])}
 print(json.dumps(rep, indent=1))
