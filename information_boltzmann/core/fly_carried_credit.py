@@ -18,7 +18,8 @@ shorter than a window):
 """
 import torch
 
-COMP_PARAMS = ('comp_eta', 'comp_logit_forget', 'comp_logit_trace', 'dopamine_logit_fast', 'dopamine_logit_slow')
+COMP_PARAMS = ('comp_eta', 'comp_logit_forget', 'comp_logit_trace', 'dopamine_logit_fast', 'dopamine_logit_slow',
+               'comp_logit_tonic')
 DOPAMINE_PARAMS = ('dopamine_logit_fast', 'dopamine_logit_slow')
 STP_PARAMS = ('logit_u0', 'log_tau_fac', 'log_tau_rec')
 STATE_OF = {'comp': ('comp_trace', 'comp_memory'), 'dopamine': ('dopamine',), 'stp': ('u', 'x')}
@@ -39,14 +40,15 @@ def dopamine_step(S, conc, slow, arrival, f, s):
     return torch.cat([dc_f, ds_f, ds_s], 0)
 
 
-def comp_step(S_phi, S_tr, phi, trace, spikes_kc, lam, eta, kappa, phasic, gate, edge_kc, dphasic, tonic=None):
+def comp_step(S_phi, S_tr, phi, trace, spikes_kc, lam, eta, kappa, phasic, gate, edge_kc, dphasic, tonic=None,
+              tonic_rate=None):
     """One tick of the compartment memory's sensitivities.
     trace' = lam trace + (1 - lam) s;  phi' = phi + w (eta p (1 + phi) - kappa phi),  w = gate * trace'[edge_kc]
     (gate = occ(slow dopamine at the MBON) / 0.5, detached in the model too).
     S_tr [1, n_kc]: d trace / d logit_trace.  S_phi [5, E] for COMP_PARAMS.  dphasic [2, E]: d p / d (lf, ls).
     phi, trace: the values before the tick; p, gate at this tick.
     tonic [1, E] (active forgetting, gate x its rate): phi' -= tonic phi, ungated by the trace; it enters keep (the
-    carried sensitivities decay with it); its own rate is learned within the window only."""
+    carried sensitivities decay with it); tonic_rate sigma: its own row d phi' / d logit = -tonic (1 - sigma) phi."""
     S_tr_new = lam * S_tr + lam * (1.0 - lam) * (trace - spikes_kc)
     trace_new = lam * trace + (1.0 - lam) * spikes_kc
     w = gate * trace_new.index_select(1, edge_kc)
@@ -56,7 +58,10 @@ def comp_step(S_phi, S_tr, phi, trace, spikes_kc, lam, eta, kappa, phasic, gate,
     direct = torch.cat([w * phasic * (1.0 + phi),                    # eta
                         -w * kappa * (1.0 - kappa) * phi,             # logit of the forgetting rate
                         dw_trace * A,                                 # logit of the trace's decay
-                        w * eta * (1.0 + phi) * dphasic], 0)          # the dopamine clocks, through p
+                        w * eta * (1.0 + phi) * dphasic,              # the dopamine clocks, through p
+                        (-tonic * (1.0 - tonic_rate) * phi) if tonic is not None else torch.zeros_like(phi)], 0)
+    if S_phi.shape[0] != direct.shape[0]:            # sensitivities saved before the tonic row existed
+        S_phi = torch.cat([S_phi, S_phi.new_zeros(direct.shape[0] - S_phi.shape[0], S_phi.shape[1])], 0)
     return keep * S_phi + direct, S_tr_new
 
 

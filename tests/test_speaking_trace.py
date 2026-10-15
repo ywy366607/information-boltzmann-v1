@@ -1,5 +1,6 @@
 """The continuous speaking trace (accumulate_speaking_trace) is the horizon form (accumulate_speaking_credit) with the
 horizon taken to infinity: the same sum_d (R_d - b) grad log p_d, delivered word by word across windows."""
+import math
 import types
 
 import torch
@@ -105,3 +106,29 @@ def test_differential_trace_is_the_average_reward_return():
             'decisions': [(0, 0, 8, 0), (2, 16, 8, 0), (4, 32, 8, 0)], 'g': torch.randn(48, 5)}
     accumulate_speaking_trace(learner3, dark, [0.0] * 6, tau, differential=True)
     assert all(it['return'] < 0 for it in learner3.speak_trace['diag'][:-1])
+
+
+def test_event_clock_removes_the_cost_of_speaking_with_a_neutral_mother():
+    """A neutral mother: after a silent decision or after the child's own word, the same mother words with the same
+    progress follow.  On the tick clock the spoken decision's return is lower (its word delays the replies); on the
+    event clock (mother words since the decision) both are equal (review 2026-10-15)."""
+    gains_m = [0.2, 0.1, 0.15, 0.05, 0.1, 0.2]
+
+    def run(event_clock, tau):
+        m = _model()
+        learner = types.SimpleNamespace(model=m)
+        silent = {'intervals': [8] + [8] * 6, 'speakers': ['mother'] + ['mother'] * 6,
+                  'sources': ['mother_reply'] * 7, 'decisions': [(0, 0, 8, 0)], 'g': torch.randn(56, 5)}
+        said = {'intervals': [8, 8] + [8] * 6, 'speakers': ['mother', 'fly'] + ['mother'] * 6,
+                'sources': ['mother_reply', 'self_hearing'] + ['mother_reply'] * 6, 'decisions': [(0, 0, 8, 1)],
+                'g': torch.randn(64, 5)}
+        out = []
+        for rec, gains in ((silent, [0.0] + gains_m), (said, [0.0, 0.0] + gains_m)):
+            learner.speak_trace, learner.speak_credit_clock = None, 0
+            accumulate_speaking_trace(learner, rec, gains, tau, event_clock=event_clock)
+            out.append(learner.speak_trace['diag'][0]['return'])
+        return out
+    s_tick, d_tick = run(False, 26.0)
+    s_ev, d_ev = run(True, 3.0)
+    assert abs(d_tick / s_tick - math.exp(-8 / 26.0)) < 1e-6   # the tick clock: her word costs e^{-8/26}
+    assert abs(d_ev - s_ev) < 1e-9

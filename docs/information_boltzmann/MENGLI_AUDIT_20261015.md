@@ -110,3 +110,26 @@ c11, a mainline brain already trained on text with acts. The newborn uses the ma
   - H1 memory: needs the GPU environment restored, plus finer tick checkpointing;
   - M3 / M4 (epistemic value via α'3);
   - the review.
+
+## Review 1 (subagent, 2026-10-15 15:10) — corrections adopted
+
+- **M2 withdrawn as "fixed".**
+  - The differential (average-reward) charge is the same for every decision ending at the same time, so the baseline
+    absorbs it, and the bias against speaking stays.
+  - The real cause is the tick clock: her own word delays the mother's later words.
+  - Fix: `--mother-credit-event-clock` (decay per mother word since the decision; τ in words).
+  - Test: with a neutral mother the spoken/silent returns are equal on the event clock, and e^{−8/26} apart on the
+    tick clock. At 32 ticks per word the tick-clock cost would be 71%.
+- **M1 bug fixed.**
+  - The forgetting term used the detached φ, so BPTT missed it, and its rate had no carried credit.
+  - Now the live φ is used, `comp_logit_tonic` has its own row in COMP_PARAMS, and old 5-row sensitivities are padded,
+    not reset.
+  - The CPU equivalence test runs the same recursion as the model.
+- **Open from the review:**
+  - MBON κ outside A (its own learnable parameter, no homeostat);
+  - Kenyon trace τ and active-forgetting τ initialised in word terms at 32 ticks (about 2–3 words, about 8k ticks);
+  - B recalibrated at 32 ticks with the split of traces standing before the pulse vs traces created by the reply word;
+  - the SiliconFlow first-line check;
+  - α'3: the size-normalisation input gain, I/E on raw synapse counts, DPM → MBON axo-axonal check;
+  - H1;
+  - a paired control fork.

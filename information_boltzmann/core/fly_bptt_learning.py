@@ -419,6 +419,10 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
             if 'comp' in credit:
                 with torch.no_grad():
                     from .fly_carried_credit import comp_step, occupancy_slope, COMP_PARAMS
+                    if credit_comp.numel() == (len(COMP_PARAMS) - 1) * comp_memory.shape[1]:
+                        # saved before the active-forgetting row existed: keep the carried rows, add a zero row
+                        credit_comp = torch.cat([credit_comp.reshape(len(COMP_PARAMS) - 1, -1),
+                                                 credit_comp.new_zeros(1, comp_memory.shape[1])], 0)
                     if credit_comp.numel() != len(COMP_PARAMS) * comp_memory.shape[1]:
                         credit_comp = h.new_zeros(len(COMP_PARAMS), comp_memory.shape[1])
                         credit_comp_trace = h.new_zeros(1, comp_trace.shape[1])
@@ -445,14 +449,17 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
                         occ_slow_c.detach() / 0.5, model.comp_edge_kc,
                         dphasic,
                         tonic=(occ_slow_c.detach() / 0.5 * torch.sigmoid(model.comp_logit_tonic.detach())
-                               if getattr(model, 'comp_logit_tonic', None) is not None else None))
+                               if getattr(model, 'comp_logit_tonic', None) is not None else None),
+                        tonic_rate=(float(torch.sigmoid(model.comp_logit_tonic.detach()))
+                                    if getattr(model, 'comp_logit_tonic', None) is not None else None))
+            phi_prev = comp_memory                    # live: BPTT sees the forgetting term too (review 2026-10-15)
             comp_memory = comp_memory + window_c * (model.comp_eta * phasic_c * (1.0 + comp_memory) - kappa_c * comp_memory)
             tonic_c = getattr(model, 'comp_logit_tonic', None)
             if tonic_c is not None:
                 # active forgetting (Berry et al. 2012): the dopamine neurons' ongoing activity erodes the memory on
                 # its own clock, whether or not the Kenyon cell fires; without it every edge that ever fired sat at
                 # the same equilibrium (learning and forgetting both gated by the trace) and repetition left no mark
-                comp_memory = comp_memory - (occ_slow_c.detach() / 0.5) * torch.sigmoid(tonic_c) * memory_before
+                comp_memory = comp_memory - (occ_slow_c.detach() / 0.5) * torch.sigmoid(tonic_c) * phi_prev
     bank = getattr(current, 'read_bank', torch.empty(0))
     if getattr(model, 'read_bank_gain', None) is not None:
         motor_now = h[:, model.read_indices] if model.read_surface != 'all' else h

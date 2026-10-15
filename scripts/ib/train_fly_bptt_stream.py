@@ -288,6 +288,8 @@ def resolve_learning_modes(args, previous_config, previous_learner):
         args.intrinsic_mbon_kappa = float(previous_config.get('intrinsic_mbon_kappa') or 0.0)
     if getattr(args, 'sense_gains_learnable', None) is None:
         args.sense_gains_learnable = bool(previous_config.get('sense_gains_learnable', False))
+    if getattr(args, 'mother_credit_event_clock', None) is None:
+        args.mother_credit_event_clock = bool(previous_config.get('mother_credit_event_clock', False))
     if getattr(args, 'mother_credit_brain_tau', None) is None:
         args.mother_credit_brain_tau = bool(previous_config.get('mother_credit_brain_tau', False))
     if getattr(args, 'mother_credit_differential', None) is None:
@@ -405,6 +407,17 @@ def apply_profile(parser, argv, name):
     args.profile_dests = sorted({table[g[0]].dest for g in _option_groups(PROFILES[name].split())})
     args.explicit_dests = sorted(explicit)
     return args
+
+
+def speak_credit_tau(model, args):
+    """The speaking credit's decay: in ticks, or in mother words on the event clock (--mother-credit-event-clock).
+    --mother-credit-brain-tau: the brain's own eligibility clock (the Kenyon trace time constant, learnable), converted
+    to words by the world's mean word interval on the event clock."""
+    brain = (float(-1.0 / torch.log(torch.sigmoid(model.comp_logit_trace.detach())))
+             if args.mother_credit_brain_tau and getattr(model, 'comp_logit_trace', None) is not None else None)
+    if args.mother_credit_event_clock:
+        return brain / max(float(args.stream_pace_mean or 8.0), 1.0) if brain else float(args.mother_credit_tau_words)
+    return brain if brain else args.mother_credit_tau
 
 
 def make_sense_gains(model, args, saved_model=None):
@@ -552,6 +565,11 @@ def main():
     parser.add_argument('--sense-gains-learnable', action='store_true', default=None,
                         help="The mother's voice gain (Johnston's organ) and the PAM cells' sensitivity to her answer "
                              'are learnable, starting at their levels (omitted = inherit)')
+    parser.add_argument('--mother-credit-event-clock', action='store_true', default=None,
+                        help='The speaking credit decays per mother word since the decision, not per tick: her own word '
+                             'does not discount what follows (review 2026-10-15; omitted = inherit)')
+    parser.add_argument('--mother-credit-tau-words', type=float, default=3.0,
+                        help='Event-clock decay in mother words (without --mother-credit-brain-tau)')
     parser.add_argument('--mother-credit-brain-tau', action='store_true', default=None,
                         help="The speaking credit decays on the brain's own eligibility clock: the Kenyon trace time "
                              "constant (comp_logit_trace, learnable) instead of --mother-credit-tau (omitted = inherit)")
@@ -2429,13 +2447,10 @@ def main():
                 from information_boltzmann.core.fly_mother_world import epistemic_credit
                 learner.last_epistemic = epistemic_credit(learner, window_state0, window_token0, targets_,
                                                           horizon_ticks=args.mother_credit_ticks,
-                                                          tau_ticks=(float(-1.0 / torch.log(torch.sigmoid(
-                                                              model.comp_logit_trace.detach())))
-                                                              if args.mother_credit_brain_tau
-                                                              and getattr(model, 'comp_logit_trace', None) is not None
-                                                              else args.mother_credit_tau),
+                                                          tau_ticks=speak_credit_tau(model, args),
                                                           trace=args.mother_credit_trace,
-                                                          differential=args.mother_credit_differential)
+                                                          differential=args.mother_credit_differential,
+                                                          event_clock=args.mother_credit_event_clock)
             # the pacemakers' homeostat, after the update and the replay: next window's three passes share one kappa
             learner.pacemaker_homeostat_step()
             trace = getattr(learner, 'last_ai_trace', None)

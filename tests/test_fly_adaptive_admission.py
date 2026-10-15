@@ -1502,9 +1502,9 @@ def test_carried_credit_equals_backprop_through_both_windows():
     st = start
     for t in range(T1 + T2):
         st = tick(st, t)
-    full = torch.autograd.grad(loss(st), [getattr(model, n) for n in cc.COMP_PARAMS])
+    full = torch.autograd.grad(loss(st), [getattr(model, n) for n in cc.COMP_PARAMS if hasattr(model, n)])
     # (b) window 1 forward-only with the recursions, then window 2 BPTT from leaves, plus G . S_0
-    st, S = start, (torch.zeros(3, N), torch.zeros(5, E), torch.zeros(1, nkc))
+    st, S = start, (torch.zeros(3, N), torch.zeros(len(cc.COMP_PARAMS), E), torch.zeros(1, nkc))
     with torch.no_grad():
         for t in range(T1):
             st, S = sens(st, S, t)
@@ -1516,7 +1516,7 @@ def test_carried_credit_equals_backprop_through_both_windows():
     model.zero_grad(set_to_none=True)
     loss(s2).backward()
     cc.apply_carried_credit(model, leaves, {'credit_dopamine': S[0], 'credit_comp': S[1], 'credit_comp_trace': S[2]})
-    for name, g in zip(cc.COMP_PARAMS, full):
+    for name, g in zip([n for n in cc.COMP_PARAMS if hasattr(model, n)], full):
         assert torch.allclose(getattr(model, name).grad, g, rtol=1e-4, atol=1e-6), (name, getattr(model, name).grad, g)
     assert all(float(g.abs()) > 0 for g in full)
 

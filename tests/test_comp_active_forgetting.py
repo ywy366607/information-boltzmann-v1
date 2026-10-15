@@ -12,7 +12,7 @@ def test_carried_credit_with_active_forgetting():
     dopamine clocks, and for STP with per-class parameters."""
     from information_boltzmann.core import fly_carried_credit as cc
     torch.manual_seed(3)
-    N, E, nkc, K, KT = 7, 6, 3, 0.4, 0.05
+    N, E, nkc, K = 7, 6, 3, 0.4
     post = torch.tensor([4, 4, 5, 6, 5, 6]); edge_kc = torch.tensor([0, 1, 1, 2, 0, 2]); kc = torch.tensor([0, 1, 2])
     T1, T2 = 23, 17
     spikes = (torch.rand(T1 + T2, N) < 0.3).float()
@@ -20,7 +20,7 @@ def test_carried_credit_with_active_forgetting():
     occ = lambda c: c / (c + K)
     model = torch.nn.Module()
     for name, v in (('comp_eta', -0.4), ('comp_logit_forget', -2.0), ('comp_logit_trace', 2.5),
-                    ('dopamine_logit_fast', 1.5), ('dopamine_logit_slow', 3.0)):
+                    ('dopamine_logit_fast', 1.5), ('dopamine_logit_slow', 3.0), ('comp_logit_tonic', -3.0)):
         setattr(model, name, torch.nn.Parameter(torch.tensor(v)))
     model.carried_credit = ('comp', 'dopamine')
 
@@ -35,7 +35,7 @@ def test_carried_credit_with_active_forgetting():
         p = F.relu(occ(dp[0:1]) - occ(dp[1:2]))
         w = occ(dp[1:2].detach()) / 0.5 * tr[:, edge_kc]
         kap = torch.sigmoid(model.comp_logit_forget)
-        phi = phi + w * (model.comp_eta * p * (1 + phi) - kap * phi) - occ(dp[1:2].detach()) / 0.5 * KT * phi
+        phi = phi + w * (model.comp_eta * p * (1 + phi) - kap * phi)             - occ(dp[1:2].detach()) / 0.5 * torch.sigmoid(model.comp_logit_tonic) * phi      # live phi, as the model
         return D, tr, phi
 
     def sens(st, S, t):
@@ -52,7 +52,8 @@ def test_carried_credit_with_active_forgetting():
                                   -cc.occupancy_slope(dp[1:2], K) * Sdp[2:3]], 0)
         Sphi, Str = cc.comp_step(Sphi, Str, phi, tr, spikes[t:t + 1, kc], torch.sigmoid(model.comp_logit_trace).detach(),
                                  model.comp_eta.detach(), torch.sigmoid(model.comp_logit_forget).detach(), p,
-                                 occ(dp[1:2]) / 0.5, edge_kc, dphasic, tonic=occ(dp[1:2]) / 0.5 * KT)
+                                 occ(dp[1:2]) / 0.5, edge_kc, dphasic, tonic=occ(dp[1:2]) / 0.5 * torch.sigmoid(model.comp_logit_tonic).detach(),
+                                 tonic_rate=float(torch.sigmoid(model.comp_logit_tonic)))
         return tuple(x.detach() for x in new), (Sd, Sphi, Str)
 
     start = (torch.rand(2, N) * 0.3, torch.rand(1, nkc) * 0.1, torch.zeros(1, E))
@@ -64,7 +65,7 @@ def test_carried_credit_with_active_forgetting():
         st = tick(st, t)
     full = torch.autograd.grad(loss(st), [getattr(model, n) for n in cc.COMP_PARAMS])
     # (b) window 1 forward-only with the recursions, then window 2 BPTT from leaves, plus G . S_0
-    st, S = start, (torch.zeros(3, N), torch.zeros(5, E), torch.zeros(1, nkc))
+    st, S = start, (torch.zeros(3, N), torch.zeros(len(cc.COMP_PARAMS), E), torch.zeros(1, nkc))
     with torch.no_grad():
         for t in range(T1):
             st, S = sens(st, S, t)

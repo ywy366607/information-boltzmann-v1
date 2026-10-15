@@ -889,7 +889,8 @@ def accumulate_speaking_credit(learner, rec, gains, horizon_ticks=64, beta=0.98,
             'credit_clock_ticks': now, 'credit_horizon_ticks': int(horizon_ticks)}
 
 
-def accumulate_speaking_trace(learner, rec, gains, tau_ticks, beta=0.98, differential=False, rate_beta=0.98):
+def accumulate_speaking_trace(learner, rec, gains, tau_ticks, beta=0.98, differential=False, rate_beta=0.98,
+                              event_clock=False):
     """The speaking credit as a continuous eligibility trace, O(1) and without a horizon (--mother-credit-trace).
 
     Each decision adds the gradient of its own log-probability (on the act readout, at the decision) to a trace E that
@@ -904,6 +905,13 @@ def accumulate_speaking_trace(learner, rec, gains, tau_ticks, beta=0.98, differe
     and a stretch that teaches nothing (a dark room of name calls) is below her average: worth leaving.  r_bar is the
     eligible progress per physical tick, a slow average over windows (rate_beta), updated after this window is valued.
     Per-decision returns are also tracked, for the said / silent statistics only, until their weight drops below 1e-3.
+    Review (2026-10-15): the differential charge is the same for every decision ending at the same time, so the
+    baseline absorbs it: it does NOT remove the bias against speaking.  The bias is the clock itself: her own word
+    delays the mother's later words by its ticks, so every later word is discounted more after speaking (22% at 8
+    ticks / tau 32, 71% at 32 ticks / tau 26).
+    event_clock=True (--mother-credit-event-clock): discount on the conversation's own clock, the count of eligible
+    mother words since the decision (tau_ticks is then in words).  Her own word no longer shifts the mother's later
+    words; what she says is valued by what the following replies teach, not by when they arrive.
     """
     import numpy as np
     import torch
@@ -933,6 +941,17 @@ def accumulate_speaking_trace(learner, rec, gains, tau_ticks, beta=0.98, differe
         if on:
             events.append((int(t), 1, float(g)))
     events.sort(key=lambda e: (e[0], e[1]))
+    if event_clock:
+        # time = eligible mother words so far (carried): a decision takes the index of the next word, so the first
+        # word after it has delay 0, the next delay 1, ...
+        count = int(tr.get('events', 0))
+        remapped = []
+        for t, kind, x in events:
+            remapped.append((count, kind, x))
+            if kind == 1:
+                count += 1
+        events = remapped
+        now = count
     diag = list(tr.get('diag', []))
     said_now = []
     for t, kind, x in events:
@@ -980,8 +999,8 @@ def accumulate_speaking_trace(learner, rec, gains, tau_ticks, beta=0.98, differe
         rate = float(sum(g for g, on in zip(gains, eligible) if on)) / max(ticks, 1.0)
         r_bar = rate if 'r_bar' not in tr else rate_beta * float(tr['r_bar']) + (1 - rate_beta) * rate
     learner.speak_trace = {'E': {k: v.detach() for k, v in E.items()}, 't': t_trace, 'baseline': b, 'diag': diag,
-                           **({'r_bar': r_bar} if differential else {})}
-    learner.speak_credit_clock = now
+                           **({'r_bar': r_bar} if differential else {}), **({'events': now} if event_clock else {})}
+    learner.speak_credit_clock = int(arrival[-1]) if len(arrival) else clock
     learner.speak_epistemic_baseline = b
     learner.pending_speak_credit = {'trace': {k: v.detach() for k, v in G.items()}, 'decisions': said_now}
     mean = lambda xs: float(np.mean(xs)) if xs else None
@@ -1000,7 +1019,7 @@ def accumulate_speaking_trace(learner, rec, gains, tau_ticks, beta=0.98, differe
 
 
 def epistemic_credit(learner, state0, previous_token, targets, horizon_ticks=64, beta=0.98, tau_ticks=0.0,
-                     trace=False, differential=False):
+                     trace=False, differential=False, event_clock=False):
     """Replay matched real sensory intervals after learning, then advance delayed speaking eligibility (trace=True:
     the continuous O(1) trace, no horizon)."""
     rec = getattr(learner, 'speak_record', None)
@@ -1012,7 +1031,8 @@ def epistemic_credit(learner, state0, previous_token, targets, horizon_ticks=64,
     before = rec['ce_before'].tolist()
     gains = [b - a for b, a in zip(before, after)]
     if trace:
-        return accumulate_speaking_trace(learner, rec, gains, tau_ticks, beta=beta, differential=differential)
+        return accumulate_speaking_trace(learner, rec, gains, tau_ticks, beta=beta, differential=differential,
+                                         event_clock=event_clock)
     return accumulate_speaking_credit(learner, rec, gains,
                                       horizon_ticks=horizon_ticks, beta=beta, tau_ticks=tau_ticks)
 
