@@ -223,3 +223,63 @@ resume), `--comp-unit-traces`.
   - (c) DANs out of the homeostat, with κ fixed at birth (out of the gradient as now). Their synapses can still drift
     under BPTT.
 - Test: 4096 words with each option; the DANs' κ trajectory and the 4× pulse contrast at the end.
+
+## Third review (2026-10-15 night): adopted, fixed, measured
+
+The review said no-go for now. Its findings and what was done:
+
+- **Carried credit was not exact for the newborn's rule** (now fixed, `ad359df`).
+  - `comp_step` always received the use-dependent forgetting rate, but the timing rule sets it to 0. Now 0 is passed
+    when it is off.
+  - The potentiation path was missing. `S_phi` now carries 2P rows: P for φ and P for the dopamine trace D, which is a
+    window leaf.
+    - `keep` gains −g P D s, and the cross term g P s (1 − φ) · S_D is added.
+    - New rows for `comp_eta_pot` and `comp_burst_k` (through p, both threshold forms).
+  - CPU test `test_carried_credit_newborn_compartment` covers unit/rate traces × absolute/contrast threshold, with
+    adapted K_j, tonic forgetting and the forgetting parameter present but off. All COMP parameters match BPTT exactly;
+    the ramp interior and the potentiation are exercised.
+- **The threshold's background statistics absorbed the pairing's own bursts.** They are now updated only on ticks below
+  the threshold.
+- **The homeostat was anti-responsive for event-driven DANs.** It now counted their evoked and B-driven spikes against a
+  set point of about 0. Option (c) adopted: `--homeostat-skip-dans`. The DANs' κ keeps its birth value
+  (`--dan-kappa 1.05`); the other pacemakers keep their homeostat.
+  - Still open: the review's preferred mechanism for the DANs' irregularity is channel noise (prediction: κ 1.0 plus
+    about 0.1 rheobase noise gives ISI CV above 0.5 and PPL101 not silent in words).
+  - Also open: a slow class-level excitability homeostat (τ ≥ 4 τ_tonic).
+- **The learning rate start was arbitrary.**
+  - Linearised: dφ/dt = −x(1 + φ) − rφ. Memory lives 1/(x + r), and the median edge sits at half depression when
+    x = r.
+  - Turnover measured at ×1 / 32 ticks:
+
+    | η | φ correlation over 256 words | memory | mean \|Δφ\| per 256 words |
+    |---|---|---|---|
+    | 1 | 0.36 | ~250 words | 0.24 |
+    | 0.1 | 0.81 | ~1200 words | 0.05 |
+
+  - `calibrate_comp_rate` / `--comp-rate-calibrate` sets |η| = r⟨g⟩ / median⟨g e p⟩ at birth from the newborn's own
+    dopamine (and likewise for potentiation with ⟨g D s⟩). Both stay learnable.
+- **The pairing probe's forward pulse fell inside the word**, so the word's later Kenyon spikes met the dopamine and
+  potentiated. This explains forward ≈ none at 2×.
+  - `FWD_AFTER=1`: the pulse starts when the word ends (trace conditioning); every arm gets the same silent ticks.
+  - `REST=160` (≥ 3 τ_fast), `WORD_TICKS=16`, `ZS_TIME_SCALE=2`: the launch's working point.
+  - `REP` replicates the run from a different conversation start.
+
+**Clock inventory at launch (×2, 16 ticks per word):**
+
+| clock | ticks | words | note |
+|---|---|---|---|
+| membrane τ_m | 20 → 10 | 0.6 | scaled ×2 |
+| synapse τ_s | 5 → 2.5 | 0.16 | scaled ×2 |
+| adaptation τ_a | 50 → 25 | 1.6 | scaled ×2 |
+| dopamine fast | 50 | 3.1 | not scaled |
+| dopamine slow | 500 | 31 | not scaled |
+| Kenyon eligibility (comp trace) | 40 | 2.5 | `--comp-trace-tau 40` |
+| threshold background | 1000 | 62 | sub-threshold ticks only |
+| active forgetting | 65536 | 4096 | `--comp-tonic-forget` |
+| homeostat EMA (non-DAN pacemakers) | 16 windows | 128 | |
+| BPTT window | 128 | 8 | carried credit beyond |
+
+- **Open:** dopamine fast clearance (50 ticks) is longer than the Kenyon eligibility (40). In the fly, dopamine clears
+  much faster than the eligibility window, so the aftermath of a pulse reaches the next word.
+  - Prediction: φ_Z drift in the paired arms exceeds 0.1 while τ_fast ≥ τ_e, and falls below it at τ_fast ≈ τ_e / 3.
+  - This decides whether the newborn's τ_fast start moves.
