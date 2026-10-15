@@ -29,6 +29,10 @@ def main():
     parser.add_argument('--checkpoint-dir', type=Path, required=True)
     parser.add_argument('--chunk-tokens', type=int, default=8192)
     parser.add_argument('--chunks', type=int, default=1)
+    parser.add_argument('--extra', default='', help='Extra trainer switches for every chunk (they are inherited anyway)')
+    parser.add_argument('--probes', action=argparse.BooleanOptionalAction, default=True,
+                        help='After each chunk: dopamine cells alive (alpha3_probe), surprise -> DA (live_da_report), '
+                             'act timing (live_act_report); one summary line each in the status')
     args = parser.parse_args()
     if args.chunk_tokens <= 0 or args.chunk_tokens % 32:
         parser.error('chunk-tokens must be a positive multiple of the 32-token training window')
@@ -68,7 +72,7 @@ def main():
                    '--mother-credit-ticks', '64', '--mother-credit-tau', '32',
                    '--mother-voice', '--mother-voice-level', '1.5',
                    '--compartment-dendritic', '--no-eye-binary', '--noise-rate', '0',
-                   '--log-word-dopamine', '--stream-pace-mean', '8', '--stream-pace-min', '4']
+                   '--log-word-dopamine', '--stream-pace-mean', '8', '--stream-pace-min', '4'] + args.extra.split()
         with (args.output / 'train.log').open('a', encoding='utf-8') as log:
             result = subprocess.run(command, cwd=root, stdout=log, stderr=subprocess.STDOUT)
         progress = json.loads((args.output / 'progress.json').read_text(encoding='utf-8'))
@@ -84,6 +88,36 @@ def main():
         write_json(plan_path, plan)
         note(f'chunk {c} done: mother-world tokens={saved_tokens}; chunk_words={saved_tokens - plan["start_tokens"]}; '
              f'speed={progress.get("speed_tokens_per_sec", 0):.3f}; ABA/AG deferred')
+        if args.probes:
+            run_probes(root, args, c, note)
+
+
+def run_probes(root, args, c, note):
+    """The brain's own circuits after each chunk (diagnostics on the saved state; the brain is not frozen for any gate):
+    the dopamine cells alive, surprise -> phasic DA on the chunk's own words, the acts' timing within interval."""
+    fi = root / 'scripts/ib/fly_interface'
+    out = args.output
+    env = {**__import__('os').environ, 'PYTHONIOENCODING': 'utf-8', 'FLY_REUSE_TRANSMISSION': '0'}
+
+    def run(cmd, log):
+        with open(log, 'w', encoding='utf-8') as handle:
+            return subprocess.run(cmd, cwd=root, stdout=handle, stderr=subprocess.STDOUT, env=env).returncode
+
+    if run([sys.executable, '-u', str(fi / 'alpha3_probe.py'), str(args.checkpoint_dir), str(out / f'alpha3_c{c}.json')],
+           out / f'alpha3_c{c}.txt') == 0:
+        r = json.loads((out / f'alpha3_c{c}.json').read_text(encoding='utf-8'))
+        note(f'c{c} dopamine cells: rate {json.dumps({k: round(v, 4) for k, v in r["rate_per_tick"].items()})}; '
+             f'v/theta {json.dumps({k: round(v[1], 3) for k, v in r["median_v_over_theta"].items()})}')
+    else:
+        note(f'c{c} alpha3 probe FAILED')
+    da = subprocess.run([sys.executable, str(fi / 'live_da_report.py'), str(out / f'scores_c{c}.jsonl')], cwd=root,
+                        capture_output=True, text=True, env=env)
+    note(f'c{c} (2) surprise~DA: {da.stdout.strip()[:600] or "FAILED"}')
+    trace = out / 'ai_trace.jsonl'
+    if trace.exists():
+        act = subprocess.run([sys.executable, str(fi / 'live_act_report.py'), str(trace)], cwd=root,
+                             capture_output=True, text=True, env=env)
+        note(f'c{c} (3) acts: {act.stdout.strip().splitlines()[-1][:900] if act.stdout.strip() else "FAILED"}')
 
 
 if __name__ == '__main__':
