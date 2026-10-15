@@ -152,7 +152,7 @@ def apply_carried_credit(model, leaves, start, scale=1.0):
         G_phi, G_tr = grad('comp_memory'), grad('comp_trace')
         S_phi, S_tr = start['credit_comp'], start['credit_comp_trace']
         if G_phi is not None:
-            for k, name in enumerate(COMP_PARAMS):
+            for k, name in enumerate(COMP_PARAMS[:S_phi.shape[0]]):     # old states carry fewer rows (no tonic)
                 add(name, (G_phi[0] * S_phi[k]).sum())
         if G_tr is not None:
             add('comp_logit_trace', (G_tr[0] * S_tr[0]).sum())
