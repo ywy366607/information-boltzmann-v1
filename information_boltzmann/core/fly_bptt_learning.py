@@ -447,7 +447,11 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
                 with torch.no_grad():
                     if comp_p_stats.numel() != 2 * rel_c.numel():
                         comp_p_stats = torch.cat([rel_c.detach(), rel_c.detach() ** 2 + 1e-6], 0)
-                    a_s = 1.0 / 1000.0
+                    # the background is estimated from the ticks below the threshold only (third review): a pairing's
+                    # own bursts must not raise the threshold that judges them (10 pulses in ~1300 ticks did)
+                    sd_0 = (comp_p_stats[1:2] - comp_p_stats[0:1] ** 2).clamp_min(1e-8).sqrt()
+                    below = (rel_c.detach() <= comp_p_stats[0:1] + F.softplus(burst_k.detach()) * sd_0).to(rel_c.dtype)
+                    a_s = below / 1000.0
                     comp_p_stats = torch.cat([(1 - a_s) * comp_p_stats[0:1] + a_s * rel_c.detach(),
                                               (1 - a_s) * comp_p_stats[1:2] + a_s * rel_c.detach() ** 2], 0)
                     sd_p = (comp_p_stats[1:2] - comp_p_stats[0:1] ** 2).clamp_min(1e-8).sqrt()
@@ -473,12 +477,14 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
             if 'comp' in credit:
                 with torch.no_grad():
                     from .fly_carried_credit import comp_step, occupancy_slope, COMP_PARAMS
-                    if credit_comp.numel() == (len(COMP_PARAMS) - 1) * comp_memory.shape[1]:
-                        # saved before the active-forgetting row existed: keep the carried rows, add a zero row
-                        credit_comp = torch.cat([credit_comp.reshape(len(COMP_PARAMS) - 1, -1),
-                                                 credit_comp.new_zeros(1, comp_memory.shape[1])], 0)
-                    if credit_comp.numel() != len(COMP_PARAMS) * comp_memory.shape[1]:
-                        credit_comp = h.new_zeros(len(COMP_PARAMS), comp_memory.shape[1])
+                    E_c = comp_memory.shape[1]
+                    if credit_comp.numel() == 0 or credit_comp.numel() % E_c:
+                        credit_comp = h.new_zeros(len(COMP_PARAMS), E_c)
+                        credit_comp_trace = h.new_zeros(1, comp_trace.shape[1])
+                    else:
+                        # saved with fewer rows (before the tonic / potentiation / threshold rows): comp_step pads them
+                        credit_comp = credit_comp.reshape(-1, E_c)
+                    if credit_comp_trace.numel() != comp_trace.shape[1]:
                         credit_comp_trace = h.new_zeros(1, comp_trace.shape[1])
                     post = model.comp_post.long()
                     Sd = credit_dopamine.index_select(1, post)                # [3, E]: dfast/dlf, dslow/dlf, dslow/dls
@@ -495,6 +501,10 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
                     else:
                         a_s = occupancy_slope(dpost[1:2], model.comp_affinity)
                     dphasic = on * torch.cat([a_f * Sd[0:1] - a_s * Sd[1:2], -a_s * Sd[2:3]], 0)
+                    dk_c = torch.zeros_like(dphasic[0:1])
+                    if burst_k is not None and not rel_burst:
+                        # p = relu(raw - mean - softplus(k) sd): d p / d k = -sigmoid(k) sd where p > 0
+                        dk_c = -on * torch.sigmoid(burst_k.detach()) * sd_p
                     if rel_burst:
                         # phasic = relu(raw) * ramp(rel): ramp d(raw) + relu(raw) d(ramp), d ramp = d rel / sd inside it
                         r_ = ramp_c.detach()
@@ -505,18 +515,39 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
                         in_ramp = ((r_ > 0) & (r_ < 1)).float() / sd_p
                         dphasic = (raw_on * r_ * torch.cat([a_f * Sd[0:1] - a_s * Sd[1:2], -a_s * Sd[2:3]], 0)
                                    + F.relu(phasic_raw_c.detach()) * in_ramp * drel)
+                        # d ramp / d k = -sigmoid(k) inside the ramp (its width is one sd)
+                        dk_c = -F.relu(phasic_raw_c.detach()) * in_ramp * sd_p * torch.sigmoid(burst_k.detach())
+                    dphasic = torch.cat([dphasic, dk_c], 0)
+                    eta_pot_d = getattr(model, 'comp_eta_pot', None)
+                    pot_c = None
+                    if eta_pot_d is not None:
+                        D_c = (comp_da_trace.detach() if comp_da_trace.numel() == phasic_c.numel()
+                               else torch.zeros_like(phasic_c.detach()))
+                        pot_c = {'P': F.softplus(eta_pot_d.detach()), 'dP': torch.sigmoid(eta_pot_d.detach()), 'D': D_c,
+                                 's_edge': spikes_c.detach().index_select(1, model.comp_kc).index_select(1, model.comp_edge_kc)}
                     lam_d = lam_c.detach()
                     credit_comp, credit_comp_trace = comp_step(
                         credit_comp, credit_comp_trace, memory_before, trace_before,
                         spikes_c.detach().index_select(1, model.comp_kc), lam_d, model.comp_eta.detach(),
-                        kappa_c.detach(), phasic_c.detach(),
+                        (kappa_c.detach() if getattr(model, 'comp_use_forget', True) else torch.zeros_like(kappa_c.detach())),
+                        phasic_c.detach(),
                         occ_slow_c.detach() / 0.5, model.comp_edge_kc,
                         dphasic,
                         tonic=(occ_slow_c.detach() / 0.5 * torch.sigmoid(model.comp_logit_tonic.detach())
                                if getattr(model, 'comp_logit_tonic', None) is not None else None),
                         tonic_rate=(float(torch.sigmoid(model.comp_logit_tonic.detach()))
                                     if getattr(model, 'comp_logit_tonic', None) is not None else None),
-                        unit=unit_c)
+                        unit=unit_c, pot=pot_c)
+            probe_c = getattr(model, '_comp_rate_probe', None)
+            if probe_c is not None:
+                # calibrate_comp_rate: each edge's write drive per tick, depression (gate e p) and potentiation (gate D s)
+                with torch.no_grad():
+                    probe_c['dep'] += (window_c * phasic_c).detach()[0]
+                    probe_c['gate'] += (occ_slow_c.detach() / 0.5)[0]
+                    if getattr(model, 'comp_eta_pot', None) is not None and comp_da_trace.numel() == phasic_c.numel():
+                        s_e = spikes_c.detach().index_select(1, model.comp_kc).index_select(1, model.comp_edge_kc)
+                        probe_c['pot'] += (occ_slow_c.detach() / 0.5 * comp_da_trace.detach() * s_e)[0]
+                    probe_c['ticks'] += 1
             phi_prev = comp_memory                    # live: BPTT sees the forgetting term too (review 2026-10-15)
             use_forget = kappa_c if getattr(model, 'comp_use_forget', True) else 0.0
             comp_memory = comp_memory + window_c * (model.comp_eta * phasic_c * (1.0 + comp_memory) - use_forget * comp_memory)
@@ -1244,6 +1275,56 @@ def attach_comp_relative_burst(model):
         raise ValueError('the relative burst threshold needs attach_comp_timing (comp_burst_k)')
     model.comp_burst_relative = True
     return True
+
+
+def calibrate_comp_rate(model, state, tokens, ticks, hold=True):
+    """The compartment learning rates' start from the individual's own dopamine (third review 2026-10-15): with
+    d phi / dt = -x (1 + phi) - r phi per edge (x = |eta| <gate e p> the write drive, r the active-forgetting rate at
+    tonic dopamine), the edge of the median-frequency word sits at half depression when x = r, and its memory lives
+    1 / (x + r).  Runs `tokens` (fixed weights, no gradient, the state discarded) and sets |eta| = r <gate> / median
+    over touched edges of <gate e p> for the depression, likewise for the potentiation with <gate D s>; both stay
+    learnable.  Measured at x1 / 32 ticks: eta 1 gave a 256-word phi correlation of 0.36 (memory ~250 words), eta 0.1
+    gave 0.81 (~1200 words); x = r falls near 0.15.  Needs attach_comp_tonic_forget.  Returns (eta, eta_pot, r)."""
+    import math
+    if getattr(model, 'comp_logit_tonic', None) is None:
+        raise ValueError('the rate calibration balances writes against active forgetting (--comp-tonic-forget)')
+    E = model.comp_pre.numel()
+    dev = state.h.device
+    model._comp_rate_probe = {'dep': torch.zeros(E, device=dev), 'pot': torch.zeros(E, device=dev),
+                              'gate': torch.zeros(E, device=dev), 'ticks': 0}
+    opts = dict(base_rates=model.get_decay_rates(), thresholds=model.get_thresholds(),
+                conductance_gains=model.get_conductance_gains(), alif_params=model.get_alif_params(),
+                stp_params=model.get_stp_params())
+    if getattr(model, 'dopamine_sensitivity', None) is not None:
+        opts['dopamine_s_class'] = dopamine_class_sensitivity(model, state.h)
+    writer = model.topographic_writer
+    quiet = torch.zeros_like(state.h)
+    s = state
+    try:
+        with torch.no_grad():
+            for w in tokens:
+                token = torch.tensor([int(w)], device=dev)
+                for t in range(int(ticks)):
+                    if t == 0 or hold:
+                        drive, baseline = write_input(model, s, token)
+                        s = step_fly_physical_tick(model, s, token, drive, baseline, opts, base_rates=opts['base_rates'])
+                    else:
+                        s = step_fly_physical_tick(model, s, None, quiet, writer.lambda_adapt * s.baseline, opts,
+                                                   base_rates=opts['base_rates'])
+        pr = model._comp_rate_probe
+    finally:
+        model._comp_rate_probe = None
+    n = max(pr['ticks'], 1)
+    r = float(torch.sigmoid(model.comp_logit_tonic.detach())) * float((pr['gate'] / n).mean())
+    dep = pr['dep'] / n
+    eta = r / float(dep[dep > 0].median()) if bool((dep > 0).any()) else abs(float(model.comp_eta.detach()))
+    pot = pr['pot'] / n
+    eta_pot = r / float(pot[pot > 0].median()) if bool((pot > 0).any()) else eta
+    with torch.no_grad():
+        model.comp_eta.fill_(-eta)
+        if getattr(model, 'comp_eta_pot', None) is not None:
+            model.comp_eta_pot.fill_(math.log(math.expm1(max(eta_pot, 1e-6))))
+    return eta, eta_pot, r
 
 
 def attach_comp_unit_traces(model, eta=-1.0, eta_pot=1.0):
@@ -2089,7 +2170,7 @@ def read_fly_motor(model, state):
 STEP_GRAD_CLIP = float(os.environ.get('FLY_STEP_GRAD_CLIP', '1000'))
 
 
-def attach_pacemaker_homeostasis(model, tau_windows=16.0, eta=0.05, band=(0.0, 3.0), warm_windows=16):
+def attach_pacemaker_homeostasis(model, tau_windows=16.0, eta=0.05, band=(0.0, 3.0), warm_windows=16, exclude_cells=None):
     """Responsiveness kept alive (2026-10-15; design docs/information_boltzmann/MENGLI_TRACES_AND_HOMEOSTASIS_DESIGN_20261015.md).
     The spontaneously active modulatory cells (intrinsic_kappa: PAM / PPL / OA / 5-HT / clock cells) pacemake from their
     own conductances; in m_main the short-window BPTT turned their drive from 1.21 to 0.39 (median) and silenced PPL1.
@@ -2104,9 +2185,19 @@ def attach_pacemaker_homeostasis(model, tau_windows=16.0, eta=0.05, band=(0.0, 3
     model.register_buffer('homeo_spikes', torch.zeros(model.intrinsic_index.numel(), device=model.intrinsic_kappa.device),
                           persistent=False)
     model.homeo_ticks = 0
+    # exclude_cells (--homeostat-skip-dans, third review 2026-10-15): event-driven cells (the dopamine cells near
+    # threshold, silent at birth) are left out -- with a set point of ~0 every evoked burst lowered their kappa
+    # (~-0.055 per window at 1 spike / 1000 ticks), and the reward pulse B on the PAM cells counted as their own firing;
+    # their kappa keeps its birth value (out of the gradient as for every pacemaker)
+    mask = torch.ones(model.intrinsic_index.numel(), device=model.intrinsic_kappa.device)
+    if exclude_cells is not None:
+        ex = torch.zeros(model.n_neurons, dtype=torch.bool, device=mask.device)
+        ex[torch.as_tensor(np.asarray(exclude_cells, dtype=np.int64), device=mask.device)] = True
+        mask = (~ex[model.intrinsic_index.long()]).float()
+    model.register_buffer('homeo_mask', mask, persistent=False)
     model.pacemaker_homeo = {'tau': float(tau_windows), 'eta': float(eta), 'band': (float(band[0]), float(band[1])),
                              'warm': int(warm_windows)}
-    return int(model.intrinsic_index.numel())
+    return int(mask.sum())
 
 
 def attach_reply_reward(model, graph_npz, annotations, level=1.0, ticks=4, learnable=False):
@@ -4168,6 +4259,9 @@ class FlyBPTTLearner:
             else:
                 eps = 1.0 / 2000.0                            # a cell silent at its set point is not pushed
                 step = cfg['eta'] * (torch.log(h['target'].to(rate) + eps) - torch.log(h['ema'] + eps))
+                mask = getattr(m, 'homeo_mask', None)
+                if mask is not None:
+                    step = step * mask.reshape(step.shape) if step.numel() == mask.numel() else step
                 m.intrinsic_kappa.add_(step).clamp_(*cfg['band'])
                 moved = float(step.abs().mean())
             self.homeo = h

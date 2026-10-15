@@ -35,7 +35,7 @@ from information_boltzmann.core.fly_bptt_learning import (WRITER_SENSE, attach_i
     ONLINE_DA_PARAMETER_NAMES, attach_online_da_plasticity, attach_kenyon_dendritic_only, attach_homeostasis,
     attach_regime_homeostasis, attach_tied_writer, REGIME_KENYON_Z,
     attach_compartment_memory, attach_taste_heads, COMPARTMENT_PARAMETER_NAMES, TASTE_PARAMETER_NAMES,
-    attach_stream_jepa, STREAM_JEPA_PARAMETER_NAMES, attach_mother_voice, attach_pacemaker_homeostasis, attach_comp_tonic_forget, attach_comp_timing, attach_comp_unit_traces, attach_comp_relative_burst, set_time_scale, COMP_TONIC_PARAMETER_NAMES, attach_reply_reward, attach_apl_kenyon_dendritic_only, attach_compartment_dendritic,
+    attach_stream_jepa, STREAM_JEPA_PARAMETER_NAMES, attach_mother_voice, attach_pacemaker_homeostasis, attach_comp_tonic_forget, attach_comp_timing, attach_comp_unit_traces, attach_comp_relative_burst, calibrate_comp_rate, set_time_scale, COMP_TONIC_PARAMETER_NAMES, attach_reply_reward, attach_apl_kenyon_dendritic_only, attach_compartment_dendritic,
     renormalize_kenyon_inputs, pin_kenyon_to_dopamine, pin_sensory_terminals, pin_modulatory_fast_edges,
     reset_inputs_to_birth, attach_graded_cells, GRADED_PARAMETER_NAMES, attach_receptor_writer,
 )
@@ -280,6 +280,8 @@ def resolve_learning_modes(args, previous_config, previous_learner):
         args.mother_reward_level = float(previous_config.get('mother_reward_level') or 1.0)
     if getattr(args, 'mother_reward_ticks', None) is None:
         args.mother_reward_ticks = int(previous_config.get('mother_reward_ticks') or 4)
+    if getattr(args, 'homeostat_skip_dans', None) is None:
+        args.homeostat_skip_dans = bool(previous_config.get('homeostat_skip_dans', False))
     if getattr(args, 'pacemaker_homeostasis', None) is None:
         args.pacemaker_homeostasis = bool(previous_config.get('pacemaker_homeostasis', False))
     if getattr(args, 'dan_kappa', None) is None:
@@ -681,6 +683,9 @@ def main():
     parser.add_argument('--comp-unit-traces', action='store_true', default=None,
                         help='Newborn: the compartment eligibility is the terminal state (one spike lifts it to ~1, saturating), '
                              'rates start -1 / +1 (needs --comp-timing, --compartment-adapted; omitted = inherit)')
+    parser.add_argument('--comp-rate-calibrate', action='store_true',
+                        help='Newborn: start the compartment depression / potentiation rates so the median edge writes as fast '
+                             'as it forgets (calibrate_comp_rate; needs --comp-tonic-forget)')
     parser.add_argument('--comp-burst-relative', action='store_true', default=None,
                         help='The compartment burst threshold judged on the linear dopamine contrast (f - s) / (s + K), '
                              'occupancy amount ramped over one sd (needs --comp-timing; omitted = inherit)')
@@ -695,6 +700,9 @@ def main():
     parser.add_argument('--comp-tonic-forget', type=float, default=None,
                         help='Active forgetting of the Kenyon -> MBON memory: phi relaxes on its own clock (this many ticks '
                              'at tonic dopamine), whether or not the Kenyon cell fires; 0 = off (omitted = inherit)')
+    parser.add_argument('--homeostat-skip-dans', action='store_true', default=None,
+                        help='The pacemaker homeostat leaves the dopamine cells out (event-driven near threshold; their kappa '
+                             'keeps its birth value; omitted = inherit)')
     parser.add_argument('--pacemaker-homeostasis', action=argparse.BooleanOptionalAction, default=None,
                         help='The spontaneously active modulatory cells keep their own firing: intrinsic_kappa leaves the '
                              'gradient and an intrinsic homeostat holds each cell near its own set point (omitted = inherit)')
@@ -1254,7 +1262,7 @@ def main():
             names.extend(name for name in group if name in named_now and name not in names)
         if getattr(args, 'pacemaker_homeostasis', False) and getattr(model, 'intrinsic_kappa', None) is not None:
             # the pacemakers' drive belongs to their homeostat, not to the prediction gradient
-            print(f'Pacemaker homeostasis on {attach_pacemaker_homeostasis(model)} spontaneously active cells '
+            print(f'Pacemaker homeostasis on {attach_pacemaker_homeostasis(model, exclude_cells=(np.load(args.graph, allow_pickle=True)["dan_indices"] if args.homeostat_skip_dans else None))} spontaneously active cells '
                   f'(kappa out of the gradient)', flush=True)
             names = [n for n in names if n not in INTRINSIC_PARAMETER_NAMES]
         names.extend(n for n in make_sense_gains(model, args)[0] if n not in names)
@@ -1296,6 +1304,12 @@ def main():
             go_max_ticks=int(args.go_max_ticks or 32))
         learner.stream_pace_mean = float(args.stream_pace_mean or 0.0)
         learner.stream_pace_min = float(getattr(args, 'stream_pace_min', 0.0) or 0.0)
+        if getattr(args, 'comp_rate_calibrate', False) and getattr(model, 'comp_eta', None) is not None:
+            # the compartment rates' start from the newborn's own dopamine: the median edge writes as fast as it forgets
+            eta_c, pot_c, r_c = calibrate_comp_rate(model, learner.state, np.asarray(train[:128]),
+                                                    ticks=int(round(args.stream_pace_mean or 8)), hold=bool(args.hold_input))
+            print(f'Compartment rates calibrated on 128 words: depression {eta_c:.4f}, potentiation {pot_c:.4f} '
+                  f'(active forgetting {r_c:.2e} per tick)', flush=True)
         if getattr(args, 'ai', False):
             # a newborn's omitted switches take the same defaults a resume would (acts from birth, 2026-10-15)
             learner.ai_epistemic, learner.ai_pragmatic = float(args.ai_epistemic or 0.0), float(args.ai_pragmatic or 0.0)
@@ -1740,7 +1754,7 @@ def main():
                     newly_trainable.append(full_name)
         if getattr(args, 'pacemaker_homeostasis', False) and getattr(model, 'intrinsic_kappa', None) is not None:
             # the pacemakers' drive belongs to their homeostat, not to the prediction gradient
-            print(f'Pacemaker homeostasis on {attach_pacemaker_homeostasis(model)} spontaneously active cells '
+            print(f'Pacemaker homeostasis on {attach_pacemaker_homeostasis(model, exclude_cells=(np.load(args.graph, allow_pickle=True)["dan_indices"] if args.homeostat_skip_dans else None))} spontaneously active cells '
                   f'(kappa out of the gradient)', flush=True)
             names = [n for n in names if n not in INTRINSIC_PARAMETER_NAMES]
             newly_trainable = [n for n in newly_trainable if n not in INTRINSIC_PARAMETER_NAMES]

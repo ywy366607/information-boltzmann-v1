@@ -65,7 +65,8 @@ def test_carried_credit_with_active_forgetting(unit):
     st = start
     for t in range(T1 + T2):
         st = tick(st, t)
-    full = torch.autograd.grad(loss(st), [getattr(model, n) for n in cc.COMP_PARAMS])
+    names = [n for n in cc.COMP_PARAMS if hasattr(model, n)]
+    full = torch.autograd.grad(loss(st), [getattr(model, n) for n in names])
     # (b) window 1 forward-only with the recursions, then window 2 BPTT from leaves, plus G . S_0
     st, S = start, (torch.zeros(3, N), torch.zeros(len(cc.COMP_PARAMS), E), torch.zeros(1, nkc))
     with torch.no_grad():
@@ -79,7 +80,7 @@ def test_carried_credit_with_active_forgetting(unit):
     model.zero_grad(set_to_none=True)
     loss(s2).backward()
     cc.apply_carried_credit(model, leaves, {'credit_dopamine': S[0], 'credit_comp': S[1], 'credit_comp_trace': S[2]})
-    for name, g in zip(cc.COMP_PARAMS, full):
+    for name, g in zip(names, full):
         assert torch.allclose(getattr(model, name).grad, g, rtol=1e-4, atol=1e-6), (name, getattr(model, name).grad, g)
     assert all(float(g.abs()) > 0 for g in full)
 
@@ -179,7 +180,8 @@ def test_carried_credit_with_relative_burst_threshold(unit):
     st = start
     for t in range(T1 + T2):
         st = tick(st, t)[:4]
-    full = torch.autograd.grad(loss(st), [getattr(model, n) for n in cc.COMP_PARAMS])
+    names = [n for n in cc.COMP_PARAMS if hasattr(model, n)]
+    full = torch.autograd.grad(loss(st), [getattr(model, n) for n in names])
     st, S = start, (torch.zeros(3, N), torch.zeros(len(cc.COMP_PARAMS), E), torch.zeros(1, nkc))
     with torch.no_grad():
         for t in range(T1):
@@ -192,7 +194,136 @@ def test_carried_credit_with_relative_burst_threshold(unit):
     model.zero_grad(set_to_none=True)
     loss(s2).backward()
     cc.apply_carried_credit(model, leaves, {'credit_dopamine': S[0], 'credit_comp': S[1], 'credit_comp_trace': S[2]})
-    for name, g in zip(cc.COMP_PARAMS, full):
+    for name, g in zip(names, full):
         assert torch.allclose(getattr(model, name).grad, g, rtol=1e-4, atol=1e-6), (name, getattr(model, name).grad, g)
     assert all(float(g.abs()) > 0 for g in full)
     assert sum(seen) > 10                    # the ramp's own slope was exercised
+
+
+@pytest.mark.parametrize('unit', [False, True])
+@pytest.mark.parametrize('rel', [False, True])
+def test_carried_credit_newborn_compartment(unit, rel):
+    """The newborn's full compartment rule (third review 2026-10-15): timing rule with the potentiation path (its own
+    dopamine trace D, eta_pot), use-dependent forgetting off (kappa 0 although its parameter exists), adapted receptors
+    K_j = max(slow, K), active forgetting, burst threshold k (absolute or on the contrast), unit or rate traces.
+    Carried credit for every COMP parameter equals backprop through both windows."""
+    from information_boltzmann.core import fly_carried_credit as cc
+    torch.manual_seed(7 + 2 * unit + rel)
+    N, E, nkc, K = 7, 6, 3, 0.05
+    post = torch.tensor([4, 4, 5, 6, 5, 6]); edge_kc = torch.tensor([0, 1, 1, 2, 0, 2]); kc = torch.tensor([0, 1, 2])
+    T1, T2 = 29, 19
+    spikes = (torch.rand(T1 + T2, N) < 0.3).float()
+    arrival = torch.rand(T1 + T2, N) * 0.6 * (torch.rand(T1 + T2, N) < 0.5).float()
+    occ = lambda c, k: c / (c + k)
+    sp = torch.nn.functional.softplus
+    model = torch.nn.Module()
+    for name, v in (('comp_eta', -0.6), ('comp_logit_forget', -2.0), ('comp_logit_trace', 2.0),
+                    ('dopamine_logit_fast', 1.2), ('dopamine_logit_slow', 2.5), ('comp_logit_tonic', -3.0),
+                    ('comp_eta_pot', 0.3), ('comp_burst_k', -1.0)):
+        setattr(model, name, torch.nn.Parameter(torch.tensor(v)))
+    model.carried_credit = ('comp', 'dopamine')
+    seen = {'ramp': 0, 'pot': 0}
+
+    def tick(st, t):
+        Dc, tr, phi, Dt, stats = st
+        f, s = torch.sigmoid(model.dopamine_logit_fast), torch.sigmoid(model.dopamine_logit_slow)
+        conc = f * Dc[0:1] + (1 - f) * arrival[t:t + 1]
+        Dc = torch.cat([conc, s * Dc[1:2] + (1 - s) * conc], 0)
+        lam = torch.sigmoid(model.comp_logit_trace)
+        sk = spikes[t:t + 1, kc]
+        tr = (lam * tr + (1 - lam * tr) * sk) if unit else (lam * tr + (1 - lam) * sk)
+        dp = Dc[:, post]
+        Kj = torch.maximum(dp[1:2], torch.tensor(K))
+        occ_s = occ(dp[1:2], Kj)
+        raw = occ(dp[0:1], Kj) - occ_s
+        kb = sp(model.comp_burst_k)
+        if rel:
+            sig = (dp[0:1] - dp[1:2]) / (dp[1:2] + K)
+        else:
+            sig = raw
+        with torch.no_grad():
+            stats = torch.cat([0.8 * stats[0:1] + 0.2 * sig, 0.8 * stats[1:2] + 0.2 * sig ** 2], 0)
+            sd = (stats[1:2] - stats[0:1] ** 2).clamp_min(1e-8).sqrt()
+        if rel:
+            ramp = ((sig - stats[0:1] - kb * sd) / sd).clamp(0.0, 1.0)
+            p = F.relu(raw) * ramp
+            seen['ramp'] += int(((ramp > 0) & (ramp < 1) & (raw > 0)).sum())
+        else:
+            ramp = None
+            p = F.relu(raw - stats[0:1] - kb * sd)
+        g = occ_s.detach() / 0.5
+        w = g * tr[:, edge_kc]
+        phi_prev = phi
+        phi = phi + w * (model.comp_eta * p * (1 + phi) - 0.0 * phi)
+        s_e = sk[:, edge_kc]
+        phi = phi + g * sp(model.comp_eta_pot) * Dt * s_e * (1 - phi_prev)
+        seen['pot'] += int((Dt * s_e > 0).sum())
+        Dt = (lam * Dt + (1 - lam * Dt) * p.clamp(max=1.0)) if unit else (lam * Dt + (1 - lam) * p)
+        phi = phi - g * torch.sigmoid(model.comp_logit_tonic) * phi_prev
+        return (Dc, tr, phi, Dt, stats), (raw, ramp, sd, p, Kj, g)
+
+    def sens(st, S, t):
+        Dc, tr, phi, Dt, stats = (x.detach() for x in st)
+        Sd, Sphi, Str = S
+        f, s = torch.sigmoid(model.dopamine_logit_fast).detach(), torch.sigmoid(model.dopamine_logit_slow).detach()
+        Sd = cc.dopamine_step(Sd, Dc[0:1], Dc[1:2], arrival[t:t + 1], f, s)
+        new, (raw, ramp, sd, p, Kj, g) = tick(st, t)
+        new = tuple(x.detach() for x in new)
+        dp = new[0][:, post]
+        Sdp = Sd[:, post]
+        raw, p = raw.detach(), p.detach()
+        on = (p > 0).float()
+        a_f = cc.occupancy_slope(dp[0:1], Kj)
+        adapted = (dp[1:2] >= K).float()
+        a_s = (1 - adapted) * cc.occupancy_slope(dp[1:2], K) + adapted * dp[0:1] / (dp[0:1] + Kj).square()
+        draw = torch.cat([a_f * Sdp[0:1] - a_s * Sdp[1:2], -a_s * Sdp[2:3]], 0)
+        sk_ = torch.sigmoid(model.comp_burst_k).detach()
+        if rel:
+            r_ = ramp.detach()
+            den = dp[1:2] + K
+            b_s = (dp[0:1] + K) / den.square()
+            drel = torch.cat([Sdp[0:1] / den - b_s * Sdp[1:2], -b_s * Sdp[2:3]], 0)
+            in_ramp = ((r_ > 0) & (r_ < 1)).float() / sd
+            dph = (raw > 0).float() * r_ * draw + F.relu(raw) * in_ramp * drel
+            dk = -F.relu(raw) * in_ramp * sd * sk_
+        else:
+            dph = on * draw
+            dk = -on * sk_ * sd
+        dph = torch.cat([dph, dk], 0)
+        pot = {'P': sp(model.comp_eta_pot).detach(), 'dP': torch.sigmoid(model.comp_eta_pot).detach(), 'D': Dt,
+               's_edge': spikes[t:t + 1, kc][:, edge_kc]}
+        Sphi, Str = cc.comp_step(Sphi, Str, phi, tr, spikes[t:t + 1, kc], torch.sigmoid(model.comp_logit_trace).detach(),
+                                 model.comp_eta.detach(), torch.tensor(0.0), p, g, edge_kc, dph,
+                                 tonic=g * torch.sigmoid(model.comp_logit_tonic).detach(),
+                                 tonic_rate=float(torch.sigmoid(model.comp_logit_tonic)), unit=unit, pot=pot)
+        return new, (Sd, Sphi, Str)
+
+    start = (torch.rand(2, N) * 0.3, torch.rand(1, nkc) * 0.1, torch.zeros(1, E), torch.zeros(1, E),
+             torch.cat([torch.zeros(1, E), torch.full((1, E), 0.05)], 0))
+    wD, wtr, wphi, wDt = torch.randn(2, N), torch.randn(1, nkc), torch.randn(1, E), torch.randn(1, E)
+    loss = lambda st: (st[0] * wD).sum() + (st[1] * wtr).sum() + (st[2] * wphi).sum() + (st[2] ** 2).sum() + (st[3] * wDt).sum()
+    params = [getattr(model, n) for n in cc.COMP_PARAMS]
+    st = start
+    for t in range(T1 + T2):
+        st = tick(st, t)[0]
+    full = torch.autograd.grad(loss(st), params, allow_unused=True)
+    full = [torch.zeros(()) if g is None else g for g in full]
+    st, S = start, (torch.zeros(3, N), torch.zeros(len(cc.COMP_PARAMS), E), torch.zeros(1, nkc))
+    with torch.no_grad():
+        for t in range(T1):
+            st, S = sens(st, S, t)
+    leaves = {'dopamine': st[0].clone().requires_grad_(), 'comp_trace': st[1].clone().requires_grad_(),
+              'comp_memory': st[2].clone().requires_grad_(), 'comp_da_trace': st[3].clone().requires_grad_()}
+    s2 = (leaves['dopamine'], leaves['comp_trace'], leaves['comp_memory'], leaves['comp_da_trace'], st[4])
+    for t in range(T1, T1 + T2):
+        s2 = tick(s2, t)[0]
+    model.zero_grad(set_to_none=True)
+    loss(s2).backward()
+    cc.apply_carried_credit(model, leaves, {'credit_dopamine': S[0], 'credit_comp': S[1], 'credit_comp_trace': S[2]})
+    for name, g in zip(cc.COMP_PARAMS, full):
+        got = getattr(model, name).grad
+        got = torch.zeros(()) if got is None else got
+        assert torch.allclose(got, g, rtol=1e-4, atol=1e-6), (name, got, g)
+    assert float(full[1].abs()) == 0.0                       # the use-dependent forgetting is off: no credit
+    assert all(float(full[i].abs()) > 0 for i in (0, 2, 3, 4, 5, 6, 7))
+    assert seen['pot'] > 5 and (not rel or seen['ramp'] > 5)

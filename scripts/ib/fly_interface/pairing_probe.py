@@ -18,7 +18,11 @@ fork, RUN = Path(sys.argv[1]), Path(sys.argv[2])
 MBON_T = sys.argv[3] if len(sys.argv) > 3 else 'MBON11'
 DAN_T = sys.argv[4] if len(sys.argv) > 4 else 'PPL101'
 OUT = Path(sys.argv[5]) if len(sys.argv) > 5 else None
-REST, WORD, PULSE, LEVEL = 32, 32, 8, float(os.environ.get('PAIR_LEVEL', '2.0'))
+REST, WORD, PULSE, LEVEL = int(os.environ.get('REST', '32')), int(os.environ.get('WORD_TICKS', '32')), 8, float(os.environ.get('PAIR_LEVEL', '2.0'))
+# FWD_AFTER=1 (third review): the forward pulse starts when the word ends (trace conditioning), so no Kenyon spike of
+# the word follows the dopamine (which would potentiate); every arm gets the same PULSE silent ticks after the word
+FWD_AFTER = os.environ.get('FWD_AFTER') == '1'
+REP = int(os.environ.get('REP', '0'))      # replicate: the conversation starts REP x 40 words later
 TESTS = int(os.environ.get('TESTS', '1'))
 FWD_AT, BWD_LEAD = 16, int(os.environ.get('BWD_LEAD', '4'))
 REST = max(REST, BWD_LEAD + PULSE + 8)       # the backward pulse must fit inside the silence before the word
@@ -36,6 +40,7 @@ mbon = torch.as_tensor(np.flatnonzero(typ == MBON_T), device='cuda')
 dan = torch.as_tensor(np.flatnonzero(typ == DAN_T), device='cuda')
 kc = torch.as_tensor(np.flatnonzero(cls == 'Kenyon_Cell'), device='cuda')
 on_mbon = torch.isin(model.comp_post.long(), mbon)
+CALIB = os.environ.get('COMP_CALIB') == '1'
 with torch.no_grad():
     rates = model.get_decay_rates()[0]
     rheo = (model.get_thresholds().expand_as(rates) * -torch.log(rates.clamp(1e-5, 1 - 1e-7)))[0]
@@ -46,7 +51,7 @@ tok = tiktoken.get_encoding('gpt2')
 X, Z = tok.encode(' flower')[0], tok.encode(' water')[0]
 lines = [json.loads(l) for l in (RUN / 'mother.jsonl').read_text(encoding='utf-8').splitlines() if l.strip()]
 filler = []
-for r in lines:
+for r in lines[REP * 6:] if REP else lines:
     t = r['text'].strip()
     if t and t != '...' and not t.startswith('Mengli'):
         filler += tok.encode(' ' + t)
@@ -68,7 +73,7 @@ def trial(s, w, mode):
     resp, fired = 0.0, torch.zeros(kc.numel(), dtype=torch.bool, device='cuda')
     th = model.get_thresholds().reshape(-1)
     for t in range(WORD):
-        s = tick(s, w, drive=pulse_drive if mode == 'forward' and FWD_AT <= t < FWD_AT + PULSE else None)
+        s = tick(s, w, drive=pulse_drive if mode == 'forward' and not FWD_AFTER and FWD_AT <= t < FWD_AT + PULSE else None)
         spk = s.ring[0][0] > 0
         fired |= spk[kc]
         if t >= WORD // 2:
@@ -76,6 +81,9 @@ def trial(s, w, mode):
             # plus its spikes, per tick
             vt = s.h[0, mbon] / (th.index_select(0, mbon) if th.numel() > 1 else th)
             resp += float(vt.mean() + spk[mbon].float().mean()) / (WORD // 2)
+    if FWD_AFTER:
+        for t in range(PULSE):
+            s = tick(s, w, on=False, drive=pulse_drive if mode == 'forward' else None)
     s = fl.expect_next(model, s, fl.read_fly_motor(model, s))
     return s, resp, fired
 
@@ -101,6 +109,9 @@ def phi_on(s, fired_kc):
     return float(s.comp_memory[0][sel].mean()) if bool(sel.any()) else None
 
 
+if CALIB:
+    # the newborn's start (calibrate_comp_rate): the median edge writes as fast as it forgets
+    print('compartment rates calibrated (dep, pot, r):', fl.calibrate_comp_rate(model, s0, filler[:128], WORD), flush=True)
 rep = {'mbon': MBON_T, 'dan': DAN_T, 'level': LEVEL, 'arms': {}}
 with torch.no_grad():
     # warm-up: the brain listens to WARM ordinary words first (the burst threshold's statistics settle, ~1000 ticks)
