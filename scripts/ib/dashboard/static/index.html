@@ -149,6 +149,10 @@ textarea { width: 100%; min-height: 460px; font: 12px/1.5 Consolas, monospace; }
       <div class="card"><h2>认知学分</h2><p class="sub">--mother-credit epistemic：决策后 64 tick 内妈妈的话教会了多少（更新前 CE − 更新后 CE）。开口之后 vs 沉默之后</p>
         <canvas class="chart" id="cEpi"></canvas>
         <div class="legend"><span><i style="background:var(--fly)"></i>开口之后</span><span><i style="background:var(--dim)"></i>沉默之后</span><span><i style="background:var(--mother)"></i>妈妈每词学到</span></div></div>
+      <div class="card"><h2>起搏稳态与回应多巴胺</h2><p class="sub">--pacemaker-homeostasis：439 个起搏/调质细胞各自回到出生后前 16 窗的放电率（κ 不进梯度）。--mother-reward：她对孩子开口的正常回应，第一词时 PAM 的脉冲数（每窗）</p>
+        <canvas class="chart" id="cHomeo"></canvas>
+        <div class="legend"><span><i style="background:var(--fly)"></i>κ 中位数</span><span><i style="background:var(--accent)"></i>放电率中位数 ×100</span><span><i style="background:var(--mother)"></i>回应脉冲</span></div>
+        <div class="kv" id="homeoKv" style="margin-top:10px"></div></div>
     </div>
     <div class="card" style="margin-top:14px"><h2>妈妈世界运行对照</h2><p class="sub">同一起点（D4 c8，1,024 词）：不随回应 → 随回应 → 认知学分</p>
       <div class="scroll"><table id="motherRuns"></table></div></div>
@@ -343,6 +347,15 @@ async function drawTalk() {
   chart($('#cEpi'), [{color: css('--fly'), points: ep.map(w => ({x: ex(w), y: w.epistemic.speak_said_return}))},
                      {color: css('--dim'), points: ep.map(w => ({x: ex(w), y: w.epistemic.speak_silent_return}))},
                      {color: css('--mother'), dots: true, points: ep.map(w => ({x: ex(w), y: w.epistemic.ig_mother_mean}))}], {zero: true, xfmt: x => x.toFixed(1) + 'k'});
+  const ho = WINDOWS.filter(w => w.homeo), rp = WINDOWS.filter(w => w.reply_pulses != null);
+  chart($('#cHomeo'), [{color: css('--fly'), points: ho.map(w => ({x: ex(w), y: w.homeo.homeo_kappa_median}))},
+                       {color: css('--accent'), points: ho.map(w => ({x: ex(w), y: 100 * w.homeo.homeo_rate_median}))},
+                       {color: css('--mother'), dots: true, points: rp.filter(w => w.reply_pulses > 0).map(w => ({x: ex(w), y: w.reply_pulses}))}], {zero: true, xfmt: x => x.toFixed(1) + 'k'});
+  const lh = ho.length ? ho[ho.length - 1].homeo : null;
+  $('#homeoKv').innerHTML = lh ? [['窗数', lh.homeo_windows], ['设定点', lh.homeo_target_set ? '已定' : '测量中'], ['κ 中位数', lh.homeo_kappa_median.toFixed(3)],
+      ['放电率中位数', lh.homeo_rate_median.toFixed(4)], ['贴边比例', (100 * lh.homeo_at_band).toFixed(1) + '%'], ['每窗步长', lh.homeo_step.toExponential(2)],
+      ['回应脉冲（总）', rp.reduce((a, w) => a + w.reply_pulses, 0)]].map(([k, v]) => `<span>${k}</span><span>${v}</span>`).join('')
+    : '<span>未开启</span><span>—</span>';
   const pct = v => v == null ? '—' : Math.round(100 * v) + '%';
   $('#motherRuns').innerHTML = '<tr><th>运行</th><th>学分</th><th>话轮</th><th>一口气 / 结束词 / 让出</th><th>沉默话轮</th><th>每轮词数</th><th>妈妈多样性</th><th>妈妈重复</th><th>hazard 起 → 止</th></tr>' +
     runs.filter(r => r.monitor).map(r => { const mo = r.monitor, e = mo.fly_turn_ends || {};

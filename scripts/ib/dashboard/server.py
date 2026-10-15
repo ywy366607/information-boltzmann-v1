@@ -180,7 +180,8 @@ def windows(run, last=400):
                          'fly_words': sum(1 for s in sp if s == 'fly') if sp else None,
                          'monitor': r.get('monitor'), 'epistemic': r.get('epistemic'),
                          'topic': r.get('plan_topic'), 'by_source': by_source,
-                         'quiet_ticks': sum(r.get('quiet_ticks') or [])})
+                         'quiet_ticks': sum(r.get('quiet_ticks') or []),
+                         'homeo': r.get('homeo'), 'reply_pulses': r.get('reply_pulses')})
     rows.sort(key=lambda r: r['trained'])
     return rows[-last:]
 
