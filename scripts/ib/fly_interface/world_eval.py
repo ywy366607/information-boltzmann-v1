@@ -200,6 +200,56 @@ def load(fork):
             if model.read_surface != 'all':
                 model.output_read.weight[:, quiet_cells[model.read_indices]] = 0.0
         print(f'zero-shot: {int(quiet_cells.sum())} cells silenced ({os.environ["ZS_SILENCE_MASK"]})', flush=True)
+    if os.environ.get('ZS_WRITER_GAIN') and not getattr(fl, '_zs_writer_gain', None):
+        # zero-shot (2026-10-15): the text writer's drive x gain (the senses' strength), every caller of write_input
+        g_w = float(os.environ['ZS_WRITER_GAIN'])
+        _orig_write = fl.write_input
+
+        def _gained_write(*a, **k):
+            drive, baseline = _orig_write(*a, **k)
+            return (drive * g_w if drive is not None else drive), baseline
+        fl.write_input = _gained_write
+        fl._zs_writer_gain = g_w
+        print(f'zero-shot: writer drive x{g_w}', flush=True)
+    if os.environ.get('ZS_RESTORE_DAN_INHIB'):
+        # zero-shot (2026-10-15): the inhibitory inputs onto the dopamine cells back at their birth weights (training
+        # grew inhibition that silenced PPL1: birth +0.77 theta, c21 -1.0 theta); excitation and everything else as is
+        birth_sd = torch.load(fork / 'birth.pt', map_location='cpu', mmap=True, weights_only=False)['model']
+        dan_m = torch.zeros(model.n_neurons, dtype=torch.bool, device='cuda')
+        dan_m[torch.as_tensor(np.load(graph, allow_pickle=True)['dan_indices'].astype(np.int64), device='cuda')] = True
+        with torch.no_grad():
+            w = model.edge_weight_i
+            m = dan_m[model.edge_post_i.long()] & (w != 0)
+            before = float(w[m].abs().sum())
+            w[m] = birth_sd['edge_weight_i'].to(w.device, w.dtype)[m]
+        print(f'zero-shot: inhibition onto the dopamine cells restored to birth ({int(m.sum())} edges, '
+              f'|w| sum {before:.1f} -> {float(w[m].abs().sum()):.1f})', flush=True)
+    if os.environ.get('ZS_RESTORE_TASTE'):
+        # zero-shot (2026-10-15): where were the innate taste lines lost?  The output synapses of the taste receptors
+        # (sugar / bitter / water / salt GRNs, Vicente 2025) and of every cell fewer than K hops downstream of them
+        # back at their birth weights (edges the connectome rules pinned at 0 stay 0)
+        import pandas as pd
+        K = int(os.environ['ZS_RESTORE_TASTE'])
+        gnpz = np.load(graph, allow_pickle=True)
+        typ_t = pd.read_feather(graph.parent / 'body-annotations.feather').set_index('bodyId').reindex(
+            gnpz['neuron_body_ids'])['type'].astype(str).values
+        src = np.isin(typ_t, ['LB3b', 'LB3c', 'dorsal_tpGRN', 'LB1a', 'LB1b', 'LB1c', 'LB1d', 'LB3a', 'LB3d'])
+        pre_all = np.concatenate([gnpz['edge_pre_e'], gnpz['edge_pre_i']]); post_all = np.concatenate([gnpz['edge_post_e'], gnpz['edge_post_i']])
+        sel, front = src.copy(), src.copy()
+        for _ in range(K - 1):
+            nxt = np.zeros_like(src); nxt[post_all[front[pre_all]]] = True
+            front = nxt & ~sel; sel |= nxt
+        birth_sd = torch.load(fork / 'birth.pt', map_location='cpu', mmap=True, weights_only=False)['model']
+        sel_t = torch.as_tensor(sel, device='cuda')
+        n_restored = 0
+        with torch.no_grad():
+            for sfx in ('e', 'i'):
+                w = getattr(model, f'edge_weight_{sfx}')
+                m = sel_t[getattr(model, f'edge_pre_{sfx}').long()] & (w != 0)
+                w[m] = birth_sd[f'edge_weight_{sfx}'].to(w.device, w.dtype)[m]
+                n_restored += int(m.sum())
+        print(f'zero-shot: taste lines restored to birth weights, {int(src.sum())} receptors + {int(sel.sum() - src.sum())} '
+              f'cells within {K - 1} hops, {n_restored} output edges', flush=True)
     model.eval().requires_grad_(False)
     return model, cfg, L
 

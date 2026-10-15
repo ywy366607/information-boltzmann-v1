@@ -1345,3 +1345,761 @@ Here the self side already exists, as her own act: commit/yield is in the brain 
 - end reasons (end_word against end_yield and end_breath);
 - the epistemic returns;
 - whether familiarity (MBON) separates the mother's words from her own.
+
+## 2026-10-15 01:00 — Mengli probe after chunk 3 (`mengli_probe.py`): predictions before the run
+
+The user asked five questions: does Johnston's organ work, does a signal still die after two hops, is there a
+corollary discharge, does the familiarity memory catch the repeated "Mengli", and do the Kenyon and dopamine cells
+matter?
+
+The probe is a diagnostic on a copy of c3: weights frozen, the online compartment rule still running. It replays her
+own last 600 tokens of conversation, holding each word for 6 ticks. Every effect is a paired branch taken from the same
+state. Results are reported as [min | median | mean | max]. The lineage pauses for it, because the 4 GB GPU cannot hold
+the probe beside training.
+
+**Predictions**
+
+1. **(V) The voice**
+   - JO itself will fire strongly.
+   - Hop 1 (315 first-order cells: SAD and AMMC) rises.
+   - From hop 2 on the change is near 0, if the birth synapse scale still holds (one synapse = 0.35% of threshold).
+   - Kenyon, MBON and DAN show about 0.
+   - If so, the voice is felt only at the ear. Nothing downstream can use it until learning strengthens the route.
+2. **(H) Two-hop decay of the text input**
+   - The same profile: the cells the writer drives and hop 1 rise, the change falls to about 0 by hop 2–3.
+   - The Kenyon cells are the exception, because their claws were rescaled by the compartment rule.
+3. **(C) Corollary discharge**
+   - The static route gives excitation at hop 1 and net inhibition at hops 2–3 (`efference_route_probe.py`).
+   - In activity, expect a small command-specific effect on the auditory cells: first-order rising a little at tick 1–2
+     and nothing clear after.
+   - A clear specific inhibition at ticks 2–4 would mean the route already carries a corollary discharge.
+4. **(F) Familiarity**
+   - Earlier, on OWT, phi saturated and depression was global (change 1 not adopted).
+   - So phi of the edges used by " Meng"/"li" will differ little from the rest, and its correlation with word count
+     stays weak.
+   - Comparing c1 with c3 shows whether three chunks of "Mengli" left a trace.
+5. **(K) Kenyon and dopamine**
+   - Silencing the Kenyon cells for one word costs little, because the MBONs barely read them (the MBON probe).
+   - Silencing them for the whole stream costs more.
+   - Silencing the dopamine cells for one word costs about 0. Sustained, the cost is small but not zero: DA modulates
+     thresholds and phi.
+
+## 2026-10-15 02:30 — Why Mengli falls silent: the speaking credit favours silence by construction
+
+**Observed.** Her silent turns rose 26% → 58% → 86% (chunks 1–3), fell to 30% in chunk 4, then reached 100% in
+chunk 5: 554 turns, 0 words, and the mother only calls "Mengli?". This is the dark room.
+
+**Credit per decision, chunk means of the window means:**
+
+| chunk | said | silent | of which: yield after speech | of which: pure silence |
+|---|---|---|---|---|
+| 1 | 0.39 | 0.49 | 0.53 | 0.31 |
+| 2 | 0.15 | 0.23 | 0.22 | 0.16 |
+| 3 | 0.11 | 0.19 | 0.22 | 0.12 |
+
+Silence out-earns speech in every chunk. The causes are in the design, not the brain.
+
+1. **The reply's credit goes to the wrong decision.** The epistemic return of a decision is the learning progress of
+   the mother's words arriving within 64 ticks after it, discounted with tau 32.
+   - After a "say", the next words are her own, which earn no learning progress.
+   - The mother's reply comes only after the yield, so for the "say" it is far away and discounted.
+   - The yield right before the reply collects the reply.
+   - So at every decision point silence looks better, although it was the speech that bought the reply.
+2. **Continuity is not in the objective.** One quiet beat silences the Kenyon layer 30-fold (gap sweep). After a
+   silence the context is gone and the mother's next words are harder to predict.
+   - Learning progress does not price that loss. If anything, a word that is more surprising has more to teach.
+   - The accuracy (expected surprise) part of expected free energy, "keep my world predictable", is missing.
+   - The `predict` credit has an accuracy term, yet it also went silent: 76% in mother_v2_contingent. It prices her
+     own words at the unigram prior (expensive), while silence buys the most predictable words of all, the call
+     "Mengli?".
+3. **The brain side is secondary.** The brain cannot hold context through a pause: no persistent activity at the
+   Kenyon level. That makes silence truly costly, but the credit never sees the cost.
+
+**Way out (one change at a time).**
+- The credit of a decision should compare the futures of speaking and of keeping silent. Two options:
+  - per turn: the reply is credited to the turn's speech, not only to its last yield;
+  - the accuracy of the mother's following words (CE level) next to their learning progress.
+- Then the brain's persistence through pauses, from the fly's own recurrent loops (MBON–DAN, central complex).
+
+**Coordination.** A second agent's goal (`MENGLI_GOAL_20261015.md`: true silence, state continuation, delayed credit)
+targets the same problem. Its `grow_mengli.py` chunk 6 failed at 02:21 with a CUDA memory-allocation error; nothing
+trains now. The user decides who owns the lineage.
+
+## 2026-10-15 02:40 — Mengli probe results
+
+The probe ran on `last.pt` (50,944 words, the end of chunk 5), plus the familiarity part alone on c1.
+
+It replays her own last 600 tokens. 296 of them are " Meng"/"li": she was silent, and the mother kept calling.
+
+All results are paired branches from the same state. Rates are spikes per cell per tick, given as a change against a
+baseline. Distributions are written as mean ± se [min | median | max].
+
+**(V) The voice reaches the ear and stops there.** Prediction 1 holds.
+
+| group | rate without voice | change with voice | relative |
+|---|---|---|---|
+| JO-A/B (138) | 0.0137 | +0.0725 [+0.052 \| +0.073 \| +0.094] | ×6 |
+| auditory first order (283) | 0.0097 | +0.0039 | +40% |
+| hop 1 from JO (979) | 0.0169 | +0.0019 | +11% |
+| auditory second order | 0.0113 | +0.0005 | +4% |
+| hop 2–4 | | 0.0000 | 0 |
+| Kenyon, MBON, DAN | | 0.0000 | 0 |
+| output cells | 0.0743 | +0.0007 | +1% |
+
+Nothing that could tell "her" from "me" (MB, dopamine, acts) receives the voice.
+
+**(H) A sensory signal still dies after two hops.** Prediction 2 holds.
+
+| group | rate in a quiet interval | change with the word written | relative |
+|---|---|---|---|
+| cells the writer drives (hop 0) | 0.0003 | +0.0153 | |
+| hop 1 | 0.0070 | +0.0006 | +9% |
+| hop 2 | 0.0031 | +0.0001 | +3% |
+| hop 3 | | 0 | |
+| Kenyon | | +0.0002 | +9%, 62% of words |
+| MBON | | +0.0003 | +2% |
+| DAN | | 0 | |
+| output | | +0.0057 | +8% |
+
+The learned direct path to the output cells carries the word. The deep brain hardly hears it.
+
+**(C) Corollary discharge: inconclusive, the test was too weak.**
+- The command raised output firing by only +0.0008 at tick 1 and did not move the commit hazard at all.
+- The auditory cells did not change: 0 ± 0.0001 at every tick.
+- Rerun with a command strong enough to make the act commit before judging.
+
+**(F) Familiarity does not catch "Mengli".**
+
+| | phi on fired KC edges, Mengli | phi on fired KC edges, other words | rho(phi, word count) | MBON effect of phi, Mengli | MBON effect of phi, other words |
+|---|---|---|---|---|---|
+| c1 | −0.099 | −0.107 | +0.07 | −0.0018 | −0.0028 |
+| c5 | −0.105 | −0.108 | +0.15 | −0.0005 | −0.0020 |
+
+- Mengli's synapses are, if anything, less depressed than the rest.
+- The MBON effect of phi shrinks with word count (rho +0.48): the opposite of familiarity.
+- phi is near 0 for most edges (median −0.005) and deep for a few (min −0.84).
+
+**(K) Kenyon and dopamine cells do not help prediction now.** Changes in next-word CE on the mother's words (intact
+CE 1.06):
+
+| ablation | change in CE |
+|---|---|
+| KC silenced for one word | +0.0001 |
+| DAN silenced for one word | −0.0004 |
+| KC silenced throughout | −0.025 ± 0.013 [−1.61 \| −0.012 \| +1.43] |
+| DAN silenced throughout | −0.029 ± 0.013 [−1.39 \| −0.009 \| +1.47] |
+
+Silencing either set, if anything, helps by about 2 se. Prediction 5 was wrong on the sustained part.
+
+**Cause and way out.** One cause links all of these: signals do not travel. The birth synapse scale, one synapse = 0.35% of
+threshold, is still the bottleneck (see the memory note on the birth scale).
+- The voice cannot reach a decision.
+- The text barely reaches the Kenyon cells.
+- The MB therefore codes almost nothing about the conversation, so phi and DA have nothing to work on.
+- A corollary discharge cannot form along routes that carry no signal.
+
+The deep brain (KC, MBON, DAN) is effectively disconnected from the conversation. Fixing the speaking credit alone will
+not make it carry the conversation.
+
+The way out is the pending rebirth decision: a birth scale under which signals travel 3–4 hops (1–3.9% of threshold
+per synapse reached DA, MB and motor zero-shot). It should be paired with the credit fix and checked zero-shot first,
+with this same probe: V, H and F should become non-zero downstream.
+
+## 2026-10-15 02:50 — Rebirth question, zero-shot on the conversation (`birth_scale_conversation.py`): predictions
+
+**Setup.**
+- Starting point: the birth checkpoint, with the general compartment rule applied.
+- Variants: every edge set to a uniform efficacy per synapse of 0.35% (as born), 1%, 2% or 3.9% of the threshold.
+- Input: Mengli's last 400 tokens of conversation, with the voice on for the mother's words.
+
+**Predictions.**
+- **Born (0.35%):** like the adult.
+  - The voice and the text stop at hop 1–2.
+  - Kenyon, MBON and DAN show about 0.
+- **1–2%:** the conversation reaches KC, MBON, PAM and PPL1, and the voice reaches beyond the first-order auditory cells.
+- **3.9%:** risk of runaway activity under continuous input.
+  - It is only safe if the saturated fraction (cells firing on more than 50% of ticks) stays small and the late rate
+    stays near the early rate.
+
+**Choice rule.** The smallest scale at which V and H are non-zero in KC, MBON and DAN, with no saturation drift.
+
+**Results (03:15).** Run on birth.pt with the compartment rule, 400 tokens, 2,400 ticks per scale. Values are means of
+paired rate differences per cell per tick; the rate during a quiet interval is in parentheses.
+
+| scale | text → KC | text → MBON | text → PPL1 | text → PAM | voice → aud1 | voice → KC/MBON/DAN | all-cell rate | silent cells | saturated cells | MBON rate, first → last quarter |
+|---|---|---|---|---|---|---|---|---|---|---|
+| born 0.35% | +0.0002 (0.0013) | 0 | 0 | +0.0001 | +0.0017 | 0 | 0.0030 | 89% | 0 | 0.0003 → 0.0005 |
+| 1% | +0.0038 (0.012) | +0.0023 (0.022) | +0.0002 | 0 | +0.0038 | 0 | 0.0042 | 83% | 0 | 0.021 → 0.034 |
+| 2% | +0.0084 (0.021) | +0.0071 (0.052) | +0.0011 | 0 | +0.0057 | 0 | 0.0060 | 75% | 0 | 0.046 → 0.075 |
+| 3.9% | +0.0154 (0.031) | +0.0136 (0.087) | +0.0010 | 0 | +0.0080 | 0 | 0.0087 | 63% | 0 | 0.073 → 0.115 |
+
+**Against the predictions.**
+- Born behaves as predicted.
+- From 1% on, the text reaches the Kenyon cells and the MBONs (KC +31% to +50%, MBON +10% to +16%). It reaches PPL1
+  only weakly and PAM not at all.
+- Prediction wrong: the voice still stops at the first-order auditory cells at every scale. This may be the fly's own
+  anatomy rather than a defect. The Drosophila mushroom-body calyx gets mainly olfactory input; song goes
+  JO → AMMC/WED → AVLP → courtship and premotor circuits. The voice would then have to tell self from mother through
+  the auditory-premotor route, which training must open, not through the MB.
+- Prediction wrong: 3.9% does not run away. No cell saturates, and the overall rate is the same in the first and last
+  quarter.
+- The MBON rate, however, drifts up by about 60% within 400 tokens at every scale above born. This needs a longer
+  stability check before a long run.
+
+**Reading.**
+- 2% is the smallest scale at which the conversation clearly reaches the MB (KC +39%, MBON +14%) with no saturation.
+- PAM (reward) is not reached by text at any scale. It should come from taste or valence routes, not from words.
+
+**Rebirth candidate.**
+- Birth at 2% per synapse plus the compartment rule.
+- First a 2,000-token zero-shot stability check of the MBON drift.
+- Then a new lineage from birth, with the speaking-credit fix as a separate, controlled change.
+
+Waiting for the user's decision on lineage ownership: a second agent is working on Mengli, and there is one GPU.
+
+**Stability at 2% over 2,000 tokens (12,000 ticks).** The drift plateaus.
+
+| | first quarter | last quarter |
+|---|---|---|
+| all cells | 0.0061 | 0.0060 |
+| KC | 0.0309 | 0.0301 |
+| MBON | 0.065 | 0.075 |
+| PPL1 | 0.040 | 0.039 |
+| output | 0.0106 | 0.0105 |
+
+- The MBON rate levels off at about 0.075, which it had already reached within the first 400 tokens.
+- 4 cells saturate (0.0024%); 72% of cells never fire.
+- Each word still reaches the mushroom body: KC +0.008, MBON +0.0087.
+
+**2% passes the zero-shot checks.** The rebirth plan is ready: birth at 2% plus the compartment rule. The
+speaking-credit fix comes after it, as its own controlled change.
+
+## 2026-10-15 03:45 — Correction: the rebirth proposal rested on a wrong premise
+
+**What was wrong.** `birth_scale_conversation.py` converted weights with the original builder's g = 0.0058, where one
+synapse is about 0.35% of threshold. Mengli and every lineage since 10-13 are born on the Shiu-scale **r2** graph:
+- the median edge is already 3.6% of threshold;
+- the median |w| is 8.6× the original graph.
+
+So the variants labelled 1%, 2% and 3.9% were global gains on r2:
+
+| label | median gain | p10–p90 gain |
+|---|---|---|
+| 1% | ×2.8 | ×1.6–5.1 |
+| 2% | ×5.5 | ×3.2–10.3 |
+| 3.9% | ×10.8 | ×6.2–20 |
+
+These are far beyond the biological scale. "Born" was r2 as it is.
+
+**What stands.**
+- On r2 as born, the conversation barely reaches the mushroom body: KC +0.0002 over a quiet rate of 0.0013; MBON, PAM
+  and PPL1 about 0.
+- The trained c5 shows the same: text dies after two hops, and the voice stops at the first-order auditory cells.
+- The engine stays stable even at ×10 gains: no saturation over 2,400 ticks.
+- The memory note on the birth synapse scale was written before r2 and is out of date for the current lineages. The
+  synapse scale is **not** the reason the conversation misses the MB.
+
+**Withdrawn.**
+- The `--birth-synapse-efficacy` option is reverted on branch `claude/rebirth-birth-scale` (d0bc31c). Nothing was
+  trained with it.
+- No rebirth.
+
+**Open cause.** Why does text reach the output cells but not the Kenyon cells on a Shiu-scale graph? Candidates to test
+zero-shot before any change:
+1. **Input strength.** receptor_lang writes each word weakly into 14k sensory cells: +0.03 spikes per tick per driven
+   cell, and the mainline input gain is 0.5. Few PN claws coincide, which matches the earlier finding that an isolated
+   word lifts the Kenyon top 1% only to about 0.33 θ.
+2. **Anatomy.** Only the olfactory share of the text reaches the calyx, through PNs.
+3. **Inhibition.** APL / PN gain at the calyx.
+
+The next step is a dose–response of the writer gain (not the synapses) against KC / MBON reach and stability, with the
+same probe.
+
+## 2026-10-15 04:10 — Writer-gain dose–response, zero-shot on Mengli c5 (synapses unchanged)
+
+**Setup.** The text drive is multiplied by ×1, ×2, ×4 or ×8 on every written tick. 400 tokens, paired word-vs-quiet
+branches. Rates are spikes per cell per tick: the extra caused by the word, with the quiet-interval rate in parentheses.
+
+| gain | written cells | KC | MBON | PAM | PPL1 | output | all-cell rate, first → last quarter | saturated |
+|---|---|---|---|---|---|---|---|---|
+| ×1 | +0.022 | +0.0021 (0.0053) | +0.0011 (0.025) | +0.0002 | +0.0001 | +0.0091 | 0.0066 → 0.0066 | 0.002% |
+| ×2 | +0.060 | +0.0053 (0.010) | +0.0037 (0.036) | +0.0002 | +0.0003 | +0.020 | 0.0119 → 0.0117 | 0.002% |
+| ×4 | +0.118 | +0.0090 (0.016) | +0.0058 (0.045) | +0.0005 | +0.0003 | +0.034 | 0.0192 → 0.0187 | 0.002% |
+| ×8 | +0.194 | +0.0155 (0.022) | +0.0108 (0.055) | +0.0005 | +0.0001 | +0.046 | 0.0281 → 0.0274 | 0.002% |
+
+**Reading.**
+
+1. **Input strength is a lever.** The words' reach into the mushroom body grows roughly in proportion to the writer
+   gain: KC ×7 and MBON ×10 from ×1 to ×8. The engine stays stable: rates are flat across the stream and nothing
+   saturates.
+2. **The written cells fire very weakly at ×1:** 0.022 spikes per tick. At 5 ms per tick that is about 4 Hz evoked,
+   against tens to hundreds of Hz for a real receptor at its stimulus. The mainline also halves the input (gain 0.5).
+   The principled invariant is "a word must make its receptor cells fire clearly", not a copied rate. ×4–×8 reaches
+   20–40 Hz.
+3. **The dopamine cells (PAM, PPL1) do not respond to text at any gain.** That is as it should be. Dopamine should
+   follow surprise or value, not the presence of input, which is gate (2) and not a reach problem.
+4. **Discrepancy to resolve.** At ×1 the KC word effect here (+0.0021 over 0.0053) is 10× the one in `mengli_probe.py`
+   on the same checkpoint (+0.0002 over 0.0022). The streams differ (400 vs 600 tokens), and `mengli_probe.py` has since
+   been edited by the second agent. Check before relying on either number.
+
+**Next (training, one change, with control).** From the same checkpoint, writer gain ×4 against ×1 for 1,024 words,
+paired by window. Judged by:
+- the living brain contribution (noedges arm);
+- (2) surprise → phasic DA;
+- KC/MBON reach afterwards.
+
+This needs the GPU, and therefore the lineage-ownership decision.
+
+## 2026-10-15 05:20 — Writer gain ×4 vs ×1, living A/B from Mengli c5 (branch `claude/writer-gain-ab`)
+
+**Setup.** One change: a fixed ×4 on the text writer drive. Both arms start from the same checkpoint and read the same
+1,024 OWT words, each with its own living noedges arm. All learning is on and windows are paired. Values are nats per
+word, as mean ± se [min | median | mean | max] over 32 windows.
+
+**(1) Brain contribution, noedges − brain**
+
+| arm | contribution | NLL brain | NLL noedges |
+|---|---|---|---|
+| ×1 | **+0.413 ± 0.049** [−0.40 \| +0.43 \| +0.41 \| +0.89] | 7.038 | 7.450 |
+| ×4 | +0.287 ± 0.052 [−0.40 \| +0.27 \| +0.29 \| +0.97] | 7.163 | 7.450 |
+
+The unigram on the same words is 7.361.
+
+**×4 − ×1 on the brain arms:** +0.126 ± 0.031 nats worse [−0.26 \| +0.09 \| +0.13 \| +0.52].
+
+**(2) Surprise ~ phasic DA**
+- ×1: rho 0.011; residual after rarity −0.10.
+- ×4: rho −0.010; residual +0.035.
+- Neither is different from 0.
+
+**Reading.**
+- **Gate (1) on text is clearly positive for Mengli's c5 brain:** +0.41 nats per word over the noedges arm, and
+  0.32 below the unigram.
+- **×4 on the adult is not adopted.** It costs 0.13 nats per word within 1,024 words.
+- **Cause:** the adult's weights and readout are calibrated to the ×1 drive. ×4 moves the operating point (output
+  rate 0.08 → 0.12), so its recurrent prediction worsens even though the words reach the mushroom body more
+  strongly (zero-shot dose–response). The noedges arms are identical (7.4503 vs 7.4504), so the cost lies entirely in
+  the recurrent brain.
+- **Way out:** the senses' strength cannot be changed suddenly on an adult. Two options:
+  - a newborn comparison, ×4 vs ×1 from birth, where the brain grows up with strong senses;
+  - a slow ramp, if the lineage must be kept.
+- (2) stays at about 0 either way. Dopamine does not follow surprise yet; the next mechanism question is separate from
+  reach.
+
+## 2026-10-15 05:45 — Items 1, 3 and 4 re-run this session (Mengli c5)
+
+**Item 1. m_olf living gate, segment 1 vs 2** (paired by window, 1,024 words each)
+
+| segment | brain contribution [min \| median \| mean \| max] | brain vs unigram |
+|---|---|---|
+| live_c1 | +0.087 ± 0.037 [−0.42 \| +0.08 \| +0.087 \| +0.57] (noedges rerun) | 7.450 vs 7.541 |
+| live_c2 | +0.290 ± 0.062 [−0.13 \| +0.15 \| +0.29 \| +1.17] | 7.655 vs 7.946 |
+
+- The change of +0.20 is real: about 2.8 se, combined se 0.072.
+- The frozen gate had read c1 as −0.047. That was an artifact of freezing.
+- The latch is worth −0.026 ± 0.015 in c1 and −0.022 ± 0.005 in c2: no value.
+- Mengli c5 on text: +0.413 ± 0.049 (writer-gain A/B, ×1 arm).
+
+**Item 3. Speed profile** (`scratch/profile_mainline_tick.sh`, 256 words, current working tree)
+- 4.2 s per 32-word window (`forward_window`, cumulative). GPU utilisation is 27% on average, so the run is host-bound.
+- Per mechanism, over 1,899 ticks:
+
+| mechanism | function | cumulative time |
+|---|---|---|
+| writer (predictive) | `forward_with_state` | 2.0 s |
+| carried compartment credit | `comp_step` (new, `fly_carried_credit.py`) | 1.67 s |
+| dopamine | `dopamine_step` | 0.98 s |
+| EG | `_eg_apply` | 0.70 s |
+| act muscles | `ai_step` | 1.37 s |
+
+- Gradient checkpointing pack hooks: 4.4 s cumulative over 267k calls.
+- Hidden overhead: about 540k grad-mode switches.
+- Speed-ups that keep the semantics:
+  - batch the per-tick hooks;
+  - avoid the grad-mode context churn in the checkpointed segments.
+
+**Item 4. Taste pulse probe** (`taste_pulse_probe.py`, fixed weights). Extra Hz per cell over 40 ticks:
+
+| taste | MN9 | PAM | PPL1 | MBON |
+|---|---|---|---|---|
+| sugar | **0.0** | +0.49 | +1.04 | +0.47 |
+| bitter | +2.08 | −0.47 | +1.04 | +0.43 |
+| water | 0 | +0.04 | 0 | −0.26 |
+| high salt | 0 | +0.73 | +0.78 | +0.86 |
+
+- **Negative result.** The innate taste lines measured on 10-13 (r2 rebirth smoke: sugar → MN9 +68 Hz, bitter → PPL1
+  +45 Hz) are almost gone in the adult Mengli:
+  - sugar no longer drives MN9;
+  - bitter barely drives PPL1;
+  - valence survives only as a sign: sugar raises PAM (+0.49), bitter lowers it (−0.47).
+- **Probable cause.** The BPTT training on text reshaped the taste routes, which carried no gradient. EG plasticity
+  pulls toward birth only with tau 4,096 updates. On 10-13 the decision was to gate births on the senses surviving
+  ("sugar → MN9 ≥ +20 Hz at chunks 5 and 25"); this adult fails that gate.
+- **Way out.**
+  - Check when the routes died: d5b birth → c11 → Mengli c1 / c5, the same probe on each.
+  - If training kills them, protect the innate taste synapses: pin them, as the connectome pins already do, or lean
+    harder on the pull to birth.
+  - This matters for the mother world: taste is the only built-in value signal for later acts.
+
+## 2026-10-15 03:50 — m_main long run resumed (item 5): first living gate after the resume
+
+The chain is `grow_mainline_live_wt.sh` (isolated worktree, commit 97b6654).
+
+**Chunk 13.** It reached 53,248 words in 18 minutes.
+- Fresh B NLL 6.996, AG 0.558.
+- A-revisit 6.582.
+
+**Gate c12 (living, paired by window, 1,024 words)**
+- **(1) Brain contribution: +0.797 ± 0.058** [min +0.28 | median +0.79 | mean +0.797 | max +1.55].
+  - Every window is positive.
+  - Brain 6.986, noedges 7.783, unigram on the same words 7.676: the brain beats the unigram by 0.69.
+- **(2) Surprise ~ phasic DA:** −0.011, next −0.006, DA cells −0.001; per 1,024 words [−0.035 | −0.029 | −0.028 | −0.018].
+  Still about 0; dopamine does not follow surprise.
+- **(L)** No cell latches.
+
+**Reading.**
+- Gate (1) is clearly positive and growing in the long run. It went +0.09 → +0.29 (m_olf c1 → c2), then +0.41
+  (Mengli c5 on text), and now +0.80 at m_main c12.
+- The causal order now stops at (2): surprise does not reach dopamine. The acts (3) depend on it, because the speaking
+  and looking credits read dopamine as precision.
+- (2) is the next mechanism question, together with the lost taste lines (item 4), since taste is the dopamine
+  system's innate teacher.
+
+## 2026-10-15 04:00 — (2) surprise → dopamine: theory before the next test
+
+This draws on what was known before plus today's measurements.
+
+**Known.**
+- Surprise is strong at the senses: the writer innovation has rho 0.83.
+- It roughly halves at each synapse along the olfactory path: receptors 0.52 → ALPN 0.26 → KC 0.13 → MBON 0.06 →
+  DAN about 0 (m_main c6).
+- Kenyon → dopamine-terminal release raised the variance of phasic DA, not its tie to surprise.
+- Its habituation erased the release everywhere: the Kenyon code is a context code over about 3 words, so it never
+  repeats word by word.
+
+**New today.**
+- The text arrives very weakly. A written cell fires about 0.02 per tick, roughly 4 Hz.
+- The deep brain therefore receives the word mostly as a small change on top of its own background. The Kenyon and
+  MBON responses to a word scale with the writer drive (dose–response).
+- The dopamine cells do not respond to text at any gain, in PAM or PPL1. Their input is dominated by other lines,
+  through state-dependent recurrent loops.
+- The innate taste lines, the dopamine system's own teacher, are mostly lost in the adults.
+
+**Hypothesis.** Surprise is diluted twice:
+- a weak carrier at the input, at each written cell;
+- averaging per layer, which halves it at each synapse.
+
+Without a teacher, the dopamine cells' input weights are never shaped to read it, and BPTT on next-word CE gives
+them no reason to. The fly's own answer is novelty DANs (PPL1-α'3/α'2), driven by MBON-α'3 and habituated by the
+compartment memory. That needs a word code that repeats, which only a context of about 3 words provides.
+
+**Test, zero-shot, when the GPU is free between chains.** On m_main c13, correlate surprise with DA at the writer gain
+of the live run (×1) and at ×4.
+- Does surprise survive further down the path when the carrier is stronger (rho per layer)?
+- Does MBON-α'3 respond more to a context seen for the first time than to a repeated one (3-word contexts)?
+
+If both hold, the route exists and only the senses' strength is missing. That leads to a newborn comparison, ×4 vs ×1
+from birth (the adult cannot take ×4 suddenly, as the A/B showed). If MBON-α'3 does not discriminate, the
+compartment memory does not habituate on contexts. That has to be fixed before any dopamine credit.
+
+## 2026-10-15 04:45 — m_main living gates c13, c14
+
+| gate | (1) brain contribution [min \| median \| mean \| max] | (2) surprise ~ phasic DA, same / next word | (2) per 1,024 words [min \| median \| mean \| max] | (L) latched cells, worth |
+|---|---|---|---|---|
+| c12 | +0.797 ± 0.058 [+0.28 \| +0.79 \| +0.797 \| +1.55] | −0.011 / −0.006 | [−0.035 \| −0.029 \| −0.028 \| −0.018] | 0, n/a |
+| c13 | +0.679 ± 0.054 [+0.18 \| +0.66 \| +0.679 \| +1.35] | +0.017 / +0.022 | [−0.014 \| +0.023 \| +0.022 \| +0.056] | 618, **+0.033 ± 0.010** [−0.07 \| +0.02 \| +0.033 \| +0.12] |
+| c14 | +0.854 ± 0.056 [+0.27 \| +0.83 \| +0.854 \| +1.48] | +0.034 / +0.031 | [−0.005 \| +0.023 \| +0.030 \| +0.079] | 684, +0.031 ± 0.015 [−0.07 \| +0.02 \| +0.031 \| +0.34] |
+
+- **(1)** Every window is positive at all three gates. The brain beats the unigram by 0.58–0.74 nats.
+- **(2)** It creeps up, −0.011 → +0.017 → +0.034, and at c14 three of the four 1,024-word blocks are positive. It is
+  small; it has to keep rising before it counts.
+- **(L)** The latch is worth something for the first time:
+  - +0.033 ± 0.010 at c13 (3.3 se) and +0.031 ± 0.015 at c14 (2 se), with 618–684 cells latched;
+  - earlier it was −0.02 in m_olf and −0.019 in m_main c1.
+- **Fresh B / AG.** Fresh B NLL went 6.996 (c13) → 6.943 (c14) → 7.181 (c15). The first gate with fresh B / AG is due
+  at c15.
+
+## 2026-10-15 05:35 — m_main gate c15: the first fresh B / AG of the resumed run, and its taste probe
+
+**(1) Brain contribution: +0.715 ± 0.038** [+0.34 | +0.76 | +0.715 | +1.12]. Every window is positive.
+
+**AG** (both arms learning):
+
+| | brain | noedges | brain advantage |
+|---|---|---|---|
+| fresh B NLL | 6.947 | 7.214 | **0.27** |
+| A-revisit | 6.407 | 7.318 | **0.91** |
+
+The brain generalises to unseen text and keeps far more of what it read.
+
+**(2) Surprise ~ DA** −0.015 (next −0.000), per 1,024 words [−0.054 | −0.019 | −0.015 | +0.034]. The rise at
+c13/c14 was noise around 0; (2) is still not met.
+
+**(L) Latch** +0.021 ± 0.014 (666 cells). Small, positive three gates in a row.
+
+**Taste** (taste_pulse_probe, m_main c15), extra Hz per cell over 40 ticks:
+
+| | MN9 | PAM | PPL1 |
+|---|---|---|---|
+| sugar | −2.08 | −0.21 | −1.30 |
+| bitter | 0 | +0.41 | +2.6 |
+| water | −2.08 | | |
+| salt | 0 | | |
+
+- The innate lines are lost in m_main as in Mengli (birth smoke 10-13: sugar → MN9 +68, bitter → PPL1 +45).
+- Text training erases the taste routes. They carry no gradient, and the pull to birth (tau 4,096) is too weak.
+- Only a faint bitter → PPL1 remains.
+- This is the most likely structural reason (2) stays at 0: the dopamine system has lost its teacher.
+
+**Way out (one change, controlled).** Protect the innate taste synapses, receptor → … → MN9 / PAM / PPL1 routes,
+from BPTT and EG, as the connectome pins protect fixed edges. Keep them at birth weights, or give them a strong pull
+to birth.
+- **Check zero-shot first:** restore only those edges to their birth weights in the c15 copy. If the taste lines come
+  back without hurting text, the protection is the fix. If not, the loss lies elsewhere, in thresholds or the class
+  physiology learned by evidence plasticity.
+- This is a GPU test, to run between chunks or after the run.
+
+**Taste-restore probe, queued (`ZS_RESTORE_TASTE`, world_eval).** On c17, before the chain goes on, the taste pulse
+probe is run four ways:
+- as is;
+- with the output edges of the taste receptors restored to birth weights (k = 1);
+- with the edges of every cell within 1 hop of the receptors also restored (k = 2);
+- within 2 hops (k = 3).
+
+Edges pinned at 0 by the connectome rules stay 0. Gate c16 is skipped for this pause.
+
+**Predictions.**
+- If k = 1 already brings back sugar → MN9 (birth ≥ +20 Hz), the loss sits at the receptors' own synapses. A narrow
+  protection fixes it.
+- If only k = 2–3 does, it sits in the shared interneurons (GNG). Protecting them also touches the text route, which
+  needs a text-cost check.
+- If no k does, the loss is in the learned physiology: thresholds and class parameters from evidence plasticity, not
+  in the weights.
+
+**Taste-restore results (c17), extra Hz per cell:**
+
+| restored | sugar → MN9 | bitter → PPL1 | bitter → PAM |
+|---|---|---|---|
+| none | 0 | +2.1 | +0.41 |
+| receptor outputs (8,166 edges) | 0 | +3.4 | +0.40 |
+| + 1 hop (237,660 edges) | 0 | +3.7 | +2.12 |
+| + 2 hops (7.9 M edges) | 0 | +5.0 | +0.36 |
+
+Restoring the weights, even across most of the brain, does not bring sugar → MN9 back. So the loss is not in the
+weights, or it was never a loss.
+
+**Comparability.** The 10-13 numbers (+68 / +45 Hz) came from the smoke newborn with **100 Hz Poisson receptors**.
+`taste_pulse_probe.py` drives the receptors with a tonic current (gain × θ, 20 ticks) from the reading state. The two
+are not comparable. The same probe runs next on m_main's own birth checkpoint, at the next chunk boundary (PAUSE). Only
+then is "lost in training" a finding.
+
+## 2026-10-15 06:25 — Correction: the taste lines were not lost in training
+
+The same `taste_pulse_probe.py` on m_main's **birth** checkpoint gives sugar → MN9 −2.1 Hz and bitter → PPL1
++3.4 Hz. That is the same as the adults: c15 gave −2.1 / +2.6, c17 0 / +2.1, Mengli c5 0 / +1.0.
+
+So the "loss" was an artifact of comparing different stimuli. The 10-13 +68 / +45 Hz came from 100 Hz Poisson
+receptors on the smoke newborn. This probe's tonic pulse from the reading state hardly moves MN9 or PPL1 even at
+birth.
+
+Withdrawn:
+- "innate taste lines erased by text training";
+- the protection proposal;
+- the hypothesis that this is why (2) stays at 0.
+
+The restore probe agrees: restoring the birth weights changed nothing.
+
+Open: the two taste probes disagree at birth (Poisson vs tonic drive). Before the taste routes are used as a dopamine
+teacher, settle the stimulus with a dose–response: the tonic gain, and Poisson rates of 50, 100 and 200 Hz, on birth
+and adult alike.
+
+**Gate c17 (living):**
+- (1) brain contribution +0.511 ± 0.050 [+0.07 | +0.49 | +0.511 | +1.24]. Every window is positive.
+- (2) +0.025 (next +0.033), per 1,024 words [−0.016 | +0.011 | +0.011 | +0.037].
+- (L) −0.005 ± 0.015, with 710 cells latched.
+
+## 2026-10-15 06:40 — (3) Do the acts time themselves? (Mengli, `live_act_report.py`, the living stream's own trace)
+
+m_main has no acts. Mengli has the motor acts: look, think (waiting) and speak/commit. The data is her `ai_trace.jsonl`
+in the mother world, 4,832 words (chunks 1–5). The ranges are per 1,024-word block, [min | median | mean | max].
+
+| measure | Mengli, mother world | the same trace from 0 (incl. the d5b text history, 18,208 words) |
+|---|---|---|
+| answered fraction | [0.03 \| 0.45 \| 0.37 \| 0.54] | [0.04 \| 0.84 \| 0.71 \| 0.99] |
+| expected latency (ticks) | [2.5 \| 2.6 \| 3.1 \| 4.8] | [1.1 \| 1.7 \| 2.0 \| 4.7] |
+| latency entropy (timing diversity) | [1.04 \| 1.17 \| 1.25 \| 1.62] | [0.19 \| 0.78 \| 0.83 \| 1.58] |
+| rho(latency, gain from waiting) | **[+0.30 \| +0.36 \| +0.40 \| +0.58]** | [−0.02 \| +0.15 \| +0.21 \| +0.59] |
+| rho(latency, best tick of the read) | **[+0.38 \| +0.52 \| +0.57 \| +0.87]** | [+0.03 \| +0.32 \| +0.32 \| +0.87] |
+| rho(latency, the word's CE) | [−0.55 \| −0.14 \| −0.23 \| −0.08] | [−0.51 \| −0.02 \| −0.06 \| +0.05] |
+
+**Reading.**
+- In the mother world the commit timing follows the value of waiting, in every block. It commits later when waiting
+  would improve the read, and close to the read's best tick (rho +0.57).
+- Its timing is more diverse than on text: entropy 1.25 against 0.83.
+- This is the first sign in the causal order that an act reads the brain's own uncertainty and times itself.
+- It is correlational, from the living stream. The causal test is the act's living ablation: a fixed-timing arm on
+  the same conversation.
+- The negative rho with the word's CE means harder words get committed earlier. Together with the falling answered
+  fraction (Mengli's silence), this fits the speaking-credit bias found tonight: yielding pays.
+
+**Correction to the reading above, from the report's own controls.**
+
+| measure | [min \| median \| mean \| max] |
+|---|---|
+| rho(latency, gain from waiting), within the same interval length k | [+0.04 \| +0.07 \| +0.07 \| +0.11] |
+| rho(latency, best tick), within k | [−0.03 \| +0.04 \| +0.02 \| +0.06] |
+| timing value over a null timing | [−0.010 \| +0.005 \| +0.025 \| +0.102] nats |
+
+- The strong raw correlations (+0.40, +0.57) come mostly from interval length. A longer interval means both a later
+  commit and a later best tick.
+- Within the same interval the act follows the value of waiting only weakly (+0.07) and the best tick barely at all
+  (+0.02).
+- Its timing is worth +0.025 nats over a null timing on average; the median is only +0.005.
+- **(3) is therefore not shown.** The acts are diverse (entropy 1.25), but they do not yet time themselves by
+  uncertainty beyond the interval.
+- This is consistent with the order: without (2), dopamine as precision carries no surprise, so the acts have nothing
+  to read.
+
+## 2026-10-15 06:50 — (2) zero-shot tests queued for the next chunk boundary
+
+The tests run on m_main's latest checkpoint, at writer gain ×1 and ×4 (`ZS_WRITER_GAIN`, world_eval):
+- `surprise_path_probe.py`: Spearman of surprisal with each layer along the olfactory path, down to phasic DA;
+- `word_novelty_probe.py`: do new words drive MBON-α'3 / PPL1-α'3, and does the response habituate over 8
+  presentations?
+
+**Predictions.**
+- **×1** looks like c6: receptors about 0.5 → KC about 0.1 → DAN about 0.
+- **×4** raises rho from the ALPN to the MBONs, because the carrier is stronger (the dose–response raised KC and MBON
+  reach ×4–7). If rho at the dopamine cells stays about 0 even then, the break lies between the MBONs and the DANs:
+  their input weights or the other lines dominate. Strength is not the bottleneck.
+- **Novelty.** If MBON-α'3 responds to new words and habituates while PPL1-α'3 does not follow, the MBON → DAN link
+  is the missing piece. If MBON-α'3 does not respond at all, the novelty code is missing upstream.
+
+## 2026-10-15 07:00 — (2) results: where surprise stops (m_main c19), and gate c18
+
+**Gate c18 (living):**
+- (1) +0.382 ± 0.069 [−0.27 | +0.31 | +0.382 | +1.40]. A harder stretch of text: unigram 8.01.
+- (2) **+0.053** (next +0.066), per 1,024 words [−0.018 | +0.016 | +0.026 | +0.089]. The highest so far, still small.
+- (L) **+0.047 ± 0.017** with 631 latched cells (2.8 se).
+
+**Surprise along the path.** Spearman with surprisal, [min | median | mean | max] over 4 places:
+
+| layer | writer ×1 | writer ×4 |
+|---|---|---|
+| writer innovation | [0.81 \| 0.87 \| 0.86 \| 0.90] | [0.83 \| 0.88 \| 0.88 \| 0.92] |
+| olfactory receptors | [0.48 \| 0.53 \| 0.54 \| 0.61] | [0.42 \| 0.47 \| 0.47 \| 0.52] |
+| ALPN | [0.23 \| 0.28 \| 0.29 \| 0.38] | **[0.33 \| 0.39 \| 0.39 \| 0.45]** |
+| Kenyon | [0.08 \| 0.14 \| 0.14 \| 0.21] | **[0.14 \| 0.16 \| 0.17 \| 0.24]** |
+| MBON | [0.04 \| 0.08 \| 0.08 \| 0.13] | [0.04 \| 0.08 \| 0.09 \| 0.13] |
+| DAN spikes | [−0.04 \| −0.02 \| −0.02 \| −0.00] | [−0.04 \| +0.01 \| +0.01 \| +0.08] |
+| DAN v/θ | [−0.04 \| −0.02 \| −0.02 \| +0.01] | [−0.10 \| −0.08 \| −0.07 \| −0.01] |
+| phasic DA | [−0.04 \| +0.02 \| +0.02 \| +0.07] | [−0.09 \| +0.02 \| +0.01 \| +0.08] |
+
+- The prediction holds. A stronger carrier raises surprise in the ALPN (+0.10) and the Kenyon cells (+0.03).
+- The MBONs stay at 0.08 and the dopamine cells at about 0.
+- **The path breaks at Kenyon → MBON (0.17 → 0.09) and MBON → DAN (0.09 → 0), not in the senses' strength.**
+- A ×4 writer is not the fix for (2).
+
+**Word novelty (`word_novelty_probe.py`).** Six unseen words, each 8 times among text:
+- MBON-α'3 (MBON16/17, 6 cells), PPL104 (α'3 dopamine, 2 cells) and phi on the α'3 edges are **exactly 0** for every
+  word and every presentation, at ×1 and ×4.
+- The read's CE on arrival is 11.5–13.3 nats, and it does not fall over the 8 presentations (slope −0.006).
+- The novelty circuit does not respond at all. A response of exactly 0 most likely means these cells are silent, or
+  their inputs never reach them.
+- This could not be checked now: the static check of their inputs ran out of RAM beside the training. It is the next
+  test at the next pause:
+  - their baseline firing;
+  - their Kenyon input share;
+  - the MBON-α'3 → PPL104 edges.
+
+**Cause and exit.**
+- Surprise reaches the Kenyon cells but the MB output layer barely reads it, and the dopamine cells not at all.
+- The fly's own route for novelty, KC → MBON-α'3 → PPL1-α'3, is silent in this model.
+- **Next:**
+  1. Find out why α'3 is silent: thresholds, inputs pinned by a rule, or class physiology driven to silence.
+  2. Fix it as a mechanism.
+  3. Then rerun this probe: novelty response plus habituation.
+- Only after that does dopamine-as-precision have a surprise to carry for the acts (3).
+
+## 2026-10-15 07:35 — Why the α'3 novelty circuit is silent (`alpha3_probe.py`, m_main c20, 512 words of text)
+
+| | MBON-α'3 (6) | PPL104 (2) | all MBONs (97) | all PPL1 (16) |
+|---|---|---|---|---|
+| firing per tick | **0** | **0** | 0.012 | 0.004 |
+| median v/θ, [min \| median \| mean \| max] over words | [−0.69 \| −0.53 \| −0.53 \| −0.36] | [−1.18 \| −1.00 \| −0.99 \| −0.68] | [−0.37 \| −0.24 \| −0.23 \| −0.03] | [−1.09 \| −0.99 \| −0.98 \| −0.75] |
+| excitatory static edges (pinned at 0) | 1,833 (1,755) | 1,555 (1,139) | 73,955 (67,399) | 25,897 (21,471) |
+| excitatory weight: static + compartment | 0.9 + 18.1 | 4.0 | 163 + 970 | 84 |
+| inhibitory weight | 11.5 | 10.5 | 707 | 186 |
+
+- φ on the α'3 Kenyon edges is [−0.81 \| −0.38 \| 0], so their efficacy is depressed by 38% at the median.
+- There are 11 excitatory MBON-α'3 → PPL104 edges.
+
+**Reading.**
+- Both α'3 cells sit deep below rest: MBON-α'3 at −0.53 θ, PPL104 at −1.0 θ.
+- Inhibition dominates, and their Kenyon input has been depressed by the compartment memory: φ median −0.38.
+- PPL1 as a whole sits at −1.0 θ as well and hardly fires (0.004 per tick). The PPL1 cluster, the punishment and
+  novelty dopamine, is held under. That fits the flat (2) at every gate.
+- The novelty route exists in the wiring: KC → MBON-α'3 through 1,614 compartment edges, and MBON-α'3 → PPL104
+  through 11 edges. The cells are driven out of their operating range.
+
+**Candidate causes to separate (zero-shot, one at a time, at the next pause):**
+1. φ depression. Set φ to 0 on the α'3 edges and see whether MBON-α'3 fires.
+2. Tonic inhibition. Is the inhibition of MBON-α'3 / PPL1 from APL or a learned class? Split its weight by presynaptic
+   type.
+3. Learned physiology. Compare PPL1's threshold and leak against birth.
+4. The same probe on birth.pt. If α'3 is silent there too, it is a birth (connectome or rule) problem. If not, training
+   drove it there.
+
+**Also fixed.** The gate c19 noedges arm crashed: `UnboundLocalError 'evidence'` on an update skipped for non-finite
+values. Fixed in the worktree (40536aa); gate c19 is lost.
+
+## 2026-10-15 08:20 — α'3 / PPL1 cause separated: training silenced the PPL1 dopamine cells
+
+`alpha3_probe.py` was run three ways: on m_main c21 as is, with φ on the α'3 edges reset to 0, and on m_main's birth.
+The figures are firing per tick and the median v/θ.
+
+| | MBON-α'3 | PPL104 (α'3 DA) | all PPL1 | all MBONs |
+|---|---|---|---|---|
+| birth | 0 / −0.07 | **0.017 / +0.60** | **0.017 / +0.77** | 0.0001 / +0.01 |
+| c21 | 0 / −0.55 | 0 / −1.06 | 0.002 / −1.02 | 0.014 / −0.20 |
+| c21 with φ_α'3 = 0 | 0 / −0.50 | 0 / −1.06 | 0.002 / −1.02 | 0.014 / −0.19 |
+
+**Inhibitory weight onto them, top presynaptic types:**
+
+| target | birth | c21 |
+|---|---|---|
+| PPL1 | SMP056 12.5, CRE027 11.4, DPM 9.7 | **FB4G 18.6**, SMP116 16.8, CRE027 15.7, SMP084 13.7, **CRE052 12.6**, LHMB1 12.4 |
+| PPL104 | mALB1 1.7, … (all < 1.8) | **CRE052 4.5** |
+
+**Findings.**
+1. **Training silenced the PPL1 dopamine cells.**
+   - At birth they are tonically active (+0.77 θ); PPL104 is above threshold and fires.
+   - By c21 they sit at −1.0 θ, held down by inhibition that grew in training: new or strengthened FB4G, CRE052,
+     SMP116, SMP084.
+   - BPTT on next-word CE found it useful to shut the punishment/novelty dopamine off. Its phasic modulation of
+     thresholds and plasticity presumably cost prediction in the short window.
+   - This is a likely structural reason (2) stays at 0: the cells that should carry novelty and surprise are clamped.
+2. **φ is not the cause.** Resetting the α'3 compartment memory changes nothing.
+3. **MBON-α'3 is silent even at birth** (−0.07 θ, undriven). That is a separate birth-level gap, which the
+   KC-reach problem above explains.
+
+**Way out.** The fly's own principle: dopamine cells are not free parameters of the prediction objective.
+- Option 1: protect the inhibitory synapses onto the DANs from BPTT, keeping them at birth weights, or keep them under
+  a strong pull to birth. One change, controlled.
+- Option 2, better: let them learn only through their own local rule, not through the CE gradient.
+- Check zero-shot first: restore only the inhibitory inputs onto the DANs to birth weights on c21. Then re-run
+  `alpha3_probe` and `surprise_path_probe`:
+  - do PPL1 fire again?
+  - does surprise reach phasic DA?
+  - what does it cost the text?
+
+The same check matters most for Mengli: her BPTT in the mother world faces the same pressure.
+
+**Also.**
+- The gate c20 noedges arm failed with a NaN score (the JSON write refused NaN). This needs a look. The c20 brain
+  contribution is lost.
+- m_main is asked to pause at the next chunk boundary. It has done its job:
+  - (1) is established;
+  - the PPL1 silencing is found.
+
+  The active parts (3) can only be tested in the mother world, so the GPU goes to Mengli.
