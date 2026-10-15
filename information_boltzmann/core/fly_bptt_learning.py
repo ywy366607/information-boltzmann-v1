@@ -76,6 +76,8 @@ class FlyPhysicalState:
     kc_avail: torch.Tensor = field(default_factory=lambda: torch.empty(0))
     comp_da_trace: torch.Tensor = field(default_factory=lambda: torch.empty(0))   # dopamine-before-Kenyon trace per compartment edge
     comp_p_stats: torch.Tensor = field(default_factory=lambda: torch.empty(0))    # running mean / second moment of the phasic dopamine per edge
+    comp_camp: torch.Tensor = field(default_factory=lambda: torch.empty(0))       # cAMP integrator of the dopamine contrast per edge (attach_comp_camp)
+    credit_comp_camp: torch.Tensor = field(default_factory=lambda: torch.empty(0))  # its carried sensitivities [3, E]
 
     def detached(self):
         return FlyPhysicalState(**{
@@ -403,6 +405,8 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
     comp_trace = getattr(current, 'comp_trace', torch.empty(0))
     comp_da_trace = getattr(current, 'comp_da_trace', torch.empty(0))
     comp_p_stats = getattr(current, 'comp_p_stats', torch.empty(0))
+    comp_camp = getattr(current, 'comp_camp', torch.empty(0))
+    credit_comp_camp = getattr(current, 'credit_comp_camp', torch.empty(0))
     if comp_on:
         # Compartment memory (attach_compartment_memory): e <- l e + (1 - l) s at each Kenyon cell; at each plastic
         # synapse k -> j, with the dopamine delivered to its MBON j (the MBON marks the compartment):
@@ -444,18 +448,32 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
                 # mean + k sd keeps k learnable and the carried credit exact
                 k0_c = model.comp_affinity
                 rel_c = (d_post[0:1] - d_post[1:2]) / (d_post[1:2] + k0_c)
+                camp_logit = getattr(model, 'comp_logit_camp', None)
+                camp_before = None
+                if camp_logit is not None:
+                    # the Kenyon terminal's cAMP integrates the dopamine contrast (rutabaga adenylyl cyclase): a burst
+                    # sustained over the integrator's time teaches, a single tick's fluctuation does not (a per-tick
+                    # threshold passed 2.7% of ticks = 34% of words at 16 ticks; attach_comp_camp)
+                    lam_i = torch.sigmoid(camp_logit)
+                    if comp_camp.numel() != rel_c.numel():
+                        comp_camp = rel_c.detach().clone()
+                    camp_before = comp_camp.detach()
+                    comp_camp = lam_i * comp_camp + (1.0 - lam_i) * rel_c
+                    sig_c = comp_camp
+                else:
+                    sig_c = rel_c
                 with torch.no_grad():
-                    if comp_p_stats.numel() != 2 * rel_c.numel():
-                        comp_p_stats = torch.cat([rel_c.detach(), rel_c.detach() ** 2 + 1e-6], 0)
+                    if comp_p_stats.numel() != 2 * sig_c.numel():
+                        comp_p_stats = torch.cat([sig_c.detach(), sig_c.detach() ** 2 + 1e-6], 0)
                     # the background is estimated from the ticks below the threshold only (third review): a pairing's
                     # own bursts must not raise the threshold that judges them (10 pulses in ~1300 ticks did)
                     sd_0 = (comp_p_stats[1:2] - comp_p_stats[0:1] ** 2).clamp_min(1e-8).sqrt()
-                    below = (rel_c.detach() <= comp_p_stats[0:1] + F.softplus(burst_k.detach()) * sd_0).to(rel_c.dtype)
+                    below = (sig_c.detach() <= comp_p_stats[0:1] + F.softplus(burst_k.detach()) * sd_0).to(sig_c.dtype)
                     a_s = below / 1000.0
-                    comp_p_stats = torch.cat([(1 - a_s) * comp_p_stats[0:1] + a_s * rel_c.detach(),
-                                              (1 - a_s) * comp_p_stats[1:2] + a_s * rel_c.detach() ** 2], 0)
+                    comp_p_stats = torch.cat([(1 - a_s) * comp_p_stats[0:1] + a_s * sig_c.detach(),
+                                              (1 - a_s) * comp_p_stats[1:2] + a_s * sig_c.detach() ** 2], 0)
                     sd_p = (comp_p_stats[1:2] - comp_p_stats[0:1] ** 2).clamp_min(1e-8).sqrt()
-                ramp_c = ((rel_c - comp_p_stats[0:1] - F.softplus(burst_k) * sd_p) / sd_p).clamp(0.0, 1.0)
+                ramp_c = ((sig_c - comp_p_stats[0:1] - F.softplus(burst_k) * sd_p) / sd_p).clamp(0.0, 1.0)
                 phasic_c = phasic_c * ramp_c
             elif burst_k is not None:
                 # only a burst above the compartment's own fluctuation teaches (cAMP threshold; 2026-10-15: a newborn's
@@ -513,11 +531,26 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
                         b_s = (dpost[0:1] + k0_c) / den.square()
                         drel = torch.cat([Sd[0:1] / den - b_s * Sd[1:2], -b_s * Sd[2:3]], 0)
                         in_ramp = ((r_ > 0) & (r_ < 1)).float() / sd_p
+                        dcamp_c = None
+                        if camp_before is not None:
+                            # the integrator's sensitivities: I' = l I + (1 - l) rel; rows lf, ls, logit of l
+                            l_i = torch.sigmoid(camp_logit.detach())
+                            if credit_comp_camp.numel() != 3 * rel_c.numel():
+                                credit_comp_camp = rel_c.new_zeros(3, rel_c.shape[1]).detach()
+                            credit_comp_camp = torch.cat([l_i * credit_comp_camp[0:2] + (1.0 - l_i) * drel,
+                                                          l_i * credit_comp_camp[2:3]
+                                                          + l_i * (1.0 - l_i) * (camp_before - rel_c.detach())], 0)
+                            dsig = credit_comp_camp[0:2]
+                            dcamp_c = F.relu(phasic_raw_c.detach()) * in_ramp * credit_comp_camp[2:3]
+                        else:
+                            dsig = drel
                         dphasic = (raw_on * r_ * torch.cat([a_f * Sd[0:1] - a_s * Sd[1:2], -a_s * Sd[2:3]], 0)
-                                   + F.relu(phasic_raw_c.detach()) * in_ramp * drel)
+                                   + F.relu(phasic_raw_c.detach()) * in_ramp * dsig)
                         # d ramp / d k = -sigmoid(k) inside the ramp (its width is one sd)
                         dk_c = -F.relu(phasic_raw_c.detach()) * in_ramp * sd_p * torch.sigmoid(burst_k.detach())
-                    dphasic = torch.cat([dphasic, dk_c], 0)
+                    else:
+                        dcamp_c = None
+                    dphasic = torch.cat([dphasic, dk_c] + ([dcamp_c] if dcamp_c is not None else []), 0)
                     eta_pot_d = getattr(model, 'comp_eta_pot', None)
                     pot_c = None
                     if eta_pot_d is not None:
@@ -582,7 +615,8 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
                             modulator, getattr(current, 'expected_input', torch.empty(0)), dopamine, da_trace, da_memory,
                             homeostasis, regime, comp_trace, comp_memory,
                             credit_comp, credit_comp_trace, credit_dopamine, credit_stp, kc_avail,
-                            comp_da_trace=comp_da_trace, comp_p_stats=comp_p_stats)
+                            comp_da_trace=comp_da_trace, comp_p_stats=comp_p_stats, comp_camp=comp_camp,
+                            credit_comp_camp=credit_comp_camp)
 
 
 def extract_fly_motor_latent(model, state):
@@ -1263,6 +1297,20 @@ def attach_comp_timing(model, eta_pot=None, use_forget=False, burst_k=0.25):
     start_k = 0.25 if burst_k is None else float(burst_k)
     model.comp_burst_k = nn.Parameter(torch.tensor(_math.log(_math.expm1(max(start_k, 1e-3))), device=model.comp_eta.device))
     return target
+
+
+def attach_comp_camp(model, tau_ticks=16.0):
+    """--comp-camp-tau: the compartment's burst judgement on the Kenyon terminal's cAMP, a leaky integral of the
+    dopamine contrast (rutabaga adenylyl cyclase integrates dopamine with the terminal's own activity over hundreds of
+    ms; the time constant starts at one word and is learnable).  The fourth review showed the per-tick threshold
+    passes a fixed 2.7% of ticks, 34% of words at 16 ticks, whatever the dopamine means; integrating first lets a
+    sustained burst through and averages single-tick fluctuations.  Needs attach_comp_relative_burst."""
+    import math
+    if not getattr(model, 'comp_burst_relative', False):
+        raise ValueError('the cAMP integrator judges the contrast burst (attach_comp_relative_burst first)')
+    lam = 1.0 - 1.0 / float(tau_ticks)
+    model.comp_logit_camp = nn.Parameter(torch.tensor(math.log(lam / (1.0 - lam)), device=model.comp_eta.device))
+    return float(tau_ticks)
 
 
 def attach_comp_relative_burst(model):
@@ -2296,7 +2344,7 @@ def clip_state_gradients(model, state, cap=None):
         model.step_grad_clips = over.float() if count is None else count + over.float()
         return g * torch.where(over, cap / n.clamp_min(1e-30), torch.ones_like(n))
 
-    for name in ('h', 'ge', 'gi', 'b', 'x', 'u', 'dopamine', 'comp_memory', 'comp_trace', 'comp_da_trace', 'comp_p_stats'):
+    for name in ('h', 'ge', 'gi', 'b', 'x', 'u', 'dopamine', 'comp_memory', 'comp_trace', 'comp_da_trace', 'comp_p_stats', 'comp_camp'):
         t = getattr(state, name, None)
         if torch.is_tensor(t) and t.requires_grad:
             t.register_hook(hook)
@@ -2759,7 +2807,7 @@ class FlyBPTTLearner:
             # than the synapses' relative steps (2% of the birth weight).  Their own rate makes them evolvable.
             physio = set(CLASS_PARAMETER_NAMES) | {'dopamine_logit_fast', 'dopamine_logit_slow', 'comp_logit_trace',
                                                    'comp_logit_forget', 'comp_logit_tonic', 'voice_log_gain',
-                                                   'reward_log_gain', 'mbon_kappa', 'comp_eta_pot', 'comp_burst_k'}
+                                                   'reward_log_gain', 'mbon_kappa', 'comp_eta_pot', 'comp_burst_k', 'comp_logit_camp'}
             moved = [named[n] for n in self.adam_names if n in physio]
             self.physio_names = [n for n in self.adam_names if n in physio]
             self.physio_lr = float(lr_physiology)

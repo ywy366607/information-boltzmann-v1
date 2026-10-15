@@ -77,7 +77,7 @@ def load(fork):
     act = ow.ACT_PARAMETER_NAMES + ('act_mu', 'act_sigma', 'act_w_scale') + ow.SENSE_PARAMETER_NAMES
     from information_boltzmann.core import fly_active_inference as fai
     late = (fl.COMPARTMENT_PARAMETER_NAMES + fl.TASTE_PARAMETER_NAMES + act + fai.AI_STATE_NAMES + fl.STREAM_JEPA_PARAMETER_NAMES
-            + fl.COMP_TONIC_PARAMETER_NAMES + ('comp_eta_pot', 'comp_burst_k'))
+            + fl.COMP_TONIC_PARAMETER_NAMES + ('comp_eta_pot', 'comp_burst_k', 'comp_logit_camp'))
     world_only = ('voice_log_gain', 'reward_log_gain')     # the mother world's senses (its harness attaches them)
     if cfg.get('input_gain_size_exponent') is not None:
         fl.attach_input_gain(model)
@@ -109,6 +109,8 @@ def load(fork):
                 model.comp_unit_traces = True
             if cfg.get('comp_burst_relative'):
                 model.comp_burst_relative = True
+            if cfg.get('comp_camp_tau'):
+                fl.attach_comp_camp(model, float(cfg['comp_camp_tau']))
             model.load_state_dict({k: v for k, v in saved['model'].items() if k in late}, strict=False)
         if cfg.get('stream_jepa'):
             fl.attach_stream_jepa(model, graph, graph.parent / 'body-annotations.feather')
@@ -294,6 +296,9 @@ def load(fork):
     if os.environ.get('ZS_BURST_REL') and getattr(model, 'comp_burst_k', None) is not None:
         # zero-shot: the burst judged on the linear dopamine contrast (attach_comp_relative_burst)
         print(f'zero-shot: relative burst threshold {fl.attach_comp_relative_burst(model)}', flush=True)
+    if os.environ.get('ZS_COMP_CAMP') and getattr(model, 'comp_burst_relative', False):
+        # zero-shot: the burst judged on the terminal's cAMP, a leaky integral of the contrast (attach_comp_camp)
+        print(f'zero-shot: cAMP integrator tau {fl.attach_comp_camp(model, float(os.environ["ZS_COMP_CAMP"]))} ticks', flush=True)
     if os.environ.get('ZS_COMP_UNIT') and getattr(model, 'comp_eta', None) is not None:
         # zero-shot: eligibility as the terminal's state (one spike lifts it to ~1), rates restarted (-1 / +1)
         print(f'zero-shot: unit eligibility traces, rates (dep, pot) {fl.attach_comp_unit_traces(model)}', flush=True)

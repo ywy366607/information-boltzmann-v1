@@ -35,7 +35,7 @@ from information_boltzmann.core.fly_bptt_learning import (WRITER_SENSE, attach_i
     ONLINE_DA_PARAMETER_NAMES, attach_online_da_plasticity, attach_kenyon_dendritic_only, attach_homeostasis,
     attach_regime_homeostasis, attach_tied_writer, REGIME_KENYON_Z,
     attach_compartment_memory, attach_taste_heads, COMPARTMENT_PARAMETER_NAMES, TASTE_PARAMETER_NAMES,
-    attach_stream_jepa, STREAM_JEPA_PARAMETER_NAMES, attach_mother_voice, attach_pacemaker_homeostasis, attach_comp_tonic_forget, attach_comp_timing, attach_comp_unit_traces, attach_comp_relative_burst, calibrate_comp_rate, set_time_scale, COMP_TONIC_PARAMETER_NAMES, attach_reply_reward, attach_apl_kenyon_dendritic_only, attach_compartment_dendritic,
+    attach_stream_jepa, STREAM_JEPA_PARAMETER_NAMES, attach_mother_voice, attach_pacemaker_homeostasis, attach_comp_tonic_forget, attach_comp_timing, attach_comp_unit_traces, attach_comp_relative_burst, attach_comp_camp, calibrate_comp_rate, set_time_scale, COMP_TONIC_PARAMETER_NAMES, attach_reply_reward, attach_apl_kenyon_dendritic_only, attach_compartment_dendritic,
     renormalize_kenyon_inputs, pin_kenyon_to_dopamine, pin_sensory_terminals, pin_modulatory_fast_edges,
     reset_inputs_to_birth, attach_graded_cells, GRADED_PARAMETER_NAMES, attach_receptor_writer,
 )
@@ -290,6 +290,8 @@ def resolve_learning_modes(args, previous_config, previous_learner):
         args.comp_burst_k = previous_config.get('comp_burst_k', None)
     if getattr(args, 'time_scale', None) is None:
         args.time_scale = float(previous_config.get('time_scale') or 1.0)
+    if getattr(args, 'comp_camp_tau', None) is None:
+        args.comp_camp_tau = previous_config.get('comp_camp_tau', None)
     if getattr(args, 'comp_burst_relative', None) is None:
         args.comp_burst_relative = bool(previous_config.get('comp_burst_relative', False))
     if getattr(args, 'comp_unit_traces', None) is None:
@@ -688,6 +690,9 @@ def main():
     parser.add_argument('--comp-rate-calibrate', action='store_true',
                         help='Newborn: start the compartment depression / potentiation rates so the median edge writes as fast '
                              'as it forgets (calibrate_comp_rate; needs --comp-tonic-forget)')
+    parser.add_argument('--comp-camp-tau', type=float, default=None,
+                        help='The burst judged on the Kenyon terminal cAMP: a leaky integral of the dopamine contrast, '
+                             'time constant in ticks (start; learnable; needs --comp-burst-relative; omitted = inherit)')
     parser.add_argument('--comp-burst-relative', action='store_true', default=None,
                         help='The compartment burst threshold judged on the linear dopamine contrast (f - s) / (s + K), '
                              'occupancy amount ramped over one sd (needs --comp-timing; omitted = inherit)')
@@ -1243,6 +1248,10 @@ def main():
                 print(f'Compartment timing rule (newborn): dopamine before Kenyon potentiates (start '
                       f'{attach_comp_timing(model, burst_k=args.comp_burst_k):.3f}), use-dependent forgetting off', flush=True)
                 names.extend(n for n in ('comp_eta_pot', 'comp_burst_k') if n not in names)
+                if args.comp_camp_tau and args.comp_burst_relative:
+                    attach_comp_relative_burst(model)
+                    print(f'cAMP integrator of the dopamine contrast (newborn): tau {attach_comp_camp(model, args.comp_camp_tau):g} ticks', flush=True)
+                    names.append('comp_logit_camp')
                 if args.comp_burst_relative:
                     print(f'Burst threshold on the dopamine contrast (newborn): {attach_comp_relative_burst(model)}', flush=True)
                 if args.comp_unit_traces:
@@ -1501,7 +1510,7 @@ def main():
                    and key not in COMPARTMENT_PARAMETER_NAMES + TASTE_PARAMETER_NAMES + ACT_STATE_NAMES + AI_STATE_NAMES
                    + STREAM_JEPA_PARAMETER_NAMES
                    # attached later in the resume (comp tonic / timing, make_sense_gains), each then loads its own
-                   + COMP_TONIC_PARAMETER_NAMES + ('comp_eta_pot', 'comp_burst_k', 'voice_log_gain', 'reward_log_gain')}
+                   + COMP_TONIC_PARAMETER_NAMES + ('comp_eta_pot', 'comp_burst_k', 'comp_logit_camp', 'voice_log_gain', 'reward_log_gain')}
         if not args.go_neuron:
             dropped = [k for k in weights if k in GO_PARAMETER_NAMES]
             for k in dropped:
@@ -1587,7 +1596,7 @@ def main():
             if args.compartment_memory or args.taste_every:
                 comp_state = {k: v for k, v in saved['model'].items() if k in COMPARTMENT_PARAMETER_NAMES + TASTE_PARAMETER_NAMES}
                 saved_tonic = {k: v for k, v in saved['model'].items() if k in COMP_TONIC_PARAMETER_NAMES}
-                saved_tonic_all = {k: v for k, v in saved['model'].items() if k in ('comp_eta_pot', 'comp_burst_k')}
+                saved_tonic_all = {k: v for k, v in saved['model'].items() if k in ('comp_eta_pot', 'comp_burst_k', 'comp_logit_camp')}
                 rate = {} if args.comp_rate is None else {'eta': -float(args.comp_rate)}      # forgetting stays slow (0.02)
                 n_comp = attach_compartment_memory(model, args.graph, args.graph.parent / 'body-annotations.feather',
                                                    affinity=args.dopamine_affinity, **rate)
@@ -1736,6 +1745,15 @@ def main():
                 if args.comp_burst_relative:
                     attach_comp_relative_burst(model)
                     print('Burst threshold on the dopamine contrast', flush=True)
+                    if args.comp_camp_tau:
+                        attach_comp_camp(model, args.comp_camp_tau)
+                        if 'comp_logit_camp' in saved['model']:
+                            model.load_state_dict({'comp_logit_camp': saved['model']['comp_logit_camp']}, strict=False)
+                        print(f'cAMP integrator: tau {float(1 / (1 - torch.sigmoid(model.comp_logit_camp.detach()))):.1f} ticks', flush=True)
+                        if 'comp_logit_camp' not in names:
+                            names = list(names) + ['comp_logit_camp']
+                            if 'comp_logit_camp' not in saved['model']:
+                                newly_trainable.append('comp_logit_camp')
                     print('Unit eligibility traces (rates from the checkpoint)', flush=True)
                 for n_ in ('comp_eta_pot', 'comp_burst_k'):
                     if n_ not in names:

@@ -19,10 +19,12 @@ shorter than a window):
 import torch
 
 COMP_PARAMS = ('comp_eta', 'comp_logit_forget', 'comp_logit_trace', 'dopamine_logit_fast', 'dopamine_logit_slow',
-               'comp_logit_tonic', 'comp_eta_pot', 'comp_burst_k')
+               'comp_logit_tonic', 'comp_eta_pot', 'comp_burst_k', 'comp_logit_camp')
+# rows of dphasic (d p / d theta through the dopamine and the threshold) -> their COMP_PARAMS index
+DPHASIC_ROWS = (3, 4, 7, 8)       # dopamine_logit_fast, dopamine_logit_slow, comp_burst_k, comp_logit_camp
 DOPAMINE_PARAMS = ('dopamine_logit_fast', 'dopamine_logit_slow')
 STP_PARAMS = ('logit_u0', 'log_tau_fac', 'log_tau_rec')
-STATE_OF = {'comp': ('comp_trace', 'comp_memory', 'comp_da_trace'), 'dopamine': ('dopamine',), 'stp': ('u', 'x')}
+STATE_OF = {'comp': ('comp_trace', 'comp_memory', 'comp_da_trace', 'comp_camp'), 'dopamine': ('dopamine',), 'stp': ('u', 'x')}
 
 
 def occupancy_slope(c, affinity):
@@ -40,6 +42,20 @@ def dopamine_step(S, conc, slow, arrival, f, s):
     return torch.cat([dc_f, ds_f, ds_s], 0)
 
 
+def split_comp_rows(S, n):
+    """The carried rows in the current layout: (phi rows [n, E], D rows [n, E] or None).  Earlier layouts carried fewer
+    parameters (5, 6 or 8 phi rows; with the potentiation path 2 x 8): each block keeps its order, new rows start at 0."""
+    E = S.shape[1]
+    pad = lambda B: torch.cat([B[:n], B.new_zeros(max(0, n - B.shape[0]), E)], 0)
+    rows = S.shape[0]
+    if rows == 2 * n:
+        return S[:n], S[n:]
+    if rows >= 16 and rows % 2 == 0 and rows // 2 < n:      # an older potentiation layout (2 x k, k < n)
+        k = rows // 2
+        return pad(S[:k]), pad(S[k:])
+    return pad(S), None
+
+
 def comp_step(S_phi, S_tr, phi, trace, spikes_kc, lam, eta, kappa, phasic, gate, edge_kc, dphasic, tonic=None,
               tonic_rate=None, unit=False, pot=None):
     """One tick of the compartment memory's sensitivities, rows in COMP_PARAMS order (P rows).
@@ -55,14 +71,11 @@ def comp_step(S_phi, S_tr, phi, trace, spikes_kc, lam, eta, kappa, phasic, gate,
     carries 2P rows: P for phi, P for D, with D' = lam D + (1 - lam D) min(p, 1) (unit) or lam D + (1 - lam) p.
     Returns (S_phi', S_tr')."""
     n = len(COMP_PARAMS)
-    E = phi.shape[1]
-    rows = 2 * n if pot is not None else n
-    if S_phi.shape[0] < rows:
-        # saved with fewer rows (before the tonic / potentiation rows): phi rows keep their order, the rest start at 0
-        old = S_phi[:min(S_phi.shape[0], n)]
-        S_phi = torch.cat([old, S_phi.new_zeros(rows - old.shape[0], E)], 0)
-    elif S_phi.shape[0] > rows:
-        S_phi = S_phi[:rows]
+    S_p0, S_D0 = split_comp_rows(S_phi, n)
+    if pot is not None:
+        S_phi = torch.cat([S_p0, S_D0 if S_D0 is not None else torch.zeros_like(S_p0)], 0)
+    else:
+        S_phi = S_p0
     if unit:      # trace' = lam trace + (1 - lam trace) s  (attach_comp_unit_traces)
         S_tr_new = lam * (1.0 - spikes_kc) * S_tr + lam * (1.0 - lam) * trace * (1.0 - spikes_kc)
         trace_new = lam * trace + (1.0 - lam * trace) * spikes_kc
@@ -73,16 +86,16 @@ def comp_step(S_phi, S_tr, phi, trace, spikes_kc, lam, eta, kappa, phasic, gate,
     dw_trace = gate * S_tr_new.index_select(1, edge_kc)
     A = eta * phasic * (1.0 + phi) - kappa * phi
     z = torch.zeros_like(phi)
-    dk = dphasic[2:3] if dphasic.shape[0] > 2 else z
+    dp = [z] * n                                            # d p / d theta per COMP_PARAMS row
+    for r, idx in enumerate(DPHASIC_ROWS[:dphasic.shape[0]]):
+        dp[idx] = dphasic[r:r + 1]
     keep = 1.0 + w * (eta * phasic - kappa) - (tonic if tonic is not None else 0.0)
-    direct = [w * phasic * (1.0 + phi),                    # eta
-              -w * kappa * (1.0 - kappa) * phi,             # logit of the use-dependent forgetting rate
-              dw_trace * A,                                 # logit of the trace's decay
-              w * eta * (1.0 + phi) * dphasic[0:1],         # the dopamine clocks, through p
-              w * eta * (1.0 + phi) * dphasic[1:2],
-              (-tonic * (1.0 - tonic_rate) * phi) if tonic is not None else z,
-              z,                                            # eta_pot (below)
-              w * eta * (1.0 + phi) * dk]                   # burst threshold k, through p
+    direct = [w * eta * (1.0 + phi) * d for d in dp]        # every parameter acting through p
+    direct[0] = w * phasic * (1.0 + phi)                    # eta
+    direct[1] = -w * kappa * (1.0 - kappa) * phi            # logit of the use-dependent forgetting rate
+    direct[2] = dw_trace * A                                # logit of the trace's decay
+    direct[5] = (-tonic * (1.0 - tonic_rate) * phi) if tonic is not None else z
+    direct[6] = z                                           # eta_pot (below)
     if pot is None:
         return keep * S_phi + torch.cat(direct, 0), S_tr_new
     P, dP, D, s_e = pot['P'], pot['dP'], pot['D'], pot['s_edge']
@@ -101,7 +114,9 @@ def comp_step(S_phi, S_tr, phi, trace, spikes_kc, lam, eta, kappa, phasic, gate,
         keep_D = lam
         d_lam = lam * (1.0 - lam) * (D - phasic)
         d_q = (1.0 - lam) * torch.ones_like(phasic)
-    direct_D = [z, z, d_lam.expand_as(phi), d_q * dphasic[0:1], d_q * dphasic[1:2], z, z, d_q * dk]
+    direct_D = [d_q * d for d in dp]
+    direct_D[0], direct_D[1], direct_D[5], direct_D[6] = z, z, z, z
+    direct_D[2] = d_lam.expand_as(phi)
     S_D_new = keep_D * S_D + torch.cat(direct_D, 0)
     return torch.cat([S_p_new, S_D_new], 0), S_tr_new
 
@@ -158,7 +173,8 @@ def open_window(state, mechanisms):
     import dataclasses
     model_fields = {}
     leaves = {}
-    start = {name: getattr(state, name) for name in ('credit_comp', 'credit_comp_trace', 'credit_dopamine', 'credit_stp')}
+    start = {name: getattr(state, name, None) for name in ('credit_comp', 'credit_comp_trace', 'credit_dopamine', 'credit_stp',
+                                                         'credit_comp_camp')}
     for mech in mechanisms:
         for name in STATE_OF[mech]:
             t = getattr(state, name, None)
@@ -191,14 +207,20 @@ def apply_carried_credit(model, leaves, start, scale=1.0):
 
     if 'comp' in mech and start.get('credit_comp') is not None and start['credit_comp'].numel():
         G_phi, G_tr, G_D = grad('comp_memory'), grad('comp_trace'), grad('comp_da_trace')
-        S_phi, S_tr = start['credit_comp'], start['credit_comp_trace']
+        S_all, S_tr = start['credit_comp'], start['credit_comp_trace']
         n = len(COMP_PARAMS)
+        S_phi, S_D = split_comp_rows(S_all, n)
         if G_phi is not None:
-            for k, name in enumerate(COMP_PARAMS[:min(S_phi.shape[0], n)]):     # old states carry fewer rows
+            for k, name in enumerate(COMP_PARAMS):
                 add(name, (G_phi[0] * S_phi[k]).sum())
-        if G_D is not None and S_phi.shape[0] == 2 * n:
+        if G_D is not None and S_D is not None:
             for k, name in enumerate(COMP_PARAMS):                  # the potentiation's dopamine trace
-                add(name, (G_D[0] * S_phi[n + k]).sum())
+                add(name, (G_D[0] * S_D[k]).sum())
+        G_I, S_I = grad('comp_camp'), start.get('credit_comp_camp')
+        if G_I is not None and S_I is not None and S_I.numel():
+            # the cAMP integrator of the burst judgement: rows dopamine_logit_fast, _slow, comp_logit_camp
+            for k, name in enumerate(('dopamine_logit_fast', 'dopamine_logit_slow', 'comp_logit_camp')):
+                add(name, (G_I[0] * S_I[k]).sum())
         if G_tr is not None:
             add('comp_logit_trace', (G_tr[0] * S_tr[0]).sum())
     if 'dopamine' in mech and start.get('credit_dopamine') is not None and start['credit_dopamine'].numel():

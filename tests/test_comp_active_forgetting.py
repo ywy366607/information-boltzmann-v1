@@ -200,15 +200,15 @@ def test_carried_credit_with_relative_burst_threshold(unit):
     assert sum(seen) > 10                    # the ramp's own slope was exercised
 
 
-@pytest.mark.parametrize('unit', [False, True])
-@pytest.mark.parametrize('rel', [False, True])
-def test_carried_credit_newborn_compartment(unit, rel):
+@pytest.mark.parametrize('unit,rel,camp', [(False, False, False), (True, False, False), (False, True, False),
+                                           (True, True, False), (False, True, True), (True, True, True)])
+def test_carried_credit_newborn_compartment(unit, rel, camp):
     """The newborn's full compartment rule (third review 2026-10-15): timing rule with the potentiation path (its own
     dopamine trace D, eta_pot), use-dependent forgetting off (kappa 0 although its parameter exists), adapted receptors
     K_j = max(slow, K), active forgetting, burst threshold k (absolute or on the contrast), unit or rate traces.
     Carried credit for every COMP parameter equals backprop through both windows."""
     from information_boltzmann.core import fly_carried_credit as cc
-    torch.manual_seed(7 + 2 * unit + rel)
+    torch.manual_seed(7 + 2 * unit + rel + 4 * camp)
     N, E, nkc, K = 7, 6, 3, 0.05
     post = torch.tensor([4, 4, 5, 6, 5, 6]); edge_kc = torch.tensor([0, 1, 1, 2, 0, 2]); kc = torch.tensor([0, 1, 2])
     T1, T2 = 29, 19
@@ -219,13 +219,13 @@ def test_carried_credit_newborn_compartment(unit, rel):
     model = torch.nn.Module()
     for name, v in (('comp_eta', -0.6), ('comp_logit_forget', -2.0), ('comp_logit_trace', 2.0),
                     ('dopamine_logit_fast', 1.2), ('dopamine_logit_slow', 2.5), ('comp_logit_tonic', -3.0),
-                    ('comp_eta_pot', 0.3), ('comp_burst_k', -1.0)):
+                    ('comp_eta_pot', 0.3), ('comp_burst_k', -1.0)) + ((('comp_logit_camp', 1.5),) if camp else ()):
         setattr(model, name, torch.nn.Parameter(torch.tensor(v)))
     model.carried_credit = ('comp', 'dopamine')
     seen = {'ramp': 0, 'pot': 0}
 
     def tick(st, t):
-        Dc, tr, phi, Dt, stats = st
+        Dc, tr, phi, Dt, stats, I = st
         f, s = torch.sigmoid(model.dopamine_logit_fast), torch.sigmoid(model.dopamine_logit_slow)
         conc = f * Dc[0:1] + (1 - f) * arrival[t:t + 1]
         Dc = torch.cat([conc, s * Dc[1:2] + (1 - s) * conc], 0)
@@ -237,9 +237,17 @@ def test_carried_credit_newborn_compartment(unit, rel):
         occ_s = occ(dp[1:2], Kj)
         raw = occ(dp[0:1], Kj) - occ_s
         kb = sp(model.comp_burst_k)
+        I_before = I
         if rel:
-            sig = (dp[0:1] - dp[1:2]) / (dp[1:2] + K)
+            rel_v = (dp[0:1] - dp[1:2]) / (dp[1:2] + K)
+            if camp:
+                li = torch.sigmoid(model.comp_logit_camp)
+                I = li * I + (1 - li) * rel_v
+                sig = I
+            else:
+                sig = rel_v
         else:
+            rel_v = None
             sig = raw
         with torch.no_grad():
             stats = torch.cat([0.8 * stats[0:1] + 0.2 * sig, 0.8 * stats[1:2] + 0.2 * sig ** 2], 0)
@@ -260,14 +268,14 @@ def test_carried_credit_newborn_compartment(unit, rel):
         seen['pot'] += int((Dt * s_e > 0).sum())
         Dt = (lam * Dt + (1 - lam * Dt) * p.clamp(max=1.0)) if unit else (lam * Dt + (1 - lam) * p)
         phi = phi - g * torch.sigmoid(model.comp_logit_tonic) * phi_prev
-        return (Dc, tr, phi, Dt, stats), (raw, ramp, sd, p, Kj, g)
+        return (Dc, tr, phi, Dt, stats, I), (raw, ramp, sd, p, Kj, g, rel_v, I_before)
 
     def sens(st, S, t):
-        Dc, tr, phi, Dt, stats = (x.detach() for x in st)
-        Sd, Sphi, Str = S
+        Dc, tr, phi, Dt, stats, I = (x.detach() for x in st)
+        Sd, Sphi, Str, SI = S
         f, s = torch.sigmoid(model.dopamine_logit_fast).detach(), torch.sigmoid(model.dopamine_logit_slow).detach()
         Sd = cc.dopamine_step(Sd, Dc[0:1], Dc[1:2], arrival[t:t + 1], f, s)
-        new, (raw, ramp, sd, p, Kj, g) = tick(st, t)
+        new, (raw, ramp, sd, p, Kj, g, rel_v, I_before) = tick(st, t)
         new = tuple(x.detach() for x in new)
         dp = new[0][:, post]
         Sdp = Sd[:, post]
@@ -284,46 +292,60 @@ def test_carried_credit_newborn_compartment(unit, rel):
             b_s = (dp[0:1] + K) / den.square()
             drel = torch.cat([Sdp[0:1] / den - b_s * Sdp[1:2], -b_s * Sdp[2:3]], 0)
             in_ramp = ((r_ > 0) & (r_ < 1)).float() / sd
-            dph = (raw > 0).float() * r_ * draw + F.relu(raw) * in_ramp * drel
+            if camp:
+                li = torch.sigmoid(model.comp_logit_camp).detach()
+                SI = torch.cat([li * SI[0:2] + (1 - li) * drel,
+                                li * SI[2:3] + li * (1 - li) * (I_before.detach() - rel_v.detach())], 0)
+                dsig = SI[0:2]
+            else:
+                dsig = drel
+            dph = (raw > 0).float() * r_ * draw + F.relu(raw) * in_ramp * dsig
             dk = -F.relu(raw) * in_ramp * sd * sk_
+            extra = [F.relu(raw) * in_ramp * SI[2:3]] if camp else []
         else:
             dph = on * draw
             dk = -on * sk_ * sd
-        dph = torch.cat([dph, dk], 0)
+            extra = []
+        dph = torch.cat([dph, dk] + extra, 0)
         pot = {'P': sp(model.comp_eta_pot).detach(), 'dP': torch.sigmoid(model.comp_eta_pot).detach(), 'D': Dt,
                's_edge': spikes[t:t + 1, kc][:, edge_kc]}
         Sphi, Str = cc.comp_step(Sphi, Str, phi, tr, spikes[t:t + 1, kc], torch.sigmoid(model.comp_logit_trace).detach(),
                                  model.comp_eta.detach(), torch.tensor(0.0), p, g, edge_kc, dph,
                                  tonic=g * torch.sigmoid(model.comp_logit_tonic).detach(),
                                  tonic_rate=float(torch.sigmoid(model.comp_logit_tonic)), unit=unit, pot=pot)
-        return new, (Sd, Sphi, Str)
+        return new, (Sd, Sphi, Str, SI)
 
     start = (torch.rand(2, N) * 0.3, torch.rand(1, nkc) * 0.1, torch.zeros(1, E), torch.zeros(1, E),
-             torch.cat([torch.zeros(1, E), torch.full((1, E), 0.05)], 0))
+             torch.cat([torch.zeros(1, E), torch.full((1, E), 0.05)], 0), torch.zeros(1, E))
     wD, wtr, wphi, wDt = torch.randn(2, N), torch.randn(1, nkc), torch.randn(1, E), torch.randn(1, E)
     loss = lambda st: (st[0] * wD).sum() + (st[1] * wtr).sum() + (st[2] * wphi).sum() + (st[2] ** 2).sum() + (st[3] * wDt).sum()
-    params = [getattr(model, n) for n in cc.COMP_PARAMS]
+    names = [n for n in cc.COMP_PARAMS if hasattr(model, n)]
+    params = [getattr(model, n) for n in names]
     st = start
     for t in range(T1 + T2):
         st = tick(st, t)[0]
     full = torch.autograd.grad(loss(st), params, allow_unused=True)
     full = [torch.zeros(()) if g is None else g for g in full]
-    st, S = start, (torch.zeros(3, N), torch.zeros(len(cc.COMP_PARAMS), E), torch.zeros(1, nkc))
+    st, S = start, (torch.zeros(3, N), torch.zeros(len(cc.COMP_PARAMS), E), torch.zeros(1, nkc), torch.zeros(3, E))
     with torch.no_grad():
         for t in range(T1):
             st, S = sens(st, S, t)
     leaves = {'dopamine': st[0].clone().requires_grad_(), 'comp_trace': st[1].clone().requires_grad_(),
               'comp_memory': st[2].clone().requires_grad_(), 'comp_da_trace': st[3].clone().requires_grad_()}
-    s2 = (leaves['dopamine'], leaves['comp_trace'], leaves['comp_memory'], leaves['comp_da_trace'], st[4])
+    if camp:
+        leaves['comp_camp'] = st[5].clone().requires_grad_()
+    s2 = (leaves['dopamine'], leaves['comp_trace'], leaves['comp_memory'], leaves['comp_da_trace'], st[4],
+          leaves['comp_camp'] if camp else st[5])
     for t in range(T1, T1 + T2):
         s2 = tick(s2, t)[0]
     model.zero_grad(set_to_none=True)
     loss(s2).backward()
-    cc.apply_carried_credit(model, leaves, {'credit_dopamine': S[0], 'credit_comp': S[1], 'credit_comp_trace': S[2]})
-    for name, g in zip(cc.COMP_PARAMS, full):
+    cc.apply_carried_credit(model, leaves, {'credit_dopamine': S[0], 'credit_comp': S[1], 'credit_comp_trace': S[2],
+                                            'credit_comp_camp': S[3] if camp else None})
+    for name, g in zip(names, full):
         got = getattr(model, name).grad
         got = torch.zeros(()) if got is None else got
         assert torch.allclose(got, g, rtol=1e-4, atol=1e-6), (name, got, g)
     assert float(full[1].abs()) == 0.0                       # the use-dependent forgetting is off: no credit
-    assert all(float(full[i].abs()) > 0 for i in (0, 2, 3, 4, 5, 6, 7))
+    assert all(float(full[i].abs()) > 0 for i in range(len(names)) if i != 1)
     assert seen['pot'] > 5 and (not rel or seen['ramp'] > 5)

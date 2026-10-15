@@ -32,19 +32,30 @@ train = np.load(ROOT / cfg['data'] / 'train.npy', mmap_mode='r')
 counts = np.bincount(np.asarray(train[:20_000_000], dtype=np.int64), minlength=50257).astype(np.float64) + 0.5
 surprisal = -np.log(counts / counts.sum())
 E = model.comp_pre.numel()
+comp_pre_l = model.comp_pre.long()
+mbon_idx = torch.unique(model.comp_post.long())
 drive, share, words = [], [], []
+mbon_resp, phi_word = [], []      # familiarity: the MBONs' response to the word, phi on the edges of its Kenyon cells
 with torch.no_grad():
     for i, w in enumerate(text[:64 + N_WORDS]):
         model._comp_rate_probe = {'dep': torch.zeros(E, device='cuda'), 'pot': torch.zeros(E, device='cuda'),
                                   'gate': torch.zeros(E, device='cuda'), 'ticks': 0}
+        fired = torch.zeros(model.n_neurons, dtype=torch.bool, device='cuda')
+        mb = 0.0
         for t in range(WT):
             s = fl.advance_fly_token_stream(model, s, torch.tensor([int(w)], device='cuda'), [1], ticks=1, hold_input=True,
                                             fresh=False, **opts)[0]
+            spk = s.ring[0][0] > 0
+            fired |= spk
+            mb += float(spk.index_select(0, mbon_idx).float().mean())
         s = fl.expect_next(model, s, fl.read_fly_motor(model, s))
         pr = model._comp_rate_probe
         if i >= 64:                       # the first 64 words settle the threshold's background
             d = pr['dep'] + pr['pot']
             drive.append(float(d.sum())); share.append(float((d > 0).float().mean())); words.append(int(w))
+            sel = fired.index_select(0, comp_pre_l)
+            phi_word.append(float(s.comp_memory[0][sel].mean()) if bool(sel.any()) else float('nan'))
+            mbon_resp.append(mb / WT)
 model._comp_rate_probe = None
 drive, share, words = np.array(drive), np.array(share), np.array(words)
 from scipy.stats import spearmanr
@@ -68,10 +79,26 @@ if mask.sum() > 10:
     rel = drive[mask] / np.maximum(np.array([drive[inv == inv[j]].mean() for j in np.flatnonzero(mask)]), 1e-12)
     trend = float(spearmanr(occ_idx[mask], rel)[0])
 q = lambda v: [round(float(np.min(v)), 4), round(float(np.median(v)), 4), round(float(np.mean(v)), 4), round(float(np.max(v)), 4)]
+# familiarity: within each word seen >= 3 times, the MBONs' response and phi against its occurrence index (a
+# repetition-suppression / familiarity code falls with repeats), and phi against rarity across all words
+mbon_resp, phi_word = np.array(mbon_resp), np.array(phi_word)
+fam_mbon = fam_phi = None
+if mask.sum() > 10:
+    def rel_to_word(v):
+        return np.array([v[j] - np.nanmean(v[inv == inv[j]]) for j in np.flatnonzero(mask)])
+    fam_mbon = float(spearmanr(occ_idx[mask], rel_to_word(mbon_resp))[0])
+    pv = rel_to_word(phi_word)
+    ok = np.isfinite(pv)
+    fam_phi = float(spearmanr(occ_idx[mask][ok], pv[ok])[0]) if ok.sum() > 10 else None
+okp = np.isfinite(phi_word)
+phi_rarity = float(spearmanr(phi_word[okp], surprisal[words][okp])[0]) if okp.sum() > 10 else None
 rep_ = {'words': int(len(words)), 'drive [min,med,mean,max]': q(drive), 'edges written share': q(share),
         'spearman drive~surprisal': round(float(rho), 3), 'p': float(pval), 'identity eta2 (>=3 occurrences)': eta2,
         'repeat trend (spearman occurrence~relative drive)': trend, 'distinct words': int(len(uniq)),
-        'words seen >=3': int((cnt >= 3).sum())}
+        'words seen >=3': int((cnt >= 3).sum()),
+        'familiarity: MBON response over repeats (spearman)': fam_mbon,
+        'familiarity: phi over repeats (spearman)': fam_phi,
+        'phi ~ rarity (spearman)': phi_rarity}
 print(json.dumps(rep_, indent=1), flush=True)
 if OUT:
     OUT.write_text(json.dumps(rep_, indent=1), encoding='utf-8')
