@@ -1497,7 +1497,9 @@ def main():
         weights = {key: value for key, value in saved['model'].items()
                    if key not in ('edge_weight_e', 'edge_weight_i')
                    and key not in COMPARTMENT_PARAMETER_NAMES + TASTE_PARAMETER_NAMES + ACT_STATE_NAMES + AI_STATE_NAMES
-                   + STREAM_JEPA_PARAMETER_NAMES}
+                   + STREAM_JEPA_PARAMETER_NAMES
+                   # attached later in the resume (comp tonic / timing, make_sense_gains), each then loads its own
+                   + COMP_TONIC_PARAMETER_NAMES + ('comp_eta_pot', 'comp_burst_k', 'voice_log_gain', 'reward_log_gain')}
         if not args.go_neuron:
             dropped = [k for k in weights if k in GO_PARAMETER_NAMES]
             for k in dropped:
