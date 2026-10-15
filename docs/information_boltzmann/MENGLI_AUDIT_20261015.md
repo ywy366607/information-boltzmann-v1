@@ -133,3 +133,33 @@ c11, a mainline brain already trained on text with acts. The newborn uses the ma
   - α'3: the size-normalisation input gain, I/E on raw synapse counts, DPM → MBON axo-axonal check;
   - H1;
   - a paired control fork.
+
+## Review 1 items, progress (2026-10-15 16:00)
+
+**Done in code, with tests:**
+- event-clock credit;
+- live forgetting term plus its carried row;
+- `mbon_kappa` as its own learnable parameter outside A;
+- newborn Kenyon trace start (`--comp-trace-tau`);
+- sense gains learnable.
+
+**B at 32 ticks** (`reward_pulse_probe`, WORD_TICKS=32, FORK=64, 1.0×):
+- phasic DA +0.039;
+- Σ|Δφ| 83;
+- 96% on traces standing before the pulse;
+- **4%** on traces the reply word creates.
+
+The reviewer's prediction (> 30% on reply traces) is falsified. B still credits the state before her answer.
+
+**Mouth:** 12 SiliconFlow replies, 0 with leaked reasoning, 1 truncated; cache hits 0 (the provider does not report or
+cache them for this model).
+
+**α'3:**
+- Raw synapse counts give inhibition / excitation of about 0.19. The model's 0.7 comes from the global COBA conversion
+  (inhibitory 3.67 vs excitatory 1.82 per synapse; Shiu replication), not from an α'3-specific artifact. The reviewer's
+  hypothesis 2 is falsified.
+- The KC → α'3 dendritic share is 0.99 (not a compartment artifact).
+- Kenyon input gain pooled (`--input-gain-kenyon-pooled`): the a'b' cells' axon-dominated volume no longer cuts their
+  claw drive. Zero-shot at birth with MBON κ 1.0: α'3 goes 0 → 0.0002 spikes per tick. That is not enough, and
+  prediction 4 failed.
+- **Still open: α'3 drive.**

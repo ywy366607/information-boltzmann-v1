@@ -219,6 +219,10 @@ def load(fork):
             before = float(model.intrinsic_kappa.median())
             model.intrinsic_kappa.copy_(birth_sd['intrinsic_kappa'].to(model.intrinsic_kappa.device))
         print(f'zero-shot: intrinsic kappa restored to birth (median {before:.3f} -> {float(model.intrinsic_kappa.median()):.3f})', flush=True)
+    if os.environ.get('ZS_KC_POOLED') and getattr(model, 'log_input_gain', None) is not None:
+        # zero-shot, at birth only (2026-10-15): the input gains re-initialised from size with the Kenyon subtypes
+        # pooled (on birth.pt every other class gets back exactly its birth value)
+        print('zero-shot: Kenyon input gain pooled', fl.init_input_gain_from_size(model, graph, float(cfg.get('input_gain_size_exponent') or 0.5), kenyon_pooled=True), flush=True)
     if os.environ.get('ZS_MBON_KAPPA'):
         import pandas as pd
         # zero-shot (2026-10-15): the MBONs join the spontaneously active cells with intrinsic current kappa (x their

@@ -657,6 +657,9 @@ def main():
                         help='The reward pulse in rheobase units (omitted = inherit, else 1.0)')
     parser.add_argument('--mother-reward-ticks', type=int, default=None,
                         help='The reward pulse length in ticks (omitted = inherit, else 4)')
+    parser.add_argument('--input-gain-kenyon-pooled', action='store_true', default=False,
+                        help='Newborn: the Kenyon subtype classes start their input gain from the pooled Kenyon size '
+                             '(the body volume is mostly axon; per-subtype size starved the alpha-prime beta-prime cells)')
     parser.add_argument('--comp-trace-tau', type=float, default=None,
                         help="Newborn: the Kenyon eligibility trace's start time constant in ticks (learnable; default 50). "
                              'Set in word terms, about 2-3 word intervals of the world')
@@ -1112,7 +1115,7 @@ def main():
             print(f'Type classes (newborn): {split_by_type(model, args.graph, args.graph.parent / "body-annotations.feather")} cell types with their own physiology', flush=True)
         if args.input_gain_size_exponent is not None:
             print(f'Input gain per class from size^{args.input_gain_size_exponent} (min, median, max): '
-                  f'{init_input_gain_from_size(model, args.graph, args.input_gain_size_exponent)}', flush=True)
+                  f'{init_input_gain_from_size(model, args.graph, args.input_gain_size_exponent, kenyon_pooled=bool(args.input_gain_kenyon_pooled))}', flush=True)
         if args.kc_subtypes:
             print(f'Kenyon subtypes (newborn): {split_kenyon_subtypes(model, args.graph, args.graph.parent / "body-annotations.feather")}', flush=True)
         if args.modulatory_classes:

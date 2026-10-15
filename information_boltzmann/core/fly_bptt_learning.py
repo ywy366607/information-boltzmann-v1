@@ -4192,9 +4192,13 @@ def attach_input_gain(model):
     return model
 
 
-def init_input_gain_from_size(model, graph_npz, exponent=0.5):
+def init_input_gain_from_size(model, graph_npz, exponent=0.5, kenyon_pooled=False):
     """Start every non-sensory class at gain (median size / class median size)^exponent (0 = uniform synapses, 1 =
-    inputs inverse to size; 0.5 = halfway, in log).  Classes without size data, and sensory classes, stay at 1."""
+    inputs inverse to size; 0.5 = halfway, in log).  Classes without size data, and sensory classes, stay at 1.
+    kenyon_pooled (--input-gain-kenyon-pooled, 2026-10-15): the Kenyon subtype classes share the pooled Kenyon size.
+    A body's volume is mostly its axon, and the Kenyon subtypes differ mainly there (a'b' 284M vs ab 178M voxels):
+    the per-subtype size cut the a'b' cells' claw drive to 0.79 of ab's, kept them the quietest Kenyon cells (15% ever
+    active) and left MBON-a'3, their only reader, undriven.  The same claw drive should give the same v / theta."""
     import pandas as pd
     from pathlib import Path
     graph = np.load(graph_npz, allow_pickle=True)
@@ -4206,6 +4210,15 @@ def init_input_gain_from_size(model, graph_npz, exponent=0.5):
     med = np.median(size[np.isfinite(size) & (size > 0)])
     gains = np.zeros(model.n_superclasses)
     df = pd.DataFrame({'c': cls[ok], 's': size[ok]}).groupby('c')['s'].median()
+    if kenyon_pooled:
+        ann_cls = pd.read_feather(Path(graph_npz).parent / 'body-annotations.feather').set_index('bodyId').reindex(
+            graph['neuron_body_ids'])['class'].astype(str).values
+        kc = ann_cls == 'Kenyon_Cell'
+        kc_classes = [c for c in np.unique(cls[kc]) if (ann_cls[cls == c] == 'Kenyon_Cell').all()]
+        pooled = float(np.median(size[kc & ok]))
+        for c in kc_classes:
+            if c in df.index:
+                df.loc[c] = pooled
     gains[df.index.values] = exponent * np.log(med / df.values)
     with torch.no_grad():
         model.log_input_gain.copy_(torch.as_tensor(gains, dtype=torch.float32, device=model.log_input_gain.device))
