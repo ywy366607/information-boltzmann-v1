@@ -326,3 +326,24 @@ arm, per replicate:
      background is conditioned on the word-onset phase, so the predictable word-locked part never teaches.
 2. Channel noise on the DANs (review): irregular spontaneous firing instead of silence near threshold.
 3. The MBON output effect needs both a larger R and the Kenyon share of MBON drive.
+
+**Gate 2 at the compartments, measured** (`da_info_probe.py`; launch working point, 512 mother-text words after 64
+settling words):
+- Per word, the compartment write drive reaches a median of 34% of all edges (range 11–69%).
+- Spearman correlation with unigram surprisal: 0.07 (p 0.09).
+- Variance explained by word identity (39 words seen ≥ 3 times): 0.25, against a chance level of about 0.19.
+- Repeat trend: −0.06. There is no self-limiting with repetition, so the MBON → DAN feedback does not act yet.
+
+**Reading:** the newborn's ordinary dopamine is not yet a teacher. The learner is right: sign, specificity, persistence
+and exact credit all hold. With calibrated rates, its writes of this uninformative dopamine stay slow (0.99 φ
+correlation over 256 words), and that is also why one pairing leaves only 0.01.
+
+**Proposal for the launch decision:** treat gate 2 as a developmental outcome, not a pre-birth calibration.
+- The things that can make the dopamine informative in life are the mother's reply pulse B (sparse, contingent) and
+  BPTT on the dopamine cells' input synapses (with carried credit).
+- Living probes for the dashboard, falsifiable within 8k words:
+  - the write share locked to B pulses exceeds that of ordinary words;
+  - the surprisal correlation reaches ≥ 0.2;
+  - the repeat trend turns negative (≤ −0.2).
+- If none moves by 8k words, the route to the DANs is missing a fly path (SEZ / LH valence inputs, MBON → DAN), and
+  that is the next audit.
