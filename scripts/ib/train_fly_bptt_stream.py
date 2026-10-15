@@ -1887,6 +1887,9 @@ def main():
     config['dataset_manifest'] = json.loads(manifest.read_text(encoding='utf-8')) if manifest.exists() else None
     config['train_shape'], config['validation_shape'] = list(train.shape), list(val.shape)
     config['tokenizer'] = 'GPT-2, 50257 vocabulary entries'
+    # the conversation's own saved state outlives the big checkpoint dict (freed here)
+    resume_mother = ({'mother_world': saved.get('mother_world'), 'mother_rng': saved.get('mother_rng')}
+                     if not is_scratch_start else {})
     if not is_scratch_start:
         del weights, old, saved
     gc.collect()
@@ -2199,7 +2202,7 @@ def main():
                    if family.get('child', {}).get('name') else 'Hello, little one.')      # her first word: her name
         state_path = args.output / 'mother_state.json'
         saved_talk = json.loads(state_path.read_text(encoding='utf-8')) if state_path.exists() else None
-        saved_world = saved.get('mother_world') if args.resume else None
+        saved_world = resume_mother.get('mother_world') if args.resume else None
         if saved_world is not None:
             opening = None
         elif saved_talk:
@@ -2238,8 +2241,8 @@ def main():
             print(f'Mother’s voice on {n_voice} Johnston’s organ cells (JO-A/B), {args.mother_voice_level} x rheobase', flush=True)
         print(f'Child end of turn: {child_end!r}, or a yield, or {args.mother_max_fly_words} words', flush=True)
         mother_rng = np.random.default_rng(int(trained) + 104729)
-        if args.resume and saved.get('mother_rng') is not None:
-            mother_rng.bit_generator.state = saved['mother_rng']
+        if args.resume and resume_mother.get('mother_rng') is not None:
+            mother_rng.bit_generator.state = resume_mother['mother_rng']
         print(f'Mother world ({args.mother_world}): turn-taking, self-hearing, beats ({ticks_per_beat} ticks/beat), '
               f'pause {pause_beats} beat(s), silent call threshold {silent_thresh}, fly T={args.mother_temperature}',
               flush=True)

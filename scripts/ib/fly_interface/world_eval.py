@@ -211,6 +211,14 @@ def load(fork):
         fl.write_input = _gained_write
         fl._zs_writer_gain = g_w
         print(f'zero-shot: writer drive x{g_w}', flush=True)
+    if os.environ.get('ZS_RESTORE_KAPPA') and getattr(model, 'intrinsic_kappa', None) is not None:
+        # zero-shot (2026-10-15): the pacemaker drive of the spontaneously active modulatory cells back at birth
+        # (BPTT turned it down in m_main: median 1.21 -> 0.39)
+        birth_sd = torch.load(fork / 'birth.pt', map_location='cpu', mmap=True, weights_only=False)['model']
+        with torch.no_grad():
+            before = float(model.intrinsic_kappa.median())
+            model.intrinsic_kappa.copy_(birth_sd['intrinsic_kappa'].to(model.intrinsic_kappa.device))
+        print(f'zero-shot: intrinsic kappa restored to birth (median {before:.3f} -> {float(model.intrinsic_kappa.median()):.3f})', flush=True)
     if os.environ.get('ZS_RESTORE_DAN_INHIB'):
         # zero-shot (2026-10-15): the inhibitory inputs onto the dopamine cells back at their birth weights (training
         # grew inhibition that silenced PPL1: birth +0.77 theta, c21 -1.0 theta); excitation and everything else as is
