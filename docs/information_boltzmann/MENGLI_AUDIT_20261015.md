@@ -86,3 +86,27 @@ Layer rates at birth (32 ticks, spikes per tick): olfactory receptors 0.027, ALP
   - finer tick checkpointing;
   - analytic advance through silence;
   - event-driven, merged kernels.
+
+## The newborn plan (draft for review, 2026-10-15 15:00)
+
+Mengli is kept as she is. A new individual is born from scratch into the mother world. Mengli herself began from d5b
+c11, a mainline brain already trained on text with acts. The newborn uses the mainline profile plus:
+
+- **Acts:** `--ai --motor-acts --ai-pragmatic 1 --ai-depth 2 --ai-sigreg 0.01 --act-brain-grad`, muscles calibrated at
+  birth, `--no-eye-binary`, `--noise-rate 0`.
+- **World clock:** the mother's words held about 32 ticks (`--stream-pace-mean 32 --stream-pace-min 24`); the
+  beat / pause scaled with it. Absolute time is free; the ratio to the brain's own chain (15–25 ticks) is what counts.
+- **Credit:**
+  - `--mother-credit epistemic --mother-credit-trace --mother-credit-differential --mother-credit-brain-tau` (C, no
+    horizon, average reward, on the Kenyon trace clock).
+  - `--mother-reward` (B), `--mother-voice`, `--sense-gains-learnable`.
+- **Physiology:**
+  - `--pacemaker-homeostasis` (A);
+  - `--intrinsic-mbon-kappa ~1.0` (MBONs tonic, learnable; value from the zero-shot range 0.95–1.1);
+  - `--comp-tonic-forget 2048` (active forgetting).
+- **Mouth:** `--mother-world siliconflow` (GLM-5.3-Flash) or DeepSeek (back at 13:05).
+- **BPTT:** 32 words (about 1,024 ticks). The tick span and the token span are both logged.
+- **Open before go:**
+  - H1 memory: needs the GPU environment restored, plus finer tick checkpointing;
+  - M3 / M4 (epistemic value via α'3);
+  - the review.

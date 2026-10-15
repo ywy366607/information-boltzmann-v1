@@ -918,7 +918,8 @@ def attach_precision(model, graph_npz, annotations, tau=8.0, pattern=MODULATORY_
 INTRINSIC_TYPE_PATTERN = r'^(s-LNv|l-LNv|5thsLNv|LNd|DN1|DN2|DN3|LPN|LN-DN1|PAM\d|PPL\d|OA-|5-HT)'
 
 
-def attach_intrinsic_drive(model, graph_npz, annotations, kappa=1.2, pattern=INTRINSIC_TYPE_PATTERN, jitter=0.0, seed=0):
+def attach_intrinsic_drive(model, graph_npz, annotations, kappa=1.2, pattern=INTRINSIC_TYPE_PATTERN, jitter=0.0, seed=0,
+                           mbon_kappa=0.0):
     """Release the spontaneously active cells the connectome already contains: each selected neuron gets a learnable
     intrinsic current kappa (in units of its rheobase, start 1.2 = slow pacemaking, period ~1.8 tau_m).  Every other
     neuron is unchanged.  Returns the selected cell types."""
@@ -929,15 +930,27 @@ def attach_intrinsic_drive(model, graph_npz, annotations, kappa=1.2, pattern=INT
     table = table[table['type'].astype(str).str.contains(pattern, regex=True)]
     position = {int(b): i for i, b in enumerate(ids)}
     chosen = sorted(position[int(b)] for b in table['bodyId'] if int(b) in position)
+    # mbon_kappa > 0 (--intrinsic-mbon-kappa, 2026-10-15): the MBONs are tonically active in the fly; at birth they were
+    # silent here (0.0001 spikes / tick), so the Kenyon -> MBON memory could shape nothing.  They join with their own
+    # (smaller) start current, learnable like the pacemakers'; the Kenyon input then modulates around that baseline.
+    mbons = []
+    if mbon_kappa and mbon_kappa > 0:
+        cls_all = pd.read_feather(annotations).set_index('bodyId').reindex(ids)['class'].astype(str).values
+        mbons = [i for i in np.flatnonzero(cls_all == 'MBON') if i not in set(chosen)]
+    starts = [float(kappa)] * len(chosen) + [float(mbon_kappa)] * len(mbons)
+    chosen = list(chosen) + list(mbons)
     device = model.read_indices.device
     model.register_buffer('intrinsic_index', torch.as_tensor(chosen, dtype=torch.long, device=device), persistent=False)
     # jitter: each cell's kappa x (1 + jitter * N(0, 1)), fixed at birth -- identical pacemakers started from the same
     # state fire in lockstep (audit 2026-10-13: 441 cells at one 27 Hz rhythm); different periods desynchronise them
-    k = torch.full((len(chosen),), float(kappa))
+    k = torch.tensor(starts, dtype=torch.float32)
     if jitter > 0:
         k = k * (1.0 + jitter * torch.randn(len(chosen), generator=torch.Generator().manual_seed(seed)))
     model.intrinsic_kappa = nn.Parameter(k.to(device))
-    return table['type'].astype(str).value_counts().to_dict()
+    released = table['type'].astype(str).value_counts().to_dict()
+    if mbons:
+        released['MBON (tonic)'] = len(mbons)
+    return released
 
 
 def attach_read_bank(model, taus=(1, 2, 4, 8, 16, 32)):

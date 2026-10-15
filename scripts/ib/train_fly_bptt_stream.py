@@ -284,6 +284,8 @@ def resolve_learning_modes(args, previous_config, previous_learner):
         args.pacemaker_homeostasis = bool(previous_config.get('pacemaker_homeostasis', False))
     if getattr(args, 'comp_tonic_forget', None) is None:
         args.comp_tonic_forget = float(previous_config.get('comp_tonic_forget') or 0.0)
+    if getattr(args, 'intrinsic_mbon_kappa', None) is None:
+        args.intrinsic_mbon_kappa = float(previous_config.get('intrinsic_mbon_kappa') or 0.0)
     if getattr(args, 'sense_gains_learnable', None) is None:
         args.sense_gains_learnable = bool(previous_config.get('sense_gains_learnable', False))
     if getattr(args, 'mother_credit_brain_tau', None) is None:
@@ -544,6 +546,9 @@ def main():
                         help="Speaking act's credit: 'predict' (-CE of the following words) or 'epistemic' (what the words "
                              "arriving within --mother-credit-ticks taught: learning progress, applied one window late)")
     parser.add_argument('--mother-credit-ticks', type=int, default=64, help='Epistemic credit horizon in ticks')
+    parser.add_argument('--intrinsic-mbon-kappa', type=float, default=None,
+                        help='The MBONs join the spontaneously active cells with this start current (x rheobase, '
+                             'learnable); 0 = off (omitted = inherit)')
     parser.add_argument('--sense-gains-learnable', action='store_true', default=None,
                         help="The mother's voice gain (Johnston's organ) and the PAM cells' sensitivity to her answer "
                              'are learnable, starting at their levels (omitted = inherit)')
@@ -1099,7 +1104,8 @@ def main():
                 args.intrinsic_pattern = INTRINSIC_TYPE_PATTERN       # saved: a later default change cannot alter the lineage
             released = attach_intrinsic_drive(model, args.graph, args.graph.parent / 'body-annotations.feather',
                                               **({'kappa': args.intrinsic_kappa} if args.intrinsic_kappa is not None else {}),
-                                              pattern=args.intrinsic_pattern, jitter=float(args.intrinsic_jitter or 0.0))
+                                              pattern=args.intrinsic_pattern, jitter=float(args.intrinsic_jitter or 0.0),
+                                              mbon_kappa=float(args.intrinsic_mbon_kappa or 0.0))
             print(f'Released {int(model.intrinsic_index.numel())} spontaneously active cells (newborn): {released}', flush=True)
         if args.graded_types:
             print(f'Graded (non-spiking) cells (newborn): {attach_graded_cells(model, args.graph, args.graph.parent / "body-annotations.feather", types=tuple(args.graded_types.split(",")), gain=args.graded_gain)}', flush=True)
@@ -1334,7 +1340,8 @@ def main():
         if args.intrinsic:
             released = attach_intrinsic_drive(model, args.graph, args.graph.parent / 'body-annotations.feather',
                                               **({'kappa': args.intrinsic_kappa} if args.intrinsic_kappa is not None else {}),
-                                              **({'pattern': args.intrinsic_pattern} if args.intrinsic_pattern else {}))
+                                              **({'pattern': args.intrinsic_pattern} if args.intrinsic_pattern else {}),
+                                              mbon_kappa=float(args.intrinsic_mbon_kappa or 0.0))
             print(f'Released {int(model.intrinsic_index.numel())} spontaneously active cells: {released}', flush=True)
         if args.graded_types:
             print(f'Graded (non-spiking) cells: {attach_graded_cells(model, args.graph, args.graph.parent / "body-annotations.feather", types=tuple(args.graded_types.split(",")), gain=args.graded_gain)}', flush=True)
