@@ -435,7 +435,25 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
             phasic_raw_c = dopamine_occupancy(d_post[0:1], comp_k) - occ_slow_c
             phasic_c = F.relu(phasic_raw_c)
             burst_k = getattr(model, 'comp_burst_k', None)
-            if burst_k is not None:
+            rel_burst = burst_k is not None and getattr(model, 'comp_burst_relative', False)
+            if rel_burst:
+                # the burst is judged on the linear contrast (f - s) / (s + K) (Weber, as dopamine_adapted for every
+                # other target), the amount written stays the bounded occupancy: the adapted occupancy is capped at 0.5,
+                # so at birth (kappa_DAN 1.05) the spontaneous threshold (0.47) sat at the 4x pulse's peak (0.466),
+                # while in contrast terms they are 4.0 and 25 (attach_comp_relative_burst).  A ramp over one sd above
+                # mean + k sd keeps k learnable and the carried credit exact
+                k0_c = model.comp_affinity
+                rel_c = (d_post[0:1] - d_post[1:2]) / (d_post[1:2] + k0_c)
+                with torch.no_grad():
+                    if comp_p_stats.numel() != 2 * rel_c.numel():
+                        comp_p_stats = torch.cat([rel_c.detach(), rel_c.detach() ** 2 + 1e-6], 0)
+                    a_s = 1.0 / 1000.0
+                    comp_p_stats = torch.cat([(1 - a_s) * comp_p_stats[0:1] + a_s * rel_c.detach(),
+                                              (1 - a_s) * comp_p_stats[1:2] + a_s * rel_c.detach() ** 2], 0)
+                    sd_p = (comp_p_stats[1:2] - comp_p_stats[0:1] ** 2).clamp_min(1e-8).sqrt()
+                ramp_c = ((rel_c - comp_p_stats[0:1] - F.softplus(burst_k) * sd_p) / sd_p).clamp(0.0, 1.0)
+                phasic_c = phasic_c * ramp_c
+            elif burst_k is not None:
                 # only a burst above the compartment's own fluctuation teaches (cAMP threshold; 2026-10-15: a newborn's
                 # pacemaking DANs give phasic p > 0 80% of the time, p99 0.61, and wrote noise into every edge).  Each edge
                 # keeps a slow mean / second moment of its phasic dopamine (detached, ~1000 ticks); the threshold is
@@ -477,6 +495,16 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
                     else:
                         a_s = occupancy_slope(dpost[1:2], model.comp_affinity)
                     dphasic = on * torch.cat([a_f * Sd[0:1] - a_s * Sd[1:2], -a_s * Sd[2:3]], 0)
+                    if rel_burst:
+                        # phasic = relu(raw) * ramp(rel): ramp d(raw) + relu(raw) d(ramp), d ramp = d rel / sd inside it
+                        r_ = ramp_c.detach()
+                        raw_on = (phasic_raw_c.detach() > 0).float()
+                        den = dpost[1:2] + k0_c
+                        b_s = (dpost[0:1] + k0_c) / den.square()
+                        drel = torch.cat([Sd[0:1] / den - b_s * Sd[1:2], -b_s * Sd[2:3]], 0)
+                        in_ramp = ((r_ > 0) & (r_ < 1)).float() / sd_p
+                        dphasic = (raw_on * r_ * torch.cat([a_f * Sd[0:1] - a_s * Sd[1:2], -a_s * Sd[2:3]], 0)
+                                   + F.relu(phasic_raw_c.detach()) * in_ramp * drel)
                     lam_d = lam_c.detach()
                     credit_comp, credit_comp_trace = comp_step(
                         credit_comp, credit_comp_trace, memory_before, trace_before,
@@ -1204,6 +1232,18 @@ def attach_comp_timing(model, eta_pot=None, use_forget=False, burst_k=0.25):
     start_k = 0.25 if burst_k is None else float(burst_k)
     model.comp_burst_k = nn.Parameter(torch.tensor(_math.log(_math.expm1(max(start_k, 1e-3))), device=model.comp_eta.device))
     return target
+
+
+def attach_comp_relative_burst(model):
+    """--comp-burst-relative: the compartment's burst threshold (mean + k sd, comp_burst_k) is judged on the linear
+    dopamine contrast (f - s) / (s + K) at its MBON, the written amount stays the occupancy phasic, ramped over one sd
+    above the threshold (k learnable; carried credit exact).  Birth sweep (FLY_EVENT_THREE_FACTOR_DESIGN, step 1 at
+    birth): in occupancy terms the threshold met the pulse's peak at the 0.5 ceiling; in contrast terms the 4x pulse is
+    3.8x the spontaneous p99 at kappa_DAN 1.05.  Needs attach_comp_timing (the threshold)."""
+    if getattr(model, 'comp_burst_k', None) is None:
+        raise ValueError('the relative burst threshold needs attach_comp_timing (comp_burst_k)')
+    model.comp_burst_relative = True
+    return True
 
 
 def attach_comp_unit_traces(model, eta=-1.0, eta_pot=1.0):

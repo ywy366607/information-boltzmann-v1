@@ -35,7 +35,7 @@ from information_boltzmann.core.fly_bptt_learning import (WRITER_SENSE, attach_i
     ONLINE_DA_PARAMETER_NAMES, attach_online_da_plasticity, attach_kenyon_dendritic_only, attach_homeostasis,
     attach_regime_homeostasis, attach_tied_writer, REGIME_KENYON_Z,
     attach_compartment_memory, attach_taste_heads, COMPARTMENT_PARAMETER_NAMES, TASTE_PARAMETER_NAMES,
-    attach_stream_jepa, STREAM_JEPA_PARAMETER_NAMES, attach_mother_voice, attach_pacemaker_homeostasis, attach_comp_tonic_forget, attach_comp_timing, attach_comp_unit_traces, set_time_scale, COMP_TONIC_PARAMETER_NAMES, attach_reply_reward, attach_apl_kenyon_dendritic_only, attach_compartment_dendritic,
+    attach_stream_jepa, STREAM_JEPA_PARAMETER_NAMES, attach_mother_voice, attach_pacemaker_homeostasis, attach_comp_tonic_forget, attach_comp_timing, attach_comp_unit_traces, attach_comp_relative_burst, set_time_scale, COMP_TONIC_PARAMETER_NAMES, attach_reply_reward, attach_apl_kenyon_dendritic_only, attach_compartment_dendritic,
     renormalize_kenyon_inputs, pin_kenyon_to_dopamine, pin_sensory_terminals, pin_modulatory_fast_edges,
     reset_inputs_to_birth, attach_graded_cells, GRADED_PARAMETER_NAMES, attach_receptor_writer,
 )
@@ -288,6 +288,8 @@ def resolve_learning_modes(args, previous_config, previous_learner):
         args.comp_burst_k = previous_config.get('comp_burst_k', None)
     if getattr(args, 'time_scale', None) is None:
         args.time_scale = float(previous_config.get('time_scale') or 1.0)
+    if getattr(args, 'comp_burst_relative', None) is None:
+        args.comp_burst_relative = bool(previous_config.get('comp_burst_relative', False))
     if getattr(args, 'comp_unit_traces', None) is None:
         args.comp_unit_traces = bool(previous_config.get('comp_unit_traces', False))
     if getattr(args, 'comp_timing', None) is None:
@@ -679,6 +681,9 @@ def main():
     parser.add_argument('--comp-unit-traces', action='store_true', default=None,
                         help='Newborn: the compartment eligibility is the terminal state (one spike lifts it to ~1, saturating), '
                              'rates start -1 / +1 (needs --comp-timing, --compartment-adapted; omitted = inherit)')
+    parser.add_argument('--comp-burst-relative', action='store_true', default=None,
+                        help='The compartment burst threshold judged on the linear dopamine contrast (f - s) / (s + K), '
+                             'occupancy amount ramped over one sd (needs --comp-timing; omitted = inherit)')
     parser.add_argument('--comp-burst-k', type=float, default=None,
                         help='Newborn: the burst threshold start in sd above edge mean (learnable; default 0.25; omitted = inherit)')
     parser.add_argument('--dan-kappa', type=float, default=None,
@@ -1228,6 +1233,8 @@ def main():
                 print(f'Compartment timing rule (newborn): dopamine before Kenyon potentiates (start '
                       f'{attach_comp_timing(model, burst_k=args.comp_burst_k):.3f}), use-dependent forgetting off', flush=True)
                 names.extend(n for n in ('comp_eta_pot', 'comp_burst_k') if n not in names)
+                if args.comp_burst_relative:
+                    print(f'Burst threshold on the dopamine contrast (newborn): {attach_comp_relative_burst(model)}', flush=True)
                 if args.comp_unit_traces:
                     print(f'Unit eligibility traces (newborn), rates (dep, pot) start {attach_comp_unit_traces(model)}', flush=True)
         if args.stream_jepa:
@@ -1708,6 +1715,9 @@ def main():
                 print('Compartment timing rule: dopamine before Kenyon potentiates, use-dependent forgetting off', flush=True)
                 if args.comp_unit_traces:
                     model.comp_unit_traces = True
+                if args.comp_burst_relative:
+                    attach_comp_relative_burst(model)
+                    print('Burst threshold on the dopamine contrast', flush=True)
                     print('Unit eligibility traces (rates from the checkpoint)', flush=True)
                 for n_ in ('comp_eta_pot', 'comp_burst_k'):
                     if n_ not in names:

@@ -107,6 +107,8 @@ def load(fork):
                 fl.attach_comp_timing(model, burst_k=(float(cfg['comp_burst_k']) if cfg.get('comp_burst_k') is not None else 0.25))
             if cfg.get('comp_unit_traces'):
                 model.comp_unit_traces = True
+            if cfg.get('comp_burst_relative'):
+                model.comp_burst_relative = True
             model.load_state_dict({k: v for k, v in saved['model'].items() if k in late}, strict=False)
         if cfg.get('stream_jepa'):
             fl.attach_stream_jepa(model, graph, graph.parent / 'body-annotations.feather')
@@ -289,6 +291,9 @@ def load(fork):
         with torch.no_grad():
             model.comp_burst_k.fill_(_m.log(_m.expm1(float(os.environ['ZS_BURST_K']))))
         print(f'zero-shot: burst threshold k {os.environ["ZS_BURST_K"]}', flush=True)
+    if os.environ.get('ZS_BURST_REL') and getattr(model, 'comp_burst_k', None) is not None:
+        # zero-shot: the burst judged on the linear dopamine contrast (attach_comp_relative_burst)
+        print(f'zero-shot: relative burst threshold {fl.attach_comp_relative_burst(model)}', flush=True)
     if os.environ.get('ZS_COMP_UNIT') and getattr(model, 'comp_eta', None) is not None:
         # zero-shot: eligibility as the terminal's state (one spike lifts it to ~1), rates restarted (-1 / +1)
         print(f'zero-shot: unit eligibility traces, rates (dep, pot) {fl.attach_comp_unit_traces(model)}', flush=True)

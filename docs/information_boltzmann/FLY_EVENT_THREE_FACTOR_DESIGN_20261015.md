@@ -127,8 +127,24 @@ identical. Three causes were found, each measured.
      φ_X after pairing: none −0.12, forward −0.41, backward +0.72. But after 256 words the unpaired arm itself
      drifted to −0.83, so the spontaneous dopamine's writes erase the pairing.
 4. **The DANs' spontaneous regime is the root (zero-shot κ sweep for the 338 DANs, review 2026-10-15 night).**
-   - κ 1.2 (birth): regular pacemaking about every 6 ticks, near the refractory-limited maximum. There is no headroom
-     for a burst, and its volleys write noise.
+   - Full sweep (zero-shot, birth, 32 ordinary words; MBON11 relative dopamine (f − s)/(s + K); PPL101 spontaneous
+     rate; 4× and 16× pulse peaks):
+
+     | κ_DAN | PPL101 spikes / cell / 100 ticks | ISI CV | spont. p99 | 4× peak | 16× peak | 4× / p99 |
+     |---|---|---|---|---|---|---|
+     | 0.85 | 0 | — | 0.31 | 102 | 104 | 330 |
+     | 0.95 | 0 | — | 4.0 | 45 | 56 | 11 |
+     | 1.0 | 0 | — | 5.9 | 38 | 49 | 6.5 |
+     | 1.05 | 0 | — | 6.7 | 25 | 34 | 3.8 |
+     | 1.1 | 0.10 | — | 10.3 | 10.6 | 15 | 1.0 |
+     | 1.2 (birth) | 0.29 | 0.06–0.11 | 15.4 | 4.9 | 9.1 | 0.3 |
+
+   - Correction: at κ 1.2, PPL101 does not fire near its maximum. It fires about once per 350 ticks, but almost
+     perfectly regularly, and both cells fire together. The volleys arrive at an MBON whose slow dopamine has decayed
+     in between, so in relative terms each one is as large as a burst. The "every 6 ticks" seen earlier was under the
+     pulse.
+   - The headroom for a burst appears below κ ≈ 1.1. The spontaneous signal at MBON11 then comes from the other DANs
+     onto it (PPL102, PAM10/11, small weights).
    - κ 0.95 and 0.85: PPL101 fires **0** spikes during ordinary words. The words do not drive the DANs at birth, so
      the spontaneous signal goes to about 0 (relative p99 4.0 at 0.95, 0.31 at 0.85). A forced pulse then reads
      36–104. That is clean for a probe, but the dopamine carries nothing in life.
@@ -165,3 +181,45 @@ Also fixed:
 
 **New in the trainer:** `--time-scale k` (newborn; time constants / k, conductances and sensory drive × k; inherited on
 resume), `--comp-unit-traces`.
+
+## Step 1 at birth, continued (2026-10-15 night)
+
+**κ_DAN 1.05, k 0.25, unit traces, 4×, TESTS=3** (φ_X; pre −0.258 in all arms):
+
+| arm | post | retest (256 words) |
+|---|---|---|
+| none | +0.228 | −0.799 |
+| forward | −0.576 | −0.740 |
+| backward | +0.692 | −0.830 |
+
+- The direction is right at post: forward −0.80 and backward +0.46 relative to none.
+- But the control itself moved +0.49 during the block, and every arm ends at about −0.8 after conversation. The
+  ordinary words' dopamine follows their Kenyon spikes (Kenyon then dopamine), so with a low threshold every word
+  depresses its edges.
+- Cause of the low threshold's failure: in occupancy terms the spontaneous threshold (m + 2 sd = 0.47) equals the 4×
+  pulse's peak (0.466), because adapted occupancy is capped at 0.5. In contrast terms they are 4.0 and 25.
+
+**Fix: `--comp-burst-relative` / `attach_comp_relative_burst`.**
+- The burst is judged on the linear contrast (f − s)/(s + K), the same Weber signal `dopamine_adapted` gives every
+  other target.
+- The amount written stays the bounded occupancy, ramped over one sd above mean + k sd, so k is learnable.
+- Carried credit is exact: the CPU test is parametrised on both trace forms, and the ramp's interior is exercised.
+- Predictions (k 2, κ_DAN 1.05):
+  - none drifts under 0.1 over the block and over 256 words;
+  - forward below none and backward above none at post, signs kept at retest;
+  - 2× still writes (pulse contrast about 25 against threshold about 4).
+
+**Open for review: the pacemaker homeostat's set point for event-driven cells.**
+- The homeostat moves κ by η (log target − log rate), with the target set to the cell's own rate over its first 16
+  windows.
+- A DAN near threshold (κ ≤ 1.05) is silent at birth, so its target is about 0.
+- Every evoked burst then lowers its κ: for a cell evoked to 1 spike per 1000 ticks, each window steps by
+  0.05 × (log(0.0005) − log(0.0015)) ≈ −0.055. After 16 windows κ is down by about 0.9. Use makes it less excitable,
+  which is anti-responsive.
+- Candidates, each falsifiable:
+  - (a) Sense the cell's mean depolarisation v/θ instead of its rate (excitability homeostasis). Evoked spikes reset v,
+    so use keeps the cell near threshold.
+  - (b) Keep the rate sensor but give the DANs a set point no lower than their evoked floor.
+  - (c) DANs out of the homeostat, with κ fixed at birth (out of the gradient as now). Their synapses can still drift
+    under BPTT.
+- Test: 4096 words with each option; the DANs' κ trajectory and the 4× pulse contrast at the end.
