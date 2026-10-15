@@ -219,6 +219,9 @@ def load(fork):
             before = float(model.intrinsic_kappa.median())
             model.intrinsic_kappa.copy_(birth_sd['intrinsic_kappa'].to(model.intrinsic_kappa.device))
         print(f'zero-shot: intrinsic kappa restored to birth (median {before:.3f} -> {float(model.intrinsic_kappa.median()):.3f})', flush=True)
+    if os.environ.get('ZS_COMP_TONIC') and getattr(model, 'comp_eta', None) is not None:
+        # zero-shot (2026-10-15): active forgetting of the Kenyon -> MBON memory at this many ticks (tonic dopamine)
+        print(f'zero-shot: active forgetting, tau {fl.attach_comp_tonic_forget(model, float(os.environ["ZS_COMP_TONIC"])):.0f} ticks', flush=True)
     if os.environ.get('ZS_RESTORE_DAN_INHIB'):
         # zero-shot (2026-10-15): the inhibitory inputs onto the dopamine cells back at their birth weights (training
         # grew inhibition that silenced PPL1: birth +0.77 theta, c21 -1.0 theta); excitation and everything else as is

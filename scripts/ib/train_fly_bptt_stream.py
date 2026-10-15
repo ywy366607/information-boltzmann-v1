@@ -35,7 +35,7 @@ from information_boltzmann.core.fly_bptt_learning import (WRITER_SENSE, attach_i
     ONLINE_DA_PARAMETER_NAMES, attach_online_da_plasticity, attach_kenyon_dendritic_only, attach_homeostasis,
     attach_regime_homeostasis, attach_tied_writer, REGIME_KENYON_Z,
     attach_compartment_memory, attach_taste_heads, COMPARTMENT_PARAMETER_NAMES, TASTE_PARAMETER_NAMES,
-    attach_stream_jepa, STREAM_JEPA_PARAMETER_NAMES, attach_mother_voice, attach_pacemaker_homeostasis, attach_reply_reward, attach_apl_kenyon_dendritic_only, attach_compartment_dendritic,
+    attach_stream_jepa, STREAM_JEPA_PARAMETER_NAMES, attach_mother_voice, attach_pacemaker_homeostasis, attach_comp_tonic_forget, COMP_TONIC_PARAMETER_NAMES, attach_reply_reward, attach_apl_kenyon_dendritic_only, attach_compartment_dendritic,
     renormalize_kenyon_inputs, pin_kenyon_to_dopamine, pin_sensory_terminals, pin_modulatory_fast_edges,
     reset_inputs_to_birth, attach_graded_cells, GRADED_PARAMETER_NAMES, attach_receptor_writer,
 )
@@ -282,6 +282,8 @@ def resolve_learning_modes(args, previous_config, previous_learner):
         args.mother_reward_ticks = int(previous_config.get('mother_reward_ticks') or 4)
     if getattr(args, 'pacemaker_homeostasis', None) is None:
         args.pacemaker_homeostasis = bool(previous_config.get('pacemaker_homeostasis', False))
+    if getattr(args, 'comp_tonic_forget', None) is None:
+        args.comp_tonic_forget = float(previous_config.get('comp_tonic_forget') or 0.0)
     if getattr(args, 'mother_credit_differential', None) is None:
         args.mother_credit_differential = bool(previous_config.get('mother_credit_differential', False))
     if getattr(args, 'mother_credit_trace', None) is None:
@@ -602,6 +604,9 @@ def main():
                         help='The reward pulse in rheobase units (omitted = inherit, else 1.0)')
     parser.add_argument('--mother-reward-ticks', type=int, default=None,
                         help='The reward pulse length in ticks (omitted = inherit, else 4)')
+    parser.add_argument('--comp-tonic-forget', type=float, default=None,
+                        help='Active forgetting of the Kenyon -> MBON memory: phi relaxes on its own clock (this many ticks '
+                             'at tonic dopamine), whether or not the Kenyon cell fires; 0 = off (omitted = inherit)')
     parser.add_argument('--pacemaker-homeostasis', action=argparse.BooleanOptionalAction, default=None,
                         help='The spontaneously active modulatory cells keep their own firing: intrinsic_kappa leaves the '
                              'gradient and an intrinsic homeostat holds each cell near its own set point (omitted = inherit)')
@@ -1116,6 +1121,10 @@ def main():
             names.append('log_kc_release')
         if args.compartment_memory:
             names.extend(n for n in COMPARTMENT_PARAMETER_NAMES + TASTE_PARAMETER_NAMES if n not in names)
+            if args.comp_tonic_forget:
+                print(f'Active forgetting of the compartment memory: tau {attach_comp_tonic_forget(model, args.comp_tonic_forget):.0f} '
+                      f'ticks at tonic dopamine (newborn)', flush=True)
+                names.extend(n for n in COMP_TONIC_PARAMETER_NAMES if n not in names)
         if args.stream_jepa:
             names.extend(n for n in STREAM_JEPA_PARAMETER_NAMES if n not in names)
         if args.use_read_gamma_trace:
@@ -1432,6 +1441,7 @@ def main():
                 print(f'Writer tied now by chemosensory receptor type (scale {args.tied_writer_scale})', flush=True)
             if args.compartment_memory or args.taste_every:
                 comp_state = {k: v for k, v in saved['model'].items() if k in COMPARTMENT_PARAMETER_NAMES + TASTE_PARAMETER_NAMES}
+                saved_tonic = {k: v for k, v in saved['model'].items() if k in COMP_TONIC_PARAMETER_NAMES}
                 rate = {} if args.comp_rate is None else {'eta': -float(args.comp_rate)}      # forgetting stays slow (0.02)
                 n_comp = attach_compartment_memory(model, args.graph, args.graph.parent / 'body-annotations.feather',
                                                    affinity=args.dopamine_affinity, **rate)
@@ -1560,6 +1570,16 @@ def main():
             extra = [name for name in COMPARTMENT_PARAMETER_NAMES + TASTE_PARAMETER_NAMES if name not in names]
             names = list(names) + extra
             newly_trainable += extra
+            if args.comp_tonic_forget:
+                attach_comp_tonic_forget(model, args.comp_tonic_forget)
+                tonic_state = {k: v for k, v in saved_tonic.items()}
+                if tonic_state:
+                    model.load_state_dict(tonic_state, strict=False)
+                print(f'Active forgetting of the compartment memory: tau '
+                      f'{float(1 / torch.sigmoid(model.comp_logit_tonic.detach())):.0f} ticks at tonic dopamine', flush=True)
+                extra = [name for name in COMP_TONIC_PARAMETER_NAMES if name not in names]
+                names = list(names) + extra
+                newly_trainable += extra
         if args.stream_jepa:
             extra = [name for name in STREAM_JEPA_PARAMETER_NAMES if name not in names]
             names = list(names) + extra

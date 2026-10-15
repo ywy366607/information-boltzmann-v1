@@ -443,8 +443,16 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
                         spikes_c.detach().index_select(1, model.comp_kc), lam_d, model.comp_eta.detach(),
                         kappa_c.detach(), phasic_c.detach(),
                         occ_slow_c.detach() / 0.5, model.comp_edge_kc,
-                        dphasic)
+                        dphasic,
+                        tonic=(occ_slow_c.detach() / 0.5 * torch.sigmoid(model.comp_logit_tonic.detach())
+                               if getattr(model, 'comp_logit_tonic', None) is not None else None))
             comp_memory = comp_memory + window_c * (model.comp_eta * phasic_c * (1.0 + comp_memory) - kappa_c * comp_memory)
+            tonic_c = getattr(model, 'comp_logit_tonic', None)
+            if tonic_c is not None:
+                # active forgetting (Berry et al. 2012): the dopamine neurons' ongoing activity erodes the memory on
+                # its own clock, whether or not the Kenyon cell fires; without it every edge that ever fired sat at
+                # the same equilibrium (learning and forgetting both gated by the trace) and repetition left no mark
+                comp_memory = comp_memory - (occ_slow_c.detach() / 0.5) * torch.sigmoid(tonic_c) * memory_before
     bank = getattr(current, 'read_bank', torch.empty(0))
     if getattr(model, 'read_bank_gain', None) is not None:
         motor_now = h[:, model.read_indices] if model.read_surface != 'all' else h
@@ -1090,6 +1098,21 @@ def attach_compartment_memory(model, graph_npz, annotations, eta=-0.02, tau_trac
 
 
 COMPARTMENT_PARAMETER_NAMES = ('comp_weight', 'comp_eta', 'comp_logit_trace', 'comp_logit_forget')
+COMP_TONIC_PARAMETER_NAMES = ('comp_logit_tonic',)
+
+
+def attach_comp_tonic_forget(model, tau_ticks=2048.0):
+    """Active forgetting of the Kenyon -> MBON memory (--comp-tonic-forget): phi relaxes to 0 at a rate
+    sigmoid(comp_logit_tonic) per tick scaled by the compartment's tonic dopamine occupancy (occ(slow) / 0.5), whether
+    or not its Kenyon cell fires.  Learning stays pairing-gated, so an edge's depression now counts its pairings
+    against the time between them: the familiarity of a repeated word (MBON-alpha'3 habituation, Hattori 2017) and
+    its recovery when it stops recurring.  The rate is learnable (class physiology, by BPTT within the window)."""
+    if getattr(model, 'comp_eta', None) is None:
+        raise ValueError('active forgetting needs the compartment memory')
+    if getattr(model, 'comp_logit_tonic', None) is None:
+        r = 1.0 / float(tau_ticks)
+        model.comp_logit_tonic = nn.Parameter(torch.tensor(math.log(r / (1 - r)), device=model.comp_eta.device))
+    return float(1.0 / torch.sigmoid(model.comp_logit_tonic.detach()))
 STREAM_JEPA_PARAMETER_NAMES = ('jepa_proj.weight', 'jepa_pred.weight', 'jepa_pred.bias')
 
 
@@ -2450,7 +2473,7 @@ class FlyBPTTLearner:
             # 2e-4 a time constant moves ~1% per 4k-token chunk (D2: STP moved <= 0.016 in two chunks), 100x slower
             # than the synapses' relative steps (2% of the birth weight).  Their own rate makes them evolvable.
             physio = set(CLASS_PARAMETER_NAMES) | {'dopamine_logit_fast', 'dopamine_logit_slow', 'comp_logit_trace',
-                                                   'comp_logit_forget'}
+                                                   'comp_logit_forget', 'comp_logit_tonic'}
             moved = [named[n] for n in self.adam_names if n in physio]
             self.physio_names = [n for n in self.adam_names if n in physio]
             self.physio_lr = float(lr_physiology)
