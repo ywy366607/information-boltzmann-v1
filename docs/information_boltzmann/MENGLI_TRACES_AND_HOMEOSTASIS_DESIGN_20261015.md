@@ -146,3 +146,19 @@ memory; "on traces" is its share on edges whose Kenyon trace was standing. Value
 - About 98% of the written φ lands on the synapses whose Kenyon trace was standing at the answer. That is exactly the
   "which of my states preceded her answer" credit.
 - 1.0 is the start level.
+
+**C — the speaking credit as a continuous trace (`--mother-credit-trace`, `accumulate_speaking_trace`).**
+- At each decision, the gradient of its own log-probability on the act readout (ai_w, ai_b) is added to a trace E.
+- E decays as exp(−Δt / τ) on the physical clock and is carried across windows in the checkpoint: O(readout) state.
+  Each later normal-reply word with learning progress g adds g·E to the credit; each decision subtracts b·∇log p
+  (b is the running mean return).
+- This is exactly Σ_d (R_d − b) ∇log p_d with R_d = Σ_words g e^{−delay/τ}, with no cutoff. `tests/test_speaking_trace.py`
+  checks equality with the horizon form at infinite horizon.
+- The said / silent statistics are kept per decision until their weight falls below 10⁻³ (about 7τ).
+- The brain's own share of that credit comes through B (PAM dopamine onto the standing Kenyon traces). C is only the
+  readout's share.
+
+**Order in life (`grow_mengli_abc.sh`).** It waits for DeepSeek, then: chunk 6 +A; chunk 7 +B; chunk 8 +C; then plain
+chunks. After each chunk it probes the dopamine cells, surprise → DA and act timing (`grow_mengli.py --probes`); the
+dashboard `?run=mengli` shows the homeostat and her pulses. A GPU smoke test on a copy (local mother, 96 words,
+A+B+C) passed: the homeostat counts, a pulse is logged, the trace runs, and all of it is saved in the checkpoint.
