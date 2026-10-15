@@ -476,10 +476,13 @@ class MotherWorld:
         self.plan_path = plan_path
         self.mother_turn_fresh = False             # True when mother turn has just started (for pause timing)
 
-        self._say_mother(opening)
+        self.mother_heard = []
+        self.mother_source = 'mother_opening'
+        if opening is not None:
+            self._say_mother(opening, source='mother_opening')
 
     # -- the stream -------------------------------------------------------------------------------------------------
-    def _say_mother(self, text):
+    def _say_mother(self, text, source='mother_reply'):
         clean_text = str(text).strip() or self.get_call_prompt()
         self.transcript.append(('mother', clean_text))
         self.mother_turns.append(clean_text)
@@ -487,7 +490,41 @@ class MotherWorld:
         self.mother_heard = []                     # her words the child has heard so far this turn
         self.turn = 'mother'
         self.mother_turn_fresh = True
+        self.mother_source = source
         self.stats['mother_turns'] += 1
+
+    def state_dict(self):
+        """Conversation state at the same completed window as the brain checkpoint."""
+        return {'format': 'mother-world-v2', 'turn': self.turn, 'queue': list(self.queue),
+                'fly_words': list(self.fly_words), 'mother_heard': list(self.mother_heard),
+                'transcript': list(self.transcript), 'history_anchor': getattr(self, 'history_anchor', 0),
+                'fly_turns': list(self.fly_turns), 'mother_turns': list(self.mother_turns),
+                'stats': dict(self.stats), 'silent_beats': self.silent_beats,
+                'mother_turn_fresh': self.mother_turn_fresh, 'mother_source': self.mother_source,
+                'pending': self.pending, 'rng': self.rng.getstate(),
+                'mother_usage': dict(getattr(self.mother, 'usage', {}) or {})}
+
+    def load_state_dict(self, saved):
+        if saved.get('format') != 'mother-world-v2':
+            raise ValueError('A complete mother-world-v2 state is required')
+        if saved['turn'] not in ('mother', 'fly', 'waiting'):
+            raise ValueError('Invalid mother-world turn')
+        if saved['turn'] == 'mother' and not saved['queue']:
+            raise ValueError('A mother turn must retain its unread words')
+        self.turn = saved['turn']
+        self.queue = collections.deque(saved['queue'])
+        for key in ('fly_words', 'mother_heard', 'fly_turns', 'mother_turns'):
+            setattr(self, key, list(saved[key]))
+        self.transcript = [tuple(x) for x in saved['transcript']]
+        self.stats = collections.Counter(saved['stats'])
+        for key in ('history_anchor', 'silent_beats', 'mother_turn_fresh', 'mother_source', 'pending'):
+            setattr(self, key, saved[key])
+        # JSON sidecars turn tuples into lists; random.Random requires nested tuples.
+        def as_tuple(value):
+            return tuple(as_tuple(x) for x in value) if isinstance(value, (tuple, list)) else value
+        self.rng.setstate(as_tuple(saved['rng']))
+        if hasattr(self.mother, 'usage'):
+            self.mother.usage.update(saved.get('mother_usage', {}))
 
     def get_call_prompt(self):
         if self.call_prompt:
@@ -540,7 +577,7 @@ class MotherWorld:
 
     def call(self):
         """She calls the child by name (the floor is hers)."""
-        self._say_mother(self.get_call_prompt())
+        self._say_mother(self.get_call_prompt(), source='mother_call')
         self.silent_beats = 0
         self.stats['mother_calls'] += 1
 
@@ -587,7 +624,7 @@ class MotherWorld:
         # Dark room defense: if synchronous mother and persistently silent, auto-call
         if not getattr(self.mother, 'asynchronous', False) and not had_words and self.silent_beats >= self.silent_beats_threshold:
             call_text = self.get_call_prompt()
-            self._say_mother(call_text)
+            self._say_mother(call_text, source='mother_call')
             self.silent_beats = 0
             self.stats['mother_calls'] += 1
             return
@@ -627,7 +664,7 @@ class MotherWorld:
                 self.turn = 'fly'
                 return 1
             if act == 'call':
-                self._say_mother(text or self.get_call_prompt())
+                self._say_mother(text or self.get_call_prompt(), source='mother_call')
                 self.silent_beats = 0
                 self.stats['mother_calls'] += 1
             else:
@@ -672,7 +709,31 @@ class MotherWorld:
                    if (u := getattr(self.mother, 'usage', None)) else {})}
 
 
-def replay_ce(learner, state0, previous_token, targets, intervals, voices=None):
+def sensory_segments(ticks, segment_ticks, quiet_ranges=()):
+    """Split a real interval at checkpoint and external-silence boundaries.
+
+    A quiet range withdraws text and voice together, while physical time continues.
+    Ranges are disjoint half-open intervals in ticks relative to the word's interval.
+    """
+    if ticks < 1 or segment_ticks < 1:
+        raise ValueError('Interval and segment lengths must be positive')
+    last = 0
+    edges = {0, ticks, *range(segment_ticks, ticks, segment_ticks)}
+    for start, end in quiet_ranges:
+        if not (last <= start < end <= ticks):
+            raise ValueError('Quiet ranges must be ordered, disjoint and inside the interval')
+        edges.update((start, end))
+        last = end
+    edges = sorted(edges)
+    q = 0
+    for start, end in zip(edges, edges[1:]):
+        while q < len(quiet_ranges) and quiet_ranges[q][1] <= start:
+            q += 1
+        on = not (q < len(quiet_ranges) and quiet_ranges[q][0] <= start < quiet_ranges[q][1])
+        yield start, end - start, on
+
+
+def replay_ce(learner, state0, previous_token, targets, intervals, voices=None, quiet_ranges=None, ai_g0=None):
     """Per-word CE of a window's targets, relived (no gradient) from its starting state with the CURRENT weights: the
     same intervals and segments as the training pass, eyes as the learner has them (open when forced).  After the
     update this is CE_after; the training pass's scores are CE_before."""
@@ -691,58 +752,101 @@ def replay_ce(learner, state0, previous_token, targets, intervals, voices=None):
         if getattr(m, 'dopamine_sensitivity', None) is not None:
             opts['dopamine_s_class'] = fl.dopamine_class_sensitivity(m, s.h)
         token = int(previous_token)
+        ai_g = ai_g0.detach().clone() if ai_g0 is not None else None
         for j, (target, k) in enumerate(zip(targets, intervals)):
             done, latent = 0, None
             voice = bool(voices[j]) if voices is not None else False     # the mother's voice, as in the training pass
-            while done < k:
-                ticks = min(seg - done % seg, k - done)
-                s, latent = fl.advance_fly_token_stream(
-                    m, s, torch.tensor([token], device=s.h.device), [ticks], ticks=ticks,
+            quiet = quiet_ranges[j] if quiet_ranges is not None else ()
+            token_tensor = torch.tensor([token], device=s.h.device)
+            for done, ticks, sensory_on in sensory_segments(k, seg, quiet):
+                ai_opts = (dict(ai_g=ai_g, ai_tape=[False] * ticks,
+                                eye_forced=getattr(learner, 'eye_forced', None)) if ai_g is not None else {})
+                result = fl.advance_fly_token_stream(
+                    m, s, token_tensor, [ticks], ticks=ticks, sensory_on=sensory_on,
                     hold_input=learner.hold_input, read_after=learner.read_lag or None,
-                    writer_baseline_clock=learner.writer_baseline_clock, fresh=done == 0, voice=voice, **opts)[:2]
-                done += ticks
+                    writer_baseline_clock=learner.writer_baseline_clock, fresh=done == 0, voice=voice,
+                    **ai_opts, **opts)
+                s, latent = result[:2]
+                if ai_g is not None:
+                    ai_g = result[-1]
             logits = m.decoder(m.read_norm(latent)).float()
             out.append(float(F.cross_entropy(logits, torch.tensor([int(target)], device=logits.device))))
             token = int(target)
     return out
 
 
-def epistemic_credit(learner, state0, previous_token, targets, horizon_ticks=64, beta=0.98, tau_ticks=0.0):
-    """After the update: the learning progress of every word (the mother's only), the return of every decision of the
-    window (the progress of the words arriving within horizon_ticks after it), the advantage against a running mean,
-    and the pending credit for the next window (learner.pending_speak_credit).  Returns a metrics dict.
-    tau_ticks > 0: the return discounts every later word by exp(-delay / tau_ticks) instead of a flat horizon -- a reply
-    that comes later is worth less, so a silence that only postpones the same reply no longer shares its credit (with
-    the flat horizon the silences before a word earned the reply that word bought)."""
+def accumulate_speaking_credit(learner, rec, gains, horizon_ticks=64, beta=0.98, tau_ticks=0.0):
+    """Carry decisions across BPTT boundaries until their configured physical-time horizon ends.
+
+    Only normal replies contribute learning progress. Automatic name calls are monitored separately. Stored muscle
+    features are detached eligibility for the policy readout; this does not claim delayed gradients into the brain.
+    """
     import numpy as np
+    import torch
+    if horizon_ticks <= 0:
+        raise ValueError('Speaking credit horizon must be positive')
+    clock = int(getattr(learner, 'speak_credit_clock', 0))
+    arrival = clock + np.cumsum(rec['intervals'])
+    now = int(arrival[-1]) if len(arrival) else clock
+    pending = list(getattr(learner, 'speak_pending_eligibility', []))
+    for i, t0, n, d in rec['decisions']:
+        if n > 0:
+            pending.append({'g': rec['g'][t0:t0 + n].detach().clone(), 'decision': (i, 0, n, d),
+                            'end': clock + t0 + n, 'return': 0.0,
+                            'after_speech': i > 0 and rec['speakers'][i - 1] == 'fly',
+                            'horizon': int(horizon_ticks), 'tau': float(tau_ticks)})
+    sources = rec.get('sources')
+    eligible = [(sources[j] == 'mother_reply' if sources is not None else who == 'mother')
+                for j, who in enumerate(rec['speakers'])]
+    ig = [float(g) if on else 0.0 for g, on in zip(gains, eligible)]
+    ready, waiting = [], []
+    for item in pending:
+        for g, t in zip(ig, arrival):
+            delay = int(t) - item['end']
+            # The word arrives after the decision, even if it shares its terminal physical tick.
+            if 0 <= delay <= item['horizon']:
+                item['return'] += g * (float(np.exp(-delay / item['tau'])) if item['tau'] > 0 else 1.0)
+        (ready if now >= item['end'] + item['horizon'] else waiting).append(item)
+    learner.speak_credit_clock = now
+    learner.speak_pending_eligibility = waiting
+    R = [item['return'] for item in ready]
+    baseline = getattr(learner, 'speak_epistemic_baseline', None)
+    advantages = [r - baseline for r in R] if baseline is not None else [0.0] * len(R)
+    if ready:
+        learner.speak_epistemic_baseline = (float(np.mean(R)) if baseline is None else
+                                           beta * baseline + (1 - beta) * float(np.mean(R)))
+        frames, decisions, offset = [], [], 0
+        for item in ready:
+            i, _, n, d = item['decision']
+            frames.append(item['g'])
+            decisions.append((i, offset, n, d))
+            offset += n
+        learner.pending_speak_credit = (torch.cat(frames, 0), decisions, advantages)
+    said = [item['return'] for item in ready if item['decision'][-1]]
+    silent = [item['return'] for item in ready if not item['decision'][-1]]
+    pure = [item['return'] for item in ready if not item['decision'][-1] and not item['after_speech']]
+    yielded = [item['return'] for item in ready if not item['decision'][-1] and item['after_speech']]
+    mom = [g for g, on in zip(gains, eligible) if on]
+    mean = lambda xs: float(np.mean(xs)) if xs else None
+    return {'ig_mother_mean': mean(mom), 'speak_return_ig': mean(R),
+            'speak_said_return': mean(said), 'speak_silent_return': mean(silent),
+            'pure_silence_return': mean(pure), 'yield_after_speech_return': mean(yielded),
+            'pure_silence_n': len(pure), 'yield_after_speech_n': len(yielded),
+            'credit_matured_decisions': len(ready), 'credit_pending_decisions': len(waiting),
+            'credit_clock_ticks': now, 'credit_horizon_ticks': int(horizon_ticks)}
+
+
+def epistemic_credit(learner, state0, previous_token, targets, horizon_ticks=64, beta=0.98, tau_ticks=0.0):
+    """Replay matched real sensory intervals after learning, then advance delayed speaking eligibility."""
     rec = getattr(learner, 'speak_record', None)
     if rec is None:
         return {}
     learner.speak_record = None
-    after = replay_ce(learner, state0, previous_token, targets, rec['intervals'], rec.get('voices'))
+    after = replay_ce(learner, state0, previous_token, targets, rec['intervals'], rec.get('voices'),
+                      rec.get('quiet_ranges'), rec.get('ai_g0'))
     before = rec['ce_before'].tolist()
-    ig = [(b - a) if who == 'mother' else 0.0 for b, a, who in zip(before, after, rec['speakers'])]
-    arrival = np.cumsum(rec['intervals'])                     # the tick at which word j arrives (end of its interval)
-    R = []
-    for i, t0, n, d in rec['decisions']:
-        end = t0 + n
-        if tau_ticks > 0:
-            R.append(float(sum(g * np.exp(-(t - end) / tau_ticks) for g, t in zip(ig, arrival) if t > end)))
-        else:
-            R.append(float(sum(g for g, t in zip(ig, arrival) if end < t <= end + horizon_ticks)))
-    b = getattr(learner, 'speak_epistemic_baseline', None)
-    A = [r - b for r in R] if b is not None else [0.0] * len(R)
-    if R:
-        learner.speak_epistemic_baseline = (float(np.mean(R)) if b is None else beta * b + (1 - beta) * float(np.mean(R)))
-    learner.pending_speak_credit = (rec['g'], rec['decisions'], A)
-    mom = [x for x, who in zip(ig, rec['speakers']) if who == 'mother']
-    return {'ig_mother_mean': float(np.mean(mom)) if mom else None, 'speak_return_ig': float(np.mean(R)) if R else None,
-            'speak_said_return': (float(np.mean([r for r, (*_, d) in zip(R, rec['decisions']) if d]))
-                                  if any(d for *_, d in rec['decisions']) else None),
-            'speak_silent_return': (float(np.mean([r for r, (*_, d) in zip(R, rec['decisions']) if not d]))
-                                    if any(not d for *_, d in rec['decisions']) else None),
-            # the silences split: a yield after her own words (it buys the reply) vs silence with nothing said
-            **_silence_split(R, rec['decisions'], rec['speakers'])}
+    return accumulate_speaking_credit(learner, rec, [b - a for b, a in zip(before, after)],
+                                      horizon_ticks=horizon_ticks, beta=beta, tau_ticks=tau_ticks)
 
 
 def _silence_split(R, decisions, speakers):
@@ -802,29 +906,35 @@ def live_window(learner, world, n, rng, pace_min, pace_mean, temperature=1.0, ti
         seg = int(getattr(learner, 'stream_segment_ticks', 16) or 16)
         token = int(learner.previous_token)
         acts = bool(speak_act) and getattr(m, 'ai_mode', None) == 'motor'
-        ai_g = learner.ai_g.detach().clone() if acts and getattr(learner, 'ai_g', None) is not None else None
-        acts = acts and ai_g is not None          # the muscles' state comes from the first trained window
-        targets, intervals, speakers, decisions = [], [], [], []
+        motor_on = getattr(m, 'ai_mode', None) == 'motor'
+        if motor_on:
+            from .fly_active_inference import motor_rest
+            saved_muscles = getattr(learner, 'ai_g', None)
+            ai_g = saved_muscles.detach().clone() if saved_muscles is not None else motor_rest(m, s.h)
+        else:
+            ai_g = None
+        targets, intervals, speakers, decisions, quiet_ranges, sources = [], [], [], [], [], []
         tpb = int(getattr(world, 'ticks_per_beat', 8))
         pause = int(getattr(world, 'pause_beats_before_reply', 1)) * tpb
         # whose voice is on the senses: the mother's words carry it (Johnston's organ, fly_bptt_learning.attach_mother_voice)
         voice = bool(getattr(learner, 'last_voice', False))
 
-        def advance(k, start=0):
+        def advance(k, start=0, sensory_on=True):
             # ticks start .. start + k - 1 of the word's interval, in the training pass's segments (same packets)
             nonlocal s, ai_g
             done, latent, committed, said_read = start, None, False, None
             while done < start + k:
                 ticks = min(seg - done % seg, start + k - done)
                 extra_kw = (dict(ai_g=ai_g, ai_tape=[], eye_forced=getattr(learner, 'eye_forced', None),
-                                 read_every=True) if acts else {})
+                                 read_every=True) if motor_on else {})
                 out = fl.advance_fly_token_stream(
-                    m, s, torch.tensor([token], device=s.h.device), [ticks], ticks=ticks,
+                    m, s, token_tensor, [ticks], ticks=ticks,
                     hold_input=learner.hold_input, read_after=learner.read_lag or None,
                     writer_baseline_clock=learner.writer_baseline_clock, fresh=done == 0, voice=voice,
+                    sensory_on=sensory_on,
                     **extra_kw, **opts)
                 s, latent = out[0], out[1]
-                if acts:
+                if motor_on:
                     ai_g = out[-1]
                     tape = extra_kw['ai_tape']
                     if not committed and any(tape):
@@ -842,13 +952,23 @@ def live_window(learner, world, n, rng, pace_min, pace_mean, temperature=1.0, ti
         tick0 = 0                                  # ticks of the window before this word's interval
         for i in range(n):
             word, who = None, None
+            quiet = []
+            # Reuse the token tensor across checkpoint segments and silent gaps.
+            token_tensor = torch.tensor([token], device=s.h.device)
             extra = 0
             if world.turn == 'waiting':
                 extra = min(int(max_wait_ticks), world.wait_for_mother() * tpb)
             elif world.turn == 'mother' and getattr(world, 'mother_turn_fresh', False):
                 extra = min(int(max_wait_ticks), pause)
-            k = int(rng.geometric(1.0 / pace)) + extra
+            k = int(rng.geometric(1.0 / pace))
             latent, committed, said_read = advance(k)
+            if extra:
+                quiet.append((k, k + extra))
+                latent, extra_commit, extra_read = advance(extra, k, sensory_on=False)
+                if not committed and extra_commit:
+                    said_read = extra_read
+                committed = committed or extra_commit
+                k += extra
             if world.turn == 'mother':
                 if acts and interrupt:
                     decisions.append((i, tick0, k, int(committed)))
@@ -871,12 +991,14 @@ def live_window(learner, world, n, rng, pace_min, pace_mean, temperature=1.0, ti
                         gap = pause
                     if world.turn == 'mother':
                         if gap > 0:
-                            advance(gap, k)
+                            quiet.append((k, k + gap))
+                            advance(gap, k, sensory_on=False)
                             k += gap
                         word, who = world.next_word()
                     else:
                         gap = max(gap, tpb)                 # a beat of silence, and the child decides again
-                        _, committed, said_read = advance(gap, k)
+                        quiet.append((k, k + gap))
+                        latent, committed, said_read = advance(gap, k, sensory_on=False)
                         decisions.append((i, tick0 + k, gap, int(committed)))
                         k += gap
                         tries += 1
@@ -887,10 +1009,13 @@ def live_window(learner, world, n, rng, pace_min, pace_mean, temperature=1.0, ti
                 word, who = say(latent), 'fly'
                 world.speak(word)
             targets.append(int(word)); intervals.append(k); speakers.append(who)
+            quiet_ranges.append(quiet)
+            sources.append(world.mother_source if who == 'mother' else 'self_hearing')
             token = int(word)
             voice = who == 'mother'
             tick0 += k
-    forced = {'pace': pace, 'intervals': intervals, 'speakers': list(speakers)}
+    forced = {'pace': pace, 'intervals': intervals, 'speakers': list(speakers),
+              'quiet_ranges': quiet_ranges, 'sources': sources}
     if acts:
         forced.update(decisions=decisions)
     return targets, forced, speakers

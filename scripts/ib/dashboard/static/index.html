@@ -83,6 +83,7 @@ textarea { width: 100%; min-height: 460px; font: 12px/1.5 Consolas, monospace; }
   <span class="meta" id="meta">—</span>
 </header>
 <main>
+  <div class="card" id="runState" style="margin-bottom:14px">正在读取运行状态…</div>
   <section class="tab on" id="t-train">
     <div class="grid">
       <div class="card"><h2>(1) 大脑承担预测</h2>
@@ -93,6 +94,11 @@ textarea { width: 100%; min-height: 460px; font: 12px/1.5 Consolas, monospace; }
         <p class="sub">每窗学习前的打分（8 窗滑动平均），对照同一批词的词频基线</p>
         <canvas class="chart" id="cNll"></canvas>
         <div class="legend"><span><i style="background:var(--brain)"></i>大脑</span><span><i style="background:var(--uni)"></i>词频基线</span></div></div>
+      <div class="card"><h2>正常妈妈回复：即时预测</h2>
+        <p class="sub">只计正常回复的更新前 NLL，按词数汇总最近 8 窗；叫名字和自听另列。旧日志未标来源时显示暂无数据。</p>
+        <canvas class="chart" id="cReplyNll"></canvas>
+        <div class="legend"><span><i style="background:var(--brain)"></i>大脑</span><span><i style="background:var(--uni)"></i>同词元固定词频</span></div>
+        <table id="sourceTable"></table></div>
       <div class="card"><h2>(2) 惊讶 → 多巴胺</h2>
         <p class="sub">每次门控：惊讶与相位多巴胺（同一个词、下一个词）及多巴胺细胞放电的 Spearman 相关</p>
         <canvas class="chart" id="cDa"></canvas>
@@ -122,6 +128,9 @@ textarea { width: 100%; min-height: 460px; font: 12px/1.5 Consolas, monospace; }
         </div></div>
       <div class="card"><h2>类别</h2><p class="sub" id="healthFile">点击类别切换显示</p><div class="classes" id="classes"></div></div>
     </div>
+    <div class="card" style="margin-top:14px"><h2>回路细胞活动与静默后饱和</h2>
+      <p class="sub" id="activityNote">真实对话的冻结权重回放；非脉冲细胞单列。接近不应期放电上限是候选饱和信号，需结合因果作用判断。</p>
+      <table id="activityTable"></table></div>
   </section>
 
   <section class="tab" id="t-talk">
@@ -226,6 +235,18 @@ function drawTrain() {
   const w = WINDOWS, xs = w.map(r => r.trained / 1000);
   chart($('#cNll'), [{color: css('--uni'), width: 1.2, points: roll(w.map(r => r.unigram), 8).map((y, i) => ({x: xs[i], y}))},
                      {color: css('--brain'), points: roll(w.map(r => r.nll), 8).map((y, i) => ({x: xs[i], y}))}], {xfmt: x => x.toFixed(0) + 'k'});
+  const sourceMean = (rows, source, field) => {
+    const groups = rows.map(r => r.by_source?.[source]).filter(g => g?.n > 0 && g[field] != null);
+    const n = groups.reduce((s, g) => s + g.n, 0);
+    return n ? groups.reduce((s, g) => s + g.n * g[field], 0) / n : null;
+  };
+  const replyPoints = field => w.map((r, i) => ({x: xs[i], y: sourceMean(w.slice(Math.max(0, i - 7), i + 1), 'mother_reply', field)}));
+  chart($('#cReplyNll'), [{color: css('--uni'), points: replyPoints('unigram')},
+                         {color: css('--brain'), points: replyPoints('nll')}], {xfmt: x => x.toFixed(0) + 'k'});
+  const recentSources = w.slice(-8);
+  $('#sourceTable').innerHTML = '<tr><th>最近 8 窗来源</th><th>词元数</th><th>即时 NLL</th><th>词频 NLL</th></tr>' +
+    [['mother_reply', '正常回复'], ['mother_call', '叫名字'], ['mother_opening', '开场'], ['self_hearing', '自听']].map(([key, label]) =>
+      `<tr><td>${label}</td><td>${recentSources.reduce((s, r) => s + (r.by_source?.[key]?.n || 0), 0)}</td><td>${fmt(sourceMean(recentSources, key, 'nll'), 3, false)}</td><td>${fmt(sourceMean(recentSources, key, 'unigram'), 3, false)}</td></tr>`).join('');
   chart($('#cDa'), [{color: css('--accent'), points: st.gates.map(g => ({x: g.c, y: g.da}))},
                     {color: css('--mother'), points: st.gates.map(g => ({x: g.c, y: g.da_next}))},
                     {color: css('--fly'), points: st.gates.map(g => ({x: g.c, y: g.da_cells}))}], {zero: true, xfmt: x => 'c' + Math.round(x)});
@@ -359,13 +380,29 @@ document.querySelectorAll('#tabs button').forEach(b => b.onclick = () => {
 });
 function refreshVisible() {
   if ($('#t-train').classList.contains('on')) drawTrain();
-  if ($('#t-brain').classList.contains('on')) { listClasses(); drawBrain(); }
+  if ($('#t-brain').classList.contains('on')) {
+    listClasses(); drawBrain();
+    const groups = HEALTH?.cell_activity?.groups || {}, quiet = HEALTH?.quiet_cell_activity?.groups || {};
+    $('#activityNote').textContent = HEALTH?.activity_file ? `${HEALTH.activity_file} · 冻结权重对话回放 ${HEALTH.cell_activity.ticks} 拍；随后撤除文本与声音 ${HEALTH.quiet_cell_activity?.ticks || 0} 拍。非脉冲细胞单列，饱和是候选现象。` : '暂无回路活动探针';
+    $('#activityTable').innerHTML = '<tr><th>回路</th><th>脉冲 / 非脉冲细胞</th><th>从未放电</th><th>接近放电上限</th><th>静默后接近上限</th><th>释放量的时间变化</th></tr>' +
+      ['whole_brain', 'JO', 'aud1', 'aud2', 'KC', 'MBON', 'DAN', 'output'].filter(k => groups[k]).map(k => {
+        const g = groups[k], q = quiet[k];
+        const pct = x => x == null ? '—' : (x * 100).toFixed(1) + '%';
+        return `<tr><td>${k}</td><td>${g.spiking_cells} / ${g.graded_cells}</td><td>${pct(g.never_spiking_fraction)}</td><td>${pct(g.near_ceiling_fraction)}</td><td>${pct(q?.near_ceiling_fraction)}</td><td>${fmt(g.release_temporal_sd_mean, 4, false)}</td></tr>`;
+      }).join('');
+  }
   if ($('#t-talk').classList.contains('on')) drawTalk();
   if ($('#t-acts').classList.contains('on')) drawActs();
 }
 async function refresh() {
   if (!RUN) return;
   [STATUS, WINDOWS, HEALTH] = await Promise.all([api(`/api/status?run=${RUN}`), api(`/api/windows?run=${RUN}&last=600`), api(`/api/health?run=${RUN}`)]);
+  const runtime = STATUS.runtime || {};
+  const states = {failed: '启动或训练失败，当前未继续训练', paused: '训练已暂停',
+                  completed: '本块训练完成', running: '最近记录：训练中', calibrated: '校准已完成'};
+  const lastTalk = runtime.conversation_updated ? new Date(runtime.conversation_updated * 1000).toLocaleString() : '暂无';
+  $('#runState').textContent = `${states[runtime.status] || '暂无运行状态'} · 已训练 ${(runtime.trained ?? '—').toLocaleString()} 词元 · 最后对话 ${lastTalk}${['failed', 'paused', 'completed'].includes(runtime.status) ? ' · 下方是已保存的对话记录' : ''}`;
+  $('#runState').style.borderColor = runtime.status === 'failed' ? 'var(--noedge)' : '';
   const lastGate = STATUS.gates.at(-1), lastChunk = STATUS.chunks.at(-1);
   $('#meta').textContent = `${RUN} · ${lastChunk ? '第 ' + lastChunk.c + ' 段 ' + lastChunk.time : '—'} · ${lastGate ? '大脑贡献 ' + fmt(lastGate.mean) + ' ± ' + lastGate.se : ''} · 刷新于 ${new Date().toLocaleTimeString()}`;
   refreshVisible();
@@ -373,10 +410,11 @@ async function refresh() {
 (async () => {
   const runs = await api('/api/runs');
   // this round = the lineage (a run with a status) updated most recently; the page opens on it
-  const current = (runs.find(r => r.lineage) || runs[0] || {}).name;
+  const requested = new URLSearchParams(location.search).get('run');
+  const current = runs.some(r => r.name === requested) ? requested : (runs.find(r => r.lineage) || runs[0] || {}).name;
   $('#run').innerHTML = runs.map(r => `<option value="${r.name}">${r.name}${r.name === current ? '（本轮）' : ''}</option>`).join('');
   RUN = current; $('#run').value = RUN;
-  $('#run').onchange = () => { RUN = $('#run').value; refresh(); };
+  $('#run').onchange = () => { RUN = $('#run').value; history.replaceState(null, '', '?run=' + encodeURIComponent(RUN)); refresh(); };
   brainEvents(); loadCfg(); await refresh();
   api('/api/brain').then(b => { BRAIN = b; if ($('#t-brain').classList.contains('on')) { listClasses(); drawBrain(); } });
   setInterval(refresh, 30000);

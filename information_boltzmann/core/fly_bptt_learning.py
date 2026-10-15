@@ -1944,7 +1944,8 @@ def _advance_fly_token_stream(model, state, token, schedule_box=None, *, ticks, 
                               conductance_gains=None, alif_params=None, stp_params=None, h_mean_decay=0.99,
                               read_every=False, world=None, world_tape=None, act_g=None, fresh=True, ai_g_tape=None,
                               ai_g=None, ai_tape=None, eye_forced=None, eye_binary=False, eye_tape=None,
-                              eye_sample=False, sense_noise=None, dopamine_s_class=None, voice=False):
+                              eye_sample=False, sense_noise=None, dopamine_s_class=None, voice=False,
+                              sensory_on=True):
     """Streaming clock: every token occupies exactly `ticks` physical ticks, whatever the brain is doing, and the
     prediction of the next token is read just before it arrives.  Nothing waits for the brain to settle, so the
     processing of a token continues while the next ones are being sensed (latency and throughput decouple).
@@ -1952,6 +1953,8 @@ def _advance_fly_token_stream(model, state, token, schedule_box=None, *, ticks, 
     hold_input=False: the token is one sensory pulse at its first tick (the archived event form), quiet afterwards.
     hold_input=True: the token stays on the sensory surface for all its ticks; the writer's own adaptation turns the
     held stimulus into a decaying innovation.
+    sensory_on=False: the external word and voice are absent; membranes, adaptation, local plasticity and motor
+    integrators continue evolving for every tick. This also overrides a fresh onset.
     read_after=None: read after the last tick (the prediction of the NEXT token, read just before it arrives).
     read_after=D (1 <= D <= ticks): read after D ticks of THIS token's window -- output lags input.  The read is the
     prediction of this very token, made while it is being sensed: leak-free only while D is below the earliest
@@ -1982,7 +1985,6 @@ def _advance_fly_token_stream(model, state, token, schedule_box=None, *, ticks, 
     if dopamine_s_class is not None:
         options['dopamine_s_class'] = dopamine_s_class
     writer = model.topographic_writer
-    embedding = model.embedding(token) if writer is not None else None
     if read_after is not None and not 1 <= read_after <= ticks:
         raise ValueError('read_after must lie inside the token window')
     current = state
@@ -1997,7 +1999,7 @@ def _advance_fly_token_stream(model, state, token, schedule_box=None, *, ticks, 
     if ai_g is not None:
         from .fly_active_inference import ai_eye, ai_step
         ai_replay = len(ai_tape) > 0
-    voice_drive = mother_voice_drive(model, current.h) if voice else None
+    voice_drive = mother_voice_drive(model, current.h) if voice and sensory_on else None
     for tick in range(ticks):
         if read_after is not None and tick == read_after:
             latent = read_fly_motor(model, current)
@@ -2008,7 +2010,7 @@ def _advance_fly_token_stream(model, state, token, schedule_box=None, *, ticks, 
             # the mother's voice on Johnston's organ (added to any world drive of this tick)
             prev = getattr(model, 'external_drive', None)
             model.external_drive = voice_drive if prev is None else prev + voice_drive
-        writes = (tick == 0 and fresh) or (hold_input and writer is not None)
+        writes = sensory_on and ((tick == 0 and fresh) or (hold_input and writer is not None))
         if ai_g is not None:
             if eye_binary:
                 # M3: the eyes as a decision, exactly 0 / 1 forward (taped for the recompute), straight-through
@@ -2657,9 +2659,11 @@ class FlyBPTTLearner:
             # intervals are given, so this pass relives exactly what happened (consumed here, once)
             forced = getattr(self, 'forced_world', None)
             forced_k, forced_speak, g_tape, voices = None, None, None, None
+            quiet_ranges = None
             if forced is not None and pace > 0:
                 pace, forced_k = float(forced['pace']), list(forced['intervals'])
-                if forced.get('speakers') is not None and getattr(m, 'voice_cells', None) is not None:
+                quiet_ranges = forced.get('quiet_ranges')
+                if forced.get('speakers') is not None:
                     # the mother's voice on the senses while her word is the input (the same as the live pass): the
                     # first input is the previous window's last word
                     sp = list(forced['speakers'])
@@ -2694,6 +2698,7 @@ class FlyBPTTLearner:
                     p_open = float(getattr(self, 'eye_init', 0.95))
                     self.ai_g = state.h.new_tensor([[math.log(p_open / (1 - p_open)), 0.0]])     # eyes open at the start
                 ai_g = self.ai_g
+                ai_g_initial = ai_g.detach().clone()
             if world is not None:
                 if getattr(self, 'act_g', None) is None:
                     self.act_g = state.h.new_zeros(1, 2)
@@ -2721,12 +2726,13 @@ class FlyBPTTLearner:
                                                      dtype=emb.dtype, device=emb.device) * scale
                     sense_sigmas.append(sigma)
                 seg = int(getattr(self, 'stream_segment_ticks', 16) or k)
-                done = 0
-                while done < k:
+                from .fly_mother_world import sensory_segments
+                quiet = quiet_ranges[word_j] if quiet_ranges is not None else ()
+                for done, n, sensory_on in sensory_segments(k, seg, quiet):
                     # a long interval in segments of <= seg ticks, each its own checkpoint (same computation)
-                    n = min(seg, k - done)
                     stream['ticks'] = n
                     stream['fresh'] = done == 0
+                    stream['sensory_on'] = sensory_on
                     stream['sense_noise'] = None if word_noise is None else word_noise[done:done + n]
                     box = [n]
                     if world is not None:
@@ -2753,7 +2759,6 @@ class FlyBPTTLearner:
                     if world is not None:
                         hazards.append(out[wi - 2]); act_g = out[wi - 1]
                         records += [rec for _, rec, _ in tape]
-                    done += n
                 if pace > 0:
                     intervals.append(k)
                 latents.append(token_lat)
@@ -2849,31 +2854,35 @@ class FlyBPTTLearner:
                     # own answer, the main speaker's next word (fly_active_inference.pragmatic_value)
                     from .fly_active_inference import pragmatic_value
                     hz = torch.cat(ai_out)
-                    # the answers' values are evaluated under the beliefs, never trained by them: preferences select
-                    # acts, they do not bend predictions (else the brain trades later-tick accuracy for quick answers)
-                    with torch.no_grad():
-                        logp = F.log_softmax(m.decoder(m.read_norm(torch.cat(reads, 0))).float(), -1)
-                    flat = targets.flatten().tolist()
-                    answers, nxt = [0] * n_words, flat[-1]
-                    for j in range(n_words - 1, -1, -1):
-                        if not tnoise[j]:
-                            nxt = flat[j]
-                        answers[j] = nxt
-                    asks = [not x for x in input_noise]
-                    miss = -math.log(m.decoder.out_features)
-                    if getattr(self, 'unigram_ce', None) is not None:
-                        # not answering leaves the listener with its prior: an answer is worth what it adds to that
-                        miss = [-float(self.unigram_ce[a]) for a in answers]
-                    J_out, commit_tick, extended = pragmatic_value(hz, e, on, logp.detach(), intervals, answers, asks,
-                                                                   miss, depth)
-                    J_out = J_out / len(intervals)
-                    if forced_speak is not None and motor and g_tape is not None:
+                    delayed_mother = forced_speak is not None and motor and g_tape is not None
+                    if not delayed_mother:
+                        # Internal prediction is trained at every physical tick. The mother-world mouth has its own
+                        # realized-outcome credit; do not compute a second full-vocabulary objective and discard it.
+                        with torch.no_grad():
+                            logp = F.log_softmax(m.decoder(m.read_norm(torch.cat(reads, 0))).float(), -1)
+                        flat = targets.flatten().tolist()
+                        answers, nxt = [0] * n_words, flat[-1]
+                        for j in range(n_words - 1, -1, -1):
+                            if not tnoise[j]:
+                                nxt = flat[j]
+                            answers[j] = nxt
+                        asks = [not x for x in input_noise]
+                        miss = -math.log(m.decoder.out_features)
+                        if getattr(self, 'unigram_ce', None) is not None:
+                            miss = [-float(self.unigram_ce[a]) for a in answers]
+                        J_out, commit_tick, extended = pragmatic_value(hz, e, on, logp.detach(), intervals,
+                                                                       answers, asks, miss, depth)
+                        J_out = J_out / len(intervals)
+                    if delayed_mother:
                         # the epistemic credit: this window's decisions are valued after the update (trainer:
                         # fly_mother_world.epistemic_credit); the previous window's arrive now, through the readout
                         from .fly_active_inference import delayed_speaking_value
                         T_all = sum(intervals)
                         self.speak_record = {'g': torch.cat(g_tape[:T_all], 0), 'decisions': forced_speak[0],
                                              'speakers': forced_speak[1], 'intervals': list(intervals), 'voices': voices,
+                                             'quiet_ranges': quiet_ranges,
+                                             'sources': forced.get('sources') if forced is not None else None,
+                                             'ai_g0': ai_g_initial,
                                              'ce_before': scores.detach().float().cpu()}
                         J_out = hz.new_zeros(())
                         pending = getattr(self, 'pending_speak_credit', None)
@@ -2956,6 +2965,10 @@ class FlyBPTTLearner:
                                           'hazard': (torch.cat(ai_out).detach().cpu().tolist()
                                                      if getattr(m, 'ai_mode', None) == 'motor' else None),
                                           'gamma': self.last_adaptive_metrics.get('gamma'),
+                                          'speakers': forced.get('speakers') if forced is not None else None,
+                                          'sources': forced.get('sources') if forced is not None else None,
+                                          'speech_decisions': forced_speak[0] if forced_speak is not None else None,
+                                          'quiet_ranges': quiet_ranges,
                                           # every tick's read CE against its word's target: the value of waiting
                                           'tick_ce': tick_ce.detach().cpu().tolist() if pace > 0 else None}
             if world is not None:
@@ -3832,8 +3845,37 @@ class FlyBPTTLearner:
         return {'z': self.evidence_z, 'beta': self.evidence_beta, 'count': self.evidence_count,
                 'pull_tau': self.pull_tau, 'moments': self.evidence_moments, 'birth': self.evidence_birth}
 
+    def interaction_state_dict(self):
+        """Delayed policy credit and input clocks belong to the continuous individual."""
+        names = ('last_voice', 'speak_credit', 'speak_epistemic_baseline', 'speak_baseline',
+                 'pending_speak_credit', 'speak_pending_eligibility', 'speak_credit_clock')
+        saved = {name: getattr(self, name) for name in names if hasattr(self, name)}
+        for name in ('pace_rng', 'sense_rng'):
+            rng = getattr(self, name, None)
+            if rng is not None:
+                saved[name] = rng.bit_generator.state
+        return saved
+
+    def load_interaction_state(self, saved):
+        def to_device(value):
+            if torch.is_tensor(value):
+                return value.to(self.state.h.device)
+            if isinstance(value, dict):
+                return {k: to_device(v) for k, v in value.items()}
+            if isinstance(value, (tuple, list)):
+                return type(value)(to_device(v) for v in value)
+            return value
+        for name, value in saved.items():
+            if name in ('pace_rng', 'sense_rng'):
+                rng = np.random.default_rng()
+                rng.bit_generator.state = value
+                setattr(self, name, rng)
+            else:
+                setattr(self, name, to_device(value))
+
     def state_dict(self):
         return {'evidence': self.evidence_state(), 'eg': self.eg_state(),
+                'interaction': self.interaction_state_dict(),
                 'physical': self.state.state_dict(), 'optimizer': self.optimizer.state_dict(),
                 'sgd': self.sgd.state_dict(), 'adam_names': self.adam_names,
                 'plasticity_optimizer_kind': self.plasticity_optimizer_kind,

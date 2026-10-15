@@ -801,6 +801,8 @@ def main():
                         help='Ablation: ALIF strength beta held at its lower clamp (1e-4) with zero gradient; '
                              'all other state, weights and the learner are unchanged')
     parser.add_argument('--validate-every-tokens', type=int, default=5000)
+    parser.add_argument('--checkpoint-every-tokens', type=int, default=0,
+                        help='Save continuous state at this training-token cadence without running ABA/AG (0 disables)')
     parser.add_argument('--log-every-tokens', type=int, default=128)
     parser.add_argument('--eval-tokens', type=int, default=256)
     parser.add_argument('--replay-tokens', type=int, default=128)
@@ -1682,6 +1684,7 @@ def main():
                           'plasticity_optimizer_migration': f'{old_kind}->{args.plasticity_optimizer}'}
                 best = math.inf
         learner.physical_ticks = old.get('physical_ticks', learner.events)
+        learner.load_interaction_state(old.get('interaction', {}))
         if args.ai and old.get('ai_g') is not None:
             from information_boltzmann.core.fly_active_inference import Familiarity
             learner.ai_g = old['ai_g'].to(learner.state.h.device)
@@ -2043,7 +2046,9 @@ def main():
             'recent_a': recent_a, 'recent_scores': recent_scores,
             'first_pass_meter': first_pass_meter.state_dict(),
             'phase_first_pass_meter': phase_meter.state_dict(),
-            'rng_cpu': torch.get_rng_state(), 'rng_cuda': torch.cuda.get_rng_state()}
+            'rng_cpu': torch.get_rng_state(), 'rng_cuda': torch.cuda.get_rng_state(),
+            'mother_world': mother_world.state_dict() if mother_world is not None else None,
+            'mother_rng': mother_rng.bit_generator.state if mother_rng is not None else None}
         atomic_save(args.output / 'last.pt', payload)
         if is_best:
             atomic_save(args.output / 'best.pt', {'format': 'fly-bptt-best-weights-v1',
@@ -2194,7 +2199,10 @@ def main():
                    if family.get('child', {}).get('name') else 'Hello, little one.')      # her first word: her name
         state_path = args.output / 'mother_state.json'
         saved_talk = json.loads(state_path.read_text(encoding='utf-8')) if state_path.exists() else None
-        if saved_talk:
+        saved_world = saved.get('mother_world') if args.resume else None
+        if saved_world is not None:
+            opening = None
+        elif saved_talk:
             # a continuing lineage: no new greeting -- the conversation goes on, the mother calls her by name
             opening = f"{family.get('child', {}).get('name', 'little one')}?"
         # the child's turn ends at a line break or when she yields (her act), or at max_fly_words; by default a
@@ -2208,14 +2216,21 @@ def main():
                                    silent_beats_threshold=silent_thresh,
                                    call_prompt=call_prompt,
                                    contingent=bool(raising.get('contingent', True)))
-        if saved_talk:
+        if saved_world is not None:
+            mother_world.load_state_dict(saved_world)
+            print(f'Mother world: exact continuation, turn={mother_world.turn}, '
+                  f'unread={len(mother_world.queue)}, partial speech={len(mother_world.fly_words)}', flush=True)
+        elif saved_talk:
             # the restored history comes first, then this chunk's call; the mouth's cached prefix stays anchored
             mother_world.transcript = [tuple(x) for x in saved_talk['transcript']] + mother_world.transcript
             mother_world.history_anchor = int(saved_talk.get('history_anchor', 0))
             mother_world.silent_beats = int(saved_talk.get('silent_beats', 0))
             print(f'Mother world: the conversation continues ({len(saved_talk["transcript"])} lines restored, '
                   f'from {saved_talk.get("trained")} words)', flush=True)
-        learner.last_voice = bool((saved_talk or {}).get('last_voice', False))
+        if saved_world is None:
+            learner.last_voice = bool((saved_talk or {}).get('last_voice', False))
+            if saved_talk:
+                origin['mother_world_migration'] = 'legacy transcript only; unread queue and delayed credit unavailable'
         if args.mother_voice:
             args.mother_voice_level = float(args.mother_voice_level or 1.5)
             n_voice = attach_mother_voice(model, args.graph, args.graph.parent / 'body-annotations.feather',
@@ -2223,6 +2238,8 @@ def main():
             print(f'Mother’s voice on {n_voice} Johnston’s organ cells (JO-A/B), {args.mother_voice_level} x rheobase', flush=True)
         print(f'Child end of turn: {child_end!r}, or a yield, or {args.mother_max_fly_words} words', flush=True)
         mother_rng = np.random.default_rng(int(trained) + 104729)
+        if args.resume and saved.get('mother_rng') is not None:
+            mother_rng.bit_generator.state = saved['mother_rng']
         print(f'Mother world ({args.mother_world}): turn-taking, self-hearing, beats ({ticks_per_beat} ticks/beat), '
               f'pause {pause_beats} beat(s), silent call threshold {silent_thresh}, fly T={args.mother_temperature}',
               flush=True)
@@ -2261,18 +2278,6 @@ def main():
                 with (args.output / 'mother.jsonl').open('a', encoding='utf-8') as out:
                     for who, text in mother_world.transcript[before:]:
                         out.write(json.dumps({'trained': trained, 'who': who, 'text': text}) + '\n')
-                # the conversation outlives the process (a raising lineage never restarts it): the transcript tail,
-                # the mouth's cache anchor and the silence count, restored at the next chunk
-                keep = 200
-                cut = max(0, len(mother_world.transcript) - keep)
-                atomic_json(args.output / 'mother_state.json', {
-                    'trained': int(trained), 'transcript': [list(x) for x in mother_world.transcript[cut:]],
-                    'history_anchor': max(0, int(getattr(mother_world, 'history_anchor', 0)) - cut),
-                    'silent_beats': int(getattr(mother_world, 'silent_beats', 0)),
-                    # whose voice the last word of this window was (the next window's first input; observe() has
-                    # not run yet, so learner.last_voice is still this window's start)
-                    'last_voice': (speakers[-1] == 'mother' if speakers else bool(getattr(learner, 'last_voice', False))),
-                    'fly_silent_turns': int(mother_world.stats.get('fly_silent_turns', 0))})
                 try:
                     mon_tmp = Path('data/harness/monitor.tmp')
                     mon_dst = Path('data/harness/monitor.json')
@@ -2335,6 +2340,11 @@ def main():
             seconds = time.perf_counter() - begin
             cursor += args.window
             trained += args.window
+            if mother_world is not None:
+                # Sidecar is for inspection; the checkpoint holds the authoritative paired brain/world state.
+                atomic_json(args.output / 'mother_state.json', {
+                    'trained': int(trained), **mother_world.state_dict(),
+                    'last_voice': bool(getattr(learner, 'last_voice', False))})
             if shelf is not None:
                 with torch.no_grad():
                     shelf_opts = dict(base_rates=model.get_decay_rates(), thresholds=model.get_thresholds(),
@@ -2357,7 +2367,10 @@ def main():
                                           'unigram': [float(x) for x in reference_surprisal[values]],
                                           **({'word_da': learner.last_word_da}
                                              if getattr(learner, 'last_word_da', None) is not None else {}),
-                                          **({'speakers': speakers, 'monitor': mother_world.monitor(), **plan_meta}
+                                          **({'speakers': speakers, 'sources': forced_.get('sources'),
+                                              'quiet_ticks': [sum(b - a for a, b in ranges)
+                                                              for ranges in forced_.get('quiet_ranges', [])],
+                                              'monitor': mother_world.monitor(), **plan_meta}
                                              if speakers is not None else {}),
                                           **({'epistemic': learner.last_epistemic}
                                              if getattr(learner, 'last_epistemic', None) else {})}) + '\n')
@@ -2391,6 +2404,9 @@ def main():
                 checkpoint()
                 progress('paused')
                 return
+            if (args.checkpoint_every_tokens > 0 and trained < target
+                    and (trained - start_trained) % args.checkpoint_every_tokens == 0):
+                checkpoint()
             if not args.skip_eval and (trained >= next_eval or trained == target):
                 if val_cursor + args.eval_tokens > len(val):
                     raise ValueError('Fresh validation stream exhausted')
@@ -2433,6 +2449,9 @@ def main():
                 checkpoint(is_best)
                 progress('running')
                 next_eval += args.validate_every_tokens
+        if args.skip_eval:
+            # Mother-world chunks must save their final state even while ABA/AG evaluation is deferred.
+            checkpoint()
         progress('completed')
     except BaseException as exc:
         row = progress('failed')

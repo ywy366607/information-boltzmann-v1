@@ -718,7 +718,7 @@ class FlyReservoirLM(nn.Module):
                 layouts = build_incoming_layout(
                     getattr(self, 'edge_pre' + suffix), getattr(self, 'edge_post' + suffix),
                     self.delay_splits if kind == 'cuba' else getattr(self, 'splits_' + kind),
-                    self.n_neurons)
+                    self.n_neurons, cache_dir=Path(graph_npz).parent / '.incoming_cache')
                 names = []
                 for tier, tensors in enumerate(layouts):
                     tier_names = []

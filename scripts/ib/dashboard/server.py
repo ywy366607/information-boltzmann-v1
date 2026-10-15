@@ -45,6 +45,7 @@ GATE = re.compile(r'^(\d\d:\d\d) gate c(\d+) \(living\): \(1\) brain contributio
 # fresh B ...; epistemic {...}; monitor {...}'
 CHUNK = re.compile(r'^(?:\d\d-\d\d )?(\d\d:\d\d) (?:born: )?chunk (\d+) done: (?:\[ACTIVE EVAL (\d+)\] )?'
                    r'fresh B NLL=([\d.]+); A revisit=([\d.]+)(?:; epistemic (\{.*?\}))?(?:; monitor (\{.*\}))?')
+MOTHER_CHUNK = re.compile(r'^(?:\d\d-\d\d )?(\d\d:\d\d) chunk (\d+) done: mother-world tokens=(\d+); chunk_words=(\d+)')
 AG = re.compile(r'^(\d\d:\d\d) gate c(\d+) AG: brain fresh B NLL=([\d.]+);.*?noedges fresh B NLL=([\d.]+)')
 ACTS = re.compile(r'^(\d\d:\d\d) gate c(\d+) acts \(living\): (\{.*\})$')
 # what reading is worth (blind arm - brain, living): the chain's '(1b) reading ...' and the one-off reports
@@ -78,10 +79,22 @@ def runs():
 def parse_status(run):
     path = RUNS / run / 'status'
     rep = {'chunks': [], 'gates': [], 'ag': [], 'acts': [], 'reading': [], 'mother_runs': [], 'events': []}
+    progress_path = RUNS / run / 'progress.json'
+    talk_path = RUNS / run / 'mother.jsonl'
+    if progress_path.exists():
+        progress = json.loads(progress_path.read_text(encoding='utf-8'))
+        rep['runtime'] = {'status': progress.get('status'), 'trained': progress.get('bptt_train_tokens'),
+                          'target': progress.get('target_bptt_tokens'),
+                          'progress_updated': progress_path.stat().st_mtime,
+                          'conversation_updated': talk_path.stat().st_mtime if talk_path.exists() else None}
     if not path.exists():
         return rep
     for line in path.read_text(encoding='utf-8', errors='replace').splitlines():
         line = line.strip()
+        if m := MOTHER_CHUNK.match(line):
+            rep['chunks'].append({'time': m.group(1), 'c': int(m.group(2)), 'words': int(m.group(3)),
+                                  'chunk_words': int(m.group(4)), 'fresh_b': None, 'revisit': None})
+            rep['events'].append(line)
         if m := READING_CHAIN.match(line):
             rep['reading'].append({'time': m.group(1), 'c': int(m.group(2)), 'who': 'gate', 'mean': _f(m.group(3)),
                                    'se': _f(m.group(4)), 'min': _f(m.group(5)), 'median': _f(m.group(6)),
@@ -155,11 +168,19 @@ def windows(run, last=400):
                 continue
             da = r.get('word_da') or []
             sp = r.get('speakers') or []
+            sources = r.get('sources') or []
+            by_source = {}
+            for source in ('mother_reply', 'mother_call', 'mother_opening', 'self_hearing'):
+                pairs = [(ce, uni) for ce, uni, tag in zip(r['scores'], r['unigram'], sources) if tag == source]
+                by_source[source] = {'n': len(pairs),
+                                     'nll': float(np.mean([x[0] for x in pairs])) if pairs else None,
+                                     'unigram': float(np.mean([x[1] for x in pairs])) if pairs else None}
             rows.append({'trained': r['trained'], 'nll': float(np.mean(r['scores'])), 'unigram': float(np.mean(r['unigram'])),
                          'phasic': float(np.mean([x[0] for x in da])) if da else None,
                          'fly_words': sum(1 for s in sp if s == 'fly') if sp else None,
                          'monitor': r.get('monitor'), 'epistemic': r.get('epistemic'),
-                         'topic': r.get('plan_topic')})
+                         'topic': r.get('plan_topic'), 'by_source': by_source,
+                         'quiet_ticks': sum(r.get('quiet_ticks') or [])})
     rows.sort(key=lambda r: r['trained'])
     return rows[-last:]
 
@@ -219,12 +240,18 @@ def mother_runs():
 
 
 def health(run):
+    activity_files = sorted((RUNS / run).glob('probe_cell_activity_*.json'), key=lambda p: p.stat().st_mtime)
+    activity = json.loads(activity_files[-1].read_text(encoding='utf-8')) if activity_files else {}
+    extras = {'activity_file': activity_files[-1].name if activity_files else None,
+              'cell_activity': activity.get('P_cell_activity'),
+              'quiet_cell_activity': activity.get('P_after_true_silence'),
+              'activity_scope': activity.get('scope')}
     files = sorted(glob.glob(str(RUNS / run / 'cell_health_c*.json')), key=lambda p: int(re.findall(r'c(\d+)', p)[-1]))
     if not files:
-        return {}
+        return extras
     d = json.load(open(files[-1], encoding='utf-8'))
     groups = {k[6:]: v for k, v in d.get('groups', {}).items() if k.startswith('class:')}
-    return {'file': Path(files[-1]).name, 'whole_brain': d.get('whole_brain'), 'flags': d.get('flags'),
+    return {**extras, 'file': Path(files[-1]).name, 'whole_brain': d.get('whole_brain'), 'flags': d.get('flags'),
             'classes': {k: {'mean_hz': v['rate_min_median_mean_max'][2] * 1000.0, 'silent': v['silent_frac'],
                             'n': v['n'], 'follows_text': v.get('follows_text')} for k, v in groups.items()}}
 

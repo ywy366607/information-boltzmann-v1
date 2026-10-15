@@ -561,7 +561,7 @@ class PyTorchDelayedSynapticTransmission(torch.autograd.Function):
         return *grad_spikes, None, None, grad_weight, None
 
 
-def build_incoming_layout(edge_pre, edge_post, delay_splits, n_neurons):
+def build_incoming_layout(edge_pre, edge_post, delay_splits, n_neurons, *, cache_dir=None, chunk_edges=131072):
     """Stable incoming-row layout; original trainable edge order is unchanged.
 
     Cache topology only. Returned int32 indices are moved with the model;
@@ -570,14 +570,10 @@ def build_incoming_layout(edge_pre, edge_post, delay_splits, n_neurons):
     pre = edge_pre.detach().cpu().numpy()
     post = edge_post.detach().cpu().numpy()
     splits = _canonical_delay_splits(delay_splits, len(pre))
-    layouts = []
-    for start, end in zip(splits, splits[1:]):
-        order = np.argsort(post[start:end], kind='stable') + start
-        counts = np.bincount(post[start:end].astype(np.int64), minlength=n_neurons)
-        offsets = np.concatenate(([0], np.cumsum(counts))).astype(np.int32)
-        layouts.append(tuple(torch.from_numpy(value) for value in (
-            order.astype(np.int32), pre[order].astype(np.int32), offsets)))
-    return tuple(layouts)
+    from .fly_topology_layout import incoming_arrays
+    return tuple(tuple(torch.from_numpy(value) for value in arrays)
+                 for arrays in incoming_arrays(pre, post, splits, n_neurons,
+                                                cache_dir=cache_dir, chunk_edges=chunk_edges))
 
 
 class IncomingDelayedTransmission(torch.autograd.Function):

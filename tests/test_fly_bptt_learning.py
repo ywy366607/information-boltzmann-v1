@@ -37,6 +37,63 @@ def physical(model):
         h.clone(), torch.ones_like(h), u, model.topographic_writer.a_adapt.clone())
 
 
+def test_true_silence_withdraws_text_and_voice_but_keeps_physical_time(tmp_path, monkeypatch):
+    from information_boltzmann.core import fly_bptt_learning as fl
+    torch.manual_seed(11)
+    model = make_model(tmp_path)
+    state = physical(model)
+    state.h.copy_(torch.linspace(.01, .05, model.n_neurons)[None])
+    state.baseline.add_(0.3)
+    def unwanted_voice(*args):
+        raise AssertionError('JO voice must be absent during silence')
+    monkeypatch.setattr(fl, 'mother_voice_drive', unwanted_voice)
+    with torch.no_grad():
+        quiet, _ = fl.advance_fly_token_stream(model, copy.deepcopy(state), torch.tensor([1]),
+                                               ticks=8, hold_input=True, fresh=True,
+                                               voice=True, sensory_on=False)
+        expected, _ = fl.advance_fly_token_stream(model, copy.deepcopy(state), torch.tensor([7]),
+                                                  ticks=8, hold_input=False, fresh=False, voice=False)
+    for name, value in quiet.state_dict().items():
+        if isinstance(value, tuple):
+            for a, b in zip(value, expected.state_dict()[name]):
+                torch.testing.assert_close(a, b)
+        else:
+            torch.testing.assert_close(value, expected.state_dict()[name])
+    assert not torch.equal(quiet.h, state.h)
+    assert not torch.equal(quiet.baseline, state.baseline)
+
+
+@pytest.mark.parametrize('motor', [False, True])
+def test_recorded_silence_training_and_ce_replay_match(tmp_path, motor):
+    from information_boltzmann.core.fly_mother_world import replay_ce
+    torch.manual_seed(11)
+    model = make_model(tmp_path)
+    if motor:
+        from information_boltzmann.core.fly_active_inference import attach_motor_acts
+        attach_motor_acts(model, brain_gradient=True)
+        with torch.no_grad():
+            model.ai_w.normal_(0, .1)
+    learner = FlyBPTTLearner(model, physical(model), stream_ticks=1, hold_input=True,
+                             lambda_jepa=0, use_ctm_loss=False)
+    learner.stream_pace_mean = 4
+    learner.stream_segment_ticks = 3
+    learner.previous_token = 0
+    learner.speak_credit = 'epistemic'
+    state0 = copy.deepcopy(learner.state)
+    intervals = [8, 5, 7]
+    quiet = [[(3, 8)], [], [(2, 5)]]
+    learner.forced_world = {'pace': 4, 'intervals': intervals, 'quiet_ranges': quiet,
+                            'speakers': ['mother', 'mother', 'fly'], 'decisions': [(2, 13, 2, 0)]}
+    targets = [1, 2, 3]
+    with torch.no_grad():
+        scores, _, _ = learner.forward_window(torch.tensor([[0, 1, 2]]), torch.tensor([targets]))
+        ai_g0 = learner.speak_record['ai_g0'] if motor else None
+        rng0 = torch.get_rng_state().clone()
+        replay = replay_ce(learner, state0, 0, targets, intervals, [False, True, True], quiet, ai_g0)
+        assert torch.equal(torch.get_rng_state(), rng0)
+    torch.testing.assert_close(scores, torch.tensor(replay))
+
+
 def test_functional_writer_retains_adaptation_history(tmp_path):
     torch.manual_seed(11)
     model = make_model(tmp_path)
@@ -50,6 +107,56 @@ def test_functional_writer_retains_adaptation_history(tmp_path):
     assert all(torch.isfinite(gradient).all() and gradient.abs().sum() > 0 for gradient in gradients)
     assert torch.count_nonzero(drive[:, model.read_indices]) == 0
     assert torch.equal(writer.a_adapt, torch.zeros_like(writer.a_adapt))
+
+
+def test_newborn_muscles_decide_from_first_window_and_replay_matches_live_state(tmp_path, monkeypatch):
+    from information_boltzmann.core import fly_bptt_learning as fl
+    from information_boltzmann.core.fly_active_inference import attach_motor_acts
+    from information_boltzmann.core.fly_mother_world import MotherWorld, live_window
+    class Tokens:
+        def encode(self, text):
+            return [1]
+        def decode(self, ids):
+            return 'word'
+    class Mother:
+        asynchronous = False
+        def reply(self, history):
+            return 'reply'
+    torch.manual_seed(3)
+    model = make_model(tmp_path)
+    attach_motor_acts(model, brain_gradient=True)
+    with torch.no_grad():
+        model.ai_b[1] = -100.0   # A deterministic silent decision, rather than forced newborn speech.
+    learner = FlyBPTTLearner(model, physical(model), stream_ticks=1, hold_input=True,
+                             lambda_jepa=0, use_ctm_loss=False)
+    learner.previous_token = 0
+    learner.stream_pace_mean = 4
+    learner.speak_credit = 'epistemic'
+    assert getattr(learner, 'ai_g', None) is None
+    world = MotherWorld(Mother(), Tokens(), opening=None, contingent=True)
+    world.turn = 'fly'
+    states = []
+    advance = fl.advance_fly_token_stream
+    def record_advance(*args, **kwargs):
+        result = advance(*args, **kwargs)
+        states.append(result[0])
+        return result
+    monkeypatch.setattr(fl, 'advance_fly_token_stream', record_advance)
+    targets, forced, speakers = live_window(learner, world, 1, np.random.default_rng(14), 4, 4, speak_act=True)
+    assert forced['decisions'] and not any(d for *_, d in forced['decisions'])
+    assert forced['sources'] == ['mother_call'] and speakers == ['mother']
+    assert forced['quiet_ranges'][0]
+    live_state = states[-1]
+    learner.forced_world = forced
+    with torch.no_grad():
+        _, replay_state, _ = learner.forward_window(torch.tensor([[0]]), torch.tensor([targets]))
+    for name, value in live_state.state_dict().items():
+        expected = replay_state.state_dict()[name]
+        if isinstance(value, tuple):
+            for a, b in zip(value, expected):
+                torch.testing.assert_close(a, b)
+        else:
+            torch.testing.assert_close(value, expected)
 
 
 def test_physical_detach_preserves_every_value():
