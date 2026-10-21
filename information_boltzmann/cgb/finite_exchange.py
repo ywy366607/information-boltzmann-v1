@@ -99,6 +99,10 @@ class FiniteExchange:
     def owned(self):
         return self.free + self.carried + self._sum(self.pre, self.bound)
 
+    def binding_energy(self):
+        """Local C energy; extensions must include its reciprocal energy term."""
+        return self.params.bound_energy
+
     def balances(self):
         return dict(support=self.owned()-self.initial_owned
                     - self._sum(self.pre, self.binding_net)
@@ -126,9 +130,9 @@ class FiniteExchange:
         p = self.params
         empty = self.capacity-self.bound
         return dict(binding=(p.binding_rate*self.free[self.post]*empty,
-                             p.binding_rate*np.exp(p.bound_energy)*self.bound),
+                             p.binding_rate*np.exp(self.binding_energy())*self.bound),
                     transport=(p.transport_rate*self.bound*self.charged[self.pre],
-                               p.transport_rate*np.exp(p.carried_energy-p.bound_energy-p.charged_energy)
+                               p.transport_rate*np.exp(p.carried_energy-self.binding_energy()-p.charged_energy)
                                *self.carried[self.pre]*self.depleted[self.pre]*empty),
                     release=(p.release_rate*self.carried,
                              p.release_rate*np.exp(-p.carried_energy)*self.free))
@@ -146,7 +150,7 @@ class FiniteExchange:
         slots = self._sum(self.pre, self.capacity)
         low = np.maximum.reduce((-self.carried, -self.depleted, total-slots))
         high = np.minimum(self.charged, total)
-        backward = p.transport_rate*np.exp(p.carried_energy-p.bound_energy-p.charged_energy)
+        backward = p.transport_rate*np.exp(p.carried_energy-self.binding_energy()-p.charged_energy)
 
         def occupancy(x):
             plus = dt*p.transport_rate*(self.charged-x)[self.pre]
@@ -180,7 +184,7 @@ class FiniteExchange:
         if p.binding_rate and len(self.pre):
             bound_before = self.bound
             result = material_slot_step(self.free, self.bound, self.post, self.capacity,
-                p.binding_rate, p.binding_rate*np.exp(p.bound_energy), dt)
+                p.binding_rate, p.binding_rate*np.exp(self.binding_energy()), dt)
             self.free, self.bound = result.free, result.structure
             self.binding_net += self.bound-bound_before
         self._transport(dt)

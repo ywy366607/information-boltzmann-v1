@@ -46,3 +46,14 @@ git worktree add -b codex/cgb-revisit-20261022 D:/cgb-revisit-20261022 cgb-befor
 - 验证：12个相关CGB测试文件124项通过，JUnit随运行保存；4臂实际96ms、半程完整恢复、两个细化步长、付费的外部状态干预均完成。未启动语言训练。
 - [实际结果及边界](CGB_DRIVEN_PORTS_RESULTS_20261022.md)。本轮交付材料／端口因果作用，没有把端口反馈改称完整语言主体闭环。
 - 备份路径：`F:/fly_stream_overflow/cgb_driven_ports_backup_20261022/`，存Git bundle、完整子核状态、报告、书架和哈希清单。日志与Git先完成，备份验证后再发出关机指令；系统执行结果单列在该路径的关机请求记录中。
+
+## 活动痕迹与捕获的联合实现
+
+2026-10-22。用户恢复工作，要求沿Claude及主规划把学习过程与物理通路统一，并推进空间生长；本轮没有再次关机请求。
+
+- 回退基线`e5b75bb`，标签`cgb-before-trace-growth-20261022`。痕迹实现单独提交并标`cgb-activity-trace-20261022`，空间扩展随后单独提交。
+- 新增有限二态痕迹、带存储的实际传输事件、互易结合能、热恢复和两态通道群速率；沿原结构反应形成捕获／留存通路。新变量都有容量、储能和正反转化。
+- `finite_exchange.py`提取共同结合能接口，`driven_exchange.py`提取共同正反尝试率，旧默认保持原数值路径。未向旧主个体写入新状态。
+- 执行`trace_exchange_audit.py --archive F:/fly_stream_overflow/cgb_spatial_calibrated_r1_20261021/medium_complete.npz --out F:/fly_stream_overflow/cgb_trace_exchange_20261022`：4臂64ms、半程恢复、同文本切断对照完成。13项直接检查通过，JUnit为该目录`trace_tests.xml`。
+- 联合实现更能保留结合支持，但写入要付款，总结构并未比不写痕迹更多；这不是失败数据删除，也没有把总量当作学习收益。详见[CGB_TRACE_EXCHANGE_RESULTS_20261022.md](CGB_TRACE_EXCHANGE_RESULTS_20261022.md)。
+- 该阶段存档调度器在Git中保留仅到trace类型的实际版本；随后空间提交再加入spatial类型，便于Claude独立回退。

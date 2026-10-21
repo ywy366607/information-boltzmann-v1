@@ -104,10 +104,14 @@ class DrivenExchange(FlowExchange):
         result = super().fluxes()
         p = self.params
         a = p.charged_energy+p.charge_per_event*(self.voltage[self.pre]-self.voltage[self.post])
-        rate = p.active_rate*self.capacity*(self.pre != self.post)
+        rate = self.active_attempt_rate()*(self.pre != self.post)
         result['active'] = (rate*self.charged[self.pre]*expit(a),
                             rate*self.depleted[self.pre]*expit(-a))
         return result
+
+    def active_attempt_rate(self):
+        """Common forward/reverse attempt factor, distinct from affinity."""
+        return self.params.active_rate*self.capacity
 
     def entropy_rate(self):
         dv = self.voltage[self.port_nodes]-self.world_voltage
@@ -122,7 +126,7 @@ class DrivenExchange(FlowExchange):
             old_p, old_d = self.charged[pre].copy(), self.depleted[pre].copy()
             old_pre, old_post = self.charge[pre].copy(), self.charge[post].copy()
             lo, hi = -old_d, old_p
-            rate = p.active_rate*self.capacity[edges]
+            rate = self.active_attempt_rate()[edges]
             for _ in range(64):
                 x = (lo+hi)*.5
                 va = (old_pre-.5*p.charge_per_event*x)/self.capacitance[pre]
