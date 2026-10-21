@@ -28,6 +28,28 @@ def material(alpha=0., c=0, r=0, **params):
         program=program(), cell_type=[0, 1, 2], recognition_energy_fraction=alpha, seed=17)
 
 
+def test_identity_symmetric_execution_is_explicit_and_complete_on_resume(tmp_path):
+    from scripts.ib.generative.compare_support_transport import same
+    m = material()
+    old = m.state_dict()
+    assert old['schema'] == 1 and 'field_scheme' not in old
+    m.field_scheme = 'symmetric_ou'
+    assert m.state_dict()['schema'] == 2
+    for _ in range(4):
+        m.step(2., np.array([2., -1.]))
+    save_exchange(tmp_path/'symmetric.npz', m, {'scope':'numerical full-state continuation'})
+    restored, _ = load_exchange(tmp_path/'symmetric.npz')
+    assert restored.field_scheme == 'symmetric_ou'
+    for _ in range(16):
+        m.step(2., np.array([2., -1.]))
+        restored.step(2., np.array([2., -1.]))
+    same(m.state_dict(), restored.state_dict())
+    broken = m.state_dict()
+    broken['schema'] = 1
+    with pytest.raises(ValueError):
+        IdentityMobileExchange.from_state_dict(broken)
+
+
 @pytest.mark.parametrize('alpha', [0., .35, 1.])
 @pytest.mark.parametrize('c,r', [(0, 0), (1, 1)])
 def test_all_identity_events_match_joint_u_g_and_reverse_rates(alpha, c, r):

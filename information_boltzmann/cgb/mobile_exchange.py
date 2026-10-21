@@ -86,6 +86,8 @@ class MobileExchange:
         self.reaction_counts = {}
         self.motion_attempts = self.motion_accepted = 0
         self.event_observer = None
+        self.source_observer = None  # disposable instrument; never physical state
+        self.field_scheme = 'sequential_ou'
         for name in self._ledgers:
             setattr(self, name, 0.)
         self.initial_material = np.array(self.material.sum()+len(self.pre))
@@ -109,6 +111,8 @@ class MobileExchange:
         return cKDTree(self.coordinates).query_pairs(self.params.contact_radius, output_type='ndarray')
 
     def _validate(self):
+        if self.field_scheme not in ('sequential_ou', 'symmetric_ou'):
+            raise ValueError('Unknown field integration scheme')
         p = self.params
         if (self.coordinates.shape != (self.n, 3) or not np.isfinite(self.coordinates).all()
                 or np.any(self.coordinates < 0) or np.any(self.coordinates > p.box_size)):
@@ -413,6 +417,8 @@ class MobileExchange:
             del self._motion_bins, self._motion_neighbors
 
     def _field(self, dt, world_voltage):
+        if self.field_scheme == 'symmetric_ou':
+            return self._field_symmetric(dt, world_voltage)
         if world_voltage is not None:
             old = self.world_charge.copy()
             rate = dt*self.source_conductance/self.world_capacitance
@@ -427,6 +433,10 @@ class MobileExchange:
             self.source_heat += heat
             self.heat_out += heat
             self.entropy_balance += heat
+            if self.source_observer:
+                self.source_observer(dict(time_ms=self.t, dt_ms=dt,
+                    before_charge=old.copy(), after_charge=self.world_charge.copy(),
+                    source_work=work, source_heat=heat))
         for a, i in enumerate(self.port_nodes):
             inverse_c = 1/self.capacitance[i]+1/self.world_capacitance[a]
             dv = self.charge[i]/self.capacitance[i]-self.world_charge[a]/self.world_capacitance[a]
@@ -457,6 +467,65 @@ class MobileExchange:
             self.conduction_heat += heat
             self.entropy_balance += heat
 
+    def _field_symmetric(self, dt, world_voltage):
+        """Palindromic local OU composition, with O(N+E) workspace.
+
+        Every channel advances dt in total; the global clock advances only
+        once in step(). This changes execution accuracy, not constitutive
+        laws. Source work and heat are measured at each actual half update.
+        """
+        n = self.n
+        q = np.r_[self.charge, self.world_charge]
+        capacitance = np.r_[self.capacitance, self.world_capacitance]
+        conductance = self.bridge_conductance()
+        half = dt/2
+
+        def source():
+            if world_voltage is None:
+                return
+            old = q[n:].copy()
+            rate = half*self.source_conductance/self.world_capacitance
+            delta = ((world_voltage-old/self.world_capacitance)*(-np.expm1(-rate))*self.world_capacitance
+                +self.rng_field.normal(size=len(old))*np.sqrt(-self.world_capacitance*np.expm1(-2*rate)))
+            q[n:] += delta
+            work = float(np.dot(world_voltage, delta))
+            heat = work-.5*float(np.sum((q[n:]**2-old**2)/self.world_capacitance))
+            self.work_in += work
+            self.source_charge += float(delta.sum())
+            self.source_heat += heat
+            self.heat_out += heat
+            self.entropy_balance += heat
+            if self.source_observer:
+                self.charge[:], self.world_charge[:] = q[:n], q[n:]
+                self.source_observer(dict(time_ms=self.t, dt_ms=half,
+                    before_charge=old.copy(), after_charge=q[n:].copy(),
+                    source_work=work, source_heat=heat))
+
+        def pair(i, j, g):
+            inverse_c = 1/capacitance[i]+1/capacitance[j]
+            dv = q[i]/capacitance[i]-q[j]/capacitance[j]
+            rate = half*g*inverse_c
+            sent = (dv*(-np.expm1(-rate))/inverse_c
+                +self.rng_field.normal()*math.sqrt(-np.expm1(-2*rate)/inverse_c))
+            heat = dv*sent-.5*inverse_c*sent*sent
+            q[i] -= sent
+            q[j] += sent
+            self.heat_out += heat
+            self.conduction_heat += heat
+            self.entropy_balance += heat
+
+        source()
+        for a, i in enumerate(self.port_nodes):
+            pair(int(i), n+a, self.port_conductance[a])
+        for e, (i, j) in enumerate(zip(self.pre, self.post)):
+            pair(int(i), int(j), conductance[e])
+        for e in range(len(self.pre)-1, -1, -1):
+            pair(int(self.pre[e]), int(self.post[e]), conductance[e])
+        for a in range(len(self.port_nodes)-1, -1, -1):
+            pair(int(self.port_nodes[a]), n+a, self.port_conductance[a])
+        source()
+        self.charge[:], self.world_charge[:] = q[:n], q[n:]
+
     def bridge_conductance(self):
         p = self.params
         return self.unit_conductance*(p.gate_low+(p.gate_high-p.gate_low)*self.trace)
@@ -485,7 +554,9 @@ class MobileExchange:
             free_energy=self.initial_free_energy+self.work_in-self.free_energy()-self.entropy_balance)
 
     def state_dict(self):
-        return dict(schema=2, kind='mobile_exchange', params=asdict(self.params),
+        if self.field_scheme not in ('sequential_ou', 'symmetric_ou'):
+            raise ValueError('Unknown field integration scheme')
+        state = dict(schema=2, kind='mobile_exchange', params=asdict(self.params),
             pre=self.pre.copy(), post=self.post.copy(), capacity=self.capacity.copy(),
             arrays={name: getattr(self, name).copy() for name in self._arrays},
             port_nodes=self.port_nodes.tolist(), unit_conductance=self.unit_conductance,
@@ -495,11 +566,16 @@ class MobileExchange:
             reaction_counts=dict(self.reaction_counts), motion_attempts=self.motion_attempts,
             motion_accepted=self.motion_accepted,
             **{name: float(getattr(self, name)) for name in self._ledgers})
+        if self.field_scheme == 'symmetric_ou':
+            state.update(schema=3, field_scheme=self.field_scheme)
+        return state
 
     @classmethod
     def from_state_dict(cls, state):
-        if state.get('schema') != 2 or state.get('kind') != 'mobile_exchange':
+        if state.get('schema') not in (2,3) or state.get('kind') != 'mobile_exchange':
             raise ValueError('Unsupported mobile material archive')
+        if state.get('field_scheme', 'sequential_ou') != ('symmetric_ou' if state['schema']==3 else 'sequential_ou'):
+            raise ValueError('Field scheme and archive schema disagree')
         a = state['arrays']
         obj = cls(a['coordinates'], a['material'], a['free'], a['charged'], a['depleted'],
             end_capacity=a['end_capacity'], carried=a['carried'], charge=a['charge'],
@@ -514,6 +590,7 @@ class MobileExchange:
     def _restore_archive(cls, obj, state):
         """Restore all arrays/ledgers/RNGs after a subtype builds its carrier."""
         a = state['arrays']
+        obj.field_scheme = state.get('field_scheme', 'sequential_ou')
         if not np.array_equal(state['capacity'], obj.capacity):
             raise ValueError('Corrupt actual bridge inventory')
         for name in cls._arrays:

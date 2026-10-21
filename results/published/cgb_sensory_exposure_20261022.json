@@ -1,0 +1,632 @@
+{
+  "date": "2026-10-22",
+  "baseline_git": "696c15bd0aa9f81e52491c2d0e03f5fe931a61bf",
+  "exposure": {
+    "passed": true,
+    "baseline_git": "696c15bd0aa9f81e52491c2d0e03f5fe931a61bf",
+    "code_sha256": {
+      "scripts\\ib\\generative\\sensory_exposure_audit.py": "4ea05b27bdc1a575600da8eb442dae6a085b473028862025c18040757ee9cf95",
+      "information_boltzmann\\cgb\\mobile_exchange.py": "68dc8b675b7d871eb267e921f03a5b417bd5f03b11a2417b5dc8b28355f348b0",
+      "information_boltzmann\\cgb\\sensory_channel.py": "4dc5658eeb8e5095561896fa583ebeab4f257006af18984267820ca06416d868",
+      "docs\\information_boltzmann\\CGB_SENSORY_EXPOSURE_PREREG_20261022.md": "727a836f2eb8d2fa4cf21d6dbafc382af69c6a61c5029f28e321fbea68b12c83"
+    },
+    "archive_sha256": "dc41fb6892669b388b78ba52597e17d04a4ec1114c5e9c30bd07a20cc722f403",
+    "mean": {
+      "source_posterior_nll": 1.4418843439571518,
+      "source_realized_log_evidence": 1.7449675332581123,
+      "source_uniform_binary_information_nats": 3.801830263002504,
+      "source_uniform_gaussian_bound_nats": 4.1163363792349195,
+      "source_work": 17.405673949485987,
+      "source_heat": 15.215275053065753
+    },
+    "frozen_channel_mean_bounds_nats": {
+      "port_first_2ms": 0.005158016689996976,
+      "ports_4ms": 0.023770318673971974,
+      "rooted_brain_4ms": 0.037439175482654435,
+      "brain_world_4ms": 3.608057509479911
+    },
+    "actual_source_instrument_bytes": 16,
+    "all_original_future_predictions_verified": 1024,
+    "final_time_ms": 7424.0,
+    "original_final_full_state_session_and_three_rngs_exact": true,
+    "instrumented_prefix_sham_exact": true,
+    "source_archive_unchanged": true,
+    "interpretation": "Source-contact path evidence is not brain knowledge; frozen field endpoints are not adaptive-sequence mutual information; no predictive utility claim."
+  },
+  "resolution_summary": {
+    "exact_bounds_nats": {
+      "ports": 0.01399837689553346,
+      "rooted_brain": 0.019804206133701166,
+      "brain_world": 3.6530800701234876
+    },
+    "resolution": [
+      {
+        "k": 2,
+        "substep_ms": 2.0,
+        "gain_relative_error": 0.026599939044314694,
+        "covariance_relative_error": 0.015166388221508884,
+        "bounds_nats": {
+          "ports": 0.023770318673971974,
+          "rooted_brain": 0.037439175482654435,
+          "brain_world": 3.608057509479911
+        }
+      },
+      {
+        "k": 4,
+        "substep_ms": 1.0,
+        "gain_relative_error": 0.013578242492810439,
+        "covariance_relative_error": 0.007134279491080132,
+        "bounds_nats": {
+          "ports": 0.018916500852617344,
+          "rooted_brain": 0.02826608848958446,
+          "brain_world": 3.6294596875383727
+        }
+      },
+      {
+        "k": 8,
+        "substep_ms": 0.5,
+        "gain_relative_error": 0.006863687536569751,
+        "covariance_relative_error": 0.00356345249982247,
+        "bounds_nats": {
+          "ports": 0.016457850096851478,
+          "rooted_brain": 0.023933992566880558,
+          "brain_world": 3.6410182573308
+        }
+      },
+      {
+        "k": 16,
+        "substep_ms": 0.25,
+        "gain_relative_error": 0.0034512572751162693,
+        "covariance_relative_error": 0.001793327194712295,
+        "bounds_nats": {
+          "ports": 0.015226903868582959,
+          "rooted_brain": 0.021841964073621586,
+          "brain_world": 3.6469895426245755
+        }
+      },
+      {
+        "k": 32,
+        "substep_ms": 0.125,
+        "gain_relative_error": 0.0017305897605404575,
+        "covariance_relative_error": 0.0009017353793446155,
+        "bounds_nats": {
+          "ports": 0.014612146096285595,
+          "rooted_brain": 0.020816048016172845,
+          "brain_world": 3.650020316451145
+        }
+      },
+      {
+        "k": 64,
+        "substep_ms": 0.0625,
+        "gain_relative_error": 0.0008665495643261252,
+        "covariance_relative_error": 0.00045264504553172824,
+        "bounds_nats": {
+          "ports": 0.014305111931408553,
+          "rooted_brain": 0.020308334639506313,
+          "brain_world": 3.651546623015158
+        }
+      },
+      {
+        "k": 128,
+        "substep_ms": 0.03125,
+        "gain_relative_error": 0.0004335903265336019,
+        "covariance_relative_error": 0.00022686047399821338,
+        "bounds_nats": {
+          "ports": 0.014151703650121434,
+          "rooted_brain": 0.020055818035266917,
+          "brain_world": 3.6523124605448545
+        }
+      }
+    ]
+  },
+  "symmetric_execution": {
+    "passed": true,
+    "baseline_git": "696c15bd0aa9f81e52491c2d0e03f5fe931a61bf",
+    "original_archive_sha256": "dc41fb6892669b388b78ba52597e17d04a4ec1114c5e9c30bd07a20cc722f403",
+    "code_sha256": {
+      "scripts\\ib\\generative\\symmetric_field_audit.py": "5ea5cc7672fd083deede22b47fafba922ff6f4c5744c0fc643f181b5770cb650",
+      "information_boltzmann\\cgb\\mobile_exchange.py": "e58790ea478631aa833c4dceaf3f3755f603f1b902b3a3e8c64e1bb8d6af5e24",
+      "information_boltzmann\\cgb\\identity_material.py": "210547214e406885d42645c08a1554aeaf5e8b77bdd261a8f3fa6e68a85ce6ae",
+      "information_boltzmann\\cgb\\sensory_channel.py": "54b0e570060b6a4b881d34265c6c0adce0b4b6751397cbb6cfa5e2e0ce7af31a",
+      "docs\\information_boltzmann\\CGB_FIELD_SYMMETRY_PREREG_20261022.md": "857a8cc401c074a834f05d84ccaa76ac921ed9e290cba53fb1451a1ea23fc02e"
+    },
+    "arms": {
+      "sequential_ou": {
+        "actual_bytes": 128,
+        "start_ms": 3328.0,
+        "end_ms": 3840.0,
+        "nll_nats_per_byte": {
+          "material": 10.805755686816397,
+          "fixed_byte": 3.382013234946066,
+          "fixed_bits": 3.8018509716073208,
+          "source_filter": 10.312388204969219
+        },
+        "seconds_including_restored_future64_and_diagnostics": 13.88161730000138,
+        "actual_reactions": {
+          "conversion+": 14,
+          "conversion-": 21,
+          "active+": 200,
+          "transport-": 5,
+          "assembly+": 25,
+          "binding+": 51,
+          "write+": 315,
+          "binding-": 50,
+          "release+": 22,
+          "assembly-": 25,
+          "thermal-": 67,
+          "write-": 325,
+          "active-": 200,
+          "thermal+": 80,
+          "transport+": 6,
+          "release-": 17
+        },
+        "errors": {
+          "material": 0.0,
+          "drive": 0.0,
+          "support": 0.0,
+          "ends": 0.0,
+          "charge": 4.263256414560601e-14,
+          "energy": 4.816911314264871e-10,
+          "free_energy": 4.5838532969355583e-10
+        },
+        "source_work": 2497.4739011898855,
+        "heat_out": 2488.341484988745,
+        "final_bridges": 35,
+        "final_trace": 16,
+        "final_support": 30,
+        "archive_schema": 1,
+        "archive_sha256": "65b4f3b6802b49e4556909514bafca7704b4551308af629b4dbd75f90b5dceeb",
+        "restored_future_bytes": 64,
+        "all_future_scores_full_state_three_rngs_and_session_exact": true,
+        "frozen_resolution": [
+          {
+            "time_ms": 3328.0,
+            "scope": "same complete checkpoint, frozen-field reference only",
+            "rows": [
+              {
+                "scheme": "sequential_ou",
+                "k": 2,
+                "exposure_ms": 4.0,
+                "gain_relative_error": 0.02676982224778271,
+                "covariance_relative_error": 0.015780719684483753
+              },
+              {
+                "scheme": "sequential_ou",
+                "k": 4,
+                "exposure_ms": 4.0,
+                "gain_relative_error": 0.013664965185997368,
+                "covariance_relative_error": 0.00723239763009964
+              },
+              {
+                "scheme": "sequential_ou",
+                "k": 8,
+                "exposure_ms": 4.0,
+                "gain_relative_error": 0.006907108938736251,
+                "covariance_relative_error": 0.0035656047159615127
+              },
+              {
+                "scheme": "sequential_ou",
+                "k": 16,
+                "exposure_ms": 4.0,
+                "gain_relative_error": 0.0034729171938446476,
+                "covariance_relative_error": 0.0017791877997589466
+              },
+              {
+                "scheme": "symmetric_ou",
+                "k": 2,
+                "exposure_ms": 4.0,
+                "gain_relative_error": 0.0008909372056610199,
+                "covariance_relative_error": 0.003473817299243217
+              },
+              {
+                "scheme": "symmetric_ou",
+                "k": 4,
+                "exposure_ms": 4.0,
+                "gain_relative_error": 0.00022236405416568267,
+                "covariance_relative_error": 0.0010187104410145102
+              },
+              {
+                "scheme": "symmetric_ou",
+                "k": 8,
+                "exposure_ms": 4.0,
+                "gain_relative_error": 5.6028053345300534e-05,
+                "covariance_relative_error": 0.00031102936540023106
+              },
+              {
+                "scheme": "symmetric_ou",
+                "k": 16,
+                "exposure_ms": 4.0,
+                "gain_relative_error": 1.424826348562614e-05,
+                "covariance_relative_error": 9.846537489514581e-05
+              }
+            ]
+          },
+          {
+            "time_ms": 3584.0,
+            "scope": "same complete checkpoint, frozen-field reference only",
+            "rows": [
+              {
+                "scheme": "sequential_ou",
+                "k": 2,
+                "exposure_ms": 4.0,
+                "gain_relative_error": 0.026893809335716914,
+                "covariance_relative_error": 0.013486033652354696
+              },
+              {
+                "scheme": "sequential_ou",
+                "k": 4,
+                "exposure_ms": 4.0,
+                "gain_relative_error": 0.01370321982679998,
+                "covariance_relative_error": 0.00655404547630558
+              },
+              {
+                "scheme": "sequential_ou",
+                "k": 8,
+                "exposure_ms": 4.0,
+                "gain_relative_error": 0.006920881218362829,
+                "covariance_relative_error": 0.0032789267736006676
+              },
+              {
+                "scheme": "sequential_ou",
+                "k": 16,
+                "exposure_ms": 4.0,
+                "gain_relative_error": 0.0034785782755198387,
+                "covariance_relative_error": 0.0016477312614718808
+              },
+              {
+                "scheme": "symmetric_ou",
+                "k": 2,
+                "exposure_ms": 4.0,
+                "gain_relative_error": 0.0008815032997813279,
+                "covariance_relative_error": 0.0028162186002336593
+              },
+              {
+                "scheme": "symmetric_ou",
+                "k": 4,
+                "exposure_ms": 4.0,
+                "gain_relative_error": 0.00021814662244531887,
+                "covariance_relative_error": 0.000781656663715598
+              },
+              {
+                "scheme": "symmetric_ou",
+                "k": 8,
+                "exposure_ms": 4.0,
+                "gain_relative_error": 5.442391216548633e-05,
+                "covariance_relative_error": 0.00020514313102366105
+              },
+              {
+                "scheme": "symmetric_ou",
+                "k": 16,
+                "exposure_ms": 4.0,
+                "gain_relative_error": 1.3600079347841694e-05,
+                "covariance_relative_error": 5.205503456194567e-05
+              }
+            ]
+          },
+          {
+            "time_ms": 3840.0,
+            "scope": "same complete checkpoint, frozen-field reference only",
+            "rows": [
+              {
+                "scheme": "sequential_ou",
+                "k": 2,
+                "exposure_ms": 4.0,
+                "gain_relative_error": 0.026958980688009358,
+                "covariance_relative_error": 0.03986812593093257
+              },
+              {
+                "scheme": "sequential_ou",
+                "k": 4,
+                "exposure_ms": 4.0,
+                "gain_relative_error": 0.013905845707859322,
+                "covariance_relative_error": 0.0159391558041867
+              },
+              {
+                "scheme": "sequential_ou",
+                "k": 8,
+                "exposure_ms": 4.0,
+                "gain_relative_error": 0.007050246511231752,
+                "covariance_relative_error": 0.007187436430327612
+              },
+              {
+                "scheme": "sequential_ou",
+                "k": 16,
+                "exposure_ms": 4.0,
+                "gain_relative_error": 0.00352838359654954,
+                "covariance_relative_error": 0.003286762775996517
+              },
+              {
+                "scheme": "symmetric_ou",
+                "k": 2,
+                "exposure_ms": 4.0,
+                "gain_relative_error": 0.003254534551190695,
+                "covariance_relative_error": 0.026549690279149787
+              },
+              {
+                "scheme": "symmetric_ou",
+                "k": 4,
+                "exposure_ms": 4.0,
+                "gain_relative_error": 0.0019963721345766204,
+                "covariance_relative_error": 0.011215581183757433
+              },
+              {
+                "scheme": "symmetric_ou",
+                "k": 8,
+                "exposure_ms": 4.0,
+                "gain_relative_error": 0.0010777227854478395,
+                "covariance_relative_error": 0.004802118187330898
+              },
+              {
+                "scheme": "symmetric_ou",
+                "k": 16,
+                "exposure_ms": 4.0,
+                "gain_relative_error": 0.0004922412783681248,
+                "covariance_relative_error": 0.0019256313234292577
+              }
+            ]
+          }
+        ],
+        "field_base_buffer_bytes": 792,
+        "field_buffer_scope": "q, capacitance and conductance buffers, excludes temporary port vectors and Python/RNG overhead"
+      },
+      "symmetric_ou": {
+        "actual_bytes": 128,
+        "start_ms": 3328.0,
+        "end_ms": 3840.0,
+        "nll_nats_per_byte": {
+          "material": 11.219603240691047,
+          "fixed_byte": 3.382013234946066,
+          "fixed_bits": 3.8018509716073208,
+          "source_filter": 10.312388204969219
+        },
+        "seconds_including_restored_future64_and_diagnostics": 17.993799699999727,
+        "actual_reactions": {
+          "conversion+": 13,
+          "conversion-": 16,
+          "active+": 208,
+          "transport-": 6,
+          "assembly+": 16,
+          "binding+": 56,
+          "write+": 266,
+          "binding-": 57,
+          "release+": 17,
+          "assembly-": 15,
+          "thermal-": 87,
+          "write-": 272,
+          "active-": 200,
+          "thermal+": 96,
+          "transport+": 7,
+          "release-": 14
+        },
+        "errors": {
+          "material": 0.0,
+          "drive": 0.0,
+          "support": 0.0,
+          "ends": 0.0,
+          "charge": 1.1368683772161603e-13,
+          "energy": 4.3439740693429485e-10,
+          "free_energy": 4.43833414465189e-10
+        },
+        "source_work": 2588.6405128624247,
+        "heat_out": 2611.933480460386,
+        "final_bridges": 36,
+        "final_trace": 16,
+        "final_support": 28,
+        "archive_schema": 2,
+        "archive_sha256": "ac80abea3bdc93a672b12a01b7393a90efa3a3e5f97a569ca7f7b4f240d06f2e",
+        "restored_future_bytes": 64,
+        "all_future_scores_full_state_three_rngs_and_session_exact": true,
+        "frozen_resolution": [
+          {
+            "time_ms": 3328.0,
+            "scope": "same complete checkpoint, frozen-field reference only",
+            "rows": [
+              {
+                "scheme": "sequential_ou",
+                "k": 2,
+                "exposure_ms": 4.0,
+                "gain_relative_error": 0.02676982224778271,
+                "covariance_relative_error": 0.015780719684483753
+              },
+              {
+                "scheme": "sequential_ou",
+                "k": 4,
+                "exposure_ms": 4.0,
+                "gain_relative_error": 0.013664965185997368,
+                "covariance_relative_error": 0.00723239763009964
+              },
+              {
+                "scheme": "sequential_ou",
+                "k": 8,
+                "exposure_ms": 4.0,
+                "gain_relative_error": 0.006907108938736251,
+                "covariance_relative_error": 0.0035656047159615127
+              },
+              {
+                "scheme": "sequential_ou",
+                "k": 16,
+                "exposure_ms": 4.0,
+                "gain_relative_error": 0.0034729171938446476,
+                "covariance_relative_error": 0.0017791877997589466
+              },
+              {
+                "scheme": "symmetric_ou",
+                "k": 2,
+                "exposure_ms": 4.0,
+                "gain_relative_error": 0.0008909372056610199,
+                "covariance_relative_error": 0.003473817299243217
+              },
+              {
+                "scheme": "symmetric_ou",
+                "k": 4,
+                "exposure_ms": 4.0,
+                "gain_relative_error": 0.00022236405416568267,
+                "covariance_relative_error": 0.0010187104410145102
+              },
+              {
+                "scheme": "symmetric_ou",
+                "k": 8,
+                "exposure_ms": 4.0,
+                "gain_relative_error": 5.6028053345300534e-05,
+                "covariance_relative_error": 0.00031102936540023106
+              },
+              {
+                "scheme": "symmetric_ou",
+                "k": 16,
+                "exposure_ms": 4.0,
+                "gain_relative_error": 1.424826348562614e-05,
+                "covariance_relative_error": 9.846537489514581e-05
+              }
+            ]
+          },
+          {
+            "time_ms": 3584.0,
+            "scope": "same complete checkpoint, frozen-field reference only",
+            "rows": [
+              {
+                "scheme": "sequential_ou",
+                "k": 2,
+                "exposure_ms": 4.0,
+                "gain_relative_error": 0.027599914472053805,
+                "covariance_relative_error": 0.05228933988401229
+              },
+              {
+                "scheme": "sequential_ou",
+                "k": 4,
+                "exposure_ms": 4.0,
+                "gain_relative_error": 0.01406216817072578,
+                "covariance_relative_error": 0.0232896910243618
+              },
+              {
+                "scheme": "sequential_ou",
+                "k": 8,
+                "exposure_ms": 4.0,
+                "gain_relative_error": 0.007090820160457555,
+                "covariance_relative_error": 0.009985970898043282
+              },
+              {
+                "scheme": "sequential_ou",
+                "k": 16,
+                "exposure_ms": 4.0,
+                "gain_relative_error": 0.003576566698742849,
+                "covariance_relative_error": 0.004184755220228739
+              },
+              {
+                "scheme": "symmetric_ou",
+                "k": 2,
+                "exposure_ms": 4.0,
+                "gain_relative_error": 0.007042123269968005,
+                "covariance_relative_error": 0.02898384526313481
+              },
+              {
+                "scheme": "symmetric_ou",
+                "k": 4,
+                "exposure_ms": 4.0,
+                "gain_relative_error": 0.004441422295888967,
+                "covariance_relative_error": 0.01172120422104082
+              },
+              {
+                "scheme": "symmetric_ou",
+                "k": 8,
+                "exposure_ms": 4.0,
+                "gain_relative_error": 0.002107438750798603,
+                "covariance_relative_error": 0.00420669644702958
+              },
+              {
+                "scheme": "symmetric_ou",
+                "k": 16,
+                "exposure_ms": 4.0,
+                "gain_relative_error": 0.0007737182679426018,
+                "covariance_relative_error": 0.0014065015384819948
+              }
+            ]
+          },
+          {
+            "time_ms": 3840.0,
+            "scope": "same complete checkpoint, frozen-field reference only",
+            "rows": [
+              {
+                "scheme": "sequential_ou",
+                "k": 2,
+                "exposure_ms": 4.0,
+                "gain_relative_error": 0.026777098470440533,
+                "covariance_relative_error": 0.018421546998487616
+              },
+              {
+                "scheme": "sequential_ou",
+                "k": 4,
+                "exposure_ms": 4.0,
+                "gain_relative_error": 0.01364398908218853,
+                "covariance_relative_error": 0.008529390722549742
+              },
+              {
+                "scheme": "sequential_ou",
+                "k": 8,
+                "exposure_ms": 4.0,
+                "gain_relative_error": 0.006892439883502393,
+                "covariance_relative_error": 0.004176453329535091
+              },
+              {
+                "scheme": "sequential_ou",
+                "k": 16,
+                "exposure_ms": 4.0,
+                "gain_relative_error": 0.003464812009195253,
+                "covariance_relative_error": 0.0020595792024086473
+              },
+              {
+                "scheme": "symmetric_ou",
+                "k": 2,
+                "exposure_ms": 4.0,
+                "gain_relative_error": 0.0008963896612494092,
+                "covariance_relative_error": 0.0049227098179332645
+              },
+              {
+                "scheme": "symmetric_ou",
+                "k": 4,
+                "exposure_ms": 4.0,
+                "gain_relative_error": 0.00022555104896778734,
+                "covariance_relative_error": 0.0016929585458345998
+              },
+              {
+                "scheme": "symmetric_ou",
+                "k": 8,
+                "exposure_ms": 4.0,
+                "gain_relative_error": 5.813117811089765e-05,
+                "covariance_relative_error": 0.0006099981897373027
+              },
+              {
+                "scheme": "symmetric_ou",
+                "k": 16,
+                "exposure_ms": 4.0,
+                "gain_relative_error": 1.5451204653389336e-05,
+                "covariance_relative_error": 0.0002316715490493254
+              }
+            ]
+          }
+        ],
+        "field_base_buffer_bytes": 800,
+        "field_buffer_scope": "q, capacitance and conductance buffers, excludes temporary port vectors and Python/RNG overhead"
+      }
+    },
+    "continuous_time_field_reference": "same frozen generator, bounded diagnostic, not production dense execution",
+    "legacy_original_128_prearrival_scores_exact": true,
+    "original_archive_unchanged": true,
+    "claim": "Numerical field accuracy and full-state continuation; not improved predictive learning or complete biological dynamics"
+  },
+  "validation": {
+    "tests": 219,
+    "seconds": 25.18,
+    "failures": 0
+  },
+  "next_research_source": {
+    "archive": "F:\\fly_stream_overflow\\cgb_symmetric_field_20261022\\symmetric_ou_complete.npz",
+    "sha256": "ac80abea3bdc93a672b12a01b7393a90efa3a3e5f97a569ca7f7b4f240d06f2e",
+    "field_scheme": "symmetric_ou",
+    "archive_kind": "identity_mobile_exchange",
+    "archive_schema": 2,
+    "time_ms": 3840.0,
+    "source_lineage": "native_fresh_A_mid -> explicit numerical branch, 128 recorded real OWT bytes",
+    "status": "candidate, predictive utility incomplete; original later branch retained"
+  },
+  "scope": "Native reaction/material laws unchanged; conditional field numerical correction, not a new learning or agency claim"
+}

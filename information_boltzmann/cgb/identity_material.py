@@ -191,7 +191,7 @@ class IdentityMobileExchange(MobileExchange):
 
     def state_dict(self):
         state = super().state_dict()
-        state.update(schema=1, kind='identity_mobile_exchange',
+        state.update(schema=2 if self.field_scheme=='symmetric_ou' else 1, kind='identity_mobile_exchange',
             recognition_energy_fraction=self.recognition_energy_fraction,
             recognition_enabled=self.recognition_enabled, transport_enabled=self.transport_enabled,
             genome=dict(types=self.program.types.tolist(), provenance=self.program.provenance,
@@ -200,8 +200,10 @@ class IdentityMobileExchange(MobileExchange):
 
     @classmethod
     def from_state_dict(cls, state):
-        if state.get('schema') != 1 or state.get('kind') != 'identity_mobile_exchange':
+        if state.get('schema') not in (1,2) or state.get('kind') != 'identity_mobile_exchange':
             raise ValueError('Unsupported inherited identity material archive')
+        if state.get('field_scheme', 'sequential_ou') != ('symmetric_ou' if state['schema']==2 else 'sequential_ou'):
+            raise ValueError('Identity archive field scheme disagrees with schema')
         a, genome = state['arrays'], state['genome']
         program = IdentityMaterialProgram({k: a['gene_'+k] for k in IdentityMaterialProgram.array_names},
             genome['types'], genome['provenance'])
