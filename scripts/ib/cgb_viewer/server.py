@@ -27,6 +27,15 @@ class Viewer(BaseHTTPRequestHandler):
         elif route=='/calibration':
             data=self.server.calibration
             content_type='application/json; charset=utf-8'
+        elif route=='/material':
+            data=(Path(__file__).parent/'material.html').read_bytes()
+            content_type='text/html; charset=utf-8'
+        elif route=='/material_scene.json':
+            if self.server.material_scene is None:
+                self.send_error(404,'No physical material run attached')
+                return
+            data=self.server.material_scene
+            content_type='application/json; charset=utf-8'
         elif route=='/health':
             data=b'{"status":"ready","read_only":true}'
             content_type='application/json'
@@ -57,10 +66,12 @@ if __name__=='__main__':
     parser.add_argument('--compare',type=Path)
     parser.add_argument('--calibration',type=Path)
     parser.add_argument('--tree-candidate',type=Path)
+    parser.add_argument('--material-run',type=Path)
     args=parser.parse_args()
     httpd=ThreadingHTTPServer(('127.0.0.1',args.port),Viewer)
     httpd.scenes={}
     httpd.versions=[]
+    httpd.material_scene=(args.material_run/'material_scene.json').read_bytes() if args.material_run else None
     calibration={}
     if args.calibration:
         for name in ('morphology','spatial_identity','occurrence'):

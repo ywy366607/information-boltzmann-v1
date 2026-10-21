@@ -1,0 +1,653 @@
+{
+  "date": "2026-10-22",
+  "scope": "spatial finite material deposition and retraction; not complete neuronal morphogenesis",
+  "baseline_git": "e5b75bb3d3b30b9129dc909f156244c643b84f8f",
+  "preregistered": "docs/information_boltzmann/CGB_TRACE_GROWTH_PREREG_20261022.md",
+  "nodes": 729,
+  "spatial_positions": 1944,
+  "initial_seed_bonds": 6,
+  "story": "The Crow and the Pitcher",
+  "story_source": 21,
+  "reading_shelf_sha256": "1ea149c9ef2db8bf6b04fc3acd06d055260ab7fad48fdc6a857959dbbc73c298",
+  "bytes_presented": 64,
+  "byte_stream_hex": "412043524f5720706572697368696e6720776974682074686972737420736177206120706974636865722c20616e6420686f70696e6720746f2066696e642077",
+  "byte_ms": 4.0,
+  "dt_ms": 2.0,
+  "arms": {
+    "J0_D0.005": {
+      "params": {
+        "binding_rate": 0.01,
+        "transport_rate": 0.001,
+        "release_rate": 0.001,
+        "bound_energy": -2.0,
+        "carried_energy": 0.0,
+        "charged_energy": 4.0,
+        "assembly_rate": 0.05,
+        "structure_energy": 2.0,
+        "conversion_rate": 0.0,
+        "charge_per_event": 1.0,
+        "active_rate": 0.0,
+        "write_rate": 0.0005,
+        "recovery_rate": 0.001,
+        "trace_energy": 2.0,
+        "capture_coupling": 2.0,
+        "gate_low": 1.0,
+        "gate_high": 2.0,
+        "cohesion_energy": 0.0,
+        "bulk_attempt": 0.001,
+        "surface_attempt": 2.0,
+        "material_diffusion": 0.005,
+        "support_diffusion": 0.0025,
+        "drive_diffusion": 0.0025,
+        "spacing": 1.0
+      },
+      "initial": {
+        "installed": 4.800000000000001,
+        "radius_of_gyration": 0.5,
+        "centroid": [
+          3.999999999999999,
+          3.999999999999999,
+          4.0
+        ],
+        "levels": {
+          "0.1": {
+            "edges": 6,
+            "new_edges": 0,
+            "nodes": 7,
+            "components": 1,
+            "junctions": 1,
+            "tips": 6,
+            "cycle_rank": 0
+          },
+          "0.3": {
+            "edges": 6,
+            "new_edges": 0,
+            "nodes": 7,
+            "components": 1,
+            "junctions": 1,
+            "tips": 6,
+            "cycle_rank": 0
+          },
+          "0.5": {
+            "edges": 6,
+            "new_edges": 0,
+            "nodes": 7,
+            "components": 1,
+            "junctions": 1,
+            "tips": 6,
+            "cycle_rank": 0
+          }
+        }
+      },
+      "final": {
+        "installed": 452.0115988312941,
+        "radius_of_gyration": 4.376689775408267,
+        "centroid": [
+          3.8778279418651636,
+          3.8778607445886104,
+          3.877950348484838
+        ],
+        "levels": {
+          "0.1": {
+            "edges": 1944,
+            "new_edges": 1938,
+            "nodes": 729,
+            "components": 1,
+            "junctions": 729,
+            "tips": 0,
+            "cycle_rank": 1216
+          },
+          "0.3": {
+            "edges": 97,
+            "new_edges": 91,
+            "nodes": 83,
+            "components": 3,
+            "junctions": 35,
+            "tips": 20,
+            "cycle_rank": 17
+          },
+          "0.5": {
+            "edges": 3,
+            "new_edges": 0,
+            "nodes": 4,
+            "components": 1,
+            "junctions": 1,
+            "tips": 3,
+            "cycle_rank": 0
+          }
+        }
+      },
+      "elapsed_ms": 256.0,
+      "seconds": 5.673448600000029,
+      "source_work": 1261.4799976936179,
+      "final_material": 135.9884011687059,
+      "final_charged": 125.91040884929791,
+      "trace_written": 8.933520562100162,
+      "maximum_balance_errors": {
+        "support": 1.4849232954361469e-15,
+        "drive": 4.8199291780015585e-15,
+        "energy": 5.6843418860808015e-12,
+        "entropy": 5.115907697472721e-12,
+        "material": 3.1086244689504383e-15,
+        "charge_local": 0.0,
+        "charge_transport_global": 1.865174681370263e-14,
+        "charge_world": 1.2434497875801753e-14,
+        "diffusion_global": 1.6653345369377348e-15
+      },
+      "minimum_irreversible_g_drop": 0.0,
+      "peak_cg_iterations": 7,
+      "archive": "F:\\fly_stream_overflow\\cgb_spatial_material_20261022\\J0_D0.005_complete.npz",
+      "sha256": "9def1f7d5f08c2467bb1f0f0793f50c8622df7a2b7151a9026a598701fdc4713",
+      "full_restore_loaded": true,
+      "future_bitwise_tested": false,
+      "physical_state_bytes": 294056
+    },
+    "J0.6_D0.005": {
+      "params": {
+        "binding_rate": 0.01,
+        "transport_rate": 0.001,
+        "release_rate": 0.001,
+        "bound_energy": -2.0,
+        "carried_energy": 0.0,
+        "charged_energy": 4.0,
+        "assembly_rate": 0.05,
+        "structure_energy": 2.0,
+        "conversion_rate": 0.0,
+        "charge_per_event": 1.0,
+        "active_rate": 0.0,
+        "write_rate": 0.0005,
+        "recovery_rate": 0.001,
+        "trace_energy": 2.0,
+        "capture_coupling": 2.0,
+        "gate_low": 1.0,
+        "gate_high": 2.0,
+        "cohesion_energy": 0.6,
+        "bulk_attempt": 0.001,
+        "surface_attempt": 2.0,
+        "material_diffusion": 0.005,
+        "support_diffusion": 0.0025,
+        "drive_diffusion": 0.0025,
+        "spacing": 1.0
+      },
+      "initial": {
+        "installed": 4.800000000000001,
+        "radius_of_gyration": 0.5,
+        "centroid": [
+          3.999999999999999,
+          3.999999999999999,
+          4.0
+        ],
+        "levels": {
+          "0.1": {
+            "edges": 6,
+            "new_edges": 0,
+            "nodes": 7,
+            "components": 1,
+            "junctions": 1,
+            "tips": 6,
+            "cycle_rank": 0
+          },
+          "0.3": {
+            "edges": 6,
+            "new_edges": 0,
+            "nodes": 7,
+            "components": 1,
+            "junctions": 1,
+            "tips": 6,
+            "cycle_rank": 0
+          },
+          "0.5": {
+            "edges": 6,
+            "new_edges": 0,
+            "nodes": 7,
+            "components": 1,
+            "junctions": 1,
+            "tips": 6,
+            "cycle_rank": 0
+          }
+        }
+      },
+      "final": {
+        "installed": 509.75286903050653,
+        "radius_of_gyration": 4.372609504624229,
+        "centroid": [
+          3.8512471438346423,
+          3.8513197311933025,
+          3.851464415431017
+        ],
+        "levels": {
+          "0.1": {
+            "edges": 1944,
+            "new_edges": 1938,
+            "nodes": 729,
+            "components": 1,
+            "junctions": 729,
+            "tips": 0,
+            "cycle_rank": 1216
+          },
+          "0.3": {
+            "edges": 387,
+            "new_edges": 381,
+            "nodes": 233,
+            "components": 2,
+            "junctions": 176,
+            "tips": 48,
+            "cycle_rank": 156
+          },
+          "0.5": {
+            "edges": 27,
+            "new_edges": 21,
+            "nodes": 29,
+            "components": 2,
+            "junctions": 2,
+            "tips": 9,
+            "cycle_rank": 0
+          }
+        }
+      },
+      "elapsed_ms": 256.0,
+      "seconds": 8.36593229999994,
+      "source_work": 1266.6805628126517,
+      "final_material": 78.2471309694935,
+      "final_charged": 71.54343289282883,
+      "trace_written": 6.058094263992004,
+      "maximum_balance_errors": {
+        "support": 1.7277845820728999e-15,
+        "drive": 4.468647674116255e-15,
+        "energy": 4.888534022029489e-12,
+        "entropy": 6.821210263296962e-12,
+        "material": 1.4259426972529354e-15,
+        "charge_local": 0.0,
+        "charge_transport_global": 2.042810365310288e-14,
+        "charge_world": 8.881784197001252e-15,
+        "diffusion_global": 1.9567680809018384e-15
+      },
+      "minimum_irreversible_g_drop": 0.0,
+      "peak_cg_iterations": 7,
+      "archive": "F:\\fly_stream_overflow\\cgb_spatial_material_20261022\\J0.6_D0.005_complete.npz",
+      "sha256": "ebeb943aecd2e33899bfdcf936e115a90d3023ab1d070f6a2724ecabbdcd7a0b",
+      "full_restore_loaded": true,
+      "future_bitwise_tested": true,
+      "physical_state_bytes": 294056
+    },
+    "J0_D0.1": {
+      "params": {
+        "binding_rate": 0.01,
+        "transport_rate": 0.001,
+        "release_rate": 0.001,
+        "bound_energy": -2.0,
+        "carried_energy": 0.0,
+        "charged_energy": 4.0,
+        "assembly_rate": 0.05,
+        "structure_energy": 2.0,
+        "conversion_rate": 0.0,
+        "charge_per_event": 1.0,
+        "active_rate": 0.0,
+        "write_rate": 0.0005,
+        "recovery_rate": 0.001,
+        "trace_energy": 2.0,
+        "capture_coupling": 2.0,
+        "gate_low": 1.0,
+        "gate_high": 2.0,
+        "cohesion_energy": 0.0,
+        "bulk_attempt": 0.001,
+        "surface_attempt": 2.0,
+        "material_diffusion": 0.1,
+        "support_diffusion": 0.05,
+        "drive_diffusion": 0.05,
+        "spacing": 1.0
+      },
+      "initial": {
+        "installed": 4.800000000000001,
+        "radius_of_gyration": 0.5,
+        "centroid": [
+          3.999999999999999,
+          3.999999999999999,
+          4.0
+        ],
+        "levels": {
+          "0.1": {
+            "edges": 6,
+            "new_edges": 0,
+            "nodes": 7,
+            "components": 1,
+            "junctions": 1,
+            "tips": 6,
+            "cycle_rank": 0
+          },
+          "0.3": {
+            "edges": 6,
+            "new_edges": 0,
+            "nodes": 7,
+            "components": 1,
+            "junctions": 1,
+            "tips": 6,
+            "cycle_rank": 0
+          },
+          "0.5": {
+            "edges": 6,
+            "new_edges": 0,
+            "nodes": 7,
+            "components": 1,
+            "junctions": 1,
+            "tips": 6,
+            "cycle_rank": 0
+          }
+        }
+      },
+      "final": {
+        "installed": 454.1782678839667,
+        "radius_of_gyration": 4.298528032205286,
+        "centroid": [
+          3.911725881567748,
+          3.9124218845852297,
+          3.9135968057364883
+        ],
+        "levels": {
+          "0.1": {
+            "edges": 1944,
+            "new_edges": 1938,
+            "nodes": 729,
+            "components": 1,
+            "junctions": 729,
+            "tips": 0,
+            "cycle_rank": 1216
+          },
+          "0.3": {
+            "edges": 0,
+            "new_edges": 0,
+            "nodes": 0,
+            "components": 0,
+            "junctions": 0,
+            "tips": 0,
+            "cycle_rank": 0
+          },
+          "0.5": {
+            "edges": 0,
+            "new_edges": 0,
+            "nodes": 0,
+            "components": 0,
+            "junctions": 0,
+            "tips": 0,
+            "cycle_rank": 0
+          }
+        }
+      },
+      "elapsed_ms": 256.0,
+      "seconds": 5.640250100000003,
+      "source_work": 1260.0207900148584,
+      "final_material": 133.82173211603333,
+      "final_charged": 123.99480864167646,
+      "trace_written": 8.71392558056505,
+      "maximum_balance_errors": {
+        "support": 1.429412144204889e-15,
+        "drive": 5.176414852314792e-15,
+        "energy": 4.320099833421409e-12,
+        "entropy": 1.5688783605583012e-11,
+        "material": 6.217248937900877e-15,
+        "charge_local": 0.0,
+        "charge_transport_global": 8.881784197001252e-15,
+        "charge_world": 8.881784197001252e-15,
+        "diffusion_global": 9.325873406851315e-15
+      },
+      "minimum_irreversible_g_drop": 0.0,
+      "peak_cg_iterations": 7,
+      "archive": "F:\\fly_stream_overflow\\cgb_spatial_material_20261022\\J0_D0.1_complete.npz",
+      "sha256": "9abd599f1135c917f0ae3977eafff94a28cb4deee086b53a4173f7f9a0155c6c",
+      "full_restore_loaded": true,
+      "future_bitwise_tested": false,
+      "physical_state_bytes": 294056
+    },
+    "J0.6_D0.1": {
+      "params": {
+        "binding_rate": 0.01,
+        "transport_rate": 0.001,
+        "release_rate": 0.001,
+        "bound_energy": -2.0,
+        "carried_energy": 0.0,
+        "charged_energy": 4.0,
+        "assembly_rate": 0.05,
+        "structure_energy": 2.0,
+        "conversion_rate": 0.0,
+        "charge_per_event": 1.0,
+        "active_rate": 0.0,
+        "write_rate": 0.0005,
+        "recovery_rate": 0.001,
+        "trace_energy": 2.0,
+        "capture_coupling": 2.0,
+        "gate_low": 1.0,
+        "gate_high": 2.0,
+        "cohesion_energy": 0.6,
+        "bulk_attempt": 0.001,
+        "surface_attempt": 2.0,
+        "material_diffusion": 0.1,
+        "support_diffusion": 0.05,
+        "drive_diffusion": 0.05,
+        "spacing": 1.0
+      },
+      "initial": {
+        "installed": 4.800000000000001,
+        "radius_of_gyration": 0.5,
+        "centroid": [
+          3.999999999999999,
+          3.999999999999999,
+          4.0
+        ],
+        "levels": {
+          "0.1": {
+            "edges": 6,
+            "new_edges": 0,
+            "nodes": 7,
+            "components": 1,
+            "junctions": 1,
+            "tips": 6,
+            "cycle_rank": 0
+          },
+          "0.3": {
+            "edges": 6,
+            "new_edges": 0,
+            "nodes": 7,
+            "components": 1,
+            "junctions": 1,
+            "tips": 6,
+            "cycle_rank": 0
+          },
+          "0.5": {
+            "edges": 6,
+            "new_edges": 0,
+            "nodes": 7,
+            "components": 1,
+            "junctions": 1,
+            "tips": 6,
+            "cycle_rank": 0
+          }
+        }
+      },
+      "final": {
+        "installed": 513.4884846592511,
+        "radius_of_gyration": 4.1893895611226615,
+        "centroid": [
+          3.86841842087646,
+          3.870311839617794,
+          3.872816899613243
+        ],
+        "levels": {
+          "0.1": {
+            "edges": 1944,
+            "new_edges": 1938,
+            "nodes": 729,
+            "components": 1,
+            "junctions": 729,
+            "tips": 0,
+            "cycle_rank": 1216
+          },
+          "0.3": {
+            "edges": 360,
+            "new_edges": 354,
+            "nodes": 229,
+            "components": 1,
+            "junctions": 131,
+            "tips": 32,
+            "cycle_rank": 132
+          },
+          "0.5": {
+            "edges": 6,
+            "new_edges": 0,
+            "nodes": 7,
+            "components": 1,
+            "junctions": 1,
+            "tips": 6,
+            "cycle_rank": 0
+          }
+        }
+      },
+      "elapsed_ms": 256.0,
+      "seconds": 5.68534939999995,
+      "source_work": 1274.3978016063825,
+      "final_material": 74.51151534074904,
+      "final_charged": 68.18775765022934,
+      "trace_written": 5.724034922920307,
+      "maximum_balance_errors": {
+        "support": 1.9984014443252818e-15,
+        "drive": 4.829470157119431e-15,
+        "energy": 5.002220859751105e-12,
+        "entropy": 8.86757334228605e-12,
+        "material": 1.887379141862766e-15,
+        "charge_local": 0.0,
+        "charge_transport_global": 2.042810365310288e-14,
+        "charge_world": 7.105427357601002e-15,
+        "diffusion_global": 1.0658141036401503e-14
+      },
+      "minimum_irreversible_g_drop": 0.0,
+      "peak_cg_iterations": 7,
+      "archive": "F:\\fly_stream_overflow\\cgb_spatial_material_20261022\\J0.6_D0.1_complete.npz",
+      "sha256": "2df648b8dacfc98d03fb81c35f7331c6b75d873ee1751712283f2108d956e4ea",
+      "full_restore_loaded": true,
+      "future_bitwise_tested": false,
+      "physical_state_bytes": 294056
+    }
+  },
+  "code_sha256": {
+    "scripts\\ib\\generative\\spatial_growth_audit.py": "c432c3bc2b5868081d43686fb27dafcae2998f50f6ec06e4215bd16ec087dc8e",
+    "information_boltzmann\\cgb\\spatial_exchange.py": "31f0da0b1726eb04c89f875f981391e17f1b632e623eeba8598551bb00a3bd46",
+    "information_boltzmann\\cgb\\trace_exchange.py": "3757431e74d3a395e4896f5a2a689c45de5e93d02cd27e6e55a2f5b4639cc99c",
+    "information_boltzmann\\cgb\\driven_exchange.py": "179ccd2d7d5d5d382b868d78d06629ffa375189ac63bcce53d01ea8e7d32949b",
+    "information_boltzmann\\cgb\\flow_exchange.py": "fe6cc28c003b7c19ebf6f6d97dfb6025b5930eadc9689305eb33baa663c62c32",
+    "information_boltzmann\\cgb\\structural_exchange.py": "dc19fcde30a722d109209672d2787b5fc90e0b33c60ddcae58f9179f1a8744ab",
+    "information_boltzmann\\cgb\\finite_exchange.py": "487a5acca6c85ffc9a0798beaea00f027301fbd55c42eac435faad26df35d6ae",
+    "information_boltzmann\\cgb\\material_reactions.py": "5c532505b1b4e381f7f1b8a51edc566754904ed0ee838b29df48b43c368dbf9a",
+    "information_boltzmann\\cgb\\exchange_checkpoint.py": "a0e8f0c25dd5ec50dd5c46c43bb9303b2189af634f8663f2fb399a9dc6a6f543",
+    "docs\\information_boltzmann\\CGB_TRACE_GROWTH_PREREG_20261022.md": "876f87134d9ff9fae8e3f47cf88954b9cadb2bfdee3c84d324769eb5df908316"
+  },
+  "no_target_coordinates_or_branch_count": true,
+  "constitutive_scope": "equal-volume lattice material with short-range cohesion and surface catalysis",
+  "neuronal_lineages_generated": false,
+  "cell_contact_identity_matching_invoked": false,
+  "continuum_mesh_convergence": "unmeasured; independent diffusion time-refinement test is separate",
+  "language_or_predictive_learning_benefit": "unmeasured",
+  "passed": true,
+  "validation": {
+    "passed": 150,
+    "failed": 0,
+    "junit": "F:\\fly_stream_overflow\\cgb_spatial_material_20261022\\regression.xml",
+    "scope": "14 affected CGB numerical/physical/interface files, not language capability"
+  },
+  "followup_seed_control": {
+    "date": "2026-10-22",
+    "post_primary_exploratory": true,
+    "preregistered_before_this_run": "docs/information_boltzmann/CGB_SPATIAL_SEED_CONTROL_20261022.md",
+    "primary_report": "F:\\fly_stream_overflow\\cgb_spatial_material_20261022\\report.json",
+    "primary_report_sha256": "1654191c7bf5f49e6a40d79452cc243056c2bc6a6de8f3bf9c96c6989eb3b949",
+    "material_total": 588.0000000000001,
+    "seed_material_returned_uniformly": 4.800000000000001,
+    "initial": {
+      "installed": 0.0
+    },
+    "initial_energy": 2332.8,
+    "initial_free_energy": 283.859470904697,
+    "installed_seed_initial_energy": 2336.64,
+    "installed_seed_initial_free_energy": 285.74844629371876,
+    "final": {
+      "installed": 507.11599532559563,
+      "radius_of_gyration": 4.3968208365341965,
+      "centroid": [
+        3.849696308460715,
+        3.849761061452837,
+        3.8498938740637585
+      ],
+      "levels": {
+        "0.1": {
+          "edges": 1944,
+          "new_edges": 1938,
+          "nodes": 729,
+          "components": 1,
+          "junctions": 729,
+          "tips": 0,
+          "cycle_rank": 1216
+        },
+        "0.3": {
+          "edges": 366,
+          "new_edges": 366,
+          "nodes": 214,
+          "components": 1,
+          "junctions": 172,
+          "tips": 36,
+          "cycle_rank": 153
+        },
+        "0.5": {
+          "edges": 21,
+          "new_edges": 21,
+          "nodes": 22,
+          "components": 1,
+          "junctions": 1,
+          "tips": 3,
+          "cycle_rank": 0
+        }
+      }
+    },
+    "final_charged": 69.61915316164024,
+    "source_work": 1254.9402962781394,
+    "source_work_seeded": 1266.6805628126517,
+    "charge_absmax_from_seeded": 0.39269821900899404,
+    "density_absmax_from_seeded": 0.6305767391630462,
+    "maximum_balance_errors": {
+      "support": 1.6653345369377348e-15,
+      "drive": 5.133046765415372e-15,
+      "energy": 9.094947017729282e-12,
+      "entropy": 1.3869794202037156e-11,
+      "material": 1.2902005852577503e-15,
+      "charge_local": 0.0,
+      "charge_transport_global": 9.769962616701378e-15,
+      "charge_world": 1.1546319456101628e-14,
+      "diffusion_global": 1.3600232051658168e-15
+    },
+    "minimum_irreversible_g_drop": 0.0,
+    "seconds_with_restore": 8.99203979999993,
+    "full_restore_future_bitwise": true,
+    "archive": "F:\\fly_stream_overflow\\cgb_spatial_seed_control_20261022\\no_seed_complete.npz",
+    "sha256": "d85dea1216a99f3a0316611199cc6671d79172f56082ccd8b13fb78b01158ee6",
+    "passed": true,
+    "source_manifest": {
+      "scripts\\ib\\generative\\spatial_seed_control.py": "9a1528e5b492126361bd4513ca9ef6dcdf18164ab745d27886a3ebbd1b6b5388",
+      "scripts\\ib\\generative\\spatial_growth_audit.py": "c432c3bc2b5868081d43686fb27dafcae2998f50f6ec06e4215bd16ec087dc8e",
+      "docs\\information_boltzmann\\CGB_SPATIAL_SEED_CONTROL_20261022.md": "ac03d469b64ae897c80164bd3d8cff08ba37222fe6a47a562aead0d75625f9b0"
+    }
+  },
+  "results_document": "docs/information_boltzmann/CGB_SPATIAL_MATERIAL_RESULTS_20261022.md",
+  "visualization": {
+    "url": "http://127.0.0.1:8766/material",
+    "read_only": true,
+    "scene": "F:\\fly_stream_overflow\\cgb_spatial_material_20261022\\material_scene.json",
+    "scene_sha256": "f913be0b5ba6816afb6af8bafcae6d3a7bbae8381f2c5e4388496ca9501fc61a",
+    "screenshot": "F:\\fly_stream_overflow\\cgb_spatial_material_20261022\\material_view.png",
+    "screenshot_sha256": "de0da45c21a64b1c688fc115a663ab003ddd94dca2157f445070867f69ec3531",
+    "observed_final": {
+      "installed": 509.75,
+      "material": 78.25,
+      "source_work": 1266.68,
+      "displayed": 387,
+      "total_positions": 1944
+    },
+    "browser_checked": true
+  }
+}

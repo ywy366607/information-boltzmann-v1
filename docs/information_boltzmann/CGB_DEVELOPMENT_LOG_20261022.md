@@ -57,3 +57,15 @@ git worktree add -b codex/cgb-revisit-20261022 D:/cgb-revisit-20261022 cgb-befor
 - 执行`trace_exchange_audit.py --archive F:/fly_stream_overflow/cgb_spatial_calibrated_r1_20261021/medium_complete.npz --out F:/fly_stream_overflow/cgb_trace_exchange_20261022`：4臂64ms、半程恢复、同文本切断对照完成。13项直接检查通过，JUnit为该目录`trace_tests.xml`。
 - 联合实现更能保留结合支持，但写入要付款，总结构并未比不写痕迹更多；这不是失败数据删除，也没有把总量当作学习收益。详见[CGB_TRACE_EXCHANGE_RESULTS_20261022.md](CGB_TRACE_EXCHANGE_RESULTS_20261022.md)。
 - 该阶段存档调度器在Git中保留仅到trace类型的实际版本；随后空间提交再加入spatial类型，便于Claude独立回退。
+
+## 空间材料反应、成核及种子检查
+
+2026-10-22约05:45，Asia/Shanghai。痕迹提交`80478b3`已独立保存；本段用`cgb-spatial-material-20261022`标签定位。
+
+- 把同一TraceExchange放入等体积三维空间：有限F/B/P/D扩散、局部结合能、双向表面催化与实际材料沉积／拆解。没有目标质心、指定分叉数或分枝方向调度。
+- 主执行：`spatial_growth_audit.py --out F:/fly_stream_overflow/cgb_spatial_material_20261022`，预先记录四臂，共同9³网格／64个真实字节／256ms。看到低密度全域成核后，另写方案并执行`spatial_seed_control.py --primary F:/fly_stream_overflow/cgb_spatial_material_20261022 --out F:/fly_stream_overflow/cgb_spatial_seed_control_20261022`。
+- 关键结果：无种子也形成高密度结构，现阶段是空间成核／沉积，不是神经突伸长验收；4臂、完整无种子诊断及失败出口均保留。[完整结果](CGB_SPATIAL_MATERIAL_RESULTS_20261022.md)。
+- 验证：14个CGB文件150项通过，13.40秒；JUnit在主空间运行目录`regression.xml`。包括独立ODE、扩散算子空间极限、组合收支、相邻结合能、完整恢复和关闭扩展等价。初始2³扩散测试触及精度地板，换成非交换3³检验分裂误差，未改物理实现来凑验收。
+- 观察室新增只读`/material`，读取实际`material_scene.json`；四臂／时间／显示阈值可切换，阈值不反馈给动力学。页面末态509.75材料／78.25底物／1266.68源功已与原报告核对；截图`F:/fly_stream_overflow/cgb_spatial_material_20261022/material_view.png`。旧出生候选页面保留。
+- 仍缺：多谱系材料域、真实细胞接触与V3d调用、连通细长界面、完整有符号／预测贡献学习及连续身体世界。保留这些缺口，不按测试数量称整脑完成。
+- 备份：`F:/fly_stream_overflow/cgb_trace_spatial_backup_20261022/`保存Git增量bundle、两阶段状态、源码／书架／报告／截图和哈希清单；正式主个体未恢复。本轮无新的关机授权，不自动关机。
