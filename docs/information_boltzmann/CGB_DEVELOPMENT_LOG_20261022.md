@@ -69,3 +69,7 @@ git worktree add -b codex/cgb-revisit-20261022 D:/cgb-revisit-20261022 cgb-befor
 - 观察室新增只读`/material`，读取实际`material_scene.json`；四臂／时间／显示阈值可切换，阈值不反馈给动力学。页面末态509.75材料／78.25底物／1266.68源功已与原报告核对；截图`F:/fly_stream_overflow/cgb_spatial_material_20261022/material_view.png`。旧出生候选页面保留。
 - 仍缺：多谱系材料域、真实细胞接触与V3d调用、连通细长界面、完整有符号／预测贡献学习及连续身体世界。保留这些缺口，不按测试数量称整脑完成。
 - 备份：`F:/fly_stream_overflow/cgb_trace_spatial_backup_20261022/`保存Git增量bundle、两阶段状态、源码／书架／报告／截图和哈希清单；正式主个体未恢复。本轮无新的关机授权，不自动关机。
+
+## 下一步物理状态的必要性
+
+空间代码提交`f448d91`之后，另将“交叉不相通／真正接合”的等材料端口响应推导写入[CGB_CONNECTIVITY_STATE_DERIVATION_20261022.md](CGB_CONNECTIVITY_STATE_DERIVATION_20261022.md)，同步主规划。这是下一轮连接端／导通域状态的来源，不新添未经推导的分叉动力学，不改变本轮执行代码和结果。
