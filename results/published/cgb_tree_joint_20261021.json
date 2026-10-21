@@ -1,0 +1,214 @@
+{
+  "scope": "Conditional tree candidate and joint held-out description; spatial birth not accepted",
+  "joint": {
+    "scope": "Joint description on fixed held-out bodies; no new model tuning after report",
+    "test_cells": 204,
+    "test_types": 26,
+    "models": {
+      "cgb_spatial_calibrated_r1_20261021": {
+        "tree": {
+          "branches": {
+            "type_equal_log_rmse": 3.656849866852942,
+            "median_generated_to_real_ratio": 0.027544151866309978
+          },
+          "tips": {
+            "type_equal_log_rmse": 3.4365023325750914,
+            "median_generated_to_real_ratio": 0.0341000401549519
+          },
+          "median_chain": {
+            "type_equal_log_rmse": 4.383592821382204,
+            "median_generated_to_real_ratio": 74.35120872834429
+          },
+          "chord_arc": {
+            "type_equal_log_rmse": 1.2595191071245893,
+            "median_generated_to_real_ratio": 0.3353153322159923
+          },
+          "length": {
+            "type_equal_log_rmse": 0.15660770513883474,
+            "median_generated_to_real_ratio": 1.0028321522950443
+          }
+        },
+        "centroid_mean_error_um_type_equal": 65.60919231065867,
+        "covariance_relative_error_type_equal": 0.505314881596841,
+        "branch_quantiles": [
+          6.0,
+          6.0,
+          6.0
+        ],
+        "completed": null,
+        "contact": {
+          "4": {
+            "type_pairs": 2256,
+            "real_positive": 668,
+            "generated_positive": 658,
+            "positive_contact_recall": 0.6541916167664671,
+            "positive_contact_precision": 0.6641337386018237,
+            "log_spearman": 0.5565818655808557,
+            "log_rmse": 6.040029362514064,
+            "scope": "Training-label type-averaged polarity reference vs four generated cells/type; descriptive transfer diagnostic, not independent occurrence validation"
+          },
+          "2": {
+            "type_pairs": 2256,
+            "real_positive": 518,
+            "generated_positive": 597,
+            "positive_contact_recall": 0.6351351351351351,
+            "positive_contact_precision": 0.5510887772194305,
+            "log_spearman": 0.49683175091131165,
+            "log_rmse": 3.5380560544482944,
+            "scope": "Training-label type-averaged polarity reference vs four generated cells/type; descriptive transfer diagnostic, not independent occurrence validation"
+          }
+        }
+      },
+      "cgb_tree_candidate_20261021": {
+        "tree": {
+          "branches": {
+            "type_equal_log_rmse": 0.17692772920736038,
+            "median_generated_to_real_ratio": 0.979122409902516
+          },
+          "tips": {
+            "type_equal_log_rmse": 0.15534078148387823,
+            "median_generated_to_real_ratio": 0.9556721209612355
+          },
+          "median_chain": {
+            "type_equal_log_rmse": 2.125303216004902,
+            "median_generated_to_real_ratio": 0.6293179535160212
+          },
+          "chord_arc": {
+            "type_equal_log_rmse": 0.10754170845914307,
+            "median_generated_to_real_ratio": 1.0564489602646816
+          },
+          "length": {
+            "type_equal_log_rmse": 0.1566077051388348,
+            "median_generated_to_real_ratio": 1.0028321522950336
+          }
+        },
+        "centroid_mean_error_um_type_equal": 79.97888451001349,
+        "covariance_relative_error_type_equal": 0.8168721702768935,
+        "branch_quantiles": [
+          46.0,
+          431.5,
+          2203.0
+        ],
+        "completed": true,
+        "contact": {
+          "4": {
+            "type_pairs": 2256,
+            "real_positive": 668,
+            "generated_positive": 464,
+            "positive_contact_recall": 0.4820359281437126,
+            "positive_contact_precision": 0.6939655172413793,
+            "log_spearman": 0.48605539281338844,
+            "log_rmse": 6.138864442679061,
+            "scope": "Training-label type-averaged polarity reference vs four generated cells/type; descriptive transfer diagnostic, not independent occurrence validation"
+          },
+          "2": {
+            "type_pairs": 2256,
+            "real_positive": 518,
+            "generated_positive": 394,
+            "positive_contact_recall": 0.4594594594594595,
+            "positive_contact_precision": 0.6040609137055838,
+            "log_spearman": 0.4399463588883726,
+            "log_rmse": 3.455018276708607,
+            "scope": "Training-label type-averaged polarity reference vs four generated cells/type; descriptive transfer diagnostic, not independent occurrence validation"
+          }
+        }
+      }
+    }
+  },
+  "candidate": {
+    "scope": "Candidate spatial development and prescribed real-text sensory drive; no capability claim",
+    "cells": 192,
+    "identity_types": 48,
+    "segments": 342577,
+    "opportunities": 2902,
+    "birth": {
+      "candidate_opportunities": 2902,
+      "sampled_edges": 462,
+      "desired_structure": 10.39002949260663,
+      "funded_structure": 10.39002949260663,
+      "seed": 21,
+      "conductance_scale": 1,
+      "material_enabled": true,
+      "scope": "Strength-prior-to-local-medium interface; morphology, occurrence and physiology supplied",
+      "unverified": [
+        "developmental morphology generation",
+        "strength-to-conductance calibration",
+        "world learning and agency"
+      ],
+      "arbor_material_carried": 1380.681780440936,
+      "occurrence_calibration_scope": "Observed real cell pairs; generated geometry transfer not validated"
+    },
+    "binding_rate_unfitted": null,
+    "generated_feature_abs_z_max": 195.02673809389927,
+    "generated_feature_fraction_abs_z_over_6": 0.06956409372846313,
+    "generated_log_feature_fraction_abs_z_over_6": 0.06969331495520331,
+    "generated_log_feature_abs_z_max": 11.548197193003846,
+    "max_local_material_error": 3.2784885917180873e-12,
+    "simulated_reading_ms": 9600.0,
+    "story_title": "The Crow and the Pitcher",
+    "words_presented": 48,
+    "changed_structural_edges": 462,
+    "readout_training": false,
+    "world_consequence_learning": false,
+    "growth_steps": 895,
+    "initial_material": 1764.681780440936,
+    "spatial_descriptors_calibrated": true,
+    "occurrence_calibrated": true,
+    "growth_dynamics_calibrated": false,
+    "polarity_calibrated": false,
+    "mean_occurrence_probability": 0.16154196007229152,
+    "sampled_edges": 462,
+    "conditional_tree_program": true,
+    "tree_growth_completed": true,
+    "seconds": 59.332167700000355,
+    "source_sha256": {
+      "D:\\information-boltzmann-v1\\scripts\\ib\\generative\\build_spatial_preview.py": "cf4d3b844ecc7270c3695b468076a89b4546feb299861cf69edbfb434d0e6f53",
+      "D:\\information-boltzmann-v1\\information_boltzmann\\cgb\\development.py": "a8303410d555950e6a374a524227574be8da05ad6097fddd7ca669774dc2ea26",
+      "D:\\information-boltzmann-v1\\information_boltzmann\\cgb\\structural_budget.py": "0d8dcea4fc8e8f76f0f4b1931221b636ff058687bc1942c26964aa28ef034dae",
+      "D:\\information-boltzmann-v1\\docs\\information_boltzmann\\CGB_SPATIAL_PREVIEW_20261021.md": "a5b5934715ebbfb9eb02eea492c8f068bb61da92df6d8f320f31fd99594818b4"
+    },
+    "spatial_generation": {
+      "length_fraction_quantiles": [
+        0.9999999999999667,
+        0.9999999999999999,
+        1.0000000000000038
+      ],
+      "cable_centroid_error_um_median": 54.56171028641596,
+      "soma_noise_sampled": false,
+      "trees_topology_validated": false,
+      "cone_workspace_per_cell": 8,
+      "cumulative_cones_max": 4409,
+      "endpoint_field_correlation_steps_unfitted": 8
+    }
+  },
+  "verification": {
+    "growth_real_rebuild_bitwise": true,
+    "growth_future_replay_steps": 3,
+    "medium_restore_future_bitwise_steps": 120,
+    "material_error_after_resume": 3.282707439211663e-12,
+    "source_provenance": {
+      "scope": "Candidate spatial development and prescribed real-text sensory drive; no capability claim",
+      "generator_sha256": "975796f705c667f8a0e62155140100f2da3099b789aa64cf05a1c221be64e530",
+      "story": "The Crow and the Pitcher",
+      "story_source": 21,
+      "binding_rate_unfitted": null,
+      "geometry_law": "Known-type spatial descriptors with candidate local Gaussian growth",
+      "spatial_program_sha256": "4585d2fd65e8d8dcd8f3728e7a959b3650b297ebef3e9fb584118695c3308d81",
+      "occurrence_program_sha256": "b6ce5a8fa73c678cdb1a6ecff6a916acfa1a191b99c8804fa0f549eb7d293c79",
+      "code_path": "D:\\information-boltzmann-v1\\information_boltzmann\\cgb\\development.py"
+    },
+    "payload_sha256": {
+      "birth_program_features.npz": "d1462e1f7a10c8bd5bebe7f353fc265453e4171d88e2459cbcafd9de095d0b18",
+      "medium_before_reading.npz": "ef896083dab62bf5346611eadee826e2f305c3e926266ff2d3e4df4bad976bc9",
+      "medium_complete.npz": "7cb2235058752ea496d3c97f574050a91c0aaff18f690fa2d2812869b76c02ea"
+    }
+  },
+  "focused_checks_passed": 40,
+  "program_sha256": "abd5b3c9b51dd4ba85539b8b30e50a79d68dde85c94d2c9222c539e877e11202",
+  "array_storage_bytes": {
+    "growth_arrays": 15608760,
+    "segments": 27406160,
+    "growth_json": 78227713,
+    "scope": "NumPy payload and JSON bytes, excluding Python-object overhead and process peak RSS; CPU execution"
+  }
+}

@@ -1,0 +1,106 @@
+{
+  "scope": "Source-graph sensory-exit coverage inventory; not generated rewiring or geometry/function acceptance",
+  "sensory_cells": 14426,
+  "identity_covered_sensory_cells": 11661,
+  "strength_types": 3000,
+  "spatial_known_types": 2822,
+  "edges": {
+    "e": {
+      "edges": 780179,
+      "identity_covered_edges": 363420,
+      "both_spatial_types_known_edges": 0,
+      "missing_pre_types_by_edge_count": {
+        "None": 42848,
+        "SNta41": 3068,
+        "JO-CM": 2799,
+        "JO-EV6": 2522,
+        "SNta45": 2457,
+        "SNta40": 2181,
+        "SNxx22": 2169,
+        "SNta19": 2134,
+        "SAxx01": 2045,
+        "SNxx21": 1983,
+        "SNpp53": 1864,
+        "SNxx26": 1861,
+        "SApp19": 1821,
+        "SNpp41": 1789,
+        "SNpp07": 1785,
+        "SNpp17": 1774,
+        "SNpp43": 1752,
+        "SNpp18": 1700,
+        "SNxx19": 1695,
+        "SNpp33": 1655
+      },
+      "missing_post_types_by_edge_count": {
+        "None": 11602,
+        "INXXX429": 1533,
+        "IN19A045": 1373,
+        "IN19A042": 1180,
+        "M_lvPNm24": 1145,
+        "IN19A056": 1125,
+        "CB4083": 1105,
+        "lLN12A": 1097,
+        "IN19A057": 1095,
+        "ANXXX264": 1081,
+        "IN11A025": 1070,
+        "IN05B013": 1031,
+        "IN05B019": 1021,
+        "ALIN4": 1015,
+        "IN06B078": 960,
+        "AN05B036": 931,
+        "IN05B020": 895,
+        "IN05B036": 890,
+        "M_adPNm5": 881,
+        "IN23B017": 857
+      }
+    },
+    "i": {
+      "edges": 64015,
+      "identity_covered_edges": 62050,
+      "both_spatial_types_known_edges": 41223,
+      "missing_pre_types_by_edge_count": {
+        "HBeyelet": 335,
+        "None": 304,
+        "R7R8_unclear": 223
+      },
+      "missing_post_types_by_edge_count": {
+        "Dm-DRA2": 320,
+        "MeVP15": 163,
+        "Cm-DRA": 132,
+        "MeVP43": 85,
+        "Cm27": 70,
+        "None": 65,
+        "MeVP32": 60,
+        "aMe6c": 53,
+        "Cm18": 44,
+        "aMe3": 43,
+        "MeVP63": 27,
+        "MeVP31": 23,
+        "aMe2": 11,
+        "ME_LO_unclear": 10,
+        "aMe1": 10,
+        "aMe10": 10,
+        "Tm_unclear": 9,
+        "aMe6a": 8,
+        "aMe6b": 7,
+        "SLP250": 6
+      }
+    }
+  },
+  "total_edges": 844194,
+  "identity_covered_fraction": 0.503995527094483,
+  "both_spatial_types_known_fraction": 0.04883119283008408,
+  "identity_order_exact": true,
+  "missing": [
+    "Cell-pair geometry/compartment/contact calibration",
+    "Types outside these fitted identities",
+    "Efficacy of learned zero/pinned edges differs from raw graph counts"
+  ],
+  "sha256": {
+    "F:\\cgb_e2_head\\data\\malecns_v1\\fly_reservoir_coba_r2.npz": "d91baf38ff9464f94e7e9fc196d999b204a0e6e31d63987343e36a7546baa325",
+    "F:\\fly_stream_overflow\\cgb_v3d_20261021\\directed64_deploy.npz": "975796f705c667f8a0e62155140100f2da3099b789aa64cf05a1c221be64e530",
+    "F:\\fly_stream_overflow\\cgb_birth_calibration_20261021\\spatial_identity_program.npz": "4585d2fd65e8d8dcd8f3728e7a959b3650b297ebef3e9fb584118695c3308d81",
+    "F:\\fly_stream_overflow\\cgb_birth_calibration_20261021\\occurrence_program.npz": "b6ce5a8fa73c678cdb1a6ecff6a916acfa1a191b99c8804fa0f549eb7d293c79",
+    "D:\\information-boltzmann-v1\\scripts\\ib\\generative\\e2_target_coverage.py": "956117aee197518c7bda2ed263814f85cc444f5bd575914d9309718162009471"
+  }
+}

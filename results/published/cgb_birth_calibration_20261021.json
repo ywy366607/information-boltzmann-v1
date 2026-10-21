@@ -1,0 +1,188 @@
+{
+  "scope": "Real known-type morphology and cell-pair occurrence held out within one animal; generated candidate and interface verification",
+  "morphology_type_holdout": {
+    "gain": 0.025948482415694585,
+    "test_mse": 0.9060553491956695,
+    "baseline_test_mse": 0.9301924311382732,
+    "splits": {
+      "train": {
+        "groups": 4495,
+        "types": 2269
+      },
+      "val": {
+        "groups": 584,
+        "types": 297
+      },
+      "test": {
+        "groups": 573,
+        "types": 289
+      }
+    },
+    "fit_type_codes_fixed": true
+  },
+  "spatial_identity": {
+    "gain": 0.7874571220191363,
+    "test_mse": 0.24580615500951583,
+    "baseline_test_mse": 1.1565014896977495,
+    "split": {
+      "train": {
+        "cells": 85527,
+        "types": 2822
+      },
+      "val": {
+        "cells": 10728,
+        "types": 1705
+      },
+      "test": {
+        "cells": 10728,
+        "types": 1705
+      }
+    },
+    "parameters": 42010,
+    "alpha": 0.1,
+    "midline_um": 389.152,
+    "heldout_soma_mean_absolute_error_um": 38.22743410684554
+  },
+  "occurrence": {
+    "split": {
+      "train": {
+        "n": 2121278,
+        "positive": 34638
+      },
+      "val": {
+        "n": 117808,
+        "positive": 1948
+      },
+      "test": {
+        "n": 118674,
+        "positive": 1867
+      }
+    },
+    "selection": {
+      "selected_family": "identity_geometry",
+      "selected_lambda": 1e-05,
+      "split_sha256": {
+        "train": "782698964460c06fc767c320e4ef51cf1c1016b8c5f41f619a9b4dadfeeb2176",
+        "val": "e412f6865d2d887ce7bd8190648771eab17a694b79c99079d23838fad776618e",
+        "test": "7a8ba4c403b5fe9b8f2555aef2e483a355d12a6b8e7a5f965f55343ea56a4989"
+      }
+    },
+    "best": {
+      "geometry": {
+        "test": {
+          "n": 118674,
+          "positives": 1867,
+          "log_loss": 0.033885519377878176,
+          "brier": 0.01035023604271974,
+          "auc": 0.9846433054853246
+        },
+        "lambda": 1e-07,
+        "settled": true
+      },
+      "identity_geometry": {
+        "test": {
+          "n": 118674,
+          "positives": 1867,
+          "log_loss": 0.03349491943815325,
+          "brier": 0.01018951748310326,
+          "auc": 0.9851597934138162
+        },
+        "lambda": 1e-05,
+        "settled": true
+      }
+    },
+    "deployment_error": 3.520604023865559e-07,
+    "peak_cuda_mib": 241.20849609375
+  },
+  "candidate": {
+    "scope": "Candidate spatial development and prescribed real-text sensory drive; no capability claim",
+    "cells": 192,
+    "identity_types": 48,
+    "segments": 28269,
+    "opportunities": 6070,
+    "birth": {
+      "candidate_opportunities": 6070,
+      "sampled_edges": 545,
+      "desired_structure": 9.651791648969102,
+      "funded_structure": 9.651791648969102,
+      "seed": 21,
+      "conductance_scale": 1,
+      "material_enabled": true,
+      "scope": "Strength-prior-to-local-medium interface; morphology, occurrence and physiology supplied",
+      "unverified": [
+        "developmental morphology generation",
+        "strength-to-conductance calibration",
+        "world learning and agency"
+      ],
+      "arbor_material_carried": 1371.7548678546418,
+      "occurrence_calibration_scope": "Observed real cell pairs; generated geometry transfer not validated"
+    },
+    "binding_rate_unfitted": null,
+    "generated_feature_abs_z_max": 195.02673809389927,
+    "generated_feature_fraction_abs_z_over_6": 0.08467874794069193,
+    "generated_log_feature_fraction_abs_z_over_6": 0.08467874794069193,
+    "generated_log_feature_abs_z_max": 11.548197193003846,
+    "max_local_material_error": 3.5587088831334768e-12,
+    "simulated_reading_ms": 9600.0,
+    "story_title": "The Crow and the Pitcher",
+    "words_presented": 48,
+    "changed_structural_edges": 545,
+    "readout_training": false,
+    "world_consequence_learning": false,
+    "growth_steps": 64,
+    "initial_material": 1764.681780440936,
+    "spatial_descriptors_calibrated": true,
+    "occurrence_calibrated": true,
+    "growth_dynamics_calibrated": false,
+    "polarity_calibrated": false,
+    "mean_occurrence_probability": 0.09321041916210805,
+    "sampled_edges": 545,
+    "seconds": 18.592550800000026,
+    "source_sha256": {
+      "D:\\information-boltzmann-v1\\scripts\\ib\\generative\\build_spatial_preview.py": "688711fdd05cf6fffab0ee312fc6fcda48cd086f98e36fdd6cc7ec61cb72e9a6",
+      "D:\\information-boltzmann-v1\\information_boltzmann\\cgb\\development.py": "b2eafd5bddb5165011fec1592d754f4fd3224a48724e407159394505dc01c467",
+      "D:\\information-boltzmann-v1\\information_boltzmann\\cgb\\structural_budget.py": "0d8dcea4fc8e8f76f0f4b1931221b636ff058687bc1942c26964aa28ef034dae",
+      "D:\\information-boltzmann-v1\\docs\\information_boltzmann\\CGB_SPATIAL_PREVIEW_20261021.md": "a5b5934715ebbfb9eb02eea492c8f068bb61da92df6d8f320f31fd99594818b4"
+    },
+    "spatial_generation": {
+      "length_fraction_quantiles": [
+        0.9019615760735937,
+        1.0,
+        1.0000000000000016
+      ],
+      "cable_centroid_error_um_median": 35.34728694629079,
+      "soma_noise_sampled": false,
+      "trees_topology_validated": false,
+      "cone_slot_limit": 8,
+      "endpoint_field_correlation_steps_unfitted": 8
+    }
+  },
+  "verification": {
+    "growth_real_rebuild_bitwise": true,
+    "growth_future_replay_steps": 3,
+    "medium_restore_future_bitwise_steps": 120,
+    "material_error_after_resume": 3.2853719744707632e-12,
+    "source_provenance": {
+      "scope": "Candidate spatial development and prescribed real-text sensory drive; no capability claim",
+      "generator_sha256": "975796f705c667f8a0e62155140100f2da3099b789aa64cf05a1c221be64e530",
+      "story": "The Crow and the Pitcher",
+      "story_source": 21,
+      "binding_rate_unfitted": null,
+      "geometry_law": "Known-type spatial descriptors with candidate local Gaussian growth",
+      "spatial_program_sha256": "4585d2fd65e8d8dcd8f3728e7a959b3650b297ebef3e9fb584118695c3308d81",
+      "occurrence_program_sha256": "b6ce5a8fa73c678cdb1a6ecff6a916acfa1a191b99c8804fa0f549eb7d293c79",
+      "code_path": "D:\\information-boltzmann-v1\\information_boltzmann\\cgb\\development.py"
+    },
+    "payload_sha256": {
+      "birth_program_features.npz": "fea84c65388aaf92e31c4b2d1e00485f911a355191505a3d523e397ecccfbbea",
+      "medium_before_reading.npz": "19ae855126a5e9ac215421999b357677a6f4a2fa4466dab61c79475eeb14e090",
+      "medium_complete.npz": "c57b03a49418b37f3ca5bd0fc1dcefa892ce649637d5e007c5ea14c5fa447112"
+    }
+  },
+  "focused_checks_passed": 36,
+  "remaining": [
+    "Generated tree topology, polarity and geometry transfer",
+    "Physiological differentiation and strength conversion",
+    "Endogenous consequence credit and language/world learning"
+  ]
+}

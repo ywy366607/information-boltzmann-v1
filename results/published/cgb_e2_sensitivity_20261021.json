@@ -1,0 +1,1480 @@
+{
+  "created_utc": "2026-10-21T09:21:31.827517+00:00",
+  "scope": "Historical frozen-parameter causal diagnostics, not generated-brain learning acceptance",
+  "analysis_sha256": "73d5183c1c640c35fbbef5d366cc75c4b1e0f6f39779c25172068a643a4ac8e6",
+  "runs": {
+    "newborn_128": {
+      "raw_directory": "F:\\fly_stream_overflow\\cgb_e2_sensitivity_20261021",
+      "report": {
+        "scope": "Historical frozen-parameter acute causal diagnostic; local physical plasticity runs, no optimizer/BPTT, not E2 functional acceptance",
+        "source_root": "F:\\cgb_e2_head",
+        "checkpoint": "E:\\fly_stream_overflow\\cgb_v1_e2_ckpt\\real\\last.pt",
+        "checkpoint_sha256": "2f3beefe3da2ff39725fb50c1dcde3f9c6352509a4615ecf437779ee7e7dcc12",
+        "checkpoint_unchanged": true,
+        "historical_train_tokens": 1024,
+        "original_train_cursor": 1024,
+        "offset": 60000,
+        "exposure_sha256": "30b3a5710c44739b55ed9774fa4ed8b3ab26608ba9e07b29ff821ce9640080d1",
+        "dataset": "F:\\cgb_e2_head\\data\\ib_owt_gpt2\\validation.npy",
+        "schedule": "Window log-uniform mean, per-token geometric stopping; shared new diagnostic clock",
+        "nll_read": "Last physical tick before next token arrival; not historical training weighted-hazard objective",
+        "source_hashes": {
+          "D:\\information-boltzmann-v1\\scripts\\ib\\generative\\e2_sensitivity.py": "d1fc13edb449a0f17675e1a4fa608bd6d66cad2fe8fbbe05ede2488fe0c24b7e",
+          "F:\\cgb_e2_head\\scripts\\ib\\fly_interface\\world_eval_e2.py": "e8bda6d9ad8fe26b1b3b3cedc7f94bcb82583a7be412d31e0ffdb53985fb37fd",
+          "F:\\cgb_e2_head\\information_boltzmann\\core\\fly_bptt_learning.py": "8e1942cdbe8150b5b3c221ac43ae47d19c64423f74065cbe4dba149f86247570"
+        },
+        "arms": {
+          "real": {
+            "words": 128,
+            "physical_ticks": 1542,
+            "mean_nll": 7.403150178492069,
+            "changed_nonzero_edges": {},
+            "seconds": 15.598219399998925,
+            "terminal_tick_activity": {
+              "mb": 0.037066701381263556,
+              "cx": 0.017486758723407547
+            }
+          },
+          "mb_cut": {
+            "words": 128,
+            "physical_ticks": 1542,
+            "mean_nll": 7.403527297079563,
+            "changed_nonzero_edges": {
+              "e": 61282,
+              "i": 4836,
+              "compartment": 60628
+            },
+            "seconds": 10.423704499997257,
+            "terminal_tick_activity": {
+              "mb": 0.0006790216082208644,
+              "cx": 0.015338983191213629
+            },
+            "paired_nll_delta": 0.0003771185874938965,
+            "paired_nll_delta_second_half": 1.3478100299835205e-05,
+            "max_nll_difference": 0.038649559020996094,
+            "readout_rms_difference": 0.006325439549982548,
+            "final_physical_absmax_difference": {
+              "h": 0.3274954929947853,
+              "ring": 1.0,
+              "ge": 9.308337177615613,
+              "gi": 8.795593738555908,
+              "b": 0.4491167822852731,
+              "x": 0.0,
+              "u": 0.0,
+              "baseline": 0.0,
+              "h_mean": 0.2576378285884857,
+              "dan_gate": 0.0,
+              "gamma_z1": 0.0,
+              "gamma_z2": 0.0,
+              "observer_prior": 0.0,
+              "observer_history": 0.0,
+              "read_bank": 0.0,
+              "modulator": 0.0,
+              "expected_input": 0.001483917236328125,
+              "dopamine": 5.890630722045898,
+              "da_trace": 0.0,
+              "da_memory": 0.0,
+              "homeostasis": 0.0,
+              "regime": 0.0,
+              "comp_trace": 1.0,
+              "comp_memory": 0.034493327140808105,
+              "credit_comp": 0.0,
+              "credit_comp_trace": 0.0,
+              "credit_dopamine": 0.0,
+              "credit_stp": 0.0,
+              "kc_avail": 0.0,
+              "comp_da_trace": 0.4309448227286339,
+              "comp_p_stats": 0.1736002571415156,
+              "comp_camp": 0.0,
+              "credit_comp_camp": 0.0
+            }
+          },
+          "cx_cut": {
+            "words": 128,
+            "physical_ticks": 1542,
+            "mean_nll": 7.40301288664341,
+            "changed_nonzero_edges": {
+              "e": 250311,
+              "i": 214451
+            },
+            "seconds": 10.362191600001097,
+            "terminal_tick_activity": {
+              "mb": 0.03512342409885605,
+              "cx": 0.0024814618814161804
+            },
+            "paired_nll_delta": -0.00013729184865951538,
+            "paired_nll_delta_second_half": -5.2832067012786865e-05,
+            "max_nll_difference": 0.044979095458984375,
+            "readout_rms_difference": 0.006163289304822683,
+            "final_physical_absmax_difference": {
+              "h": 0.23313617706298828,
+              "ring": 1.0,
+              "ge": 5.0473606288433075,
+              "gi": 9.269264221191406,
+              "b": 0.35183754563331604,
+              "x": 0.0,
+              "u": 0.0,
+              "baseline": 0.0,
+              "h_mean": 0.09676860272884369,
+              "dan_gate": 0.0,
+              "gamma_z1": 0.0,
+              "gamma_z2": 0.0,
+              "observer_prior": 0.0,
+              "observer_history": 0.0,
+              "read_bank": 0.0,
+              "modulator": 0.0,
+              "expected_input": 0.0021983087062835693,
+              "dopamine": 0.7821410894393921,
+              "da_trace": 0.0,
+              "da_memory": 0.0,
+              "homeostasis": 0.0,
+              "regime": 0.0,
+              "comp_trace": 1.0,
+              "comp_memory": 0.019424110651016235,
+              "credit_comp": 0.0,
+              "credit_comp_trace": 0.0,
+              "credit_dopamine": 0.0,
+              "credit_stp": 0.0,
+              "kc_avail": 0.0,
+              "comp_da_trace": 0.40648359060287476,
+              "comp_p_stats": 0.06800030171871185,
+              "comp_camp": 0.0,
+              "credit_comp_camp": 0.0
+            }
+          },
+          "all_cut": {
+            "words": 128,
+            "physical_ticks": 1542,
+            "mean_nll": 6.964766198769212,
+            "changed_nonzero_edges": {
+              "e": 14000836,
+              "i": 9605039,
+              "compartment": 60628
+            },
+            "seconds": 10.428499599998759,
+            "terminal_tick_activity": {
+              "mb": 0.0005327130811565439,
+              "cx": 4.502118827076629e-05
+            },
+            "paired_nll_delta": -0.4383839797228575,
+            "paired_nll_delta_second_half": -0.362762276083231,
+            "max_nll_difference": 1.5577831268310547,
+            "readout_rms_difference": 0.19062486290931702,
+            "final_physical_absmax_difference": {
+              "h": 0.2897941470146179,
+              "ring": 1.0,
+              "ge": 9.309889793395996,
+              "gi": 15.430672645568848,
+              "b": 0.5048660635948181,
+              "x": 0.0,
+              "u": 0.0,
+              "baseline": 0.0,
+              "h_mean": 0.21923005904038106,
+              "dan_gate": 0.0,
+              "gamma_z1": 0.0,
+              "gamma_z2": 0.0,
+              "observer_prior": 0.0,
+              "observer_history": 0.0,
+              "read_bank": 0.0,
+              "modulator": 0.0,
+              "expected_input": 0.1304560899734497,
+              "dopamine": 12.223158359527588,
+              "da_trace": 0.0,
+              "da_memory": 0.0,
+              "homeostasis": 0.0,
+              "regime": 0.0,
+              "comp_trace": 1.0,
+              "comp_memory": 0.03370752930641174,
+              "credit_comp": 0.0,
+              "credit_comp_trace": 0.0,
+              "credit_dopamine": 0.0,
+              "credit_stp": 0.0,
+              "kc_avail": 0.0,
+              "comp_da_trace": 0.544615626335144,
+              "comp_p_stats": 0.6740871255751699,
+              "comp_camp": 0.0,
+              "credit_comp_camp": 0.0
+            }
+          },
+          "sham": {
+            "words": 128,
+            "physical_ticks": 1542,
+            "mean_nll": 7.403150178492069,
+            "changed_nonzero_edges": {},
+            "seconds": 10.341208400001051,
+            "terminal_tick_activity": {
+              "mb": 0.037066701381263556,
+              "cx": 0.017486758723407547
+            },
+            "paired_nll_delta": 0.0,
+            "paired_nll_delta_second_half": 0.0,
+            "max_nll_difference": 0.0,
+            "readout_rms_difference": 0.0,
+            "final_physical_absmax_difference": {
+              "h": 1.4901161193847656e-08,
+              "ring": 0.0,
+              "ge": 1.7881393432617188e-07,
+              "gi": 0.0,
+              "b": 0.0,
+              "x": 0.0,
+              "u": 0.0,
+              "baseline": 0.0,
+              "h_mean": 7.450580596923828e-09,
+              "dan_gate": 0.0,
+              "gamma_z1": 0.0,
+              "gamma_z2": 0.0,
+              "observer_prior": 0.0,
+              "observer_history": 0.0,
+              "read_bank": 0.0,
+              "modulator": 0.0,
+              "expected_input": 0.0,
+              "dopamine": 1.1920928955078125e-07,
+              "da_trace": 0.0,
+              "da_memory": 0.0,
+              "homeostasis": 0.0,
+              "regime": 0.0,
+              "comp_trace": 0.0,
+              "comp_memory": 1.4901161193847656e-08,
+              "credit_comp": 0.0,
+              "credit_comp_trace": 0.0,
+              "credit_dopamine": 0.0,
+              "credit_stp": 0.0,
+              "kc_avail": 0.0,
+              "comp_da_trace": 9.313225746154785e-09,
+              "comp_p_stats": 1.1175870895385742e-08,
+              "comp_camp": 0.0,
+              "credit_comp_camp": 0.0
+            }
+          }
+        },
+        "sham_pass": true,
+        "peak_cuda_allocated_mib": 1461.3076171875,
+        "seconds": 68.08189330000096
+      },
+      "comparisons": {
+        "real": {
+          "paired_mean": 0.0,
+          "block_size": 32,
+          "blocks": 4,
+          "descriptive_block_resample_95pct": [
+            0.0,
+            0.0
+          ],
+          "second_half_mean": 0.0,
+          "scope": "Within this finite stream segment; not convergence or cross-stream generalization"
+        },
+        "mb_cut": {
+          "paired_mean": 0.0003771185874938965,
+          "block_size": 32,
+          "blocks": 4,
+          "descriptive_block_resample_95pct": [
+            -0.00022789090871810913,
+            0.0009536296129226685
+          ],
+          "second_half_mean": 1.3478100299835205e-05,
+          "scope": "Within this finite stream segment; not convergence or cross-stream generalization"
+        },
+        "cx_cut": {
+          "paired_mean": -0.00013729184865951538,
+          "block_size": 32,
+          "blocks": 4,
+          "descriptive_block_resample_95pct": [
+            -0.0017559081315994263,
+            0.0014813244342803955
+          ],
+          "second_half_mean": -5.2832067012786865e-05,
+          "scope": "Within this finite stream segment; not convergence or cross-stream generalization"
+        },
+        "all_cut": {
+          "paired_mean": -0.4383839797228575,
+          "block_size": 32,
+          "blocks": 4,
+          "descriptive_block_resample_95pct": [
+            -0.5739976800978184,
+            -0.34142853133380413
+          ],
+          "second_half_mean": -0.362762276083231,
+          "scope": "Within this finite stream segment; not convergence or cross-stream generalization"
+        },
+        "sham": {
+          "paired_mean": 0.0,
+          "block_size": 32,
+          "blocks": 4,
+          "descriptive_block_resample_95pct": [
+            0.0,
+            0.0
+          ],
+          "second_half_mean": 0.0,
+          "scope": "Within this finite stream segment; not convergence or cross-stream generalization"
+        }
+      }
+    },
+    "newborn_512": {
+      "raw_directory": "F:\\fly_stream_overflow\\cgb_e2_sensitivity_replication_20261021",
+      "report": {
+        "scope": "Historical frozen-parameter acute causal diagnostic; local physical plasticity runs, no optimizer/BPTT, not E2 functional acceptance",
+        "source_root": "F:\\cgb_e2_head",
+        "checkpoint": "E:\\fly_stream_overflow\\cgb_v1_e2_ckpt\\real\\last.pt",
+        "checkpoint_sha256": "2f3beefe3da2ff39725fb50c1dcde3f9c6352509a4615ecf437779ee7e7dcc12",
+        "checkpoint_unchanged": true,
+        "historical_train_tokens": 1024,
+        "original_train_cursor": 1024,
+        "offset": 61024,
+        "exposure_sha256": "af1732f5a9a84889f15f4681758adf787451ba63059c9c3bb74fa06aa5f91365",
+        "dataset": "F:\\cgb_e2_head\\data\\ib_owt_gpt2\\validation.npy",
+        "schedule": "Window log-uniform mean, per-token geometric stopping; shared new diagnostic clock",
+        "nll_read": "Last physical tick before next token arrival; not historical training weighted-hazard objective",
+        "source_hashes": {
+          "D:\\information-boltzmann-v1\\scripts\\ib\\generative\\e2_sensitivity.py": "d1fc13edb449a0f17675e1a4fa608bd6d66cad2fe8fbbe05ede2488fe0c24b7e",
+          "F:\\cgb_e2_head\\scripts\\ib\\fly_interface\\world_eval_e2.py": "e8bda6d9ad8fe26b1b3b3cedc7f94bcb82583a7be412d31e0ffdb53985fb37fd",
+          "F:\\cgb_e2_head\\information_boltzmann\\core\\fly_bptt_learning.py": "8e1942cdbe8150b5b3c221ac43ae47d19c64423f74065cbe4dba149f86247570"
+        },
+        "arms": {
+          "real": {
+            "words": 512,
+            "physical_ticks": 7053,
+            "mean_nll": 7.6657781563699245,
+            "changed_nonzero_edges": {},
+            "seconds": 51.05020200000217,
+            "terminal_tick_activity": {
+              "mb": 0.02913743601175156,
+              "cx": 0.013147510679914376
+            }
+          },
+          "all_cut": {
+            "words": 512,
+            "physical_ticks": 7053,
+            "mean_nll": 7.522539330646396,
+            "changed_nonzero_edges": {
+              "e": 14000836,
+              "i": 9605039,
+              "compartment": 60628
+            },
+            "seconds": 47.99782889999915,
+            "terminal_tick_activity": {
+              "mb": 0.0004933223251555319,
+              "cx": 1.1255297067691572e-05
+            },
+            "paired_nll_delta": -0.14323882572352886,
+            "paired_nll_delta_second_half": -0.2530564833432436,
+            "max_nll_difference": 1.7303566932678223,
+            "readout_rms_difference": 0.1930280476808548,
+            "final_physical_absmax_difference": {
+              "h": 0.22358839213848114,
+              "ring": 1.0,
+              "ge": 6.412679195404053,
+              "gi": 14.266451835632324,
+              "b": 0.5032107830047607,
+              "x": 0.0,
+              "u": 0.0,
+              "baseline": 0.0,
+              "h_mean": 0.21225223690271378,
+              "dan_gate": 0.0,
+              "gamma_z1": 0.0,
+              "gamma_z2": 0.0,
+              "observer_prior": 0.0,
+              "observer_history": 0.0,
+              "read_bank": 0.0,
+              "modulator": 0.0,
+              "expected_input": 0.12886586785316467,
+              "dopamine": 12.412001609802246,
+              "da_trace": 0.0,
+              "da_memory": 0.0,
+              "homeostasis": 0.0,
+              "regime": 0.0,
+              "comp_trace": 1.0,
+              "comp_memory": 0.17068806290626526,
+              "credit_comp": 0.0,
+              "credit_comp_trace": 0.0,
+              "credit_dopamine": 0.0,
+              "credit_stp": 0.0,
+              "kc_avail": 0.0,
+              "comp_da_trace": 0.6191152594983578,
+              "comp_p_stats": 0.17576793988700956,
+              "comp_camp": 0.0,
+              "credit_comp_camp": 0.0
+            }
+          },
+          "sham": {
+            "words": 512,
+            "physical_ticks": 7053,
+            "mean_nll": 7.6657781563699245,
+            "changed_nonzero_edges": {},
+            "seconds": 47.6166469000018,
+            "terminal_tick_activity": {
+              "mb": 0.02913743601175156,
+              "cx": 0.013147510679914376
+            },
+            "paired_nll_delta": 0.0,
+            "paired_nll_delta_second_half": 0.0,
+            "max_nll_difference": 0.0,
+            "readout_rms_difference": 0.0,
+            "final_physical_absmax_difference": {
+              "h": 1.4901161193847656e-08,
+              "ring": 0.0,
+              "ge": 1.1920928955078125e-07,
+              "gi": 0.0,
+              "b": 0.0,
+              "x": 0.0,
+              "u": 0.0,
+              "baseline": 0.0,
+              "h_mean": 7.450580596923828e-09,
+              "dan_gate": 0.0,
+              "gamma_z1": 0.0,
+              "gamma_z2": 0.0,
+              "observer_prior": 0.0,
+              "observer_history": 0.0,
+              "read_bank": 0.0,
+              "modulator": 0.0,
+              "expected_input": 0.0,
+              "dopamine": 2.9802322387695312e-08,
+              "da_trace": 0.0,
+              "da_memory": 0.0,
+              "homeostasis": 0.0,
+              "regime": 0.0,
+              "comp_trace": 0.0,
+              "comp_memory": 7.450580596923828e-08,
+              "credit_comp": 0.0,
+              "credit_comp_trace": 0.0,
+              "credit_dopamine": 0.0,
+              "credit_stp": 0.0,
+              "kc_avail": 0.0,
+              "comp_da_trace": 7.450580596923828e-09,
+              "comp_p_stats": 4.423782229423523e-09,
+              "comp_camp": 0.0,
+              "credit_comp_camp": 0.0
+            }
+          }
+        },
+        "sham_pass": true,
+        "peak_cuda_allocated_mib": 1461.3076171875,
+        "seconds": 156.2803165999976
+      },
+      "comparisons": {
+        "real": {
+          "paired_mean": 0.0,
+          "block_size": 32,
+          "blocks": 16,
+          "descriptive_block_resample_95pct": [
+            0.0,
+            0.0
+          ],
+          "second_half_mean": 0.0,
+          "scope": "Within this finite stream segment; not convergence or cross-stream generalization"
+        },
+        "all_cut": {
+          "paired_mean": -0.14323882572352886,
+          "block_size": 32,
+          "blocks": 16,
+          "descriptive_block_resample_95pct": [
+            -0.25088346588891,
+            -0.04099269837606705
+          ],
+          "second_half_mean": -0.2530564833432436,
+          "scope": "Within this finite stream segment; not convergence or cross-stream generalization"
+        },
+        "sham": {
+          "paired_mean": 0.0,
+          "block_size": 32,
+          "blocks": 16,
+          "descriptive_block_resample_95pct": [
+            0.0,
+            0.0
+          ],
+          "second_half_mean": 0.0,
+          "scope": "Within this finite stream segment; not convergence or cross-stream generalization"
+        }
+      }
+    },
+    "learned_128": {
+      "raw_directory": "F:\\fly_stream_overflow\\cgb_e2_mature_admission_20261021",
+      "report": {
+        "scope": "Historical frozen-parameter acute causal diagnostic; local physical plasticity runs, no optimizer/BPTT, not E2 functional acceptance",
+        "source_root": "F:\\cgb_e2_head",
+        "checkpoint": "E:\\ib_checkpoints\\m_main\\last.pt",
+        "checkpoint_sha256": "9b5c06eb9e48f0c77bd93315f7d1bb6bb805c9f5c80b8523d4f1c6dfd4beac2e",
+        "checkpoint_unchanged": true,
+        "historical_train_tokens": 90112,
+        "saved_model_tensors_restored_exactly": true,
+        "restored_dopamine_site": "pre",
+        "decoder_bias_only_nll": 7.31276798248291,
+        "original_train_cursor": 90112,
+        "offset": 63072,
+        "exposure_sha256": "aa5dff6349ca8155bc7898decd97bd0003eefb01d7e69476de55d1b11658aec6",
+        "dataset": "F:\\cgb_e2_head\\data\\ib_owt_gpt2\\validation.npy",
+        "schedule": "Window log-uniform mean, per-token geometric stopping; shared new diagnostic clock",
+        "nll_read": "Last physical tick before next token arrival; not historical training weighted-hazard objective",
+        "source_hashes": {
+          "D:\\information-boltzmann-v1\\scripts\\ib\\generative\\e2_sensitivity.py": "4f7c4c88ad258eb5edb1dab6d86a67e87e1728b1954801e0c434bf46370b4165",
+          "F:\\cgb_e2_head\\scripts\\ib\\fly_interface\\world_eval_e2.py": "e8bda6d9ad8fe26b1b3b3cedc7f94bcb82583a7be412d31e0ffdb53985fb37fd",
+          "F:\\cgb_e2_head\\information_boltzmann\\core\\fly_bptt_learning.py": "8e1942cdbe8150b5b3c221ac43ae47d19c64423f74065cbe4dba149f86247570"
+        },
+        "arms": {
+          "real": {
+            "words": 128,
+            "physical_ticks": 418,
+            "mean_nll": 7.388800336048007,
+            "changed_nonzero_edges": {},
+            "seconds": 6.764868099999148,
+            "terminal_tick_activity": {
+              "mb": 0.005139555767755155,
+              "cx": 0.06256091137765907
+            }
+          },
+          "mb_cut": {
+            "words": 128,
+            "physical_ticks": 418,
+            "mean_nll": 7.366733028087765,
+            "changed_nonzero_edges": {
+              "e": 61282,
+              "i": 4836,
+              "compartment": 59460
+            },
+            "seconds": 2.606336299999384,
+            "terminal_tick_activity": {
+              "mb": 0.000300120047540986,
+              "cx": 0.06311175882001407
+            },
+            "paired_nll_delta": -0.022067307960242033,
+            "paired_nll_delta_second_half": -0.023757120594382286,
+            "max_nll_difference": 0.42539143562316895,
+            "readout_rms_difference": 0.026958078145980835,
+            "final_physical_absmax_difference": {
+              "h": 0.445530042052269,
+              "ring": 1.0,
+              "ge": 5.966429110383615,
+              "gi": 9.000901222229004,
+              "b": 0.22186164557933807,
+              "x": 0.0,
+              "u": 0.0,
+              "baseline": 0.0,
+              "h_mean": 0.12093108147382736,
+              "dan_gate": 0.0,
+              "gamma_z1": 0.0,
+              "gamma_z2": 0.0,
+              "observer_prior": 0.0,
+              "observer_history": 0.0,
+              "read_bank": 0.0,
+              "modulator": 0.0,
+              "expected_input": 0.04983842372894287,
+              "dopamine": 0.6650660037994385,
+              "da_trace": 0.0,
+              "da_memory": 0.0,
+              "homeostasis": 0.0,
+              "regime": 0.0,
+              "comp_trace": 0.06854995822127119,
+              "comp_memory": 0.8976906114257872,
+              "credit_comp": 0.0,
+              "credit_comp_trace": 0.0,
+              "credit_dopamine": 0.0,
+              "credit_stp": 0.0,
+              "kc_avail": 0.0,
+              "comp_da_trace": 0.0,
+              "comp_p_stats": 0.0,
+              "comp_camp": 0.0,
+              "credit_comp_camp": 0.0
+            }
+          },
+          "cx_cut": {
+            "words": 128,
+            "physical_ticks": 418,
+            "mean_nll": 7.381061852909625,
+            "changed_nonzero_edges": {
+              "e": 250298,
+              "i": 214449
+            },
+            "seconds": 2.6142132000022684,
+            "terminal_tick_activity": {
+              "mb": 0.004901335507156546,
+              "cx": 0.001149364410821363
+            },
+            "paired_nll_delta": -0.007738483138382435,
+            "paired_nll_delta_second_half": -0.010307814925909042,
+            "max_nll_difference": 0.5206015110015869,
+            "readout_rms_difference": 0.027761096134781837,
+            "final_physical_absmax_difference": {
+              "h": 0.4746631681919098,
+              "ring": 1.0,
+              "ge": 2.0940093994140625,
+              "gi": 9.326054573059082,
+              "b": 0.5082006842898181,
+              "x": 0.0,
+              "u": 0.0,
+              "baseline": 0.0,
+              "h_mean": 0.23565711081027985,
+              "dan_gate": 0.0,
+              "gamma_z1": 0.0,
+              "gamma_z2": 0.0,
+              "observer_prior": 0.0,
+              "observer_history": 0.0,
+              "read_bank": 0.0,
+              "modulator": 0.0,
+              "expected_input": 0.00820876657962799,
+              "dopamine": 2.6247405409812927,
+              "da_trace": 0.0,
+              "da_memory": 0.0,
+              "homeostasis": 0.0,
+              "regime": 0.0,
+              "comp_trace": 0.05575397610664368,
+              "comp_memory": 0.8756869970820844,
+              "credit_comp": 0.0,
+              "credit_comp_trace": 0.0,
+              "credit_dopamine": 0.0,
+              "credit_stp": 0.0,
+              "kc_avail": 0.0,
+              "comp_da_trace": 0.0,
+              "comp_p_stats": 0.0,
+              "comp_camp": 0.0,
+              "credit_comp_camp": 0.0
+            }
+          },
+          "all_cut": {
+            "words": 128,
+            "physical_ticks": 418,
+            "mean_nll": 8.397807577624917,
+            "changed_nonzero_edges": {
+              "e": 13988491,
+              "i": 9602834,
+              "compartment": 59460
+            },
+            "seconds": 2.593651300001511,
+            "terminal_tick_activity": {
+              "mb": 7.878151268414513e-05,
+              "cx": 0.00046080507718215813
+            },
+            "paired_nll_delta": 1.00900724157691,
+            "paired_nll_delta_second_half": 1.1906585153192282,
+            "max_nll_difference": 4.875215530395508,
+            "readout_rms_difference": 0.13270270824432373,
+            "final_physical_absmax_difference": {
+              "h": 0.4746631681919098,
+              "ring": 1.0,
+              "ge": 2.0861244201660156,
+              "gi": 11.211236953735352,
+              "b": 0.5082006842898181,
+              "x": 0.0,
+              "u": 0.0,
+              "baseline": 0.0,
+              "h_mean": 0.3265137313865125,
+              "dan_gate": 0.0,
+              "gamma_z1": 0.0,
+              "gamma_z2": 0.0,
+              "observer_prior": 0.0,
+              "observer_history": 0.0,
+              "read_bank": 0.0,
+              "modulator": 0.0,
+              "expected_input": 0.21289022266864777,
+              "dopamine": 6.722724914550781,
+              "da_trace": 0.0,
+              "da_memory": 0.0,
+              "homeostasis": 0.0,
+              "regime": 0.0,
+              "comp_trace": 0.10829291369228855,
+              "comp_memory": 0.5786159038543701,
+              "credit_comp": 0.0,
+              "credit_comp_trace": 0.0,
+              "credit_dopamine": 0.0,
+              "credit_stp": 0.0,
+              "kc_avail": 0.0,
+              "comp_da_trace": 0.0,
+              "comp_p_stats": 0.0,
+              "comp_camp": 0.0,
+              "credit_comp_camp": 0.0
+            }
+          },
+          "sham": {
+            "words": 128,
+            "physical_ticks": 418,
+            "mean_nll": 7.388800336048007,
+            "changed_nonzero_edges": {},
+            "seconds": 2.577588799998921,
+            "terminal_tick_activity": {
+              "mb": 0.005139555767755155,
+              "cx": 0.06256091137765907
+            },
+            "paired_nll_delta": 0.0,
+            "paired_nll_delta_second_half": 0.0,
+            "max_nll_difference": 0.0,
+            "readout_rms_difference": 0.0,
+            "final_physical_absmax_difference": {
+              "h": 1.4901161193847656e-08,
+              "ring": 0.0,
+              "ge": 2.9802322387695312e-08,
+              "gi": 0.0,
+              "b": 0.0,
+              "x": 0.0,
+              "u": 0.0,
+              "baseline": 0.0,
+              "h_mean": 1.4901161193847656e-08,
+              "dan_gate": 0.0,
+              "gamma_z1": 0.0,
+              "gamma_z2": 0.0,
+              "observer_prior": 0.0,
+              "observer_history": 0.0,
+              "read_bank": 0.0,
+              "modulator": 0.0,
+              "expected_input": 0.0,
+              "dopamine": 2.9802322387695312e-08,
+              "da_trace": 0.0,
+              "da_memory": 0.0,
+              "homeostasis": 0.0,
+              "regime": 0.0,
+              "comp_trace": 0.0,
+              "comp_memory": 0.0,
+              "credit_comp": 0.0,
+              "credit_comp_trace": 0.0,
+              "credit_dopamine": 0.0,
+              "credit_stp": 0.0,
+              "kc_avail": 0.0,
+              "comp_da_trace": 0.0,
+              "comp_p_stats": 0.0,
+              "comp_camp": 0.0,
+              "credit_comp_camp": 0.0
+            }
+          }
+        },
+        "sham_pass": true,
+        "peak_cuda_allocated_mib": 1457.14501953125,
+        "seconds": 26.675745900000038
+      },
+      "comparisons": {
+        "real": {
+          "paired_mean": 0.0,
+          "block_size": 32,
+          "blocks": 4,
+          "descriptive_block_resample_95pct": [
+            0.0,
+            0.0
+          ],
+          "second_half_mean": 0.0,
+          "scope": "Within this finite stream segment; not convergence or cross-stream generalization"
+        },
+        "mb_cut": {
+          "paired_mean": -0.022067307960242033,
+          "block_size": 32,
+          "blocks": 4,
+          "descriptive_block_resample_95pct": [
+            -0.032732137478888035,
+            -0.011402478441596031
+          ],
+          "second_half_mean": -0.023757120594382286,
+          "scope": "Within this finite stream segment; not convergence or cross-stream generalization"
+        },
+        "cx_cut": {
+          "paired_mean": -0.007738483138382435,
+          "block_size": 32,
+          "blocks": 4,
+          "descriptive_block_resample_95pct": [
+            -0.033094399608671665,
+            0.015048101544380188
+          ],
+          "second_half_mean": -0.010307814925909042,
+          "scope": "Within this finite stream segment; not convergence or cross-stream generalization"
+        },
+        "all_cut": {
+          "paired_mean": 1.00900724157691,
+          "block_size": 32,
+          "blocks": 4,
+          "descriptive_block_resample_95pct": [
+            0.45326217636466026,
+            1.3831010330468416
+          ],
+          "second_half_mean": 1.1906585153192282,
+          "scope": "Within this finite stream segment; not convergence or cross-stream generalization"
+        },
+        "sham": {
+          "paired_mean": 0.0,
+          "block_size": 32,
+          "blocks": 4,
+          "descriptive_block_resample_95pct": [
+            0.0,
+            0.0
+          ],
+          "second_half_mean": 0.0,
+          "scope": "Within this finite stream segment; not convergence or cross-stream generalization"
+        },
+        "bias_baseline": {
+          "paired_mean": -0.07603254541754723,
+          "block_size": 32,
+          "blocks": 4,
+          "descriptive_block_resample_95pct": [
+            -0.20572402141988277,
+            0.07749113999307156
+          ],
+          "second_half_mean": -0.18996857851743698,
+          "scope": "Within this finite stream segment; not convergence or cross-stream generalization"
+        }
+      }
+    },
+    "learned_512": {
+      "raw_directory": "F:\\fly_stream_overflow\\cgb_e2_mature_replication_20261021",
+      "report": {
+        "scope": "Historical frozen-parameter acute causal diagnostic; local physical plasticity runs, no optimizer/BPTT, not E2 functional acceptance",
+        "source_root": "F:\\cgb_e2_head",
+        "checkpoint": "E:\\ib_checkpoints\\m_main\\last.pt",
+        "checkpoint_sha256": "9b5c06eb9e48f0c77bd93315f7d1bb6bb805c9f5c80b8523d4f1c6dfd4beac2e",
+        "checkpoint_unchanged": true,
+        "historical_train_tokens": 90112,
+        "saved_model_tensors_restored_exactly": true,
+        "restored_dopamine_site": "pre",
+        "decoder_bias_only_nll": 7.139222145080566,
+        "constant_readout_baseline": {
+          "mean_nll": 7.216248512268066,
+          "calibration": "F:\\fly_stream_overflow\\cgb_e2_mature_admission_20261021\\real.npz",
+          "calibration_sha256": "d40a289e1ae5b8d339f3c4c4f61f4b7aff10f1af83ebf6473972a914ccbe8bf8",
+          "method": "Mean calibration readout, then unchanged read_norm and decoder"
+        },
+        "input_lag_tokens": 32,
+        "original_train_cursor": 90112,
+        "offset": 65000,
+        "exposure_sha256": "015756ee43edf2e67e4f803bf607130a0f6706b44d240b1c9d27e16bb0040390",
+        "dataset": "F:\\cgb_e2_head\\data\\ib_owt_gpt2\\validation.npy",
+        "schedule": "Window log-uniform mean, per-token geometric stopping; shared new diagnostic clock",
+        "nll_read": "Last physical tick before next token arrival; not historical training weighted-hazard objective",
+        "source_hashes": {
+          "D:\\information-boltzmann-v1\\scripts\\ib\\generative\\e2_sensitivity.py": "7c852de84c1b8f66968121888ef2782383e9f55c614ce66234ae901d9d9ea8a3",
+          "F:\\cgb_e2_head\\scripts\\ib\\fly_interface\\world_eval_e2.py": "e8bda6d9ad8fe26b1b3b3cedc7f94bcb82583a7be412d31e0ffdb53985fb37fd",
+          "F:\\cgb_e2_head\\information_boltzmann\\core\\fly_bptt_learning.py": "8e1942cdbe8150b5b3c221ac43ae47d19c64423f74065cbe4dba149f86247570"
+        },
+        "arms": {
+          "real": {
+            "words": 512,
+            "physical_ticks": 2703,
+            "mean_nll": 6.840576253482141,
+            "changed_nonzero_edges": {},
+            "seconds": 18.51856730000145,
+            "terminal_tick_activity": {
+              "mb": 0.005987863858933906,
+              "cx": 0.06314022809965536
+            }
+          },
+          "mb_cut": {
+            "words": 512,
+            "physical_ticks": 2703,
+            "mean_nll": 6.84963525692001,
+            "changed_nonzero_edges": {
+              "e": 61282,
+              "i": 4836,
+              "compartment": 59460
+            },
+            "seconds": 14.41843019999942,
+            "terminal_tick_activity": {
+              "mb": 0.0003141881750252651,
+              "cx": 0.06338188600057038
+            },
+            "paired_nll_delta": 0.00905900343786925,
+            "paired_nll_delta_second_half": 0.014429017901420593,
+            "max_nll_difference": 0.5989100933074951,
+            "readout_rms_difference": 0.031428128480911255,
+            "final_physical_absmax_difference": {
+              "h": 0.5017494559288025,
+              "ring": 1.0,
+              "ge": 6.420151382684708,
+              "gi": 11.005043029785156,
+              "b": 0.4335376322269436,
+              "x": 0.0,
+              "u": 0.0,
+              "baseline": 0.0,
+              "h_mean": 0.38516183011233807,
+              "dan_gate": 0.0,
+              "gamma_z1": 0.0,
+              "gamma_z2": 0.0,
+              "observer_prior": 0.0,
+              "observer_history": 0.0,
+              "read_bank": 0.0,
+              "modulator": 0.0,
+              "expected_input": 0.01752222329378128,
+              "dopamine": 2.435986489057541,
+              "da_trace": 0.0,
+              "da_memory": 0.0,
+              "homeostasis": 0.0,
+              "regime": 0.0,
+              "comp_trace": 0.08174992352724075,
+              "comp_memory": 0.7637146208435297,
+              "credit_comp": 0.0,
+              "credit_comp_trace": 0.0,
+              "credit_dopamine": 0.0,
+              "credit_stp": 0.0,
+              "kc_avail": 0.0,
+              "comp_da_trace": 0.0,
+              "comp_p_stats": 0.0,
+              "comp_camp": 0.0,
+              "credit_comp_camp": 0.0
+            }
+          },
+          "cx_cut": {
+            "words": 512,
+            "physical_ticks": 2703,
+            "mean_nll": 6.835902080172673,
+            "changed_nonzero_edges": {
+              "e": 250298,
+              "i": 214449
+            },
+            "seconds": 14.54738179999913,
+            "terminal_tick_activity": {
+              "mb": 0.0059484731065140295,
+              "cx": 0.0009388241615511106
+            },
+            "paired_nll_delta": -0.004674173309467733,
+            "paired_nll_delta_second_half": 0.004990258486941457,
+            "max_nll_difference": 0.8102712631225586,
+            "readout_rms_difference": 0.02984103374183178,
+            "final_physical_absmax_difference": {
+              "h": 0.3941369652748108,
+              "ring": 1.0,
+              "ge": 4.81282651424408,
+              "gi": 9.761159420013428,
+              "b": 0.5082012414932251,
+              "x": 0.0,
+              "u": 0.0,
+              "baseline": 0.0,
+              "h_mean": 0.30183273553848267,
+              "dan_gate": 0.0,
+              "gamma_z1": 0.0,
+              "gamma_z2": 0.0,
+              "observer_prior": 0.0,
+              "observer_history": 0.0,
+              "read_bank": 0.0,
+              "modulator": 0.0,
+              "expected_input": 0.011321425437927246,
+              "dopamine": 3.166336417198181,
+              "da_trace": 0.0,
+              "da_memory": 0.0,
+              "homeostasis": 0.0,
+              "regime": 0.0,
+              "comp_trace": 0.06949707120656967,
+              "comp_memory": 0.876358801967736,
+              "credit_comp": 0.0,
+              "credit_comp_trace": 0.0,
+              "credit_dopamine": 0.0,
+              "credit_stp": 0.0,
+              "kc_avail": 0.0,
+              "comp_da_trace": 0.0,
+              "comp_p_stats": 0.0,
+              "comp_camp": 0.0,
+              "credit_comp_camp": 0.0
+            }
+          },
+          "all_cut": {
+            "words": 512,
+            "physical_ticks": 2703,
+            "mean_nll": 7.719753664336167,
+            "changed_nonzero_edges": {
+              "e": 13988491,
+              "i": 9602834,
+              "compartment": 59460
+            },
+            "seconds": 14.654541100000642,
+            "terminal_tick_activity": {
+              "mb": 1.9695378171036282e-05,
+              "cx": 0.00011520126929553953
+            },
+            "paired_nll_delta": 0.8791774108540267,
+            "paired_nll_delta_second_half": 0.6691838908009231,
+            "max_nll_difference": 6.075896739959717,
+            "readout_rms_difference": 0.14335627853870392,
+            "final_physical_absmax_difference": {
+              "h": 0.5017494559288025,
+              "ring": 1.0,
+              "ge": 6.6518988609313965,
+              "gi": 18.208036422729492,
+              "b": 0.5096241235733032,
+              "x": 0.0,
+              "u": 0.0,
+              "baseline": 0.0,
+              "h_mean": 0.4088149368762192,
+              "dan_gate": 0.0,
+              "gamma_z1": 0.0,
+              "gamma_z2": 0.0,
+              "observer_prior": 0.0,
+              "observer_history": 0.0,
+              "read_bank": 0.0,
+              "modulator": 0.0,
+              "expected_input": 0.20417988300323486,
+              "dopamine": 3.8279881551861763,
+              "da_trace": 0.0,
+              "da_memory": 0.0,
+              "homeostasis": 0.0,
+              "regime": 0.0,
+              "comp_trace": 0.09154456108808517,
+              "comp_memory": 0.7573231579735875,
+              "credit_comp": 0.0,
+              "credit_comp_trace": 0.0,
+              "credit_dopamine": 0.0,
+              "credit_stp": 0.0,
+              "kc_avail": 0.0,
+              "comp_da_trace": 0.0,
+              "comp_p_stats": 0.0,
+              "comp_camp": 0.0,
+              "credit_comp_camp": 0.0
+            }
+          },
+          "input_lag": {
+            "words": 512,
+            "physical_ticks": 2703,
+            "mean_nll": 7.390728959115222,
+            "changed_nonzero_edges": {},
+            "seconds": 14.462293799999316,
+            "terminal_tick_activity": {
+              "mb": 0.006249531025218857,
+              "cx": 0.0634017482661875
+            },
+            "paired_nll_delta": 0.5501527056330815,
+            "paired_nll_delta_second_half": 0.6569710089825094,
+            "max_nll_difference": 4.812269330024719,
+            "readout_rms_difference": 0.08850008994340897,
+            "final_physical_absmax_difference": {
+              "h": 0.3941369652748108,
+              "ring": 1.0,
+              "ge": 2.527464047074318,
+              "gi": 18.198005944490433,
+              "b": 0.1805295233208426,
+              "x": 0.0,
+              "u": 0.0,
+              "baseline": 1.7593357563018799,
+              "h_mean": 0.19193075597286224,
+              "dan_gate": 0.0,
+              "gamma_z1": 0.0,
+              "gamma_z2": 0.0,
+              "observer_prior": 0.0,
+              "observer_history": 0.0,
+              "read_bank": 0.0,
+              "modulator": 0.0,
+              "expected_input": 0.14344651997089386,
+              "dopamine": 0.3336867094039917,
+              "da_trace": 0.0,
+              "da_memory": 0.0,
+              "homeostasis": 0.0,
+              "regime": 0.0,
+              "comp_trace": 0.05845254473388195,
+              "comp_memory": 0.4668982923030853,
+              "credit_comp": 0.0,
+              "credit_comp_trace": 0.0,
+              "credit_dopamine": 0.0,
+              "credit_stp": 0.0,
+              "kc_avail": 0.0,
+              "comp_da_trace": 0.0,
+              "comp_p_stats": 0.0,
+              "comp_camp": 0.0,
+              "credit_comp_camp": 0.0
+            }
+          },
+          "sham": {
+            "words": 512,
+            "physical_ticks": 2703,
+            "mean_nll": 6.840576253482141,
+            "changed_nonzero_edges": {},
+            "seconds": 14.794578400000319,
+            "terminal_tick_activity": {
+              "mb": 0.005987863858933906,
+              "cx": 0.06314022809965536
+            },
+            "paired_nll_delta": 0.0,
+            "paired_nll_delta_second_half": 0.0,
+            "max_nll_difference": 0.0,
+            "readout_rms_difference": 0.0,
+            "final_physical_absmax_difference": {
+              "h": 1.1175870895385742e-08,
+              "ring": 0.0,
+              "ge": 1.4901161193847656e-08,
+              "gi": 0.0,
+              "b": 0.0,
+              "x": 0.0,
+              "u": 0.0,
+              "baseline": 0.0,
+              "h_mean": 2.2351741790771484e-08,
+              "dan_gate": 0.0,
+              "gamma_z1": 0.0,
+              "gamma_z2": 0.0,
+              "observer_prior": 0.0,
+              "observer_history": 0.0,
+              "read_bank": 0.0,
+              "modulator": 0.0,
+              "expected_input": 0.0,
+              "dopamine": 1.1920928955078125e-07,
+              "da_trace": 0.0,
+              "da_memory": 0.0,
+              "homeostasis": 0.0,
+              "regime": 0.0,
+              "comp_trace": 0.0,
+              "comp_memory": 0.0,
+              "credit_comp": 0.0,
+              "credit_comp_trace": 0.0,
+              "credit_dopamine": 0.0,
+              "credit_stp": 0.0,
+              "kc_avail": 0.0,
+              "comp_da_trace": 0.0,
+              "comp_p_stats": 0.0,
+              "comp_camp": 0.0,
+              "credit_comp_camp": 0.0
+            }
+          }
+        },
+        "sham_pass": true,
+        "peak_cuda_allocated_mib": 1458.9560546875,
+        "seconds": 101.04487140000128
+      },
+      "comparisons": {
+        "real": {
+          "paired_mean": 0.0,
+          "block_size": 32,
+          "blocks": 16,
+          "descriptive_block_resample_95pct": [
+            0.0,
+            0.0
+          ],
+          "second_half_mean": 0.0,
+          "scope": "Within this finite stream segment; not convergence or cross-stream generalization"
+        },
+        "mb_cut": {
+          "paired_mean": 0.00905900343786925,
+          "block_size": 32,
+          "blocks": 16,
+          "descriptive_block_resample_95pct": [
+            -0.0035473483731038864,
+            0.02270758227969053
+          ],
+          "second_half_mean": 0.014429017901420593,
+          "scope": "Within this finite stream segment; not convergence or cross-stream generalization"
+        },
+        "cx_cut": {
+          "paired_mean": -0.004674173309467733,
+          "block_size": 32,
+          "blocks": 16,
+          "descriptive_block_resample_95pct": [
+            -0.027609051726176403,
+            0.018173581612063557
+          ],
+          "second_half_mean": 0.004990258486941457,
+          "scope": "Within this finite stream segment; not convergence or cross-stream generalization"
+        },
+        "all_cut": {
+          "paired_mean": 0.8791774108540267,
+          "block_size": 32,
+          "blocks": 16,
+          "descriptive_block_resample_95pct": [
+            0.6733464544668095,
+            1.0713654193357798
+          ],
+          "second_half_mean": 0.6691838908009231,
+          "scope": "Within this finite stream segment; not convergence or cross-stream generalization"
+        },
+        "input_lag": {
+          "paired_mean": 0.5501527056330815,
+          "block_size": 32,
+          "blocks": 16,
+          "descriptive_block_resample_95pct": [
+            0.45612550947116687,
+            0.6579136941028991
+          ],
+          "second_half_mean": 0.6569710089825094,
+          "scope": "Within this finite stream segment; not convergence or cross-stream generalization"
+        },
+        "sham": {
+          "paired_mean": 0.0,
+          "block_size": 32,
+          "blocks": 16,
+          "descriptive_block_resample_95pct": [
+            0.0,
+            0.0
+          ],
+          "second_half_mean": 0.0,
+          "scope": "Within this finite stream segment; not convergence or cross-stream generalization"
+        },
+        "bias_baseline": {
+          "paired_mean": 0.2986461332766339,
+          "block_size": 32,
+          "blocks": 16,
+          "descriptive_block_resample_95pct": [
+            0.1799944242462516,
+            0.4226305803953435
+          ],
+          "second_half_mean": 0.45034622866660357,
+          "scope": "Within this finite stream segment; not convergence or cross-stream generalization"
+        },
+        "constant_baseline": {
+          "paired_mean": 0.3756720823002979,
+          "block_size": 32,
+          "blocks": 16,
+          "descriptive_block_resample_95pct": [
+            0.30278315689065494,
+            0.45189631908433514
+          ],
+          "second_half_mean": 0.4813920045271516,
+          "scope": "Within this finite stream segment; not convergence or cross-stream generalization"
+        }
+      }
+    },
+    "sensory_256": {
+      "raw_directory": "F:\\fly_stream_overflow\\cgb_e2_sensory_localization_20261021",
+      "report": {
+        "scope": "Historical frozen-parameter acute causal diagnostic; local physical plasticity runs, no optimizer/BPTT, not E2 functional acceptance",
+        "source_root": "F:\\cgb_e2_head",
+        "checkpoint": "E:\\ib_checkpoints\\m_main\\last.pt",
+        "checkpoint_sha256": "9b5c06eb9e48f0c77bd93315f7d1bb6bb805c9f5c80b8523d4f1c6dfd4beac2e",
+        "checkpoint_unchanged": true,
+        "historical_train_tokens": 90112,
+        "saved_model_tensors_restored_exactly": true,
+        "restored_dopamine_site": "pre",
+        "decoder_bias_only_nll": 7.449583530426025,
+        "constant_readout_baseline": {
+          "mean_nll": 7.696511268615723,
+          "calibration": "F:\\fly_stream_overflow\\cgb_e2_mature_admission_20261021\\real.npz",
+          "calibration_sha256": "d40a289e1ae5b8d339f3c4c4f61f4b7aff10f1af83ebf6473972a914ccbe8bf8",
+          "method": "Mean calibration readout, then unchanged read_norm and decoder"
+        },
+        "input_lag_tokens": 32,
+        "sensory_injection_cells": 14426,
+        "sensory_compartment_edges": 0,
+        "original_train_cursor": 90112,
+        "offset": 67000,
+        "exposure_sha256": "fe09d1063a1de460df2681c9e604e08bc13f22822918b61a5200538ea48ae5c4",
+        "dataset": "F:\\cgb_e2_head\\data\\ib_owt_gpt2\\validation.npy",
+        "schedule": "Window log-uniform mean, per-token geometric stopping; shared new diagnostic clock",
+        "nll_read": "Last physical tick before next token arrival; not historical training weighted-hazard objective",
+        "source_hashes": {
+          "D:\\information-boltzmann-v1\\scripts\\ib\\generative\\e2_sensitivity.py": "d718ac53a4486d50b95f9c662bb4804d5d8c0de78fa577623caf3da82923fac7",
+          "F:\\cgb_e2_head\\scripts\\ib\\fly_interface\\world_eval_e2.py": "e8bda6d9ad8fe26b1b3b3cedc7f94bcb82583a7be412d31e0ffdb53985fb37fd",
+          "F:\\cgb_e2_head\\information_boltzmann\\core\\fly_bptt_learning.py": "8e1942cdbe8150b5b3c221ac43ae47d19c64423f74065cbe4dba149f86247570"
+        },
+        "arms": {
+          "real": {
+            "words": 256,
+            "physical_ticks": 899,
+            "mean_nll": 7.323333141859621,
+            "changed_nonzero_edges": {},
+            "seconds": 9.120046600000933,
+            "terminal_tick_activity": {
+              "mb": 0.0055484693720018186,
+              "cx": 0.06306938582565635
+            }
+          },
+          "sensory_cut": {
+            "words": 256,
+            "physical_ticks": 899,
+            "mean_nll": 7.73115970660001,
+            "changed_nonzero_edges": {
+              "e": 769092,
+              "i": 64005
+            },
+            "seconds": 5.4290948000016215,
+            "terminal_tick_activity": {
+              "mb": 0.0003582683090144201,
+              "cx": 0.06015757440763991
+            },
+            "paired_nll_delta": 0.4078265647403896,
+            "paired_nll_delta_second_half": 0.49282890651375055,
+            "max_nll_difference": 4.379643440246582,
+            "readout_rms_difference": 0.09597316384315491,
+            "final_physical_absmax_difference": {
+              "h": 0.3486346062272787,
+              "ring": 1.0,
+              "ge": 4.05484975874424,
+              "gi": 12.181891262631325,
+              "b": 0.4352276250720024,
+              "x": 0.0,
+              "u": 0.0,
+              "baseline": 0.0,
+              "h_mean": 0.3299715742468834,
+              "dan_gate": 0.0,
+              "gamma_z1": 0.0,
+              "gamma_z2": 0.0,
+              "observer_prior": 0.0,
+              "observer_history": 0.0,
+              "read_bank": 0.0,
+              "modulator": 0.0,
+              "expected_input": 0.13173817098140717,
+              "dopamine": 1.9698331952095032,
+              "da_trace": 0.0,
+              "da_memory": 0.0,
+              "homeostasis": 0.0,
+              "regime": 0.0,
+              "comp_trace": 0.0654295831918701,
+              "comp_memory": 0.9062139540910721,
+              "credit_comp": 0.0,
+              "credit_comp_trace": 0.0,
+              "credit_dopamine": 0.0,
+              "credit_stp": 0.0,
+              "kc_avail": 0.0,
+              "comp_da_trace": 0.0,
+              "comp_p_stats": 0.0,
+              "comp_camp": 0.0,
+              "credit_comp_camp": 0.0
+            }
+          },
+          "input_lag": {
+            "words": 256,
+            "physical_ticks": 899,
+            "mean_nll": 7.751281766220927,
+            "changed_nonzero_edges": {},
+            "seconds": 5.498967999999877,
+            "terminal_tick_activity": {
+              "mb": 0.005191138946543106,
+              "cx": 0.06279131381597836
+            },
+            "paired_nll_delta": 0.42794862436130643,
+            "paired_nll_delta_second_half": 0.3598316302523017,
+            "max_nll_difference": 4.667491674423218,
+            "readout_rms_difference": 0.07841028273105621,
+            "final_physical_absmax_difference": {
+              "h": 0.31064848601818085,
+              "ring": 1.0,
+              "ge": 2.0183178155850783,
+              "gi": 10.494586110115051,
+              "b": 0.1596600180491805,
+              "x": 0.0,
+              "u": 0.0,
+              "baseline": 1.2739936858415604,
+              "h_mean": 0.06041205674409866,
+              "dan_gate": 0.0,
+              "gamma_z1": 0.0,
+              "gamma_z2": 0.0,
+              "observer_prior": 0.0,
+              "observer_history": 0.0,
+              "read_bank": 0.0,
+              "modulator": 0.0,
+              "expected_input": 0.1821884959936142,
+              "dopamine": 0.5690544843673706,
+              "da_trace": 0.0,
+              "da_memory": 0.0,
+              "homeostasis": 0.0,
+              "regime": 0.0,
+              "comp_trace": 0.04809682350605726,
+              "comp_memory": 0.13386466354131699,
+              "credit_comp": 0.0,
+              "credit_comp_trace": 0.0,
+              "credit_dopamine": 0.0,
+              "credit_stp": 0.0,
+              "kc_avail": 0.0,
+              "comp_da_trace": 0.0,
+              "comp_p_stats": 0.0,
+              "comp_camp": 0.0,
+              "credit_comp_camp": 0.0
+            }
+          },
+          "sham": {
+            "words": 256,
+            "physical_ticks": 899,
+            "mean_nll": 7.323333141859621,
+            "changed_nonzero_edges": {},
+            "seconds": 5.43489259999842,
+            "terminal_tick_activity": {
+              "mb": 0.0055484693720018186,
+              "cx": 0.06306938582565635
+            },
+            "paired_nll_delta": 0.0,
+            "paired_nll_delta_second_half": 0.0,
+            "max_nll_difference": 0.0,
+            "readout_rms_difference": 0.0,
+            "final_physical_absmax_difference": {
+              "h": 1.1175870895385742e-08,
+              "ring": 0.0,
+              "ge": 1.4901161193847656e-08,
+              "gi": 0.0,
+              "b": 0.0,
+              "x": 0.0,
+              "u": 0.0,
+              "baseline": 0.0,
+              "h_mean": 1.4901161193847656e-08,
+              "dan_gate": 0.0,
+              "gamma_z1": 0.0,
+              "gamma_z2": 0.0,
+              "observer_prior": 0.0,
+              "observer_history": 0.0,
+              "read_bank": 0.0,
+              "modulator": 0.0,
+              "expected_input": 0.0,
+              "dopamine": 2.384185791015625e-07,
+              "da_trace": 0.0,
+              "da_memory": 0.0,
+              "homeostasis": 0.0,
+              "regime": 0.0,
+              "comp_trace": 0.0,
+              "comp_memory": 0.0,
+              "credit_comp": 0.0,
+              "credit_comp_trace": 0.0,
+              "credit_dopamine": 0.0,
+              "credit_stp": 0.0,
+              "kc_avail": 0.0,
+              "comp_da_trace": 0.0,
+              "comp_p_stats": 0.0,
+              "comp_camp": 0.0,
+              "credit_comp_camp": 0.0
+            }
+          }
+        },
+        "sham_pass": true,
+        "peak_cuda_allocated_mib": 1458.9560546875,
+        "seconds": 35.14242589999776
+      },
+      "comparisons": {
+        "real": {
+          "paired_mean": 0.0,
+          "block_size": 32,
+          "blocks": 8,
+          "descriptive_block_resample_95pct": [
+            0.0,
+            0.0
+          ],
+          "second_half_mean": 0.0,
+          "scope": "Within this finite stream segment; not convergence or cross-stream generalization"
+        },
+        "sensory_cut": {
+          "paired_mean": 0.4078265647403896,
+          "block_size": 32,
+          "blocks": 8,
+          "descriptive_block_resample_95pct": [
+            0.30103139132261275,
+            0.541080002929084
+          ],
+          "second_half_mean": 0.49282890651375055,
+          "scope": "Within this finite stream segment; not convergence or cross-stream generalization"
+        },
+        "input_lag": {
+          "paired_mean": 0.42794862436130643,
+          "block_size": 32,
+          "blocks": 8,
+          "descriptive_block_resample_95pct": [
+            0.2952275910531171,
+            0.5721544339321554
+          ],
+          "second_half_mean": 0.3598316302523017,
+          "scope": "Within this finite stream segment; not convergence or cross-stream generalization"
+        },
+        "sham": {
+          "paired_mean": 0.0,
+          "block_size": 32,
+          "blocks": 8,
+          "descriptive_block_resample_95pct": [
+            0.0,
+            0.0
+          ],
+          "second_half_mean": 0.0,
+          "scope": "Within this finite stream segment; not convergence or cross-stream generalization"
+        },
+        "bias_baseline": {
+          "paired_mean": 0.12625031871721148,
+          "block_size": 32,
+          "blocks": 8,
+          "descriptive_block_resample_95pct": [
+            -0.0054132635705173016,
+            0.2662522853352129
+          ],
+          "second_half_mean": 0.166688428260386,
+          "scope": "Within this finite stream segment; not convergence or cross-stream generalization"
+        },
+        "constant_baseline": {
+          "paired_mean": 0.37317827017977834,
+          "block_size": 32,
+          "blocks": 8,
+          "descriptive_block_resample_95pct": [
+            0.280978266953025,
+            0.48154475154587995
+          ],
+          "second_half_mean": 0.3772390289232135,
+          "scope": "Within this finite stream segment; not convergence or cross-stream generalization"
+        }
+      }
+    }
+  }
+}

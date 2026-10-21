@@ -1,0 +1,118 @@
+{
+  "status": "completed",
+  "scope": "Numerical and interface checks only",
+  "half_supply_ratio": 0.5,
+  "real_interface": {
+    "birth": {
+      "candidate_opportunities": 4096,
+      "sampled_edges": 4096,
+      "desired_structure": 127.47758238378613,
+      "funded_structure": 11.759283958495772,
+      "seed": 21,
+      "conductance_scale": 10,
+      "material_enabled": true,
+      "scope": "Strength-prior-to-local-medium interface; morphology, occurrence and physiology supplied",
+      "unverified": [
+        "developmental morphology generation",
+        "occurrence calibration",
+        "strength-to-conductance calibration",
+        "world learning and agency"
+      ]
+    },
+    "provenance": {
+      "study": "V2f numerical/interface acceptance",
+      "generator": "F:\\fly_stream_overflow\\cgb_v3d_20261021\\directed64_deploy.npz",
+      "generator_sha256": "975796f705c667f8a0e62155140100f2da3099b789aa64cf05a1c221be64e530",
+      "real_data_sha256": {
+        "F:\\fly_stream_overflow\\cgb_v1\\e1_types3000.npz": "5c1cbf692aee1cff80f7e0266e2a623efdeeb13d1da53194d4215e67398ea9de",
+        "F:\\fly_stream_overflow\\cgb_v1\\e1_types3000_sides.npz": "17d6f9b16a306649f8bd876c1c2d3721219d61c2a208bcbdc20c405bf16a10df",
+        "F:\\fly_stream_overflow\\cgb_v1\\e1c_overlap_trainlabels_4um.npy": "163c5e15f7236f7cbf6d606e641f58efecd49cca2a754b8db8e7bf9e0fc6e046",
+        "F:\\fly_stream_overflow\\cgb_v1\\e1c_overlap_trainlabels_2um.npy": "864dc75e5a3abd5d8ce60ab051d769173367db65403db2fd9324d0ee7f7db5e8"
+      },
+      "panel_seed": 21,
+      "panel_pairs": 4096,
+      "excluded_within_type_pairs": 1881,
+      "scope": "Observed connected type-pair panel; not independent morphological birth"
+    },
+    "cells_as_type_interface_nodes": 3000,
+    "edges": 4096,
+    "simulated_ms": 1000.0,
+    "paired_resume_steps": 2000,
+    "all_dynamic_arrays_bitwise_equal": true,
+    "rng_bitwise_equal": true,
+    "max_local_balance_error": 8.621575675604731e-16,
+    "active_calcium_pools": 4095,
+    "nonzero_tags": 4095,
+    "diagnostic_spikes": 12173,
+    "structure_sum": 12.512236761565184,
+    "material_imported": 30.000000000001187,
+    "material_maintenance_paid": 1.2140067744460794,
+    "material_maintenance_unpaid": 0.0,
+    "medium_array_bytes": 1361172,
+    "complete_archive_bytes": 538671,
+    "seconds_including_paired_restore_and_verification": 7.588893299998745,
+    "complete_archive": "F:\\fly_stream_overflow\\cgb_v2f_20261021\\real_interface_complete.npz",
+    "passed": true
+  },
+  "source_sha256": {
+    "D:\\information-boltzmann-v1\\scripts\\ib\\generative\\v2f_material_closure.py": "0fa70385f8d292044026741e8a1e5b74b4a9d02347b421f0eb5f722852f17495",
+    "D:\\information-boltzmann-v1\\information_boltzmann\\cgb\\medium.py": "60e9e1b53ce19f189a9f02661149885d570119a8f87db23cdef0d9e33c367c96",
+    "D:\\information-boltzmann-v1\\information_boltzmann\\cgb\\structural_budget.py": "c1a379a743b368674a11274b9afe8412464b143ccad378f3f06c1bbfdefb2c4b",
+    "D:\\information-boltzmann-v1\\information_boltzmann\\cgb\\birth.py": "c40283ca3b65c25e03e2dd63c2de84f4dd4444f4ff84343d10222d5a7fb099b7",
+    "D:\\information-boltzmann-v1\\information_boltzmann\\cgb\\checkpoint.py": "d40ebd68d70836bae893fb7d0e754b66e3829654d52ee58f4847202608e1ab15",
+    "D:\\information-boltzmann-v1\\docs\\information_boltzmann\\CGB_V2F_PREREG_20261021.md": "9bd8b9b1f9616c8a28fee84b8eaba39da7fe20e8ac33fac8448e4546c585ce0a"
+  },
+  "seconds": 12.214186999999583,
+  "passed": true,
+  "numerical": [
+    {
+      "dt": 1,
+      "supply": 0.0003,
+      "expected_discrete_plateau": 0.025104253254979992,
+      "continuous_limit": 0.024999999999999998,
+      "measured_plateau": 0.025104253254005476,
+      "relative_plateau_error": 3.881874506289781e-11,
+      "continuous_limit_error": 0.004170130160219138,
+      "withdrawn_structure": 5.439666858539818e-11,
+      "restored_structure": 0.025104253254005476,
+      "max_local_balance_error": 1.5143442055887135e-13,
+      "passed": true
+    },
+    {
+      "dt": 1,
+      "supply": 0.00015,
+      "expected_discrete_plateau": 0.012552126627489996,
+      "continuous_limit": 0.012499999999999999,
+      "measured_plateau": 0.012552126627002738,
+      "relative_plateau_error": 3.881874506289781e-11,
+      "continuous_limit_error": 0.004170130160219138,
+      "withdrawn_structure": 2.7198334292698973e-11,
+      "restored_structure": 0.012552126627002738,
+      "max_local_balance_error": 7.571721027943568e-14,
+      "passed": true
+    },
+    {
+      "dt": 0.5,
+      "supply": 0.0003,
+      "expected_discrete_plateau": 0.025052105007581187,
+      "continuous_limit": 0.024999999999999998,
+      "measured_plateau": 0.025052105006622135,
+      "relative_plateau_error": 3.8282303293252537e-11,
+      "continuous_limit_error": 0.002084200264885483,
+      "withdrawn_structure": 5.294341316805991e-11,
+      "restored_structure": 0.025052105006622135,
+      "max_local_balance_error": 8.08686451136964e-13,
+      "passed": true
+    }
+  ],
+  "focused_tests": {
+    "passed": 27,
+    "files": [
+      "tests/test_cgb_structural_budget.py",
+      "tests/test_cgb_birth.py",
+      "tests/test_cgb_matching.py"
+    ],
+    "scope": "Numerical/interface only"
+  },
+  "source_snapshot": "F:\\fly_stream_overflow\\cgb_v2f_20261021\\source_snapshot\\manifest.json"
+}
