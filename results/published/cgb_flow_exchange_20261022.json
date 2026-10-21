@@ -1,0 +1,276 @@
+{
+  "date": "2026-10-22",
+  "scope": "physical two-way work/structure delivery; not learning benefit",
+  "baseline_git": "14bcfa173bd651f8e0302c04070d7458a15ff16a",
+  "source_archive": "F:\\fly_stream_overflow\\cgb_spatial_calibrated_r1_20261021\\medium_complete.npz",
+  "source_sha256": "c57b03a49418b37f3ca5bd0fc1dcefa892ce649637d5e007c5ea14c5fa447112",
+  "source_unchanged": true,
+  "inherited_provenance": {
+    "scope": "Candidate spatial development and prescribed real-text sensory drive; no capability claim",
+    "generator_sha256": "975796f705c667f8a0e62155140100f2da3099b789aa64cf05a1c221be64e530",
+    "story": "The Crow and the Pitcher",
+    "story_source": 21,
+    "binding_rate_unfitted": null,
+    "geometry_law": "Known-type spatial descriptors with candidate local Gaussian growth",
+    "spatial_program_sha256": "4585d2fd65e8d8dcd8f3728e7a959b3650b297ebef3e9fb584118695c3308d81",
+    "occurrence_program_sha256": "b6ce5a8fa73c678cdb1a6ecff6a916acfa1a191b99c8804fa0f549eb7d293c79",
+    "code_path": "D:\\information-boltzmann-v1\\information_boltzmann\\cgb\\development.py"
+  },
+  "code_sha256": {
+    "scripts\\ib\\generative\\flow_exchange_audit.py": "9c6a34361747eea7c9effc7586b9281728db8af8986def5487b590cc78709b41",
+    "information_boltzmann\\cgb\\flow_exchange.py": "fe6cc28c003b7c19ebf6f6d97dfb6025b5930eadc9689305eb33baa663c62c32",
+    "information_boltzmann\\cgb\\structural_exchange.py": "dc19fcde30a722d109209672d2787b5fc90e0b33c60ddcae58f9179f1a8744ab",
+    "information_boltzmann\\cgb\\finite_exchange.py": "0656f54cc2f2e31500878213dcf0de602624490fe8d57772853f92c387f8a35a",
+    "information_boltzmann\\cgb\\material_reactions.py": "5c532505b1b4e381f7f1b8a51edc566754904ed0ee838b29df48b43c368dbf9a",
+    "information_boltzmann\\cgb\\exchange_checkpoint.py": "459322f40d19dfd1b8f1fe29c81c4b5097afffd3263481e349c17ed420f60232",
+    "docs\\information_boltzmann\\CGB_FAST_WORK_PREREG_20261022.md": "38a18b0a6ff07ee1c5d855a164b34b832748b9084ea5b73428d08220765c32ae"
+  },
+  "preregistered": "docs/information_boltzmann/CGB_FAST_WORK_PREREG_20261022.md",
+  "cells": 192,
+  "contacts": 545,
+  "current_port": 88,
+  "params": {
+    "binding_rate": 0.01,
+    "transport_rate": 0.001,
+    "release_rate": 0.001,
+    "bound_energy": -2.0,
+    "carried_energy": 0.0,
+    "charged_energy": 4.0,
+    "assembly_rate": 0.001,
+    "structure_energy": 2.0,
+    "conversion_rate": 0.01,
+    "charge_per_event": 1.0
+  },
+  "initial_installed": 545,
+  "initial_charged": 96.0,
+  "arms": {
+    "coupled_driven": {
+      "dt_ms": 1.0,
+      "elapsed_ms": 200.0,
+      "seconds": 1.6956800000043586,
+      "maximum_balance_errors": {
+        "support": 2.683964162031316e-14,
+        "drive": 2.220446049250313e-15,
+        "energy": 1.3002932064409833e-12,
+        "entropy": 1.3002932064409833e-12,
+        "material": 5.329070518200751e-15,
+        "charge_local": 5.861977570020827e-14,
+        "charge_transport_global": 1.3322676295501878e-14
+      },
+      "minimum_irreversible_g_drop": 0.0,
+      "cg_iterations_max": 8,
+      "charged": 17.835215345197195,
+      "installed": 546.0189691771941,
+      "material": 94.9810308228059,
+      "field_energy": 27.169925200051217,
+      "internal_energy": 1066.1371258552224,
+      "free_energy": -330.6094959664713,
+      "work_in": 34.62530316919738,
+      "heat_out": 366.82674828883023,
+      "entropy_balance": 319.50754948238887,
+      "conduction_heat": 23.624022610635848,
+      "conduction_numerical_heat": 0.8637078515131406,
+      "conduction_heat_split_error": 3.411715354673106e-13
+    },
+    "coupled_quiet": {
+      "dt_ms": 1.0,
+      "elapsed_ms": 200.0,
+      "seconds": 1.714316699995834,
+      "maximum_balance_errors": {
+        "support": 2.425837308805967e-14,
+        "drive": 2.4424906541753444e-15,
+        "energy": 0.0,
+        "entropy": 0.0,
+        "material": 4.440892098500626e-15,
+        "charge_local": 2.42861286636753e-16,
+        "charge_transport_global": 2.248201624865942e-15
+      },
+      "minimum_irreversible_g_drop": 0.0,
+      "cg_iterations_max": 7,
+      "charged": 17.509451080028022,
+      "installed": 545.9731652267359,
+      "material": 95.02683477326418,
+      "field_energy": 14.772058242264187,
+      "internal_energy": 1052.3262713662082,
+      "free_energy": -343.70210202510395,
+      "work_in": 0.0,
+      "heat_out": 346.01229960864816,
+      "entropy_balance": 297.97485237182525,
+      "conduction_heat": 0.0030061704003078063,
+      "conduction_numerical_heat": 5.0264099820329816e-05,
+      "conduction_heat_split_error": -2.2069905785174725e-12
+    },
+    "uncoupled_driven": {
+      "dt_ms": 1.0,
+      "elapsed_ms": 200.0,
+      "seconds": 1.2831896999996388,
+      "maximum_balance_errors": {
+        "support": 2.6922908347160046e-14,
+        "drive": 3.1086244689504383e-15,
+        "energy": 1.1404210908949608e-12,
+        "entropy": 1.1404210908949608e-12,
+        "material": 3.552713678800501e-15,
+        "charge_local": 4.973799150320701e-14,
+        "charge_transport_global": 8.881784197001252e-15
+      },
+      "minimum_irreversible_g_drop": 0.0,
+      "cg_iterations_max": 8,
+      "charged": 78.36265281009892,
+      "installed": 557.9196795741018,
+      "material": 83.08032042589818,
+      "field_energy": 4.814720141173082,
+      "internal_energy": 1314.0223331047318,
+      "free_energy": -147.52114370648962,
+      "work_in": 29.51457243146081,
+      "heat_out": 113.83081030158428,
+      "entropy_balance": 131.3084664846707,
+      "conduction_heat": 23.82590357233103,
+      "conduction_numerical_heat": 0.8739487179567317,
+      "conduction_heat_split_error": -9.617862062327731e-13
+    },
+    "uncoupled_quiet": {
+      "dt_ms": 1.0,
+      "elapsed_ms": 200.0,
+      "seconds": 1.2174203999966267,
+      "maximum_balance_errors": {
+        "support": 2.6922908347160046e-14,
+        "drive": 3.1086244689504383e-15,
+        "energy": 0.0,
+        "entropy": 0.0,
+        "material": 3.552713678800501e-15,
+        "charge_local": 0.0,
+        "charge_transport_global": 0.0
+      },
+      "minimum_irreversible_g_drop": 0.0,
+      "cg_iterations_max": 0,
+      "charged": 78.36265281009892,
+      "installed": 557.9196795741018,
+      "material": 83.08032042589818,
+      "field_energy": 0.0,
+      "internal_energy": 1309.2076129635589,
+      "free_energy": -152.3358638476626,
+      "work_in": 0.0,
+      "heat_out": 89.13095801129748,
+      "entropy_balance": 106.6086141943839,
+      "conduction_heat": 0.0,
+      "conduction_numerical_heat": 0.0,
+      "conduction_heat_split_error": 0.0
+    }
+  },
+  "contrast": {
+    "charged": {
+      "coupled_delta_sum": 0.325764265169177,
+      "uncoupled_delta_absmax": 0.0,
+      "difference_in_differences_absmax": 0.0623257461132973
+    },
+    "capacity": {
+      "coupled_delta_sum": 0.045803950458263354,
+      "uncoupled_delta_absmax": 0.0,
+      "difference_in_differences_absmax": 0.0033708607086783138
+    },
+    "material": {
+      "coupled_delta_sum": -0.045803950458272846,
+      "uncoupled_delta_absmax": 0.0,
+      "difference_in_differences_absmax": 0.01922215069452471
+    }
+  },
+  "acute_fast_response_charge_absmax": 0.0001734747673138859,
+  "refinement": {
+    "arms": {
+      "0.5": {
+        "dt_ms": 0.5,
+        "elapsed_ms": 200.0,
+        "seconds": 3.383647900001961,
+        "maximum_balance_errors": {
+          "support": 4.618527782440651e-14,
+          "drive": 4.551914400963142e-15,
+          "energy": 9.747758156208874e-13,
+          "entropy": 9.747758156208874e-13,
+          "material": 5.329070518200751e-15,
+          "charge_local": 1.5631940186722204e-13,
+          "charge_transport_global": 1.0658141036401503e-14
+        },
+        "minimum_irreversible_g_drop": 0.0,
+        "cg_iterations_max": 7,
+        "charged": 17.778703281072417,
+        "installed": 546.0281798936437,
+        "material": 94.97182010635628,
+        "field_energy": 27.196238761675808,
+        "internal_energy": 1065.9467369521426,
+        "free_energy": -330.65973391313514,
+        "work_in": 34.223433628335535,
+        "heat_out": 366.61526765104895,
+        "entropy_balance": 319.15591788819165,
+        "conduction_heat": 23.634732140223463,
+        "conduction_numerical_heat": 0.4321083113828062,
+        "conduction_heat_split_error": 5.532796443219468e-13
+      },
+      "0.25": {
+        "dt_ms": 0.25,
+        "elapsed_ms": 200.0,
+        "seconds": 6.698971300000267,
+        "maximum_balance_errors": {
+          "support": 9.676981438389021e-14,
+          "drive": 1.5432100042289676e-14,
+          "energy": 4.0749625895841746e-12,
+          "entropy": 4.0749625895841746e-12,
+          "material": 4.440892098500626e-15,
+          "charge_local": 2.398081733190338e-13,
+          "charge_transport_global": 4.973799150320701e-14
+        },
+        "minimum_irreversible_g_drop": 0.0,
+        "cg_iterations_max": 6,
+        "charged": 17.750408608703253,
+        "installed": 546.0328015511574,
+        "material": 94.96719844884262,
+        "field_energy": 27.20941247887763,
+        "internal_energy": 1065.8514540087747,
+        "free_energy": -330.68478037651005,
+        "work_in": 34.02252876991538,
+        "heat_out": 366.5096457359987,
+        "entropy_balance": 318.98005949314836,
+        "conduction_heat": 23.640297761722127,
+        "conduction_numerical_heat": 0.21612016962851235,
+        "conduction_heat_split_error": 5.487554854965992e-13
+      }
+    },
+    "dt1_vs_dt05": 0.005616520023377412,
+    "dt05_vs_dt025": 0.002811717058581797,
+    "ratio": 1.9975409710002365
+  },
+  "source_archives": {
+    "coupled_driven": {
+      "path": "F:\\fly_stream_overflow\\cgb_flow_exchange_r2_20261022\\coupled_driven.npz",
+      "sha256": "a8d48765c42af24092d301f34c862a349d069b4909ae97a9f242271432d39dbe"
+    },
+    "coupled_quiet": {
+      "path": "F:\\fly_stream_overflow\\cgb_flow_exchange_r2_20261022\\coupled_quiet.npz",
+      "sha256": "ad7ab591d150e9b72b5d48b97386aaade07f6c5a9a366d4bde793bd71c456437"
+    },
+    "uncoupled_driven": {
+      "path": "F:\\fly_stream_overflow\\cgb_flow_exchange_r2_20261022\\uncoupled_driven.npz",
+      "sha256": "1cf5c6dc6baca3bbe81b430e7eee0c1f35e68330cbc19e5634d7c1911cc8e8f4"
+    },
+    "uncoupled_quiet": {
+      "path": "F:\\fly_stream_overflow\\cgb_flow_exchange_r2_20261022\\uncoupled_quiet.npz",
+      "sha256": "b1ff5eb5c4b1b863251888cfc4b393442684920f3e6805f5b4deb41814570b41"
+    }
+  },
+  "complete_restore_future_bitwise": true,
+  "restore_future_ms": 20.0,
+  "state_array_bytes": 52024,
+  "solver_workspace": "matrix-free O(N+E), no dense factorization",
+  "delivery_observed": true,
+  "learning_or_behavior_benefit": "unmeasured",
+  "directed_active_spiking": "not implemented in this passive realization",
+  "world_consequence_loop": "not coupled in this audit",
+  "language_training": false,
+  "passed": true,
+  "validation": {
+    "passed": 110,
+    "failed": 0,
+    "scope": "11 affected CGB numerical/interface files; not whole repository",
+    "junit": "F:\\fly_stream_overflow\\cgb_flow_exchange_r2_20261022\\regression.xml"
+  },
+  "results_document": "docs/information_boltzmann/CGB_FAST_WORK_RESULTS_20261022.md"
+}

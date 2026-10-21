@@ -14,7 +14,7 @@
 
 ## 如何回退与继续
 
-基线用Git标签`cgb-before-fast-work-20261022`定位，后续每个完整实现单独提交。优先在另一目录建立分支查看旧版：
+基线提交`14bcfa173bd651f8e0302c04070d7458a15ff16a`，用Git标签`cgb-before-fast-work-20261022`定位；本轮完成版用`cgb-fast-work-20261022`定位。后续每个完整实现单独提交。优先在另一目录建立分支查看旧版：
 
 ```powershell
 git worktree add -b codex/cgb-revisit-20261022 D:/cgb-revisit-20261022 cgb-before-fast-work-20261022
@@ -24,4 +24,13 @@ git worktree add -b codex/cgb-revisit-20261022 D:/cgb-revisit-20261022 cgb-befor
 
 ## 本轮记录
 
-待推导与验证后追加：变更范围、假设、执行命令、结果、实验路径、未交付部分及对应提交入口。
+2026-10-22 04:10（Asia/Shanghai附近；精确运行/提交时间见报告及Git）。
+
+- 改动：新增`flow_exchange.py`及13项物理/恢复检查；原子存档按kind支持新类，原finite/structural档仍可加载；新增配对审计脚本，更新主规划、物理核心及归属表。
+- 推导：[快场—慢结构预注册](CGB_FAST_WORK_PREREG_20261022.md)。固定电容、同质并联导通和热浴两态换能是明确本构。未使用目标梯度或免费活动奖励，未切换主个体。
+- 命令：`D:/conda_envs/vox/python.exe scripts/ib/generative/flow_exchange_audit.py --archive F:/fly_stream_overflow/cgb_spatial_calibrated_r1_20261021/medium_complete.npz --out F:/fly_stream_overflow/cgb_flow_exchange_r2_20261022`。
+- 最终验证：`pytest`运行flow_exchange、finite_exchange、structural_exchange、support_analysis、support_transport、material_reactions、structural_budget、birth、development、birth_calibration、tree_geometry这11个CGB测试文件，**110通过，10.45秒**；JUnit在最终运行目录`regression.xml`。
+- 初轮及改进：CG解直接写荷量会累积求解余差。改为按反对称边电流推进，并单列传输的物理／数值热；最终内部输运总电荷余差约`1e-14`。初轮报告与源码也保留，不覆盖失败／改进证据。
+- 实际结果、四臂指标、来源及存档SHA256见[结果文档](CGB_FAST_WORK_RESULTS_20261022.md)。输入经换能影响结构，结构影响下一快响应；完整恢复后20ms逐位一致。
+- 尚未交付：这仍是被动互易电荷实现，不是全脑能量验收；有源定向传输、原脉冲／语言接口、选择性学习及世界后果尚待整合。
+- 备份：当前分支`codex/cgb-physical-closure-20261022`。本轮标签与基线分开，可单独回退；实验盘另存包含这两次提交的增量Git bundle及清单，备份路径`F:/fly_stream_overflow/cgb_git_backup_20261022/`。实际bundle验证与哈希记录在该目录，只有验证成功后才称完成备份。

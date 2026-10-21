@@ -36,6 +36,9 @@ def load_exchange(path):
         if state.get('kind') == 'structural_exchange':
             from .structural_exchange import StructuralExchange
             model_class = StructuralExchange
+        elif state.get('kind') == 'flow_exchange':
+            from .flow_exchange import FlowExchange
+            model_class = FlowExchange
         elif 'kind' in state:
             raise ValueError('Unknown exchange archive kind')
         for name in ('pre', 'post', 'capacity'):
