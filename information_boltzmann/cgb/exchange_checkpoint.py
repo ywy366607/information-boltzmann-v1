@@ -48,6 +48,9 @@ def load_exchange(path):
         elif state.get('kind') == 'spatial_exchange':
             from .spatial_exchange import SpatialExchange
             model_class = SpatialExchange
+        elif state.get('kind') == 'end_exchange':
+            from .end_exchange import EndExchange
+            model_class = EndExchange
         elif 'kind' in state:
             raise ValueError('Unknown exchange archive kind')
         for name in ('pre', 'post', 'capacity'):

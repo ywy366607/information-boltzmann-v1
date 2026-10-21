@@ -73,3 +73,17 @@ git worktree add -b codex/cgb-revisit-20261022 D:/cgb-revisit-20261022 cgb-befor
 ## 下一步物理状态的必要性
 
 空间代码提交`f448d91`之后，另将“交叉不相通／真正接合”的等材料端口响应推导写入[CGB_CONNECTIVITY_STATE_DERIVATION_20261022.md](CGB_CONNECTIVITY_STATE_DERIVATION_20261022.md)，同步主规划。这是下一轮连接端／导通域状态的来源，不新添未经推导的分叉动力学，不改变本轮执行代码和结果。
+
+
+## 独立材料域、有限端与新接合
+
+2026-10-22，基线48772fe。由连接状态必要性推导实施EndExchange，复用Trace/Spatial共同自由能和物料账。双端反应、同位置独立电荷、有限端竞争与接触生成已接入；实际材料移动和身份谱系继续待接。
+
+- 实施前方案：CGB_END_PAIRING_PREREG_20261022.md；源码及该版本方案复制到运行目录。
+- 主执行：`end_pairing_audit.py --out F:/fly_stream_overflow/cgb_end_pairing_20261022`，五臂各256ms。无种子仍沉积，不把它包装成神经突生长。
+- 同末态因果：`end_contact_delivery.py --run F:/fly_stream_overflow/cgb_end_pairing_20261022`，实际256→256.5ms，sham逐位一致，只改新桥电导产生最大电荷差0.005087272，原档哈希不变。
+- 15个CGB文件163项通过/18.33s，JUnit在运行目录regression.xml。默认慢合成通路测试最初触及自定幅度阈值，改用明确较快测试周转解析，无修改主实验常数。
+- 状态134312字节，O(N+E)；各臂半程/末态及因果副本均完整保存并核对。正式主个体保持暂停。
+- 新结果、原始证据、源码快照和Git阶段备份分开保留；后续提交定位见cgb-finite-ends-20261022标签。
+
+- 观察室增加只读`/ends`，保留`/material`和原出生页面；实际页面与JSON核对，截图`F:/fly_stream_overflow/cgb_end_pairing_20261022/end_view.png`。本轮仅替换自己启动的只读viewer服务，保留原参数并加新结果入口；当前PID24464。无训练进程启动。
