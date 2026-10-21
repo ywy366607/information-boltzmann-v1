@@ -34,3 +34,15 @@ git worktree add -b codex/cgb-revisit-20261022 D:/cgb-revisit-20261022 cgb-befor
 - 实际结果、四臂指标、来源及存档SHA256见[结果文档](CGB_FAST_WORK_RESULTS_20261022.md)。输入经换能影响结构，结构影响下一快响应；完整恢复后20ms逐位一致。
 - 尚未交付：这仍是被动互易电荷实现，不是全脑能量验收；有源定向传输、原脉冲／语言接口、选择性学习及世界后果尚待整合。
 - 备份：当前分支`codex/cgb-physical-closure-20261022`。本轮标签与基线分开，可单独回退；实验盘另存包含这两次提交的增量Git bundle及清单，备份路径`F:/fly_stream_overflow/cgb_git_backup_20261022/`。实际bundle验证与哈希记录在该目录，只有验证成功后才称完成备份。
+
+## 有源传输与端口（本轮结束后关机）
+
+2026-10-22约04:20，Asia/Shanghai。
+
+- 用户指令：“做完帮我关机”。完成当前一个有界接入／验证段后执行，不无限延长研究，也不恢复暂停主个体。
+- 继承提交`eb720ed9647a1f2a826bee0ac33350989c9f823c`；新改动以`cgb-driven-ports-20261022`标签定位，旧版以`cgb-before-driven-ports-20261022`定位。
+- 沿同一自由能新增有限P/D付款的极性传输，以及有限外部电容／源电导／端口反作用；实现`driven_exchange.py`、存档kind、14项新检查及真实书架字节配对审计。
+- 执行：`D:/conda_envs/vox/python.exe scripts/ib/generative/driven_ports_audit.py --archive F:/fly_stream_overflow/cgb_spatial_calibrated_r1_20261021/medium_complete.npz --out F:/fly_stream_overflow/cgb_driven_ports_20261022`。
+- 验证：12个相关CGB测试文件124项通过，JUnit随运行保存；4臂实际96ms、半程完整恢复、两个细化步长、付费的外部状态干预均完成。未启动语言训练。
+- [实际结果及边界](CGB_DRIVEN_PORTS_RESULTS_20261022.md)。本轮交付材料／端口因果作用，没有把端口反馈改称完整语言主体闭环。
+- 备份路径：`F:/fly_stream_overflow/cgb_driven_ports_backup_20261022/`，存Git bundle、完整子核状态、报告、书架和哈希清单。日志与Git先完成，备份验证后再发出关机指令；系统执行结果单列在该路径的关机请求记录中。

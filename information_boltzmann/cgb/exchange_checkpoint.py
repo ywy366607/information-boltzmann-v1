@@ -39,6 +39,9 @@ def load_exchange(path):
         elif state.get('kind') == 'flow_exchange':
             from .flow_exchange import FlowExchange
             model_class = FlowExchange
+        elif state.get('kind') == 'driven_exchange':
+            from .driven_exchange import DrivenExchange
+            model_class = DrivenExchange
         elif 'kind' in state:
             raise ValueError('Unknown exchange archive kind')
         for name in ('pre', 'post', 'capacity'):
