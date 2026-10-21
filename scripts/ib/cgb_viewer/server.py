@@ -42,6 +42,15 @@ class Viewer(BaseHTTPRequestHandler):
                 return
             data=self.server.end_scene
             content_type='application/json; charset=utf-8'
+        elif route=='/mobile':
+            data=(Path(__file__).parent/'mobile.html').read_bytes()
+            content_type='text/html; charset=utf-8'
+        elif route=='/mobile_scene.json':
+            if self.server.mobile_scene is None:
+                self.send_error(404,'No moving material run attached')
+                return
+            data=self.server.mobile_scene
+            content_type='application/json; charset=utf-8'
         elif route=='/health':
             data=b'{"status":"ready","read_only":true}'
             content_type='application/json'
@@ -74,12 +83,14 @@ if __name__=='__main__':
     parser.add_argument('--tree-candidate',type=Path)
     parser.add_argument('--material-run',type=Path)
     parser.add_argument('--end-run',type=Path)
+    parser.add_argument('--mobile-run',type=Path)
     args=parser.parse_args()
     httpd=ThreadingHTTPServer(('127.0.0.1',args.port),Viewer)
     httpd.scenes={}
     httpd.versions=[]
     httpd.material_scene=(args.material_run/'material_scene.json').read_bytes() if args.material_run else None
     httpd.end_scene=(args.end_run/'material_scene.json').read_bytes() if args.end_run else None
+    httpd.mobile_scene=(args.mobile_run/'mobile_scene.json').read_bytes() if args.mobile_run else None
     calibration={}
     if args.calibration:
         for name in ('morphology','spatial_identity','occurrence'):

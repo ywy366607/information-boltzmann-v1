@@ -87,3 +87,16 @@ git worktree add -b codex/cgb-revisit-20261022 D:/cgb-revisit-20261022 cgb-befor
 - 新结果、原始证据、源码快照和Git阶段备份分开保留；后续提交定位见cgb-finite-ends-20261022标签。
 
 - 观察室增加只读`/ends`，保留`/material`和原出生页面；实际页面与JSON核对，截图`F:/fly_stream_overflow/cgb_end_pairing_20261022/end_view.png`。本轮仅替换自己启动的只读viewer服务，保留原参数并加新结果入口；当前PID24464。无训练进程启动。
+
+
+## 移动材料、存储载体与同温热浴
+
+2026-10-22，基线abf1d04。新增MobileExchange，把既有反应图分辨成有限整数物料/二态桥；端库存与局部组成随实际材料坐标移动。实际新接触临时搜索，桥创建/配置释放/回收统一记账。
+
+- 第一轮`mobile_material_audit.py --out F:/fly_stream_overflow/cgb_mobile_material_20261022`完整保存；12项直接与175项组合检查通过，但快场仍是历史确定性耗散。联查同温性发现需补配套电荷涨落，保留该轮源码/旧schema1，不作正式同温结果。
+- 按相同kBT导出快场/世界端口OU协方差，第三RNG完整保存；新schema2明确区别，未给旧个体补随机数冒充连续恢复。第二轮`F:/fly_stream_overflow/cgb_mobile_thermal_20261022`完成。
+- 共享端统计、一次相遇搜索、局部运动格箱及弹性能增量替换重复全图工作；`mobile_execution_equivalence.py --reference F:/fly_stream_overflow/cgb_mobile_thermal_20261022 --out F:/fly_stream_overflow/cgb_mobile_thermal_20261022/execution_equivalence.json`：五臂128→256ms物理数组/三RNG逐位相同，账本舍入≤2.51e-12。
+- 当前执行`mobile_material_audit.py --out F:/fly_stream_overflow/cgb_mobile_bounded_20261022`。16个相关文件176项通过/17.34s；正式报告、全部几何/事件/源码/字节/恢复结果保留。
+- 完整臂有19次原先不相遇材料对的装配，两条初始桥发展到28桥；0号连通部分3→23材料；初始两桥夹角π→1.46708rad，非角度目标控制。各干预只是一次配对实现，不由桥数大小声称学习收益。
+- 新只读`/mobile`保留旧路由。实际初/末数值与图像核对，截图`F:/fly_stream_overflow/cgb_mobile_bounded_20261022/mobile_view.png`；viewer新PID12448，仅替换本线程原只读服务，无正式训练启动。
+- 下一段：真实相遇的有向身份发生/强度物性接口、完整有符号/延迟学习与世界后果。小材料核未被叫作完整生命体。分阶段Git和完整证据备份另保存。

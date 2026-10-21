@@ -1,0 +1,1024 @@
+{
+  "date": "2026-10-22",
+  "baseline_git": "abf1d04d1910558747716baf8b863fe42daf4c46",
+  "preregistered": "docs/information_boltzmann/CGB_MOBILE_MATERIAL_PREREG_20261022.md",
+  "scope": "mobile finite material with same reaction graph; no prescribed branch/turn command",
+  "nodes": 24,
+  "real_text_source": 21,
+  "story": "The Crow and the Pitcher",
+  "bytes_presented": 64,
+  "byte_stream_hex": "412043524f5720706572697368696e6720776974682074686972737420736177206120706974636865722c20616e6420686f70696e6720746f2066696e642077",
+  "dt_ms": 2.0,
+  "byte_interval_ms": 4.0,
+  "code_sha256": {
+    "scripts\\ib\\generative\\mobile_material_audit.py": "b12bea07869fedb5cee048110f4eac0c51f168bdac29d91ed31d01cb29cb284f",
+    "information_boltzmann\\cgb\\mobile_exchange.py": "1345d1243c9280b43c4528ec2c3ea9a85536355de8a76537be5ddab00ce6dc5d",
+    "information_boltzmann\\cgb\\spatial_exchange.py": "31f0da0b1726eb04c89f875f981391e17f1b632e623eeba8598551bb00a3bd46",
+    "information_boltzmann\\cgb\\trace_exchange.py": "3757431e74d3a395e4896f5a2a689c45de5e93d02cd27e6e55a2f5b4639cc99c",
+    "information_boltzmann\\cgb\\driven_exchange.py": "179ccd2d7d5d5d382b868d78d06629ffa375189ac63bcce53d01ea8e7d32949b",
+    "information_boltzmann\\cgb\\flow_exchange.py": "fe6cc28c003b7c19ebf6f6d97dfb6025b5930eadc9689305eb33baa663c62c32",
+    "information_boltzmann\\cgb\\structural_exchange.py": "dc19fcde30a722d109209672d2787b5fc90e0b33c60ddcae58f9179f1a8744ab",
+    "information_boltzmann\\cgb\\finite_exchange.py": "487a5acca6c85ffc9a0798beaea00f027301fbd55c42eac435faad26df35d6ae",
+    "information_boltzmann\\cgb\\material_reactions.py": "5c532505b1b4e381f7f1b8a51edc566754904ed0ee838b29df48b43c368dbf9a",
+    "information_boltzmann\\cgb\\exchange_checkpoint.py": "ea058a3a7bd8c65e3d419621d367fb71faa4a435d85285d75dea409033210ce8",
+    "docs\\information_boltzmann\\CGB_MOBILE_MATERIAL_PREREG_20261022.md": "9942db95a5b58c80419d6f130dbc2cbe91f805be027a5fe424bd7c99b7fe64f7"
+  },
+  "arms": {
+    "coupled": {
+      "params": {
+        "binding_rate": 0.05,
+        "transport_rate": 0.01,
+        "release_rate": 0.01,
+        "bound_energy": -2.0,
+        "carried_energy": 0.0,
+        "charged_energy": 4.0,
+        "assembly_rate": 0.05,
+        "structure_energy": 2.0,
+        "conversion_rate": 0.01,
+        "charge_per_event": 1.0,
+        "active_rate": 0.005,
+        "write_rate": 0.02,
+        "recovery_rate": 0.02,
+        "trace_energy": 2.0,
+        "capture_coupling": 2.0,
+        "gate_low": 1.0,
+        "gate_high": 2.0,
+        "cohesion_energy": 0.6,
+        "bulk_attempt": 0.2,
+        "surface_attempt": 1.0,
+        "material_diffusion": 0.0,
+        "support_diffusion": 0.0,
+        "drive_diffusion": 0.0,
+        "spacing": 1.0,
+        "mobility": 0.002,
+        "core_diameter": 0.3,
+        "contact_radius": 1.5,
+        "rest_length": 0.8,
+        "elastic_stiffness": 4.0,
+        "box_size": 5.0
+      },
+      "initial": {
+        "bridges": 2,
+        "used_material_units": 2,
+        "free_ends": 68,
+        "branch_nodes": 0,
+        "isolated_cores": 21,
+        "tips": 2,
+        "seed_component_nodes": 3,
+        "seed_component_path_extent": 1.6,
+        "mean_pair_angle_radians": 3.141592653589793
+      },
+      "final": {
+        "bridges": 28,
+        "used_material_units": 28,
+        "free_ends": 16,
+        "branch_nodes": 14,
+        "isolated_cores": 1,
+        "tips": 4,
+        "seed_component_nodes": 23,
+        "seed_component_path_extent": 10.878649510466616,
+        "mean_pair_angle_radians": 1.5652951959346426
+      },
+      "events": {
+        "formations": 34,
+        "new_spatial_pair_formations": 19,
+        "free_core_attachments": 12,
+        "branch_formations": 19,
+        "nucleations": 4,
+        "joins_or_closures": 18,
+        "removals": 8
+      },
+      "initial_energy": 771.4,
+      "initial_free_energy": 1131.4658422145496,
+      "elapsed_ms": 256.0,
+      "seconds": 2.3693834000005154,
+      "source_work": 1343.0734830830595,
+      "heat_out": 1853.6517552331375,
+      "motion_heat": 3.59108407759855,
+      "reaction_heat": 478.7996322648415,
+      "source_heat": 1162.0888674113276,
+      "conduction_heat": 209.1721714793716,
+      "free_material": 70,
+      "bound_support": 22,
+      "occupied_trace": 14,
+      "reaction_counts": {
+        "assembly+": 34,
+        "binding+": 41,
+        "active+": 31,
+        "conversion-": 49,
+        "binding-": 13,
+        "write+": 36,
+        "assembly-": 8,
+        "thermal+": 18,
+        "thermal-": 37,
+        "transport+": 14,
+        "release-": 20,
+        "conversion+": 2,
+        "release+": 10,
+        "transport-": 8,
+        "write-": 3,
+        "active-": 1
+      },
+      "motion_attempts": 3072,
+      "motion_accepted": 2468,
+      "rms_displacement": 1.1211583192825827,
+      "maximum_balance_errors": {
+        "material": 0.0,
+        "drive": 0.0,
+        "support": 0.0,
+        "ends": 0.0,
+        "charge": 2.1316282072803006e-14,
+        "energy": 3.979039320256561e-12,
+        "free_energy": 4.320099833421409e-12
+      },
+      "archive": "F:\\fly_stream_overflow\\cgb_mobile_bounded_20261022\\coupled_complete.npz",
+      "sha256": "59a4f1371a08cbd91b08e49074aca27242c4f7e5a0ad80f2c2cf236ca1d5a1c1",
+      "full_restore_loaded": true,
+      "future_bitwise_tested": true,
+      "state_bytes": 3584,
+      "current_encounter_pairs": 42
+    },
+    "no_motion": {
+      "params": {
+        "binding_rate": 0.05,
+        "transport_rate": 0.01,
+        "release_rate": 0.01,
+        "bound_energy": -2.0,
+        "carried_energy": 0.0,
+        "charged_energy": 4.0,
+        "assembly_rate": 0.05,
+        "structure_energy": 2.0,
+        "conversion_rate": 0.01,
+        "charge_per_event": 1.0,
+        "active_rate": 0.005,
+        "write_rate": 0.02,
+        "recovery_rate": 0.02,
+        "trace_energy": 2.0,
+        "capture_coupling": 2.0,
+        "gate_low": 1.0,
+        "gate_high": 2.0,
+        "cohesion_energy": 0.6,
+        "bulk_attempt": 0.2,
+        "surface_attempt": 1.0,
+        "material_diffusion": 0.0,
+        "support_diffusion": 0.0,
+        "drive_diffusion": 0.0,
+        "spacing": 1.0,
+        "mobility": 0.0,
+        "core_diameter": 0.3,
+        "contact_radius": 1.5,
+        "rest_length": 0.8,
+        "elastic_stiffness": 4.0,
+        "box_size": 5.0
+      },
+      "initial": {
+        "bridges": 2,
+        "used_material_units": 2,
+        "free_ends": 68,
+        "branch_nodes": 0,
+        "isolated_cores": 21,
+        "tips": 2,
+        "seed_component_nodes": 3,
+        "seed_component_path_extent": 1.6,
+        "mean_pair_angle_radians": 3.141592653589793
+      },
+      "final": {
+        "bridges": 20,
+        "used_material_units": 20,
+        "free_ends": 32,
+        "branch_nodes": 7,
+        "isolated_cores": 2,
+        "tips": 11,
+        "seed_component_nodes": 9,
+        "seed_component_path_extent": 4.368136225757873,
+        "mean_pair_angle_radians": 1.51354919655963
+      },
+      "events": {
+        "formations": 19,
+        "new_spatial_pair_formations": 0,
+        "free_core_attachments": 9,
+        "branch_formations": 6,
+        "nucleations": 5,
+        "joins_or_closures": 5,
+        "removals": 1
+      },
+      "initial_energy": 771.4,
+      "initial_free_energy": 1131.4658422145496,
+      "elapsed_ms": 256.0,
+      "seconds": 1.0665030000000115,
+      "source_work": 1386.519870199927,
+      "heat_out": 1792.9687936260868,
+      "motion_heat": 0.0,
+      "reaction_heat": 395.35089131801857,
+      "source_heat": 1261.3408915191064,
+      "conduction_heat": 136.27701078895763,
+      "free_material": 78,
+      "bound_support": 9,
+      "occupied_trace": 9,
+      "reaction_counts": {
+        "assembly+": 19,
+        "binding+": 27,
+        "write+": 29,
+        "thermal+": 16,
+        "active+": 21,
+        "release-": 26,
+        "conversion-": 47,
+        "transport+": 11,
+        "thermal-": 31,
+        "binding-": 9,
+        "assembly-": 1,
+        "write-": 5,
+        "release+": 17,
+        "active-": 1,
+        "transport-": 2,
+        "conversion+": 1
+      },
+      "motion_attempts": 0,
+      "motion_accepted": 0,
+      "rms_displacement": 0.0,
+      "maximum_balance_errors": {
+        "material": 0.0,
+        "drive": 0.0,
+        "support": 0.0,
+        "ends": 0.0,
+        "charge": 2.1316282072803006e-14,
+        "energy": 5.115907697472721e-12,
+        "free_energy": 2.7284841053187847e-12
+      },
+      "archive": "F:\\fly_stream_overflow\\cgb_mobile_bounded_20261022\\no_motion_complete.npz",
+      "sha256": "5c1d0d961dbbc3c55f076f731e232602cb128fcf18c821b117bb07f2679f76fc",
+      "full_restore_loaded": true,
+      "future_bitwise_tested": false,
+      "state_bytes": 3264,
+      "current_encounter_pairs": 24
+    },
+    "no_capture": {
+      "params": {
+        "binding_rate": 0.05,
+        "transport_rate": 0.01,
+        "release_rate": 0.01,
+        "bound_energy": -2.0,
+        "carried_energy": 0.0,
+        "charged_energy": 4.0,
+        "assembly_rate": 0.05,
+        "structure_energy": 2.0,
+        "conversion_rate": 0.01,
+        "charge_per_event": 1.0,
+        "active_rate": 0.005,
+        "write_rate": 0.02,
+        "recovery_rate": 0.02,
+        "trace_energy": 2.0,
+        "capture_coupling": 0.0,
+        "gate_low": 1.0,
+        "gate_high": 2.0,
+        "cohesion_energy": 0.6,
+        "bulk_attempt": 0.2,
+        "surface_attempt": 1.0,
+        "material_diffusion": 0.0,
+        "support_diffusion": 0.0,
+        "drive_diffusion": 0.0,
+        "spacing": 1.0,
+        "mobility": 0.002,
+        "core_diameter": 0.3,
+        "contact_radius": 1.5,
+        "rest_length": 0.8,
+        "elastic_stiffness": 4.0,
+        "box_size": 5.0
+      },
+      "initial": {
+        "bridges": 2,
+        "used_material_units": 2,
+        "free_ends": 68,
+        "branch_nodes": 0,
+        "isolated_cores": 21,
+        "tips": 2,
+        "seed_component_nodes": 3,
+        "seed_component_path_extent": 1.6,
+        "mean_pair_angle_radians": 3.141592653589793
+      },
+      "final": {
+        "bridges": 29,
+        "used_material_units": 29,
+        "free_ends": 14,
+        "branch_nodes": 15,
+        "isolated_cores": 2,
+        "tips": 1,
+        "seed_component_nodes": 22,
+        "seed_component_path_extent": 10.24089710815266,
+        "mean_pair_angle_radians": 1.522955562200928
+      },
+      "events": {
+        "formations": 32,
+        "new_spatial_pair_formations": 16,
+        "free_core_attachments": 15,
+        "branch_formations": 19,
+        "nucleations": 2,
+        "joins_or_closures": 15,
+        "removals": 5
+      },
+      "initial_energy": 771.4,
+      "initial_free_energy": 1131.4658422145496,
+      "elapsed_ms": 256.0,
+      "seconds": 1.5590737999991688,
+      "source_work": 1360.6608789773684,
+      "heat_out": 1887.9677479544403,
+      "motion_heat": 7.002624254733586,
+      "reaction_heat": 487.16751488916566,
+      "source_heat": 1209.4579905832659,
+      "conduction_heat": 184.3396182272803,
+      "free_material": 69,
+      "bound_support": 16,
+      "occupied_trace": 7,
+      "reaction_counts": {
+        "assembly+": 32,
+        "binding+": 42,
+        "conversion-": 50,
+        "write+": 36,
+        "active+": 32,
+        "transport+": 16,
+        "release-": 14,
+        "binding-": 17,
+        "thermal-": 35,
+        "thermal+": 9,
+        "transport-": 7,
+        "write-": 3,
+        "release+": 8,
+        "active-": 2,
+        "assembly-": 5,
+        "conversion+": 4
+      },
+      "motion_attempts": 3072,
+      "motion_accepted": 2489,
+      "rms_displacement": 1.2786917752634683,
+      "maximum_balance_errors": {
+        "material": 0.0,
+        "drive": 0.0,
+        "support": 0.0,
+        "ends": 0.0,
+        "charge": 1.4210854715202004e-14,
+        "energy": 4.206412995699793e-12,
+        "free_energy": 3.183231456205249e-12
+      },
+      "archive": "F:\\fly_stream_overflow\\cgb_mobile_bounded_20261022\\no_capture_complete.npz",
+      "sha256": "a9ed46a970c3a5799569d6ab9a50ab823d59ab04e1f93743bf98f0c7951dd364",
+      "full_restore_loaded": true,
+      "future_bitwise_tested": false,
+      "state_bytes": 3624,
+      "current_encounter_pairs": 58
+    },
+    "no_write": {
+      "params": {
+        "binding_rate": 0.05,
+        "transport_rate": 0.01,
+        "release_rate": 0.01,
+        "bound_energy": -2.0,
+        "carried_energy": 0.0,
+        "charged_energy": 4.0,
+        "assembly_rate": 0.05,
+        "structure_energy": 2.0,
+        "conversion_rate": 0.01,
+        "charge_per_event": 1.0,
+        "active_rate": 0.005,
+        "write_rate": 0.0,
+        "recovery_rate": 0.02,
+        "trace_energy": 2.0,
+        "capture_coupling": 2.0,
+        "gate_low": 1.0,
+        "gate_high": 2.0,
+        "cohesion_energy": 0.6,
+        "bulk_attempt": 0.2,
+        "surface_attempt": 1.0,
+        "material_diffusion": 0.0,
+        "support_diffusion": 0.0,
+        "drive_diffusion": 0.0,
+        "spacing": 1.0,
+        "mobility": 0.002,
+        "core_diameter": 0.3,
+        "contact_radius": 1.5,
+        "rest_length": 0.8,
+        "elastic_stiffness": 4.0,
+        "box_size": 5.0
+      },
+      "initial": {
+        "bridges": 2,
+        "used_material_units": 2,
+        "free_ends": 68,
+        "branch_nodes": 0,
+        "isolated_cores": 21,
+        "tips": 2,
+        "seed_component_nodes": 3,
+        "seed_component_path_extent": 1.6,
+        "mean_pair_angle_radians": 3.141592653589793
+      },
+      "final": {
+        "bridges": 28,
+        "used_material_units": 28,
+        "free_ends": 16,
+        "branch_nodes": 16,
+        "isolated_cores": 2,
+        "tips": 4,
+        "seed_component_nodes": 20,
+        "seed_component_path_extent": 5.939109686139664,
+        "mean_pair_angle_radians": 1.600553084706149
+      },
+      "events": {
+        "formations": 27,
+        "new_spatial_pair_formations": 13,
+        "free_core_attachments": 15,
+        "branch_formations": 15,
+        "nucleations": 2,
+        "joins_or_closures": 10,
+        "removals": 1
+      },
+      "initial_energy": 771.4,
+      "initial_free_energy": 1131.4658422145496,
+      "elapsed_ms": 256.0,
+      "seconds": 1.3912571000000753,
+      "source_work": 1336.5963638400838,
+      "heat_out": 1758.9017192880242,
+      "motion_heat": 3.9466790734185206,
+      "reaction_heat": 396.3894906760279,
+      "source_heat": 1229.0167355177284,
+      "conduction_heat": 129.54881402085218,
+      "free_material": 70,
+      "bound_support": 17,
+      "occupied_trace": 6,
+      "reaction_counts": {
+        "assembly+": 27,
+        "binding+": 41,
+        "conversion-": 38,
+        "release-": 19,
+        "thermal+": 22,
+        "active+": 39,
+        "transport+": 15,
+        "thermal-": 16,
+        "conversion+": 1,
+        "binding-": 12,
+        "release+": 14,
+        "transport-": 3,
+        "active-": 1,
+        "assembly-": 1
+      },
+      "motion_attempts": 3072,
+      "motion_accepted": 2581,
+      "rms_displacement": 1.4160777481462075,
+      "maximum_balance_errors": {
+        "material": 0.0,
+        "drive": 0.0,
+        "support": 0.0,
+        "ends": 0.0,
+        "charge": 2.1316282072803006e-14,
+        "energy": 4.433786671143025e-12,
+        "free_energy": 3.865352482534945e-12
+      },
+      "archive": "F:\\fly_stream_overflow\\cgb_mobile_bounded_20261022\\no_write_complete.npz",
+      "sha256": "394c3f0b20c00b9f761a7c6bb7cf2c9766c6f01372290304cd7252d424bf9d2a",
+      "full_restore_loaded": true,
+      "future_bitwise_tested": false,
+      "state_bytes": 3584,
+      "current_encounter_pairs": 49
+    },
+    "fewer_ends": {
+      "params": {
+        "binding_rate": 0.05,
+        "transport_rate": 0.01,
+        "release_rate": 0.01,
+        "bound_energy": -2.0,
+        "carried_energy": 0.0,
+        "charged_energy": 4.0,
+        "assembly_rate": 0.05,
+        "structure_energy": 2.0,
+        "conversion_rate": 0.01,
+        "charge_per_event": 1.0,
+        "active_rate": 0.005,
+        "write_rate": 0.02,
+        "recovery_rate": 0.02,
+        "trace_energy": 2.0,
+        "capture_coupling": 2.0,
+        "gate_low": 1.0,
+        "gate_high": 2.0,
+        "cohesion_energy": 0.6,
+        "bulk_attempt": 0.2,
+        "surface_attempt": 1.0,
+        "material_diffusion": 0.0,
+        "support_diffusion": 0.0,
+        "drive_diffusion": 0.0,
+        "spacing": 1.0,
+        "mobility": 0.002,
+        "core_diameter": 0.3,
+        "contact_radius": 1.5,
+        "rest_length": 0.8,
+        "elastic_stiffness": 4.0,
+        "box_size": 5.0
+      },
+      "initial": {
+        "bridges": 2,
+        "used_material_units": 2,
+        "free_ends": 44,
+        "branch_nodes": 0,
+        "isolated_cores": 21,
+        "tips": 2,
+        "seed_component_nodes": 3,
+        "seed_component_path_extent": 1.6,
+        "mean_pair_angle_radians": 3.141592653589793
+      },
+      "final": {
+        "bridges": 19,
+        "used_material_units": 19,
+        "free_ends": 10,
+        "branch_nodes": 0,
+        "isolated_cores": 4,
+        "tips": 2,
+        "seed_component_nodes": 7,
+        "seed_component_path_extent": 3.643646412725105,
+        "mean_pair_angle_radians": 1.51054839833952
+      },
+      "events": {
+        "formations": 22,
+        "new_spatial_pair_formations": 13,
+        "free_core_attachments": 13,
+        "branch_formations": 0,
+        "nucleations": 2,
+        "joins_or_closures": 7,
+        "removals": 5
+      },
+      "initial_energy": 771.4,
+      "initial_free_energy": 1133.3753847194341,
+      "elapsed_ms": 256.0,
+      "seconds": 1.169898799999828,
+      "source_work": 1359.7599612506995,
+      "heat_out": 1783.4435681936034,
+      "motion_heat": 0.7571410153678343,
+      "reaction_heat": 423.78760429011305,
+      "source_heat": 1258.7797394610748,
+      "conduction_heat": 100.11908342704993,
+      "free_material": 79,
+      "bound_support": 12,
+      "occupied_trace": 8,
+      "reaction_counts": {
+        "assembly+": 22,
+        "binding+": 27,
+        "write+": 26,
+        "conversion-": 51,
+        "release-": 14,
+        "thermal-": 18,
+        "active+": 26,
+        "thermal+": 5,
+        "binding-": 5,
+        "transport+": 13,
+        "assembly-": 5,
+        "write-": 5,
+        "release+": 5,
+        "transport-": 3,
+        "active-": 1,
+        "conversion+": 1
+      },
+      "motion_attempts": 3072,
+      "motion_accepted": 2617,
+      "rms_displacement": 1.3240087190498933,
+      "maximum_balance_errors": {
+        "material": 0.0,
+        "drive": 0.0,
+        "support": 0.0,
+        "ends": 0.0,
+        "charge": 2.4868995751603507e-14,
+        "energy": 3.524291969370097e-12,
+        "free_energy": 4.547473508864641e-12
+      },
+      "archive": "F:\\fly_stream_overflow\\cgb_mobile_bounded_20261022\\fewer_ends_complete.npz",
+      "sha256": "09184f45c3dc5334329160422b64e626640995ad00962d63086135104467cf41",
+      "full_restore_loaded": true,
+      "future_bitwise_tested": false,
+      "state_bytes": 3224,
+      "current_encounter_pairs": 34
+    }
+  },
+  "directed_matching_invoked": false,
+  "signed_predictive_learning": false,
+  "physical_assumptions": "finite-valence cores; hard exclusion/container/extensibility; elastic bridges; isothermal bath",
+  "continuum_or_language_capability": "not established by this finite numerical/interface audit",
+  "passed": true,
+  "retained_seed_bend_radians": {
+    "coupled": [
+      [
+        0.0,
+        3.141592653589793
+      ],
+      [
+        16.0,
+        1.6144852692255676
+      ],
+      [
+        32.0,
+        1.0364086345014683
+      ],
+      [
+        48.0,
+        1.0654339869646092
+      ],
+      [
+        64.0,
+        1.25668794354414
+      ],
+      [
+        80.0,
+        1.3835377016816444
+      ],
+      [
+        96.0,
+        1.346552836698488
+      ],
+      [
+        112.0,
+        1.656077007646771
+      ],
+      [
+        128.0,
+        1.3999620675816227
+      ],
+      [
+        144.0,
+        1.4578443081409462
+      ],
+      [
+        160.0,
+        1.3352821305006422
+      ],
+      [
+        176.0,
+        1.7802854186007693
+      ],
+      [
+        192.0,
+        2.2764936641587146
+      ],
+      [
+        208.0,
+        1.7489650554563276
+      ],
+      [
+        224.0,
+        1.771999854649322
+      ],
+      [
+        240.0,
+        1.418918859092113
+      ],
+      [
+        256.0,
+        1.4670835130567503
+      ]
+    ],
+    "no_motion": [
+      [
+        0.0,
+        3.141592653589793
+      ],
+      [
+        16.0,
+        3.141592653589793
+      ],
+      [
+        32.0,
+        3.141592653589793
+      ],
+      [
+        48.0,
+        3.141592653589793
+      ],
+      [
+        64.0,
+        3.141592653589793
+      ],
+      [
+        80.0,
+        3.141592653589793
+      ],
+      [
+        96.0,
+        3.141592653589793
+      ],
+      [
+        112.0,
+        3.141592653589793
+      ],
+      [
+        128.0,
+        3.141592653589793
+      ],
+      [
+        144.0,
+        3.141592653589793
+      ],
+      [
+        160.0,
+        3.141592653589793
+      ],
+      [
+        176.0,
+        3.141592653589793
+      ],
+      [
+        192.0,
+        3.141592653589793
+      ],
+      [
+        208.0,
+        3.141592653589793
+      ],
+      [
+        224.0,
+        3.141592653589793
+      ],
+      [
+        240.0,
+        3.141592653589793
+      ],
+      [
+        256.0,
+        3.141592653589793
+      ]
+    ],
+    "no_capture": [
+      [
+        0.0,
+        3.141592653589793
+      ],
+      [
+        16.0,
+        1.6144852692255676
+      ],
+      [
+        32.0,
+        1.002350642120423
+      ],
+      [
+        48.0,
+        0.8957042656172818
+      ],
+      [
+        64.0,
+        1.0688754124435833
+      ],
+      [
+        80.0,
+        1.125131738721238
+      ],
+      [
+        96.0,
+        0.8912070094689845
+      ],
+      [
+        112.0,
+        1.4274275838391692
+      ],
+      [
+        128.0,
+        1.0433041638326062
+      ],
+      [
+        144.0,
+        0.8669421419278707
+      ],
+      [
+        160.0,
+        0.6679607239683214
+      ],
+      [
+        176.0,
+        1.0200001516702242
+      ],
+      [
+        192.0,
+        0.8676622566566893
+      ],
+      [
+        208.0,
+        0.8097390960815132
+      ],
+      [
+        224.0,
+        0.6508399331251716
+      ],
+      [
+        240.0,
+        0.5186060798018411
+      ],
+      [
+        256.0,
+        0.7449918868091242
+      ]
+    ],
+    "no_write": [
+      [
+        0.0,
+        3.141592653589793
+      ],
+      [
+        16.0,
+        1.6144852692255676
+      ],
+      [
+        32.0,
+        1.1540272721393114
+      ],
+      [
+        48.0,
+        0.9956342730373865
+      ],
+      [
+        64.0,
+        1.1914221387694275
+      ],
+      [
+        80.0,
+        1.4221069260645811
+      ],
+      [
+        96.0,
+        1.4161510277606046
+      ],
+      [
+        112.0,
+        1.6602307454205865
+      ],
+      [
+        128.0,
+        1.413567170354134
+      ],
+      [
+        144.0,
+        1.568713925545976
+      ],
+      [
+        160.0,
+        1.3947017668466393
+      ],
+      [
+        176.0,
+        1.8374541940172
+      ],
+      [
+        192.0,
+        2.532181162092295
+      ],
+      [
+        208.0,
+        2.0177703885204865
+      ],
+      [
+        224.0,
+        2.1101527409610847
+      ],
+      [
+        240.0,
+        1.7104008544670632
+      ],
+      [
+        256.0,
+        1.7182854255294946
+      ]
+    ],
+    "fewer_ends": [
+      [
+        0.0,
+        3.141592653589793
+      ],
+      [
+        16.0,
+        1.745165315052156
+      ],
+      [
+        32.0,
+        1.0991314409573207
+      ],
+      [
+        48.0,
+        0.9324092475818493
+      ],
+      [
+        64.0,
+        1.2936591817341077
+      ],
+      [
+        80.0,
+        1.3709835056937718
+      ],
+      [
+        96.0,
+        1.176293598467709
+      ],
+      [
+        112.0,
+        1.3916350380758553
+      ],
+      [
+        128.0,
+        1.10553264535238
+      ],
+      [
+        144.0,
+        0.9923299387838852
+      ],
+      [
+        160.0,
+        0.836982006921999
+      ],
+      [
+        176.0,
+        0.746892041100348
+      ],
+      [
+        192.0,
+        0.670098276614608
+      ],
+      [
+        208.0,
+        0.9911001350909661
+      ],
+      [
+        224.0,
+        0.774019677495382
+      ],
+      [
+        240.0,
+        0.8571527513481463
+      ],
+      [
+        256.0,
+        1.1141704284893597
+      ]
+    ]
+  },
+  "execution_equivalence": {
+    "reference": "F:\\fly_stream_overflow\\cgb_mobile_thermal_20261022",
+    "reference_source_sha256": "fd40fad8f91faaeb0dc7a54d15b92a95ae1afc4ca48361aadb78980a052350f8",
+    "current_source_sha256": "1345d1243c9280b43c4528ec2c3ea9a85536355de8a76537be5ddab00ce6dc5d",
+    "same_physical_clock": "128->256ms, dt2ms, same retained real byte stream",
+    "arms": {
+      "coupled": {
+        "physical_arrays_and_rng_bitwise": true,
+        "maximum_ledger_roundoff": 2.0463630789890885e-12,
+        "reference_seconds": 0.7663424000002124,
+        "bounded_work_seconds": 0.6868766999996296
+      },
+      "no_motion": {
+        "physical_arrays_and_rng_bitwise": true,
+        "maximum_ledger_roundoff": 0.0,
+        "reference_seconds": 0.520326699999714,
+        "bounded_work_seconds": 0.38308930000039254
+      },
+      "no_capture": {
+        "physical_arrays_and_rng_bitwise": true,
+        "maximum_ledger_roundoff": 2.5011104298755527e-12,
+        "reference_seconds": 0.9213795999994545,
+        "bounded_work_seconds": 0.7559598999996524
+      },
+      "no_write": {
+        "physical_arrays_and_rng_bitwise": true,
+        "maximum_ledger_roundoff": 2.2737367544323206e-12,
+        "reference_seconds": 0.7560652000001937,
+        "bounded_work_seconds": 0.6564898000005996
+      },
+      "fewer_ends": {
+        "physical_arrays_and_rng_bitwise": true,
+        "maximum_ledger_roundoff": 1.8189894035458565e-12,
+        "reference_seconds": 0.6681685000003199,
+        "bounded_work_seconds": 0.5807322999999087
+      }
+    },
+    "passed": true
+  },
+  "validation": {
+    "passed": 176,
+    "seconds": 17.34,
+    "junit": "F:\\fly_stream_overflow\\cgb_mobile_bounded_20261022\\regression.xml",
+    "scope": "16 affected CGB files, physical/numerical/interface evidence"
+  },
+  "viewer": {
+    "url": "http://127.0.0.1:8766/mobile",
+    "screenshot": "F:\\fly_stream_overflow\\cgb_mobile_bounded_20261022\\mobile_view.png",
+    "sha256": "ea9402adbcfd12211af1ec3191a86c79d6d7c6ffb3e74ad289a611613b4b0a6d",
+    "observed_initial": [
+      2,
+      3,
+      0,
+      96,
+      0,
+      0
+    ],
+    "observed_final": [
+      28,
+      23,
+      14,
+      70,
+      1343.07,
+      22
+    ]
+  },
+  "superseded_reference": {
+    "run": "F:/fly_stream_overflow/cgb_mobile_material_20261022",
+    "schema": 1,
+    "reason": "deterministic fast field did not have common-temperature fluctuations; actual source/states preserved, not selected result"
+  }
+}
