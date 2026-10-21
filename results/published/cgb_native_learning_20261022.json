@@ -1,0 +1,685 @@
+{
+  "date": "2026-10-22",
+  "baseline_git": "0f1674125a6083e2647d521d5bac7bbad2467473",
+  "run": "F:\\fly_stream_overflow\\cgb_native_learning_20261022",
+  "sources": {
+    "archive": "F:\\fly_stream_overflow\\cgb_identity_cached_20261022\\coupled_complete.npz",
+    "archive_sha256": "4317f2e25e7834fa8f76b16b1b38895904506f51e058cd01616f5f1e67258c05",
+    "source_time_ms": 256.0,
+    "retained_history_bytes": 64,
+    "genome": "e2dd1af426729119fe14baa239b5d4462b7d93c9a5fe62112254a33fad55caca",
+    "corpus": {
+      "source": "openwebtext",
+      "revision": "433fe0f44ed7894fea29c08b3202aa348ccc6369",
+      "split_rule": "NFC_document_sha256_mod100_98_1_1",
+      "tokenizer": {
+        "type": "utf8_bytes",
+        "offset": 4,
+        "special_tokens": [
+          "<pad>",
+          "<bos>",
+          "<eos>",
+          "<unk>"
+        ]
+      },
+      "manifest_sha256": "3614c380d4c72688ac8ccde42f32ea0655d16bec1ba0874a924fd777af904d2d",
+      "files_sha256": {
+        "train.npy": "2f227239bc63b89daf31956701d243a93f9dd46671702fff03763b33dc6db4fb",
+        "validation.npy": "60d41d3fdda8c1718ad1735693eda0dae2b23a0032c5e04a29aac9d0c6d35d8c"
+      },
+      "selected_locations": {
+        "warm": {
+          "split": "train",
+          "offset": 0
+        },
+        "fresh_A": {
+          "split": "train",
+          "offset": 256
+        },
+        "fresh_B": {
+          "split": "validation",
+          "offset": 0
+        },
+        "revisit_A": {
+          "split": "train",
+          "offset": 0,
+          "replay": true
+        }
+      },
+      "selected_counts": {
+        "warm": 256,
+        "fresh_A": 1024,
+        "fresh_B": 256,
+        "revisit_A": 256
+      },
+      "selected_sha256": {
+        "warm": "8adc7c0db929640b940dc5dd169d0e33d817702bad92c4e8e74fef402729fe47",
+        "fresh_A": "f78646c8d44a0757e6209fe2a21213886d45e428352822fd34016e76f83b879a",
+        "fresh_B": "cae7e75576faafe47498559572aebb75265dc091a8fbd2d50558b027bc4cdac9",
+        "revisit_A": "8adc7c0db929640b940dc5dd169d0e33d817702bad92c4e8e74fef402729fe47"
+      }
+    },
+    "selected_stream_sha256": "66ff4214ee2abf401a2d6e299755578c82964b2622c90ace8be05ca286f0f7db"
+  },
+  "code_sha256": {
+    "scripts\\ib\\generative\\native_learning_stream.py": "fd661b5a70e31e575c3ab480d22947ede9b6a3b96e14ade0199bea210d93cb17",
+    "information_boltzmann\\cgb\\learning_observation.py": "1869e034855cfb9346bab8543ff6fa44fdab53d62812ec28db79792d7e0ec9da",
+    "information_boltzmann\\cgb\\mobile_exchange.py": "2732bb7c1a574e4e96cd3c29b641c332efcc83415b6b854214b49f129f0afcf3",
+    "information_boltzmann\\cgb\\identity_material.py": "4378e1bc6c6b48839ca02b38269ff841efea5ce224a6d1f41e47588123fe580b",
+    "information_boltzmann\\cgb\\exchange_checkpoint.py": "2fbb82909948f3b6cff539fd5d13cf351d6c4b497b90355a02db3d0b0802010c",
+    "docs\\information_boltzmann\\CGB_NATIVE_LEARNING_PREREG_20261022.md": "eefc71a6c83bdc61d21490b19bb1e733fa7572488f10ed9abab9dbeea7753f5b"
+  },
+  "units": "nats per UTF8 byte, prediction before arrival",
+  "byte_ms": 4.0,
+  "dt_ms": 2.0,
+  "optimizer_updates": 0,
+  "convergence": "budget-limited first interface; no architecture capacity/convergence conclusion",
+  "shared_warm_bytes": 256,
+  "new_scored_bytes_per_arm": 1280,
+  "revisit_bytes_per_arm": 256,
+  "fixed_reference_exposure_bytes": 320,
+  "arms": {
+    "native": {
+      "intervention": {
+        "time_ms": 1280.0,
+        "changes": {
+          "capture_coupling": 2.0
+        },
+        "previous": {
+          "capture_coupling": 2.0
+        },
+        "external_work": 0.0,
+        "free_energy_change": 0.0,
+        "state_erased": false,
+        "kinetic_controller": "ideal diagnostic barrier; not part of the living model"
+      },
+      "params": {
+        "binding_rate": 0.05,
+        "transport_rate": 0.01,
+        "release_rate": 0.01,
+        "bound_energy": -2.0,
+        "carried_energy": 0.0,
+        "charged_energy": 4.0,
+        "assembly_rate": 0.05,
+        "structure_energy": 2.0,
+        "conversion_rate": 0.01,
+        "charge_per_event": 1.0,
+        "active_rate": 0.005,
+        "write_rate": 0.02,
+        "recovery_rate": 0.02,
+        "trace_energy": 2.0,
+        "capture_coupling": 2.0,
+        "gate_low": 1.0,
+        "gate_high": 2.0,
+        "cohesion_energy": 0.6,
+        "bulk_attempt": 0.2,
+        "surface_attempt": 1.0,
+        "material_diffusion": 0.0,
+        "support_diffusion": 0.0,
+        "drive_diffusion": 0.0,
+        "spacing": 1.0,
+        "mobility": 0.002,
+        "core_diameter": 0.3,
+        "contact_radius": 1.5,
+        "rest_length": 0.8,
+        "elastic_stiffness": 4.0,
+        "box_size": 5.0
+      },
+      "phases": {
+        "fresh_A": {
+          "n": 1024,
+          "nll_nats_per_byte": {
+            "material": 12.172597233285888,
+            "fixed_byte": 3.3976424718008036,
+            "fixed_bits": 3.8866419641228354,
+            "source_filter": 10.458397897737829
+          },
+          "physical_start_ms": 1280.0,
+          "physical_end_ms": 5376.0,
+          "seconds": 77.61301959999946,
+          "native_reaction_events": {
+            "write+": 2561,
+            "transport+": 46,
+            "conversion+": 95,
+            "active+": 1866,
+            "conversion-": 121,
+            "write-": 2579,
+            "binding-": 358,
+            "thermal-": 637,
+            "assembly-": 187,
+            "assembly+": 187,
+            "active-": 1870,
+            "release+": 150,
+            "binding+": 358,
+            "release-": 150,
+            "transport-": 50,
+            "thermal+": 656
+          },
+          "maximum_balance_errors": {
+            "material": 0.0,
+            "drive": 0.0,
+            "support": 0.0,
+            "ends": 0.0,
+            "charge": 1.9895196601282805e-13,
+            "energy": 4.816911314264871e-10,
+            "free_energy": 4.5838532969355583e-10
+          },
+          "source_work": 20518.673511883473,
+          "heat_out": 20510.755277861896,
+          "archive": "F:\\fly_stream_overflow\\cgb_native_learning_20261022\\native_fresh_A_complete.npz",
+          "sha256": "f7db064c1501fd4c8cf6db2294c0472eaf9b2c0437070fe1e46cf3c3fb53734f",
+          "full_restore_loaded": true,
+          "restored_future_bytes_tested": 16
+        },
+        "fresh_B": {
+          "n": 256,
+          "nll_nats_per_byte": {
+            "material": 12.330182086910385,
+            "fixed_byte": 3.543381001850594,
+            "fixed_bits": 4.059897445596038,
+            "source_filter": 10.84985010037508
+          },
+          "physical_start_ms": 5376.0,
+          "physical_end_ms": 6400.0,
+          "seconds": 22.299594199999774,
+          "native_reaction_events": {
+            "write+": 580,
+            "transport+": 13,
+            "conversion+": 28,
+            "active+": 423,
+            "conversion-": 35,
+            "write-": 588,
+            "binding-": 80,
+            "thermal-": 164,
+            "assembly-": 38,
+            "assembly+": 37,
+            "active-": 421,
+            "release+": 34,
+            "binding+": 78,
+            "release-": 36,
+            "transport-": 13,
+            "thermal+": 164
+          },
+          "maximum_balance_errors": {
+            "material": 0.0,
+            "drive": 0.0,
+            "support": 0.0,
+            "ends": 0.0,
+            "charge": 9.947598300641403e-14,
+            "energy": 6.090203896746971e-10,
+            "free_energy": 5.529727786779404e-10
+          },
+          "source_work": 5291.193439647468,
+          "heat_out": 5289.75528326257,
+          "archive": "F:\\fly_stream_overflow\\cgb_native_learning_20261022\\native_fresh_B_complete.npz",
+          "sha256": "57dcda05a8ece2dd8bad55cda67e8fad2ff10b01ba9f4d20b2218bfe54f25beb",
+          "full_restore_loaded": true,
+          "restored_future_bytes_tested": 0
+        },
+        "revisit_A": {
+          "n": 256,
+          "nll_nats_per_byte": {
+            "material": 12.428753966105916,
+            "fixed_byte": 3.392654595298695,
+            "fixed_bits": 3.868586056873867,
+            "source_filter": 10.42474812368924
+          },
+          "physical_start_ms": 6400.0,
+          "physical_end_ms": 7424.0,
+          "seconds": 14.443199199999981,
+          "native_reaction_events": {
+            "write+": 215,
+            "transport+": 9,
+            "conversion+": 23,
+            "active+": 123,
+            "conversion-": 31,
+            "write-": 210,
+            "binding-": 84,
+            "thermal-": 146,
+            "assembly-": 41,
+            "assembly+": 41,
+            "active-": 138,
+            "release+": 42,
+            "binding+": 88,
+            "release-": 37,
+            "transport-": 5,
+            "thermal+": 141
+          },
+          "maximum_balance_errors": {
+            "material": 0.0,
+            "drive": 0.0,
+            "support": 0.0,
+            "ends": 0.0,
+            "charge": 1.9895196601282805e-13,
+            "energy": 9.109726306633092e-10,
+            "free_energy": 7.785274647176266e-10
+          },
+          "source_work": 5093.3559528796795,
+          "heat_out": 5104.9966790158,
+          "archive": "F:\\fly_stream_overflow\\cgb_native_learning_20261022\\native_revisit_A_complete.npz",
+          "sha256": "6980d0b61424b6cf1d18ad5956d356185d8468f20a45b4775f9e8722e526398e",
+          "full_restore_loaded": true,
+          "restored_future_bytes_tested": 0
+        }
+      }
+    },
+    "no_trace_capture": {
+      "intervention": {
+        "time_ms": 1280.0,
+        "changes": {
+          "capture_coupling": 0.0
+        },
+        "previous": {
+          "capture_coupling": 2.0
+        },
+        "external_work": 34.0,
+        "free_energy_change": 34.0,
+        "state_erased": false,
+        "kinetic_controller": "ideal diagnostic barrier; not part of the living model"
+      },
+      "params": {
+        "binding_rate": 0.05,
+        "transport_rate": 0.01,
+        "release_rate": 0.01,
+        "bound_energy": -2.0,
+        "carried_energy": 0.0,
+        "charged_energy": 4.0,
+        "assembly_rate": 0.05,
+        "structure_energy": 2.0,
+        "conversion_rate": 0.01,
+        "charge_per_event": 1.0,
+        "active_rate": 0.005,
+        "write_rate": 0.02,
+        "recovery_rate": 0.02,
+        "trace_energy": 2.0,
+        "capture_coupling": 0.0,
+        "gate_low": 1.0,
+        "gate_high": 2.0,
+        "cohesion_energy": 0.6,
+        "bulk_attempt": 0.2,
+        "surface_attempt": 1.0,
+        "material_diffusion": 0.0,
+        "support_diffusion": 0.0,
+        "drive_diffusion": 0.0,
+        "spacing": 1.0,
+        "mobility": 0.002,
+        "core_diameter": 0.3,
+        "contact_radius": 1.5,
+        "rest_length": 0.8,
+        "elastic_stiffness": 4.0,
+        "box_size": 5.0
+      },
+      "phases": {
+        "fresh_A": {
+          "n": 1024,
+          "nll_nats_per_byte": {
+            "material": 11.482672169932476,
+            "fixed_byte": 3.3976424718008036,
+            "fixed_bits": 3.8866419641228354,
+            "source_filter": 10.458397897737829
+          },
+          "physical_start_ms": 1280.0,
+          "physical_end_ms": 5376.0,
+          "seconds": 51.92342869999993,
+          "native_reaction_events": {
+            "write+": 1309,
+            "transport+": 75,
+            "conversion+": 90,
+            "active+": 870,
+            "conversion-": 120,
+            "write-": 1322,
+            "binding-": 560,
+            "thermal-": 287,
+            "assembly-": 216,
+            "assembly+": 217,
+            "active-": 888,
+            "release+": 176,
+            "binding+": 560,
+            "release-": 170,
+            "transport-": 72,
+            "thermal+": 283
+          },
+          "maximum_balance_errors": {
+            "material": 0.0,
+            "drive": 0.0,
+            "support": 0.0,
+            "ends": 0.0,
+            "charge": 4.405364961712621e-13,
+            "energy": 3.579998519853689e-10,
+            "free_energy": 3.67435859516263e-10
+          },
+          "source_work": 19832.061066880065,
+          "heat_out": 19861.884721206974,
+          "archive": "F:\\fly_stream_overflow\\cgb_native_learning_20261022\\no_trace_capture_fresh_A_complete.npz",
+          "sha256": "e8ff819f4ff2bcd9a10a4543328e17d5be82ae262bd259d9db0b9876ed63c0c4",
+          "full_restore_loaded": true,
+          "restored_future_bytes_tested": 0
+        },
+        "fresh_B": {
+          "n": 256,
+          "nll_nats_per_byte": {
+            "material": 11.844919302107632,
+            "fixed_byte": 3.543381001850594,
+            "fixed_bits": 4.059897445596038,
+            "source_filter": 10.84985010037508
+          },
+          "physical_start_ms": 5376.0,
+          "physical_end_ms": 6400.0,
+          "seconds": 12.351634200000262,
+          "native_reaction_events": {
+            "write+": 294,
+            "transport+": 18,
+            "conversion+": 21,
+            "active+": 193,
+            "conversion-": 31,
+            "write-": 295,
+            "binding-": 132,
+            "thermal-": 65,
+            "assembly-": 45,
+            "assembly+": 45,
+            "active-": 210,
+            "release+": 46,
+            "binding+": 141,
+            "release-": 44,
+            "transport-": 12,
+            "thermal+": 73
+          },
+          "maximum_balance_errors": {
+            "material": 0.0,
+            "drive": 0.0,
+            "support": 0.0,
+            "ends": 0.0,
+            "charge": 4.405364961712621e-13,
+            "energy": 2.9979219107190147e-10,
+            "free_energy": 3.128661774098873e-10
+          },
+          "source_work": 5263.937925853985,
+          "heat_out": 5249.7415499498275,
+          "archive": "F:\\fly_stream_overflow\\cgb_native_learning_20261022\\no_trace_capture_fresh_B_complete.npz",
+          "sha256": "f23cdbbe5bc5e284929aa60a1faec1c9d6405729ca514a995e6828e412896ded",
+          "full_restore_loaded": true,
+          "restored_future_bytes_tested": 0
+        },
+        "revisit_A": {
+          "n": 256,
+          "nll_nats_per_byte": {
+            "material": 11.185929254701431,
+            "fixed_byte": 3.392654595298695,
+            "fixed_bits": 3.868586056873867,
+            "source_filter": 10.42474812368924
+          },
+          "physical_start_ms": 6400.0,
+          "physical_end_ms": 7424.0,
+          "seconds": 20.12251920000017,
+          "native_reaction_events": {
+            "write+": 671,
+            "transport+": 16,
+            "conversion+": 23,
+            "active+": 493,
+            "conversion-": 26,
+            "write-": 687,
+            "binding-": 167,
+            "thermal-": 59,
+            "assembly-": 69,
+            "assembly+": 68,
+            "active-": 482,
+            "release+": 47,
+            "binding+": 168,
+            "release-": 39,
+            "transport-": 12,
+            "thermal+": 74
+          },
+          "maximum_balance_errors": {
+            "material": 0.0,
+            "drive": 0.0,
+            "support": 0.0,
+            "ends": 0.0,
+            "charge": 4.121147867408581e-13,
+            "energy": 3.623199518187903e-10,
+            "free_energy": 3.41970007866621e-10
+          },
+          "source_work": 4926.046419319879,
+          "heat_out": 4932.525152511826,
+          "archive": "F:\\fly_stream_overflow\\cgb_native_learning_20261022\\no_trace_capture_revisit_A_complete.npz",
+          "sha256": "752659af40a1b7b14019b3efd9b0ab6ca732e75d171ac1ddbf22084dbed57214",
+          "full_restore_loaded": true,
+          "restored_future_bytes_tested": 0
+        }
+      }
+    },
+    "frozen_adaptation": {
+      "intervention": {
+        "time_ms": 1280.0,
+        "changes": {
+          "mobility": 0.0,
+          "assembly_rate": 0.0,
+          "binding_rate": 0.0,
+          "transport_rate": 0.0,
+          "release_rate": 0.0,
+          "write_rate": 0.0,
+          "recovery_rate": 0.0
+        },
+        "previous": {
+          "mobility": 0.002,
+          "assembly_rate": 0.05,
+          "binding_rate": 0.05,
+          "transport_rate": 0.01,
+          "release_rate": 0.01,
+          "write_rate": 0.02,
+          "recovery_rate": 0.02
+        },
+        "external_work": 0.0,
+        "free_energy_change": 0.0,
+        "state_erased": false,
+        "kinetic_controller": "ideal diagnostic barrier; not part of the living model"
+      },
+      "params": {
+        "binding_rate": 0.0,
+        "transport_rate": 0.0,
+        "release_rate": 0.0,
+        "bound_energy": -2.0,
+        "carried_energy": 0.0,
+        "charged_energy": 4.0,
+        "assembly_rate": 0.0,
+        "structure_energy": 2.0,
+        "conversion_rate": 0.01,
+        "charge_per_event": 1.0,
+        "active_rate": 0.005,
+        "write_rate": 0.0,
+        "recovery_rate": 0.0,
+        "trace_energy": 2.0,
+        "capture_coupling": 2.0,
+        "gate_low": 1.0,
+        "gate_high": 2.0,
+        "cohesion_energy": 0.6,
+        "bulk_attempt": 0.2,
+        "surface_attempt": 1.0,
+        "material_diffusion": 0.0,
+        "support_diffusion": 0.0,
+        "drive_diffusion": 0.0,
+        "spacing": 1.0,
+        "mobility": 0.0,
+        "core_diameter": 0.3,
+        "contact_radius": 1.5,
+        "rest_length": 0.8,
+        "elastic_stiffness": 4.0,
+        "box_size": 5.0
+      },
+      "phases": {
+        "fresh_A": {
+          "n": 1024,
+          "nll_nats_per_byte": {
+            "material": 12.32348210345112,
+            "fixed_byte": 3.3976424718008036,
+            "fixed_bits": 3.8866419641228354,
+            "source_filter": 10.458397897737829
+          },
+          "physical_start_ms": 1280.0,
+          "physical_end_ms": 5376.0,
+          "seconds": 15.69868729999962,
+          "native_reaction_events": {
+            "write+": 0,
+            "transport+": 0,
+            "conversion+": 118,
+            "active+": 945,
+            "conversion-": 121,
+            "write-": 0,
+            "binding-": 0,
+            "thermal-": 0,
+            "assembly-": 0,
+            "assembly+": 0,
+            "active-": 944,
+            "release+": 0,
+            "binding+": 0,
+            "release-": 0,
+            "transport-": 0,
+            "thermal+": 0
+          },
+          "maximum_balance_errors": {
+            "material": 0.0,
+            "drive": 0.0,
+            "support": 0.0,
+            "ends": 0.0,
+            "charge": 1.7763568394002505e-13,
+            "energy": 1.5063505998114124e-10,
+            "free_energy": 1.4915713109076023e-10
+          },
+          "source_work": 20347.56393574311,
+          "heat_out": 20346.292487007446,
+          "archive": "F:\\fly_stream_overflow\\cgb_native_learning_20261022\\frozen_adaptation_fresh_A_complete.npz",
+          "sha256": "88f78df66858c6dd688a8890c181280103941cf1a013b019bd11addc8db6de92",
+          "full_restore_loaded": true,
+          "restored_future_bytes_tested": 0
+        },
+        "fresh_B": {
+          "n": 256,
+          "nll_nats_per_byte": {
+            "material": 12.550337378797012,
+            "fixed_byte": 3.543381001850594,
+            "fixed_bits": 4.059897445596038,
+            "source_filter": 10.84985010037508
+          },
+          "physical_start_ms": 5376.0,
+          "physical_end_ms": 6400.0,
+          "seconds": 4.013669900000423,
+          "native_reaction_events": {
+            "write+": 0,
+            "transport+": 0,
+            "conversion+": 36,
+            "active+": 223,
+            "conversion-": 43,
+            "write-": 0,
+            "binding-": 0,
+            "thermal-": 0,
+            "assembly-": 0,
+            "assembly+": 0,
+            "active-": 237,
+            "release+": 0,
+            "binding+": 0,
+            "release-": 0,
+            "transport-": 0,
+            "thermal+": 0
+          },
+          "maximum_balance_errors": {
+            "material": 0.0,
+            "drive": 0.0,
+            "support": 0.0,
+            "ends": 0.0,
+            "charge": 2.4158453015843406e-13,
+            "energy": 1.986109054996632e-10,
+            "free_energy": 1.673470251262188e-10
+          },
+          "source_work": 5070.106540108893,
+          "heat_out": 5055.149211869782,
+          "archive": "F:\\fly_stream_overflow\\cgb_native_learning_20261022\\frozen_adaptation_fresh_B_complete.npz",
+          "sha256": "f1b01bb5ff81fca6bcfe76e02eba04ae53e657b164bc50c33de1f61ef13e8e54",
+          "full_restore_loaded": true,
+          "restored_future_bytes_tested": 0
+        },
+        "revisit_A": {
+          "n": 256,
+          "nll_nats_per_byte": {
+            "material": 11.517771237075793,
+            "fixed_byte": 3.392654595298695,
+            "fixed_bits": 3.868586056873867,
+            "source_filter": 10.42474812368924
+          },
+          "physical_start_ms": 6400.0,
+          "physical_end_ms": 7424.0,
+          "seconds": 4.0860185999999885,
+          "native_reaction_events": {
+            "write+": 0,
+            "transport+": 0,
+            "conversion+": 24,
+            "active+": 258,
+            "conversion-": 29,
+            "write-": 0,
+            "binding-": 0,
+            "thermal-": 0,
+            "assembly-": 0,
+            "assembly+": 0,
+            "active-": 261,
+            "release+": 0,
+            "binding+": 0,
+            "release-": 0,
+            "transport-": 0,
+            "thermal+": 0
+          },
+          "maximum_balance_errors": {
+            "material": 0.0,
+            "drive": 0.0,
+            "support": 0.0,
+            "ends": 0.0,
+            "charge": 3.126388037344441e-13,
+            "energy": 1.949729266925715e-10,
+            "free_energy": 2.1827872842550278e-10
+          },
+          "source_work": 5114.546878895144,
+          "heat_out": 5113.56275874962,
+          "archive": "F:\\fly_stream_overflow\\cgb_native_learning_20261022\\frozen_adaptation_revisit_A_complete.npz",
+          "sha256": "dc83336bc372eb9c124d747658331200b8847426daa66742156cf3061e1a270d",
+          "full_restore_loaded": true,
+          "restored_future_bytes_tested": 0
+        }
+      }
+    }
+  },
+  "full_resume": {
+    "passed": true,
+    "start_ms": 3328.0,
+    "end_ms": 7424.0,
+    "future_bytes": 1024,
+    "source_archive_sha256": "dc41fb6892669b388b78ba52597e17d04a4ec1114c5e9c30bd07a20cc722f403",
+    "reference_sha256": "6980d0b61424b6cf1d18ad5956d356185d8468f20a45b4775f9e8722e526398e",
+    "physical_state_and_three_rngs_bitwise": true,
+    "external_session_exact": true,
+    "all_future_prearrival_predictions_exact": true,
+    "selected_stream_sha256": "66ff4214ee2abf401a2d6e299755578c82964b2622c90ace8be05ca286f0f7db"
+  },
+  "sensory": {
+    "passed": true,
+    "source_archive": "F:\\fly_stream_overflow\\cgb_native_learning_20261022\\native_fresh_A_mid.npz",
+    "source_sha256": "dc41fb6892669b388b78ba52597e17d04a4ec1114c5e9c30bd07a20cc722f403",
+    "bytes": 16,
+    "first_phase_byte": 512,
+    "final_ms": 3392.0,
+    "all_physical_state_three_rngs_and_prearrival_scores_sham_exact": true,
+    "scope": "post-arrival first-field evidence conditional on full pre-field physical state; not agent posterior or prequential prediction",
+    "natural_text_information_gain": "finite realized log evidence ratios; no uniform-input capacity claim for this nonuniform sample",
+    "mean": {
+      "posterior_nll_uniform": 5.560283365046702,
+      "posterior_nll_fixed_prior": 3.2063522215761973,
+      "realized_log_evidence_ratio": -0.019500344360933425,
+      "uniform_input_information_bound_nats": 0.005158016689996976,
+      "gain_frobenius": 0.020231397589449595,
+      "noise_covariance_trace": 3.490271292976634
+    }
+  },
+  "checks": {
+    "tests": 213,
+    "files": 21,
+    "seconds": 23.65,
+    "failures": 0
+  },
+  "interpretation": "Native coupling changes dynamics; predictive utility not established. Sensory result is conditional one-substep evidence, not pre-arrival NLL or agent posterior."
+}

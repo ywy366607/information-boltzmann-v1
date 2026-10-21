@@ -70,4 +70,5 @@ Nf/T回答“谁得到支持、衰退得慢”；B回答“实际能造多少、
 - Codex材料账与连续性：[V2f](CGB_V2F_RESULTS_20261021.md)。
 - Codex空间出生、校准与树形候选：[初版](CGB_SPATIAL_PREVIEW_RESULTS_20261021.md)、[校准](CGB_BIRTH_CALIBRATION_RESULTS_20261021.md)、[联合检查](CGB_TREE_JOINT_RESULTS_20261021.md)。
 - Codex功能定位：[E2敏感性与覆盖](CGB_E2_SENSITIVITY_RESULTS_20261021.md)。
+- Codex同核学习与换能诊断：[真实流、原反应通量、完整未来恢复和解析感觉通道](CGB_NATIVE_LEARNING_RESULTS_20261022.md)。继承Claude相遇／定向身份及有限池思想，不替代原V2时序结果；当前参考端口预测没有胜过频率，完整时序、延迟认识信用及身体世界仍未交付。
 - 共同路线与最新状态：[主规划](CONSTRUCTAL_GENERATIVE_BRAIN_FRAMEWORK_20261018.md)。
