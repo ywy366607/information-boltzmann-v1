@@ -54,6 +54,9 @@ def load_exchange(path):
         elif state.get('kind') == 'mobile_exchange':
             from .mobile_exchange import MobileExchange
             model_class = MobileExchange
+        elif state.get('kind') == 'identity_mobile_exchange':
+            from .identity_material import IdentityMobileExchange
+            model_class = IdentityMobileExchange
         elif 'kind' in state:
             raise ValueError('Unknown exchange archive kind')
         for name in ('pre', 'post', 'capacity'):

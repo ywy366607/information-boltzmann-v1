@@ -101,6 +101,10 @@ class MobileExchange:
     def remaining_ends(self):
         return self.end_capacity-self.degrees()
 
+    def bridge_key(self, i, j):
+        """Default material permits one bridge, of either polarity, per pair."""
+        return tuple(sorted((int(i), int(j))))
+
     def encounters(self):
         return cKDTree(self.coordinates).query_pairs(self.params.contact_radius, output_type='ndarray')
 
@@ -120,7 +124,7 @@ class MobileExchange:
             raise ValueError('Invalid actual bridge endpoints')
         if self.capacity.shape != self.pre.shape or not np.array_equal(self.capacity, np.ones(len(self.pre))):
             raise ValueError('Actual bridges have one material unit each')
-        pairs = np.sort(np.stack((self.pre, self.post), axis=1), axis=1)
+        pairs = np.asarray([self.bridge_key(a, b) for a, b in zip(self.pre, self.post)])
         if len(np.unique(pairs, axis=0)) != len(pairs):
             raise ValueError('One actual bridge per material pair required')
         for name in ('bound', 'trace'):
@@ -256,14 +260,14 @@ class MobileExchange:
         events = []
         pairs = self.encounters() if pairs is None else pairs
         degree = self.degrees() if degree is None else degree
-        present = {tuple(sorted((int(a), int(b)))) for a, b in zip(self.pre, self.post)}
+        present = {self.bridge_key(a, b) for a, b in zip(self.pre, self.post)}
         ends = self.end_capacity-degree
         for a, b in pairs:
             a, b = int(a), int(b)
-            if (a, b) not in present and ends[a] and ends[b]:
-                for i, j in ((a, b), (b, a)):
-                    if self.material[j] and self.charged[j]:
-                        events.append(MaterialEvent('assembly', i, j))
+            for i, j in ((a, b), (b, a)):
+                if (self.bridge_key(i, j) not in present and ends[a] and ends[b]
+                        and self.material[j] and self.charged[j]):
+                    events.append(MaterialEvent('assembly', i, j))
             for pool in ('material', 'free', 'charged', 'depleted'):
                 if getattr(self, pool)[a]: events.append(MaterialEvent('exchange', a, b, pool=pool))
                 if getattr(self, pool)[b]: events.append(MaterialEvent('exchange', a, b, sign=-1, pool=pool))
@@ -436,8 +440,7 @@ class MobileExchange:
             self.conduction_heat += heat
             self.entropy_balance += heat
         if not len(self.pre): return
-        p = self.params
-        g = self.unit_conductance*(p.gate_low+(p.gate_high-p.gate_low)*self.trace)
+        g = self.bridge_conductance()
         # Exact conditional OU charge exchange at the same kBT=1 as motion
         # and reactions. Passive dissipation without this variance would
         # silently place the fast field at a different bath temperature.
@@ -453,6 +456,10 @@ class MobileExchange:
             self.heat_out += heat
             self.conduction_heat += heat
             self.entropy_balance += heat
+
+    def bridge_conductance(self):
+        p = self.params
+        return self.unit_conductance*(p.gate_low+(p.gate_high-p.gate_low)*self.trace)
 
     def step(self, dt, world_voltage=None):
         if not np.isfinite(dt) or dt <= 0: raise ValueError('Positive finite elapsed time required')
@@ -501,6 +508,12 @@ class MobileExchange:
             params=MobileExchangeParams(**state['params']), port_nodes=state['port_nodes'],
             world_charge=a['world_charge'], world_capacitance=a['world_capacitance'],
             port_conductance=a['port_conductance'], source_conductance=a['source_conductance'])
+        return cls._restore_archive(obj, state)
+
+    @classmethod
+    def _restore_archive(cls, obj, state):
+        """Restore all arrays/ledgers/RNGs after a subtype builds its carrier."""
+        a = state['arrays']
         if not np.array_equal(state['capacity'], obj.capacity):
             raise ValueError('Corrupt actual bridge inventory')
         for name in cls._arrays:
