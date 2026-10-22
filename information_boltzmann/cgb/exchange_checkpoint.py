@@ -36,6 +36,9 @@ def load_exchange(path):
         if state.get('kind') == 'structural_exchange':
             from .structural_exchange import StructuralExchange
             model_class = StructuralExchange
+        elif state.get('kind') == 'growing_identity_mobile_exchange':
+            from .growing_material import GrowingIdentityMobileExchange
+            model_class = GrowingIdentityMobileExchange
         elif state.get('kind') == 'boundary_identity_mobile_exchange':
             from .boundary_material import BoundaryIdentityMobileExchange
             model_class = BoundaryIdentityMobileExchange

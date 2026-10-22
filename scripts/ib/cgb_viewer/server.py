@@ -42,7 +42,7 @@ class Viewer(BaseHTTPRequestHandler):
                 return
             data=self.server.end_scene
             content_type='application/json; charset=utf-8'
-        elif route in ('/mobile','/identity'):
+        elif route in ('/mobile','/identity','/growth'):
             data=(Path(__file__).parent/'mobile.html').read_bytes()
             content_type='text/html; charset=utf-8'
         elif route=='/mobile_scene.json':
@@ -56,6 +56,12 @@ class Viewer(BaseHTTPRequestHandler):
                 self.send_error(404,'No identity material run attached')
                 return
             data=self.server.identity_scene
+            content_type='application/json; charset=utf-8'
+        elif route=='/growth_scene.json':
+            if self.server.growth_scene is None:
+                self.send_error(404,'No growing-domain material run attached')
+                return
+            data=self.server.growth_scene
             content_type='application/json; charset=utf-8'
         elif route=='/health':
             data=b'{"status":"ready","read_only":true}'
@@ -91,6 +97,7 @@ if __name__=='__main__':
     parser.add_argument('--end-run',type=Path)
     parser.add_argument('--mobile-run',type=Path)
     parser.add_argument('--identity-run',type=Path)
+    parser.add_argument('--growth-run',type=Path)
     args=parser.parse_args()
     httpd=ThreadingHTTPServer(('127.0.0.1',args.port),Viewer)
     httpd.scenes={}
@@ -99,6 +106,7 @@ if __name__=='__main__':
     httpd.end_scene=(args.end_run/'material_scene.json').read_bytes() if args.end_run else None
     httpd.mobile_scene=(args.mobile_run/'mobile_scene.json').read_bytes() if args.mobile_run else None
     httpd.identity_scene=(args.identity_run/'mobile_scene.json').read_bytes() if args.identity_run else None
+    httpd.growth_scene=(args.growth_run/'mobile_scene.json').read_bytes() if args.growth_run else None
     calibration={}
     if args.calibration:
         for name in ('morphology','spatial_identity','occurrence'):

@@ -1,0 +1,348 @@
+{
+  "primary": {
+    "kind": "continuous_growing_material_research_candidate",
+    "archive": "F:\\fly_stream_overflow\\cgb_domain_birth_20261022\\growing_complete.npz",
+    "sha256": "eec5d5f805146d3d00cf45ce0c14ef6d7096f3d212c11cc7167de2e8ce22b920",
+    "time_ms": 7936.0,
+    "next_fresh_train_byte": 1408,
+    "next_validation_byte": 256,
+    "model_kind": "growing_identity_mobile_exchange",
+    "genome_sha256": "e2dd1af426729119fe14baa239b5d4462b7d93c9a5fe62112254a33fad55caca",
+    "parent_archive": "F:\\fly_stream_overflow\\cgb_future_exchange_recovered_20261022\\native_revisit_A_complete.npz",
+    "parent_sha256": "6563b8fdc94f16f3f453d23571eecbed7ee556b1945b844bd90aa28d95c89f56",
+    "parameters": {
+      "domain_formation_energy": 2.0,
+      "reference_volume": 1.0,
+      "reference_charge": 1.0,
+      "capacity_and_identity": "local same-phase template"
+    },
+    "total_conserved_material": 122,
+    "nodes": 28,
+    "internal_bridges": 39,
+    "boundary_contacts": 4,
+    "free_material": 51,
+    "natural_primary": true,
+    "not_champion": true,
+    "full_physical_session_observer_genome_and_three_rngs_retained": true,
+    "source_genome_bytes": 825280,
+    "physical_array_bytes": 4616,
+    "storage_scope": "Array payload only; excludes Python/NumPy/import/runtime, disposable spatial workspaces and immutable derived genome factors; not whole-process RAM admission",
+    "archive_bytes": 797734,
+    "source_unchanged": true,
+    "acute_extra_4ms_not_written_to_primary": true,
+    "prediction_or_language_capability_established": false
+  },
+  "run": {
+    "passed": true,
+    "sources": {
+      "parent_archive": "F:\\fly_stream_overflow\\cgb_future_exchange_recovered_20261022\\native_revisit_A_complete.npz",
+      "parent_sha256": "6563b8fdc94f16f3f453d23571eecbed7ee556b1945b844bd90aa28d95c89f56",
+      "original_sources": {
+        "archive": "F:\\fly_stream_overflow\\cgb_identity_cached_20261022\\coupled_complete.npz",
+        "archive_sha256": "4317f2e25e7834fa8f76b16b1b38895904506f51e058cd01616f5f1e67258c05",
+        "source_time_ms": 256.0,
+        "retained_history_bytes": 64,
+        "genome": "e2dd1af426729119fe14baa239b5d4462b7d93c9a5fe62112254a33fad55caca",
+        "corpus": {
+          "source": "openwebtext",
+          "revision": "433fe0f44ed7894fea29c08b3202aa348ccc6369",
+          "split_rule": "NFC_document_sha256_mod100_98_1_1",
+          "tokenizer": {
+            "type": "utf8_bytes",
+            "offset": 4,
+            "special_tokens": [
+              "<pad>",
+              "<bos>",
+              "<eos>",
+              "<unk>"
+            ]
+          },
+          "manifest_sha256": "3614c380d4c72688ac8ccde42f32ea0655d16bec1ba0874a924fd777af904d2d",
+          "files_sha256": {
+            "train.npy": "2f227239bc63b89daf31956701d243a93f9dd46671702fff03763b33dc6db4fb",
+            "validation.npy": "60d41d3fdda8c1718ad1735693eda0dae2b23a0032c5e04a29aac9d0c6d35d8c"
+          },
+          "selected_locations": {
+            "warm": {
+              "split": "train",
+              "offset": 0
+            },
+            "fresh_A": {
+              "split": "train",
+              "offset": 256
+            },
+            "fresh_B": {
+              "split": "validation",
+              "offset": 0
+            },
+            "revisit_A": {
+              "split": "train",
+              "offset": 0,
+              "replay": true
+            }
+          },
+          "selected_counts": {
+            "warm": 256,
+            "fresh_A": 1024,
+            "fresh_B": 256,
+            "revisit_A": 256
+          },
+          "selected_sha256": {
+            "warm": "8adc7c0db929640b940dc5dd169d0e33d817702bad92c4e8e74fef402729fe47",
+            "fresh_A": "f78646c8d44a0757e6209fe2a21213886d45e428352822fd34016e76f83b879a",
+            "fresh_B": "cae7e75576faafe47498559572aebb75265dc091a8fbd2d50558b027bc4cdac9",
+            "revisit_A": "8adc7c0db929640b940dc5dd169d0e33d817702bad92c4e8e74fef402729fe47"
+          }
+        },
+        "selected_stream_sha256": "66ff4214ee2abf401a2d6e299755578c82964b2622c90ace8be05ca286f0f7db"
+      },
+      "split": "train",
+      "token_offset": 4,
+      "fresh_byte_start": 1280,
+      "fresh_byte_end": 1408,
+      "selected_sha256": "e7f0fa86ab96dcecce9ed36741b53c8b18aadc1b53ecfe8e6b8230735836c6dd"
+    },
+    "baseline_git": "111d01d3392e65b9c135b70ab4d636d7a6e9f9be",
+    "code_sha256": {
+      "scripts\\ib\\generative\\domain_birth_audit.py": "b0d748292abbe761ebd5eb2bda7bff56a6dfcd91683a4a1f5041ef8105b160c0",
+      "information_boltzmann\\cgb\\growing_material.py": "7acd778289c2d6892edeeda532ecd6feb9eec8c8b35b88b37bae2950fd21d6a2",
+      "information_boltzmann\\cgb\\mobile_exchange.py": "2cb240733e9888307947b1cc745fb496f8dab8cc8c3f6f437ccfc4fb860b7923",
+      "information_boltzmann\\cgb\\identity_material.py": "a5659e5767776efb6523c7b601a16684bbc702320647fea9c000b03e3e7f7ca3",
+      "information_boltzmann\\cgb\\boundary_material.py": "9b50fed7a93a3ee01a613bdc443b6a68a2f6f874f14ec62e3f5a9ea4e1e07854",
+      "information_boltzmann\\cgb\\exchange_checkpoint.py": "ce544342616d4958fdcce533c646e12229be6c99f877c4506bc7bd1080543d85",
+      "docs\\information_boltzmann\\CGB_DOMAIN_BIRTH_PREREG_20261022.md": "dde9e8fdee74a307e5aeab243e5dfae5820774d410659ee2e7e725463d7a873c"
+    },
+    "arms": {
+      "growing": {
+        "archive": "F:\\fly_stream_overflow\\cgb_domain_birth_20261022\\growing_complete.npz",
+        "sha256": "eec5d5f805146d3d00cf45ce0c14ef6d7096f3d212c11cc7167de2e8ce22b920",
+        "first_time_ms": 7424.0,
+        "last_time_ms": 7936.0,
+        "bytes": 128,
+        "nll_nats_per_byte": {
+          "material": 11.556068342845917,
+          "fixed_byte": 3.475549322914083,
+          "fixed_bits": 4.0114201454311775,
+          "source_filter": 10.597411539247169
+        },
+        "nodes": 28,
+        "internal_bridges": 39,
+        "boundary_contacts": 4,
+        "initial_total_material": 122,
+        "final_free_material": 51,
+        "final_domain_material": 28,
+        "births": 4,
+        "deaths": 0,
+        "attempts": 43,
+        "initial_live_domains": 24,
+        "new_live_domains": 4,
+        "actual_original_events": {
+          "write-": 290,
+          "write+": 279,
+          "active-": 210,
+          "active+": 205,
+          "binding+": 46,
+          "port_binding-": 14,
+          "thermal-": 89,
+          "thermal+": 91,
+          "port_thermal+": 12,
+          "binding-": 48,
+          "port_binding+": 11,
+          "release+": 16,
+          "port_thermal-": 13,
+          "assembly-": 27,
+          "release-": 16,
+          "assembly+": 27,
+          "conversion+": 10,
+          "port_assembly-": 8,
+          "port_assembly+": 5,
+          "conversion-": 23,
+          "port_write-": 4,
+          "port_active+": 2,
+          "transport-": 6,
+          "transport+": 7,
+          "port_write+": 3,
+          "port_active-": 1,
+          "port_transport-": 1,
+          "port_transport+": 1
+        },
+        "actual_events_touching_new_domains": {
+          "assembly-": 6,
+          "assembly+": 7,
+          "thermal+": 4,
+          "thermal-": 3,
+          "binding+": 6,
+          "binding-": 3,
+          "write+": 1,
+          "release+": 1,
+          "write-": 2,
+          "active-": 1,
+          "conversion-": 1
+        },
+        "max_degree": 3,
+        "source_work": 2525.178033182783,
+        "heat_out": 2487.5487380412305,
+        "domain_heat": 3.1789923237082105,
+        "maximum_errors": {
+          "material": 0.0,
+          "drive": 0.0,
+          "support": 0.0,
+          "ends": 0.0,
+          "charge": 1.1368683772161603e-13,
+          "energy": 1.6094645616249181e-09,
+          "free_energy": 1.6952981241047382e-09,
+          "boundary_slots": 0.0
+        },
+        "restored_future_bytes": 64,
+        "full_physics_session_observer_and_three_rngs_exact": true,
+        "closed_barrier_parent_physical_future_exact": false,
+        "seconds": 21.493934699999954
+      },
+      "closed_domain_barrier": {
+        "archive": "F:\\fly_stream_overflow\\cgb_domain_birth_20261022\\closed_domain_barrier_complete.npz",
+        "sha256": "fbac0b9bff5964a0c3f0a772b57d79e6298acde79f80c0fb7675b171c4b03b8f",
+        "first_time_ms": 7424.0,
+        "last_time_ms": 7936.0,
+        "bytes": 128,
+        "nll_nats_per_byte": {
+          "material": 10.428963915135185,
+          "fixed_byte": 3.475549322914083,
+          "fixed_bits": 4.0114201454311775,
+          "source_filter": 10.597411539247169
+        },
+        "nodes": 24,
+        "internal_bridges": 36,
+        "boundary_contacts": 7,
+        "initial_total_material": 122,
+        "final_free_material": 55,
+        "final_domain_material": 24,
+        "births": 0,
+        "deaths": 0,
+        "attempts": 0,
+        "initial_live_domains": 24,
+        "new_live_domains": 0,
+        "actual_original_events": {
+          "write-": 410,
+          "write+": 408,
+          "active-": 296,
+          "active+": 297,
+          "binding+": 43,
+          "port_binding-": 12,
+          "thermal-": 72,
+          "thermal+": 74,
+          "port_thermal+": 15,
+          "binding-": 47,
+          "port_binding+": 11,
+          "release+": 15,
+          "port_thermal-": 18,
+          "assembly-": 37,
+          "port_write-": 2,
+          "assembly+": 38,
+          "port_write+": 5,
+          "release-": 15,
+          "conversion+": 12,
+          "port_active+": 3,
+          "transport-": 7,
+          "conversion-": 7,
+          "port_active-": 4,
+          "port_assembly-": 7,
+          "transport+": 9,
+          "port_assembly+": 7,
+          "port_transport-": 2,
+          "port_transport+": 1
+        },
+        "actual_events_touching_new_domains": {},
+        "max_degree": 3,
+        "source_work": 2528.6158838082483,
+        "heat_out": 2498.805737134753,
+        "domain_heat": 0.0,
+        "maximum_errors": {
+          "material": 0.0,
+          "drive": 0.0,
+          "support": 0.0,
+          "ends": 0.0,
+          "charge": 1.4210854715202004e-13,
+          "energy": 1.6676722225383855e-09,
+          "free_energy": 1.6880221664905548e-09,
+          "boundary_slots": 0.0
+        },
+        "restored_future_bytes": 64,
+        "full_physics_session_observer_and_three_rngs_exact": true,
+        "closed_barrier_parent_physical_future_exact": true,
+        "seconds": 45.6183529000009
+      }
+    },
+    "optimizer_updates": 0,
+    "byte_ms": 4.0,
+    "dt_ms": 2.0,
+    "original_source_unchanged": true,
+    "scope": "Actual paid domain birth, original learning and full continuation; no predictive convergence, complete morphology or language-world capability claim"
+  },
+  "delivery": {
+    "source": "F:\\fly_stream_overflow\\cgb_domain_birth_20261022\\growing_complete.npz",
+    "source_sha256": "eec5d5f805146d3d00cf45ce0c14ef6d7096f3d212c11cc7167de2e8ce22b920",
+    "source_unchanged": true,
+    "resume": {
+      "growing": {
+        "future_bytes": 64,
+        "all_logits_scores_and_full_state_exact": true
+      },
+      "closed_domain_barrier": {
+        "future_bytes": 64,
+        "all_logits_scores_and_full_state_exact": true
+      }
+    },
+    "actual_births": 4,
+    "births_from_already_grown_parent": 1,
+    "native_assembly_events_touching_new_domains": 7,
+    "native_contact_pairs_other_than_birth": [
+      [
+        24,
+        0
+      ],
+      [
+        24,
+        11
+      ],
+      [
+        24,
+        22
+      ]
+    ],
+    "actual_death_attempts": 38,
+    "actual_accepted_deaths": 0,
+    "selected_new_domain_ids": [
+      24,
+      27,
+      26,
+      25
+    ],
+    "interval_ms": [
+      7936.0,
+      7940.0
+    ],
+    "next_actual_train_byte": 1408,
+    "byte_value": 80,
+    "same_initial_state_and_three_rngs": true,
+    "sham_full_state_exact": true,
+    "brain_charge_l2_difference": 2.495684228509518,
+    "world_charge_l2_difference": 0.026933807245640293,
+    "branch_maximum_balance_errors": {
+      "intact": 1.5497789718210697e-09,
+      "sham": 1.5497789718210697e-09,
+      "cut_new_domain_conduction": 1.57160684466362e-09
+    },
+    "scope": "Acute diagnostic after actual paid growth, same real 4ms, all original learning active. New-domain birth held closed in all branches; ideal kinetic barrier changes only passive conduction on existing edges incident to the four new domains. Selection/barrier controller is not a natural mechanism. Cut is reconstructible from source+code+input; it is not saved as an uninstrumented full checkpoint. No learning benefit claim."
+  },
+  "regression": {
+    "tests": 242,
+    "errors": 0,
+    "failures": 0,
+    "seconds": 23.536
+  },
+  "docs": "docs/information_boltzmann/CGB_DOMAIN_BIRTH_RESULTS_20261022.md",
+  "viewer": "http://127.0.0.1:8766/growth",
+  "scene_sha256": "1ff3104472c2c5c2c9ef0db446ab8cd9fff697e19429b5590df90e377f6133f0",
+  "screenshot": "F:\\fly_stream_overflow\\cgb_domain_birth_20261022\\growth_view.png",
+  "scope": "Paid independent domains and original local reactions are actually coupled. Natural inverse recovery, useful predictive learning and long-term morphology remain incomplete."
+}
