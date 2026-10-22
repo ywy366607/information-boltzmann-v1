@@ -79,7 +79,8 @@ def parameter_quench(model, **changes):
                  'carried_energy','bound_energy','cohesion_energy','elastic_stiffness','rest_length'}
     kinetic = {'assembly_rate','binding_rate','transport_rate','release_rate','write_rate',
                'recovery_rate','conversion_rate','active_rate','mobility',
-               'material_diffusion','support_diffusion','drive_diffusion'}
+               'material_diffusion','support_diffusion','drive_diffusion',
+               'gate_low','gate_high'}
     if not set(changes) <= energetic|kinetic:
         raise ValueError('Unaccounted parameter intervention')
     old = model.params

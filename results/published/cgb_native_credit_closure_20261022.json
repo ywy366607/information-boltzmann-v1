@@ -1,0 +1,831 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-22",
+  "stage": "inverse_development",
+  "physical_parameters_added_for_learning": false,
+  "new_reward_or_fatigue_rule_added": false,
+  "scope": "Native conditional credit-delivery/retention interface; autonomous useful temporal credit not proven",
+  "runs": {
+    "cgb_native_credit_closure_20261022": {
+      "analysis": {
+        "source": {
+          "parent_archive": "F:\\fly_stream_overflow\\cgb_polarized_storage_repaired_20261022\\reference_complete.npz",
+          "parent_sha256": "4ccfb7b4a2aa0f30e2d7c939a586752837aa8188408fcc16de5f875bdf5c30b5",
+          "corpus": {
+            "source": "openwebtext",
+            "revision": "433fe0f44ed7894fea29c08b3202aa348ccc6369",
+            "split_rule": "NFC_document_sha256_mod100_98_1_1",
+            "tokenizer": {
+              "type": "utf8_bytes",
+              "offset": 4,
+              "special_tokens": [
+                "<pad>",
+                "<bos>",
+                "<eos>",
+                "<unk>"
+              ]
+            },
+            "manifest_sha256": "3614c380d4c72688ac8ccde42f32ea0655d16bec1ba0874a924fd777af904d2d",
+            "files_sha256": {
+              "train.npy": "2f227239bc63b89daf31956701d243a93f9dd46671702fff03763b33dc6db4fb",
+              "validation.npy": "60d41d3fdda8c1718ad1735693eda0dae2b23a0032c5e04a29aac9d0c6d35d8c"
+            }
+          },
+          "train_byte_range": [
+            4256,
+            4280
+          ],
+          "actual_input_sha256": "693d65f54036a862e529e3e453a22c40a354e1d9c63dec66314a22c706e30931",
+          "target_stable_ids": [
+            36,
+            50
+          ],
+          "downstream_stable_ids": [
+            50,
+            20
+          ],
+          "original_carrier_id": 3935,
+          "native_path": {
+            "upstream_edge": 39,
+            "downstream_edge": 10,
+            "pre": 7,
+            "middle": 48,
+            "downstream": 49,
+            "actual_transport_rate": 0.005964180031090852
+          },
+          "delays_ms": [
+            0,
+            16,
+            64
+          ],
+          "future_noise_groups": 8,
+          "post_return_ms": 32,
+          "main_individual_advanced": false,
+          "code_sha256": {
+            "information_boltzmann\\cgb\\end_exchange.py": "ce609574324a15646bd9bfb7851e63d5577b3fadc60ad0c70ce5f5994edd68a2",
+            "scripts\\ib\\generative\\native_credit_closure.py": "2f137c6bbfd2c8f1dffd752c465a6b79d466e45bc050c54e65fc9ce88b56a09d",
+            "information_boltzmann\\cgb\\mobile_exchange.py": "fabac4b9799b67b2f9744493b99c31ab01104e5bf4c59ea9233d354e7ef40164",
+            "information_boltzmann\\cgb\\exchange_observation.py": "712312414b0d5d9d89a89b9048208278d0ae867b5e7c1de95fa762d4b81b9062",
+            "information_boltzmann\\cgb\\type_generator.py": "39fffedf6c617ecbd4fdf4b628b568926844f950f05d0f66093bf7442d535200",
+            "information_boltzmann\\cgb\\occurrence.py": "71d12442475c6a806a567944060da6c0f3a2646986ffe81a367a31f843c02225",
+            "information_boltzmann\\cgb\\sensory_channel.py": "686004561bcc49edc373fff05ebe43b1a9d998d55653fa2d543bf26c7afef476",
+            "scripts\\ib\\generative\\domain_rate_audit.py": "70400f7e3a91572a3d6a1a3766ebf8a2a794bc4aec912997c6d585cda7ec7513",
+            "information_boltzmann\\cgb\\matching_analysis.py": "eb6e25251cdd062b659cf08d5e095a4d6f3b344f80432e8456557acae22a71ea",
+            "information_boltzmann\\cgb\\__init__.py": "2c51b2add334eb147d084f47419b0802a445e830354a761435ea0c9afefb0ced",
+            "information_boltzmann\\cgb\\birth.py": "1b14a80e9a87345095c94e26f22b0cb16624a0b2b4919aa02d1778e7616ae5ac",
+            "information_boltzmann\\cgb\\material_reactions.py": "5c532505b1b4e381f7f1b8a51edc566754904ed0ee838b29df48b43c368dbf9a",
+            "information_boltzmann\\cgb\\structural_budget.py": "c26f18102920fc1c45b8bdd15e6a2ddc4331af97acdcaaaaa467d58e8f1c021e",
+            "information_boltzmann\\cgb\\material_fork.py": "8df1fc9dbec94e1b3b6b2b0a17b28d5090381792bb3a4d9833edf41ea32625c7",
+            "information_boltzmann\\cgb\\readout_observation.py": "9c04935cfa83d967378b1a27cbf4c9bc84206c582ad6554db145ecf158275c13",
+            "information_boltzmann\\cgb\\memory_intervention.py": "7e155cb740ad5e8bc6a332db228d64a83f7ac8adbd7ad062e542b7725faf5371",
+            "information_boltzmann\\cgb\\spatial_exchange.py": "31f0da0b1726eb04c89f875f981391e17f1b632e623eeba8598551bb00a3bd46",
+            "information_boltzmann\\cgb\\v0.py": "60b144013e0cf9fdf846c774c81d3abe0937effc178213427153ead12e0be62c",
+            "docs\\information_boltzmann\\CGB_NATIVE_CREDIT_CLOSURE_20261022.md": "a371adfe0cdbcb1da85a277ac6935ba796e0810557ff14ae8f7c67e5ab7836d1",
+            "information_boltzmann\\cgb\\flow_exchange.py": "fe6cc28c003b7c19ebf6f6d97dfb6025b5930eadc9689305eb33baa663c62c32",
+            "information_boltzmann\\cgb\\learning_observation.py": "1b629ee37983c34fc0bc567132a6849ab1adc432a21957be71a9f82a38d1f9c2",
+            "scripts\\ib\\generative\\compare_support_transport.py": "2bb0d3624287802fcecf7406a93b1a401d812b9397d1a6646dbabfc2172c1a7b",
+            "information_boltzmann\\cgb\\matching.py": "0455adcae1e73ac3125b14d1632d335333299d0d84470c1dd3138df612608bc6",
+            "information_boltzmann\\cgb\\development.py": "914941c4bd713397bf5a58faee8d6036ed39fa6c0007b020f9f97961077b4b78",
+            "information_boltzmann\\cgb\\finite_exchange.py": "487a5acca6c85ffc9a0798beaea00f027301fbd55c42eac435faad26df35d6ae",
+            "information_boltzmann\\cgb\\growing_material.py": "7afa2e30e564fc996430786b8455482fda25006327481dc5c7675d1ba68e4c1c",
+            "information_boltzmann\\cgb\\support_analysis.py": "39af1232a6681d97044d525382f3a5a05676f4cf8c33e37694d5d190bdf7bcee",
+            "information_boltzmann\\cgb\\medium.py": "d9610ab3144a93fa841a102d56a4258d4c1b4d32c711d2e83a0b80e3ac4fa138",
+            "information_boltzmann\\cgb\\tree_development.py": "2439f434984ecc9efd5aec795b76342d26627dff43e8a5cc9172bcea36522f93",
+            "information_boltzmann\\cgb\\support_transport.py": "5169e7bd7575c918f569528de69c860f8d23cefda5299fce4b87c252457be5c6",
+            "information_boltzmann\\cgb\\identity_material.py": "4a95b6cdb4ce03349d05f5ae57a329591a59dfea7ba1f8de0612f89498652e9e",
+            "information_boltzmann\\cgb\\tree_geometry.py": "78fa60c227a660cb7a95bccbec177b55df1b6a6a7d6be15dffd98aed99fc7188",
+            "scripts\\ib\\generative\\domain_birth_audit.py": "b0d748292abbe761ebd5eb2bda7bff56a6dfcd91683a4a1f5041ef8105b160c0",
+            "information_boltzmann\\cgb\\charge_storage.py": "95b0d051a4d41fbb3f856fb02c77ef4ae91cdfadc7422a0d183176bfdec33bcf",
+            "information_boltzmann\\cgb\\energy_observation.py": "93eec136bc6a9304ff50c61dc3b6ab32c0c163d2b9c2e9aff77c9787f1624577",
+            "information_boltzmann\\cgb\\structural_exchange.py": "dc19fcde30a722d109209672d2787b5fc90e0b33c60ddcae58f9179f1a8744ab",
+            "information_boltzmann\\cgb\\boundary_material.py": "8a5992e47a90de819334d4c0adb693d29adb281cf815a7dad794163e8942dd93",
+            "information_boltzmann\\cgb\\local_learning.py": "d0505f7c2269732037cfdaceb0acf6fdec58070f769250a4b8b44a5620668dc0",
+            "information_boltzmann\\cgb\\checkpoint.py": "d40ebd68d70836bae893fb7d0e754b66e3829654d52ee58f4847202608e1ab15",
+            "information_boltzmann\\cgb\\morphology.py": "d0730f83f8f46fb20a2777db3ef59571d6fd2371f00b3b591fab4bd47d6740e2",
+            "information_boltzmann\\cgb\\credit_observation.py": "907e3dbacc3409b079722e78272e3bde8039c10817b2f3fc499ac25977e39535",
+            "information_boltzmann\\cgb\\exchange_checkpoint.py": "ce544342616d4958fdcce533c646e12229be6c99f877c4506bc7bd1080543d85",
+            "information_boltzmann\\cgb\\native_port.py": "85949b98e0eac84d2147a71b6374790abb17f9fd2123687be4cb0f8489487bf5",
+            "scripts\\ib\\generative\\native_learning_stream.py": "92d8f901bd13b48759e25e9bea2fd11d387389fc9ba4f6f91764ad6cf3d3ef31",
+            "information_boltzmann\\cgb\\trace_exchange.py": "3757431e74d3a395e4896f5a2a689c45de5e93d02cd27e6e55a2f5b4639cc99c",
+            "information_boltzmann\\cgb\\driven_exchange.py": "179ccd2d7d5d5d382b868d78d06629ffa375189ac63bcce53d01ea8e7d32949b"
+          }
+        },
+        "groups": [
+          {
+            "delay_ms": 0,
+            "conditions": [
+              {
+                "marked": false,
+                "requested_return": false,
+                "n": 8,
+                "actual_returns": 0,
+                "target_binding_events": 0,
+                "final_bound_fraction": 0.0,
+                "original_retained_fraction": 1.0,
+                "rebuilt_fraction": 0.0,
+                "capture_rate_mean": 0.0,
+                "all_activity_configurations_washed": true
+              },
+              {
+                "marked": false,
+                "requested_return": true,
+                "n": 8,
+                "actual_returns": 8,
+                "target_binding_events": 5,
+                "final_bound_fraction": 0.625,
+                "original_retained_fraction": 0.875,
+                "rebuilt_fraction": 0.0,
+                "capture_rate_mean": 0.044039853898894116,
+                "all_activity_configurations_washed": true
+              },
+              {
+                "marked": true,
+                "requested_return": false,
+                "n": 8,
+                "actual_returns": 0,
+                "target_binding_events": 0,
+                "final_bound_fraction": 0.0,
+                "original_retained_fraction": 1.0,
+                "rebuilt_fraction": 0.0,
+                "capture_rate_mean": 0.0,
+                "all_activity_configurations_washed": true
+              },
+              {
+                "marked": true,
+                "requested_return": true,
+                "n": 8,
+                "actual_returns": 8,
+                "target_binding_events": 6,
+                "final_bound_fraction": 0.75,
+                "original_retained_fraction": 1.0,
+                "rebuilt_fraction": 0.0,
+                "capture_rate_mean": 0.049100689501895424,
+                "all_activity_configurations_washed": true
+              }
+            ],
+            "interaction_contrasts": {
+              "after_return/capture_rate": {
+                "values": [
+                  0.005060835603001308,
+                  0.005060835603001308,
+                  0.005060835603001308,
+                  0.005060835603001308,
+                  0.005060835603001308,
+                  0.005060835603001308,
+                  0.005060835603001308,
+                  0.005060835603001308
+                ],
+                "paired_mean": 0.005060835603001308,
+                "minimum": 0.005060835603001308,
+                "maximum": 0.005060835603001308,
+                "scope": "Eight future-noise realizations of one selected native path"
+              },
+              "final/bound_support": {
+                "values": [
+                  0.0,
+                  1.0,
+                  0.0,
+                  -1.0,
+                  1.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "paired_mean": 0.125,
+                "minimum": -1.0,
+                "maximum": 1.0,
+                "scope": "Eight future-noise realizations of one selected native path"
+              },
+              "final/original_carrier_alive": {
+                "values": [
+                  0.0,
+                  1.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "paired_mean": 0.125,
+                "minimum": 0.0,
+                "maximum": 1.0,
+                "scope": "Eight future-noise realizations of one selected native path"
+              },
+              "after_configuration_washout/basal_installed_conductance": {
+                "values": [
+                  0.0,
+                  0.009295847993923162,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "paired_mean": 0.0011619809992403952,
+                "minimum": 0.0,
+                "maximum": 0.009295847993923162,
+                "scope": "Eight future-noise realizations of one selected native path"
+              },
+              "after_configuration_washout/dismantle_rate": {
+                "values": [
+                  0.0011286131081299118,
+                  -0.0020788830676605396,
+                  0.0014819760217176054,
+                  0.0071624509599090835,
+                  -0.009798580961403913,
+                  0.0,
+                  0.0026061187713498505,
+                  0.0
+                ],
+                "paired_mean": 6.271185400525e-05,
+                "minimum": -0.009798580961403913,
+                "maximum": 0.0071624509599090835,
+                "scope": "Eight future-noise realizations of one selected native path"
+              }
+            }
+          },
+          {
+            "delay_ms": 16,
+            "conditions": [
+              {
+                "marked": false,
+                "requested_return": false,
+                "n": 8,
+                "actual_returns": 0,
+                "target_binding_events": 0,
+                "final_bound_fraction": 0.0,
+                "original_retained_fraction": 0.625,
+                "rebuilt_fraction": 0.0,
+                "capture_rate_mean": 0.0,
+                "all_activity_configurations_washed": true
+              },
+              {
+                "marked": false,
+                "requested_return": true,
+                "n": 8,
+                "actual_returns": 7,
+                "target_binding_events": 5,
+                "final_bound_fraction": 0.625,
+                "original_retained_fraction": 0.875,
+                "rebuilt_fraction": 0.0,
+                "capture_rate_mean": 0.038534872161532355,
+                "all_activity_configurations_washed": true
+              },
+              {
+                "marked": true,
+                "requested_return": false,
+                "n": 8,
+                "actual_returns": 0,
+                "target_binding_events": 0,
+                "final_bound_fraction": 0.0,
+                "original_retained_fraction": 1.0,
+                "rebuilt_fraction": 0.0,
+                "capture_rate_mean": 0.0,
+                "all_activity_configurations_washed": true
+              },
+              {
+                "marked": true,
+                "requested_return": true,
+                "n": 8,
+                "actual_returns": 5,
+                "target_binding_events": 4,
+                "final_bound_fraction": 0.5,
+                "original_retained_fraction": 0.875,
+                "rebuilt_fraction": 0.0,
+                "capture_rate_mean": 0.030055326488309476,
+                "all_activity_configurations_washed": true
+              }
+            ],
+            "interaction_contrasts": {
+              "after_return/capture_rate": {
+                "values": [
+                  0.0,
+                  0.005060835603001308,
+                  0.0,
+                  -0.044039853898894116,
+                  0.005060835603001308,
+                  -0.044039853898894116,
+                  0.005060835603001308,
+                  0.005060835603001308
+                ],
+                "paired_mean": -0.008479545673222875,
+                "minimum": -0.044039853898894116,
+                "maximum": 0.005060835603001308,
+                "scope": "Eight future-noise realizations of one selected native path"
+              },
+              "final/bound_support": {
+                "values": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  -1.0,
+                  0.0,
+                  0.0,
+                  1.0,
+                  -1.0
+                ],
+                "paired_mean": -0.125,
+                "minimum": -1.0,
+                "maximum": 1.0,
+                "scope": "Eight future-noise realizations of one selected native path"
+              },
+              "final/original_carrier_alive": {
+                "values": [
+                  0.0,
+                  -1.0,
+                  -1.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0,
+                  -2.0
+                ],
+                "paired_mean": -0.375,
+                "minimum": -2.0,
+                "maximum": 1.0,
+                "scope": "Eight future-noise realizations of one selected native path"
+              },
+              "after_configuration_washout/basal_installed_conductance": {
+                "values": [
+                  0.0,
+                  -0.009295847993923162,
+                  -0.009295847993923162,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.009295847993923162,
+                  -0.018591695987846324
+                ],
+                "paired_mean": -0.0034859429977211857,
+                "minimum": -0.018591695987846324,
+                "maximum": 0.009295847993923162,
+                "scope": "Eight future-noise realizations of one selected native path"
+              },
+              "after_configuration_washout/dismantle_rate": {
+                "values": [
+                  0.0,
+                  -0.0048449943892809495,
+                  -0.003381333063051529,
+                  0.005322469063388139,
+                  -0.001810670312740163,
+                  0.0,
+                  0.0006021612131833195,
+                  -0.004567728544966065
+                ],
+                "paired_mean": -0.001085012004183406,
+                "minimum": -0.0048449943892809495,
+                "maximum": 0.005322469063388139,
+                "scope": "Eight future-noise realizations of one selected native path"
+              }
+            }
+          },
+          {
+            "delay_ms": 64,
+            "conditions": [
+              {
+                "marked": false,
+                "requested_return": false,
+                "n": 8,
+                "actual_returns": 0,
+                "target_binding_events": 0,
+                "final_bound_fraction": 0.0,
+                "original_retained_fraction": 0.5,
+                "rebuilt_fraction": 0.0,
+                "capture_rate_mean": 0.0,
+                "all_activity_configurations_washed": true
+              },
+              {
+                "marked": false,
+                "requested_return": true,
+                "n": 8,
+                "actual_returns": 1,
+                "target_binding_events": 0,
+                "final_bound_fraction": 0.0,
+                "original_retained_fraction": 0.5,
+                "rebuilt_fraction": 0.0,
+                "capture_rate_mean": 0.0,
+                "all_activity_configurations_washed": true
+              },
+              {
+                "marked": true,
+                "requested_return": false,
+                "n": 8,
+                "actual_returns": 0,
+                "target_binding_events": 0,
+                "final_bound_fraction": 0.0,
+                "original_retained_fraction": 0.75,
+                "rebuilt_fraction": 0.25,
+                "capture_rate_mean": 0.0,
+                "all_activity_configurations_washed": true
+              },
+              {
+                "marked": true,
+                "requested_return": true,
+                "n": 8,
+                "actual_returns": 4,
+                "target_binding_events": 4,
+                "final_bound_fraction": 0.5,
+                "original_retained_fraction": 0.875,
+                "rebuilt_fraction": 0.125,
+                "capture_rate_mean": 0.023285135850197383,
+                "all_activity_configurations_washed": true
+              }
+            ],
+            "interaction_contrasts": {
+              "after_return/capture_rate": {
+                "values": [
+                  0.0,
+                  0.0,
+                  0.044039853898894116,
+                  0.0,
+                  0.049100689501895424,
+                  0.0,
+                  0.049100689501895424,
+                  0.044039853898894116
+                ],
+                "paired_mean": 0.023285135850197383,
+                "minimum": 0.0,
+                "maximum": 0.049100689501895424,
+                "scope": "Eight future-noise realizations of one selected native path"
+              },
+              "final/bound_support": {
+                "values": [
+                  0.0,
+                  0.0,
+                  1.0,
+                  0.0,
+                  1.0,
+                  0.0,
+                  1.0,
+                  1.0
+                ],
+                "paired_mean": 0.5,
+                "minimum": 0.0,
+                "maximum": 1.0,
+                "scope": "Eight future-noise realizations of one selected native path"
+              },
+              "final/original_carrier_alive": {
+                "values": [
+                  0.0,
+                  0.0,
+                  1.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "paired_mean": 0.125,
+                "minimum": 0.0,
+                "maximum": 1.0,
+                "scope": "Eight future-noise realizations of one selected native path"
+              },
+              "after_configuration_washout/basal_installed_conductance": {
+                "values": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "paired_mean": 0.0,
+                "minimum": 0.0,
+                "maximum": 0.0,
+                "scope": "Eight future-noise realizations of one selected native path"
+              },
+              "after_configuration_washout/dismantle_rate": {
+                "values": [
+                  0.0,
+                  0.0,
+                  -0.005556509165589443,
+                  0.0,
+                  -0.0037935760901132544,
+                  0.0,
+                  -0.0030547473998807383,
+                  -0.0034958741614107025
+                ],
+                "paired_mean": -0.0019875883521242674,
+                "minimum": -0.005556509165589443,
+                "maximum": 0.0,
+                "scope": "Eight future-noise realizations of one selected native path"
+              }
+            }
+          }
+        ],
+        "trials": 96,
+        "exact_resume_trials": 4,
+        "actual_bytes": 1408,
+        "actual_reference_ms": 5632.0,
+        "max_balance_error": 5.902534294398477e-09,
+        "resource_usage_bound_passed": true,
+        "all_failed_returns_retained": true,
+        "all_trial_source_states_retained_in_provenance": true,
+        "prediction_credit_proven": false,
+        "autonomous_policy_proven": false,
+        "score_scope": "Conditional causal delivery and retention; not independent biological samples or long-term learning"
+      },
+      "verification": {
+        "passed": true,
+        "source_hashes_verified": true,
+        "source_archive_unchanged": true,
+        "conditional_trials_verified": 96,
+        "receipts_verified": 14528,
+        "full_checkpoint_future_reproduced": [
+          "g0_d0_m0_r0",
+          "g0_d0_m0_r1",
+          "g0_d0_m1_r0",
+          "g0_d0_m1_r1"
+        ],
+        "observer_sham_same_future_physical_state_three_rngs_and_session": true,
+        "all_resource_receipts_and_actual_clocks_reproduced": true,
+        "predictive_or_biological_credit_validated": false
+      }
+    },
+    "cgb_native_credit_flat_response_20261022": {
+      "analysis": {
+        "source": {
+          "parent_archive": "F:\\fly_stream_overflow\\cgb_polarized_storage_repaired_20261022\\reference_complete.npz",
+          "parent_sha256": "4ccfb7b4a2aa0f30e2d7c939a586752837aa8188408fcc16de5f875bdf5c30b5",
+          "corpus": {
+            "source": "openwebtext",
+            "revision": "433fe0f44ed7894fea29c08b3202aa348ccc6369",
+            "split_rule": "NFC_document_sha256_mod100_98_1_1",
+            "tokenizer": {
+              "type": "utf8_bytes",
+              "offset": 4,
+              "special_tokens": [
+                "<pad>",
+                "<bos>",
+                "<eos>",
+                "<unk>"
+              ]
+            },
+            "manifest_sha256": "3614c380d4c72688ac8ccde42f32ea0655d16bec1ba0874a924fd777af904d2d",
+            "files_sha256": {
+              "train.npy": "2f227239bc63b89daf31956701d243a93f9dd46671702fff03763b33dc6db4fb",
+              "validation.npy": "60d41d3fdda8c1718ad1735693eda0dae2b23a0032c5e04a29aac9d0c6d35d8c"
+            }
+          },
+          "train_byte_range": [
+            4256,
+            4280
+          ],
+          "actual_input_sha256": "693d65f54036a862e529e3e453a22c40a354e1d9c63dec66314a22c706e30931",
+          "target_stable_ids": [
+            36,
+            50
+          ],
+          "downstream_stable_ids": [
+            50,
+            20
+          ],
+          "original_carrier_id": 3935,
+          "native_path": {
+            "upstream_edge": 39,
+            "downstream_edge": 10,
+            "pre": 7,
+            "middle": 48,
+            "downstream": 49,
+            "actual_transport_rate": 0.005964180031090852
+          },
+          "delays_ms": [
+            0
+          ],
+          "future_noise_groups": 8,
+          "post_return_ms": 32,
+          "response_control": "flat",
+          "main_individual_advanced": false,
+          "code_sha256": {
+            "information_boltzmann\\cgb\\local_learning.py": "d0505f7c2269732037cfdaceb0acf6fdec58070f769250a4b8b44a5620668dc0",
+            "information_boltzmann\\cgb\\readout_observation.py": "9c04935cfa83d967378b1a27cbf4c9bc84206c582ad6554db145ecf158275c13",
+            "information_boltzmann\\cgb\\material_reactions.py": "5c532505b1b4e381f7f1b8a51edc566754904ed0ee838b29df48b43c368dbf9a",
+            "information_boltzmann\\cgb\\structural_budget.py": "c26f18102920fc1c45b8bdd15e6a2ddc4331af97acdcaaaaa467d58e8f1c021e",
+            "information_boltzmann\\cgb\\learning_observation.py": "8dd10585531f59b0dd5e781ecccb1d704c0e77f6be12d3e71e3d581fec20b8e3",
+            "information_boltzmann\\cgb\\birth.py": "1b14a80e9a87345095c94e26f22b0cb16624a0b2b4919aa02d1778e7616ae5ac",
+            "information_boltzmann\\cgb\\material_fork.py": "8df1fc9dbec94e1b3b6b2b0a17b28d5090381792bb3a4d9833edf41ea32625c7",
+            "information_boltzmann\\cgb\\matching.py": "0455adcae1e73ac3125b14d1632d335333299d0d84470c1dd3138df612608bc6",
+            "information_boltzmann\\cgb\\tree_geometry.py": "78fa60c227a660cb7a95bccbec177b55df1b6a6a7d6be15dffd98aed99fc7188",
+            "scripts\\ib\\generative\\domain_rate_audit.py": "70400f7e3a91572a3d6a1a3766ebf8a2a794bc4aec912997c6d585cda7ec7513",
+            "information_boltzmann\\cgb\\identity_material.py": "4a95b6cdb4ce03349d05f5ae57a329591a59dfea7ba1f8de0612f89498652e9e",
+            "information_boltzmann\\cgb\\boundary_material.py": "8a5992e47a90de819334d4c0adb693d29adb281cf815a7dad794163e8942dd93",
+            "docs\\information_boltzmann\\CGB_NATIVE_CREDIT_RESPONSE_CONTROL_20261022.md": "9e267a4d2099cd96e64f48f18a770b1bbd3dcb602666337766d12b33e3f47c38",
+            "information_boltzmann\\cgb\\spatial_exchange.py": "31f0da0b1726eb04c89f875f981391e17f1b632e623eeba8598551bb00a3bd46",
+            "information_boltzmann\\cgb\\memory_intervention.py": "7e155cb740ad5e8bc6a332db228d64a83f7ac8adbd7ad062e542b7725faf5371",
+            "information_boltzmann\\cgb\\exchange_observation.py": "712312414b0d5d9d89a89b9048208278d0ae867b5e7c1de95fa762d4b81b9062",
+            "information_boltzmann\\cgb\\morphology.py": "d0730f83f8f46fb20a2777db3ef59571d6fd2371f00b3b591fab4bd47d6740e2",
+            "information_boltzmann\\cgb\\exchange_checkpoint.py": "ce544342616d4958fdcce533c646e12229be6c99f877c4506bc7bd1080543d85",
+            "information_boltzmann\\cgb\\charge_storage.py": "95b0d051a4d41fbb3f856fb02c77ef4ae91cdfadc7422a0d183176bfdec33bcf",
+            "information_boltzmann\\cgb\\trace_exchange.py": "3757431e74d3a395e4896f5a2a689c45de5e93d02cd27e6e55a2f5b4639cc99c",
+            "information_boltzmann\\cgb\\checkpoint.py": "d40ebd68d70836bae893fb7d0e754b66e3829654d52ee58f4847202608e1ab15",
+            "information_boltzmann\\cgb\\flow_exchange.py": "fe6cc28c003b7c19ebf6f6d97dfb6025b5930eadc9689305eb33baa663c62c32",
+            "scripts\\ib\\generative\\compare_support_transport.py": "2bb0d3624287802fcecf7406a93b1a401d812b9397d1a6646dbabfc2172c1a7b",
+            "information_boltzmann\\cgb\\energy_observation.py": "93eec136bc6a9304ff50c61dc3b6ab32c0c163d2b9c2e9aff77c9787f1624577",
+            "information_boltzmann\\cgb\\mobile_exchange.py": "fabac4b9799b67b2f9744493b99c31ab01104e5bf4c59ea9233d354e7ef40164",
+            "information_boltzmann\\cgb\\occurrence.py": "71d12442475c6a806a567944060da6c0f3a2646986ffe81a367a31f843c02225",
+            "information_boltzmann\\cgb\\driven_exchange.py": "179ccd2d7d5d5d382b868d78d06629ffa375189ac63bcce53d01ea8e7d32949b",
+            "information_boltzmann\\cgb\\development.py": "914941c4bd713397bf5a58faee8d6036ed39fa6c0007b020f9f97961077b4b78",
+            "scripts\\ib\\generative\\native_learning_stream.py": "92d8f901bd13b48759e25e9bea2fd11d387389fc9ba4f6f91764ad6cf3d3ef31",
+            "information_boltzmann\\cgb\\support_analysis.py": "39af1232a6681d97044d525382f3a5a05676f4cf8c33e37694d5d190bdf7bcee",
+            "information_boltzmann\\cgb\\type_generator.py": "39fffedf6c617ecbd4fdf4b628b568926844f950f05d0f66093bf7442d535200",
+            "information_boltzmann\\cgb\\finite_exchange.py": "487a5acca6c85ffc9a0798beaea00f027301fbd55c42eac435faad26df35d6ae",
+            "scripts\\ib\\generative\\native_credit_closure.py": "27996793279889732fffdffbedd9834dfeb22d1821cf31dc37b9f7740b97cb3f",
+            "scripts\\ib\\generative\\domain_birth_audit.py": "b0d748292abbe761ebd5eb2bda7bff56a6dfcd91683a4a1f5041ef8105b160c0",
+            "information_boltzmann\\cgb\\native_port.py": "85949b98e0eac84d2147a71b6374790abb17f9fd2123687be4cb0f8489487bf5",
+            "information_boltzmann\\cgb\\tree_development.py": "2439f434984ecc9efd5aec795b76342d26627dff43e8a5cc9172bcea36522f93",
+            "information_boltzmann\\cgb\\credit_observation.py": "907e3dbacc3409b079722e78272e3bde8039c10817b2f3fc499ac25977e39535",
+            "information_boltzmann\\cgb\\v0.py": "60b144013e0cf9fdf846c774c81d3abe0937effc178213427153ead12e0be62c",
+            "information_boltzmann\\cgb\\sensory_channel.py": "686004561bcc49edc373fff05ebe43b1a9d998d55653fa2d543bf26c7afef476",
+            "information_boltzmann\\cgb\\structural_exchange.py": "dc19fcde30a722d109209672d2787b5fc90e0b33c60ddcae58f9179f1a8744ab",
+            "information_boltzmann\\cgb\\growing_material.py": "7afa2e30e564fc996430786b8455482fda25006327481dc5c7675d1ba68e4c1c",
+            "docs\\information_boltzmann\\CGB_NATIVE_CREDIT_CLOSURE_20261022.md": "a371adfe0cdbcb1da85a277ac6935ba796e0810557ff14ae8f7c67e5ab7836d1",
+            "information_boltzmann\\cgb\\matching_analysis.py": "eb6e25251cdd062b659cf08d5e095a4d6f3b344f80432e8456557acae22a71ea",
+            "information_boltzmann\\cgb\\end_exchange.py": "ce609574324a15646bd9bfb7851e63d5577b3fadc60ad0c70ce5f5994edd68a2",
+            "information_boltzmann\\cgb\\medium.py": "d9610ab3144a93fa841a102d56a4258d4c1b4d32c711d2e83a0b80e3ac4fa138",
+            "information_boltzmann\\cgb\\support_transport.py": "5169e7bd7575c918f569528de69c860f8d23cefda5299fce4b87c252457be5c6",
+            "information_boltzmann\\cgb\\__init__.py": "2c51b2add334eb147d084f47419b0802a445e830354a761435ea0c9afefb0ced"
+          }
+        },
+        "groups": [
+          {
+            "delay_ms": 0,
+            "conditions": [
+              {
+                "marked": false,
+                "requested_return": false,
+                "n": 8,
+                "actual_returns": 0,
+                "target_binding_events": 0,
+                "final_bound_fraction": 0.0,
+                "original_retained_fraction": 1.0,
+                "rebuilt_fraction": 0.0,
+                "capture_rate_mean": 0.0,
+                "all_activity_configurations_washed": true
+              },
+              {
+                "marked": false,
+                "requested_return": true,
+                "n": 8,
+                "actual_returns": 8,
+                "target_binding_events": 7,
+                "final_bound_fraction": 0.875,
+                "original_retained_fraction": 1.0,
+                "rebuilt_fraction": 0.0,
+                "capture_rate_mean": 0.044039853898894116,
+                "all_activity_configurations_washed": true
+              },
+              {
+                "marked": true,
+                "requested_return": false,
+                "n": 8,
+                "actual_returns": 0,
+                "target_binding_events": 0,
+                "final_bound_fraction": 0.0,
+                "original_retained_fraction": 1.0,
+                "rebuilt_fraction": 0.0,
+                "capture_rate_mean": 0.0,
+                "all_activity_configurations_washed": true
+              },
+              {
+                "marked": true,
+                "requested_return": true,
+                "n": 8,
+                "actual_returns": 8,
+                "target_binding_events": 4,
+                "final_bound_fraction": 0.5,
+                "original_retained_fraction": 1.0,
+                "rebuilt_fraction": 0.0,
+                "capture_rate_mean": 0.049100689501895424,
+                "all_activity_configurations_washed": true
+              }
+            ],
+            "interaction_contrasts": {
+              "after_return/capture_rate": {
+                "values": [
+                  0.005060835603001308,
+                  0.005060835603001308,
+                  0.005060835603001308,
+                  0.005060835603001308,
+                  0.005060835603001308,
+                  0.005060835603001308,
+                  0.005060835603001308,
+                  0.005060835603001308
+                ],
+                "paired_mean": 0.005060835603001308,
+                "minimum": 0.005060835603001308,
+                "maximum": 0.005060835603001308,
+                "scope": "Eight future-noise realizations of one selected native path"
+              },
+              "final/bound_support": {
+                "values": [
+                  0.0,
+                  -1.0,
+                  -1.0,
+                  -1.0,
+                  1.0,
+                  0.0,
+                  -1.0,
+                  0.0
+                ],
+                "paired_mean": -0.375,
+                "minimum": -1.0,
+                "maximum": 1.0,
+                "scope": "Eight future-noise realizations of one selected native path"
+              },
+              "final/original_carrier_alive": {
+                "values": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "paired_mean": 0.0,
+                "minimum": 0.0,
+                "maximum": 0.0,
+                "scope": "Eight future-noise realizations of one selected native path"
+              },
+              "after_configuration_washout/basal_installed_conductance": {
+                "values": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "paired_mean": 0.0,
+                "minimum": 0.0,
+                "maximum": 0.0,
+                "scope": "Eight future-noise realizations of one selected native path"
+              },
+              "after_configuration_washout/dismantle_rate": {
+                "values": [
+                  0.0035564834619101872,
+                  0.008649776491078384,
+                  0.009013882054971778,
+                  0.004780967989405441,
+                  -0.007697928585437573,
+                  0.0,
+                  -0.0012321371634074797,
+                  0.0
+                ],
+                "paired_mean": 0.002133880531065092,
+                "minimum": -0.007697928585437573,
+                "maximum": 0.009013882054971778,
+                "scope": "Eight future-noise realizations of one selected native path"
+              }
+            }
+          }
+        ],
+        "trials": 32,
+        "exact_resume_trials": 4,
+        "actual_bytes": 256,
+        "actual_reference_ms": 1024.0,
+        "max_balance_error": 5.902536662631447e-09,
+        "resource_usage_bound_passed": true,
+        "all_failed_returns_retained": true,
+        "all_trial_source_states_retained_in_provenance": true,
+        "prediction_credit_proven": false,
+        "autonomous_policy_proven": false,
+        "score_scope": "Conditional causal delivery and retention; not independent biological samples or long-term learning"
+      },
+      "verification": {
+        "passed": true,
+        "source_hashes_verified": true,
+        "source_archive_unchanged": true,
+        "conditional_trials_verified": 32,
+        "receipts_verified": 2334,
+        "full_checkpoint_future_reproduced": [
+          "g0_d0_m0_r0",
+          "g0_d0_m0_r1",
+          "g0_d0_m1_r0",
+          "g0_d0_m1_r1"
+        ],
+        "observer_sham_same_future_physical_state_three_rngs_and_session": true,
+        "all_resource_receipts_and_actual_clocks_reproduced": true,
+        "predictive_or_biological_credit_validated": false
+      }
+    }
+  },
+  "tests": {
+    "cgb_passed": 318,
+    "post_indexing_focused_passed": 5,
+    "junit": "F:\\fly_stream_overflow\\cgb_native_credit_all_regression_20261022.xml"
+  },
+  "physical_role_gaps": [
+    "r has both response and capture roles; not validated pure eligibility.",
+    "Write affinity detects voltage/finite composition, not yet validated signed pre/post temporal eligibility.",
+    "Conditional support return is not proof of autonomous useful consequence allocation.",
+    "Long-term structural/strength benefit remains unproven; no new state added merely to fit it."
+  ]
+}
