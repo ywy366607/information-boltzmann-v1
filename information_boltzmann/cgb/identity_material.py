@@ -45,7 +45,7 @@ class IdentityMaterialProgram:
             +co@self.arrays['occurrence_affinity']@co)
         self.strength_center = float(np.mean(self.arrays['strength_out'])+np.mean(self.arrays['strength_in'])
             +cs@self.arrays['strength_affinity']@cs)
-        for value in self.arrays.values():
+        for value in (*self.arrays.values(), self._normalized, self._occ_left, self._strength_left):
             value.setflags(write=False)
         self.types.setflags(write=False)
 

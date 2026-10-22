@@ -158,3 +158,136 @@ def test_new_domain_uses_nonzero_inherited_identity_and_native_transmission():
     m.step(.5, [.4, -.3])
     m._validate()
     assert max(abs(float(v)) for v in m.balances().values()) < 1e-10
+
+
+@pytest.mark.parametrize('alpha', [0., .4, 1.])
+def test_exact_birth_ratio_eliminates_auxiliary_charge_and_resource_marks(alpha):
+    from information_boltzmann.cgb.boundary_material import BoundaryIdentityMobileExchange
+    from test_cgb_identity_material import material as identity_material
+    m = GrowingIdentityMobileExchange.from_boundary(
+        BoundaryIdentityMobileExchange.from_identity(identity_material(alpha=alpha)))
+    old = np.array([8, 3, 2, 2, 6])
+    available = old+[-2, 0, 0, -1, 1]
+    rng = np.random.default_rng(608)
+    # Conditional numerical states, not unpaid interventions in an individual.
+    for _ in range(32):
+        length = float(rng.uniform(.3, 1.5))
+        xyz = m.coordinates[0]+[length, 0., 0.]
+        q = float(rng.normal()*2)
+        child_counts = rng.binomial(available, .5)
+        full = m._birth_metrics(0, xyz, q, child_counts, old_counts=old,
+                                old_charge=1.2, old_degree=0)
+        marginal = m.birth_log_ratio(0, xyz, old_counts=old, old_charge=1.2, old_degree=0)
+        assert abs(full['log_birth_acceptance_ratio']-marginal) < 3e-13
+
+
+def test_marginal_ratio_is_the_normalized_joint_conditional_integral():
+    import itertools
+    from numpy.polynomial.hermite import hermgauss
+    m = growing()
+    old = np.array([2, 1, 0, 1, 0])
+    available = old+[-2, 0, 0, -1, 1]
+    xyz = m.coordinates[0]+[.8, 0., 0.]
+    log_ratio = m.birth_log_ratio(0, xyz, old_counts=old, old_charge=.4, old_degree=0)
+    nodes, weights = hermgauss(8)
+    acceptance = normalization = 0.
+    for child in itertools.product(*(range(int(n)+1) for n in available)):
+        child = np.asarray(child)
+        probability = np.exp(np.sum(gammaln(available+1)-gammaln(child+1)
+                                    -gammaln(available-child+1)-available*math.log(2)))
+        for node, weight in zip(nodes, weights):
+            q = .2+node*math.sqrt(m.capacitance[0])
+            full = m._birth_metrics(0, xyz, q, child, old_counts=old, old_charge=.4, old_degree=0)
+            w = probability*weight/math.sqrt(math.pi)
+            normalization += w
+            acceptance += w*math.exp(min(0., full['log_birth_acceptance_ratio']))
+    assert abs(normalization-1) < 1e-14
+    assert abs(acceptance-math.exp(min(0., log_ratio))) < 1e-14
+
+
+def test_thinned_recovery_is_the_original_attempt_times_exact_acceptance():
+    m = growing()
+    receipt = m.birth_trial(0, [1., 1.8, 1.], .3, [0, 1, 1, 1, 2], 0., insertion_index=0)
+    i, j = receipt['parent_after'], receipt['child_after']
+    log_ratio = m.death_log_ratio(i, j)
+    assert abs(log_ratio-receipt['log_birth_acceptance_ratio']) < 1e-12
+    rate = m._domain_attempt_rate(m.degrees()[i]-1)*math.exp(min(0., -log_ratio))
+    rows = m.domain_generator_rates()['inverse_channels']
+    assert any(row['parent']==i and row['child']==j and row['accepted_rate']==rate for row in rows)
+    assert rate <= m._domain_attempt_rate(m.degrees()[i]-1)
+    m.domain_reactions_enabled = False
+    rates = m.domain_generator_rates()
+    assert rates['birth_attempt_rate_upper_bound'] == rates['recovery_accepted_rate'] == 0
+
+
+def test_marginal_sampling_has_explicit_schema_and_complete_future(tmp_path):
+    m = growing()
+    assert m.state_dict()['schema'] == 1 and 'domain_sampling' not in m.state_dict()
+    m.domain_sampling = 'marginal'
+    m._validate()
+    assert m.state_dict()['schema'] == 2
+    m.params = replace(m.params, assembly_rate=.3, material_diffusion=.1,
+                       support_diffusion=.1, drive_diffusion=.1)
+    for _ in range(8):
+        m.step(.5, [2.])
+    path = tmp_path/'marginal.npz'
+    save_exchange(path, m)
+    restored, _ = load_exchange(path)
+    assert restored.domain_sampling == 'marginal'
+    for _ in range(16):
+        m.step(.5, [2.]); restored.step(.5, [2.])
+    same(m.state_dict(), restored.state_dict())
+    assert max(abs(float(v)) for v in m.balances().values()) < 1e-10
+    corrupt = m.state_dict()
+    corrupt['schema'] = 1
+    with pytest.raises(ValueError, match='schema'):
+        GrowingIdentityMobileExchange.from_state_dict(corrupt)
+
+
+def test_growing_learning_drift_separates_native_exact_terms_and_domain_bounds():
+    from information_boltzmann.cgb.learning_observation import native_learning_drift
+    m = growing()
+    drift = native_learning_drift(m)
+    assert 'domains' in drift and 'spatial mark' in drift['scope']
+    bounds = drift['domains']
+    assert bounds['birth_attempt_rate_upper_bound'] >= 0
+    assert bounds['domain_count_drift_bounds'][0] <= bounds['domain_count_drift_bounds'][1]
+
+
+def test_material_fork_shares_only_immutable_genes_and_repeats_full_physics():
+    from information_boltzmann.cgb.material_fork import fork_material
+    m = growing();m.domain_sampling = 'marginal'
+    original = m.state_dict()
+    fork = fork_material(m)
+    assert fork.program is m.program
+    for name in m.program.array_names:
+        assert getattr(fork, 'gene_'+name) is getattr(m, 'gene_'+name)
+    for name in ('_normalized', '_occ_left', '_strength_left'):
+        assert getattr(fork.program, name) is getattr(m.program, name)
+        assert not getattr(fork.program, name).flags.writeable
+    for name in m._node_arrays:
+        assert not np.shares_memory(getattr(fork, name), getattr(m, name))
+    fork.step(2., [2.])
+    same(m.state_dict(), original)
+    m.step(2., [2.])
+    same(m.state_dict(), fork.state_dict())
+    m.material[0] += 1
+    assert m.material[0] == fork.material[0]+1
+
+
+def test_original_capture_transport_and_release_change_same_physical_phase_ratio():
+    m = growing()
+    xyz0 = m.coordinates[0]+[0., .8, 0.]
+    xyz1 = m.coordinates[1]+[0., .8, 0.]
+    ratio0, ratio1 = m.birth_log_ratio(0, xyz0), m.birth_log_ratio(1, xyz1)
+    m.apply_event(MaterialEvent('binding', 0, 1, 0))
+    assert abs(m.birth_log_ratio(1, xyz1)-ratio1+math.log(2)) < 1e-13
+    assert m.birth_log_ratio(0, xyz0) == ratio0
+    fuel, depleted = int(m.charged[0]), int(m.depleted[0])
+    m.apply_event(MaterialEvent('transport', 0, 1, 0))
+    expected = math.log((fuel-1)*(depleted+1)/(fuel*(depleted+2)))+math.log(2)
+    assert abs(m.birth_log_ratio(0, xyz0)-ratio0-expected) < 1e-13
+    ratio = m.birth_log_ratio(0, xyz0)
+    m.apply_event(MaterialEvent('release', 0))
+    assert abs(m.birth_log_ratio(0, xyz0)-ratio) < 1e-13
+    assert max(abs(float(v)) for v in m.balances().values()) < 1e-10

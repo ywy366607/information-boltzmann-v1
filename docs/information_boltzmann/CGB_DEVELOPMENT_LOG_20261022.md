@@ -173,3 +173,18 @@ git worktree add -b codex/cgb-revisit-20261022 D:/cgb-revisit-20261022 cgb-befor
 - 下一自然候选growing_complete.npz，SHA eec5d5f8…22b920，7936ms、下一train1408/validation256。新archive kind明确记录本构、屏障、计数和完整物理/基因/来源；acute额外4ms没有回写主档。候选不是冠军，后续继续维持/回收、形态、有用学习和世界闭合。
 - 观察室新增只读/growth和原入口链接，回放实际可变N及稳定显示编号；末态28/39/51核对实际档。截图growth_view.png，原移动/身份/沉积/端页面保留。只替换本线程只读viewer，PID10248→12944，未启旧训练。本轮无技能/子智能体/关机。
 - Git阶段cgb-domain-birth-20261022，原始运行/源码/截图与增量bundle另存F:/fly_stream_overflow/cgb_domain_birth_backup_20261022/，以哈希和恢复验证manifest为准。
+
+## 同联合G的解析域比、原支持耦合及持续改造
+
+基线df3286d。推导CGB_DOMAIN_RATE_DERIVATION_20261022.md先于执行：条件高斯与二项分配项在完整正反比中精确抵消，真实荷量/资源仍保留。实现marginal/schema2，逆向按原接受概率精确稀释空尝试，旧resolved/schema1保持旧RNG路径；不是新增物理偏好或死亡率。补CGB_MEMORY_PHASE_COUPLING_20261022.md，从原binding/transport/release/write计量推出同一空间比的变化，未另乘奖励。
+
+- 上轮38回收尝试的实际条件概率总和0.000572717，不把0接受当接口断开。理想混合分配熵可主导当前出生，保留其物理意义与非预测性。
+- 首次来源核对Windows键分隔符错误，未暴露新数据、无新物理执行，cgb_domain_rate_20261022留失败说明。修复后domain_rate_audit.py运行到cgb_domain_rate_r1_20261022；先核对旧实际源码SHA，从旧中点64未来字节所有logit/评分/物理/三RNG/会话/观察器逐位复现并匹配旧末档。
+- train[1408,1920)512新OWT字节，无文档边界，4ms/字节、dt2ms，7936→9984ms，0优化器更新。解析自然、旧逐项同律参照、解析χ0因果副本三支；χ0由原parameter_quench付款12、ΔG12，原r/C/q/P/结构不擦除。当前域速率严格相同，原支持/痕迹通量可改变之后条件。
+- 自然28→43（15出生/0域回收），25B+43域+53内部桥+1边界=122；原逐项44域、χ0为46域，单条不同轨迹不作稳定优劣判断。自然载体358出生/347拆解、源43载体只4存活，7个旧位置占据中3个是重建；未证明周转后记忆保持。
+- 自然原端口NLL10.581719、同批固定频率3.412207 nat/byte，未优于频率。实际流源功9978.874653、热9937.885980，最大账本误差2.44e−9。三支中点后256未来字节全部logit/评分/物理/三RNG/会话/域身份/载体观察逐位一致。
+- 新增material_fork共享只读基因及派生身份因子、复制全部物理/RNG状态，避免每个局部研究副本重建3000类常数；内部全图SSA/紧凑插入仍是待优化项。251项CGB检查通过/25.05s；最终JUnit regression_final.xml，旧251集合的前一版报告同时保留。
+- 探索性capture_phase_generator.py在源7936和自然9984档枚举原桥/池子生成元：χ的回收率响应差分别−6.99e−10与0，出生尝试上界响应差均0。明确这是子生成元与上界，不冒充完整出生率/学习收益，也不搜索直到阳性。
+- 自然新候选marginal_complete.npz，SHA d6b0dd49…45eda，9984ms、下一train1920/validation256；schema2模式与全部经历/物性/基因/随机数和双观察器保留。其他支不是候选。下一步区分外部持续驱动与初始库存/混合松弛，再检验有用自维持，不人为补死亡阈值。
+- 观察室/growth由三个真实完整档显示28→43、53桥/25B，未插值编造。只替换本线程只读viewer，12944→6588；growth_view.png已核对，旧各页保留。未恢复旧新生儿训练，无技能/子智能体/关机。
+- Git标签cgb-domain-rates-20261022，完整证据/失败说明/代码/截图及增量bundle备份到F:/fly_stream_overflow/cgb_domain_rate_backup_20261022/，以其验证manifest为准。

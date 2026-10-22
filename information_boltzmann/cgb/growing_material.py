@@ -26,11 +26,13 @@ class GrowingIdentityMobileExchange(BoundaryIdentityMobileExchange):
                     'depleted', 'charge', 'capacitance', 'end_capacity', 'cell_type')
 
     def __init__(self, *args, domain_formation_energy, reference_volume,
-                 reference_charge, domain_reactions_enabled=True, **kwargs):
+                 reference_charge, domain_reactions_enabled=True,
+                 domain_sampling='resolved', **kwargs):
         self.domain_formation_energy = float(domain_formation_energy)
         self.reference_volume = float(reference_volume)
         self.reference_charge = float(reference_charge)
         self.domain_reactions_enabled = domain_reactions_enabled
+        self.domain_sampling = domain_sampling
         self.domain_attempts = self.domain_births = self.domain_deaths = 0
         self.domain_observer = None  # disposable receipts, never a rate input
         super().__init__(*args, **kwargs)
@@ -41,7 +43,8 @@ class GrowingIdentityMobileExchange(BoundaryIdentityMobileExchange):
         if (not np.isfinite(self.domain_formation_energy)
                 or not np.isfinite(self.reference_volume) or self.reference_volume <= 0
                 or not np.isfinite(self.reference_charge) or self.reference_charge <= 0
-                or not isinstance(self.domain_reactions_enabled, bool)):
+                or not isinstance(self.domain_reactions_enabled, bool)
+                or self.domain_sampling not in ('resolved', 'marginal')):
             raise ValueError('Explicit finite domain energy, positive standard measures and barrier required')
 
     def energy(self):
@@ -59,6 +62,63 @@ class GrowingIdentityMobileExchange(BoundaryIdentityMobileExchange):
     def _domain_attempt_rate(self, old_parent_degree):
         p = self.params
         return p.assembly_rate * (p.bulk_attempt + p.surface_attempt * old_parent_degree)
+
+    def birth_log_ratio(self, parent, position, *, old_counts=None,
+                        old_charge=None, old_degree=None):
+        """Exact marginal ratio: Gaussian/partition proposal terms cancel.
+
+        All five pools and both charge degrees remain actual state. This
+        only removes their auxiliary draws from the acceptance decision.
+        No predictive utility or new material parameter enters this ratio.
+        """
+        counts = (np.array([getattr(self, name)[parent] for name in self._pools_names], np.int64)
+                  if old_counts is None else np.asarray(old_counts, np.int64))
+        b, f, h, fuel, depleted = map(int, counts)
+        degree = int(self.degrees()[parent] if old_degree is None else old_degree)
+        ends = int(self.end_capacity[parent])
+        if min(counts) < 0 or b < 2 or fuel < 1 or degree >= ends:
+            raise ValueError('Unavailable parent composition or ends')
+        q = float(self.charge[parent] if old_charge is None else old_charge)
+        c, p = float(self.capacitance[parent]), self.params
+        length = float(np.linalg.norm(np.asarray(position)-self.coordinates[parent]))
+        volume = 4*math.pi*(p.contact_radius**3-p.core_diameter**3)/3
+        composition = (math.log(b)+math.log(b-1)+math.log(fuel)-math.log(depleted+1)
+                       + (sum(counts)-2)*math.log(2))
+        return float(-self.domain_formation_energy-p.structure_energy+p.charged_energy
+                     + p.cohesion_energy*degree-float(self.recognition_free_energy(parent, parent))
+                     + q*q/(4*c)+.5*math.log(math.pi*c)-math.log(self.reference_charge)
+                     + math.log(ends-degree)+math.log(ends)+math.log(volume/self.reference_volume)
+                     + composition-.5*p.elastic_stiffness*(length-p.rest_length)**2)
+
+    def death_log_ratio(self, parent, child, degree=None):
+        """Birth/recovery ratio evaluated on this inverse channel's preimage."""
+        merged = np.array([getattr(self, name)[parent]+getattr(self, name)[child]
+                           for name in self._pools_names], np.int64)
+        merged += np.array([2, 0, 0, 1, -1], np.int64)
+        degree = self.degrees() if degree is None else degree
+        return self.birth_log_ratio(parent, self.coordinates[child], old_counts=merged,
+                                    old_charge=self.charge[parent]+self.charge[child],
+                                    old_degree=degree[parent]-1)
+
+    def domain_generator_rates(self):
+        """Exact recovery hazards and rigorous birth bounds, not a utility."""
+        degree = self.degrees()
+        parents = self.birth_parents(degree) if self.domain_reactions_enabled else []
+        deaths = self.death_channels(degree) if self.domain_reactions_enabled else []
+        birth_bound = float(sum(self._domain_attempt_rate(degree[i]) for i in parents))
+        rows = []
+        for i, j, edge in deaths:
+            log_ratio = self.death_log_ratio(i, j, degree)
+            attempt = self._domain_attempt_rate(degree[i]-1)
+            rows.append(dict(parent=i, child=j, edge=edge, attempt_rate=attempt,
+                             log_birth_ratio=log_ratio,
+                             accepted_rate=attempt*math.exp(min(0., -log_ratio))))
+        death_rate = sum(row['accepted_rate'] for row in rows)
+        return dict(birth_attempt_rate_upper_bound=birth_bound, recovery_accepted_rate=death_rate,
+                    birth_parent_count=len(parents), inverse_channels=rows,
+                    domain_count_drift_bounds=[-death_rate, birth_bound-death_rate],
+                    charged_count_drift_bounds=[death_rate-birth_bound, death_rate],
+                    scope='Original physical generator, rates per reference ms; actual birth acceptance requires the allowed spatial-mark integral, not computed here')
 
     def birth_parents(self, degree=None):
         degree = self.degrees() if degree is None else degree
@@ -133,6 +193,8 @@ class GrowingIdentityMobileExchange(BoundaryIdentityMobileExchange):
         return uniform == 0 or math.log(uniform) < min(0., log_ratio)
 
     def _record_domain(self, receipt, metrics=None, event_time=None):
+        if self.domain_sampling == 'marginal':
+            receipt['domain_sampling'] = 'marginal'
         if metrics is not None:
             self.domain_heat -= receipt['delta_u']
             self.heat_out -= receipt['delta_u']
@@ -144,6 +206,12 @@ class GrowingIdentityMobileExchange(BoundaryIdentityMobileExchange):
         if self.domain_observer is not None:
             self.domain_observer(copy.deepcopy(receipt))
         return receipt
+
+    def _valid_birth_geometry(self, parent, xyz):
+        length = float(np.linalg.norm(xyz-self.coordinates[parent]))
+        return (not np.any(xyz < 0) and not np.any(xyz > self.params.box_size)
+                and self.params.core_diameter <= length <= self.params.contact_radius
+                and not np.any(np.linalg.norm(self.coordinates-xyz, axis=1) < self.params.core_diameter))
 
     def birth_trial(self, parent, position, child_charge, child_counts, uniform, *,
                     insertion_index=None, event_time=None):
@@ -161,10 +229,7 @@ class GrowingIdentityMobileExchange(BoundaryIdentityMobileExchange):
                        accepted=False, position=xyz.tolist(), child_charge=float(child_charge),
                        child_compositions=metrics['child_counts'].tolist(),
                        **{k:v for k,v in metrics.items() if not k.endswith('_counts')})
-        length = float(np.linalg.norm(xyz-self.coordinates[parent]))
-        if (np.any(xyz < 0) or np.any(xyz > self.params.box_size)
-                or length < self.params.core_diameter or length > self.params.contact_radius
-                or np.any(np.linalg.norm(self.coordinates-xyz, axis=1) < self.params.core_diameter)):
+        if not self._valid_birth_geometry(parent, xyz):
             receipt['rejection'] = 'outside allowed physical geometry'
             return self._record_domain(receipt, event_time=event_time)
         if not self._accept(metrics['log_birth_acceptance_ratio'], uniform):
@@ -241,11 +306,27 @@ class GrowingIdentityMobileExchange(BoundaryIdentityMobileExchange):
         radius = (p.core_diameter**3+self.rng_reaction.random()
                   *(p.contact_radius**3-p.core_diameter**3))**(1/3)
         xyz = self.coordinates[parent]+radius*direction
+        if self.domain_sampling == 'marginal':
+            log_ratio = self.birth_log_ratio(parent, xyz)
+            uniform = self.rng_reaction.random()
+            valid = self._valid_birth_geometry(parent, xyz)
+            accepted = valid and self._accept(log_ratio, uniform)
+            if not accepted:
+                self.domain_attempts += 1
+                receipt = dict(kind='domain_birth', parent_before=int(parent), nodes_before=self.n,
+                               accepted=False, position=xyz.tolist(),
+                               log_birth_acceptance_ratio=log_ratio,
+                               rejection='reversible acceptance' if valid else 'outside allowed physical geometry')
+                return self._record_domain(receipt, event_time=event_time)
         charge = self.charge[parent]/2+self.rng_reaction.normal()*math.sqrt(self.capacitance[parent]/2)
         available = np.array([getattr(self, name)[parent] for name in self._pools_names])
         available += np.array([-2, 0, 0, -1, 1])
         partition = self.rng_reaction.binomial(available, .5)
-        return self.birth_trial(parent, xyz, charge, partition, self.rng_reaction.random(),
+        # In marginal mode the position has already been accepted with its
+        # exact marginal rate. Draw the remaining unchanged physical marks
+        # conditionally; do not perform a second acceptance/rejection.
+        uniform = 0. if self.domain_sampling == 'marginal' else self.rng_reaction.random()
+        return self.birth_trial(parent, xyz, charge, partition, uniform,
                                 event_time=event_time)
 
     def _reactions(self, dt):
@@ -259,7 +340,9 @@ class GrowingIdentityMobileExchange(BoundaryIdentityMobileExchange):
             parents, deaths = self.birth_parents(degree), self.death_channels(degree)
             rates = [self.event_rate(e, degree) for e in events]
             rates += [self._domain_attempt_rate(degree[i]) for i in parents]
-            rates += [self._domain_attempt_rate(degree[i]-1) for i,j,e in deaths]
+            rates += [self._domain_attempt_rate(degree[i]-1)
+                      * (math.exp(min(0., -self.death_log_ratio(i, j, degree)))
+                         if self.domain_sampling == 'marginal' else 1.) for i,j,e in deaths]
             rates = np.asarray(rates, float)
             total = float(rates.sum())
             if not np.isfinite(total):
@@ -279,7 +362,8 @@ class GrowingIdentityMobileExchange(BoundaryIdentityMobileExchange):
                     receipt = self._propose_birth(int(parents[index]), self.t+elapsed)
                 else:
                     receipt = self.death_trial(*deaths[index-len(parents)],
-                                               self.rng_reaction.random(), event_time=self.t+elapsed)
+                                               0. if self.domain_sampling == 'marginal'
+                                               else self.rng_reaction.random(), event_time=self.t+elapsed)
                 if receipt['accepted']:
                     pairs = self.encounters()  # geometry/index space actually changed
 
@@ -291,6 +375,8 @@ class GrowingIdentityMobileExchange(BoundaryIdentityMobileExchange):
                      domain_reactions_enabled=self.domain_reactions_enabled,
                      domain_attempts=self.domain_attempts, domain_births=self.domain_births,
                      domain_deaths=self.domain_deaths)
+        if self.domain_sampling == 'marginal':
+            state.update(schema=2, domain_sampling='marginal')
         return state
 
     @classmethod
@@ -311,8 +397,10 @@ class GrowingIdentityMobileExchange(BoundaryIdentityMobileExchange):
 
     @classmethod
     def from_state_dict(cls, state):
-        if state.get('kind') != 'growing_identity_mobile_exchange' or state.get('schema') != 1:
+        if state.get('kind') != 'growing_identity_mobile_exchange' or state.get('schema') not in (1, 2):
             raise ValueError('Unsupported growing material archive')
+        if state.get('domain_sampling', 'resolved') != ('resolved' if state['schema'] == 1 else 'marginal'):
+            raise ValueError('Domain sampling mode disagrees with archive schema')
         if state.get('field_scheme') not in ('sequential_ou', 'symmetric_ou'):
             raise ValueError('Explicit field mode required')
         a, genome = state['arrays'], state['genome']
@@ -335,7 +423,8 @@ class GrowingIdentityMobileExchange(BoundaryIdentityMobileExchange):
                   boundary_conduction_enabled=state['boundary_conduction_enabled'],
                   domain_formation_energy=state['domain_formation_energy'],
                   reference_volume=state['reference_volume'], reference_charge=state['reference_charge'],
-                  domain_reactions_enabled=state['domain_reactions_enabled'])
+                  domain_reactions_enabled=state['domain_reactions_enabled'],
+                  domain_sampling=state.get('domain_sampling', 'resolved'))
         for name in ('domain_attempts', 'domain_births', 'domain_deaths'):
             value = state[name]
             if not isinstance(value, int) or value < 0:

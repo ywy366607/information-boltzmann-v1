@@ -59,9 +59,13 @@ def native_learning_drift(model):
             totals[name]['positive' if contribution >= 0 else 'negative'] += contribution
             totals[name]['net'] += contribution
         heat_rate -= rate*model.event_delta(event,degree)[0]
-    return dict(time_ms=model.t, totals=totals, by_reaction=groups,
-                conditional_reaction_heat_out_rate=heat_rate,
-                scope='reaction generator conditional on full current material state; not predictive utility')
+    result = dict(time_ms=model.t, totals=totals, by_reaction=groups,
+                  conditional_reaction_heat_out_rate=heat_rate,
+                  scope='Original bridge/pool reaction subgenerator conditional on full current state; not predictive utility')
+    if hasattr(model, 'domain_generator_rates'):
+        result['domains'] = model.domain_generator_rates()
+        result['scope'] += '; domain birth has a continuous spatial mark: reported separately as exact recovery rates and birth bounds'
+    return result
 
 
 def parameter_quench(model, **changes):

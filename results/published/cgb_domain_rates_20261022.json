@@ -1,0 +1,757 @@
+{
+  "primary": {
+    "kind": "continuous_physical_growing_candidate",
+    "archive": "F:\\fly_stream_overflow\\cgb_domain_rate_r1_20261022\\marginal_complete.npz",
+    "sha256": "d6b0dd49eda0a4d26d29124f1a558f7d4f9e79568345fc668d663cc14fa45eda",
+    "time_ms": 9984.0,
+    "model_kind": "growing_identity_mobile_exchange",
+    "schema": 2,
+    "domain_sampling": "marginal",
+    "next_fresh_train_byte": 1920,
+    "next_validation_byte": 256,
+    "nodes": 43,
+    "total_material": 122,
+    "free_material": 25,
+    "internal_bridges": 53,
+    "boundary_contacts": 1,
+    "genome_sha256": "e2dd1af426729119fe14baa239b5d4462b7d93c9a5fe62112254a33fad55caca",
+    "parent_archive": "F:\\fly_stream_overflow\\cgb_domain_birth_20261022\\growing_complete.npz",
+    "parent_sha256": "eec5d5f805146d3d00cf45ce0c14ef6d7096f3d212c11cc7167de2e8ce22b920",
+    "natural_primary": true,
+    "not_champion": true,
+    "complete_physical_rngs_session_domain_and_carrier_observers": true,
+    "immutable_constitution_array_bytes": 5817280,
+    "physical_array_bytes": 6620,
+    "payload_scope": "Array payload only; excludes Python/NumPy runtime, caches, logs, independent observation state and working space; not a whole-process RAM claim",
+    "attempt_counter_scope": "Processed execution candidates; thinned null recovery attempts are not counted in marginal mode",
+    "convergence_predictive_benefit_or_self_maintenance_established": false
+  },
+  "cohorts": {
+    "marginal": {
+      "source_positions_still_occupied": 7,
+      "same_source_carriers": 4,
+      "rebuilt_same_position": 3
+    },
+    "resolved_reference": {
+      "source_positions_still_occupied": 6,
+      "same_source_carriers": 4,
+      "rebuilt_same_position": 2
+    },
+    "no_capture": {
+      "source_positions_still_occupied": 6,
+      "same_source_carriers": 4,
+      "rebuilt_same_position": 2
+    }
+  },
+  "previous_recovery": {
+    "source": "F:\\fly_stream_overflow\\cgb_domain_birth_20261022\\growing_domains.jsonl.gz",
+    "source_sha256": "0f965a7d810a86e14619899fc5e35b75bd5b1a0c06e61f8ddade016f62575563",
+    "actual_attempts": 38,
+    "accepted": 0,
+    "conditional_probability_min": 1.9092321240985335e-07,
+    "conditional_probability_max": 0.0003935516330728885,
+    "sum_actual_conditional_probabilities": 0.0005727172205826365,
+    "scope": "Predictable acceptance probabilities at the actually recorded attempt states, not an unconditional trajectory probability",
+    "full_report": "F:/fly_stream_overflow/cgb_domain_rate_r1_20261022/previous_recovery_probabilities.json"
+  },
+  "capture_generator_start": {
+    "source": "F:\\fly_stream_overflow\\cgb_domain_birth_20261022\\growing_complete.npz",
+    "source_sha256": "eec5d5f805146d3d00cf45ce0c14ef6d7096f3d212c11cc7167de2e8ce22b920",
+    "source_unchanged": true,
+    "intact": {
+      "initial_phase_rates": {
+        "birth_attempt_rate_upper_bound": 0.0,
+        "recovery_accepted_rate": 3.732082440442486e-05,
+        "birth_parent_count": 0,
+        "inverse_channels": [
+          {
+            "parent": 0,
+            "child": 12,
+            "edge": 32,
+            "attempt_rate": 0.11000000000000001,
+            "log_birth_ratio": 13.166973877300597,
+            "accepted_rate": 2.10401381405205e-07
+          },
+          {
+            "parent": 4,
+            "child": 10,
+            "edge": 37,
+            "attempt_rate": 0.11000000000000001,
+            "log_birth_ratio": 7.994337770601842,
+            "accepted_rate": 3.711042302301966e-05
+          }
+        ],
+        "domain_count_drift_bounds": [
+          -3.732082440442486e-05,
+          -3.732082440442486e-05
+        ],
+        "charged_count_drift_bounds": [
+          3.732082440442486e-05,
+          3.732082440442486e-05
+        ],
+        "scope": "Original physical generator, rates per reference ms; actual birth acceptance requires the allowed spatial-mark integral, not computed here"
+      },
+      "native_generator_response": {
+        "recovery_accepted_rate": -5.735017116743301e-07,
+        "birth_attempt_rate_upper_bound": 0.010418597750862192
+      },
+      "by_kind": {
+        "binding": {
+          "recovery_accepted_rate": 9.986148449289544e-11,
+          "birth_attempt_rate_upper_bound": 0.0
+        },
+        "thermal": {
+          "recovery_accepted_rate": -8.897502642563598e-08,
+          "birth_attempt_rate_upper_bound": 0.0
+        },
+        "active": {
+          "recovery_accepted_rate": 5.030063720569259e-08,
+          "birth_attempt_rate_upper_bound": 0.0
+        },
+        "assembly": {
+          "recovery_accepted_rate": -6.513417395984285e-07,
+          "birth_attempt_rate_upper_bound": 0.010418597750862192
+        },
+        "transport": {
+          "recovery_accepted_rate": 3.339704466749162e-11,
+          "birth_attempt_rate_upper_bound": 0.0
+        },
+        "write": {
+          "recovery_accepted_rate": 1.297183562780248e-07,
+          "birth_attempt_rate_upper_bound": 0.0
+        },
+        "conversion": {
+          "recovery_accepted_rate": -1.3101716165692662e-08,
+          "birth_attempt_rate_upper_bound": 0.0
+        },
+        "release": {
+          "recovery_accepted_rate": 0.0,
+          "birth_attempt_rate_upper_bound": 0.0
+        },
+        "port_binding": {
+          "recovery_accepted_rate": -9.460808555670263e-11,
+          "birth_attempt_rate_upper_bound": 0.0
+        },
+        "port_transport": {
+          "recovery_accepted_rate": 3.339704466749162e-11,
+          "birth_attempt_rate_upper_bound": 0.0
+        },
+        "port_write": {
+          "recovery_accepted_rate": -6.045510229303757e-11,
+          "birth_attempt_rate_upper_bound": 0.0
+        },
+        "port_thermal": {
+          "recovery_accepted_rate": 0.0,
+          "birth_attempt_rate_upper_bound": 0.0
+        },
+        "port_active": {
+          "recovery_accepted_rate": -1.1381535426824797e-10,
+          "birth_attempt_rate_upper_bound": 0.0
+        },
+        "port_assembly": {
+          "recovery_accepted_rate": 0.0,
+          "birth_attempt_rate_upper_bound": 0.0
+        }
+      },
+      "evaluated_channels": 211
+    },
+    "no_capture": {
+      "initial_phase_rates": {
+        "birth_attempt_rate_upper_bound": 0.0,
+        "recovery_accepted_rate": 3.732082440442486e-05,
+        "birth_parent_count": 0,
+        "inverse_channels": [
+          {
+            "parent": 0,
+            "child": 12,
+            "edge": 32,
+            "attempt_rate": 0.11000000000000001,
+            "log_birth_ratio": 13.166973877300597,
+            "accepted_rate": 2.10401381405205e-07
+          },
+          {
+            "parent": 4,
+            "child": 10,
+            "edge": 37,
+            "attempt_rate": 0.11000000000000001,
+            "log_birth_ratio": 7.994337770601842,
+            "accepted_rate": 3.711042302301966e-05
+          }
+        ],
+        "domain_count_drift_bounds": [
+          -3.732082440442486e-05,
+          -3.732082440442486e-05
+        ],
+        "charged_count_drift_bounds": [
+          3.732082440442486e-05,
+          3.732082440442486e-05
+        ],
+        "scope": "Original physical generator, rates per reference ms; actual birth acceptance requires the allowed spatial-mark integral, not computed here"
+      },
+      "native_generator_response": {
+        "recovery_accepted_rate": -5.742012000773895e-07,
+        "birth_attempt_rate_upper_bound": 0.010418597750862192
+      },
+      "by_kind": {
+        "binding": {
+          "recovery_accepted_rate": 9.986148449289544e-11,
+          "birth_attempt_rate_upper_bound": 0.0
+        },
+        "thermal": {
+          "recovery_accepted_rate": -8.897502642563598e-08,
+          "birth_attempt_rate_upper_bound": 0.0
+        },
+        "active": {
+          "recovery_accepted_rate": 5.030063720569259e-08,
+          "birth_attempt_rate_upper_bound": 0.0
+        },
+        "assembly": {
+          "recovery_accepted_rate": -6.513417395984285e-07,
+          "birth_attempt_rate_upper_bound": 0.010418597750862192
+        },
+        "transport": {
+          "recovery_accepted_rate": 1.2901644771240313e-10,
+          "birth_attempt_rate_upper_bound": 0.0
+        },
+        "write": {
+          "recovery_accepted_rate": 1.295383770809177e-07,
+          "birth_attempt_rate_upper_bound": 0.0
+        },
+        "conversion": {
+          "recovery_accepted_rate": -1.3101716165692662e-08,
+          "birth_attempt_rate_upper_bound": 0.0
+        },
+        "release": {
+          "recovery_accepted_rate": 0.0,
+          "birth_attempt_rate_upper_bound": 0.0
+        },
+        "port_binding": {
+          "recovery_accepted_rate": -6.270114865247587e-10,
+          "birth_attempt_rate_upper_bound": 0.0
+        },
+        "port_transport": {
+          "recovery_accepted_rate": 1.2901644771240313e-10,
+          "birth_attempt_rate_upper_bound": 0.0
+        },
+        "port_write": {
+          "recovery_accepted_rate": -2.387997133672204e-10,
+          "birth_attempt_rate_upper_bound": 0.0
+        },
+        "port_thermal": {
+          "recovery_accepted_rate": 0.0,
+          "birth_attempt_rate_upper_bound": 0.0
+        },
+        "port_active": {
+          "recovery_accepted_rate": -1.1381535426824797e-10,
+          "birth_attempt_rate_upper_bound": 0.0
+        },
+        "port_assembly": {
+          "recovery_accepted_rate": 0.0,
+          "birth_attempt_rate_upper_bound": 0.0
+        }
+      },
+      "evaluated_channels": 211
+    },
+    "intervention": {
+      "time_ms": 7936.0,
+      "changes": {
+        "capture_coupling": 0.0
+      },
+      "previous": {
+        "capture_coupling": 2.0
+      },
+      "external_work": 12.0,
+      "free_energy_change": 12.0,
+      "state_erased": false,
+      "kinetic_controller": "ideal diagnostic barrier; not part of the living model"
+    },
+    "instantaneous_phase_rates_equal": true,
+    "difference": {
+      "recovery_accepted_rate": -6.994884030594585e-10,
+      "birth_attempt_rate_upper_bound": 0.0
+    },
+    "scope": "Exploratory exact bridge/pool subgenerator applied to current recovery hazard and birth-attempt upper bound. Geometry/source/OU and phase jumps are not included in this local generator. The bound is not an integrated birth rate. Hypothetical permitted native jumps are enumerated with actual rates/energy; they do not change the primary state or become a learning score.",
+    "full_report": "F:/fly_stream_overflow/cgb_domain_rate_r1_20261022/capture_generator.json"
+  },
+  "capture_generator_end": {
+    "source": "F:\\fly_stream_overflow\\cgb_domain_rate_r1_20261022\\marginal_complete.npz",
+    "source_sha256": "d6b0dd49eda0a4d26d29124f1a558f7d4f9e79568345fc668d663cc14fa45eda",
+    "source_unchanged": true,
+    "intact": {
+      "initial_phase_rates": {
+        "birth_attempt_rate_upper_bound": 0.0,
+        "recovery_accepted_rate": 0,
+        "birth_parent_count": 0,
+        "inverse_channels": [],
+        "domain_count_drift_bounds": [
+          0,
+          0.0
+        ],
+        "charged_count_drift_bounds": [
+          0.0,
+          0
+        ],
+        "scope": "Original physical generator, rates per reference ms; actual birth acceptance requires the allowed spatial-mark integral, not computed here"
+      },
+      "native_generator_response": {
+        "recovery_accepted_rate": 1.5879780784357932e-08,
+        "birth_attempt_rate_upper_bound": 0.004010553817910034
+      },
+      "by_kind": {
+        "binding": {
+          "recovery_accepted_rate": 1.0933817227394372e-08,
+          "birth_attempt_rate_upper_bound": 0.0
+        },
+        "write": {
+          "recovery_accepted_rate": 0.0,
+          "birth_attempt_rate_upper_bound": 0.0
+        },
+        "thermal": {
+          "recovery_accepted_rate": 0.0,
+          "birth_attempt_rate_upper_bound": 0.0
+        },
+        "active": {
+          "recovery_accepted_rate": 0.0,
+          "birth_attempt_rate_upper_bound": 0.0
+        },
+        "transport": {
+          "recovery_accepted_rate": 0.0,
+          "birth_attempt_rate_upper_bound": 0.0
+        },
+        "assembly": {
+          "recovery_accepted_rate": 4.9459635569635605e-09,
+          "birth_attempt_rate_upper_bound": 0.004010553817910034
+        },
+        "conversion": {
+          "recovery_accepted_rate": 0.0,
+          "birth_attempt_rate_upper_bound": 0.0
+        },
+        "release": {
+          "recovery_accepted_rate": 0.0,
+          "birth_attempt_rate_upper_bound": 0.0
+        },
+        "port_binding": {
+          "recovery_accepted_rate": 0.0,
+          "birth_attempt_rate_upper_bound": 0.0
+        },
+        "port_write": {
+          "recovery_accepted_rate": 0.0,
+          "birth_attempt_rate_upper_bound": 0.0
+        },
+        "port_thermal": {
+          "recovery_accepted_rate": 0.0,
+          "birth_attempt_rate_upper_bound": 0.0
+        },
+        "port_active": {
+          "recovery_accepted_rate": 0.0,
+          "birth_attempt_rate_upper_bound": 0.0
+        },
+        "port_assembly": {
+          "recovery_accepted_rate": 0.0,
+          "birth_attempt_rate_upper_bound": 0.0
+        }
+      },
+      "evaluated_channels": 240
+    },
+    "no_capture": {
+      "initial_phase_rates": {
+        "birth_attempt_rate_upper_bound": 0.0,
+        "recovery_accepted_rate": 0,
+        "birth_parent_count": 0,
+        "inverse_channels": [],
+        "domain_count_drift_bounds": [
+          0,
+          0.0
+        ],
+        "charged_count_drift_bounds": [
+          0.0,
+          0
+        ],
+        "scope": "Original physical generator, rates per reference ms; actual birth acceptance requires the allowed spatial-mark integral, not computed here"
+      },
+      "native_generator_response": {
+        "recovery_accepted_rate": 1.5879780784357932e-08,
+        "birth_attempt_rate_upper_bound": 0.004010553817910034
+      },
+      "by_kind": {
+        "binding": {
+          "recovery_accepted_rate": 1.0933817227394372e-08,
+          "birth_attempt_rate_upper_bound": 0.0
+        },
+        "write": {
+          "recovery_accepted_rate": 0.0,
+          "birth_attempt_rate_upper_bound": 0.0
+        },
+        "thermal": {
+          "recovery_accepted_rate": 0.0,
+          "birth_attempt_rate_upper_bound": 0.0
+        },
+        "active": {
+          "recovery_accepted_rate": 0.0,
+          "birth_attempt_rate_upper_bound": 0.0
+        },
+        "transport": {
+          "recovery_accepted_rate": 0.0,
+          "birth_attempt_rate_upper_bound": 0.0
+        },
+        "assembly": {
+          "recovery_accepted_rate": 4.9459635569635605e-09,
+          "birth_attempt_rate_upper_bound": 0.004010553817910034
+        },
+        "conversion": {
+          "recovery_accepted_rate": 0.0,
+          "birth_attempt_rate_upper_bound": 0.0
+        },
+        "release": {
+          "recovery_accepted_rate": 0.0,
+          "birth_attempt_rate_upper_bound": 0.0
+        },
+        "port_binding": {
+          "recovery_accepted_rate": 0.0,
+          "birth_attempt_rate_upper_bound": 0.0
+        },
+        "port_write": {
+          "recovery_accepted_rate": 0.0,
+          "birth_attempt_rate_upper_bound": 0.0
+        },
+        "port_thermal": {
+          "recovery_accepted_rate": 0.0,
+          "birth_attempt_rate_upper_bound": 0.0
+        },
+        "port_active": {
+          "recovery_accepted_rate": 0.0,
+          "birth_attempt_rate_upper_bound": 0.0
+        },
+        "port_assembly": {
+          "recovery_accepted_rate": 0.0,
+          "birth_attempt_rate_upper_bound": 0.0
+        }
+      },
+      "evaluated_channels": 240
+    },
+    "intervention": {
+      "time_ms": 9984.0,
+      "changes": {
+        "capture_coupling": 0.0
+      },
+      "previous": {
+        "capture_coupling": 2.0
+      },
+      "external_work": 34.0,
+      "free_energy_change": 34.0,
+      "state_erased": false,
+      "kinetic_controller": "ideal diagnostic barrier; not part of the living model"
+    },
+    "instantaneous_phase_rates_equal": true,
+    "difference": {
+      "recovery_accepted_rate": 0.0,
+      "birth_attempt_rate_upper_bound": 0.0
+    },
+    "scope": "Exploratory exact bridge/pool subgenerator applied to current recovery hazard and birth-attempt upper bound. Geometry/source/OU and phase jumps are not included in this local generator. The bound is not an integrated birth rate. Hypothetical permitted native jumps are enumerated with actual rates/energy; they do not change the primary state or become a learning score.",
+    "full_report": "F:/fly_stream_overflow/cgb_domain_rate_r1_20261022/capture_generator_end.json"
+  },
+  "regression": {
+    "tests": 251,
+    "errors": 0,
+    "failures": 0,
+    "seconds": 25.023
+  },
+  "report": "docs/information_boltzmann/CGB_DOMAIN_RATE_RESULTS_20261022.md",
+  "viewer": "http://127.0.0.1:8766/growth",
+  "scene_sha256": "f9a1d1f79ef507beb6072c6a720f61d92ef6387b0a6cd520587a1591e8a507b7",
+  "scope": "Same physical phase generator simplified exactly, original support/trace reactions coupled to phase ratios, sustained real-stream growth. Stable useful learning, natural domain recovery and driven self-maintenance remain open.",
+  "run_metadata": {
+    "baseline_git": "df3286d2b171f5ba42af5c6984c9e8226cc12377",
+    "sources": {
+      "parent_archive": "F:\\fly_stream_overflow\\cgb_domain_birth_20261022\\growing_complete.npz",
+      "parent_sha256": "eec5d5f805146d3d00cf45ce0c14ef6d7096f3d212c11cc7167de2e8ce22b920",
+      "original_sources": {
+        "parent_archive": "F:\\fly_stream_overflow\\cgb_future_exchange_recovered_20261022\\native_revisit_A_complete.npz",
+        "parent_sha256": "6563b8fdc94f16f3f453d23571eecbed7ee556b1945b844bd90aa28d95c89f56",
+        "original_sources": {
+          "archive": "F:\\fly_stream_overflow\\cgb_identity_cached_20261022\\coupled_complete.npz",
+          "archive_sha256": "4317f2e25e7834fa8f76b16b1b38895904506f51e058cd01616f5f1e67258c05",
+          "source_time_ms": 256.0,
+          "retained_history_bytes": 64,
+          "genome": "e2dd1af426729119fe14baa239b5d4462b7d93c9a5fe62112254a33fad55caca",
+          "corpus": {
+            "source": "openwebtext",
+            "revision": "433fe0f44ed7894fea29c08b3202aa348ccc6369",
+            "split_rule": "NFC_document_sha256_mod100_98_1_1",
+            "tokenizer": {
+              "type": "utf8_bytes",
+              "offset": 4,
+              "special_tokens": [
+                "<pad>",
+                "<bos>",
+                "<eos>",
+                "<unk>"
+              ]
+            },
+            "manifest_sha256": "3614c380d4c72688ac8ccde42f32ea0655d16bec1ba0874a924fd777af904d2d",
+            "files_sha256": {
+              "train.npy": "2f227239bc63b89daf31956701d243a93f9dd46671702fff03763b33dc6db4fb",
+              "validation.npy": "60d41d3fdda8c1718ad1735693eda0dae2b23a0032c5e04a29aac9d0c6d35d8c"
+            },
+            "selected_locations": {
+              "warm": {
+                "split": "train",
+                "offset": 0
+              },
+              "fresh_A": {
+                "split": "train",
+                "offset": 256
+              },
+              "fresh_B": {
+                "split": "validation",
+                "offset": 0
+              },
+              "revisit_A": {
+                "split": "train",
+                "offset": 0,
+                "replay": true
+              }
+            },
+            "selected_counts": {
+              "warm": 256,
+              "fresh_A": 1024,
+              "fresh_B": 256,
+              "revisit_A": 256
+            },
+            "selected_sha256": {
+              "warm": "8adc7c0db929640b940dc5dd169d0e33d817702bad92c4e8e74fef402729fe47",
+              "fresh_A": "f78646c8d44a0757e6209fe2a21213886d45e428352822fd34016e76f83b879a",
+              "fresh_B": "cae7e75576faafe47498559572aebb75265dc091a8fbd2d50558b027bc4cdac9",
+              "revisit_A": "8adc7c0db929640b940dc5dd169d0e33d817702bad92c4e8e74fef402729fe47"
+            }
+          },
+          "selected_stream_sha256": "66ff4214ee2abf401a2d6e299755578c82964b2622c90ace8be05ca286f0f7db"
+        },
+        "split": "train",
+        "token_offset": 4,
+        "fresh_byte_start": 1280,
+        "fresh_byte_end": 1408,
+        "selected_sha256": "e7f0fa86ab96dcecce9ed36741b53c8b18aadc1b53ecfe8e6b8230735836c6dd"
+      },
+      "split": "train",
+      "token_offset": 4,
+      "fresh_byte_start": 1408,
+      "fresh_byte_end": 1920,
+      "block_sha256": "b54b762f19020d7c7b614db7787b21cb1006fc88df3124d7fab02370ab35b7c4"
+    },
+    "source_unchanged": true,
+    "legacy_equivalence": {
+      "bytes": 64,
+      "old_actual_source_sha256": "7acd778289c2d6892edeeda532ecd6feb9eec8c8b35b88b37bae2950fd21d6a2",
+      "all_logits_scores_physical_states_three_rngs_and_session_exact": true
+    },
+    "optimizer_updates": 0,
+    "byte_ms": 4.0,
+    "dt_ms": 2.0,
+    "scope": "Exact conditional phase sampler and continued local physical learning. Single trajectories are not a convergence or predictive-benefit claim.",
+    "full_report": "F:/fly_stream_overflow/cgb_domain_rate_r1_20261022/report.json"
+  },
+  "arms": {
+    "marginal": {
+      "archive": "F:\\fly_stream_overflow\\cgb_domain_rate_r1_20261022\\marginal_complete.npz",
+      "sha256": "d6b0dd49eda0a4d26d29124f1a558f7d4f9e79568345fc668d663cc14fa45eda",
+      "bytes": 512,
+      "time_ms": 9984.0,
+      "nll": {
+        "material": 10.581718778591323,
+        "fixed_byte": 3.412207126197961,
+        "fixed_bits": 3.8843393286416594,
+        "source_filter": 10.356910422257446
+      },
+      "nodes": 43,
+      "stage_births": 15,
+      "stage_deaths": 0,
+      "carrier": {
+        "live_carriers": 54,
+        "source_carriers_surviving": 4,
+        "births": 358,
+        "deaths": 347
+      },
+      "final_material": 25,
+      "total_material": 122,
+      "internal_bridges": 53,
+      "boundary_contacts": 1,
+      "original_reactions": {
+        "port_binding-": 7,
+        "assembly+": 314,
+        "thermal+": 361,
+        "port_active+": 2,
+        "thermal-": 354,
+        "port_transport-": 3,
+        "active+": 713,
+        "port_write+": 6,
+        "assembly-": 315,
+        "port_thermal+": 33,
+        "port_active-": 3,
+        "domain+": 15,
+        "port_write-": 10,
+        "binding-": 165,
+        "conversion-": 59,
+        "binding+": 174,
+        "release+": 81,
+        "active-": 716,
+        "port_thermal-": 29,
+        "write-": 946,
+        "port_assembly+": 29,
+        "transport+": 28,
+        "transport-": 27,
+        "conversion+": 73,
+        "release-": 69,
+        "port_assembly-": 32,
+        "port_transport+": 10,
+        "write+": 951,
+        "port_binding+": 11
+      },
+      "intervention": null,
+      "flow_source_work": 9978.874652950944,
+      "heat_out": 9937.885979627608,
+      "maximum_error": 2.4374458007514477e-09,
+      "restored_future_bytes": 256,
+      "all_logits_physics_three_rngs_session_and_both_observers_exact": true,
+      "primary": true
+    },
+    "resolved_reference": {
+      "archive": "F:\\fly_stream_overflow\\cgb_domain_rate_r1_20261022\\resolved_reference_complete.npz",
+      "sha256": "d394cfddeabf015f691ff6a414237ec7350b5a4499d12fa16bab72d57b72d1e5",
+      "bytes": 512,
+      "time_ms": 9984.0,
+      "nll": {
+        "material": 11.337860854755318,
+        "fixed_byte": 3.412207126197961,
+        "fixed_bits": 3.8843393286416594,
+        "source_filter": 10.356910422257446
+      },
+      "nodes": 44,
+      "stage_births": 16,
+      "stage_deaths": 0,
+      "carrier": {
+        "live_carriers": 56,
+        "source_carriers_surviving": 4,
+        "births": 426,
+        "deaths": 413
+      },
+      "final_material": 22,
+      "total_material": 122,
+      "internal_bridges": 54,
+      "boundary_contacts": 2,
+      "original_reactions": {
+        "port_binding-": 28,
+        "assembly+": 395,
+        "thermal+": 382,
+        "port_active+": 8,
+        "thermal-": 353,
+        "port_transport-": 3,
+        "active+": 714,
+        "port_write+": 9,
+        "assembly-": 396,
+        "port_thermal+": 44,
+        "port_active-": 5,
+        "domain+": 16,
+        "port_write-": 14,
+        "binding-": 172,
+        "conversion-": 63,
+        "binding+": 176,
+        "release+": 56,
+        "active-": 732,
+        "port_thermal-": 39,
+        "write-": 1028,
+        "port_assembly+": 15,
+        "transport+": 24,
+        "transport-": 22,
+        "conversion+": 52,
+        "release-": 54,
+        "port_assembly-": 17,
+        "port_transport+": 3,
+        "write+": 1022,
+        "port_binding+": 26
+      },
+      "intervention": null,
+      "flow_source_work": 10156.08745516427,
+      "heat_out": 10061.517783457268,
+      "maximum_error": 1.760781742632389e-09,
+      "restored_future_bytes": 256,
+      "all_logits_physics_three_rngs_session_and_both_observers_exact": true,
+      "primary": false
+    },
+    "no_capture": {
+      "archive": "F:\\fly_stream_overflow\\cgb_domain_rate_r1_20261022\\no_capture_complete.npz",
+      "sha256": "8f0845312b49fe2c9d033d2dcf662f5db4101fe7731b2ad166748fd7f1c51961",
+      "bytes": 512,
+      "time_ms": 9984.0,
+      "nll": {
+        "material": 11.358779879123635,
+        "fixed_byte": 3.412207126197961,
+        "fixed_bits": 3.8843393286416594,
+        "source_filter": 10.356910422257446
+      },
+      "nodes": 46,
+      "stage_births": 18,
+      "stage_deaths": 0,
+      "carrier": {
+        "live_carriers": 55,
+        "source_carriers_surviving": 4,
+        "births": 362,
+        "deaths": 350
+      },
+      "final_material": 21,
+      "total_material": 122,
+      "internal_bridges": 54,
+      "boundary_contacts": 1,
+      "original_reactions": {
+        "port_binding-": 20,
+        "assembly+": 338,
+        "thermal+": 207,
+        "port_active+": 4,
+        "thermal-": 183,
+        "port_transport-": 0,
+        "active+": 538,
+        "port_write+": 5,
+        "assembly-": 341,
+        "port_thermal+": 11,
+        "port_active-": 1,
+        "domain+": 18,
+        "port_write-": 5,
+        "binding-": 270,
+        "conversion-": 44,
+        "binding+": 278,
+        "release+": 75,
+        "active-": 538,
+        "port_thermal-": 12,
+        "write-": 872,
+        "port_assembly+": 6,
+        "transport+": 16,
+        "transport-": 14,
+        "conversion+": 44,
+        "release-": 69,
+        "port_assembly-": 9,
+        "port_transport+": 3,
+        "write+": 851,
+        "port_binding+": 20
+      },
+      "intervention": {
+        "time_ms": 7936.0,
+        "changes": {
+          "capture_coupling": 0.0
+        },
+        "previous": {
+          "capture_coupling": 2.0
+        },
+        "external_work": 12.0,
+        "free_energy_change": 12.0,
+        "state_erased": false,
+        "kinetic_controller": "ideal diagnostic barrier; not part of the living model"
+      },
+      "flow_source_work": 9649.44172412673,
+      "heat_out": 9573.195316862453,
+      "maximum_error": 2.0372681319713593e-09,
+      "restored_future_bytes": 256,
+      "all_logits_physics_three_rngs_session_and_both_observers_exact": true,
+      "primary": false
+    }
+  }
+}
