@@ -14,12 +14,16 @@ from scripts.ib.generative.native_learning_stream import atomic_json
 
 def main(run):
     report=json.loads((run/'report.json').read_text(encoding='utf-8'))
+    shared_path=run/'cohort_analysis.json'
+    shared=json.loads(shared_path.read_text(encoding='utf-8')) if shared_path.exists() else None
     primary=next(label for label,item in report['arms'].items() if item.get('primary'))
     arms=[]
     origin_count=None
     for label in report['arms']:
         frames=[]
         source_work=source_heat=None
+        history_path=run/(label+'_windows.json')
+        history=json.loads(history_path.read_text(encoding='utf-8')) if history_path.exists() else []
         for stage in ('start','mid','complete'):
             model,meta=load_exchange(run/(label+'_'+stage+'.npz'))
             if stage=='start':source_work,source_heat=model.work_in,model.heat_out
@@ -40,6 +44,23 @@ def main(run):
                 source_work=model.work_in-source_work,heat_out=model.heat_out-source_heat,port_nodes=model.port_nodes.tolist(),
                 morphology=dict(bridges=len(model.pre),branch_nodes=int(np.sum(degree>=3)),seed_component_nodes=len(seen)),
                 boundary_contacts=int(model.port_installed.sum()),archive_stage=stage))
+            if 'nll_by_phase' in report['arms'][label]:
+                cohort=meta['stage_reference']['cohort']
+                current=next((row for row in history if row['time_ms']==model.t),None)
+                phase=current['phase'] if current else None
+                frames[-1]['memory']=dict(total_carriers=len(cohort),
+                    source_trace_carriers=sum(x['trace'] for x in cohort.values()),
+                    retained=current['original_carriers_retained'] if current else len(cohort),
+                    retained_trace=current['original_trace_carriers_retained'] if current else sum(x['trace'] for x in cohort.values()),
+                    retained_with_trace_now=current['original_trace_carriers_current_trace'] if current else sum(x['trace'] for x in cohort.values()),
+                    rebuilt=current['rebuilt_old_positions'] if current else 0,
+                    phase=phase,assessment=report['arms'][label]['nll_by_phase'].get(phase),samples=128 if phase else 0)
+                if shared:
+                    fixed=next(row['fate'] for row in shared['arms'][label]['windows'] if row['time_ms']==model.t)
+                    frames[-1]['memory'].update(total_carriers=fixed['source_carriers'],
+                        source_trace_carriers=fixed['groups']['traced']['initial'],retained=fixed['retained'],
+                        retained_trace=fixed['groups']['traced']['retained'],
+                        retained_with_trace_now=fixed['groups']['traced']['current_trace'],rebuilt=fixed['rebuilt_old_positions'])
         arms.append(dict(id=label,frames=frames))
     selected=next(arm for arm in arms if arm['id']==primary)
     first,last=selected['frames'][0],selected['frames'][-1]
@@ -58,6 +79,13 @@ def main(run):
                '主线预先指定为新顺序2ms，未按域数或NLL挑选。原痕迹、支持、身份和空间反应全部继续。'
                '每支中点后的128字节已逐位恢复；这是数值执行检查，不是单轨迹收敛或语言能力结论。'
                '页面显示实际内部桥，边界另计；图中只有实际存档，无插值造型。')
+    if 'nll_by_phase' in report['arms'][primary]:
+        title='痕迹、支持与真实载体周转'
+        notes=('自然支先读128新OWT字节，再回访128个确实见过的字节，学习持续，4ms/字节。'
+               '保留痕迹/条件化去痕迹副本用原允许反应匹配q/P/D；另有付费关闭捕获耦合的副本。'
+               '它们是诊断对照，未经修改的自然支始终是主线，不挑域数或NLL的赢家。'
+               '原载体存活、痕迹当前值和旧位置重建分别计数；当前未证明语义记忆或预测收益。')
+        notes+=' 各条件按同一未干预父档的载体群计数；当前r值也可能经历重写，不等于原内容连续留存。'
     atomic_json(run/'mobile_scene.json',dict(box_size=model.params.box_size,default=primary,
         default_frame=2,birth_origin_count=origin_count,arms=arms,read_only=True,source=str(run),
         title=title,work_label='本段外界源功',heat_label='本段净热流出 Q',

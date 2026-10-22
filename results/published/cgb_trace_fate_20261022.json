@@ -1,0 +1,921 @@
+{
+  "passed": true,
+  "source_report": "F:\\fly_stream_overflow\\cgb_trace_fate_20261022\\report.json",
+  "source_report_sha256": "5b70d5f894632bc314590043132dc77729bdee0d1cca0345c79f95bf97676c45",
+  "source_analysis": "F:\\fly_stream_overflow\\cgb_trace_fate_20261022\\cohort_analysis.json",
+  "source_analysis_sha256": "420f8661d97a21fce75381e55f74b4327cb33871d28497c7be56fd7e10d1a4fd",
+  "source": {
+    "parent_archive": "F:\\fly_stream_overflow\\cgb_full_step_20261022\\symmetric_dt2_complete.npz",
+    "parent_sha256": "d1515a4aafa620adab91a7404cc78ac14ccb9ee5541addb265410ff6a4fba65c",
+    "corpus": {
+      "source": "openwebtext",
+      "revision": "433fe0f44ed7894fea29c08b3202aa348ccc6369",
+      "split_rule": "NFC_document_sha256_mod100_98_1_1",
+      "tokenizer": {
+        "type": "utf8_bytes",
+        "offset": 4,
+        "special_tokens": [
+          "<pad>",
+          "<bos>",
+          "<eos>",
+          "<unk>"
+        ]
+      },
+      "manifest_sha256": "3614c380d4c72688ac8ccde42f32ea0655d16bec1ba0874a924fd777af904d2d",
+      "files_sha256": {
+        "train.npy": "2f227239bc63b89daf31956701d243a93f9dd46671702fff03763b33dc6db4fb",
+        "validation.npy": "60d41d3fdda8c1718ad1735693eda0dae2b23a0032c5e04a29aac9d0c6d35d8c"
+      }
+    },
+    "fresh_selection": {
+      "split": "train",
+      "start": 2688,
+      "end": 2816,
+      "token_offset": 4
+    },
+    "replay_selection": {
+      "split": "train",
+      "start": 2560,
+      "end": 2688,
+      "token_offset": 4,
+      "verified_against_actual_previous_run": true
+    },
+    "protocol": "128 actual fresh bytes then 128 verified revisited bytes; 4ms each, original dt2ms, full native learning"
+  },
+  "arms": {
+    "natural": {
+      "time_ms": 14080.0,
+      "nodes": 52,
+      "free_material": 8,
+      "internal_bridges": 61,
+      "boundary_contacts": 1,
+      "domain_births": 3,
+      "domain_deaths": 0,
+      "carrier_births": 252,
+      "carrier_deaths": 250,
+      "source_work": 4996.76356484041,
+      "heat_out": 4981.848817214057,
+      "energy_change": 14.91474762456346,
+      "nll_by_phase": {
+        "fresh_F": {
+          "material": 10.929023711768828,
+          "fixed_byte": 3.35231872341413,
+          "fixed_bits": 3.739517907371148,
+          "source_filter": 9.892650076321157
+        },
+        "revisit_A": {
+          "material": 11.546065459024451,
+          "fixed_byte": 3.398709256052746,
+          "fixed_bits": 3.858777219384102,
+          "source_filter": 10.53253882308978
+        }
+      },
+      "maximum_error": 2.0881998352706432e-09,
+      "restored_future_intervals": 128,
+      "all_future_records_physics_rngs_session_observers_exact": true,
+      "observer_only_sham_exact": true,
+      "actual_fresh_exposures": 128,
+      "actual_replay_exposures": 128,
+      "next_train_byte": 2816,
+      "next_validation_byte": 256,
+      "primary": true,
+      "archive": "F:\\fly_stream_overflow\\cgb_trace_fate_20261022\\natural_complete.npz",
+      "sha256": "8e359c1da68287d28869b67c59fbca99f0887c1da256d2becb773197d0805029",
+      "wall_seconds": 125.23982460000116,
+      "shared_parent_fate": {
+        "source_carriers": 60,
+        "retained": 17,
+        "rebuilt_old_positions": 9,
+        "groups": {
+          "traced": {
+            "initial": 24,
+            "retained": 8,
+            "current_trace": 0,
+            "current_bound": 8
+          },
+          "untraced": {
+            "initial": 36,
+            "retained": 9,
+            "current_trace": 4,
+            "current_bound": 7
+          },
+          "bound": {
+            "initial": 38,
+            "retained": 16,
+            "current_trace": 3,
+            "current_bound": 14
+          },
+          "unbound": {
+            "initial": 22,
+            "retained": 1,
+            "current_trace": 1,
+            "current_bound": 1
+          }
+        }
+      }
+    },
+    "kept": {
+      "time_ms": 14080.0,
+      "nodes": 52,
+      "free_material": 8,
+      "internal_bridges": 62,
+      "boundary_contacts": 0,
+      "domain_births": 3,
+      "domain_deaths": 0,
+      "carrier_births": 303,
+      "carrier_deaths": 301,
+      "source_work": 4906.759337955606,
+      "heat_out": 5029.6947569617405,
+      "energy_change": -122.93541900634898,
+      "nll_by_phase": {
+        "fresh_F": {
+          "material": 11.928760167901356,
+          "fixed_byte": 3.35231872341413,
+          "fixed_bits": 3.739517907371148,
+          "source_filter": 9.892650076321157
+        },
+        "revisit_A": {
+          "material": 11.08016254870627,
+          "fixed_byte": 3.398709256052746,
+          "fixed_bits": 3.858777219384102,
+          "source_filter": 10.53253882308978
+        }
+      },
+      "maximum_error": 2.5756889954209328e-09,
+      "restored_future_intervals": 128,
+      "all_future_records_physics_rngs_session_observers_exact": true,
+      "observer_only_sham_exact": null,
+      "actual_fresh_exposures": 128,
+      "actual_replay_exposures": 128,
+      "next_train_byte": 2816,
+      "next_validation_byte": 256,
+      "primary": false,
+      "archive": "F:\\fly_stream_overflow\\cgb_trace_fate_20261022\\kept_complete.npz",
+      "sha256": "65dc7231cc9891e56b4277acdada945951ca7623b4e06d41ff5ebd5da4f9e66e",
+      "wall_seconds": 75.27039560000048,
+      "shared_parent_fate": {
+        "source_carriers": 60,
+        "retained": 18,
+        "rebuilt_old_positions": 4,
+        "groups": {
+          "traced": {
+            "initial": 24,
+            "retained": 11,
+            "current_trace": 6,
+            "current_bound": 10
+          },
+          "untraced": {
+            "initial": 36,
+            "retained": 7,
+            "current_trace": 4,
+            "current_bound": 6
+          },
+          "bound": {
+            "initial": 38,
+            "retained": 16,
+            "current_trace": 10,
+            "current_bound": 15
+          },
+          "unbound": {
+            "initial": 22,
+            "retained": 2,
+            "current_trace": 0,
+            "current_bound": 1
+          }
+        }
+      }
+    },
+    "erase": {
+      "time_ms": 14080.0,
+      "nodes": 53,
+      "free_material": 9,
+      "internal_bridges": 59,
+      "boundary_contacts": 1,
+      "domain_births": 4,
+      "domain_deaths": 0,
+      "carrier_births": 265,
+      "carrier_deaths": 265,
+      "source_work": 4938.938765513725,
+      "heat_out": 5019.332324290277,
+      "energy_change": -80.3935587749221,
+      "nll_by_phase": {
+        "fresh_F": {
+          "material": 10.444065239588273,
+          "fixed_byte": 3.35231872341413,
+          "fixed_bits": 3.739517907371148,
+          "source_filter": 9.892650076321157
+        },
+        "revisit_A": {
+          "material": 10.426686269598457,
+          "fixed_byte": 3.398709256052746,
+          "fixed_bits": 3.858777219384102,
+          "source_filter": 10.53253882308978
+        }
+      },
+      "maximum_error": 3.7194922697381116e-09,
+      "restored_future_intervals": 128,
+      "all_future_records_physics_rngs_session_observers_exact": true,
+      "observer_only_sham_exact": null,
+      "actual_fresh_exposures": 128,
+      "actual_replay_exposures": 128,
+      "next_train_byte": 2816,
+      "next_validation_byte": 256,
+      "primary": false,
+      "archive": "F:\\fly_stream_overflow\\cgb_trace_fate_20261022\\erase_complete.npz",
+      "sha256": "e631359dd709a76a13c1cf8bacbcc7b3a01525d75aef92be4a08d314c901655c",
+      "wall_seconds": 75.37658920000104,
+      "shared_parent_fate": {
+        "source_carriers": 60,
+        "retained": 21,
+        "rebuilt_old_positions": 3,
+        "groups": {
+          "traced": {
+            "initial": 24,
+            "retained": 10,
+            "current_trace": 4,
+            "current_bound": 8
+          },
+          "untraced": {
+            "initial": 36,
+            "retained": 11,
+            "current_trace": 5,
+            "current_bound": 9
+          },
+          "bound": {
+            "initial": 38,
+            "retained": 18,
+            "current_trace": 9,
+            "current_bound": 15
+          },
+          "unbound": {
+            "initial": 22,
+            "retained": 3,
+            "current_trace": 0,
+            "current_bound": 2
+          }
+        }
+      }
+    },
+    "kept_no_capture": {
+      "time_ms": 14080.0,
+      "nodes": 51,
+      "free_material": 11,
+      "internal_bridges": 59,
+      "boundary_contacts": 1,
+      "domain_births": 2,
+      "domain_deaths": 0,
+      "carrier_births": 261,
+      "carrier_deaths": 261,
+      "source_work": 4985.959964655514,
+      "heat_out": 5117.482602093638,
+      "energy_change": -131.5226374370132,
+      "nll_by_phase": {
+        "fresh_F": {
+          "material": 11.899424376703692,
+          "fixed_byte": 3.35231872341413,
+          "fixed_bits": 3.739517907371148,
+          "source_filter": 9.892650076321157
+        },
+        "revisit_A": {
+          "material": 10.562161047174422,
+          "fixed_byte": 3.398709256052746,
+          "fixed_bits": 3.858777219384102,
+          "source_filter": 10.53253882308978
+        }
+      },
+      "maximum_error": 3.245077095925808e-09,
+      "restored_future_intervals": 128,
+      "all_future_records_physics_rngs_session_observers_exact": true,
+      "observer_only_sham_exact": null,
+      "actual_fresh_exposures": 128,
+      "actual_replay_exposures": 128,
+      "next_train_byte": 2816,
+      "next_validation_byte": 256,
+      "primary": false,
+      "archive": "F:\\fly_stream_overflow\\cgb_trace_fate_20261022\\kept_no_capture_complete.npz",
+      "sha256": "519232bbf67c093909efe420040008f0b77bceb5c9563deed8331d2b020c3f17",
+      "wall_seconds": 60.434890099997574,
+      "shared_parent_fate": {
+        "source_carriers": 60,
+        "retained": 6,
+        "rebuilt_old_positions": 3,
+        "groups": {
+          "traced": {
+            "initial": 24,
+            "retained": 2,
+            "current_trace": 0,
+            "current_bound": 2
+          },
+          "untraced": {
+            "initial": 36,
+            "retained": 4,
+            "current_trace": 0,
+            "current_bound": 4
+          },
+          "bound": {
+            "initial": 38,
+            "retained": 6,
+            "current_trace": 0,
+            "current_bound": 6
+          },
+          "unbound": {
+            "initial": 22,
+            "retained": 0,
+            "current_trace": 0,
+            "current_bound": 0
+          }
+        }
+      }
+    },
+    "erase_no_capture": {
+      "time_ms": 14080.0,
+      "nodes": 51,
+      "free_material": 11,
+      "internal_bridges": 59,
+      "boundary_contacts": 1,
+      "domain_births": 2,
+      "domain_deaths": 0,
+      "carrier_births": 272,
+      "carrier_deaths": 272,
+      "source_work": 4816.855664206974,
+      "heat_out": 4930.320318418853,
+      "energy_change": -113.46465421369811,
+      "nll_by_phase": {
+        "fresh_F": {
+          "material": 11.108302305341853,
+          "fixed_byte": 3.35231872341413,
+          "fixed_bits": 3.739517907371148,
+          "source_filter": 9.892650076321157
+        },
+        "revisit_A": {
+          "material": 10.824899262720546,
+          "fixed_byte": 3.398709256052746,
+          "fixed_bits": 3.858777219384102,
+          "source_filter": 10.53253882308978
+        }
+      },
+      "maximum_error": 2.306478563696146e-09,
+      "restored_future_intervals": 128,
+      "all_future_records_physics_rngs_session_observers_exact": true,
+      "observer_only_sham_exact": null,
+      "actual_fresh_exposures": 128,
+      "actual_replay_exposures": 128,
+      "next_train_byte": 2816,
+      "next_validation_byte": 256,
+      "primary": false,
+      "archive": "F:\\fly_stream_overflow\\cgb_trace_fate_20261022\\erase_no_capture_complete.npz",
+      "sha256": "7675135ed285771b5618a070352f110a4fdb8a4c6d4d1e477c3904606f742046",
+      "wall_seconds": 75.59660179999992,
+      "shared_parent_fate": {
+        "source_carriers": 60,
+        "retained": 10,
+        "rebuilt_old_positions": 3,
+        "groups": {
+          "traced": {
+            "initial": 24,
+            "retained": 4,
+            "current_trace": 0,
+            "current_bound": 4
+          },
+          "untraced": {
+            "initial": 36,
+            "retained": 6,
+            "current_trace": 0,
+            "current_bound": 3
+          },
+          "bound": {
+            "initial": 38,
+            "retained": 9,
+            "current_trace": 0,
+            "current_bound": 7
+          },
+          "unbound": {
+            "initial": 22,
+            "retained": 1,
+            "current_trace": 0,
+            "current_bound": 0
+          }
+        }
+      }
+    }
+  },
+  "matched_state_checks": {
+    "kept_erase": {
+      "physical_states_match_except_memory_and_its_heat": true,
+      "stored_memory_energy_difference": 4.0
+    },
+    "kept_no_capture_erase_no_capture": {
+      "physical_states_match_except_memory_and_its_heat": true,
+      "stored_memory_energy_difference": 4.0
+    }
+  },
+  "mechanisms": {
+    "kept__erase": {
+      "inspected": 24,
+      "applied": 24,
+      "binding_rate_pairs": [
+        {
+          "key": "i:31:16",
+          "kind": "binding-",
+          "kept_rate": 0.0004537357422156874,
+          "erased_rate": 0.0031689469166518804,
+          "ratio": 0.14318186897717977
+        },
+        {
+          "key": "i:30:31",
+          "kind": "binding-",
+          "kept_rate": 0.0008993104981045778,
+          "erased_rate": 0.0059601461011058775,
+          "ratio": 0.1508873243791314
+        },
+        {
+          "key": "i:36:7",
+          "kind": "binding-",
+          "kept_rate": 0.0008993104981045778,
+          "erased_rate": 0.0059601461011058775,
+          "ratio": 0.1508873243791314
+        },
+        {
+          "key": "i:13:44",
+          "kind": "binding-",
+          "kept_rate": 0.0008993104981045778,
+          "erased_rate": 0.0059601461011058775,
+          "ratio": 0.1508873243791314
+        },
+        {
+          "key": "i:5:3",
+          "kind": "binding-",
+          "kept_rate": 0.0004537357422156874,
+          "erased_rate": 0.0031689469166518804,
+          "ratio": 0.14318186897717977
+        },
+        {
+          "key": "i:41:28",
+          "kind": "binding-",
+          "kept_rate": 0.0008993104981045778,
+          "erased_rate": 0.0059601461011058775,
+          "ratio": 0.1508873243791314
+        },
+        {
+          "key": "i:39:6",
+          "kind": "binding-",
+          "kept_rate": 0.0008993104981045778,
+          "erased_rate": 0.0059601461011058775,
+          "ratio": 0.1508873243791314
+        },
+        {
+          "key": "i:1:14",
+          "kind": "binding-",
+          "kept_rate": 0.0008993104981045778,
+          "erased_rate": 0.0059601461011058775,
+          "ratio": 0.1508873243791314
+        },
+        {
+          "key": "i:29:45",
+          "kind": "binding-",
+          "kept_rate": 0.0008993104981045778,
+          "erased_rate": 0.0059601461011058775,
+          "ratio": 0.1508873243791314
+        },
+        {
+          "key": "p:5",
+          "kind": "binding-",
+          "kept_rate": 0.0008993104981045778,
+          "erased_rate": 0.0059601461011058775,
+          "ratio": 0.1508873243791314
+        },
+        {
+          "key": "i:17:47",
+          "kind": "binding-",
+          "kept_rate": 0.0008993104981045778,
+          "erased_rate": 0.0059601461011058775,
+          "ratio": 0.1508873243791314
+        },
+        {
+          "key": "i:7:18",
+          "kind": "binding-",
+          "kept_rate": 0.0008993104981045778,
+          "erased_rate": 0.0059601461011058775,
+          "ratio": 0.1508873243791314
+        },
+        {
+          "key": "p:7",
+          "kind": "binding-",
+          "kept_rate": 0.0008993104981045778,
+          "erased_rate": 0.0059601461011058775,
+          "ratio": 0.1508873243791314
+        },
+        {
+          "key": "i:1:22",
+          "kind": "binding-",
+          "kept_rate": 0.0008993104981045778,
+          "erased_rate": 0.0059601461011058775,
+          "ratio": 0.1508873243791314
+        },
+        {
+          "key": "i:29:33",
+          "kind": "binding-",
+          "kept_rate": 0.0008993104981045778,
+          "erased_rate": 0.0059601461011058775,
+          "ratio": 0.1508873243791314
+        },
+        {
+          "key": "i:0:14",
+          "kind": "binding-",
+          "kept_rate": 0.0008993104981045778,
+          "erased_rate": 0.0059601461011058775,
+          "ratio": 0.1508873243791314
+        },
+        {
+          "key": "i:16:11",
+          "kind": "binding-",
+          "kept_rate": 0.0008993104981045778,
+          "erased_rate": 0.0059601461011058775,
+          "ratio": 0.1508873243791314
+        },
+        {
+          "key": "i:30:3",
+          "kind": "binding-",
+          "kept_rate": 0.0004537357422156874,
+          "erased_rate": 0.0031689469166518804,
+          "ratio": 0.14318186897717977
+        },
+        {
+          "key": "i:45:0",
+          "kind": "binding-",
+          "kept_rate": 0.0008993104981045778,
+          "erased_rate": 0.0059601461011058775,
+          "ratio": 0.1508873243791314
+        },
+        {
+          "key": "i:9:21",
+          "kind": "binding-",
+          "kept_rate": 0.0008993104981045778,
+          "erased_rate": 0.0059601461011058775,
+          "ratio": 0.1508873243791314
+        },
+        {
+          "key": "i:35:23",
+          "kind": "binding-",
+          "kept_rate": 0.0008993104981045778,
+          "erased_rate": 0.0059601461011058775,
+          "ratio": 0.1508873243791314
+        },
+        {
+          "key": "i:25:19",
+          "kind": "binding-",
+          "kept_rate": 0.0008993104981045778,
+          "erased_rate": 0.0059601461011058775,
+          "ratio": 0.1508873243791314
+        }
+      ],
+      "conductance_difference_l2": 0.5467971524304017,
+      "boundary_conductance_difference_l2": 0.042426406871192854,
+      "initial_forecast_exactly_matched": true,
+      "first_4ms_later_forecast_logit_difference_l2": 2.447979411063241,
+      "final_world_charge_difference_l2": 2.5357291750166784,
+      "final_brain_port_voltage_difference_l2": 3.5675133915457553,
+      "scope": "Exact current-rate/finite-path delivery; single paths do not establish stable learning benefit or mediation"
+    },
+    "kept_no_capture__erase_no_capture": {
+      "inspected": 24,
+      "applied": 24,
+      "binding_rate_pairs": [
+        {
+          "key": "i:31:16",
+          "kind": "binding-",
+          "kept_rate": 0.0031689469166518804,
+          "erased_rate": 0.0031689469166518804,
+          "ratio": 1.0
+        },
+        {
+          "key": "i:30:31",
+          "kind": "binding-",
+          "kept_rate": 0.0059601461011058775,
+          "erased_rate": 0.0059601461011058775,
+          "ratio": 1.0
+        },
+        {
+          "key": "i:36:7",
+          "kind": "binding-",
+          "kept_rate": 0.0059601461011058775,
+          "erased_rate": 0.0059601461011058775,
+          "ratio": 1.0
+        },
+        {
+          "key": "i:13:44",
+          "kind": "binding-",
+          "kept_rate": 0.0059601461011058775,
+          "erased_rate": 0.0059601461011058775,
+          "ratio": 1.0
+        },
+        {
+          "key": "i:5:3",
+          "kind": "binding-",
+          "kept_rate": 0.0031689469166518804,
+          "erased_rate": 0.0031689469166518804,
+          "ratio": 1.0
+        },
+        {
+          "key": "i:41:28",
+          "kind": "binding-",
+          "kept_rate": 0.0059601461011058775,
+          "erased_rate": 0.0059601461011058775,
+          "ratio": 1.0
+        },
+        {
+          "key": "i:39:6",
+          "kind": "binding-",
+          "kept_rate": 0.0059601461011058775,
+          "erased_rate": 0.0059601461011058775,
+          "ratio": 1.0
+        },
+        {
+          "key": "i:1:14",
+          "kind": "binding-",
+          "kept_rate": 0.0059601461011058775,
+          "erased_rate": 0.0059601461011058775,
+          "ratio": 1.0
+        },
+        {
+          "key": "i:29:45",
+          "kind": "binding-",
+          "kept_rate": 0.0059601461011058775,
+          "erased_rate": 0.0059601461011058775,
+          "ratio": 1.0
+        },
+        {
+          "key": "p:5",
+          "kind": "binding-",
+          "kept_rate": 0.0059601461011058775,
+          "erased_rate": 0.0059601461011058775,
+          "ratio": 1.0
+        },
+        {
+          "key": "i:17:47",
+          "kind": "binding-",
+          "kept_rate": 0.0059601461011058775,
+          "erased_rate": 0.0059601461011058775,
+          "ratio": 1.0
+        },
+        {
+          "key": "i:7:18",
+          "kind": "binding-",
+          "kept_rate": 0.0059601461011058775,
+          "erased_rate": 0.0059601461011058775,
+          "ratio": 1.0
+        },
+        {
+          "key": "p:7",
+          "kind": "binding-",
+          "kept_rate": 0.0059601461011058775,
+          "erased_rate": 0.0059601461011058775,
+          "ratio": 1.0
+        },
+        {
+          "key": "i:1:22",
+          "kind": "binding-",
+          "kept_rate": 0.0059601461011058775,
+          "erased_rate": 0.0059601461011058775,
+          "ratio": 1.0
+        },
+        {
+          "key": "i:29:33",
+          "kind": "binding-",
+          "kept_rate": 0.0059601461011058775,
+          "erased_rate": 0.0059601461011058775,
+          "ratio": 1.0
+        },
+        {
+          "key": "i:0:14",
+          "kind": "binding-",
+          "kept_rate": 0.0059601461011058775,
+          "erased_rate": 0.0059601461011058775,
+          "ratio": 1.0
+        },
+        {
+          "key": "i:16:11",
+          "kind": "binding-",
+          "kept_rate": 0.0059601461011058775,
+          "erased_rate": 0.0059601461011058775,
+          "ratio": 1.0
+        },
+        {
+          "key": "i:30:3",
+          "kind": "binding-",
+          "kept_rate": 0.0031689469166518804,
+          "erased_rate": 0.0031689469166518804,
+          "ratio": 1.0
+        },
+        {
+          "key": "i:45:0",
+          "kind": "binding-",
+          "kept_rate": 0.0059601461011058775,
+          "erased_rate": 0.0059601461011058775,
+          "ratio": 1.0
+        },
+        {
+          "key": "i:9:21",
+          "kind": "binding-",
+          "kept_rate": 0.0059601461011058775,
+          "erased_rate": 0.0059601461011058775,
+          "ratio": 1.0
+        },
+        {
+          "key": "i:35:23",
+          "kind": "binding-",
+          "kept_rate": 0.0059601461011058775,
+          "erased_rate": 0.0059601461011058775,
+          "ratio": 1.0
+        },
+        {
+          "key": "i:25:19",
+          "kind": "binding-",
+          "kept_rate": 0.0059601461011058775,
+          "erased_rate": 0.0059601461011058775,
+          "ratio": 1.0
+        }
+      ],
+      "conductance_difference_l2": 0.5467971524304017,
+      "boundary_conductance_difference_l2": 0.042426406871192854,
+      "initial_forecast_exactly_matched": true,
+      "first_4ms_later_forecast_logit_difference_l2": 17.657008633675648,
+      "final_world_charge_difference_l2": 5.272027462524516,
+      "final_brain_port_voltage_difference_l2": 3.661001670841208,
+      "scope": "Exact current-rate/finite-path delivery; single paths do not establish stable learning benefit or mediation"
+    }
+  },
+  "conditions": {
+    "natural": {
+      "parameter_intervention": null,
+      "condition": null
+    },
+    "kept": {
+      "parameter_intervention": null,
+      "condition": {
+        "mode": "active_inverse",
+        "inspected_traced_carriers": 24,
+        "applied": 24,
+        "delta_u": 121.41581355875422,
+        "delta_g": 92.90913572314162,
+        "reaction_heat_out": -121.4158135587495,
+        "external_protocol_work": 0.0,
+        "scope": "Allowed-jump conditional comparison; experiment-controller selection cost is not modeled; never part of autonomous learning"
+      }
+    },
+    "erase": {
+      "parameter_intervention": null,
+      "condition": {
+        "mode": "write_inverse",
+        "inspected_traced_carriers": 24,
+        "applied": 24,
+        "delta_u": 117.41581355875422,
+        "delta_g": 88.90913572314162,
+        "reaction_heat_out": -117.4158135587495,
+        "external_protocol_work": 0.0,
+        "scope": "Allowed-jump conditional comparison; experiment-controller selection cost is not modeled; never part of autonomous learning"
+      }
+    },
+    "kept_no_capture": {
+      "parameter_intervention": {
+        "time_ms": 13056.0,
+        "changes": {
+          "capture_coupling": 0.0
+        },
+        "previous": {
+          "capture_coupling": 2.0
+        },
+        "external_work": 44.0,
+        "free_energy_change": 44.0,
+        "state_erased": false,
+        "kinetic_controller": "ideal diagnostic barrier; not part of the living model"
+      },
+      "condition": {
+        "mode": "active_inverse",
+        "inspected_traced_carriers": 24,
+        "applied": 24,
+        "delta_u": 121.41581355875422,
+        "delta_g": 92.90913572314162,
+        "reaction_heat_out": -121.4158135587495,
+        "external_protocol_work": 0.0,
+        "scope": "Allowed-jump conditional comparison; experiment-controller selection cost is not modeled; never part of autonomous learning"
+      }
+    },
+    "erase_no_capture": {
+      "parameter_intervention": {
+        "time_ms": 13056.0,
+        "changes": {
+          "capture_coupling": 0.0
+        },
+        "previous": {
+          "capture_coupling": 2.0
+        },
+        "external_work": 0.0,
+        "free_energy_change": 0.0,
+        "state_erased": false,
+        "kinetic_controller": "ideal diagnostic barrier; not part of the living model"
+      },
+      "condition": {
+        "mode": "write_inverse",
+        "inspected_traced_carriers": 24,
+        "applied": 24,
+        "delta_u": 117.41581355875422,
+        "delta_g": 88.90913572314162,
+        "reaction_heat_out": -117.4158135587495,
+        "external_protocol_work": 0.0,
+        "scope": "Allowed-jump conditional comparison; experiment-controller selection cost is not modeled; never part of autonomous learning"
+      }
+    }
+  },
+  "actual_revisit": {
+    "first_actual_pass": {
+      "material": 9.68170837902177,
+      "fixed_byte": 3.398709256052746,
+      "fixed_bits": 3.858777219384102,
+      "source_filter": 10.453294289926756
+    },
+    "actual_revisit": {
+      "material": 11.546065459024451,
+      "fixed_byte": 3.398709256052746,
+      "fixed_bits": 3.858777219384102,
+      "source_filter": 10.53253882308978
+    },
+    "material_delta": 1.86435708000268,
+    "same_128_actual_bytes": true,
+    "scope": "Prequential active exposure and revisit; no reset, no convergence or memory-capacity conclusion"
+  },
+  "energy_closure": {
+    "natural": {
+      "source_work": 4996.76356484041,
+      "heat_out": 4981.848817214057,
+      "energy_change": 14.91474762456346,
+      "budget_residual": -1.7898855730891228e-09
+    },
+    "kept": {
+      "source_work": 4906.759337955606,
+      "heat_out": 5029.6947569617405,
+      "energy_change": -122.93541900634898,
+      "budget_residual": -2.1373125491663814e-10
+    },
+    "erase": {
+      "source_work": 4938.938765513725,
+      "heat_out": 5019.332324290277,
+      "energy_change": -80.3935587749221,
+      "budget_residual": 1.6298145055770874e-09
+    },
+    "kept_no_capture": {
+      "source_work": 4985.959964655514,
+      "heat_out": 5117.482602093638,
+      "energy_change": -131.5226374370132,
+      "budget_residual": 1.1104930308647454e-09
+    },
+    "erase_no_capture": {
+      "source_work": 4816.855664206974,
+      "heat_out": 4930.320318418853,
+      "energy_change": -113.46465421369811,
+      "budget_residual": -1.8189894035458565e-09
+    }
+  },
+  "regression": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "tests": "272",
+    "time": "25.341",
+    "timestamp": "2026-10-22T11:28:55.390709+08:00",
+    "hostname": "llm"
+  },
+  "candidate": {
+    "archive": "F:\\fly_stream_overflow\\cgb_trace_fate_20261022\\natural_complete.npz",
+    "sha256": "8e359c1da68287d28869b67c59fbca99f0887c1da256d2becb773197d0805029",
+    "time_ms": 14080,
+    "nodes": 52,
+    "next_train_byte": 2816,
+    "next_validation_byte": 256,
+    "full_state": true,
+    "original_three_rngs": true,
+    "observers_preserved": true,
+    "dt_ms": 2.0,
+    "external_interval_ms": 4.0,
+    "material_scheme": "symmetric",
+    "field_scheme": "symmetric_ou",
+    "domain_sampling": "marginal",
+    "schema": 3,
+    "experience_protocol": {
+      "intervals": 256,
+      "actual_text_exposures": 256,
+      "fresh_exposures": 128,
+      "replay_exposures": 128,
+      "next_train_byte": 2816,
+      "next_validation_byte": 256,
+      "replay_selection": [
+        2560,
+        2688
+      ],
+      "phase": "revisit_A"
+    },
+    "selection": "Unmodified natural individual, not the 53-domain or best-NLL diagnostic copy; no champion claim"
+  },
+  "scope": "Current physical memory delivery and actual source-cohort turnover; native prediction remains worse than frequency. No universal learning or autonomy claim."
+}

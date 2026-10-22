@@ -212,3 +212,16 @@ git worktree add -b codex/cgb-revisit-20261022 D:/cgb-revisit-20261022 cgb-befor
 - 主线源功4934.037933、热4942.831938、ΔU−8.794005；端口NLL10.628091/固定频率3.471412 nat/byte，未证明有用预测。自然候选symmetric_dt2_complete.npz，SHAd1515a4aafa620adab91a7404cc78ac14ccb9ee5541addb265410ff6a4fba65c；下一train2688/validation256。父档和其他臂保留，不叫冠军。
 - /growth核对46→49、58内部桥、13B、功/热；真实三个完整存档，无插值树。只读viewer22576→3956，旧其他页面保留；截图F:/fly_stream_overflow/cgb_full_step_20261022/growth_view.png。
 - Git阶段cgb-full-step-20261022；完整源码/实际数据/旧源码/9全档/截图与增量bundle保存在F:/fly_stream_overflow/cgb_full_step_backup_20261022/，以实际manifest和恢复核对为准。没有旧妈妈训练、子agent/skill或关机。总目标继续周转中的历史保持、预测/行动后果与跨层维持，不以整核测试替代主线。
+
+
+## 2026-10-22 当前整核痕迹、支持、周转与真实回访
+
+- 上一goal段为实质进展：5a3380e整核已提交并备份；本段实查该父档d1515a4a…fba65c后继续，无真实阻塞、无旧妈妈训练重启。
+- 实施前CGB_TRACE_FATE_PREREG_20261022.md。新增memory_intervention.py仅作为诊断：原write−/active−对24个当前r载体保持q/P/D/C/几何/身份/三RNG一致，只改r及其能量/热；不直接重置bit，不作自主学习规则。22对解绑率约0.14318–0.15089；χ0后逐项相同，导通差仍在。条件设置稀有向上跳变+121.4/+117.4储能及对应负热、关χ的44/0外功明确；外部实验选择成本未建模。
+- trace_fate_audit.py自然及四条件副本各128新train[2688,2816)+128回访train[2560,2688)，回访与前段实际输入逐字节核对。4ms/byte、dt2ms，至14080ms；新/回访暴露分别计，不推进虚假新游标。自然49→52、8B+52域+61内部桥+1边界=122；仍无自然域回收。
+- 自然60原载体17存活，9个旧位置重建；原24个带r者8存活、当前全r0/C1。新analyze_trace_fate.py按同一父档重投影所有条件，不让条件去r将历史cohort改为0，也不把重写r当原内容连续保存。272项CGB检查通过/25.36s，五支中点后128字节全记录/物理/三RNG/会话/域与桥身份逐位一致，natural全256字节观察器sham亦逐位相同，账本误差≤3.72e-9。
+- 自然B NLL10.9290/频率3.3523；同一A原首遍9.6817，回访11.5461/频率3.3987。实际差异不是语义保持或因果学习收益；下一步内在未来预期仍缺，不能把即时电势差或NLL仪器改名完成。
+- CGB_LEARNING_GENERATOR_BRIDGE_20261022.md补同一生成元的物料、储能、速率与有效层对应；继承Claude功能划分，不声称当前二态r逐位复刻全部V2连续有符号标签。没有新生物组件或评分回传。
+- 自然候选natural_complete.npz，SHA8e359c1da68287d28869b67c59fbca99f0887c1da256d2becb773197d0805029；下一新train2816/validation256。15全档与条件副本保留，不按53域或NLL择优。
+- /growth新增共享历史载体/当前r/重建及真实128回访评分，已核对natural和erase历史24者，最后返回natural；只读viewer3956→8164，原其他页面保留。截图F:/fly_stream_overflow/cgb_trace_fate_20261022/growth_view.png。
+- Git阶段cgb-trace-fate-20261022，完整源码/实际流/逐事件/15全档/共同父档分析/截图及增量bundle备份F:/fly_stream_overflow/cgb_trace_fate_backup_20261022/，以恢复与哈希manifest为准。目标继续，无子agent/skill/关机；本段不以因果交付冒充完整有用主动生命。
