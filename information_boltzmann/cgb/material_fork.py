@@ -35,6 +35,8 @@ def fork_material(model: MobileExchange) -> MobileExchange:
     for name in ('rng_reaction', 'rng_motion', 'rng_field'):
         setattr(fork, name, copy.deepcopy(getattr(model, name)))
     fork.reaction_counts = dict(model.reaction_counts)
+    if hasattr(model, '_ledger_roundoff'):
+        fork._ledger_roundoff = dict(model._ledger_roundoff)
     if hasattr(model, '_pair_cache'):
         fork._pair_cache = type(model._pair_cache)()
     fork.event_observer = fork.source_observer = None

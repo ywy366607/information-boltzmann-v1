@@ -26,9 +26,12 @@ class MobileExchangeParams(SpatialExchangeParams):
     rest_length: float = .8
     elastic_stiffness: float = 4.
     box_size: float = 5.
+    polarized_storage: bool = False
 
     def __post_init__(self):
         super().__post_init__()
+        if not isinstance(self.polarized_storage, bool):
+            raise ValueError('Storage constitution must explicitly select scalar or polarized material')
         if (self.mobility < 0 or self.elastic_stiffness < 0
                 or not 0 < self.core_diameter < self.rest_length < self.contact_radius
                 or self.box_size <= self.contact_radius):
@@ -47,6 +50,9 @@ class MaterialEvent:
 
 
 class MobileExchange:
+    _accumulated_ledgers = ('heat_out', 'work_in', 'entropy_balance',
+        'source_charge', 'electrode_charge', 'motion_heat', 'reaction_heat',
+        'source_heat', 'conduction_heat')
     _arrays = ('coordinates', 'free', 'bound', 'carried', 'charged', 'depleted',
         'material', 'trace', 'end_capacity', 'charge', 'capacitance',
         'world_charge', 'world_capacitance', 'port_conductance', 'source_conductance',
@@ -103,6 +109,36 @@ class MobileExchange:
 
     def remaining_ends(self):
         return self.end_capacity-self.degrees()
+
+    def enable_compensated_ledgers(self):
+        """Retain future rounding remainders without rebasing inherited totals.
+
+        These O(1) arithmetic words are not physical state or memory. Legacy
+        archives keep their original arithmetic unless explicitly enabled.
+        """
+        if getattr(self, '_material_step_active', False):
+            raise ValueError('Change arithmetic only at a complete step boundary')
+        if not hasattr(self, '_ledger_roundoff'):
+            self._ledger_roundoff = {k: 0. for k in self._ledgers
+                                     if k in self._accumulated_ledgers or k == 'domain_heat'}
+
+    def _add_ledger(self, name, delta):
+        remainder = getattr(self, '_ledger_roundoff', None)
+        if remainder is None:
+            setattr(self, name, getattr(self, name)+delta)
+            return
+        # TwoSum twice: preserve the low word across updates, cancellation,
+        # forks and archives. Neither word participates in physical hazards.
+        old = float(getattr(self, name))
+        delta = float(delta)
+        high = old+delta
+        b = high-old
+        error = (old-(high-b))+(delta-b)
+        low = remainder[name]+error
+        total = high+low
+        b = total-high
+        remainder[name] = (high-(total-b))+(low-b)
+        setattr(self, name, total)
 
     def bridge_key(self, i, j):
         """Default material permits one bridge, of either polarity, per pair."""
@@ -204,7 +240,9 @@ class MobileExchange:
 
     def _charge_changes(self, event):
         z = event.sign*self.params.charge_per_event
-        if event.kind in ('write', 'active'): return [(event.i, -z), (event.j, z)]
+        if (event.kind in ('write', 'active')
+                or event.kind == 'thermal' and self.params.polarized_storage):
+            return [(event.i, -z), (event.j, z)]
         if event.kind == 'conversion': return [(event.i, -z)]
         return []
 
@@ -392,10 +430,10 @@ class MobileExchange:
             _, trace, index = self._contact_arrays(event)
             trace[index] += s
         if event.kind == 'conversion':
-            self.electrode_charge += s*self.params.charge_per_event
-        self.heat_out -= du
-        self.reaction_heat -= du
-        self.entropy_balance -= dg
+            self._add_ledger('electrode_charge', s*self.params.charge_per_event)
+        self._add_ledger('heat_out', -(du))
+        self._add_ledger('reaction_heat', -(du))
+        self._add_ledger('entropy_balance', -(dg))
         key = ('port_' if event.interface >= 0 else '')+event.kind+('+' if s > 0 else '-')
         self.reaction_counts[key] = self.reaction_counts.get(key, 0)+1
         if self.event_observer:
@@ -471,9 +509,9 @@ class MobileExchange:
             if not bins[old_key]: del bins[old_key]
             bins.setdefault(new_key, set()).add(i)
         self.motion_accepted += 1
-        self.motion_heat -= du
-        self.heat_out -= du
-        self.entropy_balance -= du
+        self._add_ledger('motion_heat', -(du))
+        self._add_ledger('heat_out', -(du))
+        self._add_ledger('entropy_balance', -(du))
         return True
 
     def _motion(self, dt):
@@ -507,11 +545,11 @@ class MobileExchange:
             self.world_charge += delta
             work = float(np.dot(world_voltage, delta))
             heat = work-.5*float(np.sum((self.world_charge**2-old**2)/self.world_capacitance))
-            self.work_in += work
-            self.source_charge += float(delta.sum())
-            self.source_heat += heat
-            self.heat_out += heat
-            self.entropy_balance += heat
+            self._add_ledger('work_in', work)
+            self._add_ledger('source_charge', float(delta.sum()))
+            self._add_ledger('source_heat', heat)
+            self._add_ledger('heat_out', heat)
+            self._add_ledger('entropy_balance', heat)
             if self.source_observer:
                 self.source_observer(dict(time_ms=self.t, dt_ms=dt,
                     before_charge=old.copy(), after_charge=self.world_charge.copy(),
@@ -526,9 +564,9 @@ class MobileExchange:
             heat = (dv*sent-.5*inverse_c*sent*sent)
             self.charge[i] -= sent
             self.world_charge[a] += sent
-            self.heat_out += heat
-            self.conduction_heat += heat
-            self.entropy_balance += heat
+            self._add_ledger('heat_out', heat)
+            self._add_ledger('conduction_heat', heat)
+            self._add_ledger('entropy_balance', heat)
         if not len(self.pre): return
         g = self.bridge_conductance()
         # Exact conditional OU charge exchange at the same kBT=1 as motion
@@ -543,9 +581,9 @@ class MobileExchange:
             heat = dv*sent-.5*inverse_c*sent*sent
             self.charge[i] -= sent
             self.charge[j] += sent
-            self.heat_out += heat
-            self.conduction_heat += heat
-            self.entropy_balance += heat
+            self._add_ledger('heat_out', heat)
+            self._add_ledger('conduction_heat', heat)
+            self._add_ledger('entropy_balance', heat)
 
     def _field_symmetric(self, dt, world_voltage):
         """Palindromic local OU composition, with O(N+E) workspace.
@@ -578,11 +616,11 @@ class MobileExchange:
             q[n:] += delta
             work = float(np.dot(world_voltage, delta))
             heat = work-.5*float(np.sum((q[n:]**2-old**2)/self.world_capacitance))
-            self.work_in += work
-            self.source_charge += float(delta.sum())
-            self.source_heat += heat
-            self.heat_out += heat
-            self.entropy_balance += heat
+            self._add_ledger('work_in', work)
+            self._add_ledger('source_charge', float(delta.sum()))
+            self._add_ledger('source_heat', heat)
+            self._add_ledger('heat_out', heat)
+            self._add_ledger('entropy_balance', heat)
             if self.source_observer:
                 self.charge[:], self.world_charge[:] = q[:n], q[n:]
                 self.source_observer(dict(time_ms=self.t+(source_elapsed if randomized else 0.), dt_ms=half,
@@ -599,9 +637,9 @@ class MobileExchange:
             heat = dv*sent-.5*inverse_c*sent*sent
             q[i] -= sent
             q[j] += sent
-            self.heat_out += heat
-            self.conduction_heat += heat
-            self.entropy_balance += heat
+            self._add_ledger('heat_out', heat)
+            self._add_ledger('conduction_heat', heat)
+            self._add_ledger('entropy_balance', heat)
 
         source()
         for a, i in enumerate(self.port_nodes):
@@ -627,6 +665,11 @@ class MobileExchange:
         from .native_port import native_port_constitution
         return native_port_constitution(self)
 
+    def storage_charge_partition(self):
+        """Resolve mobile/bound charge without adding physical state."""
+        from .charge_storage import storage_charge_partition
+        return storage_charge_partition(self)
+
     def step(self, dt, world_voltage=None):
         if not np.isfinite(dt) or dt <= 0: raise ValueError('Positive finite elapsed time required')
         if world_voltage is not None:
@@ -641,7 +684,7 @@ class MobileExchange:
         self._validate()
 
     def balances(self):
-        return dict(material=self.material.sum()+len(self.pre)-self.initial_material,
+        result = dict(material=self.material.sum()+len(self.pre)-self.initial_material,
             drive=self.charged.sum()+self.depleted.sum()-self.initial_drive,
             support=self.free.sum()+self.carried.sum()+self.bound.sum()-self.initial_support,
             ends=self.remaining_ends().sum()+2*len(self.pre)-self.end_capacity.sum(),
@@ -649,6 +692,17 @@ class MobileExchange:
                    -self.source_charge-self.initial_total_charge,
             energy=self.energy()+self.heat_out-self.work_in-self.initial_energy,
             free_energy=self.initial_free_energy+self.work_in-self.free_energy()-self.entropy_balance)
+        remainder = getattr(self, '_ledger_roundoff', None)
+        if remainder is not None:
+            result['energy'] = math.fsum([self.energy(), self.heat_out, remainder['heat_out'],
+                -self.work_in, -remainder['work_in'], -self.initial_energy])
+            result['free_energy'] = math.fsum([self.initial_free_energy, self.work_in,
+                remainder['work_in'], -self.free_energy(), -self.entropy_balance,
+                -remainder['entropy_balance']])
+            result['charge'] = math.fsum([float(np.sum(self.charge)), float(np.sum(self.world_charge)),
+                self.electrode_charge, remainder['electrode_charge'], -self.source_charge,
+                -remainder['source_charge'], -float(self.initial_total_charge)])
+        return result
 
     def state_dict(self):
         if getattr(self, '_material_step_active', False):
@@ -665,6 +719,13 @@ class MobileExchange:
             reaction_counts=dict(self.reaction_counts), motion_attempts=self.motion_attempts,
             motion_accepted=self.motion_accepted,
             **{name: float(getattr(self, name)) for name in self._ledgers})
+        if not self.params.polarized_storage:
+            # Legacy effective material, including its exact serialized state,
+            # keeps the original charge law when this new choice is absent.
+            state['params'].pop('polarized_storage')
+        if hasattr(self, '_ledger_roundoff'):
+            state['ledger_accumulation'] = 'two_sum'
+            state['ledger_roundoff'] = dict(self._ledger_roundoff)
         if self.field_scheme == 'symmetric_ou':
             state.update(schema=3, field_scheme=self.field_scheme)
         return state
@@ -700,6 +761,14 @@ class MobileExchange:
         for name in cls._ledgers:
             if not np.isfinite(state[name]): raise ValueError('Nonfinite mobile ledger')
             setattr(obj, name, float(state[name]))
+        if 'ledger_accumulation' in state or 'ledger_roundoff' in state:
+            if state.get('ledger_accumulation') != 'two_sum':
+                raise ValueError('Unknown cumulative ledger arithmetic')
+            obj.enable_compensated_ledgers()
+            values = state.get('ledger_roundoff', {})
+            if set(values) != set(obj._ledger_roundoff) or not all(np.isfinite(v) for v in values.values()):
+                raise ValueError('Incomplete or nonfinite cumulative ledger remainders')
+            obj._ledger_roundoff = {k: float(v) for k,v in values.items()}
         obj.rng_reaction.bit_generator.state = state['rng_reaction']
         obj.rng_motion.bit_generator.state = state['rng_motion']
         obj.rng_field.bit_generator.state = state['rng_field']

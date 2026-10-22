@@ -94,8 +94,8 @@ def parameter_quench(model, **changes):
     except Exception:
         model.params = old
         raise
-    model.work_in += du
-    model.entropy_balance += du-dg
+    model._add_ledger('work_in', du)
+    model._add_ledger('entropy_balance', du-dg)
     return dict(time_ms=model.t,changes=changes,previous={k:asdict(old)[k] for k in changes},
                 external_work=du,free_energy_change=dg,state_erased=False,
                 kinetic_controller='ideal diagnostic barrier; not part of the living model')

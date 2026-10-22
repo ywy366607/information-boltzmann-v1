@@ -206,10 +206,10 @@ class GrowingIdentityMobileExchange(BoundaryIdentityMobileExchange):
         if self.domain_sampling == 'marginal':
             receipt['domain_sampling'] = 'marginal'
         if metrics is not None:
-            self.domain_heat -= receipt['delta_u']
-            self.heat_out -= receipt['delta_u']
-            self.reaction_heat -= receipt['delta_u']
-            self.entropy_balance -= receipt['delta_g']
+            self._add_ledger('domain_heat', -(receipt['delta_u']))
+            self._add_ledger('heat_out', -(receipt['delta_u']))
+            self._add_ledger('reaction_heat', -(receipt['delta_u']))
+            self._add_ledger('entropy_balance', -(receipt['delta_g']))
             key = 'domain+' if receipt['kind'] == 'domain_birth' else 'domain-'
             self.reaction_counts[key] = self.reaction_counts.get(key, 0)+1
         receipt['time_ms'] = self.t if event_time is None else float(event_time)

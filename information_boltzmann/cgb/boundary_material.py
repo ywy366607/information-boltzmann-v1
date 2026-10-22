@@ -55,7 +55,8 @@ class BoundaryIdentityMobileExchange(IdentityMobileExchange):
         return super()._contact_arrays(event)
 
     def _charge_changes(self,event):
-        if event.interface >= 0 and event.kind in ('write','active'):
+        if event.interface >= 0 and (event.kind in ('write','active')
+                or event.kind == 'thermal' and self.params.polarized_storage):
             z = event.sign*self.params.charge_per_event
             return [(self.n+event.interface,-z),(int(self.port_nodes[event.interface]),z)]
         return super()._charge_changes(event)
