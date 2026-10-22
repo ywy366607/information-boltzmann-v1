@@ -1,0 +1,967 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-22",
+  "stage": "inverse_development",
+  "corrected_observation": "Trace removal is not actual structure removal; installed structure survives until native assembly-minus.",
+  "native_core_modified": false,
+  "physical_individual_advanced": false,
+  "biological_validation_complete": false,
+  "experiments": {
+    "cgb_r7_structure_constraints_20261022": {
+      "source": {
+        "selection": "All support conditions retained; no test selection",
+        "source_archive": "F:\\fly_stream_overflow\\cgb_polarized_storage_repaired_20261022\\reference_complete.npz",
+        "parent_sha256": "4ccfb7b4a2aa0f30e2d7c939a586752837aa8188408fcc16de5f875bdf5c30b5",
+        "observations_sha256": "b6fa93b7f330202ce6e7565c60581964b2aa08523ef833c83bc249b5f4a4bfa3",
+        "prereg_sha256": "28372b9977360b365aa7a066ed86cdbeda6b5ccff7d3aa853748e850d62dca2e",
+        "native_source_sha256": "fabac4b9799b67b2f9744493b99c31ab01104e5bf4c59ea9233d354e7ef40164"
+      },
+      "rows": [
+        {
+          "support": 1,
+          "structure_energy": 2.0,
+          "fit": {
+            "clock_reference_ms_per_minute": 28367.919497645144,
+            "train_nll": 2.0551518211903113,
+            "optimizer_success": true,
+            "clock_on_boundary": false,
+            "nonfinite_grid_objectives": 37
+          },
+          "train_score": {
+            "incident_tracks": 149,
+            "observed_endings": 131,
+            "right_censored": 18,
+            "mean_nll": 2.0551518211903113,
+            "total_nll": 306.2176213573564
+          },
+          "test_score": {
+            "incident_tracks": 72,
+            "observed_endings": 66,
+            "right_censored": 6,
+            "mean_nll": 1.977627352366965,
+            "total_nll": 142.38916937042148
+          },
+          "count_closure": {
+            "closure": "Independent identical fixed locations, stationary marginal counts",
+            "installed_probability": 0.9990559520291271,
+            "candidate_locations": 15,
+            "locations_at_grid_boundary": true,
+            "predicted_mean_count": 14.985839280436906,
+            "predicted_stationary_fano": 0.0009440479708728855,
+            "predicted_visible_arrivals_per_minute": 3.468442888241275,
+            "predicted_count_autocorrelation": {
+              "1": 8.204632505032502e-11,
+              "2": 1.6397493657833967e-10,
+              "4": 3.277144461120586e-10,
+              "8": 6.553111787018069e-10,
+              "16": 1.310386930358993e-09,
+              "32": 2.6206561471956757e-09
+            },
+            "train_mean_composite_nll": 43.587568693486965,
+            "train_observed_mean": 7.6,
+            "score_scope": "Marginal composite score; frames correlated, not a trajectory likelihood",
+            "test_mean_composite_nll": 50.89484401211154,
+            "test_observed_mean": 6.483333333333333
+          }
+        },
+        {
+          "support": 2,
+          "structure_energy": 2.0,
+          "fit": {
+            "clock_reference_ms_per_minute": 54703.88615037655,
+            "train_nll": 2.0551528054399575,
+            "optimizer_success": true,
+            "clock_on_boundary": false,
+            "nonfinite_grid_objectives": 32
+          },
+          "train_score": {
+            "incident_tracks": 149,
+            "observed_endings": 131,
+            "right_censored": 18,
+            "mean_nll": 2.0551528054399575,
+            "total_nll": 306.21776801055364
+          },
+          "test_score": {
+            "incident_tracks": 72,
+            "observed_endings": 66,
+            "right_censored": 6,
+            "mean_nll": 1.9776286776983953,
+            "total_nll": 142.38926479428446
+          },
+          "count_closure": {
+            "closure": "Independent identical fixed locations, stationary marginal counts",
+            "installed_probability": 0.9995102924063537,
+            "candidate_locations": 15,
+            "locations_at_grid_boundary": true,
+            "predicted_mean_count": 14.992654386095305,
+            "predicted_stationary_fano": 0.0004897075936463047,
+            "predicted_visible_arrivals_per_minute": 3.470028302858967,
+            "predicted_count_autocorrelation": {
+              "1": -1.9960379443822627e-10,
+              "2": -3.9920758887645254e-10,
+              "4": -7.984151777529051e-10,
+              "8": -1.59705717799949e-09,
+              "16": -3.19411435599898e-09,
+              "32": -6.38800188950428e-09
+            },
+            "train_mean_composite_nll": 48.44124024883409,
+            "train_observed_mean": 7.6,
+            "score_scope": "Marginal composite score; frames correlated, not a trajectory likelihood",
+            "test_mean_composite_nll": 56.48196812120895,
+            "test_observed_mean": 6.483333333333333
+          }
+        },
+        {
+          "support": 4,
+          "structure_energy": 2.0,
+          "fit": {
+            "clock_reference_ms_per_minute": 107374.75023676243,
+            "train_nll": 2.055153204623572,
+            "optimizer_success": true,
+            "clock_on_boundary": false,
+            "nonfinite_grid_objectives": 26
+          },
+          "train_score": {
+            "incident_tracks": 149,
+            "observed_endings": 131,
+            "right_censored": 18,
+            "mean_nll": 2.055153204623572,
+            "total_nll": 306.21782748891223
+          },
+          "test_score": {
+            "incident_tracks": 72,
+            "observed_endings": 66,
+            "right_censored": 6,
+            "mean_nll": 1.9776294749878263,
+            "total_nll": 142.38932219912348
+          },
+          "count_closure": {
+            "closure": "Independent identical fixed locations, stationary marginal counts",
+            "installed_probability": 0.9997504721259063,
+            "candidate_locations": 15,
+            "locations_at_grid_boundary": true,
+            "predicted_mean_count": 14.996257081888594,
+            "predicted_stationary_fano": 0.00024952787409371346,
+            "predicted_visible_arrivals_per_minute": 3.470860642669914,
+            "predicted_count_autocorrelation": {
+              "1": 4.370297815684398e-10,
+              "2": 8.736145226261174e-10,
+              "4": 1.7481191262737592e-09,
+              "8": 3.495793212036756e-09,
+              "16": 6.9920314645842744e-09,
+              "32": 1.3983617888657787e-08
+            },
+            "train_mean_composite_nll": 53.4287741985152,
+            "train_observed_mean": 7.6,
+            "score_scope": "Marginal composite score; frames correlated, not a trajectory likelihood",
+            "test_mean_composite_nll": 62.222669288231266,
+            "test_observed_mean": 6.483333333333333
+          }
+        },
+        {
+          "support": 8,
+          "structure_energy": 2.0,
+          "fit": {
+            "clock_reference_ms_per_minute": 212716.35298208942,
+            "train_nll": 2.0551533759181146,
+            "optimizer_success": true,
+            "clock_on_boundary": false,
+            "nonfinite_grid_objectives": 20
+          },
+          "train_score": {
+            "incident_tracks": 149,
+            "observed_endings": 131,
+            "right_censored": 18,
+            "mean_nll": 2.0551533759181146,
+            "total_nll": 306.2178530117991
+          },
+          "test_score": {
+            "incident_tracks": 72,
+            "observed_endings": 66,
+            "right_censored": 6,
+            "mean_nll": 1.977629561674205,
+            "total_nll": 142.38932844054276
+          },
+          "count_closure": {
+            "closure": "Independent identical fixed locations, stationary marginal counts",
+            "installed_probability": 0.9998740337619518,
+            "candidate_locations": 15,
+            "locations_at_grid_boundary": true,
+            "predicted_mean_count": 14.998110506429278,
+            "predicted_stationary_fano": 0.00012596623804816964,
+            "predicted_visible_arrivals_per_minute": 3.471293665980526,
+            "predicted_count_autocorrelation": {
+              "1": 2.9071097759205443e-09,
+              "2": 5.8106936455027975e-09,
+              "4": 1.161962433783645e-08,
+              "8": 2.3237485722503755e-08,
+              "16": 4.647408996842294e-08,
+              "32": 9.294465403050759e-08
+            },
+            "train_mean_composite_nll": 58.48615460565718,
+            "train_observed_mean": 7.6,
+            "score_scope": "Marginal composite score; frames correlated, not a trajectory likelihood",
+            "test_mean_composite_nll": 68.04349269096244,
+            "test_observed_mean": 6.483333333333333
+          }
+        },
+        {
+          "support": 16,
+          "structure_energy": 2.0,
+          "fit": {
+            "clock_reference_ms_per_minute": 423399.0056985219,
+            "train_nll": 2.0551534537823857,
+            "optimizer_success": true,
+            "clock_on_boundary": false,
+            "nonfinite_grid_objectives": 14
+          },
+          "train_score": {
+            "incident_tracks": 149,
+            "observed_endings": 131,
+            "right_censored": 18,
+            "mean_nll": 2.0551534537823857,
+            "total_nll": 306.21786461357544
+          },
+          "test_score": {
+            "incident_tracks": 72,
+            "observed_endings": 66,
+            "right_censored": 6,
+            "mean_nll": 1.9776297114447903,
+            "total_nll": 142.3893392240249
+          },
+          "count_closure": {
+            "closure": "Independent identical fixed locations, stationary marginal counts",
+            "installed_probability": 0.9999367119399022,
+            "candidate_locations": 15,
+            "locations_at_grid_boundary": true,
+            "predicted_mean_count": 14.999050679098533,
+            "predicted_stationary_fano": 6.32880600978103e-05,
+            "predicted_visible_arrivals_per_minute": 3.4715110809642646,
+            "predicted_count_autocorrelation": {
+              "1": -2.1596033145733976e-09,
+              "2": -4.306926187877897e-09,
+              "4": -8.605080631992295e-09,
+              "8": -1.720138952022109e-08,
+              "16": -3.4386989901667885e-08,
+              "32": -6.876871675707767e-08
+            },
+            "train_mean_composite_nll": 63.57922572127165,
+            "train_observed_mean": 7.6,
+            "score_scope": "Marginal composite score; frames correlated, not a trajectory likelihood",
+            "test_mean_composite_nll": 73.9052547126046,
+            "test_observed_mean": 6.483333333333333
+          }
+        }
+      ]
+    },
+    "cgb_r7_structure_calibration_20261022": {
+      "source": {
+        "parent_archive": "F:\\fly_stream_overflow\\cgb_polarized_storage_repaired_20261022\\reference_complete.npz",
+        "parent_sha256": "4ccfb7b4a2aa0f30e2d7c939a586752837aa8188408fcc16de5f875bdf5c30b5",
+        "observations_sha256": "b6fa93b7f330202ce6e7565c60581964b2aa08523ef833c83bc249b5f4a4bfa3",
+        "prereg_sha256": "51283100dc10a03a21eacfc719a48ef7d52a0b151836171955cff7173b91ba3d",
+        "lifetime_fit": "Control CG1/2 only; counts do not tune formation energy or clock",
+        "physical_parameters_installed": false
+      },
+      "rows": [
+        {
+          "support": 1,
+          "structure_energy": 30.0,
+          "fit": {
+            "structure_energy": 30.0,
+            "clock_reference_ms_per_minute": 499.4591982674794,
+            "native_fitted_rate_recheck": true,
+            "parameter_boundary_hits": [
+              0
+            ],
+            "final_mean_nll": 2.04983751858422,
+            "derivative_free_success": true,
+            "derivative_free_improvement": 1.3382139840700802e-10
+          },
+          "train_score": {
+            "incident_tracks": 149,
+            "observed_endings": 131,
+            "right_censored": 18,
+            "mean_nll": 2.04983751858422,
+            "total_nll": 305.4257902690488
+          },
+          "test_score": {
+            "incident_tracks": 72,
+            "observed_endings": 66,
+            "right_censored": 6,
+            "mean_nll": 1.9698485987959782,
+            "total_nll": 141.82909911331043
+          },
+          "count_closure": {
+            "closure": "Independent identical fixed locations, stationary marginal counts",
+            "installed_probability": 7.317289787836266e-10,
+            "candidate_locations": 128,
+            "locations_at_grid_boundary": true,
+            "predicted_mean_count": 9.36613092843042e-08,
+            "predicted_stationary_fano": 0.999999999268271,
+            "predicted_visible_arrivals_per_minute": 2.145463157959617e-08,
+            "predicted_count_autocorrelation": {
+              "1": 0.7709338919426734,
+              "2": 0.5959615548426298,
+              "4": 0.35613981701191116,
+              "8": 0.12718184021748352,
+              "16": 0.016219380089450848,
+              "32": 0.0002637864873532835
+            },
+            "train_mean_composite_nll": 133.35071202034243,
+            "train_observed_mean": 7.6,
+            "score_scope": "Marginal composite score; frames correlated, not a trajectory likelihood",
+            "test_mean_composite_nll": 112.7099280833476,
+            "test_observed_mean": 6.483333333333333
+          }
+        },
+        {
+          "support": 2,
+          "structure_energy": 29.99780492934743,
+          "fit": {
+            "structure_energy": 29.99780492934743,
+            "clock_reference_ms_per_minute": 966.0554259986877,
+            "native_fitted_rate_recheck": true,
+            "parameter_boundary_hits": [],
+            "final_mean_nll": 2.0528744576145113,
+            "derivative_free_success": true,
+            "derivative_free_improvement": 6.957900922088811e-11
+          },
+          "train_score": {
+            "incident_tracks": 149,
+            "observed_endings": 131,
+            "right_censored": 18,
+            "mean_nll": 2.0528744576145113,
+            "total_nll": 305.8782941845622
+          },
+          "test_score": {
+            "incident_tracks": 72,
+            "observed_endings": 66,
+            "right_censored": 6,
+            "mean_nll": 1.9743466118960338,
+            "total_nll": 142.15295605651443
+          },
+          "count_closure": {
+            "closure": "Independent identical fixed locations, stationary marginal counts",
+            "installed_probability": 1.4143543982001387e-09,
+            "candidate_locations": 128,
+            "locations_at_grid_boundary": true,
+            "predicted_mean_count": 1.8103736296961775e-07,
+            "predicted_stationary_fano": 0.9999999985856456,
+            "predicted_visible_arrivals_per_minute": 4.171503992007734e-08,
+            "predicted_count_autocorrelation": {
+              "1": 0.7695777308762928,
+              "2": 0.5929318979796866,
+              "4": 0.35197308924818377,
+              "8": 0.12402771722463588,
+              "16": 0.015400589016974858,
+              "32": 0.00023745126807046637
+            },
+            "train_mean_composite_nll": 128.34217338404213,
+            "train_observed_mean": 7.6,
+            "score_scope": "Marginal composite score; frames correlated, not a trajectory likelihood",
+            "test_mean_composite_nll": 108.43729316302611,
+            "test_observed_mean": 6.483333333333333
+          }
+        },
+        {
+          "support": 4,
+          "structure_energy": 29.999999999999485,
+          "fit": {
+            "structure_energy": 29.999999999999485,
+            "clock_reference_ms_per_minute": 1895.7362729090896,
+            "native_fitted_rate_recheck": true,
+            "parameter_boundary_hits": [
+              0
+            ],
+            "final_mean_nll": 2.054128565949813,
+            "derivative_free_success": true,
+            "derivative_free_improvement": 3.154809746774845e-11
+          },
+          "train_score": {
+            "incident_tracks": 149,
+            "observed_endings": 131,
+            "right_censored": 18,
+            "mean_nll": 2.054128565949813,
+            "total_nll": 306.0651563265222
+          },
+          "test_score": {
+            "incident_tracks": 72,
+            "observed_endings": 66,
+            "right_censored": 6,
+            "mean_nll": 1.9761624883268014,
+            "total_nll": 142.2836991595297
+          },
+          "count_closure": {
+            "closure": "Independent identical fixed locations, stationary marginal counts",
+            "installed_probability": 2.7703016255566255e-09,
+            "candidate_locations": 128,
+            "locations_at_grid_boundary": true,
+            "predicted_mean_count": 3.5459860807124806e-07,
+            "predicted_stationary_fano": 0.9999999972296983,
+            "predicted_visible_arrivals_per_minute": 8.190747030574218e-08,
+            "predicted_count_autocorrelation": {
+              "1": 0.7690135588812073,
+              "2": 0.591686192686294,
+              "4": 0.350272716436021,
+              "8": 0.12275411552722355,
+              "16": 0.01507632751915246,
+              "32": 0.00022741262312682357
+            },
+            "train_mean_composite_nll": 123.23282249593694,
+            "train_observed_mean": 7.6,
+            "score_scope": "Marginal composite score; frames correlated, not a trajectory likelihood",
+            "test_mean_composite_nll": 104.07865833003422,
+            "test_observed_mean": 6.483333333333333
+          }
+        },
+        {
+          "support": 8,
+          "structure_energy": 29.999999999999993,
+          "fit": {
+            "structure_energy": 29.999999999999993,
+            "clock_reference_ms_per_minute": 3753.1628890254374,
+            "native_fitted_rate_recheck": true,
+            "parameter_boundary_hits": [
+              0
+            ],
+            "final_mean_nll": 2.05467238229151,
+            "derivative_free_success": true,
+            "derivative_free_improvement": 1.4845014106867893e-11
+          },
+          "train_score": {
+            "incident_tracks": 149,
+            "observed_endings": 131,
+            "right_censored": 18,
+            "mean_nll": 2.05467238229151,
+            "total_nll": 306.146184961435
+          },
+          "test_score": {
+            "incident_tracks": 72,
+            "observed_endings": 66,
+            "right_censored": 6,
+            "mean_nll": 1.976942863062269,
+            "total_nll": 142.33988614048337
+          },
+          "count_closure": {
+            "closure": "Independent identical fixed locations, stationary marginal counts",
+            "installed_probability": 5.48839847498822e-09,
+            "candidate_locations": 128,
+            "locations_at_grid_boundary": true,
+            "predicted_mean_count": 7.025150047984922e-07,
+            "predicted_stationary_fano": 0.9999999945116015,
+            "predicted_visible_arrivals_per_minute": 1.6244366022134557e-07,
+            "predicted_count_autocorrelation": {
+              "1": 0.7687684107939907,
+              "2": 0.5911472607711342,
+              "4": 0.3495392784458728,
+              "8": 0.12220714356168398,
+              "16": 0.01493818414077041,
+              "32": 0.00022320310899668984
+            },
+            "train_mean_composite_nll": 118.03685260521073,
+            "train_observed_mean": 7.6,
+            "score_scope": "Marginal composite score; frames correlated, not a trajectory likelihood",
+            "test_mean_composite_nll": 99.64613143489801,
+            "test_observed_mean": 6.483333333333333
+          }
+        },
+        {
+          "support": 16,
+          "structure_energy": 29.700000000046924,
+          "fit": {
+            "structure_energy": 29.700000000046924,
+            "clock_reference_ms_per_minute": 7467.005077273843,
+            "native_fitted_rate_recheck": true,
+            "parameter_boundary_hits": [],
+            "final_mean_nll": 2.054921139012487,
+            "derivative_free_success": true,
+            "derivative_free_improvement": 7.2160055708536675e-12
+          },
+          "train_score": {
+            "incident_tracks": 149,
+            "observed_endings": 131,
+            "right_censored": 18,
+            "mean_nll": 2.054921139012487,
+            "total_nll": 306.1832497128606
+          },
+          "test_score": {
+            "incident_tracks": 72,
+            "observed_endings": 66,
+            "right_censored": 6,
+            "mean_nll": 1.977298437248737,
+            "total_nll": 142.36548748190907
+          },
+          "count_closure": {
+            "closure": "Independent identical fixed locations, stationary marginal counts",
+            "installed_probability": 1.4746656848161313e-08,
+            "candidate_locations": 128,
+            "locations_at_grid_boundary": true,
+            "predicted_mean_count": 1.8875720765646481e-06,
+            "predicted_stationary_fano": 0.9999999852533431,
+            "predicted_visible_arrivals_per_minute": 4.366781440038388e-07,
+            "predicted_count_autocorrelation": {
+              "1": 0.7686561720983942,
+              "2": 0.5909009807813652,
+              "4": 0.34920455090179947,
+              "8": 0.12195799137153256,
+              "16": 0.014875480371010408,
+              "32": 0.0002213056346730501
+            },
+            "train_mean_composite_nll": 110.52516643027734,
+            "train_observed_mean": 7.6,
+            "score_scope": "Marginal composite score; frames correlated, not a trajectory likelihood",
+            "test_mean_composite_nll": 93.23813616592817,
+            "test_observed_mean": 6.483333333333333
+          }
+        }
+      ]
+    },
+    "cgb_r7_joint_observables_20261022": {
+      "source": {
+        "parent_archive": "F:\\fly_stream_overflow\\cgb_polarized_storage_repaired_20261022\\reference_complete.npz",
+        "parent_sha256": "4ccfb7b4a2aa0f30e2d7c939a586752837aa8188408fcc16de5f875bdf5c30b5",
+        "observations_sha256": "b6fa93b7f330202ce6e7565c60581964b2aa08523ef833c83bc249b5f4a4bfa3",
+        "prereg_sha256": "798117a92f9ffff83e6e8f19467e4767c558db3942d9c1c43b87fc244c8b35e9",
+        "physical_individual_advanced": false,
+        "fitted_parameters_installed": false
+      },
+      "rows": [
+        {
+          "support": 1,
+          "structure_energy": 10.610006651654171,
+          "fit": {
+            "clock_reference_ms_per_minute": 504.63360696019856,
+            "train_nll": 2.0499404171480977,
+            "optimizer_success": true,
+            "clock_on_boundary": false,
+            "nonfinite_grid_objectives": 72
+          },
+          "train_score": {
+            "incident_tracks": 149,
+            "observed_endings": 131,
+            "right_censored": 18,
+            "mean_nll": 2.0499404171480977,
+            "total_nll": 305.4411221550666
+          },
+          "test_score": {
+            "incident_tracks": 72,
+            "observed_endings": 66,
+            "right_censored": 6,
+            "mean_nll": 1.9700034968547437,
+            "total_nll": 141.84025177354155
+          },
+          "count_closure": {
+            "closure": "Independent identical fixed locations, stationary marginal counts",
+            "installed_probability": 0.1617021276595772,
+            "candidate_locations": 47,
+            "locations_at_grid_boundary": false,
+            "predicted_mean_count": 7.600000000000128,
+            "predicted_stationary_fano": 0.8382978723404229,
+            "predicted_visible_arrivals_per_minute": 1.7412491333114983,
+            "predicted_count_autocorrelation": {
+              "1": 0.7332515941305087,
+              "2": 0.5393851327392097,
+              "4": 0.29187101440436725,
+              "8": 0.08546237529774678,
+              "16": 0.007327282613209261,
+              "32": 5.3861557719163385e-05
+            },
+            "train_mean_composite_nll": 2.3078351892211164,
+            "train_observed_mean": 7.6,
+            "score_scope": "Marginal composite score; frames correlated, not a trajectory likelihood",
+            "training_mean_is_fitted_not_validation": true,
+            "test_mean_composite_nll": 2.0528294203893704,
+            "test_observed_mean": 6.483333333333333
+          }
+        },
+        {
+          "support": 2,
+          "structure_energy": 11.26682983411699,
+          "fit": {
+            "clock_reference_ms_per_minute": 971.175226299451,
+            "train_nll": 2.0528979045748743,
+            "optimizer_success": true,
+            "clock_on_boundary": false,
+            "nonfinite_grid_objectives": 67
+          },
+          "train_score": {
+            "incident_tracks": 149,
+            "observed_endings": 131,
+            "right_censored": 18,
+            "mean_nll": 2.0528979045748743,
+            "total_nll": 305.88178778165627
+          },
+          "test_score": {
+            "incident_tracks": 72,
+            "observed_endings": 66,
+            "right_censored": 6,
+            "mean_nll": 1.9743807608571062,
+            "total_nll": 142.15541478171164
+          },
+          "count_closure": {
+            "closure": "Independent identical fixed locations, stationary marginal counts",
+            "installed_probability": 0.16170212765956649,
+            "candidate_locations": 47,
+            "locations_at_grid_boundary": false,
+            "predicted_mean_count": 7.599999999999625,
+            "predicted_stationary_fano": 0.8382978723404335,
+            "predicted_visible_arrivals_per_minute": 1.7512894086236057,
+            "predicted_count_autocorrelation": {
+              "1": 0.7316988416026079,
+              "2": 0.5361130239848365,
+              "4": 0.28780897879414663,
+              "8": 0.08294692679217756,
+              "16": 0.00688957167626036,
+              "32": 4.7530903352487785e-05
+            },
+            "train_mean_composite_nll": 2.3078351892211164,
+            "train_observed_mean": 7.6,
+            "score_scope": "Marginal composite score; frames correlated, not a trajectory likelihood",
+            "training_mean_is_fitted_not_validation": true,
+            "test_mean_composite_nll": 2.052829420389282,
+            "test_observed_mean": 6.483333333333333
+          }
+        },
+        {
+          "support": 4,
+          "structure_energy": 11.941307939198662,
+          "fit": {
+            "clock_reference_ms_per_minute": 1900.8328391814966,
+            "train_nll": 2.0541340010729408,
+            "optimizer_success": true,
+            "clock_on_boundary": false,
+            "nonfinite_grid_objectives": 61
+          },
+          "train_score": {
+            "incident_tracks": 149,
+            "observed_endings": 131,
+            "right_censored": 18,
+            "mean_nll": 2.0541340010729408,
+            "total_nll": 306.06596615986814
+          },
+          "test_score": {
+            "incident_tracks": 72,
+            "observed_endings": 66,
+            "right_censored": 6,
+            "mean_nll": 1.9761703225181126,
+            "total_nll": 142.28426322130412
+          },
+          "count_closure": {
+            "closure": "Independent identical fixed locations, stationary marginal counts",
+            "installed_probability": 0.16170212765958936,
+            "candidate_locations": 47,
+            "locations_at_grid_boundary": false,
+            "predicted_mean_count": 7.6000000000006995,
+            "predicted_stationary_fano": 0.8382978723404106,
+            "predicted_visible_arrivals_per_minute": 1.7555154258364005,
+            "predicted_count_autocorrelation": {
+              "1": 0.7310429371278486,
+              "2": 0.5347504954600152,
+              "4": 0.2861329126391329,
+              "8": 0.08192209610187559,
+              "16": 0.006715332734559667,
+              "32": 4.5123262955548356e-05
+            },
+            "train_mean_composite_nll": 2.3078351892211173,
+            "train_observed_mean": 7.6,
+            "score_scope": "Marginal composite score; frames correlated, not a trajectory likelihood",
+            "training_mean_is_fitted_not_validation": true,
+            "test_mean_composite_nll": 2.052829420389471,
+            "test_observed_mean": 6.483333333333333
+          }
+        },
+        {
+          "support": 8,
+          "structure_energy": 12.624988233757904,
+          "fit": {
+            "clock_reference_ms_per_minute": 3758.2500373013536,
+            "train_nll": 2.0546736777532266,
+            "optimizer_success": true,
+            "clock_on_boundary": false,
+            "nonfinite_grid_objectives": 55
+          },
+          "train_score": {
+            "incident_tracks": 149,
+            "observed_endings": 131,
+            "right_censored": 18,
+            "mean_nll": 2.0546736777532266,
+            "total_nll": 306.14637798523074
+          },
+          "test_score": {
+            "incident_tracks": 72,
+            "observed_endings": 66,
+            "right_censored": 6,
+            "mean_nll": 1.9769446991206345,
+            "total_nll": 142.3400183366857
+          },
+          "count_closure": {
+            "closure": "Independent identical fixed locations, stationary marginal counts",
+            "installed_probability": 0.1617021276595234,
+            "candidate_locations": 47,
+            "locations_at_grid_boundary": false,
+            "predicted_mean_count": 7.5999999999976,
+            "predicted_stationary_fano": 0.8382978723404766,
+            "predicted_visible_arrivals_per_minute": 1.7573646783811943,
+            "predicted_count_autocorrelation": {
+              "1": 0.7307554752047497,
+              "2": 0.5341567069772606,
+              "4": 0.28540521312718764,
+              "8": 0.08147949580702434,
+              "16": 0.006640812154174037,
+              "32": 4.411303325900237e-05
+            },
+            "train_mean_composite_nll": 2.3078351892211173,
+            "train_observed_mean": 7.6,
+            "score_scope": "Marginal composite score; frames correlated, not a trajectory likelihood",
+            "training_mean_is_fitted_not_validation": true,
+            "test_mean_composite_nll": 2.0528294203889277,
+            "test_observed_mean": 6.483333333333333
+          }
+        },
+        {
+          "support": 16,
+          "structure_energy": 13.313368149593085,
+          "fit": {
+            "clock_reference_ms_per_minute": 7472.088312998008,
+            "train_nll": 2.05492145429922,
+            "optimizer_success": true,
+            "clock_on_boundary": false,
+            "nonfinite_grid_objectives": 49
+          },
+          "train_score": {
+            "incident_tracks": 149,
+            "observed_endings": 131,
+            "right_censored": 18,
+            "mean_nll": 2.05492145429922,
+            "total_nll": 306.18329669058375
+          },
+          "test_score": {
+            "incident_tracks": 72,
+            "observed_endings": 66,
+            "right_censored": 6,
+            "mean_nll": 1.977298863688594,
+            "total_nll": 142.36551818557876
+          },
+          "count_closure": {
+            "closure": "Independent identical fixed locations, stationary marginal counts",
+            "installed_probability": 0.16170212765951886,
+            "candidate_locations": 47,
+            "locations_at_grid_boundary": false,
+            "predicted_mean_count": 7.599999999997387,
+            "predicted_stationary_fano": 0.8382978723404811,
+            "predicted_visible_arrivals_per_minute": 1.7582143719253476,
+            "predicted_count_autocorrelation": {
+              "1": 0.7306233055632232,
+              "2": 0.5338843423898403,
+              "4": 0.2850719653874078,
+              "8": 0.08127728003549502,
+              "16": 0.006606911118761482,
+              "32": 4.365731985892736e-05
+            },
+            "train_mean_composite_nll": 2.307835189221116,
+            "train_observed_mean": 7.6,
+            "score_scope": "Marginal composite score; frames correlated, not a trajectory likelihood",
+            "training_mean_is_fitted_not_validation": true,
+            "test_mean_composite_nll": 2.0528294203888886,
+            "test_observed_mean": 6.483333333333333
+          }
+        }
+      ]
+    }
+  },
+  "independent_verification": {
+    "passed": true,
+    "runs": [
+      "cgb_r7_structure_constraints_20261022",
+      "cgb_r7_structure_calibration_20261022",
+      "cgb_r7_joint_observables_20261022"
+    ],
+    "native_energy_and_rates_reproduced": true,
+    "spectral_first_visibility_and_scores_reproduced": true,
+    "locked_parameters_unchanged": true,
+    "observation_and_parent_hashes_verified": true,
+    "biological_validation_complete": false,
+    "physical_individual_advanced": false,
+    "spectral_diagnostics": [
+      {
+        "run": "cgb_r7_structure_constraints_20261022",
+        "total_support": 1,
+        "decay_rates_per_minute": [
+          0.26324623336239567,
+          532.8370269427527,
+          1456.3684064460103,
+          1986.2426110938595
+        ],
+        "first_visible_fast_mode_to_slow_ratio": 2024.1012383612235
+      },
+      {
+        "run": "cgb_r7_structure_constraints_20261022",
+        "total_support": 2,
+        "decay_rates_per_minute": [
+          0.26324742559726605,
+          1057.733668546874,
+          2778.422523256716,
+          3830.228720574979
+        ],
+        "first_visible_fast_mode_to_slow_ratio": 4018.020940364551
+      },
+      {
+        "run": "cgb_r7_structure_constraints_20261022",
+        "total_support": 4,
+        "decay_rates_per_minute": [
+          0.26324749496468786,
+          2110.1140396534943,
+          5419.869159059758,
+          7518.12560270225
+        ],
+        "first_visible_fast_mode_to_slow_ratio": 8015.704156791866
+      },
+      {
+        "run": "cgb_r7_structure_constraints_20261022",
+        "total_support": 8,
+        "decay_rates_per_minute": [
+          0.26324793198261714,
+          4216.390321677404,
+          10701.238337426441,
+          14893.910341663535
+        ],
+        "first_visible_fast_mode_to_slow_ratio": 16016.803208755395
+      },
+      {
+        "run": "cgb_r7_structure_constraints_20261022",
+        "total_support": 16,
+        "decay_rates_per_minute": [
+          0.2632479546788095,
+          8429.755312355293,
+          21263.125625390156,
+          29645.44099229538
+        ],
+        "first_visible_fast_mode_to_slow_ratio": 32022.111330895204
+      },
+      {
+        "run": "cgb_r7_structure_calibration_20261022",
+        "total_support": 1,
+        "decay_rates_per_minute": [
+          0.257426380571033,
+          9.848557936325445,
+          28.930712722054913,
+          35.882182700940916
+        ],
+        "first_visible_fast_mode_to_slow_ratio": 38.25776485874913
+      },
+      {
+        "run": "cgb_r7_structure_calibration_20261022",
+        "total_support": 2,
+        "decay_rates_per_minute": [
+          0.26076241339275147,
+          19.176840824931833,
+          56.00036579200549,
+          69.47034486902807
+        ],
+        "first_visible_fast_mode_to_slow_ratio": 73.5414302062327
+      },
+      {
+        "run": "cgb_r7_structure_calibration_20261022",
+        "total_support": 4,
+        "decay_rates_per_minute": [
+          0.26213218603955485,
+          37.768779282910614,
+          109.93342346898005,
+          136.3961059975619
+        ],
+        "first_visible_fast_mode_to_slow_ratio": 144.08295239719794
+      },
+      {
+        "run": "cgb_r7_structure_calibration_20261022",
+        "total_support": 8,
+        "decay_rates_per_minute": [
+          0.26272460782367235,
+          74.91651910972142,
+          217.6858476699253,
+          270.10934196462006
+        ],
+        "first_visible_fast_mode_to_slow_ratio": 285.15227306001594
+      },
+      {
+        "run": "cgb_r7_structure_calibration_20261022",
+        "total_support": 16,
+        "decay_rates_per_minute": [
+          0.26299529708064817,
+          149.1929798380615,
+          433.1312812062198,
+          537.463505245082
+        ],
+        "first_visible_fast_mode_to_slow_ratio": 567.283831666051
+      },
+      {
+        "run": "cgb_r7_joint_observables_20261022",
+        "total_support": 1,
+        "decay_rates_per_minute": [
+          0.25753978456783577,
+          9.945875138591258,
+          29.194082322588528,
+          36.23710766730401
+        ],
+        "first_visible_fast_mode_to_slow_ratio": 38.61879109389223
+      },
+      {
+        "run": "cgb_r7_joint_observables_20261022",
+        "total_support": 2,
+        "decay_rates_per_minute": [
+          0.2607880903279729,
+          19.275955063199486,
+          56.25821886556347,
+          69.8206657465196
+        ],
+        "first_visible_fast_mode_to_slow_ratio": 73.91424600317299
+      },
+      {
+        "run": "cgb_r7_joint_observables_20261022",
+        "total_support": 4,
+        "decay_rates_per_minute": [
+          0.26213808891301105,
+          37.86901810371944,
+          110.1887021022758,
+          136.7444034523921
+        ],
+        "first_visible_fast_mode_to_slow_ratio": 144.46209728905916
+      },
+      {
+        "run": "cgb_r7_joint_observables_20261022",
+        "total_support": 8,
+        "decay_rates_per_minute": [
+          0.2627260467194447,
+          75.01740257589643,
+          217.93995602689353,
+          270.4567833317571
+        ],
+        "first_visible_fast_mode_to_slow_ratio": 285.53469864373477
+      },
+      {
+        "run": "cgb_r7_joint_observables_20261022",
+        "total_support": 16,
+        "decay_rates_per_minute": [
+          0.2629956778962269,
+          149.29421144520308,
+          433.3848483750845,
+          537.8105753986124
+        ],
+        "first_visible_fast_mode_to_slow_ratio": 567.6679276231746
+      }
+    ]
+  },
+  "tests": {
+    "passed": 10,
+    "junit": "F:\\fly_stream_overflow\\cgb_r7_structure_tests_20261022.xml"
+  },
+  "interpretation": "Same-generator count/turnover inversion works as a conditional observation interface. Fixed geometry/independent stationary locations fail to reproduce slow retention and observed arrival flux. Existing geometry, shared inventories and transport, boundary and initial states remain to be constrained; no new slow-state rule added.",
+  "inference_limits": [
+    "K=47 is an effective independent-location fit, not an anatomical identification.",
+    "Training mean is fitted, not independently validated.",
+    "CG3 comparisons are exploratory because it was previously inspected.",
+    "Formation energy/clock apply only to the stated conditional sector and are not installed in the individual.",
+    "Count marginal composite NLL is not a correlated trajectory likelihood; scores from shared observations are not summed."
+  ],
+  "conditional_geometry_and_identity": "Bare native scalar MobileExchange, two rest-length domains, neutral recognition; full parent geometry and identity program are not projected."
+}
