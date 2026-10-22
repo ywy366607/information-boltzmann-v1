@@ -188,3 +188,16 @@ git worktree add -b codex/cgb-revisit-20261022 D:/cgb-revisit-20261022 cgb-befor
 - 自然新候选marginal_complete.npz，SHA d6b0dd49…45eda，9984ms、下一train1920/validation256；schema2模式与全部经历/物性/基因/随机数和双观察器保留。其他支不是候选。下一步区分外部持续驱动与初始库存/混合松弛，再检验有用自维持，不人为补死亡阈值。
 - 观察室/growth由三个真实完整档显示28→43、53桥/25B，未插值编造。只替换本线程只读viewer，12944→6588；growth_view.png已核对，旧各页保留。未恢复旧新生儿训练，无技能/子智能体/关机。
 - Git标签cgb-domain-rates-20261022，完整证据/失败说明/代码/截图及增量bundle备份到F:/fly_stream_overflow/cgb_domain_rate_backup_20261022/，以其验证manifest为准。
+
+## 持续驱动、热浴和库存的同状态对照
+
+基线743bb2b。先写CGB_DRIVE_MAINTENANCE_PREREG_20261022.md，再实现SourceProtocol和原energy()的分项观察；保留全部物性/学习，不增加饥饿/死亡/生长评分。原自然9984ms、43域完整状态继续，两个控制保留旧文字会话、不捏造暴露。
+
+- `drive_maintenance_audit.py --out F:/fly_stream_overflow/cgb_drive_maintenance_20261022`：三支各512外部间隔×4ms，dt2ms，至12032ms；text_drive接收train[1920,2432)512新OWT字节，无文档边界；held_source保持实际最后字节101的外部电势，source_disconnected原world_voltage=None，世界电容/端口/热浴/原反应保留。共享初态RNG不代表之后相同通道噪声，不作单轨迹稳定效应量判断。
+- 自然46域、恒源47、断源49，三支总材料122精确；自然19B+46域+57内部桥+0附加边界，原基本感觉仍在。域回收均0，桥载体持续出生/拆解；源54载体存活11/12/8，重建与留存分开。
+- 本段源功9723.674206/2454.807641/0，热流出9671.931812/2371.685901/−18.311707。断源ΔU=+18.311707由热浴净输入闭合，旧世界电容−17.609077、P+12、域+12、桥+14等逐项核对；配置修正−23.073649、点态G−4.761942，不当系统Shannon熵或已达到平衡。
+- 只有自然支评分：原端口10.128827、固定频率3.430293 nat/byte，未交付有用预测；控制NLL为null、实际新文字0、文本游标仍1920。三支中点后256未来间隔的记录/物理/三RNG/协议/会话/双观察器精确恢复，断源累计source work/source charge不变，最大账本3.04e−9。
+- 256项CGB检查通过/28.91s。来源改为固定语料描述与父档哈希引用，避免层层嵌套复制，原经历可追溯。下一自然text_drive_complete.npz，SHA6ec4fa46…dc285，12032ms、下一train2432/validation256；不把断源49域副本挑成主线，不叫冠军。
+- 新CGB_FULL_STEP_DERIVATION_20261022.md记录整核M/R/F回文组合、累计dt与桥存储标签问题；单场对称不等于整核时间互易，固定G守恒不替代组合检查。尚未实现新模式，不归因本轮增长为已证数值错误，也不补新的生物组件。
+- 观察室/growth新增真实文本/恒源/断源三选项、随分支更新域数、本段源功和热；0/−18.31与完整档核对。仅替换本线程只读viewer，6588→22576；growth_view.png与source_off_view.png已存。旧各页/正式暂停个体保留，无技能/子智能体/关机。
+- Git阶段cgb-drive-maintenance-20261022，完整代码/原始记录/物理档/协议/截图与增量bundle备份到F:/fly_stream_overflow/cgb_drive_maintenance_backup_20261022/，以哈希/恢复验证manifest为准。主目标继续整核执行一致性和有用维持，不以这段对照算完成。

@@ -1,5 +1,6 @@
 """Read-only display of three actual complete archives per continued arm."""
 import argparse
+import json
 from pathlib import Path
 import sys
 
@@ -12,11 +13,17 @@ from scripts.ib.generative.native_learning_stream import atomic_json
 
 
 def main(run):
+    report=json.loads((run/'report.json').read_text(encoding='utf-8'))
+    primary=next(label for label,item in report['arms'].items() if item.get('primary'))
     arms=[]
-    for label in ('marginal','resolved_reference','no_capture'):
+    origin_count=None
+    for label in report['arms']:
         frames=[]
+        source_work=source_heat=None
         for stage in ('start','mid','complete'):
             model,meta=load_exchange(run/(label+'_'+stage+'.npz'))
+            if stage=='start':source_work,source_heat=model.work_in,model.heat_out
+            origin_count=meta['growth_observer']['initial_n']
             degree=model.degrees()
             ids=meta['growth_observer']['ids']
             seen={ids.index(0)} if 0 in ids else set()
@@ -30,17 +37,27 @@ def main(run):
             frames.append(dict(ms=model.t,coordinates=model.coordinates.tolist(),
                 node_ids=ids,pre=model.pre.tolist(),post=model.post.tolist(),
                 trace=model.trace.tolist(),bound=model.bound.tolist(),material=int(model.material.sum()),
-                source_work=model.work_in,heat_out=model.heat_out,port_nodes=model.port_nodes.tolist(),
+                source_work=model.work_in-source_work,heat_out=model.heat_out-source_heat,port_nodes=model.port_nodes.tolist(),
                 morphology=dict(bridges=len(model.pre),branch_nodes=int(np.sum(degree>=3)),seed_component_nodes=len(seen)),
                 boundary_contacts=int(model.port_installed.sum()),archive_stage=stage))
         arms.append(dict(id=label,frames=frames))
-    first,last=arms[0]['frames'][0],arms[0]['frames'][-1]
-    atomic_json(run/'mobile_scene.json',dict(box_size=model.params.box_size,default='marginal',
-        default_frame=2,birth_origin_count=24,arms=arms,read_only=True,source=str(run),
-        title='同一材料过程的持续生长',
-        intro='由实际起点、中点、末态三个完整存档回放；中间没有插值生成的结构。新域沿用原支持、痕迹、驱动、运动和身份匹配；青色编号24起属于这条连续历史中出生的域。',
-        reference=str(len(first['coordinates']))+' → '+str(len(last['coordinates']))+'个域 · '+str(int(last['ms']-first['ms']))+'参考毫秒 · 总材料122',
-        notes='本段512个新OWT字节，原自然个体从28长到43域，材料账25B+43域+53内部桥+1边界=122。原逐项采样与解析采样具有相同物理生成元，单条随机轨迹不同；关闭捕获副本显式支付12单位参数工作。当前预测仍未胜过固定频率，自然域回收和有用记忆继续检验。页面只显示内部桥，边界接触另计。'))
+    selected=next(arm for arm in arms if arm['id']==primary)
+    first,last=selected['frames'][0],selected['frames'][-1]
+    notes='仅显示实际起点、中点和末态；原学习、支持与空间过程保持活动。图中为内部桥，边界接触另计；结构数量不代表预测学习已通过。'
+    title='同一材料过程的持续生长'
+    if 'source_disconnected' in report['arms']:
+        off=report['arms']['source_disconnected']
+        title='持续驱动与材料库存对照'
+        notes=('只有真实文本支接收512个新OWT字节；恒源与断源均0新文字，只有物理时间继续。'
+               '断源支末态'+str(off['nodes'])+'域、源功'+format(off['source_work'],'.2f')+
+               '、净热流出'+format(off['heat_out'],'.2f')+'（负值为热浴输入）。'
+               '三支实际源功不同，当前不能据域数判断自维持或语义收益。页面显示内部桥，边界另计。')
+    atomic_json(run/'mobile_scene.json',dict(box_size=model.params.box_size,default=primary,
+        default_frame=2,birth_origin_count=origin_count,arms=arms,read_only=True,source=str(run),
+        title=title,work_label='本段外界源功',heat_label='本段净热流出 Q',
+        intro='由实际起点、中点、末态三个完整存档回放；中间没有插值生成的结构。新域沿用原支持、痕迹、驱动、运动和身份匹配；青色编号表示这条连续历史中出生的域。',
+        reference=str(len(first['coordinates']))+' → '+str(len(last['coordinates']))+'个域 · '+str(int(last['ms']-first['ms']))+'参考毫秒 · 总材料'+str(int(model.initial_material)),
+        notes=notes))
 
 
 if __name__=='__main__':
