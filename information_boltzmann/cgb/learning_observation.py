@@ -46,9 +46,7 @@ def native_learning_drift(model):
         dn = sign if kind == 'assembly' else 0
         dg = 0.
         if dn or dr:
-            factor = float(model._transport_factor(event.i,event.j)) if hasattr(model,'_transport_factor') else 1.
-            dg = model.unit_conductance*factor*(model.params.gate_low*dn
-                +(model.params.gate_high-model.params.gate_low)*dr)
+            dg = model.contact_conductance_increment(event)
         dp = sum(change for name, node, change in model._pools(event) if name=='charged')
         deltas = dict(support=dc, trace=dr, bridges=dn, conductance=dg, charged=dp)
         bucket = groups.setdefault(kind, dict(rate=0., support_drift=0., trace_drift=0., conductance_drift=0.))

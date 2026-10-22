@@ -1,0 +1,871 @@
+{
+  "date": "2026-10-22",
+  "actual_run": {
+    "passed": true,
+    "baseline_git": "4da3e0015dcc5ebb5b0e0c89f1bc0ec7fb310331",
+    "sources": {
+      "parent": "F:\\fly_stream_overflow\\cgb_symmetric_field_20261022\\symmetric_ou_complete.npz",
+      "sha256": "ac80abea3bdc93a672b12a01b7393a90efa3a3e5f97a569ca7f7b4f240d06f2e",
+      "inherited": {
+        "archive": "F:\\fly_stream_overflow\\cgb_identity_cached_20261022\\coupled_complete.npz",
+        "archive_sha256": "4317f2e25e7834fa8f76b16b1b38895904506f51e058cd01616f5f1e67258c05",
+        "source_time_ms": 256.0,
+        "retained_history_bytes": 64,
+        "genome": "e2dd1af426729119fe14baa239b5d4462b7d93c9a5fe62112254a33fad55caca",
+        "corpus": {
+          "source": "openwebtext",
+          "revision": "433fe0f44ed7894fea29c08b3202aa348ccc6369",
+          "split_rule": "NFC_document_sha256_mod100_98_1_1",
+          "tokenizer": {
+            "type": "utf8_bytes",
+            "offset": 4,
+            "special_tokens": [
+              "<pad>",
+              "<bos>",
+              "<eos>",
+              "<unk>"
+            ]
+          },
+          "manifest_sha256": "3614c380d4c72688ac8ccde42f32ea0655d16bec1ba0874a924fd777af904d2d",
+          "files_sha256": {
+            "train.npy": "2f227239bc63b89daf31956701d243a93f9dd46671702fff03763b33dc6db4fb",
+            "validation.npy": "60d41d3fdda8c1718ad1735693eda0dae2b23a0032c5e04a29aac9d0c6d35d8c"
+          },
+          "selected_locations": {
+            "warm": {
+              "split": "train",
+              "offset": 0
+            },
+            "fresh_A": {
+              "split": "train",
+              "offset": 256
+            },
+            "fresh_B": {
+              "split": "validation",
+              "offset": 0
+            },
+            "revisit_A": {
+              "split": "train",
+              "offset": 0,
+              "replay": true
+            }
+          },
+          "selected_counts": {
+            "warm": 256,
+            "fresh_A": 1024,
+            "fresh_B": 256,
+            "revisit_A": 256
+          },
+          "selected_sha256": {
+            "warm": "8adc7c0db929640b940dc5dd169d0e33d817702bad92c4e8e74fef402729fe47",
+            "fresh_A": "f78646c8d44a0757e6209fe2a21213886d45e428352822fd34016e76f83b879a",
+            "fresh_B": "cae7e75576faafe47498559572aebb75265dc091a8fbd2d50558b027bc4cdac9",
+            "revisit_A": "8adc7c0db929640b940dc5dd169d0e33d817702bad92c4e8e74fef402729fe47"
+          }
+        },
+        "selected_stream_sha256": "66ff4214ee2abf401a2d6e299755578c82964b2622c90ace8be05ca286f0f7db"
+      }
+    },
+    "code_sha256": {
+      "scripts\\ib\\generative\\boundary_contact_audit.py": "66a3f72f46366be1d1dadfe3a8242575e6d32446bfada99bc138441fd2b9ae14",
+      "information_boltzmann\\cgb\\mobile_exchange.py": "cb655d5541da031ae9862b276a44909d05ceaea3b3b81d046e6696390a4a70c9",
+      "information_boltzmann\\cgb\\identity_material.py": "a5659e5767776efb6523c7b601a16684bbc702320647fea9c000b03e3e7f7ca3",
+      "information_boltzmann\\cgb\\boundary_material.py": "9b50fed7a93a3ee01a613bdc443b6a68a2f6f874f14ec62e3f5a9ea4e1e07854",
+      "information_boltzmann\\cgb\\exchange_checkpoint.py": "7483b07480851cd7295e0d9d64f848477e3ea3ef097b321341ebc60cc074efd5",
+      "information_boltzmann\\cgb\\learning_observation.py": "f5f83e4055cb7b399c36fe3b7378abd126fe26fc576c2465f8102fd4c0746ecc",
+      "information_boltzmann\\cgb\\sensory_channel.py": "06f7a73fdcece578c23f9e5bc755c25d7bc5c5a797a4809928f8a8954ea7b51c",
+      "docs\\information_boltzmann\\CGB_BOUNDARY_CONTACTS_PREREG_20261022.md": "9fae938e52c9c31766eb7dcb7cbc42b490c1ea6a565273f7ba4d262e56be66db"
+    },
+    "predecessor_equivalence": {
+      "legacy": {
+        "original_predictions_exact": 64,
+        "clock_ms": 3584.0
+      },
+      "symmetric": {
+        "original_predictions_exact": 64,
+        "clock_ms": 3840.0,
+        "full_final_state_session_and_three_rngs_exact": true
+      }
+    },
+    "migration": {
+      "new_empty_slots": 8,
+      "material_created": 0,
+      "energy_injected": 0.0,
+      "all_old_state_preserved": true
+    },
+    "arms": {
+      "coupled": {
+        "bytes": 256,
+        "start_ms": 3840.0,
+        "end_ms": 4864.0,
+        "seconds_including_resume_and_control": 35.302900200000295,
+        "nll_nats_per_byte": {
+          "material": 10.957856799509795,
+          "fixed_byte": 3.386278034203018,
+          "fixed_bits": 3.8453074564288734,
+          "source_filter": 10.437609665043789
+        },
+        "reaction_events": {
+          "binding+": 87,
+          "transport+": 12,
+          "assembly+": 57,
+          "thermal-": 161,
+          "conversion+": 25,
+          "port_assembly+": 14,
+          "write-": 493,
+          "port_transport-": 1,
+          "port_assembly-": 9,
+          "binding-": 91,
+          "conversion-": 26,
+          "active-": 369,
+          "transport-": 13,
+          "port_thermal-": 8,
+          "port_active-": 6,
+          "thermal+": 160,
+          "port_thermal+": 13,
+          "release-": 42,
+          "release+": 36,
+          "port_binding+": 16,
+          "write+": 491,
+          "port_binding-": 12,
+          "assembly-": 59,
+          "port_active+": 4,
+          "port_write+": 4,
+          "active+": 370,
+          "port_write-": 5
+        },
+        "actual_boundary_events": 92,
+        "final_ports": [
+          0,
+          1,
+          1,
+          1,
+          0,
+          0,
+          1,
+          1
+        ],
+        "final_trace": [
+          0,
+          1,
+          1,
+          1,
+          0,
+          0,
+          1,
+          0
+        ],
+        "final_support": [
+          0,
+          1,
+          1,
+          1,
+          0,
+          0,
+          1,
+          1
+        ],
+        "effective_port_conductance": [
+          0.05,
+          0.11,
+          0.11,
+          0.11,
+          0.05,
+          0.05,
+          0.11,
+          0.08
+        ],
+        "source_work": 5206.765303633107,
+        "heat_out": 5197.964499004756,
+        "maximum_balance_errors": {
+          "material": 0.0,
+          "drive": 0.0,
+          "support": 0.0,
+          "ends": 0.0,
+          "charge": 2.5579538487363607e-13,
+          "energy": 7.909193300292827e-10,
+          "free_energy": 8.221832104027271e-10,
+          "boundary_slots": 0.0
+        },
+        "extra_physical_array_bytes": 192,
+        "restored_future_bytes": 128,
+        "full_state_session_rng_and_scores_exact": true,
+        "inherited_identity_continuation_exact": false,
+        "archive_sha256": "a7f829f62a23e774ba0fc34f540523da640708ecc49caecdc72012ed5b4b2b33"
+      },
+      "boundary_frozen": {
+        "bytes": 256,
+        "start_ms": 3840.0,
+        "end_ms": 4864.0,
+        "seconds_including_resume_and_control": 59.93467899999996,
+        "nll_nats_per_byte": {
+          "material": 11.725306388206882,
+          "fixed_byte": 3.386278034203018,
+          "fixed_bits": 3.8453074564288734,
+          "source_filter": 10.437609665043789
+        },
+        "reaction_events": {
+          "binding+": 95,
+          "transport+": 12,
+          "assembly+": 62,
+          "thermal-": 153,
+          "release-": 32,
+          "release+": 33,
+          "conversion+": 21,
+          "write+": 556,
+          "assembly-": 63,
+          "write-": 556,
+          "binding-": 92,
+          "active+": 431,
+          "conversion-": 26,
+          "active-": 437,
+          "transport-": 10,
+          "thermal+": 151
+        },
+        "actual_boundary_events": 0,
+        "final_ports": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "final_trace": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "final_support": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "effective_port_conductance": [
+          0.05,
+          0.05,
+          0.05,
+          0.05,
+          0.05,
+          0.05,
+          0.05,
+          0.05
+        ],
+        "source_work": 5096.536213269257,
+        "heat_out": 5103.817117482351,
+        "maximum_balance_errors": {
+          "material": 0.0,
+          "drive": 0.0,
+          "support": 0.0,
+          "ends": 0.0,
+          "charge": 1.1368683772161603e-13,
+          "energy": 6.490381565527059e-10,
+          "free_energy": 6.330083124339581e-10,
+          "boundary_slots": 0.0
+        },
+        "extra_physical_array_bytes": 192,
+        "restored_future_bytes": 128,
+        "full_state_session_rng_and_scores_exact": true,
+        "inherited_identity_continuation_exact": true,
+        "archive_sha256": "7ac7a08904017f10125b8857f36b57e710c2084102647da277be72a8436aa7a9"
+      }
+    },
+    "acute_delivery": {
+      "measured": true,
+      "source": "F:\\fly_stream_overflow\\cgb_boundary_contacts_20261022\\coupled_complete.npz",
+      "source_sha256": "a7f829f62a23e774ba0fc34f540523da640708ecc49caecdc72012ed5b4b2b33",
+      "phase": "fresh_A",
+      "next_byte": 896,
+      "start_ms": 4864.0,
+      "end_ms": 4868.0,
+      "installed_before": [
+        0,
+        1,
+        1,
+        1,
+        0,
+        0,
+        1,
+        1
+      ],
+      "trace_before": [
+        0,
+        1,
+        1,
+        1,
+        0,
+        0,
+        1,
+        0
+      ],
+      "support_before": [
+        0,
+        1,
+        1,
+        1,
+        0,
+        0,
+        1,
+        1
+      ],
+      "instantaneous_barrier_energy_change": 0.0,
+      "source_memory_erased": false,
+      "sham_all_state_and_rng_exact": true,
+      "brain_charge_difference_norm": 0.47476077455557736,
+      "world_charge_difference_norm": 0.46309675571245923,
+      "arms": [
+        {
+          "arm": "full",
+          "clock_ms": 4868.0,
+          "source_work": 24.21048414357574,
+          "heat_out": 25.212620558402705,
+          "prearrival_scores": {
+            "material": 10.867205383930713,
+            "fixed_byte": 2.163211424745295,
+            "fixed_bits": 3.898598807876801,
+            "source_filter": 11.119743620507997
+          }
+        },
+        {
+          "arm": "sham",
+          "clock_ms": 4868.0,
+          "source_work": 24.21048414357574,
+          "heat_out": 25.212620558402705,
+          "prearrival_scores": {
+            "material": 10.867205383930713,
+            "fixed_byte": 2.163211424745295,
+            "fixed_bits": 3.898598807876801,
+            "source_filter": 11.119743620507997
+          }
+        },
+        {
+          "arm": "blocked",
+          "clock_ms": 4868.0,
+          "source_work": 24.205969900944183,
+          "heat_out": 25.504970413072442,
+          "prearrival_scores": {
+            "material": 10.867205383930713,
+            "fixed_byte": 2.163211424745295,
+            "fixed_bits": 3.898598807876801,
+            "source_filter": 11.119743620507997
+          }
+        }
+      ],
+      "scope": "one actual 4ms real byte with all material reactions active; additional-conduction barrier is a diagnostic controller"
+    },
+    "optimizer_updates": 0,
+    "byte_ms": 4.0,
+    "dt_ms": 2.0,
+    "scope": "Shared native reactions now remodel finite parallel sensory contact; predictive learning/complete body/world closure not claimed"
+  },
+  "memory_causal_probe": {
+    "measured": true,
+    "passed": true,
+    "source": "F:\\fly_stream_overflow\\cgb_boundary_contacts_20261022\\coupled_complete.npz",
+    "source_sha256": "a7f829f62a23e774ba0fc34f540523da640708ecc49caecdc72012ed5b4b2b33",
+    "source_unchanged": true,
+    "records": [
+      {
+        "port": 1,
+        "resource_node": 1,
+        "source_time_ms": 4864.0,
+        "end_time_ms": 4868.0,
+        "jumps": {
+          "write": {
+            "delta_u": 4.2346830151216075,
+            "delta_g": 2.7306056183453333
+          },
+          "active": {
+            "delta_u": 4.2346830151216075,
+            "delta_g": 2.7306056183453333
+          },
+          "sham": {
+            "delta_u": 4.2346830151216075,
+            "delta_g": 2.7306056183453333
+          }
+        },
+        "only_memory_configuration_differs_before_future": true,
+        "prearrival_scores_equal": true,
+        "response_before_future": {
+          "write": {
+            "port_trace": 0,
+            "conductance": 0.08,
+            "native_unbind_rate": 0.0059601461011058775
+          },
+          "active": {
+            "port_trace": 1,
+            "conductance": 0.11,
+            "native_unbind_rate": 0.0008993104981045778
+          },
+          "sham": {
+            "port_trace": 1,
+            "conductance": 0.11,
+            "native_unbind_rate": 0.0008993104981045778
+          }
+        },
+        "sham_exact": true,
+        "brain_charge_difference_norm": 0.37797454734503955,
+        "world_charge_difference_norm": 0.2114981459904524
+      },
+      {
+        "port": 2,
+        "resource_node": 2,
+        "source_time_ms": 4864.0,
+        "end_time_ms": 4868.0,
+        "jumps": {
+          "write": {
+            "delta_u": 4.256146151959431,
+            "delta_g": 1.9535610589653851
+          },
+          "active": {
+            "delta_u": 4.256146151959431,
+            "delta_g": 1.9535610589653851
+          },
+          "sham": {
+            "delta_u": 4.256146151959431,
+            "delta_g": 1.9535610589653851
+          }
+        },
+        "only_memory_configuration_differs_before_future": true,
+        "prearrival_scores_equal": true,
+        "response_before_future": {
+          "write": {
+            "port_trace": 0,
+            "conductance": 0.08,
+            "native_unbind_rate": 0.0059601461011058775
+          },
+          "active": {
+            "port_trace": 1,
+            "conductance": 0.11,
+            "native_unbind_rate": 0.0008993104981045778
+          },
+          "sham": {
+            "port_trace": 1,
+            "conductance": 0.11,
+            "native_unbind_rate": 0.0008993104981045778
+          }
+        },
+        "sham_exact": true,
+        "brain_charge_difference_norm": 0.11638997532482254,
+        "world_charge_difference_norm": 0.1614740318584136
+      },
+      {
+        "port": 3,
+        "resource_node": 3,
+        "source_time_ms": 4864.0,
+        "end_time_ms": 4868.0,
+        "jumps": {
+          "write": {
+            "delta_u": 3.3656331789665317,
+            "delta_g": 1.0630480859724858
+          },
+          "active": {
+            "delta_u": 3.3656331789665317,
+            "delta_g": 1.0630480859724858
+          },
+          "sham": {
+            "delta_u": 3.3656331789665317,
+            "delta_g": 1.0630480859724858
+          }
+        },
+        "only_memory_configuration_differs_before_future": true,
+        "prearrival_scores_equal": true,
+        "response_before_future": {
+          "write": {
+            "port_trace": 0,
+            "conductance": 0.08,
+            "native_unbind_rate": 0.0031689469166518804
+          },
+          "active": {
+            "port_trace": 1,
+            "conductance": 0.11,
+            "native_unbind_rate": 0.0004537357422156874
+          },
+          "sham": {
+            "port_trace": 1,
+            "conductance": 0.11,
+            "native_unbind_rate": 0.0004537357422156874
+          }
+        },
+        "sham_exact": true,
+        "brain_charge_difference_norm": 0.40488356030910927,
+        "world_charge_difference_norm": 0.14217907328978807
+      },
+      {
+        "port": 6,
+        "resource_node": 6,
+        "source_time_ms": 4864.0,
+        "end_time_ms": 4868.0,
+        "jumps": {
+          "write": {
+            "delta_u": 4.8572930244045045,
+            "delta_g": 2.5547079314104586
+          },
+          "active": {
+            "delta_u": 4.8572930244045045,
+            "delta_g": 2.5547079314104586
+          },
+          "sham": {
+            "delta_u": 4.8572930244045045,
+            "delta_g": 2.5547079314104586
+          }
+        },
+        "only_memory_configuration_differs_before_future": true,
+        "prearrival_scores_equal": true,
+        "response_before_future": {
+          "write": {
+            "port_trace": 0,
+            "conductance": 0.08,
+            "native_unbind_rate": 0.0059601461011058775
+          },
+          "active": {
+            "port_trace": 1,
+            "conductance": 0.11,
+            "native_unbind_rate": 0.0008993104981045778
+          },
+          "sham": {
+            "port_trace": 1,
+            "conductance": 0.11,
+            "native_unbind_rate": 0.0008993104981045778
+          }
+        },
+        "sham_exact": true,
+        "brain_charge_difference_norm": 0.5709039103158234,
+        "world_charge_difference_norm": 0.2377295434430312
+      }
+    ],
+    "scope": "Conditional native-jump memory intervention on all naturally eligible ports; no direct trace reset, no predictive utility claim"
+  },
+  "conditional_discrimination": {
+    "source": "F:\\fly_stream_overflow\\cgb_boundary_contacts_20261022\\coupled_complete.npz",
+    "source_sha256": "a7f829f62a23e774ba0fc34f540523da640708ecc49caecdc72012ed5b4b2b33",
+    "scope": "Exact frozen 4ms field after matched native jumps; one source bit inverted, other bits fixed. Instrument discrimination, not organism knowledge or text prediction.",
+    "records": [
+      {
+        "port": 1,
+        "conditional_duration_ms": 4.0,
+        "observed_brain_nodes": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23
+        ],
+        "states": {
+          "write": {
+            "trace": 0,
+            "conductance": 0.08,
+            "native_jump_delta_u": 4.2346830151216075,
+            "native_jump_delta_g": 2.7306056183453333,
+            "source_flip_kl_nats": 0.014016595326320042,
+            "equal_prior_source_flip_error": 0.466641286385208,
+            "uniform_source_gaussian_information_bound_nats": 0.03633625825753936
+          },
+          "active": {
+            "trace": 1,
+            "conductance": 0.11,
+            "native_jump_delta_u": 4.2346830151216075,
+            "native_jump_delta_g": 2.7306056183453333,
+            "source_flip_kl_nats": 0.02230845318102945,
+            "equal_prior_source_flip_error": 0.45794447804071997,
+            "uniform_source_gaussian_information_bound_nats": 0.03826154575529021
+          }
+        }
+      },
+      {
+        "port": 2,
+        "conditional_duration_ms": 4.0,
+        "observed_brain_nodes": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23
+        ],
+        "states": {
+          "write": {
+            "trace": 0,
+            "conductance": 0.08,
+            "native_jump_delta_u": 4.256146151959431,
+            "native_jump_delta_g": 1.9535610589653851,
+            "source_flip_kl_nats": 0.011568341321913204,
+            "equal_prior_source_flip_error": 0.46968817366124893,
+            "uniform_source_gaussian_information_bound_nats": 0.036631259154628136
+          },
+          "active": {
+            "trace": 1,
+            "conductance": 0.11,
+            "native_jump_delta_u": 4.256146151959431,
+            "native_jump_delta_g": 1.9535610589653851,
+            "source_flip_kl_nats": 0.018831762164211896,
+            "equal_prior_source_flip_error": 0.4613491159557742,
+            "uniform_source_gaussian_information_bound_nats": 0.03826154575529021
+          }
+        }
+      },
+      {
+        "port": 3,
+        "conditional_duration_ms": 4.0,
+        "observed_brain_nodes": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23
+        ],
+        "states": {
+          "write": {
+            "trace": 0,
+            "conductance": 0.08,
+            "native_jump_delta_u": 3.3656331789665317,
+            "native_jump_delta_g": 1.0630480859724858,
+            "source_flip_kl_nats": 0.014742874293467212,
+            "equal_prior_source_flip_error": 0.46579001774033285,
+            "uniform_source_gaussian_information_bound_nats": 0.036220436860581184
+          },
+          "active": {
+            "trace": 1,
+            "conductance": 0.11,
+            "native_jump_delta_u": 3.3656331789665317,
+            "native_jump_delta_g": 1.0630480859724858,
+            "source_flip_kl_nats": 0.02347734988588148,
+            "equal_prior_source_flip_error": 0.456860948181649,
+            "uniform_source_gaussian_information_bound_nats": 0.03826154575529021
+          }
+        }
+      },
+      {
+        "port": 6,
+        "conditional_duration_ms": 4.0,
+        "observed_brain_nodes": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23
+        ],
+        "states": {
+          "write": {
+            "trace": 0,
+            "conductance": 0.08,
+            "native_jump_delta_u": 4.8572930244045045,
+            "native_jump_delta_g": 2.5547079314104586,
+            "source_flip_kl_nats": 0.023775346561997833,
+            "equal_prior_source_flip_error": 0.4565891070496801,
+            "uniform_source_gaussian_information_bound_nats": 0.03549163882774728
+          },
+          "active": {
+            "trace": 1,
+            "conductance": 0.11,
+            "native_jump_delta_u": 4.8572930244045045,
+            "native_jump_delta_g": 2.5547079314104586,
+            "source_flip_kl_nats": 0.035080163396659446,
+            "equal_prior_source_flip_error": 0.4473185448887251,
+            "uniform_source_gaussian_information_bound_nats": 0.03826154575529021
+          }
+        }
+      }
+    ],
+    "code_sha256": {
+      "scripts\\ib\\generative\\boundary_discrimination_probe.py": "d9bf0cb8d63a0b219179b8749b81c2438de19ab6d8acd558bd84ac4531d42417",
+      "information_boltzmann\\cgb\\boundary_material.py": "9b50fed7a93a3ee01a613bdc443b6a68a2f6f874f14ec62e3f5a9ea4e1e07854",
+      "information_boltzmann\\cgb\\sensory_channel.py": "06f7a73fdcece578c23f9e5bc755c25d7bc5c5a797a4809928f8a8954ea7b51c",
+      "docs\\information_boltzmann\\CGB_BOUNDARY_MEMORY_PROBE_20261022.md": "c12445f81d46fc1c4ca831bd7379d6fbbb5dcaf4af83faca97afe70d4abde690"
+    }
+  },
+  "spatial_continuity": {
+    "coupled": {
+      "observed_directed_pairs": [
+        [
+          2,
+          15
+        ],
+        [
+          2,
+          23
+        ],
+        [
+          4,
+          20
+        ],
+        [
+          7,
+          22
+        ],
+        [
+          15,
+          2
+        ],
+        [
+          18,
+          12
+        ],
+        [
+          21,
+          2
+        ]
+      ],
+      "unique_unordered_pairs": 6,
+      "scope": "Lower bound from saved frames; distance measured at stage start, not never-seen lifetime pairs or learning benefit"
+    },
+    "boundary_frozen": {
+      "observed_directed_pairs": [
+        [
+          4,
+          21
+        ],
+        [
+          4,
+          22
+        ],
+        [
+          6,
+          22
+        ],
+        [
+          7,
+          2
+        ],
+        [
+          7,
+          21
+        ],
+        [
+          14,
+          23
+        ],
+        [
+          15,
+          21
+        ],
+        [
+          18,
+          4
+        ],
+        [
+          18,
+          9
+        ],
+        [
+          18,
+          16
+        ],
+        [
+          21,
+          16
+        ],
+        [
+          22,
+          2
+        ]
+      ],
+      "unique_unordered_pairs": 12,
+      "scope": "Lower bound from saved frames; distance measured at stage start, not never-seen lifetime pairs or learning benefit"
+    }
+  },
+  "validation": {
+    "tests": 230,
+    "failures": 0,
+    "errors": 0,
+    "seconds": 22.372
+  },
+  "next_research_source": {
+    "archive": "F:\\fly_stream_overflow\\cgb_boundary_contacts_20261022\\coupled_complete.npz",
+    "sha256": "a7f829f62a23e774ba0fc34f540523da640708ecc49caecdc72012ed5b4b2b33",
+    "kind": "boundary_identity_mobile_exchange",
+    "schema": 1,
+    "field_scheme": "symmetric_ou",
+    "time_ms": 4864.0,
+    "phase": "fresh_A",
+    "next_phase_byte": 896,
+    "status": "candidate: native boundary plasticity and causal delivery; predictive learning incomplete; use neither barriers nor forced-jump controls as mainline"
+  }
+}

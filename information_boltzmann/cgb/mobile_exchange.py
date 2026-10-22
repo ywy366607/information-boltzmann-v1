@@ -43,6 +43,7 @@ class MaterialEvent:
     edge: int = -1
     sign: int = 1
     pool: str = ''
+    interface: int = -1
 
 
 class MobileExchange:
@@ -207,6 +208,47 @@ class MobileExchange:
         if event.kind == 'conversion': return [(event.i, -z)]
         return []
 
+    def _charge_energy_increment(self, node, dq):
+        if node < self.n:
+            return (self.charge[node]*dq+.5*dq*dq)/self.capacitance[node]
+        port = node-self.n
+        return (self.world_charge[port]*dq+.5*dq*dq)/self.world_capacitance[port]
+
+    def _add_charge(self, node, dq):
+        if node < self.n:
+            self.charge[node] += dq
+        else:
+            self.world_charge[node-self.n] += dq
+
+    def _contact_arrays(self, event):
+        if event.interface >= 0:
+            raise ValueError('This material has no registered boundary storage')
+        return self.bound, self.trace, event.edge
+
+    def _assembly_delta(self, event, degree):
+        p, s = self.params, event.sign
+        neighbors = degree[event.i]+degree[event.j]-(2 if s < 0 else 0)
+        length = np.linalg.norm(self.coordinates[event.i]-self.coordinates[event.j])
+        du = s*(p.structure_energy+.5*p.elastic_stiffness*(length-p.rest_length)**2
+                -p.cohesion_energy*neighbors)
+        ends = self.end_capacity-degree
+        mix = (-math.log(ends[event.i])-math.log(ends[event.j]) if s > 0 else
+                math.log(ends[event.i]+1)+math.log(ends[event.j]+1))
+        return du, mix
+
+    def _assembly_attempt(self, event, degree):
+        neighbors = degree[event.i]+degree[event.j]-(2 if event.sign < 0 else 0)
+        return self.params.assembly_rate*(self.params.bulk_attempt+self.params.surface_attempt*neighbors)
+
+    def _contact_transport_factor(self, event):
+        return 1.
+
+    def contact_conductance_increment(self, event):
+        dn = event.sign if event.kind == 'assembly' else 0
+        dr = event.sign if event.kind in ('write','thermal') else 0
+        p = self.params
+        return self.unit_conductance*self._contact_transport_factor(event)*(p.gate_low*dn+(p.gate_high-p.gate_low)*dr)
+
     def event_delta(self, event, degree=None):
         """Exact U/G increments, including finite-composition multiplicities."""
         p, e, s = self.params, event.edge, event.sign
@@ -218,31 +260,26 @@ class MobileExchange:
             if name == 'charged': du += p.charged_energy*change
             if name == 'carried': du += p.carried_energy*change
         for node, dq in self._charge_changes(event):
-            du += (self.charge[node]*dq+.5*dq*dq)/self.capacitance[node]
+            du += self._charge_energy_increment(node, dq)
         if event.kind == 'assembly':
             degree = self.degrees() if degree is None else degree
-            neighbors = degree[event.i]+degree[event.j]-(2 if s < 0 else 0)
-            length = np.linalg.norm(self.coordinates[event.i]-self.coordinates[event.j])
-            du += s*(p.structure_energy+.5*p.elastic_stiffness*(length-p.rest_length)**2
-                     -p.cohesion_energy*neighbors)
-            ends = self.end_capacity-degree
-            if s > 0:
-                mix -= math.log(ends[event.i])+math.log(ends[event.j])
-            else:
-                mix += math.log(ends[event.i]+1)+math.log(ends[event.j]+1)
+            assembly_u, assembly_mix = self._assembly_delta(event, degree)
+            du += assembly_u
+            mix += assembly_mix
         elif event.kind in ('binding', 'transport'):
+            _, trace, index = self._contact_arrays(event)
             dc = s if event.kind == 'binding' else -s
-            du += dc*(p.bound_energy-p.capture_coupling*self.trace[e])
+            du += dc*(p.bound_energy-p.capture_coupling*trace[index])
         elif event.kind in ('write', 'thermal'):
-            du += s*(p.trace_energy-p.capture_coupling*self.bound[e])
+            bound, _, index = self._contact_arrays(event)
+            du += s*(p.trace_energy-p.capture_coupling*bound[index])
         return float(du), float(du+mix)
 
     def attempt_rate(self, event, degree=None):
         p, k = self.params, event.kind
         if k == 'assembly':
             d = self.degrees() if degree is None else degree
-            neighbors = d[event.i]+d[event.j]-(2 if event.sign < 0 else 0)
-            return p.assembly_rate*(p.bulk_attempt+p.surface_attempt*neighbors)
+            return self._assembly_attempt(event, d)
         if k == 'binding': return p.binding_rate
         if k == 'transport': return p.transport_rate
         if k == 'release': return p.release_rate
@@ -250,7 +287,8 @@ class MobileExchange:
         if k == 'thermal': return p.recovery_rate
         if k == 'conversion': return p.conversion_rate
         if k == 'active':
-            return p.active_rate*(p.gate_low+(p.gate_high-p.gate_low)*self.trace[event.edge])
+            _, trace, index = self._contact_arrays(event)
+            return p.active_rate*(p.gate_low+(p.gate_high-p.gate_low)*trace[index])
         if k == 'exchange':
             d = {'material': p.material_diffusion, 'free': p.support_diffusion,
                  'charged': p.drive_diffusion, 'depleted': p.drive_diffusion}[event.pool]
@@ -259,6 +297,25 @@ class MobileExchange:
 
     def event_rate(self, event, degree=None):
         return self.attempt_rate(event, degree)*float(expit(-self.event_delta(event, degree)[1]))
+
+    def _installed_contact_events(self, i, j, edge, interface=-1):
+        """One admission graph, with resource owners distinct from terminals."""
+        def event(kind, sign=1):
+            return MaterialEvent(kind,i,j,edge,sign,interface=interface)
+        bound,trace,index = self._contact_arrays(event('active'))
+        c,r = bound[index],trace[index]
+        events = []
+        if not c and not r and self.depleted[j]: events.append(event('assembly',-1))
+        if not c and self.free[j]: events.append(event('binding'))
+        if c: events.append(event('binding',-1))
+        if c and self.charged[i]: events.append(event('transport'))
+        if not c and self.carried[i] and self.depleted[i]: events.append(event('transport',-1))
+        if not r and self.charged[i]: events.append(event('write'))
+        if r and self.depleted[i]: events.append(event('write',-1))
+        events.append(event('thermal',-1 if r else 1))
+        if self.charged[i]: events.append(event('active'))
+        if self.depleted[i]: events.append(event('active',-1))
+        return events
 
     def events(self, pairs=None, degree=None):
         events = []
@@ -277,23 +334,23 @@ class MobileExchange:
                 if getattr(self, pool)[b]: events.append(MaterialEvent('exchange', a, b, sign=-1, pool=pool))
         for e, (i, j) in enumerate(zip(self.pre, self.post)):
             i, j = int(i), int(j)
-            c, r = self.bound[e], self.trace[e]
-            if not c and not r and self.depleted[j]: events.append(MaterialEvent('assembly', i, j, e, -1))
-            if not c and self.free[j]: events.append(MaterialEvent('binding', i, j, e))
-            if c: events.append(MaterialEvent('binding', i, j, e, -1))
-            if c and self.charged[i]: events.append(MaterialEvent('transport', i, j, e))
-            if not c and self.carried[i] and self.depleted[i]: events.append(MaterialEvent('transport', i, j, e, -1))
-            if not r and self.charged[i]: events.append(MaterialEvent('write', i, j, e))
-            if r and self.depleted[i]: events.append(MaterialEvent('write', i, j, e, -1))
-            events.append(MaterialEvent('thermal', i, j, e, -1 if r else 1))
-            if self.charged[i]: events.append(MaterialEvent('active', i, j, e))
-            if self.depleted[i]: events.append(MaterialEvent('active', i, j, e, -1))
+            events.extend(self._installed_contact_events(i,j,e))
         for i in range(self.n):
             if self.carried[i]: events.append(MaterialEvent('release', i))
             if self.free[i]: events.append(MaterialEvent('release', i, sign=-1))
             if self.depleted[i]: events.append(MaterialEvent('conversion', i))
             if self.charged[i]: events.append(MaterialEvent('conversion', i, sign=-1))
         return [e for e in events if self.attempt_rate(e, degree) > 0.]
+
+    def _apply_assembly(self, event):
+        if event.sign > 0:
+            self.pre, self.post = np.r_[self.pre, event.i], np.r_[self.post, event.j]
+            self.bound, self.trace = np.r_[self.bound, 0], np.r_[self.trace, 0]
+            self.capacity = np.ones(len(self.pre))
+        else:
+            keep = np.arange(len(self.pre)) != event.edge
+            for name in ('pre', 'post', 'bound', 'trace', 'capacity'):
+                setattr(self, name, getattr(self, name)[keep])
 
     def apply_event(self, event, *, event_time=None, check=True, degree=None):
         if check and event not in self.events():
@@ -304,34 +361,32 @@ class MobileExchange:
         for name, node, change in self._pools(event):
             getattr(self, name)[node] += change
         for node, dq in self._charge_changes(event):
-            self.charge[node] += dq
+            self._add_charge(node, dq)
         e, s = event.edge, event.sign
         if event.kind == 'assembly':
-            if s > 0:
-                self.pre, self.post = np.r_[self.pre, event.i], np.r_[self.post, event.j]
-                self.bound, self.trace = np.r_[self.bound, 0], np.r_[self.trace, 0]
-                self.capacity = np.ones(len(self.pre))
-            else:
-                keep = np.arange(len(self.pre)) != e
-                for name in ('pre', 'post', 'bound', 'trace', 'capacity'):
-                    setattr(self, name, getattr(self, name)[keep])
+            self._apply_assembly(event)
         elif event.kind in ('binding', 'transport'):
-            self.bound[e] += s if event.kind == 'binding' else -s
+            bound, _, index = self._contact_arrays(event)
+            bound[index] += s if event.kind == 'binding' else -s
         elif event.kind in ('write', 'thermal'):
-            self.trace[e] += s
+            _, trace, index = self._contact_arrays(event)
+            trace[index] += s
         if event.kind == 'conversion':
             self.electrode_charge += s*self.params.charge_per_event
         self.heat_out -= du
         self.reaction_heat -= du
         self.entropy_balance -= dg
-        key = event.kind+('+' if s > 0 else '-')
+        key = ('port_' if event.interface >= 0 else '')+event.kind+('+' if s > 0 else '-')
         self.reaction_counts[key] = self.reaction_counts.get(key, 0)+1
         if self.event_observer:
-            self.event_observer(dict(kind=event.kind, sign=s, i=event.i, j=event.j,
+            record = dict(kind=event.kind, sign=s, i=event.i, j=event.j,
                 time_ms=self.t if event_time is None else event_time,
                 degrees_before=before_degree[[event.i, event.j]].tolist() if event.j >= 0 else [],
                 distance=float(np.linalg.norm(self.coordinates[event.i]-self.coordinates[event.j]))
-                if event.j >= 0 else None, delta_u=du, delta_g=dg))
+                if event.j >= 0 else None, delta_u=du, delta_g=dg)
+            if event.interface >= 0:
+                record['interface'] = event.interface
+            self.event_observer(record)
 
     def _reactions(self, dt):
         elapsed = 0.
@@ -437,10 +492,11 @@ class MobileExchange:
                 self.source_observer(dict(time_ms=self.t, dt_ms=dt,
                     before_charge=old.copy(), after_charge=self.world_charge.copy(),
                     source_work=work, source_heat=heat))
+        port_g = self.effective_port_conductance()
         for a, i in enumerate(self.port_nodes):
             inverse_c = 1/self.capacitance[i]+1/self.world_capacitance[a]
             dv = self.charge[i]/self.capacitance[i]-self.world_charge[a]/self.world_capacitance[a]
-            rate = dt*self.port_conductance[a]*inverse_c
+            rate = dt*port_g[a]*inverse_c
             sent = (dv*(-np.expm1(-rate))/inverse_c
                 +self.rng_field.normal()*math.sqrt(-np.expm1(-2*rate)/inverse_c))
             heat = (dv*sent-.5*inverse_c*sent*sent)
@@ -478,6 +534,7 @@ class MobileExchange:
         q = np.r_[self.charge, self.world_charge]
         capacitance = np.r_[self.capacitance, self.world_capacitance]
         conductance = self.bridge_conductance()
+        port_g = self.effective_port_conductance()
         half = dt/2
 
         def source():
@@ -516,19 +573,22 @@ class MobileExchange:
 
         source()
         for a, i in enumerate(self.port_nodes):
-            pair(int(i), n+a, self.port_conductance[a])
+            pair(int(i), n+a, port_g[a])
         for e, (i, j) in enumerate(zip(self.pre, self.post)):
             pair(int(i), int(j), conductance[e])
         for e in range(len(self.pre)-1, -1, -1):
             pair(int(self.pre[e]), int(self.post[e]), conductance[e])
         for a in range(len(self.port_nodes)-1, -1, -1):
-            pair(int(self.port_nodes[a]), n+a, self.port_conductance[a])
+            pair(int(self.port_nodes[a]), n+a, port_g[a])
         source()
         self.charge[:], self.world_charge[:] = q[:n], q[n:]
 
     def bridge_conductance(self):
         p = self.params
         return self.unit_conductance*(p.gate_low+(p.gate_high-p.gate_low)*self.trace)
+
+    def effective_port_conductance(self):
+        return self.port_conductance
 
     def step(self, dt, world_voltage=None):
         if not np.isfinite(dt) or dt <= 0: raise ValueError('Positive finite elapsed time required')

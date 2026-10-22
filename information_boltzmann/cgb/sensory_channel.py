@@ -64,25 +64,26 @@ def frozen_field_channel(model, durations, observed_nodes=None, observed_world_p
             covariance[:] += (-model.world_capacitance[port]*np.expm1(-2*rate))*np.outer(response, response)
             rows[:, n+port] *= np.exp(-rate)
     conductance = model.bridge_conductance()
+    port_g = model.effective_port_conductance()
     scheme = getattr(model, 'field_scheme', 'sequential_ou')
     for dt in durations[::-1]:
         if scheme == 'symmetric_ou':
             half = dt/2
             source(half)
             for port in range(ports):
-                pair(int(model.port_nodes[port]), n+port, model.port_conductance[port], half)
+                pair(int(model.port_nodes[port]), n+port, port_g[port], half)
             for edge in range(len(model.pre)):
                 pair(int(model.pre[edge]), int(model.post[edge]), conductance[edge], half)
             for edge in range(len(model.pre)-1, -1, -1):
                 pair(int(model.pre[edge]), int(model.post[edge]), conductance[edge], half)
             for port in range(ports-1, -1, -1):
-                pair(int(model.port_nodes[port]), n+port, model.port_conductance[port], half)
+                pair(int(model.port_nodes[port]), n+port, port_g[port], half)
             source(half)
         elif scheme == 'sequential_ou':
             for edge in range(len(model.pre)-1, -1, -1):
                 pair(int(model.pre[edge]), int(model.post[edge]), conductance[edge], dt)
             for port in range(ports-1, -1, -1):
-                pair(int(model.port_nodes[port]), n+port, model.port_conductance[port], dt)
+                pair(int(model.port_nodes[port]), n+port, port_g[port], dt)
             source(dt)
         else:
             raise ValueError('Unknown field integration scheme')
@@ -211,8 +212,9 @@ def exact_field_reference(model, duration, observed_nodes=None, observed_world_p
         laplacian[j, j] += g
         laplacian[i, j] -= g
         laplacian[j, i] -= g
+    port_g = model.effective_port_conductance()
     for port, i in enumerate(model.port_nodes):
-        j, g = n+port, model.port_conductance[port]
+        j, g = n+port, port_g[port]
         laplacian[i, i] += g
         laplacian[j, j] += g+model.source_conductance[port]
         laplacian[i, j] -= g

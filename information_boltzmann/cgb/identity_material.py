@@ -161,7 +161,7 @@ class IdentityMobileExchange(MobileExchange):
 
     def event_delta(self, event, degree=None):
         du, dg = super().event_delta(event, degree)
-        if event.kind == 'assembly':
+        if event.kind == 'assembly' and event.interface < 0:
             df = event.sign*float(self.recognition_free_energy(event.i, event.j))
             du += self.recognition_energy_fraction*df
             dg += df
@@ -183,10 +183,13 @@ class IdentityMobileExchange(MobileExchange):
     def bridge_conductance(self):
         return super().bridge_conductance()*self._transport_factor(self.pre, self.post)
 
+    def _contact_transport_factor(self, event):
+        return 1. if event.interface >= 0 else float(self._transport_factor(event.i,event.j))
+
     def attempt_rate(self, event, degree=None):
         rate = super().attempt_rate(event, degree)
         if event.kind in ('active', 'write'):
-            rate *= float(self._transport_factor(event.i, event.j))
+            rate *= self._contact_transport_factor(event)
         return rate
 
     def state_dict(self):
