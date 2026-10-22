@@ -1,0 +1,586 @@
+{
+  "baseline_git": "cf607ee4d8480ed587da6f43433d101d1c54df33",
+  "protocol": "Existing native learning active; fresh A 128, fresh B 256, revisit A 256; conditional native jumps only in research controls",
+  "primary": {
+    "kind": "continuous_physical_research_candidate",
+    "archive": "F:\\fly_stream_overflow\\cgb_future_exchange_recovered_20261022\\native_revisit_A_complete.npz",
+    "sha256": "6563b8fdc94f16f3f453d23571eecbed7ee556b1945b844bd90aa28d95c89f56",
+    "natural_primary": true,
+    "not_champion": true,
+    "time_ms": 7424.0,
+    "model_kind": "boundary_identity_mobile_exchange",
+    "source": "F:\\fly_stream_overflow\\cgb_boundary_contacts_20261022\\coupled_complete.npz",
+    "source_sha256": "a7f829f62a23e774ba0fc34f540523da640708ecc49caecdc72012ed5b4b2b33",
+    "session_phase": "revisit_A",
+    "next_phase_byte": 256,
+    "complete_physical_session_observer_genome_and_three_rngs": true,
+    "field_scheme": "symmetric_ou",
+    "next_fresh_corpus_cursor": {
+      "train_byte": 1280,
+      "validation_byte": 256
+    },
+    "cursor_scope": "Existing warm 256 plus fresh train 1024; fresh validation 256. Expand source blocks explicitly; completed revisit is not fresh.",
+    "actual_native_source_snapshot": "F:\\fly_stream_overflow\\cgb_future_exchange_recovered_20261022\\native_original_source",
+    "sources": {
+      "archive": "F:\\fly_stream_overflow\\cgb_identity_cached_20261022\\coupled_complete.npz",
+      "archive_sha256": "4317f2e25e7834fa8f76b16b1b38895904506f51e058cd01616f5f1e67258c05",
+      "source_time_ms": 256.0,
+      "retained_history_bytes": 64,
+      "genome": "e2dd1af426729119fe14baa239b5d4462b7d93c9a5fe62112254a33fad55caca",
+      "corpus": {
+        "source": "openwebtext",
+        "revision": "433fe0f44ed7894fea29c08b3202aa348ccc6369",
+        "split_rule": "NFC_document_sha256_mod100_98_1_1",
+        "tokenizer": {
+          "type": "utf8_bytes",
+          "offset": 4,
+          "special_tokens": [
+            "<pad>",
+            "<bos>",
+            "<eos>",
+            "<unk>"
+          ]
+        },
+        "manifest_sha256": "3614c380d4c72688ac8ccde42f32ea0655d16bec1ba0874a924fd777af904d2d",
+        "files_sha256": {
+          "train.npy": "2f227239bc63b89daf31956701d243a93f9dd46671702fff03763b33dc6db4fb",
+          "validation.npy": "60d41d3fdda8c1718ad1735693eda0dae2b23a0032c5e04a29aac9d0c6d35d8c"
+        },
+        "selected_locations": {
+          "warm": {
+            "split": "train",
+            "offset": 0
+          },
+          "fresh_A": {
+            "split": "train",
+            "offset": 256
+          },
+          "fresh_B": {
+            "split": "validation",
+            "offset": 0
+          },
+          "revisit_A": {
+            "split": "train",
+            "offset": 0,
+            "replay": true
+          }
+        },
+        "selected_counts": {
+          "warm": 256,
+          "fresh_A": 1024,
+          "fresh_B": 256,
+          "revisit_A": 256
+        },
+        "selected_sha256": {
+          "warm": "8adc7c0db929640b940dc5dd169d0e33d817702bad92c4e8e74fef402729fe47",
+          "fresh_A": "f78646c8d44a0757e6209fe2a21213886d45e428352822fd34016e76f83b879a",
+          "fresh_B": "cae7e75576faafe47498559572aebb75265dc091a8fbd2d50558b027bc4cdac9",
+          "revisit_A": "8adc7c0db929640b940dc5dd169d0e33d817702bad92c4e8e74fef402729fe47"
+        }
+      },
+      "selected_stream_sha256": "66ff4214ee2abf401a2d6e299755578c82964b2622c90ace8be05ca286f0f7db"
+    },
+    "full_future_restore_bytes": 128,
+    "capability_or_convergence_established": false
+  },
+  "fresh_bytes_per_arm": 384,
+  "revisit_bytes_per_arm": 256,
+  "physical_ms_per_byte": 4,
+  "dt_ms": 2,
+  "optimizer_updates": 0,
+  "validation": {
+    "tests": 233,
+    "errors": 0,
+    "failures": 0,
+    "seconds": 23.61,
+    "observer_equivalence": {
+      "verified_future_bytes": 128,
+      "physical_state_three_rngs_session_and_predictions_exact": true,
+      "receipts_close": true
+    },
+    "per_arm": {
+      "native": {
+        "restored_future_bytes": 128,
+        "full_state_session_observer_and_three_rngs_exact": true,
+        "maximum_final_balance_error": 1.1496013030409813e-09
+      },
+      "retained": {
+        "restored_future_bytes": 128,
+        "full_state_session_observer_and_three_rngs_exact": true,
+        "maximum_final_balance_error": 1.673470251262188e-10
+      },
+      "reconfigured": {
+        "restored_future_bytes": 128,
+        "full_state_session_observer_and_three_rngs_exact": true,
+        "maximum_final_balance_error": 1.0622898116707802e-09
+      }
+    }
+  },
+  "phases": {
+    "native": {
+      "fresh_A": {
+        "n": 128,
+        "nll_nats_per_byte": {
+          "material": 10.389027704309367,
+          "fixed_byte": 3.3405509211531195,
+          "fixed_bits": 3.842382323698333,
+          "source_filter": 10.248733708278518
+        },
+        "start_ms": 4864.0,
+        "end_ms": 5376.0,
+        "source_work": 2501.9025169932283,
+        "heat_out": 2509.2227390538756,
+        "conversion_electrical_delivery": 11.010490636216506,
+        "drive_energy_change": -4.0,
+        "original_carriers_surviving": 25,
+        "target_carriers_surviving": 3,
+        "births": 43,
+        "deaths": 40
+      },
+      "fresh_B": {
+        "n": 256,
+        "nll_nats_per_byte": {
+          "material": 11.490685024671276,
+          "fixed_byte": 3.5433810018505927,
+          "fixed_bits": 4.059897445596032,
+          "source_filter": 10.849850100375088
+        },
+        "start_ms": 5376.0,
+        "end_ms": 6400.0,
+        "source_work": 5227.477435467947,
+        "heat_out": 5214.850587795478,
+        "conversion_electrical_delivery": 16.375838113886093,
+        "drive_energy_change": 12.0,
+        "original_carriers_surviving": 12,
+        "target_carriers_surviving": 1,
+        "births": 86,
+        "deaths": 89
+      },
+      "revisit_A": {
+        "n": 256,
+        "nll_nats_per_byte": {
+          "material": 11.303034767532603,
+          "fixed_byte": 3.3926545952986946,
+          "fixed_bits": 3.868586056873861,
+          "source_filter": 10.424748123689241
+        },
+        "start_ms": 6400.0,
+        "end_ms": 7424.0,
+        "source_work": 5182.524709358218,
+        "heat_out": 5212.10045676204,
+        "conversion_electrical_delivery": 5.213497516484708,
+        "drive_energy_change": -8.0,
+        "original_carriers_surviving": 5,
+        "target_carriers_surviving": 0,
+        "births": 53,
+        "deaths": 50
+      }
+    },
+    "retained": {
+      "fresh_A": {
+        "n": 128,
+        "nll_nats_per_byte": {
+          "material": 11.332607047816705,
+          "fixed_byte": 3.3405509211531195,
+          "fixed_bits": 3.842382323698333,
+          "source_filter": 10.248733708278518
+        },
+        "start_ms": 4864.0,
+        "end_ms": 5376.0,
+        "source_work": 2511.26609280537,
+        "heat_out": 2532.405249615571,
+        "conversion_electrical_delivery": 1.5717423599805556,
+        "drive_energy_change": -12.0,
+        "original_carriers_surviving": 20,
+        "target_carriers_surviving": 2,
+        "births": 52,
+        "deaths": 50
+      },
+      "fresh_B": {
+        "n": 256,
+        "nll_nats_per_byte": {
+          "material": 11.52821740439907,
+          "fixed_byte": 3.5433810018505927,
+          "fixed_bits": 4.059897445596032,
+          "source_filter": 10.849850100375088
+        },
+        "start_ms": 5376.0,
+        "end_ms": 6400.0,
+        "source_work": 5307.566249277799,
+        "heat_out": 5312.554838815548,
+        "conversion_electrical_delivery": 15.869994147561554,
+        "drive_energy_change": -4.0,
+        "original_carriers_surviving": 9,
+        "target_carriers_surviving": 0,
+        "births": 73,
+        "deaths": 76
+      },
+      "revisit_A": {
+        "n": 256,
+        "nll_nats_per_byte": {
+          "material": 11.069455201534183,
+          "fixed_byte": 3.3926545952986946,
+          "fixed_bits": 3.868586056873861,
+          "source_filter": 10.424748123689241
+        },
+        "start_ms": 6400.0,
+        "end_ms": 7424.0,
+        "source_work": 4887.560289234192,
+        "heat_out": 4880.439334825249,
+        "conversion_electrical_delivery": 16.551117683463474,
+        "drive_energy_change": 4.0,
+        "original_carriers_surviving": 6,
+        "target_carriers_surviving": 0,
+        "births": 69,
+        "deaths": 68
+      }
+    },
+    "reconfigured": {
+      "fresh_A": {
+        "n": 128,
+        "nll_nats_per_byte": {
+          "material": 11.169669328755207,
+          "fixed_byte": 3.3405509211531195,
+          "fixed_bits": 3.842382323698333,
+          "source_filter": 10.248733708278518
+        },
+        "start_ms": 4864.0,
+        "end_ms": 5376.0,
+        "source_work": 2635.452025165967,
+        "heat_out": 2655.4535916381174,
+        "conversion_electrical_delivery": 9.573852934296271,
+        "drive_energy_change": -16.0,
+        "original_carriers_surviving": 26,
+        "target_carriers_surviving": 3,
+        "births": 38,
+        "deaths": 37
+      },
+      "fresh_B": {
+        "n": 256,
+        "nll_nats_per_byte": {
+          "material": 11.595873645372025,
+          "fixed_byte": 3.5433810018505927,
+          "fixed_bits": 4.059897445596032,
+          "source_filter": 10.849850100375088
+        },
+        "start_ms": 5376.0,
+        "end_ms": 6400.0,
+        "source_work": 5263.329843820506,
+        "heat_out": 5249.243774657814,
+        "conversion_electrical_delivery": 15.264567742169275,
+        "drive_energy_change": 16.0,
+        "original_carriers_surviving": 12,
+        "target_carriers_surviving": 0,
+        "births": 80,
+        "deaths": 82
+      },
+      "revisit_A": {
+        "n": 256,
+        "nll_nats_per_byte": {
+          "material": 11.288741436431913,
+          "fixed_byte": 3.3926545952986946,
+          "fixed_bits": 3.868586056873861,
+          "source_filter": 10.424748123689241
+        },
+        "start_ms": 6400.0,
+        "end_ms": 7424.0,
+        "source_work": 5089.513125562724,
+        "heat_out": 5102.77367959352,
+        "conversion_electrical_delivery": 4.930751909029073,
+        "drive_energy_change": -8.0,
+        "original_carriers_surviving": 6,
+        "target_carriers_surviving": 0,
+        "births": 89,
+        "deaths": 85
+      }
+    }
+  },
+  "native_reaction_totals": {
+    "time_ms": 7424.0,
+    "events": 7714,
+    "conversion_electrical_delivery": 32.59982626658731,
+    "drive_energy_change": 0.0,
+    "source_work": 12911.904661819393,
+    "heat_out": 12936.173783611393,
+    "initial_contacts": 39,
+    "live_contacts": 42,
+    "initial_carriers_surviving": 5,
+    "focus_carriers_surviving": 0,
+    "focus_carriers_initial": 4,
+    "births": 182,
+    "deaths": 179,
+    "local_drive_change": [
+      0,
+      -1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      -1,
+      0,
+      -1,
+      0,
+      0,
+      1,
+      0,
+      0,
+      1,
+      0,
+      0
+    ],
+    "by_kind": {
+      "active": {
+        "events": 2386,
+        "electrical_energy_delta": -67.96196702182824,
+        "drive_energy_delta": 16.0,
+        "other_energy_delta": -8.881784197001252e-15,
+        "delta_u": -51.96196702182815,
+        "delta_g": -55.55548255913815
+      },
+      "write": {
+        "events": 3159,
+        "electrical_energy_delta": 28.754163745008345,
+        "drive_energy_delta": 44.0,
+        "other_energy_delta": 21.999999999999996,
+        "delta_u": 94.75416374500843,
+        "delta_g": 66.20442597606097
+      },
+      "thermal": {
+        "events": 770,
+        "electrical_energy_delta": 0.0,
+        "drive_energy_delta": 0.0,
+        "other_energy_delta": -20.0,
+        "delta_u": -20.0,
+        "delta_g": -20.0
+      },
+      "binding": {
+        "events": 429,
+        "electrical_energy_delta": 0.0,
+        "drive_energy_delta": 0.0,
+        "other_energy_delta": 4.0,
+        "delta_u": 4.0,
+        "delta_g": 2.901387711331891
+      },
+      "conversion": {
+        "events": 131,
+        "electrical_energy_delta": -32.59982626658731,
+        "drive_energy_delta": -68.0,
+        "other_energy_delta": 0.0,
+        "delta_u": -100.59982626658729,
+        "delta_g": -63.32815463057726
+      },
+      "transport": {
+        "events": 47,
+        "electrical_energy_delta": 0.0,
+        "drive_energy_delta": 20.0,
+        "other_energy_delta": -16.0,
+        "delta_u": 4.0,
+        "delta_g": -9.697727522307893
+      },
+      "release": {
+        "events": 154,
+        "electrical_energy_delta": 0.0,
+        "drive_energy_delta": 0.0,
+        "other_energy_delta": 0.0,
+        "delta_u": 0.0,
+        "delta_g": 0.6931471805599455
+      },
+      "port_assembly": {
+        "events": 46,
+        "electrical_energy_delta": 0.0,
+        "drive_energy_delta": -8.0,
+        "other_energy_delta": 4.0,
+        "delta_u": -4.0,
+        "delta_g": -1.8797364637999083
+      },
+      "assembly": {
+        "events": 315,
+        "electrical_energy_delta": 0.0,
+        "drive_energy_delta": -4.0,
+        "other_energy_delta": -5.08652829272317,
+        "delta_u": -9.086528292723163,
+        "delta_g": -10.784514334736935
+      },
+      "port_transport": {
+        "events": 7,
+        "electrical_energy_delta": 0.0,
+        "drive_energy_delta": -4.0,
+        "other_energy_delta": 2.0,
+        "delta_u": -2.0,
+        "delta_g": 0.9957322735539913
+      },
+      "port_active": {
+        "events": 26,
+        "electrical_energy_delta": -2.9372842519305737,
+        "drive_energy_delta": -8.0,
+        "other_energy_delta": -1.3322676295501878e-15,
+        "delta_u": -10.937284251930574,
+        "delta_g": -6.332114065942482
+      },
+      "port_thermal": {
+        "events": 136,
+        "electrical_energy_delta": 0.0,
+        "drive_energy_delta": 0.0,
+        "other_energy_delta": 0.0,
+        "delta_u": 0.0,
+        "delta_g": 0.0
+      },
+      "port_write": {
+        "events": 23,
+        "electrical_energy_delta": -5.63986554513179,
+        "drive_energy_delta": 12.0,
+        "other_energy_delta": 0.0,
+        "delta_u": 6.360134454868208,
+        "delta_g": 0.2508868721038442
+      },
+      "port_binding": {
+        "events": 85,
+        "electrical_energy_delta": 0.0,
+        "drive_energy_delta": 0.0,
+        "other_energy_delta": -6.0,
+        "delta_u": -6.0,
+        "delta_g": -6.287682072451781
+      }
+    }
+  },
+  "organization_and_capacity": {
+    "native": {
+      "initial_contacts": 39,
+      "final_contacts": 42,
+      "same_contact_keys": 16,
+      "original_carriers": 5,
+      "rebuilt_same_keys": 11,
+      "material_total": 98,
+      "free_material": 56,
+      "internal_edges": 35,
+      "boundary_contacts": 7,
+      "fixed_material_nodes": 24,
+      "maximum_internal_edges": 36,
+      "maximum_boundary_contacts": 8,
+      "global_free_material_lower_bound": 54,
+      "next_phase": "revisit_A",
+      "next_phase_byte": 256
+    },
+    "retained": {
+      "initial_contacts": 39,
+      "final_contacts": 39,
+      "same_contact_keys": 16,
+      "original_carriers": 6,
+      "rebuilt_same_keys": 10,
+      "material_total": 98,
+      "free_material": 59,
+      "internal_edges": 35,
+      "boundary_contacts": 4,
+      "fixed_material_nodes": 24,
+      "maximum_internal_edges": 36,
+      "maximum_boundary_contacts": 8,
+      "global_free_material_lower_bound": 54,
+      "next_phase": "revisit_A",
+      "next_phase_byte": 256
+    },
+    "reconfigured": {
+      "initial_contacts": 39,
+      "final_contacts": 42,
+      "same_contact_keys": 18,
+      "original_carriers": 6,
+      "rebuilt_same_keys": 12,
+      "material_total": 98,
+      "free_material": 56,
+      "internal_edges": 36,
+      "boundary_contacts": 6,
+      "fixed_material_nodes": 24,
+      "maximum_internal_edges": 36,
+      "maximum_boundary_contacts": 8,
+      "global_free_material_lower_bound": 54,
+      "next_phase": "revisit_A",
+      "next_phase_byte": 256
+    }
+  },
+  "ensemble_summary": {
+    "nll": {
+      "paired_mean": -0.053441591087838525,
+      "sample_sd": 1.2660491912542966,
+      "descriptive_t95_interval": [
+        -1.1118852027888062,
+        1.0050020206131292
+      ]
+    },
+    "conversion_electrical_delivery": {
+      "paired_mean": -0.8979751602640427,
+      "sample_sd": 4.914775178937673,
+      "descriptive_t95_interval": [
+        -5.006830034962345,
+        3.2108797144342596
+      ]
+    },
+    "drive_energy_change": {
+      "paired_mean": 8.5,
+      "sample_sd": 13.082157969649241,
+      "descriptive_t95_interval": [
+        -2.436957762691632,
+        19.436957762691634
+      ]
+    },
+    "source_work": {
+      "paired_mean": -13.86787028289882,
+      "sample_sd": 60.333915307177485,
+      "descriptive_t95_interval": [
+        -64.30828576353429,
+        36.572545197736645
+      ]
+    },
+    "initial_carriers_surviving": {
+      "paired_mean": -1.375,
+      "sample_sd": 3.3779748793788102,
+      "descriptive_t95_interval": [
+        -4.199057671900286,
+        1.449057671900286
+      ]
+    },
+    "focus_carriers_surviving": {
+      "paired_mean": -0.375,
+      "sample_sd": 1.0606601717798212,
+      "descriptive_t95_interval": [
+        -1.261734094347294,
+        0.5117340943472941
+      ]
+    },
+    "live_contacts": {
+      "paired_mean": -1.5,
+      "sample_sd": 1.7728105208558367,
+      "descriptive_t95_interval": [
+        -2.982106685520745,
+        -0.017893314479254796
+      ]
+    }
+  },
+  "ensemble_seeds": [
+    20261022,
+    20261023,
+    20261024,
+    20261025,
+    20261026,
+    20261027,
+    20261028,
+    20261029
+  ],
+  "recovery": {
+    "failed_run": "F:/fly_stream_overflow/cgb_future_exchange_20261022",
+    "cause": "Tuple/list JSON receipt representation; physical comparison passed",
+    "natural_completed_run_preserved_without_reexecution": true,
+    "retained_prefix_predictions_exact": 384,
+    "retained_prefix_receipts_exact": 4362
+  },
+  "raw_report": "F:\\fly_stream_overflow\\cgb_future_exchange_recovered_20261022\\report.json",
+  "raw_report_sha256": "f440f3b3f9696f3f91c393678cfe4301d2a1581fd884f3a232199034da01010d",
+  "report": "docs/information_boltzmann/CGB_FUTURE_EXCHANGE_RESULTS_20261022.md",
+  "next": "Material-paid birth and reversible recovery of independent domains; derivation only, not yet implemented",
+  "scope": "Physical consequence path and exact finite receipts verified. Stable predictive benefit, useful selective retention, complete growth and language-world closure remain unproven."
+}

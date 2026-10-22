@@ -159,3 +159,70 @@ def test_native_matched_jumps_isolate_memory_without_an_unpaid_reset():
     assert write.effective_port_conductance()[0]<active.effective_port_conductance()[0]
     for model in (write,active):
         assert max(abs(float(v)) for v in model.balances().values())<1e-12
+
+
+def test_event_receipts_preserve_full_future_and_reconstruct_local_drive():
+    m=material(1,1,1)
+    m.params=replace(m.params,material_diffusion=.1,support_diffusion=.1,drive_diffusion=.1)
+    sham=BoundaryIdentityMobileExchange.from_state_dict(m.state_dict())
+    initial=m.charged.copy();observed=[]
+    m.event_observer=observed.append
+    for _ in range(16):
+        m.step(2.,np.array([2.]))
+        sham.step(2.,np.array([2.]))
+    same(m.state_dict(),sham.state_dict())
+    delta=np.zeros(m.n,dtype=np.int64)
+    for receipt in observed:
+        for name,node,change in receipt['composition_changes']:
+            if name=='charged':delta[node]+=change
+        assert abs(receipt['electrical_energy_delta']+receipt['drive_energy_delta']+
+                   receipt['other_energy_delta']-receipt['delta_u'])<1e-13
+        mass=sum(change for name,node,change in receipt['composition_changes'] if name=='material')
+        support=sum(change for name,node,change in receipt['composition_changes'] if name in ('free','carried'))
+        drive=sum(change for name,node,change in receipt['composition_changes'] if name in ('charged','depleted'))
+        assert mass+receipt['configuration_changes']['installed']==0
+        assert support+receipt['configuration_changes']['bound']==0
+        assert drive==0
+        assert abs(sum(dq for node,dq in receipt['charge_changes'])+receipt['electrode_charge_delta'])<1e-14
+        assert 0<=receipt['pre_event_rate']<=receipt['pre_event_attempt_rate']
+    np.testing.assert_array_equal(delta,m.charged-initial)
+    assert any(row['kind']=='exchange' for row in observed)
+    import json
+    assert observed==json.loads(json.dumps(observed))
+
+
+def test_existing_assembly_fuel_dependence_is_finite_composition_not_a_score():
+    m=material(0,0,0);event=MaterialEvent('assembly',0,0,0,interface=0)
+    # Numerical conditional states: initial ledgers are not interpreted as a
+    # physical intervention. This verifies the original finite-rate formula.
+    total=8;rates=[]
+    for p in range(1,total+1):
+        m.charged[0]=p;m.depleted[0]=total-p
+        dg=m.event_delta(event)[1]
+        k=np.exp(m.params.structure_energy-m.params.charged_energy)/m.material[0]
+        expected=m.params.assembly_rate*p/(p+k*(total-p+1))
+        assert abs(m.event_rate(event)-expected)<1e-15
+        rates.append(m.event_rate(event))
+    assert np.all(np.diff(rates)>0)
+    m.charged[0]=0;m.depleted[0]=total
+    assert event not in m.events()
+
+
+def test_carrier_fate_observation_does_not_count_rebirth_as_retention(tmp_path):
+    from information_boltzmann.cgb.exchange_observation import ExchangeObservation
+    m=material(1,0,0)
+    observer=ExchangeObservation(m,focus_ports=[0]);m.event_observer=observer.observe
+    m.apply_event(MaterialEvent('assembly',0,0,0,-1,interface=0))
+    m.apply_event(MaterialEvent('assembly',0,0,0,1,interface=0))
+    summary=observer.summary(m)
+    assert summary['live_contacts']==summary['initial_contacts']
+    assert summary['focus_carriers_surviving']==0
+    assert summary['initial_carriers_surviving']==summary['initial_contacts']-1
+    save_exchange(tmp_path/'observed.npz',m,{'observer':observer.state_dict()})
+    other,meta=load_exchange(tmp_path/'observed.npz')
+    observed=ExchangeObservation(other,state=meta['observer']);other.event_observer=observed.observe
+    for _ in range(8):
+        m.step(2.,np.array([2.]));other.step(2.,np.array([2.]))
+    same(m.state_dict(),other.state_dict())
+    assert observer.state_dict()==observed.state_dict()
+    observer.validate(m);observed.validate(other)

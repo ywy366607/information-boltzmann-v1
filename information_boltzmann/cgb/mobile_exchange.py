@@ -357,6 +357,21 @@ class MobileExchange:
             raise ValueError('Unavailable material event')
         degree = self.degrees() if degree is None else degree
         du, dg = self.event_delta(event, degree)
+        receipt = None
+        if self.event_observer:
+            composition = [[name,int(node),int(change)] for name,node,change in self._pools(event)]
+            charge_changes = [[int(node),float(dq)] for node,dq in self._charge_changes(event)]
+            electrical = sum(self._charge_energy_increment(node,dq) for node,dq in charge_changes)
+            drive = self.params.charged_energy*sum(change for name,node,change in composition if name=='charged')
+            attempt = self.attempt_rate(event,degree)
+            receipt = dict(composition_changes=composition,charge_changes=charge_changes,
+                configuration_changes=dict(installed=event.sign if event.kind=='assembly' else 0,
+                    bound=event.sign if event.kind=='binding' else -event.sign if event.kind=='transport' else 0,
+                    trace=event.sign if event.kind in ('write','thermal') else 0),
+                electrode_charge_delta=float(event.sign*self.params.charge_per_event) if event.kind=='conversion' else 0.,
+                electrical_energy_delta=float(electrical),drive_energy_delta=float(drive),
+                other_energy_delta=float(du-electrical-drive),
+                pre_event_attempt_rate=float(attempt),pre_event_rate=float(attempt*expit(-dg)))
         before_degree = degree
         for name, node, change in self._pools(event):
             getattr(self, name)[node] += change
@@ -384,6 +399,9 @@ class MobileExchange:
                 degrees_before=before_degree[[event.i, event.j]].tolist() if event.j >= 0 else [],
                 distance=float(np.linalg.norm(self.coordinates[event.i]-self.coordinates[event.j]))
                 if event.j >= 0 else None, delta_u=du, delta_g=dg)
+            record.update(receipt)
+            if event.kind == 'exchange':
+                record['pool'] = event.pool
             if event.interface >= 0:
                 record['interface'] = event.interface
             self.event_observer(record)
