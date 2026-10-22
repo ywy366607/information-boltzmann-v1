@@ -1,0 +1,347 @@
+{
+  "passed": true,
+  "source_report": "F:\\fly_stream_overflow\\cgb_prediction_observation_20261022\\report.json",
+  "source_report_sha256": "b04f923384aaa249d389f34df5bd7754af86fc03909a394b968c52c1e373f07a",
+  "source": {
+    "parent_archive": "F:\\fly_stream_overflow\\cgb_trace_fate_20261022\\natural_complete.npz",
+    "parent_sha256": "8e359c1da68287d28869b67c59fbca99f0887c1da256d2becb773197d0805029",
+    "corpus": {
+      "source": "openwebtext",
+      "revision": "433fe0f44ed7894fea29c08b3202aa348ccc6369",
+      "split_rule": "NFC_document_sha256_mod100_98_1_1",
+      "tokenizer": {
+        "type": "utf8_bytes",
+        "offset": 4,
+        "special_tokens": [
+          "<pad>",
+          "<bos>",
+          "<eos>",
+          "<unk>"
+        ]
+      },
+      "manifest_sha256": "3614c380d4c72688ac8ccde42f32ea0655d16bec1ba0874a924fd777af904d2d",
+      "files_sha256": {
+        "train.npy": "2f227239bc63b89daf31956701d243a93f9dd46671702fff03763b33dc6db4fb",
+        "validation.npy": "60d41d3fdda8c1718ad1735693eda0dae2b23a0032c5e04a29aac9d0c6d35d8c"
+      }
+    },
+    "train_selection": {
+      "split": "train",
+      "start": 2816,
+      "end": 3840,
+      "token_offset": 4
+    },
+    "validation_selection": {
+      "split": "validation",
+      "start": 256,
+      "end": 1280,
+      "token_offset": 4
+    },
+    "initial_last_actual_byte": 97,
+    "protocol": "2048 new real bytes, 4ms each, original native learning; external probes fit train only and frozen before validation"
+  },
+  "natural": {
+    "time_ms": 22272.0,
+    "nodes": 55,
+    "free_material": 8,
+    "internal_bridges": 58,
+    "boundary_contacts": 1,
+    "domain_births": 3,
+    "domain_deaths": 0,
+    "carrier_births": 2050,
+    "carrier_deaths": 2053,
+    "original_carriers_retained": 1,
+    "rebuilt_old_positions": 0,
+    "source_work": 40461.26481584263,
+    "heat_out": 40436.13625953415,
+    "energy_change": 25.128556303073083,
+    "maximum_error": 8.236384019255638e-09,
+    "actual_fresh_train": 1024,
+    "actual_fresh_validation": 1024,
+    "next_train_byte": 3840,
+    "next_validation_byte": 1280,
+    "nll_by_phase": {
+      "fresh_G": {
+        "material": 10.894108079800084,
+        "fixed_byte": 3.422186235644203,
+        "fixed_bits": 3.8936989009556737,
+        "source_filter": 10.426898485562988
+      },
+      "fresh_validation_observation": {
+        "material": 11.77319630204373,
+        "fixed_byte": 3.5792787525640506,
+        "fixed_bits": 4.31214208145695,
+        "source_filter": 10.972949860224157
+      }
+    },
+    "phase_sample_counts": {
+      "fresh_G": 1024,
+      "fresh_validation_observation": 1024
+    },
+    "frozen_external_observer_validation": {
+      "brain_diagonal": 4.378093650657263,
+      "source_diagonal": 4.347967172594264,
+      "brain_affine": 4.404448687974308,
+      "source_affine": 4.371875110706588,
+      "previous_affine": 4.223860157154734,
+      "brain_source": 4.424228758695937,
+      "source_previous": 4.2893455326692855,
+      "brain_current": 4.4516693520347115,
+      "matched_train_byte_frequency": 3.396365874092347,
+      "matched_train_bit_frequency": 4.369994926097514
+    },
+    "restored_future_intervals": 512,
+    "all_physics_rngs_scores_features_readouts_session_observers_exact": true,
+    "observer_only_sham_bytes": 128,
+    "observer_only_sham_exact": true,
+    "primary": true,
+    "archive": "F:\\fly_stream_overflow\\cgb_prediction_observation_20261022\\natural_complete.npz",
+    "sha256": "1f92108dcd7db7cd8aca7de0e9c69e55af2d7ebb7e05f6254823310910ddf19a",
+    "wall_seconds": 583.0845659999977
+  },
+  "energy_closure": {
+    "source_work": 40461.26481584263,
+    "heat_out": 40436.13625953415,
+    "energy_change": 25.128556303073083,
+    "budget_residual": -5.4060365073382854e-09
+  },
+  "external_readout_fit_info": {
+    "brain_diagonal": {
+      "samples": 1024,
+      "features": 8,
+      "parameters": 16,
+      "ridge": 0.01,
+      "iterations": 15,
+      "final_objective": 3.870071446379115,
+      "gradient_inf": 6.037040070248304e-08,
+      "converged": true,
+      "constant_features": [],
+      "source": "training rows only; centering/scaling/prior and coefficients frozen before validation",
+      "trace": [
+        {
+          "stage": "initial",
+          "objective": 3.871904080996983
+        },
+        {
+          "stage": "final",
+          "objective": 3.870071446379115
+        }
+      ]
+    },
+    "source_diagonal": {
+      "samples": 1024,
+      "features": 8,
+      "parameters": 16,
+      "ridge": 0.01,
+      "iterations": 16,
+      "final_objective": 3.8180748657453374,
+      "gradient_inf": 6.92815857938553e-08,
+      "converged": true,
+      "constant_features": [
+        7
+      ],
+      "source": "training rows only; centering/scaling/prior and coefficients frozen before validation",
+      "trace": [
+        {
+          "stage": "initial",
+          "objective": 3.871904080996983
+        },
+        {
+          "stage": "final",
+          "objective": 3.8180748657453374
+        }
+      ]
+    },
+    "brain_affine": {
+      "samples": 1024,
+      "features": 8,
+      "parameters": 72,
+      "ridge": 0.01,
+      "iterations": 24,
+      "final_objective": 3.8426091803441946,
+      "gradient_inf": 2.707731151826271e-08,
+      "converged": true,
+      "constant_features": [],
+      "source": "training rows only; centering/scaling/prior and coefficients frozen before validation",
+      "trace": [
+        {
+          "stage": "initial",
+          "objective": 3.871904080996983
+        },
+        {
+          "stage": "final",
+          "objective": 3.8426091803441946
+        }
+      ]
+    },
+    "source_affine": {
+      "samples": 1024,
+      "features": 8,
+      "parameters": 72,
+      "ridge": 0.01,
+      "iterations": 35,
+      "final_objective": 3.713108758295361,
+      "gradient_inf": 4.345725439398873e-08,
+      "converged": true,
+      "constant_features": [
+        7
+      ],
+      "source": "training rows only; centering/scaling/prior and coefficients frozen before validation",
+      "trace": [
+        {
+          "stage": "initial",
+          "objective": 3.871904080996983
+        },
+        {
+          "stage": "final",
+          "objective": 3.713108758295361
+        }
+      ]
+    },
+    "previous_affine": {
+      "samples": 1024,
+      "features": 8,
+      "parameters": 72,
+      "ridge": 0.01,
+      "iterations": 33,
+      "final_objective": 3.6556936937439177,
+      "gradient_inf": 1.231218578123458e-07,
+      "converged": true,
+      "constant_features": [
+        7
+      ],
+      "source": "training rows only; centering/scaling/prior and coefficients frozen before validation",
+      "trace": [
+        {
+          "stage": "initial",
+          "objective": 3.871904080996983
+        },
+        {
+          "stage": "final",
+          "objective": 3.6556936937439177
+        }
+      ]
+    },
+    "brain_source": {
+      "samples": 1024,
+      "features": 16,
+      "parameters": 136,
+      "ridge": 0.01,
+      "iterations": 39,
+      "final_objective": 3.683764029275775,
+      "gradient_inf": 2.5529896062698263e-08,
+      "converged": true,
+      "constant_features": [
+        15
+      ],
+      "source": "training rows only; centering/scaling/prior and coefficients frozen before validation",
+      "trace": [
+        {
+          "stage": "initial",
+          "objective": 3.871904080996983
+        },
+        {
+          "stage": "final",
+          "objective": 3.683764029275775
+        }
+      ]
+    },
+    "source_previous": {
+      "samples": 1024,
+      "features": 16,
+      "parameters": 136,
+      "ridge": 0.01,
+      "iterations": 52,
+      "final_objective": 3.580607085448796,
+      "gradient_inf": 5.080879824747968e-08,
+      "converged": true,
+      "constant_features": [
+        7,
+        15
+      ],
+      "source": "training rows only; centering/scaling/prior and coefficients frozen before validation",
+      "trace": [
+        {
+          "stage": "initial",
+          "objective": 3.871904080996983
+        },
+        {
+          "stage": "final",
+          "objective": 3.580607085448796
+        }
+      ]
+    },
+    "brain_current": {
+      "samples": 1024,
+      "features": 16,
+      "parameters": 136,
+      "ridge": 0.01,
+      "iterations": 41,
+      "final_objective": 3.8148199418617303,
+      "gradient_inf": 1.1490450691755902e-07,
+      "converged": true,
+      "constant_features": [],
+      "source": "training rows only; centering/scaling/prior and coefficients frozen before validation",
+      "trace": [
+        {
+          "stage": "initial",
+          "objective": 3.871904080996983
+        },
+        {
+          "stage": "final",
+          "objective": 3.8148199418617303
+        }
+      ]
+    }
+  },
+  "body_optimizer_updates": 0,
+  "readouts_frozen_before_validation": true,
+  "full_metadata_resume": {
+    "passed": true,
+    "actual_diagnostic_replay_bytes": 512,
+    "all_physics_three_rngs_session_observers_frozen_readouts_frequencies_aggregates_lastbyte_exact": true,
+    "source": "All reference arrays and counters loaded only from validation_mid metadata",
+    "main_candidate_unchanged": true
+  },
+  "regression": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "tests": "277",
+    "time": "27.125",
+    "timestamp": "2026-10-22T12:03:34.783365+08:00",
+    "hostname": "llm"
+  },
+  "candidate": {
+    "archive": "F:\\fly_stream_overflow\\cgb_prediction_observation_20261022\\natural_complete.npz",
+    "sha256": "1f92108dcd7db7cd8aca7de0e9c69e55af2d7ebb7e05f6254823310910ddf19a",
+    "time_ms": 22272,
+    "nodes": 55,
+    "next_train_byte": 3840,
+    "next_validation_byte": 1280,
+    "full_state": true,
+    "original_three_rngs": true,
+    "observers_preserved": true,
+    "dt_ms": 2.0,
+    "external_interval_ms": 4.0,
+    "material_scheme": "symmetric",
+    "field_scheme": "symmetric_ou",
+    "domain_sampling": "marginal",
+    "schema": 3,
+    "experience_protocol": {
+      "intervals": 2048,
+      "actual_text_exposures": 2048,
+      "replay_exposures": 0,
+      "fresh_train_exposures": 1024,
+      "fresh_validation_exposures": 1024,
+      "next_train_byte": 3840,
+      "next_validation_byte": 1280
+    },
+    "last_actual_byte": 32,
+    "frozen_readouts_role": "external observation metadata only; never installed as brain learning",
+    "selection": "The same physically unmodified natural individual; no selection by calibration score or morphology; not a champion"
+  },
+  "next_native_port_interface_implemented": false,
+  "scope": "Frozen observation comparison on an independent split. Large raw readout mismatch and no extra prediction delivered by tested port projections; not a full-brain impossibility or installed predictive circuit."
+}

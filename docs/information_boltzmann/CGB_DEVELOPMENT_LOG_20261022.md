@@ -225,3 +225,16 @@ git worktree add -b codex/cgb-revisit-20261022 D:/cgb-revisit-20261022 cgb-befor
 - 自然候选natural_complete.npz，SHA8e359c1da68287d28869b67c59fbca99f0887c1da256d2becb773197d0805029；下一新train2816/validation256。15全档与条件副本保留，不按53域或NLL择优。
 - /growth新增共享历史载体/当前r/重建及真实128回访评分，已核对natural和erase历史24者，最后返回natural；只读viewer3956→8164，原其他页面保留。截图F:/fly_stream_overflow/cgb_trace_fate_20261022/growth_view.png。
 - Git阶段cgb-trace-fate-20261022，完整源码/实际流/逐事件/15全档/共同父档分析/截图及增量bundle备份F:/fly_stream_overflow/cgb_trace_fate_backup_20261022/，以恢复与哈希manifest为准。目标继续，无子agent/skill/关机；本段不以因果交付冒充完整有用主动生命。
+
+
+## 2026-10-22 预测观测歧义与原生端口推导
+
+- 上段b423650为实际进展：父档实际52域/14080ms/8e359c1d…805029已实查后继续；无重复旧审批。readout_observation.py是单向外部仪器，不更换身体/存储/三RNG/物理学习。
+- 实施前CGB_PREDICTION_OBSERVATION_DERIVATION_20261022.md：从概率恒等式区分环境条件熵、bit分解、表征损失及观测不匹配；当前q→bit约定不是已装内在预测。冻结8个16/72/136参数观察器，ridge.01，只在train[2816,3840)1024新字节拟合，再在validation[256,1280)1024新字节验证，原生学习持续，4ms/byte、dt2ms。起始上字节取实际上一回访记录，不用train相邻索引伪造。
+- 原生52→55域，新增3/回收0，8B+55域+58内部桥+1边界=122。2050载体出生/2053拆解，原62载体1存活；仍不能据此判组织记忆。源功40461.264816、热40436.136260、ΔU25.128556，最大账误差8.24e-9，未改阈值。
+- 新验证raw11.773196、原频率3.579279；外部脑端口对角4.378094、源对角4.347967、上字节仿射4.223860，同预算bit频率4.369995/字节频率3.396366。其余观察器全部报告，没有按分数选择新个体或将系数装回主体。8拟合15–52迭代/总255，最大梯度1.24e-7；身体优化器0而原生局部反应一直更新。
+- 277项CGB检查/27.15s，前128字节测量sham逐位相同，拟合前后全物理不变，验证后512字节全部特征/评分/物理/三RNG/会话/观察器/身份逐位相同。新增verify_observation_resume.py仅从validation_mid全元数据再回放512，频率/累计指标/上字节/冻结读出和主候选全一致；诊断重放不计新暴露。
+- CGB_NATIVE_PREDICTIVE_PORT_DERIVATION_20261022.md推导原生成元中性端口电流N_B与感觉匹配电流−N_B；出生中性一阶矩0而噪声非0，叶回收精确计入，原固定载体反馈负导纳来自同一亲和。接口仍未实现，下一步要接原生反向流/实际感觉，而非加外部预测头。
+- 主文档概览将阶段流水合并为当前实现、证据与下一接入，历史各结果与Git来源保留。当前自然natural_complete.npz，SHA1f92108dcd7db7cd8aca7de0e9c69e55af2d7ebb7e05f6254823310910ddf19a，22272ms，下一新train3840/validation1280；保留5全档。
+- /growth已核对55域、raw与外部校准分开、1024独立split及原62载体1存活；只读viewer8164→22136，原其他页面保留，截图F:/fly_stream_overflow/cgb_prediction_observation_20261022/growth_view.png。
+- Git阶段cgb-prediction-observation-20261022，代码/原记录/冻结仪器/5全档/独立恢复/截图和增量bundle备份F:/fly_stream_overflow/cgb_prediction_observation_backup_20261022/，以哈希/恢复manifest为准。目标继续，未启动旧妈妈训练、子agent/skill或关机。

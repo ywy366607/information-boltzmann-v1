@@ -54,7 +54,10 @@ def main(run):
                     retained_trace=current['original_trace_carriers_retained'] if current else sum(x['trace'] for x in cohort.values()),
                     retained_with_trace_now=current['original_trace_carriers_current_trace'] if current else sum(x['trace'] for x in cohort.values()),
                     rebuilt=current['rebuilt_old_positions'] if current else 0,
-                    phase=phase,assessment=report['arms'][label]['nll_by_phase'].get(phase),samples=128 if phase else 0)
+                    phase=phase,assessment=report['arms'][label]['nll_by_phase'].get(phase),
+                    samples=report['arms'][label].get('phase_sample_counts',{}).get(phase,128) if phase else 0)
+                if report.get('protocol_kind')=='readout_observation' and stage=='complete':
+                    frames[-1]['memory']['frozen_readout_validation']=report['arms'][label]['frozen_external_observer_validation']
                 if shared:
                     fixed=next(row['fate'] for row in shared['arms'][label]['windows'] if row['time_ms']==model.t)
                     frames[-1]['memory'].update(total_carriers=fixed['source_carriers'],
@@ -86,6 +89,13 @@ def main(run):
                '它们是诊断对照，未经修改的自然支始终是主线，不挑域数或NLL的赢家。'
                '原载体存活、痕迹当前值和旧位置重建分别计数；当前未证明语义记忆或预测收益。')
         notes+=' 各条件按同一未干预父档的载体群计数；当前r值也可能经历重写，不等于原内容连续留存。'
+    if report.get('protocol_kind')=='readout_observation':
+        title='原生状态、观测概率与真实生成'
+        notes=('自然支先接收1024新训练字节，仅用其输入前状态拟合8种外部观察器；'
+               '随后冻结观察器，接收独立split的1024新验证字节，身体原生学习一直继续。'
+               'raw端口NLL保留；校准分数只属于外部仪器，不是已安装的脑内预测回路。'
+               '本轮未交付超过源/频率参照的端口预测收益；下一步从原电荷连续性推导体内反向流。'
+               '只回放真实三份材料状态，无插值造型或按分数挑选的个体。')
     atomic_json(run/'mobile_scene.json',dict(box_size=model.params.box_size,default=primary,
         default_frame=2,birth_origin_count=origin_count,arms=arms,read_only=True,source=str(run),
         title=title,work_label='本段外界源功',heat_label='本段净热流出 Q',
