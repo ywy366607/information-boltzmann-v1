@@ -106,6 +106,12 @@ def main(run):
                '同状态量子偏离已交付到原反应亲和，但匹配值尚不能有效预测未来感觉：容量加权风险892.354，当前感觉持久性3.610。'
                '有限驱动消耗使局部写入门槛升高，恢复使其降低；完整V2时序选择性仍待统一。'
                '本段55域保持，新增付费边界接触2个；仅回放实际存档。raw NLL、感觉风险和功热分别计量。')
+    if report.get('protocol_kind')=='native_timing':
+        title='历史次序、慢结构与未来交换'
+        notes=('主线实际接收32个连续新OWT字节；16个诊断分支比较两段输入次序，并保留相同64ms尾段。'
+               '原过程痕迹配置差异均值27.50，同次序不同噪声为27.33，当前未验到选择性时序保持。'
+               '全部快速电荷清零的付费诊断副本，在共同未来浴下仍可交付不同交换；这不单独归于痕迹或预测学习。'
+               '自然主线未经制备，实际完整保存到23424ms；图中仅有真实存档。下一步沿微观相互作用与保留的历史相关性推导选择过程。')
     atomic_json(run/'mobile_scene.json',dict(box_size=model.params.box_size,default=primary,
         default_frame=2,birth_origin_count=origin_count,arms=arms,read_only=True,source=str(run),
         title=title,work_label='本段外界源功',heat_label='本段净热流出 Q',

@@ -1,0 +1,579 @@
+{
+  "passed": true,
+  "source_report": "F:\\fly_stream_overflow\\cgb_native_timing_20261022\\report.json",
+  "source_report_sha256": "6e681736778e6c13fdff9662f5deeb835849f2ce161b224dd705394768553598",
+  "sources": {
+    "parent_archive": "F:\\fly_stream_overflow\\cgb_native_port_20261022\\natural_complete.npz",
+    "parent_sha256": "9cd3bdb7bd3d1349871b4968378d82950fac8234e64b6151575a700020b4867f",
+    "corpus": {
+      "source": "openwebtext",
+      "revision": "433fe0f44ed7894fea29c08b3202aa348ccc6369",
+      "split_rule": "NFC_document_sha256_mod100_98_1_1",
+      "tokenizer": {
+        "type": "utf8_bytes",
+        "offset": 4,
+        "special_tokens": [
+          "<pad>",
+          "<bos>",
+          "<eos>",
+          "<unk>"
+        ]
+      },
+      "manifest_sha256": "3614c380d4c72688ac8ccde42f32ea0655d16bec1ba0874a924fd777af904d2d",
+      "files_sha256": {
+        "train.npy": "2f227239bc63b89daf31956701d243a93f9dd46671702fff03763b33dc6db4fb",
+        "validation.npy": "60d41d3fdda8c1718ad1735693eda0dae2b23a0032c5e04a29aac9d0c6d35d8c"
+      }
+    },
+    "primary_selection": [
+      4096,
+      4128
+    ],
+    "diagnostic_future_selection": [
+      4128,
+      4136
+    ],
+    "future_noise_offsets": [
+      0,
+      1000000,
+      2000000,
+      3000000
+    ]
+  },
+  "natural": {
+    "time_ms": 23424.0,
+    "nodes": 55,
+    "free_material": 6,
+    "internal_bridges": 58,
+    "boundary_contacts": 3,
+    "domain_births": 0,
+    "domain_deaths": 0,
+    "carrier_births": 29,
+    "carrier_deaths": 29,
+    "original_carriers_retained": 45,
+    "rebuilt_old_positions": 1,
+    "source_work": 546.3413555862207,
+    "heat_out": 568.0100555826502,
+    "energy_change": -21.66869999680995,
+    "maximum_balance_error": 8.053007150010671e-09,
+    "next_train_byte": 4128,
+    "next_validation_byte": 1280,
+    "nll_by_phase": {
+      "temporal_order": {
+        "material": 10.180176725394176,
+        "fixed_byte": 3.365244631272628,
+        "fixed_bits": 3.7222792731111993,
+        "source_filter": 10.067283848434197
+      }
+    },
+    "phase_sample_counts": {
+      "temporal_order": 32
+    },
+    "restored_future_intervals": 16,
+    "observer_only_sham_bytes": 32,
+    "primary": true,
+    "archive": "F:\\fly_stream_overflow\\cgb_native_timing_20261022\\natural_complete.npz",
+    "sha256": "57b50f0b6dc155ff0af639938a938c85781c1ea5a66bb7033438a6c8db945134"
+  },
+  "energy_closure": {
+    "source_work": 546.3413555862207,
+    "heat_out": 568.0100555826502,
+    "energy_change": -21.66869999680995,
+    "budget_residual": -3.8039615901652724e-10
+  },
+  "regression": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "tests": "288",
+    "time": "31.620",
+    "timestamp": "2026-10-22T12:59:45.805756+08:00",
+    "hostname": "llm"
+  },
+  "candidate": {
+    "archive": "F:\\fly_stream_overflow\\cgb_native_timing_20261022\\natural_complete.npz",
+    "sha256": "57b50f0b6dc155ff0af639938a938c85781c1ea5a66bb7033438a6c8db945134",
+    "time_ms": 23424.0,
+    "nodes": 55,
+    "next_train_byte": 4128,
+    "next_validation_byte": 1280,
+    "last_actual_byte": 101,
+    "full_state": true,
+    "original_three_rngs": true,
+    "observers_preserved": true,
+    "dt_ms": 2.0,
+    "external_interval_ms": 4.0,
+    "material_scheme": "symmetric",
+    "field_scheme": "symmetric_ou",
+    "domain_sampling": "marginal",
+    "schema": 3,
+    "experience_protocol": {
+      "intervals": 32,
+      "actual_text_exposures": 32,
+      "fresh_primary_exposures": 32,
+      "next_train_byte": 4128,
+      "next_validation_byte": 1280
+    },
+    "selection": "Preselected unmodified family-0 native ABT, not a score/morphology winner or champion",
+    "inherited_external_observation_preserved": true
+  },
+  "diagnostic_arms": 16,
+  "complete_archives": 83,
+  "matched_future": {
+    "passed": true,
+    "arms": 16,
+    "actual_intervals_per_arm": 8,
+    "full_restore_exact": true,
+    "observer_only_sham_exact": true,
+    "main_candidate_unchanged": true
+  },
+  "temporal_aggregate": {
+    "native": {
+      "after_shared_64ms_tail": {
+        "trace_configuration_l1": {
+          "values": [
+            25,
+            33,
+            31,
+            21
+          ],
+          "mean": 27.5
+        },
+        "support_configuration_l1": {
+          "values": [
+            21,
+            18,
+            20,
+            17
+          ],
+          "mean": 19.0
+        },
+        "charged_l1": {
+          "values": [
+            11.0,
+            9.0,
+            10.0,
+            10.0
+          ],
+          "mean": 10.0
+        },
+        "world_voltage_l2": {
+          "values": [
+            2.296105179332698,
+            3.3599397832412157,
+            3.7045028504336286,
+            3.3919662818121816
+          ],
+          "mean": 3.188128523704931
+        },
+        "contact_pattern_symmetric_difference": {
+          "values": [
+            45,
+            41,
+            51,
+            43
+          ],
+          "mean": 45.0
+        },
+        "boundary_conductance_l1": {
+          "values": [
+            0.09,
+            0.03,
+            0.06,
+            0.09
+          ],
+          "mean": 0.0675
+        }
+      },
+      "after_paid_charge_preparation": {
+        "trace_configuration_l1": {
+          "values": [
+            25,
+            33,
+            31,
+            21
+          ],
+          "mean": 27.5
+        },
+        "support_configuration_l1": {
+          "values": [
+            21,
+            18,
+            20,
+            17
+          ],
+          "mean": 19.0
+        },
+        "charged_l1": {
+          "values": [
+            11.0,
+            9.0,
+            10.0,
+            10.0
+          ],
+          "mean": 10.0
+        },
+        "world_voltage_l2": {
+          "values": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mean": 0.0
+        },
+        "contact_pattern_symmetric_difference": {
+          "values": [
+            45,
+            41,
+            51,
+            43
+          ],
+          "mean": 45.0
+        },
+        "boundary_conductance_l1": {
+          "values": [
+            0.09,
+            0.03,
+            0.06,
+            0.09
+          ],
+          "mean": 0.0675
+        }
+      },
+      "common_bath_future_32ms": {
+        "trace_configuration_l1": {
+          "values": [
+            31,
+            33,
+            30,
+            30
+          ],
+          "mean": 31.0
+        },
+        "support_configuration_l1": {
+          "values": [
+            23,
+            24,
+            17,
+            19
+          ],
+          "mean": 20.75
+        },
+        "charged_l1": {
+          "values": [
+            12.0,
+            5.0,
+            10.0,
+            10.0
+          ],
+          "mean": 9.25
+        },
+        "world_voltage_l2": {
+          "values": [
+            2.652343300010718,
+            1.3253979363136945,
+            2.0427134197786336,
+            1.609635745091111
+          ],
+          "mean": 1.9075226002985395
+        },
+        "contact_pattern_symmetric_difference": {
+          "values": [
+            54,
+            50,
+            52,
+            49
+          ],
+          "mean": 51.25
+        },
+        "boundary_conductance_l1": {
+          "values": [
+            0.09,
+            0.03,
+            0.09,
+            0.06
+          ],
+          "mean": 0.0675
+        }
+      }
+    },
+    "closed": {
+      "after_shared_64ms_tail": {
+        "trace_configuration_l1": {
+          "values": [
+            32,
+            19,
+            24,
+            20
+          ],
+          "mean": 23.75
+        },
+        "support_configuration_l1": {
+          "values": [
+            19,
+            14,
+            14,
+            12
+          ],
+          "mean": 14.75
+        },
+        "charged_l1": {
+          "values": [
+            8.0,
+            12.0,
+            9.0,
+            7.0
+          ],
+          "mean": 9.0
+        },
+        "world_voltage_l2": {
+          "values": [
+            2.9980993127494986,
+            3.102285990300966,
+            3.715629492352774,
+            1.8726790177306532
+          ],
+          "mean": 2.922173453283473
+        },
+        "contact_pattern_symmetric_difference": {
+          "values": [
+            38,
+            39,
+            45,
+            43
+          ],
+          "mean": 41.25
+        },
+        "boundary_conductance_l1": {
+          "values": [
+            0.0,
+            0.03,
+            0.12,
+            0.03
+          ],
+          "mean": 0.045
+        }
+      },
+      "after_paid_charge_preparation": {
+        "trace_configuration_l1": {
+          "values": [
+            32,
+            19,
+            24,
+            20
+          ],
+          "mean": 23.75
+        },
+        "support_configuration_l1": {
+          "values": [
+            19,
+            14,
+            14,
+            12
+          ],
+          "mean": 14.75
+        },
+        "charged_l1": {
+          "values": [
+            8.0,
+            12.0,
+            9.0,
+            7.0
+          ],
+          "mean": 9.0
+        },
+        "world_voltage_l2": {
+          "values": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mean": 0.0
+        },
+        "contact_pattern_symmetric_difference": {
+          "values": [
+            38,
+            39,
+            45,
+            43
+          ],
+          "mean": 41.25
+        },
+        "boundary_conductance_l1": {
+          "values": [
+            0.0,
+            0.03,
+            0.12,
+            0.03
+          ],
+          "mean": 0.045
+        }
+      },
+      "common_bath_future_32ms": {
+        "trace_configuration_l1": {
+          "values": [
+            23,
+            21,
+            25,
+            23
+          ],
+          "mean": 23.0
+        },
+        "support_configuration_l1": {
+          "values": [
+            20,
+            12,
+            17,
+            11
+          ],
+          "mean": 15.0
+        },
+        "charged_l1": {
+          "values": [
+            6.0,
+            10.0,
+            7.0,
+            7.0
+          ],
+          "mean": 7.5
+        },
+        "world_voltage_l2": {
+          "values": [
+            2.7223305868939542,
+            3.923561412253634,
+            2.9833673922311625,
+            2.1177359398374054
+          ],
+          "mean": 2.936748832804039
+        },
+        "contact_pattern_symmetric_difference": {
+          "values": [
+            42,
+            43,
+            50,
+            49
+          ],
+          "mean": 46.0
+        },
+        "boundary_conductance_l1": {
+          "values": [
+            0.0,
+            0.06,
+            0.06,
+            0.03
+          ],
+          "mean": 0.0375
+        }
+      }
+    }
+  },
+  "same_order_noise_reference": {
+    "native": {
+      "trace_configuration_l1": {
+        "same_order_different_noise_values": [
+          26,
+          26,
+          24,
+          28,
+          34,
+          24,
+          32,
+          32,
+          30,
+          26,
+          22,
+          24
+        ],
+        "same_order_different_noise_mean": 27.333333333333332,
+        "swapped_order_shared_initial_rng_values": [
+          25,
+          33,
+          31,
+          21
+        ],
+        "swapped_order_shared_initial_rng_mean": 27.5
+      },
+      "support_configuration_l1": {
+        "same_order_different_noise_values": [
+          16,
+          23,
+          23,
+          25,
+          25,
+          24,
+          19,
+          18,
+          23,
+          15,
+          14,
+          17
+        ],
+        "same_order_different_noise_mean": 20.166666666666668,
+        "swapped_order_shared_initial_rng_values": [
+          21,
+          18,
+          20,
+          17
+        ],
+        "swapped_order_shared_initial_rng_mean": 19.0
+      }
+    },
+    "closed": {
+      "trace_configuration_l1": {
+        "same_order_different_noise_values": [
+          32,
+          30,
+          29,
+          26,
+          23,
+          23,
+          25,
+          26,
+          31,
+          21,
+          32,
+          31
+        ],
+        "same_order_different_noise_mean": 27.416666666666668,
+        "swapped_order_shared_initial_rng_values": [
+          32,
+          19,
+          24,
+          20
+        ],
+        "swapped_order_shared_initial_rng_mean": 23.75
+      },
+      "support_configuration_l1": {
+        "same_order_different_noise_values": [
+          22,
+          25,
+          19,
+          19,
+          19,
+          22,
+          15,
+          16,
+          16,
+          15,
+          17,
+          20
+        ],
+        "same_order_different_noise_mean": 18.75,
+        "swapped_order_shared_initial_rng_values": [
+          19,
+          14,
+          14,
+          12
+        ],
+        "swapped_order_shared_initial_rng_mean": 14.75
+      }
+    }
+  },
+  "selective_timing_retention_delivered": false,
+  "full_v2_timing_migrated": false,
+  "body_optimizer_updates": 0,
+  "scope": "Native history changes retained material and future exchange, but observed order differences are comparable to same-order noise; no selective timing-learning claim"
+}
