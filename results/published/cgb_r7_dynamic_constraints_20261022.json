@@ -1,0 +1,393 @@
+{
+  "schema_version": 1,
+  "stage": "inverse_development_candidate_constraint",
+  "date": "2026-10-22",
+  "source_repository": "https://github.com/vkleist/Filo2",
+  "source_commit": "872d0593eaaac2496ee85b64e7ef92c78193c7f1",
+  "source_hashes_verified": true,
+  "observation_groups": {
+    "filopodium/Atg6_mutant": {
+      "workbooks": 3,
+      "records": 188,
+      "duration_conflicts": 0,
+      "invalid_rows": 0,
+      "incident_records": 151,
+      "incident_observed_endings": 140,
+      "incident_right_censored": 11
+    },
+    "filopodium/Atg6_rescue": {
+      "workbooks": 3,
+      "records": 253,
+      "duration_conflicts": 2,
+      "invalid_rows": 2,
+      "incident_records": 238,
+      "incident_observed_endings": 233,
+      "incident_right_censored": 5
+    },
+    "filopodium/Atg7_mutant": {
+      "workbooks": 3,
+      "records": 226,
+      "duration_conflicts": 0,
+      "invalid_rows": 0,
+      "incident_records": 201,
+      "incident_observed_endings": 179,
+      "incident_right_censored": 22
+    },
+    "bulb/Atg6_mutant": {
+      "workbooks": 5,
+      "records": 17,
+      "duration_conflicts": 0,
+      "invalid_rows": 0,
+      "incident_records": 3,
+      "incident_observed_endings": 2,
+      "incident_right_censored": 1
+    },
+    "bulb/Atg6_rescue": {
+      "workbooks": 7,
+      "records": 39,
+      "duration_conflicts": 12,
+      "invalid_rows": 0,
+      "incident_records": 37,
+      "incident_observed_endings": 32,
+      "incident_right_censored": 5
+    },
+    "bulb/Atg7_mutant": {
+      "workbooks": 6,
+      "records": 19,
+      "duration_conflicts": 0,
+      "invalid_rows": 0,
+      "incident_records": 4,
+      "incident_observed_endings": 1,
+      "incident_right_censored": 3
+    },
+    "bulb/Control": {
+      "workbooks": 4,
+      "records": 9,
+      "duration_conflicts": 0,
+      "invalid_rows": 0,
+      "incident_records": 4,
+      "incident_observed_endings": 3,
+      "incident_right_censored": 1
+    },
+    "filopodium/Control": {
+      "workbooks": 3,
+      "records": 242,
+      "duration_conflicts": 0,
+      "invalid_rows": 0,
+      "incident_records": 221,
+      "incident_observed_endings": 197,
+      "incident_right_censored": 24
+    }
+  },
+  "original_bulb_fit_admitted": false,
+  "amendment": "CGB_R7_DYNAMIC_AMENDMENT_20261022.md",
+  "split": {
+    "source_commit": "872d0593eaaac2496ee85b64e7ef92c78193c7f1",
+    "observations_sha256": "b6fa93b7f330202ce6e7565c60581964b2aa08523ef833c83bc249b5f4a4bfa3",
+    "train": [
+      {
+        "file": "Data/Files/Control/Control_P60_GC1.xlsx",
+        "sha256": "2fe44a7e1363a4f42a574c84bf5c206602fdff84fc487c5e4aa318a425f9a7ee"
+      },
+      {
+        "file": "Data/Files/Control/Control_P60_GC2.xlsx",
+        "sha256": "752ab0bec34c5be8ad5a663e4ca8f8efbb35566cddb9c07575548349db9c7808"
+      }
+    ],
+    "test": [
+      {
+        "file": "Data/Files/Control/Control_P60_GC3.xlsx",
+        "sha256": "a808ac43aeb15c24df770410904cccf5e88bc6758e0c91e0efa2ff55164425e7"
+      }
+    ],
+    "sampling_interval_minutes": 1.0,
+    "model_selection": "None between families; all fits use CG1/CG2 only",
+    "prereg_sha256": "091601114e65b4b9930df5c7fa3626cbf172d9261e16d3b9274d6e73eb77f484"
+  },
+  "observation_rule": "Incident tracks only for survival; first-frame prevalent tracks kept in counts. End event S(d)-S(d+1); right censor S(d); d=last-first.",
+  "observational_models": {
+    "single": {
+      "parameters": {
+        "rates_per_minute": [
+          0.26324804711449884
+        ],
+        "weights_at_first_observation": [
+          1.0
+        ],
+        "analytic_discrete_mle": true,
+        "identified_within_family": true
+      },
+      "scores": {
+        "train": {
+          "incident_tracks": 149,
+          "observed_endings": 131,
+          "right_censored": 18,
+          "total_nll": 306.2178754000731,
+          "mean_nll": 2.0551535261749874
+        },
+        "test": {
+          "incident_tracks": 72,
+          "observed_endings": 66,
+          "right_censored": 6,
+          "total_nll": 142.38934602805685,
+          "mean_nll": 1.977629805945234
+        }
+      },
+      "conditional_stationary_mean_count": 5.455686375986544
+    },
+    "mixture": {
+      "parameters": {
+        "rates_per_minute": [
+          0.06107136733702131,
+          0.4790370771659986
+        ],
+        "weights_at_first_observation": [
+          0.16304520044215665,
+          0.8369547995578434
+        ],
+        "optimizer_parameters": [
+          -2.795712142329795,
+          -0.7359772792098711,
+          -1.6357426004220996
+        ],
+        "parameter_boundary_hits": [],
+        "optimization_success": true,
+        "gradient_inf": 3.184853556124213e-09,
+        "extra_objective_improvement": 0.0,
+        "multistart_objective_range": [
+          1.9241628465366762,
+          1.9241628465366778
+        ],
+        "microscopic_parameters_identified": false
+      },
+      "scores": {
+        "train": {
+          "incident_tracks": 149,
+          "observed_endings": 131,
+          "right_censored": 18,
+          "total_nll": 286.70026413396477,
+          "mean_nll": 1.9241628465366762
+        },
+        "test": {
+          "incident_tracks": 72,
+          "observed_endings": 66,
+          "right_censored": 6,
+          "total_nll": 138.4031327731849,
+          "mean_nll": 1.9222657329609012
+        }
+      },
+      "conditional_stationary_mean_count": 6.251715628156969
+    }
+  },
+  "observed_control_cones": [
+    {
+      "file": "Data/Files/Control/Control_P60_GC1.xlsx",
+      "record_count": 69,
+      "initial_preexisting": 6,
+      "incident_records": 63,
+      "incident_observed_endings": 51,
+      "incident_right_censored": 12,
+      "mean_count": 6.816666666666666,
+      "fano": 1.2542379788101057,
+      "zero_frame_fraction": 0.0
+    },
+    {
+      "file": "Data/Files/Control/Control_P60_GC2.xlsx",
+      "record_count": 95,
+      "initial_preexisting": 9,
+      "incident_records": 86,
+      "incident_observed_endings": 80,
+      "incident_right_censored": 6,
+      "mean_count": 8.383333333333333,
+      "fano": 0.3264082173624917,
+      "zero_frame_fraction": 0.0
+    },
+    {
+      "file": "Data/Files/Control/Control_P60_GC3.xlsx",
+      "record_count": 78,
+      "initial_preexisting": 6,
+      "incident_records": 72,
+      "incident_observed_endings": 66,
+      "incident_right_censored": 6,
+      "mean_count": 6.483333333333333,
+      "fano": 0.28530419880034275,
+      "zero_frame_fraction": 0.0
+    }
+  ],
+  "native_generator_bridge": {
+    "selected_support": 16,
+    "native_parameter_source": "F:\\fly_stream_overflow\\cgb_polarized_storage_repaired_20261022\\reference_complete.npz",
+    "parent_sha256": "4ccfb7b4a2aa0f30e2d7c939a586752837aa8188408fcc16de5f875bdf5c30b5",
+    "parent_unchanged": true,
+    "native_source_sha256": "fabac4b9799b67b2f9744493b99c31ab01104e5bf4c59ea9233d354e7ef40164",
+    "selected_native_parameters": {
+      "trace_energy": 2.0,
+      "capture_coupling": 2.0,
+      "bound_energy": -2.0,
+      "binding_rate": 0.05,
+      "recovery_rate": 0.02
+    },
+    "evidence_level": "Exploratory conditional native-generator observation bridge on real R7 data; not a full biological validation",
+    "rows": [
+      {
+        "total_support": 1,
+        "actual_native_rates_per_reference_ms": {
+          "binding": 0.049100689501895424,
+          "unbinding": 0.0008993104981045778,
+          "disappearance_unbound": 0.017615941559557646,
+          "disappearance_bound": 0.01
+        },
+        "transient_generator": [
+          [
+            -0.06671663106145306,
+            0.049100689501895424
+          ],
+          [
+            0.0008993104981045778,
+            -0.010899310498104577
+          ]
+        ],
+        "clock_reference_ms_per_minute": 22.26188597003258,
+        "initially_unbound_probability": 1.0,
+        "optimizer_success": true,
+        "train_nll": 2.013541285988079,
+        "entry_distribution_on_boundary": true,
+        "test_nll": 1.9169965732589942,
+        "test_tracks": 72
+      },
+      {
+        "total_support": 2,
+        "actual_native_rates_per_reference_ms": {
+          "binding": 0.049546264257784314,
+          "unbinding": 0.0004537357422156874,
+          "disappearance_unbound": 0.017615941559557646,
+          "disappearance_bound": 0.01
+        },
+        "transient_generator": [
+          [
+            -0.06716220581734196,
+            0.049546264257784314
+          ],
+          [
+            0.0004537357422156874,
+            -0.010453735742215687
+          ]
+        ],
+        "clock_reference_ms_per_minute": 22.363982422798554,
+        "initially_unbound_probability": 1.0,
+        "optimizer_success": true,
+        "train_nll": 2.0133293454803063,
+        "entry_distribution_on_boundary": true,
+        "test_nll": 1.9165116850783466,
+        "test_tracks": 72
+      },
+      {
+        "total_support": 4,
+        "actual_native_rates_per_reference_ms": {
+          "binding": 0.049772098056316466,
+          "unbinding": 0.00022790194368354014,
+          "disappearance_unbound": 0.017615941559557646,
+          "disappearance_bound": 0.01
+        },
+        "transient_generator": [
+          [
+            -0.06738803961587411,
+            0.049772098056316466
+          ],
+          [
+            0.00022790194368354014,
+            -0.01022790194368354
+          ]
+        ],
+        "clock_reference_ms_per_minute": 22.416135045830806,
+        "initially_unbound_probability": 1.0,
+        "optimizer_success": true,
+        "train_nll": 2.0132231959996556,
+        "entry_distribution_on_boundary": true,
+        "test_nll": 1.9162664265955316,
+        "test_tracks": 72
+      },
+      {
+        "total_support": 8,
+        "actual_native_rates_per_reference_ms": {
+          "binding": 0.04988578873847331,
+          "unbinding": 0.00011421126152669491,
+          "disappearance_unbound": 0.017615941559557646,
+          "disappearance_bound": 0.01
+        },
+        "transient_generator": [
+          [
+            -0.06750173029803096,
+            0.04988578873847331
+          ],
+          [
+            0.00011421126152669491,
+            -0.010114211261526696
+          ]
+        ],
+        "clock_reference_ms_per_minute": 22.442494839831674,
+        "initially_unbound_probability": 1.0,
+        "optimizer_success": true,
+        "train_nll": 2.0131700815226603,
+        "entry_distribution_on_boundary": true,
+        "test_nll": 1.9161430830053021,
+        "test_tracks": 72
+      },
+      {
+        "total_support": 16,
+        "actual_native_rates_per_reference_ms": {
+          "binding": 0.04994282907360039,
+          "unbinding": 5.717092639961493e-05,
+          "disappearance_unbound": 0.017615941559557646,
+          "disappearance_bound": 0.01
+        },
+        "transient_generator": [
+          [
+            -0.06755877063315804,
+            0.04994282907360039
+          ],
+          [
+            5.717092639961493e-05,
+            -0.010057170926399616
+          ]
+        ],
+        "clock_reference_ms_per_minute": 22.455746802909324,
+        "initially_unbound_probability": 1.0,
+        "optimizer_success": true,
+        "train_nll": 2.0131435150085912,
+        "entry_distribution_on_boundary": true,
+        "test_nll": 1.9160812295877148,
+        "test_tracks": 72
+      }
+    ]
+  },
+  "independent_verification": {
+    "passed": true,
+    "author_mat_nonbulb_rows_exact": {
+      "Control": 236,
+      "Atg6_mutant": 176,
+      "Atg7_mutant": 216
+    },
+    "locked_model_scores_reproduced": true,
+    "native_rate_projections_exact": true,
+    "normalized_absorbing_probability": true,
+    "parent_archive_sha256_verified": true,
+    "author_code_executed": false,
+    "physical_individual_advanced": false
+  },
+  "numerical_tests": {
+    "passed": 4,
+    "junit": "F:/fly_stream_overflow/cgb_r7_observation_tests_20261022.xml"
+  },
+  "biological_validation_complete": false,
+  "new_physical_mechanism_added": false,
+  "physical_individual_advanced": false,
+  "interpretation": "Existing support exchange is worth joint testing; mapping trace disappearance to visible filopodium disappearance remains a hypothesis. CG3 native comparison is exploratory after observational fits.",
+  "next_constraint": "Derive visible paid structure/contact presence from the same generator; jointly test appearance, survival, counts and spatial contact against real R7 dynamics and existing maleCNS structure.",
+  "artifacts": {
+    "cgb_inverse_sources_20261022/Filo2": "F:\\fly_stream_overflow\\cgb_inverse_sources_20261022\\Filo2",
+    "cgb_r7_observation_audit_20261022": "F:\\fly_stream_overflow\\cgb_r7_observation_audit_20261022",
+    "cgb_r7_lifetime_constraints_20261022": "F:\\fly_stream_overflow\\cgb_r7_lifetime_constraints_20261022",
+    "cgb_r7_generator_bridge_20261022": "F:\\fly_stream_overflow\\cgb_r7_generator_bridge_20261022"
+  }
+}
