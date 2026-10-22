@@ -44,6 +44,10 @@ def main(run):
                 source_work=model.work_in-source_work,heat_out=model.heat_out-source_heat,port_nodes=model.port_nodes.tolist(),
                 morphology=dict(bridges=len(model.pre),branch_nodes=int(np.sum(degree>=3)),seed_component_nodes=len(seen)),
                 boundary_contacts=int(model.port_installed.sum()),archive_stage=stage))
+            if report.get('protocol_kind')=='native_port':
+                frames[-1]['native_port']=meta['native_port_constitution']
+                if stage=='complete':
+                    frames[-1]['native_port_risk']=report['arms'][label]['quadratic_sensory_risk']
             if 'nll_by_phase' in report['arms'][label]:
                 cohort=meta['stage_reference']['cohort']
                 current=next((row for row in history if row['time_ms']==model.t),None)
@@ -96,6 +100,12 @@ def main(run):
                'raw端口NLL保留；校准分数只属于外部仪器，不是已安装的脑内预测回路。'
                '本轮未交付超过源/频率参照的端口预测收益；下一步从原电荷连续性推导体内反向流。'
                '只回放真实三份材料状态，无插值造型或按分数挑选的个体。')
+    if report.get('protocol_kind')=='native_port':
+        title='原生感觉匹配与学习门槛'
+        notes=('当前自然个体继续接收256新OWT字节，4ms/字节。身体匹配值由原电荷连续性、有限反应与域回收求得，未加预测头。'
+               '同状态量子偏离已交付到原反应亲和，但匹配值尚不能有效预测未来感觉：容量加权风险892.354，当前感觉持久性3.610。'
+               '有限驱动消耗使局部写入门槛升高，恢复使其降低；完整V2时序选择性仍待统一。'
+               '本段55域保持，新增付费边界接触2个；仅回放实际存档。raw NLL、感觉风险和功热分别计量。')
     atomic_json(run/'mobile_scene.json',dict(box_size=model.params.box_size,default=primary,
         default_frame=2,birth_origin_count=origin_count,arms=arms,read_only=True,source=str(run),
         title=title,work_label='本段外界源功',heat_label='本段净热流出 Q',

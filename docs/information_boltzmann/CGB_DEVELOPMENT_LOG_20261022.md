@@ -238,3 +238,14 @@ git worktree add -b codex/cgb-revisit-20261022 D:/cgb-revisit-20261022 cgb-befor
 - 主文档概览将阶段流水合并为当前实现、证据与下一接入，历史各结果与Git来源保留。当前自然natural_complete.npz，SHA1f92108dcd7db7cd8aca7de0e9c69e55af2d7ebb7e05f6254823310910ddf19a，22272ms，下一新train3840/validation1280；保留5全档。
 - /growth已核对55域、raw与外部校准分开、1024独立split及原62载体1存活；只读viewer8164→22136，原其他页面保留，截图F:/fly_stream_overflow/cgb_prediction_observation_20261022/growth_view.png。
 - Git阶段cgb-prediction-observation-20261022，代码/原记录/冻结仪器/5全档/独立恢复/截图和增量bundle备份F:/fly_stream_overflow/cgb_prediction_observation_backup_20261022/，以哈希/恢复manifest为准。目标继续，未启动旧妈妈训练、子agent/skill或关机。
+
+
+## 2026-10-22 原生端口、真实感觉与内生适应
+
+- 从0476980父档55域/22272ms继续。native_port.py计入原桥/池/域回收的中性一阶体内流，出生中性均值0而噪声保留；局部感觉反解按被动/有源可达性分类。5项端口数值检查及完整付费制备/一个荷量量子偏离的4ms控制通过。
+- 自然train[3840,4096)256新字节，4ms/byte，dt2ms；55域未变，新增2边界接触，总物料6B+55域+58内部桥+3边界=122。载体257出生/255拆解，原14存活/5旧位置重建；域出生/回收0。
+- 原生匹配感觉风险892.353532，保持当前感觉3.610069，上一实际源均值8.360346。745/2048匹配电势超出源±3，未裁剪。raw NLL11.132851/固定字节频率3.331184。仅是身体构成匹配，未交付未来预测收益。
+- 源功4822.801523、热4799.614992、ΔU23.186531、最大误差8.01e-9。自然档SHA9cd3bdb7bd3d1349871b4968378d82950fac8234e64b6151575a700020b4867f，23296ms；下一新train4096/validation1280。
+- local_learning.py直接分解现有ΔG：消耗P→D内生抬高后续写入门槛，支持结合降低门槛，恢复反向改变；没有新目标/率。4项检查与独立末128字节恢复验证1179原生亲和分解（最大误差8.88e-16）、455消耗/453恢复。V2时序选择尚未迁入；当前写入是电势降亲和，不假称配对探测。
+- 新verify_native_port_resume.py从mid全部元数据恢复感觉匹配/风险/源基线/物理/三RNG/会话/域和桥身份，128字节逐位相同；源基线所需上字节来自哈希验证语料游标前一位，候选manifest补记104，主档不改。286项CGB检查通过；完整7档/源码运行快照/报告保留。
+- 阶段标签cgb-native-port-20261022，增量bundle与完整源/报告/档备份F:/fly_stream_overflow/cgb_native_port_backup_20261022/，以最终哈希/恢复manifest为准。主目标继续，无子agent/skill/旧妈妈训练或关机。

@@ -298,6 +298,11 @@ class MobileExchange:
     def event_rate(self, event, degree=None):
         return self.attempt_rate(event, degree)*float(expit(-self.event_delta(event, degree)[1]))
 
+    def learning_affinity(self, event):
+        """Expose this material's actual finite-drive learning condition."""
+        from .local_learning import local_learning_affinity
+        return local_learning_affinity(self, event)
+
     def _installed_contact_events(self, i, j, edge, interface=-1):
         """One admission graph, with resource owners distinct from terminals."""
         def event(kind, sign=1):
@@ -616,6 +621,11 @@ class MobileExchange:
 
     def effective_port_conductance(self):
         return self.port_conductance
+
+    def port_constitution(self):
+        """Native neutral boundary current, evaluated without advancing state."""
+        from .native_port import native_port_constitution
+        return native_port_constitution(self)
 
     def step(self, dt, world_voltage=None):
         if not np.isfinite(dt) or dt <= 0: raise ValueError('Positive finite elapsed time required')
