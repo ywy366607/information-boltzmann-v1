@@ -1,3 +1,5 @@
+> **已归档（2026-10-22，Claude 审计）**：物理材料核链，不进主线、停止扩展。理由与可保留的教训见 [CGB_CLAUDE_AUDIT_OF_CODEX_20261022.md](CGB_CLAUDE_AUDIT_OF_CODEX_20261022.md)；标签 `archive/cgb-material-kernel-20261022`。
+
 # 当前原生过程的次序响应与噪声参照
 
 2026-10-22。基线0802db8，按[原方案](CGB_NATIVE_TIMING_PREREG_20261022.md)及[未来浴控制](CGB_NATIVE_TIMING_FUTURE_CONTROL_20261022.md)执行。研究对象为同一完整生成体；没有添加STDP、BCM或新学习状态。

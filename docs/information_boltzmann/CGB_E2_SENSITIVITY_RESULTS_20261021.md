@@ -54,7 +54,7 @@ MB、CX切除在512词元段分别变化+0.0091、−0.0047，描述区间均跨
 ## 4. 状态、资源和复现
 
 - 历史代码根：`F:/cgb_e2_head`；原模型和当前扩展模型不混装。
-- 旧E2状态：`E:/fly_stream_overflow/cgb_v1_e2_ckpt/real/last.pt`，SHA256 `2f3beefe3da2ff39725fb50c1dcde3f9c6352509a4615ecf437779ee7e7dcc12`。
+- 旧E2状态：`E:/fly_stream_overflow/cgb_v1_e2_ckpt/real/last.pt`，SHA256 `2f3beefe3da2ff39725fb50c1dcde3f9c6352509a4615ecf437779ee7e7dcc12`。（2026-10-22 为腾出磁盘空间已删除，经用户授权；SHA 保留以供核对，需要时重跑 E2 再生成。）
 - 已学习参考：`E:/ib_checkpoints/m_main/last.pt`，SHA256 `9b5c06eb9e48f0c77bd93315f7d1bb6bb805c9f5c80b8523d4f1c6dfd4beac2e`。
 - 所有运行前后检查点哈希一致；所有sham的NLL、读出和最终全物理状态一致。
 - 已学习参考逐项核实模型保存张量，包括普通state_dict外的非持久快速边权；恢复cfg指定的dopamine_site=pre。初次准入的校验器漏查非持久缓冲，曾写空的restore_failure.json；修正后精确恢复通过，这是校验器问题，不是检查点损坏。

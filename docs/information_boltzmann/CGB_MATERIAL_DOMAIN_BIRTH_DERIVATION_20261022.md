@@ -1,3 +1,5 @@
+> **已归档（2026-10-22，Claude 审计）**：物理材料核链，不进主线、停止扩展。理由与可保留的教训见 [CGB_CLAUDE_AUDIT_OF_CODEX_20261022.md](CGB_CLAUDE_AUDIT_OF_CODEX_20261022.md)；标签 `archive/cgb-material-kernel-20261022`。
+
 # 从有限材料到新增独立储能域
 
 2026-10-22；承接[物理核心](CGB_PHYSICAL_CORE_20261022.md)与[端口可区分性](CGB_CONNECTIVITY_STATE_DERIVATION_20261022.md)。本文件记录实现前的状态与速率推导；随后同一反应已实际生成24→28域、新域继续延伸和新接触，详见[实施结果](CGB_DOMAIN_BIRTH_RESULTS_20261022.md)。不预设目标树形或分叉概率。以下推导保留原来源与待选择本构，不把一次实现追认为唯一物理定律。

@@ -1,3 +1,5 @@
+> **已归档（2026-10-22，Claude 审计）**：物理材料核链，不进主线、停止扩展。理由与可保留的教训见 [CGB_CLAUDE_AUDIT_OF_CODEX_20261022.md](CGB_CLAUDE_AUDIT_OF_CODEX_20261022.md)；标签 `archive/cgb-material-kernel-20261022`。
+
 # 继承有向身份规则的移动材料
 
 2026-10-22，基线cccdd06。原V3d/发生程序保持不变，本轮将其**身份分量**接入实际移动材料的新接触。正式当前运行`F:/fly_stream_overflow/cgb_identity_cached_20261022/`，直接求值对照保留于`cgb_identity_material_20261022/`。

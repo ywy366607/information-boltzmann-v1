@@ -1,3 +1,5 @@
+> **已归档（2026-10-22，Claude 审计）**：物理材料核链，不进主线、停止扩展。理由与可保留的教训见 [CGB_CLAUDE_AUDIT_OF_CODEX_20261022.md](CGB_CLAUDE_AUDIT_OF_CODEX_20261022.md)；标签 `archive/cgb-material-kernel-20261022`。
+
 # 从已有有限驱动推导局部适应，并定位V2时序缺口
 
 2026-10-22。承接Claude的V2/T4d和当前原生端口结果；不增加BCM函数、活动均分目标或NLL奖励。先明确现有过程已经生成什么，避免把V2整套学习误称已迁入。

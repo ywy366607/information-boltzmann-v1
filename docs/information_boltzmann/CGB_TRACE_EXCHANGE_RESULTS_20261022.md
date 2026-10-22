@@ -1,3 +1,5 @@
+> **已归档（2026-10-22，Claude 审计）**：物理材料核链，不进主线、停止扩展。理由与可保留的教训见 [CGB_CLAUDE_AUDIT_OF_CODEX_20261022.md](CGB_CLAUDE_AUDIT_OF_CODEX_20261022.md)；标签 `archive/cgb-material-kernel-20261022`。
+
 # 活动痕迹、支持捕获与结构周转的同一物理实现
 
 2026-10-22。基线`e5b75bb`，推导／先行约束见[CGB_TRACE_GROWTH_PREREG_20261022.md](CGB_TRACE_GROWTH_PREREG_20261022.md)。继承Claude的E5/E6/E9工作方向：活动留下局部痕迹，痕迹改变有限支持捕获，支持影响结构留存。本轮将这条路线放入已有快场／驱动／结构的联合自由能，未声称与原K−P有符号标签逐项等价。

@@ -1,3 +1,5 @@
+> **已归档（2026-10-22，Claude 审计）**：物理材料核链，不进主线、停止扩展。理由与可保留的教训见 [CGB_CLAUDE_AUDIT_OF_CODEX_20261022.md](CGB_CLAUDE_AUDIT_OF_CODEX_20261022.md)；标签 `archive/cgb-material-kernel-20261022`。
+
 # 同一材料反应产生新的空间储能域
 
 2026-10-22，基线111d01d；[实施前声明](CGB_DOMAIN_BIRTH_PREREG_20261022.md)和[推导](CGB_MATERIAL_DOMAIN_BIRTH_DERIVATION_20261022.md)先于执行。沿用 Claude 的有限池、局部转化和定向身份成果，不加入目标形态、分叉概率、预测奖励或回传梯度。

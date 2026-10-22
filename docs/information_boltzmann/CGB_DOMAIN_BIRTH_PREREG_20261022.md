@@ -1,3 +1,5 @@
+> **已归档（2026-10-22，Claude 审计）**：物理材料核链，不进主线、停止扩展。理由与可保留的教训见 [CGB_CLAUDE_AUDIT_OF_CODEX_20261022.md](CGB_CLAUDE_AUDIT_OF_CODEX_20261022.md)；标签 `archive/cgb-material-kernel-20261022`。
+
 # 同核材料域出生：实现与运行前声明
 
 基线111d01d，自然父档为cgb_future_exchange_recovered_20261022/native_revisit_A_complete.npz，7424ms，SHA256 6563b8fdc94f16f3f453d23571eecbed7ee556b1945b844bd90aa28d95c89f56。只在完整副本增加材料相变，保留父档及此前经历。原母女个体不恢复。

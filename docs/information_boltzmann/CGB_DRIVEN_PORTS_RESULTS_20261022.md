@@ -1,3 +1,5 @@
+> **已归档（2026-10-22，Claude 审计）**：物理材料核链，不进主线、停止扩展。理由与可保留的教训见 [CGB_CLAUDE_AUDIT_OF_CODEX_20261022.md](CGB_CLAUDE_AUDIT_OF_CODEX_20261022.md)；标签 `archive/cgb-material-kernel-20261022`。
+
 # 有源定向传输与有状态端口：交付记录
 
 2026-10-22。基线`eb720ed`，预注册见[CGB_DRIVEN_PORTS_PREREG_20261022.md](CGB_DRIVEN_PORTS_PREREG_20261022.md)。沿同一局部自由能和有限池，本轮补入**有限功源驱动的定向传输，以及保留状态和反作用的外部端口**。这推进材料层操作闭合，完整语言主体的闭合与学习仍待身体／世界接入。

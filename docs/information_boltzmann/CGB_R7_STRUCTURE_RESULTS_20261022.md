@@ -1,3 +1,5 @@
+> **已归档（2026-10-22，Claude 审计）**：物理材料核链，不进主线、停止扩展。理由与可保留的教训见 [CGB_CLAUDE_AUDIT_OF_CODEX_20261022.md](CGB_CLAUDE_AUDIT_OF_CODEX_20261022.md)；标签 `archive/cgb-material-kernel-20261022`。
+
 # 实际结构、数量与周转：同一生成元的下一道逆发育约束
 
 2026-10-22；接续[CGB_R7_DYNAMIC_RESULTS_20261022.md](CGB_R7_DYNAMIC_RESULTS_20261022.md)。仍在逆发育：本轮更新的是候选生成规律的观察与反演，未替换连续个体或进入第二阶段新脑生成。

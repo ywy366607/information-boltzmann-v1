@@ -1,3 +1,5 @@
+> **已归档（2026-10-22，Claude 审计）**：物理材料核链，不进主线、停止扩展。理由与可保留的教训见 [CGB_CLAUDE_AUDIT_OF_CODEX_20261022.md](CGB_CLAUDE_AUDIT_OF_CODEX_20261022.md)；标签 `archive/cgb-material-kernel-20261022`。
+
 # 同一物理生成元的整核时间推进
 
 2026-10-22；本推导写于实现前，现已按此接入schema3整核模式并完成真实连续副本，见[实现与结果](CGB_FULL_STEP_RESULTS_20261022.md)。承接实际源驱动对照，不新增生物方程、存活目标或结构选择分数。

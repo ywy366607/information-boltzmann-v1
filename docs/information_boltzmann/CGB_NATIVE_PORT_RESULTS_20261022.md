@@ -1,3 +1,5 @@
+> **已归档（2026-10-22，Claude 审计）**：物理材料核链，不进主线、停止扩展。理由与可保留的教训见 [CGB_CLAUDE_AUDIT_OF_CODEX_20261022.md](CGB_CLAUDE_AUDIT_OF_CODEX_20261022.md)；标签 `archive/cgb-material-kernel-20261022`。
+
 # 原生感觉接口、局部适应与V2迁移的当前结果
 
 2026-10-22。父档0476980，实际55域/22272ms，SHA256 `1f92108dcd7db7cd8aca7de0e9c69e55af2d7ebb7e05f6254823310910ddf19a`。按[实施前方案](CGB_NATIVE_PORT_PREREG_20261022.md)执行，未修改自然个体或按成绩择优。

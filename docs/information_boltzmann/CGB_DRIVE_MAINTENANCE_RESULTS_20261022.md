@@ -1,3 +1,5 @@
+> **已归档（2026-10-22，Claude 审计）**：物理材料核链，不进主线、停止扩展。理由与可保留的教训见 [CGB_CLAUDE_AUDIT_OF_CODEX_20261022.md](CGB_CLAUDE_AUDIT_OF_CODEX_20261022.md)；标签 `archive/cgb-material-kernel-20261022`。
+
 # 持续驱动、库存和热交换：同状态对照结果
 
 2026-10-22；基线743bb2b。[运行前声明](CGB_DRIVE_MAINTENANCE_PREREG_20261022.md)先于执行。沿用原联合G、材料、痕迹/支持、空间相变与身份，不加寿命、额外营养奖励或强制萎缩。

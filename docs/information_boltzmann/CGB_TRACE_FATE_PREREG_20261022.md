@@ -1,3 +1,5 @@
+> **已归档（2026-10-22，Claude 审计）**：物理材料核链，不进主线、停止扩展。理由与可保留的教训见 [CGB_CLAUDE_AUDIT_OF_CODEX_20261022.md](CGB_CLAUDE_AUDIT_OF_CODEX_20261022.md)；标签 `archive/cgb-material-kernel-20261022`。
+
 # 同一生成过程中的痕迹、周转与真实回访：实施前声明
 
 2026-10-22。承接当前自然schema3档49域、13056ms，SHA256 d1515a4aafa620adab91a7404cc78ac14ccb9ee5541addb265410ff6a4fba65c。主线仍是同一有限物料/能量/局部正反转化；不安装新学习或生长奖励。

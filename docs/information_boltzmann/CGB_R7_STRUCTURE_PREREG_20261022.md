@@ -1,3 +1,5 @@
+> **已归档（2026-10-22，Claude 审计）**：物理材料核链，不进主线、停止扩展。理由与可保留的教训见 [CGB_CLAUDE_AUDIT_OF_CODEX_20261022.md](CGB_CLAUDE_AUDIT_OF_CODEX_20261022.md)；标签 `archive/cgb-material-kernel-20261022`。
+
 # R7：从痕迹保持改为付费结构存留的条件检验
 
 写于本轮结构生成元计算与拟合之前。上一轮Control的全部结果已经看过，本轮是探索性、固定操作的逆发育约束，CG3不重新称盲测。

@@ -1,3 +1,5 @@
+> **已归档（2026-10-22，Claude 审计）**：物理材料核链，不进主线、停止扩展。理由与可保留的教训见 [CGB_CLAUDE_AUDIT_OF_CODEX_20261022.md](CGB_CLAUDE_AUDIT_OF_CODEX_20261022.md)；标签 `archive/cgb-material-kernel-20261022`。
+
 # 身份规则到移动材料：实施前推导与识别边界
 
 基线cccdd06。复用Claude路线中已交付的发生与有向条件强度程序，不重训/改写其统计成绩。目标是把这些身份参数接到实际相遇后的同一物理反应，而不是复制成年邻接表或另抽一个永久Bernoulli开关。

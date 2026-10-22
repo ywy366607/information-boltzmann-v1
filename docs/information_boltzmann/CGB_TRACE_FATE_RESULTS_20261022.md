@@ -1,3 +1,5 @@
+> **已归档（2026-10-22，Claude 审计）**：物理材料核链，不进主线、停止扩展。理由与可保留的教训见 [CGB_CLAUDE_AUDIT_OF_CODEX_20261022.md](CGB_CLAUDE_AUDIT_OF_CODEX_20261022.md)；标签 `archive/cgb-material-kernel-20261022`。
+
 # 当前生成核中的痕迹、支持与真实周转
 
 2026-10-22。承接[预注册](CGB_TRACE_FATE_PREREG_20261022.md)及[统一生成元推导](CGB_LEARNING_GENERATOR_BRIDGE_20261022.md)。上一阶段已实现空间生长与整核，这一阶段交付当前完整个体的实际记忆通路与回访证据；没有新增生物组件或学习奖励。

@@ -1,3 +1,5 @@
+> **已归档（2026-10-22，Claude 审计）**：物理材料核链，不进主线、停止扩展。理由与可保留的教训见 [CGB_CLAUDE_AUDIT_OF_CODEX_20261022.md](CGB_CLAUDE_AUDIT_OF_CODEX_20261022.md)；标签 `archive/cgb-material-kernel-20261022`。
+
 # 同一生成元的整核推进：实现与实际连续副本
 
 2026-10-22。承接[实施前推导](CGB_FULL_STEP_DERIVATION_20261022.md)和[实际段预注册](CGB_FULL_STEP_PREREG_20261022.md)。本轮把原运动、局部学习/结构反应和场传播统一为完整对称推进；没有增加生物组件、学习奖励、衰亡规则或资源池。

@@ -1,3 +1,5 @@
+> **已归档（2026-10-22，Claude 审计）**：物理材料核链，不进主线、停止扩展。理由与可保留的教训见 [CGB_CLAUDE_AUDIT_OF_CODEX_20261022.md](CGB_CLAUDE_AUDIT_OF_CODEX_20261022.md)；标签 `archive/cgb-material-kernel-20261022`。
+
 # 带电构形检查的累计账修复与续接
 
 本记录写于修复后运行之前。原方案、失败日志与源码快照保留于 `F:/fly_stream_overflow/cgb_polarized_storage_20261022`，不覆盖。原参考支已完整到24448ms，SHA256 `4ccfb7b4a2aa0f30e2d7c939a586752837aa8188408fcc16de5f875bdf5c30b5`，直接复用，不重复推进其经历。

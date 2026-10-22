@@ -1,3 +1,5 @@
+> **已归档（2026-10-22，Claude 审计）**：物理材料核链，不进主线、停止扩展。理由与可保留的教训见 [CGB_CLAUDE_AUDIT_OF_CODEX_20261022.md](CGB_CLAUDE_AUDIT_OF_CODEX_20261022.md)；标签 `archive/cgb-material-kernel-20261022`。
+
 # 同一交换过程进入三维空间：沉积、成核与下一处缺口
 
 2026-10-22，继承`e5b75bb`物理通路与本轮`80478b3`活动痕迹实现。具体方程和四臂参数在执行前写入[CGB_TRACE_GROWTH_PREREG_20261022.md](CGB_TRACE_GROWTH_PREREG_20261022.md)。本轮实际交付**有活动痕迹／支持捕获的空间材料反应—输运介质**；形态实测更接近成核和网状沉积，不能改称完整神经突发育。

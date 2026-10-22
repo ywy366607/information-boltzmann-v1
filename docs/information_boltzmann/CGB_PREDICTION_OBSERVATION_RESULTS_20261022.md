@@ -1,3 +1,5 @@
+> **已归档（2026-10-22，Claude 审计）**：物理材料核链，不进主线、停止扩展。理由与可保留的教训见 [CGB_CLAUDE_AUDIT_OF_CODEX_20261022.md](CGB_CLAUDE_AUDIT_OF_CODEX_20261022.md)；标签 `archive/cgb-material-kernel-20261022`。
+
 # 原生物理状态与固定观测概率：真实流结果
 
 2026-10-22。按[实施前推导与计划](CGB_PREDICTION_OBSERVATION_DERIVATION_20261022.md)执行。核心结论是：旧raw端口分数包含很大的观测不匹配；独立验证里，当前端口及本次受检的低维读出仍未交付额外预测收益。不能把其中任一项改名成主体已形成预期。

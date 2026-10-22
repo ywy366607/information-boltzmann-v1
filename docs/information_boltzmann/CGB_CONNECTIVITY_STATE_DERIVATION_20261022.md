@@ -1,3 +1,5 @@
+> **已归档（2026-10-22，Claude 审计）**：物理材料核链，不进主线、停止扩展。理由与可保留的教训见 [CGB_CLAUDE_AUDIT_OF_CODEX_20261022.md](CGB_CLAUDE_AUDIT_OF_CODEX_20261022.md)；标签 `archive/cgb-material-kernel-20261022`。
+
 # 从端口可区分性推出必须保留的连接状态
 
 2026-10-22。接在[CGB_SPATIAL_MATERIAL_RESULTS_20261022.md](CGB_SPATIAL_MATERIAL_RESULTS_20261022.md)之后。先说明现有粗粒化丢失了什么，再决定下一步状态；不直接加分叉函数。

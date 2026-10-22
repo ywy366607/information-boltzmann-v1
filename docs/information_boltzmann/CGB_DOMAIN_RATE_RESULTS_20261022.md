@@ -1,3 +1,5 @@
+> **已归档（2026-10-22，Claude 审计）**：物理材料核链，不进主线、停止扩展。理由与可保留的教训见 [CGB_CLAUDE_AUDIT_OF_CODEX_20261022.md](CGB_CLAUDE_AUDIT_OF_CODEX_20261022.md)；标签 `archive/cgb-material-kernel-20261022`。
+
 # 同一生成元的解析域速率与持续生长
 
 2026-10-22，基线df3286d。先保存[解析推导/运行前声明](CGB_DOMAIN_RATE_DERIVATION_20261022.md)，再实现并核对。继承Claude有限池、捕获/逆向支持与定向身份；不新增物理状态、目标梯度、生长分数或人为死亡率。

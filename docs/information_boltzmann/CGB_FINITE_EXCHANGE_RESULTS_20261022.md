@@ -1,3 +1,5 @@
+> **已归档（2026-10-22，Claude 审计）**：物理材料核链，不进主线、停止扩展。理由与可保留的教训见 [CGB_CLAUDE_AUDIT_OF_CODEX_20261022.md](CGB_CLAUDE_AUDIT_OF_CODEX_20261022.md)；标签 `archive/cgb-material-kernel-20261022`。
+
 # CGB：有限交换与结构重组的物理子核
 
 2026-10-22。沿Claude核心文档的有限池、占据、恢复、结构转化与逆向支持，完成两个相接的局部物理过程。[交换登记](CGB_FINITE_EXCHANGE_PREREG_20261022.md)、[结构扩展登记](CGB_STRUCTURE_EXCHANGE_PREREG_20261022.md)。没有使用目标梯度，也没有要求酶／囊泡作为元件。

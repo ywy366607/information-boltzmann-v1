@@ -1,3 +1,5 @@
+> **已归档（2026-10-22，Claude 审计）**：物理材料核链，不进主线、停止扩展。理由与可保留的教训见 [CGB_CLAUDE_AUDIT_OF_CODEX_20261022.md](CGB_CLAUDE_AUDIT_OF_CODEX_20261022.md)；标签 `archive/cgb-material-kernel-20261022`。
+
 # 可移动材料、真实新相遇与同核学习痕迹
 
 2026-10-22，接续abf1d04的有限连接端。本轮把端库存、局部组成与电荷放到可移动的有限材料上，同一装配事件由实际空间相遇产生新桥。正式当前运行是`F:/fly_stream_overflow/cgb_mobile_bounded_20261022/`。

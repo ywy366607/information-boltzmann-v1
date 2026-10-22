@@ -1,3 +1,5 @@
+> **已归档（2026-10-22，Claude 审计）**：物理材料核链，不进主线、停止扩展。理由与可保留的教训见 [CGB_CLAUDE_AUDIT_OF_CODEX_20261022.md](CGB_CLAUDE_AUDIT_OF_CODEX_20261022.md)；标签 `archive/cgb-material-kernel-20261022`。
+
 # 快场与慢结构的双向功交换：结果
 
 2026-10-22。继承基线`14bcfa173bd651f8e0302c04070d7458a15ff16a`，预注册见[CGB_FAST_WORK_PREREG_20261022.md](CGB_FAST_WORK_PREREG_20261022.md)。本轮实现并验收了声明材料中的快场—有限驱动—结构双向因果交付；真实语言世界中的预测、行动及学习收益仍待接入。

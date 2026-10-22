@@ -1,3 +1,5 @@
+> **已归档（2026-10-22，Claude 审计）**：物理材料核链，不进主线、停止扩展。理由与可保留的教训见 [CGB_CLAUDE_AUDIT_OF_CODEX_20261022.md](CGB_CLAUDE_AUDIT_OF_CODEX_20261022.md)；标签 `archive/cgb-material-kernel-20261022`。
+
 # 活动痕迹、支持捕获与空间转化为何是同一个过程
 
 2026-10-22；由[域反应比](CGB_DOMAIN_RATE_DERIVATION_20261022.md)和现有native反应计量直接推导，不增加任何物理状态、学习分数或生物组件。

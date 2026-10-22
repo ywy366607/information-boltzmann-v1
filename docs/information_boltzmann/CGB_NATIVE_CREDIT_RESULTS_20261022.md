@@ -1,3 +1,5 @@
+> **已归档（2026-10-22，Claude 审计）**：物理材料核链，不进主线、停止扩展。理由与可保留的教训见 [CGB_CLAUDE_AUDIT_OF_CODEX_20261022.md](CGB_CLAUDE_AUDIT_OF_CODEX_20261022.md)；标签 `archive/cgb-material-kernel-20261022`。
+
 # 活动配置、支持返回与持久可塑性：原生闭环的实际边界
 
 2026-10-22。按[CGB_NATIVE_CREDIT_CLOSURE_20261022.md](CGB_NATIVE_CREDIT_CLOSURE_20261022.md)执行原24448ms材料档的完整副本审计；保留所有几何、类型、池、活动、结构和原生场，没有重生、暂停输入或使用NLL奖励。新代码只建立功能分层观察与条件调度，不增加资格／疲劳／奖励状态。
