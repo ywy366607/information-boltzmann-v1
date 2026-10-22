@@ -52,6 +52,12 @@ def main(run):
                '断源支末态'+str(off['nodes'])+'域、源功'+format(off['source_work'],'.2f')+
                '、净热流出'+format(off['heat_out'],'.2f')+'（负值为热浴输入）。'
                '三支实际源功不同，当前不能据域数判断自维持或语义收益。页面显示内部桥，边界另计。')
+    if 'symmetric_dt2' in report['arms']:
+        title='同一物理过程 · 整核交错推进'
+        notes=('三支均经历同一256新OWT字节、1024参考毫秒；分别为旧顺序2ms、新对称顺序2ms与1ms。'
+               '主线预先指定为新顺序2ms，未按域数或NLL挑选。原痕迹、支持、身份和空间反应全部继续。'
+               '每支中点后的128字节已逐位恢复；这是数值执行检查，不是单轨迹收敛或语言能力结论。'
+               '页面显示实际内部桥，边界另计；图中只有实际存档，无插值造型。')
     atomic_json(run/'mobile_scene.json',dict(box_size=model.params.box_size,default=primary,
         default_frame=2,birth_origin_count=origin_count,arms=arms,read_only=True,source=str(run),
         title=title,work_label='本段外界源功',heat_label='本段净热流出 Q',

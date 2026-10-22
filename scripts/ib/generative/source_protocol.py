@@ -3,7 +3,7 @@ from dataclasses import dataclass, asdict
 
 import numpy as np
 
-from scripts.ib.generative.native_learning_stream import advance_byte
+from scripts.ib.generative.native_learning_stream import advance_byte, external_step_count
 
 
 @dataclass
@@ -29,20 +29,21 @@ class SourceProtocol:
         elif self.held_voltage is not None:
             raise ValueError('Only a held source owns a constant voltage vector')
 
-    def advance(self, model, session, target=None):
+    def advance(self, model, session, target=None, *, dt_ms=2.):
         self.validate(model)
+        steps = external_step_count(dt_ms)
         if self.mode == 'text_drive':
             if not isinstance(target, (int, np.integer)) or not 0 <= target < 256:
                 raise ValueError('A real stream byte is required')
-            row = advance_byte(model, session, int(target), 'fresh_E')
+            row = advance_byte(model, session, int(target), 'fresh_E', dt_ms=dt_ms)
             self.text_exposures += 1
         else:
             if target is not None:
                 raise ValueError('A physical boundary control must not claim unexposed text')
             before = model.t
             voltage = np.asarray(self.held_voltage, float) if self.mode == 'held_source' else None
-            for _ in range(2):
-                model.step(2., voltage)
+            for _ in range(steps):
+                model.step(dt_ms, voltage)
             if voltage is not None:
                 old = np.asarray(session['source_only_voltage'], float)
                 session['source_only_voltage'] = (voltage+(old-voltage)*np.exp(

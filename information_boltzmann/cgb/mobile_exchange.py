@@ -423,7 +423,8 @@ class MobileExchange:
             if elapsed > dt: break
             target = self.rng_reaction.random()*total
             index = min(int(np.searchsorted(np.cumsum(rates), target, side='right')), len(events)-1)
-            self.apply_event(events[index], event_time=self.t+elapsed, check=False, degree=degree)
+            self.apply_event(events[index], event_time=self.t+getattr(self, '_reaction_clock_offset', 0.)+elapsed,
+                             check=False, degree=degree)
 
     def move_trial(self, i, proposal, acceptance_uniform):
         proposal = np.asarray(proposal, float)
@@ -554,8 +555,15 @@ class MobileExchange:
         conductance = self.bridge_conductance()
         port_g = self.effective_port_conductance()
         half = dt/2
+        randomized = getattr(self, 'material_scheme', 'sequential') == 'symmetric'
+        # Array insertion order is not a physical material coordinate. In
+        # the new whole-step mode mix conditional reversible OU palindromes
+        # uniformly, and reuse the SAME permutation in reverse on return.
+        order = self.rng_field.permutation(len(self.pre)) if randomized else range(len(self.pre))
+        source_elapsed = 0.
 
         def source():
+            nonlocal source_elapsed
             if world_voltage is None:
                 return
             old = q[n:].copy()
@@ -572,9 +580,10 @@ class MobileExchange:
             self.entropy_balance += heat
             if self.source_observer:
                 self.charge[:], self.world_charge[:] = q[:n], q[n:]
-                self.source_observer(dict(time_ms=self.t, dt_ms=half,
+                self.source_observer(dict(time_ms=self.t+(source_elapsed if randomized else 0.), dt_ms=half,
                     before_charge=old.copy(), after_charge=q[n:].copy(),
                     source_work=work, source_heat=heat))
+            source_elapsed += half
 
         def pair(i, j, g):
             inverse_c = 1/capacitance[i]+1/capacitance[j]
@@ -592,9 +601,9 @@ class MobileExchange:
         source()
         for a, i in enumerate(self.port_nodes):
             pair(int(i), n+a, port_g[a])
-        for e, (i, j) in enumerate(zip(self.pre, self.post)):
-            pair(int(i), int(j), conductance[e])
-        for e in range(len(self.pre)-1, -1, -1):
+        for e in order:
+            pair(int(self.pre[e]), int(self.post[e]), conductance[e])
+        for e in reversed(order):
             pair(int(self.pre[e]), int(self.post[e]), conductance[e])
         for a in range(len(self.port_nodes)-1, -1, -1):
             pair(int(self.port_nodes[a]), n+a, port_g[a])
@@ -632,6 +641,8 @@ class MobileExchange:
             free_energy=self.initial_free_energy+self.work_in-self.free_energy()-self.entropy_balance)
 
     def state_dict(self):
+        if getattr(self, '_material_step_active', False):
+            raise ValueError('Archive only after a complete material step; partial or failed step is not resumable')
         if self.field_scheme not in ('sequential_ou', 'symmetric_ou'):
             raise ValueError('Unknown field integration scheme')
         state = dict(schema=2, kind='mobile_exchange', params=asdict(self.params),

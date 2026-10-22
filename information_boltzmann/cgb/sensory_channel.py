@@ -27,6 +27,8 @@ def frozen_field_channel(model, durations, observed_nodes=None, observed_world_p
     This counterfactual excludes intervening reactions and motion. It is not
     the channel of the full adaptive material.step sequence.
     """
+    if getattr(model, 'material_scheme', 'sequential') == 'symmetric':
+        raise ValueError('Random edge-order OU is a Gaussian mixture; this instrument needs an explicit conditional order')
     durations = np.asarray(durations, float)
     if durations.ndim != 1 or not len(durations) or not np.isfinite(durations).all() or np.any(durations <= 0):
         raise ValueError('Positive finite field durations required')

@@ -27,7 +27,10 @@ class GrowingIdentityMobileExchange(BoundaryIdentityMobileExchange):
 
     def __init__(self, *args, domain_formation_energy, reference_volume,
                  reference_charge, domain_reactions_enabled=True,
-                 domain_sampling='resolved', **kwargs):
+                 domain_sampling='resolved', material_scheme='sequential', **kwargs):
+        if material_scheme not in ('sequential', 'symmetric'):
+            raise ValueError('Explicit supported whole-material integration scheme required')
+        self.material_scheme = 'sequential'  # the parent initializes its legacy field first
         self.domain_formation_energy = float(domain_formation_energy)
         self.reference_volume = float(reference_volume)
         self.reference_charge = float(reference_charge)
@@ -37,6 +40,10 @@ class GrowingIdentityMobileExchange(BoundaryIdentityMobileExchange):
         self.domain_observer = None  # disposable receipts, never a rate input
         super().__init__(*args, **kwargs)
         self.initial_material += self.n
+        self.material_scheme = material_scheme
+        if material_scheme == 'symmetric':
+            self.field_scheme = 'symmetric_ou'
+        self._validate()
 
     def _validate(self):
         super()._validate()
@@ -46,6 +53,9 @@ class GrowingIdentityMobileExchange(BoundaryIdentityMobileExchange):
                 or not isinstance(self.domain_reactions_enabled, bool)
                 or self.domain_sampling not in ('resolved', 'marginal')):
             raise ValueError('Explicit finite domain energy, positive standard measures and barrier required')
+        if (self.material_scheme not in ('sequential', 'symmetric')
+                or self.material_scheme == 'symmetric' and self.field_scheme != 'symmetric_ou'):
+            raise ValueError('Whole-material symmetric integration requires symmetric OU fields')
 
     def energy(self):
         return super().energy() + self.n * self.domain_formation_energy
@@ -333,6 +343,7 @@ class GrowingIdentityMobileExchange(BoundaryIdentityMobileExchange):
         if not self.domain_reactions_enabled:
             return super()._reactions(dt)
         elapsed = 0.
+        origin = self.t+getattr(self, '_reaction_clock_offset', 0.)
         pairs = self.encounters()
         while True:
             degree = self.degrees()
@@ -355,19 +366,49 @@ class GrowingIdentityMobileExchange(BoundaryIdentityMobileExchange):
             index = min(int(np.searchsorted(np.cumsum(rates),
                                             self.rng_reaction.random()*total, side='right')), len(rates)-1)
             if index < len(events):
-                self.apply_event(events[index], event_time=self.t+elapsed, check=False, degree=degree)
+                self.apply_event(events[index], event_time=origin+elapsed, check=False, degree=degree)
             else:
                 index -= len(events)
                 if index < len(parents):
-                    receipt = self._propose_birth(int(parents[index]), self.t+elapsed)
+                    receipt = self._propose_birth(int(parents[index]), origin+elapsed)
                 else:
                     receipt = self.death_trial(*deaths[index-len(parents)],
                                                0. if self.domain_sampling == 'marginal'
-                                               else self.rng_reaction.random(), event_time=self.t+elapsed)
+                                               else self.rng_reaction.random(), event_time=origin+elapsed)
                 if receipt['accepted']:
                     pairs = self.encounters()  # geometry/index space actually changed
 
+    def step(self, dt, world_voltage=None):
+        if self.material_scheme == 'sequential':
+            return super().step(dt, world_voltage)
+        # Reject invalid calls before mutating any physical/RNG state.
+        self._validate()
+        if not np.isfinite(dt) or dt <= 0:
+            raise ValueError('Positive finite elapsed time required')
+        if world_voltage is not None:
+            world_voltage = np.asarray(world_voltage, float)
+            if (world_voltage.shape != self.port_nodes.shape or not np.isfinite(world_voltage).all()
+                    or np.any(np.abs(world_voltage) > 100.)):
+                raise ValueError('Finite bounded world source voltage required')
+        if getattr(self, '_material_step_active', False):
+            raise ValueError('A partial or failed material step cannot be restarted')
+        self._material_step_active = True
+        half = dt/2
+        self._motion(half)
+        self._reaction_clock_offset = 0.
+        self._reactions(half)
+        self._field(dt, world_voltage)
+        self._reaction_clock_offset = half
+        self._reactions(half)
+        self._motion(half)
+        self.t += dt
+        self._validate()
+        # On exceptions leave the guard set: intermediate operator cursors
+        # are not archived. Resume the last complete checkpoint instead.
+        del self._reaction_clock_offset, self._material_step_active
+
     def state_dict(self):
+        self._validate()
         state = super().state_dict()
         state.update(kind='growing_identity_mobile_exchange', schema=1,
                      domain_formation_energy=self.domain_formation_energy,
@@ -377,6 +418,8 @@ class GrowingIdentityMobileExchange(BoundaryIdentityMobileExchange):
                      domain_deaths=self.domain_deaths)
         if self.domain_sampling == 'marginal':
             state.update(schema=2, domain_sampling='marginal')
+        if self.material_scheme == 'symmetric':
+            state.update(schema=3, material_scheme='symmetric', domain_sampling=self.domain_sampling)
         return state
 
     @classmethod
@@ -397,9 +440,16 @@ class GrowingIdentityMobileExchange(BoundaryIdentityMobileExchange):
 
     @classmethod
     def from_state_dict(cls, state):
-        if state.get('kind') != 'growing_identity_mobile_exchange' or state.get('schema') not in (1, 2):
+        if state.get('kind') != 'growing_identity_mobile_exchange' or state.get('schema') not in (1, 2, 3):
             raise ValueError('Unsupported growing material archive')
-        if state.get('domain_sampling', 'resolved') != ('resolved' if state['schema'] == 1 else 'marginal'):
+        schema = state['schema']
+        if schema == 3:
+            if (state.get('material_scheme') != 'symmetric' or state.get('field_scheme') != 'symmetric_ou'
+                    or state.get('domain_sampling') not in ('resolved', 'marginal')):
+                raise ValueError('Symmetric whole-material archive requires explicit field and phase modes')
+        elif state.get('material_scheme', 'sequential') != 'sequential':
+            raise ValueError('Whole-material mode disagrees with archive schema')
+        if schema != 3 and state.get('domain_sampling', 'resolved') != ('resolved' if schema == 1 else 'marginal'):
             raise ValueError('Domain sampling mode disagrees with archive schema')
         if state.get('field_scheme') not in ('sequential_ou', 'symmetric_ou'):
             raise ValueError('Explicit field mode required')
@@ -424,7 +474,8 @@ class GrowingIdentityMobileExchange(BoundaryIdentityMobileExchange):
                   domain_formation_energy=state['domain_formation_energy'],
                   reference_volume=state['reference_volume'], reference_charge=state['reference_charge'],
                   domain_reactions_enabled=state['domain_reactions_enabled'],
-                  domain_sampling=state.get('domain_sampling', 'resolved'))
+                  domain_sampling=state.get('domain_sampling', 'resolved'),
+                  material_scheme=state.get('material_scheme', 'sequential'))
         for name in ('domain_attempts', 'domain_births', 'domain_deaths'):
             value = state[name]
             if not isinstance(value, int) or value < 0:

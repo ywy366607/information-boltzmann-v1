@@ -75,7 +75,18 @@ def new_session(model,history):
         scored_bytes=0,phase=None,next_phase_byte=0,phase_metrics={},interventions=[])
 
 
-def advance_byte(model,session,target,phase,warm=False):
+def external_step_count(dt_ms):
+    """Resolve the fixed 4ms input interval without shortening its clock."""
+    if not np.isfinite(dt_ms) or dt_ms <= 0:
+        raise ValueError('Positive finite integration step required')
+    count = int(round(4./dt_ms))
+    if count < 1 or count*dt_ms != 4.:
+        raise ValueError('Integration step must exactly divide the declared 4ms interval')
+    return count
+
+
+def advance_byte(model,session,target,phase,warm=False,*,dt_ms=2.):
+    steps = external_step_count(dt_ms)
     # Freeze all forecast objects before any target-dependent physical step.
     logits=port_bit_logits(model)
     source_logits=port_bit_logits(model,voltage=np.asarray(session['source_only_voltage']))
@@ -87,7 +98,7 @@ def advance_byte(model,session,target,phase,warm=False):
                 fixed_bits=byte_nll(bit_logits,target),source_filter=byte_nll(source_logits,target))
     source=np.array([3. if (int(target)>>bit)&1 else -3. for bit in range(8)])
     before=model.t
-    for _ in range(2):model.step(2.,source)
+    for _ in range(steps):model.step(dt_ms,source)
     assert model.t==before+4.
     # Exact source-only mean response, with no coupling to a brain and no
     # fitted coefficient. It is a reference filter, not a living controller.

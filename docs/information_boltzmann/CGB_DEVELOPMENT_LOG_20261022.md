@@ -201,3 +201,14 @@ git worktree add -b codex/cgb-revisit-20261022 D:/cgb-revisit-20261022 cgb-befor
 - 新CGB_FULL_STEP_DERIVATION_20261022.md记录整核M/R/F回文组合、累计dt与桥存储标签问题；单场对称不等于整核时间互易，固定G守恒不替代组合检查。尚未实现新模式，不归因本轮增长为已证数值错误，也不补新的生物组件。
 - 观察室/growth新增真实文本/恒源/断源三选项、随分支更新域数、本段源功和热；0/−18.31与完整档核对。仅替换本线程只读viewer，6588→22576；growth_view.png与source_off_view.png已存。旧各页/正式暂停个体保留，无技能/子智能体/关机。
 - Git阶段cgb-drive-maintenance-20261022，完整代码/原始记录/物理档/协议/截图与增量bundle备份到F:/fly_stream_overflow/cgb_drive_maintenance_backup_20261022/，以哈希/恢复验证manifest为准。主目标继续整核执行一致性和有用维持，不以这段对照算完成。
+
+
+## 2026-10-22 整核一致性与连续实际空间生长
+
+- 实施前CGB_FULL_STEP_DERIVATION_20261022.md与CGB_FULL_STEP_PREREG_20261022.md；完成schema3回文M/R/F、累计反应与源时钟，等权内部OU执行排列与原序逆向返回，无新增物料/生物方程/评分。旧schema1/2默认原执行，部分失败步禁止假存档。
+- 旧text_drive_mid后256实际字节逐位重放到原complete；保留d76830d全部CGB源码独立包，64真实字节与当前legacy物理/三RNG/评分/会话逐位相同。268项CGB检查通过/28.75s；一次误选全部tests收集被主动终止，最终只执行全部test_cgb文件，不把中止收集算通过。
+- full_step_audit.py三支从原46域12032ms/下一train2432同档出发，各256相同新OWT字节至13056ms；legacy_dt2/symmetric_dt2/symmetric_dt1均49域，均3域出生/0回收。三支128未来字节全部记录/全物理/三RNG/协议/观察器逐位一致，账本误差<2.23e-9；并非单路径收敛或模式优劣证据。
+- 预定主线symmetric_dt2：13B+49域+58内部桥+2边界=122，载体277出生/274拆解，原57载体15存活、4个旧位置重建。binding103/100、write158/162、active126/121、transport5/7、release34/33，均为原局部事件。识别/输运启用，原3000类型程序/24种来源身份保留。
+- 主线源功4934.037933、热4942.831938、ΔU−8.794005；端口NLL10.628091/固定频率3.471412 nat/byte，未证明有用预测。自然候选symmetric_dt2_complete.npz，SHAd1515a4aafa620adab91a7404cc78ac14ccb9ee5541addb265410ff6a4fba65c；下一train2688/validation256。父档和其他臂保留，不叫冠军。
+- /growth核对46→49、58内部桥、13B、功/热；真实三个完整存档，无插值树。只读viewer22576→3956，旧其他页面保留；截图F:/fly_stream_overflow/cgb_full_step_20261022/growth_view.png。
+- Git阶段cgb-full-step-20261022；完整源码/实际数据/旧源码/9全档/截图与增量bundle保存在F:/fly_stream_overflow/cgb_full_step_backup_20261022/，以实际manifest和恢复核对为准。没有旧妈妈训练、子agent/skill或关机。总目标继续周转中的历史保持、预测/行动后果与跨层维持，不以整核测试替代主线。

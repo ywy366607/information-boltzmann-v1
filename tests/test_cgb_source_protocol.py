@@ -36,6 +36,23 @@ def test_text_protocol_repeats_original_physical_learning_and_scores():
     assert protocol.text_exposures == protocol.intervals == 3
 
 
+@pytest.mark.parametrize('mode', ['text_drive', 'held_source', 'source_disconnected'])
+def test_refinement_advances_same_external_interval_and_rejects_fractional_clock(mode):
+    m, s = ports()
+    other = MobileExchange.from_state_dict(m.state_dict())
+    protocol = SourceProtocol(mode, [3.]*8 if mode == 'held_source' else None)
+    before, session = m.state_dict(), copy.deepcopy(s)
+    with pytest.raises(ValueError, match='divide'):
+        protocol.advance(m, s, 255 if mode == 'text_drive' else None, dt_ms=3.)
+    same(m.state_dict(), before)
+    assert s == session and protocol.intervals == 0
+    protocol.advance(m, s, 255 if mode == 'text_drive' else None, dt_ms=1.)
+    for _ in range(4):
+        other.step(1., None if mode == 'source_disconnected' else np.full(8, 3.))
+    same(m.state_dict(), other.state_dict())
+    assert m.t == 4. and protocol.intervals == 1
+
+
 @pytest.mark.parametrize('mode', ['held_source', 'source_disconnected'])
 def test_control_advances_physical_time_without_fictitious_text(mode, tmp_path):
     m, s = ports()

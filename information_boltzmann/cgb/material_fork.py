@@ -16,7 +16,8 @@ def fork_material(model: MobileExchange) -> MobileExchange:
     """
     if not isinstance(model, MobileExchange):
         raise TypeError('A complete mobile material state is required')
-    if hasattr(model, '_motion_bins') or hasattr(model, '_motion_neighbors'):
+    if (hasattr(model, '_motion_bins') or hasattr(model, '_motion_neighbors')
+            or getattr(model, '_material_step_active', False)):
         raise ValueError('Fork only at a complete operator boundary')
     fork = copy.copy(model)
     for name in model._arrays:
