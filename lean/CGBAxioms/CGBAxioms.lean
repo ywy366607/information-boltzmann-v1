@@ -5,3 +5,7 @@ import CGBAxioms.Models
 import CGBAxioms.Life
 import CGBAxioms.Inference
 import CGBAxioms.Foundation
+import CGBAxioms.RuleEncoding
+import CGBAxioms.WorldRecovery
+import CGBAxioms.OperationalLife
+import CGBAxioms.RecoveryControls

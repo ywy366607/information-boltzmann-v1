@@ -3,6 +3,15 @@ import CGBAxioms.Medium
 /-!
 # The infinite-stream life statement
 
+**Historical menu semantics (versioned 2026-10-23).** The `recover`, `aliveInd`,
+`Lives` and `LifeConjecture` below retain the old favourable-stimulus menu for
+compatibility. They do not measure current-world reachability. New operational
+targets live in `OperationalLife.lean`, using actual joint first-hit probabilities
+and a finite encoded rulebook. No equivalence of the two targets is asserted.
+Descriptions of negentropy, anaesthesia and death below are historical motivation;
+the implementation observes content intake and a sensory schedule, not a full
+world energy ledger or an irreversible probability-threshold crossing.
+
 The life definition (`CGB_AXIOMS_V0_20261022.md` §4.1–4.2) splits in two: its premises are
 the axioms, its emergent part is a theorem to prove. This file states that theorem.
 

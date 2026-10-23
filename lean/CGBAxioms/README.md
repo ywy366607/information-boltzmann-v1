@@ -21,6 +21,15 @@ Foundation.lean checks finite-state specialization, clocks, probability bounds a
 distinction between independence, universal guarantees and existence. It adds no physical
 axiom. The audit does not establish physical validity, minimality, or a life existence theorem.
 
+RuleEncoding.lean provides a complete finite rational rulebook, fixed interpreter,
+roundtrip/injectivity and total-instance bit accounting. WorldRecovery.lean derives
+actual first-hit probabilities from the existing joint dynamics, with time-dependent
+and loop-cut versions. OperationalLife.lean is the versioned partial target using
+both interfaces; Life.lean keeps the historical favourable-stimulus-menu target.
+RecoveryControls.lean proves a semantic accessibility counterexample. Neither target
+is an established life existence theorem; material intake is not yet energy intake.
+
 Scope and findings:
 - ../../docs/information_boltzmann/CGB_AXIOMS_V0_20261022.md
 - ../../docs/information_boltzmann/CGB_FOUNDATION_AUDIT_20261023.md
+- ../../docs/information_boltzmann/CGB_OPERATIONAL_FOUNDATIONS_20261023.md
