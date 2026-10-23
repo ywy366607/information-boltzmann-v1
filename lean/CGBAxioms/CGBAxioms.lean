@@ -4,3 +4,4 @@ import CGBAxioms.Medium
 import CGBAxioms.Models
 import CGBAxioms.Life
 import CGBAxioms.Inference
+import CGBAxioms.Foundation

@@ -1,0 +1,76 @@
+{
+  "scope": "Foundation audit only; no added physical axiom, changed life target, or experiment.",
+  "baseline": "de0268d",
+  "inventory": {
+    "declarations": 385,
+    "modules": [
+      "CGBAxioms.Language",
+      "CGBAxioms.Symmetry",
+      "CGBAxioms.Medium",
+      "CGBAxioms.Life",
+      "CGBAxioms.Models",
+      "CGBAxioms.Inference",
+      "CGBAxioms.Foundation"
+    ],
+    "theorems": 239
+  },
+  "source_declared_theorems": 104,
+  "audit_guard_checks": 10,
+  "new_source_proofs": [
+    "CGB.Medium.finite_local_states_of_p1a",
+    "CGB.Medium.p1a_iff_unique_vacuum",
+    "CGB.Medium.exists_clock_of_finite_stimuli",
+    "CGB.Medium.recover_ignores_world_moves",
+    "CGB.Medium.recover_bounds",
+    "CGB.Medium.law_nonneg_of_clocked",
+    "CGB.Medium.lawCut_nonneg_of_clocked",
+    "CGB.Medium.aliveProb_bounds",
+    "CGB.Medium.aliveProb_zero",
+    "CGB.Medium.persists_parameter_bounds",
+    "CGB.FoundationCounterexamples.unboundedStimulus_axioms",
+    "CGB.FoundationCounterexamples.unboundedStimulus_no_clock",
+    "CGB.TheoryAudit.existence_survives_weakening",
+    "CGB.TheoryAudit.counterexample_blocks_guarantee"
+  ],
+  "build_and_full_trust_audit_passed": true,
+  "legacy_manual_43_passed": true,
+  "unchanged_base_lean_modules": [
+    "lean/CGBAxioms/CGBAxioms/Language.lean",
+    "lean/CGBAxioms/CGBAxioms/Symmetry.lean",
+    "lean/CGBAxioms/CGBAxioms/Medium.lean",
+    "lean/CGBAxioms/CGBAxioms/Models.lean",
+    "lean/CGBAxioms/CGBAxioms/Life.lean",
+    "lean/CGBAxioms/CGBAxioms/Inference.lean"
+  ],
+  "verified_source_snapshot_files": 19,
+  "evidence_directory": "F:\\fly_stream_overflow\\cgb_foundation_audit_20261023",
+  "full_inventory_sha256": "7cd1b87a017ac45def93b56340fe76c00e5783677a53c3e8e45194700f5481cf",
+  "source_hashes": {
+    "lean/CGBAxioms/CGBAxioms/Audit.lean": "1745f9772250e6bfe7812323cc5c8733840d60b9d62ad8549d81c049249f3b44",
+    "lean/CGBAxioms/CGBAxioms/AuditAll.lean": "6e1bc9c942b841b9b53dac9c728e9e266137adfc3d020773bc7344742c995c07",
+    "lean/CGBAxioms/CGBAxioms/Foundation.lean": "0fe5127c183a9ea32632ebfc3bf152c441ffadd90b115e87a7610b562add8134",
+    "lean/CGBAxioms/CGBAxioms/Inference.lean": "e1f34bfeb7c2907336753abdb4aa5daf6bc3515edafb50b6c2522a615a0d9a6f",
+    "lean/CGBAxioms/CGBAxioms/Language.lean": "b52db422bcac3996cb279d41813aa4a0998ebb6fe54ba2bb87b096972539f0fe",
+    "lean/CGBAxioms/CGBAxioms/Life.lean": "fd7d864b6ca95dfeb04afd1decf7f2e1bec9fae66cf347d59db42c088e71c976",
+    "lean/CGBAxioms/CGBAxioms/Medium.lean": "e4f507706eec6f69ce57c95b47a1062e6b644bab12990347cd8d84f286c86fc4",
+    "lean/CGBAxioms/CGBAxioms/Models.lean": "d7648d7e36912bdd6119f4e27027301b791c530ad7217e873d35c504e1a2f5b0",
+    "lean/CGBAxioms/CGBAxioms/Symmetry.lean": "f595478d072a4fa5680be6e6a928afb86922e3fcdd3ef0512bfefdb9ab2090bc",
+    "lean/CGBAxioms/CGBAxioms.lean": "914d8a03b2d4133378ced20b8d7a062e05d2c9ce5a1c450a06dd162f5fd99c4c",
+    "lean/CGBAxioms/scripts/audit.py": "cc6d60295dfba86277642aecc3a0ebd5f72ce9f43f3f727adcf4d2de85f2ff0e",
+    "lean/CGBAxioms/scripts/audit.sh": "43288d2c0b9320f8272584bc92e219a37d0a1acf86f06ae914d13b86769b03b0",
+    "lean/CGBAxioms/README.md": "92401cd52de247979a37ef5815fd9673d8d012ab4244057d0a4f1b66972d3cb9",
+    "lean/CGBAxioms/lakefile.toml": "bc06899122e1b4bc89f61a126911541ba9c874c4aad0fea3762657d9aef1abb8",
+    "lean/CGBAxioms/lake-manifest.json": "5b6e4e0d305ca50266c032a823861f1e3de411bc52114f9a98d80d3629899cea",
+    "lean/CGBAxioms/lean-toolchain": "d581a24b57a4ae9e0b2132ca8ac7cc3ac336a9fc2751fe6b29414e2d434d54c4",
+    "docs/information_boltzmann/CGB_AXIOMS_V0_20261022.md": "8bb7c8d909de51b1e7639b7ded3351cd9359fddd17dce567a8166f069336de9a",
+    "docs/information_boltzmann/CGB_FOUNDATION_AUDIT_20261023.md": "07440dfdb07538aae31f2fd807016b256a45bb02fec7c06a6a22148f4c32884a",
+    "docs/information_boltzmann/CGB_DEVELOPMENT_LOG_20261022.md": "63b22dc490aca5cbb8adc6835e58dcdbc68006c27bc37a56fc76747b0b22d52b"
+  },
+  "limitations": [
+    "No global-minimality or full-Lives witness",
+    "Atomic independence of all compound clauses not completed",
+    "Source signatures are audited, not empirical premise truth",
+    "Current recovery ignores actual world transitions",
+    "No Python-to-Lean refinement or finite-code complexity model"
+  ]
+}
