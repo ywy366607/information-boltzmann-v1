@@ -1,5 +1,6 @@
 import CGBAxioms.Foundation
 import CGBAxioms.RecoveryControls
+import CGBAxioms.InteractionControls
 import Lean
 
 /-!

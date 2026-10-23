@@ -29,7 +29,15 @@ both interfaces; Life.lean keeps the historical favourable-stimulus-menu target.
 RecoveryControls.lean proves a semantic accessibility counterexample. Neither target
 is an established life existence theorem; material intake is not yet energy intake.
 
+Interaction.lean gives finite probabilistic interaction coalgebras, common-output
+couplings, coinductive soundness for all finite observation cylinders, composable
+state refinement, event first-hit preservation and a separate world-clock certificate.
+InteractionBridge.lean reuses the existing normal/cut kernels and proves that
+first-hit observation is exactly the prior actual-recovery semantics. Semantic
+controls are in InteractionControls.lean; this adds no physical axiom or generator.
+
 Scope and findings:
 - ../../docs/information_boltzmann/CGB_AXIOMS_V0_20261022.md
 - ../../docs/information_boltzmann/CGB_FOUNDATION_AUDIT_20261023.md
 - ../../docs/information_boltzmann/CGB_OPERATIONAL_FOUNDATIONS_20261023.md
+- ../../docs/information_boltzmann/CGB_COALGEBRA_SEMANTICS_20261023.md

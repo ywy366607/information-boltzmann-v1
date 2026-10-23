@@ -9,3 +9,6 @@ import CGBAxioms.RuleEncoding
 import CGBAxioms.WorldRecovery
 import CGBAxioms.OperationalLife
 import CGBAxioms.RecoveryControls
+import CGBAxioms.Interaction
+import CGBAxioms.InteractionBridge
+import CGBAxioms.InteractionControls

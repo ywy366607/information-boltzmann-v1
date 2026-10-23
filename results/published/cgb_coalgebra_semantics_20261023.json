@@ -1,0 +1,144 @@
+{
+  "scope": "Coalgebraic interaction semantics and conditional refinement certificates; no added physical axiom or brain capability experiment.",
+  "baseline_commit": "851012b7c9367966dd3c3683b6e459d266acfab0",
+  "inventory": {
+    "declarations": 797,
+    "modules": [
+      "CGBAxioms.Language",
+      "CGBAxioms.Symmetry",
+      "CGBAxioms.Medium",
+      "CGBAxioms.Life",
+      "CGBAxioms.Models",
+      "CGBAxioms.Inference",
+      "CGBAxioms.Foundation",
+      "CGBAxioms.RuleEncoding",
+      "CGBAxioms.WorldRecovery",
+      "CGBAxioms.OperationalLife",
+      "CGBAxioms.RecoveryControls",
+      "CGBAxioms.Interaction",
+      "CGBAxioms.InteractionBridge",
+      "CGBAxioms.InteractionControls"
+    ],
+    "theorems": 457
+  },
+  "source_declared_theorems": 171,
+  "new_source_proof_count": 31,
+  "new_source_proofs": [
+    "CGB.Interaction.bisimilar_is_bisimulation",
+    "CGB.Interaction.bisimilar_sameBehavior",
+    "CGB.Interaction.coinduction",
+    "CGB.Interaction.distinguishing_trace",
+    "CGB.Interaction.firstHit_bounds",
+    "CGB.Interaction.trace_nonneg",
+    "CGB.Interaction.trace_prefix_consistent",
+    "CGB.InteractionControls.actual_recovery_bridge",
+    "CGB.InteractionControls.different_future",
+    "CGB.InteractionControls.independent_bit_refines",
+    "CGB.InteractionControls.independent_bit_sameBehavior",
+    "CGB.InteractionControls.no_bisimulation_from_first_observation",
+    "CGB.InteractionControls.physical_certificate_rejects_time_rescaling",
+    "CGB.InteractionControls.same_first_observation",
+    "CGB.Medium.intakeCoalgebra_actualRecover",
+    "CGB.Medium.intakeCoalgebra_firstHit",
+    "CGB.Medium.refinement_preserves_recovery_and_time",
+    "CGB.Interaction.Bisimulation.firstHit_eq",
+    "CGB.Interaction.Bisimulation.sameBehavior",
+    "CGB.Interaction.Bisimulation.trace_eq",
+    "CGB.Interaction.Coupling.expectation_at_output",
+    "CGB.Interaction.Machine.ofKernels_firstHit",
+    "CGB.Interaction.Machine.ofKernels_marginal",
+    "CGB.Interaction.Machine.ofKernels_step",
+    "CGB.Interaction.Refines.bisimulation",
+    "CGB.Interaction.Refines.comp",
+    "CGB.Interaction.Refines.firstHit_eq",
+    "CGB.Interaction.Refines.recovery_test_iff",
+    "CGB.Interaction.Refines.refl",
+    "CGB.Interaction.Refines.sameBehavior",
+    "CGB.Interaction.TimedRefinement.elapsed_eq"
+  ],
+  "full_build_and_trust_audit_passed": true,
+  "audit_guard_checks": 10,
+  "legacy_manual_43_passed": true,
+  "unchanged_base_modules": [
+    "Language",
+    "Symmetry",
+    "Medium",
+    "Models",
+    "Life",
+    "Inference",
+    "Foundation",
+    "RuleEncoding",
+    "WorldRecovery",
+    "OperationalLife",
+    "RecoveryControls"
+  ],
+  "archived_new_sources_reelaborated": [
+    {
+      "module": "Interaction",
+      "exit_code": 0,
+      "source_sha256": "9e6daed623e1f03a15c6661408c191fb5d9696af28938ab3cc8f5bed516c8023"
+    },
+    {
+      "module": "InteractionBridge",
+      "exit_code": 0,
+      "source_sha256": "43059e1a6192caf81267331edbdd59a0b2480fd4776a589e5138b36286fdf467"
+    },
+    {
+      "module": "InteractionControls",
+      "exit_code": 0,
+      "source_sha256": "8bbb3766b4494b1b9f2323b17757d5e9f1fc2a87f0b006fefc019ef9b068490d"
+    }
+  ],
+  "reelaboration_scope": "Archived source, matching audited workspace dependencies and pinned toolchain; not an isolated dependency rebuild or independent scientific review.",
+  "source_snapshot_file_count": 28,
+  "source_hashes": {
+    "CGBAxioms/Audit.lean": "1745f9772250e6bfe7812323cc5c8733840d60b9d62ad8549d81c049249f3b44",
+    "CGBAxioms/AuditAll.lean": "8739f7cdf354fe6f6dc31db99a7e08eaa4f2c4841e39275beabc9add6a965b42",
+    "CGBAxioms/Foundation.lean": "0fe5127c183a9ea32632ebfc3bf152c441ffadd90b115e87a7610b562add8134",
+    "CGBAxioms/Inference.lean": "e1f34bfeb7c2907336753abdb4aa5daf6bc3515edafb50b6c2522a615a0d9a6f",
+    "CGBAxioms/Interaction.lean": "9e6daed623e1f03a15c6661408c191fb5d9696af28938ab3cc8f5bed516c8023",
+    "CGBAxioms/InteractionBridge.lean": "43059e1a6192caf81267331edbdd59a0b2480fd4776a589e5138b36286fdf467",
+    "CGBAxioms/InteractionControls.lean": "8bbb3766b4494b1b9f2323b17757d5e9f1fc2a87f0b006fefc019ef9b068490d",
+    "CGBAxioms/Language.lean": "b52db422bcac3996cb279d41813aa4a0998ebb6fe54ba2bb87b096972539f0fe",
+    "CGBAxioms/Life.lean": "f21caf6feba9f6a4a2b5a3bdeb6bea7a05d6503b97c347af52c56e68050b3f65",
+    "CGBAxioms/Medium.lean": "e4f507706eec6f69ce57c95b47a1062e6b644bab12990347cd8d84f286c86fc4",
+    "CGBAxioms/Models.lean": "d7648d7e36912bdd6119f4e27027301b791c530ad7217e873d35c504e1a2f5b0",
+    "CGBAxioms/OperationalLife.lean": "db2259043a68f052c23bbea402a3b48933ff03f3766556349c342db675976e1a",
+    "CGBAxioms/RecoveryControls.lean": "19ab24fd7e9f292707a916eb9cdb5a372b62121c6faae042882aca892b0d35a2",
+    "CGBAxioms/RuleEncoding.lean": "27aaa80e273a621bfa37a0c47e85afeb7aed818f3b96cf56359a0fccc0990100",
+    "CGBAxioms/Symmetry.lean": "f595478d072a4fa5680be6e6a928afb86922e3fcdd3ef0512bfefdb9ab2090bc",
+    "CGBAxioms/WorldRecovery.lean": "168592642319cd10c65ee9edac1e11389534243346b03636408cc421bf00af5c",
+    "CGBAxioms.lean": "272ff6bd03bffb97b389e34b5daf2c3f060740db6f57a64be8df345d5bc792c2"
+  },
+  "controls": {
+    "independent_resampled_bit_has_exact_quotient_certificate": true,
+    "same_first_output": {
+      "alternating_false_probability": 1,
+      "constant_false_probability": 1
+    },
+    "different_continuation_false_true": {
+      "alternating_probability": 1,
+      "constant_probability": 0
+    },
+    "different_continuation_proves_not_bisimilar": true,
+    "physical_certificate_rejects_clock_1_vs_2": true,
+    "normal_and_cut_recovery_match_prior_operational_definition": true
+  },
+  "proved": [
+    "Nonnegative and prefix-consistent finite observation probabilities.",
+    "Common-output bisimulation implies equality of ALL finite observation cylinders under ALL causal input policies.",
+    "Exact state-map refinement yields bisimulation and composes.",
+    "Observed first-hit and content-plus-recovery threshold tests transfer under the stated premises.",
+    "Original joint kernels are unchanged by observation labels; normal/cut recovery matches the prior definition.",
+    "A timed certificate for two media preserves actual recovery and n/clock elapsed time."
+  ],
+  "limits": [
+    "No claim of full life existence, minimal physical axioms, or new brain mechanism.",
+    "No construction of a general final coalgebra, infinite-path measure, or minimal-state discovery algorithm.",
+    "Only registered observations are preserved; physical content and clocks require explicit correspondence.",
+    "No actual Python generator/optimized implementation refinement certificate has been established.",
+    "Usable-free-energy ledger, active recovery, nonfrozen memory, active inference and true-fly validation remain on the main route.",
+    "Hopf structure remains a candidate requiring composition/decomposition laws, not inferred from tree-like appearance."
+  ],
+  "archive_directory": "F:/fly_stream_overflow/cgb_coalgebra_semantics_20261023"
+}
