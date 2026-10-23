@@ -42,3 +42,9 @@ import CGBAxioms.Life
 #print axioms CGB.Medium.kernel_nonneg
 #print axioms CGB.Medium.kernel_sum
 #print axioms CGB.Medium.law_sum
+#print axioms CGB.Medium.lawCut_sum
+-- self-maintenance through the loop: exposure and metabolism are necessary
+#print axioms CGB.Medium.not_selfMaintains_of_unexposed
+#print axioms CGB.Medium.not_selfMaintains_of_closedMatter
+#print axioms CGB.Medium.Lives.exposed
+#print axioms CGB.Medium.Lives.metabolizes

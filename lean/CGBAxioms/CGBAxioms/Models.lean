@@ -534,7 +534,7 @@ theorem seed_axioms : seed.Axioms :=
 
 /-- The reflection swapping the interior sites is a genuine symmetry. -/
 theorem seed_swap_isAut : seed.IsAut (Equiv.swap 1 3) :=
-  ⟨by show ∀ u v : Fin 4, ringAdj _ _ ↔ ringAdj u v; decide, by decide, by decide⟩
+  ⟨by change ∀ u v : Fin 4, ringAdj _ _ ↔ ringAdj u v; decide, by decide, by decide⟩
 
 /-- Food at the source and an open drain at the sink. -/
 def food : Fin 4 → Bool := fun _ => true
