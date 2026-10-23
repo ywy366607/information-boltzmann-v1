@@ -1,0 +1,376 @@
+{
+  "scope": "Joint minimality, conditional consequences and free-function audit. No added physical axiom or capability experiment.",
+  "baseline_commit": "25b1b5fb6f9d697101be7095ca467b840e5c2244",
+  "inventory": {
+    "declarations": 857,
+    "modules": [
+      "CGBAxioms.Language",
+      "CGBAxioms.Symmetry",
+      "CGBAxioms.Medium",
+      "CGBAxioms.Life",
+      "CGBAxioms.Models",
+      "CGBAxioms.Inference",
+      "CGBAxioms.Foundation",
+      "CGBAxioms.RuleEncoding",
+      "CGBAxioms.WorldRecovery",
+      "CGBAxioms.OperationalLife",
+      "CGBAxioms.RecoveryControls",
+      "CGBAxioms.Interaction",
+      "CGBAxioms.InteractionBridge",
+      "CGBAxioms.InteractionControls",
+      "CGBAxioms.ConstraintAudit",
+      "CGBAxioms.ConstraintFreedom"
+    ],
+    "theorems": 510
+  },
+  "source_declared_theorems": 190,
+  "new_source_proof_count": 19,
+  "new_source_proofs": [
+    "CGB.ConstraintFreedom.arbitrarily_many_states_at_unit_capacity",
+    "CGB.ConstraintFreedom.arbitrary_driven_tables_admitted",
+    "CGB.ConstraintFreedom.constant_protocol_can_be_driven",
+    "CGB.ConstraintFreedom.openSite_reproduces_process",
+    "CGB.JumpProcess.fromConductance_reversible",
+    "CGB.JumpProcess.reversible_conductance_representation",
+    "CGB.Medium.axioms_iff_atomized",
+    "CGB.Medium.empty_boundary_every_stimulus_reversible",
+    "CGB.Medium.empty_participants_no_effect",
+    "CGB.Medium.initial_invariant_of_rigid",
+    "CGB.Medium.jump_equivariant",
+    "CGB.Medium.onlyBoundarySenses_of_all_boundary",
+    "CGB.Medium.p1a_iff_finite_and_unique",
+    "CGB.Medium.p2a_of_every_event_open",
+    "CGB.Medium.p2c_of_rigid",
+    "CGB.Medium.rescale_axioms",
+    "CGB.Medium.rescale_changes_nonzero_jump",
+    "CGB.Medium.rescale_jump",
+    "CGB.Medium.rigid_of_injective_identity"
+  ],
+  "full_build_and_trust_audit_passed": true,
+  "audit_guard_checks": 10,
+  "legacy_manual_43_passed": true,
+  "unchanged_base_modules": [
+    "Language",
+    "Symmetry",
+    "Medium",
+    "Models",
+    "Life",
+    "Inference",
+    "Foundation",
+    "RuleEncoding",
+    "WorldRecovery",
+    "OperationalLife",
+    "RecoveryControls",
+    "Interaction",
+    "InteractionBridge",
+    "InteractionControls"
+  ],
+  "archived_new_sources_reelaborated": [
+    {
+      "module": "ConstraintAudit",
+      "exit_code": 0,
+      "source_sha256": "cfbda2ff344353b46b209b43cfd69dc836a2ab9a4cbe62ddbe172de9e04544ab"
+    },
+    {
+      "module": "ConstraintFreedom",
+      "exit_code": 0,
+      "source_sha256": "37bf271ea1b419f9df48cf81ea20ccc3b7704d39fab9961ad23c45967ea8c0fe"
+    }
+  ],
+  "reelaboration_scope": "Archived source using matching audited workspace dependencies and pinned toolchain; not an isolated rebuild or independent scientific review.",
+  "source_snapshot_file_count": 31,
+  "source_hashes": {
+    "CGBAxioms/Audit.lean": "1745f9772250e6bfe7812323cc5c8733840d60b9d62ad8549d81c049249f3b44",
+    "CGBAxioms/AuditAll.lean": "78dde51608d564fced685131447a75db909da0a0c038c53e92f851fd26e26df2",
+    "CGBAxioms/ConstraintAudit.lean": "cfbda2ff344353b46b209b43cfd69dc836a2ab9a4cbe62ddbe172de9e04544ab",
+    "CGBAxioms/ConstraintFreedom.lean": "37bf271ea1b419f9df48cf81ea20ccc3b7704d39fab9961ad23c45967ea8c0fe",
+    "CGBAxioms/Foundation.lean": "0fe5127c183a9ea32632ebfc3bf152c441ffadd90b115e87a7610b562add8134",
+    "CGBAxioms/Inference.lean": "e1f34bfeb7c2907336753abdb4aa5daf6bc3515edafb50b6c2522a615a0d9a6f",
+    "CGBAxioms/Interaction.lean": "9e6daed623e1f03a15c6661408c191fb5d9696af28938ab3cc8f5bed516c8023",
+    "CGBAxioms/InteractionBridge.lean": "43059e1a6192caf81267331edbdd59a0b2480fd4776a589e5138b36286fdf467",
+    "CGBAxioms/InteractionControls.lean": "8bbb3766b4494b1b9f2323b17757d5e9f1fc2a87f0b006fefc019ef9b068490d",
+    "CGBAxioms/Language.lean": "b52db422bcac3996cb279d41813aa4a0998ebb6fe54ba2bb87b096972539f0fe",
+    "CGBAxioms/Life.lean": "f21caf6feba9f6a4a2b5a3bdeb6bea7a05d6503b97c347af52c56e68050b3f65",
+    "CGBAxioms/Medium.lean": "e4f507706eec6f69ce57c95b47a1062e6b644bab12990347cd8d84f286c86fc4",
+    "CGBAxioms/Models.lean": "d7648d7e36912bdd6119f4e27027301b791c530ad7217e873d35c504e1a2f5b0",
+    "CGBAxioms/OperationalLife.lean": "db2259043a68f052c23bbea402a3b48933ff03f3766556349c342db675976e1a",
+    "CGBAxioms/RecoveryControls.lean": "19ab24fd7e9f292707a916eb9cdb5a372b62121c6faae042882aca892b0d35a2",
+    "CGBAxioms/RuleEncoding.lean": "27aaa80e273a621bfa37a0c47e85afeb7aed818f3b96cf56359a0fccc0990100",
+    "CGBAxioms/Symmetry.lean": "f595478d072a4fa5680be6e6a928afb86922e3fcdd3ef0512bfefdb9ab2090bc",
+    "CGBAxioms/WorldRecovery.lean": "168592642319cd10c65ee9edac1e11389534243346b03636408cc421bf00af5c",
+    "CGBAxioms.lean": "94845441499251bd197d9c2b6883b9d42f0396a8359f4141fb1574f753a3669d"
+  },
+  "constraint_registry": [
+    {
+      "id": "A01",
+      "parent": "P1a",
+      "atomized_field": "finiteSublevels",
+      "statement": "Finite content sublevels",
+      "regime_or_free_choice": "automatic for finite local state types",
+      "legacy_bundle_witnesses": [
+        "CGB.Models.twinTape_witness"
+      ],
+      "consequence_proofs": [
+        "CGB.Medium.p1a_iff_finite_and_unique"
+      ],
+      "independence_status": "Legacy evidence retained; no new blanket claim of 14-way irredundancy."
+    },
+    {
+      "id": "A02",
+      "parent": "P1a",
+      "atomized_field": "boundedContent",
+      "statement": "Uniform content capacity",
+      "regime_or_free_choice": "automatic for finite local state types",
+      "legacy_bundle_witnesses": [
+        "CGB.Models.twinBag_witness"
+      ],
+      "consequence_proofs": [
+        "CGB.Medium.p1a_iff_finite_and_unique"
+      ],
+      "independence_status": "Legacy evidence retained; no new blanket claim of 14-way irredundancy."
+    },
+    {
+      "id": "A03",
+      "parent": "P1a",
+      "atomized_field": "uniqueVacuum",
+      "statement": "Unique zero-content state",
+      "regime_or_free_choice": "remaining P1a condition in the finite specialization",
+      "legacy_bundle_witnesses": [
+        "CGB.Models.twinBlank_witness"
+      ],
+      "consequence_proofs": [
+        "CGB.Medium.p1a_iff_unique_vacuum"
+      ],
+      "independence_status": "Legacy evidence retained; no new blanket claim of 14-way irredundancy."
+    },
+    {
+      "id": "A04",
+      "parent": "P1b",
+      "atomized_field": "homogeneousContact",
+      "statement": "Transitive contact automorphisms",
+      "regime_or_free_choice": "full structural automorphism group may still be rigid",
+      "legacy_bundle_witnesses": [],
+      "consequence_proofs": [
+        "CGB.Medium.rigid_of_injective_identity"
+      ],
+      "independence_status": "Legacy evidence retained; no new blanket claim of 14-way irredundancy."
+    },
+    {
+      "id": "A05",
+      "parent": "P1b",
+      "atomized_field": "participantsContact",
+      "statement": "Participants pairwise contact",
+      "regime_or_free_choice": "no distance, degree or participant-count bound",
+      "legacy_bundle_witnesses": [],
+      "consequence_proofs": [],
+      "independence_status": "Legacy evidence retained; no new blanket claim of 14-way irredundancy."
+    },
+    {
+      "id": "A06",
+      "parent": "P1b",
+      "atomized_field": "writesParticipants",
+      "statement": "No writes outside participants",
+      "regime_or_free_choice": "vacuous write restriction if all sites participate",
+      "legacy_bundle_witnesses": [],
+      "consequence_proofs": [
+        "CGB.Medium.empty_participants_no_effect"
+      ],
+      "independence_status": "Legacy evidence retained; no new blanket claim of 14-way irredundancy."
+    },
+    {
+      "id": "A07",
+      "parent": "P1b",
+      "atomized_field": "rateReadsParticipants",
+      "statement": "Rate reads participants only",
+      "regime_or_free_choice": "all-site participants allow full-state tables",
+      "legacy_bundle_witnesses": [
+        "CGB.Models.farFlip_witness"
+      ],
+      "consequence_proofs": [],
+      "independence_status": "Legacy evidence retained; no new blanket claim of 14-way irredundancy."
+    },
+    {
+      "id": "A08",
+      "parent": "P1b",
+      "atomized_field": "effectReadsParticipants",
+      "statement": "Effect reads participants only",
+      "regime_or_free_choice": "all-site participants allow full-state tables",
+      "legacy_bundle_witnesses": [],
+      "consequence_proofs": [],
+      "independence_status": "Legacy evidence retained; no new blanket claim of 14-way irredundancy."
+    },
+    {
+      "id": "A09",
+      "parent": "P2a",
+      "atomized_field": "closedConservation",
+      "statement": "Positive-rate closed events conserve content",
+      "regime_or_free_choice": "automatic if every event is open",
+      "legacy_bundle_witnesses": [
+        "CGB.Models.twinToggle_witness"
+      ],
+      "consequence_proofs": [
+        "CGB.Medium.p2a_of_every_event_open",
+        "CGB.Medium.finite_reachable"
+      ],
+      "independence_status": "Legacy evidence retained; no new blanket claim of 14-way irredundancy."
+    },
+    {
+      "id": "A10",
+      "parent": "P2b",
+      "atomized_field": "calmBalance",
+      "statement": "Aggregate detailed balance at calm",
+      "regime_or_free_choice": "conductances, support and clock remain free",
+      "legacy_bundle_witnesses": [
+        "CGB.Models.twinCycle_witness"
+      ],
+      "consequence_proofs": [],
+      "independence_status": "Legacy evidence retained; no new blanket claim of 14-way irredundancy."
+    },
+    {
+      "id": "A11",
+      "parent": "P2c",
+      "atomized_field": "coherentEquivariance",
+      "statement": "One shared event permutation for rate and effect",
+      "regime_or_free_choice": "automatic for rigid structure",
+      "legacy_bundle_witnesses": [
+        "CGB.Models.triLookup_witness"
+      ],
+      "consequence_proofs": [
+        "CGB.Medium.p2c_of_rigid",
+        "CGB.Medium.jump_equivariant"
+      ],
+      "independence_status": "Legacy evidence retained; no new blanket claim of 14-way irredundancy."
+    },
+    {
+      "id": "A12",
+      "parent": "P3",
+      "atomized_field": "boundaryRate",
+      "statement": "Rate senses boundary stimulus only",
+      "regime_or_free_choice": "automatic when all sites are boundary",
+      "legacy_bundle_witnesses": [
+        "CGB.Models.innerClock_witness"
+      ],
+      "consequence_proofs": [
+        "CGB.Medium.onlyBoundarySenses_of_all_boundary"
+      ],
+      "independence_status": "Legacy evidence retained; no new blanket claim of 14-way irredundancy."
+    },
+    {
+      "id": "A13",
+      "parent": "P3",
+      "atomized_field": "boundaryEffect",
+      "statement": "Effect senses boundary stimulus only",
+      "regime_or_free_choice": "automatic when all sites are boundary",
+      "legacy_bundle_witnesses": [],
+      "consequence_proofs": [
+        "CGB.Medium.onlyBoundarySenses_of_all_boundary"
+      ],
+      "independence_status": "Legacy evidence retained; no new blanket claim of 14-way irredundancy."
+    },
+    {
+      "id": "A14",
+      "parent": "P3",
+      "atomized_field": "initialInvariant",
+      "statement": "Initial state structurally invariant",
+      "regime_or_free_choice": "automatic for rigid structure",
+      "legacy_bundle_witnesses": [
+        "CGB.Models.pairPreset_witness"
+      ],
+      "consequence_proofs": [
+        "CGB.Medium.initial_invariant_of_rigid"
+      ],
+      "independence_status": "Legacy evidence retained; no new blanket claim of 14-way irredundancy."
+    }
+  ],
+  "joint_findings": [
+    {
+      "id": "equivalent_factoring",
+      "statement": "Original six bundles iff 14 audit conditions; not globally minimal atoms.",
+      "proof_refs": [
+        "CGB.Medium.axioms_iff_atomized"
+      ]
+    },
+    {
+      "id": "qualitative_capacity",
+      "statement": "P1a iff finite local state type and unique vacuum; no quantitative information/content law.",
+      "proof_refs": [
+        "CGB.Medium.p1a_iff_finite_and_unique",
+        "CGB.ConstraintFreedom.arbitrarily_many_states_at_unit_capacity"
+      ]
+    },
+    {
+      "id": "conditional_vacuity",
+      "statement": "Rigid structure, full boundary and all-open events weaken comparisons in stated regimes.",
+      "proof_refs": [
+        "CGB.Medium.rigid_of_injective_identity",
+        "CGB.Medium.p2c_of_rigid",
+        "CGB.Medium.initial_invariant_of_rigid",
+        "CGB.Medium.onlyBoundarySenses_of_all_boundary",
+        "CGB.Medium.p2a_of_every_event_open"
+      ]
+    },
+    {
+      "id": "joint_consequences",
+      "statement": "Aggregate kernel equivariance; no boundary plus boundary sensing and calm balance makes all stimuli reversible.",
+      "proof_refs": [
+        "CGB.Medium.jump_equivariant",
+        "CGB.Medium.empty_boundary_every_stimulus_reversible"
+      ]
+    },
+    {
+      "id": "conductance_freedom",
+      "statement": "All reversible kernels have k(x,y)=C(x,y)/pi(x), with positive pi and symmetric nonnegative C.",
+      "proof_refs": [
+        "CGB.JumpProcess.fromConductance_reversible",
+        "CGB.JumpProcess.reversible_conductance_representation"
+      ]
+    },
+    {
+      "id": "clock_scale_freedom",
+      "statement": "All six clauses survive global rate scaling c>=0; actual nonzero rates change at c=2. Fixed world-clock admission is separate.",
+      "proof_refs": [
+        "CGB.Medium.rescale_axioms",
+        "CGB.Medium.rescale_jump",
+        "CGB.Medium.rescale_changes_nonzero_jump"
+      ]
+    },
+    {
+      "id": "arbitrary_driven_core",
+      "statement": "Single exposed-site core admits arbitrary finite driven tables and any finite process off-diagonal rates; no encoded-budget or life witness.",
+      "proof_refs": [
+        "CGB.ConstraintFreedom.arbitrary_driven_tables_admitted",
+        "CGB.ConstraintFreedom.openSite_reproduces_process"
+      ]
+    },
+    {
+      "id": "constant_drive",
+      "statement": "Existing constant food witness is nonreversible; temporal protocol changes and detailed balance differ.",
+      "proof_refs": [
+        "CGB.ConstraintFreedom.constant_protocol_can_be_driven",
+        "CGB.Models.seed_driven"
+      ]
+    }
+  ],
+  "proof_reference_validation": "All registered names exist in the current full kernel-audited inventory; all 14 field names match source order.",
+  "remaining_free_data": [
+    "state/site/event/stimulus granularity",
+    "contact/identity/boundary geometry",
+    "content values and physical correspondence",
+    "participants",
+    "effect functions",
+    "positive equilibrium weights and symmetric conductances",
+    "driven rate functions",
+    "initial/calm state selection",
+    "world feedback/resources/stimuli and clock",
+    "shared generator encoding and observation correspondence"
+  ],
+  "limits": [
+    "No global minimum axiom-set theorem; separate independence of all 14 subconditions is unfinished.",
+    "Counterexamples to a universal guarantee do not prove necessity for existential life generation.",
+    "Permissive driven models have no complete encoding-budget or life certificate.",
+    "Qualitative finiteness does not identify information capacity with physical content/energy/hardware.",
+    "Effective equilibrium potential is not a calibrated energy/work/heat ledger.",
+    "No actual fly validation, generator refinement, new brain or individual training occurred."
+  ],
+  "archive_directory": "F:/fly_stream_overflow/cgb_minimality_generativity_20261023"
+}

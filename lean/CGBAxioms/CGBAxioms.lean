@@ -12,3 +12,5 @@ import CGBAxioms.RecoveryControls
 import CGBAxioms.Interaction
 import CGBAxioms.InteractionBridge
 import CGBAxioms.InteractionControls
+import CGBAxioms.ConstraintAudit
+import CGBAxioms.ConstraintFreedom

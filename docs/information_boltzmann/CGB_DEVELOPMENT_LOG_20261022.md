@@ -304,3 +304,11 @@ git worktree add -b codex/cgb-revisit-20261022 D:/cgb-revisit-20261022 cgb-befor
 - 原主线sham32字节/恢复16字节逐位一致；288项CGB检查/31.65s，全臂最大账误差9.22e-9，未改1e-8。83完整档保留，非主分支不推进自然新语料游标。
 - 用户指出邓煜等工作：检索阅读原论文arXiv:2408.07818与2503.01800，CGB_MICRO_MACRO_CAUSALITY_20261022.md据此区分可逆微观、初始相关性、统计闭合和宏观时间方向；下一步从原物理相互作用/相关性推出学习有效层，V2为参照，不以复制STDP/BCM为目标。
 - 阶段cgb-native-timing-20261022，增量bundle、源码/原始事件/83全档/分析和恢复manifest备份F:/fly_stream_overflow/cgb_native_timing_backup_20261022/。主目标仍进行，无子agent/skill/旧妈妈训练或关机。
+
+## 2026-10-23 最小性与生成后果的共同审查
+
+- 从25b1b5fb6f9d697101be7095ca467b840e5c2244接续；遵循用户要求，不先设计机制清单再补公理，同时审查已有约束的冗余、共同后果和未定自由。未用skill/子agent，未改个体、生成器或原Medium/Life/世界动力学。
+- 新增ConstraintAudit.lean和ConstraintFreedom.lean，共19条源定理：原六条与14项等价拆分；一般P1a等价有限局部状态加唯一真空；任意有限状态数可放在容量1；刚性结构/全边界/全开放事件的条件空转；空参与者作用恒等、聚合核等变、空边界下全刺激可逆；详细平衡的双向导通量参数化；全六条对任意非负全局速率缩放封闭；非零跃迁在二倍速时真改变；任意有限驱动表满足核心及任意有限跳变过程非对角率的精确表示；恒定驱动与变时协议区分。
+- 完整构建/信任与模块审计通过：16模块、857命名定理/定义、510含生成项的定理、190源定理、10审计器反向检查。数字是形式化规模，不是脑机制数量。14项尚未全部逐项独立审结；允许任意驱动表的族不声称满足全编码1%预算或生命目标。
+- 主文档v0.9同步修正P2c与有限程序、有效势与物理能量、恒定驱动与时间平移、P3接口与持续开放等旧混淆。CGB_MINIMALITY_GENERATIVITY_AUDIT_20261023.md给出14项总表、共同后果、自由函数表及下一步问题；不是追加一组新的物理限制。
+- 证据、旧43项回归、源码快照及哈希/归档重检查记录目录F:/fly_stream_overflow/cgb_minimality_generativity_20261023/，结构化结果results/published/cgb_minimality_generativity_20261023.json。Git增量备份以该目录backup_verification.json为准；父提交与既有bundle链保留，便于Claude审阅/回退。

@@ -36,8 +36,16 @@ InteractionBridge.lean reuses the existing normal/cut kernels and proves that
 first-hit observation is exactly the prior actual-recovery semantics. Semantic
 controls are in InteractionControls.lean; this adds no physical axiom or generator.
 
+ConstraintAudit.lean factors the six compound clauses into 14 equivalent audit
+conditions, proves finite-state redundancy and structural vacuity regimes, joint
+kernel consequences, conductance parametrization and rate-scale freedom.
+ConstraintFreedom.lean admits arbitrary finite driven tables/processes in an
+exposed-site representation. These are model-class results, not life or encoded
+budget witnesses, and not a certificate that all 14 conditions are independent.
+
 Scope and findings:
 - ../../docs/information_boltzmann/CGB_AXIOMS_V0_20261022.md
 - ../../docs/information_boltzmann/CGB_FOUNDATION_AUDIT_20261023.md
 - ../../docs/information_boltzmann/CGB_OPERATIONAL_FOUNDATIONS_20261023.md
 - ../../docs/information_boltzmann/CGB_COALGEBRA_SEMANTICS_20261023.md
+- ../../docs/information_boltzmann/CGB_MINIMALITY_GENERATIVITY_AUDIT_20261023.md
