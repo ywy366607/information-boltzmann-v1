@@ -1,4 +1,5 @@
 import CGBAxioms.Life
+import CGBAxioms.Models
 
 /-!
 # Active inference, first rungs: the blanket and foresight
@@ -37,11 +38,11 @@ namespace CGB
 namespace Medium
 
 variable {U Λ A I : Type*} [Fintype U] [DecidableEq U] [Fintype Λ] [DecidableEq Λ] [Fintype A]
-  [Fintype I] (M : Medium U Λ A I)
+  (M : Medium U Λ A I)
 
 /-! ## The Markov blanket -/
 
-omit [Fintype U] [DecidableEq U] [Fintype Λ] [DecidableEq Λ] [Fintype I] in
+omit [Fintype U] [DecidableEq U] [Fintype Λ] [DecidableEq Λ] in
 /-- Under P3, the full dynamics reads the stimulus only at the boundary. -/
 lemma jump_blanket [DecidableEq (U → Λ)] (h : M.OnlyBoundarySenses) {s s' : U → I}
     (hs : ∀ u ∈ M.boundary, s u = s' u) (x y : U → Λ) :
@@ -49,8 +50,8 @@ lemma jump_blanket [DecidableEq (U → Λ)] (h : M.OnlyBoundarySenses) {s s' : U
   simp only [jump]
   exact Finset.sum_congr rfl fun a _ => by rw [(h a s s' x hs).1, (h a s s' x hs).2]
 
-lemma kernel_blanket (h : M.OnlyBoundarySenses) {s s' : U → I}
-    (hs : ∀ u ∈ M.boundary, s u = s' u) : M.kernel s = M.kernel s' := by
+lemma kernel_blanket (h : M.OnlyBoundarySenses) (R : ℝ) {s s' : U → I}
+    (hs : ∀ u ∈ M.boundary, s u = s' u) : M.kernel R s = M.kernel R s' := by
   funext x y
   simp only [kernel, M.jump_blanket h hs]
 
@@ -60,19 +61,20 @@ variable (Wd : World U Λ I)
 through the stimuli at the boundary, and the world's step reads the organism only through
 the boundary. -/
 def Blanket : Prop :=
-  (∀ s s' : U → I, (∀ u ∈ M.boundary, s u = s' u) → M.kernel s = M.kernel s') ∧
+  (∀ s s' : U → I, (∀ u ∈ M.boundary, s u = s' u) →
+    M.kernel Wd.clock s = M.kernel Wd.clock s') ∧
     M.ReadsBoundary Wd
 
 /-- P3 gives the organism's half of the blanket; a world that touches only the body gives
 the other half. -/
 theorem blanket_of_axioms (h : M.Axioms) (hw : M.ReadsBoundary Wd) : M.Blanket Wd :=
-  ⟨fun _ _ hs => M.kernel_blanket h.p3.1 hs, hw⟩
+  ⟨fun _ _ hs => M.kernel_blanket h.p3.1 _ hs, hw⟩
 
 /-! ## Foresight -/
 
 section Foresight
 
-variable [DecidableEq I]
+variable [DecidableEq I] [Fintype I]
 
 /-- The stimuli at the boundary. -/
 def boundaryStim (s : U → I) : M.boundary → I := fun u => s u
@@ -105,5 +107,21 @@ def Predicts : Prop := ∃ n ε, 0 < ε ∧ ε ≤ M.worldForesight Wd n
 end Foresight
 
 end Medium
+
+namespace Models
+
+open Medium
+
+/-- The rock satisfies all six axioms but can never take anything in: it was never alive. -/
+theorem rock_cannot_eat (x : Fin 2 → Fin 3) : ¬ rock.CanTakeIn x := by
+  rintro ⟨a, s, hr, -⟩
+  simp [rock, solo] at hr
+
+/-- So the rock persists in no world. -/
+theorem rock_not_persists (Wd : World (Fin 2) (Fin 3) Unit) (δ : ℝ) (T : ℕ) :
+    ¬ rock.Persists Wd δ T :=
+  rock.not_persists_of_no_intake Wd rock_cannot_eat δ T
+
+end Models
 
 end CGB

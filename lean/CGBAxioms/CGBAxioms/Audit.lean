@@ -52,3 +52,10 @@ import CGBAxioms.Inference
 -- active inference, first rung: the blanket (one-step sparse coupling)
 #print axioms CGB.Medium.kernel_blanket
 #print axioms CGB.Medium.blanket_of_axioms
+-- alive = can eat again within the horizon with enough probability (user); the rock never lived
+#print axioms CGB.Medium.irrecoverable_absorbing
+#print axioms CGB.Medium.recover_eq_zero
+#print axioms CGB.Medium.never_alive_without_intake
+#print axioms CGB.Medium.not_persists_of_no_intake
+#print axioms CGB.Models.rock_cannot_eat
+#print axioms CGB.Models.rock_not_persists
