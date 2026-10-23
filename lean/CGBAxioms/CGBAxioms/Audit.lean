@@ -1,5 +1,6 @@
 import CGBAxioms.Models
 import CGBAxioms.Life
+import CGBAxioms.Inference
 
 /-! Every theorem may depend only on Lean's foundational axioms
 (`propext`, `Classical.choice`, `Quot.sound`); CGB clauses appear as hypotheses.
@@ -48,3 +49,6 @@ import CGBAxioms.Life
 #print axioms CGB.Medium.not_selfMaintains_of_closedMatter
 #print axioms CGB.Medium.Lives.exposed
 #print axioms CGB.Medium.Lives.metabolizes
+-- active inference, first rung: the blanket (one-step sparse coupling)
+#print axioms CGB.Medium.kernel_blanket
+#print axioms CGB.Medium.blanket_of_axioms
