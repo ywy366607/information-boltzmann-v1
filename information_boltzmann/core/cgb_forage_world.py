@@ -9,6 +9,11 @@ costs `cost` from a bounded reserve; an empty reserve is absorbing (dead), and
 the world keeps advancing. Supply is a world property: no prediction score is
 converted into resources.
 
+Stage 2 (`doc_rich` given): a source's hidden state is no longer a coin with a
+hazard; it is a fixed world rule on the current document (`doc_rich[k][i]`, with
+document end offsets `doc_ends[k]`), so it changes at document boundaries and
+can be inferred from the text itself.
+
 `cut=True` gives the loop-cut world of `SelfMaintains`: the world moves on the
 actions of a ghost that switches at the organism's own empirical switch rate,
 independently of the world state; the organism still senses what it receives.
@@ -32,7 +37,7 @@ class Tick:
 
 class ForageWorld:
     def __init__(self, sources, *, hazard=0.01, p_rich=0.7, p_poor=0.3, cost=0.55,
-                 reserve=20.0, capacity=40.0, cut=False, seed=0):
+                 reserve=20.0, capacity=40.0, cut=False, doc_ends=None, doc_rich=None, seed=0):
         self.src = [np.asarray(s, dtype=np.uint8) for s in sources]
         self.pos = [0] * len(self.src)
         self.rng = np.random.default_rng(seed)
@@ -42,11 +47,22 @@ class ForageWorld:
         self.cost, self.reserve, self.capacity = cost, reserve, capacity
         self.alive, self.cut = True, cut
         self.requested = self.ticks = 0
+        self.doc_ends, self.doc_rich = doc_ends, doc_rich
+        if doc_rich is not None:
+            self.rich = [self._doc_rich(k) for k in range(len(self.src))]
+
+    def _doc_rich(self, k):
+        import bisect
+        i = bisect.bisect_right(self.doc_ends[k], self.pos[k] % len(self.src[k]))
+        return bool(self.doc_rich[k][min(i, len(self.doc_rich[k]) - 1)])
 
     def step(self, action: int) -> Tick:
-        for k in range(len(self.rich)):
-            if self.rng.random() < self.hazard:
-                self.rich[k] = not self.rich[k]
+        if self.doc_rich is None:
+            for k in range(len(self.rich)):
+                if self.rng.random() < self.hazard:
+                    self.rich[k] = not self.rich[k]
+        else:
+            self.rich = [self._doc_rich(k) for k in range(len(self.src))]
         self.ticks += 1
         self.requested += int(action == 1)
         if self.cut:  # ghost with the organism's own switch rate, blind to the world
@@ -61,7 +77,6 @@ class ForageWorld:
         else:
             k = self.at
             byte = int(self.src[k][self.pos[k] % len(self.src[k])])
-            self.pos[k] += 1
             if self.alive:
                 p = self.p_rich if self.rich[k] else self.p_poor
                 intake = int(self.rng.random() < p)
@@ -69,4 +84,5 @@ class ForageWorld:
             self.reserve = min(self.capacity, self.reserve + intake) - self.cost
             if self.reserve <= 0:
                 self.reserve, self.alive = 0.0, False
+        self.pos = [p + 1 for p in self.pos]  # every source runs on; the world does not wait
         return Tick(byte, intake, self.reserve, self.alive, travelled)

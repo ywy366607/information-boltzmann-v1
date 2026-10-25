@@ -55,6 +55,7 @@ def main():
     ap.add_argument("--p-poor", type=float, default=0.1)
     ap.add_argument("--reserve", type=float, default=150.0)
     ap.add_argument("--sources", type=int, default=3)
+    ap.add_argument("--stage", type=int, default=1, help="2: hidden state = digit-rich document rule")
     ap.add_argument("--out", required=True)
     args = ap.parse_args()
     d = ROOT / "data" / "ib_owt_10000"
@@ -82,13 +83,32 @@ def main():
     results = {k: [] for k in agents}
     for seed in range(1, args.seeds + 1):
         off = seed * 3_000_011
-        sources = [train[off + k * 500_000:off + k * 500_000 + 400_000] for k in range(args.sources)]
+        spans = [(off + k * 500_000, off + k * 500_000 + 400_000) for k in range(args.sources)]
+        sources = [train[a:b] for a, b in spans]
+        if args.stage == 2:
+            import bisect
+            import numpy as np
+            ends, rich = [], []
+            for (a, b), src in zip(spans, sources):
+                e = [x - a for x in train.ends[bisect.bisect_right(train.ends, a):bisect.bisect_left(train.ends, b)]]
+                e.append(b - a)
+                cuts = [0] + e
+                frac = [float(np.mean((src[i:j] >= 48) & (src[i:j] <= 57))) if j > i else 0.0
+                        for i, j in zip(cuts, cuts[1:])]
+                ends.append(e)
+                rich.append(frac)
+            med = float(np.median([f for fr in rich for f in fr]))
+            rich = [[f >= med for f in fr] for fr in rich]
+            wkw_s = dict(wkw, doc_ends=ends, doc_rich=rich)
+        else:
+            wkw_s = wkw
         for name, (factory, cut) in agents.items():
-            r = live(factory, sources, wkw, args.ticks, seed, cut=cut)
+            r = live(factory, sources, wkw_s, args.ticks, seed, cut=cut)
             results[name].append(r)
             print(seed, name, json.dumps(r), flush=True)
     summary = {k: {m: stats([r[m] for r in v]) for m in v[0]} for k, v in results.items()}
-    report = dict(world=dict(wkw, ticks=args.ticks, sources=args.sources), hidden=args.hidden,
+    report = dict(world=dict(wkw, ticks=args.ticks, sources=args.sources, stage=args.stage,
+                             stage2_rule="document digit fraction >= median over sources"), hidden=args.hidden,
                   seeds=args.seeds, provenance=prov, per_seed=results, summary=summary, admitted=False)
     out = Path(args.out)
     out.parent.mkdir(parents=True, exist_ok=True)
