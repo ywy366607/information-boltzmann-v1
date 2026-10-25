@@ -1,4 +1,5 @@
 import CGBAxioms.Inference
+import CGBAxioms.LanguageLifeKernel
 
 /-!
 # Generation, layer 1: what the axioms force on the equilibrium law
@@ -328,6 +329,85 @@ theorem no_fixed_gain_for_two_volatilities (r P₁ P₂ K : ℝ) (hr : 0 < r) (h
     subst hK
     nlinarith
 
+/-! ## Interoceptive memory is necessary (forage world, minimal form)
+
+A source is rich or poor (fixed while the organism stays) with prior odds `a = (1-π)/π`;
+a rich source yields intake with probability `pr`, a poor one with `pp < pr`. After `n`
+consecutive ticks without intake, Bayes gives the rich posterior `1 / (1 + a ρⁿ)` with
+`ρ = (1-pp)/(1-pr) > 1`, and the best predicted intake `pp + post · (pr - pp)`. -/
+
+/-- Best predicted intake after `n` consecutive misses. -/
+noncomputable def missPrediction (a ρ pr pp : ℝ) (n : ℕ) : ℝ :=
+  pp + (pr - pp) / (1 + a * ρ ^ n)
+
+/-- The miss posterior is Bayes' rule: with prior `π`, miss probabilities `qr < qp`
+(`qr = 1 - pr`, `qp = 1 - pp`), `n` misses give rich posterior `1 / (1 + a ρⁿ)` with
+`a = (1-π)/π` and `ρ = qp/qr`. -/
+theorem miss_posterior_bayes {π qr qp : ℝ} (hπ0 : 0 < π) (hπ1 : π < 1) (hr : 0 < qr)
+    (hp : 0 < qp) (n : ℕ) :
+    π * qr ^ n / (π * qr ^ n + (1 - π) * qp ^ n) = 1 / (1 + (1 - π) / π * (qp / qr) ^ n) := by
+  have h1 : 0 < qr ^ n := pow_pos hr n
+  have h2 : 0 < qp ^ n := pow_pos hp n
+  have h3 : 0 < 1 - π := by linarith
+  rw [div_pow]
+  field_simp
+
+/-- **G11a**: each further miss strictly lowers the best prediction. -/
+theorem missPrediction_strictAnti {a ρ pr pp : ℝ} (ha : 0 < a) (hρ : 1 < ρ) (hp : pp < pr) :
+    StrictAnti (missPrediction a ρ pr pp) := by
+  apply strictAnti_nat_of_succ_lt
+  intro n
+  unfold missPrediction
+  have h0 : 0 < ρ ^ n := pow_pos (by linarith) n
+  have hlt : ρ ^ n < ρ ^ (n + 1) := pow_lt_pow_right₀ hρ (Nat.lt_succ_self n)
+  have d1 : 0 < 1 + a * ρ ^ n := by positivity
+  have d2 : 1 + a * ρ ^ n < 1 + a * ρ ^ (n + 1) := by nlinarith
+  have : (pr - pp) / (1 + a * ρ ^ (n + 1)) < (pr - pp) / (1 + a * ρ ^ n) :=
+    div_lt_div_of_pos_left (by linarith) d1 d2
+  linarith
+
+/-- **G11b (interoceptive memory)**: to predict intake within `ε` after every history of up
+to `N` consecutive misses, where `2ε` is below every gap between those predictions, an
+organism's state must take at least `N + 1` distinct values on those intake histories
+(via `CausalState.separated_histories_capacity`). In stage 1 the heard bytes carry no
+information about intake, so these distinctions must be stored from intake itself; by G6
+the interior cannot re-read the stimulus later, so they must be held in states. -/
+theorem intake_memory_capacity {S : Type*} [Fintype S] {a ρ pr pp ε : ℝ} (N : ℕ)
+    (code : List Bool → S) (decode : S → ℝ)
+    (accurate : ∀ n : Fin (N + 1),
+      dist (missPrediction a ρ pr pp n) (decode (code (List.replicate n false))) ≤ ε)
+    (gap : ∀ i j : Fin (N + 1), i ≠ j →
+      ε + ε < dist (missPrediction a ρ pr pp i) (missPrediction a ρ pr pp j)) :
+    N + 1 ≤ Fintype.card S := by
+  have h := LanguageLifeKernel.CausalState.separated_histories_capacity
+    (fun h : List Bool => missPrediction a ρ pr pp (h.count false))
+    (fun n : Fin (N + 1) => List.replicate n false) code (fun s _ => decode s)
+    (fun _ suffix => suffix = []) ε
+    (fun n suffix hs => by subst hs; simpa [List.count_replicate] using accurate n)
+    (fun i j hij => ⟨[], rfl, rfl, by simpa [List.count_replicate] using gap i j hij⟩)
+  simpa using h.2
+
+/-- The gap condition is satisfiable: strict monotonicity separates any finite family, so
+some positive precision forces `N + 1` states. -/
+theorem intake_gap_exists {a ρ pr pp : ℝ} (ha : 0 < a) (hρ : 1 < ρ) (hp : pp < pr) (N : ℕ) :
+    ∃ ε > 0, ∀ i j : Fin (N + 1), i ≠ j →
+      ε + ε < dist (missPrediction a ρ pr pp i) (missPrediction a ρ pr pp j) := by
+  have hs := missPrediction_strictAnti ha hρ hp
+  let gaps := (Finset.univ.filter fun p : Fin (N + 1) × Fin (N + 1) => p.1 ≠ p.2).image
+    fun p => dist (missPrediction a ρ pr pp p.1) (missPrediction a ρ pr pp p.2)
+  have pos : ∀ g ∈ gaps, 0 < g := by
+    intro g hg
+    obtain ⟨p, hp', rfl⟩ := Finset.mem_image.1 hg
+    have hne : (p.1 : ℕ) ≠ p.2 := fun h => (Finset.mem_filter.1 hp').2 (Fin.ext h)
+    exact dist_pos.2 (hs.injective.ne hne)
+  by_cases he : gaps.Nonempty
+  · refine ⟨gaps.min' he / 4, by have := pos _ (gaps.min'_mem he); positivity, fun i j hij => ?_⟩
+    have hm : gaps.min' he ≤ dist (missPrediction a ρ pr pp i) (missPrediction a ρ pr pp j) :=
+      gaps.min'_le _ (Finset.mem_image.2 ⟨(i, j), by simp [hij], rfl⟩)
+    have := pos _ (gaps.min'_mem he)
+    linarith
+  · refine ⟨1, one_pos, fun i j hij => absurd ⟨_, Finset.mem_image.2 ⟨(i, j), by simp [hij], rfl⟩⟩ he⟩
+
 /-! ## Layer 2b: the integration bottleneck
 
 A single-unit move of `v` is produced by events whose participants form a clique
@@ -354,12 +434,12 @@ theorem two_part_balance {α β : Type*} (φ₁ : α → ℝ) (φ₂ : β → �
   field_simp [(h₁ x).ne', (h₂ y).ne']
   ring
 
-/-- **G8b** (three parts are impossible): if up rates `f₁+f₂+f₃` and nonnegative down rates
-`g₁+g₂+g₃` (each term reading one part) satisfy detailed balance with a product factor
-`φ₁ φ₂ φ₃` that is non-constant on every part, the down rate vanishes somewhere. -/
+/-- **G8b** (three parts are impossible): if up rates `f₁+f₂+f₃` and down rates `g₁+g₂+g₃`
+(each term reading one part) satisfy detailed balance with a product factor `φ₁ φ₂ φ₃` that
+is non-constant on every part, the total down rate vanishes at a chosen state. No sign
+assumption is needed; with nonnegative rates every part's down rate vanishes there. -/
 theorem three_part_balance_impossible {α β γ : Type*}
     (f₁ g₁ φ₁ : α → ℝ) (f₂ g₂ φ₂ : β → ℝ) (f₃ g₃ φ₃ : γ → ℝ)
-    (hg₁ : ∀ a, 0 ≤ g₁ a) (hg₂ : ∀ b, 0 ≤ g₂ b) (hg₃ : ∀ c, 0 ≤ g₃ c)
     (hφ₁ : ∀ a, 0 < φ₁ a) (hφ₂ : ∀ b, 0 < φ₂ b) (hφ₃ : ∀ c, 0 < φ₃ c)
     (hbal : ∀ a b c, f₁ a + f₂ b + f₃ c = φ₁ a * φ₂ b * φ₃ c * (g₁ a + g₂ b + g₃ c))
     {a₀ a₁ : α} {b₀ b₁ : β} {c₀ c₁ : γ}
