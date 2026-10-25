@@ -1,4 +1,4 @@
-"""Closed local reactions of the registered LG-1 integer energy family.
+"""Local reactions and finite boundary exchange of the registered LG-1 family.
 
 One shared state holds end charges (p,q) and plastic slots w. The rook contact
 graph is implicit. Rates realize pi proportional to 2**(-2*E), without reading
@@ -223,3 +223,175 @@ class LocalMedium:
             raise ValueError("local medium checkpoint mismatch")
         restored = LocalMedium(self.law, bytes.fromhex(snapshot["payload"]))
         self.payload = restored.payload
+
+
+@dataclass(frozen=True)
+class ReservoirLaw:
+    source_initial: int
+    content_cost: int = 0
+    chemical_base: int = 0
+    stimulus: int = 1
+
+    def __post_init__(self):
+        if (any(type(v) is not int for v in asdict(self).values())
+                or self.source_initial < 0 or self.stimulus < 0):
+            raise ValueError("invalid finite reservoir law")
+
+
+class OpenMedium:
+    """The same body with finite, reversible boundary material exchange.
+
+    A fixed proposal set includes all closed moves and two exchange directions
+    per edge. The byte selects one Q compartment's external chemical potential.
+    It does not select a proposal or write weights. Mass-based predictions are
+    an explicit OBSERVER readout; the body never reads their global normalizer.
+    Resource credits in the world are distinct from this reservoir's material.
+    """
+
+    def __init__(self, body: LocalMedium, reservoir: ReservoirLaw):
+        if not isinstance(body, LocalMedium) or not isinstance(reservoir, ReservoirLaw):
+            raise ValueError("invalid open medium")
+        self.body, self.reservoir = body, reservoir
+        self.stock = reservoir.source_initial
+        self.initial_content = sum(sum(body.get(e)) for e in range(body.law.edges))
+        self.intake = self.released = 0
+        f = body.law
+        delta_u = max(abs(b - a) for a, b in zip(f.potential, f.potential[1:]))
+        self.exchange_bound = (abs(f.coupling) * f.slot_cap * f.charge_cap + delta_u
+                               + abs(reservoir.content_cost)
+                               + max(abs(reservoir.chemical_base),
+                                     abs(reservoir.chemical_base + reservoir.stimulus)))
+
+    @property
+    def events(self):
+        return self.body.law.events + 2 * self.body.law.edges
+
+    @property
+    def proposal_families(self):
+        """State-independent spans; disabled moves remain in each family."""
+        f = self.body.law
+        sizes = (4 * f.edges, 2 * f.edges, f.edges * (f.labels - 1),
+                 f.edges * (f.rows - 1), 2 * f.edges)
+        start, spans = 0, []
+        for size in sizes:
+            if size:
+                spans.append((start, size))
+            start += size
+        return tuple(spans)
+
+    def sample_proposal(self, rng):
+        """Uniform family, then uniform event: fixed reciprocal conductances.
+
+        This avoids combinatorial dilution of boundary attempts; it changes
+        relative family clocks versus a uniform draw over the entire index set.
+        Both reverse partners still have the same proposal probability.
+        """
+        families = self.proposal_families
+        start, size = families[rng.randrange(len(families))]
+        return start + rng.randrange(size)
+
+    def proposal_bound(self, index):
+        if type(index) is not int or not 0 <= index < self.events:
+            raise ValueError("invalid open proposal")
+        if index < self.body.law.events:
+            return self.body.law.bounds[self.body.decode(index)[0]]
+        return self.exchange_bound
+
+    def reverse(self, index):
+        self.proposal_bound(index)
+        if index < self.body.law.events:
+            return self.body.reverse(index)
+        return self.body.law.events + ((index - self.body.law.events) ^ 1)
+
+    def prepare(self, index, label):
+        bound = self.proposal_bound(index)
+        f, r = self.body.law, self.reservoir
+        if type(label) is not int or not 0 <= label < f.labels:
+            raise ValueError("invalid boundary stimulus")
+        if index < f.events:
+            edits, exponent, _ = self.body.prepare(index)
+            return edits, exponent, bound, 0
+        edge, direction = divmod(index - f.events, 2)
+        sign = 1 if direction == 0 else -1
+        p, q, w = old = self.body.get(edge)
+        if not 0 <= q + sign <= f.charge_cap or (sign == 1 and self.stock == 0):
+            return (), None, bound, 0
+        new = (p, q + sign, w)
+        col = edge % f.labels
+        total = sum(self.body.get(e)[1] for e in range(col, f.edges, f.labels))
+        delta = (self.body.unit_energy(new) - self.body.unit_energy(old)
+                 + f.potential[total + sign] - f.potential[total])
+        mu = r.chemical_base + (r.stimulus if col == label else 0)
+        exponent = -delta - (r.content_cost - mu) * sign
+        assert -bound <= exponent <= bound
+        return ((edge, new),), exponent, bound, sign
+
+    def masses(self):
+        """Observer workspace: current Q masses, without a Gibbs approximation."""
+        f = self.body.law
+        values = tuple(sum(self.body.get(e)[1] for e in range(b, f.edges, f.labels))
+                       for b in range(f.labels))
+        total = sum(values)
+        return (values, total) if total else ((1,) * f.labels, f.labels)
+
+    def _commit(self, edits, sign):
+        for edge, state in edits:
+            self.body._put(edge, state)
+        self.stock -= sign
+        self.intake += int(sign == 1)
+        self.released += int(sign == -1)
+
+    def tick(self, index, ticket, world):
+        """Score old state, publish once, then make at most one paid reaction.
+
+        The ticket is uniform in [0,2**(2*bound)); its width is known before
+        publication. This permits validation before any world mutation even
+        though the reaction rate depends on the newly arrived byte. Rejections
+        are paid. For nonempty readouts zero target mass is reported as zero,
+        without smoothing it into a finite language score.
+        """
+        if self.body.law.labels != 256:
+            raise ValueError("tick requires the native 256-byte boundary")
+        bound = self.proposal_bound(index)
+        if type(ticket) is not int or ticket < 0 or ticket.bit_length() > 2 * bound:
+            raise ValueError("invalid fixed-width dyadic ticket")
+        masses, total = self.masses()  # observer measurement BEFORE the target
+        boundary = world.begin()
+        observed = world.publish()
+        edits, exponent, _, sign = self.prepare(index, observed.payload)
+        funded = world.pay_write(self.body.law.attempt_fee)
+        accepted = funded and exponent is not None and ticket >> (bound + exponent) == 0
+        if accepted:
+            self._commit(edits, sign)
+        return dict(tick=observed.tick, byte=observed.payload, active=boundary.active,
+                    funded=funded, accepted=accepted, material_delta=sign if accepted else 0,
+                    target_mass=masses[observed.payload], total_mass=total,
+                    random_bits=2 * bound,
+                    spent=self.body.law.attempt_fee if funded else 0)
+
+    def state_dict(self):
+        return dict(version=1, reservoir=asdict(self.reservoir), body=self.body.state_dict(),
+                    initial_content=self.initial_content, stock=self.stock,
+                    intake=self.intake, released=self.released)
+
+    def load_state_dict(self, snapshot):
+        expected = self.state_dict()
+        if (type(snapshot) is not dict or set(snapshot) != set(expected)
+                or type(snapshot["version"]) is not int or snapshot["version"] != 1
+                or type(snapshot["reservoir"]) is not dict
+                or set(snapshot["reservoir"]) != set(expected["reservoir"])
+                or any(type(v) is not int or v != expected["reservoir"][k]
+                       for k, v in snapshot["reservoir"].items())
+                or any(type(snapshot[k]) is not int or snapshot[k] < 0
+                       for k in ("stock", "intake", "released", "initial_content"))
+                or snapshot["initial_content"] != self.initial_content):
+            raise ValueError("open medium checkpoint mismatch")
+        restored = LocalMedium(self.body.law, bytes(self.body.payload))
+        restored.load_state_dict(snapshot["body"])
+        content = sum(sum(restored.get(e)) for e in range(restored.law.edges))
+        if (content + snapshot["stock"] != self.initial_content + self.reservoir.source_initial
+                or snapshot["stock"] != self.reservoir.source_initial
+                - snapshot["intake"] + snapshot["released"]):
+            raise ValueError("open material balance mismatch")
+        self.body.payload = restored.payload
+        self.stock, self.intake, self.released = (snapshot[k] for k in ("stock", "intake", "released"))

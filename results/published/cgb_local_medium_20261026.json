@@ -39,12 +39,74 @@
     "observation_conditions_rates": false,
     "capability_claim": false
   },
+  "open_exchange": {
+    "proposal_rows": 23328,
+    "enabled_reverse_pairs": 12960,
+    "exact_boundary_log_balance": true,
+    "body_plus_reservoir_conserved": true,
+    "boundary_reads_only_its_Q_clique": true,
+    "byte_modulates_boundary_only": true,
+    "family_proposal_normalized_and_reverse_symmetric": true
+  },
+  "open_timing": {
+    "pre_target_readout": true,
+    "active_open_JSON_restore": true,
+    "source_intake_to_plastic_slot": true,
+    "rejected_and_blocked_paid": true,
+    "resource_failure_keeps_publication": true,
+    "invalid_inputs_atomic": true,
+    "zero_target_mass_reported": true,
+    "empty_readout_fallback_declared": true,
+    "source_exhaustion_blocks_intake": true,
+    "byte_counterfactual_changes_reaction": true,
+    "conserved_structure_intervention_changes_future_readout": true
+  },
+  "input_response": {
+    "exact_body_source_kernel_pairs": 1024,
+    "maximum_checked_TV": "3/256",
+    "bound": "TV(K_b(x),K_c(x)) <= min(1,2/(F*B)) for one paid attempt",
+    "scope": "same old body/source; distinct stimuli; uniform family and uniform event",
+    "native_1x256_TV_upper_bound": "1/512",
+    "implication": "family balance alone does not establish usable per-byte response"
+  },
+  "real_byte_open_interface": {
+    "source_provenance": {
+      "manifest": "3614c380d4c72688ac8ccde42f32ea0655d16bec1ba0874a924fd777af904d2d",
+      "files": {
+        "tokenizer.json": "e727da4afe06d37d6ffff7db05ab21f69c5be39253ee7b7f7ec759cadab69c1d",
+        "train.npy": "2f227239bc63b89daf31956701d243a93f9dd46671702fff03763b33dc6db4fb",
+        "validation.npy": "60d41d3fdda8c1718ad1735693eda0dae2b23a0032c5e04a29aac9d0c6d35d8c"
+      },
+      "verified_document_counts": {
+        "train": 9786,
+        "validation": 114
+      },
+      "native_byte_counts": {
+        "train": 48125691,
+        "validation": 467911
+      }
+    },
+    "split": "validation",
+    "fresh_bytes": 64,
+    "accepted_reactions": 2,
+    "accepted_exchanges": 0,
+    "zero_probability_targets": 0,
+    "observer_bits_per_byte": 7.99195846620579,
+    "body_bytes": 96,
+    "native_alphabet": 256,
+    "boundary_proposal_fraction": "1/4",
+    "old_all_event_boundary_fraction": "512/67328",
+    "observer_global_readout_not_local_body_computation": true,
+    "sampler_rng_JSON_restore": true,
+    "capability_claim": false,
+    "budget_limited_interface_only": true
+  },
   "source_hashes": {
-    "information_boltzmann/core/cgb_local_medium.py": "0153202c71ad471c3f2f380d717dea21b8aca48912ce5daf0af7390f0788fb92",
-    "scripts/validate_cgb_local_medium.py": "cd736e5213da1e6c7ac1d44ff6d1ba50e205e65bd1f2a1faab6042c8ba7afa2c",
+    "information_boltzmann/core/cgb_local_medium.py": "9bb504363f48d4ee8d076b3fbea06a8dc1319cd7f9d4ff612d252ad6bd32eb6c",
+    "scripts/validate_cgb_local_medium.py": "7c44c564b913640a2f3a5fe724ccfe818e686eee61f552c0c251888869c85137",
     "information_boltzmann/core/cgb_low_resource_life.py": "0c4b80b6503ed4d617857c4ff0e477100c9de2d0f371ab7960f6191f330f9800",
-    "lean/CGBAxioms/reviews/unified_reference_20261025.lean": "33f985718ce589858f77e6e055a1d49110dc8331582b86190dff7f3b85b3fa67",
-    "docs/information_boltzmann/CGB_LG1_ORGANISM_SPEC_20261026.md": "436dc0229a14d422c6680df52de722a78cfe790c8e8025a7397ad325a13092bd",
-    "docs/information_boltzmann/CGB_UNIFIED_REFERENCE_20261026.md": "b0491875e4d4e3601804145847d15f5aba2979a92b953420784d05a5257e014a"
+    "lean/CGBAxioms/reviews/unified_reference_20261025.lean": "f10a58be22e0319461da020142c5c5538731371f148ce82405fbe340fa8d0a80",
+    "docs/information_boltzmann/CGB_LG1_ORGANISM_SPEC_20261026.md": "b50b88e4f9c787b93345941139c680a03b726329b6e961729504393fe32a3ca6",
+    "docs/information_boltzmann/CGB_UNIFIED_REFERENCE_20261026.md": "93da555b8ab335518ab4de7f407b1e3c24508e7960bc2334ccdc581c17abb232"
   }
 }

@@ -161,6 +161,19 @@ private theorem local_plastic_delta (ε J p q w : Real) :
     (ε * (w + 1) - J * (w + 1) * p * (q - 1)) - (ε * w - J * w * p * q) =
       ε - J * p * (q - w - 1) := by ring
 #print axioms local_plastic_delta
+
+-- Boundary exchange uses the SAME local energy plus chemical work.
+private theorem boundary_exchange_log_balance (d c μ s : Real) :
+    (-d - (c - μ) * s) - (d + (c - μ) * s) = -2 * (d + (c - μ) * s) := by ring
+example (body stock : Nat) (hs : 0 < stock) :
+    (body + 1) + (stock - 1) = body + stock := by omega
+#print axioms boundary_exchange_log_balance
+private theorem boundary_contact_fraction {H B F : Real}
+    (hH : H ≠ 0) (hB : B ≠ 0) (hF : F ≠ 0) :
+    (1 / F) * ((2 * H) / (2 * H * B)) = 1 / (F * B) := by
+  field_simp [hH, hB, hF]
+  <;> ring
+#print axioms boundary_contact_fraction
 #eval IO.println (Json.mkObj [
   ("format", toJson "CGB.UnifiedReference.boundary.v1"),
   ("vectors", toJson (boundaryVectors.map fun w => Json.mkObj [
