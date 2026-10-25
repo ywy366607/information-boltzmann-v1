@@ -191,6 +191,38 @@ theorem local_markov_of_single_unit_moves [DecidableEq U] (h : M.P1b) {π : (U �
     · rw [Set.mem_singleton_iff.1 hv]
       simp
 
+/-- **P2b from weighted micro-reversibility** (generalizes `p2b_of_micro`, which has
+uniform weights): if events pair up by an involution `rev` so that every effective calm
+event is undone by its partner and the pair satisfies detailed balance with a positive
+weight `π`, then P2b holds with that weight. This is the constructor an energy-based
+medium needs. -/
+theorem p2b_of_micro_weighted (π : (U → Λ) → ℝ) (hp : ∀ x, 0 < π x)
+    (rev : A → A) (hinv : Function.Involutive rev)
+    (hback : ∀ a x, M.act a M.calm x ≠ x →
+      M.act (rev a) M.calm (M.act a M.calm x) = x ∧
+        π x * M.rate a M.calm x = π (M.act a M.calm x) * M.rate (rev a) M.calm (M.act a M.calm x)) :
+    M.P2b := by
+  refine ⟨π, hp, fun x y => ?_⟩
+  simp only [jump, Finset.mul_sum]
+  rw [← Equiv.sum_comp (hinv.toPerm rev)
+    (fun a => π y * if M.act a M.calm y = x ∧ y ≠ x then M.rate a M.calm y else 0)]
+  refine Finset.sum_congr rfl fun a _ => ?_
+  have e : (hinv.toPerm rev) a = rev a := rfl
+  rw [e]
+  by_cases h1 : M.act a M.calm x = y ∧ x ≠ y
+  · obtain ⟨hxy, hne⟩ := h1
+    have hb := hback a x (by rw [hxy]; exact Ne.symm hne)
+    rw [hxy] at hb
+    rw [if_pos ⟨hxy, hne⟩, if_pos ⟨hb.1, Ne.symm hne⟩]
+    exact hb.2
+  · rw [if_neg h1]
+    by_cases h2 : M.act (rev a) M.calm y = x ∧ y ≠ x
+    · obtain ⟨hyx, hne⟩ := h2
+      have hb := hback (rev a) y (by rw [hyx]; exact Ne.symm hne)
+      rw [hyx, hinv a] at hb
+      exact absurd ⟨hb.1, Ne.symm hne⟩ h1
+    · rw [if_neg h2, mul_zero, mul_zero]
+
 /-! ## Layer 2: the interior is always in local detailed balance -/
 
 /-- **G6**: under P1b and P3 a transition whose changed set and its scope avoid the
