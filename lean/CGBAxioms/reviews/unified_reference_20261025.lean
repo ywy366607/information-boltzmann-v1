@@ -144,6 +144,23 @@ private def boundaryVectors : List (List Nat) := [[1,3], [2,5,7], [1,1,1], [6553
 
 #print axioms boundary_accept_balance
 #print axioms boundary_accept_minorization
+
+-- G8's crossed channels, with the local unit factor split as r*r.
+private theorem local_cross_balance {r p q : Real}
+    (hr : 0 < r) (hp : 0 < p) (hq : 0 < q) :
+    r * p + r * q = (r * r * p * q) * (1 / r / p + 1 / r / q) := by
+  field_simp [hr.ne', hp.ne', hq.ne']
+  ring
+
+example (p q w : Nat) (hp : 0 < p) : (p - 1) + (q + 1) + w = p + q + w := by omega
+example (p q w : Nat) (hq : 0 < q) : p + (q - 1) + (w + 1) = p + q + w := by omega
+#print axioms local_cross_balance
+
+-- Consuming one charge to form a slot changes both factors of w*p*q.
+private theorem local_plastic_delta (ε J p q w : Real) :
+    (ε * (w + 1) - J * (w + 1) * p * (q - 1)) - (ε * w - J * w * p * q) =
+      ε - J * p * (q - w - 1) := by ring
+#print axioms local_plastic_delta
 #eval IO.println (Json.mkObj [
   ("format", toJson "CGB.UnifiedReference.boundary.v1"),
   ("vectors", toJson (boundaryVectors.map fun w => Json.mkObj [

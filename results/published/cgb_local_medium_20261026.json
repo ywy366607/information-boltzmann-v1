@@ -1,0 +1,50 @@
+{
+  "status": "joint_local_reactions_checked",
+  "capability_claim": false,
+  "full_medium_admitted": false,
+  "training_performed": false,
+  "production_lean_modules_added": 0,
+  "per_family_caps_are_registered_conductances": true,
+  "reactions": {
+    "exhaustive_states": 4420,
+    "proposal_rows": 135608,
+    "enabled_reverse_pairs": 34640,
+    "whole_energy_log_balance_exact": true,
+    "content_conservation_exact": true,
+    "static_reverse_scheduler": true,
+    "target_weight": "2**(-2*E), within the conserved-content shell"
+  },
+  "locality": {
+    "clique_outside_change_checks": 204,
+    "actual_state_reads_within_declared_clique": true,
+    "native_byte_edges": 768,
+    "native_byte_packed_state_bytes": 288,
+    "edge_indices_stored": 0,
+    "maximum_field_bits": 4,
+    "fields_per_edge": 3,
+    "native_byte_bits_per_edge": 3,
+    "three_byte_read_write_checked": true,
+    "encoding": "ceil(log2((Q+1)^2*(W+1))) fixed bits per edge; lossless",
+    "whole_clique_sum_cost_is_degree_dependent": true
+  },
+  "history": {
+    "same_boundary_charges_different_history_rate_ratio": 16,
+    "new_slot_from_conserved_charge": true,
+    "closed_content": 3,
+    "paid_path_attempts": 5,
+    "active_joint_json_restore": true,
+    "blocked_attempt_is_paid": true,
+    "resource_failure_keeps_publication": true,
+    "enabled_rejection_is_paid": true,
+    "observation_conditions_rates": false,
+    "capability_claim": false
+  },
+  "source_hashes": {
+    "information_boltzmann/core/cgb_local_medium.py": "0153202c71ad471c3f2f380d717dea21b8aca48912ce5daf0af7390f0788fb92",
+    "scripts/validate_cgb_local_medium.py": "cd736e5213da1e6c7ac1d44ff6d1ba50e205e65bd1f2a1faab6042c8ba7afa2c",
+    "information_boltzmann/core/cgb_low_resource_life.py": "0c4b80b6503ed4d617857c4ff0e477100c9de2d0f371ab7960f6191f330f9800",
+    "lean/CGBAxioms/reviews/unified_reference_20261025.lean": "33f985718ce589858f77e6e055a1d49110dc8331582b86190dff7f3b85b3fa67",
+    "docs/information_boltzmann/CGB_LG1_ORGANISM_SPEC_20261026.md": "436dc0229a14d422c6680df52de722a78cfe790c8e8025a7397ad325a13092bd",
+    "docs/information_boltzmann/CGB_UNIFIED_REFERENCE_20261026.md": "b0491875e4d4e3601804145847d15f5aba2979a92b953420784d05a5257e014a"
+  }
+}
