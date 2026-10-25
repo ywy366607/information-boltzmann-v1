@@ -39,7 +39,7 @@ class PrefixReplayWorld:
     available in its open frame and is consumed when that frame is published.
     """
 
-    COSTS = ("maintenance_spent", "request_spent", "holding_spent", "read_spent")
+    COSTS = ("maintenance_spent", "request_spent", "holding_spent", "read_spent", "write_spent")
     COUNTS = COSTS + ("offered", "spill", "accepted", "delivered", "cancelled",
                       "replayed_bytes", "fresh")
 
@@ -145,13 +145,25 @@ class PrefixReplayWorld:
         state["counts"]["accepted"] += 1
         return True
 
+    def pay_write(self, amount: int) -> bool:
+        """Pay a declared memory-write tariff from the SAME maintenance reserve.
+
+        The caller must compute its proposed update first and commit it only
+        after payment succeeds. This is operational accounting, not joules.
+        """
+        if self._state["phase"] != "published":
+            raise ContractViolation("writes must follow this tick's publication")
+        if type(amount) is not int or amount < 0:
+            raise ContractViolation("invalid write tariff")
+        return self._state["active"] and self._pay("write_spent", amount)
+
     def state_dict(self) -> dict:
         """Complete JSON checkpoint; source identity and costs are audit-only."""
         state = dict(self._state, counts=dict(self._state["counts"]))
         for key in ("pending", "receipt"):
             record = state[key]
             state[key] = None if record is None else dict(record, payload=list(record["payload"]))
-        return dict(version=1, config=dict(self._config), state=state)
+        return dict(version=2, config=dict(self._config), state=state)
 
     def load_state_dict(self, snapshot: dict) -> None:
         """Validate a complete checkpoint before replacing any live state.
@@ -165,7 +177,7 @@ class PrefixReplayWorld:
 
         require(type(snapshot) is dict and set(snapshot) == {"version", "config", "state"},
                 "invalid world checkpoint fields")
-        require(type(snapshot["version"]) is int and snapshot["version"] == 1,
+        require(type(snapshot["version"]) is int and snapshot["version"] in (1, 2),
                 "unsupported world checkpoint version")
         config = snapshot["config"]
         require(type(config) is dict and set(config) == set(self._config)
@@ -175,6 +187,10 @@ class PrefixReplayWorld:
         require(type(raw) is dict and set(raw) == set(self._state), "invalid world state fields")
         state = dict(raw)
         counts = state["counts"]
+        if snapshot["version"] == 1:
+            require(type(counts) is dict and set(counts) == set(self.COUNTS) - {"write_spent"},
+                    "invalid legacy world counters")
+            counts = dict(counts, write_spent=0)
         require(type(counts) is dict and set(counts) == set(self.COUNTS)
                 and all(type(v) is int and v >= 0 for v in counts.values()), "invalid world counters")
         state["counts"] = dict(counts)
@@ -188,6 +204,8 @@ class PrefixReplayWorld:
                 and state["reserve"] <= config["capacity"] and counts["fresh"] == tick,
                 "world clock, cursor, or capacity mismatch")
         begins = tick + int(phase == "open")
+        require(tick > 0 or counts["write_spent"] == 0,
+                "world writes precede the first publication")
         require((phase != "open" or state["cursor"] < len(self._source))
                 and (phase != "published" or tick > 0), "impossible world phase")
         require(counts["offered"] == begins * config["supply_per_tick"]

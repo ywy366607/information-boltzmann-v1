@@ -44,8 +44,7 @@ def reject(world, operation):
 def balance(world, initial):
     state = world.state_dict()["state"]
     counts = state["counts"]
-    spent = sum(counts[key] for key in
-                ("maintenance_spent", "request_spent", "holding_spent", "read_spent"))
+    spent = sum(counts[key] for key in world.COSTS)
     assert state["reserve"] + spent + counts["spill"] == initial + counts["offered"]
     assert counts["accepted"] == counts["delivered"] + counts["cancelled"] + int(state["pending"] is not None)
     return counts

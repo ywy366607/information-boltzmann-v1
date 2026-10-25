@@ -8,7 +8,9 @@ import json
 from pathlib import Path
 import shutil
 import subprocess
+import struct
 import sys
+from unittest.mock import patch
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -18,6 +20,11 @@ spec = importlib.util.spec_from_file_location("cgb_unified_reference", ROOT / MO
 model = importlib.util.module_from_spec(spec)
 sys.modules[spec.name] = model
 spec.loader.exec_module(model)
+world_spec = importlib.util.spec_from_file_location("cgb_reference_world",
+    ROOT / "information_boltzmann/core/cgb_low_resource_life.py")
+life = importlib.util.module_from_spec(world_spec)
+sys.modules[world_spec.name] = life
+world_spec.loader.exec_module(life)
 
 
 def sha(path):
@@ -30,7 +37,192 @@ def export(lake, name):
     if result.returncode:
         raise RuntimeError(result.stdout[-4000:] + result.stderr[-1000:])
     assert "sorryAx" not in result.stdout and "[sorry" not in result.stdout
-    return next(json.loads(line) for line in result.stdout.splitlines() if line.startswith("{"))
+    objects = [json.loads(line) for line in result.stdout.splitlines() if line.startswith("{")]
+    if name == "unified_reference_20261025.lean":
+        world = next(x for x in objects if x["format"] == "CGB.UnifiedReference.world.v1")
+        world["ticket_vectors"] = next(x["vectors"] for x in objects
+            if x["format"] == "CGB.UnifiedReference.tickets.v1")
+        return world
+    return objects[0]
+
+
+def validate_families():
+    rows = world_rows = 0
+    for n in (2, 3, 7, 16, 256):
+        for capacity in (0, 1, 2, 5):
+            f = model.FiniteFamily(n, capacity)
+            cells = (range(f.cells) if n < 256 else
+                     [0, 1] + [2 + p * n + h for p in range(3) for h in (0, 1, 127, 255)])
+            for q in cells:
+                for r in range(capacity + 1):
+                    old = model.Body(q, r, f)
+                    for signal in range(-1, n + 5):
+                        u = model.local_step(old, signal)
+                        assert u.body.content + u.outgoing == old.content + u.incoming
+                        assert f.credit(u.body.cell) + u.writes + u.lost_credit == f.credit(q) + u.topups
+                        assert all(v >= 0 for v in (u.incoming, u.outgoing, u.writes, u.topups, u.lost_credit))
+                        carrier = model.Carrier.seed(old).advance(old, signal)
+                        assert sum(p.count(0) for p in carrier.owners) == u.body.content
+                        assert sum(p.count(1) for p in carrier.owners) == 4 + max(4, capacity)
+                        rows += 1
+                for w in range(4 * n + 1):
+                    kernel = model.world_row(q, w, f)
+                    assert sum(kernel.values()) == 1 and min(kernel.values()) > 0
+                    assert all(0 <= v <= 4 * n for v in kernel)
+                    world_rows += 1
+            horizon = 6 if n < 256 else 2
+            run = model.ReferenceRun(family=f).extend(horizon)
+            run.balance(horizon)
+    for n in (0, 1, True):
+        try:
+            model.FiniteFamily(n)
+        except ValueError:
+            pass
+        else:
+            raise AssertionError("ambiguous search needs at least two situations")
+    return dict(situations=[2, 3, 7, 16, 256], capacities=[0, 1, 2, 5],
+                local_and_carrier_rows=rows, normalized_world_rows=world_rows,
+                exhaustive_up_to_situations=16, largest_family="representative cells, all signals/worlds",
+                scope="Finite implementation checks; all-time Lean certificates apply to the default only")
+
+
+def likelihood_table(likelihood):
+    top = max(likelihood)
+    return b"".join(struct.pack("<256H", value, top + 1 - value, *([1] * 254))
+                    for value in likelihood)
+
+
+def validate_bytes(vectors):
+    checked = 0
+    for counts, likelihood, expected in vectors:
+        # The final maximal-int vector checks arithmetic separately; a positive
+        # 256-byte row has other entries too and must respect the total cap.
+        if max(likelihood) > 32000:
+            assert sum(counts) ** 2 * max(likelihood) < 2 ** 31
+            continue
+        frame = model.ByteFrame(model.TicketMemory(bytes(counts)), likelihood_table(likelihood))
+        projected, fee = frame.project(0)
+        assert list(projected.counts) == expected
+        assert fee == sum((a ^ b).bit_count() for a, b in zip(counts, expected))
+    for h in (1, 2, 3, 7, 31):
+        for tickets in (1, 7, 31, 255):
+            counts = bytes([tickets // h + (i < tickets % h) for i in range(h)])
+            frame = model.ByteFrame(model.TicketMemory(counts), likelihood_table(list(range(1, h + 1))))
+            assert sum(frame.probability(b) for b in range(256)) == 1
+            for byte in range(256):
+                projected, _fee = frame.project(byte)
+                masses = frame.masses(byte)
+                posterior = [Fraction(m, sum(masses)) for m in masses]
+                errors = [abs(Fraction(c, tickets) - p) for c, p in zip(projected.counts, posterior)]
+                assert sum(projected.counts) == tickets
+                assert all(e < Fraction(1, tickets) for e in errors)
+                assert sum(errors) / 2 <= Fraction(h, 2 * tickets)
+                assert tickets * max(masses) < 2 ** 31
+                checked += 1
+    memory = model.TicketMemory(bytes([50, 50]))
+    table = likelihood_table([1, 3])
+    def world(reserve=100):
+        return life.PrefixReplayWorld(b"\x00\x01\x00\x01", source_id="integer-interface",
+                                     reserve=reserve, capacity=reserve)
+    funded = world()
+    learned, row = model.byte_step(memory, table, funded)
+    assert learned != memory and row["probability"] == Fraction(2, 258)
+    state = funded.state_dict()["state"]
+    assert state["reserve"] + sum(state["counts"][c] for c in funded.COSTS) == 100
+    assert state["counts"]["write_spent"] == row["spent"] > 0
+    blocked = world(1)
+    unchanged, rejected = model.byte_step(memory, table, blocked)
+    assert unchanged == memory and not rejected["funded"]
+    assert blocked.state_dict()["state"]["counts"]["write_spent"] == 0
+    with patch.object(model.ByteFrame, "project", side_effect=AssertionError("inactive projection")), \
+         patch.object(model.ByteFrame, "probability", side_effect=AssertionError("inactive inference")):
+        unchanged, dead = model.byte_step(memory, table, blocked)
+    assert unchanged == memory and not dead["active"] and dead["tick"] == 1
+    assert dead["probability"] == Fraction(1, 256)
+    saved = json.loads(json.dumps(dict(world=funded.state_dict(),
+                                     memory=list(learned.payload), table=table.hex())))
+    clone = world()
+    clone.load_state_dict(saved["world"])
+    cloned_memory = model.TicketMemory(bytes(saved["memory"]))
+    cloned_table = bytes.fromhex(saved["table"])
+    for _ in range(3):
+        a, ra = model.byte_step(learned, table, funded)
+        b, rb = model.byte_step(cloned_memory, cloned_table, clone)
+        assert a == b and ra == rb and funded.state_dict() == clone.state_dict()
+        learned, cloned_memory = a, b
+    legacy = world().state_dict()
+    legacy["version"] = 1
+    del legacy["state"]["counts"]["write_spent"]
+    clone = world()
+    clone.load_state_dict(legacy)
+    assert clone.state_dict() == world().state_dict()
+    for bad in (True, -1, 1.0):
+        before = funded.state_dict()
+        try:
+            funded.pay_write(bad)
+        except life.ContractViolation:
+            pass
+        else:
+            raise AssertionError("invalid write tariff accepted")
+        assert funded.state_dict() == before
+    unopened = world()
+    for operation in (lambda: unopened.pay_write(0),
+                      lambda: model.byte_step(memory, table[:-1], unopened)):
+        before = unopened.state_dict()
+        try:
+            operation()
+        except (life.ContractViolation, ValueError):
+            pass
+        else:
+            raise AssertionError("invalid phase/frame accepted")
+        assert unopened.state_dict() == before
+    for kind in ("missing_new_counter", "legacy_with_write_counter", "balance_tamper"):
+        bad = world().state_dict()
+        if kind == "missing_new_counter":
+            del bad["state"]["counts"]["write_spent"]
+        elif kind == "legacy_with_write_counter":
+            bad["version"] = 1
+        else:
+            bad["state"]["counts"]["write_spent"] = 1
+        before = clone.state_dict()
+        try:
+            clone.load_state_dict(bad)
+        except life.ContractViolation:
+            pass
+        else:
+            raise AssertionError("invalid write checkpoint accepted")
+        assert clone.state_dict() == before
+    first = world()
+    first.begin()
+    bad = first.state_dict()
+    bad["state"]["reserve"] -= 1
+    bad["state"]["counts"]["write_spent"] = 1  # balances, but before any publication
+    before = first.state_dict()
+    try:
+        first.load_state_dict(bad)
+    except life.ContractViolation:
+        pass
+    else:
+        raise AssertionError("write before first publication restored")
+    assert first.state_dict() == before
+    # Counterexample: the projection may erase a rare but decisive hypothesis.
+    absorbed = model.ByteFrame(model.TicketMemory(bytes([0, 100])), likelihood_table([10000, 1]))
+    assert absorbed.project(0)[0].counts == bytes([0, 100])
+    exact = Fraction(4 * 10000, 4 * 10000 + 996)
+    assert exact > Fraction(97, 100)
+    return dict(projections=checked, lean_reference_vectors=len(vectors),
+                persistent_counts_bytes="H", likelihood_program_bytes="512*H",
+                arithmetic_bound=255 * 255 * 32767, signed_int32_safe=True,
+                shared_maintenance_and_write_budget=True, score_before_update=True,
+                invalid_write_and_checkpoint_atomic_rejection=True,
+                full_restore_continuation=True, legacy_world_zero_write_migration=True,
+                resource_failure_keeps_world_ticking=True,
+                inactive_skips_inference_and_projection=True,
+                one_step_tv_bound="H/(2M), relative to the already quantized prior",
+                erased_rare_hypothesis_exact_posterior=str(exact),
+                zero_count_absorption=True, uniform_infinite_history_error_bound=False,
+                generative_likelihood_rule_supplied=False, capability_claim=False,
+                local_medium_realization=False, finite_body_language_refinement=False)
 
 
 def validate_components(body, world):
@@ -193,12 +385,24 @@ def main():
     guard = subprocess.run([sys.executable, str(ROOT / "scripts/check_lean_complexity_budget.py")],
                            cwd=ROOT, capture_output=True, encoding="utf-8", check=True)
     budget = json.loads(guard.stdout)
-    report = dict(status="existing_finite_process_consolidated_and_cross_checked",
+    contract_run = subprocess.run([sys.executable, str(ROOT / "scripts/validate_cgb_contract.py"),
+                                   "--real-data", "--events", "64"], cwd=ROOT,
+                                  capture_output=True, encoding="utf-8", check=True)
+    contract = json.loads(contract_run.stdout)
+    report = dict(status="parameterized_finite_reference_and_paid_byte_diagnostic_checked",
                   capability_claim=False, complete_life_definition_proved=False,
                   new_brain_architecture=False, production_lean_modules_added=0,
                   canonical_process="CGB.SensoryMaintenance.process",
                   components=validate_components(body, world), ghost=validate_ghost(world),
                   protocols=validate_protocols(), relearning=paid_relearning_path(),
+                  parameterized=validate_families(), byte_interface=validate_bytes(world["ticket_vectors"]),
+                  real_byte_world_interface=dict(
+                      source_revision=contract["source_revision"], split=contract["source_split"],
+                      alphabet=contract["alphabet"], source_hashes=contract["source_hashes"],
+                      fresh_bytes_per_path=64, paths=["nominal", "resource_cut"],
+                      actual_model_updates=0, capability_claim=False,
+                      unit_checks=contract["unit_checks"],
+                      scope="Existing zero-update interface oracle, not the new port or a trained organism"),
                   carrier_scope="Executable old-stock choice realizes the contract, not Lean choose identities",
                   port_separation_scope="Separate extension; only existing legacy_rules is imported",
                   build_and_trust=dict(passed=True, inventory_sha256=sha(inventory_path),
@@ -207,6 +411,8 @@ def main():
                                        complexity_guard_passed=budget["passed"]),
                   source_hashes={name: sha(ROOT / name) for name in (
                       MODULE, "scripts/validate_cgb_unified_reference.py",
+                      "information_boltzmann/core/cgb_low_resource_life.py",
+                      "scripts/validate_cgb_contract.py",
                       "docs/information_boltzmann/CGB_UNIFIED_REFERENCE_20261026.md",
                       "lean/CGBAxioms/reviews/export_sensory_record_20261025.lean",
                       "lean/CGBAxioms/reviews/unified_reference_20261025.lean")},

@@ -1,6 +1,7 @@
 import CGBAxioms.SensoryMaintenanceCarrier
 import CGBAxioms.PortSeparation
 import CGBAxioms.SensoryMaintenanceTwoTickGlobal
+import CGBAxioms.CausalLearning
 
 /-! Algorithm verification only: export an executable integer representation of
 the EXISTING GraceRecovery world. No production medium or rule is added. -/
@@ -81,6 +82,42 @@ example (s : SensoryMaintenance.Stim) (x : SensoryMaintenance.State) :=
 #print axioms worldMass_correct
 #print axioms CGB.SensoryMaintenanceCarrier.realized
 #print axioms CGB.SensoryMaintenanceCarrier.recovery_preserved
+
+-- Full-support byte models cannot learn by Boolean exclusion alone.
+private theorem full_support_frozen {H : Type*} [Fintype H] [DecidableEq H]
+    {B : Nat} (m : CausalLearning.Memory H B) (o : Fin 256) :
+    CausalLearning.advance (fun (_ : H) (_ : Unit) (_ : Unit) (_ : Fin 256) => true)
+      m () () o = m ∧
+    CausalLearning.fee (fun (_ : H) (_ : Unit) (_ : Unit) (_ : Fin 256) => true)
+      m () () o = 0 :=
+  CausalLearning.agreement_no_write _ m () () o (by intros; rfl)
+
+-- Algorithm reference only: Hamilton projection with stable index ties.
+private def projectTickets (counts likelihood : List Nat) : List Nat := Id.run do
+  let tickets := counts.sum
+  let masses := counts.zipWith (· * ·) likelihood
+  let total := masses.sum
+  let floors := masses.map (fun m => tickets * m / total)
+  let order := (List.range counts.length).mergeSort (fun a b =>
+    let ra := tickets * masses[a]! % total
+    let rb := tickets * masses[b]! % total
+    ra > rb || (ra == rb && a ≤ b))
+  let selected := order.take (tickets - floors.sum)
+  return (List.range counts.length).map (fun h => floors[h]! + if h ∈ selected then 1 else 0)
+
+private def ticketVectors : List (List Nat × List Nat) :=
+  [([1,1], [1,3]), ([3,4,8], [7,2,5]), ([0,127,128], [99,1,1]),
+   ([1,1,1,1,1,1,1], [1,2,3,4,5,6,7]), ([255], [32767])]
+
+example : 255 * 255 * 32767 < (2 : Nat)^31 := by decide
+
+#print axioms full_support_frozen
+#print axioms CGB.Interaction.Machine.conditioned_next
+
+#eval IO.println (Json.mkObj [
+  ("format", toJson "CGB.UnifiedReference.tickets.v1"),
+  ("vectors", toJson (ticketVectors.map fun (counts, likelihood) =>
+    [counts, likelihood, projectTickets counts likelihood]))]).compress
 
 #eval IO.println (Json.mkObj [
   ("format", toJson "CGB.UnifiedReference.world.v1"),
