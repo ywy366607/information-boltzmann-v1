@@ -232,6 +232,101 @@ theorem coupling_vanishes_beyond_scope (h : M.P1b) {π : (U → Λ) → ℝ} (hp
   M.equilibrium_ratio_local h hp hdb D hD hy hyD (fun u hu => not_not.1 fun hn =>
     (hu.elim (hfar u hn).1 (hfar u hn).2)) hpos
 
+/-! ## Layer 2b: the integration bottleneck
+
+A single-unit move of `v` is produced by events whose participants form a clique
+containing `v`. If `v`'s neighbours split into parts with no contact between different
+parts, every such event reads at most one part, so the total up and down rates are sums of
+single-part functions. Detailed balance asks their ratio to equal the equilibrium factor.
+When that factor is a product over parts (for instance pairwise couplings `J_i x_i`):
+
+* two parts: always realizable (`two_part_balance`, a crossed construction);
+* three parts, each with a non-constant factor: impossible with a positive down rate
+  (`three_part_balance_impossible`).
+
+So a unit can be energetically sensitive to at most two mutually non-contacting groups of
+neighbours; integrating more inputs needs intermediate units (binary-tree convergence).
+These are the algebraic cores; the bridge from `Medium.jump` to the part-wise sums is
+stated in the generation note, not yet formalized. -/
+
+/-- **G8a** (two parts suffice): with positive part factors `φ₁, φ₂` and constants
+`a, b ≥ 0`, up rates `a φ₁ + b φ₂` and down rates `b / φ₁ + a / φ₂` (each term reads one
+part) have ratio exactly `φ₁ φ₂`. -/
+theorem two_part_balance {α β : Type*} (φ₁ : α → ℝ) (φ₂ : β → ℝ) (h₁ : ∀ a, 0 < φ₁ a)
+    (h₂ : ∀ b, 0 < φ₂ b) (a b : ℝ) (x : α) (y : β) :
+    a * φ₁ x + b * φ₂ y = φ₁ x * φ₂ y * (b / φ₁ x + a / φ₂ y) := by
+  field_simp [(h₁ x).ne', (h₂ y).ne']
+  ring
+
+/-- **G8b** (three parts are impossible): if up rates `f₁+f₂+f₃` and nonnegative down rates
+`g₁+g₂+g₃` (each term reading one part) satisfy detailed balance with a product factor
+`φ₁ φ₂ φ₃` that is non-constant on every part, the down rate vanishes somewhere. -/
+theorem three_part_balance_impossible {α β γ : Type*}
+    (f₁ g₁ φ₁ : α → ℝ) (f₂ g₂ φ₂ : β → ℝ) (f₃ g₃ φ₃ : γ → ℝ)
+    (hg₁ : ∀ a, 0 ≤ g₁ a) (hg₂ : ∀ b, 0 ≤ g₂ b) (hg₃ : ∀ c, 0 ≤ g₃ c)
+    (hφ₁ : ∀ a, 0 < φ₁ a) (hφ₂ : ∀ b, 0 < φ₂ b) (hφ₃ : ∀ c, 0 < φ₃ c)
+    (hbal : ∀ a b c, f₁ a + f₂ b + f₃ c = φ₁ a * φ₂ b * φ₃ c * (g₁ a + g₂ b + g₃ c))
+    {a₀ a₁ : α} {b₀ b₁ : β} {c₀ c₁ : γ}
+    (d₁ : φ₁ a₀ ≠ φ₁ a₁) (d₂ : φ₂ b₀ ≠ φ₂ b₁) (d₃ : φ₃ c₀ ≠ φ₃ c₁) :
+    g₁ a₀ + g₂ b₀ + g₃ c₀ = 0 := by
+  -- mixed second difference over two parts at a fixed third part value vanishes
+  have mix : ∀ p₀ p₁ q₀ q₁ r₀ r₁ s₀ s₁ t : ℝ,
+      (p₁ * r₁ * (q₁ + s₁ + t) - p₁ * r₀ * (q₁ + s₀ + t)) -
+        (p₀ * r₁ * (q₀ + s₁ + t) - p₀ * r₀ * (q₀ + s₀ + t)) =
+      (p₁ * q₁ - p₀ * q₀) * (r₁ - r₀) + (p₁ - p₀) * (r₁ * s₁ - r₀ * s₀)
+        + t * (p₁ - p₀) * (r₁ - r₀) := fun _ _ _ _ _ _ _ _ _ => by ring
+  have zero12 : ∀ c, (φ₁ a₁ * g₁ a₁ - φ₁ a₀ * g₁ a₀) * (φ₂ b₁ - φ₂ b₀) +
+      (φ₁ a₁ - φ₁ a₀) * (φ₂ b₁ * g₂ b₁ - φ₂ b₀ * g₂ b₀) +
+      g₃ c * (φ₁ a₁ - φ₁ a₀) * (φ₂ b₁ - φ₂ b₀) = 0 := fun c => by
+    have e := mix (φ₁ a₀) (φ₁ a₁) (g₁ a₀) (g₁ a₁) (φ₂ b₀) (φ₂ b₁) (g₂ b₀) (g₂ b₁) (g₃ c)
+    have h11 := hbal a₁ b₁ c; have h10 := hbal a₁ b₀ c
+    have h01 := hbal a₀ b₁ c; have h00 := hbal a₀ b₀ c
+    have hc := (hφ₃ c).ne'
+    rw [← e]
+    apply mul_left_cancel₀ hc
+    linear_combination h10 + h01 - h11 - h00
+  have zero13 : ∀ b, (φ₁ a₁ * g₁ a₁ - φ₁ a₀ * g₁ a₀) * (φ₃ c₁ - φ₃ c₀) +
+      (φ₁ a₁ - φ₁ a₀) * (φ₃ c₁ * g₃ c₁ - φ₃ c₀ * g₃ c₀) +
+      g₂ b * (φ₁ a₁ - φ₁ a₀) * (φ₃ c₁ - φ₃ c₀) = 0 := fun b => by
+    have e := mix (φ₁ a₀) (φ₁ a₁) (g₁ a₀) (g₁ a₁) (φ₃ c₀) (φ₃ c₁) (g₃ c₀) (g₃ c₁) (g₂ b)
+    have h11 := hbal a₁ b c₁; have h10 := hbal a₁ b c₀
+    have h01 := hbal a₀ b c₁; have h00 := hbal a₀ b c₀
+    have hb := (hφ₂ b).ne'
+    rw [← e]
+    apply mul_left_cancel₀ hb
+    linear_combination h10 + h01 - h11 - h00
+  have zero23 : ∀ a, (φ₂ b₁ * g₂ b₁ - φ₂ b₀ * g₂ b₀) * (φ₃ c₁ - φ₃ c₀) +
+      (φ₂ b₁ - φ₂ b₀) * (φ₃ c₁ * g₃ c₁ - φ₃ c₀ * g₃ c₀) +
+      g₁ a * (φ₂ b₁ - φ₂ b₀) * (φ₃ c₁ - φ₃ c₀) = 0 := fun a => by
+    have e := mix (φ₂ b₀) (φ₂ b₁) (g₂ b₀) (g₂ b₁) (φ₃ c₀) (φ₃ c₁) (g₃ c₀) (g₃ c₁) (g₁ a)
+    have h11 := hbal a b₁ c₁; have h10 := hbal a b₁ c₀
+    have h01 := hbal a b₀ c₁; have h00 := hbal a b₀ c₀
+    have ha := (hφ₁ a).ne'
+    rw [← e]
+    apply mul_left_cancel₀ ha
+    linear_combination h10 + h01 - h11 - h00
+  have n1 : φ₁ a₁ - φ₁ a₀ ≠ 0 := sub_ne_zero.2 (Ne.symm d₁)
+  have n2 : φ₂ b₁ - φ₂ b₀ ≠ 0 := sub_ne_zero.2 (Ne.symm d₂)
+  have n3 : φ₃ c₁ - φ₃ c₀ ≠ 0 := sub_ne_zero.2 (Ne.symm d₃)
+  -- each down rate takes the same value at the two chosen points
+  have k3 : g₃ c₁ = g₃ c₀ := by
+    have := (zero12 c₁).trans (zero12 c₀).symm
+    have h : (g₃ c₁ - g₃ c₀) * ((φ₁ a₁ - φ₁ a₀) * (φ₂ b₁ - φ₂ b₀)) = 0 := by linear_combination this
+    exact sub_eq_zero.1 ((mul_eq_zero.1 h).resolve_right (mul_ne_zero n1 n2))
+  have k2 : g₂ b₁ = g₂ b₀ := by
+    have := (zero13 b₁).trans (zero13 b₀).symm
+    have h : (g₂ b₁ - g₂ b₀) * ((φ₁ a₁ - φ₁ a₀) * (φ₃ c₁ - φ₃ c₀)) = 0 := by linear_combination this
+    exact sub_eq_zero.1 ((mul_eq_zero.1 h).resolve_right (mul_ne_zero n1 n3))
+  have k1 : g₁ a₁ = g₁ a₀ := by
+    have := (zero23 a₁).trans (zero23 a₀).symm
+    have h : (g₁ a₁ - g₁ a₀) * ((φ₂ b₁ - φ₂ b₀) * (φ₃ c₁ - φ₃ c₀)) = 0 := by linear_combination this
+    exact sub_eq_zero.1 ((mul_eq_zero.1 h).resolve_right (mul_ne_zero n2 n3))
+  have h := zero12 c₀
+  rw [k1, k2] at h
+  have h' : (g₁ a₀ + g₂ b₀ + g₃ c₀) * ((φ₁ a₁ - φ₁ a₀) * (φ₂ b₁ - φ₂ b₀)) = 0 := by
+    linear_combination h
+  exact (mul_eq_zero.1 h').resolve_right (mul_ne_zero n1 n2)
+
 end Medium
 
 end CGB
