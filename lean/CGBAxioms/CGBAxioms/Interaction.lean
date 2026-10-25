@@ -28,6 +28,22 @@ abbrev Policy (I O : Type*) := List O → I
 
 namespace Machine
 
+/-- A positive-mass observation uniquely fixes the normalized next-state law.
+This conditions a given joint kernel; it does not identify its physical law. -/
+theorem conditioned_next (i : I) (s : S) (o : O)
+    (positive : 0 < ∑ t, P.step i s o t) :
+    let mass := ∑ t, P.step i s o t
+    let post := fun t => P.step i s o t / mass
+    (∀ t, 0 ≤ post t) ∧ (∑ t, post t) = 1 ∧
+      ∀ candidate : S → ℝ, (∀ t, mass * candidate t = P.step i s o t) → candidate = post := by
+  dsimp
+  refine ⟨fun t => div_nonneg (P.nonneg i s o t) (le_of_lt positive), ?_, ?_⟩
+  · simp only [div_eq_mul_inv, ← Finset.sum_mul]
+    exact div_self (ne_of_gt positive)
+  · intro candidate law
+    funext t
+    exact (eq_div_iff (ne_of_gt positive)).mpr (by simpa [mul_comm] using law t)
+
 noncomputable def trace (policy : Policy I O) : List O → List O → S → ℝ
   | _, [] => fun _ => 1
   | history, o :: future => fun s => ∑ s', P.step (policy history) s o s' *

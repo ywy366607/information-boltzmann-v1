@@ -1,7 +1,4 @@
-import CGBAxioms.Foundation
-import CGBAxioms.RecoveryControls
-import CGBAxioms.InteractionControls
-import CGBAxioms.ConstraintFreedom
+import CGBAxioms
 import Lean
 
 /-!

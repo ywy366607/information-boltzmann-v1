@@ -26,9 +26,12 @@ carries an explicit generative model.
 Withdrawn after review (2026-10-23): a self-model as closed-minus-cut foresight (passed by
 any noisy reflex in a world that echoes the body), and pragmatic and epistemic advantage
 over the best reflex (unsatisfiable: a frozen copy of the body that already holds content
-counts as alive forever). The root cause is that "alive" is still "holds content"; it has to
-become the self-defined viable region of the life definition first. See the axiom document,
-§4.4.
+counts as alive forever under the THEN-current content-only test). The menu-intake
+revision and then OperationalLife's actual-world recovery repaired that historical test;
+LifeControls now excludes no-intake and fully absorbing states in the operational target.
+The withdrawn reflex advantage and self-model are still not re-established. Quiet-only
+freezing, useful memory, active recovery and action-conditioned prediction need separate
+contracts and witnesses. See the axiom document, §4.4, and the Noether/life-controls report.
 -/
 
 open Finset
@@ -123,5 +126,26 @@ theorem rock_not_persists (Wd : World (Fin 2) (Fin 3) Unit) (δ : ℝ) (T : ℕ)
   rock.not_persists_of_no_intake Wd rock_cannot_eat δ T
 
 end Models
+
+/-- Any positive finite reweighting improves an observed event's normalized
+probability exactly when its conditional mean multiplier exceeds the global
+mean. This is a decision criterion for a specified change, not a learning law,
+sampler guarantee, or claim that a shared potential is forced by the axioms. -/
+theorem finite_reweighting_improves_iff {S : Type*} [Fintype S]
+    (event : Finset S) (w r : S → ℝ) (hw : ∀ s, 0 < w s)
+    (hr : ∀ s, 0 < r s) (hne : event.Nonempty) :
+    (∑ s ∈ event, w s) / (∑ s, w s) <
+        (∑ s ∈ event, w s * r s) / (∑ s, w s * r s) ↔
+      (∑ s, w s * r s) / (∑ s, w s) <
+        (∑ s ∈ event, w s * r s) / (∑ s ∈ event, w s) := by
+  have : Nonempty S := ⟨hne.choose⟩
+  have htotal : 0 < ∑ s, w s :=
+    Finset.sum_pos (fun s _ => hw s) Finset.univ_nonempty
+  have hchanged : 0 < ∑ s, w s * r s :=
+    Finset.sum_pos (fun s _ => mul_pos (hw s) (hr s)) Finset.univ_nonempty
+  have hevent : 0 < ∑ s ∈ event, w s :=
+    Finset.sum_pos (fun s _ => hw s) hne
+  rw [div_lt_div_iff₀ htotal hchanged, div_lt_div_iff₀ htotal hevent]
+  rw [mul_comm (∑ s ∈ event, w s) (∑ s, w s * r s)]
 
 end CGB
