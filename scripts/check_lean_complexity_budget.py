@@ -18,13 +18,19 @@ LEAN_ROOT = INVENTORY.parents[1]
 
 # These are review budgets, deliberately above the current inventory but close
 # enough to force consolidation before maintenance cost grows materially.
+# Lead decision 2026-10-25: the contract/witness layer is frozen at its 10-25 size
+# (FROZEN_LINES, every source except GENERATION); the headroom above the old caps
+# (72 modules, 4000 declarations, 800 theorems, 15600 lines) is reserved for the
+# generative chain axioms -> forced structure -> mechanism in GENERATION.
 CAPS = {
-    "modules": 72,
-    "declarations": 4000,
-    "source_declared_theorems": 800,
-    "source_lines": 15600,
+    "modules": 73,
+    "declarations": 4300,
+    "source_declared_theorems": 900,
+    "source_lines": 17600,
     "largest_source_file": 900,
 }
+GENERATION = "CGBAxioms/Generation.lean"
+FROZEN_LINES = 15600
 
 # Active entry points stay short; detailed evidence lives in existing reports.
 FILE_CAPS = {
@@ -69,6 +75,9 @@ def budget_report(data: dict) -> dict:
         for key in CAPS
         if values[key] > CAPS[key]
     ]
+    frozen = sum(n for p, n in zip(sources, lines) if p.relative_to(LEAN_ROOT).as_posix() != GENERATION)
+    if frozen > FROZEN_LINES:
+        violations.append(f"frozen contract/witness layer={frozen} lines exceeds {FROZEN_LINES}")
     violations.extend(f"{name}={active_lines[name]} lines exceeds cap {cap}"
                       for name, cap in FILE_CAPS.items() if active_lines[name] > cap)
     if violations:

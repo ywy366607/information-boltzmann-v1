@@ -70,3 +70,4 @@ import CGBAxioms.AlgebraicCore
 import CGBAxioms.AlgebraicHomology
 import CGBAxioms.PortFlowHomology
 import CGBAxioms.LanguageLifeKernel
+import CGBAxioms.Generation
