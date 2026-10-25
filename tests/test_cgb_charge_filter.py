@@ -57,3 +57,25 @@ def test_online_ngram_is_prequential():
     assert abs(first - math.log(256)) < 1e-9
     g.observe(97)
     assert g.observe(97) < first
+
+
+def test_fixed_lag_posterior_matches_brute_force():
+    import itertools
+    m = ChargeFilter(3, alphabet=4, seed=3, lag=2, init_spread=5)
+    m.learning = True
+    seen = []
+    m._learn = lambda token, evidence, alpha_prev: seen.append(evidence / evidence.sum())
+    A, B = (m.A / m.R[:, None]).double(), (m.B / m.S[:, None]).double()
+    tokens = [1, 3, 0, 2]
+    for b in tokens:
+        m.observe(b)
+    # first smoothed deposit is for tick 0 given tokens 0..2; hidden h_0..h_2
+    post = torch.zeros(3, dtype=torch.float64)
+    for path in itertools.product(range(3), repeat=3):
+        w = sum((1 / 3) * A[i, path[0]] for i in range(3))
+        w = w * B[path[0], tokens[0]]
+        for k in (1, 2):
+            w = w * A[path[k - 1], path[k]] * B[path[k], tokens[k]]
+        post[path[0]] += w
+    post /= post.sum()
+    assert torch.allclose(seen[0].double(), post, atol=1e-5)

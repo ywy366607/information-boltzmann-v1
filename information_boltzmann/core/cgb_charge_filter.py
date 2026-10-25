@@ -12,7 +12,10 @@ Learning deposits `deposit` units on K edge pairs (i, j) sampled from the joint
 posterior alpha_i A_ij/R_i B_jb/S_j / p_b: a local three-factor product (source
 charge, edge, target evidence) over one broadcast scalar p_b. Credit across
 ticks is carried only by the filtered charge alpha (one-lag online EM); no
-backward pass, no stored trajectory. A row whose mass exceeds `row_cap` is
+backward pass, no stored trajectory. With `lag=L > 0` the deposit for tick s
+waits L ticks and uses the posterior smoothed by the L bytes that have since
+arrived (fixed-lag online EM); the extra carrier is the last L charges and
+bytes, L*N numbers, and each tick costs L more transport products. A row whose mass exceeds `row_cap` is
 halved with floor 1 (finite capacity; old evidence is forgotten).
 """
 
@@ -25,7 +28,7 @@ import torch
 
 class ChargeFilter:
     def __init__(self, cells=256, *, alphabet=256, deposit=16, samples=4,
-                 row_cap=1 << 20, init_spread=16, seed=0, device="cpu"):
+                 row_cap=1 << 20, init_spread=16, lag=0, seed=0, device="cpu"):
         if row_cap >= 1 << 23:
             raise ValueError("row_cap must keep integer masses exact in float32")
         g = torch.Generator(device="cpu").manual_seed(seed)
@@ -38,6 +41,7 @@ class ChargeFilter:
         self.R, self.S = self.A.sum(1), self.B.sum(1)
         self.alpha = torch.full((cells,), 1.0 / cells, device=self.device)
         self.learning = True
+        self.lag, self._recent = lag, []
         self._q = None
 
     def predict(self, **_):
@@ -51,13 +55,27 @@ class ChargeFilter:
         evidence = q * self.B[:, token] / self.S
         pb = evidence.sum()
         if self.learning:
-            self._learn(token, evidence)
+            if self.lag == 0:
+                self._learn(token, evidence, self.alpha)
+            else:
+                self._recent.append((self.alpha, token))
+                if len(self._recent) > self.lag:
+                    self._learn_smoothed()
         self.alpha = evidence / pb
         return -math.log(float(pb))
 
-    def _learn(self, token, evidence):
+    def _learn_smoothed(self):
+        alpha_prev, token = self._recent.pop(0)
+        beta = torch.ones(self.cells, device=self.device)
+        for _, later in reversed(self._recent):
+            beta = (self.A @ (self.B[:, later] / self.S * beta)) / self.R
+            beta = beta / beta.sum()
+        q = (alpha_prev / self.R) @ self.A
+        self._learn(token, q * self.B[:, token] / self.S * beta, alpha_prev)
+
+    def _learn(self, token, evidence, alpha_prev):
         js = torch.multinomial(evidence, self.samples, replacement=True, generator=self.gen)
-        w = (self.alpha / self.R)[:, None] * self.A[:, js]
+        w = (alpha_prev / self.R)[:, None] * self.A[:, js]
         is_ = torch.multinomial(w.T, 1, generator=self.gen).squeeze(1)
         self.A.index_put_((is_, js), torch.full_like(js, self.deposit, dtype=torch.float32), accumulate=True)
         self.B.index_put_((js, torch.full_like(js, token)),
@@ -84,10 +102,12 @@ class ChargeFilter:
 
     def state_dict(self):
         return dict(A=self.A.cpu(), B=self.B.cpu(), alpha=self.alpha.cpu(),
-                    learning=self.learning, gen=self.gen.get_state())
+                    learning=self.learning, gen=self.gen.get_state(), lag=self.lag,
+                    recent=[(a.cpu(), b) for a, b in self._recent])
 
     def resident_bytes(self):
-        return sum(t.numel() * t.element_size() for t in (self.A, self.B, self.R, self.S, self.alpha))
+        tensors = [self.A, self.B, self.R, self.S, self.alpha] + [a for a, _ in self._recent]
+        return sum(t.numel() * t.element_size() for t in tensors) + len(self._recent)
 
 
 class OnlineNgram:

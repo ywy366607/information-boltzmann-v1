@@ -41,6 +41,7 @@ def main():
     ap.add_argument("--segments", type=int, default=10)
     ap.add_argument("--deposit", type=int, default=64)
     ap.add_argument("--init-spread", type=int, default=2)
+    ap.add_argument("--lag", type=int, default=0)
     ap.add_argument("--probe-points", type=int, default=1000)
     ap.add_argument("--threads", type=int, default=2)
     ap.add_argument("--out", required=True)
@@ -55,7 +56,8 @@ def main():
     future = [int(b) for b in val[0:args.future]]
     assert (sum(b == 0 for b in life[:100_000]) < 10), "zero bytes in stream: decoding error"
 
-    m = ChargeFilter(args.cells, seed=args.seed, deposit=args.deposit, init_spread=args.init_spread)
+    m = ChargeFilter(args.cells, seed=args.seed, deposit=args.deposit, init_spread=args.init_spread,
+                    lag=args.lag)
     ngrams = {f"online_order{k}": OnlineNgram(k) for k in (0, 1, 2, 3)}
     window, curve, occ = 50_000, [], torch.zeros(args.cells)
     acc = {k: 0.0 for k in ["organism", *ngrams]}
@@ -96,7 +98,7 @@ def main():
 
     report = dict(
         organism="ChargeFilter", cells=args.cells, seed=args.seed, deposit=args.deposit,
-        init_spread=args.init_spread, life_bytes=args.life, life_start=start,
+        init_spread=args.init_spread, lag=args.lag, life_bytes=args.life, life_start=start,
         future_bytes=args.future, segments=args.segments, provenance=prov,
         resident_bytes=m.resident_bytes(), life_seconds=life_seconds,
         life_curve_bits_per_byte=curve,
