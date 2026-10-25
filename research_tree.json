@@ -4,6 +4,53 @@
   "source_of_truth": "docs/NORTH_STAR.md",
   "nodes": [
     {
+      "id": "IB_CGB_UNIFIED_20261026",
+      "parent": null,
+      "layer": "algorithm",
+      "direction": "deduction",
+      "time": "2026-10-26",
+      "title": "Consolidate the existing finite paid-learning and maintenance process",
+      "status": "partially_reusable",
+      "claim": "One existing SensoryMaintenance process now has an executable old-state body/world update, five-port ledger, its own marginal-ghost cut and two old-stock material buffers. Earlier rule/world revisions are not assumed equivalent; PortSeparation remains an extension outside the global certificate.",
+      "canonical_process": "CGB.SensoryMaintenance.process",
+      "findings": {
+        "production_lean_modules_added": 0,
+        "body_input_rows": 192,
+        "world_probability_entries": 648,
+        "joint_state_input_rows": 1728,
+        "carrier_component_rows": 384,
+        "own_cut_marginal": true,
+        "paid_A_B_A_path_probability": "1/8",
+        "paid_path_writes": 5,
+        "two_loss_start_2_survival_time_3": "1/2",
+        "training_performed": false,
+        "complete_life_definition_proved": false
+      },
+      "lean": {
+        "source": "lean/CGBAxioms/CGBAxioms/SensoryMaintenanceCarrier.lean",
+        "declarations": [
+          "CGB.SensoryMaintenance.admission",
+          "CGB.SensoryMaintenanceCarrier.realized",
+          "CGB.SensoryMaintenanceCarrier.recovery_preserved",
+          "CGB.SensoryMaintenanceCarrier.source_energy_budget"
+        ],
+        "trust_audit_passed": true
+      },
+      "next_action": "Use this shared process as the common reference while deriving a scalable law. Re-establish history, plasticity and action-maintenance claims for a real language world; do not enlarge the finite table into an architecture.",
+      "artifacts": [
+        "information_boltzmann/core/cgb_unified_reference.py",
+        "scripts/validate_cgb_unified_reference.py",
+        "lean/CGBAxioms/reviews/unified_reference_20261025.lean",
+        "docs/information_boltzmann/CGB_UNIFIED_REFERENCE_20261026.md",
+        "results/published/cgb_unified_reference_20261026.json"
+      ],
+      "confidence": "I",
+      "admission_scope": "finite reference; not complete life or language capability",
+      "motivation": "Existing witness properties must refer to one actual body/world process before they can constrain an implementation.",
+      "action": "Execute the unchanged SensoryMaintenance kernel, audit local/world/joint rows, material identities, paid relearning and exact counterfactual scoring against Lean.",
+      "invalidation": "Any mismatch with the Lean exports or a failure of old-state causality, own-marginal cut semantics, first-hit scoring or old-stock material/credit balance invalidates this executable-reference claim."
+    },
+    {
       "id": "IB_FLUX_JUNCTION_20261009",
       "parent": "IB_HOPF_RECOMPOSE_20261009",
       "title": "Gen3 capacity-paid persistent flux junctions with executable CK edits",

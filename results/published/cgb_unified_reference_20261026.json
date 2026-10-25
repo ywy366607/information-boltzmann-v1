@@ -1,0 +1,282 @@
+{
+  "status": "existing_finite_process_consolidated_and_cross_checked",
+  "capability_claim": false,
+  "complete_life_definition_proved": false,
+  "new_brain_architecture": false,
+  "production_lean_modules_added": 0,
+  "canonical_process": "CGB.SensoryMaintenance.process",
+  "components": {
+    "body_input_rows": 192,
+    "world_probability_entries": 648,
+    "joint_state_input_rows": 1728,
+    "carrier_local_rows": 192,
+    "carrier_component_rows": 384,
+    "world_and_body_both_read_old_state": true
+  },
+  "ghost": {
+    "own_cut_body_marginal": true,
+    "staged_continuation_equal": true,
+    "invalid_protocol_atomic_rejection_and_retry": true
+  },
+  "protocols": {
+    "natural_checked_times": 25,
+    "interruption_start_times": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "interruption_time_pairs": 70,
+    "cut_survival": [
+      "1",
+      "1",
+      "1",
+      "1",
+      "1",
+      "1",
+      "3/4",
+      "11/16",
+      "125/256",
+      "280711/1048576"
+    ],
+    "two_loss": {
+      "start": 2,
+      "time": 3,
+      "survival": "1/2",
+      "body": "aSpent",
+      "reserve": 1,
+      "world": "feedB",
+      "witness_mass": "1/2",
+      "first_hit_three_ticks": "0"
+    },
+    "natural_balance": {
+      "final_content": "2498407/524288",
+      "incoming": "34257657/1048576",
+      "outgoing": "33455147/1048576",
+      "final_credit": "1349061/1048576",
+      "writes": "8289323/1048576",
+      "topups": "536863/65536",
+      "lost_credit": "0",
+      "source_stock": "8",
+      "final_body_and_source": "6692711/524288",
+      "initial_body_and_source": "12",
+      "recharge_work": "34257657/1048576"
+    },
+    "cut_balance": {
+      "final_content": "5545/2048",
+      "incoming": "45881/4096",
+      "outgoing": "51175/4096",
+      "final_credit": "3505/4096",
+      "writes": "9639/4096",
+      "topups": "89/32",
+      "lost_credit": "293/512",
+      "source_stock": "8",
+      "final_body_and_source": "21929/2048",
+      "initial_body_and_source": "12",
+      "recharge_work": "45881/4096"
+    },
+    "scope": "Exact finite checks; existing Lean certificates carry all-time claims"
+  },
+  "relearning": {
+    "probability": "1/8",
+    "writes": 5,
+    "topups": 6,
+    "incoming": 20,
+    "outgoing": 18,
+    "final_content": 6,
+    "fixed_material_identities": 24,
+    "source_stock": 8,
+    "recharge_work": 20,
+    "state_path": [
+      {
+        "tick": 1,
+        "cell": "search",
+        "reserve": 2,
+        "world": "answerA",
+        "cumulative_writes": 0
+      },
+      {
+        "tick": 2,
+        "cell": "aSpent",
+        "reserve": 2,
+        "world": "feedA",
+        "cumulative_writes": 1
+      },
+      {
+        "tick": 3,
+        "cell": "aReady",
+        "reserve": 2,
+        "world": "feedB",
+        "cumulative_writes": 1
+      },
+      {
+        "tick": 4,
+        "cell": "aReady",
+        "reserve": 2,
+        "world": "missB",
+        "cumulative_writes": 1
+      },
+      {
+        "tick": 5,
+        "cell": "search",
+        "reserve": 2,
+        "world": "probeB",
+        "cumulative_writes": 2
+      },
+      {
+        "tick": 6,
+        "cell": "search",
+        "reserve": 2,
+        "world": "answerB",
+        "cumulative_writes": 2
+      },
+      {
+        "tick": 7,
+        "cell": "bSpent",
+        "reserve": 2,
+        "world": "feedB",
+        "cumulative_writes": 3
+      },
+      {
+        "tick": 8,
+        "cell": "bReady",
+        "reserve": 2,
+        "world": "feedA",
+        "cumulative_writes": 3
+      },
+      {
+        "tick": 9,
+        "cell": "bReady",
+        "reserve": 2,
+        "world": "missA",
+        "cumulative_writes": 3
+      },
+      {
+        "tick": 10,
+        "cell": "search",
+        "reserve": 2,
+        "world": "probeA",
+        "cumulative_writes": 4
+      },
+      {
+        "tick": 11,
+        "cell": "search",
+        "reserve": 2,
+        "world": "answerA",
+        "cumulative_writes": 4
+      },
+      {
+        "tick": 12,
+        "cell": "aSpent",
+        "reserve": 2,
+        "world": "feedA",
+        "cumulative_writes": 5
+      },
+      {
+        "tick": 13,
+        "cell": "aReady",
+        "reserve": 2,
+        "world": "feedA",
+        "cumulative_writes": 5
+      }
+    ],
+    "scope": "One supported path, not typical behavior or capability evidence"
+  },
+  "carrier_scope": "Executable old-stock choice realizes the contract, not Lean choose identities",
+  "port_separation_scope": "Separate extension; only existing legacy_rules is imported",
+  "build_and_trust": {
+    "passed": true,
+    "inventory_sha256": "ee9f76178ee76e165205243c97b1f29e8dd95fba23f2e6d062cb716cc2022161",
+    "compiled_declarations": 4014,
+    "production_modules": 73,
+    "complexity_guard_passed": true
+  },
+  "source_hashes": {
+    "information_boltzmann/core/cgb_unified_reference.py": "bd2f99f43ed5ed1ce6380b1bbd84c130ea2d1521fcd0d3c9c78b8c7dd6034468",
+    "scripts/validate_cgb_unified_reference.py": "527234ef3664fd1d6aeff04dc29f692a49a6b57feffdf626423e40314073f3bb",
+    "docs/information_boltzmann/CGB_UNIFIED_REFERENCE_20261026.md": "10b2930d268aec798df73106dc7f5fea9ad20dd4febd82e7f7798f675744eb2d",
+    "lean/CGBAxioms/reviews/export_sensory_record_20261025.lean": "593fc2df6f8e2b72743f0b26cbd7c07db13d1dd32deb40912141d044300d1b2e",
+    "lean/CGBAxioms/reviews/unified_reference_20261025.lean": "f39b2ce591abce0486c41f89e1ac1f666f069249bd99e8ad273bfbf32d62c284"
+  },
+  "lean_source_hashes": {
+    "CGBAxioms/ActiveLoop.lean": "9e56d8c7f329724716af60955108055a5bc359eef0b69135f2c7330b0de5708c",
+    "CGBAxioms/ActiveMaintenance.lean": "ef9b4df1f7a054281609ed64845b77c347c367b5d0491084d2e0ed48dc870acf",
+    "CGBAxioms/ActiveMaintenanceCarrier.lean": "5507055efe8a88ce80cc49864a01ea8e3fcdf66b0846606d8fafcbf30fc88e17",
+    "CGBAxioms/ActiveMaintenanceEnergy.lean": "eebb826a2a3adb761c488e541da3979b58c35690d1346c5c5d7bf0ff34f44d71",
+    "CGBAxioms/AlgebraicCore.lean": "7a0e6bed82f5eace4b91f071d00b268bf2406ca0df9f765a2ee4a0f51c8a851b",
+    "CGBAxioms/AlgebraicHomology.lean": "d893ac3860af5f40939021a6a59f5e75c0d7a171223f18bf469f41805205d377",
+    "CGBAxioms/AtomicIndependence.lean": "58f36e25a38713402bd89b3c2d7686c83a69dde990a19c62d1c135b174a8cc0e",
+    "CGBAxioms/Audit.lean": "1745f9772250e6bfe7812323cc5c8733840d60b9d62ad8549d81c049249f3b44",
+    "CGBAxioms/AuditAll.lean": "5c8cd6cab2cfbe028a8a26f58c541845f89f7f109833cdcaec49d9777145f543",
+    "CGBAxioms/BufferedMaterial.lean": "915fa2d5ee467e1aaf4731eb69ae9c3a52c891331860b374e30cf6a7607fc473",
+    "CGBAxioms/CausalLearning.lean": "5c257723c917b064457f7b70db2a44cbc38e8c906d92526967db1ff77c7ae11e",
+    "CGBAxioms/ConstraintAudit.lean": "cfbda2ff344353b46b209b43cfd69dc836a2ab9a4cbe62ddbe172de9e04544ab",
+    "CGBAxioms/ConstraintFreedom.lean": "37bf271ea1b419f9df48cf81ea20ccc3b7704d39fab9961ad23c45967ea8c0fe",
+    "CGBAxioms/EnergyBudget.lean": "7f679d7803742d11465b58f4695cf521e3e1a42f3ce831b666131fccc6fbb06c",
+    "CGBAxioms/EnergyControls.lean": "5ec64bc2b3b272e6463f6bdac86d8bc32f40f74e096aadb9b6618209ccf114a0",
+    "CGBAxioms/EventChannels.lean": "0dd33bcc957ff3e3155df4cefaee463ae3627d621434fbcc73474e35ffc73232",
+    "CGBAxioms/Foundation.lean": "0fe5127c183a9ea32632ebfc3bf152c441ffadd90b115e87a7610b562add8134",
+    "CGBAxioms/Generation.lean": "58d0154fabc8989b36da4f789d9a4b7ba4fb43eb452fccbb8103f43744a120d5",
+    "CGBAxioms/GraceRecovery.lean": "a69d4a0f454309b44b6b684079d139f2cf528eddb8ec218912bc5b3aa1bc7186",
+    "CGBAxioms/GraceRecoveryAccounting.lean": "b51839b00a908531bd6b26d91706f3ce235ed1b5c07901dd3162090fa749e4cc",
+    "CGBAxioms/GraceRecoveryClosure.lean": "10c2b1d21e7fcb0fccbacf133a1750e52ef82e0ad45343a6ab00fe96a8fb4a65",
+    "CGBAxioms/GraceRecoveryControls.lean": "c18defe425e12a973403633241f6522234dd8fb1f9187ec4928c1437d5707b35",
+    "CGBAxioms/Inference.lean": "7c98023d72f74478582a418266012511f18c2e3e453b83f507c2e85181bbb7cb",
+    "CGBAxioms/InformationThermodynamics.lean": "71c6fcc3eb2d6e3a1bd4e6d7d9423d9dfcb6f60f90b78a9707226b79846fd37b",
+    "CGBAxioms/Interaction.lean": "7a4cf353eeb05a63d7e65bf9389d4c312c5d8bb874bac6d9b534bde490790acc",
+    "CGBAxioms/InteractionBridge.lean": "43059e1a6192caf81267331edbdd59a0b2480fd4776a589e5138b36286fdf467",
+    "CGBAxioms/InteractionControls.lean": "8bbb3766b4494b1b9f2323b17757d5e9f1fc2a87f0b006fefc019ef9b068490d",
+    "CGBAxioms/Language.lean": "b52db422bcac3996cb279d41813aa4a0998ebb6fe54ba2bb87b096972539f0fe",
+    "CGBAxioms/LanguageLifeKernel.lean": "9f9756fb32233317611b455e48aaeeedf30bbd3d456e6ebaba4ecfc87450cc0e",
+    "CGBAxioms/LearningMaintenance.lean": "1c39a0a7b93b8ca2acb8526ffabab7beddaddf8de990f9c1a377c912345359dd",
+    "CGBAxioms/LearningMaintenanceControls.lean": "196b1babf3f274d301169f21edbc6b3793c3c2016aaefe096accd1f3ce20d997",
+    "CGBAxioms/LearningMaintenanceEnergy.lean": "f9cd51870d98c6e69256bcf45d88acec7e35f522256d9a0e53eae3b266a58c57",
+    "CGBAxioms/Life.lean": "f21caf6feba9f6a4a2b5a3bdeb6bea7a05d6503b97c347af52c56e68050b3f65",
+    "CGBAxioms/LifeControls.lean": "5f025d923089697978a8b6a5bbf64fe16db62485d56ebd584f538611f9c38e1c",
+    "CGBAxioms/MaterialExchange.lean": "8f888370007db06d7de370155672bdea53ec0929dd7940ace30e7933677eed08",
+    "CGBAxioms/MaterialSource.lean": "50194b475dd439a9497ebbff6f1cc7f2fbc64ea7c0c2d20431a02c412ebab7b8",
+    "CGBAxioms/MaterialSourceControls.lean": "518a2f25e56b7d578fd61c87c02905ffac8f628a419286ebcef051a674fe9354",
+    "CGBAxioms/Medium.lean": "e4f507706eec6f69ce57c95b47a1062e6b644bab12990347cd8d84f286c86fc4",
+    "CGBAxioms/Models.lean": "d7648d7e36912bdd6119f4e27027301b791c530ad7217e873d35c504e1a2f5b0",
+    "CGBAxioms/NoetherBridge.lean": "810a4afc5d944216ca86cd3153ae8d26ff9dc531756220f531f2dc46e35861e3",
+    "CGBAxioms/OperationalLife.lean": "216bcc5a22b70ecffd449a9ab55fdb916b51f3138ffda971e3966b882daa9155",
+    "CGBAxioms/PortContractInstances.lean": "18e34a338c82d9523df16937fa0a66007de0f5c5afd0c3414e7e6547856188fb",
+    "CGBAxioms/PortContracts.lean": "e87b80d635dca5459c0cd2cf01d331dfb1c2f532f60e71881e6bee2593b54da2",
+    "CGBAxioms/PortFlowHomology.lean": "7dc1dae2f840aa031745041299ee5276de583074ba8ccc38c1cb3a887b890e94",
+    "CGBAxioms/PortSeparation.lean": "71232909742d2df1811bc2524f6a5c54d0430ef6f81af7514b3e5807da97f7d4",
+    "CGBAxioms/RecoveryControls.lean": "19ab24fd7e9f292707a916eb9cdb5a372b62121c6faae042882aca892b0d35a2",
+    "CGBAxioms/RecoveryCriteria.lean": "80bfa01f085dbc149e187fcdc8aad3cf7c484e87ffcffc60dcce7df312f93504",
+    "CGBAxioms/RecoveryTransport.lean": "b005c7f353fda4bbf1ccfb4aa7dc8f14dfb61f417ca751c0a4e6d2721eac880e",
+    "CGBAxioms/RenewableCandidateAudit.lean": "8195d886f6f750914c4f6464edb38eddde3800b5b3ebccd20876f6aa9639d4bf",
+    "CGBAxioms/RenewableEncoding.lean": "c4b8eae531a446ee0f31b8410b2b21497fa7a5b62ea11fbdf39ff5f326949d11",
+    "CGBAxioms/RenewableLearning.lean": "4acbf7995598225791b2337f6ecc38d811a8bc2f20a691ccefc947d7960afb6d",
+    "CGBAxioms/RenewableLearningCarrier.lean": "388f343da7cd11e024bc9e1e65f5145c119078922d279897059fce988578ab71",
+    "CGBAxioms/RenewableLearningClosure.lean": "452637186863049448b94a917a0307e23d05b83d636f60e55336d2df3cfece2b",
+    "CGBAxioms/RenewableLearningControls.lean": "a49bde30cfab9ad99f5807c7a4e8247e482dac59bf9a1cfeeeebc18688cb44b3",
+    "CGBAxioms/RenewableLearningEnergy.lean": "01b0f1ce5322bd6fc27ebce6d85112048be11db9c9e37f769e7251726720b1e3",
+    "CGBAxioms/RenewableLearningLife.lean": "650a1ed5038ff4de9383f33a2a32cb9e8bc766cc763b7050ce5c6e3d1fdac4fd",
+    "CGBAxioms/RenewableRecoveryCertificate.lean": "b097face8427e16785f8493197714bcb163c128f36705cb21648389f126c191b",
+    "CGBAxioms/RuleEncoding.lean": "27aaa80e273a621bfa37a0c47e85afeb7aed818f3b96cf56359a0fccc0990100",
+    "CGBAxioms/ScheduledRecovery.lean": "30d9067bda0e33b0a59eb006918aefa2c318d4cfd6b2a9b1bd6bb69f4f461986",
+    "CGBAxioms/SensoryMaintenance.lean": "1c3d2a74740f722a9428b83b40344e3fecc4b38f9ba8480087a299fa57836a7a",
+    "CGBAxioms/SensoryMaintenanceBoundaries.lean": "525c555738e499cb180bde2d05df022e0d5b67ba6255386ae9f58e44f1b53711",
+    "CGBAxioms/SensoryMaintenanceCarrier.lean": "b6d38f490a2baf3922be29d43d7ae2f4b7e8ca49fa043fd4e4489290d4cdffc3",
+    "CGBAxioms/SensoryMaintenanceClosure.lean": "4871b8339c482199a6112eb18659ca49b32be3fa54c232fc3a003640b988ba54",
+    "CGBAxioms/SensoryMaintenanceLimits.lean": "ad430d3c3f58fca9159e80db65dcc040dcdba501f83fbef7de5e85e40b77505b",
+    "CGBAxioms/SensoryMaintenanceProtocolRepairRefutation.lean": "42216274832b0f3169f9caee3da9f8912828d3bd65f45ef1120a6da7d25d32a4",
+    "CGBAxioms/SensoryMaintenanceRecovery.lean": "c43846488cdda8000a7cf48d73dc19b526ac3c4e8c85d9ae467f51a144894b5a",
+    "CGBAxioms/SensoryMaintenanceRepairAudit.lean": "a5b66ffa1d3962510f4f0a40bdbc6be834eeae8bdfb7694e4cde8e808441f34f",
+    "CGBAxioms/SensoryMaintenanceRepairCandidates.lean": "9455c1062d0e481827392055ffc79298e52fdcbdacaf088be17008b5f405fc80",
+    "CGBAxioms/SensoryMaintenanceTwoTickGlobal.lean": "a54baf2db7663a33c802b51a28e994e533e47acdbeddfbcc2b7097b9268459e7",
+    "CGBAxioms/SensoryMaintenanceTwoTickObstruction.lean": "231e90cf014e00523284a76b0df3d2d9389f249f71cf3ee7bdfcab065d170efa",
+    "CGBAxioms/SpongeContractInstance.lean": "9c11c287bc2b7034df5d15cf4b74f36e85ec30fc473852575e31eee40413f74c",
+    "CGBAxioms/SubconditionGraph.lean": "3ab2e1c74a3a7895a2ff82bb17a3b430084de904b457e68bc627dcb099c78c51",
+    "CGBAxioms/Symmetry.lean": "f595478d072a4fa5680be6e6a928afb86922e3fcdd3ef0512bfefdb9ab2090bc",
+    "CGBAxioms/TurnoverControls.lean": "7af924e715056309d2c97984dce20fbc3b1a5c07501c0458829e04ca0bbdde7f",
+    "CGBAxioms/WorldRecovery.lean": "168592642319cd10c65ee9edac1e11389534243346b03636408cc421bf00af5c",
+    "CGBAxioms.lean": "fd75e9be2d09c2f10811fdef3791fa234627380d025ae3df82ee06f4ea100f70"
+  }
+}
