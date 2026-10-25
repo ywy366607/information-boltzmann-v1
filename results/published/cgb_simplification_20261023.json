@@ -1,0 +1,117 @@
+{
+  "status": "full_build_trust_and_equivalence_checks_passed",
+  "timestamp": "2026-10-23T21:10:35+08:00",
+  "scope": "Refactor duplicated scoring and static/time-dependent channel observations; no new physical or life capability claim.",
+  "before": {
+    "modules": 23,
+    "declarations": 1335,
+    "kernel_theorem_entries": 826,
+    "source_declared_theorems": 329
+  },
+  "after": {
+    "modules": 23,
+    "declarations": 1331,
+    "kernel_theorem_entries": 819,
+    "source_declared_theorems": 324
+  },
+  "code_lines": [
+    {
+      "file": "lean/CGBAxioms/CGBAxioms/OperationalLife.lean",
+      "before": 129,
+      "after": 153
+    },
+    {
+      "file": "lean/CGBAxioms/CGBAxioms/MaterialExchange.lean",
+      "before": 210,
+      "after": 187
+    },
+    {
+      "file": "lean/CGBAxioms/CGBAxioms/EventChannels.lean",
+      "before": 343,
+      "after": 300
+    }
+  ],
+  "main_document_lines": {
+    "before": 511,
+    "after": 446,
+    "historical_material_moved_not_discarded": true
+  },
+  "changes": [
+    "Shared Viability formulas and probability-bound proofs across both observers.",
+    "One time-dependent channel firstHit interface; static marks are a specialization.",
+    "Use generic Encodable results rather than duplicate ExchangeBook wrappers.",
+    "Keep version/menu history off the current main narrative."
+  ],
+  "removed_source_declared_interfaces": [
+    "CGB.Exchange.alive_bounds",
+    "CGB.Operational.alive_bounds",
+    "CGB.Description.ExchangeBook.code_roundtrip",
+    "CGB.Description.ExchangeBook.same_code_same_book",
+    "CGB.EventChannels.Kernel.firstHit_static",
+    "CGB.EventChannels.Kernel.lift",
+    "CGB.EventChannels.Kernel.recovery",
+    "CGB.EventChannels.Kernel.recovery_bounds",
+    "CGB.EventChannels.Kernel.recovery_ignores_previous",
+    "CGB.EventChannels.Kernel.state_mark_recovery"
+  ],
+  "replacement_interfaces": {
+    "alive_bounds": "CGB.Viability.alive_bounds",
+    "static_channel_recovery": "CGB.EventChannels.Kernel.firstHit with time-independent mark",
+    "state_mark_recovery": "CGB.EventChannels.Kernel.state_mark_firstHit",
+    "exchange_book_roundtrip": "Encodable.encodek",
+    "exchange_book_code_injectivity": "Encodable.encode_injective"
+  },
+  "source_declared_signatures_changed": [
+    "CGB.Medium.event_state_mark_matches_operational"
+  ],
+  "equivalence_checks": {
+    "passed": true,
+    "old_scoring_formula_checks": 10,
+    "retired_static_observer_equivalence_checks": 1,
+    "path": "lean/CGBAxioms/.lake/simplification_equivalence_20261023.lean",
+    "sha256": "c5f3e7d8d3bc02316267ed9fb84e24122260aaed42c5480a6cd6fd0d92520ffb"
+  },
+  "preserved": {
+    "physical_axioms": true,
+    "encoded_description_budget": true,
+    "world_clock": true,
+    "normal_and_cut_state_laws": true,
+    "all_turnover_controls": true,
+    "original_user_definition_verbatim": true,
+    "full_production_import_coverage": true
+  },
+  "proof_trust_passed": true,
+  "module_coverage_passed": true,
+  "audit_guard_checks": 10,
+  "source_hashes": {
+    "CGBAxioms/AtomicIndependence.lean": "58f36e25a38713402bd89b3c2d7686c83a69dde990a19c62d1c135b174a8cc0e",
+    "CGBAxioms/Audit.lean": "1745f9772250e6bfe7812323cc5c8733840d60b9d62ad8549d81c049249f3b44",
+    "CGBAxioms/AuditAll.lean": "ee6e11e7b0dca083534c4353f29a76868b9f0763654a137ec5b358fc3ab2d7aa",
+    "CGBAxioms/ConstraintAudit.lean": "cfbda2ff344353b46b209b43cfd69dc836a2ab9a4cbe62ddbe172de9e04544ab",
+    "CGBAxioms/ConstraintFreedom.lean": "37bf271ea1b419f9df48cf81ea20ccc3b7704d39fab9961ad23c45967ea8c0fe",
+    "CGBAxioms/EventChannels.lean": "0dd33bcc957ff3e3155df4cefaee463ae3627d621434fbcc73474e35ffc73232",
+    "CGBAxioms/Foundation.lean": "0fe5127c183a9ea32632ebfc3bf152c441ffadd90b115e87a7610b562add8134",
+    "CGBAxioms/Inference.lean": "1b0314e6508a0190c33aaf6d24dd82102ef8d7722cadd7c1897232eb95504c60",
+    "CGBAxioms/Interaction.lean": "9e6daed623e1f03a15c6661408c191fb5d9696af28938ab3cc8f5bed516c8023",
+    "CGBAxioms/InteractionBridge.lean": "43059e1a6192caf81267331edbdd59a0b2480fd4776a589e5138b36286fdf467",
+    "CGBAxioms/InteractionControls.lean": "8bbb3766b4494b1b9f2323b17757d5e9f1fc2a87f0b006fefc019ef9b068490d",
+    "CGBAxioms/Language.lean": "b52db422bcac3996cb279d41813aa4a0998ebb6fe54ba2bb87b096972539f0fe",
+    "CGBAxioms/Life.lean": "f21caf6feba9f6a4a2b5a3bdeb6bea7a05d6503b97c347af52c56e68050b3f65",
+    "CGBAxioms/LifeControls.lean": "5f025d923089697978a8b6a5bbf64fe16db62485d56ebd584f538611f9c38e1c",
+    "CGBAxioms/MaterialExchange.lean": "8f888370007db06d7de370155672bdea53ec0929dd7940ace30e7933677eed08",
+    "CGBAxioms/Medium.lean": "e4f507706eec6f69ce57c95b47a1062e6b644bab12990347cd8d84f286c86fc4",
+    "CGBAxioms/Models.lean": "d7648d7e36912bdd6119f4e27027301b791c530ad7217e873d35c504e1a2f5b0",
+    "CGBAxioms/NoetherBridge.lean": "810a4afc5d944216ca86cd3153ae8d26ff9dc531756220f531f2dc46e35861e3",
+    "CGBAxioms/OperationalLife.lean": "216bcc5a22b70ecffd449a9ab55fdb916b51f3138ffda971e3966b882daa9155",
+    "CGBAxioms/RecoveryControls.lean": "19ab24fd7e9f292707a916eb9cdb5a372b62121c6faae042882aca892b0d35a2",
+    "CGBAxioms/RuleEncoding.lean": "27aaa80e273a621bfa37a0c47e85afeb7aed818f3b96cf56359a0fccc0990100",
+    "CGBAxioms/SubconditionGraph.lean": "3ab2e1c74a3a7895a2ff82bb17a3b430084de904b457e68bc627dcb099c78c51",
+    "CGBAxioms/Symmetry.lean": "f595478d072a4fa5680be6e6a928afb86922e3fcdd3ef0512bfefdb9ab2090bc",
+    "CGBAxioms/TurnoverControls.lean": "7af924e715056309d2c97984dce20fbc3b1a5c07501c0458829e04ca0bbdde7f",
+    "CGBAxioms/WorldRecovery.lean": "168592642319cd10c65ee9edac1e11389534243346b03636408cc421bf00af5c",
+    "CGBAxioms.lean": "9da06674acb643a0eaacc615b1b7c7aa00a4b37c280eeb5c015e290fdb74aef8"
+  },
+  "full_audit": "lean/CGBAxioms/.lake/simplification_20261023.json",
+  "backup": "results/cgb_simplification_before_20261023_210056",
+  "report": "docs/information_boltzmann/CGB_SIMPLIFICATION_20261023.md"
+}

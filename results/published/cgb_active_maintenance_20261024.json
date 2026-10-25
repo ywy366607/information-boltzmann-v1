@@ -1,0 +1,904 @@
+{
+  "date": "2026-10-24",
+  "status": "verified_maintenance_subtarget",
+  "core_result_groups": 3,
+  "results": {
+    "core_result_groups": 3,
+    "normal_survival_all_times": "1",
+    "cut_survival_from_tick_3_upper_bound": "1/2",
+    "self_maintenance_margin": "1/2",
+    "persists_delta": 0,
+    "recovery_horizon": 3,
+    "recovery_threshold": "1/2",
+    "normal_input_and_consumption_per_tick_from_2": 1,
+    "zero_reserve_channel_rate": 0,
+    "fixed_material_tokens": 3,
+    "normal_and_cut_timed_realization": true,
+    "recycling_recharge_counted_as_external_work": true,
+    "energy_flux_not_residual_heat": true,
+    "same_actual_scoring_and_energy_law": true,
+    "proof_trust_passed": true,
+    "previous_signatures_preserved": 1507,
+    "new_source_declared_theorems": 31,
+    "full_production_modules": 31,
+    "core_public_theorems": 11,
+    "internal_support_theorems": 20,
+    "audit_guard_checks": 10
+  },
+  "scope": "Concrete finite mathematical maintenance witness, not learning or full L1-L6. Isothermal admission uses explicitly declared T=1 and zero internal/carried entropy; microscopic bath and physical entropy calibration remain separate. No encoded 1 percent candidate or continuously novel rich world is claimed.",
+  "verification": {
+    "production_build_passed": true,
+    "proof_trust_passed": true,
+    "module_coverage_passed": true,
+    "audit_guard_checks": 10,
+    "initial_binding_and_material_energy_port_checks_passed": true,
+    "zero_reserve_channel_gate_check_passed": true,
+    "legacy_counterexample_retained": true,
+    "original_life_definition_unchanged": true,
+    "training_performed": false,
+    "energy_baseline_signatures_preserved": 1473,
+    "reviewed_delivery_signatures_preserved": 1507
+  },
+  "inventory": {
+    "declarations": 1634,
+    "modules": [
+      "CGBAxioms.Language",
+      "CGBAxioms.Symmetry",
+      "CGBAxioms.Medium",
+      "CGBAxioms.Models",
+      "CGBAxioms.Life",
+      "CGBAxioms.Inference",
+      "CGBAxioms.Foundation",
+      "CGBAxioms.RuleEncoding",
+      "CGBAxioms.WorldRecovery",
+      "CGBAxioms.OperationalLife",
+      "CGBAxioms.RecoveryControls",
+      "CGBAxioms.Interaction",
+      "CGBAxioms.InteractionBridge",
+      "CGBAxioms.InteractionControls",
+      "CGBAxioms.ConstraintAudit",
+      "CGBAxioms.ConstraintFreedom",
+      "CGBAxioms.SubconditionGraph",
+      "CGBAxioms.AtomicIndependence",
+      "CGBAxioms.NoetherBridge",
+      "CGBAxioms.LifeControls",
+      "CGBAxioms.EventChannels",
+      "CGBAxioms.MaterialExchange",
+      "CGBAxioms.TurnoverControls",
+      "CGBAxioms.MaterialSource",
+      "CGBAxioms.MaterialSourceControls",
+      "CGBAxioms.EnergyBudget",
+      "CGBAxioms.EnergyControls",
+      "CGBAxioms.ActiveLoop",
+      "CGBAxioms.ActiveMaintenance",
+      "CGBAxioms.ActiveMaintenanceEnergy",
+      "CGBAxioms.ActiveMaintenanceCarrier"
+    ],
+    "theorems": 1009
+  },
+  "source_declared_theorem_count": 381,
+  "new_source_declared_theorems": [
+    "CGB.ActiveMaintenance.admission",
+    "CGB.ActiveMaintenance.cut_survival",
+    "CGB.ActiveMaintenance.maintenance_witness",
+    "CGB.ActiveMaintenance.natural_survival",
+    "CGB.ActiveMaintenance.reads_boundary",
+    "CGB.ActiveMaintenance.starvation_depletes",
+    "CGB.ActiveMaintenance.sustained_exchange",
+    "CGB.ActiveMaintenanceCarrier.realized",
+    "CGB.ActiveMaintenanceEnergy.actual_law",
+    "CGB.ActiveMaintenanceEnergy.availability_budget",
+    "CGB.ActiveMaintenanceEnergy.isothermal",
+    "_private.CGBAxioms.ActiveMaintenance.0.CGB.ActiveMaintenance.cut_alive_bound",
+    "_private.CGBAxioms.ActiveMaintenance.0.CGB.ActiveMaintenance.cut_early_law",
+    "_private.CGBAxioms.ActiveMaintenance.0.CGB.ActiveMaintenance.cut_move_early",
+    "_private.CGBAxioms.ActiveMaintenance.0.CGB.ActiveMaintenance.cut_survival_mass_bound",
+    "_private.CGBAxioms.ActiveMaintenance.0.CGB.ActiveMaintenance.kernel_table",
+    "_private.CGBAxioms.ActiveMaintenance.0.CGB.ActiveMaintenance.natural_alive",
+    "_private.CGBAxioms.ActiveMaintenance.0.CGB.ActiveMaintenance.natural_law",
+    "_private.CGBAxioms.ActiveMaintenance.0.CGB.ActiveMaintenance.normal_recovery",
+    "_private.CGBAxioms.ActiveMaintenance.0.CGB.ActiveMaintenance.recovery_step",
+    "_private.CGBAxioms.ActiveMaintenance.0.CGB.ActiveMaintenance.starve_mass_monotone",
+    "_private.CGBAxioms.ActiveMaintenance.0.CGB.ActiveMaintenance.starve_mass_three",
+    "_private.CGBAxioms.ActiveMaintenance.0.CGB.ActiveMaintenance.starve_recovery",
+    "_private.CGBAxioms.ActiveMaintenance.0.CGB.ActiveMaintenance.starve_world_step",
+    "_private.CGBAxioms.ActiveMaintenance.0.CGB.ActiveMaintenance.sum_configs",
+    "_private.CGBAxioms.ActiveMaintenanceCarrier.0.CGB.ActiveMaintenanceCarrier.event_delivery",
+    "_private.CGBAxioms.ActiveMaintenanceCarrier.0.CGB.ActiveMaintenanceCarrier.physical_delivery",
+    "_private.CGBAxioms.ActiveMaintenanceCarrier.0.CGB.ActiveMaintenanceCarrier.token_count",
+    "_private.CGBAxioms.ActiveMaintenanceCarrier.0.CGB.ActiveMaintenanceCarrier.token_energy",
+    "_private.CGBAxioms.ActiveMaintenanceCarrier.0.CGB.ActiveMaintenanceCarrier.token_transport",
+    "_private.CGBAxioms.ActiveMaintenanceEnergy.0.CGB.ActiveMaintenanceEnergy.body_supported"
+  ],
+  "certificates": {
+    "CGB.ActiveMaintenance.admission": {
+      "kind": "theorem",
+      "signature": "CGB.ActiveMaintenance.body.Axioms ∧ CGB.ActiveMaintenance.body.EventClocked 1",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "project_dependencies": [
+        "CGB.JumpProcess",
+        "CGB.Medium",
+        "CGB.ActiveMaintenance.State",
+        "CGB.ActiveMaintenance.Stim",
+        "CGB.ActiveMaintenance.body",
+        "CGB.ActiveMaintenance.cost",
+        "CGB.ActiveMaintenance.next",
+        "CGB.JumpProcess.mk",
+        "CGB.JumpProcess.rate",
+        "CGB.Medium.Axioms",
+        "CGB.Medium.Closed",
+        "CGB.Medium.EventClocked",
+        "CGB.Medium.IsAut",
+        "CGB.Medium.OnlyBoundarySenses",
+        "CGB.Medium.P1a",
+        "CGB.Medium.Rigid",
+        "CGB.Medium.act",
+        "CGB.Medium.boundary",
+        "CGB.Medium.calm",
+        "CGB.Medium.content",
+        "CGB.Medium.init",
+        "CGB.Medium.initial_invariant_of_rigid",
+        "CGB.Medium.jump",
+        "CGB.Medium.mk",
+        "CGB.Medium.near",
+        "CGB.Medium.onlyBoundarySenses_of_all_boundary",
+        "CGB.Medium.p1a_iff_unique_vacuum",
+        "CGB.Medium.p2a_of_every_event_open",
+        "CGB.Medium.p2c_of_rigid",
+        "CGB.Medium.parts",
+        "CGB.Medium.rate",
+        "CGB.ActiveMaintenance.body._proof_1",
+        "CGB.ActiveMaintenance.cost._proof_1",
+        "CGB.ActiveMaintenance.next._proof_1",
+        "CGB.JumpProcess.mk.congr_simp",
+        "CGB.Medium.Axioms.mk",
+        "CGB.Medium.jump._proof_1",
+        "CGB.Medium.mk.congr_simp"
+      ]
+    },
+    "CGB.ActiveMaintenance.reads_boundary": {
+      "kind": "theorem",
+      "signature": "CGB.ActiveMaintenance.body.ReadsBoundary CGB.ActiveMaintenance.world",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "project_dependencies": [
+        "CGB.Medium",
+        "CGB.ActiveMaintenance.State",
+        "CGB.ActiveMaintenance.Stim",
+        "CGB.ActiveMaintenance.body",
+        "CGB.ActiveMaintenance.cost",
+        "CGB.ActiveMaintenance.next",
+        "CGB.ActiveMaintenance.world",
+        "CGB.Medium.ReadsBoundary",
+        "CGB.Medium.boundary",
+        "CGB.Medium.mk",
+        "CGB.World.W",
+        "CGB.World.moves",
+        "CGB.ActiveMaintenance.body._proof_1",
+        "CGB.ActiveMaintenance.cost._proof_1",
+        "CGB.ActiveMaintenance.next._proof_1",
+        "CGB.Medium.mk.congr_simp"
+      ]
+    },
+    "CGB.ActiveMaintenance.natural_survival": {
+      "kind": "theorem",
+      "signature": "∀ (n : ℕ),\n  CGB.Exchange.survival CGB.ActiveMaintenance.body CGB.ActiveMaintenance.world CGB.ActiveMaintenance.he\n      CGB.ActiveMaintenance.ledger false (fun x => CGB.ActiveMaintenance.world.sense) n =\n    1",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "project_dependencies": [
+        "CGB.ActiveLoop.WorldState",
+        "CGB.ActiveLoop.fin6_sum",
+        "CGB.ActiveMaintenance.State",
+        "CGB.ActiveMaintenance.Stim",
+        "CGB.ActiveMaintenance.W",
+        "CGB.ActiveMaintenance.body",
+        "CGB.ActiveMaintenance.he",
+        "CGB.ActiveMaintenance.incoming",
+        "CGB.ActiveMaintenance.ledger",
+        "CGB.ActiveMaintenance.moves",
+        "CGB.ActiveMaintenance.next",
+        "CGB.ActiveMaintenance.sense",
+        "CGB.ActiveMaintenance.world",
+        "CGB.Exchange.alive",
+        "CGB.Exchange.survival",
+        "CGB.Medium.MaterialLedger",
+        "CGB.Medium.law",
+        "CGB.World.W",
+        "CGB.World.sense",
+        "CGB.ActiveMaintenance.cost._proof_1",
+        "CGB.ActiveMaintenance.moves._proof_1",
+        "CGB.ActiveMaintenance.next._proof_1",
+        "CGB.ActiveMaintenance.sense._proof_1",
+        "CGB.Exchange.alive.congr_simp"
+      ]
+    },
+    "CGB.ActiveMaintenance.cut_survival": {
+      "kind": "theorem",
+      "signature": "∀ (n : ℕ),\n  3 ≤ n →\n    CGB.Exchange.survival CGB.ActiveMaintenance.body CGB.ActiveMaintenance.world CGB.ActiveMaintenance.he\n        CGB.ActiveMaintenance.ledger true (fun x => CGB.ActiveMaintenance.world.sense) n ≤\n      1 / 2",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "project_dependencies": [
+        "CGB.ActiveMaintenance.State",
+        "CGB.ActiveMaintenance.Stim",
+        "CGB.ActiveMaintenance.body",
+        "CGB.ActiveMaintenance.he",
+        "CGB.ActiveMaintenance.ledger",
+        "CGB.ActiveMaintenance.sense",
+        "CGB.ActiveMaintenance.world",
+        "CGB.Exchange.survival",
+        "CGB.World.sense",
+        "CGB.ActiveMaintenance.cut_survival._proof_1_1"
+      ]
+    },
+    "CGB.ActiveMaintenance.maintenance_witness": {
+      "kind": "theorem",
+      "signature": "CGB.Exchange.Persists CGB.ActiveMaintenance.body CGB.ActiveMaintenance.world CGB.ActiveMaintenance.he\n    CGB.ActiveMaintenance.ledger 0 ∧\n  CGB.Exchange.SelfMaintains CGB.ActiveMaintenance.body CGB.ActiveMaintenance.world CGB.ActiveMaintenance.he\n    CGB.ActiveMaintenance.ledger",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "project_dependencies": [
+        "CGB.ActiveMaintenance.State",
+        "CGB.ActiveMaintenance.Stim",
+        "CGB.ActiveMaintenance.body",
+        "CGB.ActiveMaintenance.cut_survival",
+        "CGB.ActiveMaintenance.he",
+        "CGB.ActiveMaintenance.ledger",
+        "CGB.ActiveMaintenance.natural_survival",
+        "CGB.ActiveMaintenance.sense",
+        "CGB.ActiveMaintenance.world",
+        "CGB.Exchange.Persists",
+        "CGB.Exchange.SelfMaintains",
+        "CGB.Exchange.survival",
+        "CGB.World.sense"
+      ]
+    },
+    "CGB.ActiveMaintenance.starvation_depletes": {
+      "kind": "theorem",
+      "signature": "∀ (cut : Bool) (t : ℕ) (a : CGB.ActiveMaintenance.State),\n  (CGB.ActiveMaintenance.body.jointEventKernel CGB.ActiveMaintenance.world CGB.ActiveMaintenance.he cut\n            (fun x => CGB.ActiveMaintenance.world.sense) t).step\n        (fun x => a, 5) (if a = 0 then none else some ()) (fun x => 0, 5) =\n      1 ∧\n    CGB.ActiveMaintenance.next 4 a = 0 ∧\n      CGB.ActiveMaintenance.cost (CGB.ActiveMaintenance.next 4 a) = 0 ∧\n        ∀ (s : CGB.ActiveMaintenance.Stim), CGB.ActiveMaintenance.next s 0 = 0",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "project_dependencies": [
+        "CGB.Medium",
+        "CGB.ActiveMaintenance.State",
+        "CGB.ActiveMaintenance.Stim",
+        "CGB.ActiveMaintenance.W",
+        "CGB.ActiveMaintenance.body",
+        "CGB.ActiveMaintenance.cost",
+        "CGB.ActiveMaintenance.he",
+        "CGB.ActiveMaintenance.next",
+        "CGB.ActiveMaintenance.sense",
+        "CGB.ActiveMaintenance.world",
+        "CGB.Medium.act",
+        "CGB.Medium.eventStep",
+        "CGB.Medium.eventWorldStep",
+        "CGB.Medium.jointEventKernel",
+        "CGB.Medium.mk",
+        "CGB.Medium.rate",
+        "CGB.World.W",
+        "CGB.World.fin",
+        "CGB.World.sense",
+        "CGB.ActiveMaintenance.body._proof_1",
+        "CGB.ActiveMaintenance.cost._proof_1",
+        "CGB.ActiveMaintenance.next._proof_1",
+        "CGB.ActiveMaintenance.sense._proof_1",
+        "CGB.EventChannels.Kernel.step",
+        "CGB.Medium.eventStep.match_1",
+        "CGB.Medium.mk.congr_simp"
+      ]
+    },
+    "CGB.ActiveMaintenance.sustained_exchange": {
+      "kind": "theorem",
+      "signature": "∀ (n : ℕ),\n  2 ≤ n →\n    ∑ x,\n          ∑ w,\n            CGB.ActiveMaintenance.body.law CGB.ActiveMaintenance.world (fun x => CGB.ActiveMaintenance.world.sense) n x\n                w *\n              ↑(CGB.ActiveMaintenance.incoming (CGB.ActiveMaintenance.sense w ()) (x ())) =\n        1 ∧\n      ∑ x,\n          ∑ w,\n            CGB.ActiveMaintenance.body.law CGB.ActiveMaintenance.world (fun x => CGB.ActiveMaintenance.world.sense) n x\n                w *\n              ↑(CGB.ActiveMaintenance.outgoing (CGB.ActiveMaintenance.sense w ()) (x ())) =\n        1",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "project_dependencies": [
+        "CGB.ActiveLoop.WorldState",
+        "CGB.ActiveLoop.fin6_sum",
+        "CGB.ActiveMaintenance.State",
+        "CGB.ActiveMaintenance.Stim",
+        "CGB.ActiveMaintenance.W",
+        "CGB.ActiveMaintenance.body",
+        "CGB.ActiveMaintenance.incoming",
+        "CGB.ActiveMaintenance.outgoing",
+        "CGB.ActiveMaintenance.sense",
+        "CGB.ActiveMaintenance.world",
+        "CGB.Medium.law",
+        "CGB.World.sense",
+        "CGB.ActiveMaintenance.cost._proof_1",
+        "CGB.ActiveMaintenance.moves._proof_1",
+        "CGB.ActiveMaintenance.next._proof_1",
+        "CGB.ActiveMaintenance.sense._proof_1"
+      ]
+    },
+    "CGB.ActiveMaintenanceEnergy.actual_law": {
+      "kind": "theorem",
+      "signature": "∀ (cut : Bool) (n : ℕ) (z : CGB.ActiveMaintenanceEnergy.S),\n  CGB.Energetics.law (CGB.ActiveMaintenanceEnergy.process cut) CGB.ActiveMaintenanceEnergy.initial n z =\n    if cut = true then\n      CGB.ActiveMaintenance.body.lawCut CGB.ActiveMaintenance.world (fun x => CGB.ActiveMaintenance.world.sense) n z.1\n        z.2\n    else\n      CGB.ActiveMaintenance.body.law CGB.ActiveMaintenance.world (fun x => CGB.ActiveMaintenance.world.sense) n z.1 z.2",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "project_dependencies": [
+        "CGB.ActiveMaintenance.State",
+        "CGB.ActiveMaintenance.Stim",
+        "CGB.ActiveMaintenance.W",
+        "CGB.ActiveMaintenance.body",
+        "CGB.ActiveMaintenance.he",
+        "CGB.ActiveMaintenance.world",
+        "CGB.ActiveMaintenanceEnergy.S",
+        "CGB.ActiveMaintenanceEnergy.initial",
+        "CGB.ActiveMaintenanceEnergy.process",
+        "CGB.Energetics.law",
+        "CGB.Medium.init",
+        "CGB.Medium.jointEventKernel",
+        "CGB.Medium.jointEventKernel_stateLaw",
+        "CGB.Medium.law",
+        "CGB.Medium.lawCut",
+        "CGB.World.W",
+        "CGB.World.fin",
+        "CGB.World.sense",
+        "CGB.World.start",
+        "CGB.ActiveMaintenance.sense._proof_1",
+        "CGB.ActiveMaintenanceEnergy.actual_law._simp_1_2",
+        "CGB.EventChannels.Kernel.stateLaw"
+      ]
+    },
+    "CGB.ActiveMaintenanceEnergy.isothermal": {
+      "kind": "theorem",
+      "signature": "∀ (cut : Bool),\n  CGB.Energetics.Isothermal (CGB.ActiveMaintenanceEnergy.process cut) (CGB.ActiveMaintenanceEnergy.account cut)\n    CGB.ActiveMaintenanceEnergy.initial 1 (fun x x_1 => 0) fun x x_1 x_2 x_3 => 0",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "project_dependencies": [
+        "CGB.ActiveMaintenance.State",
+        "CGB.ActiveMaintenance.Stim",
+        "CGB.ActiveMaintenance.W",
+        "CGB.ActiveMaintenance.outgoing",
+        "CGB.ActiveMaintenance.sense",
+        "CGB.ActiveMaintenance.world",
+        "CGB.ActiveMaintenanceEnergy.S",
+        "CGB.ActiveMaintenanceEnergy.account",
+        "CGB.ActiveMaintenanceEnergy.initial",
+        "CGB.ActiveMaintenanceEnergy.port",
+        "CGB.ActiveMaintenanceEnergy.process",
+        "CGB.Energetics.Isothermal",
+        "CGB.Energetics.flux",
+        "CGB.Energetics.law",
+        "CGB.Energetics.law_probability",
+        "CGB.Energetics.production",
+        "CGB.World.W",
+        "CGB.Energetics.Account.heat",
+        "CGB.Interaction.Machine.nonneg",
+        "CGB.Interaction.Machine.step"
+      ]
+    },
+    "CGB.ActiveMaintenanceEnergy.availability_budget": {
+      "kind": "theorem",
+      "signature": "∀ (cut : Bool) (n : ℕ),\n  CGB.Energetics.mean\n        (CGB.Energetics.law (CGB.ActiveMaintenanceEnergy.process cut) CGB.ActiveMaintenanceEnergy.initial n)\n        ((CGB.ActiveMaintenanceEnergy.account cut).stored n) +\n      ∑ t ∈ Finset.range n,\n        CGB.Energetics.flux (CGB.ActiveMaintenanceEnergy.process cut) CGB.ActiveMaintenanceEnergy.initial\n          (CGB.ActiveMaintenanceEnergy.port CGB.ActiveMaintenance.outgoing) t =\n    1 +\n      ∑ t ∈ Finset.range n,\n        CGB.Energetics.flux (CGB.ActiveMaintenanceEnergy.process cut) CGB.ActiveMaintenanceEnergy.initial\n          (CGB.ActiveMaintenanceEnergy.port CGB.ActiveMaintenance.incoming) t",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "project_dependencies": [
+        "CGB.Medium",
+        "CGB.ActiveMaintenance.State",
+        "CGB.ActiveMaintenance.Stim",
+        "CGB.ActiveMaintenance.W",
+        "CGB.ActiveMaintenance.body",
+        "CGB.ActiveMaintenance.cost",
+        "CGB.ActiveMaintenance.incoming",
+        "CGB.ActiveMaintenance.next",
+        "CGB.ActiveMaintenance.outgoing",
+        "CGB.ActiveMaintenance.world",
+        "CGB.ActiveMaintenanceEnergy.S",
+        "CGB.ActiveMaintenanceEnergy.account",
+        "CGB.ActiveMaintenanceEnergy.initial",
+        "CGB.ActiveMaintenanceEnergy.isothermal",
+        "CGB.ActiveMaintenanceEnergy.port",
+        "CGB.ActiveMaintenanceEnergy.process",
+        "CGB.Energetics.flux",
+        "CGB.Energetics.freeEnergy",
+        "CGB.Energetics.law",
+        "CGB.Energetics.mean",
+        "CGB.Energetics.production",
+        "CGB.Energetics.suppliedAvailability",
+        "CGB.Energetics.work_budget",
+        "CGB.Medium.init",
+        "CGB.Medium.mk",
+        "CGB.World.W",
+        "CGB.ActiveMaintenance.body._proof_1",
+        "CGB.ActiveMaintenance.cost._proof_1",
+        "CGB.ActiveMaintenance.next._proof_1",
+        "CGB.ActiveMaintenance.sense._proof_1",
+        "CGB.Energetics.Account.drive",
+        "CGB.Energetics.Account.heat",
+        "CGB.Energetics.Account.load",
+        "CGB.Energetics.Account.matter",
+        "CGB.Energetics.Account.stored",
+        "CGB.Interaction.Machine.step",
+        "CGB.Medium.mk.congr_simp"
+      ]
+    },
+    "CGB.ActiveMaintenanceCarrier.realized": {
+      "kind": "theorem",
+      "signature": "∀ (cut : Bool),\n  CGB.MaterialSource.Realization (CGB.ActiveMaintenanceCarrier.physical cut) (CGB.ActiveMaintenanceEnergy.process cut)\n    CGB.ActiveMaintenanceCarrier.owner CGB.ActiveMaintenanceCarrier.project\n    (fun z => CGB.ActiveMaintenance.body.total z.1)\n    (CGB.ActiveMaintenanceCarrier.declared CGB.ActiveMaintenance.incoming)\n    (CGB.ActiveMaintenanceCarrier.declared CGB.ActiveMaintenance.outgoing) CGB.ActiveMaintenance.world.clock",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "project_dependencies": [
+        "CGB.Medium",
+        "CGB.ActiveMaintenance.State",
+        "CGB.ActiveMaintenance.Stim",
+        "CGB.ActiveMaintenance.W",
+        "CGB.ActiveMaintenance.body",
+        "CGB.ActiveMaintenance.cost",
+        "CGB.ActiveMaintenance.incoming",
+        "CGB.ActiveMaintenance.next",
+        "CGB.ActiveMaintenance.outgoing",
+        "CGB.ActiveMaintenance.sense",
+        "CGB.ActiveMaintenance.world",
+        "CGB.ActiveMaintenanceCarrier.Phase",
+        "CGB.ActiveMaintenanceCarrier.R",
+        "CGB.ActiveMaintenanceCarrier.declared",
+        "CGB.ActiveMaintenanceCarrier.owner",
+        "CGB.ActiveMaintenanceCarrier.owners",
+        "CGB.ActiveMaintenanceCarrier.phaseNext",
+        "CGB.ActiveMaintenanceCarrier.physical",
+        "CGB.ActiveMaintenanceCarrier.project",
+        "CGB.ActiveMaintenanceEnergy.S",
+        "CGB.ActiveMaintenanceEnergy.process",
+        "CGB.Interaction.Machine",
+        "CGB.MaterialSource.Allowed",
+        "CGB.MaterialSource.Place",
+        "CGB.MaterialSource.Realization",
+        "CGB.MaterialSource.count",
+        "CGB.MaterialSource.moved",
+        "CGB.Medium.content",
+        "CGB.Medium.mk",
+        "CGB.Medium.total",
+        "CGB.World.W",
+        "CGB.World.clock",
+        "CGB.World.sense",
+        "CGB.ActiveMaintenance.body._proof_1",
+        "CGB.ActiveMaintenance.cost._proof_1",
+        "CGB.ActiveMaintenance.next._proof_1",
+        "CGB.ActiveMaintenanceCarrier.physical._proof_1",
+        "CGB.ActiveMaintenanceCarrier.physical._proof_2",
+        "CGB.Interaction.Machine.mk",
+        "CGB.Interaction.Machine.step",
+        "CGB.Interaction.TimedRefinement.mk",
+        "CGB.MaterialSource.Place.body",
+        "CGB.MaterialSource.Place.sink",
+        "CGB.MaterialSource.Place.source",
+        "CGB.MaterialSource.Realization.mk",
+        "CGB.Medium.mk.congr_simp",
+        "CGB.Interaction.Machine.mk.congr_simp"
+      ]
+    },
+    "CGB.ActiveMaintenanceEnergy.account": {
+      "kind": "definition",
+      "signature": "(cut : Bool) → CGB.Energetics.Account (CGB.ActiveMaintenanceEnergy.process cut)",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "project_dependencies": [
+        "CGB.ActiveMaintenance.State",
+        "CGB.ActiveMaintenance.Stim",
+        "CGB.ActiveMaintenance.cost",
+        "CGB.ActiveMaintenance.incoming",
+        "CGB.ActiveMaintenance.outgoing",
+        "CGB.ActiveMaintenance.world",
+        "CGB.ActiveMaintenanceEnergy.S",
+        "CGB.ActiveMaintenanceEnergy.port",
+        "CGB.ActiveMaintenanceEnergy.process",
+        "CGB.Energetics.Account",
+        "CGB.World.W",
+        "CGB.ActiveMaintenanceEnergy.account._proof_1",
+        "CGB.Energetics.Account.mk"
+      ]
+    },
+    "CGB.ActiveMaintenanceCarrier.sourceAccount": {
+      "kind": "definition",
+      "signature": "(cut : Bool) → CGB.Energetics.Account (CGB.ActiveMaintenanceCarrier.physical cut)",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "project_dependencies": [
+        "CGB.ActiveMaintenance.State",
+        "CGB.ActiveMaintenance.Stim",
+        "CGB.ActiveMaintenance.outgoing",
+        "CGB.ActiveMaintenance.world",
+        "CGB.ActiveMaintenanceCarrier.Phase",
+        "CGB.ActiveMaintenanceCarrier.R",
+        "CGB.ActiveMaintenanceCarrier.owner",
+        "CGB.ActiveMaintenanceCarrier.physical",
+        "CGB.ActiveMaintenanceCarrier.project",
+        "CGB.ActiveMaintenanceEnergy.S",
+        "CGB.ActiveMaintenanceEnergy.port",
+        "CGB.Energetics.Account",
+        "CGB.MaterialSource.count",
+        "CGB.MaterialSource.moved",
+        "CGB.World.W",
+        "CGB.ActiveMaintenanceCarrier.sourceAccount._proof_1",
+        "CGB.Energetics.Account.mk",
+        "CGB.MaterialSource.Place.body",
+        "CGB.MaterialSource.Place.sink",
+        "CGB.MaterialSource.Place.source"
+      ]
+    }
+  },
+  "source_hashes": {
+    "CGBAxioms/ActiveLoop.lean": "9e56d8c7f329724716af60955108055a5bc359eef0b69135f2c7330b0de5708c",
+    "CGBAxioms/ActiveMaintenance.lean": "ef9b4df1f7a054281609ed64845b77c347c367b5d0491084d2e0ed48dc870acf",
+    "CGBAxioms/ActiveMaintenanceCarrier.lean": "5507055efe8a88ce80cc49864a01ea8e3fcdf66b0846606d8fafcbf30fc88e17",
+    "CGBAxioms/ActiveMaintenanceEnergy.lean": "eebb826a2a3adb761c488e541da3979b58c35690d1346c5c5d7bf0ff34f44d71",
+    "CGBAxioms/AtomicIndependence.lean": "58f36e25a38713402bd89b3c2d7686c83a69dde990a19c62d1c135b174a8cc0e",
+    "CGBAxioms/Audit.lean": "1745f9772250e6bfe7812323cc5c8733840d60b9d62ad8549d81c049249f3b44",
+    "CGBAxioms/AuditAll.lean": "5c8cd6cab2cfbe028a8a26f58c541845f89f7f109833cdcaec49d9777145f543",
+    "CGBAxioms/ConstraintAudit.lean": "cfbda2ff344353b46b209b43cfd69dc836a2ab9a4cbe62ddbe172de9e04544ab",
+    "CGBAxioms/ConstraintFreedom.lean": "37bf271ea1b419f9df48cf81ea20ccc3b7704d39fab9961ad23c45967ea8c0fe",
+    "CGBAxioms/EnergyBudget.lean": "7f679d7803742d11465b58f4695cf521e3e1a42f3ce831b666131fccc6fbb06c",
+    "CGBAxioms/EnergyControls.lean": "5ec64bc2b3b272e6463f6bdac86d8bc32f40f74e096aadb9b6618209ccf114a0",
+    "CGBAxioms/EventChannels.lean": "0dd33bcc957ff3e3155df4cefaee463ae3627d621434fbcc73474e35ffc73232",
+    "CGBAxioms/Foundation.lean": "0fe5127c183a9ea32632ebfc3bf152c441ffadd90b115e87a7610b562add8134",
+    "CGBAxioms/Inference.lean": "1b0314e6508a0190c33aaf6d24dd82102ef8d7722cadd7c1897232eb95504c60",
+    "CGBAxioms/Interaction.lean": "9e6daed623e1f03a15c6661408c191fb5d9696af28938ab3cc8f5bed516c8023",
+    "CGBAxioms/InteractionBridge.lean": "43059e1a6192caf81267331edbdd59a0b2480fd4776a589e5138b36286fdf467",
+    "CGBAxioms/InteractionControls.lean": "8bbb3766b4494b1b9f2323b17757d5e9f1fc2a87f0b006fefc019ef9b068490d",
+    "CGBAxioms/Language.lean": "b52db422bcac3996cb279d41813aa4a0998ebb6fe54ba2bb87b096972539f0fe",
+    "CGBAxioms/Life.lean": "f21caf6feba9f6a4a2b5a3bdeb6bea7a05d6503b97c347af52c56e68050b3f65",
+    "CGBAxioms/LifeControls.lean": "5f025d923089697978a8b6a5bbf64fe16db62485d56ebd584f538611f9c38e1c",
+    "CGBAxioms/MaterialExchange.lean": "8f888370007db06d7de370155672bdea53ec0929dd7940ace30e7933677eed08",
+    "CGBAxioms/MaterialSource.lean": "50194b475dd439a9497ebbff6f1cc7f2fbc64ea7c0c2d20431a02c412ebab7b8",
+    "CGBAxioms/MaterialSourceControls.lean": "518a2f25e56b7d578fd61c87c02905ffac8f628a419286ebcef051a674fe9354",
+    "CGBAxioms/Medium.lean": "e4f507706eec6f69ce57c95b47a1062e6b644bab12990347cd8d84f286c86fc4",
+    "CGBAxioms/Models.lean": "d7648d7e36912bdd6119f4e27027301b791c530ad7217e873d35c504e1a2f5b0",
+    "CGBAxioms/NoetherBridge.lean": "810a4afc5d944216ca86cd3153ae8d26ff9dc531756220f531f2dc46e35861e3",
+    "CGBAxioms/OperationalLife.lean": "216bcc5a22b70ecffd449a9ab55fdb916b51f3138ffda971e3966b882daa9155",
+    "CGBAxioms/RecoveryControls.lean": "19ab24fd7e9f292707a916eb9cdb5a372b62121c6faae042882aca892b0d35a2",
+    "CGBAxioms/RuleEncoding.lean": "27aaa80e273a621bfa37a0c47e85afeb7aed818f3b96cf56359a0fccc0990100",
+    "CGBAxioms/SubconditionGraph.lean": "3ab2e1c74a3a7895a2ff82bb17a3b430084de904b457e68bc627dcb099c78c51",
+    "CGBAxioms/Symmetry.lean": "f595478d072a4fa5680be6e6a928afb86922e3fcdd3ef0512bfefdb9ab2090bc",
+    "CGBAxioms/TurnoverControls.lean": "7af924e715056309d2c97984dce20fbc3b1a5c07501c0458829e04ca0bbdde7f",
+    "CGBAxioms/WorldRecovery.lean": "168592642319cd10c65ee9edac1e11389534243346b03636408cc421bf00af5c",
+    "CGBAxioms.lean": "84404658fab5276764fa4d7b58f6c75e80c5c74731c83366cc509a8272afc8da"
+  },
+  "artifact_hashes": {
+    "lean/CGBAxioms/reviews/active_maintenance_20261024.lean": "2ef78e30e803b2ace8d04cf75f7dfc4fcbc3849fdc8605468ab54866b9fd06e3",
+    "lean/CGBAxioms/scripts/check_active_maintenance.py": "4be7956beaee004afe6ea388162f97de8e3f0ee707c5d6ea8b4f517af868f394",
+    "docs/information_boltzmann/CGB_ACTIVE_MAINTENANCE_20261024.md": "79b3fe8eff11a87123dcca76dd1178e33dcc658549525ec2933d29a8853e3b60",
+    "docs/information_boltzmann/CGB_AXIOMS_V0_20261022.md": "54072c066bdc3a7a09d6d9da04c9fe77f97526ffbe0f16776760da81754f33eb"
+  },
+  "semantic_crosscheck": {
+    "date": "2026-10-24",
+    "scope": "Exact finite mathematical-model cross-check; no training.",
+    "arithmetic": "fractions.Fraction",
+    "carrier_checks": 45,
+    "zero_reserve_disables_registered_channels": true,
+    "budget_prefix_checks": 20,
+    "runs": {
+      "natural": [
+        {
+          "time": 0,
+          "survival": "1",
+          "mean_reserve": "1",
+          "input_flux": "0",
+          "consumption_flux": "0",
+          "cumulative_input_before_tick": "0",
+          "cumulative_consumption_before_tick": "0",
+          "law": {
+            "1,0": "1"
+          }
+        },
+        {
+          "time": 1,
+          "survival": "1",
+          "mean_reserve": "1",
+          "input_flux": "0",
+          "consumption_flux": "0",
+          "cumulative_input_before_tick": "0",
+          "cumulative_consumption_before_tick": "0",
+          "law": {
+            "1,1": "1/2",
+            "1,2": "1/2"
+          }
+        },
+        {
+          "time": 2,
+          "survival": "1",
+          "mean_reserve": "1",
+          "input_flux": "1",
+          "consumption_flux": "1",
+          "cumulative_input_before_tick": "0",
+          "cumulative_consumption_before_tick": "0",
+          "law": {
+            "1,3": "1/2",
+            "2,4": "1/2"
+          }
+        },
+        {
+          "time": 3,
+          "survival": "1",
+          "mean_reserve": "1",
+          "input_flux": "1",
+          "consumption_flux": "1",
+          "cumulative_input_before_tick": "1",
+          "cumulative_consumption_before_tick": "1",
+          "law": {
+            "1,3": "1/2",
+            "2,4": "1/2"
+          }
+        },
+        {
+          "time": 4,
+          "survival": "1",
+          "mean_reserve": "1",
+          "input_flux": "1",
+          "consumption_flux": "1",
+          "cumulative_input_before_tick": "2",
+          "cumulative_consumption_before_tick": "2",
+          "law": {
+            "1,3": "1/2",
+            "2,4": "1/2"
+          }
+        },
+        {
+          "time": 5,
+          "survival": "1",
+          "mean_reserve": "1",
+          "input_flux": "1",
+          "consumption_flux": "1",
+          "cumulative_input_before_tick": "3",
+          "cumulative_consumption_before_tick": "3",
+          "law": {
+            "1,3": "1/2",
+            "2,4": "1/2"
+          }
+        },
+        {
+          "time": 6,
+          "survival": "1",
+          "mean_reserve": "1",
+          "input_flux": "1",
+          "consumption_flux": "1",
+          "cumulative_input_before_tick": "4",
+          "cumulative_consumption_before_tick": "4",
+          "law": {
+            "1,3": "1/2",
+            "2,4": "1/2"
+          }
+        },
+        {
+          "time": 7,
+          "survival": "1",
+          "mean_reserve": "1",
+          "input_flux": "1",
+          "consumption_flux": "1",
+          "cumulative_input_before_tick": "5",
+          "cumulative_consumption_before_tick": "5",
+          "law": {
+            "1,3": "1/2",
+            "2,4": "1/2"
+          }
+        },
+        {
+          "time": 8,
+          "survival": "1",
+          "mean_reserve": "1",
+          "input_flux": "1",
+          "consumption_flux": "1",
+          "cumulative_input_before_tick": "6",
+          "cumulative_consumption_before_tick": "6",
+          "law": {
+            "1,3": "1/2",
+            "2,4": "1/2"
+          }
+        },
+        {
+          "time": 9,
+          "survival": "1",
+          "mean_reserve": "1",
+          "input_flux": "1",
+          "consumption_flux": "1",
+          "cumulative_input_before_tick": "7",
+          "cumulative_consumption_before_tick": "7",
+          "law": {
+            "1,3": "1/2",
+            "2,4": "1/2"
+          }
+        }
+      ],
+      "cut": [
+        {
+          "time": 0,
+          "survival": "1",
+          "mean_reserve": "1",
+          "input_flux": "0",
+          "consumption_flux": "0",
+          "cumulative_input_before_tick": "0",
+          "cumulative_consumption_before_tick": "0",
+          "law": {
+            "1,0": "1"
+          }
+        },
+        {
+          "time": 1,
+          "survival": "1",
+          "mean_reserve": "1",
+          "input_flux": "0",
+          "consumption_flux": "0",
+          "cumulative_input_before_tick": "0",
+          "cumulative_consumption_before_tick": "0",
+          "law": {
+            "1,1": "1/2",
+            "1,2": "1/2"
+          }
+        },
+        {
+          "time": 2,
+          "survival": "1",
+          "mean_reserve": "1",
+          "input_flux": "1",
+          "consumption_flux": "1",
+          "cumulative_input_before_tick": "0",
+          "cumulative_consumption_before_tick": "0",
+          "law": {
+            "1,3": "1/2",
+            "2,4": "1/2"
+          }
+        },
+        {
+          "time": 3,
+          "survival": "1/2",
+          "mean_reserve": "1",
+          "input_flux": "1/2",
+          "consumption_flux": "1",
+          "cumulative_input_before_tick": "1",
+          "cumulative_consumption_before_tick": "1",
+          "law": {
+            "1,3": "1/4",
+            "1,5": "1/4",
+            "2,5": "1/4",
+            "2,4": "1/4"
+          }
+        },
+        {
+          "time": 4,
+          "survival": "1/4",
+          "mean_reserve": "1/2",
+          "input_flux": "1/4",
+          "consumption_flux": "1/2",
+          "cumulative_input_before_tick": "3/2",
+          "cumulative_consumption_before_tick": "2",
+          "law": {
+            "1,3": "1/8",
+            "1,5": "1/8",
+            "0,5": "1/2",
+            "2,5": "1/8",
+            "2,4": "1/8"
+          }
+        },
+        {
+          "time": 5,
+          "survival": "1/16",
+          "mean_reserve": "1/4",
+          "input_flux": "1/16",
+          "consumption_flux": "1/4",
+          "cumulative_input_before_tick": "7/4",
+          "cumulative_consumption_before_tick": "5/2",
+          "law": {
+            "1,3": "1/32",
+            "1,5": "3/32",
+            "0,5": "3/4",
+            "2,5": "3/32",
+            "2,4": "1/32"
+          }
+        },
+        {
+          "time": 6,
+          "survival": "1/128",
+          "mean_reserve": "1/16",
+          "input_flux": "1/128",
+          "consumption_flux": "1/16",
+          "cumulative_input_before_tick": "29/16",
+          "cumulative_consumption_before_tick": "11/4",
+          "law": {
+            "1,3": "1/256",
+            "1,5": "7/256",
+            "0,5": "15/16",
+            "2,5": "7/256",
+            "2,4": "1/256"
+          }
+        },
+        {
+          "time": 7,
+          "survival": "1/4096",
+          "mean_reserve": "1/128",
+          "input_flux": "1/4096",
+          "consumption_flux": "1/128",
+          "cumulative_input_before_tick": "233/128",
+          "cumulative_consumption_before_tick": "45/16",
+          "law": {
+            "1,3": "1/8192",
+            "1,5": "31/8192",
+            "0,5": "127/128",
+            "2,5": "31/8192",
+            "2,4": "1/8192"
+          }
+        },
+        {
+          "time": 8,
+          "survival": "1/1048576",
+          "mean_reserve": "1/4096",
+          "input_flux": "1/1048576",
+          "consumption_flux": "1/4096",
+          "cumulative_input_before_tick": "7457/4096",
+          "cumulative_consumption_before_tick": "361/128",
+          "law": {
+            "1,3": "1/2097152",
+            "1,5": "255/2097152",
+            "0,5": "4095/4096",
+            "2,5": "255/2097152",
+            "2,4": "1/2097152"
+          }
+        },
+        {
+          "time": 9,
+          "survival": "1/8589934592",
+          "mean_reserve": "1/1048576",
+          "input_flux": "1/8589934592",
+          "consumption_flux": "1/1048576",
+          "cumulative_input_before_tick": "1908993/1048576",
+          "cumulative_consumption_before_tick": "11553/4096",
+          "law": {
+            "1,3": "1/17179869184",
+            "1,5": "8191/17179869184",
+            "0,5": "1048575/1048576",
+            "2,5": "8191/17179869184",
+            "2,4": "1/17179869184"
+          }
+        }
+      ]
+    },
+    "source_hashes": {
+      "CGBAxioms/ActiveMaintenance.lean": "ef9b4df1f7a054281609ed64845b77c347c367b5d0491084d2e0ed48dc870acf",
+      "CGBAxioms/ActiveMaintenanceEnergy.lean": "eebb826a2a3adb761c488e541da3979b58c35690d1346c5c5d7bf0ff34f44d71",
+      "CGBAxioms/ActiveMaintenanceCarrier.lean": "5507055efe8a88ce80cc49864a01ea8e3fcdf66b0846606d8fafcbf30fc88e17",
+      "scripts/check_active_maintenance.py": "4be7956beaee004afe6ea388162f97de8e3f0ee707c5d6ea8b4f517af868f394"
+    }
+  },
+  "full_local_audit": "lean/CGBAxioms/.lake/active_maintenance_20261024.json",
+  "prechange_backup": "results/cgb_active_maintenance_before_20261024",
+  "report": "docs/information_boltzmann/CGB_ACTIVE_MAINTENANCE_20261024.md",
+  "main_document": "docs/information_boltzmann/CGB_AXIOMS_V0_20261022.md"
+}

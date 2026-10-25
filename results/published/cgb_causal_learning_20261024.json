@@ -1,0 +1,631 @@
+{
+  "date": "2026-10-24",
+  "status": "verified_semantic_learning_admission",
+  "core_result_groups": 3,
+  "results": {
+    "core_result_groups": 3,
+    "action_precedes_observed_feedback": true,
+    "candidate_memory_and_write_reserve_are_internal": true,
+    "true_model_identifier_hidden_from_controller": true,
+    "faithful_candidate_retained_all_times": true,
+    "effective_write_removes_candidate_and_spends_declared_unit": true,
+    "path_and_actual_mean_write_budgets": true,
+    "zero_write_reserve_preserves_physical_world_step": true,
+    "candidate_dependent_controller_verified": true,
+    "empty_candidates_certify_no_actions": true,
+    "robust_safety_conditional_on_faithfulness_and_available_safe_action": true,
+    "physical_energy_account_required_for_same_learned_process": true,
+    "probability_only_distinctions_not_learned_by_support_screening": true,
+    "proof_trust_passed": true,
+    "previous_signatures_preserved": 1634,
+    "review_examples_passed": 8,
+    "training_performed": false
+  },
+  "scope": "Finite support-screening interaction interface, with three core result groups. This does not yet realize a six-axiom physical learning medium or transfer the fixed-control Exchange survival proof. Unit write charge is declared accounting, not universal microscopic dissipation. Same-support probability learning, full physical processing costs, clock admission, encoded 1-percent budget and full L1-L6 remain separate.",
+  "core_results": [
+    {
+      "name": "causal_learning_and_faithfulness",
+      "certificates": [
+        "paid_elimination",
+        "true_model_law",
+        "certifiedOr"
+      ]
+    },
+    {
+      "name": "finite_memory_and_paid_updates",
+      "certificates": [
+        "memory_cardinality",
+        "write_contract",
+        "path_budget",
+        "paid_mean_budget"
+      ]
+    },
+    {
+      "name": "conditional_safe_control_and_obstruction",
+      "certificates": [
+        "safe_outcome",
+        "certified_choice_sound",
+        "no_safe_exploration"
+      ]
+    }
+  ],
+  "verification": {
+    "production_build_passed": true,
+    "review_lean_exit_code": 0,
+    "review_examples_passed": 8,
+    "proof_trust_passed": true,
+    "module_coverage_passed": true,
+    "audit_guard_checks": 10,
+    "previous_signatures_preserved": 1634,
+    "old_module_sources_unchanged_except_root_import": true,
+    "original_life_definition_unchanged": true,
+    "all_previous_tree_nodes_and_metadata_preserved": true,
+    "training_performed": false
+  },
+  "inventory": {
+    "declarations": 1712,
+    "modules": [
+      "CGBAxioms.Language",
+      "CGBAxioms.Symmetry",
+      "CGBAxioms.Medium",
+      "CGBAxioms.Models",
+      "CGBAxioms.Life",
+      "CGBAxioms.Inference",
+      "CGBAxioms.Foundation",
+      "CGBAxioms.RuleEncoding",
+      "CGBAxioms.WorldRecovery",
+      "CGBAxioms.OperationalLife",
+      "CGBAxioms.RecoveryControls",
+      "CGBAxioms.Interaction",
+      "CGBAxioms.InteractionBridge",
+      "CGBAxioms.InteractionControls",
+      "CGBAxioms.ConstraintAudit",
+      "CGBAxioms.ConstraintFreedom",
+      "CGBAxioms.SubconditionGraph",
+      "CGBAxioms.AtomicIndependence",
+      "CGBAxioms.NoetherBridge",
+      "CGBAxioms.LifeControls",
+      "CGBAxioms.EventChannels",
+      "CGBAxioms.MaterialExchange",
+      "CGBAxioms.TurnoverControls",
+      "CGBAxioms.MaterialSource",
+      "CGBAxioms.MaterialSourceControls",
+      "CGBAxioms.EnergyBudget",
+      "CGBAxioms.EnergyControls",
+      "CGBAxioms.ActiveLoop",
+      "CGBAxioms.ActiveMaintenance",
+      "CGBAxioms.ActiveMaintenanceEnergy",
+      "CGBAxioms.ActiveMaintenanceCarrier",
+      "CGBAxioms.CausalLearning"
+    ],
+    "theorems": 1055
+  },
+  "source_declared_theorem_count": 397,
+  "new_source_declared_theorems": {
+    "total": 16,
+    "public": 14,
+    "private_support": 2,
+    "interpretation": "Proof infrastructure count, grouped into three core results; not sixteen independent scientific claims."
+  },
+  "certificates": {
+    "memory_cardinality": {
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "kind": "theorem",
+      "module": "CGBAxioms.CausalLearning",
+      "name": "CGB.CausalLearning.memory_cardinality",
+      "project_dependencies": [
+        "CGB.CausalLearning.Memory",
+        "CGB.CausalLearning.instFintypeMemory",
+        "CGB.CausalLearning.Memory.candidates",
+        "CGB.CausalLearning.Memory.casesOn",
+        "CGB.CausalLearning.Memory.mk",
+        "CGB.CausalLearning.Memory.reserve"
+      ],
+      "signature": "∀ {H : Type u_1} [inst : Fintype H] (B : ℕ), Fintype.card (CGB.CausalLearning.Memory H B) = 2 ^ Fintype.card H * (B + 1)",
+      "type_dependencies": [
+        "CGB.CausalLearning.Memory",
+        "CGB.CausalLearning.instFintypeMemory"
+      ],
+      "source_declared": true
+    },
+    "write_contract": {
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "kind": "theorem",
+      "module": "CGBAxioms.CausalLearning",
+      "name": "CGB.CausalLearning.write_contract",
+      "project_dependencies": [
+        "CGB.CausalLearning.Memory",
+        "CGB.CausalLearning.Support",
+        "CGB.CausalLearning.advance",
+        "CGB.CausalLearning.fee",
+        "CGB.CausalLearning.screen",
+        "CGB.CausalLearning.Memory.candidates",
+        "CGB.CausalLearning.Memory.mk",
+        "CGB.CausalLearning.Memory.reserve",
+        "CGB.CausalLearning.advance._proof_1",
+        "CGB.CausalLearning.advance._proof_2",
+        "CGB.CausalLearning.write_contract._proof_1_1",
+        "CGB.CausalLearning.write_contract._proof_1_2"
+      ],
+      "signature": "∀ {H : Type u_1} {C : Type u_2} {A : Type u_3} {O : Type u_4} [inst : Fintype H] [inst_1 : DecidableEq H]\n  (possible : CGB.CausalLearning.Support H C A O) {B : ℕ} (m : CGB.CausalLearning.Memory H B) (c : C) (a : A) (o : O),\n  (CGB.CausalLearning.advance possible m c a o).candidates ⊆ m.candidates ∧\n    ↑(CGB.CausalLearning.advance possible m c a o).reserve + CGB.CausalLearning.fee possible m c a o = ↑m.reserve ∧\n      (CGB.CausalLearning.advance possible m c a o).candidates.card + CGB.CausalLearning.fee possible m c a o ≤\n        m.candidates.card",
+      "type_dependencies": [
+        "CGB.CausalLearning.Support",
+        "CGB.CausalLearning.Memory",
+        "CGB.CausalLearning.Memory.candidates",
+        "CGB.CausalLearning.advance",
+        "CGB.CausalLearning.Memory.reserve",
+        "CGB.CausalLearning.fee"
+      ],
+      "source_declared": true
+    },
+    "paid_elimination": {
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "kind": "theorem",
+      "module": "CGBAxioms.CausalLearning",
+      "name": "CGB.CausalLearning.paid_elimination",
+      "project_dependencies": [
+        "CGB.CausalLearning.Memory",
+        "CGB.CausalLearning.Support",
+        "CGB.CausalLearning.advance",
+        "CGB.CausalLearning.fee",
+        "CGB.CausalLearning.screen",
+        "CGB.CausalLearning.Memory.candidates",
+        "CGB.CausalLearning.Memory.mk",
+        "CGB.CausalLearning.Memory.reserve",
+        "CGB.CausalLearning.advance._proof_2",
+        "CGB.CausalLearning.paid_elimination._proof_1_2"
+      ],
+      "signature": "∀ {H : Type u_1} {C : Type u_2} {A : Type u_3} {O : Type u_4} [inst : Fintype H] [inst_1 : DecidableEq H]\n  (possible : CGB.CausalLearning.Support H C A O) {B : ℕ} (m : CGB.CausalLearning.Memory H B) (c : C) (a : A) (o : O)\n  (h : H),\n  0 < ↑m.reserve →\n    h ∈ m.candidates →\n      possible h c a o = false →\n        h ∉ (CGB.CausalLearning.advance possible m c a o).candidates ∧ CGB.CausalLearning.fee possible m c a o = 1",
+      "type_dependencies": [
+        "CGB.CausalLearning.Support",
+        "CGB.CausalLearning.Memory",
+        "CGB.CausalLearning.Memory.reserve",
+        "CGB.CausalLearning.Memory.candidates",
+        "CGB.CausalLearning.advance",
+        "CGB.CausalLearning.fee"
+      ],
+      "source_declared": true
+    },
+    "path_budget": {
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "kind": "theorem",
+      "module": "CGBAxioms.CausalLearning",
+      "name": "CGB.CausalLearning.path_budget",
+      "project_dependencies": [
+        "CGB.CausalLearning.Memory",
+        "CGB.CausalLearning.Support",
+        "CGB.CausalLearning.advance",
+        "CGB.CausalLearning.fee",
+        "CGB.CausalLearning.write_contract",
+        "CGB.CausalLearning.Memory.candidates",
+        "CGB.CausalLearning.Memory.reserve",
+        "CGB.CausalLearning.path_budget._proof_1_2",
+        "CGB.CausalLearning.path_budget._proof_1_3"
+      ],
+      "signature": "∀ {H : Type u_1} {C : Type u_2} {A : Type u_3} {O : Type u_4} [inst : Fintype H] [inst_1 : DecidableEq H]\n  (possible : CGB.CausalLearning.Support H C A O) {B : ℕ} (m : ℕ → CGB.CausalLearning.Memory H B) (context : ℕ → C)\n  (action : ℕ → A) (observed : ℕ → O),\n  (∀ (t : ℕ), m (t + 1) = CGB.CausalLearning.advance possible (m t) (context t) (action t) (observed t)) →\n    ∀ (n : ℕ),\n      ↑(m n).reserve + ∑ t ∈ Finset.range n, CGB.CausalLearning.fee possible (m t) (context t) (action t) (observed t) =\n          ↑(m 0).reserve ∧\n        (m n).candidates.card +\n            ∑ t ∈ Finset.range n, CGB.CausalLearning.fee possible (m t) (context t) (action t) (observed t) ≤\n          (m 0).candidates.card",
+      "type_dependencies": [
+        "CGB.CausalLearning.Support",
+        "CGB.CausalLearning.Memory",
+        "CGB.CausalLearning.advance",
+        "CGB.CausalLearning.Memory.reserve",
+        "CGB.CausalLearning.fee",
+        "CGB.CausalLearning.Memory.candidates"
+      ],
+      "source_declared": true
+    },
+    "true_model_law": {
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "kind": "theorem",
+      "module": "CGBAxioms.CausalLearning",
+      "name": "CGB.CausalLearning.true_model_law",
+      "project_dependencies": [
+        "CGB.CausalLearning.Faithful",
+        "CGB.CausalLearning.Memory",
+        "CGB.CausalLearning.Support",
+        "CGB.CausalLearning.closed",
+        "CGB.CausalLearning.initialMemory",
+        "CGB.CausalLearning.instDecidableEqMemory",
+        "CGB.CausalLearning.instFintypeMemory",
+        "CGB.CausalLearning.true_model_step",
+        "CGB.Energetics.law",
+        "CGB.Interaction.Machine",
+        "CGB.CausalLearning.Memory.candidates",
+        "CGB.Interaction.Machine.step"
+      ],
+      "signature": "∀ {H : Type u_1} {C : Type u_2} {A : Type u_3} {O : Type u_4} [inst : Fintype H] [inst_1 : DecidableEq H] {S : Type u_5}\n  [inst_2 : Fintype S] [inst_3 : DecidableEq S] [inst_4 : Fintype A] [inst_5 : DecidableEq A] [inst_6 : Fintype O]\n  (P : CGB.Interaction.Machine S (ℕ × A) O) (sensor : S → C) (possible : CGB.CausalLearning.Support H C A O) {B : ℕ}\n  (choose : CGB.CausalLearning.Memory H B → C → A) (h : H),\n  CGB.CausalLearning.Faithful P sensor possible h →\n    ∀ (s₀ : S) (n : ℕ) (z : S × CGB.CausalLearning.Memory H B),\n      0 <\n          CGB.Energetics.law (CGB.CausalLearning.closed P sensor possible choose)\n            (s₀, CGB.CausalLearning.initialMemory H B) n z →\n        h ∈ z.2.candidates",
+      "type_dependencies": [
+        "CGB.Interaction.Machine",
+        "CGB.CausalLearning.Support",
+        "CGB.CausalLearning.Memory",
+        "CGB.CausalLearning.Faithful",
+        "CGB.Energetics.law",
+        "CGB.CausalLearning.instFintypeMemory",
+        "CGB.CausalLearning.instDecidableEqMemory",
+        "CGB.CausalLearning.closed",
+        "CGB.CausalLearning.initialMemory",
+        "CGB.CausalLearning.Memory.candidates"
+      ],
+      "source_declared": true
+    },
+    "physical_marginal": {
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "kind": "theorem",
+      "module": "CGBAxioms.CausalLearning",
+      "name": "CGB.CausalLearning.physical_marginal",
+      "project_dependencies": [
+        "CGB.CausalLearning.Memory",
+        "CGB.CausalLearning.Support",
+        "CGB.CausalLearning.advance",
+        "CGB.CausalLearning.closed",
+        "CGB.CausalLearning.instDecidableEqMemory",
+        "CGB.CausalLearning.instFintypeMemory",
+        "CGB.Interaction.Machine",
+        "CGB.CausalLearning.closed._proof_1",
+        "CGB.CausalLearning.closed._proof_2",
+        "CGB.Interaction.Machine.mk",
+        "CGB.Interaction.Machine.step",
+        "CGB.Interaction.Machine.mk.congr_simp"
+      ],
+      "signature": "∀ {H : Type u_1} {C : Type u_2} {A : Type u_3} {O : Type u_4} [inst : Fintype H] [inst_1 : DecidableEq H] {S : Type u_5}\n  [inst_2 : Fintype S] [inst_3 : Fintype A] [inst_4 : DecidableEq A] [inst_5 : Fintype O]\n  (P : CGB.Interaction.Machine S (ℕ × A) O) (sensor : S → C) (possible : CGB.CausalLearning.Support H C A O) {B : ℕ}\n  (choose : CGB.CausalLearning.Memory H B → C → A) (t : ℕ) (z : S × CGB.CausalLearning.Memory H B) (out : A × O)\n  (s' : S),\n  ∑ m', (CGB.CausalLearning.closed P sensor possible choose).step t z out (s', m') =\n    if out.1 = choose z.2 (sensor z.1) then P.step (t, out.1) z.1 out.2 s' else 0",
+      "type_dependencies": [
+        "CGB.Interaction.Machine",
+        "CGB.CausalLearning.Support",
+        "CGB.CausalLearning.Memory",
+        "CGB.CausalLearning.instFintypeMemory",
+        "CGB.Interaction.Machine.step",
+        "CGB.CausalLearning.closed"
+      ],
+      "source_declared": true
+    },
+    "safe_outcome": {
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "kind": "theorem",
+      "module": "CGBAxioms.CausalLearning",
+      "name": "CGB.CausalLearning.safe_outcome",
+      "project_dependencies": [
+        "CGB.CausalLearning.Faithful",
+        "CGB.CausalLearning.Memory",
+        "CGB.CausalLearning.Robust",
+        "CGB.CausalLearning.Support",
+        "CGB.CausalLearning.advance",
+        "CGB.CausalLearning.closed",
+        "CGB.CausalLearning.instFintypeMemory",
+        "CGB.Interaction.Machine",
+        "CGB.CausalLearning.Memory.candidates",
+        "CGB.Interaction.Machine.step"
+      ],
+      "signature": "∀ {H : Type u_1} {C : Type u_2} {A : Type u_3} {O : Type u_4} [inst : Fintype H] [inst_1 : DecidableEq H] {S : Type u_5}\n  [inst_2 : Fintype S] [inst_3 : Fintype A] [inst_4 : DecidableEq A] [inst_5 : Fintype O]\n  (P : CGB.Interaction.Machine S (ℕ × A) O) (sensor : S → C) (possible : CGB.CausalLearning.Support H C A O) {B : ℕ}\n  (choose : CGB.CausalLearning.Memory H B → C → A) (good : C → A → O → Prop) (h : H),\n  CGB.CausalLearning.Faithful P sensor possible h →\n    (∀ (m : CGB.CausalLearning.Memory H B) (c : C),\n        m.candidates.Nonempty → CGB.CausalLearning.Robust possible good m.candidates c (choose m c)) →\n      ∀ (t : ℕ) (z z' : S × CGB.CausalLearning.Memory H B) (out : A × O),\n        h ∈ z.2.candidates →\n          0 < (CGB.CausalLearning.closed P sensor possible choose).step t z out z' → good (sensor z.1) out.1 out.2",
+      "type_dependencies": [
+        "CGB.Interaction.Machine",
+        "CGB.CausalLearning.Support",
+        "CGB.CausalLearning.Memory",
+        "CGB.CausalLearning.Faithful",
+        "CGB.CausalLearning.Memory.candidates",
+        "CGB.CausalLearning.Robust",
+        "CGB.Interaction.Machine.step",
+        "CGB.CausalLearning.instFintypeMemory",
+        "CGB.CausalLearning.closed"
+      ],
+      "source_declared": true
+    },
+    "certified_choice_sound": {
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "kind": "theorem",
+      "module": "CGBAxioms.CausalLearning",
+      "name": "CGB.CausalLearning.certified_choice_sound",
+      "project_dependencies": [
+        "CGB.CausalLearning.Memory",
+        "CGB.CausalLearning.Robust",
+        "CGB.CausalLearning.Support",
+        "CGB.CausalLearning.certifiedActions",
+        "CGB.CausalLearning.certifiedOr",
+        "CGB.CausalLearning.Memory.candidates"
+      ],
+      "signature": "∀ {H : Type u_1} {C : Type u_2} {A : Type u_3} {O : Type u_4} [inst : Fintype H] [inst_1 : DecidableEq H]\n  [inst_2 : Fintype A] [inst_3 : Fintype O] (possible : CGB.CausalLearning.Support H C A O) {B : ℕ}\n  [inst_4 : LinearOrder A] (good : C → A → O → Bool) (fallback : A) (m : CGB.CausalLearning.Memory H B) (c : C),\n  (CGB.CausalLearning.certifiedActions possible good m.candidates c).Nonempty →\n    CGB.CausalLearning.Robust possible (fun c a o => good c a o = true) m.candidates c\n      (CGB.CausalLearning.certifiedOr possible good fallback m c)",
+      "type_dependencies": [
+        "CGB.CausalLearning.Support",
+        "CGB.CausalLearning.Memory",
+        "CGB.CausalLearning.certifiedActions",
+        "CGB.CausalLearning.Memory.candidates",
+        "CGB.CausalLearning.Robust",
+        "CGB.CausalLearning.certifiedOr"
+      ],
+      "source_declared": true
+    },
+    "no_safe_exploration": {
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "kind": "theorem",
+      "module": "CGBAxioms.CausalLearning",
+      "name": "CGB.CausalLearning.no_safe_exploration",
+      "project_dependencies": [
+        "CGB.CausalLearning.Robust",
+        "CGB.CausalLearning.Support"
+      ],
+      "signature": "∀ {H : Type u_1} {C : Type u_2} {A : Type u_3} {O : Type u_4} (possible : CGB.CausalLearning.Support H C A O)\n  (good : C → A → O → Prop) (v : Finset H) (c : C),\n  (∀ (a : A), ∃ h ∈ v, ∃ o, possible h c a o = true ∧ ¬good c a o) → ¬∃ a, CGB.CausalLearning.Robust possible good v c a",
+      "type_dependencies": [
+        "CGB.CausalLearning.Support",
+        "CGB.CausalLearning.Robust"
+      ],
+      "source_declared": true
+    },
+    "paid_mean_budget": {
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "kind": "theorem",
+      "module": "CGBAxioms.CausalLearning",
+      "name": "CGB.CausalLearning.paid_mean_budget",
+      "project_dependencies": [
+        "CGB.CausalLearning.Memory",
+        "CGB.CausalLearning.Support",
+        "CGB.CausalLearning.charge",
+        "CGB.CausalLearning.closed",
+        "CGB.CausalLearning.instDecidableEqMemory",
+        "CGB.CausalLearning.instFintypeMemory",
+        "CGB.CausalLearning.writeAccount",
+        "CGB.Energetics.expected_first_law",
+        "CGB.Energetics.flux",
+        "CGB.Energetics.law",
+        "CGB.Energetics.mean",
+        "CGB.Interaction.Machine",
+        "CGB.CausalLearning.Memory.reserve",
+        "CGB.CausalLearning.closed._simp_1",
+        "CGB.Energetics.Account.drive",
+        "CGB.Energetics.Account.heat",
+        "CGB.Energetics.Account.load",
+        "CGB.Energetics.Account.matter",
+        "CGB.Energetics.Account.stored",
+        "CGB.Interaction.Machine.step"
+      ],
+      "signature": "∀ {H : Type u_1} {C : Type u_2} {A : Type u_3} {O : Type u_4} [inst : Fintype H] [inst_1 : DecidableEq H] {S : Type u_5}\n  [inst_2 : Fintype S] [inst_3 : DecidableEq S] [inst_4 : Fintype A] [inst_5 : DecidableEq A] [inst_6 : Fintype O]\n  (P : CGB.Interaction.Machine S (ℕ × A) O) (sensor : S → C) (possible : CGB.CausalLearning.Support H C A O) {B : ℕ}\n  (choose : CGB.CausalLearning.Memory H B → C → A) (initial : S × CGB.CausalLearning.Memory H B) (n : ℕ),\n  CGB.Energetics.mean (CGB.Energetics.law (CGB.CausalLearning.closed P sensor possible choose) initial n)\n        ((CGB.CausalLearning.writeAccount P sensor possible choose).stored n) +\n      ∑ t ∈ Finset.range n,\n        CGB.Energetics.flux (CGB.CausalLearning.closed P sensor possible choose) initial\n          (CGB.CausalLearning.charge sensor possible) t =\n    ↑↑initial.2.reserve",
+      "type_dependencies": [
+        "CGB.Interaction.Machine",
+        "CGB.CausalLearning.Support",
+        "CGB.CausalLearning.Memory",
+        "CGB.Energetics.mean",
+        "CGB.CausalLearning.instFintypeMemory",
+        "CGB.Energetics.law",
+        "CGB.CausalLearning.instDecidableEqMemory",
+        "CGB.CausalLearning.closed",
+        "CGB.Energetics.Account.stored",
+        "CGB.CausalLearning.writeAccount",
+        "CGB.Energetics.flux",
+        "CGB.CausalLearning.charge",
+        "CGB.CausalLearning.Memory.reserve"
+      ],
+      "source_declared": true
+    },
+    "closed": {
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "kind": "definition",
+      "module": "CGBAxioms.CausalLearning",
+      "name": "CGB.CausalLearning.closed",
+      "project_dependencies": [
+        "CGB.CausalLearning.Memory",
+        "CGB.CausalLearning.Support",
+        "CGB.CausalLearning.advance",
+        "CGB.CausalLearning.instDecidableEqMemory",
+        "CGB.CausalLearning.instFintypeMemory",
+        "CGB.Interaction.Machine",
+        "CGB.CausalLearning.closed._proof_1",
+        "CGB.CausalLearning.closed._proof_2",
+        "CGB.Interaction.Machine.mk",
+        "CGB.Interaction.Machine.step"
+      ],
+      "signature": "{H : Type u_1} →\n  {C : Type u_2} →\n    {A : Type u_3} →\n      {O : Type u_4} →\n        [inst : Fintype H] →\n          [DecidableEq H] →\n            {S : Type u_5} →\n              [inst_2 : Fintype S] →\n                [inst_3 : Fintype A] →\n                  [DecidableEq A] →\n                    [inst_5 : Fintype O] →\n                      CGB.Interaction.Machine S (ℕ × A) O →\n                        (S → C) →\n                          CGB.CausalLearning.Support H C A O →\n                            {B : ℕ} →\n                              (CGB.CausalLearning.Memory H B → C → A) →\n                                CGB.Interaction.Machine (S × CGB.CausalLearning.Memory H B) ℕ (A × O)",
+      "type_dependencies": [
+        "CGB.Interaction.Machine",
+        "CGB.CausalLearning.Support",
+        "CGB.CausalLearning.Memory",
+        "CGB.CausalLearning.instFintypeMemory"
+      ],
+      "source_declared": true
+    },
+    "certifiedOr": {
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "kind": "definition",
+      "module": "CGBAxioms.CausalLearning",
+      "name": "CGB.CausalLearning.certifiedOr",
+      "project_dependencies": [
+        "CGB.CausalLearning.Memory",
+        "CGB.CausalLearning.Support",
+        "CGB.CausalLearning.certifiedActions",
+        "CGB.CausalLearning.Memory.candidates"
+      ],
+      "signature": "{H : Type u_1} →\n  {C : Type u_2} →\n    {A : Type u_3} →\n      {O : Type u_4} →\n        [inst : Fintype H] →\n          [DecidableEq H] →\n            [Fintype A] →\n              [Fintype O] →\n                CGB.CausalLearning.Support H C A O →\n                  {B : ℕ} → [LinearOrder A] → (C → A → O → Bool) → A → CGB.CausalLearning.Memory H B → C → A",
+      "type_dependencies": [
+        "CGB.CausalLearning.Support",
+        "CGB.CausalLearning.Memory"
+      ],
+      "source_declared": true
+    },
+    "writeAccount": {
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "kind": "definition",
+      "module": "CGBAxioms.CausalLearning",
+      "name": "CGB.CausalLearning.writeAccount",
+      "project_dependencies": [
+        "CGB.CausalLearning.Memory",
+        "CGB.CausalLearning.Support",
+        "CGB.CausalLearning.charge",
+        "CGB.CausalLearning.closed",
+        "CGB.CausalLearning.instFintypeMemory",
+        "CGB.Energetics.Account",
+        "CGB.Interaction.Machine",
+        "CGB.CausalLearning.Memory.reserve",
+        "CGB.CausalLearning.writeAccount._proof_1",
+        "CGB.Energetics.Account.mk"
+      ],
+      "signature": "{H : Type u_1} →\n  {C : Type u_2} →\n    {A : Type u_3} →\n      {O : Type u_4} →\n        [inst : Fintype H] →\n          [inst_1 : DecidableEq H] →\n            {S : Type u_5} →\n              [inst_2 : Fintype S] →\n                [inst_3 : Fintype A] →\n                  [inst_4 : DecidableEq A] →\n                    [inst_5 : Fintype O] →\n                      (P : CGB.Interaction.Machine S (ℕ × A) O) →\n                        (sensor : S → C) →\n                          (possible : CGB.CausalLearning.Support H C A O) →\n                            {B : ℕ} →\n                              (choose : CGB.CausalLearning.Memory H B → C → A) →\n                                CGB.Energetics.Account (CGB.CausalLearning.closed P sensor possible choose)",
+      "type_dependencies": [
+        "CGB.Interaction.Machine",
+        "CGB.CausalLearning.Support",
+        "CGB.CausalLearning.Memory",
+        "CGB.Energetics.Account",
+        "CGB.CausalLearning.instFintypeMemory",
+        "CGB.CausalLearning.closed"
+      ],
+      "source_declared": true
+    },
+    "totalAccount": {
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "kind": "definition",
+      "module": "CGBAxioms.CausalLearning",
+      "name": "CGB.CausalLearning.totalAccount",
+      "project_dependencies": [
+        "CGB.CausalLearning.Memory",
+        "CGB.CausalLearning.Support",
+        "CGB.CausalLearning.charge",
+        "CGB.CausalLearning.closed",
+        "CGB.CausalLearning.instFintypeMemory",
+        "CGB.Energetics.Account",
+        "CGB.Interaction.Machine",
+        "CGB.CausalLearning.Memory.candidates",
+        "CGB.CausalLearning.Memory.reserve",
+        "CGB.CausalLearning.totalAccount._proof_1",
+        "CGB.Energetics.Account.drive",
+        "CGB.Energetics.Account.heat",
+        "CGB.Energetics.Account.load",
+        "CGB.Energetics.Account.matter",
+        "CGB.Energetics.Account.mk",
+        "CGB.Energetics.Account.stored"
+      ],
+      "signature": "{H : Type u_1} →\n  {C : Type u_2} →\n    {A : Type u_3} →\n      {O : Type u_4} →\n        [inst : Fintype H] →\n          [inst_1 : DecidableEq H] →\n            {S : Type u_5} →\n              [inst_2 : Fintype S] →\n                [inst_3 : Fintype A] →\n                  [inst_4 : DecidableEq A] →\n                    [inst_5 : Fintype O] →\n                      (P : CGB.Interaction.Machine S (ℕ × A) O) →\n                        (sensor : S → C) →\n                          (possible : CGB.CausalLearning.Support H C A O) →\n                            {B : ℕ} →\n                              (choose : CGB.CausalLearning.Memory H B → C → A) →\n                                (physical :\n                                    CGB.Energetics.Account (CGB.CausalLearning.closed P sensor possible choose)) →\n                                  (stored : ℕ → S → Finset H → ℝ) →\n                                    (∀ (t : ℕ) (z : S × CGB.CausalLearning.Memory H B),\n                                        physical.stored t z = stored t z.1 z.2.candidates) →\n                                      CGB.Energetics.Account (CGB.CausalLearning.closed P sensor possible choose)",
+      "type_dependencies": [
+        "CGB.Interaction.Machine",
+        "CGB.CausalLearning.Support",
+        "CGB.CausalLearning.Memory",
+        "CGB.Energetics.Account",
+        "CGB.CausalLearning.instFintypeMemory",
+        "CGB.CausalLearning.closed",
+        "CGB.Energetics.Account.stored",
+        "CGB.CausalLearning.Memory.candidates"
+      ],
+      "source_declared": true
+    }
+  },
+  "source_hashes": {
+    "CGBAxioms/ActiveLoop.lean": "9e56d8c7f329724716af60955108055a5bc359eef0b69135f2c7330b0de5708c",
+    "CGBAxioms/ActiveMaintenance.lean": "ef9b4df1f7a054281609ed64845b77c347c367b5d0491084d2e0ed48dc870acf",
+    "CGBAxioms/ActiveMaintenanceCarrier.lean": "5507055efe8a88ce80cc49864a01ea8e3fcdf66b0846606d8fafcbf30fc88e17",
+    "CGBAxioms/ActiveMaintenanceEnergy.lean": "eebb826a2a3adb761c488e541da3979b58c35690d1346c5c5d7bf0ff34f44d71",
+    "CGBAxioms/AtomicIndependence.lean": "58f36e25a38713402bd89b3c2d7686c83a69dde990a19c62d1c135b174a8cc0e",
+    "CGBAxioms/Audit.lean": "1745f9772250e6bfe7812323cc5c8733840d60b9d62ad8549d81c049249f3b44",
+    "CGBAxioms/AuditAll.lean": "5c8cd6cab2cfbe028a8a26f58c541845f89f7f109833cdcaec49d9777145f543",
+    "CGBAxioms/CausalLearning.lean": "5c257723c917b064457f7b70db2a44cbc38e8c906d92526967db1ff77c7ae11e",
+    "CGBAxioms/ConstraintAudit.lean": "cfbda2ff344353b46b209b43cfd69dc836a2ab9a4cbe62ddbe172de9e04544ab",
+    "CGBAxioms/ConstraintFreedom.lean": "37bf271ea1b419f9df48cf81ea20ccc3b7704d39fab9961ad23c45967ea8c0fe",
+    "CGBAxioms/EnergyBudget.lean": "7f679d7803742d11465b58f4695cf521e3e1a42f3ce831b666131fccc6fbb06c",
+    "CGBAxioms/EnergyControls.lean": "5ec64bc2b3b272e6463f6bdac86d8bc32f40f74e096aadb9b6618209ccf114a0",
+    "CGBAxioms/EventChannels.lean": "0dd33bcc957ff3e3155df4cefaee463ae3627d621434fbcc73474e35ffc73232",
+    "CGBAxioms/Foundation.lean": "0fe5127c183a9ea32632ebfc3bf152c441ffadd90b115e87a7610b562add8134",
+    "CGBAxioms/Inference.lean": "1b0314e6508a0190c33aaf6d24dd82102ef8d7722cadd7c1897232eb95504c60",
+    "CGBAxioms/Interaction.lean": "9e6daed623e1f03a15c6661408c191fb5d9696af28938ab3cc8f5bed516c8023",
+    "CGBAxioms/InteractionBridge.lean": "43059e1a6192caf81267331edbdd59a0b2480fd4776a589e5138b36286fdf467",
+    "CGBAxioms/InteractionControls.lean": "8bbb3766b4494b1b9f2323b17757d5e9f1fc2a87f0b006fefc019ef9b068490d",
+    "CGBAxioms/Language.lean": "b52db422bcac3996cb279d41813aa4a0998ebb6fe54ba2bb87b096972539f0fe",
+    "CGBAxioms/Life.lean": "f21caf6feba9f6a4a2b5a3bdeb6bea7a05d6503b97c347af52c56e68050b3f65",
+    "CGBAxioms/LifeControls.lean": "5f025d923089697978a8b6a5bbf64fe16db62485d56ebd584f538611f9c38e1c",
+    "CGBAxioms/MaterialExchange.lean": "8f888370007db06d7de370155672bdea53ec0929dd7940ace30e7933677eed08",
+    "CGBAxioms/MaterialSource.lean": "50194b475dd439a9497ebbff6f1cc7f2fbc64ea7c0c2d20431a02c412ebab7b8",
+    "CGBAxioms/MaterialSourceControls.lean": "518a2f25e56b7d578fd61c87c02905ffac8f628a419286ebcef051a674fe9354",
+    "CGBAxioms/Medium.lean": "e4f507706eec6f69ce57c95b47a1062e6b644bab12990347cd8d84f286c86fc4",
+    "CGBAxioms/Models.lean": "d7648d7e36912bdd6119f4e27027301b791c530ad7217e873d35c504e1a2f5b0",
+    "CGBAxioms/NoetherBridge.lean": "810a4afc5d944216ca86cd3153ae8d26ff9dc531756220f531f2dc46e35861e3",
+    "CGBAxioms/OperationalLife.lean": "216bcc5a22b70ecffd449a9ab55fdb916b51f3138ffda971e3966b882daa9155",
+    "CGBAxioms/RecoveryControls.lean": "19ab24fd7e9f292707a916eb9cdb5a372b62121c6faae042882aca892b0d35a2",
+    "CGBAxioms/RuleEncoding.lean": "27aaa80e273a621bfa37a0c47e85afeb7aed818f3b96cf56359a0fccc0990100",
+    "CGBAxioms/SubconditionGraph.lean": "3ab2e1c74a3a7895a2ff82bb17a3b430084de904b457e68bc627dcb099c78c51",
+    "CGBAxioms/Symmetry.lean": "f595478d072a4fa5680be6e6a928afb86922e3fcdd3ef0512bfefdb9ab2090bc",
+    "CGBAxioms/TurnoverControls.lean": "7af924e715056309d2c97984dce20fbc3b1a5c07501c0458829e04ca0bbdde7f",
+    "CGBAxioms/WorldRecovery.lean": "168592642319cd10c65ee9edac1e11389534243346b03636408cc421bf00af5c",
+    "CGBAxioms.lean": "7e330ffdea478e46fe4e9da45a6d76563777af22d43c89a1a2f2aa2977f58aec"
+  },
+  "artifact_hashes": {
+    "lean/CGBAxioms/reviews/causal_learning_20261024.lean": "c46ca724dd8f10ecec1809107f1a98546b58ada37b802d247ae640d9d016cb82",
+    "docs/information_boltzmann/CGB_CAUSAL_LEARNING_20261024.md": "80995ac7446b807b649c3d584752bd19fc910ef0803527b6d66785d76da8692d",
+    "docs/information_boltzmann/CGB_AXIOMS_V0_20261022.md": "9a7b1b4664540b6ddbadf87c4625c9414aeeb9f95fabf59b4c503111c16ff100",
+    "research_tree.json": "0f7d1051ac1153be0a332f9ce1836bafd4f72bf576da7cfc1487e7010bd0b910"
+  },
+  "semantic_crosscheck": {
+    "kind": "Finite exact Lean truth-table and interface checks; no capability training or performance estimates.",
+    "examples": [
+      "feedback changes candidate set and selected action",
+      "alternative feedback changes retained candidate",
+      "shared prediction has no effective-write fee",
+      "zero reserve freezes candidate update",
+      "explicit world satisfies faithful support",
+      "zero reserve still delivers actual world outcome",
+      "unsupported feedback yields empty candidates",
+      "empty candidates certify no actions"
+    ],
+    "review_file": "lean/CGBAxioms/reviews/causal_learning_20261024.lean"
+  },
+  "energy_interpretation": {
+    "write_unit": "Declared accounting scale; no universal microscopic energy bound claimed.",
+    "total_account": "Requires an independently valid physical account on the same learned-action process. Physical stored energy may depend on the candidate register and must exclude the separately accounted write reserve.",
+    "pending": [
+      "physical sensing and computation costs",
+      "physical medium and time interpretation",
+      "maintenance Exchange survival proof for learned control"
+    ]
+  },
+  "full_local_audit": "lean/CGBAxioms/.lake/causal_learning_20261024.json",
+  "prechange_backup": "results/cgb_causal_learning_before_20261024/manifest.json",
+  "report": "docs/information_boltzmann/CGB_CAUSAL_LEARNING_20261024.md",
+  "main_document": "docs/information_boltzmann/CGB_AXIOMS_V0_20261022.md"
+}

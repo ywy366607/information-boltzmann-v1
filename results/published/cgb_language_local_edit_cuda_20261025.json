@@ -1,0 +1,23 @@
+{
+  "scope": "64 serialized conditional-block interface edits in a billion-slot packed allocation, not language training",
+  "device": "NVIDIA GeForce GTX 1650",
+  "torch_version": "2.9.1+cu126",
+  "coefficient_slots": 1073741824,
+  "edits": 64,
+  "allocation_initial_byte": "0x88",
+  "nibble_indices": "32 evenly spaced indices, each +1 toward label1 then -1 toward label0",
+  "rule": "config=2h+y; mass=(code+9 if h else 1)*(3 if h==y else 1); output=y",
+  "resident_bytes": 572522496,
+  "peak_allocated_bytes": 572522496,
+  "extra_peak_allocated_bytes": 0,
+  "peak_reserved_bytes": 591396864,
+  "kernel_sha256": "67c6521fdfd81f772b8dee01adcdb6349825f3403cb036cc179d1437a1f79cd3",
+  "exact_roundtrip_on_32_owned_bytes": true,
+  "scales_used_for_arithmetic": false,
+  "training": false,
+  "statistics_device": "CPU",
+  "serialized_scalar_device_io": true,
+  "rule_is_numerical_verification_fixture": true,
+  "full_language_learning_or_gpu_speed_claim": false,
+  "validator_sha256": "94182355106afb126eeba88f548e3f67a74645975cf3022129f27741a11fa670"
+}

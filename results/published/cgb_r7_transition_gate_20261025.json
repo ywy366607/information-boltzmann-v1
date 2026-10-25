@@ -1,0 +1,266 @@
+{
+  "schema_version": 1,
+  "stage": "inverse_development_transition_and_gate_audit",
+  "evidence": {
+    "source_commit": "872d0593eaaac2496ee85b64e7ef92c78193c7f1",
+    "source_files_hash_verified": 43,
+    "observations_sha256": "b6fa93b7f330202ce6e7565c60581964b2aa08523ef833c83bc249b5f4a4bfa3",
+    "groups": {
+      "Atg6_mutant": {
+        "workbooks": 3,
+        "admitted_workbooks": 3,
+        "rows_with_marker_schema": 188,
+        "marker_positive": 12,
+        "partial_marker": 3,
+        "incident_marker_positive": 0,
+        "partial_rows": [
+          {
+            "file": "Data/Files/Atg6_mutant/Atg6mutant_P60_GC1.xlsx",
+            "parent_id": "2.0",
+            "first": 0,
+            "last": 59,
+            "marked_frames": 55,
+            "total_frames": 60,
+            "minimum_binary_marker_changes": 1
+          },
+          {
+            "file": "Data/Files/Atg6_mutant/Atg6mutant_P60_GC2.xlsx",
+            "parent_id": "3.0",
+            "first": 0,
+            "last": 57,
+            "marked_frames": 41,
+            "total_frames": 58,
+            "minimum_binary_marker_changes": 1
+          },
+          {
+            "file": "Data/Files/Atg6_mutant/Atg6mutant_P60_GC3.xlsx",
+            "parent_id": "2.0",
+            "first": 0,
+            "last": 59,
+            "marked_frames": 26,
+            "total_frames": 60,
+            "minimum_binary_marker_changes": 1
+          }
+        ],
+        "missing_marker_schema_files": [],
+        "percentage_max_error": 2.3333333376562848e-08,
+        "same_numeric_id_link_failures": null
+      },
+      "Atg6_rescue": {
+        "workbooks": 3,
+        "admitted_workbooks": 1,
+        "rows_with_marker_schema": 0,
+        "marker_positive": null,
+        "partial_marker": null,
+        "incident_marker_positive": null,
+        "partial_rows": [],
+        "missing_marker_schema_files": [
+          "Data/Files/Atg6_rescue/Atg6rescue_P60_GC1.xlsx",
+          "Data/Files/Atg6_rescue/Atg6rescue_P60_GC2.xlsx",
+          "Data/Files/Atg6_rescue/Atg6rescue_P60_GC3.xlsx"
+        ],
+        "percentage_max_error": null,
+        "same_numeric_id_link_failures": null
+      },
+      "Atg7_mutant": {
+        "workbooks": 3,
+        "admitted_workbooks": 3,
+        "rows_with_marker_schema": 226,
+        "marker_positive": 10,
+        "partial_marker": 3,
+        "incident_marker_positive": 0,
+        "partial_rows": [
+          {
+            "file": "Data/Files/Atg7_mutant/Atg7mutant_P60_GC1.xlsx",
+            "parent_id": "3.0",
+            "first": 0,
+            "last": 7,
+            "marked_frames": 3,
+            "total_frames": 8,
+            "minimum_binary_marker_changes": 1
+          },
+          {
+            "file": "Data/Files/Atg7_mutant/Atg7mutant_P60_GC2.xlsx",
+            "parent_id": "3.0",
+            "first": 0,
+            "last": 59,
+            "marked_frames": 11,
+            "total_frames": 60,
+            "minimum_binary_marker_changes": 1
+          },
+          {
+            "file": "Data/Files/Atg7_mutant/Atg7mutant_P60_GC3.xlsx",
+            "parent_id": "5.0",
+            "first": 0,
+            "last": 59,
+            "marked_frames": 47,
+            "total_frames": 60,
+            "minimum_binary_marker_changes": 1
+          }
+        ],
+        "missing_marker_schema_files": [],
+        "percentage_max_error": 2.666666665263051e-08,
+        "same_numeric_id_link_failures": null
+      },
+      "Control": {
+        "workbooks": 3,
+        "admitted_workbooks": 3,
+        "rows_with_marker_schema": 242,
+        "marker_positive": 6,
+        "partial_marker": 3,
+        "incident_marker_positive": 1,
+        "partial_rows": [
+          {
+            "file": "Data/Files/Control/Control_P60_GC1.xlsx",
+            "parent_id": "4.0",
+            "first": 0,
+            "last": 59,
+            "marked_frames": 57,
+            "total_frames": 60,
+            "minimum_binary_marker_changes": 1
+          },
+          {
+            "file": "Data/Files/Control/Control_P60_GC2.xlsx",
+            "parent_id": "4.0",
+            "first": 0,
+            "last": 59,
+            "marked_frames": 24,
+            "total_frames": 60,
+            "minimum_binary_marker_changes": 1
+          },
+          {
+            "file": "Data/Files/Control/Control_P60_GC2.xlsx",
+            "parent_id": "12.0",
+            "first": 3,
+            "last": 59,
+            "marked_frames": 19,
+            "total_frames": 57,
+            "minimum_binary_marker_changes": 1
+          }
+        ],
+        "missing_marker_schema_files": [],
+        "percentage_max_error": 9.999999994736442e-09,
+        "same_numeric_id_link_failures": 4
+      }
+    },
+    "control_candidate_links": [
+      {
+        "filopodium_file": "Data/Files/Control/Control_P60_GC1.xlsx",
+        "bulb_file": "Data/Files/Bulbous_Control/Bulbous_Control_CG1.xlsx",
+        "bulb_id": "1.0",
+        "bulb_first": 0,
+        "bulb_last": 59,
+        "candidate_parent_ids": [
+          "2.0"
+        ],
+        "unique_candidate": true,
+        "same_numeric_id_is_candidate": false,
+        "conditional_suffix_violations": [],
+        "linkage_confirmed": false
+      },
+      {
+        "filopodium_file": "Data/Files/Control/Control_P60_GC1.xlsx",
+        "bulb_file": "Data/Files/Bulbous_Control/Bulbous_Control_CG1.xlsx",
+        "bulb_id": "2.0",
+        "bulb_first": 3,
+        "bulb_last": 59,
+        "candidate_parent_ids": [
+          "4.0"
+        ],
+        "unique_candidate": true,
+        "same_numeric_id_is_candidate": false,
+        "conditional_suffix_violations": [],
+        "linkage_confirmed": false
+      },
+      {
+        "filopodium_file": "Data/Files/Control/Control_P60_GC2.xlsx",
+        "bulb_file": "Data/Files/Bulbous_Control/Bulbous_Control_CG2.xlsx",
+        "bulb_id": "1.0",
+        "bulb_first": 0,
+        "bulb_last": 59,
+        "candidate_parent_ids": [
+          "1.0"
+        ],
+        "unique_candidate": true,
+        "same_numeric_id_is_candidate": true,
+        "conditional_suffix_violations": [],
+        "linkage_confirmed": false
+      },
+      {
+        "filopodium_file": "Data/Files/Control/Control_P60_GC2.xlsx",
+        "bulb_file": "Data/Files/Bulbous_Control/Bulbous_Control_CG2.xlsx",
+        "bulb_id": "2.0",
+        "bulb_first": 0,
+        "bulb_last": 23,
+        "candidate_parent_ids": [
+          "4.0"
+        ],
+        "unique_candidate": true,
+        "same_numeric_id_is_candidate": false,
+        "conditional_suffix_violations": [
+          "4.0"
+        ],
+        "linkage_confirmed": false
+      },
+      {
+        "filopodium_file": "Data/Files/Control/Control_P60_GC2.xlsx",
+        "bulb_file": "Data/Files/Bulbous_Control/Bulbous_Control_CG2.xlsx",
+        "bulb_id": "3.0",
+        "bulb_first": 19,
+        "bulb_last": 37,
+        "candidate_parent_ids": [
+          "12.0"
+        ],
+        "unique_candidate": true,
+        "same_numeric_id_is_candidate": false,
+        "conditional_suffix_violations": [
+          "12.0"
+        ],
+        "linkage_confirmed": false
+      },
+      {
+        "filopodium_file": "Data/Files/Control/Control_P60_GC3.xlsx",
+        "bulb_file": "Data/Files/Bulbous_Control/Bulbous_Control_CG3.xlsx",
+        "bulb_id": "1.0",
+        "bulb_first": 0,
+        "bulb_last": 59,
+        "candidate_parent_ids": [
+          "1.0"
+        ],
+        "unique_candidate": true,
+        "same_numeric_id_is_candidate": true,
+        "conditional_suffix_violations": [],
+        "linkage_confirmed": false
+      }
+    ],
+    "control_candidate_links_confirmed": false,
+    "candidate_link_scope": "Same-numbered cones plus duration/containment only; no source crosswalk confirms a shared unit or parent ID namespace",
+    "raw_framewise_marker_sequences_present_in_workbook_schema": false,
+    "source_hashes": {
+      "Data/DataImport.m": "07a1cea7b72a05bad93179a44bf0fc4fafa76cdc432db1507d7ed796b65789f6",
+      "Data/DataImportBulbous.m": "c3baf0ae5a229dc3cfc102edd9b66600f59a572e2535bf4e5f99e1cd2ac2d2e4",
+      "Description.docx": "d750cd80044d15632b5acbf4f6591cde6031aefb422b3a019d9cc6d3c3f05a66",
+      "MechanisticModel/MechanisticModel.m": "8c0de5654278c0285f49dba43332a5668a9e9621b8ef23528d669bc87b29b840"
+    }
+  },
+  "algebra": {
+    "first_hit_and_survival_transfer_checks": 801,
+    "finite_horizon_gate_bound_checks": 2880,
+    "geometric_relative_gain_checks": 784,
+    "partial_binary_duration_checks": 494,
+    "ambiguous_duration_classes": 28,
+    "status": "Exact arithmetic checks, paper results not Lean formalization"
+  },
+  "script_sha256": "59bfee8f8ef042645cd136452b73953d56d0fd5ed44ca2c181ba5049db1e1061",
+  "dependency_sha256": {
+    "scripts\\ib\\generative\\r7_identifiability_audit.py": "faeb37cd2ad6df3fe2fe330b314996cf27a0d19a0151e8bdab3d0ddd640046c3"
+  },
+  "conclusions": {
+    "new_fit_or_training": false,
+    "author_code_executed": false,
+    "single_parameter_gene_intervention_identified": false,
+    "gate_law_is_conditional_H_not_core_axiom": true,
+    "independent_mechanism_review_completed": false,
+    "biological_validation_complete": false
+  }
+}

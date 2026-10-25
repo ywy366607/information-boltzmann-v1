@@ -1,0 +1,88 @@
+{
+  "date": "2026-10-24",
+  "status": "verified_two_tick_state_boundary_and_recharge_condition",
+  "core_result_groups": 3,
+  "results": {
+    "core_result_groups": 3,
+    "new_general_axioms": 0,
+    "two_tick_nonempty": true,
+    "two_tick_reserve_zero": true,
+    "third_tick_empty": true,
+    "recharge_requires_positive_base_incoming": true,
+    "recharge_requires_nonvacuum_result": true,
+    "full_two_tick_survival_claimed": false,
+    "full_two_tick_tolerance_claimed": false,
+    "long_blackout_failure_preserved": true,
+    "training_performed": false
+  },
+  "scope": "Exact local transition and recharge conditions for the existing finite carrier; no new full recovery certificate or physical calibration.",
+  "core_results": [
+    {
+      "id": "IB_CGB_SENSORY_BOUNDARY_20261024",
+      "parent": "IB_CGB_CONTINUOUS_MAINTENANCE_20261024",
+      "layer": "theorem",
+      "direction": "deduction",
+      "time": "2026-10-24",
+      "status": "verified_two_tick_state_boundary_and_recharge_condition",
+      "title": "Two-loss state boundary and conditional reserve recharge are exact",
+      "claim": "For every nonvacuum supported cell, two absent-sensing ticks leave the body nonempty with zero reserve, while the third reaches the absorbing empty state. A subsequent normal signal replenishes the reserve exactly when its base intake is positive and the resulting structural cell remains nonvacuum. This is a local state and recharge result, not a proof that every two-tick protocol has full recovery score.",
+      "findings": {
+        "core_result_groups": 3,
+        "new_general_axioms": 0,
+        "two_tick_nonempty": true,
+        "two_tick_reserve_zero": true,
+        "third_tick_empty": true,
+        "recharge_requires_positive_base_incoming": true,
+        "recharge_requires_nonvacuum_result": true,
+        "full_two_tick_survival_claimed": false,
+        "full_two_tick_tolerance_claimed": false,
+        "long_blackout_failure_preserved": true,
+        "training_performed": false
+      },
+      "scope": "Exact local transition and recharge conditions for the existing finite carrier; no new full recovery certificate or physical calibration.",
+      "action": "Use this boundary to formulate the remaining two-tick recovery certificate; only claim full tolerance after proving the future first-hit condition for every start time.",
+      "artifacts": [
+        "lean/CGBAxioms/CGBAxioms/SensoryMaintenanceBoundaries.lean",
+        "lean/CGBAxioms/reviews/sensory_maintenance_boundaries_20261024.lean"
+      ]
+    }
+  ],
+  "verification": {
+    "production_build_passed": true,
+    "independent_review_exit_code": 0,
+    "review_examples_passed": 3,
+    "proof_trust_passed": true,
+    "module_coverage_passed": true,
+    "audit_guard_checks": 10,
+    "previous_declarations_and_signatures_preserved": 3327,
+    "old_production_sources_unchanged_except_root_import": true,
+    "main_theorem_row_list_unchanged": true,
+    "training_performed": false
+  },
+  "inventory": {
+    "compiled_declarations": 3330,
+    "modules": 62,
+    "kernel_theorem_entries": 2153,
+    "source_authored_theorems": 686,
+    "added_compiled_declarations": 3,
+    "independent_scientific_results_not_equal_to_inventory": true
+  },
+  "artifact_hashes": {
+    "docs/information_boltzmann/CGB_AXIOMS_V0_20261022.md": "c14583a86a8bfce16bef911fd62589a65f34b57d958c4fe5faafe8bb6992d2dd",
+    "docs/information_boltzmann/CGB_CONTINUOUS_MAINTENANCE_20261024.md": "f330af49cc70b8fcdda25e60aa726b66daca31e7a9e4593f5b29453fb6bc0dc0",
+    "lean/CGBAxioms/CGBAxioms/SensoryMaintenanceBoundaries.lean": "525c555738e499cb180bde2d05df022e0d5b67ba6255386ae9f58e44f1b53711",
+    "lean/CGBAxioms/reviews/sensory_maintenance_boundaries_20261024.lean": "6879705f2ffd2ed89bc00e4531098c6bd6df6c348c9a2385311c1ec73725244d",
+    "research_tree.json": "8d86e2dcbdb7918831fe6e83487da6b361edb1af4881c24cfd18cdad6441ce38"
+  },
+  "audit_inventory": "lean/CGBAxioms/.lake/sensory_boundaries_20261024.json",
+  "build_log": "lean/CGBAxioms/.lake/sensory_boundaries_fullbuild.log",
+  "review_log": "lean/CGBAxioms/.lake/sensory_boundaries_review.log",
+  "main_document": "docs/information_boltzmann/CGB_AXIOMS_V0_20261022.md",
+  "report": "docs/information_boltzmann/CGB_CONTINUOUS_MAINTENANCE_20261024.md",
+  "artifacts": [
+    "lean/CGBAxioms/CGBAxioms/SensoryMaintenanceBoundaries.lean",
+    "lean/CGBAxioms/reviews/sensory_maintenance_boundaries_20261024.lean",
+    "docs/information_boltzmann/CGB_CONTINUOUS_MAINTENANCE_20261024.md",
+    "results/published/cgb_sensory_boundary_20261024.json"
+  ]
+}

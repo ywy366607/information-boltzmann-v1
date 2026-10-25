@@ -1,0 +1,128 @@
+{
+  "date": "2026-10-25",
+  "scope": "minimal repair selection under the registered continuous-time finite model",
+  "baseline_preserved": true,
+  "selection": "reachable_region_guarded_contract",
+  "criteria": {
+    "preserve_old_refutation": true,
+    "preserve_one_tick_tolerance": true,
+    "preserve_continuous_clock": true,
+    "preserve_existing_budget_ledger": true,
+    "avoid_new_port": true,
+    "avoid_universal_information_energy_claim": true
+  },
+  "candidates": {
+    "state_repair": {
+      "formal_status": "excluded_under_existing_ports",
+      "evidence": "CGB.SensoryMaintenanceRepairAudit.no_state_only_two_tick_repair",
+      "one_tick_preserved": true,
+      "dangerous_branch_excluded": false,
+      "budget_ledger_preserved": false,
+      "required_change": "new internal supply/protection port or explicit dissipation-contract change",
+      "selected": false
+    },
+    "protocol_repair": {
+      "formal_status": "local_properties_proved_full_survival_refuted",
+      "evidence": "CGB.SensoryMaintenanceProtocolRepairRefutation.protected_protocol_survival_lt_one",
+      "one_tick_preserved": true,
+      "dangerous_branch_excluded": false,
+      "budget_ledger_preserved": true,
+      "measured_useful_bits_under_current_probe": 0.0,
+      "measured_dissipation_units": 2,
+      "selected": false
+    },
+    "reachable_region": {
+      "formal_status": "conditional_contract_verified",
+      "evidence": [
+        "CGB.SensoryMaintenanceRepairCandidates.guarded_firstHit",
+        "CGB.SensoryMaintenanceRepairCandidates.guarded_survival_at",
+        "CGB.SensoryMaintenanceRepairCandidates.guarded_support_zero",
+        "CGB.SensoryMaintenanceRepairCandidates.not_guarded_support_two"
+      ],
+      "one_tick_preserved": true,
+      "dangerous_branch_excluded": true,
+      "budget_ledger_preserved": true,
+      "clock_paused": false,
+      "new_port": false,
+      "selected": true,
+      "boundary": "GuardedTwoTickSupport is required; n0=0 is verified and n0=2 is excluded."
+    }
+  },
+  "remaining_capability_gaps": {
+    "global_two_tick_tolerance": false,
+    "natural_admissible_interruption_set_complete": false,
+    "physical_energy_calibrated": false,
+    "language_world_held_out_useful_bits_measured": false,
+    "1B_runtime_capability_verified": false
+  },
+  "next_runtime_contract": {
+    "artifact": "docs/information_boltzmann/CGB_LOW_RESOURCE_LIFE_CONTRACT_20261025.md",
+    "implementation_harness": "information_boltzmann/core/cgb_low_resource_life.py",
+    "validation_entry": "scripts/validate_cgb_contract.py",
+    "smoke_validation": "cgb_contract_ok",
+    "observation_stream_adapter": "information_boltzmann/core/cgb_observation_stream.py",
+    "observation_stream_validation": "scripts/validate_cgb_observation_stream.py",
+    "observation_stream_smoke": "cgb_observation_stream_ok",
+    "real_language_source_audit": "scripts/audit_owt_observation_source.py",
+    "real_language_source_smoke": "cgb_owt_source_ok",
+    "information_ledger": "information_boltzmann/core/cgb_information_ledger.py",
+    "information_ledger_validation": "scripts/validate_cgb_information_ledger.py",
+    "information_ledger_smoke": "cgb_information_ledger_ok",
+    "prequential_bridge": "information_boltzmann/core/cgb_prequential_bridge.py",
+    "prequential_bridge_validation": "scripts/validate_cgb_prequential_bridge.py",
+    "prequential_bridge_smoke": "cgb_prequential_bridge_ok",
+    "heldout_measurement_entry": "scripts/measure_cgb_prequential_heldout.py",
+    "heldout_measurement_requires_checkpoint": true,
+    "heldout_measurement_result": "results/published/cgb_heldout_measurement_20261025.json",
+    "heldout_measurement_status": "budget_limited_read_only_diagnostic",
+    "heldout_discrete_dissipation_units_per_useful_bit": 8.903515368516624,
+    "heldout_net_predictive_gain_bits": -10.020791050392507,
+    "heldout_useful_rows": 66,
+    "heldout_loss_rows": 62,
+    "heldout_physical_energy_per_useful_bit": null,
+    "heldout_rng_replay_exact": false,
+    "from_scratch_model_spec": "docs/information_boltzmann/CGB_LANGUAGE_LIFE_MODEL_V1_20261025.md",
+    "lean_reference_kernel": "lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean",
+    "lean_reference_kernel_status": "build_and_audit_passed",
+    "torch_reference_kernel": "information_boltzmann/core/cgb_language_kernel.py",
+    "torch_reference_kernel_validation": "scripts/validate_cgb_language_kernel.py",
+    "torch_reference_kernel_smoke": "cgb_language_kernel_ok",
+    "lean_plasticity_status": "finite_paid_feedback_verified",
+    "full_brain_generation_status": "not_yet_formalized_or_implemented",
+    "finite_plasticity_sources": [
+      "CGB.CausalLearning.write_contract",
+      "CGB.LearningMaintenance.paid_learning",
+      "CGB.LearningMaintenance.acquired_control",
+      "CGB.RenewableLearning.reconsider"
+    ],
+    "from_scratch_training_required": true,
+    "observation_event_contract": {
+      "first_tick": 0,
+      "tick_stride": 1,
+      "explicit_arrival_required": true,
+      "payload_or_token_exclusive": true
+    },
+    "continuous_input_preserved": true,
+    "online_credit_required": true,
+    "generation_and_action_separated": true,
+    "physical_energy_calibrated": false,
+    "real_language_held_out_evidence_required": true,
+    "boundary_smokes": [
+      "cgb_observation_stream_ok",
+      "cgb_owt_source_ok",
+      "cgb_information_ledger_ok",
+      "cgb_prequential_bridge_ok",
+      "cgb_contract_ok"
+    ]
+  },
+  "complexity_budget": {
+    "modules": 72,
+    "declarations": 3959,
+    "source_declared_theorems": 782,
+    "caps": {
+      "modules": 72,
+      "declarations": 4000,
+      "source_declared_theorems": 800
+    }
+  }
+}

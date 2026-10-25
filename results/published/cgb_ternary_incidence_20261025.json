@@ -1,0 +1,79 @@
+{
+  "date": "2026-10-25",
+  "status": "verified_ternary_incidence_and_sparse_encoding",
+  "scope": "Exact encoding analysis of the current finite incidence chain; no claim that ternary LLM accuracy results transfer to this algebraic flow.",
+  "claim": "The current 384-edge incidence chain has alphabet {-1,0,+1}, so its dense information-theoretic rate is log2(3)=1.585 bits per entry. However, orientation fixes the signs and each edge has only a source and target; source/target index storage is smaller than generic ternary packing, and the registered transition rule can regenerate the target from a 5-bit source state and 4-bit input code. Ternary storage does not make the accumulation arithmetic ternary: boundary sums still require a wider accumulator.",
+  "findings": {
+    "core_result_groups": 3,
+    "edges": 384,
+    "incidence_entries": 9216,
+    "nonzero_incidence_entries": 632,
+    "self_loop_edges": 68,
+    "information_theoretic_bits_per_trit": 1.584962500721156,
+    "dense_ternary_packed_bytes": 1844,
+    "sparse_source_target_bytes": 480,
+    "sparse_source_target_flow_bytes": 624,
+    "generated_source_input_bytes": 432,
+    "sign_bits_needed": 0,
+    "boundary_accumulator_can_be_ternary": false,
+    "bitnet_claim_transferred_without_retraining": false,
+    "training_performed": false
+  },
+  "analysis": {
+    "scope": "exact incidence storage analysis for the current PortSeparation chain",
+    "states": 24,
+    "inputs": 16,
+    "edges": 384,
+    "incidence_entries": 9216,
+    "incidence_nonzero_entries": 632,
+    "self_loop_edges": 68,
+    "alphabet": [
+      -1,
+      0,
+      1
+    ],
+    "information_theoretic_bits_per_trit": 1.584962500721156,
+    "ternary_packing": {
+      "trits_per_byte": 5,
+      "packed_bytes": 1844,
+      "roundtrip_exact": true,
+      "theoretical_dense_bytes": 1826
+    },
+    "sparse_orientation_known": {
+      "bits_per_state_index": 5,
+      "source_target_bits_per_edge": 10,
+      "bytes_for_all_edges": 480,
+      "sign_bits_needed": 0,
+      "reason": "source is -1 and target is +1 by definition"
+    },
+    "sparse_with_flow_counter": {
+      "flow_bits": 3,
+      "bits_per_edge": 13,
+      "bytes_for_all_edges": 624
+    },
+    "generated_transition_encoding": {
+      "source_index_bits": 5,
+      "input_index_bits": 4,
+      "bits_per_edge_if_target_recomputed": 9,
+      "bytes_for_all_edges": 432
+    },
+    "conclusion": {
+      "ternary_dense_is_exact": true,
+      "sparse_source_target_beats_dense_ternary": true,
+      "log2_3_is_asymptotic_storage_rate_not_gpu_dtype": true,
+      "accumulator_can_be_ternary": false,
+      "recommended_current_encoding": "generated transition or sparse source/target indices"
+    }
+  },
+  "artifact_hashes": {
+    "scripts/analyze_ternary_incidence.py": "55f2e1641034dffaa1fdb89f6a50409b916f0215a825c0e1f25b5fef18b721fb",
+    "results/published/cgb_ternary_incidence_20261025.json": "85f4547fa86bee011733a24bf69f0f2eb90b3054efaf7c31ef090aada8922b0d",
+    "docs/information_boltzmann/CGB_CONTINUOUS_MAINTENANCE_20261024.md": "c22d492cee643aaad261b78a8bf8ef77bc5ff4d9faec384fea9d18873bf35f73",
+    "research_tree.json": "dac06c82a78530d07493023111cffe0ca83c242daeaffff533ee9f554e3398f0"
+  },
+  "report": "docs/information_boltzmann/CGB_CONTINUOUS_MAINTENANCE_20261024.md",
+  "artifacts": [
+    "scripts/analyze_ternary_incidence.py",
+    "results/published/cgb_ternary_incidence_20261025.json"
+  ]
+}

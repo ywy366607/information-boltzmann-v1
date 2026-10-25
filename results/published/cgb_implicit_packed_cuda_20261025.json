@@ -1,0 +1,50 @@
+{
+  "scope": {
+    "operator_only": true,
+    "training": false,
+    "ability": false,
+    "scales_used_for_arithmetic": false,
+    "bptt": false
+  },
+  "source_sha256": "ad481954a49d43c798e4946348cd57d975c26fde10b4dff6be6cf8542ed429bd",
+  "kernel_sha256": "67c6521fdfd81f772b8dee01adcdb6349825f3403cb036cc179d1437a1f79cd3",
+  "device": "cuda",
+  "torch_version": "2.9.1+cu126",
+  "seed": 20261024,
+  "device_name": "NVIDIA GeForce GTX 1650",
+  "blocks": 64,
+  "width": 4096,
+  "tile": 1024,
+  "scale_group": 64,
+  "P": 1073741824,
+  "E": 1073741824,
+  "nodes": 524288,
+  "passes": 1,
+  "checked_coefficients": 1073741824,
+  "checked_conservation_blocks": 64,
+  "single_pass_wall_seconds": 0.6770694999868283,
+  "flow_range": [
+    -8,
+    7
+  ],
+  "bytes": {
+    "resident": {
+      "packed_weights": 536870912,
+      "scales": 33554432,
+      "nodes": 2097152
+    },
+    "resident_total": 572522496,
+    "endpoint_indices": 0,
+    "cuda_free_before": 3454795776,
+    "cuda_total": 4294639616,
+    "cuda_baseline": {
+      "allocated": 0,
+      "reserved": 0
+    },
+    "cuda_resident_allocated": 572522496,
+    "cuda_peak_allocated": 585176576,
+    "cuda_peak_reserved": 595591168,
+    "execution_extra_peak_allocated": 12654080
+  },
+  "limits": "Integer transport test, not a neural activity or learning model; CPU peak is unmeasured."
+}

@@ -1,0 +1,89 @@
+{
+  "date": "2026-10-24",
+  "status": "verified_coarse_port_and_refinement_contracts",
+  "core_result_groups": 3,
+  "results": {
+    "core_result_groups": 3,
+    "new_general_axioms": 0,
+    "coarse_port_factorization_registered": true,
+    "port_protocol_sensor_resource_projections": true,
+    "ranked_reserve_contract_registered": true,
+    "rank_decrease_and_empty_absorption_are_interface_fields": true,
+    "timed_refinement_recovery_wrapper_registered": true,
+    "microstate_carrier_expansion_required_for_each_future_model": false,
+    "local_port_separation_preserved": true,
+    "full_joint_carrier_refinement_claimed": false,
+    "full_l1_l6_claimed": false,
+    "training_performed": false
+  },
+  "scope": "Future models may register separated sensory/resource ports, a finite reserve-rank contract, and a timed refinement with marked-intake correspondence. The generic interface preserves port projections and recovery across the existing refinement theorem; it does not create resources or prove physical calibration. Full carrier expansion is required only when a model needs to establish its own refinement fields.",
+  "core_results": [
+    {
+      "id": "IB_CGB_PORT_CONTRACTS_20261024",
+      "parent": "IB_CGB_PORT_SEPARATION_20261024",
+      "layer": "theorem",
+      "direction": "deduction",
+      "time": "2026-10-24",
+      "status": "verified_coarse_port_and_refinement_contracts",
+      "title": "Coarse port factorization and timed refinement replace mandatory microstate expansion",
+      "claim": "Future models may register separated sensory/resource ports, a finite reserve-rank contract, and a timed refinement with marked-intake correspondence. The generic interface preserves port projections and recovery across the existing refinement theorem; it does not create resources or prove physical calibration. Full carrier expansion is required only when a model needs to establish its own refinement fields.",
+      "findings": {
+        "core_result_groups": 3,
+        "new_general_axioms": 0,
+        "coarse_port_factorization_registered": true,
+        "port_protocol_sensor_resource_projections": true,
+        "ranked_reserve_contract_registered": true,
+        "rank_decrease_and_empty_absorption_are_interface_fields": true,
+        "timed_refinement_recovery_wrapper_registered": true,
+        "microstate_carrier_expansion_required_for_each_future_model": false,
+        "local_port_separation_preserved": true,
+        "full_joint_carrier_refinement_claimed": false,
+        "full_l1_l6_claimed": false,
+        "training_performed": false
+      },
+      "scope": "Generic interface contracts; no new organism capability or carrier realization.",
+      "action": "Use these contracts as the default admission layer for richer models; expand identities only for disputed transport, energy, or causal-port claims.",
+      "artifacts": [
+        "lean/CGBAxioms/CGBAxioms/PortContracts.lean",
+        "lean/CGBAxioms/reviews/port_contracts_20261024.lean"
+      ]
+    }
+  ],
+  "verification": {
+    "production_build_passed": true,
+    "independent_review_exit_code": 0,
+    "review_examples_passed": 4,
+    "proof_trust_passed": true,
+    "module_coverage_passed": true,
+    "audit_guard_checks": 10,
+    "previous_declarations_and_signatures_preserved": 3237,
+    "old_production_sources_unchanged_except_root_import": true,
+    "main_theorem_row_list_unchanged": true,
+    "training_performed": false
+  },
+  "inventory": {
+    "compiled_declarations": 3282,
+    "modules": 59,
+    "kernel_theorem_entries": 2129,
+    "source_authored_theorems": 676,
+    "added_compiled_declarations": 45,
+    "independent_scientific_results_not_equal_to_inventory": true
+  },
+  "artifact_hashes": {
+    "docs/information_boltzmann/CGB_AXIOMS_V0_20261022.md": "c14583a86a8bfce16bef911fd62589a65f34b57d958c4fe5faafe8bb6992d2dd",
+    "docs/information_boltzmann/CGB_CONTINUOUS_MAINTENANCE_20261024.md": "42e85ef4f8fe0000e64319c17e811cd758983ca79379f8d9a3e47d2bbaad361d",
+    "lean/CGBAxioms/reviews/port_contracts_20261024.lean": "340cbcf1f2810935cc9969547f687de43ca369e33dd82f429d9f1da0e234c082",
+    "research_tree.json": "e4e693dcb065ff59036ea0223c6764a84d1f1be8897e31da7a2b2591049ffdf7"
+  },
+  "audit_inventory": "lean/CGBAxioms/.lake/port_contracts_20261024.json",
+  "build_log": "lean/CGBAxioms/.lake/port_contracts_fullbuild.log",
+  "review_log": "lean/CGBAxioms/.lake/port_contracts_review.log",
+  "main_document": "docs/information_boltzmann/CGB_AXIOMS_V0_20261022.md",
+  "report": "docs/information_boltzmann/CGB_CONTINUOUS_MAINTENANCE_20261024.md",
+  "artifacts": [
+    "lean/CGBAxioms/CGBAxioms/PortContracts.lean",
+    "lean/CGBAxioms/reviews/port_contracts_20261024.lean",
+    "docs/information_boltzmann/CGB_CONTINUOUS_MAINTENANCE_20261024.md",
+    "results/published/cgb_port_contracts_20261024.json"
+  ]
+}

@@ -1,0 +1,85 @@
+{
+  "torch_version": "2.9.1+cu126",
+  "cuda_available": true,
+  "dtypes": {
+    "int8": {
+      "bytes_per_element": 1,
+      "add": {
+        "status": "ok",
+        "output_dtype": "torch.int8"
+      },
+      "mul": {
+        "status": "ok",
+        "output_dtype": "torch.int8"
+      },
+      "sum": {
+        "status": "ok",
+        "output_dtype": "torch.int64"
+      },
+      "where": {
+        "status": "ok",
+        "output_dtype": "torch.int8"
+      },
+      "mm": {
+        "status": "unsupported",
+        "error": "\"addmm_cuda\" not implemented for 'Char'"
+      }
+    },
+    "int32": {
+      "bytes_per_element": 4,
+      "add": {
+        "status": "ok",
+        "output_dtype": "torch.int32"
+      },
+      "mul": {
+        "status": "ok",
+        "output_dtype": "torch.int32"
+      },
+      "sum": {
+        "status": "ok",
+        "output_dtype": "torch.int64"
+      },
+      "where": {
+        "status": "ok",
+        "output_dtype": "torch.int32"
+      },
+      "mm": {
+        "status": "unsupported",
+        "error": "\"addmm_cuda\" not implemented for 'Int'"
+      }
+    },
+    "int64": {
+      "bytes_per_element": 8,
+      "add": {
+        "status": "ok",
+        "output_dtype": "torch.int64"
+      },
+      "mul": {
+        "status": "ok",
+        "output_dtype": "torch.int64"
+      },
+      "sum": {
+        "status": "ok",
+        "output_dtype": "torch.int64"
+      },
+      "where": {
+        "status": "ok",
+        "output_dtype": "torch.int64"
+      },
+      "mm": {
+        "status": "unsupported",
+        "error": "\"addmm_cuda\" not implemented for 'Long'"
+      }
+    }
+  },
+  "device": "NVIDIA GeForce GTX 1650",
+  "compute_capability": [
+    7,
+    5
+  ],
+  "total_memory_bytes": 4294639616,
+  "matrix_shape": [
+    256,
+    256
+  ]
+}

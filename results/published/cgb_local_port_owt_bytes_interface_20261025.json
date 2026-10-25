@@ -1,0 +1,90 @@
+{
+  "status": "local_port_interface_audit",
+  "training_performed": false,
+  "learner": "local-port",
+  "metadata": {
+    "reference_protocol_only": true,
+    "capability_claim": false,
+    "model_architecture_selected": false,
+    "rule_id": "owt-byte-joint-local-port-interface-v2:0b08c574ece6f52c3a1ee75772bb10d85e160fdf43a4075f30ec6a095ce723e2",
+    "transition": "joint",
+    "joint_law_identified": false,
+    "persistent_context": "sampled_hidden_mask",
+    "initial_context": "registered boot-derived parameter; not a world posterior",
+    "seed": 20261025,
+    "learning_enabled": false,
+    "warm_boot_symbols": 1,
+    "source_cursor": {
+      "format": "offset4-byte-v1",
+      "source_sha256": "60d41d3fdda8c1718ad1735693eda0dae2b23a0032c5e04a29aac9d0c6d35d8c",
+      "byte_offset": 33,
+      "raw_offset": 33
+    },
+    "source_cursor_restore_equal": true,
+    "restore_state_dict_continuation_equal": true,
+    "json_restore_equal": true,
+    "generated_token_ids": [
+      110,
+      110
+    ],
+    "head_nibbles": 8,
+    "packed_bytes": 4,
+    "next_target_offset": 33,
+    "external_tick": 32
+  },
+  "checkpoint_sha256": null,
+  "config": null,
+  "checkpoint": null,
+  "model_parameters": 8,
+  "source_revision": "433fe0f44ed7894fea29c08b3202aa348ccc6369",
+  "source_sha256": {
+    "manifest": "3614c380d4c72688ac8ccde42f32ea0655d16bec1ba0874a924fd777af904d2d",
+    "files": {
+      "tokenizer.json": "e727da4afe06d37d6ffff7db05ab21f69c5be39253ee7b7f7ec759cadab69c1d",
+      "train.npy": "2f227239bc63b89daf31956701d243a93f9dd46671702fff03763b33dc6db4fb",
+      "validation.npy": "60d41d3fdda8c1718ad1735693eda0dae2b23a0032c5e04a29aac9d0c6d35d8c"
+    },
+    "verified_document_counts": {
+      "train": 9786,
+      "validation": 114
+    },
+    "native_byte_counts": {
+      "train": 48125691,
+      "validation": 467911
+    }
+  },
+  "implementation_sha256": {
+    "cgb_language_kernel": "67c6521fdfd81f772b8dee01adcdb6349825f3403cb036cc179d1437a1f79cd3",
+    "cgb_prequential_bridge": "deffa9fbedf8b39796bc1f46f09bb5418f2fb029160f29c25f36661763856677",
+    "cgb_observation_stream": "fe2c8b0587414b732bd4cee4a6784415df5ee77f6f996040d67dfd50a36c2299"
+  },
+  "validation_tokens": "D:\\information-boltzmann-v1\\data\\ib_owt_10000\\validation.npy",
+  "alphabet": "byte",
+  "train_reference_tokens": "D:\\information-boltzmann-v1\\data\\ib_owt_10000\\train.npy",
+  "unit": "UTF8_bytes",
+  "boundary_policy": "EOS/BOS retained as source metadata; byte ticks, no state reset",
+  "start": 0,
+  "start_tick": 0,
+  "events": 32,
+  "boot_token": 77,
+  "learner_updates": 0,
+  "mean_prequential_nll_nats": 6.631843220158785,
+  "ledger": {
+    "reference_name": "train_unigram",
+    "rows": 32,
+    "useful_bits": 0.0,
+    "predictive_loss_bits": 173.98314335042534,
+    "net_predictive_gain_bits": -173.98314335042534,
+    "useful_rows": 0,
+    "loss_rows": 32,
+    "write_units": 32,
+    "dissipation_units": 32,
+    "dissipation_units_per_useful_bit": null,
+    "write_units_per_useful_bit": null,
+    "calibrated_energy": null,
+    "energy_per_useful_bit": null,
+    "energy_coverage_rows": 0,
+    "measure_kind": "predictive_gain_relative_to_declared_reference"
+  },
+  "scope": "source/score/restore wiring only; no language capability or world-action acceptance"
+}

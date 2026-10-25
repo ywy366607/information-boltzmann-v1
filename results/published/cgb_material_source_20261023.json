@@ -1,0 +1,535 @@
+{
+  "status": "full_build_and_trust_audit_passed",
+  "timestamp": "2026-10-23T21:41:08+08:00",
+  "baseline_commit": "25b21ec0cf7fe3982b35067fbf2dc6061698f243",
+  "scope": "Fixed-identity material-transport interpretation, conditional source budgets, and a finite supply/exchange/exhaustion control. Not a full life, physical thermodynamics or biological capability witness.",
+  "core_results": [
+    "Derive gross input/output from fixed-token relocation rather than free positive counts.",
+    "Simultaneous body, source and system/exterior balance; cumulative intake bounded by stock plus explicit supply and recycling.",
+    "Same-clock realization of an explicit source world using the old six-axiom body; zero future intake after source exhaustion in normal and cut branches."
+  ],
+  "interpretation_conditions": {
+    "carrier": "A fixed finite set of material identities with unit-count ownership at one location per state.",
+    "places": [
+      "body",
+      "accessible_source",
+      "return_sink",
+      "outside"
+    ],
+    "allowed_ports": [
+      "source_to_body",
+      "body_to_sink",
+      "outside_to_source",
+      "source_to_outside",
+      "sink_to_source",
+      "sink_to_outside",
+      "unchanged"
+    ],
+    "status": "Explicit carrier interpretation / model-interface conditions, not new general physical axioms or empirically validated constitutive laws."
+  },
+  "source_budget": "final_stock + cumulative_intake + cumulative_source_export = initial_stock + cumulative_exterior_supply + cumulative_recycling",
+  "no_refill_consequence": "Without external refill or recycling, cumulative material intake is bounded by initial accessible stock. No mortality/free-energy claim follows from finite matter alone.",
+  "control": {
+    "body": "CGB.TurnoverControls.body",
+    "six_axiom_certificate": "CGB.TurnoverControls.body_axioms",
+    "world": "CGB.MaterialSourceControls.world",
+    "physical_process": "CGB.MaterialSourceControls.physical",
+    "token_identities": 2,
+    "resource_world_states": 3,
+    "world_clock": 1,
+    "phases": [
+      "Exterior token enters source with no intake.",
+      "Source token enters body while previous body token enters sink.",
+      "Accessible source exhausted; idle thereafter."
+    ],
+    "body_count_all_phases": 1,
+    "supply_transfer": 1,
+    "replacement_incoming": 1,
+    "replacement_outgoing": 1,
+    "exhausted_source_stock": 0,
+    "future_intake_probability_after_exhaustion": 0,
+    "realization_branches": [
+      "normal",
+      "marginal_ghost_cut"
+    ],
+    "protocol_scope": "Registered natural sensing protocol. Changed sensing/resource/recycling protocols require their own realization checks.",
+    "arbitrary_old_worlds_claimed_realizable": false,
+    "causal_self_maintenance_witness": false
+  },
+  "process_contract": "Existing Interaction.TimedRefinement preserves joint event/next-state laws for every admitted source state and input, with the same world clock. Body count and supported transfer counts must match the declared medium ledger.",
+  "future_probability_dependency_chain": [
+    "CGB.MaterialSourceControls.no_future_intake_after_exhaustion",
+    "CGB.Interaction.Refines.firstHit_eq",
+    "CGB.Interaction.Bisimulation.firstHit_eq"
+  ],
+  "binding_checks": {
+    "passed": true,
+    "count": 2,
+    "checks": [
+      "Physical initial projection equals original body init and source-world start.",
+      "Outgoing transported count matches the original ledger, as well as the incoming count used by the definition."
+    ],
+    "path": "lean/CGBAxioms/.lake/material_source_binding_checks_20261023.lean",
+    "sha256": "8f95db61e30aa3d7aaae0538d56bc9b58c617990794984c8ca09a62aab7ea6c8"
+  },
+  "compatibility": {
+    "previous_declaration_signatures_preserved": 1331,
+    "previous_source_files_changed": [
+      "CGBAxioms/AuditAll.lean",
+      "CGBAxioms.lean"
+    ],
+    "previous_nonentry_lean_source_hashes_preserved": true,
+    "general_physical_axioms_changed": false,
+    "legacy_dynamics_or_target_definitions_changed": false,
+    "scoring_framework_duplicated": false,
+    "original_user_definition_preserved_verbatim": true
+  },
+  "inventory": {
+    "declarations": 1404,
+    "modules": [
+      "CGBAxioms.Language",
+      "CGBAxioms.Symmetry",
+      "CGBAxioms.Medium",
+      "CGBAxioms.Life",
+      "CGBAxioms.Models",
+      "CGBAxioms.Inference",
+      "CGBAxioms.Foundation",
+      "CGBAxioms.RuleEncoding",
+      "CGBAxioms.WorldRecovery",
+      "CGBAxioms.OperationalLife",
+      "CGBAxioms.RecoveryControls",
+      "CGBAxioms.Interaction",
+      "CGBAxioms.InteractionBridge",
+      "CGBAxioms.InteractionControls",
+      "CGBAxioms.ConstraintAudit",
+      "CGBAxioms.ConstraintFreedom",
+      "CGBAxioms.SubconditionGraph",
+      "CGBAxioms.AtomicIndependence",
+      "CGBAxioms.NoetherBridge",
+      "CGBAxioms.LifeControls",
+      "CGBAxioms.EventChannels",
+      "CGBAxioms.MaterialExchange",
+      "CGBAxioms.TurnoverControls",
+      "CGBAxioms.MaterialSource",
+      "CGBAxioms.MaterialSourceControls"
+    ],
+    "theorems": 860
+  },
+  "source_declared_theorems": 333,
+  "new_source_theorems": [
+    "CGB.MaterialSource.balance",
+    "CGB.MaterialSource.intake_bound_without_refill",
+    "CGB.MaterialSource.moved_le_stock",
+    "CGB.MaterialSource.no_intake_from_empty_source",
+    "CGB.MaterialSource.no_transport_without_relocation",
+    "CGB.MaterialSource.source_budget",
+    "CGB.MaterialSourceControls.no_future_intake_after_exhaustion",
+    "CGB.MaterialSourceControls.realized",
+    "CGB.MaterialSourceControls.supply_exchange_exhaustion"
+  ],
+  "new_source_theorem_count": 9,
+  "proof_trust_passed": true,
+  "module_coverage_passed": true,
+  "audit_guard_checks": 10,
+  "remaining_obligations": [
+    "Empirical/implementation grounding of material identities and accessible-source/return-sink ports.",
+    "Energy, work/heat and free-energy/entropy accounting.",
+    "Resource-consequential feedback and matched intervention certificates.",
+    "Full encoded-budget life/self-maintenance/cognition witness."
+  ],
+  "certificates": [
+    {
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "kind": "theorem",
+      "module": "CGBAxioms.MaterialSource",
+      "name": "CGB.MaterialSource.balance",
+      "project_dependencies": [
+        "CGB.MaterialSource.Allowed",
+        "CGB.MaterialSource.Place",
+        "CGB.MaterialSource.count",
+        "CGB.MaterialSource.instDecidableEqPlace",
+        "CGB.MaterialSource.moved",
+        "CGB.MaterialSource.Place.body",
+        "CGB.MaterialSource.Place.casesOn",
+        "CGB.MaterialSource.Place.ctorIdx",
+        "CGB.MaterialSource.Place.outside",
+        "CGB.MaterialSource.Place.sink",
+        "CGB.MaterialSource.Place.source",
+        "CGB.MaterialSource.balance._simp_1_3"
+      ],
+      "signature": "∀ {C : Type u_1} [inst : Fintype C] (before after : C → CGB.MaterialSource.Place),\n  CGB.MaterialSource.Allowed before after →\n    CGB.MaterialSource.count after CGB.MaterialSource.Place.body +\n          CGB.MaterialSource.moved before after CGB.MaterialSource.Place.body CGB.MaterialSource.Place.sink =\n        CGB.MaterialSource.count before CGB.MaterialSource.Place.body +\n          CGB.MaterialSource.moved before after CGB.MaterialSource.Place.source CGB.MaterialSource.Place.body ∧\n      CGB.MaterialSource.count after CGB.MaterialSource.Place.source +\n              CGB.MaterialSource.moved before after CGB.MaterialSource.Place.source CGB.MaterialSource.Place.body +\n            CGB.MaterialSource.moved before after CGB.MaterialSource.Place.source CGB.MaterialSource.Place.outside =\n          CGB.MaterialSource.count before CGB.MaterialSource.Place.source +\n              CGB.MaterialSource.moved before after CGB.MaterialSource.Place.outside CGB.MaterialSource.Place.source +\n            CGB.MaterialSource.moved before after CGB.MaterialSource.Place.sink CGB.MaterialSource.Place.source ∧\n        CGB.MaterialSource.count after CGB.MaterialSource.Place.body +\n                  CGB.MaterialSource.count after CGB.MaterialSource.Place.source +\n                CGB.MaterialSource.count after CGB.MaterialSource.Place.sink +\n              CGB.MaterialSource.moved before after CGB.MaterialSource.Place.source CGB.MaterialSource.Place.outside +\n            CGB.MaterialSource.moved before after CGB.MaterialSource.Place.sink CGB.MaterialSource.Place.outside =\n          CGB.MaterialSource.count before CGB.MaterialSource.Place.body +\n                CGB.MaterialSource.count before CGB.MaterialSource.Place.source +\n              CGB.MaterialSource.count before CGB.MaterialSource.Place.sink +\n            CGB.MaterialSource.moved before after CGB.MaterialSource.Place.outside CGB.MaterialSource.Place.source",
+      "type_dependencies": [
+        "CGB.MaterialSource.Place",
+        "CGB.MaterialSource.Allowed",
+        "CGB.MaterialSource.count",
+        "CGB.MaterialSource.Place.body",
+        "CGB.MaterialSource.moved",
+        "CGB.MaterialSource.Place.sink",
+        "CGB.MaterialSource.Place.source",
+        "CGB.MaterialSource.Place.outside"
+      ],
+      "source_declared": true
+    },
+    {
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "kind": "theorem",
+      "module": "CGBAxioms.MaterialSource",
+      "name": "CGB.MaterialSource.intake_bound_without_refill",
+      "project_dependencies": [
+        "CGB.MaterialSource.Allowed",
+        "CGB.MaterialSource.Place",
+        "CGB.MaterialSource.count",
+        "CGB.MaterialSource.moved",
+        "CGB.MaterialSource.source_budget",
+        "CGB.MaterialSource.Place.body",
+        "CGB.MaterialSource.Place.outside",
+        "CGB.MaterialSource.Place.sink",
+        "CGB.MaterialSource.Place.source",
+        "CGB.MaterialSource.intake_bound_without_refill._proof_1_1"
+      ],
+      "signature": "∀ {C : Type u_1} [inst : Fintype C] (path : ℕ → C → CGB.MaterialSource.Place),\n  (∀ (t : ℕ), CGB.MaterialSource.Allowed (path t) (path (t + 1))) →\n    (∀ (t : ℕ),\n        CGB.MaterialSource.moved (path t) (path (t + 1)) CGB.MaterialSource.Place.outside\n              CGB.MaterialSource.Place.source +\n            CGB.MaterialSource.moved (path t) (path (t + 1)) CGB.MaterialSource.Place.sink\n              CGB.MaterialSource.Place.source =\n          0) →\n      ∀ (n : ℕ),\n        ∑ t ∈ Finset.range n,\n            CGB.MaterialSource.moved (path t) (path (t + 1)) CGB.MaterialSource.Place.source\n              CGB.MaterialSource.Place.body ≤\n          CGB.MaterialSource.count (path 0) CGB.MaterialSource.Place.source",
+      "type_dependencies": [
+        "CGB.MaterialSource.Place",
+        "CGB.MaterialSource.Allowed",
+        "CGB.MaterialSource.moved",
+        "CGB.MaterialSource.Place.outside",
+        "CGB.MaterialSource.Place.source",
+        "CGB.MaterialSource.Place.sink",
+        "CGB.MaterialSource.Place.body",
+        "CGB.MaterialSource.count"
+      ],
+      "source_declared": true
+    },
+    {
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "kind": "theorem",
+      "module": "CGBAxioms.MaterialSource",
+      "name": "CGB.MaterialSource.moved_le_stock",
+      "project_dependencies": [
+        "CGB.MaterialSource.Place",
+        "CGB.MaterialSource.count",
+        "CGB.MaterialSource.instDecidableEqPlace",
+        "CGB.MaterialSource.moved"
+      ],
+      "signature": "∀ {C : Type u_1} [inst : Fintype C] (before after : C → CGB.MaterialSource.Place) (p q : CGB.MaterialSource.Place),\n  CGB.MaterialSource.moved before after p q ≤ CGB.MaterialSource.count before p",
+      "type_dependencies": [
+        "CGB.MaterialSource.Place",
+        "CGB.MaterialSource.moved",
+        "CGB.MaterialSource.count"
+      ],
+      "source_declared": true
+    },
+    {
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "kind": "theorem",
+      "module": "CGBAxioms.MaterialSource",
+      "name": "CGB.MaterialSource.no_intake_from_empty_source",
+      "project_dependencies": [
+        "CGB.MaterialSource.Place",
+        "CGB.MaterialSource.count",
+        "CGB.MaterialSource.moved",
+        "CGB.MaterialSource.moved_le_stock",
+        "CGB.MaterialSource.Place.body",
+        "CGB.MaterialSource.Place.source",
+        "CGB.MaterialSource.no_intake_from_empty_source._proof_1_1"
+      ],
+      "signature": "∀ {C : Type u_1} [inst : Fintype C] (before after : C → CGB.MaterialSource.Place),\n  CGB.MaterialSource.count before CGB.MaterialSource.Place.source = 0 →\n    CGB.MaterialSource.moved before after CGB.MaterialSource.Place.source CGB.MaterialSource.Place.body = 0",
+      "type_dependencies": [
+        "CGB.MaterialSource.Place",
+        "CGB.MaterialSource.count",
+        "CGB.MaterialSource.Place.source",
+        "CGB.MaterialSource.moved",
+        "CGB.MaterialSource.Place.body"
+      ],
+      "source_declared": true
+    },
+    {
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "kind": "theorem",
+      "module": "CGBAxioms.MaterialSource",
+      "name": "CGB.MaterialSource.no_transport_without_relocation",
+      "project_dependencies": [
+        "CGB.MaterialSource.Place",
+        "CGB.MaterialSource.instDecidableEqPlace",
+        "CGB.MaterialSource.moved",
+        "CGB.MaterialSource.Place.body",
+        "CGB.MaterialSource.Place.casesOn",
+        "CGB.MaterialSource.Place.ctorIdx",
+        "CGB.MaterialSource.Place.outside",
+        "CGB.MaterialSource.Place.sink",
+        "CGB.MaterialSource.Place.source"
+      ],
+      "signature": "∀ {C : Type u_1} [inst : Fintype C] (owner : C → CGB.MaterialSource.Place),\n  CGB.MaterialSource.moved owner owner CGB.MaterialSource.Place.source CGB.MaterialSource.Place.body = 0 ∧\n    CGB.MaterialSource.moved owner owner CGB.MaterialSource.Place.body CGB.MaterialSource.Place.sink = 0",
+      "type_dependencies": [
+        "CGB.MaterialSource.Place",
+        "CGB.MaterialSource.moved",
+        "CGB.MaterialSource.Place.source",
+        "CGB.MaterialSource.Place.body",
+        "CGB.MaterialSource.Place.sink"
+      ],
+      "source_declared": true
+    },
+    {
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "kind": "theorem",
+      "module": "CGBAxioms.MaterialSource",
+      "name": "CGB.MaterialSource.source_budget",
+      "project_dependencies": [
+        "CGB.MaterialSource.Allowed",
+        "CGB.MaterialSource.Place",
+        "CGB.MaterialSource.balance",
+        "CGB.MaterialSource.count",
+        "CGB.MaterialSource.moved",
+        "CGB.MaterialSource.Place.body",
+        "CGB.MaterialSource.Place.outside",
+        "CGB.MaterialSource.Place.sink",
+        "CGB.MaterialSource.Place.source",
+        "CGB.MaterialSource.source_budget._proof_1_1"
+      ],
+      "signature": "∀ {C : Type u_1} [inst : Fintype C] (path : ℕ → C → CGB.MaterialSource.Place),\n  (∀ (t : ℕ), CGB.MaterialSource.Allowed (path t) (path (t + 1))) →\n    ∀ (n : ℕ),\n      CGB.MaterialSource.count (path n) CGB.MaterialSource.Place.source +\n          ∑ t ∈ Finset.range n,\n            (CGB.MaterialSource.moved (path t) (path (t + 1)) CGB.MaterialSource.Place.source\n                CGB.MaterialSource.Place.body +\n              CGB.MaterialSource.moved (path t) (path (t + 1)) CGB.MaterialSource.Place.source\n                CGB.MaterialSource.Place.outside) =\n        CGB.MaterialSource.count (path 0) CGB.MaterialSource.Place.source +\n          ∑ t ∈ Finset.range n,\n            (CGB.MaterialSource.moved (path t) (path (t + 1)) CGB.MaterialSource.Place.outside\n                CGB.MaterialSource.Place.source +\n              CGB.MaterialSource.moved (path t) (path (t + 1)) CGB.MaterialSource.Place.sink\n                CGB.MaterialSource.Place.source)",
+      "type_dependencies": [
+        "CGB.MaterialSource.Place",
+        "CGB.MaterialSource.Allowed",
+        "CGB.MaterialSource.count",
+        "CGB.MaterialSource.Place.source",
+        "CGB.MaterialSource.moved",
+        "CGB.MaterialSource.Place.body",
+        "CGB.MaterialSource.Place.outside",
+        "CGB.MaterialSource.Place.sink"
+      ],
+      "source_declared": true
+    },
+    {
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "kind": "theorem",
+      "module": "CGBAxioms.MaterialSourceControls",
+      "name": "CGB.MaterialSourceControls.no_future_intake_after_exhaustion",
+      "project_dependencies": [
+        "CGB.Interaction.Machine",
+        "CGB.MaterialSourceControls.Phase",
+        "CGB.MaterialSourceControls.coarse",
+        "CGB.MaterialSourceControls.declared",
+        "CGB.MaterialSourceControls.event",
+        "CGB.MaterialSourceControls.next",
+        "CGB.MaterialSourceControls.owner",
+        "CGB.MaterialSourceControls.physical",
+        "CGB.MaterialSourceControls.project",
+        "CGB.MaterialSourceControls.realized",
+        "CGB.MaterialSourceControls.world",
+        "CGB.Medium.total",
+        "CGB.TurnoverControls.body",
+        "CGB.World.W",
+        "CGB.World.clock",
+        "CGB.World.dec",
+        "CGB.World.fin",
+        "CGB.Interaction.Machine.firstHit",
+        "CGB.Interaction.Machine.mk",
+        "CGB.Interaction.Machine.step",
+        "CGB.Interaction.Refines.firstHit_eq",
+        "CGB.Interaction.TimedRefinement.representation",
+        "CGB.MaterialSource.Realization.process",
+        "CGB.MaterialSourceControls.next._proof_1",
+        "CGB.Interaction.Machine.deterministic._proof_1",
+        "CGB.Interaction.Machine.deterministic._proof_2",
+        "CGB.Interaction.Machine.mk.congr_simp"
+      ],
+      "signature": "∀ (cut : Bool) (history : List (Option Unit)) (k : ℕ),\n  (CGB.MaterialSourceControls.coarse cut).firstHit List.length Option.isSome history k\n      (CGB.MaterialSourceControls.project 2) =\n    0",
+      "type_dependencies": [
+        "CGB.Interaction.Machine.firstHit",
+        "CGB.World.W",
+        "CGB.MaterialSourceControls.world",
+        "CGB.World.fin",
+        "CGB.MaterialSourceControls.coarse",
+        "CGB.MaterialSourceControls.project",
+        "CGB.MaterialSourceControls.Phase"
+      ],
+      "source_declared": true
+    },
+    {
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "kind": "theorem",
+      "module": "CGBAxioms.MaterialSourceControls",
+      "name": "CGB.MaterialSourceControls.realized",
+      "project_dependencies": [
+        "CGB.Medium",
+        "CGB.World",
+        "CGB.Interaction.Machine",
+        "CGB.MaterialSource.Allowed",
+        "CGB.MaterialSource.Place",
+        "CGB.MaterialSource.Realization",
+        "CGB.MaterialSource.count",
+        "CGB.MaterialSource.instDecidableEqPlace",
+        "CGB.MaterialSource.moved",
+        "CGB.MaterialSourceControls.Phase",
+        "CGB.MaterialSourceControls.coarse",
+        "CGB.MaterialSourceControls.declared",
+        "CGB.MaterialSourceControls.event",
+        "CGB.MaterialSourceControls.next",
+        "CGB.MaterialSourceControls.owner",
+        "CGB.MaterialSourceControls.physical",
+        "CGB.MaterialSourceControls.project",
+        "CGB.MaterialSourceControls.world",
+        "CGB.Medium.act",
+        "CGB.Medium.content",
+        "CGB.Medium.cutMove",
+        "CGB.Medium.eventStep",
+        "CGB.Medium.eventWorldStep",
+        "CGB.Medium.lawCut",
+        "CGB.Medium.lawCut_sum",
+        "CGB.Medium.mk",
+        "CGB.Medium.rate",
+        "CGB.Medium.total",
+        "CGB.TurnoverControls.body",
+        "CGB.World.W",
+        "CGB.World.clock",
+        "CGB.World.dec",
+        "CGB.World.fin",
+        "CGB.World.mk",
+        "CGB.World.moves",
+        "CGB.World.sense",
+        "CGB.ConstraintFreedom.openSite._proof_1",
+        "CGB.Interaction.Machine.mk",
+        "CGB.Interaction.Machine.step",
+        "CGB.Interaction.TimedRefinement.mk",
+        "CGB.MaterialSource.Place.body",
+        "CGB.MaterialSource.Place.ctorIdx",
+        "CGB.MaterialSource.Place.outside",
+        "CGB.MaterialSource.Place.sink",
+        "CGB.MaterialSource.Place.source",
+        "CGB.MaterialSource.Realization.mk",
+        "CGB.MaterialSourceControls.next._proof_1",
+        "CGB.MaterialSourceControls.realized._simp_1_7",
+        "CGB.MaterialSourceControls.world._proof_1",
+        "CGB.MaterialSourceControls.world._proof_2",
+        "CGB.MaterialSourceControls.world._proof_3",
+        "CGB.MaterialSourceControls.world._proof_4",
+        "CGB.MaterialSourceControls.world._proof_5",
+        "CGB.Medium.mk.congr_simp",
+        "CGB.TurnoverControls.body._proof_1",
+        "CGB.World.mk.congr_simp",
+        "CGB.Interaction.Machine.deterministic._proof_1",
+        "CGB.Interaction.Machine.deterministic._proof_2",
+        "CGB.Interaction.Machine.mk.congr_simp"
+      ],
+      "signature": "∀ (cut : Bool),\n  CGB.MaterialSource.Realization CGB.MaterialSourceControls.physical (CGB.MaterialSourceControls.coarse cut)\n    CGB.MaterialSourceControls.owner CGB.MaterialSourceControls.project (fun z => CGB.TurnoverControls.body.total z.1)\n    CGB.MaterialSourceControls.declared CGB.MaterialSourceControls.declared CGB.MaterialSourceControls.world.clock",
+      "type_dependencies": [
+        "CGB.MaterialSource.Realization",
+        "CGB.MaterialSourceControls.Phase",
+        "CGB.World.W",
+        "CGB.MaterialSourceControls.world",
+        "CGB.World.fin",
+        "CGB.World.dec",
+        "CGB.MaterialSourceControls.physical",
+        "CGB.MaterialSourceControls.coarse",
+        "CGB.MaterialSourceControls.owner",
+        "CGB.MaterialSourceControls.project",
+        "CGB.Medium.total",
+        "CGB.TurnoverControls.body",
+        "CGB.MaterialSourceControls.declared",
+        "CGB.World.clock"
+      ],
+      "source_declared": true
+    },
+    {
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "kind": "theorem",
+      "module": "CGBAxioms.MaterialSourceControls",
+      "name": "CGB.MaterialSourceControls.supply_exchange_exhaustion",
+      "project_dependencies": [
+        "CGB.MaterialSource.Place",
+        "CGB.MaterialSource.count",
+        "CGB.MaterialSource.instDecidableEqPlace",
+        "CGB.MaterialSource.moved",
+        "CGB.MaterialSourceControls.Phase",
+        "CGB.MaterialSourceControls.owner",
+        "CGB.MaterialSource.Place.body",
+        "CGB.MaterialSource.Place.ctorIdx",
+        "CGB.MaterialSource.Place.outside",
+        "CGB.MaterialSource.Place.sink",
+        "CGB.MaterialSource.Place.source",
+        "CGB.MaterialSourceControls.next._proof_1"
+      ],
+      "signature": "CGB.MaterialSource.moved (CGB.MaterialSourceControls.owner 0) (CGB.MaterialSourceControls.owner 1)\n      CGB.MaterialSource.Place.outside CGB.MaterialSource.Place.source =\n    1 ∧\n  CGB.MaterialSource.moved (CGB.MaterialSourceControls.owner 0) (CGB.MaterialSourceControls.owner 1)\n        CGB.MaterialSource.Place.source CGB.MaterialSource.Place.body =\n      0 ∧\n    CGB.MaterialSource.moved (CGB.MaterialSourceControls.owner 1) (CGB.MaterialSourceControls.owner 2)\n          CGB.MaterialSource.Place.source CGB.MaterialSource.Place.body =\n        1 ∧\n      CGB.MaterialSource.moved (CGB.MaterialSourceControls.owner 1) (CGB.MaterialSourceControls.owner 2)\n            CGB.MaterialSource.Place.body CGB.MaterialSource.Place.sink =\n          1 ∧\n        CGB.MaterialSource.count (CGB.MaterialSourceControls.owner 2) CGB.MaterialSource.Place.source = 0 ∧\n          ∀ (p : CGB.MaterialSourceControls.Phase),\n            CGB.MaterialSource.count (CGB.MaterialSourceControls.owner p) CGB.MaterialSource.Place.body = 1",
+      "type_dependencies": [
+        "CGB.MaterialSource.moved",
+        "CGB.MaterialSourceControls.owner",
+        "CGB.MaterialSourceControls.Phase",
+        "CGB.MaterialSource.Place.outside",
+        "CGB.MaterialSource.Place.source",
+        "CGB.MaterialSource.Place.body",
+        "CGB.MaterialSource.Place.sink",
+        "CGB.MaterialSource.count"
+      ],
+      "source_declared": true
+    }
+  ],
+  "source_hashes": {
+    "CGBAxioms/AtomicIndependence.lean": "58f36e25a38713402bd89b3c2d7686c83a69dde990a19c62d1c135b174a8cc0e",
+    "CGBAxioms/Audit.lean": "1745f9772250e6bfe7812323cc5c8733840d60b9d62ad8549d81c049249f3b44",
+    "CGBAxioms/AuditAll.lean": "d532ecee45e1f187578645197e2e589b4746aca03625ef923d8b1b01896f73a6",
+    "CGBAxioms/ConstraintAudit.lean": "cfbda2ff344353b46b209b43cfd69dc836a2ab9a4cbe62ddbe172de9e04544ab",
+    "CGBAxioms/ConstraintFreedom.lean": "37bf271ea1b419f9df48cf81ea20ccc3b7704d39fab9961ad23c45967ea8c0fe",
+    "CGBAxioms/EventChannels.lean": "0dd33bcc957ff3e3155df4cefaee463ae3627d621434fbcc73474e35ffc73232",
+    "CGBAxioms/Foundation.lean": "0fe5127c183a9ea32632ebfc3bf152c441ffadd90b115e87a7610b562add8134",
+    "CGBAxioms/Inference.lean": "1b0314e6508a0190c33aaf6d24dd82102ef8d7722cadd7c1897232eb95504c60",
+    "CGBAxioms/Interaction.lean": "9e6daed623e1f03a15c6661408c191fb5d9696af28938ab3cc8f5bed516c8023",
+    "CGBAxioms/InteractionBridge.lean": "43059e1a6192caf81267331edbdd59a0b2480fd4776a589e5138b36286fdf467",
+    "CGBAxioms/InteractionControls.lean": "8bbb3766b4494b1b9f2323b17757d5e9f1fc2a87f0b006fefc019ef9b068490d",
+    "CGBAxioms/Language.lean": "b52db422bcac3996cb279d41813aa4a0998ebb6fe54ba2bb87b096972539f0fe",
+    "CGBAxioms/Life.lean": "f21caf6feba9f6a4a2b5a3bdeb6bea7a05d6503b97c347af52c56e68050b3f65",
+    "CGBAxioms/LifeControls.lean": "5f025d923089697978a8b6a5bbf64fe16db62485d56ebd584f538611f9c38e1c",
+    "CGBAxioms/MaterialExchange.lean": "8f888370007db06d7de370155672bdea53ec0929dd7940ace30e7933677eed08",
+    "CGBAxioms/MaterialSource.lean": "50194b475dd439a9497ebbff6f1cc7f2fbc64ea7c0c2d20431a02c412ebab7b8",
+    "CGBAxioms/MaterialSourceControls.lean": "518a2f25e56b7d578fd61c87c02905ffac8f628a419286ebcef051a674fe9354",
+    "CGBAxioms/Medium.lean": "e4f507706eec6f69ce57c95b47a1062e6b644bab12990347cd8d84f286c86fc4",
+    "CGBAxioms/Models.lean": "d7648d7e36912bdd6119f4e27027301b791c530ad7217e873d35c504e1a2f5b0",
+    "CGBAxioms/NoetherBridge.lean": "810a4afc5d944216ca86cd3153ae8d26ff9dc531756220f531f2dc46e35861e3",
+    "CGBAxioms/OperationalLife.lean": "216bcc5a22b70ecffd449a9ab55fdb916b51f3138ffda971e3966b882daa9155",
+    "CGBAxioms/RecoveryControls.lean": "19ab24fd7e9f292707a916eb9cdb5a372b62121c6faae042882aca892b0d35a2",
+    "CGBAxioms/RuleEncoding.lean": "27aaa80e273a621bfa37a0c47e85afeb7aed818f3b96cf56359a0fccc0990100",
+    "CGBAxioms/SubconditionGraph.lean": "3ab2e1c74a3a7895a2ff82bb17a3b430084de904b457e68bc627dcb099c78c51",
+    "CGBAxioms/Symmetry.lean": "f595478d072a4fa5680be6e6a928afb86922e3fcdd3ef0512bfefdb9ab2090bc",
+    "CGBAxioms/TurnoverControls.lean": "7af924e715056309d2c97984dce20fbc3b1a5c07501c0458829e04ca0bbdde7f",
+    "CGBAxioms/WorldRecovery.lean": "168592642319cd10c65ee9edac1e11389534243346b03636408cc421bf00af5c",
+    "CGBAxioms.lean": "65790e289372d566cbf6f12fd8831db9e86f26a58c1c6dc5007a7a1fb4c06c4c"
+  },
+  "full_local_audit": "lean/CGBAxioms/.lake/material_source_20261023.json",
+  "prechange_backup": "results/cgb_material_source_before_20261023_212059",
+  "report": "docs/information_boltzmann/CGB_MATERIAL_SOURCE_20261023.md"
+}

@@ -1,0 +1,156 @@
+{
+  "date": "2026-10-25",
+  "scope": "local two-tick obstruction and conditional information-thermodynamic contract",
+  "verified": true,
+  "two_tick_full_tolerance_claimed": false,
+  "two_tick_full_tolerance_refuted": true,
+  "local_obstruction": {
+    "world_branch": ["feedA", "feedB", "missB"],
+    "first_world_step_probability": 0.5,
+    "second_world_step_probability": 1.0,
+    "reserve_after_two_loss_ticks": 0,
+    "next_sensed_cell": "vacuum",
+    "natural_interruption_start": 2,
+    "evaluation_time": 5,
+    "positive_empty_mass": true,
+    "survival_strictly_less_than_one": true,
+    "interpretation": "The local branch is connected to the natural state law, formally refuting full two-tick tolerance."
+  },
+  "information_thermodynamics": {
+    "contract": "RecorderContract",
+    "separates_useful_bits_from_erased_bits": true,
+    "landauer_floor_is_model_contract": true,
+    "positive_erasure_positive_dissipation_theorem": true,
+    "universal_per_recorded_bit_theorem": false,
+    "pareto_efficiency_definition": true
+  },
+  "information_measurement": {
+    "artifact": "results/published/cgb_repair_information_cost_20261025.json",
+    "script": "scripts/measure_repair_information_cost.py",
+    "protected_probe_useful_bits": 0.0,
+    "protected_probe_dissipation_units": 2,
+    "protected_probe_energy_per_useful_bit": null,
+    "guarded_witness_useful_bits": 0.0,
+    "guarded_witness_third_tick_input_units": 3,
+    "answer_branch_useful_bits_under_balanced_prior": 1.0,
+    "answer_branch_outgoing_dissipation_units": 2,
+    "answer_branch_record_write_units": 1,
+    "answer_branch_discrete_units_per_useful_bit": 2.0,
+    "answer_branch_is_current_initial_law": false,
+    "physical_energy_calibrated": false,
+    "interpretation": "Both finite examples have zero predictive mutual information under the stated priors; no finite energy-per-useful-bit ratio is reported."
+  },
+  "repair_audit": {
+    "spent_miss_incoming": 0,
+    "spent_miss_outgoing": 1,
+    "spent_miss_current_cost": 1,
+    "zero_cost_successor": "empty",
+    "state_only_nonempty_repair_allowed_under_existing_ports": false,
+    "required_next_repair_class": "internal_supply_or_protection_port_or_explicit_dissipation_contract_change"
+  },
+  "repair_candidates": {
+    "protocol": {
+      "first_lost_tick": "none",
+      "second_tick": "probe",
+      "recharge_after_one_loss": true,
+      "local_dangerous_branch_excluded": true,
+      "two_tick_discrete_outgoing_cost": 2,
+      "second_tick_probe_input_cost_at_reserve_two": 2,
+      "useful_bit_denominator_calibrated": false,
+      "full_first_hit_proved": false,
+      "full_first_hit_refuted": true,
+      "refutation_artifact": "lean/CGBAxioms/CGBAxioms/SensoryMaintenanceProtocolRepairRefutation.lean"
+    },
+    "reachable_region": {
+      "eligible_cells": ["search", "aReady", "bReady"],
+      "spent_states_excluded": true,
+      "two_loss_cell_preservation": true,
+      "budget_contract_reused": true,
+      "guarded_witness": "(search, probeA)",
+      "guarded_third_tick_positive_intake": true,
+      "guarded_local_first_hit_proved": true,
+      "guarded_local_first_hit_time_shifted": true,
+      "guarded_local_first_hit_theorem": "CGB.SensoryMaintenanceRepairCandidates.guarded_firstHit",
+      "guarded_local_alive_proved": true,
+      "guarded_local_alive_theorem": "CGB.SensoryMaintenanceRepairCandidates.guarded_alive",
+      "guarded_local_tolerance_proved": true,
+      "guarded_local_tolerance_theorem": "CGB.SensoryMaintenanceRepairCandidates.guarded_two_tick_local_tolerance",
+      "guarded_support_zero_proved": true,
+      "guarded_support_zero_theorem": "CGB.SensoryMaintenanceRepairCandidates.guarded_support_zero",
+      "guarded_support_two_refuted": true,
+      "guarded_support_two_theorem": "CGB.SensoryMaintenanceRepairCandidates.not_guarded_support_two",
+      "guarded_survival_at_theorem": "CGB.SensoryMaintenanceRepairCandidates.guarded_survival_at",
+      "guarded_initial_survival_proved": true,
+      "guarded_initial_survival_theorem": "CGB.SensoryMaintenanceRepairCandidates.guarded_initial_survival",
+      "full_first_hit_proved": false
+    },
+    "state_only": {
+      "nonempty_successor_under_existing_ports": false,
+      "requires_new_port_or_contract": true
+    }
+  },
+  "artifacts": [
+    "lean/CGBAxioms/CGBAxioms/SensoryMaintenanceTwoTickObstruction.lean",
+    "lean/CGBAxioms/CGBAxioms/InformationThermodynamics.lean",
+    "lean/CGBAxioms/CGBAxioms/SensoryMaintenanceRepairAudit.lean",
+    "lean/CGBAxioms/CGBAxioms/SensoryMaintenanceRepairCandidates.lean",
+    "lean/CGBAxioms/CGBAxioms/SensoryMaintenanceProtocolRepairRefutation.lean",
+    "lean/CGBAxioms/reviews/two_tick_obstruction_20261025.lean",
+    "lean/CGBAxioms/reviews/sensory_repair_audit_20261025.lean",
+    "lean/CGBAxioms/reviews/sensory_repair_candidates_20261025.lean",
+    "lean/CGBAxioms/reviews/sensory_protocol_repair_refutation_20261025.lean",
+    "results/published/cgb_repair_selection_20261025.json",
+    "docs/information_boltzmann/CGB_LOW_RESOURCE_LIFE_CONTRACT_20261025.md",
+    "information_boltzmann/core/cgb_low_resource_life.py",
+    "information_boltzmann/core/cgb_observation_stream.py",
+    "information_boltzmann/core/cgb_information_ledger.py",
+    "information_boltzmann/core/cgb_prequential_bridge.py",
+    "scripts/validate_cgb_contract.py",
+    "scripts/validate_cgb_observation_stream.py",
+    "scripts/audit_owt_observation_source.py",
+    "scripts/validate_cgb_information_ledger.py",
+    "scripts/validate_cgb_prequential_bridge.py",
+    "scripts/measure_cgb_prequential_heldout.py",
+    "results/published/cgb_heldout_measurement_20261025.json",
+    "docs/information_boltzmann/CGB_LANGUAGE_LIFE_MODEL_V1_20261025.md",
+    "lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean",
+    "information_boltzmann/core/cgb_language_kernel.py",
+    "scripts/validate_cgb_language_kernel.py"
+  ],
+  "training_performed": false,
+  "lean_theorems": {
+    "empty_mass_positive": "CGB.SensoryMaintenanceTwoTickGlobal.empty_mass_positive",
+    "two_tick_survival_lt_one": "CGB.SensoryMaintenanceTwoTickGlobal.two_tick_survival_lt_one",
+    "not_two_tick_tolerance": "CGB.SensoryMaintenanceTwoTickGlobal.not_two_tick_tolerance",
+    "firstHit_three_tick_layered": "CGB.SensoryMaintenanceRepairCandidates.firstHit_three_tick_layered",
+    "guarded_firstHit": "CGB.SensoryMaintenanceRepairCandidates.guarded_firstHit",
+    "guarded_alive": "CGB.SensoryMaintenanceRepairCandidates.guarded_alive",
+    "guarded_two_tick_local_tolerance": "CGB.SensoryMaintenanceRepairCandidates.guarded_two_tick_local_tolerance",
+    "guarded_support_zero": "CGB.SensoryMaintenanceRepairCandidates.guarded_support_zero",
+    "not_guarded_support_two": "CGB.SensoryMaintenanceRepairCandidates.not_guarded_support_two",
+    "guarded_survival_at": "CGB.SensoryMaintenanceRepairCandidates.guarded_survival_at",
+    "guarded_initial_survival": "CGB.SensoryMaintenanceRepairCandidates.guarded_initial_survival"
+  },
+  "lean_audit": {
+    "passed": true,
+    "modules": 72,
+    "declarations": 3800,
+    "theorem_entries": 2477,
+    "source_declared_theorems": 749,
+    "guard_checks": 10
+  },
+  "lean_complexity_budget": {
+    "passed": true,
+    "values": {
+      "modules": 72,
+      "declarations": 3800,
+      "source_declared_theorems": 749
+    },
+    "caps": {
+      "modules": 72,
+      "declarations": 4000,
+      "source_declared_theorems": 800
+    },
+    "guard_script": "scripts/check_lean_complexity_budget.py"
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "date": "2026-10-24",
+  "status": "verified_semiring_transport_budget_and_formal_jet_core",
+  "core_result_groups": 3,
+  "results": {
+    "core_result_groups": 3,
+    "new_general_axioms": 0,
+    "semiring_pushforward_total_preserved": true,
+    "semiring_path_weight_registered": true,
+    "local_budget_cast_to_any_semiring": true,
+    "path_budget_cast_to_any_semiring": true,
+    "formal_jet_product_rule": true,
+    "formal_horner_value_preserved": true,
+    "probability_and_order_still_real_interface": true,
+    "gpu_speedup_claimed": false,
+    "full_l1_l6_claimed": false,
+    "training_performed": false
+  },
+  "scope": "Algebraic finite-state and first-order formal-differential core; no replacement of probability, order, completeness, or physical calibration.",
+  "core_results": [
+    {
+      "id": "IB_CGB_ALGEBRAIC_CORE_20261024",
+      "parent": "IB_CGB_CONTINUOUS_MAINTENANCE_20261024",
+      "layer": "theorem",
+      "direction": "deduction",
+      "time": "2026-10-24",
+      "status": "verified_semiring_transport_budget_and_formal_jet_core",
+      "title": "Finite transport, budgets, and first-order algebraic differentials factor through semiring operations",
+      "claim": "The finite-state transport layer can be stated over a commutative semiring: push-forward, row-mass preservation, path products, and the existing natural-number maintenance budgets require only zero, one, addition, multiplication, and finite sums/products. A paired value/variation representation gives an algebraic product rule and Horner evaluation without invoking real limits. Probability normalization, order bounds, recovery inequalities, convergence, and physical calibration remain separate real-valued interfaces.",
+      "findings": {
+        "core_result_groups": 3,
+        "new_general_axioms": 0,
+        "semiring_pushforward_total_preserved": true,
+        "semiring_path_weight_registered": true,
+        "local_budget_cast_to_any_semiring": true,
+        "path_budget_cast_to_any_semiring": true,
+        "formal_jet_product_rule": true,
+        "formal_horner_value_preserved": true,
+        "probability_and_order_still_real_interface": true,
+        "gpu_speedup_claimed": false,
+        "full_l1_l6_claimed": false,
+        "training_performed": false
+      },
+      "scope": "Algebraic finite-state and first-order formal-differential core; no replacement of probability, order, completeness, or physical calibration.",
+      "action": "Use the semiring/jet layer for exact discrete transport and symbolic or automatic-differentiation experiments; keep real-valued probability and recovery theorems behind explicit coefficient and order interfaces, then benchmark GPU kernels separately.",
+      "artifacts": [
+        "lean/CGBAxioms/CGBAxioms/AlgebraicCore.lean",
+        "lean/CGBAxioms/reviews/algebraic_core_20261024.lean"
+      ]
+    }
+  ],
+  "verification": {
+    "production_build_passed": true,
+    "independent_review_exit_code": 0,
+    "review_examples_passed": 6,
+    "proof_trust_passed": true,
+    "module_coverage_passed": true,
+    "audit_guard_checks": 10,
+    "previous_declarations_and_signatures_preserved": 3330,
+    "old_production_sources_unchanged_except_root_import": true,
+    "main_theorem_row_list_unchanged": true,
+    "training_performed": false
+  },
+  "inventory": {
+    "compiled_declarations": 3359,
+    "modules": 63,
+    "kernel_theorem_entries": 2167,
+    "source_authored_theorems": 692,
+    "added_compiled_declarations": 29,
+    "independent_scientific_results_not_equal_to_inventory": true
+  },
+  "artifact_hashes": {
+    "docs/information_boltzmann/CGB_AXIOMS_V0_20261022.md": "c14583a86a8bfce16bef911fd62589a65f34b57d958c4fe5faafe8bb6992d2dd",
+    "docs/information_boltzmann/CGB_CONTINUOUS_MAINTENANCE_20261024.md": "0955272f5876a22b1713817b79f7dca017354aea86672c99866781584782e002",
+    "lean/CGBAxioms/CGBAxioms/AlgebraicCore.lean": "dc382fa776e660024d9b26aecac368d42bd743511fd7242fb009929c38a0ae6a",
+    "lean/CGBAxioms/reviews/algebraic_core_20261024.lean": "6b3bede9db055c705b6151b6ecb8ddba7e289be8442f4c52bcd3d8f5b5557169",
+    "research_tree.json": "87429a8d7f798492f709a4c155d762391edb37c5fc47f415c9cc64e3dfc6fabd"
+  },
+  "audit_inventory": "lean/CGBAxioms/.lake/algebraic_core_20261024.json",
+  "build_log": "lean/CGBAxioms/.lake/algebraic_core_fullbuild.log",
+  "review_log": "lean/CGBAxioms/.lake/algebraic_core_review.log",
+  "main_document": "docs/information_boltzmann/CGB_AXIOMS_V0_20261022.md",
+  "report": "docs/information_boltzmann/CGB_CONTINUOUS_MAINTENANCE_20261024.md",
+  "artifacts": [
+    "lean/CGBAxioms/CGBAxioms/AlgebraicCore.lean",
+    "lean/CGBAxioms/reviews/algebraic_core_20261024.lean",
+    "docs/information_boltzmann/CGB_CONTINUOUS_MAINTENANCE_20261024.md",
+    "results/published/cgb_algebraic_core_20261024.json"
+  ]
+}

@@ -1,0 +1,104 @@
+{
+  "date": "2026-10-24",
+  "status": "verified_unified_admission_cross_model",
+  "core_result_groups": 3,
+  "results": {
+    "core_result_groups": 3,
+    "new_general_axioms": 0,
+    "coarse_admission_bundle_registered": true,
+    "current_24_state_body_instance": true,
+    "sponge_coarse_candidate_instance": true,
+    "common_port_factorization_contract": true,
+    "common_ranked_reserve_contract": true,
+    "full_carrier_realization_claimed": false,
+    "biological_capability_claimed_for_sponge": false,
+    "physical_calibration_claimed": false,
+    "full_l1_l6_claimed": false,
+    "training_performed": false
+  },
+  "scope": "Reusable coarse admission interface plus two formal instances; no new organism capability or physical realization.",
+  "core_results": [
+    {
+      "id": "IB_CGB_COARSE_ADMISSION_CROSS_MODEL_20261024",
+      "parent": "IB_CGB_PORT_CONTRACTS_20261024",
+      "layer": "theorem",
+      "direction": "deduction",
+      "time": "2026-10-24",
+      "status": "verified_unified_admission_cross_model",
+      "title": "One coarse admission contract passes the current body and a sponge candidate",
+      "claim": "A single CoarseAdmission bundle packages the separated sensory/resource port and ranked reserve obligations. The existing 24-state body and a separate sponge-like coarse candidate both satisfy the same bundle, while the sponge instance remains only a structural interface witness and makes no biological, carrier, energy, or causal-delivery claim.",
+      "findings": {
+        "core_result_groups": 3,
+        "new_general_axioms": 0,
+        "coarse_admission_bundle_registered": true,
+        "current_24_state_body_instance": true,
+        "sponge_coarse_candidate_instance": true,
+        "common_port_factorization_contract": true,
+        "common_ranked_reserve_contract": true,
+        "full_carrier_realization_claimed": false,
+        "biological_capability_claimed_for_sponge": false,
+        "physical_calibration_claimed": false,
+        "full_l1_l6_claimed": false,
+        "training_performed": false
+      },
+      "scope": "Reusable coarse admission interface plus two formal instances; no new organism capability or physical realization.",
+      "action": "Use CoarseAdmission as the default first gate for future models. Require a model-specific carrier refinement only when a claim depends on identity-level transport, energy, or causal delivery.",
+      "artifacts": [
+        "lean/CGBAxioms/CGBAxioms/PortContracts.lean",
+        "lean/CGBAxioms/CGBAxioms/PortContractInstances.lean",
+        "lean/CGBAxioms/CGBAxioms/SpongeContractInstance.lean",
+        "lean/CGBAxioms/reviews/port_contract_instances_20261024.lean",
+        "lean/CGBAxioms/reviews/sponge_contract_instance_20261024.lean"
+      ]
+    }
+  ],
+  "verification": {
+    "production_build_passed": true,
+    "independent_review_exit_code": 0,
+    "current_body_review_examples_passed": 6,
+    "sponge_candidate_review_examples_passed": 4,
+    "review_examples_passed_total": 10,
+    "proof_trust_passed": true,
+    "module_coverage_passed": true,
+    "audit_guard_checks": 10,
+    "previous_declarations_and_signatures_preserved": 3293,
+    "old_production_sources_unchanged_except_root_import": true,
+    "main_theorem_row_list_unchanged": true,
+    "training_performed": false
+  },
+  "inventory": {
+    "compiled_declarations": 3327,
+    "modules": 61,
+    "kernel_theorem_entries": 2150,
+    "source_authored_theorems": 683,
+    "added_compiled_declarations": 34,
+    "independent_scientific_results_not_equal_to_inventory": true
+  },
+  "artifact_hashes": {
+    "docs/information_boltzmann/CGB_AXIOMS_V0_20261022.md": "c14583a86a8bfce16bef911fd62589a65f34b57d958c4fe5faafe8bb6992d2dd",
+    "docs/information_boltzmann/CGB_CONTINUOUS_MAINTENANCE_20261024.md": "7d92aef283d4bdddba29f23723209e145208aa1884bf4ee3069c0cdc503c823f",
+    "lean/CGBAxioms/CGBAxioms/PortContracts.lean": "e87b80d635dca5459c0cd2cf01d331dfb1c2f532f60e71881e6bee2593b54da2",
+    "lean/CGBAxioms/CGBAxioms/PortContractInstances.lean": "18e34a338c82d9523df16937fa0a66007de0f5c5afd0c3414e7e6547856188fb",
+    "lean/CGBAxioms/CGBAxioms/SpongeContractInstance.lean": "9c11c287bc2b7034df5d15cf4b74f36e85ec30fc473852575e31eee40413f74c",
+    "lean/CGBAxioms/reviews/port_contract_instances_20261024.lean": "fe19f9f7f28832b49e0455d0cc1a17c752a4e520b462ccf467490c4851325b16",
+    "lean/CGBAxioms/reviews/sponge_contract_instance_20261024.lean": "f4ef3b1a2ea610725c47785de0d35953959224f383d824ccfb499dc9fb009486",
+    "research_tree.json": "5f27d76abac6a9ced579eaa0671ff4dd7116826c7e18de3fd97e6b884cc7d3eb"
+  },
+  "audit_inventory": "lean/CGBAxioms/.lake/coarse_admission_20261024.json",
+  "build_log": "lean/CGBAxioms/.lake/coarse_admission_fullbuild.log",
+  "review_logs": [
+    "lean/CGBAxioms/.lake/port_contract_instances_review.log",
+    "lean/CGBAxioms/.lake/sponge_contract_instance_review.log"
+  ],
+  "main_document": "docs/information_boltzmann/CGB_AXIOMS_V0_20261022.md",
+  "report": "docs/information_boltzmann/CGB_CONTINUOUS_MAINTENANCE_20261024.md",
+  "artifacts": [
+    "lean/CGBAxioms/CGBAxioms/PortContracts.lean",
+    "lean/CGBAxioms/CGBAxioms/PortContractInstances.lean",
+    "lean/CGBAxioms/CGBAxioms/SpongeContractInstance.lean",
+    "lean/CGBAxioms/reviews/port_contract_instances_20261024.lean",
+    "lean/CGBAxioms/reviews/sponge_contract_instance_20261024.lean",
+    "docs/information_boltzmann/CGB_CONTINUOUS_MAINTENANCE_20261024.md",
+    "results/published/cgb_coarse_admission_20261024.json"
+  ]
+}

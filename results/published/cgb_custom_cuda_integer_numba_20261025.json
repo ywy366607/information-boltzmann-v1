@@ -1,0 +1,49 @@
+{
+  "scope": "hand-written Numba CUDA integer matmul; no training or capability claim",
+  "torch_version": "2.9.1+cu126",
+  "numba_cuda": true,
+  "device": "NVIDIA GeForce GTX 1650",
+  "compute_capability": [
+    7,
+    5
+  ],
+  "size": 1024,
+  "repeats": 50,
+  "storage_bytes": {
+    "int8_A_or_B": 1048576,
+    "int32_A_or_B": 4194304,
+    "float32_A_or_B": 4194304,
+    "bfloat16_A_or_B": 2097152,
+    "int32_output": 4194304
+  },
+  "modes": {
+    "custom_numba_int8_acc_int32": {
+      "seconds_per_run": 0.007057452392578125,
+      "runs_per_second": 141.69418996742175,
+      "output_dtype": "torch.int32",
+      "working_set_bytes": 6291456,
+      "max_abs_error_vs_float32": 0.0
+    },
+    "custom_numba_int32_acc_int32": {
+      "seconds_per_run": 0.007090418701171875,
+      "runs_per_second": 141.035394684763,
+      "output_dtype": "torch.int32",
+      "working_set_bytes": 12582912,
+      "max_abs_error_vs_float32": 0.0
+    },
+    "torch_float32": {
+      "seconds_per_run": 0.0007746406555175781,
+      "runs_per_second": 1290.921142438422,
+      "output_dtype": "torch.float32",
+      "working_set_bytes": 12582912,
+      "max_abs_error_vs_float32": 0.0
+    },
+    "torch_bfloat16": {
+      "seconds_per_run": 0.0013652224731445313,
+      "runs_per_second": 732.4813498687064,
+      "output_dtype": "torch.bfloat16",
+      "working_set_bytes": 6291456,
+      "max_abs_error_vs_float32": 1.0
+    }
+  }
+}

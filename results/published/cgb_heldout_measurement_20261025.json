@@ -1,0 +1,103 @@
+{
+  "status": "read_only_heldout_measurement",
+  "training_performed": false,
+  "config": "D:\\information-boltzmann-v1\\configs\\information_boltzmann\\smoke_owt.json",
+  "config_dataset_revision": "433fe0f44ed7894fea29c08b3202aa348ccc6369",
+  "checkpoint": "D:\\information-boltzmann-v1\\checkpoints\\information_boltzmann\\ib_owt_5000_champion.pt",
+  "checkpoint_sha256": "da1285cb1e5acddb9779e81e8faa7e1adf4205cc9be1be420406f9298ee27fdc",
+  "checkpoint_metadata": {
+    "config": {
+      "status": "implemented_smoke_candidate",
+      "seed": 11,
+      "model": {
+        "phase_dim": 2,
+        "particles": 16,
+        "hidden_dim": 48,
+        "flow_layers": 4,
+        "base_density": "logistic",
+        "joint_xv": true,
+        "decoder": "distribution_integral"
+      },
+      "dynamics": {
+        "steps": 4,
+        "force": "data_driven_confined_damped",
+        "collision": "local_microreversible_attention_binary_elastic",
+        "max_collision_rate": 1.0,
+        "invariants": [
+          "mass",
+          "momentum",
+          "kinetic_energy"
+        ],
+        "h_theorem": "structural_microreversibility",
+        "supervision": "prequential_online_next_real_token",
+        "pde_form": "conservative_velocity_divergence",
+        "kappa": 1.0,
+        "gamma": 1.0,
+        "acceleration_norm_bound": 1.0,
+        "event_interval": 1.0,
+        "kernel_width": 1.0,
+        "temperature": 0.1
+      },
+      "data": {
+        "dataset": "openwebtext",
+        "revision": "433fe0f44ed7894fea29c08b3202aa348ccc6369",
+        "require_resolved_revision": true,
+        "vocab_size": 260,
+        "split": "document_sha256_98_1_1",
+        "tokenizer": "utf8_bytes_smoke"
+      },
+      "train": {
+        "precision": "float32",
+        "batch_size": 1,
+        "supervised_targets": 128,
+        "learning_rate": 0.0003,
+        "weight_decay": 0.01,
+        "gradient_clip": 1.0,
+        "warmup_fraction": 0.0,
+        "update_every_real_tokens": 8,
+        "tbptt_length": 8
+      },
+      "extra_modules": [],
+      "stream": {
+        "persistent_phase_state": true,
+        "initialize_once": true,
+        "reset_at_document_boundary": false,
+        "train_deploy_same_step": true,
+        "synthetic_tokens_are_supervision": false
+      }
+    },
+    "manifest_sha256": "07778ef89f755b537013e6bd9aa7572e997fc228e033bbce14ffc317e79919d5",
+    "split": "train",
+    "git_commit": "a6f76a8cca2c4851d58d1bbe622360eb05d8d116",
+    "load_diagnostics": {
+      "read_only": true,
+      "rng_restore": "cuda_rng_not_restored_device_mismatch"
+    }
+  },
+  "validation_tokens": "D:\\information-boltzmann-v1\\data\\ib_owt_10000\\validation.npy",
+  "train_reference_tokens": "D:\\information-boltzmann-v1\\data\\ib_owt_10000\\train.npy",
+  "start": 4,
+  "start_tick": 5000,
+  "events": 128,
+  "boot_token": 109,
+  "model_parameters": 69655,
+  "learner_updates": 625,
+  "ledger": {
+    "reference_name": "train_unigram",
+    "rows": 128,
+    "useful_bits": 14.37634402840656,
+    "predictive_loss_bits": 24.397135078799067,
+    "net_predictive_gain_bits": -10.020791050392507,
+    "useful_rows": 66,
+    "loss_rows": 62,
+    "write_units": 128,
+    "dissipation_units": 128,
+    "dissipation_units_per_useful_bit": 8.903515368516624,
+    "write_units_per_useful_bit": 8.903515368516624,
+    "calibrated_energy": null,
+    "energy_per_useful_bit": null,
+    "energy_coverage_rows": 0,
+    "measure_kind": "predictive_gain_relative_to_declared_reference"
+  },
+  "scope": "real validation first-pass predictive accounting; no action/world consequence measurement"
+}

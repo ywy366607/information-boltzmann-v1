@@ -1,0 +1,797 @@
+{
+  "status": "exact_finite_record_verified_not_capability_evidence",
+  "scope": "existing SensoryMaintenance body under registered boundary stimuli; world state not encoded",
+  "original_state_cardinality": 24,
+  "reachable_record_cardinality": 16,
+  "reachability_domain": "all registered boundary-stimulus interventions, not natural-law support",
+  "minimum_fixed_record_bits": 4,
+  "current_action_class_count": 3,
+  "action_content_class_count": 16,
+  "future_action_partition_counts": [
+    3,
+    6,
+    15,
+    16
+  ],
+  "transition_and_five_port_cases": 128,
+  "restored_continuation_cases": 128,
+  "distinguishing_pair_count": 120,
+  "max_distinguishing_input_length": 3,
+  "all_record_codes_payload_bytes": 8,
+  "all_record_codes_archive_bytes": 238,
+  "archive_model_mismatch_rejected": true,
+  "archive_payload_corruption_rejected": true,
+  "invalid_domain_or_encoding_cases_rejected": 15,
+  "gpu_memory_or_speed_measured": false,
+  "external_storage_energy_calibrated": false,
+  "learner_reads_hidden_world": false,
+  "training_started": false,
+  "reachability_witnesses": {
+    "3": [],
+    "2": [
+      "missing"
+    ],
+    "6": [
+      "answerA"
+    ],
+    "9": [
+      "answerB"
+    ],
+    "0": [
+      "scarce"
+    ],
+    "1": [
+      "missing",
+      "missing"
+    ],
+    "5": [
+      "answerA",
+      "missing"
+    ],
+    "12": [
+      "answerA",
+      "feed"
+    ],
+    "8": [
+      "answerB",
+      "missing"
+    ],
+    "15": [
+      "answerB",
+      "feed"
+    ],
+    "4": [
+      "answerA",
+      "missing",
+      "missing"
+    ],
+    "11": [
+      "answerA",
+      "feed",
+      "missing"
+    ],
+    "7": [
+      "answerB",
+      "missing",
+      "missing"
+    ],
+    "14": [
+      "answerB",
+      "feed",
+      "missing"
+    ],
+    "10": [
+      "answerA",
+      "feed",
+      "missing",
+      "missing"
+    ],
+    "13": [
+      "answerB",
+      "feed",
+      "missing",
+      "missing"
+    ]
+  },
+  "distinguishing_input_witnesses": [
+    {
+      "left_record": 0,
+      "right_record": 1,
+      "inputs": [
+        "answerA"
+      ]
+    },
+    {
+      "left_record": 0,
+      "right_record": 2,
+      "inputs": [
+        "answerA"
+      ]
+    },
+    {
+      "left_record": 0,
+      "right_record": 3,
+      "inputs": [
+        "answerA"
+      ]
+    },
+    {
+      "left_record": 0,
+      "right_record": 4,
+      "inputs": []
+    },
+    {
+      "left_record": 0,
+      "right_record": 5,
+      "inputs": []
+    },
+    {
+      "left_record": 0,
+      "right_record": 6,
+      "inputs": []
+    },
+    {
+      "left_record": 0,
+      "right_record": 7,
+      "inputs": []
+    },
+    {
+      "left_record": 0,
+      "right_record": 8,
+      "inputs": []
+    },
+    {
+      "left_record": 0,
+      "right_record": 9,
+      "inputs": []
+    },
+    {
+      "left_record": 0,
+      "right_record": 10,
+      "inputs": []
+    },
+    {
+      "left_record": 0,
+      "right_record": 11,
+      "inputs": []
+    },
+    {
+      "left_record": 0,
+      "right_record": 12,
+      "inputs": []
+    },
+    {
+      "left_record": 0,
+      "right_record": 13,
+      "inputs": []
+    },
+    {
+      "left_record": 0,
+      "right_record": 14,
+      "inputs": []
+    },
+    {
+      "left_record": 0,
+      "right_record": 15,
+      "inputs": []
+    },
+    {
+      "left_record": 1,
+      "right_record": 2,
+      "inputs": [
+        "missing",
+        "answerA"
+      ]
+    },
+    {
+      "left_record": 1,
+      "right_record": 3,
+      "inputs": [
+        "missing",
+        "answerA"
+      ]
+    },
+    {
+      "left_record": 1,
+      "right_record": 4,
+      "inputs": []
+    },
+    {
+      "left_record": 1,
+      "right_record": 5,
+      "inputs": []
+    },
+    {
+      "left_record": 1,
+      "right_record": 6,
+      "inputs": []
+    },
+    {
+      "left_record": 1,
+      "right_record": 7,
+      "inputs": []
+    },
+    {
+      "left_record": 1,
+      "right_record": 8,
+      "inputs": []
+    },
+    {
+      "left_record": 1,
+      "right_record": 9,
+      "inputs": []
+    },
+    {
+      "left_record": 1,
+      "right_record": 10,
+      "inputs": []
+    },
+    {
+      "left_record": 1,
+      "right_record": 11,
+      "inputs": []
+    },
+    {
+      "left_record": 1,
+      "right_record": 12,
+      "inputs": []
+    },
+    {
+      "left_record": 1,
+      "right_record": 13,
+      "inputs": []
+    },
+    {
+      "left_record": 1,
+      "right_record": 14,
+      "inputs": []
+    },
+    {
+      "left_record": 1,
+      "right_record": 15,
+      "inputs": []
+    },
+    {
+      "left_record": 2,
+      "right_record": 3,
+      "inputs": [
+        "missing",
+        "missing",
+        "answerA"
+      ]
+    },
+    {
+      "left_record": 2,
+      "right_record": 4,
+      "inputs": []
+    },
+    {
+      "left_record": 2,
+      "right_record": 5,
+      "inputs": []
+    },
+    {
+      "left_record": 2,
+      "right_record": 6,
+      "inputs": []
+    },
+    {
+      "left_record": 2,
+      "right_record": 7,
+      "inputs": []
+    },
+    {
+      "left_record": 2,
+      "right_record": 8,
+      "inputs": []
+    },
+    {
+      "left_record": 2,
+      "right_record": 9,
+      "inputs": []
+    },
+    {
+      "left_record": 2,
+      "right_record": 10,
+      "inputs": []
+    },
+    {
+      "left_record": 2,
+      "right_record": 11,
+      "inputs": []
+    },
+    {
+      "left_record": 2,
+      "right_record": 12,
+      "inputs": []
+    },
+    {
+      "left_record": 2,
+      "right_record": 13,
+      "inputs": []
+    },
+    {
+      "left_record": 2,
+      "right_record": 14,
+      "inputs": []
+    },
+    {
+      "left_record": 2,
+      "right_record": 15,
+      "inputs": []
+    },
+    {
+      "left_record": 3,
+      "right_record": 4,
+      "inputs": []
+    },
+    {
+      "left_record": 3,
+      "right_record": 5,
+      "inputs": []
+    },
+    {
+      "left_record": 3,
+      "right_record": 6,
+      "inputs": []
+    },
+    {
+      "left_record": 3,
+      "right_record": 7,
+      "inputs": []
+    },
+    {
+      "left_record": 3,
+      "right_record": 8,
+      "inputs": []
+    },
+    {
+      "left_record": 3,
+      "right_record": 9,
+      "inputs": []
+    },
+    {
+      "left_record": 3,
+      "right_record": 10,
+      "inputs": []
+    },
+    {
+      "left_record": 3,
+      "right_record": 11,
+      "inputs": []
+    },
+    {
+      "left_record": 3,
+      "right_record": 12,
+      "inputs": []
+    },
+    {
+      "left_record": 3,
+      "right_record": 13,
+      "inputs": []
+    },
+    {
+      "left_record": 3,
+      "right_record": 14,
+      "inputs": []
+    },
+    {
+      "left_record": 3,
+      "right_record": 15,
+      "inputs": []
+    },
+    {
+      "left_record": 4,
+      "right_record": 5,
+      "inputs": [
+        "missing"
+      ]
+    },
+    {
+      "left_record": 4,
+      "right_record": 6,
+      "inputs": [
+        "missing"
+      ]
+    },
+    {
+      "left_record": 4,
+      "right_record": 7,
+      "inputs": []
+    },
+    {
+      "left_record": 4,
+      "right_record": 8,
+      "inputs": []
+    },
+    {
+      "left_record": 4,
+      "right_record": 9,
+      "inputs": []
+    },
+    {
+      "left_record": 4,
+      "right_record": 10,
+      "inputs": [
+        "miss",
+        "answerA"
+      ]
+    },
+    {
+      "left_record": 4,
+      "right_record": 11,
+      "inputs": [
+        "missing"
+      ]
+    },
+    {
+      "left_record": 4,
+      "right_record": 12,
+      "inputs": [
+        "missing"
+      ]
+    },
+    {
+      "left_record": 4,
+      "right_record": 13,
+      "inputs": []
+    },
+    {
+      "left_record": 4,
+      "right_record": 14,
+      "inputs": []
+    },
+    {
+      "left_record": 4,
+      "right_record": 15,
+      "inputs": []
+    },
+    {
+      "left_record": 5,
+      "right_record": 6,
+      "inputs": [
+        "missing",
+        "missing"
+      ]
+    },
+    {
+      "left_record": 5,
+      "right_record": 7,
+      "inputs": []
+    },
+    {
+      "left_record": 5,
+      "right_record": 8,
+      "inputs": []
+    },
+    {
+      "left_record": 5,
+      "right_record": 9,
+      "inputs": []
+    },
+    {
+      "left_record": 5,
+      "right_record": 10,
+      "inputs": [
+        "missing"
+      ]
+    },
+    {
+      "left_record": 5,
+      "right_record": 11,
+      "inputs": [
+        "miss",
+        "answerA"
+      ]
+    },
+    {
+      "left_record": 5,
+      "right_record": 12,
+      "inputs": [
+        "missing",
+        "missing"
+      ]
+    },
+    {
+      "left_record": 5,
+      "right_record": 13,
+      "inputs": []
+    },
+    {
+      "left_record": 5,
+      "right_record": 14,
+      "inputs": []
+    },
+    {
+      "left_record": 5,
+      "right_record": 15,
+      "inputs": []
+    },
+    {
+      "left_record": 6,
+      "right_record": 7,
+      "inputs": []
+    },
+    {
+      "left_record": 6,
+      "right_record": 8,
+      "inputs": []
+    },
+    {
+      "left_record": 6,
+      "right_record": 9,
+      "inputs": []
+    },
+    {
+      "left_record": 6,
+      "right_record": 10,
+      "inputs": [
+        "missing"
+      ]
+    },
+    {
+      "left_record": 6,
+      "right_record": 11,
+      "inputs": [
+        "missing",
+        "missing"
+      ]
+    },
+    {
+      "left_record": 6,
+      "right_record": 12,
+      "inputs": [
+        "miss",
+        "answerA"
+      ]
+    },
+    {
+      "left_record": 6,
+      "right_record": 13,
+      "inputs": []
+    },
+    {
+      "left_record": 6,
+      "right_record": 14,
+      "inputs": []
+    },
+    {
+      "left_record": 6,
+      "right_record": 15,
+      "inputs": []
+    },
+    {
+      "left_record": 7,
+      "right_record": 8,
+      "inputs": [
+        "missing"
+      ]
+    },
+    {
+      "left_record": 7,
+      "right_record": 9,
+      "inputs": [
+        "missing"
+      ]
+    },
+    {
+      "left_record": 7,
+      "right_record": 10,
+      "inputs": []
+    },
+    {
+      "left_record": 7,
+      "right_record": 11,
+      "inputs": []
+    },
+    {
+      "left_record": 7,
+      "right_record": 12,
+      "inputs": []
+    },
+    {
+      "left_record": 7,
+      "right_record": 13,
+      "inputs": [
+        "miss",
+        "answerA"
+      ]
+    },
+    {
+      "left_record": 7,
+      "right_record": 14,
+      "inputs": [
+        "missing"
+      ]
+    },
+    {
+      "left_record": 7,
+      "right_record": 15,
+      "inputs": [
+        "missing"
+      ]
+    },
+    {
+      "left_record": 8,
+      "right_record": 9,
+      "inputs": [
+        "missing",
+        "missing"
+      ]
+    },
+    {
+      "left_record": 8,
+      "right_record": 10,
+      "inputs": []
+    },
+    {
+      "left_record": 8,
+      "right_record": 11,
+      "inputs": []
+    },
+    {
+      "left_record": 8,
+      "right_record": 12,
+      "inputs": []
+    },
+    {
+      "left_record": 8,
+      "right_record": 13,
+      "inputs": [
+        "missing"
+      ]
+    },
+    {
+      "left_record": 8,
+      "right_record": 14,
+      "inputs": [
+        "miss",
+        "answerA"
+      ]
+    },
+    {
+      "left_record": 8,
+      "right_record": 15,
+      "inputs": [
+        "missing",
+        "missing"
+      ]
+    },
+    {
+      "left_record": 9,
+      "right_record": 10,
+      "inputs": []
+    },
+    {
+      "left_record": 9,
+      "right_record": 11,
+      "inputs": []
+    },
+    {
+      "left_record": 9,
+      "right_record": 12,
+      "inputs": []
+    },
+    {
+      "left_record": 9,
+      "right_record": 13,
+      "inputs": [
+        "missing"
+      ]
+    },
+    {
+      "left_record": 9,
+      "right_record": 14,
+      "inputs": [
+        "missing",
+        "missing"
+      ]
+    },
+    {
+      "left_record": 9,
+      "right_record": 15,
+      "inputs": [
+        "miss",
+        "answerA"
+      ]
+    },
+    {
+      "left_record": 10,
+      "right_record": 11,
+      "inputs": [
+        "missing"
+      ]
+    },
+    {
+      "left_record": 10,
+      "right_record": 12,
+      "inputs": [
+        "missing"
+      ]
+    },
+    {
+      "left_record": 10,
+      "right_record": 13,
+      "inputs": []
+    },
+    {
+      "left_record": 10,
+      "right_record": 14,
+      "inputs": []
+    },
+    {
+      "left_record": 10,
+      "right_record": 15,
+      "inputs": []
+    },
+    {
+      "left_record": 11,
+      "right_record": 12,
+      "inputs": [
+        "missing",
+        "missing"
+      ]
+    },
+    {
+      "left_record": 11,
+      "right_record": 13,
+      "inputs": []
+    },
+    {
+      "left_record": 11,
+      "right_record": 14,
+      "inputs": []
+    },
+    {
+      "left_record": 11,
+      "right_record": 15,
+      "inputs": []
+    },
+    {
+      "left_record": 12,
+      "right_record": 13,
+      "inputs": []
+    },
+    {
+      "left_record": 12,
+      "right_record": 14,
+      "inputs": []
+    },
+    {
+      "left_record": 12,
+      "right_record": 15,
+      "inputs": []
+    },
+    {
+      "left_record": 13,
+      "right_record": 14,
+      "inputs": [
+        "missing"
+      ]
+    },
+    {
+      "left_record": 13,
+      "right_record": 15,
+      "inputs": [
+        "missing"
+      ]
+    },
+    {
+      "left_record": 14,
+      "right_record": 15,
+      "inputs": [
+        "missing",
+        "missing"
+      ]
+    }
+  ],
+  "source_sha256": {
+    "scripts\\validate_cgb_sensory_record.py": "0ef8aaccf8a0cf2737e7ac95a199a039e4e88c2c9c34f8fe80028ee6048d9c08",
+    "information_boltzmann\\core\\cgb_sensory_record.py": "c3c070b98390d8f2c98bc24adf0daf0a49bfa20e9782d120d1380b475c6657bc",
+    "lean\\CGBAxioms\\reviews\\export_sensory_record_20261025.lean": "593fc2df6f8e2b72743f0b26cbd7c07db13d1dd32deb40912141d044300d1b2e",
+    "lean\\CGBAxioms\\CGBAxioms\\LanguageLifeKernel.lean": "dd4dadb7521a4bcc6805c9864b12949dbde0637a4f23202ce1711a69657f481e",
+    "lean\\CGBAxioms\\CGBAxioms\\SensoryMaintenance.lean": "1c3d2a74740f722a9428b83b40344e3fecc4b38f9ba8480087a299fa57836a7a",
+    "lean\\CGBAxioms\\CGBAxioms\\RenewableLearning.lean": "4acbf7995598225791b2337f6ecc38d811a8bc2f20a691ccefc947d7960afb6d"
+  },
+  "lean_export_sha256": "6072d8d6b49810e0b368088a0bfb792b1fd83b4bbdba5e8929e49b110c33da8a"
+}

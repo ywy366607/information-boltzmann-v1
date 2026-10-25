@@ -1,0 +1,898 @@
+{
+  "schema_version": 1,
+  "stage": "language_life_1b_admission",
+  "date": "2026-10-25",
+  "target": {
+    "independent_trainable_parameters": 1000000000,
+    "world": "continuous_language",
+    "random_initialization_required": true,
+    "trained_target_model_exists": false
+  },
+  "proof": {
+    "full_build_and_trust_audit_passed": true,
+    "current_inventory_sha256": "6a1976a635ad6c01eb0ee07708001f654341e4bcd3f07b89457867bde46ecd3d",
+    "values": {
+      "modules": 72,
+      "declarations": 3991,
+      "source_declared_theorems": 796,
+      "source_lines": 15595,
+      "largest_source_file": 876
+    },
+    "new_source_theorems": 14,
+    "new_Lean_modules": 0,
+    "new_general_axioms": 0,
+    "verified": [
+      "FirstHit.first_hit_sum",
+      "FirstHit.truncation",
+      "FirstHit.probability_bounds",
+      "CGB.finite_reweighting_improves_iff",
+      "CGB.LanguageLifeKernel.LocalEdit.accepts_iff",
+      "CGB.LanguageLifeKernel.CausalState.realizes",
+      "CGB.LanguageLifeKernel.CausalState.fold_refines",
+      "CGB.LanguageLifeKernel.CausalState.minimal",
+      "CGB.LanguageLifeKernel.CausalState.finite_bound",
+      "CGB.LanguageLifeKernel.CausalState.finite_alphabets_unbounded",
+      "CGB.LanguageLifeKernel.Approximation.fold_error",
+      "CGB.LanguageLifeKernel.Approximation.invariant_error",
+      "CGB.Interaction.Machine.conditioned_next",
+      "CGB.LanguageLifeKernel.CausalState.separated_histories_capacity"
+    ],
+    "scope": "Conditional correctness, minimal-state and uniform-precision capacity requirements; no selected architecture, measured language capacity or hardware superiority",
+    "current_increment_source_theorems": 0,
+    "current_increment_source_lines": 0,
+    "current_increment_declarations": 0,
+    "build_log": "lean/CGBAxioms/.lake/precision_capacity_20261025.build.log",
+    "audit_log": "lean/CGBAxioms/.lake/precision_capacity_20261025.audit.log",
+    "current_proof_foundational_axioms": {
+      "CGB.LanguageLifeKernel.CausalState.separated_histories_capacity": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    }
+  },
+  "maintenance": {
+    "passed": true,
+    "caps": {
+      "modules": 72,
+      "declarations": 4000,
+      "source_declared_theorems": 800,
+      "source_lines": 15600,
+      "largest_source_file": 900
+    },
+    "active_line_caps": {
+      "docs/information_boltzmann/CGB_LANGUAGE_LIFE_MODEL_V1_20261025.md": 220,
+      "information_boltzmann/core/cgb_language_kernel.py": 180,
+      "scripts/validate_cgb_language_kernel.py": 140,
+      "scripts/bench_algebraic_coefficients.py": 300,
+      "information_boltzmann/core/cgb_prequential_bridge.py": 260,
+      "information_boltzmann/core/cgb_low_resource_life.py": 300,
+      "scripts/validate_cgb_contract.py": 360,
+      "scripts/validate_cgb_prequential_bridge.py": 180,
+      "scripts/measure_cgb_prequential_heldout.py": 230,
+      "information_boltzmann/core/cgb_observation_stream.py": 300,
+      "scripts/validate_cgb_observation_stream.py": 180,
+      "information_boltzmann/core/cgb_sensory_port.py": 150,
+      "scripts/validate_cgb_sensory_port.py": 150,
+      "scripts/check_lean_complexity_budget.py": 125
+    },
+    "active_lines": {
+      "docs/information_boltzmann/CGB_LANGUAGE_LIFE_MODEL_V1_20261025.md": 219,
+      "information_boltzmann/core/cgb_language_kernel.py": 177,
+      "scripts/validate_cgb_language_kernel.py": 140,
+      "scripts/bench_algebraic_coefficients.py": 287,
+      "information_boltzmann/core/cgb_prequential_bridge.py": 259,
+      "information_boltzmann/core/cgb_low_resource_life.py": 245,
+      "scripts/validate_cgb_contract.py": 357,
+      "scripts/validate_cgb_prequential_bridge.py": 180,
+      "scripts/measure_cgb_prequential_heldout.py": 202,
+      "information_boltzmann/core/cgb_observation_stream.py": 276,
+      "scripts/validate_cgb_observation_stream.py": 142,
+      "information_boltzmann/core/cgb_sensory_port.py": 150,
+      "scripts/validate_cgb_sensory_port.py": 121,
+      "scripts/check_lean_complexity_budget.py": 87
+    },
+    "spec_lines_before": 483,
+    "spec_lines_after": 219,
+    "spec_lines_removed": 264,
+    "negative_checks": [
+      "active_spec_line_cap",
+      "declaration_cap",
+      "failed_proof_trust",
+      "heldout_entry_line_cap",
+      "packed_benchmark_line_cap",
+      "stale_source_hash",
+      "tree_port_line_cap",
+      "tree_validator_line_cap",
+      "world_core_line_cap",
+      "world_validator_line_cap"
+    ],
+    "source_hashes_current": true,
+    "values": {
+      "modules": 72,
+      "declarations": 3991,
+      "source_declared_theorems": 796,
+      "source_lines": 15595,
+      "largest_source_file": 876
+    },
+    "new_core_modules": 0,
+    "new_research_tree_nodes": 0,
+    "removed_production_abstraction": "ResourceSpec and unused six-callback synchronous life harness; retain actual tensor accounting, Observation API and prequential bridge",
+    "current_increment": "Replace unused synchronous callback scaffold with bounded paid public-prefix world; transient delivered input uses the existing joint port; no new core or Lean module, theorem, or training",
+    "negative_checks_current_increment": [
+      "stale_source_hash",
+      "failed_proof_trust",
+      "declaration_cap",
+      "active_spec_line_cap",
+      "world_core_line_cap",
+      "world_validator_line_cap"
+    ],
+    "equivalent_simplifications": {
+      "source_lines_removed": 25,
+      "old_signatures_unchanged": [
+        "CGB.LanguageLifeKernel.charge_total_preserved",
+        "CGB.LanguageLifeKernel.external_causal_readout_exists_iff",
+        "CGB.LanguageLifeKernel.history_readout_exists_iff",
+        "CGB.LanguageLifeKernel.history_transition_exists_iff",
+        "CGB.LanguageLifeKernel.no_visible_only_delayed_credit_rule",
+        "CGB.LanguageLifeKernel.observable_transfer_recovers_amount",
+        "CGB.LanguageLifeKernel.reserve_balance"
+      ],
+      "all_old_source_theorems_preserved": true,
+      "signature_comparison_log": "lean/CGBAxioms/.lake/precision_capacity_20261025.summary.json",
+      "automatic_declaration_delta": "Four added and four no longer preinstantiated, including three lazy equations still accessible after import; no source definition/theorem removed"
+    }
+  },
+  "resource_profiles": {
+    "scope": "Partial storage layout and measured integer transport. History, learning, language ports and restore costs are not full-model admitted.",
+    "parameters": 1000000000,
+    "expanded_edges": 1000000000,
+    "int4_plus_fp16_scale_every64": {
+      "scope": "Target 1,000,000,000 coefficient slots; weights and scales only",
+      "packed_weight_bytes": 500000000,
+      "scale_bytes": 31250000,
+      "subtotal_bytes": 531250000
+    },
+    "full_model_admitted": false,
+    "usable_device_budget_must_include_headroom": true,
+    "reference_device_vram_bytes": 4294967296,
+    "rejected_explicit_index_profile": {
+      "required": false,
+      "two_INT64_endpoint_arrays_bytes": 16000000000,
+      "weight_scale_and_index_bytes": 16531250000
+    },
+    "implicit_rule_block_example": {
+      "blocks": 64,
+      "rows": 4096,
+      "cols": 4096,
+      "int4_weight_bytes": 536870912,
+      "group64_fp16_scale_bytes": 33554432,
+      "parameter_and_scale_bytes": 570425344,
+      "parameter_and_scale_MiB": 544.0,
+      "per_edge_index_bytes": 0,
+      "metadata_scope": "Dimensions/seeds or block routes plus host-object overhead, not per-edge arrays",
+      "full_model_or_learning_state_allocated": false,
+      "independent_coefficient_slots": 1073741824,
+      "actual_packed_layout_allocation_checked": true
+    },
+    "measured_packed_operator": {
+      "artifact": "results/published/cgb_implicit_packed_cuda_20261025.json",
+      "artifact_sha256": "1fe677a3632c8da495ea61db1438d05738fa507e187e1cd30b6455c3988e7503",
+      "device_name": "NVIDIA GeForce GTX 1650",
+      "coefficient_slots": 1073741824,
+      "tensor_resident_bytes": 572522496,
+      "torch_allocated_peak_bytes": 585176576,
+      "torch_reserved_peak_bytes": 595591168,
+      "execution_extra_peak_bytes": 12654080,
+      "driver_context_and_other_processes_included": false,
+      "scales_used_for_arithmetic": false,
+      "complete_learning_or_language_model": false
+    },
+    "serialized_local_edit_check": {
+      "artifact": "results/published/cgb_language_local_edit_cuda_20261025.json",
+      "artifact_sha256": "8dddcc413d8ed85ed0da34d0a798df736aab6436c9f2dc6141301bc6241a2a51",
+      "coefficient_slots": 1073741824,
+      "edits": 64,
+      "tensor_resident_bytes": 572522496,
+      "extra_peak_gpu_allocated_bytes": 0,
+      "statistics_device": "CPU",
+      "full_language_model_or_throughput_validated": false
+    }
+  },
+  "implementation_checks": {
+    "kernel_validation_passed": true,
+    "large_tensor_allocation_performed": true,
+    "training_started": false,
+    "integer_overflow_rejections_checked": 3,
+    "integer_exactness_scope": "Conservative no-overflow range; may reject safe cancellation. Production refinement still requires corresponding range admission.",
+    "implicit_graph_transport_cases": 3,
+    "frozen_state_tiled_equivalence_cases": 3,
+    "int8_flow_int32_state_checked": true,
+    "graph_endpoint_arrays_required": false,
+    "production_tiled_scheduler_implemented": true,
+    "scheduler_scope": "Checked reference using a frozen old state and fixed-size producer tiles; arbitrary callback hidden allocations are external obligations",
+    "optimized_full_learning_scheduler_implemented": false,
+    "packed_cpu_byte_oracle": {
+      "packed_byte": "0xF0",
+      "decoded_values": [
+        -8,
+        7
+      ],
+      "blocks": 2,
+      "width": 8,
+      "tile": 6,
+      "nodes_checked_exactly": 32,
+      "coefficients_checked": 128
+    },
+    "full_packed_coefficient_pass_checked": 1073741824,
+    "local_edit": {
+      "byte_direction_context_target_cases": 4096,
+      "legal_cases": 3840,
+      "range_boundary_rejections": 256,
+      "accepted_edits": 960,
+      "cdf_all_tickets": 608,
+      "mass_boundary_and_label_domain_checks": true,
+      "hidden_factor_path_and_disconnected_control_checked": true,
+      "node_marginal_alias_counterexample": {
+        "old_weights": [
+          [
+            1,
+            3,
+            3,
+            1
+          ],
+          [
+            3,
+            1,
+            1,
+            3
+          ]
+        ],
+        "multiplier": [
+          2,
+          1,
+          1,
+          4
+        ],
+        "event": "00",
+        "old_and_new_event_probabilities": [
+          [
+            "1/8",
+            "1/6"
+          ],
+          [
+            "3/8",
+            "3/10"
+          ]
+        ]
+      },
+      "parallel_edits_counterexample": {
+        "prior": [
+          "9/20",
+          "1/20",
+          "1/20",
+          "9/20"
+        ],
+        "event_conditional": [
+          "1/100",
+          "39/100",
+          "39/100",
+          "21/100"
+        ],
+        "multipliers": [
+          [
+            1,
+            1,
+            3,
+            3
+          ],
+          [
+            1,
+            3,
+            1,
+            3
+          ]
+        ],
+        "each_improves_separately": true,
+        "combined_prior_mean": "24/5",
+        "combined_event_mean": "106/25"
+      },
+      "additional_domain_and_range_rejections": 18
+    },
+    "native_byte_source_and_cursor_checked": true,
+    "optional_sensor_offline_contract_checked": true,
+    "joint_hidden_recurrence_checked": true,
+    "paid_prefix_world_validation_passed": true,
+    "paid_prefix_real_owt_interface_passed": true,
+    "same_old_state_information_cut_checked": true,
+    "resource_cut_full_window_fallback_checked": true,
+    "pure_combined_input_preflight_checked": true,
+    "source_future_suffix_isolated_from_visible_frame": true,
+    "randomized_world_json_restore_checks": 23856,
+    "randomized_restore_scope": "250 deterministic interface parameter/action cases, all ready/open/published/EOF snapshots; not capability trials",
+    "final_report_and_source_bindings_verified": true
+  },
+  "independent_scope_review": {
+    "completed": true,
+    "findings": [
+      "Definition, lawful task responses, precision, deadlines and full resource costs precede architecture construction; numerical fixture factors do not select a brain law.",
+      "Canonical future-response states are abstract minimal realizations on reachable states, not effective finite algorithms; finite Bool alphabets can still require infinite exact memory.",
+      "Uniform approximation certificates compose only under their registered full-update and same-input premises; language epsilon/L/delta and reference-world mismatch remain unassigned.",
+      "Separated histories require common lawful suffixes and a code fixed beforehand; fixed-query communication uses M_query and includes addresses, timing, silence and side information.",
+      "Combinations and temporal response windows are counted; lifetime observations and microscopic nonrecurrence do not imply infinite readable memory. Unbounded host counters are not free finite-body storage.",
+      "Exact implicit topology, integer range checks and packed allocator measurements cover declared operators and storage, not complete model memory, throughput or language superiority.",
+      "Finite modification compares old-model joint event support with global support; separate favorable edits need not combine favorably or improve independent future behavior.",
+      "Given positive joint mass, the conditioned hidden law is normalized and unique; prefix fixture factors share readout/transition codes but do not identify the physical or language law.",
+      "Whole-byte scoring and posterior sampling use the same frozen old frame before edits; generation RNG is isolated, semantic checkpoint versions differ, and combined input is rejected before consuming reference state.",
+      "Public-prefix replay binds actual source SHA only on the audit side, freezes request intervals and excludes future or pre-origin bytes; it is not train-only retrieval.",
+      "One slot suffices for implicit request identity here; positive delay, paid holding/readout, cancellation and all-prefix resource balances are checked without a new identity or memory module.",
+      "Delivered bytes are current auxiliary input, supplied identically to old-frame prediction and conditioned transition. World snapshots retain any open receipt; model snapshots add no persistent auxiliary field.",
+      "Real OWT uses fixed requests and zero parameter updates. Same-old-state information cuts establish channel use, not learned acquisition, predictive gain or policy benefit.",
+      "Resource-cut scoring covers all fresh bytes after absorbing failure using uniform256 fallback with the port frozen; NLL never mints resources and declared fees are not calibrated joules.",
+      "Trusted whole-loop JSON audit copies world, port, ledger fields and bridge counter. Public world/port loaders validate before mutation; this adds no generic untrusted ledger loader.",
+      "Finite EOF, discrete delays and fixed external supply do not establish unbounded novelty, pathwise survival, active resource acquisition or an independent wall-clock producer.",
+      "Optional pretrained sensory weights and workspace remain separate costs; offline sensor checks do not establish official-weight inference or integration with the new byte replay world.",
+      "Existing proof inventory and all source hashes remain current: no new Lean theorem or general axiom was needed for this interface instance."
+    ]
+  },
+  "next_admission": {
+    "candidate_local_plasticity_kernel_selected": false,
+    "task_to_supply_contract_identified": false,
+    "world_protocol": "Continuous native OWT-byte prefix with optional paid single-slot delayed replay of actually published bytes; train-only retrieval remains a separate future protocol",
+    "causal_controls": [
+      "freeze_plasticity_keep_activity",
+      "legal_history_control",
+      "remove_action_information_preserve_cost_and_delay",
+      "cut_resource_supply_keep_world_running"
+    ],
+    "active_information_acquisition_is_not_resource_acquisition": true,
+    "finite_local_edit_operator_selected": true,
+    "required_connections": [
+      "Ground required future responses, lawful continuations and precision/reliability in a real language task; this finite world interface supplies causal delivery and tariffs, not the missing task semantics.",
+      "Derive necessary retained distinctions and deadline-accessible information, then construct shared bounded recurrence with full error and cost accounting; do not preselect architecture families.",
+      "Derive how the same body selects useful requests and changes future predictions/actions; compare learned policy and plasticity under matched source, costs and delays.",
+      "Sufficient from-scratch training, independent future validation, context changes/revisits, resource admission and measured timing before capability or scale conclusions."
+    ],
+    "token_scoring_generation_and_restore_port_connected": true,
+    "shared_generated_factor_and_history_law_selected": false,
+    "byte_scoring_generation_and_restore_port_connected": true,
+    "canonical_causal_state_minimality_proved": true,
+    "finite_realization_of_future_contract_selected": false,
+    "conditional_approximation_composition_proved": true,
+    "concrete_full_step_language_error_certificate_selected": false,
+    "given_joint_kernel_hidden_transition_connected": true,
+    "given_joint_kernel_conditioning_uniqueness_proved": true,
+    "precision_capacity_necessary_bound_proved": true,
+    "grounded_task_precision_deadline_contract_selected": false,
+    "architecture_mechanisms_preselected": false,
+    "complete_architecture_efficiency_or_accuracy_advantage_proved": false,
+    "paid_delayed_public_prefix_world_connected": true,
+    "script_requests_are_learned_policy": false,
+    "independent_wall_clock_world_scheduler_implemented": false
+  },
+  "source_sha256": {
+    "docs/information_boltzmann/CGB_LANGUAGE_LIFE_MODEL_V1_20261025.md": "28d73f855aa03a8f1cfa02a2f6e163f10debae3af0f1201db136906d7e6177b2",
+    "lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean": "a09ae393d52073bfdf17f8ffae078aaf5aaa0927f8d59b8ff569388f282c77a1",
+    "information_boltzmann/core/cgb_language_kernel.py": "67c6521fdfd81f772b8dee01adcdb6349825f3403cb036cc179d1437a1f79cd3",
+    "scripts/validate_cgb_language_kernel.py": "94182355106afb126eeba88f548e3f67a74645975cf3022129f27741a11fa670",
+    "scripts/check_lean_complexity_budget.py": "1c2027e25210efa7c8857a3112c4e0888a9ad4d4c20e210b64cc6afd5d10395a",
+    "lean/CGBAxioms/CGBAxioms/Inference.lean": "7c98023d72f74478582a418266012511f18c2e3e453b83f507c2e85181bbb7cb",
+    "scripts/bench_algebraic_coefficients.py": "ad481954a49d43c798e4946348cd57d975c26fde10b4dff6be6cf8542ed429bd",
+    "information_boltzmann/core/cgb_prequential_bridge.py": "deffa9fbedf8b39796bc1f46f09bb5418f2fb029160f29c25f36661763856677",
+    "scripts/validate_cgb_prequential_bridge.py": "dc8e452e8850975de0b562a715b55c022f89c6608199ea5dece8d09bbc58f8de",
+    "scripts/measure_cgb_prequential_heldout.py": "0b08c574ece6f52c3a1ee75772bb10d85e160fdf43a4075f30ec6a095ce723e2",
+    "information_boltzmann/core/cgb_observation_stream.py": "fe2c8b0587414b732bd4cee4a6784415df5ee77f6f996040d67dfd50a36c2299",
+    "scripts/validate_cgb_observation_stream.py": "9b1dfcc0a5e8759ebb982659138c41a3c35549f1458b5ceb6ebb72ecb7d52f0f",
+    "information_boltzmann/core/cgb_sensory_port.py": "abbd65ac309bf5e52cad6c1f378c5ad57bc3777d44d7f263787e47b83eeba847",
+    "scripts/validate_cgb_sensory_port.py": "b3f9727a62d7f1baf23ee8f7d825d744eb2421edfa3dc562331f9ce5e4b1ccf9",
+    "docs/information_boltzmann/CGB_CONTINUOUS_MAINTENANCE_20261024.md": "5a9dc5c847dcf166f92087d85e6f103e537e2b4e6d803b4496caab0540546d13",
+    "lean/CGBAxioms/CGBAxioms/AlgebraicCore.lean": "7a0e6bed82f5eace4b91f071d00b268bf2406ca0df9f765a2ee4a0f51c8a851b",
+    "lean/CGBAxioms/CGBAxioms/AlgebraicHomology.lean": "d893ac3860af5f40939021a6a59f5e75c0d7a171223f18bf469f41805205d377",
+    "lean/CGBAxioms/CGBAxioms/Interaction.lean": "7a4cf353eeb05a63d7e65bf9389d4c312c5d8bb874bac6d9b534bde490790acc",
+    "docs/information_boltzmann/CGB_LOW_RESOURCE_LIFE_CONTRACT_20261025.md": "19f0dedd00d385069ef3dbc50ca76da7bbe20b3f3b520fc4b092b588a98549ef",
+    "information_boltzmann/core/cgb_low_resource_life.py": "414b12d2be824ce3f6e1ad334d4e59d690175eacf55c6a51beec9d645444e802",
+    "information_boltzmann/core/cgb_information_ledger.py": "be3c03e80ede3e761b6bed2e0f1d93b249b847e6b9668b8b1fa0cdfc8d641146",
+    "scripts/validate_cgb_contract.py": "1ee7186be5b0d8511b48e19bd1c73ad22f7fbfdd4d0219a4636162a035792d2e"
+  },
+  "training_storage_contract": {
+    "BPTT_or_time_growing_tape": false,
+    "Adam_or_FP32_master_required": false,
+    "full_parameter_gradient_required": false,
+    "per_parameter_FP16_trace_required": false,
+    "recursive_history": "Task-sufficient and recursively closed state; storage constant in elapsed sequence length for a fixed admitted model, not a time/compute bound or total storage independent of parameter count",
+    "existing_fixed_bit_witness": "SensoryRecord.Fin16/fold_refines",
+    "homology_scope": "Retain conditional boundary composition and conservation; implicit addressing is a storage representation, not a new homology or cognition theorem"
+  },
+  "learning_direction": {
+    "theorem": "CGB.finite_reweighting_improves_iff",
+    "criterion": "P_wr(E)>P_w(E) iff E_w[r|E]>E_w[r], for finite strictly positive w,r and nonempty E",
+    "local_feature_specialization": "For r=rho(phi), compare two multiplier means under the same old model and fixed context; multivariable phi requires its joint marginal",
+    "exact_rational_reweighting_cases": 5103,
+    "exact_rational_feature_regrouping_cases": 13608,
+    "enumeration": "3 states; weights in {1,2,3}; multipliers in {1/2,1,2}; every nonempty event; grouping additionally uses every binary feature map",
+    "local_moment_algorithm_implemented": true,
+    "future_credit_or_learning_capability_verified": false,
+    "integer_reference_theorem": "CGB.LanguageLifeKernel.LocalEdit.accepts_iff",
+    "local_algorithm": "Stream exact old/candidate joint masses from one pure fixed-context rule; accept iff Anew*Z>A*Znew, then write one actual INT4 nibble",
+    "shared_rule_for_activity_and_edit": true,
+    "activity_sampling": "Integer inverse CDF; external uniform ticket",
+    "operator_bounds": {
+      "configurations": 256,
+      "context_int32_entries": 64,
+      "sum_upper_bound": 2147483647,
+      "cross_product_bits": 62
+    },
+    "persistent_per_parameter_trace_or_gradient": false,
+    "callback_obligations": [
+      "pure fixed closed context",
+      "fixed configuration-to-label mapping",
+      "bounded callback allocations",
+      "single byte writer and fixed scales"
+    ],
+    "current_condition_probability_only": true,
+    "global_language_probability_correspondence_proved": false,
+    "recurrence_and_world_cadence_admitted": false,
+    "proposal_rule_and_factor_family_from_axioms_forced": false,
+    "tree_factor_to_token_probability_constructed": true,
+    "scope_of_unproved_correspondence": "Generated brain is unspecified; normalized finite-alphabet port now admits native bytes and a GPT2 adapter"
+  },
+  "language_port": {
+    "artifact": "results/published/cgb_local_port_owt_bytes_interface_20261025.json",
+    "artifact_sha256": "70d0c4f20faaea7c00794d943d4ee49fb9362d970248f43069d0aa6ceaa44873",
+    "vocabulary_size": 256,
+    "unit": "UTF8_bytes",
+    "valid_tree_leaf_mapping": "integer token ID; child prefix c allowed iff c*2**remaining<V",
+    "normalization": "Paper induction plus 558 exact leaf probabilities, including all 256 bytes",
+    "normalization_vocabularies": [
+      1,
+      2,
+      3,
+      5,
+      8,
+      9,
+      17,
+      256,
+      257
+    ],
+    "frozen_whole_token_before_edit": true,
+    "single_depth_edit_improves_old_context_target_checked": true,
+    "generation_rng_isolated_and_failed_sample_preserves_state": true,
+    "json_resume_continuation_equal": true,
+    "invalid_restore_preserves_state": true,
+    "invalid_reference_and_energy_rejected_before_observe": true,
+    "source_events_checked": 32,
+    "actual_updates": 0,
+    "test_split_used": false,
+    "dataset_revision": "433fe0f44ed7894fea29c08b3202aa348ccc6369",
+    "reference_head_independent_nibbles": 8,
+    "head_packed_bytes": 4,
+    "head_is_full_generated_brain": false,
+    "fixture_history": "One sampled hidden mask with 8 logical bits; recurrence follows the specified finite joint factors; language sufficiency is unproved",
+    "continuous_async_world_or_action_consequences_admitted": false,
+    "external_ticks_per_byte": 1,
+    "byte_source_cursor_restore_equal": true,
+    "native_source": {
+      "manifest": "3614c380d4c72688ac8ccde42f32ea0655d16bec1ba0874a924fd777af904d2d",
+      "files": {
+        "tokenizer.json": "e727da4afe06d37d6ffff7db05ab21f69c5be39253ee7b7f7ec759cadab69c1d",
+        "train.npy": "2f227239bc63b89daf31956701d243a93f9dd46671702fff03763b33dc6db4fb",
+        "validation.npy": "60d41d3fdda8c1718ad1735693eda0dae2b23a0032c5e04a29aac9d0c6d35d8c"
+      },
+      "verified_document_counts": {
+        "train": 9786,
+        "validation": 114
+      },
+      "native_byte_counts": {
+        "train": 48125691,
+        "validation": 467911
+      }
+    },
+    "boundary_policy": "Strip offset-four storage and EOS/BOS framing; retain document metadata; no byte-clock reset",
+    "gpt2_adapter": {
+      "artifact": "results/published/cgb_local_port_owt_interface_20261025.json",
+      "artifact_sha256": "358e457b86e8cec1643ebe86b66a3da09953b5ca5bc0eac6870d5decb3b5c24c",
+      "vocabulary_size": 50257,
+      "unit": "GPT2_tokens",
+      "external_ticks_per_token": 1,
+      "source_events_checked": 32,
+      "actual_updates": 0,
+      "checkpoint_mode_read_only": true,
+      "transition": "legacy",
+      "checkpoint_format_version": 1
+    },
+    "transition": "joint",
+    "checkpoint_format_version": 2,
+    "logical_context_bits": 8,
+    "logical_context_bits_are_total_host_storage": false,
+    "joint_kernel": {
+      "theorem": "CGB.Interaction.Machine.conditioned_next",
+      "joint": "W(byte,hidden_next|s)=product_d q_d(hidden_next[d],bit[d]|s,prefix[d])",
+      "local_q": "Strictly positive weights normalized separately over two hidden values and each legal prefix branch",
+      "readout": "p(byte|s)=sum_hidden_next W(byte,hidden_next|s)",
+      "transition": "K(hidden_next|s,byte)=W(byte,hidden_next|s)/p(byte|s)",
+      "positive_observation_mass_required": true,
+      "conditional_nonnegative_normalized_unique_proved": true,
+      "whole_factor_tree_formalized_in_Lean": false,
+      "exact_posterior_tickets": 1824,
+      "old_frame_mask_and_rng_continuation_checked": true,
+      "shared_code_changes_readout_and_conditioned_hidden_law_checked": true,
+      "removing_history_factor_removes_context_readout_difference_checked": true,
+      "independent_joint_enumeration": {
+        "vocabularies": [
+          1,
+          3,
+          5
+        ],
+        "all_old_masks": true,
+        "seed": 71,
+        "normalized_contexts": 13,
+        "joint_cells": 369,
+        "observation_marginals": 53,
+        "method": "Exact Fractions: product of locally normalized q; marginal agrees with port and joint/marginal equals product of hidden conditionals"
+      },
+      "order": "Freeze old frame; score entire observation; sample hidden from old frame; propose one depth-code edit; commit mask/tick/RNG",
+      "initial_mask": "Registered boot-derived parameter, not an inferred world posterior",
+      "hidden_mask_is_world_belief": false,
+      "reference_runtime": "CPU serial bounded interface fixture",
+      "head_bytes_exclude_host_objects_counters_and_rng": true,
+      "snapshot_versions": {
+        "joint": 2,
+        "legacy": 1,
+        "missing_transition_only_legacy_v1": true
+      },
+      "wrong_versions_and_modes_rejected_atomically": true,
+      "old_v1_loader_rejects_joint_v2": true,
+      "law_family_constants_and_edit_proposal_forced_by_axioms": false,
+      "complete_body_transition_selected": false,
+      "fixture_is_architecture_proposal": false
+    },
+    "discrete_paid_replay_input_connected": true,
+    "delivered_auxiliary": "Current bounded tuple input, reused unchanged by predict/observe; restored from the world open frame, not a new model state field",
+    "auxiliary_rejects_before_reference_state_consumption": true,
+    "wall_clock_async_scheduler_implemented": false
+  },
+  "sensory_port": {
+    "module": "information_boltzmann/core/cgb_sensory_port.py",
+    "kind": "optional frozen additive observation, not a replacement for exact byte generation",
+    "model": "google/embeddinggemma-2",
+    "model_card": "https://huggingface.co/google/embeddinggemma-2",
+    "revision": "914f7f89142e33e77833254d9c9b90c3cef7303b",
+    "default_dimensions": 768,
+    "available_dimensions": [
+      128,
+      256,
+      512,
+      768
+    ],
+    "default_modalities": [
+      "text"
+    ],
+    "official_modalities": [
+      "text",
+      "image",
+      "video",
+      "audio"
+    ],
+    "default_device": "cpu",
+    "default_dtype": "float32",
+    "float16_rejected": true,
+    "default_local_files_only": true,
+    "frozen": true,
+    "weights_downloaded": false,
+    "official_weight_inference_tested": false,
+    "attached_to_generated_brain": false,
+    "validation": "Offline injected encoder and fake SentenceTransformer backend; causality, source bounds, shape, finite normalization, freezing and local-only loading",
+    "causal_contract": "source_end <= requested_at < arrival_tick <= read_tick; caller certifies payload belongs to declared source interval",
+    "actual_async_world_scheduler_implemented": false,
+    "default_max_input_bytes": 1048576,
+    "default_max_input_items": 32,
+    "utf8_measurement_workspace_upper_bytes": 4194304,
+    "output_768_float32_payload_bytes": 3072,
+    "reported_full_model_parameters_approx": 740000000,
+    "reported_text_only_parameters_approx": 270000000,
+    "full_model_storage_and_workspace_measured": false,
+    "sensor_cost_included_in_total_system_budget_required": true,
+    "runtime_probe": {
+      "versions": {
+        "torch": "2.9.1+cu126",
+        "transformers": "4.57.3",
+        "sentence-transformers": null
+      },
+      "embedding_gemma2_config_registered": false,
+      "device": "NVIDIA GeForce GTX 1650",
+      "native_bfloat16": false
+    }
+  },
+  "canonical_causal_state": {
+    "source": "lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean",
+    "theorems": [
+      "CGB.LanguageLifeKernel.CausalState.realizes",
+      "CGB.LanguageLifeKernel.CausalState.fold_refines",
+      "CGB.LanguageLifeKernel.CausalState.minimal",
+      "CGB.LanguageLifeKernel.CausalState.finite_bound",
+      "CGB.LanguageLifeKernel.CausalState.finite_alphabets_unbounded"
+    ],
+    "scope": "Abstract minimal representation for a fixed total deterministic history-readout contract; not a selected brain architecture or effective finite algorithm",
+    "task_contract": "required : List U -> O; all finite input histories and suffixes",
+    "state": "Set.range (h -> (suffix -> required(h ++ suffix)))",
+    "canonical_read_and_step_proved": true,
+    "arbitrary_forward_fold_proved": true,
+    "universal_projection": "Every exact deterministic fold realization S projects surjectively to canonical states; projection agrees on all reachable history states",
+    "finite_bound": "A finite exact realization implies finite canonical states and |Q| <= |S|; complete b-bit representation gives |Q| <= 2^b",
+    "finite_state_assumed_for_canonical_construction": false,
+    "finite_alphabet_infinite_state_counterexample": "Bool input/output: equality of true and false historical counts; prefixes true^n distinguished by suffix false^n",
+    "source_theorems_added": 5,
+    "source_lines_added": 91,
+    "compiled_declarations_added": 16,
+    "physical_core_clauses_used": [],
+    "proof_foundational_axioms": {
+      "CGB.LanguageLifeKernel.CausalState.realizes": [
+        "propext",
+        "Quot.sound"
+      ],
+      "CGB.LanguageLifeKernel.CausalState.fold_refines": [
+        "propext",
+        "Quot.sound"
+      ],
+      "CGB.LanguageLifeKernel.CausalState.minimal": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "CGB.LanguageLifeKernel.CausalState.finite_bound": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "CGB.LanguageLifeKernel.CausalState.finite_alphabets_unbounded": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    "independent_review_passed": true,
+    "full_build_and_trust_audit_passed": true,
+    "target_contract_grounded_in_world_selected": false,
+    "finite_effective_runtime_constructed": false,
+    "shared_local_rule_or_neural_topology_selected": false,
+    "language_learning_capability_verified": false,
+    "randomized_body_scope": "Requires a separately stated deterministic complete-state/random-input contract; no belief-mixture capacity inference",
+    "build_log": "lean/CGBAxioms/.lake/minimal_causal_state_20261025.build.log",
+    "audit_log": "lean/CGBAxioms/.lake/minimal_causal_state_20261025.audit.log"
+  },
+  "approximate_implementation_contract": {
+    "source": "lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean",
+    "theorems": [
+      "CGB.LanguageLifeKernel.Approximation.fold_error",
+      "CGB.LanguageLifeKernel.Approximation.invariant_error"
+    ],
+    "scope": "Conditional composition of full deterministic updates under the same arrived input continuation; error must measure or provably bound the registered readout discrepancy",
+    "one_step_premise": "L>=0 and E(reference(x,u),reduced(z,u)) <= L*E(x,z)+delta for every state/input in the registered closed domain",
+    "finite_horizon_bound": "e_n <= L^n*e_0 + delta*sum_{k<n} L^k",
+    "uniform_sufficient_condition": "e_0<=epsilon and L*epsilon+delta<=epsilon",
+    "contraction_required_as_general_axiom": false,
+    "full_update_must_include": [
+      "activity",
+      "parameters_and_structure_learning",
+      "history",
+      "reserve",
+      "actual_random_state"
+    ],
+    "reference_to_reduced_certificate_selected": false,
+    "finite_effective_brain_constructed": false,
+    "language_readout_alphabet": 256,
+    "language_readout_timing": "Predict normalized next-byte probabilities from arrived past before the next target updates the model",
+    "candidate_error_measure": "Total variation of one-byte probabilities against a registered reference generation law; reference law is not yet identified",
+    "reference_generation_law": null,
+    "measured_language_epsilon": null,
+    "measured_step_L": null,
+    "measured_step_delta": null,
+    "reference_vs_world_mismatch_separate": true,
+    "TV_alone_implies_target_NLL_bound": false,
+    "native_integer_arithmetic_exactness_implies_language_accuracy": false,
+    "different_action_world_input_branches_covered": false,
+    "fixture_audit": "The joint fixture is an operator/interface asset only; its constants, mask size and edit proposal are not a preselected brain architecture. A grounded task contract must precede state/resource derivation; language epsilon/L/delta remain unknown",
+    "source_theorems_added": 2,
+    "source_lines_added": 43,
+    "source_lines_removed": 37,
+    "net_source_lines_added": 6,
+    "physical_core_clauses_used": [],
+    "proof_foundational_axioms": {
+      "CGB.LanguageLifeKernel.Approximation.fold_error": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "CGB.LanguageLifeKernel.Approximation.invariant_error": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    "independent_review_passed": true,
+    "full_build_and_trust_audit_passed": true,
+    "build_log": "lean/CGBAxioms/.lake/approximation_fold_20261025.build.log",
+    "audit_log": "lean/CGBAxioms/.lake/approximation_fold_20261025.audit.log"
+  },
+  "precision_resource_contract": {
+    "source": "lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean",
+    "theorem": "CGB.LanguageLifeKernel.CausalState.separated_histories_capacity",
+    "scope": "Necessary readable-code capacity under a registered uniform metric-error contract on common legal continuations",
+    "premises": [
+      "Required history readout and legal histories/continuations are supplied by the world task",
+      "Code is fixed before suffix selection; decoder has only that code and the suffix plus registered fixed side information",
+      "Every admitted family response has pointwise error <= epsilon",
+      "Every pair in the family has a common legal continuation with required-response distance > 2*epsilon"
+    ],
+    "conclusion": "code composed with history is injective; for finite family I and code space S, card(I)<=card(S)",
+    "bit_instance": "A complete fixed B-bit code with M>=1 separated histories requires M<=2^B and B>=ceil(log2 M)",
+    "fin_bit_instance_checked": true,
+    "bit_instance_is_new_source_theorem": false,
+    "approximate_closeness_assumed_transitive": false,
+    "communication_application": {
+      "status": "paper specialization plus declared channel-capacity contract",
+      "query_and_public_side_information_fixed": true,
+      "bound": "If receiving side state has at most 2^a values and the complete transcript delivered by the deadline has at most 2^C values, then M_query<=2^(a+C)",
+      "pairwise_different_queries_M_cannot_replace_M_query": true,
+      "analytical_counterexample": "n stored bits admit 2^n distinguishable histories across index queries, while a response to a fixed index can be one bit",
+      "count_all_visible_signals": [
+        "payload",
+        "address",
+        "route",
+        "silence",
+        "length",
+        "order",
+        "send/arrival timing"
+      ],
+      "deadline_and_bandwidth_formalized_in_Lean": false
+    },
+    "complete_history_information": [
+      "learned parameters",
+      "hidden state",
+      "mutable structure",
+      "caches",
+      "queues",
+      "routing/cursors",
+      "persistent RNG state",
+      "accessible external records or their explicitly charged communication"
+    ],
+    "risk_scope": "Worst-case over declared histories, common legal suffixes and full run conditions; average NLL or stochastic-encoder average risk does not directly instantiate this theorem",
+    "fixed_file_unique_future_is_common_continuation_certificate": false,
+    "grounded_language_response_contract_selected": false,
+    "measured_separated_history_family_size": null,
+    "measured_uniform_readout_epsilon": null,
+    "certified_complete_state_bit_requirement": null,
+    "registered_causal_cut": null,
+    "registered_deadline_ticks": null,
+    "certified_delivered_transcript_capacity_bits": null,
+    "wall_seconds_per_tick": null,
+    "necessary_capacity_is_gpu_memory_bound": false,
+    "capacity_bound_proves_runtime_optimality": false,
+    "recursive_algorithm_generated": false,
+    "measured_precision_speed_resource_superiority": false,
+    "architecture_selection_order": "world/organism contract -> required distinctions -> reachable information and resource/time obligations -> construct shared recurrence -> prove and measure",
+    "named_architecture_families_preselected": false,
+    "arbitrary_weighted_performance_objective_added": false,
+    "physical_core_clauses_used": [],
+    "new_general_axioms": 0,
+    "independent_scope_review_passed": true,
+    "full_build_and_trust_audit_passed": true,
+    "audit_summary": "lean/CGBAxioms/.lake/precision_capacity_20261025.summary.json",
+    "coding_scope": "Code capacity includes combinations and all readable physical carriers; readout O may be a temporal window. M is not the count of lifetime stimuli or exact microscopic configurations"
+  },
+  "open_stream_scope": {
+    "finite_body_and_unbounded_interaction_compatible": true,
+    "coding_bound_counts_task_relevant_retained_distinctions_not_lifetime_observations": true,
+    "combination_codes_included_in_complete_code_space": true,
+    "temporal_window_readout_allowed": "O may be an admitted space-time response window; its source information and elapsed time remain explicit",
+    "fixed_state_shared_future_deterministic_word_count_bounded_by_state_count": true,
+    "fresh_input_or_external_records_not_free_recovery_of_erased_past": true,
+    "finite_driven_body_implies_periodic_open_trajectory": false,
+    "microscopic_nonrecurrence_implies_infinite_reliably_readable_memory": false,
+    "existing_semantics": "Interaction finite S/O, arbitrary I, arbitrary finite histories and trace_prefix_consistent; no preset horizon",
+    "infinite_path_measure_formalized": false,
+    "legacy_world_scope": "Life.World has Fintype W; Operational.EncodedCandidate.rich is a static cardinality inequality, not a continuous-input or effective-novelty guarantee",
+    "world_continuity_effective_information_and_supply_contract_completed": false,
+    "irreversibility_alone_implies_perpetual_useful_new_information": false,
+    "uniform_marginal_survival_implies_single_path_never_fails": false,
+    "mathematical_reference_state_scope": "LanguageLifeKernel.State contains unbounded Nat/Int fields; finite graph is not a finite full body. Bounded physical-state representations need separate range/representation admission; external tick is not free body memory",
+    "biology_or_world_nonrepetition_required_as_new_general_axiom": false,
+    "audit_sources": [
+      "lean/CGBAxioms/CGBAxioms/Interaction.lean",
+      "lean/CGBAxioms/CGBAxioms/Life.lean",
+      "lean/CGBAxioms/CGBAxioms/OperationalLife.lean",
+      "lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean"
+    ],
+    "scope": "Existing open-interaction semantics plus a finite real-byte paid delayed-world interface instance; no new theorem or training, no perpetual information or supply certificate",
+    "discrete_paid_public_prefix_instance_implemented": true,
+    "actual_finite_source_eof_explicit": true,
+    "independent_wall_clock_producer_implemented": false
+  },
+  "world_interface": {
+    "artifact": "results/published/cgb_public_prefix_world_20261025.json",
+    "artifact_sha256": "6c36843a26da4037a1692a5348cf9d451804af1491369580d5dc920706900f09",
+    "source": "information_boltzmann/core/cgb_low_resource_life.py",
+    "validator": "scripts/validate_cgb_contract.py",
+    "status": "delayed_public_prefix_interface_audit",
+    "source_revision": "433fe0f44ed7894fea29c08b3202aa348ccc6369",
+    "prefix_scope": "already published validation prefix; no future or train-only fiction",
+    "audit_source_hashes_visible_to_learner": false,
+    "unit_checks": {
+      "atomic_prefix_range_rejection": true,
+      "positive_delay_fresh_continuity": true,
+      "single_pending_slot": true,
+      "single_receipt_delivery": true,
+      "bounded_read_block": true,
+      "all_fees_and_spill_conserved": true,
+      "absorbing_failure": true,
+      "explicit_eof": true,
+      "pending_and_open_receipt_json_restore": true,
+      "illegal_snapshot_atomic_rejection": true,
+      "public_prefix_nonanticipation": true,
+      "auxiliary_and_vocab_atomic_rejection": true
+    },
+    "nominal": {
+      "fresh_bytes": 256,
+      "replay_bytes": 64,
+      "active_bridge_bytes": 256,
+      "uniform_fallback_bytes": 0,
+      "resource_counts": {
+        "maintenance_spent": 256,
+        "request_spent": 32,
+        "holding_spent": 48,
+        "read_spent": 64,
+        "offered": 512,
+        "spill": 97,
+        "accepted": 16,
+        "delivered": 16,
+        "cancelled": 0,
+        "replayed_bytes": 64,
+        "fresh": 256
+      },
+      "final_reserve": 31,
+      "trusted_whole_loop_json_snapshot_max_bytes": 16104,
+      "matched_same_old_state_information_cut_pairs": 16
+    },
+    "resource_cut": {
+      "fresh_bytes": 256,
+      "replay_bytes": 4,
+      "active_bridge_bytes": 7,
+      "uniform_fallback_bytes": 249,
+      "resource_counts": {
+        "maintenance_spent": 7,
+        "request_spent": 2,
+        "holding_spent": 3,
+        "read_spent": 4,
+        "offered": 0,
+        "spill": 0,
+        "accepted": 1,
+        "delivered": 1,
+        "cancelled": 0,
+        "replayed_bytes": 4,
+        "fresh": 256
+      },
+      "final_reserve": 0,
+      "trusted_whole_loop_json_snapshot_max_bytes": 16102
+    },
+    "pending_owner": "environment; charged single slot with frozen source interval and at most four payload bytes in this audit",
+    "external_archive_bytes": 467911,
+    "external_archive_host_object_bytes": 467944,
+    "snapshot_byte_measure": "Serialized trusted whole-loop JSON at registered pending/open-receipt cuts; not resident memory, full-run maximum or peak workspace",
+    "source_eof_behavior": "StopIteration before further tick charges; pending snapshot remains preserved, no implicit loop",
+    "supply_and_tariffs": "Fixed external supply; maintenance=1, request=2, holding=1 per waiting interval including due tick, read=1 per byte; units not joules",
+    "resource_balance": "reserve + maintenance + request + holding + read + spill = initial + offered, at every checked prefix",
+    "pending_balance": "accepted - delivered - cancelled = occupied, in {0,1}",
+    "information_cut_scope": "Same old body state and paid world; compare actual receipt with equal-length zero bytes. This is readout-channel use, not a paired policy-quality experiment.",
+    "wall_seconds_per_tick": null,
+    "wall_clock_deadline_certified": false,
+    "model_persistent_auxiliary_field_added": false,
+    "model_checkpoint_version_changed": false,
+    "actual_updates": 0,
+    "active_acquisition_policy_learned": false,
+    "complete_finite_body_representation_certified": false,
+    "architecture_or_learning_capability_claim": false,
+    "new_general_axioms": 0,
+    "new_lean_modules": 0,
+    "new_source_theorems": 0
+  }
+}

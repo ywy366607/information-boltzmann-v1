@@ -1,0 +1,50 @@
+{
+  "scope": "finite PortSeparation kernel operator microbenchmark; no training or capability claim",
+  "device": "cuda",
+  "cuda_available": true,
+  "torch_version": "2.9.1+cu126",
+  "states": 24,
+  "inputs": 16,
+  "batch": 256,
+  "steps": 32,
+  "repeats": 50,
+  "seed": 20261024,
+  "modes": {
+    "float32": {
+      "status": "ok",
+      "seconds_per_run": 0.0027216540000517854,
+      "runs_per_second": 367.42363282804234,
+      "checksum": 145325.0,
+      "max_abs_error_vs_float64": 0.0
+    },
+    "float64": {
+      "status": "ok",
+      "seconds_per_run": 0.005452571999921929,
+      "runs_per_second": 183.39968734283897,
+      "checksum": 145325.0,
+      "max_abs_error_vs_float64": 0.0
+    },
+    "int64": {
+      "status": "unsupported",
+      "error": "\"baddbmm_cuda\" not implemented for 'Long'"
+    },
+    "fixed_q12_int64": {
+      "status": "unsupported",
+      "error": "\"baddbmm_cuda\" not implemented for 'Long'"
+    },
+    "float16": {
+      "status": "ok",
+      "seconds_per_run": 0.003996539999934612,
+      "runs_per_second": 250.21643722228757,
+      "checksum": 145325.0,
+      "max_abs_error_vs_float64": 0.0
+    },
+    "bfloat16": {
+      "status": "ok",
+      "seconds_per_run": 0.002294240000046557,
+      "runs_per_second": 435.8741892651628,
+      "checksum": 145325.0,
+      "max_abs_error_vs_float64": 0.0
+    }
+  }
+}

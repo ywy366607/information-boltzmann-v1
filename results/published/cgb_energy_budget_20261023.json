@@ -1,0 +1,506 @@
+{
+  "status": "full_build_and_trust_audit_passed",
+  "timestamp": "2026-10-23T22:10:47+08:00",
+  "baseline_commit": "25b21ec0cf7fe3982b35067fbf2dc6061698f243",
+  "scope": "Supported-event energy accounting and conditional mean isothermal availability budgets on the unchanged process. Not a derivation of the second law from the six medium predicates, a measured chemical calibration or a full self-maintaining life witness.",
+  "core_results": [
+    "Supported-event first law averages along the original normalized actual state law.",
+    "Finite-prefix free-energy/work/production identity yields reserve and cyclic work bounds, and rules out positive sustained availability use on bounded supply and reserve.",
+    "The same fixed-identity material process supports different energy calibrations; physical energy ports require separate carrier evidence."
+  ],
+  "energy_ports": {
+    "stored": "Time-indexed internal energy of the declared system boundary.",
+    "drive": "Signed work into the system from the drive port.",
+    "load": "Signed work delivered out to the load port.",
+    "matter": "Signed advected energy into the system.",
+    "heat": "Signed heat into the system.",
+    "first_law": "U(t+1,s_next) + load = U(t,s) + drive + matter + heat on every supported event.",
+    "time_index": "External world tick; no extra organism memory."
+  },
+  "availability_conditions": {
+    "temperature": "Fixed positive reference bath temperature.",
+    "entropy": "Physically calibrated entropy with time/protocol dependence and energy-per-temperature units; not predictive loss.",
+    "boundary_entropy": "Complete non-thermal entropy transport; work ports interpreted as ideal work.",
+    "mean_second_law": "Nonnegative ensemble entropy-production residual along the actual initial-state law.",
+    "second_law_derived_from_six_axioms": false,
+    "nonnegative_trajectory_production_imposed": false,
+    "reserve_lower_bound": "Required explicitly for a finite-reserve bound; not inferred from arbitrary entropy callbacks.",
+    "positive_maintenance_demand": "Not assumed for all life; must be established for the particular mechanism."
+  },
+  "finite_prefix_identity": "F_n + sum(load) + T*sum(mean_production) = F_0 + sum(drive + matter_energy - T*carried_entropy)",
+  "sustained_use_result": "With a uniform free-energy lower bound and a bound on cumulative available supply, no fixed epsilon>0 can lower-bound cumulative delivered work plus T*mean production by n*epsilon for every prefix.",
+  "control": {
+    "process": "CGB.MaterialSourceControls.physical",
+    "material_process_changed": false,
+    "system_boundary": "Body + accessible source + return sink; work/heat receivers and exterior material store are outside that boundary.",
+    "total_energy_partition": "internal + exterior_material + work_receiver + heat_receiver = 2*scale at every phase.",
+    "material_port_binding": "Each supported material-energy inflow equals 2*scale times the same exterior-to-source token transfer.",
+    "double_counting_avoided": "Source-to-body relocation is internal to this chosen boundary; its incoming energy is not added again.",
+    "positive_scale": 1,
+    "exterior_input": 2,
+    "work_output": 1,
+    "heat_into_system": -1,
+    "zero_scale_same_material_intake": 1,
+    "zero_scale_work_output": 0,
+    "isothermal_accounting_condition_checked": "For nonnegative scale, T=1, declared system entropy zero and nonthermal entropy transport zero.",
+    "physical_entropy_or_local_detailed_balance_inferred": false,
+    "actual_physical_thermodynamic_realization_claimed": false
+  },
+  "compatibility": {
+    "previous_declaration_signatures_preserved": 1404,
+    "previous_lean_source_changes": [
+      "CGBAxioms/AuditAll.lean",
+      "CGBAxioms.lean"
+    ],
+    "previous_nonentry_source_hashes_preserved": true,
+    "physical_axioms_changed": false,
+    "existing_dynamics_and_world_clock_changed": false,
+    "new_life_scoring_framework": false,
+    "existing_candidate_fields_changed": false,
+    "original_user_definition_preserved_verbatim": true
+  },
+  "inventory": {
+    "declarations": 1473,
+    "modules": [
+      "CGBAxioms.Language",
+      "CGBAxioms.Symmetry",
+      "CGBAxioms.Medium",
+      "CGBAxioms.Life",
+      "CGBAxioms.Models",
+      "CGBAxioms.Inference",
+      "CGBAxioms.Foundation",
+      "CGBAxioms.RuleEncoding",
+      "CGBAxioms.WorldRecovery",
+      "CGBAxioms.OperationalLife",
+      "CGBAxioms.RecoveryControls",
+      "CGBAxioms.Interaction",
+      "CGBAxioms.InteractionBridge",
+      "CGBAxioms.InteractionControls",
+      "CGBAxioms.ConstraintAudit",
+      "CGBAxioms.ConstraintFreedom",
+      "CGBAxioms.SubconditionGraph",
+      "CGBAxioms.AtomicIndependence",
+      "CGBAxioms.NoetherBridge",
+      "CGBAxioms.LifeControls",
+      "CGBAxioms.EventChannels",
+      "CGBAxioms.MaterialExchange",
+      "CGBAxioms.TurnoverControls",
+      "CGBAxioms.MaterialSource",
+      "CGBAxioms.MaterialSourceControls",
+      "CGBAxioms.EnergyBudget",
+      "CGBAxioms.EnergyControls"
+    ],
+    "theorems": 902
+  },
+  "source_declared_theorems": 342,
+  "new_source_theorems": [
+    "CGB.Energetics.availability_balance",
+    "CGB.Energetics.expected_first_law",
+    "CGB.Energetics.law_probability",
+    "CGB.Energetics.no_sustained_use_on_finite_supply",
+    "CGB.Energetics.work_budget",
+    "CGB.EnergyControls.isothermal_account",
+    "CGB.EnergyControls.material_energy_binding",
+    "CGB.EnergyControls.same_material_different_energy",
+    "CGB.EnergyControls.total_partition"
+  ],
+  "new_source_theorem_count": 9,
+  "proof_trust_passed": true,
+  "module_coverage_passed": true,
+  "audit_guard_checks": 10,
+  "remaining_obligations": [
+    "Carrier-specific energy units, heat/work identification, physical entropy and bath/channel coupling evidence.",
+    "Resource-consequential actions and matched normal/cut/source/energy intervention certificates.",
+    "Positive availability demand of a particular maintenance mechanism.",
+    "Full encoded-budget causal self-maintenance and biological-life/cognition witness."
+  ],
+  "primary_reference": {
+    "title": "Entropy production along a stochastic trajectory and an integral fluctuation theorem",
+    "author": "Udo Seifert",
+    "year": 2005,
+    "url": "https://arxiv.org/abs/cond-mat/0503686",
+    "role": "Trajectory fluctuations versus mean constraints; not evidence that this project derives a physical second law."
+  },
+  "certificates": [
+    {
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "kind": "theorem",
+      "module": "CGBAxioms.EnergyBudget",
+      "name": "CGB.Energetics.availability_balance",
+      "project_dependencies": [
+        "CGB.Energetics.Account",
+        "CGB.Energetics.expected_first_law",
+        "CGB.Energetics.flux",
+        "CGB.Energetics.freeEnergy",
+        "CGB.Energetics.law",
+        "CGB.Energetics.mean",
+        "CGB.Energetics.production",
+        "CGB.Energetics.suppliedAvailability",
+        "CGB.Interaction.Machine",
+        "CGB.Energetics.Account.drive",
+        "CGB.Energetics.Account.heat",
+        "CGB.Energetics.Account.load",
+        "CGB.Energetics.Account.matter",
+        "CGB.Energetics.Account.stored"
+      ],
+      "signature": "∀ {S : Type u_1} {O : Type u_2} [inst : Fintype S] [inst_1 : DecidableEq S] [inst_2 : Fintype O]\n  (P : CGB.Interaction.Machine S ℕ O) (a : CGB.Energetics.Account P) (initial : S) (T : ℝ) (entropy : ℕ → (S → ℝ) → ℝ)\n  (carriedEntropy : ℕ → S → O → S → ℝ),\n  0 < T →\n    ∀ (t : ℕ),\n      CGB.Energetics.freeEnergy P a initial T entropy (t + 1) - CGB.Energetics.freeEnergy P a initial T entropy t +\n            CGB.Energetics.flux P initial a.load t +\n          T * CGB.Energetics.production P a initial T entropy carriedEntropy t =\n        CGB.Energetics.suppliedAvailability P a initial T carriedEntropy t",
+      "type_dependencies": [
+        "CGB.Interaction.Machine",
+        "CGB.Energetics.Account",
+        "CGB.Energetics.freeEnergy",
+        "CGB.Energetics.flux",
+        "CGB.Energetics.Account.load",
+        "CGB.Energetics.production",
+        "CGB.Energetics.suppliedAvailability"
+      ],
+      "source_declared": true
+    },
+    {
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "kind": "theorem",
+      "module": "CGBAxioms.EnergyBudget",
+      "name": "CGB.Energetics.expected_first_law",
+      "project_dependencies": [
+        "CGB.Energetics.Account",
+        "CGB.Energetics.events",
+        "CGB.Energetics.flux",
+        "CGB.Energetics.law",
+        "CGB.Energetics.mean",
+        "CGB.Interaction.Machine",
+        "CGB.Energetics.Account.balance",
+        "CGB.Energetics.Account.drive",
+        "CGB.Energetics.Account.heat",
+        "CGB.Energetics.Account.load",
+        "CGB.Energetics.Account.matter",
+        "CGB.Energetics.Account.stored",
+        "CGB.Energetics.expected_first_law._simp_1_3",
+        "CGB.Energetics.expected_first_law._simp_1_4",
+        "CGB.Energetics.expected_first_law._simp_1_7",
+        "CGB.EventChannels.Kernel.stateLaw",
+        "CGB.Interaction.Machine.nonneg",
+        "CGB.Interaction.Machine.step",
+        "CGB.Interaction.Machine.sum_one"
+      ],
+      "signature": "∀ {S : Type u_1} {O : Type u_2} [inst : Fintype S] [inst_1 : DecidableEq S] [inst_2 : Fintype O]\n  (P : CGB.Interaction.Machine S ℕ O) (a : CGB.Energetics.Account P) (initial : S) (t : ℕ),\n  CGB.Energetics.mean (CGB.Energetics.law P initial (t + 1)) (a.stored (t + 1)) +\n      CGB.Energetics.flux P initial a.load t =\n    CGB.Energetics.mean (CGB.Energetics.law P initial t) (a.stored t) + CGB.Energetics.flux P initial a.drive t +\n        CGB.Energetics.flux P initial a.matter t +\n      CGB.Energetics.flux P initial a.heat t",
+      "type_dependencies": [
+        "CGB.Interaction.Machine",
+        "CGB.Energetics.Account",
+        "CGB.Energetics.mean",
+        "CGB.Energetics.law",
+        "CGB.Energetics.Account.stored",
+        "CGB.Energetics.flux",
+        "CGB.Energetics.Account.load",
+        "CGB.Energetics.Account.drive",
+        "CGB.Energetics.Account.matter",
+        "CGB.Energetics.Account.heat"
+      ],
+      "source_declared": true
+    },
+    {
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "kind": "theorem",
+      "module": "CGBAxioms.EnergyBudget",
+      "name": "CGB.Energetics.law_probability",
+      "project_dependencies": [
+        "CGB.Energetics.events",
+        "CGB.Energetics.law",
+        "CGB.Interaction.Machine",
+        "CGB.Energetics.law_probability._simp_1_1",
+        "CGB.EventChannels.Kernel.forget",
+        "CGB.EventChannels.Kernel.stateLaw",
+        "CGB.FirstHit.Kernel.nonneg",
+        "CGB.FirstHit.Kernel.step",
+        "CGB.FirstHit.Kernel.sum_one"
+      ],
+      "signature": "∀ {S : Type u_1} {O : Type u_2} [inst : Fintype S] [inst_1 : DecidableEq S] [inst_2 : Fintype O]\n  (P : CGB.Interaction.Machine S ℕ O) (initial : S) (t : ℕ),\n  (∀ (s : S), 0 ≤ CGB.Energetics.law P initial t s) ∧ ∑ s, CGB.Energetics.law P initial t s = 1",
+      "type_dependencies": [
+        "CGB.Interaction.Machine",
+        "CGB.Energetics.law"
+      ],
+      "source_declared": true
+    },
+    {
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "kind": "theorem",
+      "module": "CGBAxioms.EnergyBudget",
+      "name": "CGB.Energetics.no_sustained_use_on_finite_supply",
+      "project_dependencies": [
+        "CGB.Energetics.Account",
+        "CGB.Energetics.Isothermal",
+        "CGB.Energetics.flux",
+        "CGB.Energetics.freeEnergy",
+        "CGB.Energetics.production",
+        "CGB.Energetics.suppliedAvailability",
+        "CGB.Energetics.work_budget",
+        "CGB.Interaction.Machine",
+        "CGB.Energetics.Account.load",
+        "CGB.Energetics.no_sustained_use_on_finite_supply._simp_1_1"
+      ],
+      "signature": "∀ {S : Type u_1} {O : Type u_2} [inst : Fintype S] [inst_1 : DecidableEq S] [inst_2 : Fintype O]\n  (P : CGB.Interaction.Machine S ℕ O) (a : CGB.Energetics.Account P) (initial : S) (T : ℝ) (entropy : ℕ → (S → ℝ) → ℝ)\n  (carriedEntropy : ℕ → S → O → S → ℝ),\n  CGB.Energetics.Isothermal P a initial T entropy carriedEntropy →\n    ∀ (lower supplyBound ε : ℝ),\n      0 < ε →\n        (∀ (n : ℕ), lower ≤ CGB.Energetics.freeEnergy P a initial T entropy n) →\n          (∀ (n : ℕ),\n              ∑ t ∈ Finset.range n, CGB.Energetics.suppliedAvailability P a initial T carriedEntropy t ≤ supplyBound) →\n            ¬∀ (n : ℕ),\n                ↑n * ε ≤\n                  ∑ t ∈ Finset.range n,\n                    (CGB.Energetics.flux P initial a.load t +\n                      T * CGB.Energetics.production P a initial T entropy carriedEntropy t)",
+      "type_dependencies": [
+        "CGB.Interaction.Machine",
+        "CGB.Energetics.Account",
+        "CGB.Energetics.Isothermal",
+        "CGB.Energetics.freeEnergy",
+        "CGB.Energetics.suppliedAvailability",
+        "CGB.Energetics.flux",
+        "CGB.Energetics.Account.load",
+        "CGB.Energetics.production"
+      ],
+      "source_declared": true
+    },
+    {
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "kind": "theorem",
+      "module": "CGBAxioms.EnergyBudget",
+      "name": "CGB.Energetics.work_budget",
+      "project_dependencies": [
+        "CGB.Energetics.Account",
+        "CGB.Energetics.Isothermal",
+        "CGB.Energetics.availability_balance",
+        "CGB.Energetics.flux",
+        "CGB.Energetics.freeEnergy",
+        "CGB.Energetics.production",
+        "CGB.Energetics.suppliedAvailability",
+        "CGB.Interaction.Machine",
+        "CGB.Energetics.Account.load"
+      ],
+      "signature": "∀ {S : Type u_1} {O : Type u_2} [inst : Fintype S] [inst_1 : DecidableEq S] [inst_2 : Fintype O]\n  (P : CGB.Interaction.Machine S ℕ O) (a : CGB.Energetics.Account P) (initial : S) (T : ℝ) (entropy : ℕ → (S → ℝ) → ℝ)\n  (carriedEntropy : ℕ → S → O → S → ℝ),\n  CGB.Energetics.Isothermal P a initial T entropy carriedEntropy →\n    ∀ (n : ℕ),\n      CGB.Energetics.freeEnergy P a initial T entropy n + ∑ t ∈ Finset.range n, CGB.Energetics.flux P initial a.load t +\n            T * ∑ t ∈ Finset.range n, CGB.Energetics.production P a initial T entropy carriedEntropy t =\n          CGB.Energetics.freeEnergy P a initial T entropy 0 +\n            ∑ t ∈ Finset.range n, CGB.Energetics.suppliedAvailability P a initial T carriedEntropy t ∧\n        (∀ lower ≤ CGB.Energetics.freeEnergy P a initial T entropy n,\n            ∑ t ∈ Finset.range n, CGB.Energetics.flux P initial a.load t ≤\n              CGB.Energetics.freeEnergy P a initial T entropy 0 - lower +\n                ∑ t ∈ Finset.range n, CGB.Energetics.suppliedAvailability P a initial T carriedEntropy t) ∧\n          (CGB.Energetics.freeEnergy P a initial T entropy n = CGB.Energetics.freeEnergy P a initial T entropy 0 →\n            ∑ t ∈ Finset.range n, CGB.Energetics.flux P initial a.load t ≤\n              ∑ t ∈ Finset.range n, CGB.Energetics.suppliedAvailability P a initial T carriedEntropy t)",
+      "type_dependencies": [
+        "CGB.Interaction.Machine",
+        "CGB.Energetics.Account",
+        "CGB.Energetics.Isothermal",
+        "CGB.Energetics.freeEnergy",
+        "CGB.Energetics.flux",
+        "CGB.Energetics.Account.load",
+        "CGB.Energetics.production",
+        "CGB.Energetics.suppliedAvailability"
+      ],
+      "source_declared": true
+    },
+    {
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "kind": "theorem",
+      "module": "CGBAxioms.EnergyControls",
+      "name": "CGB.EnergyControls.isothermal_account",
+      "project_dependencies": [
+        "CGB.Energetics.Isothermal",
+        "CGB.Energetics.flux",
+        "CGB.Energetics.law",
+        "CGB.Energetics.law_probability",
+        "CGB.Energetics.production",
+        "CGB.EnergyControls.account",
+        "CGB.Interaction.Machine",
+        "CGB.MaterialSourceControls.Phase",
+        "CGB.MaterialSourceControls.event",
+        "CGB.MaterialSourceControls.next",
+        "CGB.MaterialSourceControls.physical",
+        "CGB.Energetics.Account.heat",
+        "CGB.EnergyControls.internal._proof_1",
+        "CGB.Interaction.Machine.mk",
+        "CGB.Interaction.Machine.step",
+        "CGB.MaterialSourceControls.next._proof_1",
+        "CGB.Interaction.Machine.deterministic._proof_1",
+        "CGB.Interaction.Machine.deterministic._proof_2",
+        "CGB.Interaction.Machine.mk.congr_simp"
+      ],
+      "signature": "∀ (a : ℝ),\n  0 ≤ a →\n    CGB.Energetics.Isothermal CGB.MaterialSourceControls.physical (CGB.EnergyControls.account a) 0 1 (fun x x_1 => 0)\n      fun x x_1 x_2 x_3 => 0",
+      "type_dependencies": [
+        "CGB.Energetics.Isothermal",
+        "CGB.MaterialSourceControls.Phase",
+        "CGB.MaterialSourceControls.physical",
+        "CGB.EnergyControls.account"
+      ],
+      "source_declared": true
+    },
+    {
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "kind": "theorem",
+      "module": "CGBAxioms.EnergyControls",
+      "name": "CGB.EnergyControls.material_energy_binding",
+      "project_dependencies": [
+        "CGB.EnergyControls.account",
+        "CGB.Interaction.Machine",
+        "CGB.MaterialSource.Place",
+        "CGB.MaterialSource.instDecidableEqPlace",
+        "CGB.MaterialSource.moved",
+        "CGB.MaterialSourceControls.Phase",
+        "CGB.MaterialSourceControls.event",
+        "CGB.MaterialSourceControls.next",
+        "CGB.MaterialSourceControls.owner",
+        "CGB.MaterialSourceControls.physical",
+        "CGB.Energetics.Account.matter",
+        "CGB.EnergyControls.internal._proof_1",
+        "CGB.EnergyControls.internal._proof_2",
+        "CGB.Interaction.Machine.mk",
+        "CGB.Interaction.Machine.step",
+        "CGB.MaterialSource.Place.body",
+        "CGB.MaterialSource.Place.ctorIdx",
+        "CGB.MaterialSource.Place.outside",
+        "CGB.MaterialSource.Place.sink",
+        "CGB.MaterialSource.Place.source",
+        "CGB.MaterialSourceControls.next._proof_1",
+        "CGB.Interaction.Machine.deterministic._proof_1",
+        "CGB.Interaction.Machine.deterministic._proof_2",
+        "CGB.Interaction.Machine.mk.congr_simp"
+      ],
+      "signature": "∀ (a : ℝ) (t : ℕ) (p p' : CGB.MaterialSourceControls.Phase) (e : Option Unit),\n  0 < CGB.MaterialSourceControls.physical.step t p e p' →\n    (CGB.EnergyControls.account a).matter t p e p' =\n      2 * a *\n        ↑(CGB.MaterialSource.moved (CGB.MaterialSourceControls.owner p) (CGB.MaterialSourceControls.owner p')\n            CGB.MaterialSource.Place.outside CGB.MaterialSource.Place.source)",
+      "type_dependencies": [
+        "CGB.MaterialSourceControls.Phase",
+        "CGB.Interaction.Machine.step",
+        "CGB.MaterialSourceControls.physical",
+        "CGB.Energetics.Account.matter",
+        "CGB.EnergyControls.account",
+        "CGB.MaterialSource.moved",
+        "CGB.MaterialSourceControls.owner",
+        "CGB.MaterialSource.Place.outside",
+        "CGB.MaterialSource.Place.source"
+      ],
+      "source_declared": true
+    },
+    {
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "kind": "theorem",
+      "module": "CGBAxioms.EnergyControls",
+      "name": "CGB.EnergyControls.same_material_different_energy",
+      "project_dependencies": [
+        "CGB.Energetics.Account",
+        "CGB.EnergyControls.account",
+        "CGB.EnergyControls.exterior",
+        "CGB.EnergyControls.heatReceiver",
+        "CGB.EnergyControls.internal",
+        "CGB.EnergyControls.workReceiver",
+        "CGB.MaterialSource.Place",
+        "CGB.MaterialSource.instDecidableEqPlace",
+        "CGB.MaterialSource.moved",
+        "CGB.MaterialSourceControls.Phase",
+        "CGB.MaterialSourceControls.owner",
+        "CGB.MaterialSourceControls.physical",
+        "CGB.Energetics.Account.heat",
+        "CGB.Energetics.Account.load",
+        "CGB.Energetics.Account.matter",
+        "CGB.Energetics.Account.mk",
+        "CGB.EnergyControls.account._proof_1",
+        "CGB.EnergyControls.internal._proof_1",
+        "CGB.EnergyControls.internal._proof_2",
+        "CGB.Interaction.Machine.step",
+        "CGB.MaterialSource.Place.body",
+        "CGB.MaterialSource.Place.ctorIdx",
+        "CGB.MaterialSource.Place.outside",
+        "CGB.MaterialSource.Place.sink",
+        "CGB.MaterialSource.Place.source",
+        "CGB.MaterialSourceControls.next._proof_1",
+        "CGB.Energetics.Account.mk.congr_simp"
+      ],
+      "signature": "∀ (t : ℕ),\n  CGB.MaterialSource.moved (CGB.MaterialSourceControls.owner 1) (CGB.MaterialSourceControls.owner 2)\n        CGB.MaterialSource.Place.source CGB.MaterialSource.Place.body =\n      1 ∧\n    (CGB.EnergyControls.account 0).load t 1 (some ()) 2 = 0 ∧\n      (CGB.EnergyControls.account 1).load t 1 (some ()) 2 = 1 ∧\n        (CGB.EnergyControls.account 1).heat t 1 (some ()) 2 = -1 ∧ (CGB.EnergyControls.account 1).matter t 0 none 1 = 2",
+      "type_dependencies": [
+        "CGB.MaterialSource.moved",
+        "CGB.MaterialSourceControls.owner",
+        "CGB.MaterialSourceControls.Phase",
+        "CGB.MaterialSource.Place.source",
+        "CGB.MaterialSource.Place.body",
+        "CGB.Energetics.Account.load",
+        "CGB.MaterialSourceControls.physical",
+        "CGB.EnergyControls.account",
+        "CGB.Energetics.Account.heat",
+        "CGB.Energetics.Account.matter"
+      ],
+      "source_declared": true
+    },
+    {
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "kind": "theorem",
+      "module": "CGBAxioms.EnergyControls",
+      "name": "CGB.EnergyControls.total_partition",
+      "project_dependencies": [
+        "CGB.EnergyControls.exterior",
+        "CGB.EnergyControls.heatReceiver",
+        "CGB.EnergyControls.internal",
+        "CGB.EnergyControls.workReceiver",
+        "CGB.MaterialSourceControls.Phase",
+        "CGB.EnergyControls.internal._proof_1",
+        "CGB.EnergyControls.internal._proof_2"
+      ],
+      "signature": "∀ (a : ℝ) (p : CGB.MaterialSourceControls.Phase),\n  CGB.EnergyControls.internal a p + CGB.EnergyControls.exterior a p + CGB.EnergyControls.workReceiver a p +\n      CGB.EnergyControls.heatReceiver a p =\n    2 * a",
+      "type_dependencies": [
+        "CGB.MaterialSourceControls.Phase",
+        "CGB.EnergyControls.internal",
+        "CGB.EnergyControls.exterior",
+        "CGB.EnergyControls.workReceiver",
+        "CGB.EnergyControls.heatReceiver"
+      ],
+      "source_declared": true
+    }
+  ],
+  "source_hashes": {
+    "CGBAxioms/AtomicIndependence.lean": "58f36e25a38713402bd89b3c2d7686c83a69dde990a19c62d1c135b174a8cc0e",
+    "CGBAxioms/Audit.lean": "1745f9772250e6bfe7812323cc5c8733840d60b9d62ad8549d81c049249f3b44",
+    "CGBAxioms/AuditAll.lean": "7bf15188c8f9b64e7ea2394edc5ad4a19854bfec7d498d960235fab0d17d0dc9",
+    "CGBAxioms/ConstraintAudit.lean": "cfbda2ff344353b46b209b43cfd69dc836a2ab9a4cbe62ddbe172de9e04544ab",
+    "CGBAxioms/ConstraintFreedom.lean": "37bf271ea1b419f9df48cf81ea20ccc3b7704d39fab9961ad23c45967ea8c0fe",
+    "CGBAxioms/EnergyBudget.lean": "7f679d7803742d11465b58f4695cf521e3e1a42f3ce831b666131fccc6fbb06c",
+    "CGBAxioms/EnergyControls.lean": "5ec64bc2b3b272e6463f6bdac86d8bc32f40f74e096aadb9b6618209ccf114a0",
+    "CGBAxioms/EventChannels.lean": "0dd33bcc957ff3e3155df4cefaee463ae3627d621434fbcc73474e35ffc73232",
+    "CGBAxioms/Foundation.lean": "0fe5127c183a9ea32632ebfc3bf152c441ffadd90b115e87a7610b562add8134",
+    "CGBAxioms/Inference.lean": "1b0314e6508a0190c33aaf6d24dd82102ef8d7722cadd7c1897232eb95504c60",
+    "CGBAxioms/Interaction.lean": "9e6daed623e1f03a15c6661408c191fb5d9696af28938ab3cc8f5bed516c8023",
+    "CGBAxioms/InteractionBridge.lean": "43059e1a6192caf81267331edbdd59a0b2480fd4776a589e5138b36286fdf467",
+    "CGBAxioms/InteractionControls.lean": "8bbb3766b4494b1b9f2323b17757d5e9f1fc2a87f0b006fefc019ef9b068490d",
+    "CGBAxioms/Language.lean": "b52db422bcac3996cb279d41813aa4a0998ebb6fe54ba2bb87b096972539f0fe",
+    "CGBAxioms/Life.lean": "f21caf6feba9f6a4a2b5a3bdeb6bea7a05d6503b97c347af52c56e68050b3f65",
+    "CGBAxioms/LifeControls.lean": "5f025d923089697978a8b6a5bbf64fe16db62485d56ebd584f538611f9c38e1c",
+    "CGBAxioms/MaterialExchange.lean": "8f888370007db06d7de370155672bdea53ec0929dd7940ace30e7933677eed08",
+    "CGBAxioms/MaterialSource.lean": "50194b475dd439a9497ebbff6f1cc7f2fbc64ea7c0c2d20431a02c412ebab7b8",
+    "CGBAxioms/MaterialSourceControls.lean": "518a2f25e56b7d578fd61c87c02905ffac8f628a419286ebcef051a674fe9354",
+    "CGBAxioms/Medium.lean": "e4f507706eec6f69ce57c95b47a1062e6b644bab12990347cd8d84f286c86fc4",
+    "CGBAxioms/Models.lean": "d7648d7e36912bdd6119f4e27027301b791c530ad7217e873d35c504e1a2f5b0",
+    "CGBAxioms/NoetherBridge.lean": "810a4afc5d944216ca86cd3153ae8d26ff9dc531756220f531f2dc46e35861e3",
+    "CGBAxioms/OperationalLife.lean": "216bcc5a22b70ecffd449a9ab55fdb916b51f3138ffda971e3966b882daa9155",
+    "CGBAxioms/RecoveryControls.lean": "19ab24fd7e9f292707a916eb9cdb5a372b62121c6faae042882aca892b0d35a2",
+    "CGBAxioms/RuleEncoding.lean": "27aaa80e273a621bfa37a0c47e85afeb7aed818f3b96cf56359a0fccc0990100",
+    "CGBAxioms/SubconditionGraph.lean": "3ab2e1c74a3a7895a2ff82bb17a3b430084de904b457e68bc627dcb099c78c51",
+    "CGBAxioms/Symmetry.lean": "f595478d072a4fa5680be6e6a928afb86922e3fcdd3ef0512bfefdb9ab2090bc",
+    "CGBAxioms/TurnoverControls.lean": "7af924e715056309d2c97984dce20fbc3b1a5c07501c0458829e04ca0bbdde7f",
+    "CGBAxioms/WorldRecovery.lean": "168592642319cd10c65ee9edac1e11389534243346b03636408cc421bf00af5c",
+    "CGBAxioms.lean": "599082f14684e1a34f3dbfadbd3df662568c8dfa6b984f8c362d52c5c17d891f"
+  },
+  "full_local_audit": "lean/CGBAxioms/.lake/energy_budget_20261023.json",
+  "prechange_backup": "results/cgb_energy_before_20261023_215128",
+  "report": "docs/information_boltzmann/CGB_ENERGY_BUDGET_20261023.md"
+}

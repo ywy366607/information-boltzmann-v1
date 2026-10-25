@@ -1,0 +1,70 @@
+{
+  "status": "arithmetic_and_encoding_verified_only",
+  "production_changed": false,
+  "gpu_memory_or_speed_measured": false,
+  "checks": {
+    "exact_carry_cases": 7967,
+    "hard_reset_nonconservation_cases": 7680,
+    "nibble_pair_roundtrips": 256,
+    "odd_length_roundtrip": true,
+    "bounded_modulo_age_cases": 65536
+  },
+  "reset_counterexample": {
+    "threshold": 15,
+    "residual": 14,
+    "incoming": 6,
+    "exact": {
+      "pulse_count": 1,
+      "remainder": 5
+    },
+    "hard_reset": {
+      "pulse_count": 1,
+      "remainder": 0
+    },
+    "unaccounted_amount": 5
+  },
+  "multiple_pulse_counterexample": {
+    "threshold": 16,
+    "total": 32,
+    "required_pulse_count": 2,
+    "one_bit_per_tick_sufficient": false
+  },
+  "clock_counterexample": {
+    "timestamps": [
+      1,
+      257
+    ],
+    "phases": [
+      1,
+      1
+    ],
+    "true_elapsed": 256,
+    "modulo_elapsed": 0
+  },
+  "clock_exactness_condition": "0 <= known elapsed < 256; phase-only dynamics must also factor through modulo",
+  "accumulated_value_bit_lengths": {
+    "15": 4,
+    "255": 8,
+    "65535": 16
+  },
+  "storage_payload_bytes": {
+    "1000000": {
+      "int64": 8000000,
+      "int32": 4000000,
+      "uint8": 1000000,
+      "packed_uint4": 500000
+    },
+    "1000000000": {
+      "int64": 8000000000,
+      "int32": 4000000000,
+      "uint8": 1000000000,
+      "packed_uint4": 500000000
+    }
+  },
+  "acceptance": {
+    "narrow_storage": "prove reachable range and exact encode/decode plus transition equivalence",
+    "carry_events": "preserve count, residual, sign, timing and boundary ledger",
+    "modulo_phase": "periodic use or bounded-age contract with stale-event rejection",
+    "full_model_lossless": false
+  }
+}

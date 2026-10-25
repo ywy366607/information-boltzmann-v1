@@ -1,0 +1,75 @@
+{
+  "status": "local_port_interface_audit",
+  "training_performed": false,
+  "learner": "local-port",
+  "metadata": {
+    "reference_protocol_only": true,
+    "capability_claim": false,
+    "model_architecture_selected": false,
+    "rule_id": "owt-gpt2-legacy-local-port-interface-v2:0b08c574ece6f52c3a1ee75772bb10d85e160fdf43a4075f30ec6a095ce723e2",
+    "transition": "legacy",
+    "joint_law_identified": false,
+    "persistent_context": "last_observed_symbol",
+    "initial_context": "registered boot-derived parameter; not a world posterior",
+    "seed": 20261025,
+    "learning_enabled": false,
+    "warm_boot_symbols": 1,
+    "restore_state_dict_continuation_equal": true,
+    "json_restore_equal": true,
+    "generated_token_ids": [
+      28130,
+      28130
+    ],
+    "head_nibbles": 16,
+    "packed_bytes": 8,
+    "next_target_offset": 33,
+    "external_tick": 32
+  },
+  "checkpoint_sha256": null,
+  "config": null,
+  "checkpoint": null,
+  "model_parameters": 16,
+  "source_revision": "433fe0f44ed7894fea29c08b3202aa348ccc6369",
+  "source_sha256": {
+    "manifest": "caf2298208a1935275f06b5822da55b61cff7521ae7403db55404ed4cb4c055d",
+    "files": {
+      "tokenizer.json": "0822604b7eb40de39854dfc285a8c18aae58dfdbbef81457cf5a889e84b9be0b",
+      "train.npy": "6dd24ac1b43aef10d914418b7e6d6f28eedbc5ae8dc653003196375e37ceedb9",
+      "validation.npy": "542a39693215fa5163b92d14a13f9a8545fc4747ff3e819427bc4291db9de624"
+    }
+  },
+  "implementation_sha256": {
+    "cgb_language_kernel": "67c6521fdfd81f772b8dee01adcdb6349825f3403cb036cc179d1437a1f79cd3",
+    "cgb_prequential_bridge": "deffa9fbedf8b39796bc1f46f09bb5418f2fb029160f29c25f36661763856677",
+    "cgb_observation_stream": "fe2c8b0587414b732bd4cee4a6784415df5ee77f6f996040d67dfd50a36c2299"
+  },
+  "validation_tokens": "D:\\information-boltzmann-v1\\data\\ib_owt_gpt2\\validation.npy",
+  "alphabet": "gpt2",
+  "train_reference_tokens": "D:\\information-boltzmann-v1\\data\\ib_owt_gpt2\\train.npy",
+  "unit": "GPT2_tokens",
+  "boundary_policy": "encode_ordinary(document) followed by GPT2 EOT; no state reset",
+  "start": 0,
+  "start_tick": 0,
+  "events": 32,
+  "boot_token": 20273,
+  "learner_updates": 0,
+  "mean_prequential_nll_nats": 13.888743936192505,
+  "ledger": {
+    "reference_name": "train_unigram",
+    "rows": 32,
+    "useful_bits": 7.650982466392044,
+    "predictive_loss_bits": 258.2852757302977,
+    "net_predictive_gain_bits": -250.63429326390568,
+    "useful_rows": 4,
+    "loss_rows": 28,
+    "write_units": 32,
+    "dissipation_units": 32,
+    "dissipation_units_per_useful_bit": 4.182469394037203,
+    "write_units_per_useful_bit": 4.182469394037203,
+    "calibrated_energy": null,
+    "energy_per_useful_bit": null,
+    "energy_coverage_rows": 0,
+    "measure_kind": "predictive_gain_relative_to_declared_reference"
+  },
+  "scope": "source/score/restore wiring only; no language capability or world-action acceptance"
+}

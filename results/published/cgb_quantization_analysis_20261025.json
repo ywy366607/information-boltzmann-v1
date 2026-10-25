@@ -1,0 +1,102 @@
+{
+  "scope": "exact bit-width and quantization analysis for the current finite witness",
+  "states": 24,
+  "inputs": 16,
+  "transition_edges": 384,
+  "exact_ranges": {
+    "binary_transition_coefficients": {
+      "values": [
+        0,
+        1
+      ],
+      "minimum_bits": 1
+    },
+    "material_flow_counters": {
+      "range": [
+        0,
+        6
+      ],
+      "minimum_unsigned_bits": 3
+    },
+    "reserve": {
+      "range": [
+        0,
+        2
+      ],
+      "minimum_unsigned_bits": 2
+    },
+    "cell_index": {
+      "range": [
+        0,
+        7
+      ],
+      "minimum_unsigned_bits": 3
+    },
+    "state_index": {
+      "range": [
+        0,
+        23
+      ],
+      "minimum_unsigned_bits": 5
+    }
+  },
+  "quantization": {
+    "current_binary_transition": {
+      "int1_max_abs_error": 0.0,
+      "int4_max_abs_error": 0.0,
+      "int8_max_abs_error": 0.0
+    },
+    "three_tick_dyadic_probabilities": {
+      "values": [
+        0.0,
+        0.125,
+        0.25,
+        0.5,
+        1.0
+      ],
+      "q3_fixed_scale_8_in_4bit": {
+        "max_abs_error": 0.0,
+        "mean_abs_error": 0.0,
+        "step": 0.125
+      },
+      "q4_fixed_scale_15": {
+        "max_abs_error": 0.033333333333333326,
+        "mean_abs_error": 0.011666666666666664,
+        "step": 0.06666666666666667
+      },
+      "q8_fixed_scale_255": {
+        "max_abs_error": 0.0019607843137254832,
+        "mean_abs_error": 0.0006862745098039191,
+        "step": 0.00392156862745098
+      }
+    },
+    "arbitrary_unit_interval_worst_case": {
+      "q4": {
+        "max_abs_error_bound": 0.03333333333333333,
+        "step": 0.06666666666666667
+      },
+      "q8": {
+        "max_abs_error_bound": 0.00196078431372549,
+        "step": 0.00392156862745098
+      }
+    }
+  },
+  "storage": {
+    "dense_transition_binary_bytes": 1152,
+    "sparse_target_only_5bit_bytes": 240,
+    "sparse_target_plus_3bit_flow_bytes": 384,
+    "dense_transition_q4_bytes": 4608,
+    "dense_transition_q8_bytes": 9216,
+    "one_state_vector_q4_bytes": 12,
+    "one_state_vector_q8_bytes": 24,
+    "one_state_vector_float16_bytes": 48,
+    "one_state_vector_float32_bytes": 96
+  },
+  "recommendation": {
+    "exact_current_transition_storage": "1-bit dense or 5-bit sparse target index",
+    "exact_current_flow_storage": "3-bit unsigned counters; int4 is sufficient with margin",
+    "exact_three_tick_dyadic_probability_storage": "Q3 fixed-point (scale 8 in a 4-bit unsigned container)",
+    "accumulator": "int32 for current 24-state kernel; widen if batch or path sums grow",
+    "universal_real_valued_claim": false
+  }
+}

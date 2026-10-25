@@ -1,0 +1,313 @@
+{
+  "scope": "Complete relative irredundancy of the fixed 14 predicates in the general Medium language; finite, homogeneous-contact, rigid countermodels for each of the fixed nine ReducedCore predicates.",
+  "status": "full_remaining_thirteen_certificates_verified",
+  "baseline_commit": "25b21ec0cf7fe3982b35067fbf2dc6061698f243",
+  "audit_timestamp": "2026-10-23T19:25:21+08:00",
+  "inventory": {
+    "declarations": 1073,
+    "modules": [
+      "CGBAxioms.Language",
+      "CGBAxioms.Symmetry",
+      "CGBAxioms.Medium",
+      "CGBAxioms.Life",
+      "CGBAxioms.Models",
+      "CGBAxioms.Inference",
+      "CGBAxioms.Foundation",
+      "CGBAxioms.RuleEncoding",
+      "CGBAxioms.WorldRecovery",
+      "CGBAxioms.OperationalLife",
+      "CGBAxioms.RecoveryControls",
+      "CGBAxioms.Interaction",
+      "CGBAxioms.InteractionBridge",
+      "CGBAxioms.InteractionControls",
+      "CGBAxioms.ConstraintAudit",
+      "CGBAxioms.ConstraintFreedom",
+      "CGBAxioms.SubconditionGraph",
+      "CGBAxioms.AtomicIndependence"
+    ],
+    "theorems": 658
+  },
+  "source_declared_theorems": 252,
+  "new_source_declared_theorems": 25,
+  "full_build_and_trust_audit_passed": true,
+  "audit_guard_checks": 10,
+  "previous_declaration_signatures_preserved": true,
+  "general_axioms_and_existing_dynamics_unchanged": true,
+  "counterexample_contract": "Isolates M target := (forall c, c != target -> Holds M c) and not Holds M target",
+  "conditions_match_original_atomization": "CGB.Medium.atomized_iff_all_conditions",
+  "general_irredundancy": "CGB.Medium.all_atoms_independent",
+  "common_model": "CGB.Medium.twinFlip_all_conditions",
+  "reduced_core_conditions": [
+    "A03",
+    "A05",
+    "A06",
+    "A07",
+    "A08",
+    "A09",
+    "A10",
+    "A12",
+    "A13"
+  ],
+  "reduced_core_coverage": "CGB.Medium.reducedCore_iff_selected_conditions",
+  "reduced_core_same_regime_irredundancy": "CGB.Medium.every_reduced_condition_independent_in_regime",
+  "reduced_regime": [
+    "Finite local state space",
+    "HomogeneousContact",
+    "Rigid structural automorphisms"
+  ],
+  "reduced_core_recovery_bridge": "CGB.Medium.reducedCore_iff_atomized_of_regimes",
+  "identity_relabeling": {
+    "definition": "CGB.Medium.rigidLabel",
+    "preservation": "CGB.Medium.holds_rigidLabel_iff",
+    "certificate_transfer": "CGB.Medium.isolates_rigidLabel",
+    "scope": "Changes structural identities only. Preserves physical state types, contact, boundary, participants, content, actions, rates, calm input and initial state. Does not certify a fixed identity-page or encoded-genome budget."
+  },
+  "conditions": {
+    "A01": {
+      "model": "twinTape",
+      "certificate": "CGB.Medium.a01_independent",
+      "signature": "CGB.Models.twinTape.Isolates CGB.Medium.AtomicCondition.a01",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "all_other_13_hold": true,
+      "target_fails": true,
+      "finite_local_states_in_this_witness": false
+    },
+    "A02": {
+      "model": "twinBag",
+      "certificate": "CGB.Medium.a02_independent",
+      "signature": "CGB.Models.twinBag.Isolates CGB.Medium.AtomicCondition.a02",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "all_other_13_hold": true,
+      "target_fails": true,
+      "finite_local_states_in_this_witness": false
+    },
+    "A03": {
+      "model": "twinBlank",
+      "certificate": "CGB.Medium.a03_independent",
+      "signature": "CGB.Models.twinBlank.Isolates CGB.Medium.AtomicCondition.a03",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "all_other_13_hold": true,
+      "target_fails": true,
+      "finite_local_states_in_this_witness": true
+    },
+    "A04": {
+      "model": "path3Rigid",
+      "certificate": "CGB.Medium.a04_independent",
+      "signature": "CGB.Medium.path3Rigid.Isolates CGB.Medium.AtomicCondition.a04",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "all_other_13_hold": true,
+      "target_fails": true,
+      "finite_local_states_in_this_witness": true
+    },
+    "A05": {
+      "model": "globalFlip univ",
+      "certificate": "CGB.Medium.a05_independent",
+      "signature": "(CGB.Medium.globalFlip Finset.univ).Isolates CGB.Medium.AtomicCondition.a05",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "all_other_13_hold": true,
+      "target_fails": true,
+      "finite_local_states_in_this_witness": true
+    },
+    "A06": {
+      "model": "globalFlip ∅",
+      "certificate": "CGB.Medium.a06_independent",
+      "signature": "(CGB.Medium.globalFlip ∅).Isolates CGB.Medium.AtomicCondition.a06",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "all_other_13_hold": true,
+      "target_fails": true,
+      "finite_local_states_in_this_witness": true
+    },
+    "A07": {
+      "model": "farFlip",
+      "certificate": "CGB.Medium.a07_independent",
+      "signature": "CGB.Models.farFlip.Isolates CGB.Medium.AtomicCondition.a07",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "all_other_13_hold": true,
+      "target_fails": true,
+      "finite_local_states_in_this_witness": true
+    },
+    "A08": {
+      "model": "farAct",
+      "certificate": "CGB.Medium.a08_independent",
+      "signature": "CGB.Medium.farAct.Isolates CGB.Medium.AtomicCondition.a08",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "all_other_13_hold": true,
+      "target_fails": true,
+      "finite_local_states_in_this_witness": true
+    },
+    "A09": {
+      "model": "twinToggle",
+      "certificate": "CGB.Medium.a09_independent",
+      "signature": "CGB.Models.twinToggle.Isolates CGB.Medium.AtomicCondition.a09",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "all_other_13_hold": true,
+      "target_fails": true,
+      "finite_local_states_in_this_witness": true
+    },
+    "A10": {
+      "model": "twinCycle",
+      "certificate": "CGB.Medium.a10_independent",
+      "signature": "CGB.Models.twinCycle.Isolates CGB.Medium.AtomicCondition.a10",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "all_other_13_hold": true,
+      "target_fails": true,
+      "finite_local_states_in_this_witness": true
+    },
+    "A11": {
+      "model": "triLookup",
+      "certificate": "CGB.Medium.a11_independent",
+      "signature": "CGB.Models.triLookup.Isolates CGB.Medium.AtomicCondition.a11",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "all_other_13_hold": true,
+      "target_fails": true,
+      "finite_local_states_in_this_witness": true
+    },
+    "A12": {
+      "model": "innerClock",
+      "certificate": "CGB.Medium.a12_independent",
+      "signature": "CGB.Models.innerClock.Isolates CGB.Medium.AtomicCondition.a12",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "all_other_13_hold": true,
+      "target_fails": true,
+      "finite_local_states_in_this_witness": true
+    },
+    "A13": {
+      "model": "innerActClock",
+      "certificate": "CGB.Medium.a13_independent",
+      "signature": "CGB.Medium.innerActClock.Isolates CGB.Medium.AtomicCondition.a13",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "all_other_13_hold": true,
+      "target_fails": true,
+      "finite_local_states_in_this_witness": true
+    },
+    "A14": {
+      "model": "pairPreset",
+      "certificate": "CGB.Medium.a14_independent",
+      "signature": "CGB.Models.pairPreset.Isolates CGB.Medium.AtomicCondition.a14",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "all_other_13_hold": true,
+      "target_fails": true,
+      "finite_local_states_in_this_witness": true
+    }
+  },
+  "limitations": [
+    "Irredundancy concerns these fixed predicates and the stated model classes, not globally fewest formulations or physical necessity.",
+    "A01/A02 countermodels use infinite local-state types; with explicit Finite Lambda they are automatic consequences, so there is no finite-specialization independence claim for those two.",
+    "The A04 countermodel has Empty events and is a logical witness, not a biological organism.",
+    "No identification of contact with actual connectome wiring has been certified.",
+    "The countermodels are not required to meet GenomeBudget 1/100, fixed shared identity pages or the full operational life target; stronger subdomains need their own audit."
+  ],
+  "full_atomic_independence_audit_completed_in_general_language": true,
+  "physical_necessity_proved": false,
+  "life_existence_proved": false,
+  "globally_smallest_axiom_system_proved": false,
+  "source_hashes": {
+    "CGBAxioms/AtomicIndependence.lean": "58f36e25a38713402bd89b3c2d7686c83a69dde990a19c62d1c135b174a8cc0e",
+    "CGBAxioms/Audit.lean": "1745f9772250e6bfe7812323cc5c8733840d60b9d62ad8549d81c049249f3b44",
+    "CGBAxioms/AuditAll.lean": "b606986d57060fa8a343bee41b85a1983d5b6b8b03c9a258411dc7cf43f2f067",
+    "CGBAxioms/ConstraintAudit.lean": "cfbda2ff344353b46b209b43cfd69dc836a2ab9a4cbe62ddbe172de9e04544ab",
+    "CGBAxioms/ConstraintFreedom.lean": "37bf271ea1b419f9df48cf81ea20ccc3b7704d39fab9961ad23c45967ea8c0fe",
+    "CGBAxioms/Foundation.lean": "0fe5127c183a9ea32632ebfc3bf152c441ffadd90b115e87a7610b562add8134",
+    "CGBAxioms/Inference.lean": "e1f34bfeb7c2907336753abdb4aa5daf6bc3515edafb50b6c2522a615a0d9a6f",
+    "CGBAxioms/Interaction.lean": "9e6daed623e1f03a15c6661408c191fb5d9696af28938ab3cc8f5bed516c8023",
+    "CGBAxioms/InteractionBridge.lean": "43059e1a6192caf81267331edbdd59a0b2480fd4776a589e5138b36286fdf467",
+    "CGBAxioms/InteractionControls.lean": "8bbb3766b4494b1b9f2323b17757d5e9f1fc2a87f0b006fefc019ef9b068490d",
+    "CGBAxioms/Language.lean": "b52db422bcac3996cb279d41813aa4a0998ebb6fe54ba2bb87b096972539f0fe",
+    "CGBAxioms/Life.lean": "f21caf6feba9f6a4a2b5a3bdeb6bea7a05d6503b97c347af52c56e68050b3f65",
+    "CGBAxioms/Medium.lean": "e4f507706eec6f69ce57c95b47a1062e6b644bab12990347cd8d84f286c86fc4",
+    "CGBAxioms/Models.lean": "d7648d7e36912bdd6119f4e27027301b791c530ad7217e873d35c504e1a2f5b0",
+    "CGBAxioms/OperationalLife.lean": "db2259043a68f052c23bbea402a3b48933ff03f3766556349c342db675976e1a",
+    "CGBAxioms/RecoveryControls.lean": "19ab24fd7e9f292707a916eb9cdb5a372b62121c6faae042882aca892b0d35a2",
+    "CGBAxioms/RuleEncoding.lean": "27aaa80e273a621bfa37a0c47e85afeb7aed818f3b96cf56359a0fccc0990100",
+    "CGBAxioms/SubconditionGraph.lean": "3ab2e1c74a3a7895a2ff82bb17a3b430084de904b457e68bc627dcb099c78c51",
+    "CGBAxioms/Symmetry.lean": "f595478d072a4fa5680be6e6a928afb86922e3fcdd3ef0512bfefdb9ab2090bc",
+    "CGBAxioms/WorldRecovery.lean": "168592642319cd10c65ee9edac1e11389534243346b03636408cc421bf00af5c",
+    "CGBAxioms.lean": "6d9e3c4a62fca7035fa67d690ca8209a600c6fc89f5460e3039c24f229798147"
+  },
+  "audit_command": "python scripts/audit.py --output .lake/atomic_independence_20261023.json",
+  "backup": "results/cgb_atomic_before_20261023_192146",
+  "report": "docs/information_boltzmann/CGB_ATOMIC_INDEPENDENCE_20261023.md",
+  "new_source_theorems": [
+    "CGB.Medium.a01_independent",
+    "CGB.Medium.a02_independent",
+    "CGB.Medium.a03_independent",
+    "CGB.Medium.a04_independent",
+    "CGB.Medium.a05_independent",
+    "CGB.Medium.a06_independent",
+    "CGB.Medium.a07_independent",
+    "CGB.Medium.a08_independent",
+    "CGB.Medium.a09_independent",
+    "CGB.Medium.a10_independent",
+    "CGB.Medium.a11_independent",
+    "CGB.Medium.a12_independent",
+    "CGB.Medium.a13_independent",
+    "CGB.Medium.a14_independent",
+    "CGB.Medium.all_atoms_independent",
+    "CGB.Medium.atomized_iff_all_conditions",
+    "CGB.Medium.every_reduced_condition_independent_in_regime",
+    "CGB.Medium.farAct_other_clauses",
+    "CGB.Medium.globalFlip_other_clauses",
+    "CGB.Medium.holds_rigidLabel_iff",
+    "CGB.Medium.innerActClock_other_clauses",
+    "CGB.Medium.isolates_rigidLabel",
+    "CGB.Medium.reducedCore_iff_selected_conditions",
+    "CGB.Medium.rigidLabel_rigid",
+    "CGB.Medium.twinFlip_all_conditions"
+  ]
+}

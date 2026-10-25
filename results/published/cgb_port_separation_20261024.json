@@ -1,0 +1,88 @@
+{
+  "date": "2026-10-24",
+  "status": "verified_local_sensory_resource_port_separation",
+  "core_result_groups": 3,
+  "results": {
+    "core_result_groups": 3,
+    "new_general_axioms": 0,
+    "same_body_state_and_clock": true,
+    "sensory_port_and_resource_port_separated": true,
+    "resource_open_noninformative_inlet_actual_turnover": true,
+    "resource_closed_nonempty_rank_strictly_decreases": true,
+    "local_budgets_and_six_axiom_admission_verified": true,
+    "normal_and_previous_cut_results_preserved": true,
+    "joint_fixed_identity_carrier_refinement_registered": false,
+    "full_l1_l6_claimed": false,
+    "training_performed": false
+  },
+  "scope": "Under the same finite body and physical clock, sensory input and resource supply can be independently clamped. An information-free supplied inlet still carries actual paid turnover, while a closed resource inlet strictly lowers the reserve rank of every nonempty state. Local six-axiom admission and budgets are verified; full fixed-identity carrier refinement remains separate.",
+  "core_results": [
+    {
+      "id": "IB_CGB_PORT_SEPARATION_20261024",
+      "parent": "IB_CGB_CONTINUOUS_MAINTENANCE_20261024",
+      "layer": "theorem",
+      "direction": "deduction",
+      "time": "2026-10-24",
+      "status": "verified_local_sensory_resource_port_separation",
+      "title": "Sensory information and resource supply are separate causal ports",
+      "claim": "Under the same finite body and physical clock, sensory input and resource supply can be independently clamped. An information-free supplied inlet still carries actual paid turnover, while a closed resource inlet strictly lowers the reserve rank of every nonempty state. Local six-axiom admission and budgets are verified; full fixed-identity carrier refinement remains separate.",
+      "findings": {
+        "core_result_groups": 3,
+        "new_general_axioms": 0,
+        "same_body_state_and_clock": true,
+        "sensory_port_and_resource_port_separated": true,
+        "resource_open_noninformative_inlet_actual_turnover": true,
+        "resource_closed_nonempty_rank_strictly_decreases": true,
+        "local_budgets_and_six_axiom_admission_verified": true,
+        "normal_and_previous_cut_results_preserved": true,
+        "joint_fixed_identity_carrier_refinement_registered": false,
+        "full_l1_l6_claimed": false,
+        "training_performed": false
+      },
+      "scope": "Local port controls only; no complete new carrier encoding or physical calibration.",
+      "action": "Build the joint carrier refinement and compare sensory-only, resource-only and combined interventions at the functional recovery horizon.",
+      "artifacts": [
+        "lean/CGBAxioms/CGBAxioms/PortSeparation.lean",
+        "lean/CGBAxioms/reviews/port_separation_20261024.lean"
+      ]
+    }
+  ],
+  "verification": {
+    "production_build_passed": true,
+    "independent_review_exit_code": 0,
+    "review_examples_passed": 7,
+    "proof_trust_passed": true,
+    "module_coverage_passed": true,
+    "audit_guard_checks": 10,
+    "previous_declarations_and_signatures_preserved": 3198,
+    "old_production_sources_unchanged_except_root_import": true,
+    "main_theorem_row_list_unchanged": true,
+    "original_life_definition_unchanged": true,
+    "training_performed": false
+  },
+  "inventory": {
+    "compiled_declarations": 3237,
+    "modules": 58,
+    "kernel_theorem_entries": 2112,
+    "source_authored_theorems": 672,
+    "added_compiled_declarations": 39,
+    "independent_scientific_results_not_equal_to_inventory": true
+  },
+  "artifact_hashes": {
+    "docs/information_boltzmann/CGB_AXIOMS_V0_20261022.md": "c14583a86a8bfce16bef911fd62589a65f34b57d958c4fe5faafe8bb6992d2dd",
+    "docs/information_boltzmann/CGB_CONTINUOUS_MAINTENANCE_20261024.md": "ddbce5d222fa3af3187e55ded8c64d4edd1aa4b8bbed4f21a261a4398c0891c8",
+    "lean/CGBAxioms/reviews/port_separation_20261024.lean": "cc1bba7c910a4e786d553baca48829066e61e22e978eabd75950077c3bbf4168",
+    "research_tree.json": "3e3604c1cbfb5df6afa34d31932f78061cf69529aaef8fdad65920069de7f48b"
+  },
+  "audit_inventory": "lean/CGBAxioms/.lake/port_separation_20261024.json",
+  "build_log": "lean/CGBAxioms/.lake/port_separation_fullbuild.log",
+  "review_log": "lean/CGBAxioms/.lake/port_separation_review.log",
+  "main_document": "docs/information_boltzmann/CGB_AXIOMS_V0_20261022.md",
+  "report": "docs/information_boltzmann/CGB_CONTINUOUS_MAINTENANCE_20261024.md",
+  "artifacts": [
+    "lean/CGBAxioms/CGBAxioms/PortSeparation.lean",
+    "lean/CGBAxioms/reviews/port_separation_20261024.lean",
+    "docs/information_boltzmann/CGB_CONTINUOUS_MAINTENANCE_20261024.md",
+    "results/published/cgb_port_separation_20261024.json"
+  ]
+}

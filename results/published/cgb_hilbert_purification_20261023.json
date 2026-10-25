@@ -1,0 +1,256 @@
+{
+  "scope": "Reviewed conditional redundancy, local separation and reduced-core candidate. No global minimality, biological incompatibility or life-existence certificate.",
+  "review_status": "corrected_after_Gemini_claim_review",
+  "baseline_commit": "25b21ec0cf7fe3982b35067fbf2dc6061698f243",
+  "historical_parent_commit": "25b1b5fb6f9d697101be7095ca467b840e5c2244",
+  "audit_timestamp": "2026-10-23T19:08:51+08:00",
+  "inventory": {
+    "declarations": 934,
+    "modules": [
+      "CGBAxioms.Language",
+      "CGBAxioms.Symmetry",
+      "CGBAxioms.Medium",
+      "CGBAxioms.Life",
+      "CGBAxioms.Models",
+      "CGBAxioms.Inference",
+      "CGBAxioms.Foundation",
+      "CGBAxioms.RuleEncoding",
+      "CGBAxioms.WorldRecovery",
+      "CGBAxioms.OperationalLife",
+      "CGBAxioms.RecoveryControls",
+      "CGBAxioms.Interaction",
+      "CGBAxioms.InteractionBridge",
+      "CGBAxioms.InteractionControls",
+      "CGBAxioms.ConstraintAudit",
+      "CGBAxioms.ConstraintFreedom",
+      "CGBAxioms.SubconditionGraph"
+    ],
+    "theorems": 571
+  },
+  "source_declared_theorems": 227,
+  "counting_note": "Inventory theorems include generated declarations; source_declared_theorems counts directly authored theorem/lemma declarations. Neither counts independent physical claims.",
+  "original_Gemini_inventory": {
+    "declarations": 929,
+    "modules": [
+      "CGBAxioms.Language",
+      "CGBAxioms.Symmetry",
+      "CGBAxioms.Medium",
+      "CGBAxioms.Life",
+      "CGBAxioms.Models",
+      "CGBAxioms.Inference",
+      "CGBAxioms.Foundation",
+      "CGBAxioms.RuleEncoding",
+      "CGBAxioms.WorldRecovery",
+      "CGBAxioms.OperationalLife",
+      "CGBAxioms.RecoveryControls",
+      "CGBAxioms.Interaction",
+      "CGBAxioms.InteractionBridge",
+      "CGBAxioms.InteractionControls",
+      "CGBAxioms.ConstraintAudit",
+      "CGBAxioms.ConstraintFreedom",
+      "CGBAxioms.SubconditionGraph"
+    ],
+    "theorems": 567,
+    "source_declared_theorems": 224
+  },
+  "full_build_and_trust_audit_passed": true,
+  "audit_guard_checks": 10,
+  "legacy_manual_43_passed": true,
+  "full_atomic_independence_audit_completed": false,
+  "reduced_core_minimality_proved": false,
+  "general_axioms_changed": false,
+  "original_Gemini_source_theorems_preserved": [
+    "CGB.Medium.a01_and_a02_redundant_of_finite",
+    "CGB.Medium.a01_of_finite",
+    "CGB.Medium.a02_of_finite",
+    "CGB.Medium.all_boundary_satisfies_a12_a13",
+    "CGB.Medium.atomized_implies_reducedCore",
+    "CGB.Medium.complete_graph_satisfies_a04_a05",
+    "CGB.Medium.farAct_isolates_a08",
+    "CGB.Medium.farAct_not_effectReads",
+    "CGB.Medium.farAct_satisfies_homoContact",
+    "CGB.Medium.farAct_satisfies_partsContact",
+    "CGB.Medium.farAct_satisfies_rateReads",
+    "CGB.Medium.farAct_satisfies_writes",
+    "CGB.Medium.farFlip_isolates_a07",
+    "CGB.Medium.farFlip_not_rateReads",
+    "CGB.Medium.farFlip_satisfies_effectReads",
+    "CGB.Medium.farFlip_satisfies_homoContact",
+    "CGB.Medium.farFlip_satisfies_partsContact",
+    "CGB.Medium.farFlip_satisfies_writes",
+    "CGB.Medium.innerActClock_isolates_a13",
+    "CGB.Medium.innerActClock_not_boundaryEffect",
+    "CGB.Medium.innerActClock_satisfies_boundaryRate",
+    "CGB.Medium.innerActClock_satisfies_initialInvariant",
+    "CGB.Medium.innerClock_isolates_a12",
+    "CGB.Medium.innerClock_not_boundaryRate",
+    "CGB.Medium.innerClock_satisfies_boundaryEffect",
+    "CGB.Medium.innerClock_satisfies_initialInvariant",
+    "CGB.Medium.reducedCore_implies_atomized_of_regimes",
+    "CGB.Medium.onlyBoundarySenses_iff_atoms",
+    "CGB.Medium.p1b_iff_atoms",
+    "CGB.Medium.p3_iff_atoms",
+    "CGB.Medium.pairPreset_isolates_a14",
+    "CGB.Medium.path3_not_homogeneous",
+    "CGB.Medium.uniqueVacuum_independent_of_finite",
+    "CGB.Medium.universal_parts_satisfies_a06_a07_a08"
+  ],
+  "original_Gemini_signatures_preserved_modulo_core_rename": true,
+  "other_Lean_sources_unchanged_from_review_start": true,
+  "proven_subcondition_audit": {
+    "A01_finiteSublevels": {
+      "status": "Redundant_only_under_explicit_Finite_Lambda",
+      "lean_theorems": [
+        "CGB.Medium.a01_of_finite"
+      ],
+      "scope_note": "General-language condition retained; finiteness remains an assumption."
+    },
+    "A02_boundedContent": {
+      "status": "Redundant_only_under_explicit_Finite_Lambda",
+      "lean_theorems": [
+        "CGB.Medium.a02_of_finite"
+      ],
+      "scope_note": "General-language condition retained; finiteness remains an assumption."
+    },
+    "A03_uniqueVacuum": {
+      "status": "Not_implied_by_finiteness",
+      "lean_theorems": [
+        "CGB.Medium.uniqueVacuum_independent_of_finite",
+        "CGB.Models.twinBlank_witness"
+      ],
+      "scope_note": "Simple finite-state count example and historical full parent-clause witness retained; no physical necessity conclusion."
+    },
+    "A04_homogeneousContact": {
+      "status": "Specific_path3_contact_counterexample",
+      "lean_theorems": [
+        "CGB.Medium.path3_not_homogeneous"
+      ],
+      "scope_note": "No biological contact-to-wiring identification certified; general axiom retained."
+    },
+    "A05_participantsContact": {
+      "status": "Complete_graph_automatic_satisfaction_not_independence",
+      "lean_theorems": [
+        "CGB.Medium.complete_graph_satisfies_a04_a05"
+      ],
+      "scope_note": "Full atomic independence certificate remains pending."
+    },
+    "A06_writesParticipants": {
+      "status": "Universal_participants_automatic_satisfaction_not_independence",
+      "lean_theorems": [
+        "CGB.Medium.universal_parts_satisfies_a06_a07_a08"
+      ],
+      "scope_note": "Full atomic independence certificate remains pending."
+    },
+    "A07_rateReadsParticipants": {
+      "status": "Separated_within_P1b_subset",
+      "lean_theorems": [
+        "CGB.Medium.farFlip_isolates_a07"
+      ],
+      "scope_note": "Displayed conjunction preserves A04/A05/A06/A08; it does not list all remaining 13 conditions."
+    },
+    "A08_effectReadsParticipants": {
+      "status": "Separated_within_P1b_subset",
+      "lean_theorems": [
+        "CGB.Medium.farAct_isolates_a08"
+      ],
+      "scope_note": "Displayed conjunction preserves A04/A05/A06/A07; it does not list all remaining 13 conditions."
+    },
+    "A09_closedConservation": {
+      "status": "Historical_parent_clause_witness_and_conditional_vacuity",
+      "lean_theorems": [
+        "CGB.Models.twinToggle_witness",
+        "CGB.Medium.p2a_of_every_event_open"
+      ],
+      "scope_note": "No new physical energy or resource-bookkeeping certificate."
+    },
+    "A10_calmBalance": {
+      "status": "Historical_parent_clause_witness_and_conductance_parameterization",
+      "lean_theorems": [
+        "CGB.Models.twinCycle_witness",
+        "CGB.JumpProcess.fromConductance_reversible"
+      ],
+      "scope_note": "No new mixing, physical heat/work or necessity certificate."
+    },
+    "A11_coherentEquivariance": {
+      "status": "Automatic_only_under_declared_rigidity",
+      "lean_theorems": [
+        "CGB.Medium.rigid_of_injective_identity",
+        "CGB.Medium.p2c_of_rigid"
+      ],
+      "scope_note": "General axiom retained; encoding budget is a separate obligation."
+    },
+    "A12_boundaryRate": {
+      "status": "Separated_within_P3_subset",
+      "lean_theorems": [
+        "CGB.Medium.innerClock_isolates_a12"
+      ],
+      "scope_note": "Displayed conjunction preserves A13/A14; full atomic certificate not supplied by this statement alone."
+    },
+    "A13_boundaryEffect": {
+      "status": "Separated_within_P3_subset",
+      "lean_theorems": [
+        "CGB.Medium.innerActClock_isolates_a13"
+      ],
+      "scope_note": "Displayed conjunction preserves A12/A14; full atomic certificate not supplied by this statement alone."
+    },
+    "A14_initialInvariant": {
+      "status": "P3_subset_separation_and_conditional_rigidity",
+      "lean_theorems": [
+        "CGB.Medium.pairPreset_isolates_a14",
+        "CGB.Medium.initial_invariant_of_rigid"
+      ],
+      "scope_note": "General axiom retained; automatic satisfaction only under the stated rigidity premise."
+    }
+  },
+  "reduced_core_bridge": {
+    "name": "CGB.Medium.ReducedCore",
+    "forward": "CGB.Medium.atomized_implies_reducedCore",
+    "conditional_reverse": "CGB.Medium.reducedCore_implies_atomized_of_regimes",
+    "iff": "CGB.Medium.reducedCore_iff_atomized_of_regimes",
+    "additional_premises": [
+      "Finite local state space (Finite Lambda)",
+      "HomogeneousContact (A04)",
+      "Rigid structural automorphisms"
+    ],
+    "missing_homogeneity_counterexample": "CGB.Medium.finite_rigid_reducedCore_not_atomized",
+    "counterexample_scope": "Finite rigid three-site carrier with Empty event type; logical countermodel only."
+  },
+  "withdrawn_claims": [
+    "All 14 subconditions have complete global independence certificates.",
+    "The selected nine-field subset is a proven minimal or physically necessary core.",
+    "Finite local states and rigid structural data alone recover all original conditions.",
+    "The three-site path theorem proves the actual fly connectome violates the contact axiom.",
+    "A01/A02 or A04/A11/A14 have been deleted from the general Medium.Axioms.",
+    "Unique zero-content state is a proved unique minimum-energy ground state."
+  ],
+  "source_hashes": {
+    "CGBAxioms/Audit.lean": "1745f9772250e6bfe7812323cc5c8733840d60b9d62ad8549d81c049249f3b44",
+    "CGBAxioms/AuditAll.lean": "0e85a113d10c06e940a8f04fffb2d42c76b23a863ccc8ad09427af6582295cc7",
+    "CGBAxioms/ConstraintAudit.lean": "cfbda2ff344353b46b209b43cfd69dc836a2ab9a4cbe62ddbe172de9e04544ab",
+    "CGBAxioms/ConstraintFreedom.lean": "37bf271ea1b419f9df48cf81ea20ccc3b7704d39fab9961ad23c45967ea8c0fe",
+    "CGBAxioms/Foundation.lean": "0fe5127c183a9ea32632ebfc3bf152c441ffadd90b115e87a7610b562add8134",
+    "CGBAxioms/Inference.lean": "e1f34bfeb7c2907336753abdb4aa5daf6bc3515edafb50b6c2522a615a0d9a6f",
+    "CGBAxioms/Interaction.lean": "9e6daed623e1f03a15c6661408c191fb5d9696af28938ab3cc8f5bed516c8023",
+    "CGBAxioms/InteractionBridge.lean": "43059e1a6192caf81267331edbdd59a0b2480fd4776a589e5138b36286fdf467",
+    "CGBAxioms/InteractionControls.lean": "8bbb3766b4494b1b9f2323b17757d5e9f1fc2a87f0b006fefc019ef9b068490d",
+    "CGBAxioms/Language.lean": "b52db422bcac3996cb279d41813aa4a0998ebb6fe54ba2bb87b096972539f0fe",
+    "CGBAxioms/Life.lean": "f21caf6feba9f6a4a2b5a3bdeb6bea7a05d6503b97c347af52c56e68050b3f65",
+    "CGBAxioms/Medium.lean": "e4f507706eec6f69ce57c95b47a1062e6b644bab12990347cd8d84f286c86fc4",
+    "CGBAxioms/Models.lean": "d7648d7e36912bdd6119f4e27027301b791c530ad7217e873d35c504e1a2f5b0",
+    "CGBAxioms/OperationalLife.lean": "db2259043a68f052c23bbea402a3b48933ff03f3766556349c342db675976e1a",
+    "CGBAxioms/RecoveryControls.lean": "19ab24fd7e9f292707a916eb9cdb5a372b62121c6faae042882aca892b0d35a2",
+    "CGBAxioms/RuleEncoding.lean": "27aaa80e273a621bfa37a0c47e85afeb7aed818f3b96cf56359a0fccc0990100",
+    "CGBAxioms/SubconditionGraph.lean": "3ab2e1c74a3a7895a2ff82bb17a3b430084de904b457e68bc627dcb099c78c51",
+    "CGBAxioms/Symmetry.lean": "f595478d072a4fa5680be6e6a928afb86922e3fcdd3ef0512bfefdb9ab2090bc",
+    "CGBAxioms/WorldRecovery.lean": "168592642319cd10c65ee9edac1e11389534243346b03636408cc421bf00af5c",
+    "CGBAxioms.lean": "cbad5c399709d4009d0f74ec418516b2dd864eebc92a17697ec29df232f01da1"
+  },
+  "audit_commands": [
+    "python scripts/audit.py --output .lake/review_after_20261023.json",
+    "lake env lean CGBAxioms/Audit.lean"
+  ],
+  "review_report": "docs/information_boltzmann/CGB_GEMINI_REVIEW_20261023.md",
+  "backup": "results/cgb_gemini_review_before_20261023_190354",
+  "snapshot_status": "Historical review before full atomic certificates were added; original scope corrections remain valid.",
+  "continued_by": "results/published/cgb_atomic_independence_20261023.json"
+}

@@ -1,0 +1,88 @@
+{
+  "date": "2026-10-25",
+  "status": "verified_custom_numba_integer_cuda_kernel",
+  "scope": "One hand-written tiled CUDA kernel on the current GTX 1650; no general GPU performance or biological capability claim.",
+  "claim": "A Numba CUDA tiled kernel on the GTX 1650 computes exact int8-to-int32 and int32-to-int32 matrix products. For 1024x1024 matrices, int8 inputs use a 6 MiB working set versus 12 MiB for float32, while the naive integer kernel is about nine times slower than cuBLAS float32. The result separates storage savings from throughput: integer GPU advantage requires an optimized kernel and wider safe accumulation.",
+  "findings": {
+    "core_result_groups": 3,
+    "new_general_axioms": 0,
+    "custom_int8_kernel_correct": true,
+    "custom_int32_kernel_correct": true,
+    "int8_working_set_bytes": 6291456,
+    "int32_working_set_bytes": 12582912,
+    "float32_working_set_bytes": 12582912,
+    "bfloat16_working_set_bytes": 6291456,
+    "custom_int8_seconds_per_run": 0.007057452392578125,
+    "custom_int32_seconds_per_run": 0.007090418701171875,
+    "float32_seconds_per_run": 0.0007746406555175781,
+    "bfloat16_seconds_per_run": 0.0013652224731445313,
+    "custom_kernel_speedup_claimed": false,
+    "training_performed": false
+  },
+  "benchmark": {
+    "scope": "hand-written Numba CUDA integer matmul; no training or capability claim",
+    "torch_version": "2.9.1+cu126",
+    "numba_cuda": true,
+    "device": "NVIDIA GeForce GTX 1650",
+    "compute_capability": [
+      7,
+      5
+    ],
+    "size": 1024,
+    "repeats": 50,
+    "storage_bytes": {
+      "int8_A_or_B": 1048576,
+      "int32_A_or_B": 4194304,
+      "float32_A_or_B": 4194304,
+      "bfloat16_A_or_B": 2097152,
+      "int32_output": 4194304
+    },
+    "modes": {
+      "custom_numba_int8_acc_int32": {
+        "seconds_per_run": 0.007057452392578125,
+        "runs_per_second": 141.69418996742175,
+        "output_dtype": "torch.int32",
+        "working_set_bytes": 6291456,
+        "max_abs_error_vs_float32": 0.0
+      },
+      "custom_numba_int32_acc_int32": {
+        "seconds_per_run": 0.007090418701171875,
+        "runs_per_second": 141.035394684763,
+        "output_dtype": "torch.int32",
+        "working_set_bytes": 12582912,
+        "max_abs_error_vs_float32": 0.0
+      },
+      "torch_float32": {
+        "seconds_per_run": 0.0007746406555175781,
+        "runs_per_second": 1290.921142438422,
+        "output_dtype": "torch.float32",
+        "working_set_bytes": 12582912,
+        "max_abs_error_vs_float32": 0.0
+      },
+      "torch_bfloat16": {
+        "seconds_per_run": 0.0013652224731445313,
+        "runs_per_second": 732.4813498687064,
+        "output_dtype": "torch.bfloat16",
+        "working_set_bytes": 6291456,
+        "max_abs_error_vs_float32": 1.0
+      }
+    }
+  },
+  "verification": {
+    "cuda_kernel_compiled_and_ran": true,
+    "int8_correctness_max_abs_error": 0.0,
+    "int32_correctness_max_abs_error": 0.0,
+    "training_performed": false
+  },
+  "artifact_hashes": {
+    "scripts/bench_custom_cuda_integer_numba.py": "495ec588c13f659547ff5e23ab7e1e2c2805e76d4fbb037f3bebba09d77038ec",
+    "results/published/cgb_custom_cuda_integer_numba_20261025.json": "54cc08f411762829d9cad859c6b1f66feeb173bcbea220f3bb4838de1b71b5c8",
+    "docs/information_boltzmann/CGB_CONTINUOUS_MAINTENANCE_20261024.md": "2c46f61646cd341341da570a962ffbafe206e6d42117fc6f9721c0836daceed4",
+    "research_tree.json": "a3b79d54acc6c0a76830d5d5863da8c3f31e31ad6af4b1955cbe73c7f8b20a26"
+  },
+  "report": "docs/information_boltzmann/CGB_CONTINUOUS_MAINTENANCE_20261024.md",
+  "artifacts": [
+    "scripts/bench_custom_cuda_integer_numba.py",
+    "results/published/cgb_custom_cuda_integer_numba_20261025.json"
+  ]
+}

@@ -1,0 +1,628 @@
+{
+  "scope": "Direct event-language Noether bridge and current operational-life definition controls motivated by passive absorption and frozen-copy objections.",
+  "status": "full_build_and_trust_audit_passed",
+  "audit_timestamp": "2026-10-23T19:51:35+08:00",
+  "baseline_commit": "25b21ec0cf7fe3982b35067fbf2dc6061698f243",
+  "inventory": {
+    "declarations": 1123,
+    "modules": [
+      "CGBAxioms.Language",
+      "CGBAxioms.Symmetry",
+      "CGBAxioms.Medium",
+      "CGBAxioms.Life",
+      "CGBAxioms.Models",
+      "CGBAxioms.Inference",
+      "CGBAxioms.Foundation",
+      "CGBAxioms.RuleEncoding",
+      "CGBAxioms.WorldRecovery",
+      "CGBAxioms.OperationalLife",
+      "CGBAxioms.RecoveryControls",
+      "CGBAxioms.Interaction",
+      "CGBAxioms.InteractionBridge",
+      "CGBAxioms.InteractionControls",
+      "CGBAxioms.ConstraintAudit",
+      "CGBAxioms.ConstraintFreedom",
+      "CGBAxioms.SubconditionGraph",
+      "CGBAxioms.AtomicIndependence",
+      "CGBAxioms.NoetherBridge",
+      "CGBAxioms.LifeControls"
+    ],
+    "theorems": 701
+  },
+  "source_declared_theorems": 285,
+  "new_source_theorems": [
+    "CGB.FirstHit.during_zero_on_closed",
+    "CGB.JumpProcess.observableSymmetry_iff_conserved",
+    "CGB.Medium.closedJump_conserved_iff",
+    "CGB.Medium.content_drift_boundary",
+    "CGB.Medium.jump_gen_events",
+    "CGB.Medium.kernel_from_frozen_state",
+    "CGB.Medium.p2a_iff_closed_conserved",
+    "CGB.Medium.p2a_iff_closed_expected_drifts",
+    "CGB.Medium.p2a_iff_closed_moments",
+    "CGB.Medium.p2a_iff_closed_observable_symmetry",
+    "CGB.NoetherControls.meanOnly_first_drift",
+    "CGB.NoetherControls.meanOnly_not_conserved",
+    "CGB.NoetherControls.meanOnly_second_drift",
+    "CGB.NoetherControls.seed_closed_symmetry",
+    "CGB.NoetherControls.toggle_fails_closed_moments",
+    "CGB.Operational.alive_zero_from_frozen_state",
+    "CGB.Operational.alive_zero_without_intake",
+    "CGB.Operational.not_persists_of_closed_moments_and_empty_boundary",
+    "CGB.Operational.not_persists_of_frozen",
+    "CGB.Operational.not_persists_of_frozen_initial",
+    "CGB.Operational.not_persists_without_intake",
+    "CGB.Operational.not_selfMaintains_without_intake",
+    "CGB.Operational.recovery_zero_from_frozen_state",
+    "CGB.Operational.recovery_zero_without_intake",
+    "CGB.Operational.survival_zero_without_intake",
+    "CGB.RecoveryControls.filledPassive_axioms",
+    "CGB.RecoveryControls.filledPassive_clock",
+    "CGB.RecoveryControls.filledPassive_not_persists",
+    "CGB.RecoveryControls.passive_body_axioms",
+    "CGB.RecoveryControls.passive_body_can_take_in",
+    "CGB.RecoveryControls.passive_full_frozen",
+    "CGB.RecoveryControls.passive_full_not_alive",
+    "CGB.RecoveryControls.passive_intake_not_persistence"
+  ],
+  "new_source_theorem_count": 33,
+  "proof_trust_passed": true,
+  "module_coverage_passed": true,
+  "audit_guard_checks": 10,
+  "previous_1073_declaration_signatures_preserved": true,
+  "existing_physical_axioms_dynamics_and_operational_target_definitions_unchanged": true,
+  "existing_lean_files_changed": [
+    "CGBAxioms.lean (imports)",
+    "CGBAxioms/AuditAll.lean (imports)",
+    "CGBAxioms/Inference.lean (historical-status comment only)"
+  ],
+  "noether_downstream_dependency_chain": [
+    "CGB.Operational.not_persists_of_closed_moments_and_empty_boundary",
+    "CGB.Medium.p2a_iff_closed_moments",
+    "CGB.JumpProcess.noether"
+  ],
+  "closed_generator_scope": "Restrict existing rates to closed events as an analysis object; original open generator is preserved.",
+  "closed_equivalence": [
+    "P2a",
+    "Total-content pathwise conservation on closed events",
+    "Zero first and second content moment drifts for every stimulus",
+    "Multiplication by total content commutes with the closed observable generator"
+  ],
+  "open_boundary_balance": "Every function of total content has drift contributed only by boundary-touching events under P2a.",
+  "passive_counterexample": {
+    "model": "CGB.RecoveryControls.filledPassive",
+    "certificate": "CGB.RecoveryControls.passive_intake_not_persistence",
+    "satisfies_six_axioms": true,
+    "clock_rate": 1,
+    "positive_initial_content": true,
+    "intake_event_exists_at_another_state": true,
+    "initial_state_absorbing_for_all_inputs": true,
+    "current_operational_persistence_impossible": true,
+    "scope": "Logical full-state absorbing control. It is not a biological model of Porifera, E. coli or all passive processes, and is not a complete genome-budget witness."
+  },
+  "positive_and_negative_controls": {
+    "seed_closed_symmetry": "CGB.NoetherControls.seed_closed_symmetry",
+    "nonconserving_closed_toggle_rejected": "CGB.NoetherControls.toggle_fails_closed_moments",
+    "mean_only_cancellation": {
+      "first_drift": 0,
+      "second_drift_at_center": 2,
+      "certificate": "CGB.NoetherControls.meanOnly_not_conserved"
+    }
+  },
+  "prior_repairs_integrated": [
+    {
+      "commit": "de0268db7fdb7c0f6bb0005cf974fd1867c7b6f4",
+      "change": "Content-only alive criterion replaced by historical intake-recovery criterion."
+    },
+    {
+      "commit": "851012b",
+      "change": "Actual joint body-world first-hit recovery and branch-specific cut futures replace the favourable-input menu in the operational target."
+    }
+  ],
+  "current_migrations_proved": [
+    "No possible intake: normal and cut recovery/alive/survival zero, no persistence or self-maintenance",
+    "Fully frozen body: no persistence",
+    "All-input absorbing current state: recovery/alive zero",
+    "Absorbing initial body: no persistence even with initial material"
+  ],
+  "remaining_target_obligations": [
+    "Active recovery after actual damage",
+    "Useful non-frozen memory and its causal contribution",
+    "Action-conditioned prediction and self-model",
+    "Matched reflex or internal-lesion counterfactual with satisfiable advantage contract",
+    "Channel-resolved resource, usable energy and entropy accounting",
+    "Full life positive witness"
+  ],
+  "not_claimed": [
+    "New general physical axiom",
+    "All passive processes excluded",
+    "Active inference or self-model existence",
+    "Actual Python runtime now uses Noether-derived monitors",
+    "A constructed continuous-time semigroup",
+    "Real-world capability evidence"
+  ],
+  "build_retry": {
+    "initial_failure": "Concurrent rebuild failed to read existing mathlib artifacts",
+    "live_free_memory_kib": 3419504,
+    "resolution": "Sequential module prebuilds, then the identical full build/trust audit",
+    "root_cause": "Resource pressure suspected; no corrupted/missing artifact established",
+    "all_sequential_targets_passed": true
+  },
+  "certificate_signatures": {
+    "CGB.JumpProcess.observableSymmetry_iff_conserved": {
+      "signature": "∀ {S : Type u_1} [inst : Fintype S] (P : CGB.JumpProcess S) (Q : S → ℝ), P.ObservableSymmetry Q ↔ P.Conserved Q",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "project_dependencies": [
+        "CGB.JumpProcess",
+        "CGB.JumpProcess.Conserved",
+        "CGB.JumpProcess.ObservableSymmetry",
+        "CGB.JumpProcess.gen",
+        "CGB.JumpProcess.noether",
+        "CGB.JumpProcess.rate",
+        "CGB.JumpProcess.rate_nonneg"
+      ]
+    },
+    "CGB.Medium.jump_gen_events": {
+      "signature": "∀ {U : Type u_1} {Λ : Type u_2} {A : Type u_3} {I : Type u_4} (M : CGB.Medium U Λ A I) [inst : Fintype A]\n  [inst_1 : Fintype (U → Λ)] [inst_2 : DecidableEq (U → Λ)] (s : U → I) (f : (U → Λ) → ℝ) (x : U → Λ),\n  (M.jump s).gen f x = ∑ a, M.rate a s x * (f (M.act a s x) - f x)",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "project_dependencies": [
+        "CGB.Medium",
+        "CGB.JumpProcess.gen",
+        "CGB.JumpProcess.rate",
+        "CGB.Medium.act",
+        "CGB.Medium.jump",
+        "CGB.Medium.rate"
+      ]
+    },
+    "CGB.Medium.closedJump_conserved_iff": {
+      "signature": "∀ {U : Type u_1} {Λ : Type u_2} {A : Type u_3} {I : Type u_4} (M : CGB.Medium U Λ A I) [inst : DecidableEq U]\n  [inst_1 : Fintype A] [inst_2 : DecidableEq (U → Λ)] (s : U → I) (Q : (U → Λ) → ℝ),\n  (M.closedJump s).Conserved Q ↔ ∀ (a : A) (x : U → Λ), M.Closed a → 0 < M.rate a s x → Q (M.act a s x) = Q x",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "project_dependencies": [
+        "CGB.Medium",
+        "CGB.JumpProcess.Conserved",
+        "CGB.JumpProcess.rate",
+        "CGB.Medium.Closed",
+        "CGB.Medium.act",
+        "CGB.Medium.closedJump",
+        "CGB.Medium.closedPart",
+        "CGB.Medium.instDecidableClosedOfDecidableEq",
+        "CGB.Medium.rate",
+        "CGB.Medium.rate_nonneg"
+      ]
+    },
+    "CGB.Medium.p2a_iff_closed_conserved": {
+      "signature": "∀ {U : Type u_1} {Λ : Type u_2} {A : Type u_3} {I : Type u_4} (M : CGB.Medium U Λ A I) [inst : Fintype U]\n  [inst_1 : DecidableEq U] [inst_2 : DecidableEq Λ] [inst_3 : Fintype A],\n  M.P2a ↔ ∀ (s : U → I), (M.closedJump s).Conserved M.contentObservable",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "project_dependencies": [
+        "CGB.Medium",
+        "CGB.JumpProcess.Conserved",
+        "CGB.Medium.Closed",
+        "CGB.Medium.P2a",
+        "CGB.Medium.act",
+        "CGB.Medium.closedJump",
+        "CGB.Medium.closedJump_conserved_iff",
+        "CGB.Medium.contentObservable",
+        "CGB.Medium.rate",
+        "CGB.Medium.total"
+      ]
+    },
+    "CGB.Medium.p2a_iff_closed_moments": {
+      "signature": "∀ {U : Type u_1} {Λ : Type u_2} {A : Type u_3} {I : Type u_4} (M : CGB.Medium U Λ A I) [inst : Fintype U]\n  [inst_1 : DecidableEq U] [inst_2 : Fintype Λ] [inst_3 : DecidableEq Λ] [inst_4 : Fintype A],\n  M.P2a ↔\n    ∀ (s : U → I),\n      (∀ (x : U → Λ), (M.closedJump s).gen M.contentObservable x = 0) ∧\n        ∀ (x : U → Λ), (M.closedJump s).gen (fun y => M.contentObservable y ^ 2) x = 0",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "project_dependencies": [
+        "CGB.Medium",
+        "CGB.JumpProcess.Conserved",
+        "CGB.JumpProcess.gen",
+        "CGB.JumpProcess.noether",
+        "CGB.Medium.P2a",
+        "CGB.Medium.closedJump",
+        "CGB.Medium.contentObservable",
+        "CGB.Medium.p2a_iff_closed_conserved"
+      ]
+    },
+    "CGB.Medium.p2a_iff_closed_expected_drifts": {
+      "signature": "∀ {U : Type u_1} {Λ : Type u_2} {A : Type u_3} {I : Type u_4} (M : CGB.Medium U Λ A I) [inst : Fintype U]\n  [inst_1 : DecidableEq U] [inst_2 : Fintype Λ] [inst_3 : DecidableEq Λ] [inst_4 : Fintype A],\n  M.P2a ↔\n    ∀ (s : U → I),\n      (∀ (p : (U → Λ) → ℝ),\n          (∀ (x : U → Λ), 0 ≤ p x) → ∑ x, p x = 1 → ∑ x, p x * (M.closedJump s).gen M.contentObservable x = 0) ∧\n        ∀ (p : (U → Λ) → ℝ),\n          (∀ (x : U → Λ), 0 ≤ p x) →\n            ∑ x, p x = 1 → ∑ x, p x * (M.closedJump s).gen (fun y => M.contentObservable y ^ 2) x = 0",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "project_dependencies": [
+        "CGB.Medium",
+        "CGB.JumpProcess.expect_const_iff",
+        "CGB.JumpProcess.gen",
+        "CGB.Medium.P2a",
+        "CGB.Medium.closedJump",
+        "CGB.Medium.contentObservable",
+        "CGB.Medium.p2a_iff_closed_moments"
+      ]
+    },
+    "CGB.Medium.p2a_iff_closed_observable_symmetry": {
+      "signature": "∀ {U : Type u_1} {Λ : Type u_2} {A : Type u_3} {I : Type u_4} (M : CGB.Medium U Λ A I) [inst : Fintype U]\n  [inst_1 : DecidableEq U] [inst_2 : Fintype Λ] [inst_3 : DecidableEq Λ] [inst_4 : Fintype A],\n  M.P2a ↔ ∀ (s : U → I), (M.closedJump s).ObservableSymmetry M.contentObservable",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "project_dependencies": [
+        "CGB.Medium",
+        "CGB.JumpProcess.Conserved",
+        "CGB.JumpProcess.ObservableSymmetry",
+        "CGB.JumpProcess.observableSymmetry_iff_conserved",
+        "CGB.Medium.P2a",
+        "CGB.Medium.closedJump",
+        "CGB.Medium.contentObservable",
+        "CGB.Medium.p2a_iff_closed_conserved"
+      ]
+    },
+    "CGB.Medium.content_drift_boundary": {
+      "signature": "∀ {U : Type u_1} {Λ : Type u_2} {A : Type u_3} {I : Type u_4} (M : CGB.Medium U Λ A I) [inst : Fintype U]\n  [inst_1 : DecidableEq U] [inst_2 : Fintype Λ] [inst_3 : DecidableEq Λ] [inst_4 : Fintype A],\n  M.P2a →\n    ∀ (s : U → I) (g : ℕ → ℝ) (x : U → Λ),\n      (M.jump s).gen (fun y => g (M.total y)) x =\n        ∑ a, if M.Closed a then 0 else M.rate a s x * (g (M.total (M.act a s x)) - g (M.total x))",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "project_dependencies": [
+        "CGB.Medium",
+        "CGB.JumpProcess.gen",
+        "CGB.Medium.Closed",
+        "CGB.Medium.P2a",
+        "CGB.Medium.act",
+        "CGB.Medium.instDecidableClosedOfDecidableEq",
+        "CGB.Medium.jump",
+        "CGB.Medium.jump_gen_events",
+        "CGB.Medium.rate",
+        "CGB.Medium.rate_nonneg",
+        "CGB.Medium.total"
+      ]
+    },
+    "CGB.FirstHit.during_zero_on_closed": {
+      "signature": "∀ {S : Type u_1} [inst : Fintype S] (K : ℕ → CGB.FirstHit.Kernel S) (mark : S → S → Bool) (C : S → Prop),\n  (∀ (t : ℕ) (z z' : S), C z → 0 < (K t).step z z' → C z') →\n    (∀ (t : ℕ) (z z' : S), C z → 0 < (K t).step z z' → mark z z' = false) →\n      ∀ (t k : ℕ) (z : S), C z → CGB.FirstHit.during K mark t k z = 0",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "project_dependencies": [
+        "CGB.FirstHit.Kernel",
+        "CGB.FirstHit.during",
+        "CGB.FirstHit.Kernel.nonneg",
+        "CGB.FirstHit.Kernel.step"
+      ]
+    },
+    "CGB.Operational.recovery_zero_without_intake": {
+      "signature": "∀ {U : Type u_1} {Λ : Type u_2} {A : Type u_3} {I : Type u_4} [inst : Fintype U] [inst_1 : DecidableEq U]\n  [inst_2 : Fintype Λ] [inst_3 : DecidableEq Λ] [inst_4 : Fintype A] (M : CGB.Medium U Λ A I) (Wd : CGB.World U Λ I)\n  (hc : M.Clocked Wd.clock),\n  (∀ (x : U → Λ), ¬M.CanTakeIn x) →\n    ∀ (cut : Bool) (sched : ℕ → Wd.W → U → I) (t k : ℕ) (z : (U → Λ) × Wd.W),\n      CGB.Operational.recovery M Wd hc cut sched t k z = 0",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "project_dependencies": [
+        "CGB.Medium",
+        "CGB.World",
+        "CGB.FirstHit.Kernel",
+        "CGB.FirstHit.during_zero_on_closed",
+        "CGB.Medium.CanTakeIn",
+        "CGB.Medium.Clocked",
+        "CGB.Medium.cutMove",
+        "CGB.Medium.kernel",
+        "CGB.Medium.kernel_up_zero",
+        "CGB.Medium.lawCut",
+        "CGB.Medium.materialIntake",
+        "CGB.Medium.scheduledCutKernel",
+        "CGB.Medium.scheduledKernel",
+        "CGB.Medium.total",
+        "CGB.Operational.recovery",
+        "CGB.World.W",
+        "CGB.World.clock",
+        "CGB.World.fin",
+        "CGB.World.moves",
+        "CGB.FirstHit.Kernel.step"
+      ]
+    },
+    "CGB.Operational.not_persists_without_intake": {
+      "signature": "∀ {U : Type u_1} {Λ : Type u_2} {A : Type u_3} {I : Type u_4} [inst : Fintype U] [inst_1 : DecidableEq U]\n  [inst_2 : Fintype Λ] [inst_3 : DecidableEq Λ] [inst_4 : Fintype A] (M : CGB.Medium U Λ A I) (Wd : CGB.World U Λ I)\n  (hc : M.Clocked Wd.clock), (∀ (x : U → Λ), ¬M.CanTakeIn x) → ∀ (δ : ℝ), ¬CGB.Operational.Persists M Wd hc δ",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "project_dependencies": [
+        "CGB.Medium",
+        "CGB.World",
+        "CGB.Medium.CanTakeIn",
+        "CGB.Medium.Clocked",
+        "CGB.Operational.Persists",
+        "CGB.Operational.survival",
+        "CGB.Operational.survival_zero_without_intake",
+        "CGB.World.clock",
+        "CGB.World.sense"
+      ]
+    },
+    "CGB.Operational.not_selfMaintains_without_intake": {
+      "signature": "∀ {U : Type u_1} {Λ : Type u_2} {A : Type u_3} {I : Type u_4} [inst : Fintype U] [inst_1 : DecidableEq U]\n  [inst_2 : Fintype Λ] [inst_3 : DecidableEq Λ] [inst_4 : Fintype A] (M : CGB.Medium U Λ A I) (Wd : CGB.World U Λ I)\n  (hc : M.Clocked Wd.clock), (∀ (x : U → Λ), ¬M.CanTakeIn x) → ¬CGB.Operational.SelfMaintains M Wd hc",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "project_dependencies": [
+        "CGB.Medium",
+        "CGB.World",
+        "CGB.Medium.CanTakeIn",
+        "CGB.Medium.Clocked",
+        "CGB.Operational.SelfMaintains",
+        "CGB.Operational.survival",
+        "CGB.Operational.survival_zero_without_intake",
+        "CGB.World.clock",
+        "CGB.World.sense"
+      ]
+    },
+    "CGB.Operational.not_persists_of_frozen": {
+      "signature": "∀ {U : Type u_1} {Λ : Type u_2} {A : Type u_3} {I : Type u_4} [inst : Fintype U] [inst_1 : DecidableEq U]\n  [inst_2 : Fintype Λ] [inst_3 : DecidableEq Λ] [inst_4 : Fintype A] (M : CGB.Medium U Λ A I) (Wd : CGB.World U Λ I)\n  (hc : M.Clocked Wd.clock),\n  (∀ (a : A) (s : U → I) (x : U → Λ), 0 < M.rate a s x → M.act a s x = x) →\n    ∀ (δ : ℝ), ¬CGB.Operational.Persists M Wd hc δ",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "project_dependencies": [
+        "CGB.Medium",
+        "CGB.World",
+        "CGB.Medium.CanTakeIn",
+        "CGB.Medium.Clocked",
+        "CGB.Medium.act",
+        "CGB.Medium.rate",
+        "CGB.Medium.total",
+        "CGB.Operational.Persists",
+        "CGB.Operational.not_persists_without_intake",
+        "CGB.World.clock"
+      ]
+    },
+    "CGB.Operational.recovery_zero_from_frozen_state": {
+      "signature": "∀ {U : Type u_1} {Λ : Type u_2} {A : Type u_3} {I : Type u_4} [inst : Fintype U] [inst_1 : DecidableEq U]\n  [inst_2 : Fintype Λ] [inst_3 : DecidableEq Λ] [inst_4 : Fintype A] (M : CGB.Medium U Λ A I) (Wd : CGB.World U Λ I)\n  (hc : M.Clocked Wd.clock) (x : U → Λ),\n  (∀ (a : A) (s : U → I), 0 < M.rate a s x → M.act a s x = x) →\n    ∀ (cut : Bool) (sched : ℕ → Wd.W → U → I) (t k : ℕ) (w : Wd.W),\n      CGB.Operational.recovery M Wd hc cut sched t k (x, w) = 0",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "project_dependencies": [
+        "CGB.Medium",
+        "CGB.World",
+        "CGB.FirstHit.Kernel",
+        "CGB.FirstHit.during_zero_on_closed",
+        "CGB.Medium.Clocked",
+        "CGB.Medium.act",
+        "CGB.Medium.cutMove",
+        "CGB.Medium.kernel",
+        "CGB.Medium.kernel_from_frozen_state",
+        "CGB.Medium.lawCut",
+        "CGB.Medium.materialIntake",
+        "CGB.Medium.rate",
+        "CGB.Medium.scheduledCutKernel",
+        "CGB.Medium.scheduledKernel",
+        "CGB.Medium.total",
+        "CGB.Operational.recovery",
+        "CGB.World.W",
+        "CGB.World.clock",
+        "CGB.World.fin",
+        "CGB.World.moves",
+        "CGB.FirstHit.Kernel.step"
+      ]
+    },
+    "CGB.Operational.not_persists_of_frozen_initial": {
+      "signature": "∀ {U : Type u_1} {Λ : Type u_2} {A : Type u_3} {I : Type u_4} [inst : Fintype U] [inst_1 : DecidableEq U]\n  [inst_2 : Fintype Λ] [inst_3 : DecidableEq Λ] [inst_4 : Fintype A] (M : CGB.Medium U Λ A I) (Wd : CGB.World U Λ I)\n  (hc : M.Clocked Wd.clock),\n  (∀ (a : A) (s : U → I), 0 < M.rate a s M.init → M.act a s M.init = M.init) →\n    ∀ (δ : ℝ), ¬CGB.Operational.Persists M Wd hc δ",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "project_dependencies": [
+        "CGB.Medium",
+        "CGB.World",
+        "CGB.Medium.Clocked",
+        "CGB.Medium.act",
+        "CGB.Medium.init",
+        "CGB.Medium.law",
+        "CGB.Medium.lawCut",
+        "CGB.Medium.rate",
+        "CGB.Operational.Persists",
+        "CGB.Operational.alive",
+        "CGB.Operational.alive_zero_from_frozen_state",
+        "CGB.Operational.survival",
+        "CGB.World.W",
+        "CGB.World.clock",
+        "CGB.World.dec",
+        "CGB.World.fin",
+        "CGB.World.sense",
+        "CGB.World.start"
+      ]
+    },
+    "CGB.RecoveryControls.passive_intake_not_persistence": {
+      "signature": "∀ (δ : ℝ),\n  CGB.RecoveryControls.filledPassive.Axioms ∧\n    CGB.RecoveryControls.filledPassive.Clocked 1 ∧\n      0 < CGB.RecoveryControls.filledPassive.total CGB.RecoveryControls.filledPassive.init ∧\n        (∃ x, CGB.RecoveryControls.filledPassive.CanTakeIn x) ∧\n          ¬CGB.Operational.Persists CGB.RecoveryControls.filledPassive (CGB.RecoveryControls.world true)\n              CGB.RecoveryControls.filledPassive_clock δ",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "project_dependencies": [
+        "CGB.Medium",
+        "CGB.Medium.Axioms",
+        "CGB.Medium.CanTakeIn",
+        "CGB.Medium.Clocked",
+        "CGB.Medium.act",
+        "CGB.Medium.boundary",
+        "CGB.Medium.calm",
+        "CGB.Medium.content",
+        "CGB.Medium.ident",
+        "CGB.Medium.init",
+        "CGB.Medium.mk",
+        "CGB.Medium.near",
+        "CGB.Medium.parts",
+        "CGB.Medium.rate",
+        "CGB.Medium.rate_nonneg",
+        "CGB.Medium.total",
+        "CGB.Operational.Persists",
+        "CGB.RecoveryControls.body",
+        "CGB.RecoveryControls.filledPassive",
+        "CGB.RecoveryControls.filledPassive_axioms",
+        "CGB.RecoveryControls.filledPassive_clock",
+        "CGB.RecoveryControls.filledPassive_not_persists",
+        "CGB.RecoveryControls.passive_body_can_take_in",
+        "CGB.RecoveryControls.world",
+        "CGB.Medium.mk.congr_simp",
+        "CGB.RecoveryControls.body._proof_1"
+      ]
+    },
+    "CGB.NoetherControls.seed_closed_symmetry": {
+      "signature": "∀ (s : Fin 4 → Bool), (CGB.Models.seed.closedJump s).ObservableSymmetry CGB.Models.seed.contentObservable",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "project_dependencies": [
+        "CGB.JumpProcess.ObservableSymmetry",
+        "CGB.Medium.P2a",
+        "CGB.Medium.closedJump",
+        "CGB.Medium.contentObservable",
+        "CGB.Medium.p2a_iff_closed_observable_symmetry",
+        "CGB.Models.seed",
+        "CGB.Models.seed_p2a"
+      ]
+    },
+    "CGB.NoetherControls.toggle_fails_closed_moments": {
+      "signature": "¬∀ (s : Fin 2 → Unit),\n    (∀ (x : Fin 2 → Bool), (CGB.Models.twinToggle.closedJump s).gen CGB.Models.twinToggle.contentObservable x = 0) ∧\n      ∀ (x : Fin 2 → Bool),\n        (CGB.Models.twinToggle.closedJump s).gen (fun y => CGB.Models.twinToggle.contentObservable y ^ 2) x = 0",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "project_dependencies": [
+        "CGB.JumpProcess.gen",
+        "CGB.Medium.IsAut",
+        "CGB.Medium.P1a",
+        "CGB.Medium.P1b",
+        "CGB.Medium.P2a",
+        "CGB.Medium.P2b",
+        "CGB.Medium.P2c",
+        "CGB.Medium.P3",
+        "CGB.Medium.closedJump",
+        "CGB.Medium.contentObservable",
+        "CGB.Medium.p2a_iff_closed_moments",
+        "CGB.Models.twinToggle",
+        "CGB.Models.twinToggle_witness"
+      ]
+    },
+    "CGB.NoetherControls.meanOnly_first_drift": {
+      "signature": "∀ (x : Fin 3), CGB.NoetherControls.meanOnly.gen CGB.NoetherControls.signedValue x = 0",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "project_dependencies": [
+        "CGB.JumpProcess.gen",
+        "CGB.JumpProcess.rate",
+        "CGB.NoetherControls.meanOnly",
+        "CGB.NoetherControls.signedValue",
+        "CGB.NoetherControls.meanOnly._proof_1"
+      ]
+    },
+    "CGB.NoetherControls.meanOnly_second_drift": {
+      "signature": "CGB.NoetherControls.meanOnly.gen (fun x => CGB.NoetherControls.signedValue x ^ 2) 0 = 2",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "project_dependencies": [
+        "CGB.JumpProcess.gen",
+        "CGB.JumpProcess.rate",
+        "CGB.NoetherControls.meanOnly",
+        "CGB.NoetherControls.signedValue",
+        "CGB.NoetherControls.meanOnly._proof_1"
+      ]
+    },
+    "CGB.NoetherControls.meanOnly_not_conserved": {
+      "signature": "¬CGB.NoetherControls.meanOnly.Conserved CGB.NoetherControls.signedValue",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "project_dependencies": [
+        "CGB.JumpProcess.Conserved",
+        "CGB.JumpProcess.gen",
+        "CGB.JumpProcess.noether",
+        "CGB.NoetherControls.meanOnly",
+        "CGB.NoetherControls.meanOnly_second_drift",
+        "CGB.NoetherControls.signedValue"
+      ]
+    }
+  },
+  "source_hashes": {
+    "CGBAxioms/AtomicIndependence.lean": "58f36e25a38713402bd89b3c2d7686c83a69dde990a19c62d1c135b174a8cc0e",
+    "CGBAxioms/Audit.lean": "1745f9772250e6bfe7812323cc5c8733840d60b9d62ad8549d81c049249f3b44",
+    "CGBAxioms/AuditAll.lean": "d2b9e05d7d42e1b1d4ed1308d187d111498a8b7086d33a10ca370484ae6e367f",
+    "CGBAxioms/ConstraintAudit.lean": "cfbda2ff344353b46b209b43cfd69dc836a2ab9a4cbe62ddbe172de9e04544ab",
+    "CGBAxioms/ConstraintFreedom.lean": "37bf271ea1b419f9df48cf81ea20ccc3b7704d39fab9961ad23c45967ea8c0fe",
+    "CGBAxioms/Foundation.lean": "0fe5127c183a9ea32632ebfc3bf152c441ffadd90b115e87a7610b562add8134",
+    "CGBAxioms/Inference.lean": "1b0314e6508a0190c33aaf6d24dd82102ef8d7722cadd7c1897232eb95504c60",
+    "CGBAxioms/Interaction.lean": "9e6daed623e1f03a15c6661408c191fb5d9696af28938ab3cc8f5bed516c8023",
+    "CGBAxioms/InteractionBridge.lean": "43059e1a6192caf81267331edbdd59a0b2480fd4776a589e5138b36286fdf467",
+    "CGBAxioms/InteractionControls.lean": "8bbb3766b4494b1b9f2323b17757d5e9f1fc2a87f0b006fefc019ef9b068490d",
+    "CGBAxioms/Language.lean": "b52db422bcac3996cb279d41813aa4a0998ebb6fe54ba2bb87b096972539f0fe",
+    "CGBAxioms/Life.lean": "f21caf6feba9f6a4a2b5a3bdeb6bea7a05d6503b97c347af52c56e68050b3f65",
+    "CGBAxioms/LifeControls.lean": "5f025d923089697978a8b6a5bbf64fe16db62485d56ebd584f538611f9c38e1c",
+    "CGBAxioms/Medium.lean": "e4f507706eec6f69ce57c95b47a1062e6b644bab12990347cd8d84f286c86fc4",
+    "CGBAxioms/Models.lean": "d7648d7e36912bdd6119f4e27027301b791c530ad7217e873d35c504e1a2f5b0",
+    "CGBAxioms/NoetherBridge.lean": "810a4afc5d944216ca86cd3153ae8d26ff9dc531756220f531f2dc46e35861e3",
+    "CGBAxioms/OperationalLife.lean": "db2259043a68f052c23bbea402a3b48933ff03f3766556349c342db675976e1a",
+    "CGBAxioms/RecoveryControls.lean": "19ab24fd7e9f292707a916eb9cdb5a372b62121c6faae042882aca892b0d35a2",
+    "CGBAxioms/RuleEncoding.lean": "27aaa80e273a621bfa37a0c47e85afeb7aed818f3b96cf56359a0fccc0990100",
+    "CGBAxioms/SubconditionGraph.lean": "3ab2e1c74a3a7895a2ff82bb17a3b430084de904b457e68bc627dcb099c78c51",
+    "CGBAxioms/Symmetry.lean": "f595478d072a4fa5680be6e6a928afb86922e3fcdd3ef0512bfefdb9ab2090bc",
+    "CGBAxioms/WorldRecovery.lean": "168592642319cd10c65ee9edac1e11389534243346b03636408cc421bf00af5c",
+    "CGBAxioms.lean": "5a4937e843de929c3c514fdec52d6339e0da2683b16b5dbfc65e34feeca8449d"
+  },
+  "audit_command": "python scripts/audit.py --output .lake/noether_life_controls_20261023.json",
+  "report": "docs/information_boltzmann/CGB_NOETHER_LIFE_CONTROLS_20261023.md",
+  "backup": "results/cgb_noether_life_before_20261023_194418",
+  "biological_scope_clarification": {
+    "user_clarification": "Porifera and E. coli are intended low-complexity biological references that the theory should be able to include.",
+    "withdrawn_interpretation": "Reinterpreting the user's sponge as a passive absorbent material was unsupported.",
+    "cognitive_scope": "Keep a degree of intelligence and agency as functional, organism-scale targets; do not impose neurons, explicit probabilistic world models or higher cognition as universal structural prerequisites.",
+    "formal_status": "The existing Lean certificates are unchanged. Neither a biological classification nor full L1-L6 satisfaction for Porifera or E. coli has been machine proved.",
+    "primary_sources": [
+      "https://www.nature.com/articles/s41467-020-17397-w",
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC9287330/",
+      "https://journals.asm.org/doi/10.1128/jb.02171-14"
+    ]
+  },
+  "v014_followup": {
+    "legacy_observer": "Operational materialIntake detects positive net content growth.",
+    "constant_state_does_not_imply_zero_physical_turnover": true,
+    "new_version": "Exchange gross-channel material subtarget with same state laws and world clock.",
+    "evidence": "results/published/cgb_material_exchange_20261023.json"
+  }
+}

@@ -1,0 +1,269 @@
+{
+  "date": "2026-10-24",
+  "status": "reported_claims_refuted",
+  "scope": "Exact rational replay of a finite mathematical model; no training.",
+  "lean_table_check": "reviews/active_loop_20261024.lean",
+  "arithmetic": "fractions.Fraction, no sampling or floating-point tolerance",
+  "rows": [
+    {
+      "time": 0,
+      "natural_survival": "0",
+      "cut_survival": "0",
+      "natural_law": {
+        "1,0": "1"
+      },
+      "cut_law": {
+        "1,0": "1"
+      }
+    },
+    {
+      "time": 1,
+      "natural_survival": "1",
+      "cut_survival": "1",
+      "natural_law": {
+        "1,1": "1/2",
+        "1,2": "1/2"
+      },
+      "cut_law": {
+        "1,1": "1/2",
+        "1,2": "1/2"
+      }
+    },
+    {
+      "time": 2,
+      "natural_survival": "1",
+      "cut_survival": "1",
+      "natural_law": {
+        "1,3": "1/2",
+        "2,4": "1/2"
+      },
+      "cut_law": {
+        "1,3": "1/2",
+        "2,4": "1/2"
+      }
+    },
+    {
+      "time": 3,
+      "natural_survival": "1",
+      "cut_survival": "1/2",
+      "natural_law": {
+        "3,3": "1/2",
+        "3,4": "1/2"
+      },
+      "cut_law": {
+        "3,3": "1/4",
+        "3,5": "1/2",
+        "3,4": "1/4"
+      }
+    },
+    {
+      "time": 4,
+      "natural_survival": "1",
+      "cut_survival": "1/2",
+      "natural_law": {
+        "1,3": "1/2",
+        "1,4": "1/2"
+      },
+      "cut_law": {
+        "1,3": "1/4",
+        "3,5": "1/2",
+        "1,4": "1/4"
+      }
+    },
+    {
+      "time": 5,
+      "natural_survival": "1/2",
+      "cut_survival": "3/8",
+      "natural_law": {
+        "3,3": "1/2",
+        "3,5": "1/2"
+      },
+      "cut_law": {
+        "3,3": "1/4",
+        "3,5": "5/8",
+        "3,4": "1/8"
+      }
+    },
+    {
+      "time": 6,
+      "natural_survival": "1/2",
+      "cut_survival": "3/8",
+      "natural_law": {
+        "1,3": "1/2",
+        "3,5": "1/2"
+      },
+      "cut_law": {
+        "1,3": "1/4",
+        "3,5": "5/8",
+        "1,4": "1/8"
+      }
+    },
+    {
+      "time": 7,
+      "natural_survival": "1/2",
+      "cut_survival": "21/64",
+      "natural_law": {
+        "3,3": "1/2",
+        "3,5": "1/2"
+      },
+      "cut_law": {
+        "3,3": "1/4",
+        "3,5": "43/64",
+        "3,4": "5/64"
+      }
+    },
+    {
+      "time": 8,
+      "natural_survival": "1/2",
+      "cut_survival": "21/64",
+      "natural_law": {
+        "1,3": "1/2",
+        "3,5": "1/2"
+      },
+      "cut_law": {
+        "1,3": "1/4",
+        "3,5": "43/64",
+        "1,4": "5/64"
+      }
+    },
+    {
+      "time": 9,
+      "natural_survival": "1/2",
+      "cut_survival": "1239/4096",
+      "natural_law": {
+        "3,3": "1/2",
+        "3,5": "1/2"
+      },
+      "cut_law": {
+        "3,3": "1/4",
+        "3,5": "2857/4096",
+        "3,4": "215/4096"
+      }
+    }
+  ],
+  "claimed_quarter_gap_counterexample_times": [
+    2,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "active_loop_authored_theorems": [
+    "CGB.ActiveLoop.active_expected_first_law",
+    "CGB.ActiveLoop.body_axioms",
+    "CGB.ActiveLoop.body_clock",
+    "CGB.ActiveLoop.body_readsBoundary",
+    "CGB.ActiveLoop.fin6_sum",
+    "CGB.ActiveLoop.unique_vacuum",
+    "CGB.ActiveLoop.worldMoves_nonneg",
+    "CGB.ActiveLoop.worldMoves_sum"
+  ],
+  "source_hashes": {
+    "CGBAxioms/ActiveLoop.lean": "9e56d8c7f329724716af60955108055a5bc359eef0b69135f2c7330b0de5708c",
+    "scripts/check_active_loop.py": "1914a00a3700d14a54242aade2e8a88be91b953d33512314ad8b2c7ba6c13330",
+    "reviews/active_loop_20261024.lean": "b5a1a82b71747a3f0c7528b7c36a53281a9adf28f5c43fdfacfaa401735f631e"
+  },
+  "acceptance": "partially_reusable_not_accepted_as_positive_witness",
+  "verification": {
+    "production_build_passed": true,
+    "lean_review_checks_passed": true,
+    "exact_fraction_replay_passed": true,
+    "proof_trust_passed": true,
+    "module_coverage_passed": true,
+    "audit_guard_checks": 10,
+    "production_inventory": {
+      "declarations": 1507,
+      "modules": [
+        "CGBAxioms.Language",
+        "CGBAxioms.Symmetry",
+        "CGBAxioms.Medium",
+        "CGBAxioms.Models",
+        "CGBAxioms.Life",
+        "CGBAxioms.Inference",
+        "CGBAxioms.Foundation",
+        "CGBAxioms.RuleEncoding",
+        "CGBAxioms.WorldRecovery",
+        "CGBAxioms.OperationalLife",
+        "CGBAxioms.RecoveryControls",
+        "CGBAxioms.Interaction",
+        "CGBAxioms.InteractionBridge",
+        "CGBAxioms.InteractionControls",
+        "CGBAxioms.ConstraintAudit",
+        "CGBAxioms.ConstraintFreedom",
+        "CGBAxioms.SubconditionGraph",
+        "CGBAxioms.AtomicIndependence",
+        "CGBAxioms.NoetherBridge",
+        "CGBAxioms.LifeControls",
+        "CGBAxioms.EventChannels",
+        "CGBAxioms.MaterialExchange",
+        "CGBAxioms.TurnoverControls",
+        "CGBAxioms.MaterialSource",
+        "CGBAxioms.MaterialSourceControls",
+        "CGBAxioms.EnergyBudget",
+        "CGBAxioms.EnergyControls",
+        "CGBAxioms.ActiveLoop"
+      ],
+      "theorems": 921
+    },
+    "source_declared_theorem_count": 350
+  },
+  "lean_review_checks": [
+    "normal_and_cut_one_step_tables",
+    "natural_starvation_path_probability_one_half",
+    "positive_residual_heat_example",
+    "starvation_fixed_state_nonzero_reserve_and_zero_load_matter_heat"
+  ],
+  "compatibility": {
+    "energy_baseline_signatures_preserved": 1473,
+    "gemini_delivery_signatures_preserved": 1507,
+    "executable_lean_code_unchanged": true,
+    "only_existing_research_node_changed": "IB_CGB_ACTIVE_LOOP_20261023"
+  },
+  "production_source_hashes": {
+    "CGBAxioms/ActiveLoop.lean": "9e56d8c7f329724716af60955108055a5bc359eef0b69135f2c7330b0de5708c",
+    "CGBAxioms/AtomicIndependence.lean": "58f36e25a38713402bd89b3c2d7686c83a69dde990a19c62d1c135b174a8cc0e",
+    "CGBAxioms/Audit.lean": "1745f9772250e6bfe7812323cc5c8733840d60b9d62ad8549d81c049249f3b44",
+    "CGBAxioms/AuditAll.lean": "5c8cd6cab2cfbe028a8a26f58c541845f89f7f109833cdcaec49d9777145f543",
+    "CGBAxioms/ConstraintAudit.lean": "cfbda2ff344353b46b209b43cfd69dc836a2ab9a4cbe62ddbe172de9e04544ab",
+    "CGBAxioms/ConstraintFreedom.lean": "37bf271ea1b419f9df48cf81ea20ccc3b7704d39fab9961ad23c45967ea8c0fe",
+    "CGBAxioms/EnergyBudget.lean": "7f679d7803742d11465b58f4695cf521e3e1a42f3ce831b666131fccc6fbb06c",
+    "CGBAxioms/EnergyControls.lean": "5ec64bc2b3b272e6463f6bdac86d8bc32f40f74e096aadb9b6618209ccf114a0",
+    "CGBAxioms/EventChannels.lean": "0dd33bcc957ff3e3155df4cefaee463ae3627d621434fbcc73474e35ffc73232",
+    "CGBAxioms/Foundation.lean": "0fe5127c183a9ea32632ebfc3bf152c441ffadd90b115e87a7610b562add8134",
+    "CGBAxioms/Inference.lean": "1b0314e6508a0190c33aaf6d24dd82102ef8d7722cadd7c1897232eb95504c60",
+    "CGBAxioms/Interaction.lean": "9e6daed623e1f03a15c6661408c191fb5d9696af28938ab3cc8f5bed516c8023",
+    "CGBAxioms/InteractionBridge.lean": "43059e1a6192caf81267331edbdd59a0b2480fd4776a589e5138b36286fdf467",
+    "CGBAxioms/InteractionControls.lean": "8bbb3766b4494b1b9f2323b17757d5e9f1fc2a87f0b006fefc019ef9b068490d",
+    "CGBAxioms/Language.lean": "b52db422bcac3996cb279d41813aa4a0998ebb6fe54ba2bb87b096972539f0fe",
+    "CGBAxioms/Life.lean": "f21caf6feba9f6a4a2b5a3bdeb6bea7a05d6503b97c347af52c56e68050b3f65",
+    "CGBAxioms/LifeControls.lean": "5f025d923089697978a8b6a5bbf64fe16db62485d56ebd584f538611f9c38e1c",
+    "CGBAxioms/MaterialExchange.lean": "8f888370007db06d7de370155672bdea53ec0929dd7940ace30e7933677eed08",
+    "CGBAxioms/MaterialSource.lean": "50194b475dd439a9497ebbff6f1cc7f2fbc64ea7c0c2d20431a02c412ebab7b8",
+    "CGBAxioms/MaterialSourceControls.lean": "518a2f25e56b7d578fd61c87c02905ffac8f628a419286ebcef051a674fe9354",
+    "CGBAxioms/Medium.lean": "e4f507706eec6f69ce57c95b47a1062e6b644bab12990347cd8d84f286c86fc4",
+    "CGBAxioms/Models.lean": "d7648d7e36912bdd6119f4e27027301b791c530ad7217e873d35c504e1a2f5b0",
+    "CGBAxioms/NoetherBridge.lean": "810a4afc5d944216ca86cd3153ae8d26ff9dc531756220f531f2dc46e35861e3",
+    "CGBAxioms/OperationalLife.lean": "216bcc5a22b70ecffd449a9ab55fdb916b51f3138ffda971e3966b882daa9155",
+    "CGBAxioms/RecoveryControls.lean": "19ab24fd7e9f292707a916eb9cdb5a372b62121c6faae042882aca892b0d35a2",
+    "CGBAxioms/RuleEncoding.lean": "27aaa80e273a621bfa37a0c47e85afeb7aed818f3b96cf56359a0fccc0990100",
+    "CGBAxioms/SubconditionGraph.lean": "3ab2e1c74a3a7895a2ff82bb17a3b430084de904b457e68bc627dcb099c78c51",
+    "CGBAxioms/Symmetry.lean": "f595478d072a4fa5680be6e6a928afb86922e3fcdd3ef0512bfefdb9ab2090bc",
+    "CGBAxioms/TurnoverControls.lean": "7af924e715056309d2c97984dce20fbc3b1a5c07501c0458829e04ca0bbdde7f",
+    "CGBAxioms/WorldRecovery.lean": "168592642319cd10c65ee9edac1e11389534243346b03636408cc421bf00af5c",
+    "CGBAxioms.lean": "fa344fc0d16639d6495d378d7645d907a7f0d881f83d408c5f598a68efb86ac2"
+  },
+  "remaining_obligations": [
+    "Repair B-action memory and initial recovery window.",
+    "Prove existing viability/SelfMaintains targets for all required times.",
+    "Realize matter and energy source/entropy ports and prove Isothermal admission.",
+    "Couple maintenance demand and energetic feasibility back to actual event dynamics."
+  ],
+  "report": "docs/information_boltzmann/CGB_ACTIVE_LOOP_REVIEW_20261024.md",
+  "prechange_backup": "results/cgb_active_loop_before_review_20261024",
+  "full_trust_inventory": "lean/CGBAxioms/.lake/active_loop_review_20261024.json",
+  "review_artifact_hashes": {
+    "docs/information_boltzmann/CGB_ACTIVE_LOOP_REVIEW_20261024.md": "dbffdf9c1ea3ff67c20e0b6afddabcec22d72f6252a956f7d882e1d065b596f3",
+    "docs/information_boltzmann/CGB_ACTIVE_LOOP_20261023.md": "6c24b7f594405ac75d93ddbca4737b7b3cc940d2180a531d274aac04a420fe11"
+  }
+}

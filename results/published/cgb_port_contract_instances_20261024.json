@@ -1,0 +1,90 @@
+{
+  "date": "2026-10-24",
+  "status": "verified_current_body_coarse_contract_instance",
+  "core_result_groups": 3,
+  "results": {
+    "core_result_groups": 3,
+    "new_general_axioms": 0,
+    "current_24_state_body_instantiated": true,
+    "sensory_resource_split_instance": true,
+    "ranked_reserve_instance": true,
+    "empty_absorption_preserved": true,
+    "strict_loss_rank_preserved": true,
+    "microstate_expansion_required_for_coarse_admission": false,
+    "full_carrier_realization_claimed": false,
+    "physical_calibration_claimed": false,
+    "full_l1_l6_claimed": false,
+    "training_performed": false
+  },
+  "scope": "Concrete instantiation of generic coarse contracts; no new organism capability, carrier realization, or physical calibration.",
+  "core_results": [
+    {
+      "id": "IB_CGB_PORT_CONTRACT_INSTANCES_20261024",
+      "parent": "IB_CGB_PORT_CONTRACTS_20261024",
+      "layer": "theorem",
+      "direction": "deduction",
+      "time": "2026-10-24",
+      "status": "verified_current_body_coarse_contract_instance",
+      "title": "The current 24-state body is admitted by coarse port and reserve contracts",
+      "claim": "The existing 24-state sensory-maintenance body instantiates the generic port-factorization and ranked-reserve contracts. Admission therefore requires only the separated sensory/resource projection and reserve-rank certificate at this layer; fixed carrier identities remain conditional on transport, energy, or causal-port claims.",
+      "findings": {
+        "core_result_groups": 3,
+        "new_general_axioms": 0,
+        "current_24_state_body_instantiated": true,
+        "sensory_resource_split_instance": true,
+        "ranked_reserve_instance": true,
+        "empty_absorption_preserved": true,
+        "strict_loss_rank_preserved": true,
+        "microstate_expansion_required_for_coarse_admission": false,
+        "full_carrier_realization_claimed": false,
+        "physical_calibration_claimed": false,
+        "full_l1_l6_claimed": false,
+        "training_performed": false
+      },
+      "scope": "Concrete instantiation of generic coarse contracts; no new organism capability, carrier realization, or physical calibration.",
+      "action": "Use the coarse contracts as the first admission layer for future models; add fixed carrier refinement only when a claim depends on identity-level transport, energy, or causal delivery.",
+      "artifacts": [
+        "lean/CGBAxioms/CGBAxioms/PortContractInstances.lean",
+        "lean/CGBAxioms/reviews/port_contract_instances_20261024.lean"
+      ]
+    }
+  ],
+  "verification": {
+    "production_build_passed": true,
+    "independent_review_exit_code": 0,
+    "review_examples_passed": 5,
+    "proof_trust_passed": true,
+    "module_coverage_passed": true,
+    "audit_guard_checks": 10,
+    "previous_declarations_and_signatures_preserved": 3282,
+    "old_production_sources_unchanged_except_root_import": true,
+    "main_theorem_row_list_unchanged": true,
+    "training_performed": false
+  },
+  "inventory": {
+    "compiled_declarations": 3293,
+    "modules": 60,
+    "kernel_theorem_entries": 2136,
+    "source_authored_theorems": 678,
+    "added_compiled_declarations": 11,
+    "independent_scientific_results_not_equal_to_inventory": true
+  },
+  "artifact_hashes": {
+    "docs/information_boltzmann/CGB_AXIOMS_V0_20261022.md": "c14583a86a8bfce16bef911fd62589a65f34b57d958c4fe5faafe8bb6992d2dd",
+    "docs/information_boltzmann/CGB_CONTINUOUS_MAINTENANCE_20261024.md": "923cdcc8c0cabca675585db672daeb83cae8c0013c978ca5458b8e8ef37f17b4",
+    "lean/CGBAxioms/CGBAxioms/PortContractInstances.lean": "1e3c8754872f66a7c44b15ad5876ae0da674e1958ce0e44a4d6db607f8856d2e",
+    "lean/CGBAxioms/reviews/port_contract_instances_20261024.lean": "cf71228d5c1f4e516b20f875efd0089ca63353db0878e9ee2a1f3c6e8e6402f2",
+    "research_tree.json": "7d11ad99e4194844b90283f42a5eb00e7e76875fb85ad0bc3bf3a10c43357a2f"
+  },
+  "audit_inventory": "lean/CGBAxioms/.lake/port_contract_instances_20261024.json",
+  "build_log": "lean/CGBAxioms/.lake/port_contract_instances_fullbuild.log",
+  "review_log": "lean/CGBAxioms/.lake/port_contract_instances_review.log",
+  "main_document": "docs/information_boltzmann/CGB_AXIOMS_V0_20261022.md",
+  "report": "docs/information_boltzmann/CGB_CONTINUOUS_MAINTENANCE_20261024.md",
+  "artifacts": [
+    "lean/CGBAxioms/CGBAxioms/PortContractInstances.lean",
+    "lean/CGBAxioms/reviews/port_contract_instances_20261024.lean",
+    "docs/information_boltzmann/CGB_CONTINUOUS_MAINTENANCE_20261024.md",
+    "results/published/cgb_port_contract_instances_20261024.json"
+  ]
+}

@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "stage": "inverse_development_identifiability_audit",
+  "status": "paper_derivation_with_exact_and_numerical_checks_not_Lean_proof",
+  "source_commit": "872d0593eaaac2496ee85b64e7ef92c78193c7f1",
+  "input_sha256": {
+    "F:\\fly_stream_overflow\\cgb_r7_observation_audit_20261022\\observations.json": "b6fa93b7f330202ce6e7565c60581964b2aa08523ef833c83bc249b5f4a4bfa3",
+    "F:\\fly_stream_overflow\\cgb_r7_lifetime_constraints_20261022\\parameters_locked.json": "bda00e8e349680e6ed2a48a7ee43bfc8e48b1215c3cb795fb5fb63492da63c2e",
+    "F:\\fly_stream_overflow\\cgb_r7_lifetime_constraints_20261022\\report.json": "342a26997670572657bd639c813411bae8992f1bd306fb81e0e9aafb421206ee"
+  },
+  "source_workbooks_sha256_checked": true,
+  "script_sha256": "faeb37cd2ad6df3fe2fe330b314996cf27a0d19a0151e8bdab3d0ddd640046c3",
+  "exact_algebra": {
+    "parameter_cases": 352,
+    "exact_survival_checks": 8800,
+    "exact_positive_mixture_mappings": 252,
+    "exact_count_paths": 30,
+    "count_path_laws_identical": true,
+    "exact_marker_event_and_censor_checks": 10,
+    "equal_eigenvalue_and_negative_coefficient_cases_included": true,
+    "conditional_intervention_identities_checked": true
+  },
+  "locked_fit_mapping": {
+    "u": 0.6193795194298004,
+    "v": 0.9407560981226681,
+    "k": 0.052398908690393146,
+    "death_from_U": 0.32822157187980644,
+    "mixture_slow_coefficient": 0.16304520044215665,
+    "ever_observed_C_probability": 0.13766707616966758,
+    "continuous_capture_rate": 0.06814730293701389,
+    "continuous_capture_before_loss_probability": 0.14225893189766417
+  },
+  "max_survival_difference": 5.551115123125783e-17,
+  "scores": {
+    "train": {
+      "tracks": 149,
+      "static_mean_nll": 1.9241628465366767,
+      "dynamic_mean_nll": 1.9241628465366767,
+      "historical_locked_mean_nll": 1.9241628465366762
+    },
+    "historical_test": {
+      "tracks": 72,
+      "static_mean_nll": 1.9222657329609012,
+      "dynamic_mean_nll": 1.9222657329609016,
+      "historical_locked_mean_nll": 1.9222657329609012
+    }
+  },
+  "cones": [
+    {
+      "file": "Data/Files/Control/Control_P60_GC1.xlsx",
+      "sha256": "2fe44a7e1363a4f42a574c84bf5c206602fdff84fc487c5e4aa318a425f9a7ee",
+      "split": "train",
+      "incident_tracks": 63,
+      "observed_bulbous_positive": 0,
+      "expected_positive_if_C_is_Bulbous_given_lifetimes": 9.871298056879404,
+      "max_track_nll_difference": 1.7763568394002505e-15
+    },
+    {
+      "file": "Data/Files/Control/Control_P60_GC2.xlsx",
+      "sha256": "752ab0bec34c5be8ad5a663e4ca8f8efbb35566cddb9c07575548349db9c7808",
+      "split": "train",
+      "incident_tracks": 86,
+      "observed_bulbous_positive": 1,
+      "expected_positive_if_C_is_Bulbous_given_lifetimes": 9.116205294049546,
+      "max_track_nll_difference": 1.7763568394002505e-15
+    },
+    {
+      "file": "Data/Files/Control/Control_P60_GC3.xlsx",
+      "sha256": "a808ac43aeb15c24df770410904cccf5e88bc6758e0c91e0efa2ff55164425e7",
+      "split": "historical_test",
+      "incident_tracks": 72,
+      "observed_bulbous_positive": 0,
+      "expected_positive_if_C_is_Bulbous_given_lifetimes": 8.334345975463924,
+      "max_track_nll_difference": 3.552713678800501e-15
+    }
+  ],
+  "marker_check_scope": "Exploratory conditional expectations under an extra unreviewed C_equals_Bulbous observation hypothesis; no intervention or biological identification",
+  "marker_column_semantics": "Cached bulbous_frame_count is raw column C (Bulbous); only positive/zero is used, consistent with author DataImport.m logical(T.Bulbous)",
+  "conclusions": {
+    "lifetime_mixture_does_not_identify_capture": true,
+    "same_independent_arrivals_and_lifetimes_imply_same_count_and_turnover_law": true,
+    "core_axioms_derive_capture": false,
+    "new_parameters_fitted": false,
+    "fresh_blind_test": false,
+    "complete_Control_CG4_exists_in_locked_split": false,
+    "independent_mechanism_review_completed": false,
+    "biological_validation_complete": false,
+    "physical_individual_or_training_advanced": false
+  }
+}

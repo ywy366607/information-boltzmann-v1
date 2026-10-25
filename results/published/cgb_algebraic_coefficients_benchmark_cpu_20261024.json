@@ -1,0 +1,42 @@
+{
+  "scope": "finite PortSeparation kernel operator microbenchmark; no training or capability claim",
+  "device": "cpu",
+  "cuda_available": false,
+  "torch_version": "2.11.0+cpu",
+  "states": 24,
+  "inputs": 16,
+  "batch": 256,
+  "steps": 32,
+  "repeats": 20,
+  "seed": 20261024,
+  "modes": {
+    "float32": {
+      "status": "ok",
+      "seconds_per_run": 0.0024248950001492632,
+      "runs_per_second": 412.38899001335955,
+      "checksum": 145325.0,
+      "max_abs_error_vs_float64": 0.0
+    },
+    "float64": {
+      "status": "ok",
+      "seconds_per_run": 0.002982825000071898,
+      "runs_per_second": 335.25265477387916,
+      "checksum": 145325.0,
+      "max_abs_error_vs_float64": 0.0
+    },
+    "int64": {
+      "status": "ok",
+      "seconds_per_run": 0.04239794499990239,
+      "runs_per_second": 23.58604880501407,
+      "checksum": 145325.0,
+      "max_abs_error_vs_float64": 0.0
+    },
+    "fixed_q12_int64": {
+      "status": "ok",
+      "seconds_per_run": 0.06432704500002728,
+      "runs_per_second": 15.545560968945113,
+      "checksum": 145325.0,
+      "max_abs_error_vs_float64": 0.0
+    }
+  }
+}

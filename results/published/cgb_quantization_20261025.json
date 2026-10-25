@@ -1,0 +1,136 @@
+{
+  "date": "2026-10-25",
+  "status": "verified_model_bit_width_and_quantization_bounds",
+  "scope": "Exact bit-width and quantization bounds for the current finite witness; no universal quantization guarantee for future real-valued models.",
+  "claim": "For the current 24-state, 16-input witness, deterministic transition coefficients are binary, material-flow counters lie in 0..6, reserve lies in 0..2, and state indices need 5 bits. Thus exact storage can use one-bit dense transitions or five-bit sparse targets, three-bit flow counters, and two-bit reserve values. The three-tick dyadic probability set is represented exactly by Q3 scale-8 values in a four-bit unsigned container; arbitrary unit-interval int4 quantization has a 1/30 worst-case absolute error bound.",
+  "findings": {
+    "core_result_groups": 3,
+    "transition_minimum_bits": 1,
+    "flow_counter_minimum_unsigned_bits": 3,
+    "reserve_minimum_unsigned_bits": 2,
+    "state_index_bits": 5,
+    "q3_three_tick_max_abs_error": 0.0,
+    "q4_arbitrary_unit_interval_worst_case": 0.03333333333333333,
+    "q8_arbitrary_unit_interval_worst_case": 0.00196078431372549,
+    "dense_binary_transition_bytes": 1152,
+    "sparse_target_only_bytes": 240,
+    "sparse_target_plus_flow_bytes": 384,
+    "state_vector_q4_bytes": 12,
+    "state_vector_float32_bytes": 96,
+    "universal_real_valued_claim": false,
+    "training_performed": false
+  },
+  "analysis": {
+    "scope": "exact bit-width and quantization analysis for the current finite witness",
+    "states": 24,
+    "inputs": 16,
+    "transition_edges": 384,
+    "exact_ranges": {
+      "binary_transition_coefficients": {
+        "values": [
+          0,
+          1
+        ],
+        "minimum_bits": 1
+      },
+      "material_flow_counters": {
+        "range": [
+          0,
+          6
+        ],
+        "minimum_unsigned_bits": 3
+      },
+      "reserve": {
+        "range": [
+          0,
+          2
+        ],
+        "minimum_unsigned_bits": 2
+      },
+      "cell_index": {
+        "range": [
+          0,
+          7
+        ],
+        "minimum_unsigned_bits": 3
+      },
+      "state_index": {
+        "range": [
+          0,
+          23
+        ],
+        "minimum_unsigned_bits": 5
+      }
+    },
+    "quantization": {
+      "current_binary_transition": {
+        "int1_max_abs_error": 0.0,
+        "int4_max_abs_error": 0.0,
+        "int8_max_abs_error": 0.0
+      },
+      "three_tick_dyadic_probabilities": {
+        "values": [
+          0.0,
+          0.125,
+          0.25,
+          0.5,
+          1.0
+        ],
+        "q3_fixed_scale_8_in_4bit": {
+          "max_abs_error": 0.0,
+          "mean_abs_error": 0.0,
+          "step": 0.125
+        },
+        "q4_fixed_scale_15": {
+          "max_abs_error": 0.033333333333333326,
+          "mean_abs_error": 0.011666666666666664,
+          "step": 0.06666666666666667
+        },
+        "q8_fixed_scale_255": {
+          "max_abs_error": 0.0019607843137254832,
+          "mean_abs_error": 0.0006862745098039191,
+          "step": 0.00392156862745098
+        }
+      },
+      "arbitrary_unit_interval_worst_case": {
+        "q4": {
+          "max_abs_error_bound": 0.03333333333333333,
+          "step": 0.06666666666666667
+        },
+        "q8": {
+          "max_abs_error_bound": 0.00196078431372549,
+          "step": 0.00392156862745098
+        }
+      }
+    },
+    "storage": {
+      "dense_transition_binary_bytes": 1152,
+      "sparse_target_only_5bit_bytes": 240,
+      "sparse_target_plus_3bit_flow_bytes": 384,
+      "dense_transition_q4_bytes": 4608,
+      "dense_transition_q8_bytes": 9216,
+      "one_state_vector_q4_bytes": 12,
+      "one_state_vector_q8_bytes": 24,
+      "one_state_vector_float16_bytes": 48,
+      "one_state_vector_float32_bytes": 96
+    },
+    "recommendation": {
+      "exact_current_transition_storage": "1-bit dense or 5-bit sparse target index",
+      "exact_current_flow_storage": "3-bit unsigned counters; int4 is sufficient with margin",
+      "exact_three_tick_dyadic_probability_storage": "Q3 fixed-point (scale 8 in a 4-bit unsigned container)",
+      "accumulator": "int32 for current 24-state kernel; widen if batch or path sums grow",
+      "universal_real_valued_claim": false
+    }
+  },
+  "artifact_hashes": {
+    "scripts/analyze_quantization.py": "d16e7a1916ae2553af415c439e75ba9a4454b2fbf8310e5c444e859099320701",
+    "results/published/cgb_quantization_analysis_20261025.json": "a0ed36dc54b9a98d512f3b53439e761499fd50917e96e0b2e0df308cfdb1855f",
+    "docs/information_boltzmann/CGB_CONTINUOUS_MAINTENANCE_20261024.md": "266a1f76b099cac93eaf8022d2ce78f9ca331330207f800a24b4f400e971422d",
+    "research_tree.json": "e2b1b3f6a46da51b459bd4dccd8d1a00df5b1c541ca7ce62fba683347d60a001"
+  },
+  "report": "docs/information_boltzmann/CGB_CONTINUOUS_MAINTENANCE_20261024.md",
+  "artifacts": [
+    "scripts/analyze_quantization.py",
+    "results/published/cgb_quantization_analysis_20261025.json"
+  ]
+}
