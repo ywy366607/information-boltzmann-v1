@@ -1,4 +1,4 @@
-import CGBAxioms.Medium
+import CGBAxioms.Inference
 
 /-!
 # Generation, layer 1: what the axioms force on the equilibrium law
@@ -190,6 +190,47 @@ theorem local_markov_of_single_unit_moves [DecidableEq U] (h : M.P1b) {π : (U �
     · exact Function.update_of_ne (by simpa using hv) _ _
     · rw [Set.mem_singleton_iff.1 hv]
       simp
+
+/-! ## Layer 2: the interior is always in local detailed balance -/
+
+/-- **G6**: under P1b and P3 a transition whose changed set and its scope avoid the
+boundary has the same rate under every stimulus as in the calm environment. -/
+theorem rate_interior_stimulus_free (h : M.P1b) (h3 : M.OnlyBoundarySenses) (s : U → I)
+    {x y : U → Λ} (D : Set U) (hD : ∀ u, u ∈ D ↔ x u ≠ y u)
+    (hint : ∀ u, u ∈ D ∨ u ∈ M.scope D → u ∉ M.boundary) :
+    (M.jump s).rate x y = (M.jump M.calm).rate x y := by
+  classical
+  let s' : U → I := fun u => if u ∈ M.boundary then M.calm u else s u
+  have h1 : (M.jump s').rate x y = (M.jump s).rate x y :=
+    M.jump_rate_local h D hD (fun u hu => (not_not.1 fun hn => hu ((hD u).2 (Ne.symm hn))))
+      (fun _ _ => rfl) (fun _ _ => rfl) fun u hu => by simp [s', hint u hu]
+  rw [← h1]
+  exact M.jump_blanket h3 (fun u hu => by simp [s', hu]) x y
+
+/-- **G6DB**: hence, with P2b, interior transitions satisfy detailed balance with the calm
+weight under every stimulus: all irreversibility enters at the boundary. -/
+theorem interior_detailed_balance (h : M.P1b) (h3 : M.OnlyBoundarySenses)
+    {π : (U → Λ) → ℝ}
+    (hdb : ∀ x y, π x * (M.jump M.calm).rate x y = π y * (M.jump M.calm).rate y x)
+    (s : U → I) {x y : U → Λ} (D : Set U) (hD : ∀ u, u ∈ D ↔ x u ≠ y u)
+    (hint : ∀ u, u ∈ D ∨ u ∈ M.scope D → u ∉ M.boundary) :
+    π x * (M.jump s).rate x y = π y * (M.jump s).rate y x := by
+  rw [M.rate_interior_stimulus_free h h3 s D hD hint,
+    M.rate_interior_stimulus_free h h3 s D (fun u => by rw [hD u]; exact ne_comm) hint]
+  exact hdb x y
+
+/-- **G7**: no equilibrium coupling beyond contact. If a second change (on `E`, e.g. a
+plastic variable) lies outside `D ∪ scope D`, it does not alter the equilibrium preference
+across the move on `D`; the mixed second difference of `log π` vanishes. -/
+theorem coupling_vanishes_beyond_scope (h : M.P1b) {π : (U → Λ) → ℝ} (hp : ∀ x, 0 < π x)
+    (hdb : ∀ x y, π x * (M.jump M.calm).rate x y = π y * (M.jump M.calm).rate y x)
+    {x y x' y' : U → Λ} (D : Set U) (hD : ∀ u, u ∈ D ↔ x u ≠ y u)
+    (hy : ∀ u, u ∉ D → y' u = x' u) (hyD : ∀ u ∈ D, y' u = y u)
+    (hfar : ∀ u, x' u ≠ x u → u ∉ D ∧ u ∉ M.scope D)
+    (hpos : 0 < (M.jump M.calm).rate y x) :
+    π y' / π x' = π y / π x :=
+  M.equilibrium_ratio_local h hp hdb D hD hy hyD (fun u hu => not_not.1 fun hn =>
+    (hu.elim (hfar u hn).1 (hfar u hn).2)) hpos
 
 end Medium
 
