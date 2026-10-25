@@ -43,6 +43,8 @@ def main():
     ap.add_argument("--relax", type=float, default=1.0)
     ap.add_argument("--diffuse", type=float, default=0.3)
     ap.add_argument("--feedback", type=float, default=0.1)
+    ap.add_argument("--recur", type=float, default=0.0)
+    ap.add_argument("--anneal", type=float, default=0.0)
     ap.add_argument("--seed", type=int, default=1)
     ap.add_argument("--life", type=int, default=1_000_000)
     ap.add_argument("--future", type=int, default=100_000)
@@ -61,7 +63,7 @@ def main():
     assert (sum(b == 0 for b in life[:100_000]) < 10), "zero bytes in stream: decoding error"
 
     m = LG1(args.hidden, seed=args.seed, eta=args.eta, relax=args.relax, diffuse=args.diffuse,
-            feedback=args.feedback)
+            feedback=args.feedback, recur=args.recur, anneal=args.anneal)
     ngrams = {f"online_order{k}": OnlineNgram(k) for k in (0, 1, 2, 3)}
     window, curve = 50_000, []
     acc = {k: 0.0 for k in ["organism", *ngrams]}
@@ -105,7 +107,7 @@ def main():
 
     report = dict(
         organism="LG1-meanfield", admitted=False, hidden=args.hidden, seed=args.seed, eta=args.eta,
-        relax=args.relax, diffuse=args.diffuse, feedback=args.feedback,
+        relax=args.relax, diffuse=args.diffuse, feedback=args.feedback, recur=args.recur, anneal=args.anneal,
         life_bytes=args.life, life_start=start,
         future_bytes=args.future, segments=args.segments, provenance=prov,
         resident_bytes=sum(a.nbytes for a in (m.W_in, m.W1, m.W2, m.bias, m.h, m.p1, m.p2)),
