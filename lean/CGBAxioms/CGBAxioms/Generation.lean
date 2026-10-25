@@ -264,6 +264,70 @@ theorem coupling_vanishes_beyond_scope (h : M.P1b) {π : (U → Λ) → ℝ} (hp
   M.equilibrium_ratio_local h hp hdb D hD hy hyD (fun u hu => not_not.1 fun hn =>
     (hu.elim (hfar u hn).1 (hfar u hn).2)) hpos
 
+/-- **G9 (modulation needs the boundary)**: if the rate of a transition (for example a
+plastic move: its learning rate or, through the forward/backward pair, its learning
+direction) differs between two stimuli, then some unit of the changed set or its contact
+scope is a boundary unit. Interior plasticity can therefore depend on the world only
+through local states it reads; world-driven gating, sign or rate control needs a
+boundary (modulator) unit at the plastic site. Contrapositive of G6. -/
+theorem modulation_needs_boundary (h : M.P1b) (h3 : M.OnlyBoundarySenses) {s s' : U → I}
+    {x y : U → Λ} (D : Set U) (hD : ∀ u, u ∈ D ↔ x u ≠ y u)
+    (hdiff : (M.jump s).rate x y ≠ (M.jump s').rate x y) :
+    ∃ u, (u ∈ D ∨ u ∈ M.scope D) ∧ u ∈ M.boundary := by
+  by_contra hno
+  push Not at hno
+  exact hdiff ((M.rate_interior_stimulus_free h h3 s D hD hno).trans
+    (M.rate_interior_stimulus_free h h3 s' D hD hno).symm)
+
+/-! ## Why learning rates must be modulated (minimal world class)
+
+World: a hidden value drifting as a random walk (step variance `q`) and observed with
+noise (variance `r`). A learner with a fixed gain `K` (update `m ← m + K (y − m)`) has
+stationary prediction-error variance `V(K) = (q + K² r) / (K (2 − K))` for `0 < K < 2`
+(from `e' = (1 − K) e + w − K v`). Parametrize the world by `P > 0` with
+`q = P² / (P + r)` (`P` is the Kalman steady-state prior variance). -/
+
+/-- **G10a**: the fixed-gain error exceeds the optimum `P` by an exact square; the unique
+optimal fixed gain is the Kalman gain `P / (P + r)`. -/
+theorem fixed_gain_error (r P K : ℝ) (hr : 0 < r) (hP : 0 < P) (hK0 : 0 < K) (hK2 : K < 2) :
+    (P ^ 2 / (P + r) + K ^ 2 * r) / (K * (2 - K)) - P =
+      ((P + r) * K - P) ^ 2 / (K * (2 - K) * (P + r)) := by
+  have h1 : K * (2 - K) ≠ 0 := (mul_pos hK0 (by linarith)).ne'
+  have h2 : P + r ≠ 0 := by positivity
+  field_simp
+  ring
+
+/-- **G10b (necessity of modulation, minimal form)**: in two worlds with different
+volatility (`P₁ ≠ P₂`), no fixed gain is optimal in both: in at least one world its error
+is strictly above that world's optimum. A learner that persists across such worlds must
+change its learning rate with the world; by G9 that change needs boundary participation
+or local states informed by activity. -/
+theorem no_fixed_gain_for_two_volatilities (r P₁ P₂ K : ℝ) (hr : 0 < r) (hP₁ : 0 < P₁)
+    (hP₂ : 0 < P₂) (hne : P₁ ≠ P₂) (hK0 : 0 < K) (hK2 : K < 2) :
+    P₁ < (P₁ ^ 2 / (P₁ + r) + K ^ 2 * r) / (K * (2 - K)) ∨
+      P₂ < (P₂ ^ 2 / (P₂ + r) + K ^ 2 * r) / (K * (2 - K)) := by
+  have hden : ∀ P, 0 < P → 0 < K * (2 - K) * (P + r) := fun P hP =>
+    mul_pos (mul_pos hK0 (by linarith)) (by linarith)
+  by_contra hno
+  push Not at hno
+  obtain ⟨h₁, h₂⟩ := hno
+  have z : ∀ P, 0 < P → (P ^ 2 / (P + r) + K ^ 2 * r) / (K * (2 - K)) ≤ P →
+      (P + r) * K - P = 0 := fun P hP hle => by
+    have e := fixed_gain_error r P K hr hP hK0 hK2
+    have hsq : ((P + r) * K - P) ^ 2 / (K * (2 - K) * (P + r)) ≤ 0 := by linarith
+    have hsq' : ((P + r) * K - P) ^ 2 ≤ 0 :=
+      (div_le_iff₀ (hden P hP)).1 hsq |>.trans (by rw [zero_mul])
+    exact pow_eq_zero_iff (n := 2) (by norm_num) |>.1 (le_antisymm hsq' (sq_nonneg _))
+  have e₁ := z P₁ hP₁ h₁
+  have e₂ := z P₂ hP₂ h₂
+  apply hne
+  have : (P₁ - P₂) * (K - 1) = 0 := by linear_combination e₁ - e₂
+  rcases mul_eq_zero.1 this with h | h
+  · linarith
+  · have hK : K = 1 := by linarith
+    subst hK
+    nlinarith
+
 /-! ## Layer 2b: the integration bottleneck
 
 A single-unit move of `v` is produced by events whose participants form a clique
