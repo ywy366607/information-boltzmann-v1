@@ -427,3 +427,60 @@ def byte_step(memory: TicketMemory, table: bytes, world):
                            probability=probability, active=boundary.active,
                            required_write_units=fee, spent=fee if funded else 0,
                            changed=successor != memory, funded=funded)
+
+
+@dataclass(frozen=True)
+class BoundaryKernel:
+    """One-particle conditional sampler on a declared boundary clique.
+
+    Frozen positive uint16 weights define the target law. One logical proposal
+    reads only its source and destination weights; no normalizer is consulted.
+    The caller owes uniform proposal/ticket entropy, clique realization, and
+    the history-to-weight law. A position is a sample, not a probability vector.
+    """
+    weights: bytes
+    attempt_fee: int = 1
+
+    def __post_init__(self):
+        if (type(self.weights) is not bytes or len(self.weights) % 2
+                or not 4 <= len(self.weights) <= 512
+                or type(self.attempt_fee) is not int or self.attempt_fee < 1):
+            raise ValueError("invalid boundary weights or attempt tariff")
+        if any(w == 0 for (w,) in struct.iter_unpack("<H", self.weights)):
+            raise ValueError("boundary weights must be positive")
+
+    @property
+    def alphabet(self):
+        return len(self.weights) // 2
+
+    def weight(self, label: int):
+        if type(label) is not int or not 0 <= label < self.alphabet:
+            raise ValueError("invalid boundary label")
+        return struct.unpack_from("<H", self.weights, 2 * label)[0]
+
+    def hop(self, position: int, proposal: int, ticket: int):
+        """proposal ~ Uniform(B), ticket ~ Uniform(weight(position)), independent.
+
+        Rejection and self-proposal are transitions too. Ticket production is
+        an explicit stochastic primitive, not an unbounded hidden inner loop.
+        """
+        old, new = self.weight(position), self.weight(proposal)
+        if type(ticket) is not int or not 0 <= ticket < old:
+            raise ValueError("invalid boundary acceptance ticket")
+        return proposal if ticket < min(old, new) else position
+
+    def tick(self, position: int, proposal: int, ticket: int, world):
+        """Publish once, pay one attempt, commit NEXT tick's sample.
+
+        All valid attempts, including rejection and self-proposal, cost the same
+        declared amount. Refusal keeps the old position. Only a fully funded
+        attempt has the registered mixing kernel; these units are not joules.
+        """
+        candidate = self.hop(position, proposal, ticket)
+        boundary = world.begin()
+        observation = world.publish()
+        funded = world.pay_write(self.attempt_fee)
+        return candidate if funded else position, dict(
+            tick=observation.tick, byte=observation.payload,
+            predicted_label=position if boundary.active else None,
+            funded=funded, spent=self.attempt_fee if funded else 0)

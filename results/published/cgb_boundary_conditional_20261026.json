@@ -1,0 +1,40 @@
+{
+  "status": "conditional_boundary_sampler_and_finite_time_contract_checked",
+  "capability_claim": false,
+  "training_performed": false,
+  "full_medium_admitted": false,
+  "production_lean_modules_added": 0,
+  "checks": {
+    "lean_transition_vectors": 4,
+    "enumerated_random_tickets": 59,
+    "detailed_balance_and_minorization_entries": 131213,
+    "finite_time_and_exogenous_tracking_cases": 4,
+    "binary_normalized_mean": [
+      "2/5",
+      "3/5"
+    ],
+    "one_particle_target": [
+      "1/4",
+      "3/4"
+    ],
+    "one_attempt_256_label_tv": "32767/33024",
+    "paid_rejections_self_proposals_and_refusals": true,
+    "one_attempt_per_driver_publication": true,
+    "active_sample_json_restore": true,
+    "single_sample_is_not_a_probability_vector": true,
+    "sampled_delta_l1_bias": "2*eta*abs(p)*TV(actual_sample_law,target)",
+    "mixing_scope": "Fixed frames or specified exogenous frame sequences; funded attempts only",
+    "locality_scope": "Two frozen weights in one declared clique; full LG1 field not realized",
+    "rng_scope": "Uniform proposal and acceptance ticket are explicit external primitives"
+  },
+  "source_hashes": {
+    "information_boltzmann/core/cgb_unified_reference.py": "e68cb7756843f103b9bcfa87ba1d051f18c11e08d3d7e2c7613321017130b6aa",
+    "information_boltzmann/core/cgb_low_resource_life.py": "0c4b80b6503ed4d617857c4ff0e477100c9de2d0f371ab7960f6191f330f9800",
+    "scripts/validate_cgb_boundary_conditional.py": "48c8fa637242781ee5495d374927e06e7af14c6cca8f395652a0cdd9baa4cca6",
+    "scripts/validate_cgb_unified_reference.py": "0bd80a131d881461fb107eeb361ddcfb1d65de025ac208679a3f1e79e247b5d9",
+    "lean/CGBAxioms/reviews/unified_reference_20261025.lean": "8a45b77c23a2f51cbba2dc128cb66f9aa5fb0d1449d442283dc84adf42cc3aac",
+    "docs/information_boltzmann/CGB_GENERATION_LAYER1_20261025.md": "6092a0fee85b7746af384c8f4f499492c9ba2a85cb5170d1291fd7aaa7faf03e",
+    "docs/information_boltzmann/CGB_LG1_ORGANISM_SPEC_20261026.md": "11f8003deed1d3d8ea476cf6ad98bcc0162e25ed7fddaa34ccb223d2b4fd2ae7",
+    "docs/information_boltzmann/CGB_UNIFIED_REFERENCE_20261026.md": "e668aedf9186d52614ebe818566f89ab9272d4175507cabb062518d4feb5b2d8"
+  }
+}

@@ -114,6 +114,44 @@ example : 255 * 255 * 32767 < (2 : Nat)^31 := by decide
 #print axioms full_support_frozen
 #print axioms CGB.Interaction.Machine.conditioned_next
 
+-- A pairwise integer acceptance rule has the required weighted reverse flow.
+private theorem boundary_accept_balance {a b : Real} (ha : 0 < a) (hb : 0 < b) :
+    a * min 1 (b / a) = b * min 1 (a / b) := by
+  rw [mul_min_of_nonneg _ _ ha.le, mul_min_of_nonneg _ _ hb.le]
+  simp only [mul_one, mul_div_cancel₀ _ ha.ne', mul_div_cancel₀ _ hb.ne']
+  exact min_comm _ _
+
+private theorem boundary_accept_minorization {a b m : Real}
+    (ha : 0 < a) (hb : 0 < b) (ham : a ≤ m) (hbm : b ≤ m) :
+    b / m ≤ min 1 (b / a) := by
+  have hm : 0 < m := lt_of_lt_of_le ha ham
+  apply le_min
+  · exact (div_le_one hm).mpr hbm
+  · exact (div_le_div_iff₀ hm ha).mpr (mul_le_mul_of_nonneg_left ham hb.le)
+
+-- Independent binary charges: normalized mean is NOT the one-particle law.
+example : ((1 / 2 : Rat) / (1 / 2 + 3 / 4),
+    (3 / 4 : Rat) / (1 / 2 + 3 / 4)) = (2 / 5, 3 / 5) := by norm_num
+example : (2 / 5 : Rat) ≠ 1 / (1 + 3) := by norm_num
+
+private def boundaryMass (weights : List Nat) (i j : Nat) : Nat :=
+  if i = j then weights.length * weights[i]! -
+    ((List.range weights.length).filter (· ≠ i)).foldl
+      (fun acc k => acc + min weights[i]! weights[k]!) 0
+  else min weights[i]! weights[j]!
+
+private def boundaryVectors : List (List Nat) := [[1,3], [2,5,7], [1,1,1], [65535,1]]
+
+#print axioms boundary_accept_balance
+#print axioms boundary_accept_minorization
+#eval IO.println (Json.mkObj [
+  ("format", toJson "CGB.UnifiedReference.boundary.v1"),
+  ("vectors", toJson (boundaryVectors.map fun w => Json.mkObj [
+    ("weights", toJson w),
+    ("denominators", toJson (w.map (w.length * ·))),
+    ("rows", toJson ((List.range w.length).map fun i =>
+      (List.range w.length).map fun j => boundaryMass w i j))]))]).compress
+
 #eval IO.println (Json.mkObj [
   ("format", toJson "CGB.UnifiedReference.tickets.v1"),
   ("vectors", toJson (ticketVectors.map fun (counts, likelihood) =>
