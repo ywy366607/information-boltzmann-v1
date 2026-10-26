@@ -82,3 +82,4 @@ import CGBAxioms.GenerationOrganismGeneratedS0
 import CGBAxioms.GenerationIgnition
 import CGBAxioms.GenerationLifeGate
 import CGBAxioms.GenerationLinearMemory
+import CGBAxioms.GenerationLatchHealth

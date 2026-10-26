@@ -26,12 +26,13 @@ variable {U Λ A I : Type*} (M : Medium U Λ A I)
 state in it can take content in, no state in it is recoverable. -/
 theorem trap_irrecoverable [Fintype U] (B : Set (U → Λ)) (hclosed : ∀ x y, x ∈ B → M.OrgStep x y → y ∈ B)
     (hno : ∀ x ∈ B, ¬ M.CanTakeIn x) : ∀ x ∈ B, ¬ M.Recoverable x := by
-  rintro x hx ⟨y, hxy, hy⟩
-  have : y ∈ B := by
+  have reach : ∀ x y, x ∈ B → Relation.ReflTransGen M.OrgStep x y → y ∈ B := by
+    intro x y hx hxy
     induction hxy with
     | refl => exact hx
     | tail _ hst ih => exact hclosed _ _ ih hst
-  exact hno y this hy
+  rintro x hx ⟨y, hxy, hy⟩
+  exact hno y (reach x y hx hxy) hy
 
 variable [Fintype U] [DecidableEq U] [Fintype Λ] [DecidableEq Λ] [Fintype A]
 
