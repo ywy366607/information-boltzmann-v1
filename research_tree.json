@@ -4,6 +4,37 @@
   "source_of_truth": "docs/NORTH_STAR.md",
   "nodes": [
     {
+      "id": "IB_CGB_INFINITE_NESTING_20261026",
+      "parent": null,
+      "layer": "theory",
+      "direction": "deduction",
+      "time": "2026-10-26",
+      "title": "Bound genuine nesting depth and separate static restriction from coarse dynamical closure",
+      "status": "partially_reusable",
+      "claim": "Finite decreasing regions stabilize; finite complete states cannot encode unbounded independent bits. A uniform positive layer cost forbids infinite depth under bounded cumulative budgets. Static repeated freezing is intersection and preserves detailed balance; coarse projection can lose exact closure even for symmetric microscopic rates.",
+      "findings": {
+        "review_lemmas": 11,
+        "production_modules_added": 0,
+        "production_theorems_added": 0,
+        "new_general_axioms": 0,
+        "infinite_medium_constructed": false,
+        "capability_claim": false,
+        "positive_cost_floor_is_additional_contract": true,
+        "geometric_positive_costs_have_bounded_prefixes": true,
+        "reversible_three_state_projection_counterexample": true
+      },
+      "artifacts": [
+        "lean/CGBAxioms/reviews/infinite_nesting_20261026.lean",
+        "docs/information_boltzmann/CGB_INFINITE_NESTING_20261026.md",
+        "results/published/cgb_infinite_nesting_20261026.json"
+      ],
+      "next_action": "For one existing finite joint model, register layer projections and verify exact response closure or a quantified truncation error and serial resource budget. Do not infer intelligence or unique steady state from unbounded wrapper depth.",
+      "invalidation": "A changed physical model, state-dependent freezing, repeated counting of the same matter, or treating bounded scalar costs as a constructed infinite finite-state organism falls outside this review.",
+      "confidence": "I",
+      "motivation": "Determine whether unbounded nesting adds genuine physical state or useful effective dynamics under the existing finite-resource goal.",
+      "action": "Prove 11 explicitly scoped review lemmas with Lean foundation-only dependencies and independently review the mathematical assumptions and document scope; add no production module or general axiom."
+    },
+    {
       "id": "IB_CGB_UNIFIED_20261026",
       "parent": null,
       "layer": "algorithm",

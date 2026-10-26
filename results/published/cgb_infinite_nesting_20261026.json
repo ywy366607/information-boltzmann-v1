@@ -1,0 +1,93 @@
+{
+  "status": "infinite_nesting_structural_review_verified",
+  "capability_claim": false,
+  "infinite_medium_constructed": false,
+  "production_modules_added": 0,
+  "production_theorems_added": 0,
+  "review_theorems": 11,
+  "proof_trust_passed": true,
+  "forbidden_source_checks_passed": true,
+  "axiom_dependencies": {
+    "CGB.InfiniteNestingReview.finite_regions_stabilize": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "CGB.InfiniteNestingReview.strict_region_depth": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "CGB.InfiniteNestingReview.independent_bits_bound": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "CGB.InfiniteNestingReview.no_unbounded_independent_bits": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "CGB.InfiniteNestingReview.depth_budget_bound": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "CGB.InfiniteNestingReview.no_uniform_cost_infinite_depth": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "CGB.InfiniteNestingReview.geometric_prefix": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "CGB.InfiniteNestingReview.geometric_costs_fit": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "CGB.InfiniteNestingReview.freeze_twice": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "CGB.InfiniteNestingReview.infinite_freeze_balance": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "CGB.InfiniteNestingReview.reversible_projection_not_closed": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ]
+  },
+  "independent_review": "Final read-only review of proof statements, implementations and document scope passed; no blocking issue.",
+  "scope": [
+    "finite-region stabilization, not dynamical fixed point",
+    "independent-bit cardinal bound, not history-length bound",
+    "positive lower-bound cost plus bounded prefixes is an explicit additional contract",
+    "geometric positive layer costs fit bounded prefixes; no infinite dynamics constructed",
+    "static repeated freezing preserves the original detailed balance",
+    "symmetric three-state generator need not close under a two-state observation"
+  ],
+  "source_hashes": {
+    "lean/CGBAxioms/reviews/infinite_nesting_20261026.lean": "b0299aecd0e9eefe6916f8c2206b6e10ec98e3b102731cc6159302a349855f0e",
+    "docs/information_boltzmann/CGB_INFINITE_NESTING_20261026.md": "3e4e296a661a9bd558be42a70bc9e4622df3ea7507dcb44b615f70cc9be0687f",
+    "lean/CGBAxioms/scripts/audit.py": "cc6d60295dfba86277642aecc3a0ebd5f72ce9f43f3f727adcf4d2de85f2ff0e",
+    "lean/CGBAxioms/CGBAxioms/Nesting.lean": "297f588fb07a9ae1b1def4056e96b5864a6636cadaceef2739f8b7efadef9720",
+    "lean/CGBAxioms/CGBAxioms/Medium.lean": "3673475e710b8c880cdc0c3a7c39ca7f78db69ac43e9d80264737b6ddecdc7ad",
+    "lean/CGBAxioms/CGBAxioms/Symmetry.lean": "f595478d072a4fa5680be6e6a928afb86922e3fcdd3ef0512bfefdb9ab2090bc",
+    "lean/CGBAxioms/CGBAxioms/Language.lean": "b52db422bcac3996cb279d41813aa4a0998ebb6fe54ba2bb87b096972539f0fe"
+  },
+  "existing_production_inventory": {
+    "source_theorems": 975,
+    "modules": 93,
+    "declarations": 4674,
+    "inventory_sha256": "062e2e35763f1be615da2d5ec4123d7a0ff70d17079ce2e91a1e63b7d324f8dc",
+    "maintenance_budget_passed": false,
+    "budget_scope": "prior production growth exceeds the existing guard; this review does not raise caps"
+  }
+}
