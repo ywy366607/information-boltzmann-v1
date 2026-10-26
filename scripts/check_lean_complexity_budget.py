@@ -22,14 +22,16 @@ LEAN_ROOT = INVENTORY.parents[1]
 # (FROZEN_LINES, every source except GENERATION); the headroom above the old caps
 # (72 modules, 4000 declarations, 800 theorems, 15600 lines) is reserved for the
 # generative chain axioms -> forced structure -> mechanism in GENERATION.
+# 2026-10-26 (user): the budget is "as small as possible", not "no growth"; the
+# totals were raised for the chain, the per-file cap still forces splitting.
 CAPS = {
-    "modules": 73,
-    "declarations": 4300,
-    "source_declared_theorems": 900,
-    "source_lines": 17600,
+    "modules": 80,
+    "declarations": 4600,
+    "source_declared_theorems": 1000,
+    "source_lines": 19000,
     "largest_source_file": 900,
 }
-GENERATION = "CGBAxioms/Generation.lean"
+GENERATION = "CGBAxioms/Generation"  # prefix: every Generation*.lean module
 FROZEN_LINES = 15600
 
 # Active entry points stay short; detailed evidence lives in existing reports.
@@ -75,7 +77,7 @@ def budget_report(data: dict) -> dict:
         for key in CAPS
         if values[key] > CAPS[key]
     ]
-    frozen = sum(n for p, n in zip(sources, lines) if p.relative_to(LEAN_ROOT).as_posix() != GENERATION)
+    frozen = sum(n for p, n in zip(sources, lines) if not p.relative_to(LEAN_ROOT).as_posix().startswith(GENERATION))
     if frozen > FROZEN_LINES:
         violations.append(f"frozen contract/witness layer={frozen} lines exceeds {FROZEN_LINES}")
     violations.extend(f"{name}={active_lines[name]} lines exceeds cap {cap}"
