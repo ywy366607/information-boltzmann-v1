@@ -661,6 +661,118 @@ def check_nested_organism_kernel_matches(name):
                                     unmatched_lanes=unmatched)
 
 
+# ---------- life layer for organisms nested in a world (role "nested_organism") ----------
+
+NESTED_LEAN = ("CGB.NestedWorld.senses_of_intake", "CGB.NestedWorld.metabolizes_of_intake",
+               "CGB.NestedWorld.dead_intake_is_physics", "CGB.NestedWorld.leak_bound",
+               "CGB.Generation.export_forced", "CGB.Generation.retention_needs_selectivity",
+               "CGB.Generation.corpses_must_go")
+
+
+def _nested_genome(spec):
+    g = json.loads((ROOT / spec["organism"]).read_text(encoding="utf-8"))["genome"]
+    return {k: np.asarray(v, dtype=float) for k, v in g.items()}
+
+
+def nested_life_layer(man, decls):
+    """Life obligations of a nested organism: the Lean class theorems with their decidable table
+    condition, export (G16), selective export (G17), finite-horizon memory, closed loop beats the
+    blind control (from the held-out record)."""
+    import torch
+    import cgb_nested_world as NW
+    import cgb_nested_organism as NO
+    import cgb_nested_organism_triton as NX
+    spec = man["life"]
+    rows, failures = [], []
+    for t in NESTED_LEAN:
+        d = decls.get(t)
+        rows.append(dict(item=f"lean:{t.rsplit('.', 1)[1]}", passed=d is not None and set(d["axioms"]) <= STANDARD))
+    tbl = NW.load(spec["world"])
+    g = _nested_genome(spec)
+    V = tbl["table"]["V"]
+    kx = np.concatenate([np.exp(g["logk_x"]), np.full(len(NO.EXCH) - NO.N_SELECTED_X, np.exp(NO.LOGK_LEAK))])
+    # the decidable condition of senses_of_intake / metabolizes_of_intake
+    intake = [x for x, (p, a, b, food, gated) in enumerate(NO.EXCH) if food and gated and b == a + 1 and kx[x] > 0]
+    cond = bool(intake) and NO.UNITS[NO.GATE[0]] > 0 and V >= 2
+    rows.append(dict(item="lean:table_condition", passed=cond, intake_exchanges=intake))
+    # export: a gated exchange that lowers the organism's content, with positive prefactor (G16)
+    export = [x for x, (p, a, b, food, gated) in enumerate(NO.EXCH) if a > b and gated and kx[x] > 0]
+    rows.append(dict(item="export", passed=bool(export), exchanges=export))
+    # selective export: per-unit export propensity differs between pages (G17), at the birth state
+    # in a clean cell: k * exp(-dE / 2) for each content-lowering exchange of each page
+    phi = np.zeros((6, NO.SMAX))
+    for c, (p, st) in enumerate(NO.SELECTED_PHI):
+        phi[p, st] = g["phi"][c]
+    phi[NO.S, 1] = NO.PHI_S1
+    prop = {}
+    for x, (p, a, b, food, gated) in enumerate(NO.EXCH):
+        if a <= b:
+            continue
+        pool = 0
+        dE = phi[p, b] - phi[p, a] + np.log((pool + 1) / (V - pool)) + (tbl["table"]["foodE"] if food else 0.0)
+        prop[NO.PAGES[p]] = prop.get(NO.PAGES[p], 0.0) + kx[x] * (NO.UNITS[NO.GATE[0]] if gated else 1) * np.exp(-dE / 2)
+    vals = sorted(prop.values())
+    sel = len(vals) >= 2 and vals[-1] > 2 * vals[0]
+    rows.append(dict(item="selective_export", passed=bool(sel), per_unit_export={k: float(v) for k, v in prop.items()}))
+    # memory: a one-tick food pulse, withdrawn for a tick, is decodable from the inner state
+    mem = _nested_memory(tbl, g)
+    rows.append(dict(item="memory", **mem))
+    # self-maintenance: held-out survival of the closed loop beats the blind control (O1 record)
+    rec = json.loads((ROOT / spec["eval"]).read_text(encoding="utf-8"))
+    med, blind = rec["arms"]["organism"]["median"], rec["arms"]["blind"]["median"]
+    rows.append(dict(item="self_maintenance", passed=bool(med > blind), organism_median=med, blind_median=blind))
+    for r in rows:
+        if not r["passed"]:
+            failures.append(f"life layer: {r['item']} failed")
+    return rows, failures
+
+
+def _nested_memory(tbl, g, lanes=4096, pulse_food=80, base_food=2, seed=5):
+    import torch
+    import cgb_nested_organism as NO
+    import cgb_nested_organism_triton as NX
+
+    class Stub:
+        pass
+
+    out = {}
+    for arm, pulse in (("rest", base_food), ("pulse", pulse_food)):
+        st = Stub()
+        st.B, st.G, st.V, st.dt = lanes, 3, tbl["table"]["V"], 0.05
+        st.foodE = tbl["table"]["foodE"]
+        st.f = torch.full((lanes, 3, 3), base_food, dtype=torch.int32, device="cuda")
+        st.w = torch.zeros((lanes, 3, 3), dtype=torch.int32, device="cuda")
+        gg = {k: np.repeat(np.asarray(v)[None], lanes, axis=0) for k, v in g.items()}
+        o = NX.ExactOrganisms(st, gg, seed=seed, still=True)
+        o.x32.zero_(); o.y32.zero_()
+        for t in range(60):                       # settle at rest
+            st.f.fill_(base_food); st.w.zero_()
+            for _ in range(20):
+                o.leap()
+        st.f.fill_(pulse); st.w.zero_()           # one tick at the pulse level
+        for _ in range(20):
+            o.leap()
+        st.f.fill_(base_food); st.w.zero_()       # withdrawn for a tick
+        for _ in range(20):
+            o.leap()
+        out[arm] = o.n32.view(lanes, -1).double().cpu().numpy()
+    diff = out["pulse"].mean(0) - out["rest"].mean(0)
+    se = np.sqrt(out["pulse"].var(0) / lanes + out["rest"].var(0) / lanes) + 1e-12
+    z = np.abs(diff) / se
+    k = int(np.argmax(z))
+    return dict(passed=bool(z[k] > 5.0), max_z=float(z[k]), coordinate=f"{NO.PAGES[k // NO.SMAX]}{k % NO.SMAX}")
+
+
+def check_nested_table_is_record(name):
+    """The admitted genome is the one selection produced (the record's validated best)."""
+    man = json.loads((ARCH / f"{name}.json").read_text(encoding="utf-8"))
+    spec = man["life"]
+    g = json.loads((ROOT / spec["organism"]).read_text(encoding="utf-8"))["genome"]
+    rec = json.loads((ROOT / spec["record"]).read_text(encoding="utf-8"))["best"]["genome"]
+    diff = [k for k in rec if rec[k] != g.get(k)]
+    return not diff, dict(record=spec["record"], differing_fields=diff)
+
+
 CHECKS = {k[len("check_"):]: v for k, v in list(globals().items()) if k.startswith("check_")}
 
 
@@ -843,6 +955,8 @@ def gate(name):
         failures.append(f"Lean Medium instance {med} not in inventory")
     if man.get("role") == "world":   # a world is not alive: it must only be an axiom model
         life, lf = [], []
+    elif man.get("role") == "nested_organism":
+        life, lf = nested_life_layer(man, decls)
     else:
         life, lf = life_layer(man, decls)
     failures += lf

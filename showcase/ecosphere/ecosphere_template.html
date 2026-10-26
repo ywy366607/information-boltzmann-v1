@@ -86,7 +86,7 @@ input[type=range] { width: 100%; accent-color: var(--food); }
 
 <div class="wrap">
   <header>
-    <div class="eyebrow">CGB · 第一个产出 · 世界 rain_torus_w0 · 生物 nested_s0</div>
+    <div class="eyebrow" id="eyebrow">CGB · 第一个产出 · 世界 rain_torus_w0</div>
     <h1>一颗<em>生态球</em></h1>
     <p class="lede">一滴二维的水。雨随机落下，食物扩散、变干；废物流向汇点。里面的大肠杆菌靠膜进食、修膜、游动、翻滚，死后身体被分解还给世界。世界和生物是同一张 Lean 规则表，每一个事件的速率都与 Lean 逐条对拍过。点一下放食物，或放进新的大肠杆菌。</p>
   </header>
@@ -166,6 +166,8 @@ input[type=range] { width: 100%; accent-color: var(--food); }
 const T = /*__TABLES__*/;
 (function () {
   const E = window.Ecosphere;
+  if (T.record) document.getElementById('eyebrow').textContent =
+    `CGB · 第一个产出 · 世界 ${T.world.name} · 生物由选择生成（第 ${T.record.gen} 代，留出世界存活中位 ${T.record.val[1]} 拍）`;
   const cv = document.getElementById('cv'), ctx = cv.getContext('2d');
   const G = T.world.G, V = T.world.V;
   let S, running = true, speed = 10, selected = null, seed = 1;
