@@ -39,9 +39,10 @@ def misses(tr):
 def main():
     rep = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
     g = rep["best"]
+    cost = float(sys.argv[3]) if len(sys.argv) > 3 else rep.get("args", {}).get("cost", 0.6)
     rows, flux = [], []
     for s in HELD:
-        (surv, intake, sw, fl), tr = live(g, s, TICKS, trace=True, world=make_world(s, TICKS))
+        (surv, intake, sw, fl), tr = live(g, s, TICKS, trace=True, world=make_world(s, TICKS), cost=cost)
         tr = tr[:surv]
         rows.append((tr, misses(tr)))
         flux.append([float(x) for x in fl[:3]])
@@ -54,6 +55,7 @@ def main():
         if sel.sum() >= 20:
             curve[k] = float(tr[sel, 0].mean())
     out = dict(
+        cost=cost,
         genome=g,
         P1_spearman_occupancy_vs_misses=rho,
         P1_pass=bool(rho) and max(abs(v) for v in rho.values()) > 0.5,
