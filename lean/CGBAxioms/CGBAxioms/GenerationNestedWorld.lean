@@ -346,17 +346,101 @@ def rev2 : NR2 Hd n → NR2 Hd n
   | .inr (.inl (e, d, dir)) => .inr (.inl (e, d, !dir))
   | .inr (.inr (S, h2, dir)) => .inr (.inr (S, h2, !dir))
 
+/-- Pool multiplicity factor of a change of a pool from `a` to `b` quanta (NESTING_SYSTEM_MAP 7.1:
+lumped rates are `κ √(source multiplicity · target multiplicity) e^{-ΔE/2}`): symmetric in `a`, `b`,
+equal to 1 when the pool does not change. A one-quantum step `m → m + 1` gets `√((m+1)(V-m))`,
+which turns the Boltzmann factor of `cellF` into mass action: a pool gains at rate `∝ V - m` (free
+places) and loses at rate `∝ m + 1` (its quanta), every quantum moving on its own. -/
+noncomputable def poolCond (V a b : ℕ) : ℝ :=
+  Real.sqrt (∏ k ∈ Finset.Ico (min a b) (max a b), (((k : ℝ) + 1) * ((V : ℝ) - k)))
+
+theorem poolCond_symm (V a b : ℕ) : poolCond V a b = poolCond V b a := by
+  unfold poolCond; rw [min_comm, max_comm]
+
+theorem poolCond_nonneg (V a b : ℕ) : 0 ≤ poolCond V a b := Real.sqrt_nonneg _
+
+/-- Both pools of a cell. -/
+noncomputable def poolFactor (l l' : W.Cell) : ℝ :=
+  poolCond W.V l.1 l'.1 * poolCond W.V l.2.1 l'.2.1
+
+theorem poolFactor_symm (l l' : W.Cell) : W.poolFactor l l' = W.poolFactor l' l := by
+  unfold poolFactor; rw [poolCond_symm, poolCond_symm W.V l.2.1]
+
+theorem poolFactor_nonneg (l l' : W.Cell) : 0 ≤ W.poolFactor l l' :=
+  mul_nonneg (poolCond_nonneg _ _ _) (poolCond_nonneg _ _ _)
+
+theorem poolCond_pos (V a b : ℕ) (ha : a ≤ V) (hb : b ≤ V) : 0 < poolCond V a b := by
+  unfold poolCond
+  apply Real.sqrt_pos.mpr
+  apply Finset.prod_pos
+  intro k hk
+  rw [Finset.mem_Ico] at hk
+  have : k < V := lt_of_lt_of_le hk.2 (max_le ha hb)
+  have : (k : ℝ) < V := by exact_mod_cast this
+  exact mul_pos (by positivity) (by linarith)
+
+/-- Pools are bounded by `V`, so every pool change has positive multiplicity. -/
+theorem poolFactor_pos (l l' : W.Cell) : 0 < W.poolFactor l l' :=
+  mul_pos (poolCond_pos _ _ _ (Nat.lt_succ_iff.mp l.1.2) (Nat.lt_succ_iff.mp l'.1.2))
+    (poolCond_pos _ _ _ (Nat.lt_succ_iff.mp l.2.1.2) (Nat.lt_succ_iff.mp l'.2.1.2))
+
+theorem poolCond_self (V a : ℕ) : poolCond V a a = 1 := by
+  simp [poolCond]
+
+theorem poolCond_step (V m : ℕ) : poolCond V m (m + 1) = Real.sqrt (((m : ℝ) + 1) * ((V : ℝ) - m)) := by
+  unfold poolCond
+  rw [min_eq_left (Nat.le_succ m), max_eq_right (Nat.le_succ m), Nat.Ico_succ_singleton,
+    Finset.prod_singleton]
+
+/-- **Mass action** from 7.1: with the entropic pool energy `cellF`, the lumped conductance makes a
+one-quantum gain of a pool with `m` quanta fire at a rate `∝ V - m` (its free places) ... -/
+theorem mass_action_up (V m : ℕ) (hm : m < V) (D : ℝ) :
+    poolCond V m (m + 1) *
+        Real.exp (-(Generation.cellF V (m + 1) - Generation.cellF V m + D) / 2) =
+      ((V : ℝ) - m) * Real.exp (-D / 2) := by
+  have ha : (0 : ℝ) < (m : ℝ) + 1 := by positivity
+  have hb : (0 : ℝ) < (V : ℝ) - m := by
+    have : (m : ℝ) < V := by exact_mod_cast hm
+    linarith
+  rw [poolCond_step, Generation.cell_step V m hm, ← Real.exp_log (mul_pos ha hb), ← Real.exp_half,
+    Real.log_mul ha.ne' hb.ne', Real.log_div ha.ne' hb.ne']
+  conv_rhs => rw [← Real.exp_log hb]
+  rw [← Real.exp_add, ← Real.exp_add]
+  congr 1
+  ring
+
+/-- ... and a one-quantum loss of a pool with `m + 1` quanta at a rate `∝ m + 1` (its quanta). -/
+theorem mass_action_down (V m : ℕ) (hm : m < V) (D : ℝ) :
+    poolCond V (m + 1) m *
+        Real.exp (-(Generation.cellF V m - Generation.cellF V (m + 1) + D) / 2) =
+      ((m : ℝ) + 1) * Real.exp (-D / 2) := by
+  have ha : (0 : ℝ) < (m : ℝ) + 1 := by positivity
+  have hb : (0 : ℝ) < (V : ℝ) - m := by
+    have : (m : ℝ) < V := by exact_mod_cast hm
+    linarith
+  have hs : Generation.cellF V m - Generation.cellF V (m + 1) =
+      -(Generation.cellF V (m + 1) - Generation.cellF V m) := by ring
+  rw [poolCond_symm, poolCond_step, hs, Generation.cell_step V m hm, ← Real.exp_log (mul_pos ha hb),
+    ← Real.exp_half, Real.log_mul ha.ne' hb.ne', Real.log_div ha.ne' hb.ne']
+  conv_rhs => rw [← Real.exp_log ha]
+  rw [← Real.exp_add, ← Real.exp_add]
+  congr 1
+  ring
+
 noncomputable def c1 : NR1 Λi Hd n nR nX → ℕ → W.Cell → ℝ
   | .inl (k, _, _, _), _, _ => (W.spec k).κ
-  | .inr (.inl (j, _, _)), _, l => W.xκ j * (if W.xgated j then (W.cellGate l : ℝ) else 1)
+  | .inr (.inl (j, u, dir)), i, l => W.xκ j * (if W.xgated j then (W.cellGate l : ℝ) else 1) *
+      W.poolFactor l (W.eff1 (.inr (.inl (j, u, dir))) i l)
   | .inr (.inr (.inl _)), _, _ => W.κflip
-  | .inr (.inr (.inr (.inl _))), _, _ => W.κin
+  | .inr (.inr (.inr (.inl (food, dir)))), i, l =>
+      W.κin * W.poolFactor l (W.eff1 (.inr (.inr (.inr (.inl (food, dir))))) i l)
   | .inr (.inr (.inr (.inr (hd, yd, dir)))), i, l =>
       (if W.gateCount yd = 0 then W.κdis else 0) *
         Real.exp (-|W.φ i (W.eff1 (.inr (.inr (.inr (.inr (hd, yd, dir))))) i l) - W.φ i l| / 2)
 
 noncomputable def c2 : NR2 Hd n → ℕ → ℕ → W.Cell × W.Cell → ℝ
-  | .inl _, _, _, _ => W.κdiff
+  | .inl r, i, j, p => W.κdiff * (W.poolFactor p.1 (W.eff2 (.inl r) i j p).1 *
+      W.poolFactor p.2 (W.eff2 (.inl r) i j p).2)
   | .inr (.inl _), _, _, _ => W.κmove
   | .inr (.inr r), i, j, p =>
       W.κdiv * (if 0 < W.cellGate p.1 then 1 else 0) *
@@ -469,9 +553,9 @@ def birthCell (y0 : Fin n → Λi) (h0 : Hd) (i : ℕ) : W.Cell :=
 theorem c1_nonneg (r : NR1 Λi Hd n nR nX) (i : ℕ) (l : W.Cell) : 0 ≤ W.c1 r i l := by
   rcases r with ⟨k, -, -, -⟩ | ⟨j, -, -⟩ | ⟨-, -⟩ | ⟨-, -⟩ | ⟨-, yd, -⟩
   · exact (W.spec k).κ_nonneg
-  · exact mul_nonneg (W.xκ_nonneg j) (by split_ifs <;> positivity)
+  · exact mul_nonneg (mul_nonneg (W.xκ_nonneg j) (by split_ifs <;> positivity)) (W.poolFactor_nonneg _ _)
   · exact W.κflip_nonneg
-  · exact W.κin_nonneg
+  · exact mul_nonneg W.κin_nonneg (W.poolFactor_nonneg _ _)
   · simp only [c1]
     refine mul_nonneg ?_ (Real.exp_pos _).le
     split_ifs
@@ -479,8 +563,8 @@ theorem c1_nonneg (r : NR1 Λi Hd n nR nX) (i : ℕ) (l : W.Cell) : 0 ≤ W.c1 r
     · exact le_rfl
 
 theorem c2_nonneg (r : NR2 Hd n) (i j : ℕ) (p : W.Cell × W.Cell) : 0 ≤ W.c2 r i j p := by
-  rcases r with ⟨-, -⟩ | ⟨-, -, -⟩ | r
-  · exact W.κdiff_nonneg
+  rcases r with r | ⟨-, -, -⟩ | r
+  · exact mul_nonneg W.κdiff_nonneg (mul_nonneg (W.poolFactor_nonneg _ _) (W.poolFactor_nonneg _ _))
   · exact W.κmove_nonneg
   · simp only [c2]
     refine mul_nonneg (mul_nonneg W.κdiv_nonneg ?_) (Real.exp_pos _).le
@@ -950,13 +1034,24 @@ theorem axioms [Fintype Λi] [Fintype Hd] {U : Type*} [Fintype U] [DecidableEq U
   · intro r i l hne
     rcases r with ⟨k, u, v, dir⟩ | ⟨j, u, dir⟩ | ⟨a, b⟩ | ⟨food, dir⟩ | ⟨hd, yd, dir⟩
     · rfl
-    · change W.xκ j * (if W.xgated j then (W.cellGate (W.eff1 (.inr (.inl (j, u, dir))) i l) : ℝ) else 1) =
-        W.xκ j * (if W.xgated j then (W.cellGate l : ℝ) else 1)
+    · have hback := W.back1 (.inr (.inl (j, u, dir))) i l hne
+      change W.xκ j * (if W.xgated j then (W.cellGate (W.eff1 (.inr (.inl (j, u, dir))) i l) : ℝ) else 1) *
+          W.poolFactor (W.eff1 (.inr (.inl (j, u, dir))) i l)
+            (W.eff1 (.inr (.inl (j, u, !dir))) i (W.eff1 (.inr (.inl (j, u, dir))) i l)) =
+        W.xκ j * (if W.xgated j then (W.cellGate l : ℝ) else 1) *
+          W.poolFactor l (W.eff1 (.inr (.inl (j, u, dir))) i l)
+      rw [show W.eff1 (.inr (.inl (j, u, !dir))) i (W.eff1 (.inr (.inl (j, u, dir))) i l) = l from hback,
+        W.poolFactor_symm (W.eff1 _ i l) l]
       by_cases hg : W.xgated j = true
       · rw [if_pos hg, if_pos hg, eff1_xch, W.xchEff_gate (hgate j hg)]
       · rw [if_neg hg, if_neg hg]
     · rfl
-    · rfl
+    · have hback := W.back1 (.inr (.inr (.inr (.inl (food, dir))))) i l hne
+      change W.κin * W.poolFactor (W.eff1 (.inr (.inr (.inr (.inl (food, dir))))) i l)
+          (W.eff1 (.inr (.inr (.inr (.inl (food, !dir))))) i (W.eff1 (.inr (.inr (.inr (.inl (food, dir))))) i l)) =
+        W.κin * W.poolFactor l (W.eff1 (.inr (.inr (.inr (.inl (food, dir))))) i l)
+      rw [show W.eff1 (.inr (.inr (.inr (.inl (food, !dir))))) i
+          (W.eff1 (.inr (.inr (.inr (.inl (food, dir))))) i l) = l from hback, W.poolFactor_symm]
     · have hback := W.back1 (.inr (.inr (.inr (.inr (hd, yd, dir))))) i l hne
       change (if W.gateCount yd = 0 then W.κdis else 0) *
           Real.exp (-|W.φ i (W.eff1 (.inr (.inr (.inr (.inr (hd, yd, !dir))))) i
@@ -968,7 +1063,15 @@ theorem axioms [Fintype Λi] [Fintype Hd] {U : Type*} [Fintype U] [DecidableEq U
           (W.eff1 (.inr (.inr (.inr (.inr (hd, yd, dir))))) i l) = l from hback, abs_sub_comm]
   · intro r i j p hne
     rcases r with ⟨food, dir⟩ | ⟨e, d, dir⟩ | ⟨S, h2, dir⟩
-    · rfl
+    · have hback := W.back2 (.inl (food, dir)) i j p hne
+      change W.κdiff * (W.poolFactor (W.eff2 (.inl (food, dir)) i j p).1
+            (W.eff2 (.inl (food, !dir)) i j (W.eff2 (.inl (food, dir)) i j p)).1 *
+          W.poolFactor (W.eff2 (.inl (food, dir)) i j p).2
+            (W.eff2 (.inl (food, !dir)) i j (W.eff2 (.inl (food, dir)) i j p)).2) =
+        W.κdiff * (W.poolFactor p.1 (W.eff2 (.inl (food, dir)) i j p).1 *
+          W.poolFactor p.2 (W.eff2 (.inl (food, dir)) i j p).2)
+      rw [show W.eff2 (.inl (food, !dir)) i j (W.eff2 (.inl (food, dir)) i j p) = p from hback,
+        W.poolFactor_symm _ p.1, W.poolFactor_symm _ p.2]
     · rfl
     · have hback := W.back2 (.inr (.inr (S, h2, dir))) i j p hne
       have hg := W.div_gate hdg S h2 dir i j p
@@ -1014,7 +1117,7 @@ theorem intake_is_exchange
     (r : NR1 Λi Hd n nR nX) (i : ℕ) (l : W.Cell) (hb : l.2.2 ≠ none)
     (hup : W.orgIn l < W.orgIn (W.eff1 r i l)) :
     ∃ j u dir, r = .inr (.inl (j, u, dir)) ∧
-      W.c1 r i l = W.xκ j * (if W.xgated j then (W.cellGate l : ℝ) else 1) := by
+      W.c1 r i l = W.xκ j * (if W.xgated j then (W.cellGate l : ℝ) else 1) * W.poolFactor l (W.eff1 r i l) := by
   rcases r with ⟨k, u, v, dir⟩ | ⟨j, u, dir⟩ | ⟨a, b⟩ | ⟨food, dir⟩ | ⟨hd, yd, dir⟩
   · exfalso
     obtain ⟨f, w, _ | ⟨y, h⟩⟩ := l
@@ -1189,14 +1292,15 @@ theorem poolShift_one {V : ℕ} (w : Fin (V + 1)) (hw : (w : ℕ) < V) :
   congr 1
 
 /-- **Leak bound**: an ungated exchange that moves one quantum from a unit into the waste pool
-fires at rate at least `κ * exp (-Φ - log V / 2)` whenever the unit holds that quantum and the
-pool is not full, whatever the rest of the organism and the reservoir potential `μ` (the
-exchange conserves the cell's content, so `μ` drops out). The bound depends only on physics. -/
+fires at rate at least `κ * exp (-Φ)` whenever the unit holds that quantum and the pool is not
+full, whatever the rest of the organism and the reservoir potential `μ` (the exchange conserves the
+cell's content, so `μ` drops out). The bound depends only on physics; under mass action the rate is
+`κ (V - w) e^{-ΔE_in/2}`, at least one free place. -/
 theorem leak_bound (Φ : ℝ) (hΦ : ∀ p s, |W.φIn p s| ≤ Φ) (j : Fin nX) (hg : W.xgated j = false)
     (hf : W.xfood j = false) (hc : W.contentIn (W.xa j) = W.contentIn (W.xb j) + 1) (u : Fin n)
     (i : ℕ) (f w : Fin (W.V + 1)) (y : Fin n → Λi) (h : Hd)
     (hu : W.pageIn u = W.xpage j ∧ y u = W.xa j) (hw : (w : ℕ) < W.V) (μ : ℝ) :
-    W.xκ j * Real.exp (-Φ - Real.log W.V / 2) ≤
+    W.xκ j * Real.exp (-Φ) ≤
       W.c1 (.inr (.inl (j, u, false))) i (f, w, some (y, h)) *
         Real.exp (-(W.φ i (W.eff1 (.inr (.inl (j, u, false))) i (f, w, some (y, h))) -
           W.φ i (f, w, some (y, h)) - μ * ((W.content (W.eff1 (.inr (.inl (j, u, false))) i
@@ -1238,12 +1342,15 @@ theorem leak_bound (Φ : ℝ) (hΦ : ∀ p s, |W.φIn p s| ≤ Φ) (j : Fin nX) 
   have hrV : ((w : ℕ) + 1 : ℝ) / (W.V - (w : ℕ)) ≤ W.V := by
     rw [div_le_iff₀ (by linarith)]; nlinarith
   have hlog := Real.log_le_log hr0 hrV
-  have hc1 : W.c1 (.inr (.inl (j, u, false))) i (f, w, some (y, h)) = W.xκ j := by
-    simp [c1, hg]
-  rw [hc1, hcont, sub_self, mul_zero, sub_zero, hphi]
+  have hc1 : W.c1 (.inr (.inl (j, u, false))) i (f, w, some (y, h)) =
+      W.xκ j * poolCond W.V w ((w : ℕ) + 1) := by
+    simp only [c1, hg, Bool.false_eq_true, if_false, mul_one, heff, poolFactor, poolCond_self, one_mul, hwv]
+  rw [hc1, hcont, sub_self, mul_zero, sub_zero, hphi, ← hstep, mul_assoc, mass_action_up W.V w hw]
   apply mul_le_mul_of_nonneg_left _ (W.xκ_nonneg j)
-  apply Real.exp_le_exp.mpr
-  linarith
+  have hE : Real.exp (-Φ) ≤
+      Real.exp (-(W.φIn (W.pageIn u) (W.xb j) - W.φIn (W.pageIn u) (y u)) / 2) :=
+    Real.exp_le_exp.mpr (by linarith)
+  exact hE.trans (le_mul_of_one_le_left (Real.exp_pos _).le hden)
 
 /-! ## Nested life: sensing and metabolism, once for every organism of the class
 
@@ -1303,9 +1410,9 @@ theorem metabolizes_of_intake [Fintype Λi] [Fintype Hd] {U : Type*} [Fintype U]
   · change 0 < C.c1 _ (C.ident u0) (W.withOrg u0 f1 y h u0) * Real.exp _
     refine mul_pos ?_ (Real.exp_pos _)
     simp only [withOrg, Function.update_self]
-    change 0 < W.xκ j * (if W.xgated j then (W.gateCount y : ℝ) else 1)
+    change 0 < W.xκ j * (if W.xgated j then (W.gateCount y : ℝ) else 1) * W.poolFactor _ _
     rw [if_pos hg]
-    exact mul_pos hk (by exact_mod_cast hgate)
+    exact mul_pos (mul_pos hk (by exact_mod_cast hgate)) (W.poolFactor_pos _ _)
   · change W.orgIn (C.act1 _ u0 (W.withOrg u0 f1 y h) u0) ≠ W.orgIn (W.withOrg u0 f1 y h u0)
     simp only [LatticeCRN.act1, Function.update_self, withOrg]
     change W.orgIn (W.eff1 (.inr (.inl (j, u, false))) (page u0) (f1, 0, some (y, h))) ≠
@@ -1345,15 +1452,6 @@ theorem senses_of_intake [Fintype Λi] [Fintype Hd] {U : Type*} [Fintype U] [Dec
       simp [withOrg]
     change C.c1 _ (C.ident u0) (W.withOrg u0 f1 y h u0) * Real.exp (-C.dE1 _ u0 _ (W.withOrg u0 f1 y h) / 2) ≠
       C.c1 _ (C.ident u0) (W.withOrg u0 f2 y h u0) * Real.exp (-C.dE1 _ u0 _ (W.withOrg u0 f2 y h) / 2)
-    have hc1 : ∀ f : Fin (W.V + 1), C.c1 (.inr (.inl (j, u, false))) (C.ident u0) (W.withOrg u0 f y h u0) =
-        W.xκ j * W.gateCount y := fun f => by
-      rw [hcell]
-      change W.xκ j * (if W.xgated j then (W.gateCount y : ℝ) else 1) = _
-      rw [if_pos hg]
-    rw [hc1, hc1]
-    have hpos : W.xκ j * (W.gateCount y : ℝ) ≠ 0 := (mul_pos hk (by exact_mod_cast hgate)).ne'
-    intro e
-    have e2 := Real.exp_injective (mul_left_cancel₀ hpos e)
     -- energy changes
     have hdE : ∀ f : Fin (W.V + 1), 1 ≤ (f : ℕ) → C.dE1 (.inr (.inl (j, u, false))) u0 (fun _ => 0)
         (W.withOrg u0 f y h) = Generation.cellF W.V ((f : ℕ) - 1) - Generation.cellF W.V f - W.foodE +
@@ -1370,18 +1468,27 @@ theorem senses_of_intake [Fintype Λi] [Fintype Hd] {U : Type*} [Fintype U] [Dec
       have : (((f : ℕ) - 1 : ℕ) : ℝ) = (f : ℕ) - 1 := by rw [Nat.cast_sub hf1]; simp
       simp only [Fin.val_mk, this]
       ring
-    rw [hdE f1 (by simp [f1]), hdE f2 (by simp [f2])] at e2
-    simp only [f1, f2, Fin.val_mk, Nat.sub_self, Nat.reduceSub] at e2
-    have h01 := Generation.cell_step W.V 0 (by omega)
-    have h12 := Generation.cell_step W.V 1 (by omega)
-    simp only [Nat.zero_add, Nat.reduceAdd, Nat.cast_zero, Nat.cast_one, zero_add, sub_zero] at h01 h12
-    have hlog : Real.log (1 / (W.V : ℝ)) = Real.log ((1 + 1) / ((W.V : ℝ) - 1)) := by linarith
-    have hVr : (2 : ℝ) ≤ W.V := by exact_mod_cast hV
-    have h1 : (0 : ℝ) < 1 / (W.V : ℝ) := div_pos one_pos (by linarith)
-    have h2 : (0 : ℝ) < (1 + 1) / ((W.V : ℝ) - 1) := div_pos (by norm_num) (by linarith)
-    have := Real.log_injOn_pos (Set.mem_Ioi.mpr h1) (Set.mem_Ioi.mpr h2) hlog
-    rw [div_eq_div_iff (ne_of_gt (by linarith)) (ne_of_gt (by linarith))] at this
-    linarith
+    -- mass action: the same intake fires at a rate proportional to the food quanta
+    have e4 : ∀ a b c d : ℝ, a - b - c + d = a - b + (-c + d) := fun _ _ _ _ => by ring
+    have hrate : ∀ (f : Fin (W.V + 1)) (m : ℕ), (f : ℕ) = m + 1 → m < W.V →
+        C.c1 (.inr (.inl (j, u, false))) (C.ident u0) (W.withOrg u0 f y h u0) *
+          Real.exp (-C.dE1 (.inr (.inl (j, u, false))) u0 (fun _ => 0) (W.withOrg u0 f y h) / 2) =
+        W.xκ j * W.gateCount y * (((m : ℝ) + 1) *
+          Real.exp (-(-W.foodE + (W.bugE (Function.update y u (W.xb j)) - W.bugE y)) / 2)) := by
+      intro f m hfm hm
+      rw [hdE f (by omega), hcell]
+      change W.xκ j * (if W.xgated j then (W.gateCount y : ℝ) else 1) *
+          W.poolFactor (f, 0, some (y, h))
+            (W.eff1 (.inr (.inl (j, u, false))) (page u0) (f, 0, some (y, h))) * _ = _
+      rw [if_pos hg, W.intake_eff j hf hc u _ y h hu f 0 (by omega)]
+      simp only [poolFactor, poolCond_self, mul_one, Fin.val_mk, hfm, Nat.add_sub_cancel]
+      rw [← mass_action_down W.V m hm (-W.foodE + (W.bugE (Function.update y u (W.xb j)) - W.bugE y)), e4]
+      ring
+    rw [hrate f1 0 rfl (by omega), hrate f2 1 rfl (by omega)]
+    have hpos : 0 < W.xκ j * (W.gateCount y : ℝ) := mul_pos hk (by exact_mod_cast hgate)
+    apply ne_of_lt
+    apply mul_lt_mul_of_pos_left _ hpos
+    apply mul_lt_mul_of_pos_right (by push_cast; norm_num) (Real.exp_pos _)
 
 /-! ## Two instances: a ring and a torus -/
 
