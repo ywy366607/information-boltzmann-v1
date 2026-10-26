@@ -801,6 +801,103 @@ theorem dead_only_reforms
   · left; rw [hc, if_pos hg, hdead]; simp
   · right; exact ⟨j, u, dir, hr, hwear j (by simpa using hg)⟩
 
+/-! ## Leaks: every held quantum needs an exit the organism cannot close
+
+In a closed box, content that a part can hold for ever is lost to the rest (the infinite stream
+`stream_never_dry` needs the world to keep flowing; with a shared pool the holders only grow,
+G19a). The axioms give no permanent lock (P2b: every event has a positive reverse), but a hold can
+be made as long as the organism likes in three ways, each closed below:
+* an exit that needs a partner unit is shut when the partner is gone (`partner_exit_blocked`);
+* an exit through the membrane is shut when the membrane is gone (`gated_exit_blocked`);
+* an exit from a deep enough energy well is as slow as wanted (the factor `exp (-Φ)` below).
+An ungated one-unit exit into the waste pool, with energies bounded by a physical scale `Φ`, has a
+rate bounded below whatever the organism does (`leak_bound`). So every page that can hold content
+needs such a leak, and the energy scale is physics, not selection. -/
+
+/-- A pair rule whose partner state is absent leaves the organism as it is. -/
+theorem partner_exit_blocked (k : Fin nR) (u v : Fin n) (dir : Bool) (y : Fin n → Λi)
+    (hno : ∀ w, W.pageIn w = (W.spec k).j →
+      y w ≠ (if dir then (W.spec k).b else (W.spec k).a).2) :
+    W.innerAct k u v dir y = y := by
+  unfold innerAct
+  split_ifs with huv
+  · rfl
+  · have hp : (W.spec k).apply dir (W.pageIn u) (W.pageIn v) (y u, y v) = (y u, y v) := by
+      unfold RuleSpec.apply
+      rw [if_neg]
+      rintro ⟨-, hj, hpe⟩
+      exact hno v hj (by rw [← hpe])
+    simp only [hp, Function.update_eq_self]
+
+/-- A gated exchange has no conductance without an intact membrane. -/
+theorem gated_exit_blocked (j : Fin nX) (hg : W.xgated j = true) (u : Fin n) (dir : Bool) (i : ℕ)
+    (l : W.Cell) (hd : W.cellGate l = 0) : W.c1 (.inr (.inl (j, u, dir))) i l = 0 := by
+  simp [c1, hg, hd]
+
+theorem poolShift_one {V : ℕ} (w : Fin (V + 1)) (hw : (w : ℕ) < V) :
+    ∃ w' : Fin (V + 1), poolShift w 1 = some w' ∧ (w' : ℕ) = w + 1 := by
+  refine ⟨⟨w + 1, by omega⟩, ?_, rfl⟩
+  unfold poolShift
+  rw [dif_pos (by omega)]
+  congr 1
+
+/-- **Leak bound**: an ungated exchange that moves one quantum from a unit into the waste pool
+fires at rate at least `κ * exp (-Φ - log V / 2)` whenever the unit holds that quantum and the
+pool is not full, whatever the rest of the organism and the reservoir potential `μ` (the
+exchange conserves the cell's content, so `μ` drops out). The bound depends only on physics. -/
+theorem leak_bound (Φ : ℝ) (hΦ : ∀ p s, |W.φIn p s| ≤ Φ) (j : Fin nX) (hg : W.xgated j = false)
+    (hf : W.xfood j = false) (hc : W.contentIn (W.xa j) = W.contentIn (W.xb j) + 1) (u : Fin n)
+    (i : ℕ) (f w : Fin (W.V + 1)) (y : Fin n → Λi) (h : Hd)
+    (hu : W.pageIn u = W.xpage j ∧ y u = W.xa j) (hw : (w : ℕ) < W.V) (μ : ℝ) :
+    W.xκ j * Real.exp (-Φ - Real.log W.V / 2) ≤
+      W.c1 (.inr (.inl (j, u, false))) i (f, w, some (y, h)) *
+        Real.exp (-(W.φ i (W.eff1 (.inr (.inl (j, u, false))) i (f, w, some (y, h))) -
+          W.φ i (f, w, some (y, h)) - μ * ((W.content (W.eff1 (.inr (.inl (j, u, false))) i
+            (f, w, some (y, h))) : ℝ) - W.content (f, w, some (y, h)))) / 2) := by
+  obtain ⟨w', hw', hwv⟩ := poolShift_one w hw
+  have hd : ((W.contentIn (W.xa j) : ℤ) - W.contentIn (W.xb j)) = 1 := by rw [hc]; push_cast; ring
+  have heff : W.eff1 (.inr (.inl (j, u, false))) i (f, w, some (y, h)) =
+      (f, w', some (Function.update y u (W.xb j), h)) := by
+    simp only [eff1, Bool.false_eq_true, if_false, hu, and_self, if_true, hf, hd, hw']
+  rw [heff]
+  have hcont : (W.content (f, w', some (Function.update y u (W.xb j), h)) : ℝ) =
+      W.content (f, w, some (y, h)) := by
+    have hs := sum_update_nat W.contentIn u (W.xb j) y
+    rw [hu.2, hc] at hs
+    simp only [content, bugContent]
+    have : (((f : ℕ) + (w' : ℕ) + (W.B + ∑ v, W.contentIn (Function.update y u (W.xb j) v)) : ℕ) : ℤ) =
+        (((f : ℕ) + (w : ℕ) + (W.B + ∑ v, W.contentIn (y v)) : ℕ) : ℤ) := by
+      push_cast [hwv] at hs ⊢
+      rw [hs]; push_cast; ring
+    exact_mod_cast this
+  have hE : ∑ v, W.φIn (W.pageIn v) (Function.update y u (W.xb j) v) - ∑ v, W.φIn (W.pageIn v) (y v) =
+      W.φIn (W.pageIn u) (W.xb j) - W.φIn (W.pageIn u) (y u) :=
+    LatticeCRN.sum_update (fun v l => W.φIn (W.pageIn v) l) u (W.xb j) y
+  have hstep := Generation.cell_step W.V w hw
+  have hphi : W.φ i (f, w', some (Function.update y u (W.xb j), h)) - W.φ i (f, w, some (y, h)) =
+      Real.log (((w : ℕ) + 1 : ℝ) / (W.V - (w : ℕ))) +
+        (W.φIn (W.pageIn u) (W.xb j) - W.φIn (W.pageIn u) (y u)) := by
+    simp only [φ, bugE]
+    rw [show ((w' : ℕ)) = (w : ℕ) + 1 from hwv]
+    push_cast at hstep ⊢
+    linarith
+  have hb1 := hΦ (W.pageIn u) (W.xb j)
+  have hb2 := hΦ (W.pageIn u) (y u)
+  rw [abs_le] at hb1 hb2
+  have hV : (1 : ℝ) ≤ W.V := by exact_mod_cast (show 1 ≤ W.V by omega)
+  have hwV : ((w : ℕ) : ℝ) + 1 ≤ W.V := by exact_mod_cast hw
+  have hden : (1 : ℝ) ≤ W.V - (w : ℕ) := by linarith
+  have hr0 : (0 : ℝ) < ((w : ℕ) + 1 : ℝ) / (W.V - (w : ℕ)) := by positivity
+  have hrV : ((w : ℕ) + 1 : ℝ) / (W.V - (w : ℕ)) ≤ W.V := by
+    rw [div_le_iff₀ (by linarith)]; nlinarith
+  have hlog := Real.log_le_log hr0 hrV
+  have hc1 : W.c1 (.inr (.inl (j, u, false))) i (f, w, some (y, h)) = W.xκ j := by
+    simp [c1, hg]
+  rw [hc1, hcont, sub_self, mul_zero, sub_zero, hphi]
+  apply mul_le_mul_of_nonneg_left _ (W.xκ_nonneg j)
+  apply Real.exp_le_exp.mpr
+  linarith
+
 /-! ## Two instances: a ring and a torus -/
 
 /-- Neighbours on a ring of `L` cells. -/
