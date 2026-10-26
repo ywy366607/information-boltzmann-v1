@@ -1,0 +1,109 @@
+{
+ "world": {
+  "hazard": 0.005,
+  "cost": 0.6,
+  "reserve": 600.0,
+  "capacity": 1200.0,
+  "p_rich": 0.9,
+  "p_poor": 0.1,
+  "ticks": 100000,
+  "sources": 3,
+  "stage": 1,
+  "stage2_rule": "document digit fraction >= median over sources"
+ },
+ "hidden": 256,
+ "seeds": 8,
+ "g15": {
+  "eta": 0.1,
+  "trace": 0.9,
+  "relax": 0.0,
+  "state_baseline": 0,
+  "base_rate": 0.01,
+  "couple": 0.01,
+  "slow_c": 10.0,
+  "slow_leak": 0.0
+ },
+ "provenance": {
+  "manifest": "3614c380d4c72688ac8ccde42f32ea0655d16bec1ba0874a924fd777af904d2d",
+  "files": {
+   "tokenizer.json": "e727da4afe06d37d6ffff7db05ab21f69c5be39253ee7b7f7ec759cadab69c1d",
+   "train.npy": "2f227239bc63b89daf31956701d243a93f9dd46671702fff03763b33dc6db4fb",
+   "validation.npy": "60d41d3fdda8c1718ad1735693eda0dae2b23a0032c5e04a29aac9d0c6d35d8c"
+  },
+  "verified_document_counts": {
+   "train": 9786,
+   "validation": 114
+  },
+  "native_byte_counts": {
+   "train": 48125691,
+   "validation": 467911
+  }
+ },
+ "per_seed": {
+  "g15_forager": [
+   {
+    "survival": 100000,
+    "intake_rate": 0.7465,
+    "switches": 0.06624
+   },
+   {
+    "survival": 100000,
+    "intake_rate": 0.76955,
+    "switches": 0.05658
+   },
+   {
+    "survival": 100000,
+    "intake_rate": 0.7546,
+    "switches": 0.06469
+   },
+   {
+    "survival": 100000,
+    "intake_rate": 0.74135,
+    "switches": 0.07136
+   },
+   {
+    "survival": 100000,
+    "intake_rate": 0.73135,
+    "switches": 0.07331
+   },
+   {
+    "survival": 100000,
+    "intake_rate": 0.75131,
+    "switches": 0.06953
+   },
+   {
+    "survival": 100000,
+    "intake_rate": 0.77187,
+    "switches": 0.05701
+   },
+   {
+    "survival": 4249,
+    "intake_rate": 0.45869616380324785,
+    "switches": 0.26429748176041423
+   }
+  ]
+ },
+ "summary": {
+  "g15_forager": {
+   "survival": {
+    "min": 4249,
+    "median": 100000.0,
+    "mean": 88031.125,
+    "max": 100000
+   },
+   "intake_rate": {
+    "min": 0.45869616380324785,
+    "median": 0.748905,
+    "mean": 0.715653270475406,
+    "max": 0.77187
+   },
+   "switches": {
+    "min": 0.05658,
+    "median": 0.067885,
+    "mean": 0.09037718522005178,
+    "max": 0.26429748176041423
+   }
+  }
+ },
+ "admitted": false
+}

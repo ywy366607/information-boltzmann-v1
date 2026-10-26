@@ -60,6 +60,12 @@ def main():
     ap.add_argument("--agents", default="", help="comma list; empty = all")
     ap.add_argument("--pg-eta", type=float, default=0.1)
     ap.add_argument("--pg-trace", type=float, default=0.9)
+    ap.add_argument("--pg-relax", type=float, default=0.0)
+    ap.add_argument("--pg-state-baseline", type=int, default=0)
+    ap.add_argument("--pg-base-rate", type=float, default=0.01)
+    ap.add_argument("--pg-couple", type=float, default=0.0)
+    ap.add_argument("--pg-slow-c", type=float, default=10.0)
+    ap.add_argument("--pg-slow-leak", type=float, default=0.0)
     ap.add_argument("--out", required=True)
     args = ap.parse_args()
     d = ROOT / "data" / "ib_owt_10000"
@@ -77,7 +83,10 @@ def main():
 
     def pg(frozen=False):
         def make(world):
-            a = PGForager(eta=args.pg_eta, trace=args.pg_trace, seed=world.seed + 7919)
+            a = PGForager(eta=args.pg_eta, trace=args.pg_trace, relax=args.pg_relax,
+                          state_baseline=bool(args.pg_state_baseline), base_rate=args.pg_base_rate,
+                          couple=args.pg_couple, slow_c=args.pg_slow_c, slow_leak=args.pg_slow_leak,
+                          seed=world.seed + 7919)
             a.learning = not frozen
             return a
         return make
@@ -125,7 +134,9 @@ def main():
     summary = {k: {m: stats([r[m] for r in v]) for m in v[0]} for k, v in results.items()}
     report = dict(world=dict(wkw, ticks=args.ticks, sources=args.sources, stage=args.stage,
                              stage2_rule="document digit fraction >= median over sources"), hidden=args.hidden,
-                  seeds=args.seeds, g15=dict(eta=args.pg_eta, trace=args.pg_trace), provenance=prov, per_seed=results, summary=summary, admitted=False)
+                  seeds=args.seeds, g15=dict(eta=args.pg_eta, trace=args.pg_trace, relax=args.pg_relax,
+                                                 state_baseline=args.pg_state_baseline, base_rate=args.pg_base_rate,
+                                                 couple=args.pg_couple, slow_c=args.pg_slow_c, slow_leak=args.pg_slow_leak), provenance=prov, per_seed=results, summary=summary, admitted=False)
     out = Path(args.out)
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(report, indent=1), encoding="utf-8")
