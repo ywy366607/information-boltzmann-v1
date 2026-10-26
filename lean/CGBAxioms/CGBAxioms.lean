@@ -81,3 +81,4 @@ import CGBAxioms.GenerationOrganismEcoliV1
 import CGBAxioms.GenerationOrganismGeneratedS0
 import CGBAxioms.GenerationIgnition
 import CGBAxioms.GenerationLifeGate
+import CGBAxioms.GenerationLinearMemory
