@@ -1,4 +1,4 @@
-import CGBAxioms.GenerationTable
+import CGBAxioms.GenerationLifeGate
 
 /-!
 # Organism `generated_s0`: generated from its rule table
@@ -51,5 +51,19 @@ theorem axioms : medium.Axioms :=
   tableCRN.axioms spec page bid content φ μ (fun _ => (0 : Fin 2)) (0 : ℤ) (by simp [μ])
     ⟨0, rfl, fun l hl => Fin.ext (by simpa [content] using hl)⟩
     (by intro k; fin_cases k <;> simp [spec, bid, content])
+
+/-- **Life gate L-metabolism** (`Lives.metabolizes`): rule 0 on units 14 and 0 changes content. -/
+theorem metabolizes : ∃ a s x, 0 < medium.rate a s x ∧ medium.total (medium.act a s x) ≠ medium.total x :=
+  tableCRN.metabolizes_of_rule spec page bid content φ μ (fun _ => (0 : Fin 2)) (0 : ℤ) ⟨0, by decide⟩
+    (by norm_num [spec]) (u := ⟨14, by decide⟩) (v := ⟨0, by decide⟩) (by decide)
+    (by simp [page, spec]) (by simp [page, spec]) (by simp [spec, content]) (fun _ => 0)
+
+/-- **Life gate L-sense** (`Lives.exposed`): the same event exchanges content with a boundary
+reservoir, so its rate depends on the stimulus. -/
+theorem exposed : medium.Exposed :=
+  tableCRN.exposed_of_rule spec page bid content φ μ (fun _ => (0 : Fin 2)) (0 : ℤ) ⟨0, by decide⟩
+    (by norm_num [spec]) (u := ⟨14, by decide⟩) (v := ⟨0, by decide⟩) (by decide)
+    (by simp [page, spec]) (by simp [page, spec]) (by simp [spec, content])
+    (by simp [spec, bid]) (0 : ℤ) 1 (by norm_num [μ])
 
 end CGB.Organisms.GeneratedS0

@@ -41,9 +41,20 @@ def test_grown_organism_checks_pass_and_only_w_in_and_medium_block():
     assert all(e["passed"] for e in r["execution"])
     assert sorted(r["failures"]) == sorted([
         "hidden_write_weights (structure): no valid Lean theorem",
-        "no Lean Medium instance with an Axioms proof"])
+        "no Lean Medium instance with an Axioms proof",
+        "life layer: manifest has no `life` section (mandatory)"])
 
 
 def test_generated_organism_is_admitted():
     r = cgb_gate.gate("generated_s0")
     assert r["admitted"], r["failures"]
+    assert {row["item"] for row in r["life"] if row["passed"]} >= {
+        "lean:exposed", "lean:metabolizes", "export", "selective_export", "memory", "self_maintenance"}
+
+
+def test_memoryless_tables_fail_the_life_layer():
+    # chemo_s0 and ignition_s0 (no interior page) carry no one-tick memory
+    import json
+    for rec in ("chemo_s0_20261026.json", "ignition_s0_20261026.json"):
+        t = json.loads((cgb_gate.ROOT / "results/published/cgb_generated" / rec).read_text(encoding="utf-8"))["table"]
+        assert not cgb_gate.life_memory(t, 0, 2.0, reps=200, lags=(1,))["passed"], rec

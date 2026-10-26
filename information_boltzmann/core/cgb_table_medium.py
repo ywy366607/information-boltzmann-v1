@@ -130,7 +130,8 @@ def lean_source(t, module):
     phi = "\n".join(f"  | {p}, l => if l = 0 then {v[0]} else {v[1]}" for p, v in t["phi"].items())
     bid = ", ".join(str(p) for p in t["boundary_pages"])
     name = t["name"]
-    return f'''import CGBAxioms.GenerationTable
+    life = life_witness_source(t, pages)
+    return f'''import CGBAxioms.GenerationLifeGate
 
 /-!
 # Organism `{name}`: generated from its rule table
@@ -170,8 +171,45 @@ theorem axioms : medium.Axioms :=
   tableCRN.axioms spec page bid content φ μ (fun _ => (0 : Fin 2)) (0 : ℤ) (by simp [μ])
     ⟨0, rfl, fun l hl => Fin.ext (by simpa [content] using hl)⟩
     (by intro k; fin_cases k <;> simp [spec, bid, content])
-
+{life}
 end CGB.Organisms.{module}
+'''
+
+
+def life_witness(t, pages):
+    """A rule touching a boundary page that changes content, with two distinct units on its
+    pages: the witness for the life-gate lemmas `tableCRN.exposed_of_rule` and
+    `tableCRN.metabolizes_of_rule`. None if the table has no such rule."""
+    bnd = set(t["boundary_pages"])
+    for k, r in enumerate(t["rules"]):
+        if r["kappa"] <= 0 or sum(r["a"]) == sum(r["b"]) or not ({r["i"], r["j"]} & bnd):
+            continue
+        us = [u for u, p in enumerate(pages) if p == r["i"]]
+        for u in us:
+            vs = [v for v, p in enumerate(pages) if p == r["j"] and v != u]
+            if vs:
+                return k, u, vs[0]
+    return None
+
+
+def life_witness_source(t, pages):
+    w = life_witness(t, pages)
+    if w is None:
+        return "\n-- No life witness: no rule moves content through a boundary page (life gate fails).\n"
+    k, u, v = w
+    args = (f"spec page bid content φ μ (fun _ => (0 : Fin 2)) (0 : ℤ) ⟨{k}, by decide⟩\n"
+            f"    (by norm_num [spec]) (u := ⟨{u}, by decide⟩) (v := ⟨{v}, by decide⟩) (by decide)\n"
+            f"    (by simp [page, spec]) (by simp [page, spec]) (by simp [spec, content])")
+    return f'''
+/-- **Life gate L-metabolism** (`Lives.metabolizes`): rule {k} on units {u} and {v} changes content. -/
+theorem metabolizes : ∃ a s x, 0 < medium.rate a s x ∧ medium.total (medium.act a s x) ≠ medium.total x :=
+  tableCRN.metabolizes_of_rule {args} (fun _ => 0)
+
+/-- **Life gate L-sense** (`Lives.exposed`): the same event exchanges content with a boundary
+reservoir, so its rate depends on the stimulus. -/
+theorem exposed : medium.Exposed :=
+  tableCRN.exposed_of_rule {args}
+    (by simp [spec, bid]) (0 : ℤ) 1 (by norm_num [μ])
 '''
 
 

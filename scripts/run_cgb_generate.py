@@ -150,6 +150,34 @@ def evaluate(g, seeds, **kw):
     return out
 
 
+# Life-admitted search (2026-10-26): only tables that pass the mandatory life layer of the gate
+# (sense + metabolism witness, export, selective export, one-tick memory) enter the population.
+PROBE = {"forage": (0, 6.0), "chemo": (0, 2.0), "ignition": (0, 2.0)}
+
+
+def life_ok(g):
+    import cgb_gate
+    from cgb_table_medium import life_witness, unit_pages
+    t = to_table(g, "candidate")
+    if life_witness(t, unit_pages(t)) is None:
+        return False
+    ex = cgb_gate.life_export(t)
+    if not (ex["export"] and ex["selective"]):
+        return False
+    probe, mu = PROBE[WORLD["name"]]
+    return cgb_gate.life_memory(t, probe, mu, reps=200, lags=(1,))["passed"]
+
+
+def fill(pool, make, n):
+    """Draw candidates with `make()` until `n` of them pass `life_ok`."""
+    out, tries = [], 0
+    while len(out) < n:
+        cand = [make() for _ in range(2 * (n - len(out)))]
+        tries += len(cand)
+        out += [c for c, ok in zip(cand, pool.map(life_ok, cand)) if ok][: n - len(out)]
+    return out, tries
+
+
 def _init(cost, world_name, ntrain=4):
     global TRAIN
     COST[0] = cost
@@ -166,27 +194,36 @@ def main():
     ap.add_argument("--cost", type=float, default=0.6)
     ap.add_argument("--world", default="forage", choices=["forage", "chemo", "ignition"])
     ap.add_argument("--train", type=int, default=4, help="number of training worlds (seeds 1..N)")
+    ap.add_argument("--life", action="store_true", help="only life-admitted tables enter the population")
     ap.add_argument("--out", required=True)
     a = ap.parse_args()
     _init(a.cost, a.world, a.train)
     rng = np.random.default_rng(a.seed)
-    pop = [random_genome(rng) for _ in range(a.pop)]
     history = []
     with Pool(a.workers, initializer=_init, initargs=(a.cost, a.world, a.train)) as pool:
+        if a.life:
+            pop, tries = fill(pool, lambda: random_genome(rng), a.pop)
+            print("life-admitted initial population:", a.pop, "of", tries, "random tables", flush=True)
+        else:
+            pop = [random_genome(rng) for _ in range(a.pop)]
         fit = pool.map(fitness, pop)
         for gen in range(a.gens):
             order = np.argsort(fit)[::-1]
             elite = [pop[i] for i in order[:8]]
             history.append(dict(gen=gen, best=float(fit[order[0]]), median=float(np.median(fit))))
             print(gen, round(fit[order[0]], 1), round(float(np.median(fit)), 1), flush=True)
-            children = []
-            while len(children) < a.pop - len(elite):
+            def make():
                 i, j = rng.integers(len(pop), size=2)
                 parent = pop[i] if fit[i] >= fit[j] else pop[j]
                 child = mutate(parent, rng)
                 for _ in range(int(rng.integers(0, 3))):
                     child = mutate(child, rng)
-                children.append(child)
+                return child
+
+            if a.life:
+                children, _ = fill(pool, make, a.pop - len(elite))
+            else:
+                children = [make() for _ in range(a.pop - len(elite))]
             cfit = pool.map(fitness, children)
             pop = elite + children
             fit = [fit[i] for i in order[:8]] + cfit
