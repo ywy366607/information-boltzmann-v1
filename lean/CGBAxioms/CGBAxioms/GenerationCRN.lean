@@ -5,9 +5,17 @@ import CGBAxioms.GenerationMedium
 
 One compartment (every unit touches every other: a single clique, which by G8 can
 integrate anything). Events are a rule applied to an ordered pair of distinct units.
-Rules see only the identity pages and states of the two units; the energy is a sum of
-single-unit terms, boundary units adding a reservoir term that reads their stimulus.
-Rates are `κ r * exp (-ΔE / 2)` (M1a). The theorem `PairCRN.axioms` proves the six
+Rules see only the identity pages and states of the two units. The energy change of an
+event is the change of single-unit energies minus the reservoir work `μ * Δc`: content that
+an event takes in or gives out is exchanged with the reservoir of its boundary participant,
+whose potential `μ` is set by that unit's stimulus. Rates are `κ r * exp (-ΔE / 2)` (M1a).
+With `μ calm = 0` the calm dynamics is detailed balanced; different reservoir potentials
+give cycles a net affinity, so a constant environment can drive a steady current.
+
+Revision 2026-10-26: the first version put the stimulus into a state energy `ψ (s u) l` of
+the boundary unit. Then every constant stimulus admitted the potential `Σ φ + Σ ψ`, so the
+dynamics was detailed balanced in every constant environment: no steady metabolism was
+possible, and a token entering at one reservoir and leaving at another did no net work. The theorem `PairCRN.axioms` proves the six
 clauses once from finite, decidable obligations on the rule table.
 -/
 
@@ -22,8 +30,8 @@ structure PairCRN (U Λ I R : Type*) where
   content : Λ → ℕ
   /-- single-unit energy by identity page -/
   φ : ℕ → Λ → ℝ
-  /-- reservoir term of a boundary unit under its stimulus -/
-  ψ : I → Λ → ℝ
+  /-- reservoir potential of a boundary unit under its stimulus -/
+  μ : I → ℝ
   /-- effect of a rule on the ordered pair, given their identity pages -/
   eff : R → ℕ → ℕ → Λ × Λ → Λ × Λ
   κ : R → ℝ
@@ -41,9 +49,17 @@ variable {U Λ I R : Type*} [Fintype U] [DecidableEq U] [Fintype R] [DecidableEq
 /-- The boundary units. -/
 def boundary : Finset U := univ.filter fun u => C.ident u ∈ C.bid
 
-/-- Energy of unit `u` in state `l` under stimulus `s`. -/
-noncomputable def unitE (s : U → I) (u : U) (l : Λ) : ℝ :=
-  C.φ (C.ident u) l + if C.ident u ∈ C.bid then C.ψ (s u) l else 0
+/-- Energy of unit `u` in state `l`. -/
+noncomputable def unitE (u : U) (l : Λ) : ℝ := C.φ (C.ident u) l
+
+/-- The reservoir potential an event on `(u, v)` exchanges content with. -/
+noncomputable def reservoir (s : U → I) (u v : U) : ℝ :=
+  if C.ident u ∈ C.bid then C.μ (s u) else if C.ident v ∈ C.bid then C.μ (s v) else 0
+
+/-- Content taken in by the event. -/
+noncomputable def dC (r : R) (u v : U) (x : U → Λ) : ℝ :=
+  let p := C.eff r (C.ident u) (C.ident v) (x u, x v)
+  (C.content p.1 : ℝ) + C.content p.2 - C.content (x u) - C.content (x v)
 
 /-- The effect of rule `r` on the pair `(u, v)`. -/
 def pairAct (r : R) (u v : U) (x : U → Λ) : U → Λ :=
@@ -51,10 +67,11 @@ def pairAct (r : R) (u v : U) (x : U → Λ) : U → Λ :=
     let p := C.eff r (C.ident u) (C.ident v) (x u, x v)
     Function.update (Function.update x u p.1) v p.2
 
-/-- Energy change of the event. -/
+/-- Energy change of the event, reservoir work included. -/
 noncomputable def dE (r : R) (u v : U) (s : U → I) (x : U → Λ) : ℝ :=
   let p := C.eff r (C.ident u) (C.ident v) (x u, x v)
-  C.unitE s u p.1 + C.unitE s v p.2 - C.unitE s u (x u) - C.unitE s v (x v)
+  C.unitE u p.1 + C.unitE v p.2 - C.unitE u (x u) - C.unitE v (x v) -
+    C.reservoir s u v * C.dC r u v x
 
 /-- The medium. -/
 noncomputable def medium : Medium U Λ (R × U × U) I where
@@ -72,8 +89,8 @@ noncomputable def medium : Medium U Λ (R × U × U) I where
   init u := C.birth (C.ident u)
   calm _ := C.calm
 
-/-- Total energy under stimulus `s`. -/
-noncomputable def totalE (s : U → I) (x : U → Λ) : ℝ := ∑ u, C.unitE s u (x u)
+/-- Total single-unit energy. -/
+noncomputable def totalE (x : U → Λ) : ℝ := ∑ u, C.unitE u (x u)
 
 /-- A pair event changes a unit-wise sum only at its two units. -/
 lemma sum_pairAct (g : U → Λ → ℝ) (r : R) {u v : U} (huv : u ≠ v) (x : U → Λ) :
@@ -97,10 +114,11 @@ lemma sum_pairAct (g : U → Λ → ℝ) (r : R) {u v : U} (huv : u ≠ v) (x : 
   simp [Function.update_of_ne huv, Function.update_of_ne (Ne.symm huv)]
   ring
 
-lemma totalE_pairAct (r : R) {u v : U} (huv : u ≠ v) (s : U → I) (x : U → Λ) :
-    C.totalE s (C.pairAct r u v x) - C.totalE s x = C.dE r u v s x := by
-  rw [totalE, totalE, C.sum_pairAct (fun w l => C.unitE s w l) r huv x]
-  rfl
+lemma totalE_pairAct (r : R) {u v : U} (huv : u ≠ v) (s : U → I) (x : U → Λ)
+    (hs : C.reservoir s u v = 0) :
+    C.totalE (C.pairAct r u v x) - C.totalE x = C.dE r u v s x := by
+  rw [totalE, totalE, C.sum_pairAct (fun w l => C.unitE w l) r huv x]
+  simp only [dE, hs, zero_mul, sub_zero]
 
 /-! ## The six clauses from table obligations -/
 
@@ -120,7 +138,7 @@ theorem p1b : C.medium.P1b := by
     have hu := hxy u (by simp [medium])
     have hv := hxy v (by simp [medium])
     refine ⟨?_, fun w hw => ?_⟩
-    · simp only [medium, dE, unitE, hu.1, hv.1, hu.2, hv.2]
+    · simp only [medium, dE, unitE, reservoir, dC, hu.1, hv.1, hu.2, hv.2]
     · simp only [medium, Finset.mem_insert, Finset.mem_singleton] at hw
       simp only [medium, pairAct, hu.1, hv.1]
       split_ifs with huv
@@ -155,11 +173,12 @@ theorem p2a (hcons : ∀ r i j p, i ∉ C.bid → j ∉ C.bid →
     linarith
   exact_mod_cast this
 
-theorem p2b [DecidableEq (U → Λ)] (hinv : Function.Involutive C.rev) (hκ : ∀ r, C.κ (C.rev r) = C.κ r)
+theorem p2b [DecidableEq (U → Λ)] (hcalm : C.μ C.calm = 0)
+    (hinv : Function.Involutive C.rev) (hκ : ∀ r, C.κ (C.rev r) = C.κ r)
     (hback : ∀ r i j p, C.eff r i j p ≠ p → C.eff (C.rev r) i j (C.eff r i j p) = p) :
     C.medium.P2b := by
   classical
-  refine C.medium.p2b_of_energy (C.totalE fun _ => C.calm) (fun e => C.κ e.1)
+  refine C.medium.p2b_of_energy C.totalE (fun e => C.κ e.1)
     (fun e => (C.rev e.1, e.2)) (fun e => by simp [hinv e.1]) (fun e => hκ e.1) ?_ ?_
   · rintro ⟨r, u, v⟩ x hne
     simp only [medium, pairAct] at hne ⊢
@@ -187,7 +206,7 @@ theorem p2b [DecidableEq (U → Λ)] (hinv : Function.Involutive C.rev) (hκ : �
     have huv : u ≠ v := by
       rintro rfl
       exact hne (by simp [medium, pairAct])
-    have h := C.totalE_pairAct r huv (fun _ => C.calm) x
+    have h := C.totalE_pairAct r huv (fun _ => C.calm) x (by simp [reservoir, hcalm])
     simp only [medium, huv, if_false]
     rw [h]
 
@@ -197,13 +216,15 @@ theorem p2c : C.medium.P2c := by
   have hid : ∀ u, C.ident (σ u) = C.ident u := hσ.2.1
   refine ⟨Equiv.prodCongr (Equiv.refl R) (Equiv.prodCongr σ σ), ?_⟩
   rintro ⟨r, u, v⟩ s x
-  have hE : ∀ w l, C.unitE (s ∘ σ.symm) (σ w) l = C.unitE s w l := by
+  have hE : ∀ w l, C.unitE (σ w) l = C.unitE w l := by
     intro w l; simp [unitE, hid]
+  have hR : C.reservoir (s ∘ σ.symm) (σ u) (σ v) = C.reservoir s u v := by
+    simp [reservoir, hid]
   refine ⟨?_, ?_⟩
   · simp only [medium, Equiv.prodCongr_apply, Equiv.refl_apply, Prod.map, EmbeddingLike.apply_eq_iff_eq]
     split_ifs
     · rfl
-    · simp only [dE, Function.comp_apply, Equiv.symm_apply_apply, hid, hE]
+    · simp only [dE, dC, Function.comp_apply, Equiv.symm_apply_apply, hid, hE, hR]
   · simp only [medium, Equiv.prodCongr_apply, Equiv.refl_apply, Prod.map, pairAct,
       EmbeddingLike.apply_eq_iff_eq]
     split_ifs
@@ -216,14 +237,14 @@ theorem p3 : C.medium.P3 := by
   classical
   refine ⟨?_, fun σ hσ => ?_⟩
   · rintro ⟨r, u, v⟩ s s' x hs
-    have hE : ∀ w l, C.unitE s w l = C.unitE s' w l := by
-      intro w l
-      unfold unitE
-      split_ifs with h
-      · rw [hs w (by simp [medium, boundary, h])]
+    have hR : C.reservoir s u v = C.reservoir s' u v := by
+      unfold reservoir
+      split_ifs with h1 h2
+      · rw [hs u (by simp [medium, boundary, h1])]
+      · rw [hs v (by simp [medium, boundary, h2])]
       · rfl
     refine ⟨?_, rfl⟩
-    simp only [medium, dE, hE]
+    simp only [medium, dE, hR]
   · funext u
     have : C.ident (σ.symm u) = C.ident u := by
       have := hσ.2.1 (σ.symm u)
@@ -237,8 +258,9 @@ theorem homogeneous : C.medium.HomogeneousContact :=
 
 /-- **M2**: a well-mixed pair reaction medium is a model of the CGB axioms as soon as its
 finite rule table passes the local obligations: content levels (P1a), conservation of
-closed rules (P2a), and reversible rules with symmetric prefactors (P2b). -/
-theorem axioms [DecidableEq (U → Λ)]
+closed rules (P2a), reversible rules with symmetric prefactors and a zero calm reservoir
+potential (P2b). -/
+theorem axioms [DecidableEq (U → Λ)] (hcalm : C.μ C.calm = 0)
     (h1a : (∀ n, {l : Λ | C.content l ≤ n}.Finite) ∧ (∃ K, ∀ l, C.content l ≤ K) ∧
       ∃! l, C.content l = 0)
     (hcons : ∀ r i j p, i ∉ C.bid → j ∉ C.bid →
@@ -246,7 +268,7 @@ theorem axioms [DecidableEq (U → Λ)]
     (hinv : Function.Involutive C.rev) (hκ : ∀ r, C.κ (C.rev r) = C.κ r)
     (hback : ∀ r i j p, C.eff r i j p ≠ p → C.eff (C.rev r) i j (C.eff r i j p) = p) :
     C.medium.Axioms :=
-  ⟨C.p1a h1a, C.p1b, C.p2a hcons, C.p2b hinv hκ hback, C.p2c, C.p3⟩
+  ⟨C.p1a h1a, C.p1b, C.p2a hcons, C.p2b hcalm hinv hκ hback, C.p2c, C.p3⟩
 
 end PairCRN
 

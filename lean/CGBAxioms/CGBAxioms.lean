@@ -76,3 +76,5 @@ import CGBAxioms.GenerationGrowth
 import CGBAxioms.GenerationMedium
 import CGBAxioms.GenerationCRN
 import CGBAxioms.GenerationAxiomAudit
+import CGBAxioms.GenerationTable
+import CGBAxioms.GenerationOrganismEcoliV1

@@ -1,0 +1,236 @@
+{
+ "name": "ecoli_v1",
+ "note": "Single well-mixed compartment, rule-table medium (Lean: CGB.tableCRN, M3). States 0/1, content = state. Pages: 0 S food sensor, 1 Y memory (interior), 2 M motor, 3 K fuel, 4 T arrival sensor; boundary pages 0, 2, 3, 4. Tokens flow from the fuel reservoir K into Y (hunger); food opens S as a sink that drains Y; Y tokens bind the motor units M; the world reads a tumble (switch source) when every motor unit is bound (cooperative switch); arrival opens T as a sink and travel empties M. Reservoir work: an event taking in content dc from the reservoir of its boundary participant costs -mu*dc.",
+ "pages": {
+  "S": 0,
+  "Y": 1,
+  "M": 2,
+  "K": 3,
+  "T": 4
+ },
+ "boundary_pages": [
+  0,
+  2,
+  3,
+  4
+ ],
+ "units": {
+  "S": 1,
+  "Y": 12,
+  "M": 4,
+  "K": 1,
+  "T": 1
+ },
+ "phi": {
+  "0": [
+   0,
+   2
+  ],
+  "1": [
+   0,
+   1
+  ],
+  "2": [
+   0,
+   1
+  ],
+  "3": [
+   0,
+   1
+  ],
+  "4": [
+   0,
+   2
+  ]
+ },
+ "birth": {
+  "0": 0,
+  "1": 0,
+  "2": 0,
+  "3": 0,
+  "4": 0
+ },
+ "rules": [
+  {
+   "name": "fuel_in_y0",
+   "i": 3,
+   "j": 1,
+   "a": [
+    0,
+    0
+   ],
+   "b": [
+    1,
+    0
+   ],
+   "kappa": 5
+  },
+  {
+   "name": "fuel_in_y1",
+   "i": 3,
+   "j": 1,
+   "a": [
+    0,
+    1
+   ],
+   "b": [
+    1,
+    1
+   ],
+   "kappa": 5
+  },
+  {
+   "name": "phosphorylate",
+   "i": 3,
+   "j": 1,
+   "a": [
+    1,
+    0
+   ],
+   "b": [
+    0,
+    1
+   ],
+   "kappa": 0.5
+  },
+  {
+   "name": "drain_to_food_sensor",
+   "i": 0,
+   "j": 1,
+   "a": [
+    0,
+    1
+   ],
+   "b": [
+    1,
+    0
+   ],
+   "kappa": 20
+  },
+  {
+   "name": "food_sink_y0",
+   "i": 0,
+   "j": 1,
+   "a": [
+    1,
+    0
+   ],
+   "b": [
+    0,
+    0
+   ],
+   "kappa": 5
+  },
+  {
+   "name": "food_sink_y1",
+   "i": 0,
+   "j": 1,
+   "a": [
+    1,
+    1
+   ],
+   "b": [
+    0,
+    1
+   ],
+   "kappa": 5
+  },
+  {
+   "name": "motor_bind",
+   "i": 2,
+   "j": 1,
+   "a": [
+    0,
+    1
+   ],
+   "b": [
+    1,
+    0
+   ],
+   "kappa": 0.5
+  },
+  {
+   "name": "motor_release_y0",
+   "i": 2,
+   "j": 1,
+   "a": [
+    1,
+    0
+   ],
+   "b": [
+    0,
+    0
+   ],
+   "kappa": 0.05
+  },
+  {
+   "name": "motor_release_y1",
+   "i": 2,
+   "j": 1,
+   "a": [
+    1,
+    1
+   ],
+   "b": [
+    0,
+    1
+   ],
+   "kappa": 0.05
+  },
+  {
+   "name": "drain_to_arrival_sensor",
+   "i": 4,
+   "j": 1,
+   "a": [
+    0,
+    1
+   ],
+   "b": [
+    1,
+    0
+   ],
+   "kappa": 20
+  },
+  {
+   "name": "arrival_sink_y0",
+   "i": 4,
+   "j": 1,
+   "a": [
+    1,
+    0
+   ],
+   "b": [
+    0,
+    0
+   ],
+   "kappa": 5
+  },
+  {
+   "name": "arrival_sink_y1",
+   "i": 4,
+   "j": 1,
+   "a": [
+    1,
+    1
+   ],
+   "b": [
+    0,
+    1
+   ],
+   "kappa": 5
+  }
+ ],
+ "stimulus": {
+  "calm": 0,
+  "food_on": -8,
+  "food_off": 8,
+  "fuel": 4,
+  "arrive_on": -8,
+  "arrive_off": 8,
+  "motor_rest": 0,
+  "motor_release": -10
+ },
+ "tick_time": 1.0,
+ "motor_rule": "tumble iff every motor unit is bound (cooperative switch, as the FliM ring)",
+ "status": "HAND-DESIGNED REFERENCE (control), not generated: every page, rule and constant was chosen by Claude from E. coli biology. Generated organisms come from selection over admitted rule tables."
+}
