@@ -1,0 +1,288 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>生成的大肠杆菌</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Dark-field microscope view of a ring world beside an instrument panel for one cell; stacks on phones.
+   One deliberate look (dark-field microscopy), so a single dark palette. */
+:root {
+  color-scheme: dark;
+  --ground: #06080a;
+  --panel: #0d1215;
+  --rule: #1f2a2f;
+  --ink: #dfe8ea;
+  --muted: #7f9196;
+  --field: #5ad1d6;
+  --cell: #f4efe6;
+  --tumble: #ff8a6b;
+  --blind: #8a83b8;
+  --dead: #3a4447;
+  --p0: #5ad1d6; --p1: #e3b65b; --p2: #ff8a6b; --p3: #a99bf0;
+  --display: "Instrument Serif", "Songti SC", "STSong", Georgia, serif;
+  --sans: "IBM Plex Sans", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--ground); color: var(--ink); font-family: var(--sans); font-size: 15px; line-height: 1.65;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 28px 56px;
+}
+.wrap { max-width: 1120px; margin: 0 auto; display: grid; gap: 32px; }
+header { display: grid; gap: 8px; }
+.eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; color: var(--muted); text-transform: uppercase; }
+h1 { font-family: var(--display); font-weight: 400; font-size: clamp(34px, 6vw, 58px); line-height: 1.08; margin: 0; text-wrap: balance; }
+h1 em { color: var(--field); font-style: italic; }
+.lede { color: var(--muted); max-width: 64ch; margin: 0; }
+.status { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+.chip { font-family: var(--mono); font-size: 12px; padding: 3px 10px; border: 1px solid var(--rule); border-radius: 999px; }
+.chip.ok::before { content: "✓ "; color: var(--field); }
+.chip.no::before { content: "✗ "; color: var(--tumble); }
+.stage { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 24px; align-items: start; }
+@media (max-width: 820px) { .stage { grid-template-columns: minmax(0, 1fr); } }
+.worlds { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+.worlds button[aria-pressed="true"] { border-color: var(--field); color: var(--field); }
+.worldnote { font-size: 13px; color: var(--muted); margin: 0 0 6px; max-width: 64ch; min-height: 3.2em; }
+.scope { position: relative; width: 100%; max-width: 620px; aspect-ratio: 1 / 1; margin: 0 auto; }
+.scope canvas { width: 100%; height: 100%; display: block; cursor: pointer; }
+.readout { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); text-align: center; pointer-events: none; }
+.readout .t { font-family: var(--mono); font-size: clamp(22px, 4vw, 32px); font-variant-numeric: tabular-nums; }
+.readout .s { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.controls { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 12px; }
+button, select { font: 500 13px var(--sans); color: var(--ink); background: var(--panel); border: 1px solid var(--rule);
+  border-radius: 6px; padding: 6px 12px; cursor: pointer; }
+button:focus-visible, select:focus-visible, input:focus-visible { outline: 2px solid var(--field); outline-offset: 2px; }
+input[type=range] { flex: 1 1 200px; min-width: 0; accent-color: var(--field); }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 12px; color: var(--muted); margin-top: 10px; }
+.legend i { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
+.legend i.ring { background: none; border: 2px solid var(--tumble); }
+.panel { background: var(--panel); border: 1px solid var(--rule); border-radius: 10px; padding: 16px; display: grid; gap: 14px; min-width: 0; }
+.panel h2 { font-family: var(--display); font-weight: 400; font-size: 28px; margin: 0; }
+.kv { display: grid; grid-template-columns: auto 1fr; gap: 4px 14px; font-size: 13px; margin: 0; }
+.kv dt { color: var(--muted); }
+.kv dd { margin: 0; font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.spark { width: 100%; height: 80px; display: block; }
+.spark.tall { height: 110px; }
+.cap { font-size: 12px; color: var(--muted); margin: 0 0 4px; }
+.keys { display: flex; flex-wrap: wrap; gap: 4px 12px; font-family: var(--mono); font-size: 11px; color: var(--muted); margin-top: 4px; }
+.keys i { display: inline-block; width: 10px; height: 2px; vertical-align: middle; margin-right: 5px; }
+section.notes { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 28px; }
+section.notes > div { min-width: 0; }
+section.notes h3 { font-family: var(--display); font-weight: 400; font-size: 26px; margin: 0 0 8px; }
+section.notes p { margin: 0 0 10px; max-width: 64ch; }
+.body h3 { font-family: var(--display); font-weight: 400; font-size: 26px; margin: 0 0 8px; }
+.tablebox { overflow-x: auto; border: 1px solid var(--rule); border-radius: 8px; }
+table { border-collapse: collapse; font-family: var(--mono); font-size: 12px; width: 100%; min-width: 460px; }
+th, td { text-align: left; padding: 6px 12px; border-bottom: 1px solid var(--rule); white-space: nowrap; font-variant-numeric: tabular-nums; }
+tr:last-child td { border-bottom: none; }
+th { color: var(--muted); font-weight: 400; }
+.twocol { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+.twocol > div { min-width: 0; }
+.muted { color: var(--muted); }
+code { font-family: var(--mono); font-size: .92em; color: var(--field); }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow" id="eyebrow"></div>
+    <h1 id="headline"></h1>
+    <p class="lede" id="lede"></p>
+    <div class="status" id="status"></div>
+  </header>
+
+  <div class="stage">
+    <div>
+      <div class="worlds" id="worlds" role="group" aria-label="选择世界"></div>
+      <p class="worldnote" id="worldnote"></p>
+      <div class="scope">
+        <canvas id="scope" width="1240" height="1240" aria-label="环形世界：外圈为生成的个体，内圈为致盲对照"></canvas>
+        <div class="readout"><div class="t" id="tick">0</div><div class="s">拍<br><span id="alive"></span></div></div>
+      </div>
+      <div class="controls">
+        <button id="play" type="button">暂停</button>
+        <select id="speed" aria-label="播放速度"><option value="1">慢</option><option value="2" selected>中</option><option value="6">快</option><option value="20">很快</option></select>
+        <input id="scrub" type="range" min="0" max="1" value="0" step="1" aria-label="时间">
+      </div>
+      <div class="legend">
+        <span><i style="background:var(--field)"></i>食物浓度（越亮越浓，每个世界各自的范围）</span>
+        <span><i style="background:var(--cell)"></i>个体（外圈 12 个）</span>
+        <span><i class="ring"></i>正在翻滚：停下、原地换方向</span>
+        <span><i style="background:var(--blind)"></i>致盲对照（内圈，受体被切断）</span>
+        <span><i style="background:var(--dead)"></i>储备耗尽</span>
+      </div>
+    </div>
+
+    <aside class="panel" aria-live="polite">
+      <h2 id="cellname">个体 1</h2>
+      <dl class="kv" id="cellkv"></dl>
+      <div><p class="cap">储备：吃到食物上升，活着本身在消耗；归零即死亡</p><canvas class="spark" id="sparkReserve" width="800" height="160"></canvas></div>
+      <div><p class="cap">它此刻感受到的浓度 ln c</p><canvas class="spark" id="sparkField" width="800" height="160"></canvas></div>
+      <div><p class="cap">体内四页单元的平均状态（占最高状态的比例）</p><canvas class="spark tall" id="sparkInterior" width="800" height="220"></canvas>
+        <div class="keys" id="interiorKeys"></div></div>
+      <p class="cap">点击视野里的个体可以切换观察对象。</p>
+    </aside>
+  </div>
+
+  <section class="notes" id="notes"></section>
+
+  <section class="body">
+    <h3>它的身体</h3>
+    <p class="muted" style="max-width:64ch;margin:0 0 14px">下面两张表就是这个个体的全部。选择找到了它们，没有一行是写出来的。同一张表被编译成 Lean 中的 <code>CGB.Organisms.EcoliMsS0.medium</code>，并在那里证明满足公理。</p>
+    <div class="twocol">
+      <div class="tablebox"><table id="pagesTable"></table></div>
+      <div class="tablebox"><table id="rulesTable"></table></div>
+    </div>
+  </section>
+</div>
+
+<script id="data" type="application/json">__DATA__</script>
+<script>
+(function () {
+  const D = JSON.parse(document.getElementById("data").textContent);
+  const M = D.meta;
+  const cs = getComputedStyle(document.documentElement);
+  const C = k => cs.getPropertyValue(k).trim();
+  const col = { field: C("--field"), cell: C("--cell"), tumble: C("--tumble"), blind: C("--blind"), dead: C("--dead"),
+                ink: C("--ink"), muted: C("--muted"), rule: C("--rule"), pages: [C("--p0"), C("--p1"), C("--p2"), C("--p3")] };
+
+  document.getElementById("eyebrow").textContent = M.eyebrow;
+  document.getElementById("headline").innerHTML = M.headline;
+  document.getElementById("lede").textContent = M.lede;
+  const st = document.getElementById("status");
+  M.status.forEach(s => { const e = document.createElement("span"); e.className = "chip " + (s.ok ? "ok" : "no"); e.textContent = s.text; st.appendChild(e); });
+  const notes = document.getElementById("notes");
+  M.notes.forEach(n => { const s = document.createElement("div"); s.innerHTML = "<h3>" + n.title + "</h3>" + n.html; notes.appendChild(s); });
+
+  // body tables (same organism in every world)
+  const W0 = D.worlds[0];
+  const pageName = {}; Object.entries(W0.pages).forEach(([k, v]) => pageName[v] = k);
+  const role = M.roles;
+  const nStates = p => Number((W0.states || {})[String(p)] || 2);
+  const pagesRows = Object.entries(W0.pages).sort((a, b) => a[1] - b[1]).map(([nm, p]) =>
+    `<tr><td>${nm}</td><td>${role[nm] || "内部"}</td><td>${W0.units[nm]}</td><td>${nStates(p)}</td></tr>`);
+  document.getElementById("pagesTable").innerHTML = "<tr><th>页</th><th>角色</th><th>单元数</th><th>状态数</th></tr>" + pagesRows.join("");
+  const rulesRows = W0.rules.map((r, k) =>
+    `<tr><td>${k}</td><td>${pageName[r.i]}·${r.a[0]} + ${pageName[r.j]}·${r.a[1]}</td><td>⇌</td><td>${pageName[r.i]}·${r.b[0]} + ${pageName[r.j]}·${r.b[1]}</td></tr>`);
+  document.getElementById("rulesTable").innerHTML = "<tr><th>#</th><th>页·状态 + 页·状态</th><th></th><th>页·状态 + 页·状态</th></tr>" + rulesRows.join("");
+
+  const NB = 4;
+  const interiorPages = Object.values(W0.pages).filter(p => p >= NB).sort((a, b) => a - b);
+  document.getElementById("interiorKeys").innerHTML = interiorPages.map((p, i) =>
+    `<span><i style="background:${col.pages[i % 4]}"></i>${pageName[p]}（${W0.units[pageName[p]]} 个，${nStates(p)} 态）</span>`).join("");
+
+  const cv = document.getElementById("scope"), g = cv.getContext("2d");
+  const W = cv.width, cx = W / 2, cy = W / 2;
+  const Rf = W * 0.415, Rc = W * 0.455, Rb = W * 0.335;
+  const scrub = document.getElementById("scrub");
+  const fieldLayer = document.createElement("canvas"); fieldLayer.width = W; fieldLayer.height = W;
+
+  let S = null, frame = 0, playing = true, sel = 0;
+  const ang = x => x / S.ring * Math.PI * 2 - Math.PI / 2;
+  const jitter = (k, n) => (k / Math.max(1, n - 1) - 0.5);
+
+  function setWorld(i) {
+    const w = D.worlds[i];
+    const lnF = w.field.map(v => Math.log(v));
+    S = { ...w, lnF, lmin: Math.min(...lnF), lmax: Math.max(...lnF),
+          maxFrames: Math.max(...w.colony.map(l => l.x.length), ...w.blind.map(l => l.x.length)) + 1 };  // one frame after the last death
+    // field brightness: each world's own concentration range, so its peaks stand out
+    const f = fieldLayer.getContext("2d"); f.clearRect(0, 0, W, W);
+    const n = w.field.length, cmin = Math.min(...w.field), cmax = Math.max(...w.field);
+    for (let b = 0; b < n; b++) {
+      const a0 = b / n * Math.PI * 2 - Math.PI / 2, a1 = (b + 1.3) / n * Math.PI * 2 - Math.PI / 2;
+      const v = (w.field[b] - cmin) / (cmax - cmin + 1e-9);  // linear concentration: peaks stand out
+      f.beginPath(); f.arc(cx, cy, Rf, a0, a1); f.lineWidth = W * (0.016 + 0.075 * v);
+      f.strokeStyle = col.field; f.globalAlpha = 0.05 + 0.95 * Math.sqrt(v); f.stroke();
+    }
+    f.globalAlpha = 1;
+    f.beginPath(); f.arc(cx, cy, Rb, 0, Math.PI * 2); f.lineWidth = 1.5; f.strokeStyle = col.rule; f.stroke();
+    scrub.max = String(S.maxFrames - 1);
+    frame = 0; sel = 0; playing = !reduced; document.getElementById("play").textContent = playing ? "暂停" : "播放";
+    document.querySelectorAll("#worlds button").forEach((b, k) => b.setAttribute("aria-pressed", String(k === i)));
+    document.getElementById("worldnote").textContent = w.note;
+    draw();
+  }
+
+  function draw() {
+    g.clearRect(0, 0, W, W);
+    g.drawImage(fieldLayer, 0, 0);
+    let aliveC = 0, aliveB = 0;
+    [[S.colony, Rc, col.cell, 0.03, 0], [S.blind, Rb, col.blind, 0.022, 1]].forEach(([lives, R, c, spread, gi]) => {
+      lives.forEach((L, k) => {
+        const alive = frame < L.x.length || L.survival >= S.ticks;
+        const fi = Math.min(frame, L.x.length - 1);
+        const a = ang(L.x[fi]), r = R + W * spread * jitter(k, lives.length);
+        const px = cx + r * Math.cos(a), py = cy + r * Math.sin(a);
+        if (alive) gi ? aliveB++ : aliveC++;
+        g.beginPath(); g.arc(px, py, W * (alive ? 0.0095 : 0.006), 0, Math.PI * 2);
+        g.fillStyle = alive ? c : col.dead; g.fill();
+        if (alive && L.tumbling[fi]) { g.beginPath(); g.arc(px, py, W * 0.018, 0, Math.PI * 2); g.lineWidth = W * 0.003; g.strokeStyle = col.tumble; g.stroke(); }
+        if (!gi && k === sel) { g.beginPath(); g.arc(px, py, W * 0.026, 0, Math.PI * 2); g.lineWidth = W * 0.002; g.strokeStyle = col.ink; g.stroke(); }
+      });
+    });
+    document.getElementById("tick").textContent = Math.min(frame * S.every, S.ticks, Math.max(...S.colony.map(l => l.survival), ...S.blind.map(l => l.survival))).toLocaleString("en-US");
+    document.getElementById("alive").textContent = `个体活着 ${aliveC}/${S.colony.length} · 致盲 ${aliveB}/${S.blind.length}`;
+    scrub.value = String(frame);
+    drawPanel();
+  }
+
+  function spark(id, series, lo, hi, colors) {
+    const c = document.getElementById(id), x = c.getContext("2d"), w = c.width, h = c.height;
+    x.clearRect(0, 0, w, h);
+    x.strokeStyle = col.rule; x.lineWidth = 1;
+    for (let q = 0; q <= 2; q++) { const y = 4 + (h - 8) * q / 2; x.beginPath(); x.moveTo(0, y); x.lineTo(w, y); x.stroke(); }
+    const n = Math.max(2, S.maxFrames);
+    series.forEach((s, si) => {
+      x.beginPath(); x.lineWidth = 2.5; x.strokeStyle = colors[si % colors.length];
+      s.forEach((v, i) => { const px = i / (n - 1) * w, py = h - 4 - (h - 8) * (v - lo) / (hi - lo + 1e-9); i ? x.lineTo(px, py) : x.moveTo(px, py); });
+      x.stroke();
+    });
+    const cxp = frame / (n - 1) * w; x.strokeStyle = col.ink; x.globalAlpha = .55; x.beginPath(); x.moveTo(cxp, 0); x.lineTo(cxp, h); x.stroke(); x.globalAlpha = 1;
+  }
+
+  function drawPanel() {
+    const L = S.colony[sel];
+    const fi = Math.min(frame, L.x.length - 1);
+    const alive = frame < L.x.length || L.survival >= S.ticks;
+    document.getElementById("cellname").textContent = `个体 ${sel + 1}`;
+    const kv = [["此刻", alive ? (L.tumbling[fi] ? "翻滚：停下换方向" : "直游") : `储备耗尽，第 ${L.survival.toLocaleString("en-US")} 拍`],
+                ["位置", `${L.x[fi].toFixed(0)} / ${S.ring}`],
+                ["储备", L.reserve[fi].toFixed(1)],
+                ["一生中翻滚的比例", (L.tumble * 100).toFixed(1) + "%"],
+                ["寿命", L.survival >= S.ticks ? `活满 ${S.ticks.toLocaleString("en-US")} 拍` : `${L.survival.toLocaleString("en-US")} 拍`]];
+    document.getElementById("cellkv").innerHTML = kv.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join("");
+    spark("sparkReserve", [L.reserve], 0, Math.max(300, ...L.reserve), [col.cell]);
+    spark("sparkField", [L.x.map(v => S.lnF[Math.floor(v / S.ring * S.field.length) % S.field.length])], S.lmin, S.lmax, [col.field]);
+    spark("sparkInterior", L.interior.map((s, i) => s.map(v => v / (nStates(interiorPages[i]) - 1))), 0, 1, col.pages);
+  }
+
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function step() {
+    if (!playing) return;
+    frame = Math.min(S.maxFrames - 1, frame + Number(document.getElementById("speed").value));
+    if (frame >= S.maxFrames - 1) { playing = false; document.getElementById("play").textContent = "重播"; }
+    draw();
+  }
+  document.getElementById("play").addEventListener("click", e => {
+    if (frame >= S.maxFrames - 1) frame = 0;
+    playing = !playing; e.target.textContent = playing ? "暂停" : "播放";
+  });
+  scrub.addEventListener("input", () => { frame = Number(scrub.value); draw(); });
+  cv.addEventListener("click", ev => {
+    const r = cv.getBoundingClientRect(), sx = (ev.clientX - r.left) / r.width * W, sy = (ev.clientY - r.top) / r.height * W;
+    let best = -1, bd = 1e9;
+    S.colony.forEach((L, k) => {
+      const fi = Math.min(frame, L.x.length - 1), a = ang(L.x[fi]), rr = Rc + W * 0.03 * jitter(k, S.colony.length);
+      const d = Math.hypot(cx + rr * Math.cos(a) - sx, cy + rr * Math.sin(a) - sy);
+      if (d < bd) { bd = d; best = k; }
+    });
+    if (best >= 0 && bd < W * 0.06) { sel = best; draw(); }
+  });
+  const wb = document.getElementById("worlds");
+  D.worlds.forEach((w, i) => { const b = document.createElement("button"); b.type = "button"; b.textContent = w.label; b.addEventListener("click", () => setWorld(i)); wb.appendChild(b); });
+  setWorld(0);
+  setInterval(step, 40);
+})();
+</script>
