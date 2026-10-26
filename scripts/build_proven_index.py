@@ -64,6 +64,8 @@ def main():
              "",
              "由 `scripts/build_proven_index.py` 从 Lean 源码生成。新工作开始前先在这里检索"
              "（定理名与文档注释首句），避免重复推导。",
+             "",
+             "**未入 Lean 的手工推导与数值见证**另列在 `CGB_HAND_DERIVATIONS.md`，检索时两处都要看。",
              ""]
     total = 0
     for path in sorted(LEAN.glob("*.lean")):

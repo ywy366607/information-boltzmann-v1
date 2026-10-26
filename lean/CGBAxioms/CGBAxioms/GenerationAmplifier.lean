@@ -27,6 +27,11 @@ no equilibrium gain at all:
   sensed potential (Hill > 1, which chemotaxis needs) requires drive or a non-additive
   interaction energy, the same requirement as for the latch (G23). The amplifier of
   chemotaxis and the latch of ignition are one substrate: a driven or cooperative switch.
+* `quanta_hill` (G25d): a state of `s` quanta has Hill coefficient `s` at equilibrium.
+* `resolvable_band`, `gain_times_band` (G25e): with `N` units, a switch of gain `s` resolves
+  only `|μ - θ| ≤ log (N - 1) / s`; gain times width is `2 log (N - 1)`. A world whose sensed
+  potential ranges wider than that cannot be served by one fixed operating point `θ` at the
+  needed gain: `θ` must move with the world (adaptation, as *E. coli*'s receptor methylation).
 -/
 
 namespace CGB.Generation
@@ -91,5 +96,57 @@ haemoglobin. (Found by selection in the multi-state chemotaxis run before it was
 theorem quanta_hill (s μ φs : ℝ) :
     Real.log (Real.exp (s * μ - φs) / Real.exp (s * 0 - φs)) = s * μ := by
   rw [← Real.exp_sub, Real.log_exp]; ring
+
+
+/-- Lower edge of the resolvable range: with `N` units, the occupancy is at least one unit's
+worth (`1/N`) exactly when `-h ≤ log (N - 1)`. -/
+theorem occupancy_ge_inv_iff {N h : ℝ} (hN : 1 < N) :
+    1 / N ≤ occupancy h ↔ -h ≤ Real.log (N - 1) := by
+  unfold occupancy
+  have he := Real.exp_pos (-h)
+  rw [one_div_le_one_div (by linarith) (by positivity), Real.le_log_iff_exp_le (by linarith)]
+  constructor <;> intro H <;> linarith
+
+/-- Upper edge: the occupancy leaves at least one unit empty exactly when `h ≤ log (N - 1)`. -/
+theorem occupancy_le_one_sub_inv_iff {N h : ℝ} (hN : 1 < N) :
+    occupancy h ≤ 1 - 1 / N ↔ h ≤ Real.log (N - 1) := by
+  unfold occupancy
+  have he := Real.exp_pos (-h)
+  have hN1 : 0 < N - 1 := by linarith
+  have key : 1 / (1 + Real.exp (-h)) ≤ 1 - 1 / N ↔ 1 / (N - 1) ≤ Real.exp (-h) := by
+    rw [div_le_iff₀ (by positivity), div_le_iff₀ hN1]
+    constructor
+    · intro H
+      have : 1 ≤ (N - 1) / N * (1 + Real.exp (-h)) := by
+        have h' : 1 - 1 / N = (N - 1) / N := by field_simp
+        rw [h'] at H; linarith
+      rw [div_mul_eq_mul_div, le_div_iff₀ (by linarith)] at this
+      nlinarith
+    · intro H
+      have h' : 1 - 1 / N = (N - 1) / N := by field_simp
+      rw [h', div_mul_eq_mul_div, le_div_iff₀ (by linarith)]
+      nlinarith
+  have hinv : 1 / (N - 1) = Real.exp (-Real.log (N - 1)) := by
+    rw [Real.exp_neg, Real.exp_log hN1, one_div]
+  rw [key, hinv, Real.exp_le_exp]
+  constructor <;> intro H <;> linarith
+
+/-- **G25e (gain–range bound)**: a switch of gain `s` (a state of `s` quanta, G25d) centred at
+`θ`, read through `N` units, is resolvable (between one occupied and one empty unit) exactly on
+`|μ - θ| ≤ log (N - 1) / s`. -/
+theorem resolvable_band {N s μ θ : ℝ} (hN : 1 < N) (hs : 0 < s) :
+    (1 / N ≤ occupancy (s * (μ - θ)) ∧ occupancy (s * (μ - θ)) ≤ 1 - 1 / N) ↔
+      |μ - θ| ≤ Real.log (N - 1) / s := by
+  have h1 : μ - θ ≤ Real.log (N - 1) / s ↔ s * (μ - θ) ≤ Real.log (N - 1) := by
+    rw [le_div_iff₀ hs]; constructor <;> intro H <;> linarith
+  have h2 : -(Real.log (N - 1) / s) ≤ μ - θ ↔ -(s * (μ - θ)) ≤ Real.log (N - 1) := by
+    rw [neg_le, le_div_iff₀ hs]; constructor <;> intro H <;> linarith
+  rw [occupancy_ge_inv_iff hN, occupancy_le_one_sub_inv_iff hN, abs_le, h1, h2]
+
+/-- The product of gain and resolvable width is `2 log (N - 1)`, independent of the gain: an
+amplified switch covers a proportionally narrower band of the sensed potential. -/
+theorem gain_times_band {N s : ℝ} (hs : s ≠ 0) :
+    s * (2 * (Real.log (N - 1) / s)) = 2 * Real.log (N - 1) := by
+  field_simp
 
 end CGB.Generation

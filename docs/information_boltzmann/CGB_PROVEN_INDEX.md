@@ -2,7 +2,9 @@
 
 由 `scripts/build_proven_index.py` 从 Lean 源码生成。新工作开始前先在这里检索（定理名与文档注释首句），避免重复推导。
 
-共 905 条定理/引理。
+共 912 条定理/引理。
+**未入 Lean 的手工推导与数值见证**另列在 `CGB_HAND_DERIVATIONS.md`，检索时两处都要看。
+
 ## ActiveLoop（8）
 _Proposed responsive loop and algebraic energy account The proved results are medium axioms, clock and boundary admission, world-row normalization, and an expected first-law identity._
 
@@ -255,7 +257,7 @@ _Generation, layer 1: what the axioms force on the equilibrium law The axioms co
 - `two_part_balance`：**G8a** (two parts suffice): with positive part factors `φ₁, φ₂` and constants `a, b ≥ 0`, up rates `a φ₁ + b φ₂` and down rates `b / φ₁ + a / φ₂` (each term reads one part) have ratio exactly `φ₁ φ₂`.
 - `three_part_balance_impossible`：**G8b** (three parts are impossible): if up rates `f₁+f₂+f₃` and down rates `g₁+g₂+g₃` (each term reading one part) satisfy detailed balance with a product factor `φ₁ φ₂ φ₃` that is non-constant on every part, the total 
 
-## GenerationAmplifier（7）
+## GenerationAmplifier（11）
 _An equilibrium amplifier: ordered filling of a conserved shell (generation chain, G25) Chemotaxis needs an all-or-none response to a tiny difference (a gain of order ten in *E._
 
 - `occupancy_le_exp`
@@ -265,6 +267,10 @@ _An equilibrium amplifier: ordered filling of a conserved shell (generation chai
 - `switch_width`：**G25b (switch width)**: raising the potential from `l1` to `l2` adds at most `NH` times the gain in `H`'s occupancy plus `NL e^{-(l1 - φL)}` content.
 - `equilibrium_hill_one`：**G25c (equilibrium Hill coefficient is one)**: the log-odds of occupation is exactly the potential above the unit's energy, so it moves one-for-one with the sensed potential.
 - `quanta_hill`：**G25d (cooperativity from multiple quanta)**: a state holding `s` units of content, with energy `φs`, has equilibrium weight `exp (s μ - φs)` relative to the empty state, so its log-odds moves `s`-for-one with the poten
+- `occupancy_ge_inv_iff`：Lower edge of the resolvable range: with `N` units, the occupancy is at least one unit's worth (`1/N`) exactly when `-h ≤ log (N - 1)`.
+- `occupancy_le_one_sub_inv_iff`：Upper edge: the occupancy leaves at least one unit empty exactly when `h ≤ log (N - 1)`.
+- `resolvable_band`：**G25e (gain–range bound)**: a switch of gain `s` (a state of `s` quanta, G25d) centred at `θ`, read through `N` units, is resolvable (between one occupied and one empty unit) exactly on `|μ - θ| ≤ log (N - 1) / s`.
+- `gain_times_band`：The product of gain and resolvable width is `2 log (N - 1)`, independent of the gain: an amplified switch covers a proportionally narrower band of the sensed potential.
 
 ## GenerationAxiomAudit（2）
 _Which axiom parts work (generation chain, audit) Usage in the generation chain (G1–G22, M1–M2): P1b's locality parts (participants in contact, writes and reads only participants), P2a, P2b and P3's boundary sensing enter_
@@ -361,6 +367,13 @@ _A generator of admitted media (generation chain, M1) Instead of proving the six
 
 - `p2b_of_energy`：**M1a**: symmetric (Metropolis-type) rates of a reversible event set under an energy give P2b.
 - `rate_local_of_energy`：**M1b**: a rate that is a function of the participants' states through the event's energy difference reads only the participants, when that difference does.
+
+## GenerationOrganismEcoliMsS0（3）
+_Organism `ecoli_ms_s0`: generated from its rule table Source: `information_boltzmann/organisms/ecoli_ms_s0.json`, sha256 38ff4daa364a8d382398d91208cc7908b61c82d1a1324e64111291ef4801fa1b._
+
+- `axioms`：**The organism is a model of the CGB axioms** (M3: unique free state, and every rule between two interior pages conserves content).
+- `metabolizes`：**Life gate L-metabolism** (`Lives.metabolizes`): rule 0 on units 1024 and 1735 changes content.
+- `exposed`：**Life gate L-sense** (`Lives.exposed`): the same event exchanges content with a boundary reservoir, so its rate depends on the stimulus.
 
 ## GenerationOrganismEcoliV1（3）
 _Organism `ecoli_v1`: generated from its rule table Source: `information_boltzmann/organisms/ecoli_v1.json`, sha256 4ab0545552e85d06779b9d1da4a1c49b88bd976203fae895833f9a148ccb6a65._
