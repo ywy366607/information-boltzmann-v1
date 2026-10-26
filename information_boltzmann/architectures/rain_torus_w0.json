@@ -1,7 +1,7 @@
 {
  "name": "rain_torus_w0",
  "role": "world",
- "implementation": "information_boltzmann/worlds/rain_torus_w0.json (world table) run by information_boltzmann/core/cgb_nested_world.py (exact Gillespie reference; batched tau-leaping on torch with CUDA Graph)",
+ "implementation": "information_boltzmann/worlds/rain_torus_w0.json (world table) run by information_boltzmann/core/cgb_nested_world.py (exact Gillespie reference; batched tau-leaping on torch) and cgb_nested_world_triton.py (fused leap, CUDA Graph; tau-leap dt 0.05 is within ~0.5% of exact Gillespie in total food)",
  "lean_medium": "CGB.NestedWorld.lattice",
  "mechanisms": [
   {

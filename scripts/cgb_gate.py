@@ -397,7 +397,32 @@ def check_nested_world_rates_match_lean(name):
             for kk in keys:
                 a, b = ref.get(kk, 0.0), got.get(kk, 0.0)
                 worst = max(worst, abs(a - b) / max(1e-12, abs(a), abs(b)))
-    return worst < 1e-9, dict(max_relative_error=worst, states=30, G=G)
+    info = dict(max_relative_error=worst, states=30, G=G)
+    ok = worst < 1e-9
+    if torch.cuda.is_available():   # the fused float32 leap computes the same rates
+        import cgb_nested_world_triton as NT
+        tb = copy.deepcopy(NW.load(name))
+        Gf = tb["geometry"]["G"]
+        fw = NT.FusedWorld(tb, B=4)
+        rw = NW.World(tb, B=4, device="cuda", dtype=torch.float64)
+        fworst = 0.0
+        for trial in range(5):
+            f = torch.tensor(rng.integers(0, V + 1, size=(4, Gf, Gf)), device="cuda")
+            f[0, :2] = 0
+            f[1, :2] = V
+            w = torch.tensor(rng.integers(0, 40, size=(4, Gf, Gf)), device="cuda")
+            mu = torch.tensor(rng.choice([-8.0, 0.0, 8.0], size=(4, Gf, Gf)), device="cuda")
+            fw.f.copy_(f)
+            fw.w.copy_(w)
+            rw.f.copy_(f)
+            rw.w.copy_(w)
+            a, r = fw.rates(mu).double(), rw.rates(mu)
+            if not ((a == 0) == (r == 0)).all():
+                fworst = float("inf")
+            fworst = max(fworst, ((a - r).abs() / r.abs().clamp(min=1e-12)).max().item())
+        info["fused_max_relative_error"] = fworst
+        ok = ok and fworst < 1e-5
+    return ok, info
 
 
 CHECKS = {k[len("check_"):]: v for k, v in list(globals().items()) if k.startswith("check_")}
