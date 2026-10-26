@@ -20,6 +20,7 @@ sys.path.insert(0, str(ROOT / "information_boltzmann" / "core"))
 from cgb_observation_stream import load_owt_sources  # noqa: E402
 from cgb_forage_world import ForageWorld  # noqa: E402
 from cgb_lg1_forager import LG1Forager, Reflex, Integrator, RandomPolicy, Oracle  # noqa: E402
+from cgb_pg_forager import PGForager  # noqa: E402
 
 
 def stats(v):
@@ -56,6 +57,9 @@ def main():
     ap.add_argument("--reserve", type=float, default=150.0)
     ap.add_argument("--sources", type=int, default=3)
     ap.add_argument("--stage", type=int, default=1, help="2: hidden state = digit-rich document rule")
+    ap.add_argument("--agents", default="", help="comma list; empty = all")
+    ap.add_argument("--pg-eta", type=float, default=0.1)
+    ap.add_argument("--pg-trace", type=float, default=0.9)
     ap.add_argument("--out", required=True)
     args = ap.parse_args()
     d = ROOT / "data" / "ib_owt_10000"
@@ -65,13 +69,23 @@ def main():
 
     def forager(frozen=False):
         def make(world):
-            a = LG1Forager(args.hidden, seed=world.rng.integers(1 << 30), eta=0.05, relax=1.0,
+            a = LG1Forager(args.hidden, seed=world.seed + 7919, eta=0.05, relax=1.0,
                            diffuse=0.3, feedback=0.1, recur=2.0)
             a.learning = not frozen
             return a
         return make
 
+    def pg(frozen=False):
+        def make(world):
+            a = PGForager(eta=args.pg_eta, trace=args.pg_trace, seed=world.seed + 7919)
+            a.learning = not frozen
+            return a
+        return make
+
     agents = {
+        "g15_forager": (pg(), False),
+        "g15_forager_loop_cut": (pg(), True),
+        "g15_forager_frozen": (pg(frozen=True), False),
         "lg1_forager": (forager(), False),
         "lg1_forager_loop_cut": (forager(), True),
         "lg1_forager_frozen": (forager(frozen=True), False),
@@ -80,6 +94,8 @@ def main():
         "random": (lambda w: RandomPolicy(seed=7), False),
         "oracle": (lambda w: Oracle(w), False),
     }
+    if args.agents:
+        agents = {k: v for k, v in agents.items() if k in args.agents.split(",")}
     results = {k: [] for k in agents}
     for seed in range(1, args.seeds + 1):
         off = seed * 3_000_011
@@ -109,7 +125,7 @@ def main():
     summary = {k: {m: stats([r[m] for r in v]) for m in v[0]} for k, v in results.items()}
     report = dict(world=dict(wkw, ticks=args.ticks, sources=args.sources, stage=args.stage,
                              stage2_rule="document digit fraction >= median over sources"), hidden=args.hidden,
-                  seeds=args.seeds, provenance=prov, per_seed=results, summary=summary, admitted=False)
+                  seeds=args.seeds, g15=dict(eta=args.pg_eta, trace=args.pg_trace), provenance=prov, per_seed=results, summary=summary, admitted=False)
     out = Path(args.out)
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(report, indent=1), encoding="utf-8")

@@ -7,7 +7,9 @@ single-tick intake is noisy evidence of the hidden state. Actions: 0 stay,
 1 switch (the next tick is spent travelling: no byte, no intake). Every tick
 costs `cost` from a bounded reserve; an empty reserve is absorbing (dead), and
 the world keeps advancing. Supply is a world property: no prediction score is
-converted into resources.
+converted into resources. Hidden states, intake draws and the ghost use separate
+random streams, so every agent with the same seed lives through the same
+hidden-state history whatever it does.
 
 Stage 2 (`doc_rich` given): a source's hidden state is no longer a coin with a
 hazard; it is a fixed world rule on the current document (`doc_rich[k][i]`, with
@@ -40,7 +42,10 @@ class ForageWorld:
                  reserve=20.0, capacity=40.0, cut=False, doc_ends=None, doc_rich=None, seed=0):
         self.src = [np.asarray(s, dtype=np.uint8) for s in sources]
         self.pos = [0] * len(self.src)
-        self.rng = np.random.default_rng(seed)
+        self.seed = seed
+        self.rng = np.random.default_rng(seed)  # hidden states only
+        self.irng = np.random.default_rng([seed, 1])  # intake draws
+        self.grng = np.random.default_rng([seed, 2])  # loop-cut ghost
         self.rich = [bool(self.rng.random() < 0.5) for _ in self.src]
         self.at, self.travelling = 0, False
         self.hazard, self.p_rich, self.p_poor = hazard, p_rich, p_poor
@@ -66,7 +71,7 @@ class ForageWorld:
         self.ticks += 1
         self.requested += int(action == 1)
         if self.cut:  # ghost with the organism's own switch rate, blind to the world
-            action = int(self.rng.random() < self.requested / self.ticks)
+            action = int(self.grng.random() < self.requested / self.ticks)
         if action == 1 and not self.travelling:
             self.at = (self.at + 1) % len(self.src)
             self.travelling = True
@@ -79,7 +84,7 @@ class ForageWorld:
             byte = int(self.src[k][self.pos[k] % len(self.src[k])])
             if self.alive:
                 p = self.p_rich if self.rich[k] else self.p_poor
-                intake = int(self.rng.random() < p)
+                intake = int(self.irng.random() < p)
         if self.alive:
             self.reserve = min(self.capacity, self.reserve + intake) - self.cost
             if self.reserve <= 0:

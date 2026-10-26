@@ -1,0 +1,475 @@
+{
+ "world": {
+  "hazard": 0.005,
+  "cost": 0.6,
+  "reserve": 300.0,
+  "capacity": 600.0,
+  "p_rich": 0.9,
+  "p_poor": 0.1,
+  "ticks": 100000,
+  "sources": 3,
+  "stage": 1,
+  "stage2_rule": "document digit fraction >= median over sources"
+ },
+ "hidden": 256,
+ "seeds": 8,
+ "g15": {
+  "eta": 0.1,
+  "trace": 0.9
+ },
+ "provenance": {
+  "manifest": "3614c380d4c72688ac8ccde42f32ea0655d16bec1ba0874a924fd777af904d2d",
+  "files": {
+   "tokenizer.json": "e727da4afe06d37d6ffff7db05ab21f69c5be39253ee7b7f7ec759cadab69c1d",
+   "train.npy": "2f227239bc63b89daf31956701d243a93f9dd46671702fff03763b33dc6db4fb",
+   "validation.npy": "60d41d3fdda8c1718ad1735693eda0dae2b23a0032c5e04a29aac9d0c6d35d8c"
+  },
+  "verified_document_counts": {
+   "train": 9786,
+   "validation": 114
+  },
+  "native_byte_counts": {
+   "train": 48125691,
+   "validation": 467911
+  }
+ },
+ "per_seed": {
+  "g15_forager": [
+   {
+    "survival": 100000,
+    "intake_rate": 0.76397,
+    "switches": 0.04131
+   },
+   {
+    "survival": 100000,
+    "intake_rate": 0.78436,
+    "switches": 0.02556
+   },
+   {
+    "survival": 100000,
+    "intake_rate": 0.7701,
+    "switches": 0.05719
+   },
+   {
+    "survival": 542,
+    "intake_rate": 0.046125461254612546,
+    "switches": 0.8560885608856088
+   },
+   {
+    "survival": 100000,
+    "intake_rate": 0.74822,
+    "switches": 0.04152
+   },
+   {
+    "survival": 100000,
+    "intake_rate": 0.76846,
+    "switches": 0.05633
+   },
+   {
+    "survival": 100000,
+    "intake_rate": 0.79168,
+    "switches": 0.03628
+   },
+   {
+    "survival": 100000,
+    "intake_rate": 0.77133,
+    "switches": 0.05971
+   }
+  ],
+  "g15_forager_loop_cut": [
+   {
+    "survival": 1029,
+    "intake_rate": 0.3080660835762877,
+    "switches": 0.3848396501457726
+   },
+   {
+    "survival": 926,
+    "intake_rate": 0.275377969762419,
+    "switches": 0.45464362850971923
+   },
+   {
+    "survival": 830,
+    "intake_rate": 0.2385542168674699,
+    "switches": 0.3433734939759036
+   },
+   {
+    "survival": 724,
+    "intake_rate": 0.1850828729281768,
+    "switches": 0.43922651933701656
+   },
+   {
+    "survival": 1089,
+    "intake_rate": 0.3241505968778696,
+    "switches": 0.38292011019283745
+   },
+   {
+    "survival": 857,
+    "intake_rate": 0.24970828471411902,
+    "switches": 0.750291715285881
+   },
+   {
+    "survival": 686,
+    "intake_rate": 0.1618075801749271,
+    "switches": 0.5830903790087464
+   },
+   {
+    "survival": 844,
+    "intake_rate": 0.24407582938388625,
+    "switches": 0.5639810426540285
+   }
+  ],
+  "g15_forager_frozen": [
+   {
+    "survival": 861,
+    "intake_rate": 0.2508710801393728,
+    "switches": 0.49477351916376305
+   },
+   {
+    "survival": 824,
+    "intake_rate": 0.2354368932038835,
+    "switches": 0.5266990291262136
+   },
+   {
+    "survival": 784,
+    "intake_rate": 0.21683673469387754,
+    "switches": 0.4885204081632653
+   },
+   {
+    "survival": 774,
+    "intake_rate": 0.21188630490956073,
+    "switches": 0.5103359173126615
+   },
+   {
+    "survival": 1036,
+    "intake_rate": 0.30984555984555984,
+    "switches": 0.4922779922779923
+   },
+   {
+    "survival": 989,
+    "intake_rate": 0.29625884732052576,
+    "switches": 0.5055611729019212
+   },
+   {
+    "survival": 689,
+    "intake_rate": 0.16400580551523947,
+    "switches": 0.5239477503628447
+   },
+   {
+    "survival": 827,
+    "intake_rate": 0.2370012091898428,
+    "switches": 0.5392986698911729
+   }
+  ],
+  "integrator_ecoli": [
+   {
+    "survival": 100000,
+    "intake_rate": 0.75851,
+    "switches": 0.02259
+   },
+   {
+    "survival": 100000,
+    "intake_rate": 0.7806,
+    "switches": 0.01965
+   },
+   {
+    "survival": 33132,
+    "intake_rate": 0.7448388265121333,
+    "switches": 0.020614511650368223
+   },
+   {
+    "survival": 100000,
+    "intake_rate": 0.7559,
+    "switches": 0.02219
+   },
+   {
+    "survival": 23209,
+    "intake_rate": 0.7133870481278815,
+    "switches": 0.020164591322331855
+   },
+   {
+    "survival": 100000,
+    "intake_rate": 0.76619,
+    "switches": 0.02177
+   },
+   {
+    "survival": 60092,
+    "intake_rate": 0.7659422219263795,
+    "switches": 0.017806030752845637
+   },
+   {
+    "survival": 100000,
+    "intake_rate": 0.76628,
+    "switches": 0.02095
+   }
+  ],
+  "reflex": [
+   {
+    "survival": 16735,
+    "intake_rate": 0.5820734986555124,
+    "switches": 0.2089632506722438
+   },
+   {
+    "survival": 100000,
+    "intake_rate": 0.6268,
+    "switches": 0.1866
+   },
+   {
+    "survival": 17997,
+    "intake_rate": 0.5833194421292438,
+    "switches": 0.20831249652719896
+   },
+   {
+    "survival": 6540,
+    "intake_rate": 0.5541284403669725,
+    "switches": 0.22293577981651377
+   },
+   {
+    "survival": 23680,
+    "intake_rate": 0.6008023648648648,
+    "switches": 0.1995777027027027
+   },
+   {
+    "survival": 29998,
+    "intake_rate": 0.6000066671111407,
+    "switches": 0.19997999866657779
+   },
+   {
+    "survival": 100000,
+    "intake_rate": 0.6184,
+    "switches": 0.1908
+   },
+   {
+    "survival": 3055,
+    "intake_rate": 0.5018003273322422,
+    "switches": 0.2490998363338789
+   }
+  ],
+  "random": [
+   {
+    "survival": 3435,
+    "intake_rate": 0.5126637554585153,
+    "switches": 0.020378457059679767
+   },
+   {
+    "survival": 1126,
+    "intake_rate": 0.3330373001776199,
+    "switches": 0.017761989342806393
+   },
+   {
+    "survival": 1952,
+    "intake_rate": 0.4462090163934426,
+    "switches": 0.018954918032786885
+   },
+   {
+    "survival": 4379,
+    "intake_rate": 0.531399862982416,
+    "switches": 0.021237725508106875
+   },
+   {
+    "survival": 3254,
+    "intake_rate": 0.5076828518746158,
+    "switches": 0.019668100799016593
+   },
+   {
+    "survival": 3105,
+    "intake_rate": 0.5033816425120773,
+    "switches": 0.01932367149758454
+   },
+   {
+    "survival": 1169,
+    "intake_rate": 0.34302822925577414,
+    "switches": 0.017964071856287425
+   },
+   {
+    "survival": 1407,
+    "intake_rate": 0.38663823738450603,
+    "switches": 0.017768301350390904
+   }
+  ],
+  "oracle": [
+   {
+    "survival": 100000,
+    "intake_rate": 0.7845,
+    "switches": 0.00513
+   },
+   {
+    "survival": 100000,
+    "intake_rate": 0.80413,
+    "switches": 0.00501
+   },
+   {
+    "survival": 100000,
+    "intake_rate": 0.79148,
+    "switches": 0.00529
+   },
+   {
+    "survival": 100000,
+    "intake_rate": 0.77872,
+    "switches": 0.00518
+   },
+   {
+    "survival": 100000,
+    "intake_rate": 0.77027,
+    "switches": 0.00498
+   },
+   {
+    "survival": 100000,
+    "intake_rate": 0.79024,
+    "switches": 0.00539
+   },
+   {
+    "survival": 100000,
+    "intake_rate": 0.80848,
+    "switches": 0.00517
+   },
+   {
+    "survival": 100000,
+    "intake_rate": 0.78969,
+    "switches": 0.00493
+   }
+  ]
+ },
+ "summary": {
+  "g15_forager": {
+   "survival": {
+    "min": 542,
+    "median": 100000.0,
+    "mean": 87567.75,
+    "max": 100000
+   },
+   "intake_rate": {
+    "min": 0.046125461254612546,
+    "median": 0.76928,
+    "mean": 0.6805306826568266,
+    "max": 0.79168
+   },
+   "switches": {
+    "min": 0.02556,
+    "median": 0.048924999999999996,
+    "mean": 0.1467485701107011,
+    "max": 0.8560885608856088
+   }
+  },
+  "g15_forager_loop_cut": {
+   "survival": {
+    "min": 686,
+    "median": 850.5,
+    "mean": 873.125,
+    "max": 1089
+   },
+   "intake_rate": {
+    "min": 0.1618075801749271,
+    "median": 0.24689205704900263,
+    "mean": 0.24835292928564442,
+    "max": 0.3241505968778696
+   },
+   "switches": {
+    "min": 0.3433734939759036,
+    "median": 0.4469350739233679,
+    "mean": 0.4877958173887382,
+    "max": 0.750291715285881
+   }
+  },
+  "g15_forager_frozen": {
+   "survival": {
+    "min": 689,
+    "median": 825.5,
+    "mean": 848,
+    "max": 1036
+   },
+   "intake_rate": {
+    "min": 0.16400580551523947,
+    "median": 0.23621905119686315,
+    "mean": 0.2402678043522328,
+    "max": 0.30984555984555984
+   },
+   "switches": {
+    "min": 0.4885204081632653,
+    "median": 0.5079485451072914,
+    "mean": 0.5101768073999793,
+    "max": 0.5392986698911729
+   }
+  },
+  "integrator_ecoli": {
+   "survival": {
+    "min": 23209,
+    "median": 100000.0,
+    "mean": 77054.125,
+    "max": 100000
+   },
+   "intake_rate": {
+    "min": 0.7133870481278815,
+    "median": 0.7622261109631898,
+    "mean": 0.7564560120707993,
+    "max": 0.7806
+   },
+   "switches": {
+    "min": 0.017806030752845637,
+    "median": 0.02078225582518411,
+    "mean": 0.020716891715693214,
+    "max": 0.02259
+   }
+  },
+  "reflex": {
+   "survival": {
+    "min": 3055,
+    "median": 20838.5,
+    "mean": 37250.625,
+    "max": 100000
+   },
+   "intake_rate": {
+    "min": 0.5018003273322422,
+    "median": 0.5916630546201922,
+    "mean": 0.5834163425574971,
+    "max": 0.6268
+   },
+   "switches": {
+    "min": 0.1866,
+    "median": 0.20414624759688837,
+    "mean": 0.20828363308988948,
+    "max": 0.2490998363338789
+   }
+  },
+  "random": {
+   "survival": {
+    "min": 1126,
+    "median": 2528.5,
+    "mean": 2478.375,
+    "max": 4379
+   },
+   "intake_rate": {
+    "min": 0.3330373001776199,
+    "median": 0.47479532945275993,
+    "mean": 0.44550511200487086,
+    "max": 0.531399862982416
+   },
+   "switches": {
+    "min": 0.017761989342806393,
+    "median": 0.019139294765185715,
+    "mean": 0.019132154430832424,
+    "max": 0.021237725508106875
+   }
+  },
+  "oracle": {
+   "survival": {
+    "min": 100000,
+    "median": 100000.0,
+    "mean": 100000,
+    "max": 100000
+   },
+   "intake_rate": {
+    "min": 0.77027,
+    "median": 0.789965,
+    "mean": 0.78968875,
+    "max": 0.80848
+   },
+   "switches": {
+    "min": 0.00493,
+    "median": 0.00515,
+    "mean": 0.005135,
+    "max": 0.00539
+   }
+  }
+ },
+ "admitted": false
+}
