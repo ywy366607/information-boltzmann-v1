@@ -2,7 +2,7 @@
 
 由 `scripts/build_proven_index.py` 从 Lean 源码生成。新工作开始前先在这里检索（定理名与文档注释首句），避免重复推导。
 
-共 943 条定理/引理。
+共 966 条定理/引理。
 **未入 Lean 的手工推导与数值见证**另列在 `CGB_HAND_DERIVATIONS.md`，检索时两处都要看。
 
 ## ActiveLoop（8）
@@ -387,6 +387,33 @@ _A generator of admitted media (generation chain, M1) Instead of proving the six
 
 - `p2b_of_energy`：**M1a**: symmetric (Metropolis-type) rates of a reversible event set under an energy give P2b.
 - `rate_local_of_energy`：**M1b**: a rate that is a function of the participants' states through the event's energy difference reads only the participants, when that difference does.
+
+## GenerationNestedWorld（23）
+_An organism nested in its world (T-E2) The joint medium of a bacterium-like organism and its world, as a lattice medium (M4)._
+
+- `poolShift_back`
+- `poolShift_val`
+- `apply_content`
+- `sum_pair_update`
+- `pair_back`
+- `innerAct_content`
+- `fuelAct_content`
+- `innerAct_back`
+- `fuelAct_back`
+- `c1_nonneg`
+- `c2_nonneg`
+- `content_p1a`
+- `not_bid`
+- `sum_update_nat`
+- `cons1`
+- `cons2`
+- `eff1_xch`
+- `xchEff_back`
+- `back1`
+- `eff2_diff`
+- `diffEff_back`
+- `back2`
+- `axioms`：**T-E2 (an organism nested in its world is admitted)**: the joint medium of organisms and their world satisfies the six axiom clauses as soon as the organism's inner pair rules and its fuel rule conserve content.
 
 ## GenerationNesting（7）
 _Nesting: the world is a medium too (generation chain, G26) An organism is a medium; the world it lives in obeys the same axioms, and so does a body that hosts organisms (mitochondria, gut bacteria) or a collective made o_
