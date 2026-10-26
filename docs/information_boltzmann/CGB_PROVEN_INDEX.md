@@ -2,7 +2,7 @@
 
 由 `scripts/build_proven_index.py` 从 Lean 源码生成。新工作开始前先在这里检索（定理名与文档注释首句），避免重复推导。
 
-共 929 条定理/引理。
+共 943 条定理/引理。
 **未入 Lean 的手工推导与数值见证**另列在 `CGB_HAND_DERIVATIONS.md`，检索时两处都要看。
 
 ## ActiveLoop（8）
@@ -339,6 +339,24 @@ _When is a latch healthy? (generation chain, latch health) A latch (ignition, G2
 - `trap_irrecoverable`：**H1 (lock-in is death)**: if the set `B` is closed under the organism's own events and no state in it can take content in, no state in it is recoverable.
 - `trap_insensitive`：**H2 (latched means blind)**: where rates and effects do not depend on the stimulus, the one-tick kernel out of that state is the same under every stimulus.
 - `pair_rate_ratio`：**H1, quantitative**: a cue changes the rate of an event by exactly `exp((reservoir s - reservoir s') · dC / 2)`.
+
+## GenerationLattice（14）
+_Lattice media: cells with neighbour contact (generation chain, M4; nesting T-E1) The joint medium of an organism nested in its world._
+
+- `p2b_of_conductance`：**M1a with conductances**: rates `κ a x · exp (-(E y - E x) / 2)` with `κ` equal on an event and its reverse (read at the respective source states) give P2b.
+- `sum_update`
+- `sum_update2`
+- `adj_ne`
+- `p1a`
+- `p1b`
+- `p2a`
+- `act1_ne`
+- `act2_ne`
+- `p2b`
+- `adj_aut`
+- `p2c`
+- `p3`
+- `axioms`：**M4 (lattice media are admitted)**: a lattice reaction medium satisfies the six clauses when its rule tables pass local obligations: content levels (P1a), conservation by rules among interior cells (P2a), a zero calm po
 
 ## GenerationLifeGate（9）
 _Life necessities as admission obligations (generation chain, gate layer L) The axioms P1–P3 say what a medium is._
