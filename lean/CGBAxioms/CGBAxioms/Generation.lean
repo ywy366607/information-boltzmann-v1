@@ -56,6 +56,28 @@ theorem reversible_mul_invariant (P : JumpProcess S) {π w : S → ℝ} (hp : �
     rw [← hxy, hyx]
     ring
 
+variable {Q P : Type*}
+
+/-- The dynamics with the slow part `P` frozen: only moves that keep `P` survive. -/
+def freezeSlow [DecidableEq P] (K : JumpProcess (Q × P)) : JumpProcess (Q × P) where
+  rate x y := if x.2 = y.2 then K.rate x y else 0
+  rate_nonneg x y := by split_ifs <;> simp [K.rate_nonneg]
+
+/-- **G13 (prediction is the boundary's Gibbs conditional)**: if the joint calm dynamics
+has detailed-balance weight `π`, then with the slow interior `P` frozen, for each fixed
+`p` the conditional `π (·, p) / Σ π (·, p)` is a detailed-balance (hence stationary) law of
+the fast part's own moves. What an undriven fast boundary expresses about the next input,
+given its slow interior, is this conditional. Convergence to it (irreducibility, mixing
+time) and the time-scale separation itself are not claimed. -/
+theorem freezeSlow_conditional_balance [Fintype Q] [DecidableEq P] (K : JumpProcess (Q × P))
+    {π : Q × P → ℝ} (hp : ∀ x, 0 < π x) (hdb : ∀ x y, π x * K.rate x y = π y * K.rate y x)
+    (p : P) (q q' : Q) :
+    π (q, p) / (∑ r, π (r, p)) * (freezeSlow K).rate (q, p) (q', p) =
+      π (q', p) / (∑ r, π (r, p)) * (freezeSlow K).rate (q', p) (q, p) := by
+  simp only [freezeSlow, if_true]
+  rw [div_mul_eq_mul_div, div_mul_eq_mul_div, hdb]
+
+
 end JumpProcess
 
 namespace Medium
