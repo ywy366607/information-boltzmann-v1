@@ -1,0 +1,13 @@
+{
+ "name": "charge_filter",
+ "implementation": "information_boltzmann/core/cgb_charge_filter.py:ChargeFilter",
+ "lean_medium": null,
+ "note": "negative control: the 10-25 diagnostic that was called an organism",
+ "mechanisms": [
+  {"id": "global_posterior_normalization", "kind": "mechanism",
+   "what": "every cell is normalized by the global predictive p(b) (violates P1b)", "theorems": []},
+  {"id": "every_cell_reads_the_byte", "kind": "mechanism",
+   "what": "interior cells read the stimulus directly (violates P3)", "theorems": []},
+  {"id": "integer_deposit", "kind": "structure", "what": "integer-mass deposit of the posterior", "theorems": []}
+ ]
+}

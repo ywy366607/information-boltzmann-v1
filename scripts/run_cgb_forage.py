@@ -180,6 +180,11 @@ def main():
                   seeds=args.seeds, g15=dict(eta=args.pg_eta, trace=args.pg_trace, relax=args.pg_relax,
                                                  state_baseline=args.pg_state_baseline, base_rate=args.pg_base_rate,
                                                  couple=args.pg_couple, slow_c=args.pg_slow_c, slow_leak=args.pg_slow_leak), provenance=prov, per_seed=results, summary=summary, admitted=False)
+    sys.path.insert(0, str(ROOT / "scripts"))
+    from cgb_gate import gate
+    g = gate("g15_organism")
+    report["gate"] = {"g15_organism": dict(admitted=g["admitted"], failures=g["failures"])}
+    report["admitted"] = False  # no agent here has passed scripts/cgb_gate.py
     out = Path(args.out)
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(report, indent=1), encoding="utf-8")
