@@ -83,6 +83,9 @@ structure NestedWorld (Λi Hd : Type*) (n nR nX : ℕ) where
   xfood : Fin nX → Bool
   xκ : Fin nX → ℝ
   xκ_nonneg : ∀ j, 0 ≤ xκ j
+  /-- `xgated j`: the exchange goes through the membrane (conductance ∝ intact membrane units);
+  an ungated exchange is physics the organism does not control (wear of the membrane itself) -/
+  xgated : Fin nX → Bool
   /-- the motor unit and its run state -/
   motor : Fin n
   run : Λi
@@ -101,6 +104,10 @@ structure NestedWorld (Λi Hd : Type*) (n nR nX : ℕ) where
   /-- `ahead i j h`: the cell with page `j` is the neighbour ahead of the cell with page `i` for
   heading `h` (read from identity pages only, so P2c holds) -/
   ahead : ℕ → ℕ → Hd → Bool
+  /-- the membrane: exchanges through the boundary go through intact units of this page (state
+  `gateOn`); their conductance is proportional to how many there are (`gateCount`) -/
+  gatePage : ℕ
+  gateOn : Λi
 
 namespace NestedWorld
 
@@ -123,6 +130,15 @@ def content (l : W.Cell) : ℕ :=
   l.1 + l.2.1 + match l.2.2 with
     | none => 0
     | some (y, _) => W.bugContent y
+
+/-- Intact membrane units of an organism. -/
+def gateCount (y : Fin n → Λi) : ℕ :=
+  (Finset.univ.filter fun v => W.pageIn v = W.gatePage ∧ y v = W.gateOn).card
+
+/-- Intact membrane units in a cell (none without an organism). -/
+def cellGate : W.Cell → ℕ
+  | (_, _, some (y, _)) => W.gateCount y
+  | _ => 0
 
 /-- Inner energy of an organism. -/
 noncomputable def bugE (y : Fin n → Λi) : ℝ := ∑ u, W.φIn (W.pageIn u) (y u)
@@ -224,7 +240,7 @@ def rev2 : NR2 n → NR2 n
 
 def c1 : NR1 Hd n nR nX → ℕ → W.Cell → ℝ
   | .inl (k, _, _, _), _, _ => (W.spec k).κ
-  | .inr (.inl (j, _, _)), _, _ => W.xκ j
+  | .inr (.inl (j, _, _)), _, l => W.xκ j * (if W.xgated j then (W.cellGate l : ℝ) else 1)
   | .inr (.inr (.inl _)), _, _ => W.κflip
   | .inr (.inr (.inr _)), _, _ => W.κin
 
@@ -338,7 +354,7 @@ def birthCell (y0 : Fin n → Λi) (h0 : Hd) (i : ℕ) : W.Cell :=
 theorem c1_nonneg (r : NR1 Hd n nR nX) (i : ℕ) (l : W.Cell) : 0 ≤ W.c1 r i l := by
   rcases r with ⟨k, -, -, -⟩ | ⟨j, -, -⟩ | ⟨-, -⟩ | ⟨-, -⟩
   · exact (W.spec k).κ_nonneg
-  · exact W.xκ_nonneg j
+  · exact mul_nonneg (W.xκ_nonneg j) (by split_ifs <;> positivity)
   · exact W.κflip_nonneg
   · exact W.κin_nonneg
 
@@ -521,6 +537,30 @@ theorem eff1_xch (j : Fin nX) (u : Fin n) (dir : Bool) (i : ℕ) (l : W.Cell) :
         (if dir then W.xa j else W.xb j) u l := by
   obtain ⟨f, w, _ | ⟨y, h⟩⟩ := l <;> rfl
 
+theorem gateCount_update {u : Fin n} (hu : W.pageIn u ≠ W.gatePage) (b : Λi) (y : Fin n → Λi) :
+    W.gateCount (Function.update y u b) = W.gateCount y := by
+  unfold gateCount
+  congr 1
+  apply Finset.filter_congr
+  intro v _
+  by_cases hv : v = u
+  · subst hv; simp [hu]
+  · simp [Function.update_of_ne hv]
+
+/-- An exchange through a page other than the membrane leaves the membrane as it is. -/
+theorem xchEff_gate {pg : ℕ} (hpg : pg ≠ W.gatePage) (food : Bool) (a b : Λi) (u : Fin n)
+    (l : W.Cell) : W.cellGate (W.xchEff pg food a b u l) = W.cellGate l := by
+  obtain ⟨f, w, _ | ⟨y, h⟩⟩ := l
+  · rfl
+  · by_cases hm : W.pageIn u = pg ∧ y u = a
+    · have hu : W.pageIn u ≠ W.gatePage := hm.1 ▸ hpg
+      cases food
+      · rcases hp : poolShift w ((W.contentIn a : ℤ) - W.contentIn b) with _ | w' <;>
+          simp [xchEff, hm, hp, cellGate, W.gateCount_update hu]
+      · rcases hp : poolShift f ((W.contentIn a : ℤ) - W.contentIn b) with _ | f' <;>
+          simp [xchEff, hm, hp, cellGate, W.gateCount_update hu]
+    · simp [xchEff, hm]
+
 theorem xchEff_back (pg : ℕ) (food : Bool) (a b : Λi) (u : Fin n) (l : W.Cell)
     (hne : W.xchEff pg food a b u l ≠ l) : W.xchEff pg food b a u (W.xchEff pg food a b u l) = l := by
   obtain ⟨f, w, _ | ⟨y, h⟩⟩ := l
@@ -667,7 +707,7 @@ theorem back2 (r : NR2 n) (i j : ℕ) (p : W.Cell × W.Cell) (hne : W.eff2 r i j
 open Classical in
 /-- **T-E2 (an organism nested in its world is admitted)**: the joint medium of organisms and
 their world satisfies the six axiom clauses as soon as the organism's inner pair rules and its
-fuel rule conserve content. Sensing, eating, excreting (exchange with the cell's pools),
+fuel rule conserve content and no exchange goes through the membrane page itself. Sensing, eating, excreting (exchange with the cell's pools),
 tumbling, diffusion, driven movement and the world's own sources and sinks need no further
 obligation. -/
 theorem axioms [Fintype Λi] [Fintype Hd] {U : Type*} [Fintype U] [DecidableEq U]
@@ -676,7 +716,8 @@ theorem axioms [Fintype Λi] [Fintype Hd] {U : Type*} [Fintype U] [DecidableEq U
     (hspec : ∀ k, W.contentIn (W.spec k).a.1 + W.contentIn (W.spec k).a.2 =
       W.contentIn (W.spec k).b.1 + W.contentIn (W.spec k).b.2)
     (hfuel : W.contentIn W.fuel.a.1 + W.contentIn W.fuel.a.2 =
-      W.contentIn W.fuel.b.1 + W.contentIn W.fuel.b.2) :
+      W.contentIn W.fuel.b.1 + W.contentIn W.fuel.b.2)
+    (hgate : ∀ j, W.xgated j = true → W.xpage j ≠ W.gatePage) :
     (W.lattice adj hsymm hirr page y0 h0).medium.Axioms := by
   classical
   refine LatticeCRN.axioms (W.lattice adj hsymm hirr page y0 h0) W.content_p1a
@@ -684,8 +725,81 @@ theorem axioms [Fintype Λi] [Fintype Hd] {U : Type*} [Fintype U] [DecidableEq U
     ?_ ?_ (fun r i l hne => W.back1 r i l hne) (fun r i j p hne => W.back2 r i j p hne) ?_ ?_
   · intro r; rcases r with ⟨k, u, v, dir⟩ | ⟨j, u, dir⟩ | ⟨a, b⟩ | ⟨food, dir⟩ <;> simp [lattice, rev1]
   · intro r; rcases r with ⟨food, dir⟩ | ⟨e, d, dir⟩ <;> simp [lattice, rev2]
-  · intro r i l _; rcases r with ⟨k, u, v, dir⟩ | ⟨j, u, dir⟩ | ⟨a, b⟩ | ⟨food, dir⟩ <;> rfl
+  · intro r i l _
+    rcases r with ⟨k, u, v, dir⟩ | ⟨j, u, dir⟩ | ⟨a, b⟩ | ⟨food, dir⟩
+    · rfl
+    · change W.xκ j * (if W.xgated j then (W.cellGate (W.eff1 (.inr (.inl (j, u, dir))) i l) : ℝ) else 1) =
+        W.xκ j * (if W.xgated j then (W.cellGate l : ℝ) else 1)
+      by_cases hg : W.xgated j = true
+      · rw [if_pos hg, if_pos hg, eff1_xch, W.xchEff_gate (hgate j hg)]
+      · rw [if_neg hg, if_neg hg]
+    · rfl
+    · rfl
   · intro r i j p _; rcases r with ⟨food, dir⟩ | ⟨e, d, dir⟩ <;> rfl
+
+/-! ## The membrane: why it is needed, and what losing it means -/
+
+/-- Content held by the organism in a cell (its inner units; the body `B` is constant). -/
+def orgIn : W.Cell → ℕ
+  | (_, _, some (y, _)) => ∑ u, W.contentIn (y u)
+  | _ => 0
+
+theorem orgIn_congr {l l' : W.Cell} (h : l'.2.2 = l.2.2) : W.orgIn l' = W.orgIn l := by
+  obtain ⟨_, _, b⟩ := l
+  obtain ⟨_, _, b'⟩ := l'
+  simp only at h
+  subst h
+  rcases b' with _ | ⟨y, h⟩ <;> rfl
+
+/-- The world's supply rules never touch the organism. -/
+theorem eff1_supply_bug (food dir : Bool) (i : ℕ) (l : W.Cell) :
+    (W.eff1 (.inr (.inr (.inr (food, dir)))) i l).2.2 = l.2.2 := by
+  obtain ⟨f, w, b⟩ := l
+  cases food <;> simp only [eff1, Bool.false_eq_true, if_false, if_true] <;> split_ifs <;>
+    (try split) <;> rfl
+
+/-- **Only exchanges feed the organism**: every single-cell event that raises the content held by
+the organism is a pool exchange; a gated one has conductance proportional to the intact membrane.
+-/
+theorem intake_is_exchange
+    (hspec : ∀ k, W.contentIn (W.spec k).a.1 + W.contentIn (W.spec k).a.2 =
+      W.contentIn (W.spec k).b.1 + W.contentIn (W.spec k).b.2)
+    (r : NR1 Hd n nR nX) (i : ℕ) (l : W.Cell) (hup : W.orgIn l < W.orgIn (W.eff1 r i l)) :
+    ∃ j u dir, r = .inr (.inl (j, u, dir)) ∧
+      W.c1 r i l = W.xκ j * (if W.xgated j then (W.cellGate l : ℝ) else 1) := by
+  rcases r with ⟨k, u, v, dir⟩ | ⟨j, u, dir⟩ | ⟨a, b⟩ | ⟨food, dir⟩
+  · exfalso
+    obtain ⟨f, w, _ | ⟨y, h⟩⟩ := l
+    · simp [eff1, orgIn] at hup
+    · simp only [eff1, orgIn, W.innerAct_content hspec] at hup
+      exact lt_irrefl _ hup
+  · exact ⟨j, u, dir, rfl, rfl⟩
+  · exfalso
+    obtain ⟨f, w, _ | ⟨y, h⟩⟩ := l
+    · simp [eff1, orgIn] at hup
+    · simp only [eff1] at hup
+      split_ifs at hup <;> simp [orgIn] at hup
+  · exfalso
+    rw [W.orgIn_congr (W.eff1_supply_bug food dir i l)] at hup
+    exact lt_irrefl _ hup
+
+/-- **Death** (`Part.CanTakeIn` fails through the organism's own doing): with no intact membrane
+unit, every event that would raise the organism's content has rate zero, except an ungated
+exchange, which (`hwear`) is only the membrane page re-forming from the cell's pools: physics the
+organism does not control. Every rate of the medium is a positive multiple of `exp`, so
+`Part.Recoverable` alone never fails; without the membrane factor, intake would not depend on the
+body at all, structure would have no use and selection could drop its upkeep. -/
+theorem dead_only_reforms
+    (hspec : ∀ k, W.contentIn (W.spec k).a.1 + W.contentIn (W.spec k).a.2 =
+      W.contentIn (W.spec k).b.1 + W.contentIn (W.spec k).b.2)
+    (hwear : ∀ j, W.xgated j = false → W.xpage j = W.gatePage)
+    (r : NR1 Hd n nR nX) (i : ℕ) (l : W.Cell) (hdead : W.cellGate l = 0)
+    (hup : W.orgIn l < W.orgIn (W.eff1 r i l)) :
+    W.c1 r i l = 0 ∨ ∃ j u dir, r = .inr (.inl (j, u, dir)) ∧ W.xpage j = W.gatePage := by
+  obtain ⟨j, u, dir, hr, hc⟩ := W.intake_is_exchange hspec r i l hup
+  by_cases hg : W.xgated j = true
+  · left; rw [hc, if_pos hg, hdead]; simp
+  · right; exact ⟨j, u, dir, hr, hwear j (by simpa using hg)⟩
 
 /-! ## Two instances: a ring and a torus -/
 
@@ -732,9 +846,9 @@ theorem axioms_torus [Fintype Λi] [Fintype Hd] (G : ℕ) (kind : Fin G × Fin G
     (hspec : ∀ k, W.contentIn (W.spec k).a.1 + W.contentIn (W.spec k).a.2 =
       W.contentIn (W.spec k).b.1 + W.contentIn (W.spec k).b.2)
     (hfuel : W.contentIn W.fuel.a.1 + W.contentIn W.fuel.a.2 =
-      W.contentIn W.fuel.b.1 + W.contentIn W.fuel.b.2) :
+      W.contentIn W.fuel.b.1 + W.contentIn W.fuel.b.2) (hgate : ∀ j, W.xgated j = true → W.xpage j ≠ W.gatePage) :
     (W.lattice (torusAdj G) (torusAdj_symm G) (fun _ h => h.1 rfl) (torusPage G kind) y0 h0).medium.Axioms :=
-  W.axioms _ _ _ _ y0 h0 hspec hfuel
+  W.axioms _ _ _ _ y0 h0 hspec hfuel hgate
 
 open Classical in
 /-- The one-dimensional ring is a model too. -/
@@ -742,9 +856,9 @@ theorem axioms_ring [Fintype Λi] [Fintype Hd] (L : ℕ) (page : Fin L → ℕ) 
     (hspec : ∀ k, W.contentIn (W.spec k).a.1 + W.contentIn (W.spec k).a.2 =
       W.contentIn (W.spec k).b.1 + W.contentIn (W.spec k).b.2)
     (hfuel : W.contentIn W.fuel.a.1 + W.contentIn W.fuel.a.2 =
-      W.contentIn W.fuel.b.1 + W.contentIn W.fuel.b.2) :
+      W.contentIn W.fuel.b.1 + W.contentIn W.fuel.b.2) (hgate : ∀ j, W.xgated j = true → W.xpage j ≠ W.gatePage) :
     (W.lattice (ringAdj L) (ringAdj_symm L) (fun _ h => h.1 rfl) page y0 h0).medium.Axioms :=
-  W.axioms _ _ _ _ y0 h0 hspec hfuel
+  W.axioms _ _ _ _ y0 h0 hspec hfuel hgate
 
 end NestedWorld
 
