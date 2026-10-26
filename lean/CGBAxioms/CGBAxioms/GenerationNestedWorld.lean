@@ -11,14 +11,18 @@ inner state is its inner units' states (`Fin n → Λi`, the inner medium one le
 heading. Its body costs `B > 0` content (the body is matter, so an empty cell is the unique
 vacuum).
 
-Cells sit on a ring; identity pages are `3 * kind + position % 3`, so each cell can tell its
-forward neighbour (chirality, P2c) and its kind (plain 0, food source 1, waste sink 2). Source
-and sink cells are the world's own boundary.
+Cells form any world with a symmetric neighbour relation (`axioms_ring`, `axioms_torus` for a
+`G × G` torus); identity pages are `9 * kind + position code`, so a cell can tell the neighbour
+ahead for each heading (chirality, P2c) and its kind (plain 0, food source 1, waste sink 2,
+birth place 3). Source and sink cells are the world's own boundary; a source receives whole
+pellets (`pellet` quanta) at the potential of its stimulus, so food rain and the user's clicks are
+stimuli at the world's boundary.
 
 Rules (each with its reverse):
 * single cell: an inner pair rule on two inner units; an exchange of one inner unit with the
-  cell's food or waste pool (sensing, eating, excreting); a heading flip while the motor is not in
-  its run state (tumble); food entering or leaving at a source cell, waste at a sink cell;
+  cell's food or waste pool (sensing, eating, excreting); a turn from heading `a` to `b` while the
+  motor is not in its run state (tumble); a food pellet entering or leaving at a source cell,
+  waste at a sink cell;
 * neighbour cells: one quantum of food or waste diffusing; the organism moving to an empty
   neighbour along its heading while one fuel rule fires inside it (moving forward spends fuel,
   moving back would return it: self-propulsion is driven).
@@ -58,7 +62,7 @@ theorem poolShift_val {V : ℕ} {k k' : Fin (V + 1)} {d : ℤ} (h : poolShift k 
   simp only [Fin.val_mk]; omega
 
 /-- The data of a nested world. -/
-structure NestedWorld (Λi : Type*) (n nR nX : ℕ) where
+structure NestedWorld (Λi Hd : Type*) (n nR nX : ℕ) where
   /-- pool capacity (food and waste, quanta per cell) -/
   V : ℕ
   /-- content of the organism's body -/
@@ -92,25 +96,25 @@ structure NestedWorld (Λi : Type*) (n nR nX : ℕ) where
   κmove_nonneg : 0 ≤ κmove
   κdiff_nonneg : 0 ≤ κdiff
   κin_nonneg : 0 ≤ κin
+  /-- quanta in one food pellet supplied by the world's boundary -/
+  pellet : ℕ
+  /-- `ahead i j h`: the cell with page `j` is the neighbour ahead of the cell with page `i` for
+  heading `h` (read from identity pages only, so P2c holds) -/
+  ahead : ℕ → ℕ → Hd → Bool
 
 namespace NestedWorld
 
-variable {Λi : Type*} [DecidableEq Λi] {n nR nX : ℕ} (W : NestedWorld Λi n nR nX)
+variable {Λi Hd : Type*} [DecidableEq Λi] [DecidableEq Hd] {n nR nX : ℕ} (W : NestedWorld Λi Hd n nR nX)
 
 /-- A cell: food, waste, and possibly an organism (inner states and heading). -/
-abbrev Cell := Fin (W.V + 1) × Fin (W.V + 1) × Option ((Fin n → Λi) × Bool)
+abbrev Cell := Fin (W.V + 1) × Fin (W.V + 1) × Option ((Fin n → Λi) × Hd)
 
-/-- Single-cell rules: inner pair rule, pool exchange, heading flip, boundary supply. -/
-abbrev NR1 (n nR nX : ℕ) := (Fin nR × Fin n × Fin n × Bool) ⊕ (Fin nX × Fin n × Bool) ⊕ Unit ⊕ (Bool × Bool)
+/-- Single-cell rules: inner pair rule, pool exchange, turn (heading a to b), boundary supply. -/
+abbrev NR1 (Hd : Type*) (n nR nX : ℕ) :=
+  (Fin nR × Fin n × Fin n × Bool) ⊕ (Fin nX × Fin n × Bool) ⊕ (Hd × Hd) ⊕ (Bool × Bool)
 
 /-- Neighbour rules: diffusion of food or waste, movement with fuel units. -/
 abbrev NR2 (n : ℕ) := (Bool × Bool) ⊕ (Fin n × Fin n × Bool)
-
-/-- `j` is the neighbour ahead of `i` for heading `h` (chirality from identity pages). -/
-def ahead (i j : ℕ) (h : Bool) : Prop :=
-  if h then j % 3 = (i + 1) % 3 else j % 3 = (i + 2) % 3
-
-instance (i j : ℕ) (h : Bool) : Decidable (ahead i j h) := by unfold ahead; infer_instance
 
 /-- Content of an organism. -/
 def bugContent (y : Fin n → Λi) : ℕ := W.B + ∑ u, W.contentIn (y u)
@@ -141,7 +145,7 @@ def fuelAct (e d : Fin n) (dir : Bool) (y : Fin n → Λi) : Fin n → Λi :=
     Function.update (Function.update y e p.1) d p.2
 
 /-- Effect of a single-cell rule on a cell with page `i`. -/
-def eff1 : NR1 n nR nX → ℕ → W.Cell → W.Cell
+def eff1 : NR1 Hd n nR nX → ℕ → W.Cell → W.Cell
   | .inl (k, u, v, dir), _, l => match l with
       | (f, w, some (y, h)) => (f, w, some (W.innerAct k u v dir y, h))
       | l => l
@@ -161,18 +165,19 @@ def eff1 : NR1 n nR nX → ℕ → W.Cell → W.Cell
               | none => l
           else l
       | l => l
-  | .inr (.inr (.inl ())), _, l => match l with
-      | (f, w, some (y, h)) => if y W.motor = W.run then l else (f, w, some (y, !h))
+  | .inr (.inr (.inl (a, b))), _, l => match l with
+      | (f, w, some (y, h)) => if y W.motor = W.run ∨ h ≠ a then l else (f, w, some (y, b))
       | l => l
   | .inr (.inr (.inr (food, dir))), i, l =>
-      let d : ℤ := if dir then -1 else 1
       if food then
-        if i / 3 = 1 then match poolShift l.1 d with
+        let d : ℤ := if dir then -(W.pellet : ℤ) else W.pellet
+        if i / 9 = 1 then match poolShift l.1 d with
           | some f' => (f', l.2.1, l.2.2)
           | none => l
         else l
       else
-        if i / 3 = 2 then match poolShift l.2.1 d with
+        let d : ℤ := if dir then -1 else 1
+        if i / 9 = 2 then match poolShift l.2.1 d with
           | some w' => (l.1, w', l.2.2)
           | none => l
         else l
@@ -194,7 +199,7 @@ def eff2 : NR2 n → ℕ → ℕ → W.Cell × W.Cell → W.Cell × W.Cell
         match l.2.2, l'.2.2 with
         | none, some (y, h) =>
             let y' := W.fuelAct e d true y
-            if ahead i j h ∧ y' ≠ y ∧ y W.motor = W.run ∧ y' W.motor = W.run then
+            if W.ahead i j h = true ∧ y' ≠ y ∧ y W.motor = W.run ∧ y' W.motor = W.run then
               ((l.1, l.2.1, some (y', h)), (l'.1, l'.2.1, none))
             else (l, l')
         | _, _ => (l, l')
@@ -202,25 +207,25 @@ def eff2 : NR2 n → ℕ → ℕ → W.Cell × W.Cell → W.Cell × W.Cell
         match l.2.2, l'.2.2 with
         | some (y, h), none =>
             let y' := W.fuelAct e d false y
-            if ahead i j h ∧ y' ≠ y ∧ y W.motor = W.run ∧ y' W.motor = W.run then
+            if W.ahead i j h = true ∧ y' ≠ y ∧ y W.motor = W.run ∧ y' W.motor = W.run then
               ((l.1, l.2.1, none), (l'.1, l'.2.1, some (y', h)))
             else (l, l')
         | _, _ => (l, l')
 
-def rev1 : NR1 n nR nX → NR1 n nR nX
+def rev1 : NR1 Hd n nR nX → NR1 Hd n nR nX
   | .inl (k, u, v, dir) => .inl (k, u, v, !dir)
   | .inr (.inl (j, u, dir)) => .inr (.inl (j, u, !dir))
-  | .inr (.inr (.inl ())) => .inr (.inr (.inl ()))
+  | .inr (.inr (.inl (a, b))) => .inr (.inr (.inl (b, a)))
   | .inr (.inr (.inr (food, dir))) => .inr (.inr (.inr (food, !dir)))
 
 def rev2 : NR2 n → NR2 n
   | .inl (food, dir) => .inl (food, !dir)
   | .inr (e, d, dir) => .inr (e, d, !dir)
 
-def c1 : NR1 n nR nX → ℕ → W.Cell → ℝ
+def c1 : NR1 Hd n nR nX → ℕ → W.Cell → ℝ
   | .inl (k, _, _, _), _, _ => (W.spec k).κ
   | .inr (.inl (j, _, _)), _, _ => W.xκ j
-  | .inr (.inr (.inl ())), _, _ => W.κflip
+  | .inr (.inr (.inl _)), _, _ => W.κflip
   | .inr (.inr (.inr _)), _, _ => W.κin
 
 def c2 : NR2 n → ℕ → ℕ → W.Cell × W.Cell → ℝ
@@ -321,19 +326,17 @@ theorem fuelAct_back (e d : Fin n) (dir : Bool) (y : Fin n → Λi)
 
 /-! ## The joint medium -/
 
-/-- Ring adjacency on `L` cells. -/
-def ringAdj (L : ℕ) (u v : Fin L) : Prop := u ≠ v ∧ ((u.val + 1) % L = v.val ∨ (v.val + 1) % L = u.val)
+/-- Identity pages are `9 * kind + local position code` (`< 9`): kind 0 plain, 1 food source,
+2 waste sink (the world's own boundary), 3 birth place. -/
+def bidW : Finset ℕ := Finset.Icc 9 26
 
-/-- The world's own boundary pages: food sources (kind 1) and waste sinks (kind 2). -/
-def bidW : Finset ℕ := {3, 4, 5, 6, 7, 8}
-
-/-- Birth: an organism in state `y0` (heading forward) on cells of kind 3, every other cell
+/-- Birth: an organism in state `y0` with heading `h0` on cells of kind 3, every other cell
 empty. -/
-def birthCell (y0 : Fin n → Λi) (i : ℕ) : W.Cell :=
-  if i / 3 = 3 then (0, 0, some (y0, true)) else (0, 0, none)
+def birthCell (y0 : Fin n → Λi) (h0 : Hd) (i : ℕ) : W.Cell :=
+  if i / 9 = 3 then (0, 0, some (y0, h0)) else (0, 0, none)
 
-theorem c1_nonneg (r : NR1 n nR nX) (i : ℕ) (l : W.Cell) : 0 ≤ W.c1 r i l := by
-  rcases r with ⟨k, -, -, -⟩ | ⟨j, -, -⟩ | ⟨⟩ | ⟨-, -⟩
+theorem c1_nonneg (r : NR1 Hd n nR nX) (i : ℕ) (l : W.Cell) : 0 ≤ W.c1 r i l := by
+  rcases r with ⟨k, -, -, -⟩ | ⟨j, -, -⟩ | ⟨-, -⟩ | ⟨-, -⟩
   · exact (W.spec k).κ_nonneg
   · exact W.xκ_nonneg j
   · exact W.κflip_nonneg
@@ -344,12 +347,14 @@ theorem c2_nonneg (r : NR2 n) (i j : ℕ) (p : W.Cell × W.Cell) : 0 ≤ W.c2 r 
   · exact W.κdiff_nonneg
   · exact W.κmove_nonneg
 
-/-- The joint medium of organisms and their world on a ring of `L` cells. -/
-noncomputable def lattice (L : ℕ) (page : Fin L → ℕ) (y0 : Fin n → Λi) :
-    LatticeCRN (Fin L) W.Cell ℝ (NR1 n nR nX) (NR2 n) where
-  adj := ringAdj L
-  adj_symm _ _ h := ⟨h.1.symm, h.2.symm⟩
-  adj_irrefl _ h := h.1 rfl
+/-- The joint medium of organisms and their world on cells `U` with a symmetric, irreflexive
+neighbour relation. -/
+noncomputable def lattice {U : Type*} (adj : U → U → Prop) (hsymm : ∀ u v, adj u v → adj v u)
+    (hirr : ∀ u, ¬ adj u u) (page : U → ℕ) (y0 : Fin n → Λi) (h0 : Hd) :
+    LatticeCRN U W.Cell ℝ (NR1 Hd n nR nX) (NR2 n) where
+  adj := adj
+  adj_symm := hsymm
+  adj_irrefl := hirr
   ident := page
   bid := bidW
   content := W.content
@@ -363,12 +368,12 @@ noncomputable def lattice (L : ℕ) (page : Fin L → ℕ) (y0 : Fin n → Λi) 
   c2_nonneg := W.c2_nonneg
   rev1 := rev1
   rev2 := rev2
-  birth := W.birthCell y0
+  birth := W.birthCell y0 h0
   calm := 0
 
 /-! ## Obligations -/
 
-theorem content_p1a [Fintype Λi] :
+theorem content_p1a [Fintype Λi] [Fintype Hd] :
     (∀ m, {l : W.Cell | W.content l ≤ m}.Finite) ∧ (∃ K, ∀ l, W.content l ≤ K) ∧
       ∃! l, W.content l = 0 := by
   classical
@@ -398,8 +403,8 @@ theorem content_p1a [Fintype Λi] :
       have := W.B_pos
       omega
 
-theorem not_bid {i : ℕ} (hi : i ∉ bidW) : i / 3 ≠ 1 ∧ i / 3 ≠ 2 := by
-  simp only [bidW, Finset.mem_insert, Finset.mem_singleton, not_or] at hi
+theorem not_bid {i : ℕ} (hi : i ∉ bidW) : i / 9 ≠ 1 ∧ i / 9 ≠ 2 := by
+  simp only [bidW, Finset.mem_Icc, not_and_or, not_le] at hi
   omega
 
 theorem sum_update_nat (g : Λi → ℕ) (u : Fin n) (b : Λi) (y : Fin n → Λi) :
@@ -414,10 +419,10 @@ theorem sum_update_nat (g : Λi → ℕ) (u : Fin n) (b : Λi) (y : Fin n → Λ
 
 theorem cons1 (hspec : ∀ k, W.contentIn (W.spec k).a.1 + W.contentIn (W.spec k).a.2 =
       W.contentIn (W.spec k).b.1 + W.contentIn (W.spec k).b.2)
-    (r : NR1 n nR nX) (i : ℕ) (l : W.Cell) (hi : i ∉ bidW) :
+    (r : NR1 Hd n nR nX) (i : ℕ) (l : W.Cell) (hi : i ∉ bidW) :
     W.content (W.eff1 r i l) = W.content l := by
   obtain ⟨f, w, b⟩ := l
-  rcases r with ⟨k, u, v, dir⟩ | ⟨j, u, dir⟩ | ⟨⟩ | ⟨food, dir⟩
+  rcases r with ⟨k, u, v, dir⟩ | ⟨j, u, dir⟩ | ⟨ha, hb⟩ | ⟨food, dir⟩
   · rcases b with _ | ⟨y, h⟩
     · rfl
     · simp only [eff1, content, bugContent, W.innerAct_content hspec]
@@ -537,9 +542,9 @@ theorem xchEff_back (pg : ℕ) (food : Bool) (a b : Λi) (u : Fin n) (l : W.Cell
           simp [xchEff, hm, hps, hc, hb, hy]
     · simp [xchEff, hm] at hne
 
-theorem back1 (r : NR1 n nR nX) (i : ℕ) (l : W.Cell) (hne : W.eff1 r i l ≠ l) :
+theorem back1 (r : NR1 Hd n nR nX) (i : ℕ) (l : W.Cell) (hne : W.eff1 r i l ≠ l) :
     W.eff1 (rev1 r) i (W.eff1 r i l) = l := by
-  rcases r with ⟨k, u, v, dir⟩ | ⟨j, u, dir⟩ | ⟨⟩ | ⟨food, dir⟩
+  rcases r with ⟨k, u, v, dir⟩ | ⟨j, u, dir⟩ | ⟨ha, hb⟩ | ⟨food, dir⟩
   · obtain ⟨f, w, _ | ⟨y, h⟩⟩ := l
     · exact absurd rfl hne
     · have hy : W.innerAct k u v dir y ≠ y := fun e => hne (by simp [eff1, e])
@@ -555,30 +560,26 @@ theorem back1 (r : NR1 n nR nX) (i : ℕ) (l : W.Cell) (hne : W.eff1 r i l ≠ l
     exact W.xchEff_back _ _ _ _ u l hne
   · obtain ⟨f, w, _ | ⟨y, h⟩⟩ := l
     · exact absurd rfl hne
-    · by_cases hr : y W.motor = W.run
-      · simp [eff1, hr] at hne
-      · simp [eff1, rev1, hr]
+    · by_cases hc : y W.motor = W.run ∨ h ≠ ha
+      · simp [eff1, hc] at hne
+      · push Not at hc
+        have hab : hb ≠ ha := fun e => hne (by simp [eff1, hc, e])
+        simp [eff1, rev1, hc, hab]
   · obtain ⟨f, w, b⟩ := l
     cases food
-    · by_cases hk : i / 3 = 2
+    · by_cases hk : i / 9 = 2
       · rcases hps : poolShift w (if dir = true then -1 else 1) with _ | w'
         · simp [eff1, hk, hps] at hne
         · have hb := poolShift_back hps
-          have hd : -(if dir = true then (-1 : ℤ) else 1) = if (!dir) = true then -1 else 1 := by
-            cases dir <;> rfl
-          rw [hd] at hb
           have hb' : poolShift w' (if dir = false then (-1 : ℤ) else 1) = some w := by
             cases dir <;> simpa using hb
           simp [eff1, rev1, hk, hps, hb']
       · simp [eff1, hk] at hne
-    · by_cases hk : i / 3 = 1
-      · rcases hps : poolShift f (if dir = true then -1 else 1) with _ | f'
+    · by_cases hk : i / 9 = 1
+      · rcases hps : poolShift f (if dir = true then -(W.pellet : ℤ) else W.pellet) with _ | f'
         · simp [eff1, hk, hps] at hne
         · have hb := poolShift_back hps
-          have hd : -(if dir = true then (-1 : ℤ) else 1) = if (!dir) = true then -1 else 1 := by
-            cases dir <;> rfl
-          rw [hd] at hb
-          have hb' : poolShift f' (if dir = false then (-1 : ℤ) else 1) = some f := by
+          have hb' : poolShift f' (if dir = false then -(W.pellet : ℤ) else W.pellet) = some f := by
             cases dir <;> simpa using hb
           simp [eff1, rev1, hk, hps, hb']
       · simp [eff1, hk] at hne
@@ -635,11 +636,11 @@ theorem back2 (r : NR2 n) (i j : ℕ) (p : W.Cell × W.Cell) (hne : W.eff2 r i j
     · rcases b with _ | ⟨y, h⟩ <;> rcases b' with _ | ⟨y', h'⟩
       · simp [eff2] at hne
       · simp [eff2] at hne
-      · by_cases hc : ahead i j h ∧ W.fuelAct e d false y ≠ y ∧ y W.motor = W.run ∧
+      · by_cases hc : W.ahead i j h = true ∧ W.fuelAct e d false y ≠ y ∧ y W.motor = W.run ∧
             W.fuelAct e d false y W.motor = W.run
         · have hy := W.fuelAct_back e d false y hc.2.1
           simp only [Bool.not_false] at hy
-          have hc' : ahead i j h ∧ W.fuelAct e d true (W.fuelAct e d false y) ≠ W.fuelAct e d false y ∧
+          have hc' : W.ahead i j h = true ∧ W.fuelAct e d true (W.fuelAct e d false y) ≠ W.fuelAct e d false y ∧
               W.fuelAct e d false y W.motor = W.run ∧
               W.fuelAct e d true (W.fuelAct e d false y) W.motor = W.run := by
             rw [hy]; exact ⟨hc.1, fun h' => hc.2.1 h'.symm, hc.2.2.2, hc.2.2.1⟩
@@ -649,11 +650,11 @@ theorem back2 (r : NR2 n) (i j : ℕ) (p : W.Cell × W.Cell) (hne : W.eff2 r i j
       · simp [eff2] at hne
     · rcases b with _ | ⟨y', h'⟩ <;> rcases b' with _ | ⟨y, h⟩
       · simp [eff2] at hne
-      · by_cases hc : ahead i j h ∧ W.fuelAct e d true y ≠ y ∧ y W.motor = W.run ∧
+      · by_cases hc : W.ahead i j h = true ∧ W.fuelAct e d true y ≠ y ∧ y W.motor = W.run ∧
             W.fuelAct e d true y W.motor = W.run
         · have hy := W.fuelAct_back e d true y hc.2.1
           simp only [Bool.not_true] at hy
-          have hc' : ahead i j h ∧ W.fuelAct e d false (W.fuelAct e d true y) ≠ W.fuelAct e d true y ∧
+          have hc' : W.ahead i j h = true ∧ W.fuelAct e d false (W.fuelAct e d true y) ≠ W.fuelAct e d true y ∧
               W.fuelAct e d true y W.motor = W.run ∧
               W.fuelAct e d false (W.fuelAct e d true y) W.motor = W.run := by
             rw [hy]; exact ⟨hc.1, fun h' => hc.2.1 h'.symm, hc.2.2.2, hc.2.2.1⟩
@@ -669,20 +670,81 @@ their world satisfies the six axiom clauses as soon as the organism's inner pair
 fuel rule conserve content. Sensing, eating, excreting (exchange with the cell's pools),
 tumbling, diffusion, driven movement and the world's own sources and sinks need no further
 obligation. -/
-theorem axioms [Fintype Λi] (L : ℕ) (page : Fin L → ℕ) (y0 : Fin n → Λi)
+theorem axioms [Fintype Λi] [Fintype Hd] {U : Type*} [Fintype U] [DecidableEq U]
+    (adj : U → U → Prop) (hsymm : ∀ u v, adj u v → adj v u) (hirr : ∀ u, ¬ adj u u)
+    (page : U → ℕ) (y0 : Fin n → Λi) (h0 : Hd)
     (hspec : ∀ k, W.contentIn (W.spec k).a.1 + W.contentIn (W.spec k).a.2 =
       W.contentIn (W.spec k).b.1 + W.contentIn (W.spec k).b.2)
     (hfuel : W.contentIn W.fuel.a.1 + W.contentIn W.fuel.a.2 =
       W.contentIn W.fuel.b.1 + W.contentIn W.fuel.b.2) :
-    (W.lattice L page y0).medium.Axioms := by
+    (W.lattice adj hsymm hirr page y0 h0).medium.Axioms := by
   classical
-  refine LatticeCRN.axioms (W.lattice L page y0) W.content_p1a
+  refine LatticeCRN.axioms (W.lattice adj hsymm hirr page y0 h0) W.content_p1a
     (fun r i l hi => W.cons1 hspec r i l hi) (fun r i j p _ _ => W.cons2 hfuel r i j p) rfl
     ?_ ?_ (fun r i l hne => W.back1 r i l hne) (fun r i j p hne => W.back2 r i j p hne) ?_ ?_
-  · intro r; rcases r with ⟨k, u, v, dir⟩ | ⟨j, u, dir⟩ | ⟨⟩ | ⟨food, dir⟩ <;> simp [lattice, rev1]
+  · intro r; rcases r with ⟨k, u, v, dir⟩ | ⟨j, u, dir⟩ | ⟨a, b⟩ | ⟨food, dir⟩ <;> simp [lattice, rev1]
   · intro r; rcases r with ⟨food, dir⟩ | ⟨e, d, dir⟩ <;> simp [lattice, rev2]
-  · intro r i l _; rcases r with ⟨k, u, v, dir⟩ | ⟨j, u, dir⟩ | ⟨⟩ | ⟨food, dir⟩ <;> rfl
+  · intro r i l _; rcases r with ⟨k, u, v, dir⟩ | ⟨j, u, dir⟩ | ⟨a, b⟩ | ⟨food, dir⟩ <;> rfl
   · intro r i j p _; rcases r with ⟨food, dir⟩ | ⟨e, d, dir⟩ <;> rfl
+
+/-! ## Two instances: a ring and a torus -/
+
+/-- Neighbours on a ring of `L` cells. -/
+def ringAdj (L : ℕ) (u v : Fin L) : Prop :=
+  u ≠ v ∧ ((u.val + 1) % L = v.val ∨ (v.val + 1) % L = u.val)
+
+theorem ringAdj_symm (L : ℕ) (u v : Fin L) (h : ringAdj L u v) : ringAdj L v u :=
+  ⟨h.1.symm, h.2.symm⟩
+
+/-- Neighbours on a `G × G` torus (four-neighbourhood). -/
+def torusAdj (G : ℕ) (u v : Fin G × Fin G) : Prop :=
+  u ≠ v ∧ ((u.1 = v.1 ∧ ((u.2.val + 1) % G = v.2.val ∨ (v.2.val + 1) % G = u.2.val)) ∨
+    (u.2 = v.2 ∧ ((u.1.val + 1) % G = v.1.val ∨ (v.1.val + 1) % G = u.1.val)))
+
+theorem torusAdj_symm (G : ℕ) (u v : Fin G × Fin G) (h : torusAdj G u v) : torusAdj G v u := by
+  refine ⟨h.1.symm, ?_⟩
+  rcases h.2 with ⟨h1, h2⟩ | ⟨h1, h2⟩
+  · exact Or.inl ⟨h1.symm, h2.symm⟩
+  · exact Or.inr ⟨h1.symm, h2.symm⟩
+
+/-- Page of a torus cell: `9 * kind + 3 * (x % 3) + y % 3` (kind and chirality code). -/
+def torusPage (G : ℕ) (kind : Fin G × Fin G → ℕ) (u : Fin G × Fin G) : ℕ :=
+  9 * kind u + 3 * (u.1.val % 3) + u.2.val % 3
+
+/-- The neighbour ahead, read from the chirality codes of the two pages (heading 0: +x, 1: +y,
+2: -x, 3: -y). With `G` a multiple of 3 it picks exactly the neighbour in that direction. -/
+def torusAhead (i j : ℕ) (h : Fin 4) : Bool :=
+  let ix := i % 9 / 3
+  let iy := i % 3
+  let jx := j % 9 / 3
+  let jy := j % 3
+  match h with
+  | 0 => jx == (ix + 1) % 3 && jy == iy
+  | 1 => jy == (iy + 1) % 3 && jx == ix
+  | 2 => jx == (ix + 2) % 3 && jy == iy
+  | 3 => jy == (iy + 2) % 3 && jx == ix
+
+open Classical in
+/-- **The two-dimensional world is a model of the axioms**: organisms on a torus, food pellets
+from the world's boundary, diffusion, waste sinks, driven movement in four headings. -/
+theorem axioms_torus [Fintype Λi] [Fintype Hd] (G : ℕ) (kind : Fin G × Fin G → ℕ)
+    (y0 : Fin n → Λi) (h0 : Hd)
+    (hspec : ∀ k, W.contentIn (W.spec k).a.1 + W.contentIn (W.spec k).a.2 =
+      W.contentIn (W.spec k).b.1 + W.contentIn (W.spec k).b.2)
+    (hfuel : W.contentIn W.fuel.a.1 + W.contentIn W.fuel.a.2 =
+      W.contentIn W.fuel.b.1 + W.contentIn W.fuel.b.2) :
+    (W.lattice (torusAdj G) (torusAdj_symm G) (fun _ h => h.1 rfl) (torusPage G kind) y0 h0).medium.Axioms :=
+  W.axioms _ _ _ _ y0 h0 hspec hfuel
+
+open Classical in
+/-- The one-dimensional ring is a model too. -/
+theorem axioms_ring [Fintype Λi] [Fintype Hd] (L : ℕ) (page : Fin L → ℕ) (y0 : Fin n → Λi) (h0 : Hd)
+    (hspec : ∀ k, W.contentIn (W.spec k).a.1 + W.contentIn (W.spec k).a.2 =
+      W.contentIn (W.spec k).b.1 + W.contentIn (W.spec k).b.2)
+    (hfuel : W.contentIn W.fuel.a.1 + W.contentIn W.fuel.a.2 =
+      W.contentIn W.fuel.b.1 + W.contentIn W.fuel.b.2) :
+    (W.lattice (ringAdj L) (ringAdj_symm L) (fun _ h => h.1 rfl) page y0 h0).medium.Axioms :=
+  W.axioms _ _ _ _ y0 h0 hspec hfuel
 
 end NestedWorld
 
