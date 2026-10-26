@@ -73,3 +73,66 @@ class PGForager:
             self.ate, self.n = 1, 0
         else:
             self.n = min(self.n + 1, self.nmax)
+
+
+class LangPGForager:
+    """G15 forager that also listens: the motor readout reads the intake-history state
+    (G11/G12) and a slow trace of every heard byte (the cue memory that predicting
+    intake from text needs, by the G11 argument). Same G15 rule on linear features.
+
+    Registered choices: leaky traces per byte value at time constants `taus` (set to
+    their long-run mean, i.e. "no evidence yet", on arrival at a new source), online
+    per-feature standardization scaled by 1/sqrt(group size), trace carrier,
+    step size, baseline rate.
+    """
+
+    def __init__(self, nmax=16, eta=0.1, trace=0.9, base_rate=0.01, taus=(16.0, 300.0),
+                 lang=True, seed=0):
+        self.nmax, self.lang = nmax, lang
+        self.ns = 2 * (nmax + 1)
+        self.L = 256 * len(taus) if lang else 0
+        self.F = self.ns + self.L
+        self.W = np.zeros((2, self.F))
+        self.e = np.zeros_like(self.W)
+        self.eta, self.lam, self.br = eta, trace, base_rate
+        self.k = np.repeat(1.0 / np.asarray(taus), 256)
+        self.tr = np.zeros(self.L)
+        self.mu, self.var = np.zeros(self.L), np.full(self.L, 1e-4)
+        self.rng = np.random.default_rng(seed)
+        self.bl, self.ate, self.n = 0.5, 0, 0
+        self.learning = True
+
+    def features(self):
+        x = np.zeros(self.F)
+        x[self.ate * (self.nmax + 1) + self.n] = 1.0
+        if self.lang:
+            # group-normalized: the whole language group moves a logit O(eta) per tick
+            x[self.ns:] = (self.tr - self.mu) / np.sqrt(self.var * self.L)
+        return x
+
+    def act(self) -> int:
+        x = self.features()
+        z = self.W @ x
+        p = np.exp(z - z.max())
+        p /= p.sum()
+        a = int(self.rng.random() < p[1])
+        score = -p
+        score[a] += 1.0
+        self.e *= self.lam
+        self.e += np.outer(score, x)
+        return a
+
+    def sense(self, byte, intake: int, travelled: bool):
+        if self.learning:
+            self.W += self.eta * (intake - self.bl) * self.e
+            self.bl += self.br * (intake - self.bl)
+        if travelled:
+            self.ate, self.n = 0, 0
+            self.tr[:] = self.mu
+        else:
+            self.ate, self.n = (1, 0) if intake else (self.ate, min(self.n + 1, self.nmax))
+            if self.lang and byte is not None:
+                self.tr *= 1.0 - self.k
+                self.tr[byte::256] += self.k[byte::256]
+                self.mu += 1e-3 * (self.tr - self.mu)
+                self.var += 1e-3 * ((self.tr - self.mu) ** 2 - self.var)

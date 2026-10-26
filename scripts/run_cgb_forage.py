@@ -20,7 +20,7 @@ sys.path.insert(0, str(ROOT / "information_boltzmann" / "core"))
 from cgb_observation_stream import load_owt_sources  # noqa: E402
 from cgb_forage_world import ForageWorld  # noqa: E402
 from cgb_lg1_forager import LG1Forager, Reflex, Integrator, RandomPolicy, Oracle  # noqa: E402
-from cgb_pg_forager import PGForager  # noqa: E402
+from cgb_pg_forager import PGForager, LangPGForager  # noqa: E402
 
 
 def stats(v):
@@ -58,6 +58,9 @@ def main():
     ap.add_argument("--sources", type=int, default=3)
     ap.add_argument("--stage", type=int, default=1, help="2: hidden state = digit-rich document rule")
     ap.add_argument("--agents", default="", help="comma list; empty = all")
+    ap.add_argument("--taus", default="16,300")
+    ap.add_argument("--window", type=int, default=32, help="stage 3: rich iff a digit in the last W bytes")
+    ap.add_argument("--shuffle-bytes", type=int, default=0, help="1: permute each source (destroys text, keeps byte counts)")
     ap.add_argument("--pg-eta", type=float, default=0.1)
     ap.add_argument("--pg-trace", type=float, default=0.9)
     ap.add_argument("--pg-relax", type=float, default=0.0)
@@ -91,7 +94,16 @@ def main():
             return a
         return make
 
+    def lang(use=True, cut=False):
+        def make(world):
+            return LangPGForager(eta=args.pg_eta, trace=args.pg_trace, taus=tuple(float(t) for t in args.taus.split(",")), lang=use,
+                                 seed=world.seed + 7919)
+        return make
+
     agents = {
+        "g15_lang": (lang(), False),
+        "g15_lang_loop_cut": (lang(), True),
+        "g15_counter_only": (lang(use=False), False),
         "g15_forager": (pg(), False),
         "g15_forager_loop_cut": (pg(), True),
         "g15_forager_frozen": (pg(frozen=True), False),
@@ -110,6 +122,11 @@ def main():
         off = seed * 3_000_011
         spans = [(off + k * 500_000, off + k * 500_000 + 400_000) for k in range(args.sources)]
         sources = [train[a:b] for a, b in spans]
+        if args.shuffle_bytes:
+            import numpy as np
+            prng = np.random.default_rng(seed + 55)
+            sources_text = [np.asarray(s) for s in sources]  # labels below use the real text
+            sources_shuf = [prng.permutation(s) for s in sources_text]
         if args.stage == 2:
             import bisect
             import numpy as np
@@ -125,15 +142,26 @@ def main():
             med = float(np.median([f for fr in rich for f in fr]))
             rich = [[f >= med for f in fr] for fr in rich]
             wkw_s = dict(wkw, doc_ends=ends, doc_rich=rich)
+        elif args.stage == 3:
+            import numpy as np
+            masks = []
+            for src in sources:
+                dig = ((np.asarray(src) >= 48) & (np.asarray(src) <= 57)).astype(np.int64)
+                c = np.concatenate([[0], np.cumsum(dig)])
+                i = np.arange(len(dig))
+                masks.append((c[i + 1] - c[np.maximum(i + 1 - args.window, 0)]) > 0)
+            wkw_s = dict(wkw, rich_mask=masks)
         else:
             wkw_s = wkw
+        heard = sources_shuf if args.shuffle_bytes else sources
         for name, (factory, cut) in agents.items():
-            r = live(factory, sources, wkw_s, args.ticks, seed, cut=cut)
+            r = live(factory, heard, wkw_s, args.ticks, seed, cut=cut)
             results[name].append(r)
             print(seed, name, json.dumps(r), flush=True)
     summary = {k: {m: stats([r[m] for r in v]) for m in v[0]} for k, v in results.items()}
-    report = dict(world=dict(wkw, ticks=args.ticks, sources=args.sources, stage=args.stage,
-                             stage2_rule="document digit fraction >= median over sources"), hidden=args.hidden,
+    report = dict(world=dict(wkw, ticks=args.ticks, shuffle_bytes=args.shuffle_bytes, taus=args.taus, window=args.window, sources=args.sources, stage=args.stage,
+                             stage2_rule="document digit fraction >= median over sources",
+                             stage3_rule="a digit in the last `window` bytes of the source text (including the current byte)"), hidden=args.hidden,
                   seeds=args.seeds, g15=dict(eta=args.pg_eta, trace=args.pg_trace, relax=args.pg_relax,
                                                  state_baseline=args.pg_state_baseline, base_rate=args.pg_base_rate,
                                                  couple=args.pg_couple, slow_c=args.pg_slow_c, slow_leak=args.pg_slow_leak), provenance=prov, per_seed=results, summary=summary, admitted=False)

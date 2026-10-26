@@ -16,6 +16,10 @@ hazard; it is a fixed world rule on the current document (`doc_rich[k][i]`, with
 document end offsets `doc_ends[k]`), so it changes at document boundaries and
 can be inferred from the text itself.
 
+Stage 3 (`rich_mask` given): the hidden state of source k at its position i is
+`rich_mask[k][i]`, a world rule on the local text (for example "a digit occurred
+in the last W bytes"), so it flips on the text's own time scale.
+
 `cut=True` gives the loop-cut world of `SelfMaintains`: the world moves on the
 actions of a ghost that switches at the organism's own empirical switch rate,
 independently of the world state; the organism still senses what it receives.
@@ -39,7 +43,7 @@ class Tick:
 
 class ForageWorld:
     def __init__(self, sources, *, hazard=0.01, p_rich=0.7, p_poor=0.3, cost=0.55,
-                 reserve=20.0, capacity=40.0, cut=False, doc_ends=None, doc_rich=None, seed=0):
+                 reserve=20.0, capacity=40.0, cut=False, doc_ends=None, doc_rich=None, rich_mask=None, seed=0):
         self.src = [np.asarray(s, dtype=np.uint8) for s in sources]
         self.pos = [0] * len(self.src)
         self.seed = seed
@@ -53,8 +57,11 @@ class ForageWorld:
         self.alive, self.cut = True, cut
         self.requested = self.ticks = 0
         self.doc_ends, self.doc_rich = doc_ends, doc_rich
+        self.rich_mask = rich_mask
         if doc_rich is not None:
             self.rich = [self._doc_rich(k) for k in range(len(self.src))]
+        if rich_mask is not None:
+            self.rich = [bool(m[0]) for m in rich_mask]
 
     def _doc_rich(self, k):
         import bisect
@@ -62,7 +69,9 @@ class ForageWorld:
         return bool(self.doc_rich[k][min(i, len(self.doc_rich[k]) - 1)])
 
     def step(self, action: int) -> Tick:
-        if self.doc_rich is None:
+        if self.rich_mask is not None:
+            self.rich = [bool(m[p % len(m)]) for m, p in zip(self.rich_mask, self.pos)]
+        elif self.doc_rich is None:
             for k in range(len(self.rich)):
                 if self.rng.random() < self.hazard:
                     self.rich[k] = not self.rich[k]
