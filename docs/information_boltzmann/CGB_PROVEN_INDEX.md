@@ -428,7 +428,7 @@ _An organism nested in its world (T-E2) The joint medium of a bacterium-like org
 - `intake_is_exchange`：**Only exchanges feed the organism**: every single-cell event that raises the content held by the organism is a pool exchange; a gated one has conductance proportional to the intact membrane.
 - `dead_intake_is_physics`：**Death** (`Part.CanTakeIn` fails through the organism's own doing): with no intact membrane unit, every event that would raise the organism's content has rate zero, except an ungated exchange: physics the organism does 
 - `dead_output_is_physics`：**A dead body does not give itself away**: every single-cell event that lowers the content held by the organism is a pool exchange; with no intact membrane the gated ones have rate zero, so what leaves a dead body leaves
-- `frees_only_by_dissolving`：**Only dissolution empties a place** (with G26c `corpses_must_go`, why the table needs it): every single-cell event that turns a cell holding a body into a cell without one is the dissolution of an empty body.
+- `frees_only_by_dissolving`：**Only dissolution empties a place** (with G26c `corpses_must_go`, why the table needs it): every single-cell event that turns a cell holding a body into a cell without one is the dissolution of a body.
 - `partner_exit_blocked`：A pair rule whose partner state is absent leaves the organism as it is.
 - `gated_exit_blocked`：A gated exchange has no conductance without an intact membrane.
 - `poolShift_one`
