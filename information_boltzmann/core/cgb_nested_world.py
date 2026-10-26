@@ -68,7 +68,7 @@ def _ssa_kernel():
         return -(math.lgamma(V + 1.0) - math.lgamma(n + 1.0) - math.lgamma(V - n + 1.0))
 
     @njit(cache=True)
-    def rates(f, w, mu, kind, V, P, kin, kdiff, out):
+    def rates(f, w, mu, kind, V, P, kin, kdiff, fE, out):
         """All effective events of the world. out[c, e]: c = cell (x * G + y);
         e 0/1: food pellet in/out (source), 2/3: waste in/out (sink),
         4..7: food quantum to neighbour d, 8..11: waste quantum to neighbour d
@@ -83,9 +83,9 @@ def _ssa_kernel():
                 m = mu[x, y]
                 if kind[x, y] == 1:
                     if f[x, y] + P <= V:
-                        out[c, 0] = kin * math.exp(-(lf(V, f[x, y] + P) - lf(V, f[x, y]) - m * P) / 2.0)
+                        out[c, 0] = kin * math.exp(-(lf(V, f[x, y] + P) - lf(V, f[x, y]) - (m - fE) * P) / 2.0)
                     if f[x, y] >= P:
-                        out[c, 1] = kin * math.exp(-(lf(V, f[x, y] - P) - lf(V, f[x, y]) + m * P) / 2.0)
+                        out[c, 1] = kin * math.exp(-(lf(V, f[x, y] - P) - lf(V, f[x, y]) + (m - fE) * P) / 2.0)
                 elif kind[x, y] == 2:
                     if w[x, y] + 1 <= V:
                         out[c, 2] = kin * math.exp(-(lf(V, w[x, y] + 1) - lf(V, w[x, y]) - m) / 2.0)
@@ -105,7 +105,7 @@ def _ssa_kernel():
         return tot
 
     @njit(cache=True)
-    def run(f, w, mu, kind, V, P, kin, kdiff, T, seed):
+    def run(f, w, mu, kind, V, P, kin, kdiff, fE, T, seed):
         """Exact Gillespie for time T (stimulus held fixed). Recomputes all rates per event:
         a reference for small grids, not a fast simulator."""
         np.random.seed(seed)
@@ -114,7 +114,7 @@ def _ssa_kernel():
         t = 0.0
         nev = 0
         while True:
-            tot = rates(f, w, mu, kind, V, P, kin, kdiff, out)
+            tot = rates(f, w, mu, kind, V, P, kin, kdiff, fE, out)
             if tot <= 0.0:
                 break
             t += -math.log(1.0 - np.random.random()) / tot
@@ -172,7 +172,7 @@ def ssa_kernels():
 def ssa_world(f, w, mu, kind, tbl, T, seed):
     _, run = ssa_kernels()
     t = tbl["table"]
-    return run(f, w, mu, kind, t["V"], t["pellet"], t["kappa_in"], t["kappa_diff"], float(T), seed)
+    return run(f, w, mu, kind, t["V"], t["pellet"], t["kappa_in"], t["kappa_diff"], t.get("foodE", 0.0), float(T), seed)
 
 
 def rates_np(f, w, mu, kind, tbl):
@@ -180,7 +180,7 @@ def rates_np(f, w, mu, kind, tbl):
     r, _ = ssa_kernels()
     t = tbl["table"]
     out = np.zeros((f.shape[0] * f.shape[1], 12))
-    r(f, w, mu, kind, t["V"], t["pellet"], t["kappa_in"], t["kappa_diff"], out)
+    r(f, w, mu, kind, t["V"], t["pellet"], t["kappa_in"], t["kappa_diff"], t.get("foodE", 0.0), out)
     return out
 
 
@@ -199,6 +199,7 @@ class World:
         self.dtype = dtype or (torch.float32 if str(device).startswith("cuda") else torch.float64)
         t = tbl["table"]
         self.V, self.P, self.kin, self.kdiff = t["V"], t["pellet"], t["kappa_in"], t["kappa_diff"]
+        self.foodE = t.get("foodE", 0.0)
         self.G = G = tbl["geometry"]["G"]
         k = torch.tensor(kinds(G), device=device)
         self.src, self.snk = (k == 1), (k == 2)
@@ -234,8 +235,9 @@ class World:
             up, dn = self._tables()
             ufa, dfa, uwa, dwa = up[f], dn[f], up[w], dn[w]
             em, ep = th.exp(mu / 2), th.exp(-mu / 2)
-            out[:, 0] = self.kin * ufa * em * self.src
-            out[:, 1] = self.kin * dfa * ep * self.src
+            emf, epf = th.exp((mu - self.foodE) / 2), th.exp(-(mu - self.foodE) / 2)   # food carries foodE
+            out[:, 0] = self.kin * ufa * emf * self.src
+            out[:, 1] = self.kin * dfa * epf * self.src
             out[:, 2] = self.kin * uwa * em * self.snk
             out[:, 3] = self.kin * dwa * ep * self.snk
             for s, (ua, da) in enumerate(((ufa, dfa), (uwa, dwa))):
@@ -243,9 +245,9 @@ class World:
                     out[:, 4 + 4 * s + d] = (2.0 * self.kdiff) * da * self._nb(ua, d)
             return out
         lff, lfw = self.lf(f), self.lf(w)
-        r = self.kin * th.exp(-(self.lf(f + P) - lff - mu * P) / 2)
+        r = self.kin * th.exp(-(self.lf(f + P) - lff - (mu - self.foodE) * P) / 2)
         out[:, 0] = th.where(self.src & (f + P <= V), r, 0.0)
-        r = self.kin * th.exp(-(self.lf(f - P) - lff + mu * P) / 2)
+        r = self.kin * th.exp(-(self.lf(f - P) - lff + (mu - self.foodE) * P) / 2)
         out[:, 1] = th.where(self.src & (f >= P), r, 0.0)
         r = self.kin * th.exp(-(self.lf(w + 1) - lfw - mu) / 2)
         out[:, 2] = th.where(self.snk & (w + 1 <= V), r, 0.0)

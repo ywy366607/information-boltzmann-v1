@@ -311,8 +311,10 @@ def check_nested_world_rates_match_lean(name):
     def shift(k, d):
         return k + d if 0 <= k + d <= V else None
 
+    fE = t.get("foodE", 0.0)
+
     def phi(l):
-        return cellF(l[0]) + cellF(l[1])
+        return cellF(l[0]) + fE * l[0] + cellF(l[1])
 
     def content(l):
         return l[0] + l[1]
@@ -446,6 +448,7 @@ def check_nested_organism_rates_match_lean(name):
 
     st = Stub()
     st.B, st.G, st.V, st.dt = B, 6, V, 0.05
+    fE = st.foodE = tbl["table"].get("foodE", 0.0)
     st.f = torch.zeros(B, 6, 6, dtype=torch.int32)
     st.w = torch.zeros(B, 6, 6, dtype=torch.int32)
     org = NO.Organisms(st, NO.random_genomes(B, rng), seed=1)
@@ -503,7 +506,7 @@ def check_nested_organism_rates_match_lean(name):
                             continue
                         y2 = list(y)
                         y2[u] = s1
-                        dE = bugE(y2) - bugE(y) + cellF(pool + d) - cellF(pool)
+                        dE = bugE(y2) - bugE(y) + cellF(pool + d) - cellF(pool) + (fE * d if food else 0.0)
                         ref[c + dr] += kx[b, x] * (gate if gated else 1) * m.exp(-dE / 2)
                 c += 2
             motor = [u for u in range(len(y)) if pageIn[u] == NO.M][0]
@@ -550,6 +553,7 @@ def check_nested_organism_kernel_matches(name):
     def world(B, dt):
         st = Stub()
         st.B, st.G, st.V, st.dt = B, 3, V, dt
+        st.foodE = tbl["table"].get("foodE", 0.0)
         st.f = torch.tensor(rng.choice([0, 1, 5, 60, V - 1, V], size=(B, 3, 3)), dtype=torch.int32, device="cuda")
         st.w = torch.tensor(rng.choice([0, 1, 4, V], size=(B, 3, 3)), dtype=torch.int32, device="cuda")
         return st
@@ -591,6 +595,7 @@ def check_nested_organism_kernel_matches(name):
     dt = 0.01 / tot
     ow = Stub()
     ow.B, ow.G, ow.V, ow.dt = L, 3, V, dt
+    ow.foodE = tbl["table"].get("foodE", 0.0)
     ow.f = torch.full((L, 3, 3), f0, dtype=torch.int32, device="cuda")
     ow.w = torch.full((L, 3, 3), w0, dtype=torch.int32, device="cuda")
     oL = NX.ExactOrganisms(ow, g, seed=4)

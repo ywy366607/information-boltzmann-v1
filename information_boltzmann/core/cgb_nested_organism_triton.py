@@ -41,7 +41,8 @@ def _cols():
             eff = [f"n{p}_{s0} -= 1", f"n{p}_{s1} += 1", f"{pool} += {d}"]
             if food:
                 eff.append(f"intake += {-d}")
-            cols.append((f"kx{x}{gate} * tl.exp({sign} * (phi{p}_{b} - phi{p}_{a}) / 2.0) * {pf} * "
+            fe = f" + FE * {a - b}.0" if food else ""
+            cols.append((f"kx{x}{gate} * tl.exp({sign} * (phi{p}_{b} - phi{p}_{a}{fe}) / 2.0) * {pf} * "
                          f"n{p}_{s0}.to(tl.float32)", eff))
     M, run = NO.M, NO.RUN
     cols.append((f"tl.where(n{M}_{run} > 0, 0.0, 3.0 * kflip)", ["h = (h + 1 + (frac * 3.0).to(tl.int32)) % 4"]))
@@ -78,7 +79,7 @@ def kernel_source(K):
     w("")
     w("@triton.jit")
     w("def organism_leap(n_ptr, phi_ptr, kr_ptr, kx_ptr, kflip_ptr, kmove_ptr, x_ptr, y_ptr, h_ptr,")
-    w("                  f_ptr, w_ptr, seed_ptr, intake_ptr, moves_ptr, over_ptr, B, G, V, dt,")
+    w("                  f_ptr, w_ptr, seed_ptr, intake_ptr, moves_ptr, over_ptr, B, G, V, dt, FE,")
     w("                  BLOCK: tl.constexpr):")
     w("    pid = tl.program_id(0)")
     w("    b = pid * BLOCK + tl.arange(0, BLOCK)")
@@ -209,14 +210,14 @@ class ExactOrganisms(NO.Organisms):
         self.intake32 = torch.zeros(self.B, dtype=torch.int32, device=dev)
         self.moves32 = torch.zeros(self.B, dtype=torch.int32, device=dev)
         self.overflow = torch.zeros(self.B, dtype=torch.int32, device=dev)
-        self.oseed = torch.tensor([seed * 7919 + 101], dtype=torch.int32, device=dev)
+        self.oseed = torch.tensor([(seed * 7919 + 101) % 2000000000], dtype=torch.int32, device=dev)
         self.fn = kernel(K)
 
     def leap(self):
         grid = (triton.cdiv(self.B, self.BLOCK),)
         self.fn[grid](self.n32, self.phi_c, self.kr_c, self.kx_c, self.kflip, self.kmove, self.x32, self.y32,
                       self.h32, self.W.f, self.W.w, self.oseed, self.intake32, self.moves32, self.overflow,
-                      self.B, self.G, self.V, self.dt, BLOCK=self.BLOCK)
+                      self.B, self.G, self.V, self.dt, self.foodE, BLOCK=self.BLOCK)
 
     def kernel_rates(self):
         """(B, C) rate columns computed by the generated kernel code."""
@@ -224,7 +225,7 @@ class ExactOrganisms(NO.Organisms):
         grid = (triton.cdiv(self.B, self.BLOCK),)
         rates_kernel()[grid](out, self.n32, self.phi_c, self.kr_c, self.kx_c, self.kflip, self.kmove, self.x32,
                              self.y32, self.h32, self.W.f, self.W.w, self.oseed, self.intake32, self.moves32,
-                             self.overflow, self.B, self.G, self.V, self.dt, BLOCK=self.BLOCK)
+                             self.overflow, self.B, self.G, self.V, self.dt, self.foodE, BLOCK=self.BLOCK)
         return out
 
     def end_tick(self):

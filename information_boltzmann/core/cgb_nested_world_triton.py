@@ -43,7 +43,7 @@ def _pois(lam, u):
 
 @triton.jit
 def _phase1(f_ptr, w_ptr, mu_ptr, kind_ptr, seed_ptr, fmid_ptr, wmid_ptr, send_ptr, rates_ptr,
-            N, G, V, kin, kdiff, dt, WRITE_RATES: tl.constexpr, BLOCK: tl.constexpr):
+            N, G, V, kin, kdiff, dt, fE, WRITE_RATES: tl.constexpr, BLOCK: tl.constexpr):
     pid = tl.program_id(0)
     offs = pid * BLOCK + tl.arange(0, BLOCK)
     m = offs < N
@@ -61,8 +61,8 @@ def _phase1(f_ptr, w_ptr, mu_ptr, kind_ptr, seed_ptr, fmid_ptr, wmid_ptr, send_p
     ep = tl.exp(-mu / 2.0)
     src = kd == 1
     snk = kd == 2
-    r0 = tl.where(src, kin * _up(f, V) * em, 0.0)
-    r1 = tl.where(src, kin * _dn(f, V) * ep, 0.0)
+    r0 = tl.where(src, kin * _up(f, V) * tl.exp((mu - fE) / 2.0), 0.0)     # food carries fE
+    r1 = tl.where(src, kin * _dn(f, V) * tl.exp(-(mu - fE) / 2.0), 0.0)
     r2 = tl.where(snk, kin * _up(w, V) * em, 0.0)
     r3 = tl.where(snk, kin * _dn(w, V) * ep, 0.0)
     base = offs * 12
@@ -144,6 +144,7 @@ class FusedWorld:
         t = tbl["table"]
         assert t["pellet"] == 1
         self.V, self.kin, self.kdiff, self.dt = t["V"], t["kappa_in"], t["kappa_diff"], dt
+        self.foodE = float(t.get("foodE", 0.0))
         self.G = G = tbl["geometry"]["G"]
         self.B = B
         self.N = B * G * G
@@ -153,14 +154,14 @@ class FusedWorld:
         self.fmid = torch.empty_like(self.f)
         self.wmid = torch.empty_like(self.f)
         self.send = torch.empty(self.N * 8, dtype=torch.int32, device=device)
-        self.seed = torch.tensor([seed * 1000003 + 17], dtype=torch.int32, device=device)
+        self.seed = torch.tensor([(seed * 1000003 + 17) % 2000000000], dtype=torch.int32, device=device)
         self.mu32 = torch.zeros(B, G, G, dtype=torch.float32, device=device)
 
     def leap(self, rates_out=None):
         grid = (triton.cdiv(self.N, self.BLOCK),)
         _phase1[grid](self.f, self.w, self.mu32, self.kind, self.seed, self.fmid, self.wmid, self.send,
                       rates_out if rates_out is not None else self.send, self.N, self.G, self.V,
-                      self.kin, self.kdiff, self.dt, WRITE_RATES=rates_out is not None, BLOCK=self.BLOCK)
+                      self.kin, self.kdiff, self.dt, self.foodE, WRITE_RATES=rates_out is not None, BLOCK=self.BLOCK)
         _phase2[grid](self.f, self.w, self.fmid, self.wmid, self.send, self.seed, self.N, self.G, BLOCK=self.BLOCK)
 
     def rates(self, mu):

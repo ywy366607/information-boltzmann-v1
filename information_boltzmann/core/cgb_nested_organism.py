@@ -49,9 +49,12 @@ EXCH = ((F, 0, 1, True, True),    # bind
         (S, 1, 0, False, False))  # membrane wear
 FUEL = (E, D, 1, 0, 0, 1)
 GATE = (S, 1)
-PHI_S1 = -5.0                      # physics
-LOGK_LEAK = math.log(6e-4)         # physics: leak prefactor of every page
-PHI_BOUND = 8.0                    # physics: energy scale, |phi| <= PHI_BOUND (`leak_bound`)
+PHI_S1 = 2.0                       # physics: intact membrane, between waste (< 0) and food (foodE + ln c)
+LOGK_LEAK = math.log(1e-5)         # physics: leak prefactor of every page
+PHI_PER_QUANTUM = (0.0, 8.0)       # physics: energy per content quantum of a held state; the floor 0 keeps
+                                   # every body state above waste up to a half-full pool (no condensation
+                                   # of bodies out of waste); the scale bounds holds (`leak_bound`)
+PHI_BOUND = 16.0                   # |phi| <= PHI_BOUND for every state (content <= 2)
 N_SELECTED_X = 4                   # bind, unload, uptake, excrete
 SELECTED_PHI = ((F, 1), (F, 2), (Y, 1), (M, 1), (E, 1), (D, 1))
 SHIFT = ((1, 0), (0, 1), (-1, 0), (0, -1))
@@ -60,7 +63,8 @@ SHIFT = ((1, 0), (0, 1), (-1, 0), (0, -1))
 def random_genomes(B, rng, lo=-9.0, hi=0.0):
     """Selected numbers, uniform in the prereg ranges, with the time-scale premise
     logk(Y0 + F1) <= logk(bind) - ln 20."""
-    g = dict(phi=rng.uniform(-8.0, 0.0, size=(B, len(SELECTED_PHI))),
+    plo, phi_hi = phi_range()
+    g = dict(phi=rng.uniform(plo, phi_hi, size=(B, len(SELECTED_PHI))),
              logk_rule=rng.uniform(lo, hi, size=(B, len(RULES))),
              logk_x=rng.uniform(lo, hi, size=(B, 4)),
              log_flip=rng.uniform(lo, hi, size=B),
@@ -68,8 +72,15 @@ def random_genomes(B, rng, lo=-9.0, hi=0.0):
     return premise(g)
 
 
+def phi_range():
+    """Per selected energy: content s of the state times the per-quantum physics range."""
+    lo = np.array([PHI_PER_QUANTUM[0] * s for (_, s) in SELECTED_PHI])
+    hi = np.array([PHI_PER_QUANTUM[1] * s for (_, s) in SELECTED_PHI])
+    return lo, hi
+
+
 def premise(g):
-    g["logk_rule"][:, 0] = np.minimum(g["logk_rule"][:, 0], g["logk_x"][:, 0] - math.log(20.0))
+    g["logk_rule"][..., 0] = np.minimum(g["logk_rule"][..., 0], g["logk_x"][..., 0] - math.log(20.0))
     return g
 
 
@@ -78,6 +89,7 @@ class Organisms:
 
     def __init__(self, world, genomes, seed=0, blind=False, still=False, freeze_y=False):
         self.W = world
+        self.foodE = float(getattr(world, "foodE", 0.0))
         B, dev = world.B, world.f.device
         self.B, self.dev, self.G, self.V, self.dt = B, dev, world.G, world.V, world.dt
         g = {k: torch.tensor(np.asarray(v), dtype=torch.float32, device=dev) for k, v in genomes.items()}
@@ -147,7 +159,7 @@ class Organisms:
             fwd_pool = self._up(pool) if d > 0 else self._dn(pool)
             bwd_pool = self._dn(pool) if d > 0 else self._up(pool)
             k = self.kx[:, x] * (gate if gated else 1.0)
-            dphi = phi[:, p, b] - phi[:, p, a]
+            dphi = phi[:, p, b] - phi[:, p, a] + (self.foodE * d if food else 0.0)   # food carries foodE
             cols.append(k * torch.exp(-dphi / 2) * fwd_pool * n[:, p, a])
             cols.append(k * torch.exp(dphi / 2) * bwd_pool * n[:, p, b])
         running = (self.n[:, M, RUN] > 0)
