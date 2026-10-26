@@ -2,7 +2,7 @@
 
 由 `scripts/build_proven_index.py` 从 Lean 源码生成。新工作开始前先在这里检索（定理名与文档注释首句），避免重复推导。
 
-共 912 条定理/引理。
+共 914 条定理/引理。
 **未入 Lean 的手工推导与数值见证**另列在 `CGB_HAND_DERIVATIONS.md`，检索时两处都要看。
 
 ## ActiveLoop（8）
@@ -257,7 +257,7 @@ _Generation, layer 1: what the axioms force on the equilibrium law The axioms co
 - `two_part_balance`：**G8a** (two parts suffice): with positive part factors `φ₁, φ₂` and constants `a, b ≥ 0`, up rates `a φ₁ + b φ₂` and down rates `b / φ₁ + a / φ₂` (each term reads one part) have ratio exactly `φ₁ φ₂`.
 - `three_part_balance_impossible`：**G8b** (three parts are impossible): if up rates `f₁+f₂+f₃` and down rates `g₁+g₂+g₃` (each term reading one part) satisfy detailed balance with a product factor `φ₁ φ₂ φ₃` that is non-constant on every part, the total 
 
-## GenerationAmplifier（11）
+## GenerationAmplifier（13）
 _An equilibrium amplifier: ordered filling of a conserved shell (generation chain, G25) Chemotaxis needs an all-or-none response to a tiny difference (a gain of order ten in *E._
 
 - `occupancy_le_exp`
@@ -271,6 +271,8 @@ _An equilibrium amplifier: ordered filling of a conserved shell (generation chai
 - `occupancy_le_one_sub_inv_iff`：Upper edge: the occupancy leaves at least one unit empty exactly when `h ≤ log (N - 1)`.
 - `resolvable_band`：**G25e (gain–range bound)**: a switch of gain `s` (a state of `s` quanta, G25d) centred at `θ`, read through `N` units, is resolvable (between one occupied and one empty unit) exactly on `|μ - θ| ≤ log (N - 1) / s`.
 - `gain_times_band`：The product of gain and resolvable width is `2 log (N - 1)`, independent of the gain: an amplified switch covers a proportionally narrower band of the sensed potential.
+- `fixed_threshold_fails`：**G25f (a fixed threshold fails on a wide world)**: if the sensed potential ranges over an interval wider than `2 log (N - 1) / s`, a switch of gain `s` at any fixed `θ` is unresolvable somewhere in it.
+- `centred_threshold_resolves`：**G25f (a threshold centred on the prediction works everywhere)**: if the threshold sits at a stored prediction `μhat` (G13: the slow interior's conditional) and the innovation `μ - μhat` (G14) stays within `δ` with `s δ
 
 ## GenerationAxiomAudit（2）
 _Which axiom parts work (generation chain, audit) Usage in the generation chain (G1–G22, M1–M2): P1b's locality parts (participants in contact, writes and reads only participants), P2a, P2b and P3's boundary sensing enter_

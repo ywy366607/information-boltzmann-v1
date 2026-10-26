@@ -32,6 +32,9 @@ no equilibrium gain at all:
   only `|μ - θ| ≤ log (N - 1) / s`; gain times width is `2 log (N - 1)`. A world whose sensed
   potential ranges wider than that cannot be served by one fixed operating point `θ` at the
   needed gain: `θ` must move with the world (adaptation, as *E. coli*'s receptor methylation).
+* `fixed_threshold_fails`, `centred_threshold_resolves` (G25f): a fixed threshold fails on a
+  world wider than the band; a threshold centred on the stored prediction (G13), reading the
+  innovation (G14), works at any level. With G25c, centring needs drive.
 -/
 
 namespace CGB.Generation
@@ -148,5 +151,34 @@ amplified switch covers a proportionally narrower band of the sensed potential. 
 theorem gain_times_band {N s : ℝ} (hs : s ≠ 0) :
     s * (2 * (Real.log (N - 1) / s)) = 2 * Real.log (N - 1) := by
   field_simp
+
+
+/-- Resolvable: at least one unit occupied and one empty. -/
+def Resolvable (N q : ℝ) : Prop := 1 / N ≤ q ∧ q ≤ 1 - 1 / N
+
+/-- **G25f (a fixed threshold fails on a wide world)**: if the sensed potential ranges over an
+interval wider than `2 log (N - 1) / s`, a switch of gain `s` at any fixed `θ` is unresolvable
+somewhere in it. With G25c (at equilibrium every unit's threshold is its own fixed energy `φ`),
+no equilibrium pair table can compare at gain `s` across such a world. -/
+theorem fixed_threshold_fails {N s θ a b : ℝ} (hN : 1 < N) (hs : 0 < s) (hab : a ≤ b)
+    (hwide : 2 * (Real.log (N - 1) / s) < b - a) :
+    ∃ μ, a ≤ μ ∧ μ ≤ b ∧ ¬ Resolvable N (occupancy (s * (μ - θ))) := by
+  by_contra H
+  push Not at H
+  have ha := (resolvable_band hN hs).1 (H a le_rfl hab)
+  have hb := (resolvable_band hN hs).1 (H b hab le_rfl)
+  rw [abs_le] at ha hb
+  linarith [ha.1, hb.2]
+
+/-- **G25f (a threshold centred on the prediction works everywhere)**: if the threshold sits at a
+stored prediction `μhat` (G13: the slow interior's conditional) and the innovation `μ - μhat`
+(G14) stays within `δ` with `s δ ≤ log (N - 1)`, the switch is resolvable whatever the absolute
+level of `μ`. Moving the threshold with the stored past is adaptation; by G25c it needs drive
+(or a non-additive energy). -/
+theorem centred_threshold_resolves {N s μ μhat δ : ℝ} (hN : 1 < N) (hs : 0 < s)
+    (hδ : s * δ ≤ Real.log (N - 1)) (h : |μ - μhat| ≤ δ) :
+    Resolvable N (occupancy (s * (μ - μhat))) := by
+  refine (resolvable_band hN hs).2 (h.trans ?_)
+  rw [le_div_iff₀ hs]; linarith
 
 end CGB.Generation
