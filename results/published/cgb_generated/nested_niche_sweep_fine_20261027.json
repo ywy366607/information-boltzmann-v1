@@ -1,0 +1,36 @@
+{
+ "f_star": 10,
+ "mu_rain": 17.0,
+ "rows": [
+  {
+   "rain_rate": 0.02,
+   "cells_rich": 0.0270684516059028,
+   "local": 0.063,
+   "blind": 0.0186,
+   "food_mean": 2.440239906311035
+  },
+  {
+   "rain_rate": 0.05,
+   "cells_rich": 0.1673257107204862,
+   "local": 0.20265,
+   "blind": 0.1198,
+   "food_mean": 4.877753257751465
+  },
+  {
+   "rain_rate": 0.1,
+   "cells_rich": 0.4061322211371528,
+   "local": 0.46715,
+   "blind": 0.37135,
+   "food_mean": 12.54135513305664
+  },
+  {
+   "rain_rate": 0.2,
+   "cells_rich": 0.6171109442816831,
+   "local": 0.68535,
+   "blind": 0.62795,
+   "food_mean": 24.31720733642578
+  }
+ ],
+ "chosen": null,
+ "note": "mass action, rain size fixed (mu_rain 17, ~250 quanta per rain); stopped after 0.2: blind approaches local as rain grows, so the rain's size is swept too (nested_niche_sweep_2d)"
+}
