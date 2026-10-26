@@ -1,0 +1,29 @@
+{
+  "name": "rain_torus_w0",
+  "status": "admitted",
+  "lean_instance": "CGB.NestedWorld.axioms_torus",
+  "lean_medium": "CGB.NestedWorld.lattice",
+  "geometry": {
+    "G": 48,
+    "kind": "sink (2) where x % 3 == 1 and y % 3 == 1, source (1) elsewhere",
+    "page": "9 * kind + 3 * (x % 3) + y % 3 (torusPage)"
+  },
+  "table": {
+    "V": 1500,
+    "pellet": 1,
+    "kappa_in": 0.01,
+    "kappa_diff": 0.2
+  },
+  "stimulus": {
+    "mu_sink": -8.0,
+    "mu_dry": -8.0,
+    "mu_rain": 8.0,
+    "rain_rate": 0.05,
+    "rain_dur": 50,
+    "rate_sigma": 1.15,
+    "rate_tau": 2000.0,
+    "click": "a click is a rain at the nearest source cell (mu_rain for rain_dur ticks)"
+  },
+  "niche_choice": "Numbers fixed before any organism lives here, by one principle: separated timescales, rain (50 ticks) << food lifetime after rain (~10^2-10^3 ticks) << richness drift (2000 ticks, as W2). Rich and lean times vary at random (user's choice, 2026-10-26). Never tuned on an organism's result.",
+  "notes": "Everything the world does is a rule of the Lean table: rain, drying and waste removal are exchanges with the outer reservoir at the stimulus potential (supply rule), spreading is the diffusion rule; the simulator computes their rates from the same formulas (gate check nested_world_rates_match_lean)."
+}

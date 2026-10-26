@@ -285,6 +285,121 @@ def check_table_is_record(name):
     return not diff, dict(record=man["life"]["record"], differing_fields=diff)
 
 
+def check_nested_world_rates_match_lean(name):
+    """Worlds (`cgb_nested_world`): on a 6 x 6 copy of the torus, the rate of every effective event
+    of the exact kernel and of the batched torch world equals the sum of the Lean medium's event
+    rates with that effect, transcribed here independently from `NestedWorld.eff1/eff2/c1/c2`,
+    `LatticeCRN.medium.rate` (`c * exp(-dE / 2)`, `dE` with reservoir work at boundary cells,
+    pages `torusPage`, boundary `bidW = [9, 26]`, neighbours `torusAdj`, energy `cellF`)."""
+    import math as m
+    import cgb_nested_world as NW
+    tbl = copy.deepcopy(NW.load(name))
+    G = tbl["geometry"]["G"] = 6
+    t = tbl["table"]
+    V, P, kin, kdiff = t["V"], t["pellet"], t["kappa_in"], t["kappa_diff"]
+    kind = NW.kinds(G)
+    page = {(x, y): 9 * int(kind[x, y]) + 3 * (x % 3) + y % 3 for x in range(G) for y in range(G)}
+    cells = list(page)
+
+    def adj(u, v):
+        return u != v and ((u[0] == v[0] and ((u[1] + 1) % G == v[1] or (v[1] + 1) % G == u[1])) or
+                           (u[1] == v[1] and ((u[0] + 1) % G == v[0] or (v[0] + 1) % G == u[0])))
+
+    def cellF(k):
+        return -(m.lgamma(V + 1) - m.lgamma(k + 1) - m.lgamma(V - k + 1))
+
+    def shift(k, d):
+        return k + d if 0 <= k + d <= V else None
+
+    def phi(l):
+        return cellF(l[0]) + cellF(l[1])
+
+    def content(l):
+        return l[0] + l[1]
+
+    def eff1(food, dr, i, l):
+        if food:
+            d = -P if dr else P
+            if i // 9 == 1 and shift(l[0], d) is not None:
+                return (l[0] + d, l[1])
+            return l
+        d = -1 if dr else 1
+        if i // 9 == 2 and shift(l[1], d) is not None:
+            return (l[0], l[1] + d)
+        return l
+
+    def eff2(food, dr, l, l2):
+        d = 1 if dr else -1
+        k = 0 if food else 1
+        a, b = shift(l[k], d), shift(l2[k], -d)
+        if a is None or b is None:
+            return l, l2
+        l, l2 = list(l), list(l2)
+        l[k], l2[k] = a, b
+        return tuple(l), tuple(l2)
+
+    rng = np.random.default_rng(5)
+    worst = 0.0
+    import torch
+    th_world = NW.World(tbl, B=1, device="cpu", dtype=torch.float64)
+    for trial in range(30):
+        f = rng.choice([0, 1, 2, V // 2, V - 1, V], size=(G, G)) if trial % 3 == 0 else rng.integers(0, V + 1, size=(G, G))
+        w = rng.integers(0, V + 1, size=(G, G)) if trial % 2 else rng.integers(0, 4, size=(G, G))
+        mu = rng.choice([-8.0, 0.0, 8.0], size=(G, G)) + (rng.normal(size=(G, G)) if trial % 2 else 0.0)
+        x = {c: (int(f[c]), int(w[c])) for c in cells}
+        res = {c: (float(mu[c]) if 9 <= page[c] <= 26 else 0.0) for c in cells}
+        ref = {}
+        for c in cells:   # single-cell rules: rate c1 * exp(-dE1 / 2)
+            for food in (True, False):
+                for dr in (True, False):
+                    l2 = eff1(food, dr, page[c], x[c])
+                    if l2 == x[c]:
+                        continue
+                    dE = phi(l2) - phi(x[c]) - res[c] * (content(l2) - content(x[c]))
+                    key = (c, "f" if food else "w", content(l2) - content(x[c]))
+                    ref[key] = ref.get(key, 0.0) + kin * m.exp(-dE / 2)
+        for u in cells:   # neighbour rules on ordered pairs: rate c2 * exp(-dE2 / 2)
+            for v in cells:
+                if not adj(u, v):
+                    continue
+                for food in (True, False):
+                    for dr in (True, False):
+                        a, b = eff2(food, dr, x[u], x[v])
+                        if (a, b) == (x[u], x[v]):
+                            continue
+                        rs = res[u] if 9 <= page[u] <= 26 else res[v]
+                        dE = (phi(a) + phi(b) - phi(x[u]) - phi(x[v]) -
+                              rs * (content(a) + content(b) - content(x[u]) - content(x[v])))
+                        k = 0 if food else 1
+                        src, dst = (v, u) if a[k] > x[u][k] else (u, v)
+                        key = (src, dst, "f" if food else "w")
+                        ref[key] = ref.get(key, 0.0) + kdiff * m.exp(-dE / 2)
+        out = NW.rates_np(f.astype(np.int64), w.astype(np.int64), mu.astype(np.float64), kind, tbl)
+        th_world.f[0] = torch.tensor(f)
+        th_world.w[0] = torch.tensor(w)
+        tr = th_world.rates(torch.tensor(mu)[None]).numpy()[0]
+        got_k, got_t = {}, {}
+        for (xx, yy) in cells:
+            c = xx * G + yy
+            for e in range(12):
+                if out[c, e] == 0.0 and tr[e, xx, yy] == 0.0:
+                    continue
+                if e < 4:
+                    key = ((xx, yy), "f" if e < 2 else "w", (P if e == 0 else -P) if e < 2 else (1 if e == 2 else -1))
+                else:
+                    s, d = (e - 4) // 4, (e - 4) % 4
+                    dx, dy = NW.World.SHIFT[d]
+                    key = ((xx, yy), ((xx + dx) % G, (yy + dy) % G), "f" if s == 0 else "w")
+                got_k[key] = got_k.get(key, 0.0) + out[c, e]
+                got_t[key] = got_t.get(key, 0.0) + float(tr[e, xx, yy])
+        for got in (got_k, got_t):
+            keys = set(ref) | set(got)
+            for kk in keys:
+                a, b = ref.get(kk, 0.0), got.get(kk, 0.0)
+                worst = max(worst, abs(a - b) / max(1e-12, abs(a), abs(b)))
+    return worst < 1e-9, dict(max_relative_error=worst, states=30, G=G)
+
+
 CHECKS = {k[len("check_"):]: v for k, v in list(globals().items()) if k.startswith("check_")}
 
 
@@ -465,7 +580,10 @@ def gate(name):
         failures.append("no Lean Medium instance with an Axioms proof")
     elif med not in decls:
         failures.append(f"Lean Medium instance {med} not in inventory")
-    life, lf = life_layer(man, decls)
+    if man.get("role") == "world":   # a world is not alive: it must only be an axiom model
+        life, lf = [], []
+    else:
+        life, lf = life_layer(man, decls)
     failures += lf
     return dict(architecture=name, implementation=man.get("implementation"), inventory_fresh=fresh,
                 lineage=lineage, execution=execution, lean_medium=med, life=life,

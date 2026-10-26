@@ -1,0 +1,31 @@
+{
+ "name": "rain_torus_w0",
+ "role": "world",
+ "implementation": "information_boltzmann/worlds/rain_torus_w0.json (world table) run by information_boltzmann/core/cgb_nested_world.py (exact Gillespie reference; batched tau-leaping on torch with CUDA Graph)",
+ "lean_medium": "CGB.NestedWorld.lattice",
+ "mechanisms": [
+  {
+   "id": "nested_world_medium",
+   "kind": "structure",
+   "what": "G x G torus of cells (food pool, waste pool, at most one organism); supply at source/sink cells is exchange with the outer reservoir at the stimulus potential; one-quantum diffusion between neighbours; cell energy -log C(V, n); rates c * exp(-dE / 2); an organism nested in it keeps the joint medium an axiom model",
+   "theorems": [
+    "CGB.NestedWorld.axioms_torus",
+    "CGB.NestedWorld.axioms",
+    "CGB.Generation.cell_step"
+   ],
+   "checks": [
+    "nested_world_rates_match_lean:rain_torus_w0"
+   ]
+  },
+  {
+   "id": "world_niche",
+   "kind": "constant",
+   "what": "V, kappa_in, kappa_diff, stimulus potentials, rain rate and duration, richness drift: a declared niche choice fixed before any organism lives here (niche_choice in the world table); never tuned on a result"
+  },
+  {
+   "id": "weather",
+   "kind": "constant",
+   "what": "the stimulus schedule (random rains whose rate drifts as an Ornstein-Uhlenbeck process; user clicks are rains): the world's outer environment, an input of the medium, not a rule"
+  }
+ ]
+}
