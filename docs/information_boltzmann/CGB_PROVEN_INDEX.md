@@ -2,7 +2,7 @@
 
 由 `scripts/build_proven_index.py` 从 Lean 源码生成。新工作开始前先在这里检索（定理名与文档注释首句），避免重复推导。
 
-共 987 条定理/引理。
+共 988 条定理/引理。
 **未入 Lean 的手工推导与数值见证**另列在 `CGB_HAND_DERIVATIONS.md`，检索时两处都要看。
 
 ## ActiveLoop（8）
@@ -395,7 +395,7 @@ _A generator of admitted media (generation chain, M1) Instead of proving the six
 - `p2b_of_energy`：**M1a**: symmetric (Metropolis-type) rates of a reversible event set under an energy give P2b.
 - `rate_local_of_energy`：**M1b**: a rate that is a function of the participants' states through the event's energy difference reads only the participants, when that difference does.
 
-## GenerationNestedWorld（38）
+## GenerationNestedWorld（39）
 _An organism nested in its world (T-E2) The joint medium of a bacterium-like organism and its world, as a lattice medium (M4)._
 
 - `poolShift_back`
@@ -428,6 +428,7 @@ _An organism nested in its world (T-E2) The joint medium of a bacterium-like org
 - `intake_is_exchange`：**Only exchanges feed the organism**: every single-cell event that raises the content held by the organism is a pool exchange; a gated one has conductance proportional to the intact membrane.
 - `dead_intake_is_physics`：**Death** (`Part.CanTakeIn` fails through the organism's own doing): with no intact membrane unit, every event that would raise the organism's content has rate zero, except an ungated exchange: physics the organism does 
 - `dead_output_is_physics`：**A dead body does not give itself away**: every single-cell event that lowers the content held by the organism is a pool exchange; with no intact membrane the gated ones have rate zero, so what leaves a dead body leaves
+- `frees_only_by_dissolving`：**Only dissolution empties a place** (with G26c `corpses_must_go`, why the table needs it): every single-cell event that turns a cell holding a body into a cell without one is the dissolution of an empty body.
 - `partner_exit_blocked`：A pair rule whose partner state is absent leaves the organism as it is.
 - `gated_exit_blocked`：A gated exchange has no conductance without an intact membrane.
 - `poolShift_one`
