@@ -408,6 +408,69 @@ theorem intake_gap_exists {a ρ pr pp : ℝ} (ha : 0 < a) (hρ : 1 < ρ) (hp : p
     linarith
   · refine ⟨1, one_pos, fun i j hij => absurd ⟨_, Finset.mem_image.2 ⟨(i, j), by simp [hij], rfl⟩⟩ he⟩
 
+/-- The leave threshold exists: whenever going elsewhere is worth more than a known-poor
+source (`pp < c`), enough misses push the best prediction below `c`. -/
+theorem exists_leave_threshold {a ρ pr pp c : ℝ} (ha : 0 < a) (hρ : 1 < ρ) (hp : pp < pr)
+    (hc : pp < c) : ∃ n, missPrediction a ρ pr pp n < c := by
+  obtain ⟨n, hn⟩ := ((tendsto_pow_atTop_atTop_of_one_lt hρ).eventually_gt_atTop
+    ((pr - pp) / (a * (c - pp)))).exists
+  refine ⟨n, ?_⟩
+  have hcp : 0 < c - pp := by linarith
+  have hac : 0 < a * (c - pp) := mul_pos ha hcp
+  have h1 : pr - pp < a * (c - pp) * ρ ^ n := by
+    rwa [div_lt_iff₀ hac, mul_comm] at hn
+  have hpos : 0 < 1 + a * ρ ^ n := by have := pow_pos (by linarith : (0:ℝ) < ρ) n; positivity
+  unfold missPrediction
+  have : (pr - pp) / (1 + a * ρ ^ n) < c - pp := by
+    rw [div_lt_iff₀ hpos]
+    nlinarith
+  linarith
+
+/-- Optimal foraging action after a history of misses: `1` (stay) iff the best predicted
+intake is at least the value `c` of going elsewhere, else `0` (leave). -/
+noncomputable def stayDecision (a ρ pr pp c : ℝ) (h : List Bool) : ℝ :=
+  if c ≤ missPrediction a ρ pr pp (h.count false) then 1 else 0
+
+/-- **G12 (a miss counter is necessary for optimal foraging)**: let `nStar` be the first
+miss count whose best prediction falls below `c` (all earlier counts stay at or above it).
+Any state code whose readout gives the optimal stay/leave action, for histories of up to
+`nStar` misses and every continuation of further misses, takes at least `nStar + 1`
+distinct values: histories with `i < j ≤ nStar` misses must be told apart, because after
+`nStar - j` more misses one must leave and the other must stay. The precision is fixed
+by the world (`c`, `pr`, `pp`, prior), not chosen. -/
+theorem miss_counter_necessary {S : Type*} [Fintype S] {a ρ pr pp c : ℝ} (nStar : ℕ)
+    (hbelow : missPrediction a ρ pr pp nStar < c)
+    (habove : ∀ n < nStar, c ≤ missPrediction a ρ pr pp n)
+    (code : List Bool → S) (decode : S → List Bool → ℝ)
+    (exact : ∀ (n : Fin (nStar + 1)) (k : ℕ), n + k ≤ nStar →
+      decode (code (List.replicate n false)) (List.replicate k false) =
+        stayDecision a ρ pr pp c (List.replicate n false ++ List.replicate k false)) :
+    nStar + 1 ≤ Fintype.card S := by
+  have h := LanguageLifeKernel.CausalState.separated_histories_capacity
+    (stayDecision a ρ pr pp c) (fun n : Fin (nStar + 1) => List.replicate n false) code decode
+    (fun n suffix => ∃ k, suffix = List.replicate k false ∧ (n : ℕ) + k ≤ nStar) (1 / 3)
+    (fun n suffix ⟨k, hs, hk⟩ => by subst hs; rw [exact n k hk, dist_self]; norm_num)
+    (fun i j hij => by
+      wlog hlt : (i : ℕ) < j generalizing i j
+      · obtain ⟨s, h1, h2, h3⟩ := this j i (Ne.symm hij)
+          (lt_of_le_of_ne (not_lt.1 hlt) (fun e => hij (Fin.ext e.symm)))
+        exact ⟨s, h2, h1, by rwa [dist_comm]⟩
+      refine ⟨List.replicate (nStar - j) false, ⟨_, rfl, by omega⟩, ⟨_, rfl, by omega⟩, ?_⟩
+      have hi : c ≤ missPrediction a ρ pr pp (i + (nStar - j)) := habove _ (by omega)
+      have hj : (j : ℕ) + (nStar - j) = nStar := by omega
+      simp only [stayDecision, List.count_append, List.count_replicate_self]
+      rw [if_pos hi, hj, if_neg (not_le.2 hbelow), Real.dist_eq]
+      norm_num)
+  simpa using h.2
+
+/-- Merging two histories that lie on opposite sides of the threshold costs expected
+intake: with positive weights, a single shared action earns strictly less than acting
+optimally on each. -/
+theorem merging_across_threshold_loses {w₁ w₂ p₁ p₂ c : ℝ} (hw₁ : 0 < w₁) (hw₂ : 0 < w₂)
+    (h₁ : c < p₁) (h₂ : p₂ < c) (stay : Bool) :
+    w₁ * (if stay then p₁ else c) + w₂ * (if stay then p₂ else c) < w₁ * p₁ + w₂ * c := by
+  cases stay <;> simp <;> nlinarith
+
 /-! ## Layer 2b: the integration bottleneck
 
 A single-unit move of `v` is produced by events whose participants form a clique
