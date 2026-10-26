@@ -1,0 +1,115 @@
+{
+ "architecture": "ecoli_ms_s0",
+ "implementation": "information_boltzmann/organisms/ecoli_ms_s0.json (multi-state rule table) run by information_boltzmann/core/cgb_table3.py inside information_boltzmann/core/cgb_chemotaxis2.py",
+ "inventory_fresh": true,
+ "lineage": [
+  {
+   "id": "rule_table_medium",
+   "kind": "structure",
+   "theorems": {
+    "CGB.tableCRN.axioms": "ok",
+    "CGB.PairCRN.axioms": "ok",
+    "CGB.Medium.p2b_of_energy": "ok"
+   },
+   "status": "licensed"
+  },
+  {
+   "id": "table_entries",
+   "kind": "selected",
+   "theorems": {},
+   "status": "selected (allowed)"
+  },
+  {
+   "id": "world_interface",
+   "kind": "constant",
+   "theorems": {},
+   "status": "constant (allowed)"
+  }
+ ],
+ "execution": [
+  {
+   "mechanism": "rule_table_medium",
+   "check": "table_lean_hash:ecoli_ms_s0",
+   "passed": true,
+   "table_sha256": "38ff4daa364a8d382398d91208cc7908b61c82d1a1324e64111291ef4801fa1b",
+   "lean_module": "GenerationOrganismEcoliMsS0"
+  },
+  {
+   "mechanism": "rule_table_medium",
+   "check": "table3_rates_match_lean:ecoli_ms_s0",
+   "passed": true,
+   "max_relative_error": 3.5224506774390485e-16,
+   "states": 200,
+   "units_per_page_cap": 5
+  },
+  {
+   "mechanism": "rule_table_medium",
+   "check": "table_is_record:ecoli_ms_s0",
+   "passed": true,
+   "record": "results/published/cgb_generated/ecoli_ms_s0_20261026.json",
+   "differing_fields": []
+  }
+ ],
+ "lean_medium": "CGB.Organisms.EcoliMsS0.axioms",
+ "life": [
+  {
+   "item": "lean:exposed",
+   "passed": true
+  },
+  {
+   "item": "lean:metabolizes",
+   "passed": true
+  },
+  {
+   "item": "export",
+   "passed": true,
+   "kinds": 9
+  },
+  {
+   "item": "selective_export",
+   "passed": true,
+   "max_min_ratio": 42092.22397565989
+  },
+  {
+   "item": "memory",
+   "passed": true,
+   "horizon": 32,
+   "curve": {
+    "1": {
+     "accuracy": 1.0,
+     "z": 17.32050807568877
+    },
+    "2": {
+     "accuracy": 0.9666666666666667,
+     "z": 16.16580753730952
+    },
+    "4": {
+     "accuracy": 0.72,
+     "z": 7.621023553303059
+    },
+    "8": {
+     "accuracy": 0.65,
+     "z": 5.196152422706632
+    },
+    "16": {
+     "accuracy": 0.68,
+     "z": 6.23538290724796
+    },
+    "32": {
+     "accuracy": 0.6,
+     "z": 3.4641016151377535
+    }
+   }
+  },
+  {
+   "item": "self_maintenance",
+   "organism_mean": 3979.5,
+   "cut_mean": 171.625,
+   "organism_median": 790.5,
+   "cut_median": 116.0,
+   "passed": true
+  }
+ ],
+ "admitted": true,
+ "failures": []
+}

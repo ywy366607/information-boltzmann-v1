@@ -244,6 +244,47 @@ def check_table_rates_match_lean(name):
     return worst < 1e-9, dict(max_relative_error=worst, states=200)
 
 
+def check_table3_rates_match_lean(name):
+    """Multi-state tables (`cgb_table3`, the simulator of the generated organisms): the compiled
+    rate of every rule direction equals the sum of the unit-level rates transcribed from the
+    Lean definitions. Unit-level enumeration is quadratic in units, so the check runs on a copy
+    with at most 5 units per page (rates depend on the table only through counts)."""
+    from cgb_table_medium import unit_pages, unit_rates
+    from cgb_table3 import _rates
+    t = dict(_table(name))
+    t["units"] = {k: min(v, 5) for k, v in t["units"].items()}
+    counts, phi, bnd, R, kap, S = _table_arrays(t)
+    nst = {int(p): int(v) for p, v in t.get("states", {}).items()}
+    pages = unit_pages(t)
+    P = len(t["pages"])
+    rng = np.random.default_rng(11)
+    worst = 0.0
+    for _ in range(200):
+        x = [int(rng.integers(nst.get(p, 2))) for p in pages]
+        mu_page = {p: float(rng.choice([-6.0, 0.0, 2.0, 6.0])) if p in t["boundary_pages"] else 0.0 for p in range(P)}
+        n = np.zeros((P, S), dtype=np.int64)
+        for u, p in enumerate(pages):
+            n[p, x[u]] += 1
+        w = np.zeros(2 * len(t["rules"]))
+        _rates(n, phi, bnd, np.array([mu_page[p] for p in range(P)]), R, kap, w)
+        ref = np.zeros_like(w)
+        for (k, d, _u, _v), r in unit_rates(t, x, mu_page).items():
+            ref[2 * k + int(d)] += r
+        worst = max(worst, float(np.abs(w - ref).max() / max(1.0, float(np.abs(ref).max()))))
+    return worst < 1e-9, dict(max_relative_error=worst, states=200, units_per_page_cap=5)
+
+
+def check_table_is_record(name):
+    """The admitted table is the one selection produced: every field except name/status equals
+    the `table` of the selection record named in the architecture manifest's life section."""
+    t = _table(name)
+    man = json.loads((ARCH / f"{name}.json").read_text(encoding="utf-8"))
+    rec = json.loads((ROOT / man["life"]["record"]).read_text(encoding="utf-8"))["table"]
+    keys = [k for k in rec if k not in ("name", "status")]
+    diff = [k for k in keys if rec[k] != t.get(k)]
+    return not diff, dict(record=man["life"]["record"], differing_fields=diff)
+
+
 CHECKS = {k[len("check_"):]: v for k, v in list(globals().items()) if k.startswith("check_")}
 
 

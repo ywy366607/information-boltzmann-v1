@@ -185,6 +185,10 @@ WORLDS = {}
 
 
 def world(s):
+    # training worlds are fresh every generation: caching them grows memory without bound
+    # (s2 died of it at generation 198), so only the fixed validation / held-out seeds are kept
+    if s >= 1000:
+        return W.make_world(s, TICKS)
     if s not in WORLDS:
         WORLDS[s] = W.make_world(s, TICKS)
     return WORLDS[s]
