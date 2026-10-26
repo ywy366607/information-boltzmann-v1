@@ -425,6 +425,237 @@ def check_nested_world_rates_match_lean(name):
     return ok, info
 
 
+def check_nested_organism_rates_match_lean(name):
+    """Organisms nested in a world (`cgb_nested_organism`): for random genomes, inner states and
+    pools, every rate column of the engine equals the sum of the Lean medium's event rates with
+    that effect, transcribed here unit by unit from `NestedWorld.eff1/eff2/c1/c2` (inner pair rules
+    on ordered unit pairs, exchanges with conductance `xκ * (gated ? intact membrane : 1)` and
+    energy `dφ + cellF(pool') - cellF(pool)`, turns `(a, b)` while the motor is not running,
+    forward and backward moves on ordered cell pairs with the fuel rule)."""
+    import math as m
+    import torch
+    import cgb_nested_world as NW
+    import cgb_nested_organism as NO
+    tbl = NW.load(name)
+    V = tbl["table"]["V"]
+    rng = np.random.default_rng(9)
+    B = 6
+
+    class Stub:
+        pass
+
+    st = Stub()
+    st.B, st.G, st.V, st.dt = B, 6, V, 0.05
+    st.f = torch.zeros(B, 6, 6, dtype=torch.int32)
+    st.w = torch.zeros(B, 6, 6, dtype=torch.int32)
+    org = NO.Organisms(st, NO.random_genomes(B, rng), seed=1)
+    pageIn = [p for p, u in enumerate(NO.UNITS) for _ in range(u)]
+    phi = org.phi.double().numpy()
+    kr, kx = org.kr.double().numpy(), org.kx.double().numpy()
+    kflip, kmove = org.kflip.double().numpy(), org.kmove.double().numpy()
+
+    def cellF(k):
+        return -(m.lgamma(V + 1) - m.lgamma(k + 1) - m.lgamma(V - k + 1))
+
+    worst = 0.0
+    for trial in range(8):
+        ys, fs, ws = [], [], []
+        for b in range(B):
+            y = [int(rng.integers(NO.STATES[p])) for p in pageIn]
+            if trial % 4 == 0:
+                for u, p in enumerate(pageIn):
+                    if p == NO.S:
+                        y[u] = 0           # dead: no intact membrane
+            ys.append(y)
+            fs.append(int(rng.choice([0, 1, 3, 50, V - 1, V])))
+            ws.append(int(rng.choice([0, 1, 7, V - 1, V])))
+        n = torch.zeros(B, 6, NO.SMAX, dtype=torch.int32)
+        for b in range(B):
+            for u, p in enumerate(pageIn):
+                n[b, p, ys[b][u]] += 1
+        org.n.copy_(n)
+        got = org.rates(torch.tensor(fs, dtype=torch.int32), torch.tensor(ws, dtype=torch.int32)).double().numpy()
+        for b in range(B):
+            y = ys[b]
+            ref = np.zeros(got.shape[1])
+            bugE = lambda yy: sum(phi[b, pageIn[u], yy[u]] for u in range(len(yy)))
+            c = 0
+            for r, (i, j, a1, a2, b1, b2) in enumerate(NO.RULES):        # spec k, (u, v, dir)
+                for dr in (0, 1):
+                    src = (b1, b2) if dr else (a1, a2)
+                    dst = (a1, a2) if dr else (b1, b2)
+                    for u in range(len(y)):
+                        for v in range(len(y)):
+                            if u == v or pageIn[u] != i or pageIn[v] != j or (y[u], y[v]) != src:
+                                continue
+                            y2 = list(y)
+                            y2[u], y2[v] = dst
+                            ref[c + dr] += kr[b, r] * m.exp(-(bugE(y2) - bugE(y)) / 2)
+                c += 2
+            gate = sum(1 for u in range(len(y)) if pageIn[u] == NO.GATE[0] and y[u] == NO.GATE[1])
+            for x, (p, a, bb, food, gated) in enumerate(NO.EXCH):        # exchange j, (u, dir)
+                for dr in (0, 1):
+                    s0, s1 = (bb, a) if dr else (a, bb)
+                    d = s0 - s1
+                    pool = fs[b] if food else ws[b]
+                    for u in range(len(y)):
+                        if pageIn[u] != p or y[u] != s0 or not 0 <= pool + d <= V:
+                            continue
+                        y2 = list(y)
+                        y2[u] = s1
+                        dE = bugE(y2) - bugE(y) + cellF(pool + d) - cellF(pool)
+                        ref[c + dr] += kx[b, x] * (gate if gated else 1) * m.exp(-dE / 2)
+                c += 2
+            motor = [u for u in range(len(y)) if pageIn[u] == NO.M][0]
+            if y[motor] != NO.RUN:                                       # turns (a, b), b != a
+                ref[c] = 3 * kflip[b]
+            c += 1
+            i, j, a1, a2, b1, b2 = NO.FUEL                               # moves (e, d, dir)
+            for fwd in (True, False):
+                src = (a1, a2) if fwd else (b1, b2)
+                dst = (b1, b2) if fwd else (a1, a2)
+                for e in range(len(y)):
+                    for dd in range(len(y)):
+                        if e == dd or pageIn[e] != i or pageIn[dd] != j or (y[e], y[dd]) != src:
+                            continue
+                        y2 = list(y)
+                        y2[e], y2[dd] = dst
+                        if y[motor] == NO.RUN and y2[motor] == NO.RUN:
+                            ref[c + (0 if fwd else 1)] += kmove[b] * m.exp(-(bugE(y2) - bugE(y)) / 2)
+            for k in range(len(ref)):
+                a_, g_ = ref[k], got[b, k]
+                worst = max(worst, abs(a_ - g_) / max(1e-30, abs(a_), abs(g_)))
+    return worst < 1e-5, dict(max_relative_error=worst, states=8 * B)
+
+
+def check_nested_organism_kernel_matches(name):
+    """The exact GPU organism kernel (`cgb_nested_organism_triton`, generated from the table):
+    (1) its rate columns equal `Organisms.rates` (itself checked against Lean) on random genomes
+    and states; (2) its events do what the columns say: from one fixed state, in a leap so short
+    that almost no lane has two events, the lanes' state changes are classified by the effect
+    pattern of each column, and each pattern's frequency matches its share of the total rate."""
+    import torch
+    if not torch.cuda.is_available():
+        return False, dict(error="needs CUDA")
+    import cgb_nested_world as NW
+    import cgb_nested_organism as NO
+    import cgb_nested_organism_triton as NX
+    tbl = NW.load(name)
+    V = tbl["table"]["V"]
+    rng = np.random.default_rng(13)
+
+    class Stub:
+        pass
+
+    def world(B, dt):
+        st = Stub()
+        st.B, st.G, st.V, st.dt = B, 3, V, dt
+        st.f = torch.tensor(rng.choice([0, 1, 5, 60, V - 1, V], size=(B, 3, 3)), dtype=torch.int32, device="cuda")
+        st.w = torch.tensor(rng.choice([0, 1, 4, V], size=(B, 3, 3)), dtype=torch.int32, device="cuda")
+        return st
+
+    def rand_n(B):
+        n = torch.zeros(B, 6, NO.SMAX, dtype=torch.int32)
+        for p, u in enumerate(NO.UNITS):
+            for b in range(B):
+                cuts = np.sort(rng.integers(0, u + 1, size=NO.STATES[p] - 1))
+                parts = np.diff(np.concatenate([[0], cuts, [u]]))
+                for s_, c in enumerate(parts):
+                    n[b, p, s_] = int(c)
+        return n.cuda()
+
+    B = 256
+    o = NX.ExactOrganisms(world(B, 0.05), NO.random_genomes(B, rng), seed=2)
+    o.n32.copy_(rand_n(B))
+    o.n = o.n32
+    worst = 0.0
+    a = o.kernel_rates().double()
+    ref = NO.Organisms.rates(o).double()
+    worst = ((a - ref).abs() / ref.abs().clamp(min=1e-30)).max().item()
+    rate_ok = worst < 1e-5 and bool(((a == 0) == (ref == 0)).all())
+    # effects
+    L = 1 << 20
+    g1 = NO.random_genomes(1, rng)
+    g = {k: np.repeat(np.asarray(v)[None] if np.ndim(v) == 0 else np.asarray(v)[:1], L, axis=0) for k, v in g1.items()}
+    st = world(1, 1.0)
+    f0, w0 = int(st.f[0, 0, 0]), int(st.w[0, 0, 0])
+    o1 = NX.ExactOrganisms(world(1, 1.0), g1, seed=3)
+    o1.n32.copy_(rand_n(1))
+    o1.n32[0, NO.M, :] = 0
+    o1.n32[0, NO.M, int(rng.integers(2))] = 1
+    o1.n = o1.n32
+    o1.x32.zero_(); o1.y32.zero_(); o1.x.zero_(); o1.y.zero_()
+    o1.W.f.fill_(f0); o1.W.w.fill_(w0)
+    r1 = NO.Organisms.rates(o1)[0].double().cpu().numpy()
+    tot = r1.sum()
+    dt = 0.01 / tot
+    ow = Stub()
+    ow.B, ow.G, ow.V, ow.dt = L, 3, V, dt
+    ow.f = torch.full((L, 3, 3), f0, dtype=torch.int32, device="cuda")
+    ow.w = torch.full((L, 3, 3), w0, dtype=torch.int32, device="cuda")
+    oL = NX.ExactOrganisms(ow, g, seed=4)
+    oL.n32.copy_(o1.n32.expand(L, -1, -1))
+    oL.n = oL.n32
+    oL.x32.zero_(); oL.y32.zero_(); oL.h32.zero_()
+    n0 = oL.n32.clone()
+    oL.leap()
+    dn = (oL.n32 - n0).view(L, -1).cpu().numpy()
+    dfo = (ow.f[:, 0, 0] - f0).cpu().numpy()
+    dwo = (ow.w[:, 0, 0] - w0).cpu().numpy()
+    dh = oL.h32.cpu().numpy()
+    pos = (oL.x32 * 3 + oL.y32).cpu().numpy()
+    changed = (np.abs(dn).sum(1) > 0) | (dfo != 0) | (dwo != 0) | (dh != 0) | (pos != 0)
+    pats = {}
+
+    def add(c, ch, df=0, dw=0, kind="plain"):
+        d = np.zeros(6 * NO.SMAX, dtype=np.int64)
+        for (p_, s_, v_) in ch:
+            d[p_ * NO.SMAX + s_] += v_
+        pats.setdefault((tuple(d), df, dw, kind), []).append(c)
+
+    c = 0
+    for (i, j, a1, a2, b1, b2) in NO.RULES:          # effects read from the table itself
+        add(c, [(i, a1, -1), (j, a2, -1), (i, b1, 1), (j, b2, 1)])
+        add(c + 1, [(i, b1, -1), (j, b2, -1), (i, a1, 1), (j, a2, 1)])
+        c += 2
+    for (p_, a_, b_, food, gated) in NO.EXCH:
+        for (s0, s1) in ((a_, b_), (b_, a_)):
+            dd = s0 - s1
+            add(c, [(p_, s0, -1), (p_, s1, 1)], df=dd if food else 0, dw=0 if food else dd)
+            c += 1
+    add(c, [], kind="turn")
+    i, j, a1, a2, b1, b2 = NO.FUEL
+    add(c + 1, [(i, a1, -1), (j, a2, -1), (i, b1, 1), (j, b2, 1)], kind="fwd")
+    add(c + 2, [(i, b1, -1), (j, b2, -1), (i, a1, 1), (j, a2, 1)], kind="back")
+    matched = np.zeros(L, dtype=bool)
+    zmax = 0.0
+    n1 = int(changed.sum())
+    for (d, df, dw, kind), cs in pats.items():
+        m = (dn == np.array(d)).all(1) & changed
+        if kind == "turn":
+            m &= (dh != 0) & (pos == 0)
+        elif kind == "fwd":
+            m &= pos == 3          # heading 0: x + 1
+        elif kind == "back":
+            m &= pos == 6          # x - 1 on a 3-torus
+        else:
+            m &= (dh == 0) & (pos == 0) & (dfo == df) & (dwo == dw)
+        if kind == "plain":
+            pass
+        else:
+            m &= (dfo == 0) & (dwo == 0)
+        obs = int(m.sum())
+        exp = n1 * r1[cs].sum() / tot
+        matched |= m
+        if exp > 0 or obs > 0:
+            zmax = max(zmax, abs(obs - exp) / np.sqrt(max(exp, 1.0)))
+    unmatched = int((changed & ~matched).sum())
+    # lanes with two events in the leap match no single pattern: expected fraction tot * dt / 2
+    eff_ok = zmax < 5.0 and unmatched <= 2 * n1 * 0.005 + 10
+    return rate_ok and eff_ok, dict(rate_max_relative_error=worst, single_event_lanes=n1, effect_max_z=zmax,
+                                    unmatched_lanes=unmatched)
+
+
 CHECKS = {k[len("check_"):]: v for k, v in list(globals().items()) if k.startswith("check_")}
 
 
