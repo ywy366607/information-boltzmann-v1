@@ -14,8 +14,9 @@
       return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
     };
   }
-  function up(n, V) { return n < V ? Math.sqrt((V - n) / (n + 1)) : 0; }   // pool gains a quantum
-  function dn(n, V) { return n > 0 ? Math.sqrt(n / (V - n + 1)) : 0; }     // pool loses a quantum
+  // mass action (Lean poolFactor, mass_action_up/down): pool conductance times exp(-dcellF/2)
+  function up(n, V) { return n < V ? V - n : 0; }   // pool gains a quantum
+  function dn(n, V) { return n > 0 ? n : 0; }       // pool loses a quantum
   function pois(lam, u) {                      // inversion, tail beyond 12 below 1e-9 for lam <= 1.2
     let p = Math.exp(-lam), c = p, k = 0;
     for (let i = 1; i <= 12; i++) { if (u > c) k++; p = p * lam / i; c += p; }

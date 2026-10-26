@@ -7,7 +7,10 @@ Every event is a rule of the Lean table, with the Lean rate `c * exp(-dE / 2)`:
   * diffusion (neighbours, `.inl (food, dir)`): one quantum of food or waste moves between
     adjacent cells. Both ordered pairs (u, v) and (v, u) are events of the medium, so a move from
     v to u has two events with the same rate (factor 2 below);
-  * cell energy `cellF V n = -log C(V, n)` (G26, `cell_step`).
+  * cell energy `cellF V n = -log C(V, n)` (G26, `cell_step`);
+  * every pool change carries the conductance `poolCond V a b = sqrt(prod_{min<=k<max} (k+1)(V-k))`
+    (system map 7.1, Lean `poolFactor`), so with `cellF` a pool of n quanta gains one at a rate
+    `∝ V - n` and loses one at a rate `∝ n` (mass action, `mass_action_up/down`).
 Rain, drying, waste removal and the user's clicks are stimuli (the reservoir potential of boundary
 cells), not code paths. Organism events plug in later from the organism's own table.
 
@@ -68,6 +71,12 @@ def _ssa_kernel():
         return -(math.lgamma(V + 1.0) - math.lgamma(n + 1.0) - math.lgamma(V - n + 1.0))
 
     @njit(cache=True)
+    def lc(V, a, b):
+        """log poolCond V a b."""
+        lo, hi = min(a, b), max(a, b)
+        return 0.5 * (math.lgamma(hi + 1.0) - math.lgamma(lo + 1.0) + math.lgamma(V - lo + 1.0) - math.lgamma(V - hi + 1.0))
+
+    @njit(cache=True)
     def rates(f, w, mu, kind, V, P, kin, kdiff, fE, out):
         """All effective events of the world. out[c, e]: c = cell (x * G + y);
         e 0/1: food pellet in/out (source), 2/3: waste in/out (sink),
@@ -83,14 +92,14 @@ def _ssa_kernel():
                 m = mu[x, y]
                 if kind[x, y] == 1:
                     if f[x, y] + P <= V:
-                        out[c, 0] = kin * math.exp(-(lf(V, f[x, y] + P) - lf(V, f[x, y]) - (m - fE) * P) / 2.0)
+                        out[c, 0] = kin * math.exp(lc(V, f[x, y], f[x, y] + P) - (lf(V, f[x, y] + P) - lf(V, f[x, y]) - (m - fE) * P) / 2.0)
                     if f[x, y] >= P:
-                        out[c, 1] = kin * math.exp(-(lf(V, f[x, y] - P) - lf(V, f[x, y]) + (m - fE) * P) / 2.0)
+                        out[c, 1] = kin * math.exp(lc(V, f[x, y], f[x, y] - P) - (lf(V, f[x, y] - P) - lf(V, f[x, y]) + (m - fE) * P) / 2.0)
                 elif kind[x, y] == 2:
                     if w[x, y] + 1 <= V:
-                        out[c, 2] = kin * math.exp(-(lf(V, w[x, y] + 1) - lf(V, w[x, y]) - m) / 2.0)
+                        out[c, 2] = kin * math.exp(lc(V, w[x, y], w[x, y] + 1) - (lf(V, w[x, y] + 1) - lf(V, w[x, y]) - m) / 2.0)
                     if w[x, y] >= 1:
-                        out[c, 3] = kin * math.exp(-(lf(V, w[x, y] - 1) - lf(V, w[x, y]) + m) / 2.0)
+                        out[c, 3] = kin * math.exp(lc(V, w[x, y], w[x, y] - 1) - (lf(V, w[x, y] - 1) - lf(V, w[x, y]) + m) / 2.0)
                 for d in range(4):
                     tx = (x + (1 if d == 0 else (G - 1 if d == 2 else 0))) % G
                     ty = (y + (1 if d == 1 else (G - 1 if d == 3 else 0))) % G
@@ -99,7 +108,8 @@ def _ssa_kernel():
                         if a[x, y] >= 1 and a[tx, ty] + 1 <= V:
                             dE = (lf(V, a[tx, ty] + 1) - lf(V, a[tx, ty]) +
                                   lf(V, a[x, y] - 1) - lf(V, a[x, y]))
-                            out[c, 4 + 4 * s + d] = 2.0 * kdiff * math.exp(-dE / 2.0)
+                            lcd = lc(V, a[tx, ty], a[tx, ty] + 1) + lc(V, a[x, y], a[x, y] - 1)
+                            out[c, 4 + 4 * s + d] = 2.0 * kdiff * math.exp(lcd - dE / 2.0)
                 for e in range(12):
                     tot += out[c, e]
         return tot
@@ -212,18 +222,25 @@ class World:
         n = n.to(self.torch.float64)
         return -(self.lgV - self.torch.lgamma(n + 1) - self.torch.lgamma(self.V - n + 1))
 
+    def lc(self, a, b):
+        """log poolCond V a b (clamped outside 0..V; those rates are masked)."""
+        th, V = self.torch, self.V
+        lo = th.minimum(a, b).clamp(0, V).to(th.float64)
+        hi = th.maximum(a, b).clamp(0, V).to(th.float64)
+        return 0.5 * (th.lgamma(hi + 1) - th.lgamma(lo + 1) + th.lgamma(V - lo + 1) - th.lgamma(V - hi + 1))
+
     def _nb(self, a, d):
         dx, dy = self.SHIFT[d]
         return self.torch.roll(a, shifts=(-dx, -dy), dims=(1, 2))
 
     def _tables(self):
-        """exp(-(cellF(n+1) - cellF(n)) / 2) = sqrt((V - n) / (n + 1)) (`cell_step`) for adding a
-        quantum, and its inverse at n - 1 for removing one; 0 where the shift leaves 0..V."""
+        """Mass action (`mass_action_up/down`): poolCond * exp(-dcellF / 2) is V - n for adding a
+        quantum and n for removing one; 0 where the shift leaves 0..V."""
         if not hasattr(self, "_up"):
             th, V = self.torch, self.V
             n = th.arange(V + 1, dtype=th.float64, device=self.dev)
-            self._up = th.where(n < V, th.sqrt((V - n) / (n + 1)), 0.0).to(self.dtype)
-            self._dn = th.where(n > 0, th.sqrt(n / (V - n + 1)), 0.0).to(self.dtype)
+            self._up = th.where(n < V, V - n, 0.0).to(self.dtype)
+            self._dn = n.to(self.dtype)
         return self._up, self._dn
 
     def rates(self, mu):
@@ -245,13 +262,14 @@ class World:
                     out[:, 4 + 4 * s + d] = (2.0 * self.kdiff) * da * self._nb(ua, d)
             return out
         lff, lfw = self.lf(f), self.lf(w)
-        r = self.kin * th.exp(-(self.lf(f + P) - lff - (mu - self.foodE) * P) / 2)
+        lc = self.lc
+        r = self.kin * th.exp(lc(f, f + P) - (self.lf(f + P) - lff - (mu - self.foodE) * P) / 2)
         out[:, 0] = th.where(self.src & (f + P <= V), r, 0.0)
-        r = self.kin * th.exp(-(self.lf(f - P) - lff + (mu - self.foodE) * P) / 2)
+        r = self.kin * th.exp(lc(f, f - P) - (self.lf(f - P) - lff + (mu - self.foodE) * P) / 2)
         out[:, 1] = th.where(self.src & (f >= P), r, 0.0)
-        r = self.kin * th.exp(-(self.lf(w + 1) - lfw - mu) / 2)
+        r = self.kin * th.exp(lc(w, w + 1) - (self.lf(w + 1) - lfw - mu) / 2)
         out[:, 2] = th.where(self.snk & (w + 1 <= V), r, 0.0)
-        r = self.kin * th.exp(-(self.lf(w - 1) - lfw + mu) / 2)
+        r = self.kin * th.exp(lc(w, w - 1) - (self.lf(w - 1) - lfw + mu) / 2)
         out[:, 3] = th.where(self.snk & (w >= 1), r, 0.0)
         for s, a in enumerate((f, w)):
             la, lam = self.lf(a), self.lf(a - 1)
@@ -259,7 +277,8 @@ class World:
                 b = self._nb(a, d)
                 dE = self.lf(b + 1) - self.lf(b) + lam - la
                 ok = (a >= 1) & (b + 1 <= V)
-                out[:, 4 + 4 * s + d] = th.where(ok, 2.0 * self.kdiff * th.exp(-dE / 2), 0.0)
+                lcd = lc(b, b + 1) + lc(a, a - 1)
+                out[:, 4 + 4 * s + d] = th.where(ok, 2.0 * self.kdiff * th.exp(lcd - dE / 2), 0.0)
         return out
 
     def step(self, mu, T=1.0):

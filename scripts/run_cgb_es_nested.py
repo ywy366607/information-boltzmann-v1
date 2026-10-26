@@ -39,8 +39,9 @@ def bounds():
     lo, hi = [plo], [phi_hi]
     for k, n in KEYS[1:]:
         m = max(n, 1)
-        lo.append(np.full(m, -9.0))
-        hi.append(np.full(m, 0.0))
+        r = NO.LOGK_X_RANGE if k == "logk_x" else NO.LOGK_RANGE
+        lo.append(np.full(m, r[0]))
+        hi.append(np.full(m, r[1]))
     return np.concatenate(lo), np.concatenate(hi)
 
 

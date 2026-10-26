@@ -311,6 +311,12 @@ def check_nested_world_rates_match_lean(name):
     def shift(k, d):
         return k + d if 0 <= k + d <= V else None
 
+    def poolCond(a, b):   # `poolCond`: sqrt of the product over min <= k < max of (k + 1)(V - k)
+        return m.exp(0.5 * sum(m.log(k + 1) + m.log(V - k) for k in range(min(a, b), max(a, b))))
+
+    def poolFactor(l, l2):
+        return poolCond(l[0], l2[0]) * poolCond(l[1], l2[1])
+
     fE = t.get("foodE", 0.0)
 
     def phi(l):
@@ -359,7 +365,7 @@ def check_nested_world_rates_match_lean(name):
                         continue
                     dE = phi(l2) - phi(x[c]) - res[c] * (content(l2) - content(x[c]))
                     key = (c, "f" if food else "w", content(l2) - content(x[c]))
-                    ref[key] = ref.get(key, 0.0) + kin * m.exp(-dE / 2)
+                    ref[key] = ref.get(key, 0.0) + kin * poolFactor(x[c], l2) * m.exp(-dE / 2)
         for u in cells:   # neighbour rules on ordered pairs: rate c2 * exp(-dE2 / 2)
             for v in cells:
                 if not adj(u, v):
@@ -375,7 +381,7 @@ def check_nested_world_rates_match_lean(name):
                         k = 0 if food else 1
                         src, dst = (v, u) if a[k] > x[u][k] else (u, v)
                         key = (src, dst, "f" if food else "w")
-                        ref[key] = ref.get(key, 0.0) + kdiff * m.exp(-dE / 2)
+                        ref[key] = ref.get(key, 0.0) + kdiff * poolFactor(x[u], a) * poolFactor(x[v], b) * m.exp(-dE / 2)
         out = NW.rates_np(f.astype(np.int64), w.astype(np.int64), mu.astype(np.float64), kind, tbl)
         th_world.f[0] = torch.tensor(f)
         th_world.w[0] = torch.tensor(w)
@@ -431,7 +437,7 @@ def check_nested_organism_rates_match_lean(name):
     """Organisms nested in a world (`cgb_nested_organism`): for random genomes, inner states and
     pools, every rate column of the engine equals the sum of the Lean medium's event rates with
     that effect, transcribed here unit by unit from `NestedWorld.eff1/eff2/c1/c2` (inner pair rules
-    on ordered unit pairs, exchanges with conductance `xκ * (gated ? intact membrane : 1)` and
+    on ordered unit pairs, exchanges with conductance `xκ * (gated ? intact membrane : 1) * poolFactor` and
     energy `dφ + cellF(pool') - cellF(pool)`, turns `(a, b)` while the motor is not running,
     forward and backward moves on ordered cell pairs with the fuel rule)."""
     import math as m
@@ -459,6 +465,9 @@ def check_nested_organism_rates_match_lean(name):
 
     def cellF(k):
         return -(m.lgamma(V + 1) - m.lgamma(k + 1) - m.lgamma(V - k + 1))
+
+    def poolCond(a, b):   # `poolCond`
+        return m.exp(0.5 * sum(m.log(k + 1) + m.log(V - k) for k in range(min(a, b), max(a, b))))
 
     worst = 0.0
     for trial in range(8):
@@ -507,7 +516,7 @@ def check_nested_organism_rates_match_lean(name):
                         y2 = list(y)
                         y2[u] = s1
                         dE = bugE(y2) - bugE(y) + cellF(pool + d) - cellF(pool) + (fE * d if food else 0.0)
-                        ref[c + dr] += kx[b, x] * (gate if gated else 1) * m.exp(-dE / 2)
+                        ref[c + dr] += kx[b, x] * (gate if gated else 1) * poolCond(pool, pool + d) * m.exp(-dE / 2)
                 c += 2
             motor = [u for u in range(len(y)) if pageIn[u] == NO.M][0]
             if y[motor] != NO.RUN:                                       # turns (a, b), b != a

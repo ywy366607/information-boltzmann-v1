@@ -27,8 +27,8 @@ import cgb_nested_organism as NO  # noqa: E402
 import cgb_nested_organism_triton as NX  # noqa: E402
 
 KEYS = ("phi", "logk_rule", "logk_x", "log_flip", "log_move")
-RANGES = {"phi": NO.phi_range(), "logk_rule": (-9.0, 0.0), "logk_x": (-9.0, 0.0),
-          "log_flip": (-9.0, 0.0), "log_move": (-9.0, 0.0)}
+RANGES = {"phi": NO.phi_range(), "logk_rule": NO.LOGK_RANGE, "logk_x": NO.LOGK_X_RANGE,
+          "log_flip": NO.LOGK_RANGE, "log_move": NO.LOGK_RANGE}
 VAL = tuple(range(500, 516))
 
 

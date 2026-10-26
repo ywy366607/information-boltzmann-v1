@@ -6,10 +6,11 @@ Events and Lean rates (`c * exp(-dE / 2)`; the organism's cell may be a boundary
 organism event conserves the cell's content, so the reservoir term vanishes):
   * inner pair rule k on units (u, v), u != v: kappa_k * exp(-dE_phi / 2), summed over ordered
     unit pairs in the source states (multiplicity n[i, s] * n[j, t]);
-  * exchange j of unit u with the cell's food or waste pool: kappa_j * gate * exp(-dE / 2) with
-    dE = dphi + cellF(pool + d) - cellF(pool), i.e. the factor sqrt((V - n) / (n + 1)) when the
-    pool gains one quantum and sqrt(n / (V - n + 1)) when it loses one; gate = intact membrane
-    units for gated exchanges, 1 for wear;
+  * exchange j of unit u with the cell's food or waste pool:
+    kappa_j * gate * poolCond * exp(-dE / 2) with dE = dphi + cellF(pool + d) - cellF(pool);
+    with the pool conductance (Lean `poolFactor`, system map 7.1) this is mass action: the factor
+    V - n when the pool gains one quantum and n when it loses one (`mass_action_up/down`);
+    gate = intact membrane units for gated exchanges, 1 for wear;
   * turn from heading a to each b != a while the motor is not running: kappa_flip each;
   * move to the cell ahead (forward, fuel rule a -> b) or behind (fuel b -> a) while the motor
     runs before and after: kappa_move * exp(-dE_fuel / 2) * fuel multiplicity.
@@ -50,7 +51,9 @@ EXCH = ((F, 0, 1, True, True),    # bind
 FUEL = (E, D, 1, 0, 0, 1)
 GATE = (S, 1)
 PHI_S1 = 2.0                       # physics: intact membrane, between waste (< 0) and food (foodE + ln c)
-LOGK_LEAK = math.log(1e-5)         # physics: leak prefactor of every page
+LOGK_LEAK = math.log(2.6e-7)       # physics: leak prefactor of every page; under mass action a leak into an
+                                   # empty waste pool fires at kappa * V, the same per-quantum rate as the
+                                   # first table's 1e-5 * sqrt(V) (V = 1500)
 PHI_PER_QUANTUM = (0.0, 8.0)       # physics: energy per content quantum of a held state; the floor 0 keeps
                                    # every body state above waste up to a half-full pool (no condensation
                                    # of bodies out of waste); the scale bounds holds (`leak_bound`)
@@ -58,15 +61,18 @@ PHI_BOUND = 16.0                   # |phi| <= PHI_BOUND for every state (content
 N_SELECTED_X = 4                   # bind, unload, uptake, excrete
 SELECTED_PHI = ((F, 1), (F, 2), (Y, 1), (M, 1), (E, 1), (D, 1))
 SHIFT = ((1, 0), (0, 1), (-1, 0), (0, -1))
+LOGK_RANGE = (-9.0, 0.0)           # selection range of rule, turn and move prefactors
+LOGK_X_RANGE = (-16.0, -4.0)       # exchanges: under mass action the pool factor is n or V - n (up to 1500),
+                                   # so the range moves down by ~ln sqrt(8 V) ~ 4.7 and widens
 
 
-def random_genomes(B, rng, lo=-9.0, hi=0.0):
+def random_genomes(B, rng, lo=LOGK_RANGE[0], hi=LOGK_RANGE[1]):
     """Selected numbers, uniform in the prereg ranges, with the time-scale premise
     logk(Y0 + F1) <= logk(bind) - ln 20."""
     plo, phi_hi = phi_range()
     g = dict(phi=rng.uniform(plo, phi_hi, size=(B, len(SELECTED_PHI))),
              logk_rule=rng.uniform(lo, hi, size=(B, len(RULES))),
-             logk_x=rng.uniform(lo, hi, size=(B, 4)),
+             logk_x=rng.uniform(*LOGK_X_RANGE, size=(B, 4)),
              log_flip=rng.uniform(lo, hi, size=B),
              log_move=rng.uniform(lo, hi, size=B))
     return premise(g)
@@ -132,11 +138,11 @@ class Organisms:
 
     def _up(self, n):
         n = n.to(torch.float32)
-        return torch.where(n < self.V, torch.sqrt((self.V - n) / (n + 1.0)), torch.zeros_like(n))
+        return torch.where(n < self.V, self.V - n, torch.zeros_like(n))
 
     def _dn(self, n):
         n = n.to(torch.float32)
-        return torch.where(n > 0, torch.sqrt(n / (self.V - n + 1.0)), torch.zeros_like(n))
+        return torch.where(n > 0, n, torch.zeros_like(n))
 
     def pools(self):
         cell = self.x * self.G + self.y

@@ -20,13 +20,13 @@ import triton.language as tl
 @triton.jit
 def _up(n, V):
     nf = n.to(tl.float32)
-    return tl.where(n < V, tl.sqrt((V - nf) / (nf + 1.0)), 0.0)
+    return tl.where(n < V, V - nf, 0.0)
 
 
 @triton.jit
 def _dn(n, V):
     nf = n.to(tl.float32)
-    return tl.where(n > 0, tl.sqrt(nf / (V - nf + 1.0)), 0.0)
+    return tl.where(n > 0, nf, 0.0)
 
 
 @triton.jit

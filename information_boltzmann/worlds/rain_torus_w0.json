@@ -11,8 +11,8 @@
   "table": {
     "V": 1500,
     "pellet": 1,
-    "kappa_in": 0.01,
-    "kappa_diff": 0.2,
+    "kappa_in": 3.663e-05,
+    "kappa_diff": 3.333e-05,
     "B": 16,
     "kappa_dis": 0.005,
     "foodE": 8.0
@@ -20,7 +20,7 @@
   "stimulus": {
     "mu_sink": -8.0,
     "mu_dry": 0.0,
-    "mu_rain": 16.0,
+    "mu_rain": 17.0,
     "rain_rate": 0.05,
     "rain_dur": 50,
     "rate_sigma": 1.15,
@@ -30,5 +30,6 @@
   "niche_choice": "Numbers fixed before any organism lives here, by one principle: separated timescales, rain (50 ticks) << food lifetime after rain (~10^2-10^3 ticks) << richness drift (2000 ticks, as W2). Rich and lean times vary at random (user's choice, 2026-10-26). Never tuned on an organism's result.",
   "notes": "Everything the world does is a rule of the Lean table: rain, drying and waste removal are exchanges with the outer reservoir at the stimulus potential (supply rule), spreading is the diffusion rule; the simulator computes their rates from the same formulas (gate check nested_world_rates_match_lean).",
   "dissolution": "physics (2026-10-27, after G26c and frees_only_by_dissolving): a body without intact membrane dissolves into the cell's waste pool with everything it holds (B plus inner content); conductance is symmetric Metropolis, kappa_dis * exp(-|dE|/2), so downhill dissolution runs at kappa_dis = 0.005 (a corpse lasts ~200 ticks) and the reverse (a dead body forming from waste) at kappa_dis * exp(-|dE|). B = 16; the reverse is negligible at the waste levels of this world (simulators omit it; the cross-check reports the bound).",
-  "food_energy": "physics (2026-10-27): a food quantum carries chemical energy foodE = 8 relative to a waste quantum (food is free energy, not only matter; derived earlier for the 2D world, forgotten in the first nested table). The food reservoir potentials shift by +8 (dry 0, rain 16), so the world's own dynamics are unchanged; only the organism's food and waste exchanges see the difference. Without it food and waste were the same content at different concentrations and bodies condensed out of concentrated waste."
+  "food_energy": "physics (2026-10-27): a food quantum carries chemical energy foodE = 8 relative to a waste quantum (food is free energy, not only matter; derived earlier for the 2D world, forgotten in the first nested table). The food reservoir potentials shift by +8 (dry 0, rain 16), so the world's own dynamics are unchanged; only the organism's food and waste exchanges see the difference. Without it food and waste were the same content at different concentrations and bodies condensed out of concentrated waste.",
+  "mass_action": "physics (2026-10-27, system map 7.1, Lean poolFactor / mass_action_up/down): every pool change carries the conductance sqrt(product of multiplicities), so a pool of n quanta gains one at a rate proportional to V - n and loses one at a rate proportional to n; each quantum moves on its own. The first table used a constant conductance (the pool acted as one unit: decay and diffusion per quantum fell as 1/sqrt(n), halos stayed narrow and uptake grew as sqrt(food)). Constants re-declared from the same timescales, not from any organism: a dry food quantum lives 500 ticks (kappa_in * exp(foodE/2) = 1/500, so kappa_in = e^-4/500); a rain fills an empty cell at ~5 quanta per tick (kappa_in * V * exp((mu_rain - foodE)/2) = 5, so mu_rain = 17); a quantum hops 0.1 per tick to each neighbour (2 kappa_diff V = 0.1), so a food patch spreads over sqrt(D tau) ~ 7 cells: wider than one cell (a gradient exists) and much narrower than the torus (patches stay separate). Waste leaves a sink at the same 1/500 per quantum (mu_sink = -8)."
 }

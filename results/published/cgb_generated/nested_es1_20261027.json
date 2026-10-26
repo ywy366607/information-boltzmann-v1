@@ -1,0 +1,154 @@
+{
+ "prereg": "docs/information_boltzmann/CGB_NESTED_ORGANISM_PREREG_20261027.md",
+ "method": "ES (Qiu et al. 2025, arXiv 2509.24372), common random numbers",
+ "world": "rain_torus_w0",
+ "init": "results/published/cgb_generated/nested_s1_20261027.json",
+ "args": {
+  "init": "results/published/cgb_generated/nested_s1_20261027.json",
+  "iters": 30,
+  "N": 30,
+  "worlds": 8,
+  "sigma": 0.08,
+  "alpha": 0.08,
+  "ticks": 8000,
+  "vevery": 5,
+  "seed": 2,
+  "out": "results/published/cgb_generated/nested_es1_20261027.json"
+ },
+ "history": [
+  {
+   "iter": 0,
+   "center_mean": 2967.875,
+   "center_median": 2638.0,
+   "pert_mean": [
+    1142.75,
+    2476.875,
+    3959.5
+   ],
+   "overflow_lanes": 0,
+   "seconds": 194.0
+  },
+  {
+   "iter": 1,
+   "center_mean": 3011.0,
+   "center_median": 2202.5,
+   "pert_mean": [
+    2362.125,
+    3101.0625,
+    4400.0
+   ],
+   "overflow_lanes": 0,
+   "seconds": 194.9
+  },
+  {
+   "iter": 2,
+   "center_mean": 2322.5,
+   "center_median": 2350.0,
+   "pert_mean": [
+    2302.875,
+    2950.5625,
+    3809.25
+   ],
+   "overflow_lanes": 0,
+   "seconds": 196.8
+  },
+  {
+   "iter": 3,
+   "center_mean": 3280.875,
+   "center_median": 2906.0,
+   "pert_mean": [
+    1704.375,
+    2964.625,
+    4106.5
+   ],
+   "overflow_lanes": 0,
+   "seconds": 195.6
+  },
+  {
+   "iter": 4,
+   "center_mean": 3355.875,
+   "center_median": 3103.0,
+   "pert_mean": [
+    1842.0,
+    2986.25,
+    3889.125
+   ],
+   "overflow_lanes": 0,
+   "seconds": 197.6
+  },
+  {
+   "iter": 5,
+   "center_mean": 3757.375,
+   "center_median": 3477.5,
+   "pert_mean": [
+    2326.875,
+    2824.125,
+    4263.875
+   ],
+   "overflow_lanes": 0,
+   "seconds": 311.4
+  }
+ ],
+ "validation": [
+  {
+   "iter": 4,
+   "val": [
+    1565.0,
+    3094.0,
+    7502.0
+   ],
+   "val_mean": 3471.3125
+  }
+ ],
+ "theta": [
+  0.690234611375983,
+  0.38942973805446435,
+  0.6737803617929885,
+  0.7445265583600209,
+  0.9572589782083598,
+  0.6611610183983513,
+  0.2964412815865061,
+  0.5324745188846647,
+  0.022350629233722476,
+  0.0,
+  0.7802704528285248,
+  0.7991189571351507,
+  0.6352354514035246,
+  0.9906807182983275,
+  0.6891241113108082,
+  0.5592287628927763
+ ],
+ "best": {
+  "gen": 4,
+  "genome": {
+   "phi": [
+    5.526816359887187,
+    6.00071321388343,
+    5.193650684214192,
+    5.9422299209821,
+    7.7629106964771,
+    5.180602214552568
+   ],
+   "logk_rule": [
+    -6.262818053221825,
+    -4.215065757284974,
+    -8.95340974605219,
+    -8.952273741096551
+   ],
+   "logk_x": [
+    -1.93372320454427,
+    -1.75315538061622,
+    -3.5082018658302907,
+    0.0
+   ],
+   "log_flip": -2.9150995202360344,
+   "log_move": -3.698909653762339
+  },
+  "val": [
+   1565.0,
+   3094.0,
+   7502.0
+  ],
+  "val_mean": 3471.3125
+ }
+}
