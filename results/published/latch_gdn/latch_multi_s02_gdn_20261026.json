@@ -1,0 +1,25 @@
+{
+ "prereg": "docs/information_boltzmann/CGB_LINEAR_MEMORY_LATCH_PREREG_20261026.md#part-2",
+ "args": {
+  "steps": 1500,
+  "seeds": 1,
+  "kinds": [
+   "gdn"
+  ],
+  "sigma": 0.2,
+  "out": "results/published/latch_gdn/latch_multi_s02_gdn_20261026.json"
+ },
+ "runs": [
+  {
+   "kind": "gdn",
+   "seed": 0,
+   "final_loss": 0.03521234542131424,
+   "acc": {
+    "16": 1.0,
+    "64": 0.8115234375,
+    "256": 0.490234375,
+    "1024": 0.5146484375
+   }
+  }
+ ]
+}
