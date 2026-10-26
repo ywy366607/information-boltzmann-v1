@@ -1,5 +1,7 @@
 import CGBAxioms.Inference
 import CGBAxioms.LanguageLifeKernel
+import Mathlib.Analysis.SpecialFunctions.ExpDeriv
+import Mathlib.Analysis.SpecialFunctions.Log.Deriv
 
 /-!
 # Generation, layer 1: what the axioms force on the equilibrium law
@@ -492,6 +494,85 @@ theorem merging_across_threshold_loses {w₁ w₂ p₁ p₂ c : ℝ} (hw₁ : 0 
     (h₁ : c < p₁) (h₂ : p₂ < c) (stay : Bool) :
     w₁ * (if stay then p₁ else c) + w₂ * (if stay then p₂ else c) < w₁ * p₁ + w₂ * c := by
   cases stay <;> simp <;> nlinarith
+
+/-! ## The learning rule (delta rule) from the two-phase protocol
+
+Readout (G13): the boundary takes value `c` with probability `softmax z c`, where the
+logit `z c` collects the couplings from the slow interior. A plastic coupling `w` from an
+interior unit with state `x` to boundary value `b` adds `x * w` to `z b`. -/
+
+/-- Boundary readout law. -/
+noncomputable def softmax {B : Type*} [Fintype B] (z : B → ℝ) (c : B) : ℝ :=
+  Real.exp (z c) / ∑ d, Real.exp (z d)
+
+/-- **G14a (two-phase drift)**: in the drive phase the boundary is clamped to the arrived
+value `b'` and the site moves by `+λ x` when the boundary shows `b`; in the free phase the
+boundary samples the readout law and the site moves by `-μ x` when it shows `b`. The
+expected drift per cycle is `x (λ [b = b'] - μ softmax z b)`. -/
+theorem two_phase_drift {B : Type*} [Fintype B] [DecidableEq B] (z : B → ℝ) (b b' : B)
+    (x lam mu : ℝ) :
+    lam * x * (if b' = b then 1 else 0) - mu * ∑ c, softmax z c * (x * (if c = b then 1 else 0)) =
+      x * (lam * (if b' = b then 1 else 0) - mu * softmax z b) := by
+  simp only [mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]
+  split_ifs <;> ring
+
+/-- The readout law sums to one. -/
+theorem softmax_sum {B : Type*} [Fintype B] [Nonempty B] (z : B → ℝ) :
+    ∑ c, softmax z c = 1 := by
+  simp only [softmax, div_eq_mul_inv, ← Finset.sum_mul]
+  exact mul_inv_cancel₀ (Finset.sum_pos (fun _ _ => Real.exp_pos _) Finset.univ_nonempty).ne'
+
+/-- **G14b**: the log likelihood of the arrived value `b'` changes, per unit change of that
+coupling, by `x ([b' = b] - softmax z b)`. -/
+theorem log_softmax_deriv {B : Type*} [Fintype B] [DecidableEq B] (z : B → ℝ) (b b' : B)
+    (x : ℝ) :
+    HasDerivAt (fun t => Real.log (softmax (fun c => z c + if c = b then t * x else 0) b'))
+      (x * ((if b' = b then 1 else 0) - softmax z b)) 0 := by
+  have hS : ∀ t : ℝ, 0 < ∑ d, Real.exp (z d + if d = b then t * x else 0) := fun t =>
+    Finset.sum_pos (fun _ _ => Real.exp_pos _) ⟨b, Finset.mem_univ _⟩
+  have hform : (fun t => Real.log (softmax (fun c => z c + if c = b then t * x else 0) b')) =
+      fun t => (z b' + if b' = b then t * x else 0) -
+        Real.log (∑ d, Real.exp (z d + if d = b then t * x else 0)) := by
+    funext t
+    simp only [softmax]
+    rw [Real.log_div (Real.exp_pos _).ne' (hS t).ne', Real.log_exp]
+  rw [hform]
+  have hlin : ∀ d, HasDerivAt (fun t : ℝ => z d + if d = b then t * x else 0)
+      (if d = b then x else 0) 0 := fun d => by
+    split_ifs
+    · simpa using ((hasDerivAt_id (0 : ℝ)).mul_const x).const_add (z d)
+    · simpa using hasDerivAt_const (0 : ℝ) (z d)
+  have hsum : HasDerivAt (fun t => ∑ d, Real.exp (z d + if d = b then t * x else 0))
+      (∑ d, Real.exp (z d) * (if d = b then x else 0)) 0 := by
+    have := HasDerivAt.fun_sum (u := Finset.univ) (fun d _ => (hlin d).exp)
+    simpa using this
+  have hlog := hsum.log (hS 0).ne'
+  have := (hlin b').sub hlog
+  simp only [zero_mul, ite_self, add_zero, mul_ite, mul_zero, Finset.sum_ite_eq',
+    Finset.mem_univ, ite_true] at this
+  convert this using 1
+  have hS0 : 0 < ∑ d, Real.exp (z d) :=
+    Finset.sum_pos (fun _ _ => Real.exp_pos _) ⟨b, Finset.mem_univ _⟩
+  simp only [softmax]
+  split_ifs <;> field_simp <;> ring
+
+/-- **G14c (the phases must balance)**: if, for every readout state and arrived value, the
+expected drift vector over boundary values is a positive multiple of the log-likelihood
+gradient vector, the drive and free phases carry equal weight (`λ = μ`): summed over
+boundary values the gradient vanishes while the drift sums to `λ - μ`. Sleep-like free
+sampling must balance waking clamped learning. -/
+theorem phases_must_balance {B : Type*} [Fintype B] [DecidableEq B] [Nonempty B]
+    (lam mu : ℝ)
+    (prop : ∀ (z : B → ℝ) (b' : B), ∃ κ > 0, ∀ b,
+      lam * (if b' = b then 1 else 0) - mu * softmax z b =
+        κ * ((if b' = b then 1 else 0) - softmax z b)) :
+    lam = mu := by
+  obtain ⟨b'⟩ := ‹Nonempty B›
+  obtain ⟨κ, -, h⟩ := prop (fun _ => 0) b'
+  have hs := Finset.sum_congr rfl (fun b (_ : b ∈ Finset.univ) => h b)
+  simp only [Finset.sum_sub_distrib, ← Finset.mul_sum, Finset.sum_ite_eq, Finset.mem_univ,
+    if_true, softmax_sum] at hs
+  linarith
 
 /-! ## Layer 2b: the integration bottleneck
 
