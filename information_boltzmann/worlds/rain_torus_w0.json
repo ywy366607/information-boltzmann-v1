@@ -20,14 +20,14 @@
   "stimulus": {
     "mu_sink": -8.0,
     "mu_dry": 0.0,
-    "mu_rain": 17.0,
-    "rain_rate": 0.05,
+    "mu_rain": 25.0,
+    "rain_rate": 0.001,
     "rain_dur": 50,
     "rate_sigma": 1.15,
     "rate_tau": 2000.0,
     "click": "a click is a rain at the nearest source cell (mu_rain for rain_dur ticks)"
   },
-  "niche_choice": "Numbers fixed before any organism lives here, by one principle: separated timescales, rain (50 ticks) << food lifetime after rain (~10^2-10^3 ticks) << richness drift (2000 ticks, as W2). Rich and lean times vary at random (user's choice, 2026-10-26). Never tuned on an organism's result.",
+  "niche_choice": "Numbers fixed before any organism lives here. Timescales: rain (50 ticks) << food lifetime (500 ticks) << richness drift (2000 ticks, as W2); rich and lean times vary at random (user's choice, 2026-10-26). Rain rate and size by three principles, judged with ideal policies only (scripts/witness/nested_niche_sweep.py, results nested_niche_sweep_final_20261027.json): (1) feasible: the best local forager (senses only its own cell; memory time constant 1-30 ticks and speed 1-10 cells per tick, the best counts) eats on average >= f* = 10, the maintenance threshold of the body (under mass action intake is proportional to the food under the body and the reserve smooths a few hundred ticks, so the mean food counts, not the time above f*); (2) sensing useful: a blind walker eats less than half of that; (3) leanest: least standing food among those. Chosen: rain_rate 0.001 per tick per world, mu_rain 25 (~13,000 quanta per rain): world mean food 4.7, best local forager 13.3, blind 4.1. Small frequent rains failed (a blind walker catches up as rain grows); faster diffusion or longer food life flatten the field and failed too. Never tuned on an organism's result.",
   "notes": "Everything the world does is a rule of the Lean table: rain, drying and waste removal are exchanges with the outer reservoir at the stimulus potential (supply rule), spreading is the diffusion rule; the simulator computes their rates from the same formulas (gate check nested_world_rates_match_lean).",
   "dissolution": "physics (2026-10-27, after G26c and frees_only_by_dissolving): a body without intact membrane dissolves into the cell's waste pool with everything it holds (B plus inner content); conductance is symmetric Metropolis, kappa_dis * exp(-|dE|/2), so downhill dissolution runs at kappa_dis = 0.005 (a corpse lasts ~200 ticks) and the reverse (a dead body forming from waste) at kappa_dis * exp(-|dE|). B = 16; the reverse is negligible at the waste levels of this world (simulators omit it; the cross-check reports the bound).",
   "food_energy": "physics (2026-10-27): a food quantum carries chemical energy foodE = 8 relative to a waste quantum (food is free energy, not only matter; derived earlier for the 2D world, forgotten in the first nested table). The food reservoir potentials shift by +8 (dry 0, rain 16), so the world's own dynamics are unchanged; only the organism's food and waste exchanges see the difference. Without it food and waste were the same content at different concentrations and bodies condensed out of concentrated waste.",

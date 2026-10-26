@@ -46,6 +46,8 @@ def bounds():
 
 
 LO, HI = bounds()
+WITNESS = dict(phi=np.array([3.0, 6.0, 3.0, 3.0, 3.0, 1.0]), logk_rule=np.array([-6.0, -9.0, -9.0, -2.0]),
+               logk_x=np.array([-3.0, -9.0, -1.0, -1.0]) - 4.7, log_flip=np.array(-9.0), log_move=np.array(-9.0))
 
 
 def encode(g):
@@ -70,7 +72,7 @@ def decode(U):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--init", required=True, help="selection record whose best genome starts the center")
+    ap.add_argument("--init", required=True, help="selection record whose best genome starts the center, or 'witness'")
     ap.add_argument("--iters", type=int, default=30)
     ap.add_argument("--N", type=int, default=30)
     ap.add_argument("--worlds", type=int, default=8)
@@ -83,8 +85,12 @@ def main():
     a = ap.parse_args()
     tbl = NW.load("rain_torus_w0")
     rng = np.random.default_rng(a.seed)
-    init = json.loads(Path(a.init).read_text(encoding="utf-8"))
-    theta = encode(init["best"]["genome"])
+    if a.init == "witness":   # the existence witness declared before any selection (metabolism, still)
+        theta = encode(WITNESS)
+    else:
+        init = json.loads(Path(a.init).read_text(encoding="utf-8"))
+        theta = encode(init["best"]["genome"])
+    theta = np.clip(theta, 0.0, 1.0)
     hist, vals, best = [], [], None
     out = Path(a.out)
     for it in range(a.iters):

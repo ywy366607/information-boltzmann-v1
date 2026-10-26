@@ -1,0 +1,58 @@
+{
+ "f_star": 10,
+ "rows": [
+  {
+   "rain_rate": 0.004,
+   "mu_rain": 23.0,
+   "diff_mult": 4.0,
+   "food_life": 500.0,
+   "food_total": 21657.90625,
+   "cells_rich": 0.24090162082248312,
+   "local_by_tau": {
+    "1.0": 0.22494999999999998,
+    "3.0": 0.2647,
+    "10.0": 0.23945,
+    "30.0": 0.24635
+   },
+   "local": 0.2647,
+   "blind": 0.19785,
+   "food_mean": 9.40013313293457
+  },
+  {
+   "rain_rate": 0.008,
+   "mu_rain": 23.0,
+   "diff_mult": 4.0,
+   "food_life": 500.0,
+   "food_total": 29116.96875,
+   "cells_rich": 0.49612101915147394,
+   "local_by_tau": {
+    "1.0": 0.5464,
+    "3.0": 0.5389999999999999,
+    "10.0": 0.5322,
+    "30.0": 0.53935
+   },
+   "local": 0.5464,
+   "blind": 0.48585,
+   "food_mean": 12.6375732421875
+  },
+  {
+   "rain_rate": 0.002,
+   "mu_rain": 23.0,
+   "diff_mult": 1.0,
+   "food_life": 1000.0,
+   "food_total": 11967.46875,
+   "cells_rich": 0.2301789184570309,
+   "local_by_tau": {
+    "1.0": 0.34575,
+    "3.0": 0.33575,
+    "10.0": 0.3512,
+    "30.0": 0.3709
+   },
+   "local": 0.3709,
+   "blind": 0.19395,
+   "food_mean": 5.1942138671875
+  }
+ ],
+ "chosen": null,
+ "note": "stopped after 3 rows: faster diffusion (x4) and longer food life (1000) both flatten the field and lower the local forager's advantage; bigger rains are swept instead"
+}
