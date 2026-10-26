@@ -235,22 +235,29 @@ class ExactOrganisms(NO.Organisms):
         self.run_time += (self.n32[:, NO.M, NO.RUN] > 0).to(torch.int64)
 
 
-def run_exact(tbl, genomes, world_seeds, ticks=5000, device="cuda", K=64, warm=1500, **org_kw):
-    """Lives of B organisms (rows of genomes) in B fresh worlds, world leap (fused) then exact
-    organism events, the whole tick in one CUDA Graph. Returns numpy dict incl. overflow."""
+def run_exact(tbl, genomes, world_seeds, ticks=5000, device="cuda", K=64, warm=1500, copies=1, **org_kw):
+    """Lives of B organisms (rows of genomes) in B worlds, world leap (fused) then exact organism
+    events, the whole tick in one CUDA Graph. Returns numpy dict incl. overflow.
+    copies > 1 (common random numbers): world_seeds names W = B / copies worlds; lane c * W + w
+    lives in world w (the same rain and the same birth place for every copy c)."""
     import numpy as np
     import cgb_nested_world as NW
     import cgb_nested_world_triton as NT
-    B = len(world_seeds)
+    B = len(world_seeds) * copies
+    Wn = len(world_seeds)
     W = NT.FusedWorld(tbl, B=B, device=device, seed=int(world_seeds[0]))
-    wea = NW.Weather(tbl, B=B, device=device, seed=0)
+    wea = NW.Weather(tbl, B=Wn, device=device, seed=0)
     wea.rng = np.random.default_rng(list(map(int, world_seeds)))
-    wea.X = wea.rng.normal(0.0, wea.s["rate_sigma"], size=B)
+    wea.X = wea.rng.normal(0.0, wea.s["rate_sigma"], size=Wn)
+    tick_mu = (lambda: wea.tick().repeat(copies, 1, 1)) if copies > 1 else wea.tick
     buf, replay = W.captured()
     for _ in range(warm):
-        buf.copy_(wea.tick())
+        buf.copy_(tick_mu())
         replay()
     O = ExactOrganisms(W, genomes, seed=int(world_seeds[0]) + 1, K=K, **org_kw)
+    if copies > 1:
+        for t in (O.x32, O.y32, O.h32):
+            t.copy_(t[:Wn].repeat(copies))
     nleap = max(1, int(round(1.0 / W.dt)))
 
     def tick_fn():
@@ -275,7 +282,7 @@ def run_exact(tbl, genomes, world_seeds, ticks=5000, device="cuda", K=64, warm=1
         t.zero_()
     O.death.fill_(-1)
     for _ in range(ticks):
-        W.mu32.copy_(wea.tick())
+        W.mu32.copy_(tick_mu())
         g.replay()
     death = O.death.cpu().numpy()
     surv = np.where(death < 0, ticks, death)
