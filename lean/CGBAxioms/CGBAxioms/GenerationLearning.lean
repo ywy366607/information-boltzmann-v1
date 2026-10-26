@@ -70,3 +70,44 @@ theorem history_useless_of_independent {E Cw R : Type*} [Fintype E] [Fintype Cw]
     _ = M := by rw [← Finset.sum_mul, hr1, one_mul]
 
 end CGB.Generation
+
+/-! ## Openness: a world that never settles
+
+A world's average over time is a sequence `c t`. A fixed rule is beaten after every time `T`
+exactly when the world never becomes stationary (O-1, O-2): an organism that must keep comparing,
+remembering and learning for ever needs a world whose averages keep changing for ever. -/
+
+namespace CGB.Generation
+
+/-- **O-1**: if the world settles (its average constant from `T` on), the fixed rule `τ = c T` is
+optimal at every later time and patch: nothing is left to compare or learn. -/
+theorem settled_fixed_optimal (c : ℕ → ℝ) (T : ℕ) (hs : ∀ t ≥ T, c t = c T) :
+    ∀ t ≥ T, ∀ q, leaveValue (c T) (c t) q = max q (c t) := by
+  intro t ht q
+  rw [hs t ht]
+  exact fixed_threshold_optimal _ q
+
+/-- **O-2**: every fixed rule is beaten after every time if and only if the world never settles
+(after every time it still takes two different averages). -/
+theorem beaten_forever_iff_never_settles (c : ℕ → ℝ) :
+    (∀ T τ, ∃ t ≥ T, ∃ q, leaveValue τ (c t) q < max q (c t)) ↔
+      ∀ T, ∃ t₁ ≥ T, ∃ t₂ ≥ T, c t₁ ≠ c t₂ := by
+  constructor
+  · intro h T
+    by_contra hn
+    push Not at hn
+    obtain ⟨t, ht, q, hq⟩ := h T (c T)
+    have hs : ∀ t ≥ T, c t = c T := fun t ht => hn t ht T le_rfl
+    rw [settled_fixed_optimal c T hs t ht q] at hq
+    exact lt_irrefl _ hq
+  · intro h T τ
+    obtain ⟨t₁, h₁, t₂, h₂, hne⟩ := h T
+    rcases lt_or_gt_of_ne hne with hlt | hlt
+    · obtain ⟨q, -, -, hq | hq⟩ := no_fixed_leave_threshold hlt τ
+      · exact ⟨t₁, h₁, q, hq⟩
+      · exact ⟨t₂, h₂, q, hq⟩
+    · obtain ⟨q, -, -, hq | hq⟩ := no_fixed_leave_threshold hlt τ
+      · exact ⟨t₂, h₂, q, hq⟩
+      · exact ⟨t₁, h₁, q, hq⟩
+
+end CGB.Generation
