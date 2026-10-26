@@ -2,7 +2,7 @@
 
 由 `scripts/build_proven_index.py` 从 Lean 源码生成。新工作开始前先在这里检索（定理名与文档注释首句），避免重复推导。
 
-共 971 条定理/引理。
+共 987 条定理/引理。
 **未入 Lean 的手工推导与数值见证**另列在 `CGB_HAND_DERIVATIONS.md`，检索时两处都要看。
 
 ## ActiveLoop（8）
@@ -395,7 +395,7 @@ _A generator of admitted media (generation chain, M1) Instead of proving the six
 - `p2b_of_energy`：**M1a**: symmetric (Metropolis-type) rates of a reversible event set under an energy give P2b.
 - `rate_local_of_energy`：**M1b**: a rate that is a function of the participants' states through the event's energy difference reads only the participants, when that difference does.
 
-## GenerationNestedWorld（23）
+## GenerationNestedWorld（38）
 _An organism nested in its world (T-E2) The joint medium of a bacterium-like organism and its world, as a lattice medium (M4)._
 
 - `poolShift_back`
@@ -415,14 +415,29 @@ _An organism nested in its world (T-E2) The joint medium of a bacterium-like org
 - `cons1`
 - `cons2`
 - `eff1_xch`
+- `gateCount_update`
+- `xchEff_gate`：An exchange through a page other than the membrane leaves the membrane as it is.
 - `xchEff_back`
 - `back1`
 - `eff2_diff`
 - `diffEff_back`
 - `back2`
-- `axioms`：**T-E2 (an organism nested in its world is admitted)**: the joint medium of organisms and their world satisfies the six axiom clauses as soon as the organism's inner pair rules and its fuel rule conserve content.
+- `axioms`：**T-E2 (an organism nested in its world is admitted)**: the joint medium of organisms and their world satisfies the six axiom clauses as soon as the organism's inner pair rules and its fuel rule conserve content and no e
+- `orgIn_congr`
+- `eff1_supply_bug`：The world's supply rules never touch the organism.
+- `intake_is_exchange`：**Only exchanges feed the organism**: every single-cell event that raises the content held by the organism is a pool exchange; a gated one has conductance proportional to the intact membrane.
+- `dead_intake_is_physics`：**Death** (`Part.CanTakeIn` fails through the organism's own doing): with no intact membrane unit, every event that would raise the organism's content has rate zero, except an ungated exchange: physics the organism does 
+- `dead_output_is_physics`：**A dead body does not give itself away**: every single-cell event that lowers the content held by the organism is a pool exchange; with no intact membrane the gated ones have rate zero, so what leaves a dead body leaves
+- `partner_exit_blocked`：A pair rule whose partner state is absent leaves the organism as it is.
+- `gated_exit_blocked`：A gated exchange has no conductance without an intact membrane.
+- `poolShift_one`
+- `leak_bound`：**Leak bound**: an ungated exchange that moves one quantum from a unit into the waste pool fires at rate at least `κ * exp (-Φ - log V / 2)` whenever the unit holds that quantum and the pool is not full, whatever the res
+- `ringAdj_symm`
+- `torusAdj_symm`
+- `axioms_torus`：**The two-dimensional world is a model of the axioms**: organisms on a torus, food pellets from the world's boundary, diffusion, waste sinks, driven movement in four headings.
+- `axioms_ring`：The one-dimensional ring is a model too.
 
-## GenerationNesting（7）
+## GenerationNesting（8）
 _Nesting: the world is a medium too (generation chain, G26) An organism is a medium; the world it lives in obeys the same axioms, and so does a body that hosts organisms (mitochondria, gut bacteria) or a collective made o_
 
 - `cell_potential`：**G26a (the sensed potential of a world cell)**.
@@ -432,6 +447,7 @@ _Nesting: the world is a medium too (generation chain, G26) An organism is a med
 - `cell_step`：Adding one quantum to a cell holding `n` of `V` costs exactly `log ((n + 1) / (V - n))`, so to a unit exchanging quanta with it the cell is a reservoir of potential `≈ log (n / V) = ln c`, and one exchange moves that pot
 - `missProb_ge`
 - `stream_never_dry`：**T-N7 (the stream never runs dry)**: under a stationary law `π` of the world–organism process, if some state `x` (weight `π x`) has two possible successors with different boundary readings, then every predictor of the n
+- `corpses_must_go`：**G26c (corpses must go: decomposition is necessary)**: in a world with finitely many places, if new deaths never stop (an endless stream of mortal lives: at every time some place that holds no corpse yet will later hold
 
 ## GenerationOrganismEcoliMsS0（3）
 _Organism `ecoli_ms_s0`: generated from its rule table Source: `information_boltzmann/organisms/ecoli_ms_s0.json`, sha256 38ff4daa364a8d382398d91208cc7908b61c82d1a1324e64111291ef4801fa1b._

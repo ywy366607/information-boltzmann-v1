@@ -800,6 +800,35 @@ theorem dead_intake_is_physics
   · left; rw [hc, if_pos hg, hdead]; simp
   · right; exact ⟨j, u, dir, hr, by simpa using hg⟩
 
+/-- **A dead body does not give itself away**: every single-cell event that lowers the content
+held by the organism is a pool exchange; with no intact membrane the gated ones have rate zero, so
+what leaves a dead body leaves only by an ungated exchange (physics, a leak). With G26c
+(`corpses_must_go`), a world of endless mortal lives needs such leaks, or organisms that take
+dead bodies apart (decomposers, events this table does not yet have). -/
+theorem dead_output_is_physics
+    (hspec : ∀ k, W.contentIn (W.spec k).a.1 + W.contentIn (W.spec k).a.2 =
+      W.contentIn (W.spec k).b.1 + W.contentIn (W.spec k).b.2)
+    (r : NR1 Hd n nR nX) (i : ℕ) (l : W.Cell) (hdead : W.cellGate l = 0)
+    (hdown : W.orgIn (W.eff1 r i l) < W.orgIn l) :
+    W.c1 r i l = 0 ∨ ∃ j u dir, r = .inr (.inl (j, u, dir)) ∧ W.xgated j = false := by
+  rcases r with ⟨k, u, v, dir⟩ | ⟨j, u, dir⟩ | ⟨a, b⟩ | ⟨food, dir⟩
+  · exfalso
+    obtain ⟨f, w, _ | ⟨y, h⟩⟩ := l
+    · simp [eff1, orgIn] at hdown
+    · simp only [eff1, orgIn, W.innerAct_content hspec] at hdown
+      exact lt_irrefl _ hdown
+  · by_cases hg : W.xgated j = true
+    · left; simp [c1, hg, hdead]
+    · right; exact ⟨j, u, dir, rfl, by simpa using hg⟩
+  · exfalso
+    obtain ⟨f, w, _ | ⟨y, h⟩⟩ := l
+    · simp [eff1, orgIn] at hdown
+    · simp only [eff1] at hdown
+      split_ifs at hdown <;> simp [orgIn] at hdown
+  · exfalso
+    rw [W.orgIn_congr (W.eff1_supply_bug food dir i l)] at hdown
+    exact lt_irrefl _ hdown
+
 /-! ## Leaks: every held quantum needs an exit the organism cannot close
 
 In a closed box, content that a part can hold for ever is lost to the rest (the infinite stream

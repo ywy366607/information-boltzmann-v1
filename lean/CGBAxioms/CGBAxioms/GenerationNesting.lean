@@ -152,4 +152,30 @@ theorem stream_never_dry (K : W → W → ℝ) (hK : ∀ w w', 0 ≤ K w w') (π
   rw [Finset.sum_const, Finset.card_range, nsmul_eq_mul]
   exact mul_le_mul_of_nonneg_left hone (Nat.cast_nonneg T)
 
+/-- **G26c (corpses must go: decomposition is necessary)**: in a world with finitely many places,
+if new deaths never stop (an endless stream of mortal lives: at every time some place that holds
+no corpse yet will later hold one), the set of places holding corpses cannot only grow: at some
+time a corpse is removed. A finite world whose dead bodies are never taken apart fills with them,
+and its stream ends. Who removes it is not the dead body (`NestedWorld.dead_output_is_physics`):
+physics (a leak) or another organism (a decomposer). -/
+theorem corpses_must_go {U : Type*} [Fintype U] [DecidableEq U] (dead : ℕ → Finset U)
+    (hnew : ∀ t, ∃ t' > t, ∃ u, u ∉ dead t ∧ u ∈ dead t') :
+    ∃ t, ¬ dead t ⊆ dead (t + 1) := by
+  by_contra hall
+  push Not at hall
+  have hmono : Monotone dead := monotone_nat_of_le_succ hall
+  have hgrow : ∀ k : ℕ, ∃ t, k ≤ (dead t).card := by
+    intro k
+    induction k with
+    | zero => exact ⟨0, Nat.zero_le _⟩
+    | succ k ih =>
+      obtain ⟨t, ht⟩ := ih
+      obtain ⟨t', htt', u, hu, hu'⟩ := hnew t
+      have hsub : dead t ⊂ dead t' :=
+        Finset.ssubset_iff_subset_ne.mpr ⟨hmono htt'.le, fun e => hu (e ▸ hu')⟩
+      exact ⟨t', lt_of_le_of_lt ht (Finset.card_lt_card hsub)⟩
+  obtain ⟨t, ht⟩ := hgrow (Fintype.card U + 1)
+  have := Finset.card_le_univ (dead t)
+  omega
+
 end CGB.Generation
