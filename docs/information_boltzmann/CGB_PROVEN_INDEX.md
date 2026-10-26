@@ -2,7 +2,7 @@
 
 由 `scripts/build_proven_index.py` 从 Lean 源码生成。新工作开始前先在这里检索（定理名与文档注释首句），避免重复推导。
 
-共 988 条定理/引理。
+共 992 条定理/引理。
 **未入 Lean 的手工推导与数值见证**另列在 `CGB_HAND_DERIVATIONS.md`，检索时两处都要看。
 
 ## ActiveLoop（8）
@@ -395,7 +395,7 @@ _A generator of admitted media (generation chain, M1) Instead of proving the six
 - `p2b_of_energy`：**M1a**: symmetric (Metropolis-type) rates of a reversible event set under an energy give P2b.
 - `rate_local_of_energy`：**M1b**: a rate that is a function of the participants' states through the event's energy difference reads only the participants, when that difference does.
 
-## GenerationNestedWorld（39）
+## GenerationNestedWorld（43）
 _An organism nested in its world (T-E2) The joint medium of a bacterium-like organism and its world, as a lattice medium (M4)._
 
 - `poolShift_back`
@@ -433,6 +433,10 @@ _An organism nested in its world (T-E2) The joint medium of a bacterium-like org
 - `gated_exit_blocked`：A gated exchange has no conductance without an intact membrane.
 - `poolShift_one`
 - `leak_bound`：**Leak bound**: an ungated exchange that moves one quantum from a unit into the waste pool fires at rate at least `κ * exp (-Φ - log V / 2)` whenever the unit holds that quantum and the pool is not full, whatever the res
+- `intake_eff`
+- `intake_content`
+- `metabolizes_of_intake`：**Nested metabolism** (`Part.Metabolizes`) for every organism whose table has a gated food intake of one quantum, in a state with an intact membrane and a unit ready to take in.
+- `senses_of_intake`：**Nested sensing** (`Part.Senses`): the same intake event, from the same organism, fires at different rates when only the cell's food differs (one quantum or two).
 - `ringAdj_symm`
 - `torusAdj_symm`
 - `axioms_torus`：**The two-dimensional world is a model of the axioms**: organisms on a torus, food pellets from the world's boundary, diffusion, waste sinks, driven movement in four headings.

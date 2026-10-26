@@ -1,6 +1,7 @@
 import CGBAxioms.GenerationLattice
 import CGBAxioms.GenerationNesting
 import CGBAxioms.GenerationTable
+import CGBAxioms.NestedLife
 
 /-!
 # An organism nested in its world (T-E2)
@@ -1055,6 +1056,144 @@ theorem leak_bound (Φ : ℝ) (hΦ : ∀ p s, |W.φIn p s| ≤ Φ) (j : Fin nX) 
   apply mul_le_mul_of_nonneg_left _ (W.xκ_nonneg j)
   apply Real.exp_le_exp.mpr
   linarith
+
+/-! ## Nested life: sensing and metabolism, once for every organism of the class
+
+The life notions of a part of a medium (`NestedLife`): the organism is the body in a cell `u0`
+(`orgPart`), its content the inner content `orgIn`. Both obligations follow from one decidable
+table condition: a gated exchange that takes one quantum from the food pool, with an intact
+membrane. Every nested organism whose table has such an exchange senses and metabolizes. -/
+
+open Classical in
+/-- The organism in cell `u0` as a part of the joint medium. -/
+noncomputable def orgPart {U : Type*} (u0 : U) : Part U W.Cell (Option ((Fin n → Λi) × Hd)) :=
+  ⟨fun x => (x u0).2.2, fun x => W.orgIn (x u0)⟩
+
+theorem intake_eff (j : Fin nX) (hf : W.xfood j = true)
+    (hc : W.contentIn (W.xb j) = W.contentIn (W.xa j) + 1) (u : Fin n) (i : ℕ) (y : Fin n → Λi) (h : Hd)
+    (hu : W.pageIn u = W.xpage j ∧ y u = W.xa j) (f w : Fin (W.V + 1)) (hf1 : 1 ≤ (f : ℕ)) :
+    W.eff1 (.inr (.inl (j, u, false))) i (f, w, some (y, h)) =
+      (⟨(f : ℕ) - 1, by omega⟩, w, some (Function.update y u (W.xb j), h)) := by
+  have hd : ((W.contentIn (W.xa j) : ℤ) - W.contentIn (W.xb j)) = -1 := by rw [hc]; push_cast; ring
+  have hps : poolShift f (-1) = some ⟨(f : ℕ) - 1, by omega⟩ := by
+    unfold poolShift
+    rw [dif_pos (by omega)]
+    congr 1
+    ext
+    simp only [Fin.val_mk]
+    omega
+  simp only [eff1, Bool.false_eq_true, if_false, hu, and_self, if_true, hf, hd, hps]
+
+theorem intake_content (j : Fin nX) (hc : W.contentIn (W.xb j) = W.contentIn (W.xa j) + 1)
+    (u : Fin n) (y : Fin n → Λi) (hu : y u = W.xa j) :
+    ∑ v, W.contentIn (Function.update y u (W.xb j) v) = ∑ v, W.contentIn (y v) + 1 := by
+  have hs := sum_update_nat W.contentIn u (W.xb j) y
+  rw [hu, hc] at hs
+  push_cast at hs
+  zify
+  push_cast
+  linarith
+
+/-- A cell holding food `f`, no waste, and the organism. -/
+def withOrg {U : Type*} [DecidableEq U] (u0 : U) (f : Fin (W.V + 1)) (y : Fin n → Λi) (h : Hd) :
+    U → W.Cell :=
+  Function.update (fun _ => ((0 : Fin (W.V + 1)), (0 : Fin (W.V + 1)), none)) u0 (f, 0, some (y, h))
+
+open Classical in
+/-- **Nested metabolism** (`Part.Metabolizes`) for every organism whose table has a gated food
+intake of one quantum, in a state with an intact membrane and a unit ready to take in. -/
+theorem metabolizes_of_intake [Fintype Λi] [Fintype Hd] {U : Type*} [Fintype U] [DecidableEq U]
+    (adj : U → U → Prop) (hsymm : ∀ u v, adj u v → adj v u) (hirr : ∀ u, ¬ adj u u)
+    (page : U → ℕ) (y0 : Fin n → Λi) (h0 : Hd) (u0 : U)
+    (j : Fin nX) (hg : W.xgated j = true) (hf : W.xfood j = true) (hk : 0 < W.xκ j)
+    (hc : W.contentIn (W.xb j) = W.contentIn (W.xa j) + 1) (u : Fin n) (y : Fin n → Λi) (h : Hd)
+    (hu : W.pageIn u = W.xpage j ∧ y u = W.xa j) (hgate : 0 < W.gateCount y) (hV : 1 ≤ W.V) :
+    (W.orgPart u0).Metabolizes (W.lattice adj hsymm hirr page y0 h0).medium := by
+  set C := W.lattice adj hsymm hirr page y0 h0
+  let f1 : Fin (W.V + 1) := ⟨1, by omega⟩
+  refine ⟨.inl (.inr (.inl (j, u, false)), u0), fun _ => 0, W.withOrg u0 f1 y h, ?_, ?_⟩
+  · change 0 < C.c1 _ (C.ident u0) (W.withOrg u0 f1 y h u0) * Real.exp _
+    refine mul_pos ?_ (Real.exp_pos _)
+    simp only [withOrg, Function.update_self]
+    change 0 < W.xκ j * (if W.xgated j then (W.gateCount y : ℝ) else 1)
+    rw [if_pos hg]
+    exact mul_pos hk (by exact_mod_cast hgate)
+  · change W.orgIn (C.act1 _ u0 (W.withOrg u0 f1 y h) u0) ≠ W.orgIn (W.withOrg u0 f1 y h u0)
+    simp only [LatticeCRN.act1, Function.update_self, withOrg]
+    change W.orgIn (W.eff1 (.inr (.inl (j, u, false))) (page u0) (f1, 0, some (y, h))) ≠
+      W.orgIn (f1, 0, some (y, h))
+    rw [W.intake_eff j hf hc u _ y h hu f1 0 (by simp [f1])]
+    simp only [orgIn, W.intake_content j hc u y hu.2]
+    omega
+
+open Classical in
+/-- **Nested sensing** (`Part.Senses`): the same intake event, from the same organism, fires at
+different rates when only the cell's food differs (one quantum or two). -/
+theorem senses_of_intake [Fintype Λi] [Fintype Hd] {U : Type*} [Fintype U] [DecidableEq U]
+    (adj : U → U → Prop) (hsymm : ∀ u v, adj u v → adj v u) (hirr : ∀ u, ¬ adj u u)
+    (page : U → ℕ) (y0 : Fin n → Λi) (h0 : Hd) (u0 : U)
+    (j : Fin nX) (hg : W.xgated j = true) (hf : W.xfood j = true) (hk : 0 < W.xκ j)
+    (hc : W.contentIn (W.xb j) = W.contentIn (W.xa j) + 1) (u : Fin n) (y : Fin n → Λi) (h : Hd)
+    (hu : W.pageIn u = W.xpage j ∧ y u = W.xa j) (hgate : 0 < W.gateCount y) (hV : 2 ≤ W.V) :
+    (W.orgPart u0).Senses (W.lattice adj hsymm hirr page y0 h0).medium := by
+  set C := W.lattice adj hsymm hirr page y0 h0
+  let f1 : Fin (W.V + 1) := ⟨1, by omega⟩
+  let f2 : Fin (W.V + 1) := ⟨2, by omega⟩
+  have hxb : W.xb j ≠ W.xa j := fun e => by rw [e] at hc; omega
+  refine ⟨.inl (.inr (.inl (j, u, false)), u0), fun _ => 0, W.withOrg u0 f1 y h, W.withOrg u0 f2 y h,
+    ?_, ?_, ?_⟩
+  · simp [orgPart, withOrg]
+  · change (C.act1 _ u0 (W.withOrg u0 f1 y h) u0).2.2 ≠ (W.withOrg u0 f1 y h u0).2.2
+    simp only [LatticeCRN.act1, Function.update_self, withOrg]
+    change (W.eff1 (.inr (.inl (j, u, false))) (page u0) (f1, 0, some (y, h))).2.2 ≠ some (y, h)
+    rw [W.intake_eff j hf hc u _ y h hu f1 0 (by simp [f1])]
+    intro e
+    simp only [Option.some.injEq, Prod.mk.injEq] at e
+    have := congrFun e.1 u
+    rw [Function.update_self, hu.2] at this
+    exact hxb this
+  · -- the two rates: the same conductance, different energy changes
+    have hcell : ∀ f : Fin (W.V + 1), W.withOrg u0 f y h u0 = (f, 0, some (y, h)) := fun f => by
+      simp [withOrg]
+    change C.c1 _ (C.ident u0) (W.withOrg u0 f1 y h u0) * Real.exp (-C.dE1 _ u0 _ (W.withOrg u0 f1 y h) / 2) ≠
+      C.c1 _ (C.ident u0) (W.withOrg u0 f2 y h u0) * Real.exp (-C.dE1 _ u0 _ (W.withOrg u0 f2 y h) / 2)
+    have hc1 : ∀ f : Fin (W.V + 1), C.c1 (.inr (.inl (j, u, false))) (C.ident u0) (W.withOrg u0 f y h u0) =
+        W.xκ j * W.gateCount y := fun f => by
+      rw [hcell]
+      change W.xκ j * (if W.xgated j then (W.gateCount y : ℝ) else 1) = _
+      rw [if_pos hg]
+    rw [hc1, hc1]
+    have hpos : W.xκ j * (W.gateCount y : ℝ) ≠ 0 := (mul_pos hk (by exact_mod_cast hgate)).ne'
+    intro e
+    have e2 := Real.exp_injective (mul_left_cancel₀ hpos e)
+    -- energy changes
+    have hdE : ∀ f : Fin (W.V + 1), 1 ≤ (f : ℕ) → C.dE1 (.inr (.inl (j, u, false))) u0 (fun _ => 0)
+        (W.withOrg u0 f y h) = Generation.cellF W.V ((f : ℕ) - 1) - Generation.cellF W.V f - W.foodE +
+          (W.bugE (Function.update y u (W.xb j)) - W.bugE y) := fun f hf1 => by
+      simp only [LatticeCRN.dE1, LatticeCRN.unitE, LatticeCRN.res]
+      rw [hcell]
+      change W.φ (page u0) (W.eff1 (.inr (.inl (j, u, false))) (page u0) (f, 0, some (y, h))) -
+          W.φ (page u0) (f, 0, some (y, h)) -
+          (if page u0 ∈ bidW then (0 : ℝ) else 0) *
+            ((W.content (W.eff1 (.inr (.inl (j, u, false))) (page u0) (f, 0, some (y, h))) : ℝ) -
+              (W.content (f, 0, some (y, h)) : ℝ)) = _
+      rw [W.intake_eff j hf hc u _ y h hu f 0 hf1]
+      simp only [φ, ite_self, zero_mul, sub_zero]
+      have : (((f : ℕ) - 1 : ℕ) : ℝ) = (f : ℕ) - 1 := by rw [Nat.cast_sub hf1]; simp
+      simp only [Fin.val_mk, this]
+      ring
+    rw [hdE f1 (by simp [f1]), hdE f2 (by simp [f2])] at e2
+    simp only [f1, f2, Fin.val_mk, Nat.sub_self, Nat.reduceSub] at e2
+    have h01 := Generation.cell_step W.V 0 (by omega)
+    have h12 := Generation.cell_step W.V 1 (by omega)
+    simp only [Nat.zero_add, Nat.reduceAdd, Nat.cast_zero, Nat.cast_one, zero_add, sub_zero] at h01 h12
+    have hlog : Real.log (1 / (W.V : ℝ)) = Real.log ((1 + 1) / ((W.V : ℝ) - 1)) := by linarith
+    have hVr : (2 : ℝ) ≤ W.V := by exact_mod_cast hV
+    have h1 : (0 : ℝ) < 1 / (W.V : ℝ) := div_pos one_pos (by linarith)
+    have h2 : (0 : ℝ) < (1 + 1) / ((W.V : ℝ) - 1) := div_pos (by norm_num) (by linarith)
+    have := Real.log_injOn_pos (Set.mem_Ioi.mpr h1) (Set.mem_Ioi.mpr h2) hlog
+    rw [div_eq_div_iff (ne_of_gt (by linarith)) (ne_of_gt (by linarith))] at this
+    linarith
 
 /-! ## Two instances: a ring and a torus -/
 
