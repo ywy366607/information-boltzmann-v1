@@ -19,8 +19,6 @@ structure Atomized [Fintype U] [Fintype A] [DecidableEq (U → Λ)] : Prop where
   finiteSublevels : ∀ n, {l : Λ | M.content l ≤ n}.Finite
   boundedContent : ∃ K, ∀ l, M.content l ≤ K
   uniqueVacuum : ∃! l, M.content l = 0
-  homogeneousContact : ∀ u v, ∃ σ : Equiv.Perm U,
-    (∀ a b, M.near (σ a) (σ b) ↔ M.near a b) ∧ σ u = v
   participantsContact : ∀ a, ∀ u ∈ M.parts a, ∀ v ∈ M.parts a, M.near u v
   writesParticipants : ∀ a s x u, u ∉ M.parts a → M.act a s x u = x u
   rateReadsParticipants : ∀ a s s' x y,
@@ -41,14 +39,14 @@ theorem axioms_iff_atomized [Fintype U] [Fintype A] [DecidableEq (U → Λ)] :
     M.Axioms ↔ M.Atomized := by
   constructor
   · intro h
-    exact ⟨h.p1a.1, h.p1a.2.1, h.p1a.2.2, h.p1b.1, h.p1b.2.1,
-      h.p1b.2.2.1, fun a s s' x y hh => (h.p1b.2.2.2 a s s' x y hh).1,
-      fun a s s' x y hh => (h.p1b.2.2.2 a s s' x y hh).2,
+    exact ⟨h.p1a.1, h.p1a.2.1, h.p1a.2.2, h.p1b.1,
+      h.p1b.2.1, fun a s s' x y hh => (h.p1b.2.2 a s s' x y hh).1,
+      fun a s s' x y hh => (h.p1b.2.2 a s s' x y hh).2,
       h.p2a, h.p2b, h.p2c, fun a s s' x hh => (h.p3.1 a s s' x hh).1,
       fun a s s' x hh => (h.p3.1 a s s' x hh).2, h.p3.2⟩
   · intro h
     exact ⟨⟨h.finiteSublevels, h.boundedContent, h.uniqueVacuum⟩,
-      ⟨h.homogeneousContact, h.participantsContact, h.writesParticipants,
+      ⟨h.participantsContact, h.writesParticipants,
         fun a s s' x y hh => ⟨h.rateReadsParticipants a s s' x y hh,
           h.effectReadsParticipants a s s' x y hh⟩⟩,
       h.closedConservation, h.calmBalance, h.coherentEquivariance,
@@ -151,9 +149,9 @@ theorem rescale_jump [Fintype A] [DecidableEq (U → Λ)] (c : ℝ) (hc : 0 ≤ 
 
 theorem rescale_axioms [Fintype U] [Fintype A] [DecidableEq (U → Λ)]
     (c : ℝ) (hc : 0 ≤ c) (h : M.Axioms) : (M.rescale c hc).Axioms := by
-  refine ⟨h.p1a, ⟨h.p1b.1, h.p1b.2.1, h.p1b.2.2.1, ?_⟩, ?_, ?_, ?_, ?_⟩
+  refine ⟨h.p1a, ⟨h.p1b.1, h.p1b.2.1, ?_⟩, ?_, ?_, ?_, ?_⟩
   · intro a s s' x y hh
-    obtain ⟨hr, ha⟩ := h.p1b.2.2.2 a s s' x y hh
+    obtain ⟨hr, ha⟩ := h.p1b.2.2 a s s' x y hh
     exact ⟨congrArg (c * ·) hr, ha⟩
   · intro a s x hclosed hpos
     apply h.p2a a s x hclosed

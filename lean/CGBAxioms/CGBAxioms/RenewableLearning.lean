@@ -187,9 +187,7 @@ theorem admission (reopen refill : Bool) :
     · refine ⟨.vacuum, rfl, ?_⟩
       intro q hq
       cases q <;> norm_num [M, plant, cost, buffer, credit] at *
-    · refine ⟨?_, by intros; trivial, ?_, ?_⟩
-      · intro u v
-        exact ⟨Equiv.refl Unit, by intros; rfl, Subsingleton.elim _ _⟩
+    · refine ⟨by intros; trivial, ?_, ?_⟩
       · intro e s x u hu
         simp [M, plant] at hu
       · intro e s s' x y hh

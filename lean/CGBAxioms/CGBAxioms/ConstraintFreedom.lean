@@ -56,9 +56,7 @@ theorem arbitrary_driven_tables_admitted (cost : Λ → ℕ) (hv : ∃! l, cost 
     intro u
     exact Subsingleton.elim _ _
   refine ⟨(M.p1a_iff_unique_vacuum).2 hv, ?_, ?_, ?_, M.p2c_of_rigid hr, ?_⟩
-  · refine ⟨?_, by intros; trivial, ?_, ?_⟩
-    · intro u v
-      exact ⟨Equiv.refl Unit, by intros; rfl, Subsingleton.elim _ _⟩
+  · refine ⟨by intros; trivial, ?_, ?_⟩
     · intro e s x u hu
       simp [M, openSite] at hu
     · intro e s s' x y hh

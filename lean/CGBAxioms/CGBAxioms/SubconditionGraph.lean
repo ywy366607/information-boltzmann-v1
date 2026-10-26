@@ -36,9 +36,6 @@ variable {U Λ A I : Type*} (M : Medium U Λ A I)
 
 /-! ## 1. Named predicates for the atomic sub-conditions -/
 
-def HomogeneousContact (M : Medium U Λ A I) : Prop :=
-  ∀ u v, ∃ σ : Equiv.Perm U, (∀ a b, M.near (σ a) (σ b) ↔ M.near a b) ∧ σ u = v
-
 def ParticipantsContact (M : Medium U Λ A I) : Prop :=
   ∀ a, ∀ u ∈ M.parts a, ∀ v ∈ M.parts a, M.near u v
 
@@ -62,15 +59,15 @@ def InitialInvariant (M : Medium U Λ A I) : Prop :=
   ∀ σ, M.IsAut σ → M.init ∘ σ.symm = M.init
 
 theorem p1b_iff_atoms :
-    M.P1b ↔ M.HomogeneousContact ∧ M.ParticipantsContact ∧ M.WritesParticipants ∧
+    M.P1b ↔ M.ParticipantsContact ∧ M.WritesParticipants ∧
       M.RateReadsParticipants ∧ M.EffectReadsParticipants := by
   constructor
   · intro h
-    exact ⟨h.1, h.2.1, h.2.2.1,
-      fun a s s' x y hh => (h.2.2.2 a s s' x y hh).1,
-      fun a s s' x y hh => (h.2.2.2 a s s' x y hh).2⟩
-  · rintro ⟨h1, h2, h3, h4, h5⟩
-    exact ⟨h1, h2, h3, fun a s s' x y hh => ⟨h4 a s s' x y hh, h5 a s s' x y hh⟩⟩
+    exact ⟨h.1, h.2.1,
+      fun a s s' x y hh => (h.2.2 a s s' x y hh).1,
+      fun a s s' x y hh => (h.2.2 a s s' x y hh).2⟩
+  · rintro ⟨h2, h3, h4, h5⟩
+    exact ⟨h2, h3, fun a s s' x y hh => ⟨h4 a s s' x y hh, h5 a s s' x y hh⟩⟩
 
 theorem onlyBoundarySenses_iff_atoms :
     M.OnlyBoundarySenses ↔ M.BoundaryRate ∧ M.BoundaryEffect := by
@@ -434,23 +431,23 @@ theorem atomized_implies_reducedCore [Fintype U] [Fintype A] [DecidableEq (U →
          h.closedConservation, h.calmBalance, h.boundaryRate, h.boundaryEffect⟩
 
 theorem reducedCore_implies_atomized_of_regimes [Fintype U] [Fintype A] [DecidableEq (U → Λ)]
-    [Finite Λ] (hhomo : M.HomogeneousContact) (hrigid : M.Rigid) :
+    [Finite Λ] (hrigid : M.Rigid) :
     M.ReducedCore → M.Atomized := by
   intro h
   obtain ⟨h01, h02⟩ := a01_and_a02_redundant_of_finite M.content
-  exact ⟨h01, h02, h.uniqueVacuum, hhomo, h.participantsContact, h.writesParticipants,
+  exact ⟨h01, h02, h.uniqueVacuum, h.participantsContact, h.writesParticipants,
          h.rateReadsParticipants, h.effectReadsParticipants,
          h.closedConservation, h.calmBalance,
          p2c_of_rigid M hrigid,
          h.boundaryRate, h.boundaryEffect,
          initial_invariant_of_rigid M hrigid⟩
 
-/-- Exact recovery includes contact homogeneity as an explicit premise. -/
+/-- Exact recovery under finite local states and rigid structural data (contact
+homogeneity is no longer part of the axioms since 2026-10-26). -/
 theorem reducedCore_iff_atomized_of_regimes [Fintype U] [Fintype A]
-    [DecidableEq (U → Λ)] [Finite Λ]
-    (hhomo : M.HomogeneousContact) (hrigid : M.Rigid) :
+    [DecidableEq (U → Λ)] [Finite Λ] (hrigid : M.Rigid) :
     M.ReducedCore ↔ M.Atomized :=
-  ⟨M.reducedCore_implies_atomized_of_regimes hhomo hrigid,
+  ⟨M.reducedCore_implies_atomized_of_regimes hrigid,
     M.atomized_implies_reducedCore⟩
 
 /-- A finite rigid contact carrier with no events. This is a logical countermodel,
@@ -482,12 +479,13 @@ theorem path3Rigid_reducedCore : path3Rigid.ReducedCore := by
   · intro a; exact a.elim
   · intro a; exact a.elim
 
-/-- Finiteness and rigidity do not recover A04 or the original axioms. -/
-theorem finite_rigid_reducedCore_not_atomized :
-    path3Rigid.ReducedCore ∧ path3Rigid.Rigid ∧ ¬ path3Rigid.Atomized := by
-  refine ⟨path3Rigid_reducedCore, ?_, ?_⟩
-  · exact rigid_of_injective_identity path3Rigid (fun _ _ h => Fin.ext h)
-  · intro h
-    exact path3_not_homogeneous h.homogeneousContact
+/-- Since contact homogeneity left P1b (2026-10-26), the rigid three-unit chain, whose
+contact is not homogeneous (its ends have one contact, its middle two), is a model;
+before, it was the countermodel showing that finiteness and rigidity do not recover A04. -/
+theorem path3Rigid_atomized_not_homogeneous :
+    path3Rigid.Atomized ∧ ¬ path3Rigid.HomogeneousContact := by
+  refine ⟨?_, path3_not_homogeneous⟩
+  exact (path3Rigid.reducedCore_implies_atomized_of_regimes
+    (rigid_of_injective_identity path3Rigid (fun _ _ h => Fin.ext h))) path3Rigid_reducedCore
 
 end CGB.Medium

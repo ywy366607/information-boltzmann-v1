@@ -93,7 +93,7 @@ def scope (D : Set U) : Set U := {v | ∀ u ∈ D, M.near u v}
 /-- Under P1b an event that changes all of `D` reads only inside `scope D`. -/
 lemma parts_subset_scope (h : M.P1b) {a : A} {D : Set U} (hD : ∀ u ∈ D, u ∈ M.parts a) :
     ∀ v ∈ M.parts a, v ∈ M.scope D :=
-  fun v hv u hu => h.2.1 a u (hD u hu) v hv
+  fun v hv u hu => h.1 a u (hD u hu) v hv
 
 /-- **G2**: under P2a a closed event that changes a single unit keeps that unit's content,
 so content moves inside the body only by events that change at least two units. -/
@@ -136,7 +136,7 @@ theorem jump_rate_local (h : M.P1b) {s s' : U → I} {x y x' y' : U → Λ} (D :
   refine Finset.sum_congr rfl fun a _ => ?_
   by_cases hsub : ∀ u ∈ D, u ∈ M.parts a
   · have hsc := M.parts_subset_scope h hsub
-    obtain ⟨hr, hact⟩ := h.2.2.2 a s' s x' x fun u hu =>
+    obtain ⟨hr, hact⟩ := h.2.2 a s' s x' x fun u hu =>
       ⟨hx u (Or.inr (hsc u hu)), hs u (Or.inr (hsc u hu))⟩
     have hyy : ∀ u ∈ M.parts a, y' u = y u := fun u hu => by
       by_cases huD : u ∈ D
@@ -149,21 +149,21 @@ theorem jump_rate_local (h : M.P1b) {s s' : U → I} {x y x' y' : U → Λ} (D :
         funext u
         by_cases hu : u ∈ M.parts a
         · rw [← hact u hu, he, hyy u hu]
-        · rw [h.2.2.1 a s x u hu]
+        · rw [h.2.1 a s x u hu]
           exact not_not.1 fun hn => hu (hsub u ((hD u).2 hn))
       · intro he
         funext u
         by_cases hu : u ∈ M.parts a
         · rw [hact u hu, he, hyy u hu]
-        · rw [h.2.2.1 a s' x' u hu]
+        · rw [h.2.1 a s' x' u hu]
           exact (hy u fun huD => hu (hsub u huD)).symm
     simp only [hcond, hne, hr]
   · push Not at hsub
     obtain ⟨u, huD, hu⟩ := hsub
     have h1 : M.act a s x ≠ y := fun he =>
-      (hD u).1 huD (by rw [← he, h.2.2.1 a s x u hu])
+      (hD u).1 huD (by rw [← he, h.2.1 a s x u hu])
     have h2 : M.act a s' x' ≠ y' := fun he =>
-      (hD u).1 huD (by rw [← hx u (Or.inl huD), ← hyD u huD, ← he, h.2.2.1 a s' x' u hu])
+      (hD u).1 huD (by rw [← hx u (Or.inl huD), ← hyD u huD, ← he, h.2.1 a s' x' u hu])
     simp [h1, h2]
 
 /-- **G1E**: across one calm transition with a positive reverse rate, the equilibrium

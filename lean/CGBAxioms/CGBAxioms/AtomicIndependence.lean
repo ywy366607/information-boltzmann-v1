@@ -1,7 +1,10 @@
 import CGBAxioms.SubconditionGraph
 
 /-!
-# Full remaining-thirteen certificates
+# Full remaining-twelve certificates
+
+Since 2026-10-26 contact homogeneity (former A04) is no longer an axiom part; the thirteen
+remaining atomic conditions keep their ids (A01–A03, A05–A14).
 
 Atomic irredundancy is relative to this fixed general Medium language, which does
 not assume finite local states. Logical countermodels are not capability studies
@@ -13,7 +16,7 @@ open Finset
 namespace CGB.Medium
 
 inductive AtomicCondition where
-  | a01 | a02 | a03 | a04 | a05 | a06 | a07
+  | a01 | a02 | a03 | a05 | a06 | a07
   | a08 | a09 | a10 | a11 | a12 | a13 | a14
   deriving DecidableEq
 
@@ -23,7 +26,6 @@ def Holds [Fintype U] [Fintype A] [DecidableEq (U → Λ)] : AtomicCondition →
   | .a01 => ∀ n, {l : Λ | M.content l ≤ n}.Finite
   | .a02 => ∃ K, ∀ l, M.content l ≤ K
   | .a03 => ∃! l, M.content l = 0
-  | .a04 => M.HomogeneousContact
   | .a05 => M.ParticipantsContact
   | .a06 => M.WritesParticipants
   | .a07 => M.RateReadsParticipants
@@ -46,20 +48,20 @@ theorem atomized_iff_all_conditions [Fintype U] [Fintype A]
   · intro h c
     cases c
     all_goals first | exact h.finiteSublevels | exact h.boundedContent |
-      exact h.uniqueVacuum | exact h.homogeneousContact | exact h.participantsContact |
+      exact h.uniqueVacuum | exact h.participantsContact |
       exact h.writesParticipants | exact h.rateReadsParticipants |
       exact h.effectReadsParticipants | exact h.closedConservation | exact h.calmBalance |
       exact h.coherentEquivariance | exact h.boundaryRate | exact h.boundaryEffect |
       exact h.initialInvariant
   · intro h
-    exact ⟨h .a01, h .a02, h .a03, h .a04, h .a05, h .a06, h .a07,
+    exact ⟨h .a01, h .a02, h .a03, h .a05, h .a06, h .a07,
       h .a08, h .a09, h .a10, h .a11, h .a12, h .a13, h .a14⟩
 
 open Models
 
 theorem a01_independent : twinTape.Isolates .a01 := by
   obtain ⟨hn, h1b, h9, h10, h11, hp3, _, h2, h3⟩ := twinTape_witness
-  obtain ⟨h4, h5, h6, h7, h8⟩ := (p1b_iff_atoms twinTape).mp h1b
+  obtain ⟨h5, h6, h7, h8⟩ := (p1b_iff_atoms twinTape).mp h1b
   obtain ⟨h12, h13, h14⟩ := (p3_iff_atoms twinTape).mp hp3
   have hn1 : ¬ (∀ n, {l | twinTape.content l ≤ n}.Finite) := fun h => hn ⟨h, h2, h3⟩
   refine ⟨?_, hn1⟩
@@ -68,7 +70,7 @@ theorem a01_independent : twinTape.Isolates .a01 := by
 
 theorem a02_independent : twinBag.Isolates .a02 := by
   obtain ⟨hn, h1b, h9, h10, h11, hp3, _, h1, h3⟩ := twinBag_witness
-  obtain ⟨h4, h5, h6, h7, h8⟩ := (p1b_iff_atoms twinBag).mp h1b
+  obtain ⟨h5, h6, h7, h8⟩ := (p1b_iff_atoms twinBag).mp h1b
   obtain ⟨h12, h13, h14⟩ := (p3_iff_atoms twinBag).mp hp3
   have hn1 : ¬ (∃ K, ∀ l, twinBag.content l ≤ K) := fun h => hn ⟨h1, h, h3⟩
   refine ⟨?_, hn1⟩
@@ -77,7 +79,7 @@ theorem a02_independent : twinBag.Isolates .a02 := by
 
 theorem a03_independent : twinBlank.Isolates .a03 := by
   obtain ⟨hn, h1b, h9, h10, h11, hp3, _, h1, h2⟩ := twinBlank_witness
-  obtain ⟨h4, h5, h6, h7, h8⟩ := (p1b_iff_atoms twinBlank).mp h1b
+  obtain ⟨h5, h6, h7, h8⟩ := (p1b_iff_atoms twinBlank).mp h1b
   obtain ⟨h12, h13, h14⟩ := (p3_iff_atoms twinBlank).mp hp3
   have hn1 : ¬ (∃! l, twinBlank.content l = 0) := fun h => hn ⟨h1, h2, h⟩
   refine ⟨?_, hn1⟩
@@ -87,7 +89,7 @@ theorem a03_independent : twinBlank.Isolates .a03 := by
 theorem a09_independent : twinToggle.Isolates .a09 := by
   obtain ⟨hn1, hp1a, h1b, h10, h11, hp3, _⟩ := twinToggle_witness
   obtain ⟨h1, h2, h3⟩ := hp1a
-  obtain ⟨h4, h5, h6, h7, h8⟩ := (p1b_iff_atoms twinToggle).mp h1b
+  obtain ⟨h5, h6, h7, h8⟩ := (p1b_iff_atoms twinToggle).mp h1b
   obtain ⟨h12, h13, h14⟩ := (p3_iff_atoms twinToggle).mp hp3
   refine ⟨?_, hn1⟩
   intro c hc
@@ -96,7 +98,7 @@ theorem a09_independent : twinToggle.Isolates .a09 := by
 theorem a10_independent : twinCycle.Isolates .a10 := by
   obtain ⟨hn1, hp1a, h1b, h9, h11, hp3, _⟩ := twinCycle_witness
   obtain ⟨h1, h2, h3⟩ := hp1a
-  obtain ⟨h4, h5, h6, h7, h8⟩ := (p1b_iff_atoms twinCycle).mp h1b
+  obtain ⟨h5, h6, h7, h8⟩ := (p1b_iff_atoms twinCycle).mp h1b
   obtain ⟨h12, h13, h14⟩ := (p3_iff_atoms twinCycle).mp hp3
   refine ⟨?_, hn1⟩
   intro c hc
@@ -105,7 +107,7 @@ theorem a10_independent : twinCycle.Isolates .a10 := by
 theorem a11_independent : triLookup.Isolates .a11 := by
   obtain ⟨hn1, hp1a, h1b, h9, h10, hp3⟩ := triLookup_witness
   obtain ⟨h1, h2, h3⟩ := hp1a
-  obtain ⟨h4, h5, h6, h7, h8⟩ := (p1b_iff_atoms triLookup).mp h1b
+  obtain ⟨h5, h6, h7, h8⟩ := (p1b_iff_atoms triLookup).mp h1b
   obtain ⟨h12, h13, h14⟩ := (p3_iff_atoms triLookup).mp hp3
   refine ⟨?_, hn1⟩
   intro c hc
@@ -123,7 +125,7 @@ theorem a07_independent : farFlip.Isolates .a07 := by
 theorem a12_independent : innerClock.Isolates .a12 := by
   obtain ⟨_, hp1a, h1b, h9, h10, h11, _⟩ := innerClock_witness
   obtain ⟨h1, h2, h3⟩ := hp1a
-  obtain ⟨h4, h5, h6, h7, h8⟩ := (p1b_iff_atoms innerClock).mp h1b
+  obtain ⟨h5, h6, h7, h8⟩ := (p1b_iff_atoms innerClock).mp h1b
   obtain ⟨hn1, h13, h14⟩ := innerClock_isolates_a12
   refine ⟨?_, hn1⟩
   intro c hc
@@ -132,22 +134,11 @@ theorem a12_independent : innerClock.Isolates .a12 := by
 theorem a14_independent : pairPreset.Isolates .a14 := by
   obtain ⟨_, hp1a, h1b, h9, h10, h11, _⟩ := pairPreset_witness
   obtain ⟨h1, h2, h3⟩ := hp1a
-  obtain ⟨h4, h5, h6, h7, h8⟩ := (p1b_iff_atoms pairPreset).mp h1b
+  obtain ⟨h5, h6, h7, h8⟩ := (p1b_iff_atoms pairPreset).mp h1b
   obtain ⟨hn1, h12, h13⟩ := pairPreset_isolates_a14
   refine ⟨?_, hn1⟩
   intro c hc
   cases c <;> simp_all [Holds]
-
-theorem a04_independent : path3Rigid.Isolates .a04 := by
-  obtain ⟨h, hr, _⟩ := finite_rigid_reducedCore_not_atomized
-  have h1 := a01_of_finite path3Rigid.content
-  have h2 := a02_of_finite path3Rigid.content
-  have h11 := p2c_of_rigid path3Rigid hr
-  have h14 := initial_invariant_of_rigid path3Rigid hr
-  obtain ⟨h3, h5, h6, h7, h8, h9, h10, h12, h13⟩ := h
-  refine ⟨?_, path3_not_homogeneous⟩
-  intro c hc
-  cases c <;> simp_all [Holds, InitialInvariant]
 
 /-- The same positive-rate involution with either all or no sites declared as
 participants. It separates contact admissibility from the write footprint. -/
@@ -181,7 +172,6 @@ theorem globalFlip_other_clauses (participants : Finset (Fin 2)) :
 theorem a05_independent : (globalFlip univ).Isolates .a05 := by
   obtain ⟨⟨h1, h2, h3⟩, h9, h10, h11, hp3⟩ := globalFlip_other_clauses univ
   obtain ⟨h12, h13, h14⟩ := (p3_iff_atoms (globalFlip univ)).mp hp3
-  have h4 : (globalFlip univ).HomogeneousContact := eq_homogeneous
   obtain ⟨h6, h7, h8⟩ := universal_parts_satisfies_a06_a07_a08
     (globalFlip univ) (fun _ => rfl)
   have hn : ¬ (globalFlip univ).ParticipantsContact := by
@@ -195,7 +185,6 @@ theorem a05_independent : (globalFlip univ).Isolates .a05 := by
 theorem a06_independent : (globalFlip ∅).Isolates .a06 := by
   obtain ⟨⟨h1, h2, h3⟩, h9, h10, h11, hp3⟩ := globalFlip_other_clauses ∅
   obtain ⟨h12, h13, h14⟩ := (p3_iff_atoms (globalFlip ∅)).mp hp3
-  have h4 : (globalFlip ∅).HomogeneousContact := eq_homogeneous
   have h5 : (globalFlip ∅).ParticipantsContact := by
     intro a u hu
     simp [globalFlip] at hu
@@ -252,7 +241,7 @@ theorem innerActClock_other_clauses :
     innerActClock.P1a ∧ innerActClock.P1b ∧ innerActClock.P2a ∧
       innerActClock.P2b ∧ innerActClock.P2c := by
   refine ⟨flipCost_p1a rfl, ?_, ?_, ?_, ?_⟩
-  · refine ⟨eq_homogeneous, ?_, ?_, ?_⟩
+  · refine ⟨?_, ?_, ?_⟩
     · intro a u hu v hv
       simp only [innerActClock, Finset.mem_singleton] at hu hv
       exact hu.trans hv.symm
@@ -286,7 +275,7 @@ theorem innerActClock_other_clauses :
 
 theorem a13_independent : innerActClock.Isolates .a13 := by
   obtain ⟨⟨h1, h2, h3⟩, h1b, h9, h10, h11⟩ := innerActClock_other_clauses
-  obtain ⟨h4, h5, h6, h7, h8⟩ := (p1b_iff_atoms innerActClock).mp h1b
+  obtain ⟨h5, h6, h7, h8⟩ := (p1b_iff_atoms innerActClock).mp h1b
   obtain ⟨hn, h12, h14⟩ := innerActClock_isolates_a13
   refine ⟨?_, hn⟩
   intro c hc
@@ -341,15 +330,6 @@ theorem all_atoms_independent (c : AtomicCondition) : Nonempty (AtomicCountermod
       Input := Unit
       medium := twinBlank
       certificate := a03_independent
-    }⟩
-  | a04 =>
-    exact ⟨{
-      Carrier := Fin 3
-      Local := Fin 2
-      Event := Empty
-      Input := Unit
-      medium := path3Rigid
-      certificate := a04_independent
     }⟩
   | a05 =>
     exact ⟨{
@@ -482,11 +462,10 @@ theorem isolates_rigidLabel [Fintype U] [Fintype A] [DecidableEq (U → Λ)]
   exact (M.holds_rigidLabel_iff d hd11 hd14).mpr (h.1 d hd)
 
 /-- Every selected condition has a finite-local-state countermodel in the SAME
-homogeneous-contact and rigid-structure regime used by the recovery bridge. -/
+rigid-structure regime used by the recovery bridge. -/
 theorem every_reduced_condition_independent_in_regime (c : AtomicCondition)
     (hc : InReduced c) :
-    ∃ w : AtomicCountermodel c, Finite w.Local ∧
-      w.medium.HomogeneousContact ∧ w.medium.Rigid := by
+    ∃ w : AtomicCountermodel c, Finite w.Local ∧ w.medium.Rigid := by
   cases c with
   | a01 => exact False.elim hc
   | a02 => exact False.elim hc
@@ -496,57 +475,49 @@ theorem every_reduced_condition_independent_in_regime (c : AtomicCondition)
       medium := (twinBlank).rigidLabel,
       certificate := isolates_rigidLabel (twinBlank) .a03 (by decide) (by decide)
         a03_independent }
-    refine ⟨w, inferInstance, ?_, rigidLabel_rigid (twinBlank)⟩
-    exact (a03_independent.1 .a04 (by decide))
-  | a04 => exact False.elim hc
+    exact ⟨w, inferInstance, rigidLabel_rigid (twinBlank)⟩
   | a05 =>
     let w : AtomicCountermodel .a05 := {
       Carrier := Fin 2, Local := Fin 3, Event := Unit, Input := Unit,
       medium := (globalFlip univ).rigidLabel,
       certificate := isolates_rigidLabel (globalFlip univ) .a05 (by decide) (by decide)
         a05_independent }
-    refine ⟨w, inferInstance, ?_, rigidLabel_rigid (globalFlip univ)⟩
-    exact (a05_independent.1 .a04 (by decide))
+    exact ⟨w, inferInstance, rigidLabel_rigid (globalFlip univ)⟩
   | a06 =>
     let w : AtomicCountermodel .a06 := {
       Carrier := Fin 2, Local := Fin 3, Event := Unit, Input := Unit,
       medium := (globalFlip ∅).rigidLabel,
       certificate := isolates_rigidLabel (globalFlip ∅) .a06 (by decide) (by decide)
         a06_independent }
-    refine ⟨w, inferInstance, ?_, rigidLabel_rigid (globalFlip ∅)⟩
-    exact (a06_independent.1 .a04 (by decide))
+    exact ⟨w, inferInstance, rigidLabel_rigid (globalFlip ∅)⟩
   | a07 =>
     let w : AtomicCountermodel .a07 := {
       Carrier := Fin 2, Local := Fin 3, Event := Fin 2, Input := Unit,
       medium := (farFlip).rigidLabel,
       certificate := isolates_rigidLabel (farFlip) .a07 (by decide) (by decide)
         a07_independent }
-    refine ⟨w, inferInstance, ?_, rigidLabel_rigid (farFlip)⟩
-    exact (a07_independent.1 .a04 (by decide))
+    exact ⟨w, inferInstance, rigidLabel_rigid (farFlip)⟩
   | a08 =>
     let w : AtomicCountermodel .a08 := {
       Carrier := Fin 2, Local := Fin 3, Event := Fin 2, Input := Unit,
       medium := (farAct).rigidLabel,
       certificate := isolates_rigidLabel (farAct) .a08 (by decide) (by decide)
         a08_independent }
-    refine ⟨w, inferInstance, ?_, rigidLabel_rigid (farAct)⟩
-    exact (a08_independent.1 .a04 (by decide))
+    exact ⟨w, inferInstance, rigidLabel_rigid (farAct)⟩
   | a09 =>
     let w : AtomicCountermodel .a09 := {
       Carrier := Fin 2, Local := Bool, Event := Fin 2 × Unit, Input := Unit,
       medium := (twinToggle).rigidLabel,
       certificate := isolates_rigidLabel (twinToggle) .a09 (by decide) (by decide)
         a09_independent }
-    refine ⟨w, inferInstance, ?_, rigidLabel_rigid (twinToggle)⟩
-    exact (a09_independent.1 .a04 (by decide))
+    exact ⟨w, inferInstance, rigidLabel_rigid (twinToggle)⟩
   | a10 =>
     let w : AtomicCountermodel .a10 := {
       Carrier := Fin 2, Local := Fin 4, Event := Fin 2 × Unit, Input := Unit,
       medium := (twinCycle).rigidLabel,
       certificate := isolates_rigidLabel (twinCycle) .a10 (by decide) (by decide)
         a10_independent }
-    refine ⟨w, inferInstance, ?_, rigidLabel_rigid (twinCycle)⟩
-    exact (a10_independent.1 .a04 (by decide))
+    exact ⟨w, inferInstance, rigidLabel_rigid (twinCycle)⟩
   | a11 => exact False.elim hc
   | a12 =>
     let w : AtomicCountermodel .a12 := {
@@ -554,16 +525,14 @@ theorem every_reduced_condition_independent_in_regime (c : AtomicCondition)
       medium := (innerClock).rigidLabel,
       certificate := isolates_rigidLabel (innerClock) .a12 (by decide) (by decide)
         a12_independent }
-    refine ⟨w, inferInstance, ?_, rigidLabel_rigid (innerClock)⟩
-    exact (a12_independent.1 .a04 (by decide))
+    exact ⟨w, inferInstance, rigidLabel_rigid (innerClock)⟩
   | a13 =>
     let w : AtomicCountermodel .a13 := {
       Carrier := Fin 2, Local := Fin 3, Event := Fin 2, Input := Bool,
       medium := (innerActClock).rigidLabel,
       certificate := isolates_rigidLabel (innerActClock) .a13 (by decide) (by decide)
         a13_independent }
-    refine ⟨w, inferInstance, ?_, rigidLabel_rigid (innerActClock)⟩
-    exact (a13_independent.1 .a04 (by decide))
+    exact ⟨w, inferInstance, rigidLabel_rigid (innerActClock)⟩
   | a14 => exact False.elim hc
 
 end CGB.Medium

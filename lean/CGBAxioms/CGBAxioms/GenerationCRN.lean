@@ -109,8 +109,7 @@ theorem p1a (h : (∀ n, {l : Λ | C.content l ≤ n}.Finite) ∧ (∃ K, ∀ l,
 
 theorem p1b : C.medium.P1b := by
   classical
-  refine ⟨fun u v => ⟨Equiv.swap u v, fun _ _ => Iff.rfl, by simp⟩, fun _ _ _ _ _ => trivial,
-    ?_, ?_⟩
+  refine ⟨fun _ _ _ _ _ => trivial, ?_, ?_⟩
   · rintro ⟨r, u, v⟩ s x w hw
     simp only [medium, Finset.mem_insert, Finset.mem_singleton, not_or] at hw
     simp only [medium, pairAct]
@@ -231,6 +230,10 @@ theorem p3 : C.medium.P3 := by
       rw [Equiv.apply_symm_apply] at this
       exact this.symm
     simp [medium, this]
+
+/-- The single compartment's contact is homogeneous (an optional model property). -/
+theorem homogeneous : C.medium.HomogeneousContact :=
+  fun u v => ⟨Equiv.swap u v, fun _ _ => Iff.rfl, by simp⟩
 
 /-- **M2**: a well-mixed pair reaction medium is a model of the CGB axioms as soon as its
 finite rule table passes the local obligations: content levels (P1a), conservation of

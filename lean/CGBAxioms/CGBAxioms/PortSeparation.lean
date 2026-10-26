@@ -95,8 +95,7 @@ theorem admission : body.Axioms ∧ body.EventClocked 1 := by
   constructor
   · refine ⟨(body.p1a_iff_unique_vacuum).2 ?_, ?_, ?_, ?_, body.p2c_of_rigid hr, ?_⟩
     · exact (SensoryMaintenance.admission.1.p1a |> (SensoryMaintenance.body.p1a_iff_unique_vacuum).1)
-    · refine ⟨?_, by intros; trivial, ?_, ?_⟩
-      · intro u v; exact ⟨Equiv.refl Unit, by intros; rfl, Subsingleton.elim _ _⟩
+    · refine ⟨by intros; trivial, ?_, ?_⟩
       · intro e s x u hu; simp [body] at hu
       · intro e s s' x y hh
         have hx : x = y := funext fun u => (hh u (by simp [body])).1

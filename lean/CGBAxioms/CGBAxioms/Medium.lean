@@ -84,11 +84,16 @@ def P1a : Prop :=
   (∀ n, {ℓ : Λ | M.content ℓ ≤ n}.Finite) ∧ (∃ K, ∀ ℓ, M.content ℓ ≤ K) ∧
     ∃! ℓ, M.content ℓ = 0
 
-/-- **P1b** influence needs contact: contact comes from a homogeneous space (every unit
-looks like every other), participants are in contact, an event changes only its
-participants, and its rate and effect read only its participants' states and stimuli. -/
+/-- **P1b** influence needs contact: participants are in contact, an event changes only
+its participants, and its rate and effect read only its participants' states and stimuli.
+
+Revision 2026-10-26: contact homogeneity (every unit looks like every other) was removed
+from P1b. It entered no derivation of the generation chain, it cannot stop per-unit rules
+(`ConstraintAudit.rigid_of_injective_identity`), and it forces a regular contact graph
+(`GenerationAxiomAudit.homogeneous_regular`), excluding trees, hubs, finite grids with a
+surface and line graphs of unequal compartments. It survives as the optional model property
+`HomogeneousContact`. -/
 def P1b : Prop :=
-  (∀ u v, ∃ σ : Equiv.Perm U, (∀ a b, M.near (σ a) (σ b) ↔ M.near a b) ∧ σ u = v) ∧
   (∀ a, ∀ u ∈ M.parts a, ∀ v ∈ M.parts a, M.near u v) ∧
   (∀ a s x u, u ∉ M.parts a → M.act a s x u = x u) ∧
   ∀ a s s' x y, (∀ u ∈ M.parts a, x u = y u ∧ s u = s' u) →
@@ -119,6 +124,11 @@ def OnlyBoundarySenses : Prop :=
 environment (which breaks time-translation symmetry) acts only through the boundary, and
 the birth state carries no asymmetry beyond the given structure. -/
 def P3 : Prop := M.OnlyBoundarySenses ∧ ∀ σ, M.IsAut σ → M.init ∘ σ.symm = M.init
+
+/-- Optional model property (removed from P1b on 2026-10-26): contact comes from a homogeneous
+space, every unit looks like every other. -/
+def HomogeneousContact : Prop :=
+  ∀ u v, ∃ σ : Equiv.Perm U, (∀ a b, M.near (σ a) (σ b) ↔ M.near a b) ∧ σ u = v
 
 /-- A model of the CGB axioms. -/
 structure Axioms [Fintype U] [Fintype A] [DecidableEq (U → Λ)] : Prop where

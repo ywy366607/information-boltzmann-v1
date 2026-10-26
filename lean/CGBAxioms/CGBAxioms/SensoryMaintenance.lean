@@ -108,8 +108,7 @@ theorem admission : body.Axioms ∧ body.EventClocked 1 := by
       rintro ⟨q,r⟩ h
       fin_cases r <;> cases q <;>
         norm_num [cost, RenewableLearning.cost, buffer, credit, empty, body] at *
-    · refine ⟨?_, by intros; trivial, ?_, ?_⟩
-      · intro u v; exact ⟨Equiv.refl Unit, by intros; rfl, Subsingleton.elim _ _⟩
+    · refine ⟨by intros; trivial, ?_, ?_⟩
       · intro e s x u hu; simp [body] at hu
       · intro e s s' x y hh
         have hx : x = y := funext fun u => (hh u (by simp [body])).1

@@ -76,9 +76,7 @@ theorem plant_admission (transition : Stim → State → State) :
     · refine ⟨0, rfl, ?_⟩
       intro l hl
       fin_cases l <;> norm_num [plant, cost] at *
-    · refine ⟨?_, by intros; trivial, ?_, ?_⟩
-      · intro u v
-        exact ⟨Equiv.refl Unit, by intros; rfl, Subsingleton.elim _ _⟩
+    · refine ⟨by intros; trivial, ?_, ?_⟩
       · intro e s x u hu
         simp [plant] at hu
       · intro e s s' x y hh

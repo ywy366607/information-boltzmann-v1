@@ -197,8 +197,7 @@ def unboundedStimulus : Medium (Fin 1) Bool Unit ℕ where
 
 theorem unboundedStimulus_axioms : unboundedStimulus.Axioms := by
   refine ⟨Models.bool_p1a rfl, ?_, ?_, ?_, ?_, ?_⟩
-  · refine ⟨fun u v => ⟨Equiv.swap u v, fun _ _ => Iff.rfl,
-        Equiv.swap_apply_left u v⟩, fun _ _ _ _ _ => trivial, ?_, ?_⟩
+  · refine ⟨fun _ _ _ _ _ => trivial, ?_, ?_⟩
     · intro a s x u hu
       exact False.elim (hu (Finset.mem_univ u))
     · intro a s s' x y h

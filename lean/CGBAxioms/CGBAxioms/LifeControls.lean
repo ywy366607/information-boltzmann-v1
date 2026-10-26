@@ -199,9 +199,7 @@ clauses; its failure of the life target is not a violation of those clauses. -/
 theorem passive_body_axioms : body.Axioms := by
   refine ⟨⟨fun _ => Set.toFinite _, ⟨1, by decide⟩, ⟨false, rfl, by decide⟩⟩,
     ?_, ?_, ?_, ?_, ?_⟩
-  · refine ⟨?_, by intros; trivial, ?_, ?_⟩
-    · intro u v
-      exact ⟨Equiv.refl Unit, by intros; rfl, Subsingleton.elim _ _⟩
+  · refine ⟨by intros; trivial, ?_, ?_⟩
     · intro a s x u hu
       simp [body] at hu
     · intro a s s' x y hh

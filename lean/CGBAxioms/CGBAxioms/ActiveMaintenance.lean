@@ -50,9 +50,7 @@ theorem admission : body.Axioms ∧ body.EventClocked 1 := by
     · refine ⟨0, rfl, ?_⟩
       intro l hl
       fin_cases l <;> norm_num [body, cost] at *
-    · refine ⟨?_, by intros; trivial, ?_, ?_⟩
-      · intro u v
-        exact ⟨Equiv.refl Unit, by intros; rfl, Subsingleton.elim _ _⟩
+    · refine ⟨by intros; trivial, ?_, ?_⟩
       · intro e s x u hu
         simp [body] at hu
       · intro e s s' x y hh

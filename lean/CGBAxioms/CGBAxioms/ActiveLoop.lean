@@ -95,9 +95,7 @@ theorem body_axioms : body.Axioms := by
     intro u
     exact Subsingleton.elim _ _
   refine ⟨(body.p1a_iff_unique_vacuum).2 unique_vacuum, ?_, ?_, ?_, body.p2c_of_rigid hr, ?_⟩
-  · refine ⟨?_, by intros; trivial, ?_, ?_⟩
-    · intro u v
-      exact ⟨Equiv.refl Unit, by intros; rfl, Subsingleton.elim _ _⟩
+  · refine ⟨by intros; trivial, ?_, ?_⟩
     · intro e s x u hu
       simp [body] at hu
     · intro e s s' x y hh

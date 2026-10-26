@@ -168,8 +168,7 @@ lemma xhop_isAut {σ : Equiv.Perm U} (hid : ∀ u, ident (σ u) = ident u) :
 
 omit [Fintype U] in
 lemma xhop_p1b : (xhop U c hc ident init).P1b := by
-  refine ⟨fun u v => ⟨Equiv.swap u v, fun _ _ => Iff.rfl, Equiv.swap_apply_left u v⟩,
-    fun _ _ _ _ _ => trivial, fun a _ x w hw => ?_, fun a s s' x y hxy => ?_⟩
+  refine ⟨fun _ _ _ _ _ => trivial, fun a _ x w hw => ?_, fun a s s' x y hxy => ?_⟩
   · simp only [xhop, Finset.mem_insert, Finset.mem_singleton, not_or] at hw
     exact xhopAct_outside x hw.1 hw.2
   · have h1 : x a.1 = y a.1 := (hxy _ (by simp [xhop])).1
@@ -273,8 +272,7 @@ lemma solo_isAut (σ : Equiv.Perm U) : (solo U content step r hr ℓ₀).IsAut �
   ⟨fun _ _ => σ.injective.eq_iff, fun _ => rfl, fun _ => by simp [solo]⟩
 
 lemma solo_p1b : (solo U content step r hr ℓ₀).P1b := by
-  refine ⟨eq_homogeneous, fun a u hu v hv => ?_, fun a _ x u hu => ?_,
-    fun a s s' x y hxy => ?_⟩
+  refine ⟨fun a u hu v hv => ?_, fun a _ x u hu => ?_, fun a s s' x y hxy => ?_⟩
   · simp only [solo, Finset.mem_singleton] at hu hv
     exact hu.trans hv.symm
   · simp only [solo, Finset.mem_singleton] at hu
@@ -409,8 +407,7 @@ noncomputable def seed : Medium (Fin 4) Bool ((Fin 4 × Fin 4) ⊕ Bool) Bool wh
   calm _ := false
 
 lemma seed_p1b : seed.P1b := by
-  refine ⟨fun u v => ⟨Equiv.addRight (v - u), fun a b => ringAdj_shift _ a b, by simp⟩,
-    ?_, ?_, ?_⟩
+  refine ⟨?_, ?_, ?_⟩
   · rintro (a | _ | _) u hu v hv
     · by_cases ha : ringAdj a.1 a.2
       · simp only [seed, ha, ite_true, Finset.mem_insert, Finset.mem_singleton] at hu hv
@@ -760,7 +757,7 @@ theorem farFlip_witness :
   refine ⟨fun h => ?_, flipCost_p1a rfl, fun u _ x _ _ => ?_, ?_,
     fun σ _ => ⟨σ, fun u s x => ⟨?_, ?_⟩⟩, ⟨fun _ _ _ _ _ => ⟨rfl, rfl⟩, fun _ _ => rfl⟩,
     ⟨fun _ _ => (Equiv.swap 0 1).injective.eq_iff, fun _ => rfl, fun _ => by simp [farFlip]⟩⟩
-  · have := (h.2.2.2 0 (fun _ => ()) (fun _ => ()) (fun _ => 1)
+  · have := (h.2.2 0 (fun _ => ()) (fun _ => ()) (fun _ => 1)
       (Function.update (fun _ => 1) 1 2) (by simp [farFlip])).1
     simp [farFlip] at this
   · refine Finset.sum_congr rfl fun w _ => ?_
@@ -824,7 +821,7 @@ noncomputable def innerClock : Medium (Fin 2) (Fin 3) (Fin 2) Bool where
 theorem innerClock_witness :
     ¬ innerClock.P3 ∧ innerClock.P1a ∧ innerClock.P1b ∧ innerClock.P2a ∧ innerClock.P2b ∧
       innerClock.P2c ∧ innerClock.IsAut (Equiv.swap 0 1) := by
-  refine ⟨fun h => ?_, flipCost_p1a rfl, ⟨eq_homogeneous, fun a u hu v hv => ?_,
+  refine ⟨fun h => ?_, flipCost_p1a rfl, ⟨fun a u hu v hv => ?_,
     fun a _ x w hw => ?_, fun a s s' x y hxy => ?_⟩, fun u _ x _ _ => ?_, ?_,
     fun σ _ => ⟨σ, fun u s x => ⟨by simp [innerClock], ?_⟩⟩,
     ⟨fun _ _ => (Equiv.swap 0 1).injective.eq_iff, fun _ => rfl,
