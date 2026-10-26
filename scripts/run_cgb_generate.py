@@ -22,14 +22,18 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "information_boltzmann" / "core"))
 import cgb_table_fast  # noqa: E402
 import cgb_chemotaxis  # noqa: E402
+import cgb_ignition  # noqa: E402
 
-# World selection: forage (pages F, A, M; motor index 2) or chemo (pages F, M; motor index 1).
+# World selection: forage (pages F, A, M; motor index 2), chemo (pages F, M; motor index 1)
+# or ignition (pages S, G, E, M; motor index 3).
 WORLD = {"name": "forage", "mod": cgb_table_fast, "nb": 3, "motor": 2, "maxu": 16}
 
 
 def set_world(name):
     if name == "chemo":
         WORLD.update(name="chemo", mod=cgb_chemotaxis, nb=2, motor=1, maxu=64)
+    elif name == "ignition":
+        WORLD.update(name="ignition", mod=cgb_ignition, nb=4, motor=3, maxu=64)
     else:
         WORLD.update(name="forage", mod=cgb_table_fast, nb=3, motor=2, maxu=16)
 
@@ -160,7 +164,7 @@ def main():
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--workers", type=int, default=10)
     ap.add_argument("--cost", type=float, default=0.6)
-    ap.add_argument("--world", default="forage", choices=["forage", "chemo"])
+    ap.add_argument("--world", default="forage", choices=["forage", "chemo", "ignition"])
     ap.add_argument("--train", type=int, default=4, help="number of training worlds (seeds 1..N)")
     ap.add_argument("--out", required=True)
     a = ap.parse_args()
@@ -187,15 +191,19 @@ def main():
             pop = elite + children
             fit = [fit[i] for i in order[:8]] + cfit
     best = pop[int(np.argmax(fit))]
-    report = dict(prereg=("docs/information_boltzmann/CGB_GENERATED_ORGANISM_PREREG_20261026.md" if a.world == "forage"
-                          else "docs/information_boltzmann/CGB_GENERATED_CHEMOTAXIS_PREREG_20261026.md"),
+    prereg = {"forage": "ORGANISM", "chemo": "CHEMOTAXIS", "ignition": "IGNITION"}[a.world]
+    if a.world == "forage":
+        held = dict(organism=evaluate(best, HELD), loop_cut=evaluate(best, HELD, cut=True),
+                    blind=evaluate(best, HELD, blind=True))
+    elif a.world == "chemo":
+        held = dict(organism=evaluate(best, HELD), blind=evaluate(best, HELD, blind=True),
+                    never_tumble=evaluate(best, HELD, mode=1), fixed_tumble_0p1=evaluate(best, HELD, mode=2))
+    else:
+        held = dict(organism=evaluate(best, HELD), blind=evaluate(best, HELD, blind=True),
+                    calm_fuel=evaluate(best, HELD, calm_fuel=True))
+    report = dict(prereg=f"docs/information_boltzmann/CGB_GENERATED_{prereg}_PREREG_20261026.md",
                   args=vars(a), history=history, best=best, table=to_table(best, f"generated_s{a.seed}"),
-                  world=a.world,
-                  held_out=(dict(organism=evaluate(best, HELD), loop_cut=evaluate(best, HELD, cut=True),
-                                 blind=evaluate(best, HELD, blind=True)) if a.world == "forage" else
-                            dict(organism=evaluate(best, HELD), blind=evaluate(best, HELD, blind=True),
-                                 never_tumble=evaluate(best, HELD, mode=1),
-                                 fixed_tumble_0p1=evaluate(best, HELD, mode=2))))
+                  world=a.world, held_out=held)
     Path(a.out).parent.mkdir(parents=True, exist_ok=True)
     Path(a.out).write_text(json.dumps(report, indent=1), encoding="utf-8")
     for k, v in report["held_out"].items():
