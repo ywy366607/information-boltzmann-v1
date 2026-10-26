@@ -2,7 +2,7 @@
 
 由 `scripts/build_proven_index.py` 从 Lean 源码生成。新工作开始前先在这里检索（定理名与文档注释首句），避免重复推导。
 
-共 918 条定理/引理。
+共 929 条定理/引理。
 **未入 Lean 的手工推导与数值见证**另列在 `CGB_HAND_DERIVATIONS.md`，检索时两处都要看。
 
 ## ActiveLoop（8）
@@ -370,13 +370,16 @@ _A generator of admitted media (generation chain, M1) Instead of proving the six
 - `p2b_of_energy`：**M1a**: symmetric (Metropolis-type) rates of a reversible event set under an energy give P2b.
 - `rate_local_of_energy`：**M1b**: a rate that is a function of the participants' states through the event's energy difference reads only the participants, when that difference does.
 
-## GenerationNesting（4）
+## GenerationNesting（7）
 _Nesting: the world is a medium too (generation chain, G26) An organism is a medium; the world it lives in obeys the same axioms, and so does a body that hosts organisms (mitochondria, gut bacteria) or a collective made o_
 
 - `cell_potential`：**G26a (the sensed potential of a world cell)**.
 - `site_balance`：Conservation at a site: food after `T` ticks plus everything eaten is at most the initial food plus the regeneration.
 - `stay_starves`：**G26b (staying put starves)**: with food never negative, regeneration at most `r`, and a reserve that gains at most what is eaten and pays `c` per tick, the reserve after `T` ticks is at most `R₀ + f₀ + (r - c) T`.
 - `stay_dies`：The reserve is exhausted in finite time when living costs more than the site regenerates.
+- `cell_step`：Adding one quantum to a cell holding `n` of `V` costs exactly `log ((n + 1) / (V - n))`, so to a unit exchanging quanta with it the cell is a reservoir of potential `≈ log (n / V) = ln c`, and one exchange moves that pot
+- `missProb_ge`
+- `stream_never_dry`：**T-N7 (the stream never runs dry)**: under a stationary law `π` of the world–organism process, if some state `x` (weight `π x`) has two possible successors with different boundary readings, then every predictor of the n
 
 ## GenerationOrganismEcoliMsS0（3）
 _Organism `ecoli_ms_s0`: generated from its rule table Source: `information_boltzmann/organisms/ecoli_ms_s0.json`, sha256 38ff4daa364a8d382398d91208cc7908b61c82d1a1324e64111291ef4801fa1b._
@@ -799,6 +802,18 @@ _Consistency models, independence witnesses and the bottleneck theorem **Consist
 - `triLookup_witness`
 - `pairPreset_witness`
 - `innerClock_witness`
+
+## Nesting（8）
+_Nesting: an organism is a part of one medium, its boundary induced by contact There is one medium._
+
+- `boundary_eq_outer_compl`：`S`'s own boundary: the units of `S` touching the outside.
+- `participant_near`：A participant of an event that also has a participant in `S` is in `S` or touches it.
+- `blanket_of_contact`：**T-N1 (the blanket from contact)**: two states that agree on `S` and on the units touching it give every event with a participant in `S` the same rate and the same effect on `S`.
+- `untouched_unchanged`：Events with no participant in `S` leave `S` unchanged.
+- `organism_blanket`：The organism's half: what happens to `O` reads only `O` and the units touching it.
+- `world_blanket`：The world's half (formerly the assumption `ReadsBoundary`): what happens to the rest reads only the rest and the organism's own boundary units.
+- `exchange_conserves`：**T-N2 (exchange conserves)**: a closed event with positive rate changes the content of `O` by exactly minus the change of the rest.
+- `freezeOutside_balance`：**T-N3 (the organism's own moves are balanced with the world frozen)**: if the joint calm dynamics has detailed-balance weight `π`, the dynamics with the outside of `O` frozen has the same detailed balance.
 
 ## NoetherBridge（8）
 _Noether correspondence for the actual medium event language A closed-event restriction is an analysis object, not a change to the running medium._
