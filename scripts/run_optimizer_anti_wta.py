@@ -99,6 +99,35 @@ def run(name, kind, lr, seed=0):
                 tail_acc=float(acc[K // 2:].mean()), erank=erank)
 
 
+def run_modes(name, lr, seed=0, d=32, steps=3000):
+    """O6: two-layer linear net; time for each teacher mode to reach half its strength."""
+    gen = torch.Generator().manual_seed(seed)
+    U, _ = torch.linalg.qr(torch.randn(d, d, generator=gen))
+    Vt, _ = torch.linalg.qr(torch.randn(d, d, generator=gen))
+    sig = torch.tensor([5.0, 4.0, 3.0, 2.0, 1.0])
+    T = U[:, :5] @ torch.diag(sig) @ Vt[:, :5].T
+    W1 = 1e-3 * torch.randn(d, d, generator=gen)
+    W2 = 1e-3 * torch.randn(d, d, generator=gen)
+    s1, s2 = step_fn(name, lr), step_fn(name, lr)
+    hit = [None] * 5
+    for t in range(steps):
+        A, B = W1.clone().requires_grad_(True), W2.clone().requires_grad_(True)
+        loss = 0.5 * ((B @ A - T) ** 2).sum() / d
+        loss.backward()
+        with torch.no_grad():
+            s1(W1, A.grad)
+            s2(W2, B.grad)
+            P = W2 @ W1
+            for i in range(5):
+                if hit[i] is None and float(U[:, i] @ P @ Vt[:, i]) >= sig[i] / 2:
+                    hit[i] = t + 1
+        if not torch.isfinite(W1).all():
+            break
+    with torch.no_grad():
+        final = float(0.5 * ((W2 @ W1 - T) ** 2).sum() / d)
+    return dict(opt=name, lr=lr, final_loss=final, hit=hit)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--out", required=True)
@@ -119,10 +148,20 @@ def main():
         pred[f"O5_{kind}"] = get[(kind, "rowres")] >= get[(kind, "rownorm")] - 0.02
     pred["O2"] = get[("orthogonal", "rownorm")] >= get[("orthogonal", "muon_ns")] - 0.03
     pred["O3"] = get[("correlated", "rownorm")] < get[("correlated", "muon_ns")] - 0.05
+    modes = {}
+    for name in ("sgd", "muon_ns"):
+        runs = [run_modes(name, lr) for lr in (0.003, 0.01, 0.03, 0.1, 0.3)]
+        ok = [r for r in runs if all(h is not None for h in r["hit"])] or runs
+        modes[name] = min(ok, key=lambda r: r["final_loss"])
+        modes[name]["sweep"] = [dict(lr=r["lr"], loss=r["final_loss"], hit=r["hit"]) for r in runs]
+        print(json.dumps({k: v for k, v in modes[name].items() if k != "sweep"}), flush=True)
+    ratio = {k: (v["hit"][4] / v["hit"][0] if v["hit"][0] and v["hit"][4] else float("inf")) for k, v in modes.items()}
+    pred["O6_ratio_weakest_over_strongest"] = ratio
+    pred["O6"] = ratio["sgd"] >= 3 and ratio["muon_ns"] <= 1.5
     print(json.dumps(pred))
     Path(a.out).parent.mkdir(parents=True, exist_ok=True)
     Path(a.out).write_text(json.dumps(dict(prereg="docs/information_boltzmann/CGB_OPTIMIZER_ANTI_WTA_PREREG_20261026.md",
-                                           best=best, predictions=pred), indent=1), encoding="utf-8")
+                                           best=best, modes=modes, predictions=pred), indent=1), encoding="utf-8")
 
 
 if __name__ == "__main__":
