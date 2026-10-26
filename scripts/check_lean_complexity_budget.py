@@ -25,7 +25,7 @@ LEAN_ROOT = INVENTORY.parents[1]
 # 2026-10-26 (user): the budget is "as small as possible", not "no growth"; the
 # totals were raised for the chain, the per-file cap still forces splitting.
 CAPS = {
-    "modules": 80,
+    "modules": 90,
     "declarations": 4600,
     "source_declared_theorems": 1000,
     "source_lines": 19000,

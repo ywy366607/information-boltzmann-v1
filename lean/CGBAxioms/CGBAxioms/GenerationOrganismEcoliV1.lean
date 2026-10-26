@@ -52,6 +52,6 @@ rule between two interior pages conserves content). -/
 theorem axioms : medium.Axioms :=
   tableCRN.axioms spec page bid content φ μ (fun _ => (0 : Fin 2)) (0 : ℤ) (by simp [μ])
     ⟨0, rfl, fun l hl => Fin.ext (by simpa [content] using hl)⟩
-    (by intro k; fin_cases k <;> simp [spec, bid])
+    (by intro k; fin_cases k <;> simp [spec, bid, content])
 
 end CGB.Organisms.EcoliV1

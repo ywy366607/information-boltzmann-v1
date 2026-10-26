@@ -1,0 +1,16 @@
+{
+ "name": "generated_s0",
+ "implementation": "information_boltzmann/organisms/generated_s0.json (rule table) run by information_boltzmann/core/cgb_table_fast.py",
+ "lean_medium": "CGB.Organisms.GeneratedS0.axioms",
+ "mechanisms": [
+  {"id": "rule_table_medium", "kind": "structure",
+   "what": "one well-mixed compartment; reversible two-unit rules; energy change = single-unit energies minus reservoir work; rates kappa*exp(-dE/2)",
+   "theorems": ["CGB.tableCRN.axioms", "CGB.PairCRN.axioms", "CGB.Medium.p2b_of_energy"],
+   "checks": ["table_lean_hash:generated_s0", "table_rates_match_lean:generated_s0"]},
+  {"id": "table_entries", "kind": "selected",
+   "what": "which pages, unit counts, energies and rules: found by selection on survival in the forage world, not designed",
+   "evidence": "results/published/cgb_generated/gen_s0_20261026.json"},
+  {"id": "world_interface", "kind": "constant",
+   "what": "food page potential +-6, arrival page +-6, one motor unit read by the world (fixed in the prereg)"}
+ ]
+}

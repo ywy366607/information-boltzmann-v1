@@ -7,7 +7,8 @@ every mechanism of the model. The gate admits the model only if all three layers
    that exist in the current audit inventory and depend only on the standard axioms
    (propext, Classical.choice, Quot.sound). The inventory must match the current
    sources. Only kind "constant" (numbers that learning or evolution may tune) may
-   cite nothing.
+   cite nothing, and kind "selected" (table entries found by selection on survival, not
+   designed) needs an existing selection record as evidence.
 2. Execution. Every licensed mechanism names checks that run on the real
    implementation and confirm it computes what the theorem states.
 3. Medium. The manifest names a Lean `Medium` instance whose `Axioms` proof is in
@@ -190,6 +191,48 @@ def check_grown_R_rule():
     return ok, dict(asymmetry=sym, reciprocity_error=recip, occupancy_form_error=form)
 
 
+def _table(name):
+    from cgb_table_medium import load
+    return load(ROOT / "information_boltzmann" / "organisms" / f"{name}.json")
+
+
+def check_table_lean_hash(name):
+    t = _table(name)
+    module = "".join(w.capitalize() for w in name.replace("_", " ").split()) if name != "ecoli_v1" else "EcoliV1"
+    if name.startswith("generated_"):
+        module = "Generated" + name.split("_", 1)[1].capitalize()
+    lean = (LEAN / "CGBAxioms" / f"GenerationOrganism{module}.lean").read_text(encoding="utf-8")
+    ok = t["sha256"] in lean
+    return ok, dict(table_sha256=t["sha256"], lean_module=f"GenerationOrganism{module}")
+
+
+def check_table_rates_match_lean(name):
+    """The compiled simulator's rate of every rule direction equals the sum, over units, of
+    the unit-level rates transcribed from the Lean definitions."""
+    from cgb_table_medium import unit_pages, unit_rates
+    from cgb_table_fast import _rates, arrays, table_genome
+    t = _table(name)
+    g = table_genome(t)
+    counts, phi, bnd, ri, rj, a0, a1, b0, b1, kap = arrays(g)
+    pages = unit_pages(t)
+    P = len(t["pages"])
+    rng = np.random.default_rng(11)
+    worst = 0.0
+    for _ in range(200):
+        x = [int(rng.integers(2)) for _ in pages]
+        mu_page = {p: float(rng.choice([-6.0, 0.0, 6.0])) if p in t["boundary_pages"] else 0.0 for p in range(P)}
+        n = np.zeros((P, 2), dtype=np.int64)
+        for u, p in enumerate(pages):
+            n[p, x[u]] += 1
+        w = np.zeros(2 * len(t["rules"]))
+        _rates(n, phi, bnd, np.array([mu_page[p] for p in range(P)]), ri, rj, a0, a1, b0, b1, kap, w)
+        ref = np.zeros_like(w)
+        for (k, d, _u, _v), r in unit_rates(t, x, mu_page).items():
+            ref[2 * k + int(d)] += r
+        worst = max(worst, float(np.abs(w - ref).max() / max(1.0, float(np.abs(ref).max()))))
+    return worst < 1e-9, dict(max_relative_error=worst, states=200)
+
+
 CHECKS = {k[len("check_"):]: v for k, v in list(globals().items()) if k.startswith("check_")}
 
 
@@ -212,6 +255,11 @@ def gate(name):
         licensed = bool(row["theorems"]) and all(v == "ok" for v in row["theorems"].values())
         if mech["kind"] == "constant":
             row["status"] = "constant (allowed)"
+        elif mech["kind"] == "selected":
+            ev = mech.get("evidence")
+            row["status"] = "selected (allowed)" if ev and (ROOT / ev).exists() else "UNLICENSED"
+            if row["status"] == "UNLICENSED":
+                failures.append(f"{mech['id']} (selected): selection record missing")
         elif licensed:
             row["status"] = "licensed"
         else:
@@ -223,8 +271,12 @@ def gate(name):
         if not mech.get("checks"):
             failures.append(f"{mech['id']}: licensed but no executable check on the implementation")
         for c in mech.get("checks", []):
+            fn, _, arg = c.partition(":")
             try:
-                ok, info = CHECKS[c]() if c in CHECKS else (False, dict(error="unknown check"))
+                if fn not in CHECKS:
+                    ok, info = False, dict(error="unknown check")
+                else:
+                    ok, info = CHECKS[fn](arg) if arg else CHECKS[fn]()
             except Exception as exc:  # a crashing check is a failing check
                 ok, info = False, dict(error=repr(exc))
             execution.append(dict(mechanism=mech["id"], check=c, passed=bool(ok), **info))

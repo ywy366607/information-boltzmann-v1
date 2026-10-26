@@ -42,3 +42,8 @@ def test_grown_organism_checks_pass_and_only_w_in_and_medium_block():
     assert sorted(r["failures"]) == sorted([
         "hidden_write_weights (structure): no valid Lean theorem",
         "no Lean Medium instance with an Axioms proof"])
+
+
+def test_generated_organism_is_admitted():
+    r = cgb_gate.gate("generated_s0")
+    assert r["admitted"], r["failures"]

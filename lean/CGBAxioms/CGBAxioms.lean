@@ -78,3 +78,4 @@ import CGBAxioms.GenerationCRN
 import CGBAxioms.GenerationAxiomAudit
 import CGBAxioms.GenerationTable
 import CGBAxioms.GenerationOrganismEcoliV1
+import CGBAxioms.GenerationOrganismGeneratedS0
