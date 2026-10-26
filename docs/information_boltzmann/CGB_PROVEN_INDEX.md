@@ -2,7 +2,7 @@
 
 由 `scripts/build_proven_index.py` 从 Lean 源码生成。新工作开始前先在这里检索（定理名与文档注释首句），避免重复推导。
 
-共 992 条定理/引理。
+共 997 条定理/引理。
 **未入 Lean 的手工推导与数值见证**另列在 `CGB_HAND_DERIVATIONS.md`，检索时两处都要看。
 
 ## ActiveLoop（8）
@@ -357,6 +357,15 @@ _Lattice media: cells with neighbour contact (generation chain, M4; nesting T-E1
 - `p2c`
 - `p3`
 - `axioms`：**M4 (lattice media are admitted)**: a lattice reaction medium satisfies the six clauses when its rule tables pass local obligations: content levels (P1a), conservation by rules among interior cells (P2a), a zero calm po
+
+## GenerationLearning（5）
+_When does a world reward learning? (generation chain, L-1 to L-3) C-1 (`GenerationLeaveRule`) says when a forager must compare now with the past within one life._
+
+- `innate_optimal_of_constant`：**L-1**: a constant average across generations makes the innate threshold optimal.
+- `learner_loses_of_constant`：**L-1**: in a constant world a learner that pays `κ > 0` loses to the instinct at every patch.
+- `innate_loss_quarter`：**L-2**: with two different averages every innate threshold loses at least a quarter of their gap at some patch in one of the two worlds.
+- `learner_beats_innate`：**L-2**: a learner (who uses the world's own average after paying `κ`) beats every instinct somewhere when its cost is below a quarter of the gap.
+- `history_useless_of_independent`：**L-3**: if the next world state `c` (law `p`) is independent of the history `e` (law `r`) from which the rule `σ e` is chosen, the expected value is at most that of the best fixed rule.
 
 ## GenerationLeaveRule（3）
 _When must a forager compare now with the past? (generation chain, C-1) A forager at a patch with local gain rate `q` either stays (earning `q`) or leaves for the rest of the world (worth `c`, the environment's average ra_
