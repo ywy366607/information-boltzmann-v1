@@ -101,6 +101,9 @@ structure NestedWorld (Λi Hd : Type*) (n nR nX : ℕ) where
   κin_nonneg : 0 ≤ κin
   /-- quanta in one food pellet supplied by the world's boundary -/
   pellet : ℕ
+  /-- chemical energy of a food quantum relative to a waste quantum: food carries free energy, not
+  only matter (the injection at the boundary is free energy) -/
+  foodE : ℝ
   /-- `ahead i j h`: the cell with page `j` is the neighbour ahead of the cell with page `i` for
   heading `h` (read from identity pages only, so P2c holds) -/
   ahead : ℕ → ℕ → Hd → Bool
@@ -154,7 +157,7 @@ def cellGate : W.Cell → ℕ
 noncomputable def bugE (y : Fin n → Λi) : ℝ := ∑ u, W.φIn (W.pageIn u) (y u)
 
 noncomputable def φ (_i : ℕ) (l : W.Cell) : ℝ :=
-  Generation.cellF W.V l.1 + Generation.cellF W.V l.2.1 + match l.2.2 with
+  Generation.cellF W.V l.1 + W.foodE * (l.1 : ℕ) + Generation.cellF W.V l.2.1 + match l.2.2 with
     | none => 0
     | some (y, _) => W.bugE y
 
@@ -265,12 +268,14 @@ def rev2 : NR2 n → NR2 n
   | .inl (food, dir) => .inl (food, !dir)
   | .inr (e, d, dir) => .inr (e, d, !dir)
 
-def c1 : NR1 Λi Hd n nR nX → ℕ → W.Cell → ℝ
+noncomputable def c1 : NR1 Λi Hd n nR nX → ℕ → W.Cell → ℝ
   | .inl (k, _, _, _), _, _ => (W.spec k).κ
   | .inr (.inl (j, _, _)), _, l => W.xκ j * (if W.xgated j then (W.cellGate l : ℝ) else 1)
   | .inr (.inr (.inl _)), _, _ => W.κflip
   | .inr (.inr (.inr (.inl _))), _, _ => W.κin
-  | .inr (.inr (.inr (.inr (_, yd, _)))), _, _ => if W.gateCount yd = 0 then W.κdis else 0
+  | .inr (.inr (.inr (.inr (hd, yd, dir)))), i, l =>
+      (if W.gateCount yd = 0 then W.κdis else 0) *
+        Real.exp (-|W.φ i (W.eff1 (.inr (.inr (.inr (.inr (hd, yd, dir))))) i l) - W.φ i l| / 2)
 
 def c2 : NR2 n → ℕ → ℕ → W.Cell × W.Cell → ℝ
   | .inl _, _, _, _ => W.κdiff
@@ -386,6 +391,7 @@ theorem c1_nonneg (r : NR1 Λi Hd n nR nX) (i : ℕ) (l : W.Cell) : 0 ≤ W.c1 r
   · exact W.κflip_nonneg
   · exact W.κin_nonneg
   · simp only [c1]
+    refine mul_nonneg ?_ (Real.exp_pos _).le
     split_ifs
     · exact W.κdis_nonneg
     · exact le_rfl
@@ -795,7 +801,7 @@ theorem axioms [Fintype Λi] [Fintype Hd] {U : Type*} [Fintype U] [DecidableEq U
     ?_ ?_ (fun r i l hne => W.back1 r i l hne) (fun r i j p hne => W.back2 r i j p hne) ?_ ?_
   · intro r; rcases r with ⟨k, u, v, dir⟩ | ⟨j, u, dir⟩ | ⟨a, b⟩ | ⟨food, dir⟩ | ⟨hd, yd, dir⟩ <;> simp [lattice, rev1]
   · intro r; rcases r with ⟨food, dir⟩ | ⟨e, d, dir⟩ <;> simp [lattice, rev2]
-  · intro r i l _
+  · intro r i l hne
     rcases r with ⟨k, u, v, dir⟩ | ⟨j, u, dir⟩ | ⟨a, b⟩ | ⟨food, dir⟩ | ⟨hd, yd, dir⟩
     · rfl
     · change W.xκ j * (if W.xgated j then (W.cellGate (W.eff1 (.inr (.inl (j, u, dir))) i l) : ℝ) else 1) =
@@ -805,7 +811,15 @@ theorem axioms [Fintype Λi] [Fintype Hd] {U : Type*} [Fintype U] [DecidableEq U
       · rw [if_neg hg, if_neg hg]
     · rfl
     · rfl
-    · rfl
+    · have hback := W.back1 (.inr (.inr (.inr (.inr (hd, yd, dir))))) i l hne
+      change (if W.gateCount yd = 0 then W.κdis else 0) *
+          Real.exp (-|W.φ i (W.eff1 (.inr (.inr (.inr (.inr (hd, yd, !dir))))) i
+            (W.eff1 (.inr (.inr (.inr (.inr (hd, yd, dir))))) i l)) -
+            W.φ i (W.eff1 (.inr (.inr (.inr (.inr (hd, yd, dir))))) i l)| / 2) =
+        (if W.gateCount yd = 0 then W.κdis else 0) *
+          Real.exp (-|W.φ i (W.eff1 (.inr (.inr (.inr (.inr (hd, yd, dir))))) i l) - W.φ i l| / 2)
+      rw [show W.eff1 (.inr (.inr (.inr (.inr (hd, yd, !dir))))) i
+          (W.eff1 (.inr (.inr (.inr (.inr (hd, yd, dir))))) i l) = l from hback, abs_sub_comm]
   · intro r i j p _; rcases r with ⟨food, dir⟩ | ⟨e, d, dir⟩ <;> rfl
 
 /-! ## The membrane: why it is needed, and what losing it means -/
