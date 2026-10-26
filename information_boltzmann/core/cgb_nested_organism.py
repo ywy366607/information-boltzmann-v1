@@ -38,11 +38,21 @@ EXCH = ((F, 0, 1, True, True),    # bind
         (F, 2, 1, True, True),    # unload
         (E, 0, 1, True, True),    # uptake
         (D, 1, 0, False, True),   # excrete
-        (S, 1, 0, False, False))  # wear (physics)
+        # leaks (physics, `leak_bound`): every content-holding state of every page loses one
+        # quantum to the cell's waste pool through no membrane, at the same prefactor
+        (F, 1, 0, False, False),
+        (F, 2, 1, False, False),
+        (Y, 1, 0, False, False),
+        (M, 1, 0, False, False),
+        (E, 1, 0, False, False),
+        (D, 1, 0, False, False),
+        (S, 1, 0, False, False))  # membrane wear
 FUEL = (E, D, 1, 0, 0, 1)
 GATE = (S, 1)
 PHI_S1 = -5.0                      # physics
-LOGK_WEAR = math.log(6e-4)         # physics
+LOGK_LEAK = math.log(6e-4)         # physics: leak prefactor of every page
+PHI_BOUND = 8.0                    # physics: energy scale, |phi| <= PHI_BOUND (`leak_bound`)
+N_SELECTED_X = 4                   # bind, unload, uptake, excrete
 SELECTED_PHI = ((F, 1), (F, 2), (Y, 1), (M, 1), (E, 1), (D, 1))
 SHIFT = ((1, 0), (0, 1), (-1, 0), (0, -1))
 
@@ -77,7 +87,8 @@ class Organisms:
         phi[:, S, 1] = PHI_S1
         self.phi = phi
         self.kr = torch.exp(g["logk_rule"])
-        kx = torch.cat([torch.exp(g["logk_x"]), torch.full((B, 1), math.exp(LOGK_WEAR), device=dev)], 1)
+        nleak = len(EXCH) - N_SELECTED_X
+        kx = torch.cat([torch.exp(g["logk_x"]), torch.full((B, nleak), math.exp(LOGK_LEAK), device=dev)], 1)
         if blind:
             kx[:, 0] = 0.0
             kx[:, 1] = 0.0

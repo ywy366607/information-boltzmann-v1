@@ -785,21 +785,20 @@ theorem intake_is_exchange
 
 /-- **Death** (`Part.CanTakeIn` fails through the organism's own doing): with no intact membrane
 unit, every event that would raise the organism's content has rate zero, except an ungated
-exchange, which (`hwear`) is only the membrane page re-forming from the cell's pools: physics the
-organism does not control. Every rate of the medium is a positive multiple of `exp`, so
+exchange: physics the organism does not control (the reverse of a leak, membrane re-forming from
+the cell's pools). Every rate of the medium is a positive multiple of `exp`, so
 `Part.Recoverable` alone never fails; without the membrane factor, intake would not depend on the
 body at all, structure would have no use and selection could drop its upkeep. -/
-theorem dead_only_reforms
+theorem dead_intake_is_physics
     (hspec : ∀ k, W.contentIn (W.spec k).a.1 + W.contentIn (W.spec k).a.2 =
       W.contentIn (W.spec k).b.1 + W.contentIn (W.spec k).b.2)
-    (hwear : ∀ j, W.xgated j = false → W.xpage j = W.gatePage)
     (r : NR1 Hd n nR nX) (i : ℕ) (l : W.Cell) (hdead : W.cellGate l = 0)
     (hup : W.orgIn l < W.orgIn (W.eff1 r i l)) :
-    W.c1 r i l = 0 ∨ ∃ j u dir, r = .inr (.inl (j, u, dir)) ∧ W.xpage j = W.gatePage := by
+    W.c1 r i l = 0 ∨ ∃ j u dir, r = .inr (.inl (j, u, dir)) ∧ W.xgated j = false := by
   obtain ⟨j, u, dir, hr, hc⟩ := W.intake_is_exchange hspec r i l hup
   by_cases hg : W.xgated j = true
   · left; rw [hc, if_pos hg, hdead]; simp
-  · right; exact ⟨j, u, dir, hr, hwear j (by simpa using hg)⟩
+  · right; exact ⟨j, u, dir, hr, by simpa using hg⟩
 
 /-! ## Leaks: every held quantum needs an exit the organism cannot close
 
