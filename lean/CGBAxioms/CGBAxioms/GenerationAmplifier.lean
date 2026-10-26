@@ -83,4 +83,13 @@ theorem equilibrium_hill_one (μ φ : ℝ) :
     Real.log (occupancy (μ - φ) / (1 - occupancy (μ - φ))) = μ - φ := by
   rw [occupancy_odds, Real.log_exp]
 
+/-- **G25d (cooperativity from multiple quanta)**: a state holding `s` units of content, with
+energy `φs`, has equilibrium weight `exp (s μ - φs)` relative to the empty state, so its log-odds
+moves `s`-for-one with the potential: its Hill coefficient is `s`. Binary units give 1 (G25c);
+a unit that takes up several quanta at once is cooperative at equilibrium, as in Hill's
+haemoglobin. (Found by selection in the multi-state chemotaxis run before it was written down.) -/
+theorem quanta_hill (s μ φs : ℝ) :
+    Real.log (Real.exp (s * μ - φs) / Real.exp (s * 0 - φs)) = s * μ := by
+  rw [← Real.exp_sub, Real.log_exp]; ring
+
 end CGB.Generation
