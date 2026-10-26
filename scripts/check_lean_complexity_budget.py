@@ -32,6 +32,7 @@ CAPS = {
     "largest_source_file": 900,
 }
 GENERATION = "CGBAxioms/Generation"  # prefix: every Generation*.lean module
+ROOT_IMPORTS = "CGBAxioms.lean"  # import aggregator, grows by one line per module
 FROZEN_LINES = 15600
 
 # Active entry points stay short; detailed evidence lives in existing reports.
@@ -77,7 +78,8 @@ def budget_report(data: dict) -> dict:
         for key in CAPS
         if values[key] > CAPS[key]
     ]
-    frozen = sum(n for p, n in zip(sources, lines) if not p.relative_to(LEAN_ROOT).as_posix().startswith(GENERATION))
+    frozen = sum(n for p, n in zip(sources, lines) if not p.relative_to(LEAN_ROOT).as_posix().startswith(GENERATION)
+                 and p.relative_to(LEAN_ROOT).as_posix() != ROOT_IMPORTS)
     if frozen > FROZEN_LINES:
         violations.append(f"frozen contract/witness layer={frozen} lines exceeds {FROZEN_LINES}")
     violations.extend(f"{name}={active_lines[name]} lines exceeds cap {cap}"
