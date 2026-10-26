@@ -2,7 +2,7 @@
 
 由 `scripts/build_proven_index.py` 从 Lean 源码生成。新工作开始前先在这里检索（定理名与文档注释首句），避免重复推导。
 
-共 904 条定理/引理。
+共 905 条定理/引理。
 ## ActiveLoop（8）
 _Proposed responsive loop and algebraic energy account The proved results are medium axioms, clock and boundary admission, world-row normalization, and an expected first-law identity._
 
@@ -255,7 +255,7 @@ _Generation, layer 1: what the axioms force on the equilibrium law The axioms co
 - `two_part_balance`：**G8a** (two parts suffice): with positive part factors `φ₁, φ₂` and constants `a, b ≥ 0`, up rates `a φ₁ + b φ₂` and down rates `b / φ₁ + a / φ₂` (each term reads one part) have ratio exactly `φ₁ φ₂`.
 - `three_part_balance_impossible`：**G8b** (three parts are impossible): if up rates `f₁+f₂+f₃` and down rates `g₁+g₂+g₃` (each term reading one part) satisfy detailed balance with a product factor `φ₁ φ₂ φ₃` that is non-constant on every part, the total 
 
-## GenerationAmplifier（6）
+## GenerationAmplifier（7）
 _An equilibrium amplifier: ordered filling of a conserved shell (generation chain, G25) Chemotaxis needs an all-or-none response to a tiny difference (a gain of order ten in *E._
 
 - `occupancy_le_exp`
@@ -264,6 +264,7 @@ _An equilibrium amplifier: ordered filling of a conserved shell (generation chai
 - `high_off_below_threshold`：**G25a (H stays off below threshold)**: while the low page is at most half full, the high page is occupied at most `e^{-Δ}`.
 - `switch_width`：**G25b (switch width)**: raising the potential from `l1` to `l2` adds at most `NH` times the gain in `H`'s occupancy plus `NL e^{-(l1 - φL)}` content.
 - `equilibrium_hill_one`：**G25c (equilibrium Hill coefficient is one)**: the log-odds of occupation is exactly the potential above the unit's energy, so it moves one-for-one with the sensed potential.
+- `quanta_hill`：**G25d (cooperativity from multiple quanta)**: a state holding `s` units of content, with energy `φs`, has equilibrium weight `exp (s μ - φs)` relative to the empty state, so its log-odds moves `s`-for-one with the poten
 
 ## GenerationAxiomAudit（2）
 _Which axiom parts work (generation chain, audit) Usage in the generation chain (G1–G22, M1–M2): P1b's locality parts (participants in contact, writes and reads only participants), P2a, P2b and P3's boundary sensing enter_

@@ -261,18 +261,22 @@ LIFE_LINEAGE = {
 
 
 def _table_arrays(t):
+    """Arrays for the exact simulator of multi-state pair tables (`cgb_table3`)."""
     from cgb_table_medium import unit_pages
     P = len(t["pages"])
     pages = unit_pages(t)
+    S = max([int(v) for v in t.get("states", {}).values()] or [2])
     counts = np.array([pages.count(p) for p in range(P)], dtype=np.int64)
-    phi = np.array([t["phi"][str(p)] for p in range(P)], dtype=np.float64)
+    phi = np.zeros((P, S))
+    for p in range(P):
+        v = t["phi"][str(p)]
+        phi[p, :len(v)] = v
     bnd = np.zeros(P, dtype=np.bool_)
     bnd[list(t["boundary_pages"])] = True
-    r = t["rules"]
-    cols = [np.array([x[c] for x in r], dtype=np.int64) for c in ("i", "j")]
-    cols += [np.array([x[k][c] for x in r], dtype=np.int64) for k in ("a", "b") for c in (0, 1)]
-    kap = np.array([x["kappa"] for x in r], dtype=np.float64)
-    return counts, phi, bnd, cols, kap
+    R = np.array([[r["i"], r["j"], -1, r["a"][0], r["a"][1], 0, r["b"][0], r["b"][1], 0] for r in t["rules"]],
+                 dtype=np.int64).reshape(-1, 9)
+    kap = np.array([r["kappa"] for r in t["rules"]], dtype=np.float64)
+    return counts, phi, bnd, R, kap, S
 
 
 def life_export(t):
@@ -294,30 +298,34 @@ def life_export(t):
                 max_min_ratio=ratio)
 
 
-def life_memory(t, probe, mu_pulse, reps=600, seed=11, lags=(1, 2, 4, 8, 16, 32)):
-    """Finite-horizon Remembers: a +-mu pulse on the probe page for one tick, then calm. The
-    sign is decoded from the per-page active counts `lag` calm ticks later (mean-difference
-    projection fitted on half the replicates, tested on the other half)."""
-    from cgb_table_fast import _run
-    counts, phi, bnd, cols, kap = _table_arrays(t)
+def life_memory(t, probe, mu_pulse, reps=600, seed=11, lags=(1, 2, 4, 8, 16, 32), rest=None):
+    """Finite-horizon Remembers: a +-mu pulse on the probe page for one tick, then rest (the
+    organism's resting reservoir potentials `rest`, default all zero). The sign is decoded from the
+    per-page per-state counts `lag` rest ticks later (mean-difference projection fitted on half
+    the replicates, tested on the other half)."""
+    from cgb_table3 import _run
+    counts, phi, bnd, R, kap, S = _table_arrays(t)
     P = counts.shape[0]
+    base = np.zeros(P)
+    for p, v in (rest or {}).items():
+        base[int(p)] = v
     np.random.seed(seed)
     signs = np.random.default_rng(seed).choice([-1.0, 1.0], size=reps)
-    feats = np.zeros((len(lags), reps, P))
+    feats = np.zeros((len(lags), reps, P * S))
     flux = np.zeros(P)
     for r in range(reps):
-        n = np.zeros((P, 2), dtype=np.int64)
+        n = np.zeros((P, S), dtype=np.int64)
         n[:, 0] = counts
-        mu = np.zeros(P)
-        _run(n, phi, bnd, mu, *cols, kap, 20.0, flux)
-        mu[probe] = signs[r] * mu_pulse
-        _run(n, phi, bnd, mu, *cols, kap, 1.0, flux)
-        mu[:] = 0.0
+        mu = base.copy()
+        _run(n, phi, bnd, mu, R, kap, 20.0, flux)
+        mu[probe] = base[probe] + signs[r] * mu_pulse
+        _run(n, phi, bnd, mu, R, kap, 1.0, flux)
+        mu[:] = base
         last = 0
         for li, lag in enumerate(lags):
-            _run(n, phi, bnd, mu, *cols, kap, float(lag - last), flux)
+            _run(n, phi, bnd, mu, R, kap, float(lag - last), flux)
             last = lag
-            feats[li, r] = n[:, 1]
+            feats[li, r] = n.reshape(-1)
     half = reps // 2
     curve = {}
     for li, lag in enumerate(lags):
@@ -358,7 +366,7 @@ def life_layer(man, decls):
     ex = life_export(t)
     rows.append(dict(item="export", passed=ex["export"], kinds=ex["kinds"]))
     rows.append(dict(item="selective_export", passed=ex["selective"], max_min_ratio=ex["max_min_ratio"]))
-    mem = life_memory(t, spec["probe_page"], spec["pulse_mu"])
+    mem = life_memory(t, spec["probe_page"], spec["pulse_mu"], rest=spec.get("rest_mu"))
     rows.append(dict(item="memory", passed=mem["passed"], horizon=mem["horizon"], curve=mem["curve"]))
     rows.append(dict(item="self_maintenance", **life_self_maintenance(spec["record"], spec["cut_arm"])))
     failures += [f"life: {r['item']} failed" for r in rows if not r["passed"]]
