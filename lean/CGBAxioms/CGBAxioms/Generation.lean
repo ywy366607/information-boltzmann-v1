@@ -611,6 +611,108 @@ weights `exp (z b)` on the configurations `label b on`, the normalized law is `s
 theorem sector_law_is_softmax {B : Type*} [Fintype B] (z : B → ℝ) (b : B) :
     Real.exp (z b) / ∑ c, Real.exp (z c) = softmax z b := rfl
 
+/-! ## Actions: the motor readout and reward-modulated learning
+
+The world reads the motor boundary (`ReadsBoundary`); by R1/R2 and G13 the action is one
+motor particle among action labels with equilibrium law `softmax z` given the interior.
+No target action is ever supplied; the boundary senses intake (reward), so by G9 its sign
+reaches motor plasticity only through a boundary modulator. Both phases are weighted by
+the same advantage `R a - bl` (balanced phases, G14c). -/
+
+/-- **G15a (reward-modulated two-phase drift is the policy gradient)**: if the motor
+particle was clamped at the action taken `a ~ softmax z`, the drive phase moved the
+site by `(R a - bl) x` when label `b` was on, and the free phase by `-(R a - bl) x softmax z b`,
+the expected drift equals `x softmax z b (R b - J)` with `J = Σ softmax z a * R a`, for
+every baseline `bl`. -/
+theorem reward_two_phase_drift {B : Type*} [Fintype B] [DecidableEq B] [Nonempty B]
+    (z R : B → ℝ) (bl : ℝ) (b : B) :
+    ∑ a, softmax z a * ((R a - bl) * ((if a = b then 1 else 0) - softmax z b)) =
+      softmax z b * (R b - ∑ a, softmax z a * R a) := by
+  have hs := softmax_sum z
+  have h1 : ∀ a, softmax z a * ((R a - bl) * ((if a = b then 1 else 0) - softmax z b)) =
+      ((if a = b then softmax z a * (R a - bl) else 0) - softmax z b * (softmax z a * R a)) +
+        softmax z b * bl * softmax z a := by
+    intro a; split_ifs <;> ring
+  rw [Finset.sum_congr rfl fun a _ => h1 a, Finset.sum_add_distrib, Finset.sum_sub_distrib,
+    Finset.sum_ite_eq', ← Finset.mul_sum, ← Finset.mul_sum, hs]
+  simp only [Finset.mem_univ, if_true]
+  ring
+
+/-- **G15b**: that drift is exactly the derivative of the expected reward `J` with respect
+to the logit of `b`. -/
+theorem expected_reward_deriv {B : Type*} [Fintype B] [DecidableEq B] (z R : B → ℝ) (b : B) :
+    HasDerivAt (fun t => ∑ a, softmax (fun c => z c + if c = b then t else 0) a * R a)
+      (softmax z b * (R b - ∑ a, softmax z a * R a)) 0 := by
+  set D : ℝ → ℝ := fun t => ∑ d, Real.exp (z d + if d = b then t else 0)
+  set N : ℝ → ℝ := fun t => ∑ d, Real.exp (z d + if d = b then t else 0) * R d
+  have hD : ∀ t, 0 < D t := fun t =>
+    Finset.sum_pos (fun _ _ => Real.exp_pos _) ⟨b, Finset.mem_univ _⟩
+  have hratio : ∀ w : B → ℝ, ∑ a, softmax w a * R a =
+      (∑ d, Real.exp (w d) * R d) / ∑ d, Real.exp (w d) := by
+    intro w
+    simp only [softmax, div_eq_mul_inv, Finset.sum_mul]
+    exact Finset.sum_congr rfl fun a _ => by ring
+  have hform : (fun t => ∑ a, softmax (fun c => z c + if c = b then t else 0) a * R a) =
+      fun t => N t / D t := by
+    funext t
+    exact hratio _
+  rw [hform]
+  have hlin : ∀ d, HasDerivAt (fun t : ℝ => z d + if d = b then t else 0)
+      (if d = b then 1 else 0) 0 := fun d => by
+    split_ifs
+    · simpa using (hasDerivAt_id (0 : ℝ)).const_add (z d)
+    · simpa using hasDerivAt_const (0 : ℝ) (z d)
+  have hD' : HasDerivAt D (Real.exp (z b)) 0 := by
+    have := HasDerivAt.fun_sum (u := Finset.univ) (fun d _ => (hlin d).exp)
+    simpa [D, mul_ite] using this
+  have hN' : HasDerivAt N (Real.exp (z b) * R b) 0 := by
+    have := HasDerivAt.fun_sum (u := Finset.univ) (fun d _ => ((hlin d).exp).mul_const (R d))
+    simpa [N, mul_ite, ite_mul] using this
+  convert hN'.div hD' (hD 0).ne' using 1
+  have hD0 : D 0 = ∑ d, Real.exp (z d) := by simp [D]
+  have hN0 : N 0 = ∑ d, Real.exp (z d) * R d := by simp [N]
+  have hpos : 0 < ∑ d, Real.exp (z d) := hD0 ▸ hD 0
+  rw [hD0, hN0, hratio z]
+  simp only [softmax]
+  field_simp
+
+/-- **G15c (outcome-blind modulation learns nothing)**: if the modulator's weight `m` does
+not depend on the action's outcome, the expected two-phase drift is zero for every site.
+So a policy can only climb through a modulator that reads intake, which by G9 is a
+boundary unit. -/
+theorem outcome_blind_drift_zero {B : Type*} [Fintype B] [DecidableEq B] [Nonempty B]
+    (z : B → ℝ) (m : ℝ) (b : B) :
+    ∑ a, softmax z a * (m * ((if a = b then 1 else 0) - softmax z b)) = 0 := by
+  have h := reward_two_phase_drift z (fun _ => m) 0 b
+  have hs := softmax_sum z
+  simp only [sub_zero] at h
+  rw [h, ← Finset.sum_mul, hs]
+  ring
+
+/-- **G15d (reward phases must balance)**: with drive weight `lam` and free weight `mu`,
+if the expected drift is a multiple of the expected-reward gradient for every reward
+table, then `lam = mu`. -/
+theorem reward_phases_must_balance {B : Type*} [Fintype B] [DecidableEq B] [Nonempty B]
+    (z : B → ℝ) (bl lam mu : ℝ) (b : B)
+    (h : ∀ R : B → ℝ, ∃ κ : ℝ,
+      ∑ a, softmax z a * ((R a - bl) * (lam * (if a = b then 1 else 0) - mu * softmax z b)) =
+        κ * (softmax z b * (R b - ∑ a, softmax z a * R a))) : lam = mu := by
+  obtain ⟨κ, hκ⟩ := h (fun _ => bl + 1)
+  have hs := softmax_sum z
+  have hp : 0 < softmax z b := div_pos (Real.exp_pos _)
+    (Finset.sum_pos (fun _ _ => Real.exp_pos _) ⟨b, Finset.mem_univ _⟩)
+  have hJ : ∑ a, softmax z a * (bl + 1) = bl + 1 := by rw [← Finset.sum_mul, hs, one_mul]
+  have ht : ∀ a, softmax z a * ((bl + 1 - bl) * (lam * (if a = b then 1 else 0) -
+      mu * softmax z b)) = lam * (if a = b then softmax z a else 0) -
+        mu * softmax z b * softmax z a := by
+    intro a; split_ifs <;> ring
+  rw [Finset.sum_congr rfl fun a _ => ht a, Finset.sum_sub_distrib, ← Finset.mul_sum,
+    ← Finset.mul_sum, Finset.sum_ite_eq', hs, hJ] at hκ
+  simp only [Finset.mem_univ, if_true] at hκ
+  have h0 : (lam - mu) * softmax z b = 0 := by linarith
+  have := (mul_eq_zero.mp h0).resolve_right hp.ne'
+  linarith
+
 /-! ## Layer 2b: the integration bottleneck
 
 A single-unit move of `v` is produced by events whose participants form a clique
