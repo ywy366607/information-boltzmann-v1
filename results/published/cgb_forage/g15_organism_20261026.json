@@ -1,0 +1,501 @@
+{
+ "world": {
+  "hazard": 0.005,
+  "cost": 0.6,
+  "reserve": 300.0,
+  "capacity": 600.0,
+  "p_rich": 0.9,
+  "p_poor": 0.1,
+  "ticks": 100000,
+  "shuffle_bytes": 0,
+  "taus": "16,300",
+  "window": 32,
+  "sources": 3,
+  "stage": 1,
+  "stage2_rule": "document digit fraction >= median over sources",
+  "stage3_rule": "a digit in the last `window` bytes of the source text (including the current byte)"
+ },
+ "hidden": 256,
+ "seeds": 8,
+ "g15": {
+  "eta": 0.1,
+  "trace": 0.9,
+  "relax": 0.0,
+  "state_baseline": 0,
+  "base_rate": 0.01,
+  "couple": 0.0,
+  "slow_c": 10.0,
+  "slow_leak": 0.0
+ },
+ "provenance": {
+  "manifest": "3614c380d4c72688ac8ccde42f32ea0655d16bec1ba0874a924fd777af904d2d",
+  "files": {
+   "tokenizer.json": "e727da4afe06d37d6ffff7db05ab21f69c5be39253ee7b7f7ec759cadab69c1d",
+   "train.npy": "2f227239bc63b89daf31956701d243a93f9dd46671702fff03763b33dc6db4fb",
+   "validation.npy": "60d41d3fdda8c1718ad1735693eda0dae2b23a0032c5e04a29aac9d0c6d35d8c"
+  },
+  "verified_document_counts": {
+   "train": 9786,
+   "validation": 114
+  },
+  "native_byte_counts": {
+   "train": 48125691,
+   "validation": 467911
+  }
+ },
+ "per_seed": {
+  "org": [
+   {
+    "survival": 100000,
+    "intake_rate": 0.76412,
+    "switches": 0.05874,
+    "bytes_heard": 94126,
+    "byte_bits_last": 4.128038653856811
+   },
+   {
+    "survival": 100000,
+    "intake_rate": 0.77757,
+    "switches": 0.05142,
+    "bytes_heard": 94858,
+    "byte_bits_last": 4.0414738439234785
+   },
+   {
+    "survival": 100000,
+    "intake_rate": 0.76847,
+    "switches": 0.05209,
+    "bytes_heard": 94791,
+    "byte_bits_last": 4.037895566782372
+   },
+   {
+    "survival": 100000,
+    "intake_rate": 0.75617,
+    "switches": 0.05294,
+    "bytes_heard": 94706,
+    "byte_bits_last": 4.131605343862226
+   },
+   {
+    "survival": 100000,
+    "intake_rate": 0.74582,
+    "switches": 0.06561,
+    "bytes_heard": 93439,
+    "byte_bits_last": 4.040932467448299
+   },
+   {
+    "survival": 100000,
+    "intake_rate": 0.76898,
+    "switches": 0.06066,
+    "bytes_heard": 93934,
+    "byte_bits_last": 3.99039325360855
+   },
+   {
+    "survival": 100000,
+    "intake_rate": 0.77897,
+    "switches": 0.06004,
+    "bytes_heard": 93996,
+    "byte_bits_last": 4.035470102472502
+   },
+   {
+    "survival": 100000,
+    "intake_rate": 0.76975,
+    "switches": 0.05383,
+    "bytes_heard": 94617,
+    "byte_bits_last": 4.096189645054436
+   }
+  ],
+  "org_counter_policy": [
+   {
+    "survival": 100000,
+    "intake_rate": 0.76471,
+    "switches": 0.04521,
+    "bytes_heard": 95479,
+    "byte_bits_last": 4.093948387689893
+   },
+   {
+    "survival": 100000,
+    "intake_rate": 0.78435,
+    "switches": 0.0333,
+    "bytes_heard": 96670,
+    "byte_bits_last": 4.02846743966011
+   },
+   {
+    "survival": 100000,
+    "intake_rate": 0.77156,
+    "switches": 0.06163,
+    "bytes_heard": 93837,
+    "byte_bits_last": 4.06390228045943
+   },
+   {
+    "survival": 100000,
+    "intake_rate": 0.75976,
+    "switches": 0.06719,
+    "bytes_heard": 93281,
+    "byte_bits_last": 4.137855381368099
+   },
+   {
+    "survival": 100000,
+    "intake_rate": 0.74928,
+    "switches": 0.06687,
+    "bytes_heard": 93313,
+    "byte_bits_last": 4.026350776761659
+   },
+   {
+    "survival": 100000,
+    "intake_rate": 0.76555,
+    "switches": 0.03749,
+    "bytes_heard": 96251,
+    "byte_bits_last": 3.965823537581679
+   },
+   {
+    "survival": 100000,
+    "intake_rate": 0.78601,
+    "switches": 0.03865,
+    "bytes_heard": 96135,
+    "byte_bits_last": 4.025030252996246
+   },
+   {
+    "survival": 100000,
+    "intake_rate": 0.76806,
+    "switches": 0.03968,
+    "bytes_heard": 96032,
+    "byte_bits_last": 4.073684748270661
+   }
+  ],
+  "org_lang_frozen": [
+   {
+    "survival": 100000,
+    "intake_rate": 0.76402,
+    "switches": 0.06009,
+    "bytes_heard": 93991,
+    "byte_bits_last": 8.000000000001625
+   },
+   {
+    "survival": 100000,
+    "intake_rate": 0.78526,
+    "switches": 0.04875,
+    "bytes_heard": 95125,
+    "byte_bits_last": 8.000000000001625
+   },
+   {
+    "survival": 100000,
+    "intake_rate": 0.77273,
+    "switches": 0.05962,
+    "bytes_heard": 94038,
+    "byte_bits_last": 8.000000000001625
+   },
+   {
+    "survival": 100000,
+    "intake_rate": 0.75917,
+    "switches": 0.04421,
+    "bytes_heard": 95579,
+    "byte_bits_last": 8.000000000001625
+   },
+   {
+    "survival": 100000,
+    "intake_rate": 0.74634,
+    "switches": 0.03081,
+    "bytes_heard": 96919,
+    "byte_bits_last": 8.000000000001625
+   },
+   {
+    "survival": 100000,
+    "intake_rate": 0.75263,
+    "switches": 0.04913,
+    "bytes_heard": 95087,
+    "byte_bits_last": 8.000000000001625
+   },
+   {
+    "survival": 100000,
+    "intake_rate": 0.78857,
+    "switches": 0.04693,
+    "bytes_heard": 95307,
+    "byte_bits_last": 8.000000000001625
+   },
+   {
+    "survival": 100000,
+    "intake_rate": 0.77154,
+    "switches": 0.03391,
+    "bytes_heard": 96609,
+    "byte_bits_last": 8.000000000001625
+   }
+  ],
+  "org_frozen": [
+   {
+    "survival": 816,
+    "intake_rate": 0.23161764705882354,
+    "switches": 0.5061274509803921,
+    "bytes_heard": 403,
+    "byte_bits_last": 8.000000000000016
+   },
+   {
+    "survival": 881,
+    "intake_rate": 0.25879682179341656,
+    "switches": 0.492622020431328,
+    "bytes_heard": 447,
+    "byte_bits_last": 8.000000000000018
+   },
+   {
+    "survival": 774,
+    "intake_rate": 0.21188630490956073,
+    "switches": 0.4728682170542636,
+    "bytes_heard": 408,
+    "byte_bits_last": 8.000000000000016
+   },
+   {
+    "survival": 814,
+    "intake_rate": 0.23095823095823095,
+    "switches": 0.4914004914004914,
+    "bytes_heard": 414,
+    "byte_bits_last": 8.000000000000016
+   },
+   {
+    "survival": 1089,
+    "intake_rate": 0.3241505968778696,
+    "switches": 0.4820936639118457,
+    "bytes_heard": 564,
+    "byte_bits_last": 8.000000000000018
+   },
+   {
+    "survival": 997,
+    "intake_rate": 0.29889669007021064,
+    "switches": 0.5015045135406219,
+    "bytes_heard": 497,
+    "byte_bits_last": 8.000000000000018
+   },
+   {
+    "survival": 722,
+    "intake_rate": 0.18421052631578946,
+    "switches": 0.5221606648199446,
+    "bytes_heard": 345,
+    "byte_bits_last": 8.000000000000016
+   },
+   {
+    "survival": 912,
+    "intake_rate": 0.2708333333333333,
+    "switches": 0.4824561403508772,
+    "bytes_heard": 472,
+    "byte_bits_last": 8.000000000000018
+   }
+  ],
+  "org_loop_cut": [
+   {
+    "survival": 734,
+    "intake_rate": 0.1907356948228883,
+    "switches": 0.6525885558583107,
+    "bytes_heard": 279,
+    "byte_bits_last": 5.9211307210704724
+   },
+   {
+    "survival": 699,
+    "intake_rate": 0.17024320457796852,
+    "switches": 0.7939914163090128,
+    "bytes_heard": 236,
+    "byte_bits_last": 5.8060126389502695
+   },
+   {
+    "survival": 1027,
+    "intake_rate": 0.3076923076923077,
+    "switches": 0.3612463485881207,
+    "bytes_heard": 661,
+    "byte_bits_last": 5.350702091721326
+   },
+   {
+    "survival": 997,
+    "intake_rate": 0.29889669007021064,
+    "switches": 0.18756268806419257,
+    "bytes_heard": 745,
+    "byte_bits_last": 5.3436301432361555
+   },
+   {
+    "survival": 959,
+    "intake_rate": 0.2867570385818561,
+    "switches": 0.4348279457768509,
+    "bytes_heard": 495,
+    "byte_bits_last": 5.515538982980657
+   },
+   {
+    "survival": 1209,
+    "intake_rate": 0.35153019023986765,
+    "switches": 0.37882547559966917,
+    "bytes_heard": 802,
+    "byte_bits_last": 5.175779682963649
+   },
+   {
+    "survival": 762,
+    "intake_rate": 0.20603674540682415,
+    "switches": 0.410761154855643,
+    "bytes_heard": 410,
+    "byte_bits_last": 5.347047055802158
+   },
+   {
+    "survival": 984,
+    "intake_rate": 0.29471544715447157,
+    "switches": 0.5030487804878049,
+    "bytes_heard": 532,
+    "byte_bits_last": 5.5752660247705546
+   }
+  ]
+ },
+ "summary": {
+  "org": {
+   "survival": {
+    "min": 100000,
+    "median": 100000.0,
+    "mean": 100000,
+    "max": 100000
+   },
+   "intake_rate": {
+    "min": 0.74582,
+    "median": 0.768725,
+    "mean": 0.76623125,
+    "max": 0.77897
+   },
+   "switches": {
+    "min": 0.05142,
+    "median": 0.056285,
+    "mean": 0.05691625,
+    "max": 0.06561
+   },
+   "bytes_heard": {
+    "min": 93439,
+    "median": 94371.5,
+    "mean": 94308.375,
+    "max": 94858
+   },
+   "byte_bits_last": {
+    "min": 3.99039325360855,
+    "median": 4.0412031556858885,
+    "mean": 4.062749859626084,
+    "max": 4.131605343862226
+   }
+  },
+  "org_counter_policy": {
+   "survival": {
+    "min": 100000,
+    "median": 100000.0,
+    "mean": 100000,
+    "max": 100000
+   },
+   "intake_rate": {
+    "min": 0.74928,
+    "median": 0.766805,
+    "mean": 0.76866,
+    "max": 0.78601
+   },
+   "switches": {
+    "min": 0.0333,
+    "median": 0.042445,
+    "mean": 0.0487525,
+    "max": 0.06719
+   },
+   "bytes_heard": {
+    "min": 93281,
+    "median": 95755.5,
+    "mean": 95124.75,
+    "max": 96670
+   },
+   "byte_bits_last": {
+    "min": 3.965823537581679,
+    "median": 4.046184860059769,
+    "mean": 4.0518828505984725,
+    "max": 4.137855381368099
+   }
+  },
+  "org_lang_frozen": {
+   "survival": {
+    "min": 100000,
+    "median": 100000.0,
+    "mean": 100000,
+    "max": 100000
+   },
+   "intake_rate": {
+    "min": 0.74634,
+    "median": 0.76778,
+    "mean": 0.7675325,
+    "max": 0.78857
+   },
+   "switches": {
+    "min": 0.03081,
+    "median": 0.04784,
+    "mean": 0.04668125,
+    "max": 0.06009
+   },
+   "bytes_heard": {
+    "min": 93991,
+    "median": 95216.0,
+    "mean": 95331.875,
+    "max": 96919
+   },
+   "byte_bits_last": {
+    "min": 8.000000000001625,
+    "median": 8.000000000001625,
+    "mean": 8.000000000001625,
+    "max": 8.000000000001625
+   }
+  },
+  "org_frozen": {
+   "survival": {
+    "min": 722,
+    "median": 848.5,
+    "mean": 875.625,
+    "max": 1089
+   },
+   "intake_rate": {
+    "min": 0.18421052631578946,
+    "median": 0.24520723442612005,
+    "mean": 0.25141876891465437,
+    "max": 0.3241505968778696
+   },
+   "switches": {
+    "min": 0.4728682170542636,
+    "median": 0.4920112559159097,
+    "mean": 0.49390414531122057,
+    "max": 0.5221606648199446
+   },
+   "bytes_heard": {
+    "min": 345,
+    "median": 430.5,
+    "mean": 443.75,
+    "max": 564
+   },
+   "byte_bits_last": {
+    "min": 8.000000000000016,
+    "median": 8.000000000000018,
+    "mean": 8.000000000000018,
+    "max": 8.000000000000018
+   }
+  },
+  "org_loop_cut": {
+   "survival": {
+    "min": 699,
+    "median": 971.5,
+    "mean": 921.375,
+    "max": 1209
+   },
+   "intake_rate": {
+    "min": 0.17024320457796852,
+    "median": 0.2907362428681638,
+    "mean": 0.2633259148182993,
+    "max": 0.35153019023986765
+   },
+   "switches": {
+    "min": 0.18756268806419257,
+    "median": 0.42279455031624696,
+    "mean": 0.4653565456924506,
+    "max": 0.7939914163090128
+   },
+   "bytes_heard": {
+    "min": 236,
+    "median": 513.5,
+    "mean": 520,
+    "max": 802
+   },
+   "byte_bits_last": {
+    "min": 5.175779682963649,
+    "median": 5.433120537350991,
+    "mean": 5.504388417686905,
+    "max": 5.9211307210704724
+   }
+  }
+ },
+ "admitted": false
+}

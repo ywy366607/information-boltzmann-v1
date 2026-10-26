@@ -139,3 +139,60 @@ class Oracle:
         return self.moved
     def sense(self, *a):
         pass
+
+
+class G15Organism(LG1Forager):
+    """One body that lives and learns language: the LG-1 hidden state is written by the
+    heard byte, intake, travel and the efference copy; its byte readout learns by the
+    two-phase delta rule (G14); the motor readout reads the intake-history state
+    (G11/G12) and the same hidden state, and learns by the intake-modulated two-phase
+    rule (G15). The registered LG1Forager threshold policy is not used.
+
+    `learning` gates the language (byte) learning; `policy_learning` gates G15.
+    Registered choices: those of LG-1, the exponential score trace, step sizes,
+    hidden group scaled by 2/sqrt(hidden).
+    """
+
+    def __init__(self, hidden=256, *, pg_eta=0.1, pg_trace=0.9, base_rate=0.01, nmax=16,
+                 use_hidden=True, seed=0, **kw):
+        super().__init__(hidden, seed=seed, **kw)
+        self.nmax, self.ns, self.use_hidden = nmax, 2 * (nmax + 1), use_hidden
+        self.Wp = np.zeros((2, self.ns + (hidden if use_hidden else 0)))
+        self.ep = np.zeros_like(self.Wp)
+        self.pg_eta, self.pg_lam, self.br = pg_eta, pg_trace, base_rate
+        self.prng = np.random.default_rng(seed + 202)
+        self.bl, self.ate, self.n = 0.5, 0, 0
+        self.policy_learning = True
+        self.hscale = 2.0 / math.sqrt(hidden)
+
+    def features(self):
+        x = np.zeros(self.Wp.shape[1])
+        x[self.ate * (self.nmax + 1) + self.n] = 1.0
+        if self.use_hidden:
+            x[self.ns:] = (self.p1 - 0.5) * self.hscale
+        return x
+
+    def act(self) -> int:
+        x = self.features()
+        z = self.Wp @ x
+        p = np.exp(z - z.max())
+        p /= p.sum()
+        a = int(self.prng.random() < p[1])
+        score = -p
+        score[a] += 1.0
+        self.ep *= self.pg_lam
+        self.ep += np.outer(score, x)
+        self.last_action = a
+        return a
+
+    def sense(self, byte, intake: int, travelled: bool):
+        if self.policy_learning:
+            self.Wp += self.pg_eta * (intake - self.bl) * self.ep
+            self.bl += self.br * (intake - self.bl)
+        if travelled:
+            self.ate, self.n = 0, 0
+        elif intake:
+            self.ate, self.n = 1, 0
+        else:
+            self.n = min(self.n + 1, self.nmax)
+        super().sense(byte, intake, travelled)

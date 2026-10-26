@@ -19,7 +19,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "information_boltzmann" / "core"))
 from cgb_observation_stream import load_owt_sources  # noqa: E402
 from cgb_forage_world import ForageWorld  # noqa: E402
-from cgb_lg1_forager import LG1Forager, Reflex, Integrator, RandomPolicy, Oracle  # noqa: E402
+from cgb_lg1_forager import LG1Forager, G15Organism, Reflex, Integrator, RandomPolicy, Oracle  # noqa: E402
 from cgb_pg_forager import PGForager, LangPGForager  # noqa: E402
 
 
@@ -40,6 +40,7 @@ def live(agent_factory, sources, wkw, ticks, seed, cut=False):
             break
     out = dict(survival=death, intake_rate=intake / death, switches=world.requested / death)
     if isinstance(agent, LG1Forager) and agent.byte_nll:
+        out["bytes_heard"] = len(agent.byte_nll)
         n = agent.byte_nll[-20000:]
         out["byte_bits_last"] = sum(n) / len(n) / math.log(2)
     return out
@@ -100,7 +101,21 @@ def main():
                                  seed=world.seed + 7919)
         return make
 
+    def org(use_hidden=True, lang_learn=True, policy_learn=True):
+        def make(world):
+            a = G15Organism(args.hidden, seed=world.seed + 7919, eta=0.05, relax=1.0, diffuse=0.3,
+                            feedback=0.1, recur=2.0, pg_eta=args.pg_eta, pg_trace=args.pg_trace,
+                            use_hidden=use_hidden)
+            a.learning, a.policy_learning = lang_learn, policy_learn
+            return a
+        return make
+
     agents = {
+        "org": (org(), False),
+        "org_counter_policy": (org(use_hidden=False), False),
+        "org_lang_frozen": (org(lang_learn=False), False),
+        "org_frozen": (org(lang_learn=False, policy_learn=False), False),
+        "org_loop_cut": (org(), True),
         "g15_lang": (lang(), False),
         "g15_lang_loop_cut": (lang(), True),
         "g15_counter_only": (lang(use=False), False),

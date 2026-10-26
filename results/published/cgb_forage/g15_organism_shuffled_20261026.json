@@ -1,0 +1,141 @@
+{
+ "world": {
+  "hazard": 0.005,
+  "cost": 0.6,
+  "reserve": 300.0,
+  "capacity": 600.0,
+  "p_rich": 0.9,
+  "p_poor": 0.1,
+  "ticks": 100000,
+  "shuffle_bytes": 1,
+  "taus": "16,300",
+  "window": 32,
+  "sources": 3,
+  "stage": 1,
+  "stage2_rule": "document digit fraction >= median over sources",
+  "stage3_rule": "a digit in the last `window` bytes of the source text (including the current byte)"
+ },
+ "hidden": 256,
+ "seeds": 8,
+ "g15": {
+  "eta": 0.1,
+  "trace": 0.9,
+  "relax": 0.0,
+  "state_baseline": 0,
+  "base_rate": 0.01,
+  "couple": 0.0,
+  "slow_c": 10.0,
+  "slow_leak": 0.0
+ },
+ "provenance": {
+  "manifest": "3614c380d4c72688ac8ccde42f32ea0655d16bec1ba0874a924fd777af904d2d",
+  "files": {
+   "tokenizer.json": "e727da4afe06d37d6ffff7db05ab21f69c5be39253ee7b7f7ec759cadab69c1d",
+   "train.npy": "2f227239bc63b89daf31956701d243a93f9dd46671702fff03763b33dc6db4fb",
+   "validation.npy": "60d41d3fdda8c1718ad1735693eda0dae2b23a0032c5e04a29aac9d0c6d35d8c"
+  },
+  "verified_document_counts": {
+   "train": 9786,
+   "validation": 114
+  },
+  "native_byte_counts": {
+   "train": 48125691,
+   "validation": 467911
+  }
+ },
+ "per_seed": {
+  "org": [
+   {
+    "survival": 100000,
+    "intake_rate": 0.76268,
+    "switches": 0.05937,
+    "bytes_heard": 94063,
+    "byte_bits_last": 5.127465976192059
+   },
+   {
+    "survival": 100000,
+    "intake_rate": 0.78722,
+    "switches": 0.03898,
+    "bytes_heard": 96102,
+    "byte_bits_last": 5.058217615409045
+   },
+   {
+    "survival": 100000,
+    "intake_rate": 0.76376,
+    "switches": 0.04879,
+    "bytes_heard": 95121,
+    "byte_bits_last": 5.138857222145753
+   },
+   {
+    "survival": 14923,
+    "intake_rate": 0.6889365409100047,
+    "switches": 0.15948535817194934,
+    "bytes_heard": 12543,
+    "byte_bits_last": 5.08623901288406
+   },
+   {
+    "survival": 100000,
+    "intake_rate": 0.73817,
+    "switches": 0.0543,
+    "bytes_heard": 94570,
+    "byte_bits_last": 5.08305838077268
+   },
+   {
+    "survival": 100000,
+    "intake_rate": 0.76756,
+    "switches": 0.04556,
+    "bytes_heard": 95444,
+    "byte_bits_last": 5.066935209147946
+   },
+   {
+    "survival": 6553,
+    "intake_rate": 0.612543873035251,
+    "switches": 0.21394781016328399,
+    "bytes_heard": 5151,
+    "byte_bits_last": 5.153280193242093
+   },
+   {
+    "survival": 100000,
+    "intake_rate": 0.76909,
+    "switches": 0.03616,
+    "bytes_heard": 96384,
+    "byte_bits_last": 5.1517012851242105
+   }
+  ]
+ },
+ "summary": {
+  "org": {
+   "survival": {
+    "min": 6553,
+    "median": 100000.0,
+    "mean": 77684.5,
+    "max": 100000
+   },
+   "intake_rate": {
+    "min": 0.612543873035251,
+    "median": 0.76322,
+    "mean": 0.736245051743157,
+    "max": 0.78722
+   },
+   "switches": {
+    "min": 0.03616,
+    "median": 0.051545,
+    "mean": 0.08207414604190416,
+    "max": 0.21394781016328399
+   },
+   "bytes_heard": {
+    "min": 5151,
+    "median": 94845.5,
+    "mean": 73672.25,
+    "max": 96384
+   },
+   "byte_bits_last": {
+    "min": 5.058217615409045,
+    "median": 5.106852494538059,
+    "mean": 5.108219361864731,
+    "max": 5.153280193242093
+   }
+  }
+ },
+ "admitted": false
+}
