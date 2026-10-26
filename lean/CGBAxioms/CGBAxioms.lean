@@ -91,3 +91,4 @@ import CGBAxioms.GenerationNesting
 import CGBAxioms.GenerationLattice
 import CGBAxioms.GenerationNestedWorld
 import CGBAxioms.GenerationLeaveRule
+import CGBAxioms.NestedLife
