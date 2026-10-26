@@ -2,7 +2,7 @@
 
 由 `scripts/build_proven_index.py` 从 Lean 源码生成。新工作开始前先在这里检索（定理名与文档注释首句），避免重复推导。
 
-共 966 条定理/引理。
+共 971 条定理/引理。
 **未入 Lean 的手工推导与数值见证**另列在 `CGB_HAND_DERIVATIONS.md`，检索时两处都要看。
 
 ## ActiveLoop（8）
@@ -357,6 +357,13 @@ _Lattice media: cells with neighbour contact (generation chain, M4; nesting T-E1
 - `p2c`
 - `p3`
 - `axioms`：**M4 (lattice media are admitted)**: a lattice reaction medium satisfies the six clauses when its rule tables pass local obligations: content levels (P1a), conservation by rules among interior cells (P2a), a zero calm po
+
+## GenerationLeaveRule（3）
+_When must a forager compare now with the past? (generation chain, C-1) A forager at a patch with local gain rate `q` either stays (earning `q`) or leaves for the rest of the world (worth `c`, the environment's average ra_
+
+- `leaveValue_le`
+- `fixed_threshold_optimal`：In a stationary world the fixed threshold `τ = c` is optimal everywhere.
+- `no_fixed_leave_threshold`：**C-1 (a changing world needs comparison)**: with two different averages `c₁ < c₂`, every fixed threshold `τ` loses strictly at some patch rate `q` between them, in one of the two worlds.
 
 ## GenerationLifeGate（9）
 _Life necessities as admission obligations (generation chain, gate layer L) The axioms P1–P3 say what a medium is._
@@ -847,6 +854,12 @@ _Consistency models, independence witnesses and the bottleneck theorem **Consist
 - `triLookup_witness`
 - `pairPreset_witness`
 - `innerClock_witness`
+
+## NestedLife（2）
+_Life of a nested organism Once the organism is part of one medium with its world (`Nesting`), it has no outside stimulus: what it senses is the state of the world next to it, and what it takes in comes out of the world._
+
+- `irrecoverable_absorbing`
+- `no_intake_of_closed`：An organism that never exchanges content cannot take anything in, so nothing is recoverable for it: metabolism is necessary for nested life.
 
 ## Nesting（8）
 _Nesting: an organism is a part of one medium, its boundary induced by contact There is one medium._
