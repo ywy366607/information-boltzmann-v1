@@ -20,7 +20,30 @@ import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "information_boltzmann" / "core"))
-from cgb_table_fast import live, make_world, to_table  # noqa: E402
+import cgb_table_fast  # noqa: E402
+import cgb_chemotaxis  # noqa: E402
+
+# World selection: forage (pages F, A, M; motor index 2) or chemo (pages F, M; motor index 1).
+WORLD = {"name": "forage", "mod": cgb_table_fast, "nb": 3, "motor": 2, "maxu": 16}
+
+
+def set_world(name):
+    if name == "chemo":
+        WORLD.update(name="chemo", mod=cgb_chemotaxis, nb=2, motor=1, maxu=64)
+    else:
+        WORLD.update(name="forage", mod=cgb_table_fast, nb=3, motor=2, maxu=16)
+
+
+def live(*a, **k):
+    return WORLD["mod"].live(*a, **k)
+
+
+def make_world(seed, ticks):
+    return WORLD["mod"].make_world(seed, ticks)
+
+
+def to_table(g, name):
+    return WORLD["mod"].to_table(g, name)
 
 TICKS = 20000  # 3000 was too easy: random tables survived and ignored food (smoke 2026-10-26)
 TRAIN = (1, 2, 3, 4)
@@ -42,15 +65,18 @@ def random_rule(rng, P):
         b = (int(rng.integers(2)), int(rng.integers(2)))
         if a == b:
             continue
-        if i >= 3 and j >= 3 and sum(a) != sum(b):
+        if i >= WORLD["nb"] and j >= WORLD["nb"] and sum(a) != sum(b):
             continue  # interior-interior rules conserve content (M3)
         return [i, j, a[0], a[1], b[0], b[1], float(rng.uniform(-3, 3))]
 
 
 def random_genome(rng):
     k = int(rng.integers(0, 4))
-    P = 3 + k
-    counts = [int(rng.integers(1, 5)), int(rng.integers(1, 5)), 1] + [int(rng.integers(1, 17)) for _ in range(k)]
+    nb = WORLD["nb"]
+    P = nb + k
+    counts = [int(rng.integers(1, 5)) for _ in range(nb)]
+    counts[WORLD["motor"]] = 1
+    counts += [int(rng.integers(1, WORLD["maxu"] + 1)) for _ in range(k)]
     phi = []
     for _ in range(P):
         phi += [0.0, float(rng.uniform(-4, 4))]
@@ -60,7 +86,8 @@ def random_genome(rng):
 
 def mutate(g, rng):
     g = copy.deepcopy(g)
-    P = 3 + g["interior"]
+    nb = WORLD["nb"]
+    P = nb + g["interior"]
     op = rng.integers(7)
     if op == 0 and g["rules"]:
         k = int(rng.integers(len(g["rules"])))
@@ -74,7 +101,7 @@ def mutate(g, rng):
                 for _ in range(20):
                     c = r.copy()
                     c[f] = 1 - c[f]
-                    if (c[2], c[3]) != (c[4], c[5]) and not (c[0] >= 3 and c[1] >= 3 and c[2] + c[3] != c[4] + c[5]):
+                    if (c[2], c[3]) != (c[4], c[5]) and not (c[0] >= nb and c[1] >= nb and c[2] + c[3] != c[4] + c[5]):
                         g["rules"][k] = c
                         break
     elif op == 1 and len(g["rules"]) < 12:
@@ -86,12 +113,12 @@ def mutate(g, rng):
         g["phi"][2 * p + 1] = float(np.clip(g["phi"][2 * p + 1] + rng.normal(0, 0.7), -4, 4))
     elif op == 4:
         p = int(rng.integers(P))
-        if p != 2:
-            hi = 4 if p < 3 else 16
+        if p != WORLD["motor"]:
+            hi = 4 if p < nb else WORLD["maxu"]
             g["counts"][p] = int(np.clip(g["counts"][p] + rng.choice([-2, -1, 1, 2]), 1, hi))
     elif op == 5 and g["interior"] < 3:
         g["interior"] += 1
-        g["counts"].append(int(rng.integers(1, 17)))
+        g["counts"].append(int(rng.integers(1, WORLD["maxu"] + 1)))
         g["phi"] += [0.0, float(rng.uniform(-4, 4))]
         g["rules"].append(random_rule(rng, P + 1))
     elif op == 6 and g["interior"] > 0:
@@ -106,7 +133,7 @@ def mutate(g, rng):
 def fitness(g):
     vals = []
     for s in TRAIN:
-        surv, intake, sw, _ = live(g, s, TICKS, world=world(s), cost=COST[0])
+        surv, intake, sw = live(g, s, TICKS, world=world(s), cost=COST[0])[:3]
         vals.append(surv + 100 * intake)
     return statistics.mean(vals)
 
@@ -114,9 +141,16 @@ def fitness(g):
 def evaluate(g, seeds, **kw):
     out = []
     for s in seeds:
-        surv, intake, sw, flux = live(g, s, TICKS, world=world(s), cost=COST[0], **kw)
-        out.append(dict(survival=int(surv), intake=float(intake), switch=float(sw), flux=[float(x) for x in flux[:3]]))
+        surv, intake, sw = live(g, s, TICKS, world=world(s), cost=COST[0], **kw)[:3]
+        out.append(dict(survival=int(surv), intake=float(intake), switch=float(sw)))
     return out
+
+
+def _init(cost, world_name, ntrain=4):
+    global TRAIN
+    COST[0] = cost
+    TRAIN = tuple(range(1, ntrain + 1))
+    set_world(world_name)
 
 
 def main():
@@ -126,13 +160,15 @@ def main():
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--workers", type=int, default=10)
     ap.add_argument("--cost", type=float, default=0.6)
+    ap.add_argument("--world", default="forage", choices=["forage", "chemo"])
+    ap.add_argument("--train", type=int, default=4, help="number of training worlds (seeds 1..N)")
     ap.add_argument("--out", required=True)
     a = ap.parse_args()
-    COST[0] = a.cost
+    _init(a.cost, a.world, a.train)
     rng = np.random.default_rng(a.seed)
     pop = [random_genome(rng) for _ in range(a.pop)]
     history = []
-    with Pool(a.workers, initializer=COST.__setitem__, initargs=(0, a.cost)) as pool:
+    with Pool(a.workers, initializer=_init, initargs=(a.cost, a.world, a.train)) as pool:
         fit = pool.map(fitness, pop)
         for gen in range(a.gens):
             order = np.argsort(fit)[::-1]
@@ -151,10 +187,15 @@ def main():
             pop = elite + children
             fit = [fit[i] for i in order[:8]] + cfit
     best = pop[int(np.argmax(fit))]
-    report = dict(prereg="docs/information_boltzmann/CGB_GENERATED_ORGANISM_PREREG_20261026.md",
+    report = dict(prereg=("docs/information_boltzmann/CGB_GENERATED_ORGANISM_PREREG_20261026.md" if a.world == "forage"
+                          else "docs/information_boltzmann/CGB_GENERATED_CHEMOTAXIS_PREREG_20261026.md"),
                   args=vars(a), history=history, best=best, table=to_table(best, f"generated_s{a.seed}"),
-                  held_out=dict(organism=evaluate(best, HELD), loop_cut=evaluate(best, HELD, cut=True),
-                                blind=evaluate(best, HELD, blind=True)))
+                  world=a.world,
+                  held_out=(dict(organism=evaluate(best, HELD), loop_cut=evaluate(best, HELD, cut=True),
+                                 blind=evaluate(best, HELD, blind=True)) if a.world == "forage" else
+                            dict(organism=evaluate(best, HELD), blind=evaluate(best, HELD, blind=True),
+                                 never_tumble=evaluate(best, HELD, mode=1),
+                                 fixed_tumble_0p1=evaluate(best, HELD, mode=2))))
     Path(a.out).parent.mkdir(parents=True, exist_ok=True)
     Path(a.out).write_text(json.dumps(report, indent=1), encoding="utf-8")
     for k, v in report["held_out"].items():
