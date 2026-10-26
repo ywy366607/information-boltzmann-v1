@@ -574,6 +574,43 @@ theorem phases_must_balance {B : Type*} [Fintype B] [DecidableEq B] [Nonempty B]
     if_true, softmax_sum] at hs
   linarith
 
+/-! ## Why the readout is one particle among labels (the softmax premise of G14)
+
+The world delivers exactly one symbol per tick, so the target is a categorical law. -/
+
+/-- **R2 (leakage loses on every outcome)**: if the free boundary puts mass `ℓ > 0` on
+configurations that are no symbol, every symbol's predicted probability is `(1 - ℓ) q b`
+instead of `q b`, and the log likelihood of whatever arrives is strictly lower. An optimal
+predictive boundary keeps its free dynamics inside the one-symbol sector. -/
+theorem leakage_loses {ℓ q : ℝ} (hℓ : 0 < ℓ) (hℓ1 : ℓ < 1) (hq : 0 < q) :
+    Real.log ((1 - ℓ) * q) < Real.log q := by
+  apply Real.log_lt_log (mul_pos (by linarith) hq)
+  nlinarith
+
+/-- **R1 (conservation makes the readout one-hot)**: if every label unit holds content `0`
+or `1` and the readout's total content is `1` (an invariant shell of the closed free
+dynamics under P2a, `total_of_reachable`), exactly one label is on. -/
+theorem one_unit_one_label {B : Type*} [Fintype B] [DecidableEq B] (n : B → ℕ)
+    (h01 : ∀ b, n b ≤ 1) (htot : ∑ b, n b = 1) : ∃! b, n b = 1 := by
+  have hex : ∃ b, n b = 1 := by
+    by_contra hno
+    push Not at hno
+    have : ∀ b, n b = 0 := fun b => by have := h01 b; have := hno b; omega
+    simp [this] at htot
+  obtain ⟨b, hb⟩ := hex
+  refine ⟨b, hb, fun c hc => ?_⟩
+  by_contra hne
+  have h2 : n b + n c ≤ ∑ d, n d := by
+    rw [← Finset.sum_pair (Ne.symm hne)]
+    exact Finset.sum_le_sum_of_subset (Finset.subset_univ _)
+  omega
+
+/-- In the one-particle sector a local label energy gives the softmax readout: with
+weights `exp (z b)` on the configurations `label b on`, the normalized law is `softmax z`
+(G13 restricted to the sector). -/
+theorem sector_law_is_softmax {B : Type*} [Fintype B] (z : B → ℝ) (b : B) :
+    Real.exp (z b) / ∑ c, Real.exp (z c) = softmax z b := rfl
+
 /-! ## Layer 2b: the integration bottleneck
 
 A single-unit move of `v` is produced by events whose participants form a clique
