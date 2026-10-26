@@ -13,7 +13,7 @@ from pathlib import Path
 import torch
 import torch.nn.functional as F
 
-K, D, STEPS, BATCH = 256, 128, 400, 256
+K, D, STEPS, BATCH = 1024, 64, 200, 256
 LRS = (0.01, 0.03, 0.1, 0.3, 1.0)
 NS = (3.4445, -4.7750, 2.0315)
 
@@ -130,6 +130,7 @@ def run_modes(name, lr, seed=0, d=32, steps=3000):
 
 def main():
     ap = argparse.ArgumentParser()
+    ap.add_argument("--skip-modes", action="store_true")
     ap.add_argument("--out", required=True)
     a = ap.parse_args()
     best = []
@@ -149,15 +150,16 @@ def main():
     pred["O2"] = get[("orthogonal", "rownorm")] >= get[("orthogonal", "muon_ns")] - 0.03
     pred["O3"] = get[("correlated", "rownorm")] < get[("correlated", "muon_ns")] - 0.05
     modes = {}
-    for name in ("sgd", "muon_ns"):
+    for name in (() if a.skip_modes else ("sgd", "muon_ns")):
         runs = [run_modes(name, lr) for lr in (0.003, 0.01, 0.03, 0.1, 0.3)]
         ok = [r for r in runs if all(h is not None for h in r["hit"])] or runs
         modes[name] = min(ok, key=lambda r: r["final_loss"])
         modes[name]["sweep"] = [dict(lr=r["lr"], loss=r["final_loss"], hit=r["hit"]) for r in runs]
         print(json.dumps({k: v for k, v in modes[name].items() if k != "sweep"}), flush=True)
-    ratio = {k: (v["hit"][4] / v["hit"][0] if v["hit"][0] and v["hit"][4] else float("inf")) for k, v in modes.items()}
-    pred["O6_ratio_weakest_over_strongest"] = ratio
-    pred["O6"] = ratio["sgd"] >= 3 and ratio["muon_ns"] <= 1.5
+    if modes:
+        ratio = {k: (v["hit"][4] / v["hit"][0] if v["hit"][0] and v["hit"][4] else float("inf")) for k, v in modes.items()}
+        pred["O6_ratio_weakest_over_strongest"] = ratio
+        pred["O6"] = ratio["sgd"] >= 3 and ratio["muon_ns"] <= 1.5
     print(json.dumps(pred))
     Path(a.out).parent.mkdir(parents=True, exist_ok=True)
     Path(a.out).write_text(json.dumps(dict(prereg="docs/information_boltzmann/CGB_OPTIMIZER_ANTI_WTA_PREREG_20261026.md",

@@ -1,0 +1,47 @@
+{
+ "prereg": "docs/information_boltzmann/CGB_LINEAR_MEMORY_LATCH_PREREG_20261026.md#part-2",
+ "args": {
+  "steps": 1500,
+  "seeds": 1,
+  "kinds": [
+   "tanh"
+  ],
+  "out": "results/published/latch_gdn/latch_multi_tanh_20261026.json"
+ },
+ "runs": [
+  {
+   "kind": "tanh",
+   "seed": 0,
+   "final_loss": 6.475582722487161e-06,
+   "acc": {
+    "16": 1.0,
+    "64": 1.0,
+    "256": 1.0,
+    "1024": 0.6982421875
+   },
+   "contrib": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "gini": 0.0,
+   "never_flip": 0.375,
+   "used_never_flip": 0.0,
+   "gain": [
+    2.003478765487671,
+    1.958631992340088,
+    1.984823226928711,
+    1.9969532489776611,
+    2.010321855545044,
+    1.989320158958435,
+    2.0479679107666016,
+    2.013364315032959
+   ]
+  }
+ ]
+}

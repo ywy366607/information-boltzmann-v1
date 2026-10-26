@@ -20,7 +20,8 @@ IG = 2 * J                 # ignore tokens IG+b
 RD = 2 * J + 2             # read tokens RD+j
 V = 3 * J + 2
 M = 8                      # latch slots / sectors
-TRAIN_LEN, GAPS, SIGMA = 128, (16, 64, 256, 1024), 0.05
+TRAIN_LEN, GAPS = 128, (16, 64, 256, 1024)
+SIGMA = 0.05
 DEV = "cuda" if torch.cuda.is_available() else "cpu"
 
 
@@ -174,8 +175,11 @@ def main():
     ap.add_argument("--steps", type=int, default=1500)
     ap.add_argument("--seeds", type=int, default=3)
     ap.add_argument("--kinds", nargs="+", default=["gdn", "tanh", "sector"])
+    ap.add_argument("--sigma", type=float, default=0.05)
     ap.add_argument("--out", required=True)
     a = ap.parse_args()
+    global SIGMA
+    SIGMA = a.sigma
     res = []
     for kind in a.kinds:
         for seed in range(a.seeds):
