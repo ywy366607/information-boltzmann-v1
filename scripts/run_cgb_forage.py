@@ -101,17 +101,18 @@ def main():
                                  seed=world.seed + 7919)
         return make
 
-    def org(use_hidden=True, lang_learn=True, policy_learn=True):
+    def org(use_hidden=True, lang_learn=True, policy_learn=True, grown_R=False):
         def make(world):
             a = G15Organism(args.hidden, seed=world.seed + 7919, eta=0.05, relax=1.0, diffuse=0.3,
                             feedback=0.1, recur=2.0, pg_eta=args.pg_eta, pg_trace=args.pg_trace,
-                            use_hidden=use_hidden)
+                            use_hidden=use_hidden, grown_R=grown_R)
             a.learning, a.policy_learning = lang_learn, policy_learn
             return a
         return make
 
     agents = {
         "org": (org(), False),
+        "org_grown": (org(grown_R=True), False),
         "org_counter_policy": (org(use_hidden=False), False),
         "org_lang_frozen": (org(lang_learn=False), False),
         "org_frozen": (org(lang_learn=False, policy_learn=False), False),

@@ -154,8 +154,15 @@ class G15Organism(LG1Forager):
     """
 
     def __init__(self, hidden=256, *, pg_eta=0.1, pg_trace=0.9, base_rate=0.01, nmax=16,
-                 use_hidden=True, seed=0, **kw):
+                 use_hidden=True, grown_R=False, seed=0, **kw):
+        if grown_R:
+            kw["recur"] = 0.0
         super().__init__(hidden, seed=seed, **kw)
+        self.growth = None
+        if grown_R:  # interior couplings grown by the G18 law, not drawn at birth
+            from cgb_grown import ForcedGrowth
+            self.growth = ForcedGrowth(hidden)
+            self.R = self.growth.coupling()
         self.nmax, self.ns, self.use_hidden = nmax, 2 * (nmax + 1), use_hidden
         self.Wp = np.zeros((2, self.ns + (hidden if use_hidden else 0)))
         self.ep = np.zeros_like(self.Wp)
@@ -196,3 +203,5 @@ class G15Organism(LG1Forager):
         else:
             self.n = min(self.n + 1, self.nmax)
         super().sense(byte, intake, travelled)
+        if self.growth is not None and self.learning:
+            self.R = self.growth.step(self.p1.astype(np.float64))

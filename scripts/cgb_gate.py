@@ -144,6 +144,52 @@ def check_interior_symmetric():
     return err == 0.0, dict(max_asymmetry=err)
 
 
+def check_score_trace_geometric():
+    m = _organism()
+    rng = np.random.default_rng(1)
+    m.ep = rng.normal(0, 1, m.Wp.shape)
+    before = m.ep.copy()
+    m.prng = _Forced(1)
+    x, pi = m.features(), _policy(m)
+    m.act()
+    score = -pi
+    score[1] += 1.0
+    err = float(np.abs(m.ep - (m.pg_lam * before + np.outer(score, x))).max())
+    return err < 1e-12, dict(max_abs_error=err, decay=m.pg_lam)
+
+
+def check_p2_symmetric_exchange():
+    from cgb_lg1 import LG1
+    m = LG1(16, seed=7, eta=0.05, relax=0.0, diffuse=0.3, feedback=0.1)
+    rng = np.random.default_rng(7)
+    m.p1 = rng.random(16).astype(np.float32)
+    m.p2 = rng.random(16).astype(np.float32)
+    p1, p2 = m.p1.astype(np.float64), m.p2.astype(np.float64)
+    m.observe(66)
+    tot = float(np.abs((m.p1 + m.p2) - (p1 + p2)).max())
+    diff = float(np.abs((m.p1 - m.p2) - (1 - 2 * m.diffuse) * (p1 - p2)).max())
+    return max(tot, diff) < 1e-5, dict(total_error=tot, difference_error=diff)
+
+
+def check_grown_R_rule():
+    from cgb_lg1_forager import G15Organism
+    m = G15Organism(16, seed=4, eta=0.05, relax=1.0, diffuse=0.3, feedback=0.1, grown_R=True)
+    rng = np.random.default_rng(4)
+    for _ in range(50):
+        m.prng = rng
+        m.act()
+        m.sense(int(rng.integers(32, 127)), int(rng.random() < 0.5), False)
+    g = m.growth
+    sym = float(np.abs(m.R - m.R.T).max())
+    recip = float(np.abs(m.R - g.kappa / g.n_c * g.n).max())
+    # the occupancy target is the G18c sigmoid of kappa * c - theta_i - theta_j
+    field = g.kappa * g.c - (g.theta[:, None] + g.theta[None, :])
+    occ = 1.0 / (1.0 + np.exp(-np.clip(field, -60, 60)))
+    form = float(np.abs(g.target() - occ).max())
+    ok = sym < 1e-6 and recip < 1e-5 and form < 1e-12 and float(np.abs(g.c - g.c.T).max()) < 1e-12
+    return ok, dict(asymmetry=sym, reciprocity_error=recip, occupancy_form_error=form)
+
+
 CHECKS = {k[len("check_"):]: v for k, v in list(globals().items()) if k.startswith("check_")}
 
 

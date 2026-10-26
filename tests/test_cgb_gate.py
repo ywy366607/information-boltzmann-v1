@@ -34,3 +34,11 @@ def test_unlicensed_structure_blocks_admission():
     r = cgb_gate.gate("g15_organism")
     assert not r["admitted"]
     assert "no Lean Medium instance with an Axioms proof" in r["failures"]
+
+
+def test_grown_organism_checks_pass_and_only_w_in_and_medium_block():
+    r = cgb_gate.gate("g15_grown_organism")
+    assert all(e["passed"] for e in r["execution"])
+    assert sorted(r["failures"]) == sorted([
+        "hidden_write_weights (structure): no valid Lean theorem",
+        "no Lean Medium instance with an Axioms proof"])

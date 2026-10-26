@@ -20,7 +20,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "information_boltzmann" / "core"))
 from cgb_observation_stream import load_owt_sources  # noqa: E402
 from cgb_lg1 import LG1  # noqa: E402
-from cgb_grown import GrownLG1, random_sparse_R  # noqa: E402
+from cgb_grown import GrownLG1, ForcedGrownLG1, random_sparse_R  # noqa: E402
 import numpy as np  # noqa: E402
 
 LN2 = math.log(2)
@@ -52,6 +52,7 @@ def main():
     ap.add_argument("--seed", type=int, default=1)
     ap.add_argument("--budget", type=float, default=0.1)
     ap.add_argument("--beta", type=float, default=4.0)
+    ap.add_argument("--kappa", type=float, default=20.0)
     ap.add_argument("--arms", default="none,random_dense,grown,grown_useblind,random_sparse")
     ap.add_argument("--out", required=True)
     args = ap.parse_args()
@@ -69,11 +70,20 @@ def main():
             m = LG1(args.hidden, recur=2.0, **kw)
         elif arm in ("grown", "grown_useblind"):
             m = GrownLG1(args.hidden, budget=args.budget, beta=args.beta, use_driven=(arm == "grown"), **kw)
+        elif arm in ("forced", "forced_local"):
+            m = ForcedGrownLG1(args.hidden, budget=args.budget, kappa=args.kappa,
+                               local_pool=(arm == "forced_local"), **kw)
         elif arm == "random_sparse":
             m = LG1(args.hidden, recur=0.0, **kw)
             occ = grown_occ if grown_occ is not None else args.budget
             m.R = random_sparse_R(args.hidden, occ, 2.0 / np.sqrt(args.budget * args.hidden), args.seed)
         r = live(m, life, future)
+        if isinstance(m, ForcedGrownLG1):
+            r["occupancy"] = m.occupancy()
+            r["strong_fraction"] = float((m.n > 0.5).mean())
+            r["theta"] = float(np.mean(m.theta))
+            r["degree_strong"] = stats([int(x) for x in (m.n > 0.5).sum(1)])
+            r["n_quantiles"] = [float(q) for q in np.quantile(m.n, [0.5, 0.9, 0.99])]
         if isinstance(m, GrownLG1):
             r["occupancy"] = m.occupancy()
             nz = m.n > 0.5
