@@ -17,12 +17,14 @@
   // mass action (Lean poolFactor, mass_action_up/down): pool conductance times exp(-dcellF/2)
   function up(n, V) { return n < V ? V - n : 0; }   // pool gains a quantum
   function dn(n, V) { return n > 0 ? n : 0; }       // pool loses a quantum
-  function pois(lam, u) {                      // inversion, tail beyond 12 below 1e-9 for lam <= 1.2
+  function gauss(r) { return Math.sqrt(-2 * Math.log(1 - r())) * Math.cos(2 * Math.PI * r()); }
+  // Poisson count: inversion for lam <= 20 (stops when the cumulative passes u), rounded normal beyond
+  function pois(lam, u, r) {
+    if (lam > 20) return Math.max(0, Math.floor(lam + Math.sqrt(lam) * gauss(r) + 0.5));
     let p = Math.exp(-lam), c = p, k = 0;
-    for (let i = 1; i <= 12; i++) { if (u > c) k++; p = p * lam / i; c += p; }
+    while (u > c && k < 200) { k++; p = p * lam / k; c += p; }
     return k;
   }
-  function gauss(r) { return Math.sqrt(-2 * Math.log(1 - r())) * Math.cos(2 * Math.PI * r()); }
 
   const SHIFT = [[1, 0], [0, 1], [-1, 0], [0, -1]];
 
@@ -116,18 +118,18 @@
       if (kd === 1) {
         const mu = this.mu[c] - this.foodE;
         const l0 = kin * up(f, V) * Math.exp(mu / 2) * dt, l1 = kin * dn(f, V) * Math.exp(-mu / 2) * dt;
-        fa += Math.min(l0 > 0 ? pois(l0, r()) : 0, (V - f) >> 1) - Math.min(l1 > 0 ? pois(l1, r()) : 0, f);
+        fa += Math.min(l0 > 0 ? pois(l0, r(), r) : 0, (V - f) >> 1) - Math.min(l1 > 0 ? pois(l1, r(), r) : 0, f);
       } else if (kd === 2) {
         const mu = this.mu[c];
         const l2 = kin * up(w, V) * Math.exp(mu / 2) * dt, l3 = kin * dn(w, V) * Math.exp(-mu / 2) * dt;
-        wa += Math.min(l2 > 0 ? pois(l2, r()) : 0, (V - w) >> 1) - Math.min(l3 > 0 ? pois(l3, r()) : 0, w);
+        wa += Math.min(l2 > 0 ? pois(l2, r(), r) : 0, (V - w) >> 1) - Math.min(l3 > 0 ? pois(l3, r(), r) : 0, w);
       }
       const dnf = dn(f, V) * k2 * dt, dnw = dn(w, V) * k2 * dt;
       for (let d = 0; d < 4; d++) {
         const nc = nb[c * 4 + d];
         let sf = 0, sw = 0;
-        if (dnf > 0) { const fb = F[nc]; sf = Math.min(pois(dnf * up(fb, V), r()), (V - fb) >> 3, fa); fa -= sf; }
-        if (dnw > 0) { const wb = Wp[nc]; sw = Math.min(pois(dnw * up(wb, V), r()), (V - wb) >> 3, wa); wa -= sw; }
+        if (dnf > 0) { const fb = F[nc]; sf = Math.min(pois(dnf * up(fb, V), r(), r), (V - fb) >> 3, fa); fa -= sf; }
+        if (dnw > 0) { const wb = Wp[nc]; sw = Math.min(pois(dnw * up(wb, V), r(), r), (V - wb) >> 3, wa); wa -= sw; }
         S[c * 8 + d] = sf; S[c * 8 + 4 + d] = sw;
       }
       this.fmid[c] = fa; this.wmid[c] = wa;
@@ -171,23 +173,48 @@
   };
 
   // ---------- organisms (exact events) ----------
-  Sphere.prototype.place = function (x, y, genome, h) {
+  // Genome coordinates in [0, 1] -> numbers (as cgb_nested_population.Coder.decode): a prefactor at
+  // coordinate 0 is an absent event (log -inf).
+  Sphere.prototype.decode = function (theta) {
+    const C = this.T.coder, g = {}, v = [];
+    for (let i = 0; i < C.lo.length; i++) {
+      const u = Math.min(1, Math.max(0, theta[i]));
+      v.push(i >= C.nphi && u <= 0 ? -Infinity : C.lo[i] + u * (C.hi[i] - C.lo[i]));
+    }
+    let i = 0;
+    for (const [k, n] of C.sizes) { if (n === 0) g[k] = v[i++]; else { g[k] = v.slice(i, i + n); i += n; } }
+    return g;
+  };
+  Sphere.prototype.mutate = function (theta) {      // replication fidelity (cgb_nested_population.mutate)
+    const t = Float64Array.from(theta), C = this.T.coder;
+    if (this.r() < C.pmut) {
+      const k = (this.r() * t.length) | 0, s = this.r() < 0.5 ? -1 : 1;
+      t[k] = Math.min(1, Math.max(0, Math.round((t[k] + C.delta * s) / C.delta) * C.delta));
+    }
+    return t;
+  };
+  Sphere.prototype.place = function (x, y, genome, h, kind, parent) {
     const G = this.G, c = ((x % G) + G) % G * G + ((y % G) + G) % G;
     if (this.occ[c] >= 0) return null;
     const O = this.T.organism, SM = O.SMAX, n = new Int32Array(6 * SM);
     for (let p = 0; p < 6; p++) n[p * SM] = O.UNITS[p];
     n[O.S * SM] = 0; n[O.S * SM + 1] = O.UNITS[O.S];
-    const E = O.E, half = O.UNITS[E] >> 1;
-    n[E * SM] = O.UNITS[E] - half; n[E * SM + 1] = half;
-    const g = genome || this.T.genome;
+    if (kind !== 'newborn') {                         // newborn (Lean yb): intact membrane, the rest empty
+      const E = O.E, half = O.UNITS[E] >> 1;
+      n[E * SM] = O.UNITS[E] - half; n[E * SM + 1] = half;
+    }
+    const theta = this.T.coder ? Float64Array.from(genome || this.T.theta0) : null;
+    const g = theta ? this.decode(theta) : (genome || this.T.genome);
     const phi = new Float64Array(6 * SM);
     O.SELECTED_PHI.forEach((ps, i) => { phi[ps[0] * SM + ps[1]] = g.phi[i]; });
     phi[O.S * SM + 1] = O.PHI_S1;
     const kx = g.logk_x.map(Math.exp);
     for (let i = kx.length; i < O.EXCH.length; i++) kx.push(Math.exp(O.LOGK_LEAK));
     const o = { id: this.nextId++, n, phi, kr: g.logk_rule.map(Math.exp), kx, kflip: Math.exp(g.log_flip),
-      kmove: Math.exp(g.log_move), c, h: h == null ? (this.r() * 4) | 0 : h, born: this.tick, death: -1,
-      intake: 0, moves: 0, gone: false };
+      kmove: Math.exp(g.log_move), kdiv: g.log_div == null ? 0 : Math.exp(g.log_div), theta,
+      c, h: h == null ? (this.r() * 4) | 0 : h, born: this.tick, death: -1,
+      intake: 0, moves: 0, gone: false, births: 0,
+      gen: parent ? parent.gen + 1 : 0, lineage: parent ? parent.lineage : this.nextId - 1 };
     this.orgs.push(o); this.byId.set(o.id, o); this.occ[c] = o.id;
     return o;
   };
@@ -195,13 +222,15 @@
     const O = this.T.organism, SM = O.SMAX, n = o.n, phi = o.phi, V = this.V;
     const fc = this.f[o.c], wc = this.w[o.c];
     let k = 0;
-    for (let r = 0; r < O.RULES.length; r++) {
-      const [i, j, a1, a2, b1, b2] = O.RULES[r];
-      const dE = phi[i * SM + b1] + phi[j * SM + b2] - phi[i * SM + a1] - phi[j * SM + a2];
-      out[k++] = o.kr[r] * Math.exp(-dE / 2) * n[i * SM + a1] * (n[j * SM + a2] - (i === j && a1 === a2 ? 1 : 0));
-      out[k++] = o.kr[r] * Math.exp(dE / 2) * n[i * SM + b1] * (n[j * SM + b2] - (i === j && b1 === b2 ? 1 : 0));
-    }
     const gate = n[O.GATE[0] * SM + O.GATE[1]];
+    const pf = (pool, d) => (d > 0 ? up(pool, V) : (d < 0 ? dn(pool, V) : 1));   // mass action of a pool change
+    for (let r = 0; r < O.RULES.length; r++) {
+      const [i, j, a1, a2, b1, b2, df = 0, dw = 0, gated = false] = O.RULES[r];
+      const dE = phi[i * SM + b1] + phi[j * SM + b2] - phi[i * SM + a1] - phi[j * SM + a2] + this.foodE * df;
+      const kk = o.kr[r] * (gated ? gate : 1);
+      out[k++] = kk * Math.exp(-dE / 2) * n[i * SM + a1] * (n[j * SM + a2] - (i === j && a1 === a2 ? 1 : 0)) * pf(fc, df) * pf(wc, dw);
+      out[k++] = kk * Math.exp(dE / 2) * n[i * SM + b1] * (n[j * SM + b2] - (i === j && b1 === b2 ? 1 : 0)) * pf(fc, -df) * pf(wc, -dw);
+    }
     for (let x = 0; x < O.EXCH.length; x++) {
       const [p, a, b, food, gated] = O.EXCH[x];
       const pool = food ? fc : wc, d = a - b;
@@ -214,11 +243,26 @@
     const [i, j, a1, a2, b1, b2] = O.FUEL;
     const dE = phi[i * SM + b1] + phi[j * SM + b2] - phi[i * SM + a1] - phi[j * SM + a2];
     const ahead = this.nb(o.c, o.h), behind = this.nb(o.c, (o.h + 2) % 4);
-    out[k++] = running && this.occ[ahead] < 0 ? o.kmove * Math.exp(-dE / 2) * n[i * SM + a1] * n[j * SM + a2] : 0;
-    out[k++] = running && this.occ[behind] < 0 ? o.kmove * Math.exp(dE / 2) * n[i * SM + b1] * n[j * SM + b2] : 0;
+    out[k++] = running && this.occ[ahead] === -1 ? o.kmove * Math.exp(-dE / 2) * n[i * SM + a1] * n[j * SM + a2] : 0;
+    out[k++] = running && this.occ[behind] === -1 ? o.kmove * Math.exp(dE / 2) * n[i * SM + b1] * n[j * SM + b2] : 0;
     // dissolution of a body without intact membrane, with all it holds (the event of its own heading)
     out[k++] = n[O.GATE[0] * SM + O.GATE[1]] === 0 ? this.dissolveRate(o) : 0;   // dead membrane
+    // division (Lean recipes): 4 headings x kdiv x empty neighbours x Metropolis, division page full
+    out[k++] = this.divRate(o);
     return k;
+  };
+  Sphere.prototype.emptyNbrs = function (c) {
+    const e = []; for (let d = 0; d < 4; d++) { const nc = this.nb(c, d); if (this.occ[nc] === -1) e.push(nc); } return e;
+  };
+  Sphere.prototype.divRate = function (o) {
+    const O = this.T.organism, SM = O.SMAX, D = O.DIV;
+    if (!D || !(o.kdiv > 0) || o.pending) return 0;
+    const n = o.n;
+    if (n[O.GATE[0] * SM + O.GATE[1]] === 0 || n[O.E * SM + 1] !== D.BQ) return 0;
+    const ne = this.emptyNbrs(o.c).length;
+    if (ne === 0) return 0;
+    const dE = D.NS * O.PHI_S1 - D.BQ * (o.phi[O.E * SM + 1] - o.phi[O.E * SM]);
+    return 4 * o.kdiv * ne * Math.min(1, Math.exp(-dE));
   };
   Sphere.prototype.orgLeap = function (o, buf) {
     const O = this.T.organism, SM = O.SMAX, n = o.n, r = this.r, dt = this.dt;
@@ -236,8 +280,11 @@
       let k = 0;
       const pair = (i, s0, j, s1, i2, d0, j2, d1) => { n[i * SM + s0]--; n[j * SM + s1]--; n[i2 * SM + d0]++; n[j2 * SM + d1]++; };
       if (q < 2 * O.RULES.length) {
-        const [i, j, a1, a2, b1, b2] = O.RULES[q >> 1];
+        const [i, j, a1, a2, b1, b2, df = 0, dw = 0] = O.RULES[q >> 1];
+        const sg = (q & 1) ? -1 : 1;
         if (q & 1) pair(i, b1, j, b2, i, a1, j, a2); else pair(i, a1, j, a2, i, b1, j, b2);
+        if (df) { this.f[o.c] += sg * df; o.intake -= sg * df; }
+        if (dw) this.w[o.c] += sg * dw;
         continue;
       }
       k = 2 * O.RULES.length;
@@ -249,6 +296,14 @@
         continue;
       }
       k += 2 * O.EXCH.length;
+      if (q === k + 4) {                                   // divide into the frac-th empty neighbour
+        const D = O.DIV, e = this.emptyNbrs(o.c), to = e[Math.min(e.length - 1, (frac * e.length) | 0)];
+        n[O.E * SM + 1] -= D.BQ; n[O.E * SM] += D.BQ;
+        o.pending = true; o.births++;
+        this.newborns.push({ c: to, theta: this.mutate(o.theta), h: (this.r() * 4) | 0, parent: o });
+        this.occ[to] = -2;                                 // the place is the newborn's from now on
+        continue;
+      }
       if (q === k + 3) {                                   // dissolve: the body leaves the world
         this.w[o.c] += this.bodyContent(o); this.occ[o.c] = -1; o.gone = true; o.goneAt = this.tick; this.dissolved++;
         return;
@@ -263,14 +318,24 @@
   };
 
   Sphere.prototype.orgAt = function (c) { const id = this.occ[c]; return id < 0 ? null : this.byId.get(id); };
+  Sphere.prototype.placeAt = function (c, genome) { const G = this.G; return this.place((c / G) | 0, c % G, genome); };
   Sphere.prototype.step = function () {
     this.weather();
     const nl = Math.max(1, Math.round(1 / this.dt));
-    const buf = this._buf || (this._buf = new Float64Array(64)), O = this.T.organism, SM = O.SMAX;
+    const O = this.T.organism, SM = O.SMAX, nbuf = 2 * O.RULES.length + 2 * O.EXCH.length + 8;
+    const buf = this._buf && this._buf.length >= nbuf ? this._buf : (this._buf = new Float64Array(nbuf));
+    this.newborns = [];
     for (let l = 0; l < nl; l++) {
       this.worldLeap();
       for (const o of this.orgs) if (!o.gone) this.orgLeap(o, buf);
     }
+    // births join at the end of the tick (as cgb_nested_population.end_tick); one per parent per tick
+    for (const b of this.newborns) {
+      this.occ[b.c] = -1;
+      this.place((b.c / this.G) | 0, b.c % this.G, b.theta, b.h, 'newborn', b.parent);
+      this.births = (this.births || 0) + 1;
+    }
+    for (const o of this.orgs) o.pending = false;
     this.tick++;
     let anyGone = false;
     for (const o of this.orgs) {

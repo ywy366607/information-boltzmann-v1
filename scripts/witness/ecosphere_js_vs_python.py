@@ -51,7 +51,7 @@ for (const cs of inp.cases) {
   const world = []; for (let c = 0; c < G * G; c++) world.push(Array.from(S.worldRates(c)));
   const o = S.place(cs.x, cs.y, cs.genome, cs.h);
   for (let p = 0; p < 6; p++) for (let s = 0; s < inp.T.organism.SMAX; s++) o.n[p * inp.T.organism.SMAX + s] = cs.n[p][s];
-  const buf = new Float64Array(64); const k = S.orgRates(o, buf);
+  const buf = new Float64Array(512); const k = S.orgRates(o, buf);
   out.push({ world, org: Array.from(buf.slice(0, k)) });
 }
 fs.writeFileSync(process.argv[4], JSON.stringify(out));
@@ -98,7 +98,7 @@ for cs, r in zip(cases, res):
         dis = kd * m.exp(-abs(dE) / 2) * m.exp(-dE / 2)
     else:
         dis = 0.0
-    ref_o = np.concatenate([ref_o, [dis]])
+    ref_o = np.concatenate([ref_o, [dis, 0.0]])        # legacy bodies have no division recipe
     worst_o = max(worst_o, float((np.abs(np.array(r["org"]) - ref_o) / np.maximum(np.abs(ref_o), 1e-300)).max()))
 ssa = json.loads((ROOT / "results/published/cgb_generated/nested_world_tau_vs_ssa_20261026.json").read_text())
 js2 = r"""

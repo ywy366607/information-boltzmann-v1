@@ -2,8 +2,9 @@
 `cgb_nested_world.World.rates`, sampled and applied in two kernels per leap.
 
 Phase 1 (per cell): rates of the 12 classes (supply in/out of food at sources and of waste at
-sinks; one quantum of food or waste to each neighbour), Poisson counts by inversion (rate * dt is
-small; the tail beyond K = 12 is below 1e-9 for rate * dt <= 1.2), clipped so that no pool leaves
+sinks; one quantum of food or waste to each neighbour), Poisson counts by inversion up to 48 terms
+for rate * dt <= 20 (tail below 1e-8; a rain at an empty source reaches rate * dt = 13.5 at dt = 0.05)
+and by the rounded normal beyond, clipped so that no pool leaves
 0..V: supply in <= (V - n) // 2, sends to a neighbour <= (V - n_neighbour) // 8, total sends <= the
 pool after supply. Writes the pool after its own events and the four send counts.
 Phase 2 (per cell): adds what the four neighbours sent.
@@ -30,15 +31,16 @@ def _dn(n, V):
 
 
 @triton.jit
-def _pois(lam, u):
-    p = tl.exp(-lam)
+def _pois(lam, u, z):
+    p = tl.exp(-tl.minimum(lam, 20.0))
     c = p
     k = tl.zeros_like(lam)
-    for i in tl.static_range(1, 13):
+    for i in tl.static_range(1, 49):
         k += tl.where(u > c, 1.0, 0.0)
         p = p * lam / i
         c = c + p
-    return k.to(tl.int32)
+    kn = tl.maximum(tl.floor(lam + tl.sqrt(lam) * z + 0.5), 0.0)
+    return tl.where(lam <= 20.0, k, kn).to(tl.int32)
 
 
 @triton.jit
@@ -66,10 +68,10 @@ def _phase1(f_ptr, w_ptr, mu_ptr, kind_ptr, seed_ptr, fmid_ptr, wmid_ptr, send_p
     r2 = tl.where(snk, kin * _up(w, V) * em, 0.0)
     r3 = tl.where(snk, kin * _dn(w, V) * ep, 0.0)
     base = offs * 12
-    k0 = _pois(r0 * dt, tl.rand(seed, base + 0))
-    k1 = _pois(r1 * dt, tl.rand(seed, base + 1))
-    k2 = _pois(r2 * dt, tl.rand(seed, base + 2))
-    k3 = _pois(r3 * dt, tl.rand(seed, base + 3))
+    k0 = _pois(r0 * dt, tl.rand(seed, base + 0), tl.randn(seed, base + 12 * N + 0))
+    k1 = _pois(r1 * dt, tl.rand(seed, base + 1), tl.randn(seed, base + 12 * N + 1))
+    k2 = _pois(r2 * dt, tl.rand(seed, base + 2), tl.randn(seed, base + 12 * N + 2))
+    k3 = _pois(r3 * dt, tl.rand(seed, base + 3), tl.randn(seed, base + 12 * N + 3))
     fa = f + tl.minimum(k0, (V - f) // 2) - tl.minimum(k1, f)
     wa = w + tl.minimum(k2, (V - w) // 2) - tl.minimum(k3, w)
     if WRITE_RATES:
@@ -96,8 +98,8 @@ def _phase1(f_ptr, w_ptr, mu_ptr, kind_ptr, seed_ptr, fmid_ptr, wmid_ptr, send_p
         if WRITE_RATES:
             tl.store(rates_ptr + base + 4 + d, rf, mask=m)
             tl.store(rates_ptr + base + 8 + d, rw, mask=m)
-        sf = tl.minimum(tl.minimum(_pois(rf * dt, tl.rand(seed, base + 4 + d)), (V - fb) // 8), fa)
-        sw = tl.minimum(tl.minimum(_pois(rw * dt, tl.rand(seed, base + 8 + d)), (V - wb) // 8), wa)
+        sf = tl.minimum(tl.minimum(_pois(rf * dt, tl.rand(seed, base + 4 + d), tl.randn(seed, base + 12 * N + 4 + d)), (V - fb) // 8), fa)
+        sw = tl.minimum(tl.minimum(_pois(rw * dt, tl.rand(seed, base + 8 + d), tl.randn(seed, base + 12 * N + 8 + d)), (V - wb) // 8), wa)
         fa -= sf
         wa -= sw
         tl.store(send_ptr + offs * 8 + d, sf, mask=m)
