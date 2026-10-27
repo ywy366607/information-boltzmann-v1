@@ -153,6 +153,8 @@
 
 ## 8. 待证的边（入 Lean 前不做相应实现）
 
+**2026-10-28 已证 N1–N5**（`GenerationInformationEnergy.lean`，完整构建与审计通过）：`freeEnergy_eq_kl`、`freeEnergy_at_law`、`kl_nonneg`（N1）；`snapshot_misses_hidden`（N2）；`finite_memory_bounds_net_work`（N3，代数层：Sagawa–Ueda 上界与 Landauer 擦除作为假设，G16a 给出擦除量）；`passivity_ends`（N4，直接调用 W2 `vanishing_gain_loses_under_drift`，增益取零）；`mixture_regret_le`（N5）。依赖 T1 的草稿文件已删除。剩 N6（可选）。
+
 | 编号 | 命题 | 依赖（已有） |
 |---|---|---|
 | N1 | 不匹配就是自由能：对 Gibbs 分布 π，F(q) − F(π) = KL(q‖π) ≥ 0，当且仅当 q = π 时为零 | T-E、`gibbs_inequality` |
