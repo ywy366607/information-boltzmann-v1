@@ -76,6 +76,13 @@ structure NestedWorld (Λi Hd : Type*) (n nR nX : ℕ) where
   φIn : ℕ → Λi → ℝ
   /-- the inner pair rules -/
   spec : Fin nR → RuleSpec Λi
+  /-- pool coupling of pair rule `k`: in its forward direction (`a ↦ b`) the cell's food and waste
+  pools change by `sdf k` and `sdw k` quanta. `0, 0` is a rule inside the body; any other pair
+  crosses the boundary (an antiport, a symport, a pump: one grammar for all of them), and if
+  `sgated k` it goes through the membrane -/
+  sdf : Fin nR → ℤ
+  sdw : Fin nR → ℤ
+  sgated : Fin nR → Bool
   /-- pool exchange `j`: an inner unit on page `xpage j` goes `xa j → xb j`; the food pool
   (`xfood j`) or the waste pool takes the content difference -/
   xpage : Fin nX → ℕ
@@ -171,6 +178,13 @@ noncomputable def φ (_i : ℕ) (l : W.Cell) : ℝ :=
     | none => 0
     | some (y, _) => W.bugE y
 
+/-- Pool changes (food, waste) of pair rule `k` in direction `dir`. -/
+def sdir (k : Fin nR) (dir : Bool) : ℤ × ℤ := if dir then (-W.sdf k, -W.sdw k) else (W.sdf k, W.sdw k)
+
+theorem sdir_not (k : Fin nR) (dir : Bool) :
+    W.sdir k (!dir) = (-(W.sdir k dir).1, -(W.sdir k dir).2) := by
+  cases dir <;> simp [sdir]
+
 /-- An inner pair rule applied to two inner units. -/
 def innerAct (k : Fin nR) (u v : Fin n) (dir : Bool) (y : Fin n → Λi) : Fin n → Λi :=
   if u = v then y else
@@ -186,7 +200,11 @@ def fuelAct (e d : Fin n) (dir : Bool) (y : Fin n → Λi) : Fin n → Λi :=
 /-- Effect of a single-cell rule on a cell with page `i`. -/
 def eff1 : NR1 Λi Hd n nR nX → ℕ → W.Cell → W.Cell
   | .inl (k, u, v, dir), _, l => match l with
-      | (f, w, some (y, h)) => (f, w, some (W.innerAct k u v dir y, h))
+      | (f, w, some (y, h)) =>
+          if W.innerAct k u v dir y = y then l else
+          match poolShift f (W.sdir k dir).1, poolShift w (W.sdir k dir).2 with
+          | some f', some w' => (f', w', some (W.innerAct k u v dir y, h))
+          | _, _ => l
       | l => l
   | .inr (.inl (j, u, dir)), _, l => match l with
       | (f, w, some (y, h)) =>
@@ -427,8 +445,67 @@ theorem mass_action_down (V m : ℕ) (hm : m < V) (D : ℝ) :
   congr 1
   ring
 
+/-- **Uniport selectivity is fixed by free energy**: a reversible exchange that moves one food
+quantum into the body (inner energy change `D`, food energy included) fills at food `m + 1` and
+drains back at food `q`; the ratio of the two mass-action rates is `(m + 1) / (V - q) · e^{-D}`,
+whatever its conductance `κ`. Selection can make the door slow or fast, never selective. -/
+theorem uniport_selectivity (V m q : ℕ) (hm : m < V) (hq : q < V) {κ : ℝ} (hκ : 0 < κ) (D : ℝ) :
+    (κ * poolCond V (m + 1) m * Real.exp (-(Generation.cellF V m - Generation.cellF V (m + 1) + D) / 2)) /
+      (κ * poolCond V q (q + 1) * Real.exp (-(Generation.cellF V (q + 1) - Generation.cellF V q + -D) / 2)) =
+      ((m : ℝ) + 1) / ((V : ℝ) - q) * Real.exp (-D) := by
+  have hb : (0 : ℝ) < (V : ℝ) - q := by
+    have : (q : ℝ) < V := by exact_mod_cast hq
+    linarith
+  rw [mul_assoc, mul_assoc, mass_action_down V m hm, mass_action_up V q hq]
+  have he : Real.exp (-D) = Real.exp (-D / 2) / Real.exp (-(-D) / 2) := by
+    rw [← Real.exp_sub]; congr 1; ring
+  rw [he]
+  field_simp
+
+/-- **Antiport selectivity**: the same exchange coupled to the waste pool (one food quantum in, one
+waste quantum out, inner energy change `D`) fills at food `m + 1`, waste `w` and drains at food `q`,
+waste `z + 1`; the ratio is `(m + 1)(V - w) / ((V - q)(z + 1)) · e^{-D}`. Where the world keeps
+waste low (`z` small), the door drains `~ V / (z + 1)` times less than a uniport with the same
+`D`: dissipating the food-to-waste step at the door makes it one-way. -/
+theorem antiport_selectivity (V m q w z : ℕ) (hm : m < V) (hq : q < V) (hw : w < V) (hz : z < V)
+    {κ : ℝ} (hκ : 0 < κ) (D : ℝ) :
+    (κ * (poolCond V (m + 1) m * poolCond V w (w + 1)) *
+        Real.exp (-((Generation.cellF V m - Generation.cellF V (m + 1)) +
+          ((Generation.cellF V (w + 1) - Generation.cellF V w) + D)) / 2)) /
+      (κ * (poolCond V q (q + 1) * poolCond V (z + 1) z) *
+        Real.exp (-((Generation.cellF V (q + 1) - Generation.cellF V q) +
+          ((Generation.cellF V z - Generation.cellF V (z + 1)) + -D)) / 2)) =
+      ((m : ℝ) + 1) * ((V : ℝ) - w) / (((V : ℝ) - q) * ((z : ℝ) + 1)) * Real.exp (-D) := by
+  have hb : (0 : ℝ) < (V : ℝ) - q := by
+    have : (q : ℝ) < V := by exact_mod_cast hq
+    linarith
+  have hbw : (0 : ℝ) < (V : ℝ) - w := by
+    have : (w : ℝ) < V := by exact_mod_cast hw
+    linarith
+  have split1 : ∀ (A B C : ℝ), Real.exp (-(A + (B + C)) / 2) =
+      Real.exp (-(A + 0) / 2) * Real.exp (-(B + C) / 2) := fun A B C => by
+    rw [← Real.exp_add]; congr 1; ring
+  rw [split1, split1]
+  have hn : κ * (poolCond V (m + 1) m * poolCond V w (w + 1)) *
+      (Real.exp (-(Generation.cellF V m - Generation.cellF V (m + 1) + 0) / 2) *
+        Real.exp (-(Generation.cellF V (w + 1) - Generation.cellF V w + D) / 2)) =
+      κ * (((m : ℝ) + 1) * Real.exp (-0 / 2)) * (((V : ℝ) - w) * Real.exp (-D / 2)) := by
+    rw [← mass_action_down V m hm 0, ← mass_action_up V w hw D]; ring
+  have hd : κ * (poolCond V q (q + 1) * poolCond V (z + 1) z) *
+      (Real.exp (-(Generation.cellF V (q + 1) - Generation.cellF V q + 0) / 2) *
+        Real.exp (-(Generation.cellF V z - Generation.cellF V (z + 1) + -D) / 2)) =
+      κ * (((V : ℝ) - q) * Real.exp (-0 / 2)) * (((z : ℝ) + 1) * Real.exp (-(-D) / 2)) := by
+    rw [← mass_action_up V q hq 0, ← mass_action_down V z hz (-D)]; ring
+  rw [hn, hd]
+  have he : Real.exp (-D) = Real.exp (-D / 2) / Real.exp (-(-D) / 2) := by
+    rw [← Real.exp_sub]; congr 1; ring
+  rw [he]
+  simp only [neg_zero, zero_div, Real.exp_zero, mul_one]
+  field_simp
+
 noncomputable def c1 : NR1 Λi Hd n nR nX → ℕ → W.Cell → ℝ
-  | .inl (k, _, _, _), _, _ => (W.spec k).κ
+  | .inl (k, u, v, dir), i, l => (W.spec k).κ * (if W.sgated k then (W.cellGate l : ℝ) else 1) *
+      W.poolFactor l (W.eff1 (.inl (k, u, v, dir)) i l)
   | .inr (.inl (j, u, dir)), i, l => W.xκ j * (if W.xgated j then (W.cellGate l : ℝ) else 1) *
       W.poolFactor l (W.eff1 (.inr (.inl (j, u, dir))) i l)
   | .inr (.inr (.inl _)), _, _ => W.κflip
@@ -483,15 +560,6 @@ theorem pair_back {u v : Fin n} (huv : u ≠ v) (y : Fin n → Λi) (p : Λi × 
     · subst hwu; simp [Function.update_of_ne hwv]
     · simp [Function.update_of_ne hwv, Function.update_of_ne hwu]
 
-theorem innerAct_content (hspec : ∀ k, W.contentIn (W.spec k).a.1 + W.contentIn (W.spec k).a.2 =
-      W.contentIn (W.spec k).b.1 + W.contentIn (W.spec k).b.2)
-    (k : Fin nR) (u v : Fin n) (dir : Bool) (y : Fin n → Λi) :
-    ∑ w, W.contentIn (W.innerAct k u v dir y w) = ∑ w, W.contentIn (y w) := by
-  unfold innerAct
-  split_ifs with huv
-  · rfl
-  · exact sum_pair_update _ huv _ _ y (apply_content _ (hspec k) dir _ _ _)
-
 theorem fuelAct_content (hfuel : W.contentIn W.fuel.a.1 + W.contentIn W.fuel.a.2 =
       W.contentIn W.fuel.b.1 + W.contentIn W.fuel.b.2)
     (e d : Fin n) (dir : Bool) (y : Fin n → Λi) :
@@ -539,6 +607,73 @@ theorem fuelAct_back (e d : Fin n) (dir : Bool) (y : Fin n → Λi)
     rw [Prod.mk.eta, hb]
     exact pair_back hed y p _ rfl
 
+theorem gateCount_update {u : Fin n} (hu : W.pageIn u ≠ W.gatePage) (b : Λi) (y : Fin n → Λi) :
+    W.gateCount (Function.update y u b) = W.gateCount y := by
+  unfold gateCount
+  congr 1
+  apply Finset.filter_congr
+  intro v _
+  by_cases hv : v = u
+  · subst hv; simp [hu]
+  · simp [Function.update_of_ne hv]
+
+/-- Content balance of the pair rules with the pools they couple to (P1b for coupled rules). -/
+def SpecBalanced : Prop := ∀ k, (W.contentIn (W.spec k).a.1 : ℤ) + W.contentIn (W.spec k).a.2 =
+    W.contentIn (W.spec k).b.1 + W.contentIn (W.spec k).b.2 + W.sdf k + W.sdw k
+
+/-- A pair rule that fired moved the content the pools gave up into the body (or back). -/
+theorem innerAct_delta (hspec : W.SpecBalanced) (k : Fin nR) (u v : Fin n) (dir : Bool)
+    (y : Fin n → Λi) (hne : W.innerAct k u v dir y ≠ y) :
+    ((∑ w, W.contentIn (W.innerAct k u v dir y w) : ℕ) : ℤ) + (W.sdir k dir).1 + (W.sdir k dir).2 =
+      ((∑ w, W.contentIn (y w) : ℕ) : ℤ) := by
+  unfold innerAct at hne ⊢
+  split_ifs at hne ⊢ with huv
+  · exact absurd rfl hne
+  · set p := (W.spec k).apply dir (W.pageIn u) (W.pageIn v) (y u, y v) with hpdef
+    have hp : p ≠ (y u, y v) := by
+      intro e; apply hne; rw [e]
+      funext w
+      by_cases hwv : w = v
+      · subst hwv; simp
+      · by_cases hwu : w = u
+        · subst hwu; simp [Function.update_of_ne hwv]
+        · simp [Function.update_of_ne hwv, Function.update_of_ne hwu]
+    have hm : W.pageIn u = (W.spec k).i ∧ W.pageIn v = (W.spec k).j ∧
+        (y u, y v) = (if dir then (W.spec k).b else (W.spec k).a) := by
+      by_contra hm; apply hp; rw [hpdef]; unfold RuleSpec.apply; rw [if_neg hm]
+    have hpv : p = (if dir then (W.spec k).a else (W.spec k).b) := by
+      rw [hpdef]; unfold RuleSpec.apply; rw [if_pos hm]
+    have hs := LatticeCRN.sum_update2 (fun _ l => (W.contentIn l : ℝ)) huv p.1 p.2 y
+    have hu : y u = (if dir then (W.spec k).b else (W.spec k).a).1 := by rw [← hm.2.2]
+    have hv : y v = (if dir then (W.spec k).b else (W.spec k).a).2 := by rw [← hm.2.2]
+    have hk := hspec k
+    have hR : ((∑ w, W.contentIn (Function.update (Function.update y u p.1) v p.2 w) : ℕ) : ℝ) +
+        (W.sdir k dir).1 + (W.sdir k dir).2 = ((∑ w, W.contentIn (y w) : ℕ) : ℝ) := by
+      rw [hpv]
+      push_cast
+      rw [hu, hv, hpv] at hs
+      have hk' : ((W.contentIn (W.spec k).a.1 : ℤ) : ℝ) + ((W.contentIn (W.spec k).a.2 : ℤ) : ℝ) =
+          ((W.contentIn (W.spec k).b.1 : ℤ) : ℝ) + ((W.contentIn (W.spec k).b.2 : ℤ) : ℝ) +
+            ((W.sdf k : ℤ) : ℝ) + ((W.sdw k : ℤ) : ℝ) := by exact_mod_cast congrArg (fun z : ℤ => (z : ℝ)) hk
+      push_cast at hk'
+      cases dir <;> simp only [sdir, Bool.false_eq_true, if_false, if_true] at hs ⊢ <;> push_cast <;> linarith
+    exact_mod_cast hR
+
+/-- A pair rule away from the membrane page leaves the membrane as it is. -/
+theorem gateCount_innerAct (k : Fin nR) (u v : Fin n) (dir : Bool) (y : Fin n → Λi)
+    (hi : (W.spec k).i ≠ W.gatePage) (hj : (W.spec k).j ≠ W.gatePage) :
+    W.gateCount (W.innerAct k u v dir y) = W.gateCount y := by
+  unfold innerAct
+  split_ifs with huv
+  · rfl
+  · by_cases hm : W.pageIn u = (W.spec k).i ∧ W.pageIn v = (W.spec k).j ∧
+        (y u, y v) = (if dir then (W.spec k).b else (W.spec k).a)
+    · dsimp only
+      rw [W.gateCount_update (by rw [hm.2.1]; exact hj), W.gateCount_update (by rw [hm.1]; exact hi)]
+    · have hp : (W.spec k).apply dir (W.pageIn u) (W.pageIn v) (y u, y v) = (y u, y v) := by
+        unfold RuleSpec.apply; rw [if_neg hm]
+      simp only [hp, Function.update_eq_self]
+
 /-! ## The joint medium -/
 
 /-- Identity pages are `9 * kind + local position code` (`< 9`): kind 0 plain, 1 food source,
@@ -551,8 +686,8 @@ def birthCell (y0 : Fin n → Λi) (h0 : Hd) (i : ℕ) : W.Cell :=
   if i / 9 = 3 then (0, 0, some (y0, h0)) else (0, 0, none)
 
 theorem c1_nonneg (r : NR1 Λi Hd n nR nX) (i : ℕ) (l : W.Cell) : 0 ≤ W.c1 r i l := by
-  rcases r with ⟨k, -, -, -⟩ | ⟨j, -, -⟩ | ⟨-, -⟩ | ⟨-, -⟩ | ⟨-, yd, -⟩
-  · exact (W.spec k).κ_nonneg
+  rcases r with ⟨k, u, v, dir⟩ | ⟨j, -, -⟩ | ⟨-, -⟩ | ⟨-, -⟩ | ⟨-, yd, -⟩
+  · exact mul_nonneg (mul_nonneg (W.spec k).κ_nonneg (by split_ifs <;> positivity)) (W.poolFactor_nonneg _ _)
   · exact mul_nonneg (mul_nonneg (W.xκ_nonneg j) (by split_ifs <;> positivity)) (W.poolFactor_nonneg _ _)
   · exact W.κflip_nonneg
   · exact mul_nonneg W.κin_nonneg (W.poolFactor_nonneg _ _)
@@ -640,15 +775,28 @@ theorem sum_update_nat (g : Λi → ℕ) (u : Fin n) (b : Λi) (y : Fin n → Λ
     rw [hR]; push_cast; ring
   exact_mod_cast this
 
-theorem cons1 (hspec : ∀ k, W.contentIn (W.spec k).a.1 + W.contentIn (W.spec k).a.2 =
-      W.contentIn (W.spec k).b.1 + W.contentIn (W.spec k).b.2)
+theorem cons1 (hspec : W.SpecBalanced)
     (r : NR1 Λi Hd n nR nX) (i : ℕ) (l : W.Cell) (hi : i ∉ bidW) :
     W.content (W.eff1 r i l) = W.content l := by
   obtain ⟨f, w, b⟩ := l
   rcases r with ⟨k, u, v, dir⟩ | ⟨j, u, dir⟩ | ⟨ha, hb⟩ | ⟨food, dir⟩ | ⟨hd, yd, dir⟩
   · rcases b with _ | ⟨y, h⟩
     · rfl
-    · simp only [eff1, content, bugContent, W.innerAct_content hspec]
+    · simp only [eff1]
+      split_ifs with hy
+      · rfl
+      · have hd := W.innerAct_delta hspec k u v dir y hy
+        rcases hf : poolShift f (W.sdir k dir).1 with _ | f' <;>
+          rcases hw : poolShift w (W.sdir k dir).2 with _ | w'
+        · rfl
+        · rfl
+        · rfl
+        · have hv1 := poolShift_val hf
+          have hv2 := poolShift_val hw
+          simp only [content, bugContent]
+          zify at hv1 hv2 ⊢
+          push_cast at hd ⊢
+          linarith
   · rcases b with _ | ⟨y, h⟩
     · rfl
     · simp only [eff1]
@@ -784,16 +932,6 @@ theorem eff1_xch (j : Fin nX) (u : Fin n) (dir : Bool) (i : ℕ) (l : W.Cell) :
         (if dir then W.xa j else W.xb j) u l := by
   obtain ⟨f, w, _ | ⟨y, h⟩⟩ := l <;> rfl
 
-theorem gateCount_update {u : Fin n} (hu : W.pageIn u ≠ W.gatePage) (b : Λi) (y : Fin n → Λi) :
-    W.gateCount (Function.update y u b) = W.gateCount y := by
-  unfold gateCount
-  congr 1
-  apply Finset.filter_congr
-  intro v _
-  by_cases hv : v = u
-  · subst hv; simp [hu]
-  · simp [Function.update_of_ne hv]
-
 /-- An exchange through a page other than the membrane leaves the membrane as it is. -/
 theorem xchEff_gate {pg : ℕ} (hpg : pg ≠ W.gatePage) (food : Bool) (a b : Λi) (u : Fin n)
     (l : W.Cell) : W.cellGate (W.xchEff pg food a b u l) = W.cellGate l := by
@@ -835,7 +973,18 @@ theorem back1 (r : NR1 Λi Hd n nR nX) (i : ℕ) (l : W.Cell) (hne : W.eff1 r i 
   · obtain ⟨f, w, _ | ⟨y, h⟩⟩ := l
     · exact absurd rfl hne
     · have hy : W.innerAct k u v dir y ≠ y := fun e => hne (by simp [eff1, e])
-      simp [eff1, rev1, W.innerAct_back k u v dir y hy]
+      rcases hf : poolShift f (W.sdir k dir).1 with _ | f'
+      · exact absurd (by simp [eff1, hy, hf]) hne
+      rcases hw : poolShift w (W.sdir k dir).2 with _ | w'
+      · exact absurd (by simp [eff1, hy, hf, hw]) hne
+      have hb := W.innerAct_back k u v dir y hy
+      have hy' : W.innerAct k u v (!dir) (W.innerAct k u v dir y) ≠ W.innerAct k u v dir y := by
+        rw [hb]; exact Ne.symm hy
+      have hf' := poolShift_back hf
+      have hw' := poolShift_back hw
+      rw [← (W.sdir_not k dir ▸ rfl : (W.sdir k (!dir)).1 = -(W.sdir k dir).1)] at hf'
+      rw [← (W.sdir_not k dir ▸ rfl : (W.sdir k (!dir)).2 = -(W.sdir k dir).2)] at hw'
+      simp only [eff1, rev1, if_neg hy, hf, hw, hf', hw', hb, if_neg (Ne.symm hy)]
   · rw [eff1_xch] at hne ⊢
     change W.eff1 (.inr (.inl (j, u, !dir))) i _ = l
     rw [eff1_xch]
@@ -1009,6 +1158,21 @@ theorem div_gate (hdg : W.divPage ≠ W.gatePage) (S : Finset (Fin n)) (h2 : Hd)
     · simp [cellGate, W.gateCount_drain hdg hc.2.2.2]
     · rfl
 
+theorem cellGate_inner (k : Fin nR) (u v : Fin n) (dir : Bool) (i : ℕ) (l : W.Cell)
+    (hi : (W.spec k).i ≠ W.gatePage) (hj : (W.spec k).j ≠ W.gatePage) :
+    W.cellGate (W.eff1 (.inl (k, u, v, dir)) i l) = W.cellGate l := by
+  obtain ⟨f, w, _ | ⟨y, h⟩⟩ := l
+  · rfl
+  · simp only [eff1]
+    split_ifs with hy
+    · rfl
+    · rcases hf : poolShift f (W.sdir k dir).1 with _ | f' <;>
+        rcases hw : poolShift w (W.sdir k dir).2 with _ | w'
+      · rfl
+      · rfl
+      · rfl
+      · exact W.gateCount_innerAct k u v dir y hi hj
+
 open Classical in
 /-- **T-E2 (an organism nested in its world is admitted)**: the joint medium of organisms and
 their world satisfies the six axiom clauses as soon as the organism's inner pair rules and its
@@ -1018,11 +1182,11 @@ obligation. -/
 theorem axioms [Fintype Λi] [Fintype Hd] {U : Type*} [Fintype U] [DecidableEq U]
     (adj : U → U → Prop) (hsymm : ∀ u v, adj u v → adj v u) (hirr : ∀ u, ¬ adj u u)
     (page : U → ℕ) (y0 : Fin n → Λi) (h0 : Hd)
-    (hspec : ∀ k, W.contentIn (W.spec k).a.1 + W.contentIn (W.spec k).a.2 =
-      W.contentIn (W.spec k).b.1 + W.contentIn (W.spec k).b.2)
+    (hspec : W.SpecBalanced)
     (hfuel : W.contentIn W.fuel.a.1 + W.contentIn W.fuel.a.2 =
       W.contentIn W.fuel.b.1 + W.contentIn W.fuel.b.2)
     (hgate : ∀ j, W.xgated j = true → W.xpage j ≠ W.gatePage)
+    (hsg : ∀ k, W.sgated k = true → (W.spec k).i ≠ W.gatePage ∧ (W.spec k).j ≠ W.gatePage)
     (hdiv : W.contentIn W.divFrom = W.contentIn W.divTo + 1) (hdg : W.divPage ≠ W.gatePage) :
     (W.lattice adj hsymm hirr page y0 h0).medium.Axioms := by
   classical
@@ -1033,7 +1197,17 @@ theorem axioms [Fintype Λi] [Fintype Hd] {U : Type*} [Fintype U] [DecidableEq U
   · intro r; rcases r with ⟨food, dir⟩ | ⟨e, d, dir⟩ | ⟨S, h2, dir⟩ <;> simp [lattice, rev2]
   · intro r i l hne
     rcases r with ⟨k, u, v, dir⟩ | ⟨j, u, dir⟩ | ⟨a, b⟩ | ⟨food, dir⟩ | ⟨hd, yd, dir⟩
-    · rfl
+    · have hback := W.back1 (.inl (k, u, v, dir)) i l hne
+      change (W.spec k).κ * (if W.sgated k then (W.cellGate (W.eff1 (.inl (k, u, v, dir)) i l) : ℝ) else 1) *
+          W.poolFactor (W.eff1 (.inl (k, u, v, dir)) i l)
+            (W.eff1 (.inl (k, u, v, !dir)) i (W.eff1 (.inl (k, u, v, dir)) i l)) =
+        (W.spec k).κ * (if W.sgated k then (W.cellGate l : ℝ) else 1) *
+          W.poolFactor l (W.eff1 (.inl (k, u, v, dir)) i l)
+      rw [show W.eff1 (.inl (k, u, v, !dir)) i (W.eff1 (.inl (k, u, v, dir)) i l) = l from hback,
+        W.poolFactor_symm (W.eff1 _ i l) l]
+      by_cases hg : W.sgated k = true
+      · rw [if_pos hg, if_pos hg, W.cellGate_inner k u v dir i l (hsg k hg).1 (hsg k hg).2]
+      · rw [if_neg hg, if_neg hg]
     · have hback := W.back1 (.inr (.inl (j, u, dir))) i l hne
       change W.xκ j * (if W.xgated j then (W.cellGate (W.eff1 (.inr (.inl (j, u, dir))) i l) : ℝ) else 1) *
           W.poolFactor (W.eff1 (.inr (.inl (j, u, dir))) i l)
@@ -1101,6 +1275,26 @@ theorem orgIn_congr {l l' : W.Cell} (h : l'.2.2 = l.2.2) : W.orgIn l' = W.orgIn 
   subst h
   rcases b' with _ | ⟨y, h⟩ <;> rfl
 
+/-- A pair rule that does not couple to the pools (`sdf + sdw = 0`) keeps the organism's content. -/
+theorem orgIn_inner (hspec : W.SpecBalanced) (k : Fin nR) (u v : Fin n) (dir : Bool) (i : ℕ)
+    (l : W.Cell) (h0 : W.sdf k + W.sdw k = 0) :
+    W.orgIn (W.eff1 (.inl (k, u, v, dir)) i l) = W.orgIn l := by
+  obtain ⟨f, w, _ | ⟨y, h⟩⟩ := l
+  · rfl
+  · simp only [eff1]
+    split_ifs with hy
+    · rfl
+    · rcases hf : poolShift f (W.sdir k dir).1 with _ | f' <;>
+        rcases hw : poolShift w (W.sdir k dir).2 with _ | w'
+      · rfl
+      · rfl
+      · rfl
+      · have hd := W.innerAct_delta hspec k u v dir y hy
+        have hz : (W.sdir k dir).1 + (W.sdir k dir).2 = 0 := by
+          cases dir <;> simp only [sdir, Bool.false_eq_true, if_false, if_true] <;> omega
+        simp only [orgIn]
+        omega
+
 /-- The world's supply rules never touch the organism. -/
 theorem eff1_supply_bug (food dir : Bool) (i : ℕ) (l : W.Cell) :
     (W.eff1 (.inr (.inr (.inr (.inl (food, dir))))) i l).2.2 = l.2.2 := by
@@ -1108,23 +1302,24 @@ theorem eff1_supply_bug (food dir : Bool) (i : ℕ) (l : W.Cell) :
   cases food <;> simp only [eff1, Bool.false_eq_true, if_false, if_true] <;> split_ifs <;>
     (try split) <;> rfl
 
-/-- **Only exchanges feed the organism**: every single-cell event that raises the content held by
-the organism is a pool exchange; a gated one has conductance proportional to the intact membrane.
+/-- **Only events across the boundary feed the organism**: every single-cell event that raises the
+content held by the organism is a pool exchange or a pair rule coupled to the pools; a gated one has
+conductance proportional to the intact membrane.
 -/
 theorem intake_is_exchange
-    (hspec : ∀ k, W.contentIn (W.spec k).a.1 + W.contentIn (W.spec k).a.2 =
-      W.contentIn (W.spec k).b.1 + W.contentIn (W.spec k).b.2)
+    (hspec : W.SpecBalanced)
     (r : NR1 Λi Hd n nR nX) (i : ℕ) (l : W.Cell) (hb : l.2.2 ≠ none)
     (hup : W.orgIn l < W.orgIn (W.eff1 r i l)) :
-    ∃ j u dir, r = .inr (.inl (j, u, dir)) ∧
-      W.c1 r i l = W.xκ j * (if W.xgated j then (W.cellGate l : ℝ) else 1) * W.poolFactor l (W.eff1 r i l) := by
+    (∃ j u dir, r = .inr (.inl (j, u, dir)) ∧
+      W.c1 r i l = W.xκ j * (if W.xgated j then (W.cellGate l : ℝ) else 1) * W.poolFactor l (W.eff1 r i l)) ∨
+    (∃ k u v dir, r = .inl (k, u, v, dir) ∧ W.sdf k + W.sdw k ≠ 0 ∧
+      W.c1 r i l = (W.spec k).κ * (if W.sgated k then (W.cellGate l : ℝ) else 1) *
+        W.poolFactor l (W.eff1 r i l)) := by
   rcases r with ⟨k, u, v, dir⟩ | ⟨j, u, dir⟩ | ⟨a, b⟩ | ⟨food, dir⟩ | ⟨hd, yd, dir⟩
-  · exfalso
-    obtain ⟨f, w, _ | ⟨y, h⟩⟩ := l
-    · simp [eff1, orgIn] at hup
-    · simp only [eff1, orgIn, W.innerAct_content hspec] at hup
-      exact lt_irrefl _ hup
-  · exact ⟨j, u, dir, rfl, rfl⟩
+  · refine Or.inr ⟨k, u, v, dir, rfl, fun h0 => ?_, rfl⟩
+    rw [W.orgIn_inner hspec k u v dir i l h0] at hup
+    exact lt_irrefl _ hup
+  · exact Or.inl ⟨j, u, dir, rfl, rfl⟩
   · exfalso
     obtain ⟨f, w, _ | ⟨y, h⟩⟩ := l
     · simp [eff1, orgIn] at hup
@@ -1151,15 +1346,18 @@ the cell's pools). Every rate of the medium is a positive multiple of `exp`, so
 `Part.Recoverable` alone never fails; without the membrane factor, intake would not depend on the
 body at all, structure would have no use and selection could drop its upkeep. -/
 theorem dead_intake_is_physics
-    (hspec : ∀ k, W.contentIn (W.spec k).a.1 + W.contentIn (W.spec k).a.2 =
-      W.contentIn (W.spec k).b.1 + W.contentIn (W.spec k).b.2)
+    (hspec : W.SpecBalanced)
     (r : NR1 Λi Hd n nR nX) (i : ℕ) (l : W.Cell) (hb : l.2.2 ≠ none) (hdead : W.cellGate l = 0)
     (hup : W.orgIn l < W.orgIn (W.eff1 r i l)) :
-    W.c1 r i l = 0 ∨ ∃ j u dir, r = .inr (.inl (j, u, dir)) ∧ W.xgated j = false := by
-  obtain ⟨j, u, dir, hr, hc⟩ := W.intake_is_exchange hspec r i l hb hup
-  by_cases hg : W.xgated j = true
-  · left; rw [hc, if_pos hg, hdead]; simp
-  · right; exact ⟨j, u, dir, hr, by simpa using hg⟩
+    W.c1 r i l = 0 ∨ (∃ j u dir, r = .inr (.inl (j, u, dir)) ∧ W.xgated j = false) ∨
+      ∃ k u v dir, r = .inl (k, u, v, dir) ∧ W.sgated k = false := by
+  rcases W.intake_is_exchange hspec r i l hb hup with ⟨j, u, dir, hr, hc⟩ | ⟨k, u, v, dir, hr, -, hc⟩
+  · by_cases hg : W.xgated j = true
+    · left; rw [hc, if_pos hg, hdead]; simp
+    · right; left; exact ⟨j, u, dir, hr, by simpa using hg⟩
+  · by_cases hg : W.sgated k = true
+    · left; rw [hc, if_pos hg, hdead]; simp
+    · right; right; exact ⟨k, u, v, dir, hr, by simpa using hg⟩
 
 /-- **A dead body does not give itself away**: every single-cell event that lowers the content
 held by the organism is a pool exchange; with no intact membrane the gated ones have rate zero, so
@@ -1167,18 +1365,20 @@ what leaves a dead body leaves only by an ungated exchange (physics, a leak). Wi
 (`corpses_must_go`), a world of endless mortal lives needs such leaks, or organisms that take
 dead bodies apart (decomposers, events this table does not yet have). -/
 theorem dead_output_is_physics
-    (hspec : ∀ k, W.contentIn (W.spec k).a.1 + W.contentIn (W.spec k).a.2 =
-      W.contentIn (W.spec k).b.1 + W.contentIn (W.spec k).b.2)
+    (hspec : W.SpecBalanced)
     (r : NR1 Λi Hd n nR nX) (i : ℕ) (l : W.Cell) (hdead : W.cellGate l = 0)
     (hdown : W.orgIn (W.eff1 r i l) < W.orgIn l) :
     W.c1 r i l = 0 ∨ (∃ j u dir, r = .inr (.inl (j, u, dir)) ∧ W.xgated j = false) ∨
+      (∃ k u v dir, r = .inl (k, u, v, dir) ∧ W.sdf k + W.sdw k ≠ 0 ∧ W.sgated k = false) ∨
       ∃ hd yd, r = .inr (.inr (.inr (.inr (hd, yd, false)))) := by
   rcases r with ⟨k, u, v, dir⟩ | ⟨j, u, dir⟩ | ⟨a, b⟩ | ⟨food, dir⟩ | ⟨hd, yd, dir⟩
-  · exfalso
-    obtain ⟨f, w, _ | ⟨y, h⟩⟩ := l
-    · simp [eff1, orgIn] at hdown
-    · simp only [eff1, orgIn, W.innerAct_content hspec] at hdown
+  · by_cases h0 : W.sdf k + W.sdw k = 0
+    · exfalso
+      rw [W.orgIn_inner hspec k u v dir i l h0] at hdown
       exact lt_irrefl _ hdown
+    · by_cases hg : W.sgated k = true
+      · left; simp [c1, hg, hdead]
+      · right; right; left; exact ⟨k, u, v, dir, rfl, h0, by simpa using hg⟩
   · by_cases hg : W.xgated j = true
     · left; simp [c1, hg, hdead]
     · right; left; exact ⟨j, u, dir, rfl, by simpa using hg⟩
@@ -1191,7 +1391,7 @@ theorem dead_output_is_physics
     rw [W.orgIn_congr (W.eff1_supply_bug food dir i l)] at hdown
     exact lt_irrefl _ hdown
   · cases dir
-    · right; right; exact ⟨hd, yd, rfl⟩
+    · right; right; right; exact ⟨hd, yd, rfl⟩
     · exfalso
       obtain ⟨f, w, b⟩ := l
       rcases b with _ | ⟨y, h⟩
@@ -1212,7 +1412,8 @@ theorem frees_only_by_dissolving (r : NR1 Λi Hd n nR nX) (i : ℕ) (l : W.Cell)
   rcases b with _ | ⟨y, h⟩
   · exact absurd rfl hb
   rcases r with ⟨k, u, v, dir⟩ | ⟨j, u, dir⟩ | ⟨a, c⟩ | ⟨food, dir⟩ | ⟨hd, yd, dir⟩
-  · simp [eff1] at hfree
+  · simp only [eff1] at hfree
+    split_ifs at hfree <;> (try split at hfree) <;> simp_all
   · rw [eff1_xch] at hfree
     simp only [xchEff] at hfree
     split_ifs at hfree <;> (try split at hfree) <;> simp_all
@@ -1532,24 +1733,24 @@ open Classical in
 from the world's boundary, diffusion, waste sinks, driven movement in four headings. -/
 theorem axioms_torus [Fintype Λi] [Fintype Hd] (G : ℕ) (kind : Fin G × Fin G → ℕ)
     (y0 : Fin n → Λi) (h0 : Hd)
-    (hspec : ∀ k, W.contentIn (W.spec k).a.1 + W.contentIn (W.spec k).a.2 =
-      W.contentIn (W.spec k).b.1 + W.contentIn (W.spec k).b.2)
+    (hspec : W.SpecBalanced)
     (hfuel : W.contentIn W.fuel.a.1 + W.contentIn W.fuel.a.2 =
       W.contentIn W.fuel.b.1 + W.contentIn W.fuel.b.2) (hgate : ∀ j, W.xgated j = true → W.xpage j ≠ W.gatePage)
+    (hsg : ∀ k, W.sgated k = true → (W.spec k).i ≠ W.gatePage ∧ (W.spec k).j ≠ W.gatePage)
     (hdiv : W.contentIn W.divFrom = W.contentIn W.divTo + 1) (hdg : W.divPage ≠ W.gatePage) :
     (W.lattice (torusAdj G) (torusAdj_symm G) (fun _ h => h.1 rfl) (torusPage G kind) y0 h0).medium.Axioms :=
-  W.axioms _ _ _ _ y0 h0 hspec hfuel hgate hdiv hdg
+  W.axioms _ _ _ _ y0 h0 hspec hfuel hgate hsg hdiv hdg
 
 open Classical in
 /-- The one-dimensional ring is a model too. -/
 theorem axioms_ring [Fintype Λi] [Fintype Hd] (L : ℕ) (page : Fin L → ℕ) (y0 : Fin n → Λi) (h0 : Hd)
-    (hspec : ∀ k, W.contentIn (W.spec k).a.1 + W.contentIn (W.spec k).a.2 =
-      W.contentIn (W.spec k).b.1 + W.contentIn (W.spec k).b.2)
+    (hspec : W.SpecBalanced)
     (hfuel : W.contentIn W.fuel.a.1 + W.contentIn W.fuel.a.2 =
       W.contentIn W.fuel.b.1 + W.contentIn W.fuel.b.2) (hgate : ∀ j, W.xgated j = true → W.xpage j ≠ W.gatePage)
+    (hsg : ∀ k, W.sgated k = true → (W.spec k).i ≠ W.gatePage ∧ (W.spec k).j ≠ W.gatePage)
     (hdiv : W.contentIn W.divFrom = W.contentIn W.divTo + 1) (hdg : W.divPage ≠ W.gatePage) :
     (W.lattice (ringAdj L) (ringAdj_symm L) (fun _ h => h.1 rfl) page y0 h0).medium.Axioms :=
-  W.axioms _ _ _ _ y0 h0 hspec hfuel hgate hdiv hdg
+  W.axioms _ _ _ _ y0 h0 hspec hfuel hgate hsg hdiv hdg
 
 end NestedWorld
 
