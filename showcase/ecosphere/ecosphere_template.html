@@ -88,7 +88,7 @@ input[type=range] { width: 100%; accent-color: var(--food); }
   <header>
     <div class="eyebrow" id="eyebrow">CGB · 第一个产出 · 世界 rain_torus_w0</div>
     <h1>一颗<em>生态球</em></h1>
-    <p class="lede">一滴二维的水。雨随机落下，食物扩散、变干；废物流向汇点。里面的大肠杆菌靠膜进食、修膜、游动、翻滚，死后身体被分解还给世界。世界和生物是同一张 Lean 规则表，每一个事件的速率都与 Lean 逐条对拍过。点一下放食物，或放进新的大肠杆菌。</p>
+    <p class="lede">一滴二维的水。雨随机落下，食物扩散、变干；废物流向汇点。里面的大肠杆菌靠膜进食、修膜，死后身体被分解还给世界；它们有马达，但选择出来的这一种几乎不动：把高能储备存在体内、慢慢交换，原地等雨（会觅食的身体需要被驱动的摄入，下一步）。世界和生物是同一张 Lean 规则表，每一个事件的速率都与 Lean 逐条对拍过。点一下放食物，或放进新的大肠杆菌。</p>
   </header>
 
   <section class="bench">
@@ -225,8 +225,8 @@ const T = /*__TABLES__*/;
     const d = img.data;
     for (let x = 0; x < G; x++) for (let y = 0; y < G; y++) {
       const c = x * G + y, i = (y * G + x) * 4;
-      // the dry background holds ~0.5 quanta per cell: show food above a couple of quanta
-      const fo = Math.min(1, Math.max(0, Math.log1p(S.f[c]) - Math.log1p(2)) / (Math.log1p(120) - Math.log1p(2)));
+      // the dry background holds a few quanta per cell; a big rain holds hundreds at its centre (log scale)
+      const fo = Math.min(1, Math.max(0, Math.log1p(S.f[c]) - Math.log1p(2)) / (Math.log1p(400) - Math.log1p(2)));
       const wa = Math.min(1, Math.max(0, Math.log1p(S.w[c]) - Math.log1p(2)) / (Math.log1p(40) - Math.log1p(2)));
       d[i] = 10 + 80 * fo * fo + 70 * wa; d[i + 1] = 14 + 195 * fo; d[i + 2] = 18 + 200 * fo + 60 * wa; d[i + 3] = 255;
     }

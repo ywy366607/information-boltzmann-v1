@@ -1,0 +1,78 @@
+{
+ "name": "nested_ecoli_es2",
+ "role": "nested_organism",
+ "implementation": "information_boltzmann/organisms/nested_ecoli_es2.json (selected numbers) on the structure of information_boltzmann/core/cgb_nested_organism.py, run by cgb_nested_organism_triton.py (exact events, generated from the table) inside the world rain_torus_w0; the eco-sphere page runs the same table in JavaScript (showcase/ecosphere/ecosphere_core.js)",
+ "lean_medium": "CGB.NestedWorld.lattice",
+ "mechanisms": [
+  {
+   "id": "joint_medium",
+   "kind": "structure",
+   "what": "organism nested in the rain torus: inner pair rules, exchanges with the cell's pools, turning, fuel-driven movement, dissolution; one Lean table with the world",
+   "theorems": [
+    "CGB.NestedWorld.axioms_torus",
+    "CGB.NestedWorld.axioms"
+   ],
+   "checks": [
+    "nested_world_rates_match_lean:rain_torus_w0",
+    "nested_organism_rates_match_lean:rain_torus_w0",
+    "nested_organism_kernel_matches:rain_torus_w0",
+    "nested_table_is_record:nested_ecoli_es2"
+   ]
+  },
+  {
+   "id": "membrane",
+   "kind": "structure",
+   "what": "every exchange through the boundary goes through intact membrane units (conductance proportional to them); without them the organism takes nothing in (death)",
+   "theorems": [
+    "CGB.NestedWorld.intake_is_exchange",
+    "CGB.NestedWorld.dead_intake_is_physics"
+   ],
+   "checks": [
+    "nested_organism_rates_match_lean:rain_torus_w0"
+   ]
+  },
+  {
+   "id": "leaks",
+   "kind": "structure",
+   "what": "every content-holding state of every page leaks one quantum to the waste pool through no membrane, with bounded energies: no hold the organism can make permanent",
+   "theorems": [
+    "CGB.NestedWorld.leak_bound",
+    "CGB.NestedWorld.partner_exit_blocked",
+    "CGB.NestedWorld.gated_exit_blocked"
+   ],
+   "checks": [
+    "nested_organism_rates_match_lean:rain_torus_w0"
+   ]
+  },
+  {
+   "id": "dissolution",
+   "kind": "structure",
+   "what": "a body without intact membrane dissolves with all it holds; the only event that frees a place",
+   "theorems": [
+    "CGB.Generation.corpses_must_go",
+    "CGB.NestedWorld.frees_only_by_dissolving",
+    "CGB.NestedWorld.dead_output_is_physics"
+   ],
+   "checks": [
+    "nested_world_rates_match_lean:rain_torus_w0"
+   ]
+  },
+  {
+   "id": "selected_numbers",
+   "kind": "selected",
+   "what": "energies and prefactors in the physics ranges, found by selection on survival in fresh worlds each generation, validated on seeds 500-515",
+   "evidence": "results/published/cgb_generated/nested_es2_20261027.json"
+  },
+  {
+   "id": "physics_constants",
+   "kind": "constant",
+   "what": "membrane energy 2, leak prefactor 1e-5, per-quantum energy range [0, 8], structure counts; the world's foodE, B, kappa_dis: declared physics (prereg section 5), not selected"
+  }
+ ],
+ "life": {
+  "world": "rain_torus_w0",
+  "organism": "information_boltzmann/organisms/nested_ecoli_es2.json",
+  "record": "results/published/cgb_generated/nested_es2_20261027.json",
+  "eval": "results/published/cgb_generated/nested_es2_eval_20261027.json"
+ }
+}
