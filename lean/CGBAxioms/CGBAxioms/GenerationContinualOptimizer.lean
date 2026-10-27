@@ -257,4 +257,40 @@ theorem softmax_rows_coupled (p : ℝ) (h0 : 0 < p) (h1 : p < 1) : -(p * (1 - p)
   have : 0 < p * (1 - p) := mul_pos h0 (by linarith)
   linarith
 
+/-! ## v5: sparse rows, events and rates (2026-10-27)
+
+The v4 calibration check located the remaining softmax bias: head rows are predicted within 4%,
+tail rows ten times too high. A tail row's gradient is a spike every few hundred steps.
+
+* `ema_forgets_rare_spikes`: an average with factor `β` holds `β^k` of a spike after `k` quiet
+  steps; for the registered `β = 0.95` and spikes 200 steps apart this is below the spike's share
+  `1/200` of the long-run power.
+  A short-window noise estimate is far too small just before the next spike, the gain is near 1,
+  and the estimate jumps to the spike: the expected gradient of a rare row is overstated.
+* `partition_is_unbiased`: split each sample's contribution into an event part and a background
+  part by any rule that looks only at that sample; the two expected parts add to the expected
+  gradient whatever the rule. The rule changes efficiency, never the target, so it is a
+  registered choice and not a correction.
+* `event_part_is_rate_times_size`: the expected event part per step is the event rate times the
+  mean event contribution. The rate is a count (it ticks every step); the size ticks only on
+  events (W3, `occurrence_clock_beats_time_clock`, now applied to the object it is about).
+  Events come from the per-sample post-synaptic error δ (a label that occurs, a unit that fires),
+  the post-synaptic factor that the three-factor rule already provides.
+-/
+
+/-- The registered window (factor 0.95) with spikes 200 steps apart: the held share 0.95^200 is
+below the spike's share 1/200 of the long-run power. -/
+theorem ema_forgets_rare_spikes : ((19 : ℝ) / 20) ^ 200 < 1 / 200 := by norm_num
+
+theorem partition_is_unbiased {ι : Type*} (s : Finset ι) (w g : ι → ℝ) (ev : ι → Bool) :
+    ∑ i ∈ s, w i * g i =
+      ∑ i ∈ s, w i * (if ev i then g i else 0) + ∑ i ∈ s, w i * (if ev i then 0 else g i) := by
+  rw [← Finset.sum_add_distrib]
+  refine Finset.sum_congr rfl fun i _ => ?_
+  cases ev i <;> simp
+
+theorem event_part_is_rate_times_size (n B μ : ℝ) (hB : B ≠ 0) :
+    (n * μ) / B = (n / B) * μ := by
+  field_simp
+
 end CGB.Continual
