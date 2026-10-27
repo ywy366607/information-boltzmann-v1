@@ -264,4 +264,70 @@ theorem no_optimal_step_negative_curvature (h e g M : ℝ) (hh : h < 0) (hg : g 
   rw [div_lt_iff₀ hneg] at hsq
   nlinarith [le_abs_self M, neg_abs_le M]
 
+/-! ## The step bound and momentum (2026-10-27)
+
+* `no_fixed_bound_two_radii`: let the local model be valid up to a radius `R` (progress `ρ`
+  for a bound `ρ ≤ R`, no progress guaranteed beyond). No fixed bound gets the full progress at
+  two different radii, so the bound must track the radius online (W0 forbids a schedule).
+* `bound_stays_in_band`: the online rule that multiplies the bound by `γ > 1` when the step was
+  inside the valid radius (the realized decrease matched the prediction) and divides it by `γ`
+  otherwise keeps a bound that is in `[R / γ, R * γ]` there forever. The ratio of realized to
+  predicted decrease is one global number: a broadcast modulator (G9, the third factor).
+* `newton_step_exact`, `momentum_after_exact_step`: with the exact curvature step one step
+  reaches the optimum of a quadratic direction; any momentum `β ≠ 0` then moves it away again.
+  Within a whitened clique momentum is redundant; any role it keeps is across cliques.
+-/
+
+/-- Guaranteed progress of a step bound `ρ` when the local model is valid up to `R`. -/
+noncomputable def progress (ρ R : ℝ) : ℝ := if ρ ≤ R then ρ else 0
+
+theorem no_fixed_bound_two_radii (ρ R₁ R₂ : ℝ) (h₁ : 0 < R₁) (h12 : R₁ < R₂) :
+    progress ρ R₁ < R₁ ∨ progress ρ R₂ < R₂ := by
+  unfold progress
+  by_cases hρ : ρ ≤ R₁
+  · right
+    rw [if_pos (hρ.trans h12.le)]
+    linarith
+  · left
+    rw [if_neg hρ]
+    exact h₁
+
+/-- One step of the multiplicative trust rule. -/
+noncomputable def trustStep (γ R ρ : ℝ) : ℝ := if ρ ≤ R then γ * ρ else ρ / γ
+
+theorem bound_stays_in_band (γ R ρ : ℝ) (hγ : 1 < γ) (hR : 0 < R)
+    (hlo : R / γ ≤ ρ) (hhi : ρ ≤ R * γ) :
+    R / γ ≤ trustStep γ R ρ ∧ trustStep γ R ρ ≤ R * γ := by
+  have hγ0 : 0 < γ := by linarith
+  have hρ0 : 0 < ρ := lt_of_lt_of_le (div_pos hR hγ0) hlo
+  unfold trustStep
+  split_ifs with h
+  · constructor
+    · have : R / γ ≤ ρ := hlo
+      nlinarith
+    · nlinarith
+  · push Not at h
+    constructor
+    · exact div_le_div_of_nonneg_right h.le hγ0.le
+    · rw [div_le_iff₀ hγ0]
+      nlinarith
+
+/-- The exact curvature step reaches the optimum of a quadratic direction. -/
+theorem newton_step_exact (h e : ℝ) (hh : h ≠ 0) : e - (1 / h) * (h * e) = 0 := by
+  field_simp
+  ring
+
+/-- After an exact step, momentum `β ≠ 0` (heavy ball: next error `β (e₁ - e₀)` with `e₁ = 0`)
+moves a direction that started away from the optimum off it again. -/
+theorem momentum_after_exact_step (h e₀ β : ℝ) (hh : h ≠ 0) (he : e₀ ≠ 0) (hβ : β ≠ 0) :
+    (e₀ - (1 / h) * (h * e₀)) - (1 / h) * (h * (e₀ - (1 / h) * (h * e₀))) +
+      β * ((e₀ - (1 / h) * (h * e₀)) - e₀) ≠ 0 := by
+  rw [newton_step_exact h e₀ hh]
+  simp only [mul_zero, sub_zero, zero_sub]
+  intro h0
+  have : β * e₀ = 0 := by linarith
+  rcases mul_eq_zero.mp this with h1 | h1
+  · exact hβ h1
+  · exact he h1
+
 end CGB.GradientFilter
