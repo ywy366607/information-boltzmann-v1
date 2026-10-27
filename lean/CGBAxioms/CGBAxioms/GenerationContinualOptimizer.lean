@@ -173,4 +173,88 @@ theorem secant_own_noise_bias (h s c x y : ℝ) :
 theorem secant_same_batch_exact (h a ξ : ℝ) : ((h * a + ξ) - ξ) * a = h * a ^ 2 := by
   ring
 
+/-! ## Occurrence must run through every estimate (v4, 2026-10-27)
+
+A row occurs in a batch with probability `p`. Its gradient, curvature and the decrease of a step
+differ between batches where it occurs (`1`) and where it does not (`0`).
+
+* `fresh_decrease_mixture`, `conditional_prediction_excess`: the expected decrease of a step on the
+  next batch is `p d₁ + (1 - p) d₀`; predicting it from the occurrence-conditional `d₁` alone
+  overstates it by `(1 - p)(d₁ - d₀)`, large for rare rows. Scored on fresh data, every step on a
+  rare row then looks like a failure and the shared bound collapses. Each row needs its
+  occurrence rate and both conditional estimates, each ticking on its own events (W3 for both
+  components of the mixture), and the step uses the mixture `p m₁ + (1 - p) m₀`.
+* `shared_reference_flips`: judging occurrence against a reference
+  shared by the rows (a fraction of the layer's largest row) lets another row's growth erase this
+  row's occurrence: one shared potential, the rich-club pattern of G19a. A decision against the
+  row's own reference does not depend on any other row by construction (G22c); no theorem is
+  needed for that.
+* Curvature: a row without curvature data steps at the shared bound; one bound cannot fit two
+  validity radii (`no_fixed_bound_two_radii`), so every row needs a curvature, from a prior
+  shared inside the clique until its own secant exists.
+-/
+
+theorem fresh_decrease_mixture (p d₁ d₀ : ℝ) :
+    p * d₁ + (1 - p) * d₀ = d₀ + p * (d₁ - d₀) := by ring
+
+theorem conditional_prediction_excess (p d₁ d₀ : ℝ) :
+    d₁ - (p * d₁ + (1 - p) * d₀) = (1 - p) * (d₁ - d₀) := by ring
+
+/-- Shared reference: row `x` occurs when `x ≥ f · max x y`. Growing the other row erases it. -/
+theorem shared_reference_flips (f x : ℝ) (hf : 0 < f) (hx : 0 < x) (hfx : f * x ≤ x) :
+    x ≥ f * max x x ∧ ¬ (x ≥ f * max x (2 * x / f)) := by
+  constructor
+  · simpa using hfx
+  · intro h
+    have hm : 2 * x / f ≤ max x (2 * x / f) := le_max_right _ _
+    have : f * (2 * x / f) = 2 * x := by field_simp
+    nlinarith [mul_le_mul_of_nonneg_left hm hf.le]
+
+/-! ## v4/v5: what the v3 run and the calibration checks forced (2026-10-27)
+
+* `expected_gradient_is_mixture`: the per-step mean of a row's gradient is the occurrence mixture
+  `p g₁ + (1 - p) g₀`, so a filter updated every step estimates exactly what the expected fresh
+  decrease needs (`fresh_decrease_mixture`); no occurrence detection is required for the step.
+  W3 (`occurrence_clock_beats_time_clock`) stays true but concerns conditional estimates, which
+  the step does not use.
+* `positive_part_bias`: with no signal and a calibrated variance, `m^2 - P` averages to `0` but
+  the per-step plug-in `max(m^2 - P, 0)` averages to `P / 2`: noise-only directions take steps
+  whose expected decrease is negative. Clip after averaging.
+* `consistent_prediction_excess`: the step acts on the shrunk mean `ĝ = f m` (`0 ≤ f ≤ 1`);
+  predicting its decrease with `m` overstates it by `(1 - f) m u ≥ 0` when `u` has the sign of
+  `m`. The prediction must use the belief the step uses.
+* `softmax_rows_coupled`, `softmax_gradients_sum_zero`: for a softmax output the gradients of the
+  class rows sum to zero and the output factor of the curvature has the off-diagonal entry
+  `-p (1 - p) ≠ 0` between two classes. An input-side basis then leaves cross-row curvature and the
+  per-element secant is not exact (`secant_exact_iff`): the output side needs its own basis, from
+  the post-synaptic error covariance `E[δ δᵀ]` (inside the clique). Under a squared loss that
+  factor is the identity and the input-side basis alone suffices (`eigenbasis_decouples`).
+-/
+
+theorem expected_gradient_is_mixture (p g₁ g₀ : ℝ) :
+    p * g₁ + (1 - p) * g₀ = g₀ + p * (g₁ - g₀) := by ring
+
+/-- Zero signal, calibrated variance: `m` is `0, 0, c, -c` with `c^2 = 2P`, so `E[m^2] = P`. The
+average of `m^2 - P` is `0`; the average of the per-step plug-in `max(m^2 - P, 0)` is `P / 2`. -/
+theorem positive_part_bias (P : ℝ) (hP : 0 < P) :
+    ((0 - P) + (0 - P) + (2 * P - P) + (2 * P - P)) / 4 = 0 ∧
+      (max (0 - P) 0 + max (0 - P) 0 + max (2 * P - P) 0 + max (2 * P - P) 0) / 4 = P / 2 := by
+  refine ⟨by ring, ?_⟩
+  rw [max_eq_right (by linarith), max_eq_left (by linarith)]
+  ring
+
+theorem consistent_prediction_excess (m u f h : ℝ) (hf : f ≤ 1) (hmu : 0 ≤ m * u) :
+    (m * u - h * u ^ 2 / 2) - (f * m * u - h * u ^ 2 / 2) = (1 - f) * (m * u) ∧
+      0 ≤ (1 - f) * (m * u) := by
+  refine ⟨by ring, mul_nonneg (by linarith) hmu⟩
+
+/-- Two-class softmax: the class-row gradients `(p - y)` and `((1 - p) - (1 - y))` sum to zero. -/
+theorem softmax_gradients_sum_zero (p y : ℝ) : (p - y) + ((1 - p) - (1 - y)) = 0 := by ring
+
+/-- The output factor of the softmax curvature, `diag p - p pᵀ` for two classes, has the
+off-diagonal entry `-p (1 - p)`, nonzero for `0 < p < 1`. -/
+theorem softmax_rows_coupled (p : ℝ) (h0 : 0 < p) (h1 : p < 1) : -(p * (1 - p)) ≠ 0 := by
+  have : 0 < p * (1 - p) := mul_pos h0 (by linarith)
+  linarith
+
 end CGB.Continual
