@@ -37,9 +37,13 @@ def main(record, out, evaluation=None, persist=None):
                             living=ev["living"], last=ev["last"])
     if evaluation and evaluation != "-":
         ev = json.loads(Path(evaluation).read_text(encoding="utf-8"))
+        so = ev["arms"]["organism"]["score_per_world"]
         T["evaluation"] = dict(path=Path(evaluation).resolve().relative_to(ROOT).as_posix(), ticks=ev["ticks"],
-                               worlds=ev["held_out_seeds"], arms={k: dict(living=v["living"], extinct=v["extinct"])
-                                                                 for k, v in ev["arms"].items()})
+                               worlds=ev["held_out_seeds"],
+                               arms={k: dict(living=v["living"], extinct=v["extinct"], n=len(so),
+                                             organism_wins=sum(x > y for x, y in zip(so, v["score_per_world"])),
+                                             organism_losses=sum(x < y for x, y in zip(so, v["score_per_world"])))
+                                     for k, v in ev["arms"].items()})
     d = ROOT / "showcase" / "ecosphere"
     html = (d / "ecosphere_template.html").read_text(encoding="utf-8")
     core = (d / "ecosphere_core.js").read_text(encoding="utf-8")

@@ -327,7 +327,8 @@ const T = /*__TABLES__*/;
     if (Ev) {
       const nm = { organism: '本物种', blind: '瞎眼（去掉受体）', still: '不动（去掉马达）', nodiv: '不分裂' };
       ev = `留出世界 ${Ev.worlds[0]}–${Ev.worlds[1]}（从未参与选择）跑 ${Ev.ticks} 拍、不突变，活着的个体数 [最小 | 中位 | 均值 | 最大] 与灭绝世界数：<br>` +
-        Object.entries(Ev.arms).map(([k, a]) => `${nm[k] || k}：[${a.living.min} | ${a.living.median} | ${a.living.mean.toFixed(1)} | ${a.living.max}]，灭绝 ${a.extinct}`).join('<br>') + '。';
+        Object.entries(Ev.arms).map(([k, a]) => `${nm[k] || k}：[${a.living.min} | ${a.living.median} | ${a.living.mean.toFixed(1)} | ${a.living.max}]，灭绝 ${a.extinct}` +
+          (k === 'organism' ? '' : `；同一世界里本物种得分更高 ${a.organism_wins}/${a.n}、更低 ${a.organism_losses}/${a.n}`)).join('<br>') + '。';
     } else {
       ev = '留出世界（种子 9000–9015，从未参与选择）上的对照评估（去掉受体、去掉马达、去掉分裂）正在跑，结果出来后更新这里。';
     }
@@ -338,7 +339,9 @@ const T = /*__TABLES__*/;
     ev += ' 常见的轨迹是一千拍内长满全部槽位，再在几千拍里衰落；也常有一开局就灭绝的世界。';
     const VL = R.val_living || [], alive = VL.filter(v => v > 0).length;
     set('note-honest', '这个物种还没通过准入门：门控的嵌套生命层还不认识分裂和种群，正在补。' + ev +
-      ` 选择的最后一代，${VL.length} 个验证世界里 ${R.ticks} 拍后有 ${alive} 个还有活的：离"真实大肠杆菌那样几乎在哪都能活下去"还远。` +
+      ' 有限的世界里会灭绝是正常的；我们看的是它会不会尽力活着。答案是还不太会：去掉受体的对照在同一世界里赢它的次数和输给它的差不多，' +
+      '死掉的个体大多一辈子一格没走——它的马达几乎只能被"闻到食物"启动，落在干处就原地等到饿死。' +
+      '真实大肠杆菌没有刺激也一直在游，越饿越游；缺的是一个生来就有、自己出能量维持的"期望"，这要先在 Lean 里推出来。' +
       '速率与 Lean 逐条对拍；世界的积分步长（0.05 拍）使食物总量与精确解相差约 1%。点"放食物"等于让最近的格子下一场雨。');
   }
   let acc = 0, last = performance.now(), frame = 0;
