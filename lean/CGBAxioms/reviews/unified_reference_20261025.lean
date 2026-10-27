@@ -213,6 +213,15 @@ private theorem clique_total_update {ι : Type*} [Fintype ι] [DecidableEq ι]
     congrArg (fun n => n + value) h
 #print axioms clique_total_update
 
+-- Event-driven execution (contract v2): one family conductance multiplies both partners of
+-- every reverse pair, so any positive family clock keeps the same detailed balance.
+private theorem family_conductance_keeps_balance (πx πy κ rf rb : ℝ)
+    (h : πx * rf = πy * rb) : πx * (κ * rf) = πy * (κ * rb) := by
+  calc πx * (κ * rf) = κ * (πx * rf) := by ring
+    _ = κ * (πy * rb) := by rw [h]
+    _ = πy * (κ * rb) := by ring
+#print axioms family_conductance_keeps_balance
+
 #eval IO.println (Json.mkObj [
   ("format", toJson "CGB.UnifiedReference.boundary.v1"),
   ("vectors", toJson (boundaryVectors.map fun w => Json.mkObj [
