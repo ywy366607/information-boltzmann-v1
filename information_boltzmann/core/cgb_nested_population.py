@@ -1,16 +1,19 @@
 """Populations in the rain torus: many organisms per world, division with inheritance and mutation,
 death and dissolution, all on the GPU (Lean `CGB.NestedWorld`: division by recipes, dissolution,
-moves into empty cells; prereg docs/information_boltzmann/CGB_GENERATED_ECOLI_GOAL_20261027.md).
+moves that exchange with the occupant; prereg docs/information_boltzmann/CGB_GENERATED_ECOLI_GOAL_20261027.md).
 
 A world has SL organism slots; slot b of world b // SL is one lane of the exact event kernel
 (`cgb_nested_organism_triton._cols`, the organism's own events, checked against Lean), with:
-  * STALE PHYSICS (2026-10-27): Lean now makes a move an exchange with whatever occupies the
-    target (`NestedWorld.move_exchanges`); this kernel still moves only into an empty cell, so
-    `cgb_gate.check_nested_population_rates_match_lean` fails on it until the exchange is
-    implemented, and runs made with it are pre-exchange results. Old text:
-  * moves only into an empty cell (Lean `eff2` move: the target holds no body): the move column
-    carries the target's emptiness; a move is claimed by an atomic compare-and-swap on the
-    occupancy grid and undone if another lane took the cell in the same leap;
+  * moves exchange the mover with the occupant of the target (Lean `NestedWorld.move_exchanges`,
+    2026-10-27; runs before that date moved only into empty cells). Into an empty cell: claimed by
+    an atomic compare-and-swap on the occupancy grid, undone (fuel returned) if another lane took
+    the cell in the same leap. Into a body's cell: the mover pays its fuel, files an exchange request
+    and ends its leap there (a lane caches its cell's pools, so two lanes cannot share a cell inside
+    a leap); after the leap `_exchange` swaps the pair if the occupant is still in place, filed no
+    request itself and no other mover won it (lowest lane wins), and otherwise returns the fuel, as
+    for a lost claim. Engine conventions (not Lean): the mover loses the rest of that leap
+    (dt = 0.05 tick), and a cell claimed by a birth in this tick (the newborn joins at the end of the
+    tick, as all births here) cannot be entered: its move column is zero;
   * division (Lean recipe events `(S, rb, h2, dir = false)`): a body with an intact membrane whose
     division page is full puts a newborn into an empty neighbour; its rate is
     4 headings x kdiv x empty neighbours x min(1, e^{-dE}) (Metropolis conductance),
@@ -108,7 +111,7 @@ def kernel_source(K, T):
     P, SM = len(T.STATES), T.SMAX
     nvars = [(p, s) for p in range(P) for s in range(T.STATES[p])]
     Fp, Ep, Sp = NO.F, NO.E, NO.S
-    # the move columns carry the emptiness of their target
+    # the move columns are zero only into a cell claimed by a birth in this tick (`ea`, `eb`)
     (efwd, ffwd), (eback, fback) = cols[-2], cols[-1]
     cols[-2] = (f"({efwd}) * ea", ffwd)
     cols[-1] = (f"({eback}) * eb", fback)
@@ -133,6 +136,7 @@ def kernel_source(K, T):
     w("def population_leap(n_ptr, phi_ptr, kr_ptr, kx_ptr, kflip_ptr, kmove_ptr, kdiv_ptr, x_ptr, y_ptr, h_ptr,")
     w("                    alive_ptr, occ_ptr, free_ptr, birth_ptr, bh_ptr, scratch_ptr, cellF_ptr,")
     w("                    f_ptr, w_ptr, seed_ptr, intake_ptr, moves_ptr, over_ptr, gone_ptr, rates_ptr,")
+    w("                    xreq_ptr, xcell_ptr, xdir_ptr,")
     w("                    B, SL, G, V, dt, FE, BODY, BQ, NS, PHIS1, KDIS, KMAX, RATES_ONLY: tl.constexpr,")
     w("                    BLOCK: tl.constexpr):")
     w("    pid = tl.program_id(0)")
@@ -177,15 +181,21 @@ def kernel_source(K, T):
     w("        c1 = base + x * G + yp")
     w("        c2 = base + xm * G + y")
     w("        c3 = base + x * G + ym")
-    w("        e0 = tl.where(tl.load(occ_ptr + c0, mask=go, other=1) == 0, 1, 0)")
-    w("        e1 = tl.where(tl.load(occ_ptr + c1, mask=go, other=1) == 0, 1, 0)")
-    w("        e2 = tl.where(tl.load(occ_ptr + c2, mask=go, other=1) == 0, 1, 0)")
-    w("        e3 = tl.where(tl.load(occ_ptr + c3, mask=go, other=1) == 0, 1, 0)")
+    w("        o0 = tl.load(occ_ptr + c0, mask=go, other=1)")
+    w("        o1 = tl.load(occ_ptr + c1, mask=go, other=1)")
+    w("        o2 = tl.load(occ_ptr + c2, mask=go, other=1)")
+    w("        o3 = tl.load(occ_ptr + c3, mask=go, other=1)")
+    w("        e0 = tl.where(o0 == 0, 1, 0)")
+    w("        e1 = tl.where(o1 == 0, 1, 0)")
+    w("        e2 = tl.where(o2 == 0, 1, 0)")
+    w("        e3 = tl.where(o3 == 0, 1, 0)")
     w("        nempty = e0 + e1 + e2 + e3")
     w("        ca = tl.where(h == 0, c0, tl.where(h == 1, c1, tl.where(h == 2, c2, c3)))")
     w("        cb = tl.where(h == 0, c2, tl.where(h == 1, c3, tl.where(h == 2, c0, c1)))")
-    w("        ea = tl.where(h == 0, e0, tl.where(h == 1, e1, tl.where(h == 2, e2, e3))).to(tl.float32)")
-    w("        eb = tl.where(h == 0, e2, tl.where(h == 1, e3, tl.where(h == 2, e0, e1))).to(tl.float32)")
+    w("        oa = tl.where(h == 0, o0, tl.where(h == 1, o1, tl.where(h == 2, o2, o3)))")
+    w("        ob = tl.where(h == 0, o2, tl.where(h == 1, o3, tl.where(h == 2, o0, o1)))")
+    w("        ea = tl.where(oa != -1, 1.0, 0.0)")
+    w("        eb = tl.where(ob != -1, 1.0, 0.0)")
     for c, (expr, _) in enumerate(cols):
         w(f"        r{c} = {expr}")
     # division
@@ -233,12 +243,19 @@ def kernel_source(K, T):
     w("        fdiv = (target - acc) / tl.maximum(rdiv, 1e-30)")
     w("        acc += rdiv")
     w("        sdis = go & (target >= acc) & (target < acc + rdis) & (rdis > 0.0)")
-    # moves: claim the target, undo the fuel step if another lane took it
+    # moves: into an empty cell claim it (undo the fuel step if another lane took it); into a body's
+    # cell file an exchange request and end the leap (resolved by Population._exchange)
     w("        moved = step != 0")
     w("        tcell = tl.where(step == 1, ca, cb)")
-    w("        old = tl.atomic_cas(tl.where(moved, occ_ptr + tcell, scratch_ptr + b), tl.zeros_like(b), b + 1)")
-    w("        ok = moved & (old == 0)")
-    w("        bad = moved & (old != 0)")
+    w("        tocc = tl.load(occ_ptr + tcell, mask=moved, other=0)")
+    w("        xch = moved & (tocc > 0)")
+    w("        plain = moved & (tocc == 0)")
+    w("        old = tl.atomic_cas(tl.where(plain, occ_ptr + tcell, scratch_ptr + b), tl.zeros_like(b), b + 1)")
+    w("        ok = plain & (old == 0)")
+    w("        bad = (plain & (old != 0)) | (moved & (tocc < 0))")
+    w("        tl.store(xreq_ptr + b, tocc, mask=xch)")
+    w("        tl.store(xcell_ptr + b, tcell, mask=xch)")
+    w("        tl.store(xdir_ptr + b, step, mask=xch)")
     w(f"        badf = bad & (step == 1)")
     w(f"        badb = bad & (step == -1)")
     for (msk, src, dst) in (("badf", (a1, a2), (b1, b2)), ("badb", (b1, b2), (a1, a2))):
@@ -272,7 +289,7 @@ def kernel_source(K, T):
     # dissolution: everything the body holds goes to the waste pool, the place is free
     w("        wc = tl.where(sdis, wc + q, wc)")
     w("        gone = tl.where(sdis, 1, gone)")
-    w("        go = go & (gone == 0)")
+    w("        go = go & (gone == 0) & (tl.where(xch, 1, 0) == 0)")
     w("        it += 1")
     w("    if not RATES_ONLY:")
     w("        over = tl.where(go, 1, 0)")
@@ -357,7 +374,14 @@ class Population:
         for name in ("x", "y", "h", "alive", "birth", "bh", "intake", "moves", "over", "gone"):
             setattr(self, name, torch.zeros(B, dtype=torch.int32, device=dev))
         self.scratch = torch.ones(B + self.BLOCK, dtype=torch.int32, device=dev)   # CAS target of lanes that claim nothing
-        self.occ = torch.zeros(self.NW, self.G * self.G, dtype=torch.int32, device=dev)
+        # occupancy (0 empty, -1 claimed by a birth, lane + 1); one spare element at the end receives
+        # the scatters of lanes that change nothing in `_exchange`
+        self._occ_buf = torch.zeros(self.NW * self.G * self.G + 1, dtype=torch.int32, device=dev)
+        self.occ = self._occ_buf[:-1].view(self.NW, self.G * self.G)
+        for name in ("xreq", "xcell", "xdir"):
+            setattr(self, name, torch.zeros(B, dtype=torch.int32, device=dev))
+        self.exchanges_total = torch.zeros(self.NW, dtype=torch.int64, device=dev)
+        self.exchanges_lost = torch.zeros(self.NW, dtype=torch.int64, device=dev)
         self.free = torch.full((self.NW,), SL, dtype=torch.int32, device=dev)
         self.cellF = cellF_table(self.V).to(dev)
         self.seed = torch.tensor([(seed * 7919 + 17) % 2000000000], dtype=torch.int32, device=dev)
@@ -447,12 +471,61 @@ class Population:
 
     def leap(self, rates_only=False):
         grid = (triton.cdiv(self.B, self.BLOCK),)
+        self.xreq.zero_()
         self.fn[grid](self.n, self.phi, self.kr, self.kx, self.kflip, self.kmove, self.kdiv, self.x, self.y, self.h,
                       self.alive, self.occ, self.free, self.birth, self.bh, self.scratch, self.cellF,
                       self.W.f, self.W.w, self.seed, self.intake, self.moves, self.over, self.gone, self.rates_buf,
+                      self.xreq, self.xcell, self.xdir,
                       self.B, self.SL, self.G, self.V, self.W.dt, self.foodE, self.BODY, self.BQ,
                       self.T.UNITS[NO.S], float(self.T.PHI_S1), self.KDIS, self.K, RATES_ONLY=rates_only,
                       BLOCK=self.BLOCK)
+        if not rates_only:
+            self._exchange()
+
+    def _exchange(self):
+        """Resolve the leap's exchange requests on the device (no host sync). A request of lane `a`
+        to swap with lane `t` holds if `t` is alive and still in the requested cell, filed no request
+        itself, and `a` is the lowest lane asking for `t`; then the two bodies swap cells. Otherwise
+        the mover's fuel step is returned (as for a lost claim of an empty cell)."""
+        B, G, dev = self.B, self.G, self.dev
+        lane = torch.arange(B, device=dev)
+        has = self.xreq > 0
+        t = (self.xreq - 1).clamp(min=0).long()
+        base = (lane // self.SL) * G * G
+        cell_a = base + self.x.long() * G + self.y.long()
+        cell_t = base + self.x[t].long() * G + self.y[t].long()
+        occf = self._occ_buf
+        xc = self.xcell.long().clamp(min=0, max=occf.numel() - 1)
+        valid = (has & (self.alive[t] == 1) & (self.alive == 1) & (cell_t == xc)
+                 & (occf[xc] == self.xreq) & (self.xreq[t] == 0))
+        win = torch.full((B,), B, dtype=torch.long, device=dev)
+        win.scatter_reduce_(0, t, torch.where(valid, lane, torch.full_like(lane, B)), reduce="amin")
+        acc = valid & (win[t] == lane)
+        # positions: the mover takes the target's cell, the target the mover's
+        for name in ("x", "y"):
+            v = getattr(self, name)
+            tmp = torch.full((B + 1,), -1, dtype=v.dtype, device=dev)
+            tmp.scatter_(0, torch.where(acc, t, torch.full_like(t, B)), v)
+            new = torch.where(tmp[:B] >= 0, tmp[:B], v)
+            new = torch.where(acc, v[t], new)
+            v.copy_(new)
+        spare = torch.full_like(cell_a, occf.numel() - 1)
+        occf.scatter_(0, torch.where(acc, cell_a, spare), (t + 1).to(torch.int32))
+        occf.scatter_(0, torch.where(acc, cell_t, spare), (lane + 1).to(torch.int32))
+        occf[-1] = 0
+        self.moves += acc.to(torch.int32)
+        # lost requests: return the fuel step (forward: (a1, a2) -> (b1, b2), backward the reverse)
+        lost = has & ~acc
+        i_, j_, a1, a2, b1, b2 = self.T.FUEL
+        d = (lost & (self.xdir == 1)).to(torch.int32) - (lost & (self.xdir == -1)).to(torch.int32)
+        n = self.n
+        n[:, i_, a1] += d
+        n[:, j_, a2] += d
+        n[:, i_, b1] -= d
+        n[:, j_, b2] -= d
+        w = lane // self.SL
+        self.exchanges_total.index_add_(0, w, acc.long())
+        self.exchanges_lost.index_add_(0, w, lost.long())
 
     def end_tick(self):
         """Births claimed during the tick become lanes; dissolved lanes are free."""

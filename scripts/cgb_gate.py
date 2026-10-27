@@ -878,8 +878,12 @@ def check_nested_population_rates_match_lean(name):
         cells = [((x[b] + dx) % G) * G + (y[b] + dy) % G for dx, dy in NO.SHIFT]
         empty = [occ[wld, c] == 0 for c in cells]
         ref = list(ref_org[b])
-        # moves: Lean move_exchanges, the rate ignores the target's occupant (the kernel below still
-        # moves only into empty cells and fails this check until it implements the exchange)
+        # moves: Lean move_exchanges, the rate ignores the target's occupant; engine convention: a
+        # cell claimed by a birth in this tick (occupancy -1, the newborn joins at the end of the
+        # tick) cannot be entered
+        notres = [occ[wld, c] != -1 for c in cells]
+        ref[nc - 2] *= notres[h[b]]                    # forward: the cell ahead
+        ref[nc - 1] *= notres[(h[b] + 2) % 4]          # backward: the cell behind
         gate = n[b, T.GATE[0], T.GATE[1]]
         dE = NS * PS1 - BQ * (phi[b, NO.E, 1] - phi[b, NO.E, 0])
         full = n[b, NO.E, 1] == BQ and T.UNITS[NO.E] == BQ
