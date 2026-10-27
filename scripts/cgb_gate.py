@@ -444,6 +444,8 @@ def check_nested_organism_rates_match_lean(name):
     import torch
     import cgb_nested_world as NW
     import cgb_nested_organism as NO
+    name, _, tname = name.partition("@")
+    T = NO.table_of(tname or None)
     tbl = NW.load(name)
     V = tbl["table"]["V"]
     rng = np.random.default_rng(9)
@@ -457,8 +459,8 @@ def check_nested_organism_rates_match_lean(name):
     fE = st.foodE = tbl["table"].get("foodE", 0.0)
     st.f = torch.zeros(B, 6, 6, dtype=torch.int32)
     st.w = torch.zeros(B, 6, 6, dtype=torch.int32)
-    org = NO.Organisms(st, NO.random_genomes(B, rng), seed=1)
-    pageIn = [p for p, u in enumerate(NO.UNITS) for _ in range(u)]
+    org = NO.Organisms(st, NO.random_genomes(B, rng, table=T), seed=1, table=T)
+    pageIn = [p for p, u in enumerate(T.UNITS) for _ in range(u)]
     phi = org.phi.double().numpy()
     kr, kx = org.kr.double().numpy(), org.kx.double().numpy()
     kflip, kmove = org.kflip.double().numpy(), org.kmove.double().numpy()
@@ -473,7 +475,7 @@ def check_nested_organism_rates_match_lean(name):
     for trial in range(8):
         ys, fs, ws = [], [], []
         for b in range(B):
-            y = [int(rng.integers(NO.STATES[p])) for p in pageIn]
+            y = [int(rng.integers(T.STATES[p])) for p in pageIn]
             if trial % 4 == 0:
                 for u, p in enumerate(pageIn):
                     if p == NO.S:
@@ -481,7 +483,7 @@ def check_nested_organism_rates_match_lean(name):
             ys.append(y)
             fs.append(int(rng.choice([0, 1, 3, 50, V - 1, V])))
             ws.append(int(rng.choice([0, 1, 7, V - 1, V])))
-        n = torch.zeros(B, 6, NO.SMAX, dtype=torch.int32)
+        n = torch.zeros(B, 6, T.SMAX, dtype=torch.int32)
         for b in range(B):
             for u, p in enumerate(pageIn):
                 n[b, p, ys[b][u]] += 1
@@ -492,20 +494,27 @@ def check_nested_organism_rates_match_lean(name):
             ref = np.zeros(got.shape[1])
             bugE = lambda yy: sum(phi[b, pageIn[u], yy[u]] for u in range(len(yy)))
             c = 0
-            for r, (i, j, a1, a2, b1, b2) in enumerate(NO.RULES):        # spec k, (u, v, dir)
+            gate = sum(1 for u in range(len(y)) if pageIn[u] == T.GATE[0] and y[u] == T.GATE[1])
+            for r, (i, j, a1, a2, b1, b2, df, dw, gated) in enumerate(T.RULES):   # spec k, (u, v, dir)
                 for dr in (0, 1):
                     src = (b1, b2) if dr else (a1, a2)
                     dst = (a1, a2) if dr else (b1, b2)
+                    sdf, sdw = (-df, -dw) if dr else (df, dw)          # `sdir`
+                    f2, w2 = fs[b] + sdf, ws[b] + sdw
+                    if not (0 <= f2 <= V and 0 <= w2 <= V):
+                        continue
                     for u in range(len(y)):
                         for v in range(len(y)):
                             if u == v or pageIn[u] != i or pageIn[v] != j or (y[u], y[v]) != src:
                                 continue
                             y2 = list(y)
                             y2[u], y2[v] = dst
-                            ref[c + dr] += kr[b, r] * m.exp(-(bugE(y2) - bugE(y)) / 2)
+                            dE = (bugE(y2) - bugE(y) + cellF(f2) - cellF(fs[b]) + fE * sdf +
+                                  cellF(w2) - cellF(ws[b]))
+                            ref[c + dr] += (kr[b, r] * (gate if gated else 1) * poolCond(fs[b], f2) *
+                                            poolCond(ws[b], w2) * m.exp(-dE / 2))
                 c += 2
-            gate = sum(1 for u in range(len(y)) if pageIn[u] == NO.GATE[0] and y[u] == NO.GATE[1])
-            for x, (p, a, bb, food, gated) in enumerate(NO.EXCH):        # exchange j, (u, dir)
+            for x, (p, a, bb, food, gated) in enumerate(T.EXCH):        # exchange j, (u, dir)
                 for dr in (0, 1):
                     s0, s1 = (bb, a) if dr else (a, bb)
                     d = s0 - s1
@@ -519,10 +528,10 @@ def check_nested_organism_rates_match_lean(name):
                         ref[c + dr] += kx[b, x] * (gate if gated else 1) * poolCond(pool, pool + d) * m.exp(-dE / 2)
                 c += 2
             motor = [u for u in range(len(y)) if pageIn[u] == NO.M][0]
-            if y[motor] != NO.RUN:                                       # turns (a, b), b != a
+            if y[motor] != T.RUN:                                        # turns (a, b), b != a
                 ref[c] = 3 * kflip[b]
             c += 1
-            i, j, a1, a2, b1, b2 = NO.FUEL                               # moves (e, d, dir)
+            i, j, a1, a2, b1, b2 = T.FUEL                               # moves (e, d, dir)
             for fwd in (True, False):
                 src = (a1, a2) if fwd else (b1, b2)
                 dst = (b1, b2) if fwd else (a1, a2)
@@ -532,7 +541,7 @@ def check_nested_organism_rates_match_lean(name):
                             continue
                         y2 = list(y)
                         y2[e], y2[dd] = dst
-                        if y[motor] == NO.RUN and y2[motor] == NO.RUN:
+                        if y[motor] == T.RUN and y2[motor] == T.RUN:
                             ref[c + (0 if fwd else 1)] += kmove[b] * m.exp(-(bugE(y2) - bugE(y)) / 2)
             for k in range(len(ref)):
                 a_, g_ = ref[k], got[b, k]
@@ -552,6 +561,8 @@ def check_nested_organism_kernel_matches(name):
     import cgb_nested_world as NW
     import cgb_nested_organism as NO
     import cgb_nested_organism_triton as NX
+    name, _, tname = name.partition("@")
+    T = NO.table_of(tname or None)
     tbl = NW.load(name)
     V = tbl["table"]["V"]
     rng = np.random.default_rng(13)
@@ -568,17 +579,17 @@ def check_nested_organism_kernel_matches(name):
         return st
 
     def rand_n(B):
-        n = torch.zeros(B, 6, NO.SMAX, dtype=torch.int32)
-        for p, u in enumerate(NO.UNITS):
+        n = torch.zeros(B, 6, T.SMAX, dtype=torch.int32)
+        for p, u in enumerate(T.UNITS):
             for b in range(B):
-                cuts = np.sort(rng.integers(0, u + 1, size=NO.STATES[p] - 1))
+                cuts = np.sort(rng.integers(0, u + 1, size=T.STATES[p] - 1))
                 parts = np.diff(np.concatenate([[0], cuts, [u]]))
                 for s_, c in enumerate(parts):
                     n[b, p, s_] = int(c)
         return n.cuda()
 
     B = 256
-    o = NX.ExactOrganisms(world(B, 0.05), NO.random_genomes(B, rng), seed=2)
+    o = NX.ExactOrganisms(world(B, 0.05), NO.random_genomes(B, rng, table=T), seed=2, table=T)
     o.n32.copy_(rand_n(B))
     o.n = o.n32
     worst = 0.0
@@ -588,11 +599,11 @@ def check_nested_organism_kernel_matches(name):
     rate_ok = worst < 1e-5 and bool(((a == 0) == (ref == 0)).all())
     # effects
     L = 1 << 20
-    g1 = NO.random_genomes(1, rng)
+    g1 = NO.random_genomes(1, rng, table=T)
     g = {k: np.repeat(np.asarray(v)[None] if np.ndim(v) == 0 else np.asarray(v)[:1], L, axis=0) for k, v in g1.items()}
     st = world(1, 1.0)
     f0, w0 = int(st.f[0, 0, 0]), int(st.w[0, 0, 0])
-    o1 = NX.ExactOrganisms(world(1, 1.0), g1, seed=3)
+    o1 = NX.ExactOrganisms(world(1, 1.0), g1, seed=3, table=T)
     o1.n32.copy_(rand_n(1))
     o1.n32[0, NO.M, :] = 0
     o1.n32[0, NO.M, int(rng.integers(2))] = 1
@@ -607,7 +618,7 @@ def check_nested_organism_kernel_matches(name):
     ow.foodE = tbl["table"].get("foodE", 0.0)
     ow.f = torch.full((L, 3, 3), f0, dtype=torch.int32, device="cuda")
     ow.w = torch.full((L, 3, 3), w0, dtype=torch.int32, device="cuda")
-    oL = NX.ExactOrganisms(ow, g, seed=4)
+    oL = NX.ExactOrganisms(ow, g, seed=4, table=T)
     oL.n32.copy_(o1.n32.expand(L, -1, -1))
     oL.n = oL.n32
     oL.x32.zero_(); oL.y32.zero_(); oL.h32.zero_()
@@ -622,23 +633,23 @@ def check_nested_organism_kernel_matches(name):
     pats = {}
 
     def add(c, ch, df=0, dw=0, kind="plain"):
-        d = np.zeros(6 * NO.SMAX, dtype=np.int64)
+        d = np.zeros(6 * T.SMAX, dtype=np.int64)
         for (p_, s_, v_) in ch:
-            d[p_ * NO.SMAX + s_] += v_
+            d[p_ * T.SMAX + s_] += v_
         pats.setdefault((tuple(d), df, dw, kind), []).append(c)
 
     c = 0
-    for (i, j, a1, a2, b1, b2) in NO.RULES:          # effects read from the table itself
-        add(c, [(i, a1, -1), (j, a2, -1), (i, b1, 1), (j, b2, 1)])
-        add(c + 1, [(i, b1, -1), (j, b2, -1), (i, a1, 1), (j, a2, 1)])
+    for (i, j, a1, a2, b1, b2, rdf, rdw, _g) in T.RULES:          # effects read from the table itself
+        add(c, [(i, a1, -1), (j, a2, -1), (i, b1, 1), (j, b2, 1)], df=rdf, dw=rdw)
+        add(c + 1, [(i, b1, -1), (j, b2, -1), (i, a1, 1), (j, a2, 1)], df=-rdf, dw=-rdw)
         c += 2
-    for (p_, a_, b_, food, gated) in NO.EXCH:
+    for (p_, a_, b_, food, gated) in T.EXCH:
         for (s0, s1) in ((a_, b_), (b_, a_)):
             dd = s0 - s1
             add(c, [(p_, s0, -1), (p_, s1, 1)], df=dd if food else 0, dw=0 if food else dd)
             c += 1
     add(c, [], kind="turn")
-    i, j, a1, a2, b1, b2 = NO.FUEL
+    i, j, a1, a2, b1, b2 = T.FUEL
     add(c + 1, [(i, a1, -1), (j, a2, -1), (i, b1, 1), (j, b2, 1)], kind="fwd")
     add(c + 2, [(i, b1, -1), (j, b2, -1), (i, a1, 1), (j, a2, 1)], kind="back")
     matched = np.zeros(L, dtype=bool)
