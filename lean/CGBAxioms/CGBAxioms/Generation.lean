@@ -353,6 +353,21 @@ theorem no_fixed_gain_for_two_volatilities (r P₁ P₂ K : ℝ) (hr : 0 < r) (h
     subst hK
     nlinarith
 
+/-- **G10c (heterogeneous compartments need local gains)**: model two compartments by
+their local volatility parameters `P c`. If two compartments have different volatility,
+one globally shared gain is strictly above the local optimum in at least one compartment.
+This is the compartment form of G10b; it proves the necessity of local modulation only
+for this heterogeneous random-walk class, not for every possible learning rule. -/
+theorem no_global_gain_for_heterogeneous_compartments {C : Type*} [Fintype C] [Nonempty C]
+    (r : ℝ) (P : C → ℝ) (K : ℝ) (hr : 0 < r) (hP : ∀ c, 0 < P c)
+    (hne : ∃ c d, P c ≠ P d) (hK0 : 0 < K) (hK2 : K < 2) :
+    ∃ c, P c < (P c ^ 2 / (P c + r) + K ^ 2 * r) / (K * (2 - K)) := by
+  obtain ⟨c, d, hcd⟩ := hne
+  have h := no_fixed_gain_for_two_volatilities r (P c) (P d) K hr (hP c) (hP d) hcd hK0 hK2
+  rcases h with hc | hd
+  · exact ⟨c, hc⟩
+  · exact ⟨d, hd⟩
+
 /-! ## Interoceptive memory is necessary (forage world, minimal form)
 
 A source is rich or poor (fixed while the organism stays) with prior odds `a = (1-π)/π`;
