@@ -29,23 +29,35 @@ import cgb_nested_world as NW  # noqa: E402
 import cgb_nested_organism as NO  # noqa: E402
 import cgb_nested_organism_triton as NX  # noqa: E402
 
-KEYS = (("phi", len(NO.SELECTED_PHI)), ("logk_rule", len(NO.RULES)), ("logk_x", NO.N_SELECTED_X),
-        ("log_flip", 0), ("log_move", 0))
-VAL = np.arange(500, 516)
+T = NO.LEGACY      # the organism table (set by --table before anything else runs)
+
+
+def keys():
+    return (("phi", len(T.SELECTED_PHI)), ("logk_rule", len(T.RULES)), ("logk_x", T.N_SELECTED_X),
+            ("log_flip", 0), ("log_move", 0))
 
 
 def bounds():
-    plo, phi_hi = NO.phi_range()
+    plo, phi_hi = NO.phi_range(T)
     lo, hi = [plo], [phi_hi]
-    for k, n in KEYS[1:]:
-        m = max(n, 1)
-        r = NO.LOGK_X_RANGE if k == "logk_x" else NO.LOGK_RANGE
-        lo.append(np.full(m, r[0]))
-        hi.append(np.full(m, r[1]))
+    lo.append(np.array([r[0] for r in T.RULE_RANGE]))
+    hi.append(np.array([r[1] for r in T.RULE_RANGE]))
+    lo.append(np.full(T.N_SELECTED_X, T.X_RANGE[0]))
+    hi.append(np.full(T.N_SELECTED_X, T.X_RANGE[1]))
+    for _ in range(2):
+        lo.append(np.full(1, NO.LOGK_RANGE[0]))
+        hi.append(np.full(1, NO.LOGK_RANGE[1]))
     return np.concatenate(lo), np.concatenate(hi)
 
 
-LO, HI = bounds()
+def set_table(name):
+    global T, KEYS, LO, HI
+    T = NO.table_of(name)
+    KEYS = keys()
+    LO, HI = bounds()
+
+
+set_table("legacy")
 WITNESS = dict(phi=np.array([3.0, 6.0, 3.0, 3.0, 3.0, 1.0]), logk_rule=np.array([-6.0, -9.0, -9.0, -2.0]),
                logk_x=np.array([-3.0, -9.0, -1.0, -1.0]) - 4.7, log_flip=np.array(-9.0), log_move=np.array(-9.0))
 MOVER = dict(WITNESS, logk_rule=np.array([-6.0, -3.0, -3.0, -2.0]), log_flip=np.array(-3.0), log_move=np.array(-4.0))
@@ -60,6 +72,9 @@ def decode(U):
     """Rows of [0, 1] coordinates -> genome dict of arrays (clipped, premise enforced)."""
     U = np.atleast_2d(U)
     V = LO + np.clip(U, 0.0, 1.0) * (HI - LO)
+    if T.name != "legacy":   # a prefactor at coordinate 0 is an absent event (conductance 0)
+        nphi = len(T.SELECTED_PHI)
+        V[:, nphi:] = np.where(U[:, nphi:] <= 0.0, -np.inf, V[:, nphi:])
     g, i = {}, 0
     for k, n in KEYS:
         if n == 0:
@@ -68,7 +83,7 @@ def decode(U):
         else:
             g[k] = V[:, i:i + n].copy()
             i += n
-    return NO.premise(g)
+    return NO.premise(g, T)
 
 
 def main():
@@ -83,13 +98,14 @@ def main():
     ap.add_argument("--vevery", type=int, default=5)
     ap.add_argument("--seed", type=int, default=2)
     ap.add_argument("--out", required=True)
+    ap.add_argument("--table", default="legacy", help="organism table: legacy or grammar_v1")
     a = ap.parse_args()
+    set_table(a.table)
     tbl = NW.load("rain_torus_w0")
     rng = np.random.default_rng(a.seed)
-    if a.init == "witness":   # the existence witness declared before any selection (metabolism, still)
-        theta = encode(WITNESS)
-    elif a.init == "mover":   # the same body, moving (~1 cell per tick) with a usable run/stop circuit
-        theta = encode(MOVER)
+    if a.init in ("witness", "mover"):   # declared before any selection (still / moving), in table T
+        w0 = WITNESS if a.init == "witness" else MOVER
+        theta = encode(w0 if T.name == "legacy" else NO.map_genome(w0, "legacy", T))
     else:
         init = json.loads(Path(a.init).read_text(encoding="utf-8"))
         theta = encode(init["best"]["genome"])
@@ -103,7 +119,7 @@ def main():
         g = decode(U)
         rows = {k: np.repeat(v, a.worlds, axis=0) for k, v in g.items()}   # lane = row * W + world
         seeds = 200000 * (a.seed + 1) + 1000 * it + np.arange(a.worlds)
-        r = NX.run_exact(tbl, rows, seeds, ticks=a.ticks, copies=a.N + 1)
+        r = NX.run_exact(tbl, rows, seeds, ticks=a.ticks, copies=a.N + 1, table=T)
         # a lane that needed more than K events in a leap is not exact (overflow): it scores as dead at
         # birth, so selection stays where the simulator is exact (total event rate <= K / dt per tick)
         surv = np.where(r["overflow"] > 0, 0, r["survival"]).reshape(a.N + 1, a.worlds)
@@ -117,7 +133,8 @@ def main():
         print(json.dumps(hist[-1]), flush=True)
         if it % a.vevery == a.vevery - 1 or it == a.iters - 1:
             gc = decode(theta[None])
-            vr = NX.run_exact(tbl, {k: np.repeat(v, len(VAL), axis=0) for k, v in gc.items()}, VAL, ticks=a.ticks)
+            vr = NX.run_exact(tbl, {k: np.repeat(v, len(VAL), axis=0) for k, v in gc.items()}, VAL, ticks=a.ticks,
+                               table=T)
             vs = vr["survival"]
             row = dict(iter=it, val=[float(x) for x in np.percentile(vs, [0, 50, 100])], val_mean=float(vs.mean()))
             vals.append(row)
@@ -127,7 +144,7 @@ def main():
                 best = dict(gen=it, genome=cand, val=row["val"], val_mean=row["val_mean"])
         out.write_text(json.dumps(dict(prereg="docs/information_boltzmann/CGB_NESTED_ORGANISM_PREREG_20261027.md",
                                        method="ES (Qiu et al. 2025, arXiv 2509.24372), common random numbers; overflow lanes score 0",
-                                       world="rain_torus_w0", init=a.init, args=vars(a), history=hist,
+                                       world="rain_torus_w0", table=T.name, init=a.init, args=vars(a), history=hist,
                                        validation=vals, theta=theta.tolist(), best=best), indent=1), encoding="utf-8")
 
 

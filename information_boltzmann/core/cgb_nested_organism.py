@@ -93,6 +93,7 @@ class Table:
     PHI_S1: float = PHI_S1
     LOGK_LEAK: float = LOGK_LEAK
     PHI_PER_QUANTUM: tuple = PHI_PER_QUANTUM
+    X_RANGE: tuple = LOGK_X_RANGE      # selection range of the selected exchanges' log prefactors
 
     def structure(self):
         return dict(table=self.name, pages=list(PAGES), units=list(self.UNITS), states=list(self.STATES),
@@ -104,6 +105,13 @@ class Table:
 
 LEGACY = Table(name="legacy", RULES=tuple(r + (0, 0, False) for r in RULES), EXCH=EXCH,
                N_SELECTED_X=N_SELECTED_X, RULE_RANGE=tuple(LOGK_RANGE for _ in RULES), PREMISE=True)
+
+
+# Ranges of the grammar table, by one principle: the bottom of every range is negligible, at most
+# ~1e-4 events per tick at the largest multiplicity (crossing: membrane 10 x pool factor 1500 x units
+# ~260 ~ 4e6, so e^-24; inside the body: units ~260, so e^-14); a coordinate of 0 is an absent event.
+GRAMMAR_X_RANGE = (-24.0, -4.0)
+GRAMMAR_INNER_RANGE = (-14.0, 0.0)
 
 
 def grammar_table():
@@ -138,7 +146,7 @@ def grammar_table():
                             if crossing and S in (i, j):
                                 continue
                             rules.append((i, j, a1, a2, b1, b2, df, dw, crossing))
-                            rng_.append(LOGK_X_RANGE if crossing else LOGK_RANGE)
+                            rng_.append(GRAMMAR_X_RANGE if crossing else GRAMMAR_INNER_RANGE)
     exch = []
     for p in range(6):
         if p == S:
@@ -147,7 +155,7 @@ def grammar_table():
             for food in (True, False):
                 exch.append((p, a, b, food, True))     # unit a -> b takes one quantum from the pool
     return Table(name="grammar_v1", RULES=tuple(rules), EXCH=tuple(exch) + LEAKS, N_SELECTED_X=len(exch),
-                 RULE_RANGE=tuple(rng_), PREMISE=False)
+                 RULE_RANGE=tuple(rng_), PREMISE=False, X_RANGE=GRAMMAR_X_RANGE)
 
 
 GRAMMAR = grammar_table()
@@ -171,7 +179,7 @@ def random_genomes(B, rng, lo=LOGK_RANGE[0], hi=LOGK_RANGE[1], table=None):
     rh = np.array([r[1] for r in T.RULE_RANGE])
     g = dict(phi=rng.uniform(plo, phi_hi, size=(B, len(T.SELECTED_PHI))),
              logk_rule=rl + (rh - rl) * rng.uniform(size=(B, len(T.RULES))),
-             logk_x=rng.uniform(*LOGK_X_RANGE, size=(B, T.N_SELECTED_X)),
+             logk_x=rng.uniform(*T.X_RANGE, size=(B, T.N_SELECTED_X)),
              log_flip=rng.uniform(lo, hi, size=B),
              log_move=rng.uniform(lo, hi, size=B))
     return premise(g, T)
@@ -409,3 +417,32 @@ def run(tbl, genomes, world_seeds, ticks=5000, device="cuda", graph=True, **org_
     surv = np.where(death < 0, ticks, death)
     return dict(survival=surv, intake=O.intake.cpu().numpy() / np.maximum(1, surv),
                 moves=O.moves.cpu().numpy(), run_frac=O.run_time.cpu().numpy() / ticks)
+
+
+def _rule_key(rule):
+    """A pair rule up to the order of its units and its direction."""
+    i, j, a1, a2, b1, b2, df, dw, _g = rule
+    fwd = tuple(sorted([(i, a1, b1), (j, a2, b2)])) + ((df, dw),)
+    rev = tuple(sorted([(i, b1, a1), (j, b2, a2)])) + ((-df, -dw),)
+    return min(fwd, rev)
+
+
+def _exch_key(x):
+    p, a, b, food, _g = x
+    return (p, min(a, b), max(a, b), food)
+
+
+def map_genome(g, src, dst):
+    """A genome of table `src` written in table `dst`: rules and exchanges that are the same event
+    keep their prefactor; every other rule of `dst` is absent (prefactor 0, log -inf)."""
+    S_, D_ = table_of(src), table_of(dst)
+    rk = {_rule_key(r): k for k, r in enumerate(S_.RULES)}
+    xk = {_exch_key(x): k for k, x in enumerate(S_.EXCH[:S_.N_SELECTED_X])}
+    lr = np.asarray(g["logk_rule"], dtype=float)
+    lx = np.asarray(g["logk_x"], dtype=float)
+    out = {k: np.asarray(v, dtype=float).copy() for k, v in g.items() if k not in ("logk_rule", "logk_x")}
+    out["logk_rule"] = np.array([lr[..., rk[_rule_key(r)]] if _rule_key(r) in rk else -np.inf
+                                 for k, r in enumerate(D_.RULES)]).T
+    out["logk_x"] = np.array([lx[..., xk[_exch_key(x)]] if _exch_key(x) in xk else -np.inf
+                              for x in D_.EXCH[:D_.N_SELECTED_X]]).T
+    return out

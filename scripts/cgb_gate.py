@@ -793,6 +793,112 @@ def check_nested_table_is_record(name):
     return not diff, dict(record=spec["record"], differing_fields=diff)
 
 
+def check_nested_population_rates_match_lean(name):
+    """Populations (`cgb_nested_population`, argument `world@table`): on random populations
+    (random inner states, occupancy, pools, pending births), every rate column of the population
+    kernel equals an independent transcription of the Lean medium: the organism's own events as
+    `Organisms.rates` (itself checked against Lean), a move only into an empty cell (Lean `eff2`
+    move), division (recipes `(S, rb, h2, false)`: 4 headings x kdiv x empty neighbours x
+    Metropolis, the division page full, an intact membrane, no birth pending this tick) and
+    dissolution (`(hd, yd, false)`: kappa_dis x Metropolis, membrane wholly broken, the waste pool
+    able to take the body)."""
+    import math as m
+    import torch
+    if not torch.cuda.is_available():
+        return False, dict(error="needs CUDA")
+    import cgb_nested_world as NW
+    import cgb_nested_world_triton as NT
+    import cgb_nested_organism as NO
+    import cgb_nested_population as NP
+    wname, _, tname = name.partition("@")
+    T = NO.table_of(tname or NP.DIV_GRAMMAR.name)
+    tbl = NW.load(wname)
+    V, G = tbl["table"]["V"], tbl["geometry"]["G"]
+    rng = np.random.default_rng(21)
+    nw, SL = 3, 64
+    W = NT.FusedWorld(tbl, B=nw, seed=4)
+    W.f.copy_(torch.tensor(rng.choice([0, 1, 7, 300, V - 1, V], size=(nw, G, G)), dtype=torch.int32, device="cuda"))
+    W.w.copy_(torch.tensor(rng.choice([0, 2, 40, V - 30, V], size=(nw, G, G)), dtype=torch.int32, device="cuda"))
+    P = NP.Population(W, tbl, SL=SL, table=T, seed=8)
+    coder = NP.Coder(T)
+    for wld in range(nw):
+        cells = rng.choice(G * G, size=SL - 4, replace=False)
+        for c in cells:
+            P.place(wld, int(c), rng.uniform(0, 1, size=coder.D))
+    # random inner states (the division page sometimes full, the membrane sometimes broken)
+    for b in range(P.B):
+        if int(P.alive[b]) != 1:
+            continue
+        for p, u in enumerate(T.UNITS):
+            k = T.STATES[p]
+            cuts = np.sort(rng.integers(0, u + 1, size=k - 1))
+            parts = np.diff(np.concatenate([[0], cuts, [u]]))
+            if p == NO.E and rng.random() < 0.4:
+                parts = np.array([0, u])
+            if p == NO.S and rng.random() < 0.3:
+                parts = np.array([u, 0])
+            for s_, c in enumerate(parts):
+                P.n[b, p, s_] = int(c)
+    P.birth.copy_(torch.tensor((rng.random(P.B) < 0.2).astype(np.int32), device="cuda"))
+    occ = P.occ.cpu().numpy().copy()
+    occ[occ == 0] = np.where(rng.random((occ == 0).sum()) < 0.1, -1, 0)   # a few reserved cells
+    P.occ.copy_(torch.tensor(occ, device="cuda"))
+    P.leap(rates_only=True)
+    got = P.rates_buf.double().cpu().numpy()
+    # organism columns: Organisms.rates on the same lanes, moves times target emptiness
+    alive = P.alive.cpu().numpy() == 1
+
+    class Stub:
+        pass
+
+    st = Stub()
+    st.B, st.G, st.V, st.dt, st.foodE = P.B, G, V, W.dt, P.foodE
+    st.f = W.f.repeat_interleave(SL, 0)
+    st.w = W.w.repeat_interleave(SL, 0)
+    org = NO.Organisms(st, {k: v for k, v in coder.decode(P.theta).items() if k != "log_div"}, table=T)
+    org.n = P.n.clone()
+    org.x, org.y, org.h = P.x.long(), P.y.long(), P.h.long()
+    ref_org = org.rates().double().cpu().numpy()
+    x, y, h = P.x.cpu().numpy(), P.y.cpu().numpy(), P.h.cpu().numpy()
+    n = P.n.cpu().numpy()
+    phi = P.phi.double().cpu().numpy()
+    kdiv = P.kdiv.double().cpu().numpy()
+    wpool = W.w.view(nw, -1).cpu().numpy()
+    birth = P.birth.cpu().numpy()
+    BQ, NS, PS1, KD, BODY = P.BQ, T.UNITS[NO.S], T.PHI_S1, P.KDIS, P.BODY
+
+    def cellF(k):
+        return -(m.lgamma(V + 1) - m.lgamma(k + 1) - m.lgamma(V - k + 1))
+
+    worst, nchk = 0.0, 0
+    nc = ref_org.shape[1]
+    for b in np.nonzero(alive)[0]:
+        wld = b // SL
+        cells = [((x[b] + dx) % G) * G + (y[b] + dy) % G for dx, dy in NO.SHIFT]
+        empty = [occ[wld, c] == 0 for c in cells]
+        ref = list(ref_org[b])
+        ref[nc - 2] *= empty[h[b]]                     # forward: the cell ahead
+        ref[nc - 1] *= empty[(h[b] + 2) % 4]           # backward: the cell behind
+        gate = n[b, T.GATE[0], T.GATE[1]]
+        dE = NS * PS1 - BQ * (phi[b, NO.E, 1] - phi[b, NO.E, 0])
+        full = n[b, NO.E, 1] == BQ and T.UNITS[NO.E] == BQ
+        rdiv = 4 * kdiv[b] * sum(empty) * min(1.0, m.exp(-dE)) if (gate > 0 and full and birth[b] == 0) else 0.0
+        q = BODY + sum(s_ * n[b, p, s_] for p in range(6) for s_ in range(1, T.STATES[p]))
+        wc = int(wpool[wld, x[b] * G + y[b]])
+        bug = sum(phi[b, p, s_] * n[b, p, s_] for p in range(6) for s_ in range(T.STATES[p]))
+        if gate == 0 and wc + q <= V:
+            dEd = cellF(wc + q) - cellF(wc) - bug
+            rdis = KD * min(1.0, m.exp(-dEd))
+        else:
+            rdis = 0.0
+        ref += [rdiv, rdis]
+        for k_ in range(len(ref)):
+            a_, g_ = ref[k_], got[b, k_]
+            worst = max(worst, abs(a_ - g_) / max(1e-30, abs(a_), abs(g_)))
+        nchk += 1
+    return worst < 1e-4, dict(max_relative_error=worst, lanes=nchk, table=T.name)
+
+
 CHECKS = {k[len("check_"):]: v for k, v in list(globals().items()) if k.startswith("check_")}
 
 
