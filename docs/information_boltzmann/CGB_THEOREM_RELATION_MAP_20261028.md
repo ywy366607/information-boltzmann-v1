@@ -163,6 +163,7 @@
 | N4 | 不观察时不确定性增长，行动必在有限时间内发生 | W2（K = 0）、对数单调 |
 | N5 | 学习会饱和：Bayes 混合的超额编码长度 ≤ log(1/w(θ₀)) | 已写，`GenerationLanguageForaging.lean` 的 `mixture_regret_le`，单文件编译通过，未入根导入。同文件中依赖 T1 的另三条要删除 |
 | N6（可选） | 符号流取功上界与"必要多样性"（Boyd–Mandal–Crutchfield） | N1、N2 |
+| N7 | 语速：有效速率在慢于 u 或快于 C·k·L/u 时都低于 u；太慢接不上前文，太快没弛豫好；均匀信息密度被容量逼出 | **已证 2026-10-28**，`GenerationSpeechTempo.lean`（`tempo_band`、`slow_retention_vanishes`、`fast_settling_vanishes`、`peaks_wasted`、`uniform_attains`）；嘴的设计见 `CGB_LANGUAGE_MOUTH_DESIGN_20261028.md` |
 
 ---
 
