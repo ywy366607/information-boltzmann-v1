@@ -11,7 +11,7 @@ a few hundred ticks, so maintenance needs the TIME-AVERAGED food under the forag
 share of time above f*. The criteria become: (1) local mean food >= f*, (2) blind mean food < half
 the local mean. The time-share numbers are still reported. f* = the maintenance
 threshold of the body (nested_maintenance_threshold). World and ideal policies only."""
-import copy, json, math, sys
+import copy, json, math, os, sys
 from pathlib import Path
 import numpy as np, torch
 ROOT = Path(__file__).resolve().parents[2]
@@ -19,7 +19,7 @@ sys.path.insert(0, str(ROOT / "information_boltzmann" / "core"))
 import cgb_nested_world as NW, cgb_nested_world_triton as NT
 fstar = json.loads((ROOT / "results/published/cgb_generated/nested_maintenance_threshold_20261027.json").read_text())["f_star"]
 base = NW.load("rain_torus_w0"); G = base["geometry"]["G"]
-B, T = 32, 10000
+B, T = int(os.environ.get("NICHE_B", 32)), 10000   # worlds per point (NICHE_B), ticks
 TAUS = (1.0, 3.0, 10.0, 30.0)
 import os
 SPEEDS = tuple(float(v) for v in os.environ.get("NICHE_SPEEDS", "1").split(","))   # cells per tick of the local forager
@@ -37,11 +37,12 @@ for a in ARGS:
     tbl["table"]["kappa_in"] = base["table"]["kappa_in"] * 500.0 / life
     tbl["stimulus"]["mu_rain"] = mu_rain + 2.0 * math.log(life / 500.0)
     tbl["stimulus"]["mu_sink"] = base["stimulus"]["mu_sink"] - 2.0 * math.log(life / 500.0)   # waste leaves at the same rate
-    W = NT.FusedWorld(tbl, B=B, seed=21); wea = NW.Weather(tbl, B=B, device="cuda", seed=21)
+    SEED = int(os.environ.get("NICHE_SEED", 21))
+    W = NT.FusedWorld(tbl, B=B, seed=SEED); wea = NW.Weather(tbl, B=B, device="cuda", seed=SEED)
     buf, rep = W.captured()
     for _ in range(1500):
         buf.copy_(wea.tick()); rep()
-    rng = np.random.default_rng(5)
+    rng = np.random.default_rng(5 + SEED - 21)
     st = {k: dict(P=rng.uniform(0, G, (B, 2)), ang=rng.uniform(0, 6.283, B), prev=np.zeros(B), on=np.zeros(B), sum=np.zeros(B))
           for k in [("local", tau, v) for tau in TAUS for v in SPEEDS] + ["blind"]}
     rich = 0.0
@@ -70,6 +71,7 @@ for a in ARGS:
     row = dict(rain_rate=rate, mu_rain=mu_rain, diff_mult=dmul, food_life=life, food_total=float(W.f.float().sum(dim=(1, 2)).mean()), cells_rich=rich / T, local_by_tau={f"{k[1]:g},{k[2]:g}": float(np.median(st[k]["on"] / T)) for k in st if k != "blind"},
                local_mean_by_tau={f"{k[1]:g},{k[2]:g}": float(np.median(st[k]["sum"] / T)) for k in st if k != "blind"},
                local_mean=max(float(np.median(st[k]["sum"] / T)) for k in st if k != "blind"),
+               local_mean_q25_q75=[float(np.percentile(st[kb]["sum"] / T, q)) for kb in [max((k for k in st if k != "blind"), key=lambda k: np.median(st[k]["sum"] / T))] for q in (25, 75)],
                blind_mean=float(np.median(st["blind"]["sum"] / T)),
                local=max(float(np.median(st[k]["on"] / T)) for k in st if k != "blind"),
                blind=float(np.median(st["blind"]["on"] / T)), food_mean=float(W.f.float().mean()))
