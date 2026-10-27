@@ -366,4 +366,139 @@ theorem steady_gain_worse_for_fresh (P Ps r : ℝ) (hr : 0 < r) (hP : 0 < P) (hP
   rw [sq_abs] at this
   nlinarith
 
+/-! ## Three premises the v2 run showed missing (2026-10-27)
+
+* `in_sample_decrease_bias`: one direction, true loss `h e^2 / 2`, batch gradient `g = h e + ξ`.
+  The decrease of a step `e' = e - η g` measured on the batch that made it exceeds the decrease
+  on fresh data by `η ξ g`; over the noise pair `±ξ` the mean excess is `η ξ^2 > 0`. A modulator
+  that scores a step on its own batch is biased toward larger steps, and the bias grows with the
+  step: the score must come from data the step did not see (forecast before observation).
+* `own_step_biases_noise_estimate`: the gradient difference contains the change caused by the
+  optimizer's own step, `Δg = h Δθ + noise`. The lag-one estimate of the noise `-Δg_t Δg_{t-1}`
+  averaged over the noise pair is `-x y - h^2 a b` (`a, b` the two steps); for persistent steps
+  (`a b > 0`) it is pulled below the true value and clamps to zero. The residual
+  `Δg - h Δθ` removes it exactly: the optimizer must predict the consequence of its own action
+  (an efference copy; cf. `CausalRecord.action_feedback_witness`, an identical sensor means
+  different things after different actions).
+* `secant_needs_diagonal`: in a basis where the curvature has an off-diagonal entry `c`, the
+  per-direction secant `Δg_1 / Δθ_1 = h_1 + c Δθ_2 / Δθ_1` depends on the step ratio; it equals
+  the curvature for every step only when `c = 0`. The basis must diagonalize the curvature. For
+  a linear layer the curvature's input factor is the pre-activity covariance `E[x xᵀ]` (local:
+  the pre-synaptic side of the three-factor rule), not the gradient covariance `E[Gᵀ G]`, which
+  weights each input by its squared error.
+-/
+
+/-- Decrease measured on the batch that made the step minus the decrease on fresh data. -/
+theorem in_sample_decrease_bias (h e ξ η : ℝ) :
+    ((h * e ^ 2 / 2 + ξ * e) - (h * (e - η * (h * e + ξ)) ^ 2 / 2 + ξ * (e - η * (h * e + ξ)))) -
+      (h * e ^ 2 / 2 - h * (e - η * (h * e + ξ)) ^ 2 / 2) = η * ξ * (h * e + ξ) := by
+  ring
+
+theorem in_sample_decrease_bias_mean (h e ξ η : ℝ) (hη : 0 < η) (hξ : ξ ≠ 0) :
+    0 < (η * ξ * (h * e + ξ) + η * (-ξ) * (h * e + -ξ)) / 2 := by
+  have : (η * ξ * (h * e + ξ) + η * (-ξ) * (h * e + -ξ)) / 2 = η * ξ ^ 2 := by ring
+  rw [this]
+  positivity
+
+/-- Lag-one noise estimate averaged over the noise pair `(x, y)`, `(-x, -y)`. -/
+theorem own_step_biases_noise_estimate (h a b x y : ℝ) :
+    (-((h * a + x) * (h * b + y)) + -((h * a - x) * (h * b - y))) / 2 = -(x * y) - h ^ 2 * (a * b) := by
+  ring
+
+theorem residual_removes_own_step (h a b x y : ℝ) :
+    -(((h * a + x) - h * a) * ((h * b + y) - h * b)) = -(x * y) := by
+  ring
+
+theorem secant_needs_diagonal (h₁ c a₁ a₂ : ℝ) (ha : a₁ ≠ 0) :
+    (h₁ * a₁ + c * a₂) / a₁ = h₁ + c * (a₂ / a₁) := by
+  field_simp
+
+theorem secant_exact_iff (h₁ c : ℝ) :
+    (∀ a₁ a₂ : ℝ, a₁ ≠ 0 → (h₁ * a₁ + c * a₂) / a₁ = h₁) ↔ c = 0 := by
+  constructor
+  · intro H
+    have := H 1 1 one_ne_zero
+    simp at this
+    linarith
+  · rintro rfl a₁ a₂ ha
+    field_simp
+    ring
+
+/-! ## The closed loop: what v3 must satisfy (2026-10-27)
+
+The model now contains the optimizer's own action. One direction: distance to the optimum `e`,
+gradient `g = h e + ξ`, step `u`, next distance `e - u`, so the true gradient moves by `-h u`.
+
+* `fresh_decrease_unbiased`: scored on a batch whose noise `ξ'` the step did not see, the measured
+  decrease averaged over `±ξ'` equals the true decrease. This is the modulator's input.
+* `estimated_curvature_residual_bias`: the efference residual with an estimated curvature `ĥ`
+  leaves a bias `-(h - ĥ)^2 a b`, second order in the curvature error, against `-h^2 a b` without it.
+* `eigenbasis_decouples`: for a linear layer the curvature of `½ (w·x - y)^2` along `v, v'` is
+  `vᵀ Σ v'`, `Σ = E[x xᵀ]`; two eigenvectors of `Σ` that are orthogonal have zero cross curvature,
+  so in the pre-activity eigenbasis the per-direction secant is exact (`secant_exact_iff`).
+* `trust_with_deadband_stays_in_band`: a comparison below the measurement resolution carries no
+  evidence; keeping `ρ` unchanged there keeps the band of `bound_stays_in_band`.
+-/
+
+/-- Fresh-batch decrease averaged over the unseen noise pair `±ξ'`. -/
+theorem fresh_decrease_unbiased (h e u ξ' : ℝ) :
+    (((h * e ^ 2 / 2 + ξ' * e) - (h * (e - u) ^ 2 / 2 + ξ' * (e - u))) +
+      ((h * e ^ 2 / 2 + -ξ' * e) - (h * (e - u) ^ 2 / 2 + -ξ' * (e - u)))) / 2 =
+      h * e ^ 2 / 2 - h * (e - u) ^ 2 / 2 := by
+  ring
+
+theorem estimated_curvature_residual_bias (h ĥ a b x y : ℝ) :
+    (-(((h * a + x) - ĥ * a) * ((h * b + y) - ĥ * b)) +
+      -(((h * a - x) - ĥ * a) * ((h * b - y) - ĥ * b))) / 2 = -(x * y) - (h - ĥ) ^ 2 * (a * b) := by
+  ring
+
+theorem eigenbasis_decouples {n : ℕ} (S : Matrix (Fin n) (Fin n) ℝ) (v w : Fin n → ℝ) (μ : ℝ)
+    (hw : S.mulVec w = μ • w) (horth : v ⬝ᵥ w = 0) : v ⬝ᵥ S.mulVec w = 0 := by
+  rw [hw, dotProduct_smul, horth, smul_zero]
+
+/-- Trust rule with a dead band: no evidence keeps the bound. -/
+noncomputable def trustStep3 (γ R ρ : ℝ) (evidence : Bool) : ℝ :=
+  if evidence then trustStep γ R ρ else ρ
+
+theorem trust_with_deadband_stays_in_band (γ R ρ : ℝ) (ev : Bool) (hγ : 1 < γ) (hR : 0 < R)
+    (hlo : R / γ ≤ ρ) (hhi : ρ ≤ R * γ) :
+    R / γ ≤ trustStep3 γ R ρ ev ∧ trustStep3 γ R ρ ev ≤ R * γ := by
+  unfold trustStep3
+  cases ev
+  · exact ⟨hlo, hhi⟩
+  · exact bound_stays_in_band γ R ρ hγ hR hlo hhi
+
+/-! ## A linear gain cannot hold through a burst (optimizer form of G24, 2026-10-27)
+
+A filter with gain `K` that holds the value `v` and then sees `n` observations equal to `d`
+is at `d + (1 - K)^n (v - d)` (`linGain_closed`). The fraction it has moved toward `d` is
+`1 - (1 - K)^n` whether the run of `d` is a burst that will revert or a lasting change
+(`linear_damage_eq_adoption`): write and forget are tied, as in G24. No linear gain keeps the
+damage of a burst below `ε` and adopts a change of the same length above `1 - ε` (`ε < 1/2`).
+A rule that defers (moves only after a confirmation run, a latch with a finite exit) is not
+tied; it is healthy only while its exit stays reachable (H1, H2).
+-/
+
+/-- Estimate after `n` observations equal to `d`, starting from `v`, with gain `K`. -/
+def linGain (K v d : ℝ) : ℕ → ℝ
+  | 0 => v
+  | n + 1 => linGain K v d n + K * (d - linGain K v d n)
+
+theorem linGain_closed (K v d : ℝ) (n : ℕ) : linGain K v d n = d + (1 - K) ^ n * (v - d) := by
+  induction n with
+  | zero => simp [linGain]
+  | succ n ih => simp only [linGain, ih, pow_succ]; ring
+
+theorem linear_damage_eq_adoption (K v d : ℝ) (n : ℕ) (hvd : v ≠ d) :
+    (linGain K v d n - v) / (d - v) = 1 - (1 - K) ^ n := by
+  rw [linGain_closed]
+  have : d - v ≠ 0 := sub_ne_zero.mpr (Ne.symm hvd)
+  field_simp
+  ring
+
+theorem no_linear_gain_separates (K ε : ℝ) (n : ℕ) (hε : ε < 1 / 2) :
+    ¬ (1 - (1 - K) ^ n ≤ ε ∧ 1 - ε ≤ 1 - (1 - K) ^ n) := by
+  rintro ⟨h1, h2⟩
+  linarith
+
 end CGB.GradientFilter
