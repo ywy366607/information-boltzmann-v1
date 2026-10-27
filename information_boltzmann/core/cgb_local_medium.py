@@ -248,10 +248,12 @@ class OpenMedium:
     Resource credits in the world are distinct from this reservoir's material.
     """
 
-    def __init__(self, body: LocalMedium, reservoir: ReservoirLaw):
-        if not isinstance(body, LocalMedium) or not isinstance(reservoir, ReservoirLaw):
+    def __init__(self, body: LocalMedium, reservoir: ReservoirLaw, *, opportunities_per_tick=1):
+        if (not isinstance(body, LocalMedium) or not isinstance(reservoir, ReservoirLaw)
+                or type(opportunities_per_tick) is not int or opportunities_per_tick < 0):
             raise ValueError("invalid open medium")
         self.body, self.reservoir = body, reservoir
+        self._opportunities_per_tick = opportunities_per_tick
         self.stock = reservoir.source_initial
         self.initial_content = sum(sum(body.get(e)) for e in range(body.law.edges))
         self.intake = self.released = 0
@@ -265,6 +267,11 @@ class OpenMedium:
     @property
     def events(self):
         return self.body.law.events + 2 * self.body.law.edges
+
+    @property
+    def opportunities_per_tick(self):
+        """Registered finite opportunity cap, not an adaptive convergence loop."""
+        return self._opportunities_per_tick
 
     @property
     def proposal_families(self):
@@ -342,42 +349,84 @@ class OpenMedium:
         self.released += int(sign == -1)
 
     def tick(self, index, ticket, world):
-        """Score old state, publish once, then make at most one paid reaction.
+        """Compatibility wrapper for one opportunity and the original receipt."""
+        result = self.tick_window(((index, ticket),), world)
+        return dict(tick=result["tick"], byte=result["byte"], active=result["active"],
+                    funded=bool(result["funded_attempts"]), accepted=bool(result["accepted_reactions"]),
+                    material_delta=result["material_delta"], target_mass=result["target_mass"],
+                    total_mass=result["total_mass"], random_bits=result["planned_random_bits"],
+                    spent=result["spent"])
 
-        The ticket is uniform in [0,2**(2*bound)); its width is known before
-        publication. This permits validation before any world mutation even
-        though the reaction rate depends on the newly arrived byte. Rejections
-        are paid. For nonempty readouts zero target mass is reported as zero,
-        without smoothing it into a finite language score.
+    def tick_window(self, plan, world):
+        """One publication followed by a bounded sequence of the SAME paid kernel.
+
+        The caller supplies an exact tuple of (proposal, uniform dyadic ticket)
+        pairs sampled independently of the new byte, using sample_proposal.
+        All ranges are checked before publication, including unused late pairs.
+        A fixed opportunity cap changes the per-publication dynamics: it is a
+        registered exposure/work budget, not an equivalence to the old clock.
+        No future input is inspected, and no target-dependent extra work occurs.
+
+        Every evaluated reaction uses the state left by its predecessor. Blocked
+        and randomly rejected reactions are paid; the first refusal ends work.
+        The whole plan's ticket bits count as generated even when funding stops.
+        These declared operation charges do not certify joules or real-time CPU
+        deadlines. Snapshots are supported between complete windows, not inside.
         """
         if self.body.law.labels != 256:
             raise ValueError("tick requires the native 256-byte boundary")
-        bound = self.proposal_bound(index)
-        if type(ticket) is not int or ticket < 0 or ticket.bit_length() > 2 * bound:
-            raise ValueError("invalid fixed-width dyadic ticket")
+        if type(plan) is not tuple or len(plan) > self.opportunities_per_tick:
+            raise ValueError("reaction plan exceeds the registered finite window")
+        planned_bits = 0
+        for pair in plan:
+            if type(pair) is not tuple or len(pair) != 2:
+                raise ValueError("invalid reaction plan entry")
+            index, ticket = pair
+            bound = self.proposal_bound(index)
+            if type(ticket) is not int or ticket < 0 or ticket.bit_length() > 2 * bound:
+                raise ValueError("invalid fixed-width dyadic ticket")
+            planned_bits += 2 * bound
         masses, total = self.masses()  # observer measurement BEFORE the target
         boundary = world.begin()
         observed = world.publish()
-        edits, exponent, _, sign = self.prepare(index, observed.payload)
-        funded = world.pay_write(self.body.law.attempt_fee)
-        accepted = funded and exponent is not None and ticket >> (bound + exponent) == 0
-        if accepted:
-            self._commit(edits, sign)
+        evaluated = funded = accepted = material_delta = evaluated_bits = 0
+        for index, ticket in plan:
+            if not world.pay_write(self.body.law.attempt_fee):
+                break
+            funded += 1
+            edits, exponent, bound, sign = self.prepare(index, observed.payload)
+            evaluated += 1
+            evaluated_bits += 2 * bound
+            if exponent is not None and ticket >> (bound + exponent) == 0:
+                self._commit(edits, sign)
+                accepted += 1
+                material_delta += sign
         return dict(tick=observed.tick, byte=observed.payload, active=boundary.active,
-                    funded=funded, accepted=accepted, material_delta=sign if accepted else 0,
                     target_mass=masses[observed.payload], total_mass=total,
-                    random_bits=2 * bound,
-                    spent=self.body.law.attempt_fee if funded else 0)
+                    scheduled_attempts=len(plan), evaluated_attempts=evaluated,
+                    funded_attempts=funded, accepted_reactions=accepted,
+                    material_delta=material_delta, planned_random_bits=planned_bits,
+                    evaluated_random_bits=evaluated_bits,
+                    spent=funded * self.body.law.attempt_fee,
+                    opportunities_per_tick=self.opportunities_per_tick)
 
     def state_dict(self):
-        return dict(version=1, reservoir=asdict(self.reservoir), body=self.body.state_dict(),
+        return dict(version=2, opportunities_per_tick=self.opportunities_per_tick,
+                    reservoir=asdict(self.reservoir), body=self.body.state_dict(),
                     initial_content=self.initial_content, stock=self.stock,
                     intake=self.intake, released=self.released)
 
     def load_state_dict(self, snapshot):
         expected = self.state_dict()
+        # The old interface meant exactly one opportunity per publication.
+        if type(snapshot) is dict and type(snapshot.get("version")) is int and snapshot["version"] == 1:
+            if self.opportunities_per_tick != 1 or "opportunities_per_tick" in snapshot:
+                raise ValueError("legacy checkpoint has a different reaction clock")
+            snapshot = dict(snapshot, version=2, opportunities_per_tick=1)
         if (type(snapshot) is not dict or set(snapshot) != set(expected)
-                or type(snapshot["version"]) is not int or snapshot["version"] != 1
+                or type(snapshot["version"]) is not int or snapshot["version"] != 2
+                or type(snapshot["opportunities_per_tick"]) is not int
+                or snapshot["opportunities_per_tick"] != self.opportunities_per_tick
                 or type(snapshot["reservoir"]) is not dict
                 or set(snapshot["reservoir"]) != set(expected["reservoir"])
                 or any(type(v) is not int or v != expected["reservoir"][k]

@@ -174,6 +174,35 @@ private theorem boundary_contact_fraction {H B F : Real}
   field_simp [hH, hB, hF]
   <;> ring
 #print axioms boundary_contact_fraction
+
+-- Scalar cores only: a TV coupling and a real paid-opportunity clock remain
+-- separate certificates; a contact envelope is not a response guarantee.
+private theorem boundary_contact_envelope (q : Real) (h0 : 0 ≤ q) (h1 : q ≤ 1) (n : Nat) :
+    0 ≤ 1 - (1 - q) ^ n ∧ 1 - (1 - q) ^ n ≤ 1 ∧
+      1 - (1 - q) ^ n ≤ (n : Real) * q := by
+  induction n with
+  | zero => simp
+  | succ n ih =>
+    have hp : 0 ≤ (1 - q) ^ n := pow_nonneg (by linarith) n
+    have hstay := mul_nonneg hp (sub_nonneg.mpr h1)
+    have hhit := mul_nonneg h0 hp
+    have hseen := mul_nonneg h0 ih.1
+    simp only [pow_succ, Nat.cast_succ]
+    refine ⟨?_, ?_, ?_⟩ <;> nlinarith [ih.1, ih.2.2]
+#print axioms boundary_contact_envelope
+
+private theorem boundary_response_budget (q fee budget required : Real) (n : Nat)
+    (h0 : 0 ≤ q) (h1 : q ≤ 1) (hfee : 0 ≤ fee)
+    (paid : (n : Real) * fee ≤ budget) (response : required ≤ 1 - (1 - q) ^ n) :
+    required * fee ≤ budget * q := by
+  have envelope := (boundary_contact_envelope q h0 h1 n).2.2
+  calc
+    required * fee ≤ ((n : Real) * q) * fee :=
+      mul_le_mul_of_nonneg_right (response.trans envelope) hfee
+    _ = ((n : Real) * fee) * q := by ring
+    _ ≤ budget * q := mul_le_mul_of_nonneg_right paid h0
+#print axioms boundary_response_budget
+
 #eval IO.println (Json.mkObj [
   ("format", toJson "CGB.UnifiedReference.boundary.v1"),
   ("vectors", toJson (boundaryVectors.map fun w => Json.mkObj [

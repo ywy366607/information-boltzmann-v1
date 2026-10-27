@@ -1,0 +1,265 @@
+{
+  "status": "joint_local_reactions_checked",
+  "capability_claim": false,
+  "full_medium_admitted": false,
+  "training_performed": false,
+  "production_lean_modules_added": 0,
+  "production_theorems_added": 0,
+  "private_scalar_review_lemmas_added": 2,
+  "per_family_caps_are_registered_conductances": true,
+  "reactions": {
+    "exhaustive_states": 4420,
+    "proposal_rows": 135608,
+    "enabled_reverse_pairs": 34640,
+    "whole_energy_log_balance_exact": true,
+    "content_conservation_exact": true,
+    "static_reverse_scheduler": true,
+    "target_weight": "2**(-2*E), within the conserved-content shell"
+  },
+  "locality": {
+    "clique_outside_change_checks": 204,
+    "actual_state_reads_within_declared_clique": true,
+    "native_byte_edges": 768,
+    "native_byte_packed_state_bytes": 288,
+    "edge_indices_stored": 0,
+    "maximum_field_bits": 4,
+    "fields_per_edge": 3,
+    "native_byte_bits_per_edge": 3,
+    "three_byte_read_write_checked": true,
+    "encoding": "ceil(log2((Q+1)^2*(W+1))) fixed bits per edge; lossless",
+    "whole_clique_sum_cost_is_degree_dependent": true
+  },
+  "history": {
+    "same_boundary_charges_different_history_rate_ratio": 16,
+    "new_slot_from_conserved_charge": true,
+    "closed_content": 3,
+    "paid_path_attempts": 5,
+    "active_joint_json_restore": true,
+    "blocked_attempt_is_paid": true,
+    "resource_failure_keeps_publication": true,
+    "enabled_rejection_is_paid": true,
+    "observation_conditions_rates": false,
+    "capability_claim": false
+  },
+  "open_exchange": {
+    "proposal_rows": 23328,
+    "enabled_reverse_pairs": 12960,
+    "exact_boundary_log_balance": true,
+    "body_plus_reservoir_conserved": true,
+    "boundary_reads_only_its_Q_clique": true,
+    "byte_modulates_boundary_only": true,
+    "family_proposal_normalized_and_reverse_symmetric": true
+  },
+  "open_timing": {
+    "pre_target_readout": true,
+    "active_open_JSON_restore": true,
+    "source_intake_to_plastic_slot": true,
+    "rejected_and_blocked_paid": true,
+    "resource_failure_keeps_publication": true,
+    "invalid_inputs_atomic": true,
+    "zero_target_mass_reported": true,
+    "empty_readout_fallback_declared": true,
+    "source_exhaustion_blocks_intake": true,
+    "byte_counterfactual_changes_reaction": true,
+    "conserved_structure_intervention_changes_future_readout": true
+  },
+  "open_windows": {
+    "zero_window_still_publishes_and_maintains": true,
+    "single_attempt_legacy_equivalent": true,
+    "sequential_same_byte_source_to_slot": true,
+    "score_frozen_before_publication": true,
+    "late_invalid_ticket_and_excess_budget_atomic": true,
+    "refusal_truncates_evaluation": true,
+    "failure_keeps_world_advancing": true,
+    "blocked_and_rejected_opportunities_paid": true,
+    "completed_window_JSON_and_rng_restore": true,
+    "quota_snapshot_checked": true,
+    "finite_registered_opportunities_not_free_internal_time": true,
+    "capability_claim": false
+  },
+  "input_response": {
+    "exact_body_source_kernel_pairs": 1024,
+    "maximum_checked_TV": "3/256",
+    "bound": "TV(K_b(x),K_c(x)) <= min(1,2/(F*B)) for one paid attempt",
+    "scope": "same old body/source; distinct stimuli; uniform family and uniform event",
+    "native_1x256_TV_upper_bound": "1/512",
+    "finite_windows": [
+      {
+        "paid_opportunities": 0,
+        "contact_envelope_upper": 0.0,
+        "minimum_operation_fee": 0
+      },
+      {
+        "paid_opportunities": 1,
+        "contact_envelope_upper": 0.001953125,
+        "minimum_operation_fee": 1
+      },
+      {
+        "paid_opportunities": 64,
+        "contact_envelope_upper": 0.11761095797097762,
+        "minimum_operation_fee": 64
+      },
+      {
+        "paid_opportunities": 256,
+        "contact_envelope_upper": 0.3937658115426551,
+        "minimum_operation_fee": 256
+      },
+      {
+        "paid_opportunities": 1024,
+        "contact_envelope_upper": 0.8649291295322543,
+        "minimum_operation_fee": 1024
+      }
+    ],
+    "half_TV_requires_at_least_opportunities": 355,
+    "compound_TV_proof": "paper first-contact coupling; Lean checks scalar envelope/budget only",
+    "fixed_exposure_and_full_funding_required_for_kernel_power": true,
+    "larger_envelope_is_not_response_or_learning_guarantee": true,
+    "implication": "family balance alone does not establish usable per-byte response"
+  },
+  "real_byte_open_interface": {
+    "source_provenance": {
+      "manifest": "3614c380d4c72688ac8ccde42f32ea0655d16bec1ba0874a924fd777af904d2d",
+      "files": {
+        "tokenizer.json": "e727da4afe06d37d6ffff7db05ab21f69c5be39253ee7b7f7ec759cadab69c1d",
+        "train.npy": "2f227239bc63b89daf31956701d243a93f9dd46671702fff03763b33dc6db4fb",
+        "validation.npy": "60d41d3fdda8c1718ad1735693eda0dae2b23a0032c5e04a29aac9d0c6d35d8c"
+      },
+      "verified_document_counts": {
+        "train": 9786,
+        "validation": 114
+      },
+      "native_byte_counts": {
+        "train": 48125691,
+        "validation": 467911
+      }
+    },
+    "split": "validation",
+    "fresh_bytes": 64,
+    "accepted_reactions": 2,
+    "accepted_exchanges": 0,
+    "zero_probability_targets": 0,
+    "observer_bits_per_byte": 7.99195846620579,
+    "body_bytes": 96,
+    "native_alphabet": 256,
+    "boundary_proposal_fraction": "1/4",
+    "old_all_event_boundary_fraction": "512/67328",
+    "observer_global_readout_not_local_body_computation": true,
+    "sampler_rng_JSON_restore": true,
+    "capability_claim": false,
+    "budget_limited_interface_only": true
+  },
+  "real_byte_window_interface": {
+    "source_provenance": {
+      "manifest": "3614c380d4c72688ac8ccde42f32ea0655d16bec1ba0874a924fd777af904d2d",
+      "files": {
+        "tokenizer.json": "e727da4afe06d37d6ffff7db05ab21f69c5be39253ee7b7f7ec759cadab69c1d",
+        "train.npy": "2f227239bc63b89daf31956701d243a93f9dd46671702fff03763b33dc6db4fb",
+        "validation.npy": "60d41d3fdda8c1718ad1735693eda0dae2b23a0032c5e04a29aac9d0c6d35d8c"
+      },
+      "verified_document_counts": {
+        "train": 9786,
+        "validation": 114
+      },
+      "native_byte_counts": {
+        "train": 48125691,
+        "validation": 467911
+      }
+    },
+    "split": "validation",
+    "fresh_bytes": 256,
+    "supply_per_tick": 65,
+    "initial_reserve": 200,
+    "reserve_capacity": 200,
+    "arms": [
+      {
+        "opportunities_per_tick": 1,
+        "scheduled_attempts": 256,
+        "evaluated_attempts": 256,
+        "funded_attempts": 256,
+        "accepted_reactions": 8,
+        "planned_random_bits": 662,
+        "evaluated_random_bits": 662,
+        "spent": 256,
+        "actual_generated_random_bits": 7239,
+        "scheduler_and_rejection_random_bits": 6577,
+        "source_intake": 0,
+        "source_release": 1,
+        "source_stock": 9,
+        "net_plastic_slots": 6,
+        "body_bytes": 96,
+        "precomputed_python_plan_bytes": 37164,
+        "planning_cpu_seconds": 0.015625,
+        "kernel_cpu_seconds": 0.28125,
+        "kernel_wall_seconds": 0.27882500003033783,
+        "resource_ledger": {
+          "maintenance_spent": 256,
+          "request_spent": 0,
+          "holding_spent": 0,
+          "read_spent": 0,
+          "write_spent": 256,
+          "offered": 16640,
+          "spill": 16130,
+          "accepted": 0,
+          "delivered": 0,
+          "cancelled": 0,
+          "replayed_bytes": 0,
+          "fresh": 256
+        }
+      },
+      {
+        "opportunities_per_tick": 64,
+        "scheduled_attempts": 16384,
+        "evaluated_attempts": 16384,
+        "funded_attempts": 16384,
+        "accepted_reactions": 1696,
+        "planned_random_bits": 48902,
+        "evaluated_random_bits": 48902,
+        "spent": 16384,
+        "actual_generated_random_bits": 468971,
+        "scheduler_and_rejection_random_bits": 420069,
+        "source_intake": 24,
+        "source_release": 141,
+        "source_stock": 125,
+        "net_plastic_slots": 93,
+        "body_bytes": 96,
+        "precomputed_python_plan_bytes": 1498092,
+        "planning_cpu_seconds": 0.125,
+        "kernel_cpu_seconds": 0.859375,
+        "kernel_wall_seconds": 0.9040851999161532,
+        "resource_ledger": {
+          "maintenance_spent": 256,
+          "request_spent": 0,
+          "holding_spent": 0,
+          "read_spent": 0,
+          "write_spent": 16384,
+          "offered": 16640,
+          "spill": 65,
+          "accepted": 0,
+          "delivered": 0,
+          "cancelled": 0,
+          "replayed_bytes": 0,
+          "fresh": 256
+        }
+      }
+    ],
+    "same_initial_body": true,
+    "proposals_precomputed_without_byte_labels": true,
+    "random_bits_include_randrange_rejection": true,
+    "net_slots_not_gross_formation_count": true,
+    "random_bit_scope": "requested getrandbits(k) output bits; PRNG internal words and energy unmeasured",
+    "CPU_timing_includes_kernel_observer_readout": true,
+    "fixed_finite_work_budget": true,
+    "continuous_OS_arrival_not_implemented": true,
+    "training_performed": false,
+    "capability_claim": false,
+    "bits_per_byte_not_used_for_capability": true
+  },
+  "source_hashes": {
+    "information_boltzmann/core/cgb_local_medium.py": "d72c75809d1b29aa99aab3d5d46891b4250421a0019cb710205f52c0769bccd2",
+    "scripts/validate_cgb_local_medium.py": "fddecb5d0654fd568e9997ca7f3f081a3b080168c38b6c1571755dfaf7cc8f2a",
+    "information_boltzmann/core/cgb_low_resource_life.py": "0c4b80b6503ed4d617857c4ff0e477100c9de2d0f371ab7960f6191f330f9800",
+    "lean/CGBAxioms/reviews/unified_reference_20261025.lean": "9e8340146a04abfb1bb4371a1620e0efaf4a5b71a2c40324b50b85bc343139be",
+    "docs/information_boltzmann/CGB_LG1_ORGANISM_SPEC_20261026.md": "1659bcda15ddde964fa1243369b03e238f64d78088647ec6d87fa8fe3dac5b45",
+    "docs/information_boltzmann/CGB_UNIFIED_REFERENCE_20261026.md": "494f549df5100e276b8d064c3afd7301fde72962fa93d7b9d4fd410130ed7558"
+  }
+}
