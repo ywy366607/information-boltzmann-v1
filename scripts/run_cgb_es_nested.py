@@ -48,6 +48,7 @@ def bounds():
 LO, HI = bounds()
 WITNESS = dict(phi=np.array([3.0, 6.0, 3.0, 3.0, 3.0, 1.0]), logk_rule=np.array([-6.0, -9.0, -9.0, -2.0]),
                logk_x=np.array([-3.0, -9.0, -1.0, -1.0]) - 4.7, log_flip=np.array(-9.0), log_move=np.array(-9.0))
+MOVER = dict(WITNESS, logk_rule=np.array([-6.0, -3.0, -3.0, -2.0]), log_flip=np.array(-3.0), log_move=np.array(-4.0))
 
 
 def encode(g):
@@ -87,6 +88,8 @@ def main():
     rng = np.random.default_rng(a.seed)
     if a.init == "witness":   # the existence witness declared before any selection (metabolism, still)
         theta = encode(WITNESS)
+    elif a.init == "mover":   # the same body, moving (~1 cell per tick) with a usable run/stop circuit
+        theta = encode(MOVER)
     else:
         init = json.loads(Path(a.init).read_text(encoding="utf-8"))
         theta = encode(init["best"]["genome"])
@@ -101,7 +104,9 @@ def main():
         rows = {k: np.repeat(v, a.worlds, axis=0) for k, v in g.items()}   # lane = row * W + world
         seeds = 200000 * (a.seed + 1) + 1000 * it + np.arange(a.worlds)
         r = NX.run_exact(tbl, rows, seeds, ticks=a.ticks, copies=a.N + 1)
-        surv = r["survival"].reshape(a.N + 1, a.worlds)
+        # a lane that needed more than K events in a leap is not exact (overflow): it scores as dead at
+        # birth, so selection stays where the simulator is exact (total event rate <= K / dt per tick)
+        surv = np.where(r["overflow"] > 0, 0, r["survival"]).reshape(a.N + 1, a.worlds)
         score = surv.mean(1)
         z = (score[1:] - score[1:].mean()) / (score[1:].std() + 1e-9)
         theta = theta + a.alpha * (z[:, None] * eps).mean(0)
@@ -121,7 +126,7 @@ def main():
             if best is None or (row["val"][1], row["val_mean"]) > (best["val"][1], best["val_mean"]):
                 best = dict(gen=it, genome=cand, val=row["val"], val_mean=row["val_mean"])
         out.write_text(json.dumps(dict(prereg="docs/information_boltzmann/CGB_NESTED_ORGANISM_PREREG_20261027.md",
-                                       method="ES (Qiu et al. 2025, arXiv 2509.24372), common random numbers",
+                                       method="ES (Qiu et al. 2025, arXiv 2509.24372), common random numbers; overflow lanes score 0",
                                        world="rain_torus_w0", init=a.init, args=vars(a), history=hist,
                                        validation=vals, theta=theta.tolist(), best=best), indent=1), encoding="utf-8")
 
