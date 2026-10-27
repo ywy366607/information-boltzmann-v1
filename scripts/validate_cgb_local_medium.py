@@ -64,14 +64,21 @@ def validate_reactions():
         choices = list(product(range(f.charge_cap + 1), range(f.charge_cap + 1), range(f.slot_cap + 1)))
         for states in product(choices, repeat=f.edges):
             body = local.LocalMedium(f, pack(f, states))
+            direct = local.LocalMedium(f, pack(f, states), cache_totals=False)
             initial_energy, initial_content = energy(body), content(body)
             for index in range(f.events):
                 edits, exponent, bound = body.prepare(index)
+                assert (edits, exponent, bound) == direct.prepare(index)
                 rows += 1
                 if exponent is None:
                     assert not edits
                     continue
                 after = successor(body, edits)
+                for channel, size in ((0, f.rows), (1, f.labels)):
+                    for compartment in range(size):
+                        ids = (range(compartment * f.labels, (compartment + 1) * f.labels)
+                               if channel == 0 else range(compartment, f.edges, f.labels))
+                        assert after.total(channel, compartment) == sum(after.get(e)[channel] for e in ids)
                 back, reverse_exponent, reverse_bound = after.prepare(body.reverse(index))
                 assert content(after) == initial_content
                 assert successor(after, back).payload == body.payload
@@ -164,7 +171,8 @@ def validate_reads():
                 native_byte_bits_per_edge=byte_law.bits,
                 three_byte_read_write_checked=True,
                 encoding="ceil(log2((Q+1)^2*(W+1))) fixed bits per edge; lossless",
-                whole_clique_sum_cost_is_degree_dependent=True)
+                cached_prepare_avoids_whole_clique_scan=True,
+                direct_oracle_and_cache_rebuild_cost_is_degree_dependent=True)
 
 
 def validate_history_and_payment():
@@ -273,10 +281,13 @@ def validate_open_exchange():
     body = local.LocalMedium(f, pack(f, [(1, 0, 1)] * f.edges))
     opened = local.OpenMedium(body, local.ReservoirLaw(3))
     reads, original = [], body.get
+    sums, original_total = [], body.total
     body.get = lambda e: (reads.append(e), original(e))[1]
+    body.total = lambda channel, index: (sums.append((channel, index)), original_total(channel, index))[1]
     opened.prepare(f.events, 0)
-    assert set(reads) == {0, 2, 4}
+    assert set(reads) == {0} and sums == [(1, 0)]
     body.get = original
+    body.total = original_total
     stimulated = opened.prepare(f.events, 0)[1]
     unstimulated = opened.prepare(f.events, 1)[1]
     assert stimulated - unstimulated == opened.reservoir.stimulus
@@ -294,6 +305,70 @@ def validate_open_exchange():
                 exact_boundary_log_balance=True, body_plus_reservoir_conserved=True,
                 boundary_reads_only_its_Q_clique=True, byte_modulates_boundary_only=True,
                 family_proposal_normalized_and_reverse_symmetric=True)
+
+
+def validate_clique_cache():
+    """Derived totals must equal direct sums after all local and restore paths."""
+    checked = reads_cached = reads_direct = 0
+    for rows, labels, cap in ((1, 1, 1), (2, 3, 2), (3, 256, 1), (257, 1, 15)):
+        f = local.LocalLaw(rows, labels, cap, cap, (0,) * (max(rows, labels) * cap + 1))
+        rng = random.Random(20261027)
+        states = [tuple(rng.randrange(cap + 1) for _ in range(3)) for _ in range(f.edges)]
+        raw = pack(f, states)
+        cached = local.LocalMedium(f, raw)
+        direct = local.LocalMedium(f, raw, cache_totals=False)
+        expected_bytes = ((rows * (labels * cap).bit_length() + 7) // 8
+                          + (labels * (rows * cap).bit_length() + 7) // 8)
+        assert cached.cache_bytes == expected_bytes and direct.cache_bytes == 0
+        for step in range(80):
+            edge = rng.randrange(f.edges)
+            state = tuple(rng.randrange(cap + 1) for _ in range(3))
+            cached._put(edge, state)
+            direct._put(edge, state)
+            for channel, size in ((0, f.rows), (1, f.labels)):
+                for index in range(size):
+                    assert cached.total(channel, index) == direct.total(channel, index)
+                    checked += 1
+            proposal = rng.randrange(f.events)
+            assert cached.prepare(proposal) == direct.prepare(proposal)
+            assert cached.state_dict() == direct.state_dict()
+            if step == 39:
+                saved = json.loads(json.dumps(cached.state_dict()))
+                cached._put(edge, (0, 0, 0))
+                cached.load_state_dict(saved)
+                direct.load_state_dict(saved)
+        before = cached.state_dict()
+        try:
+            cached.payload[0] = 0
+        except TypeError:
+            assert cached.state_dict() == before
+        else:
+            raise AssertionError("raw public payload can bypass total maintenance")
+        for bad in (dict(before, totals=[0]), dict(before, payload="ff")):
+            try:
+                cached.load_state_dict(bad)
+            except ValueError:
+                assert cached.state_dict() == before
+            else:
+                raise AssertionError("invalid cache/body snapshot admitted")
+    # Same proposal, different amounts of physical reading, nonconstant U.
+    f = local.LocalLaw(3, 256, 1, 1, tuple(range(257)))
+    raw = pack(f, [(1, 0, 1)] * f.edges)
+    for use_cache in (True, False):
+        body = local.LocalMedium(f, raw, cache_totals=use_cache)
+        original, reads = body.get, []
+        body.get = lambda e: (reads.append(e), original(e))[1]
+        result = body.prepare(0)
+        assert result[1] is not None
+        if use_cache:
+            reads_cached = len(reads)
+        else:
+            reads_direct = len(reads)
+    assert reads_cached == 2 and reads_direct == 258
+    return dict(exact_total_comparisons=checked, cache_vs_direct_rate_checks=320,
+                restore_rebuilds_cache=True, raw_public_payload_readonly=True,
+                native_row_prepare_charge_reads=[reads_cached, reads_direct],
+                no_new_physical_state=True, capability_claim=False)
 
 
 def fresh_open(source, reserve=200, supply=0, hole=None, opportunities_per_tick=1):
@@ -468,8 +543,12 @@ def validate_window_real_bytes():
             self.generated_bits += k
             return super().getrandbits(k)
     rows = []
-    for quota in (1, 64):
+    paired_trace = None
+    for quota, use_cache in ((1, True), (64, True), (64, False)):
         opened, world = fresh_open(source, supply=65, opportunities_per_tick=quota)
+        start = time.perf_counter()
+        opened.body = local.LocalMedium(opened.body.law, bytes(opened.body.payload), cache_totals=use_cache)
+        initialization_wall = time.perf_counter() - start
         start = time.process_time()
         plans, random_bits = [], 0
         for tick in range(len(source)):
@@ -492,6 +571,7 @@ def validate_window_real_bytes():
         totals = dict.fromkeys(("scheduled_attempts", "evaluated_attempts", "funded_attempts",
                                 "accepted_reactions", "planned_random_bits", "evaluated_random_bits", "spent"), 0)
         cpu = wall = 0.0
+        trace = []
         for tick, plan in enumerate(plans):
             start_cpu, start_wall = time.process_time(), time.perf_counter()
             result = opened.tick_window(plan, world)
@@ -501,11 +581,24 @@ def validate_window_real_bytes():
             assert content(opened.body) + opened.stock == opened.initial_content + opened.reservoir.source_initial
             for key in totals:
                 totals[key] += result[key]
+            if quota == 64:
+                full = (result, opened.state_dict(), world.state_dict())
+                if use_cache:
+                    trace.append(full)
+                else:
+                    assert full == paired_trace[tick]
+        if quota == 64 and use_cache:
+            paired_trace = trace
         counts = world.state_dict()["state"]["counts"]
         assert totals["scheduled_attempts"] == totals["funded_attempts"] == quota * len(source)
         assert counts["fresh"] == counts["maintenance_spent"] == len(source)
         assert counts["write_spent"] == totals["spent"] and counts["offered"] == 65 * len(source)
-        rows.append(dict(opportunities_per_tick=quota, **totals, actual_generated_random_bits=random_bits,
+        rows.append(dict(opportunities_per_tick=quota, cache_totals=use_cache,
+                         initialization_wall_seconds=initialization_wall,
+                         derived_cache_packed_bytes=opened.body.cache_bytes,
+                         cache_python_bytes=(sum(sys.getsizeof(x) for x in opened.body._totals)
+                                             + sys.getsizeof(opened.body._totals) if use_cache else 0),
+                         **totals, actual_generated_random_bits=random_bits,
                          scheduler_and_rejection_random_bits=random_bits - totals["planned_random_bits"],
                          source_intake=opened.intake, source_release=opened.released, source_stock=opened.stock,
                          net_plastic_slots=sum(opened.body.get(i)[2] for i in range(opened.body.law.edges)),
@@ -518,6 +611,8 @@ def validate_window_real_bytes():
                 random_bits_include_randrange_rejection=True, net_slots_not_gross_formation_count=True,
                 random_bit_scope="requested getrandbits(k) output bits; PRNG internal words and energy unmeasured",
                 CPU_timing_includes_kernel_observer_readout=True, fixed_finite_work_budget=True,
+                cached_and_direct_every_window_state_and_receipt_identical=True,
+                observer_trace_bytes_not_counted_as_body=True, peak_process_memory_not_measured=True,
                 continuous_OS_arrival_not_implemented=True, training_performed=False,
                 capability_claim=False, bits_per_byte_not_used_for_capability=True)
 
@@ -724,13 +819,16 @@ def main():
     assert "boundary_contact_fraction' depends on axioms" in lean.stdout
     assert "boundary_contact_envelope' depends on axioms" in lean.stdout
     assert "boundary_response_budget' depends on axioms" in lean.stdout
+    assert "clique_total_update' depends on axioms" in lean.stdout
     report = dict(status="joint_local_reactions_checked", capability_claim=False,
                   full_medium_admitted=False, training_performed=False, production_lean_modules_added=0,
                   production_theorems_added=0, private_scalar_review_lemmas_added=2,
+                  derived_cache_update_review_lemmas_added=1,
                   per_family_caps_are_registered_conductances=True,
                   reactions=validate_reactions(), locality=validate_reads(), history=validate_history_and_payment(),
                   open_exchange=validate_open_exchange(), open_timing=validate_open_timing(),
                   open_windows=validate_open_windows(),
+                  clique_cache=validate_clique_cache(),
                   input_response=validate_input_response_bound(),
                   real_byte_open_interface=validate_open_real_bytes(),
                   real_byte_window_interface=validate_window_real_bytes(),

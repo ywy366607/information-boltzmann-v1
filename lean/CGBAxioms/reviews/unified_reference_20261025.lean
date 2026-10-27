@@ -203,6 +203,16 @@ private theorem boundary_response_budget (q fee budget required : Real) (n : Nat
     _ ≤ budget * q := mul_le_mul_of_nonneg_right paid h0
 #print axioms boundary_response_budget
 
+-- A cached clique sum is derived state: replacing one charge updates it exactly.
+private theorem clique_total_update {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (f : ι → Nat) (i : ι) (value : Nat) :
+    (∑ j, Function.update f i value j) + f i = (∑ j, f j) + value := by
+  rw [Finset.sum_update_of_mem (Finset.mem_univ i)]
+  have h := Finset.sum_erase_add Finset.univ f (Finset.mem_univ i)
+  simpa [Finset.sdiff_singleton_eq_erase, Nat.add_assoc, Nat.add_comm, Nat.add_left_comm] using
+    congrArg (fun n => n + value) h
+#print axioms clique_total_update
+
 #eval IO.println (Json.mkObj [
   ("format", toJson "CGB.UnifiedReference.boundary.v1"),
   ("vectors", toJson (boundaryVectors.map fun w => Json.mkObj [

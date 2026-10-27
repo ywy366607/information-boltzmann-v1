@@ -10,6 +10,20 @@ from dataclasses import asdict, dataclass
 from functools import cached_property
 
 
+def _read_packed(data, index, bits):
+    start, shift = divmod(index * bits, 8)
+    width = (shift + bits + 7) // 8
+    return (int.from_bytes(data[start:start + width], "little") >> shift) & ((1 << bits) - 1)
+
+
+def _write_packed(data, index, bits, value):
+    start, shift = divmod(index * bits, 8)
+    width = (shift + bits + 7) // 8
+    old = int.from_bytes(data[start:start + width], "little")
+    mask = ((1 << bits) - 1) << shift
+    data[start:start + width] = ((old & ~mask) | (value << shift)).to_bytes(width, "little")
+
+
 @dataclass(frozen=True)
 class LocalLaw:
     rows: int
@@ -65,30 +79,60 @@ class LocalMedium:
     """Three <=4-bit fields per edge, with one minimal fixed-width mixed-radix code.
 
     Uniform event indices range over a FIXED set, including disabled events.
-    Uniform acceptance tickets are explicit stochastic primitives. No index
-    array, aggregate cache, eligibility array or autograd history is stored.
+    Uniform acceptance tickets are explicit stochastic primitives. Optional
+    packed clique totals are derived execution storage, not extra history.
+    No index array, eligibility array or autograd history is stored.
     """
 
-    def __init__(self, law: LocalLaw, payload: bytes):
-        if not isinstance(law, LocalLaw) or type(payload) is not bytes:
+    def __init__(self, law: LocalLaw, payload: bytes, *, cache_totals=True):
+        if (not isinstance(law, LocalLaw) or type(payload) is not bytes
+                or type(cache_totals) is not bool):
             raise ValueError("invalid local medium")
         bits = law.bits * law.edges
         if len(payload) != law.state_bytes or (bits % 8 and payload[-1] >> (bits % 8)):
             raise ValueError("invalid packed shape or padding")
-        self.law, self.payload = law, bytearray(payload)
+        self.law, self._payload = law, bytearray(payload)
+        self._total_bits = ((law.labels * law.charge_cap).bit_length(),
+                            (law.rows * law.charge_cap).bit_length())
+        self._totals = (tuple(bytearray((n * b + 7) // 8)
+                              for n, b in zip((law.rows, law.labels), self._total_bits))
+                        if cache_totals else None)
         for edge in range(law.edges):
             p, q, w = self.get(edge)
             if max(p, q) > law.charge_cap or w > law.slot_cap:
                 raise ValueError("packed state exceeds capacity")
+            if self._totals is not None:
+                row, col = divmod(edge, law.labels)
+                for channel, index, value in ((0, row, p), (1, col, q)):
+                    data, width = self._totals[channel], self._total_bits[channel]
+                    _write_packed(data, index, width, _read_packed(data, index, width) + value)
         _ = law.bounds  # compile static rate bounds once, not during local events
+
+    @property
+    def payload(self):
+        """Read-only view; writes must maintain the derived total invariant."""
+        return memoryview(self._payload).toreadonly()
+
+    @property
+    def cache_bytes(self):
+        return sum(map(len, self._totals)) if self._totals is not None else 0
+
+    def total(self, channel, index):
+        """Exact sum over ONE allowed clique; the uncached path is the oracle."""
+        f = self.law
+        if (type(channel) is not int or channel not in (0, 1)
+                or type(index) is not int or not 0 <= index < (f.rows, f.labels)[channel]):
+            raise ValueError("invalid compartment")
+        if self._totals is not None:
+            return _read_packed(self._totals[channel], index, self._total_bits[channel])
+        ids = (range(index * f.labels, (index + 1) * f.labels) if channel == 0
+               else range(index, f.edges, f.labels))
+        return sum(self.get(e)[channel] for e in ids)
 
     def get(self, edge):
         if type(edge) is not int or not 0 <= edge < self.law.edges:
             raise ValueError("invalid implicit edge")
-        start, shift = divmod(edge * self.law.bits, 8)
-        width = (shift + self.law.bits + 7) // 8
-        word = int.from_bytes(self.payload[start:start + width], "little")
-        code = (word >> shift) & ((1 << self.law.bits) - 1)
+        code = _read_packed(self._payload, edge, self.law.bits)
         if code >= self.law.states:
             raise ValueError("unused local code")
         pq, w = divmod(code, self.law.slot_cap + 1)
@@ -97,13 +141,16 @@ class LocalMedium:
 
     def _put(self, edge, state):
         p, q, w = state
+        if self._totals is not None:
+            old = self.get(edge)
+            row, col = divmod(edge, self.law.labels)
+            for channel, index in ((0, row), (1, col)):
+                if state[channel] != old[channel]:
+                    data, bits = self._totals[channel], self._total_bits[channel]
+                    value = _read_packed(data, index, bits) - old[channel] + state[channel]
+                    _write_packed(data, index, bits, value)
         code = (p * (self.law.charge_cap + 1) + q) * (self.law.slot_cap + 1) + w
-        start, shift = divmod(edge * self.law.bits, 8)
-        width = (shift + self.law.bits + 7) // 8
-        old = int.from_bytes(self.payload[start:start + width], "little")
-        mask = ((1 << self.law.bits) - 1) << shift
-        word = (old & ~mask) | (code << shift)
-        self.payload[start:start + width] = word.to_bytes(width, "little")
+        _write_packed(self._payload, edge, self.law.bits, code)
 
     def decode(self, index):
         f = self.law
@@ -172,9 +219,7 @@ class LocalMedium:
         delta = sum(self.unit_energy(state) - self.unit_energy(self.get(e)) for e, state in edits)
         if kind < 2:
             row, col = divmod(edge, f.labels)
-            ids = (range(row * f.labels, (row + 1) * f.labels) if channel == 0
-                   else range(col, f.edges, f.labels))
-            total = sum(self.get(e)[channel] for e in ids)
+            total = self.total(channel, row if channel == 0 else col)
             changed = new[channel] - old[channel]
             delta_u = f.potential[total + changed] - f.potential[total]
             delta += (2 if kind == 0 else 1) * delta_u
@@ -221,8 +266,9 @@ class LocalMedium:
                 or any(type(v) is not int for v in snapshot["law"]["potential"])
                 or type(snapshot["payload"]) is not str):
             raise ValueError("local medium checkpoint mismatch")
-        restored = LocalMedium(self.law, bytes.fromhex(snapshot["payload"]))
-        self.payload = restored.payload
+        restored = LocalMedium(self.law, bytes.fromhex(snapshot["payload"]),
+                               cache_totals=self._totals is not None)
+        self._payload, self._totals = restored._payload, restored._totals
 
 
 @dataclass(frozen=True)
@@ -325,7 +371,7 @@ class OpenMedium:
             return (), None, bound, 0
         new = (p, q + sign, w)
         col = edge % f.labels
-        total = sum(self.body.get(e)[1] for e in range(col, f.edges, f.labels))
+        total = self.body.total(1, col)
         delta = (self.body.unit_energy(new) - self.body.unit_energy(old)
                  + f.potential[total + sign] - f.potential[total])
         mu = r.chemical_base + (r.stimulus if col == label else 0)
@@ -435,12 +481,13 @@ class OpenMedium:
                        for k in ("stock", "intake", "released", "initial_content"))
                 or snapshot["initial_content"] != self.initial_content):
             raise ValueError("open medium checkpoint mismatch")
-        restored = LocalMedium(self.body.law, bytes(self.body.payload))
+        restored = LocalMedium(self.body.law, bytes(self.body.payload),
+                               cache_totals=self.body._totals is not None)
         restored.load_state_dict(snapshot["body"])
         content = sum(sum(restored.get(e)) for e in range(restored.law.edges))
         if (content + snapshot["stock"] != self.initial_content + self.reservoir.source_initial
                 or snapshot["stock"] != self.reservoir.source_initial
                 - snapshot["intake"] + snapshot["released"]):
             raise ValueError("open material balance mismatch")
-        self.body.payload = restored.payload
+        self.body._payload, self.body._totals = restored._payload, restored._totals
         self.stock, self.intake, self.released = (snapshot[k] for k in ("stock", "intake", "released"))
