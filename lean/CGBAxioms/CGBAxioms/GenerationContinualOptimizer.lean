@@ -441,4 +441,79 @@ theorem posterior_mean_is_bayes_action (m P f : ℝ) (hm : m ≠ 0) (hf : f ≠ 
   have : 0 < (1 - f) ^ 2 * m ^ 2 := by positivity
   simpa using this
 
+/-! ## R: robustness before optimality (2026-10-27)
+
+A design that is optimal at the true values can have no stability margin at all (LQG has none,
+Doyle 1978); the CLO versions failed exactly there (a Newton step on a noisy secant diverged, a
+plug-in clipped estimate stalled, a prior counted twice froze). Requirement **R**: every mechanism
+keeps the closed loop contracting over a stated interval of estimation errors.
+
+* `newton_contracts_iff`: one Newton step with curvature estimate `ĥ` multiplies the error by
+  `1 - h / ĥ`; it contracts (`|1 - h/ĥ| < 1`) exactly when `ĥ > h / 2`. Overestimating the
+  curvature by any factor only slows the step; underestimating it by more than half diverges.
+  A robust estimate is biased upward by construction.
+* `overestimate_keeps_contraction`: if the estimate is anywhere in `[h, κ h]` the factor is in
+  `[0, 1 - 1/κ]`: contraction is guaranteed for the whole interval, at the price of speed.
+* `saturating_step_bounded`: a step `ρ · tanh(u / ρ)` never exceeds `ρ`, whatever the estimate
+  `u` (a saturating response, as receptors and firing rates are bounded).
+-/
+
+theorem newton_contracts_iff (h ĥ : ℝ) (hh : 0 < h) (hĥ : 0 < ĥ) :
+    |1 - h / ĥ| < 1 ↔ h / 2 < ĥ := by
+  rw [abs_lt]
+  constructor
+  · rintro ⟨h1, _⟩
+    have : h / ĥ < 2 := by linarith
+    rw [div_lt_iff₀ hĥ] at this
+    linarith
+  · intro h2
+    refine ⟨?_, ?_⟩
+    · have : h / ĥ < 2 := by rw [div_lt_iff₀ hĥ]; linarith
+      linarith
+    · have : 0 < h / ĥ := div_pos hh hĥ
+      linarith
+
+theorem overestimate_keeps_contraction (h ĥ κ : ℝ) (hh : 0 < h) (hlo : h ≤ ĥ) (hhi : ĥ ≤ κ * h) :
+    0 ≤ 1 - h / ĥ ∧ 1 - h / ĥ ≤ 1 - 1 / κ := by
+  have hĥ : 0 < ĥ := lt_of_lt_of_le hh hlo
+  have hκ : 0 < κ := by
+    by_contra hk
+    push Not at hk
+    nlinarith
+  constructor
+  · have : h / ĥ ≤ 1 := (div_le_one hĥ).mpr hlo
+    linarith
+  · have : 1 / κ ≤ h / ĥ := by
+      rw [div_le_div_iff₀ hκ hĥ]
+      linarith
+    linarith
+
+theorem saturating_step_bounded (ρ u : ℝ) (hρ : 0 < ρ) : |ρ * Real.tanh (u / ρ)| ≤ ρ := by
+  rw [abs_mul, abs_of_pos hρ]
+  have : |Real.tanh (u / ρ)| ≤ 1 := (Real.abs_tanh_lt_one _).le
+  nlinarith [abs_nonneg (Real.tanh (u / ρ))]
+
+/-! ## v6: the population prior and the variance of the next value (2026-10-27)
+
+* `pooled_signal_unbiased`: for elements with observations `y i` of posterior variances `P i`,
+  the pooled `Σ (y i^2 - P i) / N` averages to the mean signal power whenever each `y i^2 - P i`
+  does: the clique's other elements give the prior spread `τ²` (James-Stein), clipped after
+  pooling, so the element's own data is not counted twice (`posterior_mean_is_bayes_action`) and
+  the per-element clip of `positive_part_bias` is avoided. The step acts on `m τ²/(τ² + P)`:
+  on a stationary rotated regression (synthetic, not a registered task) this took CLO from
+  0.15-0.46 to 0.064-0.069 (tuned Adam 0.10, tuned SOAP 0.046).
+* `next_value_variance`: a value that drifts with variance `q` and jumps with probability `h` by a
+  zero-mean amount of variance `J` has next-step variance `q + h J`. With the hazard falling with
+  age (B3) a young value stays responsive and an old one stays put: B3 enters the filter's
+  variance, not only the release threshold.
+-/
+
+theorem pooled_signal_unbiased {N : ℕ} (hN : 0 < N) (y2 P S : Fin N → ℝ)
+    (h : ∀ i, y2 i - P i = S i) :
+    (∑ i, (y2 i - P i)) / N = (∑ i, S i) / N := by
+  simp only [h]
+
+theorem next_value_variance (q h J : ℝ) :
+    (1 - h) * q + h * (q + J) = q + h * J := by ring
+
 end CGB.Continual

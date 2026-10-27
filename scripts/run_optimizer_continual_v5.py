@@ -54,6 +54,18 @@ class CLO5(V4.CLO4):
     def _drift(self, r, c2):
         return (self.e2 / c2 - 2 * r).clamp(min=0)
 
+    def _curvature(self, own, dth, later):
+        if later:
+            self.sxy = 0.9 * self.sxy + 0.1 * own * dth
+            self.sxx = 0.9 * self.sxx + 0.1 * dth * dth
+        return self.sxy / (self.sxx + EPS)
+
+    def _step_curvature(self, h):
+        return h.abs().clamp(min=EPS)
+
+    def _bound(self, u):
+        return u.clamp(-self.rho, self.rho)
+
     def _frac(self, P):
         S = self.S.clamp(min=0)
         return S / (S + P + EPS)
@@ -91,10 +103,7 @@ class CLO5(V4.CLO4):
         thp = self.Wprev @ self.Q if self.Wprev is not None else th
         dth, own = th - thp, g - gp
         later = self.t > 1
-        if later:
-            self.sxy = 0.9 * self.sxy + 0.1 * own * dth
-            self.sxx = 0.9 * self.sxx + 0.1 * dth * dth
-        h = self.sxy / (self.sxx + EPS)
+        h = self._curvature(own, dth, later)
         if later:
             e = gp - self.gprev
             if self.t > 2:
@@ -154,11 +163,11 @@ class CLO5(V4.CLO4):
         self.ns += 1
         self.S = self.S + (m * m - P - self.S) / min(self.ns, 1 / (1 - V4.S_EMA))
         frac = self._frac(P)
-        ha = h.abs().clamp(min=EPS)
+        ha = self._step_curvature(h)
         ghat = m * frac
         u = ghat / ha
         binding = bool((u.abs() >= self.rho).any())
-        u = u.clamp(-self.rho, self.rho)
+        u = self._bound(u)
         a = u * u
         act = a.sum(1, keepdim=True) > 0
         if self.alloc != "none" and act.sum() > 1:
