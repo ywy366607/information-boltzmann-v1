@@ -293,4 +293,59 @@ theorem event_part_is_rate_times_size (n B μ : ℝ) (hB : B ≠ 0) :
     (n * μ) / B = (n / B) * μ := by
   field_simp
 
+/-! ## A beneficial latch, not only a healthy one (from the v4 run, 2026-10-27)
+
+H1 and H2 make a latch healthy: it can always be left and it keeps sensing. The v4 run showed a
+healthy latch can still cost: a hard latch (gain zero) froze a drifting backbone (task C: 7.96 vs
+1.73 without latch), and a fixed window held a 16-step burst as long as a 500-step backbone. In a
+world of slow drift plus rare revertible jumps (W7) a latch is *beneficial* when, besides H1 and
+H2 and giving up its budget (`held_budget_starves`), it
+
+* **B1 passes drift**: a frozen estimate under a random walk has an error that grows without
+  bound (`frozen_hold_loses_on_drift`), so small innovations must still be written;
+* **B2 bounds influence**: under a mixture of small noise and rare large jumps the Bayes update
+  is `y · w(y)` with `w(y) = 1 / (1 + c exp(a y^2))`; it is below `1 / (c a y)`, so the influence
+  of a single large innovation goes to zero (`mixture_update_bounded`), while a linear gain's
+  grows without bound; at `y = 0` the weight is `1 / (1 + c)`, near full for a small jump prior;
+* **B3 deepens with age**: if the prior odds of a lasting change fall with the age of the held
+  value (a decreasing hazard, as for the heavy-tailed durations of language), the number of
+  consecutive contrary observations needed to release never decreases with age
+  (`release_threshold_monotone_in_age`); with a constant hazard it is constant, so a fixed
+  window is right only in a memoryless world. The rule of succession `1 / (T + 2)` (a uniform
+  prior on an unknown constant hazard) gives odds `1 / (T + 1)`, decreasing
+  (`succession_odds_decreasing`). The depth of the hold is the continuous shell again, now indexed
+  by the age of the evidence.
+-/
+
+theorem frozen_hold_loses_on_drift (e₀ q M : ℝ) (hq : 0 < q) : ∃ n : ℕ, M < e₀ + n * q := by
+  obtain ⟨n, hn⟩ := exists_nat_gt ((M - e₀) / q)
+  refine ⟨n, ?_⟩
+  rw [div_lt_iff₀ hq] at hn
+  linarith
+
+theorem mixture_update_bounded (c a y : ℝ) (hc : 0 < c) (ha : 0 < a) (hy : 0 < y) :
+    y / (1 + c * Real.exp (a * y ^ 2)) < 1 / (c * a * y) := by
+  have he : a * y ^ 2 < Real.exp (a * y ^ 2) := by
+    have := Real.add_one_lt_exp (show a * y ^ 2 ≠ 0 by positivity)
+    linarith
+  have hd : c * a * y ^ 2 < 1 + c * Real.exp (a * y ^ 2) := by nlinarith
+  have hpos : 0 < c * a * y := by positivity
+  rw [div_lt_div_iff₀ (by positivity) hpos]
+  nlinarith
+
+theorem mixture_weight_at_zero (c a : ℝ) : 1 / (1 + c * Real.exp (a * 0 ^ 2)) = 1 / (1 + c) := by
+  simp
+
+theorem release_threshold_monotone_in_age (o : ℕ → ℝ) (hanti : Antitone o) (L : ℝ) (k T₁ T₂ : ℕ)
+    (hL : 0 ≤ L) (hT : T₁ ≤ T₂) (hrel : 1 ≤ o T₂ * L ^ k) : 1 ≤ o T₁ * L ^ k := by
+  have := hanti hT
+  have hp : 0 ≤ L ^ k := pow_nonneg hL k
+  nlinarith
+
+theorem succession_odds_decreasing : Antitone (fun T : ℕ => (1 : ℝ) / ((T : ℝ) + 1)) := by
+  intro a b hab
+  have : (a : ℝ) ≤ b := by exact_mod_cast hab
+  apply one_div_le_one_div_of_le (by positivity)
+  linarith
+
 end CGB.Continual
