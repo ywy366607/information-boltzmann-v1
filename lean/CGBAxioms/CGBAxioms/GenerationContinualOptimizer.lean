@@ -384,4 +384,61 @@ theorem linear_burst_damage_integral (a : ℕ → ℝ) (N L : ℕ) (hfull : ∀ 
   rw [Finset.sum_congr rfl fun i _ => hfull (N + i) (by omega)]
   simp
 
+/-! ## v6: what the hold must take from the clique (2026-10-27)
+
+CLO5 on a stationary task kept re-accepting single outliers as changes: the rule of succession
+`1/(T+2)` (a uniform prior on the change rate: "every second step may change" at age 0) let a
+single jump-like observation through whenever its value was young, the acceptance reset the age,
+and the accepted value was given the jump's prior variance.
+
+* `beta_hazard_decreasing`, `beta_hazard_succession`: with a Beta(α, β) prior on the change rate
+  the hazard after `T` quiet observations is `α / (α + β + T)`: still decreasing (B3 holds) and
+  equal to the rule of succession at `α = β = 1`. The clique pools thousands of element histories,
+  so `α, β` are learned (empirical Bayes); in a world without lasting changes `α` is small and a
+  single outlier is never accepted.
+* `accepted_run_variance`: after a run of `k` observations with noise variance `s` the new value
+  is known to within the variance of their mean, `s / k`; the jump-size prior no longer applies.
+-/
+
+theorem beta_hazard_decreasing (α β : ℝ) (hα : 0 < α) (hβ : 0 ≤ β) :
+    Antitone (fun T : ℕ => α / (α + β + T)) := by
+  intro a b hab
+  have : (a : ℝ) ≤ b := by exact_mod_cast hab
+  apply div_le_div_of_nonneg_left hα.le (by positivity)
+  linarith
+
+theorem beta_hazard_succession (T : ℕ) : (1 : ℝ) / (1 + 1 + T) = 1 / ((T : ℝ) + 2) := by
+  ring_nf
+
+theorem accepted_run_variance (s : ℝ) (k : ℕ) (hk : 0 < k) :
+    (∑ _i ∈ Finset.range k, s) / (k : ℝ) ^ 2 = s / k := by
+  rw [Finset.sum_const, Finset.card_range, nsmul_eq_mul]
+  have : (k : ℝ) ≠ 0 := by exact_mod_cast hk.ne'
+  field_simp
+
+/-! ## The step acts on the posterior mean without a second shrink (2026-10-27)
+
+`optimal_step_newton_times_signal` gives the shrink `S / (S + N)` for one raw observation with no
+other knowledge: the shrink is the prior "the gradient is small" applied once. The filter's `m` is
+already a posterior mean with variance `P`. Under that posterior, the expected squared error of the
+action `f m` is `P + (1 - f)^2 m^2` (`posterior_shrink_error`), smallest only at `f = 1`
+(`posterior_mean_is_bayes_action`): a second shrink counts the prior again at every step, and as
+the gradient shrinks near the optimum the steps stall (task B, CLO5: the signal fraction's median
+is 0 from step 50 on). The prior belongs in the filter's start (`m₀ = 0`, `P₀` from the clique),
+once.
+-/
+
+/-- Posterior of the gradient as the two points `m ± √P` (mean `m`, variance `P`): the mean squared
+error of the action `f m` is `P + (1 - f)^2 m^2`. -/
+theorem posterior_shrink_error (m P f : ℝ) (hP : 0 ≤ P) :
+    ((m + Real.sqrt P - f * m) ^ 2 + (m - Real.sqrt P - f * m) ^ 2) / 2 = P + (1 - f) ^ 2 * m ^ 2 := by
+  have hs := Real.sq_sqrt hP
+  nlinarith [hs]
+
+theorem posterior_mean_is_bayes_action (m P f : ℝ) (hm : m ≠ 0) (hf : f ≠ 1) :
+    P + (1 - 1) ^ 2 * m ^ 2 < P + (1 - f) ^ 2 * m ^ 2 := by
+  have h1 : (1 - f) ≠ 0 := sub_ne_zero.mpr (Ne.symm hf)
+  have : 0 < (1 - f) ^ 2 * m ^ 2 := by positivity
+  simpa using this
+
 end CGB.Continual

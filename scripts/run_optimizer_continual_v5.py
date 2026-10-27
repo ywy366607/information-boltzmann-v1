@@ -51,10 +51,23 @@ class CLO5(V4.CLO4):
         self.pi_b, self.s_b = PI_B0, S_B0
         self.stats.update(jumps=0, accepted=0, burst_runs=0)
 
+    def _drift(self, r, c2):
+        return (self.e2 / c2 - 2 * r).clamp(min=0)
+
+    def _frac(self, P):
+        S = self.S.clamp(min=0)
+        return S / (S + P + EPS)
+
+    def _hazard(self, age):
+        return 1 / (age + 2)                      # rule of succession
+
+    def _accept_var(self, Pp, J, Sn):
+        return Pp + J
+
     def kstar(self):
         if not self.age_depth:
             return torch.ones_like(self.age)
-        x = torch.log((self.pi_b * (self.age + 2)).clamp(min=EPS)) / math.log(1 / min(max(self.s_b, 1e-3), 0.999))
+        x = torch.log((self.pi_b / self._hazard(self.age)).clamp(min=EPS)) / math.log(1 / min(max(self.s_b, 1e-3), 0.999))
         return 1 + x.clamp(min=0)
 
     def step(self, W, G, X, fgrad):
@@ -92,7 +105,7 @@ class CLO5(V4.CLO4):
         c2 = max(1 - 0.95 ** n, 0.05)
         c11 = max(1 - 0.95 ** (n - 1), 0.05)
         r = (-self.e11 / c11).clamp(min=0) + EPS
-        q = (self.e2 / c2 - 2 * r).clamp(min=0)
+        q = self._drift(r, c2)
         if later:
             mp = self.m + h * dth
             Pp = self.P + q
@@ -126,7 +139,7 @@ class CLO5(V4.CLO4):
                 self.stats["burst_runs"] += int(ended.sum())
                 # ordinary part written with weight w; an accepted run moves to the new value
                 self.m = torch.where(accept, mp + self.sh, mp + w * Kg * nu)
-                self.P = torch.where(accept, Pp + J, Pp - w * Kg * Pp)
+                self.P = torch.where(accept, self._accept_var(Pp, J, Sn), Pp - w * Kg * Pp)
                 self.age = torch.where(accept, torch.zeros_like(self.age), self.age + 1)
                 self.run = torch.where(accept, torch.zeros_like(self.run), self.run)
                 self.sh = torch.where(accept, torch.zeros_like(self.sh), self.sh)
@@ -140,8 +153,7 @@ class CLO5(V4.CLO4):
         m, P = self.m, self.P
         self.ns += 1
         self.S = self.S + (m * m - P - self.S) / min(self.ns, 1 / (1 - V4.S_EMA))
-        S = self.S.clamp(min=0)
-        frac = S / (S + P + EPS)
+        frac = self._frac(P)
         ha = h.abs().clamp(min=EPS)
         ghat = m * frac
         u = ghat / ha
