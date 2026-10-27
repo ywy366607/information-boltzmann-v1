@@ -1,0 +1,731 @@
+{
+ "graph": "data/malecns_v1/fly_reservoir_coba_r2.npz",
+ "min_syn": 5,
+ "neurons": 165122,
+ "EE_reciprocal": {
+  "pairs": 76952,
+  "cells": 44922,
+  "weaker_direction_synapses": {
+   "min": 5.0,
+   "median": 6.0,
+   "mean": 9.356624909034203,
+   "max": 914.0
+  },
+  "top_type_pairs": [
+   [
+    "L2 <-> L4",
+    1847
+   ],
+   [
+    "T3 <-> Tm3",
+    1427
+   ],
+   [
+    "KCg-m <-> KCg-m",
+    1360
+   ],
+   [
+    "L2 <-> L5",
+    1293
+   ],
+   [
+    "KCa'b'-ap2 <-> KCa'b'-ap2",
+    1131
+   ],
+   [
+    "LPLC2 <-> LPLC2",
+    1088
+   ],
+   [
+    "LC17 <-> LC17",
+    1050
+   ],
+   [
+    "KCa'b'-ap1 <-> KCa'b'-ap1",
+    1016
+   ],
+   [
+    "L5 <-> Mi1",
+    998
+   ],
+   [
+    "KCab-p <-> KCab-p",
+    935
+   ],
+   [
+    "Tm3 <-> Tm3",
+    880
+   ],
+   [
+    "KCg-d <-> KCg-d",
+    869
+   ],
+   [
+    "LC9 <-> LC9",
+    865
+   ],
+   [
+    "KCa'b'-m <-> KCa'b'-m",
+    760
+   ],
+   [
+    "Mi1 <-> T2a",
+    745
+   ],
+   [
+    "KCab-s <-> KCab-s",
+    722
+   ],
+   [
+    "Mi1 <-> T2",
+    696
+   ],
+   [
+    "MeTu1 <-> MeTu1",
+    695
+   ],
+   [
+    "LC10a <-> LC10a",
+    638
+   ],
+   [
+    "PFNa <-> PFNa",
+    634
+   ],
+   [
+    "T2 <-> T2",
+    532
+   ],
+   [
+    "LC4 <-> LC4",
+    456
+   ],
+   [
+    "Tm6 <-> Tm6",
+    448
+   ],
+   [
+    "Tm20 <-> Tm20",
+    419
+   ],
+   [
+    "LPLC1 <-> LPLC1",
+    402
+   ]
+  ],
+  "superclass_pairs": [
+   [
+    "cb_intrinsic <-> cb_intrinsic",
+    36500
+   ],
+   [
+    "ol_intrinsic <-> ol_intrinsic",
+    16595
+   ],
+   [
+    "visual_projection <-> visual_projection",
+    7643
+   ],
+   [
+    "vnc_intrinsic <-> vnc_intrinsic",
+    5890
+   ],
+   [
+    "cb_intrinsic <-> descending_neuron",
+    1889
+   ],
+   [
+    "ascending_neuron <-> vnc_intrinsic",
+    1544
+   ],
+   [
+    "cb_intrinsic <-> visual_projection",
+    1318
+   ],
+   [
+    "ol_intrinsic <-> visual_projection",
+    1148
+   ],
+   [
+    "descending_neuron <-> descending_neuron",
+    972
+   ],
+   [
+    "ascending_neuron <-> ascending_neuron",
+    886
+   ],
+   [
+    "ascending_neuron <-> descending_neuron",
+    690
+   ],
+   [
+    "ascending_neuron <-> cb_intrinsic",
+    541
+   ]
+  ]
+ },
+ "II_reciprocal": {
+  "pairs": 61510,
+  "cells": 30049,
+  "weaker_direction_synapses": {
+   "min": 5.0,
+   "median": 8.0,
+   "mean": 15.263274264347261,
+   "max": 959.0
+  },
+  "top_type_pairs": [
+   [
+    "Mi4 <-> Mi9",
+    1787
+   ],
+   [
+    "C2 <-> L1",
+    1768
+   ],
+   [
+    "MeLo9 <-> Mi2",
+    1039
+   ],
+   [
+    "Dm6 <-> Mi4",
+    858
+   ],
+   [
+    "Delta7 <-> Delta7",
+    787
+   ],
+   [
+    "MeLo9 <-> Pm2a",
+    753
+   ],
+   [
+    "Pm3 <-> Pm4",
+    692
+   ],
+   [
+    "Li32 <-> TmY5a",
+    623
+   ],
+   [
+    "Cm5 <-> Cm9",
+    546
+   ],
+   [
+    "Pm2a <-> Pm2b",
+    424
+   ],
+   [
+    "Pm2a <-> Pm4",
+    402
+   ],
+   [
+    "MeLo9 <-> Pm2b",
+    384
+   ],
+   [
+    "Pm2b <-> Pm4",
+    326
+   ],
+   [
+    "Cm31a <-> Tm29",
+    323
+   ],
+   [
+    "ER4d <-> ER4d",
+    323
+   ],
+   [
+    "LT58 <-> Tm29",
+    309
+   ],
+   [
+    "Pm4 <-> Tm32",
+    300
+   ],
+   [
+    "LPi2e <-> Tlp12",
+    298
+   ],
+   [
+    "Cm7 <-> Dm8a",
+    294
+   ],
+   [
+    "Pm3 <-> Pm7",
+    289
+   ],
+   [
+    "LPi2c <-> LPi3412",
+    282
+   ],
+   [
+    "Cm19 <-> Tm32",
+    262
+   ],
+   [
+    "Cm8 <-> Cm9",
+    260
+   ],
+   [
+    "Dm12 <-> Tm37",
+    254
+   ],
+   [
+    "ER2_a <-> ER2_c",
+    240
+   ]
+  ],
+  "superclass_pairs": [
+   [
+    "cb_intrinsic <-> cb_intrinsic",
+    24422
+   ],
+   [
+    "ol_intrinsic <-> ol_intrinsic",
+    23043
+   ],
+   [
+    "vnc_intrinsic <-> vnc_intrinsic",
+    8361
+   ],
+   [
+    "ascending_neuron <-> vnc_intrinsic",
+    1032
+   ],
+   [
+    "cb_intrinsic <-> descending_neuron",
+    881
+   ],
+   [
+    "ol_intrinsic <-> visual_centrifugal",
+    800
+   ],
+   [
+    "ol_intrinsic <-> visual_projection",
+    546
+   ],
+   [
+    "cb_intrinsic <-> visual_projection",
+    441
+   ],
+   [
+    "ascending_neuron <-> cb_intrinsic",
+    391
+   ],
+   [
+    "descending_neuron <-> vnc_intrinsic",
+    348
+   ],
+   [
+    "ascending_neuron <-> ascending_neuron",
+    284
+   ],
+   [
+    "ascending_neuron <-> descending_neuron",
+    185
+   ]
+  ]
+ },
+ "excitatory_SCC": {
+  "nontrivial": 77,
+  "cells_in_nontrivial": 90080,
+  "size": {
+   "min": 2.0,
+   "median": 2.0,
+   "mean": 1169.8701298701299,
+   "max": 89880.0
+  },
+  "largest": [
+   {
+    "size": 89880,
+    "superclasses": [
+     [
+      "ol_intrinsic",
+      54000
+     ],
+     [
+      "cb_intrinsic",
+      19781
+     ],
+     [
+      "visual_projection",
+      8089
+     ],
+     [
+      "vnc_intrinsic",
+      5489
+     ],
+     [
+      "ascending_neuron",
+      1273
+     ],
+     [
+      "descending_neuron",
+      967
+     ],
+     [
+      "visual_centrifugal",
+      130
+     ],
+     [
+      "cb_motor",
+      61
+     ]
+    ],
+    "types": [
+     [
+      "Tm3",
+      2054
+     ],
+     [
+      "T3",
+      1940
+     ],
+     [
+      "T2a",
+      1867
+     ],
+     [
+      "Mi1",
+      1771
+     ],
+     [
+      "T4c",
+      1766
+     ],
+     [
+      "Tm20",
+      1741
+     ],
+     [
+      "T5b",
+      1713
+     ],
+     [
+      "T5c",
+      1710
+     ],
+     [
+      "T4d",
+      1709
+     ],
+     [
+      "L5",
+      1704
+     ],
+     [
+      "T4b",
+      1687
+     ],
+     [
+      "T4a",
+      1684
+     ],
+     [
+      "Tm4",
+      1665
+     ],
+     [
+      "T5a",
+      1660
+     ],
+     [
+      "Tm1",
+      1659
+     ]
+    ]
+   },
+   {
+    "size": 6,
+    "superclasses": [
+     [
+      "ol_intrinsic",
+      6
+     ]
+    ],
+    "types": [
+     [
+      "L2",
+      2
+     ],
+     [
+      "Tm2",
+      2
+     ],
+     [
+      "L5",
+      2
+     ]
+    ]
+   },
+   {
+    "size": 5,
+    "superclasses": [
+     [
+      "ol_intrinsic",
+      5
+     ]
+    ],
+    "types": [
+     [
+      "Tm2",
+      1
+     ],
+     [
+      "L2",
+      1
+     ],
+     [
+      "Tm1",
+      1
+     ],
+     [
+      "L4",
+      1
+     ],
+     [
+      "L5",
+      1
+     ]
+    ]
+   },
+   {
+    "size": 4,
+    "superclasses": [
+     [
+      "cb_intrinsic",
+      4
+     ]
+    ],
+    "types": [
+     [
+      "ISN",
+      4
+     ]
+    ]
+   },
+   {
+    "size": 4,
+    "superclasses": [
+     [
+      "ol_intrinsic",
+      4
+     ]
+    ],
+    "types": [
+     [
+      "L2",
+      1
+     ],
+     [
+      "Tm2",
+      1
+     ],
+     [
+      "Tm1",
+      1
+     ],
+     [
+      "L5",
+      1
+     ]
+    ]
+   },
+   {
+    "size": 4,
+    "superclasses": [
+     [
+      "ol_intrinsic",
+      4
+     ]
+    ],
+    "types": [
+     [
+      "Tm1",
+      1
+     ],
+     [
+      "Tm2",
+      1
+     ],
+     [
+      "L5",
+      1
+     ],
+     [
+      "L2",
+      1
+     ]
+    ]
+   },
+   {
+    "size": 4,
+    "superclasses": [
+     [
+      "ol_intrinsic",
+      4
+     ]
+    ],
+    "types": [
+     [
+      "L2",
+      1
+     ],
+     [
+      "L5",
+      1
+     ],
+     [
+      "Tm1",
+      1
+     ],
+     [
+      "Tm2",
+      1
+     ]
+    ]
+   },
+   {
+    "size": 4,
+    "superclasses": [
+     [
+      "ol_intrinsic",
+      4
+     ]
+    ],
+    "types": [
+     [
+      "L5",
+      1
+     ],
+     [
+      "Tm1",
+      1
+     ],
+     [
+      "Tm2",
+      1
+     ],
+     [
+      "L2",
+      1
+     ]
+    ]
+   }
+  ]
+ },
+ "validation_head_direction_ring": {
+  "EPG": 46,
+  "PEN": 42,
+  "EPG_PEN_reciprocal_pairs": 480,
+  "components_holding_EPG_PEN": [
+   [
+    54254,
+    88,
+    89880
+   ]
+  ]
+ },
+ "clock_neurons": {
+  "cells": 58,
+  "types": [
+   [
+    "l-LNv",
+    8
+   ],
+   [
+    "s-LNv",
+    8
+   ],
+   [
+    "DN1pA",
+    8
+   ],
+   [
+    "LNd_c",
+    6
+   ],
+   [
+    "5thsLNv_LNd6",
+    4
+   ],
+   [
+    "DN1a",
+    4
+   ],
+   [
+    "LNd_b",
+    4
+   ],
+   [
+    "LPN_a",
+    4
+   ],
+   [
+    "DN1pB",
+    4
+   ],
+   [
+    "LN-DN2",
+    4
+   ],
+   [
+    "LPN_b",
+    2
+   ],
+   [
+    "LN-DN1",
+    2
+   ]
+  ],
+  "synapses_in": {
+   "min": 0.0,
+   "median": 808.5,
+   "mean": 784.1034482758621,
+   "max": 1788.0
+  },
+  "synapses_out": {
+   "min": 98.0,
+   "median": 1013.5,
+   "mean": 938.9137931034483,
+   "max": 2086.0
+  },
+  "in_EE_reciprocal": 25
+ },
+ "inputless_central": {
+  "rule": "non-sensory, >= 100 output synapses, input < 2% of output",
+  "cells": 2,
+  "superclasses": [
+   [
+    "unknown",
+    1
+   ],
+   [
+    "ol_intrinsic",
+    1
+   ]
+  ],
+  "types": [
+   [
+    "",
+    1
+   ],
+   [
+    "L3",
+    1
+   ]
+  ],
+  "synapses_in": {
+   "min": 2.0,
+   "median": 2.5,
+   "mean": 2.5,
+   "max": 3.0
+  },
+  "synapses_out": {
+   "min": 161.0,
+   "median": 190.0,
+   "mean": 190.0,
+   "max": 219.0
+  }
+ }
+}
