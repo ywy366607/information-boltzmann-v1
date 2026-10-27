@@ -1,0 +1,246 @@
+{
+ "architecture": "nested_ecoli_espop2",
+ "implementation": "information_boltzmann/organisms/nested_ecoli_espop2.json ([0, 1] coordinates selected by lineage ES, scripts/run_cgb_es_population.py) on the division grammar grammar_v1_div (cgb_nested_population.DIV_GRAMMAR), run by cgb_nested_population.py (exact GPU events with division, mutation, exchange moves) inside the world rain_torus_w0; the eco-sphere page runs the same table in JavaScript (showcase/ecosphere/ecosphere_core.js)",
+ "inventory_fresh": true,
+ "lineage": [
+  {
+   "id": "joint_medium",
+   "kind": "structure",
+   "theorems": {
+    "CGB.NestedWorld.axioms_torus": "ok",
+    "CGB.NestedWorld.axioms": "ok"
+   },
+   "status": "licensed"
+  },
+  {
+   "id": "membrane",
+   "kind": "structure",
+   "theorems": {
+    "CGB.NestedWorld.intake_is_exchange": "ok",
+    "CGB.NestedWorld.dead_intake_is_physics": "ok"
+   },
+   "status": "licensed"
+  },
+  {
+   "id": "leaks",
+   "kind": "structure",
+   "theorems": {
+    "CGB.NestedWorld.leak_bound": "ok",
+    "CGB.NestedWorld.partner_exit_blocked": "ok",
+    "CGB.NestedWorld.gated_exit_blocked": "ok"
+   },
+   "status": "licensed"
+  },
+  {
+   "id": "dissolution",
+   "kind": "structure",
+   "theorems": {
+    "CGB.Generation.corpses_must_go": "ok",
+    "CGB.NestedWorld.frees_only_by_dissolving": "ok",
+    "CGB.NestedWorld.dead_output_is_physics": "ok"
+   },
+   "status": "licensed"
+  },
+  {
+   "id": "division_and_exchange",
+   "kind": "structure",
+   "theorems": {
+    "CGB.NestedWorld.births_only_by_division": "ok",
+    "CGB.NestedWorld.move_exchanges": "ok",
+    "CGB.NestedWorld.axioms_torus": "ok"
+   },
+   "status": "licensed"
+  },
+  {
+   "id": "selected_numbers",
+   "kind": "selected",
+   "theorems": {},
+   "status": "selected (allowed)"
+  },
+  {
+   "id": "physics_constants",
+   "kind": "constant",
+   "theorems": {},
+   "status": "constant (allowed)"
+  }
+ ],
+ "execution": [
+  {
+   "mechanism": "joint_medium",
+   "check": "nested_world_rates_match_lean:rain_torus_w0",
+   "passed": true,
+   "max_relative_error": 4.788187695857574e-12,
+   "states": 30,
+   "G": 6,
+   "fused_max_relative_error": 2.01054293821943e-07
+  },
+  {
+   "mechanism": "joint_medium",
+   "check": "nested_organism_rates_match_lean:rain_torus_w0@grammar_v1_div",
+   "passed": true,
+   "max_relative_error": 9.208557132359695e-07,
+   "states": 48
+  },
+  {
+   "mechanism": "joint_medium",
+   "check": "nested_organism_kernel_matches:rain_torus_w0@grammar_v1_div",
+   "passed": true,
+   "rate_max_relative_error": 7.285083531288133e-07,
+   "single_event_lanes": 10411,
+   "effect_max_z": 2.3871176330458295,
+   "unmatched_lanes": 2
+  },
+  {
+   "mechanism": "joint_medium",
+   "check": "nested_theta_is_record:nested_ecoli_espop2",
+   "passed": true,
+   "record": "results/published/cgb_generated/nested_espop2_div_mover_20261027.json",
+   "table": "grammar_v1_div",
+   "coordinates": 83
+  },
+  {
+   "mechanism": "membrane",
+   "check": "nested_organism_rates_match_lean:rain_torus_w0@grammar_v1_div",
+   "passed": true,
+   "max_relative_error": 9.208557132359695e-07,
+   "states": 48
+  },
+  {
+   "mechanism": "leaks",
+   "check": "nested_organism_rates_match_lean:rain_torus_w0@grammar_v1_div",
+   "passed": true,
+   "max_relative_error": 9.208557132359695e-07,
+   "states": 48
+  },
+  {
+   "mechanism": "dissolution",
+   "check": "nested_world_rates_match_lean:rain_torus_w0",
+   "passed": true,
+   "max_relative_error": 4.788187695857574e-12,
+   "states": 30,
+   "G": 6,
+   "fused_max_relative_error": 2.01054293821943e-07
+  },
+  {
+   "mechanism": "division_and_exchange",
+   "check": "nested_population_rates_match_lean:rain_torus_w0@grammar_v1_div",
+   "passed": true,
+   "max_relative_error": 6.980944726141077e-07,
+   "lanes": 180,
+   "table": "grammar_v1_div"
+  }
+ ],
+ "lean_medium": "CGB.NestedWorld.lattice",
+ "life": [
+  {
+   "item": "lean:senses_of_intake",
+   "passed": true
+  },
+  {
+   "item": "lean:metabolizes_of_intake",
+   "passed": true
+  },
+  {
+   "item": "lean:dead_intake_is_physics",
+   "passed": true
+  },
+  {
+   "item": "lean:leak_bound",
+   "passed": true
+  },
+  {
+   "item": "lean:export_forced",
+   "passed": true
+  },
+  {
+   "item": "lean:retention_needs_selectivity",
+   "passed": true
+  },
+  {
+   "item": "lean:corpses_must_go",
+   "passed": true
+  },
+  {
+   "item": "lean:births_only_by_division",
+   "passed": true
+  },
+  {
+   "item": "lean:move_exchanges",
+   "passed": true
+  },
+  {
+   "item": "lean:table_condition",
+   "passed": true,
+   "intake_exchanges": [
+    0,
+    2,
+    4,
+    6,
+    8,
+    10
+   ]
+  },
+  {
+   "item": "export",
+   "passed": true,
+   "exchanges": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11
+   ]
+  },
+  {
+   "item": "selective_export",
+   "passed": true,
+   "per_unit_export": {
+    "F": 0.0004028844805084108,
+    "Y": 5.16637340843522e-05,
+    "M": 6.719902775912968e-05,
+    "E": 0.13295146797450794,
+    "D": 6.494497341732959,
+    "S": 2.7372436654992317e-05
+   }
+  },
+  {
+   "item": "memory",
+   "passed": true,
+   "max_z": 180.90499696852882,
+   "coordinate": "E0"
+  },
+  {
+   "item": "self_maintenance_vs_blind",
+   "passed": false,
+   "organism_median": 5.45407680666076,
+   "control_median": 5.480298069432397,
+   "paired_wins": 4,
+   "paired_losses": 9
+  },
+  {
+   "item": "self_maintenance_vs_still",
+   "passed": true,
+   "organism_median": 5.45407680666076,
+   "control_median": 1.8958797346140277,
+   "paired_wins": 13,
+   "paired_losses": 2
+  },
+  {
+   "item": "division_necessary",
+   "passed": true,
+   "organism_living_median": 88.0,
+   "nodiv_extinct": 16
+  }
+ ],
+ "admitted": false,
+ "failures": [
+  "life layer: self_maintenance_vs_blind failed"
+ ]
+}

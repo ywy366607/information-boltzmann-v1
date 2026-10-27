@@ -689,9 +689,27 @@ NESTED_LEAN = ("CGB.NestedWorld.senses_of_intake", "CGB.NestedWorld.metabolizes_
                "CGB.Generation.corpses_must_go")
 
 
+# a population (dividing) species adds division and exchange moves
+POPULATION_LEAN = ("CGB.NestedWorld.births_only_by_division", "CGB.NestedWorld.move_exchanges")
+
+
 def _nested_genome(spec):
-    g = json.loads((ROOT / spec["organism"]).read_text(encoding="utf-8"))["genome"]
-    return {k: np.asarray(v, dtype=float) for k, v in g.items()}
+    """The organism file holds either a decoded `genome` (legacy table) or `theta`, coordinates in
+    [0, 1] on the table `table` (decoded by `cgb_nested_population.Coder`, 0 = absent event)."""
+    o = json.loads((ROOT / spec["organism"]).read_text(encoding="utf-8"))
+    if "theta" in o:
+        import cgb_nested_organism as NO
+        import cgb_nested_population as NP
+        g = NP.Coder(NO.table_of(o["table"])).decode(np.asarray(o["theta"], dtype=float))
+        return {k: np.asarray(v, dtype=float)[0] for k, v in g.items()}
+    return {k: np.asarray(v, dtype=float) for k, v in o["genome"].items()}
+
+
+def _nested_table(spec):
+    import cgb_nested_organism as NO
+    import cgb_nested_population  # noqa: F401  (registers the division grammar)
+    o = json.loads((ROOT / spec["organism"]).read_text(encoding="utf-8"))
+    return NO.table_of(o.get("table"))
 
 
 def nested_life_layer(man, decls):
@@ -704,50 +722,74 @@ def nested_life_layer(man, decls):
     import cgb_nested_organism_triton as NX
     spec = man["life"]
     rows, failures = [], []
-    for t in NESTED_LEAN:
+    T = _nested_table(spec)
+    population = "theta" in json.loads((ROOT / spec["organism"]).read_text(encoding="utf-8"))
+    for t in NESTED_LEAN + (POPULATION_LEAN if population else ()):
         d = decls.get(t)
         rows.append(dict(item=f"lean:{t.rsplit('.', 1)[1]}", passed=d is not None and set(d["axioms"]) <= STANDARD))
     tbl = NW.load(spec["world"])
     g = _nested_genome(spec)
     V = tbl["table"]["V"]
-    kx = np.concatenate([np.exp(g["logk_x"]), np.full(len(NO.EXCH) - NO.N_SELECTED_X, np.exp(NO.LOGK_LEAK))])
+    kx = np.concatenate([np.exp(g["logk_x"]), np.full(len(T.EXCH) - T.N_SELECTED_X, np.exp(T.LOGK_LEAK))])
     # the decidable condition of senses_of_intake / metabolizes_of_intake
-    intake = [x for x, (p, a, b, food, gated) in enumerate(NO.EXCH) if food and gated and b == a + 1 and kx[x] > 0]
-    cond = bool(intake) and NO.UNITS[NO.GATE[0]] > 0 and V >= 2
+    intake = [x for x, (p, a, b, food, gated) in enumerate(T.EXCH) if food and gated and b == a + 1 and kx[x] > 0]
+    cond = bool(intake) and T.UNITS[T.GATE[0]] > 0 and V >= 2
     rows.append(dict(item="lean:table_condition", passed=cond, intake_exchanges=intake))
-    # export: a gated exchange that lowers the organism's content, with positive prefactor (G16)
-    export = [x for x, (p, a, b, food, gated) in enumerate(NO.EXCH) if a > b and gated and kx[x] > 0]
+    # export: a gated exchange with positive prefactor (G16). Every exchange is reversible (Lean: each
+    # rule with its reverse), so one of its two directions lowers the content, whichever way the
+    # table writes it (the legacy table writes exports as a > b, the generated grammars every
+    # exchange as 0 -> 1 with its reverse; before 2026-10-28 this check only read a > b)
+    export = [x for x, (p, a, b, food, gated) in enumerate(T.EXCH) if a != b and gated and kx[x] > 0]
     rows.append(dict(item="export", passed=bool(export), exchanges=export))
     # selective export: per-unit export propensity differs between pages (G17), at the birth state
     # in a clean cell: k * exp(-dE / 2) for each content-lowering exchange of each page
-    phi = np.zeros((6, NO.SMAX))
-    for c, (p, st) in enumerate(NO.SELECTED_PHI):
+    phi = np.zeros((6, T.SMAX))
+    for c, (p, st) in enumerate(T.SELECTED_PHI):
         phi[p, st] = g["phi"][c]
-    phi[NO.S, 1] = NO.PHI_S1
+    phi[NO.S, 1] = T.PHI_S1
     prop = {}
-    for x, (p, a, b, food, gated) in enumerate(NO.EXCH):
-        if a <= b:
+    for x, (p, a, b, food, gated) in enumerate(T.EXCH):
+        if a == b:
             continue
+        a, b = max(a, b), min(a, b)          # the content-lowering direction, however it is written
         pool = 0
         dE = phi[p, b] - phi[p, a] + np.log((pool + 1) / (V - pool)) + (tbl["table"]["foodE"] if food else 0.0)
-        prop[NO.PAGES[p]] = prop.get(NO.PAGES[p], 0.0) + kx[x] * (NO.UNITS[NO.GATE[0]] if gated else 1) * np.exp(-dE / 2)
+        prop[NO.PAGES[p]] = prop.get(NO.PAGES[p], 0.0) + kx[x] * (T.UNITS[T.GATE[0]] if gated else 1) * np.exp(-dE / 2)
     vals = sorted(prop.values())
     sel = len(vals) >= 2 and vals[-1] > 2 * vals[0]
     rows.append(dict(item="selective_export", passed=bool(sel), per_unit_export={k: float(v) for k, v in prop.items()}))
     # memory: a one-tick food pulse, withdrawn for a tick, is decodable from the inner state
-    mem = _nested_memory(tbl, g)
+    mem = _nested_memory(tbl, g, table=T)
     rows.append(dict(item="memory", **mem))
-    # self-maintenance: held-out survival of the closed loop beats the blind control (O1 record)
     rec = json.loads((ROOT / spec["eval"]).read_text(encoding="utf-8"))
-    med, blind = rec["arms"]["organism"]["median"], rec["arms"]["blind"]["median"]
-    rows.append(dict(item="self_maintenance", passed=bool(med > blind), organism_median=med, blind_median=blind))
+    if "score" in rec["arms"]["organism"]:
+        # a population (scripts/eval_population_species.py): lineage score medians over held-out
+        # worlds, S1 (closed loop beats blind and still) and S2 (division is necessary); the paired
+        # per-world record is reported with them
+        arms = rec["arms"]
+        so = arms["organism"]["score_per_world"]
+        med = arms["organism"]["score"]["median"]
+        for ctl in ("blind", "still"):
+            m2 = arms[ctl]["score"]["median"]
+            sc = arms[ctl]["score_per_world"]
+            rows.append(dict(item=f"self_maintenance_vs_{ctl}", passed=bool(med > m2), organism_median=med,
+                             control_median=m2, paired_wins=sum(a > b for a, b in zip(so, sc)),
+                             paired_losses=sum(a < b for a, b in zip(so, sc))))
+        nd = arms["nodiv"]
+        rows.append(dict(item="division_necessary", passed=bool(arms["organism"]["living"]["median"] > nd["living"]["median"]
+                                                                and nd["extinct"] >= 12),
+                         organism_living_median=arms["organism"]["living"]["median"], nodiv_extinct=nd["extinct"]))
+    else:
+        # self-maintenance: held-out survival of the closed loop beats the blind control (O1 record)
+        med, blind = rec["arms"]["organism"]["median"], rec["arms"]["blind"]["median"]
+        rows.append(dict(item="self_maintenance", passed=bool(med > blind), organism_median=med, blind_median=blind))
     for r in rows:
         if not r["passed"]:
             failures.append(f"life layer: {r['item']} failed")
     return rows, failures
 
 
-def _nested_memory(tbl, g, lanes=4096, pulse_food=80, base_food=2, seed=5):
+def _nested_memory(tbl, g, lanes=4096, pulse_food=80, base_food=2, seed=5, table=None):
     import torch
     import cgb_nested_organism as NO
     import cgb_nested_organism_triton as NX
@@ -755,6 +797,7 @@ def _nested_memory(tbl, g, lanes=4096, pulse_food=80, base_food=2, seed=5):
     class Stub:
         pass
 
+    T = NO.table_of(table)
     out = {}
     for arm, pulse in (("rest", base_food), ("pulse", pulse_food)):
         st = Stub()
@@ -763,7 +806,7 @@ def _nested_memory(tbl, g, lanes=4096, pulse_food=80, base_food=2, seed=5):
         st.f = torch.full((lanes, 3, 3), base_food, dtype=torch.int32, device="cuda")
         st.w = torch.zeros((lanes, 3, 3), dtype=torch.int32, device="cuda")
         gg = {k: np.repeat(np.asarray(v)[None], lanes, axis=0) for k, v in g.items()}
-        o = NX.ExactOrganisms(st, gg, seed=seed, still=True)
+        o = NX.ExactOrganisms(st, gg, seed=seed, still=True, table=table)
         o.x32.zero_(); o.y32.zero_()
         for t in range(60):                       # settle at rest
             st.f.fill_(base_food); st.w.zero_()
@@ -780,7 +823,18 @@ def _nested_memory(tbl, g, lanes=4096, pulse_food=80, base_food=2, seed=5):
     se = np.sqrt(out["pulse"].var(0) / lanes + out["rest"].var(0) / lanes) + 1e-12
     z = np.abs(diff) / se
     k = int(np.argmax(z))
-    return dict(passed=bool(z[k] > 5.0), max_z=float(z[k]), coordinate=f"{NO.PAGES[k // NO.SMAX]}{k % NO.SMAX}")
+    return dict(passed=bool(z[k] > 5.0), max_z=float(z[k]), coordinate=f"{NO.PAGES[k // T.SMAX]}{k % T.SMAX}")
+
+
+def check_nested_theta_is_record(name):
+    """A population species: the admitted [0, 1] coordinates and table are the record's validated
+    best (`best.theta`, `table`)."""
+    man = json.loads((ARCH / f"{name}.json").read_text(encoding="utf-8"))
+    spec = man["life"]
+    o = json.loads((ROOT / spec["organism"]).read_text(encoding="utf-8"))
+    rec = json.loads((ROOT / spec["record"]).read_text(encoding="utf-8"))
+    same = o["theta"] == rec["best"]["theta"] and o["table"] == rec["table"]
+    return same, dict(record=spec["record"], table=o["table"], coordinates=len(o["theta"]))
 
 
 def check_nested_table_is_record(name):

@@ -167,6 +167,8 @@ def table_of(name_or_table):
         return LEGACY
     if isinstance(name_or_table, Table):
         return name_or_table
+    if name_or_table not in TABLES:
+        import cgb_nested_population  # noqa: F401  (registers the division grammar on import)
     return TABLES[name_or_table]
 
 
