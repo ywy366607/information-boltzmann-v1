@@ -11,6 +11,7 @@ import hashlib
 import json
 import re
 import subprocess
+import sys
 from pathlib import Path
 
 
@@ -139,6 +140,8 @@ def main() -> None:
     parser = argparse.ArgumentParser(__doc__)
     parser.add_argument("--output", type=Path, default=PROJECT / ".lake/audit_inventory.json")
     parser.add_argument("--self-test", action="store_true")
+    parser.add_argument("--check-index", action="store_true",
+                        help="check the generated theorem index instead of refreshing it")
     args = parser.parse_args()
     guards = self_test()
     if args.self_test:
@@ -184,6 +187,11 @@ def main() -> None:
     args.output.write_text(json.dumps(inventory, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     args.output.with_suffix(".build.log").write_text(build.stdout, encoding="utf-8")
     args.output.with_suffix(".audit.log").write_text(audit.stdout, encoding="utf-8")
+    index_command = [sys.executable, str(PROJECT.parent.parent / "scripts/build_proven_index.py"),
+                     "--inventory", str(args.output.resolve())]
+    if args.check_index:
+        index_command.append("--check")
+    print(run(index_command).stdout, end="")
     print(json.dumps({"passed": True, **inventory["summary"], "source_declared_theorems": len(authored),
                       "audit_guard_checks": guards, "output": str(args.output)}, ensure_ascii=False))
 
