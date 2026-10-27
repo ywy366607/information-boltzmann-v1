@@ -348,4 +348,40 @@ theorem succession_odds_decreasing : Antitone (fun T : ℕ => (1 : ℝ) / ((T : 
   apply one_div_le_one_div_of_le (by positivity)
   linarith
 
+/-! ## A linear cascade cannot reject bursts (2026-10-27)
+
+A linear time-invariant memory (one pool, or a Benna-Fusi chain of pools with growing time
+constants, whose mean dynamics are linear) answers a lasting step input with its step response
+`a n`. A burst of length `L` is a step up at `0` and a step down at `L`, so its response is
+`a n - a (n - L)` (zero before the step down). If the memory adopts lasting changes fully, `a n = 1`
+from some `N` on, then the burst's damage summed over time is exactly `L`, whatever the filter
+(`linear_burst_damage_integral`): a linear cascade can delay and spread the damage of a burst,
+never reduce it. Depth by age (B3) can come from a cascade; rejection of bursts (B2) needs a
+nonlinear switch (G23/G24), as in the deferral latch (`deferLatch_holds`: zero damage for bursts
+shorter than its window).
+-/
+
+/-- Response of a linear memory to a burst of length `L`, from its step response `a`. -/
+def burstResponse (a : ℕ → ℝ) (L n : ℕ) : ℝ := a n - (if L ≤ n then a (n - L) else 0)
+
+theorem linear_burst_damage_integral (a : ℕ → ℝ) (N L : ℕ) (hfull : ∀ n, N ≤ n → a n = 1) :
+    ∑ n ∈ Finset.range (N + L), burstResponse a L n = L := by
+  unfold burstResponse
+  rw [Finset.sum_sub_distrib]
+  have hshift : ∑ n ∈ Finset.range (N + L), (if L ≤ n then a (n - L) else 0) =
+      ∑ n ∈ Finset.range N, a n := by
+    rw [add_comm N L, Finset.sum_range_add]
+    have h0 : ∑ n ∈ Finset.range L, (if L ≤ n then a (n - L) else 0) = 0 :=
+      Finset.sum_eq_zero fun n hn => by
+        rw [Finset.mem_range] at hn
+        rw [if_neg (by omega)]
+    rw [h0, zero_add]
+    refine Finset.sum_congr rfl fun n _ => ?_
+    rw [if_pos (by omega)]
+    congr 1
+    omega
+  rw [hshift, Finset.sum_range_add, add_sub_cancel_left]
+  rw [Finset.sum_congr rfl fun i _ => hfull (N + i) (by omega)]
+  simp
+
 end CGB.Continual
