@@ -202,10 +202,13 @@ ARMS5 = dict(clo5={}, clo5_nohold=dict(hold=False), clo5_noage=dict(age_depth=Fa
              clo5_noalloc=dict(alloc="none"), clo5_rowonly=dict(alloc="row"))
 
 
+_BASE_MAKE = V3.make      # the original factory; main() replaces V3.make with make5
+
+
 def make5(name, lr, shape, T):
     if name in ARMS5:
         return CLO5(shape, **ARMS5[name])
-    return V3.make(name, lr, shape, T)
+    return _BASE_MAKE(name, lr, shape, T)
 
 
 def main():
