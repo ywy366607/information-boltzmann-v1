@@ -154,4 +154,23 @@ released leave `B - n s` free after `n` consolidations; it is gone once `n s ≥
 theorem held_budget_starves (B s : ℝ) (n : ℕ) (hn : B ≤ n * s) :
     B - n * s ≤ 0 := by linarith
 
+/-! ## Measuring the own step (found by the v3 mechanism check, 2026-10-27)
+
+The step `a = s + c ξ'` depends on the old batch's noise `ξ'`; the difference of gradients on two
+batches is `h a + ξ - ξ'`. Averaged over the noise pairs, the secant numerator is
+`h · E[a^2] - c y^2`: biased by the dependence of the step on the noise it was made from
+(`secant_own_noise_bias`). The gradient at the old and new parameters on one fresh batch differs
+by exactly `h a` (`secant_same_batch_exact`): one extra gradient on the next batch measures the
+own step without bias (efference copy, secant, and noise residual at fixed parameters).
+-/
+
+theorem secant_own_noise_bias (h s c x y : ℝ) :
+    ((h * (s + c * y) + x - y) * (s + c * y) + (h * (s + c * y) - x - y) * (s + c * y) +
+      (h * (s - c * y) + x + y) * (s - c * y) + (h * (s - c * y) - x + y) * (s - c * y)) / 4 =
+      h * (((s + c * y) ^ 2 + (s - c * y) ^ 2) / 2) - c * y ^ 2 := by
+  ring
+
+theorem secant_same_batch_exact (h a ξ : ℝ) : ((h * a + ξ) - ξ) * a = h * a ^ 2 := by
+  ring
+
 end CGB.Continual
