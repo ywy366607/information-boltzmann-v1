@@ -297,6 +297,8 @@
       }
       k += 2 * O.EXCH.length;
       if (q === k + 4) {                                   // divide into the frac-th empty neighbour
+        // a world of SL body slots (cgb_nested_population): with none free the event changes nothing
+        if (this.free != null) { if (this.free <= 0) continue; this.free--; }
         const D = O.DIV, e = this.emptyNbrs(o.c), to = e[Math.min(e.length - 1, (frac * e.length) | 0)];
         n[O.E * SM + 1] -= D.BQ; n[O.E * SM] += D.BQ;
         o.pending = true; o.births++;
@@ -325,6 +327,8 @@
     const O = this.T.organism, SM = O.SMAX, nbuf = 2 * O.RULES.length + 2 * O.EXCH.length + 8;
     const buf = this._buf && this._buf.length >= nbuf ? this._buf : (this._buf = new Float64Array(nbuf));
     this.newborns = [];
+    // free slots are counted at the start of the tick; a dissolved body frees its slot at the end
+    this.free = this.T.world.SL ? this.T.world.SL - this.orgs.length : null;
     for (let l = 0; l < nl; l++) {
       this.worldLeap();
       for (const o of this.orgs) if (!o.gone) this.orgLeap(o, buf);

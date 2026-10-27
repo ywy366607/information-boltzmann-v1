@@ -88,7 +88,7 @@ input[type=range] { width: 100%; accent-color: var(--food); }
   <header>
     <div class="eyebrow" id="eyebrow">CGB · 第一个产出 · 世界 rain_torus_w0</div>
     <h1>一颗<em>生态球</em></h1>
-    <p class="lede">一滴二维的水。雨随机落下，食物扩散、变干；废物流向汇点。里面的大肠杆菌靠膜进食、修膜，死后身体被分解还给世界；它们有马达，但选择出来的这一种几乎不动：把高能储备存在体内、慢慢交换，原地等雨（会觅食的身体需要被驱动的摄入，下一步）。世界和生物是同一张 Lean 规则表，每一个事件的速率都与 Lean 逐条对拍过。点一下放食物，或放进新的大肠杆菌。</p>
+    <p class="lede" id="lede">一滴二维的水。雨随机落下，食物扩散、变干；废物流向汇点。里面的大肠杆菌靠膜进食、修膜，死后身体被分解还给世界；它们有马达，但选择出来的这一种几乎不动：把高能储备存在体内、慢慢交换，原地等雨（会觅食的身体需要被驱动的摄入，下一步）。世界和生物是同一张 Lean 规则表，每一个事件的速率都与 Lean 逐条对拍过。点一下放食物，或放进新的大肠杆菌。</p>
   </header>
 
   <section class="bench">
@@ -124,6 +124,8 @@ input[type=range] { width: 100%; accent-color: var(--food); }
           <div class="stat"><b id="s-diss">0</b><span>已分解还给世界</span></div>
           <div class="stat"><b id="s-food">0</b><span>世界里的食物（份）</span></div>
           <div class="stat"><b id="s-year">—</b><span>年景（雨的频率）</span></div>
+          <div class="stat div-only" hidden><b id="s-born">0</b><span>分裂出生</span></div>
+          <div class="stat div-only" hidden><b id="s-gen">0</b><span>最深世代</span></div>
         </div>
         <canvas class="spark" id="spark" width="600" height="108" aria-label="活着的个体数与食物总量"></canvas>
         <div class="muted"><span style="color:var(--live)">━</span> 活着的个体　<span style="color:var(--food)">━</span> 食物总量</div>
@@ -147,15 +149,16 @@ input[type=range] { width: 100%; accent-color: var(--food); }
         <div><span class="sw" style="background:var(--live)"></span>游动中的大肠杆菌（拉长）</div>
         <div><span class="sw" style="background:var(--tumble)"></span>翻滚、停下进食</div>
         <div><span class="sw" style="background:var(--dead)"></span>尸体：膜已全坏，正被泄漏和溶解分解</div>
+        <div class="div-only" hidden><span class="sw" style="background:transparent;border:2px solid #a99bf0"></span>描边颜色：谱系（同一个投放的祖先）</div>
       </div>
     </div>
   </section>
 
   <section class="notes">
     <div class="card"><h2>世界</h2><p>48 × 48 的环面，每格一个食物池、一个废物池（各 0…1500 份）。下雨是格子与外部储库在高势下交换食物；不下雨时同一条规则在低势下把食物慢慢收回（变干）。每九格有一个废物汇。年景按 Ornstein–Uhlenbeck 过程随机漂移：有丰年有歉年。是 Lean 定理 <code>NestedWorld.axioms_torus</code> 的实例。</p></div>
-    <div class="card"><h2>大肠杆菌</h2><p>六个页：受体 F、慢记忆 Y、马达 M、储备 E、废物 D、膜 S。一切进出都经膜，导通量正比于完好的膜；膜会磨损，修膜要花储备。马达游动时每走一格烧一份燃料；过去好、现在差就游走，现在好就停下吃。能量与速率由选择生成，结构由定理推出。</p></div>
+    <div class="card"><h2>大肠杆菌</h2><p id="note-org">六个页：受体 F、慢记忆 Y、马达 M、储备 E、废物 D、膜 S。一切进出都经膜，导通量正比于完好的膜；膜会磨损，修膜要花储备。马达游动时每走一格烧一份燃料；过去好、现在差就游走，现在好就停下吃。能量与速率由选择生成，结构由定理推出。</p></div>
     <div class="card"><h2>死与分解</h2><p>完好的膜一份不剩就再也吃不进东西（<code>dead_intake_is_physics</code>）。每个页都有不经膜的物理泄漏（<code>leak_bound</code>），尸体被慢慢掏空，空身体再溶进废物池（<code>frees_only_by_dissolving</code>）。有限世界里死亡不停，尸体就必须被移走（<code>corpses_must_go</code>），否则世界会被填满。</p></div>
-    <div class="card"><h2>诚实的边界</h2><p>还不会繁殖：Lean 表里还没有分裂事件，新个体来自你的投放；投放是介质之外的干预，就像往生态球里加一滴菌液。速率与 Lean 逐条对拍；世界的积分步长（0.05 拍）使食物总量与精确解相差约 1%。点"放食物"等于让最近的格子下一场雨。</p></div>
+    <div class="card"><h2>诚实的边界</h2><p id="note-honest">还不会繁殖：Lean 表里还没有分裂事件，新个体来自你的投放；投放是介质之外的干预，就像往生态球里加一滴菌液。速率与 Lean 逐条对拍；世界的积分步长（0.05 拍）使食物总量与精确解相差约 1%。点"放食物"等于让最近的格子下一场雨。</p></div>
   </section>
 </div>
 
@@ -166,8 +169,10 @@ input[type=range] { width: 100%; accent-color: var(--food); }
 const T = /*__TABLES__*/;
 (function () {
   const E = window.Ecosphere;
-  if (T.record) document.getElementById('eyebrow').textContent =
+  const DIV = !!(T.organism.DIV && T.coder), SL = T.world.SL || Infinity;
+  if (T.record && !DIV) document.getElementById('eyebrow').textContent =
     `CGB · 第一个产出 · 世界 ${T.world.name} · 生物由选择生成（第 ${T.record.gen} 代，留出世界存活中位 ${T.record.val[1]} 拍）`;
+  if (DIV) speciesText();
   const cv = document.getElementById('cv'), ctx = cv.getContext('2d');
   const G = T.world.G, V = T.world.V;
   let S, running = true, speed = 10, selected = null, seed = 1;
@@ -185,7 +190,7 @@ const T = /*__TABLES__*/;
   }
   function addMany(k) {
     let tries = 0;
-    while (k > 0 && tries++ < 500) {
+    while (k > 0 && tries++ < 500 && S.orgs.length < SL) {
       const x = (Math.random() * G) | 0, y = (Math.random() * G) | 0;
       if (S.place(x, y)) k--;
     }
@@ -202,7 +207,7 @@ const T = /*__TABLES__*/;
       const c = S.nearestSource(x, y); S.rainAt(c);
       for (let d = 0; d < 4; d++) S.rainAt(S.nearestSource((x + [1, 0, -1, 0][d] + G) % G, (y + [0, 1, 0, -1][d] + G) % G));
     } else if (tool === 'bug') {
-      S.place(x, y);
+      if (S.orgs.length < SL) S.place(x, y);
     } else {
       let best = null, bd = 9;
       for (const o of S.orgs) {
@@ -254,6 +259,7 @@ const T = /*__TABLES__*/;
         ctx.fillStyle = run ? `rgba(244,239,230,${a})` : `rgba(255,138,107,${a})`; ctx.fill();
         if (run) { ctx.strokeStyle = `rgba(244,239,230,${a * .5})`; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(-L / 2, 0); ctx.lineTo(-L / 2 - k * .7, Math.sin(S.tick * 1.7 + o.id) * k * .2); ctx.stroke(); }
       }
+      if (DIV && !dead) { ctx.strokeStyle = `hsl(${(o.lineage * 137.5 + 250) % 360} 80% 70%)`; ctx.lineWidth = 2; ctx.stroke(); }
       if (o.id === selected) { ctx.strokeStyle = '#e3b65b'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(0, 0, k * .75, 0, 2 * Math.PI); ctx.stroke(); }
       ctx.restore();
     }
@@ -270,6 +276,11 @@ const T = /*__TABLES__*/;
     document.getElementById('s-food').textContent = food.toLocaleString();
     const rr = S.rate() / T.world.stimulus.rain_rate;
     document.getElementById('s-year').textContent = rr > 2 ? '丰' : rr < 0.5 ? '歉' : '平';
+    if (DIV) {
+      let g = 0; for (const o of S.orgs) if (o.gen > g) g = o.gen;
+      document.getElementById('s-born').textContent = (S.births || 0).toLocaleString();
+      document.getElementById('s-gen').textContent = g;
+    }
     hist.push([live, food]); if (hist.length > 600) hist.shift();
     const sc = document.getElementById('spark'), c2 = sc.getContext('2d'), w = sc.width, h = sc.height;
     c2.clearRect(0, 0, w, h);
@@ -291,12 +302,44 @@ const T = /*__TABLES__*/;
     if (!o) { if (selected != null) { document.getElementById('ins-none').textContent = '这个个体已被分解，还给了世界。'; } return; }
     const n = o.n, alive = n[O.S * SM + 1] > 0;
     document.getElementById('ins-head').textContent =
-      `#${o.id} · ${alive ? (n[O.M * SM + O.RUN] > 0 ? '游动' : '翻滚／进食') : '死亡（' + (S.tick - o.death) + ' 拍前）'} · 年龄 ${S.tick - o.born} 拍 · 走过 ${o.moves} 格 · 吃进 ${o.intake} 份`;
+      `#${o.id} · ${alive ? (n[O.M * SM + O.RUN] > 0 ? '游动' : '翻滚／进食') : '死亡（' + (S.tick - o.death) + ' 拍前）'} · 年龄 ${S.tick - o.born} 拍 · 走过 ${o.moves} 格 · 吃进 ${o.intake} 份` +
+      (DIV ? ` · 第 ${o.gen} 代 · 分裂 ${o.births} 次${o.theta && T.theta0 && o.theta.some((v, i) => Math.abs(v - T.theta0[i]) > 1e-9) ? ' · 带突变' : ''}` : '');
     setBar('s', n[O.S * SM + 1], O.UNITS[O.S]);
     setBar('e', n[O.E * SM + 1], O.UNITS[O.E]);
     setBar('f', n[O.F * SM + 1] + 2 * n[O.F * SM + 2], 2 * O.UNITS[O.F]);
     setBar('y', n[O.Y * SM + 1], O.UNITS[O.Y]);
     setBar('d', n[O.D * SM + 1], O.UNITS[O.D]);
+  }
+  function speciesText() {
+    const R = T.record, Ev = T.evaluation, set = (id, html) => { document.getElementById(id).innerHTML = html; };
+    document.querySelectorAll('.div-only').forEach(e => { e.hidden = false; });
+    document.getElementById('eyebrow').textContent =
+      `CGB · 生态球 v2 · 世界 ${T.world.name} · 会分裂的物种（谱系选择第 ${R.gen} 代，文法 ${R.table}）`;
+    set('lede', '一滴二维的水。雨随机落下，食物扩散、变干；废物流向汇点。里面的大肠杆菌靠膜进食、修膜；' +
+      '储备攒够一个新身体就分裂到空着的邻格，子代偶尔带一个小突变；死后身体被分解还给世界。' +
+      `这一种由谱系选择生成：每一代在随机世界里放 4 个祖先，看整个家族 ${R.ticks} 拍后还剩多少、活到多久。` +
+      '世界和生物是同一张 Lean 规则表，每个事件的速率都与门控检查过的 Python 实现逐条对拍。点一下放食物，或放进新的大肠杆菌。');
+    set('note-org', '六个页：受体 F、慢记忆 Y、马达 M、储备 E、废物 D、膜 S。一切进出都经膜，膜会磨损，修膜要花储备。' +
+      '分裂是 Lean 表里的一个事件：储备页恰好装满一个新身体（身体 ' + T.world.B + ' 份 + 膜 ' + T.organism.DIV.NS + ' 份）、' +
+      '身边有空格时才可能发生；新身体只有完好的膜，其余是空的。复制有误差：每次分裂以 ' + T.coder.pmut +
+      ' 的概率把一个基因坐标挪一小格（' + T.coder.delta + '）。世界最多容纳 ' + T.world.SL + ' 个身体（含尸体），与选择时相同。');
+    let ev;
+    if (Ev) {
+      const nm = { organism: '本物种', blind: '瞎眼（去掉受体）', still: '不动（去掉马达）', nodiv: '不分裂' };
+      ev = `留出世界 ${Ev.worlds[0]}–${Ev.worlds[1]}（从未参与选择）跑 ${Ev.ticks} 拍、不突变，活着的个体数 [最小 | 中位 | 均值 | 最大] 与灭绝世界数：<br>` +
+        Object.entries(Ev.arms).map(([k, a]) => `${nm[k] || k}：[${a.living.min} | ${a.living.median} | ${a.living.mean.toFixed(1)} | ${a.living.max}]，灭绝 ${a.extinct}`).join('<br>') + '。';
+    } else {
+      ev = '留出世界（种子 9000–9015，从未参与选择）上的对照评估（去掉受体、去掉马达、去掉分裂）正在跑，结果出来后更新这里。';
+    }
+    const P = T.persist;
+    ev += P ? ` 开着突变（${P.pmut}）、不再选择，在 ${P.n} 个留出世界里跑 ${P.ticks.toLocaleString()} 拍：${P.extinct} 个灭绝；` +
+      `活着的个体 [${P.living.min} | ${P.living.median} | ${P.living.mean.toFixed(1)} | ${P.living.max}]，最后有活体的拍 [${P.last.min} | ${P.last.median} | ${P.last.mean.toFixed(0)} | ${P.last.max}]。`
+      : ' 开着突变的 10⁵ 拍持存检验也在跑。';
+    ev += ' 常见的轨迹是一千拍内长满全部槽位，再在几千拍里衰落；也常有一开局就灭绝的世界。';
+    const VL = R.val_living || [], alive = VL.filter(v => v > 0).length;
+    set('note-honest', '这个物种还没通过准入门：门控的嵌套生命层还不认识分裂和种群，正在补。' + ev +
+      ` 选择的最后一代，${VL.length} 个验证世界里 ${R.ticks} 拍后有 ${alive} 个还有活的：离"真实大肠杆菌那样几乎在哪都能活下去"还远。` +
+      '速率与 Lean 逐条对拍；世界的积分步长（0.05 拍）使食物总量与精确解相差约 1%。点"放食物"等于让最近的格子下一场雨。');
   }
   let acc = 0, last = performance.now(), frame = 0;
   setInterval(() => {
