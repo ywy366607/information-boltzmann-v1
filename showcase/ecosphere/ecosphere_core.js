@@ -243,8 +243,10 @@
     const [i, j, a1, a2, b1, b2] = O.FUEL;
     const dE = phi[i * SM + b1] + phi[j * SM + b2] - phi[i * SM + a1] - phi[j * SM + a2];
     const ahead = this.nb(o.c, o.h), behind = this.nb(o.c, (o.h + 2) % 4);
-    out[k++] = running && this.occ[ahead] === -1 ? o.kmove * Math.exp(-dE / 2) * n[i * SM + a1] * n[j * SM + a2] : 0;
-    out[k++] = running && this.occ[behind] === -1 ? o.kmove * Math.exp(dE / 2) * n[i * SM + b1] * n[j * SM + b2] : 0;
+    // a move exchanges the mover with whatever occupies the target (Lean move_exchanges): the rate
+    // does not depend on the target's occupant
+    out[k++] = running ? o.kmove * Math.exp(-dE / 2) * n[i * SM + a1] * n[j * SM + a2] : 0;
+    out[k++] = running ? o.kmove * Math.exp(dE / 2) * n[i * SM + b1] * n[j * SM + b2] : 0;
     // dissolution of a body without intact membrane, with all it holds (the event of its own heading)
     out[k++] = n[O.GATE[0] * SM + O.GATE[1]] === 0 ? this.dissolveRate(o) : 0;   // dead membrane
     // division (Lean recipes): 4 headings x kdiv x empty neighbours x Metropolis, division page full
@@ -314,8 +316,14 @@
       const [i, j, a1, a2, b1, b2] = O.FUEL;
       const fwd = q === k + 1;
       if (fwd) pair(i, a1, j, a2, i, b1, j, b2); else pair(i, b1, j, b2, i, a1, j, a2);
-      const to = this.nb(o.c, fwd ? o.h : (o.h + 2) % 4);
-      this.occ[o.c] = -1; this.occ[to] = o.id; o.c = to; o.moves++;
+      const to = this.nb(o.c, fwd ? o.h : (o.h + 2) % 4), there = this.occ[to];
+      if (there >= 0) {                                    // a body: it takes the mover's place
+        const other = this.byId.get(there); other.c = o.c; this.occ[o.c] = there; other.pushed = (other.pushed || 0) + 1;
+      } else if (there === -2) {                           // a newborn not yet joined (it is there in Lean)
+        for (const b of this.newborns) if (b.c === to) b.c = o.c;
+        this.occ[o.c] = -2;
+      } else this.occ[o.c] = -1;
+      this.occ[to] = o.id; o.c = to; o.moves++;
     }
   };
 

@@ -24,9 +24,12 @@ Rules (each with its reverse):
   cell's food or waste pool (sensing, eating, excreting); a turn from heading `a` to `b` while the
   motor is not in its run state (tumble); a food pellet entering or leaving at a source cell,
   waste at a sink cell;
-* neighbour cells: one quantum of food or waste diffusing; the organism moving to an empty
-  neighbour along its heading while one fuel rule fires inside it (moving forward spends fuel,
-  moving back would return it: self-propulsion is driven).
+* neighbour cells: one quantum of food or waste diffusing; the organism moving along its heading
+  while one fuel rule fires inside it (moving forward spends fuel, moving back would return it:
+  self-propulsion is driven). A move exchanges the mover with whatever occupies the cell ahead: the
+  vacuum (an empty cell) or another body, which takes the mover's place unchanged
+  (`move_exchanges`). The vacuum is not special: restricting moves to empty cells would be an extra
+  rule, and it jams the inside of every colony grown by division (eco-sphere audit 2026-10-27).
 
 `NestedWorld.axioms`: the joint medium satisfies the six clauses when the inner rules and the
 fuel rule conserve content and every rate prefactor is nonnegative.
@@ -331,6 +334,11 @@ def eff2 : NR2 Hd n nB → ℕ → ℕ → W.Cell × W.Cell → W.Cell × W.Cell
             if W.ahead i j h = true ∧ y' ≠ y ∧ y W.motor = W.run ∧ y' W.motor = W.run then
               ((l.1, l.2.1, some (y', h)), (l'.1, l'.2.1, none))
             else (l, l')
+        | some (z, hz), some (y, h) =>
+            let y' := W.fuelAct e d true y
+            if W.ahead i j h = true ∧ y' ≠ y ∧ y W.motor = W.run ∧ y' W.motor = W.run then
+              ((l.1, l.2.1, some (y', h)), (l'.1, l'.2.1, some (z, hz)))
+            else (l, l')
         | _, _ => (l, l')
       else
         match l.2.2, l'.2.2 with
@@ -338,6 +346,11 @@ def eff2 : NR2 Hd n nB → ℕ → ℕ → W.Cell × W.Cell → W.Cell × W.Cell
             let y' := W.fuelAct e d false y
             if W.ahead i j h = true ∧ y' ≠ y ∧ y W.motor = W.run ∧ y' W.motor = W.run then
               ((l.1, l.2.1, none), (l'.1, l'.2.1, some (y', h)))
+            else (l, l')
+        | some (y, h), some (z, hz) =>
+            let y' := W.fuelAct e d false y
+            if W.ahead i j h = true ∧ y' ≠ y ∧ y W.motor = W.run ∧ y' W.motor = W.run then
+              ((l.1, l.2.1, some (z, hz)), (l'.1, l'.2.1, some (y', h)))
             else (l, l')
         | _, _ => (l, l')
   | .inr (.inr (S, rb, h2, dir)), _, _, (l, l') =>
@@ -355,6 +368,16 @@ def eff2 : NR2 Hd n nB → ℕ → ℕ → W.Cell × W.Cell → W.Cell × W.Cell
               ((l.1, l.2.1, some (drain S (W.divTo rb) y, h)), (l'.1, l'.2.1, some ((W.yb rb), h2)))
             else (l, l')
         | _, _ => (l, l')
+
+/-- **A move is an exchange**: whatever occupies the cell ahead (vacuum or a body), a running mover
+whose fuel rule fires takes its place and the occupant takes the mover's, unchanged; pools stay. -/
+theorem move_exchanges (e d : Fin n) (i j : ℕ) (f w f' w' : Fin (W.V + 1))
+    (o : Option ((Fin n → Λi) × Hd)) (y : Fin n → Λi) (h : Hd)
+    (hc : W.ahead i j h = true ∧ W.fuelAct e d true y ≠ y ∧ y W.motor = W.run ∧
+      W.fuelAct e d true y W.motor = W.run) :
+    W.eff2 (.inr (.inl (e, d, true))) i j ((f, w, o), (f', w', some (y, h))) =
+      ((f, w, some (W.fuelAct e d true y, h)), (f', w', o)) := by
+  rcases o with _ | ⟨z, hz⟩ <;> simp [eff2, hc]
 
 def rev1 : NR1 Λi Hd n nR nX → NR1 Λi Hd n nR nX
   | .inl (k, u, v, dir) => .inl (k, u, v, !dir)
@@ -888,8 +911,14 @@ theorem cons2 (hfuel : W.contentIn W.fuel.a.1 + W.contentIn W.fuel.a.2 =
       · split_ifs
         · simp only [content, bugContent, W.fuelAct_content hfuel]; ring
         · rfl
+      · split_ifs
+        · simp only [content, bugContent, W.fuelAct_content hfuel]; ring
+        · rfl
     · rcases b with _ | ⟨y, h⟩ <;> rcases b' with _ | ⟨y', h'⟩
       all_goals simp only [if_true]
+      · split_ifs
+        · simp only [content, bugContent, W.fuelAct_content hfuel]; ring
+        · rfl
       · split_ifs
         · simp only [content, bugContent, W.fuelAct_content hfuel]; ring
         · rfl
@@ -1105,7 +1134,17 @@ theorem back2 (r : NR2 Hd n nB) (i j : ℕ) (p : W.Cell × W.Cell) (hne : W.eff2
           simp only [eff2, rev2, Bool.not_false, Bool.false_eq_true, if_false, if_true, if_pos hc]
           rw [if_pos hc', hy]
         · simp [eff2, hc] at hne
-      · simp [eff2] at hne
+      · by_cases hc : W.ahead i j h = true ∧ W.fuelAct e d false y ≠ y ∧ y W.motor = W.run ∧
+            W.fuelAct e d false y W.motor = W.run
+        · have hy := W.fuelAct_back e d false y hc.2.1
+          simp only [Bool.not_false] at hy
+          have hc' : W.ahead i j h = true ∧ W.fuelAct e d true (W.fuelAct e d false y) ≠ W.fuelAct e d false y ∧
+              W.fuelAct e d false y W.motor = W.run ∧
+              W.fuelAct e d true (W.fuelAct e d false y) W.motor = W.run := by
+            rw [hy]; exact ⟨hc.1, fun h' => hc.2.1 h'.symm, hc.2.2.2, hc.2.2.1⟩
+          simp only [eff2, rev2, Bool.not_false, Bool.false_eq_true, if_false, if_true, if_pos hc]
+          rw [if_pos hc', hy]
+        · simp [eff2, hc] at hne
     · rcases b with _ | ⟨y', h'⟩ <;> rcases b' with _ | ⟨y, h⟩
       · simp [eff2] at hne
       · by_cases hc : W.ahead i j h = true ∧ W.fuelAct e d true y ≠ y ∧ y W.motor = W.run ∧
@@ -1120,7 +1159,17 @@ theorem back2 (r : NR2 Hd n nB) (i j : ℕ) (p : W.Cell × W.Cell) (hne : W.eff2
           rw [if_pos hc', hy]
         · simp [eff2, hc] at hne
       · simp [eff2] at hne
-      · simp [eff2] at hne
+      · by_cases hc : W.ahead i j h = true ∧ W.fuelAct e d true y ≠ y ∧ y W.motor = W.run ∧
+            W.fuelAct e d true y W.motor = W.run
+        · have hy := W.fuelAct_back e d true y hc.2.1
+          simp only [Bool.not_true] at hy
+          have hc' : W.ahead i j h = true ∧ W.fuelAct e d false (W.fuelAct e d true y) ≠ W.fuelAct e d true y ∧
+              W.fuelAct e d true y W.motor = W.run ∧
+              W.fuelAct e d false (W.fuelAct e d true y) W.motor = W.run := by
+            rw [hy]; exact ⟨hc.1, fun h' => hc.2.1 h'.symm, hc.2.2.2, hc.2.2.1⟩
+          simp only [eff2, rev2, Bool.not_true, Bool.false_eq_true, if_false, if_true, if_pos hc]
+          rw [if_pos hc', hy]
+        · simp [eff2, hc] at hne
 
   · obtain ⟨⟨f, w, b⟩, ⟨f', w', b'⟩⟩ := p
     cases dir

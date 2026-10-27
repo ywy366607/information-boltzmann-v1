@@ -4,6 +4,10 @@ moves into empty cells; prereg docs/information_boltzmann/CGB_GENERATED_ECOLI_GO
 
 A world has SL organism slots; slot b of world b // SL is one lane of the exact event kernel
 (`cgb_nested_organism_triton._cols`, the organism's own events, checked against Lean), with:
+  * STALE PHYSICS (2026-10-27): Lean now makes a move an exchange with whatever occupies the
+    target (`NestedWorld.move_exchanges`); this kernel still moves only into an empty cell, so
+    `cgb_gate.check_nested_population_rates_match_lean` fails on it until the exchange is
+    implemented, and runs made with it are pre-exchange results. Old text:
   * moves only into an empty cell (Lean `eff2` move: the target holds no body): the move column
     carries the target's emptiness; a move is claimed by an atomic compare-and-swap on the
     occupancy grid and undone if another lane took the cell in the same leap;

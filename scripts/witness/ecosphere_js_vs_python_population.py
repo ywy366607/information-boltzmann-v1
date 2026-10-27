@@ -3,8 +3,9 @@
 
 1. Rates: on random genomes (as [0, 1] coordinates, a prefactor at 0 an absent event), random inner
    states, pools and occupied neighbours, every organism column of the JS core equals
-   `Organisms.rates` (coupled rules: gate factor, foodE * df, pool factors) times the emptiness of
-   the move target, followed by dissolution and division as transcribed in
+   `Organisms.rates` (coupled rules: gate factor, foodE * df, pool factors; a move exchanges the
+   mover with whatever occupies the target, Lean `move_exchanges`, so its rate ignores occupancy),
+   followed by dissolution and division as transcribed in
    `cgb_gate.check_nested_population_rates_match_lean` (float64, relative error < 1e-5: the
    Python organism computes in float32).
 2. Effects: in a closed world (no exchange with the reservoirs) the JS core run with division,
@@ -112,8 +113,6 @@ for cs, got in zip(cases, res):
     o.x[0], o.y[0], o.h[0] = cs["x"], cs["y"], cs["h"]
     ref = list(o.rates().double().numpy()[0])
     empty = [not cs["occ"][d] for d in range(4)]
-    ref[-2] *= empty[cs["h"]]
-    ref[-1] *= empty[(cs["h"] + 2) % 4]
     nn = np.array(cs["n"])
     ph = phi[0].numpy()
     gate = nn[T.GATE[0], T.GATE[1]]

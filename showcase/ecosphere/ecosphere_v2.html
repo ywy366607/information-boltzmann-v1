@@ -408,8 +408,10 @@ input[type=range] { width: 100%; accent-color: var(--food); }
     const [i, j, a1, a2, b1, b2] = O.FUEL;
     const dE = phi[i * SM + b1] + phi[j * SM + b2] - phi[i * SM + a1] - phi[j * SM + a2];
     const ahead = this.nb(o.c, o.h), behind = this.nb(o.c, (o.h + 2) % 4);
-    out[k++] = running && this.occ[ahead] === -1 ? o.kmove * Math.exp(-dE / 2) * n[i * SM + a1] * n[j * SM + a2] : 0;
-    out[k++] = running && this.occ[behind] === -1 ? o.kmove * Math.exp(dE / 2) * n[i * SM + b1] * n[j * SM + b2] : 0;
+    // a move exchanges the mover with whatever occupies the target (Lean move_exchanges): the rate
+    // does not depend on the target's occupant
+    out[k++] = running ? o.kmove * Math.exp(-dE / 2) * n[i * SM + a1] * n[j * SM + a2] : 0;
+    out[k++] = running ? o.kmove * Math.exp(dE / 2) * n[i * SM + b1] * n[j * SM + b2] : 0;
     // dissolution of a body without intact membrane, with all it holds (the event of its own heading)
     out[k++] = n[O.GATE[0] * SM + O.GATE[1]] === 0 ? this.dissolveRate(o) : 0;   // dead membrane
     // division (Lean recipes): 4 headings x kdiv x empty neighbours x Metropolis, division page full
@@ -479,8 +481,14 @@ input[type=range] { width: 100%; accent-color: var(--food); }
       const [i, j, a1, a2, b1, b2] = O.FUEL;
       const fwd = q === k + 1;
       if (fwd) pair(i, a1, j, a2, i, b1, j, b2); else pair(i, b1, j, b2, i, a1, j, a2);
-      const to = this.nb(o.c, fwd ? o.h : (o.h + 2) % 4);
-      this.occ[o.c] = -1; this.occ[to] = o.id; o.c = to; o.moves++;
+      const to = this.nb(o.c, fwd ? o.h : (o.h + 2) % 4), there = this.occ[to];
+      if (there >= 0) {                                    // a body: it takes the mover's place
+        const other = this.byId.get(there); other.c = o.c; this.occ[o.c] = there; other.pushed = (other.pushed || 0) + 1;
+      } else if (there === -2) {                           // a newborn not yet joined (it is there in Lean)
+        for (const b of this.newborns) if (b.c === to) b.c = o.c;
+        this.occ[o.c] = -2;
+      } else this.occ[o.c] = -1;
+      this.occ[to] = o.id; o.c = to; o.moves++;
     }
   };
 
@@ -694,7 +702,9 @@ const T = {"world": {"G": 48, "V": 1500, "kappa_in": 3.663e-05, "kappa_diff": 3.
       : ' 开着突变的 10⁵ 拍持存检验也在跑。';
     ev += ' 常见的轨迹是一千拍内长满全部槽位，再在几千拍里衰落；也常有一开局就灭绝的世界。';
     const VL = R.val_living || [], alive = VL.filter(v => v > 0).length;
-    set('note-honest', '这个物种还没通过准入门：门控的嵌套生命层还不认识分裂和种群，正在补。' + ev +
+    set('note-honest', '这个物种还没通过准入门：门控的嵌套生命层还不认识分裂和种群，正在补。' +
+      '2026-10-27 起，移动是和前方的占据者交换位置（Lean <code>move_exchanges</code>：空格不再特殊），菌团中心不再卡死；' +
+      '同一个基因组、同一批世界里，"马达转了却一步没走"而死的个体从 86 个降到 7 个。下面的留出评估是之前的物理（只能走进空格）下做的。' + ev +
       ' 有限的世界里会灭绝是正常的；我们看的是它会不会尽力活着。答案是还不太会：去掉受体的对照在同一世界里赢它的次数和输给它的差不多，' +
       '死掉的个体大多一辈子一格没走——它的马达几乎只能被"闻到食物"启动，落在干处就原地等到饿死。' +
       '真实大肠杆菌没有刺激也一直在游，越饿越游；缺的是一个生来就有、自己出能量维持的"期望"，这要先在 Lean 里推出来。' +

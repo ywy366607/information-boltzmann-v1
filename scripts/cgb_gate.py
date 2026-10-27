@@ -797,7 +797,8 @@ def check_nested_population_rates_match_lean(name):
     """Populations (`cgb_nested_population`, argument `world@table`): on random populations
     (random inner states, occupancy, pools, pending births), every rate column of the population
     kernel equals an independent transcription of the Lean medium: the organism's own events as
-    `Organisms.rates` (itself checked against Lean), a move only into an empty cell (Lean `eff2`
+    `Organisms.rates` (itself checked against Lean), a move whatever the target holds (Lean
+    `move_exchanges`: the mover exchanges with the occupant; before 2026-10-27 only into an empty cell, `eff2`
     move), division (recipes `(S, rb, h2, false)`: 4 headings x kdiv x empty neighbours x
     Metropolis, the division page full, an intact membrane, no birth pending this tick) and
     dissolution (`(hd, yd, false)`: kappa_dis x Metropolis, membrane wholly broken, the waste pool
@@ -877,8 +878,8 @@ def check_nested_population_rates_match_lean(name):
         cells = [((x[b] + dx) % G) * G + (y[b] + dy) % G for dx, dy in NO.SHIFT]
         empty = [occ[wld, c] == 0 for c in cells]
         ref = list(ref_org[b])
-        ref[nc - 2] *= empty[h[b]]                     # forward: the cell ahead
-        ref[nc - 1] *= empty[(h[b] + 2) % 4]           # backward: the cell behind
+        # moves: Lean move_exchanges, the rate ignores the target's occupant (the kernel below still
+        # moves only into empty cells and fails this check until it implements the exchange)
         gate = n[b, T.GATE[0], T.GATE[1]]
         dE = NS * PS1 - BQ * (phi[b, NO.E, 1] - phi[b, NO.E, 0])
         full = n[b, NO.E, 1] == BQ and T.UNITS[NO.E] == BQ
