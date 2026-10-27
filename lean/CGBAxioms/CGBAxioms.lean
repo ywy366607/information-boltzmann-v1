@@ -77,6 +77,7 @@ import CGBAxioms.GenerationMedium
 import CGBAxioms.GenerationCRN
 import CGBAxioms.GenerationAxiomAudit
 import CGBAxioms.GenerationPredictiveHarvest
+import CGBAxioms.GenerationGradientFilter
 import CGBAxioms.GenerationTable
 import CGBAxioms.GenerationOrganismEcoliV1
 import CGBAxioms.GenerationOrganismGeneratedS0
