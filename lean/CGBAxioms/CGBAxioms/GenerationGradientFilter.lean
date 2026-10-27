@@ -184,4 +184,84 @@ theorem usage_normalized_gain_anti_dominant (s c m₁ m₂ : ℝ) (hs : 0 < s) (
     Real.sqrt_lt_sqrt (by linarith) (by linarith)
   exact div_lt_div_of_pos_left hs h1 h2
 
+/-! ## The step form (2026-10-27)
+
+Along one direction take the local quadratic `L = h e^2 / 2` (`e` the distance to the optimum)
+and an observed gradient `g = h e + ξ` with noise variance `σ2`. One step `e' = e - η g` has
+`E e'^2 = (1 - η h)^2 e^2 + η^2 σ2` (`stepErr`).
+
+* `step_error_square`: the error is the optimum plus `(h^2 e^2 + σ2) (η - η*)^2`,
+  `η* = h e^2 / (h^2 e^2 + σ2)`.
+* `optimal_step_newton_times_signal`: `η* = (1 / h) * S / (S + N)` with `S = (h e)^2` the power
+  of the true gradient and `N = σ2`: a curvature scale times the signal fraction.
+* `no_fixed_step_two_distances`: with noise, the optimal step differs at two distances, so a
+  fixed step needs a schedule; a schedule tied to the total length is excluded by W0, so the
+  signal fraction must be estimated online.
+* `no_optimal_step_negative_curvature` (W6, nonconvex data): with `h < 0` the loss along the
+  step is unbounded below, so the quadratic step does not exist and the step must be bounded.
+-/
+
+/-- Mean-square distance to the optimum after one step of size `η`. -/
+def stepErr (h e σ2 η : ℝ) : ℝ := (1 - η * h) ^ 2 * e ^ 2 + η ^ 2 * σ2
+
+theorem step_error_square (h e σ2 η : ℝ) (hA : 0 < h ^ 2 * e ^ 2 + σ2) :
+    stepErr h e σ2 η = e ^ 2 * σ2 / (h ^ 2 * e ^ 2 + σ2) +
+      (h ^ 2 * e ^ 2 + σ2) * (η - h * e ^ 2 / (h ^ 2 * e ^ 2 + σ2)) ^ 2 := by
+  unfold stepErr
+  field_simp
+  ring
+
+theorem optimal_step_minimizes (h e σ2 η : ℝ) (hA : 0 < h ^ 2 * e ^ 2 + σ2) :
+    stepErr h e σ2 (h * e ^ 2 / (h ^ 2 * e ^ 2 + σ2)) ≤ stepErr h e σ2 η := by
+  rw [step_error_square h e σ2 η hA, step_error_square h e σ2 _ hA, sub_self]
+  nlinarith [sq_nonneg (η - h * e ^ 2 / (h ^ 2 * e ^ 2 + σ2)), hA.le]
+
+theorem optimal_step_newton_times_signal (h e σ2 : ℝ) (hh : h ≠ 0) :
+    h * e ^ 2 / (h ^ 2 * e ^ 2 + σ2) = (1 / h) * ((h * e) ^ 2 / ((h * e) ^ 2 + σ2)) := by
+  rw [mul_pow]
+  field_simp
+
+/-- With noise, the optimal step differs at two different distances to the optimum. -/
+theorem no_fixed_step_two_distances (h σ2 x y : ℝ) (hh : 0 < h) (hσ : 0 < σ2)
+    (hx : 0 ≤ x) (hy : 0 ≤ y) (hxy : x ≠ y) :
+    h * x / (h ^ 2 * x + σ2) ≠ h * y / (h ^ 2 * y + σ2) := by
+  intro heq
+  have hdx : 0 < h ^ 2 * x + σ2 := by positivity
+  have hdy : 0 < h ^ 2 * y + σ2 := by positivity
+  rw [div_eq_div_iff hdx.ne' hdy.ne'] at heq
+  have : h * σ2 * (x - y) = 0 := by linear_combination heq
+  rcases mul_eq_zero.mp this with h0 | h0
+  · exact absurd h0 (mul_pos hh hσ).ne'
+  · exact hxy (sub_eq_zero.mp h0)
+
+/-- **W6 (nonconvex data)**: with negative curvature the loss along the step is unbounded
+below, so no optimal quadratic step exists and the step must be bounded. -/
+theorem no_optimal_step_negative_curvature (h e g M : ℝ) (hh : h < 0) (hg : g ≠ 0) :
+    ∃ η : ℝ, h * (e - η * g) ^ 2 / 2 < M := by
+  obtain ⟨n, hn⟩ := exists_nat_gt ((|e| + Real.sqrt (2 * |M| / (-h)) + 1) / |g|)
+  refine ⟨n * (if 0 < g then 1 else -1), ?_⟩
+  have hgabs : 0 < |g| := abs_pos.mpr hg
+  have hlarge : Real.sqrt (2 * |M| / (-h)) + |e| + 1 < |n * (if 0 < g then 1 else -1) * g| := by
+    have : |n * (if 0 < g then (1 : ℝ) else -1) * g| = n * |g| := by
+      split_ifs with hpos
+      · rw [mul_one, abs_mul, Nat.abs_cast]
+      · rw [abs_mul, abs_mul, Nat.abs_cast, abs_neg, abs_one, mul_one]
+    rw [this]
+    rw [div_lt_iff₀ hgabs] at hn
+    linarith
+  have hd : Real.sqrt (2 * |M| / (-h)) + 1 < |e - n * (if 0 < g then 1 else -1) * g| := by
+    have := abs_sub_abs_le_abs_sub (n * (if 0 < g then (1 : ℝ) else -1) * g) e
+    rw [abs_sub_comm] at this
+    linarith
+  have hs0 : 0 ≤ Real.sqrt (2 * |M| / (-h)) := Real.sqrt_nonneg _
+  have hsq : 2 * |M| / (-h) < (e - n * (if 0 < g then 1 else -1) * g) ^ 2 := by
+    have h1 : Real.sqrt (2 * |M| / (-h)) < |e - n * (if 0 < g then 1 else -1) * g| := by linarith
+    have h2 := Real.sq_sqrt (show 0 ≤ 2 * |M| / (-h) by
+      apply div_nonneg (by positivity) (by linarith))
+    rw [← sq_abs (e - _)]
+    nlinarith
+  have hneg : 0 < -h := by linarith
+  rw [div_lt_iff₀ hneg] at hsq
+  nlinarith [le_abs_self M, neg_abs_le M]
+
 end CGB.GradientFilter
