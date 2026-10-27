@@ -330,4 +330,40 @@ theorem momentum_after_exact_step (h e₀ β : ℝ) (hh : h ≠ 0) (he : e₀ �
   · exact hβ h1
   · exact he h1
 
+/-! ## Continuous shells are necessary (2026-10-27)
+
+One observation with prior variance `P` and noise `r`, gain `K`: error `(1 - K)^2 P + K^2 r`
+(`gainErr`), uniquely minimized at `K = P / (P + r)` (`gain_error_square`). A steady-state gain
+is computed from the steady prior `P*`; a direction with less evidence has a larger prior
+`P > P*` and the steady gain is strictly worse for it (`steady_gain_worse_for_fresh`). In
+long-tail data rare directions always have little evidence, so the gain must follow each
+direction's own posterior variance (its shell depth), not one steady value.
+-/
+
+/-- Error of one gain-`K` update of an estimate with prior variance `P` and noise `r`. -/
+def gainErr (P r K : ℝ) : ℝ := (1 - K) ^ 2 * P + K ^ 2 * r
+
+theorem gain_error_square (P r K : ℝ) (h : 0 < P + r) :
+    gainErr P r K = P * r / (P + r) + (P + r) * (K - P / (P + r)) ^ 2 := by
+  unfold gainErr
+  field_simp
+  ring
+
+/-- The steady gain `P* / (P* + r)` is strictly worse than the evidence-dependent gain for a
+direction whose prior variance is different (larger: a fresh or rare direction). -/
+theorem steady_gain_worse_for_fresh (P Ps r : ℝ) (hr : 0 < r) (hP : 0 < P) (hPs : 0 < Ps)
+    (hne : P ≠ Ps) :
+    gainErr P r (P / (P + r)) < gainErr P r (Ps / (Ps + r)) := by
+  have h1 : 0 < P + r := by linarith
+  rw [gain_error_square P r _ h1, gain_error_square P r _ h1, sub_self]
+  have hne' : Ps / (Ps + r) - P / (P + r) ≠ 0 := by
+    intro h0
+    have h2 : 0 < Ps + r := by linarith
+    rw [sub_eq_zero, div_eq_div_iff h2.ne' h1.ne'] at h0
+    apply hne
+    nlinarith
+  have := pow_pos (abs_pos.mpr hne') 2
+  rw [sq_abs] at this
+  nlinarith
+
 end CGB.GradientFilter
