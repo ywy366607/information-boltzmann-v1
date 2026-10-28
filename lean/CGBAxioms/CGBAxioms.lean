@@ -91,6 +91,7 @@ import CGBAxioms.GenerationCascadeMemory
 import CGBAxioms.GenerationPersistence
 import CGBAxioms.GenerationInformationEnergy
 import CGBAxioms.GenerationSpeechTempo
+import CGBAxioms.GenerationColumnMemory
 import CGBAxioms.GenerationAmplifier
 import CGBAxioms.Nesting
 import CGBAxioms.GenerationNesting

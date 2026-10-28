@@ -168,7 +168,18 @@ GDN 的 α 是离线用反向传播学的。我们不用 BPTT，但对线性递�
   2. 第三因子没有携带信号（多巴胺沉默，门 2 ≈ 0）。训练前必须先审计 q − c 是否真的变化、是否真的到达调制载体。
   3. 随机低秩反馈的信用近似太粗。用局部误差和两相对比代替。
 
+## 3c. 已证（2026-10-28，`GenerationColumnMemory.lean`，完整构建与审计通过）
+
+| 定理 | 内容 |
+|---|---|
+| `silent_rest_unique` | 没有写入时，门控 delta 步只有零这一个静止点：突触层自己既不锁存，也不产生活动 |
+| `tied_write_is_error_descent`、`tied_write_error_shrinks`、`exact_prediction_no_write` | 用同一个键先读后写，就是在 ½(⟨k,x⟩ − v)² 上走一步梯度（到达 − 预测，乘以前端键，即 G14 的差）；单位键时误差按 1 − β 缩小；预测准确时不写 |
+| `occurrence_decay_retains`、`unused_column_kept` | 按使用衰减（α^w，w ∈ [0,1]）保留的至少和每拍都衰减一样多；不被用到的柱完全保留 |
+| `no_latch_below_unit_gain`、`hardSat_lipschitz`、`latch_above_unit_gain` | 活动 x ↦ σ(gx)：g < 1 时只有静止点 0；有饱和（有限占据数，G25）且 g ≥ 1 时，除 0 外还有 ±1 两个静止点。用 delta 写入目标增益 ≥ 1 的模式就能锁存；适应（B）把增益降到 1 以下就放开 |
+
 ## 4. 缺口（要新证，实现之前做）
+
+已证的部分见 §3c。下面仍待证（编号沿用）：
 
 1. **自听闭环下的无偏性**：输入依赖于自己的输出时，G14 两相漂移还是不是似然梯度？按 `residual_removes_own_step` 的模式，用传出副本扣除自己那一步。
 2. **资格迹的长度**：级联迹的时间深度 ≥ 妈妈回应的延迟（`delayed_credit_requires_history_carrier` + `GenerationCascadeMemory`）。
