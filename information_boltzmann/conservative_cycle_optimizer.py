@@ -255,7 +255,9 @@ class ResourceCycle(torch.optim.Optimizer):
                  adam_base=False, betas=(.9, .999), eps=1e-8, competition_strength=1.0,
                  latch_state=False, latch_strength=1.0, anchor_rate=.05,
                  resource_fatigue=False, resource_recovery_rate=.25,
-                 outcome_modulation=False, outcome_deadband=1e-5):
+                 outcome_modulation=False, outcome_deadband=1e-5,
+                 calibrated_outcome=False, outcome_ema=.125,
+                 calibrated_outcome_rate=.05):
         super().__init__(params, dict(lr=lr, observer_rate=observer_rate,
             feedback=feedback, sinkhorn_steps=sinkhorn_steps, chunk_compartments=chunk_compartments,
             auto_step=auto_step, rho=1.0, rho_min=rho_min, rho_max=rho_max,
@@ -264,7 +266,11 @@ class ResourceCycle(torch.optim.Optimizer):
             competition_strength=competition_strength, latch_state=latch_state,
             latch_strength=latch_strength, anchor_rate=anchor_rate, resource_fatigue=resource_fatigue,
             resource_recovery_rate=resource_recovery_rate, outcome_modulation=outcome_modulation,
-            outcome_deadband=outcome_deadband, last_outcome_evidence=0.0))
+            outcome_deadband=outcome_deadband, last_outcome_evidence=0.0,
+            calibrated_outcome=calibrated_outcome, outcome_ema=outcome_ema,
+            calibrated_outcome_rate=calibrated_outcome_rate,
+            outcome_probability=.5, outcome_score_ema=0.0, outcome_score_count=0,
+            last_outcome_score=0.0))
         for group in self.param_groups:
             self._validate_group(group)
 
@@ -280,8 +286,17 @@ class ResourceCycle(torch.optim.Optimizer):
             raise ValueError('resource_fatigue must be boolean')
         if type(group.get('outcome_modulation', False)) is not bool:
             raise ValueError('outcome_modulation must be boolean')
+        if type(group.get('calibrated_outcome', False)) is not bool:
+            raise ValueError('calibrated_outcome must be boolean')
         if not math.isfinite(group.get('outcome_deadband', 1e-5)) or group.get('outcome_deadband', 1e-5) < 0:
             raise ValueError('invalid outcome_deadband')
+        if not math.isfinite(group.get('outcome_ema', .125)) or not 0 < group.get('outcome_ema', .125) <= 1:
+            raise ValueError('invalid outcome_ema')
+        if (not math.isfinite(group.get('calibrated_outcome_rate', .05)) or
+                group.get('calibrated_outcome_rate', .05) < 0):
+            raise ValueError('invalid calibrated_outcome_rate')
+        if not 0 <= group.get('outcome_probability', .5) <= 1:
+            raise ValueError('invalid outcome_probability')
         if (not math.isfinite(group.get('resource_recovery_rate', .25)) or
                 not 0 < group.get('resource_recovery_rate', .25) <= 1):
             raise ValueError('invalid resource_recovery_rate')
@@ -366,7 +381,8 @@ class ResourceCycle(torch.optim.Optimizer):
             # legacy directional auto-step and the fresh-outcome third
             # factor.  Either one must affect the next continuous update;
             # otherwise outcome observation is diagnostic-only.
-            uses_rho = group.get('auto_step', False) or group.get('outcome_modulation', False)
+            uses_rho = (group.get('auto_step', False) or group.get('outcome_modulation', False)
+                        or group.get('calibrated_outcome', False))
             eff_lr = group['lr'] * (group.get('rho', 1.0) if uses_rho else 1.0)
             for p in group['params']:
                 if p.grad is None or p.numel() == 0:
@@ -507,6 +523,30 @@ class ResourceCycle(torch.optim.Optimizer):
         if not math.isfinite(realized):
             raise ValueError('nonfinite realized outcome')
         for group in self.param_groups:
+            if group.get('calibrated_outcome', False):
+                # A bounded proper-score channel: the predictor reports the
+                # probability that a fresh update is beneficial, and the
+                # binary outcome is scored after the update.  Centering by
+                # the score EMA removes the systematic scale bias that made
+                # raw (realized - predicted) evidence collapse rho.
+                p = float(group.get('outcome_probability', .5))
+                y = 1.0 if realized > 0 else 0.0
+                score = 2.0 * p * y - p * p - y * y
+                count = int(group.get('outcome_score_count', 0))
+                baseline = float(group.get('outcome_score_ema', 0.0))
+                evidence = 0.0 if count == 0 else score - baseline
+                ema = group.get('outcome_ema', .125)
+                group['outcome_score_ema'] = (1.0 - ema) * baseline + ema * score
+                group['outcome_probability'] = (1.0 - ema) * p + ema * y
+                group['outcome_score_count'] = count + 1
+                group['last_outcome_score'] = score
+                group['last_outcome_evidence'] = evidence
+                if abs(evidence) > group.get('outcome_deadband', 1e-5):
+                    rate = group.get('calibrated_outcome_rate', .05)
+                    group['rho'] = min(group.get('rho_max', 10.0),
+                                       max(group.get('rho_min', 1e-4),
+                                           group.get('rho', 1.0) * math.exp(rate * evidence)))
+                continue
             if not group.get('outcome_modulation', False):
                 continue
             predicted = float(group.get('last_pred_decrease', 0.0))
@@ -544,6 +584,13 @@ class ResourceCycle(torch.optim.Optimizer):
             stored.setdefault('outcome_modulation', False)
             stored.setdefault('outcome_deadband', 1e-5)
             stored.setdefault('last_outcome_evidence', 0.0)
+            stored.setdefault('calibrated_outcome', False)
+            stored.setdefault('outcome_ema', .125)
+            stored.setdefault('calibrated_outcome_rate', .05)
+            stored.setdefault('outcome_probability', .5)
+            stored.setdefault('outcome_score_ema', 0.0)
+            stored.setdefault('outcome_score_count', 0)
+            stored.setdefault('last_outcome_score', 0.0)
             self._validate_group(stored)
             if len(current['params']) != len(stored['params']):
                 raise ValueError('different parameter group size')

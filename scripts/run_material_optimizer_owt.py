@@ -303,7 +303,7 @@ def make_optimizer(model, record, arm):
         if any(p.ndim != 2 for p in parameters):
             raise ValueError('this Muon control requires every parameter to be a matrix')
         return torch.optim.Muon(parameters, **spec['muon'])
-    if arm in ("resource", "feedback_on", "feedback_off", "step_fixed", "step_adaptive", "adam_cycle_control", "adam_cycle", "latch_control", "latch_demo", "causal_allocation_off", "causal_phase_off", "fatigue_on", "fatigue_off", "outcome_on", "outcome_off"):
+    if arm in ("resource", "feedback_on", "feedback_off", "step_fixed", "step_adaptive", "adam_cycle_control", "adam_cycle", "latch_control", "latch_demo", "causal_allocation_off", "causal_phase_off", "fatigue_on", "fatigue_off", "outcome_on", "outcome_off", "calibrated_on", "calibrated_off"):
         from information_boltzmann.conservative_cycle_optimizer import ResourceCycle
         options = dict(spec.get('adam_cycle', spec['resource']) if arm in ('adam_cycle', 'adam_cycle_control') else spec['resource'])
         if arm in ("feedback_on", "feedback_off"):
@@ -324,6 +324,9 @@ def make_optimizer(model, record, arm):
             options['resource_fatigue'] = True
         if arm in ('outcome_on', 'outcome_off'):
             options['outcome_modulation'] = arm == 'outcome_on'
+        if arm in ('calibrated_on', 'calibrated_off'):
+            options['outcome_modulation'] = True
+            options['calibrated_outcome'] = arm == 'calibrated_on'
         return ResourceCycle(model.parameters(), **options)
     if arm != "cycle":
         raise ValueError("unknown continuous optimizer")
@@ -619,7 +622,9 @@ def train(record, registration, arm, directory, preflight_path):
                 stats.update(fresh_before=fresh_before, fresh_after=fresh_after,
                              fresh_decrease=fresh_decrease,
                              outcome_evidence=fresh_decrease - stats.get('predicted_decrease', 0.0),
-                             outcome_rho=float(optimizer.param_groups[0].get('rho', 1.0)))
+                             outcome_rho=float(optimizer.param_groups[0].get('rho', 1.0)),
+                             outcome_probability=float(optimizer.param_groups[0].get('outcome_probability', .5)),
+                             outcome_score_ema=float(optimizer.param_groups[0].get('outcome_score_ema', 0.0)))
             progress["cursors"][domain] += 1024
             progress["update"] = update + 1
             for key, value in stats.items():
@@ -673,7 +678,7 @@ def main():
     parser.add_argument("--matched-rate-comparison", action="store_true", help="compare ResourceCycle and Adam-base at the same nominal rate")
     parser.add_argument("--latch-demo", action="store_true", help="compare the active restoration demo with a matched-state control")
     parser.add_argument("--preflight", action="store_true")
-    parser.add_argument("--arm", choices=("cycle", "resource", "feedback_on", "feedback_off", "step_fixed", "step_adaptive", "adam_cycle_control", "adam_cycle", "latch_control", "latch_demo", "causal_allocation_off", "causal_phase_off", "fatigue_on", "fatigue_off", "outcome_on", "outcome_off", "adam", "muon", "all"))
+    parser.add_argument("--arm", choices=("cycle", "resource", "feedback_on", "feedback_off", "step_fixed", "step_adaptive", "adam_cycle_control", "adam_cycle", "latch_control", "latch_demo", "causal_allocation_off", "causal_phase_off", "fatigue_on", "fatigue_off", "outcome_on", "outcome_off", "calibrated_on", "calibrated_off", "adam", "muon", "all"))
     parser.add_argument("--registration", type=Path, default=DEFAULT_REGISTRATION)
     parser.add_argument("--output", type=Path, default=ROOT / "results/continuous_optimizer_owt_20261028")
     args = parser.parse_args()

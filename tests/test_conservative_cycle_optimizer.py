@@ -705,3 +705,31 @@ def test_resource_fatigue_control_depletes_and_recovers_same_state(device):
         p.grad = torch.zeros_like(p)
         on.step()
     assert float(on.state[p]['row_reserve'][0]) > float(low[0])
+
+
+def test_calibrated_outcome_scores_are_centered_and_bounded():
+    p = torch.zeros(4, requires_grad=True)
+    opt = ResourceCycle([p], lr=.01, adam_base=True,
+                        outcome_modulation=True, calibrated_outcome=True,
+                        outcome_ema=.25, calibrated_outcome_rate=.2,
+                        outcome_deadband=1e-8)
+    values = [1.0, -1.0, 1.0, -1.0] * 8
+    for value in values:
+        p.grad = torch.ones_like(p)
+        opt.step()
+        opt.observe_outcome(value)
+        group = opt.param_groups[0]
+        assert group['rho_min'] <= group['rho'] <= group['rho_max']
+        assert 0 <= group['outcome_probability'] <= 1
+    group = opt.param_groups[0]
+    assert group['outcome_score_count'] == len(values)
+    assert group['outcome_probability'] == pytest.approx(.5, abs=.08)
+    assert group['rho'] > group['rho_min']
+    saved = copy.deepcopy(opt.state_dict())
+    q = p.detach().clone().requires_grad_()
+    restored = ResourceCycle([q], lr=.01, adam_base=True,
+                             outcome_modulation=True, calibrated_outcome=True)
+    restored.load_state_dict(saved)
+    assert restored.param_groups[0]['outcome_score_count'] == len(values)
+    assert restored.param_groups[0]['outcome_probability'] == pytest.approx(
+        group['outcome_probability'])
