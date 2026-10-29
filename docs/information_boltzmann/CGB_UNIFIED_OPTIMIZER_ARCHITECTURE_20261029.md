@@ -73,9 +73,10 @@ Adam 的 m,v 可以作为连续数值后端，负责尺度归一化；它不承�
 - phase_step_stays_in_unit_interval、phase_history_stays_in_unit_interval：在交换率位于 [0,1] 时，phase 不会越界；
 - phase_exchange_transfer_is_conserved、phase_exchange_transfer_reads_phase：连续 phase 更新可以写成单条带来源的源—目标守恒转移，并从目标读出净历史；
 - fresh_outcome_measurement_unbiased、fresh_outcome_trust_stays_in_band：更新后的新证据可作为第三因子输入，同时保持 trust 边界；
+- bernoulli_expected_brier_gap、bernoulli_expected_brier_calibrated、centered_bernoulli_evidence_zero_mean、calibrated_evidence_penalty_is_square：校准结果概率的偏差是平方损失，按期望评分作基线时证据均值为零；
 - build_mechanical_admission：把上述机械条件合并成一个入口定理。
 
-总模块已编译，完整信任/覆盖库存显示 1,200 条已审计源码定理，新增模块 27 条。审计的证明信任和模块覆盖通过；定理解释目录仍有一个与本次模块无关的旧解释源哈希不一致，暂不把目录刷新失败解释成 Lean 证明失败。
+总模块已编译，完整信任/覆盖库存显示 1,204 条已审计源码定理，新增模块 31 条。审计的证明信任和模块覆盖通过；定理解释目录仍有一个与本次模块无关的旧解释源哈希不一致，暂不把目录刷新失败解释成 Lean 证明失败。
 
 ## 尚未满足的条件
 
@@ -89,6 +90,12 @@ Adam 的 m,v 可以作为连续数值后端，负责尺度归一化；它不承�
 
 在现有连续 `ResourceCycle` 上，`outcome_on` 与 `outcome_off` 使用同一初始化、同一 OWT A→B→A 数据预算，并以相同频率测量更新后的新批次。修正后的实现确认新鲜结果确实进入下一步有效步长；但当前把 `realized - predicted` 直接送入旧的 `gamma_down` 规则会使 `rho` 从 1.0 退化到 `rho_min=1e-4`，5000 步单种子 prequential BPB 为 4.1945，而观测成本匹配的关闭臂为 3.1259。该结果否决当前结果门进入主线，但保留“更新后独立后果必须能调制下一步”的接口；下一次设计必须先解决证据的尺度、基线和时间聚合，再进行长跑。
 4. 把锁存的保持/释放与守恒资源转移接起来，证明保持期间仍感知，释放后资源重新可用。
+
+### 校准结果通道（Jev/RLCD 启发，2026-10-29）
+
+把新鲜后果先转成二值“有益/非有益”结果，用二值 Brier 评分和隔室级 EMA 基线形成无量纲证据。Lean 已证明：期望评分相对真实结果概率的损失正好是平方误差，以自身期望评分为基线时证据期望为零。现有 `ResourceCycle` 的可选 `calibrated_outcome` 通道只增加三个隔室级标量（结果概率、评分 EMA、计数），不复制参数状态。
+
+600 步真实 OWT A→B→A 探针中，校准通道的 `rho` 保持在 `[0.908, 1.010]`，prequential BPB 为 4.0442；同成本的 raw outcome 对照 `rho` 降至 0.0032，BPB 为 4.4184。该结果只证明校准通道避免了当前 raw 残差门的塌缩，尚不足以证明长期优势；下一步仍需多种子和更长预算验证。
 
 在这四项完成前，ResourceCycle 只能称为“Adam 数值基底上的矩阵资源竞争优化器”，不能称为完整三因子生成生命体优化器。
 
