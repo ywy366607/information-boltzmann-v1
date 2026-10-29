@@ -8,6 +8,7 @@ language organism or an equivalence to the LG1 mean-field approximation.
 
 from dataclasses import asdict, dataclass
 from functools import cached_property
+from fractions import Fraction
 
 
 def _read_packed(data, index, bits):
@@ -27,20 +28,22 @@ def _write_packed(data, index, bits, value):
 @dataclass(frozen=True)
 class LocalLaw:
     rows: int
-    labels: int
+    labels: int  # material columns; the native byte adapter separately requires 256
     charge_cap: int
     slot_cap: int
-    potential: tuple[int, ...]  # same U(N) for every compartment
+    potential: tuple[int, ...]  # shared integer numerator table for U(N)
     epsilon: int = 1
     coupling: int = 1
     attempt_fee: int = 1
+    pool_reference_size: int = 0  # 0: legacy U(N); positive: reference_size*U(N)/D
 
     def __post_init__(self):
         values = (self.rows, self.labels, self.charge_cap, self.slot_cap,
-                  self.epsilon, self.coupling, self.attempt_fee)
+                  self.epsilon, self.coupling, self.attempt_fee, self.pool_reference_size)
         if (any(type(v) is not int for v in values) or self.rows < 1
-                or not 1 <= self.labels <= 256 or not 1 <= self.charge_cap <= 15
+                or self.labels < 1 or not 1 <= self.charge_cap <= 15
                 or not 1 <= self.slot_cap <= 15 or self.attempt_fee < 1
+                or self.pool_reference_size < 0
                 or type(self.potential) is not tuple
                 or len(self.potential) != max(self.rows, self.labels) * self.charge_cap + 1
                 or any(type(v) is not int for v in self.potential)):
@@ -66,10 +69,33 @@ class LocalLaw:
     def state_bytes(self):
         return (self.edges * self.bits + 7) // 8
 
+    def pool_energy(self, channel, total):
+        """Static pool-size scaling, using the existing integer total.
+
+        Row-P pools have ``labels`` cells and column-Q pools have ``rows``.
+        With the quadratic numerator and reference_size=2 this is 2*N*N/D;
+        exact rational rates use the optimizer's proved acceptance sampler.
+        No pool history or extra per-cell state is introduced.
+        """
+        if type(channel) is not int or channel not in (0, 1):
+            raise ValueError("invalid pool channel")
+        size = self.labels if channel == 0 else self.rows
+        if type(total) is not int or not 0 <= total <= size * self.charge_cap:
+            raise ValueError("invalid pool total")
+        value = self.potential[total]
+        return (Fraction(self.pool_reference_size * value, size)
+                if self.pool_reference_size else value)
+
+    @cached_property
+    def max_potential_step(self):
+        return max(abs(self.pool_energy(channel, total+1)-self.pool_energy(channel, total))
+                   for channel, size in ((0, self.labels), (1, self.rows))
+                   for total in range(size * self.charge_cap))
+
     @cached_property
     def bounds(self):
         q, w, j = self.charge_cap, self.slot_cap, abs(self.coupling)
-        delta_u = max(abs(b - a) for a, b in zip(self.potential, self.potential[1:]))
+        delta_u = self.max_potential_step
         return (j * w * (q - 1) + 2 * delta_u,
                 abs(self.epsilon) + j * q * max(q - 1, w - 1) + delta_u,
                 j * w * q, j * w * q)
@@ -221,7 +247,7 @@ class LocalMedium:
             row, col = divmod(edge, f.labels)
             total = self.total(channel, row if channel == 0 else col)
             changed = new[channel] - old[channel]
-            delta_u = f.potential[total + changed] - f.potential[total]
+            delta_u = f.pool_energy(channel, total + changed) - f.pool_energy(channel, total)
             delta += (2 if kind == 0 else 1) * delta_u
         exponent = -delta
         assert exponent <= f.bounds[kind]
@@ -234,6 +260,8 @@ class LocalMedium:
         [0,2**random_bits). The attempt tariff is declared, not joule-calibrated;
         producing that random ticket can itself be costly. No extra free steps.
         """
+        if self.law.pool_reference_size:
+            raise ValueError("scaled pools require the rational acceptance sampler")
         edits, exponent, bound = self.prepare(index)
         bits = 0 if exponent is None else bound - exponent
         if type(ticket) is not int or ticket < 0 or ticket.bit_length() > bits:
@@ -253,12 +281,19 @@ class LocalMedium:
     def state_dict(self):
         config = asdict(self.law)
         config["potential"] = list(config["potential"])
-        return dict(version=2, encoding="mixed-radix-le", law=config, payload=self.payload.hex())
+        return dict(version=3, encoding="mixed-radix-le", law=config, payload=self.payload.hex())
 
     def load_state_dict(self, snapshot):
         expected = self.state_dict()["law"]
+        # Version2 predated pool-size scaling and means exactly the unscaled
+        # law. Upgrade a copy; never reinterpret it as a scaled medium.
+        if (type(snapshot) is dict and snapshot.get("version") == 2
+                and type(snapshot.get("law")) is dict
+                and "pool_reference_size" not in snapshot["law"]):
+            snapshot = dict(snapshot, version=3,
+                            law=dict(snapshot["law"], pool_reference_size=0))
         if (type(snapshot) is not dict or set(snapshot) != {"version", "encoding", "law", "payload"}
-                or type(snapshot["version"]) is not int or snapshot["version"] != 2
+                or type(snapshot["version"]) is not int or snapshot["version"] != 3
                 or type(snapshot["encoding"]) is not str or snapshot["encoding"] != "mixed-radix-le"
                 or type(snapshot["law"]) is not dict or set(snapshot["law"]) != set(expected)
                 or any(type(snapshot["law"][k]) is not type(v) or snapshot["law"][k] != v
@@ -304,7 +339,7 @@ class OpenMedium:
         self.initial_content = sum(sum(body.get(e)) for e in range(body.law.edges))
         self.intake = self.released = 0
         f = body.law
-        delta_u = max(abs(b - a) for a, b in zip(f.potential, f.potential[1:]))
+        delta_u = f.max_potential_step
         self.exchange_bound = (abs(f.coupling) * f.slot_cap * f.charge_cap + delta_u
                                + abs(reservoir.content_cost)
                                + max(abs(reservoir.chemical_base),
@@ -373,7 +408,7 @@ class OpenMedium:
         col = edge % f.labels
         total = self.body.total(1, col)
         delta = (self.body.unit_energy(new) - self.body.unit_energy(old)
-                 + f.potential[total + sign] - f.potential[total])
+                 + f.pool_energy(1, total + sign) - f.pool_energy(1, total))
         mu = r.chemical_base + (r.stimulus if col == label else 0)
         exponent = -delta - (r.content_cost - mu) * sign
         assert -bound <= exponent <= bound
@@ -419,6 +454,8 @@ class OpenMedium:
         These declared operation charges do not certify joules or real-time CPU
         deadlines. Snapshots are supported between complete windows, not inside.
         """
+        if self.body.law.pool_reference_size:
+            raise ValueError("scaled pools require the rational acceptance sampler")
         if self.body.law.labels != 256:
             raise ValueError("tick requires the native 256-byte boundary")
         if type(plan) is not tuple or len(plan) > self.opportunities_per_tick:

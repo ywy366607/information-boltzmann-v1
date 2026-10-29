@@ -16,6 +16,110 @@ from information_boltzmann.core.triton_synapse import (
 from scripts.ib.train_fly_bptt_stream import resolve_learning_modes
 
 
+def native_credit_args(**values):
+    from scripts.ib import train_fly_bptt_stream as trainer
+    from scripts.ib.fly_interface.native_causal_audit import trainer_restore_program
+    namespace = vars(trainer).copy()
+    parser_code, _ = trainer_restore_program(open(trainer.__file__, encoding='utf8').read())
+    exec(parser_code, namespace)
+    args = namespace['parser'].parse_args([])
+    for name, value in values.items():
+        setattr(args, name, value)
+    return args
+
+
+def test_amine_resume_versions_and_explicit_activation():
+    from information_boltzmann.core.fly_amine_modulation import AMINE_KINETICS_VERSION
+    args = native_credit_args(amine_modulation=True)
+    resolve_learning_modes(args, {'amine_modulation': False}, {})
+    assert args.amine_modulation
+    args = native_credit_args()
+    resolve_learning_modes(args, {'amine_modulation': True,
+                                 'amine_kinetics_version': AMINE_KINETICS_VERSION}, {})
+    assert args.amine_modulation
+    with pytest.raises(ValueError, match='explicit state/optimizer repair'):
+        resolve_learning_modes(native_credit_args(), {'amine_modulation': True}, {})
+
+
+def test_resource_guard_saves_committed_state_before_raising():
+    from scripts.ib.train_fly_bptt_stream import preserve_committed_resource_window
+    writes = []
+    preserve_committed_resource_window(None, lambda: writes.append('saved'))
+    assert not writes
+    with pytest.raises(MemoryError, match='complete committed-window checkpoint saved'):
+        preserve_committed_resource_window('over budget', lambda: writes.append('saved'))
+    assert writes == ['saved']
+
+
+def test_eg_scratch_reuse_preserves_normalized_update_and_diagnostics():
+    from types import SimpleNamespace
+    w = torch.tensor([.3,.6,.2,0.])
+    birth = torch.tensor([.4,.5,.3,0.])
+    posts = torch.tensor([0,0,1,1])
+    gradient = torch.tensor([.2,-.3,.1,.4])
+    old_momentum = torch.tensor([.02,.01,-.01,.1])
+    obj = SimpleNamespace(model=SimpleNamespace(n_neurons=2,edge_post_e=posts),
+        edge_names=['edge_weight_e'],edges=[w],eg_mom={'edge_weight_e':old_momentum.clone()},
+        eg_rms={'edge_weight_e':torch.tensor(.03)},eg_birth={'edge_weight_e':birth},
+        eg_total={'edge_weight_e':torch.tensor([.9,.3])},eg_tau=16.,eg_momentum=.9,
+        eg_rate=.02,eg_moved={},eg_count=2)
+    momentum=.9*old_momentum+gradient
+    rms=.99*.03+.01*momentum.square().mean()
+    move=-.02*momentum/rms.sqrt()
+    positive=w>0
+    move[positive]+=(birth[positive].log()-w[positive].log())/16
+    expected=w*move.clamp(-1,1).exp()
+    expected*=obj.eg_total['edge_weight_e'][posts]/torch.zeros(2).index_add(0,posts,expected)[posts]
+    rng=torch.get_rng_state().clone()
+    FlyBPTTLearner._eg_apply(obj,[gradient],None)
+    torch.testing.assert_close(w,expected,rtol=1e-6,atol=1e-7)
+    assert w[-1]==0 and torch.equal(rng,torch.get_rng_state())
+    actual=w[positive].div(birth[positive]).log().abs()
+    torch.testing.assert_close(torch.tensor(obj.eg_moved['edge_weight_e']),
+                               torch.stack((actual.mean(),actual.quantile(.99))))
+    assert obj.eg_count==3
+
+
+def test_native_context_recomputation_segment_inherits_and_rejects_semantic_change():
+    args = native_credit_args(mother_native_context=True, mother_action_clock='commit',mother_credit='consequence')
+    resolve_learning_modes(args, {'stream_segment_ticks':4}, {})
+    assert args.stream_segment_ticks == 4
+    args = native_credit_args(stream_segment_ticks=4)
+    with pytest.raises(ValueError, match='endpoint expectation'):
+        resolve_learning_modes(args, {}, {})
+    args = native_credit_args(stream_segment_ticks=0)
+    with pytest.raises(ValueError, match='positive'):
+        resolve_learning_modes(args, {}, {})
+
+
+@pytest.mark.parametrize('saved,explicit,expected', [({}, None, False),
+    ({'mother_native_credit': True}, None, True), ({'mother_native_credit': True}, False, False)])
+def test_native_credit_route_inherits_without_enabling_ordered_policy(saved, explicit, expected):
+    args = native_credit_args(mother_native_credit=explicit, mother_credit='consequence')
+    resolve_learning_modes(args, saved, {})
+    assert args.mother_native_credit is expected
+    assert not args.mother_consequence_native
+
+
+def test_native_credit_route_rejects_a_second_policy_change_or_wrong_objective():
+    for other, objective in ((True, 'consequence'), (False, 'epistemic')):
+        args = native_credit_args(mother_native_credit=True, mother_credit=objective,
+                                  mother_consequence_native=other)
+        with pytest.raises(ValueError):
+            resolve_learning_modes(args, {}, {})
+
+
+def test_historical_body_proxy_is_never_inherited_into_training():
+    args = native_credit_args()
+    resolve_learning_modes(args, {'body_loop': True, 'body_actuator': True,
+                                  'body_proxy_compatibility': True}, {})
+    assert args.body_loop and args.body_actuator  # state remains restorable
+    assert args.body_proxy_compatibility is False
+    args = native_credit_args(body_proxy_compatibility=True)
+    with pytest.raises(ValueError, match='quarantined'):
+        resolve_learning_modes(args, {}, {})
+
+
 @pytest.mark.parametrize('saved,explicit,expected', [
     ({}, None, False), ({'detach_reset': True}, None, True),
     ({'detach_reset': True}, False, False), ({}, True, True),

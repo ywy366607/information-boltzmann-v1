@@ -13,7 +13,7 @@
 cd /d/information-boltzmann-v1
 PY=/d/conda_envs/vox/python.exe; FI=scripts/ib/fly_interface; root=E:/fly_stream_overflow/newborn; ckpt=E:/ib_checkpoints/newborn
 W=${GATE_WORDS:-1024}; TOTAL_CHUNKS=${TOTAL_CHUNKS:-9}
-export PYTHONIOENCODING=utf-8 FLY_REUSE_TRANSMISSION=0
+export PYTHONIOENCODING=utf-8 FLY_REUSE_TRANSMISSION=0 FLY_COMPILE_TICK=0
 note() { echo "$(date '+%m-%d %H:%M') [chain] $1" >> $root/status; }
 # the mother world's switches are never inherited: every run passes them (grow_mengli adds deepseek / speak act / voice)
 WORLD="--mother-fallback siliconflow --mother-credit-trace --mother-credit-event-clock --mother-credit-brain-tau --mother-reward --sense-gains-learnable ${EXTRA:-}"
@@ -25,7 +25,9 @@ if [ ! -f $root/born ]; then
   t=$(trained); left=$((1024 - t))
   note "birth continues: $t -> 1024 words (the same individual)"
   if [ $left -gt 0 ]; then
-    $PY -u scripts/ib/train_fly_bptt_stream.py --resume $ckpt/last.pt --extend-budget --additional-tokens $left \
+    # Birth continuation is memory-sensitive: avoid a one-time TorchDynamo guard compilation while preserving the
+    # exact physical tick semantics. Explicit budgets also make the paused 152-word resume independent of inherited CLI.
+    FLY_COMPILE_TICK=0 $PY -u scripts/ib/train_fly_bptt_stream.py --resume $ckpt/last.pt --extend-budget --additional-tokens $left --window 8 --eval-tokens 512 --replay-tokens 128 \
       --output $root --checkpoint-dir $ckpt --score-log $root/scores_c1.jsonl --skip-eval --checkpoint-every-tokens 1024 \
       $MOTHER $WORLD >> $root/train.log 2>&1
     rc=$?

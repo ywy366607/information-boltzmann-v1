@@ -121,14 +121,26 @@ class StreamRunner:
             "metadata": metadata or {},
         }, path)
 
-    def load(self, path: str | Path) -> dict:
+    def load(self, path: str | Path, *, read_only: bool = False,
+             allow_rng_device_mismatch: bool = False) -> dict:
+        """Restore a complete stream state; ``read_only`` may ignore saved optimizer state.
+
+        The default keeps the original optimizer-compatibility guard.  A
+        read-only continuation can inspect a trained checkpoint without
+        constructing or mutating an optimizer, while still restoring model,
+        phase, elapsed-time, cursor, and RNG state exactly.
+        """
         if self.pending is not None or self.loss_terms:
             raise RuntimeError("Cannot load over a partially observed window")
+        if read_only and self.optimizer is not None:
+            raise ValueError("read_only loading requires optimizer=None")
         device = next(self.model.parameters()).device
+        if allow_rng_device_mismatch and not read_only:
+            raise ValueError("allow_rng_device_mismatch is restricted to read_only loading")
         saved = torch.load(path, map_location=device, weights_only=True)
         if saved["update_every"] != self.update_every or saved["gradient_clip"] != self.gradient_clip:
             raise ValueError("Checkpoint online update settings differ")
-        if (saved["optimizer"] is None) != (self.optimizer is None):
+        if not read_only and (saved["optimizer"] is None) != (self.optimizer is None):
             raise ValueError("Checkpoint learning mode differs")
         self.model.load_state_dict(saved["model"])
         if saved.get("force_gamma") is not None and hasattr(self.model.force, "gamma"):
@@ -136,13 +148,32 @@ class StreamRunner:
         if saved.get("force_kappa") is not None and hasattr(self.model.force, "kappa"):
             self.model.force.kappa = float(saved["force_kappa"])
         if self.optimizer is not None:
+            if saved["optimizer"] is None:
+                raise ValueError("Read-only loading requires optimizer=None when checkpoint has no optimizer")
             self.optimizer.load_state_dict(saved["optimizer"])
         self.state = PhaseState(**saved["state"])
-        self.generator.set_state(saved["generator"].cpu())
+        rng_restore = "exact"
+        try:
+            self.generator.set_state(saved["generator"].cpu())
+        except RuntimeError:
+            if not (read_only and allow_rng_device_mismatch):
+                raise
+            rng_restore = "generator_state_not_restored_device_mismatch"
         torch.set_rng_state(saved["torch_rng"].cpu())
         if saved["cuda_rng"] and torch.cuda.is_available():
             torch.cuda.set_rng_state_all([s.cpu() for s in saved["cuda_rng"]])
+        elif saved["cuda_rng"] and not torch.cuda.is_available():
+            if not (read_only and allow_rng_device_mismatch):
+                raise RuntimeError("Checkpoint contains CUDA RNG state but CUDA is unavailable")
+            rng_restore = "cuda_rng_not_restored_device_mismatch"
         for name in ("current_token", "events", "updates", "total_nll", "candidates", "accepted", "cross_moment_abs_sum"):
             setattr(self, name, saved[name])
         self.prefix_log_prob = self.state.x.new_zeros(())
-        return saved["metadata"]
+        metadata = saved["metadata"]
+        if read_only:
+            metadata = dict(metadata)
+            metadata["load_diagnostics"] = {
+                "read_only": True,
+                "rng_restore": rng_restore,
+            }
+        return metadata

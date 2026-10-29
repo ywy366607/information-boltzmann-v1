@@ -2,6 +2,26 @@
 import torch
 
 
+@torch.no_grad()
+def instantaneous_release_metrics(release, graded_mask=None):
+    """Keep continuous release distinct from transmitted spike events.
+
+    Rates are fractions of cells at the current tick, not Hz. The legacy
+    firing_rate denominator stays the whole population; a second field gives
+    the active fraction within spiking cells only.
+    """
+    graded = (torch.zeros_like(release, dtype=torch.bool) if graded_mask is None
+              else graded_mask.to(device=release.device, dtype=torch.bool).expand_as(release))
+    active = release > 0
+    spikes = active & ~graded
+    spiking_count = int((~graded).sum())
+    return {'firing_rate': float(spikes.float().mean()),
+            'transmission_active_fraction': float(active.float().mean()),
+            'spiking_cell_fraction_active': float(spikes.sum()) / max(1, spiking_count),
+            'graded_cell_fraction': float(graded.float().mean()),
+            'activity_metric_version': 2}
+
+
 class CellActivityAudit:
     def __init__(self, like, graded_mask=None, refractory_ticks=0):
         n = like.shape[-1]

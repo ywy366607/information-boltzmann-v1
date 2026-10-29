@@ -48,6 +48,13 @@ def main(run):
                 frames[-1]['native_port']=meta['native_port_constitution']
                 if stage=='complete':
                     frames[-1]['native_port_risk']=report['arms'][label]['quadratic_sensory_risk']
+            if report.get('protocol_kind')=='polarized_storage':
+                frames[-1]['storage_material']=dict(polarized=model.params.polarized_storage,
+                    branch_role='continuous_reference' if label=='reference' else 'counterfactual_constitution')
+                if stage=='complete':
+                    frames[-1]['storage_material'].update(thermal_events=report['arms'][label]['thermal_events'],
+                        charged_thermal_events=report['arms'][label]['thermal_events_with_nonzero_electrical_energy'],
+                        validation_risk=report['arms'][label]['quadratic_sensory_risk']['storage_validation'])
             if 'nll_by_phase' in report['arms'][label]:
                 cohort=meta['stage_reference']['cohort']
                 current=next((row for row in history if row['time_ms']==model.t),None)
@@ -112,6 +119,12 @@ def main(run):
                '原过程痕迹配置差异均值27.50，同次序不同噪声为27.33，当前未验到选择性时序保持。'
                '全部快速电荷清零的付费诊断副本，在共同未来浴下仍可交付不同交换；这不单独归于痕迹或预测学习。'
                '自然主线未经制备，实际完整保存到23424ms；图中仅有真实存档。下一步沿微观相互作用与保留的历史相关性推导选择过程。')
+    if report.get('protocol_kind')=='polarized_storage':
+        title='构形、真实电荷与空间的同一过程'
+        notes=('原标量材料与带电构形假设分支从同一完整状态出发，各经历128新训练字节和128独立验证字节，4ms/字节。'
+               '带电构形的write和thermal共享同一束缚荷位移，输入场与记忆变化因而互相作用；未添加时序目标或预测头。'
+               '原连续历史保留为参照，新物性分支不自动称冠军或已学会语言。物性差别、实际热翻转电荷交付及原评分分别显示。'
+               '所有材料、身份匹配、支持和空间反应继续使用原生成过程；这里只回放实际完整存档。')
     atomic_json(run/'mobile_scene.json',dict(box_size=model.params.box_size,default=primary,
         default_frame=2,birth_origin_count=origin_count,arms=arms,read_only=True,source=str(run),
         title=title,work_label='本段外界源功',heat_label='本段净热流出 Q',

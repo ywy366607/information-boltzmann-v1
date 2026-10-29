@@ -10,15 +10,15 @@
   },
   "proof": {
     "full_build_and_trust_audit_passed": true,
-    "current_inventory_sha256": "6a1976a635ad6c01eb0ee07708001f654341e4bcd3f07b89457867bde46ecd3d",
+    "current_inventory_sha256": "3e6b179456dbf6b4eda3401169744a8f0ee2f41a508da1bed3e81a763b5d2bd9",
     "values": {
       "modules": 72,
-      "declarations": 3991,
-      "source_declared_theorems": 796,
-      "source_lines": 15595,
-      "largest_source_file": 876
+      "declarations": 3994,
+      "source_declared_theorems": 797,
+      "source_lines": 15597,
+      "largest_source_file": 878
     },
-    "new_source_theorems": 14,
+    "new_source_theorems": 15,
     "new_Lean_modules": 0,
     "new_general_axioms": 0,
     "verified": [
@@ -35,18 +35,23 @@
       "CGB.LanguageLifeKernel.Approximation.fold_error",
       "CGB.LanguageLifeKernel.Approximation.invariant_error",
       "CGB.Interaction.Machine.conditioned_next",
-      "CGB.LanguageLifeKernel.CausalState.separated_histories_capacity"
+      "CGB.LanguageLifeKernel.CausalState.separated_histories_capacity",
+      "CGB.LanguageLifeKernel.LocalEdit.binary_factor_balance"
     ],
-    "scope": "Conditional correctness, minimal-state and uniform-precision capacity requirements; no selected architecture, measured language capacity or hardware superiority",
-    "current_increment_source_theorems": 0,
-    "current_increment_source_lines": 0,
-    "current_increment_declarations": 0,
-    "build_log": "lean/CGBAxioms/.lake/precision_capacity_20261025.build.log",
-    "audit_log": "lean/CGBAxioms/.lake/precision_capacity_20261025.audit.log",
+    "scope": "Conditional correctness, capacity and joint-factor modification balance; no selected full brain law, measured language capacity or hardware superiority",
+    "current_increment_source_theorems": 1,
+    "current_increment_source_lines": 2,
+    "current_increment_declarations": 3,
+    "build_log": "lean/CGBAxioms/.lake/audit_inventory.build.log",
+    "audit_log": "lean/CGBAxioms/.lake/audit_inventory.audit.log",
     "current_proof_foundational_axioms": {
       "CGB.LanguageLifeKernel.CausalState.separated_histories_capacity": [
         "propext",
         "Classical.choice",
+        "Quot.sound"
+      ],
+      "CGB.LanguageLifeKernel.LocalEdit.binary_factor_balance": [
+        "propext",
         "Quot.sound"
       ]
     }
@@ -110,15 +115,15 @@
     "source_hashes_current": true,
     "values": {
       "modules": 72,
-      "declarations": 3991,
-      "source_declared_theorems": 796,
-      "source_lines": 15595,
-      "largest_source_file": 876
+      "declarations": 3994,
+      "source_declared_theorems": 797,
+      "source_lines": 15597,
+      "largest_source_file": 878
     },
     "new_core_modules": 0,
     "new_research_tree_nodes": 0,
     "removed_production_abstraction": "ResourceSpec and unused six-callback synchronous life harness; retain actual tensor accounting, Observation API and prequential bridge",
-    "current_increment": "Replace unused synchronous callback scaffold with bounded paid public-prefix world; transient delivered input uses the existing joint port; no new core or Lean module, theorem, or training",
+    "current_increment": "One binary joint-factor balance theorem; shorten the old transition-factorization proof without changing any public source signature. Core Lean net +2 lines; existing kernel validator remains 140 lines; no new module or training.",
     "negative_checks_current_increment": [
       "stale_source_hash",
       "failed_proof_trust",
@@ -141,6 +146,17 @@
       "all_old_source_theorems_preserved": true,
       "signature_comparison_log": "lean/CGBAxioms/.lake/precision_capacity_20261025.summary.json",
       "automatic_declaration_delta": "Four added and four no longer preinstantiated, including three lazy equations still accessible after import; no source definition/theorem removed"
+    },
+    "current_equivalent_simplification": {
+      "declaration": "CGB.LanguageLifeKernel.history_transition_exists_iff",
+      "old_public_source_signatures_preserved": 1366,
+      "old_source_theorems_preserved": 796,
+      "generated_declaration_delta": [
+        "CGB.LanguageLifeKernel.LocalEdit.binary_factor_balance",
+        "CGB.LanguageLifeKernel.history_transition_exists_iff._simp_1_1",
+        "CGB.LanguageLifeKernel.history_transition_exists_iff._simp_1_2"
+      ],
+      "evidence": "lean/CGBAxioms/.lake/learning_state_checks_20261025.json"
     }
   },
   "resource_profiles": {
@@ -226,10 +242,10 @@
     },
     "full_packed_coefficient_pass_checked": 1073741824,
     "local_edit": {
-      "byte_direction_context_target_cases": 4096,
-      "legal_cases": 3840,
-      "range_boundary_rejections": 256,
-      "accepted_edits": 960,
+      "byte_direction_context_target_cases": 6144,
+      "legal_cases": 5760,
+      "range_boundary_rejections": 384,
+      "accepted_edits": 1920,
       "cdf_all_tickets": 608,
       "mass_boundary_and_label_domain_checks": true,
       "hidden_factor_path_and_disconnected_control_checked": true,
@@ -297,7 +313,11 @@
         "combined_prior_mean": "24/5",
         "combined_event_mean": "106/25"
       },
-      "additional_domain_and_range_rejections": 18
+      "additional_domain_and_range_rejections": 18,
+      "positive_negative_and_zero_joint_contrast_checked": true,
+      "same_both_marginals_opposite_edit_decisions_checked": true,
+      "cross_mass_equals_factor_delta_times_joint_contrast_checked": true,
+      "obsolete_constant_only_layout_assertions_removed": 2
     },
     "native_byte_source_and_cursor_checked": true,
     "optional_sensor_offline_contract_checked": true,
@@ -332,7 +352,9 @@
       "Trusted whole-loop JSON audit copies world, port, ledger fields and bridge counter. Public world/port loaders validate before mutation; this adds no generic untrusted ledger loader.",
       "Finite EOF, discrete delays and fixed external supply do not establish unbounded novelty, pathwise survival, active resource acquisition or an independent wall-clock producer.",
       "Optional pretrained sensory weights and workspace remain separate costs; offline sensor checks do not establish official-weight inference or integration with the new byte replay world.",
-      "Existing proof inventory and all source hashes remain current: no new Lean theorem or general axiom was needed for this interface instance."
+      "Binary factor modification exposes joint contrast: equal hidden/output marginals can give opposite edit directions. This is a conditional local-operator counterexample, not identified world causality or actual language-state reachability.",
+      "The generic identity adds one source theorem and two automatic simp helpers. All 796 previous source theorems and 1366 source declaration signatures are preserved; core Lean net +2 lines.",
+      "Preserving a current prediction or decision sign does not establish recursive closure under learning. No covariance cache, per-parameter eligibility or complete R was introduced."
     ]
   },
   "next_admission": {
@@ -349,7 +371,7 @@
     "finite_local_edit_operator_selected": true,
     "required_connections": [
       "Ground required future responses, lawful continuations and precision/reliability in a real language task; this finite world interface supplies causal delivery and tariffs, not the missing task semantics.",
-      "Derive necessary retained distinctions and deadline-accessible information, then construct shared bounded recurrence with full error and cost accounting; do not preselect architecture families.",
+      "For a grounded R and lawful operation family, derive retained distinctions that preserve required predictions/modification decisions and are recursively closed, with full precision, deadline and resource accounting.",
       "Derive how the same body selects useful requests and changes future predictions/actions; compare learned policy and plasticity under matched source, costs and delays.",
       "Sufficient from-scratch training, independent future validation, context changes/revisits, resource admission and measured timing before capability or scale conclusions."
     ],
@@ -368,13 +390,16 @@
     "complete_architecture_efficiency_or_accuracy_advantage_proved": false,
     "paid_delayed_public_prefix_world_connected": true,
     "script_requests_are_learned_policy": false,
-    "independent_wall_clock_world_scheduler_implemented": false
+    "independent_wall_clock_world_scheduler_implemented": false,
+    "learning_readout_distinctions_include_registered_edits": true,
+    "current_prediction_sufficiency_alone_admits_learning": false,
+    "full_shared_law_or_bounded_joint_statistic_recurrence_selected": false
   },
   "source_sha256": {
-    "docs/information_boltzmann/CGB_LANGUAGE_LIFE_MODEL_V1_20261025.md": "28d73f855aa03a8f1cfa02a2f6e163f10debae3af0f1201db136906d7e6177b2",
-    "lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean": "a09ae393d52073bfdf17f8ffae078aaf5aaa0927f8d59b8ff569388f282c77a1",
+    "docs/information_boltzmann/CGB_LANGUAGE_LIFE_MODEL_V1_20261025.md": "3accb2dde5b9e9f5fce515b5e14146dcf7dc51cd7a39f8195926b2a87e8c2f86",
+    "lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean": "9f9756fb32233317611b455e48aaeeedf30bbd3d456e6ebaba4ecfc87450cc0e",
     "information_boltzmann/core/cgb_language_kernel.py": "67c6521fdfd81f772b8dee01adcdb6349825f3403cb036cc179d1437a1f79cd3",
-    "scripts/validate_cgb_language_kernel.py": "94182355106afb126eeba88f548e3f67a74645975cf3022129f27741a11fa670",
+    "scripts/validate_cgb_language_kernel.py": "9e43e5c5473060db1212476ca13c72e98220a824ed912d77222bb98eb6cdfb5c",
     "scripts/check_lean_complexity_budget.py": "1c2027e25210efa7c8857a3112c4e0888a9ad4d4c20e210b64cc6afd5d10395a",
     "lean/CGBAxioms/CGBAxioms/Inference.lean": "7c98023d72f74478582a418266012511f18c2e3e453b83f507c2e85181bbb7cb",
     "scripts/bench_algebraic_coefficients.py": "ad481954a49d43c798e4946348cd57d975c26fde10b4dff6be6cf8542ed429bd",
@@ -385,7 +410,7 @@
     "scripts/validate_cgb_observation_stream.py": "9b1dfcc0a5e8759ebb982659138c41a3c35549f1458b5ceb6ebb72ecb7d52f0f",
     "information_boltzmann/core/cgb_sensory_port.py": "abbd65ac309bf5e52cad6c1f378c5ad57bc3777d44d7f263787e47b83eeba847",
     "scripts/validate_cgb_sensory_port.py": "b3f9727a62d7f1baf23ee8f7d825d744eb2421edfa3dc562331f9ce5e4b1ccf9",
-    "docs/information_boltzmann/CGB_CONTINUOUS_MAINTENANCE_20261024.md": "5a9dc5c847dcf166f92087d85e6f103e537e2b4e6d803b4496caab0540546d13",
+    "docs/information_boltzmann/CGB_CONTINUOUS_MAINTENANCE_20261024.md": "4dd0ff51757c110c8b93000732ca3cf66dbd51f41b14fd069695dda0a6bd5a59",
     "lean/CGBAxioms/CGBAxioms/AlgebraicCore.lean": "7a0e6bed82f5eace4b91f071d00b268bf2406ca0df9f765a2ee4a0f51c8a851b",
     "lean/CGBAxioms/CGBAxioms/AlgebraicHomology.lean": "d893ac3860af5f40939021a6a59f5e75c0d7a171223f18bf469f41805205d377",
     "lean/CGBAxioms/CGBAxioms/Interaction.lean": "7a4cf353eeb05a63d7e65bf9389d4c312c5d8bb874bac6d9b534bde490790acc",
@@ -434,7 +459,12 @@
     "recurrence_and_world_cadence_admitted": false,
     "proposal_rule_and_factor_family_from_axioms_forced": false,
     "tree_factor_to_token_probability_constructed": true,
-    "scope_of_unproved_correspondence": "Generated brain is unspecified; normalized finite-alphabet port now admits native bytes and a GPT2 adapter"
+    "scope_of_unproved_correspondence": "Generated brain is unspecified; normalized finite-alphabet port now admits native bytes and a GPT2 adapter",
+    "binary_factor_theorem": "CGB.LanguageLifeKernel.LocalEdit.binary_factor_balance",
+    "binary_joint_family": "old=(a,b,u*c,u*d), candidate=(a,b,v*c,v*d), strictly positive masses for probability interpretation",
+    "exact_integer_balance": "Anew*Z-A*Znew=(v-u)*(a*d-b*c)",
+    "binary_family_forced_by_general_axioms": false,
+    "marginal_only_compression_generally_preserves_edits": false
   },
   "language_port": {
     "artifact": "results/published/cgb_local_port_owt_bytes_interface_20261025.json",
@@ -894,5 +924,94 @@
     "new_general_axioms": 0,
     "new_lean_modules": 0,
     "new_source_theorems": 0
+  },
+  "learning_state_contract": {
+    "status": "registered_operation_readout_requirement_audited_shared_recurrence_pending",
+    "theorem": "CGB.LanguageLifeKernel.LocalEdit.binary_factor_balance",
+    "domain": "Identity over any commutative ring; positive finite masses and totals required for probability/improvement interpretation",
+    "connection": "Combine with LocalEdit.accepts_iff and history_readout_exists_iff; use history_transition_exists_iff for recursive closure. Existing CausalState can include lawful modifications in its input family.",
+    "binary_index_order": [
+      "hidden0/bit0",
+      "hidden0/bit1",
+      "hidden1/bit0",
+      "hidden1/bit1"
+    ],
+    "edit_identity": "(b+v*d)*(a+b+u*c+u*d)-(b+u*d)*(a+b+v*c+v*d)=(v-u)*(a*d-b*c)",
+    "counterexample": {
+      "base_tables": [
+        [
+          3,
+          1,
+          1,
+          3
+        ],
+        [
+          1,
+          3,
+          3,
+          1
+        ]
+      ],
+      "old_factor": 1,
+      "new_factor": 2,
+      "both_old_hidden_and_output_marginals": [
+        "1/2",
+        "1/2"
+      ],
+      "old_event_probability": [
+        "1/2",
+        "1/2"
+      ],
+      "new_event_probability": [
+        "7/12",
+        "5/12"
+      ],
+      "joint_contrast": [
+        8,
+        -8
+      ],
+      "decisions": [
+        "accept",
+        "reject"
+      ],
+      "all_states_reachable_in_one_language_body_proved": false,
+      "admission_scope": "Both are instances of the existing generic positive-mass local-edit contract; this does not establish reachability within the more restricted PackedTreePort fixture or a future generated body."
+    },
+    "conditional_history_requirement": "A registered exact encoding covering both cases must distinguish the required modification decisions, even when both current marginals agree. This does not require a separate covariance variable, four-cell table or per-parameter trace.",
+    "recursive_requirement": "Equal encoded lawful histories must have equal required readouts/registered decisions and equal encoded successors under every admitted operation. A currently sufficient sign or statistic is not automatically recursively closed.",
+    "conditional_precision_instance": {
+      "edit_response_distance": "1/6",
+      "uniform_error_strictly_below": "1/12",
+      "conclusion": "The two responses cannot share one readable code under the fixed edit query and side information",
+      "lean_checked_finite_specialization": true,
+      "measured_language_error_or_bit_requirement": false
+    },
+    "verification": {
+      "full_build_and_trust_audit": true,
+      "public_theorem_axioms": [
+        "propext",
+        "Quot.sound"
+      ],
+      "numerical_cases": {
+        "cases": 6144,
+        "legal": 5760,
+        "boundary_rejections": 384,
+        "accepted": 1920
+      },
+      "cdf_tickets": 608,
+      "finite_readout_and_precision_examples": "lean/CGBAxioms/.lake/learning_state_instance_20261025.lean",
+      "finite_example_log": "lean/CGBAxioms/.lake/learning_state_instance_20261025.log",
+      "signature_and_operator_checks": "lean/CGBAxioms/.lake/learning_state_checks_20261025.json",
+      "independent_agent_review_this_increment": true,
+      "independent_review_scope": "Read-only review of identity, positive-mass interpretation, counterexample, epsilon threshold, numerical counts and conditional necessity; reviewer did not rerun build or experiments"
+    },
+    "resource_scope": "Existing bounded integer masses and <2^62 comparisons; no persistent state, runtime module, topology index, gradient or optimizer added. Arithmetic exactness does not certify language quantization accuracy.",
+    "full_model_law_R_selected": false,
+    "bounded_learned_statistic_recurrence_derived": false,
+    "maintenance_coupled_to_same_local_modification_derived": false,
+    "world_causal_effects_identified_from_correlation": false,
+    "learned_query_policy_or_language_capability_verified": false,
+    "new_general_axioms": 0,
+    "next_action": "Ground R, its reachable states and allowed modifications; derive a finite forward-closed representation of required joint responses and actual maintenance costs before adding a state field or architecture."
   }
 }

@@ -87,6 +87,19 @@ def parse_status(run):
                           'target': progress.get('target_bptt_tokens'),
                           'progress_updated': progress_path.stat().st_mtime,
                           'conversation_updated': talk_path.stat().st_mtime if talk_path.exists() else None}
+        rep['runtime']['neural'] = {k: progress.get(k) for k in (
+            'firing_rate', 'dopamine_cells_firing', 'dopamine_phasic_sd',
+            'dopamine_plasticity_spread', 'intrinsic_kappa_mean',
+            'kc_dan_release_gain_mean', 'speed_tokens_per_sec', 'vram_peak_mib')}
+        plan_path = RUNS / run / 'chunk_plan.json'
+        if plan_path.exists():
+            plan = json.loads(plan_path.read_text(encoding='utf-8'))
+            rep['runtime']['chunk'] = plan
+            if plan.get('status') == 'running':
+                saved_end = (progress.get('status') == 'completed'
+                             and int(progress.get('bptt_train_tokens') or 0) >= int(plan.get('target_tokens') or 0))
+                rep['runtime']['status'] = 'saving' if saved_end else 'running'
+                rep['runtime']['target'] = plan.get('target_tokens')
     if not path.exists():
         return rep
     for line in path.read_text(encoding='utf-8', errors='replace').splitlines():
@@ -175,7 +188,10 @@ def windows(run, last=400):
                 by_source[source] = {'n': len(pairs),
                                      'nll': float(np.mean([x[0] for x in pairs])) if pairs else None,
                                      'unigram': float(np.mean([x[1] for x in pairs])) if pairs else None}
-            rows.append({'trained': r['trained'], 'nll': float(np.mean(r['scores'])), 'unigram': float(np.mean(r['unigram'])),
+            match = re.search(r'scores_c(\d+)\.jsonl$', f)
+            rows.append({'trained': r['trained'], 'chunk': int(match[1]) if match else None,
+                         'n_tokens': len(r['scores']),
+                         'nll': float(np.mean(r['scores'])), 'unigram': float(np.mean(r['unigram'])),
                          'phasic': float(np.mean([x[0] for x in da])) if da else None,
                          'fly_words': sum(1 for s in sp if s == 'fly') if sp else None,
                          'monitor': r.get('monitor'), 'epistemic': r.get('epistemic'),
@@ -283,11 +299,11 @@ def brain_points(n_rest=24000, seed=0):
 
 
 DEFAULT_CONFIG = {
-    'mother': {'backend': 'mailbox', 'model': 'gemini-3.5-flash', 'temperature': 0.9, 'max_reply_tokens': 80,
+    'mother': {'backend': 'deepseek', 'model': 'deepseek-flash', 'temperature': 0.9, 'max_reply_tokens': 128,
                'history_turns': 20, 'fly_temperature': 1.0, 'max_fly_words': 16, 'mailbox_timeout_s': 900,
                'persona': 'A warm, patient mother talking with a very young child who is just learning to speak. '
-                          'She answers in one or two short, simple sentences, responds to what the child said, '
-                          'asks simple questions, names things, and sometimes starts a new topic.'},
+                          'She responds to the actual child utterance in varied natural English, sharing coherent stories, '
+                          'rhymes, everyday ideas and questions. Names identify people rather than begin every reply.'},
     # the family is fixed (never rotates with the topics); names in Latin letters: her vocabulary is GPT-2
     'family': {'child': {'name': 'Mengli', 'zh': '梦漓'},
                'father': {'name': 'Papa', 'full': 'Papa Wu Yue', 'zh': 'WuYue'},
@@ -296,13 +312,11 @@ DEFAULT_CONFIG = {
                'language': 'English only. Names always in Latin letters exactly as written here (Mengli, Papa, Mama, '
                            'Aunt Ling); never Chinese characters: her vocabulary is GPT-2.',
                # (a fixed 'say the names first' made the mouth repeat one sentence: answer her first, names naturally)
-               'first_lessons': 'Every reply answers what Mengli just said: repeat one of her words back, or guess what '
-                                'she means and name it. Call her Mengli often, and use Mama and Papa naturally when they '
-                                'fit, not in every sentence. Vary your words; never repeat a sentence you already said.'},
-    'parenting': {'phases': [{'name': 'listening', 'words': 40960, 'world': 'text', 'note': 'read to the newborn'},
-                             {'name': 'babbling', 'words': 20480, 'world': 'mother', 'note': 'she answers any sound'}],
+               'first_lessons': 'Mengli is the child; Mama Yun is the adult. Preserve unclear sounds as unclear sounds. '
+                                'Use names and I/you meaningfully within varied conversation and activities.'},
+    'parenting': {'education_stage': 'connection',
                   'topics': ['animals', 'food', 'family', 'the weather', 'colours', 'the garden'],
-                  'revisit_every_words': 8192, 'switch_topic_every_turns': 12},
+                  'intention': 'Interleave reading, rhymes, daily conversation, quantity and causes; follow interests and revisit ideas without timed subject blocks.'},
     'harness': {'alarm_repeat_bigrams': 0.5, 'alarm_identical_turns': 3, 'alarm_brain_contribution_le': 0.0,
                 'check_every_words': 4096},
 }
@@ -363,6 +377,17 @@ class Handler(SimpleHTTPRequestHandler):
                 return self._json(json.loads(w.read_text(encoding='utf-8')) if w.exists() else {'facts': []})
             if u.path == '/api/config':
                 return self._json(config('raising'))
+            if u.path == '/api/parenting':
+                audit_path = RUNS / run / 'ling_audit.json'
+                presence_path = RUNS / run / 'caregiver_presence.json'
+                curriculum_path = ROOT / 'docs/information_boltzmann/MENGLI_EDUCATION.json'
+                return self._json({
+                    'plan': config('raising').get('parenting', {}),
+                    'curriculum': json.loads(curriculum_path.read_text(encoding='utf-8')) if curriculum_path.exists() else {},
+                    'audit': json.loads(audit_path.read_text(encoding='utf-8')) if audit_path.exists() else None,
+                    'caregiver': json.loads(presence_path.read_text(encoding='utf-8')) if presence_path.exists() else None,
+                    'scope': 'Ling caregiver review; unmeasured criteria remain unmeasured',
+                })
         except Exception as exc:                        # a half-written file: report, never crash the server
             return self._json({'error': repr(exc)}, 500)
         return super().do_GET()

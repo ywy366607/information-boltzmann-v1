@@ -12,13 +12,14 @@ from information_boltzmann.core.triton_synapse import (
     ('cpu', torch.float64, 2), ('cuda', torch.float32, 1),
     ('cuda', torch.float32, 2),
 ])
-def test_fixed_incoming_order_matches_full_vjp_and_uses_current_weights(device, dtype, batch):
+@pytest.mark.parametrize('host_layout', [False, True])
+def test_fixed_incoming_order_matches_full_vjp_and_uses_current_weights(device, dtype, batch, host_layout):
     if device == 'cuda' and not torch.cuda.is_available():
         pytest.skip('CUDA unavailable')
     pre = torch.tensor([2, 0, 2, 1, 3, 2, 2], device=device)
     post = torch.tensor([1, 1, 1, 3, 2, 1, 1], device=device)
     splits = (0, 3, 3, 5, 7)
-    layouts = tuple(tuple(t.to(device) for t in row)
+    layouts = tuple(tuple(t.to('cpu' if host_layout else device) for t in row)
                     for row in build_incoming_layout(pre, post, splits, 5))
     pulse = tuple(torch.tensor([[0., .1, 0., .3, .4]], device=device,
                               dtype=dtype).repeat(batch, 1).requires_grad_() for _ in range(4))
@@ -40,6 +41,25 @@ def test_fixed_incoming_order_matches_full_vjp_and_uses_current_weights(device, 
     updated_weight = (weight.detach()*2).requires_grad_()
     changed = IncomingDelayedTransmission.apply(*pulse, pre, post, updated_weight, splits, layouts)
     torch.testing.assert_close(changed, out*2)
+
+
+@pytest.mark.skipif(not torch.cuda.is_available(), reason='CUDA unavailable')
+def test_host_layout_supports_fused_incoming_fallback(monkeypatch):
+    import information_boltzmann.core.triton_synapse as ts
+    monkeypatch.setattr(ts, 'EVENT_DRIVEN', False)
+    pre = torch.tensor([1, 0, 1], device='cuda', dtype=torch.int32)
+    post = torch.tensor([0, 2, 2], device='cuda', dtype=torch.int32)
+    splits = (0, 3, 3, 3, 3)
+    layouts = build_incoming_layout(pre, post, splits, 3)
+    pulses = tuple(torch.tensor([[.2, .5, .7]], device='cuda', requires_grad=True) for _ in range(4))
+    weight = torch.tensor([.3, .2, .1], device='cuda', requires_grad=True)
+    actual = IncomingDelayedTransmission.apply(*pulses, pre, post, weight, splits, layouts)
+    expected = PyTorchDelayedSynapticTransmission.apply(*pulses, pre, post, weight, splits)
+    torch.testing.assert_close(actual, expected)
+    a = torch.autograd.grad(actual.square().sum(), (*pulses, weight))
+    b = torch.autograd.grad(expected.square().sum(), (*pulses, weight))
+    for left, right in zip(a, b):
+        torch.testing.assert_close(left, right)
 
 
 def test_empty_incoming_graph_has_zero_output_and_full_zero_pulse_vjp():

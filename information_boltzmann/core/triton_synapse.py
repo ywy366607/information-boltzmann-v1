@@ -68,14 +68,38 @@ def outgoing_layout(edge_pre, delay_splits, n_neurons):
     if key not in _OUTGOING_CACHE:
         tiers = []
         for start, end in zip(splits, splits[1:]):
-            pre = edge_pre[start:end].long()
-            order = (torch.argsort(pre, stable=True) + start).to(torch.int32)
-            counts = torch.bincount(pre, minlength=n_neurons)
-            ptr = torch.zeros(n_neurons + 1, dtype=torch.int32, device=edge_pre.device)
-            ptr[1:] = torch.cumsum(counts, 0).to(torch.int32)
-            tiers.append((order, ptr))
+            order, ptr = _outgoing_tier_arrays(edge_pre, int(start), int(end), n_neurons)
+            tiers.append(tuple(torch.from_numpy(t).to(edge_pre.device) for t in (order, ptr)))
         _OUTGOING_CACHE[key] = tuple(tiers)
     return _OUTGOING_CACHE[key]
+
+def _outgoing_tier_arrays(edge_pre, start, end, n_neurons, chunk_edges=65536):
+    """Stable outgoing CSR with bounded sorting/gather scratch on the host."""
+    if max(end, n_neurons) > np.iinfo(np.int32).max:
+        raise ValueError('Outgoing layout exceeds int32 kernel indexing')
+    counts = np.zeros(n_neurons, np.int64)
+    for left in range(start, end, chunk_edges):
+        pre = edge_pre[left:min(left+chunk_edges, end)].detach().cpu().numpy()
+        counts += np.bincount(pre, minlength=n_neurons)
+    ptr = np.zeros(n_neurons+1, np.int32)
+    ptr[1:] = np.cumsum(counts)
+    order = np.empty(end-start, np.int32)
+    written = np.zeros(n_neurons, np.int32)
+    block_start = np.empty_like(written)
+    for left in range(start, end, chunk_edges):
+        right = min(left+chunk_edges, end)
+        pre = edge_pre[left:right].detach().cpu().numpy()
+        local = np.argsort(pre, kind='stable')
+        destinations = pre[local]
+        block_counts = np.bincount(destinations, minlength=n_neurons).astype(np.int32)
+        block_start[0] = 0
+        np.cumsum(block_counts[:-1], out=block_start[1:])
+        position = (ptr[destinations] + written[destinations]
+                    + np.arange(right-left, dtype=np.int32) - block_start[destinations])
+        order[position] = local.astype(np.int32) + left
+        written += block_counts
+    return order, ptr
+
 
 def pulse_grad_layout(edge_pre, delay_splits, n_neurons):
     """Static run layout for the pulse gradient, cached per edge array: (uint8 run index of each edge within its block,
@@ -85,26 +109,56 @@ def pulse_grad_layout(edge_pre, delay_splits, n_neurons):
     splits = _canonical_delay_splits(delay_splits, edge_pre.numel())
     key_id = (edge_pre.data_ptr(), edge_pre.numel(), tuple(int(x) for x in splits), int(n_neurons), str(edge_pre.device))
     if key_id not in _PULSE_CACHE:
-        n_edges, block = edge_pre.numel(), PULSE_BLOCK
-        key = edge_pre.long().clone()
-        for k, (a, b) in enumerate(zip(splits, splits[1:])):
-            key[int(a):int(b)] += k * n_neurons
-        if n_edges == 0 or bool((key[1:] < key[:-1]).any()):
-            _PULSE_CACHE[key_id] = None
-        else:
-            position = torch.arange(n_edges, device=key.device)
-            new = torch.ones(n_edges, dtype=torch.bool, device=key.device)
-            new[1:] = (key[1:] != key[:-1]) | (position[1:] % block == 0)    # a piece never crosses a block edge
-            piece = torch.cumsum(new.long(), 0) - 1
-            first = piece[::block]
-            local = (piece - first[position // block]).to(torch.uint8)
-            counts = torch.bincount(key[new], minlength=4 * n_neurons)
-            slot_ptr = torch.zeros(4 * n_neurons + 1, dtype=torch.int32, device=key.device)
-            slot_ptr[1:] = torch.cumsum(counts, 0).to(torch.int32)
-            edge_ptr = torch.zeros(4 * n_neurons + 1, dtype=torch.int32, device=key.device)
-            edge_ptr[1:] = torch.cumsum(torch.bincount(key, minlength=4 * n_neurons), 0).to(torch.int32)
-            _PULSE_CACHE[key_id] = (local, first.to(torch.int32), slot_ptr, key[new].to(torch.int32), edge_ptr)
+        arrays = _pulse_run_arrays(edge_pre, splits, n_neurons)
+        # Topology is initialized once. Do not construct several int64 edge-sized
+        # scratch tensors on CUDA just to produce this compact uint8/int32 cache.
+        _PULSE_CACHE[key_id] = (None if arrays is None else tuple(
+            torch.from_numpy(value).to(edge_pre.device) for value in arrays))
     return _PULSE_CACHE[key_id]
+
+
+def _pulse_run_arrays(edge_pre, splits, n_neurons, chunk_edges=65536):
+    """Exact original run ordering with bounded host scratch and no CUDA scratch."""
+    n_edges, block = edge_pre.numel(), PULSE_BLOCK
+    if not n_edges:
+        return None
+    if max(n_edges, 4 * n_neurons) > np.iinfo(np.int32).max:
+        raise ValueError('Pulse-run layout exceeds int32 kernel indexing')
+    chunk_edges = max(block, (int(chunk_edges) // block) * block)
+    local = np.empty(n_edges, np.uint8)
+    first = np.empty((n_edges + block - 1) // block, np.int32)
+    counts = np.zeros(4 * n_neurons, np.int64)
+    edge_counts = np.zeros_like(counts)
+    pieces, piece_count, previous = [], 0, -1
+    for start in range(0, n_edges, chunk_edges):
+        end = min(start + chunk_edges, n_edges)
+        key = edge_pre[start:end].detach().cpu().numpy().astype(np.int64, copy=True)
+        for tier, (a, b) in enumerate(zip(splits, splits[1:])):
+            lo, hi = max(start, int(a)), min(end, int(b))
+            if hi > lo:
+                key[lo-start:hi-start] += tier * n_neurons
+        if key[0] < previous or np.any(key[1:] < key[:-1]):
+            return None
+        previous = int(key[-1])
+        change = np.empty(len(key), bool)
+        change[0] = True  # chunks begin on block boundaries
+        change[1:] = key[1:] != key[:-1]
+        run_start = np.flatnonzero(change)
+        np.add.at(edge_counts, key[run_start], np.diff(np.r_[run_start, len(key)]))
+        change[::block] = True
+        piece_slot = key[change].astype(np.int32)
+        np.add.at(counts, piece_slot, 1)
+        piece = np.cumsum(change, dtype=np.int64) + piece_count - 1
+        block_first = piece[::block]
+        first[start//block:(end+block-1)//block] = block_first
+        local[start:end] = (piece - np.repeat(block_first, block)[:len(key)]).astype(np.uint8)
+        pieces.append(piece_slot)
+        piece_count += len(piece_slot)
+    slot_ptr = np.zeros(4 * n_neurons + 1, np.int32)
+    edge_ptr = np.zeros_like(slot_ptr)
+    slot_ptr[1:] = np.cumsum(counts)
+    edge_ptr[1:] = np.cumsum(edge_counts)
+    return local, first, slot_ptr, np.concatenate(pieces), edge_ptr
 
 
 try:
@@ -637,6 +691,7 @@ class IncomingDelayedTransmission(torch.autograd.Function):
             current = torch.zeros(n_rows, dtype=torch.float32, device=s1.device)
             args = []
             for pulse, (order, source, offsets) in zip((s1, s2, s3, s4), layouts):
+                order, source, offsets = (t.to(s1.device) for t in (order, source, offsets))
                 if not order.numel():                    # empty tier: offsets are all zero, nothing is read
                     order = source = offsets.new_zeros(1)
                 args += [pulse.contiguous().view(-1), source, order, offsets]
@@ -648,6 +703,7 @@ class IncomingDelayedTransmission(torch.autograd.Function):
         for pulse, (order, source, offsets) in zip((s1, s2, s3, s4), layouts):
             if not order.numel():
                 continue
+            order, source, offsets = (t.to(s1.device) for t in (order, source, offsets))
             contribution = torch.index_select(pulse, 1, source).t().contiguous()
             contribution.mul_(torch.index_select(edge_weight, 0, order)[:, None])
             current.add_(torch.segment_reduce(contribution, 'sum', offsets=offsets,

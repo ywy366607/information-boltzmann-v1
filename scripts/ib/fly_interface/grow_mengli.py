@@ -1,6 +1,6 @@
 """Chunked continuation of one mother-world individual, with explicit pause and checkpoint accounting."""
 import argparse
-from datetime import datetime
+from datetime import datetime, timezone
 import json
 from pathlib import Path
 import re
@@ -23,7 +23,50 @@ def checkpoint_tokens(path):
     return int(json.loads(result.strip())['trained'])
 
 
+def publish_checkpoint_metadata(output, checkpoint, recovery):
+    """Publish provenance from the completed archive without loading another brain."""
+    manifest = json.loads((recovery / 'manifest.json').read_text(encoding='utf-8'))
+    stat = checkpoint.stat()
+    if (manifest['source_size'], manifest['source_mtime_ns']) != (stat.st_size, stat.st_mtime_ns):
+        raise RuntimeError('Recovery manifest does not match the current saved checkpoint')
+    write_json(output / 'checkpoint_metadata.json', {
+        'path': str(checkpoint), 'mtime_ns': stat.st_mtime_ns, 'size': stat.st_size,
+        'trained': manifest['trained'], 'checkpoint_sha256': manifest['checkpoint_sha256'],
+        'archive': str(recovery), 'archive_verified_at': datetime.now(timezone.utc).isoformat(),
+        'verification': 'complete trainer save plus matching recovery archive fingerprint',
+    })
+
+
+def claim_caregiver_review(output, checkpoint, trained, target, now=None):
+    """Consume Ling's review for exactly one checkpoint and one bounded segment.
+
+    This file records an agent decision; the supervisor never issues its own review.
+    A heartbeat is a wakeup mechanism, not evidence that an agent actually reviewed.
+    """
+    path = output / 'caregiver_presence.json'
+    if not path.exists():
+        raise RuntimeError('Ling caregiver review is required before starting a segment')
+    review = json.loads(path.read_text(encoding='utf-8'))
+    launch = review.get('next_chunk') or {}
+    now = now or datetime.now(timezone.utc)
+    expires = datetime.fromisoformat(launch.get('expires_at', '1970-01-01T00:00:00+00:00'))
+    if expires.tzinfo is None or expires <= now:
+        raise RuntimeError('Ling caregiver review has expired; review the current state again')
+    stat = checkpoint.stat()
+    if (review.get('reviewer') != 'Ling' or not review.get('agent_thread')
+            or not review.get('decision') or launch.get('status') != 'reviewed'
+            or launch.get('start_tokens') != trained or launch.get('target_tokens') != target
+            or launch.get('checkpoint_mtime_ns') != stat.st_mtime_ns
+            or launch.get('checkpoint_size') != stat.st_size):
+        raise RuntimeError('Ling review does not match this checkpoint and segment')
+    launch['status'] = 'consumed'
+    launch['started_at'] = now.isoformat()
+    review['status'] = 'training'
+    write_json(path, review)
+
+
 def main():
+    from mengli_state_archive import save_point
     parser = argparse.ArgumentParser(__doc__)
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--checkpoint-dir', type=Path, required=True)
@@ -59,6 +102,10 @@ def main():
         remaining = int(plan['target_tokens']) - trained
         if remaining <= 0:
             raise RuntimeError('Unfinished chunk plan is inconsistent with the saved checkpoint')
+        recovery = save_point(args.output, args.checkpoint_dir / 'last.pt', trained, 'before_chunk')
+        note(f'complete recovery point: {recovery}')
+        claim_caregiver_review(args.output, args.checkpoint_dir / 'last.pt', trained,
+                               int(plan['target_tokens']))
         plan['status'] = 'running'
         write_json(plan_path, plan)
         c = int(plan['chunk'])
@@ -68,10 +115,12 @@ def main():
                    '--additional-tokens', str(remaining), '--output', str(args.output),
                    '--checkpoint-dir', str(args.checkpoint_dir), '--score-log', str(args.output / f'scores_c{c}.jsonl'),
                    '--skip-eval', '--checkpoint-every-tokens', '1024',
-                   '--mother-world', 'deepseek', '--mother-speak-act', '--mother-credit', 'epistemic',
+                   '--mother-world', 'deepseek', '--mother-fallback', 'siliconflow', '--mother-speak-act',
+                   '--mother-credit', 'consequence',
                    '--mother-credit-ticks', '64', '--mother-credit-tau', '32',
                    '--mother-voice', '--mother-voice-level', '1.5',
                    '--compartment-dendritic', '--no-eye-binary', '--noise-rate', '0',
+                   '--eye-gate', 'atan',
                    '--log-word-dopamine'] + args.extra.split()     # the word interval is a profile switch: inherited
         with (args.output / 'train.log').open('a', encoding='utf-8') as log:
             result = subprocess.run(command, cwd=root, stdout=log, stderr=subprocess.STDOUT)
@@ -86,6 +135,21 @@ def main():
             raise RuntimeError('Completed training was not saved at the chunk endpoint')
         plan['status'] = 'completed'
         write_json(plan_path, plan)
+        presence_path = args.output / 'caregiver_presence.json'
+        presence = json.loads(presence_path.read_text(encoding='utf-8'))
+        presence['status'] = 'awaiting_caregiver_review'
+        presence['completed_tokens'] = saved_tokens
+        # Keep last.pt writable with an atomic-save reserve. If another full
+        # archive cannot fit, leave this individual saved and await Ling.
+        try:
+            recovery = save_point(args.output, args.checkpoint_dir / 'last.pt', saved_tokens, 'chunk_end')
+            presence['recovery_point'] = str(recovery)
+            publish_checkpoint_metadata(args.output, args.checkpoint_dir / 'last.pt', recovery)
+        except RuntimeError as error:
+            presence['status'] = 'recovery_space_required'
+            presence['recovery_error'] = str(error)
+            note(f'full last.pt saved; recovery archive needs attention: {error}')
+        write_json(presence_path, presence)
         note(f'chunk {c} done: mother-world tokens={saved_tokens}; chunk_words={saved_tokens - plan["start_tokens"]}; '
              f'speed={progress.get("speed_tokens_per_sec", 0):.3f}; ABA/AG deferred')
         if args.probes:
@@ -128,6 +192,11 @@ def run_probes(root, args, c, note):
         act = subprocess.run([sys.executable, str(fi / 'live_act_report.py'), str(trace)], cwd=root,
                              capture_output=True, text=True, env=env)
         note(f'c{c} (3) acts: {act.stdout.strip().splitlines()[-1][:900] if act.stdout.strip() else "FAILED"}')
+    # Record evidence for Ling.  The script cannot perform the caregiver review.
+    ling = subprocess.run([sys.executable, str(fi / 'ling_harness.py'), '--run', str(out),
+                           '--checkpoint-dir', str(args.checkpoint_dir)], cwd=root,
+                          capture_output=True, text=True, env=env)
+    note(f'c{c} Ling harness: {ling.stdout.strip()[-900:] if ling.stdout.strip() else "FAILED"}')
 
 
 if __name__ == '__main__':

@@ -58,7 +58,7 @@ class LocalMother:
         return text.split('\n')[0].strip() or '...'
 
 
-def world_prompt(path='data/harness/world.json', limit=40):
+def world_prompt(path='data/harness/world.json', limit=40, query=None):
     """The world as it has been established (the mother's memory, data/harness/world.json): facts the heart agent
     consolidated from the conversation -- the cat called Katz who sleeps on the chair, Papa's drum, Aunt Ling's Sunday
     visits -- so the same word keeps pointing at the same thing and the world stops drifting.  Append-mostly and placed
@@ -71,10 +71,34 @@ def world_prompt(path='data/harness/world.json', limit=40):
     except Exception:
         return ''
     facts = [f.strip() for f in facts if str(f).strip()][:limit]
+    if query is not None:
+        # Retrieve a relevant memory instead of priming every reply with every home fact.
+        from .fly_parenting_harness import _content_terms
+        terms = _content_terms(query)
+        ranked = [(len(terms & _content_terms(f)), f) for f in facts]
+        facts = [f for score, f in sorted(ranked, key=lambda x: -x[0]) if score > 0][:1]
     if not facts:
         return ''
-    return ('What is true in your home (keep it consistent; build on it when it fits): ' + ' '.join(
+    return ('Private home memory (keep it consistent, but do not recite this list; mention a fact only when the child\'s '
+            'latest words or the current activity make it relevant; use at most one fact per reply; do not repeat '
+            'the same fact or the child\'s name just because it appeared in the last turn; rotate to a different object, '
+            'action, person, or sensation when the child has already heard it): ' + ' '.join(
         f if f.endswith('.') else f + '.' for f in facts))
+
+
+def activity_prompt(plan):
+    """Only the current page reaches the mother; future pages are kept for Ling."""
+    activity = (plan.get('parenting') or {}).get('activity') or {}
+    pages = activity.get('pages') or []
+    page = int(activity.get('page', 0))
+    if not pages:
+        return ('Current activity: ' + str(activity.get('kind', 'conversation')) + '. ' +
+                str(activity.get('instruction', ''))).strip() if activity else ''
+    if page < 0 or page >= len(pages):
+        return 'The shared reading has ended. Follow the child into conversation or another activity.'
+    return ("Shared reading, current page only: " + str(pages[page]) + " " +
+            str(activity.get('instruction', 'Let the child listen, interrupt, or request another reading.')) +
+            " Continue from the recent conversation; if this page was already shared, respond or explore it instead of restarting it every turn. Story events belong to the story, not to permanent home memory.")
 
 
 def family_prompt(plan):
@@ -85,16 +109,43 @@ def family_prompt(plan):
     if not fam:
         return ''
     child = fam.get('child', {}).get('name', 'the child')
-    who = [f"you are {fam['mother'].get('full', 'Mama')} (she calls you {fam['mother'].get('name', 'Mama')})"
-           if fam.get('mother') else '',
+    mother = fam.get('mother') or {}
+    who = [f"Assistant / adult speaker: {mother.get('full', mother.get('name', 'Mama'))}, called {mother.get('name', 'Mama')}. "
+           f"User / child speaker: {child}. These are different people. "
+           f"In your reply, I/my refers to the adult and you/your to {child}. "
+           f"In the child's speech, I/my refers to {child} and you/your to the listener.",
            f"her father is {fam['father'].get('full', 'Papa')} (she calls him {fam['father'].get('name', 'Papa')})"
            if fam.get('father') else '']
     who += [f"{o['name']} is her {o.get('role', 'family')}" for o in fam.get('others', []) if o.get('name')]
-    return (f"The child's name is {child}; " + '; '.join(w for w in who if w) + '. ' + fam.get('first_lessons', '') +
+    return (' '.join(w for w in who if w) + '. ' + fam.get('first_lessons', '') +
             ' ' + fam.get('language', '')).strip()
 
 
 FAMILY_WORDS = (' Meng', ' Mama', ' Papa', ' Ling', ' Wu')     # GPT-2 first tokens of the family's names
+
+
+def sanitize_mother_reply(text: str, child_name: str = 'Mengli') -> str:
+    """Strip repetitive leading vocatives (e.g. 'Mengli, ', 'Mengli! ') from mother replies so she does not prepend
+    the child's name to every turn, while preserving intentional calls like 'Mengli?'."""
+    if not text:
+        return ''
+    line = str(text).strip()
+    if not line:
+        return ''
+    if (line.startswith('"') and line.endswith('"')) or (line.startswith("'") and line.endswith("'")):
+        line = line[1:-1].strip()
+    import re
+    names = [re.escape(child_name)]
+    if child_name.lower() != 'mengli':
+        names.append('Mengli')
+    joined = '|'.join(names)
+    pattern = rf'^(?:{joined})[\s,:!\-\.]+\s*'
+    m = re.match(pattern, line, flags=re.IGNORECASE)
+    if m:
+        rest = line[m.end():].strip()
+        if len(rest) > 1 and any(c.isalnum() for c in rest):
+            line = rest[0].upper() + rest[1:]
+    return line
 
 
 class GeminiApiMother:
@@ -151,56 +202,88 @@ class GeminiApiMother:
             except Exception:
                 pass
 
-    def get_system_prompt(self):
+    def get_system_prompt(self, transcript=()):
         """Construct the prompt combining base persona with the agent's current topic and intention."""
-        self._refresh_plan()
-        m_cfg = self.plan.get('mother', {}) if isinstance(self.plan, dict) else {}
-        p_cfg = self.plan.get('parenting', {}) if isinstance(self.plan, dict) else {}
-        persona = m_cfg.get('persona') or self.base_system
-        topic = p_cfg.get('current_topic')
-        if not topic and p_cfg.get('topics'):
-            topic = p_cfg['topics'][0]
-        intent = p_cfg.get('intention')
-        parts = [persona, family_prompt(self.plan), world_prompt()]
-        if topic:
-            parts.append(f"Current conversation topic: {topic}.")
-        if intent:
-            parts.append(f"Parenting intention for this phase: {intent}.")
-        return ' '.join(parts)
+        stable, volatile = self.get_prompt_parts(transcript)
+        return ' '.join([stable, volatile]).strip()
 
-    def get_prompt_parts(self):
-        """(stable, volatile): the persona and the family never change within a life, so they head every request and
-        the provider's prefix cache can reuse them with the whole history behind them; the world memory, topic and
-        intention change from time to time and ride in the last turn only (2026-10-15: the old system prompt carried
-        them, so every topic or fact change missed the cache for the entire history)."""
+    def get_prompt_parts(self, transcript=()):
+        """Separate caregiver instructions from the literal child utterances.
+
+        Both parts belong to system instructions. Never put care notes in a user
+        message: that message is the child's actual speech, including partial words.
+        """
         self._refresh_plan()
         m_cfg = self.plan.get('mother', {}) if isinstance(self.plan, dict) else {}
         p_cfg = self.plan.get('parenting', {}) if isinstance(self.plan, dict) else {}
-        stable = ' '.join([m_cfg.get('persona') or self.base_system, family_prompt(self.plan)])
+        stable = ' '.join([m_cfg.get('persona') or self.base_system, family_prompt(self.plan),
+            "The conversation contains literal child utterances and your past replies. "
+            "Quote the child's actual words accurately; a fragment or unclear sound may remain unclear. "
+            "Acknowledge without assigning an unexpressed intention, action or understanding. "
+            "The event <quiet_turn/> means no spoken words; respond to the quiet event, not to its notation. "
+            "Past adult replies can be mistaken; follow the family identities above. "
+            "Reply with your next words to the child, without caregiver notes or role labels."])
         topic = p_cfg.get('current_topic') or ((p_cfg.get('topics') or [None])[0])
         intent = p_cfg.get('intention')
-        volatile = [world_prompt()]
+        latest_child = next((str(text) for who, text in reversed(transcript) if who != 'mother'), '')
+        from .fly_parenting_harness import learning_resources_prompt
+        volatile = [world_prompt(query=' '.join([latest_child, str(topic or '')])), activity_prompt(self.plan),
+                    learning_resources_prompt(self.plan, transcript)]
         if topic:
             volatile.append(f"Current conversation topic: {topic}.")
         if intent:
             volatile.append(f"Parenting intention for this phase: {intent}.")
+        if p_cfg.get('context_correction'):
+            volatile.append('Caregiver correction of earlier adult statements: ' + str(p_cfg['context_correction']))
         return stable, ' '.join(v for v in volatile if v)
+
+    def get_chat_messages(self, transcript):
+        """Provider-neutral chat roles; care notes never overwrite child speech.
+
+        To maximize provider prefix caching hit rate (SiliconFlow / DeepSeek),
+        messages[0] contains ONLY the invariant stable persona and family prompt.
+        Dynamic, turn-specific volatile guidance (topic, activities, book resources) is placed
+        at the tail as a secondary system message.
+        """
+        stable, volatile = self.get_prompt_parts(transcript)
+        child = self.plan.get('family', {}).get('child', {}).get('name', 'Mengli')
+        messages = [{'role': 'system', 'content': stable}]
+        for who, text in transcript:
+            role = 'assistant' if who == 'mother' else 'user'
+            cleaned = (sanitize_mother_reply(text, child_name=child)
+                       if who == 'mother' and self.plan.get('mother', {}).get('strip_leading_vocative', False)
+                       else str(text))
+            if len(messages) > 1 and messages[-1]['role'] == role:
+                messages[-1]['content'] += '\n' + cleaned
+            else:
+                messages.append({'role': role, 'content': cleaned})
+        if messages[-1]['role'] != 'user':
+            messages.append({'role': 'user', 'content': '<quiet_turn/>'})
+        if volatile:
+            messages.append({'role': 'system', 'content': f"[Caregiver guidance: {volatile}]"})
+        return messages
 
     def reply(self, transcript):
         import time
+        self._refresh_plan()
+        child = 'Mengli'
+        if isinstance(getattr(self, 'plan', None), dict):
+            child = self.plan.get('family', {}).get('child', {}).get('name', child)
         contents = []
         for who, text in transcript:
             role = 'model' if who == 'mother' else 'user'
+            cleaned_text = (sanitize_mother_reply(text, child_name=child)
+                            if who == 'mother' and self.plan.get('mother', {}).get('strip_leading_vocative', False) else text)
             if contents and contents[-1]['role'] == role:
-                contents[-1]['parts'][0]['text'] += ' ' + text
+                contents[-1]['parts'][0]['text'] += ' ' + cleaned_text
             else:
-                contents.append({'role': role, 'parts': [{'text': text}]})
+                contents.append({'role': role, 'parts': [{'text': cleaned_text}]})
         if not contents or contents[0]['role'] != 'user':
-            contents.insert(0, {'role': 'user', 'parts': [{'text': '...'}]})
+            contents.insert(0, {'role': 'user', 'parts': [{'text': '<quiet_turn/>'}]})
         if contents[-1]['role'] != 'user':
-            contents.append({'role': 'user', 'parts': [{'text': '...'}]})
+            contents.append({'role': 'user', 'parts': [{'text': '<quiet_turn/>'}]})
 
-        system_instruction = self.get_system_prompt()
+        system_instruction = self.get_system_prompt(transcript)
         m_cfg = self.plan.get('mother', {}) if isinstance(self.plan, dict) else {}
         temperature = float(m_cfg.get('temperature', self.temperature))
         max_tokens = int(m_cfg.get('max_reply_tokens', self.max_tokens))
@@ -223,8 +306,10 @@ class GeminiApiMother:
                     data = r.json()
                     parts = data.get('candidates', [{}])[0].get('content', {}).get('parts', [])
                     text = ''.join(p.get('text', '') for p in parts).strip()
-                    first_line = text.split('\n')[0].strip()
-                    return first_line or '...'
+                    self.last_raw_reply = text
+                    reply = (sanitize_mother_reply(text, child_name=child)
+                             if m_cfg.get('strip_leading_vocative', False) else text.strip())
+                    return reply or '...'
                 elif r.status_code in (429, 503):
                     self.last_status = r.status_code
                     time.sleep(delay)
@@ -284,19 +369,15 @@ class DeepSeekMother(GeminiApiMother):
 
     def reply(self, transcript):
         import time
-        stable, volatile = self.get_prompt_parts()
-        messages = [{'role': 'system', 'content': stable}]
-        for who, text in transcript:
-            role = 'assistant' if who == 'mother' else 'user'
-            if len(messages) > 1 and messages[-1]['role'] == role:
-                messages[-1]['content'] += ' ' + text
-            else:
-                messages.append({'role': role, 'content': text})
-        if messages[-1]['role'] != 'user':
-            messages.append({'role': 'user', 'content': '...'})
-        if volatile:
-            # the changing context rides in the last turn only: everything before it is a byte-identical prefix
-            messages[-1] = {'role': 'user', 'content': f"[Mother's notes: {volatile}]\n{messages[-1]['content']}"}
+        self._refresh_plan()
+        child = 'Mengli'
+        if isinstance(getattr(self, 'plan', None), dict):
+            child = self.plan.get('family', {}).get('child', {}).get('name', child)
+        messages = self.get_chat_messages(transcript)
+        self.last_prompt_messages = messages  # Inspectable request evidence, without credentials.
+        self.last_grounding_rejections = []
+        self.last_delivered_reply = ''
+        latest_child = next((str(text) for who, text in reversed(transcript) if who != 'mother'), '')
         m_cfg = self.plan.get('mother', {}) if isinstance(self.plan, dict) else {}
         delay = 2.0
         for attempt in range(self.retries):
@@ -324,7 +405,29 @@ class DeepSeekMother(GeminiApiMother):
                     self.usage['cache_miss'] += int(miss or 0)
                     self.usage['output'] += int(usage.get('completion_tokens') or 0)
                     text = (data.get('choices', [{}])[0].get('message', {}).get('content') or '').strip()
-                    return text.splitlines()[0].strip() if text else ''
+                    self.last_raw_reply = text
+                    cleaned = (sanitize_mother_reply(text, child_name=child)
+                               if m_cfg.get('strip_leading_vocative', False) else text.strip())
+                    from .fly_parenting_harness import caregiver_reply_flags
+                    mother_name = self.plan.get('family', {}).get('mother', {}).get('name', 'Mama')
+                    flags = caregiver_reply_flags(latest_child, cleaned, child, mother_name)
+                    if flags:
+                        self.last_grounding_rejections.append({'reply': cleaned, 'flags': flags})
+                        self.usage['grounding_rejections'] = self.usage.get('grounding_rejections', 0) + 1
+                        self.last_status = 'caregiver_grounding_rejected'
+                        # Retry from the same real dialogue; never fabricate child speech
+                        # or quietly rewrite a wrong adult sentence into a new one.
+                        import json
+                        if len(self.last_grounding_rejections) >= 2:
+                            break
+                        messages.append({'role': 'system', 'content':
+                            'Caregiver grounding check: the draft was rejected for ' + ', '.join(flags) +
+                            '. Latest child utterance, verbatim: ' + json.dumps(latest_child) +
+                            '. Produce a fresh short reply. Keep partial sounds uncertain; '
+                            'a full name claim requires the actual full name. Adult and child identities remain as above.'})
+                        continue
+                    self.last_delivered_reply = cleaned
+                    return cleaned
                 self.last_status = r.status_code
                 if r.status_code == 400 and self.thinking_field:
                     self.thinking_field = False    # an API that does not know the field: ask again without it
@@ -547,11 +650,13 @@ class MotherWorld:
         self.pause_beats_before_reply = int(pause_beats_before_reply)
         self.silent_beats_threshold = int(silent_beats_threshold)
         self.silent_beats = 0
+        self.fly_pause_ticks = 0                   # elapsed silence inside an unfinished utterance
         self.call_prompt = call_prompt
         self.max_wait_beats = int(max_wait_beats)
         self.beat_duration_s = float(beat_duration_s)
         self.plan_path = plan_path
         self.mother_turn_fresh = False             # True when mother turn has just started (for pause timing)
+        self.caregiver_context_revision = None
 
         self.mother_heard = []
         self.mother_source = 'mother_opening'
@@ -560,7 +665,14 @@ class MotherWorld:
 
     # -- the stream -------------------------------------------------------------------------------------------------
     def _say_mother(self, text, source='mother_reply'):
-        clean_text = str(text).strip() or self.get_call_prompt()
+        child = 'Mengli'
+        if isinstance(getattr(self.mother, 'plan', None), dict):
+            child = self.mother.plan.get('family', {}).get('child', {}).get('name', child)
+        clean_text = str(text).strip()
+        plan = self.mother.plan if isinstance(getattr(self.mother, 'plan', None), dict) else {}
+        if source == 'mother_reply' and plan.get('mother', {}).get('strip_leading_vocative', False):
+            clean_text = sanitize_mother_reply(clean_text, child_name=child)
+        clean_text = clean_text or self.get_call_prompt()
         self.transcript.append(('mother', clean_text))
         self.mother_turns.append(clean_text)
         self.queue.extend(self.tok.encode(' ' + clean_text + '\n'))
@@ -568,6 +680,7 @@ class MotherWorld:
         self.turn = 'mother'
         self.mother_turn_fresh = True
         self.mother_source = source
+        self.reply_has_speech = source == 'mother_reply' and bool(getattr(self, '_reply_has_speech', False))
         self.stats['mother_turns'] += 1
 
     def state_dict(self):
@@ -575,9 +688,13 @@ class MotherWorld:
         return {'format': 'mother-world-v2', 'turn': self.turn, 'queue': list(self.queue),
                 'fly_words': list(self.fly_words), 'mother_heard': list(self.mother_heard),
                 'transcript': list(self.transcript), 'history_anchor': getattr(self, 'history_anchor', 0),
+                'caregiver_context_revision': self.caregiver_context_revision,
                 'fly_turns': list(self.fly_turns), 'mother_turns': list(self.mother_turns),
                 'stats': dict(self.stats), 'silent_beats': self.silent_beats,
+                'fly_pause_ticks': self.fly_pause_ticks,
                 'mother_turn_fresh': self.mother_turn_fresh, 'mother_source': self.mother_source,
+                'reply_has_speech': getattr(self, 'reply_has_speech', False),
+                'pending_reply_has_speech': getattr(self, '_reply_has_speech', False),
                 'pending': self.pending, 'rng': self.rng.getstate(),
                 'mother_usage': dict(getattr(self.mother, 'usage', {}) or {})}
 
@@ -593,7 +710,11 @@ class MotherWorld:
         for key in ('fly_words', 'mother_heard', 'fly_turns', 'mother_turns'):
             setattr(self, key, list(saved[key]))
         self.transcript = [tuple(x) for x in saved['transcript']]
+        self.reply_has_speech = bool(saved.get('reply_has_speech', False))
+        self._reply_has_speech = bool(saved.get('pending_reply_has_speech', False))
+        self.fly_pause_ticks = int(saved.get('fly_pause_ticks', 0))
         self.stats = collections.Counter(saved['stats'])
+        self.caregiver_context_revision = saved.get('caregiver_context_revision')
         for key in ('history_anchor', 'silent_beats', 'mother_turn_fresh', 'mother_source', 'pending'):
             setattr(self, key, saved[key])
         # JSON sidecars turn tuples into lists; random.Random requires nested tuples.
@@ -606,15 +727,15 @@ class MotherWorld:
     def get_call_prompt(self):
         if self.call_prompt:
             return self.call_prompt
-        child = 'Mengli'
+        child = 'the little one'
         if isinstance(getattr(self.mother, 'plan', None), dict):
-            child = self.mother.plan.get('family', {}).get('child', {}).get('name', 'Mengli')
+            child = self.mother.plan.get('family', {}).get('child', {}).get('name', child)
         elif self.plan_path:
             import json, os
             if os.path.exists(self.plan_path):
                 try:
                     data = json.load(open(self.plan_path, encoding='utf-8'))
-                    child = data.get('family', {}).get('child', {}).get('name', 'Mengli')
+                    child = data.get('family', {}).get('child', {}).get('name', child)
                 except Exception:
                     pass
         return f"{child}?"
@@ -633,8 +754,12 @@ class MotherWorld:
     def speak(self, word_id):
         """The fly's committed word during its turn; returns True when the turn ended (the mother then answers)."""
         self.fly_words.append(int(word_id))
+        if self.fly_pause_ticks:
+            self.stats['fly_resumed_pauses'] += 1
+        self.fly_pause_ticks = 0
         self.stats['fly_words'] += 1
-        self.silent_beats = 0                      # Fly spoke: reset silent beats counter
+        if self.tok.decode(self.fly_words).strip():
+            self.silent_beats = 0                  # A boundary token alone is not lexical speech.
         if int(word_id) in self.end_ids or len(self.fly_words) >= self.max_fly_words:
             self.stats['end_word' if int(word_id) in self.end_ids else 'end_breath'] += 1
             self._end_fly_turn()
@@ -653,40 +778,128 @@ class MotherWorld:
         self.stats['interruptions'] += 1
 
     def call(self):
-        """She calls the child by name (the floor is hers)."""
-        self._say_mother(self.get_call_prompt(), source='mother_call')
+        """Noncontingent presence: keep the world available during quiet listening.
+
+        A generated quiet-time contribution remains a mother_call: neither
+        novelty credit nor a speech-caused PAM reward is earned by waiting.
+        The fixed reassurance is only a fallback when the mouth is unavailable.
+        """
+        if hasattr(self.mother, '_refresh_plan'):
+            self.mother._refresh_plan()
+        plan = getattr(self.mother, 'plan', {}) or {}
+        text = None
+        if (plan.get('mother', {}).get('spontaneous_when_quiet', False)
+                and not getattr(self.mother, 'asynchronous', False)):
+            history = self.cached_history()
+            if not history or history[-1] != ('fly', '<quiet_turn/>'):
+                history = history + [('fly', '<quiet_turn/>')]
+            text = self.mother.reply(history)
+            if text and str(text).strip():
+                self.stats['mother_spontaneous_calls'] += 1
+        self._say_mother(text or self.get_call_prompt(), source='mother_call')
         self.silent_beats = 0
         self.stats['mother_calls'] += 1
 
     def yield_turn(self):
-        """v2: the fly did not commit at an arrival in its turn -- silence yields the floor, and the mother answers
-        what was said (nothing at all is a silent turn: the dark-room signal)."""
+        """Explicitly hand over the floor; a missing motor commit uses pause_speech instead."""
         self.stats['fly_yields'] += 1
         self.stats['end_yield'] += 1
-        if not self.fly_words:
-            self.silent_beats += 1
-            self.stats['fly_silent_turns'] += 1
-        else:
-            self.silent_beats = 0
         self._end_fly_turn()
+
+    def pause_speech(self, ticks):
+        """Retain partial speech until the listener's existing silence patience expires.
+
+        This is a world turn-taking timeout, not an internal memory constant or
+        a minimum utterance length. Before speech starts, keep the existing
+        contingent waiting/call protocol. Elapsed ticks have already run through
+        the brain and the same no-commit decision is retained for policy credit.
+        """
+        ticks = int(ticks)
+        if ticks <= 0 or self.turn != 'fly':
+            raise ValueError('Speech pauses require positive elapsed ticks in the child turn')
+        if not self.fly_words:
+            self.yield_turn()
+            return
+        self.fly_pause_ticks += ticks
+        self.stats['fly_pause_events'] += 1
+        self.stats['fly_pause_ticks'] += ticks
+        if self.fly_pause_ticks >= self.speech_pause_limit():
+            self.stats['end_pause'] += 1
+            self._end_fly_turn()
+
+    def speech_pause_limit(self):
+        """Listener patience in physical ticks, from the existing world rhythm."""
+        return max(1, self.ticks_per_beat * self.silent_beats_threshold)
 
     def cached_history(self):
         """The conversation the mouth sees, append-only from an anchor so that consecutive requests share their prefix
         (API prefix caches hit only on an exact prefix; a sliding window shifts it every turn and misses on all of it).
         When it grows past 2 x history_turns, the anchor jumps once to keep the last history_turns // 2 + 1 turns."""
+        if hasattr(self.mother, '_refresh_plan'):
+            self.mother._refresh_plan()
+        m_plan = getattr(self.mother, 'plan', {})
+        revision = m_plan.get('mother', {}).get('context_revision') if isinstance(m_plan, dict) else None
         anchor = getattr(self, 'history_anchor', 0)
+        if revision and revision != self.caregiver_context_revision:
+            # Ling can repair the teacher's few-shot context once. The child's
+            # complete experience, queue and physical/learning states stay intact.
+            anchor = max(0, len(self.transcript) - 1)
+            self.history_anchor = anchor
+            self.caregiver_context_revision = revision
+            self.stats['caregiver_context_repairs'] += 1
         if len(self.transcript) - anchor > 2 * self.history_turns:
             anchor = len(self.transcript) - (self.history_turns // 2 + 1)
             self.history_anchor = anchor
             self.stats['history_rebases'] += 1
-        return self.transcript[anchor:]
+        # Silence is an event, not a lexical child utterance. Keep it in the
+        # teacher's chronology so separate adult contributions cannot collapse
+        # into one uninterrupted assistant monologue. The actual token tape
+        # distinguishes silence from a genuinely spoken ellipsis. Full history
+        # and the child's stream remain unchanged.
+        recent = self.transcript[anchor:]
+        cursor = len(self.fly_turns) - sum(w == 'fly' for w, _ in recent)
+        if cursor < 0:
+            return self.transcript[anchor:]        # Legacy alignment is unknown; do not invent it.
+        history = []
+        for who, text in recent:
+            if who == 'fly':
+                words = self.fly_turns[cursor]
+                cursor += 1
+                if not self.tok.decode(words).strip():
+                    if not history or history[-1] != ('fly', '<quiet_turn/>'):
+                        history.append(('fly', '<quiet_turn/>'))
+                    continue
+            history.append((who, text))
+        return history
+
+    def turn_observation(self, index):
+        """Disambiguate visible silence placeholders using the saved token tape."""
+        who, text = self.transcript[index]
+        if who != 'fly':
+            return {}
+        # New turns are near the tail. Align backwards rather than rescanning
+        # the organism's complete lifetime on every mouth request and log row.
+        cursor = len(self.fly_turns) - sum(w == 'fly' for w, _ in self.transcript[index:])
+        if cursor < 0:
+            return {'turn_kind': 'legacy_alignment_unknown'}
+        ids = list(self.fly_turns[cursor])
+        raw = self.tok.decode(ids)
+        return {'turn_kind': ('quiet_yield' if not ids else 'boundary_only' if not raw.strip() else 'utterance'),
+                'token_ids': ids, 'spoken_text': raw.strip()}
 
     def _end_fly_turn(self):
         text = self.tok.decode(self.fly_words).strip()
-        had_words = bool(self.fly_words)
+        had_words = bool(text)
+        if had_words:
+            self.silent_beats = 0
+        else:
+            self.silent_beats += 1
+            self.stats['fly_silent_turns'] += 1
+        self._reply_has_speech = had_words
         self.transcript.append(('fly', text or '...'))
         self.fly_turns.append(list(self.fly_words))
         self.fly_words = []
+        self.fly_pause_ticks = 0
         self.stats['fly_turns'] += 1
         history = self.cached_history()
 
@@ -763,24 +976,36 @@ class MotherWorld:
             return 1.0 - len(set(bg)) / max(1, len(bg))
         recent = self.fly_turns[-last:]
         loops = sum(1 for a, b in zip(recent, recent[1:]) if a == b)
+        fly_counts = collections.Counter(fly)
+        mother_counts = collections.Counter(mom)
+        fly_top = fly_counts.most_common(1)[0] if fly_counts else ('', 0)
+        mother_top = mother_counts.most_common(1)[0] if mother_counts else ('', 0)
+        from .fly_parenting_harness import conversation_health
+        # Preserve cumulative runtime counters while fixing the lexical health definitions.
+        summary = conversation_health(self.transcript, last=last)
         return {'fly_turns': len(self.fly_turns), 'fly_ttr': round(ttr(fly), 3),
                 'fly_repeat_bigrams': round(repeat_bigrams(fly), 3), 'fly_identical_consecutive_turns': loops,
                 'fly_mean_turn_words': round(len(fly) / max(1, len(self.fly_turns[-last:])), 2),
                 'fly_silent_turns': round(sum(1 for t in recent if not t) / max(1, len(recent)), 3),
+                'fly_top_token': fly_top[0], 'fly_top_token_share': round(fly_top[1] / max(1, len(fly)), 3),
                 'mother_ttr': round(ttr(mom), 3), 'mother_repeat_bigrams': round(repeat_bigrams(mom), 3),
+                'mother_top_token': mother_top[0], 'mother_top_token_share': round(mother_top[1] / max(1, len(mom)), 3),
                 # the words for herself and the others: how often she says them, and how often she hears them
                 'fly_family_words': sum(1 for w in fly if w in self.family_ids),
                 'mother_family_words': sum(t.count(n.strip().lower()) for t in [' '.join(mom)]
                                            for n in FAMILY_WORDS),
                 'silent_beats': self.silent_beats,
+                'mother_spontaneous_calls': self.stats['mother_spontaneous_calls'],
                 'mother_calls': self.stats['mother_calls'],
                 'mother_waits': self.stats['mother_waits'],
                 # how her turns ended: breath (the length limit), an end word, or her own yield; learning to stop
                 # shows as the yield share rising
-                'fly_turn_ends': {k: self.stats[k] for k in ('end_breath', 'end_word', 'end_yield')},
+                'fly_turn_ends': {k: self.stats[k] for k in ('end_breath', 'end_word', 'end_yield', 'end_pause')},
                 'mother_waits_silence': self.stats['mother_waits_silence'],
                 'interruptions': self.stats['interruptions'],
+                **summary,
                 **({'mouth_calls': u['calls'], 'mouth_cache_hit_tokens': u['cache_hit'],
+                    'mouth_grounding_rejections': u.get('grounding_rejections', 0),
                     'mouth_cache_miss_tokens': u['cache_miss'], 'mouth_output_tokens': u['output'],
                     'mouth_cache_hit_rate': round(u['cache_hit'] / max(1, u['cache_hit'] + u['cache_miss']), 3)}
                    if (u := getattr(self.mother, 'usage', None)) else {})}
@@ -1094,15 +1319,65 @@ def live_window(learner, world, n, rng, pace_min, pace_mean, temperature=1.0, ti
     world.ticks_per_beat.
 
     speak_act (v2, motor acts attached): in the fly's turn its muscles decide at each arrival. A commit on any tick of
-    the interval (probability 1 - prod(1 - h_t)) says the word sampled from the read, heard next; no commit yields the
-    floor and the mother answers (an asynchronous mother's wait or synchronous conversational pause is added to this
-    interval, after the decision ticks).
+    the interval (probability 1 - prod(1 - h_t)) says the word sampled from the read, heard next. A missing commit
+    retains unfinished speech while the brain evolves in silence. A boundary token or sustained silence ends it;
+    the listener's existing patience is measured in actual ticks, independently of the sampled input interval.
     After a yield the mother answers after her pause, or (an agent) waits a beat: the beat passes in silence and the
     child decides again over it.  interrupt: in the mother's turn the child's commit cuts her off (MotherWorld.interrupt)
     and its word is heard; no commit keeps listening.
     forced then also carries 'decisions': (word index, first tick in the window, ticks, 1 commit / 0 silent) for every
     decision, for the act's credit in the training pass (fly_active_inference.speaking_value).
     """
+    import math
+    import torch
+    from . import fly_bptt_learning as fl
+    m = learner.model
+    consequence = None
+    native_generative = bool(getattr(learner, 'native_generative_enabled', False))
+    native_context = bool(getattr(learner, 'native_context_enabled', False))
+    if getattr(learner, 'speak_credit', None) == 'consequence':
+        if not speak_act:
+            raise ValueError('Consequence credit needs --mother-speak-act')
+        if (native_context or native_generative or getattr(learner, 'consequence_native_enabled', False)
+                or getattr(learner, 'native_credit_enabled', False)):
+            from .fly_native_policy_credit import prepare_native_policy_backward
+            prepare_native_policy_backward(m)
+        if native_context:
+            if (native_generative or getattr(learner, 'consequence_native_enabled', False)
+                    or getattr(learner, 'native_credit_enabled', False)):
+                raise ValueError('Native context replaces the other experimental policy modes explicitly')
+            from .fly_native_context import NativeContextControl
+            consequence = NativeContextControl(learner)
+        elif native_generative:
+            if getattr(learner, 'consequence_native_enabled', False) or getattr(learner, 'native_credit_enabled', False):
+                raise ValueError('Native generative control replaces the old policy-credit objective explicitly')
+            from .fly_native_generative_control import NativeGenerativeControl
+            consequence = NativeGenerativeControl(learner)
+        elif getattr(learner, 'consequence_native_enabled', False):
+            if getattr(learner, 'native_credit_enabled', False):
+                raise ValueError('Choose native credit alone or the ordered policy candidate, not both')
+            from .fly_action_model import OrderedConsequenceCredit
+            consequence = OrderedConsequenceCredit(learner)
+        elif getattr(learner, 'native_credit_enabled', False):
+            from .fly_consequence_belief import NativeCircuitConsequenceCredit
+            consequence = NativeCircuitConsequenceCredit(learner)
+        else:
+            from .fly_consequence_belief import NativeConsequenceCredit
+            consequence = NativeConsequenceCredit(learner)
+    circuit = getattr(learner, 'circuit_observer', None)      # fly_circuit_observer: counts the live pass only
+    if circuit is not None:
+        circuit.active = True
+    try:
+        return _live_window_body(learner, world, n, rng, pace_min, pace_mean, temperature, ticks_per_second,
+                                 max_wait_ticks, speak_act, interrupt, consequence, native_generative,
+                                 native_context, circuit)
+    finally:
+        if circuit is not None:
+            circuit.active = False
+
+
+def _live_window_body(learner, world, n, rng, pace_min, pace_mean, temperature, ticks_per_second,
+                      max_wait_ticks, speak_act, interrupt, consequence, native_generative, native_context, circuit):
     import math
     import torch
     from . import fly_bptt_learning as fl
@@ -1120,7 +1395,25 @@ def live_window(learner, world, n, rng, pace_min, pace_mean, temperature=1.0, ti
         seg = int(getattr(learner, 'stream_segment_ticks', 16) or 16)
         token = int(learner.previous_token)
         acts = bool(speak_act) and getattr(m, 'ai_mode', None) == 'motor'
+        causal_clock = getattr(learner, 'mother_action_clock', 'arrival') == 'commit'
+        if causal_clock and not acts:
+            raise ValueError('The commit event clock requires native speaking actions')
+        observer = None
+        if getattr(learner, 'generative_shadow_enabled', False):
+            if not causal_clock:
+                raise ValueError('The generative event observer requires the actual commit clock')
+            from .fly_generative_observer import GenerativeEventObserver
+            cached = getattr(learner, '_generative_event_observer', None)
+            if cached is not None and cached.state is getattr(learner, 'generative_event_state', None):
+                observer = cached
+                observer.diagnostics = []
+            else:
+                observer = GenerativeEventObserver(learner)
+                learner._generative_event_observer = observer
         motor_on = getattr(m, 'ai_mode', None) == 'motor'
+        motor_port_on = bool(getattr(m, 'native_motor_port_enabled', False))
+        if motor_port_on and (not causal_clock or not acts):
+            raise ValueError('Native motor port needs actual commit-clock speaking actions')
         if motor_on:
             from .fly_active_inference import motor_rest
             saved_muscles = getattr(learner, 'ai_g', None)
@@ -1128,6 +1421,12 @@ def live_window(learner, world, n, rng, pace_min, pace_mean, temperature=1.0, ti
         else:
             ai_g = None
         targets, intervals, speakers, decisions, quiet_ranges, sources = [], [], [], [], [], []
+        arrival_reads = []
+        event_tape = []
+        input_sources = []
+        motor_packet_tape, motor_commands = [], []
+        pending_motor_packet = None
+        context_endpoints = []
         tpb = int(getattr(world, 'ticks_per_beat', 8))
         pause = int(getattr(world, 'pause_beats_before_reply', 1)) * tpb
         # whose voice is on the senses: the mother's words carry it (Johnston's organ, fly_bptt_learning.attach_mother_voice)
@@ -1135,41 +1434,134 @@ def live_window(learner, world, n, rng, pace_min, pace_mean, temperature=1.0, ti
         # her answer's reward pulse rides with its first word as the input (fly_bptt_learning.attach_reply_reward)
         rewarded = bool(getattr(learner, 'last_reward', False))
         reply_onsets = []
+        consequence_ratios = []
         prev_who = 'mother' if voice else 'fly'
 
-        def advance(k, start=0, sensory_on=True):
+        def advance(k, start=0, sensory_on=True, can_commit=None):
             # ticks start .. start + k - 1 of the word's interval, in the training pass's segments (same packets)
-            nonlocal s, ai_g
+            nonlocal s, ai_g, first_commit_tick, last_advance_ticks, pending_motor_packet
             done, latent, committed, said_read = start, None, False, None
+            if can_commit is None:
+                can_commit = world.turn == 'fly' or (world.turn == 'mother' and bool(interrupt))
             while done < start + k:
                 ticks = min(seg - done % seg, start + k - done)
                 extra_kw = (dict(ai_g=ai_g, ai_tape=[], eye_forced=getattr(learner, 'eye_forced', None),
                                  read_every=True) if motor_on else {})
+                if native_context:
+                    extra_kw['update_expectation'] = False
+                if hasattr(consequence, 'timing_bias'):
+                    extra_kw['motor_value_bias'] = consequence.timing_bias
+                if consequence is not None:
+                    extra_kw['ai_g_tape'] = []
+                if causal_clock and can_commit:
+                    extra_kw['stop_on_commit'] = True
                 out = fl.advance_fly_token_stream(
                     m, s, token_tensor, [ticks], ticks=ticks,
                     hold_input=learner.hold_input, read_after=learner.read_lag or None,
                     writer_baseline_clock=learner.writer_baseline_clock, fresh=done == 0, voice=voice,
                     sensory_on=sensory_on, reward_ticks=fl.reward_ticks_left(m, rewarded, done),
+                    executed_action=bool(native_context and held_source == 'self_hearing' and sensory_on),
                     **extra_kw, **opts)
                 s, latent = out[0], out[1]
+                actual = len(extra_kw['ai_tape']) if motor_on else ticks
+                if hasattr(consequence, 'advance_ticks'):
+                    consequence.advance_ticks(actual)
                 if motor_on:
                     ai_g = out[-1]
+                    if motor_port_on:
+                        motor_packet_tape.extend(out[4].detach().cpu().tolist())
+                    if native_generative or native_context:
+                        interval_eyes.extend(out[-4].detach().cpu().tolist())
                     tape = extra_kw['ai_tape']
-                    if not committed and any(tape):
+                    # Muscles keep evolving/sampling during protected external
+                    # pauses, but those samples are not world commands. Do not
+                    # let a protected pause create a delayed "commit" later.
+                    accepted_tape = tape if not causal_clock or can_commit else []
+                    if consequence is not None:
+                        decision_frames.extend(extra_kw['ai_g_tape'])
+                        if sensory_on:
+                            sensed_eyes.append(out[-4][out[-3]])
+                        if first_commit_tick is None and any(accepted_tape):
+                            first_commit_tick = done + accepted_tape.index(True)
+                    if not committed and any(accepted_tape):
                         # the word is said from the read standing at the first commit tick
-                        first = tape.index(True)
-                        said_read = out[2][first:first + 1]
-                    committed = committed or any(tape)
-                done += ticks
+                        first = accepted_tape.index(True)
+                        said_read = out[3 if motor_port_on else 2][first:first + 1]
+                        if motor_port_on:
+                            release = s.ring[0][0, m.native_motor_index].detach()
+                            active = release > 0
+                            if not bool(active.any()):
+                                raise RuntimeError('Native command has no actual motor packet')
+                            pending_motor_packet = {
+                                'tick': tick0 + done + first,
+                                'body_ids': m.native_motor_body_ids[active].cpu().tolist(),
+                                'release': release[active].cpu().tolist()}
+                    committed = committed or any(accepted_tape)
+                done += actual
+                if causal_clock and can_commit and committed:
+                    break
+            last_advance_ticks = done - start
             return latent, committed, said_read
 
         def say(read):
-            logits = m.decoder(m.read_norm(read)).float()[0] / max(temperature, 1e-6)
-            return int(torch.multinomial(torch.softmax(logits, -1), 1))
+            nonlocal pending_motor_packet
+            from .fly_native_motor_port import action_logits
+            if motor_port_on and pending_motor_packet is None:
+                raise RuntimeError('Language peripheral cannot execute without a native motor packet')
+            logits = action_logits(m, read).float()[0] / max(temperature, 1e-6)
+            if getattr(consequence, 'word_bias', None) is not None:
+                logits = logits + consequence.word_bias
+            word = int(torch.multinomial(torch.softmax(logits, -1), 1))
+            if consequence is not None:
+                consequence.say(read, word, temperature)
+            if motor_port_on:
+                motor_commands.append({**pending_motor_packet, 'word': word})
+                pending_motor_packet = None
+            return word
+
+        def speak_word(word):
+            ended = world.speak(word)
+            if consequence is not None and ended:
+                consequence.state['in_child_turn'] = False
+
+        def choose(context, start, length, mother_turn=False):
+            if consequence is not None:
+                first = (first_commit_tick - start if first_commit_tick is not None
+                         and start <= first_commit_tick < start + length else None)
+                frames = torch.cat(decision_frames[start:start + length], 0)
+                if hasattr(consequence, 'decision_bounds'):
+                    consequence.decision_bounds = (tick0 + start, length)
+                consequence.choose(context, frames, first, mother_turn)
 
         tick0 = 0                                  # ticks of the window before this word's interval
+        last_advance_ticks = 0
         for i in range(n):
             word, who = None, None
+            decision_frames, sensed_eyes, first_commit_tick = [], [], None
+            interval_eyes = []
+            if native_context:
+                held_source = consequence.state['source']
+                input_sources.append(held_source)
+                s = fl.prepare_sensory_expectation(m, s, token, held_source)
+            if native_generative or native_context:
+                from .fly_active_inference import ai_eye
+                consequence.initial_eye = float(ai_eye(m, ai_g, getattr(learner, 'eye_forced', None)))
+                consequence.begin_interval(s, token, voice, rewarded)
+            if observer is not None:
+                from .fly_active_inference import ai_eye
+                if world.turn == 'fly' and not observer.state.get('in_child_turn', False):
+                    observer.begin_child_turn()
+                observer.begin_interval(s, float(ai_eye(m, ai_g, getattr(learner, 'eye_forced', None))))
+            context = consequence.features(s)[0] if consequence is not None else None
+            if (causal_clock and consequence is not None and world.turn == 'fly'
+                    and not consequence.state.get('in_child_turn', False)):
+                consequence.begin_child_turn()
+            if hasattr(consequence, 'prepare'):
+                consequence.prepare(context, s, enabled=(world.turn != 'mother' or bool(interrupt)),
+                                    mother_turn=world.turn == 'mother', temperature=temperature)
+            if consequence is not None:
+                source = consequence.state['source']
+                consequence_ratios.append(consequence.input_ratio(source))
             quiet = []
             # Reuse the token tensor across checkpoint segments and silent gaps.
             token_tensor = torch.tensor([token], device=s.h.device)
@@ -1180,64 +1572,144 @@ def live_window(learner, world, n, rng, pace_min, pace_mean, temperature=1.0, ti
                 extra = min(int(max_wait_ticks), pause)
             k = int(rng.geometric(1.0 / pace))
             latent, committed, said_read = advance(k)
-            if extra:
+            k = last_advance_ticks
+            if consequence is not None:
+                exposure = float(torch.cat(sensed_eyes).mean()) if sensed_eyes else 0.0
+                if hasattr(consequence, 'hear_token'):
+                    consequence.hear_token(token, source, exposure)
+                consequence.observe(s, source, exposure, end=bool(consequence.state.get('reply_end', False)))
+            if extra and not (causal_clock and committed):
+                latent, extra_commit, extra_read = advance(extra, k, sensory_on=False,
+                                                          can_commit=False if causal_clock else None)
+                extra = last_advance_ticks
                 quiet.append((k, k + extra))
-                latent, extra_commit, extra_read = advance(extra, k, sensory_on=False)
                 if not committed and extra_commit:
                     said_read = extra_read
                 committed = committed or extra_commit
                 k += extra
             if world.turn == 'mother':
                 if acts and interrupt:
+                    if consequence is not None and committed:
+                        consequence.end_response()
+                        consequence.begin_child_turn()
                     decisions.append((i, tick0, k, int(committed)))
+                    choose(context, 0, k, mother_turn=True)
                 if acts and interrupt and committed:
                     world.interrupt()                       # she is cut off; the child's word is heard
                     word, who = say(said_read if said_read is not None else latent), 'fly'
-                    world.speak(word)
+                    speak_word(word)
                 else:
                     word, who = world.next_word()
             elif acts:
+                if consequence is not None and not consequence.state.get('in_child_turn', False):
+                    consequence.begin_child_turn()
                 decisions.append((i, tick0, k, int(committed)))
+                choose(context, 0, k)
                 tries = 0
+                silent_ticks = k
                 while not committed and word is None:
-                    # silence yields the floor: she answers after her pause, or waits a beat and it comes back
-                    world.yield_turn()
+                    # Keep partial speech and its credit during a short pause.
+                    world.pause_speech(silent_ticks)
                     gap = (min(int(max_wait_ticks), world.wait_for_mother() * tpb) if world.turn == 'waiting'
                            else pause if world.turn == 'mother' else 0)
-                    if world.turn != 'mother' and tries >= 8:
+                    if world.turn != 'mother' and tries >= 8 and not world.fly_words:
                         world.call()                        # a long silence: she calls the child by name
                         gap = pause
                     if world.turn == 'mother':
                         if gap > 0:
+                            advance(gap, k, sensory_on=False, can_commit=False if causal_clock else None)
+                            gap = last_advance_ticks
                             quiet.append((k, k + gap))
-                            advance(gap, k, sensory_on=False)
                             k += gap
                         word, who = world.next_word()
                     else:
                         gap = max(gap, tpb)                 # a beat of silence, and the child decides again
-                        quiet.append((k, k + gap))
+                        if world.fly_words:
+                            gap = min(gap, world.speech_pause_limit() - world.fly_pause_ticks)
+                        wait_context = consequence.features(s)[0] if consequence is not None else None
+                        if hasattr(consequence, 'prepare'):
+                            consequence.prepare(wait_context, s, temperature=temperature)
                         latent, committed, said_read = advance(gap, k, sensory_on=False)
+                        gap = last_advance_ticks
+                        quiet.append((k, k + gap))
                         decisions.append((i, tick0 + k, gap, int(committed)))
+                        choose(wait_context, k, gap)
                         k += gap
+                        silent_ticks = gap
                         tries += 1
                 if word is None:
                     word, who = say(said_read if said_read is not None else latent), 'fly'
-                    world.speak(word)
+                    speak_word(word)
             else:
                 word, who = say(latent), 'fly'
-                world.speak(word)
+                speak_word(word)
             targets.append(int(word)); intervals.append(k); speakers.append(who)
             quiet_ranges.append(quiet)
             sources.append(world.mother_source if who == 'mother' else 'self_hearing')
-            onset = who == 'mother' and sources[-1] == 'mother_reply' and prev_who != 'mother'
+            arrival_reads.append(latent[-1:].detach() if latent is not None else None)
+            if circuit is not None:
+                circuit.end_word(m, token=int(word), who=who, source=sources[-1], read=latent,
+                                 extra={'committed': bool(committed) if acts else None,
+                                        'reply_onset': bool(who == 'mother' and sources[-1] == 'mother_reply'
+                                                            and prev_who != 'mother')})
+            if native_generative or native_context:
+                consequence.arrive(s, int(word), sources[-1], k, quiet, interval_eyes,
+                                   end=who == 'mother' and not world.queue)
+            if native_context:
+                from .fly_native_context import compartment_chart
+                context_endpoints.append({'field': compartment_chart(m, s)[0].detach().cpu(),
+                                          'read': latent.detach().cpu()})
+                s = fl.expect_next(m, s, latent)
+            if observer is not None:
+                observer.end_interval(k, int(word), sources[-1])
+                if who == 'mother':
+                    observer.state['in_child_turn'] = False
+            if causal_clock:
+                event_tape.append({'tick': tick0 + k, 'interval_ticks': k,
+                                   'source': sources[-1], 'token': int(word),
+                                   'kind': 'command_echo' if who == 'fly' else 'external_arrival'})
+            onset = (who == 'mother' and sources[-1] == 'mother_reply' and prev_who != 'mother'
+                     and (consequence is None or bool(getattr(world, 'reply_has_speech', False))))
             reply_onsets.append(onset)
             prev_who = who
             token = int(word)
             voice = who == 'mother'
             rewarded = onset
+            if consequence is not None:
+                consequence.state['source'] = sources[-1]
+                consequence.state['reply_end'] = who == 'mother' and not world.queue
+                if who == 'mother':
+                    consequence.state['in_child_turn'] = False
             tick0 += k
     forced = {'pace': pace, 'intervals': intervals, 'speakers': list(speakers),
               'quiet_ranges': quiet_ranges, 'sources': sources, 'reply_onsets': reply_onsets}
     if acts:
         forced.update(decisions=decisions)
+    if causal_clock:
+        forced.update(action_clock='commit', events=event_tape, prediction_objective='external_arrival',
+                      exclude_self_prediction=True)
+    if native_generative or native_context:
+        forced['native_generative_control'] = True
+    if native_context:
+        forced.update(native_context_control=True, input_sources=input_sources,
+                      native_context_teaching=consequence.teaching,
+                      native_context_endpoints=context_endpoints)
+    if observer is not None:
+        forced['generative_shadow'] = observer.diagnostics
+        learner.last_generative_event = observer.diagnostics
+    if motor_port_on:
+        forced.update(native_motor_port=True, native_motor_availability=motor_packet_tape,
+                      native_motor_commands=motor_commands)
+    if consequence is not None:
+        forced['consequence_ratios'] = consequence_ratios
+        if hasattr(consequence, 'native_events'):
+            forced['consequence_native_events'] = consequence.native_events
+            if hasattr(consequence, 'timing_biases'):
+                forced['consequence_timing_bias'] = consequence.timing_biases
+            forced['exclude_self_prediction'] = causal_clock or bool(
+                getattr(learner, 'consequence_native_enabled', False))
+        consequence.finish()
+    # the lived trajectory itself (brain_learning 'local' commits it instead of reliving the window)
+    if getattr(learner, 'brain_learning', 'bptt') == 'local':
+        learner.live_result = {'state': s, 'ai_g': ai_g, 'reads': arrival_reads}
     return targets, forced, speakers

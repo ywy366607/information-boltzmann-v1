@@ -729,6 +729,19 @@ class FlyReservoirLM(nn.Module):
                     names.append(tuple(tier_names))
                 self._incoming_layout_names[kind] = tuple(names)
 
+    def _apply(self, fn, recurse=True):
+        # Incoming fallback permutations are immutable execution metadata. The
+        # compact event kernel uses the original graph and does not read them.
+        # Retain the file-backed host copies rather than eagerly allocating two
+        # extra edge-sized arrays on every device transfer.
+        names = [key for tiers in getattr(self, '_incoming_layout_names', {}).values()
+                 for tier in tiers for key in tier]
+        host = {key: self._buffers.pop(key) for key in names if key in self._buffers}
+        try:
+            return super()._apply(fn, recurse=recurse)
+        finally:
+            self._buffers.update(host)
+
     def transmit(self, ring, kind):
         suffix = '' if kind == 'cuba' else '_' + kind
         args = (getattr(self, 'edge_pre' + suffix), getattr(self, 'edge_post' + suffix),
@@ -813,9 +826,42 @@ class FlyReservoirLM(nn.Module):
         floors[0, index] = torch.as_tensor(floor, dtype=torch.float32, device=index.device).expand(index.numel())
         self.register_buffer('graded_floor', floors, persistent=False)
 
+    def attach_visual_graded(self, index, gain=0.025, floor=None):
+        """Extend graded release without resizing the old APL/CT1 parameter.
+
+        Keeping the existing parameter intact preserves its optimizer moments
+        and any archived native eligibility. Both groups use one release path.
+        """
+        if hasattr(self, 'visual_graded_index'):
+            raise ValueError('Visual graded physiology is already attached')
+        if not math.isfinite(float(gain)) or gain <= 0:
+            raise ValueError('Visual release gain must be finite and positive')
+        device = self.edge_pre_e.device
+        index = torch.as_tensor(index, dtype=torch.long, device=device).reshape(-1)
+        if not index.numel() or bool(((index < 0) | (index >= self.n_neurons)).any()):
+            raise ValueError('Visual graded indices must be nonempty and within graph')
+        if torch.unique(index).numel() != index.numel():
+            raise ValueError('Duplicate visual graded indices')
+        mask = getattr(self, 'graded_mask', torch.zeros(1, self.n_neurons, device=device)).clone()
+        if bool(mask[:, index].any()):
+            raise ValueError('Visual cells overlap existing graded release parameters')
+        mask[0, index] = 1.0
+        floors = getattr(self, 'graded_floor', torch.zeros_like(mask)).clone()
+        floors[0, index] = float(self.E_I if floor is None else floor)
+        self.register_buffer('graded_mask', mask, persistent=False)
+        self.register_buffer('graded_floor', floors, persistent=False)
+        self.register_buffer('visual_graded_index', index, persistent=False)
+        self.log_visual_graded_gain = nn.Parameter(torch.full(
+            (index.numel(),), math.log(float(gain)), device=device))
+
     def graded_release(self, v_pre, thresholds):
-        gain = torch.zeros_like(v_pre).index_put((torch.zeros_like(self.graded_index), self.graded_index),
-                                                 torch.exp(self.log_graded_gain))
+        gain = torch.zeros_like(v_pre)
+        if getattr(self, 'graded_index', None) is not None:
+            gain = gain.index_put((torch.zeros_like(self.graded_index), self.graded_index),
+                                  torch.exp(self.log_graded_gain))
+        if getattr(self, 'visual_graded_index', None) is not None:
+            index = self.visual_graded_index
+            gain = gain.index_put((torch.zeros_like(index), index), torch.exp(self.log_visual_graded_gain))
         floor = getattr(self, 'graded_floor', None)
         return gain * torch.relu((v_pre if floor is None else v_pre - floor) / thresholds)
 
@@ -871,7 +917,8 @@ class FlyReservoirLM(nn.Module):
 
     def prepare_coba_tick(self, h, spike_ring=None, ge=None, gi=None, b=None,
                           x=None, u=None, *, base_rates=None, thresholds=None,
-                          conductance_gains=None, alif_params=None, stp_params=None, extra_delta_ge=None):
+                          conductance_gains=None, alif_params=None, stp_params=None, extra_delta_ge=None,
+                          extra_delta_gi=None, inhibitory_ring=None, excitatory_ring=None):
         """Consume old delayed pulses once; no current input is accepted here.
 
         The returned context retains the original state for a single later commit.
@@ -889,11 +936,17 @@ class FlyReservoirLM(nn.Module):
             stp_params = self.get_stp_params()
         if spike_ring is None:
             spike_ring = tuple(torch.zeros_like(h) for _ in range(4))
-        delta_ge = self.transmit(spike_ring, 'e')
+        if hasattr(self, 'kct_index') and excitatory_ring is None:
+            raise ValueError('KC terminal sites require complete physical state, not point-only transmission')
+        delta_ge = self.transmit(spike_ring if excitatory_ring is None else excitatory_ring, 'e')
         if extra_delta_ge is not None:
             # excitation carried outside the static edge list (e.g. plastic synapses with their own state)
             delta_ge = delta_ge + extra_delta_ge
-        delta_gi = self.transmit(spike_ring, 'i')
+        if hasattr(self, 'apl_cable_index') and inhibitory_ring is None:
+            raise ValueError('APL cable requires its complete physical state, not a point-neuron-only tick')
+        delta_gi = self.transmit(spike_ring if inhibitory_ring is None else inhibitory_ring, 'i')
+        if extra_delta_gi is not None:
+            delta_gi = delta_gi + extra_delta_gi
         if ge is None:
             ge = torch.zeros_like(h)
         if gi is None:
@@ -1043,7 +1096,9 @@ class FlyReservoirLM(nn.Module):
              stp_params: tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor] | None = None,
              return_biophysics: bool = False,
              sensory_drive: torch.Tensor | None = None,
-             extra_delta_ge: torch.Tensor | None = None):
+             extra_delta_ge: torch.Tensor | None = None,
+             extra_delta_gi: torch.Tensor | None = None,
+             inhibitory_ring=None, excitatory_ring=None):
         """One LIF event with continuous physical synaptic conductance (COBA) or current (CUBA).
         h: [B, N]; token: [B]"""
         if sensory_drive is not None:
@@ -1072,7 +1127,8 @@ class FlyReservoirLM(nn.Module):
             context = self.prepare_coba_tick(
                 h, spike_ring, ge, gi, b, x, u, base_rates=base_rates,
                 thresholds=thresholds, conductance_gains=conductance_gains,
-                alif_params=alif_params, stp_params=stp_params, extra_delta_ge=extra_delta_ge)
+                alif_params=alif_params, stp_params=stp_params, extra_delta_ge=extra_delta_ge,
+                extra_delta_gi=extra_delta_gi, inhibitory_ring=inhibitory_ring, excitatory_ring=excitatory_ring)
             return self.finish_coba_tick(context, drive, return_biophysics=return_biophysics)
 
         else:

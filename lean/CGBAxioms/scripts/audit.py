@@ -192,6 +192,11 @@ def main() -> None:
     if args.check_index:
         index_command.append("--check")
     print(run(index_command).stdout, end="")
+    catalog_command = [sys.executable, str(PROJECT.parent.parent / "scripts/build_theorem_catalog.py"),
+                       "--inventory", str(args.output.resolve())]
+    if args.check_index:
+        catalog_command.append("--check")
+    print(run(catalog_command).stdout, end="")
     print(json.dumps({"passed": True, **inventory["summary"], "source_declared_theorems": len(authored),
                       "audit_guard_checks": guards, "output": str(args.output)}, ensure_ascii=False))
 

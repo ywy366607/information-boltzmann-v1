@@ -16,6 +16,34 @@ import torch.nn.functional as F
 from torch.utils.checkpoint import checkpoint
 from .triton_synapse import execute_delayed_synaptic_transmission
 from .gradient_norms import stable_grad_norm, stable_clip_grad_norm_
+from .fly_amine_modulation import AMINE_PARAMETER_NAMES, step_amine_modulation
+from .fly_cx_state import CX_PARAMETER_NAMES, step_cx_state
+from .fly_mb_consolidation import MB_CONSOLIDATION_PARAMETER_NAMES, step_mb_consolidation, dpm_forgetting_factor
+from .fly_mb_terminal import MB_TERMINAL_PARAMETER_NAMES, step_mb_terminal, apply_mb_terminal_release
+from .fly_apl_cable import (APL_CABLE_PARAMETER_NAMES, advance_apl_cable, apply_apl_readout)
+from .fly_apl_local_release import (APL_LOCAL_RELEASE_PARAMETER_NAMES,
+                                    APL_LOCAL_RELEASE_STATE_FIELDS)
+from .fly_kc_contact_memory import (KC_CONTACT_STATE_FIELDS, advance_contact_learning, contact_arrival)
+from .fly_kc_dopamine import (KC_DOPAMINE_STATE_FIELDS, KC_DOPAMINE_PARAMETER_NAMES,
+                              advance_kc_dopamine)
+from .fly_dan_release import (DAN_RELEASE_STATE_FIELDS, DAN_RELEASE_PARAMETER_NAMES,
+                              advance_dan_release, dan_state, dan_arrival)
+from .fly_kc_site_stp import KC_SITE_STP_PARAMETER_NAMES
+from .fly_kc_lateral import KC_LATERAL_PARAMETER_NAMES, KC_LATERAL_STATE_FIELDS
+from .fly_sensory_terminals import (SENSORY_TERMINAL_PARAMETER_NAMES, SENSORY_TERMINAL_STATE_FIELDS,
+                                    advance_sensory_terminals, sensory_delivery, terminal_values as sensory_terminal_values)
+from .fly_kc_terminals import (KC_TERMINAL_PARAMETER_NAMES, KC_TERMINAL_STATE_FIELDS,
+    advance_kc_terminals, kc_arrival)
+from .fly_body_loop import (BODY_LOOP_PARAMETER_NAMES, BODY_ACTUATOR_PARAMETER_NAMES,
+                            step_body_loop, step_body_actuator)
+from .fly_endocrine_exchange import ENDOCRINE_PARAMETER_NAMES, step_endocrine_exchange
+from .fly_native_motor_port import MOTOR_PORT_PARAMETER_NAMES
+from .fly_olfactory_relay import AL_PARAMETER_NAMES, step_olfactory_relay
+from .fly_visual_physiology import VISUAL_PARAMETER_NAMES
+from .fly_native_runtime import (run_threshold_phase, pack_component_updates,
+                                 operator as native_operator, generated_phase, generated_effectors,
+                                 generated_parameter_names, archive_program, component_inputs)
+from .fly_native_runtime import owns_route
 
 STP_PARAMETER_NAMES = ('logit_u0', 'log_tau_fac', 'log_tau_rec')
 
@@ -78,6 +106,75 @@ class FlyPhysicalState:
     comp_p_stats: torch.Tensor = field(default_factory=lambda: torch.empty(0))    # running mean / second moment of the phasic dopamine per edge
     comp_camp: torch.Tensor = field(default_factory=lambda: torch.empty(0))       # cAMP integrator of the dopamine contrast per edge (attach_comp_camp)
     credit_comp_camp: torch.Tensor = field(default_factory=lambda: torch.empty(0))  # its carried sensitivities [3, E]
+    # Optional native octopamine/serotonin chemical state [2, N]: normalized
+    # local exposure and GPCR occupancy.  These are physical state, not labels
+    # or an action prior, and persist across BPTT windows.
+    amine_concentration: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    amine_receptor: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    # Optional central-complex persistent activity trace [1, n_CX].
+    cx_trace: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    # Optional slow MB regulators [1, 1]: DPM consolidation and APL state.
+    dpm_trace: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    apl_trace: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    # Individual DPM/APL -> KC axonal contacts; historical pooled traces above
+    # remain archived, never fabricated into a per-cell chemical history.
+    mb_terminal_gaba: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    mb_dpm_concentration: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    mb_dpm_receptor: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    apl_voltage: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    apl_ge: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    apl_gi: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    apl_packets: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    apl_release_gate: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    apl_release_calcium: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    apl_release_resources: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    kc_terminal_gaba: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    kc_terminal_5ht: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    kc_terminal_receptor: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    kc_terminal_packets: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    kc_terminal_eligibility: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    kc_terminal_eligibility_credit: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    kc_site_resources: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    kc_site_utilization: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    kc_contact_memory: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    kc_contact_trace: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    kc_contact_da_trace: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    kc_contact_p_stats: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    kc_contact_camp: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    kc_contact_credit: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    kc_contact_trace_credit: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    kc_contact_camp_credit: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    kc_dopamine_signal: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    kc_lateral_receptor: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    kc_lateral_signal: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    kc_dopamine_credit: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    dan_local_receptor: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    dan_local_calcium: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    dan_local_resources: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    dan_local_packets: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    dan_credit_receptor: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    dan_credit_calcium: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    dan_credit_resources: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    dan_credit_packets: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    dan_credit_dopamine: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    # Optional ascending/descending body exchange, persistent across windows.
+    body_action_trace: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    body_feedback_trace: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    # Optional antennal-lobe local inhibitory trace and normalized PN exposure.
+    al_local_trace: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    al_pn_drive: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    body_muscle: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    body_reafference: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    endocrine_calcium: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    endocrine_lk: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    endocrine_receptor: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    # Optional sensory axon terminals (fly_sensory_terminals): excitatory/inhibitory terminal conductance on every
+    # supplied node [2, nodes] and delayed packets at every actual release site [4, sites].
+    sensory_terminal_signal: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    sensory_terminal_packets: torch.Tensor = field(default_factory=lambda: torch.empty(0))
+    # Shape/identity come from the attached immutable generated-mechanism
+    # program. Every node/site retains its own offset; legacy fields stay intact.
+    native_state: torch.Tensor = field(default_factory=lambda: torch.empty(0))
 
     def detached(self):
         return FlyPhysicalState(**{
@@ -135,15 +232,289 @@ def dopamine_class_sensitivity(model, like):
     return torch.sparse.mm(onehot, model.dopamine_sensitivity.to(onehot.dtype).unsqueeze(1)).T
 
 
+def checkpoint_native_spatial(function, model, current, *args, **kwargs):
+    """Rematerialize pure spatial operators, preserving the exact local BPTT.
+
+    Flatten the dataclass and nested arguments into actual checkpoint inputs.
+    Capturing a physical-state object in the closure would retain all of its
+    large tensors and defeat an enclosing token checkpoint's saved-tensor hooks.
+    These operators do not advance clocks, RNG or global learning counters.
+    """
+    if not (getattr(model, '_native_spatial_checkpointing', False)
+            and model.training and torch.is_grad_enabled()):
+        return function(model, current, *args, **kwargs)
+    from torch.utils._pytree import tree_flatten, tree_unflatten
+    state_values, state_spec = tree_flatten(current.state_dict())
+    other_values, other_spec = tree_flatten((args, kwargs))
+    n_state = len(state_values)
+
+    def run(*values):
+        state = FlyPhysicalState(**tree_unflatten(list(values[:n_state]), state_spec))
+        positional, keywords = tree_unflatten(list(values[n_state:]), other_spec)
+        return function(model, state, *positional, **keywords)
+
+    return checkpoint(run, *state_values, *other_values, use_reentrant=False)
+
+
+def advance_compartment_learning(model, current, h, spikes_c, ring, dopamine,
+                                 credit_dopamine, dpm_trace, kc_values, local_activity=None,
+                                 local_dopamine=None, local_dopamine_credit=None, local_camp_gate=None):
+    """Shared biochemical law for connection or native-contact coordinates."""
+    credit = getattr(model, 'carried_credit', ())
+    comp_memory = current.comp_memory
+    comp_trace = current.comp_trace
+    comp_da_trace = current.comp_da_trace
+    comp_p_stats = current.comp_p_stats
+    comp_camp = current.comp_camp
+    credit_comp = current.credit_comp
+    credit_comp_trace = current.credit_comp_trace
+    credit_comp_camp = current.credit_comp_camp
+    # Compartment memory (attach_compartment_memory): e <- l e + (1 - l) s at each Kenyon cell; at each plastic
+    # synapse k -> j, with the dopamine delivered to its MBON j (the MBON marks the compartment):
+    # phi <- phi + w (eta p_j - kappa phi), w = occ(D_slow,j) / 0.5 * e_k, p_j = occ(D_fast,j) - occ(D_slow,j).
+    lam_c = torch.sigmoid(model.comp_logit_trace)
+    trace_before, memory_before = comp_trace.detach(), comp_memory.detach()
+    unit_c = getattr(model, 'comp_unit_traces', False)
+    if local_activity is None:
+        if comp_trace.numel() != model.comp_kc.numel():
+            comp_trace = h.new_zeros(1, model.comp_kc.numel())
+        if unit_c:
+            # eligibility as the terminal's own state (attach_comp_unit_traces): a spike lifts it to ~1 whatever the
+            # clock, saturating at 1 -- not a firing-rate estimate whose per-spike step is (1 - lam) ~ 0.02
+            s_kc = spikes_c.index_select(1, model.comp_kc)
+            comp_trace = lam_c * comp_trace + (1.0 - lam_c * comp_trace) * s_kc
+        else:
+            comp_trace = lam_c * comp_trace + (1.0 - lam_c) * spikes_c.index_select(1, model.comp_kc)
+    site_activity = None
+    if kc_values is not None:
+        site_activity = (kc_arrival(model, current, 'comp', new_values=kc_values, instant=True)
+            if local_activity is None else local_activity).clamp(0., 1.)
+        site_trace_before = kc_values[4].detach()
+        kc_values[4] = (lam_c * kc_values[4] + (1.0 - lam_c * kc_values[4]) * site_activity
+            if unit_c else lam_c * kc_values[4] + (1.0 - lam_c) * site_activity)
+    if local_dopamine is not None or dopamine.numel() == 2 * h.numel():
+        d_post = (dopamine.index_select(1, model.comp_post.long())
+                  if local_dopamine is None else local_dopamine)
+        # only dopamine above its own running level teaches (a burst after Kenyon activity): the signed fast - slow
+        # difference integrates to ~0 over a burst and its long undershoot, which the 50-tick trace spans, so a
+        # pairing left almost nothing
+        # comp_adapted: the compartment's receptors adapt to its own slow level (K_j = max(slow_j, K)), the same idea
+        # as dopamine_adapted's relative signal for every other target (there (f - s) / (s + K), here occupancy at
+        # K_j, so the window occ(slow) / 0.5 is 1 once adapted); the MBON compartments get ~15x the affinity in tonic dopamine,
+        # so with the fixed K they sat at occupancy 0.93 and a burst taught nothing (m_main c7)
+        comp_k = (torch.maximum(d_post[1:2], d_post.new_tensor(model.comp_affinity))
+                  if getattr(model, 'comp_adapted', False) else model.comp_affinity)
+        occ_slow_c = dopamine_occupancy(d_post[1:2], comp_k)
+        phasic_raw_c = dopamine_occupancy(d_post[0:1], comp_k) - occ_slow_c
+        phasic_c = F.relu(phasic_raw_c)
+        burst_k = getattr(model, 'comp_burst_k', None)
+        rel_burst = burst_k is not None and getattr(model, 'comp_burst_relative', False)
+        camp_gate = 1. if local_camp_gate is None else local_camp_gate
+        if local_camp_gate is not None and local_camp_gate.shape != comp_memory.shape:
+            raise ValueError('Local mAChR cAMP gate must match native plastic contacts')
+        raw_gate = 1. if rel_burst else camp_gate
+        phasic_raw_c = phasic_raw_c * raw_gate
+        phasic_c = F.relu(phasic_raw_c)
+        if rel_burst:
+            # the burst is judged on the linear contrast (f - s) / (s + K) (Weber, as dopamine_adapted for every
+            # other target), the amount written stays the bounded occupancy: the adapted occupancy is capped at 0.5,
+            # so at birth (kappa_DAN 1.05) the spontaneous threshold (0.47) sat at the 4x pulse's peak (0.466),
+            # while in contrast terms they are 4.0 and 25 (attach_comp_relative_burst).  A ramp over one sd above
+            # mean + k sd keeps k learnable and the carried credit exact
+            k0_c = model.comp_affinity
+            rel_c = (d_post[0:1] - d_post[1:2]) / (d_post[1:2] + k0_c) * camp_gate
+            camp_logit = getattr(model, 'comp_logit_camp', None)
+            camp_before = None
+            if camp_logit is not None:
+                # the Kenyon terminal's cAMP integrates the dopamine contrast (rutabaga adenylyl cyclase): a burst
+                # sustained over the integrator's time teaches, a single tick's fluctuation does not (a per-tick
+                # threshold passed 2.7% of ticks = 34% of words at 16 ticks; attach_comp_camp)
+                lam_i = torch.sigmoid(camp_logit)
+                if comp_camp.numel() != rel_c.numel():
+                    comp_camp = rel_c.detach().clone()
+                camp_before = comp_camp.detach()
+                comp_camp = lam_i * comp_camp + (1.0 - lam_i) * rel_c
+                sig_c = comp_camp
+            else:
+                sig_c = rel_c
+            with torch.no_grad():
+                if comp_p_stats.numel() != 2 * sig_c.numel():
+                    comp_p_stats = torch.cat([sig_c.detach(), sig_c.detach() ** 2 + 1e-6], 0)
+                # the background is estimated from the ticks below the threshold only (third review): a pairing's
+                # own bursts must not raise the threshold that judges them (10 pulses in ~1300 ticks did)
+                sd_0 = (comp_p_stats[1:2] - comp_p_stats[0:1] ** 2).clamp_min(1e-8).sqrt()
+                below = (sig_c.detach() <= comp_p_stats[0:1] + F.softplus(burst_k.detach()) * sd_0).to(sig_c.dtype)
+                a_s = below / 1000.0
+                comp_p_stats = torch.cat([(1 - a_s) * comp_p_stats[0:1] + a_s * sig_c.detach(),
+                                          (1 - a_s) * comp_p_stats[1:2] + a_s * sig_c.detach() ** 2], 0)
+                sd_p = (comp_p_stats[1:2] - comp_p_stats[0:1] ** 2).clamp_min(1e-8).sqrt()
+            ramp_c = ((sig_c - comp_p_stats[0:1] - F.softplus(burst_k) * sd_p) / sd_p).clamp(0.0, 1.0)
+            phasic_c = phasic_c * ramp_c
+        elif burst_k is not None:
+            # only a burst above the compartment's own fluctuation teaches (cAMP threshold; 2026-10-15: a newborn's
+            # pacemaking DANs give phasic p > 0 80% of the time, p99 0.61, and wrote noise into every edge).  Each edge
+            # keeps a slow mean / second moment of its phasic dopamine (detached, ~1000 ticks); the threshold is
+            # mean + k sd, k learnable (start 2)
+            with torch.no_grad():
+                if comp_p_stats.numel() != 2 * phasic_raw_c.numel():
+                    comp_p_stats = torch.cat([phasic_raw_c.detach(), phasic_raw_c.detach() ** 2 + 1e-6], 0)
+                a_s = 1.0 / 1000.0
+                comp_p_stats = torch.cat([(1 - a_s) * comp_p_stats[0:1] + a_s * phasic_raw_c.detach(),
+                                          (1 - a_s) * comp_p_stats[1:2] + a_s * phasic_raw_c.detach() ** 2], 0)
+                sd_p = (comp_p_stats[1:2] - comp_p_stats[0:1] ** 2).clamp_min(1e-8).sqrt()
+            phasic_c = F.relu(phasic_raw_c - comp_p_stats[0:1] - F.softplus(burst_k) * sd_p)
+        trace_edge = (kc_values[4] if kc_values is not None else comp_trace.index_select(1, model.comp_edge_kc))
+        activity_edge = (site_activity if site_activity is not None else spikes_c.index_select(1, model.comp_kc).index_select(1, model.comp_edge_kc))
+        window_c = occ_slow_c.detach() / 0.5 * trace_edge
+        kappa_c = torch.sigmoid(model.comp_logit_forget)
+        # depression scaled by the efficacy left, (1 + phi): phi approaches -1 and never passes it, so forgetting
+        # (kappa, slow) no longer has to equal the learning rate to keep phi bounded
+        if 'comp' in credit:
+            with torch.no_grad():
+                from .fly_carried_credit import comp_step, occupancy_slope, COMP_PARAMS
+                E_c = comp_memory.shape[1]
+                if credit_comp.numel() == 0 or credit_comp.numel() % E_c:
+                    credit_comp = h.new_zeros(len(COMP_PARAMS), E_c)
+                    credit_comp_trace = h.new_zeros(1, comp_trace.shape[1])
+                else:
+                    # saved with fewer rows (before the tonic / potentiation / threshold rows): comp_step pads them
+                    credit_comp = credit_comp.reshape(-1, E_c)
+                if credit_comp_trace.numel() != comp_trace.shape[1]:
+                    credit_comp_trace = h.new_zeros(1, comp_trace.shape[1])
+                post = model.comp_post.long()
+                Sd = (credit_dopamine.index_select(1, post) if local_dopamine_credit is None
+                      else local_dopamine_credit)  # dfast/dlf, dslow/dlf, dslow/dls
+                dpost = d_post.detach()
+                on = (phasic_c.detach() > 0).float()
+                k_c = comp_k.detach() if torch.is_tensor(comp_k) else comp_k
+                a_f = occupancy_slope(dpost[0:1], k_c)
+                if torch.is_tensor(comp_k):
+                    # d(phasic)/d(slow) = d occ_slow/ds - d occ_fast/ds: where adapted (slow >= K) occ_slow is 0.5
+                    # and the fast occupancy falls with the slow level through K_j
+                    adapted = (dpost[1:2] >= model.comp_affinity).to(dpost.dtype)
+                    a_s = ((1.0 - adapted) * occupancy_slope(dpost[1:2], model.comp_affinity)
+                           + adapted * dpost[0:1] / (dpost[0:1] + k_c).square())
+                else:
+                    a_s = occupancy_slope(dpost[1:2], model.comp_affinity)
+                a_f = a_f * (raw_gate.detach() if torch.is_tensor(raw_gate) else raw_gate)
+                a_s = a_s * (raw_gate.detach() if torch.is_tensor(raw_gate) else raw_gate)
+                dphasic = on * torch.cat([a_f * Sd[0:1] - a_s * Sd[1:2], -a_s * Sd[2:3]], 0)
+                dk_c = torch.zeros_like(dphasic[0:1])
+                if burst_k is not None and not rel_burst:
+                    # p = relu(raw - mean - softplus(k) sd): d p / d k = -sigmoid(k) sd where p > 0
+                    dk_c = -on * torch.sigmoid(burst_k.detach()) * sd_p
+                if rel_burst:
+                    # phasic = relu(raw) * ramp(rel): ramp d(raw) + relu(raw) d(ramp), d ramp = d rel / sd inside it
+                    r_ = ramp_c.detach()
+                    raw_on = (phasic_raw_c.detach() > 0).float()
+                    den = dpost[1:2] + k0_c
+                    b_s = (dpost[0:1] + k0_c) / den.square()
+                    drel = torch.cat([Sd[0:1] / den - b_s * Sd[1:2], -b_s * Sd[2:3]], 0)
+                    drel = drel * (camp_gate.detach() if torch.is_tensor(camp_gate) else camp_gate)
+                    in_ramp = ((r_ > 0) & (r_ < 1)).float() / sd_p
+                    dcamp_c = None
+                    if camp_before is not None:
+                        # the integrator's sensitivities: I' = l I + (1 - l) rel; rows lf, ls, logit of l
+                        l_i = torch.sigmoid(camp_logit.detach())
+                        if credit_comp_camp.numel() != 3 * rel_c.numel():
+                            credit_comp_camp = rel_c.new_zeros(3, rel_c.shape[1]).detach()
+                        credit_comp_camp = torch.cat([l_i * credit_comp_camp[0:2] + (1.0 - l_i) * drel,
+                                                      l_i * credit_comp_camp[2:3]
+                                                      + l_i * (1.0 - l_i) * (camp_before - rel_c.detach())], 0)
+                        dsig = credit_comp_camp[0:2]
+                        dcamp_c = F.relu(phasic_raw_c.detach()) * in_ramp * credit_comp_camp[2:3]
+                    else:
+                        dsig = drel
+                    dphasic = (raw_on * r_ * torch.cat([a_f * Sd[0:1] - a_s * Sd[1:2], -a_s * Sd[2:3]], 0)
+                               + F.relu(phasic_raw_c.detach()) * in_ramp * dsig)
+                    # d ramp / d k = -sigmoid(k) inside the ramp (its width is one sd)
+                    dk_c = -F.relu(phasic_raw_c.detach()) * in_ramp * sd_p * torch.sigmoid(burst_k.detach())
+                else:
+                    dcamp_c = None
+                dphasic = torch.cat([dphasic, dk_c] + ([dcamp_c] if dcamp_c is not None else []), 0)
+                eta_pot_d = getattr(model, 'comp_eta_pot', None)
+                pot_c = None
+                if eta_pot_d is not None:
+                    D_c = (comp_da_trace.detach() if comp_da_trace.numel() == phasic_c.numel()
+                           else torch.zeros_like(phasic_c.detach()))
+                    pot_c = {'P': F.softplus(eta_pot_d.detach()), 'dP': torch.sigmoid(eta_pot_d.detach()), 'D': D_c,
+                             's_edge': activity_edge.detach()}
+                lam_d = lam_c.detach()
+                credit_comp, trace_credit_new = comp_step(
+                    credit_comp, kc_values[5] if kc_values is not None else credit_comp_trace,
+                    memory_before, site_trace_before if kc_values is not None else trace_before,
+                    site_activity.detach() if kc_values is not None else spikes_c.detach().index_select(1, model.comp_kc), lam_d, model.comp_eta.detach(),
+                    (kappa_c.detach() if getattr(model, 'comp_use_forget', True) else torch.zeros_like(kappa_c.detach())),
+                    phasic_c.detach(),
+                    occ_slow_c.detach() / 0.5, torch.arange(model.comp_pre.numel(), device=h.device) if kc_values is not None else model.comp_edge_kc,
+                    dphasic,
+                    tonic=(occ_slow_c.detach() / 0.5 * torch.sigmoid(model.comp_logit_tonic.detach())
+                           if getattr(model, 'comp_logit_tonic', None) is not None else None),
+                    tonic_rate=(float(torch.sigmoid(model.comp_logit_tonic.detach()))
+                                if getattr(model, 'comp_logit_tonic', None) is not None else None),
+                    unit=unit_c, pot=pot_c)
+                if kc_values is not None:
+                    kc_values[5] = trace_credit_new
+                else:
+                    credit_comp_trace = trace_credit_new
+        probe_c = getattr(model, '_comp_rate_probe', None)
+        if probe_c is not None:
+            # calibrate_comp_rate: each edge's write drive per tick, depression (gate e p) and potentiation (gate D s)
+            with torch.no_grad():
+                probe_c['dep'] += (window_c * phasic_c).detach()[0]
+                probe_c['gate'] += (occ_slow_c.detach() / 0.5)[0]
+                if getattr(model, 'comp_eta_pot', None) is not None and comp_da_trace.numel() == phasic_c.numel():
+                    s_e = activity_edge.detach()
+                    probe_c['pot'] += (occ_slow_c.detach() / 0.5 * comp_da_trace.detach() * s_e)[0]
+                probe_c['ticks'] += 1
+        phi_prev = comp_memory                    # live: BPTT sees the forgetting term too (review 2026-10-15)
+        dpm_factor = dpm_forgetting_factor(model, dpm_trace)
+        use_forget = (kappa_c * dpm_factor if getattr(model, 'comp_use_forget', True) else 0.0)
+        comp_memory = comp_memory + window_c * (model.comp_eta * phasic_c * (1.0 + comp_memory) - use_forget * comp_memory)
+        eta_pot = getattr(model, 'comp_eta_pot', None)
+        if eta_pot is not None:
+            # timing (Handler et al. 2019): Kenyon activity before dopamine depresses (the term above); dopamine
+            # before Kenyon activity potentiates.  A per-edge trace of the phasic dopamine at the compartment, on
+            # the Kenyon trace's clock, is read when the Kenyon cell fires; potentiation bounded by (1 - phi)
+            if comp_da_trace.numel() != phasic_c.numel():
+                comp_da_trace = torch.zeros_like(phasic_c)
+            spk_edge = activity_edge
+            comp_memory = comp_memory + (occ_slow_c.detach() / 0.5) * torch.nn.functional.softplus(eta_pot)                     * comp_da_trace * spk_edge * (1.0 - phi_prev)
+            if unit_c:
+                comp_da_trace = lam_c * comp_da_trace + (1.0 - lam_c * comp_da_trace) * phasic_c.clamp(max=1.0)
+            else:
+                comp_da_trace = lam_c * comp_da_trace + (1.0 - lam_c) * phasic_c
+        tonic_c = getattr(model, 'comp_logit_tonic', None)
+        if tonic_c is not None:
+            # active forgetting (Berry et al. 2012): the dopamine neurons' ongoing activity erodes the memory on
+            # its own clock, whether or not the Kenyon cell fires; without it every edge that ever fired sat at
+            # the same equilibrium (learning and forgetting both gated by the trace) and repetition left no mark
+            comp_memory = comp_memory - (occ_slow_c.detach() / 0.5) * torch.sigmoid(tonic_c) * phi_prev
+
+    if local_activity is not None:
+        comp_trace, credit_comp_trace = kc_values[4], kc_values[5]
+    return {'comp_memory': comp_memory,'comp_trace': comp_trace,'comp_da_trace': comp_da_trace,'comp_p_stats': comp_p_stats,'comp_camp': comp_camp,'credit_comp': credit_comp,'credit_comp_trace': credit_comp_trace,'credit_comp_camp': credit_comp_camp}, kc_values
+
+
+TICK_OBSERVERS = []
+
+
 def step_fly_physical_tick(model, current, token, source, next_baseline, options, *,
                            h_mean_decay=0.99, base_rates=None):
     """Atomic physical step on the connectome with optional sensory drive."""
+    generated = generated_phase(model, current, 'pre_membrane', source=source,
+                                token=token, options=options, base_rates=base_rates)
+    generated_drive = generated_effectors(model, generated, 'pre_membrane')
     credit = getattr(model, 'carried_credit', ())                    # fly_carried_credit (off: ())
     s_class_window = options.get('dopamine_s_class')
+    executed_action = options.get('executed_action', False)
+    if 'executed_action' in options:
+        options = {k: v for k, v in options.items() if k != 'executed_action'}
     if 'dopamine_s_class' in options:                                # a window constant, not a model.step option
         options = {k: v for k, v in options.items() if k != 'dopamine_s_class'}
     credit_comp, credit_comp_trace = current.credit_comp, current.credit_comp_trace
     credit_dopamine, credit_stp = current.credit_dopamine, current.credit_stp
+    dan_receiver_credit = current.dan_credit_dopamine
     kappa = getattr(model, 'intrinsic_kappa', None)
     if kappa is not None:
         # Intrinsic (pacemaker / tonic) current of the annotated spontaneously active cells, in units of their own
@@ -212,15 +583,34 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
                       if token is not None and model.injection_mode == 'topographic' else torch.zeros_like(current.h))
         source = source + external
     comp_on = getattr(model, 'comp_pre', None) is not None
-    extra_ge = None
+    extra_ge = generated_drive.get('extra_ge')
     comp_memory = getattr(current, 'comp_memory', torch.empty(0))
     if comp_on:
         if comp_memory.numel() != model.comp_pre.numel():
             comp_memory = current.h.new_zeros(1, model.comp_pre.numel())
         # the plastic Kenyon -> MBON synapses, outside the static edge list: efficacy (1 + phi) * w, same delays
-        extra_ge = execute_delayed_synaptic_transmission(current.ring, model.comp_pre, model.comp_post,
-                                                         model.comp_weight * (1.0 + comp_memory[0]), model.comp_splits)
+        if hasattr(model, 'kct_index'):
+            per_edge = (contact_arrival(model, current) if getattr(model, 'kc_contact_memory_enabled', False)
+                else kc_arrival(model, current, 'comp', weights=model.comp_weight * (1.0 + comp_memory[0])))
+            learned_ge = torch.zeros_like(current.h).index_add(1, model.comp_post.long(), per_edge)
+            extra_ge = learned_ge if extra_ge is None else extra_ge + learned_ge
+        else:
+            learned_ge = execute_delayed_synaptic_transmission(current.ring, model.comp_pre, model.comp_post,
+                                                              model.comp_weight * (1.0 + comp_memory[0]), model.comp_splits)
+            extra_ge = learned_ge if extra_ge is None else extra_ge + learned_ge
+    if hasattr(model, 'kct_index') and not owns_route(model, 'kc_fast'):
+        site_ge = kc_arrival(model, current, 'fast').index_fill(1, model.apl_cable_index, 0.)
+        extra_ge = site_ge if extra_ge is None else extra_ge + site_ge
+    sensory_sites = getattr(model, 'sensory_terminal_enabled', False)
+    sensory_gi = None
+    if sensory_sites:
+        # sensory outputs leave from their actual release sites (fly_sensory_terminals); their point pulses are
+        # removed from the static edge transmission below, so every pulse is delivered exactly once
+        sensory_ge, sensory_gi = sensory_delivery(model, sensory_terminal_values(model, current)[1])
+        extra_ge = sensory_ge if extra_ge is None else extra_ge + sensory_ge
     dopamine = getattr(current, 'dopamine', torch.empty(0))
+    thresholds = options.get('thresholds')
+    thresholds = thresholds if thresholds is not None else model.get_thresholds()
     if getattr(model, 'dopamine_sensitivity', None) is not None and dopamine.numel():
         # Dopamine modulates excitability where it is delivered: the phasic part (concentration minus its slow mean)
         # scales the threshold, theta * exp(-s_class * phasic); s starts at 0 for every superclass.
@@ -240,6 +630,11 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
         thresholds = options.get('thresholds')
         thresholds = (thresholds if thresholds is not None else model.get_thresholds()).expand_as(current.h)
         options = {**options, 'thresholds': thresholds * torch.exp(-s_class * phasic)}
+    thresholds, native_updates = run_threshold_phase(model, current, thresholds)
+    if 'threshold_multiplier' in generated_drive:
+        thresholds = thresholds * generated_drive['threshold_multiplier']
+    dpm_trace, apl_trace = native_updates['mb_regulators']
+    options = {**options, 'thresholds': thresholds}
     modulator = getattr(current, 'modulator', torch.empty(0))
     if getattr(model, 'precision_u', None) is not None and source is not None:
         # Precision = attention: each sensory pathway's written innovation is scaled by a gain set by the current
@@ -251,14 +646,18 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
     dan_gate = current.dan_gate
     if getattr(model, 'dan_plastic_lr', 0.0) > 0.0 and model.has_dopamine:
         with torch.no_grad():
-            arrival = execute_delayed_synaptic_transmission(
-                tuple(p.detach() for p in current.ring), model.dan_edge_pre,
-                model.dan_edge_post, model.dan_edge_weight, model.dan_delay_splits)
-            arrival = arrival / model.dan_scale
+            if getattr(model,'dan_local_enabled',False) and model.dan_local_source_enabled:
+                arrival = dan_arrival(model,dan_state(model,current))
+            else:
+                arrival = execute_delayed_synaptic_transmission(
+                    tuple(p.detach() for p in current.ring), model.dan_edge_pre,
+                    model.dan_edge_post, model.dan_edge_weight, model.dan_delay_splits) / model.dan_scale
             rho = (base_rates if base_rates is not None else model.get_decay_rates())[1].detach()
             if dan_gate.numel() != current.h.numel():
                 dan_gate = torch.zeros_like(current.h)
             dan_gate = rho * dan_gate + (1.0 - rho) * arrival
+    source, body_muscle, body_reafference = step_body_actuator(model, current, source, executed_action)
+    source, body_action_trace, body_feedback_trace = step_body_loop(model, current, source)
     da_trace = getattr(current, 'da_trace', torch.empty(0))
     da_memory = getattr(current, 'da_memory', torch.empty(0))
     online = getattr(model, 'online_da_eta', None) is not None
@@ -269,18 +668,46 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
         stp = options.get('stp_params')
         stp = stp if stp is not None else model.get_stp_params()
         options = {**options, 'stp_params': (online_da_release(stp[0], da_memory), *stp[1:])}
+    if hasattr(model, 'apl_cable_index') and source is None:
+        if token is None:
+            source = torch.zeros_like(current.h)
+        elif model.injection_mode == 'topographic':
+            source = model.topographic_writer(model.embedding(token), current.h)
+        else:
+            source = torch.zeros_like(current.h).index_copy(1, model.injection_index,
+                model.input_proj(model.embedding(token)))
+    apl_step = native_operator('apl_cable')(model, current, source, base_rates=base_rates,
+        thresholds=options.get('thresholds'), conductance_gains=options.get('conductance_gains'),
+        local_inputs=component_inputs(generated_drive, 'apl_cable'))
+    apl_options = {}
+    if 'extra_gi' in generated_drive:
+        apl_options['extra_delta_gi'] = generated_drive['extra_gi']
+    if hasattr(model, 'kct_index'):
+        apl_options['excitatory_ring'] = tuple(p.index_fill(1, model.kct_index, 0.) for p in current.ring)
+    if apl_step is not None:
+        native_gi = apl_step[0] + generated_drive['extra_gi'] if 'extra_gi' in generated_drive else apl_step[0]
+        apl_options.update(extra_delta_gi=native_gi,
+            inhibitory_ring=tuple(p.index_fill(1, model.apl_cable_index, 0.) for p in current.ring))
+    if sensory_sites:
+        cells = model.st_cell
+        apl_options['excitatory_ring'] = tuple(p.index_fill(1, cells, 0.)
+                                               for p in apl_options.get('excitatory_ring', current.ring))
+        apl_options['inhibitory_ring'] = tuple(p.index_fill(1, cells, 0.)
+                                               for p in apl_options.get('inhibitory_ring', current.ring))
+        old_gi = apl_options.get('extra_delta_gi')
+        apl_options['extra_delta_gi'] = sensory_gi if old_gi is None else old_gi + sensory_gi
     if regime_on:
         # the same COBA tick as model.step, in its two halves, so the integration coefficients are at hand for the
         # free membrane
         context = model.prepare_coba_tick(current.h, current.ring, current.ge, current.gi, current.b, current.x,
-                                          current.u, **options, extra_delta_ge=extra_ge)
+                                          current.u, **options, extra_delta_ge=extra_ge, **apl_options)
         ret = model.finish_coba_tick(context, source)
     else:
         ret = model.step(
             current.h, token, spike_ring=current.ring, ge=current.ge,
             gi=current.gi, b=current.b, x=current.x, u=current.u,
             i_syn=current.ge if model.synapse_model == 'cuba' else None,
-            sensory_drive=source, **options, **({'extra_delta_ge': extra_ge} if extra_ge is not None else {}))
+            sensory_drive=source, **options, **apl_options, **({'extra_delta_ge': extra_ge} if extra_ge is not None else {}))
     h = ret[0]
     if model.synapse_model == 'coba':
         ring, ge, gi = ret[2:5]
@@ -310,7 +737,33 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
                 spk = ret[1].detach() if ret[1].shape == h.shape else (ret[2][0] > 0).to(h.dtype)
                 credit_stp = stp_step(credit_stp, current.u.detach(), current.x.detach(), spk, u0, rho_f, rho_r,
                                       *stp_parameter_slopes(model))
+    h, ge, gi, ring = native_operator('apl_cable', 'readout')(model, h, ge, gi, ring, apl_step)
+    apl_values = (apl_step[1:5] if apl_step is not None else
+                  (current.apl_voltage, current.apl_ge, current.apl_gi, current.apl_packets))
+    apl_release_values = (apl_step[5:] if apl_step is not None and len(apl_step) > 5 else
+                         [getattr(current, name) for name in APL_LOCAL_RELEASE_STATE_FIELDS])
     h_mean = current.h_mean
+    kc_values = (checkpoint_native_spatial(native_operator('kc_terminal'), model, current, ring[0],
+        base_rates=base_rates, conductance_gains=options.get('conductance_gains'),spikes=ret[1],
+        local_inputs=component_inputs(generated_drive, 'kc_terminal'))
+        if getattr(model, 'kc_terminal_enabled', False) else None)
+    if kc_values is not None:
+        release_fraction = None
+        mb_terminal_gaba, mb_dpm_concentration, mb_dpm_receptor = (
+            current.mb_terminal_gaba, current.mb_dpm_concentration, current.mb_dpm_receptor)
+    else:
+        release_fraction, mb_terminal_gaba, mb_dpm_concentration, mb_dpm_receptor = native_operator('mb_terminal')(
+            model, current, base_rates=base_rates, conductance_gains=options.get('conductance_gains'))
+    if release_fraction is not None and 'stp' in credit:
+        raise ValueError('Analytical carried STP needs the MB terminal gate derivative; '
+                         'use ordinary within-window STP credit for this mechanism')
+    ring, x = native_operator('mb_terminal', 'release')(model, ring, x, release_fraction)
+    sensory_values = (checkpoint_native_spatial(advance_sensory_terminals, model, current, ring[0],
+        base_rates=base_rates, conductance_gains=options.get('conductance_gains'))
+        if sensory_sites else None)
+    generated = generated_phase(model, current, 'post_release', generated,
+                                ring=ring, spikes=ret[1], h=h, kc_values=kc_values)
+    generated_post = generated_effectors(model, generated, 'post_release')
     if h_mean.numel() != h.numel():
         h_mean = torch.zeros_like(h)
     h_mean = h_mean_decay * h_mean + (1.0 - h_mean_decay) * h
@@ -338,20 +791,44 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
         if modulator.numel() != model.modulatory_index.numel():
             modulator = h.new_zeros(1, model.modulatory_index.numel())
         modulator = rho * modulator + (1.0 - rho) * (ring[0][:, model.modulatory_index] > 0).float()
+    dan_values = None
     if getattr(model, 'dopamine_sensitivity', None) is not None:
-        arrival = execute_delayed_synaptic_transmission(ring, model.dan_edge_pre, model.dan_edge_post,
-                                                        model.dan_edge_weight, model.dan_delay_splits) / model.dan_scale
-        if getattr(model, 'kcd_pre', None) is not None:
-            spikes_k = ring[0]
-            if getattr(model, 'kch_tau', None) is not None:
-                # habituation: the release a spike makes is scaled by the cell's availability (detached state)
-                if kc_avail.numel() != h.numel():
-                    kc_avail = torch.ones_like(h).detach()
-                spikes_k = spikes_k * kc_avail
-                fired_k = (ring[0].detach() > 0).float()
-                kc_avail = (kc_avail + (1.0 - kc_avail) / model.kch_tau
-                            - model.kch_use * kc_avail * fired_k).clamp(0.0, 1.0).detach()
-            arrival = arrival + kenyon_terminal_release(model, spikes_k)
+        kc_dan_local_release = None
+        if getattr(model,'dan_local_enabled',False):
+            dan_values = checkpoint_native_spatial(native_operator('dan_release'),model,current,ring,kc_values,
+                local_inputs=component_inputs(generated_post, 'dan_release'))
+            if getattr(model, 'dan_carried_credit_enabled', False):
+                from .fly_dan_credit import advance_credit, DAN_CREDIT_FIELDS
+                dan_values += native_operator('dan_credit')(model, current, ring, kc_values, dan_values,
+                    local_inputs=component_inputs(generated_post, 'dan_credit'))
+        if dan_values is not None and model.dan_local_source_enabled:
+            arrival = dan_arrival(model,dan_values)
+        else:
+            arrival = execute_delayed_synaptic_transmission(ring, model.dan_edge_pre, model.dan_edge_post,
+                                                            model.dan_edge_weight, model.dan_delay_splits) / model.dan_scale
+            if getattr(model, 'kcd_pre', None) is not None:
+                spikes_k = ring[0]
+                if getattr(model, 'kch_tau', None) is not None:
+                    # habituation: the release a spike makes is scaled by the cell's availability (detached state)
+                    if kc_avail.numel() != h.numel():
+                        kc_avail = torch.ones_like(h).detach()
+                    spikes_k = spikes_k * kc_avail
+                    fired_k = (ring[0].detach() > 0).float()
+                    kc_avail = (kc_avail + (1.0 - kc_avail) / model.kch_tau
+                                - model.kch_use * kc_avail * fired_k).clamp(0.0, 1.0).detach()
+                if kc_values is not None:
+                    site_drive = kc_arrival(model, current, 'kcd', new_values=kc_values,
+                        weights=model.kcd_weight, instant=True)
+                    if getattr(model, 'kch_tau', None) is not None:
+                        raise ValueError('Per-site KC habituation requires local availability; refuse pooled substitution')
+                    drive = torch.zeros_like(spikes_k).index_add(1, model.kcd_post, site_drive)
+                    release = drive * torch.exp(model.log_kc_release)[model.superclass_id].unsqueeze(0)
+                    kc_dan_local_release = release
+                    terminal = torch.zeros_like(spikes_k).index_add(1, model.dan_edge_post.long(),
+                        release.index_select(1, model.dan_edge_pre.long()) * model.dan_edge_weight) / model.dan_scale
+                    arrival = arrival + terminal
+                else:
+                    arrival = arrival + kenyon_terminal_release(model, spikes_k)
         fast, slow = torch.sigmoid(model.dopamine_logit_fast), torch.sigmoid(model.dopamine_logit_slow)
         if dopamine.numel() != 2 * h.numel():
             dopamine = torch.cat([arrival, arrival], 0).detach()
@@ -364,6 +841,13 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
                                                 arrival.detach(), fast.detach(), slow.detach())
         conc = fast * dopamine[0:1] + (1.0 - fast) * arrival
         dopamine = torch.cat([conc, slow * dopamine[1:2] + (1.0 - slow) * conc], 0)
+        if getattr(model, 'dan_receiver_credit_enabled', False) and getattr(model, 'dan_carried_credit_enabled', False):
+            from .fly_dan_receiver_credit import advance_receiver_credit
+            dan_receiver_credit = native_operator('dan_receiver_credit')(model, current, dan_values)
+    spatial_dopamine_values = None
+    if getattr(model, 'kc_dopamine_enabled', False):
+        spatial_dopamine_values = checkpoint_native_spatial(native_operator('kc_dopamine'),
+            model, current, ring, kc_dan_local_release, dan_values=dan_values)
     if online and dopamine.numel() == 2 * h.numel():
         # Three-factor online rule at the dopamine-receiving terminals (fly mushroom body: presynaptic activity and
         # dopamine, no postsynaptic factor):  e <- l e + (1 - l) s;  p = occ(D_fast) - occ(D_slow), occ(c) = c / (c + K);
@@ -402,207 +886,34 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
             log_gain = (regime[3:4] + model.regime_eta_s * torch.log(model.regime_kappa * theta_static / sd)).clamp(
                 -REGIME_LOG_GAIN_MAX, REGIME_LOG_GAIN_MAX)
             regime = torch.cat([u_free, mean, second, log_gain], 0).detach()
+    generated = generated_phase(model, current, 'learning', generated,
+                                ring=ring, h=h, dopamine=dopamine, kc_values=kc_values,
+                                dan_values=dan_values)
+    generated_learning = generated_effectors(model, generated, 'learning')
     comp_trace = getattr(current, 'comp_trace', torch.empty(0))
     comp_da_trace = getattr(current, 'comp_da_trace', torch.empty(0))
     comp_p_stats = getattr(current, 'comp_p_stats', torch.empty(0))
     comp_camp = getattr(current, 'comp_camp', torch.empty(0))
     credit_comp_camp = getattr(current, 'credit_comp_camp', torch.empty(0))
+    contact_values = None
     if comp_on:
-        # Compartment memory (attach_compartment_memory): e <- l e + (1 - l) s at each Kenyon cell; at each plastic
-        # synapse k -> j, with the dopamine delivered to its MBON j (the MBON marks the compartment):
-        # phi <- phi + w (eta p_j - kappa phi), w = occ(D_slow,j) / 0.5 * e_k, p_j = occ(D_fast,j) - occ(D_slow,j).
         spikes_c = ret[1] if ret[1].shape == h.shape else (ring[0] > 0).to(h.dtype)
-        if comp_trace.numel() != model.comp_kc.numel():
-            comp_trace = h.new_zeros(1, model.comp_kc.numel())
-        lam_c = torch.sigmoid(model.comp_logit_trace)
-        trace_before, memory_before = comp_trace.detach(), comp_memory.detach()
-        unit_c = getattr(model, 'comp_unit_traces', False)
-        if unit_c:
-            # eligibility as the terminal's own state (attach_comp_unit_traces): a spike lifts it to ~1 whatever the
-            # clock, saturating at 1 -- not a firing-rate estimate whose per-spike step is (1 - lam) ~ 0.02
-            s_kc = spikes_c.index_select(1, model.comp_kc)
-            comp_trace = lam_c * comp_trace + (1.0 - lam_c * comp_trace) * s_kc
+        if getattr(model, 'kc_contact_memory_enabled', False):
+            contact_values = native_operator('kc_contact')(model, current, h, spikes_c, ring,
+                dopamine, credit_dopamine, dpm_trace, kc_values, advance_compartment_learning,
+                spatial_dopamine_values=spatial_dopamine_values,
+                local_inputs=component_inputs(generated_learning, 'kc_contact'))
         else:
-            comp_trace = lam_c * comp_trace + (1.0 - lam_c) * spikes_c.index_select(1, model.comp_kc)
-        if dopamine.numel() == 2 * h.numel():
-            d_post = dopamine.index_select(1, model.comp_post.long())
-            # only dopamine above its own running level teaches (a burst after Kenyon activity): the signed fast - slow
-            # difference integrates to ~0 over a burst and its long undershoot, which the 50-tick trace spans, so a
-            # pairing left almost nothing
-            # comp_adapted: the compartment's receptors adapt to its own slow level (K_j = max(slow_j, K)), the same idea
-            # as dopamine_adapted's relative signal for every other target (there (f - s) / (s + K), here occupancy at
-            # K_j, so the window occ(slow) / 0.5 is 1 once adapted); the MBON compartments get ~15x the affinity in tonic dopamine,
-            # so with the fixed K they sat at occupancy 0.93 and a burst taught nothing (m_main c7)
-            comp_k = (torch.maximum(d_post[1:2], d_post.new_tensor(model.comp_affinity))
-                      if getattr(model, 'comp_adapted', False) else model.comp_affinity)
-            occ_slow_c = dopamine_occupancy(d_post[1:2], comp_k)
-            phasic_raw_c = dopamine_occupancy(d_post[0:1], comp_k) - occ_slow_c
-            phasic_c = F.relu(phasic_raw_c)
-            burst_k = getattr(model, 'comp_burst_k', None)
-            rel_burst = burst_k is not None and getattr(model, 'comp_burst_relative', False)
-            if rel_burst:
-                # the burst is judged on the linear contrast (f - s) / (s + K) (Weber, as dopamine_adapted for every
-                # other target), the amount written stays the bounded occupancy: the adapted occupancy is capped at 0.5,
-                # so at birth (kappa_DAN 1.05) the spontaneous threshold (0.47) sat at the 4x pulse's peak (0.466),
-                # while in contrast terms they are 4.0 and 25 (attach_comp_relative_burst).  A ramp over one sd above
-                # mean + k sd keeps k learnable and the carried credit exact
-                k0_c = model.comp_affinity
-                rel_c = (d_post[0:1] - d_post[1:2]) / (d_post[1:2] + k0_c)
-                camp_logit = getattr(model, 'comp_logit_camp', None)
-                camp_before = None
-                if camp_logit is not None:
-                    # the Kenyon terminal's cAMP integrates the dopamine contrast (rutabaga adenylyl cyclase): a burst
-                    # sustained over the integrator's time teaches, a single tick's fluctuation does not (a per-tick
-                    # threshold passed 2.7% of ticks = 34% of words at 16 ticks; attach_comp_camp)
-                    lam_i = torch.sigmoid(camp_logit)
-                    if comp_camp.numel() != rel_c.numel():
-                        comp_camp = rel_c.detach().clone()
-                    camp_before = comp_camp.detach()
-                    comp_camp = lam_i * comp_camp + (1.0 - lam_i) * rel_c
-                    sig_c = comp_camp
-                else:
-                    sig_c = rel_c
-                with torch.no_grad():
-                    if comp_p_stats.numel() != 2 * sig_c.numel():
-                        comp_p_stats = torch.cat([sig_c.detach(), sig_c.detach() ** 2 + 1e-6], 0)
-                    # the background is estimated from the ticks below the threshold only (third review): a pairing's
-                    # own bursts must not raise the threshold that judges them (10 pulses in ~1300 ticks did)
-                    sd_0 = (comp_p_stats[1:2] - comp_p_stats[0:1] ** 2).clamp_min(1e-8).sqrt()
-                    below = (sig_c.detach() <= comp_p_stats[0:1] + F.softplus(burst_k.detach()) * sd_0).to(sig_c.dtype)
-                    a_s = below / 1000.0
-                    comp_p_stats = torch.cat([(1 - a_s) * comp_p_stats[0:1] + a_s * sig_c.detach(),
-                                              (1 - a_s) * comp_p_stats[1:2] + a_s * sig_c.detach() ** 2], 0)
-                    sd_p = (comp_p_stats[1:2] - comp_p_stats[0:1] ** 2).clamp_min(1e-8).sqrt()
-                ramp_c = ((sig_c - comp_p_stats[0:1] - F.softplus(burst_k) * sd_p) / sd_p).clamp(0.0, 1.0)
-                phasic_c = phasic_c * ramp_c
-            elif burst_k is not None:
-                # only a burst above the compartment's own fluctuation teaches (cAMP threshold; 2026-10-15: a newborn's
-                # pacemaking DANs give phasic p > 0 80% of the time, p99 0.61, and wrote noise into every edge).  Each edge
-                # keeps a slow mean / second moment of its phasic dopamine (detached, ~1000 ticks); the threshold is
-                # mean + k sd, k learnable (start 2)
-                with torch.no_grad():
-                    if comp_p_stats.numel() != 2 * phasic_raw_c.numel():
-                        comp_p_stats = torch.cat([phasic_raw_c.detach(), phasic_raw_c.detach() ** 2 + 1e-6], 0)
-                    a_s = 1.0 / 1000.0
-                    comp_p_stats = torch.cat([(1 - a_s) * comp_p_stats[0:1] + a_s * phasic_raw_c.detach(),
-                                              (1 - a_s) * comp_p_stats[1:2] + a_s * phasic_raw_c.detach() ** 2], 0)
-                    sd_p = (comp_p_stats[1:2] - comp_p_stats[0:1] ** 2).clamp_min(1e-8).sqrt()
-                phasic_c = F.relu(phasic_raw_c - comp_p_stats[0:1] - F.softplus(burst_k) * sd_p)
-            window_c = occ_slow_c.detach() / 0.5 * comp_trace.index_select(1, model.comp_edge_kc)
-            kappa_c = torch.sigmoid(model.comp_logit_forget)
-            # depression scaled by the efficacy left, (1 + phi): phi approaches -1 and never passes it, so forgetting
-            # (kappa, slow) no longer has to equal the learning rate to keep phi bounded
-            if 'comp' in credit:
-                with torch.no_grad():
-                    from .fly_carried_credit import comp_step, occupancy_slope, COMP_PARAMS
-                    E_c = comp_memory.shape[1]
-                    if credit_comp.numel() == 0 or credit_comp.numel() % E_c:
-                        credit_comp = h.new_zeros(len(COMP_PARAMS), E_c)
-                        credit_comp_trace = h.new_zeros(1, comp_trace.shape[1])
-                    else:
-                        # saved with fewer rows (before the tonic / potentiation / threshold rows): comp_step pads them
-                        credit_comp = credit_comp.reshape(-1, E_c)
-                    if credit_comp_trace.numel() != comp_trace.shape[1]:
-                        credit_comp_trace = h.new_zeros(1, comp_trace.shape[1])
-                    post = model.comp_post.long()
-                    Sd = credit_dopamine.index_select(1, post)                # [3, E]: dfast/dlf, dslow/dlf, dslow/dls
-                    dpost = d_post.detach()
-                    on = (phasic_c.detach() > 0).float()
-                    k_c = comp_k.detach() if torch.is_tensor(comp_k) else comp_k
-                    a_f = occupancy_slope(dpost[0:1], k_c)
-                    if torch.is_tensor(comp_k):
-                        # d(phasic)/d(slow) = d occ_slow/ds - d occ_fast/ds: where adapted (slow >= K) occ_slow is 0.5
-                        # and the fast occupancy falls with the slow level through K_j
-                        adapted = (dpost[1:2] >= model.comp_affinity).to(dpost.dtype)
-                        a_s = ((1.0 - adapted) * occupancy_slope(dpost[1:2], model.comp_affinity)
-                               + adapted * dpost[0:1] / (dpost[0:1] + k_c).square())
-                    else:
-                        a_s = occupancy_slope(dpost[1:2], model.comp_affinity)
-                    dphasic = on * torch.cat([a_f * Sd[0:1] - a_s * Sd[1:2], -a_s * Sd[2:3]], 0)
-                    dk_c = torch.zeros_like(dphasic[0:1])
-                    if burst_k is not None and not rel_burst:
-                        # p = relu(raw - mean - softplus(k) sd): d p / d k = -sigmoid(k) sd where p > 0
-                        dk_c = -on * torch.sigmoid(burst_k.detach()) * sd_p
-                    if rel_burst:
-                        # phasic = relu(raw) * ramp(rel): ramp d(raw) + relu(raw) d(ramp), d ramp = d rel / sd inside it
-                        r_ = ramp_c.detach()
-                        raw_on = (phasic_raw_c.detach() > 0).float()
-                        den = dpost[1:2] + k0_c
-                        b_s = (dpost[0:1] + k0_c) / den.square()
-                        drel = torch.cat([Sd[0:1] / den - b_s * Sd[1:2], -b_s * Sd[2:3]], 0)
-                        in_ramp = ((r_ > 0) & (r_ < 1)).float() / sd_p
-                        dcamp_c = None
-                        if camp_before is not None:
-                            # the integrator's sensitivities: I' = l I + (1 - l) rel; rows lf, ls, logit of l
-                            l_i = torch.sigmoid(camp_logit.detach())
-                            if credit_comp_camp.numel() != 3 * rel_c.numel():
-                                credit_comp_camp = rel_c.new_zeros(3, rel_c.shape[1]).detach()
-                            credit_comp_camp = torch.cat([l_i * credit_comp_camp[0:2] + (1.0 - l_i) * drel,
-                                                          l_i * credit_comp_camp[2:3]
-                                                          + l_i * (1.0 - l_i) * (camp_before - rel_c.detach())], 0)
-                            dsig = credit_comp_camp[0:2]
-                            dcamp_c = F.relu(phasic_raw_c.detach()) * in_ramp * credit_comp_camp[2:3]
-                        else:
-                            dsig = drel
-                        dphasic = (raw_on * r_ * torch.cat([a_f * Sd[0:1] - a_s * Sd[1:2], -a_s * Sd[2:3]], 0)
-                                   + F.relu(phasic_raw_c.detach()) * in_ramp * dsig)
-                        # d ramp / d k = -sigmoid(k) inside the ramp (its width is one sd)
-                        dk_c = -F.relu(phasic_raw_c.detach()) * in_ramp * sd_p * torch.sigmoid(burst_k.detach())
-                    else:
-                        dcamp_c = None
-                    dphasic = torch.cat([dphasic, dk_c] + ([dcamp_c] if dcamp_c is not None else []), 0)
-                    eta_pot_d = getattr(model, 'comp_eta_pot', None)
-                    pot_c = None
-                    if eta_pot_d is not None:
-                        D_c = (comp_da_trace.detach() if comp_da_trace.numel() == phasic_c.numel()
-                               else torch.zeros_like(phasic_c.detach()))
-                        pot_c = {'P': F.softplus(eta_pot_d.detach()), 'dP': torch.sigmoid(eta_pot_d.detach()), 'D': D_c,
-                                 's_edge': spikes_c.detach().index_select(1, model.comp_kc).index_select(1, model.comp_edge_kc)}
-                    lam_d = lam_c.detach()
-                    credit_comp, credit_comp_trace = comp_step(
-                        credit_comp, credit_comp_trace, memory_before, trace_before,
-                        spikes_c.detach().index_select(1, model.comp_kc), lam_d, model.comp_eta.detach(),
-                        (kappa_c.detach() if getattr(model, 'comp_use_forget', True) else torch.zeros_like(kappa_c.detach())),
-                        phasic_c.detach(),
-                        occ_slow_c.detach() / 0.5, model.comp_edge_kc,
-                        dphasic,
-                        tonic=(occ_slow_c.detach() / 0.5 * torch.sigmoid(model.comp_logit_tonic.detach())
-                               if getattr(model, 'comp_logit_tonic', None) is not None else None),
-                        tonic_rate=(float(torch.sigmoid(model.comp_logit_tonic.detach()))
-                                    if getattr(model, 'comp_logit_tonic', None) is not None else None),
-                        unit=unit_c, pot=pot_c)
-            probe_c = getattr(model, '_comp_rate_probe', None)
-            if probe_c is not None:
-                # calibrate_comp_rate: each edge's write drive per tick, depression (gate e p) and potentiation (gate D s)
-                with torch.no_grad():
-                    probe_c['dep'] += (window_c * phasic_c).detach()[0]
-                    probe_c['gate'] += (occ_slow_c.detach() / 0.5)[0]
-                    if getattr(model, 'comp_eta_pot', None) is not None and comp_da_trace.numel() == phasic_c.numel():
-                        s_e = spikes_c.detach().index_select(1, model.comp_kc).index_select(1, model.comp_edge_kc)
-                        probe_c['pot'] += (occ_slow_c.detach() / 0.5 * comp_da_trace.detach() * s_e)[0]
-                    probe_c['ticks'] += 1
-            phi_prev = comp_memory                    # live: BPTT sees the forgetting term too (review 2026-10-15)
-            use_forget = kappa_c if getattr(model, 'comp_use_forget', True) else 0.0
-            comp_memory = comp_memory + window_c * (model.comp_eta * phasic_c * (1.0 + comp_memory) - use_forget * comp_memory)
-            eta_pot = getattr(model, 'comp_eta_pot', None)
-            if eta_pot is not None:
-                # timing (Handler et al. 2019): Kenyon activity before dopamine depresses (the term above); dopamine
-                # before Kenyon activity potentiates.  A per-edge trace of the phasic dopamine at the compartment, on
-                # the Kenyon trace's clock, is read when the Kenyon cell fires; potentiation bounded by (1 - phi)
-                if comp_da_trace.numel() != phasic_c.numel():
-                    comp_da_trace = torch.zeros_like(phasic_c)
-                spk_edge = spikes_c.index_select(1, model.comp_kc).index_select(1, model.comp_edge_kc)
-                comp_memory = comp_memory + (occ_slow_c.detach() / 0.5) * torch.nn.functional.softplus(eta_pot)                     * comp_da_trace * spk_edge * (1.0 - phi_prev)
-                if unit_c:
-                    comp_da_trace = lam_c * comp_da_trace + (1.0 - lam_c * comp_da_trace) * phasic_c.clamp(max=1.0)
-                else:
-                    comp_da_trace = lam_c * comp_da_trace + (1.0 - lam_c) * phasic_c
-            tonic_c = getattr(model, 'comp_logit_tonic', None)
-            if tonic_c is not None:
-                # active forgetting (Berry et al. 2012): the dopamine neurons' ongoing activity erodes the memory on
-                # its own clock, whether or not the Kenyon cell fires; without it every edge that ever fired sat at
-                # the same equilibrium (learning and forgetting both gated by the trace) and repetition left no mark
-                comp_memory = comp_memory - (occ_slow_c.detach() / 0.5) * torch.sigmoid(tonic_c) * phi_prev
+            learned, kc_values = advance_compartment_learning(model, current, h, spikes_c, ring,
+                dopamine, credit_dopamine, dpm_trace, kc_values)
+            comp_memory = learned['comp_memory']
+            comp_trace = learned['comp_trace']
+            comp_da_trace = learned['comp_da_trace']
+            comp_p_stats = learned['comp_p_stats']
+            comp_camp = learned['comp_camp']
+            credit_comp = learned['credit_comp']
+            credit_comp_trace = learned['credit_comp_trace']
+            credit_comp_camp = learned['credit_comp_camp']
     bank = getattr(current, 'read_bank', torch.empty(0))
     if getattr(model, 'read_bank_gain', None) is not None:
         motor_now = h[:, model.read_indices] if model.read_surface != 'all' else h
@@ -610,13 +921,37 @@ def step_fly_physical_tick(model, current, token, source, next_baseline, options
         if bank.numel() != decay.numel() * motor_now.numel():
             bank = motor_now.expand(decay.numel(), -1)
         bank = decay * bank + (1.0 - decay) * motor_now
-    return FlyPhysicalState(h, ring, ge, gi, b, x, u, next_baseline, h_mean, dan_gate, gz1, gz2,
+    generated_state = (model.native_execution_program.finish(current.native_state, generated)
+                       if generated is not None else current.native_state)
+    native_updates.update({
+        'mb_terminal': (mb_terminal_gaba, mb_dpm_concentration, mb_dpm_receptor),
+        'apl_cable': apl_values,
+        'apl_release': apl_release_values,
+        'kc_terminal': kc_values[:6] if kc_values is not None else None,
+        'kc_site_stp': kc_values[6:8] if kc_values is not None else None,
+        'kc_lateral': kc_values[8:] if kc_values is not None and len(kc_values) > 8 else None,
+        'kc_contact': contact_values,
+        'kc_dopamine': spatial_dopamine_values,
+        'dan_release': dan_values[:4] if dan_values is not None else None,
+        'dan_credit': dan_values[4:] if dan_values is not None and len(dan_values) > 4 else None,
+        'dan_receiver_credit': (dan_receiver_credit,),
+        'body_route': (body_action_trace, body_feedback_trace),
+        'historical_body_actuator': (body_muscle, body_reafference),
+        'generated': (generated_state,),
+        'sensory_terminal': sensory_values,
+    })
+    new_state = FlyPhysicalState(h, ring, ge, gi, b, x, u, next_baseline, h_mean, dan_gate, gz1, gz2,
                             current.observer_prior, getattr(current, 'observer_history', torch.empty(0)), bank,
                             modulator, getattr(current, 'expected_input', torch.empty(0)), dopamine, da_trace, da_memory,
                             homeostasis, regime, comp_trace, comp_memory,
                             credit_comp, credit_comp_trace, credit_dopamine, credit_stp, kc_avail,
                             comp_da_trace=comp_da_trace, comp_p_stats=comp_p_stats, comp_camp=comp_camp,
-                            credit_comp_camp=credit_comp_camp)
+                            credit_comp_camp=credit_comp_camp,
+                            **pack_component_updates(current, native_updates))
+    for observer in TICK_OBSERVERS:
+        # read-only diagnostics of the tick just lived (fly_circuit_observer); never part of the dynamics or a gradient
+        observer(model, new_state)
+    return new_state
 
 
 def extract_fly_motor_latent(model, state):
@@ -1700,7 +2035,7 @@ def attach_receptor_writer(model, graph_npz, annotations, sense_class='olfactory
     import pandas as pd
     from .fly_reservoir import ReceptorWriter
     graph = np.load(graph_npz, allow_pickle=True)
-    ann = pd.read_feather(annotations).set_index('bodyId').reindex(graph['neuron_body_ids'])
+    ann = pd.read_feather(annotations, columns=['bodyId', 'class', 'type']).set_index('bodyId').reindex(graph['neuron_body_ids'])
     cls, typ = ann['class'].astype(str).values, ann['type'].astype(str).values
     if sense_class in ('all', 'text', 'lang'):
         from pathlib import Path
@@ -1751,7 +2086,7 @@ def attach_graded_cells(model, graph_npz, annotations, types=GRADED_TYPES, gain=
     import fnmatch
     import pandas as pd
     graph = np.load(graph_npz, allow_pickle=True)
-    typ = pd.read_feather(annotations).set_index('bodyId').reindex(graph['neuron_body_ids'])['type'].astype(str).values
+    typ = pd.read_feather(annotations, columns=['bodyId', 'type']).set_index('bodyId').reindex(graph['neuron_body_ids'])['type'].astype(str).values
     plain = [t for t in types if not t.startswith('~')]
     tonic = [t[1:] for t in types if t.startswith('~')]
     match = lambda pats: (np.array([any(fnmatch.fnmatchcase(x, p) for p in pats) for x in typ]) if pats
@@ -2196,8 +2531,38 @@ def _write_input(model, state, token, emb=None, packets=None):
     return writer.forward_with_state(sample, state.h, state.baseline)
 
 
+def prepare_sensory_expectation(model, state, token, source, prior_expected=None):
+    """Set the prediction for an already arrived input without using a future label.
+
+    ``token`` and ``source`` describe the word currently on the sensory surface,
+    not the next target. A known ``self_hearing`` command has an efference copy:
+    its own embedding supplies the expectation through the existing predictive
+    writer and its learned beta. Other sources retain the brain's pre-arrival
+    prediction, optionally supplied as ``prior_expected``. No sensory current,
+    voice identity, reward pulse, or neuronal state is added or overwritten.
+
+    Keep this expectation fixed across every held-input/checkpoint segment via
+    ``advance_fly_token_stream(..., update_expectation=False)``. At the actual
+    event boundary call ``expect_next`` once before preparing the next input.
+    """
+    if getattr(model, 'writer_prediction_logit', None) is None:
+        return state
+    if source == 'self_hearing':
+        command = torch.as_tensor(token, dtype=torch.long, device=state.h.device).reshape(-1)
+        if command.numel() != state.h.shape[0]:
+            raise ValueError('Known sensory command must match the physical batch')
+        expected = model.embedding(command)
+    else:
+        expected = state.expected_input if prior_expected is None else prior_expected
+    if not torch.is_tensor(expected):
+        raise ValueError('Sensory expectation must be a tensor')
+    if expected.numel() and expected.shape != (state.h.shape[0], model.embedding.embedding_dim):
+        raise ValueError('Sensory expectation must match the physical batch and embedding width')
+    return FlyPhysicalState(**{**state.state_dict(), 'expected_input': expected})
+
+
 def expect_next(model, state, latent):
-    """After speaking a prediction, keep its expected word embedding as the top-down prediction of the next input."""
+    """Form the next-input prior from the current native prediction at an event boundary."""
     if getattr(model, 'writer_prediction_logit', None) is None:
         return state
     probs = torch.softmax(model.decoder(model.read_norm(latent)).float(), -1)
@@ -2258,7 +2623,7 @@ def attach_reply_reward(model, graph_npz, annotations, level=1.0, ticks=4, learn
     keyed to the word and its tick, is applied in the live pass, the training pass and the replay."""
     import pandas as pd
     graph = np.load(graph_npz, allow_pickle=True)
-    typ = pd.read_feather(annotations).set_index('bodyId').reindex(graph['neuron_body_ids'])['type'].astype(str).values
+    typ = pd.read_feather(annotations, columns=['bodyId', 'type']).set_index('bodyId').reindex(graph['neuron_body_ids'])['type'].astype(str).values
     dan = np.zeros(len(typ), bool)
     dan[graph['dan_indices'].astype(np.int64)] = True
     cells = np.flatnonzero(dan & np.char.startswith(typ.astype(str), 'PAM'))
@@ -2297,7 +2662,7 @@ def attach_mother_voice(model, graph_npz, annotations, level=1.5, types=('JO-A',
     knows them as her own from the act that made them).  Returns the number of voice cells."""
     import pandas as pd
     graph = np.load(graph_npz, allow_pickle=True)
-    typ = pd.read_feather(annotations).set_index('bodyId').reindex(graph['neuron_body_ids'])['type'].astype(str)
+    typ = pd.read_feather(annotations, columns=['bodyId', 'type']).set_index('bodyId').reindex(graph['neuron_body_ids'])['type'].astype(str)
     cells = np.flatnonzero(typ.str.match('^(' + '|'.join(types) + ')').values)
     model.register_buffer('voice_cells', torch.as_tensor(cells, device=model.edge_pre_e.device, dtype=torch.long),
                           persistent=False)
@@ -2359,7 +2724,9 @@ def _advance_fly_token_stream(model, state, token, schedule_box=None, *, ticks, 
                               read_every=False, world=None, world_tape=None, act_g=None, fresh=True, ai_g_tape=None,
                               ai_g=None, ai_tape=None, eye_forced=None, eye_binary=False, eye_tape=None,
                               eye_sample=False, sense_noise=None, dopamine_s_class=None, voice=False,
-                              sensory_on=True, reward_ticks=0):
+                              sensory_on=True, reward_ticks=0, motor_value_bias=None, ai_native_g=None,
+                              stop_on_commit=False, native_raw_policy=False, update_expectation=True,
+                              executed_action=False):
     """Streaming clock: every token occupies exactly `ticks` physical ticks, whatever the brain is doing, and the
     prediction of the next token is read just before it arrives.  Nothing waits for the brain to settle, so the
     processing of a token continues while the next ones are being sensed (latency and throughput decouple).
@@ -2389,13 +2756,18 @@ def _advance_fly_token_stream(model, state, token, schedule_box=None, *, ticks, 
     wrote the word [ticks], the output hazards [ticks], the new ai_g.
     sense_noise [ticks, d]: with held input, the senses deliver a noisy sample of the word every tick (embedding +
     sense_noise[tick]); evidence accumulates over the word's ticks (fly_active_inference, sustained noisy input).
+    update_expectation=True retains the legacy per-call expectation update. False preserves the pre-arrival or
+    known-command expectation through segmentation; the caller updates it once at the actual input-event boundary.
     """
     if not isinstance(ticks, int) or ticks < 1:
         raise ValueError('ticks must be a positive integer')
+    if stop_on_commit and ai_g is None:
+        raise ValueError('A causal commit boundary requires the motor trajectory')
     if writer_baseline_clock not in ('input', 'physical'):
         raise ValueError('writer_baseline_clock must be input or physical')
     options = dict(base_rates=base_rates, thresholds=thresholds, conductance_gains=conductance_gains,
                    alif_params=alif_params, stp_params=stp_params)
+    options['executed_action'] = executed_action
     if dopamine_s_class is not None:
         options['dopamine_s_class'] = dopamine_s_class
     writer = model.topographic_writer
@@ -2406,7 +2778,10 @@ def _advance_fly_token_stream(model, state, token, schedule_box=None, *, ticks, 
     latent = None
     packets = None
     reads, hazards = [], []
-    eyes, onsets, out_hazards = [], [], []
+    action_reads, motor_packets = [], []
+    eyes, onsets, out_hazards, native_hazards = [], [], [], []
+    if ai_native_g is not None and (ai_g is None or getattr(model, 'ai_mode', None) != 'motor'):
+        raise ValueError('Native policy score needs the existing motor trajectory')
     if world is not None:
         from .fly_odour_world import act_step, dense
         replay = len(world_tape) > 0
@@ -2438,7 +2813,10 @@ def _advance_fly_token_stream(model, state, token, schedule_box=None, *, ticks, 
                 if not ai_replay:
                     eye_tape.append(look)
             else:
-                eye = ai_eye(model, ai_g, eye_forced)
+                eye_sequence = (isinstance(eye_forced, (tuple, list)) or
+                                (torch.is_tensor(eye_forced) and eye_forced.ndim > 0))
+                forced_eye = eye_forced[tick] if eye_sequence else eye_forced
+                eye = ai_eye(model, ai_g, forced_eye)
             eyes.append(eye)
             onsets.append(writes)
         if writes:
@@ -2478,22 +2856,60 @@ def _advance_fly_token_stream(model, state, token, schedule_box=None, *, ticks, 
                 world.observe(act)
                 world_tape.append((spec, record, act))
         if ai_g is not None:
-            hz, ai_g, committed = ai_step(model, current, ai_g, ai_tape[tick] if ai_replay else None)
+            bias = (motor_value_bias[tick] if motor_value_bias is not None
+                    and hasattr(motor_value_bias, '__len__') else motor_value_bias)
+            resolved_bias = []
+            actual_bias = bias
+            if callable(bias):
+                def actual_bias(physical, muscles):
+                    value = bias(physical, muscles)
+                    resolved_bias.append(value)
+                    return value
+            hz, ai_g, committed = ai_step(model, current, ai_g, ai_tape[tick] if ai_replay else None,
+                                         outcome_bias=actual_bias)
             out_hazards.append(hz)
+            if ai_native_g is not None:
+                # Same physical spikes, muscle dynamics and realized action. Only
+                # the score's derivative reaches the brain; ordinary prediction,
+                # habit and attention losses retain their existing gradient paths.
+                native_hz, ai_native_g, _ = ai_step(
+                    model, current, ai_native_g, taped=committed,
+                    outcome_bias=resolved_bias[0] if resolved_bias else bias, brain_gradient=True)
+                if native_raw_policy:
+                    from .fly_active_inference import motor_logits
+                    native_hz = motor_logits(model, ai_native_g)[0, 1:2]
+                native_hazards.append(native_hz)
             if ai_g_tape is not None:
                 ai_g_tape.append(ai_g.detach())           # the muscle state of every tick (delayed act credit)
             if not ai_replay:
                 ai_tape.append(committed)
         if read_every:
             reads.append(read_fly_motor(model, current))
+            if getattr(model, 'native_motor_port_enabled', False):
+                from .fly_native_motor_port import read_action, motor_availability
+                action_reads.append(read_action(model, current))
+                motor_packets.append(motor_availability(model, current))
+        # A world action is an event boundary, not merely a read selector inside
+        # an interval that continues after the command. Replay uses the recorded
+        # actual interval with this switch disabled; expect_next runs at the same
+        # segment boundaries in both passes.
+        if stop_on_commit and committed:
+            break
     extra = (torch.stack(hazards), act_g) if world is not None else ()
+    if ai_native_g is not None:
+        extra = (torch.cat(native_hazards), ai_native_g, *extra)
     if ai_g is not None:
         extra = extra + (torch.cat(eyes), torch.tensor(onsets, device=current.h.device), torch.cat(out_hazards), ai_g)
     if read_every:
         latent = reads[-1]
-        return (expect_next(model, current, latent), latent, torch.cat(reads, 0), *extra)
+        next_state = expect_next(model, current, latent) if update_expectation else current
+        if action_reads:
+            return (next_state, latent, torch.cat(reads, 0), torch.cat(action_reads, 0),
+                    torch.cat(motor_packets), *extra)
+        return (next_state, latent, torch.cat(reads, 0), *extra)
     latent = latent if latent is not None else read_fly_motor(model, current)
-    return (expect_next(model, current, latent), latent, *extra)
+    next_state = expect_next(model, current, latent) if update_expectation else current
+    return (next_state, latent, *extra)
 
 
 def _advance_fly_token_adaptive(
@@ -2655,6 +3071,14 @@ def predict_fly_next(model, state, token, *, settle_ticks, writer_baseline_clock
     return logits_list[best_k], state
 
 
+# brain_learning 'local' (2026-10-19): the brain runs forward only (no autograd tape through any tick); its own local
+# laws (compartment phi, dopamine, STP, receptor and terminal states) keep acting in the forward pass. Only these readout
+# parameters, which sit on the detached brain state, take the exact gradient of their own losses.
+LOCAL_READOUT_PARAMETERS = ('output_read.weight', 'read_norm.weight', 'decoder.weight', 'decoder.bias',
+                            'motor_port_projection.weight', 'motor_port_norm.weight', 'motor_port_decoder.weight',
+                            'motor_port_decoder.bias', 'ai_w', 'ai_b', 'taste_gain', 'taste_bias')
+
+
 class FlyBPTTLearner:
     def __init__(self, model, state, *, lr=2e-4, lr_synapse=None,
                  lr_sensory=None, max_grad_norm=1.0, adam_names=None,
@@ -2689,6 +3113,7 @@ class FlyBPTTLearner:
         self.last_adaptive_metrics = {}
         self.use_ctm_loss = bool(use_ctm_loss)
         self.use_checkpointing = bool(use_checkpointing)
+        model._native_spatial_checkpointing = self.use_checkpointing
         self.last_train_loss = None
         self.last_ctm_metrics = {}
         self.lambda_jepa = float(lambda_jepa)
@@ -2743,6 +3168,8 @@ class FlyBPTTLearner:
             'log_tau_s',
             'topographic_writer.gate_linear.weight', 'topographic_writer.gate_linear.bias'))
         self.adam_names = [name for name in self.adam_names if name in named]
+        self.adam_names += [name for name in MOTOR_PORT_PARAMETER_NAMES
+                            if name in named and name not in self.adam_names]
         if getattr(model, 'act_w', None) is not None:
             # the act head, when attached, always learns (fly_odour_world.attach_act_head)
             self.adam_names += [n for n in ('act_w', 'act_b', 'act_logit_leak') if n not in self.adam_names]
@@ -2778,6 +3205,21 @@ class FlyBPTTLearner:
         # O(1) scalars/gains: the go neuron's drive, reset and leak, the read bank, intrinsic currents.  (go_read.weight
         # entries are ~0.04 at their natural scale, where the base rate already moves them ~1% per step.)
         go_scalars = ('go_drive', 'go_reset', 'go_logit_leak')
+        amine_names = [name for name in AMINE_PARAMETER_NAMES if name in named]
+        cx_names = [name for name in CX_PARAMETER_NAMES if name in named]
+        mb_names = [name for name in MB_CONSOLIDATION_PARAMETER_NAMES + MB_TERMINAL_PARAMETER_NAMES + APL_CABLE_PARAMETER_NAMES + APL_LOCAL_RELEASE_PARAMETER_NAMES + KC_TERMINAL_PARAMETER_NAMES + KC_SITE_STP_PARAMETER_NAMES + KC_DOPAMINE_PARAMETER_NAMES + KC_LATERAL_PARAMETER_NAMES + DAN_RELEASE_PARAMETER_NAMES + SENSORY_TERMINAL_PARAMETER_NAMES if name in named]
+        mb_names += list(generated_parameter_names(model))
+        body_names = [name for name in BODY_LOOP_PARAMETER_NAMES if name in named]
+        al_names = [name for name in AL_PARAMETER_NAMES if name in named]
+        visual_names = [name for name in VISUAL_PARAMETER_NAMES if name in named]
+        body_actuator_names = [name for name in BODY_ACTUATOR_PARAMETER_NAMES if name in named]
+        endocrine_names = [name for name in ENDOCRINE_PARAMETER_NAMES if name in named]
+        # These semantic arms are registered below in their own groups. A
+        # continuation may already carry one arm in adam_names, so remove all
+        # of them before constructing the generic decoder/physiology groups.
+        special_native_names = set(amine_names) | set(cx_names) | set(mb_names) | set(body_names) | set(al_names) | set(visual_names)
+        self.adam_names = [name for name in self.adam_names if name not in special_native_names]
+        self.adam_names = [name for name in self.adam_names if name not in set(body_actuator_names + endocrine_names)]
         bank_names = [name for name in READ_BANK_PARAMETER_NAMES + INTRINSIC_PARAMETER_NAMES + PRECISION_PARAMETER_NAMES
                       + PREDICTIVE_PARAMETER_NAMES + DOPAMINE_PARAMETER_NAMES + ONLINE_DA_PARAMETER_NAMES + go_scalars
                       if name in named and named[name].requires_grad
@@ -2786,9 +3228,9 @@ class FlyBPTTLearner:
                                                          + DOPAMINE_PARAMETER_NAMES + ONLINE_DA_PARAMETER_NAMES)]
         self.adam_names = [name for name in self.adam_names if name not in bank_names]
         decayed = [named[name] for name in self.adam_names
-                   if name in ('output_read.weight', 'decoder.weight') or (('latent_predictor' in name or 'graph_observer' in name) and name.endswith('.weight'))]
+                   if name in ('output_read.weight', 'decoder.weight', 'motor_port_projection.weight', 'motor_port_decoder.weight') or (('latent_predictor' in name or 'graph_observer' in name) and name.endswith('.weight'))]
         undecayed = [named[name] for name in self.adam_names
-                     if name not in ('output_read.weight', 'decoder.weight') and not (('latent_predictor' in name or 'graph_observer' in name) and name.endswith('.weight'))]
+                     if name not in ('output_read.weight', 'decoder.weight', 'motor_port_projection.weight', 'motor_port_decoder.weight') and not (('latent_predictor' in name or 'graph_observer' in name) and name.endswith('.weight'))]
         for name in self.adam_names:
             named[name].requires_grad_(True)
         if lr_decoder is None:
@@ -2823,6 +3265,56 @@ class FlyBPTTLearner:
             adam_groups.append({'params': [named[n] for n in bank_names], 'weight_decay': 0.0,
                                 'lr': lr_read_bank if lr_read_bank is not None else 50 * lr})
             self.adam_names += bank_names
+        if amine_names:
+            for name in amine_names:
+                named[name].requires_grad_(True)
+            adam_groups.append({'params': [named[name] for name in amine_names],
+                                'weight_decay': 0.0,
+                                'lr': float(lr_physiology if lr_physiology is not None else lr)})
+            self.adam_names += amine_names
+        if cx_names:
+            for name in cx_names:
+                named[name].requires_grad_(True)
+            adam_groups.append({'params': [named[name] for name in cx_names],
+                                'weight_decay': 0.0,
+                                'lr': float(lr_physiology if lr_physiology is not None else lr)})
+            self.adam_names += cx_names
+        if mb_names:
+            for name in mb_names:
+                named[name].requires_grad_(True)
+            adam_groups.append({'params': [named[name] for name in mb_names],
+                                'weight_decay': 0.0,
+                                'lr': float(lr_physiology if lr_physiology is not None else lr)})
+            self.adam_names += mb_names
+        if body_names:
+            for name in body_names:
+                named[name].requires_grad_(True)
+            adam_groups.append({'params': [named[name] for name in body_names],
+                                'weight_decay': 0.0,
+                                'lr': float(lr_physiology if lr_physiology is not None else lr)})
+            self.adam_names += body_names
+        if al_names:
+            for name in al_names:
+                named[name].requires_grad_(True)
+            adam_groups.append({'params': [named[name] for name in al_names],
+                                'weight_decay': 0.0,
+                                'lr': float(lr_physiology if lr_physiology is not None else lr)})
+            self.adam_names += al_names
+        if visual_names:
+            for name in visual_names:
+                named[name].requires_grad_(True)
+            adam_groups.append({'params': [named[name] for name in visual_names],
+                                'weight_decay': 0.0,
+                                'lr': float(lr_physiology if lr_physiology is not None else lr)})
+            self.adam_names += visual_names
+        for group_names in (body_actuator_names, endocrine_names):
+            if group_names:
+                for name in group_names:
+                    named[name].requires_grad_(True)
+                adam_groups.append({'params': [named[name] for name in group_names],
+                                    'weight_decay': 0.0,
+                                    'lr': float(lr_physiology if lr_physiology is not None else lr)})
+                self.adam_names += group_names
         parameter_names = {id(p): n for n, p in named.items()}
         for group in adam_groups:
             group['parameter_names'] = [parameter_names[id(p)] for p in group['params']]
@@ -2908,9 +3400,21 @@ class FlyBPTTLearner:
         Requested learning rates remain those of the destination optimizer.
         """
         newly_trainable = set(newly_trainable)
-        allowed_new = (set(STP_PARAMETER_NAMES) | {'logit_read_gamma'} | set(GO_PARAMETER_NAMES)
+        allowed_new = (set(generated_parameter_names(self.model)) | set(STP_PARAMETER_NAMES) | {'logit_read_gamma'} | set(GO_PARAMETER_NAMES)
                        | set(READ_BANK_PARAMETER_NAMES) | set(INTRINSIC_PARAMETER_NAMES) | set(PRECISION_PARAMETER_NAMES)
                        | set(PREDICTIVE_PARAMETER_NAMES) | set(DOPAMINE_PARAMETER_NAMES) | set(ONLINE_DA_PARAMETER_NAMES)
+                       | set(AMINE_PARAMETER_NAMES)
+                       | set(CX_PARAMETER_NAMES)
+                       | set(MB_CONSOLIDATION_PARAMETER_NAMES)
+                       | set(MB_TERMINAL_PARAMETER_NAMES)
+                       | set(APL_CABLE_PARAMETER_NAMES)
+                       | set(APL_LOCAL_RELEASE_PARAMETER_NAMES)
+                       | (set(KC_TERMINAL_PARAMETER_NAMES) | set(KC_SITE_STP_PARAMETER_NAMES) | set(KC_DOPAMINE_PARAMETER_NAMES) | set(KC_LATERAL_PARAMETER_NAMES) | set(DAN_RELEASE_PARAMETER_NAMES) | set(SENSORY_TERMINAL_PARAMETER_NAMES))
+                       | set(BODY_LOOP_PARAMETER_NAMES)
+                       | set(AL_PARAMETER_NAMES)
+                       | set(VISUAL_PARAMETER_NAMES)
+                       | set(BODY_ACTUATOR_PARAMETER_NAMES) | set(ENDOCRINE_PARAMETER_NAMES)
+                       | set(MOTOR_PORT_PARAMETER_NAMES)
                        | set(COMPARTMENT_PARAMETER_NAMES) | set(TASTE_PARAMETER_NAMES)
                        | {'act_w', 'act_b', 'act_logit_leak', 'ai_w', 'ai_b', 'ai_logit_leak'}
                        | {'log_kc_release'}                     # the Kenyon terminal release, switched on at a resume
@@ -2982,7 +3486,8 @@ class FlyBPTTLearner:
         """Every score precedes the single parameter update for this window."""
         m, state = self.model, self.state
         self._credit = None
-        if getattr(m, 'carried_credit', ()) and m.training and torch.is_grad_enabled():
+        if (getattr(m, 'carried_credit', ()) and m.training and torch.is_grad_enabled()
+                and getattr(self, 'brain_learning', 'bptt') == 'bptt'):
             # credit beyond the window: the slow states open the window as leaves (fly_carried_credit)
             from .fly_carried_credit import open_window
             state, leaves, start = open_window(state, m.carried_credit)
@@ -3103,11 +3608,15 @@ class FlyBPTTLearner:
                 if forced.get('decisions') is not None:
                     # v2: the fly's turn-taking decisions in the live pass, credited below (speaking_value)
                     forced_speak = (list(forced['decisions']), forced.get('speakers'))
-                    if getattr(self, 'speak_credit', 'predict') == 'epistemic':
+                    if getattr(self, 'speak_credit', 'predict') in ('epistemic', 'consequence'):
                         g_tape = []
                 self.forced_world = None
             total_ticks = 0
             reads, intervals = [], []
+            policy_reads, motor_packets = [], []
+            motor_port_on = bool(getattr(m, 'native_motor_port_enabled', False))
+            if motor_port_on and (forced is None or not forced.get('native_motor_port')):
+                raise ValueError('Native execution requires its actual peripheral packet tape')
             jepa_kc = ([] if getattr(m, 'jepa_proj', None) is not None and m.training and torch.is_grad_enabled()
                        else None)
             word_da = [] if getattr(self, 'record_word_da', False) else None
@@ -3119,6 +3628,17 @@ class FlyBPTTLearner:
             noise_targets = self.__dict__.pop('noise_mask', None)      # set by observe() for this window only
             sense_sigmas = []
             ai_eyes, ai_onsets, ai_out, ai_tokens = [], [], [], []
+            native_out = []
+            context_states = []
+            context_on = bool(forced is not None and forced.get('native_context_control', False))
+            if context_on:
+                if len(forced['input_sources']) != input_ids.size(1):
+                    raise ValueError('Context sensing sources must match held input, not future targets')
+                stream['update_expectation'] = False
+            native_on = forced is not None and forced.get('consequence_native_events') is not None
+            if native_on:
+                from .fly_native_policy_credit import prepare_native_policy_backward
+                prepare_native_policy_backward(m)
             if ai_on:
                 if getattr(m, 'ai_mode', None) == 'motor':
                     from .fly_active_inference import motor_rest
@@ -3130,11 +3650,15 @@ class FlyBPTTLearner:
                     self.ai_g = state.h.new_tensor([[math.log(p_open / (1 - p_open)), 0.0]])     # eyes open at the start
                 ai_g = self.ai_g
                 ai_g_initial = ai_g.detach().clone()
+                ai_native_g = ai_g.detach().clone() if native_on else None
             if world is not None:
                 if getattr(self, 'act_g', None) is None:
                     self.act_g = state.h.new_zeros(1, 2)
                 act_g = self.act_g
             for word_j, token in enumerate(input_ids.unbind(1)):
+                if context_on:
+                    state = prepare_sensory_expectation(m, state, token,
+                                                       forced['input_sources'][word_j])
                 if voices is not None:
                     stream['voice'] = voices[word_j]
                 # the world's pace: a fixed clock, or (pace > 0) a memoryless interval k >= 1 with mean `pace` drawn per
@@ -3164,6 +3688,10 @@ class FlyBPTTLearner:
                     stream['ticks'] = n
                     stream['fresh'] = done == 0
                     stream['sensory_on'] = sensory_on
+                    if getattr(m, 'body_actuator_enabled', False):
+                        if not context_on:
+                            raise ValueError('Executed-action feedback requires recorded native-context input sources')
+                        stream['executed_action'] = bool(sensory_on and forced['input_sources'][word_j] == 'self_hearing')
                     stream['reward_ticks'] = reward_ticks_left(m, rewards is not None and rewards[word_j], done)
                     stream['sense_noise'] = None if word_noise is None else word_noise[done:done + n]
                     box = [n]
@@ -3172,6 +3700,14 @@ class FlyBPTTLearner:
                         stream.update(world=world, world_tape=tape, act_g=act_g)
                     if ai_on:
                         stream.update(ai_g=ai_g, ai_tape=[], eye_forced=getattr(self, 'eye_forced', None))
+                        if native_on:
+                            stream['ai_native_g'] = ai_native_g
+                            stream['native_raw_policy'] = bool(forced.get('native_generative_control', False))
+                        if forced is not None and forced.get('consequence_timing_bias') is not None:
+                            tape_bias = forced['consequence_timing_bias']
+                            if len(tape_bias) != sum(forced['intervals']):
+                                raise ValueError('Action-value bias must follow every actual physical tick')
+                            stream['motor_value_bias'] = tape_bias[total_ticks - k + done:total_ticks - k + done + n]
                         if g_tape is not None:
                             stream['ai_g_tape'] = g_tape
                         if getattr(self, 'eye_binary', False):
@@ -3184,13 +3720,25 @@ class FlyBPTTLearner:
                     state, token_lat = out[0], out[1]
                     if pace > 0:
                         reads.append(out[2])
+                        if motor_port_on:
+                            policy_reads.append(out[3])
+                            motor_packets.append(out[4])
                     if ai_on:
                         ai_eyes.append(out[-4]); ai_onsets.append(out[-3]); ai_out.append(out[-2]); ai_g = out[-1]
+                        if native_on:
+                            native_start = 3 if stream.get('read_every', False) else 2
+                            if motor_port_on and stream.get('read_every', False):
+                                native_start += 2
+                            native_out.append(out[native_start])
+                            ai_native_g = out[native_start + 1]
                         ai_tokens += [int(token[0])] * n
                     wi = -4 if ai_on else 0
                     if world is not None:
                         hazards.append(out[wi - 2]); act_g = out[wi - 1]
                         records += [rec for _, rec, _ in tape]
+                if context_on:
+                    context_states.append(state)
+                    state = expect_next(m, state, token_lat)
                 if pace > 0:
                     intervals.append(k)
                 latents.append(token_lat)
@@ -3214,6 +3762,34 @@ class FlyBPTTLearner:
             scores = F.cross_entropy(logits, targets.flatten(), reduction='none')
             self.last_train_loss = scores
             self.last_adaptive_metrics = {}
+            context_surrogate = None
+            if motor_port_on:
+                actual_packets = torch.cat(motor_packets)
+                expected_packets = torch.as_tensor(forced['native_motor_availability'], device=actual_packets.device)
+                if actual_packets.shape != expected_packets.shape or not torch.equal(actual_packets, expected_packets):
+                    raise RuntimeError('Actual native motor events differ between live world and gradient replay')
+                real_commands = [(e['tick'], e['word']) for e in forced['native_motor_commands']]
+                content_events = [(e['tick'], e['word']) for e in forced['consequence_native_events'] if e['kind'] == 'content']
+                if real_commands != content_events:
+                    raise RuntimeError('World commands and native policy content events disagree')
+                self.last_adaptive_metrics.update(native_motor_packet_ticks=int(actual_packets.sum()),
+                    native_motor_execution_ticks=int(actual_packets.numel()),
+                    native_motor_commands=len(real_commands), native_motor_replay_matched=True)
+            if context_on:
+                from .fly_native_context import native_context_teaching, compartment_chart
+                endpoints = forced['native_context_endpoints']
+                if len(endpoints) != len(context_states):
+                    raise ValueError('Missing actual native context endpoint')
+                field_error = max(float((compartment_chart(m, s)[0].detach().cpu() - e['field']).abs().max())
+                                  for s, e in zip(context_states, endpoints))
+                read_error = max(float((r.detach().cpu() - e['read']).abs().max())
+                                 for r, e in zip(latents, endpoints))
+                if max(field_error, read_error) > 2e-4:
+                    raise RuntimeError('Native context replay differs from actual sensory trajectory')
+                context_surrogate, context_diag = native_context_teaching(
+                    m, context_states, forced['native_context_teaching'])
+                self.last_adaptive_metrics.update(context_diag, context_teacher_field_replay_error=field_error,
+                                                  context_teacher_read_replay_error=read_error)
             if pace > 0:
                 # every tick before the next word arrives carries an expectation that would have met it had it come
                 # then: each scores with the arrival hazard p = 1/pace.  P(K >= t) = (1-p)^(t-1), so the expectation of
@@ -3223,13 +3799,32 @@ class FlyBPTTLearner:
                 tick_ce = F.cross_entropy(m.decoder(m.read_norm(torch.cat(reads, 0))), tick_targets, reduction='none')
                 owner = torch.repeat_interleave(torch.arange(len(intervals), device=targets.device),
                                                 torch.as_tensor(intervals, device=targets.device))
-                self.last_train_loss = torch.zeros_like(scores).index_add(0, owner, tick_ce) / pace
+                endpoint_objective = forced is not None and forced.get('prediction_objective') == 'external_arrival'
+                # Interactive deadlines and endogenous command times do not
+                # satisfy the independent Geometric arrival identity above.
+                self.last_train_loss = (scores if endpoint_objective else
+                                        torch.zeros_like(scores).index_add(0, owner, tick_ce) / pace)
                 with torch.no_grad():
                     onset = torch.cat([torch.arange(1, k + 1, device=targets.device) for k in intervals])
                     early = tick_ce[onset <= 2].mean() if bool((onset <= 2).any()) else tick_ce.new_tensor(float('nan'))
-                self.last_adaptive_metrics = {'stream_pace_mean': pace, 'adaptive_total_ticks': total_ticks,
+                self.last_adaptive_metrics.update({'stream_pace_mean': pace, 'adaptive_total_ticks': total_ticks,
                                               'survival_ce': float(self.last_train_loss.detach().mean()),
-                                              'ce_ticks_1_2': float(early)}
+                                              'ce_ticks_1_2': float(early)})
+                if endpoint_objective:
+                    self.last_adaptive_metrics.pop('survival_ce')
+                    self.last_adaptive_metrics.update(prediction_objective='external_arrival',
+                                                      arrival_ce=float(scores.detach().mean()))
+            if forced is not None and forced.get('exclude_self_prediction', False):
+                from .fly_action_model import external_prediction_loss
+                source_tape = forced.get('sources')
+                self.last_train_loss = external_prediction_loss(self.last_train_loss, source_tape)
+                self_mask = torch.as_tensor([s == 'self_hearing' for s in source_tape],
+                                            device=scores.device)
+                self.last_adaptive_metrics.update(
+                    external_prediction_targets=int((~self_mask).sum()),
+                    self_echo_targets=int(self_mask.sum()),
+                    self_echo_raw_nll=(float(scores.detach()[self_mask].mean())
+                                       if bool(self_mask.any()) else None))
             self.last_act_loss = None
             if ai_on:
                 # perception VFE complexity (SIGReg on the per-tick read latents) and the epistemic value of looking:
@@ -3242,7 +3837,27 @@ class FlyBPTTLearner:
                 e_on = e[on]; tok_on = tok[on.cpu().numpy()]
                 nov = torch.as_tensor(self.familiarity.novelty(tok_on), dtype=e.dtype, device=e.device)
                 prior = torch.as_tensor(1.0 + self.familiarity.n[tok_on], dtype=e.dtype, device=e.device)
-                if getattr(self, 'epistemic_source', 'count') == 'belief' and reads:
+                generative_control = forced is not None and forced.get('native_generative_control', False)
+                if generative_control:
+                    # Actual external categorical accuracy trains the sensory
+                    # actuator through the real native observation dynamics.
+                    # Do not add the old count or gain-as-noise proxy reward.
+                    epistemic = e.sum() * 0.
+                elif forced is not None and forced.get('consequence_ratios') is not None:
+                    # Pre-observation uncertainty from the live native consequence belief.
+                    # Mean gain per external word, rather than rewarding longer held inputs.
+                    ratios = forced['consequence_ratios']
+                    if len(ratios) != len(intervals):
+                        raise ValueError('Consequence perception clock does not match replay')
+                    epistemic, offset = e.new_zeros(()), 0
+                    for length, ratio in zip(intervals, ratios):
+                        sl = slice(offset, offset + length)
+                        seen = on[sl]
+                        gain = e[sl][seen].mean() if bool(seen.any()) else e.new_zeros(())
+                        epistemic = epistemic + 0.5 * torch.log1p(gain * float(ratio))
+                        offset += length
+                    epistemic = epistemic / max(1, len(intervals))
+                elif getattr(self, 'epistemic_source', 'count') == 'belief' and reads:
                     # the brain's own Bayesian surprise (Itti & Baldi): what a word told the brain is how far it moved
                     # the brain's prediction of what comes next, KL(p after the word's interval || p just before it);
                     # a background word the brain has learned to ignore moves nothing and is worth ~0 (the entropy of
@@ -3321,7 +3936,9 @@ class FlyBPTTLearner:
                         if isinstance(pending, dict):
                             # the continuous trace (fly_mother_world.accumulate_speaking_trace): its credit is a
                             # gradient on the readout already, applied as the linear surrogate <G, theta>
-                            J_out = sum((g_ * getattr(m, k_)).sum() for k_, g_ in pending['trace'].items()) / len(intervals)
+                            parameters = dict(m.named_parameters())
+                            J_out = sum(((g_ * parameters[k_]).sum() for k_, g_ in pending['trace'].items()),
+                                        hz.new_zeros(())) / len(intervals)
                             said_ = pending['decisions']
                             self.last_adaptive_metrics.update({'speak_decisions': len(said_),
                                                                'speak_rate': sum(said_) / len(said_) if said_ else 0.0})
@@ -3330,6 +3947,17 @@ class FlyBPTTLearner:
                             J_out, sstats = delayed_speaking_value(m, *pending, n_words=len(intervals))
                             self.last_adaptive_metrics.update(sstats)
                             self.pending_speak_credit = None
+                        if forced is not None and forced.get('consequence_native_events') is not None:
+                            from .fly_native_policy_credit import native_policy_credit
+                            native_j, native_diag = native_policy_credit(
+                                self, forced['consequence_native_events'], torch.cat(native_out),
+                                torch.cat(policy_reads if motor_port_on else reads, 0), intervals,
+                                motor_availability=(torch.cat(motor_packets) if motor_port_on else None),
+                                raw_logits=bool(forced.get('native_generative_control', False)),
+                                include_policy_heads=bool(forced.get('native_generative_control', False)))
+                            J_out = J_out + native_j / max(1, len(intervals))
+                            self.last_adaptive_metrics.update({f'native_policy_{k}': v
+                                                               for k, v in native_diag.items()})
                     elif forced_speak is not None and motor:
                         # mother world v2: speaking is the act; its value is what the following words cost
                         from .fly_active_inference import speaking_value
@@ -3348,10 +3976,12 @@ class FlyBPTTLearner:
                     self.last_adaptive_metrics['questions_extended'] = int(sum(x > 0 for x in extended))
                     if motor:
                         # the policy prior (habit) of active inference keeps the acts sampled: 1/gamma x KL per tick
-                        from .fly_active_inference import habit_kl
+                        from .fly_active_inference import motor_policy_kl
                         habit = float(getattr(self, 'act_habit', 0.2))
-                        kl = habit_kl(hz, habit).mean()
-                        ai_loss = ai_loss + float(getattr(self, 'act_gamma_inv', 0.05)) * kl
+                        kl, decision_ticks = motor_policy_kl(
+                            hz, habit, forced_speak[0] if delayed_mother else None)
+                        ai_loss = ai_loss + (0. if generative_control else
+                                             float(getattr(self, 'act_gamma_inv', 0.05))) * kl
                         with torch.no_grad():
                             hz_d = hz.detach()
                             ent = -(hz_d * hz_d.clamp_min(1e-6).log() + (1 - hz_d) * (1 - hz_d).clamp_min(1e-6).log())
@@ -3360,6 +3990,7 @@ class FlyBPTTLearner:
                             if gamma is not None:
                                 self.last_adaptive_metrics['gamma'] = gamma
                             self.last_adaptive_metrics.update({'habit_kl': float(kl.detach()),
+                                                               'habit_kl_decision_ticks': decision_ticks,
                                                                'hazard_mean': float(hz_d.mean()),
                                                                'hazard_sd': float(hz_d.std()),
                                                                'hazard_entropy': float(ent.mean())})
@@ -3408,7 +4039,13 @@ class FlyBPTTLearner:
                                           'speakers': forced.get('speakers') if forced is not None else None,
                                           'sources': forced.get('sources') if forced is not None else None,
                                           'speech_decisions': forced_speak[0] if forced_speak is not None else None,
+                                          'consequence': getattr(self, 'last_epistemic', None)
+                                              if getattr(self, 'speak_credit', None) == 'consequence' else None,
                                           'quiet_ranges': quiet_ranges,
+                                          'native_motor_availability': (forced.get('native_motor_availability')
+                                                                       if motor_port_on else None),
+                                          'native_motor_commands': (forced.get('native_motor_commands')
+                                                                   if motor_port_on else None),
                                           # every tick's read CE against its word's target: the value of waiting
                                           'tick_ce': tick_ce.detach().cpu().tolist() if pace > 0 else None}
             if world is not None:
@@ -3473,6 +4110,8 @@ class FlyBPTTLearner:
                 self.last_jepa_metrics = {'jepa_pred': float(pred.detach()), 'jepa_sigreg': float(sig.detach()),
                                           'jepa_pred_over_mean_pattern': float(pred.detach() / base.clamp_min(1e-12)),
                                           'jepa_z_std': float(z.detach().std(0).mean())}      # ~1 healthy, -> 0 collapse
+            if context_surrogate is not None:
+                self.last_act_loss = (self.last_act_loss if self.last_act_loss is not None else 0.) + context_surrogate
             return scores, state, features
 
         if self.adaptive_admission:
@@ -3773,6 +4412,11 @@ class FlyBPTTLearner:
                 self._credit = None
                 if isinstance(getattr(self, 'last_adaptive_metrics', None), dict):
                     self.last_adaptive_metrics.update({f'carried_{k}': v for k, v in added.items()})
+        local_brain = getattr(self, 'brain_learning', 'bptt') == 'local'
+        if local_brain:
+            for p in self.trainable:
+                if p.grad is None:
+                    p.grad = torch.zeros_like(p)
         def norm(parameters):
             active = [p for p in parameters if p.requires_grad and p.numel()]
             if any(p.grad is None for p in active):
@@ -3865,7 +4509,7 @@ class FlyBPTTLearner:
                             print(f'GRAD PROBE update {self.updates} {label}: edges with gradient {float(nz.float().mean()):.3f}, '
                                   f'push up {float((gs[nz] < 0).float().mean()):.3f}, mean grad / rms '
                                   f'{float(gs.mean() / gs.pow(2).mean().sqrt().clamp_min(1e-30)):+.4f}', flush=True)
-            evidence = getattr(self, 'evidence', False)
+            evidence = getattr(self, 'evidence', False) and not local_brain
             if evidence:
                 physio_grads = self._evidence_take(self.physio_params)
             self.optimizer.step()
@@ -3898,14 +4542,17 @@ class FlyBPTTLearner:
                         local[targets] = (1.0 + (conc[targets] - slow) / (slow + level)).clamp(0.25, 4.0)
                     else:
                         local[targets] = (conc[targets] / level).clamp(0.25, 4.0)
-                before = None if getattr(self, 'eg', False) else [w.detach().clone() for w in self.edges]
-            relative = getattr(self, 'edge_step_scale', None)
-            eg = getattr(self, 'eg', False)
+                before = None if (getattr(self, 'eg', False) or local_brain) else [w.detach().clone() for w in self.edges]
+            relative = None if local_brain else getattr(self, 'edge_step_scale', None)
+            eg = getattr(self, 'eg', False) and not local_brain
+            if local_brain:
+                local = None
             if relative is not None and local is None and not eg:
                 before = [w.detach().clone() for w in self.edges]
             if (evidence and getattr(self, 'evidence_edges', True)) or eg:
                 edge_grads = self._evidence_take(self.edges)
-            self.sgd.step()
+            if not local_brain:
+                self.sgd.step()
             if eg:
                 self._eg_apply(edge_grads, local)
             if evidence:
@@ -4062,6 +4709,7 @@ class FlyBPTTLearner:
         if getattr(self, 'ablate_read', None) is not None and self.model.read_surface != 'all':
             self.model.output_read.weight[:, self.ablate_read[self.model.read_indices]] = 0.0
 
+    @torch.no_grad()
     def clamp_edges(self):
         """Retain conductance positivity or each signed edge's original sign (and keep the plastic Kenyon -> MBON
         weights excitatory).
@@ -4228,13 +4876,25 @@ class FlyBPTTLearner:
             post = getattr(self.model, 'edge_post' + sfx).long()
             total = torch.zeros(self.model.n_neurons, device=w.device).index_add_(0, post, w.float())
             w.mul_((self.eg_total[n] / total.clamp_min(1e-30))[post].to(w.dtype))
+            # These full-edge scratch tensors are no longer needed. Diagnostics
+            # must not retain them while allocating another full-edge log ratio.
+            del dlog, post, total
             ratio = w.float() / self.eg_birth[n].float().clamp_min(1e-30)
             lr_ = torch.log(ratio[alive].clamp_min(1e-30))
+            del ratio, alive
             if lr_.numel() == 0:                          # every synapse removed (the living noedges gate)
                 self.eg_moved[n] = [0.0, 0.0]
                 continue
-            self.eg_moved[n] = [float(lr_.abs().mean()), float(lr_.abs().quantile(0.99)) if lr_.numel() < 2**24 else
-                                float(lr_.abs()[torch.randint(0, lr_.numel(), (1 << 20,), device=lr_.device)].quantile(0.99))]
+            # lr_ is a private diagnostic copy. Reuse it, preserving values and
+            # the existing sampling/RNG contract without repeated 100MB abs().
+            lr_.abs_()
+            # Reporting only: GPU quantile sorts another whole edge array.
+            # Preserve values/dtype and the existing large-array RNG sample;
+            # move only the diagnostic sort to the host after learning.
+            quantile_sample = (lr_ if lr_.numel() < 2**24 else
+                               lr_[torch.randint(0, lr_.numel(), (1 << 20,), device=lr_.device)])
+            self.eg_moved[n] = [float(lr_.mean()), float(quantile_sample.detach().cpu().quantile(0.99))]
+            del quantile_sample
         self.eg_count += 1
 
     def eg_state(self):
@@ -4285,6 +4945,94 @@ class FlyBPTTLearner:
         return {'z': self.evidence_z, 'beta': self.evidence_beta, 'count': self.evidence_count,
                 'pull_tau': self.pull_tau, 'moments': self.evidence_moments, 'birth': self.evidence_birth}
 
+    def set_brain_learning(self, mode):
+        """'bptt' (historical) or 'local': freeze every brain parameter out of autograd so a window builds no tape;
+        the optimizers' states are kept untouched, so 'bptt' can resume from the same archive."""
+        if mode not in ('bptt', 'local'):
+            raise ValueError(f'Unknown brain learning mode {mode!r}')
+        self.brain_learning = mode
+        if mode == 'bptt':
+            return
+        named = dict(self.model.named_parameters())
+        for name, parameter in named.items():
+            parameter.requires_grad_(name in LOCAL_READOUT_PARAMETERS)
+        self.trainable = [p for p in self.model.parameters() if p.requires_grad]
+        if not self.trainable:
+            raise ValueError('Local brain learning found no readout parameters')
+        # States no local window reads (frozen parameters' moments, EG/evidence history) are kept, unchanged, in host
+        # memory: they are saved as before and a 'bptt' resume maps them back to the parameters' device.
+        def host(value):
+            if torch.is_tensor(value):
+                return value.cpu()
+            if isinstance(value, dict):
+                return {k: host(v) for k, v in value.items()}
+            if isinstance(value, tuple):
+                return tuple(host(v) for v in value)
+            if isinstance(value, list):
+                return [host(v) for v in value]
+            return value
+        for optimizer in (self.optimizer, self.sgd):
+            for parameter, entry in optimizer.state.items():
+                if not parameter.requires_grad:
+                    optimizer.state[parameter] = host(entry)
+        for name in ('eg_mom', 'eg_birth', 'evidence_moments', 'evidence_birth'):
+            if getattr(self, name, None) is not None:
+                setattr(self, name, host(getattr(self, name)))
+        if torch.cuda.is_available():
+            torch.cuda.empty_cache()
+
+    def live_commit(self, targets, forced):
+        """brain_learning 'local' in a lived world: the live pass was the life. Its final state becomes the
+        individual's state (native local laws already acted in it); the readout learns from the reads standing at
+        each external word's arrival (exact local gradient of the arrival CE on decoder / read_norm; the brain's
+        own echo is excluded as an external label). No window is relived."""
+        lived = getattr(self, 'live_result', None)
+        if lived is None:
+            raise RuntimeError('Local commit needs the live pass of this window')
+        self.live_result = None
+        m = self.model
+        targets = [int(t) for t in targets]
+        sources = list(forced.get('sources') or ['external'] * len(targets))
+        reads = lived['reads']
+        if len(reads) != len(targets):
+            raise ValueError('Every lived word needs its arrival read')
+        device = self.state.h.device
+        values, metrics = [], {'local_commit': True}
+        valid = [i for i, r in enumerate(reads) if r is not None]
+        if valid:
+            x = torch.cat([reads[i] for i in valid]).float()
+            y = torch.tensor([targets[i] for i in valid], device=device)
+            external = torch.tensor([sources[i] != 'self_hearing' for i in valid], device=device)
+            with torch.enable_grad():
+                ce = F.cross_entropy(m.decoder(m.read_norm(x)), y, reduction='none')
+                if bool(external.any()):
+                    self.optimizer.zero_grad(set_to_none=True)
+                    ce[external].mean().backward()
+                    self.optimizer.step()
+                    self.optimizer.zero_grad(set_to_none=True)
+            values = ce.detach().cpu().tolist()
+            metrics.update(arrival_ce=float(ce.detach().mean()), external_targets=int(external.sum()))
+        with torch.no_grad():
+            state = lived['state']
+            self.state = state.detached() if hasattr(state, 'detached') else state
+            if m.topographic_writer is not None and self.state.baseline.numel():
+                m.topographic_writer.a_adapt.copy_(self.state.baseline)
+        if lived.get('ai_g') is not None:
+            self.ai_g = lived['ai_g'].detach()
+        speakers = forced.get('speakers')
+        if speakers:
+            self.last_voice = speakers[-1] == 'mother'
+        onsets = forced.get('reply_onsets')
+        if onsets:
+            self.last_reward = bool(onsets[-1])
+        for value in values:
+            self.ema = value if self.events == 0 else .99 * self.ema + .01 * value
+        self.events += len(targets)
+        self.physical_ticks += int(sum(forced.get('intervals') or []))
+        self.previous_token = targets[-1]
+        self.updates += 1
+        return values, metrics
+
     def pacemaker_homeostat_step(self):
         """Once per window, after the update and the epistemic replay (attach_pacemaker_homeostasis)."""
         m = self.model
@@ -4326,7 +5074,8 @@ class FlyBPTTLearner:
         """Delayed policy credit and input clocks belong to the continuous individual."""
         names = ('last_voice', 'last_reward', 'speak_credit', 'speak_epistemic_baseline', 'speak_baseline',
                  'pending_speak_credit', 'speak_pending_eligibility', 'speak_credit_clock', 'homeo',
-                 'speak_trace')
+                 'speak_trace', 'consequence_state', 'generative_event_state', 'native_generative_state',
+                 'native_context_state')
         saved = {name: getattr(self, name) for name in names if hasattr(self, name)}
         for name in ('pace_rng', 'sense_rng'):
             rng = getattr(self, name, None)
@@ -4335,13 +5084,14 @@ class FlyBPTTLearner:
         return saved
 
     def load_interaction_state(self, saved):
-        def to_device(value):
+        def to_device(value, device=None):
+            device = self.state.h.device if device is None else device
             if torch.is_tensor(value):
-                return value.to(self.state.h.device)
+                return value.to(device)
             if isinstance(value, dict):
-                return {k: to_device(v) for k, v in value.items()}
+                return {k: to_device(v, device) for k, v in value.items()}
             if isinstance(value, (tuple, list)):
-                return type(value)(to_device(v) for v in value)
+                return type(value)(to_device(v, device) for v in value)
             return value
         for name, value in saved.items():
             if name in ('pace_rng', 'sense_rng'):
@@ -4349,10 +5099,23 @@ class FlyBPTTLearner:
                 rng.bit_generator.state = value
                 setattr(self, name, rng)
             else:
-                setattr(self, name, to_device(value))
+                if name == 'consequence_state' and getattr(self, 'native_credit_cpu', False):
+                    # Delayed score archives need not occupy organism GPU RAM.
+                    # Keep every value/dtype, but preserve the explicit host
+                    # storage contract before any large device allocation.
+                    setattr(self, name, {key: to_device(item, 'cpu' if key == 'native_credit' else None)
+                                         for key, item in value.items()})
+                    continue
+                # The full-covariance statistical observer is deliberately CPU
+                # state; copying it onto the 4GB organism GPU changes its device
+                # contract and needlessly consumes the physiology budget.
+                setattr(self, name, to_device(value, 'cpu' if name in
+                        ('generative_event_state', 'native_generative_state', 'native_context_state') else None))
 
     def state_dict(self):
-        return {'evidence': self.evidence_state(), 'eg': self.eg_state(),
+        return {**({'native_runtime_document': archive_program(self.model)}
+                   if getattr(self.model, 'native_program_enabled', False) else {}),
+                'evidence': self.evidence_state(), 'eg': self.eg_state(),
                 'interaction': self.interaction_state_dict(),
                 'physical': self.state.state_dict(), 'optimizer': self.optimizer.state_dict(),
                 'sgd': self.sgd.state_dict(), 'adam_names': self.adam_names,
@@ -4378,6 +5141,8 @@ class FlyBPTTLearner:
                 'min_settle_ticks': getattr(self, 'min_settle_ticks', 3),
                 'flux_baseline': getattr(self, 'flux_baseline', 0.048),
                 'stream_ticks': getattr(self, 'stream_ticks', 0),
+                'stream_segment_ticks': int(getattr(self, 'stream_segment_ticks', 16)),
+                'native_credit_cpu': bool(getattr(self, 'native_credit_cpu', False)),
                 'hold_input': getattr(self, 'hold_input', False),
                 'read_lag': getattr(self, 'read_lag', 0),
                 'go_neuron': getattr(self, 'go_neuron', False),
@@ -4409,6 +5174,8 @@ class FlyBPTTGraph:
     physical states are copied into fixed buffers before each actual replay.
     """
     def __init__(self, learner, window=32):
+        if hasattr(learner.model, 'apl_cable_index'):
+            raise ValueError('Native direct cable solve needs eager/checkpointed execution, not CUDA Graph')
         if not learner.state.h.is_cuda:
             raise ValueError('CUDA Graph requires CUDA')
         self.learner, self.window = learner, window

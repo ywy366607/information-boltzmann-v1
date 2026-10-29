@@ -10,6 +10,29 @@ import pytest
 from information_boltzmann.core.fly_mother_world import GeminiApiMother, MotherWorld
 
 
+@pytest.mark.parametrize('backend', ['gemini', 'deepseek'])
+@pytest.mark.parametrize('strip_name', [False, True])
+def test_api_mother_delivers_the_note_after_a_paragraph_break(backend, strip_name):
+    from types import SimpleNamespace
+    from information_boltzmann.core.fly_mother_world import DeepSeekMother
+    cls = GeminiApiMother if backend == 'gemini' else DeepSeekMother
+    mother = cls.__new__(cls)
+    mother._refresh_plan = lambda: None
+    mother.plan = {'mother': {'strip_leading_vocative': strip_name}}
+    mother.base_system = 'A caring adult.'
+    mother.model, mother.url, mother.api_key = 'fixture', 'fixture', 'fixture'
+    mother.temperature, mother.max_tokens, mother.retries = .7, 128, 1
+    mother.thinking_field = False
+    raw = 'Mengli, here is a note:\n\nDear Mengli,\nI am listening.\nMama'
+    payload = ({'candidates': [{'content': {'parts': [{'text': raw}]}}]}
+               if backend == 'gemini' else {'choices': [{'message': {'content': raw}}]})
+    mother.requests = SimpleNamespace(post=lambda *a, **k: SimpleNamespace(
+        status_code=200, json=lambda: payload))
+    reply = mother.reply([('fly', 'paper')])
+    assert reply == ('Here is a note:\n\nDear Mengli,\nI am listening.\nMama' if strip_name else raw)
+    assert mother.last_raw_reply == raw
+
+
 def test_gemini_mother_dynamic_plan_injection(tmp_path):
     """Verify GeminiApiMother dynamically picks up plan changes from raising.json."""
     plan_file = tmp_path / "raising.json"

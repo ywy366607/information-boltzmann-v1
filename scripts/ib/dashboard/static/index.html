@@ -99,6 +99,9 @@ textarea { width: 100%; min-height: 460px; font: 12px/1.5 Consolas, monospace; }
         <canvas class="chart" id="cReplyNll"></canvas>
         <div class="legend"><span><i style="background:var(--brain)"></i>大脑</span><span><i style="background:var(--uni)"></i>同词元固定词频</span></div>
         <table id="sourceTable"></table></div>
+      <div class="card"><h2>本段正常回复 NLL</h2>
+        <p class="sub">按实际词元数加权的更新前预测；与同批词元的固定词频比较。只统计本段已载入窗口，不混入自听、开场或自动呼唤。单位 nats/token。</p>
+        <div class="kv" id="replySummary"></div></div>
       <div class="card"><h2>(2) 惊讶 → 多巴胺</h2>
         <p class="sub">每次门控：惊讶与相位多巴胺（同一个词、下一个词）及多巴胺细胞放电的 Spearman 相关</p>
         <canvas class="chart" id="cDa"></canvas>
@@ -136,7 +139,8 @@ textarea { width: 100%; min-height: 460px; font: 12px/1.5 Consolas, monospace; }
   <section class="tab" id="t-talk">
     <div class="card" style="margin-bottom:14px"><h2>这个家</h2><p class="sub">raising.json 的 family：不随话题轮换，嘴每一轮都带着；名字只用拉丁字母（她的词表是 GPT-2）</p>
       <div class="family" id="family"></div>
-      <h2 style="margin-top:14px">世界记忆</h2><p class="sub">data/harness/world.json：心从对话里整理出的事实，嘴每一轮带上，让同一个词总指同一个东西</p>
+      <h2 style="margin-top:14px">成长与共读 · Ling 姑姑</h2><div id="parentingReview"></div>
+      <h2 style="margin-top:14px">世界记忆</h2><p class="sub">记住这个家；当前只提取与孩子或活动相关的一条事实。故事里的事不会自动当成家里的事实。</p>
       <ul class="note" id="world" style="margin:0; padding-left:18px; line-height:1.8"></ul></div>
     <div class="grid">
       <div class="card"><h2>对话</h2><p class="sub">左：梦漓（她也听得见自己）；右：妈妈；虚线 = 沉默或叫名字。最近 200 句</p><div class="chat" id="chat"></div></div>
@@ -184,9 +188,9 @@ textarea { width: 100%; min-height: 460px; font: 12px/1.5 Consolas, monospace; }
         <b>mother.fly_temperature</b>：果蝇说话时从读出采样的温度<br>
         <b>mother.max_fly_words</b>：一口气最多几个词（身体的上限；开口还是让出由她的运动细胞决定）<br>
         <b>mother.persona</b>：妈妈的性格与说话方式<br>
-        <b>parenting.phases</b>：养育阶段（聆听期 → 咿呀期 → …），每段的词数与世界<br>
+        <b>parenting.interleaved_learning</b>：交流、共读、童谣、数量与因果同时开放，按兴趣穿插；不按时间或词数排他分课<br>
         <b>parenting.current_topic / intention</b>：当前话题与育儿意图，嘴每一轮带上<br>
-        <b>parenting.topics / revisit_every_words</b>：话题与回访（A→B→A 的节省测量）<br>
+        <b>parenting.education_stage / topics</b>：发展阶段只决定支持与难度；旧知识在新情境自然回访<br>
         <b>harness.*</b>：报警阈值（重复率、相同话轮、大脑贡献 ≤ 0）</div></div>
     </div>
   </section>
@@ -248,8 +252,18 @@ function drawTrain() {
   chart($('#cReplyNll'), [{color: css('--uni'), points: replyPoints('unigram')},
                          {color: css('--brain'), points: replyPoints('nll')}], {xfmt: x => x.toFixed(0) + 'k'});
   const recentSources = w.slice(-8);
+  const segment = w.filter(r => r.chunk === w.at(-1)?.chunk);
+  const segmentNll = sourceMean(segment, 'mother_reply', 'nll');
+  const segmentUni = sourceMean(segment, 'mother_reply', 'unigram');
+  $('#replySummary').innerHTML = [
+    ['打分已更新至', `${w.at(-1)?.trained?.toLocaleString() || '—'} 词元`],
+    ['当前段', w.at(-1)?.chunk == null ? '未标注' : '第 ' + w.at(-1).chunk + ' 段'],
+    ['正常回复样本量', segment.reduce((s,r) => s + (r.by_source?.mother_reply?.n || 0), 0) + ' 词元'],
+    ['正常回复 NLL', fmt(segmentNll, 4, false)], ['固定词频 NLL', fmt(segmentUni, 4, false)],
+    ['领先固定词频', segmentNll == null || segmentUni == null ? '—' : fmt(segmentUni - segmentNll, 4)],
+  ].map(([k,v]) => `<span>${k}</span><span>${v}</span>`).join('');
   $('#sourceTable').innerHTML = '<tr><th>最近 8 窗来源</th><th>词元数</th><th>即时 NLL</th><th>词频 NLL</th></tr>' +
-    [['mother_reply', '正常回复'], ['mother_call', '叫名字'], ['mother_opening', '开场'], ['self_hearing', '自听']].map(([key, label]) =>
+    [['mother_reply', '正常回复'], ['mother_call', '妈妈主动输入／呼唤'], ['mother_opening', '开场'], ['self_hearing', '自听']].map(([key, label]) =>
       `<tr><td>${label}</td><td>${recentSources.reduce((s, r) => s + (r.by_source?.[key]?.n || 0), 0)}</td><td>${fmt(sourceMean(recentSources, key, 'nll'), 3, false)}</td><td>${fmt(sourceMean(recentSources, key, 'unigram'), 3, false)}</td></tr>`).join('');
   chart($('#cDa'), [{color: css('--accent'), points: st.gates.map(g => ({x: g.c, y: g.da}))},
                     {color: css('--mother'), points: st.gates.map(g => ({x: g.c, y: g.da_next}))},
@@ -313,9 +327,39 @@ function brainEvents() {
 
 // ---------- conversation ----------
 const esc = t => String(t).replace(/[<&]/g, c => c === '<' ? '&lt;' : '&amp;');
+const localStamp = t => t ? new Date(t).toLocaleString('zh-CN', {timeZone:'Asia/Shanghai'}) : '尚无记录';
 async function drawTalk() {
   const [m, sp, runs, cfg] = await Promise.all([api(`/api/mother?run=${RUN}`), api(`/api/speak?run=${RUN}`), api('/api/mother_runs'), api('/api/config')]);
   const world = await api('/api/world');
+  const care = await api(`/api/parenting?run=${RUN}`);
+  const plan = care.plan || {}, curriculum = care.curriculum || {}, audit = care.audit || {};
+  const stage = (curriculum.stages || []).find(s => s.id === plan.education_stage);
+  const activity = plan.activity || {};
+  const criteria = stage?.criteria || [];
+  const brainNames = {kc:'Kenyon 感觉编码', mbon:'MBON 记忆输出', dan:'多巴胺细胞', plasticity:'可塑性写入', homeostasis:'细胞稳态', familiarity:'熟悉度', read_think_speak:'读—想—说因果链'};
+  const brainStates = {historical_activity_observed_function_unverified:'旧探针有活动，功能尚待验证', historical_write_observed:'旧探针观察到写入', historical_correlations_not_causal_proof:'旧探针有关联，作用尚待验证', historical_perturbation_inconclusive:'旧干预结果未定', last_logged_only_no_cell_health_pass:'仅最后日志，未判定健康', needs_current_paired_evidence:'需要当前配对证据'};
+  const caregiver = care.caregiver || {};
+  const neural = STATUS?.runtime?.neural || {};
+  const neuralNames = {firing_rate:'全脑放电率', dopamine_cells_firing:'多巴胺细胞放电率', dopamine_phasic_sd:'相位多巴胺 SD', dopamine_plasticity_spread:'可塑性 spread', intrinsic_kappa_mean:'稳态 κ 均值', kc_dan_release_gain_mean:'KC→DAN 释放增益', speed_tokens_per_sec:'词元/秒', vram_peak_mib:'显存峰值 MiB'};
+  const consequence = audit.action_consequence || {};
+  const causal = audit.native_causal_evidence || {};
+  const causalNames = {kc_terminal_off:'关闭 KC→DAN 末梢反馈', phi_zero:'去掉已有隔室记忆', phi_frozen:'冻结本段可塑性写入'};
+  const overdue = caregiver.next_review_due_at && Date.now() > Date.parse(caregiver.next_review_due_at);
+  $('#parentingReview').innerHTML = `<p><b>${esc(stage?.name || '成长阶段待记录')}</b> · ${esc(plan.care_mode || '')}</p>` +
+    `<p>照看者：Ling（本对话） · 最近照看：${esc(localStamp(caregiver.last_reviewed_at))}${overdue ? ' · 已到复盘时间' : ''}</p>` +
+    `<p>${esc(caregiver.decision || '等待 Ling 阅读对话与脑内证据')}</p>` +
+    (caregiver.last_repair_review_at ? `<p class="sub">机制审阅：${esc(localStamp(caregiver.last_repair_review_at))}；与对话照看时间分别记录。</p>` : '') +
+    `<p class="sub">审计快照：${esc(audit.trained ?? '未测')} 词元 · ${esc(localStamp(audit.reviewed_at))}；最新分组因果功能须另测，旧审计不会覆盖新话轮监测。</p>` +
+    `<p class="sub">以下生理数值来自 ${esc(STATUS?.runtime?.trained ?? '—')} 词元处的日志，活动不等于功能验收。</p>` +
+    `<div class="kv">${Object.entries(neural).map(([k,v]) => `<span>${esc(neuralNames[k] || k)}</span><span>${fmt(v, 4, false)}</span>`).join('')}</div>` +
+    `<p class="sub">行动后果探索：${consequence.status === 'interface_observed_behavior_unverified' ? `已记录 ${esc(consequence.observed_responses)} 次真实回复后果；词内容选择 ${esc(consequence.content_decisions)} 次。行为效果待验证。` : '尚未启用新后果信用，不能由旧 NLL 信用判定探索已成立。'}</p>` +
+    (causal.summary ? `<p class="sub">原生回路因果检查：${esc(causal.trained)} 存档 · ${esc(causal.tokens)} 词元 / ${esc(causal.physical_ticks)} 真实拍。${causal.status === 'historical_checkpoint_acute' ? '当前已是历史存档证据。' : '匹配该保存检查点。'} 短程干预效应，不等于长期学习收益或熟悉后主动转向。倾向差包含妈妈输入期间的全部拍，不能直接当作实际开口决策的变化。${causal.decision_conditioned_audit?.status === 'controls_incomplete' ? ' 实际决策时段的配对检查未通过全部对照，尚未验收。' : ''}</p><table><tr><th>干预</th><th>NLL变化（干预−完整）</th><th>全部拍上的倾向差</th></tr>${Object.entries(causal.summary).map(([k,v]) => `<tr><td>${esc(causalNames[k] || k)}</td><td>${fmt(v.mean_ce_delta, 5)}</td><td>${fmt(v.mean_absolute_hazard_delta, 5, false)}</td></tr>`).join('')}</table>` : '<p class="sub">原生回路因果检查：尚无通过对照的已登记报告。</p>') +
+    `<p>${esc(stage?.purpose || '')}</p><p>当前活动：${esc(activity.title || '未安排')}${activity.pages?.length ? ` · 第 ${(activity.page || 0) + 1} 页` : ''}</p>` +
+    `<p class="sub">${plan.interleaved_learning?.enabled ? '交流、共读、童谣、数量与因果穿插；阶段不限制内容，随兴趣回访。' : ''}</p>` +
+    `<p class="sub">完整回退点：${esc(caregiver.recovery_point || '尚未登记')}。存档存在不等于功能已验收。</p>` +
+    `<ul>${criteria.map(c => `<li>${esc(c.text)} — ${esc(c.status === 'unmeasured' ? '尚未验证' : c.status)}</li>`).join('')}</ul>` +
+    `<p class="sub">Ling 最近审阅：${esc(audit.parenting_action?.action || '尚未审阅')}。升阶段需要跨会话与换情境证据；低 NLL 或重复叫名不等于理解。</p>` +
+    `<div class="kv">${Object.entries(audit.brain?.checks || {}).map(([k, v]) => `<span>${esc(brainNames[k] || k)}</span><span>${esc(brainStates[v.status] || v.status)}</span>`).join('')}</div>`;
   $('#world').innerHTML = (world.facts || []).length ? world.facts.map(f => `<li>${esc(f.fact || f)}${f.since ? ` <span style="opacity:.6">— ${esc(f.since)}</span>` : ''}</li>`).join('') : '<li>还没有记忆</li>';
   const fam = cfg.family || {};
   const people = [['child', '自己'], ['mother', '妈妈'], ['father', '爸爸']].filter(([k]) => fam[k]).map(([k, role]) => [fam[k], role])
@@ -323,23 +367,30 @@ async function drawTalk() {
   $('#family').innerHTML = people.length ? people.map(([p, role]) => `<div class="person"><b>${esc(p.name)}</b><small>${role}${p.zh ? ' · ' + esc(p.zh) : ''}${p.full && p.full !== p.name ? ' · ' + esc(p.full) : ''}</small></div>`).join('')
     : '<div class="empty">raising.json 里还没有 family</div>';
   $('#chat').innerHTML = m.length ? m.map(t => {
-      const fly = t.who === 'fly', silent = fly && (t.text === '...' || !t.text.trim()), call = !fly && /^\w+\?$/.test(t.text.trim());
-      return silent ? `<div class="msg silent">梦漓 · 沉默，让出话轮 · ${t.trained}</div>`
+      const fly = t.who === 'fly', boundary = fly && t.turn_kind === 'boundary_only';
+      const knownKind = ['quiet_yield','boundary_only','utterance'].includes(t.turn_kind);
+      const silent = fly && (knownKind ? ['quiet_yield','boundary_only'].includes(t.turn_kind) : (t.text === '...' || !t.text.trim()));
+      const call = !fly && /^\w+\?$/.test(t.text.trim());
+      return silent ? `<div class="msg silent">梦漓 · ${boundary ? '结束话轮（换行，无词语）' : knownKind ? '安静，让出话轮' : '无词语（旧记录未区分等待与结束话轮）'} · ${t.trained}</div>`
         : `<div class="msg ${fly ? 'fly' : 'mother'}${call ? ' call' : ''}"><small>${fly ? '梦漓' : '妈妈'} · ${t.trained}</small>${esc(t.text)}</div>`; }).join('')
     : '<div class="empty">这个个体还没有进入妈妈世界</div>';
   $('#chat').scrollTop = 1e9;
-  const last = [...WINDOWS].reverse().find(w => w.monitor), mon = last?.monitor || {};
-  const ends = mon.fly_turn_ends || {}, tot = (ends.end_breath || 0) + (ends.end_word || 0) + (ends.end_yield || 0);
-  const parts = [['end_breath', '一口气', css('--noedge')], ['end_word', '结束词', css('--uni')], ['end_yield', '自己让出', css('--fly')]];
+  const last = [...WINDOWS].reverse().find(w => w.monitor), mon = last?.monitor || audit.world || {};
+  const ends = mon.fly_turn_ends || {}, tot = (ends.end_breath || 0) + (ends.end_word || 0) + (ends.end_yield || 0) + (ends.end_pause || 0);
+  const parts = [['end_breath', '长度上限', css('--noedge')], ['end_word', '结束词', css('--uni')], ['end_yield', '让出（含旧版静默）', css('--fly')], ['end_pause', '持续停顿后接话', css('--mother')]];
   $('#endsBar').innerHTML = tot ? parts.map(([k, l, c]) => `<span style="width:${100 * (ends[k] || 0) / tot}%;background:${c}">${ends[k] ? l + ' ' + ends[k] : ''}</span>`).join('') : '';
   $('#endsLegend').innerHTML = tot ? `<span>${tot} 个话轮</span>` : '<span>没有话轮结束的记录</span>';
-  const names = {fly_turns: '梦漓的话轮数', fly_ttr: '梦漓用词多样性', fly_repeat_bigrams: '梦漓重复二元组', fly_identical_consecutive_turns: '连续相同话轮',
+  const names = {fly_turns: '梦漓的话轮数', fly_ttr: '梦漓用词多样性（见样本量）', fly_repeat_bigrams: '梦漓重复二元组', fly_identical_consecutive_turns: '相邻相同发声话轮（新版排除沉默）',
                  fly_mean_turn_words: '平均每轮词数', fly_silent_turns: '沉默话轮比例', mother_ttr: '妈妈用词多样性', mother_repeat_bigrams: '妈妈重复二元组',
-                 fly_family_words: '梦漓说出家人名字', mother_family_words: '妈妈说出家人名字', silent_beats: '当前连续沉默', mother_calls: '妈妈叫名字',
+                 fly_word_entropy_bits: '梦漓词语熵（bits，需结合样本量）', mother_word_entropy_bits: '妈妈词语熵（bits，需结合样本量）',
+                 fly_effective_vocabulary: '梦漓有效词汇量', mother_effective_vocabulary: '妈妈有效词汇量',
+                 mother_grounding_flags: '妈妈原话与身份待审阅项', mouth_grounding_rejections: '送达前退回重说的错误草稿',
+                 fly_family_words: '梦漓说出家人名字', mother_family_words: '妈妈说出家人名字', silent_beats: '当前连续沉默', mother_calls: '妈妈主动发起／呼唤',
+                 mother_spontaneous_calls: '安静时的自然陪伴输入',
                  mother_waits: '妈妈选择等（agent）', mother_waits_silence: '妈妈陪她安静', interruptions: '打断妈妈',
                  mouth_calls: '嘴的调用次数', mouth_cache_hit_rate: '缓存命中率（输入 token）', mouth_cache_hit_tokens: '命中的输入 token',
                  mouth_cache_miss_tokens: '未命中的输入 token', mouth_output_tokens: '输出 token'};
-  $('#monitor').innerHTML = last ? Object.entries(mon).filter(([k]) => k !== 'fly_turn_ends').map(([k, v]) => `<span>${names[k] || k}</span><span>${v}</span>`).join('') : '<span>—</span><span></span>';
+  $('#monitor').innerHTML = last ? Object.entries(mon).filter(([k,v]) => k !== 'fly_turn_ends' && (v == null || typeof v !== 'object')).map(([k, v]) => `<span>${names[k] || k}</span><span>${v}</span>`).join('') : '<span>—</span><span></span>';
   const sx = r => r.bptt_train_tokens / 1000;
   chart($('#cHazard'), [{color: css('--fly'), points: sp.map(r => ({x: sx(r), y: r.hazard_mean}))},
                         {color: css('--accent'), dots: true, points: sp.filter(r => r.speak_rate != null).map(r => ({x: sx(r), y: r.speak_rate}))}], {xfmt: x => x.toFixed(1) + 'k'});
@@ -357,9 +408,9 @@ async function drawTalk() {
       ['回应脉冲（总）', rp.reduce((a, w) => a + w.reply_pulses, 0)]].map(([k, v]) => `<span>${k}</span><span>${v}</span>`).join('')
     : '<span>未开启</span><span>—</span>';
   const pct = v => v == null ? '—' : Math.round(100 * v) + '%';
-  $('#motherRuns').innerHTML = '<tr><th>运行</th><th>学分</th><th>话轮</th><th>一口气 / 结束词 / 让出</th><th>沉默话轮</th><th>每轮词数</th><th>妈妈多样性</th><th>妈妈重复</th><th>hazard 起 → 止</th></tr>' +
+  $('#motherRuns').innerHTML = '<tr><th>运行</th><th>学分</th><th>话轮</th><th>上限 / 结束词 / 让出 / 持续停顿</th><th>沉默话轮</th><th>每轮词数</th><th>妈妈多样性</th><th>妈妈重复</th><th>hazard 起 → 止</th></tr>' +
     runs.filter(r => r.monitor).map(r => { const mo = r.monitor, e = mo.fly_turn_ends || {};
-      return `<tr><td>${r.name}</td><td>${r.credit || 'predict'}</td><td>${mo.fly_turns ?? '—'}</td><td>${e.end_breath ?? '—'} / ${e.end_word ?? '—'} / ${e.end_yield ?? '—'}</td>
+      return `<tr><td>${r.name}</td><td>${r.credit || 'predict'}</td><td>${mo.fly_turns ?? '—'}</td><td>${e.end_breath ?? '—'} / ${e.end_word ?? '—'} / ${e.end_yield ?? '—'} / ${e.end_pause ?? '—'}</td>
         <td>${pct(mo.fly_silent_turns)}</td><td>${mo.fly_mean_turn_words ?? '—'}</td><td>${mo.mother_ttr ?? '—'}</td><td>${mo.mother_repeat_bigrams ?? '—'}</td>
         <td>${r.hazard_first == null ? '—' : r.hazard_first.toFixed(3) + ' → ' + r.hazard_last.toFixed(3)}</td></tr>`; }).join('');
 }
@@ -412,9 +463,11 @@ async function refresh() {
   [STATUS, WINDOWS, HEALTH] = await Promise.all([api(`/api/status?run=${RUN}`), api(`/api/windows?run=${RUN}&last=600`), api(`/api/health?run=${RUN}`)]);
   const runtime = STATUS.runtime || {};
   const states = {failed: '启动或训练失败，当前未继续训练', paused: '训练已暂停',
+                  saving: '本段结束，正在核对存档',
                   completed: '本块训练完成', running: '最近记录：训练中', calibrated: '校准已完成'};
   const lastTalk = runtime.conversation_updated ? new Date(runtime.conversation_updated * 1000).toLocaleString() : '暂无';
-  $('#runState').textContent = `${states[runtime.status] || '暂无运行状态'} · 已训练 ${(runtime.trained ?? '—').toLocaleString()} 词元 · 最后对话 ${lastTalk}${['failed', 'paused', 'completed'].includes(runtime.status) ? ' · 下方是已保存的对话记录' : ''}`;
+  const scored = WINDOWS.at(-1)?.trained;
+  $('#runState').textContent = `${states[runtime.status] || '暂无运行状态'} · 最新打分 ${(scored ?? '—').toLocaleString()} / 目标 ${(runtime.target ?? '—').toLocaleString()} 词元 · 训练日志 ${(runtime.trained ?? '—').toLocaleString()} 词元 · 最后对话 ${lastTalk}${['failed', 'paused', 'completed'].includes(runtime.status) ? ' · 下方是已保存的对话记录' : ''}`;
   $('#runState').style.borderColor = runtime.status === 'failed' ? 'var(--noedge)' : '';
   const lastGate = STATUS.gates.at(-1), lastChunk = STATUS.chunks.at(-1);
   $('#meta').textContent = `${RUN} · ${lastChunk ? '第 ' + lastChunk.c + ' 段 ' + lastChunk.time : '—'} · ${lastGate ? '大脑贡献 ' + fmt(lastGate.mean) + ' ± ' + lastGate.se : ''} · 刷新于 ${new Date().toLocaleTimeString()}`;

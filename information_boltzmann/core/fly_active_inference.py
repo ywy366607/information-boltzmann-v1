@@ -45,7 +45,8 @@ def attach_ai_head(model, init, eye_open=0.95):
     return model
 
 
-def attach_motor_acts(model, tau_muscle=8.0, eye_open=0.9, habit=0.2, brain_gradient=False, dopamine_precision=False):
+def attach_motor_acts(model, tau_muscle=8.0, eye_open=0.9, habit=0.2, brain_gradient=False, dopamine_precision=False,
+                      eye_gate='atan'):
     """Acts as the brain's own output cells (diversity first; GOAL section 'Behaviour diversity first').  The output
     cells' transmitted spikes drive a muscle activation m = lambda m + (1 - lambda) s (the body's low-pass, tau_muscle
     ticks, no threshold, no learning); the act logits are z = W m + b (W learned: which cells drive which act; starts
@@ -66,12 +67,17 @@ def attach_motor_acts(model, tau_muscle=8.0, eye_open=0.9, habit=0.2, brain_grad
     model.ai_mode = 'motor'
     model.ai_brain_gradient = bool(brain_gradient)
     model.ai_precision = bool(dopamine_precision)
+    model.ai_eye_gate = str(eye_gate)
     if model.ai_precision and (getattr(model, 'dan_indices', None) is None
                                or getattr(model, 'dopamine_logit_slow', None) is None):
         raise ValueError('dopamine-encoded precision needs the dopamine cells and their slow clock (--dopamine-modulation)')
     model.register_buffer('ai_lambda', torch.tensor(math.exp(-1.0 / tau_muscle), device=device), persistent=True)
     model.ai_w = torch.nn.Parameter(torch.zeros(2, n, device=device))
-    prior = torch.tensor([math.log(eye_open / (1 - eye_open)), math.log(habit / (1 - habit))], device=device)
+    if eye_gate == 'atan':
+        eye_prior = math.tan(math.pi * (eye_open - 0.5))
+    else:
+        eye_prior = math.log(eye_open / (1 - eye_open))
+    prior = torch.tensor([eye_prior, math.log(habit / (1 - habit))], device=device)
     if model.ai_precision:
         model.register_buffer('ai_habit', prior, persistent=True)        # ln E, frozen
         model.ai_b = torch.nn.Parameter(torch.zeros(2, device=device))  # the value's bias, scaled with W m
@@ -87,6 +93,11 @@ def motor_logits(model, m):
     if getattr(model, 'ai_mu', None) is not None:
         m = (m - model.ai_mu) / model.ai_sigma                # each muscle's own gain (calibrate_muscles)
     value = m @ model.ai_w.T + model.ai_b
+    if getattr(model, 'native_motor_port_enabled', False):
+        # Attention keeps its own channel. Speech timing has no direct DN,
+        # endocrine or other non-motor readout shortcut.
+        output = (m * model.native_motor_mask) @ model.ai_w[1:2].T + model.ai_b[1:2]
+        value = torch.cat([value[:, :1], output], dim=1)
     if not precision:
         return value
     return model.ai_habit + gamma_of(model, d).detach() * value
@@ -177,12 +188,13 @@ def ai_eye(model, g, forced=None):
     written)."""
     if forced is not None:
         return g.new_full((1,), float(forced))
-    if getattr(model, 'ai_mode', None) == 'motor':
-        return torch.sigmoid(motor_logits(model, g)[0, 0:1])
-    return torch.sigmoid(g[0, 0:1])
+    z = motor_logits(model, g)[0, 0:1] if getattr(model, 'ai_mode', None) == 'motor' else g[0, 0:1]
+    if getattr(model, 'ai_eye_gate', 'atan') == 'atan':
+        return 0.5 + (1.0 / math.pi) * torch.atan(z)
+    return torch.sigmoid(z)
 
 
-def ai_step(model, state, g, taped=None):
+def ai_step(model, state, g, taped=None, outcome_bias=None, *, brain_gradient=None):
     """After a tick.  Motor mode: the muscles integrate the output cells' transmitted spikes; the commit hazard is
     h = sigmoid(z_out) (returned soft: the objective takes the exact expectation over commit times), the realized
     commit is a sample (taped for the recompute).  Integrator mode (M0-M3): both channels integrate the output cells'
@@ -190,7 +202,7 @@ def ai_step(model, state, g, taped=None):
     Returns (output hazard [1], new g, committed: bool)."""
     if getattr(model, 'ai_mode', None) == 'motor':
         s = state.ring[0].index_select(1, model.read_indices)
-        if not model.ai_brain_gradient:
+        if not (model.ai_brain_gradient if brain_gradient is None else brain_gradient):
             s = s.detach()
         if getattr(model, 'ai_precision', False):
             # the dopamine tone on the brain's own slow dopamine clock
@@ -200,7 +212,18 @@ def ai_step(model, state, g, taped=None):
                            rho * g[:, -1:] + (1.0 - rho) * da], 1)
         else:
             g = model.ai_lambda * g + (1.0 - model.ai_lambda) * s
-        hazard = torch.sigmoid(motor_logits(model, g)[0, 1:2])
+        logit = motor_logits(model, g)[0, 1:2]
+        if outcome_bias is not None:
+            if callable(outcome_bias):
+                outcome_bias = outcome_bias(state, g)
+            logit = logit + torch.as_tensor(outcome_bias, device=logit.device, dtype=logit.dtype).detach()
+        hazard = torch.sigmoid(logit)
+        if getattr(model, 'native_motor_port_enabled', False):
+            from .fly_native_motor_port import motor_availability
+            available = motor_availability(model, state)
+            hazard = hazard * available.to(hazard)
+            if taped is not None and bool(taped) and not bool(available.all()):
+                raise ValueError('Recorded commit has no native motor release event')
         committed = bool(torch.rand(()) < float(hazard.detach())) if taped is None else bool(taped)
         return hazard, g, committed
     h = state.h
@@ -290,14 +313,18 @@ class Familiarity:
 
 def eye_act(model, g, forced=None, taped=None, sample=False):
     """The eyes as a decision (M3): look at the coming word or not.  Forward exactly 0 / 1 (closed eyes: the word is not
-    written at all, so a question kept open cannot be answered by peeking); backward through p = sigmoid(G_eye),
-    straight through, like the output commit.  sample=True: the look is drawn from Bernoulli(p) (active inference
-    samples its policies; it also gives real closures with their real outcomes); else the look is p >= 0.5.
+    written at all, so a question kept open cannot be answered by peeking); backward through p = sigmoid(G_eye)
+    or normalized atan, straight through, like the output commit.  sample=True: the look is drawn from Bernoulli(p)
+    (active inference samples its policies; it also gives real closures with their real outcomes); else the look is p >= 0.5.
     Returns (gain [1], decision: bool)."""
     if forced is not None:
         return g.new_full((1,), float(forced)), bool(forced >= 0.5)
-    soft = torch.sigmoid(motor_logits(model, g)[0, 0:1]) if getattr(model, 'ai_mode', None) == 'motor' \
-        else torch.sigmoid(g[0, 0:1])
+    z = motor_logits(model, g)[0, 0:1] if getattr(model, 'ai_mode', None) == 'motor' else g[0, 0:1]
+    gate = getattr(model, 'ai_eye_gate', 'atan')
+    if gate == 'atan':
+        soft = 0.5 + (1.0 / math.pi) * torch.atan(z)
+    else:
+        soft = torch.sigmoid(z)
     if taped is not None:
         look = bool(taped)
     elif sample:
@@ -307,10 +334,9 @@ def eye_act(model, g, forced=None, taped=None, sample=False):
         look = bool(torch.rand(()) < min(1.0 - floor, max(floor, float(soft.detach()))))
     else:
         look = float(soft.detach()) >= 0.5
-    # the slope of p at p = 1/2, everywhere (see ai_step), on the eye's logit (motor mode: z_eye from the muscles; g
-    # itself is the muscle vector there, whose first entry is one output cell)
-    z = motor_logits(model, g)[0, 0:1] if getattr(model, 'ai_mode', None) == 'motor' else g[0, 0:1]
-    u = 0.25 * z
+    # the slope of p at z = 0: 1/pi for atan, 0.25 for sigmoid
+    slope = (1.0 / math.pi) if gate == 'atan' else 0.25
+    u = slope * z
     return float(look) + u - u.detach(), look
 
 
@@ -387,3 +413,21 @@ def habit_kl(h, habit):
     minimises E_q[gamma G] + KL(q || E)); keeps the acts sampled instead of collapsing to 0 / 1."""
     h = h.clamp(1e-6, 1 - 1e-6)
     return h * torch.log(h / habit) + (1 - h) * torch.log((1 - h) / (1 - habit))
+
+
+def motor_policy_kl(hazards, habit, decisions=None):
+    """Regularize only opportunities at which this policy can actually act.
+
+    ``None`` retains the continuously available motor policy. In mother-world,
+    recorded (word, start, length, said) intervals exclude the mother's protected
+    turn; an empty list means there were no available decisions in this window.
+    """
+    if decisions is None:
+        return habit_kl(hazards, habit).mean(), hazards.numel()
+    mask = torch.zeros_like(hazards, dtype=torch.bool)
+    for _, start, length, _ in decisions:
+        if start < 0 or length < 1 or start + length > hazards.numel():
+            raise ValueError('Motor decision lies outside its physical clock')
+        mask[start:start + length] = True
+    ticks = int(mask.sum())
+    return ((habit_kl(hazards[mask], habit).mean() if ticks else hazards.sum() * 0), ticks)

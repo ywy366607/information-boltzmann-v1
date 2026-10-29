@@ -32,6 +32,11 @@ from information_boltzmann.core.fly_bptt_learning import (WRITER_SENSE, attach_i
     GO_PARAMETER_NAMES, attach_go_neuron, attach_connectome_go, READ_BANK_PARAMETER_NAMES, attach_read_bank,
     INTRINSIC_PARAMETER_NAMES, attach_intrinsic_drive, PRECISION_PARAMETER_NAMES, attach_precision,
     PREDICTIVE_PARAMETER_NAMES, attach_predictive_writer, DOPAMINE_PARAMETER_NAMES, attach_dopamine_modulation,
+    AMINE_PARAMETER_NAMES,
+    CX_PARAMETER_NAMES,
+    MB_CONSOLIDATION_PARAMETER_NAMES,
+    BODY_LOOP_PARAMETER_NAMES,
+    AL_PARAMETER_NAMES,
     ONLINE_DA_PARAMETER_NAMES, attach_online_da_plasticity, attach_kenyon_dendritic_only, attach_homeostasis,
     attach_regime_homeostasis, attach_tied_writer, REGIME_KENYON_Z,
     attach_compartment_memory, attach_taste_heads, COMPARTMENT_PARAMETER_NAMES, TASTE_PARAMETER_NAMES,
@@ -39,6 +44,44 @@ from information_boltzmann.core.fly_bptt_learning import (WRITER_SENSE, attach_i
     renormalize_kenyon_inputs, pin_kenyon_to_dopamine, pin_sensory_terminals, pin_modulatory_fast_edges,
     reset_inputs_to_birth, attach_graded_cells, GRADED_PARAMETER_NAMES, attach_receptor_writer,
 )
+from information_boltzmann.core.fly_amine_modulation import attach_amine_modulation, AMINE_KINETICS_VERSION
+from information_boltzmann.core.fly_cx_state import attach_cx_state
+from information_boltzmann.core.fly_apl_cable import (
+    attach_apl_cable, APL_CABLE_PARAMETER_NAMES, APL_CABLE_ID_NAMES, APL_CABLE_VERSION,
+)
+from information_boltzmann.core.fly_apl_local_release import (
+    attach_apl_local_release, APL_LOCAL_RELEASE_PARAMETER_NAMES,
+    APL_LOCAL_RELEASE_VERSION,
+)
+from information_boltzmann.core.fly_mb_consolidation import attach_mb_consolidation
+from information_boltzmann.core.fly_dan_release import (attach_dan_release, DAN_RELEASE_VERSION, DAN_RELEASE_PARAMETER_NAMES, DAN_RELEASE_ID_NAMES)
+from information_boltzmann.core.fly_kc_dopamine import (attach_kc_dopamine, KC_DOPAMINE_VERSION, KC_DOPAMINE_PARAMETER_NAMES, KC_DOPAMINE_ID_NAMES)
+from information_boltzmann.core.fly_kc_lateral import (attach_kc_lateral, KC_LATERAL_VERSION,
+    KC_LATERAL_PARAMETER_NAMES, KC_LATERAL_ID_NAMES)
+from information_boltzmann.core.fly_sensory_terminals import (SENSORY_TERMINAL_VERSION,
+    SENSORY_TERMINAL_PARAMETER_NAMES, SENSORY_TERMINAL_ID_NAMES)
+from information_boltzmann.core.fly_kc_contact_memory import (
+    attach_kc_contact_memory, KC_CONTACT_VERSION, KC_CONTACT_ID_NAMES)
+from information_boltzmann.core.fly_kc_site_stp import (
+    attach_kc_site_stp, KC_SITE_STP_PARAMETER_NAMES, KC_SITE_STP_VERSION)
+from information_boltzmann.core.fly_kc_terminals import (
+    attach_kc_terminals, KC_TERMINAL_PARAMETER_NAMES, KC_TERMINAL_ID_NAMES, KC_TERMINAL_VERSION,
+)
+from information_boltzmann.core.fly_mb_terminal import (
+    attach_mb_terminal, MB_TERMINAL_PARAMETER_NAMES, MB_TERMINAL_ID_NAMES, MB_TERMINAL_VERSION,
+    quarantine_mb_pooled_credit,
+)
+from information_boltzmann.core.fly_body_loop import (attach_body_loop, attach_body_actuator,
+    BODY_ACTUATOR_PARAMETER_NAMES, quarantine_body_proxy_credit)
+from information_boltzmann.core.fly_endocrine_exchange import attach_endocrine_exchange, ENDOCRINE_PARAMETER_NAMES
+from information_boltzmann.core.fly_native_motor_port import (
+    attach_native_motor_port, MOTOR_PORT_PARAMETER_NAMES, checkpoint_model_weights,
+)
+from information_boltzmann.core.fly_olfactory_relay import attach_olfactory_relay
+from information_boltzmann.core.fly_visual_physiology import attach_visual_physiology, VISUAL_PARAMETER_NAMES
+from information_boltzmann.core.fly_native_runtime import attach_program_document, validate_program_bindings
+from information_boltzmann.core.fly_native_assembly import assemble_spatial_components
+from information_boltzmann.core.fly_activity_audit import instantaneous_release_metrics
 from information_boltzmann.runtime.lifelong_evaluation import recovery_summary, savings_summary
 from information_boltzmann.runtime.prequential_meter import FirstPassPredictionMeter
 
@@ -55,6 +98,13 @@ def atomic_json(path, payload):
     raise PermissionError(f"Could not replace {path}")
 
 
+def preserve_committed_resource_window(error, checkpoint):
+    """A post-update limit must save the paired brain/world before stopping."""
+    if error is not None:
+        checkpoint()
+        raise MemoryError(error + '; complete committed-window checkpoint saved')
+
+
 _CHECKPOINT_DIR = None
 
 
@@ -67,6 +117,13 @@ def atomic_save(path, payload):
     # file); retry the WHOLE save with fresh names until one lands cleanly.
     last_error = None
     for attempt in range(5):
+        # Release dead replay graphs and allocator reservations before making
+        # CPU staging copies of a complete GPU individual. Live values remain
+        # untouched. In particular, do not retain a failed torch.save traceback
+        # (and its large temporary storages) across the next retry.
+        gc.collect()
+        if torch.cuda.is_initialized():
+            torch.cuda.empty_cache()
         temporary = path.with_suffix(f'.pt.tmp{attempt}')
         try:
             torch.save(payload, temporary)
@@ -78,8 +135,8 @@ def atomic_save(path, payload):
                     last_error = error
                     time.sleep(0.5 * min(retry + 1, 8))
             break
-        except (RuntimeError, OSError) as error:
-            last_error = error
+        except (RuntimeError, OSError, MemoryError) as error:
+            last_error = type(error)(str(error))
             try:
                 temporary.unlink()
             except OSError:
@@ -172,6 +229,11 @@ def resolve_learning_modes(args, previous_config, previous_learner):
                                        previous_config.get('adaptive_admission', False)))
     if getattr(args, 'stream_ticks', None) is None:
         args.stream_ticks = int(previous_learner.get('stream_ticks', previous_config.get('stream_ticks', 0)))
+    old_segment = int(previous_learner.get('stream_segment_ticks', previous_config.get('stream_segment_ticks', 16)))
+    if getattr(args, 'stream_segment_ticks', None) is None:
+        args.stream_segment_ticks = old_segment
+    if args.stream_segment_ticks < 1:
+        raise ValueError('Stream recomputation segment must be positive')
     if getattr(args, 'hold_input', None) is None:
         args.hold_input = bool(previous_learner.get('hold_input', previous_config.get('hold_input', False)))
     if getattr(args, 'read_lag', None) is None:
@@ -183,6 +245,127 @@ def resolve_learning_modes(args, previous_config, previous_learner):
         args.go_neuron = None
     if getattr(args, 'dopamine_modulation', None) is None:
         args.dopamine_modulation = bool(previous_config.get('dopamine_modulation', False))
+    if getattr(args, 'amine_modulation', None) is None:
+        args.amine_modulation = bool(previous_config.get('amine_modulation', False))
+    if args.amine_modulation and previous_config.get('amine_modulation'):
+        if previous_config.get('amine_kinetics_version', 1) != AMINE_KINETICS_VERSION:
+            raise ValueError('Enabled legacy amine kinetics need an explicit state/optimizer repair; '
+                             'refusing to silently reinterpret learned time constants')
+    if getattr(args, 'cx_state', None) is None:
+        args.cx_state = bool(previous_config.get('cx_state', False))
+    if getattr(args, 'mb_consolidation', None) is None:
+        args.mb_consolidation = bool(previous_config.get('mb_consolidation', False))
+    if getattr(args, 'mb_terminal_projection', None) is None:
+        args.mb_terminal_projection = bool(previous_config.get('mb_terminal_projection', False))
+    if (args.mb_terminal_projection and previous_config.get('mb_terminal_projection')
+            and previous_config.get('mb_terminal_version') != MB_TERMINAL_VERSION):
+        raise ValueError('MB terminal kinetics/schema version requires explicit migration')
+    if getattr(args, 'apl_cable', None) is None:
+        args.apl_cable = bool(previous_config.get('apl_cable', False))
+    if args.apl_cable and previous_config.get('apl_cable') and previous_config.get('apl_cable_version') != APL_CABLE_VERSION:
+        raise ValueError('APL cable version requires explicit full-state migration')
+    if getattr(args, 'apl_local_release', None) is None:
+        args.apl_local_release = bool(previous_config.get('apl_local_release', False))
+    if args.apl_local_release and not args.apl_cable:
+        raise ValueError('Local APL calcium release requires the native cable')
+    if previous_config.get('apl_local_release') and (not args.apl_local_release or
+            previous_config.get('apl_local_release_version') != APL_LOCAL_RELEASE_VERSION):
+        raise ValueError('Continuing APL calcium release requires matching enabled history')
+    if args.apl_local_release and previous_config.get('apl_cable') and not previous_config.get('apl_local_release'):
+        raise ValueError('Use explicit full-state APL calcium migration before continuing')
+    if getattr(args,'dan_local_release',None) is None:
+        args.dan_local_release = bool(previous_config.get('dan_local_release',False))
+    from information_boltzmann.core.fly_dan_credit import DAN_CREDIT_VERSION
+    if getattr(args, 'dan_carried_credit', None) is None:
+        args.dan_carried_credit = bool(previous_config.get('dan_carried_credit', False))
+    if previous_config.get('dan_carried_credit') and (not args.dan_carried_credit or
+            previous_config.get('dan_credit_version') != DAN_CREDIT_VERSION):
+        raise ValueError('Continuing DAN credit requires matching enabled history schema')
+    if args.dan_carried_credit and not args.dan_local_release:
+        raise ValueError('DAN carried credit requires the local source')
+    if args.dan_carried_credit and previous_config.get('dan_local_release') and not previous_config.get('dan_carried_credit'):
+        raise ValueError('Use explicit DAN credit migration to record the historical derivative boundary')
+    from information_boltzmann.core.fly_dan_receiver_credit import DAN_RECEIVER_CREDIT_VERSION
+    if getattr(args, 'dan_receiver_credit', None) is None:
+        args.dan_receiver_credit = bool(previous_config.get('dan_receiver_credit', False))
+    if previous_config.get('dan_receiver_credit') and (not args.dan_receiver_credit or
+            previous_config.get('dan_receiver_credit_version') != DAN_RECEIVER_CREDIT_VERSION):
+        raise ValueError('Continuing DAN receiver credit requires its enabled history schema')
+    if args.dan_receiver_credit and not args.dan_carried_credit:
+        raise ValueError('DAN receiver history requires source material history')
+    if args.dan_receiver_credit and previous_config.get('dan_carried_credit') and not previous_config.get('dan_receiver_credit'):
+        raise ValueError('Use explicit receiver credit migration to record its derivative boundary')
+    if getattr(args,'dan_release_geometry',None) is None:
+        args.dan_release_geometry = (Path(previous_config['dan_release_geometry'])
+            if previous_config.get('dan_release_geometry') else None)
+    if previous_config.get('dan_local_release') and (not args.dan_local_release or
+            previous_config.get('dan_release_version') != DAN_RELEASE_VERSION):
+        raise ValueError('Continuing local DAN source requires matching enabled schema')
+    if getattr(args, 'kc_dopamine', None) is None:
+        args.kc_dopamine = bool(previous_config.get('kc_dopamine', False))
+    if getattr(args, 'kc_dopamine_geometry', None) is None:
+        args.kc_dopamine_geometry = (Path(previous_config['kc_dopamine_geometry'])
+            if previous_config.get('kc_dopamine_geometry') else None)
+    if previous_config.get('kc_dopamine') and (not args.kc_dopamine or
+            previous_config.get('kc_dopamine_version') != KC_DOPAMINE_VERSION):
+        raise ValueError('Continuing DAN-KC state requires matching enabled schema')
+    if getattr(args, 'kc_contact_memory', None) is None:
+        args.kc_contact_memory = bool(previous_config.get('kc_contact_memory', False))
+    if previous_config.get('kc_contact_memory') and not args.kc_contact_memory:
+        raise ValueError('Cannot silently revert contact learning; use matched read/write interventions or an explicit migration')
+    if previous_config.get('kc_contact_memory') and previous_config.get('kc_contact_version') != KC_CONTACT_VERSION:
+        raise ValueError('KC contact memory version mismatch')
+    if getattr(args, 'kc_lateral', None) is None:
+        args.kc_lateral = bool(previous_config.get('kc_lateral', False))
+    if getattr(args, 'kc_lateral_geometry', None) is None:
+        args.kc_lateral_geometry = (Path(previous_config['kc_lateral_geometry'])
+                                    if previous_config.get('kc_lateral_geometry') else None)
+    if args.kc_lateral and not args.kc_contact_memory:
+        raise ValueError('KC lateral coupling requires native plastic contacts')
+    if previous_config.get('kc_lateral') and (not args.kc_lateral or
+            previous_config.get('kc_lateral_version') != KC_LATERAL_VERSION):
+        raise ValueError('Continuing KC lateral receptors requires matching enabled history')
+    if getattr(args, 'sensory_terminal', None) is None:
+        args.sensory_terminal = bool(previous_config.get('sensory_terminal', False))
+    if getattr(args, 'sensory_terminal_geometry', None) is None:
+        args.sensory_terminal_geometry = (Path(previous_config['sensory_terminal_geometry'])
+                                          if previous_config.get('sensory_terminal_geometry') else None)
+    if previous_config.get('sensory_terminal') and (not args.sensory_terminal or
+            previous_config.get('sensory_terminal_version') != SENSORY_TERMINAL_VERSION):
+        raise ValueError('Continuing sensory terminal state requires the matching enabled schema')
+    if args.sensory_terminal and previous_config and not previous_config.get('sensory_terminal'):
+        raise ValueError('Use the full-state sensory terminal migration before enabling the pathway')
+    if args.kc_lateral and previous_config.get('kc_contact_memory') and not previous_config.get('kc_lateral'):
+        raise ValueError('Use full-state KC lateral migration before enabling the new pathway')
+    if getattr(args, 'kc_site_stp', None) is None:
+        args.kc_site_stp = bool(previous_config.get('kc_site_stp', False))
+    if args.kc_site_stp and previous_config.get('kc_site_stp') and previous_config.get('kc_site_stp_version') != KC_SITE_STP_VERSION:
+        raise ValueError('KC site STP version mismatch')
+    if getattr(args, 'kc_terminal', None) is None:
+        args.kc_terminal = bool(previous_config.get('kc_terminal', False))
+    if getattr(args, 'kc_terminal_geometry', None) is None:
+        args.kc_terminal_geometry = Path(previous_config['kc_terminal_geometry']) if previous_config.get('kc_terminal_geometry') else None
+    if args.kc_terminal and previous_config.get('kc_terminal') and previous_config.get('kc_terminal_version') != KC_TERMINAL_VERSION:
+        raise ValueError('KC terminal version requires explicit full-state migration')
+    if getattr(args, 'body_loop', None) is None:
+        args.body_loop = bool(previous_config.get('body_loop', False))
+    # Never inherit the historical proxy path as native physiology. Frozen
+    # historical audits opt in explicitly; ordinary training cannot use it.
+    args.body_proxy_compatibility = bool(getattr(args, 'body_proxy_compatibility', False))
+    if args.body_proxy_compatibility and not getattr(args, 'native_audit_frozen', False):
+        raise ValueError('Synthetic body feedback is quarantined; compatibility is for frozen historical audits only')
+    if getattr(args, 'olfactory_relay', None) is None:
+        args.olfactory_relay = bool(previous_config.get('olfactory_relay', False))
+    if getattr(args, 'visual_graded', None) is None:
+        args.visual_graded = bool(previous_config.get('visual_graded', False))
+    if getattr(args, 'visual_graded_gain', None) is None:
+        args.visual_graded_gain = float(previous_config.get('visual_graded_gain') or 0.025)
+    if getattr(args, 'body_actuator', None) is None:
+        args.body_actuator = bool(previous_config.get('body_actuator', False))
+    if getattr(args, 'endocrine_exchange', None) is None:
+        args.endocrine_exchange = bool(previous_config.get('endocrine_exchange', False))
+    if getattr(args, 'native_motor_port', None) is None:
+        args.native_motor_port = bool(previous_config.get('native_motor_port', False))
     if getattr(args, 'dopamine_site', None) is None:
         args.dopamine_site = previous_config.get('dopamine_site') or 'post'
     if getattr(args, 'dopamine_adapted', None) is None:
@@ -236,7 +419,9 @@ def resolve_learning_modes(args, previous_config, previous_learner):
         args.intrinsic_kappa = previous_config.get('intrinsic_kappa')
     if getattr(args, 'connectome_v2', None) is None:
         args.connectome_v2 = bool(previous_config.get('connectome_v2', False))
-    args.al_reset_newly = bool(args.al_reset) and not bool(previous_config.get('al_reset', False))
+    # The resolver is also used with partial namespaces by restore interfaces.
+    args.al_reset = bool(getattr(args, 'al_reset', False))
+    args.al_reset_newly = args.al_reset and not bool(previous_config.get('al_reset', False))
     if previous_config.get('al_reset'):
         args.al_reset = True
     if getattr(args, 'kc_renorm', None) is None:
@@ -259,10 +444,14 @@ def resolve_learning_modes(args, previous_config, previous_learner):
     for name, default in (('act_tau', 8.0), ('act_habit', 0.2), ('act_gamma_inv', 0.05)):
         if getattr(args, name, None) is None:
             setattr(args, name, float(previous_config.get(name) or default))
+    if args.dan_carried_credit and not args.carried_credit:
+        raise ValueError('DAN history requires --carried-credit')
     if getattr(args, 'sense_noise', None) is None:
         args.sense_noise = float(previous_config.get('sense_noise') or 0.0)
     if getattr(args, 'eye_init', None) is None:
         args.eye_init = float(previous_config.get('eye_init') or 0.95)
+    if getattr(args, 'eye_gate', None) is None:
+        args.eye_gate = str(previous_config.get('eye_gate') or 'atan')
     if getattr(args, 'noise_rate', None) is None:
         args.noise_rate = float(previous_config.get('noise_rate') or 0.0)
     for name, default in (('ai_epistemic', 0.0), ('ai_pragmatic', 0.0), ('ai_sigreg', 0.0)):
@@ -312,6 +501,43 @@ def resolve_learning_modes(args, previous_config, previous_learner):
         args.mother_credit_differential = bool(previous_config.get('mother_credit_differential', False))
     if getattr(args, 'mother_credit_trace', None) is None:
         args.mother_credit_trace = bool(previous_config.get('mother_credit_trace', False))
+    if getattr(args, 'mother_consequence_native', None) is None:
+        args.mother_consequence_native = bool(previous_config.get('mother_consequence_native', False))
+    if getattr(args, 'mother_native_credit', None) is None:
+        args.mother_native_credit = bool(previous_config.get('mother_native_credit', False))
+    if getattr(args, 'brain_learning', None) is None:
+        args.brain_learning = previous_config.get('brain_learning') or 'bptt'
+    if getattr(args, 'native_credit_cpu', None) is None:
+        args.native_credit_cpu = bool(previous_learner.get('native_credit_cpu', previous_config.get('native_credit_cpu', False)))
+    if getattr(args, 'mother_action_clock', None) is None:
+        args.mother_action_clock = previous_config.get('mother_action_clock', 'arrival')
+    if getattr(args, 'mother_generative_shadow', None) is None:
+        args.mother_generative_shadow = bool(previous_config.get('mother_generative_shadow', False))
+    if getattr(args, 'mother_native_generative', None) is None:
+        args.mother_native_generative = bool(previous_config.get('mother_native_generative', False))
+    if getattr(args, 'mother_native_context', None) is None:
+        args.mother_native_context = bool(previous_config.get('mother_native_context', False))
+    for key, default in (('mother_context_initial_variance', 1.), ('mother_context_process_variance', 1e-4)):
+        if getattr(args, key, None) is None:
+            setattr(args, key, float(previous_config.get(key, default)))
+    if args.mother_native_context:
+        if args.mother_action_clock != 'commit' or args.mother_credit != 'consequence':
+            raise ValueError('Native context requires commit clock and consequence credit')
+        if args.mother_native_generative or args.mother_native_credit or args.mother_consequence_native:
+            raise ValueError('Native context is an explicit migration; disable other policy candidates')
+    if args.stream_segment_ticks != old_segment and not args.mother_native_context:
+        raise ValueError('Changing recomputation segments requires native-context endpoint expectation semantics')
+    if args.mother_native_generative:
+        if args.mother_action_clock != 'commit' or args.mother_credit != 'consequence':
+            raise ValueError('Native generative control requires commit clock and consequence credit')
+        if args.mother_native_credit or args.mother_consequence_native:
+            raise ValueError('Disable legacy mother-native-credit and mother-consequence-native explicitly')
+    if args.mother_generative_shadow and args.mother_action_clock != 'commit':
+        raise ValueError('--mother-generative-shadow requires --mother-action-clock commit')
+    if args.mother_native_credit and args.mother_consequence_native:
+        raise ValueError('Native credit alone and the ordered consequence candidate are separate configurations')
+    if args.mother_native_credit and args.mother_credit != 'consequence':
+        raise ValueError('--mother-native-credit requires --mother-credit consequence')
     if getattr(args, 'mother_voice', None) is None:
         args.mother_voice = bool(previous_config.get('mother_voice', False))
     if getattr(args, 'mother_voice_level', None) is None:
@@ -320,9 +546,9 @@ def resolve_learning_modes(args, previous_config, previous_learner):
         args.stream_jepa = bool(previous_config.get('stream_jepa', False))
     if getattr(args, 'stream_jepa_weight', None) is None:
         args.stream_jepa_weight = float(previous_config.get('stream_jepa_weight') if previous_config.get('stream_jepa_weight') is not None else 0.5)
-    args.kc_dendritic_newly = bool(args.kc_dendritic_only) and not bool(previous_config.get('kc_dendritic_only', False))
-    args.apl_kc_dendritic_newly = bool(args.apl_kc_dendritic_only) and not bool(previous_config.get('apl_kc_dendritic_only', False))
-    args.compartment_dendritic_newly = bool(args.compartment_dendritic) and not bool(previous_config.get('compartment_dendritic', False))
+    args.kc_dendritic_newly = bool(getattr(args, 'kc_dendritic_only', None)) and not bool(previous_config.get('kc_dendritic_only', False))
+    args.apl_kc_dendritic_newly = bool(getattr(args, 'apl_kc_dendritic_only', None)) and not bool(previous_config.get('apl_kc_dendritic_only', False))
+    args.compartment_dendritic_newly = bool(getattr(args, 'compartment_dendritic', None)) and not bool(previous_config.get('compartment_dendritic', False))
     if getattr(args, 'compartment_dendritic', None) is None:
         args.compartment_dendritic = bool(previous_config.get('compartment_dendritic', False))
     if getattr(args, 'apl_kc_dendritic_only', None) is None:
@@ -364,6 +590,9 @@ def resolve_learning_modes(args, previous_config, previous_learner):
     if getattr(args, 'flux_baseline', None) is None:
         args.flux_baseline = float(previous_learner.get('flux_baseline',
                                    previous_config.get('flux_baseline', 0.048)))
+    if args.native_motor_port and not (getattr(args, 'mother_native_context', False)
+            and args.mother_action_clock == 'commit' and args.mother_credit == 'consequence'):
+        raise ValueError('Native motor port requires native-context consequence learning at the actual commit clock')
 
 
 # The mainline individual (2026-10-13).  A chain names only what it changes; at birth every switch not named comes from
@@ -456,6 +685,30 @@ def make_sense_gains(model, args, saved_model=None):
     return made, new
 
 
+def attach_mother_senses(model, args):
+    """Restore the world's physical sensory wiring without opening a network/world.
+
+    The indices are nonpersistent buffers. Restoring weights alone does not
+    restore Johnston input or PAM reply input; audits and training share this.
+    Existing learned gain Parameters are preserved by the attach helpers.
+    """
+    routes = {}
+    if not args.mother_world:
+        return routes
+    annotations = args.graph.parent / 'body-annotations.feather'
+    if args.mother_reward:
+        routes['reward_cells'] = attach_reply_reward(
+            model, args.graph, annotations, learnable=bool(args.sense_gains_learnable),
+            level=float(args.mother_reward_level or 1.0), ticks=int(args.mother_reward_ticks or 4))
+        print(f'PAM reply sense restored: {routes["reward_cells"]} cells, {model.reward_ticks} ticks', flush=True)
+    if args.mother_voice:
+        routes['voice_cells'] = attach_mother_voice(
+            model, args.graph, annotations, learnable=bool(args.sense_gains_learnable),
+            level=float(args.mother_voice_level or 1.5))
+        print(f'Mother voice sense restored: {routes["voice_cells"]} Johnston cells', flush=True)
+    return routes
+
+
 def inherit_profile_switches(parser, args, previous_config):
     """On a resume every profile switch the command line does not name is the checkpoint's own (or, if the
     checkpoint never had it, the parser default): a chain cannot drop or add a mechanism by omission."""
@@ -526,6 +779,16 @@ def main():
                         help='Quiet physical ticks after each input pulse; default retains checkpoint timing')
     parser.add_argument('--adaptive-admission', action=argparse.BooleanOptionalAction, default=None,
                         help='Enable event-driven adaptive admission settling based on causal relaxation')
+    parser.add_argument('--circuit-observer', type=Path, default=None,
+                        help='Read-only per-word circuit activity log of the live pass (fly_circuit_observer) into this '
+                             'directory; diagnostic, never inherited')
+    parser.add_argument('--brain-learning', choices=('bptt', 'local'), default=None,
+                        help="'local': the brain runs forward only (its own local laws keep acting), only the readouts "
+                             "take gradients; no autograd tape through any tick (inherit, else bptt)")
+    parser.add_argument('--native-credit-cpu', action=argparse.BooleanOptionalAction, default=None,
+                        help='Archive exact delayed native score tensors in CPU RAM; same policy/clock/values (inherit)')
+    parser.add_argument('--stream-segment-ticks', type=int, default=None,
+                        help='Native-context internal gradient recomputation segment; real input intervals unchanged (inherit, else16)')
     parser.add_argument('--stream-ticks', type=int, default=None,
                         help='Streaming clock: every token occupies exactly this many physical ticks and the next token '
                              'arrives regardless of settling (0 = serial pulse-settle-read; omitted = inherit)')
@@ -550,6 +813,61 @@ def main():
                         help='Dopamine as a neuromodulator along the connectome projections: its phasic part scales '
                              'target thresholds (per-superclass sensitivity, start 0) and its concentration scales the '
                              'learning of synapses onto the targets (omitted = inherit)')
+    parser.add_argument('--amine-modulation', action=argparse.BooleanOptionalAction, default=None,
+                        help='Native slow octopamine/serotonin delivery through immutable anatomical contacts, '
+                             'mass-action receptor occupancy, and learnable existing-cell response (omitted = inherit)')
+    parser.add_argument('--cx-state', action=argparse.BooleanOptionalAction, default=None,
+                        help='Persistent central-complex activity trace with learnable decay and native CX threshold '
+                             'feedback (omitted = inherit)')
+    parser.add_argument('--mb-terminal-projection', action=argparse.BooleanOptionalAction, default=None,
+                        help='Actual DPM/APL axonal contacts regulate individual KC release; persistent '
+                             'DPM 5-HT receptors; pooled threshold/forgetting proxy archived')
+    parser.add_argument('--mb-consolidation', action=argparse.BooleanOptionalAction, default=None,
+                        help='Native DPM slow consolidation and APL slow state around existing mushroom-body '
+                             'compartment memory (omitted = inherit)')
+    parser.add_argument('--apl-cable', action=argparse.BooleanOptionalAction, default=None,
+                        help='Full supplied APL forest with local inputs, passive cable and graded output; '
+                             'requires MB axonal contacts and eager/checkpointed execution')
+    parser.add_argument('--apl-local-release', action=argparse.BooleanOptionalAction, default=None,
+                        help='Local calcium-dependent APL release and conserving vesicle resources; inherit on resume')
+    parser.add_argument('--kc-terminal', action=argparse.BooleanOptionalAction, default=None,
+                        help='Actual KC release sites, local receptor signals and compartment eligibility')
+    parser.add_argument('--kc-terminal-geometry', type=Path, default=None)
+    parser.add_argument('--kc-lateral', action=argparse.BooleanOptionalAction, default=None,
+                        help='Native axo-axonal muscarinic inhibition of terminal release and cAMP')
+    parser.add_argument('--kc-lateral-geometry', type=Path, default=None)
+    parser.add_argument('--sensory-terminal', action=argparse.BooleanOptionalAction, default=None,
+                        help='Sensory axo-axonal return contacts shunt release at actual terminal sites')
+    parser.add_argument('--sensory-terminal-geometry', type=Path, default=None)
+    parser.add_argument('--dan-local-release', action=argparse.BooleanOptionalAction, default=None)
+    parser.add_argument('--dan-carried-credit', action=argparse.BooleanOptionalAction, default=None,
+                        help='Carry conditional local DAN material history, including native action scores')
+    parser.add_argument('--dan-receiver-credit', action=argparse.BooleanOptionalAction, default=None,
+                        help='Carry source-resolved history through global dopamine filters')
+    parser.add_argument('--dan-release-geometry', type=Path, default=None)
+    parser.add_argument('--kc-dopamine', action=argparse.BooleanOptionalAction, default=None)
+    parser.add_argument('--kc-dopamine-geometry', type=Path, default=None)
+    parser.add_argument('--kc-contact-memory', action=argparse.BooleanOptionalAction, default=None)
+    parser.add_argument('--kc-site-stp', action=argparse.BooleanOptionalAction, default=None,
+                        help='Actual KC-site resources/facilitation; requires local terminal geometry')
+    parser.add_argument('--body-loop', action=argparse.BooleanOptionalAction, default=None,
+                        help='Restore historical body trace parameters/state (omitted = inherit); '
+                             'synthetic feedback is quarantined and inactive in normal training')
+    parser.add_argument('--body-proxy-compatibility', action='store_true',
+                        help='Historical frozen diagnostic compatibility only; rejected by normal training')
+    parser.add_argument('--olfactory-relay', action=argparse.BooleanOptionalAction, default=None,
+                        help='Native antennal-lobe local inhibition: persistent AL local trace delivered through '
+                             'fixed inhibitory AL-to-PN contacts with learnable decay and PN response (omitted = inherit)')
+    parser.add_argument('--visual-graded', action=argparse.BooleanOptionalAction, default=None,
+                        help='Use existing graded membrane release for evidence-scoped early visual cells; inherit on resume')
+    parser.add_argument('--visual-graded-gain', type=float, default=None,
+                        help='Initial positive visual release gain only for newly attached cells (default .025; learnable)')
+    parser.add_argument('--body-actuator', action=argparse.BooleanOptionalAction, default=None,
+                        help='Restore historical scalar actuator state; proxy feedback is inactive in normal training')
+    parser.add_argument('--endocrine-exchange', action=argparse.BooleanOptionalAction, default=None,
+                        help='LK secretion/clearance/receptor axis into annotated IPC/ITP cells (omitted = inherit)')
+    parser.add_argument('--native-motor-port', action=argparse.BooleanOptionalAction, default=None,
+                        help='Execute language only from annotated motor-cell release packets, with a separate action decoder')
     parser.add_argument('--dopamine-site', choices=('post', 'pre'), default=None,
                         help='Which end of a synapse the dopamine scales its learning by: post = the receiving neuron, '
                              'pre = the presynaptic terminal as at the fly mushroom body (omitted = inherit, else post)')
@@ -573,9 +891,34 @@ def main():
     parser.add_argument('--mother-api-model', default=None, help='The API mother model id (the SDK reads its own env config)')
     parser.add_argument('--mother-temperature', type=float, default=1.0, help='Sampling temperature of the fly words')
     parser.add_argument('--mother-max-fly-words', type=int, default=16, help='A fly turn ends after this many words')
-    parser.add_argument('--mother-credit', choices=('predict', 'epistemic'), default='predict',
+    parser.add_argument('--mother-credit', choices=('predict', 'epistemic', 'consequence'), default='predict',
                         help="Speaking act's credit: 'predict' (-CE of the following words) or 'epistemic' (what the words "
-                             "arriving within --mother-credit-ticks taught: learning progress, applied one window late)")
+                             "arriving within --mother-credit-ticks taught: learning progress, applied one window late); "
+                             "'consequence' (native KC action-consequence uncertainty; timing and word content credit)")
+    parser.add_argument('--mother-consequence-native', action=argparse.BooleanOptionalAction, default=None,
+                        help='Opt-in ordered word/action model, posterior-guided policy and native delayed credit')
+    parser.add_argument('--mother-native-credit', action=argparse.BooleanOptionalAction, default=None,
+                        help='Send existing consequence credit to native brain parameters without changing the posterior, policy or prediction targets')
+    parser.add_argument('--mother-action-clock', choices=('arrival', 'commit'), default=None,
+                        help='Explicit event-clock migration: commit sends the command on its actual motor tick; '
+                             'uses actual external-arrival CE and excludes known self-command labels. Omitted inherits.')
+    parser.add_argument('--mother-generative-shadow', action=argparse.BooleanOptionalAction, default=None,
+                        help='Learn a durable marked-event likelihood from actual native context, commands and world '
+                             'arrivals without changing actions/rewards. Requires the commit clock; experimental, '
+                             'does not claim a subjective perception model or a complete active-inference policy.')
+    parser.add_argument('--mother-native-generative', action=argparse.BooleanOptionalAction, default=None,
+                        help='Actuate finite native categorical wait/token inference; actual external CE learns sensing, '
+                             'response evidence trains native joint policy credit. Explicit experimental migration.')
+    parser.add_argument('--mother-generative-reference', type=Path, default=None,
+                        help='Retained complete checkpoint supplying the explicit ancestral native hypothesis')
+    parser.add_argument('--mother-native-context', action=argparse.BooleanOptionalAction, default=None,
+                        help='Experimental continuous context filtering and native compartment recognition learning')
+    parser.add_argument('--mother-context-initial-variance', type=float, default=None)
+    parser.add_argument('--mother-context-process-variance', type=float, default=None)
+    parser.add_argument('--mother-generative-candidates', type=int, default=4,
+                        help='Bounded evaluated word proposals; unassessed vocabulary retains its native probability')
+    parser.add_argument('--mother-generative-ticks', type=int, default=0,
+                        help='Native proposal lookahead in actual ticks; zero uses current world mean word interval')
     parser.add_argument('--mother-credit-ticks', type=int, default=64, help='Epistemic credit horizon in ticks')
     parser.add_argument('--intrinsic-mbon-kappa', type=float, default=None,
                         help='The MBONs join the spontaneously active cells with this start current (x rheobase, '
@@ -687,6 +1030,9 @@ def main():
     parser.add_argument('--comp-unit-traces', action='store_true', default=None,
                         help='Newborn: the compartment eligibility is the terminal state (one spike lifts it to ~1, saturating), '
                              'rates start -1 / +1 (needs --comp-timing, --compartment-adapted; omitted = inherit)')
+    parser.add_argument('--native-runtime-program', type=Path, default=None,
+                        help='Data-only generated native mechanism document; resume inherits the embedded '
+                             'program and complete physical history. New continuations require explicit migration.')
     parser.add_argument('--comp-rate-calibrate', action='store_true',
                         help='Newborn: start the compartment depression / potentiation rates so the median edge writes as fast '
                              'as it forgets (calibrate_comp_rate; needs --comp-tonic-forget)')
@@ -744,6 +1090,8 @@ def main():
     parser.add_argument('--noise-alphabet', type=int, default=16, help='Noisy TV: alphabet size (random token ids)')
     parser.add_argument('--noise-seed', type=int, default=7, help='Noisy TV: the alphabet and the draws')
     parser.add_argument('--eye-init', type=float, default=None, help='M3: the eyes\' initial open probability')
+    parser.add_argument('--eye-gate', choices=('atan', 'sigmoid'), default=None,
+                        help='Sensory gating activation: normalized atan or sigmoid; omitted = inherit (default atan)')
     parser.add_argument('--kc-subtypes', action=argparse.BooleanOptionalAction, default=None,
                         help='Connectome audit: Kenyon subtypes (alpha/beta core, surface, posterior, alpha-prime/beta-prime, '
                              'gamma) get their own physiology instead of sharing that of cb_intrinsic (omitted = inherit)')
@@ -957,6 +1305,8 @@ def main():
     argv = sys.argv[1:]
     profile = parser.parse_known_args(argv)[0].profile
     args = apply_profile(parser, argv, profile)
+    if args.mother_credit == 'consequence' and (not args.mother_world or not args.mother_speak_act):
+        parser.error('consequence credit requires --mother-world and --mother-speak-act')
     if isinstance(args.init_read_gamma, str) and args.init_read_gamma != 'anatomical':
         args.init_read_gamma = float(args.init_read_gamma)      # a numeric decay, not the anatomical schedule
     _CHECKPOINT_DIR = str(args.checkpoint_dir) if args.checkpoint_dir else None
@@ -1166,6 +1516,37 @@ def main():
             if not args.kc_subtypes:
                 raise ValueError('--modulatory-classes comes after the Kenyon split (--kc-subtypes)')
             print(f'Modulatory classes (newborn): {split_modulatory_classes(model, args.graph, args.graph.parent / "body-annotations.feather")}', flush=True)
+        if args.amine_modulation:
+            n_contacts = attach_amine_modulation(model, args.graph,
+                                                 args.graph.parent / 'modulatory_neurons.feather')
+            print(f'Native OA/5-HT chemical delivery (newborn): {n_contacts} anatomical contacts', flush=True)
+        if args.cx_state:
+            n_cx = attach_cx_state(model, args.graph, args.graph.parent / 'body-annotations.feather')
+            print(f'Native CX persistent state (newborn): {n_cx} CX neurons', flush=True)
+        if args.mb_consolidation:
+            n_dpm, n_apl = attach_mb_consolidation(model, args.graph, args.graph.parent / 'body-annotations.feather')
+            print(f'Native MB consolidation (newborn): {n_dpm} DPM, {n_apl} APL neurons', flush=True)
+        if args.mb_terminal_projection:
+            print(f'Native MB axonal projection (newborn): {attach_mb_terminal(model, args.graph, args.graph.parent / "body-annotations.feather", args.graph.parent / "dendritic_share_Kenyon_Cell.feather")}', flush=True)
+        if args.apl_cable:
+            if not args.no_graph:
+                raise ValueError('APL sparse solve requires --no-graph')
+            attach_apl_cable(model, args.graph.parent / 'spatial/apl_cable_native_v1.npz')
+        if args.apl_local_release:
+            attach_apl_local_release(model)
+        if args.body_loop:
+            model.body_proxy_compatibility = args.body_proxy_compatibility
+            n_dn, n_an = attach_body_loop(model, args.graph, args.graph.parent / 'body-annotations.feather')
+            print(f'Historical body state (newborn): {n_dn} descending, {n_an} ascending; proxy feedback={model.body_proxy_compatibility}', flush=True)
+        if args.body_actuator:
+            if not args.mother_native_context:
+                raise ValueError('Executed-action body interface requires native-context source tapes')
+            print(f'Historical scalar actuator state (newborn): {attach_body_actuator(model, args.graph, args.graph.parent / "body-annotations.feather")} cells; proxy feedback={args.body_proxy_compatibility}', flush=True)
+        if args.endocrine_exchange:
+            print(f'LK receptor axis (newborn): {attach_endocrine_exchange(model, args.graph, args.graph.parent / "body-annotations.feather")}', flush=True)
+        if args.olfactory_relay:
+            n_al, n_pn, n_contacts = attach_olfactory_relay(model, args.graph, args.graph.parent / 'body-annotations.feather')
+            print(f'Native antennal-lobe relay (newborn): {n_al} local, {n_pn} PN, {n_contacts} inhibitory contacts', flush=True)
         if args.intrinsic:
             if not args.intrinsic_pattern:
                 from information_boltzmann.core.fly_bptt_learning import INTRINSIC_TYPE_PATTERN
@@ -1178,6 +1559,10 @@ def main():
             print(f'Released {int(model.intrinsic_index.numel())} spontaneously active cells (newborn): {released}', flush=True)
         if args.graded_types:
             print(f'Graded (non-spiking) cells (newborn): {attach_graded_cells(model, args.graph, args.graph.parent / "body-annotations.feather", types=tuple(args.graded_types.split(",")), gain=args.graded_gain)}', flush=True)
+        if args.visual_graded:
+            counts = attach_visual_physiology(model, args.graph, args.graph.parent / 'body-annotations.feather',
+                                             gain=0.025 if args.visual_graded_gain is None else args.visual_graded_gain)
+            print(f'Early visual graded physiology (newborn): {counts}', flush=True)
         if args.compartment_memory or args.taste_every:
             rate = {} if args.comp_rate is None else {'eta': -float(args.comp_rate)}
             if args.comp_trace_tau:
@@ -1196,10 +1581,15 @@ def main():
                 attach_motor_acts(model, tau_muscle=float(args.act_tau or 8.0), eye_open=float(args.eye_init or 0.9),
                                   habit=float(args.act_habit if args.act_habit is not None else 0.2),
                                   brain_gradient=bool(args.act_brain_grad),
-                                  dopamine_precision=bool(args.act_dopamine_precision))
+                                  dopamine_precision=bool(args.act_dopamine_precision),
+                                  eye_gate=getattr(args, 'eye_gate', 'atan'))
             else:
                 attach_ai_head(model, init, eye_open=float(getattr(args, 'eye_init', 0.95) or 0.95))
             print('Act head (eyes + output) attached at birth', flush=True)
+        if args.native_motor_port:
+            if getattr(model, 'ai_mode', None) != 'motor' or not args.mother_speak_act:
+                raise ValueError('Native motor port needs motor speaking actions')
+            print(f'Native motor language peripheral (newborn): {attach_native_motor_port(model, args.graph, args.graph.parent / "body-annotations.feather")} neurons', flush=True)
         if args.stream_jepa:
             print(f'Stream JEPA term on {attach_stream_jepa(model, args.graph, args.graph.parent / "body-annotations.feather")} Kenyon cells (newborn)', flush=True)
         if args.homeostasis:
@@ -1208,6 +1598,15 @@ def main():
             print(f'Homeostatic intrinsic plasticity, individual {args.homeostasis_seed}', flush=True)
 
         n = model.n_neurons
+        native_program = None
+        if args.native_runtime_program is not None:
+            if not args.no_graph:
+                raise ValueError('Generated native execution currently requires --no-graph')
+            document = json.loads(args.native_runtime_program.read_text(encoding='utf-8'))
+            native_program = attach_program_document(model, document)
+        native_assembly = assemble_spatial_components(model, args)
+        validate_program_bindings(model)
+        print(f'Native spatial assembly (newborn): {native_assembly}', flush=True)
         h = torch.zeros(1, n, device='cuda')
         ring = tuple(torch.zeros(1, n, device='cuda') for _ in range(4))
         ge = torch.zeros(1, n, device='cuda')
@@ -1221,6 +1620,9 @@ def main():
         gamma_z1 = torch.zeros(1, model.n_read, device='cuda') if args.use_read_gamma_trace else torch.empty(0, device='cuda')
         gamma_z2 = torch.zeros(1, model.n_read, device='cuda') if args.use_read_gamma_trace else torch.empty(0, device='cuda')
         physical = FlyPhysicalState(h, ring, ge, gi, b, x, u, baseline, h_mean, dan_gate, gamma_z1, gamma_z2)
+        if native_program is not None:
+            native_device = 'cpu' if model.native_program_state_device == 'cpu' else h.device
+            physical.native_state = native_program.layout.initialize(device=native_device, dtype=h.dtype)
 
         names = [
             'output_read.weight', 'read_norm.weight', 'decoder.weight', 'decoder.bias',
@@ -1236,6 +1638,8 @@ def main():
             names.extend(GRADED_PARAMETER_NAMES)
         if args.input_gain_size_exponent is not None:
             names.append('log_input_gain')
+        if args.kc_site_stp:
+            names.extend(KC_SITE_STP_PARAMETER_NAMES)
         if args.kc_dan_release:
             names.append('log_kc_release')
         if args.compartment_memory:
@@ -1269,6 +1673,14 @@ def main():
 
         named_now = dict(model.named_parameters())
         for group in (GO_PARAMETER_NAMES, READ_BANK_PARAMETER_NAMES, PREDICTIVE_PARAMETER_NAMES, DOPAMINE_PARAMETER_NAMES,
+                      AMINE_PARAMETER_NAMES,
+                      CX_PARAMETER_NAMES,
+                      MB_CONSOLIDATION_PARAMETER_NAMES,
+                      BODY_LOOP_PARAMETER_NAMES,
+                      AL_PARAMETER_NAMES,
+                      VISUAL_PARAMETER_NAMES,
+                      BODY_ACTUATOR_PARAMETER_NAMES, ENDOCRINE_PARAMETER_NAMES,
+                      MOTOR_PORT_PARAMETER_NAMES,
                       ONLINE_DA_PARAMETER_NAMES):
             names.extend(name for name in group if name in named_now and name not in names)
         if getattr(args, 'pacemaker_homeostasis', False) and getattr(model, 'intrinsic_kappa', None) is not None:
@@ -1314,6 +1726,8 @@ def main():
             go_tick_cost=float(args.go_tick_cost or 0.0), go_reference_energy=float(args.go_reference_energy or 0.07),
             go_max_ticks=int(args.go_max_ticks or 32))
         learner.stream_pace_mean = float(args.stream_pace_mean or 0.0)
+        learner.stream_segment_ticks = int(args.stream_segment_ticks)
+        learner.native_credit_cpu = bool(args.native_credit_cpu)
         learner.stream_pace_min = float(getattr(args, 'stream_pace_min', 0.0) or 0.0)
         if getattr(args, 'comp_rate_calibrate', False) and getattr(model, 'comp_eta', None) is not None:
             # the compartment rates' start from the newborn's own dopamine: the median edge writes as fast as it forgets
@@ -1420,6 +1834,20 @@ def main():
                         args.use_read_gamma_trace != previous_gamma or
                         args.use_latent_predictor != previous_predictor or
                         args.use_graph_observer != previous_observer or
+                        args.native_motor_port != bool(previous_config.get('native_motor_port', False)) or
+                        args.amine_modulation != bool(previous_config.get('amine_modulation', False)) or
+                        args.mb_terminal_projection != bool(previous_config.get('mb_terminal_projection', False)) or
+                        args.apl_cable != bool(previous_config.get('apl_cable', False)) or
+                        args.apl_local_release != bool(previous_config.get('apl_local_release', False)) or
+                        args.kc_terminal != bool(previous_config.get('kc_terminal', False)) or
+                        args.kc_site_stp != bool(previous_config.get('kc_site_stp', False)) or
+                        args.kc_contact_memory != bool(previous_config.get('kc_contact_memory', False)) or
+                        args.kc_lateral != bool(previous_config.get('kc_lateral', False)) or
+                        args.sensory_terminal != bool(previous_config.get('sensory_terminal', False)) or
+                        args.kc_dopamine != bool(previous_config.get('kc_dopamine', False)) or
+                        args.dan_local_release != bool(previous_config.get('dan_local_release',False)) or
+                        args.body_proxy_compatibility != bool(previous_config.get(
+                            'body_proxy_compatibility', previous_config.get('body_loop', False))) or
                         args.detach_reset != bool(previous_config.get('detach_reset', False)) or
                         args.surrogate_mode != previous_config.get('surrogate_mode', 'absolute') or
                         args.transmission_mode != previous_config.get('transmission_mode', 'atomic'))
@@ -1459,6 +1887,10 @@ def main():
             print(f'Released {int(model.intrinsic_index.numel())} spontaneously active cells: {released}', flush=True)
         if args.graded_types:
             print(f'Graded (non-spiking) cells: {attach_graded_cells(model, args.graph, args.graph.parent / "body-annotations.feather", types=tuple(args.graded_types.split(",")), gain=args.graded_gain)}', flush=True)
+        if args.visual_graded:
+            counts = attach_visual_physiology(model, args.graph, args.graph.parent / 'body-annotations.feather',
+                                             gain=args.visual_graded_gain)
+            print(f'Early visual graded physiology (resume): {counts}', flush=True)
         if args.predictive_writer:
             attach_predictive_writer(model)
         if args.dopamine_modulation:
@@ -1503,10 +1935,47 @@ def main():
             print(f'Kenyon subtypes (carried over): {split_kenyon_subtypes(model, args.graph, args.graph.parent / "body-annotations.feather", record=False)}', flush=True)
         if lineage_mod:
             print(f'Modulatory classes (carried over): {split_modulatory_classes(model, args.graph, args.graph.parent / "body-annotations.feather", record=False)}', flush=True)
+        if args.amine_modulation:
+            n_contacts = attach_amine_modulation(model, args.graph,
+                                                 args.graph.parent / 'modulatory_neurons.feather')
+            print(f'Native OA/5-HT chemical delivery (resume): {n_contacts} anatomical contacts', flush=True)
+        if args.cx_state:
+            n_cx = attach_cx_state(model, args.graph, args.graph.parent / 'body-annotations.feather')
+            print(f'Native CX persistent state (resume): {n_cx} CX neurons', flush=True)
+        if args.mb_consolidation:
+            n_dpm, n_apl = attach_mb_consolidation(model, args.graph, args.graph.parent / 'body-annotations.feather')
+            print(f'Native MB consolidation (resume): {n_dpm} DPM, {n_apl} APL neurons', flush=True)
+        if args.body_loop:
+            model.body_proxy_compatibility = args.body_proxy_compatibility
+            n_dn, n_an = attach_body_loop(model, args.graph, args.graph.parent / 'body-annotations.feather')
+            print(f'Historical body state (resume): {n_dn} descending, {n_an} ascending; proxy feedback={model.body_proxy_compatibility}', flush=True)
+        if args.body_actuator:
+            if not args.mother_native_context:
+                raise ValueError('Executed-action body interface requires native-context source tapes')
+            print(f'Historical scalar actuator state (resume): {attach_body_actuator(model, args.graph, args.graph.parent / "body-annotations.feather")} cells; proxy feedback={args.body_proxy_compatibility}', flush=True)
+        if args.endocrine_exchange:
+            print(f'LK receptor axis (resume): {attach_endocrine_exchange(model, args.graph, args.graph.parent / "body-annotations.feather")}', flush=True)
+        if args.olfactory_relay:
+            n_al, n_pn, n_contacts = attach_olfactory_relay(model, args.graph, args.graph.parent / 'body-annotations.feather')
+            print(f'Native antennal-lobe relay (resume): {n_al} local, {n_pn} PN, {n_contacts} inhibitory contacts', flush=True)
         if saved['model']['log_tau_m'].numel() != model.n_superclasses:
             raise ValueError(f'class count mismatch: checkpoint {saved["model"]["log_tau_m"].numel()}, model {model.n_superclasses}')
+        native_document = old.get('native_runtime_document')
+        if args.native_runtime_program is not None:
+            requested = json.loads(args.native_runtime_program.read_text(encoding='utf-8'))
+            if native_document is None or json.dumps(requested, sort_keys=True) != json.dumps(native_document, sort_keys=True):
+                raise ValueError('New native program requires explicit complete-state archive migration')
+        if native_document is not None:
+            if not args.no_graph:
+                raise ValueError('Generated native execution currently requires --no-graph')
+            attach_program_document(model, native_document, saved=saved['model'])
         weights = {key: value for key, value in saved['model'].items()
                    if key not in ('edge_weight_e', 'edge_weight_i')
+                   and key not in MOTOR_PORT_PARAMETER_NAMES
+                   and key != 'native_motor_body_ids'
+                   and key not in MB_TERMINAL_PARAMETER_NAMES + MB_TERMINAL_ID_NAMES
+                   and key not in APL_CABLE_PARAMETER_NAMES + APL_CABLE_ID_NAMES + APL_LOCAL_RELEASE_PARAMETER_NAMES
+                   and key not in KC_TERMINAL_PARAMETER_NAMES + KC_TERMINAL_ID_NAMES + KC_SITE_STP_PARAMETER_NAMES + KC_CONTACT_ID_NAMES + KC_LATERAL_PARAMETER_NAMES + KC_LATERAL_ID_NAMES + SENSORY_TERMINAL_PARAMETER_NAMES + SENSORY_TERMINAL_ID_NAMES + KC_DOPAMINE_PARAMETER_NAMES + KC_DOPAMINE_ID_NAMES + DAN_RELEASE_PARAMETER_NAMES + DAN_RELEASE_ID_NAMES
                    and key not in COMPARTMENT_PARAMETER_NAMES + TASTE_PARAMETER_NAMES + ACT_STATE_NAMES + AI_STATE_NAMES
                    + STREAM_JEPA_PARAMETER_NAMES
                    # attached later in the resume (comp tonic / timing, make_sense_gains), each then loads its own
@@ -1523,8 +1992,18 @@ def main():
         with torch.no_grad():
             for name in ('edge_weight_e', 'edge_weight_i'):
                 getattr(model, name).copy_(saved['model'][name])
+            if args.visual_graded and 'log_visual_graded_gain' not in saved['model']:
+                # Only this newly attached parameter may be absent. Keep all
+                # legacy gains, optimizer moments and physical states intact.
+                weights['log_visual_graded_gain'] = model.log_visual_graded_gain.detach().clone()
+            for name in BODY_ACTUATOR_PARAMETER_NAMES + ENDOCRINE_PARAMETER_NAMES:
+                if hasattr(model, name) and name not in saved['model']:
+                    weights[name] = getattr(model, name).detach().clone()
             loaded = model.load_state_dict(weights, strict=False)
-            missing = [k for k in loaded.missing_keys if k != 'logit_read_gamma' and not k.startswith('latent_predictor.') and not k.startswith('graph_observer.') and k not in GO_PARAMETER_NAMES and k not in READ_BANK_PARAMETER_NAMES and k not in INTRINSIC_PARAMETER_NAMES and k not in GRADED_PARAMETER_NAMES and k not in PRECISION_PARAMETER_NAMES and k not in PREDICTIVE_PARAMETER_NAMES and k not in DOPAMINE_PARAMETER_NAMES and k not in ONLINE_DA_PARAMETER_NAMES
+            if previous_config.get('amine_modulation') and any(
+                    name in loaded.missing_keys for name in AMINE_PARAMETER_NAMES):
+                raise ValueError('Continuing amine checkpoint is missing learned parameters')
+            missing = [k for k in loaded.missing_keys if k != 'logit_read_gamma' and not k.startswith('latent_predictor.') and not k.startswith('graph_observer.') and k not in GO_PARAMETER_NAMES and k not in READ_BANK_PARAMETER_NAMES and k not in INTRINSIC_PARAMETER_NAMES and k not in GRADED_PARAMETER_NAMES and k not in PRECISION_PARAMETER_NAMES and k not in PREDICTIVE_PARAMETER_NAMES and k not in DOPAMINE_PARAMETER_NAMES and k not in AMINE_PARAMETER_NAMES and k not in CX_PARAMETER_NAMES and k not in MB_CONSOLIDATION_PARAMETER_NAMES and k not in BODY_LOOP_PARAMETER_NAMES and k not in AL_PARAMETER_NAMES and k not in ONLINE_DA_PARAMETER_NAMES
                        and not (k == 'log_kc_release' and args.kc_dan_release)]     # a release switched on at this resume
             unexpected = [k for k in loaded.unexpected_keys if not k.startswith('latent_predictor.') and not k.startswith('graph_observer.')]
             if unexpected or missing:
@@ -1622,7 +2101,9 @@ def main():
                     from information_boltzmann.core.fly_active_inference import attach_motor_acts
                     attach_motor_acts(model, tau_muscle=args.act_tau, eye_open=float(args.eye_init or 0.9),
                                       habit=args.act_habit, brain_gradient=args.act_brain_grad,
-                                      dopamine_precision=args.act_dopamine_precision)
+                                      dopamine_precision=args.act_dopamine_precision,
+                                      eye_gate=getattr(args, 'eye_gate', 'atan'))
+                    model.ai_eye_gate = getattr(args, 'eye_gate', 'atan')
                     from information_boltzmann.core.fly_active_inference import set_motor_constants, MOTOR_CONSTANTS
                     ai_state = {k: v for k, v in ai_state.items() if k in ('ai_w', 'ai_b') + MOTOR_CONSTANTS}
                     set_motor_constants(model, ai_state)
@@ -1657,6 +2138,19 @@ def main():
             if args.dopamine_modulation and args.dopamine_sensitivity_init is not None:
                 model.dopamine_sensitivity.fill_(float(args.dopamine_sensitivity_init))
                 print(f'Dopamine sensitivities set to {args.dopamine_sensitivity_init}', flush=True)
+        if args.native_motor_port or 'motor_port_projection.weight' in saved['model']:
+            if getattr(model, 'ai_mode', None) != 'motor' or not args.mother_speak_act:
+                raise ValueError('Native motor port needs motor speaking actions')
+            if previous_config.get('native_motor_port') and 'motor_port_projection.weight' not in saved['model']:
+                raise ValueError('Native motor checkpoint is missing its action parameters')
+            count = attach_native_motor_port(model, args.graph, args.graph.parent / 'body-annotations.feather',
+                                             saved=saved['model'])
+            model.native_motor_port_enabled = bool(args.native_motor_port)
+            print(f'Native motor language peripheral (resume): {count} neurons, enabled={args.native_motor_port}', flush=True)
+        native_assembly = assemble_spatial_components(model, args, saved=saved['model'],
+                                                       previous_config=previous_config)
+        validate_program_bindings(model)
+        print(f'Native spatial assembly (resume): {native_assembly}', flush=True)
         previous_settle_ticks = old.get('settle_ticks', 0)
         previous_writer_clock = old.get('writer_baseline_clock', 'physical')
         if args.writer_baseline_clock is None:
@@ -1670,8 +2164,10 @@ def main():
             physical = FlyPhysicalState.from_online(old, 'cuda')
             names = list(old['grads'])
         else:
+            native_device = ('cpu' if getattr(model, 'native_program_state_device', 'brain') == 'cpu' else 'cuda')
             physical = FlyPhysicalState(**{key: tuple(t.to('cuda') for t in value) if key == 'ring'
-                else value.to('cuda') for key, value in old['physical'].items()})
+                else value.to(native_device if key == 'native_state' else 'cuda')
+                for key, value in old['physical'].items()})
             if physical.h_mean.numel() != physical.h.numel():
                 physical.h_mean = torch.zeros_like(physical.h)
             if args.use_read_gamma_trace:
@@ -1708,6 +2204,45 @@ def main():
             newly_trainable += [name for name in PREDICTIVE_PARAMETER_NAMES if name not in names]
         if args.dopamine_modulation:
             newly_trainable += [name for name in DOPAMINE_PARAMETER_NAMES if name not in names]
+        if args.amine_modulation:
+            newly_trainable += [name for name in AMINE_PARAMETER_NAMES if name not in names]
+        if args.cx_state:
+            newly_trainable += [name for name in CX_PARAMETER_NAMES if name not in names]
+        if args.mb_consolidation:
+            newly_trainable += [name for name in MB_CONSOLIDATION_PARAMETER_NAMES if name not in names]
+        if args.mb_terminal_projection:
+            newly_trainable += [name for name in MB_TERMINAL_PARAMETER_NAMES if name not in names]
+        if args.apl_cable:
+            newly_trainable += [name for name in APL_CABLE_PARAMETER_NAMES if name not in names]
+        if args.apl_local_release:
+            newly_trainable += [name for name in APL_LOCAL_RELEASE_PARAMETER_NAMES if name not in names]
+        if args.kc_terminal:
+            newly_trainable += [name for name in KC_TERMINAL_PARAMETER_NAMES if name not in names]
+        if args.kc_site_stp:
+            newly_trainable += [name for name in KC_SITE_STP_PARAMETER_NAMES if name not in names]
+        if args.kc_lateral:
+            newly_trainable += [name for name in KC_LATERAL_PARAMETER_NAMES if name not in names]
+        if args.sensory_terminal:
+            newly_trainable += [name for name in SENSORY_TERMINAL_PARAMETER_NAMES if name not in names]
+        if args.body_loop:
+            extra = [name for name in BODY_LOOP_PARAMETER_NAMES if name not in names]
+            names = list(names) + extra
+            newly_trainable += extra
+        if args.olfactory_relay:
+            extra = [name for name in AL_PARAMETER_NAMES if name not in names]
+            names = list(names) + extra
+            newly_trainable += extra
+        if args.visual_graded:
+            extra = [name for name in VISUAL_PARAMETER_NAMES if name not in names]
+            names = list(names) + extra
+            newly_trainable += extra
+        for enabled, parameters in ((args.body_actuator, BODY_ACTUATOR_PARAMETER_NAMES),
+                                     (args.endocrine_exchange, ENDOCRINE_PARAMETER_NAMES),
+                                     (args.native_motor_port, MOTOR_PORT_PARAMETER_NAMES)):
+            if enabled:
+                extra = [name for name in parameters if name not in names and name in dict(model.named_parameters())]
+                names = list(names) + extra
+                newly_trainable += extra
         if args.online_da_plasticity:
             newly_trainable += [name for name in ONLINE_DA_PARAMETER_NAMES if name not in names]
         if args.kc_dan_release and 'log_kc_release' not in names:
@@ -1818,6 +2353,8 @@ def main():
             go_tick_cost=float(args.go_tick_cost or 0.0), go_reference_energy=float(args.go_reference_energy or 0.07),
             go_max_ticks=int(args.go_max_ticks or 32))
         learner.stream_pace_mean = float(args.stream_pace_mean or 0.0)
+        learner.stream_segment_ticks = int(args.stream_segment_ticks)
+        learner.native_credit_cpu = bool(args.native_credit_cpu)
         learner.stream_pace_min = float(getattr(args, 'stream_pace_min', 0.0) or 0.0)
         if getattr(args, 'ai', False):
             # a newborn's omitted switches take the same defaults a resume would (acts from birth, 2026-10-15)
@@ -1937,6 +2474,10 @@ def main():
                 best = math.inf
         learner.physical_ticks = old.get('physical_ticks', learner.events)
         learner.load_interaction_state(old.get('interaction', {}))
+        if quarantine_body_proxy_credit(learner):
+            print('Synthetic-body score derivatives archived; real pending credit/world retained', flush=True)
+        if quarantine_mb_pooled_credit(learner):
+            print('Pooled MB score derivatives archived; real pending credit/world retained', flush=True)
         if args.ai and old.get('ai_g') is not None:
             from information_boltzmann.core.fly_active_inference import Familiarity
             learner.ai_g = old['ai_g'].to(learner.state.h.device)
@@ -2104,8 +2645,37 @@ def main():
         evaluations_needed += 1
     if val_cursor + evaluations_needed*args.eval_tokens > len(val):
         raise ValueError('Fresh validation stream is insufficient for the full registered budget')
+    # after every restore, migration and plasticity attachment: nothing later re-enables brain gradients
+    learner.set_brain_learning(getattr(args, 'brain_learning', None) or 'bptt')
+    if learner.brain_learning == 'local':
+        from information_boltzmann.core.fly_native_runtime import compact_index_buffers
+        compacted, freed = compact_index_buffers(model)
+        torch.cuda.empty_cache()
+        print(f'Local brain learning: readouts only; {compacted} index buffers stored as int32 '
+              f'({freed / 2**20:.0f} MiB freed)', flush=True)
+    if getattr(args, 'circuit_observer', None) is not None:
+        from information_boltzmann.core.fly_circuit_observer import attach_circuit_observer
+        attach_circuit_observer(learner, args.graph, Path('data/malecns_v1/body-annotations.feather'),
+                                args.circuit_observer)
+        print(f'Circuit observer: live-pass activity per word -> {args.circuit_observer}', flush=True)
     config = {key: str(value) if isinstance(value, Path) else value for key, value in vars(args).items()}
     config.update(d_model=previous_config['d_model'], decoder_bias=previous_config['decoder_bias'],
+        amine_kinetics_version=AMINE_KINETICS_VERSION if args.amine_modulation else None,
+        mb_terminal_version=MB_TERMINAL_VERSION if args.mb_terminal_projection else None,
+        apl_cable_version=APL_CABLE_VERSION if args.apl_cable else None,
+        apl_local_release=bool(args.apl_local_release),
+        apl_local_release_version=APL_LOCAL_RELEASE_VERSION if args.apl_local_release else None,
+        kc_terminal_version=KC_TERMINAL_VERSION if args.kc_terminal else None,
+        kc_site_stp_version=KC_SITE_STP_VERSION if args.kc_site_stp else None,
+        kc_contact_version=KC_CONTACT_VERSION if args.kc_contact_memory else None,
+        kc_lateral_version=KC_LATERAL_VERSION if args.kc_lateral else None,
+        sensory_terminal_version=SENSORY_TERMINAL_VERSION if args.sensory_terminal else None,
+        kc_dopamine_version=KC_DOPAMINE_VERSION if args.kc_dopamine else None,
+        dan_release_version=DAN_RELEASE_VERSION if args.dan_local_release else None,
+        dan_carried_credit=bool(args.dan_carried_credit),
+        dan_credit_version=1 if args.dan_carried_credit else None,
+        dan_receiver_credit=bool(args.dan_receiver_credit),
+        dan_receiver_credit_version=1 if args.dan_receiver_credit else None,
         lr=args.lr, lr_synapse=args.lr_synapse, lr_sensory=args.lr_sensory,
         plasticity_optimizer=args.plasticity_optimizer,
         n_neurons=model.n_neurons, n_synapses=sum(p.numel() for p in learner.edges),
@@ -2149,7 +2719,7 @@ def main():
     atomic_json(args.output / 'config.json', config)
     if is_scratch_start:
         atomic_save(args.output / 'birth.pt', {
-            'format': 'fly-bptt-v1', 'model': dict(model.named_parameters()),
+            'format': 'fly-bptt-v1', 'model': checkpoint_model_weights(model),
             'learner': learner.state_dict(), 'config': config, 'origin': origin,
             'train_cursor': 0, 'val_cursor': 0, 'bptt_train_tokens': 0,
             'target_bptt_tokens': target, 'best_live_nll': math.inf,
@@ -2181,7 +2751,7 @@ def main():
 
     def health():
         row = {'field_energy': float(learner.state.h.square().mean()),
-            'firing_rate': float((learner.state.ring[0] > 0).float().mean()),
+            **instantaneous_release_metrics(learner.state.ring[0], getattr(model, 'graded_mask', None)),
             'read_norm_mean': float(model.read_norm.weight.detach().mean()),
             'vram_allocated_mib': torch.cuda.memory_allocated() / 2**20,
             'vram_reserved_mib': torch.cuda.memory_reserved() / 2**20,
@@ -2210,6 +2780,12 @@ def main():
                 for k, v in learner.last_jepa_metrics.items():
                     row[f'obs_metric_{k}'] = float(v)
         # the brain's own signals (dopamine, intrinsic drive, graded cells...), logged whatever the go neuron
+        if getattr(model, 'kcd_pre', None) is not None:
+            active_types = torch.unique(model.superclass_id[model.kcd_post.long()])
+            gain = model.log_kc_release.detach()[active_types].exp()
+            row.update(kc_dan_release_enabled=True, kc_dan_release_active_types=int(active_types.numel()),
+                       kc_dan_release_gain_mean=float(gain.mean()),
+                       kc_dan_release_gain_min=float(gain.min()), kc_dan_release_gain_max=float(gain.max()))
         if getattr(model, 'dopamine_sensitivity', None) is not None and learner.state.dopamine.numel():
             dop = learner.state.dopamine.detach()
             sens = model.dopamine_sensitivity.detach()
@@ -2224,6 +2800,108 @@ def main():
             row.update(online_da_eta_mean=float(model.online_da_eta.detach().mean()),
                        online_da_tau_trace=float(-1 / torch.log(torch.sigmoid(model.online_da_logit_trace.detach()))),
                        online_da_memory_sd=float(phi.std()), online_da_memory_absmax=float(phi.abs().max()))
+        if getattr(model, 'amine_enabled', False) and learner.state.amine_concentration.numel():
+            ac = learner.state.amine_concentration.detach()
+            ar = learner.state.amine_receptor.detach()
+            row.update(amine_concentration_oa=float(ac[0].mean()),
+                       amine_concentration_5ht=float(ac[1].mean()),
+                       amine_occupancy_oa=float(ar[0].mean()),
+                       amine_occupancy_5ht=float(ar[1].mean()),
+                       amine_response_oa_mean=float(model.amine_response_oa.detach().mean()),
+                       amine_response_5ht_mean=float(model.amine_response_5ht.detach().mean()))
+        if getattr(model, 'cx_enabled', False) and learner.state.cx_trace.numel():
+            row.update(cx_trace_mean=float(learner.state.cx_trace.detach().mean()),
+                       cx_trace_sd=float(learner.state.cx_trace.detach().std()),
+                       cx_feedback_mean=float(model.cx_feedback.detach().mean()),
+                       cx_tau_mean=float((-1.0 / torch.log(torch.sigmoid(model.cx_logit_decay.detach()))).mean()))
+        row['mb_pooled_quarantined'] = bool(getattr(model, 'mb_pooled_quarantined', False))
+        if (getattr(model, 'mb_consolidation_enabled', False) and learner.state.dpm_trace.numel()
+                and not getattr(model, 'mb_pooled_quarantined', False)):
+            row.update(dpm_trace=float(learner.state.dpm_trace.detach().mean()),
+                       apl_trace=float(learner.state.apl_trace.detach().mean()),
+                       dpm_consolidation=float(model.mb_dpm_consolidation.detach()),
+                       apl_feedback=float(model.mb_apl_feedback.detach()),
+                       dpm_tau=float(-1.0 / torch.log(torch.sigmoid(model.mb_dpm_logit_decay.detach()))),
+                       apl_tau=float(-1.0 / torch.log(torch.sigmoid(model.mb_apl_logit_decay.detach()))))
+        if getattr(model, 'mb_terminal_enabled', False) and learner.state.mb_terminal_gaba.numel():
+            row.update(mb_terminal_gaba_by_source=learner.state.mb_terminal_gaba.detach().mean(1).cpu().tolist(),
+                       mb_dpm_concentration_by_source=learner.state.mb_dpm_concentration.detach().mean(1).cpu().tolist(),
+                       mb_dpm_receptor_max=float(learner.state.mb_dpm_receptor.detach().max()),
+                       mb_terminal_source_body_ids=model.mb_terminal_source_body_ids.cpu().tolist())
+        if learner.state.apl_voltage.numel():
+            row.update(apl_cable_nodes=learner.state.apl_voltage.numel(),
+                       apl_cable_voltage_min=float(learner.state.apl_voltage.min()),
+                       apl_cable_voltage_max=float(learner.state.apl_voltage.max()),
+                       apl_cable_voltage_sd=float(learner.state.apl_voltage.std()),
+                       apl_log_axial=model.apl_log_axial.detach().cpu().tolist())
+        if learner.state.apl_release_calcium.numel():
+            row.update(apl_release_calcium_max=float(learner.state.apl_release_calcium.detach().max()),
+                       apl_release_resources_min=float(learner.state.apl_release_resources.detach().min()),
+                       apl_release_scope='local normalized calcium and conserving release resources; channel identity unmeasured')
+        if learner.state.kc_lateral_receptor.numel():
+            row.update(kc_lateral_receptor_max=float(learner.state.kc_lateral_receptor.detach().max()),
+                       kc_lateral_signal_max=float(learner.state.kc_lateral_signal.detach().max()),
+                       kc_lateral_scope='actual delayed KC axonal contacts, local inhibitory receptor/effector, release and cAMP coupling')
+        if learner.state.kc_terminal_gaba.numel():
+            row.update(kc_terminal_nodes=learner.state.kc_terminal_gaba.shape[1],
+                       kc_terminal_release_sites=learner.state.kc_terminal_packets.shape[1],
+                       kc_terminal_gaba_max_by_source=learner.state.kc_terminal_gaba.detach().amax(1).cpu().tolist(),
+                       kc_terminal_5ht_max_by_source=learner.state.kc_terminal_5ht.detach().amax(1).cpu().tolist(),
+                       kc_terminal_response_max=float(learner.state.kc_terminal_receptor.detach().max()),
+                       kc_terminal_eligibility_max=float(learner.state.kc_terminal_eligibility.detach().max()),
+                       kc_terminal_state_scope='local effective receptor signals at actual morphology volumes',
+                       mb_terminal_state_scope='historical pooled snapshot retained; current local state uses kc_terminal_*')
+        if learner.state.dan_local_calcium.numel():
+            row.update(dan_local_calcium_max=float(learner.state.dan_local_calcium.detach().max()),
+                dan_local_resources_min=float(learner.state.dan_local_resources.detach().min()),
+                dan_local_source_scope='actual reciprocal contacts and DAN release sites; effective receptor/calcium kinetics, existing somatic AP drive')
+        if learner.state.kc_dopamine_signal.numel():
+            row.update(kc_dopamine_signal_max=float(learner.state.kc_dopamine_signal[0].detach().max()),
+                kc_dopamine_scope='actual DAN-KC contacts, local effective receptor signals on all KC morphology nodes')
+        if learner.state.kc_contact_memory.numel():
+            row.update(kc_plastic_contacts=learner.state.kc_contact_memory.shape[1],
+                       kc_contact_phi_min=float(learner.state.kc_contact_memory.detach().min()),
+                       kc_contact_phi_max=float(learner.state.kc_contact_memory.detach().max()),
+                       phi_scope='native release-position/MBON partner; legacy comp_memory historical',
+                       dopamine_teacher_scope=('actual DAN-KC contact-local effective receptor signals' if args.kc_dopamine
+                           else 'existing MBON compartment delivery, not spatial bouton dopamine'))
+        if learner.state.kc_site_resources.numel():
+            row.update(kc_site_resources_min=float(learner.state.kc_site_resources.detach().min()),
+                       kc_site_resources_mean=float(learner.state.kc_site_resources.detach().mean()),
+                       kc_site_utilization_max=float(learner.state.kc_site_utilization.detach().max()))
+        if getattr(model, 'body_loop_enabled', False) and learner.state.body_action_trace.numel():
+            row.update(body_action_trace=float(learner.state.body_action_trace.detach().mean()),
+                       body_feedback_trace=float(learner.state.body_feedback_trace.detach().mean()),
+                       body_feedback_mean=float(model.body_feedback.detach().mean()),
+                       body_tau=float(-1.0 / torch.log(torch.sigmoid(model.body_logit_decay.detach()))),
+                       body_descending_count=int(model.body_descending_index.numel()),
+                       body_ascending_count=int(model.body_ascending_index.numel()))
+        if getattr(model, 'body_actuator_enabled', False) and learner.state.body_muscle.numel():
+            row.update(body_muscle=float(learner.state.body_muscle.detach().mean()),
+                       body_reafference_absmax=float(learner.state.body_reafference.detach().abs().max()),
+                       body_proprioceptive_count=int(model.body_proprioceptive_index.numel()),
+                       body_proprioceptive_gain_norm=float(model.body_proprioceptive_gain.detach().norm()),
+                       body_return_mode=('historical_scalar_proxy' if getattr(model, 'body_proxy_compatibility', False)
+                                         else 'proxy_quarantined_native_periphery_unconnected'))
+        if getattr(model, 'native_motor_port_enabled', False):
+            row.update(native_motor_cells=int(model.native_motor_index.numel()),
+                       native_motor_execution='actual_release_packet',
+                       action_decoder='separate_from_prediction',
+                       native_motor_terminal_enabled=bool(model.native_motor_terminal_enabled))
+        if getattr(model, 'endocrine_enabled', False) and learner.state.endocrine_lk.numel():
+            row.update(endocrine_lk=float(learner.state.endocrine_lk.detach().mean()),
+                       endocrine_receptor=float(learner.state.endocrine_receptor.detach().mean()),
+                       endocrine_calcium=float(learner.state.endocrine_calcium.detach().mean()),
+                       endocrine_response_absmax=float(model.endocrine_response.detach().abs().max()),
+                       endocrine_target_count=int(model.endocrine_target_index.numel()))
+        if getattr(model, 'olfactory_relay_enabled', False) and learner.state.al_local_trace.numel():
+            row.update(al_local_trace=float(learner.state.al_local_trace.detach().mean()),
+                       al_pn_drive=float(learner.state.al_pn_drive.detach().mean()),
+                       al_pn_feedback_mean=float(model.al_pn_feedback.detach().mean()),
+                       al_local_tau=float(-1.0 / torch.log(torch.sigmoid(model.al_local_logit_decay.detach()))),
+                       al_local_count=int(model.al_local_index.numel()),
+                       al_pn_count=int(model.al_pn_index.numel()),
+                       al_inhibitory_contacts=int(model.al_contact_weight.numel()))
         if getattr(model, 'writer_prediction_logit', None) is not None:
             row['writer_prediction_beta'] = float(torch.sigmoid(model.writer_prediction_logit.detach()))
         if getattr(model, 'precision_u', None) is not None and learner.state.modulator.numel():
@@ -2245,6 +2923,13 @@ def main():
             row['read_bank_tau_mean'] = float((-1 / torch.log(model.read_bank_decay().detach())).mean())
         if getattr(model, 'log_graded_gain', None) is not None:
             row['graded_gain'] = [round(float(x), 5) for x in model.log_graded_gain.detach().exp()]
+        if getattr(model, 'log_visual_graded_gain', None) is not None:
+            visual_gain = model.log_visual_graded_gain.detach().exp()
+            row.update(visual_graded_count=int(model.visual_graded_index.numel()),
+                       visual_graded_gain_mean=float(visual_gain.mean()),
+                       visual_graded_gain_min=float(visual_gain.min()),
+                       visual_graded_gain_max=float(visual_gain.max()),
+                       visual_release_mean=float(learner.state.ring[0][:, model.visual_graded_index].detach().mean()))
         if getattr(learner, 'go_neuron', False):
             for k_go, v_go in getattr(learner, 'last_adaptive_metrics', {}).items():
                 row[k_go] = float(v_go) if isinstance(v_go, (int, float)) else v_go
@@ -2294,7 +2979,7 @@ def main():
         return row
 
     def checkpoint(is_best=False):
-        payload = {'format': 'fly-bptt-v1', 'model': dict(model.named_parameters()),
+        payload = {'format': 'fly-bptt-v1', 'model': checkpoint_model_weights(model),
             'learner': learner.state_dict(), 'config': config, 'origin': origin,
             'train_cursor': cursor, 'val_cursor': val_cursor, 'bptt_train_tokens': trained,
             'target_bptt_tokens': target, 'best_live_nll': best,
@@ -2307,7 +2992,7 @@ def main():
         atomic_save(args.output / 'last.pt', payload)
         if is_best:
             atomic_save(args.output / 'best.pt', {'format': 'fly-bptt-best-weights-v1',
-                'model': dict(model.named_parameters()), 'config': config,
+                'model': checkpoint_model_weights(model), 'config': config,
                 'bptt_train_tokens': trained, 'best_live_nll': best})
 
     world_rng = np.random.default_rng(1234)
@@ -2328,8 +3013,15 @@ def main():
     for _ in range(int(getattr(args, 'world_skip', 0) or 0)):
         sample_world(args.window)
 
+    pending_resource_error = None
+
     def observe(values, training=False):
-        nonlocal last_grad
+        nonlocal last_grad, pending_resource_error
+        if training and learner.brain_learning == 'local' and getattr(learner, 'live_result', None) is not None:
+            # the live pass was the life: commit it (no relived window, no tape)
+            chunk, last_grad = learner.live_commit(values, learner.forced_world)
+            learner.forced_world = None
+            return chunk
         scores = []
         for left in range(0, len(values), args.window):
             world = sample_world(min(args.window, len(values) - left)) if (training and args.mixed_world) else None
@@ -2343,7 +3035,13 @@ def main():
                 # cached blocks from a long window (fragmentation), not memory in use: give them back between windows
                 torch.cuda.empty_cache()
             if max(torch.cuda.memory_reserved(), torch.cuda.max_memory_allocated()) / 2**20 > args.vram_limit_mib:
-                raise MemoryError(f'CUDA allocation/reservation exceeded the registered {args.vram_limit_mib:.0f} MiB budget')
+                error = f'CUDA allocation/reservation exceeded the registered {args.vram_limit_mib:.0f} MiB budget'
+                if training:
+                    # observe() already updated weights and the world has moved.
+                    # Complete counters/meters/logs, then save the paired state.
+                    pending_resource_error = error
+                else:
+                    raise MemoryError(error)
         return scores
 
     taste = None
@@ -2456,8 +3154,10 @@ def main():
             mother = FallbackMother(mother, SiliconFlowMother('zai-org/GLM-5.3-Flash'))
             print(f'Mouth: {mother.name}', flush=True)
         family = raising_full.get('family') or {}
-        opening = (f"Hello, {family['child']['name']}. {family.get('mother', {}).get('name', 'Mama')} is here."
-                   if family.get('child', {}).get('name') else 'Hello, little one.')      # her first word: her name
+        # The first contact establishes safety without teaching the mouth to prepend the child's name to every turn.
+        # Naming remains available in the family memory and for meaningful attention calls, but is not a fixed greeting.
+        opening = (f"Hello there. {family.get('mother', {}).get('name', 'Mama')} is here."
+                   if family.get('child', {}).get('name') else 'Hello, little one.')
         state_path = args.output / 'mother_state.json'
         saved_talk = json.loads(state_path.read_text(encoding='utf-8')) if state_path.exists() else None
         saved_world = resume_mother.get('mother_world') if args.resume else None
@@ -2466,8 +3166,8 @@ def main():
         elif saved_talk:
             # a continuing lineage: no new greeting -- the conversation goes on, the mother calls her by name
             opening = f"{family.get('child', {}).get('name', 'little one')}?"
-        # the child's turn ends at a line break or when she yields (her act), or at max_fly_words; by default a
-        # sentence end ends it too
+        # A boundary token ends the turn; short motor pauses retain partial speech.
+        # Sustained silence uses the world's existing patience, or the safety token cap.
         child_end = tuple(raising.get('child_end_of_turn') or ('\n', '.', '?', '!'))
         mother_world = MotherWorld(mother, tiktoken.get_encoding('gpt2'), max_fly_words=args.mother_max_fly_words,
                                    opening=opening, end_of_turn=child_end,
@@ -2492,20 +3192,9 @@ def main():
             learner.last_voice = bool((saved_talk or {}).get('last_voice', False))
             if saved_talk:
                 origin['mother_world_migration'] = 'legacy transcript only; unread queue and delayed credit unavailable'
-        if args.mother_reward:
-            n_reward = attach_reply_reward(model, args.graph, args.graph.parent / 'body-annotations.feather',
-                                           learnable=bool(args.sense_gains_learnable),
-                                           level=float(args.mother_reward_level or 1.0),
-                                           ticks=int(args.mother_reward_ticks or 4))
-            print(f'Her answer as a consequence: {n_reward} PAM cells, {args.mother_reward_level} x rheobase for '
-                  f'{args.mother_reward_ticks} ticks at the first word of a normal reply', flush=True)
-        if args.mother_voice:
-            args.mother_voice_level = float(args.mother_voice_level or 1.5)
-            n_voice = attach_mother_voice(model, args.graph, args.graph.parent / 'body-annotations.feather',
-                                          learnable=bool(args.sense_gains_learnable),
-                                          level=float(args.mother_voice_level or 1.5))
-            print(f'Mother’s voice on {n_voice} Johnston’s organ cells (JO-A/B), {args.mother_voice_level} x rheobase', flush=True)
-        print(f'Child end of turn: {child_end!r}, or a yield, or {args.mother_max_fly_words} words', flush=True)
+        attach_mother_senses(model, args)
+        print(f'Child end of turn: {child_end!r}, or {mother_world.speech_pause_limit()} silent ticks, '
+              f'or {args.mother_max_fly_words} tokens; short pauses retain speech', flush=True)
         mother_rng = np.random.default_rng(int(trained) + 104729)
         if args.resume and resume_mother.get('mother_rng') is not None:
             mother_rng.bit_generator.state = resume_mother['mother_rng']
@@ -2531,6 +3220,17 @@ def main():
                 # train on exactly what happened (the same words and intervals, learner.forced_world)
                 before = len(mother_world.transcript)
                 learner.speak_credit = args.mother_credit
+                learner.consequence_native_enabled = bool(args.mother_consequence_native)
+                learner.mother_action_clock = args.mother_action_clock
+                learner.generative_shadow_enabled = bool(args.mother_generative_shadow)
+                learner.native_generative_enabled = bool(args.mother_native_generative)
+                learner.native_context_enabled = bool(args.mother_native_context)
+                learner.context_initial_variance = args.mother_context_initial_variance
+                learner.context_process_variance = args.mother_context_process_variance
+                learner.native_generative_reference = args.mother_generative_reference
+                learner.native_generative_candidates = args.mother_generative_candidates
+                learner.native_generative_ticks = args.mother_generative_ticks
+                learner.native_credit_enabled = bool(args.mother_native_credit)
                 if args.mother_credit == 'epistemic':
                     import information_boltzmann.core.fly_bptt_learning as _fl
                     window_state0 = _fl.FlyPhysicalState(**{k: (tuple(t.detach().clone() for t in v) if k == 'ring'
@@ -2545,8 +3245,22 @@ def main():
                 values = np.array(targets_, dtype=np.int64)
                 learner.forced_world = forced_
                 with (args.output / 'mother.jsonl').open('a', encoding='utf-8') as out:
-                    for who, text in mother_world.transcript[before:]:
-                        out.write(json.dumps({'trained': trained, 'who': who, 'text': text}) + '\n')
+                    for index in range(before, len(mother_world.transcript)):
+                        who, text = mother_world.transcript[index]
+                        out.write(json.dumps({'trained': trained, 'who': who, 'text': text,
+                                              **mother_world.turn_observation(index)}) + '\n')
+                mouth = mother_world.mother
+                request = getattr(mouth, 'last_prompt_messages', None)
+                if request is not None and request is not getattr(mouth, '_logged_prompt_messages', None):
+                    # Log the last mouth request in this window, without auth headers.
+                    # Preserve rejected drafts separately from what the child actually heard.
+                    with (args.output / 'mother_prompt_audit.jsonl').open('a', encoding='utf-8') as out:
+                        out.write(json.dumps({'trained': trained, 'scope': 'last API reply in this window',
+                            'model': mouth.model, 'messages': request,
+                            'grounding_rejections': getattr(mouth, 'last_grounding_rejections', []),
+                            'delivered_reply': getattr(mouth, 'last_delivered_reply', ''),
+                            'raw_reply': getattr(mouth, 'last_raw_reply', '')}, ensure_ascii=False) + '\n')
+                    mouth._logged_prompt_messages = request
                 try:
                     mon_tmp = Path('data/harness/monitor.tmp')
                     mon_dst = Path('data/harness/monitor.json')
@@ -2557,6 +3271,7 @@ def main():
                         'recent_transcript': [{'who': w, 'text': t} for w, t in mother_world.transcript[-10:]],
                         'plan_topic': raising_full.get('parenting', {}).get('current_topic') or (raising_full.get('parenting', {}).get('topics') or [None])[0],
                         'plan_intent': raising_full.get('parenting', {}).get('intention'),
+                        'plan_stage': raising_full.get('parenting', {}).get('stage'),
                         'plan_mtime': round(raising_mtime, 1),
                     }
                     mon_tmp.write_text(json.dumps(mon_data, ensure_ascii=False, indent=1), encoding='utf-8')
@@ -2633,6 +3348,7 @@ def main():
                     plan_meta = {
                         'plan_topic': p_cfg.get('current_topic') or (p_cfg.get('topics') or [None])[0],
                         'plan_intent': p_cfg.get('intention'),
+                        'plan_stage': p_cfg.get('stage'),
                         'plan_mtime': round(raising_mtime, 1)
                     }
                 with args.score_log.open('a', encoding='utf-8') as out:
@@ -2675,6 +3391,7 @@ def main():
                 if getattr(learner, 'lambda_mcr2', 0.0) > 0.0 and getattr(learner, 'last_mcr2_metrics', None):
                     mcr_info = f" [ΔR={learner.last_mcr2_metrics.get('mcr2_delta_R', 0):.2f}]"
                 print(f'BPTT {trained}/{target} | NLL {np.mean(scores):.4f}{ctm_info}{adaptive_info}{mcr_info} | {seconds:.3f}s/{args.window} | peak {row["vram_peak_mib"]:.0f} MiB', flush=True)
+            preserve_committed_resource_window(pending_resource_error, checkpoint)
             if trained == start_trained + args.window:
                 checkpoint()
                 if args.calibrate:

@@ -15,6 +15,8 @@ shorter than a window):
             and (through the phasic dopamine that writes phi) dopamine_logit_fast / slow
   dopamine  the fast and slow dopamine concentrations: dopamine_logit_fast, dopamine_logit_slow
   stp       release probability u and resources x per neuron: logit_u0, log_tau_fac, log_tau_rec (per superclass)
+  DAN source  full local receptor/calcium/resource/delayed-packet conditional
+              material history; six per-cell parameters and existing class gain
 """
 import torch
 
@@ -24,7 +26,7 @@ COMP_PARAMS = ('comp_eta', 'comp_logit_forget', 'comp_logit_trace', 'dopamine_lo
 DPHASIC_ROWS = (3, 4, 7, 8)       # dopamine_logit_fast, dopamine_logit_slow, comp_burst_k, comp_logit_camp
 DOPAMINE_PARAMS = ('dopamine_logit_fast', 'dopamine_logit_slow')
 STP_PARAMS = ('logit_u0', 'log_tau_fac', 'log_tau_rec')
-STATE_OF = {'comp': ('comp_trace', 'comp_memory', 'comp_da_trace', 'comp_camp'), 'dopamine': ('dopamine',), 'stp': ('u', 'x')}
+STATE_OF = {'comp': ('comp_trace', 'comp_memory', 'comp_da_trace', 'comp_camp', 'kc_contact_memory', 'kc_contact_trace', 'kc_contact_da_trace', 'kc_contact_camp'), 'dopamine': ('dopamine', 'kc_dopamine_signal'), 'stp': ('u', 'x')}
 
 
 def occupancy_slope(c, affinity):
@@ -72,10 +74,6 @@ def comp_step(S_phi, S_tr, phi, trace, spikes_kc, lam, eta, kappa, phasic, gate,
     Returns (S_phi', S_tr')."""
     n = len(COMP_PARAMS)
     S_p0, S_D0 = split_comp_rows(S_phi, n)
-    if pot is not None:
-        S_phi = torch.cat([S_p0, S_D0 if S_D0 is not None else torch.zeros_like(S_p0)], 0)
-    else:
-        S_phi = S_p0
     if unit:      # trace' = lam trace + (1 - lam trace) s  (attach_comp_unit_traces)
         S_tr_new = lam * (1.0 - spikes_kc) * S_tr + lam * (1.0 - lam) * trace * (1.0 - spikes_kc)
         trace_new = lam * trace + (1.0 - lam * trace) * spikes_kc
@@ -90,20 +88,29 @@ def comp_step(S_phi, S_tr, phi, trace, spikes_kc, lam, eta, kappa, phasic, gate,
     for r, idx in enumerate(DPHASIC_ROWS[:dphasic.shape[0]]):
         dp[idx] = dphasic[r:r + 1]
     keep = 1.0 + w * (eta * phasic - kappa) - (tonic if tonic is not None else 0.0)
-    direct = [w * eta * (1.0 + phi) * d for d in dp]        # every parameter acting through p
+    direct = [z] * n
+    for r, idx in enumerate(DPHASIC_ROWS[:dphasic.shape[0]]):
+        direct[idx] = w * eta * (1.0 + phi) * dphasic[r:r + 1]
     direct[0] = w * phasic * (1.0 + phi)                    # eta
     direct[1] = -w * kappa * (1.0 - kappa) * phi            # logit of the use-dependent forgetting rate
     direct[2] = dw_trace * A                                # logit of the trace's decay
     direct[5] = (-tonic * (1.0 - tonic_rate) * phi) if tonic is not None else z
     direct[6] = z                                           # eta_pot (below)
+    # Fill the final state row-by-row instead of concatenating multiple full
+    # parameter-by-contact temporaries. These are independent conditional rows;
+    # no state/parameter path is removed or shortened.
+    output = S_phi.new_empty(n * (2 if pot is not None else 1), phi.shape[1])
     if pot is None:
-        return keep * S_phi + torch.cat(direct, 0), S_tr_new
+        for row in range(n):
+            output[row:row+1] = keep * S_p0[row:row+1] + direct[row]
+        return output, S_tr_new
     P, dP, D, s_e = pot['P'], pot['dP'], pot['D'], pot['s_edge']
-    S_p, S_D = S_phi[:n], S_phi[n:]
+    S_p, S_D = S_p0, S_D0 if S_D0 is not None else torch.zeros_like(S_p0)
     keep = keep - gate * P * D * s_e
     direct[6] = gate * dP * D * s_e * (1.0 - phi)
     cross = gate * P * s_e * (1.0 - phi)                    # d phi' / d D
-    S_p_new = keep * S_p + cross * S_D + torch.cat(direct, 0)
+    for row in range(n):
+        output[row:row+1] = keep * S_p[row:row+1] + cross * S_D[row:row+1] + direct[row]
     if unit:
         q_on = (phasic < 1.0).to(phasic.dtype)
         q = phasic.clamp(max=1.0)
@@ -114,11 +121,11 @@ def comp_step(S_phi, S_tr, phi, trace, spikes_kc, lam, eta, kappa, phasic, gate,
         keep_D = lam
         d_lam = lam * (1.0 - lam) * (D - phasic)
         d_q = (1.0 - lam) * torch.ones_like(phasic)
-    direct_D = [d_q * d for d in dp]
-    direct_D[0], direct_D[1], direct_D[5], direct_D[6] = z, z, z, z
-    direct_D[2] = d_lam.expand_as(phi)
-    S_D_new = keep_D * S_D + torch.cat(direct_D, 0)
-    return torch.cat([S_p_new, S_D_new], 0), S_tr_new
+    for row in range(n):
+        direct_d = (d_lam.expand_as(phi) if row == 2 else
+                    d_q * dp[row] if row in DPHASIC_ROWS else z)
+        output[n+row:n+row+1] = keep_D * S_D[row:row+1] + direct_d
+    return output, S_tr_new
 
 
 def stp_step(S, u, x, spikes, u0, rho_f, rho_r, du0, drf, drr):
@@ -164,6 +171,8 @@ def attach_carried_credit(model, mechanisms):
     if 'comp' in mechanisms and 'dopamine' not in mechanisms:
         mechanisms = mechanisms + ('dopamine',)          # p depends on the dopamine clocks: carry their sensitivity
     model.carried_credit = mechanisms
+    if getattr(model, 'dan_carried_credit_enabled', False) and 'dopamine' not in mechanisms:
+        raise ValueError('DAN carried material credit requires opening dopamine windows')
     return mechanisms
 
 
@@ -174,7 +183,12 @@ def open_window(state, mechanisms):
     model_fields = {}
     leaves = {}
     start = {name: getattr(state, name, None) for name in ('credit_comp', 'credit_comp_trace', 'credit_dopamine', 'credit_stp',
-                                                         'credit_comp_camp')}
+                                                         'credit_comp_camp', 'kc_contact_credit', 'kc_contact_trace_credit',
+                                                         'kc_contact_camp_credit', 'kc_dopamine_credit')}
+    from .fly_dan_credit import DAN_CREDIT_FIELDS
+    from .fly_dan_release import DAN_RELEASE_STATE_FIELDS
+    start.update({name: getattr(state, name, None) for name in DAN_CREDIT_FIELDS})
+    start['dan_credit_dopamine'] = getattr(state, 'dan_credit_dopamine', None)
     for mech in mechanisms:
         for name in STATE_OF[mech]:
             t = getattr(state, name, None)
@@ -182,6 +196,12 @@ def open_window(state, mechanisms):
                 leaf = t.detach().requires_grad_(True)
                 model_fields[name] = leaf
                 leaves[name] = leaf
+    if 'dopamine' in mechanisms and any(start[n] is not None and start[n].numel() for n in DAN_CREDIT_FIELDS):
+        for name in DAN_RELEASE_STATE_FIELDS:
+            t = getattr(state, name)
+            leaf = t.detach().requires_grad_(True)
+            model_fields[name] = leaf
+            leaves[name] = leaf
     return dataclasses.replace(state, **model_fields), leaves, start
 
 
@@ -205,9 +225,16 @@ def apply_carried_credit(model, leaves, start, scale=1.0):
         t = leaves.get(name)
         return None if t is None or t.grad is None else t.grad
 
-    if 'comp' in mech and start.get('credit_comp') is not None and start['credit_comp'].numel():
-        G_phi, G_tr, G_D = grad('comp_memory'), grad('comp_trace'), grad('comp_da_trace')
-        S_all, S_tr = start['credit_comp'], start['credit_comp_trace']
+    layouts = (
+        ('comp_memory', 'comp_trace', 'comp_da_trace', 'comp_camp',
+         'credit_comp', 'credit_comp_trace', 'credit_comp_camp'),
+        ('kc_contact_memory', 'kc_contact_trace', 'kc_contact_da_trace', 'kc_contact_camp',
+         'kc_contact_credit', 'kc_contact_trace_credit', 'kc_contact_camp_credit'))
+    for phi_name, trace_name, da_name, camp_name, credit_name, trace_credit_name, camp_credit_name in layouts:
+        if 'comp' not in mech or start.get(credit_name) is None or not start[credit_name].numel():
+            continue
+        G_phi, G_tr, G_D = grad(phi_name), grad(trace_name), grad(da_name)
+        S_all, S_tr = start[credit_name], start[trace_credit_name]
         n = len(COMP_PARAMS)
         S_phi, S_D = split_comp_rows(S_all, n)
         if G_phi is not None:
@@ -216,7 +243,7 @@ def apply_carried_credit(model, leaves, start, scale=1.0):
         if G_D is not None and S_D is not None:
             for k, name in enumerate(COMP_PARAMS):                  # the potentiation's dopamine trace
                 add(name, (G_D[0] * S_D[k]).sum())
-        G_I, S_I = grad('comp_camp'), start.get('credit_comp_camp')
+        G_I, S_I = grad(camp_name), start.get(camp_credit_name)
         if G_I is not None and S_I is not None and S_I.numel():
             # the cAMP integrator of the burst judgement: rows dopamine_logit_fast, _slow, comp_logit_camp
             for k, name in enumerate(('dopamine_logit_fast', 'dopamine_logit_slow', 'comp_logit_camp')):
@@ -229,6 +256,12 @@ def apply_carried_credit(model, leaves, start, scale=1.0):
             S = start['credit_dopamine']
             add('dopamine_logit_fast', (G[0] * S[0]).sum() + (G[1] * S[1]).sum())
             add('dopamine_logit_slow', (G[1] * S[2]).sum())
+    if 'dopamine' in mech and start.get('kc_dopamine_credit') is not None and start['kc_dopamine_credit'].numel():
+        G = grad('kc_dopamine_signal')
+        if G is not None:
+            S = start['kc_dopamine_credit']
+            add('dopamine_logit_fast', (G[0]*S[0]).sum()+(G[1]*S[1]).sum())
+            add('dopamine_logit_slow', (G[1]*S[2]).sum())
     if 'stp' in mech and start.get('credit_stp') is not None and start['credit_stp'].numel():
         Gu, Gx = grad('u'), grad('x')
         if Gu is not None and Gx is not None:
@@ -239,4 +272,7 @@ def apply_carried_credit(model, leaves, start, scale=1.0):
             add('logit_u0', per(Gu[0] * S[0] + Gx[0] * S[2]))
             add('log_tau_fac', per(Gu[0] * S[1] + Gx[0] * S[3]))
             add('log_tau_rec', per(Gx[0] * S[4]))
+    from .fly_dan_credit import carried_gradients
+    for name, value in carried_gradients(model, {name: leaf.grad for name, leaf in leaves.items()}, start).items():
+        add(name, value)
     return added

@@ -42,6 +42,8 @@ def matched_conductance(opened):
 
 class ContinuousOpenMedium:
     def __init__(self, opened, *, tau, max_events, family_conductance, seed):
+        if opened.body.law.pool_reference_size:
+            raise ValueError("event-driven reference supports unscaled pools only")
         if (type(max_events) is not int or max_events < 0 or not tau >= 0
                 or len(family_conductance) != FAMILIES or any(k < 0 for k in family_conductance)):
             raise ValueError("invalid event-driven window")

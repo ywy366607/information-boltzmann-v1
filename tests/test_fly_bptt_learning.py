@@ -37,6 +37,41 @@ def physical(model):
         h.clone(), torch.ones_like(h), u, model.topographic_writer.a_adapt.clone())
 
 
+def test_native_motor_shadow_preserves_physical_forward_clock_and_randomness(tmp_path):
+    from information_boltzmann.core.fly_active_inference import attach_motor_acts, motor_rest
+    from information_boltzmann.core.fly_bptt_learning import advance_fly_token_stream
+    model = make_model(tmp_path)
+    attach_motor_acts(model, brain_gradient=False)
+    with torch.no_grad():
+        model.ai_w.normal_(std=.1)
+    initial = physical(model)
+    g0 = motor_rest(model, initial.h)
+    rng0 = torch.get_rng_state().clone()
+    results = []
+    for shadow in (False, True):
+        torch.set_rng_state(rng0)
+        tape = []
+        with torch.no_grad():
+            out = advance_fly_token_stream(
+                model, copy.deepcopy(initial), torch.tensor([1]), ticks=7, hold_input=True,
+                read_every=True, ai_g=g0.clone(), ai_tape=tape,
+                **({'ai_native_g': g0.clone()} if shadow else {}))
+        results.append((out, tape, torch.get_rng_state().clone()))
+    (normal, actions, rng), (shadow, shadow_actions, shadow_rng) = results
+    assert actions == shadow_actions and torch.equal(rng, shadow_rng)
+    for key, expected in normal[0].state_dict().items():
+        actual = shadow[0].state_dict()[key]
+        if isinstance(expected, tuple):
+            for a, b in zip(actual, expected):
+                torch.testing.assert_close(a, b, rtol=0, atol=0)
+        else:
+            torch.testing.assert_close(actual, expected, rtol=0, atol=0)
+    for offset in (1, 2, -4, -3, -2, -1):
+        torch.testing.assert_close(normal[offset], shadow[offset], rtol=0, atol=0)
+    torch.testing.assert_close(shadow[3], normal[-2], rtol=0, atol=0)
+    torch.testing.assert_close(shadow[4], normal[-1], rtol=0, atol=0)
+
+
 def test_true_silence_withdraws_text_and_voice_but_keeps_physical_time(tmp_path, monkeypatch):
     from information_boltzmann.core import fly_bptt_learning as fl
     torch.manual_seed(11)
@@ -117,7 +152,7 @@ def test_newborn_muscles_decide_from_first_window_and_replay_matches_live_state(
         def encode(self, text):
             return [1]
         def decode(self, ids):
-            return 'word'
+            return 'word' if ids else ''
     class Mother:
         asynchronous = False
         def reply(self, history):
@@ -552,3 +587,32 @@ def test_checkpointing_equivalence(tmp_path, settle_ticks, window, temporal_read
     assert s1.h.grad is not None, "Checkpoint must preserve the whole-window state credit path"
 
 
+
+
+def test_local_brain_learning_trains_readouts_only_and_builds_no_brain_tape(tmp_path):
+    from information_boltzmann.core.fly_bptt_learning import LOCAL_READOUT_PARAMETERS
+    torch.manual_seed(5)
+    model = make_model(tmp_path)
+    state = physical(model)
+    state.h.copy_(torch.linspace(.01, .05, model.n_neurons)[None])
+    state.ring = tuple(torch.ones_like(state.h)*.5 for _ in range(4))
+    learner = FlyBPTTLearner(model, state, lr=1e-3, lr_synapse=1e-3)
+    learner.previous_token = 0
+    learner.set_brain_learning('local')
+    before = {n: p.detach().clone() for n, p in model.named_parameters()}
+    seen = []
+    hook = torch.autograd.graph.saved_tensors_hooks(lambda t: (seen.append(t.numel()), t)[1], lambda t: t)
+    with hook:
+        scores, metrics = learner.observe([1, 2, 3, 4, 5, 6, 7, 8])
+    assert len(scores) == 8 and torch.isfinite(torch.tensor(scores)).all()
+    changed = {n for n, p in model.named_parameters() if not torch.equal(before[n], p.detach())}
+    assert changed and changed <= set(LOCAL_READOUT_PARAMETERS)
+    assert 'decoder.weight' in changed and 'output_read.weight' in changed
+    assert metrics['synapse_grad_norm'] == 0 and metrics['writer_grad_norm'] == 0
+    # only the readout graph on the detached latents is saved: [window, d] features and readout weights
+    readout_numel = sum(p.numel() for n, p in model.named_parameters() if n in LOCAL_READOUT_PARAMETERS)
+    assert sum(seen) <= 8 * (readout_numel + 64 * model.n_neurons)
+    assert not learner.state.h.requires_grad
+    prior = learner.state.h.clone()
+    learner.observe([0, 1, 2, 3])
+    assert learner.updates == 2 and not torch.equal(prior, learner.state.h)
