@@ -1,0 +1,218 @@
+{
+  "scope": "CUDA matching executor and standard multi-parameter optimizer; no capability claim",
+  "integrated_review": {
+    "path": "lean/CGBAxioms/reviews/optimizer_content_bridge.lean",
+    "sha256": "b3c749d93c976f26ae3429f1a0671e51f94d3a0d64cda39d6bb843a9a48e42b5",
+    "lean_exit_code": 0,
+    "audited": {
+      "CGB.OptimizerContentReview": [
+        "cooperative_content_contract",
+        "drive_removes_content_barriers",
+        "hidden_basin_calibration",
+        "maximal_reversible_acceptance",
+        "content_gradient_port",
+        "transfer_gradient_port",
+        "event_port_contract",
+        "finite_capacity_content_bridge",
+        "certified_root_refinement",
+        "fractional_probability_enclosure",
+        "force_response_dissipative",
+        "kinetic_survival_envelope",
+        "one_defect_regeneration_margin",
+        "maximal_event_clock"
+      ],
+      "CGB.ResourceEnergyReview": [
+        "scaled_pool_contract",
+        "scaled_resource_generation",
+        "resource_ground_bound",
+        "resource_ground_witness",
+        "resource_monopoly_gap"
+      ],
+      "CGB.ResourceReleaseReview": [
+        "primitive_release_port",
+        "resource_release_drift",
+        "resource_release_budget",
+        "resource_feedback_contract"
+      ],
+      "CGB.RationalSamplerReview": [
+        "rational_mixture_contract",
+        "rational_binary_coin_contract"
+      ],
+      "CGB.FiberOptimizerReview": [
+        "readout_force_response_contract",
+        "readout_regeneration_contract",
+        "readout_block_kernel_contract",
+        "readout_cell_kernel_contract",
+        "readout_release_drift",
+        "readout_release_budget",
+        "readout_task_risk_contract",
+        "autonomous_task_noise_floor",
+        "population_kernel_contract",
+        "population_task_window_contract",
+        "population_frozen_gradient_budget",
+        "readout_floor_reduction",
+        "population_resource_service",
+        "matching_parallel_preparation"
+      ]
+    },
+    "compile_record": "lean/CGBAxioms/.lake/material_combined_core.lean.check.json",
+    "auto_implicit_variables": false,
+    "production_modules_added": 0
+  },
+  "source": "information_boltzmann/material_matching_cuda.py",
+  "source_sha256": "877a11e3ffdd42c2b5b11d47500559ac3cee5e61911a731639430025de2d70cb",
+  "full_optimizer_admitted": false,
+  "training_enabled": false,
+  "model_experiments": 0,
+  "structural_declaration": "CGB.FiberOptimizerReview.matching_parallel_preparation",
+  "tests": {
+    "command": [
+      "D:/conda_envs/vox/python.exe",
+      "-m",
+      "pytest",
+      "tests/test_material_matching_cuda.py",
+      "-q",
+      "-x"
+    ],
+    "returncode": 0,
+    "passed": 21,
+    "seconds": 9.11,
+    "observed_terminal_session": "81ac30",
+    "source": "tests/test_material_matching_cuda.py",
+    "source_sha256": "eb35f144e18370442f7b6029ce159286b3cf425813448fc012a50e25a3046261",
+    "runtime_source": "information_boltzmann/material_matching_cuda.py",
+    "runtime_source_sha256": "877a11e3ffdd42c2b5b11d47500559ac3cee5e61911a731639430025de2d70cb",
+    "scope": "GPU arithmetic/autograd/optimizer/full-resume interface; no language capability claim"
+  },
+  "hardware": {
+    "name": "NVIDIA GeForce GTX 1650",
+    "total_memory": 4294639616,
+    "torch_version": "2.9.1+cu126",
+    "cuda_version": "12.6"
+  },
+  "clock": {
+    "name": "readout_matching_sweep_v1",
+    "changed_from_cpu": true,
+    "same_matching_serial_stock_and_pool_semantics": true,
+    "old_random_site_lifetime_bounds_inherited": false,
+    "external_wear": "not automatically injected; existing wear-per-random-opportunity certificates do not transfer"
+  },
+  "precision": {
+    "physical": "all27 codes exact in uint8; byte aligned rather than5-bit packed",
+    "parameter_cache": "FP32; exactly representable seven-level alphabet",
+    "candidate_choice": "uniform word0..467 modulo4/9/13, exact cardinality",
+    "force_and_energy": "FP64 represented gradient*force units and scaled-pool energies",
+    "coin": "31-bit integer ticket, floor(2^31*computed_probability)",
+    "proved_error": "coin-grid error<=2^-31+error in supplied probability; GPU exp2 error is not assumed zero",
+    "gpu_probability_checks": 3952,
+    "maximum_observed_probability_error": "4.6460493358998497e-10",
+    "maximum_actual_cuda_cutoff_disagreement": 0,
+    "ideal_unlimited_bit_sampler_claimed": false
+  },
+  "costs": {
+    "persistent_state": "one uint8 per cell, shared row/column int32 totals, one global int64 stock and GPU RNG",
+    "temporary": "O(min(rows,cols)) proposal/prefix/tickets plus finiteness-check workspace",
+    "measurement_excludes": "CUDA context/compiler private memory; Torch allocator counters include only this process allocations",
+    "benchmark": "frozen supplied gradient and complete physical sweeps; not training or speed/quality versus Adam",
+    "rows": [
+      {
+        "rows": 128,
+        "cols": 128,
+        "parameters": 16384,
+        "colors_per_sweep": 128,
+        "attempted_cells_per_sweep": 16384,
+        "wall_seconds": [
+          0.20848859997931868,
+          0.2108342999999877,
+          0.2316549999814015
+        ],
+        "median_seconds": 0.2108342999999877,
+        "attempted_cells_per_second": 77710.31563650201,
+        "torch_resident_bytes": 240128,
+        "initialization_peak_additional_bytes": 205824,
+        "sweep_peak_additional_bytes": 114688,
+        "graph_wall_seconds": [
+          0.005682600021827966,
+          0.005454400001326576,
+          0.005864000006113201,
+          0.005837900011101738,
+          0.005859400000190362,
+          0.0057376000040676445,
+          0.005489100003615022,
+          0.00566120000439696,
+          0.005871400004252791,
+          0.005663899995852262
+        ],
+        "graph_median_seconds": 0.005710100012947805,
+        "graph_speedup": 36.923048549397606,
+        "measurement": "same frozen starting physical body and RNG per sample; resets outside timing;5 graph warmups",
+        "graph_capture_peak_additional_bytes": 164864,
+        "graph_resident_bytes": 242176,
+        "graph_sweep_peak_additional_bytes": 114688,
+        "physical_bytes": 16384,
+        "shared_pool_bytes": 1024,
+        "reusable_matching_workspace_bytes": 6672,
+        "stock_bytes": 8,
+        "all_accounted_arrays_on_gpu": true
+      },
+      {
+        "rows": 512,
+        "cols": 512,
+        "parameters": 262144,
+        "colors_per_sweep": 512,
+        "attempted_cells_per_sweep": 262144,
+        "wall_seconds": [
+          1.0888806999719236,
+          0.9202930000028573,
+          1.03117969998857
+        ],
+        "median_seconds": 1.03117969998857,
+        "attempted_cells_per_second": 254217.57236193234,
+        "torch_resident_bytes": 3706880,
+        "initialization_peak_additional_bytes": 3177984,
+        "sweep_peak_additional_bytes": 1835008,
+        "graph_wall_seconds": [
+          0.02283459997852333,
+          0.02206690001185052,
+          0.022694899991620332,
+          0.0221527999965474,
+          0.022173299978021532,
+          0.02251440001418814,
+          0.019771499995840713,
+          0.01789350001490675,
+          0.017897099984111264,
+          0.017852199991466478
+        ],
+        "graph_median_seconds": 0.02210985000419896,
+        "graph_speedup": 46.63892788927718,
+        "measurement": "same frozen starting physical body and RNG per sample; resets outside timing;5 graph warmups",
+        "graph_capture_peak_additional_bytes": 2623488,
+        "graph_resident_bytes": 3708928,
+        "graph_sweep_peak_additional_bytes": 1835008,
+        "physical_bytes": 262144,
+        "shared_pool_bytes": 4096,
+        "reusable_matching_workspace_bytes": 26640,
+        "stock_bytes": 8,
+        "all_accounted_arrays_on_gpu": true
+      }
+    ]
+  },
+  "validator_sha256": "ac9f57ad26edb1dbfef1ed903e7c4864dcd113bdfb44f937a25641c06a43ebeb",
+  "cpu_source_sha256": "04bcfb6271d59a76c638f27c4887964e51f3ded22c5afc7c2b3a6ac42889b24b",
+  "predecessor_snapshot": "lean/CGBAxioms/.lake/material_optimizer_pre_gpu_matching/manifest.json",
+  "review_status": "self_reviewed; independent review pending",
+  "interface": {
+    "name": "CudaMaterialOptimizer",
+    "base": "torch.optim.Optimizer",
+    "independent_compartment_per_parameter": true,
+    "moment_or_shadow_arrays": false,
+    "initialization": "nearest seven-level readout; uniform existing microstate within that readout",
+    "checkpoint": "physical state,RNG,units,supply,fee and clock; caller owns pending gradient",
+    "lr": "gradient force scale; zero retains autonomous motion"
+  },
+  "open": [
+    "registered controlled real-language comparison and whole-model cost evaluation",
+    "full healthy-lifetime sweep-clock behavior; old random-site lifetime bounds are not inherited",
+    "registered independent continual real-language quality/resource validation"
+  ]
+}

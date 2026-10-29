@@ -1,0 +1,122 @@
+{
+  "scope": "Verified partial/completed package comparison; not optimizer-only comparison",
+  "registration": "results/published/optimizer_owt_prereg_20261028.json",
+  "registration_sha256": "8032754b3a0dc4bef9e1940222f0a99cede3e2486054f33ce2e6140c3fd4a49d",
+  "sources_match_current_registration": true,
+  "preflight": "results/material_owt_20261028/preflight.json",
+  "matched_updates": 4500,
+  "matched_scored_targets_per_arm": 4608000,
+  "all_three_registered_5000_update_budgets_completed": false,
+  "arms": {
+    "material": {
+      "executed_updates": 5000,
+      "completed_registered_budget": true,
+      "matched_updates": 4500,
+      "matched_scored_targets": 4608000,
+      "matched_prequential_bpb": 4.294292547128161,
+      "matched_validation_bpb": {
+        "A": 4.29390502860863,
+        "B": 4.388728902606869
+      },
+      "persistent_optimizer_tensor_bytes": 107792,
+      "checkpoint_sha256": "ec69b1b1c78fb8dbdbcd97839fd5f01ecb2dbef1962e78d45975125185a3fcf6",
+      "curve_sha256": "c300930dafc9e591f5c0ebb1cdcb013c1ab1a630dce2dced6b75c21ababe2e6b",
+      "checks": {
+        "checkpoint_update": 5000,
+        "pending_gradients": 10,
+        "saved_cursors": {
+          "A": 4096000,
+          "B": 1024000
+        },
+        "all_compartments_conserved": true,
+        "all_parameters_match_physical_readout": true
+      },
+      "completed_budget_measurements": {
+        "updates": 5000,
+        "scored_targets": 5120000,
+        "wall_seconds": 338.78333129998646,
+        "peak_cuda_bytes": 87415808,
+        "resident_cuda_bytes": 72631296,
+        "prequential_bpb": 4.283024403943241,
+        "final_validation_bpb": {
+          "A": 4.3710467913969655,
+          "B": 4.453093685299238
+        }
+      }
+    },
+    "adam": {
+      "executed_updates": 5000,
+      "completed_registered_budget": true,
+      "matched_updates": 4500,
+      "matched_scored_targets": 4608000,
+      "matched_prequential_bpb": 3.681365455472476,
+      "matched_validation_bpb": {
+        "A": 3.4295744762429567,
+        "B": 3.433566984482801
+      },
+      "persistent_optimizer_tensor_bytes": 790568,
+      "checkpoint_sha256": "50d89e076c33b1034ae7cc1f8a087ccc1c166c5392aa13c45cffe75decbe6d26",
+      "curve_sha256": "2ceb88a6ca0c7d9693a73cd51fff105230bdf8c98850c6f1060db58358fe003d",
+      "checks": {
+        "checkpoint_update": 5000,
+        "pending_gradients": 10,
+        "saved_cursors": {
+          "A": 4096000,
+          "B": 1024000
+        }
+      },
+      "completed_budget_measurements": {
+        "updates": 5000,
+        "scored_targets": 5120000,
+        "wall_seconds": 64.86168110001017,
+        "peak_cuda_bytes": 87185408,
+        "resident_cuda_bytes": 72296448,
+        "prequential_bpb": 3.633128535213729,
+        "final_validation_bpb": {
+          "A": 3.4170154346504353,
+          "B": 3.405143791546755
+        }
+      }
+    },
+    "material_no_force": {
+      "executed_updates": 4684,
+      "completed_registered_budget": false,
+      "matched_updates": 4500,
+      "matched_scored_targets": 4608000,
+      "matched_prequential_bpb": 9.599710796292886,
+      "matched_validation_bpb": {
+        "A": 9.568292125718603,
+        "B": 9.570594925943789
+      },
+      "persistent_optimizer_tensor_bytes": 107792,
+      "checkpoint_sha256": "0e77acf62f476703c2fe8247bb0618c6b0b0ebe6da6af8ff2085a1683a79ebc6",
+      "curve_sha256": "bc04a981f1d006f2b35b029f04feb605dfb489ee8d23d89bb1f287719ad71fc1",
+      "checks": {
+        "checkpoint_update": 4500,
+        "pending_gradients": 10,
+        "saved_cursors": {
+          "A": 3584000,
+          "B": 1024000
+        },
+        "all_compartments_conserved": true,
+        "all_parameters_match_physical_readout": true
+      }
+    }
+  },
+  "findings": {
+    "learning_signal": "Same material representation and initialized state; gradient-driven intervention beats no-force at the identical4500-update validation budget.",
+    "optimizer_attribution": "Material restricts weights to7levels, Adam remains continuous; cannot isolate optimizer quality from representation.",
+    "complete_run_wall_ratio_material_over_adam": 5.223166059751315,
+    "persistent_optimizer_tensor_ratio_adam_over_material": 7.334199198456286,
+    "peak_torch_bytes_material_minus_adam": 230400
+  },
+  "limitations": [
+    "One seed,98816parameter context128 testbed, not a generated life model",
+    "Fixed budget does not establish convergence",
+    "No universal active-memory, healthy-latch or functional-differentiation claim",
+    "Torch peak excludes CUDA context, graph-driver and compiler private memory",
+    "Wall includes protocol validation/IO/capture but excludes parameter/body initialization",
+    "Third arm stopped for scope correction;4684 logged updates and4500-update complete checkpoint preserved"
+  ],
+  "review_status": "self_reviewed; independent review pending"
+}

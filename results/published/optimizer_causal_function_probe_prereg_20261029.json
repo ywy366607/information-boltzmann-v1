@@ -1,0 +1,22 @@
+{
+  "scope": "fixed held-out functional ablation on trained continuous OWT checkpoints",
+  "created": "2026-10-29",
+  "inputs": "same registered A and B validation streams, first 4096 targets in each; no training or updates",
+  "groups": "for each of two blocks, ablate 8 contiguous pre-GELU ff1 activations; 16 disjoint groups per block, 32 total",
+  "intervention": "zero the selected ff1 output group via a temporary inference hook, leaving all other model and optimizer state unchanged",
+  "measurement": "byte-weighted BPB difference versus intact checkpoint on the same validation batches, independently for A and B",
+  "purpose": "observe heterogeneous and domain-dependent functional contribution under intervention, not claim learned functions, causal mechanism path, or scale-general diversity",
+  "checkpoints": [
+    "latch_control",
+    "causal_allocation_off",
+    "causal_phase_off"
+  ],
+  "analysis": "report all paired group effects; compare average absolute effect and effective number of groups, avoid tuning on this diagnostic",
+  "limitations": [
+    "one seed",
+    "finite domains",
+    "negative group effects possible",
+    "fresh validation samples are held out from training but not an untouched test set",
+    "self reviewed"
+  ]
+}

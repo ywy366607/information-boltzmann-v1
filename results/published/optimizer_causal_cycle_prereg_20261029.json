@@ -1,0 +1,189 @@
+{
+  "version": 5,
+  "created": "2026-10-29",
+  "scope": "controlled causal interventions on the existing ResourceCycle",
+  "review_status": "self_reviewed; independent review pending",
+  "status": "registered_pending_interface_preflight",
+  "question": "How do allocation and phase recurrence affect native updates, row concentration, and OWT learning?",
+  "lean_scope": {
+    "full_life_admitted": false,
+    "skipped": "Explicit user request: run numerical/interface checks without additional Lean gate"
+  },
+  "sources": {
+    "information_boltzmann/conservative_cycle_optimizer.py": "3a4805fb78a117a82ae51e6b7de662341d2bcd1bc818cb276c0039c7f64e25f2",
+    "information_boltzmann/conservative_cycle_cuda.py": "b9b2ddedcf7ae9b345f4317e44833880b408e70e87ebf775bba91fc30c8b00e4",
+    "lean/CGBAxioms/reviews/optimizer_conservative_cycle.lean": "289830ae4374762dfd2ea3245523022bc39176edf787af7361cc7616fcb58c09",
+    "scripts/run_material_optimizer_owt.py": "e6b0b678d32559aabdfef7128d8da54a615026573ed9fcf4ab77bd10edd4424a"
+  },
+  "data": {
+    "source": "openwebtext",
+    "revision": "433fe0f44ed7894fea29c08b3202aa348ccc6369",
+    "original_manifest_sha256": "3614c380d4c72688ac8ccde42f32ea0655d16bec1ba0874a924fd777af904d2d",
+    "original_files": {
+      "train.npy": "2f227239bc63b89daf31956701d243a93f9dd46671702fff03763b33dc6db4fb",
+      "validation.npy": "60d41d3fdda8c1718ad1735693eda0dae2b23a0032c5e04a29aac9d0c6d35d8c",
+      "test.npy": "8aa56b9028dbf51fa9a319ef223062fc5878b21c5fb057aa37f6965c28454f03",
+      "tokenizer.json": "e727da4afe06d37d6ffff7db05ab21f69c5be39253ee7b7f7ec759cadab69c1d"
+    },
+    "split_rule": "NFC_document_sha256_mod100_98_1_1",
+    "tokenizer": "UTF8 byte offset4 plus four specials; vocabulary260",
+    "domain_rule": "length>=512; fixed character-density bottom/top training thirds; heldout uses training thresholds",
+    "marked_ascii": "0123456789{}[]<>=\\|_",
+    "thresholds": [
+      0.003943075758577393,
+      0.009600204813108039
+    ],
+    "test_split": "hash checked only; never scored or used to set thresholds",
+    "streams": {
+      "train_A": {
+        "path": "data/material_owt_domains_20261028/train_A.npy",
+        "sha256": "f95ab0ee4ac8f861920babbc8d6428588f77aa5108d83d8929e392e832ccbd49",
+        "tokens": 15709166,
+        "documents": 3262,
+        "document_list_sha256": "a43badcb70eba2786760db030506658aef606c4eb2f8254f1e08db742819903d"
+      },
+      "train_B": {
+        "path": "data/material_owt_domains_20261028/train_B.npy",
+        "sha256": "5de937e4f8eab7a62d82f94ad4d9941b13223f9b1d88562472857951c7340dfb",
+        "tokens": 16816305,
+        "documents": 3262,
+        "document_list_sha256": "f54a8bd396abc15894151ab046c787d57179ef1babeae6d472204b3f977e0227"
+      },
+      "validation_A": {
+        "path": "data/material_owt_domains_20261028/validation_A.npy",
+        "sha256": "a4beaa81f0a1699528f1861146c4c8d33286b8369540b70daf0bbce3c49c2279",
+        "tokens": 113605,
+        "documents": 34,
+        "document_list_sha256": "054ab6c04bb335e0d63b341bc41c5b1bdedacd096080eb4a0830e5fdccdb602f"
+      },
+      "validation_B": {
+        "path": "data/material_owt_domains_20261028/validation_B.npy",
+        "sha256": "8854e386baa9dabf462ee4469d38ddf5043a515904b1f327288920f8ee6fae2c",
+        "tokens": 194208,
+        "documents": 43,
+        "document_list_sha256": "c0ecaf153b0d1098c5a1ea2547e7378fe6f2ccfd7475fd23b591d0f6bf83052a"
+      }
+    }
+  },
+  "model": {
+    "kind": "ordinary causal transformer optimizer testbed; not a derived CGB architecture",
+    "width": 64,
+    "layers": 2,
+    "heads": 4,
+    "ff_width": 128,
+    "context": 128,
+    "vocabulary": 260,
+    "dropout": 0,
+    "bias": false,
+    "norm": "layernorm without affine parameters",
+    "position": "fixed sinusoidal",
+    "state": "context128; no persistent neural state; optimizer state continues through every phase"
+  },
+  "experiment": {
+    "seed": 77,
+    "arms": [
+      "latch_control",
+      "causal_allocation_off",
+      "causal_phase_off"
+    ],
+    "updates": 5000,
+    "phases": [
+      [
+        "A",
+        2000
+      ],
+      [
+        "B",
+        1000
+      ],
+      [
+        "A",
+        2000
+      ]
+    ],
+    "batch": 8,
+    "context": 128,
+    "targets_per_update": 1024,
+    "targets_per_arm": 5120000,
+    "validation_every": 250,
+    "validation_targets_per_domain": 65536,
+    "checkpoint_every": 250,
+    "initialization": "same scratch Gaussian FP32 values; no projection, clipping, quantization or weight rewrite at optimizer construction",
+    "adam": {
+      "lr": 0.0003,
+      "betas": [
+        0.9,
+        0.999
+      ],
+      "eps": 1e-08,
+      "weight_decay": 0
+    },
+    "resource": {
+      "lr": 0.001,
+      "adam_base": true,
+      "betas": [
+        0.9,
+        0.999
+      ],
+      "eps": 1e-08,
+      "sinkhorn_steps": 8,
+      "latch_state": true,
+      "latch_strength": 0.0,
+      "anchor_rate": 0.05
+    },
+    "muon": {
+      "lr": 0.0003,
+      "weight_decay": 0,
+      "momentum": 0.95,
+      "nesterov": true,
+      "ns_steps": 5,
+      "adjust_lr_fn": "match_rms_adamw"
+    },
+    "record_update_stats": true,
+    "record_causal_diagnostics": true
+  },
+  "measurements": {
+    "primary": "first-pass prequential bits/actual UTF8 target byte, scored before each update",
+    "secondary": [
+      "independent validation byte NLL per domain",
+      "all-symbol NLL including boundaries",
+      "A-to-B-to-fresh-A response",
+      "wall time",
+      "whole-model peak/resident CUDA memory",
+      "physical conservation and state bytes"
+    ],
+    "units": "actual bytes are targets4..259; boundary targets1/2 reported separately; no unicode-character BPB claim",
+    "replay": "none: second A continues its fresh cursor; no repeated train targets within an arm",
+    "bridges": "last target before each domain switch is the actual next domain's first input byte and is logged explicitly",
+    "checkpoint": "model, optimizer physical state/RNG, pending gradients, all Torch RNGs, updates, stream cursors and metric accumulators",
+    "convergence": "5000 is a fixed budget, not assumed convergence; report last five validation values and slope; no early success stopping",
+    "interpretation": "same unconstrained FP32 parameter family and exact same initialization; only optimizer changes; rates fixed, not assumed equally tuned"
+  },
+  "decision_rules": {
+    "primary": "paired independent A/B validation and prequential BPB for each intervention",
+    "mechanism": "phase sign distribution and actual FF update row concentration, plus actual update RMS and relative norm",
+    "interpretation": "full effects include subsequent resource/phase/trajectory changes; state distributions are diagnostics, not proofs of mechanism or healthy latch",
+    "budget": "one seed, 5000 steps each; additional restoration on/off results are prior run at same data and settings",
+    "stop": "5000 updates per arm unless nonfinite values terminate a run",
+    "review": "self reviewed, no independent reviewer"
+  },
+  "parameter_representation": "continuous_fp32",
+  "interface_receipt": "lean/CGBAxioms/.lake/causal_cycle_tests.check.json",
+  "construction_H": {
+    "groups": "each actual matrix; non-matrices viewed as one-row matrices",
+    "observer": "per-parameter mean and RMS, matrix-level observation mass",
+    "allocation": "8 Sinkhorn row/column scaling iterations; measure actual residual",
+    "resource": "floating per-row and per-column use/recovery; matrix-valued phase",
+    "muon": "torch.optim.Muon on all 2D tensors including embeddings and head, no weight decay",
+    "hyperparameters": "fixed before runs, same data budget; no tuning or claim of equally tuned rates"
+  },
+  "skip_lean_by_user_request": true,
+  "intervention": {
+    "baseline": "same Adam-base ResourceCycle, existing anchor state retained but restoration disabled; compare existing latch intervention separately",
+    "allocation_off": "same state, observer, phase and reserves; set competition_strength to zero in final parameter update",
+    "phase_off": "same state and full allocation; remove positive phase feedback by setting feedback false",
+    "fixed": "same FP32 model, seed, stream, learning rate .001, 5000 updates, state layout, no weight decay",
+    "sampled_proxy": "every 250 steps, FF-layer row shares of squared actual update; diagnostic of instantaneous update concentration, not functional diversity",
+    "native_steps": "no normalization or step matching"
+  }
+}

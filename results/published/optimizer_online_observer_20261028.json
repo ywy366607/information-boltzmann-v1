@@ -1,0 +1,143 @@
+{
+  "status": "online_observer_arithmetic_passed",
+  "full_optimizer_admitted": false,
+  "scope": "resource-clock empirical gradient observer; no model/training executed",
+  "parameter_feedback_closed": false,
+  "bayesian_noise_or_curvature_calibration_claimed": false,
+  "lean_exit_code": 0,
+  "audited_declarations": [
+    "CGB.ConservedWriteReview.accumulated_hold_and_release",
+    "CGB.ConservedWriteReview.conserved_write_spec",
+    "CGB.ConservedWriteReview.persistent_request_cannot_freeze",
+    "CGB.OptimizerAdmissionReview.complete_step_certificate",
+    "CGB.OptimizerAdmissionReview.identical_prefix_retention_adaptation_bound",
+    "CGB.OptimizerAdmissionReview.normalized_observation_clock",
+    "CGB.OptimizerAdmissionReview.observer_energy_and_step",
+    "CGB.OptimizerAdmissionReview.pooled_gain_risk",
+    "CGB.OptimizerAdmissionReview.replenished_pool_temporal_service",
+    "CGB.OptimizerAdmissionReview.shared_budget_has_no_uniform_tail_share",
+    "CGB.OptimizerAdmissionReview.threshold_hold_and_plasticity",
+    "CGB.OptimizerHandoffReview.disturbed_error_stays_in_tube",
+    "CGB.OptimizerHandoffReview.mixture_total_variance",
+    "CGB.OptimizerHandoffReview.orthogonal_columns_exclude_one_row_wta",
+    "CGB.OptimizerHandoffReview.posterior_mean_subtracted_power",
+    "CGB.OptimizerHandoffReview.soft_hold_variance_gap",
+    "CGB.OptimizerHandoffReview.unit_posterior_power_counterexample",
+    "CGB.OptimizerIntrinsicReview.ema_fixed_point_unique",
+    "CGB.OptimizerIntrinsicReview.ema_history_gap",
+    "CGB.OptimizerIntrinsicReview.maintained_gap_requires_regeneration",
+    "CGB.OptimizerIntrinsicReview.supplied_path_preserves_offset"
+  ],
+  "sources": {
+    "lean/CGBAxioms/reviews/optimizer_v6_handoff.lean": "d279336230e99b530460b1c9be7828b28613128a580c61132ac443b8b132a036",
+    "lean/CGBAxioms/reviews/optimizer_conservative_cycle.lean": "98ac700c52a8004caff224921a289528066a9af732d6958bf5e1fd0ce12b9d7a",
+    "information_boltzmann/conservative_cycle_optimizer.py": "020d8f30e46a4858c9f95d662cf042432c6a430394816120ec77ad1b524f275d",
+    "scripts/witness/validate_optimizer_cycle_integer.py": "e880357d7f492c614d0d1aa7b1a6acae2fa9d3a66c7a2c8d515104cadf5e67cd"
+  },
+  "exact_rational_vectors": 54,
+  "vector_digest_sha256": "2757b48f1866b7af1c311bfc5679b943898dffa7c88aaa6a2c23c45cedd5dac2",
+  "checks": [
+    {
+      "device": "cpu",
+      "dtype": "torch.float32",
+      "vectors": 54,
+      "max_absolute_error": {
+        "mean": 2.384185791015625e-07,
+        "rms": 2.384185791015625e-07,
+        "update": 1.4901161193847656e-08,
+        "mass": 0.0
+      }
+    },
+    {
+      "device": "cpu",
+      "dtype": "torch.float64",
+      "vectors": 54,
+      "max_absolute_error": {
+        "mean": 4.440892098500626e-16,
+        "rms": 4.440892098500626e-16,
+        "update": 4.163336342344337e-17,
+        "mass": 0.0
+      }
+    },
+    {
+      "device": "cuda",
+      "dtype": "torch.float32",
+      "vectors": 54,
+      "max_absolute_error": {
+        "mean": 2.384185791015625e-07,
+        "rms": 2.384185791015625e-07,
+        "update": 1.4901161193847656e-08,
+        "mass": 0.0
+      }
+    },
+    {
+      "device": "cuda",
+      "dtype": "torch.float64",
+      "vectors": 54,
+      "max_absolute_error": {
+        "mean": 4.440892098500626e-16,
+        "rms": 4.440892098500626e-16,
+        "update": 4.163336342344337e-17,
+        "mass": 0.0
+      }
+    }
+  ],
+  "historical_training_class_ast_unchanged": true,
+  "layout_cost": {
+    "fp32_mean_bytes_per_parameter": 4,
+    "phase_bytes_per_parameter": 0.5,
+    "scalar_statistics_per_compartment": 2,
+    "compartment_example_parameters": 64,
+    "fp32_persistent_bytes_per_parameter_at_64": 4.625,
+    "peak_training_memory_measured": false,
+    "minimality_claimed": false
+  },
+  "remaining": "Joint mode generation from raw observations, functional retention/release, temporal service and real-stream benefit; autonomous arbitrary-weight repair is not claimed",
+  "review_status": "self_reviewed_independent_review_pending",
+  "interface_tests": {
+    "passed": 26,
+    "seconds": 7.92,
+    "observed_tool_chunk": "f53118",
+    "command": [
+      "D:/conda_envs/vox/python.exe",
+      "-m",
+      "pytest",
+      "tests/test_conservative_cycle_optimizer.py",
+      "-q",
+      "-x"
+    ],
+    "sources": {
+      "tests/test_conservative_cycle_optimizer.py": "252e06a5ea74d2507d036afb2c432f8332fb32d6485fc02aeff8f0f12c9362bd",
+      "information_boltzmann/conservative_cycle_optimizer.py": "020d8f30e46a4858c9f95d662cf042432c6a430394816120ec77ad1b524f275d",
+      "information_boltzmann/conservative_cycle_cuda.py": "b9b2ddedcf7ae9b345f4317e44833880b408e70e87ebf775bba91fc30c8b00e4"
+    }
+  },
+  "protocol_tests": {
+    "passed": 3,
+    "seconds": 3.44,
+    "observed_tool_chunk": "8b27e4"
+  },
+  "new_results": [
+    "CGB.OptimizerAdmissionReview.normalized_observation_clock",
+    "CGB.OptimizerAdmissionReview.pooled_gain_risk",
+    "CGB.OptimizerAdmissionReview.observer_energy_and_step"
+  ],
+  "construction_H": {
+    "clock": "alpha = observer_rate * old compartment mean reserve; shared moment weights are a declared resource-clock choice, not uniquely forced or Bayes optimal",
+    "exposure": "mass_next=(1-alpha)*mass+alpha; effective_gain=alpha/mass_next",
+    "energy": "direction mean and empirical gradient energy use identical effective gain; root RMS storage is arithmetic, not thermodynamic energy",
+    "grouping": "64 coordinates is a configurable layout example; pooled risk theorem quantifies conditional heterogeneous-gain cost without asserting zero pooling loss"
+  },
+  "previous_filtered_reference": {
+    "receipt": "results/published/optimizer_filtered_cycle_bridge_20261028.json",
+    "scope": "historical 25-result bridge; its runtime and test source revisions are archived before online observer addition",
+    "runtime_and_tests_archive": "lean/CGBAxioms/.lake/online_observer_before_20261028/"
+  },
+  "applicable_exclusion": {
+    "declaration": "CGB.OptimizerIntrinsicReview.supplied_path_preserves_offset",
+    "scope": "This observer and its readout do not read theta. Fixed supplied gradients/internal state preserve a theta displacement. This forbids autonomous arbitrary-weight-restoration claims; it does not require adding a full shadow vector or prove that mode history cannot aid functional retention under world feedback."
+  },
+  "next_action": "Join the generated observation gain and empirical scale to raw-stream ignition, distinguishable mode retention, finite contrary-evidence release and service in the same transition; identify functional content and independently validate real-stream benefit before full optimizer claims.",
+  "training_executed": false,
+  "new_production_modules": 0
+}

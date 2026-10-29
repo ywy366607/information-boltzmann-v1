@@ -1,0 +1,84 @@
+{
+  "status": "completed_budget",
+  "registration": "results/published/optimizer_fresh_outcome_5k_prereg_20261029_fixed.json",
+  "preflight": "results/fresh_outcome_5k_owt_20261029_fixed2/preflight.json",
+  "scope": "single-seed real OWT matched fresh-outcome third-factor intervention on existing continuous ResourceCycle",
+  "decision": "reject_current_outcome_gate_for_mainline",
+  "arms": {
+    "outcome_on": {
+      "prequential_bpb": 4.194509927488966,
+      "validation_A_bpb": 4.245157713552431,
+      "validation_B_bpb": 4.348980671610961,
+      "wall_seconds": 391.6533636000004,
+      "peak_cuda_bytes": 87621120,
+      "state_bytes": 1194608,
+      "phases": {
+        "A1": {
+          "mean_bpb": 4.198969076921829,
+          "last_bpb": 4.154345153077566,
+          "n": 2000
+        },
+        "B": {
+          "mean_bpb": 4.3424122777564,
+          "last_bpb": 4.037622247763486,
+          "n": 1000
+        },
+        "A2": {
+          "mean_bpb": 4.116148973955551,
+          "last_bpb": 4.248717193085515,
+          "n": 2000
+        }
+      },
+      "fresh_measurements": 1250,
+      "outcome_evidence_mean": -0.00016577360588937911,
+      "outcome_evidence_median": -2.068210648076274e-06,
+      "outcome_evidence_negative_fraction": 0.8256,
+      "rho_initial": 1.0,
+      "rho_final": 0.0001,
+      "rho_min": 0.0001,
+      "rho_max": 1.0,
+      "rho_unique": 212,
+      "checkpoint_sha256": "5470a5bb444a9e2be6004f50d035030df57d9bbdd3f85230803d880fd63f8e49"
+    },
+    "outcome_off": {
+      "prequential_bpb": 3.125946409476067,
+      "validation_A_bpb": 3.0441752817007597,
+      "validation_B_bpb": 2.974690650576447,
+      "wall_seconds": 399.07375390000016,
+      "peak_cuda_bytes": 87621120,
+      "state_bytes": 1194608,
+      "phases": {
+        "A1": {
+          "mean_bpb": 3.4671117750239318,
+          "last_bpb": 2.8804651865878195,
+          "n": 2000
+        },
+        "B": {
+          "mean_bpb": 3.1169420471009115,
+          "last_bpb": 2.7582209502504402,
+          "n": 1000
+        },
+        "A2": {
+          "mean_bpb": 2.7893805017206708,
+          "last_bpb": 2.7691294658293666,
+          "n": 2000
+        }
+      },
+      "fresh_measurements": 1250,
+      "outcome_evidence_mean": -0.01870510956897342,
+      "outcome_evidence_median": -0.01640520282671787,
+      "outcome_evidence_negative_fraction": 0.996,
+      "rho_initial": 1.0,
+      "rho_final": 1.0,
+      "rho_min": 1.0,
+      "rho_max": 1.0,
+      "rho_unique": 1,
+      "checkpoint_sha256": "99fc91db01f9248cf081575e2bf91bee0fdfb761f3bea97a4f5fa4c83e3480a5"
+    }
+  },
+  "interpretation": {
+    "on_effect": "Outcome feedback was causally connected to next-step rho and collapsed rho toward rho_min; quality worsened relative to matched no-op observation control.",
+    "off_effect": "Control reproduces baseline ResourceCycle trajectory under identical extra lookahead measurement cost.",
+    "claim_boundary": "One seed and fixed 5000-update budget; this is interface/mechanism diagnosis, not convergence or universal optimizer ranking."
+  }
+}

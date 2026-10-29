@@ -1,0 +1,1665 @@
+{
+  "scope": "Current native and adjacent-readout material optimizer numerical interfaces; no model training or full functional admission.",
+  "status": "material_parameter_model_not_optimizer_only",
+  "optimizer_class": "information_boltzmann.conjugate_gradient_port.MaterialOptimizer",
+  "checkpoint_version": 4,
+  "kinetic_clock": "maximal_reverse_pair_v1",
+  "source": "information_boltzmann/conjugate_gradient_port.py",
+  "source_sha256": "04bcfb6271d59a76c638f27c4887964e51f3ded22c5afc7c2b3a6ac42889b24b",
+  "test_source": "tests/test_conjugate_gradient_port.py",
+  "test_source_sha256": "d5e41166484ed2ba09cdbbe02dbf72748d6b520723459ca884cb62f2e63ce950",
+  "tests": {
+    "command": "D:/conda_envs/vox/python.exe -m pytest tests/test_conjugate_gradient_port.py -q",
+    "exit_code": 0,
+    "passed": 51,
+    "coverage": [
+      "all 729 two-cell ternary-field configurations in each row/column contact shape; zero, opposed rational and common rational forces",
+      "independent actual global energy difference, reverse odds, minimal pair ceiling, conservation, nonmutation and <=2 local gradient accesses",
+      "prescribed c=2,a=16,J=12 zero-gradient physical repair and contrary-force physical rewrite in actual step()",
+      "complete same-kinetic checkpoint continuation, rejected prior versions 1/2 and rejected clock mismatch",
+      "exact fractional-probability enclosures, rare decision beyond 200 bits, finite world payment and transactional rejection",
+      "aliased gradient/cache reproduction fixed by per-tensor interval checks; self/cross-parameter alias rejected before payment, RNG or physical changes",
+      "257-column real parameter/event interface remains separate from the native exactly-256-byte adapter; rejection precedes world changes",
+      "2^30-cell square layout metadata arithmetic without allocating that body or claiming its performance",
+      "external loss updates the same physical fields/stock/release ledger and owned cache; zero/invalid inputs leave state unchanged",
+      "external loss callback follows funding/paid ledger and precedes native proposal; refused funding does not call it",
+      "caller-owned world RNG and optimizer checkpoints reproduce the same future external-loss and physical trajectory",
+      "external loss keeps derived packed row-P/column-Q totals consistent with independent direct sums",
+      "3420 whole-energy/actual-pair-clock Q-port checks across local states, shared loads and rational forces; no model trajectory",
+      "rational-geometric mixture branches, all finite rational-coin prefixes, rare outcomes beyond 200 bits, checkpoint v4 and incompatible v3/sampler rejection",
+      "density-scaled pools: rectangular whole-energy/reverse odds, uniform Q repair margin, exact continuation and immutable legacy snapshot upgrade",
+      "unadapted dyadic and event-driven executors reject scaled pools before touching world or allocating mirrored arrays",
+      "Adjacent-readout:9576 whole-energy/reverse-block checks, exact finite-stock reversible rows and size-independent force/repair margins",
+      "Readout checkpoint5:13-unit funding, callback ordering, full physical/RNG continuation, cross-clock rejection and no new per-parameter arrays",
+      "registered-H reduced floor: all candidate probabilities equal complete enumeration; <=4 actual local evaluations",
+      "same full physical/cache/RNG/fee continuation as the predecessor enumerated kernel, including historical v5 checkpoint work",
+      "unregistered cap2 energy laws retain exact enumerated fallback"
+    ],
+    "elapsed_seconds": 24.14,
+    "observed_tool_session": 58515,
+    "current_record": "lean/CGBAxioms/.lake/material_floor_tests.check.json"
+  },
+  "primary_lean_contracts": {
+    "source": "lean/CGBAxioms/reviews/optimizer_content_bridge.lean",
+    "sha256": "b3c749d93c976f26ae3429f1a0671e51f94d3a0d64cda39d6bb843a9a48e42b5",
+    "standalone_exit_code": 0,
+    "named_results": [
+      "CGB.OptimizerContentReview.cooperative_content_contract",
+      "CGB.OptimizerContentReview.drive_removes_content_barriers",
+      "CGB.OptimizerContentReview.hidden_basin_calibration",
+      "CGB.OptimizerContentReview.maximal_reversible_acceptance",
+      "CGB.OptimizerContentReview.content_gradient_port",
+      "CGB.OptimizerContentReview.transfer_gradient_port",
+      "CGB.OptimizerContentReview.event_port_contract",
+      "CGB.OptimizerContentReview.finite_capacity_content_bridge",
+      "CGB.OptimizerContentReview.certified_root_refinement",
+      "CGB.OptimizerContentReview.fractional_probability_enclosure",
+      "CGB.OptimizerContentReview.force_response_dissipative",
+      "CGB.OptimizerContentReview.kinetic_survival_envelope",
+      "CGB.OptimizerContentReview.one_defect_regeneration_margin",
+      "CGB.OptimizerContentReview.maximal_event_clock",
+      "CGB.ResourceEnergyReview.scaled_pool_contract",
+      "CGB.ResourceEnergyReview.scaled_resource_generation",
+      "CGB.ResourceEnergyReview.resource_ground_bound",
+      "CGB.ResourceEnergyReview.resource_ground_witness",
+      "CGB.ResourceEnergyReview.resource_monopoly_gap",
+      "CGB.ResourceReleaseReview.primitive_release_port",
+      "CGB.ResourceReleaseReview.resource_release_drift",
+      "CGB.ResourceReleaseReview.resource_release_budget",
+      "CGB.ResourceReleaseReview.resource_feedback_contract",
+      "CGB.RationalSamplerReview.rational_mixture_contract",
+      "CGB.RationalSamplerReview.rational_binary_coin_contract",
+      "CGB.FiberOptimizerReview.readout_force_response_contract",
+      "CGB.FiberOptimizerReview.readout_regeneration_contract",
+      "CGB.FiberOptimizerReview.readout_block_kernel_contract",
+      "CGB.FiberOptimizerReview.readout_cell_kernel_contract",
+      "CGB.FiberOptimizerReview.readout_release_drift",
+      "CGB.FiberOptimizerReview.readout_release_budget",
+      "CGB.FiberOptimizerReview.readout_task_risk_contract",
+      "CGB.FiberOptimizerReview.autonomous_task_noise_floor",
+      "CGB.FiberOptimizerReview.population_kernel_contract",
+      "CGB.FiberOptimizerReview.population_task_window_contract",
+      "CGB.FiberOptimizerReview.population_frozen_gradient_budget",
+      "CGB.FiberOptimizerReview.readout_floor_reduction",
+      "CGB.FiberOptimizerReview.population_resource_service",
+      "CGB.FiberOptimizerReview.matching_parallel_preparation"
+    ],
+    "axioms_scope": "39 public results and two private finite-ticket helpers: foundational axioms only; no production modules added",
+    "namespace_audit": {
+      "CGB.OptimizerContentReview": [
+        "cooperative_content_contract",
+        "drive_removes_content_barriers",
+        "hidden_basin_calibration",
+        "maximal_reversible_acceptance",
+        "content_gradient_port",
+        "transfer_gradient_port",
+        "event_port_contract",
+        "finite_capacity_content_bridge",
+        "certified_root_refinement",
+        "fractional_probability_enclosure",
+        "force_response_dissipative",
+        "kinetic_survival_envelope",
+        "one_defect_regeneration_margin",
+        "maximal_event_clock"
+      ],
+      "CGB.ResourceEnergyReview": [
+        "scaled_pool_contract",
+        "scaled_resource_generation",
+        "resource_ground_bound",
+        "resource_ground_witness",
+        "resource_monopoly_gap"
+      ],
+      "CGB.ResourceReleaseReview": [
+        "primitive_release_port",
+        "resource_release_drift",
+        "resource_release_budget",
+        "resource_feedback_contract"
+      ],
+      "CGB.RationalSamplerReview": [
+        "rational_mixture_contract",
+        "rational_binary_coin_contract"
+      ],
+      "CGB.FiberOptimizerReview": [
+        "readout_force_response_contract",
+        "readout_regeneration_contract",
+        "readout_block_kernel_contract",
+        "readout_cell_kernel_contract",
+        "readout_release_drift",
+        "readout_release_budget",
+        "readout_task_risk_contract",
+        "autonomous_task_noise_floor",
+        "population_kernel_contract",
+        "population_task_window_contract",
+        "population_frozen_gradient_budget",
+        "readout_floor_reduction",
+        "population_resource_service",
+        "matching_parallel_preparation"
+      ]
+    },
+    "total_named_results": 39
+  },
+  "registered_regeneration_domain": {
+    "cap": 2,
+    "a": 16,
+    "J": 12,
+    "epsilon": 0,
+    "potential": "zero",
+    "total_material_per_cell_case": 6,
+    "physical_microstates_per_cell": 27,
+    "packed_bits_per_cell": 5,
+    "parameter_readout_levels": 7,
+    "analyzed_endpoint_codes": 2,
+    "scope": "Historical zero-potential five-certificate audit failed two release row proofs. Current resource-domain drift and neighborhood-wear evidence are separate."
+  },
+  "historical_source_clock": {
+    "source_archive": "lean/CGBAxioms/.lake/material_optimizer_source_clock_v2/manifest.json",
+    "receipt": "results/published/optimizer_content_bridge_20261028.json",
+    "wear_counterexample_receipt": "results/published/optimizer_continuous_wear_20261028.json",
+    "eight_kinetic_profiles_reproduced_exactly": true,
+    "three_gradient_profiles_reproduced_exactly": true,
+    "pre_switch_frozen_v2_state_equivalence_steps": 5,
+    "pre_switch_equivalence_attempts": 60
+  },
+  "storage_scope": "5 bits count only the registered physical payload. Floating parameter caches and gradients, derived clique totals, immutable potential/layout metadata, RNG and transient arithmetic also count. No per-parameter floating moment or protected original-weight array was added.",
+  "random_work_scope": "Fractional acceptance uses a proved rational geometric mixture: expected <=4 requested bits and one coefficient update. Integer rejection retains <=32-bit chunks. coefficient_steps and maximum rational denominator bit length are recorded. Logical bit count, finite PRNG work, Python allocation, wall time and physical energy remain distinct.",
+  "full_optimizer_admitted": false,
+  "training_enabled": false,
+  "model_training_performed": true,
+  "gpu_execution_evaluated": true,
+  "joint_audit": {
+    "session_id": 82242,
+    "status": "terminal_failed_proof_budget",
+    "diagnostics_log": "lean/CGBAxioms/.lake/material_regeneration_audit.lean.log",
+    "producing_validator_sha256": "e3e3969880d75d750bdb5ae56499a4fc6f94692a276adfdffddd2a2184820951",
+    "generated_source_sha256": "77d3c1f9d6162664164ec880270b8e2b0f74b48431874521dffeb6676f8dd4c6",
+    "previous_attempts": [
+      {
+        "session_id": 44684,
+        "terminal_exit_code": 1,
+        "reason": "two release declarations exhausted eight-million-heartbeat budget; quiet hold and wear declarations printed foundational-only dependencies; full audit not admitted"
+      },
+      {
+        "session_id": 50158,
+        "terminal_exit_code": 1,
+        "reason": "finite-index normalization mismatch in decomposed generator; stopped after diagnostic was reproduced; full audit not admitted"
+      }
+    ],
+    "repair": "Earlier decomposition repaired rate bounds; row aggregation still failed. Archived as an incomplete proof, not a dynamical counterexample.",
+    "clean_prefix_check": {
+      "session_id": 72980,
+      "terminal_exit_code": 0,
+      "declaration": "KineticAudit.Case0.certificate",
+      "axioms": "foundational only"
+    },
+    "scope": "Conditional finite-operator verification; no executed organism exposure or task training.",
+    "producing_validator_snapshot": "lean/CGBAxioms/.lake/material_regeneration_active_validator.py",
+    "current_validator_sha256": "7c1dfbceba448c77795b6a182efac340febde96a03da285db4bc8ff678e61b91",
+    "validator_revision_scope": "Independent resource-energy branch added after the live worker loaded its frozen producing version; its active primary/generated Lean inputs were not changed.",
+    "terminal_exit_code": 1,
+    "passed_final_declarations": [
+      "KineticAudit.Case0.certificate",
+      "KineticAudit.Case2.certificate",
+      "RegenerationWear.certificate"
+    ],
+    "failed_declarations": [
+      "KineticAudit.Case1.certificate",
+      "KineticAudit.Case3.certificate"
+    ],
+    "terminal_reason": "Both release row aggregations exhausted eight million heartbeats; sorryAx was printed and the whole audit was rejected.",
+    "historical_primary_source": "lean/CGBAxioms/.lake/optimizer_content_bridge_before_resource.lean",
+    "historical_primary_sha256": "0adfd98dbfb9ed0f528949f14d348c05be6dcf94ef561d5c13a21183d357cf23",
+    "current_route": "Current nonzero-potential resource domain uses the symbolic all-body drift route; no automatic retry of this older zero-potential table audit.",
+    "expected_receipt_not_produced": "results/published/optimizer_regeneration_20261028.json"
+  },
+  "review_status": "self_reviewed",
+  "gradient_input_contract": "Dense contiguous finite observations must not share storage with any parameter cache. Entry validation scans all gradient elements; interval metadata is temporary and scales with tensor count, with no copied gradient array.",
+  "resource_energy_review": {
+    "receipt": "results/published/optimizer_resource_energy_20261028.json",
+    "hypothesis": {
+      "cap": 2,
+      "coupling": 12,
+      "content_cost": 16,
+      "chemical_base": 2,
+      "epsilon": 0,
+      "potential": "U(t)=t^2 on actual row-P and column-Q compartments",
+      "material_budget": "6*n on an n by n body"
+    },
+    "proof_sha256": "997c4d0a4c0964ad13c63c795b8575ec39fb8fbc2cd2c818d847a3ab39a5afb6",
+    "declarations": [
+      "resource_ground_bound",
+      "resource_ground_witness",
+      "resource_monopoly_gap"
+    ],
+    "lean_exit_code": 0,
+    "proof_check_provenance": "Completed standalone session 91697 reused only for identical source bytes; later environmental dependency-read failure retained in receipt.",
+    "scope": "All-size conditional dispersed ground structure plus source-refined zero-force shared-wear neighborhood retention; no task claim.",
+    "joint_kinetic_bounds_inherited": false,
+    "additional_optimizer_state": false,
+    "training_enabled": false,
+    "independent_review": "pending",
+    "shared_resource_wear": {
+      "declaration": "ResourceWear.certificate",
+      "lean_exit_code": 0,
+      "generated_source_sha256": "f41407c932c144aac2c2669262335e7878159dcc2c9a301d5a8f44e446b47c68",
+      "source_event_pairs_checked": 182,
+      "good_states": 16,
+      "funded_opportunities": 4096,
+      "first_exit_probability_upper": "4046363389626307554784934379/79228162514264337593543950336",
+      "workload": {
+        "wear_probability": "1/1024",
+        "force": 0,
+        "total_material": 12,
+        "damage": "uniform among all four cells and three fields; remove one unit if present, returning it to existing stock",
+        "order": "wear then physical opportunity; first exit observed at either substep",
+        "funding": "every counted opportunity funded; maintenance and external work separate"
+      },
+      "all_native_proposals_continue": true,
+      "scope_remaining": "constant zero task force, first exit of a strict neighborhood; not forced release, changing-force robustness, long-term resource service or useful learning"
+    },
+    "integrated_review": {
+      "path": "lean/CGBAxioms/reviews/optimizer_content_bridge.lean",
+      "sha256": "b0c06bbda0fff2d632eaf244c880e91b27aed33882af92fd3789f19369bceb92",
+      "lean_exit_code": 0,
+      "audited": {
+        "CGB.OptimizerContentReview": [
+          "cooperative_content_contract",
+          "drive_removes_content_barriers",
+          "hidden_basin_calibration",
+          "maximal_reversible_acceptance",
+          "content_gradient_port",
+          "transfer_gradient_port",
+          "event_port_contract",
+          "finite_capacity_content_bridge",
+          "certified_root_refinement",
+          "fractional_probability_enclosure",
+          "force_response_dissipative",
+          "kinetic_survival_envelope",
+          "one_defect_regeneration_margin",
+          "maximal_event_clock"
+        ],
+        "CGB.ResourceEnergyReview": [
+          "scaled_pool_contract",
+          "scaled_resource_generation",
+          "resource_ground_bound",
+          "resource_ground_witness",
+          "resource_monopoly_gap"
+        ],
+        "CGB.ResourceReleaseReview": [
+          "primitive_release_port",
+          "resource_release_drift",
+          "resource_release_budget",
+          "resource_feedback_contract"
+        ],
+        "CGB.RationalSamplerReview": [
+          "rational_mixture_contract",
+          "rational_binary_coin_contract"
+        ]
+      },
+      "compile_record": "lean/CGBAxioms/.lake/material_combined_core.lean.check.json",
+      "auto_implicit_variables": false,
+      "production_modules_added": 0
+    }
+  },
+  "medium_source_sha256": "104d110891d1cc67f67532fc4348efdafd78e6b9ed8afeabcde0da536a94dc71",
+  "integrated_review": {
+    "path": "lean/CGBAxioms/reviews/optimizer_content_bridge.lean",
+    "sha256": "b3c749d93c976f26ae3429f1a0671e51f94d3a0d64cda39d6bb843a9a48e42b5",
+    "lean_exit_code": 0,
+    "audited": {
+      "CGB.OptimizerContentReview": [
+        "cooperative_content_contract",
+        "drive_removes_content_barriers",
+        "hidden_basin_calibration",
+        "maximal_reversible_acceptance",
+        "content_gradient_port",
+        "transfer_gradient_port",
+        "event_port_contract",
+        "finite_capacity_content_bridge",
+        "certified_root_refinement",
+        "fractional_probability_enclosure",
+        "force_response_dissipative",
+        "kinetic_survival_envelope",
+        "one_defect_regeneration_margin",
+        "maximal_event_clock"
+      ],
+      "CGB.ResourceEnergyReview": [
+        "scaled_pool_contract",
+        "scaled_resource_generation",
+        "resource_ground_bound",
+        "resource_ground_witness",
+        "resource_monopoly_gap"
+      ],
+      "CGB.ResourceReleaseReview": [
+        "primitive_release_port",
+        "resource_release_drift",
+        "resource_release_budget",
+        "resource_feedback_contract"
+      ],
+      "CGB.RationalSamplerReview": [
+        "rational_mixture_contract",
+        "rational_binary_coin_contract"
+      ],
+      "CGB.FiberOptimizerReview": [
+        "readout_force_response_contract",
+        "readout_regeneration_contract",
+        "readout_block_kernel_contract",
+        "readout_cell_kernel_contract",
+        "readout_release_drift",
+        "readout_release_budget",
+        "readout_task_risk_contract",
+        "autonomous_task_noise_floor",
+        "population_kernel_contract",
+        "population_task_window_contract",
+        "population_frozen_gradient_budget",
+        "readout_floor_reduction",
+        "population_resource_service",
+        "matching_parallel_preparation"
+      ]
+    },
+    "compile_record": "lean/CGBAxioms/.lake/material_combined_core.lean.check.json",
+    "auto_implicit_variables": false,
+    "production_modules_added": 0
+  },
+  "core_exact_checks": {
+    "reactions": {
+      "exhaustive_states": 4420,
+      "proposal_rows": 135608,
+      "enabled_reverse_pairs": 34640,
+      "whole_energy_log_balance_exact": true,
+      "content_conservation_exact": true,
+      "static_reverse_scheduler": true,
+      "target_weight": "2**(-2*E), within the conserved-content shell"
+    },
+    "locality": {
+      "clique_outside_change_checks": 204,
+      "actual_state_reads_within_declared_clique": true,
+      "native_byte_edges": 768,
+      "native_byte_packed_state_bytes": 288,
+      "edge_indices_stored": 0,
+      "maximum_field_bits": 4,
+      "fields_per_edge": 3,
+      "native_byte_bits_per_edge": 3,
+      "three_byte_read_write_checked": true,
+      "encoding": "ceil(log2((Q+1)^2*(W+1))) fixed bits per edge; lossless",
+      "cached_prepare_avoids_whole_clique_scan": true,
+      "direct_oracle_and_cache_rebuild_cost_is_degree_dependent": true
+    },
+    "cache": {
+      "exact_total_comparisons": 41920,
+      "cache_vs_direct_rate_checks": 320,
+      "restore_rebuilds_cache": true,
+      "raw_public_payload_readonly": true,
+      "native_row_prepare_charge_reads": [
+        2,
+        258
+      ],
+      "no_new_physical_state": true,
+      "capability_claim": false
+    },
+    "source_sha256": "104d110891d1cc67f67532fc4348efdafd78e6b9ed8afeabcde0da536a94dc71"
+  },
+  "resource_release_review": {
+    "receipt": "results/published/optimizer_resource_release_20261028.json",
+    "integrated_review": {
+      "path": "lean/CGBAxioms/reviews/optimizer_content_bridge.lean",
+      "sha256": "b0c06bbda0fff2d632eaf244c880e91b27aed33882af92fd3789f19369bceb92",
+      "lean_exit_code": 0,
+      "audited": {
+        "CGB.OptimizerContentReview": [
+          "cooperative_content_contract",
+          "drive_removes_content_barriers",
+          "hidden_basin_calibration",
+          "maximal_reversible_acceptance",
+          "content_gradient_port",
+          "transfer_gradient_port",
+          "event_port_contract",
+          "finite_capacity_content_bridge",
+          "certified_root_refinement",
+          "fractional_probability_enclosure",
+          "force_response_dissipative",
+          "kinetic_survival_envelope",
+          "one_defect_regeneration_margin",
+          "maximal_event_clock"
+        ],
+        "CGB.ResourceEnergyReview": [
+          "scaled_pool_contract",
+          "scaled_resource_generation",
+          "resource_ground_bound",
+          "resource_ground_witness",
+          "resource_monopoly_gap"
+        ],
+        "CGB.ResourceReleaseReview": [
+          "primitive_release_port",
+          "resource_release_drift",
+          "resource_release_budget",
+          "resource_feedback_contract"
+        ],
+        "CGB.RationalSamplerReview": [
+          "rational_mixture_contract",
+          "rational_binary_coin_contract"
+        ]
+      },
+      "compile_record": "lean/CGBAxioms/.lake/material_combined_core.lean.check.json",
+      "auto_implicit_variables": false,
+      "production_modules_added": 0
+    },
+    "general_drift": "For n cells the unscaled drift is <=-1+9*n/2^126; actual local proposal scale is 1/(2*families*n). Cross transfers preserve V=13(P+W)+9Q.",
+    "numerical": {
+      "source_configurations": 943,
+      "force_profiles": 2,
+      "enabled_event_checks": 23640,
+      "nonzero_observer_changes": 20216,
+      "cross_transfer_invariants": 3424,
+      "largest_layout_tested": "2x2, not a billion-cell allocation"
+    },
+    "native_update_reference": {
+      "lean_exit_code": 0,
+      "configurations": 943,
+      "physical_event_results": 37720,
+      "damage_event_results": 11316,
+      "all_encoded_successors_and_disabled_flags_equal": true,
+      "rng_trials_or_learning": false,
+      "execution_refinement_lemma": "CGB.NativeExecutionCheck.finite_mass_codegen_refinement",
+      "generated_source_sha256": "48d904df32c6187aba1fb2c4dda92fbcaa114b3d10cda82629eef2deaffc22b7",
+      "log": "lean/CGBAxioms/.lake/material_native_conformance.lean.log",
+      "scope": "Complete bounded-cell successors and legality on the deterministic interface set; not full sampler/PRNG distribution refinement"
+    },
+    "external_loss_runtime": {
+      "operation": "apply_external_loss(edge, field)",
+      "before_attempt_order": "funding, paid ledger, optional external loss, native proposal",
+      "proved_damage_successors_checked": 11316,
+      "cache_stock_release_cost_and_rng_checked": true,
+      "external_world_rng_and_work": "caller-owned and separately checkpointed"
+    },
+    "time_corollary": {
+      "rho": "6399/6400",
+      "initial": "two full diagonal codes, V=140",
+      "horizons": [
+        {
+          "funded_opportunities": 4096,
+          "first_empty_hit_probability_lower": "0"
+        },
+        {
+          "funded_opportunities": 65536,
+          "first_empty_hit_probability_lower": "178164413637703009743015028621/178263365657094759585473888256"
+        },
+        {
+          "funded_opportunities": 100000,
+          "first_empty_hit_probability_lower": "11141432010545642413376361791/11141460353568422474092118016"
+        }
+      ],
+      "scope": "Concrete full-state ideal native kernel: all legal nonempty bodies, stock<=12, forty proposals and wear probability1/1024 before each opportunity; hrow is proved, not assumed. Sampler/runtime probability refinement remains separate."
+    },
+    "pending": "Link the separately checked ideal-bit rational sampler receipt; selective release, useful learning, temporal resource service and practical GPU execution remain open."
+  },
+  "layout_scope": "Material columns may exceed 256; native byte tick still requires exactly 256. 257-column optimizer test passed. 2^30-cell arithmetic checked only as metadata; body allocation, initialization cost and GPU/quality remain unevaluated.",
+  "resource_feedback": {
+    "declaration": "CGB.ResourceReleaseReview.resource_feedback_contract",
+    "scope": "Registered cap2/J12/a16/mu2 quadratic-pool H; local Q-port energetic margins and repair-rate load response, not complete ignition/refractoriness/useful-memory evidence",
+    "independent_review": "pending",
+    "additional_persistent_state_bytes": 0,
+    "lower_force_margin": "-15-2*L",
+    "upper_force_margin": "31-2*L",
+    "local_margin_overlap_width": 46,
+    "repair_cost": "f+2*L-31",
+    "crowded_repair_multiplier": "2^(-4*h) for h>=0 and f+2*L>=31",
+    "source_event_checks": 3420,
+    "tests_command": "D:/conda_envs/vox/python.exe -m pytest tests/test_conjugate_gradient_port.py -q",
+    "tests_passed": 41,
+    "elapsed_seconds": 18.57,
+    "observed_tool_session": 87640,
+    "production_update_changed": false,
+    "theorem_premises": "Actual registered energy/rate formulas; no healthy-latch or diversity premise"
+  },
+  "acceptance_sampler": "rational_geometric_mixture_v1",
+  "probability_sampler": {
+    "receipt": "results/published/optimizer_probability_sampler_20261028.json",
+    "sampler": "rational_geometric_mixture_v1",
+    "checkpoint_version": 4,
+    "ideal_bit_probability_identity_verified": true,
+    "PRNG_independence_assumed": true,
+    "finite_prefix_means": 315,
+    "coefficient_checks": 825
+  },
+  "historical_root_sampler": {
+    "version": 3,
+    "source_manifest": "lean/CGBAxioms/.lake/material_optimizer_root_v3/source_manifest.json",
+    "scope": "Same ideal event probabilities, different RNG consumption and work ledger; no silent checkpoint migration"
+  },
+  "body_checkpoint_version": 3,
+  "scaled_pool_review": {
+    "receipt": "results/published/optimizer_scaled_pool_20261028.json",
+    "pool_reference_size": 2,
+    "body_checkpoint_version": 3,
+    "same_packed_physical_fields": true,
+    "no_added_per_parameter_array": true,
+    "all_size_energy_and_local_Q_margins": true,
+    "larger_body_temporal_admission": false
+  },
+  "pool_scaling_contract": "Reference0 preserves the unscaled law. Reference2 realizes exact U_D(N)=2*N^2/D using row/column capacities. Version2 body snapshots upgrade only to the unscaled law.",
+  "readout_fiber_review": {
+    "receipt": "results/published/optimizer_readout_fiber_20261028.json",
+    "class_name": "FiberMaterialOptimizer",
+    "checkpoint": 5,
+    "clock": "readout_fiber_v1",
+    "max_candidate_energies": 13,
+    "fee_factor": 13,
+    "new_per_parameter_arrays": 0,
+    "force_service": "f>34 or f<-22: a descent-level successor has probability>=1/26 per selected cell under scaled H",
+    "regeneration": "N=5, available stock, f<=1: full222 repair probability>=1/8 per selected cell under scaled H",
+    "scope": "Bounds conditional on specified H, frozen force and funded execution; no arbitrary useful-memory or biologically calibrated claim",
+    "source_sha256": "a97025867ff2331c3fdae776a9934ade7f8d223a83c911f369a01dfccce0f6df",
+    "reference": {
+      "path": "lean/CGBAxioms/.lake/material_readout_fiber_reference.lean",
+      "sha256": "1dfe1db3c6695284894afce92ed9165811d10369452c3fabb268f9532465b5b6",
+      "lean_exit_code": 0,
+      "contexts": 65,
+      "rational_energies": 1755,
+      "candidate_comparisons": 34580
+    },
+    "tests": {
+      "source": "tests/test_conjugate_gradient_port.py",
+      "sha256": "5624e06afde7aa48681440ec6dfac42f1a38dd7d537349fe632ac9e7a77b4a59",
+      "passed": 48,
+      "elapsed_seconds": 23.44,
+      "exit_code": 0
+    },
+    "full_optimizer_admitted": false,
+    "training_enabled": false,
+    "native_v4_continuation": {
+      "status": "identical",
+      "steps": 7,
+      "paid_attempts": 168,
+      "source": "lean\\CGBAxioms\\.lake\\material_optimizer_pre_fiber_v4\\conjugate_gradient_port.py",
+      "source_sha256": "07050b890d05582e8bcba9de0247eb064a419415dc64fb22fb72179e4fa97862"
+    },
+    "open": [
+      "same-kernel continued-wear and holding/release time bounds",
+      "functional descent with noisy/estimated forces and resource competition",
+      "practical GPU execution and independent real-data continual quality"
+    ],
+    "review_status": "self_reviewed; independent review pending",
+    "execution_superseded_by": "results/published/optimizer_floor_reduction_20261028.json",
+    "current_registered_H_max_candidate_energies": 4
+  },
+  "historical_receipt_sources": {
+    "native_v4_snapshot": "lean/CGBAxioms/.lake/material_optimizer_pre_fiber_v4/manifest.json",
+    "scope": "Historical receipts retain producing hashes. Active31-contract temporal review is separate; the48-check runtime/test source hashes are unchanged. Native time bounds are not transferred to readout kinetics.",
+    "pre_temporal_snapshot": "lean/CGBAxioms/.lake/material_optimizer_pre_fiber_temporal/manifest.json",
+    "pre_task_risk_snapshot": "lean/CGBAxioms/.lake/material_optimizer_pre_task_risk/manifest.json",
+    "pre_population_window_snapshot": "lean/CGBAxioms/.lake/material_optimizer_pre_population_window/manifest.json",
+    "pre_floor_reduction_snapshot": "lean/CGBAxioms/.lake/material_optimizer_pre_floor_reduction/manifest.json",
+    "pre_resource_service_snapshot": "lean/CGBAxioms/.lake/material_optimizer_pre_resource_service/manifest.json",
+    "pre_gpu_matching_snapshot": "lean/CGBAxioms/.lake/material_optimizer_pre_gpu_matching/manifest.json",
+    "gpu_pre_graph_snapshot": "lean/CGBAxioms/.lake/material_gpu_before_graph/manifest.json",
+    "gpu_pre_optimizer_snapshot": "lean/CGBAxioms/.lake/material_gpu_before_optimizer/manifest.json"
+  },
+  "readout_temporal_review": {
+    "receipt": "results/published/optimizer_readout_fiber_temporal_20261028.json",
+    "integrated_review": {
+      "path": "lean/CGBAxioms/reviews/optimizer_content_bridge.lean",
+      "sha256": "f99b92ac70d69a64e9d6b4464dd0b8ec0c6eb6843d9ba3d15f6c38f824d1bfde",
+      "lean_exit_code": 0,
+      "audited": {
+        "CGB.OptimizerContentReview": [
+          "cooperative_content_contract",
+          "drive_removes_content_barriers",
+          "hidden_basin_calibration",
+          "maximal_reversible_acceptance",
+          "content_gradient_port",
+          "transfer_gradient_port",
+          "event_port_contract",
+          "finite_capacity_content_bridge",
+          "certified_root_refinement",
+          "fractional_probability_enclosure",
+          "force_response_dissipative",
+          "kinetic_survival_envelope",
+          "one_defect_regeneration_margin",
+          "maximal_event_clock"
+        ],
+        "CGB.ResourceEnergyReview": [
+          "scaled_pool_contract",
+          "scaled_resource_generation",
+          "resource_ground_bound",
+          "resource_ground_witness",
+          "resource_monopoly_gap"
+        ],
+        "CGB.ResourceReleaseReview": [
+          "primitive_release_port",
+          "resource_release_drift",
+          "resource_release_budget",
+          "resource_feedback_contract"
+        ],
+        "CGB.RationalSamplerReview": [
+          "rational_mixture_contract",
+          "rational_binary_coin_contract"
+        ],
+        "CGB.FiberOptimizerReview": [
+          "readout_force_response_contract",
+          "readout_regeneration_contract",
+          "readout_block_kernel_contract",
+          "readout_cell_kernel_contract",
+          "readout_release_drift",
+          "readout_release_budget"
+        ]
+      },
+      "compile_record": "lean/CGBAxioms/.lake/material_combined_core.lean.check.json",
+      "auto_implicit_variables": false,
+      "production_modules_added": 0
+    },
+    "holding": {
+      "kernel": "readout_fiber_v1",
+      "horizons": [
+        {
+          "funded_opportunities": 256,
+          "first_exit_probability_upper": "18806250271273884459105579/19807040628566084398385987584",
+          "base_operation_fee_units": 3328
+        },
+        {
+          "funded_opportunities": 1024,
+          "first_exit_probability_upper": "300471730892659768662040789/79228162514264337593543950336",
+          "base_operation_fee_units": 13312
+        },
+        {
+          "funded_opportunities": 4096,
+          "first_exit_probability_upper": "298766746024848139074743251/19807040628566084398385987584",
+          "base_operation_fee_units": 53248
+        },
+        {
+          "funded_opportunities": 65536,
+          "first_exit_probability_upper": "8551494725072971596795281973/39614081257132168796771975168",
+          "base_operation_fee_units": 851968
+        }
+      ],
+      "domain": "four-cell body, total material12, force0; strict16-state neighborhood and continuing1/1024 external wear"
+    },
+    "release": {
+      "declarations": [
+        "CGB.FiberOptimizerReview.readout_release_drift",
+        "CGB.FiberOptimizerReview.readout_release_budget"
+      ],
+      "rho": "1279/1280",
+      "initial_mass": 12,
+      "force": "every cell>=96, possibly time/state dependent",
+      "body_scope": "all four-cell nonempty states with mass<=12; stock=12-mass; same1/1024 external wear before each paid opportunity, observed at both substeps",
+      "kernel_nonnegative_and_row_sum_at_most_one": true,
+      "hrow_assumed": false,
+      "horizons": [
+        {
+          "funded_opportunities": 4096,
+          "base_operation_fee_units": 53248,
+          "first_empty_hit_probability_lower": "10130606481743573889708857857/19807040628566084398385987584",
+          "lower_float": 0.5114649215760695
+        },
+        {
+          "funded_opportunities": 8192,
+          "base_operation_fee_units": 106496,
+          "first_empty_hit_probability_lower": "9706550417833794924972823667/9903520314283042199192993792",
+          "lower_float": 0.980111123095777
+        },
+        {
+          "funded_opportunities": 16384,
+          "base_operation_fee_units": 212992,
+          "first_empty_hit_probability_lower": "1237899231889293643342788889/1237940039285380274899124224",
+          "lower_float": 0.9999670360479573
+        },
+        {
+          "funded_opportunities": 65536,
+          "base_operation_fee_units": 851968,
+          "first_empty_hit_probability_lower": "4951760157141521099593113343/4951760157141521099596496896",
+          "lower_float": 1.0
+        }
+      ]
+    },
+    "execution_reference": {
+      "path": "lean/CGBAxioms/.lake/material_fiber_body_conformance.lean",
+      "source_sha256": "8a9ad52769955cac5091a9784bf12bd45f5d926a24e2a4f4717e132be4d6d228",
+      "lean_exit_code": 0,
+      "source_bodies": 943,
+      "budget_and_pool_views": 3768,
+      "complete_candidate_successors": 101736,
+      "whole_energy_candidate_checks": 94272,
+      "force_profiles": 2
+    },
+    "runtime_source_sha256": "a97025867ff2331c3fdae776a9934ade7f8d223a83c911f369a01dfccce0f6df",
+    "runtime_unchanged": true,
+    "interfaces": {
+      "receipt": "results/published/optimizer_readout_fiber_20261028.json",
+      "tests": 48,
+      "current_source_and_test_hashes_identical": true
+    },
+    "full_optimizer_admitted": false,
+    "training_enabled": false,
+    "review_status": "self_reviewed; independent review pending",
+    "open": [
+      "selective useful retention and actual-risk response under noisy/estimated forces",
+      "temporal resource service and functional anti-monopoly at general body sizes",
+      "practical GPU budget and independent continual real-data quality"
+    ],
+    "execution_cache_repair": {
+      "previous_record": "lean/CGBAxioms/.lake/material_fiber_body_conformance_failed_native.lean.check.json",
+      "previous_exit_code": 3221226505,
+      "correction": "Install the finite-four mass implementation before compiled callers; its equality to the original sum is Lean-proved. Physics and mathematical kernel unchanged."
+    }
+  },
+  "readout_task_risk_review": {
+    "receipt": "results/published/optimizer_readout_task_risk_20261028.json",
+    "integrated_review": {
+      "path": "lean/CGBAxioms/reviews/optimizer_content_bridge.lean",
+      "sha256": "4c27b1d094cbf322e81c3c6b6ff796d71e53fc2625f058f2d17a98870d748d7c",
+      "lean_exit_code": 0,
+      "audited": {
+        "CGB.OptimizerContentReview": [
+          "cooperative_content_contract",
+          "drive_removes_content_barriers",
+          "hidden_basin_calibration",
+          "maximal_reversible_acceptance",
+          "content_gradient_port",
+          "transfer_gradient_port",
+          "event_port_contract",
+          "finite_capacity_content_bridge",
+          "certified_root_refinement",
+          "fractional_probability_enclosure",
+          "force_response_dissipative",
+          "kinetic_survival_envelope",
+          "one_defect_regeneration_margin",
+          "maximal_event_clock"
+        ],
+        "CGB.ResourceEnergyReview": [
+          "scaled_pool_contract",
+          "scaled_resource_generation",
+          "resource_ground_bound",
+          "resource_ground_witness",
+          "resource_monopoly_gap"
+        ],
+        "CGB.ResourceReleaseReview": [
+          "primitive_release_port",
+          "resource_release_drift",
+          "resource_release_budget",
+          "resource_feedback_contract"
+        ],
+        "CGB.RationalSamplerReview": [
+          "rational_mixture_contract",
+          "rational_binary_coin_contract"
+        ],
+        "CGB.FiberOptimizerReview": [
+          "readout_force_response_contract",
+          "readout_regeneration_contract",
+          "readout_block_kernel_contract",
+          "readout_cell_kernel_contract",
+          "readout_release_drift",
+          "readout_release_budget",
+          "readout_task_risk_contract",
+          "autonomous_task_noise_floor"
+        ]
+      },
+      "compile_record": "lean/CGBAxioms/.lake/material_combined_core.lean.check.json",
+      "auto_implicit_variables": false,
+      "production_modules_added": 0
+    },
+    "assumptions": {
+      "force": "magnitude>=96 in the actual port units, signed with observed gradient",
+      "model": "whole task objective along the one changed coordinate has the written Taylor upper bound",
+      "error": "explicit envelope on the difference between true current gradient and supplied observation; no estimator is assumed valid",
+      "feasibility": "positive signal:nonempty cell; negative signal:room in N+stock budget",
+      "robust_domain": "gradient error<=50% observed magnitude and L*quantum<=50% observed magnitude"
+    },
+    "derived": {
+      "D": "quantum*observed_magnitude",
+      "c": "quantum*gradient_error+L*quantum^2/2",
+      "one_opportunity_risk_upper": "-(D-c)/26+(D+c)/2^118",
+      "robust_risk_upper": "-D/208 per selected feasible cell",
+      "no_risk_sign_assumed": true
+    },
+    "numeric": {
+      "exact_kernel_rows": 390,
+      "independent_quadratic_checks": 9360,
+      "negative_expected_increments": 9360,
+      "actual_force_port_checks": 8,
+      "scope": "independent analytic loss differences, source row probabilities and exact rational arithmetic; no learner, epochs or empirical convergence"
+    },
+    "noise_floor": {
+      "objective": "theta^2 at theta0=0, supplied gradient0, available stock1",
+      "body": "single cap2 cell, scaled quadratic H",
+      "exact_expected_increment": "9/17179869184",
+      "proved_lower": "1/2^31",
+      "significance": "unconditional task descent at every state is false; finite quantum and autonomous dynamics require a noise/accuracy budget"
+    },
+    "runtime_source_sha256": "a97025867ff2331c3fdae776a9934ade7f8d223a83c911f369a01dfccce0f6df",
+    "runtime_unchanged": true,
+    "existing_interface_tests": 48,
+    "full_optimizer_admitted": false,
+    "training_enabled": false,
+    "review_status": "self_reviewed; independent review pending",
+    "open": [
+      "actual online noise/staleness envelopes and useful selective retention over full trajectories",
+      "weak-signal/finite-precision task-risk floor and general-size temporal resource service/functional anti-monopoly",
+      "practical GPU budget and independent continual real-data convergence/quality"
+    ]
+  },
+  "population_window_review": {
+    "receipt": "results/published/optimizer_population_window_20261028.json",
+    "integrated_review": {
+      "path": "lean/CGBAxioms/reviews/optimizer_content_bridge.lean",
+      "sha256": "d8ecd083673f91f234b506124c38b465d0b3d84186b417e879ec2d6c5ed16d2d",
+      "lean_exit_code": 0,
+      "audited": {
+        "CGB.OptimizerContentReview": [
+          "cooperative_content_contract",
+          "drive_removes_content_barriers",
+          "hidden_basin_calibration",
+          "maximal_reversible_acceptance",
+          "content_gradient_port",
+          "transfer_gradient_port",
+          "event_port_contract",
+          "finite_capacity_content_bridge",
+          "certified_root_refinement",
+          "fractional_probability_enclosure",
+          "force_response_dissipative",
+          "kinetic_survival_envelope",
+          "one_defect_regeneration_margin",
+          "maximal_event_clock"
+        ],
+        "CGB.ResourceEnergyReview": [
+          "scaled_pool_contract",
+          "scaled_resource_generation",
+          "resource_ground_bound",
+          "resource_ground_witness",
+          "resource_monopoly_gap"
+        ],
+        "CGB.ResourceReleaseReview": [
+          "primitive_release_port",
+          "resource_release_drift",
+          "resource_release_budget",
+          "resource_feedback_contract"
+        ],
+        "CGB.RationalSamplerReview": [
+          "rational_mixture_contract",
+          "rational_binary_coin_contract"
+        ],
+        "CGB.FiberOptimizerReview": [
+          "readout_force_response_contract",
+          "readout_regeneration_contract",
+          "readout_block_kernel_contract",
+          "readout_cell_kernel_contract",
+          "readout_release_drift",
+          "readout_release_budget",
+          "readout_task_risk_contract",
+          "autonomous_task_noise_floor",
+          "population_kernel_contract",
+          "population_task_window_contract",
+          "population_frozen_gradient_budget"
+        ]
+      },
+      "compile_record": "lean/CGBAxioms/.lake/material_combined_core.lean.check.json",
+      "auto_implicit_variables": false,
+      "production_modules_added": 0
+    },
+    "reference": {
+      "path": "lean/CGBAxioms/.lake/material_population_reference.lean",
+      "sha256": "f457fce9a56beb4466dfb9884830fc1f4d5dfe4279d7235bf550dcea4c6ed183",
+      "lean_exit_code": 0,
+      "bodies": 4030,
+      "shapes": [
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          17
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          2
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          3,
+          2
+        ],
+        [
+          17,
+          1
+        ]
+      ],
+      "budget_and_pool_views": 16486,
+      "complete_candidate_successors": 445122,
+      "external_damage_successors": 49458,
+      "local_energy_candidate_checks": 184082,
+      "full_populations_enumerated_in_lean": false
+    },
+    "algebra": {
+      "exact_one_coordinate_rows": 97,
+      "window_and_staleness_checks": 784,
+      "nonabsorbing_zero_cases": 6,
+      "cases": [
+        {
+          "supply": 0,
+          "legal_states": 1,
+          "origin": [
+            0,
+            0,
+            0
+          ],
+          "window_horizons": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "supply": 1,
+          "legal_states": 4,
+          "origin": [
+            0,
+            0,
+            0
+          ],
+          "window_horizons": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "supply": 1,
+          "legal_states": 4,
+          "origin": [
+            1,
+            0,
+            0
+          ],
+          "window_horizons": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "supply": 3,
+          "legal_states": 17,
+          "origin": [
+            0,
+            0,
+            0
+          ],
+          "window_horizons": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "supply": 3,
+          "legal_states": 17,
+          "origin": [
+            2,
+            1,
+            0
+          ],
+          "window_horizons": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "supply": 6,
+          "legal_states": 27,
+          "origin": [
+            0,
+            0,
+            0
+          ],
+          "window_horizons": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "supply": 6,
+          "legal_states": 27,
+          "origin": [
+            2,
+            2,
+            2
+          ],
+          "window_horizons": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ],
+      "scope": "exact finite algebra only; no optimizer training or empirical convergence"
+    },
+    "frozen_budget": "initial_error_i+sensitivity_i*quantum*min(2*funded_opportunities,2*total_supply)",
+    "window_scope": "fixed task objective and frozen observed gradient; all weak/blocked coordinates, exact external-loss contribution and stochastic physical transitions remain in the bound; no risk sign assumed",
+    "runtime_source_sha256": "a97025867ff2331c3fdae776a9934ade7f8d223a83c911f369a01dfccce0f6df",
+    "runtime_unchanged": true,
+    "existing_interface_tests": 48,
+    "full_optimizer_admitted": false,
+    "training_enabled": false,
+    "review_status": "self_reviewed; independent review pending",
+    "open": [
+      "objective sensitivity and initial observation-error calibration on actual tasks; conditional window envelope need not be negative",
+      "general-size temporal resource service and functional anti-monopoly/useful selective retention",
+      "practical GPU/precision budget and independent continual real-data convergence and quality"
+    ]
+  },
+  "floor_reduction_review": {
+    "receipt": "results/published/optimizer_floor_reduction_20261028.json",
+    "integrated_review": {
+      "path": "lean/CGBAxioms/reviews/optimizer_content_bridge.lean",
+      "sha256": "e1cd1f69579c2306aa120db279b7a403acbfc4fe05bcb8c833338635248bf66e",
+      "lean_exit_code": 0,
+      "audited": {
+        "CGB.OptimizerContentReview": [
+          "cooperative_content_contract",
+          "drive_removes_content_barriers",
+          "hidden_basin_calibration",
+          "maximal_reversible_acceptance",
+          "content_gradient_port",
+          "transfer_gradient_port",
+          "event_port_contract",
+          "finite_capacity_content_bridge",
+          "certified_root_refinement",
+          "fractional_probability_enclosure",
+          "force_response_dissipative",
+          "kinetic_survival_envelope",
+          "one_defect_regeneration_margin",
+          "maximal_event_clock"
+        ],
+        "CGB.ResourceEnergyReview": [
+          "scaled_pool_contract",
+          "scaled_resource_generation",
+          "resource_ground_bound",
+          "resource_ground_witness",
+          "resource_monopoly_gap"
+        ],
+        "CGB.ResourceReleaseReview": [
+          "primitive_release_port",
+          "resource_release_drift",
+          "resource_release_budget",
+          "resource_feedback_contract"
+        ],
+        "CGB.RationalSamplerReview": [
+          "rational_mixture_contract",
+          "rational_binary_coin_contract"
+        ],
+        "CGB.FiberOptimizerReview": [
+          "readout_force_response_contract",
+          "readout_regeneration_contract",
+          "readout_block_kernel_contract",
+          "readout_cell_kernel_contract",
+          "readout_release_drift",
+          "readout_release_budget",
+          "readout_task_risk_contract",
+          "autonomous_task_noise_floor",
+          "population_kernel_contract",
+          "population_task_window_contract",
+          "population_frozen_gradient_budget",
+          "readout_floor_reduction"
+        ]
+      },
+      "compile_record": "lean/CGBAxioms/.lake/material_combined_core.lean.check.json",
+      "auto_implicit_variables": false,
+      "production_modules_added": 0
+    },
+    "reference": {
+      "path": "lean/CGBAxioms/.lake/material_floor_table_reference.lean",
+      "sha256": "2ba3dd90f59a05f0393b3a648612563946ecf07049988516fde0b1eb530fc598",
+      "lean_exit_code": 0,
+      "extracted_definition_sha256": "877be52989141f7c3b7a2d99590df646e63f67719bcfb963f68c6b8fae67f739",
+      "blocks": [
+        [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1
+          ]
+        ],
+        [
+          [
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            2
+          ]
+        ],
+        [
+          [
+            0,
+            0,
+            2
+          ],
+          [
+            1,
+            1,
+            1
+          ]
+        ],
+        [
+          [
+            1,
+            1,
+            1
+          ],
+          [
+            1,
+            1,
+            2
+          ]
+        ],
+        [
+          [
+            1,
+            1,
+            2
+          ],
+          [
+            1,
+            2,
+            2
+          ],
+          [
+            2,
+            1,
+            2
+          ]
+        ],
+        [
+          [
+            1,
+            2,
+            2
+          ],
+          [
+            2,
+            1,
+            2
+          ],
+          [
+            2,
+            2,
+            2
+          ]
+        ]
+      ]
+    },
+    "work": {
+      "previous_max_candidate_evaluations": 13,
+      "new_max_candidate_evaluations": 4,
+      "floor_evaluations_max": 3,
+      "shared_minima_tuples": 8,
+      "per_parameter_arrays_added": 0,
+      "tariff_per_opportunity": 13,
+      "tariff_changed": false,
+      "checkpoint_version": 5,
+      "clock_changed": false,
+      "applicability": "cap2,epsilon0,coupling12,quadratic numerator and pool_reference_size2; other laws retain enumeration"
+    },
+    "tests": {
+      "command": [
+        "D:/conda_envs/vox/python.exe",
+        "-m",
+        "pytest",
+        "tests/test_conjugate_gradient_port.py",
+        "-q"
+      ],
+      "source": "tests/test_conjugate_gradient_port.py",
+      "source_sha256": "d5e41166484ed2ba09cdbbe02dbf72748d6b520723459ca884cb62f2e63ce950",
+      "runtime_source_sha256": "04bcfb6271d59a76c638f27c4887964e51f3ded22c5afc7c2b3a6ac42889b24b",
+      "returncode": 0,
+      "passed": 51,
+      "reported_seconds": 24.14,
+      "observed_session_id": 25376,
+      "output_summary": "51 passed in 24.14s"
+    },
+    "benchmark": {
+      "events": 1200,
+      "repeats": 5,
+      "scope": "CPU exact preparation on a frozen2x3 body; no learner or empirical quality",
+      "same_choices_powers_and_rng": true,
+      "enumerated_evaluations": 8200,
+      "reduced_evaluations": 3179,
+      "seconds": {
+        "enumerated": [
+          0.1601954000070691,
+          0.15988110000034794,
+          0.16585590000613593,
+          0.15949890000047162,
+          0.159705700003542
+        ],
+        "reduced": [
+          0.05171529998187907,
+          0.052018499991390854,
+          0.05138829999486916,
+          0.05084469998837449,
+          0.05143700001644902
+        ]
+      },
+      "median_seconds": {
+        "enumerated": 0.15988110000034794,
+        "reduced": 0.05143700001644902
+      },
+      "preparation_speedup": 3.108289751525548
+    },
+    "source_sha256": "04bcfb6271d59a76c638f27c4887964e51f3ded22c5afc7c2b3a6ac42889b24b",
+    "update_probabilities_changed": false,
+    "full_optimizer_admitted": false,
+    "training_enabled": false,
+    "review_status": "self_reviewed; independent review pending",
+    "open": [
+      "calibrated task sensitivity/error and precision budget",
+      "general-size temporal functional resource service and useful retention",
+      "GPU implementation, whole-model resource costs and independent continual real-data quality"
+    ]
+  },
+  "resource_service_review": {
+    "premises": {
+      "target": "N<6 and next force<-22",
+      "stocked": "initial stock>=1",
+      "empty_stock": "zero stock; each counted donor differs from target, has material and current force>34",
+      "world": "same uniform pre-opportunity loss kernel,0<=eta<=1; each opportunity funded",
+      "benefit": "signed force usefulness and objective-error validity are not assumed proved"
+    },
+    "derived": {
+      "one_opportunity": "(1-eta)/(26*P)",
+      "two_opportunities": "d*(1-eta)^2/(676*P^2)",
+      "event": "target mass increases by one relative to the initial state",
+      "scope": "d counts actual eligible donor sites; bound may be zero when none exists; not a lifetime or all-request fairness theorem"
+    },
+    "numeric": {
+      "cases": 7064,
+      "stocked_bounds": 14128,
+      "empty_stock_bounds": 14128,
+      "distinct_donor_routes": 4952,
+      "exact_two_step_physical_rows": 3068,
+      "actual_reduced_executor_choices": 13436,
+      "max_donors": 16,
+      "minimum_witness_to_bound_ratio": {
+        "1x2": "1",
+        "2x1": "1",
+        "2x2": "1",
+        "2x3": "1",
+        "3x2": "1",
+        "1x17": "1",
+        "17x1": "1"
+      }
+    },
+    "no_optimizer_transition_change": true,
+    "source_sha256": "04bcfb6271d59a76c638f27c4887964e51f3ded22c5afc7c2b3a6ac42889b24b",
+    "review_status": "self_reviewed; independent review pending",
+    "open": [
+      "useful selective retention and task calibration; all-request temporal fairness is not claimed",
+      "actual task precision/noise floor and safe efficient GPU execution",
+      "independent continual real-data quality and convergence"
+    ],
+    "receipt": "results/published/optimizer_resource_service_20261028.json",
+    "integrated_review": {
+      "path": "lean/CGBAxioms/reviews/optimizer_content_bridge.lean",
+      "sha256": "5d5164846e8ed196004efbd86af2e88375cece0054473074a80d26c67a5f5bbd",
+      "lean_exit_code": 0,
+      "audited": {
+        "CGB.OptimizerContentReview": [
+          "cooperative_content_contract",
+          "drive_removes_content_barriers",
+          "hidden_basin_calibration",
+          "maximal_reversible_acceptance",
+          "content_gradient_port",
+          "transfer_gradient_port",
+          "event_port_contract",
+          "finite_capacity_content_bridge",
+          "certified_root_refinement",
+          "fractional_probability_enclosure",
+          "force_response_dissipative",
+          "kinetic_survival_envelope",
+          "one_defect_regeneration_margin",
+          "maximal_event_clock"
+        ],
+        "CGB.ResourceEnergyReview": [
+          "scaled_pool_contract",
+          "scaled_resource_generation",
+          "resource_ground_bound",
+          "resource_ground_witness",
+          "resource_monopoly_gap"
+        ],
+        "CGB.ResourceReleaseReview": [
+          "primitive_release_port",
+          "resource_release_drift",
+          "resource_release_budget",
+          "resource_feedback_contract"
+        ],
+        "CGB.RationalSamplerReview": [
+          "rational_mixture_contract",
+          "rational_binary_coin_contract"
+        ],
+        "CGB.FiberOptimizerReview": [
+          "readout_force_response_contract",
+          "readout_regeneration_contract",
+          "readout_block_kernel_contract",
+          "readout_cell_kernel_contract",
+          "readout_release_drift",
+          "readout_release_budget",
+          "readout_task_risk_contract",
+          "autonomous_task_noise_floor",
+          "population_kernel_contract",
+          "population_task_window_contract",
+          "population_frozen_gradient_budget",
+          "readout_floor_reduction",
+          "population_resource_service"
+        ]
+      },
+      "compile_record": "lean/CGBAxioms/.lake/material_combined_core.lean.check.json",
+      "auto_implicit_variables": false,
+      "production_modules_added": 0
+    },
+    "full_optimizer_admitted": false,
+    "training_enabled": false
+  },
+  "precision_acceptance_policy": {
+    "source": "User clarification on2026-10-28",
+    "lossless_quantization_required": false,
+    "primary": "Useful stable/releasable retention, plasticity, competition/diversity and practical efficiency on real tasks",
+    "precision": "Native seven-level readout is a current construction choice. Measure actual quality/resource tradeoff; no universal zero-loss proof or precision optimality prerequisite.",
+    "preserved": "Applicable same-kernel Lean admission, arithmetic correctness, boundedness and honest real-data validation remain required."
+  },
+  "gpu_execution_scope": "Standard multi-parameter optimizer, checked GPU source and registered real-language testbed; no general superiority claim",
+  "gpu_matching_reference": {
+    "scope": "CUDA matching executor and standard multi-parameter optimizer; no capability claim",
+    "source": "information_boltzmann/material_matching_cuda.py",
+    "source_sha256": "877a11e3ffdd42c2b5b11d47500559ac3cee5e61911a731639430025de2d70cb",
+    "structural_declaration": "CGB.FiberOptimizerReview.matching_parallel_preparation",
+    "tests": {
+      "command": [
+        "D:/conda_envs/vox/python.exe",
+        "-m",
+        "pytest",
+        "tests/test_material_matching_cuda.py",
+        "-q",
+        "-x"
+      ],
+      "returncode": 0,
+      "passed": 21,
+      "seconds": 9.11,
+      "observed_terminal_session": "81ac30",
+      "source": "tests/test_material_matching_cuda.py",
+      "source_sha256": "eb35f144e18370442f7b6029ce159286b3cf425813448fc012a50e25a3046261",
+      "runtime_source": "information_boltzmann/material_matching_cuda.py",
+      "runtime_source_sha256": "877a11e3ffdd42c2b5b11d47500559ac3cee5e61911a731639430025de2d70cb",
+      "scope": "GPU arithmetic/autograd/optimizer/full-resume interface; no language capability claim"
+    },
+    "hardware": {
+      "name": "NVIDIA GeForce GTX 1650",
+      "total_memory": 4294639616,
+      "torch_version": "2.9.1+cu126",
+      "cuda_version": "12.6"
+    },
+    "clock": {
+      "name": "readout_matching_sweep_v1",
+      "changed_from_cpu": true,
+      "same_matching_serial_stock_and_pool_semantics": true,
+      "old_random_site_lifetime_bounds_inherited": false,
+      "external_wear": "not automatically injected; existing wear-per-random-opportunity certificates do not transfer"
+    },
+    "precision": {
+      "physical": "all27 codes exact in uint8; byte aligned rather than5-bit packed",
+      "parameter_cache": "FP32; exactly representable seven-level alphabet",
+      "candidate_choice": "uniform word0..467 modulo4/9/13, exact cardinality",
+      "force_and_energy": "FP64 represented gradient*force units and scaled-pool energies",
+      "coin": "31-bit integer ticket, floor(2^31*computed_probability)",
+      "proved_error": "coin-grid error<=2^-31+error in supplied probability; GPU exp2 error is not assumed zero",
+      "gpu_probability_checks": 3952,
+      "maximum_observed_probability_error": "4.6460493358998497e-10",
+      "maximum_actual_cuda_cutoff_disagreement": 0,
+      "ideal_unlimited_bit_sampler_claimed": false
+    },
+    "costs": {
+      "persistent_state": "one uint8 per cell, shared row/column int32 totals, one global int64 stock and GPU RNG",
+      "temporary": "O(min(rows,cols)) proposal/prefix/tickets plus finiteness-check workspace",
+      "measurement_excludes": "CUDA context/compiler private memory; Torch allocator counters include only this process allocations",
+      "benchmark": "frozen supplied gradient and complete physical sweeps; not training or speed/quality versus Adam",
+      "rows": [
+        {
+          "rows": 128,
+          "cols": 128,
+          "parameters": 16384,
+          "colors_per_sweep": 128,
+          "attempted_cells_per_sweep": 16384,
+          "wall_seconds": [
+            0.20848859997931868,
+            0.2108342999999877,
+            0.2316549999814015
+          ],
+          "median_seconds": 0.2108342999999877,
+          "attempted_cells_per_second": 77710.31563650201,
+          "torch_resident_bytes": 240128,
+          "initialization_peak_additional_bytes": 205824,
+          "sweep_peak_additional_bytes": 114688,
+          "graph_wall_seconds": [
+            0.005682600021827966,
+            0.005454400001326576,
+            0.005864000006113201,
+            0.005837900011101738,
+            0.005859400000190362,
+            0.0057376000040676445,
+            0.005489100003615022,
+            0.00566120000439696,
+            0.005871400004252791,
+            0.005663899995852262
+          ],
+          "graph_median_seconds": 0.005710100012947805,
+          "graph_speedup": 36.923048549397606,
+          "measurement": "same frozen starting physical body and RNG per sample; resets outside timing;5 graph warmups",
+          "graph_capture_peak_additional_bytes": 164864,
+          "graph_resident_bytes": 242176,
+          "graph_sweep_peak_additional_bytes": 114688,
+          "physical_bytes": 16384,
+          "shared_pool_bytes": 1024,
+          "reusable_matching_workspace_bytes": 6672,
+          "stock_bytes": 8,
+          "all_accounted_arrays_on_gpu": true
+        },
+        {
+          "rows": 512,
+          "cols": 512,
+          "parameters": 262144,
+          "colors_per_sweep": 512,
+          "attempted_cells_per_sweep": 262144,
+          "wall_seconds": [
+            1.0888806999719236,
+            0.9202930000028573,
+            1.03117969998857
+          ],
+          "median_seconds": 1.03117969998857,
+          "attempted_cells_per_second": 254217.57236193234,
+          "torch_resident_bytes": 3706880,
+          "initialization_peak_additional_bytes": 3177984,
+          "sweep_peak_additional_bytes": 1835008,
+          "graph_wall_seconds": [
+            0.02283459997852333,
+            0.02206690001185052,
+            0.022694899991620332,
+            0.0221527999965474,
+            0.022173299978021532,
+            0.02251440001418814,
+            0.019771499995840713,
+            0.01789350001490675,
+            0.017897099984111264,
+            0.017852199991466478
+          ],
+          "graph_median_seconds": 0.02210985000419896,
+          "graph_speedup": 46.63892788927718,
+          "measurement": "same frozen starting physical body and RNG per sample; resets outside timing;5 graph warmups",
+          "graph_capture_peak_additional_bytes": 2623488,
+          "graph_resident_bytes": 3708928,
+          "graph_sweep_peak_additional_bytes": 1835008,
+          "physical_bytes": 262144,
+          "shared_pool_bytes": 4096,
+          "reusable_matching_workspace_bytes": 26640,
+          "stock_bytes": 8,
+          "all_accounted_arrays_on_gpu": true
+        }
+      ]
+    },
+    "interface": {
+      "name": "CudaMaterialOptimizer",
+      "base": "torch.optim.Optimizer",
+      "independent_compartment_per_parameter": true,
+      "moment_or_shadow_arrays": false,
+      "initialization": "nearest seven-level readout; uniform existing microstate within that readout",
+      "checkpoint": "physical state,RNG,units,supply,fee and clock; caller owns pending gradient",
+      "lr": "gradient force scale; zero retains autonomous motion"
+    },
+    "review_status": "self_reviewed; independent review pending",
+    "open": [
+      "registered controlled real-language comparison and whole-model cost evaluation",
+      "full healthy-lifetime sweep-clock behavior; old random-site lifetime bounds are not inherited",
+      "registered independent continual real-language quality/resource validation"
+    ],
+    "receipt": "results/published/optimizer_gpu_matching_20261028.json"
+  },
+  "controlled_language_experiment": {
+    "registration": "results/published/optimizer_owt_prereg_20261028.json",
+    "registration_sha256": "8032754b3a0dc4bef9e1940222f0a99cede3e2486054f33ce2e6140c3fd4a49d",
+    "preflight": "results/material_owt_20261028/preflight.json",
+    "preflight_sha256": "303f38b9d32bd4a842ddee4a887763dc37b947023d083cbc6a68f68f8a9cb31c",
+    "status": "stopped_scope_correction",
+    "orchestrator_pid": 30664,
+    "run_directory": "results/material_owt_20261028",
+    "scope": "Finite registered optimizer comparison only; full healthy-lifetime admission remains open",
+    "source_hashes": {
+      "information_boltzmann/material_matching_cuda.py": "877a11e3ffdd42c2b5b11d47500559ac3cee5e61911a731639430025de2d70cb",
+      "lean/CGBAxioms/reviews/optimizer_content_bridge.lean": "b3c749d93c976f26ae3429f1a0671e51f94d3a0d64cda39d6bb843a9a48e42b5",
+      "scripts/run_material_optimizer_owt.py": "4a3f689d5ecf40e88d1e02fd06d90ccc4919a0bf2e2b7e7a62596f3751dc3289"
+    },
+    "interface_results": {
+      "material": {
+        "initial_loss": 5.9932708740234375,
+        "exact_full_continuation": true,
+        "causal_logits": true,
+        "first_step_seconds": 6.6851516000169795,
+        "steady_step_seconds": 0.1946966999967117,
+        "changed_parameters": 12536,
+        "parameters": 98816,
+        "physical": {
+          "physical_bytes": 98816,
+          "pool_bytes": 8736,
+          "stock_bytes": 80,
+          "rng_state_bytes": 160,
+          "workspace_bytes": 33440,
+          "attempted_cells": 197632,
+          "fee_units": 2569216,
+          "compartments": 10
+        }
+      },
+      "adam": {
+        "initial_loss": 5.9932708740234375,
+        "exact_full_continuation": true,
+        "causal_logits": true,
+        "first_step_seconds": 0.0778326999861747,
+        "steady_step_seconds": 0.0356681999983266,
+        "changed_parameters": 85184,
+        "parameters": 98816,
+        "physical": {
+          "state_bytes": 790568
+        }
+      },
+      "material_no_force": {
+        "initial_loss": 5.9932708740234375,
+        "exact_full_continuation": true,
+        "causal_logits": true,
+        "first_step_seconds": 5.31384370001615,
+        "steady_step_seconds": 0.24965929999598302,
+        "changed_parameters": 13167,
+        "parameters": 98816,
+        "physical": {
+          "physical_bytes": 98816,
+          "pool_bytes": 8736,
+          "stock_bytes": 80,
+          "rng_state_bytes": 160,
+          "workspace_bytes": 33440,
+          "attempted_cells": 197632,
+          "fee_units": 2569216,
+          "compartments": 10
+        }
+      }
+    },
+    "review_status": "self_reviewed; independent review pending",
+    "full_life_admitted": false,
+    "execution_conditions": "current Lean mechanical/conditional task contracts plus actual CUDA-source and full-model-resume checks; empirical useful learning is not assumed",
+    "reason": "Scope correction: material readout constrains network parameters to seven levels while Adam parameters remain continuous. Results compare representation+optimizer packages and do not isolate optimizer quality; further execution stopped.",
+    "optimizer_only_evidence": false,
+    "quality_cost_audit": "results/published/optimizer_owt_scope_audit_20261028.json"
+  },
+  "training_execution_scope": "Stopped: return to continuous model parameters; retain original material-model provenance",
+  "continuous_replacement": {
+    "receipt": "results/published/optimizer_continuous_delivery_20261028.json",
+    "sha256": "8ca7adb0d442cd8d3533751861776b665ee9deb5987eb671f6900ceea37175bb",
+    "status": "continuous_gpu_optimizer_prototype_delivered",
+    "full_life_admitted": false,
+    "parameter_representation": "unchanged continuous FP32",
+    "tests_passed": 15,
+    "protocol_tests_passed": 3,
+    "lean_results": 22,
+    "comparison": {
+      "final_validation_bpb": {
+        "cycle": {
+          "A": 3.8592775864669697,
+          "B": 3.877641384092809
+        },
+        "adam": {
+          "A": 3.422864470335397,
+          "B": 3.396566813993823
+        }
+      },
+      "cycle_minus_adam_bpb": {
+        "A": 0.43641311613157274,
+        "B": 0.4810745700989858
+      },
+      "persistent_state_ratio_adam_over_cycle": 16.000809585492227,
+      "wall_ratio_cycle_over_adam": 1.5998896429278653,
+      "peak_torch_bytes": {
+        "cycle": 83678208,
+        "adam": 87185408
+      }
+    }
+  }
+}

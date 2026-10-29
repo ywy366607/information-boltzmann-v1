@@ -1,0 +1,418 @@
+{
+  "status": "implemented_and_fixed_budget_real_data_comparison_completed",
+  "date": "2026-10-28",
+  "optimizer": "information_boltzmann.conservative_cycle_optimizer.ResourceCycle",
+  "full_lifelong_optimizer_admitted": false,
+  "parameter_representation": "unchanged continuous FP32 in comparison; FP16/BF16/FP32/FP64 API tested",
+  "new_production_lean_modules": 0,
+  "new_review_results": [
+    "resource_filtered_tracking",
+    "encoded_contrary_of_energy_ratio",
+    "raw_stream_forces_release",
+    "relative_cue_shared_scale",
+    "integer_ignition_and_retention"
+  ],
+  "lean_refinement": {
+    "receipt": "results/published/optimizer_raw_observation_bridge_20261028.json",
+    "sha256": "23a07355e41c77a0ab6b4f0ebb2b3bf33dc1968c104adb1ad5cbb798d6151375",
+    "audited_declarations": 30,
+    "exact_recursive_steps": 480,
+    "checks": [
+      {
+        "device": "cpu",
+        "dtype": "torch.float32",
+        "transitions": 480,
+        "max_absolute_error": {
+          "mean": 5.960464477539063e-08,
+          "rms": 0.0,
+          "mass": 1.1920928955078125e-07,
+          "update": 1.4901161193847656e-08
+        }
+      },
+      {
+        "device": "cpu",
+        "dtype": "torch.float64",
+        "transitions": 480,
+        "max_absolute_error": {
+          "mean": 1.1102230246251565e-16,
+          "rms": 1.1102230246251565e-16,
+          "mass": 1.1102230246251565e-16,
+          "update": 4.163336342344337e-17
+        }
+      },
+      {
+        "device": "cuda",
+        "dtype": "torch.float32",
+        "transitions": 480,
+        "max_absolute_error": {
+          "mean": 5.960464477539063e-08,
+          "rms": 0.0,
+          "mass": 1.1920928955078125e-07,
+          "update": 1.4901161193847656e-08
+        }
+      },
+      {
+        "device": "cuda",
+        "dtype": "torch.float64",
+        "transitions": 480,
+        "max_absolute_error": {
+          "mean": 1.1102230246251565e-16,
+          "rms": 0.0,
+          "mass": 1.1102230246251565e-16,
+          "update": 4.163336342344337e-17
+        }
+      }
+    ]
+  },
+  "interface_tests": {
+    "returncode": 0,
+    "passed": 41,
+    "wall_seconds": 6.720078099984676,
+    "sources": {
+      "information_boltzmann/conservative_cycle_optimizer.py": "f0453bd370f36b9eeb82fa35c0ec3d420adceea47779c1f1a692f616659a468a",
+      "information_boltzmann/conservative_cycle_cuda.py": "b9b2ddedcf7ae9b345f4317e44833880b408e70e87ebf775bba91fc30c8b00e4",
+      "lean/CGBAxioms/reviews/optimizer_conservative_cycle.lean": "32995ed3088f37a25ac3db09850995f8abd9913b90f87eb13676c162812c0325",
+      "scripts/run_material_optimizer_owt.py": "6e60bfff9c06e48f00b645a008029fb15e58439a7435b49346a690b9795f4452",
+      "tests/test_conservative_cycle_optimizer.py": "7895a136b59c15d8bd140808578b9497a20ce4a212b6ad05ce69d5bf1c3f452b",
+      "tests/test_material_optimizer_owt_protocol.py": "b7ef68239b810b074df1986ef30b8cef58c4493845312418204cae133516d1d7"
+    }
+  },
+  "registration": {
+    "path": "results/published/optimizer_resource_prereg_20261028.json",
+    "sha256": "f195e98f24f0607ff88d8f46e701941dd3156dae7fe23770ac55de53f5ba21e3"
+  },
+  "preflight": {
+    "scope": "real-data numerical/gradient/causality/full-resume interface; not capability evidence",
+    "registration_sha256": "f195e98f24f0607ff88d8f46e701941dd3156dae7fe23770ac55de53f5ba21e3",
+    "sources": {
+      "information_boltzmann/conservative_cycle_optimizer.py": "f0453bd370f36b9eeb82fa35c0ec3d420adceea47779c1f1a692f616659a468a",
+      "information_boltzmann/conservative_cycle_cuda.py": "b9b2ddedcf7ae9b345f4317e44833880b408e70e87ebf775bba91fc30c8b00e4",
+      "lean/CGBAxioms/reviews/optimizer_conservative_cycle.lean": "32995ed3088f37a25ac3db09850995f8abd9913b90f87eb13676c162812c0325",
+      "scripts/run_material_optimizer_owt.py": "6e60bfff9c06e48f00b645a008029fb15e58439a7435b49346a690b9795f4452"
+    },
+    "arms": {
+      "resource": {
+        "initial_loss": 6.221858024597168,
+        "exact_full_continuation": true,
+        "initialization_unchanged": true,
+        "initialization_sha256": "5dbc393928522ccc167731e47b60e1c1dfb976458f81f10161b16dea379050f8",
+        "causal_logits": true,
+        "first_step_seconds": 0.22870719997445121,
+        "steady_step_seconds": 0.03734840001561679,
+        "changed_parameters": 64927,
+        "parameters": 98816,
+        "physical": {
+          "state_bytes": 457024,
+          "cycle_blocks": 24704
+        }
+      },
+      "adam": {
+        "initial_loss": 6.221858024597168,
+        "exact_full_continuation": true,
+        "initialization_unchanged": true,
+        "initialization_sha256": "5dbc393928522ccc167731e47b60e1c1dfb976458f81f10161b16dea379050f8",
+        "causal_logits": true,
+        "first_step_seconds": 0.035582699987571687,
+        "steady_step_seconds": 0.008992100018076599,
+        "changed_parameters": 85184,
+        "parameters": 98816,
+        "physical": {
+          "state_bytes": 790568,
+          "cycle_blocks": 0
+        }
+      }
+    },
+    "status": "passed",
+    "full_life_admitted": false,
+    "training_scope": "registered controlled optimizer comparison only; empirical quality remains open"
+  },
+  "results": {
+    "resource": {
+      "final_validation_bpb": {
+        "A": 3.3955386498473903,
+        "B": 3.346142879184179
+      },
+      "prequential_bpb": 3.580397631346073,
+      "wall_seconds": 194.81452489999356,
+      "persistent_optimizer_bytes": 457024,
+      "peak_cuda_bytes": 85670912,
+      "last_five_validation": [
+        {
+          "update": 4000,
+          "domains": {
+            "A": {
+              "nll": 158671.87646484375,
+              "targets": 65536,
+              "byte_nll": 158553.14624023438,
+              "bytes": 65494,
+              "bpb": 3.4925922649117283
+            },
+            "B": {
+              "nll": 157603.72509765625,
+              "targets": 65536,
+              "byte_nll": 157544.62377929688,
+              "bytes": 65514,
+              "bpb": 3.4693172061713384
+            }
+          }
+        },
+        {
+          "update": 4250,
+          "domains": {
+            "A": {
+              "nll": 157713.00732421875,
+              "targets": 65536,
+              "byte_nll": 157590.01440429688,
+              "bytes": 65494,
+              "bpb": 3.4713764966973986
+            },
+            "B": {
+              "nll": 156556.65209960938,
+              "targets": 65536,
+              "byte_nll": 156495.86206054688,
+              "bytes": 65514,
+              "bpb": 3.44622224432021
+            }
+          }
+        },
+        {
+          "update": 4500,
+          "domains": {
+            "A": {
+              "nll": 155415.2548828125,
+              "targets": 65536,
+              "byte_nll": 155314.62915039062,
+              "bytes": 65494,
+              "bpb": 3.421254546260375
+            },
+            "B": {
+              "nll": 154621.65649414062,
+              "targets": 65536,
+              "byte_nll": 154568.89135742188,
+              "bytes": 65514,
+              "bpb": 3.4037880916606755
+            }
+          }
+        },
+        {
+          "update": 4750,
+          "domains": {
+            "A": {
+              "nll": 155175.72119140625,
+              "targets": 65536,
+              "byte_nll": 155061.66845703125,
+              "bytes": 65494,
+              "bpb": 3.4156823543366963
+            },
+            "B": {
+              "nll": 153970.96508789062,
+              "targets": 65536,
+              "byte_nll": 153912.42431640625,
+              "bytes": 65514,
+              "bpb": 3.389331918253766
+            }
+          }
+        },
+        {
+          "update": 5000,
+          "domains": {
+            "A": {
+              "nll": 154266.57470703125,
+              "targets": 65536,
+              "byte_nll": 154147.205078125,
+              "bytes": 65494,
+              "bpb": 3.3955386498473903
+            },
+            "B": {
+              "nll": 152011.43872070312,
+              "targets": 65536,
+              "byte_nll": 151951.17358398438,
+              "bytes": 65514,
+              "bpb": 3.346142879184179
+            }
+          }
+        }
+      ],
+      "last_five_bpb_slope_per_update": {
+        "A": -9.992054899575125e-05,
+        "B": -0.00012129559201630506
+      },
+      "source_checkpoint_sha256": "f2cd4d403bd80c9faba30140c055892f223de5e5095919dea13100d723baebab",
+      "scored_switches": [
+        2000,
+        3000
+      ]
+    },
+    "adam": {
+      "final_validation_bpb": {
+        "A": 3.422864470335397,
+        "B": 3.396566813993823
+      },
+      "prequential_bpb": 3.656246647403756,
+      "wall_seconds": 49.92871420001029,
+      "persistent_optimizer_bytes": 790568,
+      "peak_cuda_bytes": 87185408,
+      "last_five_validation": [
+        {
+          "update": 4000,
+          "domains": {
+            "A": {
+              "nll": 159842.88916015625,
+              "targets": 65536,
+              "byte_nll": 159717.48706054688,
+              "bytes": 65494,
+              "bpb": 3.5182402437703937
+            },
+            "B": {
+              "nll": 159457.22143554688,
+              "targets": 65536,
+              "byte_nll": 159392.31884765625,
+              "bytes": 65514,
+              "bpb": 3.5100056164683293
+            }
+          }
+        },
+        {
+          "update": 4250,
+          "domains": {
+            "A": {
+              "nll": 158735.61791992188,
+              "targets": 65536,
+              "byte_nll": 158612.9052734375,
+              "bytes": 65494,
+              "bpb": 3.493908630698678
+            },
+            "B": {
+              "nll": 158283.33447265625,
+              "targets": 65536,
+              "byte_nll": 158220.27587890625,
+              "bytes": 65514,
+              "bpb": 3.48419585704707
+            }
+          }
+        },
+        {
+          "update": 4500,
+          "domains": {
+            "A": {
+              "nll": 156942.50170898438,
+              "targets": 65536,
+              "byte_nll": 156834.74560546875,
+              "bytes": 65494,
+              "bpb": 3.454739513911074
+            },
+            "B": {
+              "nll": 156748.84619140625,
+              "targets": 65536,
+              "byte_nll": 156692.30322265625,
+              "bytes": 65514,
+              "bpb": 3.450548108874377
+            }
+          }
+        },
+        {
+          "update": 4750,
+          "domains": {
+            "A": {
+              "nll": 156736.3642578125,
+              "targets": 65536,
+              "byte_nll": 156617.88818359375,
+              "bytes": 65494,
+              "bpb": 3.4499626011080844
+            },
+            "B": {
+              "nll": 156077.18383789062,
+              "targets": 65536,
+              "byte_nll": 156014.6875,
+              "bytes": 65514,
+              "bpb": 3.435626216718432
+            }
+          }
+        },
+        {
+          "update": 5000,
+          "domains": {
+            "A": {
+              "nll": 155507.48095703125,
+              "targets": 65536,
+              "byte_nll": 155387.71484375,
+              "bytes": 65494,
+              "bpb": 3.422864470335397
+            },
+            "B": {
+              "nll": 154304.89794921875,
+              "targets": 65536,
+              "byte_nll": 154240.96704101562,
+              "bytes": 65514,
+              "bpb": 3.396566813993823
+            }
+          }
+        }
+      ],
+      "last_five_bpb_slope_per_update": {
+        "A": -9.38790305842348e-05,
+        "B": -0.00011017889811106016
+      },
+      "source_checkpoint_sha256": "40c0abccf7d67159dbe6bfdb5a57a7ce0ae517f328c26ec5a02472d17f11a622",
+      "scored_switches": [
+        2000,
+        3000
+      ]
+    }
+  },
+  "comparison": {
+    "validation_bpb_resource_minus_adam": {
+      "A": -0.02732582048800669,
+      "B": -0.0504239348096438
+    },
+    "prequential_bpb_resource_minus_adam": -0.07584901605768302,
+    "persistent_state_fraction_saved": 0.42190425112071317,
+    "wall_time_resource_over_adam": 3.901853432867963,
+    "peak_memory_fraction_saved": 0.017370980244767575
+  },
+  "internal_mode_diagnostic": {
+    "cycles": 24704,
+    "negative": 11131,
+    "zero": 1045,
+    "positive": 12528,
+    "endpoint_negative": 10093,
+    "endpoint_positive": 11442,
+    "min_reserve": 10,
+    "max_reserve": 16,
+    "scope": "internal allocation diagnostic only; not functional diversity evidence"
+  },
+  "raw_artifact_sha256": {
+    "results/resource_optimizer_owt_20261028/resource/result.json": "a09e602e48f6685be35fe5ce55c3a1daa95318b019df3b2f5614573d5d439f07",
+    "results/resource_optimizer_owt_20261028/resource/curve.jsonl": "7e6de4cac3041a4be81dff9025aeb6eca501992dc10c38dd44bacaa405a34760",
+    "results/resource_optimizer_owt_20261028/resource/last.pt": "f2cd4d403bd80c9faba30140c055892f223de5e5095919dea13100d723baebab",
+    "results/resource_optimizer_owt_20261028/adam/result.json": "e0e11dbb8738a86700b8e06c4702e07d08d2c77244df0eb301b5b731e43b679b",
+    "results/resource_optimizer_owt_20261028/adam/curve.jsonl": "e091cadec5116397452b9fe932723ea68d4644d3e68feba0996c66930964b7e4",
+    "results/resource_optimizer_owt_20261028/adam/last.pt": "40c0abccf7d67159dbe6bfdb5a57a7ce0ae517f328c26ec5a02472d17f11a622"
+  },
+  "construction_H": {
+    "observation_clock": "rate times old available resource, normalized exposure startup",
+    "direction_and_scale": "same-gain mean and empirical RMS; neither Bayes calibration nor Hessian estimation",
+    "compartment": "64 contiguous slots with implicit cycles; zero-padded tail has RMS dilution corrected in readout",
+    "nominal_rates": "resource lr .001, observer .125 fixed before results; Adam .0003 inherited; no tuning or optimality claim",
+    "missing_gradient": "no observation; explicit zero gradient advances state"
+  },
+  "historical_training_class_ast_unchanged": true,
+  "limitations": [
+    "One seed, fixed untuned rates and 5000 updates do not establish general superiority or convergence",
+    "Neither final validation nor A-B-A improvement identifies a causal benefit from phase latching; same-observer mechanism ablation is still needed",
+    "RMS is empirical gradient energy, not a calibrated noise or curvature estimate",
+    "Local double budgets and finite release are not global functional diversity guarantees",
+    "Unfused Torch GPU implementation; full training peak differs from persistent-state savings",
+    "No autonomous reconstruction of arbitrary prior weights is claimed"
+  ],
+  "next_action": "Search existing general cycle/observer Lean results and admit a matched-state feedback intervention, using the same live statistics and resource state; then run a preregistered real-stream causal comparison. Keep quality-versus-memory engineering comparisons separate.",
+  "review_status": "self_reviewed_independent_review_pending",
+  "causal_identification": {
+    "current_comparison": "Complete optimizer packages: state capacity, statistic granularity and update law all differ. Identical models/data do not remove this confounding.",
+    "engineering_finding": "This fixed-budget package uses less persistent state and has slightly lower BPB, at higher runtime cost; no attribution to a particular mechanism.",
+    "next_mechanism_control": "After Lean admission, keep identical live mean/RMS/exposure/phase/resource state, precision and grouping. Change only the existing positive-feedback coupling. Do not add unused buffers to simulate capacity matching.",
+    "capacity_question": "Compare quality against actual state/compute budgets separately; equal byte count alone does not imply equal usable historical information.",
+    "adam_state_only_explanation_established": false,
+    "latch_causal_benefit_established": false
+  }
+}

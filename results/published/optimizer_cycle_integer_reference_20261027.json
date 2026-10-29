@@ -1,0 +1,53 @@
+{
+  "status": "arithmetic_refinement_passed",
+  "scope": "finite local kernel only; no model or training executed",
+  "full_optimizer_admitted": false,
+  "execution_enabled": false,
+  "proof_source": "lean/CGBAxioms/reviews/optimizer_conservative_cycle.lean",
+  "proof_sha256": "5424439d9d68401d8eb70017267746befbf46188883ba32801426227649cd9ab",
+  "validator_sha256": "5d2972455b222823b5a8ebd4175822c0ee5feedf26900ca07d16835a5c8faec8",
+  "lean_exit_code": 0,
+  "named_lemmas_audited": [
+    "allocated_readout_safe",
+    "cycle_geometry",
+    "encoded_gradient_cue_contract",
+    "exact_optimizer_step",
+    "finite_block_optimizer_step",
+    "functional_recovery_tracking",
+    "gradient_cycle_response",
+    "integer_code_roundtrip",
+    "integer_cycle_contract",
+    "integer_joint_optimizer_step",
+    "integer_phase_refines",
+    "joint_step_invariant",
+    "noisy_optimizer_step",
+    "normalized_joint_contract",
+    "normalized_trajectory_contract",
+    "quiet_restoration",
+    "regeneration_threshold",
+    "relative_contrast_coverage",
+    "relative_gradient_coverage",
+    "restoration_by_budget",
+    "strong_cue_release",
+    "unrestricted_parameter_initialization"
+  ],
+  "legal_state_pairs": 585,
+  "cue_codes": 129,
+  "exact_transition_comparisons": 75465,
+  "transition_digest_sha256": "ae212bfa8691560cacecbab0caad4c21ecd60d33df0881afbe3683131cc15a93",
+  "representation": {
+    "encoding_bits_sufficient": 10,
+    "ordinary_storage_bytes_per_cycle": 2,
+    "integer_intermediate_bits_sufficient": 16,
+    "minimal_encoding_proved": false,
+    "gpu_peak_measured": false
+  },
+  "phase_rounding_error_max": "1/64",
+  "joint_phase_and_cue_error_budget": "1/32",
+  "diagnostics": [
+    "'CGB.ConservativeCycleReview.unrestricted_parameter_initialization' depends on axioms: [propext,",
+    "Classical.choice,",
+    "Quot.sound]"
+  ],
+  "review_status": "self_reviewed"
+}

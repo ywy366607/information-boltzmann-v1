@@ -1,4 +1,4 @@
-"""CLO6: CLO5 with the drift estimate averaged before clipping.
+"""CLO6: experimental structured-curvature and soft-hold optimizer.
 
 v5 on task B: q = max(E[e^2] - 2 r, 0) per element over a 20-step window is noise clipped to its
 positive part (positive_part_bias): about half of the elements carry a spurious drift of 2-6% of
@@ -7,7 +7,10 @@ power S stays below it, the signal fraction is 0 and learning stops (B: 0.25 at 
 Drift is a slow property of the world and jumps are handled by the hold (B2), so q comes from a
 long average (factor 0.999, bias-corrected) of the unclipped per-step estimate e^2 + 2 e e_prev,
 clipped after averaging, with jump-like noise differences (e^2 > 25 x 2r) left out.
-Everything else as CLO5.
+Also uses a column-pooled shrinkage heuristic, age-dependent jump risk,
+and a saturating proposal followed by CLO5's allocation and final clipping.
+The scalar Lean bounds do not yet certify the complete update. See the v6
+handoff review for unresolved statistical assumptions and revision provenance.
 usage: python scripts/run_optimizer_continual_v6.py --out results/published/optimizer_continual_v6_20261027.json
 """
 
@@ -24,6 +27,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import run_optimizer_continual as V3  # noqa: E402
 import run_optimizer_continual_v5 as V5  # noqa: E402
 import run_optimizer_shell_kalman as V1  # noqa: E402
+
+# Capture before main installs make6 into V3; dynamic fallback would recurse.
+BASE_MAKE = V3.make
 
 EPS = V3.EPS
 DRIFT_EMA = 0.999       # registered: drift is slow
@@ -72,7 +78,7 @@ class CLO6(V5.CLO5):
         c = (1 - 0.9 ** self.na).clamp(min=0.05)
         var = (self.a2 / c - (self.a1 / c) ** 2).clamp(min=0)
         se = torch.where(self.na > 1, (var / neff.clamp(min=1)).sqrt(), torch.full_like(a, A0))
-        self.h_step = (a.abs() + UPPER_Z * se) * lam               # upper bound: the safe side
+        self.h_step = (a.abs() + UPPER_Z * se) * lam  # upward estimate; coverage is unproved
         return a * lam
 
     def _step_curvature(self, h):
@@ -87,9 +93,9 @@ class CLO6(V5.CLO5):
         return ALPHA / (ALPHA + beta + age)
 
     def _frac(self, P):
-        # the population prior, once: true gradients of a column (one input direction) spread with
-        # variance tau^2 across the clique's rows; tau^2 is pooled from the other elements (James-Stein,
-        # pooled_signal_unbiased) and clipped after pooling; the element's own m is the data
+        # Heuristic signed signal-power estimate pooled across ALL rows, including
+        # this element. Unbiasedness for the actual filtered m/P is unproved:
+        # pooled_signal_unbiased assumes its per-element moment identity.
         if self.no_shrink:
             return torch.ones_like(P)
         tau2 = (self.m * self.m - P).mean(0, keepdim=True)
@@ -106,6 +112,11 @@ class CLO6(V5.CLO5):
         T = Qold.T @ self.Q
         self.e_last = self.e_last @ T
         self.qs = self.qs @ (T * T)
+        if self.tau2 is not None:
+            # Match the existing diagonal second-moment transport convention.
+            # General rotations discard off-diagonal covariance; this is not
+            # an exact full-covariance change of coordinates.
+            self.tau2 = self.tau2 @ (T * T)
 
     def _drift(self, r, c2):
         # v5 has just set self.eprev to this step's noise difference e; self.e_last holds the previous one
@@ -136,7 +147,7 @@ ARMS6 = dict(clo6={}, clo6_nohold=dict(hold=False), clo6_noage=dict(age_depth=Fa
 def make6(name, lr, shape, T):
     if name in ARMS6:
         return CLO6(shape, **ARMS6[name])
-    return V3.make(name, lr, shape, T)
+    return BASE_MAKE(name, lr, shape, T)
 
 
 # F: an old backbone (600 quiet steps), then bursts 100 steps apart, then one lasting change (tests B3)
@@ -187,6 +198,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--out", required=True)
     ap.add_argument("--tasks", default="B_rotated_heterogeneous,B0_isotropic,C_backbone_transient,D_topic_bursts,E_two_layer,F_old_backbone_bursts")
+    ap.add_argument("--arms", default="", help="comma list; default all CLO6 arms (+ baselines on F)")
     a = ap.parse_args()
     V3.make = make6
     res = {}
@@ -194,6 +206,8 @@ def main():
         fn = V3.TASKS[task]
         res[task] = {}
         names = list(ARMS6) + (["sgd", "adam", "muon", "soap", "adam_decay", "muon_decay"] if task == "F_old_backbone_bursts" else [])
+        if a.arms:
+            names = a.arms.split(",")
         for n in names:
             sweep, lr = None, None
             if n not in ARMS6:

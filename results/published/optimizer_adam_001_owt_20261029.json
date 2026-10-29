@@ -1,0 +1,239 @@
+{
+  "scope": "ordinary PyTorch Adam lr 0.001 on same fixed-budget continuous OWT stream",
+  "registration_sha256": "b885754544dcbbd269dd06481cffd8bb62f751cc9fec05cb5ddf469b918f7d00",
+  "preflight_sha256": "07efa7d783ef67e9b77264da16a8b898830ab2a799e8ad89f4566940031acaa6",
+  "parameters": 98816,
+  "updates": 5000,
+  "targets": 5120000,
+  "prequential_bpb": 3.2581240304339643,
+  "phase_bpb": [
+    3.5943961639006785,
+    3.269885531237352,
+    2.915979049350074
+  ],
+  "validation": [
+    {
+      "update": 0,
+      "A_bpb": 8.884173686082612,
+      "B_bpb": 8.903258802074243
+    },
+    {
+      "update": 250,
+      "A_bpb": 4.065951812108734,
+      "B_bpb": 4.154294041211396
+    },
+    {
+      "update": 500,
+      "A_bpb": 3.9026045977526804,
+      "B_bpb": 3.939165962513286
+    },
+    {
+      "update": 750,
+      "A_bpb": 3.7796565129606714,
+      "B_bpb": 3.803186383338018
+    },
+    {
+      "update": 1000,
+      "A_bpb": 3.70513643015275,
+      "B_bpb": 3.696925402199646
+    },
+    {
+      "update": 1250,
+      "A_bpb": 3.6014554406815344,
+      "B_bpb": 3.6211397226849864
+    },
+    {
+      "update": 1500,
+      "A_bpb": 3.512816390583019,
+      "B_bpb": 3.523734397672201
+    },
+    {
+      "update": 1750,
+      "A_bpb": 3.4901783764004564,
+      "B_bpb": 3.488652681982278
+    },
+    {
+      "update": 2000,
+      "A_bpb": 3.467422327972727,
+      "B_bpb": 3.4417460272057494
+    },
+    {
+      "update": 2250,
+      "A_bpb": 3.4415646700004854,
+      "B_bpb": 3.344203940824561
+    },
+    {
+      "update": 2500,
+      "A_bpb": 3.3716844387247185,
+      "B_bpb": 3.3044699085382185
+    },
+    {
+      "update": 2750,
+      "A_bpb": 3.436809548466013,
+      "B_bpb": 3.4015956625187544
+    },
+    {
+      "update": 3000,
+      "A_bpb": 3.3303799685380513,
+      "B_bpb": 3.262663660342029
+    },
+    {
+      "update": 3250,
+      "A_bpb": 3.2854367706076766,
+      "B_bpb": 3.243947470845463
+    },
+    {
+      "update": 3500,
+      "A_bpb": 3.2076117128013997,
+      "B_bpb": 3.178604872325575
+    },
+    {
+      "update": 3750,
+      "A_bpb": 3.2264063619120287,
+      "B_bpb": 3.232033514290608
+    },
+    {
+      "update": 4000,
+      "A_bpb": 3.1888861106050084,
+      "B_bpb": 3.173274127837885
+    },
+    {
+      "update": 4250,
+      "A_bpb": 3.1598840537921147,
+      "B_bpb": 3.1369745112489706
+    },
+    {
+      "update": 4500,
+      "A_bpb": 3.1188059691789576,
+      "B_bpb": 3.0912507982237782
+    },
+    {
+      "update": 4750,
+      "A_bpb": 3.1249056555419563,
+      "B_bpb": 3.095818105355727
+    },
+    {
+      "update": 5000,
+      "A_bpb": 3.1346757266827514,
+      "B_bpb": 3.0700700143547945
+    }
+  ],
+  "wall_seconds": 53.76464229999692,
+  "peak_cuda_bytes": 87185408,
+  "state_bytes": 790568,
+  "update_samples": [
+    {
+      "update": 250,
+      "update_rms": 0.0004224507840831645,
+      "relative_update_l2": 0.003245097956366545
+    },
+    {
+      "update": 500,
+      "update_rms": 0.00021165071786910232,
+      "relative_update_l2": 0.0015868979458336177
+    },
+    {
+      "update": 750,
+      "update_rms": 0.000212463872812284,
+      "relative_update_l2": 0.001557899717501723
+    },
+    {
+      "update": 1000,
+      "update_rms": 0.00034251594126701366,
+      "relative_update_l2": 0.002459982057284538
+    },
+    {
+      "update": 1250,
+      "update_rms": 0.00023481385758226616,
+      "relative_update_l2": 0.0016522181729417553
+    },
+    {
+      "update": 1500,
+      "update_rms": 0.00022887187409951015,
+      "relative_update_l2": 0.0015805022071291894
+    },
+    {
+      "update": 1750,
+      "update_rms": 0.00024473733821639106,
+      "relative_update_l2": 0.001662241164797795
+    },
+    {
+      "update": 2000,
+      "update_rms": 0.00030000044960747666,
+      "relative_update_l2": 0.002004169498980307
+    },
+    {
+      "update": 2250,
+      "update_rms": 0.00028570377882882717,
+      "relative_update_l2": 0.001874382956494027
+    },
+    {
+      "update": 2500,
+      "update_rms": 0.00022460507501439856,
+      "relative_update_l2": 0.00145150130271933
+    },
+    {
+      "update": 2750,
+      "update_rms": 0.0003165744637628188,
+      "relative_update_l2": 0.002013580788453694
+    },
+    {
+      "update": 3000,
+      "update_rms": 0.00024471629051917325,
+      "relative_update_l2": 0.0015318300915620551
+    },
+    {
+      "update": 3250,
+      "update_rms": 0.00022407857932290319,
+      "relative_update_l2": 0.0013881047271949616
+    },
+    {
+      "update": 3500,
+      "update_rms": 0.00022096304690033604,
+      "relative_update_l2": 0.0013537012353746897
+    },
+    {
+      "update": 3750,
+      "update_rms": 0.00023590683113771516,
+      "relative_update_l2": 0.0014296409068927129
+    },
+    {
+      "update": 4000,
+      "update_rms": 0.0002548601253338244,
+      "relative_update_l2": 0.0015277244683618574
+    },
+    {
+      "update": 4250,
+      "update_rms": 0.0002567116838991559,
+      "relative_update_l2": 0.0015241541078424214
+    },
+    {
+      "update": 4500,
+      "update_rms": 0.0002492874143815603,
+      "relative_update_l2": 0.0014644962138855423
+    },
+    {
+      "update": 4750,
+      "update_rms": 0.0002636120094624946,
+      "relative_update_l2": 0.0015328366461621772
+    },
+    {
+      "update": 5000,
+      "update_rms": 0.0002674318966613671,
+      "relative_update_l2": 0.0015380784182727663
+    }
+  ],
+  "median_update_rms": 0.0002470123762989757,
+  "median_relative_update_l2": 0.0015479890678872445,
+  "checkpoint_sha256": "2e27b166e562eef43c49b53a9e377f4ec4f940826cc382cfce82eb56262a7c4d",
+  "reference_results": [
+    "results/published/optimizer_matched_rate_owt_20261028.json",
+    "results/published/optimizer_latch_demo_owt_20261028.json"
+  ],
+  "limitations": [
+    "one seed and 5000 updates, not convergence",
+    "same nominal rate does not mean same effective update",
+    "timings from distinct runs and updated measurement overhead",
+    "functional latching and diversity are not measured"
+  ]
+}

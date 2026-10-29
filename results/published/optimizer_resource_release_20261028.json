@@ -1,0 +1,139 @@
+{
+  "scope": "full-state native+wear ideal-kernel release budget and executable update refinement; no learning or executed exposure",
+  "review_status": "self_reviewed",
+  "full_optimizer_admitted": false,
+  "training_enabled": false,
+  "integrated_review": {
+    "path": "lean/CGBAxioms/reviews/optimizer_content_bridge.lean",
+    "sha256": "b0c06bbda0fff2d632eaf244c880e91b27aed33882af92fd3789f19369bceb92",
+    "lean_exit_code": 0,
+    "audited": {
+      "CGB.OptimizerContentReview": [
+        "cooperative_content_contract",
+        "drive_removes_content_barriers",
+        "hidden_basin_calibration",
+        "maximal_reversible_acceptance",
+        "content_gradient_port",
+        "transfer_gradient_port",
+        "event_port_contract",
+        "finite_capacity_content_bridge",
+        "certified_root_refinement",
+        "fractional_probability_enclosure",
+        "force_response_dissipative",
+        "kinetic_survival_envelope",
+        "one_defect_regeneration_margin",
+        "maximal_event_clock"
+      ],
+      "CGB.ResourceEnergyReview": [
+        "scaled_pool_contract",
+        "scaled_resource_generation",
+        "resource_ground_bound",
+        "resource_ground_witness",
+        "resource_monopoly_gap"
+      ],
+      "CGB.ResourceReleaseReview": [
+        "primitive_release_port",
+        "resource_release_drift",
+        "resource_release_budget",
+        "resource_feedback_contract"
+      ],
+      "CGB.RationalSamplerReview": [
+        "rational_mixture_contract",
+        "rational_binary_coin_contract"
+      ]
+    },
+    "compile_record": "lean/CGBAxioms/.lake/material_combined_core.lean.check.json",
+    "auto_implicit_variables": false,
+    "production_modules_added": 0
+  },
+  "hypothesis": {
+    "cap": 2,
+    "a": 16,
+    "J": 12,
+    "chemical_base": 2,
+    "epsilon": 0,
+    "potential": "quadratic",
+    "local_force": "each cell force >=96, possibly different and time/state varying",
+    "finite_budget": "2x2 time corollary uses <=12 material units and all counted opportunities funded"
+  },
+  "general_drift": "For n cells the unscaled drift is <=-1+9*n/2^126; actual local proposal scale is 1/(2*families*n). Cross transfers preserve V=13(P+W)+9Q.",
+  "numerical": {
+    "source_configurations": 943,
+    "force_profiles": 2,
+    "enabled_event_checks": 23640,
+    "nonzero_observer_changes": 20216,
+    "cross_transfer_invariants": 3424,
+    "largest_layout_tested": "2x2, not a billion-cell allocation"
+  },
+  "native_update_reference": {
+    "lean_exit_code": 0,
+    "configurations": 943,
+    "physical_event_results": 37720,
+    "damage_event_results": 11316,
+    "all_encoded_successors_and_disabled_flags_equal": true,
+    "rng_trials_or_learning": false,
+    "execution_refinement_lemma": "CGB.NativeExecutionCheck.finite_mass_codegen_refinement",
+    "generated_source_sha256": "48d904df32c6187aba1fb2c4dda92fbcaa114b3d10cda82629eef2deaffc22b7",
+    "log": "lean/CGBAxioms/.lake/material_native_conformance.lean.log",
+    "scope": "Complete bounded-cell successors and legality on the deterministic interface set; not full sampler/PRNG distribution refinement"
+  },
+  "time_corollary": {
+    "rho": "6399/6400",
+    "initial": "two full diagonal codes, V=140",
+    "horizons": [
+      {
+        "funded_opportunities": 4096,
+        "first_empty_hit_probability_lower": "0"
+      },
+      {
+        "funded_opportunities": 65536,
+        "first_empty_hit_probability_lower": "178164413637703009743015028621/178263365657094759585473888256"
+      },
+      {
+        "funded_opportunities": 100000,
+        "first_empty_hit_probability_lower": "11141432010545642413376361791/11141460353568422474092118016"
+      }
+    ],
+    "scope": "Concrete full-state ideal native kernel: all legal nonempty bodies, stock<=12, forty proposals and wear probability1/1024 before each opportunity; hrow is proved, not assumed. Sampler/runtime probability refinement remains separate."
+  },
+  "external_loss_runtime": {
+    "operation": "apply_external_loss(edge, field)",
+    "before_attempt_order": "funding, paid ledger, optional external loss, native proposal",
+    "proved_damage_successors_checked": 11316,
+    "cache_stock_release_cost_and_rng_checked": true,
+    "external_world_rng_and_work": "caller-owned and separately checkpointed"
+  },
+  "pending": "Link the separately checked ideal-bit rational sampler receipt; selective release, useful learning, temporal resource service and practical GPU execution remain open.",
+  "source_sha256": "104d110891d1cc67f67532fc4348efdafd78e6b9ed8afeabcde0da536a94dc71",
+  "gradient_port_sha256": "07050b890d05582e8bcba9de0247eb064a419415dc64fb22fb72179e4fa97862",
+  "validator_sha256": "7c1dfbceba448c77795b6a182efac340febde96a03da285db4bc8ff678e61b91",
+  "resource_feedback": {
+    "declaration": "CGB.ResourceReleaseReview.resource_feedback_contract",
+    "scope": "Registered cap2/J12/a16/mu2 quadratic-pool H; local Q-port energetic margins and repair-rate load response, not complete ignition/refractoriness/useful-memory evidence",
+    "independent_review": "pending",
+    "additional_persistent_state_bytes": 0,
+    "lower_force_margin": "-15-2*L",
+    "upper_force_margin": "31-2*L",
+    "local_margin_overlap_width": 46,
+    "repair_cost": "f+2*L-31",
+    "crowded_repair_multiplier": "2^(-4*h) for h>=0 and f+2*L>=31",
+    "source_event_checks": 3420,
+    "tests_command": "D:/conda_envs/vox/python.exe -m pytest tests/test_conjugate_gradient_port.py -q",
+    "tests_passed": 41,
+    "elapsed_seconds": 18.57,
+    "observed_tool_session": 87640,
+    "production_update_changed": false,
+    "theorem_premises": "Actual registered energy/rate formulas; no healthy-latch or diversity premise"
+  },
+  "probability_sampler": {
+    "receipt": "results/published/optimizer_probability_sampler_20261028.json",
+    "sampler": "rational_geometric_mixture_v1",
+    "source_sha256": "07050b890d05582e8bcba9de0247eb064a419415dc64fb22fb72179e4fa97862",
+    "ideal_bit_probability_identity_verified": true,
+    "PRNG_independence_assumed": true
+  },
+  "scaled_pool_review": {
+    "receipt": "results/published/optimizer_scaled_pool_20261028.json",
+    "scope": "Separate scaled family; original temporal certificates transfer only at identical 2x2 kernel, not to larger bodies"
+  }
+}

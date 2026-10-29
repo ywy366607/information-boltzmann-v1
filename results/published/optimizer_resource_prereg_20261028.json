@@ -1,0 +1,175 @@
+{
+  "version": 3,
+  "created": "2026-10-28",
+  "scope": "resource-observer continuous optimizer comparison",
+  "review_status": "self_reviewed; independent review pending",
+  "status": "registered_pending_interface_preflight",
+  "question": "Does the Lean-refined online direction/scale/phase update improve the earlier raw-gradient cycle at matched real-data exposure?",
+  "lean_scope": {
+    "full_life_admitted": false,
+    "reference_receipt": "results/published/optimizer_raw_observation_bridge_20261028.json",
+    "contracts": [
+      "integer_preconditioned_step",
+      "resource_filtered_tracking",
+      "raw_stream_forces_release",
+      "relative_cue_shared_scale",
+      "integer_ignition_and_retention"
+    ],
+    "applicability": "same online observer and integer transition; compartment-shared RMS; tail uses a smaller scalar readout rate",
+    "error_scope": "integer state exact; FP32 cue/write arithmetic remains finite precision, checked against reference",
+    "conditional_boundary": "persistent constant contrary direction, exact arithmetic and smooth-model/error premises are scoped; functional retention and calibrated curvature are not assumed for OWT",
+    "experimental_scope": "fixed-budget learning/cost comparison only; useful lifetime retention and universal superiority remain open"
+  },
+  "sources": {
+    "information_boltzmann/conservative_cycle_optimizer.py": "f0453bd370f36b9eeb82fa35c0ec3d420adceea47779c1f1a692f616659a468a",
+    "information_boltzmann/conservative_cycle_cuda.py": "b9b2ddedcf7ae9b345f4317e44833880b408e70e87ebf775bba91fc30c8b00e4",
+    "lean/CGBAxioms/reviews/optimizer_conservative_cycle.lean": "32995ed3088f37a25ac3db09850995f8abd9913b90f87eb13676c162812c0325",
+    "scripts/run_material_optimizer_owt.py": "6e60bfff9c06e48f00b645a008029fb15e58439a7435b49346a690b9795f4452"
+  },
+  "data": {
+    "source": "openwebtext",
+    "revision": "433fe0f44ed7894fea29c08b3202aa348ccc6369",
+    "original_manifest_sha256": "3614c380d4c72688ac8ccde42f32ea0655d16bec1ba0874a924fd777af904d2d",
+    "original_files": {
+      "train.npy": "2f227239bc63b89daf31956701d243a93f9dd46671702fff03763b33dc6db4fb",
+      "validation.npy": "60d41d3fdda8c1718ad1735693eda0dae2b23a0032c5e04a29aac9d0c6d35d8c",
+      "test.npy": "8aa56b9028dbf51fa9a319ef223062fc5878b21c5fb057aa37f6965c28454f03",
+      "tokenizer.json": "e727da4afe06d37d6ffff7db05ab21f69c5be39253ee7b7f7ec759cadab69c1d"
+    },
+    "split_rule": "NFC_document_sha256_mod100_98_1_1",
+    "tokenizer": "UTF8 byte offset4 plus four specials; vocabulary260",
+    "domain_rule": "length>=512; fixed character-density bottom/top training thirds; heldout uses training thresholds",
+    "marked_ascii": "0123456789{}[]<>=\\|_",
+    "thresholds": [
+      0.003943075758577393,
+      0.009600204813108039
+    ],
+    "test_split": "hash checked only; never scored or used to set thresholds",
+    "streams": {
+      "train_A": {
+        "path": "data/material_owt_domains_20261028/train_A.npy",
+        "sha256": "f95ab0ee4ac8f861920babbc8d6428588f77aa5108d83d8929e392e832ccbd49",
+        "tokens": 15709166,
+        "documents": 3262,
+        "document_list_sha256": "a43badcb70eba2786760db030506658aef606c4eb2f8254f1e08db742819903d"
+      },
+      "train_B": {
+        "path": "data/material_owt_domains_20261028/train_B.npy",
+        "sha256": "5de937e4f8eab7a62d82f94ad4d9941b13223f9b1d88562472857951c7340dfb",
+        "tokens": 16816305,
+        "documents": 3262,
+        "document_list_sha256": "f54a8bd396abc15894151ab046c787d57179ef1babeae6d472204b3f977e0227"
+      },
+      "validation_A": {
+        "path": "data/material_owt_domains_20261028/validation_A.npy",
+        "sha256": "a4beaa81f0a1699528f1861146c4c8d33286b8369540b70daf0bbce3c49c2279",
+        "tokens": 113605,
+        "documents": 34,
+        "document_list_sha256": "054ab6c04bb335e0d63b341bc41c5b1bdedacd096080eb4a0830e5fdccdb602f"
+      },
+      "validation_B": {
+        "path": "data/material_owt_domains_20261028/validation_B.npy",
+        "sha256": "8854e386baa9dabf462ee4469d38ddf5043a515904b1f327288920f8ee6fae2c",
+        "tokens": 194208,
+        "documents": 43,
+        "document_list_sha256": "c0ecaf153b0d1098c5a1ea2547e7378fe6f2ccfd7475fd23b591d0f6bf83052a"
+      }
+    }
+  },
+  "model": {
+    "kind": "ordinary causal transformer optimizer testbed; not a derived CGB architecture",
+    "width": 64,
+    "layers": 2,
+    "heads": 4,
+    "ff_width": 128,
+    "context": 128,
+    "vocabulary": 260,
+    "dropout": 0,
+    "bias": false,
+    "norm": "layernorm without affine parameters",
+    "position": "fixed sinusoidal",
+    "state": "context128; no persistent neural state; optimizer state continues through every phase"
+  },
+  "experiment": {
+    "seed": 77,
+    "arms": [
+      "resource",
+      "adam"
+    ],
+    "updates": 5000,
+    "phases": [
+      [
+        "A",
+        2000
+      ],
+      [
+        "B",
+        1000
+      ],
+      [
+        "A",
+        2000
+      ]
+    ],
+    "batch": 8,
+    "context": 128,
+    "targets_per_update": 1024,
+    "targets_per_arm": 5120000,
+    "validation_every": 250,
+    "validation_targets_per_domain": 65536,
+    "checkpoint_every": 250,
+    "initialization": "same scratch Gaussian FP32 values; no projection, clipping, quantization or weight rewrite at optimizer construction",
+    "adam": {
+      "lr": 0.0003,
+      "betas": [
+        0.9,
+        0.999
+      ],
+      "eps": 1e-08,
+      "weight_decay": 0
+    },
+    "resource": {
+      "lr": 0.001,
+      "observer_rate": 0.125,
+      "chunk_compartments": 1024
+    }
+  },
+  "measurements": {
+    "primary": "first-pass prequential bits/actual UTF8 target byte, scored before each update",
+    "secondary": [
+      "independent validation byte NLL per domain",
+      "all-symbol NLL including boundaries",
+      "A-to-B-to-fresh-A response",
+      "wall time",
+      "whole-model peak/resident CUDA memory",
+      "physical conservation and state bytes"
+    ],
+    "units": "actual bytes are targets4..259; boundary targets1/2 reported separately; no unicode-character BPB claim",
+    "replay": "none: second A continues its fresh cursor; no repeated train targets within an arm",
+    "bridges": "last target before each domain switch is the actual next domain's first input byte and is logged explicitly",
+    "checkpoint": "model, optimizer physical state/RNG, pending gradients, all Torch RNGs, updates, stream cursors and metric accumulators",
+    "convergence": "5000 is a fixed budget, not assumed convergence; report last five validation values and slope; no early success stopping",
+    "interpretation": "same unconstrained FP32 parameter family and exact same initialization; only optimizer changes; rates fixed, not assumed equally tuned"
+  },
+  "decision_rules": {
+    "positive": "learning and independent validation improvement at recorded cost; compare package quality/cost on identical parameter representation",
+    "negative": "failure to improve or excess cost rejects the present algorithm/rate for this benchmark",
+    "ambiguous": "one seed, fixed untuned rates and nonconvergence do not settle general optimizer superiority",
+    "do_not_claim": [
+      "healthy lifetime locking from a language curve",
+      "weight self-reconstruction at zero gradient",
+      "global functional diversity",
+      "1B capability",
+      "optimal hyperparameters"
+    ]
+  },
+  "parameter_representation": "continuous_fp32",
+  "interface_receipt": "lean/CGBAxioms/.lake/resource_optimizer_tests.check.json",
+  "construction_H": {
+    "observation_clock": "rate times old available resource, normalized exposure startup",
+    "direction_and_scale": "same-gain mean and empirical RMS; neither Bayes calibration nor Hessian estimation",
+    "compartment": "64 contiguous slots with implicit cycles; zero-padded tail has RMS dilution corrected in readout",
+    "nominal_rates": "resource lr .001, observer .125 fixed before results; Adam .0003 inherited; no tuning or optimality claim",
+    "missing_gradient": "no observation; explicit zero gradient advances state"
+  }
+}

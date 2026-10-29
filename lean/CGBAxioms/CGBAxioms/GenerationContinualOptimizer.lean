@@ -8,6 +8,13 @@ The optimizer of a stream learner must (i) make units compete so that they diffe
 bursts that revert (G24 in optimizer form, `no_linear_gain_separates`), and (iv) keep that hold
 releasable and sensing (H1, H2). This file derives the allocation and the latch.
 
+Scope audit (2026-10-27): the budget theorems concern specified 2x2 feasible sets
+and a chosen payoff, not full Muon dynamics or learned language functions.
+The actual allocation follows a bounded proposal and can destroy its descent
+property. Scalar bounds below therefore do not certify CLO's complete step.
+Age-dependent retention additionally assumes an appropriate world hazard;
+identical observed prefixes cannot reveal whether a change will later revert.
+
 **Allocation.** Units (rows) and input directions (columns of the relation basis) share update
 mass `A i j ≥ 0`, and rich-get-richer (positive feedback, G18/G23) favours concentrated
 allocations: the payoff `Σ A^2` is convex.
@@ -443,15 +450,16 @@ theorem posterior_mean_is_bayes_action (m P f : ℝ) (hm : m ≠ 0) (hf : f ≠ 
 
 /-! ## R: robustness before optimality (2026-10-27)
 
-A design that is optimal at the true values can have no stability margin at all (LQG has none,
-Doyle 1978); the CLO versions failed exactly there (a Newton step on a noisy secant diverged, a
-plug-in clipped estimate stalled, a prior counted twice froze). Requirement **R**: every mechanism
-keeps the closed loop contracting over a stated interval of estimation errors.
+A nominally optimal design need not have a uniform guaranteed stability margin across
+its model class (Doyle 1978 for LQG). The following results concern scalar positive
+quadratics with exact gradients, and a separate bound on the proposed step. They do
+not certify CLO's filtered, allocated update. Noisy tracking needs a bounded-error
+contract; contraction of all memory states is not imposed.
 
 * `newton_contracts_iff`: one Newton step with curvature estimate `ĥ` multiplies the error by
   `1 - h / ĥ`; it contracts (`|1 - h/ĥ| < 1`) exactly when `ĥ > h / 2`. Overestimating the
   curvature by any factor only slows the step; underestimating it by more than half diverges.
-  A robust estimate is biased upward by construction.
+  An upward estimate is one sufficient design strategy if its coverage is established.
 * `overestimate_keeps_contraction`: if the estimate is anywhere in `[h, κ h]` the factor is in
   `[0, 1 - 1/κ]`: contraction is guaranteed for the whole interval, at the price of speed.
 * `saturating_step_bounded`: a step `ρ · tanh(u / ρ)` never exceeds `ρ`, whatever the estimate
@@ -495,17 +503,16 @@ theorem saturating_step_bounded (ρ u : ℝ) (hρ : 0 < ρ) : |ρ * Real.tanh (u
 
 /-! ## v6: the population prior and the variance of the next value (2026-10-27)
 
-* `pooled_signal_unbiased`: for elements with observations `y i` of posterior variances `P i`,
-  the pooled `Σ (y i^2 - P i) / N` averages to the mean signal power whenever each `y i^2 - P i`
-  does: the clique's other elements give the prior spread `τ²` (James-Stein), clipped after
-  pooling, so the element's own data is not counted twice (`posterior_mean_is_bayes_action`) and
-  the per-element clip of `positive_part_bias` is avoided. The step acts on `m τ²/(τ² + P)`:
-  on a stationary rotated regression (synthetic, not a registered task) this took CLO from
-  0.15-0.46 to 0.064-0.069 (tuned Adam 0.10, tuned SOAP 0.046).
-* `next_value_variance`: a value that drifts with variance `q` and jumps with probability `h` by a
-  zero-mean amount of variance `J` has next-step variance `q + h J`. With the hazard falling with
-  age (B3) a young value stays responsive and an old one stays put: B3 enters the filter's
-  variance, not only the release threshold.
+* `pooled_signal_unbiased` retains its historical name, but only aggregates the
+  supplied identities `y2 i - P i = S i`. It has no probability model and does not
+  prove these identities for CLO's filtered posterior mean. All rows, including
+  the element being shrunk, enter the implementation's pool. No James-Stein risk
+  guarantee or absence of double-counting follows from this lemma.
+* `next_value_variance` is the mixture arithmetic for branch variances `q` and
+  `q + J`. Interpreting it as a predictive variance additionally requires a valid
+  probability h, equal conditional means and the declared within-branch variances.
+  Unequal branch means contribute another total-variance term. The actual CLO
+  filter and its correlated, selected jump runs require a separate justification.
 -/
 
 theorem pooled_signal_unbiased {N : ℕ} (hN : 0 < N) (y2 P S : Fin N → ℝ)

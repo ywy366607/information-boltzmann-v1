@@ -1,0 +1,265 @@
+{
+  "scope": "same-state Adam-based ResourceCycle allocation on real OWT; one seed fixed 5000-step budget",
+  "registration_sha256": "7aa619dce8e9489b1a7199504ca1731092b4078df0d3c71ad4559cf70373f982",
+  "parameters": 98816,
+  "prior_torch_adam": {
+    "state_bytes": 790568,
+    "wall_seconds": 50.15133580000838,
+    "prequential_bpb": 3.656246647403756,
+    "max_step_bpb_difference_from_control": 2.407757111910769e-06
+  },
+  "arms": {
+    "adam_cycle_control": {
+      "updates": 5000,
+      "targets": 5120000,
+      "prequential_bpb": 3.656246075300662,
+      "phase_bpb": [
+        3.969531347746872,
+        3.681596398459816,
+        3.330292624192991
+      ],
+      "validation": [
+        {
+          "update": 0,
+          "A_bpb": 8.884173686082612,
+          "B_bpb": 8.903258802074243
+        },
+        {
+          "update": 250,
+          "A_bpb": 4.570936161458114,
+          "B_bpb": 4.713174545156715
+        },
+        {
+          "update": 500,
+          "A_bpb": 4.1130823785292625,
+          "B_bpb": 4.202875541575364
+        },
+        {
+          "update": 750,
+          "A_bpb": 3.9967349345814953,
+          "B_bpb": 4.08256685933479
+        },
+        {
+          "update": 1000,
+          "A_bpb": 3.9417961296457076,
+          "B_bpb": 4.009000398878663
+        },
+        {
+          "update": 1250,
+          "A_bpb": 3.9107867565810497,
+          "B_bpb": 3.9709690020812163
+        },
+        {
+          "update": 1500,
+          "A_bpb": 3.873784166215205,
+          "B_bpb": 3.9248750446666394
+        },
+        {
+          "update": 1750,
+          "A_bpb": 3.8368734089444234,
+          "B_bpb": 3.8727864415346884
+        },
+        {
+          "update": 2000,
+          "A_bpb": 3.7892729911525906,
+          "B_bpb": 3.7991104719853532
+        },
+        {
+          "update": 2250,
+          "A_bpb": 3.7738952124076413,
+          "B_bpb": 3.709705977342351
+        },
+        {
+          "update": 2500,
+          "A_bpb": 3.698881739140976,
+          "B_bpb": 3.656882197179096
+        },
+        {
+          "update": 2750,
+          "A_bpb": 3.684932670605317,
+          "B_bpb": 3.671568985370881
+        },
+        {
+          "update": 3000,
+          "A_bpb": 3.67178150560768,
+          "B_bpb": 3.6207293041732105
+        },
+        {
+          "update": 3250,
+          "A_bpb": 3.613821227280433,
+          "B_bpb": 3.5920125081594905
+        },
+        {
+          "update": 3500,
+          "A_bpb": 3.5666755220590964,
+          "B_bpb": 3.556000725918464
+        },
+        {
+          "update": 3750,
+          "A_bpb": 3.5660636617449333,
+          "B_bpb": 3.5689486157300148
+        },
+        {
+          "update": 4000,
+          "A_bpb": 3.5182394048173116,
+          "B_bpb": 3.510004648741059
+        },
+        {
+          "update": 4250,
+          "A_bpb": 3.493907737966552,
+          "B_bpb": 3.484194916201112
+        },
+        {
+          "update": 4500,
+          "A_bpb": 3.4547386319347573,
+          "B_bpb": 3.4505471518996313
+        },
+        {
+          "update": 4750,
+          "A_bpb": 3.4499616599748197,
+          "B_bpb": 3.435625243614899
+        },
+        {
+          "update": 5000,
+          "A_bpb": 3.4228636367602197,
+          "B_bpb": 3.3965658086327135
+        }
+      ],
+      "wall_seconds": 209.5808829999878,
+      "peak_cuda_bytes": 87599616,
+      "state_bytes": 1194568,
+      "allocation_budget_residual": 2.384185791015625e-07,
+      "checkpoint_sha256": "d71daa834d1e49f0e892c10e93a6cb3682f0a597b91d7503c8da084ac69c7797"
+    },
+    "adam_cycle": {
+      "updates": 5000,
+      "targets": 5120000,
+      "prequential_bpb": 3.5223555289900763,
+      "phase_bpb": [
+        3.900864682087592,
+        3.5310311781058954,
+        3.139517567102915
+      ],
+      "validation": [
+        {
+          "update": 0,
+          "A_bpb": 8.884173686082612,
+          "B_bpb": 8.903258802074243
+        },
+        {
+          "update": 250,
+          "A_bpb": 4.4024571033663005,
+          "B_bpb": 4.514483604469994
+        },
+        {
+          "update": 500,
+          "A_bpb": 4.0301556846760835,
+          "B_bpb": 4.121644267162898
+        },
+        {
+          "update": 750,
+          "A_bpb": 3.9340153184427478,
+          "B_bpb": 4.009407597009132
+        },
+        {
+          "update": 1000,
+          "A_bpb": 3.9085309945920397,
+          "B_bpb": 3.946575006151972
+        },
+        {
+          "update": 1250,
+          "A_bpb": 3.8385337670066506,
+          "B_bpb": 3.8751674914741985
+        },
+        {
+          "update": 1500,
+          "A_bpb": 3.769676219537959,
+          "B_bpb": 3.806846924641038
+        },
+        {
+          "update": 1750,
+          "A_bpb": 3.726882723255514,
+          "B_bpb": 3.7547511388222325
+        },
+        {
+          "update": 2000,
+          "A_bpb": 3.6553949825837875,
+          "B_bpb": 3.653432034408468
+        },
+        {
+          "update": 2250,
+          "A_bpb": 3.6441479130303436,
+          "B_bpb": 3.572064805066991
+        },
+        {
+          "update": 2500,
+          "A_bpb": 3.568973253213829,
+          "B_bpb": 3.5146280948072346
+        },
+        {
+          "update": 2750,
+          "A_bpb": 3.572374266828467,
+          "B_bpb": 3.5482785687450735
+        },
+        {
+          "update": 3000,
+          "A_bpb": 3.542178570695355,
+          "B_bpb": 3.4756503897693247
+        },
+        {
+          "update": 3250,
+          "A_bpb": 3.4569336720054986,
+          "B_bpb": 3.4232530493804374
+        },
+        {
+          "update": 3500,
+          "A_bpb": 3.408363397561239,
+          "B_bpb": 3.378638005038554
+        },
+        {
+          "update": 3750,
+          "A_bpb": 3.407782021898012,
+          "B_bpb": 3.403905622137705
+        },
+        {
+          "update": 4000,
+          "A_bpb": 3.371587114789291,
+          "B_bpb": 3.3470339409500096
+        },
+        {
+          "update": 4250,
+          "A_bpb": 3.344671956457066,
+          "B_bpb": 3.3210315392867247
+        },
+        {
+          "update": 4500,
+          "A_bpb": 3.2948038162168984,
+          "B_bpb": 3.2730637070426987
+        },
+        {
+          "update": 4750,
+          "A_bpb": 3.3034816457354643,
+          "B_bpb": 3.274602490175873
+        },
+        {
+          "update": 5000,
+          "A_bpb": 3.28056214128224,
+          "B_bpb": 3.2402990530146396
+        }
+      ],
+      "wall_seconds": 209.23466250000638,
+      "peak_cuda_bytes": 87599616,
+      "state_bytes": 1194568,
+      "allocation_budget_residual": 2.384185791015625e-07,
+      "checkpoint_sha256": "d305bc653722b30128110ebe34063060e3bab8468ceb05621b76de0c86194e3e"
+    }
+  },
+  "limitations": [
+    "one seed and fixed starting lr; not converged",
+    "allocation and resource change together; cannot isolate competition from effective step size",
+    "allocation budgets do not imply conserved parameter updates",
+    "not a test of restorative weight latch, functional diversity, or lifelong performance",
+    "historical timing from separate run is indicative, not matched profiling",
+    "self-reviewed"
+  ]
+}

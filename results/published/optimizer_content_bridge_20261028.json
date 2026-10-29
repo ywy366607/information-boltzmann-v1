@@ -1,0 +1,781 @@
+{
+  "scope": "exact kernel algebra and CPU optimizer interface; no model training, capability task or stochastic retention trial",
+  "full_optimizer_admitted": false,
+  "training_enabled": false,
+  "proof_path": "lean/CGBAxioms/reviews/optimizer_content_bridge.lean",
+  "proof_sha256": "9fcff372748843e20c78ecb6d7a9f64fd0ff9bee58d365847ebd21de726e760a",
+  "lean_exit_code": 0,
+  "named_lemmas_audited": [
+    "certified_root_refinement",
+    "content_gradient_port",
+    "cooperative_content_contract",
+    "drive_removes_content_barriers",
+    "event_port_contract",
+    "finite_capacity_content_bridge",
+    "force_response_dissipative",
+    "fractional_probability_enclosure",
+    "hidden_basin_calibration",
+    "kinetic_survival_envelope",
+    "maximal_reversible_acceptance",
+    "transfer_gradient_port"
+  ],
+  "kinetic_certificates": {
+    "instances": 8,
+    "generated_source_sha256": "efaa639d35490c5942cdf3e769e6831ca61ff0a7abe819a5df5d6eb2f00a8319",
+    "generated_source_path": "lean/CGBAxioms/.lake/material_kinetic_audit.lean",
+    "scope": "Actual fixed-total one-cell protocol; all horizons and adaptive forces within registered intervals. Automatic numeric witnesses, no new optimizer rule or training.",
+    "audited": [
+      "KineticAudit.Case0.certificate",
+      "KineticAudit.Case1.certificate",
+      "KineticAudit.Case2.certificate",
+      "KineticAudit.Case3.certificate",
+      "KineticAudit.Case4.certificate",
+      "KineticAudit.Case5.certificate",
+      "KineticAudit.Case6.certificate",
+      "KineticAudit.Case7.certificate"
+    ],
+    "profiles": [
+      {
+        "a": 1,
+        "coupling": 3,
+        "held_pole": "off",
+        "mode": "hold",
+        "force_interval": [
+          "-1/4",
+          "1/4"
+        ],
+        "nominal_force": 0,
+        "mean_nominal_paid_attempts": "879",
+        "mean_nominal_intake": "65/16",
+        "mean_nominal_export": "33/16",
+        "gross_nominal_turnover_per_attempt": "49/7032",
+        "policy_iterations": 2,
+        "rho": "191/192",
+        "certificate_weights": [
+          "1",
+          "32/49",
+          "33/49",
+          "32/49"
+        ],
+        "horizons": [
+          {
+            "funded_attempts": 32,
+            "fee_units": 32,
+            "first_sign_change_probability_lower": null,
+            "first_sign_change_probability_upper": "12192174111757088750474849109/79228162514264337593543950336"
+          },
+          {
+            "funded_attempts": 256,
+            "fee_units": 256,
+            "first_sign_change_probability_lower": null,
+            "first_sign_change_probability_upper": "58416486756192074367432272689/79228162514264337593543950336"
+          },
+          {
+            "funded_attempts": 4096,
+            "fee_units": 4096,
+            "first_sign_change_probability_lower": null,
+            "first_sign_change_probability_upper": "79228162473552654177857607997/79228162514264337593543950336"
+          },
+          {
+            "funded_attempts": 65536,
+            "fee_units": 65536,
+            "first_sign_change_probability_lower": null,
+            "first_sign_change_probability_upper": "1"
+          }
+        ],
+        "scope": "first exit of midpoint readout pole, not permanent erasure or arbitrary parameter precision; funded attempts only; no imposed external wear"
+      },
+      {
+        "a": 1,
+        "coupling": 3,
+        "held_pole": "off",
+        "mode": "release",
+        "force_interval": [
+          "-24",
+          "-6"
+        ],
+        "nominal_force": -12,
+        "mean_nominal_paid_attempts": "37748739/2097152",
+        "mean_nominal_intake": "8388609/4194304",
+        "mean_nominal_export": "1/4194304",
+        "gross_nominal_turnover_per_attempt": "4194305/37748739",
+        "policy_iterations": 2,
+        "rho": "8707/9219",
+        "certificate_weights": [
+          "2",
+          "1",
+          "4098/3073",
+          "1"
+        ],
+        "horizons": [
+          {
+            "funded_attempts": 32,
+            "fee_units": 32,
+            "first_sign_change_probability_lower": "26885179715720416107772683199/39614081257132168796771975168",
+            "first_sign_change_probability_upper": null
+          },
+          {
+            "funded_attempts": 256,
+            "fee_units": 256,
+            "first_sign_change_probability_lower": "2475877880456069557476520735/2475880078570760549798248448",
+            "first_sign_change_probability_upper": null
+          },
+          {
+            "funded_attempts": 4096,
+            "fee_units": 4096,
+            "first_sign_change_probability_lower": "39614081257132168796771975167/39614081257132168796771975168",
+            "first_sign_change_probability_upper": null
+          },
+          {
+            "funded_attempts": 65536,
+            "fee_units": 65536,
+            "first_sign_change_probability_lower": "39614081257132168796771975167/39614081257132168796771975168",
+            "first_sign_change_probability_upper": null
+          }
+        ],
+        "scope": "first exit of midpoint readout pole, not permanent erasure or arbitrary parameter precision; funded attempts only; no imposed external wear"
+      },
+      {
+        "a": 1,
+        "coupling": 3,
+        "held_pole": "on",
+        "mode": "hold",
+        "force_interval": [
+          "-1/4",
+          "1/4"
+        ],
+        "nominal_force": 0,
+        "mean_nominal_paid_attempts": "891",
+        "mean_nominal_intake": "9/8",
+        "mean_nominal_export": "25/8",
+        "gross_nominal_turnover_per_attempt": "17/3564",
+        "policy_iterations": 2,
+        "rho": "83/84",
+        "certificate_weights": [
+          "28/97",
+          "33/97",
+          "28/97",
+          "1"
+        ],
+        "horizons": [
+          {
+            "funded_attempts": 32,
+            "fee_units": 32,
+            "first_sign_change_probability_lower": null,
+            "first_sign_change_probability_upper": "12611120197654843983589213597/39614081257132168796771975168"
+          },
+          {
+            "funded_attempts": 256,
+            "fee_units": 256,
+            "first_sign_change_probability_lower": null,
+            "first_sign_change_probability_upper": "75535207645824433694112240767/79228162514264337593543950336"
+          },
+          {
+            "funded_attempts": 4096,
+            "fee_units": 4096,
+            "first_sign_change_probability_lower": null,
+            "first_sign_change_probability_upper": "19807040628566084398376153583/19807040628566084398385987584"
+          },
+          {
+            "funded_attempts": 65536,
+            "fee_units": 65536,
+            "first_sign_change_probability_lower": null,
+            "first_sign_change_probability_upper": "1"
+          }
+        ],
+        "scope": "first exit of midpoint readout pole, not permanent erasure or arbitrary parameter precision; funded attempts only; no imposed external wear"
+      },
+      {
+        "a": 1,
+        "coupling": 3,
+        "held_pole": "on",
+        "mode": "release",
+        "force_interval": [
+          "6",
+          "24"
+        ],
+        "nominal_force": 12,
+        "mean_nominal_paid_attempts": "9437187/524288",
+        "mean_nominal_intake": "1/1048576",
+        "mean_nominal_export": "2097153/1048576",
+        "gross_nominal_turnover_per_attempt": "1048577/9437187",
+        "policy_iterations": 2,
+        "rho": "2179/2307",
+        "certificate_weights": [
+          "1",
+          "1026/769",
+          "1",
+          "2"
+        ],
+        "horizons": [
+          {
+            "funded_attempts": 32,
+            "fee_units": 32,
+            "first_sign_change_probability_lower": "13430899350555348370018870749/19807040628566084398385987584",
+            "first_sign_change_probability_upper": null
+          },
+          {
+            "funded_attempts": 256,
+            "fee_units": 256,
+            "first_sign_change_probability_lower": "39614045567150130874332637381/39614081257132168796771975168",
+            "first_sign_change_probability_upper": null
+          },
+          {
+            "funded_attempts": 4096,
+            "fee_units": 4096,
+            "first_sign_change_probability_lower": "39614081257132168796771975167/39614081257132168796771975168",
+            "first_sign_change_probability_upper": null
+          },
+          {
+            "funded_attempts": 65536,
+            "fee_units": 65536,
+            "first_sign_change_probability_lower": "39614081257132168796771975167/39614081257132168796771975168",
+            "first_sign_change_probability_upper": null
+          }
+        ],
+        "scope": "first exit of midpoint readout pole, not permanent erasure or arbitrary parameter precision; funded attempts only; no imposed external wear"
+      },
+      {
+        "a": 4,
+        "coupling": 12,
+        "held_pole": "off",
+        "mode": "hold",
+        "force_interval": [
+          "-1/4",
+          "1/4"
+        ],
+        "nominal_force": 0,
+        "mean_nominal_paid_attempts": "821035779",
+        "mean_nominal_intake": "1064961/8192",
+        "mean_nominal_export": "1048577/8192",
+        "gross_nominal_turnover_per_attempt": "1056769/3362962550784",
+        "policy_iterations": 2,
+        "rho": "105381887/105381888",
+        "certificate_weights": [
+          "1",
+          "35127296/36175937",
+          "35127361/36175937",
+          "35127296/36175937"
+        ],
+        "horizons": [
+          {
+            "funded_attempts": 32,
+            "fee_units": 32,
+            "first_sign_change_probability_lower": null,
+            "first_sign_change_probability_upper": "6014555431845182367571/19807040628566084398385987584"
+          },
+          {
+            "funded_attempts": 256,
+            "fee_units": 256,
+            "first_sign_change_probability_lower": null,
+            "first_sign_change_probability_upper": "192465569266339342310379/79228162514264337593543950336"
+          },
+          {
+            "funded_attempts": 4096,
+            "fee_units": 4096,
+            "first_sign_change_probability_lower": null,
+            "first_sign_change_probability_upper": "1539696501548722419655027/39614081257132168796771975168"
+          },
+          {
+            "funded_attempts": 65536,
+            "fee_units": 65536,
+            "first_sign_change_probability_lower": null,
+            "first_sign_change_probability_upper": "49255928092886277783744115/79228162514264337593543950336"
+          }
+        ],
+        "scope": "first exit of midpoint readout pole, not permanent erasure or arbitrary parameter precision; funded attempts only; no imposed external wear"
+      },
+      {
+        "a": 4,
+        "coupling": 12,
+        "held_pole": "off",
+        "mode": "release",
+        "force_interval": [
+          "-96",
+          "-24"
+        ],
+        "nominal_force": -48,
+        "mean_nominal_paid_attempts": "2785365088392105618523029507/154742504910672534362390528",
+        "mean_nominal_intake": "618970019642690137449562113/309485009821345068724781056",
+        "mean_nominal_export": "1/309485009821345068724781056",
+        "gross_nominal_turnover_per_attempt": "309485009821345068724781057/2785365088392105618523029507",
+        "policy_iterations": 2,
+        "rho": "9345848836099/9895604649987",
+        "certificate_weights": [
+          "2",
+          "1",
+          "4398046511106/3298534883329",
+          "1"
+        ],
+        "horizons": [
+          {
+            "funded_attempts": 32,
+            "fee_units": 32,
+            "first_sign_change_probability_lower": "26892974287527836783462146319/39614081257132168796771975168",
+            "first_sign_change_probability_upper": null
+          },
+          {
+            "funded_attempts": 256,
+            "fee_units": 256,
+            "first_sign_change_probability_lower": "39614046259218933702496782343/39614081257132168796771975168",
+            "first_sign_change_probability_upper": null
+          },
+          {
+            "funded_attempts": 4096,
+            "fee_units": 4096,
+            "first_sign_change_probability_lower": "39614081257132168796771975167/39614081257132168796771975168",
+            "first_sign_change_probability_upper": null
+          },
+          {
+            "funded_attempts": 65536,
+            "fee_units": 65536,
+            "first_sign_change_probability_lower": "39614081257132168796771975167/39614081257132168796771975168",
+            "first_sign_change_probability_upper": null
+          }
+        ],
+        "scope": "first exit of midpoint readout pole, not permanent erasure or arbitrary parameter precision; funded attempts only; no imposed external wear"
+      },
+      {
+        "a": 4,
+        "coupling": 12,
+        "held_pole": "on",
+        "mode": "hold",
+        "force_interval": [
+          "-1/4",
+          "1/4"
+        ],
+        "nominal_force": 0,
+        "mean_nominal_paid_attempts": "906203139",
+        "mean_nominal_intake": "4097/512",
+        "mean_nominal_export": "5121/512",
+        "gross_nominal_turnover_per_attempt": "4609/231988003584",
+        "policy_iterations": 2,
+        "rho": "100681727/100681728",
+        "certificate_weights": [
+          "33560576/50354177",
+          "33576961/50354177",
+          "33560576/50354177",
+          "1"
+        ],
+        "horizons": [
+          {
+            "funded_attempts": 32,
+            "fee_units": 32,
+            "first_sign_change_probability_lower": null,
+            "first_sign_change_probability_upper": "12590669928438602581703/39614081257132168796771975168"
+          },
+          {
+            "funded_attempts": 256,
+            "fee_units": 256,
+            "first_sign_change_probability_lower": null,
+            "first_sign_change_probability_upper": "50362623689530491426749/19807040628566084398385987584"
+          },
+          {
+            "funded_attempts": 4096,
+            "fee_units": 4096,
+            "first_sign_change_probability_lower": null,
+            "first_sign_change_probability_upper": "1611573225189936394930051/39614081257132168796771975168"
+          },
+          {
+            "funded_attempts": 65536,
+            "fee_units": 65536,
+            "first_sign_change_probability_lower": null,
+            "first_sign_change_probability_upper": "51554611374319014726512081/79228162514264337593543950336"
+          }
+        ],
+        "scope": "first exit of midpoint readout pole, not permanent erasure or arbitrary parameter precision; funded attempts only; no imposed external wear"
+      },
+      {
+        "a": 4,
+        "coupling": 12,
+        "held_pole": "on",
+        "mode": "release",
+        "force_interval": [
+          "24",
+          "96"
+        ],
+        "nominal_force": 48,
+        "mean_nominal_paid_attempts": "10880332376531662572355587/604462909807314587353088",
+        "mean_nominal_intake": "1/1208925819614629174706176",
+        "mean_nominal_export": "2417851639229258349412353/1208925819614629174706176",
+        "gross_nominal_turnover_per_attempt": "1208925819614629174706177/10880332376531662572355587",
+        "policy_iterations": 2,
+        "rho": "36507222019/38654705667",
+        "certificate_weights": [
+          "1",
+          "17179869186/12884901889",
+          "1",
+          "2"
+        ],
+        "horizons": [
+          {
+            "funded_attempts": 32,
+            "fee_units": 32,
+            "first_sign_change_probability_lower": "26892974285676672081149239199/39614081257132168796771975168",
+            "first_sign_change_probability_upper": null
+          },
+          {
+            "funded_attempts": 256,
+            "fee_units": 256,
+            "first_sign_change_probability_lower": "39614046259218892959563436549/39614081257132168796771975168",
+            "first_sign_change_probability_upper": null
+          },
+          {
+            "funded_attempts": 4096,
+            "fee_units": 4096,
+            "first_sign_change_probability_lower": "39614081257132168796771975167/39614081257132168796771975168",
+            "first_sign_change_probability_upper": null
+          },
+          {
+            "funded_attempts": 65536,
+            "fee_units": 65536,
+            "first_sign_change_probability_lower": "39614081257132168796771975167/39614081257132168796771975168",
+            "first_sign_change_probability_upper": null
+          }
+        ],
+        "scope": "first exit of midpoint readout pole, not permanent erasure or arbitrary parameter precision; funded attempts only; no imposed external wear"
+      }
+    ]
+  },
+  "lean_scope": "energy barriers, repair support, gradient/content conjugacy, real-valued paired force port, certified fractional-rate bounds and dissipative learning response",
+  "absorption_probability_scope": "exact rational linear-system verification, not yet a Lean first-hit theorem",
+  "source_sha256": "2919fd82cdba049a361a3267d601fc59c84310c3f47ffb426e77c46ad677dc7d",
+  "validator_sha256": "257d8432ac733b9a55b54b3dfcbb91071f0955f8246f8f1e12dfb1eaeede9887",
+  "gradient_port_sha256": "54eb91047ffa80aec0c140710e178611fdf9546743e2aa587488609025b38edf",
+  "gradient_port_scope": "Rational conjugate force on decoded content and CPU optimizer interface; no force rounding band; original physical law preserved; no real-task/noisy-force/GPU admission",
+  "runtime_interface": {
+    "optimizer_class": "information_boltzmann.conjugate_gradient_port.MaterialOptimizer",
+    "test_source_sha256": "967da449d583a2ab7334e61cc40248716e7081c25dd01665f3f08335b5d690c8",
+    "tests_passed": 20,
+    "device": "cpu",
+    "dtypes": [
+      "float32",
+      "float64"
+    ],
+    "initialization": "medium owns weights; floating tensors are reconstructed readout caches",
+    "cached_alphabet": "finite exactly representable normal-or-zero values, exhaustively checked at construction",
+    "lr_semantics": "common conjugate-force unit across coupled cells; local response depends on physical state/rate; zero lr does not stop physical events",
+    "checkpoint": "physical weights, material stock, RNG and complete cost ledger; future continuation tested",
+    "random_work": "proposal and acceptance bits counted; draws <=32 bits; fractional probability arithmetic has variable precision, with root_steps and max_rate_precision recorded",
+    "numerical_revision": {
+      "checkpoint_version": 2,
+      "nonzero_forces_not_rounded_away": true,
+      "rare_outcome_beyond_200_bits_checked": true,
+      "probability_certificates": "integer square/product enclosures and rational exponent identities",
+      "full_probability_runtime_refinement": "open; local enclosure/decision contract Lean-checked"
+    },
+    "physical_alphabets": [
+      {
+        "cap": 1,
+        "physical_states": 8,
+        "readout_levels": 4,
+        "stored_bits_per_cell": 3,
+        "certified_endpoint_codes": 2
+      },
+      {
+        "cap": 3,
+        "physical_states": 64,
+        "readout_levels": 10,
+        "stored_bits_per_cell": 6,
+        "certified_endpoint_codes": 2
+      },
+      {
+        "cap": 5,
+        "physical_states": 216,
+        "readout_levels": 16,
+        "stored_bits_per_cell": 8,
+        "certified_endpoint_codes": 2
+      },
+      {
+        "cap": 15,
+        "physical_states": 4096,
+        "readout_levels": 46,
+        "stored_bits_per_cell": 12,
+        "certified_endpoint_codes": 2
+      }
+    ],
+    "direct_cycle_proof_transfer": false,
+    "real_data_training": false,
+    "world_funding_contract": "optional existing PrefixReplayWorld.pay_write callback; refused funding stops before random draws/material changes; caller owns world checkpoint and continuously advancing publication/maintenance"
+  },
+  "review_status": "self_reviewed",
+  "cases": [
+    {
+      "a": 1,
+      "coupling": 3,
+      "mu": 0,
+      "force_code": null,
+      "acceptance": "existing_prepare_dyadic",
+      "proposal": "existing uniform-family then uniform-event sampler",
+      "transition_rows_checked": 20,
+      "stationary_on_basin_probability": "19/47",
+      "endpoints_equal_energy": true,
+      "on_before_off_probabilities": [
+        "0",
+        "1/5",
+        "16/85",
+        "49/85",
+        "1/5",
+        "53/85",
+        "49/85",
+        "1"
+      ],
+      "worst_off_defect_repair_probability": 0.8,
+      "worst_on_defect_repair_probability": 0.5764705882352941,
+      "worst_expected_attempts_to_either_code": 135.6,
+      "conditional_on_uninterrupted_funding": true
+    },
+    {
+      "a": 1,
+      "coupling": 3,
+      "mu": 0,
+      "force_code": null,
+      "acceptance": "maximal_reversible_metropolis",
+      "proposal": "existing uniform-family then uniform-event sampler",
+      "transition_rows_checked": 20,
+      "stationary_on_basin_probability": "19/47",
+      "endpoints_equal_energy": true,
+      "on_before_off_probabilities": [
+        "0",
+        "3/19",
+        "2/19",
+        "7/19",
+        "3/19",
+        "11/19",
+        "7/19",
+        "1"
+      ],
+      "worst_off_defect_repair_probability": 0.8421052631578947,
+      "worst_on_defect_repair_probability": 0.3684210526315789,
+      "worst_expected_attempts_to_either_code": 24.0,
+      "conditional_on_uninterrupted_funding": true
+    },
+    {
+      "a": 2,
+      "coupling": 6,
+      "mu": 0,
+      "force_code": null,
+      "acceptance": "existing_prepare_dyadic",
+      "proposal": "existing uniform-family then uniform-event sampler",
+      "transition_rows_checked": 20,
+      "stationary_on_basin_probability": "259/563",
+      "endpoints_equal_energy": true,
+      "on_before_off_probabilities": [
+        "0",
+        "129/1681",
+        "128/1681",
+        "1153/1681",
+        "129/1681",
+        "1169/1681",
+        "1153/1681",
+        "1"
+      ],
+      "worst_off_defect_repair_probability": 0.9232599643069601,
+      "worst_on_defect_repair_probability": 0.685901249256395,
+      "worst_expected_attempts_to_either_code": 1091.6966091612135,
+      "conditional_on_uninterrupted_funding": true
+    },
+    {
+      "a": 2,
+      "coupling": 6,
+      "mu": 0,
+      "force_code": null,
+      "acceptance": "maximal_reversible_metropolis",
+      "proposal": "existing uniform-family then uniform-event sampler",
+      "transition_rows_checked": 20,
+      "stationary_on_basin_probability": "259/563",
+      "endpoints_equal_energy": true,
+      "on_before_off_probabilities": [
+        "0",
+        "3/67",
+        "2/67",
+        "19/67",
+        "3/67",
+        "35/67",
+        "19/67",
+        "1"
+      ],
+      "worst_off_defect_repair_probability": 0.9552238805970149,
+      "worst_on_defect_repair_probability": 0.2835820895522388,
+      "worst_expected_attempts_to_either_code": 24.0,
+      "conditional_on_uninterrupted_funding": true
+    },
+    {
+      "a": 3,
+      "coupling": 9,
+      "mu": 0,
+      "force_code": null,
+      "acceptance": "existing_prepare_dyadic",
+      "proposal": "existing uniform-family then uniform-event sampler",
+      "transition_rows_checked": 20,
+      "stationary_on_basin_probability": "4099/8387",
+      "endpoints_equal_energy": true,
+      "on_before_off_probabilities": [
+        "0",
+        "1025/42049",
+        "1024/42049",
+        "33793/42049",
+        "1025/42049",
+        "33857/42049",
+        "33793/42049",
+        "1"
+      ],
+      "worst_off_defect_repair_probability": 0.9756236771385765,
+      "worst_on_defect_repair_probability": 0.8036576375181336,
+      "worst_expected_attempts_to_either_code": 9025.429332445481,
+      "conditional_on_uninterrupted_funding": true
+    },
+    {
+      "a": 3,
+      "coupling": 9,
+      "mu": 0,
+      "force_code": null,
+      "acceptance": "maximal_reversible_metropolis",
+      "proposal": "existing uniform-family then uniform-event sampler",
+      "transition_rows_checked": 20,
+      "stationary_on_basin_probability": "4099/8387",
+      "endpoints_equal_energy": true,
+      "on_before_off_probabilities": [
+        "0",
+        "3/259",
+        "2/259",
+        "67/259",
+        "3/259",
+        "131/259",
+        "67/259",
+        "1"
+      ],
+      "worst_off_defect_repair_probability": 0.9884169884169884,
+      "worst_on_defect_repair_probability": 0.25868725868725867,
+      "worst_expected_attempts_to_either_code": 24.0,
+      "conditional_on_uninterrupted_funding": true
+    },
+    {
+      "a": 4,
+      "coupling": 12,
+      "mu": 0,
+      "force_code": null,
+      "acceptance": "existing_prepare_dyadic",
+      "proposal": "existing uniform-family then uniform-event sampler",
+      "transition_rows_checked": 20,
+      "stationary_on_basin_probability": "65539/131843",
+      "endpoints_equal_energy": true,
+      "on_before_off_probabilities": [
+        "0",
+        "8193/1188097",
+        "8192/1188097",
+        "1056769/1188097",
+        "8193/1188097",
+        "1057025/1188097",
+        "1056769/1188097",
+        "1"
+      ],
+      "worst_off_defect_repair_probability": 0.9931040984027398,
+      "worst_on_defect_repair_probability": 0.8894635707353861,
+      "worst_expected_attempts_to_either_code": 73257.35528159738,
+      "conditional_on_uninterrupted_funding": true
+    },
+    {
+      "a": 4,
+      "coupling": 12,
+      "mu": 0,
+      "force_code": null,
+      "acceptance": "maximal_reversible_metropolis",
+      "proposal": "existing uniform-family then uniform-event sampler",
+      "transition_rows_checked": 20,
+      "stationary_on_basin_probability": "65539/131843",
+      "endpoints_equal_energy": true,
+      "on_before_off_probabilities": [
+        "0",
+        "3/1027",
+        "2/1027",
+        "259/1027",
+        "3/1027",
+        "515/1027",
+        "259/1027",
+        "1"
+      ],
+      "worst_off_defect_repair_probability": 0.997078870496592,
+      "worst_on_defect_repair_probability": 0.25219084712755596,
+      "worst_expected_attempts_to_either_code": 24.0,
+      "conditional_on_uninterrupted_funding": true
+    }
+  ],
+  "gradient_cases": [
+    {
+      "a": 1,
+      "coupling": 3,
+      "mu": 0,
+      "force_code": -5,
+      "acceptance": "paired_conjugate_force",
+      "proposal": "existing uniform-family then uniform-event sampler",
+      "transition_rows_checked": 20,
+      "stationary_on_basin_probability": "1073938432/1073939201",
+      "endpoints_equal_energy": false,
+      "on_before_off_probabilities": [
+        "0",
+        "131328/131587",
+        "131072/131587",
+        "131584/131587",
+        "131328/131587",
+        "131585/131587",
+        "131584/131587",
+        "1"
+      ],
+      "worst_off_defect_repair_probability": 0.001968279541292073,
+      "worst_on_defect_repair_probability": 0.9999772013952746,
+      "worst_expected_attempts_to_either_code": 35.96416059337169,
+      "conditional_on_uninterrupted_funding": true
+    },
+    {
+      "a": 1,
+      "coupling": 3,
+      "mu": 0,
+      "force_code": 0,
+      "acceptance": "paired_conjugate_force",
+      "proposal": "existing uniform-family then uniform-event sampler",
+      "transition_rows_checked": 20,
+      "stationary_on_basin_probability": "19/47",
+      "endpoints_equal_energy": true,
+      "on_before_off_probabilities": [
+        "0",
+        "1/5",
+        "16/85",
+        "49/85",
+        "1/5",
+        "53/85",
+        "49/85",
+        "1"
+      ],
+      "worst_off_defect_repair_probability": 0.8,
+      "worst_on_defect_repair_probability": 0.5764705882352941,
+      "worst_expected_attempts_to_either_code": 135.6,
+      "conditional_on_uninterrupted_funding": true
+    },
+    {
+      "a": 1,
+      "coupling": 3,
+      "mu": 0,
+      "force_code": 5,
+      "acceptance": "paired_conjugate_force",
+      "proposal": "existing uniform-family then uniform-event sampler",
+      "transition_rows_checked": 20,
+      "stationary_on_basin_probability": "193/1074528449",
+      "endpoints_equal_energy": false,
+      "on_before_off_probabilities": [
+        "0",
+        "1/352257",
+        "2/1056771",
+        "4099/1056771",
+        "1/352257",
+        "8195/1056771",
+        "4099/1056771",
+        "1"
+      ],
+      "worst_off_defect_repair_probability": 0.9999971611635823,
+      "worst_on_defect_repair_probability": 0.003878796825423862,
+      "worst_expected_attempts_to_either_code": 35.72736950578697,
+      "conditional_on_uninterrupted_funding": true
+    }
+  ]
+}

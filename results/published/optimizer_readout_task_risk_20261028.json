@@ -1,0 +1,101 @@
+{
+  "scope": "Actual readout-kernel risk bound under explicit finite Taylor/error conditions and an analytic autonomous-noise counterexample; no capability trial",
+  "integrated_review": {
+    "path": "lean/CGBAxioms/reviews/optimizer_content_bridge.lean",
+    "sha256": "4c27b1d094cbf322e81c3c6b6ff796d71e53fc2625f058f2d17a98870d748d7c",
+    "lean_exit_code": 0,
+    "audited": {
+      "CGB.OptimizerContentReview": [
+        "cooperative_content_contract",
+        "drive_removes_content_barriers",
+        "hidden_basin_calibration",
+        "maximal_reversible_acceptance",
+        "content_gradient_port",
+        "transfer_gradient_port",
+        "event_port_contract",
+        "finite_capacity_content_bridge",
+        "certified_root_refinement",
+        "fractional_probability_enclosure",
+        "force_response_dissipative",
+        "kinetic_survival_envelope",
+        "one_defect_regeneration_margin",
+        "maximal_event_clock"
+      ],
+      "CGB.ResourceEnergyReview": [
+        "scaled_pool_contract",
+        "scaled_resource_generation",
+        "resource_ground_bound",
+        "resource_ground_witness",
+        "resource_monopoly_gap"
+      ],
+      "CGB.ResourceReleaseReview": [
+        "primitive_release_port",
+        "resource_release_drift",
+        "resource_release_budget",
+        "resource_feedback_contract"
+      ],
+      "CGB.RationalSamplerReview": [
+        "rational_mixture_contract",
+        "rational_binary_coin_contract"
+      ],
+      "CGB.FiberOptimizerReview": [
+        "readout_force_response_contract",
+        "readout_regeneration_contract",
+        "readout_block_kernel_contract",
+        "readout_cell_kernel_contract",
+        "readout_release_drift",
+        "readout_release_budget",
+        "readout_task_risk_contract",
+        "autonomous_task_noise_floor"
+      ]
+    },
+    "compile_record": "lean/CGBAxioms/.lake/material_combined_core.lean.check.json",
+    "auto_implicit_variables": false,
+    "production_modules_added": 0
+  },
+  "full_optimizer_admitted": false,
+  "training_enabled": false,
+  "model_experiments": 0,
+  "declarations": [
+    "CGB.FiberOptimizerReview.readout_task_risk_contract",
+    "CGB.FiberOptimizerReview.autonomous_task_noise_floor"
+  ],
+  "assumptions": {
+    "force": "magnitude>=96 in the actual port units, signed with observed gradient",
+    "model": "whole task objective along the one changed coordinate has the written Taylor upper bound",
+    "error": "explicit envelope on the difference between true current gradient and supplied observation; no estimator is assumed valid",
+    "feasibility": "positive signal:nonempty cell; negative signal:room in N+stock budget",
+    "robust_domain": "gradient error<=50% observed magnitude and L*quantum<=50% observed magnitude"
+  },
+  "derived": {
+    "D": "quantum*observed_magnitude",
+    "c": "quantum*gradient_error+L*quantum^2/2",
+    "one_opportunity_risk_upper": "-(D-c)/26+(D+c)/2^118",
+    "robust_risk_upper": "-D/208 per selected feasible cell",
+    "no_risk_sign_assumed": true
+  },
+  "numeric": {
+    "exact_kernel_rows": 390,
+    "independent_quadratic_checks": 9360,
+    "negative_expected_increments": 9360,
+    "actual_force_port_checks": 8,
+    "scope": "independent analytic loss differences, source row probabilities and exact rational arithmetic; no learner, epochs or empirical convergence"
+  },
+  "noise_floor": {
+    "objective": "theta^2 at theta0=0, supplied gradient0, available stock1",
+    "body": "single cap2 cell, scaled quadratic H",
+    "exact_expected_increment": "9/17179869184",
+    "proved_lower": "1/2^31",
+    "significance": "unconditional task descent at every state is false; finite quantum and autonomous dynamics require a noise/accuracy budget"
+  },
+  "source_sha256": "a97025867ff2331c3fdae776a9934ade7f8d223a83c911f369a01dfccce0f6df",
+  "medium_source_sha256": "104d110891d1cc67f67532fc4348efdafd78e6b9ed8afeabcde0da536a94dc71",
+  "validator_sha256": "61f86c5f2d234a7fa54a004f6bda62297fab945480ecc97d268dd4de2ba66c61",
+  "no_optimizer_transition_change": true,
+  "review_status": "self_reviewed; independent review pending",
+  "open": [
+    "actual online noise/staleness envelopes and useful selective retention over full trajectories",
+    "weak-signal/finite-precision task-risk floor and general-size temporal resource service/functional anti-monopoly",
+    "practical GPU budget and independent continual real-data convergence/quality"
+  ]
+}

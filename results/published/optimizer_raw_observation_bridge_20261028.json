@@ -1,0 +1,94 @@
+{
+  "status": "raw_observation_refinement_passed",
+  "full_optimizer_admitted": false,
+  "training_executed": false,
+  "exact_recursive_transitions": 480,
+  "scope": "recursive arithmetic of cold ignition, quiet retention and contrary observations; no learner or task",
+  "audited_declarations": [
+    "CGB.ConservativeCycleReview.allocated_readout_safe",
+    "CGB.ConservativeCycleReview.cycle_geometry",
+    "CGB.ConservativeCycleReview.encoded_contrary_of_energy_ratio",
+    "CGB.ConservativeCycleReview.encoded_gradient_cue_contract",
+    "CGB.ConservativeCycleReview.exact_optimizer_step",
+    "CGB.ConservativeCycleReview.filter_error_envelope",
+    "CGB.ConservativeCycleReview.finite_block_optimizer_step",
+    "CGB.ConservativeCycleReview.functional_recovery_tracking",
+    "CGB.ConservativeCycleReview.gradient_cycle_response",
+    "CGB.ConservativeCycleReview.integer_code_roundtrip",
+    "CGB.ConservativeCycleReview.integer_cycle_contract",
+    "CGB.ConservativeCycleReview.integer_ignition_and_retention",
+    "CGB.ConservativeCycleReview.integer_joint_optimizer_step",
+    "CGB.ConservativeCycleReview.integer_phase_refines",
+    "CGB.ConservativeCycleReview.integer_preconditioned_step",
+    "CGB.ConservativeCycleReview.joint_step_invariant",
+    "CGB.ConservativeCycleReview.noisy_optimizer_step",
+    "CGB.ConservativeCycleReview.normalized_joint_contract",
+    "CGB.ConservativeCycleReview.normalized_trajectory_contract",
+    "CGB.ConservativeCycleReview.preconditioned_filter_step",
+    "CGB.ConservativeCycleReview.quiet_restoration",
+    "CGB.ConservativeCycleReview.raw_stream_forces_release",
+    "CGB.ConservativeCycleReview.regeneration_threshold",
+    "CGB.ConservativeCycleReview.relative_contrast_coverage",
+    "CGB.ConservativeCycleReview.relative_cue_shared_scale",
+    "CGB.ConservativeCycleReview.relative_gradient_coverage",
+    "CGB.ConservativeCycleReview.resource_filtered_tracking",
+    "CGB.ConservativeCycleReview.restoration_by_budget",
+    "CGB.ConservativeCycleReview.strong_cue_release",
+    "CGB.ConservativeCycleReview.unrestricted_parameter_initialization"
+  ],
+  "checks": [
+    {
+      "device": "cpu",
+      "dtype": "torch.float32",
+      "transitions": 480,
+      "max_absolute_error": {
+        "mean": 5.960464477539063e-08,
+        "rms": 0.0,
+        "mass": 1.1920928955078125e-07,
+        "update": 1.4901161193847656e-08
+      }
+    },
+    {
+      "device": "cpu",
+      "dtype": "torch.float64",
+      "transitions": 480,
+      "max_absolute_error": {
+        "mean": 1.1102230246251565e-16,
+        "rms": 1.1102230246251565e-16,
+        "mass": 1.1102230246251565e-16,
+        "update": 4.163336342344337e-17
+      }
+    },
+    {
+      "device": "cuda",
+      "dtype": "torch.float32",
+      "transitions": 480,
+      "max_absolute_error": {
+        "mean": 5.960464477539063e-08,
+        "rms": 0.0,
+        "mass": 1.1920928955078125e-07,
+        "update": 1.4901161193847656e-08
+      }
+    },
+    {
+      "device": "cuda",
+      "dtype": "torch.float64",
+      "transitions": 480,
+      "max_absolute_error": {
+        "mean": 1.1102230246251565e-16,
+        "rms": 0.0,
+        "mass": 1.1102230246251565e-16,
+        "update": 4.163336342344337e-17
+      }
+    }
+  ],
+  "lean_exit_code": 0,
+  "sources": {
+    "lean/CGBAxioms/reviews/optimizer_conservative_cycle.lean": "32995ed3088f37a25ac3db09850995f8abd9913b90f87eb13676c162812c0325",
+    "information_boltzmann/conservative_cycle_optimizer.py": "f0453bd370f36b9eeb82fa35c0ec3d420adceea47779c1f1a692f616659a468a",
+    "scripts/witness/validate_optimizer_cycle_integer.py": "da7b118de8861318c2de3fdbe0fb5c39442409a7e758430d0e5ce47fa4ddc891"
+  },
+  "oracle_digest_sha256": "eca8452c807fd8cd6700c3a60082db333906993de541178ab85548fc63e23098",
+  "remaining": "Functional historical benefit, general optimizer interface and independent real-stream validation",
+  "review_status": "self_reviewed_independent_review_pending"
+}

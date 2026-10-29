@@ -1,0 +1,137 @@
+{
+  "status": "arithmetic_refinement_passed",
+  "scope": "finite local kernel only; no model or training executed",
+  "full_optimizer_admitted": false,
+  "execution_enabled": false,
+  "proof_source": "lean/CGBAxioms/reviews/optimizer_conservative_cycle.lean",
+  "proof_sha256": "98ac700c52a8004caff224921a289528066a9af732d6958bf5e1fd0ce12b9d7a",
+  "validator_sha256": "34cbdb315c7cf1624d5f2e572279d4ee8d901ffb37cb5044e0b52f553570b9b2",
+  "lean_exit_code": 0,
+  "named_lemmas_audited": [
+    "allocated_readout_safe",
+    "cycle_geometry",
+    "encoded_gradient_cue_contract",
+    "exact_optimizer_step",
+    "filter_error_envelope",
+    "finite_block_optimizer_step",
+    "functional_recovery_tracking",
+    "gradient_cycle_response",
+    "integer_code_roundtrip",
+    "integer_cycle_contract",
+    "integer_joint_optimizer_step",
+    "integer_phase_refines",
+    "integer_preconditioned_step",
+    "joint_step_invariant",
+    "noisy_optimizer_step",
+    "normalized_joint_contract",
+    "normalized_trajectory_contract",
+    "preconditioned_filter_step",
+    "quiet_restoration",
+    "regeneration_threshold",
+    "relative_contrast_coverage",
+    "relative_gradient_coverage",
+    "restoration_by_budget",
+    "strong_cue_release",
+    "unrestricted_parameter_initialization"
+  ],
+  "legal_state_pairs": 585,
+  "cue_codes": 129,
+  "exact_transition_comparisons": 75465,
+  "transition_digest_sha256": "ae212bfa8691560cacecbab0caad4c21ecd60d33df0881afbe3683131cc15a93",
+  "filtered_bridge": {
+    "exact_rational_vectors": 36,
+    "oracle_digest_sha256": "2c17cb9d6186b47e481e413288eca4fab52a6b07cd3142ffc63beaf8acefab3b",
+    "implementation": "information_boltzmann/conservative_cycle_optimizer.py:_filtered_cycle_chunk",
+    "implementation_sha256": "7dc80e0ec26e1df839cb5dfe4c6848ccb5c6e43af20314b7fc9a97e7f99b76f0",
+    "checks": [
+      {
+        "device": "cpu",
+        "dtype": "torch.float32",
+        "vectors": 36,
+        "max_mean_error": 0.0,
+        "max_update_error": 0.0
+      },
+      {
+        "device": "cpu",
+        "dtype": "torch.float64",
+        "vectors": 36,
+        "max_mean_error": 0.0,
+        "max_update_error": 0.0
+      },
+      {
+        "device": "cuda",
+        "dtype": "torch.float32",
+        "vectors": 36,
+        "max_mean_error": 0.0,
+        "max_update_error": 0.0
+      },
+      {
+        "device": "cuda",
+        "dtype": "torch.float64",
+        "vectors": 36,
+        "max_mean_error": 0.0,
+        "max_update_error": 0.0
+      }
+    ],
+    "online_gain_and_scale_estimation_admitted": false,
+    "training_executed": false
+  },
+  "representation": {
+    "encoding_bits_sufficient": 10,
+    "ordinary_storage_bytes_per_cycle": 2,
+    "integer_intermediate_bits_sufficient": 16,
+    "minimal_encoding_proved": false,
+    "gpu_peak_measured": false
+  },
+  "phase_rounding_error_max": "1/64",
+  "joint_phase_and_cue_error_budget": "1/32",
+  "diagnostics": [
+    "'CGB.ConservativeCycleReview.unrestricted_parameter_initialization' depends on axioms: [propext,",
+    "Classical.choice,",
+    "Quot.sound]"
+  ],
+  "review_status": "self_reviewed",
+  "interface_tests": {
+    "passed": 20,
+    "seconds": 4.75,
+    "observed_tool_chunk": "d03f08",
+    "command": [
+      "D:/conda_envs/vox/python.exe",
+      "-m",
+      "pytest",
+      "tests/test_conservative_cycle_optimizer.py",
+      "-q",
+      "-x"
+    ],
+    "sources": {
+      "information_boltzmann/conservative_cycle_optimizer.py": "7dc80e0ec26e1df839cb5dfe4c6848ccb5c6e43af20314b7fc9a97e7f99b76f0",
+      "information_boltzmann/conservative_cycle_cuda.py": "b9b2ddedcf7ae9b345f4317e44833880b408e70e87ebf775bba91fc30c8b00e4",
+      "tests/test_conservative_cycle_optimizer.py": "8f3c90b321ed4b1ae9e6a9dd6b82a88adc2c9afbcc1ecf27b43d5d1054544f92"
+    }
+  },
+  "derivation_reuse": {
+    "existing": [
+      "CGB.GradientFilter.gain_error_square",
+      "CGB.GradientFilter.optimal_step_newton_times_signal",
+      "CGB.GradientFilter.own_step_biases_noise_estimate",
+      "CGB.Continual.posterior_mean_is_bayes_action",
+      "CGB.ConservativeCycleReview.noisy_optimizer_step",
+      "CGB.ConservativeCycleReview.integer_phase_refines"
+    ],
+    "added": [
+      "CGB.ConservativeCycleReview.filter_error_envelope",
+      "CGB.ConservativeCycleReview.preconditioned_filter_step",
+      "CGB.ConservativeCycleReview.integer_preconditioned_step"
+    ],
+    "new_production_modules": 0,
+    "training_class_update_changed": false,
+    "remaining": [
+      "Online gain and preconditioning statistics with explicit calibration/drift conditions",
+      "Complete low-resource cost including estimator statistics and workspace",
+      "Functional content retention, recovery, competition/service and release in the same learner",
+      "Independent real-stream quality, retention and plasticity evidence"
+    ],
+    "independent_review": "pending"
+  },
+  "historical_source_archive": "lean/CGBAxioms/.lake/filtered_bridge_before_20261028/"
+}

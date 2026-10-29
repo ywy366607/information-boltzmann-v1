@@ -1,0 +1,253 @@
+{
+  "scope": "Exact ideal-fair-bit probability identity, a.s. finite rational decision, expected work, executed reference and CPU interface; no useful-learning claim",
+  "integrated_review": {
+    "path": "lean/CGBAxioms/reviews/optimizer_content_bridge.lean",
+    "sha256": "b0c06bbda0fff2d632eaf244c880e91b27aed33882af92fd3789f19369bceb92",
+    "lean_exit_code": 0,
+    "audited": {
+      "CGB.OptimizerContentReview": [
+        "cooperative_content_contract",
+        "drive_removes_content_barriers",
+        "hidden_basin_calibration",
+        "maximal_reversible_acceptance",
+        "content_gradient_port",
+        "transfer_gradient_port",
+        "event_port_contract",
+        "finite_capacity_content_bridge",
+        "certified_root_refinement",
+        "fractional_probability_enclosure",
+        "force_response_dissipative",
+        "kinetic_survival_envelope",
+        "one_defect_regeneration_margin",
+        "maximal_event_clock"
+      ],
+      "CGB.ResourceEnergyReview": [
+        "scaled_pool_contract",
+        "scaled_resource_generation",
+        "resource_ground_bound",
+        "resource_ground_witness",
+        "resource_monopoly_gap"
+      ],
+      "CGB.ResourceReleaseReview": [
+        "primitive_release_port",
+        "resource_release_drift",
+        "resource_release_budget",
+        "resource_feedback_contract"
+      ],
+      "CGB.RationalSamplerReview": [
+        "rational_mixture_contract",
+        "rational_binary_coin_contract"
+      ]
+    },
+    "compile_record": "lean/CGBAxioms/.lake/material_combined_core.lean.check.json",
+    "auto_implicit_variables": false,
+    "production_modules_added": 0
+  },
+  "sampler": "rational_geometric_mixture_v1",
+  "checkpoint_version": 4,
+  "review_status": "self_reviewed; independent review pending",
+  "full_optimizer_admitted": false,
+  "training_enabled": false,
+  "physical_event_law_changed": false,
+  "ideal_bit_assumption": "Fresh independent uniform bits; finite Python PRNG is an implementation source, not a theorem of independence",
+  "fractional_expected_requested_bits_upper": 4,
+  "fractional_expected_coefficient_updates": 1,
+  "fractional_rational_coin_expected_bits_upper": 2,
+  "probability_identity": "P(accept)=2^(-power); N=n has mass2^(-n-1), c0=x,c(n+1)=c(n)*(n+1-x)/(n+2)",
+  "reference": {
+    "source": "lean/CGBAxioms/.lake/material_probability_reference.lean",
+    "sha256": "0f5c8a0ca005f6a03933931e8b6520e15d98f20ebae45dbb941ea44ce984e6b0",
+    "lean_exit_code": 0,
+    "configurations": 35,
+    "coefficient_checks": 825,
+    "finite_prefix_means": 315,
+    "complete_bit_strings": 17885,
+    "maximum_coefficient_index": 24,
+    "maximum_prefix_depth": 8,
+    "scope": "Actual branch coefficients and all supplied bit prefixes match executable rational Lean definitions; recursive rational reference refines the real semantics for every depth"
+  },
+  "costs": "No roots, no added per-parameter state; rational precision and individual stopping time have no fixed cap. Requested bits, Python PRNG work, allocations and time are distinct.",
+  "benchmark": {
+    "scope": "Single-thread CPU acceptance microbenchmark; 3x1500 timed coins plus separate Python allocation measurement; no model or GPU speed claim",
+    "baseline_source": "lean\\CGBAxioms\\.lake\\material_optimizer_root_v3\\conjugate_gradient_port.py",
+    "baseline_sha256": "83b6e1d5e92e25b055175ace376b325096ccc1f630ceb699c098f4b059db0397",
+    "profiles": [
+      {
+        "power": "1/2",
+        "results": {
+          "root_v3": {
+            "median_seconds_per_coin": 3.031693332983802e-05,
+            "python_peak_transient_bytes": 1420,
+            "requested_bits_per_coin": 4.229333333333333,
+            "executed_work_ledger": {
+              "attempts": 0,
+              "accepted": 0,
+              "fee_units": 0,
+              "random_bits": 6344,
+              "refused": 0,
+              "root_steps": 6728,
+              "max_rate_precision": 20
+            }
+          },
+          "rational_v4": {
+            "median_seconds_per_coin": 1.3315666670678183e-05,
+            "python_peak_transient_bytes": 520,
+            "requested_bits_per_coin": 3.4873333333333334,
+            "executed_work_ledger": {
+              "attempts": 0,
+              "accepted": 0,
+              "fee_units": 0,
+              "random_bits": 5231,
+              "refused": 0,
+              "coefficient_steps": 1571,
+              "max_rate_precision": 26
+            }
+          }
+        }
+      },
+      {
+        "power": "1/3",
+        "results": {
+          "root_v3": {
+            "median_seconds_per_coin": 3.078686667140573e-05,
+            "python_peak_transient_bytes": 1564,
+            "requested_bits_per_coin": 4.24,
+            "executed_work_ledger": {
+              "attempts": 0,
+              "accepted": 0,
+              "fee_units": 0,
+              "random_bits": 6360,
+              "refused": 0,
+              "root_steps": 6752,
+              "max_rate_precision": 16
+            }
+          },
+          "rational_v4": {
+            "median_seconds_per_coin": 1.3702600001124665e-05,
+            "python_peak_transient_bytes": 544,
+            "requested_bits_per_coin": 4.045333333333334,
+            "executed_work_ledger": {
+              "attempts": 0,
+              "accepted": 0,
+              "fee_units": 0,
+              "random_bits": 6068,
+              "refused": 0,
+              "coefficient_steps": 1603,
+              "max_rate_precision": 31
+            }
+          }
+        }
+      },
+      {
+        "power": "1/1208925819614629174706176",
+        "results": {
+          "root_v3": {
+            "median_seconds_per_coin": 3.010353333471964e-05,
+            "python_peak_transient_bytes": 1360,
+            "requested_bits_per_coin": 4.264,
+            "executed_work_ledger": {
+              "attempts": 0,
+              "accepted": 0,
+              "fee_units": 0,
+              "random_bits": 6396,
+              "refused": 0,
+              "root_steps": 6808,
+              "max_rate_precision": 12
+            }
+          },
+          "rational_v4": {
+            "median_seconds_per_coin": 1.509546666056849e-05,
+            "python_peak_transient_bytes": 1244,
+            "requested_bits_per_coin": 4.093333333333334,
+            "executed_work_ledger": {
+              "attempts": 0,
+              "accepted": 0,
+              "fee_units": 0,
+              "random_bits": 6140,
+              "refused": 0,
+              "coefficient_steps": 1541,
+              "max_rate_precision": 889
+            }
+          }
+        }
+      },
+      {
+        "power": "1208925819614629174706175/1208925819614629174706176",
+        "results": {
+          "root_v3": {
+            "median_seconds_per_coin": 3.849893333002304e-05,
+            "python_peak_transient_bytes": 1656,
+            "requested_bits_per_coin": 4.64,
+            "executed_work_ledger": {
+              "attempts": 0,
+              "accepted": 0,
+              "fee_units": 0,
+              "random_bits": 6960,
+              "refused": 0,
+              "root_steps": 7936,
+              "max_rate_precision": 12
+            }
+          },
+          "rational_v4": {
+            "median_seconds_per_coin": 1.5075399996324753e-05,
+            "python_peak_transient_bytes": 1276,
+            "requested_bits_per_coin": 4.065333333333333,
+            "executed_work_ledger": {
+              "attempts": 0,
+              "accepted": 0,
+              "fee_units": 0,
+              "random_bits": 6098,
+              "refused": 0,
+              "coefficient_steps": 1602,
+              "max_rate_precision": 1132
+            }
+          }
+        }
+      },
+      {
+        "power": "385/3",
+        "results": {
+          "root_v3": {
+            "median_seconds_per_coin": 3.998333336009334e-06,
+            "python_peak_transient_bytes": 264,
+            "requested_bits_per_coin": 32.0,
+            "executed_work_ledger": {
+              "attempts": 0,
+              "accepted": 0,
+              "fee_units": 0,
+              "random_bits": 48000,
+              "refused": 0,
+              "root_steps": 0,
+              "max_rate_precision": 0
+            }
+          },
+          "rational_v4": {
+            "median_seconds_per_coin": 4.16333334093603e-06,
+            "python_peak_transient_bytes": 264,
+            "requested_bits_per_coin": 32.0,
+            "executed_work_ledger": {
+              "attempts": 0,
+              "accepted": 0,
+              "fee_units": 0,
+              "random_bits": 48000,
+              "refused": 0,
+              "coefficient_steps": 0,
+              "max_rate_precision": 0
+            }
+          }
+        }
+      }
+    ],
+    "logical_bits_are_not_PRNG_word_cost_or_joules": true,
+    "producing_validator_sha256": "20f06aae7fe4870a4434ae2abfb8627bcf8817c0cecd0754b1483b6bd99aac8e"
+  },
+  "source_sha256": "07050b890d05582e8bcba9de0247eb064a419415dc64fb22fb72179e4fa97862",
+  "validator_sha256": "7c1dfbceba448c77795b6a182efac340febde96a03da285db4bc8ff678e61b91",
+  "tests": {
+    "command": "D:/conda_envs/vox/python.exe -m pytest tests/test_conjugate_gradient_port.py -q",
+    "passed": 41,
+    "exit_code": 0,
+    "elapsed_seconds": 18.57,
+    "observed_tool_session": 87640
+  }
+}

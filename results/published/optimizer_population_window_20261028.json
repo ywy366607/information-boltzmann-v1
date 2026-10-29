@@ -1,0 +1,244 @@
+{
+  "scope": "Uncut arbitrary-rectangle population, frozen-gradient window risk and displacement budget; numerical/interface only",
+  "integrated_review": {
+    "path": "lean/CGBAxioms/reviews/optimizer_content_bridge.lean",
+    "sha256": "d8ecd083673f91f234b506124c38b465d0b3d84186b417e879ec2d6c5ed16d2d",
+    "lean_exit_code": 0,
+    "audited": {
+      "CGB.OptimizerContentReview": [
+        "cooperative_content_contract",
+        "drive_removes_content_barriers",
+        "hidden_basin_calibration",
+        "maximal_reversible_acceptance",
+        "content_gradient_port",
+        "transfer_gradient_port",
+        "event_port_contract",
+        "finite_capacity_content_bridge",
+        "certified_root_refinement",
+        "fractional_probability_enclosure",
+        "force_response_dissipative",
+        "kinetic_survival_envelope",
+        "one_defect_regeneration_margin",
+        "maximal_event_clock"
+      ],
+      "CGB.ResourceEnergyReview": [
+        "scaled_pool_contract",
+        "scaled_resource_generation",
+        "resource_ground_bound",
+        "resource_ground_witness",
+        "resource_monopoly_gap"
+      ],
+      "CGB.ResourceReleaseReview": [
+        "primitive_release_port",
+        "resource_release_drift",
+        "resource_release_budget",
+        "resource_feedback_contract"
+      ],
+      "CGB.RationalSamplerReview": [
+        "rational_mixture_contract",
+        "rational_binary_coin_contract"
+      ],
+      "CGB.FiberOptimizerReview": [
+        "readout_force_response_contract",
+        "readout_regeneration_contract",
+        "readout_block_kernel_contract",
+        "readout_cell_kernel_contract",
+        "readout_release_drift",
+        "readout_release_budget",
+        "readout_task_risk_contract",
+        "autonomous_task_noise_floor",
+        "population_kernel_contract",
+        "population_task_window_contract",
+        "population_frozen_gradient_budget"
+      ]
+    },
+    "compile_record": "lean/CGBAxioms/.lake/material_combined_core.lean.check.json",
+    "auto_implicit_variables": false,
+    "production_modules_added": 0
+  },
+  "full_optimizer_admitted": false,
+  "training_enabled": false,
+  "model_experiments": 0,
+  "declarations": [
+    "CGB.FiberOptimizerReview.population_kernel_contract",
+    "CGB.FiberOptimizerReview.population_task_window_contract",
+    "CGB.FiberOptimizerReview.population_frozen_gradient_budget"
+  ],
+  "reference": {
+    "path": "lean/CGBAxioms/.lake/material_population_reference.lean",
+    "sha256": "f457fce9a56beb4466dfb9884830fc1f4d5dfe4279d7235bf550dcea4c6ed183",
+    "lean_exit_code": 0,
+    "bodies": 4030,
+    "shapes": [
+      [
+        1,
+        1
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        17
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        3,
+        2
+      ],
+      [
+        17,
+        1
+      ]
+    ],
+    "budget_and_pool_views": 16486,
+    "complete_candidate_successors": 445122,
+    "external_damage_successors": 49458,
+    "local_energy_candidate_checks": 184082,
+    "full_populations_enumerated_in_lean": false
+  },
+  "frozen_budget": "initial_error_i+sensitivity_i*quantum*min(2*funded_opportunities,2*total_supply)",
+  "window_scope": "fixed task objective and frozen observed gradient; all weak/blocked coordinates, exact external-loss contribution and stochastic physical transitions remain in the bound; no risk sign assumed",
+  "algebra": {
+    "exact_one_coordinate_rows": 97,
+    "window_and_staleness_checks": 784,
+    "nonabsorbing_zero_cases": 6,
+    "cases": [
+      {
+        "supply": 0,
+        "legal_states": 1,
+        "origin": [
+          0,
+          0,
+          0
+        ],
+        "window_horizons": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      {
+        "supply": 1,
+        "legal_states": 4,
+        "origin": [
+          0,
+          0,
+          0
+        ],
+        "window_horizons": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      {
+        "supply": 1,
+        "legal_states": 4,
+        "origin": [
+          1,
+          0,
+          0
+        ],
+        "window_horizons": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      {
+        "supply": 3,
+        "legal_states": 17,
+        "origin": [
+          0,
+          0,
+          0
+        ],
+        "window_horizons": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      {
+        "supply": 3,
+        "legal_states": 17,
+        "origin": [
+          2,
+          1,
+          0
+        ],
+        "window_horizons": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      {
+        "supply": 6,
+        "legal_states": 27,
+        "origin": [
+          0,
+          0,
+          0
+        ],
+        "window_horizons": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      {
+        "supply": 6,
+        "legal_states": 27,
+        "origin": [
+          2,
+          2,
+          2
+        ],
+        "window_horizons": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      }
+    ],
+    "scope": "exact finite algebra only; no optimizer training or empirical convergence"
+  },
+  "source_sha256": "a97025867ff2331c3fdae776a9934ade7f8d223a83c911f369a01dfccce0f6df",
+  "medium_source_sha256": "104d110891d1cc67f67532fc4348efdafd78e6b9ed8afeabcde0da536a94dc71",
+  "validator_sha256": "c97d64ee43635e031b43720f0d9f498f6b7f31373c4752aca351bf3a695d7652",
+  "no_optimizer_transition_change": true,
+  "review_status": "self_reviewed; independent review pending",
+  "open": [
+    "objective sensitivity and initial observation-error calibration on actual tasks; conditional window envelope need not be negative",
+    "general-size temporal resource service and functional anti-monopoly/useful selective retention",
+    "practical GPU/precision budget and independent continual real-data convergence and quality"
+  ]
+}

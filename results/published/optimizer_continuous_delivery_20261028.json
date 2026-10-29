@@ -1,0 +1,1060 @@
+{
+  "scope": "Continuous FP32 optimizer prototype; one fixed-budget controlled language comparison",
+  "registration": "results/published/optimizer_continuous_prereg_20261028.json",
+  "registration_sha256": "a4e3c34e49e35839494852dbb9fdd6503949968cf0f029f873cd46fe98c77355",
+  "sources": {
+    "information_boltzmann/conservative_cycle_optimizer.py": "0f5600925bd5093ad6bcf9443cc1f090bb2ba87fb80c8fd4114567ff9832b668",
+    "information_boltzmann/conservative_cycle_cuda.py": "b9b2ddedcf7ae9b345f4317e44833880b408e70e87ebf775bba91fc30c8b00e4",
+    "lean/CGBAxioms/reviews/optimizer_conservative_cycle.lean": "5424439d9d68401d8eb70017267746befbf46188883ba32801426227649cd9ab",
+    "scripts/run_material_optimizer_owt.py": "b503f888343a61001d63e05a94a2f705bf5e4007c79c7373efaa4fb844805710"
+  },
+  "lean_reference": "results/published/optimizer_cycle_integer_reference_20261027.json",
+  "lean_results": 22,
+  "exact_integer_comparisons": 75465,
+  "interface_tests": {
+    "returncode": 0,
+    "passed": 15,
+    "seconds": 7.31,
+    "observed_tool_chunk": "bbffee",
+    "command": [
+      "D:/conda_envs/vox/python.exe",
+      "-m",
+      "pytest",
+      "tests/test_conservative_cycle_optimizer.py",
+      "-q",
+      "-x"
+    ],
+    "sources": {
+      "information_boltzmann/conservative_cycle_optimizer.py": "0f5600925bd5093ad6bcf9443cc1f090bb2ba87fb80c8fd4114567ff9832b668",
+      "information_boltzmann/conservative_cycle_cuda.py": "b9b2ddedcf7ae9b345f4317e44833880b408e70e87ebf775bba91fc30c8b00e4",
+      "tests/test_conservative_cycle_optimizer.py": "9346ff9f24910a78d5a0422b9bec51ef2ebe8020bb33e113004f75d0f3e8829d"
+    }
+  },
+  "protocol_tests": {
+    "passed": 3,
+    "seconds": 3.61,
+    "observed_tool_chunk": "4e03a7"
+  },
+  "preflight": {
+    "scope": "real-data numerical/gradient/causality/full-resume interface; not capability evidence",
+    "registration_sha256": "a4e3c34e49e35839494852dbb9fdd6503949968cf0f029f873cd46fe98c77355",
+    "sources": {
+      "information_boltzmann/conservative_cycle_optimizer.py": "0f5600925bd5093ad6bcf9443cc1f090bb2ba87fb80c8fd4114567ff9832b668",
+      "information_boltzmann/conservative_cycle_cuda.py": "b9b2ddedcf7ae9b345f4317e44833880b408e70e87ebf775bba91fc30c8b00e4",
+      "lean/CGBAxioms/reviews/optimizer_conservative_cycle.lean": "5424439d9d68401d8eb70017267746befbf46188883ba32801426227649cd9ab",
+      "scripts/run_material_optimizer_owt.py": "b503f888343a61001d63e05a94a2f705bf5e4007c79c7373efaa4fb844805710"
+    },
+    "arms": {
+      "cycle": {
+        "initial_loss": 6.221858024597168,
+        "exact_full_continuation": true,
+        "initialization_unchanged": true,
+        "initialization_sha256": "5dbc393928522ccc167731e47b60e1c1dfb976458f81f10161b16dea379050f8",
+        "causal_logits": true,
+        "first_step_seconds": 0.6401607999869157,
+        "steady_step_seconds": 0.032050700014224276,
+        "changed_parameters": 65313,
+        "parameters": 98816,
+        "physical": {
+          "state_bytes": 49408,
+          "cycle_blocks": 24704
+        }
+      },
+      "adam": {
+        "initial_loss": 6.221858024597168,
+        "exact_full_continuation": true,
+        "initialization_unchanged": true,
+        "initialization_sha256": "5dbc393928522ccc167731e47b60e1c1dfb976458f81f10161b16dea379050f8",
+        "causal_logits": true,
+        "first_step_seconds": 0.05233040000894107,
+        "steady_step_seconds": 0.010499500000150874,
+        "changed_parameters": 85184,
+        "parameters": 98816,
+        "physical": {
+          "state_bytes": 790568,
+          "cycle_blocks": 0
+        }
+      }
+    },
+    "status": "passed",
+    "full_life_admitted": false,
+    "training_scope": "registered controlled optimizer comparison only; empirical quality remains open"
+  },
+  "full_life_admitted": false,
+  "review_status": "self_reviewed; independent review pending",
+  "arms": {
+    "cycle": {
+      "status": "completed_budget",
+      "arm": "cycle",
+      "updates": 5000,
+      "cursors": {
+        "A": 4096000,
+        "B": 1024000
+      },
+      "scored_targets": 5120000,
+      "prequential_bpb": 4.021097056756145,
+      "validation": [
+        {
+          "update": 0,
+          "domains": {
+            "A": {
+              "nll": 403615.32958984375,
+              "targets": 65536,
+              "byte_nll": 403314.66796875,
+              "bytes": 65494,
+              "bpb": 8.884173686082612
+            },
+            "B": {
+              "nll": 404462.11083984375,
+              "targets": 65536,
+              "byte_nll": 404304.5,
+              "bytes": 65514,
+              "bpb": 8.903258802074243
+            }
+          }
+        },
+        {
+          "update": 250,
+          "domains": {
+            "A": {
+              "nll": 213342.17138671875,
+              "targets": 65536,
+              "byte_nll": 212970.30249023438,
+              "bytes": 65494,
+              "bpb": 4.691287740240077
+            },
+            "B": {
+              "nll": 221046.79418945312,
+              "targets": 65536,
+              "byte_nll": 220851.82836914062,
+              "bytes": 65514,
+              "bpb": 4.863416026489295
+            }
+          }
+        },
+        {
+          "update": 500,
+          "domains": {
+            "A": {
+              "nll": 210164.69262695312,
+              "targets": 65536,
+              "byte_nll": 209785.13989257812,
+              "bytes": 65494,
+              "bpb": 4.621125308810272
+            },
+            "B": {
+              "nll": 217493.01879882812,
+              "targets": 65536,
+              "byte_nll": 217293.451171875,
+              "bytes": 65514,
+              "bpb": 4.785056391356232
+            }
+          }
+        },
+        {
+          "update": 750,
+          "domains": {
+            "A": {
+              "nll": 203953.83227539062,
+              "targets": 65536,
+              "byte_nll": 203571.02612304688,
+              "bytes": 65494,
+              "bpb": 4.484241455040117
+            },
+            "B": {
+              "nll": 210534.02783203125,
+              "targets": 65536,
+              "byte_nll": 210332.30834960938,
+              "bytes": 65514,
+              "bpb": 4.631763870237045
+            }
+          }
+        },
+        {
+          "update": 1000,
+          "domains": {
+            "A": {
+              "nll": 196161.93408203125,
+              "targets": 65536,
+              "byte_nll": 195772.40502929688,
+              "bytes": 65494,
+              "bpb": 4.312454238230558
+            },
+            "B": {
+              "nll": 201947.29052734375,
+              "targets": 65536,
+              "byte_nll": 201740.2373046875,
+              "bytes": 65514,
+              "bpb": 4.442556398742793
+            }
+          }
+        },
+        {
+          "update": 1250,
+          "domains": {
+            "A": {
+              "nll": 194944.72875976562,
+              "targets": 65536,
+              "byte_nll": 194558.00805664062,
+              "bytes": 65494,
+              "bpb": 4.285703627638416
+            },
+            "B": {
+              "nll": 200771.13403320312,
+              "targets": 65536,
+              "byte_nll": 200563.833984375,
+              "bytes": 65514,
+              "bpb": 4.416650619271227
+            }
+          }
+        },
+        {
+          "update": 1500,
+          "domains": {
+            "A": {
+              "nll": 190812.63598632812,
+              "targets": 65536,
+              "byte_nll": 190424.59936523438,
+              "bytes": 65494,
+              "bpb": 4.194653329579675
+            },
+            "B": {
+              "nll": 196338.98803710938,
+              "targets": 65536,
+              "byte_nll": 196131.228515625,
+              "bytes": 65514,
+              "bpb": 4.319039453291698
+            }
+          }
+        },
+        {
+          "update": 1750,
+          "domains": {
+            "A": {
+              "nll": 189333.87036132812,
+              "targets": 65536,
+              "byte_nll": 188937.21826171875,
+              "bytes": 65494,
+              "bpb": 4.161889452858848
+            },
+            "B": {
+              "nll": 194648.25756835938,
+              "targets": 65536,
+              "byte_nll": 194436.61083984375,
+              "bytes": 65514,
+              "bpb": 4.2817219865357
+            }
+          }
+        },
+        {
+          "update": 2000,
+          "domains": {
+            "A": {
+              "nll": 187257.97241210938,
+              "targets": 65536,
+              "byte_nll": 186869.24780273438,
+              "bytes": 65494,
+              "bpb": 4.116336414017402
+            },
+            "B": {
+              "nll": 191666.43115234375,
+              "targets": 65536,
+              "byte_nll": 191456.7060546875,
+              "bytes": 65514,
+              "bpb": 4.216100991696945
+            }
+          }
+        },
+        {
+          "update": 2250,
+          "domains": {
+            "A": {
+              "nll": 186273.28247070312,
+              "targets": 65536,
+              "byte_nll": 185915.10546875,
+              "bytes": 65494,
+              "bpb": 4.095318665619969
+            },
+            "B": {
+              "nll": 187372.60424804688,
+              "targets": 65536,
+              "byte_nll": 187178.19970703125,
+              "bytes": 65514,
+              "bpb": 4.121883268917453
+            }
+          }
+        },
+        {
+          "update": 2500,
+          "domains": {
+            "A": {
+              "nll": 184201.43725585938,
+              "targets": 65536,
+              "byte_nll": 183849.05151367188,
+              "bytes": 65494,
+              "bpb": 4.049807843327847
+            },
+            "B": {
+              "nll": 184899.87133789062,
+              "targets": 65536,
+              "byte_nll": 184708.3173828125,
+              "bytes": 65514,
+              "bpb": 4.067493566247341
+            }
+          }
+        },
+        {
+          "update": 2750,
+          "domains": {
+            "A": {
+              "nll": 183860.5341796875,
+              "targets": 65536,
+              "byte_nll": 183497.396484375,
+              "bytes": 65494,
+              "bpb": 4.04206162280581
+            },
+            "B": {
+              "nll": 184777.4228515625,
+              "targets": 65536,
+              "byte_nll": 184581.1455078125,
+              "bytes": 65514,
+              "bpb": 4.064693092556175
+            }
+          }
+        },
+        {
+          "update": 3000,
+          "domains": {
+            "A": {
+              "nll": 182823.55053710938,
+              "targets": 65536,
+              "byte_nll": 182469.01049804688,
+              "bytes": 65494,
+              "bpb": 4.019408442932916
+            },
+            "B": {
+              "nll": 182550.1806640625,
+              "targets": 65536,
+              "byte_nll": 182357.10595703125,
+              "bytes": 65514,
+              "bpb": 4.015717135804137
+            }
+          }
+        },
+        {
+          "update": 3250,
+          "domains": {
+            "A": {
+              "nll": 180759.00659179688,
+              "targets": 65536,
+              "byte_nll": 180381.83764648438,
+              "bytes": 65494,
+              "bpb": 3.9734324157788676
+            },
+            "B": {
+              "nll": 182143.76879882812,
+              "targets": 65536,
+              "byte_nll": 181936.27099609375,
+              "bytes": 65514,
+              "bpb": 4.006449856883949
+            }
+          }
+        },
+        {
+          "update": 3500,
+          "domains": {
+            "A": {
+              "nll": 179471.615234375,
+              "targets": 65536,
+              "byte_nll": 179124.37231445312,
+              "bytes": 65494,
+              "bpb": 3.9457330998321964
+            },
+            "B": {
+              "nll": 180746.75122070312,
+              "targets": 65536,
+              "byte_nll": 180554.3994140625,
+              "bytes": 65514,
+              "bpb": 3.9760194255480226
+            }
+          }
+        },
+        {
+          "update": 3750,
+          "domains": {
+            "A": {
+              "nll": 179494.33935546875,
+              "targets": 65536,
+              "byte_nll": 179144.57397460938,
+              "bytes": 65494,
+              "bpb": 3.9461780999073963
+            },
+            "B": {
+              "nll": 181545.3662109375,
+              "targets": 65536,
+              "byte_nll": 181350.7880859375,
+              "bytes": 65514,
+              "bpb": 3.9935568372086476
+            }
+          }
+        },
+        {
+          "update": 4000,
+          "domains": {
+            "A": {
+              "nll": 178451.62377929688,
+              "targets": 65536,
+              "byte_nll": 178098.18579101562,
+              "bytes": 65494,
+              "bpb": 3.9231283694997936
+            },
+            "B": {
+              "nll": 179745.4296875,
+              "targets": 65536,
+              "byte_nll": 179550.330078125,
+              "bytes": 65514,
+              "bpb": 3.953908642331218
+            }
+          }
+        },
+        {
+          "update": 4250,
+          "domains": {
+            "A": {
+              "nll": 177161.64624023438,
+              "targets": 65536,
+              "byte_nll": 176830.68725585938,
+              "bytes": 65494,
+              "bpb": 3.895208043195034
+            },
+            "B": {
+              "nll": 178398.0634765625,
+              "targets": 65536,
+              "byte_nll": 178215.1259765625,
+              "bytes": 65514,
+              "bpb": 3.924505883594172
+            }
+          }
+        },
+        {
+          "update": 4500,
+          "domains": {
+            "A": {
+              "nll": 176812.28051757812,
+              "targets": 65536,
+              "byte_nll": 176507.77197265625,
+              "bytes": 65494,
+              "bpb": 3.8880948988199093
+            },
+            "B": {
+              "nll": 177789.51806640625,
+              "targets": 65536,
+              "byte_nll": 177620.83911132812,
+              "bytes": 65514,
+              "bpb": 3.9114189905127077
+            }
+          }
+        },
+        {
+          "update": 4750,
+          "domains": {
+            "A": {
+              "nll": 176076.24584960938,
+              "targets": 65536,
+              "byte_nll": 175753.38623046875,
+              "bytes": 65494,
+              "bpb": 3.8714773679137005
+            },
+            "B": {
+              "nll": 177757.87524414062,
+              "targets": 65536,
+              "byte_nll": 177577.87353515625,
+              "bytes": 65514,
+              "bpb": 3.91047283818386
+            }
+          }
+        },
+        {
+          "update": 5000,
+          "domains": {
+            "A": {
+              "nll": 175493.88549804688,
+              "targets": 65536,
+              "byte_nll": 175199.55297851562,
+              "bytes": 65494,
+              "bpb": 3.8592775864669697
+            },
+            "B": {
+              "nll": 176249.32153320312,
+              "targets": 65536,
+              "byte_nll": 176086.96948242188,
+              "bytes": 65514,
+              "bpb": 3.877641384092809
+            }
+          }
+        }
+      ],
+      "wall_seconds": 78.09251749998657,
+      "peak_cuda_bytes": 83678208,
+      "resident_cuda_bytes": 68789248,
+      "parameters": 98816,
+      "physical": {
+        "state_bytes": 49408,
+        "cycle_blocks": 24704
+      },
+      "checkpoint_sha256": "6bb67592546d70d48f7709e7b36338b8257cc64bd4e83ff52633c92a38d5f604",
+      "registration_sha256": "a4e3c34e49e35839494852dbb9fdd6503949968cf0f029f873cd46fe98c77355",
+      "convergence": "fixed budget exhausted; convergence/superiority not inferred automatically",
+      "final_validation_bpb": {
+        "A": 3.8592775864669697,
+        "B": 3.877641384092809
+      },
+      "checkpoint_weight_range": [
+        -0.8156666159629822,
+        0.8108548521995544
+      ],
+      "distinct_parameter_values": 98739,
+      "curve_sha256": "9f3754de362f877bf3175ba1cd25d31c5e9f471d86f75a2ceb2340b3b7b01bcd",
+      "last5_validation": [
+        {
+          "update": 4000,
+          "A": 3.9231283694997936,
+          "B": 3.953908642331218
+        },
+        {
+          "update": 4250,
+          "A": 3.895208043195034,
+          "B": 3.924505883594172
+        },
+        {
+          "update": 4500,
+          "A": 3.8880948988199093,
+          "B": 3.9114189905127077
+        },
+        {
+          "update": 4750,
+          "A": 3.8714773679137005,
+          "B": 3.91047283818386
+        },
+        {
+          "update": 5000,
+          "A": 3.8592775864669697,
+          "B": 3.877641384092809
+        }
+      ]
+    },
+    "adam": {
+      "status": "completed_budget",
+      "arm": "adam",
+      "updates": 5000,
+      "cursors": {
+        "A": 4096000,
+        "B": 1024000
+      },
+      "scored_targets": 5120000,
+      "prequential_bpb": 3.656246647403756,
+      "validation": [
+        {
+          "update": 0,
+          "domains": {
+            "A": {
+              "nll": 403615.32958984375,
+              "targets": 65536,
+              "byte_nll": 403314.66796875,
+              "bytes": 65494,
+              "bpb": 8.884173686082612
+            },
+            "B": {
+              "nll": 404462.11083984375,
+              "targets": 65536,
+              "byte_nll": 404304.5,
+              "bytes": 65514,
+              "bpb": 8.903258802074243
+            }
+          }
+        },
+        {
+          "update": 250,
+          "domains": {
+            "A": {
+              "nll": 207866.66015625,
+              "targets": 65536,
+              "byte_nll": 207506.70849609375,
+              "bytes": 65494,
+              "bpb": 4.570936258260393
+            },
+            "B": {
+              "nll": 214218.92602539062,
+              "targets": 65536,
+              "byte_nll": 214029.24267578125,
+              "bytes": 65514,
+              "bpb": 4.713174695692067
+            }
+          }
+        },
+        {
+          "update": 500,
+          "domains": {
+            "A": {
+              "nll": 187053.01220703125,
+              "targets": 65536,
+              "byte_nll": 186721.53076171875,
+              "bytes": 65494,
+              "bpb": 4.1130825183547755
+            },
+            "B": {
+              "nll": 191035.36938476562,
+              "targets": 65536,
+              "byte_nll": 190856.13256835938,
+              "bytes": 65514,
+              "bpb": 4.202875659853141
+            }
+          }
+        },
+        {
+          "update": 750,
+          "domains": {
+            "A": {
+              "nll": 181729.95263671875,
+              "targets": 65536,
+              "byte_nll": 181439.70703125,
+              "bytes": 65494,
+              "bpb": 3.9967350528953918
+            },
+            "B": {
+              "nll": 185551.54760742188,
+              "targets": 65536,
+              "byte_nll": 185392.8134765625,
+              "bytes": 65514,
+              "bpb": 4.082566972236306
+            }
+          }
+        },
+        {
+          "update": 1000,
+          "domains": {
+            "A": {
+              "nll": 179173.44677734375,
+              "targets": 65536,
+              "byte_nll": 178945.6533203125,
+              "bytes": 65494,
+              "bpb": 3.941796296360743
+            },
+            "B": {
+              "nll": 182174.55322265625,
+              "targets": 65536,
+              "byte_nll": 182052.10620117188,
+              "bytes": 65514,
+              "bpb": 4.009000683820582
+            }
+          }
+        },
+        {
+          "update": 1250,
+          "domains": {
+            "A": {
+              "nll": 177727.50366210938,
+              "targets": 65536,
+              "byte_nll": 177537.91357421875,
+              "bytes": 65494,
+              "bpb": 3.910786751203145
+            },
+            "B": {
+              "nll": 180428.33935546875,
+              "targets": 65536,
+              "byte_nll": 180325.064453125,
+              "bytes": 65514,
+              "bpb": 3.970969201002933
+            }
+          }
+        },
+        {
+          "update": 1500,
+          "domains": {
+            "A": {
+              "nll": 176000.0771484375,
+              "targets": 65536,
+              "byte_nll": 175858.11645507812,
+              "bytes": 65494,
+              "bpb": 3.873784354441858
+            },
+            "B": {
+              "nll": 178310.58618164062,
+              "targets": 65536,
+              "byte_nll": 178231.90551757812,
+              "bytes": 65514,
+              "bpb": 3.9248753887474472
+            }
+          }
+        },
+        {
+          "update": 1750,
+          "domains": {
+            "A": {
+              "nll": 174327.43725585938,
+              "targets": 65536,
+              "byte_nll": 174182.4892578125,
+              "bytes": 65494,
+              "bpb": 3.836873812287252
+            },
+            "B": {
+              "nll": 175944.5,
+              "targets": 65536,
+              "byte_nll": 175866.52612304688,
+              "bytes": 65514,
+              "bpb": 3.872786963032162
+            }
+          }
+        },
+        {
+          "update": 2000,
+          "domains": {
+            "A": {
+              "nll": 172154.59790039062,
+              "targets": 65536,
+              "byte_nll": 172021.58251953125,
+              "bytes": 65494,
+              "bpb": 3.789273582722071
+            },
+            "B": {
+              "nll": 172591.78173828125,
+              "targets": 65536,
+              "byte_nll": 172520.84594726562,
+              "bytes": 65514,
+              "bpb": 3.7991111655232306
+            }
+          }
+        },
+        {
+          "update": 2250,
+          "domains": {
+            "A": {
+              "nll": 171462.49609375,
+              "targets": 65536,
+              "byte_nll": 171323.47290039062,
+              "bytes": 65494,
+              "bpb": 3.773895696419035
+            },
+            "B": {
+              "nll": 168533.966796875,
+              "targets": 65536,
+              "byte_nll": 168460.90502929688,
+              "bytes": 65514,
+              "bpb": 3.7097065095923503
+            }
+          }
+        },
+        {
+          "update": 2500,
+          "domains": {
+            "A": {
+              "nll": 168052.09106445312,
+              "targets": 65536,
+              "byte_nll": 167918.0908203125,
+              "bytes": 65494,
+              "bpb": 3.698882293065127
+            },
+            "B": {
+              "nll": 166130.00073242188,
+              "targets": 65536,
+              "byte_nll": 166062.13427734375,
+              "bytes": 65514,
+              "bpb": 3.656882767062933
+            }
+          }
+        },
+        {
+          "update": 2750,
+          "domains": {
+            "A": {
+              "nll": 167426.98071289062,
+              "targets": 65536,
+              "byte_nll": 167284.8388671875,
+              "bytes": 65494,
+              "bpb": 3.684933084703953
+            },
+            "B": {
+              "nll": 166800.72607421875,
+              "targets": 65536,
+              "byte_nll": 166729.06909179688,
+              "bytes": 65514,
+              "bpb": 3.671569453105729
+            }
+          }
+        },
+        {
+          "update": 3000,
+          "domains": {
+            "A": {
+              "nll": 166817.43823242188,
+              "targets": 65536,
+              "byte_nll": 166687.8203125,
+              "bytes": 65494,
+              "bpb": 3.6717820218864996
+            },
+            "B": {
+              "nll": 164485.32885742188,
+              "targets": 65536,
+              "byte_nll": 164420.40209960938,
+              "bytes": 65514,
+              "bpb": 3.6207299009383607
+            }
+          }
+        },
+        {
+          "update": 3250,
+          "domains": {
+            "A": {
+              "nll": 164184.91577148438,
+              "targets": 65536,
+              "byte_nll": 164056.60498046875,
+              "bytes": 65494,
+              "bpb": 3.6138218833847664
+            },
+            "B": {
+              "nll": 163182.2431640625,
+              "targets": 65536,
+              "byte_nll": 163116.35034179688,
+              "bytes": 65514,
+              "bpb": 3.592013153311004
+            }
+          }
+        },
+        {
+          "update": 3500,
+          "domains": {
+            "A": {
+              "nll": 162032.50927734375,
+              "targets": 65536,
+              "byte_nll": 161916.337890625,
+              "bytes": 65494,
+              "bpb": 3.5666763018552303
+            },
+            "B": {
+              "nll": 161540.88403320312,
+              "targets": 65536,
+              "byte_nll": 161481.03344726562,
+              "bytes": 65514,
+              "bpb": 3.55600155923917
+            }
+          }
+        },
+        {
+          "update": 3750,
+          "domains": {
+            "A": {
+              "nll": 162001.60131835938,
+              "targets": 65536,
+              "byte_nll": 161888.55346679688,
+              "bytes": 65494,
+              "bpb": 3.5660642694481277
+            },
+            "B": {
+              "nll": 162127.41845703125,
+              "targets": 65536,
+              "byte_nll": 162069.001953125,
+              "bytes": 65514,
+              "bpb": 3.5689493146441547
+            }
+          }
+        },
+        {
+          "update": 4000,
+          "domains": {
+            "A": {
+              "nll": 159842.88916015625,
+              "targets": 65536,
+              "byte_nll": 159717.48706054688,
+              "bytes": 65494,
+              "bpb": 3.5182402437703937
+            },
+            "B": {
+              "nll": 159457.22143554688,
+              "targets": 65536,
+              "byte_nll": 159392.31884765625,
+              "bytes": 65514,
+              "bpb": 3.5100056164683293
+            }
+          }
+        },
+        {
+          "update": 4250,
+          "domains": {
+            "A": {
+              "nll": 158735.61791992188,
+              "targets": 65536,
+              "byte_nll": 158612.9052734375,
+              "bytes": 65494,
+              "bpb": 3.493908630698678
+            },
+            "B": {
+              "nll": 158283.33447265625,
+              "targets": 65536,
+              "byte_nll": 158220.27587890625,
+              "bytes": 65514,
+              "bpb": 3.48419585704707
+            }
+          }
+        },
+        {
+          "update": 4500,
+          "domains": {
+            "A": {
+              "nll": 156942.50170898438,
+              "targets": 65536,
+              "byte_nll": 156834.74560546875,
+              "bytes": 65494,
+              "bpb": 3.454739513911074
+            },
+            "B": {
+              "nll": 156748.84619140625,
+              "targets": 65536,
+              "byte_nll": 156692.30322265625,
+              "bytes": 65514,
+              "bpb": 3.450548108874377
+            }
+          }
+        },
+        {
+          "update": 4750,
+          "domains": {
+            "A": {
+              "nll": 156736.3642578125,
+              "targets": 65536,
+              "byte_nll": 156617.88818359375,
+              "bytes": 65494,
+              "bpb": 3.4499626011080844
+            },
+            "B": {
+              "nll": 156077.18383789062,
+              "targets": 65536,
+              "byte_nll": 156014.6875,
+              "bytes": 65514,
+              "bpb": 3.435626216718432
+            }
+          }
+        },
+        {
+          "update": 5000,
+          "domains": {
+            "A": {
+              "nll": 155507.48095703125,
+              "targets": 65536,
+              "byte_nll": 155387.71484375,
+              "bytes": 65494,
+              "bpb": 3.422864470335397
+            },
+            "B": {
+              "nll": 154304.89794921875,
+              "targets": 65536,
+              "byte_nll": 154240.96704101562,
+              "bytes": 65514,
+              "bpb": 3.396566813993823
+            }
+          }
+        }
+      ],
+      "wall_seconds": 48.81119010000839,
+      "peak_cuda_bytes": 87185408,
+      "resident_cuda_bytes": 72296448,
+      "parameters": 98816,
+      "physical": {
+        "state_bytes": 790568,
+        "cycle_blocks": 0
+      },
+      "checkpoint_sha256": "4d64f29cde862ceb206d3d028fc3aed0afb1e9576eaade69b2bf65c0a6efdc7e",
+      "registration_sha256": "a4e3c34e49e35839494852dbb9fdd6503949968cf0f029f873cd46fe98c77355",
+      "convergence": "fixed budget exhausted; convergence/superiority not inferred automatically",
+      "final_validation_bpb": {
+        "A": 3.422864470335397,
+        "B": 3.396566813993823
+      },
+      "checkpoint_weight_range": [
+        -0.7675029039382935,
+        0.6524404287338257
+      ],
+      "distinct_parameter_values": 98752,
+      "curve_sha256": "e091cadec5116397452b9fe932723ea68d4644d3e68feba0996c66930964b7e4",
+      "last5_validation": [
+        {
+          "update": 4000,
+          "A": 3.5182402437703937,
+          "B": 3.5100056164683293
+        },
+        {
+          "update": 4250,
+          "A": 3.493908630698678,
+          "B": 3.48419585704707
+        },
+        {
+          "update": 4500,
+          "A": 3.454739513911074,
+          "B": 3.450548108874377
+        },
+        {
+          "update": 4750,
+          "A": 3.4499626011080844,
+          "B": 3.435626216718432
+        },
+        {
+          "update": 5000,
+          "A": 3.422864470335397,
+          "B": 3.396566813993823
+        }
+      ]
+    }
+  },
+  "comparison": {
+    "final_validation_bpb": {
+      "cycle": {
+        "A": 3.8592775864669697,
+        "B": 3.877641384092809
+      },
+      "adam": {
+        "A": 3.422864470335397,
+        "B": 3.396566813993823
+      }
+    },
+    "cycle_minus_adam_bpb": {
+      "A": 0.43641311613157274,
+      "B": 0.4810745700989858
+    },
+    "persistent_state_ratio_adam_over_cycle": 16.000809585492227,
+    "wall_ratio_cycle_over_adam": 1.5998896429278653,
+    "peak_torch_bytes": {
+      "cycle": 83678208,
+      "adam": 87185408
+    }
+  },
+  "limits": [
+    "one seed, fixed untuned rates and98816parameter context128 testbed; no broad superiority or convergence conclusion",
+    "loss-conditioned smooth/PL results do not establish arbitrary language loss premises",
+    "no zero-gradient reconstruction of arbitrary old weights",
+    "no useful lifetime locking or functional differentiation claim",
+    "wall includes training/validation/IO/capture but excludes setup; Torch peak excludes CUDA context/compiler private memory"
+  ],
+  "external_review_resolution": {
+    "status": "mechanical_reference_verified_complete_optimizer_unfinished",
+    "accepted": [
+      "seven-level material readout changes the model parameter family",
+      "cycle update uses current signed gradient with history-dependent bounded allocation, without temporal signed-direction filtering or historical RMS normalization",
+      "local-state and descent contracts do not prove end-to-end language usefulness"
+    ],
+    "source_diagnosis": "Cycle state reads squared gradients only: flipping signs of past gradients leaves the state history unchanged. It remembers allocation contrast, not a signed gradient prediction.",
+    "reusable_lean": [
+      "CGB.GradientFilter.memoryless_gain_excess",
+      "CGB.GradientFilter.shrink_optimum",
+      "CGB.GradientFilter.no_shared_shrink_for_two_snr",
+      "CGB.GradientFilter.optimal_step_newton_times_signal"
+    ],
+    "unsupported_claims": [
+      "quantization makes calculus universally invalid or attention impossible",
+      "2017 Transformer paper proves universal SGD impossibility",
+      "Adam second moments are exact curvature",
+      "adding a latch guarantees Adam parity or superiority"
+    ],
+    "next_action": "Jointly derive gradient estimation, scale adaptation and resource/latch-controlled final updates under the existing noise/drift/cost conditions. Do not tune reserve consumption alone or launch another training run first.",
+    "full_goal_complete": false,
+    "review_status": "self_reviewed_against_source; independent review pending"
+  }
+}

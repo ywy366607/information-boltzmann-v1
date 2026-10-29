@@ -1,0 +1,97 @@
+{
+  "scope": "Adjacent-readout kernel, same physical carrier and energy; numerical/interface only",
+  "integrated_review": {
+    "path": "lean/CGBAxioms/reviews/optimizer_content_bridge.lean",
+    "sha256": "fc0449063eb3683d9151e3bb19a8bc6855623f1e64238eb2b4cff6d44387ddcf",
+    "lean_exit_code": 0,
+    "audited": {
+      "CGB.OptimizerContentReview": [
+        "cooperative_content_contract",
+        "drive_removes_content_barriers",
+        "hidden_basin_calibration",
+        "maximal_reversible_acceptance",
+        "content_gradient_port",
+        "transfer_gradient_port",
+        "event_port_contract",
+        "finite_capacity_content_bridge",
+        "certified_root_refinement",
+        "fractional_probability_enclosure",
+        "force_response_dissipative",
+        "kinetic_survival_envelope",
+        "one_defect_regeneration_margin",
+        "maximal_event_clock"
+      ],
+      "CGB.ResourceEnergyReview": [
+        "scaled_pool_contract",
+        "scaled_resource_generation",
+        "resource_ground_bound",
+        "resource_ground_witness",
+        "resource_monopoly_gap"
+      ],
+      "CGB.ResourceReleaseReview": [
+        "primitive_release_port",
+        "resource_release_drift",
+        "resource_release_budget",
+        "resource_feedback_contract"
+      ],
+      "CGB.RationalSamplerReview": [
+        "rational_mixture_contract",
+        "rational_binary_coin_contract"
+      ],
+      "CGB.FiberOptimizerReview": [
+        "readout_force_response_contract",
+        "readout_regeneration_contract",
+        "readout_block_kernel_contract",
+        "readout_cell_kernel_contract"
+      ]
+    },
+    "compile_record": "lean/CGBAxioms/.lake/material_combined_core.lean.check.json",
+    "auto_implicit_variables": false,
+    "production_modules_added": 0
+  },
+  "full_optimizer_admitted": false,
+  "training_enabled": false,
+  "reference": {
+    "path": "lean/CGBAxioms/.lake/material_readout_fiber_reference.lean",
+    "sha256": "1dfe1db3c6695284894afce92ed9165811d10369452c3fabb268f9532465b5b6",
+    "lean_exit_code": 0,
+    "contexts": 65,
+    "rational_energies": 1755,
+    "candidate_comparisons": 34580
+  },
+  "native_v4_continuation": {
+    "status": "identical",
+    "steps": 7,
+    "paid_attempts": 168,
+    "source": "lean\\CGBAxioms\\.lake\\material_optimizer_pre_fiber_v4\\conjugate_gradient_port.py",
+    "source_sha256": "07050b890d05582e8bcba9de0247eb064a419415dc64fb22fb72179e4fa97862"
+  },
+  "tests": {
+    "source": "tests/test_conjugate_gradient_port.py",
+    "sha256": "5624e06afde7aa48681440ec6dfac42f1a38dd7d537349fe632ac9e7a77b4a59",
+    "passed": 48,
+    "elapsed_seconds": 23.44,
+    "exit_code": 0
+  },
+  "source_sha256": "a97025867ff2331c3fdae776a9934ade7f8d223a83c911f369a01dfccce0f6df",
+  "medium_source_sha256": "104d110891d1cc67f67532fc4348efdafd78e6b9ed8afeabcde0da536a94dc71",
+  "validator_sha256": "3bdbf2596bbeb5421c5e16e3fa79a9ab0b2654aea6a0b4ca39f1dbb07641fa40",
+  "operator": {
+    "class_name": "FiberMaterialOptimizer",
+    "checkpoint": 5,
+    "clock": "readout_fiber_v1",
+    "max_candidate_energies": 13,
+    "fee_factor": 13,
+    "new_per_parameter_arrays": 0,
+    "force_service": "f>34 or f<-22: a descent-level successor has probability>=1/26 per selected cell under scaled H",
+    "regeneration": "N=5, available stock, f<=1: full222 repair probability>=1/8 per selected cell under scaled H",
+    "scope": "Bounds conditional on specified H, frozen force and funded execution; no arbitrary useful-memory or biologically calibrated claim"
+  },
+  "open": [
+    "same-kernel continued-wear and holding/release time bounds",
+    "functional descent with noisy/estimated forces and resource competition",
+    "practical GPU execution and independent real-data continual quality"
+  ],
+  "review_status": "self_reviewed; independent review pending",
+  "model_experiments": 0
+}

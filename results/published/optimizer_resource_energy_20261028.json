@@ -1,0 +1,795 @@
+{
+  "scope": "exact source-energy refinement and conditional Lean ground characterization; no model, task or executed exposure",
+  "review_status": "self_reviewed",
+  "full_optimizer_admitted": false,
+  "training_enabled": false,
+  "hypothesis": {
+    "cap": 2,
+    "coupling": 12,
+    "content_cost": 16,
+    "chemical_base": 2,
+    "epsilon": 0,
+    "potential": "U(t)=t^2 on actual row-P and column-Q compartments",
+    "material_budget": "6*n on an n by n body"
+  },
+  "lean": {
+    "exit_code": 0,
+    "audited": [
+      "resource_ground_bound",
+      "resource_ground_witness",
+      "resource_monopoly_gap"
+    ],
+    "reused_unchanged_proof": true,
+    "original_check": {
+      "proof_sha256": "997c4d0a4c0964ad13c63c795b8575ec39fb8fbc2cd2c818d847a3ab39a5afb6",
+      "exit_code": 0,
+      "stdout": "'CGB.ResourceEnergyReview.resource_ground_bound' depends on axioms: [propext, Classical.choice, Quot.sound]\n'CGB.ResourceEnergyReview.resource_ground_witness' depends on axioms: [propext, Classical.choice, Quot.sound]\n'CGB.ResourceEnergyReview.resource_monopoly_gap' depends on axioms: [propext, Classical.choice, Quot.sound]\n",
+      "verified_tool_session": 91697,
+      "provenance": "Completed standalone check observed in tool output; source has not changed since that check. This is not the later failed recheck.",
+      "environmental_recheck": {
+        "exit_code": 1,
+        "error": "Failed to read an existing shared Mathlib .olean.private dependency; repeated compile was not counted as passed."
+      }
+    },
+    "conclusion": "E>=-4n; every state attaining that bound is entirely off/full and has exactly one full code in every row and column; diagonal codes attain it for all n",
+    "scope": "ground-state shape, not mixing, forced temporal participation or future predictive utility"
+  },
+  "numerical": {
+    "all_admissible_configurations_checked": 302615,
+    "all_microconfigurations": 531441,
+    "ground_energy": -8,
+    "ground_state_ids": [
+      19656,
+      511784
+    ],
+    "ground_states": 2,
+    "source_event_pairs_checked": 548,
+    "source_configurations_checked": 20,
+    "dispersed_ground_single_defect_paths": [
+      {
+        "ground_id": 19656,
+        "edge": 1,
+        "damaged_field": "p",
+        "event_indices": [
+          6,
+          34
+        ],
+        "energy_changes": [
+          0,
+          -31
+        ]
+      },
+      {
+        "ground_id": 19656,
+        "edge": 1,
+        "damaged_field": "q",
+        "event_indices": [
+          34
+        ],
+        "energy_changes": [
+          -31
+        ]
+      },
+      {
+        "ground_id": 19656,
+        "edge": 1,
+        "damaged_field": "w",
+        "event_indices": [
+          18,
+          34
+        ],
+        "energy_changes": [
+          -3,
+          -31
+        ]
+      },
+      {
+        "ground_id": 19656,
+        "edge": 2,
+        "damaged_field": "p",
+        "event_indices": [
+          10,
+          36
+        ],
+        "energy_changes": [
+          0,
+          -31
+        ]
+      },
+      {
+        "ground_id": 19656,
+        "edge": 2,
+        "damaged_field": "q",
+        "event_indices": [
+          36
+        ],
+        "energy_changes": [
+          -31
+        ]
+      },
+      {
+        "ground_id": 19656,
+        "edge": 2,
+        "damaged_field": "w",
+        "event_indices": [
+          20,
+          36
+        ],
+        "energy_changes": [
+          -3,
+          -31
+        ]
+      },
+      {
+        "ground_id": 511784,
+        "edge": 0,
+        "damaged_field": "p",
+        "event_indices": [
+          2,
+          32
+        ],
+        "energy_changes": [
+          0,
+          -31
+        ]
+      },
+      {
+        "ground_id": 511784,
+        "edge": 0,
+        "damaged_field": "q",
+        "event_indices": [
+          32
+        ],
+        "energy_changes": [
+          -31
+        ]
+      },
+      {
+        "ground_id": 511784,
+        "edge": 0,
+        "damaged_field": "w",
+        "event_indices": [
+          16,
+          32
+        ],
+        "energy_changes": [
+          -3,
+          -31
+        ]
+      },
+      {
+        "ground_id": 511784,
+        "edge": 3,
+        "damaged_field": "p",
+        "event_indices": [
+          14,
+          38
+        ],
+        "energy_changes": [
+          0,
+          -31
+        ]
+      },
+      {
+        "ground_id": 511784,
+        "edge": 3,
+        "damaged_field": "q",
+        "event_indices": [
+          38
+        ],
+        "energy_changes": [
+          -31
+        ]
+      },
+      {
+        "ground_id": 511784,
+        "edge": 3,
+        "damaged_field": "w",
+        "event_indices": [
+          22,
+          38
+        ],
+        "energy_changes": [
+          -3,
+          -31
+        ]
+      }
+    ],
+    "path_scope": "12 deterministic native-event paths, at most two events each, zero task force, unchanged other cells; each selected event has acceptance one. Proposal selection, ongoing wear, mixing and temporal service are not certified by these paths.",
+    "block_size": 4096,
+    "energy_dtype": "int16 with prechecked range; candidate IDs int32"
+  },
+  "proof_path": "lean/CGBAxioms/.lake/optimizer_resource_energy.lean",
+  "proof_sha256": "997c4d0a4c0964ad13c63c795b8575ec39fb8fbc2cd2c818d847a3ab39a5afb6",
+  "proof_source_snapshot": "module\npublic import Mathlib.Analysis.SpecialFunctions.Pow.Real\nimport Mathlib.Tactic.FinCases\nimport Mathlib.Tactic.NormNum\nimport Mathlib.Tactic.Linarith\nimport Mathlib.Tactic.Ring\nimport Lean.Elab.Tactic.Omega\n\npublic section\nopen scoped BigOperators\n\n/-! Review scratch while the primary kinetic audit is live. Same p/q/w\ncarrier and source energy, now with the EXISTING quadratic compartment\npotential U(k)=k^2. Registered parameters: c=2, J=12, a=16, chemical_base=2,\nepsilon=0. Thus local energy is 14*N-12*p*q*w. Supply is 6*n material units.\nThis constructive parameter domain is H, not a consequence of six axioms.\nThe full-code indicator below is an observer used only in the proof; no\nindicator, payoff, allocation gate or protected copy is added to the update.\n-/\nnamespace CGB.ResourceEnergyReview\n\nabbrev Field := Fin 3\ndef code (p q w : Field) : ℕ := if p.val = 2 ∧ q.val = 2 ∧ w.val = 2 then 1 else 0\nnoncomputable def phi (p q w : Field) : ℝ :=\n  14 * (p.val + q.val + w.val : ℕ) - 12 * (p.val : ℝ) * q.val * w.val\n\nprivate theorem localBounds (p q w : Field) :\n    0 ≤ phi p q w + 12 * code p q w ∧\n    6 * code p q w ≤ p.val + q.val + w.val ∧\n    2 * code p q w ≤ p.val ∧ 2 * code p q w ≤ q.val := by\n  fin_cases p <;> fin_cases q <;> fin_cases w <;> norm_num [phi, code]\n\nprivate theorem slackZero (p q w : Field) :\n    phi p q w + 12 * code p q w = 0 ↔\n      (p.val = 0 ∧ q.val = 0 ∧ w.val = 0) ∨ (p.val = 2 ∧ q.val = 2 ∧ w.val = 2) := by\n  fin_cases p <;> fin_cases q <;> fin_cases w <;> norm_num [phi, code]\n\ndef codes {n : ℕ} (p q w : Fin n → Fin n → Field) : ℕ := ∑ i, ∑ j, code (p i j) (q i j) (w i j)\ndef mass {n : ℕ} (p q w : Fin n → Fin n → Field) : ℕ :=\n  ∑ i, ∑ j, ((p i j).val + (q i j).val + (w i j).val)\ndef rowP {n : ℕ} (p : Fin n → Fin n → Field) (i : Fin n) : ℕ := ∑ j, (p i j).val\ndef colQ {n : ℕ} (q : Fin n → Fin n → Field) (j : Fin n) : ℕ := ∑ i, (q i j).val\ndef rowCodes {n : ℕ} (p q w : Fin n → Fin n → Field) (i : Fin n) : ℕ :=\n  ∑ j, code (p i j) (q i j) (w i j)\ndef colCodes {n : ℕ} (p q w : Fin n → Fin n → Field) (j : Fin n) : ℕ :=\n  ∑ i, code (p i j) (q i j) (w i j)\nnoncomputable def localSum {n : ℕ} (p q w : Fin n → Fin n → Field) : ℝ :=\n  ∑ i, ∑ j, phi (p i j) (q i j) (w i j)\nnoncomputable def energy {n : ℕ} (p q w : Fin n → Fin n → Field) : ℝ :=\n  localSum p q w + (∑ i, (rowP p i : ℝ)^2) + ∑ j, (colQ q j : ℝ)^2\n\nprivate theorem poolBound (count total : ℕ) (h : 2 * count ≤ total) :\n    4 * (count : ℝ) ≤ (total : ℝ)^2 ∧ 4 * (count : ℝ)^2 ≤ (total : ℝ)^2 := by\n  have h0 : (0 : ℝ) ≤ count := Nat.cast_nonneg _\n  have ht : (0 : ℝ) ≤ total := Nat.cast_nonneg _\n  have h2 : 2 * (count : ℝ) ≤ total := by exact_mod_cast h\n  have hsq : (count : ℝ) ≤ (count : ℝ)^2 := by\n    by_cases hz : count = 0\n    · simp [hz]\n    · have h1 : (1 : ℝ) ≤ count := by exact_mod_cast (Nat.one_le_iff_ne_zero.mpr hz)\n      nlinarith\n  have hp : 0 ≤ ((total : ℝ) - 2 * count) * ((total : ℝ) + 2 * count) :=\n    mul_nonneg (by linarith) (by linarith)\n  constructor <;> nlinarith\n\nprivate theorem rowTwiceBound {n : ℕ} (p q w : Fin n → Fin n → Field) (i : Fin n) :\n    2 * rowCodes p q w i ≤ rowP p i := calc\n  _ = ∑ j, 2 * code (p i j) (q i j) (w i j) := by simp only [rowCodes, Finset.mul_sum]\n  _ ≤ _ := Finset.sum_le_sum (by intro j _; exact (localBounds _ _ _).2.2.1)\n\nprivate theorem colTwiceBound {n : ℕ} (p q w : Fin n → Fin n → Field) (j : Fin n) :\n    2 * colCodes p q w j ≤ colQ q j := calc\n  _ = ∑ i, 2 * code (p i j) (q i j) (w i j) := by simp only [colCodes, Finset.mul_sum]\n  _ ≤ _ := Finset.sum_le_sum (by intro i _; exact (localBounds _ _ _).2.2.2)\n\nprivate theorem poolsUnique {n : ℕ} (a b : Fin n → ℕ)\n    (h2 : ∀ i, 2 * a i ≤ b i) (hsum : ∑ i, a i = n)\n    (hsq : ∑ i, (b i : ℝ)^2 = 4 * n) : ∀ i, a i = 1 := by\n  have ha : (∑ i, (a i : ℝ)) = n := by exact_mod_cast hsum\n  have hb : 4 * (∑ i, (a i : ℝ)^2) ≤ 4 * n := calc\n    _ = ∑ i, 4 * (a i : ℝ)^2 := by rw [Finset.mul_sum]\n    _ ≤ ∑ i, (b i : ℝ)^2 := Finset.sum_le_sum (by intro i _; exact (poolBound _ _ (h2 i)).2)\n    _ = _ := hsq\n  have heq : (∑ i, ((a i : ℝ) - 1)^2) =\n      (∑ i, (a i : ℝ)^2) - 2 * (∑ i, (a i : ℝ)) + n := by\n    calc\n      _ = ∑ i, ((a i : ℝ)^2 - 2 * a i + 1) := Finset.sum_congr rfl (by intro i _; ring)\n      _ = _ := by simp [Finset.sum_add_distrib, Finset.sum_sub_distrib, Finset.mul_sum, nsmul_eq_mul]\n  have hv : (∑ i, ((a i : ℝ) - 1)^2) = 0 :=\n    le_antisymm (by linarith) (Finset.sum_nonneg (by intro i _; exact sq_nonneg _))\n  intro i\n  have hi := (Finset.sum_eq_zero_iff_of_nonneg (fun _ _ => sq_nonneg _)).mp hv i (Finset.mem_univ _)\n  have he : (a i : ℝ) = 1 := by linarith [sq_eq_zero_iff.mp hi]\n  exact_mod_cast he\n\n/-- Same actual energy, arbitrary matrix size: limited material and local\nquadratic resource costs generate a global lower bound without assuming\nrow/column allocation constraints. No state-space enumeration in n. -/\ntheorem resource_ground_bound {n : ℕ} (p q w : Fin n → Fin n → Field)\n    (hsupply : mass p q w ≤ 6 * n) :\n    (-(4 : ℝ) * n ≤ energy p q w) ∧\n    (energy p q w = -(4 : ℝ) * n →\n      (∀ i j, ((p i j).val = 0 ∧ (q i j).val = 0 ∧ (w i j).val = 0) ∨\n        ((p i j).val = 2 ∧ (q i j).val = 2 ∧ (w i j).val = 2)) ∧\n      (∀ i, rowCodes p q w i = 1) ∧ (∀ j, colCodes p q w j = 1)) := by\n  have hm : 6 * codes p q w ≤ mass p q w := calc\n    _ = ∑ i, ∑ j, 6 * code (p i j) (q i j) (w i j) := by simp only [codes, Finset.mul_sum]\n    _ ≤ _ := Finset.sum_le_sum (by\n      intro i _; exact Finset.sum_le_sum (by intro j _; exact (localBounds _ _ _).2.1))\n  have hc : codes p q w ≤ n := by omega\n  have hcr : (codes p q w : ℝ) ≤ n := by exact_mod_cast hc\n  have hnon : 0 ≤ ∑ i, ∑ j, (phi (p i j) (q i j) (w i j) + 12 * code (p i j) (q i j) (w i j)) :=\n    Finset.sum_nonneg (by intro i _; exact Finset.sum_nonneg (by intro j _; exact (localBounds _ _ _).1))\n  have heq : (∑ i, ∑ j, (phi (p i j) (q i j) (w i j) + 12 * code (p i j) (q i j) (w i j))) =\n      localSum p q w + 12 * codes p q w := by\n    simp only [localSum, codes, Nat.cast_sum, Finset.mul_sum, Finset.sum_add_distrib]\n  have hl : -(12 : ℝ) * codes p q w ≤ localSum p q w := by linarith\n  have hr : 4 * (codes p q w : ℝ) ≤ ∑ i, (rowP p i : ℝ)^2 := calc\n    _ = ∑ i, 4 * (rowCodes p q w i : ℝ) := by\n      simp only [codes, rowCodes, Nat.cast_sum, Finset.mul_sum]\n    _ ≤ _ := Finset.sum_le_sum (by\n      intro i _; exact (poolBound _ _ (rowTwiceBound p q w i)).1)\n  have hcc : ∑ j, colCodes p q w j = codes p q w := by\n    unfold colCodes codes; exact Finset.sum_comm\n  have hq : 4 * (codes p q w : ℝ) ≤ ∑ j, (colQ q j : ℝ)^2 := calc\n    _ = 4 * ((∑ j, colCodes p q w j : ℕ) : ℝ) := by rw [hcc]\n    _ = ∑ j, 4 * (colCodes p q w j : ℝ) := by simp only [Nat.cast_sum, Finset.mul_sum]\n    _ ≤ _ := Finset.sum_le_sum (by\n      intro j _; exact (poolBound _ _ (colTwiceBound p q w j)).1)\n  refine ⟨by unfold energy; linarith, ?_⟩\n  intro hE\n  unfold energy at hE\n  have hCn : (codes p q w : ℝ) = n := by linarith\n  have hNatCn : codes p q w = n := by exact_mod_cast hCn\n  have hLocal : localSum p q w = -(12 : ℝ) * codes p q w := by linarith\n  have hRows : (∑ i, (rowP p i : ℝ)^2) = 4 * n := by linarith\n  have hCols : (∑ j, (colQ q j : ℝ)^2) = 4 * n := by linarith\n  have hZero : (∑ i, ∑ j, (phi (p i j) (q i j) (w i j) + 12 * code (p i j) (q i j) (w i j))) = 0 := by\n    rw [heq, hLocal]; ring\n  refine ⟨?_, ?_, ?_⟩\n  · intro i j\n    have hzRows := (Finset.sum_eq_zero_iff_of_nonneg (by\n      intro i _; exact Finset.sum_nonneg (by intro j _; exact (localBounds _ _ _).1))).mp hZero\n    have hz := (Finset.sum_eq_zero_iff_of_nonneg (by\n      intro j _; exact (localBounds (p i j) (q i j) (w i j)).1)).mp (hzRows i (Finset.mem_univ _)) j (Finset.mem_univ _)\n    exact (slackZero _ _ _).mp hz\n  · exact poolsUnique (rowCodes p q w) (rowP p) (rowTwiceBound p q w)\n      (by simpa only [codes, rowCodes] using hNatCn) hRows\n  · exact poolsUnique (colCodes p q w) (colQ q) (colTwiceBound p q w)\n      (by rw [hcc, hNatCn]) hCols\n\ndef diagonal {n : ℕ} (i j : Fin n) : Field :=\n  ⟨if i = j then 2 else 0, by split_ifs <;> decide⟩\nprivate theorem diagonalPhi {n : ℕ} (i j : Fin n) :\n    phi (diagonal i j) (diagonal i j) (diagonal i j) = if i = j then -12 else 0 := by\n  by_cases h : i = j <;> norm_num [diagonal, phi, h]\nprivate theorem diagonalRow {n : ℕ} (i : Fin n) : rowP diagonal i = 2 := by\n  simp [rowP, diagonal]\nprivate theorem diagonalCol {n : ℕ} (j : Fin n) : colQ diagonal j = 2 := by\n  simp [colQ, diagonal]\n\n/-- A dispersed configuration attains the bound at every size; its material\nis exactly the stated supply. This is a ground-state witness, not mixing or\nfuture predictive utility. -/\ntheorem resource_ground_witness (n : ℕ) :\n    mass (@diagonal n) diagonal diagonal = 6 * n ∧\n      energy (@diagonal n) diagonal diagonal = -(4 : ℝ) * n := by\n  constructor\n  · calc\n      mass (@diagonal n) diagonal diagonal = ∑ i : Fin n, ∑ j : Fin n, if i = j then 6 else 0 := by\n        unfold mass\n        apply Finset.sum_congr rfl; intro i _\n        apply Finset.sum_congr rfl; intro j _\n        by_cases h : i = j <;> simp [diagonal, h]\n      _ = 6 * n := by simp [Nat.mul_comm]\n  · simp [energy, localSum, diagonalPhi, diagonalRow, diagonalCol, nsmul_eq_mul]; ring\n\ndef monopoly (i _j : Fin 2) : Field := ⟨if i.val = 0 then 2 else 0, by split_ifs <;> decide⟩\ndef copies (_i j : Fin 2) : Field := ⟨if j.val = 0 then 2 else 0, by split_ifs <;> decide⟩\n\n/-- Explicit same-material counter-configurations: both single-row ownership\nand copying one column pay a strict energy gap in the SAME source energy. -/\ntheorem resource_monopoly_gap :\n    mass monopoly monopoly monopoly = 12 ∧ mass copies copies copies = 12 ∧\n    energy monopoly monopoly monopoly - energy (@diagonal 2) diagonal diagonal = 8 ∧\n    energy copies copies copies - energy (@diagonal 2) diagonal diagonal = 8 := by\n  norm_num [mass, energy, localSum, rowP, colQ, phi, monopoly, copies, diagonal, Fin.sum_univ_succ]\n\nend CGB.ResourceEnergyReview\n#print axioms CGB.ResourceEnergyReview.resource_ground_bound\n#print axioms CGB.ResourceEnergyReview.resource_ground_witness\n#print axioms CGB.ResourceEnergyReview.resource_monopoly_gap\n",
+  "integration_status": "merged into the existing private review; standalone source snapshot retained for provenance",
+  "integrated_review": {
+    "path": "lean/CGBAxioms/reviews/optimizer_content_bridge.lean",
+    "sha256": "b0c06bbda0fff2d632eaf244c880e91b27aed33882af92fd3789f19369bceb92",
+    "lean_exit_code": 0,
+    "audited": {
+      "CGB.OptimizerContentReview": [
+        "cooperative_content_contract",
+        "drive_removes_content_barriers",
+        "hidden_basin_calibration",
+        "maximal_reversible_acceptance",
+        "content_gradient_port",
+        "transfer_gradient_port",
+        "event_port_contract",
+        "finite_capacity_content_bridge",
+        "certified_root_refinement",
+        "fractional_probability_enclosure",
+        "force_response_dissipative",
+        "kinetic_survival_envelope",
+        "one_defect_regeneration_margin",
+        "maximal_event_clock"
+      ],
+      "CGB.ResourceEnergyReview": [
+        "scaled_pool_contract",
+        "scaled_resource_generation",
+        "resource_ground_bound",
+        "resource_ground_witness",
+        "resource_monopoly_gap"
+      ],
+      "CGB.ResourceReleaseReview": [
+        "primitive_release_port",
+        "resource_release_drift",
+        "resource_release_budget",
+        "resource_feedback_contract"
+      ],
+      "CGB.RationalSamplerReview": [
+        "rational_mixture_contract",
+        "rational_binary_coin_contract"
+      ]
+    },
+    "compile_record": "lean/CGBAxioms/.lake/material_combined_core.lean.check.json",
+    "auto_implicit_variables": false,
+    "production_modules_added": 0
+  },
+  "source_sha256": "104d110891d1cc67f67532fc4348efdafd78e6b9ed8afeabcde0da536a94dc71",
+  "gradient_port_sha256": "07050b890d05582e8bcba9de0247eb064a419415dc64fb22fb72179e4fa97862",
+  "validator_sha256": "7c1dfbceba448c77795b6a182efac340febde96a03da285db4bc8ff678e61b91",
+  "joint_scope": "This nonzero-potential chemical-base=2 family differs from the zero-potential chemical-base=0 kinetic audit. Its time bounds are not inherited.",
+  "shared_resource_wear": {
+    "scope": "Same quadratic-resource domain as ground theorem. Exact ideal-kernel algebra; no task, RNG trial or executed exposure.",
+    "workload": {
+      "wear_probability": "1/1024",
+      "force": 0,
+      "total_material": 12,
+      "damage": "uniform among all four cells and three fields; remove one unit if present, returning it to existing stock",
+      "order": "wear then physical opportunity; first exit observed at either substep",
+      "funding": "every counted opportunity funded; maintenance and external work separate"
+    },
+    "observation": "original diagonal cells each have N>=5; other cells remain zero; all other native events continue and any departure counts as failure",
+    "good_states": [
+      [
+        [
+          1,
+          2,
+          2
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          2,
+          2
+        ]
+      ],
+      [
+        [
+          1,
+          2,
+          2
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          2,
+          1,
+          2
+        ]
+      ],
+      [
+        [
+          1,
+          2,
+          2
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          2,
+          2,
+          1
+        ]
+      ],
+      [
+        [
+          1,
+          2,
+          2
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          2,
+          2,
+          2
+        ]
+      ],
+      [
+        [
+          2,
+          1,
+          2
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          2,
+          2
+        ]
+      ],
+      [
+        [
+          2,
+          1,
+          2
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          2,
+          1,
+          2
+        ]
+      ],
+      [
+        [
+          2,
+          1,
+          2
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          2,
+          2,
+          1
+        ]
+      ],
+      [
+        [
+          2,
+          1,
+          2
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          2,
+          2,
+          2
+        ]
+      ],
+      [
+        [
+          2,
+          2,
+          1
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          2,
+          2
+        ]
+      ],
+      [
+        [
+          2,
+          2,
+          1
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          2,
+          1,
+          2
+        ]
+      ],
+      [
+        [
+          2,
+          2,
+          1
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          2,
+          2,
+          1
+        ]
+      ],
+      [
+        [
+          2,
+          2,
+          1
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          2,
+          2,
+          2
+        ]
+      ],
+      [
+        [
+          2,
+          2,
+          2
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          2,
+          2
+        ]
+      ],
+      [
+        [
+          2,
+          2,
+          2
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          2,
+          1,
+          2
+        ]
+      ],
+      [
+        [
+          2,
+          2,
+          2
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          2,
+          2,
+          1
+        ]
+      ],
+      [
+        [
+          2,
+          2,
+          2
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          2,
+          2,
+          2
+        ]
+      ]
+    ],
+    "source_event_pairs_checked": 182,
+    "proposal_families": "all five native reciprocal families at original family weights; no targeted repair selection",
+    "rho": "9223253992287277905/9223372036854775808",
+    "weights": [
+      "2028508977/2147483648",
+      "2047932635/2147483648",
+      "2028508977/2147483648",
+      "4174311501/4294967296",
+      "2047932635/2147483648",
+      "4135081837/4294967296",
+      "2047932635/2147483648",
+      "4214273573/4294967296",
+      "2028508977/2147483648",
+      "2047932635/2147483648",
+      "2028508977/2147483648",
+      "4174311501/4294967296",
+      "4174311501/4294967296",
+      "4214273573/4294967296",
+      "4174311501/4294967296",
+      "1"
+    ],
+    "horizons": [
+      {
+        "funded_opportunities": 256,
+        "first_exit_probability_upper": "129579810535227034295585909/39614081257132168796771975168"
+      },
+      {
+        "funded_opportunities": 1024,
+        "first_exit_probability_upper": "515781607943163789331142257/39614081257132168796771975168"
+      },
+      {
+        "funded_opportunities": 4096,
+        "first_exit_probability_upper": "4046363389626307554784934379/79228162514264337593543950336"
+      },
+      {
+        "funded_opportunities": 65536,
+        "first_exit_probability_upper": "22491088335687655770553522609/39614081257132168796771975168"
+      }
+    ],
+    "exact_rational_diagnostics": {
+      "mean_opportunities_to_first_exit": "3758189678545767342961849528118369592339705484113450267658883029373929509588039282339550492517564099246763930359681881738979149743939121012557037242136680747299117135156989305005515039939338812935311254432008714077277194712924736800623349658527118914389529205799459392291687400349995683631782004119180410880/45434088157142420175419619263233539709666341180277194717750622593613809588690582010884878325898083404181242093535583758273101015870404942590212705886835554130827324290418295668794061755896050361584746870276952059772600814349790947778470384856369822382773951893292237320455233489117844726349527976855989",
+      "single_defect_indices": [
+        3,
+        7,
+        11,
+        12,
+        13,
+        14
+      ],
+      "repair_before_exit_without_further_wear": [
+        "230610213876615262512157559825021767602592830882878209289417837706859184485046708457865310568000833576511382131559354680017827513256811207922106648426607057443037640458508191652241167152902393388900110920229284306070150599563151282486435119104/230638584482177059243871439215736086140833170241341246642945773958898387034268094766226553943565408122308090691753687396423720927886354042830018445613787656972399050093325180755463506810370760136046203715876750731814010497607812759272811547247",
+        "230624289208731616368615871841145684864511593102330633473684226459785858311921284402683636564598380204043624648010781857187658048526071365285714654551889728353177182678040729555575087144278683065603978321246108029227337845608360130459568439296/230638584482177059243871439215736086140833170241341246642945773958898387034268094766226553943565408122308090691753687396423720927886354042830018445613787656972399050093325180755463506810370760136046203715876750731814010497607812759272811547247",
+        "230610213876613624028040084778625254881995734582176346228513089783340181350075923773638887599911177896474161372320767462697581917254283261284126546184078806872934969789943154212436938218737684392291014857814230263146824870351178819746318516224/230638584482177059243871439215736086140833170241341246642945773958898387034268094766226553943565408122308090691753687396423720927886354042830018445613787656972399050093325180755463506810370760136046203715876750731814010497607812759272811547247",
+        "230610213876615262512157559825021767602592830882878209289417837706859184485046708457865310568000833576511382131559354680017827513256811207922106648426607057443037640458508191652241167152902393388900110920229284306070150599563151282486435119104/230638584482177059243871439215736086140833170241341246642945773958898387034268094766226553943565408122308090691753687396423720927886354042830018445613787656972399050093325180755463506810370760136046203715876750731814010497607812759272811547247",
+        "230624289208731616368615871841145684864511593102330633473684226459785858311921284402683636564598380204043624648010781857187658048526071365285714654551889728353177182678040729555575087144278683065603978321246108029227337845608360130459568439296/230638584482177059243871439215736086140833170241341246642945773958898387034268094766226553943565408122308090691753687396423720927886354042830018445613787656972399050093325180755463506810370760136046203715876750731814010497607812759272811547247",
+        "230610213876613624028040084778625254881995734582176346228513089783340181350075923773638887599911177896474161372320767462697581917254283261284126546184078806872934969789943154212436938218737684392291014857814230263146824870351178819746318516224/230638584482177059243871439215736086140833170241341246642945773958898387034268094766226553943565408122308090691753687396423720927886354042830018445613787656972399050093325180755463506810370760136046203715876750731814010497607812759272811547247"
+      ],
+      "mean_attempts_to_repair_or_exit_without_further_wear": [
+        "27817357049437271037897649250526375922014434766190586669961810081299871441533818974876548721117367062636532517019124701048877865537709317535882601047833266030883735535374715637291848484741953670832799092371686926431552310187929460105488231301120/230638584482177059243871439215736086140833170241341246642945773958898387034268094766226553943565408122308090691753687396423720927886354042830018445613787656972399050093325180755463506810370760136046203715876750731814010497607812759272811547247",
+        "18593511507086758674311409268705924061876450492966096252480109510498381233091030995970843134289122110782494831577896254989594743398223209288076158705611720428743984241839308141110460819447771705504921755347775511145739720085189745502898565939200/230638584482177059243871439215736086140833170241341246642945773958898387034268094766226553943565408122308090691753687396423720927886354042830018445613787656972399050093325180755463506810370760136046203715876750731814010497607812759272811547247",
+        "27817357049437073395750974769265124337997887863788075289015598119092255897873192923031640469903510163216416904062043374325887505165496026875971280100735063124012636500754920146632312793662323362941217274505534872967353027087272658794432922910720/230638584482177059243871439215736086140833170241341246642945773958898387034268094766226553943565408122308090691753687396423720927886354042830018445613787656972399050093325180755463506810370760136046203715876750731814010497607812759272811547247",
+        "27817357049437271037897649250526375922014434766190586669961810081299871441533818974876548721117367062636532517019124701048877865537709317535882601047833266030883735535374715637291848484741953670832799092371686926431552310187929460105488231301120/230638584482177059243871439215736086140833170241341246642945773958898387034268094766226553943565408122308090691753687396423720927886354042830018445613787656972399050093325180755463506810370760136046203715876750731814010497607812759272811547247",
+        "18593511507086758674311409268705924061876450492966096252480109510498381233091030995970843134289122110782494831577896254989594743398223209288076158705611720428743984241839308141110460819447771705504921755347775511145739720085189745502898565939200/230638584482177059243871439215736086140833170241341246642945773958898387034268094766226553943565408122308090691753687396423720927886354042830018445613787656972399050093325180755463506810370760136046203715876750731814010497607812759272811547247",
+        "27817357049437073395750974769265124337997887863788075289015598119092255897873192923031640469903510163216416904062043374325887505165496026875971280100735063124012636500754920146632312793662323362941217274505534872967353027087272658794432922910720/230638584482177059243871439215736086140833170241341246642945773958898387034268094766226553943565408122308090691753687396423720927886354042830018445613787656972399050093325180755463506810370760136046203715876750731814010497607812759272811547247"
+      ]
+    },
+    "lean_exit_code": 0,
+    "declarations": [
+      "kinetic_survival_envelope",
+      "ResourceWear.certificate"
+    ],
+    "proof_path": "lean/CGBAxioms/.lake/material_resource_wear.lean",
+    "proof_sha256": "f41407c932c144aac2c2669262335e7878159dcc2c9a301d5a8f44e446b47c68",
+    "proof_source_snapshot": "module\npublic import Mathlib.Basic.Real.Basic\npublic import Mathlib.Data.Fintype.Defs\npublic import Mathlib.Algebra.Order.BigOperators.Group.Finset\npublic import Mathlib.Algebra.BigOperators.Ring.Finset\npublic import Mathlib.Algebra.BigOperators.Fin\nimport Mathlib.Tactic.NormNum\nimport Mathlib.Tactic.Ring\nimport Mathlib.Tactic.FinCases\npublic section\nopen scoped BigOperators\nnamespace CGB.OptimizerContentReview\nnoncomputable def kernelSurvival {X : Type*} [Fintype X]\n    (K : ℕ → X → X → ℝ) : ℕ → ℕ → X → ℝ\n  | 0, _, _ => 1\n  | n + 1, start, x => ∑ y, K start x y * kernelSurvival K n (start + 1) y\n\n/-- One finite weighted-row certificate controls EVERY funded horizon.\nNo tick-by-tick expansion, stationarity, eigensolver or fitted retention rule\nis needed. The verifier supplies the same actual event kernel and checks the\nfinite row inequalities, including controlled rate intervals when present. -/\ntheorem kinetic_survival_envelope {X : Type*} [Fintype X]\n    (K : ℕ → X → X → ℝ) (v : X → ℝ) (rho : ℝ)\n    (hK : ∀ n x y, 0 ≤ K n x y) (hr : 0 ≤ rho) :\n    ((∀ x, v x ≤ 1) → (∀ n x, rho * v x ≤ ∑ y, K n x y * v y) →\n      ∀ T start x, rho ^ T * v x ≤ kernelSurvival K T start x) ∧\n    ((∀ x, 1 ≤ v x) → (∀ n x, (∑ y, K n x y * v y) ≤ rho * v x) →\n      ∀ T start x, kernelSurvival K T start x ≤ rho ^ T * v x) := by\n  constructor\n  · intro hv hrow T\n    induction T with\n    | zero => intro start x; simpa [kernelSurvival] using hv x\n    | succ n ih =>\n      intro start x\n      calc\n        rho ^ (n + 1) * v x = rho ^ n * (rho * v x) := by ring\n        _ ≤ rho ^ n * ∑ y, K start x y * v y :=\n          mul_le_mul_of_nonneg_left (hrow start x) (pow_nonneg hr _)\n        _ = ∑ y, K start x y * (rho ^ n * v y) := by\n          rw [Finset.mul_sum]\n          apply Finset.sum_congr rfl\n          intro y _\n          ring\n        _ ≤ ∑ y, K start x y * kernelSurvival K n (start + 1) y := by\n          apply Finset.sum_le_sum\n          intro y _\n          exact mul_le_mul_of_nonneg_left (ih (start + 1) y) (hK start x y)\n        _ = kernelSurvival K (n + 1) start x := rfl\n  · intro hv hrow T\n    induction T with\n    | zero => intro start x; simpa [kernelSurvival] using hv x\n    | succ n ih =>\n      intro start x\n      calc\n        kernelSurvival K (n + 1) start x =\n            ∑ y, K start x y * kernelSurvival K n (start + 1) y := rfl\n        _ ≤ ∑ y, K start x y * (rho ^ n * v y) := by\n          apply Finset.sum_le_sum\n          intro y _\n          exact mul_le_mul_of_nonneg_left (ih (start + 1) y) (hK start x y)\n        _ = rho ^ n * ∑ y, K start x y * v y := by\n          rw [Finset.mul_sum]\n          apply Finset.sum_congr rfl\n          intro y _\n          ring\n        _ ≤ rho ^ n * (rho * v x) :=\n          mul_le_mul_of_nonneg_left (hrow start x) (pow_nonneg hr _)\n        _ = rho ^ (n + 1) * v x := by ring\n\n\nnamespace ResourceWear\nset_option maxHeartbeats 4000000\nprivate def row0 (y : Fin 16) : ℕ :=\n  match y.val with\n  | 0 => 18488466155892484305020910953275404\n  | 1 => 486540146000097297161953399013376\n  | 4 => 486540146000097297161953399013376\n  | _ => 0\nprivate def row1 (y : Fin 16) : ℕ :=\n  match y.val with\n  | 0 => 486540146000097297161953399013376\n  | 1 => 17994353516138418160236040739069964\n  | 2 => 7602189781251520268155521859584\n  | 3 => 486540146000097297161953399013376\n  | 5 => 486540146000097297161953399013376\n  | _ => 0\nprivate def row2 (y : Fin 16) : ℕ :=\n  match y.val with\n  | 1 => 486540146000097297161953399013376\n  | 2 => 18488466155892480847945246993010694\n  | 6 => 486540146000097297161953399013376\n  | _ => 0\nprivate def row3 (y : Fin 16) : ℕ :=\n  match y.val with\n  | 0 => 1544944333324587331231303073790\n  | 1 => 1544327781154422248032104873982\n  | 2 => 1505949222087097571097003950079\n  | 3 => 18975075612027675205072870990376978\n  | 4 => 39614081257132168796771975168\n  | 5 => 39614081257132168796771975168\n  | 6 => 39614081257132168796771975168\n  | 7 => 486540146000097297161953399013376\n  | _ => 0\nprivate def row4 (y : Fin 16) : ℕ :=\n  match y.val with\n  | 0 => 486540146000097297161953399013376\n  | 4 => 17994353516138418160236040739069964\n  | 5 => 486540146000097297161953399013376\n  | 8 => 7602189781251520268155521859584\n  | 12 => 486540146000097297161953399013376\n  | _ => 0\nprivate def row5 (y : Fin 16) : ℕ :=\n  match y.val with\n  | 1 => 486540146000097297161953399013376\n  | 4 => 486540146000097297161953399013376\n  | 5 => 17500240876384352015451170524864524\n  | 6 => 7602189781251520268155521859584\n  | 7 => 486540146000097297161953399013376\n  | 9 => 7602189781251520268155521859584\n  | 13 => 486540146000097297161953399013376\n  | _ => 0\nprivate def row6 (y : Fin 16) : ℕ :=\n  match y.val with\n  | 2 => 486540146000097297161953399013376\n  | 5 => 486540146000097297161953399013376\n  | 6 => 17994353516138414703160376778805254\n  | 10 => 7602189781251520268155521859584\n  | 14 => 486540146000097297161953399013376\n  | _ => 0\nprivate def row7 (y : Fin 16) : ℕ :=\n  match y.val with\n  | 0 => 39614081257132168796771975168\n  | 1 => 39614081257132168796771975168\n  | 2 => 39614081257132168796771975168\n  | 3 => 486540146000097297161953399013376\n  | 4 => 1504713699897289973733756239870\n  | 5 => 1504097147727124890534558040062\n  | 6 => 1465718588659800213599457116159\n  | 7 => 18480962972273609060288000776171538\n  | 8 => 618970019642690137449562112\n  | 9 => 618970019642690137449562112\n  | 10 => 618970019642690137449562112\n  | 11 => 7602189781251520268155521859584\n  | 12 => 39614081257132168796771975168\n  | 13 => 39614081257132168796771975168\n  | 14 => 39614081257132168796771975168\n  | 15 => 486540146000097297161953399013376\n  | _ => 0\nprivate def row8 (y : Fin 16) : ℕ :=\n  match y.val with\n  | 4 => 486540146000097297161953399013376\n  | 8 => 18488466155892480847945246993010694\n  | 9 => 486540146000097297161953399013376\n  | _ => 0\nprivate def row9 (y : Fin 16) : ℕ :=\n  match y.val with\n  | 5 => 486540146000097297161953399013376\n  | 8 => 486540146000097297161953399013376\n  | 9 => 17994353516138414703160376778805254\n  | 10 => 7602189781251520268155521859584\n  | 11 => 486540146000097297161953399013376\n  | _ => 0\nprivate def row10 (y : Fin 16) : ℕ :=\n  match y.val with\n  | 6 => 486540146000097297161953399013376\n  | 9 => 486540146000097297161953399013376\n  | 10 => 18488466155892477390869583032745984\n  | _ => 0\nprivate def row11 (y : Fin 16) : ℕ :=\n  match y.val with\n  | 4 => 39614081257132168796771975168\n  | 5 => 39614081257132168796771975168\n  | 6 => 39614081257132168796771975168\n  | 7 => 486540146000097297161953399013376\n  | 8 => 1544944333324587049756326363135\n  | 9 => 1544327781154421966557128163327\n  | 10 => 1505949222087097289622027239424\n  | 11 => 18975075612027671747997207030112268\n  | _ => 0\nprivate def row12 (y : Fin 16) : ℕ :=\n  match y.val with\n  | 0 => 1544944333324587331231303073790\n  | 1 => 39614081257132168796771975168\n  | 4 => 1544327781154422248032104873982\n  | 5 => 39614081257132168796771975168\n  | 8 => 1505949222087097571097003950079\n  | 9 => 39614081257132168796771975168\n  | 12 => 18975075612027675205072870990376978\n  | 13 => 486540146000097297161953399013376\n  | _ => 0\nprivate def row13 (y : Fin 16) : ℕ :=\n  match y.val with\n  | 0 => 39614081257132168796771975168\n  | 1 => 1504713699897289973733756239870\n  | 2 => 618970019642690137449562112\n  | 3 => 39614081257132168796771975168\n  | 4 => 39614081257132168796771975168\n  | 5 => 1504097147727124890534558040062\n  | 6 => 618970019642690137449562112\n  | 7 => 39614081257132168796771975168\n  | 8 => 39614081257132168796771975168\n  | 9 => 1465718588659800213599457116159\n  | 10 => 618970019642690137449562112\n  | 11 => 39614081257132168796771975168\n  | 12 => 486540146000097297161953399013376\n  | 13 => 18480962972273609060288000776171538\n  | 14 => 7602189781251520268155521859584\n  | 15 => 486540146000097297161953399013376\n  | _ => 0\nprivate def row14 (y : Fin 16) : ℕ :=\n  match y.val with\n  | 1 => 39614081257132168796771975168\n  | 2 => 1544944333324587049756326363135\n  | 5 => 39614081257132168796771975168\n  | 6 => 1544327781154421966557128163327\n  | 9 => 39614081257132168796771975168\n  | 10 => 1505949222087097289622027239424\n  | 13 => 486540146000097297161953399013376\n  | 14 => 18975075612027671747997207030112268\n  | _ => 0\nprivate def row15 (y : Fin 16) : ℕ :=\n  match y.val with\n  | 1 => 8589934592\n  | 3 => 1584560832433359010752811237373\n  | 4 => 8589934592\n  | 5 => 17179869184\n  | 6 => 8589934592\n  | 7 => 1583944280263193927553613037565\n  | 9 => 8589934592\n  | 11 => 1545565721195869250618512113662\n  | 12 => 1584560832433359010752811237373\n  | 13 => 1583944280263193927553613037565\n  | 14 => 1545565721195869250618512113662\n  | 15 => 19461685068166406150604726351118360\n  | _ => 0\nprivate def raw (x y : Fin 16) : ℕ :=\n  match x.val with\n  | 0 => row0 y\n  | 1 => row1 y\n  | 2 => row2 y\n  | 3 => row3 y\n  | 4 => row4 y\n  | 5 => row5 y\n  | 6 => row6 y\n  | 7 => row7 y\n  | 8 => row8 y\n  | 9 => row9 y\n  | 10 => row10 y\n  | 11 => row11 y\n  | 12 => row12 y\n  | 13 => row13 y\n  | 14 => row14 y\n  | 15 => row15 y\n  | _ => 0\nprivate def rawValue (x : Fin 16) : ℕ :=\n  match x.val with\n  | 0 => 4057017954\n  | 1 => 4095865270\n  | 2 => 4057017954\n  | 3 => 4174311501\n  | 4 => 4095865270\n  | 5 => 4135081837\n  | 6 => 4095865270\n  | 7 => 4214273573\n  | 8 => 4057017954\n  | 9 => 4095865270\n  | 10 => 4057017954\n  | 11 => 4174311501\n  | 12 => 4174311501\n  | 13 => 4214273573\n  | 14 => 4174311501\n  | 15 => 4294967296\n  | _ => 0\n\nnoncomputable def kernel (_ : ℕ) (x y : Fin 16) : ℝ := raw x y / 19471113219505603606989361234575360\nnoncomputable def value (x : Fin 16) : ℝ := rawValue x / 4294967296\nnoncomputable def rho : ℝ := (18446507984574555810 : ℝ) / 18446744073709551616\ntheorem certificate : ∀ T start x,\n    rho^T * value x ≤ kernelSurvival kernel T start x := by\n  apply (kinetic_survival_envelope kernel value rho ?_ ?_).1\n  · intro x; fin_cases x <;> norm_num [value, rawValue]\n  · intro n x\n    fin_cases x <;> norm_num [kernel, raw, value, rawValue, rho,\n      row0, row1, row2, row3, row4, row5, row6, row7, row8, row9, row10, row11, row12, row13, row14, row15, Fin.sum_univ_succ]\n\n  · intro n x y\n    exact div_nonneg (Nat.cast_nonneg _) (by norm_num)\n  · norm_num [rho]\nend ResourceWear\n#print axioms kinetic_survival_envelope\n#print axioms ResourceWear.certificate\nend CGB.OptimizerContentReview\n",
+    "reused_envelope_source_sha256": "7ebf6dcc77651d0f004431f921885a46134c8149daade585e9740d61dc5e0cc3",
+    "primary_proof_sha256": "b0c06bbda0fff2d632eaf244c880e91b27aed33882af92fd3789f19369bceb92",
+    "scope_remaining": "constant zero task force, first exit of a strict neighborhood; not forced release, changing-force robustness, long-term resource service or useful learning",
+    "full_optimizer_admitted": false,
+    "review_status": "self_reviewed"
+  },
+  "resource_feedback": {
+    "declaration": "CGB.ResourceReleaseReview.resource_feedback_contract",
+    "scope": "Registered cap2/J12/a16/mu2 quadratic-pool H; local Q-port energetic margins and repair-rate load response, not complete ignition/refractoriness/useful-memory evidence",
+    "independent_review": "pending",
+    "additional_persistent_state_bytes": 0,
+    "lower_force_margin": "-15-2*L",
+    "upper_force_margin": "31-2*L",
+    "local_margin_overlap_width": 46,
+    "repair_cost": "f+2*L-31",
+    "crowded_repair_multiplier": "2^(-4*h) for h>=0 and f+2*L>=31",
+    "source_event_checks": 3420,
+    "tests_command": "D:/conda_envs/vox/python.exe -m pytest tests/test_conjugate_gradient_port.py -q",
+    "tests_passed": 41,
+    "elapsed_seconds": 18.57,
+    "observed_tool_session": 87640,
+    "production_update_changed": false,
+    "theorem_premises": "Actual registered energy/rate formulas; no healthy-latch or diversity premise"
+  },
+  "compartment_scaling_diagnostic": {
+    "scope": "Unscaled fixed-H historical arithmetic; the new density-scaled family is separately proved and checked in optimizer_scaled_pool_20261028.json",
+    "formula": "L=2(k-1), delta_export=35-4k, acceptance=2^min(0,-2*delta_export)",
+    "checked_k": [
+      {
+        "full_codes_in_column": 1,
+        "Q_export_energy": 31,
+        "log2_acceptance": "-62"
+      },
+      {
+        "full_codes_in_column": 2,
+        "Q_export_energy": 27,
+        "log2_acceptance": "-54"
+      },
+      {
+        "full_codes_in_column": 3,
+        "Q_export_energy": 23,
+        "log2_acceptance": "-46"
+      },
+      {
+        "full_codes_in_column": 4,
+        "Q_export_energy": 19,
+        "log2_acceptance": "-38"
+      },
+      {
+        "full_codes_in_column": 5,
+        "Q_export_energy": 15,
+        "log2_acceptance": "-30"
+      },
+      {
+        "full_codes_in_column": 6,
+        "Q_export_energy": 11,
+        "log2_acceptance": "-22"
+      },
+      {
+        "full_codes_in_column": 7,
+        "Q_export_energy": 7,
+        "log2_acceptance": "-14"
+      },
+      {
+        "full_codes_in_column": 8,
+        "Q_export_energy": 3,
+        "log2_acceptance": "-6"
+      },
+      {
+        "full_codes_in_column": 9,
+        "Q_export_energy": -1,
+        "log2_acceptance": "0"
+      },
+      {
+        "full_codes_in_column": 10,
+        "Q_export_energy": -5,
+        "log2_acceptance": "0"
+      },
+      {
+        "full_codes_in_column": 11,
+        "Q_export_energy": -9,
+        "log2_acceptance": "0"
+      },
+      {
+        "full_codes_in_column": 12,
+        "Q_export_energy": -13,
+        "log2_acceptance": "0"
+      }
+    ],
+    "local_two_endpoint_Q_margin_requires": "k<=8 at zero force",
+    "generic_optimizer_admission": false
+  },
+  "probability_sampler": {
+    "receipt": "results/published/optimizer_probability_sampler_20261028.json",
+    "sampler": "rational_geometric_mixture_v1",
+    "source_sha256": "07050b890d05582e8bcba9de0247eb064a419415dc64fb22fb72179e4fa97862",
+    "ideal_bit_probability_identity_verified": true,
+    "PRNG_independence_assumed": true
+  },
+  "scaled_pool_review": {
+    "receipt": "results/published/optimizer_scaled_pool_20261028.json",
+    "scope": "Separate scaled family; original temporal certificates transfer only at identical 2x2 kernel, not to larger bodies"
+  }
+}

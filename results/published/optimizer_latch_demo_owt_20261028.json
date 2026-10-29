@@ -1,0 +1,583 @@
+{
+  "scope": "experimental active restoration in existing Adam-base ResourceCycle; matched-state A-B-A OWT, one seed fixed 5000-step budget",
+  "registration_sha256": "d7a051bfbf251adf22f5d0808e5f1218b79fa47119b23537aacf966debd060a8",
+  "parameters": 98816,
+  "extra_reference_bytes": 395264,
+  "old_baseline_exact_bpb_steps": 5000,
+  "arms": {
+    "latch_control": {
+      "updates": 5000,
+      "targets": 5120000,
+      "prequential_bpb": 3.1716491594551703,
+      "phase_bpb": [
+        3.5223030464987657,
+        3.173398783145858,
+        2.8201289786967942
+      ],
+      "validation": [
+        {
+          "update": 0,
+          "A_bpb": 8.884173686082612,
+          "B_bpb": 8.903258802074243
+        },
+        {
+          "update": 250,
+          "A_bpb": 4.026346966753069,
+          "B_bpb": 4.108123025824757
+        },
+        {
+          "update": 500,
+          "A_bpb": 3.845658893352716,
+          "B_bpb": 3.877719850645677
+        },
+        {
+          "update": 750,
+          "A_bpb": 3.7126520300015837,
+          "B_bpb": 3.721554889183958
+        },
+        {
+          "update": 1000,
+          "A_bpb": 3.6335728502735636,
+          "B_bpb": 3.60810529117412
+        },
+        {
+          "update": 1250,
+          "A_bpb": 3.529555693377933,
+          "B_bpb": 3.533049810271583
+        },
+        {
+          "update": 1500,
+          "A_bpb": 3.4425418674923796,
+          "B_bpb": 3.4382947891825983
+        },
+        {
+          "update": 1750,
+          "A_bpb": 3.4180294869209935,
+          "B_bpb": 3.414529670820233
+        },
+        {
+          "update": 2000,
+          "A_bpb": 3.3764841000632035,
+          "B_bpb": 3.3562024848072713
+        },
+        {
+          "update": 2250,
+          "A_bpb": 3.394414517252233,
+          "B_bpb": 3.2957115896472784
+        },
+        {
+          "update": 2500,
+          "A_bpb": 3.320075952161641,
+          "B_bpb": 3.2429826360040277
+        },
+        {
+          "update": 2750,
+          "A_bpb": 3.3762086841355314,
+          "B_bpb": 3.338219574521307
+        },
+        {
+          "update": 3000,
+          "A_bpb": 3.263796900854538,
+          "B_bpb": 3.182400683084123
+        },
+        {
+          "update": 3250,
+          "A_bpb": 3.199599052074088,
+          "B_bpb": 3.140983590281066
+        },
+        {
+          "update": 3500,
+          "A_bpb": 3.144040865824873,
+          "B_bpb": 3.10205880917234
+        },
+        {
+          "update": 3750,
+          "A_bpb": 3.144530083029823,
+          "B_bpb": 3.1474096273106786
+        },
+        {
+          "update": 4000,
+          "A_bpb": 3.1181107970592086,
+          "B_bpb": 3.091278074692156
+        },
+        {
+          "update": 4250,
+          "A_bpb": 3.105902655660131,
+          "B_bpb": 3.074326412219711
+        },
+        {
+          "update": 4500,
+          "A_bpb": 3.0542771722302855,
+          "B_bpb": 3.004225732577108
+        },
+        {
+          "update": 4750,
+          "A_bpb": 3.056479386425459,
+          "B_bpb": 3.019157799310052
+        },
+        {
+          "update": 5000,
+          "A_bpb": 3.0709271587893814,
+          "B_bpb": 2.9966200494451427
+        }
+      ],
+      "physical_samples": [
+        {
+          "update": 250,
+          "state_bytes": 1589832,
+          "cycle_blocks": 0,
+          "max_allocation_budget_residual": 2.384185791015625e-07,
+          "phase_positive_fraction": 0.28877914507772023,
+          "mean_anchor_gap": 0.004713255892763483
+        },
+        {
+          "update": 500,
+          "state_bytes": 1589832,
+          "cycle_blocks": 0,
+          "max_allocation_budget_residual": 2.384185791015625e-07,
+          "phase_positive_fraction": 0.24121599740932642,
+          "mean_anchor_gap": 0.0029572516177911214
+        },
+        {
+          "update": 750,
+          "state_bytes": 1589832,
+          "cycle_blocks": 0,
+          "max_allocation_budget_residual": 2.384185791015625e-07,
+          "phase_positive_fraction": 0.24013317681347152,
+          "mean_anchor_gap": 0.0034529405013884905
+        },
+        {
+          "update": 1000,
+          "state_bytes": 1589832,
+          "cycle_blocks": 0,
+          "max_allocation_budget_residual": 2.384185791015625e-07,
+          "phase_positive_fraction": 0.22679525582901555,
+          "mean_anchor_gap": 0.0037222884865622447
+        },
+        {
+          "update": 1250,
+          "state_bytes": 1589832,
+          "cycle_blocks": 0,
+          "max_allocation_budget_residual": 2.384185791015625e-07,
+          "phase_positive_fraction": 0.23855448510362695,
+          "mean_anchor_gap": 0.003502983445485021
+        },
+        {
+          "update": 1500,
+          "state_bytes": 1589832,
+          "cycle_blocks": 0,
+          "max_allocation_budget_residual": 2.384185791015625e-07,
+          "phase_positive_fraction": 0.2532788212435233,
+          "mean_anchor_gap": 0.003340962868898026
+        },
+        {
+          "update": 1750,
+          "state_bytes": 1589832,
+          "cycle_blocks": 0,
+          "max_allocation_budget_residual": 2.384185791015625e-07,
+          "phase_positive_fraction": 0.24689321567357514,
+          "mean_anchor_gap": 0.0036994894011033014
+        },
+        {
+          "update": 2000,
+          "state_bytes": 1589832,
+          "cycle_blocks": 0,
+          "max_allocation_budget_residual": 3.5762786865234375e-07,
+          "phase_positive_fraction": 0.23346421632124353,
+          "mean_anchor_gap": 0.0043807828538312815
+        },
+        {
+          "update": 2250,
+          "state_bytes": 1589832,
+          "cycle_blocks": 0,
+          "max_allocation_budget_residual": 2.980232238769531e-07,
+          "phase_positive_fraction": 0.2475206444300518,
+          "mean_anchor_gap": 0.0047991519957935255
+        },
+        {
+          "update": 2500,
+          "state_bytes": 1589832,
+          "cycle_blocks": 0,
+          "max_allocation_budget_residual": 3.5762786865234375e-07,
+          "phase_positive_fraction": 0.2539669689119171,
+          "mean_anchor_gap": 0.004264256381309094
+        },
+        {
+          "update": 2750,
+          "state_bytes": 1589832,
+          "cycle_blocks": 0,
+          "max_allocation_budget_residual": 2.384185791015625e-07,
+          "phase_positive_fraction": 0.24762184261658032,
+          "mean_anchor_gap": 0.005860547559248969
+        },
+        {
+          "update": 3000,
+          "state_bytes": 1589832,
+          "cycle_blocks": 0,
+          "max_allocation_budget_residual": 2.384185791015625e-07,
+          "phase_positive_fraction": 0.24836058937823835,
+          "mean_anchor_gap": 0.004891113489094176
+        },
+        {
+          "update": 3250,
+          "state_bytes": 1589832,
+          "cycle_blocks": 0,
+          "max_allocation_budget_residual": 2.384185791015625e-07,
+          "phase_positive_fraction": 0.24913981541450778,
+          "mean_anchor_gap": 0.0035583785701292165
+        },
+        {
+          "update": 3500,
+          "state_bytes": 1589832,
+          "cycle_blocks": 0,
+          "max_allocation_budget_residual": 2.980232238769531e-07,
+          "phase_positive_fraction": 0.23973850388601037,
+          "mean_anchor_gap": 0.0040047516747151015
+        },
+        {
+          "update": 3750,
+          "state_bytes": 1589832,
+          "cycle_blocks": 0,
+          "max_allocation_budget_residual": 2.384185791015625e-07,
+          "phase_positive_fraction": 0.25549506152849744,
+          "mean_anchor_gap": 0.004141080719201676
+        },
+        {
+          "update": 4000,
+          "state_bytes": 1589832,
+          "cycle_blocks": 0,
+          "max_allocation_budget_residual": 2.384185791015625e-07,
+          "phase_positive_fraction": 0.2594620304404145,
+          "mean_anchor_gap": 0.004170343704483052
+        },
+        {
+          "update": 4250,
+          "state_bytes": 1589832,
+          "cycle_blocks": 0,
+          "max_allocation_budget_residual": 2.384185791015625e-07,
+          "phase_positive_fraction": 0.26238665803108807,
+          "mean_anchor_gap": 0.004049471565015576
+        },
+        {
+          "update": 4500,
+          "state_bytes": 1589832,
+          "cycle_blocks": 0,
+          "max_allocation_budget_residual": 2.384185791015625e-07,
+          "phase_positive_fraction": 0.25601117227979275,
+          "mean_anchor_gap": 0.003723925298050895
+        },
+        {
+          "update": 4750,
+          "state_bytes": 1589832,
+          "cycle_blocks": 0,
+          "max_allocation_budget_residual": 2.384185791015625e-07,
+          "phase_positive_fraction": 0.23786633743523317,
+          "mean_anchor_gap": 0.004373535262951579
+        },
+        {
+          "update": 5000,
+          "state_bytes": 1589832,
+          "cycle_blocks": 0,
+          "max_allocation_budget_residual": 2.384185791015625e-07,
+          "phase_positive_fraction": 0.25785297927461137,
+          "mean_anchor_gap": 0.004087147413912215
+        }
+      ],
+      "wall_seconds": 247.23652170001878,
+      "peak_cuda_bytes": 87994880,
+      "state_bytes": 1589832,
+      "checkpoint_sha256": "da55642ad6da2c439c84ba808c1763833511e86c841c62259ab7d0c100b51e19"
+    },
+    "latch_demo": {
+      "updates": 5000,
+      "targets": 5120000,
+      "prequential_bpb": 3.177203822116767,
+      "phase_bpb": [
+        3.5270572313765056,
+        3.1793330656911483,
+        2.826294279636257
+      ],
+      "validation": [
+        {
+          "update": 0,
+          "A_bpb": 8.884173686082612,
+          "B_bpb": 8.903258802074243
+        },
+        {
+          "update": 250,
+          "A_bpb": 4.026652931866529,
+          "B_bpb": 4.110780033948039
+        },
+        {
+          "update": 500,
+          "A_bpb": 3.849282675900173,
+          "B_bpb": 3.8827440594559715
+        },
+        {
+          "update": 750,
+          "A_bpb": 3.7192925318730343,
+          "B_bpb": 3.7287256407347535
+        },
+        {
+          "update": 1000,
+          "A_bpb": 3.6326117165820295,
+          "B_bpb": 3.6127075493893295
+        },
+        {
+          "update": 1250,
+          "A_bpb": 3.5260135796862757,
+          "B_bpb": 3.53519221328987
+        },
+        {
+          "update": 1500,
+          "A_bpb": 3.438479479198022,
+          "B_bpb": 3.435237050572774
+        },
+        {
+          "update": 1750,
+          "A_bpb": 3.4181240197240523,
+          "B_bpb": 3.4162668272913805
+        },
+        {
+          "update": 2000,
+          "A_bpb": 3.370912026453421,
+          "B_bpb": 3.3514585244383146
+        },
+        {
+          "update": 2250,
+          "A_bpb": 3.3906640258998575,
+          "B_bpb": 3.290711998743498
+        },
+        {
+          "update": 2500,
+          "A_bpb": 3.3272643468636964,
+          "B_bpb": 3.2456662082408907
+        },
+        {
+          "update": 2750,
+          "A_bpb": 3.3916649480168912,
+          "B_bpb": 3.348390812861339
+        },
+        {
+          "update": 3000,
+          "A_bpb": 3.271546764906787,
+          "B_bpb": 3.1935994864977832
+        },
+        {
+          "update": 3250,
+          "A_bpb": 3.208928538399173,
+          "B_bpb": 3.1526687089058396
+        },
+        {
+          "update": 3500,
+          "A_bpb": 3.142760322258948,
+          "B_bpb": 3.1024638191639244
+        },
+        {
+          "update": 3750,
+          "A_bpb": 3.154440097998197,
+          "B_bpb": 3.143578067093871
+        },
+        {
+          "update": 4000,
+          "A_bpb": 3.12204468301754,
+          "B_bpb": 3.0923400693515712
+        },
+        {
+          "update": 4250,
+          "A_bpb": 3.102835577639594,
+          "B_bpb": 3.0648289674325753
+        },
+        {
+          "update": 4500,
+          "A_bpb": 3.056368053049141,
+          "B_bpb": 3.010550418992031
+        },
+        {
+          "update": 4750,
+          "A_bpb": 3.061681987249048,
+          "B_bpb": 3.022834625312533
+        },
+        {
+          "update": 5000,
+          "A_bpb": 3.064109863689592,
+          "B_bpb": 2.990180276064549
+        }
+      ],
+      "physical_samples": [
+        {
+          "update": 250,
+          "state_bytes": 1589832,
+          "cycle_blocks": 0,
+          "max_allocation_budget_residual": 2.384185791015625e-07,
+          "phase_positive_fraction": 0.28967980893782386,
+          "mean_anchor_gap": 0.0046773581751115584
+        },
+        {
+          "update": 500,
+          "state_bytes": 1589832,
+          "cycle_blocks": 0,
+          "max_allocation_budget_residual": 2.384185791015625e-07,
+          "phase_positive_fraction": 0.2418231865284974,
+          "mean_anchor_gap": 0.0028859127959516384
+        },
+        {
+          "update": 750,
+          "state_bytes": 1589832,
+          "cycle_blocks": 0,
+          "max_allocation_budget_residual": 2.980232238769531e-07,
+          "phase_positive_fraction": 0.24231905764248704,
+          "mean_anchor_gap": 0.0033616394943369486
+        },
+        {
+          "update": 1000,
+          "state_bytes": 1589832,
+          "cycle_blocks": 0,
+          "max_allocation_budget_residual": 2.384185791015625e-07,
+          "phase_positive_fraction": 0.22527728303108807,
+          "mean_anchor_gap": 0.00366493973668684
+        },
+        {
+          "update": 1250,
+          "state_bytes": 1589832,
+          "cycle_blocks": 0,
+          "max_allocation_budget_residual": 2.384185791015625e-07,
+          "phase_positive_fraction": 0.24269349093264247,
+          "mean_anchor_gap": 0.003466522851910616
+        },
+        {
+          "update": 1500,
+          "state_bytes": 1589832,
+          "cycle_blocks": 0,
+          "max_allocation_budget_residual": 2.384185791015625e-07,
+          "phase_positive_fraction": 0.24790519753886012,
+          "mean_anchor_gap": 0.0032624467782714824
+        },
+        {
+          "update": 1750,
+          "state_bytes": 1589832,
+          "cycle_blocks": 0,
+          "max_allocation_budget_residual": 2.980232238769531e-07,
+          "phase_positive_fraction": 0.2483302299222798,
+          "mean_anchor_gap": 0.003626247906545901
+        },
+        {
+          "update": 2000,
+          "state_bytes": 1589832,
+          "cycle_blocks": 0,
+          "max_allocation_budget_residual": 2.384185791015625e-07,
+          "phase_positive_fraction": 0.23557925841968913,
+          "mean_anchor_gap": 0.00418478708926569
+        },
+        {
+          "update": 2250,
+          "state_bytes": 1589832,
+          "cycle_blocks": 0,
+          "max_allocation_budget_residual": 2.384185791015625e-07,
+          "phase_positive_fraction": 0.24960532707253885,
+          "mean_anchor_gap": 0.0046681640910978765
+        },
+        {
+          "update": 2500,
+          "state_bytes": 1589832,
+          "cycle_blocks": 0,
+          "max_allocation_budget_residual": 2.384185791015625e-07,
+          "phase_positive_fraction": 0.25548494170984454,
+          "mean_anchor_gap": 0.004151241709068032
+        },
+        {
+          "update": 2750,
+          "state_bytes": 1589832,
+          "cycle_blocks": 0,
+          "max_allocation_budget_residual": 2.384185791015625e-07,
+          "phase_positive_fraction": 0.2496761658031088,
+          "mean_anchor_gap": 0.005628166729922121
+        },
+        {
+          "update": 3000,
+          "state_bytes": 1589832,
+          "cycle_blocks": 0,
+          "max_allocation_budget_residual": 2.384185791015625e-07,
+          "phase_positive_fraction": 0.24675153821243523,
+          "mean_anchor_gap": 0.004761948100643455
+        },
+        {
+          "update": 3250,
+          "state_bytes": 1589832,
+          "cycle_blocks": 0,
+          "max_allocation_budget_residual": 2.384185791015625e-07,
+          "phase_positive_fraction": 0.2504351522020725,
+          "mean_anchor_gap": 0.003486303120388268
+        },
+        {
+          "update": 3500,
+          "state_bytes": 1589832,
+          "cycle_blocks": 0,
+          "max_allocation_budget_residual": 2.980232238769531e-07,
+          "phase_positive_fraction": 0.24083144430051814,
+          "mean_anchor_gap": 0.003887266924344196
+        },
+        {
+          "update": 3750,
+          "state_bytes": 1589832,
+          "cycle_blocks": 0,
+          "max_allocation_budget_residual": 2.980232238769531e-07,
+          "phase_positive_fraction": 0.25336989961139894,
+          "mean_anchor_gap": 0.004059237326673893
+        },
+        {
+          "update": 4000,
+          "state_bytes": 1589832,
+          "cycle_blocks": 0,
+          "max_allocation_budget_residual": 2.384185791015625e-07,
+          "phase_positive_fraction": 0.25728626943005184,
+          "mean_anchor_gap": 0.004122430892960396
+        },
+        {
+          "update": 4250,
+          "state_bytes": 1589832,
+          "cycle_blocks": 0,
+          "max_allocation_budget_residual": 2.980232238769531e-07,
+          "phase_positive_fraction": 0.2623461787564767,
+          "mean_anchor_gap": 0.003973130387654576
+        },
+        {
+          "update": 4500,
+          "state_bytes": 1589832,
+          "cycle_blocks": 0,
+          "max_allocation_budget_residual": 2.384185791015625e-07,
+          "phase_positive_fraction": 0.2543717616580311,
+          "mean_anchor_gap": 0.003601417389403971
+        },
+        {
+          "update": 4750,
+          "state_bytes": 1589832,
+          "cycle_blocks": 0,
+          "max_allocation_budget_residual": 2.384185791015625e-07,
+          "phase_positive_fraction": 0.23992066062176165,
+          "mean_anchor_gap": 0.004251474485650581
+        },
+        {
+          "update": 5000,
+          "state_bytes": 1589832,
+          "cycle_blocks": 0,
+          "max_allocation_budget_residual": 2.384185791015625e-07,
+          "phase_positive_fraction": 0.25454379857512954,
+          "mean_anchor_gap": 0.003972958811978602
+        }
+      ],
+      "wall_seconds": 244.37735110000358,
+      "peak_cuda_bytes": 87994880,
+      "state_bytes": 1589832,
+      "checkpoint_sha256": "da6377d4d19d64dbe9392098e4292280e3395de81638971b3c86b30bcb5e1afa"
+    }
+  },
+  "limitations": [
+    "moving reference is a proposed mechanism, not a utility or benefit oracle",
+    "positive feedback does not guarantee functional memory or diversity",
+    "allocation budget is not a complete physical conservation ledger",
+    "one seed and fixed budget; not convergence",
+    "extra fp32 reference costs 4 bytes per parameter",
+    "self-reviewed"
+  ]
+}

@@ -1,0 +1,178 @@
+{
+  "version": 1,
+  "created": "2026-10-28",
+  "scope": "controlled optimizer research; not full life-model admission",
+  "review_status": "self_reviewed; independent review pending",
+  "status": "registered_pending_interface_preflight",
+  "question": "Does the same material state produce useful learning/retention at an acceptable whole-model cost on real byte traffic?",
+  "lean_scope": {
+    "full_life_admitted": false,
+    "mechanics": [
+      "matching_parallel_preparation",
+      "readout_floor_reduction",
+      "population_kernel_contract"
+    ],
+    "conditional_task_contracts": [
+      "readout_task_risk_contract",
+      "population_task_window_contract",
+      "population_frozen_gradient_budget"
+    ],
+    "finite_precision": [
+      "matching_coin_error",
+      "matching_coin_task_error"
+    ],
+    "applicability": "same c2 state, energy, readout, stock guard, independent row/column matching; separate tensor compartments",
+    "required_runtime_checks": "current CUDA reference tests; all finite gradients and exact readout; full model/optimizer/RNG continuation and causal logits",
+    "error_scope": "finite coin error is budgeted; observed exponential checks are numerical evidence, not a universal IEEE bound",
+    "conditional_boundary": "random-site holding/wear/service time constants are not sweep-clock guarantees; no arbitrary loss is assumed to satisfy descent/retention premises",
+    "experimental_scope": "after interface preflight, execute registered finite optimizer comparison; healthy lifetime behavior remains unadmitted"
+  },
+  "sources": {
+    "information_boltzmann/material_matching_cuda.py": "877a11e3ffdd42c2b5b11d47500559ac3cee5e61911a731639430025de2d70cb",
+    "lean/CGBAxioms/reviews/optimizer_content_bridge.lean": "b3c749d93c976f26ae3429f1a0671e51f94d3a0d64cda39d6bb843a9a48e42b5",
+    "scripts/run_material_optimizer_owt.py": "4a3f689d5ecf40e88d1e02fd06d90ccc4919a0bf2e2b7e7a62596f3751dc3289"
+  },
+  "data": {
+    "source": "openwebtext",
+    "revision": "433fe0f44ed7894fea29c08b3202aa348ccc6369",
+    "original_manifest_sha256": "3614c380d4c72688ac8ccde42f32ea0655d16bec1ba0874a924fd777af904d2d",
+    "original_files": {
+      "train.npy": "2f227239bc63b89daf31956701d243a93f9dd46671702fff03763b33dc6db4fb",
+      "validation.npy": "60d41d3fdda8c1718ad1735693eda0dae2b23a0032c5e04a29aac9d0c6d35d8c",
+      "test.npy": "8aa56b9028dbf51fa9a319ef223062fc5878b21c5fb057aa37f6965c28454f03",
+      "tokenizer.json": "e727da4afe06d37d6ffff7db05ab21f69c5be39253ee7b7f7ec759cadab69c1d"
+    },
+    "split_rule": "NFC_document_sha256_mod100_98_1_1",
+    "tokenizer": "UTF8 byte offset4 plus four specials; vocabulary260",
+    "domain_rule": "length>=512; fixed character-density bottom/top training thirds; heldout uses training thresholds",
+    "marked_ascii": "0123456789{}[]<>=\\|_",
+    "thresholds": [
+      0.003943075758577393,
+      0.009600204813108039
+    ],
+    "test_split": "hash checked only; never scored or used to set thresholds",
+    "streams": {
+      "train_A": {
+        "path": "data/material_owt_domains_20261028/train_A.npy",
+        "sha256": "f95ab0ee4ac8f861920babbc8d6428588f77aa5108d83d8929e392e832ccbd49",
+        "tokens": 15709166,
+        "documents": 3262,
+        "document_list_sha256": "a43badcb70eba2786760db030506658aef606c4eb2f8254f1e08db742819903d"
+      },
+      "train_B": {
+        "path": "data/material_owt_domains_20261028/train_B.npy",
+        "sha256": "5de937e4f8eab7a62d82f94ad4d9941b13223f9b1d88562472857951c7340dfb",
+        "tokens": 16816305,
+        "documents": 3262,
+        "document_list_sha256": "f54a8bd396abc15894151ab046c787d57179ef1babeae6d472204b3f977e0227"
+      },
+      "validation_A": {
+        "path": "data/material_owt_domains_20261028/validation_A.npy",
+        "sha256": "a4beaa81f0a1699528f1861146c4c8d33286b8369540b70daf0bbce3c49c2279",
+        "tokens": 113605,
+        "documents": 34,
+        "document_list_sha256": "054ab6c04bb335e0d63b341bc41c5b1bdedacd096080eb4a0830e5fdccdb602f"
+      },
+      "validation_B": {
+        "path": "data/material_owt_domains_20261028/validation_B.npy",
+        "sha256": "8854e386baa9dabf462ee4469d38ddf5043a515904b1f327288920f8ee6fae2c",
+        "tokens": 194208,
+        "documents": 43,
+        "document_list_sha256": "c0ecaf153b0d1098c5a1ea2547e7378fe6f2ccfd7475fd23b591d0f6bf83052a"
+      }
+    }
+  },
+  "model": {
+    "kind": "ordinary causal transformer optimizer testbed; not a derived CGB architecture",
+    "width": 64,
+    "layers": 2,
+    "heads": 4,
+    "ff_width": 128,
+    "context": 128,
+    "vocabulary": 260,
+    "dropout": 0,
+    "bias": false,
+    "norm": "layernorm without affine parameters",
+    "position": "fixed sinusoidal",
+    "state": "context128; no persistent neural state; optimizer state continues through every phase"
+  },
+  "experiment": {
+    "seed": 77,
+    "arms": [
+      "material",
+      "adam",
+      "material_no_force"
+    ],
+    "updates": 5000,
+    "phases": [
+      [
+        "A",
+        2000
+      ],
+      [
+        "B",
+        1000
+      ],
+      [
+        "A",
+        2000
+      ]
+    ],
+    "batch": 8,
+    "context": 128,
+    "targets_per_update": 1024,
+    "targets_per_arm": 5120000,
+    "validation_every": 250,
+    "validation_targets_per_domain": 65536,
+    "checkpoint_every": 250,
+    "initialization": "same scratch Gaussian initialization projected to the material seven-level alphabet in all arms",
+    "adam": {
+      "lr": 0.0003,
+      "betas": [
+        0.9,
+        0.999
+      ],
+      "eps": 1e-08,
+      "weight_decay": 0
+    },
+    "material": {
+      "quantum": "1/16",
+      "energy_unit": "1/16777216",
+      "lr": 1.0,
+      "stock_per_cell": 1,
+      "clock": "readout_matching_sweep_v1",
+      "sweeps_per_update": 1,
+      "H": "existing c2,a16,J12,mu2,scaled quadratic pools; independent parameter compartments",
+      "external_wear": "none injected; old wear/time certificates not inherited"
+    }
+  },
+  "measurements": {
+    "primary": "first-pass prequential bits/actual UTF8 target byte, scored before each update",
+    "secondary": [
+      "independent validation byte NLL per domain",
+      "all-symbol NLL including boundaries",
+      "A-to-B-to-fresh-A response",
+      "wall time",
+      "whole-model peak/resident CUDA memory",
+      "physical conservation and state bytes"
+    ],
+    "units": "actual bytes are targets4..259; boundary targets1/2 reported separately; no unicode-character BPB claim",
+    "replay": "none: second A continues its fresh cursor; no repeated train targets within an arm",
+    "bridges": "last target before each domain switch is the actual next domain's first input byte and is logged explicitly",
+    "checkpoint": "model, optimizer physical state/RNG, pending gradients, all Torch RNGs, updates, stream cursors and metric accumulators",
+    "convergence": "5000 is a fixed budget, not assumed convergence; report last five validation values and slope; no early success stopping",
+    "interpretation": "Adam can leave the seven-level grid: comparison is of optimizer+representation packages, not isolated update quality"
+  },
+  "decision_rules": {
+    "positive": "material improves independent future byte loss and beats no-force control; compare plasticity/return-A and resource costs to Adam",
+    "negative": "failure to improve over no-force or persistent training failure rejects this instantiated H/force/representation package",
+    "ambiguous": "budget-limited/nonconverged or one-seed results cannot settle general optimizer superiority",
+    "do_not_claim": [
+      "universal superiority to Adam/Muon",
+      "healthy lifetime lock from one language curve",
+      "1B capability",
+      "zero quantization loss",
+      "infinite attribution from this context128 model"
+    ]
+  }
+}

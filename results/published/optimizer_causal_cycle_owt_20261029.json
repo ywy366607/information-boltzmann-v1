@@ -1,0 +1,418 @@
+{
+  "scope": "matched-state native-step interventions on Adam-based ResourceCycle and held-out functional ablations",
+  "registration_sha256": "78ab0fb055c02ddb0cb04c4032d83481c43a53a65a11065c798e0b472c71e375",
+  "functional_probe_sha256": "18c70193e2f9c03c07b1906f560d5f80828962c9d80987a7f12d165c1aaae5b1",
+  "parameters": 98816,
+  "arms": {
+    "latch_control": {
+      "updates": 5000,
+      "targets": 5120000,
+      "prequential_bpb": 3.1716491594551703,
+      "phase_bpb": [
+        3.5223030464987657,
+        3.173398783145858,
+        2.8201289786967942
+      ],
+      "validation": [
+        {
+          "update": 0,
+          "A_bpb": 8.884173686082612,
+          "B_bpb": 8.903258802074243
+        },
+        {
+          "update": 250,
+          "A_bpb": 4.026346966753069,
+          "B_bpb": 4.108123025824757
+        },
+        {
+          "update": 500,
+          "A_bpb": 3.845658893352716,
+          "B_bpb": 3.877719850645677
+        },
+        {
+          "update": 750,
+          "A_bpb": 3.7126520300015837,
+          "B_bpb": 3.721554889183958
+        },
+        {
+          "update": 1000,
+          "A_bpb": 3.6335728502735636,
+          "B_bpb": 3.60810529117412
+        },
+        {
+          "update": 1250,
+          "A_bpb": 3.529555693377933,
+          "B_bpb": 3.533049810271583
+        },
+        {
+          "update": 1500,
+          "A_bpb": 3.4425418674923796,
+          "B_bpb": 3.4382947891825983
+        },
+        {
+          "update": 1750,
+          "A_bpb": 3.4180294869209935,
+          "B_bpb": 3.414529670820233
+        },
+        {
+          "update": 2000,
+          "A_bpb": 3.3764841000632035,
+          "B_bpb": 3.3562024848072713
+        },
+        {
+          "update": 2250,
+          "A_bpb": 3.394414517252233,
+          "B_bpb": 3.2957115896472784
+        },
+        {
+          "update": 2500,
+          "A_bpb": 3.320075952161641,
+          "B_bpb": 3.2429826360040277
+        },
+        {
+          "update": 2750,
+          "A_bpb": 3.3762086841355314,
+          "B_bpb": 3.338219574521307
+        },
+        {
+          "update": 3000,
+          "A_bpb": 3.263796900854538,
+          "B_bpb": 3.182400683084123
+        },
+        {
+          "update": 3250,
+          "A_bpb": 3.199599052074088,
+          "B_bpb": 3.140983590281066
+        },
+        {
+          "update": 3500,
+          "A_bpb": 3.144040865824873,
+          "B_bpb": 3.10205880917234
+        },
+        {
+          "update": 3750,
+          "A_bpb": 3.144530083029823,
+          "B_bpb": 3.1474096273106786
+        },
+        {
+          "update": 4000,
+          "A_bpb": 3.1181107970592086,
+          "B_bpb": 3.091278074692156
+        },
+        {
+          "update": 4250,
+          "A_bpb": 3.105902655660131,
+          "B_bpb": 3.074326412219711
+        },
+        {
+          "update": 4500,
+          "A_bpb": 3.0542771722302855,
+          "B_bpb": 3.004225732577108
+        },
+        {
+          "update": 4750,
+          "A_bpb": 3.056479386425459,
+          "B_bpb": 3.019157799310052
+        },
+        {
+          "update": 5000,
+          "A_bpb": 3.0709271587893814,
+          "B_bpb": 2.9966200494451427
+        }
+      ],
+      "median_update_rms": 0.0004686245082888081,
+      "median_row_effective_fraction": 0.9116394519805908,
+      "median_max_row_share": 0.023082981817424297,
+      "median_phase_positive_fraction": 0.24799121599740934,
+      "per_layer_median_effective_row_fraction": {
+        "blocks.0.ff1.weight": 0.9042932093143463,
+        "blocks.0.ff2.weight": 0.9355930984020233,
+        "blocks.1.ff1.weight": 0.8728857040405273,
+        "blocks.1.ff2.weight": 0.943273276090622
+      },
+      "samples": 20,
+      "state_bytes": 1589832,
+      "peak_cuda_bytes": 87994880,
+      "wall_seconds": 246.00354509998579,
+      "checkpoint_sha256": "2d8be2373b4a9c07f12e79fd635a400fb4eec5fcb2958f5180181204732751e2"
+    },
+    "causal_allocation_off": {
+      "updates": 5000,
+      "targets": 5120000,
+      "prequential_bpb": 3.2581236161702125,
+      "phase_bpb": [
+        3.5943959699946166,
+        3.2698849850046674,
+        2.915978480721961
+      ],
+      "validation": [
+        {
+          "update": 0,
+          "A_bpb": 8.884173686082612,
+          "B_bpb": 8.903258802074243
+        },
+        {
+          "update": 250,
+          "A_bpb": 4.065951763707594,
+          "B_bpb": 4.154293971319983
+        },
+        {
+          "update": 500,
+          "A_bpb": 3.9026045816189674,
+          "B_bpb": 3.939165876493084
+        },
+        {
+          "update": 750,
+          "A_bpb": 3.7796563946467754,
+          "B_bpb": 3.8031861360299373
+        },
+        {
+          "update": 1000,
+          "A_bpb": 3.705136236548192,
+          "B_bpb": 3.6969252570405553
+        },
+        {
+          "update": 1250,
+          "A_bpb": 3.601455241699073,
+          "B_bpb": 3.6211395452683197
+        },
+        {
+          "update": 1500,
+          "A_bpb": 3.5128159979960003,
+          "B_bpb": 3.523734010581293
+        },
+        {
+          "update": 1750,
+          "A_bpb": 3.490177989191342,
+          "B_bpb": 3.488652370159046
+        },
+        {
+          "update": 2000,
+          "A_bpb": 3.4674221612576916,
+          "B_bpb": 3.4417458390365576
+        },
+        {
+          "update": 2250,
+          "A_bpb": 3.4415643957273625,
+          "B_bpb": 3.3442035859912282
+        },
+        {
+          "update": 2500,
+          "A_bpb": 3.371684027315034,
+          "B_bpb": 3.3044695967149873
+        },
+        {
+          "update": 2750,
+          "A_bpb": 3.436809682913622,
+          "B_bpb": 3.4015958076778454
+        },
+        {
+          "update": 3000,
+          "A_bpb": 3.330379707709689,
+          "B_bpb": 3.2626633377662726
+        },
+        {
+          "update": 3250,
+          "A_bpb": 3.2854363403753273,
+          "B_bpb": 3.243946965476777
+        },
+        {
+          "update": 3500,
+          "A_bpb": 3.2076111185429665,
+          "B_bpb": 3.178604350828101
+        },
+        {
+          "update": 3750,
+          "A_bpb": 3.2264060768830967,
+          "B_bpb": 3.232033299240103
+        },
+        {
+          "update": 4000,
+          "A_bpb": 3.1888856104599013,
+          "B_bpb": 3.173273748811371
+        },
+        {
+          "update": 4250,
+          "A_bpb": 3.1598835751586263,
+          "B_bpb": 3.1369740488903854
+        },
+        {
+          "update": 4500,
+          "A_bpb": 3.118805436766424,
+          "B_bpb": 3.0912506100545865
+        },
+        {
+          "update": 4750,
+          "A_bpb": 3.124905443114734,
+          "B_bpb": 3.0958179601966367
+        },
+        {
+          "update": 5000,
+          "A_bpb": 3.1346744870757934,
+          "B_bpb": 3.070069355762624
+        }
+      ],
+      "median_update_rms": 0.00024701324897758695,
+      "median_row_effective_fraction": 0.7892299592494965,
+      "median_max_row_share": 0.032220082357525826,
+      "median_phase_positive_fraction": 0.2532282221502591,
+      "per_layer_median_effective_row_fraction": {
+        "blocks.0.ff1.weight": 0.7567261457443237,
+        "blocks.0.ff2.weight": 0.8895717859268188,
+        "blocks.1.ff1.weight": 0.716040313243866,
+        "blocks.1.ff2.weight": 0.8918249011039734
+      },
+      "samples": 20,
+      "state_bytes": 1589832,
+      "peak_cuda_bytes": 87994880,
+      "wall_seconds": 250.9723018000077,
+      "checkpoint_sha256": "8100b51a51acf6a1145b34d62031d18520b022cd782316979c556caf57593511"
+    },
+    "causal_phase_off": {
+      "updates": 5000,
+      "targets": 5120000,
+      "prequential_bpb": 3.138340684506972,
+      "phase_bpb": [
+        3.4858761752956045,
+        3.1343528941295133,
+        2.7928076822141916
+      ],
+      "validation": [
+        {
+          "update": 0,
+          "A_bpb": 8.884173686082612,
+          "B_bpb": 8.903258802074243
+        },
+        {
+          "update": 250,
+          "A_bpb": 3.999609096416385,
+          "B_bpb": 4.0818477680812295
+        },
+        {
+          "update": 500,
+          "A_bpb": 3.8040676383485335,
+          "B_bpb": 3.8344528934020095
+        },
+        {
+          "update": 750,
+          "A_bpb": 3.6864642655031545,
+          "B_bpb": 3.692244236578034
+        },
+        {
+          "update": 1000,
+          "A_bpb": 3.6129064995257285,
+          "B_bpb": 3.591106091787631
+        },
+        {
+          "update": 1250,
+          "A_bpb": 3.4932261531222006,
+          "B_bpb": 3.4918546925993796
+        },
+        {
+          "update": 1500,
+          "A_bpb": 3.398936581922823,
+          "B_bpb": 3.394789018353568
+        },
+        {
+          "update": 1750,
+          "A_bpb": 3.376295841142743,
+          "B_bpb": 3.3714831994826744
+        },
+        {
+          "update": 2000,
+          "A_bpb": 3.351889200927127,
+          "B_bpb": 3.327281369309126
+        },
+        {
+          "update": 2250,
+          "A_bpb": 3.339507804960788,
+          "B_bpb": 3.237005317981062
+        },
+        {
+          "update": 2500,
+          "A_bpb": 3.2850866098760845,
+          "B_bpb": 3.2033242477326804
+        },
+        {
+          "update": 2750,
+          "A_bpb": 3.3310247927170646,
+          "B_bpb": 3.295209000489229
+        },
+        {
+          "update": 3000,
+          "A_bpb": 3.2321648498210718,
+          "B_bpb": 3.1467533200519373
+        },
+        {
+          "update": 3250,
+          "A_bpb": 3.1804438978328067,
+          "B_bpb": 3.1263285731132044
+        },
+        {
+          "update": 3500,
+          "A_bpb": 3.111787766327623,
+          "B_bpb": 3.064410756028139
+        },
+        {
+          "update": 3750,
+          "A_bpb": 3.1312554763041733,
+          "B_bpb": 3.118028685447325
+        },
+        {
+          "update": 4000,
+          "A_bpb": 3.105948499605954,
+          "B_bpb": 3.064361272907029
+        },
+        {
+          "update": 4250,
+          "A_bpb": 3.088510628544681,
+          "B_bpb": 3.0450133402956108
+        },
+        {
+          "update": 4500,
+          "A_bpb": 3.0397012847394507,
+          "B_bpb": 3.0031805252977084
+        },
+        {
+          "update": 4750,
+          "A_bpb": 3.0408751441273876,
+          "B_bpb": 3.0074772209390566
+        },
+        {
+          "update": 5000,
+          "A_bpb": 3.063870829285,
+          "B_bpb": 2.979179160515378
+        }
+      ],
+      "median_update_rms": 0.0004593031810020589,
+      "median_row_effective_fraction": 0.9483850300312042,
+      "median_max_row_share": 0.020614909008145332,
+      "median_phase_positive_fraction": 0.2397486237046632,
+      "per_layer_median_effective_row_fraction": {
+        "blocks.0.ff1.weight": 0.9414794445037842,
+        "blocks.0.ff2.weight": 0.9725126624107361,
+        "blocks.1.ff1.weight": 0.9108760058879852,
+        "blocks.1.ff2.weight": 0.9676122069358826
+      },
+      "samples": 20,
+      "state_bytes": 1589832,
+      "peak_cuda_bytes": 87994880,
+      "wall_seconds": 246.82255419998546,
+      "checkpoint_sha256": "181fb40a184bb6618e6cf8752f410825715afda0ece052af6a7a0321049424fc"
+    }
+  },
+  "baseline_exact_bpb_steps": 5000,
+  "max_bpb_difference_from_torch_adam_when_allocation_off": 3.4396530175229145e-06,
+  "previous_restoration_result": "results/published/optimizer_latch_demo_owt_20261028.json",
+  "functional_probe": "results/published/optimizer_causal_function_probe_20261029.json",
+  "limitations": [
+    "one seed, single initial rate and fixed 5000 steps",
+    "allocation intervention changes actual step size, direction and future trajectory jointly",
+    "row effective fraction is a sampled update distribution, not functional diversity",
+    "phase feedback intervention is specific to this update rule",
+    "held-out group ablation effects are a finite proxy for contribution, not definitive specialization",
+    "no complete physical conservation or strong proof of healthy memory",
+    "same-checkpoint one-step probe is exploratory and selected after observing the trajectory",
+    "self-reviewed; independent review pending"
+  ]
+}

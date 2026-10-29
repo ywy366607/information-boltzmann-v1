@@ -1,0 +1,320 @@
+{
+  "scope": "Same-carrier density-scaled quadratic pools: all-size energy/generation and local Q margins; numerical refinement only, no learning trial",
+  "integrated_review": {
+    "path": "lean/CGBAxioms/reviews/optimizer_content_bridge.lean",
+    "sha256": "b0c06bbda0fff2d632eaf244c880e91b27aed33882af92fd3789f19369bceb92",
+    "lean_exit_code": 0,
+    "audited": {
+      "CGB.OptimizerContentReview": [
+        "cooperative_content_contract",
+        "drive_removes_content_barriers",
+        "hidden_basin_calibration",
+        "maximal_reversible_acceptance",
+        "content_gradient_port",
+        "transfer_gradient_port",
+        "event_port_contract",
+        "finite_capacity_content_bridge",
+        "certified_root_refinement",
+        "fractional_probability_enclosure",
+        "force_response_dissipative",
+        "kinetic_survival_envelope",
+        "one_defect_regeneration_margin",
+        "maximal_event_clock"
+      ],
+      "CGB.ResourceEnergyReview": [
+        "scaled_pool_contract",
+        "scaled_resource_generation",
+        "resource_ground_bound",
+        "resource_ground_witness",
+        "resource_monopoly_gap"
+      ],
+      "CGB.ResourceReleaseReview": [
+        "primitive_release_port",
+        "resource_release_drift",
+        "resource_release_budget",
+        "resource_feedback_contract"
+      ],
+      "CGB.RationalSamplerReview": [
+        "rational_mixture_contract",
+        "rational_binary_coin_contract"
+      ]
+    },
+    "compile_record": "lean/CGBAxioms/.lake/material_combined_core.lean.check.json",
+    "auto_implicit_variables": false,
+    "production_modules_added": 0
+  },
+  "full_optimizer_admitted": false,
+  "training_enabled": false,
+  "review_status": "self_reviewed; independent review pending",
+  "hypothesis": "Registered cap2,J12,a16,mu2,epsilon0; U_D(N)=2*N^2/D. Same-density energy replication is a declared construction condition, not a general axiom or calibrated biological law.",
+  "derived": {
+    "pool_marginal_range": "0<DeltaU<8 for legal cap2 intake, independent of D>=1",
+    "Q_quiet_margin": "|force|<=1: empty intake cost>13 and one-Q-defect repair cost<-25",
+    "energy_lower_bound": "-9*n^2/4",
+    "equality": "all cells000/222; each row/column3*n/8 full codes",
+    "capacity_witness": "For n=8m an injective m*m-bit family attains the bound: >=2^(m^2) configurations, density3/8",
+    "scope": "Ground configurations, not equilibrium expected density, functional diversity, kinetic service or task-learning capacity"
+  },
+  "reference": {
+    "path": "lean/CGBAxioms/.lake/material_scaled_reference.lean",
+    "sha256": "9390dfd4eeadee20b22cda69227142d418938f00bd3401daa62761e515e00f96",
+    "lean_exit_code": 0,
+    "pool_values_checked": 596,
+    "generated_bodies": 26,
+    "body_reports": [
+      {
+        "m": 1,
+        "mask": 0,
+        "active_codes": 24,
+        "energy": "-144"
+      },
+      {
+        "m": 1,
+        "mask": 1,
+        "active_codes": 24,
+        "energy": "-144"
+      },
+      {
+        "m": 2,
+        "mask": 0,
+        "active_codes": 96,
+        "energy": "-576"
+      },
+      {
+        "m": 2,
+        "mask": 1,
+        "active_codes": 96,
+        "energy": "-576"
+      },
+      {
+        "m": 2,
+        "mask": 2,
+        "active_codes": 96,
+        "energy": "-576"
+      },
+      {
+        "m": 2,
+        "mask": 3,
+        "active_codes": 96,
+        "energy": "-576"
+      },
+      {
+        "m": 2,
+        "mask": 4,
+        "active_codes": 96,
+        "energy": "-576"
+      },
+      {
+        "m": 2,
+        "mask": 5,
+        "active_codes": 96,
+        "energy": "-576"
+      },
+      {
+        "m": 2,
+        "mask": 6,
+        "active_codes": 96,
+        "energy": "-576"
+      },
+      {
+        "m": 2,
+        "mask": 7,
+        "active_codes": 96,
+        "energy": "-576"
+      },
+      {
+        "m": 2,
+        "mask": 8,
+        "active_codes": 96,
+        "energy": "-576"
+      },
+      {
+        "m": 2,
+        "mask": 9,
+        "active_codes": 96,
+        "energy": "-576"
+      },
+      {
+        "m": 2,
+        "mask": 10,
+        "active_codes": 96,
+        "energy": "-576"
+      },
+      {
+        "m": 2,
+        "mask": 11,
+        "active_codes": 96,
+        "energy": "-576"
+      },
+      {
+        "m": 2,
+        "mask": 12,
+        "active_codes": 96,
+        "energy": "-576"
+      },
+      {
+        "m": 2,
+        "mask": 13,
+        "active_codes": 96,
+        "energy": "-576"
+      },
+      {
+        "m": 2,
+        "mask": 14,
+        "active_codes": 96,
+        "energy": "-576"
+      },
+      {
+        "m": 2,
+        "mask": 15,
+        "active_codes": 96,
+        "energy": "-576"
+      },
+      {
+        "m": 3,
+        "mask": 0,
+        "active_codes": 216,
+        "energy": "-1296"
+      },
+      {
+        "m": 3,
+        "mask": 1,
+        "active_codes": 216,
+        "energy": "-1296"
+      },
+      {
+        "m": 3,
+        "mask": 511,
+        "active_codes": 216,
+        "energy": "-1296"
+      },
+      {
+        "m": 3,
+        "mask": 21,
+        "active_codes": 216,
+        "energy": "-1296"
+      },
+      {
+        "m": 4,
+        "mask": 0,
+        "active_codes": 384,
+        "energy": "-2304"
+      },
+      {
+        "m": 4,
+        "mask": 1,
+        "active_codes": 384,
+        "energy": "-2304"
+      },
+      {
+        "m": 4,
+        "mask": 65535,
+        "active_codes": 384,
+        "energy": "-2304"
+      },
+      {
+        "m": 4,
+        "mask": 21,
+        "active_codes": 384,
+        "energy": "-2304"
+      }
+    ],
+    "codegen_refinement": "Explicit quotient/remainder witness execution equals the original finite-product equivalence for every input; kernel and dynamics unchanged"
+  },
+  "full_column_margins": [
+    {
+      "column_size": 1,
+      "export_cost": "28",
+      "repair_acceptance": 1
+    },
+    {
+      "column_size": 2,
+      "export_cost": "27",
+      "repair_acceptance": 1
+    },
+    {
+      "column_size": 3,
+      "export_cost": "80/3",
+      "repair_acceptance": 1
+    },
+    {
+      "column_size": 8,
+      "export_cost": "105/4",
+      "repair_acceptance": 1
+    },
+    {
+      "column_size": 9,
+      "export_cost": "236/9",
+      "repair_acceptance": 1
+    },
+    {
+      "column_size": 64,
+      "export_cost": "833/32",
+      "repair_acceptance": 1
+    },
+    {
+      "column_size": 31623,
+      "export_cost": "822200/31623",
+      "repair_acceptance": 1
+    }
+  ],
+  "frozen_unscaled_equivalence": {
+    "steps": 7,
+    "paid_attempts": 168,
+    "legacy_body_v2_loaded_as_unscaled_v3": true,
+    "source_manifest": "lean/CGBAxioms/.lake/material_optimizer_pre_scaled_v4/source_manifest.json",
+    "physical_state_cache_rng_and_work_identical": true
+  },
+  "interface": "One static pool-reference integer per law; same packed fields/caches. Body checkpointv3 distinguishes scaling; legacyv2 loads only as unscaled. Legacy dyadic/event-driven executors reject scaling before effects.",
+  "old_two_by_two_kernel": "D=2 makes U_D(N)=N^2 exactly; larger-body time bounds do not follow from the old small-body certificate",
+  "medium_sha256": "104d110891d1cc67f67532fc4348efdafd78e6b9ed8afeabcde0da536a94dc71",
+  "gradient_port_sha256": "07050b890d05582e8bcba9de0247eb064a419415dc64fb22fb72179e4fa97862",
+  "validator_sha256": "7c1dfbceba448c77795b6a182efac340febde96a03da285db4bc8ff678e61b91",
+  "next": "Same-kernel temporal resource service and task-evidence selectivity; then practical execution and independent real-data quality",
+  "tests": {
+    "command": "D:/conda_envs/vox/python.exe -m pytest tests/test_conjugate_gradient_port.py -q",
+    "passed": 41,
+    "exit_code": 0,
+    "elapsed_seconds": 18.57,
+    "observed_tool_session": 87640
+  },
+  "ct_guard_source_sha256": "87717a1704b5df5f5f2f42da50de4f2ea183137c7fd67b09ccac596f8a3c7546",
+  "core_exact_checks": {
+    "reactions": {
+      "exhaustive_states": 4420,
+      "proposal_rows": 135608,
+      "enabled_reverse_pairs": 34640,
+      "whole_energy_log_balance_exact": true,
+      "content_conservation_exact": true,
+      "static_reverse_scheduler": true,
+      "target_weight": "2**(-2*E), within the conserved-content shell"
+    },
+    "locality": {
+      "clique_outside_change_checks": 204,
+      "actual_state_reads_within_declared_clique": true,
+      "native_byte_edges": 768,
+      "native_byte_packed_state_bytes": 288,
+      "edge_indices_stored": 0,
+      "maximum_field_bits": 4,
+      "fields_per_edge": 3,
+      "native_byte_bits_per_edge": 3,
+      "three_byte_read_write_checked": true,
+      "encoding": "ceil(log2((Q+1)^2*(W+1))) fixed bits per edge; lossless",
+      "cached_prepare_avoids_whole_clique_scan": true,
+      "direct_oracle_and_cache_rebuild_cost_is_degree_dependent": true
+    },
+    "cache": {
+      "exact_total_comparisons": 41920,
+      "cache_vs_direct_rate_checks": 320,
+      "restore_rebuilds_cache": true,
+      "raw_public_payload_readonly": true,
+      "native_row_prepare_charge_reads": [
+        2,
+        258
+      ],
+      "no_new_physical_state": true,
+      "capability_claim": false
+    },
+    "source_sha256": "104d110891d1cc67f67532fc4348efdafd78e6b9ed8afeabcde0da536a94dc71"
+  }
+}

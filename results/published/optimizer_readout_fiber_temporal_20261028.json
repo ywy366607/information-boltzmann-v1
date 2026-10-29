@@ -1,0 +1,564 @@
+{
+  "scope": "Same readout kernel: continued wear holding, full-state first empty hit and executable body refinement; no learning trial",
+  "integrated_review": {
+    "path": "lean/CGBAxioms/reviews/optimizer_content_bridge.lean",
+    "sha256": "f99b92ac70d69a64e9d6b4464dd0b8ec0c6eb6843d9ba3d15f6c38f824d1bfde",
+    "lean_exit_code": 0,
+    "audited": {
+      "CGB.OptimizerContentReview": [
+        "cooperative_content_contract",
+        "drive_removes_content_barriers",
+        "hidden_basin_calibration",
+        "maximal_reversible_acceptance",
+        "content_gradient_port",
+        "transfer_gradient_port",
+        "event_port_contract",
+        "finite_capacity_content_bridge",
+        "certified_root_refinement",
+        "fractional_probability_enclosure",
+        "force_response_dissipative",
+        "kinetic_survival_envelope",
+        "one_defect_regeneration_margin",
+        "maximal_event_clock"
+      ],
+      "CGB.ResourceEnergyReview": [
+        "scaled_pool_contract",
+        "scaled_resource_generation",
+        "resource_ground_bound",
+        "resource_ground_witness",
+        "resource_monopoly_gap"
+      ],
+      "CGB.ResourceReleaseReview": [
+        "primitive_release_port",
+        "resource_release_drift",
+        "resource_release_budget",
+        "resource_feedback_contract"
+      ],
+      "CGB.RationalSamplerReview": [
+        "rational_mixture_contract",
+        "rational_binary_coin_contract"
+      ],
+      "CGB.FiberOptimizerReview": [
+        "readout_force_response_contract",
+        "readout_regeneration_contract",
+        "readout_block_kernel_contract",
+        "readout_cell_kernel_contract",
+        "readout_release_drift",
+        "readout_release_budget"
+      ]
+    },
+    "compile_record": "lean/CGBAxioms/.lake/material_combined_core.lean.check.json",
+    "auto_implicit_variables": false,
+    "production_modules_added": 0
+  },
+  "full_optimizer_admitted": false,
+  "training_enabled": false,
+  "model_experiments": 0,
+  "review_status": "self_reviewed; independent review pending",
+  "holding": {
+    "scope": "Same quadratic-resource domain as ground theorem. Exact ideal-kernel algebra; no task, RNG trial or executed exposure.",
+    "workload": {
+      "wear_probability": "1/1024",
+      "force": 0,
+      "total_material": 12,
+      "damage": "uniform among all four cells and three fields; remove one unit if present, returning it to existing stock",
+      "order": "wear then physical opportunity; first exit observed at either substep",
+      "funding": "every counted opportunity funded; maintenance and external work separate"
+    },
+    "observation": "original diagonal cells each have N>=5; other cells remain zero; all other native events continue and any departure counts as failure",
+    "good_states": [
+      [
+        [
+          1,
+          2,
+          2
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          2,
+          2
+        ]
+      ],
+      [
+        [
+          1,
+          2,
+          2
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          2,
+          1,
+          2
+        ]
+      ],
+      [
+        [
+          1,
+          2,
+          2
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          2,
+          2,
+          1
+        ]
+      ],
+      [
+        [
+          1,
+          2,
+          2
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          2,
+          2,
+          2
+        ]
+      ],
+      [
+        [
+          2,
+          1,
+          2
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          2,
+          2
+        ]
+      ],
+      [
+        [
+          2,
+          1,
+          2
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          2,
+          1,
+          2
+        ]
+      ],
+      [
+        [
+          2,
+          1,
+          2
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          2,
+          2,
+          1
+        ]
+      ],
+      [
+        [
+          2,
+          1,
+          2
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          2,
+          2,
+          2
+        ]
+      ],
+      [
+        [
+          2,
+          2,
+          1
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          2,
+          2
+        ]
+      ],
+      [
+        [
+          2,
+          2,
+          1
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          2,
+          1,
+          2
+        ]
+      ],
+      [
+        [
+          2,
+          2,
+          1
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          2,
+          2,
+          1
+        ]
+      ],
+      [
+        [
+          2,
+          2,
+          1
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          2,
+          2,
+          2
+        ]
+      ],
+      [
+        [
+          2,
+          2,
+          2
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          2,
+          2
+        ]
+      ],
+      [
+        [
+          2,
+          2,
+          2
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          2,
+          1,
+          2
+        ]
+      ],
+      [
+        [
+          2,
+          2,
+          2
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          2,
+          2,
+          1
+        ]
+      ],
+      [
+        [
+          2,
+          2,
+          2
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          2,
+          2,
+          2
+        ]
+      ]
+    ],
+    "source_event_pairs_checked": 464,
+    "proposal_families": "all four cells, both directions, all adjacent candidates; no targeted repair selection",
+    "kinetic_clock": "readout_fiber_v1",
+    "rho": "9223337812298060743/9223372036854775808",
+    "weights": [
+      "4228876209/4294967296",
+      "4228876209/4294967296",
+      "4228876209/4294967296",
+      "4261797569/4294967296",
+      "4228876209/4294967296",
+      "4228876209/4294967296",
+      "4228876209/4294967296",
+      "4261797569/4294967296",
+      "4228876209/4294967296",
+      "4228876209/4294967296",
+      "4228876209/4294967296",
+      "4261797569/4294967296",
+      "4261797569/4294967296",
+      "4261797569/4294967296",
+      "4261797569/4294967296",
+      "1"
+    ],
+    "horizons": [
+      {
+        "funded_opportunities": 256,
+        "first_exit_probability_upper": "18806250271273884459105579/19807040628566084398385987584",
+        "base_operation_fee_units": 3328
+      },
+      {
+        "funded_opportunities": 1024,
+        "first_exit_probability_upper": "300471730892659768662040789/79228162514264337593543950336",
+        "base_operation_fee_units": 13312
+      },
+      {
+        "funded_opportunities": 4096,
+        "first_exit_probability_upper": "298766746024848139074743251/19807040628566084398385987584",
+        "base_operation_fee_units": 53248
+      },
+      {
+        "funded_opportunities": 65536,
+        "first_exit_probability_upper": "8551494725072971596795281973/39614081257132168796771975168",
+        "base_operation_fee_units": 851968
+      }
+    ],
+    "exact_rational_diagnostics": {
+      "mean_opportunities_to_first_exit": "51525443242570786278218874903010570653189556470559982977288663848810786097694111029963986704047012253789348509094726855793650373012916231996539964227584/188250395782044735368232619713993498267257653147656224186286561287528134458768366456180853749876855838950386566901860132086783551544785204876586887",
+      "single_defect_indices": [
+        3,
+        7,
+        11,
+        12,
+        13,
+        14
+      ],
+      "repair_before_exit_without_further_wear": [
+        "990058135075167388019598703137613197117840773647725761169618289580841933642422476285420289931189799829649752064/990085838848356814249106188316696799920370519263200127599100908727221038341773757857704083548842025270883509297",
+        "990058135075167388019598703137613197117840773647725761169618289580841933642422476285420289931189799829649752064/990085838848356814249106188316696799920370519263200127599100908727221038341773757857704083548842025270883509297",
+        "990058135103664808829569126436744296895355720109320211887939560380515810549645716256709270995144128758907142144/990085838848356814249106188316696799920370519263200127599100908727221038341773757857704083548842025270883509297",
+        "990058135075167388019598703137613197117840773647725761169618289580841933642422476285420289931189799829649752064/990085838848356814249106188316696799920370519263200127599100908727221038341773757857704083548842025270883509297",
+        "990058135075167388019598703137613197117840773647725761169618289580841933642422476285420289931189799829649752064/990085838848356814249106188316696799920370519263200127599100908727221038341773757857704083548842025270883509297",
+        "990058135103664808829569126436744296895355720109320211887939560380515810549645716256709270995144128758907142144/990085838848356814249106188316696799920370519263200127599100908727221038341773757857704083548842025270883509297"
+      ],
+      "mean_attempts_to_repair_or_exit_without_further_wear": [
+        "31681860322405356423550544313333008828712556082633152609848975538777191971426263454088886778581188855141142364160/990085838848356814249106188316696799920370519263200127599100908727221038341773757857704083548842025270883509297",
+        "31681860322405356423550544313333008828712556082633152609848975538777191971426263454088886778581188855141142364160/990085838848356814249106188316696799920370519263200127599100908727221038341773757857704083548842025270883509297",
+        "31681860323317273889469597859173300533875619910254681942270777592891112996248621005165136276148053976103402864640/990085838848356814249106188316696799920370519263200127599100908727221038341773757857704083548842025270883509297",
+        "31681860322405356423550544313333008828712556082633152609848975538777191971426263454088886778581188855141142364160/990085838848356814249106188316696799920370519263200127599100908727221038341773757857704083548842025270883509297",
+        "31681860322405356423550544313333008828712556082633152609848975538777191971426263454088886778581188855141142364160/990085838848356814249106188316696799920370519263200127599100908727221038341773757857704083548842025270883509297",
+        "31681860323317273889469597859173300533875619910254681942270777592891112996248621005165136276148053976103402864640/990085838848356814249106188316696799920370519263200127599100908727221038341773757857704083548842025270883509297"
+      ]
+    },
+    "lean_exit_code": 0,
+    "declarations": [
+      "kinetic_survival_envelope",
+      "FiberWear.certificate"
+    ],
+    "proof_path": "lean/CGBAxioms/.lake/material_fiber_wear.lean",
+    "proof_sha256": "fd52a262fe7ab45fa6587545a9d8148cb13935e10c510d8159aaa86c9111f8cc",
+    "reused_envelope_source_sha256": "7ebf6dcc77651d0f004431f921885a46134c8149daade585e9740d61dc5e0cc3",
+    "primary_proof_sha256": "f99b92ac70d69a64e9d6b4464dd0b8ec0c6eb6843d9ba3d15f6c38f824d1bfde",
+    "scope_remaining": "constant zero task force, first exit of a strict neighborhood; not forced release, changing-force robustness, long-term resource service or useful learning",
+    "full_optimizer_admitted": false,
+    "review_status": "self_reviewed"
+  },
+  "release": {
+    "declarations": [
+      "CGB.FiberOptimizerReview.readout_release_drift",
+      "CGB.FiberOptimizerReview.readout_release_budget"
+    ],
+    "rho": "1279/1280",
+    "initial_mass": 12,
+    "force": "every cell>=96, possibly time/state dependent",
+    "body_scope": "all four-cell nonempty states with mass<=12; stock=12-mass; same1/1024 external wear before each paid opportunity, observed at both substeps",
+    "kernel_nonnegative_and_row_sum_at_most_one": true,
+    "hrow_assumed": false,
+    "horizons": [
+      {
+        "funded_opportunities": 4096,
+        "base_operation_fee_units": 53248,
+        "first_empty_hit_probability_lower": "10130606481743573889708857857/19807040628566084398385987584",
+        "lower_float": 0.5114649215760695
+      },
+      {
+        "funded_opportunities": 8192,
+        "base_operation_fee_units": 106496,
+        "first_empty_hit_probability_lower": "9706550417833794924972823667/9903520314283042199192993792",
+        "lower_float": 0.980111123095777
+      },
+      {
+        "funded_opportunities": 16384,
+        "base_operation_fee_units": 212992,
+        "first_empty_hit_probability_lower": "1237899231889293643342788889/1237940039285380274899124224",
+        "lower_float": 0.9999670360479573
+      },
+      {
+        "funded_opportunities": 65536,
+        "base_operation_fee_units": 851968,
+        "first_empty_hit_probability_lower": "4951760157141521099593113343/4951760157141521099596496896",
+        "lower_float": 1.0
+      }
+    ]
+  },
+  "execution_reference": {
+    "path": "lean/CGBAxioms/.lake/material_fiber_body_conformance.lean",
+    "source_sha256": "8a9ad52769955cac5091a9784bf12bd45f5d926a24e2a4f4717e132be4d6d228",
+    "lean_exit_code": 0,
+    "source_bodies": 943,
+    "budget_and_pool_views": 3768,
+    "complete_candidate_successors": 101736,
+    "whole_energy_candidate_checks": 94272,
+    "force_profiles": 2
+  },
+  "source_sha256": "a97025867ff2331c3fdae776a9934ade7f8d223a83c911f369a01dfccce0f6df",
+  "medium_source_sha256": "104d110891d1cc67f67532fc4348efdafd78e6b9ed8afeabcde0da536a94dc71",
+  "validator_sha256": "bc2243bfdc07aaf2c71c188a1604d966074aa396e95ece323be1fb5ac476c4f2",
+  "no_optimizer_transition_change": true,
+  "open": [
+    "selective useful retention and actual-risk response under noisy/estimated forces",
+    "temporal resource service and functional anti-monopoly at general body sizes",
+    "practical GPU budget and independent continual real-data quality"
+  ]
+}

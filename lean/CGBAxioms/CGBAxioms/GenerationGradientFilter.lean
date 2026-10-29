@@ -8,6 +8,14 @@ what it must carry from history is what predicts the next true gradient (G10, G1
 records the scalar facts that order the known optimizers; it does not claim any optimizer is
 best on every problem.
 
+Scope audit (2026-10-27): these conditional algebraic optima do not uniquely
+generate an optimizer from the life axioms. One-step whitening is not necessary
+for convergence; the exact-Newton momentum example does not cover noisy or
+estimated-curvature updates. The ideal trust rule below reads the true radius;
+identifying its branch with measured decrease needs a separate error model.
+Gradient availability, full-update stability and complete resource costs remain
+implementation obligations. See CGB_OPTIMIZER_V6_HANDOFF_20261027.md.
+
 * `memoryless_gain_excess` (from G10a `fixed_gain_error`): a learner without memory (gain
   `K = 1`, plain SGD on the current gradient) exceeds the optimal tracking error by exactly
   `r^2 / (P + r)`, strictly positive whenever the gradient is noisy (`r > 0`).

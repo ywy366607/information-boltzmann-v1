@@ -1,0 +1,102 @@
+{
+  "status": "matched_feedback_refinement_passed",
+  "full_optimizer_admitted": false,
+  "training_executed": false,
+  "exact_recursive_transitions": 960,
+  "scope": "same-state feedback intervention arithmetic",
+  "feedback_settings": [
+    true,
+    false
+  ],
+  "intervention": "only 2*R*K regenerative term; all state, rounding, observation and readout laws retained",
+  "audited_declarations": [
+    "CGB.ConservativeCycleReview.allocated_readout_safe",
+    "CGB.ConservativeCycleReview.controlled_cycle_contract",
+    "CGB.ConservativeCycleReview.controlled_final_readout",
+    "CGB.ConservativeCycleReview.cycle_geometry",
+    "CGB.ConservativeCycleReview.encoded_contrary_of_energy_ratio",
+    "CGB.ConservativeCycleReview.encoded_gradient_cue_contract",
+    "CGB.ConservativeCycleReview.exact_optimizer_step",
+    "CGB.ConservativeCycleReview.filter_error_envelope",
+    "CGB.ConservativeCycleReview.finite_block_optimizer_step",
+    "CGB.ConservativeCycleReview.functional_recovery_tracking",
+    "CGB.ConservativeCycleReview.gradient_cycle_response",
+    "CGB.ConservativeCycleReview.integer_code_roundtrip",
+    "CGB.ConservativeCycleReview.integer_cycle_contract",
+    "CGB.ConservativeCycleReview.integer_ignition_and_retention",
+    "CGB.ConservativeCycleReview.integer_joint_optimizer_step",
+    "CGB.ConservativeCycleReview.integer_phase_refines",
+    "CGB.ConservativeCycleReview.integer_preconditioned_step",
+    "CGB.ConservativeCycleReview.joint_step_invariant",
+    "CGB.ConservativeCycleReview.noisy_optimizer_step",
+    "CGB.ConservativeCycleReview.normalized_joint_contract",
+    "CGB.ConservativeCycleReview.normalized_trajectory_contract",
+    "CGB.ConservativeCycleReview.passive_quiet_quantization_band",
+    "CGB.ConservativeCycleReview.preconditioned_filter_step",
+    "CGB.ConservativeCycleReview.quiet_restoration",
+    "CGB.ConservativeCycleReview.raw_stream_forces_release",
+    "CGB.ConservativeCycleReview.regeneration_threshold",
+    "CGB.ConservativeCycleReview.relative_contrast_coverage",
+    "CGB.ConservativeCycleReview.relative_cue_shared_scale",
+    "CGB.ConservativeCycleReview.relative_gradient_coverage",
+    "CGB.ConservativeCycleReview.resource_filtered_tracking",
+    "CGB.ConservativeCycleReview.restoration_by_budget",
+    "CGB.ConservativeCycleReview.strong_cue_release",
+    "CGB.ConservativeCycleReview.unrestricted_parameter_initialization"
+  ],
+  "checks": [
+    {
+      "device": "cpu",
+      "dtype": "torch.float32",
+      "transitions": 960,
+      "max_absolute_error": {
+        "mean": 5.960464477539063e-08,
+        "rms": 0.0,
+        "mass": 1.1920928955078125e-07,
+        "update": 2.2351741790771484e-08
+      }
+    },
+    {
+      "device": "cpu",
+      "dtype": "torch.float64",
+      "transitions": 960,
+      "max_absolute_error": {
+        "mean": 1.1102230246251565e-16,
+        "rms": 1.1102230246251565e-16,
+        "mass": 1.1102230246251565e-16,
+        "update": 4.163336342344337e-17
+      }
+    },
+    {
+      "device": "cuda",
+      "dtype": "torch.float32",
+      "transitions": 960,
+      "max_absolute_error": {
+        "mean": 5.960464477539063e-08,
+        "rms": 0.0,
+        "mass": 1.1920928955078125e-07,
+        "update": 2.2351741790771484e-08
+      }
+    },
+    {
+      "device": "cuda",
+      "dtype": "torch.float64",
+      "transitions": 960,
+      "max_absolute_error": {
+        "mean": 1.1102230246251565e-16,
+        "rms": 0.0,
+        "mass": 1.1102230246251565e-16,
+        "update": 4.163336342344337e-17
+      }
+    }
+  ],
+  "lean_exit_code": 0,
+  "sources": {
+    "lean/CGBAxioms/reviews/optimizer_conservative_cycle.lean": "289830ae4374762dfd2ea3245523022bc39176edf787af7361cc7616fcb58c09",
+    "information_boltzmann/conservative_cycle_optimizer.py": "66cc1ad10440fce649d610530c9c74a55797a97cbdcde02e3f4092126112a121",
+    "scripts/witness/validate_optimizer_cycle_integer.py": "c6333b8ce291515f272ef34d9e5d51857f7b8ce6c1cda0f73d6014692f1700bd"
+  },
+  "oracle_digest_sha256": "2d4e5daa72c8c8c294cf4c6c169142590e16ed4b92d0a650e80ecbd3463d1e9a",
+  "remaining": "Functional historical benefit, general optimizer interface and independent real-stream validation",
+  "review_status": "self_reviewed_independent_review_pending"
+}

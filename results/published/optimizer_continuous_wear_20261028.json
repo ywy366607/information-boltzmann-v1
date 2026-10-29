@@ -1,0 +1,146 @@
+{
+  "scope": "source-derived exact external-damage kernel algebra; no training or executed exposure",
+  "review_status": "self_reviewed",
+  "full_optimizer_admitted": false,
+  "optimizer_rule_changed": false,
+  "additional_optimizer_state": false,
+  "workload": {
+    "wear_probability": "1/1024",
+    "order": "wear, then original funded physical attempt",
+    "damage": "uniform p/q/w; remove one unit if present; return it to original stock",
+    "observation": "first midpoint-pole exit at either substep",
+    "force": 0,
+    "a": 4,
+    "J": 12,
+    "total_material": 3,
+    "initial_state": "111",
+    "funding": "all physical attempts funded; maintenance separate",
+    "environmental_work": "externally imposed; energy cost not certified in joules"
+  },
+  "physical_kernel": [
+    [
+      "20479/24576",
+      "1/6",
+      "0",
+      "0"
+    ],
+    [
+      "1/6",
+      "341/512",
+      "1/6",
+      "1/1536"
+    ],
+    [
+      "0",
+      "1/6",
+      "20479/24576",
+      "0"
+    ],
+    [
+      "0",
+      "1/100663296",
+      "0",
+      "100663295/100663296"
+    ]
+  ],
+  "wear_kernel": [
+    [
+      "1535/1536",
+      "0",
+      "0",
+      "0"
+    ],
+    [
+      "0",
+      "1535/1536",
+      "0",
+      "0"
+    ],
+    [
+      "0",
+      "0",
+      "1535/1536",
+      "0"
+    ],
+    [
+      "1/3072",
+      "1/3072",
+      "1/3072",
+      "1023/1024"
+    ]
+  ],
+  "composed_kernel": [
+    [
+      "31435265/37748736",
+      "1535/9216",
+      "0",
+      "0"
+    ],
+    [
+      "1535/9216",
+      "523435/786432",
+      "1535/9216",
+      "1535/2359296"
+    ],
+    [
+      "0",
+      "1535/9216",
+      "31435265/37748736",
+      "0"
+    ],
+    [
+      "24575/75497472",
+      "100600829/309237645312",
+      "24575/75497472",
+      "308935717891/309237645312"
+    ]
+  ],
+  "mean_funded_attempts_to_first_pole_change": "2800231477014561536/990883999540651",
+  "one_defect_no_further_wear": {
+    "states": [
+      "011",
+      "101",
+      "110"
+    ],
+    "restoration_before_pole_loss": [
+      "4096/4609",
+      "4097/4609",
+      "4096/4609"
+    ],
+    "mean_attempts_to_restore_or_pole_loss": [
+      "18898944/4609",
+      "18875904/4609",
+      "18898944/4609"
+    ]
+  },
+  "rho": "2799240593015020885/2800231477014561536",
+  "certificate_weights": [
+    "1",
+    "6978049256739331/6972332583120896",
+    "1",
+    "10938404207088131/6972332583120896"
+  ],
+  "horizons": [
+    {
+      "funded_attempts": 1024,
+      "first_pole_change_probability_lower": "0"
+    },
+    {
+      "funded_attempts": 4096,
+      "first_pole_change_probability_lower": "349050077485490956126580747948119400683948955/552405098999002811213702796727935687307821056"
+    },
+    {
+      "funded_attempts": 65536,
+      "first_pole_change_probability_lower": "552405098925792012781344359370109015553698531/552405098999002811213702796727935687307821056"
+    }
+  ],
+  "lean_scope": "exact composed rational kernel weighted-row certificate; all horizons",
+  "numerical_projection": "96-bit directed rational powers, independently checked against exact rational powers; projection not a new Lean declaration",
+  "lean_exit_code": 0,
+  "named_certificate": "WearAudit.certificate",
+  "proof_sha256": "9fcff372748843e20c78ecb6d7a9f64fd0ff9bee58d365847ebd21de726e760a",
+  "generated_source_sha256": "5a5ab40e55d6b8cd736b7ba22e5b3bd1bf25923f20162d08f1a031dbbfa8b4fa",
+  "validator_sha256": "2f11cb97bcba007c69ee1fd74ded851311a925ed4478189418b30a01e74fd6eb",
+  "source_sha256": "2919fd82cdba049a361a3267d601fc59c84310c3f47ffb426e77c46ad677dc7d",
+  "runtime_sha256": "54eb91047ffa80aec0c140710e178611fdf9546743e2aa587488609025b38edf"
+}

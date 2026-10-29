@@ -1,0 +1,124 @@
+{
+  "scope": "Conditional population resource service in the same readout+wear kernel; arithmetic/interface only",
+  "integrated_review": {
+    "path": "lean/CGBAxioms/reviews/optimizer_content_bridge.lean",
+    "sha256": "5d5164846e8ed196004efbd86af2e88375cece0054473074a80d26c67a5f5bbd",
+    "lean_exit_code": 0,
+    "audited": {
+      "CGB.OptimizerContentReview": [
+        "cooperative_content_contract",
+        "drive_removes_content_barriers",
+        "hidden_basin_calibration",
+        "maximal_reversible_acceptance",
+        "content_gradient_port",
+        "transfer_gradient_port",
+        "event_port_contract",
+        "finite_capacity_content_bridge",
+        "certified_root_refinement",
+        "fractional_probability_enclosure",
+        "force_response_dissipative",
+        "kinetic_survival_envelope",
+        "one_defect_regeneration_margin",
+        "maximal_event_clock"
+      ],
+      "CGB.ResourceEnergyReview": [
+        "scaled_pool_contract",
+        "scaled_resource_generation",
+        "resource_ground_bound",
+        "resource_ground_witness",
+        "resource_monopoly_gap"
+      ],
+      "CGB.ResourceReleaseReview": [
+        "primitive_release_port",
+        "resource_release_drift",
+        "resource_release_budget",
+        "resource_feedback_contract"
+      ],
+      "CGB.RationalSamplerReview": [
+        "rational_mixture_contract",
+        "rational_binary_coin_contract"
+      ],
+      "CGB.FiberOptimizerReview": [
+        "readout_force_response_contract",
+        "readout_regeneration_contract",
+        "readout_block_kernel_contract",
+        "readout_cell_kernel_contract",
+        "readout_release_drift",
+        "readout_release_budget",
+        "readout_task_risk_contract",
+        "autonomous_task_noise_floor",
+        "population_kernel_contract",
+        "population_task_window_contract",
+        "population_frozen_gradient_budget",
+        "readout_floor_reduction",
+        "population_resource_service"
+      ]
+    },
+    "compile_record": "lean/CGBAxioms/.lake/material_combined_core.lean.check.json",
+    "auto_implicit_variables": false,
+    "production_modules_added": 0
+  },
+  "declaration": "CGB.FiberOptimizerReview.population_resource_service",
+  "full_optimizer_admitted": false,
+  "training_enabled": false,
+  "model_experiments": 0,
+  "premises": {
+    "target": "N<6 and next force<-22",
+    "stocked": "initial stock>=1",
+    "empty_stock": "zero stock; each counted donor differs from target, has material and current force>34",
+    "world": "same uniform pre-opportunity loss kernel,0<=eta<=1; each opportunity funded",
+    "benefit": "signed force usefulness and objective-error validity are not assumed proved"
+  },
+  "derived": {
+    "one_opportunity": "(1-eta)/(26*P)",
+    "two_opportunities": "d*(1-eta)^2/(676*P^2)",
+    "event": "target mass increases by one relative to the initial state",
+    "scope": "d counts actual eligible donor sites; bound may be zero when none exists; not a lifetime or all-request fairness theorem"
+  },
+  "numeric": {
+    "cases": 7064,
+    "stocked_bounds": 14128,
+    "empty_stock_bounds": 14128,
+    "distinct_donor_routes": 4952,
+    "exact_two_step_physical_rows": 3068,
+    "actual_reduced_executor_choices": 13436,
+    "max_donors": 16,
+    "minimum_witness_to_bound_ratio": {
+      "1x2": "1",
+      "2x1": "1",
+      "2x2": "1",
+      "2x3": "1",
+      "3x2": "1",
+      "1x17": "1",
+      "17x1": "1"
+    }
+  },
+  "source_sha256": "04bcfb6271d59a76c638f27c4887964e51f3ded22c5afc7c2b3a6ac42889b24b",
+  "medium_source_sha256": "104d110891d1cc67f67532fc4348efdafd78e6b9ed8afeabcde0da536a94dc71",
+  "validator_sha256": "1845b36f1664a14d5a0202c4d9ff4a36f15a55a1162ceaac529f6ef5dd25cbe8",
+  "no_optimizer_transition_change": true,
+  "unchanged_tests": {
+    "command": [
+      "D:/conda_envs/vox/python.exe",
+      "-m",
+      "pytest",
+      "tests/test_conjugate_gradient_port.py",
+      "-q"
+    ],
+    "source": "tests/test_conjugate_gradient_port.py",
+    "source_sha256": "d5e41166484ed2ba09cdbbe02dbf72748d6b520723459ca884cb62f2e63ce950",
+    "runtime_source_sha256": "04bcfb6271d59a76c638f27c4887964e51f3ded22c5afc7c2b3a6ac42889b24b",
+    "returncode": 0,
+    "passed": 51,
+    "reported_seconds": 24.14,
+    "observed_session_id": 25376,
+    "output_summary": "51 passed in 24.14s"
+  },
+  "predecessor_snapshot": "lean/CGBAxioms/.lake/material_optimizer_pre_resource_service/manifest.json",
+  "review_status": "self_reviewed; independent review pending",
+  "open": [
+    "useful selective retention and task calibration; all-request temporal fairness is not claimed",
+    "actual task precision/noise floor and safe efficient GPU execution",
+    "independent continual real-data quality and convergence"
+  ]
+}
