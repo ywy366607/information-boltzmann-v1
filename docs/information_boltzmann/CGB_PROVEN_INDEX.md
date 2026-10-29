@@ -1,12 +1,13 @@
 # CGB 已证定理索引（自动生成，勿手改）
 
 由 `scripts/build_proven_index.py` 从 Lean 源码生成，并逐条核对当前审计清单。新工作开始前先检索已有机制；点击完整定理名查看源码、前提及结论。
+渐进检索入口：[主题导航与逐条完整陈述](CGB_THEOREMS/README.md)；先查主题，再按模块阅读。无源码解释的条目明确标注，避免把机器猜测当作定理含义。
 
-共 **1022** 条已审计源码定理/引理，来自 **94** 个生产模块。编译声明共 **4813** 项，含定义及自动生成项，不作为机制数量。
+共 **1200** 条已审计源码定理/引理，来自 **104** 个生产模块。编译声明共 **5174** 项，含定义及自动生成项，不作为机制数量。
 生成时全部生产源码哈希与通过信任/覆盖检查的库存一致；运行 `--check` 检测过时索引。标准入口 `lean/CGBAxioms/scripts/audit.py` 在构建、审计成功后自动刷新本页；其 `--check-index` 模式只核对索引、不改写索引。
 
 **未入 Lean 的手工推导与数值见证**另列在 `CGB_HAND_DERIVATIONS.md`，检索时两处都要看。
-`reviews/` 中的探索证明另有各自证据记录，未混入此生产清单。证明通过不替代其局部前提与实现对应检查。
+`reviews/` 中的探索证明见渐进检索入口的独立目录，未混入此生产清单。证明通过不替代其局部前提与实现对应检查。
 
 既有中文机制解读见 [Claude 生成链](CGB_GENERATION_LAYER1_20261025.md)；完整接线记录见 [统一参考](CGB_UNIFIED_REFERENCE_20261026.md)。这些文档保留各自证据范围。
 
@@ -19,10 +20,13 @@
 | Generation | [G3](../../lean/CGBAxioms/CGBAxioms/Generation.lean#L46)；[G13 (prediction is the boundary's Gibbs conditional)](../../lean/CGBAxioms/CGBAxioms/Generation.lean#L74)；[G2](../../lean/CGBAxioms/CGBAxioms/Generation.lean#L100)；[G1](../../lean/CGBAxioms/CGBAxioms/Generation.lean#L118)；[G1E](../../lean/CGBAxioms/CGBAxioms/Generation.lean#L171)；[G4](../../lean/CGBAxioms/CGBAxioms/Generation.lean#L197)；[P2b from weighted micro-reversibility](../../lean/CGBAxioms/CGBAxioms/Generation.lean#L224)；[G6](../../lean/CGBAxioms/CGBAxioms/Generation.lean#L255)；[G6DB](../../lean/CGBAxioms/CGBAxioms/Generation.lean#L269)；[G7](../../lean/CGBAxioms/CGBAxioms/Generation.lean#L282)；[G9 (modulation needs the boundary)](../../lean/CGBAxioms/CGBAxioms/Generation.lean#L298)；[G10a](../../lean/CGBAxioms/CGBAxioms/Generation.lean#L317)；[G10b (necessity of modulation, minimal form)](../../lean/CGBAxioms/CGBAxioms/Generation.lean#L330)；[G10c (heterogeneous compartments need local gains)](../../lean/CGBAxioms/CGBAxioms/Generation.lean#L361)；[G11a](../../lean/CGBAxioms/CGBAxioms/Generation.lean#L395)；[G11b (interoceptive memory)](../../lean/CGBAxioms/CGBAxioms/Generation.lean#L414)；[G12 (a miss counter is necessary for optimal foraging)](../../lean/CGBAxioms/CGBAxioms/Generation.lean#L480)；[G14a (two-phase drift)](../../lean/CGBAxioms/CGBAxioms/Generation.lean#L527)；[G14b](../../lean/CGBAxioms/CGBAxioms/Generation.lean#L542)；[G14c (the phases must balance)](../../lean/CGBAxioms/CGBAxioms/Generation.lean#L579)；[R2 (leakage loses on every outcome)](../../lean/CGBAxioms/CGBAxioms/Generation.lean#L600)；[R1 (conservation makes the readout one-hot)](../../lean/CGBAxioms/CGBAxioms/Generation.lean#L608)；[G15a (reward-modulated two-phase drift is the policy gradient)](../../lean/CGBAxioms/CGBAxioms/Generation.lean#L642)；[G15b](../../lean/CGBAxioms/CGBAxioms/Generation.lean#L658)；[G15c (outcome-blind modulation learns nothing)](../../lean/CGBAxioms/CGBAxioms/Generation.lean#L698)；[G15d (reward phases must balance)](../../lean/CGBAxioms/CGBAxioms/Generation.lean#L710)；[G8a](../../lean/CGBAxioms/CGBAxioms/Generation.lean#L751)；[G8b](../../lean/CGBAxioms/CGBAxioms/Generation.lean#L761) |
 | GenerationAmplifier | [G25a (H stays off below threshold)](../../lean/CGBAxioms/CGBAxioms/GenerationAmplifier.lean#L68)；[G25b (switch width)](../../lean/CGBAxioms/CGBAxioms/GenerationAmplifier.lean#L78)；[G25c (equilibrium Hill coefficient is one)](../../lean/CGBAxioms/CGBAxioms/GenerationAmplifier.lean#L90)；[G25d (cooperativity from multiple quanta)](../../lean/CGBAxioms/CGBAxioms/GenerationAmplifier.lean#L99)；[G25e (gain–range bound)](../../lean/CGBAxioms/CGBAxioms/GenerationAmplifier.lean#L140)；[G25f (a fixed threshold fails on a wide world)](../../lean/CGBAxioms/CGBAxioms/GenerationAmplifier.lean#L163)；[G25f (a threshold centred on the prediction works everywhere)](../../lean/CGBAxioms/CGBAxioms/GenerationAmplifier.lean#L178) |
 | GenerationAxiomAudit | [Homogeneity forces a regular contact graph](../../lean/CGBAxioms/CGBAxioms/GenerationAxiomAudit.lean#L26) |
+| GenerationColumnMemory | [Silence has one rest](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L51)；[Error descent](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L74)；[Decay by use keeps rare topics](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L101)；[No latch below unit gain](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L116)；[A latch above unit gain](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L131) |
 | GenerationCRN | [M2](../../lean/CGBAxioms/CGBAxioms/GenerationCRN.lean#L263) |
 | GenerationExport | [G16a (export is forced)](../../lean/CGBAxioms/CGBAxioms/GenerationExport.lean#L25)；[G16b (write-only bodies starve)](../../lean/CGBAxioms/CGBAxioms/GenerationExport.lean#L42)；[G16c](../../lean/CGBAxioms/CGBAxioms/GenerationExport.lean#L50)；[G17a (unselective export forgets)](../../lean/CGBAxioms/CGBAxioms/GenerationExport.lean#L67)；[G17b (retention needs selectivity)](../../lean/CGBAxioms/CGBAxioms/GenerationExport.lean#L90) |
+| GenerationGradientFilter | [W2 (drift forbids a vanishing gain)](../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L108)；[W3 (an occurrence clock)](../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L163)；[W4 (a relation basis)](../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L177)；[W5 is implied by W3](../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L187)；[W6 (nonconvex data)](../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L247) |
 | GenerationGrowth | [G18a](../../lean/CGBAxioms/CGBAxioms/GenerationGrowth.lean#L25)；[G18a (uniqueness)](../../lean/CGBAxioms/CGBAxioms/GenerationGrowth.lean#L32)；[G18b (reciprocity)](../../lean/CGBAxioms/CGBAxioms/GenerationGrowth.lean#L41)；[G18c](../../lean/CGBAxioms/CGBAxioms/GenerationGrowth.lean#L60)；[G19a (one pool grows a rich club)](../../lean/CGBAxioms/CGBAxioms/GenerationGrowth.lean#L77)；[G19b (memoryless ends see only symbol frequencies)](../../lean/CGBAxioms/CGBAxioms/GenerationGrowth.lean#L92)；[G19c (sequence structure needs memory at the ends)](../../lean/CGBAxioms/CGBAxioms/GenerationGrowth.lean#L113)；[G20a (two-state memory is geometric)](../../lean/CGBAxioms/CGBAxioms/GenerationGrowth.lean#L137)；[G20b (symmetric exchange)](../../lean/CGBAxioms/CGBAxioms/GenerationGrowth.lean#L152)；[G21 (no differentiation without fluctuation)](../../lean/CGBAxioms/CGBAxioms/GenerationGrowth.lean#L162)；[G22a (use depletes)](../../lean/CGBAxioms/CGBAxioms/GenerationGrowth.lean#L183)；[G22b (equilibrium inhibition retreats from co-activity)](../../lean/CGBAxioms/CGBAxioms/GenerationGrowth.lean#L189)；[G22c (no rich club needs local potentials)](../../lean/CGBAxioms/CGBAxioms/GenerationGrowth.lean#L196) |
 | GenerationIgnition | [G23 (no ignition in equilibrium with additive energies)](../../lean/CGBAxioms/CGBAxioms/GenerationIgnition.lean#L61)；[G24 (equilibrium memory bound)](../../lean/CGBAxioms/CGBAxioms/GenerationIgnition.lean#L100) |
+| GenerationInformationEnergy | [N1](../../lean/CGBAxioms/CGBAxioms/GenerationInformationEnergy.lean#L52)；[N1](../../lean/CGBAxioms/CGBAxioms/GenerationInformationEnergy.lean#L64)；[N2](../../lean/CGBAxioms/CGBAxioms/GenerationInformationEnergy.lean#L93)；[N3](../../lean/CGBAxioms/CGBAxioms/GenerationInformationEnergy.lean#L113)；[N4](../../lean/CGBAxioms/CGBAxioms/GenerationInformationEnergy.lean#L119)；[N5 (learning saturates)](../../lean/CGBAxioms/CGBAxioms/GenerationInformationEnergy.lean#L143) |
 | GenerationLatchHealth | [H1 (lock-in is death)](../../lean/CGBAxioms/CGBAxioms/GenerationLatchHealth.lean#L27)；[H2 (latched means blind)](../../lean/CGBAxioms/CGBAxioms/GenerationLatchHealth.lean#L41)；[H1, quantitative](../../lean/CGBAxioms/CGBAxioms/GenerationLatchHealth.lean#L59) |
 | GenerationLattice | [M1a with conductances](../../lean/CGBAxioms/CGBAxioms/GenerationLattice.lean#L39)；[M4 (lattice media are admitted)](../../lean/CGBAxioms/CGBAxioms/GenerationLattice.lean#L423) |
 | GenerationLearning | [L-1](../../lean/CGBAxioms/CGBAxioms/GenerationLearning.lean#L27)；[L-1](../../lean/CGBAxioms/CGBAxioms/GenerationLearning.lean#L31)；[L-2](../../lean/CGBAxioms/CGBAxioms/GenerationLearning.lean#L37)；[L-2](../../lean/CGBAxioms/CGBAxioms/GenerationLearning.lean#L53)；[L-3](../../lean/CGBAxioms/CGBAxioms/GenerationLearning.lean#L61)；[O-1](../../lean/CGBAxioms/CGBAxioms/GenerationLearning.lean#L84)；[O-2](../../lean/CGBAxioms/CGBAxioms/GenerationLearning.lean#L92) |
@@ -30,11 +34,15 @@
 | GenerationLifeGate | [No exact latch](../../lean/CGBAxioms/CGBAxioms/GenerationLifeGate.lean#L48)；[Life gate L-sense](../../lean/CGBAxioms/CGBAxioms/GenerationLifeGate.lean#L78)；[Life gate L-metabolism](../../lean/CGBAxioms/CGBAxioms/GenerationLifeGate.lean#L97)；[L-metabolism for rule tables](../../lean/CGBAxioms/CGBAxioms/GenerationLifeGate.lean#L128)；[L-sense for rule tables](../../lean/CGBAxioms/CGBAxioms/GenerationLifeGate.lean#L146) |
 | GenerationLinearMemory | [Histories merge](../../lean/CGBAxioms/CGBAxioms/GenerationLinearMemory.lean#L75)；[A linear hold cannot clean up](../../lean/CGBAxioms/CGBAxioms/GenerationLinearMemory.lean#L102) |
 | GenerationMedium | [M1a](../../lean/CGBAxioms/CGBAxioms/GenerationMedium.lean#L24)；[M1b](../../lean/CGBAxioms/CGBAxioms/GenerationMedium.lean#L45) |
-| GenerationNestedWorld | [Mass action](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L419)；[Uniport selectivity is fixed by free energy](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L456)；[Antiport selectivity](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L474)；[T-E2 (an organism nested in its world is admitted)](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1186)；[Only events across the boundary feed the organism](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1313)；[Death](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1352)；[A dead body does not give itself away](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1371)；[Only dissolution empties a place](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1412)；[Births come only from division](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1439)；[Leak bound](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1504)；[Nested metabolism](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1605)；[Nested sensing](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1632)；[The two-dimensional world is a model of the axioms](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1738) |
+| GenerationNestedWorld | [A move is an exchange](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L374)；[Mass action](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L442)；[Uniport selectivity is fixed by free energy](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L479)；[Antiport selectivity](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L497)；[T-E2 (an organism nested in its world is admitted)](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1235)；[Only events across the boundary feed the organism](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1362)；[Death](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1401)；[A dead body does not give itself away](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1420)；[Only dissolution empties a place](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1461)；[Births come only from division](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1488)；[Leak bound](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1553)；[Nested metabolism](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1654)；[Nested sensing](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1681)；[The two-dimensional world is a model of the axioms](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1787) |
 | GenerationNesting | [G26a (the sensed potential of a world cell)](../../lean/CGBAxioms/CGBAxioms/GenerationNesting.lean#L39)；[G26b (staying put starves)](../../lean/CGBAxioms/CGBAxioms/GenerationNesting.lean#L58)；[T-N7 (the stream never runs dry)](../../lean/CGBAxioms/CGBAxioms/GenerationNesting.lean#L140)；[G26c (corpses must go: decomposition is necessary)](../../lean/CGBAxioms/CGBAxioms/GenerationNesting.lean#L161) |
+| GenerationOptimizer | [Theorem: CGB Optimizer Strictly Pareto-Dominates the Adam-Muon Hybrid](../../lean/CGBAxioms/CGBAxioms/GenerationOptimizer.lean#L260) |
 | GenerationOrganismEcoliMsS0 | [The organism is a model of the CGB axioms](../../lean/CGBAxioms/CGBAxioms/GenerationOrganismEcoliMsS0.lean#L52)；[Life gate L-metabolism](../../lean/CGBAxioms/CGBAxioms/GenerationOrganismEcoliMsS0.lean#L58)；[Life gate L-sense](../../lean/CGBAxioms/CGBAxioms/GenerationOrganismEcoliMsS0.lean#L65) |
 | GenerationOrganismEcoliV1 | [The organism is a model of the CGB axioms](../../lean/CGBAxioms/CGBAxioms/GenerationOrganismEcoliV1.lean#L52)；[Life gate L-metabolism](../../lean/CGBAxioms/CGBAxioms/GenerationOrganismEcoliV1.lean#L58)；[Life gate L-sense](../../lean/CGBAxioms/CGBAxioms/GenerationOrganismEcoliV1.lean#L65) |
 | GenerationOrganismGeneratedS0 | [The organism is a model of the CGB axioms](../../lean/CGBAxioms/CGBAxioms/GenerationOrganismGeneratedS0.lean#L50)；[Life gate L-metabolism](../../lean/CGBAxioms/CGBAxioms/GenerationOrganismGeneratedS0.lean#L56)；[Life gate L-sense](../../lean/CGBAxioms/CGBAxioms/GenerationOrganismGeneratedS0.lean#L63) |
+| GenerationPersistence | [A (Kolmogorov, one direction)](../../lean/CGBAxioms/CGBAxioms/GenerationPersistence.lean#L46)；[A](../../lean/CGBAxioms/CGBAxioms/GenerationPersistence.lean#L61)；[B (integral feedback adapts perfectly)](../../lean/CGBAxioms/CGBAxioms/GenerationPersistence.lean#L73)；[B](../../lean/CGBAxioms/CGBAxioms/GenerationPersistence.lean#L82)；[C](../../lean/CGBAxioms/CGBAxioms/GenerationPersistence.lean#L92)；[C](../../lean/CGBAxioms/CGBAxioms/GenerationPersistence.lean#L102) |
+| GenerationPredictiveHarvest | [Gibbs' inequality](../../lean/CGBAxioms/CGBAxioms/GenerationPredictiveHarvest.lean#L63)；[Kelly bound](../../lean/CGBAxioms/CGBAxioms/GenerationPredictiveHarvest.lean#L75)；[No body persists](../../lean/CGBAxioms/CGBAxioms/GenerationPredictiveHarvest.lean#L106) |
+| GenerationSpeechTempo | [N7](../../lean/CGBAxioms/CGBAxioms/GenerationSpeechTempo.lean#L127) |
 | GenerationTable | [M3](../../lean/CGBAxioms/CGBAxioms/GenerationTable.lean#L72) |
 
 ## 完整模块目录
@@ -57,10 +65,15 @@
 - [Generation（35）](#generation35)
 - [GenerationAmplifier（13）](#generationamplifier13)
 - [GenerationAxiomAudit（2）](#generationaxiomaudit2)
+- [GenerationCascadeMemory（5）](#generationcascadememory5)
+- [GenerationColumnMemory（13）](#generationcolumnmemory13)
+- [GenerationContinualOptimizer（42）](#generationcontinualoptimizer42)
 - [GenerationCRN（10）](#generationcrn10)
 - [GenerationExport（6）](#generationexport6)
+- [GenerationGradientFilter（35）](#generationgradientfilter35)
 - [GenerationGrowth（16）](#generationgrowth16)
 - [GenerationIgnition（5）](#generationignition5)
+- [GenerationInformationEnergy（7）](#generationinformationenergy7)
 - [GenerationLatchHealth（3）](#generationlatchhealth3)
 - [GenerationLattice（14）](#generationlattice14)
 - [GenerationLearning（7）](#generationlearning7)
@@ -68,12 +81,17 @@
 - [GenerationLifeGate（9）](#generationlifegate9)
 - [GenerationLinearMemory（7）](#generationlinearmemory7)
 - [GenerationMedium（2）](#generationmedium2)
-- [GenerationNestedWorld（65）](#generationnestedworld65)
+- [GenerationNestedWorld（66）](#generationnestedworld66)
 - [GenerationNesting（8）](#generationnesting8)
+- [GenerationOptimizer（19）](#generationoptimizer19)
 - [GenerationOrganismEcoliMsS0（3）](#generationorganismecolimss03)
 - [GenerationOrganismEcoliV1（3）](#generationorganismecoliv13)
 - [GenerationOrganismGeneratedS0（3）](#generationorganismgenerateds03)
+- [GenerationPersistence（6）](#generationpersistence6)
+- [GenerationPredictiveHarvest（9）](#generationpredictiveharvest9)
+- [GenerationSpeechTempo（14）](#generationspeechtempo14)
 - [GenerationTable（2）](#generationtable2)
+- [GenerationUnifiedOptimizer（27）](#generationunifiedoptimizer27)
 - [GraceRecovery（20）](#gracerecovery20)
 - [GraceRecoveryAccounting（14）](#gracerecoveryaccounting14)
 - [GraceRecoveryClosure（18）](#gracerecoveryclosure18)
@@ -410,6 +428,78 @@ _Which axiom parts work (generation chain, audit) Usage in the generation chain 
 - [`CGB.Medium.homogeneous_regular`](../../lean/CGBAxioms/CGBAxioms/GenerationAxiomAudit.lean#L26)：**Homogeneity forces a regular contact graph**: every unit has the same number of contacts.
 - [`CGB.Medium.not_homogeneous_of_degrees`](../../lean/CGBAxioms/CGBAxioms/GenerationAxiomAudit.lean#L45)：A unit with a different number of contacts than another rules out homogeneity.
 
+## GenerationCascadeMemory（5）
+_A bank of two-state pools keeps a power-law trace (generation chain, cascade memory, 2026-10-27) G20a (`two_state_geometric`) makes the trace of one two-state pool exponential._
+
+- [`CGB.Generation.single_pool_falls_below_power`](../../lean/CGBAxioms/CGBAxioms/GenerationCascadeMemory.lean#L29)：One pool's trace drops below `c / t` once `t > 2 τ / c`.
+- [`CGB.Generation.bank_trace_ge_one_term`](../../lean/CGBAxioms/CGBAxioms/GenerationCascadeMemory.lean#L58)：The bank's trace is at least any one of its (nonnegative) terms.
+- [`CGB.Generation.pool_in_band_bound`](../../lean/CGBAxioms/CGBAxioms/GenerationCascadeMemory.lean#L63)：A pool with `t ≤ τ ≤ γ t` alone keeps `1 / (e γ t)`.
+- [`CGB.Generation.bank_power_law_lower_bound`](../../lean/CGBAxioms/CGBAxioms/GenerationCascadeMemory.lean#L77)
+- [`CGB.Generation.geometric_bank_covers`](../../lean/CGBAxioms/CGBAxioms/GenerationCascadeMemory.lean#L84)：Geometric time constants cover the band: every `t ∈ [τ₀, τ₀ γ^m]` has a level `k ≤ m` with `t ≤ τ₀ γ^k ≤ γ t`.
+
+## GenerationColumnMemory（13）
+_Column memory for the language organism (generation chain, 2026-10-28) The language organism's synaptic page is a set of columns `S_m` written by the gated delta rule (`GenerationLinearMemory`), with the activity page re_
+
+- [`CGB.Generation.dot_self_nonneg`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L41)
+- [`CGB.Generation.eq_zero_of_dot_self`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L44)
+- [`CGB.Generation.silent_rest_unique`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L51)：**Silence has one rest**: a gated delta step without a write (`α < 1`) fixes only zero.
+- [`CGB.Generation.tiedWrite_eq_delta_add`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L66)：The tied write is the delta step plus the write of the arrival.
+- [`CGB.Generation.tied_write_is_error_descent`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L74)：**Error descent**: the tied write is a gradient step of size `β` on `½ (⟨k, x⟩ - v)²`, whose gradient in `x i` is `(⟨k, x⟩ - v) k i` (predicted minus arrived, times the presynaptic key).
+- [`CGB.Generation.tied_write_error_shrinks`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L81)：With a unit key the prediction error shrinks by `1 - β`.
+- [`CGB.Generation.exact_prediction_no_write`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L94)：An exact prediction writes nothing.
+- [`CGB.Generation.occurrence_decay_retains`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L101)：**Decay by use keeps rare topics**: decaying by `α ^ w t` with `w t ∈ [0, 1]` keeps at least what decaying by `α` every tick keeps.
+- [`CGB.Generation.unused_column_kept`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L111)：An unused column keeps everything.
+- [`CGB.Generation.no_latch_below_unit_gain`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L116)：**No latch below unit gain**: `x ↦ σ (g x)` with a 1-Lipschitz `σ`, `σ 0 = 0` and `0 ≤ g < 1` rests only at zero.
+- [`CGB.Generation.hardSat_zero`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L125)
+- [`CGB.Generation.hardSat_lipschitz`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L127)
+- [`CGB.Generation.latch_above_unit_gain`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L131)：**A latch above unit gain**: with saturation and `g ≥ 1`, `± 1` rest besides `0`.
+
+## GenerationContinualOptimizer（42）
+_A continual optimizer: competition, no winner-take-all, a healthy latch (side branch, 2026-10-27) The optimizer of a stream learner must (i) make units compete so that they differentiate, (ii) keep one unit from taking e_
+
+- [`CGB.Continual.polar_conserves_direction_mass`](../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L54)：Orthonormal columns carry unit mass along every input direction.
+- [`CGB.Continual.payoff_le_two_of_col`](../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L71)
+- [`CGB.Continual.payoff_le_two_of_row`](../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L80)
+- [`CGB.Continual.column_budget_allows_wta`](../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L89)
+- [`CGB.Continual.row_budget_allows_copies`](../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L97)
+- [`CGB.Continual.doubly_budgeted_form`](../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L105)
+- [`CGB.Continual.doubly_budgeted_max_iff_permutation`](../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L110)
+- [`CGB.Continual.doubly_budgeted_max_differentiates`](../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L125)：At a doubly budgeted maximum the two rows own different directions.
+- [`CGB.Continual.linear_protect_implies_slow`](../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L133)
+- [`CGB.Continual.deferLatch_holds`](../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L145)
+- [`CGB.Continual.deferLatch_releases`](../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L148)
+- [`CGB.Continual.deferLatch_senses`](../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L153)：The latch is not blind: the same held state gives different outputs for different evidence runs (H2 is avoided), and every hold ends after `c` contrary steps (H1).
+- [`CGB.Continual.held_budget_starves`](../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L161)：Consolidated entries that keep a share `s` of a conserved budget `B` and are never released leave `B - n s` free after `n` consolidations; it is gone once `n s ≥ B`.
+- [`CGB.Continual.secant_own_noise_bias`](../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L174)
+- [`CGB.Continual.secant_same_batch_exact`](../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L180)
+- [`CGB.Continual.fresh_decrease_mixture`](../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L204)
+- [`CGB.Continual.conditional_prediction_excess`](../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L207)
+- [`CGB.Continual.shared_reference_flips`](../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L211)：Shared reference: row `x` occurs when `x ≥ f · max x y`.
+- [`CGB.Continual.expected_gradient_is_mixture`](../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L241)
+- [`CGB.Continual.positive_part_bias`](../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L246)：Zero signal, calibrated variance: `m` is `0, 0, c, -c` with `c^2 = 2P`, so `E[m^2] = P`.
+- [`CGB.Continual.consistent_prediction_excess`](../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L253)
+- [`CGB.Continual.softmax_gradients_sum_zero`](../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L259)：Two-class softmax: the class-row gradients `(p - y)` and `((1 - p) - (1 - y))` sum to zero.
+- [`CGB.Continual.softmax_rows_coupled`](../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L263)：The output factor of the softmax curvature, `diag p - p pᵀ` for two classes, has the off-diagonal entry `-p (1 - p)`, nonzero for `0 < p < 1`.
+- [`CGB.Continual.ema_forgets_rare_spikes`](../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L290)：The registered window (factor 0.95) with spikes 200 steps apart: the held share 0.95^200 is below the spike's share 1/200 of the long-run power.
+- [`CGB.Continual.partition_is_unbiased`](../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L292)
+- [`CGB.Continual.event_part_is_rate_times_size`](../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L299)
+- [`CGB.Continual.frozen_hold_loses_on_drift`](../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L327)
+- [`CGB.Continual.mixture_update_bounded`](../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L333)
+- [`CGB.Continual.mixture_weight_at_zero`](../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L343)
+- [`CGB.Continual.release_threshold_monotone_in_age`](../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L346)
+- [`CGB.Continual.succession_odds_decreasing`](../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L352)
+- [`CGB.Continual.linear_burst_damage_integral`](../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L374)
+- [`CGB.Continual.beta_hazard_decreasing`](../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L410)
+- [`CGB.Continual.beta_hazard_succession`](../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L417)
+- [`CGB.Continual.accepted_run_variance`](../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L420)
+- [`CGB.Continual.posterior_shrink_error`](../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L440)：Posterior of the gradient as the two points `m ± √P` (mean `m`, variance `P`): the mean squared error of the action `f m` is `P + (1 - f)^2 m^2`.
+- [`CGB.Continual.posterior_mean_is_bayes_action`](../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L445)
+- [`CGB.Continual.newton_contracts_iff`](../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L469)
+- [`CGB.Continual.overestimate_keeps_contraction`](../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L484)
+- [`CGB.Continual.saturating_step_bounded`](../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L499)
+- [`CGB.Continual.pooled_signal_unbiased`](../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L518)
+- [`CGB.Continual.next_value_variance`](../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L523)
+
 ## GenerationCRN（10）
 _Well-mixed pair reaction media are admitted (generation chain, M2) One compartment (every unit touches every other: a single clique, which by G8 can integrate anything)._
 
@@ -433,6 +523,45 @@ _Export and selective export (generation chain, G16-G17) P1a makes the body fini
 - [`CGB.Generation.survive_le_pow`](../../lean/CGBAxioms/CGBAxioms/GenerationExport.lean#L67)：**G17a (unselective export forgets)**: if every export removes the item with probability at least `q₀ > 0` (for example `1/C` when the exported unit is drawn without regard to what it holds), survival is at most `(1 - q₀
 - [`CGB.Generation.unselective_export_forgets`](../../lean/CGBAxioms/CGBAxioms/GenerationExport.lean#L79)
 - [`CGB.Generation.retention_needs_selectivity`](../../lean/CGBAxioms/CGBAxioms/GenerationExport.lean#L90)：**G17b (retention needs selectivity)**: if an item must survive every number of exports with probability at least `p > 0`, its per-export removal probability has no positive lower bound: export must eventually spare it,
+
+## GenerationGradientFilter（35）
+_An optimizer as a learner of its gradient stream (side branch, 2026-10-27) The outer loop's world is the stream of noisy gradients._
+
+- [`CGB.GradientFilter.memoryless_gain_excess`](../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L34)：A learner without memory (gain 1) exceeds the optimal error `P` by `r^2 / (P + r)`.
+- [`CGB.GradientFilter.memoryless_strictly_worse`](../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L42)
+- [`CGB.GradientFilter.shrink_error_square`](../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L52)
+- [`CGB.GradientFilter.shrink_optimum`](../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L58)
+- [`CGB.GradientFilter.unshrunk_excess`](../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L64)：Taking the noisy estimate at face value costs exactly `N^2 / (S + N)` more.
+- [`CGB.GradientFilter.no_shared_shrink_for_two_snr`](../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L72)：One shared factor is strictly suboptimal in at least one of two directions whose signal fractions differ.
+- [`CGB.GradientFilter.vanishing_gain_loses_under_drift`](../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L108)：**W2 (drift forbids a vanishing gain)**: the tracking error variance obeys `V (t+1) = (1 - K t)^2 V t + q + K t^2 r`.
+- [`CGB.GradientFilter.emaVar_fixed`](../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L153)：It is the fixed point of `v = x^2 v + (1 - x)^2 r`.
+- [`CGB.GradientFilter.occurrence_clock_beats_time_clock`](../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L163)：**W3 (an occurrence clock)**: a direction observed once every `k ≥ 2` steps, averaged with the per-step factor `β` of the frequent directions, effectively uses `β^k` per observation and has a strictly larger stationary v
+- [`CGB.GradientFilter.diagonal_cannot_whiten`](../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L177)：**W4 (a relation basis)**: if the curvature `[[a, b], [b, d]]` has a nonzero off-diagonal term, no diagonal preconditioner `diag(d₁, d₂)` turns it into a nonzero multiple of the identity (one-step whitening); a basis-awa
+- [`CGB.GradientFilter.usage_normalized_gain_anti_dominant`](../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L187)：**W5 is implied by W3**: a gain normalized by that direction's accumulated use (`s / sqrt (c + m)`, the AdaGrad / Adam form) strictly falls when the direction's own demand grows: it is locally anti-dominant without a sep
+- [`CGB.GradientFilter.step_error_square`](../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L215)
+- [`CGB.GradientFilter.optimal_step_minimizes`](../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L222)
+- [`CGB.GradientFilter.optimal_step_newton_times_signal`](../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L227)
+- [`CGB.GradientFilter.no_fixed_step_two_distances`](../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L233)：With noise, the optimal step differs at two different distances to the optimum.
+- [`CGB.GradientFilter.no_optimal_step_negative_curvature`](../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L247)：**W6 (nonconvex data)**: with negative curvature the loss along the step is unbounded below, so no optimal quadratic step exists and the step must be bounded.
+- [`CGB.GradientFilter.no_fixed_bound_two_radii`](../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L292)
+- [`CGB.GradientFilter.bound_stays_in_band`](../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L306)
+- [`CGB.GradientFilter.newton_step_exact`](../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L324)：The exact curvature step reaches the optimum of a quadratic direction.
+- [`CGB.GradientFilter.momentum_after_exact_step`](../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L330)：After an exact step, momentum `β ≠ 0` (heavy ball: next error `β (e₁ - e₀)` with `e₁ = 0`) moves a direction that started away from the optimum off it again.
+- [`CGB.GradientFilter.gain_error_square`](../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L354)
+- [`CGB.GradientFilter.steady_gain_worse_for_fresh`](../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L362)：The steady gain `P* / (P* + r)` is strictly worse than the evidence-dependent gain for a direction whose prior variance is different (larger: a fresh or rare direction).
+- [`CGB.GradientFilter.in_sample_decrease_bias`](../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L400)：Decrease measured on the batch that made the step minus the decrease on fresh data.
+- [`CGB.GradientFilter.in_sample_decrease_bias_mean`](../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L405)
+- [`CGB.GradientFilter.own_step_biases_noise_estimate`](../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L412)：Lag-one noise estimate averaged over the noise pair `(x, y)`, `(-x, -y)`.
+- [`CGB.GradientFilter.residual_removes_own_step`](../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L416)
+- [`CGB.GradientFilter.secant_needs_diagonal`](../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L420)
+- [`CGB.GradientFilter.secant_exact_iff`](../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L424)
+- [`CGB.GradientFilter.fresh_decrease_unbiased`](../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L452)：Fresh-batch decrease averaged over the unseen noise pair `±ξ'`.
+- [`CGB.GradientFilter.estimated_curvature_residual_bias`](../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L458)
+- [`CGB.GradientFilter.eigenbasis_decouples`](../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L463)
+- [`CGB.GradientFilter.trust_with_deadband_stays_in_band`](../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L471)
+- [`CGB.GradientFilter.linGain_closed`](../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L495)
+- [`CGB.GradientFilter.linear_damage_eq_adoption`](../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L500)
+- [`CGB.GradientFilter.no_linear_gain_separates`](../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L507)
 
 ## GenerationGrowth（16）
 _Growth of a connection unit (generation chain, G18) A connection unit sits between two compartments and carries its two end activities `a b : Fin 2` and its slot occupancy `w`._
@@ -462,6 +591,17 @@ _Ignition needs drive or interaction (generation chain, G23) Ignition (global-wo
 - [`CGB.Generation.no_valley`](../../lean/CGBAxioms/CGBAxioms/GenerationIgnition.lean#L61)：**G23 (no ignition in equilibrium with additive energies)**: the distribution of the number of active units has no strict valley, so it cannot have an "off" peak and an "ignited" peak separated by a gap.
 - [`CGB.Generation.pulse_rate_le`](../../lean/CGBAxioms/CGBAxioms/GenerationIgnition.lean#L83)
 - [`CGB.Generation.equilibrium_memory_bound`](../../lean/CGBAxioms/CGBAxioms/GenerationIgnition.lean#L100)：**G24 (equilibrium memory bound)**: loading at rate `lp ≤ e^{|μ|/2} l0` for time `tp`, then relaxing at rate `l0` for time `T`, keeps at most `e^{|μ|/2 - 1} tp / T` of the deviation, for every choice of `l0`.
+
+## GenerationInformationEnergy（7）
+_Information and energy for a finite body in a stream (generation chain, 2026-10-28) The missing edges N1–N5 of `docs/information_boltzmann/CGB_THEOREM_RELATION_MAP_20261028.md`._
+
+- [`CGB.InformationEnergy.freeEnergy_eq_kl`](../../lean/CGBAxioms/CGBAxioms/GenerationInformationEnergy.lean#L52)：**N1**: the free energy in the landscape `-log π` is the relative entropy to `π`.
+- [`CGB.InformationEnergy.freeEnergy_at_law`](../../lean/CGBAxioms/CGBAxioms/GenerationInformationEnergy.lean#L58)：The law itself has free energy zero.
+- [`CGB.InformationEnergy.kl_nonneg`](../../lean/CGBAxioms/CGBAxioms/GenerationInformationEnergy.lean#L64)：**N1**: free energy is never below that of the law (Gibbs' inequality).
+- [`CGB.InformationEnergy.snapshot_misses_hidden`](../../lean/CGBAxioms/CGBAxioms/GenerationInformationEnergy.lean#L93)：**N2**: a measurement that reads only the visible part carries no information about the hidden part beyond what it carries about the visible one.
+- [`CGB.InformationEnergy.finite_memory_bounds_net_work`](../../lean/CGBAxioms/CGBAxioms/GenerationInformationEnergy.lean#L113)：**N3**: work drawn from acquired information `I` at most `kT · I`, erasure of everything beyond the capacity at least `kT` per unit: the net never exceeds `kT · cap`.
+- [`CGB.InformationEnergy.passivity_ends`](../../lean/CGBAxioms/CGBAxioms/GenerationInformationEnergy.lean#L119)：**N4**: with drift `q > 0` and no observation (W2's recursion at gain zero), the information of one observation, `½ log (1 + V / r)`, exceeds any cost `c > 0` after finitely many ticks.
+- [`CGB.InformationEnergy.mixture_regret_le`](../../lean/CGBAxioms/CGBAxioms/GenerationInformationEnergy.lean#L143)：**N5 (learning saturates)**: the Bayes mixture codes the sequence at most `log (1 / w θ₀)` worse than the source's law `θ₀` (pathwise, for every sequence and length).
 
 ## GenerationLatchHealth（3）
 _When is a latch healthy? (generation chain, latch health) A latch (ignition, G23/G24) is a basin of states held by positive feedback._
@@ -536,74 +676,75 @@ _A generator of admitted media (generation chain, M1) Instead of proving the six
 - [`CGB.Medium.p2b_of_energy`](../../lean/CGBAxioms/CGBAxioms/GenerationMedium.lean#L24)：**M1a**: symmetric (Metropolis-type) rates of a reversible event set under an energy give P2b.
 - [`CGB.Medium.rate_local_of_energy`](../../lean/CGBAxioms/CGBAxioms/GenerationMedium.lean#L45)：**M1b**: a rate that is a function of the participants' states through the event's energy difference reads only the participants, when that difference does.
 
-## GenerationNestedWorld（65）
+## GenerationNestedWorld（66）
 _An organism nested in its world (T-E2) The joint medium of a bacterium-like organism and its world, as a lattice medium (M4)._
 
-- [`CGB.poolShift_back`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L45)
-- [`CGB.poolShift_val`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L58)
-- [`CGB.NestedWorld.sdir_not`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L188)
-- [`CGB.NestedWorld.drain_content`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L276)
-- [`CGB.NestedWorld.drain_drain`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L291)
-- [`CGB.NestedWorld.canDrain_drain`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L299)
-- [`CGB.NestedWorld.gateCount_drain`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L302)
-- [`CGB.NestedWorld.poolCond_symm`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L379)
-- [`CGB.NestedWorld.poolCond_nonneg`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L382)
-- [`CGB.NestedWorld.poolFactor_symm`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L388)
-- [`CGB.NestedWorld.poolFactor_nonneg`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L391)
-- [`CGB.NestedWorld.poolCond_pos`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L394)
-- [`CGB.NestedWorld.poolFactor_pos`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L405)：Pools are bounded by `V`, so every pool change has positive multiplicity.
-- [`CGB.NestedWorld.poolCond_self`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L409)
-- [`CGB.NestedWorld.poolCond_step`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L412)
-- [`CGB.NestedWorld.mass_action_up`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L419)：**Mass action** from 7.1: with the entropic pool energy `cellF`, the lumped conductance makes a one-quantum gain of a pool with `m` quanta fire at a rate `∝ V - m` (its free places) ...
-- [`CGB.NestedWorld.mass_action_down`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L435)：...
-- [`CGB.NestedWorld.uniport_selectivity`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L456)：**Uniport selectivity is fixed by free energy**: a reversible exchange that moves one food quantum into the body (inner energy change `D`, food energy included) fills at food `m + 1` and drains back at food `q`; the rati
-- [`CGB.NestedWorld.antiport_selectivity`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L474)：**Antiport selectivity**: the same exchange coupled to the waste pool (one food quantum in, one waste quantum out, inner energy change `D`) fills at food `m + 1`, waste `w` and drains at food `q`, waste `z + 1`; the rati
-- [`CGB.NestedWorld.apply_content`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L533)
-- [`CGB.NestedWorld.sum_pair_update`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L546)
-- [`CGB.NestedWorld.pair_back`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L556)
-- [`CGB.NestedWorld.fuelAct_content`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L567)
-- [`CGB.NestedWorld.innerAct_back`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L576)
-- [`CGB.NestedWorld.fuelAct_back`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L595)
-- [`CGB.NestedWorld.gateCount_update`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L614)
-- [`CGB.NestedWorld.innerAct_delta`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L629)：A pair rule that fired moved the content the pools gave up into the body (or back).
-- [`CGB.NestedWorld.gateCount_innerAct`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L667)：A pair rule away from the membrane page leaves the membrane as it is.
-- [`CGB.NestedWorld.c1_nonneg`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L692)
-- [`CGB.NestedWorld.c2_nonneg`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L704)
-- [`CGB.NestedWorld.content_p1a`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L738)
-- [`CGB.NestedWorld.not_bid`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L768)
-- [`CGB.NestedWorld.sum_update_nat`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L772)
-- [`CGB.NestedWorld.cons1`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L782)
-- [`CGB.NestedWorld.cons2`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L855)
-- [`CGB.NestedWorld.eff1_xch`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L933)
-- [`CGB.NestedWorld.xchEff_gate`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L940)：An exchange through a page other than the membrane leaves the membrane as it is.
-- [`CGB.NestedWorld.xchEff_back`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L953)
-- [`CGB.NestedWorld.back1`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L974)
-- [`CGB.NestedWorld.eff2_diff`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1057)
-- [`CGB.NestedWorld.diffEff_back`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1061)
-- [`CGB.NestedWorld.back2`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1082)
-- [`CGB.NestedWorld.div_gate`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1152)
-- [`CGB.NestedWorld.cellGate_inner`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1165)
-- [`CGB.NestedWorld.axioms`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1186)：**T-E2 (an organism nested in its world is admitted)**: the joint medium of organisms and their world satisfies the six axiom clauses as soon as the organism's inner pair rules and its fuel rule conserve content and no e
-- [`CGB.NestedWorld.orgIn_congr`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1275)
-- [`CGB.NestedWorld.orgIn_inner`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1283)：A pair rule that does not couple to the pools (`sdf + sdw = 0`) keeps the organism's content.
-- [`CGB.NestedWorld.eff1_supply_bug`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1303)：The world's supply rules never touch the organism.
-- [`CGB.NestedWorld.intake_is_exchange`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1313)：**Only events across the boundary feed the organism**: every single-cell event that raises the content held by the organism is a pool exchange or a pair rule coupled to the pools; a gated one has conductance proportional
-- [`CGB.NestedWorld.dead_intake_is_physics`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1352)：**Death** (`Part.CanTakeIn` fails through the organism's own doing): with no intact membrane unit, every event that would raise the organism's content has rate zero, except an ungated exchange: physics the organism does
-- [`CGB.NestedWorld.dead_output_is_physics`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1371)：**A dead body does not give itself away**: every single-cell event that lowers the content held by the organism is a pool exchange; with no intact membrane the gated ones have rate zero, so what leaves a dead body leaves
-- [`CGB.NestedWorld.frees_only_by_dissolving`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1412)：**Only dissolution empties a place** (with G26c `corpses_must_go`, why the table needs it): every single-cell event that turns a cell holding a body into a cell without one is the dissolution of a body.
-- [`CGB.NestedWorld.births_only_by_division`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1439)：**Births come only from division** (the dual of `frees_only_by_dissolving`): a neighbour event after which the pair holds more bodies is a division.
-- [`CGB.NestedWorld.partner_exit_blocked`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1473)：A pair rule whose partner state is absent leaves the organism as it is.
-- [`CGB.NestedWorld.gated_exit_blocked`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1488)：A gated exchange has no conductance without an intact membrane.
-- [`CGB.NestedWorld.poolShift_one`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1492)
-- [`CGB.NestedWorld.leak_bound`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1504)：**Leak bound**: an ungated exchange that moves one quantum from a unit into the waste pool fires at rate at least `κ * exp (-Φ)` whenever the unit holds that quantum and the pool is not full, whatever the rest of the org
-- [`CGB.NestedWorld.intake_eff`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1572)
-- [`CGB.NestedWorld.intake_content`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1587)
-- [`CGB.NestedWorld.metabolizes_of_intake`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1605)：**Nested metabolism** (`Part.Metabolizes`) for every organism whose table has a gated food intake of one quantum, in a state with an intact membrane and a unit ready to take in.
-- [`CGB.NestedWorld.senses_of_intake`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1632)：**Nested sensing** (`Part.Senses`): the same intake event, from the same organism, fires at different rates when only the cell's food differs (one quantum or two).
-- [`CGB.NestedWorld.ringAdj_symm`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1704)
-- [`CGB.NestedWorld.torusAdj_symm`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1712)
-- [`CGB.NestedWorld.axioms_torus`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1738)：**The two-dimensional world is a model of the axioms**: organisms on a torus, food pellets from the world's boundary, diffusion, waste sinks, driven movement in four headings.
-- [`CGB.NestedWorld.axioms_ring`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1750)：The one-dimensional ring is a model too.
+- [`CGB.poolShift_back`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L48)
+- [`CGB.poolShift_val`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L61)
+- [`CGB.NestedWorld.sdir_not`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L191)
+- [`CGB.NestedWorld.drain_content`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L279)
+- [`CGB.NestedWorld.drain_drain`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L294)
+- [`CGB.NestedWorld.canDrain_drain`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L302)
+- [`CGB.NestedWorld.gateCount_drain`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L305)
+- [`CGB.NestedWorld.move_exchanges`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L374)：**A move is an exchange**: whatever occupies the cell ahead (vacuum or a body), a running mover whose fuel rule fires takes its place and the occupant takes the mover's, unchanged; pools stay.
+- [`CGB.NestedWorld.poolCond_symm`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L402)
+- [`CGB.NestedWorld.poolCond_nonneg`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L405)
+- [`CGB.NestedWorld.poolFactor_symm`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L411)
+- [`CGB.NestedWorld.poolFactor_nonneg`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L414)
+- [`CGB.NestedWorld.poolCond_pos`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L417)
+- [`CGB.NestedWorld.poolFactor_pos`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L428)：Pools are bounded by `V`, so every pool change has positive multiplicity.
+- [`CGB.NestedWorld.poolCond_self`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L432)
+- [`CGB.NestedWorld.poolCond_step`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L435)
+- [`CGB.NestedWorld.mass_action_up`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L442)：**Mass action** from 7.1: with the entropic pool energy `cellF`, the lumped conductance makes a one-quantum gain of a pool with `m` quanta fire at a rate `∝ V - m` (its free places) ...
+- [`CGB.NestedWorld.mass_action_down`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L458)：...
+- [`CGB.NestedWorld.uniport_selectivity`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L479)：**Uniport selectivity is fixed by free energy**: a reversible exchange that moves one food quantum into the body (inner energy change `D`, food energy included) fills at food `m + 1` and drains back at food `q`; the rati
+- [`CGB.NestedWorld.antiport_selectivity`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L497)：**Antiport selectivity**: the same exchange coupled to the waste pool (one food quantum in, one waste quantum out, inner energy change `D`) fills at food `m + 1`, waste `w` and drains at food `q`, waste `z + 1`; the rati
+- [`CGB.NestedWorld.apply_content`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L556)
+- [`CGB.NestedWorld.sum_pair_update`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L569)
+- [`CGB.NestedWorld.pair_back`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L579)
+- [`CGB.NestedWorld.fuelAct_content`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L590)
+- [`CGB.NestedWorld.innerAct_back`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L599)
+- [`CGB.NestedWorld.fuelAct_back`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L618)
+- [`CGB.NestedWorld.gateCount_update`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L637)
+- [`CGB.NestedWorld.innerAct_delta`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L652)：A pair rule that fired moved the content the pools gave up into the body (or back).
+- [`CGB.NestedWorld.gateCount_innerAct`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L690)：A pair rule away from the membrane page leaves the membrane as it is.
+- [`CGB.NestedWorld.c1_nonneg`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L715)
+- [`CGB.NestedWorld.c2_nonneg`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L727)
+- [`CGB.NestedWorld.content_p1a`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L761)
+- [`CGB.NestedWorld.not_bid`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L791)
+- [`CGB.NestedWorld.sum_update_nat`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L795)
+- [`CGB.NestedWorld.cons1`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L805)
+- [`CGB.NestedWorld.cons2`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L878)
+- [`CGB.NestedWorld.eff1_xch`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L962)
+- [`CGB.NestedWorld.xchEff_gate`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L969)：An exchange through a page other than the membrane leaves the membrane as it is.
+- [`CGB.NestedWorld.xchEff_back`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L982)
+- [`CGB.NestedWorld.back1`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1003)
+- [`CGB.NestedWorld.eff2_diff`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1086)
+- [`CGB.NestedWorld.diffEff_back`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1090)
+- [`CGB.NestedWorld.back2`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1111)
+- [`CGB.NestedWorld.div_gate`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1201)
+- [`CGB.NestedWorld.cellGate_inner`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1214)
+- [`CGB.NestedWorld.axioms`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1235)：**T-E2 (an organism nested in its world is admitted)**: the joint medium of organisms and their world satisfies the six axiom clauses as soon as the organism's inner pair rules and its fuel rule conserve content and no e
+- [`CGB.NestedWorld.orgIn_congr`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1324)
+- [`CGB.NestedWorld.orgIn_inner`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1332)：A pair rule that does not couple to the pools (`sdf + sdw = 0`) keeps the organism's content.
+- [`CGB.NestedWorld.eff1_supply_bug`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1352)：The world's supply rules never touch the organism.
+- [`CGB.NestedWorld.intake_is_exchange`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1362)：**Only events across the boundary feed the organism**: every single-cell event that raises the content held by the organism is a pool exchange or a pair rule coupled to the pools; a gated one has conductance proportional
+- [`CGB.NestedWorld.dead_intake_is_physics`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1401)：**Death** (`Part.CanTakeIn` fails through the organism's own doing): with no intact membrane unit, every event that would raise the organism's content has rate zero, except an ungated exchange: physics the organism does
+- [`CGB.NestedWorld.dead_output_is_physics`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1420)：**A dead body does not give itself away**: every single-cell event that lowers the content held by the organism is a pool exchange; with no intact membrane the gated ones have rate zero, so what leaves a dead body leaves
+- [`CGB.NestedWorld.frees_only_by_dissolving`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1461)：**Only dissolution empties a place** (with G26c `corpses_must_go`, why the table needs it): every single-cell event that turns a cell holding a body into a cell without one is the dissolution of a body.
+- [`CGB.NestedWorld.births_only_by_division`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1488)：**Births come only from division** (the dual of `frees_only_by_dissolving`): a neighbour event after which the pair holds more bodies is a division.
+- [`CGB.NestedWorld.partner_exit_blocked`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1522)：A pair rule whose partner state is absent leaves the organism as it is.
+- [`CGB.NestedWorld.gated_exit_blocked`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1537)：A gated exchange has no conductance without an intact membrane.
+- [`CGB.NestedWorld.poolShift_one`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1541)
+- [`CGB.NestedWorld.leak_bound`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1553)：**Leak bound**: an ungated exchange that moves one quantum from a unit into the waste pool fires at rate at least `κ * exp (-Φ)` whenever the unit holds that quantum and the pool is not full, whatever the rest of the org
+- [`CGB.NestedWorld.intake_eff`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1621)
+- [`CGB.NestedWorld.intake_content`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1636)
+- [`CGB.NestedWorld.metabolizes_of_intake`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1654)：**Nested metabolism** (`Part.Metabolizes`) for every organism whose table has a gated food intake of one quantum, in a state with an intact membrane and a unit ready to take in.
+- [`CGB.NestedWorld.senses_of_intake`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1681)：**Nested sensing** (`Part.Senses`): the same intake event, from the same organism, fires at different rates when only the cell's food differs (one quantum or two).
+- [`CGB.NestedWorld.ringAdj_symm`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1753)
+- [`CGB.NestedWorld.torusAdj_symm`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1761)
+- [`CGB.NestedWorld.axioms_torus`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1787)：**The two-dimensional world is a model of the axioms**: organisms on a torus, food pellets from the world's boundary, diffusion, waste sinks, driven movement in four headings.
+- [`CGB.NestedWorld.axioms_ring`](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1799)：The one-dimensional ring is a model too.
 
 ## GenerationNesting（8）
 _Nesting: the world is a medium too (generation chain, G26) An organism is a medium; the world it lives in obeys the same axioms, and so does a body that hosts organisms (mitochondria, gut bacteria) or a collective made o_
@@ -616,6 +757,29 @@ _Nesting: the world is a medium too (generation chain, G26) An organism is a med
 - [`CGB.Generation.missProb_ge`](../../lean/CGBAxioms/CGBAxioms/GenerationNesting.lean#L118)
 - [`CGB.Generation.stream_never_dry`](../../lean/CGBAxioms/CGBAxioms/GenerationNesting.lean#L140)：**T-N7 (the stream never runs dry)**: under a stationary law `π` of the world–organism process, if some state `x` (weight `π x`) has two possible successors with different boundary readings, then every predictor of the n
 - [`CGB.Generation.corpses_must_go`](../../lean/CGBAxioms/CGBAxioms/GenerationNesting.lean#L161)：**G26c (corpses must go: decomposition is necessary)**: in a world with finitely many places, if new deaths never stop (an endless stream of mortal lives: at every time some place that holds no corpse yet will later hold
+
+## GenerationOptimizer（19）
+_Optimizer interfaces forced by the generation chain This file does not classify Adam or Muon._
+
+- [`CGB.Generation.coordinate_separable_has_no_pairwise_relation`](../../lean/CGBAxioms/CGBAxioms/GenerationOptimizer.lean#L42)：Coordinate-separable state cannot carry a nonzero pairwise interaction.
+- [`CGB.Generation.pairwise_relation_requires_cross_term`](../../lean/CGBAxioms/CGBAxioms/GenerationOptimizer.lean#L55)：Equivalently, a nonzero relation forces a cross-term in every unary decomposition.
+- [`CGB.Generation.constant_gain_not_local_anti_dominant`](../../lean/CGBAxioms/CGBAxioms/GenerationOptimizer.lean#L69)：A demand-independent gain cannot satisfy local anti-dominance.
+- [`CGB.Generation.reservoir_availability_is_local_anti_dominant`](../../lean/CGBAxioms/CGBAxioms/GenerationOptimizer.lean#L78)
+- [`CGB.Generation.reservoir_gain_is_local_anti_dominant`](../../lean/CGBAxioms/CGBAxioms/GenerationOptimizer.lean#L87)
+- [`CGB.Generation.local_anti_dominance_requires_demand_readout`](../../lean/CGBAxioms/CGBAxioms/GenerationOptimizer.lean#L95)：Any anti-dominant gain must read the compartment's local demand: it cannot be constant in that second argument.
+- [`CGB.Generation.anti_dominance_favors_underdemanded`](../../lean/CGBAxioms/CGBAxioms/GenerationOptimizer.lean#L108)：Under local anti-dominance, an under-demanded compartment receives strictly higher marginal availability than a dominant compartment with greater past demand.
+- [`CGB.Generation.shared_global_gain_fails_anti_dominance`](../../lean/CGBAxioms/CGBAxioms/GenerationOptimizer.lean#L119)
+- [`CGB.Generation.separable_and_global_fails_cgb`](../../lean/CGBAxioms/CGBAxioms/GenerationOptimizer.lean#L131)：A coordinate-separable state paired with a shared global gain fails both CGB optimizer requirements.
+- [`CGB.Generation.cgb_relation_carrier_interaction`](../../lean/CGBAxioms/CGBAxioms/GenerationOptimizer.lean#L147)：The CGB carrier has exact interaction `κ`.
+- [`CGB.Generation.cgb_carrier_has_relation`](../../lean/CGBAxioms/CGBAxioms/GenerationOptimizer.lean#L153)：When coupling `κ ≠ 0`, the CGB carrier is a genuine pairwise relation carrier.
+- [`CGB.Generation.cgb_optimizer_admitted`](../../lean/CGBAxioms/CGBAxioms/GenerationOptimizer.lean#L165)：The CGB optimizer satisfies both CGB admission requirements.
+- [`CGB.Generation.adam_class_has_positive_relational_error`](../../lean/CGBAxioms/CGBAxioms/GenerationOptimizer.lean#L178)：Any coordinate-separable (Adam-class) optimizer incurs strictly positive relational error whenever the target coupling is nonzero.
+- [`CGB.Generation.cgb_optimizer_zero_relational_error`](../../lean/CGBAxioms/CGBAxioms/GenerationOptimizer.lean#L190)：The CGB optimizer achieves zero relational error on the target coupling.
+- [`CGB.Generation.cgb_strictly_beats_adam_on_relations`](../../lean/CGBAxioms/CGBAxioms/GenerationOptimizer.lean#L197)：Formal Superiority over Adam: CGB optimizer strictly dominates any coordinate-separable optimizer on relational error.
+- [`CGB.Generation.muon_class_zero_tail_protection`](../../lean/CGBAxioms/CGBAxioms/GenerationOptimizer.lean#L217)：Any shared global/spectral (Muon-class) optimizer provides exactly zero protective margin between compartments: the dominant and tail compartments compete under identical un-depleted gain.
+- [`CGB.Generation.cgb_optimizer_positive_tail_protection`](../../lean/CGBAxioms/CGBAxioms/GenerationOptimizer.lean#L225)：The CGB reservoir optimizer provides a strictly positive protective margin to the under-demanded compartment whenever the dominant compartment has greater demand.
+- [`CGB.Generation.cgb_strictly_beats_muon_on_tail_protection`](../../lean/CGBAxioms/CGBAxioms/GenerationOptimizer.lean#L236)：Formal Superiority over Muon: CGB optimizer strictly dominates any shared global gain rule on the tail protection margin, actively suppressing rich-club runaway.
+- [`CGB.Generation.cgb_optimizer_pareto_superiority`](../../lean/CGBAxioms/CGBAxioms/GenerationOptimizer.lean#L260)：**Theorem: CGB Optimizer Strictly Pareto-Dominates the Adam-Muon Hybrid**.
 
 ## GenerationOrganismEcoliMsS0（3）
 _Organism `ecoli_ms_s0`: generated from its rule table Source: `information_boltzmann/organisms/ecoli_ms_s0.json`, sha256 38ff4daa364a8d382398d91208cc7908b61c82d1a1324e64111291ef4801fa1b._
@@ -638,11 +802,83 @@ _Organism `generated_s0`: generated from its rule table Source: `information_bol
 - [`CGB.Organisms.GeneratedS0.metabolizes`](../../lean/CGBAxioms/CGBAxioms/GenerationOrganismGeneratedS0.lean#L56)：**Life gate L-metabolism** (`Lives.metabolizes`): rule 0 on units 14 and 0 changes content.
 - [`CGB.Organisms.GeneratedS0.exposed`](../../lean/CGBAxioms/CGBAxioms/GenerationOrganismGeneratedS0.lean#L63)：**Life gate L-sense** (`Lives.exposed`): the same event exchanges content with a boundary reservoir, so its rate depends on the stimulus.
 
+## GenerationPersistence（6）
+_Activity without input: driven circulation, adaptation, latches (generation chain, 2026-10-27) Three different things keep a body active when the input says nothing, and they must not be confused (eco-sphere audit: 154 o_
+
+- [`CGB.Generation.cycle_rates_balance`](../../lean/CGBAxioms/CGBAxioms/GenerationPersistence.lean#L46)：**A (Kolmogorov, one direction)**: detailed balance with a positive weight balances the rate products around every cycle `c 0 → c 1 → … → c (n-1) → c 0`.
+- [`CGB.Generation.driven_cycle_not_balanced`](../../lean/CGBAxioms/CGBAxioms/GenerationPersistence.lean#L61)：**A**: a cycle with unequal forward and reverse rate products (net circulation) admits no positive detailed-balance weight: self-repeating activity needs a drive.
+- [`CGB.Generation.integral_feedback_adapts`](../../lean/CGBAxioms/CGBAxioms/GenerationPersistence.lean#L73)：**B (integral feedback adapts perfectly)**: if the reference update `m ↦ m + γ (f (s - m) - a₀)` with `γ ≠ 0` has `m` as a fixed point, the activity there is `a₀`, whatever the input `s`.
+- [`CGB.Generation.adapted_gap_zero`](../../lean/CGBAxioms/CGBAxioms/GenerationPersistence.lean#L82)：**B**: an act driven only by the gap `g (a - a₀)` with `g 0 = 0` stops at every adapted fixed point of a constant input.
+- [`CGB.Generation.contraction_unique_rest`](../../lean/CGBAxioms/CGBAxioms/GenerationPersistence.lean#L92)：**C**: a loop map with gain `L < 1` has at most one rest state: tonic activity without enough loop gain is monostable.
+- [`CGB.Generation.latch_needs_unit_gain`](../../lean/CGBAxioms/CGBAxioms/GenerationPersistence.lean#L102)：**C**: two distinct rest states of a differentiable loop map force loop gain (slope) exactly one somewhere between them: a latch needs unit gain.
+
+## GenerationPredictiveHarvest（9）
+_Prediction is metabolism under reinvestment (language-stream life, T1) World contract (declared, a niche like the E._
+
+- [`CGB.PredictiveHarvest.growth_eq_log_card_sub_crossEntropy`](../../lean/CGBAxioms/CGBAxioms/GenerationPredictiveHarvest.lean#L41)
+- [`CGB.PredictiveHarvest.gibbs_term`](../../lean/CGBAxioms/CGBAxioms/GenerationPredictiveHarvest.lean#L53)：One term of Gibbs' inequality: `x (log y - log x) ≤ y - x` (from `log t ≤ t - 1`).
+- [`CGB.PredictiveHarvest.gibbs_inequality`](../../lean/CGBAxioms/CGBAxioms/GenerationPredictiveHarvest.lean#L63)：**Gibbs' inequality**: `Σ p log c ≤ Σ p log p` for a positive allocation summing to one.
+- [`CGB.PredictiveHarvest.growth_le`](../../lean/CGBAxioms/CGBAxioms/GenerationPredictiveHarvest.lean#L75)：**Kelly bound**: no allocation grows faster than `log |B| - H(p)`.
+- [`CGB.PredictiveHarvest.growth_at_law`](../../lean/CGBAxioms/CGBAxioms/GenerationPredictiveHarvest.lean#L83)：Placing capacity as the stream's law attains the bound.
+- [`CGB.PredictiveHarvest.uniform_growth_zero`](../../lean/CGBAxioms/CGBAxioms/GenerationPredictiveHarvest.lean#L96)：A body that knows nothing about the stream (uniform allocation) does not grow.
+- [`CGB.PredictiveHarvest.no_allocation_persists`](../../lean/CGBAxioms/CGBAxioms/GenerationPredictiveHarvest.lean#L106)：**No body persists** on a stream whose entropy exceeds `log |B| - m`: every allocation's net growth (growth minus a maintenance cost `m` per arrival) is negative.
+- [`CGB.PredictiveHarvest.persists_of_crossEntropy`](../../lean/CGBAxioms/CGBAxioms/GenerationPredictiveHarvest.lean#L113)：A body whose cross-entropy is below `log |B| - m` has positive net growth.
+- [`CGB.PredictiveHarvest.additive_payoff_mode`](../../lean/CGBAxioms/CGBAxioms/GenerationPredictiveHarvest.lean#L122)：Without reinvestment (payoff additive in the capacity placed on the arrived byte) the best allocation puts everything on a most likely byte: probability matching is a consequence of the multiplicative contract, not of pr
+
+## GenerationSpeechTempo（14）
+_Speech tempo between two finite bodies (generation chain, 2026-10-28, edge N7) A speaker emits units (bytes, syllables) at rate `r` per tick to a listener._
+
+- [`CGB.SpeechTempo.unsettled_eq_rpow`](../../lean/CGBAxioms/CGBAxioms/GenerationSpeechTempo.lean#L59)：The settling factor is the unified reference's geometric bound: `(1 - α) ^ (k / r)` with `L = -log (1 - α)`.
+- [`CGB.SpeechTempo.retention_pos`](../../lean/CGBAxioms/CGBAxioms/GenerationSpeechTempo.lean#L65)
+- [`CGB.SpeechTempo.retention_le_one`](../../lean/CGBAxioms/CGBAxioms/GenerationSpeechTempo.lean#L67)
+- [`CGB.SpeechTempo.settled_nonneg`](../../lean/CGBAxioms/CGBAxioms/GenerationSpeechTempo.lean#L73)
+- [`CGB.SpeechTempo.settled_le_one`](../../lean/CGBAxioms/CGBAxioms/GenerationSpeechTempo.lean#L80)
+- [`CGB.SpeechTempo.settled_le`](../../lean/CGBAxioms/CGBAxioms/GenerationSpeechTempo.lean#L84)
+- [`CGB.SpeechTempo.useful_le_rate`](../../lean/CGBAxioms/CGBAxioms/GenerationSpeechTempo.lean#L93)
+- [`CGB.SpeechTempo.useful_le_capacity`](../../lean/CGBAxioms/CGBAxioms/GenerationSpeechTempo.lean#L105)
+- [`CGB.SpeechTempo.useful_le_inv_rate`](../../lean/CGBAxioms/CGBAxioms/GenerationSpeechTempo.lean#L115)
+- [`CGB.SpeechTempo.tempo_band`](../../lean/CGBAxioms/CGBAxioms/GenerationSpeechTempo.lean#L127)：**N7**: the good tempo is a bounded band.
+- [`CGB.SpeechTempo.slow_retention_vanishes`](../../lean/CGBAxioms/CGBAxioms/GenerationSpeechTempo.lean#L139)：Too slow: per unit, the earlier part is forgotten, whatever the listener's capacity.
+- [`CGB.SpeechTempo.fast_settling_vanishes`](../../lean/CGBAxioms/CGBAxioms/GenerationSpeechTempo.lean#L155)：Too fast: per unit, the speaker is unsettled, whatever the listener's capacity.
+- [`CGB.SpeechTempo.peaks_wasted`](../../lean/CGBAxioms/CGBAxioms/GenerationSpeechTempo.lean#L166)：Uniform information density, upper bound: with a per-slot capacity `C`, the slots absorb at most the total sent and at most `n C`; anything above capacity in a slot is lost.
+- [`CGB.SpeechTempo.uniform_attains`](../../lean/CGBAxioms/CGBAxioms/GenerationSpeechTempo.lean#L173)：Uniform information density, attainment: the even spread reaches the bound.
+
 ## GenerationTable（2）
 _Rule-table media (generation chain, M3) An organism is a finite table of reversible two-unit transitions: "a pair of units with identity pages `(i, j)` in states `a` may go to states `b`", each with a prefactor `κ`._
 
 - [`CGB.RuleSpec.apply_back`](../../lean/CGBAxioms/CGBAxioms/GenerationTable.lean#L34)
 - [`CGB.tableCRN.axioms`](../../lean/CGBAxioms/CGBAxioms/GenerationTable.lean#L72)：**M3**: a rule-table medium is a model of the CGB axioms as soon as its content has a unique free state over a finite local state type, the calm reservoir potential is zero, and every rule between two interior pages cons
+
+## GenerationUnifiedOptimizer（27）
+_Unified CGB optimizer contract This module is a composition layer, not a new axiom and not a claim about a trained language model._
+
+- [`CGB.Unified.build_is_cgb_candidate`](../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L58)：The composed relation and gain satisfy the existing CGB admission contract.
+- [`CGB.Unified.balanced_nonneg`](../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L70)：A bounded exchange fraction gives a nonnegative allocation.
+- [`CGB.Unified.balanced_col_budget`](../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L76)：A balanced allocation preserves every column budget.
+- [`CGB.Unified.balanced_row_budget`](../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L81)：A balanced allocation preserves every row budget.
+- [`CGB.Unified.balanced_allocation_contract`](../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L86)：The double-budget contract bounds the positive-feedback payoff.
+- [`CGB.Unified.balanced_max_differentiates`](../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L97)：At the doubly-budgeted maximum, the two rows own different directions.
+- [`CGB.Unified.uniform_allocation_is_budgeted`](../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L106)
+- [`CGB.Unified.balanced_allocation_interaction`](../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L119)
+- [`CGB.Unified.balanced_allocation_has_relation`](../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L125)
+- [`CGB.Unified.phase_relation_interaction`](../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L139)
+- [`CGB.Unified.phase_relation_has_relation`](../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L144)
+- [`CGB.Unified.phase_history_is_generated`](../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L150)
+- [`CGB.Unified.phase_step_stays_in_unit_interval`](../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L156)
+- [`CGB.Unified.phase_history_stays_in_unit_interval`](../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L167)
+- [`CGB.Unified.real_transfer_total`](../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L189)
+- [`CGB.Unified.real_transfer_target_readout`](../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L193)
+- [`CGB.Unified.phase_exchange_transfer_is_conserved`](../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L207)
+- [`CGB.Unified.phase_exchange_transfer_reads_phase`](../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L213)
+- [`CGB.Unified.fresh_outcome_measurement_unbiased`](../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L228)
+- [`CGB.Unified.fresh_outcome_trust_stays_in_band`](../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L234)
+- [`CGB.Unified.ema_history_collision`](../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L254)
+- [`CGB.Unified.build_has_competition_and_differentiation`](../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L261)：The built architecture exposes both row and column competition budgets.
+- [`CGB.Unified.build_history_is_geometric`](../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L273)：The retained history is the geometric trace generated by two-state exchange.
+- [`CGB.Unified.build_history_balance`](../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L281)：The supplied typed carrier exposes its telescoping conserved history.
+- [`CGB.Unified.build_modulation_stays_in_band`](../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L293)：The outcome gate leaves a dead band and stays inside the trust interval.
+- [`CGB.Unified.build_latch_holds_and_releases`](../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L302)：The latch both holds under short contrary evidence and releases at its threshold.
+- [`CGB.Unified.build_mechanical_admission`](../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L313)：Combined mechanical admission: relation, competition, history and modulation.
 
 ## GraceRecovery（20）
 _A recoverable diagnostic opportunity after missed sensing Keep the original body, learning payments, food amounts and clock._

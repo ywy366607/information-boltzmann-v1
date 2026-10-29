@@ -29,7 +29,7 @@ def first_sentence(doc: str) -> str:
     return (m.group(1) if m else doc)[:220].rstrip()
 
 
-def scan(path: Path, expected_hash: str):
+def scan(path: Path, expected_hash: str, *, full_docs: bool = False):
     raw = path.read_bytes()
     if hashlib.sha256(raw).hexdigest() != expected_hash:
         raise ValueError(f"Source changed before indexing: {path}")
@@ -73,7 +73,7 @@ def scan(path: Path, expected_hash: str):
             kind, name = m.group(1), m.group(2)
             if kind in ("theorem", "lemma"):
                 qualified = ".".join([n for n in scopes if n] + [name])
-                out.append((qualified, first_sentence(doc) if doc else "", number))
+                out.append((qualified, (" ".join(doc.split()) if full_docs else first_sentence(doc)) if doc else "", number))
             doc = None
         elif s and not s.startswith("--") and not s.startswith("@[") and not s.startswith("omit") \
                 and not s.startswith("open") and not s.startswith("variable"):
@@ -123,6 +123,8 @@ def main():
              "",
              "由 `scripts/build_proven_index.py` 从 Lean 源码生成，并逐条核对当前审计清单。"
              "新工作开始前先检索已有机制；点击完整定理名查看源码、前提及结论。",
+             "渐进检索入口：[主题导航与逐条完整陈述](CGB_THEOREMS/README.md)；"
+             "先查主题，再按模块阅读。无源码解释的条目明确标注，避免把机器猜测当作定理含义。",
              "",
              f"共 **{len(authored)}** 条已审计源码定理/引理，来自 **{len(inventory['summary']['modules'])}** 个生产模块。"
              f"编译声明共 **{inventory['summary']['declarations']}** 项，含定义及自动生成项，不作为机制数量。",
@@ -131,7 +133,7 @@ def main():
              "其 `--check-index` 模式只核对索引、不改写索引。",
              "",
              "**未入 Lean 的手工推导与数值见证**另列在 `CGB_HAND_DERIVATIONS.md`，检索时两处都要看。",
-             "`reviews/` 中的探索证明另有各自证据记录，未混入此生产清单。证明通过不替代其局部前提与实现对应检查。",
+             "`reviews/` 中的探索证明见渐进检索入口的独立目录，未混入此生产清单。证明通过不替代其局部前提与实现对应检查。",
              "",
              "既有中文机制解读见 [Claude 生成链](CGB_GENERATION_LAYER1_20261025.md)；"
              "完整接线记录见 [统一参考](CGB_UNIFIED_REFERENCE_20261026.md)。这些文档保留各自证据范围。",
