@@ -571,6 +571,35 @@ class CGBColumnLanguageBody(nn.Module):
         )
 
     @torch.no_grad()
+    def contact_teaching_direction(
+        self,
+        state: ColumnBodyState,
+        prepared: ColumnBodyStep,
+        target: torch.Tensor,
+    ) -> torch.Tensor:
+        """Propose, but do not apply, the existing-value path's S direction.
+
+        `event_value(byte_embedding(.))` is already the learned language-to-C
+        value map.  Applying the arrived language innovation to that map gives
+        an endogenous width-D teaching vector without a preset transpose or a
+        new feedback parameter.  Multiplying it by the sparse C/S trace gives
+        one direction for the existing S-to-H contact weights.
+
+        This is intentionally *not* an online update.  Lean only admits it
+        after its dot product with the exact future language score is measured
+        positive.  The returned tensor is a short-horizon audit candidate,
+        not a replacement for the proved direct C-value path.
+        """
+        receipt = self.contact_teaching_receipt(state, prepared, target)
+        byte_values = self.event_value(self.byte_embedding.weight).detach()
+        teaching = receipt.innovation @ byte_values
+        direction = torch.einsum(
+            "bd,ba,baqsr->dqsr",
+            teaching, receipt.route_weight, receipt.trace,
+        )
+        return direction.flatten(start_dim=1)
+
+    @torch.no_grad()
     def update_readout_from_arrival(
         self,
         prepared: ColumnBodyStep,

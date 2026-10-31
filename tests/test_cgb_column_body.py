@@ -259,6 +259,35 @@ def test_current_s_write_is_blind_to_the_arrived_language_innovation():
         torch.testing.assert_close(actual, expected, rtol=0.0, atol=0.0)
 
 
+def test_contact_teaching_candidate_reuses_only_the_value_map_and_sparse_hcs_receipt():
+    """The candidate has no feedback parameter, state write, or saved graph."""
+    torch.manual_seed(7)
+    body = CGBColumnLanguageBody(6, (3, 4), active_columns=3, contact_rank=3)
+    state = body.initial_state(1)
+    prepared = body.step(state, torch.tensor([41]), elapsed=0.0)
+    target = torch.tensor([73], dtype=torch.long)
+    before = tuple(parameter.detach().clone() for parameter in body.parameters())
+
+    actual = body.contact_teaching_direction(state, prepared, target)
+    receipt = body.contact_teaching_receipt(state, prepared, target)
+    byte_values = body.event_value(body.byte_embedding.weight).detach()
+    teaching = receipt.innovation @ byte_values
+    expected = torch.einsum(
+        "bd,ba,baqsr->dqsr",
+        teaching, receipt.route_weight, receipt.trace,
+    ).flatten(start_dim=1)
+
+    assert actual.shape == body.contact_to_activity.weight.shape
+    torch.testing.assert_close(actual, expected)
+    assert not actual.requires_grad
+    # Computing an admissibility direction cannot itself change model or body.
+    for parameter, previous in zip(body.parameters(), before):
+        torch.testing.assert_close(parameter, previous)
+    assert set(state.__dataclass_fields__) == {
+        "activity", "natural", "precision", "causal_token", "participation",
+    }
+
+
 def test_generated_s_timescale_has_a_finite_path_to_a_later_language_score():
     """Audit structural reachability before proposing an online rule.
 
