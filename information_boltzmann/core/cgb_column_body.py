@@ -386,13 +386,20 @@ class CGBColumnLanguageBody(nn.Module):
         route: torch.Tensor,
         source_index: torch.Tensor,
     ) -> torch.Tensor:
-        """Update each selected local contact from one endpoint-shared statistic.
+        """Update each selected local contact as an adaptive phase exchange.
 
-        The two directed readings of an edge receive the same learned
-        heterosynaptic drive and retention coefficient.  Hence their mismatch
-        contracts whenever that edge participates, exactly matching the
-        ``reciprocal_shared_update_mismatch`` admission kernel.  This creates
-        no feedback page: it rewrites the existing source-typed S contact.
+        Each arrival coordinate ``h`` is the occupied part of an existing
+        contact; its available partner is represented implicitly by ``1-h``.
+        The learned local drive supplies the up-rate, and the existing
+        H/C-dependent retention readout supplies the down-rate.  Thus the
+        update is the already-admitted two-state exchange
+        ``h + k_plus * (1-h) - k_minus * h``.  It forms a bounded local
+        trace from routed events without a separately allocated trace page or
+        a clock-selected decay constant.
+
+        The two directed readings of an edge receive the same local rates, so
+        reciprocal equality is preserved.  The later signed teaching phase is
+        still a distinct readout of this same S carrier.
         """
         raw_drive = self.edge_participation(local).unflatten(-1, (4, self.contact_rank))
         endpoint_retain = torch.sigmoid(
@@ -420,10 +427,29 @@ class CGBColumnLanguageBody(nn.Module):
         source_one_hot = F.one_hot(source_index, num_classes=2).to(dtype=arrival.dtype)
         target = (drive.unsqueeze(-2) *
                   source_one_hot[:, None, None, None, :, None])
-        arrival = arrival + active.unsqueeze(-1).unsqueeze(-1) * (
-            retain.unsqueeze(-1).unsqueeze(-1) * arrival + target - arrival
-        )
-        return torch.stack((arrival.clamp(0.0, 1.0), participation[..., _TEACHING, :]), dim=-2)
+        arrival = self._adaptive_phase_exchange(arrival, target, retain, active)
+        return torch.stack((arrival, participation[..., _TEACHING, :]), dim=-2)
+
+    @staticmethod
+    def _adaptive_phase_exchange(
+        occupied: torch.Tensor,
+        drive: torch.Tensor,
+        retain: torch.Tensor,
+        active: torch.Tensor,
+    ) -> torch.Tensor:
+        """One local, adaptive two-state exchange on an existing S coordinate.
+
+        ``drive`` and ``retain`` are local, learned values in ``[0, 1]``;
+        ``active`` is the sparse routed contact participation.  With
+        ``k_plus = active * drive`` and ``k_minus = active * (1 - retain)``,
+        this is exactly ``Generation.twoStateStep k_plus k_minus occupied``.
+        Its unoccupied partner is ``1 - occupied`` and remains implicit.
+        """
+        scale = active.unsqueeze(-1).unsqueeze(-1)
+        hold = retain.unsqueeze(-1).unsqueeze(-1)
+        k_plus = scale * drive
+        k_minus = scale * (1.0 - hold)
+        return occupied + k_plus * (1.0 - occupied) - k_minus * occupied
 
     def _reciprocal_teaching_update(
         self,

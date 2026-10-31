@@ -201,6 +201,38 @@ def test_zero_elapsed_language_arrival_leaves_nonparticipants_unchanged():
     assert torch.equal(step.state.participation[~neighbourhood], state.participation[~neighbourhood])
 
 
+def test_s_arrival_is_a_bounded_adaptive_two_state_eligibility_exchange():
+    """Existing S occupancy creates the trace; no additional trace page exists."""
+    occupied = torch.tensor([[[[[[0.0], [0.4]]]]]])
+    drive = torch.tensor([[[[[0.8], [0.3]]]]])
+    retain = torch.tensor([[[[0.75]]]])
+    active = torch.tensor([[[[0.5]]]])
+    actual = CGBColumnLanguageBody._adaptive_phase_exchange(
+        occupied, drive, retain, active,
+    )
+    k_plus = active.unsqueeze(-1).unsqueeze(-1) * drive
+    k_minus = active.unsqueeze(-1).unsqueeze(-1) * (1.0 - retain.unsqueeze(-1).unsqueeze(-1))
+    expected = occupied + k_plus * (1.0 - occupied) - k_minus * occupied
+
+    # This is exactly the existing Lean two-state step, with adaptive local
+    # rates.  Its implicit complementary population remains conserved.
+    torch.testing.assert_close(actual, expected)
+    torch.testing.assert_close((1.0 - actual) + actual, torch.ones_like(actual))
+    assert torch.all((0.0 <= actual) & (actual <= 1.0))
+
+    # A contact that is not routed neither decays nor changes.  At saturation,
+    # an up event has no remaining capacity: the same finite pool creates the
+    # refractory/anti-repetition effect without a counter variable.
+    inactive = CGBColumnLanguageBody._adaptive_phase_exchange(
+        occupied, drive, retain, torch.zeros_like(active),
+    )
+    torch.testing.assert_close(inactive, occupied)
+    saturated = CGBColumnLanguageBody._adaptive_phase_exchange(
+        torch.ones_like(occupied), torch.ones_like(drive), torch.ones_like(retain), active,
+    )
+    torch.testing.assert_close(saturated, torch.ones_like(occupied))
+
+
 def test_g14_readout_update_improves_the_arrived_byte_without_persistent_receipt_state():
     body = _body()
     state = body.initial_state(1)
