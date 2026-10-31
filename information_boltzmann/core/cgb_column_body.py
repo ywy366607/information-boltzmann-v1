@@ -221,6 +221,13 @@ class CGBColumnLanguageBody(nn.Module):
         net = (east.roll(1, dims=2) - east + south.roll(1, dims=1) - south)
         return flux, net
 
+    @staticmethod
+    def _local_neighbourhood(route: torch.Tensor) -> torch.Tensor:
+        """The event's routed columns and their four geometric neighbours."""
+        selected = route > 0
+        return (selected | selected.roll(1, dims=1) | selected.roll(-1, dims=1) |
+                selected.roll(1, dims=2) | selected.roll(-1, dims=2))
+
     def step(
         self,
         state: ColumnBodyState,
@@ -269,8 +276,16 @@ class CGBColumnLanguageBody(nn.Module):
         recurrent_gain = 1.0 + F.softplus(self.activity_gain(local))
         release = torch.sigmoid(self.activity_release(local))
         injection = route_d * value
-        activity = F.hardtanh((1.0 - release) * recurrent_gain * state.activity +
-                              neighbour + injection + net_flux.unsqueeze(-1))
+        proposed_activity = F.hardtanh(
+            (1.0 - release) * recurrent_gain * state.activity + neighbour +
+            injection + net_flux.unsqueeze(-1)
+        )
+        # A language arrival is a local event.  Precision release above is the
+        # separately declared elapsed-time process; it must not be used as an
+        # excuse to let the arrival rewrite untouched columns.  This mask is
+        # the executable P1b boundary for H.
+        activity_mask = self._local_neighbourhood(route).unsqueeze(-1)
+        activity = torch.where(activity_mask, proposed_activity, state.activity)
 
         # Only currently participating local columns change their typed S
         # reading.  The two source channels make a self utterance and an

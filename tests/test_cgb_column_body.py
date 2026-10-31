@@ -1,6 +1,6 @@
 import torch
 
-from information_boltzmann.core.cgb_column_body import CGBColumnLanguageBody
+from information_boltzmann.core.cgb_column_body import CGBColumnLanguageBody, ColumnBodyState
 
 
 def _body() -> CGBColumnLanguageBody:
@@ -87,3 +87,22 @@ def test_state_detach_preserves_values_and_removes_autograd_history():
     ):
         assert torch.equal(before, after)
         assert not after.requires_grad
+
+
+def test_zero_elapsed_language_arrival_leaves_nonparticipants_unchanged():
+    body = _body()
+    initial = body.initial_state(1)
+    state = ColumnBodyState(
+        activity=torch.empty_like(initial.activity).uniform_(-0.7, 0.7),
+        natural=torch.randn_like(initial.natural),
+        precision=initial.precision,
+        participation=torch.rand_like(initial.participation),
+    )
+    step = body.step(state, torch.tensor([23]), elapsed=0.0)
+    selected = step.route > 0
+    neighbourhood = body._local_neighbourhood(step.route)
+
+    assert torch.equal(step.state.activity[~neighbourhood], state.activity[~neighbourhood])
+    assert torch.equal(step.state.natural[~selected], state.natural[~selected])
+    assert torch.equal(step.state.precision[~selected], state.precision[~selected])
+    assert torch.equal(step.state.participation[~selected], state.participation[~selected])

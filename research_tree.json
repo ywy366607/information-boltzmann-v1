@@ -10397,7 +10397,7 @@
         "status": "partially_reusable",
         "title": "Shared H/C/S recurrent column-body candidate",
         "claim": "CGBColumnLanguageBody is one finite persistent state with bounded activity H, natural/precision carrier C, and four-neighbour source-typed participation S. Prediction precedes the arriving byte write; Trace and Demand are read from C/S rather than stored as additional state.",
-        "evidence": "Existing Lean gates: GenerationColumnRefinement common-state contract, GDNLife.step_source_irrelevant boundary, LanguageLifeKernel delayed_action_credit_requires_state_separation and observable-transfer limits. Five deterministic runtime checks cover source separation, pre-update scoring, sparse carrier writes, zero-total local edge flux and state detachment.",
+        "evidence": "Existing Lean gates: GenerationColumnRefinement common-state contract, GDNLife.step_source_irrelevant boundary, LanguageLifeKernel delayed_action_credit_requires_state_separation and observable-transfer limits. Six deterministic runtime checks cover source separation, pre-update scoring, P1b-style nonparticipant stability at zero elapsed time, sparse carrier writes, zero-total local edge flux and state detachment.",
         "artifacts": [
             "information_boltzmann/core/cgb_column_body.py",
             "tests/test_cgb_column_body.py",
