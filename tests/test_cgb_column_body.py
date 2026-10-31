@@ -136,3 +136,14 @@ def test_complete_hcs_snapshot_restores_values_and_reports_only_persistent_state
     assert all(not value.requires_grad for value in (
         snapshot.activity, snapshot.natural, snapshot.precision, snapshot.participation,
     ))
+
+
+def test_arriving_byte_cannot_select_its_own_pre_update_prediction_route():
+    body = _body()
+    state = body.initial_state(1)
+    first = body.step(state, torch.tensor([3]), elapsed=0.0)
+    second = body.step(state, torch.tensor([201]), elapsed=0.0)
+    assert torch.equal(first.route, second.route)
+    assert torch.equal(first.features, second.features)
+    assert torch.equal(first.logits, second.logits)
+    assert not torch.equal(first.state.natural, second.state.natural)

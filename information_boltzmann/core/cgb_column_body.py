@@ -98,6 +98,8 @@ class CGBColumnLanguageBody(nn.Module):
         self.byte_embedding = nn.Embedding(byte_vocab, d_model)
         self.column_keys = nn.Parameter(torch.empty(rows, cols, d_model))
         nn.init.normal_(self.column_keys, std=d_model ** -0.5)
+        self.birth_query = nn.Parameter(torch.zeros(d_model))
+        self.state_query = nn.Linear(d_model, d_model, bias=False)
         self.event_value = nn.Linear(d_model, d_model, bias=False)
         self.event_likelihood = nn.Linear(d_model, 1)
         self.readout = nn.Linear(d_model, byte_vocab)
@@ -187,10 +189,13 @@ class CGBColumnLanguageBody(nn.Module):
         if not bool(torch.isfinite(state.precision).all()) or not bool((state.precision > 0).all()):
             raise ValueError("carrier precision must be finite and positive")
 
-    def _event_route(self, event: torch.Tensor) -> torch.Tensor:
-        event = F.normalize(event, dim=-1, eps=1e-6)
+    def _state_route(self, state: ColumnBodyState) -> torch.Tensor:
+        """Prepare a sparse route from old C/H, before the byte arrives."""
+        mean = state.natural / state.precision
+        query = self.birth_query + self.state_query((state.activity + mean).mean(dim=(1, 2)))
+        query = F.normalize(query, dim=-1, eps=1e-6)
         keys = F.normalize(self.column_keys, dim=-1, eps=1e-6)
-        scores = torch.einsum("bd,hwd->bhw", event, keys)
+        scores = torch.einsum("bd,hwd->bhw", query, keys)
         flat_scores = scores.flatten(1)
         values, indices = flat_scores.topk(self.active_columns, dim=-1)
         sparse = torch.zeros_like(flat_scores)
@@ -296,7 +301,10 @@ class CGBColumnLanguageBody(nn.Module):
 
         batch = token.shape[0]
         event = self.byte_embedding(token)
-        route = self._event_route(event)
+        # This route is an old-body readout.  The arriving byte is not used
+        # until after logits have been prepared and can therefore never leak
+        # into its own prequential score.
+        route = self._state_route(state)
         route_d = route.unsqueeze(-1)
         mean = state.natural / state.precision
         # The prediction is causally prepared from old state.  It remains a
