@@ -285,9 +285,12 @@ def test_arriving_byte_cannot_select_its_own_pre_update_prediction_route():
     state = body.initial_state(1)
     first = body.step(state, torch.tensor([3]), elapsed=0.0)
     second = body.step(state, torch.tensor([201]), elapsed=0.0)
-    assert torch.equal(first.route, second.route)
+    # `route` reports the post-score write address and may depend on the
+    # arrived byte.  The only forbidden dependency is from that byte into the
+    # already issued prediction.
     assert torch.equal(first.features, second.features)
     assert torch.equal(first.logits, second.logits)
+    assert not torch.equal(first.route, second.route)
     assert not torch.equal(first.state.natural, second.state.natural)
 
 
@@ -318,6 +321,7 @@ def test_compilable_tensor_step_is_exactly_the_validated_public_transition():
         public.state.activity, public.state.natural, public.state.precision,
         public.state.causal_token, public.state.participation,
         public.features, public.route, public.edge_flux,
+        public.credit_token, public.value_eligibility,
     )
     for from_kernel, from_public in zip(actual, expected):
         torch.testing.assert_close(from_kernel, from_public)
@@ -337,3 +341,72 @@ def test_live_arrival_updates_only_causal_query_for_the_next_event():
     assert torch.equal(step.logits, replay.logits)
     advanced = body.advance_time(step.state, 3.0)
     assert torch.equal(advanced.causal_token, token)
+
+    # The stored identity is read on the following event, through a value-
+    # independent address map.  Force distinct address codes so this remains
+    # a causal contract rather than a lucky initialization property.
+    with torch.no_grad():
+        body.causal_address.weight.zero_()
+        body.causal_address.weight[17, 0] = 1
+        body.causal_address.weight[203, 1] = 1
+        body.column_keys.zero_()
+        body.column_keys[0, 0, 0] = 1
+        body.column_keys[-1, -1, 1] = 1
+    next_a = body.step(step.state, torch.tensor([7, 7]), elapsed=0.0)
+    alternate = ColumnBodyState(step.state.activity, step.state.natural,
+                                step.state.precision,
+                                torch.tensor([203, 17], dtype=torch.long),
+                                step.state.participation)
+    next_b = body.step(alternate, torch.tensor([7, 7]), elapsed=0.0)
+    assert not torch.equal(next_a.features, next_b.features)
+    assert not torch.equal(next_a.logits, next_b.logits)
+
+
+def test_value_credit_is_the_exact_one_step_causal_score_direction():
+    body = _body()
+    birth = body.initial_state(1)
+    first = body.step(birth, torch.tensor([31]), elapsed=0.0)
+    prepared = body.step(first.state, torch.tensor([88]), elapsed=0.0)
+
+    # Keep the past computation graph only for this numerical audit.  The
+    # online implementation uses the reconstructed receipt and retains none
+    # of it.  The agreement is the executable admission of the GDN value path.
+    score = torch.log_softmax(prepared.logits, dim=-1)[0, 88]
+    exact_autograd, = torch.autograd.grad(score, body.event_value.weight)
+    innovation = -torch.softmax(prepared.logits.detach(), dim=-1)
+    innovation[0, 88] += 1
+    local_error = innovation @ body.readout.weight.detach()
+    source = body.byte_embedding(prepared.credit_token.clamp_min(0)).detach()
+    reconstructed = (local_error * prepared.value_eligibility.detach().unsqueeze(-1)).T @ source
+    torch.testing.assert_close(reconstructed, exact_autograd, rtol=1e-4, atol=1e-5)
+
+    before = body.event_value.weight.detach().clone()
+    fixed_before = tuple(parameter.detach().clone() for parameter in (
+        body.causal_address.weight, body.event_likelihood.weight,
+        body.event_likelihood.bias, body.dynamics_value.weight,
+        body.activity_carrier.weight,
+    ))
+    body.update_value_from_arrival(prepared, torch.tensor([88]), step_size=0.05)
+    torch.testing.assert_close(body.event_value.weight, before + 0.05 * reconstructed)
+    # The Lean value-credit factorization holds its address, likelihood, and
+    # H/S dynamics fixed.  The runtime must preserve that boundary exactly.
+    for actual, expected in zip((
+        body.causal_address.weight, body.event_likelihood.weight,
+        body.event_likelihood.bias, body.dynamics_value.weight,
+        body.activity_carrier.weight,
+    ), fixed_before):
+        torch.testing.assert_close(actual, expected)
+
+    # Replaying the same two causal events under the infinitesimally updated
+    # value map improves their later score.  This is a local derivative check,
+    # never a language-capability conclusion.
+    body = _body()
+    birth = body.initial_state(1)
+    first = body.step(birth, torch.tensor([31]), elapsed=0.0)
+    prepared = body.step(first.state, torch.tensor([88]), elapsed=0.0)
+    before_nll = -torch.log_softmax(prepared.logits, dim=-1)[0, 88]
+    body.update_value_from_arrival(prepared, torch.tensor([88]), step_size=1e-3)
+    replay_first = body.step(birth, torch.tensor([31]), elapsed=0.0)
+    replay = body.step(replay_first.state, torch.tensor([88]), elapsed=0.0)
+    after_nll = -torch.log_softmax(replay.logits, dim=-1)[0, 88]
+    assert after_nll < before_nll

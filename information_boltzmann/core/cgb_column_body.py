@@ -58,8 +58,10 @@ class ColumnBodyStep:
     state: ColumnBodyState
     logits: torch.Tensor         # prediction prepared from the old state
     features: torch.Tensor       # old-state local readout, transient only
-    route: torch.Tensor          # [B, rows, cols], sparse event participation
+    route: torch.Tensor          # [B, rows, cols], sparse post-arrival write participation
     edge_flux: torch.Tensor      # [B, rows, cols, 2], east/south oriented flow
+    credit_token: torch.Tensor   # [B], C query responsible for this pre-score
+    value_eligibility: torch.Tensor  # [B], reconstructed direct C sensitivity
 
 
 class CGBColumnLanguageBody(nn.Module):
@@ -113,10 +115,18 @@ class CGBColumnLanguageBody(nn.Module):
         self.byte_embedding = nn.Embedding(byte_vocab, d_model)
         self.column_keys = nn.Parameter(torch.empty(rows, cols, d_model))
         nn.init.normal_(self.column_keys, std=d_model ** -0.5)
+        # The causal address is independent of the value write.  This is the
+        # separation required by `GDNLife.valuePerturb`: a value update may
+        # not silently alter the next query/address path.
         self.birth_query = nn.Parameter(torch.zeros(d_model))
-        self.state_query = nn.Linear(d_model, d_model, bias=False)
+        self.causal_address = nn.Embedding(byte_vocab, d_model)
+        # `event_value` is the only online-plastic value path.  Dynamics and
+        # confidence have their own maps, so a credit update cannot mutate an
+        # address, likelihood, H, or S path that the GDN theorem holds fixed.
         self.event_value = nn.Linear(d_model, d_model, bias=False)
+        self.dynamics_value = nn.Linear(d_model, d_model, bias=False)
         self.event_likelihood = nn.Linear(d_model, 1)
+        self.activity_carrier = nn.Linear(d_model, d_model, bias=False)
         self.readout = nn.Linear(d_model, byte_vocab)
 
         # Shared column rule F_theta.  It reads only local H/C and local
@@ -250,10 +260,8 @@ class CGBColumnLanguageBody(nn.Module):
         if not bool(torch.isfinite(state.precision).all()) or not bool((state.precision > 0).all()):
             raise ValueError("carrier precision must be finite and positive")
 
-    def _state_route(self, state: ColumnBodyState) -> torch.Tensor:
-        """Prepare a sparse route from old C/H, before the byte arrives."""
-        mean = state.natural / state.precision
-        query = self.birth_query + self.state_query((state.activity + mean).mean(dim=(1, 2)))
+    def _route_from_query(self, query: torch.Tensor) -> torch.Tensor:
+        """Select a bounded, normalized geometric write/read support."""
         query = F.normalize(query, dim=-1, eps=1e-6)
         keys = F.normalize(self.column_keys, dim=-1, eps=1e-6)
         scores = torch.einsum("bd,hwd->bhw", query, keys)
@@ -261,7 +269,44 @@ class CGBColumnLanguageBody(nn.Module):
         values, indices = flat_scores.topk(self.active_columns, dim=-1)
         sparse = torch.zeros_like(flat_scores)
         sparse.scatter_(1, indices, torch.softmax(values, dim=-1))
-        return sparse.view_as(scores)
+        return sparse.view(-1, self.rows, self.cols)
+
+    def _token_route(self, token: torch.Tensor) -> torch.Tensor:
+        """The fixed address of an arrived byte, independent of its value."""
+        return self._route_from_query(self.causal_address(token))
+
+    def _state_route(self, state: ColumnBodyState) -> torch.Tensor:
+        """Read the next causal query from existing C before the arrival."""
+        has_causal_token = (state.causal_token >= 0).unsqueeze(-1)
+        token = state.causal_token.clamp_min(0)
+        query = torch.where(has_causal_token, self.causal_address(token),
+                            self.birth_query.unsqueeze(0).expand(token.shape[0], -1))
+        return self._route_from_query(query)
+
+    def _value_eligibility_tensors(
+        self,
+        natural: torch.Tensor,
+        precision: torch.Tensor,
+        causal_token: torch.Tensor,
+        participation: torch.Tensor,
+    ) -> torch.Tensor:
+        """Capture-safe C-only eligibility kernel; caller owns validation."""
+        state = ColumnBodyState(torch.empty_like(natural), natural, precision,
+                                causal_token, participation)
+        valid = causal_token >= 0
+        token = causal_token.clamp_min(0)
+        query = self._state_route(state)
+        incoming = self._token_route(token) * F.softplus(
+            self.event_likelihood(self.byte_embedding(token))
+        ).view(-1, 1, 1)
+        eligibility = (query * incoming / precision.squeeze(-1)).sum(dim=(1, 2))
+        return torch.where(valid, eligibility, torch.zeros_like(eligibility))
+
+    def value_eligibility(self, state: ColumnBodyState) -> torch.Tensor:
+        """Validated public view of the reconstructed C eligibility."""
+        self._validate_state(state)
+        return self._value_eligibility_tensors(state.natural, state.precision,
+                                               state.causal_token, state.participation)
 
     @staticmethod
     def _as_elapsed(
@@ -547,6 +592,52 @@ class CGBColumnLanguageBody(nn.Module):
         )
 
     @torch.no_grad()
+    def _update_value_from_tensors(
+        self,
+        logits: torch.Tensor,
+        credit_token: torch.Tensor,
+        value_eligibility: torch.Tensor,
+        target: torch.Tensor,
+        step_size: float,
+    ) -> None:
+        """Capture-safe value update; public wrapper owns input validation."""
+        innovation = -torch.softmax(logits, dim=-1)
+        innovation[torch.arange(target.shape[0], device=target.device), target] += 1
+        language_error = innovation @ self.readout.weight.detach()
+        source = self.byte_embedding(credit_token.clamp_min(0)).detach()
+        valid = (credit_token >= 0).to(dtype=language_error.dtype).unsqueeze(-1)
+        scaled_error = language_error * value_eligibility.detach().unsqueeze(-1) * valid
+        self.event_value.weight.add_(scaled_error.transpose(0, 1) @ source, alpha=float(step_size))
+
+    @torch.no_grad()
+    def update_value_from_arrival(
+        self,
+        prepared: ColumnBodyStep,
+        target: torch.Tensor,
+        *,
+        step_size: float,
+    ) -> None:
+        """Apply the Lean-admitted previous-value credit before head learning.
+
+        `prepared.credit_token` and `prepared.value_eligibility` are transient
+        views of old C, never another persistent page.  With address,
+        likelihood, H and S fixed with respect to `event_value`, this outer
+        product equals the direct next-byte log-likelihood derivative.
+        """
+        if not isinstance(step_size, (float, int)) or isinstance(step_size, bool) or step_size < 0:
+            raise ValueError("step_size must be a finite nonnegative scalar")
+        if target.ndim != 1 or tuple(target.shape) != (prepared.logits.shape[0],):
+            raise ValueError("target must contain one byte index per prepared prediction")
+        if target.dtype != torch.long or not bool(((0 <= target) & (target < self.byte_vocab)).all()):
+            raise ValueError("target must contain byte indices")
+        if step_size == 0:
+            return
+        self._update_value_from_tensors(
+            prepared.logits.detach(), prepared.credit_token,
+            prepared.value_eligibility, target, float(step_size),
+        )
+
+    @torch.no_grad()
     def update_readout_from_arrival(
         self,
         prepared: ColumnBodyStep,
@@ -596,7 +687,8 @@ class CGBColumnLanguageBody(nn.Module):
         elapsed: torch.Tensor,
         source_index: torch.Tensor,
     ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor,
-               torch.Tensor, torch.Tensor, torch.Tensor]:
+               torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor,
+               torch.Tensor, torch.Tensor]:
         """Unchecked tensor kernel for one causal arrival.
 
         ``step`` remains the public, validated interface.  This factorisation
@@ -608,24 +700,33 @@ class CGBColumnLanguageBody(nn.Module):
         state = ColumnBodyState(activity, natural, precision, causal_token, participation)
         batch = token.shape[0]
         event = self.byte_embedding(token)
-        route = self._state_route(state)
-        route_d = route.unsqueeze(-1)
+        read_route = self._state_route(state)
+        read_route_d = read_route.unsqueeze(-1)
         mean = natural / precision
-        features = (route_d * (mean + activity)).sum(dim=(1, 2))
+        # H is dynamically useful but independent of `event_value`; this makes
+        # the direct C contribution to the scored feature analytically exact.
+        features = (read_route_d * (mean + activity)).sum(dim=(1, 2))
+        value_eligibility = self._value_eligibility_tensors(
+            natural, precision, causal_token, participation,
+        )
+        credit_token = causal_token.clone()
 
         dt = elapsed.view(batch, 1, 1, 1)
         process = F.softplus(self.process_variance_raw).to(dtype=precision.dtype)
         released_precision = precision / (1.0 + dt * process * precision)
         prior_precision = torch.where(dt == 0, precision, released_precision)
         prior_natural = torch.where(dt == 0, natural, prior_precision * mean)
+        write_route = self._token_route(token)
+        write_route_d = write_route.unsqueeze(-1)
         evidence_precision = F.softplus(self.event_likelihood(event)).view(batch, 1, 1, 1)
-        write_precision = route_d * evidence_precision
+        write_precision = write_route_d * evidence_precision
         value = self.event_value(event).view(batch, 1, 1, self.d_model)
+        dynamic_value = self.dynamics_value(event).view(batch, 1, 1, self.d_model)
         natural = prior_natural + write_precision * value
         precision = prior_precision + write_precision
 
         demand = precision.reciprocal() / (1.0 + precision.reciprocal())
-        local = torch.cat((activity, mean, demand), dim=-1)
+        local = torch.cat((activity, self.activity_carrier(activity), demand), dim=-1)
         flux, net_flux = self._edge_flux(local)
         neighbour = self.neighbour_mix(
             (activity.roll(1, dims=1) + activity.roll(-1, dims=1) +
@@ -641,23 +742,23 @@ class CGBColumnLanguageBody(nn.Module):
         release = torch.sigmoid(self.activity_release(local))
         unmodulated_activity = (
             (1.0 - release) * recurrent_gain * activity + neighbour +
-            contact_message + route_d * value + net_flux.unsqueeze(-1)
+            contact_message + write_route_d * dynamic_value + net_flux.unsqueeze(-1)
         )
         # Teaching is a later, modulatory stream.  It cannot fabricate an H
         # event from an otherwise zero local transition; any effect appears
         # only on this subsequent recurrence after the residual was written.
         proposed_activity = F.hardtanh(unmodulated_activity * (1.0 + teaching_modulation))
         activity = torch.where(
-            self._local_neighbourhood(route).unsqueeze(-1), proposed_activity, activity,
+            self._local_neighbourhood(write_route).unsqueeze(-1), proposed_activity, activity,
         )
 
         participation = self._reciprocal_contact_update(
-            participation, local, route, source_index,
+            participation, local, write_route, source_index,
         )
         # A live arrival becomes the query identity for the following causal
         # prediction.  No score reads this new token in the current event.
         return (activity, natural, precision, token.clone(), participation,
-                features, route, flux)
+                features, write_route, flux, credit_token, value_eligibility)
 
     def step(
         self,
@@ -678,7 +779,7 @@ class CGBColumnLanguageBody(nn.Module):
         dt = self._as_elapsed(elapsed, batch, state.precision).reshape(batch)
         source_index = self._source_index(source, batch, state.activity)
         (activity, natural, precision, causal_token, participation,
-         features, route, flux) = self._step_tensors(
+         features, route, flux, credit_token, value_eligibility) = self._step_tensors(
             state.activity, state.natural, state.precision, state.causal_token, state.participation,
             token, dt, source_index,
         )
@@ -689,4 +790,6 @@ class CGBColumnLanguageBody(nn.Module):
             features=features,
             route=route,
             edge_flux=flux,
+            credit_token=credit_token,
+            value_eligibility=value_eligibility,
         )
