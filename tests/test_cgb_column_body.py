@@ -14,7 +14,7 @@ def test_common_state_is_exactly_h_c_s_and_readouts_add_no_history_page():
     assert state.activity.shape == (2, 3, 4, 6)
     assert state.natural.shape == state.activity.shape
     assert state.precision.shape == (2, 3, 4, 1)
-    assert state.participation.shape == (2, 3, 4, 4, 2, 2, 1)
+    assert state.participation.shape == (2, 3, 4, 4, 2, 1)
     # C comprises its numerical natural/precision fields and one 8-bit-scale
     # causal query identity.  It remains one carrier, not a fourth state page.
     assert set(state.__dataclass_fields__) == {
@@ -25,7 +25,7 @@ def test_common_state_is_exactly_h_c_s_and_readouts_add_no_history_page():
     trace = body.trace(state)
     assert demand.shape == state.precision.shape
     assert trace.shape == state.participation.shape
-    assert torch.equal(trace, state.participation * demand.unsqueeze(-1).unsqueeze(-1).unsqueeze(-1))
+    assert torch.equal(trace, state.participation * demand.unsqueeze(-1).unsqueeze(-1))
 
 
 def test_source_type_is_retained_in_local_s_without_a_separate_action_log():
@@ -40,10 +40,10 @@ def test_source_type_is_retained_in_local_s_without_a_separate_action_log():
     assert torch.equal(external.state.natural, self_event.state.natural)
     assert torch.equal(external.state.precision, self_event.state.precision)
     assert not torch.equal(external.state.participation, self_event.state.participation)
-    assert external.state.participation[..., 0, 0, :].sum() > 0
-    assert external.state.participation[..., 1, 0, :].sum() == 0
-    assert self_event.state.participation[..., 1, 0, :].sum() > 0
-    assert self_event.state.participation[..., 0, 0, :].sum() == 0
+    assert external.state.participation[..., 0, :].sum() > 0
+    assert external.state.participation[..., 1, :].sum() == 0
+    assert self_event.state.participation[..., 1, :].sum() > 0
+    assert self_event.state.participation[..., 0, :].sum() == 0
     assert external.state.participation[..., 1, :].sum() == 0
 
 
@@ -93,7 +93,7 @@ def test_contact_basis_rank_expands_only_s_not_the_number_of_persistent_pages():
     torch.manual_seed(7)
     body = CGBColumnLanguageBody(6, (3, 4), active_columns=3, contact_rank=3)
     state = body.initial_state(1)
-    assert state.participation.shape == (1, 3, 4, 4, 2, 2, 3)
+    assert state.participation.shape == (1, 3, 4, 4, 2, 3)
     # C comprises its numerical natural/precision fields and one 8-bit-scale
     # causal query identity.  It remains one carrier, not a fourth state page.
     assert set(state.__dataclass_fields__) == {
@@ -116,10 +116,7 @@ def test_old_contact_state_changes_next_local_activity_but_not_its_prepared_pred
         natural=baseline.natural,
         precision=baseline.precision,
         causal_token=baseline.causal_token,
-        participation=torch.stack((
-            torch.full_like(body.arrival_participation(baseline), 0.5),
-            body.teaching_participation(baseline),
-        ), dim=-2),
+        participation=torch.full_like(baseline.participation, 0.5),
     )
     token = torch.tensor([41], dtype=torch.long)
     no_contact = body.step(baseline, token, elapsed=0.0)
@@ -143,10 +140,7 @@ def test_muting_contact_readout_preserves_the_s_write_but_removes_its_h_effect()
         natural=baseline.natural,
         precision=baseline.precision,
         causal_token=baseline.causal_token,
-        participation=torch.stack((
-            torch.full_like(body.arrival_participation(baseline), 0.5),
-            body.teaching_participation(baseline),
-        ), dim=-2),
+        participation=torch.full_like(baseline.participation, 0.5),
     )
     with torch.no_grad():
         body.contact_to_activity.weight.zero_()
@@ -243,102 +237,6 @@ def test_g14_readout_update_improves_the_arrived_byte_without_persistent_receipt
     after = torch.log_softmax(body.readout(prepared.features.detach()), dim=-1)[0, target.item()]
     assert after > before
     assert "features" not in prepared.state.__dataclass_fields__
-
-
-def test_post_arrival_reciprocal_teaching_stays_in_s_and_contracts_its_splice():
-    """The Lean reciprocal rule is an executable post-arrival transition."""
-    body = _body()
-    prepared = body.step(body.initial_state(1), torch.tensor([44]), elapsed=0.0)
-    before = body.reciprocal_teaching_mismatch().detach().clone()
-    assert not torch.allclose(body.teaching_to_activity.weight,
-                              body.activity_to_teaching.weight.transpose(0, 1))
-    innovation = -torch.softmax(prepared.logits.detach(), dim=-1)
-    innovation[0, 44] += 1
-    _, modulation, _ = body._teaching_phase_from_state(prepared.state, prepared.route, innovation)
-    release = 0.01 * modulation.mean() * body._teaching_release(prepared.state, prepared.route).detach()
-    settled = body.settle_reciprocal_teaching_from_arrival(
-        prepared, torch.tensor([44]), step_size=0.01,
-    )
-
-    # The target arrived after the old-state score.  It only writes signed S
-    # and the shared F_theta maps; H/C and that already-issued score remain.
-    assert torch.equal(settled.activity, prepared.state.activity)
-    assert torch.equal(settled.natural, prepared.state.natural)
-    assert torch.equal(settled.precision, prepared.state.precision)
-    assert torch.equal(body.arrival_participation(settled),
-                       body.arrival_participation(prepared.state))
-    assert body.teaching_participation(settled).abs().sum() > 0
-    mismatch = body.reciprocal_participation_mismatch(
-        settled.participation, phase="teaching",
-    )
-    assert torch.allclose(mismatch, torch.zeros_like(mismatch), atol=1e-7)
-    torch.testing.assert_close(body.reciprocal_teaching_mismatch(), (1.0 - release) * before,
-                               atol=2e-7, rtol=2e-7)
-
-
-def test_teaching_phase_is_an_existing_arrival_trace_gated_by_bounded_outcome():
-    body = _body()
-    prepared = body.step(body.initial_state(1), torch.tensor([44]), elapsed=0.0)
-    innovation = -torch.softmax(prepared.logits.detach(), dim=-1)
-    innovation[0, 17] += 1
-    raw_phase, modulation, _ = body._teaching_phase_from_state(
-        prepared.state, prepared.route, innovation,
-    )
-    assert raw_phase.abs().sum() > 0
-    assert torch.all((0.0 <= modulation) & (modulation <= 1.0))
-
-    # Removing only the old S arrival occupancy removes the local trace.  No
-    # new eligibility tensor or copied reverse-time derivative is consulted.
-    without_arrival = ColumnBodyState(
-        prepared.state.activity, prepared.state.natural, prepared.state.precision,
-        prepared.state.causal_token,
-        torch.stack((
-            torch.zeros_like(body.arrival_participation(prepared.state)),
-            body.teaching_participation(prepared.state),
-        ), dim=-2),
-    )
-    absent, same_gate, _ = body._teaching_phase_from_state(
-        without_arrival, prepared.route, innovation,
-    )
-    torch.testing.assert_close(absent, torch.zeros_like(absent))
-    torch.testing.assert_close(same_gate, modulation)
-
-
-def test_zero_outcome_gate_holds_the_existing_signed_s_phase_exactly():
-    body = _body()
-    initial = body.initial_state(1)
-    participation = torch.stack((
-        body.arrival_participation(initial),
-        torch.empty_like(body.teaching_participation(initial)).uniform_(-0.8, 0.8),
-    ), dim=-2)
-    local = torch.randn(1, body.rows, body.cols, 2 * body.d_model + 1)
-    route = torch.rand(1, body.rows, body.cols)
-    raw = torch.empty(1, 4 * 2 * body.contact_rank).uniform_(-1.0, 1.0)
-    held = body._reciprocal_teaching_update(
-        participation, local, route, raw, torch.zeros(1),
-    )
-    torch.testing.assert_close(held, participation)
-
-
-def test_teaching_s_only_modulates_the_next_h_transition_and_exposes_alignment_measure():
-    body = _body()
-    prepared = body.step(body.initial_state(1), torch.tensor([52]), elapsed=0.0)
-    settled = body.settle_reciprocal_teaching_from_arrival(
-        prepared, torch.tensor([52]), step_size=0.01,
-    )
-    next_token = torch.tensor([7])
-    without_teaching = body.step(prepared.state, next_token, elapsed=0.0)
-    with_teaching = body.step(settled, next_token, elapsed=0.0)
-
-    # S is excluded from the causal old-state language read, but its teaching
-    # phase changes the following local H recurrence.
-    assert torch.equal(without_teaching.route, with_teaching.route)
-    assert torch.equal(without_teaching.features, with_teaching.features)
-    assert torch.equal(without_teaching.logits, with_teaching.logits)
-    assert not torch.equal(without_teaching.state.activity, with_teaching.state.activity)
-    alignment = body.teaching_alignment_diagnostic_to_g14(prepared, torch.tensor([52]))
-    assert alignment.shape == (1,)
-    assert torch.isfinite(alignment).all()
 
 
 def test_complete_hcs_snapshot_restores_values_and_reports_only_persistent_state():
