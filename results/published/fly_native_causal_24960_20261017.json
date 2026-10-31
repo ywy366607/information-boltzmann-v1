@@ -1,0 +1,124 @@
+{
+  "checkpoint_sha256": "f2e65c7004a3ccb295fca1f5a52045418e139de160df904db57328d32849155e",
+  "trained_tokens": 24960,
+  "mode": "history",
+  "scope": "historical_clock_replay_from_current_saved_state",
+  "tokens": 32,
+  "physical_ticks": 519,
+  "quiet_ticks": 0,
+  "configuration": {
+    "time_scale": 2.0,
+    "hold_input": true,
+    "stream_pace_min": 12.0,
+    "stream_pace_mean": 16.0,
+    "window": 8,
+    "writer_baseline_clock": "physical",
+    "writer": "receptor_lang",
+    "transmission_mode": "incoming",
+    "use_stp": false,
+    "graded_types": "APL,CT1",
+    "mother_voice": true,
+    "mother_reward": true,
+    "kc_dan_release": true,
+    "mother_native_credit": true
+  },
+  "summary": {
+    "kc_terminal_off": {
+      "mean_ce_delta": -0.0055305808782577515,
+      "mean_absolute_hazard_delta": 0.041923733042639945,
+      "max_clamp_residual": 0
+    },
+    "phi_zero": {
+      "mean_ce_delta": 0.038251206278800964,
+      "mean_absolute_hazard_delta": 0.04296158519420525,
+      "max_clamp_residual": 0
+    },
+    "phi_frozen": {
+      "mean_ce_delta": -0.07519696466624737,
+      "mean_absolute_hazard_delta": 0.025965462303796503,
+      "max_clamp_residual": 0
+    }
+  },
+  "source_counts": {
+    "mother_reply": 32
+  },
+  "identity_gate": {
+    "ce_delta_per_target": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "ce_delta_mean": 0.0,
+    "read_contrast_norm": 0.0,
+    "hazard_delta_mean": 0.0,
+    "hazard_delta_abs_mean": 0.0,
+    "eye_delta_abs_mean": 0.0,
+    "muscle_maxabs": 0.0,
+    "state_maxabs": {
+      "h": 1.1175870895385742e-08,
+      "ring": 0.0,
+      "ge": 2.9802322387695312e-08,
+      "gi": 0.0,
+      "b": 0.0,
+      "x": 0.0,
+      "u": 0.0,
+      "baseline": 0.0,
+      "h_mean": 1.1175870895385742e-08,
+      "dan_gate": 0.0,
+      "gamma_z1": 0.0,
+      "gamma_z2": 0.0,
+      "observer_prior": 0.0,
+      "observer_history": 0.0,
+      "read_bank": 0.0,
+      "modulator": 0.0,
+      "expected_input": 0.0,
+      "dopamine": 4.76837158203125e-07,
+      "da_trace": 0.0,
+      "da_memory": 0.0,
+      "homeostasis": 0.0,
+      "regime": 0.0,
+      "comp_trace": 0.0,
+      "comp_memory": 1.1920928955078125e-07,
+      "credit_comp": 1.1444091796875e-05,
+      "credit_comp_trace": 0.0,
+      "credit_dopamine": 3.5762786865234375e-07,
+      "credit_stp": 0.0,
+      "kc_avail": 0.0,
+      "comp_da_trace": 2.980232238769531e-07,
+      "comp_p_stats": 2.9802322387695312e-08,
+      "comp_camp": 0.0,
+      "credit_comp_camp": 0.0
+    },
+    "state_contrast_rms": {
+      "h": 5.2628238572660635e-11,
+      "dopamine": 1.6524049906152527e-09,
+      "comp_memory": 2.8550286579331896e-09
+    },
+    "activity_delta": {},
+    "activity": {
+      "KC": 0.02073308452963829,
+      "MBON": 0.06796486675739288,
+      "DAN": 0.03580246865749359,
+      "output": 0.07398516684770584
+    },
+    "phi_updates": 6.70678200549446e-05,
+    "raw_target_release": null,
+    "clamped_target_release": null,
+    "terminal_release_mean": 0.31963279843330383,
+    "mbon_phasic_abs_mean": 0.2602311372756958
+  },
+  "model_tensors_unchanged": true,
+  "checkpoint_unchanged": true,
+  "caregiver_pause_unchanged": true,
+  "runtime_unchanged": true,
+  "elapsed_seconds": 54.79700000000594,
+  "vram_peak_mib": 2028.44091796875,
+  "report": "E:/fly_stream_overflow/native_closure_24960_history32/report.json",
+  "controls": "All4 window shams and functional identity passed; same restored full state and RNG, actual recorded clock; no training or network calls.",
+  "interpretation": "Acute effects at current checkpoint: memory and terminal feedback change hazard. Selective familiarity devaluation, useful exploration and long-term learning benefits remain unverified. CE changes on32 recent targets do not establish general utility."
+}

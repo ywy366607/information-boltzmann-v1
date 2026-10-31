@@ -1,0 +1,57 @@
+{
+  "source_tokens": 17024,
+  "source_checkpoint": "E:/ib_checkpoints/newborn_reading/last.pt",
+  "source_sha256": "fc1ce5b358973c7174c07e274437f60b7705ecef927478786f6ab0b41c83b735",
+  "baseline": {
+    "range": [
+      16000,
+      17024
+    ],
+    "voiced_turns": 8,
+    "spoken_token_lengths": [
+      3,
+      5,
+      3,
+      12,
+      2,
+      2,
+      2,
+      3
+    ],
+    "all_voiced_ends": "single no-commit interval",
+    "one_tick_ends": 2
+  },
+  "change": "Preserve unfinished speech during motor pauses; explicit newline ends immediately; sustained silence uses existing listener patience of24 physical ticks. No minimum length or forced speech.",
+  "tests": {
+    "affected_passed": 132,
+    "dashboard_js_syntax": "passed",
+    "dashboard_api_and_render": "Actual HTTP payloads and page rendering functions executed with Node; browser UI unavailable in this session."
+  },
+  "real_interface": {
+    "path": "E:/fly_stream_overflow/speech_pause_17024_256/report.json",
+    "status": "interface_passed",
+    "actual_updates": 32,
+    "resumed_pauses": 4,
+    "end_pause": 2,
+    "end_word_delta": 1,
+    "peak_mib": 3518.32958984375,
+    "interaction_roundtrip_exact": true,
+    "source_unchanged": true
+  },
+  "main_adaptation": {
+    "status": "completed",
+    "source": 17024,
+    "target": 17280,
+    "end": 17280,
+    "updates": 32,
+    "normal_reply_targets": 244,
+    "normal_reply_nll": 5.537069225897555,
+    "fixed_unigram_nll": 7.24597017314316,
+    "gain_over_unigram": 1.7089009472456054,
+    "resumed_pauses": 3,
+    "sustained_pause_ends": 2,
+    "recovery": "E:\\ib_checkpoints\\newborn_reading\\recovery\\000000017280_chunk_end",
+    "checkpoint_sha256": "33db4d6acee95b7453c267e4de39f00faaabd9ae3832e6dc63edbe788d3bdf9d"
+  },
+  "capability": "Semantic continuity and memory horizon remain unmeasured."
+}

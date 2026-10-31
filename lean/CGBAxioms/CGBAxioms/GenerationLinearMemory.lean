@@ -3,10 +3,13 @@ import CGBAxioms.GenerationIgnition
 /-!
 # Linear recurrent memory cannot latch (generation chain, corollary of G17/G24)
 
-Gated DeltaNet (and every gated linear recurrence: Mamba, RWKV, linear attention with decay)
-updates each row `x` of its state as `x ↦ α (x - β ⟪k, x⟫_ℝ k) + (write)`, with `‖k‖ = 1`,
-`β ∈ [0, 2]`, `α < 1`. In the chain's terms `α` is unselective export (G17), the delta term is
-selective export, the write is intake.
+The results below concern the specific recurrence
+`x ↦ α (x - β ⟪k, x⟫_ℝ k) + (write)`, with `‖k‖ = 1`, `β ∈ [0, 2]`,
+`α < 1`. Other gated models require their update to be checked separately.
+For example, the repository's Gated DeltaNet baseline uses the distinct
+linear part `α x - β ⟪k, x⟫ k`; the `α²` bound below does not apply to it
+without further conditions. `α` represents unselective export (G17), the delta
+term selective export, and the write intake in this reference recurrence.
 
 * `dot_delta`, `delta_nonexpansive`: the delta step never expands:
   `‖x - β⟨k,x⟩k‖² = ‖x‖² - β(2-β)⟨k,x⟩²`. `deltaStep_sub`: it is linear, so two histories'

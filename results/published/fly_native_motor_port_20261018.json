@@ -1,0 +1,389 @@
+{
+  "at": "2026-10-18T11:17:35.630213+00:00",
+  "status": "native_motor_interface_and_bounded_resource_check_validated",
+  "main": {
+    "trained": 32384,
+    "sha256": "9dacf767b558b3cf4f8642644f51092a7f4047af8712c98b53f543beb380ebe4",
+    "unchanged": true,
+    "paused": true
+  },
+  "implemented": {
+    "native_motor_cells": 815,
+    "input": "individual actual axonal release vector",
+    "action_head": "independent of sensory prediction decoder",
+    "motor_packet_required": true,
+    "no_invented_body_feedback": true,
+    "actual_word_event_replay": true,
+    "native_policy_gradient_routing": true,
+    "ordered_id_checkpoint_validation": true
+  },
+  "identity_repair": {
+    "at": "2026-10-18T09:36:08.042483+00:00",
+    "source": "F:\\fly_stream_overflow\\native_motor_port_20261018\\last.pt",
+    "source_sha256": "4722fe8abebdf9d9af31d98a476319983fd9d5eeedf4d0d70d8f565fe2dec27b",
+    "graph_sha256": "d91baf38ff9464f94e7e9fc196d999b204a0e6e31d63987343e36a7546baa325",
+    "annotations_sha256": "2177e246113e4cfbf1e7772ec37c6da1955ff22e8063d0b1f833101f99a9a3b2",
+    "new_exposure": 0,
+    "reason": "parameter-only exporter omitted ordered motor body IDs",
+    "scope": "recover from the same graph; not anatomical remapping",
+    "candidate": "F:\\fly_stream_overflow\\native_motor_port_20261018_identity\\last.pt",
+    "candidate_sha256": "58b782f1417d898543b4ac5917c53b5a073fe5153225cc65e119f80ebb0a52af",
+    "trained": 32820,
+    "motor_cells": 815,
+    "preexisting_payload_exactly_preserved": true,
+    "source_unchanged": true,
+    "status": "identity_repaired_native_restore_and_matrix_passed",
+    "matrix": "F:/fly_stream_overflow/native_motor_port_20261018_identity_matrix/report.json",
+    "admission": "F:/fly_stream_overflow/native_motor_port_20261018_admission/report.json",
+    "native_restore_without_migration": true,
+    "actual_natural_action_learning": "unmeasured",
+    "main_paused": true,
+    "identity_reference": "F:\\fly_stream_overflow\\native_motor_port_20261018_frozen\\report.json",
+    "identity_reference_sha256": "688e18d318477503e9b31a98680183ba450510c2e971de6c3979a38ea35d6d6b",
+    "original_pretraining_ordered_body_ids_exact": true,
+    "redundant_source_export_pruned": {
+      "at": "2026-10-18T11:16:55.801579+00:00",
+      "reason": "completed16-target mechanism smoke; parameter-only defective export is an exact redundant predecessor of the retained full identity repair",
+      "deleted_path": "F:\\fly_stream_overflow\\native_motor_port_20261018\\last.pt",
+      "deleted_sha256": "4722fe8abebdf9d9af31d98a476319983fd9d5eeedf4d0d70d8f565fe2dec27b",
+      "bytes_freed": 1742383441,
+      "retained_complete_equivalent": "F:\\fly_stream_overflow\\native_motor_port_20261018_identity\\last.pt",
+      "retained_sha256": "58b782f1417d898543b4ac5917c53b5a073fe5153225cc65e119f80ebb0a52af",
+      "all_results_config_and_failure_evidence_kept": true,
+      "main_and_final_candidate_untouched": true
+    }
+  },
+  "retained_candidate": {
+    "at": "2026-10-18T11:17:35.630213+00:00",
+    "status": "bounded_resource_check_completed_exact_restore_and_current_matrix_passed",
+    "checkpoint": "F:\\fly_stream_overflow\\native_motor_final_20261018\\last.pt",
+    "sha256": "89c667ba91b9d27e487eb6c166dd9d09cfed0b4a00c8b86cb30b8e6b400eead2",
+    "trained": 32904,
+    "events": 32904,
+    "updates": 4130,
+    "physical_ticks": 470339,
+    "mother_turn": "mother",
+    "unread_tokens": 127,
+    "ordered_motor_cells": 815,
+    "full_payload_fields": [
+      "format",
+      "model",
+      "learner",
+      "config",
+      "origin",
+      "train_cursor",
+      "val_cursor",
+      "bptt_train_tokens",
+      "target_bptt_tokens",
+      "best_live_nll",
+      "recent_a",
+      "recent_scores",
+      "first_pass_meter",
+      "phase_first_pass_meter",
+      "rng_cpu",
+      "rng_cuda",
+      "mother_world",
+      "mother_rng"
+    ],
+    "complete_model_learner_optimizer_physical_interaction_world_cpu_cuda_mother_rng_exact_restore": true,
+    "source_snapshot": "source_snapshot",
+    "runtime_source_matches_snapshot": true,
+    "registry_postrun_status_updated_separately": true,
+    "fresh_segment_targets": 16,
+    "peak_mib": 2885.0908203125,
+    "native_credit_cpu": true,
+    "internal_segment_ticks": 16,
+    "world_pace_unchanged": true,
+    "main_sha256": "9dacf767b558b3cf4f8642644f51092a7f4047af8712c98b53f543beb380ebe4",
+    "main_paused": true,
+    "natural_lexical_learning_benefit": "unmeasured",
+    "restore_report": "F:\\fly_stream_overflow\\native_motor_final_restore_20261018\\report.json",
+    "matrix_report": "F:\\fly_stream_overflow\\native_motor_final_matrix_20261018\\report.json"
+  },
+  "real_continuation": {
+    "initial": 32804,
+    "first_port_segment_end": 32820,
+    "first_port_targets": 16,
+    "first_port_updates": 4,
+    "first_port_nll": 6.832374095916748,
+    "first_port_same_batch_unigram": 7.23462584125676,
+    "next_segment_retained_start": 32820,
+    "next_segment_retained_end": 32852,
+    "next_segment_retained_targets": 32,
+    "next_segment_retained_nll": 5.275514479726553,
+    "next_segment_retained_same_batch_unigram": 6.743680733674613,
+    "nll_scope": "queued mother_call input scored before parameter updates; short interface run, no independent validation or learning benefit claim",
+    "natural_speech_actions": 0,
+    "unretained_later_evidence_preserved": true
+  },
+  "paired_matrix": {
+    "path": "F:\\fly_stream_overflow\\native_motor_final_matrix_20261018\\report.json",
+    "checkpoint_sha256": "89c667ba91b9d27e487eb6c166dd9d09cfed0b4a00c8b86cb30b8e6b400eead2",
+    "trained": 32904,
+    "arms": 9,
+    "real_ticks": 54,
+    "intervals": [
+      4,
+      4,
+      27,
+      19
+    ],
+    "controls_passed": true,
+    "source_rng_preserved": true,
+    "terminal_off": {
+      "ce_delta": 0.0,
+      "state_close_to_intact": true,
+      "log_prob_absmax": 0.0,
+      "action_log_prob_absmax": 9.7891206741333,
+      "command_hazard_absmax": 0.0032956895884126425,
+      "native_motor_packet_ticks": 0
+    },
+    "scope": "acute frozen delivery, not learning benefit, real action consequence, exploration or self"
+  },
+  "counterfactual_gradient_resource_admission": {
+    "checkpoint": "F:\\fly_stream_overflow\\native_motor_port_20261018_identity\\last.pt",
+    "sha256": "58b782f1417d898543b4ac5917c53b5a073fe5153225cc65e119f80ebb0a52af",
+    "trained": 32820,
+    "scope": "counterfactual one-tick VJP/resource test; no world action or learning benefit",
+    "actual_first_saved_interval": 24,
+    "executed_diagnostic_ticks": 1,
+    "motor_cells": 815,
+    "action_parameter_shapes": {
+      "motor_port_projection.weight": [
+        768,
+        815
+      ],
+      "motor_port_norm.weight": [
+        768
+      ],
+      "motor_port_decoder.weight": [
+        50257,
+        768
+      ],
+      "motor_port_decoder.bias": [
+        50257
+      ]
+    },
+    "gradient_norms": {
+      "log_tau_m": 0.00439330143854022,
+      "log_tau_s_e": 0.0212980005890131,
+      "log_tau_s_i": 0.012556781992316246,
+      "log_threshold": 0.07335446774959564,
+      "log_g_e": 0.06389088928699493,
+      "log_g_i": 0.01678265444934368,
+      "log_tau_a": 0.0,
+      "log_beta": 0.016338257119059563,
+      "mbon_kappa": 0.0,
+      "log_graded_gain": 0.0,
+      "log_visual_graded_gain": 0.0,
+      "log_input_gain": 0.023992374539375305,
+      "cx_logit_decay": 0.0,
+      "cx_feedback": 0.0,
+      "mb_apl_logit_decay": 0.0,
+      "mb_apl_feedback": 0.0,
+      "endocrine_log_tau": 0.0,
+      "endocrine_log_affinity": 0.0,
+      "endocrine_response": 0.0,
+      "al_local_logit_decay": 0.0,
+      "al_pn_feedback": 0.0,
+      "comp_weight": 0.0,
+      "motor_port_projection.weight": 21.004484176635742,
+      "motor_port_norm.weight": 3.7596006393432617,
+      "motor_port_decoder.weight": 4.6352314949035645,
+      "motor_port_decoder.bias": 0.9798246026039124
+    },
+    "optimizer_state": {
+      "motor_port_projection.weight": [
+        "exp_avg",
+        "exp_avg_sq",
+        "step"
+      ],
+      "motor_port_norm.weight": [
+        "exp_avg",
+        "exp_avg_sq",
+        "step"
+      ],
+      "motor_port_decoder.weight": [
+        "exp_avg",
+        "exp_avg_sq",
+        "step"
+      ],
+      "motor_port_decoder.bias": [
+        "exp_avg",
+        "exp_avg_sq",
+        "step"
+      ]
+    },
+    "peak_mib": 2699.7158203125,
+    "allocated_mib": 2641.70556640625,
+    "source_unchanged": true,
+    "full_long_action_window_admitted": false,
+    "status": "one_tick_native_vjp_and_optimizer_allocation_passed"
+  },
+  "resource_failure": {
+    "at": "2026-10-18T10:52:34.923883+00:00",
+    "status": "resource_guard_failed_after_committed_update_before_accounting",
+    "peak_mib": 3951.3251953125,
+    "limit_mib": 3800,
+    "last_logged_training_counter": 32880,
+    "last_in_memory_learner_events": 32884,
+    "last_complete_checkpoint": 32852,
+    "state_not_retained_after_checkpoint_tokens": 32,
+    "evidence_retained": [
+      "mother.jsonl",
+      "metrics.jsonl",
+      "scores.jsonl",
+      "progress.json",
+      "ai_trace.jsonl"
+    ],
+    "repair": "Defer post-update resource exception until complete window accounting and full checkpoint. Continue a new isolated branch from the last actual complete state, preserving failed later evidence. Smaller internal recomputation segments must pass numerical equivalence.",
+    "main_paused": true
+  },
+  "resource_repair": {
+    "committed_window_save_before_limit_error": "validated at32884",
+    "smaller_internal_segment": "numerically equivalent but increases full-model scratch boundary state; not adopted",
+    "final_internal_segment_ticks": 16,
+    "exact_delayed_score_storage": "CPU RAM; CPU/CUDA archived values, delayed surrogate and gradients equal in tests",
+    "redundant_scratch": "release EG update scratch before diagnostics; reuse private diagnostic abs buffer; update formula and random sampling unchanged",
+    "final_real_resource_check": "completed16targets through prior OOM window, peak2885.09MiB",
+    "long_natural_action_window_admission": "unmeasured"
+  },
+  "tests": {
+    "affected_before_resource_repair": "186passed; additional61passed",
+    "resource_and_restore_interfaces": "65passed",
+    "cpu_affected_final": "199passed12GPUskipped; CUDA explicitly masked with-1",
+    "standalone_deslice": "9passed",
+    "full_suite": "collection blocked by5 existing missing diagnostics/imports; native_motor_port_fullsuite_20261018.log",
+    "discarded_device_isolation_attempt": "An empty Windows CUDA mask did not isolate GPU;10Invalid device id failures were recorded separately. The explicit-1 CPU rerun passed.",
+    "final_affected": "214passed including CUDA checks; native_motor_final_regression_20261018.log",
+    "host_storage_equivalence": "CPU/CUDA exact archived value and policy gradient tests pass",
+    "full_restore": "entire saved model and learner entries, optimizers, physical/interaction/world and all RNG match exactly"
+  },
+  "unverified": [
+    "natural native word choice to actual reply to native learning benefit",
+    "long real action-window memory admission",
+    "selective familiarity devaluation through native action route",
+    "physical muscles/proprioception and complete ENS body exchange",
+    "complete exploration or self"
+  ],
+  "final_segment": {
+    "start": 32888,
+    "end": 32904,
+    "fresh_branch_targets": 16,
+    "optimizer_updates": 4,
+    "source_prediction": {
+      "mother_call": {
+        "targets": 16,
+        "pre_update_nll": 4.525426268577576,
+        "same_batch_fixed_unigram_nll": 7.609950307348912
+      }
+    },
+    "actual_native_commands": 0,
+    "actual_packet_ticks": 159,
+    "input_clock_ticks": 159,
+    "peak_mib": 2885.0908203125,
+    "complete_state_restored_exactly": true,
+    "scope": "bounded resource/interface verification through prior actual OOM input; no natural speech or capability gain conclusion"
+  },
+  "retained_lineage": [
+    {
+      "run": "native_body_route_20261018",
+      "end": 32804
+    },
+    {
+      "run": "native_motor_port_20261018_identity",
+      "end": 32820,
+      "new_retained_targets": 16
+    },
+    {
+      "run": "native_motor_live_20261018",
+      "end": 32852,
+      "new_retained_targets": 32,
+      "later_failure_evidence_kept": true
+    },
+    {
+      "run": "native_motor_segment4_20261018",
+      "end": 32884,
+      "new_retained_targets": 32,
+      "guard_saved_complete_state_before_error": true
+    },
+    {
+      "run": "native_motor_host_20261018",
+      "end": 32888,
+      "new_retained_targets": 4,
+      "later_partial_update_not_resumable": true
+    },
+    {
+      "run": "native_motor_final_20261018",
+      "end": 32904,
+      "new_retained_targets": 16
+    }
+  ],
+  "failed_attempts": [
+    {
+      "at": "2026-10-18T10:52:34.923883+00:00",
+      "status": "resource_guard_failed_after_committed_update_before_accounting",
+      "peak_mib": 3951.3251953125,
+      "limit_mib": 3800,
+      "last_logged_training_counter": 32880,
+      "last_in_memory_learner_events": 32884,
+      "last_complete_checkpoint": 32852,
+      "state_not_retained_after_checkpoint_tokens": 32,
+      "evidence_retained": [
+        "mother.jsonl",
+        "metrics.jsonl",
+        "scores.jsonl",
+        "progress.json",
+        "ai_trace.jsonl"
+      ],
+      "repair": "Defer post-update resource exception until complete window accounting and full checkpoint. Continue a new isolated branch from the last actual complete state, preserving failed later evidence. Smaller internal recomputation segments must pass numerical equivalence.",
+      "main_paused": true
+    },
+    {
+      "status": "resource_limit_committed_checkpoint_saved",
+      "trained": 32884,
+      "events": 32884,
+      "source": "F:/fly_stream_overflow/native_motor_live_20261018/last.pt",
+      "peak_mib": 4111.99365234375,
+      "limit_mib": 3800,
+      "complete_window_saved_before_exception": true,
+      "internal_segment_ticks": 4,
+      "window": 4,
+      "input_clock_unchanged": true,
+      "hypothesis_result": "smaller segments increase cross-segment state memory on this full model; not adopted as memory solution",
+      "next": "exact host storage of delayed score tensors, not temporal truncation"
+    },
+    {
+      "status": "actual_oom_in_eg_diagnostic_after_weight_update",
+      "retained_checkpoint": 32888,
+      "checkpoint_sha256": "1105a5c9dbf0f96babb0bc0c82ad8995830181bdda7117284bcce68db208af9a",
+      "last_logged_training_counter": 32896,
+      "failed_window_partially_updated_not_resumable": true,
+      "evidence_preserved": true,
+      "stack": "_eg_apply -> redundant full-edge abs/quantile diagnostics",
+      "new_fix": "release full-edge update scratch before diagnostic ratio; reuse private abs buffer without changing weights/RNG",
+      "host_credit_archive_in_effect": true,
+      "last_logged_peak_mib": 3228.60107421875,
+      "main_paused": true
+    }
+  ],
+  "cleanup": {
+    "at": "2026-10-18T11:16:55.801579+00:00",
+    "reason": "completed16-target mechanism smoke; parameter-only defective export is an exact redundant predecessor of the retained full identity repair",
+    "deleted_path": "F:\\fly_stream_overflow\\native_motor_port_20261018\\last.pt",
+    "deleted_sha256": "4722fe8abebdf9d9af31d98a476319983fd9d5eeedf4d0d70d8f565fe2dec27b",
+    "bytes_freed": 1742383441,
+    "retained_complete_equivalent": "F:\\fly_stream_overflow\\native_motor_port_20261018_identity\\last.pt",
+    "retained_sha256": "58b782f1417d898543b4ac5917c53b5a073fe5153225cc65e119f80ebb0a52af",
+    "all_results_config_and_failure_evidence_kept": true,
+    "main_and_final_candidate_untouched": true
+  },
+  "dashboard": {
+    "url": "http://127.0.0.1:8765/?run=newborn_reading",
+    "caregiver_review_verified": true,
+    "main_status": "paused_by_user_for_repair",
+    "candidate": 32904,
+    "main_nll_not_replaced_by_candidate": true,
+    "existing_service_restarted_without_training": true
+  }
+}

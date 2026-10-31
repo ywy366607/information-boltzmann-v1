@@ -1,0 +1,2767 @@
+{
+  "at": "2026-10-19T01:18:07.675935+00:00",
+  "status": "native_spatial_reciprocal_DAN_chemical_release_route_checked",
+  "geometry": {
+    "dataset": "male-cns:v1.0",
+    "confidence": 0.5,
+    "neurons": 390,
+    "nodes": 1404101,
+    "sites": 187404,
+    "segments": 1403514,
+    "KC_DAN_edges": 145727,
+    "DAN_output_edges": 236767,
+    "input_routes": 281930,
+    "output_routes": 535422,
+    "KC_receiver_routes": 225150,
+    "contact_projection_um_quantiles": [
+      0.008000000000009777,
+      0.6042516032249896,
+      1.3040822059452473,
+      3.0888807034263825
+    ],
+    "sha256": "be3eb90352b9adb19144c93d78e4f539bbfa819691f43450af13c4859238e34a",
+    "kc_geometry_sha256": "8de40839b5da3ab72cca8443e0f3ca8fed211250339079b3022c5714fedc9385",
+    "scope": "All supplied DAN morphology nodes; actual KC reciprocal contacts and DAN release positions, original graph edge fractions/delays. No ROI pooling, invented root joins, or identified channel-kinetics claim.",
+    "raw_files": [
+      {
+        "file": "100258.swc",
+        "sha256": "a62bde6ba833af4976dbe7944d9f06ef4519162612f3a279f9e15b69c2a31f6b"
+      },
+      {
+        "file": "102936.swc",
+        "sha256": "c07b3e39c35dcdd5c63cae698dc6c81d4beb0353e445441598be49d132fbe9d2"
+      },
+      {
+        "file": "103255.swc",
+        "sha256": "c554dfcc4302d188b7ab69f99646370de657d17d83ce4c6f96d52ead7c150b39"
+      },
+      {
+        "file": "103433.swc",
+        "sha256": "543ad7f4c15c800fdc8347f43018b6279f15aeb49bb048ed14c5424b3c99785f"
+      },
+      {
+        "file": "10399.swc",
+        "sha256": "52d3d7b8b85a3eb9fe9efdcc423c3978482db7461789f8ea4e23cce1eb03e9aa"
+      },
+      {
+        "file": "104460.swc",
+        "sha256": "49f70f0c94fa4fae328ce310af87f2ef30774842a773f85cd4eb8ff84daea057"
+      },
+      {
+        "file": "104713.swc",
+        "sha256": "a0bc193bb4b734ff22fca353a2301a3cb4aa52e9bb9104f29d7b7f6b49761af6"
+      },
+      {
+        "file": "105362.swc",
+        "sha256": "c700ec1e7e01eaba3dd4bc81a2321c5ad0058024233fa0ea1eb9b9b3ab8ddc71"
+      },
+      {
+        "file": "105365.swc",
+        "sha256": "293c84d0c361d1dd4e98cb02118b17c4ef8e2241e1436a3373da80887553d2c2"
+      },
+      {
+        "file": "105447.swc",
+        "sha256": "dbe57d5e4adeae84697aac355a00cdc78baeb397a16fc04de63db17d626e1af5"
+      },
+      {
+        "file": "10568.swc",
+        "sha256": "2dd2619daf4a187bbe8b5c348e88f1fae7f78d23a0419f5a9f5caa33fd6c23e0"
+      },
+      {
+        "file": "10639.swc",
+        "sha256": "4f6889ad4a936cf59c042f5263ce345f99d3bbc3b3c7c2861594697389d49a7f"
+      },
+      {
+        "file": "107285.swc",
+        "sha256": "0ef39b90692f612cebfaef1802de5a24b15cf1aaf58749f7491e54dc7513cef9"
+      },
+      {
+        "file": "10735.swc",
+        "sha256": "cf5abda4bfff7fd6f99eb85494b84f0d7dc0fb32fbf5f534ad312cb2737e5816"
+      },
+      {
+        "file": "10753.swc",
+        "sha256": "87a3eef9e9629dbb527b4cc38f69172acc9bf4ad396ee6b0590bf213cb4d7fe6"
+      },
+      {
+        "file": "107986.swc",
+        "sha256": "f9fba635d093fa62b8d38af9d49871a696ba25e377992da75cb424803a500a00"
+      },
+      {
+        "file": "108429.swc",
+        "sha256": "98ff7ae7a446f7d3fb4d835c04c091488a9cf98d06cf913eba4dd94d52e8211c"
+      },
+      {
+        "file": "10852.swc",
+        "sha256": "000a92f4a5524b0101b201940e068b8dd50db6b12b7dbe7ced1c890b4ffe289a"
+      },
+      {
+        "file": "108576.swc",
+        "sha256": "c06ab38a54fa658c09a5aa57bcb373e1f67da5c6cc4f0880f66b4e5bc57808da"
+      },
+      {
+        "file": "10898.swc",
+        "sha256": "a04b05f83d1a0a67e9d7bacf796ed168b500c7447f9af8ebc42d398b213713a6"
+      },
+      {
+        "file": "10910.swc",
+        "sha256": "4d6439183718c3f232f227d6eed5b359edc5c561e775e1c04f1e89671ab769d0"
+      },
+      {
+        "file": "10914.swc",
+        "sha256": "0fd092b0a1c5d5135a627825af0f5f12e0ec50144ff27f4bbccfd10d6ecb0e72"
+      },
+      {
+        "file": "109624.swc",
+        "sha256": "a8b9f6eb49688a778ef20529784ef8c7b75da1367c821e853d5004f8fb1eba04"
+      },
+      {
+        "file": "109793.swc",
+        "sha256": "d1fc4015e4aabe1c19ae1b78a7105ce394b2de0f73c1b1f240ebb1185db05fed"
+      },
+      {
+        "file": "110653.swc",
+        "sha256": "d46aeed47cb555d2b6736c4b4a4dbdcf3259402862aa2fe47daa823d3d378812"
+      },
+      {
+        "file": "11079.swc",
+        "sha256": "edd060c9e5dd60c2ed3b40edbd554b90495cd3f8a7389c054d67a9fd85d0710d"
+      },
+      {
+        "file": "11125.swc",
+        "sha256": "fb03741d812dc6c89010581f46444e588acf19506212efa815d9244479f276bb"
+      },
+      {
+        "file": "111665.swc",
+        "sha256": "606a65d8155768308a37bb71275230d402addde8bfa347b8ddc809016f934b2b"
+      },
+      {
+        "file": "11214.swc",
+        "sha256": "a13e2de014eb5142ba3ad66407d93b4008c6b0a725eea24898db4468899f2dfd"
+      },
+      {
+        "file": "11255.swc",
+        "sha256": "68324a6df42e696612489721000d667053d8b6272f7a3290562203ea8e2048bd"
+      },
+      {
+        "file": "113001.swc",
+        "sha256": "ce51ad28ef99dd8e61dc110e3c6914ae7640c1ba12e9289b21eaa4d3b242138f"
+      },
+      {
+        "file": "113067.swc",
+        "sha256": "245a8a57a438a544fa604d9f5019f648311213fefd1fe95aea8f088c81530716"
+      },
+      {
+        "file": "11327.swc",
+        "sha256": "8f114bd72892c2200e98291f08ca7365da9be7cb44f4967d3b959088ad7eeed1"
+      },
+      {
+        "file": "114216.swc",
+        "sha256": "6cea249d96c2c0a59b6f85d729b5b29f4936773b21e637ac0d2edb40a1b2821e"
+      },
+      {
+        "file": "114522.swc",
+        "sha256": "b836bb9fedd855c863e9f6a4cd136ae50e2803bc1b0858c9987711a064e299ec"
+      },
+      {
+        "file": "114661.swc",
+        "sha256": "594aac8f5d7cf3c420583b3a4b50d3bcdb8df5a7339d12bbe17aaa683945ba3e"
+      },
+      {
+        "file": "114700.swc",
+        "sha256": "d19166879cfb95e33a30a91cc65833dd42e96f915346c7794190b401b4419596"
+      },
+      {
+        "file": "11532.swc",
+        "sha256": "6baeb04b9d4302ff47f8d0fc2962d3f080f0d6282e1bdcab15033605024593f5"
+      },
+      {
+        "file": "11560.swc",
+        "sha256": "d21e07b4430551cfd53c5cde8a521778f0795ab904e0119929555043dc6a25a8"
+      },
+      {
+        "file": "115617.swc",
+        "sha256": "cf3d9f1bf17d309df5c28a526218891b31158c7fa27b44333cbdf3a09cac269b"
+      },
+      {
+        "file": "115868.swc",
+        "sha256": "788ca9a6fa7b3d40371ad4ecdde8674c2aa0b0bd1b4bba28f446255c875bf0cb"
+      },
+      {
+        "file": "11618.swc",
+        "sha256": "ea10925acc29483c1f6910aa020ca8841c75e5b417dab74fd274948405b4d58e"
+      },
+      {
+        "file": "11752.swc",
+        "sha256": "f45cc54cf31fede75300f0452b0df94cd8deb21e17267f6ad9901d0ffd5acc5a"
+      },
+      {
+        "file": "117782.swc",
+        "sha256": "b6478c77b18e1630514f27ed3b1e97f46810e663db45aa772412e4826b908de7"
+      },
+      {
+        "file": "11900.swc",
+        "sha256": "45d6cdc691a2cee37713b9d6dd2d46ece4e1a98c1761c67f2ec9097bd5a7e1b9"
+      },
+      {
+        "file": "119499.swc",
+        "sha256": "44ddbf34bfbb3a8a8898c268fbe0bc626aad9729f9fa691246f4f187b923a402"
+      },
+      {
+        "file": "11964.swc",
+        "sha256": "cdefd61183e0c695e545d5f344384d6d5d78d668951eb6e6050788ec8d302f05"
+      },
+      {
+        "file": "119763.swc",
+        "sha256": "5c30c57e5d66031f4c48f1a74f6bdf7cbe33fc4d0d56c8100f22221519a97182"
+      },
+      {
+        "file": "120259.swc",
+        "sha256": "f0bc9471fb8f2432e1f950dbbb85645086050f64ec9036aa942c8ec7a2d18192"
+      },
+      {
+        "file": "120768.swc",
+        "sha256": "694bd974ccfd4426d285f22d2871266e74fe0143ebfc1b91b9d57cb992fb539c"
+      },
+      {
+        "file": "122062.swc",
+        "sha256": "0b64bd1b8d8381d95d227fd9e52d1e5eb4b01dee1e76b37f74a8e18e1e687571"
+      },
+      {
+        "file": "12333.swc",
+        "sha256": "90c6855763f77f71025b90d9f45e442d5256596bae227c7cb2e896438f3d478e"
+      },
+      {
+        "file": "124918.swc",
+        "sha256": "1e8a6bb56a4b2bc6fd52d26c96b09aaf20c069e072de2a76d0ff10204b0e2aa9"
+      },
+      {
+        "file": "125080.swc",
+        "sha256": "675bbd25ceb1b224cfedf78d16e58643d9a79a7f0939de5c4723c847934847fc"
+      },
+      {
+        "file": "12588.swc",
+        "sha256": "ff34d83951eedbd39abcabcfaa4acce1667525a07c0d4e44428b238867d73d18"
+      },
+      {
+        "file": "12644.swc",
+        "sha256": "471681014280366a5a75fa6a2f1ca63e547f7d41118dd2f67befc723d2c60eeb"
+      },
+      {
+        "file": "126501.swc",
+        "sha256": "2e5c2fc015a6cf61c13636075f013c85dd40019fa6b585f849a8ee64d4f8d4ab"
+      },
+      {
+        "file": "126900.swc",
+        "sha256": "c93544f4fe163222d602e7f7cdccd7db500641fe71ad95864d1022aabe4adbfb"
+      },
+      {
+        "file": "127659.swc",
+        "sha256": "c49e329c8fd5f990fc76c74e32971f798c50da2efd2cf0bbaa7a044858c464a8"
+      },
+      {
+        "file": "128076.swc",
+        "sha256": "3da2cb4ba4785a84f1e3f7407325365e7eb53cb8e372ed5a74fca172a9a2d2eb"
+      },
+      {
+        "file": "12858.swc",
+        "sha256": "bbfd3959d8e1cc45c55b85d173fe06cd1e8c1051d42bdebaec05c0f69363e1b6"
+      },
+      {
+        "file": "12902.swc",
+        "sha256": "5bd1db656563dbf4590a8562b449482444f80a0314facddfde5c33eff9706ac6"
+      },
+      {
+        "file": "129430.swc",
+        "sha256": "7e3ff5cd24ac7378a77a5f06d9bf369f8acdd944481fb8b8891c6695a47fc3a6"
+      },
+      {
+        "file": "129563.swc",
+        "sha256": "f784d690ce1c9b39c79254aa79dde83f9af541ed04282a58e55202a085e130ee"
+      },
+      {
+        "file": "13068.swc",
+        "sha256": "57e443b95cda30cd5ee838e2de18bae6489462fb96c9bf3fafc0b22392841584"
+      },
+      {
+        "file": "131419.swc",
+        "sha256": "c0fa325fa6a949c4a50f68b1ddbc1441a0fab6b611dca1863e783cf5bb0ace07"
+      },
+      {
+        "file": "131607.swc",
+        "sha256": "cbda6a7c49408cd006fdb41d48fe0c5af46ddb0fc9f5ff06a8b990b5fe3e62ef"
+      },
+      {
+        "file": "132513.swc",
+        "sha256": "d80455b0db37714756cb153ef58a83cf2616eb5ae1627cc93ce7f2a5960daad2"
+      },
+      {
+        "file": "13259.swc",
+        "sha256": "1c7c8c5885b7eacd268479a03c41970be243037b1026f87d804f4113f7d4c194"
+      },
+      {
+        "file": "133019.swc",
+        "sha256": "224e2adccef4c7b3b80d14fd761d24305370517adc189533475c8c87abf396d2"
+      },
+      {
+        "file": "134265.swc",
+        "sha256": "f7750ddbeedac5000dc3568978194b1351b773b8da3491be32387bfce0f2612d"
+      },
+      {
+        "file": "13428.swc",
+        "sha256": "fe80163bdd53108cc63a2d8605d6d75212330c26312a1b0f0d96e7f839cff3dd"
+      },
+      {
+        "file": "134769.swc",
+        "sha256": "100693e0f0c868484e971cab36bb71957165869fac39d687c0f2ed2c95092a0e"
+      },
+      {
+        "file": "134869.swc",
+        "sha256": "cf8a177ea0dc753e7cfbdb8d9de47471022620e92e0aa5e182624de9ac112021"
+      },
+      {
+        "file": "135046.swc",
+        "sha256": "98cc257e708a58f8d0312a6022aa098d92d5282055bdb590e1a5aaa491f3f91d"
+      },
+      {
+        "file": "135171.swc",
+        "sha256": "837347e1c7e29dd8a9baa9435f15ac4736b7b833f758634c2feb550bacc585b9"
+      },
+      {
+        "file": "135287.swc",
+        "sha256": "3b4899ad2b8d3b276107964e27dc3a78ad91e6d2a66e570c39dcc5acb599a031"
+      },
+      {
+        "file": "135290.swc",
+        "sha256": "f3882b9d27333ba59351ecd723d93060d68c1f1f8b3ef077a40dc4358bcf47c6"
+      },
+      {
+        "file": "135578.swc",
+        "sha256": "4eec4c7d6cc8df79b08aa2736ebb109ebbfc6cfb902b203524c72687754a3374"
+      },
+      {
+        "file": "136024.swc",
+        "sha256": "d4502a0876f3da6c447c0460b0c7e36c1ffc9eb72bffd1d49dbcda17bdf040b5"
+      },
+      {
+        "file": "136144.swc",
+        "sha256": "bd296c05427bef4e16b0a3875f0915c7a351741f86ed025a8155eea6789794a4"
+      },
+      {
+        "file": "136215.swc",
+        "sha256": "d47e4ce118d5aefbb90990f50e68d85161aa777e49120cb1639ed12e06d645fb"
+      },
+      {
+        "file": "137321.swc",
+        "sha256": "0d29d7187885061f54a0d83e2fdf0a6526219abe2c8e753fa3a797145fdd10cf"
+      },
+      {
+        "file": "137373.swc",
+        "sha256": "0d47aecdc899d3fa62fae0418fca0f07b449bfc9e829e5d281b4ee20732e3a11"
+      },
+      {
+        "file": "137539.swc",
+        "sha256": "b2aea80302f09b9744da8e75d59c180f9c8b9047e6658a01f1d4fff800fb8091"
+      },
+      {
+        "file": "137595.swc",
+        "sha256": "fb1d6eb84e476319a317ef8983d5f9cf464b90bb57d8f3421f486fc044cf0b98"
+      },
+      {
+        "file": "138585.swc",
+        "sha256": "f2f324d82c17f0e25d8f07dced713a14097d16f7f40ee7a2cfb2836cae239ea3"
+      },
+      {
+        "file": "138629.swc",
+        "sha256": "ea820104fee072673f9d494e87843f8ffcee4dbab5de20d46b1e03e0a5bc81a3"
+      },
+      {
+        "file": "138822.swc",
+        "sha256": "58a9e582098bd9b5ceb2c39a694fd064aa1e1ca153e180ad611437f3933b858b"
+      },
+      {
+        "file": "139280.swc",
+        "sha256": "cd7ee09c58426a5d31903a866f3b58a1ed163c214ccd8e10ad07d8856d7bf738"
+      },
+      {
+        "file": "139378.swc",
+        "sha256": "b6472ed008c797bb8edfa41cc370f17b8dc808f37c0282c7dfb51e4d5eaf2012"
+      },
+      {
+        "file": "139706.swc",
+        "sha256": "83656c273e60d1e0fa1aa08edffe511b09308743bd57072c83e3fcede308cf98"
+      },
+      {
+        "file": "140271.swc",
+        "sha256": "28e3bf3b981e07dde9e6164c667a5a429af7882bf76329f9c7929f2057f95fdf"
+      },
+      {
+        "file": "141246.swc",
+        "sha256": "e28cdac8aa7d6cd4dc76cc464b09db77f2347b75583c9c0227463f7821c9cbd9"
+      },
+      {
+        "file": "141510.swc",
+        "sha256": "d5a2c5fa39a99a7550b24163370cc06c0ea3975cbf8025168012b6c7d006e413"
+      },
+      {
+        "file": "141615.swc",
+        "sha256": "662857063f477052e331404455822bdf2097587062e39771e126dbc0eee27030"
+      },
+      {
+        "file": "14182.swc",
+        "sha256": "2e04c678d759c4c23fffca911b242796e71d254b3aada8f85345349baa4aa4fc"
+      },
+      {
+        "file": "142238.swc",
+        "sha256": "fbda6d986c606ea36dbe5d53119aab3813dcf4c708578933a13d3677dc5abb05"
+      },
+      {
+        "file": "14225.swc",
+        "sha256": "b599f8d0aa279815d7e5e4f6edd69749dccc29bd9906ee5ec155e3c8b528d5ce"
+      },
+      {
+        "file": "142528.swc",
+        "sha256": "993a4a47f71eaabadc97bbde66f2ae3c5bab5f70957fbcd565aeba74ce55725d"
+      },
+      {
+        "file": "142538.swc",
+        "sha256": "edfeef8e5e7da37c52c27ad9385a3e06b756b186e8a5a18b6d66e0a31f0fd651"
+      },
+      {
+        "file": "142660.swc",
+        "sha256": "a12d35c83916d08015778ae3993639cfeb963700edbffd9dc4e91731ea1d879f"
+      },
+      {
+        "file": "142898.swc",
+        "sha256": "4b0433e7856e9729d6cbb1be9927bae0b99d5d463d50f47cfa3cc8e67affecc3"
+      },
+      {
+        "file": "143120.swc",
+        "sha256": "a6ad6ea38167ff7b4e71d1f3c01a392d9648c749bba042473190c46e20e14ef0"
+      },
+      {
+        "file": "144126.swc",
+        "sha256": "728c291c184f88bdeae2acfde5447d2c1be9b76d2c11c8f28b36a0944fd145f6"
+      },
+      {
+        "file": "144315.swc",
+        "sha256": "e4ef43c2fd745d89c9523b5c8e7dfc5fb882fa36fdc8a7657fc2d8ffd48b993b"
+      },
+      {
+        "file": "144625.swc",
+        "sha256": "715efc7aebcfb6b2c058518492eabf7a95d04738271eb6e6ecf57715b562175a"
+      },
+      {
+        "file": "144678.swc",
+        "sha256": "e01ffe4ba9ac3add8c91b2f4d3cf388775e5518da4f7a3770b1a961c79aa7197"
+      },
+      {
+        "file": "145022.swc",
+        "sha256": "9fae92a580def620822cae8e04f24a6bd9b718355248c695f3d37c8ee3e1ca0e"
+      },
+      {
+        "file": "145094.swc",
+        "sha256": "efc86b85e0d73918fbeaac701c934ecb6a4170cb6438a514f6d71f2ebd66d5ac"
+      },
+      {
+        "file": "145148.swc",
+        "sha256": "32400f688f75bef4dd8a17c7a9f969d6a65947867691b2f0edce2ef7bd0f3db9"
+      },
+      {
+        "file": "145324.swc",
+        "sha256": "a3200d9f8aa4e6a4faf5ac058126d1654237699aaf9cfc9204147224ca5a5a9f"
+      },
+      {
+        "file": "145371.swc",
+        "sha256": "525a2b03b86e9ab66e070587aaadb0d7da913ce66e82d981474d484fdde4b789"
+      },
+      {
+        "file": "145749.swc",
+        "sha256": "c43b08ca7c2aec0f373f667b5581840a7e0696990214a9682850e428ad3fd633"
+      },
+      {
+        "file": "146058.swc",
+        "sha256": "d6738982fb7947b0332d77abfff0408e051b97aa312d58b2c67f1834da739156"
+      },
+      {
+        "file": "146418.swc",
+        "sha256": "8ce3dac49c630bc3c4a630434ed5bed1d5cc93c70cf63bc9531342c1f0f9d5ec"
+      },
+      {
+        "file": "146603.swc",
+        "sha256": "7a46dc2bbc43b32d97d0682752f18c8148f449233027483dbe1faeffa13a5533"
+      },
+      {
+        "file": "146773.swc",
+        "sha256": "64b62caeff8c7f90d7f7dfeddf81c7b0dbaa84d4a5acbdb94714d727c95189be"
+      },
+      {
+        "file": "146774.swc",
+        "sha256": "b6a375e854a0a3ceeb76248b081e6e234e317877f19ebfff26690c6fe1e3dc86"
+      },
+      {
+        "file": "14705.swc",
+        "sha256": "a6a97d8a01f10a81255b40a7d0d495736a8f63496cb0be791f4ac9d03b53ad62"
+      },
+      {
+        "file": "147184.swc",
+        "sha256": "f36cc944b86c0e8a26167ec23235548d3775f5fe5093471e43be7336a64da5f7"
+      },
+      {
+        "file": "147591.swc",
+        "sha256": "82f8db3e5a8c379ad0b3ff7d97a0459938bf9e600f32c1fd1b6ce3079bafdcee"
+      },
+      {
+        "file": "147857.swc",
+        "sha256": "21e4344e2dfd6bfc15ba509f532d2071c404691f2885282f832e4635e03d503c"
+      },
+      {
+        "file": "148328.swc",
+        "sha256": "02bfc6d98c8f4c9742d3666e3786ced4993fdbff6cd369d4966a6ef4fcf5e21c"
+      },
+      {
+        "file": "148469.swc",
+        "sha256": "e905df5d9bf800003d0882f966d2e3220e62e61937212902c1e6c6c4293b1392"
+      },
+      {
+        "file": "149869.swc",
+        "sha256": "77c69946509df334236b7694ac6acd5968fcdb5f5495a33997cfc1e75cf1e650"
+      },
+      {
+        "file": "150034.swc",
+        "sha256": "afdef7f56d083d0eb5f5dd6fbe4f8266190a2172a687a0646d597eb3732cba9e"
+      },
+      {
+        "file": "150177.swc",
+        "sha256": "5d721460af78e338cf17ebf89ed8f87049ed5c49a0e16a0e8c44a9da0ec7fa90"
+      },
+      {
+        "file": "15042.swc",
+        "sha256": "47ccaa75f460b0603d860032fe78b9a4632e3064f4e17ae47c57f29b523caedc"
+      },
+      {
+        "file": "150828.swc",
+        "sha256": "e9d62a4b35db3c45d78f3ba444cbc0b7dad4bc8c01ba033bc0a3f3eb09e17de7"
+      },
+      {
+        "file": "150983.swc",
+        "sha256": "7aecb29bbbac3adc784ac611b2f724112ff5940ae2cc7c7a993b46ab63614fd7"
+      },
+      {
+        "file": "151013.swc",
+        "sha256": "95d16068109d293cbed85b994b3b1c137abf35a44acd725d8b88c63998e2419e"
+      },
+      {
+        "file": "151133.swc",
+        "sha256": "873a629a9250e4072ee04b05d50c69713f94ea69a246b782e5865ad8945e01dc"
+      },
+      {
+        "file": "151993.swc",
+        "sha256": "cb058577f6a86efd19412a253e595e9ef8718998166b7c2f47b16d8ec83b1ade"
+      },
+      {
+        "file": "152019.swc",
+        "sha256": "8e96587d23ed183df0d29f300d8cc0edddc999971976f743947b50a20524ef69"
+      },
+      {
+        "file": "152044.swc",
+        "sha256": "bad34e77ab02a511590c80c2a50ab6de8318e568867cb5685713619b6b890160"
+      },
+      {
+        "file": "152056.swc",
+        "sha256": "7dc58e75f876d68a68470ce9e2e3df68da1bd3e73af460b75456c80217a4f98c"
+      },
+      {
+        "file": "152291.swc",
+        "sha256": "f929d381dde2c8bd07918687d9d2da033973ee18ba846ceae079f040eb215843"
+      },
+      {
+        "file": "152326.swc",
+        "sha256": "47f69ccfccbf972072ad3f678cdb5fc508a5ac751dc5f534fa2cd8ffeed0ae20"
+      },
+      {
+        "file": "152385.swc",
+        "sha256": "dcf9426cd9688df7937c2320e3507290e732e439b5f3c83f87991b8e7cf4af4f"
+      },
+      {
+        "file": "152428.swc",
+        "sha256": "54c61e046c78bc4ab44f3eac498f3c2e50233ebbb26781690126e27791a94c48"
+      },
+      {
+        "file": "152997.swc",
+        "sha256": "1b97acf14509c7f3e01dd51fbdc5dcbf5b1d9324bbd346d9c0747ce03292040b"
+      },
+      {
+        "file": "153035.swc",
+        "sha256": "2778dc9f797ee74f230e5b61719190ad8f06fa0f780cf29622f84052325b4281"
+      },
+      {
+        "file": "15310.swc",
+        "sha256": "c62bced58fc2df9583d69541f81fe77d1ae64c1b0e63649cafe63eb214cc3414"
+      },
+      {
+        "file": "153771.swc",
+        "sha256": "6657443147847e0f7c7b2980b687558264e17ae7c1519584cec9d10eb72f4c73"
+      },
+      {
+        "file": "153931.swc",
+        "sha256": "c68ef5c7cb3ea5ffcee1b23a07b31c1952eb48ea94126549e11f9242dd93400c"
+      },
+      {
+        "file": "154230.swc",
+        "sha256": "45f4b3b15316ab31c499dbf743227e8c4284d1db30f600e46f19a74c8f2bf42d"
+      },
+      {
+        "file": "154387.swc",
+        "sha256": "2bcc60d6fe3a8797eb495a59371672f78ed46c7d8598b5084012df4ebc3de92a"
+      },
+      {
+        "file": "155329.swc",
+        "sha256": "2d669050775fd1e75bc76e55bb18f5088c78adb7f8e4f3b4f8993ee93f7423c9"
+      },
+      {
+        "file": "155916.swc",
+        "sha256": "cc58433a599aa72acbb2ebe31c8249c6723aeb110700141f0e064881bd8c570a"
+      },
+      {
+        "file": "156028.swc",
+        "sha256": "508065a659283475c192120c22c100a7b67f21f20658b535655f1e364eb05ca2"
+      },
+      {
+        "file": "156046.swc",
+        "sha256": "325a57e1539d28228fe51aa070bc1265376669fdf54e4e43d60e33f51ee619c5"
+      },
+      {
+        "file": "157016.swc",
+        "sha256": "80588ed0081bed4d11dd7416f439ee638f4799aace84719992ec5ce599e76a3c"
+      },
+      {
+        "file": "157134.swc",
+        "sha256": "1180df30cc0956460358c95129ae2d914d0b038582584dc89e8ec22fb1a3987e"
+      },
+      {
+        "file": "157257.swc",
+        "sha256": "6e3b7e1efbab38c9bf4a109bd1aca74ecc05f9cd072f84e0be497b45276bad33"
+      },
+      {
+        "file": "157370.swc",
+        "sha256": "d8666919f8ce882049bd1a364732a9f5ab2348418bf31c5f0ce221295195df46"
+      },
+      {
+        "file": "157683.swc",
+        "sha256": "09efccffb099a3bbb6ef295e93f8bcf7e894e8f35538ed1b6b008b3a57385d23"
+      },
+      {
+        "file": "157767.swc",
+        "sha256": "701dd9e636a672edfdfd80f03a79f1bd3f4b7b0f87b92d215b920e95cec427bc"
+      },
+      {
+        "file": "157816.swc",
+        "sha256": "c84e214b2dab89cd3ba84bebcdf084a43e889ba3159c40d4269582b3580f4f19"
+      },
+      {
+        "file": "158196.swc",
+        "sha256": "4b70b333eb79585be343a2a6a8ad24a93c41e4dcf88960d87da9d7970d20fe28"
+      },
+      {
+        "file": "158372.swc",
+        "sha256": "9cbf5517f4b50abb06eeadb5682ca9032609ac0336b4df3dd0b26a9a62ff6a6c"
+      },
+      {
+        "file": "158651.swc",
+        "sha256": "ccfd8d7130d1f539af329a483ae8d540496a502413a717c215af275797ecdd5b"
+      },
+      {
+        "file": "15888.swc",
+        "sha256": "1a85baf956f83868b2f9a204a0fdb19ef5b1ce7b6921bfbdf51473794d4b9690"
+      },
+      {
+        "file": "158917.swc",
+        "sha256": "d168ae46516d7b78fcb0ce8ba61fff933bc88b94858d4a1639946ce501ea36b2"
+      },
+      {
+        "file": "159062.swc",
+        "sha256": "525544109062571c79037a0215f07ab83c9968fb705ca83abdc50e738f7e7a53"
+      },
+      {
+        "file": "159158.swc",
+        "sha256": "c4f5b80f09414ffcbcb8401eed3bb9f3c7b2c3680550872eec18da849ddf74af"
+      },
+      {
+        "file": "159831.swc",
+        "sha256": "877a3ef596baf88ae95e962c05a6e1935cbf9ed4de4c2880670c295334101417"
+      },
+      {
+        "file": "160277.swc",
+        "sha256": "d8f4cb9985f1a4694eb469c82f316227ea245ed5be93d3aa7fde0b33327bea0f"
+      },
+      {
+        "file": "161079.swc",
+        "sha256": "ebc8aa63184bb566fd8df01972cf1d1b553831976a74ae7dbf35f4316e8876c7"
+      },
+      {
+        "file": "161153.swc",
+        "sha256": "2e0294aa2dbd262c1e9f220eb9578d195fe4bb95b47ec691b8755236393f38d2"
+      },
+      {
+        "file": "161596.swc",
+        "sha256": "27de6929825c8fd2fb04f14b0ebbbb5954f34182cba78eeaae9ef0874c56382c"
+      },
+      {
+        "file": "162050.swc",
+        "sha256": "dd027dee6ef9869981d3f0663ce0275a9be444e2568d55ae9479ebce9f3926e0"
+      },
+      {
+        "file": "162116.swc",
+        "sha256": "3626b9959deeb6cd2b290dbf7b78da76d42456c94c4ae2bf46243de5d6c487e1"
+      },
+      {
+        "file": "162631.swc",
+        "sha256": "c968f458715d21d023f2087e9d6c66c3aa6390cca96e823e415b76a9230471a3"
+      },
+      {
+        "file": "163194.swc",
+        "sha256": "984bc885868f017ba52bb78b3378775bfd54951378a4a4ac9ab9f78452ae2cb3"
+      },
+      {
+        "file": "163883.swc",
+        "sha256": "0aad455a82d336fcb7fd8fe59ef7c9ba59526cefe699151862eacbb0d48c0ed7"
+      },
+      {
+        "file": "163951.swc",
+        "sha256": "a5c15a712703b6a550310a002ec1e11192bfd7fc165265ad34095b0719264c0b"
+      },
+      {
+        "file": "164086.swc",
+        "sha256": "e00e554caefc3714266aa5ee8f712801aa223d3b07d0616229c86ff27b48bfa9"
+      },
+      {
+        "file": "164279.swc",
+        "sha256": "681da79a80f7bc3b4c768e3527c7d3ebee3f71cec70c0b8410f6ea39f4729dc5"
+      },
+      {
+        "file": "16430.swc",
+        "sha256": "0503053615a0ab360f232d0c9961d6532a177f544e85e0308652c36c167be984"
+      },
+      {
+        "file": "164601.swc",
+        "sha256": "1c01a6efac35722bba28bf23cc58b9400c36b22e199eb86708ed0e1821a35593"
+      },
+      {
+        "file": "165187.swc",
+        "sha256": "f57a0023b52292fab216f96dd910e28e86bbe185a73ac64217e7a8d192b172ca"
+      },
+      {
+        "file": "165365.swc",
+        "sha256": "36548a2784f582450840e1bb396ad6e2b4328a44eaa04155deb99e6dca1cafb3"
+      },
+      {
+        "file": "167009.swc",
+        "sha256": "2a9e62f6e89853785535dd01af693e28c25878121904e1ed4635543ad95cbd01"
+      },
+      {
+        "file": "167073.swc",
+        "sha256": "dc4584c770ae94c5cc41d3a020f8175e32c86bc9190a01bff7cc2caa9ac91b7e"
+      },
+      {
+        "file": "168020.swc",
+        "sha256": "536e5c4b744a7524d51529b4c2e15926d4135a12bfc84a7d4773b8c986f33aea"
+      },
+      {
+        "file": "168080.swc",
+        "sha256": "74b7c67c21c7a38a17abc6e54db1bf6c6a032d8e52989c50d7f5fa623c9002f7"
+      },
+      {
+        "file": "169027.swc",
+        "sha256": "21456f1ec1e75a97a7368a3fe1fcdcccc1245485b69f1ff6870cdfd002d7f5b8"
+      },
+      {
+        "file": "169278.swc",
+        "sha256": "f8c73cdb6c790bf592076b163cd40fb1cabd277b4aca5d4132c3b2e49bacb51c"
+      },
+      {
+        "file": "169674.swc",
+        "sha256": "2cd43b8ff64a8aacefb9e34c529c0e78f31e83a3d79a215c878db9123b66d6a0"
+      },
+      {
+        "file": "170450.swc",
+        "sha256": "00228ab736768503a0744fd642cf1587cfc71cc2f012ede18dd07fa1e14e2e27"
+      },
+      {
+        "file": "170467.swc",
+        "sha256": "4efc48a8d9310ef1f5528d281e5dbe3b583b3db251e68d7705b2d56401bce541"
+      },
+      {
+        "file": "17061.swc",
+        "sha256": "cd0c63143476489fdec03f80a97b4a118a5a0b23460dffce1a47d4e306dd29cf"
+      },
+      {
+        "file": "171959.swc",
+        "sha256": "d4b95194307c7bb24705ea8a8c00c905e41982e64c56acfa4ec0309c33bf44af"
+      },
+      {
+        "file": "17421.swc",
+        "sha256": "829bbf17c6b2279fe00d8547f26351653d29e69d90b1432d0544488a62ea739c"
+      },
+      {
+        "file": "174255.swc",
+        "sha256": "c2cbd918adeccbdff930d3f03032930c23e6aed30f170e50da2b458c75b16464"
+      },
+      {
+        "file": "174384.swc",
+        "sha256": "c272f87a3ca29082dee64d5f6552ddcabbad385599b6822d14d35111f78b8f12"
+      },
+      {
+        "file": "174672.swc",
+        "sha256": "9f090ff016a43a30dfb925f170589ab246ffc6380452cff4041d7fc62a966a48"
+      },
+      {
+        "file": "174862.swc",
+        "sha256": "ac77f02401750ec0bef11e5104cce16e29b8f890fdfeb0c2fb08bfdd6f00c49a"
+      },
+      {
+        "file": "175232.swc",
+        "sha256": "6f1c2852faf283541c3dc1ba5e64736dcff568944756b704821f455be19644ea"
+      },
+      {
+        "file": "175459.swc",
+        "sha256": "965904f58c97a507098caedaebcb06a4e5f427cc995f1c47d6223875d58f3d35"
+      },
+      {
+        "file": "175964.swc",
+        "sha256": "3dfc6384aa528f968036d4672c64cc8266d4bf9d53b3c5f00c49a1ea3d8e7b4d"
+      },
+      {
+        "file": "176429.swc",
+        "sha256": "685ae466b69b73c1602281ecb0f440a9a4e26a5c076fd302bf2f2548a607b0d5"
+      },
+      {
+        "file": "176460.swc",
+        "sha256": "59fd33f267aa0258b34bc6bac150f22797bdfa5dfda125d5f5b34958360fefc9"
+      },
+      {
+        "file": "177202.swc",
+        "sha256": "dbc1298b194f0041766101704743ca74a0985024f4150b526414a0a062abf69b"
+      },
+      {
+        "file": "177603.swc",
+        "sha256": "6e9152c1679ed48e362c79a833d0eed6aad1a71429aa361ac41498de4829bc47"
+      },
+      {
+        "file": "177800.swc",
+        "sha256": "9188085d0a49885444a858f2e160424742e1965cec453371a553ef08d36309b0"
+      },
+      {
+        "file": "178101.swc",
+        "sha256": "b4adf19789ec33e7a38d66adeed895cb6c242302dbeab1408ff512dc97646046"
+      },
+      {
+        "file": "178487.swc",
+        "sha256": "3acb4c25351faabd46f5bf4e9bc5e7ed14ca00a16aeb70bd540da0e781c28584"
+      },
+      {
+        "file": "178539.swc",
+        "sha256": "803649dee9da3379c83ff112600c3c4feb7617136a22f81b2b8f76abbcf041e8"
+      },
+      {
+        "file": "178945.swc",
+        "sha256": "368857988a5c0b6c2dac45580d65b943a009d416d12fdfb0cbf38c2c5ac0d1d5"
+      },
+      {
+        "file": "180403.swc",
+        "sha256": "1fa370d1907abc19f516cb001602d8284397012755db8e315e5edc3f1dcaefb7"
+      },
+      {
+        "file": "18156.swc",
+        "sha256": "4d2064c55614d141bbbf06c4c6c9bde5f5680391a1b25c51120ef172ca4bd70d"
+      },
+      {
+        "file": "181924.swc",
+        "sha256": "c8ce84a06266b1f528d0632d579a4d3587a9a7bbf5f903f24e8bbee48b6f6aa5"
+      },
+      {
+        "file": "183567.swc",
+        "sha256": "7d0cca66355bcfe44eb5cc48ded238bedfbfdeddd0afdab1355d61cca089e26f"
+      },
+      {
+        "file": "184778.swc",
+        "sha256": "a95368f8a970132e8fd1897b3bd680f2543caf95875ddaa1e31f9f4e077da2eb"
+      },
+      {
+        "file": "185518.swc",
+        "sha256": "4f1c008d0e2835b4cd88be7a130cf1cdf26ce32fad62f4c51949a1baecdeece5"
+      },
+      {
+        "file": "186566.swc",
+        "sha256": "c496a4d157084e928c8b3fa6a8979d758cb5bd537d68f5b135367a174c4da886"
+      },
+      {
+        "file": "190296.swc",
+        "sha256": "0a171c660f4e968c9d7f20de909a87271ccfd79a8d26017f69dfa5b7934774f3"
+      },
+      {
+        "file": "190297.swc",
+        "sha256": "46fe23990c7c292413827f433f37f6845f1da06badff07a91518ee7332383f03"
+      },
+      {
+        "file": "190635.swc",
+        "sha256": "a98047b0b66dc10f67e412dd820bf6083b8d4f785866249f7f4d43095f24864c"
+      },
+      {
+        "file": "192245.swc",
+        "sha256": "68e098a7f1efc5e7edaa3eb13cc47c5beff91ae967318cd9a60ab509690f726b"
+      },
+      {
+        "file": "196030.swc",
+        "sha256": "394996d4f6dd48d3fad7d2b8d2135b32a890c857ed1f691f064efc54ababbc90"
+      },
+      {
+        "file": "196622.swc",
+        "sha256": "ded4172f8e7e28f8f54ba909b5a9f621d4715f836f0e8ef057e72665548ff7f3"
+      },
+      {
+        "file": "196985.swc",
+        "sha256": "f85ad82e48a1f214a5e82e8d044ee9aa1ed01b5cd2a8cd07d1d134f6c52080ef"
+      },
+      {
+        "file": "197691.swc",
+        "sha256": "759f968853894a94d6ebfdcc728350f0c77784c8af0c0768264e787ac8c20893"
+      },
+      {
+        "file": "197920.swc",
+        "sha256": "6e12e29482370aa691ddf627366c68b278da04cf7980c8d1db5732b10a6c690d"
+      },
+      {
+        "file": "198507.swc",
+        "sha256": "f10a6aca7cb41d81ed7fc438ae5505a0dc4fc0858d2d08e2f0d9ca9266d50676"
+      },
+      {
+        "file": "198758.swc",
+        "sha256": "250b5238806a74b745fecad18faab446a569c56fbd46d4a5bf02a52a0b7ef81e"
+      },
+      {
+        "file": "200973.swc",
+        "sha256": "39f1fb84fc27fa23fcd60ec6f0070903a0e066f0a73fbc3a3dfef2788f20a87a"
+      },
+      {
+        "file": "202330.swc",
+        "sha256": "d569151c836834baafef966805c2b4e14ab6d2f2d36b3a9272329e1584a8aa41"
+      },
+      {
+        "file": "203682.swc",
+        "sha256": "540b8bbae8b2445443af15533b32159b04639e501213fd3f21a2ca8995de0bfe"
+      },
+      {
+        "file": "203885.swc",
+        "sha256": "d3a40746325c55fe4ded05bf70d60b849b834bbad1a199af4846d8310ba173cd"
+      },
+      {
+        "file": "204930.swc",
+        "sha256": "5a38140b52ce9da78a2271e618149aa5ed92a8e07053f3b9c0bf84df5fe831b1"
+      },
+      {
+        "file": "205884.swc",
+        "sha256": "94a9c13fde220a71def24bc1158957178777b833ecbaeb895ab25e174e155694"
+      },
+      {
+        "file": "206851.swc",
+        "sha256": "9fb8592c407abd4aa664639a0f24c822b577078c7c0232bdaa13fbb3f2a05210"
+      },
+      {
+        "file": "207122.swc",
+        "sha256": "009f8730b4156d02427a31b72455011c8bd557103cedeccc192e2134b2fbb736"
+      },
+      {
+        "file": "207463.swc",
+        "sha256": "54735ba600e64fda2307b1886b206a17f0856c51916dba6356e4e6b5fcc07365"
+      },
+      {
+        "file": "209656.swc",
+        "sha256": "cf715521376502c7ca7885f73354207f2ad19142209f77c6e8ec1a22db4ddef9"
+      },
+      {
+        "file": "21145.swc",
+        "sha256": "9abfea79331bca623305ae35a5f1c990a39e67f413bbe02eadca038bd3cc4ee8"
+      },
+      {
+        "file": "212085.swc",
+        "sha256": "0250ebfdfd08a308e17938068759a55e8699ab978afe0b7b99753d40874aff65"
+      },
+      {
+        "file": "212160.swc",
+        "sha256": "948e5ab0d3415d327420d19bbeec1fd5f7266115313b73af664d0eacb53e473e"
+      },
+      {
+        "file": "212684.swc",
+        "sha256": "2fd660aa9bf2b4bd71335ff554de99934d22d8c38845cf31fc882ee2881ad7bd"
+      },
+      {
+        "file": "213743.swc",
+        "sha256": "37968391f6da8f0249e17365fa88da27f7eddafa2e4c23a666be82a9879b95e4"
+      },
+      {
+        "file": "21519.swc",
+        "sha256": "cfeb7d8e246d3ea529078f025c117d30de9de5d06e766cc538f4ffd51191f340"
+      },
+      {
+        "file": "215931.swc",
+        "sha256": "05452cea4c99a71e11605b6d80fdbe7fedabdaf76877f9f3a83c261bfd248c9e"
+      },
+      {
+        "file": "215940.swc",
+        "sha256": "e58641bb21866d557cc089f096c21d93d73590531114e6b588426899cc1663cc"
+      },
+      {
+        "file": "21671.swc",
+        "sha256": "a059443287bd4d4bfb81cce6c723b3308193cc6dedff9c2c2bacc61945c99155"
+      },
+      {
+        "file": "217007.swc",
+        "sha256": "f72a39655bb10e996e61467b941f097d93f93d6911e202fe4478e3c9518cfa7a"
+      },
+      {
+        "file": "217737.swc",
+        "sha256": "2e31d6011e7c1e11e7402e9eee34216089c80712a3b23705edd04aadaf1401a2"
+      },
+      {
+        "file": "218518.swc",
+        "sha256": "b8796fabb7146075c31a4e11f1aaf70e981f18c7db01c94674e2b1801ce926b3"
+      },
+      {
+        "file": "218583.swc",
+        "sha256": "8cf5c4d55e3f1341a50a6d7a6d321649418c430149210830884dd03da9ab520b"
+      },
+      {
+        "file": "224160.swc",
+        "sha256": "4a08b1bd88147e7d45bb335a133dc5e9c79af922d5348be64a392fda34a1a625"
+      },
+      {
+        "file": "224205.swc",
+        "sha256": "a0fd3903a72a3577bdfbcc4ec3a838aab323dfcfa9f6985f7a1287f771248414"
+      },
+      {
+        "file": "224500.swc",
+        "sha256": "4d47f517fd9bc3e3b76262d655e2539cc06dd3736e4601323d592f0fa4d045f2"
+      },
+      {
+        "file": "226452.swc",
+        "sha256": "db6bc64acc69b90855e375e0f4436808773b10d692b138cf6735dafab0d2a2cd"
+      },
+      {
+        "file": "226708.swc",
+        "sha256": "c9fbf3429882c62aed8d67d205ca5d93633d3ba852755cc37150a238c6a35082"
+      },
+      {
+        "file": "22982.swc",
+        "sha256": "25c655b2b98782e678f932c2783f3c829898e4e61fcaea7b1b30c81c03e1499b"
+      },
+      {
+        "file": "230802.swc",
+        "sha256": "30f856bfa177763b8b6d73e769d01b31c3353ddc5716d2c16b08de805bbb6df8"
+      },
+      {
+        "file": "231413.swc",
+        "sha256": "df9b084721f429add01414a32d5c4d7dbcd132771f8c5df5dca25cd090f19152"
+      },
+      {
+        "file": "238644.swc",
+        "sha256": "c5d94dc8b3552f5324d51d34ef9c76646a54c598fd446012413813fe23a58400"
+      },
+      {
+        "file": "239873.swc",
+        "sha256": "6c604cf5226d5249aa42a72b8d4bdf7538eb1fa52d679a601e0746b6a1a0f399"
+      },
+      {
+        "file": "242429.swc",
+        "sha256": "06608b6af7d795fe01b0f277f9de87bcacb3dafb6a88d6f1a41d704a067d5197"
+      },
+      {
+        "file": "243477.swc",
+        "sha256": "a586ca83a03609189ec0f97c5351245ae50a461a977e9ab0b38cbf794ab14c28"
+      },
+      {
+        "file": "252045.swc",
+        "sha256": "683a4c59f35ab6bedfed0c0d5cf43dee251ca3ff16ded5a1a3cc6571daac8d75"
+      },
+      {
+        "file": "25529.swc",
+        "sha256": "8ab030f58e3f48cf5b9ff748dd9eb674eb0432257c08e0d01235582f3e309431"
+      },
+      {
+        "file": "257650.swc",
+        "sha256": "ae306eb13452d31847479b008d72d56265f46e13a2efdcdd105742214460805c"
+      },
+      {
+        "file": "259089.swc",
+        "sha256": "edbc800c093cc5f69a51d450cd4be6d4aceb4d2697eefa5360f6e7b15af5719d"
+      },
+      {
+        "file": "259486.swc",
+        "sha256": "d1ddbd46518c143461d8b3a3fbc4ca3726afac0dc80629be46528fc3e9d94f30"
+      },
+      {
+        "file": "273182.swc",
+        "sha256": "8c9683f564f239026a25db1c5c13b99de87e06ada0ee6237caf4a656e1ef5ddc"
+      },
+      {
+        "file": "28434.swc",
+        "sha256": "d7698ed0ddf399aae2d79c6afc5b6d07b3f94d3d3003d94ebfac43bc52ab12c1"
+      },
+      {
+        "file": "291665.swc",
+        "sha256": "1af64f5b9d35e57e51f99f881fd1dda653f18101e04f7ccf7329a76ea63fe872"
+      },
+      {
+        "file": "292203.swc",
+        "sha256": "859e2922801dd290ddaf8cf5742854a7f58ad9ff5c039ada819a193501827449"
+      },
+      {
+        "file": "29565.swc",
+        "sha256": "17e64133a9829c4c69f80a6df1f1f37530751cb3535502c832a8f998e4e7aab9"
+      },
+      {
+        "file": "297139.swc",
+        "sha256": "7af7577d501aeb644ad4a3452a9d6b61a63f0169086e5b80246c346c09f1b81c"
+      },
+      {
+        "file": "319321.swc",
+        "sha256": "778dbf96edf3d0e105af81f88ca539d89e5ff0920242f25732f771abf483c83f"
+      },
+      {
+        "file": "325731.swc",
+        "sha256": "364c0007ea649b3334b7af0f40b8a5e19747a9321727a0e039af69c459963b2b"
+      },
+      {
+        "file": "32865.swc",
+        "sha256": "949bbddc522dbf0f47985e2e37f02f6ced2f5cd8f0820250aa943d813ede1b62"
+      },
+      {
+        "file": "33316.swc",
+        "sha256": "7b43d32b8b351314a9037b7826ebe3faac97cd1573b4b9daeaa9b5ce4f50be22"
+      },
+      {
+        "file": "336850.swc",
+        "sha256": "944ea8f8d81b04d54bfa3baa90cdaa2fdc8f1e8596b27dc7204c4f4079421d31"
+      },
+      {
+        "file": "341512.swc",
+        "sha256": "d06f09923ca06a38a1bc751573d48fa911246df9c80ca94acee79068ab3023e2"
+      },
+      {
+        "file": "35293.swc",
+        "sha256": "9b876db8462c6053b3f28c00059d641bfd364b28d79d2917fceb63c3829266be"
+      },
+      {
+        "file": "36423.swc",
+        "sha256": "3f077c124fbb4fbb1adb9b47810a414ca78e90649c4f3424966e0877d1b24c06"
+      },
+      {
+        "file": "36624.swc",
+        "sha256": "476ebedc049afaaeb354dd1790a546b8105c681c316e8d73e62687a8f2788da9"
+      },
+      {
+        "file": "37845.swc",
+        "sha256": "a42e5cec71c626093eff6353a8e6a57e96cc7fd529ffd63981691f5a071ab791"
+      },
+      {
+        "file": "38706.swc",
+        "sha256": "178f3f2b7c2e2a71292dcb63f8cd12cdad8d40224c8acfa2e10137c6340622ac"
+      },
+      {
+        "file": "39617.swc",
+        "sha256": "8d9750a0b7e46541fd687206810523289463c4cfda903aac681dd47da1a145a2"
+      },
+      {
+        "file": "43756.swc",
+        "sha256": "ecc793fb1530a40b3d2e41310534ef11c6ec60c3f5c3650438d0bea6d24232e6"
+      },
+      {
+        "file": "44903.swc",
+        "sha256": "940fc05148be951b66f63041123022192e021b091fb782421aa66d758c9a86ce"
+      },
+      {
+        "file": "45024.swc",
+        "sha256": "751094760105025ae3ae570caad5032c4787ddb772b261b20f9f986e190b787a"
+      },
+      {
+        "file": "46794.swc",
+        "sha256": "aa0f791d6509fb8053b82f4c4d51ea2acbd78d399e1ae8b7e5c806be43efcf2d"
+      },
+      {
+        "file": "47196.swc",
+        "sha256": "9b47281936807a61b18845a9a790907af962b46dd26d4557d540c6458612bfd0"
+      },
+      {
+        "file": "48113.swc",
+        "sha256": "169c02049035ba9074b6dd42afe15c3af051a6dbe097c7e2f31b82f4d781a51d"
+      },
+      {
+        "file": "49043.swc",
+        "sha256": "80955ff2f19d5652bc8d01553468473ca4e54b0cb6104a00cbf3fbff9d5df65e"
+      },
+      {
+        "file": "506819.swc",
+        "sha256": "263c24517c6050b92986f5b27fc05a9182e7a0ea3e3cdd4370ee79072b179d6c"
+      },
+      {
+        "file": "512326.swc",
+        "sha256": "b291f0c122d8dd7ab97e3a82605e651f8a2caaa28b7cf665b52848c6171c2e14"
+      },
+      {
+        "file": "513354.swc",
+        "sha256": "213e7f66f6cd470be48c660155059976fbb002a1fe8b7334fe4d9f6d86ce19f2"
+      },
+      {
+        "file": "515048.swc",
+        "sha256": "42ebb167a6886cf986e5d5dd12311dae42bfca697fed94a12725018ebc9fce5c"
+      },
+      {
+        "file": "515933.swc",
+        "sha256": "2406b180b7f45c8e833d835497834ef0d24ee37c67ff880e51b172ff49f1946b"
+      },
+      {
+        "file": "516044.swc",
+        "sha256": "3c1e51bd5ada2c28b5d5f040a95a6593508277216af5d83f5475ca8ca317a30b"
+      },
+      {
+        "file": "517512.swc",
+        "sha256": "bf1dc9887af56f6670c52ca753325d2ac6470f670a0a7f02692cd5bbb8a4dc27"
+      },
+      {
+        "file": "518072.swc",
+        "sha256": "4985d33ac99f9f3271b68e0b6022fe8e730af5595947fb546272efe70fcb2d4f"
+      },
+      {
+        "file": "518137.swc",
+        "sha256": "452b756715845a0fc6187636f1144dcb1cb6851fb060f7527d8a934b4fd57efb"
+      },
+      {
+        "file": "519616.swc",
+        "sha256": "09863e290790b0d2225eef3454fe400832b5d9b60ea5a4dd9f200a7982fbf2e6"
+      },
+      {
+        "file": "519947.swc",
+        "sha256": "e41efa4da2e0e67e760e538fc109e550c0faa910a63414d2e19befd98046c19d"
+      },
+      {
+        "file": "520146.swc",
+        "sha256": "ead07eb64d41d4ced24eddfe03cb2cab4bbe5195a055e8f8c7e8d045893475e3"
+      },
+      {
+        "file": "520182.swc",
+        "sha256": "e4356e1073ea90fda5973a8a037ed713037d6e0ce2d760a07aeca90febb78405"
+      },
+      {
+        "file": "520188.swc",
+        "sha256": "4caa2a9bfa6ac2970ed74d8a0ba648e4ad191c5af05826467ac67aec0bf24354"
+      },
+      {
+        "file": "520384.swc",
+        "sha256": "022d906e610f9bdcc6f6a99326ce94fe54fa9ea2f093aa81c2ced6e854120f42"
+      },
+      {
+        "file": "520403.swc",
+        "sha256": "5541ccea20cb61eed34390f2025fe4e0617f2996ddc9dc60b1c8906b3a708048"
+      },
+      {
+        "file": "520616.swc",
+        "sha256": "f19963641a7513e843381c1ae769b8c6c784612372073256c3907441b92a8d5e"
+      },
+      {
+        "file": "521584.swc",
+        "sha256": "3b2adc0824e18a8bb1f8589dc3ab44960b37e7240ef17eea71f5dd29c4c91b9f"
+      },
+      {
+        "file": "522823.swc",
+        "sha256": "1e387bf1ffadfae31593f026ef81bcefd3778d2ab48383c45a081f50a49f643c"
+      },
+      {
+        "file": "523382.swc",
+        "sha256": "cc7cd4e970fc85dd85f9124f1eac3bf30265a82613ab6dd2aa478d7f4f2957d8"
+      },
+      {
+        "file": "523553.swc",
+        "sha256": "0c52850d63330fc437f1171b2c7df60a6afc2947147e779a5c7ef34b995ee171"
+      },
+      {
+        "file": "523638.swc",
+        "sha256": "6ba4ed47fc316174bd5a59b6b68120f8cb7debe44b95e9a3716a8e6075a98e8c"
+      },
+      {
+        "file": "523775.swc",
+        "sha256": "4ebc454b623c3dfcb0baaf9a603fdf5258b8f88c8e7be76e095720b7bcacd350"
+      },
+      {
+        "file": "523776.swc",
+        "sha256": "9a8a9bf10f6f37e814c573ce3d6f561944fab7aed52e0d5cb7dbb57285e139be"
+      },
+      {
+        "file": "523791.swc",
+        "sha256": "d64faf48275953ed4d525a034dcc2da594e96c0a1849afe8ae782058eb4f1fe5"
+      },
+      {
+        "file": "523942.swc",
+        "sha256": "03c1f86c56db0ef1ebc8df3ae912751afef5ee679b04a73173bc71c06ff6e6a3"
+      },
+      {
+        "file": "524069.swc",
+        "sha256": "cd28f21266611664a28d60221cbaa692380c6a7927d8796647cc6376568d0047"
+      },
+      {
+        "file": "525787.swc",
+        "sha256": "8c97e586792c03751f6becdb314ac64abf799a02182e5d76945e4d66c8a8b90a"
+      },
+      {
+        "file": "528100.swc",
+        "sha256": "2c61283c5d4bc21fa1048e937b94d8f53f3919c3111476103a79bf676cd76ee9"
+      },
+      {
+        "file": "529419.swc",
+        "sha256": "6a9d209bed31af3edb6897eacc65630beaa2f8d97dbded42aa66cf8dc9ea1268"
+      },
+      {
+        "file": "529512.swc",
+        "sha256": "97efcd08008d5a4f411a7ab9bfc06d514222a36eaec9fb1641e32171c612bcc6"
+      },
+      {
+        "file": "529516.swc",
+        "sha256": "ede9ced6c28c14a43b709b0ae79e858c0ca5b744895dbdf10817f9ba5258facf"
+      },
+      {
+        "file": "529808.swc",
+        "sha256": "ce237e54b5079f161c89155df65dba102b272abe05caa3e6c836d06a4cb91e57"
+      },
+      {
+        "file": "529811.swc",
+        "sha256": "9704746e12c73b5d28a483e01788d517cb73b54ca1f4a9a7f5d57976c3321b82"
+      },
+      {
+        "file": "532715.swc",
+        "sha256": "a8f54f3542effc97f853192efc70ea717bceb3df1f13af878cae1f4eae84571f"
+      },
+      {
+        "file": "53285.swc",
+        "sha256": "15eabdddaf4c5b3637286152ed32fd024f7d10d3f55a577284056db8b7b0381b"
+      },
+      {
+        "file": "533103.swc",
+        "sha256": "a2d6efbb5346503d4edcbf609539e8448fadf89fd02801ea521d17956ecbb21b"
+      },
+      {
+        "file": "533294.swc",
+        "sha256": "64683bd5b10df430b0c49421094b04cd7209c8a64269094958e2bd90ef388917"
+      },
+      {
+        "file": "536057.swc",
+        "sha256": "05c91c136076cd85434880e0cd5326fb5e3c424f95a82c7b50d218c45990781b"
+      },
+      {
+        "file": "536208.swc",
+        "sha256": "60f9b2054f2a0d5f58f924ac319a9296eb85120622ab193290d037482ae6fb8b"
+      },
+      {
+        "file": "537899.swc",
+        "sha256": "11b3b90934a1f5c842b44db3558b10048c775c8f2e2f6834670bf7c8bfb19d61"
+      },
+      {
+        "file": "539227.swc",
+        "sha256": "11259c7e8219744119b524aa7f3f70414d1c2954cc59d6b2af4e300766a68818"
+      },
+      {
+        "file": "543677.swc",
+        "sha256": "cec099e9581e5ca6ae59350e6efc5d4eb06377b68acd266acfbffb297a0347f9"
+      },
+      {
+        "file": "544257.swc",
+        "sha256": "2fb77e56b450a7585f58b31ef5e961b9259ad44283da66f624b141b1dc635a48"
+      },
+      {
+        "file": "544359.swc",
+        "sha256": "40b0c0ba734e26423919d50801050588ba62cda0677084a4d8ae037ac4058274"
+      },
+      {
+        "file": "544770.swc",
+        "sha256": "67582f13f21a948b18c5bfae24a5d2832a381b0b8df37f6e34b39d7c704c145a"
+      },
+      {
+        "file": "547260.swc",
+        "sha256": "eeb05042e04db8e6c086f7bdb27864033adee2ae5e581df3467eb15c06aa00b3"
+      },
+      {
+        "file": "55210.swc",
+        "sha256": "a4bb690a37112c3ff8bb4b3d02f995497b970e140c000a90c382b9bf55acf945"
+      },
+      {
+        "file": "552362.swc",
+        "sha256": "2fd54f3114b4ee9ac89374a7cfe022f28a60f44734216d0cfc8d613bbc6a4c06"
+      },
+      {
+        "file": "553201.swc",
+        "sha256": "656d413671eb4280bc99ad68681fc7cc557417866b65c76d62aa1457f7766859"
+      },
+      {
+        "file": "567409.swc",
+        "sha256": "0ae202ebeb1a6a420fb154a1e1cd676e24b5fbebb7628024884667d7f1926414"
+      },
+      {
+        "file": "577933.swc",
+        "sha256": "01c3f2a073d358e5d8a336521fa0480cc9bc58c3f77c97ac2086b5a207b50cd0"
+      },
+      {
+        "file": "580579.swc",
+        "sha256": "661e0cc540ccdd44420f696b0d87ef4f0fbe0cecb21f339404a6c0e06180fba2"
+      },
+      {
+        "file": "58941.swc",
+        "sha256": "95e549399442ed78a6e143211aed03222da8f554f5d9962c2483207ca2298e92"
+      },
+      {
+        "file": "60273.swc",
+        "sha256": "b1f2bc6cb076c972fc2deeea7f483a8ce019248efad8180a26d1ab97ca45f8e4"
+      },
+      {
+        "file": "60930.swc",
+        "sha256": "6d870fe71c09b2c96e08a577e0b2de7bf3ff7431e1cd5d5f3e76d64fb804f4fd"
+      },
+      {
+        "file": "61360.swc",
+        "sha256": "726806d231c1d4b3596bf7659ca9b9821b6fbdd3f9b1b69a80f62ab4da5b8093"
+      },
+      {
+        "file": "62731.swc",
+        "sha256": "f525c924c9e098a8c5c218b305df0a40de57feb8639ffb7db4ac1c8ad3d6eafb"
+      },
+      {
+        "file": "63391.swc",
+        "sha256": "73f996ab194f2146692792aefc307f030dacf0afdfd91ded3c6dee8abc3ac2c6"
+      },
+      {
+        "file": "65524.swc",
+        "sha256": "208dd55db22f42bffd93ce326cf384f2fcf6bfdf9e1e2fbecd3c6102f0925da6"
+      },
+      {
+        "file": "65559.swc",
+        "sha256": "1103089164ce4d7e3edfb9d674daaf4af139e4392f8830b7245adaf72ca127f2"
+      },
+      {
+        "file": "65886.swc",
+        "sha256": "eecfdadc5076dd79c42d517ee66d5b7cd94062f4c4b1df871c7a3a5b8fe15bb6"
+      },
+      {
+        "file": "66934.swc",
+        "sha256": "eb27aa439aa01c9bb8e83b8d4f93978134bed43f9c42b67791c43363dfebf9cf"
+      },
+      {
+        "file": "69722.swc",
+        "sha256": "9f6d269a27a88089f41f8dd06ece62bd4081a9e42fad66e947612238f7c1bd4e"
+      },
+      {
+        "file": "72601.swc",
+        "sha256": "3ce20bfe6f5a3f7d993df6a3e5eb663bd9224f6c417fc70f158176b793a0b219"
+      },
+      {
+        "file": "74743.swc",
+        "sha256": "c344e7cc4dc3f3139801efe5b5b2a6315db3bbc3f8f48f5741e024cf8b6d9082"
+      },
+      {
+        "file": "74856.swc",
+        "sha256": "82adf1c6d8785c1cf9e7824fbdc0c06a8af8acfbe522139d4cc721b710d4f0ce"
+      },
+      {
+        "file": "75922.swc",
+        "sha256": "3474f9e58444e547314e0b4ce95cc11f2762d3fb8aaa705afd98ea42c875b3bc"
+      },
+      {
+        "file": "76362.swc",
+        "sha256": "ad14a7e136a008ff12e06fa2366c46d5b496c04457f4d2247be0be92e2665662"
+      },
+      {
+        "file": "80744.swc",
+        "sha256": "35d018ae69901087295408832901a1a3fca23b67de018cd2f529d8b2b38d16fe"
+      },
+      {
+        "file": "83277.swc",
+        "sha256": "48f18f0fe73fdb62f867db963a0f473af741aeeb87ffcebf8eb88c64266f8b7c"
+      },
+      {
+        "file": "83852.swc",
+        "sha256": "85a67fae437bb891979d0b4a34450ed1eec495df8c0a50df61d7242c957908f9"
+      },
+      {
+        "file": "86066.swc",
+        "sha256": "ed1bbebf3154b911ca9bcdb21400bf1275595d5cc43ac266472e149b83ce6cc1"
+      },
+      {
+        "file": "86156.swc",
+        "sha256": "14579229efecb7a87646c64034a8cab67a6a95b373fd1bc4ba1dc9714119a98e"
+      },
+      {
+        "file": "86431.swc",
+        "sha256": "711d019f34d428cb23b27ec91ae619345e5b4be8ade5a39457993ea0fd923bcb"
+      },
+      {
+        "file": "87177.swc",
+        "sha256": "13a369711e62c1f377c978f124835e14cd6eb6aff7b9f33b53dcd35b28d7fdba"
+      },
+      {
+        "file": "88477.swc",
+        "sha256": "28cb155afae38dff1120d64ade73f3637e403a2f01038ca96be9e9d3dcd6e929"
+      },
+      {
+        "file": "90678.swc",
+        "sha256": "c926fcbb707588df7b18b1fc17ccf3048c5c303c0720bbb031af4f074f04a3d1"
+      },
+      {
+        "file": "90867.swc",
+        "sha256": "3fb6baad23b4c47c00ef05feb5752739293fe2773afd0293d212018ae32ddffe"
+      },
+      {
+        "file": "90902.swc",
+        "sha256": "725736fa193555ef264207a193c5d12aa3b09a5a53b1e1093486a00a9ce1f6d4"
+      },
+      {
+        "file": "909818.swc",
+        "sha256": "b91b17f51d9f6a8aee2b5a5cbdb62d62fb3a0ca19165a5c60b459fc1c544023a"
+      },
+      {
+        "file": "91391.swc",
+        "sha256": "32b6f295d90429d686605e1ec201ffdc98a7c1aaad8f95ae4af6279a41fb5283"
+      },
+      {
+        "file": "91875.swc",
+        "sha256": "63f35308f8916b3847f493e59cd3483c3cc9474e84fbbb6e4c3116d0f8e28756"
+      },
+      {
+        "file": "920537.swc",
+        "sha256": "938c8a785deb5d994c5a37f2e8a58103eed90fddf45a575d39a9ce52110dd24d"
+      },
+      {
+        "file": "92324.swc",
+        "sha256": "48bfa09bac5dab66cfe7bd472ad603975887db77ffe9fc0733dcf00176a2d56e"
+      },
+      {
+        "file": "933708.swc",
+        "sha256": "4d1765b2ce44d237c5353e16057b3d5034aa8a9f0fc57b735697a6fe2c1cc988"
+      },
+      {
+        "file": "93704.swc",
+        "sha256": "90a0eadf766ef94a1f389c54ae74b6a64735ddbbb6e7e2784d76ff61d0fca727"
+      },
+      {
+        "file": "94250.swc",
+        "sha256": "a11acdcc30d8f4d74e32e0bd834654971f7eba86e5c0d0420ee99e625dd1ae0d"
+      },
+      {
+        "file": "94922.swc",
+        "sha256": "ed5d0df35faae2e3d97c2efa7f0337690d4c55847aa928ed87472ba582252194"
+      },
+      {
+        "file": "95523.swc",
+        "sha256": "694999f20f7d3d3c52a8382c726f2f3fd6cd68ee801923eac386efad1b96b65d"
+      },
+      {
+        "file": "96497.swc",
+        "sha256": "337d60e8800ed7aafde72bfd372cbe9dd45a5034cccb2fb67710541593845fd4"
+      },
+      {
+        "file": "96571.swc",
+        "sha256": "f39cacc3c213e7444e518b94786d4d60d04a6def0e87434d52adeee3f2296059"
+      },
+      {
+        "file": "97990.swc",
+        "sha256": "b30dc7ed2f439860e6b1ea9d642f0f9ccbeee75ce0bb8bf02b22f75acf491c9a"
+      },
+      {
+        "file": "98265.swc",
+        "sha256": "4b30b62840b308dbbe41e7664adeb149b44b019c48e1c31739dc8bea0f19142b"
+      },
+      {
+        "file": "98554.swc",
+        "sha256": "2e50f2fc7c08c74bc400fa0134078e6fb4bb1564f29d00404bf0da5e68632551"
+      },
+      {
+        "file": "99089.swc",
+        "sha256": "8dcbb3647b1e0915856903a09b7240cc2a0ed5e6e55f449cf2f506b7cd9f37c7"
+      },
+      {
+        "file": "kc_outgoing_000.feather",
+        "sha256": "e3b4c209d3d891f48003ee5f8e9bffdf83221d4d4c28ab532d5e89aea5ea2367"
+      },
+      {
+        "file": "kc_outgoing_001.feather",
+        "sha256": "c95ada2d248431236d0acbfd661fe9c9cdb9bde3f48f984056f29518bf1a7761"
+      },
+      {
+        "file": "kc_outgoing_002.feather",
+        "sha256": "60bc66753a0eaa29e3bcbca61d8b45c68ba44bb779c5e90ba1e55be7a669a924"
+      },
+      {
+        "file": "kc_outgoing_003.feather",
+        "sha256": "8fafa09e6d12491f908d7f578badecabb548f9d5b55f48288d79a5f4bcd5e402"
+      },
+      {
+        "file": "kc_outgoing_004.feather",
+        "sha256": "caea67db9723fffad7e4ef93c9c0ebe0627699b1a9b47a3950fd59d343d2d6da"
+      },
+      {
+        "file": "kc_outgoing_005.feather",
+        "sha256": "aa15f37fab044caccae4ce805b64987fd217979f2b32487ef4b0047731646e0c"
+      },
+      {
+        "file": "kc_outgoing_006.feather",
+        "sha256": "52763b742867539ec54c5094a563fdf4ae54d93e217c68b25708d21183ca3b46"
+      },
+      {
+        "file": "kc_outgoing_007.feather",
+        "sha256": "baa49cb8f8b1d2cf30e621b59dce86848a78fe340498ade03cce64ab8101c790"
+      },
+      {
+        "file": "kc_outgoing_008.feather",
+        "sha256": "1db2b4f255ec3fc1393e35e04c22fb285784eb9f3bfc9744c69b8bad6b8455ec"
+      },
+      {
+        "file": "kc_outgoing_009.feather",
+        "sha256": "164f13a034c1ee3b4ec189152b38b2174884dec051c349cefc746eed4e6357b5"
+      },
+      {
+        "file": "kc_outgoing_010.feather",
+        "sha256": "211de6ca80d50af60e6070ffbbb50c3952a23dc604de2c1d341d6a9f341ee114"
+      },
+      {
+        "file": "kc_outgoing_011.feather",
+        "sha256": "4c338bb25207ba79f833733716373af856f3326c3c75ee3dee33b96c7455b222"
+      },
+      {
+        "file": "kc_outgoing_012.feather",
+        "sha256": "b9b18a1986427492f0d896ad4f5542ffbc1dbf93ea18ce5976459ee9df354980"
+      },
+      {
+        "file": "kc_outgoing_013.feather",
+        "sha256": "5de8808fd73f511b828e7f39dc3af88fa8ce4ac5eded188a814bd3cf47482a2f"
+      },
+      {
+        "file": "kc_outgoing_014.feather",
+        "sha256": "d842b600de2c0506febe9fd47a1216f367b6f545c08617976c506ca366fcb110"
+      },
+      {
+        "file": "kc_outgoing_015.feather",
+        "sha256": "f435e92905436c5cea60d588e4583a41033c7607f1382652243266dc92d5041d"
+      },
+      {
+        "file": "kc_outgoing_016.feather",
+        "sha256": "bfc5015a6222c11266371e50225dfea2ae1e000c4d1983766450658d90cbfa8c"
+      },
+      {
+        "file": "kc_outgoing_017.feather",
+        "sha256": "32227cdf8f9a07a9501955e33a49178fd082641774074287273d48367d377bbb"
+      },
+      {
+        "file": "kc_outgoing_018.feather",
+        "sha256": "48da147bc5b40b00ab02f2f7acb8ed523e470055f69670ea228d3bf5b5e3de2f"
+      },
+      {
+        "file": "kc_outgoing_019.feather",
+        "sha256": "ac53ac7b62f6389db73e0ecabb5d645e28e0b50fa2a8998adfcc9e447fb111e2"
+      },
+      {
+        "file": "kc_outgoing_020.feather",
+        "sha256": "2e550c967d643df178223714b803cbc4a56ada2fdf91d3fa98a6958bdc1b472e"
+      },
+      {
+        "file": "kc_outgoing_021.feather",
+        "sha256": "a17bc986c6f54603451bc60b6be6c595c5db134083e6dd3c57f2d1322d32fcdd"
+      },
+      {
+        "file": "kc_outgoing_022.feather",
+        "sha256": "909aceb4f9592a6387e22eba3803e17efce19c3aadde214bcfe46b859df02bb3"
+      },
+      {
+        "file": "kc_outgoing_023.feather",
+        "sha256": "462176a187a6ab51688bbc23fbdc94eb4e674c057b1b1f290c42b89b8af73422"
+      },
+      {
+        "file": "kc_outgoing_024.feather",
+        "sha256": "ea1275d72cd8d8ac1a16eef3d31388adf84394a2fd41ce116abe657977139e18"
+      }
+    ]
+  },
+  "migration": {
+    "source": "E:\\fly_stream_overflow\\native_kc_dopamine_20261019\\last.pt",
+    "source_sha256": "cae54ccbefafd7639d288a824ac0d7606b41dadaad278784bb8c86d7b3f295ee",
+    "candidate_sha256": "7813c2aba85c65165c260543c47947159ca52d27439dd9da555e6f134dd2bd08",
+    "trained": 33000,
+    "new_inputs": 0,
+    "new_optimizer_updates": 0,
+    "window_tokens": 1,
+    "new_state_bytes": 14980888,
+    "old_model_physical_optimizer_credit_world_rng_exact": true,
+    "initialization": "Existing somatic AP queue copied to actual DAN release sites; newly represented receptor/calcium coordinates start resting and resources available. No spatial chemical/vesicle past invented; all old brain/world/optimizer state retained.",
+    "scope": "Local reciprocal chemical source and calcium-related release; existing somatic AP drive retained, not active axon/VGCC molecular reconstruction",
+    "status": "zero_exposure_local_DAN_source_extension_verified"
+  },
+  "restore": {
+    "checkpoint": "E:\\fly_stream_overflow\\native_dan_release_20261019\\last.pt",
+    "sha256": "7813c2aba85c65165c260543c47947159ca52d27439dd9da555e6f134dd2bd08",
+    "trained": 33000,
+    "scope": "zero-exposure complete trainer restore",
+    "storage_only_override": null,
+    "empty_physical_schema_fields_added": [],
+    "missing_model_entries": [],
+    "extra_model_entries": [],
+    "changed_model_entries": [],
+    "changed_learner_entries": [],
+    "cpu_cuda_rng_exact": true,
+    "source_unchanged": true,
+    "mother_world_roundtrip_exact": true,
+    "mother_rng_exact": true,
+    "mother_world_scope": "real MotherWorld state restored without new exposure or network call",
+    "status": "exact_restore_passed"
+  },
+  "matrix": {
+    "at": "2026-10-19T01:14:35.371984+00:00",
+    "checkpoint": "E:\\fly_stream_overflow\\native_dan_release_20261019\\last.pt",
+    "sha256": "7813c2aba85c65165c260543c47947159ca52d27439dd9da555e6f134dd2bd08",
+    "trained": 33000,
+    "scope": "acute frozen delivery, not learning benefit, real action consequence, exploration or self",
+    "initial_site_delivery": null,
+    "initial_contact_delivery": null,
+    "historical_body_proxy": false,
+    "body_scope": "native CNS motor language peripheral; no simulated muscle/proprioception",
+    "clock_source": "saved_pending_queue_native_rng_continuation",
+    "intervals": [
+      19
+    ],
+    "ticks": 19,
+    "reduction_order": "torch deterministic algorithms and ordered native delayed modulatory sums; unsupported operators fail closed",
+    "inputs": [
+      467
+    ],
+    "targets": [
+      832
+    ],
+    "sources": [
+      "mother_call"
+    ],
+    "motor_control": "mother is speaking, no commits; identical recorded sensory gain per tick",
+    "gpu_admission": null,
+    "arms": {
+      "intact": {
+        "replay_seconds": 32.420806499998434,
+        "peak_allocated_mib": 2815.92431640625,
+        "ce": 4.771482467651367,
+        "ce_delta": 0.0,
+        "state_close_to_intact": true,
+        "log_prob_absmax": 0.0,
+        "muscle_absmax": 0.0,
+        "motor_logit_absmax": 0.0,
+        "action_log_prob_absmax": 0.0,
+        "command_hazard_absmax": 0.0,
+        "native_motor_packet_ticks": 19,
+        "physical_absmax_by_field": {
+          "h": 0.0,
+          "ring": 0.0,
+          "ge": 0.0,
+          "gi": 0.0,
+          "b": 0.0,
+          "x": 0.0,
+          "u": 0.0,
+          "baseline": 0.0,
+          "h_mean": 0.0,
+          "dan_gate": 0.0,
+          "gamma_z1": 0.0,
+          "gamma_z2": 0.0,
+          "observer_prior": 0.0,
+          "observer_history": 0.0,
+          "read_bank": 0.0,
+          "modulator": 0.0,
+          "expected_input": 0.0,
+          "dopamine": 0.0,
+          "da_trace": 0.0,
+          "da_memory": 0.0,
+          "homeostasis": 0.0,
+          "regime": 0.0,
+          "comp_trace": 0.0,
+          "comp_memory": 0.0,
+          "credit_comp": 0.0,
+          "credit_comp_trace": 0.0,
+          "credit_dopamine": 0.0,
+          "credit_stp": 0.0,
+          "kc_avail": 0.0,
+          "comp_da_trace": 0.0,
+          "comp_p_stats": 0.0,
+          "comp_camp": 0.0,
+          "credit_comp_camp": 0.0,
+          "amine_concentration": 0.0,
+          "amine_receptor": 0.0,
+          "cx_trace": 0.0,
+          "dpm_trace": 0.0,
+          "apl_trace": 0.0,
+          "mb_terminal_gaba": 0.0,
+          "mb_dpm_concentration": 0.0,
+          "mb_dpm_receptor": 0.0,
+          "apl_voltage": 0.0,
+          "apl_ge": 0.0,
+          "apl_gi": 0.0,
+          "apl_packets": 0.0,
+          "kc_terminal_gaba": 0.0,
+          "kc_terminal_5ht": 0.0,
+          "kc_terminal_receptor": 0.0,
+          "kc_terminal_packets": 0.0,
+          "kc_terminal_eligibility": 0.0,
+          "kc_terminal_eligibility_credit": 0.0,
+          "kc_site_resources": 0.0,
+          "kc_site_utilization": 0.0,
+          "kc_contact_memory": 0.0,
+          "kc_contact_trace": 0.0,
+          "kc_contact_da_trace": 0.0,
+          "kc_contact_p_stats": 0.0,
+          "kc_contact_camp": 0.0,
+          "kc_contact_credit": 0.0,
+          "kc_contact_trace_credit": 0.0,
+          "kc_contact_camp_credit": 0.0,
+          "kc_dopamine_signal": 0.0,
+          "kc_dopamine_credit": 0.0,
+          "dan_local_receptor": 0.0,
+          "dan_local_calcium": 0.0,
+          "dan_local_resources": 0.0,
+          "dan_local_packets": 0.0,
+          "body_action_trace": 0.0,
+          "body_feedback_trace": 0.0,
+          "al_local_trace": 0.0,
+          "al_pn_drive": 0.0,
+          "body_muscle": 0.0,
+          "body_reafference": 0.0,
+          "endocrine_calcium": 0.0,
+          "endocrine_lk": 0.0,
+          "endocrine_receptor": 0.0
+        },
+        "membrane_group_absmax": {
+          "visual": 0.0,
+          "CX": 0.0,
+          "KC": 0.0,
+          "MBON": 0.0,
+          "DAN": 0.0,
+          "OA": 0.0,
+          "5HT": 0.0
+        },
+        "amine_terminal_snapshot": {
+          "oa": {
+            "concentration_max": 0.18825757503509521,
+            "occupancy_max": 0.27594026923179626,
+            "occupied_cells": 63413,
+            "response_absmax": 0.1131713017821312
+          },
+          "5ht": {
+            "concentration_max": 0.23406803607940674,
+            "occupancy_max": 0.3196566700935364,
+            "occupied_cells": 25497,
+            "response_absmax": 0.10953004658222198
+          }
+        },
+        "mb_terminal_snapshot": {
+          "source_body_ids": [
+            11734,
+            12569,
+            10540,
+            10977
+          ],
+          "gaba_max_by_source": [
+            5.562627181793234e-12,
+            0.007834377698600292,
+            0.037207357585430145,
+            0.02117932215332985
+          ],
+          "5ht_concentration_max_by_dpm": [
+            0.025821557268500328,
+            0.07829848676919937
+          ],
+          "5ht_receptor_max": 0.14361540973186493,
+          "spatial_scope": "historical pooled snapshot retained, inactive; current local signals are in kc_terminal_snapshot"
+        },
+        "apl_cable_snapshot": {
+          "nodes": 88905,
+          "local_voltage_min": -0.14976166188716888,
+          "local_voltage_max": 0.5478740334510803,
+          "local_voltage_sd": 0.14544765651226044,
+          "packet_nonzero_nodes": 71231,
+          "scope": "all supplied native APL tree nodes; KC bouton cable not reconstructed"
+        },
+        "kc_terminal_snapshot": {
+          "nodes": 4184720,
+          "release_sites": 709034,
+          "kc_with_different_site_release": 27,
+          "within_kc_release_range_max": 0.9142079949378967,
+          "gaba_effector_max": 13.436656951904297,
+          "5ht_effector_max": 8.933037757873535,
+          "local_eligibility_max": 1.0,
+          "resources_min": 0.0998111367225647,
+          "utilization_max": 0.6562253832817078,
+          "scope": "actual sites and spatial effective receptor signals; not axonal action-potential cable or identified molecular localization"
+        },
+        "contact_memory_snapshot": {
+          "actual_MBON_input_vs_retained_reference_absmax": 0.001432032324373722,
+          "connections_with_local_phi_difference": 19375,
+          "within_connection_phi_range_max": 0.22038497030735016,
+          "contacts": 463628,
+          "phi_min": -0.9860513210296631,
+          "phi_max": 0.0020299970638006926,
+          "trace_max": 0.9657557010650635,
+          "teacher": "actual DAN-KC contact-local receptor signal"
+        },
+        "kc_dopamine_snapshot": {
+          "nodes": 4184720,
+          "signal_max": 10.493084907531738,
+          "signal_sd": 0.31305500864982605,
+          "contact_teacher_vs_MBON_reference_absmax": 39.8284912109375
+        },
+        "dan_local_snapshot": {
+          "nodes": 1404101,
+          "sites": 187404,
+          "calcium_max": 0.10882838070392609,
+          "receptor_max": 0.9974572062492371,
+          "resources_min": 0.0022309422492980957,
+          "source_cells_with_different_site_release": 336,
+          "within_DAN_release_range_max": 0.010403541848063469,
+          "scope": "actual KC reciprocal input and full supplied DAN trees; local effective receptor/calcium release, somatic AP still existing cell spikes"
+        }
+      },
+      "sham": {
+        "replay_seconds": 34.31807999999728,
+        "peak_allocated_mib": 3113.02685546875,
+        "ce": 4.771482467651367,
+        "ce_delta": 0.0,
+        "state_close_to_intact": true,
+        "log_prob_absmax": 0.0,
+        "muscle_absmax": 0.0,
+        "motor_logit_absmax": 0.0,
+        "action_log_prob_absmax": 0.0,
+        "command_hazard_absmax": 0.0,
+        "native_motor_packet_ticks": 19,
+        "physical_absmax_by_field": {
+          "h": 0.0,
+          "ring": 0.0,
+          "ge": 0.0,
+          "gi": 0.0,
+          "b": 0.0,
+          "x": 0.0,
+          "u": 0.0,
+          "baseline": 0.0,
+          "h_mean": 0.0,
+          "dan_gate": 0.0,
+          "gamma_z1": 0.0,
+          "gamma_z2": 0.0,
+          "observer_prior": 0.0,
+          "observer_history": 0.0,
+          "read_bank": 0.0,
+          "modulator": 0.0,
+          "expected_input": 0.0,
+          "dopamine": 0.0,
+          "da_trace": 0.0,
+          "da_memory": 0.0,
+          "homeostasis": 0.0,
+          "regime": 0.0,
+          "comp_trace": 0.0,
+          "comp_memory": 0.0,
+          "credit_comp": 0.0,
+          "credit_comp_trace": 0.0,
+          "credit_dopamine": 0.0,
+          "credit_stp": 0.0,
+          "kc_avail": 0.0,
+          "comp_da_trace": 0.0,
+          "comp_p_stats": 0.0,
+          "comp_camp": 0.0,
+          "credit_comp_camp": 0.0,
+          "amine_concentration": 0.0,
+          "amine_receptor": 0.0,
+          "cx_trace": 0.0,
+          "dpm_trace": 0.0,
+          "apl_trace": 0.0,
+          "mb_terminal_gaba": 0.0,
+          "mb_dpm_concentration": 0.0,
+          "mb_dpm_receptor": 0.0,
+          "apl_voltage": 0.0,
+          "apl_ge": 0.0,
+          "apl_gi": 0.0,
+          "apl_packets": 0.0,
+          "kc_terminal_gaba": 0.0,
+          "kc_terminal_5ht": 0.0,
+          "kc_terminal_receptor": 0.0,
+          "kc_terminal_packets": 0.0,
+          "kc_terminal_eligibility": 0.0,
+          "kc_terminal_eligibility_credit": 0.0,
+          "kc_site_resources": 0.0,
+          "kc_site_utilization": 0.0,
+          "kc_contact_memory": 0.0,
+          "kc_contact_trace": 0.0,
+          "kc_contact_da_trace": 0.0,
+          "kc_contact_p_stats": 0.0,
+          "kc_contact_camp": 0.0,
+          "kc_contact_credit": 0.0,
+          "kc_contact_trace_credit": 0.0,
+          "kc_contact_camp_credit": 0.0,
+          "kc_dopamine_signal": 0.0,
+          "kc_dopamine_credit": 0.0,
+          "dan_local_receptor": 0.0,
+          "dan_local_calcium": 0.0,
+          "dan_local_resources": 0.0,
+          "dan_local_packets": 0.0,
+          "body_action_trace": 0.0,
+          "body_feedback_trace": 0.0,
+          "al_local_trace": 0.0,
+          "al_pn_drive": 0.0,
+          "body_muscle": 0.0,
+          "body_reafference": 0.0,
+          "endocrine_calcium": 0.0,
+          "endocrine_lk": 0.0,
+          "endocrine_receptor": 0.0
+        },
+        "membrane_group_absmax": {
+          "visual": 0.0,
+          "CX": 0.0,
+          "KC": 0.0,
+          "MBON": 0.0,
+          "DAN": 0.0,
+          "OA": 0.0,
+          "5HT": 0.0
+        },
+        "amine_terminal_snapshot": {
+          "oa": {
+            "concentration_max": 0.18825757503509521,
+            "occupancy_max": 0.27594026923179626,
+            "occupied_cells": 63413,
+            "response_absmax": 0.1131713017821312
+          },
+          "5ht": {
+            "concentration_max": 0.23406803607940674,
+            "occupancy_max": 0.3196566700935364,
+            "occupied_cells": 25497,
+            "response_absmax": 0.10953004658222198
+          }
+        },
+        "mb_terminal_snapshot": {
+          "source_body_ids": [
+            11734,
+            12569,
+            10540,
+            10977
+          ],
+          "gaba_max_by_source": [
+            5.562627181793234e-12,
+            0.007834377698600292,
+            0.037207357585430145,
+            0.02117932215332985
+          ],
+          "5ht_concentration_max_by_dpm": [
+            0.025821557268500328,
+            0.07829848676919937
+          ],
+          "5ht_receptor_max": 0.14361540973186493,
+          "spatial_scope": "historical pooled snapshot retained, inactive; current local signals are in kc_terminal_snapshot"
+        },
+        "apl_cable_snapshot": {
+          "nodes": 88905,
+          "local_voltage_min": -0.14976166188716888,
+          "local_voltage_max": 0.5478740334510803,
+          "local_voltage_sd": 0.14544765651226044,
+          "packet_nonzero_nodes": 71231,
+          "scope": "all supplied native APL tree nodes; KC bouton cable not reconstructed"
+        },
+        "kc_terminal_snapshot": {
+          "nodes": 4184720,
+          "release_sites": 709034,
+          "kc_with_different_site_release": 27,
+          "within_kc_release_range_max": 0.9142079949378967,
+          "gaba_effector_max": 13.436656951904297,
+          "5ht_effector_max": 8.933037757873535,
+          "local_eligibility_max": 1.0,
+          "resources_min": 0.0998111367225647,
+          "utilization_max": 0.6562253832817078,
+          "scope": "actual sites and spatial effective receptor signals; not axonal action-potential cable or identified molecular localization"
+        },
+        "contact_memory_snapshot": {
+          "actual_MBON_input_vs_retained_reference_absmax": 0.001432032324373722,
+          "connections_with_local_phi_difference": 19375,
+          "within_connection_phi_range_max": 0.22038497030735016,
+          "contacts": 463628,
+          "phi_min": -0.9860513210296631,
+          "phi_max": 0.0020299970638006926,
+          "trace_max": 0.9657557010650635,
+          "teacher": "actual DAN-KC contact-local receptor signal"
+        },
+        "kc_dopamine_snapshot": {
+          "nodes": 4184720,
+          "signal_max": 10.493084907531738,
+          "signal_sd": 0.31305500864982605,
+          "contact_teacher_vs_MBON_reference_absmax": 39.8284912109375
+        },
+        "dan_local_snapshot": {
+          "nodes": 1404101,
+          "sites": 187404,
+          "calcium_max": 0.10882838070392609,
+          "receptor_max": 0.9974572062492371,
+          "resources_min": 0.0022309422492980957,
+          "source_cells_with_different_site_release": 336,
+          "within_DAN_release_range_max": 0.010403541848063469,
+          "scope": "actual KC reciprocal input and full supplied DAN trees; local effective receptor/calcium release, somatic AP still existing cell spikes"
+        }
+      },
+      "dan_local_feedback": {
+        "replay_seconds": 33.87587960000383,
+        "peak_allocated_mib": 3404.349609375,
+        "ce": 4.771482467651367,
+        "ce_delta": 0.0,
+        "state_close_to_intact": false,
+        "log_prob_absmax": 0.0,
+        "muscle_absmax": 0.0,
+        "motor_logit_absmax": 0.0,
+        "action_log_prob_absmax": 0.0,
+        "command_hazard_absmax": 0.0,
+        "native_motor_packet_ticks": 19,
+        "physical_absmax_by_field": {
+          "h": 1.7695128917694092e-07,
+          "ring": 0.0,
+          "ge": 3.67872416973114e-07,
+          "gi": 0.0,
+          "b": 0.0,
+          "x": 0.0,
+          "u": 0.0,
+          "baseline": 0.0,
+          "h_mean": 1.4901161193847656e-08,
+          "dan_gate": 0.0,
+          "gamma_z1": 0.0,
+          "gamma_z2": 0.0,
+          "observer_prior": 0.0,
+          "observer_history": 0.0,
+          "read_bank": 0.0,
+          "modulator": 0.0,
+          "expected_input": 0.0,
+          "dopamine": 0.015939712524414062,
+          "da_trace": 0.0,
+          "da_memory": 0.0,
+          "homeostasis": 0.0,
+          "regime": 0.0,
+          "comp_trace": 0.0,
+          "comp_memory": 0.0,
+          "credit_comp": 0.0,
+          "credit_comp_trace": 0.0,
+          "credit_dopamine": 0.014201641082763672,
+          "credit_stp": 0.0,
+          "kc_avail": 0.0,
+          "comp_da_trace": 0.0,
+          "comp_p_stats": 0.0,
+          "comp_camp": 0.0,
+          "credit_comp_camp": 0.0,
+          "amine_concentration": 0.0,
+          "amine_receptor": 0.0,
+          "cx_trace": 0.0,
+          "dpm_trace": 0.0,
+          "apl_trace": 0.0,
+          "mb_terminal_gaba": 0.0,
+          "mb_dpm_concentration": 0.0,
+          "mb_dpm_receptor": 0.0,
+          "apl_voltage": 0.0,
+          "apl_ge": 0.0,
+          "apl_gi": 0.0,
+          "apl_packets": 0.0,
+          "kc_terminal_gaba": 0.0,
+          "kc_terminal_5ht": 0.0,
+          "kc_terminal_receptor": 0.0,
+          "kc_terminal_packets": 0.0,
+          "kc_terminal_eligibility": 0.0,
+          "kc_terminal_eligibility_credit": 0.0,
+          "kc_site_resources": 0.0,
+          "kc_site_utilization": 0.0,
+          "kc_contact_memory": 0.0004994571208953857,
+          "kc_contact_trace": 0.0,
+          "kc_contact_da_trace": 0.039682477712631226,
+          "kc_contact_p_stats": 0.0028448104858398438,
+          "kc_contact_camp": 0.0,
+          "kc_contact_credit": 0.36835670471191406,
+          "kc_contact_trace_credit": 0.0,
+          "kc_contact_camp_credit": 0.0,
+          "kc_dopamine_signal": 0.19140565395355225,
+          "kc_dopamine_credit": 0.17353898286819458,
+          "dan_local_receptor": 0.9974572062492371,
+          "dan_local_calcium": 0.10882838070392609,
+          "dan_local_resources": 0.0684247612953186,
+          "dan_local_packets": 0.01051640510559082,
+          "body_action_trace": 0.0,
+          "body_feedback_trace": 0.0,
+          "al_local_trace": 0.0,
+          "al_pn_drive": 0.0,
+          "body_muscle": 0.0,
+          "body_reafference": 0.0,
+          "endocrine_calcium": 0.0,
+          "endocrine_lk": 0.0,
+          "endocrine_receptor": 0.0
+        },
+        "membrane_group_absmax": {
+          "visual": 0.0,
+          "CX": 0.0,
+          "KC": 0.0,
+          "MBON": 1.7695128917694092e-07,
+          "DAN": 0.0,
+          "OA": 0.0,
+          "5HT": 0.0
+        },
+        "amine_terminal_snapshot": {
+          "oa": {
+            "concentration_max": 0.18825757503509521,
+            "occupancy_max": 0.27594026923179626,
+            "occupied_cells": 63413,
+            "response_absmax": 0.1131713017821312
+          },
+          "5ht": {
+            "concentration_max": 0.23406803607940674,
+            "occupancy_max": 0.3196566700935364,
+            "occupied_cells": 25497,
+            "response_absmax": 0.10953004658222198
+          }
+        },
+        "mb_terminal_snapshot": {
+          "source_body_ids": [
+            11734,
+            12569,
+            10540,
+            10977
+          ],
+          "gaba_max_by_source": [
+            5.562627181793234e-12,
+            0.007834377698600292,
+            0.037207357585430145,
+            0.02117932215332985
+          ],
+          "5ht_concentration_max_by_dpm": [
+            0.025821557268500328,
+            0.07829848676919937
+          ],
+          "5ht_receptor_max": 0.14361540973186493,
+          "spatial_scope": "historical pooled snapshot retained, inactive; current local signals are in kc_terminal_snapshot"
+        },
+        "apl_cable_snapshot": {
+          "nodes": 88905,
+          "local_voltage_min": -0.14976166188716888,
+          "local_voltage_max": 0.5478740334510803,
+          "local_voltage_sd": 0.14544765651226044,
+          "packet_nonzero_nodes": 71231,
+          "scope": "all supplied native APL tree nodes; KC bouton cable not reconstructed"
+        },
+        "kc_terminal_snapshot": {
+          "nodes": 4184720,
+          "release_sites": 709034,
+          "kc_with_different_site_release": 27,
+          "within_kc_release_range_max": 0.9142079949378967,
+          "gaba_effector_max": 13.436656951904297,
+          "5ht_effector_max": 8.933037757873535,
+          "local_eligibility_max": 1.0,
+          "resources_min": 0.0998111367225647,
+          "utilization_max": 0.6562253832817078,
+          "scope": "actual sites and spatial effective receptor signals; not axonal action-potential cable or identified molecular localization"
+        },
+        "contact_memory_snapshot": {
+          "actual_MBON_input_vs_retained_reference_absmax": 0.0014320304617285728,
+          "connections_with_local_phi_difference": 19301,
+          "within_connection_phi_range_max": 0.2203644961118698,
+          "contacts": 463628,
+          "phi_min": -0.9860511422157288,
+          "phi_max": 0.0020299970638006926,
+          "trace_max": 0.9657557010650635,
+          "teacher": "actual DAN-KC contact-local receptor signal"
+        },
+        "kc_dopamine_snapshot": {
+          "nodes": 4184720,
+          "signal_max": 10.492203712463379,
+          "signal_sd": 0.3130435645580292,
+          "contact_teacher_vs_MBON_reference_absmax": 39.8284912109375
+        },
+        "dan_local_snapshot": {
+          "nodes": 1404101,
+          "sites": 187404,
+          "calcium_max": 0.0,
+          "receptor_max": 0.0,
+          "resources_min": 0.0022309422492980957,
+          "source_cells_with_different_site_release": 0,
+          "within_DAN_release_range_max": 0.0,
+          "scope": "actual KC reciprocal input and full supplied DAN trees; local effective receptor/calcium release, somatic AP still existing cell spikes"
+        }
+      },
+      "dan_local_source": {
+        "replay_seconds": 33.810159699991345,
+        "peak_allocated_mib": 3404.6044921875,
+        "ce": 4.771486282348633,
+        "ce_delta": 3.814697265625e-06,
+        "state_close_to_intact": false,
+        "log_prob_absmax": 9.632110595703125e-05,
+        "muscle_absmax": 0.0,
+        "motor_logit_absmax": 0.0,
+        "action_log_prob_absmax": 0.0,
+        "command_hazard_absmax": 0.0,
+        "native_motor_packet_ticks": 19,
+        "physical_absmax_by_field": {
+          "h": 0.10706368088722229,
+          "ring": 1.0,
+          "ge": 0.19825221598148346,
+          "gi": 0.32524573802948,
+          "b": 0.039210498332977295,
+          "x": 0.0,
+          "u": 0.0,
+          "baseline": 0.0,
+          "h_mean": 0.001887992024421692,
+          "dan_gate": 0.0,
+          "gamma_z1": 0.0,
+          "gamma_z2": 0.0,
+          "observer_prior": 0.0,
+          "observer_history": 0.0,
+          "read_bank": 0.0,
+          "modulator": 0.0,
+          "expected_input": 5.5730342864990234e-06,
+          "dopamine": 12.37221908569336,
+          "da_trace": 0.0,
+          "da_memory": 0.0,
+          "homeostasis": 0.0,
+          "regime": 0.0,
+          "comp_trace": 0.0,
+          "comp_memory": 0.0,
+          "credit_comp": 0.0,
+          "credit_comp_trace": 0.0,
+          "credit_dopamine": 10.453503608703613,
+          "credit_stp": 0.0,
+          "kc_avail": 0.0,
+          "comp_da_trace": 0.0,
+          "comp_p_stats": 0.0,
+          "comp_camp": 0.0,
+          "credit_comp_camp": 0.0,
+          "amine_concentration": 0.0,
+          "amine_receptor": 0.0,
+          "cx_trace": 0.0,
+          "dpm_trace": 0.0,
+          "apl_trace": 0.0,
+          "mb_terminal_gaba": 0.0,
+          "mb_dpm_concentration": 0.0,
+          "mb_dpm_receptor": 0.0,
+          "apl_voltage": 0.028489232063293457,
+          "apl_ge": 0.05413818359375,
+          "apl_gi": 19.103466033935547,
+          "apl_packets": 0.029416196048259735,
+          "kc_terminal_gaba": 0.04832207411527634,
+          "kc_terminal_5ht": 0.0,
+          "kc_terminal_receptor": 0.0,
+          "kc_terminal_packets": 0.0007544755935668945,
+          "kc_terminal_eligibility": 0.0,
+          "kc_terminal_eligibility_credit": 0.0,
+          "kc_site_resources": 0.0003268122673034668,
+          "kc_site_utilization": 0.0,
+          "kc_contact_memory": 0.07983936369419098,
+          "kc_contact_trace": 0.0007162690162658691,
+          "kc_contact_da_trace": 0.9130585789680481,
+          "kc_contact_p_stats": 0.006299823522567749,
+          "kc_contact_camp": 0.0,
+          "kc_contact_credit": 2.4893264770507812,
+          "kc_contact_trace_credit": 7.20396637916565e-05,
+          "kc_contact_camp_credit": 0.0,
+          "kc_dopamine_signal": 17.414077758789062,
+          "kc_dopamine_credit": 16.16800308227539,
+          "dan_local_receptor": 0.0003247857093811035,
+          "dan_local_calcium": 2.294778823852539e-06,
+          "dan_local_resources": 0.0,
+          "dan_local_packets": 6.2282197177410126e-09,
+          "body_action_trace": 0.0,
+          "body_feedback_trace": 0.0,
+          "al_local_trace": 0.0,
+          "al_pn_drive": 0.0,
+          "body_muscle": 0.0,
+          "body_reafference": 0.0,
+          "endocrine_calcium": 0.0,
+          "endocrine_lk": 0.0,
+          "endocrine_receptor": 0.0
+        },
+        "membrane_group_absmax": {
+          "visual": 0.0,
+          "CX": 0.003506133332848549,
+          "KC": 0.0,
+          "MBON": 0.008358953520655632,
+          "DAN": 0.0017394348978996277,
+          "OA": 0.00045637041330337524,
+          "5HT": 0.0
+        },
+        "amine_terminal_snapshot": {
+          "oa": {
+            "concentration_max": 0.18825757503509521,
+            "occupancy_max": 0.27594026923179626,
+            "occupied_cells": 63413,
+            "response_absmax": 0.1131713017821312
+          },
+          "5ht": {
+            "concentration_max": 0.23406803607940674,
+            "occupancy_max": 0.3196566700935364,
+            "occupied_cells": 25497,
+            "response_absmax": 0.10953004658222198
+          }
+        },
+        "mb_terminal_snapshot": {
+          "source_body_ids": [
+            11734,
+            12569,
+            10540,
+            10977
+          ],
+          "gaba_max_by_source": [
+            5.562627181793234e-12,
+            0.007834377698600292,
+            0.037207357585430145,
+            0.02117932215332985
+          ],
+          "5ht_concentration_max_by_dpm": [
+            0.025821557268500328,
+            0.07829848676919937
+          ],
+          "5ht_receptor_max": 0.14361540973186493,
+          "spatial_scope": "historical pooled snapshot retained, inactive; current local signals are in kc_terminal_snapshot"
+        },
+        "apl_cable_snapshot": {
+          "nodes": 88905,
+          "local_voltage_min": -0.14976166188716888,
+          "local_voltage_max": 0.5478740334510803,
+          "local_voltage_sd": 0.14544735848903656,
+          "packet_nonzero_nodes": 71231,
+          "scope": "all supplied native APL tree nodes; KC bouton cable not reconstructed"
+        },
+        "kc_terminal_snapshot": {
+          "nodes": 4184720,
+          "release_sites": 709034,
+          "kc_with_different_site_release": 27,
+          "within_kc_release_range_max": 0.9142079949378967,
+          "gaba_effector_max": 13.436656951904297,
+          "5ht_effector_max": 8.933037757873535,
+          "local_eligibility_max": 1.0,
+          "resources_min": 0.0998111367225647,
+          "utilization_max": 0.6562253832817078,
+          "scope": "actual sites and spatial effective receptor signals; not axonal action-potential cable or identified molecular localization"
+        },
+        "contact_memory_snapshot": {
+          "actual_MBON_input_vs_retained_reference_absmax": 0.001827438361942768,
+          "connections_with_local_phi_difference": 21175,
+          "within_connection_phi_range_max": 0.2645750045776367,
+          "contacts": 463628,
+          "phi_min": -0.9866907596588135,
+          "phi_max": 0.0020299970638006926,
+          "trace_max": 0.9657557010650635,
+          "teacher": "actual DAN-KC contact-local receptor signal"
+        },
+        "kc_dopamine_snapshot": {
+          "nodes": 4184720,
+          "signal_max": 20.858428955078125,
+          "signal_sd": 0.6207141876220703,
+          "contact_teacher_vs_MBON_reference_absmax": 48.0401611328125
+        },
+        "dan_local_snapshot": {
+          "nodes": 1404101,
+          "sites": 187404,
+          "calcium_max": 0.10882838070392609,
+          "receptor_max": 0.9974572062492371,
+          "resources_min": 0.0022309422492980957,
+          "source_cells_with_different_site_release": 336,
+          "within_DAN_release_range_max": 0.010403541848063469,
+          "scope": "actual KC reciprocal input and full supplied DAN trees; local effective receptor/calcium release, somatic AP still existing cell spikes"
+        }
+      },
+      "restored": {
+        "replay_seconds": 35.6848306000029,
+        "peak_allocated_mib": 3405.33056640625,
+        "ce": 4.771482467651367,
+        "ce_delta": 0.0,
+        "state_close_to_intact": true,
+        "log_prob_absmax": 0.0,
+        "muscle_absmax": 0.0,
+        "motor_logit_absmax": 0.0,
+        "action_log_prob_absmax": 0.0,
+        "command_hazard_absmax": 0.0,
+        "native_motor_packet_ticks": 19,
+        "physical_absmax_by_field": {
+          "h": 0.0,
+          "ring": 0.0,
+          "ge": 0.0,
+          "gi": 0.0,
+          "b": 0.0,
+          "x": 0.0,
+          "u": 0.0,
+          "baseline": 0.0,
+          "h_mean": 0.0,
+          "dan_gate": 0.0,
+          "gamma_z1": 0.0,
+          "gamma_z2": 0.0,
+          "observer_prior": 0.0,
+          "observer_history": 0.0,
+          "read_bank": 0.0,
+          "modulator": 0.0,
+          "expected_input": 0.0,
+          "dopamine": 0.0,
+          "da_trace": 0.0,
+          "da_memory": 0.0,
+          "homeostasis": 0.0,
+          "regime": 0.0,
+          "comp_trace": 0.0,
+          "comp_memory": 0.0,
+          "credit_comp": 0.0,
+          "credit_comp_trace": 0.0,
+          "credit_dopamine": 0.0,
+          "credit_stp": 0.0,
+          "kc_avail": 0.0,
+          "comp_da_trace": 0.0,
+          "comp_p_stats": 0.0,
+          "comp_camp": 0.0,
+          "credit_comp_camp": 0.0,
+          "amine_concentration": 0.0,
+          "amine_receptor": 0.0,
+          "cx_trace": 0.0,
+          "dpm_trace": 0.0,
+          "apl_trace": 0.0,
+          "mb_terminal_gaba": 0.0,
+          "mb_dpm_concentration": 0.0,
+          "mb_dpm_receptor": 0.0,
+          "apl_voltage": 0.0,
+          "apl_ge": 0.0,
+          "apl_gi": 0.0,
+          "apl_packets": 0.0,
+          "kc_terminal_gaba": 0.0,
+          "kc_terminal_5ht": 0.0,
+          "kc_terminal_receptor": 0.0,
+          "kc_terminal_packets": 0.0,
+          "kc_terminal_eligibility": 0.0,
+          "kc_terminal_eligibility_credit": 0.0,
+          "kc_site_resources": 0.0,
+          "kc_site_utilization": 0.0,
+          "kc_contact_memory": 0.0,
+          "kc_contact_trace": 0.0,
+          "kc_contact_da_trace": 0.0,
+          "kc_contact_p_stats": 0.0,
+          "kc_contact_camp": 0.0,
+          "kc_contact_credit": 0.0,
+          "kc_contact_trace_credit": 0.0,
+          "kc_contact_camp_credit": 0.0,
+          "kc_dopamine_signal": 0.0,
+          "kc_dopamine_credit": 0.0,
+          "dan_local_receptor": 0.0,
+          "dan_local_calcium": 0.0,
+          "dan_local_resources": 0.0,
+          "dan_local_packets": 0.0,
+          "body_action_trace": 0.0,
+          "body_feedback_trace": 0.0,
+          "al_local_trace": 0.0,
+          "al_pn_drive": 0.0,
+          "body_muscle": 0.0,
+          "body_reafference": 0.0,
+          "endocrine_calcium": 0.0,
+          "endocrine_lk": 0.0,
+          "endocrine_receptor": 0.0
+        },
+        "membrane_group_absmax": {
+          "visual": 0.0,
+          "CX": 0.0,
+          "KC": 0.0,
+          "MBON": 0.0,
+          "DAN": 0.0,
+          "OA": 0.0,
+          "5HT": 0.0
+        },
+        "amine_terminal_snapshot": {
+          "oa": {
+            "concentration_max": 0.18825757503509521,
+            "occupancy_max": 0.27594026923179626,
+            "occupied_cells": 63413,
+            "response_absmax": 0.1131713017821312
+          },
+          "5ht": {
+            "concentration_max": 0.23406803607940674,
+            "occupancy_max": 0.3196566700935364,
+            "occupied_cells": 25497,
+            "response_absmax": 0.10953004658222198
+          }
+        },
+        "mb_terminal_snapshot": {
+          "source_body_ids": [
+            11734,
+            12569,
+            10540,
+            10977
+          ],
+          "gaba_max_by_source": [
+            5.562627181793234e-12,
+            0.007834377698600292,
+            0.037207357585430145,
+            0.02117932215332985
+          ],
+          "5ht_concentration_max_by_dpm": [
+            0.025821557268500328,
+            0.07829848676919937
+          ],
+          "5ht_receptor_max": 0.14361540973186493,
+          "spatial_scope": "historical pooled snapshot retained, inactive; current local signals are in kc_terminal_snapshot"
+        },
+        "apl_cable_snapshot": {
+          "nodes": 88905,
+          "local_voltage_min": -0.14976166188716888,
+          "local_voltage_max": 0.5478740334510803,
+          "local_voltage_sd": 0.14544765651226044,
+          "packet_nonzero_nodes": 71231,
+          "scope": "all supplied native APL tree nodes; KC bouton cable not reconstructed"
+        },
+        "kc_terminal_snapshot": {
+          "nodes": 4184720,
+          "release_sites": 709034,
+          "kc_with_different_site_release": 27,
+          "within_kc_release_range_max": 0.9142079949378967,
+          "gaba_effector_max": 13.436656951904297,
+          "5ht_effector_max": 8.933037757873535,
+          "local_eligibility_max": 1.0,
+          "resources_min": 0.0998111367225647,
+          "utilization_max": 0.6562253832817078,
+          "scope": "actual sites and spatial effective receptor signals; not axonal action-potential cable or identified molecular localization"
+        },
+        "contact_memory_snapshot": {
+          "actual_MBON_input_vs_retained_reference_absmax": 0.001432032324373722,
+          "connections_with_local_phi_difference": 19375,
+          "within_connection_phi_range_max": 0.22038497030735016,
+          "contacts": 463628,
+          "phi_min": -0.9860513210296631,
+          "phi_max": 0.0020299970638006926,
+          "trace_max": 0.9657557010650635,
+          "teacher": "actual DAN-KC contact-local receptor signal"
+        },
+        "kc_dopamine_snapshot": {
+          "nodes": 4184720,
+          "signal_max": 10.493084907531738,
+          "signal_sd": 0.31305500864982605,
+          "contact_teacher_vs_MBON_reference_absmax": 39.8284912109375
+        },
+        "dan_local_snapshot": {
+          "nodes": 1404101,
+          "sites": 187404,
+          "calcium_max": 0.10882838070392609,
+          "receptor_max": 0.9974572062492371,
+          "resources_min": 0.0022309422492980957,
+          "source_cells_with_different_site_release": 336,
+          "within_DAN_release_range_max": 0.010403541848063469,
+          "scope": "actual KC reciprocal input and full supplied DAN trees; local effective receptor/calcium release, somatic AP still existing cell spikes"
+        }
+      }
+    },
+    "enabled": {
+      "cx": true,
+      "mb_regulators": true,
+      "historical_body_proxy": false,
+      "al_relay": true,
+      "amines": true,
+      "visual": true,
+      "endocrine": true,
+      "motor_terminal": true,
+      "mb_terminal": true,
+      "mb_terminal_gaba": true,
+      "dpm_5ht": true,
+      "apl_release": true,
+      "apl_axial": true,
+      "kc_sites": true,
+      "kc_site_transport": true,
+      "kc_site_stp": true,
+      "kc_contact_write": true,
+      "kc_contact_read": true,
+      "kc_dopamine_delivery": true,
+      "kc_dopamine_teacher": true,
+      "dan_local_feedback": true,
+      "dan_local_source": true
+    },
+    "initial_dan_site_delivery": {
+      "global_absmax": 3.814697265625e-06,
+      "KC_spatial_absmax": 0.0001220703125,
+      "close": true,
+      "scope": "Initial copied somatic AP queue only, no pre-existing local chemistry/resource history or future equivalence claim"
+    },
+    "initial_spatial_dopamine_delivery": {
+      "volume_weighted_KC_mean_vs_original_graph_absmax": 3.5762786865234375e-07,
+      "close": true,
+      "scope": "same current spike queue only; no added experience or terminal feedback intervention"
+    },
+    "requested_systems": [
+      "dan_local_feedback",
+      "dan_local_source"
+    ],
+    "frozen_archive_scope": "Complete restore first; discard optimizer/parameter-score copies for frozen physical replay only, never saved back.",
+    "control_tolerance": {
+      "state_rtol": 1e-05,
+      "state_atol": 1e-06,
+      "log_prob_atol": 2e-05,
+      "source": "native_causal_audit.states_close"
+    },
+    "controls_passed": true,
+    "source_and_rng_preserved": true,
+    "status": "controls_passed"
+  },
+  "acute_effects": {
+    "feedback_off_calcium_absmax": 0.10882838070392609,
+    "feedback_off_packet_absmax": 0.01051640510559082,
+    "feedback_off_KC_signal_absmax": 0.19140565395355225,
+    "feedback_off_phi_absmax": 0.0004994571208953857,
+    "source_reference_phi_absmax": 0.07983936369419098,
+    "source_reference_prediction_logprob_absmax": 9.632110595703125e-05,
+    "source_reference_action_logprob_absmax": 0.0
+  },
+  "resources": {
+    "new_state_bytes": 14980888,
+    "new_parameter_elements": 2340,
+    "peak_frozen_allocated_mib": 3405.33056640625,
+    "intact_replay_seconds": 32.420806499998434,
+    "scope": "Frozen physical replay after full restore; not total process VRAM or real BPTT training admission"
+  },
+  "validation": {
+    "affected_passed": 231,
+    "affected_log": "F:\\fly_stream_overflow\\dan_release_final_tests_20261019.log",
+    "deslice": "ALL UNIT TESTS PASSED",
+    "full_suite": "Not certified; known previous five missing diagnostic-script collection blockers; current affected suite passed",
+    "gpu_serialization": "First audit admission rejected the still-running own test process; waited for its normal exit and reran serially; no other job killed"
+  },
+  "actual_progress": {
+    "candidate_trained": 33000,
+    "new_training_inputs": 0,
+    "new_optimizer_updates": 0,
+    "future_window_tokens": 1,
+    "main_trained": 32384,
+    "main_status": "paused_by_user_for_repair"
+  },
+  "scope": {
+    "source": "Actual KC reciprocal positions to local receptor/calcium-related activation and resources to shared DAN release positions",
+    "AP": "Existing native-cell somatic AP packets retained; no active axonal cable/VGCC reconstruction claim",
+    "recipient": "All original DAN targets and actual spatial KC recipients read local source packets; no duplicated pooled KC feedback",
+    "learning": "Existing contact phi/eligibility law reads resulting local teacher; new source materials in native optimizer and policy gradient, full slow-state historical derivatives not implemented"
+  },
+  "nll": {
+    "normal_reply_pre_update": null,
+    "scope": "No new main dialogue or training; frozen target CE is a causal diagnostic, not learning benefit"
+  },
+  "remaining": [
+    "Active DAN axon/spike voltage and identified Na/K/Ca/VGCC channels and source receptor localization",
+    "Full extracellular volume transmission and other modulators at source",
+    "Full new slow-state historical parameter derivatives",
+    "Selective familiarity/exploration and sustained actual interaction/learning benefit"
+  ],
+  "training_adoption_approved": false,
+  "cleanup": {
+    "deleted": "E:\\fly_stream_overflow\\native_kc_contacts_20261019\\last.pt",
+    "retained_full_cover": "E:\\fly_stream_overflow\\native_kc_dopamine_20261019\\last.pt",
+    "bytes": 2278766011,
+    "deleted_sha256": "e79b5b0d53c750e48dd71945a9b57b5754d109558c784a29b1538fc14398078d",
+    "retained_sha256": "cae54ccbefafd7639d288a824ac0d7606b41dadaad278784bb8c86d7b3f295ee",
+    "reason": "Zero-exposure intermediate; all old model/physical/learner/world/RNG and optimizer by name/hyperparameters exactly covered by retained spatial dopamine source",
+    "status": "deleted_redundant_weight_after_exact_coverage_verification"
+  },
+  "preprocessing": "Interrupted own cache-complete preprocessing with Ctrl-C; materialized graph arrays once and reused caches. No learning process interrupted.",
+  "sources": [
+    "https://elifesciences.org/articles/23789"
+  ],
+  "resource_calibration_boundary": {
+    "observed_resource_min": 0.0022309422492980957,
+    "clock_scope": "Resource recovery starts from the inherited dopamine slow clock as a numerical seed, not measured DAN vesicle kinetics; all new source parameters are learnable.",
+    "interpretation": "At least one local pool shows strong use in19ticks. Minimum alone does not determine prevalence or whole-brain health.",
+    "next_check": "Audit native packet amplitude/event clock and resource recovery distribution/calibration before training adoption. Do not force speech or silently reset brain.",
+    "training_adoption_approved": false
+  }
+}

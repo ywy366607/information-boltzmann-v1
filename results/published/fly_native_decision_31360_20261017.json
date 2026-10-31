@@ -1,0 +1,54 @@
+{
+  "at": "2026-10-17T01:15:56.142986+00:00",
+  "source_checkpoint": 31360,
+  "checkpoint_sha256": "5ac061dff863e4156347612562a3549e11a1fef7ebde5857c13a3163a6b312d5",
+  "report": "E:\\fly_stream_overflow\\native_decision_31360_deterministic128\\report.json",
+  "numerical_policy": {
+    "deterministic_algorithms": true,
+    "warn_only": false,
+    "cublas_workspace_config": ":4096:8",
+    "acceptance_tolerances": "existing unchanged",
+    "purpose": "diagnose previous carried sensitivity sham mismatch using deterministic operators; current checkpoint and actual recorded clock, no learning"
+  },
+  "tokens": 128,
+  "physical_ticks": 1975,
+  "source_counts": {
+    "mother_call": 128
+  },
+  "summary": {
+    "DAN_off": {
+      "mean_ce_delta": 0.00423636773484759,
+      "mean_absolute_hazard_delta": 5.9858867220077646e-05,
+      "max_clamp_residual": 0,
+      "recorded_child_decision_ticks": 22,
+      "mean_child_decision_hazard_delta": -0.001143226389351846,
+      "mean_absolute_child_decision_hazard_delta": 0.0011465330331206628
+    },
+    "phi_zero": {
+      "mean_ce_delta": -0.01832600666966755,
+      "mean_absolute_hazard_delta": 4.206113380866606e-05,
+      "max_clamp_residual": 0,
+      "recorded_child_decision_ticks": 22,
+      "mean_child_decision_hazard_delta": -0.00035284090509693755,
+      "mean_absolute_child_decision_hazard_delta": 0.00036603187080882805
+    },
+    "kc_terminal_off": {
+      "mean_ce_delta": -0.01215501043770928,
+      "mean_absolute_hazard_delta": 4.551027561063874e-05,
+      "max_clamp_residual": 0,
+      "recorded_child_decision_ticks": 22,
+      "mean_child_decision_hazard_delta": -0.0005872322727472321,
+      "mean_absolute_child_decision_hazard_delta": 0.0005911071990670858
+    }
+  },
+  "decision_scope": "22 ticks in3 actual recorded no-commit decisions at31304. Frozen historical replay from31360; no voiced choice in this tape. Different interventions start from identical intact continuation state/RNG per window. Not a counterfactual teacher response or learning benefit.",
+  "controls": {
+    "restored_state_maxabs": 0.0,
+    "native_repeat_state_maxabs": 3.814697265625e-06,
+    "max_sham_state_abs": 1.1444091796875e-05,
+    "functional_shams": "all16 CE/hazard/muscle exact",
+    "physical_tolerance": "existing per-element rtol1e-5 atol1e-6 unchanged; deterministic torch flag does not make custom kernels bit-exact",
+    "source_model_caregiver_runtime_unchanged": true
+  },
+  "finding": "Removing DAN, phi or KC terminal feedback lowers hazard on these quiet decision ticks. These routes currently support a small propensity to act; this does not establish selective habituation, exploration benefit or the cause of renewed silence. The failed30848 audit remains unaccepted."
+}

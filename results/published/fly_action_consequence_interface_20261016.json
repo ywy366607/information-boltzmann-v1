@@ -1,0 +1,70 @@
+{
+  "date": "2026-10-16",
+  "kind": "numerical_and_real_checkpoint_interface_only",
+  "capability_verified": false,
+  "source_checkpoint": "E:\\ib_checkpoints\\newborn_reading\\last.pt",
+  "source_tokens": 6120,
+  "source_unchanged": true,
+  "mainline_status": "paused",
+  "fresh_copy_tokens": 136,
+  "optimizer_updates": 17,
+  "phase1": {
+    "start": 6120,
+    "end": 6248,
+    "fresh_tokens": 128,
+    "speed_tokens_per_sec": 0.9378075301221953,
+    "vram_peak_mib": 3208.91259765625
+  },
+  "resume": {
+    "start": 6248,
+    "end": 6256,
+    "fresh_tokens": 8,
+    "vram_peak_mib": 3190.78662109375,
+    "partial_response_words_before": 12,
+    "partial_response_words_after": 20,
+    "posterior_updates_before": 2,
+    "posterior_updates_after": 2,
+    "unread_external_words": 25
+  },
+  "native_consequence": {
+    "posterior_updates": 2,
+    "posterior_shape": [
+      1741,
+      1741
+    ],
+    "saved_policy_eligibility": [
+      "ai_w",
+      "ai_b",
+      "read_norm.weight",
+      "decoder.weight",
+      "decoder.bias"
+    ],
+    "format": "kc-action-consequence-v1",
+    "new_head_parameters": 0,
+    "note": "Added uncertainty statistics and policy eligibility, not zero memory or proven biological equivalence"
+  },
+  "identity_input_check": {
+    "name": "Mengli",
+    "token_ids": [
+      41272,
+      4528
+    ],
+    "physical_write_counts": {
+      "41272": 52,
+      "4528": 34
+    },
+    "source_filtered_for_reward_only": true,
+    "identity_recognition": "unmeasured"
+  },
+  "tests": {
+    "focused_interface_passed": 43,
+    "existing_bptt_passed": 50,
+    "unrelated_collection_blocker": "tests/test_fly_pipeline_stream_cli.py references absent scripts/ib/train_fly_pipeline_stream.py"
+  },
+  "limitations": [
+    "Linear Gaussian belief on changing neural features may become miscalibrated.",
+    "Interface and posterior contraction are not proof of understanding, active exploration benefit or self-recognition.",
+    "Mother-turn interruption path has numerical coverage; real resource check retained original interrupt=false."
+  ],
+  "temporary_checkpoints": "deleted after metadata verification; configs, logs and report retained"
+}

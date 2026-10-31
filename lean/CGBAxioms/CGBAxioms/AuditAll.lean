@@ -32,8 +32,8 @@ run_cmd do
         throwError "Non-foundational axiom {ax} in {name}"
     let signature ← liftTermElabM do
       return (← Meta.ppExpr ci.type).pretty
-    let typeDeps := ci.type.getUsedConstants.filter (fun n =>
-      n.toString.startsWith "CGB.")
+    let typeDeps := (ci.type.getUsedConstantsAsSet.toArray.filter (fun n =>
+      n.toString.startsWith "CGB.")).qsort Name.lt
     let projectDeps := ci.getUsedConstantsAsSet.toArray.filter (fun n =>
       n.toString.startsWith "CGB.")
     let record := Json.mkObj [
@@ -42,7 +42,7 @@ run_cmd do
       ("axioms", toJson (axioms.map Name.toString)),
       ("type_dependencies", toJson (typeDeps.map Name.toString)),
       ("project_dependencies", toJson ((projectDeps.qsort Name.lt).map Name.toString))]
-    logInfo m!"CGB_AUDIT_RECORD {record.compress}"
+    IO.println s!"CGB_AUDIT_RECORD {record.compress}"
     declarationCount := declarationCount + 1
     if kind == "theorem" then theoremCount := theoremCount + 1
   let modules := env.header.moduleNames.filter (fun n =>
@@ -50,4 +50,4 @@ run_cmd do
   let summary := Json.mkObj [
     ("declarations", toJson declarationCount), ("theorems", toJson theoremCount),
     ("modules", toJson (modules.map Name.toString))]
-  logInfo m!"CGB_AUDIT_SUMMARY {summary.compress}"
+  IO.println s!"CGB_AUDIT_SUMMARY {summary.compress}"

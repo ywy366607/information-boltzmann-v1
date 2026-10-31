@@ -1,0 +1,56 @@
+{
+ "types": 3000,
+ "bilateral_types": 2813,
+ "min_syn_side": 3,
+ "metric": "share of logistic loss explained beyond the degree-only null on held-out right-side type pairs",
+ "rows": [
+  {
+   "model": "degree only (null)",
+   "test_auc": 0.7324
+  },
+  {
+   "model": "replicate (left twin of the same pair)",
+   "train": 0.6218,
+   "val": 0.6157,
+   "test": 0.6251,
+   "test_auc": 0.9563
+  },
+  {
+   "model": "learned code k=4",
+   "numbers": 12016,
+   "train": 0.4566,
+   "val": 0.4507,
+   "test": 0.4496,
+   "l2": 0.01,
+   "test_auc": 0.9608
+  },
+  {
+   "model": "learned code k=8",
+   "numbers": 24064,
+   "train": 0.563,
+   "val": 0.538,
+   "test": 0.5384,
+   "l2": 0.0001,
+   "test_auc": 0.9748
+  },
+  {
+   "model": "learned code k=16",
+   "numbers": 48256,
+   "train": 0.6252,
+   "val": 0.5863,
+   "test": 0.5881,
+   "l2": 0.01,
+   "test_auc": 0.9808
+  },
+  {
+   "model": "learned code k=32",
+   "numbers": 97024,
+   "train": 0.7038,
+   "val": 0.5845,
+   "test": 0.5858,
+   "l2": 0.01,
+   "test_auc": 0.9815
+  }
+ ],
+ "seconds": 1621
+}

@@ -1,0 +1,183 @@
+{
+ "scale_um": 4.0,
+ "crowding": "all cells (types outside the 3000 lumped as other)",
+ "strength_target": "right-side log synapses per cell pair, right-connected held-out pairs (E1d footing)",
+ "exists_target": "E1 pooled >= 5 synapses (replicate row uses left twin; not the same footing for exists)",
+ "rows": [
+  {
+   "model": "mass",
+   "strength": {
+    "train": 0.259,
+    "val": 0.2409,
+    "test": 0.2285,
+    "feature_weights": [
+     0.6618671417236328,
+     13.892372131347656
+    ]
+   },
+   "exists": {
+    "train": 0.6512,
+    "val": 0.6445,
+    "test": 0.6424,
+    "feature_weights": [
+     1.34423828125,
+     -0.47393009066581726
+    ],
+    "test_auc": 0.9867
+   }
+  },
+  {
+   "model": "post",
+   "strength": {
+    "train": 0.2562,
+    "val": 0.238,
+    "test": 0.2257,
+    "feature_weights": [
+     0.6567004323005676,
+     14.167038917541504
+    ]
+   },
+   "exists": {
+    "train": 0.6479,
+    "val": 0.6412,
+    "test": 0.6393,
+    "feature_weights": [
+     1.3457343578338623,
+     -0.43261080980300903
+    ],
+    "test_auc": 0.9865
+   }
+  },
+  {
+   "model": "pre",
+   "strength": {
+    "train": 0.2497,
+    "val": 0.2313,
+    "test": 0.2193,
+    "feature_weights": [
+     0.6463358402252197,
+     13.80270767211914
+    ]
+   },
+   "exists": {
+    "train": 0.6427,
+    "val": 0.636,
+    "test": 0.6342,
+    "feature_weights": [
+     1.3312866687774658,
+     -0.43205738067626953
+    ],
+    "test_auc": 0.986
+   }
+  },
+  {
+   "model": "both",
+   "strength": {
+    "train": 0.2184,
+    "val": 0.2014,
+    "test": 0.1908,
+    "feature_weights": [
+     0.5707395672798157,
+     12.624726295471191
+    ]
+   },
+   "exists": {
+    "train": 0.611,
+    "val": 0.6059,
+    "test": 0.6033,
+    "feature_weights": [
+     1.0707204341888428,
+     -0.417571485042572
+    ],
+    "test_auc": 0.9839
+   }
+  },
+  {
+   "model": "mass + post + pre",
+   "strength": {
+    "train": 0.2602,
+    "val": 0.2423,
+    "test": 0.23,
+    "feature_weights": [
+     0.3559504747390747,
+     4.692379951477051,
+     0.5473129153251648,
+     4.692379951477051,
+     -0.24369560182094574,
+     4.692379951477051
+    ]
+   },
+   "exists": {
+    "train": 0.65,
+    "val": 0.6426,
+    "test": 0.6407,
+    "feature_weights": [
+     0.5597524046897888,
+     -0.31379881501197815,
+     0.49467891454696655,
+     -0.31379881501197815,
+     0.43897831439971924,
+     -0.31379881501197815
+    ],
+    "test_auc": 0.9865
+   }
+  },
+  {
+   "model": "replicate (left twin)",
+   "strength": {
+    "train": 0.8374,
+    "val": 0.8414,
+    "test": 0.8357,
+    "feature_weights": [
+     0.9105866551399231,
+     -1.0569887161254883
+    ]
+   },
+   "exists": {
+    "train": 0.7276,
+    "val": 0.7204,
+    "test": 0.729,
+    "feature_weights": [
+     1.2309720516204834,
+     5.291467666625977
+    ],
+    "test_auc": 0.9702
+   }
+  },
+  {
+   "model": "mass + post + pre + replicate",
+   "strength": {
+    "train": 0.8387,
+    "val": 0.8425,
+    "test": 0.8372,
+    "feature_weights": [
+     0.14742949604988098,
+     0.42923450469970703,
+     -0.0028749636840075254,
+     0.42923450469970703,
+     -0.08839423209428787,
+     0.42923450469970703,
+     0.8905162215232849,
+     -1.056254267692566
+    ]
+   },
+   "exists": {
+    "train": 0.8336,
+    "val": 0.827,
+    "test": 0.8318,
+    "feature_weights": [
+     0.3303750157356262,
+     -0.31179025769233704,
+     0.30396366119384766,
+     -0.31179025769233704,
+     0.27784138917922974,
+     -0.31179025769233704,
+     0.7387632131576538,
+     3.6915011405944824
+    ],
+    "test_auc": 0.9965
+   }
+  }
+ ],
+ "seconds": 1102
+}

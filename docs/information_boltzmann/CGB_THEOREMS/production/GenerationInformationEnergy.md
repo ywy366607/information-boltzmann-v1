@@ -4,11 +4,11 @@
 
 [源文件](../../../../lean/CGBAxioms/CGBAxioms/GenerationInformationEnergy.lean) · [返回导航](../README.md)
 
-模块源码说明：Information and energy for a finite body in a stream (generation chain, 2026-10-28) The missing edges N1–N5 of `docs/information_boltzmann/CGB_THEOREM_RELATION_MAP_20261028.md`.
+模块源码说明：Information and energy for a finite body in a stream (generation chain, 2026-10-28) Selected mathematical identities and conditional bounds for the information economics map.
 
 ## CGB.InformationEnergy.freeEnergy_eq_kl
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationInformationEnergy.lean#L52)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationInformationEnergy.lean#L53)
 
 解释：有限状态下，按给定平衡权重定义的自由能恰等于分布相对于该权重的 KL 表达式。
 
@@ -22,7 +22,7 @@
 
 ## CGB.InformationEnergy.freeEnergy_at_law
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationInformationEnergy.lean#L58)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationInformationEnergy.lean#L59)
 
 解释：在该自由能定义下，将当前分布取为参考分布时自由能为零。
 
@@ -36,7 +36,7 @@
 
 ## CGB.InformationEnergy.kl_nonneg
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationInformationEnergy.lean#L64)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationInformationEnergy.lean#L65)
 
 解释：当 q 非负归一且 π 严格正并归一时，其有限状态 KL 散度非负。
 
@@ -51,7 +51,7 @@
 
 ## CGB.InformationEnergy.snapshot_misses_hidden
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationInformationEnergy.lean#L93)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationInformationEnergy.lean#L94)
 
 解释：在所定义的联合分布和只读取可见变量的测量核中，测量对联合状态的信息等于其对可见变量的信息。
 
@@ -66,7 +66,7 @@
 
 ## CGB.InformationEnergy.finite_memory_bounds_net_work
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationInformationEnergy.lean#L113)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationInformationEnergy.lean#L114)
 
 解释：如果提取功上限为 kT·I 且超出容量的擦除成本至少为 kT·(I−cap)，净功不超过 kT·cap。
 
@@ -80,9 +80,9 @@
 
 ## CGB.InformationEnergy.passivity_ends
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationInformationEnergy.lean#L119)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationInformationEnergy.lean#L120)
 
-解释：在正漂移使方差每步递增、噪声为正的模型里，一次观测的信息值终会超过任意指定正成本。
+解释：在正漂移的指定方差递推和正噪声条件下，对数表达式最终超过任意给定正数；这本身不决定是否行动。
 
 源码说明：**N4**: with drift `q > 0` and no observation (W2's recursion at gain zero), the information of one observation, `½ log (1 + V / r)`, exceeds any cost `c > 0` after finitely many ticks.
 
@@ -95,11 +95,11 @@
 
 ## CGB.InformationEnergy.mixture_regret_le
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationInformationEnergy.lean#L143)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationInformationEnergy.lean#L144)
 
 解释：正先验权重的有限混合模型，对任一正概率假设的负对数损失至多比该假设多 log(1/w) 。
 
-源码说明：**N5 (learning saturates)**: the Bayes mixture codes the sequence at most `log (1 / w θ₀)` worse than the source's law `θ₀` (pathwise, for every sequence and length). `P θ` is the probability the hypothesis `θ` gives to the whole sequence.
+源码说明：**N5 (mixture regret)**: the Bayes mixture codes the sequence at most `log (1 / w θ₀)` worse than the source's law `θ₀` (pathwise, for every sequence and length). `P θ` is the probability the hypothesis `θ` gives to the whole sequence.
 
 形式陈述：
 

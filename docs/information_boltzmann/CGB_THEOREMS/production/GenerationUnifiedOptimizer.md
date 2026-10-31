@@ -312,9 +312,33 @@ CGB.Continual.Nonneg CGB.Unified.uniformAllocation ∧
 ∀ (p q : ℝ), CGB.Unified.bernoulliExpectedBrier p q ≤ CGB.Unified.bernoulliExpectedBrier q q
 ```
 
+## CGB.Unified.bernoulli_prediction_error_expectation
+
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L271)
+
+源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
+
+形式陈述：
+
+```lean
+∀ (p q : ℝ), q * CGB.Unified.bernoulliPredictionError p 1 + (1 - q) * CGB.Unified.bernoulliPredictionError p 0 = q - p
+```
+
+## CGB.Unified.brier_score_is_not_outcome_prediction_error
+
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L276)
+
+源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
+
+形式陈述：
+
+```lean
+CGB.Unified.bernoulliBrierScore (1 / 2) 0 ≠ CGB.Unified.bernoulliPredictionError (1 / 2) 0
+```
+
 ## CGB.Unified.centered_bernoulli_evidence_zero_mean
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L268)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L280)
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
 
@@ -329,7 +353,7 @@ CGB.Continual.Nonneg CGB.Unified.uniformAllocation ∧
 
 ## CGB.Unified.calibrated_evidence_penalty_is_square
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L274)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L286)
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
 
@@ -339,9 +363,145 @@ CGB.Continual.Nonneg CGB.Unified.uniformAllocation ∧
 ∀ (p q : ℝ), CGB.Unified.bernoulliExpectedBrier q q - CGB.Unified.bernoulliExpectedBrier p q = (p - q) ^ 2
 ```
 
+## CGB.Unified.eligibility_gated_phase_stays_in_unit_interval
+
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L299)
+
+源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
+
+形式陈述：
+
+```lean
+∀ {kp km h m : ℝ},
+  0 ≤ kp →
+    kp ≤ 1 →
+      0 ≤ km →
+        km ≤ 1 →
+          0 ≤ h →
+            h ≤ 1 →
+              0 ≤ m →
+                m ≤ 1 →
+                  0 ≤ CGB.Unified.eligibilityGatedPhaseStep kp km h m ∧
+                    CGB.Unified.eligibilityGatedPhaseStep kp km h m ≤ 1
+```
+
+## CGB.Unified.eligibility_gate_zero_holds
+
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L312)
+
+源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
+
+形式陈述：
+
+```lean
+∀ (kp km h : ℝ), CGB.Unified.eligibilityGatedPhaseStep kp km h 0 = h
+```
+
+## CGB.Unified.eligibility_gate_one_recovers
+
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L316)
+
+源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
+
+形式陈述：
+
+```lean
+∀ (kp km h : ℝ), CGB.Unified.eligibilityGatedPhaseStep kp km h 1 = CGB.Generation.twoStateStep kp km h
+```
+
+## CGB.Unified.eligibility_gated_signed_phase_stays_bounded
+
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L323)
+
+源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
+
+形式陈述：
+
+```lean
+∀ {previous raw m : ℝ},
+  -1 ≤ previous →
+    previous ≤ 1 →
+      -1 ≤ raw →
+        raw ≤ 1 →
+          0 ≤ m →
+            m ≤ 1 →
+              -1 ≤ CGB.Unified.eligibilityGatedSignedPhase previous raw m ∧
+                CGB.Unified.eligibilityGatedSignedPhase previous raw m ≤ 1
+```
+
+## CGB.Unified.eligibility_gated_signed_phase_zero_holds
+
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L336)
+
+源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
+
+形式陈述：
+
+```lean
+∀ (previous raw : ℝ), CGB.Unified.eligibilityGatedSignedPhase previous raw 0 = previous
+```
+
+## CGB.Unified.latch_phase_holds_before_release
+
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L343)
+
+源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
+
+形式陈述：
+
+```lean
+∀ (c run : ℕ) (previous raw m : ℝ),
+  run < c → CGB.Unified.eligibilityGatedSignedPhase previous raw (CGB.Unified.latchEligibilityGate c run m) = previous
+```
+
+## CGB.Unified.latch_phase_releases_at_threshold
+
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L349)
+
+源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
+
+形式陈述：
+
+```lean
+∀ (c run : ℕ) (previous raw m : ℝ),
+  c ≤ run →
+    CGB.Unified.eligibilityGatedSignedPhase previous raw (CGB.Unified.latchEligibilityGate c run m) =
+      CGB.Unified.eligibilityGatedSignedPhase previous raw m
+```
+
+## CGB.Unified.eligibility_gated_transfer_is_conserved
+
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L365)
+
+源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
+
+形式陈述：
+
+```lean
+∀ (kp km h m : ℝ),
+  (CGB.Unified.eligibilityGatedPhaseTransfer kp km h m).sourceAfter +
+      (CGB.Unified.eligibilityGatedPhaseTransfer kp km h m).targetAfter =
+    1
+```
+
+## CGB.Unified.eligibility_gated_transfer_reads_phase
+
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L371)
+
+源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
+
+形式陈述：
+
+```lean
+∀ (kp km h m : ℝ),
+  (CGB.Unified.eligibilityGatedPhaseTransfer kp km h m).targetAfter -
+      (CGB.Unified.eligibilityGatedPhaseTransfer kp km h m).targetBefore =
+    (CGB.Unified.eligibilityGatedPhaseTransfer kp km h m).amount
+```
+
 ## CGB.Unified.ema_history_collision
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L290)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L388)
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
 
@@ -355,7 +515,7 @@ CGB.Continual.Nonneg CGB.Unified.uniformAllocation ∧
 
 ## CGB.Unified.build_has_competition_and_differentiation
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L297)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L395)
 
 源码说明：The built architecture exposes both row and column competition budgets.
 
@@ -372,7 +532,7 @@ CGB.Continual.Nonneg CGB.Unified.uniformAllocation ∧
 
 ## CGB.Unified.build_history_is_geometric
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L309)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L407)
 
 源码说明：The retained history is the geometric trace generated by two-state exchange.
 
@@ -388,7 +548,7 @@ CGB.Continual.Nonneg CGB.Unified.uniformAllocation ∧
 
 ## CGB.Unified.build_history_balance
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L317)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L415)
 
 源码说明：The supplied typed carrier exposes its telescoping conserved history.
 
@@ -405,7 +565,7 @@ CGB.Continual.Nonneg CGB.Unified.uniformAllocation ∧
 
 ## CGB.Unified.build_modulation_stays_in_band
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L329)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L427)
 
 源码说明：The outcome gate leaves a dead band and stays inside the trust interval.
 
@@ -424,7 +584,7 @@ CGB.Continual.Nonneg CGB.Unified.uniformAllocation ∧
 
 ## CGB.Unified.build_latch_holds_and_releases
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L338)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L436)
 
 源码说明：The latch both holds under short contrary evidence and releases at its threshold.
 
@@ -438,7 +598,7 @@ CGB.Continual.Nonneg CGB.Unified.uniformAllocation ∧
 
 ## CGB.Unified.build_mechanical_admission
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L349)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L447)
 
 源码说明：Combined mechanical admission: relation, competition, history and modulation.
 

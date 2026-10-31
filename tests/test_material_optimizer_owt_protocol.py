@@ -182,3 +182,25 @@ def test_outcome_arms_change_only_third_factor_gate():
     assert a.pop('outcome_modulation') is True
     assert b.pop('outcome_modulation') is False
     assert a == b
+
+
+@pytest.mark.parametrize('arm,changed', [
+    ('factor_anchor', 'latch_strength'),
+    ('factor_phase_latch', 'phase_latch_enabled'),
+    ('factor_rho', 'outcome_rho_enabled'),
+])
+def test_factor_controls_change_one_setting_and_keep_state_layout(arm, changed):
+    import torch
+    record = {'experiment': {'resource': dict(lr=.001, adam_base=True, feedback=False)}}
+    models = [torch.nn.Linear(3, 2), torch.nn.Linear(3, 2)]
+    opts = [runner.make_optimizer(models[0], record, 'factor_base'),
+            runner.make_optimizer(models[1], record, arm)]
+    groups = [{k: v for k, v in o.param_groups[0].items() if k != 'params'} for o in opts]
+    assert groups[0].pop(changed) != groups[1].pop(changed)
+    assert groups[0] == groups[1]
+    for model, opt in zip(models, opts):
+        for p in model.parameters():
+            p.grad = torch.ones_like(p)
+        opt.step()
+    assert [set(opts[0].state[p]) for p in models[0].parameters()] == [
+        set(opts[1].state[p]) for p in models[1].parameters()]

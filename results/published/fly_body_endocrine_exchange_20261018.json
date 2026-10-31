@@ -1,0 +1,320 @@
+{
+  "at": "2026-10-18T08:43:43.627524+00:00",
+  "status": "implementation_and_continuity_verified_learning_benefit_unmeasured",
+  "main_paused_at": 32384,
+  "main_sha256": "9dacf767b558b3cf4f8642644f51092a7f4047af8712c98b53f543beb380ebe4",
+  "checkpoint": {
+    "path": "F:\\fly_stream_overflow\\native_body_endocrine_20261018\\last.pt",
+    "sha256": "9dfff7ece4c4fd2d78d9b9e92348316c0adad375b0aa96210e40db901cfe52f1",
+    "trained_tokens": 32804,
+    "source_checkpoint": "F:\\fly_stream_overflow\\native_visual_20261018\\last.pt",
+    "complete_trainer_payload": true,
+    "physical_fields": [
+      "h",
+      "ring",
+      "ge",
+      "gi",
+      "b",
+      "x",
+      "u",
+      "baseline",
+      "h_mean",
+      "dan_gate",
+      "gamma_z1",
+      "gamma_z2",
+      "observer_prior",
+      "observer_history",
+      "read_bank",
+      "modulator",
+      "expected_input",
+      "dopamine",
+      "da_trace",
+      "da_memory",
+      "homeostasis",
+      "regime",
+      "comp_trace",
+      "comp_memory",
+      "credit_comp",
+      "credit_comp_trace",
+      "credit_dopamine",
+      "credit_stp",
+      "kc_avail",
+      "comp_da_trace",
+      "comp_p_stats",
+      "comp_camp",
+      "credit_comp_camp",
+      "amine_concentration",
+      "amine_receptor",
+      "cx_trace",
+      "dpm_trace",
+      "apl_trace",
+      "body_action_trace",
+      "body_feedback_trace",
+      "al_local_trace",
+      "al_pn_drive",
+      "body_muscle",
+      "body_reafference",
+      "endocrine_calcium",
+      "endocrine_lk",
+      "endocrine_receptor"
+    ],
+    "new_physical_shapes": {
+      "body_muscle": [
+        1,
+        1
+      ],
+      "body_reafference": [
+        1,
+        2
+      ],
+      "endocrine_calcium": [
+        1,
+        12
+      ],
+      "endocrine_lk": [
+        1,
+        1
+      ],
+      "endocrine_receptor": [
+        1,
+        1
+      ]
+    },
+    "new_parameters": [
+      "body_muscle_logit_decay",
+      "body_proprioceptive_gain",
+      "endocrine_log_tau",
+      "endocrine_log_affinity",
+      "endocrine_response"
+    ],
+    "source_manifest": {
+      "information_boltzmann/core/fly_body_loop.py": "70d0bef4500bd5d1cec7bbad15af75e50f6fc25525176622bd9cb2c97d7ac1f9",
+      "information_boltzmann/core/fly_endocrine_exchange.py": "4e863155cee418b2799e2ec44d22260ce979639ac6047dfadea044082fea2b24",
+      "information_boltzmann/core/fly_bptt_learning.py": "f50d83505cef7529a550571d5e6551bde9559131d88068f86df26fe8c0e01282",
+      "information_boltzmann/core/fly_mother_world.py": "9de41f0dce39a025db38817b64d802815c91055e7ff484bdbfc19673f728fd63",
+      "information_boltzmann/core/fly_native_context.py": "bed6a8528c952adc0c3e49302afcbc02c5113fc78fe81902f567f839976b5bbe",
+      "information_boltzmann/core/fly_native_policy_credit.py": "7a96e4272babd810ed138875fa66870a5726da464c7bb0c8dcc7dcf01d6f5525",
+      "scripts/ib/train_fly_bptt_stream.py": "6feac036ca761db86ceda78f3feab265cc342f00dc64d33c7828de4d0a8ce120",
+      "scripts/ib/fly_interface/native_system_matrix.py": "5976057dac5aa1ebb09f2f77ce9b32b5be15f19ea124c33f76cf1fdebf47178f",
+      "data/malecns_v1/fly_mechanism_registry.json": "f3578b69dcb34ac9ad3f605feee417eb14452395a7a4795b9a101ee16fb5a3d6",
+      "docs/information_boltzmann/FLY_EXECUTED_BODY_ENDOCRINE_20261018.md": "73a747dee6afead02b49dca2590593a2acab5a117db0d52c6a52d75fce49f1e5",
+      "data/harness/raising.json": "fcabb923240770ba39e48321525c846e0fc495612f7d96582695b4e7ef4d5c79"
+    },
+    "verification": "full trainer payload reload, named parameters and optimizer membership checked; frozen matrix restore and source/RNG controls passed"
+  },
+  "continuation": {
+    "from": 32788,
+    "to": 32804,
+    "fresh_targets": 16,
+    "optimizer_updates_added": 4,
+    "source_counts": {
+      "mother_call": 16
+    },
+    "own_segment_prequential_nll": 8.771401837468147,
+    "own_segment_fixed_unigram_nll": 8.059264465574268,
+    "interpretation": "16 queued real mother_call targets, implementation audit only; no capability or architecture conclusion"
+  },
+  "runtime": {
+    "body_action_trace": 0.07069460302591324,
+    "body_feedback_trace": 0.022312307730317116,
+    "body_feedback_mean": -0.003611514111980796,
+    "body_tau": 32.514549255371094,
+    "body_descending_count": 1314,
+    "body_ascending_count": 1846,
+    "body_muscle": 0.0,
+    "body_reafference_absmax": 0.0,
+    "body_proprioceptive_count": 1454,
+    "body_proprioceptive_gain_norm": 0.0,
+    "body_return_mode": "executed_actuator_not_descending_mean",
+    "endocrine_lk": 0.002173981163650751,
+    "endocrine_receptor": 0.0032207283657044172,
+    "endocrine_calcium": 0.03469797596335411,
+    "endocrine_response_absmax": 0.0004767754871863872,
+    "endocrine_target_count": 23
+  },
+  "native_context_gradient_norms": {
+    "body_muscle_logit_decay": 0.0,
+    "body_proprioceptive_gain": 0.0,
+    "endocrine_log_tau": 6.610724572298958e-16,
+    "endocrine_log_affinity": 1.3869008311316166e-15,
+    "endocrine_response": 5.480969477248088e-11
+  },
+  "physical_shapes": {
+    "body_muscle": [
+      1,
+      1
+    ],
+    "body_reafference": [
+      1,
+      2
+    ],
+    "endocrine_calcium": [
+      1,
+      12
+    ],
+    "endocrine_lk": [
+      1,
+      1
+    ],
+    "endocrine_receptor": [
+      1,
+      1
+    ]
+  },
+  "peak_mib": 3313.46484375,
+  "tests": {
+    "focused": {
+      "passed": 153,
+      "seconds": 49.82
+    },
+    "deslice_standalone": {
+      "passed": 9
+    },
+    "full_suite": "blocked at collection by five pre-existing missing diagnostic imports/files; see F:/fly_stream_overflow/body_endocrine_full_collection_20261018.log"
+  },
+  "causal_matrix": {
+    "path": "F:\\fly_stream_overflow\\native_body_endocrine_20261018_matrix\\report.json",
+    "status": "controls_passed",
+    "arms": 9,
+    "ticks": 69,
+    "source_and_rng_preserved": true,
+    "endocrine_off": {
+      "ce": 6.8169403076171875,
+      "ce_delta": 0.0,
+      "state_close_to_intact": false,
+      "log_prob_absmax": 0.0,
+      "muscle_absmax": 0.0,
+      "motor_logit_absmax": 0.0,
+      "physical_absmax_by_field": {
+        "h": 1.4901161193847656e-08,
+        "ring": 0.0,
+        "ge": 5.960464477539063e-08,
+        "gi": 0.0,
+        "b": 0.0,
+        "x": 0.0,
+        "u": 0.0,
+        "baseline": 0.0,
+        "h_mean": 7.450580596923828e-09,
+        "dan_gate": 0.0,
+        "gamma_z1": 0.0,
+        "gamma_z2": 0.0,
+        "observer_prior": 0.0,
+        "observer_history": 0.0,
+        "read_bank": 0.0,
+        "modulator": 0.0,
+        "expected_input": 0.0,
+        "dopamine": 1.9073486328125e-06,
+        "da_trace": 0.0,
+        "da_memory": 0.0,
+        "homeostasis": 0.0,
+        "regime": 0.0,
+        "comp_trace": 0.0,
+        "comp_memory": 1.1920928955078125e-07,
+        "credit_comp": 3.814697265625e-06,
+        "credit_comp_trace": 0.0,
+        "credit_dopamine": 5.960464477539062e-07,
+        "credit_stp": 0.0,
+        "kc_avail": 0.0,
+        "comp_da_trace": 5.960464477539063e-08,
+        "comp_p_stats": 2.7939677238464355e-09,
+        "comp_camp": 0.0,
+        "credit_comp_camp": 0.0,
+        "amine_concentration": 0.0,
+        "amine_receptor": 0.0,
+        "cx_trace": 0.0,
+        "dpm_trace": 0.0,
+        "apl_trace": 0.0,
+        "body_action_trace": 0.0,
+        "body_feedback_trace": 0.0,
+        "al_local_trace": 0.0,
+        "al_pn_drive": 4.470348358154297e-08,
+        "body_muscle": 0.0,
+        "body_reafference": 0.0,
+        "endocrine_calcium": 0.029194802045822144,
+        "endocrine_lk": 0.00015655695460736752,
+        "endocrine_receptor": 0.0006716747302561998
+      },
+      "membrane_group_absmax": {
+        "visual": 0.0,
+        "CX": 0.0,
+        "KC": 0.0,
+        "MBON": 1.4901161193847656e-08,
+        "DAN": 0.0
+      }
+    },
+    "body_off": {
+      "ce": 6.8169403076171875,
+      "ce_delta": 0.0,
+      "state_close_to_intact": false,
+      "log_prob_absmax": 0.0,
+      "muscle_absmax": 0.0,
+      "motor_logit_absmax": 0.0,
+      "physical_absmax_by_field": {
+        "h": 1.862645149230957e-08,
+        "ring": 0.0,
+        "ge": 5.960464477539063e-08,
+        "gi": 0.0,
+        "b": 0.0,
+        "x": 0.0,
+        "u": 0.0,
+        "baseline": 0.0,
+        "h_mean": 7.450580596923828e-09,
+        "dan_gate": 0.0,
+        "gamma_z1": 0.0,
+        "gamma_z2": 0.0,
+        "observer_prior": 0.0,
+        "observer_history": 0.0,
+        "read_bank": 0.0,
+        "modulator": 0.0,
+        "expected_input": 0.0,
+        "dopamine": 1.9073486328125e-06,
+        "da_trace": 0.0,
+        "da_memory": 0.0,
+        "homeostasis": 0.0,
+        "regime": 0.0,
+        "comp_trace": 0.0,
+        "comp_memory": 0.0,
+        "credit_comp": 7.450580596923828e-09,
+        "credit_comp_trace": 0.0,
+        "credit_dopamine": 5.364418029785156e-07,
+        "credit_stp": 0.0,
+        "kc_avail": 0.0,
+        "comp_da_trace": 0.0,
+        "comp_p_stats": 1.4901161193847656e-08,
+        "comp_camp": 0.0,
+        "credit_comp_camp": 0.0,
+        "amine_concentration": 0.0,
+        "amine_receptor": 0.0,
+        "cx_trace": 0.0,
+        "dpm_trace": 0.0,
+        "apl_trace": 0.0,
+        "body_action_trace": 0.003958016633987427,
+        "body_feedback_trace": 0.004256373271346092,
+        "al_local_trace": 0.0,
+        "al_pn_drive": 2.2351741790771484e-08,
+        "body_muscle": 0.0,
+        "body_reafference": 0.0,
+        "endocrine_calcium": 0.0,
+        "endocrine_lk": 0.0,
+        "endocrine_receptor": 0.0
+      },
+      "membrane_group_absmax": {
+        "visual": 0.0,
+        "CX": 0.0,
+        "KC": 0.0,
+        "MBON": 1.862645149230957e-08,
+        "DAN": 0.0
+      }
+    }
+  },
+  "scope_limits": [
+    "No executed speech occurred in this 16-target continuation; muscle state and proprioceptive gain remain zero, so real speech-to-body learning remains unmeasured.",
+    "LK calcium/ligand/occupancy and response learning are nonzero; endocrine-off produces no measurable decoder or motor effect in this 69-tick frozen trace.",
+    "The one-dimensional language actuator is an interface approximation, not a fly musculoskeletal plant.",
+    "Group-level Lkr evidence supports IPC/ITP candidates; kinetics, pooling and threshold effector are explicit model assumptions.",
+    "47 untyped ENS cells still use generic network dynamics; receptor/peripheral exchange not fabricated.",
+    "OA/5HT extension remains disabled in this checkpoint."
+  ],
+  "native_body_acceptance": "WITHDRAWN: scalar and population-mean proxies are rejected as native closure; original numeric records retained.",
+  "superseded_by": "results/published/fly_body_proxy_quarantine_20261018.json"
+}

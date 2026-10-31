@@ -1,0 +1,63 @@
+{
+  "at": "2026-10-16T15:01:59.467024+00:00",
+  "source_tokens": 16000,
+  "source_sha256": "19a82091f6f23a226e5ad30eb9177dfdbcaf8cbee8af8b2a04c1b5d61fe632bf",
+  "main_training_started": false,
+  "native_credit": {
+    "report": "E:\\fly_stream_overflow\\native_credit_only_16000_audit256_compiled\\report.json",
+    "status": "interface_passed",
+    "actual_updates": 32,
+    "physical_ticks": 3099,
+    "timing_connected": 10,
+    "content_connected": 7,
+    "settled_credit_norms": [
+      0.1748355960138887
+    ],
+    "interaction_roundtrip_exact": true,
+    "peak_mib": 3329.63330078125,
+    "source_unchanged": true,
+    "existing_posterior_retained": true,
+    "existing_posterior_updates": [
+      113,
+      115
+    ],
+    "motor_brain_gradient": true
+  },
+  "current_routes": {
+    "kc_dan_release": false,
+    "kc_habituation_tau": null,
+    "precision": false,
+    "act_dopamine_precision": false,
+    "mother_voice": true,
+    "mother_reward": true,
+    "mother_reward_ticks": 4,
+    "use_stp": false
+  },
+  "terminal_feedback": {
+    "report": "E:\\fly_stream_overflow\\kc_terminal_16000_pending64\\report.json",
+    "gain": 0.1,
+    "edges": 145727,
+    "dan_cells": 348,
+    "scope": "acute delivery of existing route, not calibrated learning benefit",
+    "tokens": 64,
+    "physical_ticks": 768,
+    "mean_ce_delta": 0.0384853333234787,
+    "mean_absolute_hazard_delta": 0.020603567663081364,
+    "max_clamp_residual": 0,
+    "mean_phi_state_rms_delta": 0.017337193829007447,
+    "mean_dopamine_state_rms_delta": 0.025711806607432663,
+    "checkpoint_unchanged": true,
+    "sham_passed": true
+  },
+  "conclusion_scope": "Native credit interface and acute terminal delivery only; selective familiarity, learning benefit and autonomous action remain unverified.",
+  "runtime_archive": "E:\\fly_stream_overflow\\native_closure_16000_runtime.zip",
+  "runtime_archive_sha256": "66d2d341e8fa32cadbcd6d4a26f9684c954e48d12a98b06e7a86cadc554d8834",
+  "tests": "135 affected numerical/interface/continuation checks passed in42.89s",
+  "review": "New independent review unavailable; no capability conclusion.",
+  "scope_correction": "Old real-state audits omitted nonpersistent mother JO/PAM wiring. Do not use old effects as training-matched evidence. Replaced by full-senses reports below.",
+  "replacement_full_senses_reports": {
+    "interface": "E:/fly_stream_overflow/native_terminal_credit_16000_full_senses256/report.json",
+    "paired": "E:/fly_stream_overflow/kc_terminal_16000_full_senses64/report.json",
+    "tests": "76 affected checks passed"
+  }
+}

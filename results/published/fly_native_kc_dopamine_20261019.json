@@ -1,0 +1,1110 @@
+{
+  "at": "2026-10-18T17:40:33.689103+00:00",
+  "status": "spatial_DAN_KC_receptor_signal_route_implemented_and_checked",
+  "geometry": {
+    "dataset": "male-cns:v1.0",
+    "confidence": 0.5,
+    "graph_sha256": "d91baf38ff9464f94e7e9fc196d999b204a0e6e31d63987343e36a7546baa325",
+    "kc_geometry_sha256": "8de40839b5da3ab72cca8443e0f3ca8fed211250339079b3022c5714fedc9385",
+    "sha256": "1ffc7f6f46387c57a82179c12fb2276ca6db67e61cc60a378353f9b0ac1407ee",
+    "graph_edges": 129134,
+    "physical_contacts": 225150,
+    "source_cells": 345,
+    "target_kcs": 4063,
+    "located_source_target_nodes": 215353,
+    "excluded_not_in_active_graph": 0,
+    "projection_distance_um_quantiles": [
+      0.008000000000038199,
+      0.5890195242943977,
+      1.2322597128852262,
+      2.65149630209055
+    ],
+    "scope": "Actual DAN-KC synapses mapped to every supplied KC tree; no ROI pooling or invented links. Fraction sums to1 per existing graph edge; source local DAN axonal physiology remains existing model.",
+    "raw_files": [
+      {
+        "file": "dan_kc_000.feather",
+        "sha256": "60db267b0554b41de2457a833795482ab82fd31e291599785e8bbd570647b04d"
+      },
+      {
+        "file": "dan_kc_001.feather",
+        "sha256": "f4ee2b4fcf6bb2a1c575ad8bcb8ec74f4e8215296a89c5b30391f050cf9ed2f0"
+      },
+      {
+        "file": "dan_kc_002.feather",
+        "sha256": "4cfc17fd4b2c2cbc994d9afca86d41d705f8ee41dc5838856add158339463ab9"
+      },
+      {
+        "file": "dan_kc_003.feather",
+        "sha256": "5a7952693e6aa45d18193807d36ff5d2e3b855cd54260b991f595c2733cdd6ec"
+      },
+      {
+        "file": "dan_kc_004.feather",
+        "sha256": "8825c7ea197339a4f2676c92f6c46d4d0cc8659423c9da9c537393572c370ec2"
+      },
+      {
+        "file": "dan_kc_005.feather",
+        "sha256": "6ed5ea203307db148153147a9eff77f35f7dab8e487f0f168c3af7f50735c9a3"
+      },
+      {
+        "file": "dan_kc_006.feather",
+        "sha256": "3b33bead49639d94348728dd60dc7006b8302a65341369562589f4ea821bb340"
+      },
+      {
+        "file": "dan_kc_007.feather",
+        "sha256": "34be79840fadbaefc7f9096f3efba564afebb56022bb0622d3b43739a1bb7d42"
+      },
+      {
+        "file": "dan_kc_008.feather",
+        "sha256": "465ab34836ba90e059062fa709eba7b2782e3dae0161c7e0d4b3d355dc6bcd46"
+      },
+      {
+        "file": "dan_kc_009.feather",
+        "sha256": "e7256714abdff7052fe48bb13e103d0a3407e09f5b6af7fda9bef2eb6e90ff4c"
+      },
+      {
+        "file": "dan_kc_010.feather",
+        "sha256": "ad642de719abc99edb77f85885e1183cdd29afe5386d6ac9fe37c1a7d479e47c"
+      },
+      {
+        "file": "dan_kc_011.feather",
+        "sha256": "4decd317440e19006ce79750f414bb3d356d998f2c4bdabaad83e108a8c7e8e7"
+      },
+      {
+        "file": "dan_kc_012.feather",
+        "sha256": "17368888b1f3cc8c87bec26807212cfb08c307069268ac8f6491ac5a4ebe499e"
+      },
+      {
+        "file": "dan_kc_013.feather",
+        "sha256": "a2388dff8b1cbb07864dd627449f00f0b3b808e4ed3a29cfb7341aaaef47865a"
+      },
+      {
+        "file": "dan_kc_014.feather",
+        "sha256": "e3f33eac60aaa08c2ee93e8a5527dc4b1360c2fa5199e5f9233756b8629a1d84"
+      },
+      {
+        "file": "dan_kc_015.feather",
+        "sha256": "873e92a6471cf6c710072134878f4a59396f54d974678622db3f0e7a52840b6f"
+      },
+      {
+        "file": "dan_kc_016.feather",
+        "sha256": "cd44626b0cc7b67b53e9d66794af6a18c7bc6c382a2a0f6a1de9abd5bb26328f"
+      },
+      {
+        "file": "dan_kc_017.feather",
+        "sha256": "a8c5f59b7215aedd48c84bcbad9b85db769dea9abb014ed0c084a6b9c3c2683b"
+      },
+      {
+        "file": "dan_kc_018.feather",
+        "sha256": "a6ac8ededd5cd30bcdab6d39e1bc185dae6e56a706084b6042cdcc016490a06f"
+      },
+      {
+        "file": "dan_kc_019.feather",
+        "sha256": "8b67116502418fb41278659704b36f8fda1b9b338798a7b67d80cc44eae1b627"
+      },
+      {
+        "file": "dan_kc_020.feather",
+        "sha256": "c92aeba08711ebaa8e87a54aaeb4d85a86b96ca9e0699b54a61d5320508eeca9"
+      },
+      {
+        "file": "dan_kc_021.feather",
+        "sha256": "53a6dcc1a788e5e2fc6b15e4d89e0319f5722e51a25dd99dadece2c1c1f7ffb2"
+      }
+    ]
+  },
+  "migration": {
+    "source": "E:\\fly_stream_overflow\\native_kc_contacts_20261019\\last.pt",
+    "source_sha256": "e79b5b0d53c750e48dd71945a9b57b5754d109558c784a29b1538fc14398078d",
+    "candidate_sha256": "cae54ccbefafd7639d288a824ac0d7606b41dadaad278784bb8c86d7b3f295ee",
+    "trained": 33000,
+    "new_inputs": 0,
+    "new_optimizer_updates": 0,
+    "window_tokens": 1,
+    "old_model_physical_optimizer_credit_world_rng_exact": true,
+    "new_state_bytes": 83694400,
+    "initialization": "Prolong existing KC fast/slow signals and conditional clock sensitivities uniformly over its morphology; no reconstructed spatial past. Contact phi/history remains exact.",
+    "teacher_scope": "Actual DAN-KC synapses, local effective receptor-driving signal transport; no molecular receptor/extracellular volume or local DAN cable claim",
+    "status": "zero_exposure_spatial_dopamine_extension_verified"
+  },
+  "restore": {
+    "checkpoint": "E:\\fly_stream_overflow\\native_kc_dopamine_20261019\\last.pt",
+    "sha256": "cae54ccbefafd7639d288a824ac0d7606b41dadaad278784bb8c86d7b3f295ee",
+    "trained": 33000,
+    "scope": "zero-exposure complete trainer restore",
+    "storage_only_override": null,
+    "empty_physical_schema_fields_added": [],
+    "missing_model_entries": [],
+    "extra_model_entries": [],
+    "changed_model_entries": [],
+    "changed_learner_entries": [],
+    "cpu_cuda_rng_exact": true,
+    "source_unchanged": true,
+    "mother_world_roundtrip_exact": true,
+    "mother_rng_exact": true,
+    "mother_world_scope": "real MotherWorld state restored without new exposure or network call",
+    "status": "exact_restore_passed"
+  },
+  "matrix": {
+    "at": "2026-10-18T17:37:35.909983+00:00",
+    "checkpoint": "E:\\fly_stream_overflow\\native_kc_dopamine_20261019\\last.pt",
+    "sha256": "cae54ccbefafd7639d288a824ac0d7606b41dadaad278784bb8c86d7b3f295ee",
+    "trained": 33000,
+    "scope": "acute frozen delivery, not learning benefit, real action consequence, exploration or self",
+    "initial_site_delivery": null,
+    "initial_contact_delivery": null,
+    "historical_body_proxy": false,
+    "body_scope": "native CNS motor language peripheral; no simulated muscle/proprioception",
+    "clock_source": "saved_pending_queue_native_rng_continuation",
+    "intervals": [
+      19
+    ],
+    "ticks": 19,
+    "reduction_order": "torch deterministic algorithms and ordered native delayed modulatory sums; unsupported operators fail closed",
+    "inputs": [
+      467
+    ],
+    "targets": [
+      832
+    ],
+    "sources": [
+      "mother_call"
+    ],
+    "motor_control": "mother is speaking, no commits; identical recorded sensory gain per tick",
+    "gpu_admission": null,
+    "arms": {
+      "intact": {
+        "replay_seconds": 30.688786899998377,
+        "peak_allocated_mib": 2663.2001953125,
+        "ce": 4.771486282348633,
+        "ce_delta": 0.0,
+        "state_close_to_intact": true,
+        "log_prob_absmax": 0.0,
+        "muscle_absmax": 0.0,
+        "motor_logit_absmax": 0.0,
+        "action_log_prob_absmax": 0.0,
+        "command_hazard_absmax": 0.0,
+        "native_motor_packet_ticks": 19,
+        "physical_absmax_by_field": {
+          "h": 0.0,
+          "ring": 0.0,
+          "ge": 0.0,
+          "gi": 0.0,
+          "b": 0.0,
+          "x": 0.0,
+          "u": 0.0,
+          "baseline": 0.0,
+          "h_mean": 0.0,
+          "dan_gate": 0.0,
+          "gamma_z1": 0.0,
+          "gamma_z2": 0.0,
+          "observer_prior": 0.0,
+          "observer_history": 0.0,
+          "read_bank": 0.0,
+          "modulator": 0.0,
+          "expected_input": 0.0,
+          "dopamine": 0.0,
+          "da_trace": 0.0,
+          "da_memory": 0.0,
+          "homeostasis": 0.0,
+          "regime": 0.0,
+          "comp_trace": 0.0,
+          "comp_memory": 0.0,
+          "credit_comp": 0.0,
+          "credit_comp_trace": 0.0,
+          "credit_dopamine": 0.0,
+          "credit_stp": 0.0,
+          "kc_avail": 0.0,
+          "comp_da_trace": 0.0,
+          "comp_p_stats": 0.0,
+          "comp_camp": 0.0,
+          "credit_comp_camp": 0.0,
+          "amine_concentration": 0.0,
+          "amine_receptor": 0.0,
+          "cx_trace": 0.0,
+          "dpm_trace": 0.0,
+          "apl_trace": 0.0,
+          "mb_terminal_gaba": 0.0,
+          "mb_dpm_concentration": 0.0,
+          "mb_dpm_receptor": 0.0,
+          "apl_voltage": 0.0,
+          "apl_ge": 0.0,
+          "apl_gi": 0.0,
+          "apl_packets": 0.0,
+          "kc_terminal_gaba": 0.0,
+          "kc_terminal_5ht": 0.0,
+          "kc_terminal_receptor": 0.0,
+          "kc_terminal_packets": 0.0,
+          "kc_terminal_eligibility": 0.0,
+          "kc_terminal_eligibility_credit": 0.0,
+          "kc_site_resources": 0.0,
+          "kc_site_utilization": 0.0,
+          "kc_contact_memory": 0.0,
+          "kc_contact_trace": 0.0,
+          "kc_contact_da_trace": 0.0,
+          "kc_contact_p_stats": 0.0,
+          "kc_contact_camp": 0.0,
+          "kc_contact_credit": 0.0,
+          "kc_contact_trace_credit": 0.0,
+          "kc_contact_camp_credit": 0.0,
+          "kc_dopamine_signal": 0.0,
+          "kc_dopamine_credit": 0.0,
+          "body_action_trace": 0.0,
+          "body_feedback_trace": 0.0,
+          "al_local_trace": 0.0,
+          "al_pn_drive": 0.0,
+          "body_muscle": 0.0,
+          "body_reafference": 0.0,
+          "endocrine_calcium": 0.0,
+          "endocrine_lk": 0.0,
+          "endocrine_receptor": 0.0
+        },
+        "membrane_group_absmax": {
+          "visual": 0.0,
+          "CX": 0.0,
+          "KC": 0.0,
+          "MBON": 0.0,
+          "DAN": 0.0,
+          "OA": 0.0,
+          "5HT": 0.0
+        },
+        "amine_terminal_snapshot": {
+          "oa": {
+            "concentration_max": 0.18825757503509521,
+            "occupancy_max": 0.27594026923179626,
+            "occupied_cells": 63413,
+            "response_absmax": 0.1131713017821312
+          },
+          "5ht": {
+            "concentration_max": 0.23406803607940674,
+            "occupancy_max": 0.3196566700935364,
+            "occupied_cells": 25497,
+            "response_absmax": 0.10953004658222198
+          }
+        },
+        "mb_terminal_snapshot": {
+          "source_body_ids": [
+            11734,
+            12569,
+            10540,
+            10977
+          ],
+          "gaba_max_by_source": [
+            5.562627181793234e-12,
+            0.007834377698600292,
+            0.037207357585430145,
+            0.02117932215332985
+          ],
+          "5ht_concentration_max_by_dpm": [
+            0.025821557268500328,
+            0.07829848676919937
+          ],
+          "5ht_receptor_max": 0.14361540973186493,
+          "spatial_scope": "historical pooled snapshot retained, inactive; current local signals are in kc_terminal_snapshot"
+        },
+        "apl_cable_snapshot": {
+          "nodes": 88905,
+          "local_voltage_min": -0.14976166188716888,
+          "local_voltage_max": 0.5478740334510803,
+          "local_voltage_sd": 0.14544735848903656,
+          "packet_nonzero_nodes": 71231,
+          "scope": "all supplied native APL tree nodes; KC bouton cable not reconstructed"
+        },
+        "kc_terminal_snapshot": {
+          "nodes": 4184720,
+          "release_sites": 709034,
+          "kc_with_different_site_release": 27,
+          "within_kc_release_range_max": 0.9142079949378967,
+          "gaba_effector_max": 13.436656951904297,
+          "5ht_effector_max": 8.933037757873535,
+          "local_eligibility_max": 1.0,
+          "resources_min": 0.0998111367225647,
+          "utilization_max": 0.6562253832817078,
+          "scope": "actual sites and spatial effective receptor signals; not axonal action-potential cable or identified molecular localization"
+        },
+        "contact_memory_snapshot": {
+          "actual_MBON_input_vs_retained_reference_absmax": 0.001827438361942768,
+          "connections_with_local_phi_difference": 21175,
+          "within_connection_phi_range_max": 0.2645750045776367,
+          "contacts": 463628,
+          "phi_min": -0.9866907596588135,
+          "phi_max": 0.0020299970638006926,
+          "trace_max": 0.9657557010650635,
+          "teacher": "actual DAN-KC contact-local receptor signal"
+        },
+        "kc_dopamine_snapshot": {
+          "nodes": 4184720,
+          "signal_max": 20.858428955078125,
+          "signal_sd": 0.6207141876220703,
+          "contact_teacher_vs_MBON_reference_absmax": 48.0401611328125
+        }
+      },
+      "sham": {
+        "replay_seconds": 30.43364460000157,
+        "peak_allocated_mib": 2950.8671875,
+        "ce": 4.771486282348633,
+        "ce_delta": 0.0,
+        "state_close_to_intact": true,
+        "log_prob_absmax": 0.0,
+        "muscle_absmax": 0.0,
+        "motor_logit_absmax": 0.0,
+        "action_log_prob_absmax": 0.0,
+        "command_hazard_absmax": 0.0,
+        "native_motor_packet_ticks": 19,
+        "physical_absmax_by_field": {
+          "h": 0.0,
+          "ring": 0.0,
+          "ge": 0.0,
+          "gi": 0.0,
+          "b": 0.0,
+          "x": 0.0,
+          "u": 0.0,
+          "baseline": 0.0,
+          "h_mean": 0.0,
+          "dan_gate": 0.0,
+          "gamma_z1": 0.0,
+          "gamma_z2": 0.0,
+          "observer_prior": 0.0,
+          "observer_history": 0.0,
+          "read_bank": 0.0,
+          "modulator": 0.0,
+          "expected_input": 0.0,
+          "dopamine": 0.0,
+          "da_trace": 0.0,
+          "da_memory": 0.0,
+          "homeostasis": 0.0,
+          "regime": 0.0,
+          "comp_trace": 0.0,
+          "comp_memory": 0.0,
+          "credit_comp": 0.0,
+          "credit_comp_trace": 0.0,
+          "credit_dopamine": 0.0,
+          "credit_stp": 0.0,
+          "kc_avail": 0.0,
+          "comp_da_trace": 0.0,
+          "comp_p_stats": 0.0,
+          "comp_camp": 0.0,
+          "credit_comp_camp": 0.0,
+          "amine_concentration": 0.0,
+          "amine_receptor": 0.0,
+          "cx_trace": 0.0,
+          "dpm_trace": 0.0,
+          "apl_trace": 0.0,
+          "mb_terminal_gaba": 0.0,
+          "mb_dpm_concentration": 0.0,
+          "mb_dpm_receptor": 0.0,
+          "apl_voltage": 0.0,
+          "apl_ge": 0.0,
+          "apl_gi": 0.0,
+          "apl_packets": 0.0,
+          "kc_terminal_gaba": 0.0,
+          "kc_terminal_5ht": 0.0,
+          "kc_terminal_receptor": 0.0,
+          "kc_terminal_packets": 0.0,
+          "kc_terminal_eligibility": 0.0,
+          "kc_terminal_eligibility_credit": 0.0,
+          "kc_site_resources": 0.0,
+          "kc_site_utilization": 0.0,
+          "kc_contact_memory": 0.0,
+          "kc_contact_trace": 0.0,
+          "kc_contact_da_trace": 0.0,
+          "kc_contact_p_stats": 0.0,
+          "kc_contact_camp": 0.0,
+          "kc_contact_credit": 0.0,
+          "kc_contact_trace_credit": 0.0,
+          "kc_contact_camp_credit": 0.0,
+          "kc_dopamine_signal": 0.0,
+          "kc_dopamine_credit": 0.0,
+          "body_action_trace": 0.0,
+          "body_feedback_trace": 0.0,
+          "al_local_trace": 0.0,
+          "al_pn_drive": 0.0,
+          "body_muscle": 0.0,
+          "body_reafference": 0.0,
+          "endocrine_calcium": 0.0,
+          "endocrine_lk": 0.0,
+          "endocrine_receptor": 0.0
+        },
+        "membrane_group_absmax": {
+          "visual": 0.0,
+          "CX": 0.0,
+          "KC": 0.0,
+          "MBON": 0.0,
+          "DAN": 0.0,
+          "OA": 0.0,
+          "5HT": 0.0
+        },
+        "amine_terminal_snapshot": {
+          "oa": {
+            "concentration_max": 0.18825757503509521,
+            "occupancy_max": 0.27594026923179626,
+            "occupied_cells": 63413,
+            "response_absmax": 0.1131713017821312
+          },
+          "5ht": {
+            "concentration_max": 0.23406803607940674,
+            "occupancy_max": 0.3196566700935364,
+            "occupied_cells": 25497,
+            "response_absmax": 0.10953004658222198
+          }
+        },
+        "mb_terminal_snapshot": {
+          "source_body_ids": [
+            11734,
+            12569,
+            10540,
+            10977
+          ],
+          "gaba_max_by_source": [
+            5.562627181793234e-12,
+            0.007834377698600292,
+            0.037207357585430145,
+            0.02117932215332985
+          ],
+          "5ht_concentration_max_by_dpm": [
+            0.025821557268500328,
+            0.07829848676919937
+          ],
+          "5ht_receptor_max": 0.14361540973186493,
+          "spatial_scope": "historical pooled snapshot retained, inactive; current local signals are in kc_terminal_snapshot"
+        },
+        "apl_cable_snapshot": {
+          "nodes": 88905,
+          "local_voltage_min": -0.14976166188716888,
+          "local_voltage_max": 0.5478740334510803,
+          "local_voltage_sd": 0.14544735848903656,
+          "packet_nonzero_nodes": 71231,
+          "scope": "all supplied native APL tree nodes; KC bouton cable not reconstructed"
+        },
+        "kc_terminal_snapshot": {
+          "nodes": 4184720,
+          "release_sites": 709034,
+          "kc_with_different_site_release": 27,
+          "within_kc_release_range_max": 0.9142079949378967,
+          "gaba_effector_max": 13.436656951904297,
+          "5ht_effector_max": 8.933037757873535,
+          "local_eligibility_max": 1.0,
+          "resources_min": 0.0998111367225647,
+          "utilization_max": 0.6562253832817078,
+          "scope": "actual sites and spatial effective receptor signals; not axonal action-potential cable or identified molecular localization"
+        },
+        "contact_memory_snapshot": {
+          "actual_MBON_input_vs_retained_reference_absmax": 0.001827438361942768,
+          "connections_with_local_phi_difference": 21175,
+          "within_connection_phi_range_max": 0.2645750045776367,
+          "contacts": 463628,
+          "phi_min": -0.9866907596588135,
+          "phi_max": 0.0020299970638006926,
+          "trace_max": 0.9657557010650635,
+          "teacher": "actual DAN-KC contact-local receptor signal"
+        },
+        "kc_dopamine_snapshot": {
+          "nodes": 4184720,
+          "signal_max": 20.858428955078125,
+          "signal_sd": 0.6207141876220703,
+          "contact_teacher_vs_MBON_reference_absmax": 48.0401611328125
+        }
+      },
+      "kc_dopamine_delivery": {
+        "replay_seconds": 31.389125100002275,
+        "peak_allocated_mib": 3225.2041015625,
+        "ce": 4.771482467651367,
+        "ce_delta": -3.814697265625e-06,
+        "state_close_to_intact": false,
+        "log_prob_absmax": 9.632110595703125e-05,
+        "muscle_absmax": 0.0,
+        "motor_logit_absmax": 0.0,
+        "action_log_prob_absmax": 0.0,
+        "command_hazard_absmax": 0.0,
+        "native_motor_packet_ticks": 19,
+        "physical_absmax_by_field": {
+          "h": 0.10706368088722229,
+          "ring": 1.0,
+          "ge": 0.19825221598148346,
+          "gi": 0.32524573802948,
+          "b": 0.039210498332977295,
+          "x": 0.0,
+          "u": 0.0,
+          "baseline": 0.0,
+          "h_mean": 0.001887992024421692,
+          "dan_gate": 0.0,
+          "gamma_z1": 0.0,
+          "gamma_z2": 0.0,
+          "observer_prior": 0.0,
+          "observer_history": 0.0,
+          "read_bank": 0.0,
+          "modulator": 0.0,
+          "expected_input": 5.5730342864990234e-06,
+          "dopamine": 2.384185791015625e-07,
+          "da_trace": 0.0,
+          "da_memory": 0.0,
+          "homeostasis": 0.0,
+          "regime": 0.0,
+          "comp_trace": 0.0,
+          "comp_memory": 0.0,
+          "credit_comp": 0.0,
+          "credit_comp_trace": 0.0,
+          "credit_dopamine": 3.5762786865234375e-07,
+          "credit_stp": 0.0,
+          "kc_avail": 0.0,
+          "comp_da_trace": 0.0,
+          "comp_p_stats": 0.0,
+          "comp_camp": 0.0,
+          "credit_comp_camp": 0.0,
+          "amine_concentration": 0.0,
+          "amine_receptor": 0.0,
+          "cx_trace": 0.0,
+          "dpm_trace": 0.0,
+          "apl_trace": 0.0,
+          "mb_terminal_gaba": 0.0,
+          "mb_dpm_concentration": 0.0,
+          "mb_dpm_receptor": 0.0,
+          "apl_voltage": 0.028489232063293457,
+          "apl_ge": 0.05413818359375,
+          "apl_gi": 19.103466033935547,
+          "apl_packets": 0.029416196048259735,
+          "kc_terminal_gaba": 0.04832207411527634,
+          "kc_terminal_5ht": 0.0,
+          "kc_terminal_receptor": 0.0,
+          "kc_terminal_packets": 0.0007544755935668945,
+          "kc_terminal_eligibility": 0.0,
+          "kc_terminal_eligibility_credit": 0.0,
+          "kc_site_resources": 0.0003268122673034668,
+          "kc_site_utilization": 0.0,
+          "kc_contact_memory": 0.2645750045776367,
+          "kc_contact_trace": 0.0007162690162658691,
+          "kc_contact_da_trace": 0.9804683327674866,
+          "kc_contact_p_stats": 0.011576861143112183,
+          "kc_contact_camp": 0.0,
+          "kc_contact_credit": 7.2071380615234375,
+          "kc_contact_trace_credit": 7.20396637916565e-05,
+          "kc_contact_camp_credit": 0.0,
+          "kc_dopamine_signal": 19.989450454711914,
+          "kc_dopamine_credit": 17.990283966064453,
+          "body_action_trace": 0.0,
+          "body_feedback_trace": 0.0,
+          "al_local_trace": 0.0,
+          "al_pn_drive": 0.0,
+          "body_muscle": 0.0,
+          "body_reafference": 0.0,
+          "endocrine_calcium": 0.0,
+          "endocrine_lk": 0.0,
+          "endocrine_receptor": 0.0
+        },
+        "membrane_group_absmax": {
+          "visual": 0.0,
+          "CX": 0.003506133332848549,
+          "KC": 0.0,
+          "MBON": 0.008358953520655632,
+          "DAN": 0.0017394348978996277,
+          "OA": 0.00045637041330337524,
+          "5HT": 0.0
+        },
+        "amine_terminal_snapshot": {
+          "oa": {
+            "concentration_max": 0.18825757503509521,
+            "occupancy_max": 0.27594026923179626,
+            "occupied_cells": 63413,
+            "response_absmax": 0.1131713017821312
+          },
+          "5ht": {
+            "concentration_max": 0.23406803607940674,
+            "occupancy_max": 0.3196566700935364,
+            "occupied_cells": 25497,
+            "response_absmax": 0.10953004658222198
+          }
+        },
+        "mb_terminal_snapshot": {
+          "source_body_ids": [
+            11734,
+            12569,
+            10540,
+            10977
+          ],
+          "gaba_max_by_source": [
+            5.562627181793234e-12,
+            0.007834377698600292,
+            0.037207357585430145,
+            0.02117932215332985
+          ],
+          "5ht_concentration_max_by_dpm": [
+            0.025821557268500328,
+            0.07829848676919937
+          ],
+          "5ht_receptor_max": 0.14361540973186493,
+          "spatial_scope": "historical pooled snapshot retained, inactive; current local signals are in kc_terminal_snapshot"
+        },
+        "apl_cable_snapshot": {
+          "nodes": 88905,
+          "local_voltage_min": -0.14976166188716888,
+          "local_voltage_max": 0.5478740334510803,
+          "local_voltage_sd": 0.14544765651226044,
+          "packet_nonzero_nodes": 71231,
+          "scope": "all supplied native APL tree nodes; KC bouton cable not reconstructed"
+        },
+        "kc_terminal_snapshot": {
+          "nodes": 4184720,
+          "release_sites": 709034,
+          "kc_with_different_site_release": 27,
+          "within_kc_release_range_max": 0.9142079949378967,
+          "gaba_effector_max": 13.436656951904297,
+          "5ht_effector_max": 8.933037757873535,
+          "local_eligibility_max": 1.0,
+          "resources_min": 0.0998111367225647,
+          "utilization_max": 0.6562253832817078,
+          "scope": "actual sites and spatial effective receptor signals; not axonal action-potential cable or identified molecular localization"
+        },
+        "contact_memory_snapshot": {
+          "actual_MBON_input_vs_retained_reference_absmax": 3.255135379731655e-05,
+          "connections_with_local_phi_difference": 705,
+          "within_connection_phi_range_max": 0.0012933611869812012,
+          "contacts": 463628,
+          "phi_min": -0.9851639866828918,
+          "phi_max": 0.0020299970638006926,
+          "trace_max": 0.9657557010650635,
+          "teacher": "actual DAN-KC contact-local receptor signal"
+        },
+        "kc_dopamine_snapshot": {
+          "nodes": 4184720,
+          "signal_max": 1.3064403533935547,
+          "signal_sd": 0.20018020272254944,
+          "contact_teacher_vs_MBON_reference_absmax": 48.151329040527344
+        }
+      },
+      "kc_dopamine_teacher": {
+        "replay_seconds": 30.49144510000042,
+        "peak_allocated_mib": 3224.19287109375,
+        "ce": 4.771482467651367,
+        "ce_delta": -3.814697265625e-06,
+        "state_close_to_intact": false,
+        "log_prob_absmax": 9.632110595703125e-05,
+        "muscle_absmax": 0.0,
+        "motor_logit_absmax": 0.0,
+        "action_log_prob_absmax": 0.0,
+        "command_hazard_absmax": 0.0,
+        "native_motor_packet_ticks": 19,
+        "physical_absmax_by_field": {
+          "h": 0.10706368088722229,
+          "ring": 1.0,
+          "ge": 0.19825221598148346,
+          "gi": 0.32524573802948,
+          "b": 0.039210498332977295,
+          "x": 0.0,
+          "u": 0.0,
+          "baseline": 0.0,
+          "h_mean": 0.001887992024421692,
+          "dan_gate": 0.0,
+          "gamma_z1": 0.0,
+          "gamma_z2": 0.0,
+          "observer_prior": 0.0,
+          "observer_history": 0.0,
+          "read_bank": 0.0,
+          "modulator": 0.0,
+          "expected_input": 5.5730342864990234e-06,
+          "dopamine": 2.384185791015625e-07,
+          "da_trace": 0.0,
+          "da_memory": 0.0,
+          "homeostasis": 0.0,
+          "regime": 0.0,
+          "comp_trace": 0.0,
+          "comp_memory": 0.0,
+          "credit_comp": 0.0,
+          "credit_comp_trace": 0.0,
+          "credit_dopamine": 3.5762786865234375e-07,
+          "credit_stp": 0.0,
+          "kc_avail": 0.0,
+          "comp_da_trace": 0.0,
+          "comp_p_stats": 0.0,
+          "comp_camp": 0.0,
+          "credit_comp_camp": 0.0,
+          "amine_concentration": 0.0,
+          "amine_receptor": 0.0,
+          "cx_trace": 0.0,
+          "dpm_trace": 0.0,
+          "apl_trace": 0.0,
+          "mb_terminal_gaba": 0.0,
+          "mb_dpm_concentration": 0.0,
+          "mb_dpm_receptor": 0.0,
+          "apl_voltage": 0.028489232063293457,
+          "apl_ge": 0.05413818359375,
+          "apl_gi": 19.103466033935547,
+          "apl_packets": 0.029416196048259735,
+          "kc_terminal_gaba": 0.04832207411527634,
+          "kc_terminal_5ht": 0.0,
+          "kc_terminal_receptor": 0.0,
+          "kc_terminal_packets": 0.0007544755935668945,
+          "kc_terminal_eligibility": 0.0,
+          "kc_terminal_eligibility_credit": 0.0,
+          "kc_site_resources": 0.0003268122673034668,
+          "kc_site_utilization": 0.0,
+          "kc_contact_memory": 0.2645750045776367,
+          "kc_contact_trace": 0.0007162690162658691,
+          "kc_contact_da_trace": 0.9804683327674866,
+          "kc_contact_p_stats": 0.015790283679962158,
+          "kc_contact_camp": 0.0,
+          "kc_contact_credit": 7.2071380615234375,
+          "kc_contact_trace_credit": 7.20396637916565e-05,
+          "kc_contact_camp_credit": 0.0,
+          "kc_dopamine_signal": 1.430511474609375e-06,
+          "kc_dopamine_credit": 9.5367431640625e-07,
+          "body_action_trace": 0.0,
+          "body_feedback_trace": 0.0,
+          "al_local_trace": 0.0,
+          "al_pn_drive": 0.0,
+          "body_muscle": 0.0,
+          "body_reafference": 0.0,
+          "endocrine_calcium": 0.0,
+          "endocrine_lk": 0.0,
+          "endocrine_receptor": 0.0
+        },
+        "membrane_group_absmax": {
+          "visual": 0.0,
+          "CX": 0.003506133332848549,
+          "KC": 0.0,
+          "MBON": 0.008358953520655632,
+          "DAN": 0.0017394348978996277,
+          "OA": 0.00045637041330337524,
+          "5HT": 0.0
+        },
+        "amine_terminal_snapshot": {
+          "oa": {
+            "concentration_max": 0.18825757503509521,
+            "occupancy_max": 0.27594026923179626,
+            "occupied_cells": 63413,
+            "response_absmax": 0.1131713017821312
+          },
+          "5ht": {
+            "concentration_max": 0.23406803607940674,
+            "occupancy_max": 0.3196566700935364,
+            "occupied_cells": 25497,
+            "response_absmax": 0.10953004658222198
+          }
+        },
+        "mb_terminal_snapshot": {
+          "source_body_ids": [
+            11734,
+            12569,
+            10540,
+            10977
+          ],
+          "gaba_max_by_source": [
+            5.562627181793234e-12,
+            0.007834377698600292,
+            0.037207357585430145,
+            0.02117932215332985
+          ],
+          "5ht_concentration_max_by_dpm": [
+            0.025821557268500328,
+            0.07829848676919937
+          ],
+          "5ht_receptor_max": 0.14361540973186493,
+          "spatial_scope": "historical pooled snapshot retained, inactive; current local signals are in kc_terminal_snapshot"
+        },
+        "apl_cable_snapshot": {
+          "nodes": 88905,
+          "local_voltage_min": -0.14976166188716888,
+          "local_voltage_max": 0.5478740334510803,
+          "local_voltage_sd": 0.14544765651226044,
+          "packet_nonzero_nodes": 71231,
+          "scope": "all supplied native APL tree nodes; KC bouton cable not reconstructed"
+        },
+        "kc_terminal_snapshot": {
+          "nodes": 4184720,
+          "release_sites": 709034,
+          "kc_with_different_site_release": 27,
+          "within_kc_release_range_max": 0.9142079949378967,
+          "gaba_effector_max": 13.436656951904297,
+          "5ht_effector_max": 8.933037757873535,
+          "local_eligibility_max": 1.0,
+          "resources_min": 0.0998111367225647,
+          "utilization_max": 0.6562253832817078,
+          "scope": "actual sites and spatial effective receptor signals; not axonal action-potential cable or identified molecular localization"
+        },
+        "contact_memory_snapshot": {
+          "actual_MBON_input_vs_retained_reference_absmax": 3.908015787601471e-05,
+          "connections_with_local_phi_difference": 423,
+          "within_connection_phi_range_max": 0.00125885009765625,
+          "contacts": 463628,
+          "phi_min": -0.9853697419166565,
+          "phi_max": 0.0020299970638006926,
+          "trace_max": 0.9657557010650635,
+          "teacher": "actual DAN-KC contact-local receptor signal"
+        },
+        "kc_dopamine_snapshot": {
+          "nodes": 4184720,
+          "signal_max": 20.858428955078125,
+          "signal_sd": 0.6207141876220703,
+          "contact_teacher_vs_MBON_reference_absmax": 48.0401611328125
+        }
+      },
+      "restored": {
+        "replay_seconds": 30.51915259999805,
+        "peak_allocated_mib": 3226.75439453125,
+        "ce": 4.771486282348633,
+        "ce_delta": 0.0,
+        "state_close_to_intact": true,
+        "log_prob_absmax": 0.0,
+        "muscle_absmax": 0.0,
+        "motor_logit_absmax": 0.0,
+        "action_log_prob_absmax": 0.0,
+        "command_hazard_absmax": 0.0,
+        "native_motor_packet_ticks": 19,
+        "physical_absmax_by_field": {
+          "h": 0.0,
+          "ring": 0.0,
+          "ge": 0.0,
+          "gi": 0.0,
+          "b": 0.0,
+          "x": 0.0,
+          "u": 0.0,
+          "baseline": 0.0,
+          "h_mean": 0.0,
+          "dan_gate": 0.0,
+          "gamma_z1": 0.0,
+          "gamma_z2": 0.0,
+          "observer_prior": 0.0,
+          "observer_history": 0.0,
+          "read_bank": 0.0,
+          "modulator": 0.0,
+          "expected_input": 0.0,
+          "dopamine": 0.0,
+          "da_trace": 0.0,
+          "da_memory": 0.0,
+          "homeostasis": 0.0,
+          "regime": 0.0,
+          "comp_trace": 0.0,
+          "comp_memory": 0.0,
+          "credit_comp": 0.0,
+          "credit_comp_trace": 0.0,
+          "credit_dopamine": 0.0,
+          "credit_stp": 0.0,
+          "kc_avail": 0.0,
+          "comp_da_trace": 0.0,
+          "comp_p_stats": 0.0,
+          "comp_camp": 0.0,
+          "credit_comp_camp": 0.0,
+          "amine_concentration": 0.0,
+          "amine_receptor": 0.0,
+          "cx_trace": 0.0,
+          "dpm_trace": 0.0,
+          "apl_trace": 0.0,
+          "mb_terminal_gaba": 0.0,
+          "mb_dpm_concentration": 0.0,
+          "mb_dpm_receptor": 0.0,
+          "apl_voltage": 0.0,
+          "apl_ge": 0.0,
+          "apl_gi": 0.0,
+          "apl_packets": 0.0,
+          "kc_terminal_gaba": 0.0,
+          "kc_terminal_5ht": 0.0,
+          "kc_terminal_receptor": 0.0,
+          "kc_terminal_packets": 0.0,
+          "kc_terminal_eligibility": 0.0,
+          "kc_terminal_eligibility_credit": 0.0,
+          "kc_site_resources": 0.0,
+          "kc_site_utilization": 0.0,
+          "kc_contact_memory": 0.0,
+          "kc_contact_trace": 0.0,
+          "kc_contact_da_trace": 0.0,
+          "kc_contact_p_stats": 0.0,
+          "kc_contact_camp": 0.0,
+          "kc_contact_credit": 0.0,
+          "kc_contact_trace_credit": 0.0,
+          "kc_contact_camp_credit": 0.0,
+          "kc_dopamine_signal": 0.0,
+          "kc_dopamine_credit": 0.0,
+          "body_action_trace": 0.0,
+          "body_feedback_trace": 0.0,
+          "al_local_trace": 0.0,
+          "al_pn_drive": 0.0,
+          "body_muscle": 0.0,
+          "body_reafference": 0.0,
+          "endocrine_calcium": 0.0,
+          "endocrine_lk": 0.0,
+          "endocrine_receptor": 0.0
+        },
+        "membrane_group_absmax": {
+          "visual": 0.0,
+          "CX": 0.0,
+          "KC": 0.0,
+          "MBON": 0.0,
+          "DAN": 0.0,
+          "OA": 0.0,
+          "5HT": 0.0
+        },
+        "amine_terminal_snapshot": {
+          "oa": {
+            "concentration_max": 0.18825757503509521,
+            "occupancy_max": 0.27594026923179626,
+            "occupied_cells": 63413,
+            "response_absmax": 0.1131713017821312
+          },
+          "5ht": {
+            "concentration_max": 0.23406803607940674,
+            "occupancy_max": 0.3196566700935364,
+            "occupied_cells": 25497,
+            "response_absmax": 0.10953004658222198
+          }
+        },
+        "mb_terminal_snapshot": {
+          "source_body_ids": [
+            11734,
+            12569,
+            10540,
+            10977
+          ],
+          "gaba_max_by_source": [
+            5.562627181793234e-12,
+            0.007834377698600292,
+            0.037207357585430145,
+            0.02117932215332985
+          ],
+          "5ht_concentration_max_by_dpm": [
+            0.025821557268500328,
+            0.07829848676919937
+          ],
+          "5ht_receptor_max": 0.14361540973186493,
+          "spatial_scope": "historical pooled snapshot retained, inactive; current local signals are in kc_terminal_snapshot"
+        },
+        "apl_cable_snapshot": {
+          "nodes": 88905,
+          "local_voltage_min": -0.14976166188716888,
+          "local_voltage_max": 0.5478740334510803,
+          "local_voltage_sd": 0.14544735848903656,
+          "packet_nonzero_nodes": 71231,
+          "scope": "all supplied native APL tree nodes; KC bouton cable not reconstructed"
+        },
+        "kc_terminal_snapshot": {
+          "nodes": 4184720,
+          "release_sites": 709034,
+          "kc_with_different_site_release": 27,
+          "within_kc_release_range_max": 0.9142079949378967,
+          "gaba_effector_max": 13.436656951904297,
+          "5ht_effector_max": 8.933037757873535,
+          "local_eligibility_max": 1.0,
+          "resources_min": 0.0998111367225647,
+          "utilization_max": 0.6562253832817078,
+          "scope": "actual sites and spatial effective receptor signals; not axonal action-potential cable or identified molecular localization"
+        },
+        "contact_memory_snapshot": {
+          "actual_MBON_input_vs_retained_reference_absmax": 0.001827438361942768,
+          "connections_with_local_phi_difference": 21175,
+          "within_connection_phi_range_max": 0.2645750045776367,
+          "contacts": 463628,
+          "phi_min": -0.9866907596588135,
+          "phi_max": 0.0020299970638006926,
+          "trace_max": 0.9657557010650635,
+          "teacher": "actual DAN-KC contact-local receptor signal"
+        },
+        "kc_dopamine_snapshot": {
+          "nodes": 4184720,
+          "signal_max": 20.858428955078125,
+          "signal_sd": 0.6207141876220703,
+          "contact_teacher_vs_MBON_reference_absmax": 48.0401611328125
+        }
+      }
+    },
+    "enabled": {
+      "cx": true,
+      "mb_regulators": true,
+      "historical_body_proxy": false,
+      "al_relay": true,
+      "amines": true,
+      "visual": true,
+      "endocrine": true,
+      "motor_terminal": true,
+      "mb_terminal": true,
+      "mb_terminal_gaba": true,
+      "dpm_5ht": true,
+      "apl_release": true,
+      "apl_axial": true,
+      "kc_sites": true,
+      "kc_site_transport": true,
+      "kc_site_stp": true,
+      "kc_contact_write": true,
+      "kc_contact_read": true,
+      "kc_dopamine_delivery": true,
+      "kc_dopamine_teacher": true
+    },
+    "initial_spatial_dopamine_delivery": {
+      "volume_weighted_KC_mean_vs_original_graph_absmax": 3.5762786865234375e-07,
+      "close": true,
+      "scope": "same current spike queue only; no added experience or terminal feedback intervention"
+    },
+    "requested_systems": [
+      "kc_dopamine_delivery",
+      "kc_dopamine_teacher"
+    ],
+    "frozen_archive_scope": "Complete restore first; discard optimizer/parameter-score copies for frozen physical replay only, never saved back.",
+    "control_tolerance": {
+      "state_rtol": 1e-05,
+      "state_atol": 1e-06,
+      "log_prob_atol": 2e-05,
+      "source": "native_causal_audit.states_close"
+    },
+    "controls_passed": true,
+    "source_and_rng_preserved": true,
+    "status": "controls_passed"
+  },
+  "resources": {
+    "new_state_bytes": 83694400,
+    "new_parameter_elements": 4064,
+    "peak_frozen_allocated_mib": 3226.75439453125,
+    "intact_replay_seconds": 30.688786899998377,
+    "scope": "Frozen physical replay after full restore and discarded optimizer/score copies; not total process VRAM or BPTT training admission"
+  },
+  "validation": {
+    "affected_passed": 223,
+    "log": "F:\\fly_stream_overflow\\kc_dopamine_final_tests_20261019.log",
+    "final_interfaces_passed": 58,
+    "final_interfaces_log": "F:\\fly_stream_overflow\\kc_dopamine_final_interfaces_20261019.log",
+    "count_scope": "The two passing batches overlap, do not add counts",
+    "deslice": "ALL UNIT TESTS PASSED",
+    "full_suite": "Not certified; previous full collection has five missing diagnostic-script blockers; current affected suite passed"
+  },
+  "actual_progress": {
+    "candidate_trained": 33000,
+    "new_training_inputs": 0,
+    "new_optimizer_updates": 0,
+    "future_window_tokens": 1,
+    "main_trained": 32384,
+    "main_status": "paused_by_user_for_repair"
+  },
+  "nll": {
+    "normal_mother_reply_pre_update": null,
+    "scope": "No new natural dialogue or primary training evaluation; frozen target CE in matrix is only causal diagnostic"
+  },
+  "scope": {
+    "source": "Existing DAN spiking and KC-to-DAN terminal feedback, delivered through actual DAN-KC contact coordinates",
+    "recipient": "All4184720 supplied KC morphology nodes, actual contact-local effective receptor-driving signals; no ROI pooling",
+    "plasticity": "Actual KC-MBON contact phi/eligibility read their local teacher using the existing shared biochemical law",
+    "history": "All old state/optimizer/world/RNG exact; new signal coordinates inherit old KC signal uniformly, not reconstructed spatial history",
+    "credit": "Conditional fast/slow clock sensitivities transported and carried; new material has in-window/native policy gradient, not full cross-window historical derivative"
+  },
+  "remaining": [
+    "Molecular receptor subtype/localization and extracellular volume transmission",
+    "DAN local axon/calcium/release dynamics; current source remains previous spike/terminal-feedback mechanism",
+    "Full new slow-material carried derivatives",
+    "Sustained selective familiarity, exploration and actual communication/learning benefit"
+  ],
+  "cleanup": {
+    "deleted": "E:\\fly_stream_overflow\\native_kc_site_stp_20261018\\last.pt",
+    "retained_full_cover": "E:\\fly_stream_overflow\\native_kc_contacts_20261019\\last.pt",
+    "deleted_sha256": "c43ad2e116a6e64bd060d6e1fe459aec652cd2e9bb8faf20471361d2ba8880e1",
+    "retained_sha256": "e79b5b0d53c750e48dd71945a9b57b5754d109558c784a29b1538fc14398078d",
+    "bytes": 2221273741,
+    "reason": "Zero-exposure mechanism intermediate, all model/physical/optimizer/other learner/world/RNG exactly present in retained contact candidate; reports and config retained",
+    "status": "deleted_redundant_weight_after_exact_coverage_verification"
+  },
+  "training_adoption_approved": false,
+  "sources": [
+    "https://elifesciences.org/articles/49257",
+    "https://elifesciences.org/articles/76712"
+  ],
+  "acute_summary": {
+    "source_off_local_signal_absmax": 19.989450454711914,
+    "source_off_contact_phi_absmax": 0.2645750045776367,
+    "source_off_membrane_absmax": 0.10706368088722229,
+    "source_off_prediction_logprob_absmax": 9.632110595703125e-05,
+    "source_off_action_logprob_absmax": 0.0,
+    "scope": "Acute causal delivery under recorded19tick state; not evidence of improved prediction, selected-word behavior, or sustained learning"
+  }
+}

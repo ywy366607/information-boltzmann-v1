@@ -16,9 +16,9 @@ arrives, so its expected log growth per arrival against a stream with law `p` is
 * `gibbs_inequality`, `growth_le`: no allocation beats `log |B| - H(p)`;
   `growth_at_law`: placing capacity as the stream's law attains it (Kelly).
 * `uniform_growth_zero`: a body that knows nothing (uniform allocation) does not grow.
-* `no_allocation_persists`, `persists_of_crossEntropy`: with a maintenance cost `m` per arrival
-  (log units), no body persists on a stream with `H(p) > log |B| - m`; a body whose
-  cross-entropy is below `log |B| - m` grows.
+* `no_allocation_persists`, `persists_of_crossEntropy`: with a declared cost `m` per arrival
+  (log units), the expected net log growth is respectively negative or positive under the
+  stated inequalities. These names do not prove trajectory-level survival or extinction.
 * `additive_payoff_mode`: WITHOUT reinvestment (additive payoff) the best allocation is all on
   a most likely byte; probability matching needs the multiplicative (reinvested) contract.
 -/
@@ -101,15 +101,15 @@ theorem uniform_growth_zero [Nonempty B] (p : B → ℝ) :
     mul_one_div_cancel hB
   simp only [h_mul, Real.log_one, mul_zero, Finset.sum_const_zero]
 
-/-- **No body persists** on a stream whose entropy exceeds `log |B| - m`: every allocation's
-net growth (growth minus a maintenance cost `m` per arrival) is negative. -/
+/-- When entropy exceeds `log |B| - m`, every admissible allocation has negative
+expected net log growth under this niche contract. This is not a survival theorem. -/
 theorem no_allocation_persists [Nonempty B] (p : B → ℝ) (m : ℝ) (hp0 : ∀ b, 0 ≤ p b)
     (hp : ∑ b, p b = 1) (hH : Real.log (Fintype.card B) - m < entropy p)
     (c : B → ℝ) (hc : ∀ b, 0 < c b) (hcs : ∑ b, c b = 1) :
     growth p c - m < 0 := by
   linarith [growth_le p c hp0 hp hc hcs]
 
-/-- A body whose cross-entropy is below `log |B| - m` has positive net growth. -/
+/-- Below the cross-entropy threshold, expected net log growth is positive. -/
 theorem persists_of_crossEntropy [Nonempty B] (p c : B → ℝ) (m : ℝ) (hp : ∑ b, p b = 1)
     (hc : ∀ b, 0 < c b) (hce : crossEntropy p c < Real.log (Fintype.card B) - m) :
     0 < growth p c - m := by

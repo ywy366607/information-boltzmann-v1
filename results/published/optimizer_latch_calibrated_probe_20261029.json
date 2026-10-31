@@ -1,0 +1,77 @@
+{
+  "status": "completed_probe",
+  "scope": "200-update single-seed real OWT A→B→A probe of calibrated phase latch hold/release",
+  "registration": "results/published/optimizer_latch_calibrated_probe_prereg_20261029.json",
+  "preflight": "results/latch_calibrated_probe_owt_20261029/preflight.json",
+  "arms": {
+    "latch_calibrated_on": {
+      "prequential_bpb": 4.633483161544457,
+      "validation_A_bpb": 4.1029291155682195,
+      "validation_B_bpb": 4.185651684302977,
+      "wall_seconds": 22.376267999999982,
+      "state_bytes": 1589872,
+      "fresh_measurements": 50,
+      "rho_range": [
+        0.9237716316693102,
+        1.008624095347442
+      ],
+      "rho_final": 0.946636016126225,
+      "gate_range": [
+        0.5625,
+        0.9822511046033715
+      ],
+      "active_rows": 42,
+      "last_active": true,
+      "phase_positive_fraction": 0.2625080958549223,
+      "checkpoint_state": {
+        "rho": 0.946636016126225,
+        "outcome_probability": 0.8199646587050721,
+        "outcome_gate": 0.8199646587050721,
+        "outcome_score_count": 50,
+        "latch_state": true,
+        "latch_window": 4,
+        "latch_active": true,
+        "latch_positive_run": 0,
+        "latch_contrary_run": 0
+      }
+    },
+    "latch_calibrated_off": {
+      "prequential_bpb": 4.594452008023766,
+      "validation_A_bpb": 4.059074730846036,
+      "validation_B_bpb": 4.138100490906572,
+      "wall_seconds": 19.409330700000282,
+      "state_bytes": 1194608,
+      "fresh_measurements": 50,
+      "rho_range": [
+        0.9279317917928585,
+        1.0051510605885474
+      ],
+      "rho_final": 0.9419607325717881,
+      "gate_range": [
+        0.5625,
+        0.9693107897582811
+      ],
+      "active_rows": 0,
+      "last_active": false,
+      "phase_positive_fraction": 0.23495182966321243,
+      "checkpoint_state": {
+        "rho": 0.9419607325717881,
+        "outcome_probability": 0.8025671890160236,
+        "outcome_gate": 0.8025671890160236,
+        "outcome_score_count": 50,
+        "latch_state": false,
+        "latch_window": 4,
+        "latch_active": false,
+        "latch_positive_run": 0,
+        "latch_contrary_run": 0
+      }
+    }
+  },
+  "decision": "diagnostic_only_confounded_no_release_observed",
+  "interpretation": {
+    "on": "Latch entered hold at update 36 and remained active through update 200; release was not observed in this run. Anchor and phase latch were enabled together, so their effects are confounded.",
+    "off": "The no-latch arm also lacks the per-parameter anchor, so this is not an isolated latch intervention.",
+    "claim_boundary": "One seed and 200 updates; no convergence or long-term consolidation claim.",
+    "telemetry": "Historical outcome_evidence in curve.jsonl is raw realized-minus-predicted residual, not the calibrated score-minus-baseline signal used for latch decisions. The latter was not recorded per event."
+  }
+}

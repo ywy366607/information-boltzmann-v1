@@ -1,0 +1,146 @@
+{
+ "types": 3000,
+ "min_syn": 5,
+ "scales_um": [
+  4.0,
+  8.0,
+  16.0
+ ],
+ "zero_overlap_share": {
+  "4um": {
+   "all_pairs": 0.7175,
+   "connected_pairs": 0.0
+  },
+  "8um": {
+   "all_pairs": 0.6582,
+   "connected_pairs": 0.0
+  },
+  "16um": {
+   "all_pairs": 0.5871,
+   "connected_pairs": 0.0
+  }
+ },
+ "metric": "share of loss explained beyond the degree-only null on held-out type pairs (E1 split)",
+ "strength_reference": "left-right shared variance beyond degree 0.84 (e1_noise_ceiling)",
+ "rows": [
+  {
+   "model": "degree + encounter 4 um",
+   "scale_um": 4.0,
+   "exists": {
+    "train": 0.5953,
+    "val": 0.594,
+    "test": 0.5914,
+    "l2": 0.0,
+    "feature_weights": [
+     1.1117584705352783,
+     -0.5380208492279053
+    ],
+    "test_auc": 0.9821
+   },
+   "strength": {
+    "train": 0.1578,
+    "val": 0.1609,
+    "test": 0.151,
+    "l2": 0.0,
+    "feature_weights": [
+     0.5070328116416931,
+     8.515705108642578
+    ]
+   }
+  },
+  {
+   "model": "degree + encounter 8 um",
+   "scale_um": 8.0,
+   "exists": {
+    "train": 0.575,
+    "val": 0.5741,
+    "test": 0.5713,
+    "l2": 0.0,
+    "feature_weights": [
+     1.0838195085525513,
+     -0.6316473484039307
+    ],
+    "test_auc": 0.98
+   },
+   "strength": {
+    "train": 0.1241,
+    "val": 0.1261,
+    "test": 0.1154,
+    "l2": 0.0,
+    "feature_weights": [
+     0.48892250657081604,
+     0.0
+    ]
+   }
+  },
+  {
+   "model": "degree + encounter 16 um",
+   "scale_um": 16.0,
+   "exists": {
+    "train": 0.549,
+    "val": 0.5488,
+    "test": 0.5453,
+    "l2": 0.0,
+    "feature_weights": [
+     1.2498618364334106,
+     -0.5028653144836426
+    ],
+    "test_auc": 0.9766
+   },
+   "strength": {
+    "train": 0.0907,
+    "val": 0.0906,
+    "test": 0.0806,
+    "l2": 0.0,
+    "feature_weights": [
+     0.4687280058860779,
+     0.0
+    ]
+   }
+  },
+  {
+   "model": "code k=16",
+   "exists": {
+    "train": 0.6424,
+    "val": 0.6067,
+    "test": 0.6045,
+    "l2": 0.01,
+    "feature_weights": null,
+    "test_auc": 0.9822
+   },
+   "strength": {
+    "train": 0.4941,
+    "val": 0.1034,
+    "test": 0.0916,
+    "l2": 0.1,
+    "feature_weights": null
+   }
+  },
+  {
+   "model": "code k=16 + encounter 4 um",
+   "scale_um": 4.0,
+   "exists": {
+    "train": 0.6989,
+    "val": 0.6594,
+    "test": 0.6574,
+    "l2": 0.01,
+    "feature_weights": [
+     1.1516592502593994,
+     -0.5149543285369873
+    ],
+    "test_auc": 0.9878
+   },
+   "strength": {
+    "train": 0.548,
+    "val": 0.1804,
+    "test": 0.1872,
+    "l2": 0.1,
+    "feature_weights": [
+     0.5227158665657043,
+     8.510059356689453
+    ]
+   }
+  }
+ ],
+ "seconds": 1450
+}

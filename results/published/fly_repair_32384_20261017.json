@@ -1,0 +1,104 @@
+{
+  "at": "2026-10-17T01:49:19.917177+00:00",
+  "source_tokens": 32384,
+  "source_sha256": "9dacf767b558b3cf4f8642644f51092a7f4047af8712c98b53f543beb380ebe4",
+  "main_status": "paused_by_user_for_repair",
+  "main_line_updates": 0,
+  "automatic_monitor": "PAUSED",
+  "repairs": [
+    "Preserve actual nonverbal events in teacher chronology; no injected child words",
+    "Exclude reserved quiet event from semantic retrieval; remove fixed narrative anchor without erasing history",
+    "Age head eligibility on the same existing KC physical clock as native credit, including quiet/call/self-hearing; transport new commit scores and preserve archived responses",
+    "Regularize motor policy only on actual available decision intervals, not protected mother input"
+  ],
+  "affected_tests": {
+    "passed": 174,
+    "seconds": 45.53,
+    "log": "E:\\fly_stream_overflow\\repair_32384\\affected_tests.log"
+  },
+  "matched_loss_check": {
+    "targets": 8,
+    "sources": [
+      "mother_call",
+      "mother_call",
+      "mother_call",
+      "mother_call",
+      "mother_call",
+      "mother_call",
+      "mother_call",
+      "mother_call"
+    ],
+    "ce_before": 3.5833957195281982,
+    "ce_after": 3.5833957195281982,
+    "head_bias_gradient_during_unavailable_turn_before": -0.00010819960152730346,
+    "after": 0.0,
+    "source_unchanged": true
+  },
+  "attention_finding": {
+    "eye_logit": 421.7376708984375,
+    "ce_gradient_eye_bias": -3.8338322383424384e-07,
+    "finding": "Current clean input rewards sensing; near-ceiling attention is an observation, not proof of a broken eye. No forced closing, recalibration or speech-rate homeostat was added."
+  },
+  "live_copy": {
+    "report": "E:\\fly_stream_overflow\\repair_32384\\live128\\report.json",
+    "targets": 128,
+    "actual_updates": 16,
+    "head_clock_ticks": 237589,
+    "native_clock_ticks": 237589,
+    "interaction_roundtrip_exact": true,
+    "source_unchanged": true,
+    "main_pause_unchanged": true,
+    "runtime_unchanged": true,
+    "peak_mib": 3260.06396484375,
+    "decisions": 3,
+    "spoken_tokens": 0,
+    "scope": "Interface/clock/save-restore acceptance only. Three quiet decisions, no voiced token or newly settled speech response; does not establish recovery. Archived response settlement is covered by numerical tests."
+  },
+  "teacher_preview": {
+    "report": "E:\\fly_stream_overflow\\repair_32384\\teacher_combined\\teacher_history_preview.json",
+    "scope": "Separate environmental previews. Repaired quiet context can advance a fable/story; more and stop alter adult replies. Not child actions or capability evidence."
+  },
+  "latest_main_scores": {
+    "mother_call": {
+      "targets": 819,
+      "nll": 4.860709389050801,
+      "fixed_unigram_nll": 7.010556198659852
+    },
+    "self_hearing": {
+      "targets": 2,
+      "nll": 1.9745203256607056,
+      "fixed_unigram_nll": 4.663608447391722
+    },
+    "mother_reply": {
+      "targets": 203,
+      "nll": 5.734295502084817,
+      "fixed_unigram_nll": 7.10787267936633
+    }
+  },
+  "behavior_remaining": {
+    "silent_fraction_last50": 0.88,
+    "spoken_words_last50": 15,
+    "recovery": "not_established",
+    "full_active_exploration": "unproven",
+    "selective_familiarity_devaluation": "unproven"
+  },
+  "provenance": {
+    "checkpoint_archive": "E:\\ib_checkpoints\\newborn_reading\\recovery\\000000032384_chunk_end",
+    "new_runtime": "E:\\fly_stream_overflow\\repair_32384\\runtime.zip",
+    "runtime_sha256": {
+      "information_boltzmann/core/fly_mother_world.py": "f54509bef58b482d91575e2c88694558ce621dec064d85ab0e06e73cb1abd32c",
+      "information_boltzmann/core/fly_parenting_harness.py": "3c918d0ff738bb6217afc3a068db3283ab8b6ab5da684bba2aacb597a010c69c",
+      "information_boltzmann/core/fly_consequence_belief.py": "d1c297602ad6bf54b872aee543f8f96a3a4a3162bcf61dae1bdc2097b703f097",
+      "information_boltzmann/core/fly_active_inference.py": "22a894833303b8fd1b795ea210d0f2c71de93c4e330d6d026a394456294fe52a",
+      "information_boltzmann/core/fly_bptt_learning.py": "7c7f4239b57e507a2e7a03d3f8ced4d3da15661d5cfd50b812b1947390fecf8a",
+      "scripts/ib/fly_interface/action_loop_v2_audit.py": "74b69f5292a26e28a8b19ba0e5a6973b123486c22ed0f4860616ae8ccc6e1484",
+      "tests/test_fly_motor_policy_clock.py": "2bc5271440d50b8d657d4709b25766c08963e4c2b59b035d3441372e9be70d88",
+      "tests/test_fly_consequence_belief.py": "e8942d59122b293113d8a758e2c1103062a748a137258f54cba661bd12287961",
+      "tests/test_fly_mother_continuation.py": "2d74626498732f1166e5ccadd261857ccb59ef96841742bddf65f6095aee4f74",
+      "tests/test_fly_parenting_harness.py": "a9e5694ef8dd769ea68facd3b982fee772e95255e9755d4f533a9f2e45f8c050",
+      "data/harness/raising.json": "fcabb923240770ba39e48321525c846e0fc495612f7d96582695b4e7ef4d5c79",
+      "docs/information_boltzmann/FLY_REPAIR_32384_20261017.md": "3bbb8beacfe2e77c36e5d819990c5f9a927c143ede4fb99480cd4eb443414970"
+    }
+  },
+  "next": "Keep main paused. Any eventual resume must preserve the source and label this mechanism boundary; assess actual learning under corrected credit instead of certifying health from NLL or unit tests."
+}

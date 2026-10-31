@@ -1,0 +1,444 @@
+{
+  "graph": "data\\malecns_v1\\fly_reservoir_coba_r2.npz",
+  "neurons": 165122,
+  "edges": 25321395,
+  "registry_schema_version": 1,
+  "checkpoint": {
+    "path": "E:\\fly_stream_overflow\\native_dan_receiver_credit_20261019\\last.pt",
+    "trained": 33000
+  },
+  "systems": [
+    {
+      "id": "sensory_surfaces",
+      "neurons_by_annotation": 15896,
+      "anatomical_graph": "present_by_full_graph",
+      "full_dynamics": "generic_connectome_update",
+      "specialized_role": "existing_receptor_writer_and_early_visual_graded_option",
+      "specialized_fidelity_gap": null,
+      "evidence_scope": null,
+      "closed_loop": "unmeasured",
+      "next_unified_mechanism": "modality_specific_delay_gain_and_local_inhibition",
+      "runtime_features": {
+        "early_visual_graded": true,
+        "sensory_precision": false
+      },
+      "acute_causal_delivery": {
+        "controls_passed": true,
+        "arms": {},
+        "learning_or_behavior_gain": "unmeasured"
+      }
+    },
+    {
+      "id": "olfactory_relay",
+      "neurons_by_annotation": 3783,
+      "anatomical_graph": "present_by_full_graph",
+      "full_dynamics": "generic_connectome_update",
+      "specialized_role": "AL_local_inhibition_first_version",
+      "specialized_fidelity_gap": null,
+      "evidence_scope": null,
+      "closed_loop": "unmeasured",
+      "next_unified_mechanism": "glomerulus-specific PN/LN timing and sensory replay causal audit",
+      "runtime_features": {
+        "local_relay": true
+      },
+      "acute_causal_delivery": {
+        "controls_passed": true,
+        "arms": {},
+        "learning_or_behavior_gain": "unmeasured"
+      }
+    },
+    {
+      "id": "mushroom_body_memory",
+      "neurons_by_annotation": 4501,
+      "anatomical_graph": "present_by_full_graph",
+      "full_dynamics": "generic_connectome_update",
+      "specialized_role": "native_spatial_KC_DAN_reciprocal_chemical_release_and_contact_memory",
+      "specialized_fidelity_gap": "APL uses all supplied nodes for passive local voltage and graded release. KC uses4184720 supplied nodes and709034 actual presynaptic positions for effective receptor signals, transport, delayed release and per-connection eligibility. 709034 sites also carry persistent resource/utilization states, with release-linked consumption and recovery using learnable kinetics. This is a resource law, not molecular priming reconstruction. KC spiking remains existing cell dynamics; full axonal AP/calcium, identified receptor/effector localization, shared presynaptic long-term release biology and molecular vesicle priming, local KC coupling, active APL channels, other DPM peptides, full new slow-parameter carried derivatives and sustained behavioral benefit remain unresolved. Old pooled chemistry is retained only as inactive history. No invented bridges between disconnected morphology roots. 463628 plastic contacts across391849 sites now own phi/eligibility/biochemistry and conditional sensitivities. Same-position resource events shared; partner efficacy retained. Actual225150DAN-KC contacts on129134edges drive effective receptor signals over4184720KC nodes; contact phi reads locally. Molecular receptor localization/extracellular dopamine and active DAN axonal voltage and identified channel physiology remain unresolved; source somatic AP drive remains existing cell spikes and reciprocal chemical feedback is now local. Local KC reciprocal chemistry and Ca-related resource release now uses all1404101DAN nodes and187404physical sites. Source AP still existing point-cell spikes; active axonal/VGCC voltage, molecular receptor map, extracellular volume, full slow-state credit and sustained benefit unresolved. DAN local source conditional material history is now connected to prediction and native action score credit. Recurrent-spike and earlier downstream history, other slow mechanisms and sustained learning benefit remain unresolved. Source material history through the existing global DA filters is now source-resolved on original edges. Independent KC spatial/phi/cAMP and recurrent-spike material history remain unresolved.",
+      "evidence_scope": null,
+      "closed_loop": "unmeasured",
+      "next_unified_mechanism": "Active source axonal voltage/Na/K/Ca and receptor localization, full slow-state credit and sustained benefit",
+      "runtime_features": {
+        "kc_mbon_memory": true,
+        "kc_dan_feedback": true,
+        "dpm_apl_axonal_projection": true,
+        "apl_local_cable": true,
+        "kc_local_terminals": true,
+        "kc_site_resource_dynamics": true,
+        "kc_contact_memory": true,
+        "spatial_DAN_KC_signal": true,
+        "local_DAN_chemical_release": true,
+        "DAN_conditional_material_history": true,
+        "DAN_source_resolved_receiver_history": true
+      },
+      "acute_causal_delivery": {
+        "controls_passed": true,
+        "arms": {
+          "dan_receiver_credit": {
+            "replay_seconds": 54.77998319998733,
+            "peak_allocated_mib": 3777.28076171875,
+            "ce": 4.771482467651367,
+            "ce_delta": 0.0,
+            "state_close_to_intact": false,
+            "log_prob_absmax": 0.0,
+            "muscle_absmax": 0.0,
+            "motor_logit_absmax": 0.0,
+            "action_log_prob_absmax": 0.0,
+            "command_hazard_absmax": 0.0,
+            "native_motor_packet_ticks": 19,
+            "physical_absmax_by_field": {
+              "h": 0.0,
+              "ring": 0.0,
+              "ge": 0.0,
+              "gi": 0.0,
+              "b": 0.0,
+              "x": 0.0,
+              "u": 0.0,
+              "baseline": 0.0,
+              "h_mean": 0.0,
+              "dan_gate": 0.0,
+              "gamma_z1": 0.0,
+              "gamma_z2": 0.0,
+              "observer_prior": 0.0,
+              "observer_history": 0.0,
+              "read_bank": 0.0,
+              "modulator": 0.0,
+              "expected_input": 0.0,
+              "dopamine": 0.0,
+              "da_trace": 0.0,
+              "da_memory": 0.0,
+              "homeostasis": 0.0,
+              "regime": 0.0,
+              "comp_trace": 0.0,
+              "comp_memory": 0.0,
+              "credit_comp": 0.0,
+              "credit_comp_trace": 0.0,
+              "credit_dopamine": 0.0,
+              "credit_stp": 0.0,
+              "kc_avail": 0.0,
+              "comp_da_trace": 0.0,
+              "comp_p_stats": 0.0,
+              "comp_camp": 0.0,
+              "credit_comp_camp": 0.0,
+              "amine_concentration": 0.0,
+              "amine_receptor": 0.0,
+              "cx_trace": 0.0,
+              "dpm_trace": 0.0,
+              "apl_trace": 0.0,
+              "mb_terminal_gaba": 0.0,
+              "mb_dpm_concentration": 0.0,
+              "mb_dpm_receptor": 0.0,
+              "apl_voltage": 0.0,
+              "apl_ge": 0.0,
+              "apl_gi": 0.0,
+              "apl_packets": 0.0,
+              "kc_terminal_gaba": 0.0,
+              "kc_terminal_5ht": 0.0,
+              "kc_terminal_receptor": 0.0,
+              "kc_terminal_packets": 0.0,
+              "kc_terminal_eligibility": 0.0,
+              "kc_terminal_eligibility_credit": 0.0,
+              "kc_site_resources": 0.0,
+              "kc_site_utilization": 0.0,
+              "kc_contact_memory": 0.0,
+              "kc_contact_trace": 0.0,
+              "kc_contact_da_trace": 0.0,
+              "kc_contact_p_stats": 0.0,
+              "kc_contact_camp": 0.0,
+              "kc_contact_credit": 0.0,
+              "kc_contact_trace_credit": 0.0,
+              "kc_contact_camp_credit": 0.0,
+              "kc_dopamine_signal": 0.0,
+              "kc_dopamine_credit": 0.0,
+              "dan_local_receptor": 0.0,
+              "dan_local_calcium": 0.0,
+              "dan_local_resources": 0.0,
+              "dan_local_packets": 0.0,
+              "dan_credit_receptor": 0.0,
+              "dan_credit_calcium": 0.0,
+              "dan_credit_resources": 0.0,
+              "dan_credit_packets": 0.0,
+              "dan_credit_dopamine": 0.7055901288986206,
+              "body_action_trace": 0.0,
+              "body_feedback_trace": 0.0,
+              "al_local_trace": 0.0,
+              "al_pn_drive": 0.0,
+              "body_muscle": 0.0,
+              "body_reafference": 0.0,
+              "endocrine_calcium": 0.0,
+              "endocrine_lk": 0.0,
+              "endocrine_receptor": 0.0
+            },
+            "membrane_group_absmax": {
+              "visual": 0.0,
+              "CX": 0.0,
+              "KC": 0.0,
+              "MBON": 0.0,
+              "DAN": 0.0,
+              "OA": 0.0,
+              "5HT": 0.0
+            },
+            "amine_terminal_snapshot": {
+              "oa": {
+                "concentration_max": 0.18825757503509521,
+                "occupancy_max": 0.27594026923179626,
+                "occupied_cells": 63413,
+                "response_absmax": 0.1131713017821312
+              },
+              "5ht": {
+                "concentration_max": 0.23406803607940674,
+                "occupancy_max": 0.3196566700935364,
+                "occupied_cells": 25497,
+                "response_absmax": 0.10953004658222198
+              }
+            },
+            "mb_terminal_snapshot": {
+              "source_body_ids": [
+                11734,
+                12569,
+                10540,
+                10977
+              ],
+              "gaba_max_by_source": [
+                5.562627181793234e-12,
+                0.007834377698600292,
+                0.037207357585430145,
+                0.02117932215332985
+              ],
+              "5ht_concentration_max_by_dpm": [
+                0.025821557268500328,
+                0.07829848676919937
+              ],
+              "5ht_receptor_max": 0.14361540973186493,
+              "spatial_scope": "historical pooled snapshot retained, inactive; current local signals are in kc_terminal_snapshot"
+            },
+            "apl_cable_snapshot": {
+              "nodes": 88905,
+              "local_voltage_min": -0.14976166188716888,
+              "local_voltage_max": 0.5478740334510803,
+              "local_voltage_sd": 0.14544765651226044,
+              "packet_nonzero_nodes": 71231,
+              "scope": "all supplied native APL tree nodes; KC bouton cable not reconstructed"
+            },
+            "kc_terminal_snapshot": {
+              "nodes": 4184720,
+              "release_sites": 709034,
+              "kc_with_different_site_release": 27,
+              "within_kc_release_range_max": 0.9142079949378967,
+              "gaba_effector_max": 13.436656951904297,
+              "5ht_effector_max": 8.933037757873535,
+              "local_eligibility_max": 1.0,
+              "resources_min": 0.0998111367225647,
+              "utilization_max": 0.6562253832817078,
+              "scope": "actual sites and spatial effective receptor signals; not axonal action-potential cable or identified molecular localization"
+            },
+            "contact_memory_snapshot": {
+              "actual_MBON_input_vs_retained_reference_absmax": 0.001432032324373722,
+              "connections_with_local_phi_difference": 19375,
+              "within_connection_phi_range_max": 0.22038497030735016,
+              "contacts": 463628,
+              "phi_min": -0.9860513210296631,
+              "phi_max": 0.0020299970638006926,
+              "trace_max": 0.9657557010650635,
+              "teacher": "actual DAN-KC contact-local receptor signal"
+            },
+            "kc_dopamine_snapshot": {
+              "nodes": 4184720,
+              "signal_max": 10.493084907531738,
+              "signal_sd": 0.31305500864982605,
+              "contact_teacher_vs_MBON_reference_absmax": 39.8284912109375
+            },
+            "dan_local_snapshot": {
+              "nodes": 1404101,
+              "sites": 187404,
+              "calcium_max": 0.10882838070392609,
+              "receptor_max": 0.9974572062492371,
+              "resources_min": 0.0022309422492980957,
+              "source_cells_with_different_site_release": 336,
+              "within_DAN_release_range_max": 0.010403541848063469,
+              "scope": "actual KC reciprocal input and full supplied DAN trees; local effective receptor/calcium release, somatic AP still existing cell spikes"
+            },
+            "DAN_carried_snapshot": {
+              "dan_credit_receptor": {
+                "shape": [
+                  2,
+                  1404101
+                ],
+                "absmax": 0.36557430028915405
+              },
+              "dan_credit_calcium": {
+                "shape": [
+                  4,
+                  1404101
+                ],
+                "absmax": 0.09572561830282211
+              },
+              "dan_credit_resources": {
+                "shape": [
+                  7,
+                  187404
+                ],
+                "absmax": 0.36752137541770935
+              },
+              "dan_credit_packets": {
+                "shape": [
+                  4,
+                  7,
+                  187404
+                ],
+                "absmax": 0.3658953309059143
+              }
+            },
+            "DAN_receiver_credit_snapshot": {
+              "shape": [
+                2,
+                7,
+                236767
+              ],
+              "absmax": 0.0,
+              "scope": "Source-resolved global DA filters; separate KC spatial history remains unrepresented"
+            }
+          }
+        },
+        "learning_or_behavior_gain": "unmeasured"
+      }
+    },
+    {
+      "id": "neuromodulatory_state",
+      "neurons_by_annotation": 389,
+      "anatomical_graph": "present_by_full_graph",
+      "full_dynamics": "generic_connectome_update",
+      "specialized_role": "OA_5HT_v2_enabled_real_updates_and_current_acute_delivery_verified",
+      "specialized_fidelity_gap": "Current33000 same-state/real-clock matrix verifies acute OA/5-HT delivery. Receptor subtype identity, extracellular delivery volume and effector identity remain incomplete; exact new slow-parameter derivatives across detached windows and sustained learning benefit are not established.",
+      "evidence_scope": "193851 anatomical contacts; persistent per-target chemical and receptor states, signed learned cell-class response. Receptor subtype/effector identity and extrasynaptic volume unresolved; v1 reciprocal-time error invalidates earlier kinetics claims.",
+      "closed_loop": "unmeasured",
+      "next_unified_mechanism": "Receptor subtype/effector and delivery-volume evidence; exact carried sensitivity of new slow amine dynamics; sustained consequence-learning benefit. DPM/APL source-specific delivery and APL local cable already implemented in subsequent candidates.",
+      "runtime_features": {
+        "dopamine": true,
+        "oa_5ht_extension": true
+      },
+      "acute_causal_delivery": {
+        "controls_passed": true,
+        "arms": {},
+        "learning_or_behavior_gain": "unmeasured"
+      }
+    },
+    {
+      "id": "central_complex_state_action",
+      "neurons_by_annotation": 2950,
+      "anatomical_graph": "present_by_full_graph",
+      "full_dynamics": "generic_connectome_update",
+      "specialized_role": "persistent_cx_trace_first_version",
+      "specialized_fidelity_gap": null,
+      "evidence_scope": null,
+      "closed_loop": "unmeasured",
+      "next_unified_mechanism": "connectome_constrained_continuous_state_and_selection",
+      "runtime_features": {
+        "cx_extension": true
+      },
+      "acute_causal_delivery": {
+        "controls_passed": true,
+        "arms": {},
+        "learning_or_behavior_gain": "unmeasured"
+      }
+    },
+    {
+      "id": "association_and_context",
+      "neurons_by_annotation": 121550,
+      "anatomical_graph": "present_by_full_graph",
+      "full_dynamics": "generic_connectome_update",
+      "specialized_role": "generic_connectome_dynamics",
+      "specialized_fidelity_gap": null,
+      "evidence_scope": null,
+      "closed_loop": "unmeasured",
+      "next_unified_mechanism": "only role-supported state variables, no blanket per-ROI module",
+      "runtime_features": {},
+      "acute_causal_delivery": {
+        "controls_passed": true,
+        "arms": {},
+        "learning_or_behavior_gain": "unmeasured"
+      }
+    },
+    {
+      "id": "ascending_body_feedback",
+      "neurons_by_annotation": 21362,
+      "anatomical_graph": "present_by_full_graph",
+      "full_dynamics": "generic_connectome_update",
+      "specialized_role": "native_CNS_present_peripheral_return_missing_historical_proxies_quarantined",
+      "specialized_fidelity_gap": null,
+      "evidence_scope": null,
+      "closed_loop": "unmeasured",
+      "next_unified_mechanism": "native motor effector and actual sensory transduction with cell-specific endpoint provenance",
+      "runtime_features": {
+        "historical_body_state_retained": true,
+        "historical_proxy_diagnostic_only": false,
+        "native_peripheral_exchange": false
+      },
+      "acute_causal_delivery": {
+        "controls_passed": true,
+        "arms": {},
+        "learning_or_behavior_gain": "unmeasured"
+      }
+    },
+    {
+      "id": "descending_and_vnc_motor",
+      "neurons_by_annotation": 2227,
+      "anatomical_graph": "present_by_full_graph",
+      "full_dynamics": "generic_connectome_update",
+      "specialized_role": "native_MN_language_port_implemented_physical_peripheral_loop_missing",
+      "specialized_fidelity_gap": null,
+      "evidence_scope": "815 annotated MN release channels feed a learned digital language peripheral, separate from sensory prediction. No fabricated muscle or proprioception. Actual packet is necessary for execution; physical body mapping remains missing.",
+      "closed_loop": "unmeasured",
+      "next_unified_mechanism": "validate real native action learning and receptor-specific actual peripheral returns; preserve individual terminal identities",
+      "runtime_features": {
+        "historical_body_state_retained": true,
+        "historical_proxy_diagnostic_only": false,
+        "native_peripheral_exchange": false,
+        "native_motor_language_port": true
+      },
+      "acute_causal_delivery": {
+        "controls_passed": true,
+        "arms": {},
+        "learning_or_behavior_gain": "unmeasured"
+      }
+    },
+    {
+      "id": "visual_and_long_range_projection",
+      "neurons_by_annotation": 99154,
+      "anatomical_graph": "present_by_full_graph",
+      "full_dynamics": "generic_connectome_update",
+      "specialized_role": "early_visual_graded_implemented_long_range_projections_use_existing_graph",
+      "specialized_fidelity_gap": null,
+      "evidence_scope": "photoreceptors, L1-L3, Mi1/Tm1/Tm2/Tm3; no blanket nonspiking assignment to all optic cells",
+      "closed_loop": "unmeasured",
+      "next_unified_mechanism": "validate early visual release and downstream delivery; do not add unmotivated per-projection traces",
+      "runtime_features": {
+        "early_visual_graded": true
+      },
+      "acute_causal_delivery": {
+        "controls_passed": true,
+        "arms": {},
+        "learning_or_behavior_gain": "unmeasured"
+      }
+    },
+    {
+      "id": "endocrine_and_ens",
+      "neurons_by_annotation": 141,
+      "anatomical_graph": "present_by_full_graph",
+      "full_dynamics": "generic_connectome_update",
+      "specialized_role": "LK_IPC_ITP_receptor_axis_option_ENS_receptors_unresolved",
+      "specialized_fidelity_gap": null,
+      "evidence_scope": "LK release to IPC/ITP receptor-supported populations only; normalized kinetics and excitability response are model assumptions; 47 untyped ENS cells remain generic dynamics",
+      "closed_loop": "unmeasured",
+      "next_unified_mechanism": "validate endogenous LK delivery; obtain ENS and peripheral exchange receptor evidence",
+      "runtime_features": {
+        "lk_receptor_exchange": true
+      },
+      "acute_causal_delivery": {
+        "controls_passed": true,
+        "arms": {},
+        "learning_or_behavior_gain": "unmeasured"
+      }
+    }
+  ],
+  "interpretation": "generic full dynamics and specialized biological function are separate statuses"
+}

@@ -74,9 +74,11 @@ Adam 的 m,v 可以作为连续数值后端，负责尺度归一化；它不承�
 - phase_exchange_transfer_is_conserved、phase_exchange_transfer_reads_phase：连续 phase 更新可以写成单条带来源的源—目标守恒转移，并从目标读出净历史；
 - fresh_outcome_measurement_unbiased、fresh_outcome_trust_stays_in_band：更新后的新证据可作为第三因子输入，同时保持 trust 边界；
 - bernoulli_expected_brier_gap、bernoulli_expected_brier_calibrated、centered_bernoulli_evidence_zero_mean、calibrated_evidence_penalty_is_square：校准结果概率的偏差是平方损失，按期望评分作基线时证据均值为零；
+- eligibility_gated_phase_stays_in_unit_interval、eligibility_gate_zero_holds、eligibility_gate_one_recovers、eligibility_gated_transfer_is_conserved、eligibility_gated_transfer_reads_phase、eligibility_gated_signed_phase_stays_bounded：第三因子只门控已有资格迹，相位保持有界，零门控保持历史，满门控恢复完整相变，源—目标转移仍守恒；
+- eligibility_gated_signed_phase_zero_holds、latch_phase_holds_before_release、latch_phase_releases_at_threshold：锁存窗口内 phase 门控为零，阈值达到后恢复第三因子门控，保持与释放共享同一个资格载体；
 - build_mechanical_admission：把上述机械条件合并成一个入口定理。
 
-总模块已编译，完整信任/覆盖库存显示 1,204 条已审计源码定理，新增模块 31 条。审计的证明信任和模块覆盖通过；定理解释目录仍有一个与本次模块无关的旧解释源哈希不一致，暂不把目录刷新失败解释成 Lean 证明失败。
+总模块已编译，完整信任/覆盖库存显示 1,213 条已审计源码定理，新增模块 40 条。审计的证明信任和模块覆盖通过；定理解释目录仍有一个与本次模块无关的旧解释源哈希不一致，暂不把目录刷新失败解释成 Lean 证明失败。
 
 ## 尚未满足的条件
 
@@ -96,6 +98,16 @@ Adam 的 m,v 可以作为连续数值后端，负责尺度归一化；它不承�
 把新鲜后果先转成二值“有益/非有益”结果，用二值 Brier 评分和隔室级 EMA 基线形成无量纲证据。Lean 已证明：期望评分相对真实结果概率的损失正好是平方误差，以自身期望评分为基线时证据期望为零。现有 `ResourceCycle` 的可选 `calibrated_outcome` 通道只增加三个隔室级标量（结果概率、评分 EMA、计数），不复制参数状态。
 
 600 步真实 OWT A→B→A 探针中，校准通道的 `rho` 保持在 `[0.908, 1.010]`，prequential BPB 为 4.0442；同成本的 raw outcome 对照 `rho` 降至 0.0032，BPB 为 4.4184。该结果只证明校准通道避免了当前 raw 残差门的塌缩，尚不足以证明长期优势；下一步仍需多种子和更长预算验证。
+
+随后把同一个校准概率接到已有 signed phase 的凸门控上：300 步真实 OWT 探针中，`calibrated_phase_on` 的 `rho` 保持在 `[0.923, 1.010]`、phase gate 在 `[0.563, 0.990]`，prequential BPB 为 4.3351；raw 对照的 `rho` 降至 0.0525，BPB 为 4.6120。两臂状态大小仍为 1,194,608 bytes，且完整恢复 preflight 通过。该结果支持“后果先校准，再门控资格迹”的实现方向，但仍是单种子短探针。
+
+生产锁存接入后，200 步真实 OWT 探针中锁存臂实际进入保持状态 42 行，`rho` 保持在 `[0.924, 1.009]`，但 anchor 状态使状态大小从 1,194,608 增至 1,589,872 bytes，prequential BPB 为 4.6335；无锁存校准对照为 4.5945。单元测试已覆盖连续反向证据达到窗口后释放。当前锁存因此保留为接口候选，尚不能作为主线收益机制。
+
+核对修正：第 36 步进入锁存，200 步结束仍处于锁存，实跑没有观测到释放；两臂同时改变 anchor 和锁存门，无法单独归因。历史曲线中的 `outcome_evidence` 是原始下降残差，不是控制锁存的评分减基线，后续记录已区分二者。另一个反例是持续坏结果下，评分相对移动基线可能转正并再次点燃锁存；因此当前信号不能证明锁存有益，亦未实现对环境结果的标准预测误差。
+
+后续接口已将 `anchor_enabled`、`phase_latch_enabled`、`outcome_rho_enabled` 分离；默认 `None` 继承原实验行为，以便对照历史。新增观测 `outcome_prediction_error = y - p` 使用观测前预测概率，Lean 证明其期望为 `q - p`，并给出它与 Brier 评分不同的反例。它只表示二值事件的预测误差，目前不驱动锁存，也不证明长期收益。93 个优化器和协议测试通过，尚未用这些新开关跑真实数据对照。
+
+5000 步单种子 OWT 分项对照（A 2000 → B 1000 → A 2000）为四组保存相同 anchor 状态，单独启用 anchor 恢复力、phase 锁存或 `rho` 反馈。基线 / anchor / phase 锁存 / rho 的 prequential BPB 分别为 3.1250 / 3.1283 / 3.2727 / 3.1329；最终独立验证 A 为 3.0526 / 3.0538 / 3.1614 / 3.0614，B 为 2.9788 / 2.9693 / 3.0972 / 2.9866。phase 锁存在第 36 步进入后至结束没有释放，1250 次后果观测中有 1242 次处于锁存；当前门不满足本实验内的持续可释放性要求。`rho` 范围为 [0.903,1.012]，未出现之前的塌缩，但没有在该预算内显示收益。该实验固定单种子、关闭资源疲劳，仅检验这些实现的作用，不证明收敛或完整健康锁存。
 
 在这四项完成前，ResourceCycle 只能称为“Adam 数值基底上的矩阵资源竞争优化器”，不能称为完整三因子生成生命体优化器。
 

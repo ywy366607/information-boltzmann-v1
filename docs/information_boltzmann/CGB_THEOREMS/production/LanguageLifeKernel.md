@@ -148,9 +148,23 @@
   credit₀ ≠ credit₁ → ¬(rule visible = credit₀ ∧ rule visible = credit₁)
 ```
 
+## CGB.LanguageLifeKernel.delayed_action_credit_requires_state_separation
+
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L119)
+
+源码说明：Delayed action credit needs a state distinction between alternatives whose later consequences require different credit. This does not require a separate action log: an existing action-induced body change, a self-produced utterance written into the same state, or a world-mediated state change may supply the needed distinction. If all are absent, no rule reading only the later state can recover which action occurred.
+
+形式陈述：
+
+```lean
+∀ {S A C : Type} (advance : S → A → S) (rule : S → C) (s : S) (action₀ action₁ : A) (credit₀ credit₁ : C),
+  advance s action₀ = advance s action₁ →
+    credit₀ ≠ credit₁ → ¬(rule (advance s action₀) = credit₀ ∧ rule (advance s action₁) = credit₁)
+```
+
 ## CGB.LanguageLifeKernel.conserved_transfer_target_trace
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L135)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L155)
 
 解释：一次局部守恒转移的目标增加量恰等于转移量。
 
@@ -164,7 +178,7 @@
 
 ## CGB.LanguageLifeKernel.conserved_transfer_source_trace
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L140)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L160)
 
 解释：一次局部守恒转移的来源减少量恰等于转移量。
 
@@ -178,7 +192,7 @@
 
 ## CGB.LanguageLifeKernel.conserved_transfer_total_preserved
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L145)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L165)
 
 解释：一次局部守恒转移前后，来源与目标的总量相等。
 
@@ -192,7 +206,7 @@
 
 ## CGB.LanguageLifeKernel.observable_transfer_recovers_amount
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L165)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L185)
 
 解释：在该可观测守恒转移结构的读出前提下，目标端读数恰好等于转移量。
 
@@ -206,7 +220,7 @@
 
 ## CGB.LanguageLifeKernel.superposed_transfer_readout_is_net
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L169)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L189)
 
 解释：同一目标叠加两条整数流后，其前后差值等于两流之和，单独分量不会由这个差值直接区分。
 
@@ -220,7 +234,7 @@
 
 ## CGB.LanguageLifeKernel.conservation_does_not_identify_components
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L173)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L193)
 
 解释：存在两组各自分量不同但总流量相等的分解，说明仅知道守恒总量不能唯一识别各分量。
 
@@ -234,7 +248,7 @@
 
 ## CGB.LanguageLifeKernel.leaky_transfer_readout_is_net
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L185)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L205)
 
 解释：带泄漏的守恒转移中，载体前后差值等于输入减泄漏，不能仅凭净变化单独读出输入。
 
@@ -248,7 +262,7 @@
 
 ## CGB.LanguageLifeKernel.conserved_carrier_path_balance
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L204)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L224)
 
 解释：沿守恒载体轨迹，任意有限步的状态净变化等于这段时间输入减输出之和。
 
@@ -263,7 +277,7 @@
 
 ## CGB.LanguageLifeKernel.conserved_carrier_path_no_output
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L213)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L233)
 
 解释：沿守恒载体轨迹，如果各步输出均为零，则状态净变化等于累计输入。
 
@@ -278,7 +292,7 @@
 
 ## CGB.LanguageLifeKernel.history_readout_exists_iff
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L230)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L250)
 
 解释：对所有历史存在准确读出规则，当且仅当编码相同的历史具有相同所需输出；默认输出用于构造读出。
 
@@ -293,7 +307,7 @@
 
 ## CGB.LanguageLifeKernel.history_transition_exists_iff
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L238)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L258)
 
 解释：存在只依赖当前编码与输入的确定状态更新，当且仅当编码相同的历史在同一后续输入下仍产生相同后继编码。
 
@@ -309,7 +323,7 @@
 
 ## CGB.LanguageLifeKernel.external_causal_readout_exists_iff
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L260)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L280)
 
 解释：在给定检索接口和默认值下，存在能对所有历史和查询给出所需结果的读取规则，当且仅当不可区分的内部状态与检索结果不会要求不同输出。
 
@@ -328,7 +342,7 @@
 
 ## CGB.LanguageLifeKernel.external_trace_requires_retrieved_distinction
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L284)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L304)
 
 解释：若确定读出规则能给出所有所需信用，当两段历史的内部状态相同但所需信用不同，检索出的外部记录必须不同。
 
@@ -345,7 +359,7 @@
 
 ## CGB.LanguageLifeKernel.observational_record_does_not_fix_intervention
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L297)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L317)
 
 解释：给出两个在观测输入一致时输出相同、但在一次干预下输出不同的规则，说明被动观测一致不足以确定干预结果。
 
@@ -360,7 +374,7 @@ have response := fun direct u a => if direct = true then a else u;
 
 ## CGB.LanguageLifeKernel.SensoryRecord.exact_record_contract
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L346)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L366)
 
 解释：该 16 状态感官记录编码与读出在合法状态上互逆，并保持合法性。
 
@@ -382,7 +396,7 @@ have response := fun direct u a => if direct = true then a else u;
 
 ## CGB.LanguageLifeKernel.SensoryRecord.action_content_distinguishes
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L360)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L380)
 
 解释：在该 16 状态见证中，若两条记录读出的策略动作和内容成本均相同，则两条记录相同。
 
@@ -401,7 +415,7 @@ have response := fun direct u a => if direct = true then a else u;
 
 ## CGB.LanguageLifeKernel.SensoryRecord.record_state_lower_bound
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L366)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L386)
 
 解释：能够同时无损读取决策动作与维持成本的感知记录载体，其状态空间基数至少为16。
 
@@ -421,7 +435,7 @@ have response := fun direct u a => if direct = true then a else u;
 
 ## CGB.LanguageLifeKernel.SensoryRecord.fold_refines
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L380)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L400)
 
 解释：对编码记录连续写入感官输入，再读出，等于在原感官状态上连续执行对应更新。
 
@@ -438,7 +452,7 @@ have response := fun direct u a => if direct = true then a else u;
 
 ## CGB.LanguageLifeKernel.SensoryRecord.joint_successor_reconstruct
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L392)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L412)
 
 解释：原联合机体-世界演化过程中的每个正概率后继状态均可由内部感知记录精确编码与无损重构。
 
@@ -455,7 +469,7 @@ have response := fun direct u a => if direct = true then a else u;
 
 ## _private.CGBAxioms.LanguageLifeKernel.0.CGB.LanguageLifeKernel.CausalRecord.policy_cases
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L431)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L451)
 
 解释：给出因果记录模块中细胞各离散构型对应决策策略动作的显式分情况查找表。
 
@@ -478,7 +492,7 @@ have response := fun direct u a => if direct = true then a else u;
 
 ## CGB.LanguageLifeKernel.CausalRecord.weights_exact
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L438)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L458)
 
 解释：对于非空主体状态，给定世界转移权重恰为因果记录整数权重除以二。
 
@@ -495,7 +509,7 @@ have response := fun direct u a => if direct = true then a else u;
 
 ## CGB.LanguageLifeKernel.CausalRecord.sensor_alias_witness
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L447)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L467)
 
 解释：存在相同当前传感器读数但在相同动作下产生不同环境反馈后果的见证实例（传感器别名混淆）。
 
@@ -516,7 +530,7 @@ CGB.RenewableLearning.sense CGB.RenewableLearning.Env.feedA () =
 
 ## CGB.LanguageLifeKernel.CausalRecord.update_sound
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L458)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L478)
 
 解释：对于非空主体状态，真实世界一步转移有正权重时，相应观测下的后继世界被因果记录更新保留。
 
@@ -536,7 +550,7 @@ CGB.RenewableLearning.sense CGB.RenewableLearning.Env.feedA () =
 
 ## CGB.LanguageLifeKernel.CausalRecord.update_least
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L473)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L493)
 
 解释：任何包含所有与先验、动作和观测相容后继世界的集合，都包含该因果记录更新结果。
 
@@ -555,7 +569,7 @@ CGB.RenewableLearning.sense CGB.RenewableLearning.Env.feedA () =
 
 ## CGB.LanguageLifeKernel.CausalRecord.action_feedback_witness
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L484)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L504)
 
 解释：后续相同的传感器观测在前期采取不同动作时对应不同的因果环境后继状态解释。
 
@@ -574,7 +588,7 @@ CGB.LanguageLifeKernel.CausalRecord.update {CGB.RenewableLearning.Env.feedA, CGB
 
 ## CGB.LanguageLifeKernel.PaidRecord.settlement_contract
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L519)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L539)
 
 解释：有偿记忆记录在结算时的剩余能量储备与扣除费用之和严格守恒，且合法候选假设集保持无损收缩。
 
@@ -595,7 +609,7 @@ CGB.LanguageLifeKernel.CausalRecord.update {CGB.RenewableLearning.Env.feedA, CGB
 
 ## CGB.LanguageLifeKernel.PaidRecord.world_feedback_possible
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L538)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L558)
 
 解释：非空主体在真实世界转移有正权重时，付费记录的可能性判据接受相应动作和后继观测。
 
@@ -614,7 +628,7 @@ CGB.LanguageLifeKernel.CausalRecord.update {CGB.RenewableLearning.Env.feedA, CGB
 
 ## CGB.LanguageLifeKernel.PaidRecord.combined_write_budget
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L554)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L574)
 
 解释：综合有偿记录在单步演化中信用余额、写入能耗与手续费的综合支出受基础热力学第一定律预算严格约束。
 
@@ -636,7 +650,7 @@ CGB.LanguageLifeKernel.CausalRecord.update {CGB.RenewableLearning.Env.feedA, CGB
 
 ## CGB.LanguageLifeKernel.PaidRecord.historical_frame_witness
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L567)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L587)
 
 解释：存在仅读取当前瞬间观测无法确定真实世界状态的历史因果歧义见证。
 
@@ -656,7 +670,7 @@ CGB.LanguageLifeKernel.CausalRecord.weight CGB.RenewableLearning.Env.missA 0 CGB
 
 ## CGB.LanguageLifeKernel.PaidRecord.joint_source_possible
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L576)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L596)
 
 解释：在联合状态演化下真实环境历史始终属于有偿记忆记录的可能候选集合。
 
@@ -676,7 +690,7 @@ CGB.LanguageLifeKernel.CausalRecord.weight CGB.RenewableLearning.Env.missA 0 CGB
 
 ## CGB.LanguageLifeKernel.PaidRecord.attach_refines
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L602)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L622)
 
 解释：给已有交互机器附加更新记录后，投影到原状态仍细化原机器的行为。
 
@@ -693,7 +707,7 @@ CGB.LanguageLifeKernel.CausalRecord.weight CGB.RenewableLearning.Env.missA 0 CGB
 
 ## CGB.LanguageLifeKernel.LocalEdit.binary_factor_balance
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L615)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L635)
 
 解释：二元因子修改前后的交叉乘积差可精确分解为修改幅度 v−u 与联合表行列式 ad−bc 的乘积。
 
@@ -708,7 +722,7 @@ CGB.LanguageLifeKernel.CausalRecord.weight CGB.RenewableLearning.Env.missA 0 CGB
 
 ## CGB.LanguageLifeKernel.LocalEdit.accepts_iff
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L628)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L648)
 
 解释：当旧分布和候选分布总权重均为正时，整数交叉乘法接受判据等价于候选事件概率严格提高。
 
@@ -726,7 +740,7 @@ CGB.LanguageLifeKernel.CausalRecord.weight CGB.RenewableLearning.Env.missA 0 CGB
 
 ## CGB.LanguageLifeKernel.FirstHit.first_hit_sum
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L660)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L680)
 
 解释：首次命中表达式 1−(1−r)^t 可写成 r 乘有限几何级数。
 
@@ -740,7 +754,7 @@ CGB.LanguageLifeKernel.CausalRecord.weight CGB.RenewableLearning.Env.missA 0 CGB
 
 ## CGB.LanguageLifeKernel.FirstHit.truncation
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L671)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L691)
 
 解释：在权重非负且单步命中率介于零和一之间时，将寿命截断到有限时限不会增加首次命中成功率。
 
@@ -762,7 +776,7 @@ CGB.LanguageLifeKernel.CausalRecord.weight CGB.RenewableLearning.Env.missA 0 CGB
 
 ## CGB.LanguageLifeKernel.FirstHit.probability_bounds
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L700)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L720)
 
 解释：当权重非负且归一、单步命中率位于零和一之间时，加权首次命中成功率也位于零和一之间。
 
@@ -782,7 +796,7 @@ CGB.LanguageLifeKernel.CausalRecord.weight CGB.RenewableLearning.Env.missA 0 CGB
 
 ## CGB.LanguageLifeKernel.CausalState.realizes
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L748)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L768)
 
 解释：因果状态编码能够读出历史所需输出，并且处理一个输入后与更新历史再编码一致。
 
@@ -799,7 +813,7 @@ CGB.LanguageLifeKernel.CausalRecord.weight CGB.RenewableLearning.Env.missA 0 CGB
 
 ## CGB.LanguageLifeKernel.CausalState.fold_refines
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L758)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L778)
 
 解释：对因果状态逐个处理一个后缀，得到的状态等于先把后缀接到历史上再编码的状态。
 
@@ -816,7 +830,7 @@ CGB.LanguageLifeKernel.CausalRecord.weight CGB.RenewableLearning.Env.missA 0 CGB
 
 ## CGB.LanguageLifeKernel.CausalState.minimal
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L767)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L787)
 
 解释：任何准确实现指定历史输出的状态机都能满射到相应因果状态，表达该因果状态表示的最小性。
 
@@ -834,7 +848,7 @@ CGB.LanguageLifeKernel.CausalRecord.weight CGB.RenewableLearning.Env.missA 0 CGB
 
 ## CGB.LanguageLifeKernel.CausalState.finite_bound
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L787)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L807)
 
 解释：若有限状态机能对所有历史准确实现指定输出，则所需因果状态有限且数量不超过实现机器的状态数。
 
@@ -852,7 +866,7 @@ CGB.LanguageLifeKernel.CausalRecord.weight CGB.RenewableLearning.Env.missA 0 CGB
 
 ## CGB.LanguageLifeKernel.CausalState.finite_alphabets_unbounded
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L797)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L817)
 
 解释：即使输入为有限布尔字母表，要求判断真值与假值出现次数是否相等的历史也具有无限多个可区分因果状态。
 
@@ -866,7 +880,7 @@ Infinite ↑(CGB.LanguageLifeKernel.CausalState.State fun h => decide (List.coun
 
 ## CGB.LanguageLifeKernel.CausalState.separated_histories_capacity
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L810)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L830)
 
 解释：导出为区分非等价历史轨迹，因果状态记录载体所需容量的严格下界。
 
@@ -889,7 +903,7 @@ Infinite ↑(CGB.LanguageLifeKernel.CausalState.State fun h => decide (List.coun
 
 ## CGB.LanguageLifeKernel.Approximation.fold_error
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L845)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L865)
 
 解释：若每步近似误差至多按因子 L 放大并增加 δ，有限输入序列后的总误差满足几何累积上界。
 
@@ -909,7 +923,7 @@ Infinite ↑(CGB.LanguageLifeKernel.CausalState.State fun h => decide (List.coun
 
 ## CGB.LanguageLifeKernel.Approximation.invariant_error
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L864)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L884)
 
 解释：若单步误差递推满足 Lε+δ≤ε，则从误差不超过 ε 出发，任意有限输入序列后误差仍不超过 ε。
 

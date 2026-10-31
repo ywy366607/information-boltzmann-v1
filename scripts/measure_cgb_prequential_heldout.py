@@ -50,6 +50,20 @@ def unigram_nlls(train_tokens, targets, vocab_size: int, alpha: float):
     return (-math.log(float(probabilities[int(token)])) for token in targets)
 
 
+def consume_prequential(bridge, events, observation_type, count, write_units, dissipation_units):
+    """Prepare before pulling each event from the external iterator."""
+    source = iter(events)
+    total_nll = 0.0
+    last_event = None
+    for _ in range(count):
+        bridge.prepare()
+        last_event = next(source)
+        result = bridge.step(observation_type(last_event.tick, last_event.payload),
+                             write_units=write_units, dissipation_units=dissipation_units)
+        total_nll += result.model_nll_nats
+    return total_nll, last_event
+
+
 def fixture_rule(code, hidden, bit, context, depth, prefix):
     return ((code + 9 if hidden else 1) * (3 if hidden == bit else 1)
             * (2 if hidden == ((context[0] >> depth) & 1) else 1))
@@ -102,7 +116,9 @@ def main() -> None:
     vocab_size = 256 if alphabet == "byte" else manifest["vocab_size"]
     if args.start + args.events + int(local) >= len(validation):
         raise ValueError("validation slice needs a boot token followed by all requested targets")
-    targets, boot = validation[args.start + 1:args.start + args.events + 1], int(validation[args.start])
+    boot = int(validation[args.start])
+    targets = (None if alphabet == "byte" else
+               validation[args.start + 1:args.start + args.events + 1])
     ledger_module = load_core("cgb_information_ledger")
     load_core("cgb_language_kernel")
     bridge_module = load_core("cgb_prequential_bridge")
@@ -140,16 +156,14 @@ def main() -> None:
         if runner.current_token != boot:
             raise ValueError("checkpoint current token does not match the validation boot token")
     ledger = ledger_module.PredictiveInformationLedger(start_tick=args.start_tick, reference_name="train_unigram")
-    reference_queue = iter(unigram_nlls(train, targets, vocab_size, args.alpha))
-    bridge = bridge_module.CGBPrequentialBridge(runner, ledger, lambda _: next(reference_queue))
-    total_nll = 0.0
+    reference_nll = tuple(unigram_nlls(train, range(vocab_size), vocab_size, args.alpha))
+    bridge = bridge_module.CGBPrequentialBridge(
+        runner, ledger, lambda token: reference_nll[token], strict_scoring=True)
     events = (validation.observations(start=args.start + 1, limit=args.events, start_tick=args.start_tick)
               if alphabet == "byte" else stream.token_observations(
                   targets, source="owt_validation", start_tick=args.start_tick))
-    for event in events:
-        result = bridge.step(life.Observation(event.tick, event.payload),
-                            write_units=args.write_units, dissipation_units=args.dissipation_units)
-        total_nll += result.model_nll_nats
+    total_nll, event = consume_prequential(
+        bridge, events, life.Observation, args.events, args.write_units, args.dissipation_units)
     if checkpoint_hash and sha256(args.checkpoint) != checkpoint_hash:
         raise RuntimeError("checkpoint changed during read-only measurement")
     if local:

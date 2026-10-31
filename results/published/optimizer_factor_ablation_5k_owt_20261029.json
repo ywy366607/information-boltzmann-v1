@@ -1,0 +1,163 @@
+{
+  "status": "completed_budget",
+  "scope": "Four one-factor matched-state arms, one seed, real OWT byte stream A-B-A, 5000 updates per arm; diagnostic only",
+  "registration": "results/published/optimizer_factor_ablation_5k_prereg_20261029.json",
+  "preflight": "results/factor_ablation_5k_owt_20261029/preflight.json",
+  "arms": {
+    "factor_base": {
+      "status": "completed_budget",
+      "updates": 5000,
+      "targets": 5120000,
+      "prequential_bpb": 3.124985488176448,
+      "validation_bpb": {
+        "2000": {
+          "A": 3.345015133979831,
+          "B": 3.3340778523379706
+        },
+        "3000": {
+          "A": 3.234067200135296,
+          "B": 3.1466147764524766
+        },
+        "5000": {
+          "A": 3.05258556316575,
+          "B": 2.978833111995893
+        }
+      },
+      "phase_prequential_bpb": {
+        "A1": 3.4737070168323934,
+        "B": 3.109237469898494,
+        "A2": 2.784146901141216
+      },
+      "rho_min": 1.0,
+      "rho_max": 1.0,
+      "rho_final": 1.0,
+      "outcome_samples": 1250,
+      "latch_active_samples": 0,
+      "latch_transitions": [],
+      "state_bytes": 1589872,
+      "max_allocation_budget_residual": 2.384185791015625e-07,
+      "wall_seconds": 472.9942618000023,
+      "peak_cuda_bytes": 88016384,
+      "checkpoint_sha256": "b40457eb42d602007ecabb1453d37cb484c1161f5c9a381158e8dfc35f59c8d8"
+    },
+    "factor_anchor": {
+      "status": "completed_budget",
+      "updates": 5000,
+      "targets": 5120000,
+      "prequential_bpb": 3.128256772977627,
+      "validation_bpb": {
+        "2000": {
+          "A": 3.3512918824663878,
+          "B": 3.3340977875197475
+        },
+        "3000": {
+          "A": 3.231449862812663,
+          "B": 3.145209596133419
+        },
+        "5000": {
+          "A": 3.0537694873017203,
+          "B": 2.9693147401065274
+        }
+      },
+      "phase_prequential_bpb": {
+        "A1": 3.4804426482711412,
+        "B": 3.1113952548484796,
+        "A2": 2.784510703214251
+      },
+      "rho_min": 1.0,
+      "rho_max": 1.0,
+      "rho_final": 1.0,
+      "outcome_samples": 1250,
+      "latch_active_samples": 0,
+      "latch_transitions": [],
+      "state_bytes": 1589872,
+      "max_allocation_budget_residual": 2.384185791015625e-07,
+      "wall_seconds": 495.5950195000005,
+      "peak_cuda_bytes": 88016384,
+      "checkpoint_sha256": "cbc26660fa417f337d66d12e6d430f396c7029fe506e5cd5a0609be7e6fdde13"
+    },
+    "factor_phase_latch": {
+      "status": "completed_budget",
+      "updates": 5000,
+      "targets": 5120000,
+      "prequential_bpb": 3.2726969404914095,
+      "validation_bpb": {
+        "2000": {
+          "A": 3.466499361268524,
+          "B": 3.45691417907078
+        },
+        "3000": {
+          "A": 3.355285621811431,
+          "B": 3.2876080887903347
+        },
+        "5000": {
+          "A": 3.16141179542147,
+          "B": 3.0971735740625137
+        }
+      },
+      "phase_prequential_bpb": {
+        "A1": 3.59053962593108,
+        "B": 3.2910315410481368,
+        "A2": 2.9456942340588346
+      },
+      "rho_min": 1.0,
+      "rho_max": 1.0,
+      "rho_final": 1.0,
+      "outcome_samples": 1250,
+      "latch_active_samples": 1242,
+      "latch_transitions": [
+        [
+          36,
+          true
+        ]
+      ],
+      "state_bytes": 1589872,
+      "max_allocation_budget_residual": 2.384185791015625e-07,
+      "wall_seconds": 545.2988759,
+      "peak_cuda_bytes": 88016384,
+      "checkpoint_sha256": "b0b8ffd62222ae2598a910731824a54a77dab0e38e2739220f0350315c17a20c"
+    },
+    "factor_rho": {
+      "status": "completed_budget",
+      "updates": 5000,
+      "targets": 5120000,
+      "prequential_bpb": 3.1328558405829328,
+      "validation_bpb": {
+        "2000": {
+          "A": 3.3528067036804874,
+          "B": 3.3402389686509597
+        },
+        "3000": {
+          "A": 3.231062702098989,
+          "B": 3.152997201239755
+        },
+        "5000": {
+          "A": 3.0614164639764683,
+          "B": 2.986645439845864
+        }
+      },
+      "phase_prequential_bpb": {
+        "A1": 3.4829038311623073,
+        "B": 3.123404257136298,
+        "A2": 2.7875424405206526
+      },
+      "rho_min": 0.903226541815102,
+      "rho_max": 1.012433589694914,
+      "rho_final": 1.006170370835233,
+      "outcome_samples": 1250,
+      "latch_active_samples": 0,
+      "latch_transitions": [],
+      "state_bytes": 1589872,
+      "max_allocation_budget_residual": 2.384185791015625e-07,
+      "wall_seconds": 518.4426387999993,
+      "peak_cuda_bytes": 88016384,
+      "checkpoint_sha256": "9f99aee15c4127105423110ddf2d081e9c6b67ff0c3ca8a8c94f62c465b23d58"
+    }
+  },
+  "limitations": [
+    "Single seed and fixed budget; no convergence, general optimizer ranking, or causal effect of changing the scoring rule established.",
+    "Phase latch uses score-minus-baseline whose known counterexample permits rearming on sustained adverse outcomes.",
+    "No fresh-data-only control of the extra measurement cost; all four arms pay the same additional forwards.",
+    "Anchor is allocated and maintained in all arms to match tensor state layout and bytes."
+  ]
+}

@@ -17,6 +17,11 @@ and rejects missing modules, incomplete output and non-foundational axioms. Sour
 compiler-generated declarations are counted separately; these are not brain mechanism
 counts. scripts/audit.sh is a wrapper; Audit.lean is the old manual subset.
 
+The auditor resolves Lake's library path once and launches Lean directly, avoiding a
+large resident Lake parent. Records stream to stdout instead of accumulating in Lean's
+message log; dependency names use sets. All coverage/trust checks remain unchanged.
+For low-memory machines, set `LEAN_NUM_THREADS=1` in the audit process.
+
 Foundation.lean checks finite-state specialization, clocks, probability bounds and the
 distinction between independence, universal guarantees and existence. It adds no physical
 axiom. The audit does not establish physical validity, minimality, or a life existence theorem.

@@ -1,0 +1,672 @@
+{
+  "at": "2026-10-18T13:57:43.581400+00:00",
+  "status": "full_state_saved_and_native_delivery_verified_resource_budget_exceeded",
+  "main": {
+    "checkpoint": "E:\\ib_checkpoints\\newborn_reading\\last.pt",
+    "trained": 32384,
+    "sha256": "9dacf767b558b3cf4f8642644f51092a7f4047af8712c98b53f543beb380ebe4",
+    "paused": true,
+    "unchanged": true
+  },
+  "source": {
+    "checkpoint": "E:\\fly_stream_overflow\\native_mb_terminal_20261018\\last.pt",
+    "trained": 32968,
+    "sha256": "c8a572a14feb9e99da5b8dbf34c9ba479e9718b522223b81b8cd9991f1f00632",
+    "unchanged": true
+  },
+  "candidate": {
+    "checkpoint": "E:\\fly_stream_overflow\\native_apl_cable_20261018\\last.pt",
+    "sha256": "0836e22479af6abe2c5d747d411c700452ab7adc0bb2a51c57624340b7f48111",
+    "trained": 33000,
+    "updates": 4154,
+    "fresh_targets": 32,
+    "fresh_updates": 8,
+    "physical_ticks": 471577,
+    "fresh_physical_ticks": 483,
+    "unread_mother_tokens": 31,
+    "turn": "mother",
+    "new_child_turns": 0,
+    "new_mother_turns": 0,
+    "new_transcript_rows": 0
+  },
+  "prediction": {
+    "targets": 32,
+    "source": "mother_call",
+    "pre_update_nll": 4.444357607513666,
+    "same_batch_fixed_unigram_nll": 6.204042327822208,
+    "gain_over_fixed_unigram": 1.7596847203085417,
+    "scope": "real retained targets before update; small mechanism check, not independent validation or convergence"
+  },
+  "apl_learning": {
+    "log_axial": [
+      0.037385493516922,
+      0.010936034843325615
+    ],
+    "adam_step": 8.0,
+    "adam_moment_absmax": 1.6083773743957863e-06,
+    "local_voltage_sd": 0.10036568343639374
+  },
+  "storage": {
+    "file_bytes": 2063825897,
+    "mtime_ns": 1792331157451906400,
+    "unique_tensor_mib": 1966.4051790237427,
+    "groups_mib": {
+      "model": 582.8352584838867,
+      "learner": 1383.5650835037231,
+      "rng_cpu": 0.00482177734375,
+      "rng_cuda": 1.52587890625e-05
+    },
+    "apl_physical_mib": 2.3740196228027344,
+    "largest": [
+      {
+        "mib": 147.2373046875,
+        "path": "model.embedding.weight"
+      },
+      {
+        "mib": 147.2373046875,
+        "path": "model.decoder.weight"
+      },
+      {
+        "mib": 147.2373046875,
+        "path": "model.motor_port_decoder.weight"
+      },
+      {
+        "mib": 147.2373046875,
+        "path": "learner.interaction.consequence_state.native_credit.E.decoder.weight"
+      },
+      {
+        "mib": 147.2373046875,
+        "path": "learner.interaction.consequence_state.native_credit.E.motor_port_decoder.weight"
+      },
+      {
+        "mib": 147.2373046875,
+        "path": "learner.interaction.consequence_state.native_credit.response_score.decoder.weight"
+      },
+      {
+        "mib": 147.2373046875,
+        "path": "learner.interaction.consequence_state.native_credit.response_score.motor_port_decoder.weight"
+      },
+      {
+        "mib": 147.2373046875,
+        "path": "learner.interaction.consequence_state.legacy.eligibility.decoder.weight"
+      },
+      {
+        "mib": 147.2373046875,
+        "path": "learner.optimizer.state.1.exp_avg"
+      },
+      {
+        "mib": 147.2373046875,
+        "path": "learner.optimizer.state.1.exp_avg_sq"
+      },
+      {
+        "mib": 57.767578125,
+        "path": "model.edge_weight_e"
+      },
+      {
+        "mib": 57.767578125,
+        "path": "learner.eg.mom.edge_weight_e"
+      }
+    ]
+  },
+  "anatomy": {
+    "version": 1,
+    "dataset": "male-cns:v1.0",
+    "bodies": [
+      10540,
+      10977
+    ],
+    "nodes": 88905,
+    "cable_segments": 88900,
+    "supplied_roots": [
+      3,
+      2
+    ],
+    "no_invented_root_bridges": true,
+    "no_branch_or_roi_merging": true,
+    "nearest_node_projection_um": {
+      "median": 0.7647012488547581,
+      "p99": 1.7834438595032676,
+      "max": 2.8560560218595037
+    },
+    "routes": {
+      "in_e": 183412,
+      "in_i": 7120,
+      "out_i": 40335,
+      "out_mb": 152692
+    },
+    "contacts": [
+      {
+        "body": 10540,
+        "direction": "incoming",
+        "modeled_contact_rows": 119936
+      },
+      {
+        "body": 10540,
+        "direction": "outgoing",
+        "modeled_contact_rows": 102264
+      },
+      {
+        "body": 10977,
+        "direction": "incoming",
+        "modeled_contact_rows": 114090
+      },
+      {
+        "body": 10977,
+        "direction": "outgoing",
+        "modeled_contact_rows": 107649
+      }
+    ],
+    "source_manifest_sha256": "5f178682e5edad1f3597608e30155fb403b3c2fd2830d7992d505676dca02ec1",
+    "discretization": "one finite volume per supplied SWC node, full forest; individual synapses assigned to nearest native node",
+    "kc_scope": "KC axonal inhibition still one output per KC; KC bouton cable is not reconstructed",
+    "npz_sha256": "bb9ddd73a56aff95589f129685499822461cbf2967e0ae8ff0e2ce0c2be753f6"
+  },
+  "implementation": "Every supplied APL morphology node has persistent voltage/conductances/local delayed release; implicit passive cable with learnable positive material ratio and adjoint; measured input and output contacts, no branch/ROI pooling or global physical APL broadcast.",
+  "migration": {
+    "at": "2026-10-18T13:19:25.344502+00:00",
+    "source": "E:\\fly_stream_overflow\\native_mb_terminal_20261018\\last.pt",
+    "source_sha256": "c8a572a14feb9e99da5b8dbf34c9ba479e9718b522223b81b8cd9991f1f00632",
+    "trained": 32968,
+    "geometry": {
+      "version": 1,
+      "dataset": "male-cns:v1.0",
+      "bodies": [
+        10540,
+        10977
+      ],
+      "nodes": 88905,
+      "cable_segments": 88900,
+      "supplied_roots": [
+        3,
+        2
+      ],
+      "no_invented_root_bridges": true,
+      "no_branch_or_roi_merging": true,
+      "nearest_node_projection_um": {
+        "median": 0.7647012488547581,
+        "p99": 1.7834438595032676,
+        "max": 2.8560560218595037
+      },
+      "routes": {
+        "in_e": 183412,
+        "in_i": 7120,
+        "out_i": 40335,
+        "out_mb": 152692
+      },
+      "contacts": [
+        {
+          "body": 10540,
+          "direction": "incoming",
+          "modeled_contact_rows": 119936
+        },
+        {
+          "body": 10540,
+          "direction": "outgoing",
+          "modeled_contact_rows": 102264
+        },
+        {
+          "body": 10977,
+          "direction": "incoming",
+          "modeled_contact_rows": 114090
+        },
+        {
+          "body": 10977,
+          "direction": "outgoing",
+          "modeled_contact_rows": 107649
+        }
+      ],
+      "source_manifest_sha256": "5f178682e5edad1f3597608e30155fb403b3c2fd2830d7992d505676dca02ec1",
+      "discretization": "one finite volume per supplied SWC node, full forest; individual synapses assigned to nearest native node",
+      "kc_scope": "KC axonal inhibition still one output per KC; KC bouton cable is not reconstructed",
+      "npz_sha256": "bb9ddd73a56aff95589f129685499822461cbf2967e0ae8ff0e2ce0c2be753f6"
+    },
+    "initial_material_parameter": "log axial conductance zero (one model unit), positive and learnable, no length/time cap",
+    "initial_spatial_state": "uniform prolongation of each old APL membrane/conductance and each old delayed packet; no past spatial pattern invented",
+    "scope": "zero-exposure state extension; full trainer restore and native routing checks required before learning",
+    "status": "full_state_prolongation_verified",
+    "checkpoint_sha256": "2ccd96103c27d16cc115ace41c2be0e75dc8def86b57b8f942329776212e819f",
+    "old_model_exact": true,
+    "old_physical_exact": true,
+    "old_optimizer_moments_exact": true,
+    "old_other_learner_exact": true,
+    "old_world_rng_cursors_exact": true,
+    "new_spatial_values_match_explicit_prolongation": true
+  },
+  "initial_full_restore": {
+    "checkpoint": "E:\\fly_stream_overflow\\native_apl_cable_20261018\\last.pt",
+    "sha256": "2ccd96103c27d16cc115ace41c2be0e75dc8def86b57b8f942329776212e819f",
+    "trained": 32968,
+    "scope": "zero-exposure complete trainer restore",
+    "storage_only_override": null,
+    "empty_physical_schema_fields_added": [],
+    "missing_model_entries": [],
+    "extra_model_entries": [],
+    "changed_model_entries": [],
+    "changed_learner_entries": [],
+    "cpu_cuda_rng_exact": true,
+    "source_unchanged": true,
+    "mother_world_roundtrip_exact": true,
+    "mother_rng_exact": true,
+    "mother_world_scope": "real MotherWorld state restored without new exposure or network call",
+    "status": "exact_restore_passed"
+  },
+  "initial_delivery": {
+    "checkpoint": "E:\\fly_stream_overflow\\native_apl_cable_20261018\\last.pt",
+    "sha256": "2ccd96103c27d16cc115ace41c2be0e75dc8def86b57b8f942329776212e819f",
+    "trained": 32968,
+    "checks": {
+      "voltage_prolongation": {
+        "absmax": 1.862645149230957e-09,
+        "expected_absmax": 0.13120390474796295,
+        "close": true
+      },
+      "ge_prolongation": {
+        "absmax": 2.384185791015625e-07,
+        "expected_absmax": 2.1743392944335938,
+        "close": true
+      },
+      "gi_prolongation": {
+        "absmax": 0.0,
+        "expected_absmax": 3.150282621383667,
+        "close": true
+      },
+      "e_input_total": {
+        "absmax": 0.0,
+        "expected_absmax": 3.0437541007995605,
+        "close": true
+      },
+      "i_input_total": {
+        "absmax": 0.0,
+        "expected_absmax": 2.482821464538574,
+        "close": true
+      },
+      "fast_output_total": {
+        "absmax": 3.725290298461914e-09,
+        "expected_absmax": 0.18604379892349243,
+        "close": true
+      },
+      "axonal_output_total": {
+        "absmax": 3.725290298461914e-09,
+        "expected_absmax": 0.05567313730716705,
+        "close": true
+      }
+    },
+    "rng_preserved": true,
+    "scope": "initial uniform prolongation only; exact anatomical routing totals, not future trajectory equivalence or learning benefit",
+    "status": "initial_delivery_passed"
+  },
+  "full_restore": {
+    "checkpoint": "E:\\fly_stream_overflow\\native_apl_cable_20261018\\last.pt",
+    "sha256": "0836e22479af6abe2c5d747d411c700452ab7adc0bb2a51c57624340b7f48111",
+    "trained": 33000,
+    "scope": "zero-exposure complete trainer restore",
+    "storage_only_override": null,
+    "empty_physical_schema_fields_added": [],
+    "missing_model_entries": [],
+    "extra_model_entries": [],
+    "changed_model_entries": [],
+    "changed_learner_entries": [],
+    "cpu_cuda_rng_exact": true,
+    "source_unchanged": true,
+    "mother_world_roundtrip_exact": true,
+    "mother_rng_exact": true,
+    "mother_world_scope": "real MotherWorld state restored without new exposure or network call",
+    "status": "exact_restore_passed"
+  },
+  "causal_matrix": {
+    "report": "F:\\fly_stream_overflow\\native_apl_cable_matrix_ordered_33000_20261018\\report.json",
+    "status": "controls_passed",
+    "checkpoint_sha256": "0836e22479af6abe2c5d747d411c700452ab7adc0bb2a51c57624340b7f48111",
+    "intervals": [
+      19,
+      17,
+      17,
+      10
+    ],
+    "ticks": 63,
+    "arms": {
+      "intact": {
+        "ce": 3.3795127868652344,
+        "ce_delta": 0.0,
+        "state_close_to_intact": true,
+        "log_prob_absmax": 0.0,
+        "action_log_prob_absmax": 0.0,
+        "membrane_group_absmax": {
+          "visual": 0.0,
+          "CX": 0.0,
+          "KC": 0.0,
+          "MBON": 0.0,
+          "DAN": 0.0,
+          "OA": 0.0,
+          "5HT": 0.0
+        }
+      },
+      "sham": {
+        "ce": 3.3795127868652344,
+        "ce_delta": 0.0,
+        "state_close_to_intact": true,
+        "log_prob_absmax": 0.0,
+        "action_log_prob_absmax": 0.0,
+        "membrane_group_absmax": {
+          "visual": 0.0,
+          "CX": 0.0,
+          "KC": 0.0,
+          "MBON": 0.0,
+          "DAN": 0.0,
+          "OA": 0.0,
+          "5HT": 0.0
+        }
+      },
+      "cx": {
+        "ce": 3.22393798828125,
+        "ce_delta": -0.15557479858398438,
+        "state_close_to_intact": false,
+        "log_prob_absmax": 1.1913928985595703,
+        "action_log_prob_absmax": 2.822805404663086,
+        "membrane_group_absmax": {
+          "visual": 0.048310283571481705,
+          "CX": 0.1668168306350708,
+          "KC": 0.13938041031360626,
+          "MBON": 0.11743314564228058,
+          "DAN": 0.12220897525548935,
+          "OA": 0.09924120455980301,
+          "5HT": 0.13339605927467346
+        }
+      },
+      "mb_regulators": {
+        "ce": 3.3795127868652344,
+        "ce_delta": 0.0,
+        "state_close_to_intact": true,
+        "log_prob_absmax": 0.0,
+        "action_log_prob_absmax": 0.0,
+        "membrane_group_absmax": {
+          "visual": 0.0,
+          "CX": 0.0,
+          "KC": 0.0,
+          "MBON": 0.0,
+          "DAN": 0.0,
+          "OA": 0.0,
+          "5HT": 0.0
+        }
+      },
+      "al_relay": {
+        "ce": 3.309821844100952,
+        "ce_delta": -0.06969094276428223,
+        "state_close_to_intact": false,
+        "log_prob_absmax": 0.9412746429443359,
+        "action_log_prob_absmax": 3.2192955017089844,
+        "membrane_group_absmax": {
+          "visual": 0.031551189720630646,
+          "CX": 0.17141540348529816,
+          "KC": 0.14919599890708923,
+          "MBON": 0.09729640185832977,
+          "DAN": 0.12902839481830597,
+          "OA": 0.10791531950235367,
+          "5HT": 0.15035700798034668
+        }
+      },
+      "amines": {
+        "ce": 3.2575106620788574,
+        "ce_delta": -0.12200212478637695,
+        "state_close_to_intact": false,
+        "log_prob_absmax": 2.0213794708251953,
+        "action_log_prob_absmax": 5.708454132080078,
+        "membrane_group_absmax": {
+          "visual": 0.030854005366563797,
+          "CX": 0.16000498831272125,
+          "KC": 0.1397385448217392,
+          "MBON": 0.10871604084968567,
+          "DAN": 0.13063478469848633,
+          "OA": 0.13223934173583984,
+          "5HT": 0.12638767063617706
+        }
+      },
+      "visual": {
+        "ce": 3.304253578186035,
+        "ce_delta": -0.07525920867919922,
+        "state_close_to_intact": false,
+        "log_prob_absmax": 0.9768562316894531,
+        "action_log_prob_absmax": 4.2409820556640625,
+        "membrane_group_absmax": {
+          "visual": 0.2604247033596039,
+          "CX": 0.1704646497964859,
+          "KC": 0.14116080105304718,
+          "MBON": 0.12133439630270004,
+          "DAN": 0.12678022682666779,
+          "OA": 0.12202927470207214,
+          "5HT": 0.12638767063617706
+        }
+      },
+      "endocrine": {
+        "ce": 3.3795127868652344,
+        "ce_delta": 0.0,
+        "state_close_to_intact": false,
+        "log_prob_absmax": 0.0,
+        "action_log_prob_absmax": 0.0,
+        "membrane_group_absmax": {
+          "visual": 0.0,
+          "CX": 0.0,
+          "KC": 0.0,
+          "MBON": 0.0,
+          "DAN": 0.0,
+          "OA": 0.0,
+          "5HT": 0.0
+        }
+      },
+      "motor_terminal": {
+        "ce": 3.3795127868652344,
+        "ce_delta": 0.0,
+        "state_close_to_intact": true,
+        "log_prob_absmax": 0.0,
+        "action_log_prob_absmax": 9.585686683654785,
+        "membrane_group_absmax": {
+          "visual": 0.0,
+          "CX": 0.0,
+          "KC": 0.0,
+          "MBON": 0.0,
+          "DAN": 0.0,
+          "OA": 0.0,
+          "5HT": 0.0
+        }
+      },
+      "mb_terminal": {
+        "ce": 3.2826809883117676,
+        "ce_delta": -0.0968317985534668,
+        "state_close_to_intact": false,
+        "log_prob_absmax": 1.4653863906860352,
+        "action_log_prob_absmax": 4.171592712402344,
+        "membrane_group_absmax": {
+          "visual": 0.03789881244301796,
+          "CX": 0.16979146003723145,
+          "KC": 0.14015662670135498,
+          "MBON": 0.12133439630270004,
+          "DAN": 0.12209627777338028,
+          "OA": 0.12786537408828735,
+          "5HT": 0.12638767063617706
+        }
+      },
+      "mb_terminal_gaba": {
+        "ce": 3.3410468101501465,
+        "ce_delta": -0.03846597671508789,
+        "state_close_to_intact": false,
+        "log_prob_absmax": 0.948150634765625,
+        "action_log_prob_absmax": 5.106471061706543,
+        "membrane_group_absmax": {
+          "visual": 0.03945402428507805,
+          "CX": 0.16441145539283752,
+          "KC": 0.14827083051204681,
+          "MBON": 0.12133439630270004,
+          "DAN": 0.1334219127893448,
+          "OA": 0.15033800899982452,
+          "5HT": 0.07538217306137085
+        }
+      },
+      "dpm_5ht": {
+        "ce": 3.4158029556274414,
+        "ce_delta": 0.03629016876220703,
+        "state_close_to_intact": false,
+        "log_prob_absmax": 1.7155046463012695,
+        "action_log_prob_absmax": 3.9847278594970703,
+        "membrane_group_absmax": {
+          "visual": 0.04416339471936226,
+          "CX": 0.14533202350139618,
+          "KC": 0.13321515917778015,
+          "MBON": 0.11687199026346207,
+          "DAN": 0.12209627777338028,
+          "OA": 0.18983574211597443,
+          "5HT": 0.10121384263038635
+        }
+      },
+      "apl_release": {
+        "ce": 3.364370822906494,
+        "ce_delta": -0.015141963958740234,
+        "state_close_to_intact": false,
+        "log_prob_absmax": 1.1631269454956055,
+        "action_log_prob_absmax": 4.022914886474609,
+        "membrane_group_absmax": {
+          "visual": 0.03757340833544731,
+          "CX": 0.17745640873908997,
+          "KC": 0.12527039647102356,
+          "MBON": 0.12647977471351624,
+          "DAN": 0.13535955548286438,
+          "OA": 0.16070213913917542,
+          "5HT": 0.10838169604539871
+        }
+      },
+      "apl_axial": {
+        "ce": 3.3477182388305664,
+        "ce_delta": -0.03179454803466797,
+        "state_close_to_intact": false,
+        "log_prob_absmax": 0.8915328979492188,
+        "action_log_prob_absmax": 3.7362098693847656,
+        "membrane_group_absmax": {
+          "visual": 0.04331725463271141,
+          "CX": 0.17296041548252106,
+          "KC": 0.14236897230148315,
+          "MBON": 0.12133439630270004,
+          "DAN": 0.11270996928215027,
+          "OA": 0.1975560337305069,
+          "5HT": 0.10646362602710724
+        }
+      },
+      "restored": {
+        "ce": 3.3795127868652344,
+        "ce_delta": 0.0,
+        "state_close_to_intact": true,
+        "log_prob_absmax": 0.0,
+        "action_log_prob_absmax": 0.0,
+        "membrane_group_absmax": {
+          "visual": 0.0,
+          "CX": 0.0,
+          "KC": 0.0,
+          "MBON": 0.0,
+          "DAN": 0.0,
+          "OA": 0.0,
+          "5HT": 0.0
+        }
+      }
+    },
+    "reduction_order": "torch deterministic algorithms and ordered native delayed modulatory sums; unsupported operators fail closed",
+    "controls_passed": true,
+    "source_and_rng_preserved": true,
+    "scope": "4 real pending words/63 actual ticks; acute frozen delivery, not sustained learning benefit or natural exploration. Both APL-off branches have slightly lower CE on this small sample.",
+    "earlier_control_failures": [
+      "F:/fly_stream_overflow/native_apl_cable_matrix_33000_20261018/report.json",
+      "F:/fly_stream_overflow/native_apl_cable_matrix_deterministic_33000_20261018/report.json"
+    ],
+    "control_repair": "CUDA atomics in old small delayed dopamine kernel ignored torch deterministic flag and perturbed carried derivatives. Frozen audit uses existing same-equation PyTorch ordered sum for that route. Same tolerance retained; all sham/restored physical and prediction differences now zero."
+  },
+  "learning_curve": [
+    {
+      "bptt_train_tokens": 32972,
+      "window_prequential_nll": 5.366325736045837,
+      "seconds_per_window": 12.20402269999613,
+      "physical_ticks": 471119,
+      "vram_peak_mib": 2807.6962890625
+    },
+    {
+      "bptt_train_tokens": 32976,
+      "window_prequential_nll": 3.7016794681549072,
+      "seconds_per_window": 27.387440899998182,
+      "physical_ticks": 471203,
+      "vram_peak_mib": 3227.70556640625
+    },
+    {
+      "bptt_train_tokens": 32980,
+      "window_prequential_nll": 5.497790813446045,
+      "seconds_per_window": 24.605325500000617,
+      "physical_ticks": 471277,
+      "vram_peak_mib": 3227.70556640625
+    },
+    {
+      "bptt_train_tokens": 32984,
+      "window_prequential_nll": 4.692997097969055,
+      "seconds_per_window": 21.241318899999897,
+      "physical_ticks": 471340,
+      "vram_peak_mib": 3227.70556640625
+    },
+    {
+      "bptt_train_tokens": 32988,
+      "window_prequential_nll": 3.7925073206424713,
+      "seconds_per_window": 8.751489200003562,
+      "physical_ticks": 471356,
+      "vram_peak_mib": 3227.70556640625
+    },
+    {
+      "bptt_train_tokens": 32992,
+      "window_prequential_nll": 3.818166971206665,
+      "seconds_per_window": 18.20561579999776,
+      "physical_ticks": 471403,
+      "vram_peak_mib": 3227.70556640625
+    },
+    {
+      "bptt_train_tokens": 32996,
+      "window_prequential_nll": 2.6973851919174194,
+      "seconds_per_window": 20.791408899996895,
+      "physical_ticks": 471465,
+      "vram_peak_mib": 3227.70556640625
+    },
+    {
+      "bptt_train_tokens": 33000,
+      "window_prequential_nll": 5.988008260726929,
+      "seconds_per_window": 53.95623909999995,
+      "physical_ticks": 471577,
+      "vram_peak_mib": 3847.41357421875
+    }
+  ],
+  "validation": {
+    "affected_checks": "209 passed, CPU/CUDA gradients, state, recomputation, restore and storage failure controls",
+    "deslice": "standalone passed",
+    "cpu_suite": "same 5 pre-existing missing diagnostic-script collection errors after excluding 8 import-time benchmark jobs; not a full-suite pass",
+    "capability": "unmeasured; 32 retained mother-call targets/8 updates is mechanism admission only",
+    "dashboard": "parenting API confirmed latest candidate review in both caregiver and audit; main remains paused, resource_admitted=false"
+  },
+  "resource_failure": {
+    "host_ram_gib": 16,
+    "gpu_mib": 4096,
+    "registered_gpu_budget_mib": 3800,
+    "original_segment4_training_peak_mib": 3393,
+    "resumed_segment2_training_peak_mib": 3847.41357421875,
+    "saved_lineage": "32968 to 33000: 32 new inputs, 8 updates, 483 actual ticks. Last 4 inputs repeated from complete 32996 after final save failure; original failed attempt retained in logs, not double-counted as fresh saved experience.",
+    "failures": [
+      "Original final torch.save host MemoryError; previous complete 32996 survived.",
+      "First retry: native-context auxiliary backward emitted memory allocation failure then CUDA unknown error.",
+      "Segment2/blocking retry: update and full save succeeded; existing guard then raised because peak3847 exceeded budget3800."
+    ],
+    "storage_repair": "GC and CUDA inactive-cache release before serialization; clear failed exception references; retry MemoryError without replacing last complete file. Failure/retry tests and real full restore pass.",
+    "execution_scope": "Segment2 raised boundary-state overhead; smaller segments are not automatically lower memory. No world-time, window-length, state or precision truncation used. Long training is not resource-admitted yet.",
+    "progress_status": "failed protective exit after complete committed-window save; preserved honestly",
+    "next_step": "Calibrate exact recomputation/state offload against long actual intervals before further training; preserve physical clock and complete learning state.",
+    "observed_process_private_sample_mib": 10890
+  },
+  "remaining_gaps": [
+    "KC still one output per cell, no separate bouton cable state",
+    "APL active ion channels/receptor subtype biology",
+    "Exact carried derivatives for new slow dynamics parameters",
+    "Selective familiarity and long-run learning/behavior benefit",
+    "Native peripheral biology and complete ENS",
+    "Complete exploration or self-model unproven"
+  ],
+  "training_adoption_approved": false,
+  "source_manifest": "E:\\fly_stream_overflow\\native_apl_cable_20261018\\source_manifest.json"
+}

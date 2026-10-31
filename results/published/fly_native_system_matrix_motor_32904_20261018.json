@@ -1,0 +1,202 @@
+{
+  "at": "2026-10-18T11:14:47.533652+00:00",
+  "checkpoint": "F:\\fly_stream_overflow\\native_motor_final_20261018\\last.pt",
+  "sha256": "89c667ba91b9d27e487eb6c166dd9d09cfed0b4a00c8b86cb30b8e6b400eead2",
+  "trained": 32904,
+  "scope": "acute frozen delivery, not learning benefit, real action consequence, exploration or self",
+  "historical_body_proxy": false,
+  "body_scope": "native CNS motor language peripheral; no simulated muscle/proprioception",
+  "clock_source": "saved_pending_queue_native_rng_continuation",
+  "intervals": [
+    4,
+    4,
+    27,
+    19
+  ],
+  "ticks": 54,
+  "inputs": [
+    612,
+    13,
+    1375,
+    338
+  ],
+  "targets": [
+    13,
+    1375,
+    338,
+    655
+  ],
+  "sources": [
+    "mother_call",
+    "mother_call",
+    "mother_call",
+    "mother_call"
+  ],
+  "motor_control": "mother is speaking, no commits; identical recorded sensory gain per tick",
+  "gpu_admission": null,
+  "enabled": {
+    "cx": true,
+    "mb_regulators": true,
+    "historical_body_proxy": false,
+    "al_relay": true,
+    "amines": false,
+    "visual": true,
+    "endocrine": true,
+    "motor_terminal": true
+  },
+  "control_tolerance": {
+    "state_rtol": 1e-05,
+    "state_atol": 1e-06,
+    "log_prob_atol": 2e-05,
+    "source": "native_causal_audit.states_close"
+  },
+  "controls_passed": true,
+  "source_and_rng_preserved": true,
+  "status": "controls_passed",
+  "arms": {
+    "intact": {
+      "ce": 3.271164655685425,
+      "ce_delta": 0.0,
+      "state_close_to_intact": true,
+      "log_prob_absmax": 0.0,
+      "action_log_prob_absmax": 0.0,
+      "command_hazard_absmax": 0.0,
+      "native_motor_packet_ticks": 54,
+      "membrane_group_absmax": {
+        "visual": 0.0,
+        "CX": 0.0,
+        "KC": 0.0,
+        "MBON": 0.0,
+        "DAN": 0.0
+      }
+    },
+    "sham": {
+      "ce": 3.271164655685425,
+      "ce_delta": 0.0,
+      "state_close_to_intact": true,
+      "log_prob_absmax": 0.0,
+      "action_log_prob_absmax": 0.0,
+      "command_hazard_absmax": 0.0,
+      "native_motor_packet_ticks": 54,
+      "membrane_group_absmax": {
+        "visual": 0.0,
+        "CX": 0.0,
+        "KC": 0.0,
+        "MBON": 1.4901161193847656e-08,
+        "DAN": 0.0
+      }
+    },
+    "cx": {
+      "ce": 3.2878594398498535,
+      "ce_delta": 0.01669478416442871,
+      "state_close_to_intact": false,
+      "log_prob_absmax": 0.6712160110473633,
+      "action_log_prob_absmax": 2.5860252380371094,
+      "command_hazard_absmax": 0.0003132089041173458,
+      "native_motor_packet_ticks": 54,
+      "membrane_group_absmax": {
+        "visual": 0.01794285513460636,
+        "CX": 0.15163695812225342,
+        "KC": 0.14430929720401764,
+        "MBON": 0.12705406546592712,
+        "DAN": 0.13029958307743073
+      }
+    },
+    "mb_regulators": {
+      "ce": 3.3085553646087646,
+      "ce_delta": 0.037390708923339844,
+      "state_close_to_intact": false,
+      "log_prob_absmax": 1.1281557083129883,
+      "action_log_prob_absmax": 5.219423294067383,
+      "command_hazard_absmax": 0.0005201059393584728,
+      "native_motor_packet_ticks": 54,
+      "membrane_group_absmax": {
+        "visual": 0.035589590668678284,
+        "CX": 0.17731648683547974,
+        "KC": 0.13657240569591522,
+        "MBON": 0.12596429884433746,
+        "DAN": 0.17731648683547974
+      }
+    },
+    "al_relay": {
+      "ce": 3.2914860248565674,
+      "ce_delta": 0.020321369171142578,
+      "state_close_to_intact": false,
+      "log_prob_absmax": 1.138418197631836,
+      "action_log_prob_absmax": 3.239046096801758,
+      "command_hazard_absmax": 0.0006840855348855257,
+      "native_motor_packet_ticks": 54,
+      "membrane_group_absmax": {
+        "visual": 0.0394248440861702,
+        "CX": 0.16305696964263916,
+        "KC": 0.14265553653240204,
+        "MBON": 0.1200329139828682,
+        "DAN": 0.11875223368406296
+      }
+    },
+    "visual": {
+      "ce": 3.357990264892578,
+      "ce_delta": 0.08682560920715332,
+      "state_close_to_intact": false,
+      "log_prob_absmax": 0.8875083923339844,
+      "action_log_prob_absmax": 3.282986640930176,
+      "command_hazard_absmax": 0.0003696354106068611,
+      "native_motor_packet_ticks": 54,
+      "membrane_group_absmax": {
+        "visual": 0.2913009226322174,
+        "CX": 0.15475815534591675,
+        "KC": 0.1375182718038559,
+        "MBON": 0.11324982345104218,
+        "DAN": 0.14262264966964722
+      }
+    },
+    "endocrine": {
+      "ce": 3.271164655685425,
+      "ce_delta": 0.0,
+      "state_close_to_intact": false,
+      "log_prob_absmax": 0.0,
+      "action_log_prob_absmax": 0.0,
+      "command_hazard_absmax": 0.0,
+      "native_motor_packet_ticks": 54,
+      "membrane_group_absmax": {
+        "visual": 0.0,
+        "CX": 0.0,
+        "KC": 0.0,
+        "MBON": 1.4901161193847656e-08,
+        "DAN": 0.0
+      }
+    },
+    "motor_terminal": {
+      "ce": 3.271164655685425,
+      "ce_delta": 0.0,
+      "state_close_to_intact": true,
+      "log_prob_absmax": 0.0,
+      "action_log_prob_absmax": 9.7891206741333,
+      "command_hazard_absmax": 0.0032956895884126425,
+      "native_motor_packet_ticks": 0,
+      "membrane_group_absmax": {
+        "visual": 0.0,
+        "CX": 0.0,
+        "KC": 0.0,
+        "MBON": 1.4901161193847656e-08,
+        "DAN": 0.0
+      }
+    },
+    "restored": {
+      "ce": 3.271164655685425,
+      "ce_delta": 0.0,
+      "state_close_to_intact": true,
+      "log_prob_absmax": 0.0,
+      "action_log_prob_absmax": 0.0,
+      "command_hazard_absmax": 0.0,
+      "native_motor_packet_ticks": 54,
+      "membrane_group_absmax": {
+        "visual": 0.0,
+        "CX": 0.0,
+        "KC": 0.0,
+        "MBON": 1.4901161193847656e-08,
+        "DAN": 0.0
+      }
+    }
+  }
+}

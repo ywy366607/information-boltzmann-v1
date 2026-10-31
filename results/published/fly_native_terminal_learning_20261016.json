@@ -1,0 +1,100 @@
+{
+  "at": "2026-10-16T15:20:37.133705+00:00",
+  "source_tokens": 16000,
+  "source_sha256": "19a82091f6f23a226e5ad30eb9177dfdbcaf8cbee8af8b2a04c1b5d61fe632bf",
+  "source_recovery": "E:/ib_checkpoints/newborn_reading/recovery/000000016000_chunk_end",
+  "candidate": "existing KC->DAN terminal release plus native consequence credit; no rebirth",
+  "senses_restore_correction": {
+    "old_audits": "JO/PAM nonpersistent indices absent; old effects not train-matched",
+    "corrected_JO": 138,
+    "corrected_PAM": 316
+  },
+  "interface": {
+    "report": "E:\\fly_stream_overflow\\native_terminal_credit_16000_full_senses256\\report.json",
+    "status": "interface_passed",
+    "updates": 32,
+    "roundtrip_exact": true,
+    "peak_mib": 3400.0263671875,
+    "terminal_gain_updates_observed": 4
+  },
+  "paired": {
+    "report": "E:\\fly_stream_overflow\\kc_terminal_16000_full_senses64\\report.json",
+    "targets": 64,
+    "ticks": 768,
+    "mean_ce_delta": -0.011654194444417953,
+    "mean_absolute_hazard_delta": 0.044058667495610604,
+    "max_clamp_residual": 0,
+    "scope": "acute delivery, not training benefit"
+  },
+  "tests": "91 affected checks passed",
+  "main_segment": {
+    "start": 16000,
+    "target": 17024,
+    "status": "completed",
+    "other_mechanisms": "inherited unchanged",
+    "care_interventions": [
+      {
+        "at": "2026-10-16T15:21:25.566281+00:00",
+        "reviewer": "Ling",
+        "kind": "during_chunk_parenting_review",
+        "trained": 16136,
+        "dialogue_rows_reviewed": 2,
+        "observed_child_utterance": "One,,",
+        "evidence": "Mother16096 replied with counting then returned to repeated shelf-of-Re/Col/the motif; same motif in15736 and15968.",
+        "decision": "Targeted adult prompt/context correction; preserve complete child brain/history/queue. Continue already approved bounded17024 endpoint.",
+        "interpretation": "New utterance is an attempt, not evidence of counting comprehension or a healthy loop.",
+        "context_revision": "Ling_16136_grounded_shared_language",
+        "training_confound": "Caregiving intervention alongside circuit adaptation; do not attribute segment NLL changes solely to feedback."
+      },
+      {
+        "at": "2026-10-16T15:23:15.353432+00:00",
+        "reviewer": "Ling",
+        "kind": "during_chunk_grounding_review",
+        "trained": 16256,
+        "observed_child_utterance": "sits He A[replacement character],",
+        "observed_adult_error": "Mother16232 inferred You sat down / I saw you settle from the fragment; interface has no body observation.",
+        "decision": "Clarify common adult grounding principle in prompt/correction; no second context rebase, no child reset. Continue approved segment and inspect next replies.",
+        "state_safety": "16256 periodic full last.pt saved;16000 archived recovery retained."
+      }
+    ],
+    "end": 17024,
+    "updates": 128,
+    "checkpoint_sha256": "fc1ce5b358973c7174c07e274437f60b7705ecef927478786f6ab0b41c83b735",
+    "recovery": "E:/ib_checkpoints/newborn_reading/recovery/000000017024_chunk_end"
+  },
+  "runtime_archive": "E:\\fly_stream_overflow\\native_terminal_16000_full_senses_runtime.zip",
+  "runtime_sha256": "0679beb393f6fd49501d10bbbd8fe575a0c9b4c23ad92a71e17e45153610e2eb",
+  "post_training_audit": {
+    "path": "E:/fly_stream_overflow/native_terminal_17024_history64",
+    "status": "incomplete_sham_state_gate",
+    "window": 7,
+    "detail": "Sham CE/read/hazard/muscles and firing activity identical; small floating-point state differences exceeded allclose gate. Full causal acceptance remains pending; do not use partial arm effects as endpoint proof."
+  },
+  "short_utterance_interface": {
+    "range": [
+      16000,
+      17024
+    ],
+    "voiced_turns": 8,
+    "spoken_token_lengths": [
+      3,
+      5,
+      3,
+      12,
+      2,
+      2,
+      2,
+      3
+    ],
+    "end_yield_delta": 13,
+    "empty_yields": 5,
+    "end_word_delta": 0,
+    "end_breath_delta": 0,
+    "shortest_no_commit_ending_ticks": 1,
+    "world_intervals": 1024,
+    "total_ticks": 14405,
+    "mean_ticks_per_interval": 14.0673828125,
+    "interface": "One no-commit interval calls yield_turn and clears utterance buffer; mother replies immediately after any voiced yield. Pauses are conflated with floor release.",
+    "memory": "BPTT boundary detaches tensors and preserves physical state; actual semantic retention horizon unmeasured."
+  }
+}

@@ -1,0 +1,160 @@
+{
+  "events": 256,
+  "nominal": {
+    "control_mode": "nominal",
+    "total_ticks": 256,
+    "active_ticks": 256,
+    "survival_rate": 1.0,
+    "dissipation_units_total": 400,
+    "dissipation_per_useful_bit": 60.747272524087705,
+    "model_bits_per_byte": {
+      "min": 4.47541926891215,
+      "median": 8.193182647564653,
+      "mean": 7.935909516522823,
+      "max": 12.633248938525417,
+      "display": "[4.4754 | 8.1932 | 7.9359 | 12.6332]"
+    },
+    "gain_over_unigram_bits": {
+      "min": -12.440580880696672,
+      "median": -6.979626413345973,
+      "mean": -6.851985238031493,
+      "max": 3.819081938564535,
+      "display": "[-12.4406 | -6.9796 | -6.8520 | 3.8191]"
+    },
+    "gain_over_bigram_bits": {
+      "min": -12.602541541407321,
+      "median": -7.003333597648519,
+      "mean": -6.876176642354218,
+      "max": 3.819081938564535,
+      "display": "[-12.6025 | -7.0033 | -6.8762 | 3.8191]"
+    },
+    "final_reserve": 63
+  },
+  "frozen_learning": {
+    "control_mode": "frozen",
+    "total_ticks": 256,
+    "active_ticks": 256,
+    "survival_rate": 1.0,
+    "dissipation_units_total": 400,
+    "dissipation_per_useful_bit": 57.94580610678573,
+    "model_bits_per_byte": {
+      "min": 7.079001856607467,
+      "median": 11.33509660348832,
+      "mean": 11.203969242366002,
+      "max": 13.11867576569566,
+      "display": "[7.0790 | 11.3351 | 11.2040 | 13.1187]"
+    },
+    "gain_over_unigram_bits": {
+      "min": -12.926007707866914,
+      "median": -11.142428545659575,
+      "mean": -10.120044963874673,
+      "max": 3.819081938564535,
+      "display": "[-12.9260 | -11.1424 | -10.1200 | 3.8191]"
+    },
+    "gain_over_bigram_bits": {
+      "min": -13.115400662819557,
+      "median": -11.12986101364861,
+      "mean": -10.144236368197397,
+      "max": 3.819081938564535,
+      "display": "[-13.1154 | -11.1299 | -10.1442 | 3.8191]"
+    },
+    "final_reserve": 63
+  },
+  "history_disrupted": {
+    "control_mode": "history_disrupted",
+    "total_ticks": 256,
+    "active_ticks": 256,
+    "survival_rate": 1.0,
+    "dissipation_units_total": 400,
+    "dissipation_per_useful_bit": 60.1818238352987,
+    "model_bits_per_byte": {
+      "min": 4.47541926891215,
+      "median": 8.18329537369124,
+      "mean": 7.869789519866134,
+      "max": 12.633248938525417,
+      "display": "[4.4754 | 8.1833 | 7.8698 | 12.6332]"
+    },
+    "gain_over_unigram_bits": {
+      "min": -12.440580880696672,
+      "median": -6.708146961152639,
+      "mean": -6.785865241374804,
+      "max": 3.819081938564535,
+      "display": "[-12.4406 | -6.7081 | -6.7859 | 3.8191]"
+    },
+    "gain_over_bigram_bits": {
+      "min": -12.410830463040963,
+      "median": -6.678396543496929,
+      "mean": -6.810056645697529,
+      "max": 3.819081938564535,
+      "display": "[-12.4108 | -6.6784 | -6.8101 | 3.8191]"
+    },
+    "final_reserve": 63
+  },
+  "information_cut": {
+    "control_mode": "info_cut",
+    "total_ticks": 256,
+    "active_ticks": 256,
+    "survival_rate": 1.0,
+    "dissipation_units_total": 400,
+    "dissipation_per_useful_bit": 60.747272524087705,
+    "model_bits_per_byte": {
+      "min": 4.47541926891215,
+      "median": 8.193182647564653,
+      "mean": 7.935909516522823,
+      "max": 12.633248938525417,
+      "display": "[4.4754 | 8.1932 | 7.9359 | 12.6332]"
+    },
+    "gain_over_unigram_bits": {
+      "min": -12.440580880696672,
+      "median": -6.979626413345973,
+      "mean": -6.851985238031493,
+      "max": 3.819081938564535,
+      "display": "[-12.4406 | -6.9796 | -6.8520 | 3.8191]"
+    },
+    "gain_over_bigram_bits": {
+      "min": -12.602541541407321,
+      "median": -7.003333597648519,
+      "mean": -6.876176642354218,
+      "max": 3.819081938564535,
+      "display": "[-12.6025 | -7.0033 | -6.8762 | 3.8191]"
+    },
+    "final_reserve": 63
+  },
+  "resource_cut": {
+    "control_mode": "resource_cut",
+    "total_ticks": 256,
+    "active_ticks": 21,
+    "survival_rate": 0.08203125,
+    "dissipation_units_total": 32,
+    "dissipation_per_useful_bit": 4.465908728055119,
+    "model_bits_per_byte": {
+      "min": 8.0,
+      "median": 8.0,
+      "mean": 8.2614382868927,
+      "max": 12.633248938525417,
+      "display": "[8.0000 | 8.0000 | 8.2614 | 12.6332]"
+    },
+    "gain_over_unigram_bits": {
+      "min": -12.440580880696672,
+      "median": -7.807331942171255,
+      "mean": -7.177514008401371,
+      "max": 3.819081938564535,
+      "display": "[-12.4406 | -7.8073 | -7.1775 | 3.8191]"
+    },
+    "gain_over_bigram_bits": {
+      "min": -12.602541541407321,
+      "median": -7.777581524515544,
+      "mean": -7.2017054127240945,
+      "max": 3.819081938564535,
+      "display": "[-12.6025 | -7.7776 | -7.2017 | 3.8191]"
+    },
+    "final_reserve": 0
+  },
+  "pairwise_contrasts": {
+    "plasticity_net_gain_bits_per_byte": 3.2680597258431785,
+    "history_retention_net_gain_bits_per_byte": -0.06611999665668922,
+    "action_information_net_gain_bits_per_byte": 0.0,
+    "resource_cut_starvation_ticks": 21,
+    "starvation_penalty_bits_per_byte": 0.3255287703698766
+  }
+}

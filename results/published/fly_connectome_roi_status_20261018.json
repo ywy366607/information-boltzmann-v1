@@ -1,0 +1,1111 @@
+{
+  "source": "NeuPrint male-cns:v1.0",
+  "major_roi_bases": 122,
+  "status_definitions": {
+    "anatomical_graph": "neuron/edge is in full graph",
+    "full_spiking_dynamics": "node participates in membrane/synapse/delay update",
+    "ordinary_connectome_dynamics": "no ROI-specific biological state beyond generic neuron dynamics",
+    "input_surface_only": "used as sensory/output surface but not a dedicated regional circuit",
+    "specialized_role": "existing code has a named mechanism"
+  },
+  "rows": [
+    {
+      "roi": "AB",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "central_complex_navigation",
+      "current_gap": "No dedicated heading/position/selection state; no body-return loop.",
+      "next_step": "CX/CAN continuous state and action-selection circuit"
+    },
+    {
+      "roi": "ADMN",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "other_neuropil_or_tract",
+      "current_gap": "Anatomically present and simulated, but not assigned a distinct biological state.",
+      "next_step": "do not add a mechanism until its causal role is identified"
+    },
+    {
+      "roi": "AL",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "input_surface_only",
+      "system": "olfactory_relay",
+      "current_gap": "ALPN/ALLN/ALIN/ALON and local AL computation are not yet distinct dynamical systems.",
+      "next_step": "olfactory relay and local AL circuit"
+    },
+    {
+      "roi": "AME",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "input_surface_only",
+      "system": "sensory_or_projection",
+      "current_gap": "Input is present, but modality/ROI-specific temporal and local circuit dynamics are mostly shared.",
+      "next_step": "modality-specific delays, gain and local inhibition"
+    },
+    {
+      "roi": "AMMC",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "input_surface_only",
+      "system": "sensory_or_projection",
+      "current_gap": "Input is present, but modality/ROI-specific temporal and local circuit dynamics are mostly shared.",
+      "next_step": "modality-specific delays, gain and local inhibition"
+    },
+    {
+      "roi": "ANm",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "body_and_nerve_cord",
+      "current_gap": "No explicit body actuator, proprioceptive consequence, or ascending/descending control loop.",
+      "next_step": "ascending -> descending -> VNC motor -> proprioceptive return"
+    },
+    {
+      "roi": "AOTU",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "input_surface_only",
+      "system": "sensory_or_projection",
+      "current_gap": "Input is present, but modality/ROI-specific temporal and local circuit dynamics are mostly shared.",
+      "next_step": "modality-specific delays, gain and local inhibition"
+    },
+    {
+      "roi": "ATL",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "association_and_state",
+      "current_gap": "Present in the graph, but no named state or functional read/write role.",
+      "next_step": "role-specific state only where causal evidence supports it"
+    },
+    {
+      "roi": "AVLP",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "association_and_state",
+      "current_gap": "Present in the graph, but no named state or functional read/write role.",
+      "next_step": "role-specific state only where causal evidence supports it"
+    },
+    {
+      "roi": "AbN1",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "body_and_nerve_cord",
+      "current_gap": "No explicit body actuator, proprioceptive consequence, or ascending/descending control loop.",
+      "next_step": "ascending -> descending -> VNC motor -> proprioceptive return"
+    },
+    {
+      "roi": "AbN2",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "body_and_nerve_cord",
+      "current_gap": "No explicit body actuator, proprioceptive consequence, or ascending/descending control loop.",
+      "next_step": "ascending -> descending -> VNC motor -> proprioceptive return"
+    },
+    {
+      "roi": "AbN3",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "body_and_nerve_cord",
+      "current_gap": "No explicit body actuator, proprioceptive consequence, or ascending/descending control loop.",
+      "next_step": "ascending -> descending -> VNC motor -> proprioceptive return"
+    },
+    {
+      "roi": "AbN4",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "body_and_nerve_cord",
+      "current_gap": "No explicit body actuator, proprioceptive consequence, or ascending/descending control loop.",
+      "next_step": "ascending -> descending -> VNC motor -> proprioceptive return"
+    },
+    {
+      "roi": "AbNT",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "body_and_nerve_cord",
+      "current_gap": "No explicit body actuator, proprioceptive consequence, or ascending/descending control loop.",
+      "next_step": "ascending -> descending -> VNC motor -> proprioceptive return"
+    },
+    {
+      "roi": "BU",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "input_surface_only",
+      "system": "sensory_or_projection",
+      "current_gap": "Input is present, but modality/ROI-specific temporal and local circuit dynamics are mostly shared.",
+      "next_step": "modality-specific delays, gain and local inhibition"
+    },
+    {
+      "roi": "CA",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "other_neuropil_or_tract",
+      "current_gap": "Anatomically present and simulated, but not assigned a distinct biological state.",
+      "next_step": "do not add a mechanism until its causal role is identified"
+    },
+    {
+      "roi": "CAN",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "central_complex_navigation",
+      "current_gap": "No dedicated heading/position/selection state; no body-return loop.",
+      "next_step": "CX/CAN continuous state and action-selection circuit"
+    },
+    {
+      "roi": "CRE",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "association_and_state",
+      "current_gap": "Present in the graph, but no named state or functional read/write role.",
+      "next_step": "role-specific state only where causal evidence supports it"
+    },
+    {
+      "roi": "CRN",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "other_neuropil_or_tract",
+      "current_gap": "Anatomically present and simulated, but not assigned a distinct biological state.",
+      "next_step": "do not add a mechanism until its causal role is identified"
+    },
+    {
+      "roi": "CV",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "association_and_state",
+      "current_gap": "Present in the graph, but no named state or functional read/write role.",
+      "next_step": "role-specific state only where causal evidence supports it"
+    },
+    {
+      "roi": "CX",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "central_complex_navigation",
+      "current_gap": "No dedicated heading/position/selection state; no body-return loop.",
+      "next_step": "CX/CAN continuous state and action-selection circuit"
+    },
+    {
+      "roi": "CentralBrain",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "association_and_state",
+      "current_gap": "Present in the graph, but no named state or functional read/write role.",
+      "next_step": "role-specific state only where causal evidence supports it"
+    },
+    {
+      "roi": "CvN",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "other_neuropil_or_tract",
+      "current_gap": "Anatomically present and simulated, but not assigned a distinct biological state.",
+      "next_step": "do not add a mechanism until its causal role is identified"
+    },
+    {
+      "roi": "DMetaN",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "other_neuropil_or_tract",
+      "current_gap": "Anatomically present and simulated, but not assigned a distinct biological state.",
+      "next_step": "do not add a mechanism until its causal role is identified"
+    },
+    {
+      "roi": "DProN",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "other_neuropil_or_tract",
+      "current_gap": "Anatomically present and simulated, but not assigned a distinct biological state.",
+      "next_step": "do not add a mechanism until its causal role is identified"
+    },
+    {
+      "roi": "EB",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "central_complex_navigation",
+      "current_gap": "No dedicated heading/position/selection state; no body-return loop.",
+      "next_step": "CX/CAN continuous state and action-selection circuit"
+    },
+    {
+      "roi": "EBr1",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "central_complex_navigation",
+      "current_gap": "No dedicated heading/position/selection state; no body-return loop.",
+      "next_step": "CX/CAN continuous state and action-selection circuit"
+    },
+    {
+      "roi": "EBr2r4",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "central_complex_navigation",
+      "current_gap": "No dedicated heading/position/selection state; no body-return loop.",
+      "next_step": "CX/CAN continuous state and action-selection circuit"
+    },
+    {
+      "roi": "EBr3am",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "central_complex_navigation",
+      "current_gap": "No dedicated heading/position/selection state; no body-return loop.",
+      "next_step": "CX/CAN continuous state and action-selection circuit"
+    },
+    {
+      "roi": "EBr3d",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "central_complex_navigation",
+      "current_gap": "No dedicated heading/position/selection state; no body-return loop.",
+      "next_step": "CX/CAN continuous state and action-selection circuit"
+    },
+    {
+      "roi": "EBr3pw",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "central_complex_navigation",
+      "current_gap": "No dedicated heading/position/selection state; no body-return loop.",
+      "next_step": "CX/CAN continuous state and action-selection circuit"
+    },
+    {
+      "roi": "EBr5",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "central_complex_navigation",
+      "current_gap": "No dedicated heading/position/selection state; no body-return loop.",
+      "next_step": "CX/CAN continuous state and action-selection circuit"
+    },
+    {
+      "roi": "EBr6",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "central_complex_navigation",
+      "current_gap": "No dedicated heading/position/selection state; no body-return loop.",
+      "next_step": "CX/CAN continuous state and action-selection circuit"
+    },
+    {
+      "roi": "EPA",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "other_neuropil_or_tract",
+      "current_gap": "Anatomically present and simulated, but not assigned a distinct biological state.",
+      "next_step": "do not add a mechanism until its causal role is identified"
+    },
+    {
+      "roi": "FB",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "central_complex_navigation",
+      "current_gap": "No dedicated heading/position/selection state; no body-return loop.",
+      "next_step": "CX/CAN continuous state and action-selection circuit"
+    },
+    {
+      "roi": "FBl1",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "other_neuropil_or_tract",
+      "current_gap": "Anatomically present and simulated, but not assigned a distinct biological state.",
+      "next_step": "do not add a mechanism until its causal role is identified"
+    },
+    {
+      "roi": "FBl2",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "other_neuropil_or_tract",
+      "current_gap": "Anatomically present and simulated, but not assigned a distinct biological state.",
+      "next_step": "do not add a mechanism until its causal role is identified"
+    },
+    {
+      "roi": "FBl3",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "other_neuropil_or_tract",
+      "current_gap": "Anatomically present and simulated, but not assigned a distinct biological state.",
+      "next_step": "do not add a mechanism until its causal role is identified"
+    },
+    {
+      "roi": "FBl4",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "other_neuropil_or_tract",
+      "current_gap": "Anatomically present and simulated, but not assigned a distinct biological state.",
+      "next_step": "do not add a mechanism until its causal role is identified"
+    },
+    {
+      "roi": "FBl5",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "other_neuropil_or_tract",
+      "current_gap": "Anatomically present and simulated, but not assigned a distinct biological state.",
+      "next_step": "do not add a mechanism until its causal role is identified"
+    },
+    {
+      "roi": "FBl6",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "other_neuropil_or_tract",
+      "current_gap": "Anatomically present and simulated, but not assigned a distinct biological state.",
+      "next_step": "do not add a mechanism until its causal role is identified"
+    },
+    {
+      "roi": "FBl7",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "other_neuropil_or_tract",
+      "current_gap": "Anatomically present and simulated, but not assigned a distinct biological state.",
+      "next_step": "do not add a mechanism until its causal role is identified"
+    },
+    {
+      "roi": "FBl8",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "other_neuropil_or_tract",
+      "current_gap": "Anatomically present and simulated, but not assigned a distinct biological state.",
+      "next_step": "do not add a mechanism until its causal role is identified"
+    },
+    {
+      "roi": "FBl9",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "other_neuropil_or_tract",
+      "current_gap": "Anatomically present and simulated, but not assigned a distinct biological state.",
+      "next_step": "do not add a mechanism until its causal role is identified"
+    },
+    {
+      "roi": "FLA",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "association_and_state",
+      "current_gap": "Present in the graph, but no named state or functional read/write role.",
+      "next_step": "role-specific state only where causal evidence supports it"
+    },
+    {
+      "roi": "GA",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "association_and_state",
+      "current_gap": "Present in the graph, but no named state or functional read/write role.",
+      "next_step": "role-specific state only where causal evidence supports it"
+    },
+    {
+      "roi": "GNG",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "body_and_nerve_cord",
+      "current_gap": "No explicit body actuator, proprioceptive consequence, or ascending/descending control loop.",
+      "next_step": "ascending -> descending -> VNC motor -> proprioceptive return"
+    },
+    {
+      "roi": "GOR",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "input_surface_only",
+      "system": "sensory_or_projection",
+      "current_gap": "Input is present, but modality/ROI-specific temporal and local circuit dynamics are mostly shared.",
+      "next_step": "modality-specific delays, gain and local inhibition"
+    },
+    {
+      "roi": "HTct",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "input_surface_only",
+      "system": "sensory_or_projection",
+      "current_gap": "Input is present, but modality/ROI-specific temporal and local circuit dynamics are mostly shared.",
+      "next_step": "modality-specific delays, gain and local inhibition"
+    },
+    {
+      "roi": "IB",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "association_and_state",
+      "current_gap": "Present in the graph, but no named state or functional read/write role.",
+      "next_step": "role-specific state only where causal evidence supports it"
+    },
+    {
+      "roi": "ICL",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "association_and_state",
+      "current_gap": "Present in the graph, but no named state or functional read/write role.",
+      "next_step": "role-specific state only where causal evidence supports it"
+    },
+    {
+      "roi": "INP",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "association_and_state",
+      "current_gap": "Present in the graph, but no named state or functional read/write role.",
+      "next_step": "role-specific state only where causal evidence supports it"
+    },
+    {
+      "roi": "IPS",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "input_surface_only",
+      "system": "sensory_or_projection",
+      "current_gap": "Input is present, but modality/ROI-specific temporal and local circuit dynamics are mostly shared.",
+      "next_step": "modality-specific delays, gain and local inhibition"
+    },
+    {
+      "roi": "IntTct",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "association_and_state",
+      "current_gap": "Present in the graph, but no named state or functional read/write role.",
+      "next_step": "role-specific state only where causal evidence supports it"
+    },
+    {
+      "roi": "LA",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "input_surface_only",
+      "system": "sensory_or_projection",
+      "current_gap": "Input is present, but modality/ROI-specific temporal and local circuit dynamics are mostly shared.",
+      "next_step": "modality-specific delays, gain and local inhibition"
+    },
+    {
+      "roi": "LAL",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "association_and_state",
+      "current_gap": "Present in the graph, but no named state or functional read/write role.",
+      "next_step": "role-specific state only where causal evidence supports it"
+    },
+    {
+      "roi": "LH",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "association_and_state",
+      "current_gap": "Present in the graph, but no named state or functional read/write role.",
+      "next_step": "role-specific state only where causal evidence supports it"
+    },
+    {
+      "roi": "LO",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "input_surface_only",
+      "system": "sensory_or_projection",
+      "current_gap": "Input is present, but modality/ROI-specific temporal and local circuit dynamics are mostly shared.",
+      "next_step": "modality-specific delays, gain and local inhibition"
+    },
+    {
+      "roi": "LOP",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "input_surface_only",
+      "system": "sensory_or_projection",
+      "current_gap": "Input is present, but modality/ROI-specific temporal and local circuit dynamics are mostly shared.",
+      "next_step": "modality-specific delays, gain and local inhibition"
+    },
+    {
+      "roi": "LTct",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "input_surface_only",
+      "system": "sensory_or_projection",
+      "current_gap": "Input is present, but modality/ROI-specific temporal and local circuit dynamics are mostly shared.",
+      "next_step": "modality-specific delays, gain and local inhibition"
+    },
+    {
+      "roi": "LX",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "association_and_state",
+      "current_gap": "Present in the graph, but no named state or functional read/write role.",
+      "next_step": "role-specific state only where causal evidence supports it"
+    },
+    {
+      "roi": "LegNp",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "body_and_nerve_cord",
+      "current_gap": "No explicit body actuator, proprioceptive consequence, or ascending/descending control loop.",
+      "next_step": "ascending -> descending -> VNC motor -> proprioceptive return"
+    },
+    {
+      "roi": "MB",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "KC_MBON_DAN_compartment_memory",
+      "system": "mushroom_body",
+      "current_gap": "DPM/APL consolidation and full MBON-to-action routing remain partial.",
+      "next_step": "DPM/APL consolidation and MBON action coupling"
+    },
+    {
+      "roi": "ME",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "input_surface_only",
+      "system": "sensory_or_projection",
+      "current_gap": "Input is present, but modality/ROI-specific temporal and local circuit dynamics are mostly shared.",
+      "next_step": "modality-specific delays, gain and local inhibition"
+    },
+    {
+      "roi": "MesoAN",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "body_and_nerve_cord",
+      "current_gap": "No explicit body actuator, proprioceptive consequence, or ascending/descending control loop.",
+      "next_step": "ascending -> descending -> VNC motor -> proprioceptive return"
+    },
+    {
+      "roi": "MesoLN",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "body_and_nerve_cord",
+      "current_gap": "No explicit body actuator, proprioceptive consequence, or ascending/descending control loop.",
+      "next_step": "ascending -> descending -> VNC motor -> proprioceptive return"
+    },
+    {
+      "roi": "MetaLN",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "body_and_nerve_cord",
+      "current_gap": "No explicit body actuator, proprioceptive consequence, or ascending/descending control loop.",
+      "next_step": "ascending -> descending -> VNC motor -> proprioceptive return"
+    },
+    {
+      "roi": "NO",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "central_complex_navigation",
+      "current_gap": "No dedicated heading/position/selection state; no body-return loop.",
+      "next_step": "CX/CAN continuous state and action-selection circuit"
+    },
+    {
+      "roi": "NO1",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "central_complex_navigation",
+      "current_gap": "No dedicated heading/position/selection state; no body-return loop.",
+      "next_step": "CX/CAN continuous state and action-selection circuit"
+    },
+    {
+      "roi": "NO2",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "central_complex_navigation",
+      "current_gap": "No dedicated heading/position/selection state; no body-return loop.",
+      "next_step": "CX/CAN continuous state and action-selection circuit"
+    },
+    {
+      "roi": "NO3",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "central_complex_navigation",
+      "current_gap": "No dedicated heading/position/selection state; no body-return loop.",
+      "next_step": "CX/CAN continuous state and action-selection circuit"
+    },
+    {
+      "roi": "NTct",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "input_surface_only",
+      "system": "sensory_or_projection",
+      "current_gap": "Input is present, but modality/ROI-specific temporal and local circuit dynamics are mostly shared.",
+      "next_step": "modality-specific delays, gain and local inhibition"
+    },
+    {
+      "roi": "Optic",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "input_surface_only",
+      "system": "sensory_or_projection",
+      "current_gap": "Input is present, but modality/ROI-specific temporal and local circuit dynamics are mostly shared.",
+      "next_step": "modality-specific delays, gain and local inhibition"
+    },
+    {
+      "roi": "Ov",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "input_surface_only",
+      "system": "sensory_or_projection",
+      "current_gap": "Input is present, but modality/ROI-specific temporal and local circuit dynamics are mostly shared.",
+      "next_step": "modality-specific delays, gain and local inhibition"
+    },
+    {
+      "roi": "PB",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "central_complex_navigation",
+      "current_gap": "No dedicated heading/position/selection state; no body-return loop.",
+      "next_step": "CX/CAN continuous state and action-selection circuit"
+    },
+    {
+      "roi": "PDMN",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "other_neuropil_or_tract",
+      "current_gap": "Anatomically present and simulated, but not assigned a distinct biological state.",
+      "next_step": "do not add a mechanism until its causal role is identified"
+    },
+    {
+      "roi": "PED",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "input_surface_only",
+      "system": "sensory_or_projection",
+      "current_gap": "Input is present, but modality/ROI-specific temporal and local circuit dynamics are mostly shared.",
+      "next_step": "modality-specific delays, gain and local inhibition"
+    },
+    {
+      "roi": "PENP",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "other_neuropil_or_tract",
+      "current_gap": "Anatomically present and simulated, but not assigned a distinct biological state.",
+      "next_step": "do not add a mechanism until its causal role is identified"
+    },
+    {
+      "roi": "PLP",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "body_and_nerve_cord",
+      "current_gap": "No explicit body actuator, proprioceptive consequence, or ascending/descending control loop.",
+      "next_step": "ascending -> descending -> VNC motor -> proprioceptive return"
+    },
+    {
+      "roi": "PRW",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "input_surface_only",
+      "system": "sensory_or_projection",
+      "current_gap": "Input is present, but modality/ROI-specific temporal and local circuit dynamics are mostly shared.",
+      "next_step": "modality-specific delays, gain and local inhibition"
+    },
+    {
+      "roi": "PVLP",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "body_and_nerve_cord",
+      "current_gap": "No explicit body actuator, proprioceptive consequence, or ascending/descending control loop.",
+      "next_step": "ascending -> descending -> VNC motor -> proprioceptive return"
+    },
+    {
+      "roi": "PrN",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "body_and_nerve_cord",
+      "current_gap": "No explicit body actuator, proprioceptive consequence, or ascending/descending control loop.",
+      "next_step": "ascending -> descending -> VNC motor -> proprioceptive return"
+    },
+    {
+      "roi": "ProAN",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "body_and_nerve_cord",
+      "current_gap": "No explicit body actuator, proprioceptive consequence, or ascending/descending control loop.",
+      "next_step": "ascending -> descending -> VNC motor -> proprioceptive return"
+    },
+    {
+      "roi": "ProCN",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "body_and_nerve_cord",
+      "current_gap": "No explicit body actuator, proprioceptive consequence, or ascending/descending control loop.",
+      "next_step": "ascending -> descending -> VNC motor -> proprioceptive return"
+    },
+    {
+      "roi": "ProLN",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "body_and_nerve_cord",
+      "current_gap": "No explicit body actuator, proprioceptive consequence, or ascending/descending control loop.",
+      "next_step": "ascending -> descending -> VNC motor -> proprioceptive return"
+    },
+    {
+      "roi": "ROB",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "other_neuropil_or_tract",
+      "current_gap": "Anatomically present and simulated, but not assigned a distinct biological state.",
+      "next_step": "do not add a mechanism until its causal role is identified"
+    },
+    {
+      "roi": "RUB",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "other_neuropil_or_tract",
+      "current_gap": "Anatomically present and simulated, but not assigned a distinct biological state.",
+      "next_step": "do not add a mechanism until its causal role is identified"
+    },
+    {
+      "roi": "SAD",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "input_surface_only",
+      "system": "sensory_or_projection",
+      "current_gap": "Input is present, but modality/ROI-specific temporal and local circuit dynamics are mostly shared.",
+      "next_step": "modality-specific delays, gain and local inhibition"
+    },
+    {
+      "roi": "SCL",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "association_and_state",
+      "current_gap": "Present in the graph, but no named state or functional read/write role.",
+      "next_step": "role-specific state only where causal evidence supports it"
+    },
+    {
+      "roi": "SIP",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "association_and_state",
+      "current_gap": "Present in the graph, but no named state or functional read/write role.",
+      "next_step": "role-specific state only where causal evidence supports it"
+    },
+    {
+      "roi": "SLP",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "association_and_state",
+      "current_gap": "Present in the graph, but no named state or functional read/write role.",
+      "next_step": "role-specific state only where causal evidence supports it"
+    },
+    {
+      "roi": "SMP",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "association_and_state",
+      "current_gap": "Present in the graph, but no named state or functional read/write role.",
+      "next_step": "role-specific state only where causal evidence supports it"
+    },
+    {
+      "roi": "SNP",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "input_surface_only",
+      "system": "sensory_or_projection",
+      "current_gap": "Input is present, but modality/ROI-specific temporal and local circuit dynamics are mostly shared.",
+      "next_step": "modality-specific delays, gain and local inhibition"
+    },
+    {
+      "roi": "SPS",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "input_surface_only",
+      "system": "sensory_or_projection",
+      "current_gap": "Input is present, but modality/ROI-specific temporal and local circuit dynamics are mostly shared.",
+      "next_step": "modality-specific delays, gain and local inhibition"
+    },
+    {
+      "roi": "VES",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "body_and_nerve_cord",
+      "current_gap": "No explicit body actuator, proprioceptive consequence, or ascending/descending control loop.",
+      "next_step": "ascending -> descending -> VNC motor -> proprioceptive return"
+    },
+    {
+      "roi": "VLNP",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "body_and_nerve_cord",
+      "current_gap": "No explicit body actuator, proprioceptive consequence, or ascending/descending control loop.",
+      "next_step": "ascending -> descending -> VNC motor -> proprioceptive return"
+    },
+    {
+      "roi": "VMNP",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "body_and_nerve_cord",
+      "current_gap": "No explicit body actuator, proprioceptive consequence, or ascending/descending control loop.",
+      "next_step": "ascending -> descending -> VNC motor -> proprioceptive return"
+    },
+    {
+      "roi": "VNC",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "body_and_nerve_cord",
+      "current_gap": "No explicit body actuator, proprioceptive consequence, or ascending/descending control loop.",
+      "next_step": "ascending -> descending -> VNC motor -> proprioceptive return"
+    },
+    {
+      "roi": "VProN",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "body_and_nerve_cord",
+      "current_gap": "No explicit body actuator, proprioceptive consequence, or ascending/descending control loop.",
+      "next_step": "ascending -> descending -> VNC motor -> proprioceptive return"
+    },
+    {
+      "roi": "WED",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "input_surface_only",
+      "system": "sensory_or_projection",
+      "current_gap": "Input is present, but modality/ROI-specific temporal and local circuit dynamics are mostly shared.",
+      "next_step": "modality-specific delays, gain and local inhibition"
+    },
+    {
+      "roi": "WTct",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "input_surface_only",
+      "system": "sensory_or_projection",
+      "current_gap": "Input is present, but modality/ROI-specific temporal and local circuit dynamics are mostly shared.",
+      "next_step": "modality-specific delays, gain and local inhibition"
+    },
+    {
+      "roi": "a'1",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "central_complex_navigation",
+      "current_gap": "No dedicated heading/position/selection state; no body-return loop.",
+      "next_step": "CX/CAN continuous state and action-selection circuit"
+    },
+    {
+      "roi": "a'2",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "central_complex_navigation",
+      "current_gap": "No dedicated heading/position/selection state; no body-return loop.",
+      "next_step": "CX/CAN continuous state and action-selection circuit"
+    },
+    {
+      "roi": "a'3",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "central_complex_navigation",
+      "current_gap": "No dedicated heading/position/selection state; no body-return loop.",
+      "next_step": "CX/CAN continuous state and action-selection circuit"
+    },
+    {
+      "roi": "a'L",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "central_complex_navigation",
+      "current_gap": "No dedicated heading/position/selection state; no body-return loop.",
+      "next_step": "CX/CAN continuous state and action-selection circuit"
+    },
+    {
+      "roi": "a1",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "central_complex_navigation",
+      "current_gap": "No dedicated heading/position/selection state; no body-return loop.",
+      "next_step": "CX/CAN continuous state and action-selection circuit"
+    },
+    {
+      "roi": "a2",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "central_complex_navigation",
+      "current_gap": "No dedicated heading/position/selection state; no body-return loop.",
+      "next_step": "CX/CAN continuous state and action-selection circuit"
+    },
+    {
+      "roi": "a3",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "central_complex_navigation",
+      "current_gap": "No dedicated heading/position/selection state; no body-return loop.",
+      "next_step": "CX/CAN continuous state and action-selection circuit"
+    },
+    {
+      "roi": "aL",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "central_complex_navigation",
+      "current_gap": "No dedicated heading/position/selection state; no body-return loop.",
+      "next_step": "CX/CAN continuous state and action-selection circuit"
+    },
+    {
+      "roi": "b'1",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "central_complex_navigation",
+      "current_gap": "No dedicated heading/position/selection state; no body-return loop.",
+      "next_step": "CX/CAN continuous state and action-selection circuit"
+    },
+    {
+      "roi": "b'2",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "central_complex_navigation",
+      "current_gap": "No dedicated heading/position/selection state; no body-return loop.",
+      "next_step": "CX/CAN continuous state and action-selection circuit"
+    },
+    {
+      "roi": "b'L",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "central_complex_navigation",
+      "current_gap": "No dedicated heading/position/selection state; no body-return loop.",
+      "next_step": "CX/CAN continuous state and action-selection circuit"
+    },
+    {
+      "roi": "b1",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "central_complex_navigation",
+      "current_gap": "No dedicated heading/position/selection state; no body-return loop.",
+      "next_step": "CX/CAN continuous state and action-selection circuit"
+    },
+    {
+      "roi": "b2",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "central_complex_navigation",
+      "current_gap": "No dedicated heading/position/selection state; no body-return loop.",
+      "next_step": "CX/CAN continuous state and action-selection circuit"
+    },
+    {
+      "roi": "bL",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "central_complex_navigation",
+      "current_gap": "No dedicated heading/position/selection state; no body-return loop.",
+      "next_step": "CX/CAN continuous state and action-selection circuit"
+    },
+    {
+      "roi": "g1",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "central_complex_navigation",
+      "current_gap": "No dedicated heading/position/selection state; no body-return loop.",
+      "next_step": "CX/CAN continuous state and action-selection circuit"
+    },
+    {
+      "roi": "g2",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "central_complex_navigation",
+      "current_gap": "No dedicated heading/position/selection state; no body-return loop.",
+      "next_step": "CX/CAN continuous state and action-selection circuit"
+    },
+    {
+      "roi": "g3",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "central_complex_navigation",
+      "current_gap": "No dedicated heading/position/selection state; no body-return loop.",
+      "next_step": "CX/CAN continuous state and action-selection circuit"
+    },
+    {
+      "roi": "g4",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "central_complex_navigation",
+      "current_gap": "No dedicated heading/position/selection state; no body-return loop.",
+      "next_step": "CX/CAN continuous state and action-selection circuit"
+    },
+    {
+      "roi": "g5",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "central_complex_navigation",
+      "current_gap": "No dedicated heading/position/selection state; no body-return loop.",
+      "next_step": "CX/CAN continuous state and action-selection circuit"
+    },
+    {
+      "roi": "gL",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "ordinary_connectome_dynamics",
+      "system": "central_complex_navigation",
+      "current_gap": "No dedicated heading/position/selection state; no body-return loop.",
+      "next_step": "CX/CAN continuous state and action-selection circuit"
+    },
+    {
+      "roi": "mVAC",
+      "anatomical_graph": "yes",
+      "full_spiking_dynamics": "yes",
+      "specialized_role": "input_surface_only",
+      "system": "sensory_or_projection",
+      "current_gap": "Input is present, but modality/ROI-specific temporal and local circuit dynamics are mostly shared.",
+      "next_step": "modality-specific delays, gain and local inhibition"
+    }
+  ]
+}

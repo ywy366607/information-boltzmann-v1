@@ -1,0 +1,129 @@
+{
+ "types": 3000,
+ "scale_um": 4.0,
+ "zero_directed_overlap": {
+  "trainlabels": {
+   "all_pairs": 0.7175,
+   "connected_pairs": 0.0
+  },
+  "alllabels": {
+   "all_pairs": 0.7175,
+   "connected_pairs": 0.0
+  }
+ },
+ "polarity": "f = (out + alpha g)/(out + in + alpha) per type-voxel, alpha 1; trainlabels exclude val/test pairs",
+ "reference": {
+  "undirected_4um": {
+   "exists": 0.591,
+   "strength": 0.151,
+   "coef": 0.507
+  },
+  "code16_plus_undirected_4um": {
+   "exists": 0.657,
+   "strength": 0.187
+  }
+ },
+ "rows": [
+  {
+   "model": "degree + directed encounter (trainlabels)",
+   "exists": {
+    "train": 0.6512,
+    "val": 0.6445,
+    "test": 0.6424,
+    "l2": 0.0,
+    "feature_weights": [
+     1.34423828125,
+     -0.47393009066581726
+    ],
+    "test_auc": 0.9867
+   },
+   "strength": {
+    "train": 0.2733,
+    "val": 0.255,
+    "test": 0.238,
+    "l2": 0.0,
+    "feature_weights": [
+     0.6960910558700562,
+     14.510936737060547
+    ]
+   }
+  },
+  {
+   "model": "degree + directed encounter (alllabels)",
+   "exists": {
+    "train": 0.6522,
+    "val": 0.6506,
+    "test": 0.6488,
+    "l2": 0.0,
+    "feature_weights": [
+     1.3478212356567383,
+     -0.47365182638168335
+    ],
+    "test_auc": 0.9873
+   },
+   "strength": {
+    "train": 0.2746,
+    "val": 0.2813,
+    "test": 0.265,
+    "l2": 0.0,
+    "feature_weights": [
+     0.6980518102645874,
+     14.566425323486328
+    ]
+   }
+  },
+  {
+   "model": "degree + directed both ways (trainlabels)",
+   "exists": {
+    "train": 0.6524,
+    "val": 0.6455,
+    "test": 0.6435,
+    "l2": 0.0,
+    "feature_weights": [
+     1.347703456878662,
+     -0.36498650908470154,
+     -0.06981866806745529,
+     -0.36498650908470154
+    ],
+    "test_auc": 0.9869
+   },
+   "strength": {
+    "train": 0.3094,
+    "val": 0.2767,
+    "test": 0.2548,
+    "l2": 0.0,
+    "feature_weights": [
+     0.9686750173568726,
+     7.365123271942139,
+     -0.29866737127304077,
+     7.365123271942139
+    ]
+   }
+  },
+  {
+   "model": "code k=16 + directed encounter (trainlabels)",
+   "exists": {
+    "train": 0.7226,
+    "val": 0.6762,
+    "test": 0.6759,
+    "l2": 0.01,
+    "feature_weights": [
+     1.2841265201568604,
+     -0.47096797823905945
+    ],
+    "test_auc": 0.9892
+   },
+   "strength": {
+    "train": 0.5907,
+    "val": 0.2303,
+    "test": 0.2235,
+    "l2": 0.1,
+    "feature_weights": [
+     0.6830580234527588,
+     15.146254539489746
+    ]
+   }
+  }
+ ],
+ "seconds": 1088
+}

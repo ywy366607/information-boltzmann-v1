@@ -1,0 +1,17 @@
+{
+  "date": "2026-10-18",
+  "status": "implemented_interface_validated",
+  "mechanism": "immutable_anatomical_octopamine_serotonin_delivery_to_mass_action_occupancy_to_native_threshold_response",
+  "fast_edges_reopened": false,
+  "default_enabled": false,
+  "real_graph_contact_count": 193851,
+  "real_graph": "data/malecns_v1/fly_reservoir_coba.npz",
+  "tests": {
+    "amine_unit_file": "tests/test_fly_amine_modulation.py",
+    "amine_unit_passed": 4,
+    "legacy_bptt_x_passed": true
+  },
+  "evidence_boundary": "No real language continuation or matched off/sham learning-benefit result yet; this artifact validates the physical/interface path only.",
+  "kinetics_claim_invalidated": "v1 used inverse log-time-constant kinetics; corrected with analytic tests in v2",
+  "superseded_by": "results/published/fly_native_amine_integration_20261018.json"
+}

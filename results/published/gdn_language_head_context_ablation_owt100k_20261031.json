@@ -1,0 +1,455 @@
+{
+  "arms": {
+    "bias_only_g14": {
+      "control": "feature-free f = 0 G14 update; learns marginal byte frequency only",
+      "head_step_size": 0.01,
+      "parameter_numbers": {
+        "head_bias": 256
+      },
+      "persistent_state_bytes_fp32": 1024,
+      "persistent_state_numbers": 256,
+      "train_first_pass": {
+        "bits_per_byte": 4.92323166986175,
+        "bytes_per_second": 29788.17493199189,
+        "mean_nll_nats": 3.4125241512081037,
+        "progress": [
+          {
+            "bits_per_byte": 5.812416930912385,
+            "mean_nll_nats": 4.02886040790081,
+            "scored_bytes": 10000
+          },
+          {
+            "bits_per_byte": 5.38260299146622,
+            "mean_nll_nats": 3.7309360876083373,
+            "scored_bytes": 20000
+          },
+          {
+            "bits_per_byte": 5.2288162310190565,
+            "mean_nll_nats": 3.6243392281969387,
+            "scored_bytes": 30000
+          },
+          {
+            "bits_per_byte": 5.151792341563088,
+            "mean_nll_nats": 3.570950336384773,
+            "scored_bytes": 40000
+          },
+          {
+            "bits_per_byte": 5.083486413281341,
+            "mean_nll_nats": 3.5236042747807503,
+            "scored_bytes": 50000
+          },
+          {
+            "bits_per_byte": 5.042401461026632,
+            "mean_nll_nats": 3.4951263559619585,
+            "scored_bytes": 60000
+          },
+          {
+            "bits_per_byte": 4.985389159581592,
+            "mean_nll_nats": 3.4556084399580955,
+            "scored_bytes": 70000
+          },
+          {
+            "bits_per_byte": 4.969035261461742,
+            "mean_nll_nats": 3.444272781585157,
+            "scored_bytes": 80000
+          },
+          {
+            "bits_per_byte": 4.946950817541593,
+            "mean_nll_nats": 3.4289650115476715,
+            "scored_bytes": 90000
+          }
+        ],
+        "scored_bytes": 99950,
+        "seconds": 3.3553583000029903,
+        "special_tokens_elapsed_without_lexical_write": 50
+      },
+      "validation_first_pass_continuing": {
+        "bits_per_byte": 4.706139302388178,
+        "bytes_per_second": 29879.466958504796,
+        "mean_nll_nats": 3.2620471887727134,
+        "progress": [
+          {
+            "bits_per_byte": 4.688516149241434,
+            "mean_nll_nats": 3.249831749856472,
+            "scored_bytes": 10000
+          },
+          {
+            "bits_per_byte": 4.719466787175735,
+            "mean_nll_nats": 3.2712850972771643,
+            "scored_bytes": 20000
+          },
+          {
+            "bits_per_byte": 4.7334514674984165,
+            "mean_nll_nats": 3.2809785390138626,
+            "scored_bytes": 30000
+          },
+          {
+            "bits_per_byte": 4.729654007078388,
+            "mean_nll_nats": 3.278346340030432,
+            "scored_bytes": 40000
+          },
+          {
+            "bits_per_byte": 4.712683276881132,
+            "mean_nll_nats": 3.266583126242161,
+            "scored_bytes": 50000
+          },
+          {
+            "bits_per_byte": 4.709797348176636,
+            "mean_nll_nats": 3.264582752897342,
+            "scored_bytes": 60000
+          },
+          {
+            "bits_per_byte": 4.692866913033254,
+            "mean_nll_nats": 3.2528474695120537,
+            "scored_bytes": 70000
+          },
+          {
+            "bits_per_byte": 4.675683520539502,
+            "mean_nll_nats": 3.240936849452555,
+            "scored_bytes": 80000
+          },
+          {
+            "bits_per_byte": 4.702653104094323,
+            "mean_nll_nats": 3.259630740254455,
+            "scored_bytes": 90000
+          }
+        ],
+        "scored_bytes": 99954,
+        "seconds": 3.345240399998147,
+        "special_tokens_elapsed_without_lexical_write": 46
+      }
+    },
+    "frozen_head": {
+      "head_step_size": 0.0,
+      "parameter_numbers": {
+        "encoder": 8192,
+        "head": 8448,
+        "memory": 2152
+      },
+      "persistent_state_bytes_fp32": 4376,
+      "persistent_state_numbers": 1094,
+      "train_first_pass": {
+        "bits_per_byte": 8.070294837319812,
+        "bytes_per_second": 1433.8819933937361,
+        "mean_nll_nats": 5.5939021127757105,
+        "progress": [
+          {
+            "bits_per_byte": 8.070750029985104,
+            "mean_nll_nats": 5.594217628288269,
+            "scored_bytes": 10000
+          },
+          {
+            "bits_per_byte": 8.07138482974745,
+            "mean_nll_nats": 5.594657637953758,
+            "scored_bytes": 20000
+          },
+          {
+            "bits_per_byte": 8.071320940313772,
+            "mean_nll_nats": 5.594613353172938,
+            "scored_bytes": 30000
+          },
+          {
+            "bits_per_byte": 8.070841368646711,
+            "mean_nll_nats": 5.594280939424038,
+            "scored_bytes": 40000
+          },
+          {
+            "bits_per_byte": 8.07157309001275,
+            "mean_nll_nats": 5.594788130025863,
+            "scored_bytes": 50000
+          },
+          {
+            "bits_per_byte": 8.070529904849923,
+            "mean_nll_nats": 5.594065049171448,
+            "scored_bytes": 60000
+          },
+          {
+            "bits_per_byte": 8.07108484834532,
+            "mean_nll_nats": 5.594449706690652,
+            "scored_bytes": 70000
+          },
+          {
+            "bits_per_byte": 8.070546068854343,
+            "mean_nll_nats": 5.594076253205538,
+            "scored_bytes": 80000
+          },
+          {
+            "bits_per_byte": 8.069593062555821,
+            "mean_nll_nats": 5.593415679576662,
+            "scored_bytes": 90000
+          }
+        ],
+        "scored_bytes": 99950,
+        "seconds": 69.70587570001953,
+        "special_tokens_elapsed_without_lexical_write": 50,
+        "state_after": {
+          "natural_l2": 9.862135887145996,
+          "precision_max": 2.9293482303619385,
+          "precision_mean": 0.7850263714790344,
+          "precision_min": 0.0110293785110116
+        }
+      },
+      "validation_first_pass_continuing": {
+        "bits_per_byte": 8.067819096608583,
+        "bytes_per_second": 1433.4200356892977,
+        "mean_nll_nats": 5.592186060081923,
+        "progress": [
+          {
+            "bits_per_byte": 8.073780436594813,
+            "mean_nll_nats": 5.596318146085739,
+            "scored_bytes": 10000
+          },
+          {
+            "bits_per_byte": 8.070400625525666,
+            "mean_nll_nats": 5.5939754395723345,
+            "scored_bytes": 20000
+          },
+          {
+            "bits_per_byte": 8.066233811160314,
+            "mean_nll_nats": 5.591087223943075,
+            "scored_bytes": 30000
+          },
+          {
+            "bits_per_byte": 8.064797702768315,
+            "mean_nll_nats": 5.590091789460182,
+            "scored_bytes": 40000
+          },
+          {
+            "bits_per_byte": 8.06667338249362,
+            "mean_nll_nats": 5.59139191157341,
+            "scored_bytes": 50000
+          },
+          {
+            "bits_per_byte": 8.068270338950855,
+            "mean_nll_nats": 5.592498837439219,
+            "scored_bytes": 60000
+          },
+          {
+            "bits_per_byte": 8.067893905060851,
+            "mean_nll_nats": 5.592237913349696,
+            "scored_bytes": 70000
+          },
+          {
+            "bits_per_byte": 8.068394525966278,
+            "mean_nll_nats": 5.592584917318821,
+            "scored_bytes": 80000
+          },
+          {
+            "bits_per_byte": 8.067229224171742,
+            "mean_nll_nats": 5.591777191665438,
+            "scored_bytes": 90000
+          }
+        ],
+        "scored_bytes": 99954,
+        "seconds": 69.73113080000621,
+        "special_tokens_elapsed_without_lexical_write": 46,
+        "state_after": {
+          "natural_l2": 10.150361061096191,
+          "precision_max": 2.9293482303619385,
+          "precision_mean": 0.7850303649902344,
+          "precision_min": 0.011030755937099457
+        }
+      }
+    },
+    "local_g14_head": {
+      "head_step_size": 0.01,
+      "parameter_numbers": {
+        "encoder": 8192,
+        "head": 8448,
+        "memory": 2152
+      },
+      "persistent_state_bytes_fp32": 4376,
+      "persistent_state_numbers": 1094,
+      "train_first_pass": {
+        "bits_per_byte": 4.728810485983912,
+        "bytes_per_second": 1096.8820361563876,
+        "mean_nll_nats": 3.2777616557620535,
+        "progress": [
+          {
+            "bits_per_byte": 5.228642484846627,
+            "mean_nll_nats": 3.6242187965273858,
+            "scored_bytes": 10000
+          },
+          {
+            "bits_per_byte": 4.96839492395478,
+            "mean_nll_nats": 3.4438289334475995,
+            "scored_bytes": 20000
+          },
+          {
+            "bits_per_byte": 4.893553942613906,
+            "mean_nll_nats": 3.391953118240833,
+            "scored_bytes": 30000
+          },
+          {
+            "bits_per_byte": 4.863204165677999,
+            "mean_nll_nats": 3.370916255927086,
+            "scored_bytes": 40000
+          },
+          {
+            "bits_per_byte": 4.824701125598271,
+            "mean_nll_nats": 3.344227982252836,
+            "scored_bytes": 50000
+          },
+          {
+            "bits_per_byte": 4.805854637257356,
+            "mean_nll_nats": 3.3311645919958752,
+            "scored_bytes": 60000
+          },
+          {
+            "bits_per_byte": 4.76498614077258,
+            "mean_nll_nats": 3.3028367088837283,
+            "scored_bytes": 70000
+          },
+          {
+            "bits_per_byte": 4.758851318187305,
+            "mean_nll_nats": 3.2985843739055096,
+            "scored_bytes": 80000
+          },
+          {
+            "bits_per_byte": 4.745476303435168,
+            "mean_nll_nats": 3.289313520140118,
+            "scored_bytes": 90000
+          }
+        ],
+        "scored_bytes": 99950,
+        "seconds": 91.12192260002485,
+        "special_tokens_elapsed_without_lexical_write": 50,
+        "state_after": {
+          "natural_l2": 9.862135887145996,
+          "precision_max": 2.9293482303619385,
+          "precision_mean": 0.7850263714790344,
+          "precision_min": 0.0110293785110116
+        }
+      },
+      "validation_first_pass_continuing": {
+        "bits_per_byte": 4.571123056896816,
+        "bytes_per_second": 1100.1918719478426,
+        "mean_nll_nats": 3.1684610588805864,
+        "progress": [
+          {
+            "bits_per_byte": 4.5537425272346495,
+            "mean_nll_nats": 3.156413793748617,
+            "scored_bytes": 10000
+          },
+          {
+            "bits_per_byte": 4.588995286285795,
+            "mean_nll_nats": 3.180849144291878,
+            "scored_bytes": 20000
+          },
+          {
+            "bits_per_byte": 4.5993577924110545,
+            "mean_nll_nats": 3.1880318861961365,
+            "scored_bytes": 30000
+          },
+          {
+            "bits_per_byte": 4.593235509572847,
+            "mean_nll_nats": 3.1837882431082427,
+            "scored_bytes": 40000
+          },
+          {
+            "bits_per_byte": 4.578228959968147,
+            "mean_nll_nats": 3.1733864955598117,
+            "scored_bytes": 50000
+          },
+          {
+            "bits_per_byte": 4.57652817725481,
+            "mean_nll_nats": 3.1722076028173167,
+            "scored_bytes": 60000
+          },
+          {
+            "bits_per_byte": 4.561331440328223,
+            "mean_nll_nats": 3.1616740274629422,
+            "scored_bytes": 70000
+          },
+          {
+            "bits_per_byte": 4.543121284684022,
+            "mean_nll_nats": 3.1490517094206063,
+            "scored_bytes": 80000
+          },
+          {
+            "bits_per_byte": 4.566247487667617,
+            "mean_nll_nats": 3.1650815718157426,
+            "scored_bytes": 90000
+          }
+        ],
+        "scored_bytes": 99954,
+        "seconds": 90.85142560000531,
+        "special_tokens_elapsed_without_lexical_write": 46,
+        "state_after": {
+          "natural_l2": 10.150361061096191,
+          "precision_max": 2.9293482303619385,
+          "precision_mean": 0.7850303649902344,
+          "precision_min": 0.011030755937099457
+        }
+      }
+    }
+  },
+  "claim_scope": "Real OWT UTF-8 byte prequential comparison of the existing fixed GDN state path with versus without its Lean-admitted local affine-head update.",
+  "effect_of_local_head_learning": {
+    "train_bits_per_byte_delta_vs_frozen": -3.3414843513359003,
+    "validation_bits_per_byte_delta_vs_frozen": -3.4966960397117663,
+    "validation_context_delta_vs_same_g14_bias_only": -0.1350162454913617
+  },
+  "lean_admission": [
+    "CGB.GDNLife.finish_saved_nll_improves",
+    "CGB.GDNLife.head_update_preserves_memory",
+    "CGB.GDNLife.carrier_fold",
+    "CGB.GDNLife.exists_open_real_gdn_trajectory"
+  ],
+  "model": {
+    "d_model": 32,
+    "device": "cpu",
+    "dtype": "float32",
+    "n_slots": 32,
+    "runtime": "ActiveInferenceGDN2 + LastByteGDNReadoutPort",
+    "seed": 20261031
+  },
+  "not_claimed": [
+    "full GDN parameter learning",
+    "action learning or active language acquisition",
+    "long-horizon credit beyond the current local head path",
+    "general language-model capability"
+  ],
+  "protocol": {
+    "action": "absent",
+    "autograd_history": "absent",
+    "external_input": "OpenWebText UTF-8 bytes only",
+    "fixed_parameters": [
+      "byte_encoder",
+      "content_address",
+      "likelihood",
+      "process_variance"
+    ],
+    "individual_continuity": "one state/head per arm across train then validation; no reset",
+    "online_update": "G14 observed-minus-predicted affine byte-head update",
+    "prediction": "prequential: score before the byte is assimilated",
+    "time": "one declared causal tick per source token; tokenizer controls advance time but are not lexical bytes"
+  },
+  "source": {
+    "train": {
+      "manifest_sha256": "3614c380d4c72688ac8ccde42f32ea0655d16bec1ba0874a924fd777af904d2d",
+      "path": "data\\ib_owt_10000\\train.npy",
+      "revision": "433fe0f44ed7894fea29c08b3202aa348ccc6369",
+      "source": "openwebtext",
+      "split": "train",
+      "split_rule": "NFC_document_sha256_mod100_98_1_1",
+      "token_file_sha256": "2f227239bc63b89daf31956701d243a93f9dd46671702fff03763b33dc6db4fb",
+      "tokenizer_sha256": "e727da4afe06d37d6ffff7db05ab21f69c5be39253ee7b7f7ec759cadab69c1d",
+      "tokens_available": 48145263,
+      "tokens_presented": 100000
+    },
+    "validation": {
+      "manifest_sha256": "3614c380d4c72688ac8ccde42f32ea0655d16bec1ba0874a924fd777af904d2d",
+      "path": "data\\ib_owt_10000\\validation.npy",
+      "revision": "433fe0f44ed7894fea29c08b3202aa348ccc6369",
+      "source": "openwebtext",
+      "split": "validation",
+      "split_rule": "NFC_document_sha256_mod100_98_1_1",
+      "token_file_sha256": "60d41d3fdda8c1718ad1735693eda0dae2b23a0032c5e04a29aac9d0c6d35d8c",
+      "tokenizer_sha256": "e727da4afe06d37d6ffff7db05ab21f69c5be39253ee7b7f7ec759cadab69c1d",
+      "tokens_available": 468139,
+      "tokens_presented": 100000
+    }
+  },
+  "status": "language_only_gdn_head_admission"
+}

@@ -1,0 +1,138 @@
+{
+  "kind": "read_only_resource_layout_audit",
+  "checkpoint": "E:\\fly_stream_overflow\\native_dan_receiver_credit_20261019\\last.pt",
+  "checkpoint_sha256_previously_verified": "2d849cc21574e79d90ccafa529498b108e60a0a507c51bebb377b17208e60e1a",
+  "new_training_inputs": 0,
+  "new_optimizer_updates": 0,
+  "fields": {
+    "kc_contact_memory": {
+      "shape": [
+        1,
+        463628
+      ],
+      "bytes": 1854512
+    },
+    "kc_contact_trace": {
+      "shape": [
+        1,
+        463628
+      ],
+      "bytes": 1854512
+    },
+    "kc_contact_da_trace": {
+      "shape": [
+        1,
+        463628
+      ],
+      "bytes": 1854512
+    },
+    "kc_contact_p_stats": {
+      "shape": [
+        2,
+        463628
+      ],
+      "bytes": 3709024
+    },
+    "kc_contact_camp": {
+      "shape": [
+        1,
+        463628
+      ],
+      "bytes": 1854512
+    },
+    "kc_contact_credit": {
+      "shape": [
+        18,
+        463628
+      ],
+      "bytes": 33381216
+    },
+    "kc_contact_trace_credit": {
+      "shape": [
+        1,
+        463628
+      ],
+      "bytes": 1854512
+    },
+    "kc_contact_camp_credit": {
+      "shape": [
+        0,
+        463628
+      ],
+      "bytes": 0
+    },
+    "kc_dopamine_signal": {
+      "shape": [
+        2,
+        4184720
+      ],
+      "bytes": 33477760
+    },
+    "kc_dopamine_credit": {
+      "shape": [
+        3,
+        4184720
+      ],
+      "bytes": 50216640
+    },
+    "dan_credit_receptor": {
+      "shape": [
+        2,
+        1404101
+      ],
+      "bytes": 11232808
+    },
+    "dan_credit_calcium": {
+      "shape": [
+        4,
+        1404101
+      ],
+      "bytes": 22465616
+    },
+    "dan_credit_resources": {
+      "shape": [
+        7,
+        187404
+      ],
+      "bytes": 5247312
+    },
+    "dan_credit_packets": {
+      "shape": [
+        4,
+        7,
+        187404
+      ],
+      "bytes": 20989248
+    },
+    "dan_credit_dopamine": {
+      "shape": [
+        2,
+        7,
+        236767
+      ],
+      "bytes": 13258952
+    }
+  },
+  "one_contact_scalar_MiB": 1.7686004638671875,
+  "contact_physiology_fields_MiB": 10.611602783203125,
+  "naive_source_node_pairs": 135436573,
+  "naive_source_sensitivity_GiB": 7.063567720353603,
+  "component_layout_audit": {
+    "KC_nodes": 4184720,
+    "KC_components": 4593,
+    "source_receiver_component_pairs": 129243,
+    "component_exact_expanded_nodes": 132906086,
+    "component_exact_2_filter_7_row_GiB": 6.9315925389528275,
+    "feedback_reachable_pairs": 129220,
+    "candidate_2_plus_5_rows_with_resting_source_assumption_GiB": 6.930568382143974,
+    "root_pointer_jump_iterations": 12,
+    "seconds": 0.5896822999930009
+  },
+  "interpretation": [
+    "Local physical eligibility and per-material conditional sensitivities are different state budgets.",
+    "135436573 is source-node expansion, not a BPTT time horizon.",
+    "Component pruning alone does not make dense source-resolved sensitivities fit 4GiB.",
+    "Previously verified frozen replay is not a training memory admission.",
+    "Policy score eligibility still uses autograd; full BPTT-free policy learning is not implemented."
+  ]
+}

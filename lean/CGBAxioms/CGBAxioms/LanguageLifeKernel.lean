@@ -110,6 +110,26 @@ theorem delayed_credit_requires_history_carrier {X C : Type}
     ¬ (rule visible = credit₀ ∧ rule visible = credit₁) := by
   exact no_visible_only_delayed_credit_rule rule visible credit₀ credit₁ different
 
+/-- Delayed action credit needs a state distinction between alternatives whose
+later consequences require different credit.  This does not require a separate
+action log: an existing action-induced body change, a self-produced utterance
+written into the same state, or a world-mediated state change may supply the
+needed distinction.  If all are absent, no rule reading only the later state
+can recover which action occurred. -/
+theorem delayed_action_credit_requires_state_separation {S A C : Type}
+    (advance : S → A → S) (rule : S → C) (s : S)
+    (action₀ action₁ : A) (credit₀ credit₁ : C)
+    (same_state : advance s action₀ = advance s action₁)
+    (different_credit : credit₀ ≠ credit₁) :
+    ¬ (rule (advance s action₀) = credit₀ ∧
+      rule (advance s action₁) = credit₁) := by
+  rintro ⟨h₀, h₁⟩
+  apply different_credit
+  calc
+    credit₀ = rule (advance s action₀) := h₀.symm
+    _ = rule (advance s action₁) := by rw [same_state]
+    _ = credit₁ := h₁
+
 /-!
 ## What conservation adds
 

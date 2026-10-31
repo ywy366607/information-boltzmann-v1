@@ -1,0 +1,275 @@
+{
+  "at": "2026-10-18T12:11:33.646863+00:00",
+  "status": "native_amine_v2_integrated_current_causal_delivery_and_exact_restore_passed",
+  "main": {
+    "trained": 32384,
+    "sha256": "9dacf767b558b3cf4f8642644f51092a7f4047af8712c98b53f543beb380ebe4",
+    "unchanged": true,
+    "paused": true
+  },
+  "candidate": {
+    "checkpoint": "F:\\fly_stream_overflow\\native_amine_20261018\\last.pt",
+    "sha256": "e92d2dde16b6c8b3af360a5f748b9d3ef78bacddea805acb1c213cfb63b7348a",
+    "trained": 32936,
+    "updates": 4138,
+    "fresh_targets": 32,
+    "fresh_updates": 8,
+    "physical_ticks": 470823,
+    "unread_mother_tokens": 95
+  },
+  "kinetics_version": 2,
+  "anatomical_contacts": 193851,
+  "implementation": "actual annotated amine release -> immutable original contacts -> per-target concentration/receptor occupancy -> learned signed class response -> native membrane dynamics",
+  "kinetics_repair": "historical log-time constants used inverse kinetics; v2 uses exp(-1/tau), analytic e-fold/mass-action checks pass. Time constants remain learnable.",
+  "migration": {
+    "at": "2026-10-18T11:52:57.668655+00:00",
+    "source": "F:\\fly_stream_overflow\\native_motor_final_20261018\\last.pt",
+    "source_sha256": "89c667ba91b9d27e487eb6c166dd9d09cfed0b4a00c8b86cb30b8e6b400eead2",
+    "checkpoint": "F:\\fly_stream_overflow\\native_amine_20261018\\last.pt",
+    "sha256": "2fff7b02dbe58b8871f2762bdd0628f2228a76880451c673d37096e7a76a2b53",
+    "trained": 32904,
+    "amine_kinetics_version": 2,
+    "new_parameters": [
+      "amine_log_affinity_5ht",
+      "amine_log_affinity_oa",
+      "amine_log_clearance_5ht",
+      "amine_log_clearance_oa",
+      "amine_log_off_5ht",
+      "amine_log_off_oa",
+      "amine_response_5ht",
+      "amine_response_oa"
+    ],
+    "modified_previous_parameters": [],
+    "modified_previous_learner_fields": [],
+    "modified_previous_adam_moments": [],
+    "modified_previous_top_level_fields": [],
+    "scope": "independent zero-exposure complete-payload equivalence",
+    "status": "exact_activation_passed"
+  },
+  "initial_zero_response_control": {
+    "report": "F:/fly_stream_overflow/native_amine_zero_matrix_20261018/report.json",
+    "scope": "32904 zero response only; never reused as trained32936 evidence",
+    "arms": 10,
+    "ticks": 54
+  },
+  "parameters": {
+    "amine_log_clearance_oa": {
+      "value": 4.3651509284973145,
+      "absmax": 4.3651509284973145,
+      "nonzero_coordinates": 1,
+      "adam_step": 8.0,
+      "gradient_moment_absmax": 2.430024892419169e-07
+    },
+    "amine_log_clearance_5ht": {
+      "value": 4.792934894561768,
+      "absmax": 4.792934894561768,
+      "nonzero_coordinates": 1,
+      "adam_step": 8.0,
+      "gradient_moment_absmax": 8.874052781493447e-08
+    },
+    "amine_log_affinity_oa": {
+      "value": -0.692471444606781,
+      "absmax": 0.692471444606781,
+      "nonzero_coordinates": 1,
+      "adam_step": 8.0,
+      "gradient_moment_absmax": 5.696221592188522e-07
+    },
+    "amine_log_affinity_5ht": {
+      "value": -0.6929395794868469,
+      "absmax": 0.6929395794868469,
+      "nonzero_coordinates": 1,
+      "adam_step": 8.0,
+      "gradient_moment_absmax": 1.9968896936006786e-07
+    },
+    "amine_log_off_oa": {
+      "value": 2.479153871536255,
+      "absmax": 2.479153871536255,
+      "nonzero_coordinates": 1,
+      "adam_step": 8.0,
+      "gradient_moment_absmax": 7.541685675960252e-08
+    },
+    "amine_log_off_5ht": {
+      "value": 2.8977932929992676,
+      "absmax": 2.8977932929992676,
+      "nonzero_coordinates": 1,
+      "adam_step": 8.0,
+      "gradient_moment_absmax": 5.072259767757714e-08
+    },
+    "amine_response_oa": {
+      "value": null,
+      "absmax": 0.036036211997270584,
+      "nonzero_coordinates": 7717,
+      "adam_step": 8.0,
+      "gradient_moment_absmax": 2.943472281913273e-05
+    },
+    "amine_response_5ht": {
+      "value": null,
+      "absmax": 0.03614066168665886,
+      "nonzero_coordinates": 5988,
+      "adam_step": 8.0,
+      "gradient_moment_absmax": 1.709136449790094e-05
+    }
+  },
+  "chemical_state": {
+    "amine_concentration": {
+      "shape": [
+        2,
+        165122
+      ],
+      "max": 0.21070615947246552,
+      "nonzero": 87661
+    },
+    "amine_receptor": {
+      "shape": [
+        2,
+        165122
+      ],
+      "max": 0.3017805218696594,
+      "nonzero": 87661
+    }
+  },
+  "prediction": {
+    "targets": 32,
+    "source": "mother_call",
+    "pre_update_nll": 5.347034223377705,
+    "same_batch_fixed_unigram_nll": 7.431415130052301,
+    "scope": "actual saved mother input; small mechanism integration, no independent validation or capability claim"
+  },
+  "current_matrix": {
+    "report": "F:/fly_stream_overflow/native_amine_final_matrix_20261018/report.json",
+    "arms": 10,
+    "ticks": 26,
+    "intervals": [
+      4,
+      3,
+      4,
+      15
+    ],
+    "source_and_rng_preserved": true,
+    "amine_off": {
+      "ce": 4.80098295211792,
+      "ce_delta": 0.016978740692138672,
+      "state_close_to_intact": false,
+      "log_prob_absmax": 0.753117561340332,
+      "muscle_absmax": 0.2090146243572235,
+      "motor_logit_absmax": 0.45902109146118164,
+      "action_log_prob_absmax": 3.039626121520996,
+      "command_hazard_absmax": 0.0010047078831121325,
+      "native_motor_packet_ticks": 26,
+      "physical_absmax_by_field": {
+        "h": 0.27936485409736633,
+        "ring": 1.0,
+        "ge": 3.022305727005005,
+        "gi": 7.382266521453857,
+        "b": 0.08640575408935547,
+        "x": 0.0,
+        "u": 0.0,
+        "baseline": 0.0,
+        "h_mean": 0.0156442541629076,
+        "dan_gate": 0.0,
+        "gamma_z1": 0.0,
+        "gamma_z2": 0.0,
+        "observer_prior": 0.0,
+        "observer_history": 0.0,
+        "read_bank": 0.0,
+        "modulator": 0.0,
+        "expected_input": 0.008460402488708496,
+        "dopamine": 1.4202690124511719,
+        "da_trace": 0.0,
+        "da_memory": 0.0,
+        "homeostasis": 0.0,
+        "regime": 0.0,
+        "comp_trace": 0.9993252158164978,
+        "comp_memory": 0.0018157958984375,
+        "credit_comp": 0.44058671593666077,
+        "credit_comp_trace": 0.364423006772995,
+        "credit_dopamine": 1.2466871738433838,
+        "credit_stp": 0.0,
+        "kc_avail": 0.0,
+        "comp_da_trace": 0.04205143824219704,
+        "comp_p_stats": 0.0024350881576538086,
+        "comp_camp": 0.0,
+        "credit_comp_camp": 0.0,
+        "amine_concentration": 0.03171400725841522,
+        "amine_receptor": 0.03002459555864334,
+        "cx_trace": 0.02803642302751541,
+        "dpm_trace": 0.001964390277862549,
+        "apl_trace": 0.001899123191833496,
+        "body_action_trace": 0.0,
+        "body_feedback_trace": 0.0,
+        "al_local_trace": 0.06205683946609497,
+        "al_pn_drive": 0.05120580643415451,
+        "body_muscle": 0.0,
+        "body_reafference": 0.0,
+        "endocrine_calcium": 0.02801346778869629,
+        "endocrine_lk": 6.712507456541061e-06,
+        "endocrine_receptor": 5.19677996635437e-07
+      },
+      "membrane_group_absmax": {
+        "visual": 0.039678845554590225,
+        "CX": 0.15304209291934967,
+        "KC": 0.14436101913452148,
+        "MBON": 0.1280980408191681,
+        "DAN": 0.12696611881256104,
+        "OA": 0.20804554224014282,
+        "5HT": 0.11254999041557312
+      },
+      "amine_terminal_snapshot": {
+        "oa": {
+          "concentration_max": 0.17805378139019012,
+          "occupancy_max": 0.2590789496898651,
+          "occupied_cells": 62885,
+          "response_absmax": 0.036036211997270584
+        },
+        "5ht": {
+          "concentration_max": 0.21070615947246552,
+          "occupancy_max": 0.3017805218696594,
+          "occupied_cells": 24776,
+          "response_absmax": 0.03614066168665886
+        }
+      }
+    }
+  },
+  "full_restore": {
+    "checkpoint": "F:\\fly_stream_overflow\\native_amine_20261018\\last.pt",
+    "sha256": "e92d2dde16b6c8b3af360a5f748b9d3ef78bacddea805acb1c213cfb63b7348a",
+    "trained": 32936,
+    "scope": "zero-exposure complete trainer restore",
+    "storage_only_override": null,
+    "missing_model_entries": [],
+    "extra_model_entries": [],
+    "changed_model_entries": [],
+    "changed_learner_entries": [],
+    "cpu_cuda_rng_exact": true,
+    "source_unchanged": true,
+    "mother_world_roundtrip_exact": true,
+    "mother_rng_exact": true,
+    "mother_world_scope": "real MotherWorld state restored without new exposure or network call",
+    "status": "exact_restore_passed"
+  },
+  "resource": {
+    "complete_before_failure": 32920,
+    "failed_partial_window_not_recovery": 32924,
+    "failure": "post-update EG GPU quantile OOM before any later state was saved",
+    "repair": "same diagnostic values and RNG, exact quantile sort on CPU; actual learning formula untouched",
+    "launch_error": "First finish launch omitted --skip-eval, so bare ABA validation lacked actual peripheral tape after32936 in memory. Last complete32928 retained; only8 targets resumed with --skip-eval. This was a launch error, not a neural mechanism failure.",
+    "external_job": "PID14896 started19:59:06, after19:57:40 original OOM; blocked first restore retry only, then finished",
+    "final_peak_mib": 3220.359375,
+    "saved32_target_peak_mib": 3220.359375,
+    "migration_reporting": "First zero-exposure save completed, then hash buffer hit host MemoryError; independent saved-payload equality verified before training. Export now releases full copies before hashing."
+  },
+  "tests": {
+    "focused_passed": 105,
+    "analytic_and_actual_checkpointed_amine_learning": true,
+    "eg_formula_and_rng": true,
+    "standalone_deslice": "all9 passed",
+    "full_suite": "not rerun; prior5 diagnostic-file collection failures are not presented as current full-suite pass"
+  },
+  "remaining": [
+    "DPM/APL bilateral mean scalar extension is not native per-cell closure; replace by actual projections/effectors",
+    "receptor subtype/effector identities, extrasynaptic geometry and beyond-window exact amine sensitivities unresolved",
+    "physical muscles/receptors/proprioception and complete ENS maintenance missing",
+    "selective familiarity devaluation, natural lexical consequences, exploration and self remain unmeasured"
+  ],
+  "scope": "Parameters updating and acute delivery are not a demonstration of better communication, exploration or self; no natural child speech in this protected maternal-input segment."
+}

@@ -107,7 +107,7 @@
 
 解释：对非负归一分布，若其熵超过 log|B|−m，则任意正且归一的分配都使指定对数增长量减 m 为负。
 
-源码说明：**No body persists** on a stream whose entropy exceeds `log |B| - m`: every allocation's net growth (growth minus a maintenance cost `m` per arrival) is negative.
+源码说明：When entropy exceeds `log |B| - m`, every admissible allocation has negative expected net log growth under this niche contract. This is not a survival theorem.
 
 形式陈述：
 
@@ -125,7 +125,7 @@
 
 解释：在所列归一化与正分配条件下，若交叉熵低于 log|B|−m，则定义的对数增长量减 m 严格为正。
 
-源码说明：A body whose cross-entropy is below `log |B| - m` has positive net growth.
+源码说明：Below the cross-entropy threshold, expected net log growth is positive.
 
 形式陈述：
 

@@ -1,0 +1,270 @@
+{
+ "types": 3000,
+ "synapse_share": 0.6373,
+ "min_syn": 5,
+ "connected_share": 0.0364,
+ "null_exists_test_auc": 0.731,
+ "split": "type pairs: 90% train / 5% val (picks L2) / 5% test",
+ "metric": "share of loss explained beyond the degree-only null; exists: logistic on >= min_syn synapses; strength: squared error of log synapses per cell pair on connected pairs",
+ "rows": [
+  {
+   "model": "superclass block",
+   "labels": 16,
+   "numbers": 256,
+   "exists": {
+    "train": 0.2173,
+    "val": 0.2158,
+    "test": 0.2153,
+    "l2": 0.0001,
+    "test_auc": 0.8831
+   },
+   "strength": {
+    "train": 0.0098,
+    "val": 0.0122,
+    "test": 0.0105,
+    "l2": 0.01
+   }
+  },
+  {
+   "model": "hemilineage block",
+   "labels": 164,
+   "numbers": 26896,
+   "exists": {
+    "train": 0.1351,
+    "val": 0.1298,
+    "test": 0.1259,
+    "l2": 0.0001,
+    "test_auc": 0.838
+   },
+   "strength": {
+    "train": 0.0373,
+    "val": 0.0124,
+    "test": 0.0108,
+    "l2": 0.1
+   }
+  },
+  {
+   "model": "hemilineage x superclass block",
+   "labels": 219,
+   "numbers": 47961,
+   "exists": {
+    "train": 0.2879,
+    "val": 0.2773,
+    "test": 0.2763,
+    "l2": 0.001,
+    "test_auc": 0.9114
+   },
+   "strength": {
+    "train": 0.0573,
+    "val": 0.0189,
+    "test": 0.0185,
+    "l2": 0.1
+   }
+  },
+  {
+   "model": "learned code k=2",
+   "numbers": 6004,
+   "exists": {
+    "train": 0.2764,
+    "val": 0.2711,
+    "test": 0.2673,
+    "l2": 0.0001,
+    "test_auc": 0.9058
+   },
+   "strength": {
+    "train": 0.1263,
+    "val": 0.0853,
+    "test": 0.0861,
+    "l2": 0.1
+   }
+  },
+  {
+   "model": "lineage block + learned code k=2",
+   "numbers": 53965,
+   "exists": {
+    "train": 0.4083,
+    "val": 0.3866,
+    "test": 0.3824,
+    "l2": 0.0001,
+    "test_auc": 0.9446
+   },
+   "strength": {
+    "train": 0.1818,
+    "val": 0.107,
+    "test": 0.1066,
+    "l2": 0.1
+   }
+  },
+  {
+   "model": "learned code k=4",
+   "numbers": 12016,
+   "exists": {
+    "train": 0.4757,
+    "val": 0.4632,
+    "test": 0.4648,
+    "l2": 0.0001,
+    "test_auc": 0.9624
+   },
+   "strength": {
+    "train": 0.2127,
+    "val": 0.1259,
+    "test": 0.1196,
+    "l2": 0.1
+   }
+  },
+  {
+   "model": "lineage block + learned code k=4",
+   "numbers": 59977,
+   "exists": {
+    "train": 0.5183,
+    "val": 0.4978,
+    "test": 0.4979,
+    "l2": 0.001,
+    "test_auc": 0.9682
+   },
+   "strength": {
+    "train": 0.2612,
+    "val": 0.139,
+    "test": 0.1332,
+    "l2": 0.1
+   }
+  },
+  {
+   "model": "learned code k=8",
+   "numbers": 24064,
+   "exists": {
+    "train": 0.5795,
+    "val": 0.5582,
+    "test": 0.5543,
+    "l2": 0.0001,
+    "test_auc": 0.9765
+   },
+   "strength": {
+    "train": 0.3334,
+    "val": 0.1462,
+    "test": 0.1471,
+    "l2": 0.1
+   }
+  },
+  {
+   "model": "lineage block + learned code k=8",
+   "numbers": 72025,
+   "exists": {
+    "train": 0.6011,
+    "val": 0.5707,
+    "test": 0.5701,
+    "l2": 0.001,
+    "test_auc": 0.9784
+   },
+   "strength": {
+    "train": 0.3714,
+    "val": 0.1497,
+    "test": 0.1457,
+    "l2": 0.1
+   }
+  },
+  {
+   "model": "learned code k=16",
+   "numbers": 48256,
+   "exists": {
+    "train": 0.6424,
+    "val": 0.6067,
+    "test": 0.6045,
+    "l2": 0.01,
+    "test_auc": 0.9822
+   },
+   "strength": {
+    "train": 0.4941,
+    "val": 0.1034,
+    "test": 0.0916,
+    "l2": 0.1
+   }
+  },
+  {
+   "model": "lineage block + learned code k=16",
+   "numbers": 96217,
+   "exists": {
+    "train": 0.6487,
+    "val": 0.6094,
+    "test": 0.6091,
+    "l2": 0.01,
+    "test_auc": 0.9826
+   },
+   "strength": {
+    "train": 0.5183,
+    "val": 0.0636,
+    "test": 0.0873,
+    "l2": 0.1
+   }
+  },
+  {
+   "model": "learned code k=32",
+   "numbers": 97024,
+   "exists": {
+    "train": 0.72,
+    "val": 0.6107,
+    "test": 0.6119,
+    "l2": 0.01,
+    "test_auc": 0.9838
+   },
+   "strength": {
+    "train": 0.6894,
+    "val": -0.3812,
+    "test": -0.363,
+    "l2": 0.1
+   }
+  },
+  {
+   "model": "lineage block + learned code k=32",
+   "numbers": 144985,
+   "exists": {
+    "train": 0.7245,
+    "val": 0.6107,
+    "test": 0.6116,
+    "l2": 0.01,
+    "test_auc": 0.9838
+   },
+   "strength": {
+    "train": 0.7089,
+    "val": -0.3551,
+    "test": -0.369,
+    "l2": 0.1
+   }
+  },
+  {
+   "model": "learned code k=64",
+   "numbers": 196096,
+   "exists": {
+    "train": 0.7663,
+    "val": 0.6374,
+    "test": 0.6361,
+    "l2": 0.1,
+    "test_auc": 0.985
+   },
+   "strength": {
+    "train": 0.9014,
+    "val": -2.139,
+    "test": -1.9947,
+    "l2": 0.1
+   }
+  },
+  {
+   "model": "learned code k=128",
+   "numbers": 400384,
+   "exists": {
+    "train": 0.9345,
+    "val": 0.3884,
+    "test": 0.383,
+    "l2": 0.1,
+    "test_auc": 0.9716
+   },
+   "strength": {
+    "train": 0.9976,
+    "val": -1.8866,
+    "test": -1.6674,
+    "l2": 0.1
+   }
+  }
+ ],
+ "seconds": 6526
+}

@@ -3,7 +3,7 @@
 由 `scripts/build_proven_index.py` 从 Lean 源码生成，并逐条核对当前审计清单。新工作开始前先检索已有机制；点击完整定理名查看源码、前提及结论。
 渐进检索入口：[主题导航与逐条完整陈述](CGB_THEOREMS/README.md)；先查主题，再按模块阅读。无源码解释的条目明确标注，避免把机器猜测当作定理含义。
 
-共 **1204** 条已审计源码定理/引理，来自 **104** 个生产模块。编译声明共 **5181** 项，含定义及自动生成项，不作为机制数量。
+共 **1575** 条已审计源码定理/引理，来自 **118** 个生产模块。编译声明共 **6522** 项，含定义及自动生成项，不作为机制数量。
 生成时全部生产源码哈希与通过信任/覆盖检查的库存一致；运行 `--check` 检测过时索引。标准入口 `lean/CGBAxioms/scripts/audit.py` 在构建、审计成功后自动刷新本页；其 `--check-index` 模式只核对索引、不改写索引。
 
 **未入 Lean 的手工推导与数值见证**另列在 `CGB_HAND_DERIVATIONS.md`，检索时两处都要看。
@@ -18,21 +18,23 @@
 | 模块 | 源码标注与位置 |
 |---|---|
 | Generation | [G3](../../lean/CGBAxioms/CGBAxioms/Generation.lean#L46)；[G13 (prediction is the boundary's Gibbs conditional)](../../lean/CGBAxioms/CGBAxioms/Generation.lean#L74)；[G2](../../lean/CGBAxioms/CGBAxioms/Generation.lean#L100)；[G1](../../lean/CGBAxioms/CGBAxioms/Generation.lean#L118)；[G1E](../../lean/CGBAxioms/CGBAxioms/Generation.lean#L171)；[G4](../../lean/CGBAxioms/CGBAxioms/Generation.lean#L197)；[P2b from weighted micro-reversibility](../../lean/CGBAxioms/CGBAxioms/Generation.lean#L224)；[G6](../../lean/CGBAxioms/CGBAxioms/Generation.lean#L255)；[G6DB](../../lean/CGBAxioms/CGBAxioms/Generation.lean#L269)；[G7](../../lean/CGBAxioms/CGBAxioms/Generation.lean#L282)；[G9 (modulation needs the boundary)](../../lean/CGBAxioms/CGBAxioms/Generation.lean#L298)；[G10a](../../lean/CGBAxioms/CGBAxioms/Generation.lean#L317)；[G10b (necessity of modulation, minimal form)](../../lean/CGBAxioms/CGBAxioms/Generation.lean#L330)；[G10c (heterogeneous compartments need local gains)](../../lean/CGBAxioms/CGBAxioms/Generation.lean#L361)；[G11a](../../lean/CGBAxioms/CGBAxioms/Generation.lean#L395)；[G11b (interoceptive memory)](../../lean/CGBAxioms/CGBAxioms/Generation.lean#L414)；[G12 (a miss counter is necessary for optimal foraging)](../../lean/CGBAxioms/CGBAxioms/Generation.lean#L480)；[G14a (two-phase drift)](../../lean/CGBAxioms/CGBAxioms/Generation.lean#L527)；[G14b](../../lean/CGBAxioms/CGBAxioms/Generation.lean#L542)；[G14c (the phases must balance)](../../lean/CGBAxioms/CGBAxioms/Generation.lean#L579)；[R2 (leakage loses on every outcome)](../../lean/CGBAxioms/CGBAxioms/Generation.lean#L600)；[R1 (conservation makes the readout one-hot)](../../lean/CGBAxioms/CGBAxioms/Generation.lean#L608)；[G15a (reward-modulated two-phase drift is the policy gradient)](../../lean/CGBAxioms/CGBAxioms/Generation.lean#L642)；[G15b](../../lean/CGBAxioms/CGBAxioms/Generation.lean#L658)；[G15c (outcome-blind modulation learns nothing)](../../lean/CGBAxioms/CGBAxioms/Generation.lean#L698)；[G15d (reward phases must balance)](../../lean/CGBAxioms/CGBAxioms/Generation.lean#L710)；[G8a](../../lean/CGBAxioms/CGBAxioms/Generation.lean#L751)；[G8b](../../lean/CGBAxioms/CGBAxioms/Generation.lean#L761) |
+| GenerationActiveInference | [Active necessity.](../../lean/CGBAxioms/CGBAxioms/GenerationActiveInference.lean#L52)；[Active closure.](../../lean/CGBAxioms/CGBAxioms/GenerationActiveInference.lean#L92) |
 | GenerationAmplifier | [G25a (H stays off below threshold)](../../lean/CGBAxioms/CGBAxioms/GenerationAmplifier.lean#L68)；[G25b (switch width)](../../lean/CGBAxioms/CGBAxioms/GenerationAmplifier.lean#L78)；[G25c (equilibrium Hill coefficient is one)](../../lean/CGBAxioms/CGBAxioms/GenerationAmplifier.lean#L90)；[G25d (cooperativity from multiple quanta)](../../lean/CGBAxioms/CGBAxioms/GenerationAmplifier.lean#L99)；[G25e (gain–range bound)](../../lean/CGBAxioms/CGBAxioms/GenerationAmplifier.lean#L140)；[G25f (a fixed threshold fails on a wide world)](../../lean/CGBAxioms/CGBAxioms/GenerationAmplifier.lean#L163)；[G25f (a threshold centred on the prediction works everywhere)](../../lean/CGBAxioms/CGBAxioms/GenerationAmplifier.lean#L178) |
 | GenerationAxiomAudit | [Homogeneity forces a regular contact graph](../../lean/CGBAxioms/CGBAxioms/GenerationAxiomAudit.lean#L26) |
-| GenerationColumnMemory | [Silence has one rest](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L51)；[Error descent](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L74)；[Decay by use keeps rare topics](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L101)；[No latch below unit gain](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L116)；[A latch above unit gain](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L131) |
+| GenerationColumnMemory | [Silence has one rest](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L53)；[Error descent](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L76)；[Decay by use keeps rare topics](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L211)；[No latch below unit gain](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L226)；[A latch above unit gain](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L241) |
 | GenerationCRN | [M2](../../lean/CGBAxioms/CGBAxioms/GenerationCRN.lean#L263) |
 | GenerationExport | [G16a (export is forced)](../../lean/CGBAxioms/CGBAxioms/GenerationExport.lean#L25)；[G16b (write-only bodies starve)](../../lean/CGBAxioms/CGBAxioms/GenerationExport.lean#L42)；[G16c](../../lean/CGBAxioms/CGBAxioms/GenerationExport.lean#L50)；[G17a (unselective export forgets)](../../lean/CGBAxioms/CGBAxioms/GenerationExport.lean#L67)；[G17b (retention needs selectivity)](../../lean/CGBAxioms/CGBAxioms/GenerationExport.lean#L90) |
 | GenerationGradientFilter | [W2 (drift forbids a vanishing gain)](../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L108)；[W3 (an occurrence clock)](../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L163)；[W4 (a relation basis)](../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L177)；[W5 is implied by W3](../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L187)；[W6 (nonconvex data)](../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L247) |
 | GenerationGrowth | [G18a](../../lean/CGBAxioms/CGBAxioms/GenerationGrowth.lean#L25)；[G18a (uniqueness)](../../lean/CGBAxioms/CGBAxioms/GenerationGrowth.lean#L32)；[G18b (reciprocity)](../../lean/CGBAxioms/CGBAxioms/GenerationGrowth.lean#L41)；[G18c](../../lean/CGBAxioms/CGBAxioms/GenerationGrowth.lean#L60)；[G19a (one pool grows a rich club)](../../lean/CGBAxioms/CGBAxioms/GenerationGrowth.lean#L77)；[G19b (memoryless ends see only symbol frequencies)](../../lean/CGBAxioms/CGBAxioms/GenerationGrowth.lean#L92)；[G19c (sequence structure needs memory at the ends)](../../lean/CGBAxioms/CGBAxioms/GenerationGrowth.lean#L113)；[G20a (two-state memory is geometric)](../../lean/CGBAxioms/CGBAxioms/GenerationGrowth.lean#L137)；[G20b (symmetric exchange)](../../lean/CGBAxioms/CGBAxioms/GenerationGrowth.lean#L152)；[G21 (no differentiation without fluctuation)](../../lean/CGBAxioms/CGBAxioms/GenerationGrowth.lean#L162)；[G22a (use depletes)](../../lean/CGBAxioms/CGBAxioms/GenerationGrowth.lean#L183)；[G22b (equilibrium inhibition retreats from co-activity)](../../lean/CGBAxioms/CGBAxioms/GenerationGrowth.lean#L189)；[G22c (no rich club needs local potentials)](../../lean/CGBAxioms/CGBAxioms/GenerationGrowth.lean#L196) |
 | GenerationIgnition | [G23 (no ignition in equilibrium with additive energies)](../../lean/CGBAxioms/CGBAxioms/GenerationIgnition.lean#L61)；[G24 (equilibrium memory bound)](../../lean/CGBAxioms/CGBAxioms/GenerationIgnition.lean#L100) |
-| GenerationInformationEnergy | [N1](../../lean/CGBAxioms/CGBAxioms/GenerationInformationEnergy.lean#L52)；[N1](../../lean/CGBAxioms/CGBAxioms/GenerationInformationEnergy.lean#L64)；[N2](../../lean/CGBAxioms/CGBAxioms/GenerationInformationEnergy.lean#L93)；[N3](../../lean/CGBAxioms/CGBAxioms/GenerationInformationEnergy.lean#L113)；[N4](../../lean/CGBAxioms/CGBAxioms/GenerationInformationEnergy.lean#L119)；[N5 (learning saturates)](../../lean/CGBAxioms/CGBAxioms/GenerationInformationEnergy.lean#L143) |
+| GenerationInformationEnergy | [N1](../../lean/CGBAxioms/CGBAxioms/GenerationInformationEnergy.lean#L53)；[N1](../../lean/CGBAxioms/CGBAxioms/GenerationInformationEnergy.lean#L65)；[N2](../../lean/CGBAxioms/CGBAxioms/GenerationInformationEnergy.lean#L94)；[N3](../../lean/CGBAxioms/CGBAxioms/GenerationInformationEnergy.lean#L114)；[N4](../../lean/CGBAxioms/CGBAxioms/GenerationInformationEnergy.lean#L120)；[N5 (mixture regret)](../../lean/CGBAxioms/CGBAxioms/GenerationInformationEnergy.lean#L144) |
+| GenerationInformationProjection | [Finite deterministic CMI data processing](../../lean/CGBAxioms/CGBAxioms/GenerationInformationProjection.lean#L282) |
 | GenerationLatchHealth | [H1 (lock-in is death)](../../lean/CGBAxioms/CGBAxioms/GenerationLatchHealth.lean#L27)；[H2 (latched means blind)](../../lean/CGBAxioms/CGBAxioms/GenerationLatchHealth.lean#L41)；[H1, quantitative](../../lean/CGBAxioms/CGBAxioms/GenerationLatchHealth.lean#L59) |
 | GenerationLattice | [M1a with conductances](../../lean/CGBAxioms/CGBAxioms/GenerationLattice.lean#L39)；[M4 (lattice media are admitted)](../../lean/CGBAxioms/CGBAxioms/GenerationLattice.lean#L423) |
 | GenerationLearning | [L-1](../../lean/CGBAxioms/CGBAxioms/GenerationLearning.lean#L27)；[L-1](../../lean/CGBAxioms/CGBAxioms/GenerationLearning.lean#L31)；[L-2](../../lean/CGBAxioms/CGBAxioms/GenerationLearning.lean#L37)；[L-2](../../lean/CGBAxioms/CGBAxioms/GenerationLearning.lean#L53)；[L-3](../../lean/CGBAxioms/CGBAxioms/GenerationLearning.lean#L61)；[O-1](../../lean/CGBAxioms/CGBAxioms/GenerationLearning.lean#L84)；[O-2](../../lean/CGBAxioms/CGBAxioms/GenerationLearning.lean#L92) |
 | GenerationLeaveRule | [C-1 (a changing world needs comparison)](../../lean/CGBAxioms/CGBAxioms/GenerationLeaveRule.lean#L38) |
 | GenerationLifeGate | [No exact latch](../../lean/CGBAxioms/CGBAxioms/GenerationLifeGate.lean#L48)；[Life gate L-sense](../../lean/CGBAxioms/CGBAxioms/GenerationLifeGate.lean#L78)；[Life gate L-metabolism](../../lean/CGBAxioms/CGBAxioms/GenerationLifeGate.lean#L97)；[L-metabolism for rule tables](../../lean/CGBAxioms/CGBAxioms/GenerationLifeGate.lean#L128)；[L-sense for rule tables](../../lean/CGBAxioms/CGBAxioms/GenerationLifeGate.lean#L146) |
-| GenerationLinearMemory | [Histories merge](../../lean/CGBAxioms/CGBAxioms/GenerationLinearMemory.lean#L75)；[A linear hold cannot clean up](../../lean/CGBAxioms/CGBAxioms/GenerationLinearMemory.lean#L102) |
+| GenerationLinearMemory | [Histories merge](../../lean/CGBAxioms/CGBAxioms/GenerationLinearMemory.lean#L78)；[A linear hold cannot clean up](../../lean/CGBAxioms/CGBAxioms/GenerationLinearMemory.lean#L105) |
 | GenerationMedium | [M1a](../../lean/CGBAxioms/CGBAxioms/GenerationMedium.lean#L24)；[M1b](../../lean/CGBAxioms/CGBAxioms/GenerationMedium.lean#L45) |
 | GenerationNestedWorld | [A move is an exchange](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L374)；[Mass action](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L442)；[Uniport selectivity is fixed by free energy](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L479)；[Antiport selectivity](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L497)；[T-E2 (an organism nested in its world is admitted)](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1235)；[Only events across the boundary feed the organism](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1362)；[Death](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1401)；[A dead body does not give itself away](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1420)；[Only dissolution empties a place](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1461)；[Births come only from division](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1488)；[Leak bound](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1553)；[Nested metabolism](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1654)；[Nested sensing](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1681)；[The two-dimensional world is a model of the axioms](../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1787) |
 | GenerationNesting | [G26a (the sensed potential of a world cell)](../../lean/CGBAxioms/CGBAxioms/GenerationNesting.lean#L39)；[G26b (staying put starves)](../../lean/CGBAxioms/CGBAxioms/GenerationNesting.lean#L58)；[T-N7 (the stream never runs dry)](../../lean/CGBAxioms/CGBAxioms/GenerationNesting.lean#L140)；[G26c (corpses must go: decomposition is necessary)](../../lean/CGBAxioms/CGBAxioms/GenerationNesting.lean#L161) |
@@ -41,7 +43,8 @@
 | GenerationOrganismEcoliV1 | [The organism is a model of the CGB axioms](../../lean/CGBAxioms/CGBAxioms/GenerationOrganismEcoliV1.lean#L52)；[Life gate L-metabolism](../../lean/CGBAxioms/CGBAxioms/GenerationOrganismEcoliV1.lean#L58)；[Life gate L-sense](../../lean/CGBAxioms/CGBAxioms/GenerationOrganismEcoliV1.lean#L65) |
 | GenerationOrganismGeneratedS0 | [The organism is a model of the CGB axioms](../../lean/CGBAxioms/CGBAxioms/GenerationOrganismGeneratedS0.lean#L50)；[Life gate L-metabolism](../../lean/CGBAxioms/CGBAxioms/GenerationOrganismGeneratedS0.lean#L56)；[Life gate L-sense](../../lean/CGBAxioms/CGBAxioms/GenerationOrganismGeneratedS0.lean#L63) |
 | GenerationPersistence | [A (Kolmogorov, one direction)](../../lean/CGBAxioms/CGBAxioms/GenerationPersistence.lean#L46)；[A](../../lean/CGBAxioms/CGBAxioms/GenerationPersistence.lean#L61)；[B (integral feedback adapts perfectly)](../../lean/CGBAxioms/CGBAxioms/GenerationPersistence.lean#L73)；[B](../../lean/CGBAxioms/CGBAxioms/GenerationPersistence.lean#L82)；[C](../../lean/CGBAxioms/CGBAxioms/GenerationPersistence.lean#L92)；[C](../../lean/CGBAxioms/CGBAxioms/GenerationPersistence.lean#L102) |
-| GenerationPredictiveHarvest | [Gibbs' inequality](../../lean/CGBAxioms/CGBAxioms/GenerationPredictiveHarvest.lean#L63)；[Kelly bound](../../lean/CGBAxioms/CGBAxioms/GenerationPredictiveHarvest.lean#L75)；[No body persists](../../lean/CGBAxioms/CGBAxioms/GenerationPredictiveHarvest.lean#L106) |
+| GenerationPredictiveHarvest | [Gibbs' inequality](../../lean/CGBAxioms/CGBAxioms/GenerationPredictiveHarvest.lean#L63)；[Kelly bound](../../lean/CGBAxioms/CGBAxioms/GenerationPredictiveHarvest.lean#L75) |
+| GenerationSelfProduction | [Unbounded self-production.](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L1298) |
 | GenerationSpeechTempo | [N7](../../lean/CGBAxioms/CGBAxioms/GenerationSpeechTempo.lean#L127) |
 | GenerationTable | [M3](../../lean/CGBAxioms/CGBAxioms/GenerationTable.lean#L72) |
 
@@ -63,17 +66,26 @@
 - [EventChannels（15）](#eventchannels15)
 - [Foundation（14）](#foundation14)
 - [Generation（35）](#generation35)
+- [GenerationActiveInference（5）](#generationactiveinference5)
 - [GenerationAmplifier（13）](#generationamplifier13)
+- [GenerationAssociationCapacity（15）](#generationassociationcapacity15)
 - [GenerationAxiomAudit（2）](#generationaxiomaudit2)
 - [GenerationCascadeMemory（5）](#generationcascadememory5)
-- [GenerationColumnMemory（13）](#generationcolumnmemory13)
+- [GenerationClosedLoopCredit（7）](#generationclosedloopcredit7)
+- [GenerationColumnMemory（19）](#generationcolumnmemory19)
+- [GenerationColumnRefinement（5）](#generationcolumnrefinement5)
+- [GenerationConservedMemory（24）](#generationconservedmemory24)
 - [GenerationContinualOptimizer（42）](#generationcontinualoptimizer42)
 - [GenerationCRN（10）](#generationcrn10)
 - [GenerationExport（6）](#generationexport6)
+- [GenerationGDNLife（76）](#generationgdnlife76)
+- [GenerationGraceMemory（13）](#generationgracememory13)
 - [GenerationGradientFilter（35）](#generationgradientfilter35)
 - [GenerationGrowth（16）](#generationgrowth16)
 - [GenerationIgnition（5）](#generationignition5)
 - [GenerationInformationEnergy（7）](#generationinformationenergy7)
+- [GenerationInformationProjection（17）](#generationinformationprojection17)
+- [GenerationLanguageExistence（18）](#generationlanguageexistence18)
 - [GenerationLatchHealth（3）](#generationlatchhealth3)
 - [GenerationLattice（14）](#generationlattice14)
 - [GenerationLearning（7）](#generationlearning7)
@@ -89,20 +101,25 @@
 - [GenerationOrganismGeneratedS0（3）](#generationorganismgenerateds03)
 - [GenerationPersistence（6）](#generationpersistence6)
 - [GenerationPredictiveHarvest（9）](#generationpredictiveharvest9)
+- [GenerationSeedMemory（15）](#generationseedmemory15)
+- [GenerationSelfProduction（138）](#generationselfproduction138)
 - [GenerationSpeechTempo（14）](#generationspeechtempo14)
+- [GenerationSurvivalBounds（16）](#generationsurvivalbounds16)
 - [GenerationTable（2）](#generationtable2)
-- [GenerationUnifiedOptimizer（31）](#generationunifiedoptimizer31)
+- [GenerationUnifiedOptimizer（42）](#generationunifiedoptimizer42)
 - [GraceRecovery（20）](#gracerecovery20)
 - [GraceRecoveryAccounting（14）](#gracerecoveryaccounting14)
 - [GraceRecoveryClosure（18）](#gracerecoveryclosure18)
 - [GraceRecoveryControls（4）](#gracerecoverycontrols4)
 - [Inference（6）](#inference6)
+- [InformationEconomics（3）](#informationeconomics3)
 - [InformationThermodynamics（3）](#informationthermodynamics3)
 - [Interaction（19）](#interaction19)
 - [InteractionBridge（6）](#interactionbridge6)
 - [InteractionControls（7）](#interactioncontrols7)
 - [Language（1）](#language1)
-- [LanguageLifeKernel（53）](#languagelifekernel53)
+- [LanguageLifeAdmission（1）](#languagelifeadmission1)
+- [LanguageLifeKernel（54）](#languagelifekernel54)
 - [LearningMaintenance（26）](#learningmaintenance26)
 - [LearningMaintenanceControls（8）](#learningmaintenancecontrols8)
 - [LearningMaintenanceEnergy（4）](#learningmaintenanceenergy4)
@@ -405,6 +422,15 @@ _Generation, layer 1: what the axioms force on the equilibrium law The axioms co
 - [`CGB.Medium.two_part_balance`](../../lean/CGBAxioms/CGBAxioms/Generation.lean#L751)：**G8a** (two parts suffice): with positive part factors `φ₁, φ₂` and constants `a, b ≥ 0`, up rates `a φ₁ + b φ₂` and down rates `b / φ₁ + a / φ₂` (each term reads one part) have ratio exactly `φ₁ φ₂`.
 - [`CGB.Medium.three_part_balance_impossible`](../../lean/CGBAxioms/CGBAxioms/Generation.lean#L761)：**G8b** (three parts are impossible): if up rates `f₁+f₂+f₃` and down rates `g₁+g₂+g₃` (each term reading one part) satisfy detailed balance with a product factor `φ₁ φ₂ φ₃` that is non-constant on every part, the total
 
+## GenerationActiveInference（5）
+_Active inference from finite supply (minimal information contract) This module does not add a physical entropy variable or a new organism state._
+
+- [`CGB.ActiveInference.not_unbounded_of_bounded`](../../lean/CGBAxioms/CGBAxioms/GenerationActiveInference.lean#L41)：A bounded cumulative signal cannot satisfy the unbounded viability contract.
+- [`CGB.ActiveInference.viable_not_eventually_passive`](../../lean/CGBAxioms/CGBAxioms/GenerationActiveInference.lean#L52)：**Active necessity.** If viability requires an unbounded usable signal, and every eventually passive policy has a bounded signal in the declared world, then a viable policy cannot become eventually passive.
+- [`CGB.ActiveInference.action_condition_required`](../../lean/CGBAxioms/CGBAxioms/GenerationActiveInference.lean#L68)：If the world is action-sensitive, an action-blind predictor cannot match every action-conditioned response.
+- [`CGB.ActiveInference.silence_condition_required`](../../lean/CGBAxioms/CGBAxioms/GenerationActiveInference.lean#L78)：Silence is an ordinary byte outcome.
+- [`CGB.ActiveInference.active_closure`](../../lean/CGBAxioms/CGBAxioms/GenerationActiveInference.lean#L92)：**Active closure.** Under one declared world contract, viability rules out eventual passivity and action-sensitive future inputs rule out an action-blind predictor.
+
 ## GenerationAmplifier（13）
 _An equilibrium amplifier: ordered filling of a conserved shell (generation chain, G25) Chemotaxis needs an all-or-none response to a tiny difference (a gain of order ten in *E._
 
@@ -422,6 +448,25 @@ _An equilibrium amplifier: ordered filling of a conserved shell (generation chai
 - [`CGB.Generation.fixed_threshold_fails`](../../lean/CGBAxioms/CGBAxioms/GenerationAmplifier.lean#L163)：**G25f (a fixed threshold fails on a wide world)**: if the sensed potential ranges over an interval wider than `2 log (N - 1) / s`, a switch of gain `s` at any fixed `θ` is unresolvable somewhere in it.
 - [`CGB.Generation.centred_threshold_resolves`](../../lean/CGBAxioms/CGBAxioms/GenerationAmplifier.lean#L178)：**G25f (a threshold centred on the prediction works everywhere)**: if the threshold sits at a stored prediction `μhat` (G13: the slow interior's conditional) and the innovation `μ - μhat` (G14) stays within `δ` with `s δ
 
+## GenerationAssociationCapacity（15）
+_Exact and mixed capacity of an associative linear state A GDN fast-weight state is a superposition of value-weighted keys._
+
+- [`CGB.Generation.associationState_row`](../../lean/CGBAxioms/CGBAxioms/GenerationAssociationCapacity.lean#L29)：Each output row of `V Kᵀ` is one scalar key superposition.
+- [`CGB.Generation.association_slot_retention`](../../lean/CGBAxioms/CGBAxioms/GenerationAssociationCapacity.lean#L38)：Slotwise natural-state retention transports each stored key by the same slot factors.
+- [`CGB.Generation.association_state_readout`](../../lean/CGBAxioms/CGBAxioms/GenerationAssociationCapacity.lean#L56)：Reading `V Kᵀ` with a query is the corresponding weighted combination of values; this is the algebraic reference for GDN probe readout.
+- [`CGB.Generation.association_readout_interference_bound`](../../lean/CGBAxioms/CGBAxioms/GenerationAssociationCapacity.lean#L74)：A single interference matrix bounds the readout error uniformly over all bounded values.
+- [`CGB.Generation.probeFamilyAccurate_mono`](../../lean/CGBAxioms/CGBAxioms/GenerationAssociationCapacity.lean#L111)：Accuracy is monotone in the declared tolerance.
+- [`CGB.Generation.exact_decoder_capacity`](../../lean/CGBAxioms/CGBAxioms/GenerationAssociationCapacity.lean#L127)：Exact decoding itself forces the same key-dimension bound.
+- [`CGB.Generation.exact_decoder_association_readout`](../../lean/CGBAxioms/CGBAxioms/GenerationAssociationCapacity.lean#L158)
+- [`CGB.Generation.bounded_decoder_association_readout`](../../lean/CGBAxioms/CGBAxioms/GenerationAssociationCapacity.lean#L167)
+- [`CGB.Generation.normalized_assimilation_decoder_bound`](../../lean/CGBAxioms/CGBAxioms/GenerationAssociationCapacity.lean#L185)：A weighted natural-parameter write followed by slotwise normalization is an associative superposition with effective keys `wᵢ kᵢⱼ / pⱼ`, plus the normalized old state.
+- [`CGB.Generation.exact_decoder_is_bounded_decoder`](../../lean/CGBAxioms/CGBAxioms/GenerationAssociationCapacity.lean#L224)
+- [`CGB.Generation.precision_assimilation_is_innovation`](../../lean/CGBAxioms/CGBAxioms/GenerationAssociationCapacity.lean#L237)：A natural-parameter assimilation is an innovation update, with gain `w / (p + w)` for the individual slot.
+- [`CGB.Generation.precision_assimilation_gain_bounds`](../../lean/CGBAxioms/CGBAxioms/GenerationAssociationCapacity.lean#L246)：The precision-derived slot gain is bounded when prior precision is positive and incoming precision is nonnegative.
+- [`CGB.Generation.process_noise_gain_floor`](../../lean/CGBAxioms/CGBAxioms/GenerationAssociationCapacity.lean#L258)：With strictly positive process variance and a lower bound on incoming precision, one predict-then-assimilate step has a positive gain floor.
+- [`CGB.Generation.exact_key_capacity`](../../lean/CGBAxioms/CGBAxioms/GenerationAssociationCapacity.lean#L271)
+- [`CGB.Generation.collision_of_excess_keys`](../../lean/CGBAxioms/CGBAxioms/GenerationAssociationCapacity.lean#L278)：Beyond key dimension, linear superposition is not injective: two distinct coefficient assignments produce the same stored state.
+
 ## GenerationAxiomAudit（2）
 _Which axiom parts work (generation chain, audit) Usage in the generation chain (G1–G22, M1–M2): P1b's locality parts (participants in contact, writes and reads only participants), P2a, P2b and P3's boundary sensing enter_
 
@@ -437,22 +482,76 @@ _A bank of two-state pools keeps a power-law trace (generation chain, cascade me
 - [`CGB.Generation.bank_power_law_lower_bound`](../../lean/CGBAxioms/CGBAxioms/GenerationCascadeMemory.lean#L77)
 - [`CGB.Generation.geometric_bank_covers`](../../lean/CGBAxioms/CGBAxioms/GenerationCascadeMemory.lean#L84)：Geometric time constants cover the band: every `t ∈ [τ₀, τ₀ γ^m]` has a level `k ≤ m` with `t ≤ τ₀ γ^k ≤ γ t`.
 
-## GenerationColumnMemory（13）
+## GenerationClosedLoopCredit（7）
+_Closed-loop credit with a shared policy and predictor G15 (`Medium.expected_reward_deriv`) differentiates a fixed reward table._
+
+- [`CGB.ClosedLoopCredit.objective_deriv`](../../lean/CGBAxioms/CGBAxioms/GenerationClosedLoopCredit.lean#L43)：Product rule for the shared policy/predictor, including direct score credit.
+- [`CGB.ClosedLoopCredit.policy_deriv_sum_zero`](../../lean/CGBAxioms/CGBAxioms/GenerationClosedLoopCredit.lean#L61)：Differentiating normalization forces the policy tangents to sum to zero.
+- [`CGB.ClosedLoopCredit.scalar_baseline_zero`](../../lean/CGBAxioms/CGBAxioms/GenerationClosedLoopCredit.lean#L72)：A scalar baseline cancels against a normalized conditional outcome law.
+- [`CGB.ClosedLoopCredit.objective_deriv_advantage`](../../lean/CGBAxioms/CGBAxioms/GenerationClosedLoopCredit.lean#L82)：Three-factor advantage/score credit PLUS the complete direct score derivative.
+- [`CGB.ClosedLoopCredit.log_policy_deriv`](../../lean/CGBAxioms/CGBAxioms/GenerationClosedLoopCredit.lean#L106)：For a positive policy, the ratio appearing above really is the log score.
+- [`CGB.ClosedLoopCredit.missing_score_derivative_counterexample`](../../lean/CGBAxioms/CGBAxioms/GenerationClosedLoopCredit.lean#L114)：Singleton action/outcome, π=K=1, Rθ=θ: both laws are fixed and normalized; the policy-only estimator is zero while the actual objective derivative is one.
+- [`CGB.ClosedLoopCredit.constant_likelihood_posterior`](../../lean/CGBAxioms/CGBAxioms/GenerationClosedLoopCredit.lean#L135)：Constant positive likelihood leaves a normalized prior unchanged.
+
+## GenerationColumnMemory（19）
 _Column memory for the language organism (generation chain, 2026-10-28) The language organism's synaptic page is a set of columns `S_m` written by the gated delta rule (`GenerationLinearMemory`), with the activity page re_
 
-- [`CGB.Generation.dot_self_nonneg`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L41)
-- [`CGB.Generation.eq_zero_of_dot_self`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L44)
-- [`CGB.Generation.silent_rest_unique`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L51)：**Silence has one rest**: a gated delta step without a write (`α < 1`) fixes only zero.
-- [`CGB.Generation.tiedWrite_eq_delta_add`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L66)：The tied write is the delta step plus the write of the arrival.
-- [`CGB.Generation.tied_write_is_error_descent`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L74)：**Error descent**: the tied write is a gradient step of size `β` on `½ (⟨k, x⟩ - v)²`, whose gradient in `x i` is `(⟨k, x⟩ - v) k i` (predicted minus arrived, times the presynaptic key).
-- [`CGB.Generation.tied_write_error_shrinks`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L81)：With a unit key the prediction error shrinks by `1 - β`.
-- [`CGB.Generation.exact_prediction_no_write`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L94)：An exact prediction writes nothing.
-- [`CGB.Generation.occurrence_decay_retains`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L101)：**Decay by use keeps rare topics**: decaying by `α ^ w t` with `w t ∈ [0, 1]` keeps at least what decaying by `α` every tick keeps.
-- [`CGB.Generation.unused_column_kept`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L111)：An unused column keeps everything.
-- [`CGB.Generation.no_latch_below_unit_gain`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L116)：**No latch below unit gain**: `x ↦ σ (g x)` with a 1-Lipschitz `σ`, `σ 0 = 0` and `0 ≤ g < 1` rests only at zero.
-- [`CGB.Generation.hardSat_zero`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L125)
-- [`CGB.Generation.hardSat_lipschitz`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L127)
-- [`CGB.Generation.latch_above_unit_gain`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L131)：**A latch above unit gain**: with saturation and `g ≥ 1`, `± 1` rest besides `0`.
+- [`CGB.Generation.dot_self_nonneg`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L43)
+- [`CGB.Generation.eq_zero_of_dot_self`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L46)
+- [`CGB.Generation.silent_rest_unique`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L53)：**Silence has one rest**: a gated delta step without a write (`α < 1`) fixes only zero.
+- [`CGB.Generation.tiedWrite_eq_delta_add`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L68)：The tied write is the delta step plus the write of the arrival.
+- [`CGB.Generation.tied_write_is_error_descent`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L76)：**Error descent**: the tied write is a gradient step of size `β` on `½ (⟨k, x⟩ - v)²`, whose gradient in `x i` is `(⟨k, x⟩ - v) k i` (predicted minus arrived, times the presynaptic key).
+- [`CGB.Generation.tied_write_error_shrinks`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L83)：With a unit key the prediction error shrinks by `1 - β`.
+- [`CGB.Generation.binary_delta_crossEntropy_decreases`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L104)
+- [`CGB.Generation.tied_write_cross_read`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L168)：The change in any other readout is exactly the prediction error times the key overlap and write gain.
+- [`CGB.Generation.reused_key_tracks_and_rewrites`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L187)：Every write recovers the latest value.
+- [`CGB.Generation.exact_prediction_no_write`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L204)：An exact prediction writes nothing.
+- [`CGB.Generation.occurrence_decay_retains`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L211)：**Decay by use keeps rare topics**: decaying by `α ^ w t` with `w t ∈ [0, 1]` keeps at least what decaying by `α` every tick keeps.
+- [`CGB.Generation.unused_column_kept`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L221)：An unused column keeps everything.
+- [`CGB.Generation.no_latch_below_unit_gain`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L226)：**No latch below unit gain**: `x ↦ σ (g x)` with a 1-Lipschitz `σ`, `σ 0 = 0` and `0 ≤ g < 1` rests only at zero.
+- [`CGB.Generation.hardSat_zero`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L235)
+- [`CGB.Generation.hardSat_lipschitz`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L237)
+- [`CGB.Generation.latch_above_unit_gain`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L241)：**A latch above unit gain**: with saturation and `g ≥ 1`, `± 1` rest besides `0`.
+- [`CGB.Generation.self_listening_increment`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L259)：Exact two-trajectory increment, including the feedback contribution.
+- [`CGB.Generation.self_listening_frozen_state_gap`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L266)：Freezing the self-listening input loses the feedback part of state credit.
+- [`CGB.Generation.self_listening_frozen_state_counterexample`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L272)：A concrete nonzero feedback path makes the frozen-input credit incorrect.
+
+## GenerationColumnRefinement（5）
+_Column refinement: one body, several readable projections This file does not construct a column organism._
+
+- [`CGB.Generation.LocalColumnProjections.activity_unchanged_outside`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnRefinement.lean#L83)：P1b makes a nonparticipant's activity readout unchanged under the same physical event.
+- [`CGB.Generation.LocalColumnProjections.carrier_unchanged_outside`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnRefinement.lean#L89)：The same event leaves a nonparticipant's local causal reading unchanged.
+- [`CGB.Generation.LocalColumnProjections.contact_unchanged_outside`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnRefinement.lean#L95)：A contact reading changes only when at least one endpoint participates.
+- [`CGB.Generation.BodyCausalCarrier.satisfies_causal_carrier_contract`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnRefinement.lean#L111)：The carrier fields meet the existing exact readout-and-successor contract.
+- [`CGB.Generation.BodyCausalCarrier.merged_history_preserves_read_and_successor`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnRefinement.lean#L120)：Equivalently, any two histories merged by the carrier agree on every declared readout and on the carrier successor for each arrival.
+
+## GenerationConservedMemory（24）
+_Memory carried by a conserved observable, not a frozen body Generalize the existing quiet-identity memory marginal._
+
+- [`CGB.ConservedMemory.observable_test_preserved`](../../lean/CGBAxioms/CGBAxioms/GenerationConservedMemory.lean#L29)：Any test of a preserved observable has constant conditional expectation under the specified stimulus.
+- [`CGB.ConservedMemory.observable_indicator_preserved`](../../lean/CGBAxioms/CGBAxioms/GenerationConservedMemory.lean#L46)：A stochastic kernel preserving an observable also preserves each of its indicator test functions.
+- [`CGB.ConservedMemory.quiet_observable_memory_marginal`](../../lean/CGBAxioms/CGBAxioms/GenerationConservedMemory.lean#L64)：Quiet can be nontrivial: each future observable marginal equals the one installed by the actual first observation, even as the world evolves.
+- [`CGB.ConservedMemory.tagged_memory_nonneg`](../../lean/CGBAxioms/CGBAxioms/GenerationConservedMemory.lean#L90)：The tagged law used by the original memory definition is nonnegative under the actual clock admission, including the observation and quiet steps.
+- [`CGB.ConservedMemory.one_write_body_marginal`](../../lean/CGBAxioms/CGBAxioms/GenerationConservedMemory.lean#L106)：The first actual write marginalizes the world's normalized successor law; this is not a hand-assigned probability on a supported path.
+- [`CGB.ConservedMemory.registered_event_kernel_pos`](../../lean/CGBAxioms/CGBAxioms/GenerationConservedMemory.lean#L117)：A positive registered event that changes the body has a positive actual uniformized transition, at the same world clock.
+- [`CGB.ConservedMemory.observed_memory_as_project`](../../lean/CGBAxioms/CGBAxioms/GenerationConservedMemory.lean#L142)：The observable law is exactly the deterministic projection used by finite conditional-information data processing.
+- [`CGB.ConservedMemory.observed_memory_nonneg`](../../lean/CGBAxioms/CGBAxioms/GenerationConservedMemory.lean#L152)
+- [`CGB.ConservedMemory.one_write_observed_row`](../../lean/CGBAxioms/CGBAxioms/GenerationConservedMemory.lean#L162)：A first-write coarse row is its actual prefix mass times the observed transition probability.
+- [`CGB.ConservedMemory.one_write_observed_mass`](../../lean/CGBAxioms/CGBAxioms/GenerationConservedMemory.lean#L177)：Summing the observed outcomes returns the same actual prefix mass.
+- [`CGB.ConservedMemory.observed_write_pos_of_transition`](../../lean/CGBAxioms/CGBAxioms/GenerationConservedMemory.lean#L189)：A supported actual transition from a positive prefix gives positive observed write mass, with no assigned path weights.
+- [`CGB.ConservedMemory.observed_memory_information_le`](../../lean/CGBAxioms/CGBAxioms/GenerationConservedMemory.lean#L208)：Coarse information is a certified lower bound on the original full-body CMI, including zeros in the actual probability support.
+- [`CGB.ConservedMemory.remembers_of_conserved_observable`](../../lean/CGBAxioms/CGBAxioms/GenerationConservedMemory.lean#L227)：A positive actual information write into a conserved finite observable implies the original full-body `Remembers`, without freezing the body or assuming a positive CMI at all later times.
+- [`CGB.ConservedMemory.remembers_of_quiet_and_actual_write`](../../lean/CGBAxioms/CGBAxioms/GenerationConservedMemory.lean#L248)：An actual counterfactual write creates positive information: at the same reachable body, one world input is quiet and another has a positive transition into a different observable class.
+- [`CGB.ConservedMemory.event_observable_kernel`](../../lean/CGBAxioms/CGBAxioms/GenerationConservedMemory.lean#L280)：A local event invariant lifts to the uniformized quiet kernel.
+- [`CGB.ConservedMemory.quiet_event_observable_kernel`](../../lean/CGBAxioms/CGBAxioms/GenerationConservedMemory.lean#L304)：Quiet specialization of the local event invariant.
+- [`CGB.ConservedMemory.quiet_total_kernel`](../../lean/CGBAxioms/CGBAxioms/GenerationConservedMemory.lean#L312)：Conservation is applied only to positive quiet events which really are closed, not silently to arbitrary boundary-driven writes.
+- [`CGB.ConservedMemory.quiet_total_memory_marginal`](../../lean/CGBAxioms/CGBAxioms/GenerationConservedMemory.lean#L321)：P2a protects the total-content memory marginal under positive closed quiet exchange.
+- [`CGB.ConservedMemory.seed_calm_event_conserves`](../../lean/CGBAxioms/CGBAxioms/GenerationConservedMemory.lean#L333)：In the existing four-site physical seed, quiet shuts the two reservoir ports but leaves the hopping dynamics intact.
+- [`CGB.ConservedMemory.seed_event_clocked`](../../lean/CGBAxioms/CGBAxioms/GenerationConservedMemory.lean#L346)：A structural finite clock bound: at most eighteen registered events, each of rate at most one.
+- [`CGB.ConservedMemory.seed_calm_has_nontrivial_event`](../../lean/CGBAxioms/CGBAxioms/GenerationConservedMemory.lean#L358)：The same physical seed really moves at quiet: this is not the old identity-kernel memory shortcut.
+- [`CGB.ConservedMemory.seed_quiet_total_memory_marginal`](../../lean/CGBAxioms/CGBAxioms/GenerationConservedMemory.lean#L370)：Content distinctions written through the original seed's reservoir ports have invariant quiet marginals despite its nontrivial hopping.
+- [`CGB.ConservedMemory.historical_persistence_requires_alive_change`](../../lean/CGBAxioms/CGBAxioms/GenerationConservedMemory.lean#L386)：Historical persistence requires calm to change the viability observable, not merely to move some microscopic states.
+- [`CGB.ConservedMemory.conserving_calm_needs_organizational_viability`](../../lean/CGBAxioms/CGBAxioms/GenerationConservedMemory.lean#L416)：If calm conserves total and viability reads *only* total, the original long-disconnection death requirement is impossible.
 
 ## GenerationContinualOptimizer（42）
 _A continual optimizer: competition, no winner-take-all, a healthy latch (side branch, 2026-10-27) The optimizer of a stream learner must (i) make units compete so that they differentiate, (ii) keep one unit from taking e_
@@ -524,6 +623,103 @@ _Export and selective export (generation chain, G16-G17) P1a makes the body fini
 - [`CGB.Generation.unselective_export_forgets`](../../lean/CGBAxioms/CGBAxioms/GenerationExport.lean#L79)
 - [`CGB.Generation.retention_needs_selectivity`](../../lean/CGBAxioms/CGBAxioms/GenerationExport.lean#L90)：**G17b (retention needs selectivity)**: if an item must survive every number of exports with probability at least `p > 0`, its per-export removal probability has no positive lower bound: export must eventually spare it,
 
+## GenerationGDNLife（76）
+_Real-valued GDN carrier on one open trajectory The body is a fixed-dimensional real state, not a finite enumeration._
+
+- [`CGB.GDNLife.address_pos`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L73)
+- [`CGB.GDNLife.action_head_score_deriv`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L107)：The existing G14 log-softmax law instantiated at the GDN language head.
+- [`CGB.GDNLife.addressLogitPerturb_deriv`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L187)：Exact softmax derivative for an address-logit basis coordinate.
+- [`CGB.GDNLife.assimilate_addressLogitPerturb_natural_deriv`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L211)：The exact address-side contribution to a GDN natural-parameter write.
+- [`CGB.GDNLife.assimilate_addressLogitPerturb_precision_deriv`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L235)：The same address perturbation changes precision by the address-side incoming derivative.
+- [`CGB.GDNLife.likelihoodSoftplus_deriv`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L262)：Exact derivative of the actual softplus confidence parametrization.
+- [`CGB.GDNLife.assimilate_likelihoodLogitPerturb_natural_deriv`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L302)：The likelihood side of the current GDN write: a learned confidence logit changes the natural parameter by its softplus slope times the existing address, observation precision and value.
+- [`CGB.GDNLife.assimilate_likelihoodLogitPerturb_precision_deriv`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L319)：The same learned confidence changes the stored precision.
+- [`CGB.GDNLife.assimilate_likelihoodLogitPerturb_zero`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L338)：When the raw logit represents the current confidence, the perturbation passes through the actual arrival transition at zero exactly.
+- [`CGB.GDNLife.prepare_valuePerturb`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L346)：Altering a byte value cannot alter the prediction prepared before that byte arrives.
+- [`CGB.GDNLife.incoming_valuePerturb`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L353)：Changing the byte encoder leaves the arrival weight unchanged: it does not silently alter the address or likelihood path.
+- [`CGB.GDNLife.assimilate_valuePerturb_natural`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L362)：Exact one-arrival finite difference for a byte encoder coordinate.
+- [`CGB.GDNLife.assimilate_valuePerturb_precision`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L378)：The same perturbation leaves precision unchanged.
+- [`CGB.GDNLife.assimilate_valuePerturb_difference`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L387)：Comparing two encoder coordinates gives the exact finite difference, without invoking reverse-time differentiation.
+- [`CGB.GDNLife.valueEligibility_zero_of_no_incoming`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L397)：No arriving flow means no encoder-value eligibility at that address.
+- [`CGB.GDNLife.value_sensitivity_two_arrivals`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L405)：The value-side sensitivity is carried by the same natural state across a second arrival.
+- [`CGB.GDNLife.initial_positive`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L434)
+- [`CGB.GDNLife.prior_zero`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L438)
+- [`CGB.GDNLife.prior_natural_difference`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L451)：If a perturbation leaves a slot's precision unchanged, the prior transports its natural-state difference by `priorNaturalScale`; no past input is reread.
+- [`CGB.GDNLife.value_sensitivity_through_prior`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L472)：A value-write sensitivity remains in the same state after the time prior.
+- [`CGB.GDNLife.feature_difference_of_shared_query`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L492)：With unchanged precision and causal query, an existing natural-state difference is read out linearly by the same GDN feature map.
+- [`CGB.GDNLife.feature_valuePerturb`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L509)：A perturbation of the byte-value encoder has no direct readout path.
+- [`CGB.GDNLife.assimilate_lastByte_of_positive`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L516)：A positive-confidence arrival makes that byte the next causal query.
+- [`CGB.GDNLife.value_read_eligibility_exact`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L534)：One byte-value encoder direction reaches the next causal readout exactly through `valueReadEligibility`.
+- [`CGB.GDNLife.value_future_read_eligibility_exact`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L587)：The exact encoder-value eligibility at the next prepared readout.
+- [`CGB.GDNLife.assimilate_head`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L658)：Assimilation writes only the material memory fields and causal observation cache; it does not create a second copy of the language readout parameters.
+- [`CGB.GDNLife.assimilate_bias`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L661)
+- [`CGB.GDNLife.prior_head`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L665)：The time prior transports memory but retains the same head and bias.
+- [`CGB.GDNLife.prior_bias`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L669)
+- [`CGB.GDNLife.value_future_logit_eligibility_exact`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L684)：The next byte-logit displacement is exactly the forward eligibility read through the unchanged affine head.
+- [`CGB.GDNLife.byte_log_softmax_direction_deriv`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L721)：G14 for a whole finite logit direction.
+- [`CGB.GDNLife.value_future_log_likelihood_deriv`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L777)：G14 applied to the exact next-byte GDN displacement: the derivative of next-byte log likelihood with respect to an encoder-value direction is the forward eligibility weighted by the observed-minus-predicted language erro
+- [`CGB.GDNLife.value_future_score_factor`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L818)：Exact factorization of the encoder-value score.
+- [`CGB.GDNLife.address_nonneg`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L868)
+- [`CGB.GDNLife.incoming_nonneg`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L872)
+- [`CGB.GDNLife.prior_positive`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L877)
+- [`CGB.GDNLife.assimilate_positive`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L889)
+- [`CGB.GDNLife.step_positive`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L894)
+- [`CGB.GDNLife.zero_precision_keeps_last_byte`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L900)：Zero-precision input retains an existing last observation, matching `assimilate`'s live-observation mask rather than silently changing query.
+- [`CGB.GDNLife.first_observation_sets_last_byte`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L906)：The first input still installs the cache, even at zero precision.
+- [`CGB.GDNLife.positive_observation_sets_last_byte`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L912)：Any live arrival writes its byte into the existing causal query field.
+- [`CGB.GDNLife.step_positive_observation_sets_last_byte`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L921)：The complete GDN step preserves that live causal write through its local head update.
+- [`CGB.GDNLife.distinct_live_bytes_separate_steps`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L931)：Distinct live language emissions produce distinct post-step bodies through an existing causal field.
+- [`CGB.GDNLife.step_source_irrelevant`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L944)：Source labels do not invent a speech fee or a different learning rule.
+- [`CGB.GDNLife.preparation_uses_only_elapsed`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L948)：Prediction cannot inspect the not-yet-arrived byte or its source.
+- [`CGB.GDNLife.head_update_preserves_memory`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L953)：Local head learning does not modify the memory or its uncertainty.
+- [`CGB.GDNLife.head_update_logits`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L959)：The actual affine parameter step induces a score step of size `eta * (1 + squared feature norm)`, including the learned bias.
+- [`CGB.GDNLife.head_update_improves_saved_feature`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L973)：Strict improvement on the saved feature, not a future-language claim.
+- [`CGB.GDNLife.carrier_next`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1012)
+- [`CGB.GDNLife.carrier_fold`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1020)：Actual input histories fold through this same real body, with no reset.
+- [`CGB.GDNLife.exists_open_real_gdn_trajectory`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1045)：An actual continuous GDN, not a finite surrogate, has one infinite open numerical trajectory.
+- [`CGB.GDNLife.finish_saved_logits`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1072)：Assimilation does not change the head.
+- [`CGB.GDNLife.byte_softmax_pos`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1082)
+- [`CGB.GDNLife.finish_saved_nll_improves`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1089)：The saved-feature current-byte loss strictly decreases at any positive head step.
+- [`CGB.GDNLife.future_ce_improves_of_target_mass`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1102)：A distributional, not in-sample, sufficient condition.
+- [`CGB.GDNLife.finish_future_ce_improves`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1131)：A concrete head update can improve a declared future law even after the memory/query changed: the saved-feature gain must exceed the readout drift, and the law must be sufficiently persistent.
+- [`CGB.GDNLife.real_bias_injective`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1162)：The real family already embeds a real coordinate in an existing head bias.
+- [`CGB.GDNLife.prior_logits`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1167)
+- [`CGB.GDNLife.step_ne_of_positive_head_step`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1176)：A positive real head step changes the body on every arriving byte.
+- [`CGB.GDNLife.Process.run_initial`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1229)
+- [`CGB.GDNLife.Process.run_step`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1231)
+- [`CGB.GDNLife.Process.run_positive`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1239)
+- [`CGB.GDNLife.Process.run_body_step`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1243)
+- [`CGB.GDNLife.Process.self_speech_action_contrast_writes_body`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1252)：Two candidate language actions that emit different live self-produced bytes write distinct next bodies through the ordinary GDN boundary transition.
+- [`CGB.GDNLife.Process.next_byte_improves`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1268)：Repetition refers to the world's actual next byte, not a byte chosen for rescoring.
+- [`CGB.GDNLife.Process.externallyUseful_improves`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1302)：The useful-event certificate invokes the earlier causal result; it does not inspect the next byte while preparing the current prediction.
+- [`CGB.GDNLife.Process.self_not_externallyUseful`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1311)：A copied self byte never becomes external evidence just by passing through the same learning rule.
+- [`CGB.GDNLife.Process.externalInformation_nonneg`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1346)：A valid external language law has nonnegative information opportunity.
+- [`CGB.GDNLife.Process.ExternalLanguageLaw.information_nonneg`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1355)：The state/action-indexed opportunity inherits CMI nonnegativity from the registered external language law.
+- [`CGB.GDNLife.Process.future_reserve_preserved_keeps_signature_distinction`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1394)：A preserved future-language reserve cannot silently merge two histories that a registered external continuation could previously distinguish.
+- [`CGB.GDNLife.Process.future_reserve_recoverable_iff`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1437)：A future distinction is not dissipated exactly when all of the prior future language signature remains readable from the post-update signature.
+- [`CGB.GDNLife.Process.loses_future_language_distinction_iff_not_preserved`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1452)：Merging a prior distinct future-language signature is precisely the failure of that causal retention contract.
+- [`CGB.GDNLife.Process.recurrent_external_information_forces_activity`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1475)：Information-theoretic active necessity for the concrete GDN port.
+- [`CGB.GDNLife.Process.recurrent_external_evidence_forces_activity`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1494)：If settling into a passive policy rules out recurrent externally useful language, but such events actually recur on this same trajectory, the policy cannot settle.
+- [`CGB.GDNLife.Process.scored_external_language_trajectory`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1512)：Conditional language-level joint result for the real GDN.
+- [`CGB.GDNLife.Process.scored_joint_trajectory`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1554)：A conditional scored joint trajectory for this real GDN.
+
+## GenerationGraceMemory（13）
+_Historical memory in the unchanged grace process The natural law at tick four has one body state and three world states._
+
+- [`CGB.GraceMemory.sum_cells`](../../lean/CGBAxioms/CGBAxioms/GenerationGraceMemory.lean#L17)
+- [`CGB.GraceMemory.sum_configs`](../../lean/CGBAxioms/CGBAxioms/GenerationGraceMemory.lean#L24)
+- [`CGB.GraceMemory.sum_env`](../../lean/CGBAxioms/CGBAxioms/GenerationGraceMemory.lean#L32)
+- [`CGB.GraceMemory.kernel_table`](../../lean/CGBAxioms/CGBAxioms/GenerationGraceMemory.lean#L40)：The original body kernel, obtained by forgetting its actual event label.
+- [`CGB.GraceMemory.policy_table`](../../lean/CGBAxioms/CGBAxioms/GenerationGraceMemory.lean#L55)
+- [`CGB.GraceMemory.natural_law_early`](../../lean/CGBAxioms/CGBAxioms/GenerationGraceMemory.lean#L75)：Each step rewrites the preceding sparse row before any finite summation; there is no expansion of a Cartesian product of histories.
+- [`CGB.GraceMemory.actual_event_law_four`](../../lean/CGBAxioms/CGBAxioms/GenerationGraceMemory.lean#L96)：The same row is the law of the registered event process.
+- [`CGB.GraceMemory.one_write_marginal`](../../lean/CGBAxioms/CGBAxioms/GenerationGraceMemory.lean#L110)：Marginalize the actual world transition, whose row sums to one.
+- [`CGB.GraceMemory.one_write_joint`](../../lean/CGBAxioms/CGBAxioms/GenerationGraceMemory.lean#L122)：The three nonzero tagged outcomes have masses 1/4, 1/4 and 1/2.
+- [`CGB.GraceMemory.one_write_information`](../../lean/CGBAxioms/CGBAxioms/GenerationGraceMemory.lean#L139)：Exact conditional mutual information in nats: one bit, not a support argument.
+- [`CGB.GraceMemory.remembers`](../../lean/CGBAxioms/CGBAxioms/GenerationGraceMemory.lean#L155)：The original `Life.Remembers` predicate holds for the unchanged grace body/world.
+- [`CGB.GraceMemory.retained_information`](../../lean/CGBAxioms/CGBAxioms/GenerationGraceMemory.lean#L162)：Quiet retains exactly the same bit at every later delay.
+- [`CGB.GraceMemory.remembers_with_reachable_action_change`](../../lean/CGBAxioms/CGBAxioms/GenerationGraceMemory.lean#L177)：Combine the numerical memory witness with the already-proved supported histories whose stored states select different actions.
+
 ## GenerationGradientFilter（35）
 _An optimizer as a learner of its gradient stream (side branch, 2026-10-27) The outer loop's world is the stream of noisy gradients._
 
@@ -593,15 +789,58 @@ _Ignition needs drive or interaction (generation chain, G23) Ignition (global-wo
 - [`CGB.Generation.equilibrium_memory_bound`](../../lean/CGBAxioms/CGBAxioms/GenerationIgnition.lean#L100)：**G24 (equilibrium memory bound)**: loading at rate `lp ≤ e^{|μ|/2} l0` for time `tp`, then relaxing at rate `l0` for time `T`, keeps at most `e^{|μ|/2 - 1} tp / T` of the deviation, for every choice of `l0`.
 
 ## GenerationInformationEnergy（7）
-_Information and energy for a finite body in a stream (generation chain, 2026-10-28) The missing edges N1–N5 of `docs/information_boltzmann/CGB_THEOREM_RELATION_MAP_20261028.md`._
+_Information and energy for a finite body in a stream (generation chain, 2026-10-28) Selected mathematical identities and conditional bounds for the information economics map._
 
-- [`CGB.InformationEnergy.freeEnergy_eq_kl`](../../lean/CGBAxioms/CGBAxioms/GenerationInformationEnergy.lean#L52)：**N1**: the free energy in the landscape `-log π` is the relative entropy to `π`.
-- [`CGB.InformationEnergy.freeEnergy_at_law`](../../lean/CGBAxioms/CGBAxioms/GenerationInformationEnergy.lean#L58)：The law itself has free energy zero.
-- [`CGB.InformationEnergy.kl_nonneg`](../../lean/CGBAxioms/CGBAxioms/GenerationInformationEnergy.lean#L64)：**N1**: free energy is never below that of the law (Gibbs' inequality).
-- [`CGB.InformationEnergy.snapshot_misses_hidden`](../../lean/CGBAxioms/CGBAxioms/GenerationInformationEnergy.lean#L93)：**N2**: a measurement that reads only the visible part carries no information about the hidden part beyond what it carries about the visible one.
-- [`CGB.InformationEnergy.finite_memory_bounds_net_work`](../../lean/CGBAxioms/CGBAxioms/GenerationInformationEnergy.lean#L113)：**N3**: work drawn from acquired information `I` at most `kT · I`, erasure of everything beyond the capacity at least `kT` per unit: the net never exceeds `kT · cap`.
-- [`CGB.InformationEnergy.passivity_ends`](../../lean/CGBAxioms/CGBAxioms/GenerationInformationEnergy.lean#L119)：**N4**: with drift `q > 0` and no observation (W2's recursion at gain zero), the information of one observation, `½ log (1 + V / r)`, exceeds any cost `c > 0` after finitely many ticks.
-- [`CGB.InformationEnergy.mixture_regret_le`](../../lean/CGBAxioms/CGBAxioms/GenerationInformationEnergy.lean#L143)：**N5 (learning saturates)**: the Bayes mixture codes the sequence at most `log (1 / w θ₀)` worse than the source's law `θ₀` (pathwise, for every sequence and length).
+- [`CGB.InformationEnergy.freeEnergy_eq_kl`](../../lean/CGBAxioms/CGBAxioms/GenerationInformationEnergy.lean#L53)：**N1**: the free energy in the landscape `-log π` is the relative entropy to `π`.
+- [`CGB.InformationEnergy.freeEnergy_at_law`](../../lean/CGBAxioms/CGBAxioms/GenerationInformationEnergy.lean#L59)：The law itself has free energy zero.
+- [`CGB.InformationEnergy.kl_nonneg`](../../lean/CGBAxioms/CGBAxioms/GenerationInformationEnergy.lean#L65)：**N1**: free energy is never below that of the law (Gibbs' inequality).
+- [`CGB.InformationEnergy.snapshot_misses_hidden`](../../lean/CGBAxioms/CGBAxioms/GenerationInformationEnergy.lean#L94)：**N2**: a measurement that reads only the visible part carries no information about the hidden part beyond what it carries about the visible one.
+- [`CGB.InformationEnergy.finite_memory_bounds_net_work`](../../lean/CGBAxioms/CGBAxioms/GenerationInformationEnergy.lean#L114)：**N3**: work drawn from acquired information `I` at most `kT · I`, erasure of everything beyond the capacity at least `kT` per unit: the net never exceeds `kT · cap`.
+- [`CGB.InformationEnergy.passivity_ends`](../../lean/CGBAxioms/CGBAxioms/GenerationInformationEnergy.lean#L120)：**N4**: with drift `q > 0` and no observation (W2's recursion at gain zero), the information of one observation, `½ log (1 + V / r)`, exceeds any cost `c > 0` after finitely many ticks.
+- [`CGB.InformationEnergy.mixture_regret_le`](../../lean/CGBAxioms/CGBAxioms/GenerationInformationEnergy.lean#L144)：**N5 (mixture regret)**: the Bayes mixture codes the sequence at most `log (1 / w θ₀)` worse than the source's law `θ₀` (pathwise, for every sequence and length).
+
+## GenerationInformationProjection（17）
+_Information under finite deterministic observation Data processing for `Medium.condMutualInfo`, including sparse laws and arbitrary nonnegative total mass._
+
+- [`CGB.InformationProjection.gibbs_term_supported`](../../lean/CGBAxioms/CGBAxioms/GenerationInformationProjection.lean#L17)：Gibbs' pointwise bound on compatible, possibly zero, supports.
+- [`CGB.InformationProjection.log_sum_le`](../../lean/CGBAxioms/CGBAxioms/GenerationInformationProjection.lean#L25)：Finite log-sum, with zero entries allowed and no normalization premise.
+- [`CGB.InformationProjection.kl_nonneg_supported`](../../lean/CGBAxioms/CGBAxioms/GenerationInformationProjection.lean#L71)：The existing relative entropy is nonnegative for normalized compatible supports.
+- [`CGB.InformationProjection.kl_pos_of_support_gap`](../../lean/CGBAxioms/CGBAxioms/GenerationInformationProjection.lean#L82)：A support gap makes relative entropy strictly positive for compatible nonnegative weights of equal mass.
+- [`CGB.InformationProjection.project_nonneg`](../../lean/CGBAxioms/CGBAxioms/GenerationInformationProjection.lean#L108)
+- [`CGB.InformationProjection.sum_project`](../../lean/CGBAxioms/CGBAxioms/GenerationInformationProjection.lean#L114)：Observation preserves total mass, including zero total mass.
+- [`CGB.InformationProjection.kl_project_le`](../../lean/CGBAxioms/CGBAxioms/GenerationInformationProjection.lean#L123)：Relative entropy contracts under finite deterministic observation, without normalization, provided the reference is positive wherever the source is positive.
+- [`CGB.InformationProjection.marginals_pos`](../../lean/CGBAxioms/CGBAxioms/GenerationInformationProjection.lean#L151)
+- [`CGB.InformationProjection.reference_nonneg`](../../lean/CGBAxioms/CGBAxioms/GenerationInformationProjection.lean#L163)
+- [`CGB.InformationProjection.reference_pos_of_pos`](../../lean/CGBAxioms/CGBAxioms/GenerationInformationProjection.lean#L171)
+- [`CGB.InformationProjection.reference_sum`](../../lean/CGBAxioms/CGBAxioms/GenerationInformationProjection.lean#L179)：The conditional-product reference has exactly the source's total mass, including when that mass is zero.
+- [`CGB.InformationProjection.condMutualInfo_eq_kl`](../../lean/CGBAxioms/CGBAxioms/GenerationInformationProjection.lean#L192)：CMI is a sum of relative entropies against the conditional-product reference.
+- [`CGB.InformationProjection.condMutualInfo_nonneg`](../../lean/CGBAxioms/CGBAxioms/GenerationInformationProjection.lean#L212)：Nonnegative, unnormalized finite conditional mutual information.
+- [`CGB.InformationProjection.condMutualInfo_pos_of_missing_rectangle`](../../lean/CGBAxioms/CGBAxioms/GenerationInformationProjection.lean#L229)：A missing entry inside a positive marginal rectangle forces positive CMI.
+- [`CGB.InformationProjection.project_sum`](../../lean/CGBAxioms/CGBAxioms/GenerationInformationProjection.lean#L254)
+- [`CGB.InformationProjection.reference_project`](../../lean/CGBAxioms/CGBAxioms/GenerationInformationProjection.lean#L263)：The conditional-product reference commutes with observing the third variable.
+- [`CGB.InformationProjection.condMutualInfo_project_le`](../../lean/CGBAxioms/CGBAxioms/GenerationInformationProjection.lean#L282)：**Finite deterministic CMI data processing**, including arbitrary sparse supports and unnormalized nonnegative weights.
+
+## GenerationLanguageExistence（18）
+_Necessary bridges for a language-life existence theorem Keep continuous GDN mathematics separate from its physical realization._
+
+- [`CGB.LanguageExistence.no_global_finite_gdn_codec`](../../lean/CGBAxioms/CGBAxioms/GenerationLanguageExistence.lean#L26)：A finite physical code cannot losslessly represent every real GDN state.
+- [`CGB.LanguageExistence.p1a_no_global_real_codec`](../../lean/CGBAxioms/CGBAxioms/GenerationLanguageExistence.lean#L39)：P1a plus a finite number of physical sites rules out a global exact real-state codec; it does not rule out a continuous macro model or finite precision matrix arithmetic.
+- [`CGB.LanguageExistence.finite_range_nonincreasing_eventually_constant`](../../lean/CGBAxioms/CGBAxioms/GenerationLanguageExistence.lean#L48)：A nonincreasing real sequence with finite range eventually attains a fixed value.
+- [`CGB.LanguageExistence.finite_body_stationary_loss_eventually_constant`](../../lean/CGBAxioms/CGBAxioms/GenerationLanguageExistence.lean#L72)：A fixed loss on a finite body cannot keep strictly improving while remaining nonincreasing at every step.
+- [`CGB.LanguageExistence.recurrent_gain_excludes_eventual_stationary_descent`](../../lean/CGBAxioms/CGBAxioms/GenerationLanguageExistence.lean#L83)：Even *eventually* nonincreasing stationary loss is incompatible with arbitrarily late strict improvements on the same finite body.
+- [`CGB.LanguageExistence.strict_descent_has_no_finite_exact_readout`](../../lean/CGBAxioms/CGBAxioms/GenerationLanguageExistence.lean#L107)：The obstruction also applies on one actual trajectory: a finite body cannot reproduce an endlessly strictly descending fixed real readout exactly.
+- [`CGB.LanguageExistence.restricted_step_refines`](../../lean/CGBAxioms/CGBAxioms/GenerationLanguageExistence.lean#L132)
+- [`CGB.LanguageExistence.restricted_fold_refines`](../../lean/CGBAxioms/CGBAxioms/GenerationLanguageExistence.lean#L137)
+- [`CGB.LanguageExistence.gdn_prior_preserves_bias`](../../lean/CGBAxioms/CGBAxioms/GenerationLanguageExistence.lean#L147)：The physical-time prior never rewrites learned head bias.
+- [`CGB.LanguageExistence.gdn_silent_continuation_bias`](../../lean/CGBAxioms/CGBAxioms/GenerationLanguageExistence.lean#L154)：With no new arrived byte, any sequence of physical-time priors preserves the head bias.
+- [`CGB.LanguageExistence.gdn_alternative_arrival_bias`](../../lean/CGBAxioms/CGBAxioms/GenerationLanguageExistence.lean#L165)：Alternative bytes arriving at the same prepared body install a head-bias difference determined by the actual local update.
+- [`CGB.LanguageExistence.gdn_written_distinction_survives_silence`](../../lean/CGBAxioms/CGBAxioms/GenerationLanguageExistence.lean#L183)：A distinction written by different bytes survives arbitrarily many silent physical-time steps in this real GDN.
+- [`CGB.LanguageExistence.precision_assimilation_is_two_state_step`](../../lean/CGBAxioms/CGBAxioms/GenerationLanguageExistence.lean#L204)：The existing two-state population law gives exactly the actual GDN precision-weighted mean update, with up/down probabilities determined by the same local gain.
+- [`CGB.LanguageExistence.precision_two_state_rates_valid`](../../lean/CGBAxioms/CGBAxioms/GenerationLanguageExistence.lean#L215)：For a bounded occupancy target the two rates are valid probabilities; calm `v=1/2` balances them.
+- [`CGB.LanguageExistence.bounded_mean`](../../lean/CGBAxioms/CGBAxioms/GenerationLanguageExistence.lean#L228)
+- [`CGB.LanguageExistence.prior_unit_memory`](../../lean/CGBAxioms/CGBAxioms/GenerationLanguageExistence.lean#L238)
+- [`CGB.LanguageExistence.assimilate_unit_memory`](../../lean/CGBAxioms/CGBAxioms/GenerationLanguageExistence.lean#L252)
+- [`CGB.LanguageExistence.step_unit_memory`](../../lean/CGBAxioms/CGBAxioms/GenerationLanguageExistence.lean#L267)：Bounded byte embeddings imply bounded memory means through the *full* time-prior/assimilation/head step.
 
 ## GenerationLatchHealth（3）
 _When is a latch healthy? (generation chain, latch health) A latch (ignition, G23/G24) is a basin of states held by positive feedback._
@@ -660,15 +899,15 @@ _Life necessities as admission obligations (generation chain, gate layer L) The 
 - [`CGB.tableCRN.exposed_of_rule`](../../lean/CGBAxioms/CGBAxioms/GenerationLifeGate.lean#L146)：**L-sense for rule tables**: the same witness on a rule touching a boundary page, and two stimuli at different reservoir potentials.
 
 ## GenerationLinearMemory（7）
-_Linear recurrent memory cannot latch (generation chain, corollary of G17/G24) Gated DeltaNet (and every gated linear recurrence: Mamba, RWKV, linear attention with decay) updates each row `x` of its state as `x ↦ α (x -_
+_Linear recurrent memory cannot latch (generation chain, corollary of G17/G24) The results below concern the specific recurrence `x ↦ α (x - β ⟪k, x⟫_ℝ k) + (write)`, with `‖k‖ = 1`, `β ∈ [0, 2]`, `α < 1`._
 
-- [`CGB.Generation.dot_delta`](../../lean/CGBAxioms/CGBAxioms/GenerationLinearMemory.lean#L34)
-- [`CGB.Generation.delta_nonexpansive`](../../lean/CGBAxioms/CGBAxioms/GenerationLinearMemory.lean#L48)：The delta step never expands (squared norm), for `0 ≤ β ≤ 2`.
-- [`CGB.Generation.gated_delta_contracts`](../../lean/CGBAxioms/CGBAxioms/GenerationLinearMemory.lean#L58)：One gated delta step on the difference of two states (the write cancels): the squared gap shrinks by `α²`.
-- [`CGB.Generation.deltaStep_sub`](../../lean/CGBAxioms/CGBAxioms/GenerationLinearMemory.lean#L67)
-- [`CGB.Generation.histories_merge`](../../lean/CGBAxioms/CGBAxioms/GenerationLinearMemory.lean#L75)：**Histories merge**: if every step shrinks the gap between two states by at most `α t`, the gap after `T` steps is at most `∏ α t` times the initial gap.
-- [`CGB.Generation.histories_merge_uniform`](../../lean/CGBAxioms/CGBAxioms/GenerationLinearMemory.lean#L87)：With a uniform gate bound the gap decays at least geometrically.
-- [`CGB.Generation.linear_hold_keeps_error`](../../lean/CGBAxioms/CGBAxioms/GenerationLinearMemory.lean#L102)：**A linear hold cannot clean up**: if a linear map holds the signal `s` (`L s = s`), a perturbation along `s` is held exactly as well, `L (s + t • s) - s = t • s`.
+- [`CGB.Generation.dot_delta`](../../lean/CGBAxioms/CGBAxioms/GenerationLinearMemory.lean#L37)
+- [`CGB.Generation.delta_nonexpansive`](../../lean/CGBAxioms/CGBAxioms/GenerationLinearMemory.lean#L51)：The delta step never expands (squared norm), for `0 ≤ β ≤ 2`.
+- [`CGB.Generation.gated_delta_contracts`](../../lean/CGBAxioms/CGBAxioms/GenerationLinearMemory.lean#L61)：One gated delta step on the difference of two states (the write cancels): the squared gap shrinks by `α²`.
+- [`CGB.Generation.deltaStep_sub`](../../lean/CGBAxioms/CGBAxioms/GenerationLinearMemory.lean#L70)
+- [`CGB.Generation.histories_merge`](../../lean/CGBAxioms/CGBAxioms/GenerationLinearMemory.lean#L78)：**Histories merge**: if every step shrinks the gap between two states by at most `α t`, the gap after `T` steps is at most `∏ α t` times the initial gap.
+- [`CGB.Generation.histories_merge_uniform`](../../lean/CGBAxioms/CGBAxioms/GenerationLinearMemory.lean#L90)：With a uniform gate bound the gap decays at least geometrically.
+- [`CGB.Generation.linear_hold_keeps_error`](../../lean/CGBAxioms/CGBAxioms/GenerationLinearMemory.lean#L105)：**A linear hold cannot clean up**: if a linear map holds the signal `s` (`L s = s`), a perturbation along `s` is held exactly as well, `L (s + t • s) - s = t • s`.
 
 ## GenerationMedium（2）
 _A generator of admitted media (generation chain, M1) Instead of proving the six clauses case by case for each organism, prove once that a medium built from a local energy satisfies them, so an organism is admitted by giv_
@@ -821,9 +1060,170 @@ _Prediction is metabolism under reinvestment (language-stream life, T1) World co
 - [`CGB.PredictiveHarvest.growth_le`](../../lean/CGBAxioms/CGBAxioms/GenerationPredictiveHarvest.lean#L75)：**Kelly bound**: no allocation grows faster than `log |B| - H(p)`.
 - [`CGB.PredictiveHarvest.growth_at_law`](../../lean/CGBAxioms/CGBAxioms/GenerationPredictiveHarvest.lean#L83)：Placing capacity as the stream's law attains the bound.
 - [`CGB.PredictiveHarvest.uniform_growth_zero`](../../lean/CGBAxioms/CGBAxioms/GenerationPredictiveHarvest.lean#L96)：A body that knows nothing about the stream (uniform allocation) does not grow.
-- [`CGB.PredictiveHarvest.no_allocation_persists`](../../lean/CGBAxioms/CGBAxioms/GenerationPredictiveHarvest.lean#L106)：**No body persists** on a stream whose entropy exceeds `log |B| - m`: every allocation's net growth (growth minus a maintenance cost `m` per arrival) is negative.
-- [`CGB.PredictiveHarvest.persists_of_crossEntropy`](../../lean/CGBAxioms/CGBAxioms/GenerationPredictiveHarvest.lean#L113)：A body whose cross-entropy is below `log |B| - m` has positive net growth.
+- [`CGB.PredictiveHarvest.no_allocation_persists`](../../lean/CGBAxioms/CGBAxioms/GenerationPredictiveHarvest.lean#L106)：When entropy exceeds `log |B| - m`, every admissible allocation has negative expected net log growth under this niche contract.
+- [`CGB.PredictiveHarvest.persists_of_crossEntropy`](../../lean/CGBAxioms/CGBAxioms/GenerationPredictiveHarvest.lean#L113)：Below the cross-entropy threshold, expected net log growth is positive.
 - [`CGB.PredictiveHarvest.additive_payoff_mode`](../../lean/CGBAxioms/CGBAxioms/GenerationPredictiveHarvest.lean#L122)：Without reinvestment (payoff additive in the capacity placed on the arrived byte) the best allocation puts everything on a most likely byte: probability matching is a consequence of the multiplicative contract, not of pr
+
+## GenerationSeedMemory（15）
+_An actual memory world for the unchanged physical seed The first quiet tick moves the source particle and independently selects a quiet or food world._
+
+- [`CGB.SeedMemory.clocked`](../../lean/CGBAxioms/CGBAxioms/GenerationSeedMemory.lean#L53)：The existing structural event bound admits this world's exact clock.
+- [`CGB.SeedMemory.law_one`](../../lean/CGBAxioms/CGBAxioms/GenerationSeedMemory.lean#L57)：Collapse only the initial Dirac law, without enumerating body histories.
+- [`CGB.SeedMemory.first_hop_act`](../../lean/CGBAxioms/CGBAxioms/GenerationSeedMemory.lean#L76)
+- [`CGB.SeedMemory.first_hop_pos`](../../lean/CGBAxioms/CGBAxioms/GenerationSeedMemory.lean#L81)：A registered positive-rate hop yields a positive actual first transition.
+- [`CGB.SeedMemory.prefix_pos`](../../lean/CGBAxioms/CGBAxioms/GenerationSeedMemory.lean#L90)：Both input tags have positive probability at the very same reachable body.
+- [`CGB.SeedMemory.write_act`](../../lean/CGBAxioms/CGBAxioms/GenerationSeedMemory.lean#L97)
+- [`CGB.SeedMemory.write_totals`](../../lean/CGBAxioms/CGBAxioms/GenerationSeedMemory.lean#L102)：Food really increases total from one to two through the existing source.
+- [`CGB.SeedMemory.write_pos`](../../lean/CGBAxioms/CGBAxioms/GenerationSeedMemory.lean#L106)
+- [`CGB.SeedMemory.quiet_preserves`](../../lean/CGBAxioms/CGBAxioms/GenerationSeedMemory.lean#L116)：Positive quiet transitions preserve the readout even though hops continue.
+- [`CGB.SeedMemory.remembers`](../../lean/CGBAxioms/CGBAxioms/GenerationSeedMemory.lean#L125)：The original full-body CMI memory clause, derived from actual positive prefixes and source intake, with no assumed positive-information premise.
+- [`CGB.SeedMemory.quiet_has_nontrivial_event`](../../lean/CGBAxioms/CGBAxioms/GenerationSeedMemory.lean#L135)：Quiet is not an identity dynamics: a positive-rate event changes the body.
+- [`CGB.SeedMemory.partial_has_hop`](../../lean/CGBAxioms/CGBAxioms/GenerationSeedMemory.lean#L142)：Finite Boolean graph fact only: every partially occupied ring has an occupied-to-vacant contact.
+- [`CGB.SeedMemory.partial_rate_one`](../../lean/CGBAxioms/CGBAxioms/GenerationSeedMemory.lean#L153)：Every partial microstate has a state-changing rate-one hop under every stimulus, including quiet.
+- [`CGB.SeedMemory.partial_hold_bound`](../../lean/CGBAxioms/CGBAxioms/GenerationSeedMemory.lean#L169)：The probability of never leaving a partial microstate has a geometric bound, while the coarse memory remains.
+- [`CGB.SeedMemory.physical_memory_component`](../../lean/CGBAxioms/CGBAxioms/GenerationSeedMemory.lean#L181)：One unchanged admitted physical medium jointly has actual memory and nontrivial quiet events in this world.
+
+## GenerationSelfProduction（138）
+_Conditional existence of an open self-producing niche This module is deliberately world-independent._
+
+- [`CGB.SelfProduction.two_phase_finite_score_step_improves`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L33)：On a finite alphabet with at least two symbols, a positive finite two-phase score step strictly improves the probability of the observed symbol on the same frozen feature.
+- [`CGB.SelfProduction.softmax_nll_logit_error_bound`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L80)：If every byte logit changes by at most δ, the observed-byte negative log likelihood changes by at most 2δ.
+- [`CGB.SelfProduction.association_affine_language_nll_bound`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L122)：The associative interference certificate propagates through an affine language head into a per-byte NLL bound.
+- [`CGB.SelfProduction.delayed_readout_capacity_with_retrieval`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L171)：For a fixed future query, externally retrieved views share the burden of distinguishing histories with the finite body.
+- [`CGB.SelfProduction.association_delta_read_contract`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L190)：Assemble the existing row delta and associative readout contracts on the same value-by-key matrix.
+- [`CGB.SelfProduction.one_hot_delta_is_precision_assimilation`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L213)：For an exactly one-hot key, no global decay, and precision-derived gain, the delta write agrees with slotwise precision assimilation: only the keyed slot changes.
+- [`CGB.SelfProduction.precision_distinguishes_equal_mean_histories`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L229)：Two slots with the same current mean but different positive precisions produce different next means on the same nonmatching observation.
+- [`CGB.SelfProduction.mixed_key_delta_differs_from_slot_assimilation`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L253)：A normalized mixed key gives a concrete obstruction to general equality: the delta write couples the first slot to the second, while independent precision assimilation with zero target leaves its zero mean unchanged.
+- [`CGB.SelfProduction.positive_soft_query_changes_under_delta`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L265)：Strictly positive soft addresses necessarily overlap.
+- [`CGB.SelfProduction.association_assimilation_query_change`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L288)：Query change under the existing natural-parameter assimilation: `weight` is the per-slot sum of observation weights and `weighted` the corresponding value-weighted sum.
+- [`CGB.SelfProduction.association_assimilation_improves_iff`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L308)：On a fixed query and target, the existing assimilation improves squared prediction error exactly when its query change points sufficiently towards the target without overshooting.
+- [`CGB.SelfProduction.association_assimilation_softmax_improves_iff`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L336)：Under slotwise assimilation and an arbitrary affine-head update, a target's softmax probability rises exactly when its multiplicative change exceeds the old distribution's average.
+- [`CGB.SelfProduction.repeated_assimilation_retention`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L399)：With no intervening prior step, repeated identical slot evidence is accumulated by the existing natural/precision update.
+- [`CGB.SelfProduction.repeated_assimilation_association_readout`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L434)：The one-slot retention law composes into the actual value-by-key associative readout.
+- [`CGB.SelfProduction.repeated_assimilation_probe_family`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L460)：A family of future queries remains accurate when its target readout is accurate and the summed retained slot deviations fit the remaining tolerance.
+- [`CGB.SelfProduction.state_conditioned_logloss_le_fixed`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L503)：In a declared joint distribution, an oracle using the actual conditional byte law at each body state has no higher expected log loss than any fixed strictly positive normalized predictor.
+- [`CGB.SelfProduction.merged_histories_binary_logloss_floor`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L522)：If two equally likely histories share the same accessible state but require opposite next-byte predictions, any positive binary predictor pays at least `log 2` nats of expected loss.
+- [`CGB.SelfProduction.state_conditioned_logloss_decomposition`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L547)：For a state-dependent predictor, expected log loss is the conditional entropy plus the state-weighted KL mismatch.
+- [`CGB.SelfProduction.renewable_reopening_not_single_old_advance`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L575)：The existing renewable witness actually reopens an excluded candidate; no single old `advance` step from the same memory can implement that change.
+- [`CGB.SelfProduction.renewable_witness_unbounded_supported_writes`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L586)：The same existing renewable process has arbitrarily long supported prefixes with more than any requested number of paid writes.
+- [`CGB.SelfProduction.renewable_maintenance_and_supported_relearning`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L607)：One stochastic body-world process has operational maintenance and arbitrarily many paid writes on supported finite prefixes; blocking reopening in the same world and initial conditions lowers the registered survival scor
+- [`CGB.SelfProduction.renewable_maintenance_world_action_contrast`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L641)：The already-certified stochastic process also has a concrete world-side action contrast.
+- [`CGB.SelfProduction.renewable_action_world_contract`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L680)：This action kernel is normalized and agrees with the existing world for every live body.
+- [`CGB.SelfProduction.renewable_action_machine_reproduces`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L739)：Supplying the old policy reproduces every joint event and successor-state probability of the original uncut process, including the vacuum case.
+- [`CGB.SelfProduction.renewable_action_autonomous_eq`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L767)：Closing the explicit action port with the existing policy recovers the whole original machine, not just a one-step marginal or a sample trace.
+- [`CGB.SelfProduction.renewable_action_zero_failure_steps`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L776)：Under the declared action-port intervention, holding action 0 sends the existing initial state to the trap and then to vacuum in two certain steps.
+- [`CGB.SelfProduction.renewable_action_zero_eventual_vacuum`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L800)：In the specified intervention model, constant action zero reaches vacuum with probability one after two ticks and remains there.
+- [`CGB.SelfProduction.renewable_world_hidden_branch_and_delayed_consequence`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L862)：In the same certified world, aligned ready bodies have two equally likely next-world states while their next body state is the same.
+- [`CGB.SelfProduction.renewable_world_aligned_state_supported`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L886)：The aligned `aReady/feedA` state used above has a positive-probability three-step prefix from the actual initial state in the original process.
+- [`CGB.SelfProduction.renewable_hidden_branch_reopens_and_rewrites`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L912)：A positive-probability hidden world change in the certified process can flow through mismatch, reopening, probing and a new write on the same body.
+- [`CGB.SelfProduction.renewable_reopen_control_branch`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L951)：The recorded normal and reopen-disabled paths agree through tick four.
+- [`CGB.SelfProduction.renewable_observable_block_contract`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L996)：Every step of either block, including the transition to either next block, has positive probability in the unchanged autonomous process.
+- [`CGB.SelfProduction.renewable_observable_path_contract`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L1031)：Every finite prefix of every selected branch sequence has positive probability from the aligned state, and the existing sensor at offset two of each block recovers its selected bit.
+- [`CGB.SelfProduction.renewable_observable_from_birth`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L1075)：From the same original initial state, every finite prefix of every chosen bit sequence has positive support; sensory symbols distinguish the blocks, and each true block includes two actual paid writes.
+- [`CGB.SelfProduction.trajectory_viable`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L1169)：The same rule generates a valid state at every finite time.
+- [`CGB.SelfProduction.actual_actions_reproduce_trajectory`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L1185)：Replaying the actual actions in the same world reproduces the generated trajectory.
+- [`CGB.SelfProduction.passive_opportunity_budget`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L1196)：If each passive use spends from a finite opportunity potential, the total passive intake from that point cannot exceed the starting potential.
+- [`CGB.SelfProduction.passive_opportunity_bounds_eventual_interventions`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L1223)：A finite passive opportunity potential supplies the universal counterfactual bound required by `counterfactual_passive_bound_forces_activity`.
+- [`CGB.SelfProduction.counterfactual_passive_bound_forces_activity`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L1259)：If every eventually passive intervention in the same world has bounded intake, an actual trajectory with unbounded intake cannot become permanently passive.
+- [`CGB.SelfProduction.passive_opportunity_forces_activity`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L1283)：Finite passive opportunity and unbounded actual intake force recurrent non-passive action in the same deterministic world.
+- [`CGB.SelfProduction.exists_infinite_self_producing_trajectory`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L1298)：**Unbounded self-production.** The contract generates one trajectory indexed by all natural causal ticks, and every prefix remains in its viable niche.
+- [`CGB.SelfProduction.action_consequence_model_exists`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L1311)：The action-conditioned boundary rule itself is an exact self-consequence model when that rule is available to the organism's persistent state.
+- [`CGB.SelfProduction.action_distinction_preserved`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L1318)：If two actions have different boundary consequences at a viable state, the exact self-consequence model preserves that distinction.
+- [`CGB.SelfProduction.language_viable_next`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L1479)
+- [`CGB.SelfProduction.candidate_erase_balance`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L1507)
+- [`CGB.SelfProduction.candidate_erase_ge_fee`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L1516)
+- [`CGB.SelfProduction.effective_write_erases_distinction`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L1524)
+- [`CGB.SelfProduction.language_state_capacity`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L1533)
+- [`CGB.SelfProduction.generated_history_encodes_self_production`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L1574)：The generated history and the existing state recursion agree without a separately postulated trajectory-alignment premise.
+- [`CGB.SelfProduction.generated_boundary_signal_forces_active`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L1593)：On the generated trajectory, a boundary-derived nonnegative integer signal supports the existing active conclusion when the explicit unbounded intake and passive-depletion conditions hold.
+- [`CGB.SelfProduction.language_admission_trajectory_aligned`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L1614)：The admission history follows the self-production trajectory when its encoded initial state and every action-conditioned transition agree.
+- [`CGB.SelfProduction.language_self_production_active_if_aligned`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L1634)：With the alignment conditions, the existing active-inference conclusion applies to the same viable state trajectory produced by the language contract.
+- [`CGB.SelfProduction.language_joint_admission_self_production_active_if_aligned`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L1667)：The active and self-production halves use one trajectory once the two explicit encoded alignment conditions hold.
+- [`CGB.SelfProduction.probeLoss_eq_candidate_erase`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L1697)：Under explicit injective-probe and recoverability conditions, probe loss is exactly the candidate distinction erased by the update.
+- [`CGB.SelfProduction.language_controlled_trajectory_viable`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L1731)：Every externally controlled trajectory remains in the existing language viability region, since the language contract admits every boundary byte.
+- [`CGB.SelfProduction.language_controlled_memory_eventually_stops`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L1749)：The candidate-based language contract eventually stops changing its entire memory, for every action sequence.
+- [`CGB.SelfProduction.language_self_production_memory_eventually_stops`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L1813)：The autonomous self-production trajectory inherits the same eventual memory freeze; infinite viability does not by itself imply lifelong learning.
+- [`CGB.SelfProduction.language_candidate_eventually_constant_boundary`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L1835)：In the original candidate contract, eventual memory freeze also freezes the policy action and body-determined boundary byte.
+- [`CGB.SelfProduction.language_controlled_erasure_balance`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L1861)：Candidate elimination telescopes along every intervention, not merely along the organism's chosen policy.
+- [`CGB.SelfProduction.language_controlled_erasure_not_unbounded`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L1898)：Consequently, permanently eliminating a finite candidate family cannot produce the unbounded signal for any policy, even an active one.
+- [`CGB.SelfProduction.language_probe_loss_eq_dissipation`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L1932)：Once the bridge's three recoverability conditions hold, its measured probe loss equals the language candidate dissipation for that byte.
+- [`CGB.SelfProduction.candidate_reference_probe_loss_eq_dissipation`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L1980)
+- [`CGB.SelfProduction.language_dissipation_encoded_eq_candidate_erase`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L1998)
+- [`CGB.SelfProduction.language_cumulative_erasure_balance`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L2013)：Along an encoded history, cumulative candidate erasure is exactly the initial candidate count minus the current count.
+- [`CGB.SelfProduction.language_cumulative_erasure_bounded`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L2041)：The total number of eliminated distinctions cannot exceed the finite initial candidate set, regardless of the length of the stream.
+- [`CGB.SelfProduction.candidate_erasure_not_unbounded_signal`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L2056)：Finite one-way candidate elimination cannot itself supply the unbounded signal assumed by the active-inference contract.
+- [`CGB.SelfProduction.language_self_production_bridge`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L2071)：The existing four-way language admission and the open self-production contract can be satisfied by the same persistent memory state.
+- [`CGB.SelfProduction.language_joint_admission_and_self_production`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L2086)：The named joint-admission proposition and the infinite self-producing trajectory now form one explicit language-life existence statement.
+- [`CGB.SelfProduction.language_self_consequence_model_exists`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L2103)：In the joined language contract, the self-consequence predictor is a single function of the persistent memory, action, and boundary response.
+- [`CGB.SelfProduction.language_infinite_stream_life_complete`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L2145)：Joint candidate-contract theorem.
+- [`CGB.SelfProduction.language_candidate_predictive_growth_positive`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L2179)：If the same language candidate's allocation beats the declared reinvestment cost on every encoded history, its predictive stream contract has positive expected net log growth on every such history.
+- [`CGB.SelfProduction.language_conditional_joint_existence`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L2202)：Conditional joint existence theorem for the current language candidate.
+- [`CGB.SelfProduction.minimal_generator_conditional_joint_existence`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L2242)：Minimal-generator refinement of the conditional joint existence theorem.
+- [`CGB.SelfProduction.minimal_generator_infinite_stream_life_complete`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L2288)：The minimal generator is sufficient: `read` and `next` are materialized by history factorization, after which the complete joint theorem applies unchanged.
+- [`CGB.SelfProduction.exists_language_infinite_stream_life_of_minimal_generator`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L2301)：Given an admissible minimal generator, there is a candidate satisfying the candidate specification.
+- [`CGB.SelfProduction.renewable_language_carrier_correct`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L2345)
+- [`CGB.SelfProduction.renewable_language_carrier_trajectory`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L2375)：The same state carrier has its required readout, byte transition, and an unbounded viable trajectory.
+- [`CGB.SelfProduction.precision_binary_update_is_predictive_improvement`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L2409)：The precision-derived gain used by the active GDN path is a valid binary predictive update whenever incoming precision is positive.
+- [`CGB.SelfProduction.precision_binary_sample_gain_not_future_guarantee`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L2429)：Fitting an arrived bit does not by itself improve the underlying stream: if the old binary predictor already equals the stream law, its expected log loss cannot improve after the precision-derived update.
+- [`CGB.SelfProduction.categorical_precision_next_loss_direction`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L2464)：Categorical precision-weighted assimilation improves the next symbol's log loss exactly when that symbol repeats the observed symbol; a different symbol becomes strictly less likely.
+- [`CGB.SelfProduction.renewable_language_life_gate`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L2521)：The renewable carrier, plus explicit predictive payment and recurrent learning conditions, yields one general-state language life gate.
+- [`CGB.SelfProduction.exists_renewable_language_life_of_generator`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L2592)：Existential form of the renewable gate.
+- [`CGB.SelfProduction.renewable_open_world_trajectory`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L2675)：One open-world trajectory remains viable and realizes the readout for the history of its own delivered inputs.
+- [`CGB.SelfProduction.renewable_open_language_joint_gate`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L2715)：Conditional joint gate on the *open* body-world trajectory.
+- [`CGB.SelfProduction.open_world_categorical_next_loss_direction`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L2794)：The categorical innovation condition applied to the actual boundary and the next actual boundary on one viable open-world trajectory.
+- [`CGB.SelfProduction.open_world_precision_update_improves_next_prediction`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L2832)：An actual open-world update improves the next prediction when the next delivered bit repeats the current one and the same body's probability obeys the existing precision-derived innovation update.
+- [`CGB.SelfProduction.masked_open_world_information_limit`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L2902)：Under the same fixed delivered symbol, identical starting bodies have identical body states and actions for any two evolving external worlds.
+- [`CGB.SelfProduction.open_world_closure_excludes_conflicting_safe_actions`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L2934)：The present `RenewableOpenWorld.closed` quantifies over every hidden world state at a viable encoded body.
+- [`CGB.SelfProduction.indistinguishable_joint_worlds_cannot_both_stay_viable`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L2951)：For a joint body-world viability predicate, two worlds hidden behind the same body can require conflicting safe actions.
+- [`CGB.SelfProduction.joint_viability_policy_generation`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L2976)：A body-only policy preserving a joint viable region exists exactly when, for each body state, there is one action safe for every compatible world in that region.
+- [`CGB.SelfProduction.closed_region_law_zero`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L3007)
+- [`CGB.SelfProduction.stochastic_joint_viability_policy_generation`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L3039)：Stochastic version: a body-only policy keeps every positive-probability successor in the joint viable region iff each body has an action safe for all compatible viable worlds and all supported events.
+- [`CGB.SelfProduction.stochastic_joint_recovery_policy_generation`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L3072)：Generate one stochastic policy whose same closed loop both stays within the joint region and reaches the declared event within the finite horizon.
+- [`CGB.SelfProduction.ranked_supported_path_recurrent`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L3115)：The existing ranked recovery certificate forces a marked event in every `horizon`-tick window along every infinite sequence of supported transitions.
+- [`CGB.SelfProduction.ranked_exists_recurrently_marked_path`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L3162)：A normalized finite event kernel has an infinite supported path from any initial state; a ranked certificate makes its marked events recurrent.
+- [`CGB.SelfProduction.masked_world_prediction_and_viability_limit`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L3201)：On the same masked open-world runs, combine the prediction loss with a world-dependent viability requirement.
+- [`CGB.SelfProduction.open_world_input_not_body_determined`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L3234)：If hidden world states can give different boundary inputs at the same organism state and action, no state-only predictor is correct for both.
+- [`CGB.SelfProduction.open_world_body_prediction_iff`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L3247)：Exact body-only prediction of the next body state for every world state is possible precisely when hidden world variation has no effect on that next state.
+- [`CGB.SelfProduction.reachable_consequence_readout_iff`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L3268)：Restrict exact consequence prediction to joint states reachable from the initial condition under action interventions.
+- [`CGB.SelfProduction.renewable_open_world_is_exogenous`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L3364)：In the existing open-stream witness, every action intervention leaves the external cursor on exactly the same trajectory.
+- [`CGB.SelfProduction.existing_renewable_open_stream_witness`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L3380)：The external cursor advances each tick while the same finite organism stays in its stated non-vacuum region, for any external bit sequence.
+- [`CGB.SelfProduction.renewable_open_first_input_recorded`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L3405)：On the initial probe, the existing finite carrier records which external answer arrived.
+- [`CGB.SelfProduction.renewable_open_distinct_inputs_reach_distinct_states`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L3422)：Two worlds differing at the first observed bit start with the same body but lead to distinguishable body states after one boundary input.
+- [`CGB.SelfProduction.renewable_open_first_action_affects_body`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L3436)：In this witness world, replacing the initial probe by the passive action changes the next body state: the passive step retains `search`, while the actual probe records the external answer.
+- [`CGB.SelfProduction.renewable_open_always_passive_stays_search`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L3454)：In the open-stream witness an always-passive intervention stays in the non-vacuum `search` state forever.
+- [`CGB.SelfProduction.renewable_open_stream_recurrently_writes`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L3474)：The open witness returns to the probing state every three ticks for any external bit stream, and each probe changes the finite body state.
+- [`CGB.SelfProduction.renewable_open_probe_records_then_reopens`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L3537)：Each probe stores the current external bit for two successive body states, then reopens the body on the third tick.
+- [`CGB.SelfProduction.renewable_open_probe_enables_conditional_action`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L3585)：In the witness world the existing certified policy reads the recorded distinction for two ticks; the always-passive intervention remains at the undifferentiated fallback action.
+- [`CGB.SelfProduction.renewable_open_rewriting_loses_old_distinction`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L3614)：Recurrent writing is not enough for delayed credit: if two streams differ at one probe but agree at the next, the body first distinguishes them and then merges them.
+- [`CGB.SelfProduction.existing_renewable_carrier_reuses_old_rule`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L3646)：The derived transition admits the old witness's writing, renewal and reopening steps on one finite carrier.
+- [`CGB.SelfProduction.existing_renewable_autonomous_cycle`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L3659)：In the specified deterministic witness world the same finite carrier repeats the writing, refill and reopening cycle at every natural time scale.
+- [`CGB.SelfProduction.stationary_nonincreasing_loss_flat_on_existing_cycle`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L3701)：On the existing closed three-state witness, a fixed state-dependent loss that never increases cannot strictly improve anywhere in the cycle.
+- [`CGB.SelfProduction.existing_renewable_cycle_active_and_viable`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L3722)：The finite witness remains outside vacuum, does not become permanently passive, and has an action-sensitive boundary in the declared witness world.
+- [`CGB.SelfProduction.quiet_identity_memory_marginal`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L3745)：When quiet freezes the body, the historical tagged memory law has the same body marginal after the first observation at every later time.
+- [`CGB.SelfProduction.quiet_identity_old_memory_iff_one_write`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L3776)：For a body frozen under quiet, the old indefinitely retained conditional information requirement reduces exactly to a single positive-information write.
+- [`CGB.SelfProduction.historical_persistence_requires_calm_change`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L3797)：If calm freezes every body state, the historical `Persists` contract is impossible: under permanent calm its body-only alive score stays at the initial value, which normal persistence requires to be above threshold.
+- [`CGB.SelfProduction.grace_not_historical_persists`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L3834)：The grace witness freezes under calm, so it cannot satisfy the old long-disconnection requirement, regardless of its other operational proofs.
+- [`CGB.SelfProduction.sensory_loss_and_historical_interrupt_differ`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L3846)：The existing sensory-maintenance witness tolerates one missing-sense tick and loses its body after three, but the historical interrupt selects its different frozen equilibrium stimulus.
+- [`CGB.SelfProduction.grace_historical_memory_iff_one_write`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L3872)：In the same grace witness, the old memory criterion only tests whether one observation can add conditional information before quiet freezing.
+- [`CGB.SelfProduction.grace_reachable_memory_changes_action`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L3885)：Two already-certified finite paths also occur in the grace world.
+- [`CGB.SelfProduction.grace_reachable_equal_budget_memory_contrast`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L3923)：Two histories from the same initial process reach the same world state and bodies with equal total content, buffer and credit, but opposite stored candidates and actions.
+- [`CGB.SelfProduction.grace_action_world_matches`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L3971)
+- [`CGB.SelfProduction.grace_action_intervention_contrast`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L4015)：Reconnecting the body's policy reproduces every transition of the registered grace process; overriding action zero from birth reaches vacuum in two certain steps.
+- [`CGB.SelfProduction.grace_stochastic_joint_generator_exists`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L4056)：The existing grace witness supplies the local conditions of the stochastic joint generator: its already-proved good region is invariant under the original body policy.
+- [`CGB.SelfProduction.grace_joint_recovery_generator_exists`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L4078)：The same finite grace world supplies the strengthened generator's local conditions, using its existing actual-intake mark and recovery rank.
+- [`CGB.SelfProduction.grace_reachable_one_action_consequence`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L4108)：On an already-supported prefix, one action override at the same joint state changes the next observation and the following body: the normal probe gets an answer and writes the B candidate; action zero yields conflict and
+- [`CGB.SelfProduction.grace_one_reopening_intervention_consequence`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L4139)：On a supported mismatch, override reopening for one body event only, then restore the original body and world rules.
+- [`CGB.SelfProduction.grace_action_zero_vacuum_probability`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L4191)
+- [`CGB.SelfProduction.grace_recovery_learning_joint`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L4233)：The same grace-world process has operational persistence, one-tick interruption tolerance and a loop-cut maintenance advantage, while supporting arbitrarily many paid rewrites on positive-probability finite prefixes.
+- [`CGB.SelfProduction.grace_original_policy_joint_certificate`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L4255)：A concrete policy and its actual process simultaneously satisfy the stochastic generator's one-step closure and ranked recovery conditions, the original loop-cut maintenance and one-tick interruption contracts, and the e
+- [`CGB.SelfProduction.grace_supported_paths_recurrently_intake`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L4299)：On every infinite supported path of the original grace process, actual intake occurs in every three-tick window.
+- [`CGB.SelfProduction.grace_exists_recurrently_intaking_path`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L4316)：The original process has at least one infinite supported path, and each three-tick window on that path contains actual intake.
+- [`CGB.SelfProduction.grace_infinite_supported_learning_and_intake`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L4339)：The already registered paid-relearning path is itself an infinite supported path of the same grace process.
+- [`CGB.SelfProduction.grace_supported_path_eventually_no_writes`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L4380)：The same grace process also admits an infinite supported path that stops paid writing after its initial phase.
+- [`CGB.SelfProduction.uniform_block_learning_failure_decay`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L4436)：Minimal probabilistic upgrade for persistent learning: if the probability of no useful learning event after `n` completed blocks is `q n`, and every block has conditional success at least `p`, then failure is bounded by
+- [`CGB.SelfProduction.language_conditional_joint_specification`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L4465)：The current candidate specification and the conditional infinite-stream guarantees hold for one and the same encoded trajectory.
+- [`CGB.SelfProduction.minimal_generator_conditional_joint_specification`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L4496)：Minimal-generator form of the total gate.
+- [`CGB.SelfProduction.exists_conditionally_operating_language_life_of_minimal_generator`](../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L4548)：Existential form of the total gate.
 
 ## GenerationSpeechTempo（14）
 _Speech tempo between two finite bodies (generation chain, 2026-10-28, edge N7) A speaker emits units (bytes, syllables) at rate `r` per tick to a listener._
@@ -843,13 +1243,33 @@ _Speech tempo between two finite bodies (generation chain, 2026-10-28, edge N7) 
 - [`CGB.SpeechTempo.peaks_wasted`](../../lean/CGBAxioms/CGBAxioms/GenerationSpeechTempo.lean#L166)：Uniform information density, upper bound: with a per-slot capacity `C`, the slots absorb at most the total sent and at most `n C`; anything above capacity in a slot is lost.
 - [`CGB.SpeechTempo.uniform_attains`](../../lean/CGBAxioms/CGBAxioms/GenerationSpeechTempo.lean#L173)：Uniform information density, attainment: the even spread reaches the bound.
 
+## GenerationSurvivalBounds（16）
+_Conditional maintenance, not immortality Maintenance means longer expected structural lifetime with drive than without (`CGB_AXIOMS_V0_20261022.md`, section 4)._
+
+- [`CGB.SurvivalBounds.decay_eventually_lt`](../../lean/CGBAxioms/CGBAxioms/GenerationSurvivalBounds.lean#L22)：Reuse the existing geometric bound; no nonnegativity of `q` is needed for this upper-tail conclusion.
+- [`CGB.SurvivalBounds.no_uniform_positive_lower`](../../lean/CGBAxioms/CGBAxioms/GenerationSurvivalBounds.lean#L31)：Uniform positive irreversible block loss rules out a fixed positive floor.
+- [`CGB.SurvivalBounds.geometric_lower`](../../lean/CGBAxioms/CGBAxioms/GenerationSurvivalBounds.lean#L38)：Lower counterpart to the reused geometric upper bound.
+- [`CGB.SurvivalBounds.cumulative_risk_lower`](../../lean/CGBAxioms/CGBAxioms/GenerationSurvivalBounds.lean#L51)：Telescoping lower bound; no independence, absorption, or sign premise is needed for this algebraic statement.
+- [`CGB.SurvivalBounds.risk_budget_uniform_lower`](../../lean/CGBAxioms/CGBAxioms/GenerationSurvivalBounds.lean#L62)：A prefix budget allows strictly positive but summably bounded per-step risk.
+- [`CGB.SurvivalBounds.geometric_tail_bound`](../../lean/CGBAxioms/CGBAxioms/GenerationSurvivalBounds.lean#L82)：Uniform scalar decay bounds every finite cut tail, reusing the existing pointwise geometric bound rather than repeating its power induction.
+- [`CGB.SurvivalBounds.prefix_gap_persists`](../../lean/CGBAxioms/CGBAxioms/GenerationSurvivalBounds.lean#L103)：A prefix advantage exceeding the entire cut-tail allowance persists at all later horizons; normal needs only nonnegative scores, not contraction.
+- [`CGB.SurvivalBounds.finite_window_lifetime_transfer`](../../lean/CGBAxioms/CGBAxioms/GenerationSurvivalBounds.lean#L117)：Finite-window cumulative errors plus an actual cut-tail certificate transfer reference lifetime advantage to every actual horizon beyond the window.
+- [`CGB.SurvivalBounds.expected_step`](../../lean/CGBAxioms/CGBAxioms/GenerationSurvivalBounds.lean#L137)：General expected-step identity extracted from the rearrangement in `Energetics.expected_first_law`.
+- [`CGB.SurvivalBounds.mean_initial`](../../lean/CGBAxioms/CGBAxioms/GenerationSurvivalBounds.lean#L149)
+- [`CGB.SurvivalBounds.mean_unit_interval`](../../lean/CGBAxioms/CGBAxioms/GenerationSurvivalBounds.lean#L155)：A bounded observable gives a bounded score under the actual process law.
+- [`CGB.SurvivalBounds.mean_contraction`](../../lean/CGBAxioms/CGBAxioms/GenerationSurvivalBounds.lean#L168)：A local row contraction transfers to the original ensemble score.
+- [`CGB.SurvivalBounds.mean_risk_step`](../../lean/CGBAxioms/CGBAxioms/GenerationSurvivalBounds.lean#L181)：A local additive risk allowance transfers without independence assumptions.
+- [`CGB.SurvivalBounds.mean_retention_step`](../../lean/CGBAxioms/CGBAxioms/GenerationSurvivalBounds.lean#L195)：Lower multiplicative row bounds transfer along the same actual law.
+- [`CGB.SurvivalBounds.expectedLifetime_strict_of_row_gap`](../../lean/CGBAxioms/CGBAxioms/GenerationSurvivalBounds.lean#L216)：Positive maintenance without immortality: the same initial individual and observable have strictly longer truncated lifetime under the normal process.
+- [`CGB.SurvivalBounds.normal_cut_eventual_gap`](../../lean/CGBAxioms/CGBAxioms/GenerationSurvivalBounds.lean#L246)：Stronger, separate all-time-floor criterion: SAME initial state and observable, normal prefix risk budget versus uniform cut contraction.
+
 ## GenerationTable（2）
 _Rule-table media (generation chain, M3) An organism is a finite table of reversible two-unit transitions: "a pair of units with identity pages `(i, j)` in states `a` may go to states `b`", each with a prefactor `κ`._
 
 - [`CGB.RuleSpec.apply_back`](../../lean/CGBAxioms/CGBAxioms/GenerationTable.lean#L34)
 - [`CGB.tableCRN.axioms`](../../lean/CGBAxioms/CGBAxioms/GenerationTable.lean#L72)：**M3**: a rule-table medium is a model of the CGB axioms as soon as its content has a unique free state over a finite local state type, the calm reservoir potential is zero, and every rule between two interior pages cons
 
-## GenerationUnifiedOptimizer（31）
+## GenerationUnifiedOptimizer（42）
 _Unified CGB optimizer contract This module is a composition layer, not a new axiom and not a claim about a trained language model._
 
 - [`CGB.Unified.build_is_cgb_candidate`](../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L58)：The composed relation and gain satisfy the existing CGB admission contract.
@@ -874,15 +1294,26 @@ _Unified CGB optimizer contract This module is a composition layer, not a new ax
 - [`CGB.Unified.fresh_outcome_trust_stays_in_band`](../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L234)
 - [`CGB.Unified.bernoulli_expected_brier_gap`](../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L254)
 - [`CGB.Unified.bernoulli_expected_brier_calibrated`](../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L260)
-- [`CGB.Unified.centered_bernoulli_evidence_zero_mean`](../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L268)
-- [`CGB.Unified.calibrated_evidence_penalty_is_square`](../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L274)
-- [`CGB.Unified.ema_history_collision`](../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L290)
-- [`CGB.Unified.build_has_competition_and_differentiation`](../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L297)：The built architecture exposes both row and column competition budgets.
-- [`CGB.Unified.build_history_is_geometric`](../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L309)：The retained history is the geometric trace generated by two-state exchange.
-- [`CGB.Unified.build_history_balance`](../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L317)：The supplied typed carrier exposes its telescoping conserved history.
-- [`CGB.Unified.build_modulation_stays_in_band`](../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L329)：The outcome gate leaves a dead band and stays inside the trust interval.
-- [`CGB.Unified.build_latch_holds_and_releases`](../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L338)：The latch both holds under short contrary evidence and releases at its threshold.
-- [`CGB.Unified.build_mechanical_admission`](../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L349)：Combined mechanical admission: relation, competition, history and modulation.
+- [`CGB.Unified.bernoulli_prediction_error_expectation`](../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L271)
+- [`CGB.Unified.brier_score_is_not_outcome_prediction_error`](../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L276)
+- [`CGB.Unified.centered_bernoulli_evidence_zero_mean`](../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L280)
+- [`CGB.Unified.calibrated_evidence_penalty_is_square`](../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L286)
+- [`CGB.Unified.eligibility_gated_phase_stays_in_unit_interval`](../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L299)
+- [`CGB.Unified.eligibility_gate_zero_holds`](../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L312)
+- [`CGB.Unified.eligibility_gate_one_recovers`](../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L316)
+- [`CGB.Unified.eligibility_gated_signed_phase_stays_bounded`](../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L323)
+- [`CGB.Unified.eligibility_gated_signed_phase_zero_holds`](../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L336)
+- [`CGB.Unified.latch_phase_holds_before_release`](../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L343)
+- [`CGB.Unified.latch_phase_releases_at_threshold`](../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L349)
+- [`CGB.Unified.eligibility_gated_transfer_is_conserved`](../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L365)
+- [`CGB.Unified.eligibility_gated_transfer_reads_phase`](../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L371)
+- [`CGB.Unified.ema_history_collision`](../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L388)
+- [`CGB.Unified.build_has_competition_and_differentiation`](../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L395)：The built architecture exposes both row and column competition budgets.
+- [`CGB.Unified.build_history_is_geometric`](../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L407)：The retained history is the geometric trace generated by two-state exchange.
+- [`CGB.Unified.build_history_balance`](../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L415)：The supplied typed carrier exposes its telescoping conserved history.
+- [`CGB.Unified.build_modulation_stays_in_band`](../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L427)：The outcome gate leaves a dead band and stays inside the trust interval.
+- [`CGB.Unified.build_latch_holds_and_releases`](../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L436)：The latch both holds under short contrary evidence and releases at its threshold.
+- [`CGB.Unified.build_mechanical_admission`](../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L447)：Combined mechanical admission: relation, competition, history and modulation.
 
 ## GraceRecovery（20）
 _A recoverable diagnostic opportunity after missed sensing Keep the original body, learning payments, food amounts and clock._
@@ -966,6 +1397,13 @@ _Active inference, first rungs: the blanket and foresight The life definition or
 - [`CGB.Models.rock_not_persists`](../../lean/CGBAxioms/CGBAxioms/Inference.lean#L124)：So the rock persists in no world.
 - [`CGB.finite_reweighting_improves_iff`](../../lean/CGBAxioms/CGBAxioms/Inference.lean#L134)：Any positive finite reweighting improves an observed event's normalized probability exactly when its conditional mean multiplier exceeds the global mean.
 
+## InformationEconomics（3）
+_Information economics: a small reusable basis The project has many mechanism-level theorems, but their common economic core is small._
+
+- [`CGB.InformationEconomics.causal_carrier_contract_iff`](../../lean/CGBAxioms/CGBAxioms/InformationEconomics.lean#L33)：**Causal carrier basis.** A finite state is a valid compressed carrier exactly when it supports both the required readout and the encoded successor for every future input.
+- [`CGB.InformationEconomics.selective_write_contract`](../../lean/CGBAxioms/CGBAxioms/InformationEconomics.lean#L60)：**Selective write basis.** Agreement over all live candidates consumes no write capacity; a funded observation that rules out a live candidate spends one unit and removes that candidate.
+- [`CGB.InformationEconomics.predictive_growth_contract`](../../lean/CGBAxioms/CGBAxioms/InformationEconomics.lean#L81)：**Predictive-growth basis.** Under the declared reinvestment contract, growth decomposes into a fixed alphabet term minus cross-entropy and is bounded by the stream entropy.
+
 ## InformationThermodynamics（3）
 _Information acquisition as a conditional thermodynamic contract The general medium axioms do not assign physical energy to a recorded symbol._
 
@@ -1022,7 +1460,12 @@ _CGB language: finite-state Markov jump processes The state–event language of 
 
 - [`CGB.JumpProcess.expect_const_iff`](../../lean/CGBAxioms/CGBAxioms/Language.lean#L32)：`⟨f⟩` is constant for every initial distribution iff `L f = 0` pointwise.
 
-## LanguageLifeKernel（53）
+## LanguageLifeAdmission（1）
+_Historical finite-candidate language admission This is a contract, not an existence theorem._
+
+- [`CGB.LanguageLifeAdmission.joint_admission`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeAdmission.lean#L97)
+
+## LanguageLifeKernel（54）
 _Compact algebraic reference kernel for the language-life model This is a finite exact reference object, not a neural-network capability claim._
 
 - [`CGB.LanguageLifeKernel.incidence_ternary`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L22)
@@ -1034,50 +1477,51 @@ _Compact algebraic reference kernel for the language-life model This is a finite
 - [`CGB.LanguageLifeKernel.step_reserve_paid`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L77)
 - [`CGB.LanguageLifeKernel.no_visible_only_delayed_credit_rule`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L99)
 - [`CGB.LanguageLifeKernel.delayed_credit_requires_history_carrier`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L107)
-- [`CGB.LanguageLifeKernel.conserved_transfer_target_trace`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L135)
-- [`CGB.LanguageLifeKernel.conserved_transfer_source_trace`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L140)
-- [`CGB.LanguageLifeKernel.conserved_transfer_total_preserved`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L145)
-- [`CGB.LanguageLifeKernel.observable_transfer_recovers_amount`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L165)
-- [`CGB.LanguageLifeKernel.superposed_transfer_readout_is_net`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L169)
-- [`CGB.LanguageLifeKernel.conservation_does_not_identify_components`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L173)
-- [`CGB.LanguageLifeKernel.leaky_transfer_readout_is_net`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L185)
-- [`CGB.LanguageLifeKernel.conserved_carrier_path_balance`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L204)
-- [`CGB.LanguageLifeKernel.conserved_carrier_path_no_output`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L213)
-- [`CGB.LanguageLifeKernel.history_readout_exists_iff`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L230)
-- [`CGB.LanguageLifeKernel.history_transition_exists_iff`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L238)
-- [`CGB.LanguageLifeKernel.external_causal_readout_exists_iff`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L260)
-- [`CGB.LanguageLifeKernel.external_trace_requires_retrieved_distinction`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L284)
-- [`CGB.LanguageLifeKernel.observational_record_does_not_fix_intervention`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L297)：Two world equations agree on every recorded A=U trajectory but disagree under the intervention U=false, A=true.
-- [`CGB.LanguageLifeKernel.SensoryRecord.exact_record_contract`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L346)
-- [`CGB.LanguageLifeKernel.SensoryRecord.action_content_distinguishes`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L360)：All sixteen records already have distinct action/content observations.
-- [`CGB.LanguageLifeKernel.SensoryRecord.record_state_lower_bound`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L366)
-- [`CGB.LanguageLifeKernel.SensoryRecord.fold_refines`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L380)：The finite record supports arbitrary-length replay by a forward fold, without consulting the world regime or keeping an autograd history.
-- [`CGB.LanguageLifeKernel.SensoryRecord.joint_successor_reconstruct`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L392)：Every positive-probability successor in the original joint body/world process is exactly representable, for either registered cut and any schedule.
-- [`CGB.LanguageLifeKernel.CausalRecord.policy_cases`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L431)
-- [`CGB.LanguageLifeKernel.CausalRecord.weights_exact`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L438)
-- [`CGB.LanguageLifeKernel.CausalRecord.sensor_alias_witness`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L447)：Same present sensor, different consequences of the same actuator setting.
-- [`CGB.LanguageLifeKernel.CausalRecord.update_sound`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L458)
-- [`CGB.LanguageLifeKernel.CausalRecord.update_least`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L473)：Any candidate set retaining every compatible successor contains this one.
-- [`CGB.LanguageLifeKernel.CausalRecord.action_feedback_witness`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L484)：An identical later sensor has different interpretations when the earlier action differs.
-- [`CGB.LanguageLifeKernel.PaidRecord.settlement_contract`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L519)
-- [`CGB.LanguageLifeKernel.PaidRecord.world_feedback_possible`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L538)
-- [`CGB.LanguageLifeKernel.PaidRecord.combined_write_budget`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L554)：Add the recorder's separately endowed reserve to the ORIGINAL body's credit ledger.
-- [`CGB.LanguageLifeKernel.PaidRecord.historical_frame_witness`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L567)：Holding a source hypothesis is sound about its origin, not about a moving world.
-- [`CGB.LanguageLifeKernel.PaidRecord.joint_source_possible`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L576)：The ORIGINAL normal joint kernel, with any registered sensory schedule, licenses a receipt only for its pre-update body action and its successor's actual sensor.
-- [`CGB.LanguageLifeKernel.PaidRecord.attach_refines`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L602)：Projection recovers the whole original kernel, hence its registered finite-future observations by Interaction.Refines.sameBehavior.
-- [`CGB.LanguageLifeKernel.LocalEdit.binary_factor_balance`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L615)：A binary factor edit depends on joint contrast, not just either marginal.
-- [`CGB.LanguageLifeKernel.LocalEdit.accepts_iff`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L628)：With positive total masses, the executable comparison exactly detects improvement of the same event; inference and resource contracts are separate.
-- [`CGB.LanguageLifeKernel.FirstHit.first_hit_sum`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L660)：Conditional on a fixed lifetime, first-success probabilities telescope.
-- [`CGB.LanguageLifeKernel.FirstHit.truncation`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L671)：Stop unfolding after `horizon` trials.
-- [`CGB.LanguageLifeKernel.FirstHit.probability_bounds`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L700)：A normalized nonnegative finite lifetime distribution gives a genuine probability, independently of the chosen support representation.
-- [`CGB.LanguageLifeKernel.CausalState.realizes`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L748)：Canonical readout and single-input recursion realize the same contract.
-- [`CGB.LanguageLifeKernel.CausalState.fold_refines`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L758)：Arbitrarily long forward recursion; not a bounded-memory implementation.
-- [`CGB.LanguageLifeKernel.CausalState.minimal`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L767)：Every exact deterministic realization projects onto the canonical states.
-- [`CGB.LanguageLifeKernel.CausalState.finite_bound`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L787)：Finiteness follows from a finite exact realization; it is not assumed.
-- [`CGB.LanguageLifeKernel.CausalState.finite_alphabets_unbounded`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L797)：Finite input and output alphabets alone do not imply finite exact memory.
-- [`CGB.LanguageLifeKernel.CausalState.separated_histories_capacity`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L810)：Uniform precision requires distinct readable codes for separated futures.
-- [`CGB.LanguageLifeKernel.Approximation.fold_error`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L845)：Full one-step error certificates compose over any finite continuation.
-- [`CGB.LanguageLifeKernel.Approximation.invariant_error`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L864)：A locally closed error budget stays uniform in elapsed sequence length.
+- [`CGB.LanguageLifeKernel.delayed_action_credit_requires_state_separation`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L119)：Delayed action credit needs a state distinction between alternatives whose later consequences require different credit.
+- [`CGB.LanguageLifeKernel.conserved_transfer_target_trace`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L155)
+- [`CGB.LanguageLifeKernel.conserved_transfer_source_trace`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L160)
+- [`CGB.LanguageLifeKernel.conserved_transfer_total_preserved`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L165)
+- [`CGB.LanguageLifeKernel.observable_transfer_recovers_amount`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L185)
+- [`CGB.LanguageLifeKernel.superposed_transfer_readout_is_net`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L189)
+- [`CGB.LanguageLifeKernel.conservation_does_not_identify_components`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L193)
+- [`CGB.LanguageLifeKernel.leaky_transfer_readout_is_net`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L205)
+- [`CGB.LanguageLifeKernel.conserved_carrier_path_balance`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L224)
+- [`CGB.LanguageLifeKernel.conserved_carrier_path_no_output`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L233)
+- [`CGB.LanguageLifeKernel.history_readout_exists_iff`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L250)
+- [`CGB.LanguageLifeKernel.history_transition_exists_iff`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L258)
+- [`CGB.LanguageLifeKernel.external_causal_readout_exists_iff`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L280)
+- [`CGB.LanguageLifeKernel.external_trace_requires_retrieved_distinction`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L304)
+- [`CGB.LanguageLifeKernel.observational_record_does_not_fix_intervention`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L317)：Two world equations agree on every recorded A=U trajectory but disagree under the intervention U=false, A=true.
+- [`CGB.LanguageLifeKernel.SensoryRecord.exact_record_contract`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L366)
+- [`CGB.LanguageLifeKernel.SensoryRecord.action_content_distinguishes`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L380)：All sixteen records already have distinct action/content observations.
+- [`CGB.LanguageLifeKernel.SensoryRecord.record_state_lower_bound`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L386)
+- [`CGB.LanguageLifeKernel.SensoryRecord.fold_refines`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L400)：The finite record supports arbitrary-length replay by a forward fold, without consulting the world regime or keeping an autograd history.
+- [`CGB.LanguageLifeKernel.SensoryRecord.joint_successor_reconstruct`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L412)：Every positive-probability successor in the original joint body/world process is exactly representable, for either registered cut and any schedule.
+- [`CGB.LanguageLifeKernel.CausalRecord.policy_cases`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L451)
+- [`CGB.LanguageLifeKernel.CausalRecord.weights_exact`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L458)
+- [`CGB.LanguageLifeKernel.CausalRecord.sensor_alias_witness`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L467)：Same present sensor, different consequences of the same actuator setting.
+- [`CGB.LanguageLifeKernel.CausalRecord.update_sound`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L478)
+- [`CGB.LanguageLifeKernel.CausalRecord.update_least`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L493)：Any candidate set retaining every compatible successor contains this one.
+- [`CGB.LanguageLifeKernel.CausalRecord.action_feedback_witness`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L504)：An identical later sensor has different interpretations when the earlier action differs.
+- [`CGB.LanguageLifeKernel.PaidRecord.settlement_contract`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L539)
+- [`CGB.LanguageLifeKernel.PaidRecord.world_feedback_possible`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L558)
+- [`CGB.LanguageLifeKernel.PaidRecord.combined_write_budget`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L574)：Add the recorder's separately endowed reserve to the ORIGINAL body's credit ledger.
+- [`CGB.LanguageLifeKernel.PaidRecord.historical_frame_witness`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L587)：Holding a source hypothesis is sound about its origin, not about a moving world.
+- [`CGB.LanguageLifeKernel.PaidRecord.joint_source_possible`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L596)：The ORIGINAL normal joint kernel, with any registered sensory schedule, licenses a receipt only for its pre-update body action and its successor's actual sensor.
+- [`CGB.LanguageLifeKernel.PaidRecord.attach_refines`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L622)：Projection recovers the whole original kernel, hence its registered finite-future observations by Interaction.Refines.sameBehavior.
+- [`CGB.LanguageLifeKernel.LocalEdit.binary_factor_balance`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L635)：A binary factor edit depends on joint contrast, not just either marginal.
+- [`CGB.LanguageLifeKernel.LocalEdit.accepts_iff`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L648)：With positive total masses, the executable comparison exactly detects improvement of the same event; inference and resource contracts are separate.
+- [`CGB.LanguageLifeKernel.FirstHit.first_hit_sum`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L680)：Conditional on a fixed lifetime, first-success probabilities telescope.
+- [`CGB.LanguageLifeKernel.FirstHit.truncation`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L691)：Stop unfolding after `horizon` trials.
+- [`CGB.LanguageLifeKernel.FirstHit.probability_bounds`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L720)：A normalized nonnegative finite lifetime distribution gives a genuine probability, independently of the chosen support representation.
+- [`CGB.LanguageLifeKernel.CausalState.realizes`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L768)：Canonical readout and single-input recursion realize the same contract.
+- [`CGB.LanguageLifeKernel.CausalState.fold_refines`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L778)：Arbitrarily long forward recursion; not a bounded-memory implementation.
+- [`CGB.LanguageLifeKernel.CausalState.minimal`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L787)：Every exact deterministic realization projects onto the canonical states.
+- [`CGB.LanguageLifeKernel.CausalState.finite_bound`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L807)：Finiteness follows from a finite exact realization; it is not assumed.
+- [`CGB.LanguageLifeKernel.CausalState.finite_alphabets_unbounded`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L817)：Finite input and output alphabets alone do not imply finite exact memory.
+- [`CGB.LanguageLifeKernel.CausalState.separated_histories_capacity`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L830)：Uniform precision requires distinct readable codes for separated futures.
+- [`CGB.LanguageLifeKernel.Approximation.fold_error`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L865)：Full one-step error certificates compose over any finite continuation.
+- [`CGB.LanguageLifeKernel.Approximation.invariant_error`](../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L884)：A locally closed error budget stays uniform in elapsed sequence length.
 
 ## LearningMaintenance（26）
 _A finite learning-and-maintenance mathematical witness Safe informative boundary feedback precedes resource-dependent action._

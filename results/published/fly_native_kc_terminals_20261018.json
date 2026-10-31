@@ -1,0 +1,545 @@
+{
+  "at": "2026-10-18T15:05:36.247872+00:00",
+  "status": "native_site_routes_and_state_interfaces_verified",
+  "sources": {
+    "paused_main": {
+      "path": "E:/ib_checkpoints/newborn_reading/last.pt",
+      "sha256": "9dacf767b558b3cf4f8642644f51092a7f4047af8712c98b53f543beb380ebe4",
+      "size_bytes": 1272676491,
+      "mtime_ns": 1792200758495219000,
+      "unchanged": true
+    },
+    "parent_apl": {
+      "path": "E:\\fly_stream_overflow\\native_apl_cable_20261018\\last.pt",
+      "sha256": "0836e22479af6abe2c5d747d411c700452ab7adc0bb2a51c57624340b7f48111",
+      "size_bytes": 2063825897,
+      "mtime_ns": 1792331157451906400,
+      "unchanged": true
+    },
+    "candidate": {
+      "path": "E:\\fly_stream_overflow\\native_kc_terminals_20261018\\last.pt",
+      "sha256": "4cbc6c37fd553fb6d08595598b162c302b987f565ce8b7e71f5e3b4b004dfe16",
+      "size_bytes": 2215551255,
+      "mtime_ns": 1792334336718223400,
+      "unchanged": true
+    }
+  },
+  "continuity": {
+    "trained": 33000,
+    "optimizer_updates_total": 4154,
+    "physical_ticks_total": 471577,
+    "new_training_inputs": 0,
+    "new_optimizer_updates": 0,
+    "new_dialogue": 0,
+    "main_trained": 32384,
+    "main_status": "paused_by_user_for_repair"
+  },
+  "migration": {
+    "source": "E:\\fly_stream_overflow\\native_apl_cable_20261018\\last.pt",
+    "source_sha256": "0836e22479af6abe2c5d747d411c700452ab7adc0bb2a51c57624340b7f48111",
+    "candidate_sha256": "4cbc6c37fd553fb6d08595598b162c302b987f565ce8b7e71f5e3b4b004dfe16",
+    "trained": 33000,
+    "new_inputs": 0,
+    "new_optimizer_updates": 0,
+    "old_weights_physical_optimizer_credit_world_rng_exact": true,
+    "spatial_initialization": "Uniform prolongation of old per-KC chemistry, actual delayed packets, compartment traces and their carried derivative. No past spatial pattern invented.",
+    "geometry": {
+      "version": 1,
+      "dataset": "male-cns:v1.0",
+      "neurons": 4064,
+      "nodes": 4184720,
+      "sites": 709034,
+      "segments": 4180127,
+      "routes": {
+        "fast": 2246492,
+        "apl": 210235,
+        "receptor": 190744
+      },
+      "projection_um": {
+        "median": 0.5703051814598903,
+        "p99": 1.5499740322788649,
+        "max": 3.699167473905444
+      },
+      "npz_sha256": "8de40839b5da3ab72cca8443e0f3ca8fed211250339079b3022c5714fedc9385",
+      "scope": "every supplied KC tree node; actual presynaptic site and receptor contact positions. Transported states are effective intracellular receptor signals, not a reconstructed axonal action-potential cable or identified molecular receptor map."
+    },
+    "status": "zero_exposure_extension_verified"
+  },
+  "geometry": {
+    "version": 1,
+    "dataset": "male-cns:v1.0",
+    "neurons": 4064,
+    "nodes": 4184720,
+    "sites": 709034,
+    "segments": 4180127,
+    "routes": {
+      "fast": 2246492,
+      "apl": 210235,
+      "receptor": 190744
+    },
+    "projection_um": {
+      "median": 0.5703051814598903,
+      "p99": 1.5499740322788649,
+      "max": 3.699167473905444
+    },
+    "npz_sha256": "8de40839b5da3ab72cca8443e0f3ca8fed211250339079b3022c5714fedc9385",
+    "scope": "every supplied KC tree node; actual presynaptic site and receptor contact positions. Transported states are effective intracellular receptor signals, not a reconstructed axonal action-potential cable or identified molecular receptor map."
+  },
+  "mechanisms": {
+    "site_release": "Actual distinct presynaptic positions, shared event for same-site partners; original edge weights/fractions and delay retained",
+    "native_routes": [
+      "KC_fast_output",
+      "KC_plastic_MBON",
+      "KC_DAN_terminal_feedback",
+      "KC_local_APL_feedback"
+    ],
+    "local_learning": "Released site activity feeds per-connection eligibility and existing native DAN-gated phi law, including conditional eligibility carried trace",
+    "field_scope": "Effective intracellular receptor/post-receptor signals driven by actual GABA and DPM5HT contacts. Not a molecular receptor map, nor GABA/5HT transported intracellularly. KC somatic spiking remains existing cell dynamics.",
+    "law": "Native full-volume reaction step then (C+L_D)x_new=C*x_reacted, positive learned transport coefficients per KC and species",
+    "solver": "Exact rooted-tree elimination/backsubstitution on every supplied node; full FP64 residual and custom adjoint; no branch/ROI/node reduction",
+    "history": "Pooled chemistry arrays kept as inactive historical snapshot; current local states kc_terminal_*",
+    "unsupported": "Site-level STP and habituation currently OFF; unsupported global-STP substitution rejects explicitly"
+  },
+  "restore": {
+    "checkpoint": "E:\\fly_stream_overflow\\native_kc_terminals_20261018\\last.pt",
+    "sha256": "4cbc6c37fd553fb6d08595598b162c302b987f565ce8b7e71f5e3b4b004dfe16",
+    "trained": 33000,
+    "scope": "zero-exposure complete trainer restore",
+    "storage_only_override": null,
+    "empty_physical_schema_fields_added": [],
+    "missing_model_entries": [],
+    "extra_model_entries": [],
+    "changed_model_entries": [],
+    "changed_learner_entries": [],
+    "cpu_cuda_rng_exact": true,
+    "source_unchanged": true,
+    "mother_world_roundtrip_exact": true,
+    "mother_rng_exact": true,
+    "mother_world_scope": "real MotherWorld state restored without new exposure or network call",
+    "status": "exact_restore_passed"
+  },
+  "initial_delivery": {
+    "routes": {
+      "all_fast_KC_output": {
+        "absmax": 1.4901161193847656e-08,
+        "close": true
+      },
+      "plastic_KC_MBON": {
+        "absmax": 7.450580596923828e-09,
+        "close": true
+      },
+      "KC_DAN_feedback": {
+        "absmax": 5.960464477539063e-08,
+        "close": true
+      },
+      "local_KC_APL_feedback": {
+        "absmax": 4.656612873077393e-10,
+        "close": true
+      }
+    },
+    "status": "passed",
+    "scope": "initial uniform expansion only, preserves existing outgoing signals; no future equivalence claim"
+  },
+  "causal": {
+    "report": "F:/fly_stream_overflow/native_kc_matrix_tree_33000_20261018/report.json",
+    "scope": "acute frozen delivery, not learning benefit, real action consequence, exploration or self",
+    "arms": 17,
+    "targets": 1,
+    "ticks": 19,
+    "intervals": [
+      19
+    ],
+    "clock_source": "saved_pending_queue_native_rng_continuation",
+    "sources": [
+      "mother_call"
+    ],
+    "controls_passed": true,
+    "source_and_rng_preserved": true,
+    "sham_and_restored_all_fields_zero_difference": true,
+    "intact_local_state": {
+      "nodes": 4184720,
+      "release_sites": 709034,
+      "kc_with_different_site_release": 27,
+      "within_kc_release_range_max": 0.9142079949378967,
+      "gaba_effector_max": 13.436656951904297,
+      "5ht_effector_max": 8.933037757873535,
+      "local_eligibility_max": 0.9941813945770264,
+      "scope": "actual sites and spatial effective receptor signals; not axonal action-potential cable or identified molecular localization"
+    },
+    "arm_effects": {
+      "intact": {
+        "ce_delta": 0.0,
+        "log_prob_absmax": 0.0,
+        "motor_logit_absmax": 0.0,
+        "action_log_prob_absmax": 0.0,
+        "command_hazard_absmax": 0.0,
+        "membrane_group_absmax": {
+          "visual": 0.0,
+          "CX": 0.0,
+          "KC": 0.0,
+          "MBON": 0.0,
+          "DAN": 0.0,
+          "OA": 0.0,
+          "5HT": 0.0
+        },
+        "phi_absmax": 0.0,
+        "eligibility_absmax": 0.0
+      },
+      "sham": {
+        "ce_delta": 0.0,
+        "log_prob_absmax": 0.0,
+        "motor_logit_absmax": 0.0,
+        "action_log_prob_absmax": 0.0,
+        "command_hazard_absmax": 0.0,
+        "membrane_group_absmax": {
+          "visual": 0.0,
+          "CX": 0.0,
+          "KC": 0.0,
+          "MBON": 0.0,
+          "DAN": 0.0,
+          "OA": 0.0,
+          "5HT": 0.0
+        },
+        "phi_absmax": 0.0,
+        "eligibility_absmax": 0.0
+      },
+      "cx": {
+        "ce_delta": -0.017990589141845703,
+        "log_prob_absmax": 0.0689535140991211,
+        "motor_logit_absmax": 0.09161376953125,
+        "action_log_prob_absmax": 0.0,
+        "command_hazard_absmax": 8.212286047637463e-05,
+        "membrane_group_absmax": {
+          "visual": 0.004095856100320816,
+          "CX": 0.14240843057632446,
+          "KC": 0.002022944390773773,
+          "MBON": 0.08012540638446808,
+          "DAN": 0.1318577527999878,
+          "OA": 0.08115910738706589,
+          "5HT": 0.12163536250591278
+        },
+        "phi_absmax": 3.224611282348633e-05,
+        "eligibility_absmax": 7.748603820800781e-07
+      },
+      "mb_regulators": {
+        "ce_delta": 0.0,
+        "log_prob_absmax": 0.0,
+        "motor_logit_absmax": 0.0,
+        "action_log_prob_absmax": 0.0,
+        "command_hazard_absmax": 0.0,
+        "membrane_group_absmax": {
+          "visual": 0.0,
+          "CX": 0.0,
+          "KC": 0.0,
+          "MBON": 0.0,
+          "DAN": 0.0,
+          "OA": 0.0,
+          "5HT": 0.0
+        },
+        "phi_absmax": 0.0,
+        "eligibility_absmax": 0.0
+      },
+      "al_relay": {
+        "ce_delta": -0.031569480895996094,
+        "log_prob_absmax": 0.24886512756347656,
+        "motor_logit_absmax": 2.893646240234375,
+        "action_log_prob_absmax": 0.4076385498046875,
+        "command_hazard_absmax": 0.0001523506361991167,
+        "membrane_group_absmax": {
+          "visual": 0.004095856100320816,
+          "CX": 0.11570067703723907,
+          "KC": 0.146368145942688,
+          "MBON": 0.1152077242732048,
+          "DAN": 0.1318577527999878,
+          "OA": 0.10717183351516724,
+          "5HT": 0.046384938061237335
+        },
+        "phi_absmax": 0.0009597539901733398,
+        "eligibility_absmax": 0.8144556879997253
+      },
+      "amines": {
+        "ce_delta": 0.12109947204589844,
+        "log_prob_absmax": 1.249068260192871,
+        "motor_logit_absmax": 8.258209228515625,
+        "action_log_prob_absmax": 1.605520248413086,
+        "command_hazard_absmax": 0.0005036047659814358,
+        "membrane_group_absmax": {
+          "visual": 0.0290893092751503,
+          "CX": 0.14961744844913483,
+          "KC": 0.1484115719795227,
+          "MBON": 0.12944097816944122,
+          "DAN": 0.1333494782447815,
+          "OA": 0.20771291851997375,
+          "5HT": 0.08944928646087646
+        },
+        "phi_absmax": 0.0011186599731445312,
+        "eligibility_absmax": 0.9999799728393555
+      },
+      "visual": {
+        "ce_delta": -0.024137496948242188,
+        "log_prob_absmax": 0.16979312896728516,
+        "motor_logit_absmax": 2.173858642578125,
+        "action_log_prob_absmax": 0.0,
+        "command_hazard_absmax": 0.0,
+        "membrane_group_absmax": {
+          "visual": 0.2782418131828308,
+          "CX": 0.16283178329467773,
+          "KC": 0.0,
+          "MBON": 0.1151820570230484,
+          "DAN": 0.14229315519332886,
+          "OA": 0.11867281794548035,
+          "5HT": 0.01671067625284195
+        },
+        "phi_absmax": 1.6480684280395508e-05,
+        "eligibility_absmax": 0.0
+      },
+      "endocrine": {
+        "ce_delta": 0.0,
+        "log_prob_absmax": 0.0,
+        "motor_logit_absmax": 0.0,
+        "action_log_prob_absmax": 0.0,
+        "command_hazard_absmax": 0.0,
+        "membrane_group_absmax": {
+          "visual": 0.0,
+          "CX": 0.0,
+          "KC": 0.0,
+          "MBON": 0.0,
+          "DAN": 0.0,
+          "OA": 0.0,
+          "5HT": 0.0
+        },
+        "phi_absmax": 0.0,
+        "eligibility_absmax": 0.0
+      },
+      "motor_terminal": {
+        "ce_delta": 0.0,
+        "log_prob_absmax": 0.0,
+        "motor_logit_absmax": 0.0,
+        "action_log_prob_absmax": 8.352165222167969,
+        "command_hazard_absmax": 0.002143528778105974,
+        "membrane_group_absmax": {
+          "visual": 0.0,
+          "CX": 0.0,
+          "KC": 0.0,
+          "MBON": 0.0,
+          "DAN": 0.0,
+          "OA": 0.0,
+          "5HT": 0.0
+        },
+        "phi_absmax": 0.0,
+        "eligibility_absmax": 0.0
+      },
+      "mb_terminal": {
+        "ce_delta": -0.014177799224853516,
+        "log_prob_absmax": 0.05342388153076172,
+        "motor_logit_absmax": 1.201080322265625,
+        "action_log_prob_absmax": 0.0,
+        "command_hazard_absmax": 0.0,
+        "membrane_group_absmax": {
+          "visual": 0.004095856100320816,
+          "CX": 0.11420458555221558,
+          "KC": 0.13218745589256287,
+          "MBON": 0.12944097816944122,
+          "DAN": 0.10948058217763901,
+          "OA": 0.10333231091499329,
+          "5HT": 0.04747890308499336
+        },
+        "phi_absmax": 0.0016762018203735352,
+        "eligibility_absmax": 1.0
+      },
+      "mb_terminal_gaba": {
+        "ce_delta": -0.003360748291015625,
+        "log_prob_absmax": 0.05190086364746094,
+        "motor_logit_absmax": 0.22454833984375,
+        "action_log_prob_absmax": 0.25763607025146484,
+        "command_hazard_absmax": 1.1859461665153503e-05,
+        "membrane_group_absmax": {
+          "visual": 0.004095856100320816,
+          "CX": 0.11903640627861023,
+          "KC": 0.0038256198167800903,
+          "MBON": 0.12777401506900787,
+          "DAN": 0.13255250453948975,
+          "OA": 0.08482805639505386,
+          "5HT": 0.018028005957603455
+        },
+        "phi_absmax": 0.001143038272857666,
+        "eligibility_absmax": 0.8729168772697449
+      },
+      "dpm_5ht": {
+        "ce_delta": -0.005623817443847656,
+        "log_prob_absmax": 0.06928253173828125,
+        "motor_logit_absmax": 0.39849853515625,
+        "action_log_prob_absmax": 0.25763607025146484,
+        "command_hazard_absmax": 1.1859461665153503e-05,
+        "membrane_group_absmax": {
+          "visual": 0.004095856100320816,
+          "CX": 0.11779238283634186,
+          "KC": 0.13218745589256287,
+          "MBON": 0.11913124471902847,
+          "DAN": 0.1297840029001236,
+          "OA": 0.10005565732717514,
+          "5HT": 0.046384938061237335
+        },
+        "phi_absmax": 0.0011699795722961426,
+        "eligibility_absmax": 0.999966561794281
+      },
+      "apl_release": {
+        "ce_delta": -0.019376277923583984,
+        "log_prob_absmax": 0.3002195358276367,
+        "motor_logit_absmax": 4.962066650390625,
+        "action_log_prob_absmax": 0.8502979278564453,
+        "command_hazard_absmax": 0.0002091185888275504,
+        "membrane_group_absmax": {
+          "visual": 0.004095856100320816,
+          "CX": 0.11420458555221558,
+          "KC": 0.14731526374816895,
+          "MBON": 0.12944097816944122,
+          "DAN": 0.12702995538711548,
+          "OA": 0.13826687633991241,
+          "5HT": 0.046384938061237335
+        },
+        "phi_absmax": 0.0020137429237365723,
+        "eligibility_absmax": 0.9827092885971069
+      },
+      "apl_axial": {
+        "ce_delta": -9.632110595703125e-05,
+        "log_prob_absmax": 0.0004825592041015625,
+        "motor_logit_absmax": 0.0,
+        "action_log_prob_absmax": 0.0,
+        "command_hazard_absmax": 0.0,
+        "membrane_group_absmax": {
+          "visual": 0.0,
+          "CX": 0.11734098196029663,
+          "KC": 0.1497613936662674,
+          "MBON": 0.07569354772567749,
+          "DAN": 0.11734098196029663,
+          "OA": 0.0010235905647277832,
+          "5HT": 0.0007410869002342224
+        },
+        "phi_absmax": 0.0010092854499816895,
+        "eligibility_absmax": 0.9521480202674866
+      },
+      "kc_sites": {
+        "ce_delta": -0.014177799224853516,
+        "log_prob_absmax": 0.05342388153076172,
+        "motor_logit_absmax": 1.201080322265625,
+        "action_log_prob_absmax": 0.0,
+        "command_hazard_absmax": 0.0,
+        "membrane_group_absmax": {
+          "visual": 0.004095856100320816,
+          "CX": 0.11420458555221558,
+          "KC": 0.13218745589256287,
+          "MBON": 0.12944097816944122,
+          "DAN": 0.10948058217763901,
+          "OA": 0.10333231091499329,
+          "5HT": 0.04747890308499336
+        },
+        "phi_absmax": 0.0016762018203735352,
+        "eligibility_absmax": 1.0
+      },
+      "kc_site_transport": {
+        "ce_delta": -0.0035457611083984375,
+        "log_prob_absmax": 0.019853591918945312,
+        "motor_logit_absmax": 0.03875732421875,
+        "action_log_prob_absmax": 0.0,
+        "command_hazard_absmax": 0.0,
+        "membrane_group_absmax": {
+          "visual": 0.0,
+          "CX": 0.11800414323806763,
+          "KC": 0.0016102567315101624,
+          "MBON": 0.1151820570230484,
+          "DAN": 0.1318577527999878,
+          "OA": 0.009290952235460281,
+          "5HT": 0.01499127596616745
+        },
+        "phi_absmax": 0.0012969374656677246,
+        "eligibility_absmax": 0.8658421635627747
+      },
+      "restored": {
+        "ce_delta": 0.0,
+        "log_prob_absmax": 0.0,
+        "motor_logit_absmax": 0.0,
+        "action_log_prob_absmax": 0.0,
+        "command_hazard_absmax": 0.0,
+        "membrane_group_absmax": {
+          "visual": 0.0,
+          "CX": 0.0,
+          "KC": 0.0,
+          "MBON": 0.0,
+          "DAN": 0.0,
+          "OA": 0.0,
+          "5HT": 0.0
+        },
+        "phi_absmax": 0.0,
+        "eligibility_absmax": 0.0
+      }
+    },
+    "action_scope": "Mother speaking with no commits; changed motor logits are acute neural readout, not demonstrated changed selected words or actual action consequences. Actual word-policy log probabilities and hazard are unchanged in these KC arms."
+  },
+  "validation": {
+    "affected_tests": {
+      "passed": 218,
+      "skipped": 0,
+      "log": "F:/fly_stream_overflow/native_kc_final_affected_tests_20261018.log"
+    },
+    "new_numerical_tests": {
+      "passed": 7,
+      "contracts": [
+        "same-KC different-site release and actual delay, no duplicate point broadcast",
+        "connected transport and cross-cell isolation with material gradient",
+        "full site state detach/checkpoint/identity fail-closed",
+        "first activation extends only absent fields",
+        "exact tree values/adjoint versus full implicit operator",
+        "one-window BPTT equals checkpoint recomputation for all local state fields",
+        "without optimizer, local release writes phi; conditional trace derivative equals VJP"
+      ],
+      "scope": "Numerical/interface fixtures, no capability study"
+    },
+    "deslice": "Independent tests/test_deslice_scatter_and_gate.py ALL UNIT TESTS PASSED",
+    "full_suite": "Collection blocked by5 existing missing diagnostic scripts/modules;8 import-time training/benchmark entries excluded. Not a full-suite pass.",
+    "full_collection_log": "F:/fly_stream_overflow/native_kc_full_collection_20261018.log",
+    "compileall": "passed",
+    "git_diff_check": "passed (existing CRLF notices only)",
+    "dashboard": "API caregiver and audit latest IDs native_kc_terminals_33000_20261018, main paused"
+  },
+  "resource_history": {
+    "failed_frozen_attempts": [
+      "F:/fly_stream_overflow/native_kc_matrix_33000_20261018",
+      "F:/fly_stream_overflow/native_kc_matrix_cellwise_33000_20261018"
+    ],
+    "cause": "Generic global/per-cell SuperLU workspace exceeded host RAM",
+    "correction": "Exact native tree solver removes general-LU workspace without changing full-volume law or state; direct/adjoint comparison passes",
+    "current_frozen_check": "Completed with all supplied nodes; no optimizer updates",
+    "long_training_admission": "not measured; parent resource limit persists; unified optimization deferred by user"
+  },
+  "nll": {
+    "new_training_targets": 0,
+    "new_preupdate_nll": null,
+    "status": "unmeasured this turn",
+    "frozen_single_target_ce": 4.771544456481934,
+    "single_target_scope": "One frozen causal input, not an aggregate monitored NLL or learning benefit",
+    "historical_parent_only": {
+      "targets": 32,
+      "source": "mother_call",
+      "preupdate_nll": 4.444357607513666,
+      "fixed_unigram_nll": 6.204042327822208,
+      "scope": "Earlier APL run, not new KC evidence and not paused main normal replies"
+    }
+  },
+  "remaining_gaps": [
+    "Full KC axonal voltage propagation and local calcium/channels",
+    "Molecular receptor/effector identity and subcellular localization",
+    "Independent phi per physical presynaptic site: current phi remains per KC-MBON connection",
+    "Site-level vesicle/STP and local habituation",
+    "Native KC axo-axonal cholinergic/electrical coupling; pinned old fast edges not reopened",
+    "Active APL channels, other DPM peptides/receptors",
+    "Full new slow-material cross-window derivatives; no full RTRL or unbiased infinite-horizon credit claim",
+    "Sustained selective familiarity, active exploration and real word/timing consequence learning benefit"
+  ],
+  "training_adoption_approved": false,
+  "sources_biology": [
+    "https://elifesciences.org/articles/56954",
+    "https://male-cns.janelia.org/download/"
+  ],
+  "restore_report": "F:\\fly_stream_overflow\\native_kc_final_restore_33000_20261018\\report.json"
+}

@@ -1,0 +1,149 @@
+{
+  "graph": "data\\malecns_v1\\fly_reservoir_coba_r2.npz",
+  "neurons": 165122,
+  "edges": 25321395,
+  "registry_schema_version": 1,
+  "checkpoint": {
+    "path": "F:\\fly_stream_overflow\\native_body_route_20261018\\last.pt",
+    "trained": 32804
+  },
+  "systems": [
+    {
+      "id": "sensory_surfaces",
+      "neurons_by_annotation": 15896,
+      "anatomical_graph": "present_by_full_graph",
+      "full_dynamics": "generic_connectome_update",
+      "specialized_role": "existing_receptor_writer_and_early_visual_graded_option",
+      "closed_loop": "unmeasured",
+      "next_unified_mechanism": "modality_specific_delay_gain_and_local_inhibition",
+      "runtime_features": {
+        "early_visual_graded": true,
+        "sensory_precision": false
+      },
+      "acute_causal_delivery": "unmeasured"
+    },
+    {
+      "id": "olfactory_relay",
+      "neurons_by_annotation": 3783,
+      "anatomical_graph": "present_by_full_graph",
+      "full_dynamics": "generic_connectome_update",
+      "specialized_role": "AL_local_inhibition_first_version",
+      "closed_loop": "unmeasured",
+      "next_unified_mechanism": "glomerulus-specific PN/LN timing and sensory replay causal audit",
+      "runtime_features": {
+        "local_relay": true
+      },
+      "acute_causal_delivery": "unmeasured"
+    },
+    {
+      "id": "mushroom_body_memory",
+      "neurons_by_annotation": 4501,
+      "anatomical_graph": "present_by_full_graph",
+      "full_dynamics": "generic_connectome_update",
+      "specialized_role": "kc_mbon_dan_plus_dpm_apl_first_version",
+      "closed_loop": "unmeasured",
+      "next_unified_mechanism": "DPM_APL_consolidation_and_MBON_action_coupling",
+      "runtime_features": {
+        "kc_mbon_memory": true,
+        "kc_dan_feedback": true,
+        "dpm_apl_extension": true
+      },
+      "acute_causal_delivery": "unmeasured"
+    },
+    {
+      "id": "neuromodulatory_state",
+      "neurons_by_annotation": 389,
+      "anatomical_graph": "present_by_full_graph",
+      "full_dynamics": "generic_connectome_update",
+      "specialized_role": "dopamine_partial_amine_first_version",
+      "closed_loop": "unmeasured",
+      "next_unified_mechanism": "one_constrained_modulator_registry_for_DA_OA_5HT_DPM_APL",
+      "runtime_features": {
+        "dopamine": true,
+        "oa_5ht_extension": false
+      },
+      "acute_causal_delivery": "unmeasured"
+    },
+    {
+      "id": "central_complex_state_action",
+      "neurons_by_annotation": 2950,
+      "anatomical_graph": "present_by_full_graph",
+      "full_dynamics": "generic_connectome_update",
+      "specialized_role": "persistent_cx_trace_first_version",
+      "closed_loop": "unmeasured",
+      "next_unified_mechanism": "connectome_constrained_continuous_state_and_selection",
+      "runtime_features": {
+        "cx_extension": true
+      },
+      "acute_causal_delivery": "unmeasured"
+    },
+    {
+      "id": "association_and_context",
+      "neurons_by_annotation": 121550,
+      "anatomical_graph": "present_by_full_graph",
+      "full_dynamics": "generic_connectome_update",
+      "specialized_role": "generic_connectome_dynamics",
+      "closed_loop": "unmeasured",
+      "next_unified_mechanism": "only role-supported state variables, no blanket per-ROI module",
+      "runtime_features": {},
+      "acute_causal_delivery": "unmeasured"
+    },
+    {
+      "id": "ascending_body_feedback",
+      "neurons_by_annotation": 21362,
+      "anatomical_graph": "present_by_full_graph",
+      "full_dynamics": "generic_connectome_update",
+      "specialized_role": "native_CNS_present_peripheral_return_missing_historical_proxies_quarantined",
+      "closed_loop": "unmeasured",
+      "next_unified_mechanism": "native motor effector and actual sensory transduction with cell-specific endpoint provenance",
+      "runtime_features": {
+        "historical_body_state_retained": true,
+        "historical_proxy_diagnostic_only": false,
+        "native_peripheral_exchange": false
+      },
+      "acute_causal_delivery": "unmeasured"
+    },
+    {
+      "id": "descending_and_vnc_motor",
+      "neurons_by_annotation": 2227,
+      "anatomical_graph": "present_by_full_graph",
+      "full_dynamics": "generic_connectome_update",
+      "specialized_role": "native_motor_cells_present_execution_mapping_and_peripheral_loop_missing",
+      "closed_loop": "unmeasured",
+      "next_unified_mechanism": "connect actual native motor output to evidence-supported effector mapping",
+      "runtime_features": {
+        "historical_body_state_retained": true,
+        "historical_proxy_diagnostic_only": false,
+        "native_peripheral_exchange": false
+      },
+      "acute_causal_delivery": "unmeasured"
+    },
+    {
+      "id": "visual_and_long_range_projection",
+      "neurons_by_annotation": 99154,
+      "anatomical_graph": "present_by_full_graph",
+      "full_dynamics": "generic_connectome_update",
+      "specialized_role": "early_visual_graded_implemented_long_range_projections_use_existing_graph",
+      "closed_loop": "unmeasured",
+      "next_unified_mechanism": "validate early visual release and downstream delivery; do not add unmotivated per-projection traces",
+      "runtime_features": {
+        "early_visual_graded": true
+      },
+      "acute_causal_delivery": "unmeasured"
+    },
+    {
+      "id": "endocrine_and_ens",
+      "neurons_by_annotation": 141,
+      "anatomical_graph": "present_by_full_graph",
+      "full_dynamics": "generic_connectome_update",
+      "specialized_role": "LK_IPC_ITP_receptor_axis_option_ENS_receptors_unresolved",
+      "closed_loop": "unmeasured",
+      "next_unified_mechanism": "validate endogenous LK delivery; obtain ENS and peripheral exchange receptor evidence",
+      "runtime_features": {
+        "lk_receptor_exchange": true
+      },
+      "acute_causal_delivery": "unmeasured"
+    }
+  ],
+  "interpretation": "generic full dynamics and specialized biological function are separate statuses"
+}

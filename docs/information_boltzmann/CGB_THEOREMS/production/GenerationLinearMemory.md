@@ -4,11 +4,11 @@
 
 [源文件](../../../../lean/CGBAxioms/CGBAxioms/GenerationLinearMemory.lean) · [返回导航](../README.md)
 
-模块源码说明：Linear recurrent memory cannot latch (generation chain, corollary of G17/G24) Gated DeltaNet (and every gated linear recurrence: Mamba, RWKV, linear attention with decay) updates each row `x` of its state as `x ↦ α (x -
+模块源码说明：Linear recurrent memory cannot latch (generation chain, corollary of G17/G24) The results below concern the specific recurrence `x ↦ α (x - β ⟪k, x⟫_ℝ k) + (write)`, with `‖k‖ = 1`, `β ∈ [0, 2]`, `α < 1`.
 
 ## CGB.Generation.dot_delta
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationLinearMemory.lean#L34)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationLinearMemory.lean#L37)
 
 解释：当键向量平方范数为一时，delta 步骤后的状态平方范数精确等于原范数减去 β(2−β) 乘投影平方；该恒等式适用于任意实数 β。
 
@@ -26,7 +26,7 @@
 
 ## CGB.Generation.delta_nonexpansive
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationLinearMemory.lean#L48)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationLinearMemory.lean#L51)
 
 解释：键向量范数为一且强度 β 位于零到二之间时，delta 更新不会增大状态的平方范数。
 
@@ -45,9 +45,9 @@
 
 ## CGB.Generation.gated_delta_contracts
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationLinearMemory.lean#L58)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationLinearMemory.lean#L61)
 
-解释：在指定键和强度条件下，带 α 门控的 delta 更新后的平方范数不超过原平方范数乘 α²。
+解释：对指定形式 α·deltaStep(k,β,d)，若键为单位向量且 β 在零到二之间，更新后的平方范数不超过原平方范数乘 α²；此式不自动适用于 αd−β⟨k,d⟩k。
 
 源码说明：One gated delta step on the difference of two states (the write cancels): the squared gap shrinks by `α²`. Since `deltaStep` is linear in `x`, this is the step on the gap.
 
@@ -66,7 +66,7 @@
 
 ## CGB.Generation.deltaStep_sub
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationLinearMemory.lean#L67)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationLinearMemory.lean#L70)
 
 解释：对于固定键与强度，两个状态分别经过 delta 更新后的差，等于对它们的原始差应用同一 delta 更新。这体现该步骤相对状态的线性。
 
@@ -81,7 +81,7 @@
 
 ## CGB.Generation.histories_merge
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationLinearMemory.lean#L75)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationLinearMemory.lean#L78)
 
 解释：若每步历史差距至多乘以非负因子 α，T 步后的差距不超过初始差距乘所有 α 的积。
 
@@ -96,7 +96,7 @@
 
 ## CGB.Generation.histories_merge_uniform
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationLinearMemory.lean#L87)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationLinearMemory.lean#L90)
 
 解释：若各步收缩因子均不超过统一上界，历史差距受该上界的 T 次幂乘初始差距约束。
 
@@ -112,7 +112,7 @@
 
 ## CGB.Generation.linear_hold_keeps_error
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationLinearMemory.lean#L102)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationLinearMemory.lean#L105)
 
 解释：若线性映射原样保持信号 s，那么沿 s 方向的任意比例扰动也会原样保留。因此该映射不能同时对这类扰动作精确纠错；结论只针对这里的线性映射及扰动方向。
 

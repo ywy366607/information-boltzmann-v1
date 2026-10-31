@@ -1,0 +1,41 @@
+{
+  "experiment": "gdn_byte_probe_bridge_20261030",
+  "status": "mechanism_diagnostic_only",
+  "result": {
+    "seed": 0,
+    "bytes": [
+      108,
+      97,
+      110,
+      103,
+      117,
+      97,
+      103,
+      101
+    ],
+    "text": "language",
+    "address_rank": 8,
+    "address_pairwise_min_distance": 0.9585339426994324,
+    "gram_max_offdiag_abs": 0.10445468127727509,
+    "gram_condition_number": 2.635660409927368,
+    "written": {
+      "probe_error": 0.91401207447052,
+      "mean_probe_variance": 5.618886470794678
+    },
+    "dual_written_probe_error": 0.18093109130859375,
+    "erased": {
+      "probe_error": 0.91401207447052,
+      "mean_probe_variance": 6.302581787109375
+    },
+    "overwritten": {
+      "probe_error": 1.760188341140747,
+      "mean_probe_variance": 0.7379887104034424
+    },
+    "bridge_conditions": {
+      "probe_injective": true,
+      "written_probe_recoverable": false,
+      "dual_written_probe_recoverable": true,
+      "overwritten_probe_unrecoverable": true
+    }
+  }
+}

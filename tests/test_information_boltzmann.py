@@ -1,4 +1,5 @@
 """Behavioral contracts for the isolated continuous-phase prototype."""
+import copy
 import math
 
 import pytest
@@ -20,6 +21,345 @@ def deterministic():
 def tiny(**kwargs):
     return InformationBoltzmann(vocab_size=12, phase_dim=2, particles=8,
                                hidden_dim=8, flow_layers=2, steps=2, **kwargs)
+
+
+def test_stream_runner_prepared_logits_score_before_observation():
+    from information_boltzmann.core.cgb_information_ledger import PredictiveInformationLedger
+    from information_boltzmann.core.cgb_low_resource_life import Observation
+    from information_boltzmann.core.cgb_prequential_bridge import CGBPrequentialBridge
+
+    runner = StreamRunner(tiny(), 1, seed=17)
+    ledger = PredictiveInformationLedger()
+    bridge = CGBPrequentialBridge(runner, ledger, lambda _: math.log(12), strict_scoring=True)
+    for tick, target in enumerate((2, 3)):
+        logits = bridge.prepare()
+        expected = float(-torch.log_softmax(logits, dim=0)[target])
+        result = bridge.step(Observation(tick, target), write_units=0, dissipation_units=0)
+        assert math.isclose(result.model_nll_nats, expected, rel_tol=1e-6)
+        assert torch.equal(result.prediction, logits.detach())
+        assert runner.pending is None and runner.events == tick + 1
+
+
+def test_gdn_byte_port_scores_before_actual_assimilation():
+    from fine_grain.active_gdn2 import ActiveInferenceGDN2
+    from information_boltzmann.core.cgb_information_ledger import PredictiveInformationLedger
+    from information_boltzmann.core.cgb_low_resource_life import Observation
+    from information_boltzmann.core.cgb_prequential_bridge import CGBPrequentialBridge, GDNByteReadoutPort
+
+    devices = [torch.device("cpu")]
+    if torch.cuda.is_available():
+        devices.append(torch.device("cuda"))
+    for device in devices:
+        memory = ActiveInferenceGDN2(d_model=3, n_slots=2, res=2).to(device).double()
+        embedding = torch.nn.Embedding(256, 3).to(device).double()
+        head = torch.nn.Linear(3, 256).to(device).double()
+        state = memory.initial_state(1, device, torch.float64)
+        calls = []
+
+        def query(current):
+            calls.append("query")
+            return torch.softmax(current.natural.sum(dim=-1).unsqueeze(1), dim=-1)
+
+        def encode(byte):
+            calls.append(("encode", byte))
+            value = embedding(torch.tensor([[byte]], device=device))
+            return value, memory.atlas[:1].unsqueeze(0), 1.0
+
+        class PreScoredOnlyPort(GDNByteReadoutPort):
+            def observe(self, token, *, external=True):
+                raise AssertionError("bridge must reuse the prepared score")
+
+        learner = PreScoredOnlyPort(memory, state, query, head, encode)
+        ledger = PredictiveInformationLedger()
+        bridge = CGBPrequentialBridge(learner, ledger, lambda _: math.log(256), strict_scoring=True)
+        for tick, byte in enumerate((65, 66)):
+            before = learner.state.natural.clone()
+            logits = bridge.prepare()
+            assert calls[-1] == "query"
+            assert torch.equal(learner.state.natural, before)
+            expected = float(-torch.log_softmax(logits, dim=0)[byte])
+            result = bridge.step(Observation(tick, byte), write_units=0, dissipation_units=0)
+            assert calls[-1] == ("encode", byte)
+            assert math.isclose(result.model_nll_nats, expected, rel_tol=1e-12)
+            assert not torch.equal(learner.state.natural, before)
+            assert not learner.state.natural.requires_grad
+        assert ledger.rows == 2
+        assert embedding.weight.requires_grad and head.weight.requires_grad
+        before = learner.state.natural.clone()
+        bridge.prepare()
+        with pytest.raises(ValueError, match="byte"):
+            bridge.step(Observation(2, 256), write_units=0, dissipation_units=0)
+        assert calls[-1] == "query" and torch.equal(learner.state.natural, before)
+        bridge.step(Observation(2, 67), write_units=0, dissipation_units=0)
+        assert calls[-1] == ("encode", 67) and ledger.rows == 3
+
+
+def test_gdn_port_uses_elapsed_world_time_before_predicting():
+    from fine_grain.active_gdn2 import ActiveInferenceGDN2
+    from information_boltzmann.core.cgb_prequential_bridge import GDNByteReadoutPort
+
+    devices = [torch.device("cpu")]
+    if torch.cuda.is_available():
+        devices.append(torch.device("cuda"))
+    for device in devices:
+        memory = ActiveInferenceGDN2(d_model=3, n_slots=2, res=2).to(device).double()
+        embedding = torch.nn.Embedding(256, 3).to(device).double()
+        head = torch.nn.Linear(3, 256).to(device).double()
+        state = memory.initial_state(1, device, torch.float64)
+        query = lambda s: torch.full((1, 1, 2), 0.5, device=device, dtype=torch.float64)
+        encode = lambda b: (embedding(torch.tensor([[b]], device=device)),
+                            memory.atlas[:1].unsqueeze(0), 1.0)
+        port = GDNByteReadoutPort(memory, state, query, head, encode)
+        port.predict()
+        port.observe_pre_scored(65)
+        before = port.state
+        prior = memory.dynamic_prior(before, 2.0)
+        port.advance_time(2.0)
+        torch.testing.assert_close(port.state.natural, prior.natural)
+        torch.testing.assert_close(port.state.precision, prior.precision)
+        torch.testing.assert_close(port.state.natural / port.state.precision,
+                                   before.natural / before.precision)
+        assert torch.all(port.state.precision < before.precision)
+        tokens, centers, _ = encode(66)
+        incoming = (memory.address(tokens, centers).unsqueeze(-1) *
+                    torch.nn.functional.softplus(memory.log_likelihood_precision(tokens)).unsqueeze(-2))[:, 0]
+        q = 2.0 * torch.nn.functional.softplus(memory.process_variance_raw)
+        wmin = incoming.min()
+        actual_gain = incoming / (port.state.precision + incoming)
+        floor = wmin / (1.0 / q + wmin)
+        assert torch.all(actual_gain >= floor - 1e-12)
+        assert not port.state.natural.requires_grad
+        current = port.state
+        port.advance_time(0)
+        assert port.state is current
+        for invalid in (-1, float("inf"), float("nan"), True):
+            with pytest.raises(ValueError, match="elapsed time"):
+                port.advance_time(invalid)
+            assert port.state is current
+        port.predict()
+        with pytest.raises(ValueError, match="pending"):
+            port.advance_time(1.0)
+        assert port.state is current
+        port.observe_pre_scored(66)
+
+
+def test_gdn_local_affine_head_update_matches_current_byte_gradient():
+    from fine_grain.active_gdn2 import ActiveInferenceGDN2
+    from information_boltzmann.core.cgb_prequential_bridge import GDNByteReadoutPort
+
+    devices = [torch.device("cpu")]
+    if torch.cuda.is_available():
+        devices.append(torch.device("cuda"))
+    for device in devices:
+        memory = ActiveInferenceGDN2(d_model=3, n_slots=2, res=2).to(device).double()
+        embedding = torch.nn.Embedding(256, 3).to(device).double()
+        head = torch.nn.Linear(3, 256).to(device).double()
+        state = memory.initial_state(1, device, torch.float64)
+        state.natural.fill_(0.2)
+        query = lambda s: torch.full((1, 1, 2), 0.5, device=device, dtype=torch.float64)
+        encode = lambda b: (embedding(torch.tensor([[b]], device=device)),
+                            memory.atlas[:1].unsqueeze(0), 1.0)
+        step = 0.03
+        port = GDNByteReadoutPort(memory, state, query, head, encode, head_step_size=step)
+        feature = memory.association_readout(state, query(state))[0, 0].detach()
+        weight_before, bias_before = head.weight.detach().clone(), head.bias.detach().clone()
+        loss = -torch.log_softmax(head(feature), dim=0)[65]
+        grad_w, grad_b = torch.autograd.grad(loss, (head.weight, head.bias))
+        logits = port.predict()
+        torch.testing.assert_close(head.weight, weight_before)
+        torch.testing.assert_close(head.bias, bias_before)
+        port.observe_pre_scored(65)
+        torch.testing.assert_close(head.weight, weight_before - step * grad_w)
+        torch.testing.assert_close(head.bias, bias_before - step * grad_b)
+        assert torch.log_softmax(head(feature), dim=0)[65] > torch.log_softmax(logits, dim=0)[65]
+        assert port._pending is None and port._pending_features is None
+        assert not port.state.natural.requires_grad
+
+
+def test_gdn_external_future_signature_replays_sourced_bytes_without_live_mutation():
+    """A branch audit uses the same GDN state and rejects self-copy evidence."""
+    from information_boltzmann.core.cgb_observation_stream import StreamEvent
+    from information_boltzmann.core.cgb_prequential_bridge import GDNByteReadoutPort
+    from fine_grain.active_gdn2 import ActiveInferenceGDN2
+
+    memory = ActiveInferenceGDN2(d_model=3, n_slots=2, res=2).double()
+    embedding = torch.nn.Embedding(256, 3).double()
+    head = torch.nn.Linear(3, 256).double()
+    state = memory.initial_state(1, torch.device("cpu"), torch.float64)
+    query = lambda s: torch.softmax(s.natural.sum(dim=-1).unsqueeze(1), dim=-1)
+    encode = lambda byte: (embedding(torch.tensor([[byte]])), memory.atlas[:1].unsqueeze(0), 1.0)
+    port = GDNByteReadoutPort(memory, state, query, head, encode, head_step_size=0.03)
+    continuation = (
+        (1.5, StreamEvent(10, 65, "owt_utf8_bytes", {"byte_offset": 10})),
+        (0.0, StreamEvent(11, 66, "owt_utf8_bytes", {"byte_offset": 11})),
+    )
+
+    original_state = port.snapshot().state
+    original_head = {name: value.detach().clone() for name, value in head.state_dict().items()}
+    branch_head = torch.nn.Linear(3, 256).double()
+    branch_head.load_state_dict(original_head)
+    branch = GDNByteReadoutPort(memory, port.snapshot().state, query, branch_head, encode,
+                                head_step_size=0.03)
+    for elapsed, event in continuation:
+        branch.advance_time(elapsed)
+        branch.predict()
+        branch.observe_pre_scored(event.payload)
+    expected = branch.predict()
+
+    actual = port.external_future_signature(continuation)
+    torch.testing.assert_close(actual, expected)
+    torch.testing.assert_close(port.state.natural, original_state.natural)
+    torch.testing.assert_close(port.state.precision, original_state.precision)
+    for name, value in original_head.items():
+        torch.testing.assert_close(head.state_dict()[name], value)
+    assert port._pending is None and port._pending_features is None
+
+    with pytest.raises(ValueError, match="external event"):
+        port.external_future_signature(((0.0, StreamEvent(12, 67, "self", {})),))
+    torch.testing.assert_close(port.state.natural, original_state.natural)
+    for name, value in original_head.items():
+        torch.testing.assert_close(head.state_dict()[name], value)
+
+
+def test_gdn_self_speech_persists_as_a_readable_difference_after_external_arrival():
+    """Finite interface witness, not a claim about arbitrary-delay retention."""
+    from fine_grain.active_gdn2 import ActiveInferenceGDN2
+    from information_boltzmann.core.cgb_observation_stream import StreamEvent
+    from information_boltzmann.core.cgb_prequential_bridge import LastByteGDNReadoutPort
+
+    memory = ActiveInferenceGDN2(d_model=2, n_slots=2, res=2).double()
+    encoder = torch.nn.Embedding(256, 2).double()
+    head = torch.nn.Linear(2, 256).double()
+    with torch.no_grad():
+        encoder.weight.zero_()
+        encoder.weight[65].copy_(torch.tensor([1.0, 0.0], dtype=torch.float64))
+        encoder.weight[66].copy_(torch.tensor([-1.0, 0.0], dtype=torch.float64))
+        memory.content_address.weight.zero_()
+        head.weight.zero_()
+        head.bias.zero_()
+        head.weight[0, 0] = 1.0
+    seed_logits = torch.zeros(2, dtype=torch.float64)
+    anchor = memory.atlas[0].double()
+
+    def make_port():
+        return LastByteGDNReadoutPort(
+            memory,
+            memory.initial_state(1, torch.device("cpu"), torch.float64),
+            encoder,
+            head,
+            seed_logits,
+            anchor,
+            observation_precision=1.0,
+        )
+
+    left, right = make_port(), make_port()
+    for port, self_byte in ((left, 65), (right, 66)):
+        port.predict()
+        port.observe_pre_scored(self_byte, external=False)
+    for port in (left, right):
+        port.predict()
+        port.observe_pre_scored(67, external=True)
+
+    # The later external byte is identical in both bodies and has replaced the
+    # last-byte query, yet the ordinary associative state still differs.
+    assert torch.allclose(left.state.last_tokens, right.state.last_tokens)
+    assert not torch.allclose(left.state.natural, right.state.natural)
+    continuation = ((0.0, StreamEvent(1, 68, "mother", {})),)
+    assert not torch.allclose(
+        left.external_future_signature(continuation),
+        right.external_future_signature(continuation),
+    )
+
+
+def test_last_byte_gdn_port_matches_seed_then_previous_byte_address():
+    """Remove the arbitrary query callback from the concrete GDN byte path."""
+    from fine_grain.active_gdn2 import ActiveInferenceGDN2
+    from information_boltzmann.core.cgb_prequential_bridge import LastByteGDNReadoutPort
+
+    memory = ActiveInferenceGDN2(d_model=4, n_slots=3, res=3).double()
+    with torch.no_grad():
+        memory.content_address.weight.copy_(torch.tensor([
+            [0.2, -0.1, 0.3, -0.2],
+            [-0.3, 0.4, 0.1, 0.2],
+            [0.1, 0.2, -0.4, 0.3],
+        ], dtype=torch.float64))
+        memory.content_address_scale.fill_(1.0)
+    encoder = torch.nn.Embedding(256, 4).double()
+    head = torch.nn.Linear(4, 256).double()
+    seed_logits = torch.tensor([0.2, -0.4, 0.1], dtype=torch.float64)
+    state = memory.initial_state(1, torch.device("cpu"), torch.float64)
+    port = LastByteGDNReadoutPort(memory, state, encoder, head, seed_logits, memory.atlas[0],
+                                  observation_precision=0.7)
+
+    torch.testing.assert_close(
+        port._last_byte_query(state)[0, 0], torch.softmax(seed_logits, dim=0)
+    )
+    port.predict()
+    port.observe_pre_scored(65)
+    expected = memory.address(port.state.last_tokens, port.state.last_centers)
+    torch.testing.assert_close(port._last_byte_query(port.state), expected)
+    assert port.state.last_tokens.shape == (1, 1, 4)
+    assert port.state.last_centers.shape == (1, 1, 2)
+
+    with pytest.raises(ValueError, match="seed logits"):
+        LastByteGDNReadoutPort(memory, state, encoder, head, torch.zeros(2), memory.atlas[0])
+
+
+def test_prepared_logits_survive_buffer_reuse_before_observation():
+    from information_boltzmann.core.cgb_information_ledger import PredictiveInformationLedger
+    from information_boltzmann.core.cgb_low_resource_life import Observation
+    from information_boltzmann.core.cgb_prequential_bridge import CGBPrequentialBridge
+
+    class ReusedBufferLearner:
+        def __init__(self):
+            self.logits = torch.tensor([0.0, 2.0], requires_grad=True)
+
+        def predict(self):
+            return self.logits
+
+        def observe(self, token, *, external=True):
+            return 0.0
+
+    learner = ReusedBufferLearner()
+    bridge = CGBPrequentialBridge(learner, PredictiveInformationLedger(), lambda _: math.log(2))
+    returned = bridge.prepare()
+    expected = float(-torch.log_softmax(returned.detach(), dim=0)[1])
+    with torch.no_grad():
+        returned.copy_(torch.tensor([4.0, -4.0]))
+    result = bridge.step(Observation(0, 1), write_units=0, dissipation_units=0)
+    assert math.isclose(result.model_nll_nats, expected, rel_tol=1e-6)
+    assert not result.prediction.requires_grad
+    assert torch.equal(result.prediction, torch.tensor([0.0, 2.0]))
+
+
+def test_strict_prequential_bridge_rejects_unprepared_or_unscoreable_prediction():
+    from information_boltzmann.core.cgb_information_ledger import PredictiveInformationLedger
+    from information_boltzmann.core.cgb_low_resource_life import Observation
+    from information_boltzmann.core.cgb_prequential_bridge import (
+        CGBPrequentialBridge, PrequentialBridgeViolation,
+    )
+
+    class UnsupportedLearner:
+        def __init__(self):
+            self.observations = 0
+
+        def predict(self):
+            return object()
+
+        def observe(self, token, *, external=True):
+            self.observations += 1
+            return 0.0
+
+    learner = UnsupportedLearner()
+    ledger = PredictiveInformationLedger()
+    bridge = CGBPrequentialBridge(learner, ledger, lambda _: math.log(2), strict_scoring=True)
+    observation = Observation(0, 1)
+    with pytest.raises(PrequentialBridgeViolation, match="prepared"):
+        bridge.step(observation, write_units=0, dissipation_units=0)
+    bridge.prepare()
+    with pytest.raises(PrequentialBridgeViolation, match="scoreable"):
+        bridge.step(observation, write_units=0, dissipation_units=0)
+    assert learner.observations == 0 and ledger.rows == 0 and bridge.last_tick == -1
 
 
 def test_lifetime_tensor_accounting_preserves_online_updates():
@@ -449,3 +789,92 @@ def test_initial_joint_density_uses_ordered_input_context():
     a = left.sample(4, torch.Generator().manual_seed(9))
     b = right.sample(4, torch.Generator().manual_seed(9))
     assert not torch.allclose(a.x, b.x) or not torch.allclose(a.v, b.v)
+
+
+def test_last_byte_value_credit_matches_one_arrival_forward_derivative():
+    """The value update is the Lean-proved causal carrier, not BPTT."""
+    from fine_grain.active_gdn2 import ActiveInferenceGDN2
+    from information_boltzmann.core.cgb_prequential_bridge import LastByteGDNReadoutPort
+
+    torch.manual_seed(71)
+    memory = ActiveInferenceGDN2(d_model=2, n_slots=2, res=2).double()
+    value_encoder = torch.nn.Embedding(256, 2).double()
+    address_encoder = torch.nn.Embedding(256, 2).double()
+    likelihood_encoder = torch.nn.Embedding(256, 2).double()
+    head = torch.nn.Linear(2, 256).double()
+    for parameter in memory.parameters():
+        parameter.requires_grad_(False)
+    for parameter in address_encoder.parameters():
+        parameter.requires_grad_(False)
+    for parameter in likelihood_encoder.parameters():
+        parameter.requires_grad_(False)
+    for parameter in head.parameters():
+        parameter.requires_grad_(False)
+    anchor = memory.atlas[0].double()
+    source, target, step = 65, 66, 0.03
+
+    # Exact differentiable reference for the sole admitted source-value path:
+    # write source -> one process prior -> query source address -> score target.
+    reference = memory.initial_state(1, torch.device("cpu"), torch.float64)
+    source_byte = torch.tensor([[source]])
+    value = value_encoder(source_byte)
+    address = address_encoder(source_byte)
+    likelihood = likelihood_encoder(source_byte)
+    reference = memory.assimilate(
+        reference, value, anchor.reshape(1, 1, 2), 1.0, update_motion=False,
+        address_tokens=address, likelihood_tokens=likelihood,
+    )
+    reference = memory.dynamic_prior(reference, 1.0)
+    query = memory.address(reference.last_tokens, reference.last_centers)
+    features = memory.association_readout(reference, query)[0, 0]
+    score = torch.log_softmax(head(features), dim=0)[target]
+    expected_gradient = torch.autograd.grad(score, value)[0][0, 0].detach()
+
+    state = memory.initial_state(1, torch.device("cpu"), torch.float64)
+    port = LastByteGDNReadoutPort(
+        memory, state, value_encoder, head, torch.zeros(2, dtype=torch.float64), anchor,
+        observation_precision=1.0, value_step_size=step,
+        address_encoder=address_encoder, likelihood_encoder=likelihood_encoder,
+    )
+    before = value_encoder.weight[source].detach().clone()
+    port.predict()
+    port.observe_pre_scored(source)
+    port.advance_time(1.0)
+    port.predict()
+    port.observe_pre_scored(target)
+    torch.testing.assert_close(value_encoder.weight[source], before + step * expected_gradient,
+                               rtol=1e-10, atol=1e-10)
+    assert port._last_byte_token == target
+    assert port._previous_value_eligibility is not None
+
+    with pytest.raises(ValueError, match="distinct fixed"):
+        LastByteGDNReadoutPort(
+            memory, memory.initial_state(1, torch.device("cpu"), torch.float64),
+            value_encoder, head, torch.zeros(2, dtype=torch.float64), anchor,
+            value_step_size=step,
+        )
+
+
+def test_last_byte_snapshot_preserves_causal_credit_carrier():
+    from fine_grain.active_gdn2 import ActiveInferenceGDN2
+    from information_boltzmann.core.cgb_prequential_bridge import LastByteGDNReadoutPort
+
+    memory = ActiveInferenceGDN2(d_model=2, n_slots=2, res=2).double()
+    value_encoder = torch.nn.Embedding(256, 2).double()
+    address_encoder = torch.nn.Embedding(256, 2).double()
+    likelihood_encoder = torch.nn.Embedding(256, 2).double()
+    port = LastByteGDNReadoutPort(
+        memory, memory.initial_state(1, torch.device("cpu"), torch.float64), value_encoder,
+        torch.nn.Linear(2, 256).double(), torch.zeros(2, dtype=torch.float64),
+        memory.atlas[0].double(), value_step_size=0.01,
+        address_encoder=address_encoder, likelihood_encoder=likelihood_encoder,
+    )
+    port.predict()
+    port.observe_pre_scored(65)
+    snapshot = port.snapshot()
+    token, eligibility = port._last_byte_token, port._previous_value_eligibility
+    port.predict()
+    port.observe_pre_scored(66)
+    port.restore(snapshot)
+    assert port._last_byte_token == token
+    assert port._previous_value_eligibility == eligibility

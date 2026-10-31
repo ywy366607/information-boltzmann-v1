@@ -1,0 +1,14 @@
+{
+  "date": "2026-10-18",
+  "status": "implemented_interface_validated",
+  "mechanism": "persistent_cx_activity_trace_to_native_cx_threshold_feedback",
+  "cx_neurons": 2950,
+  "default_enabled": false,
+  "tests": {
+    "cx_unit_file": "tests/test_fly_cx_state.py",
+    "cx_unit_passed": 3,
+    "amine_and_native_policy_regression_passed": 32,
+    "bptt_state_regression_passed": 11
+  },
+  "evidence_boundary": "No real-language CX continuation or matched sham/off learning-benefit result yet; this artifact validates state, gradients and native threshold delivery only."
+}

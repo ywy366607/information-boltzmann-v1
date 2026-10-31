@@ -72,15 +72,15 @@
     "text": "在给定线性梯度模型中，同一个噪声 ξ 在新旧参数梯度差里抵消，得到 h·a²。这为同批次测量自身步长造成的梯度变化提供代数依据，但并不保证任意非线性模型都精确。"
   },
   "CGB.Generation.dot_delta": {
-    "source_sha256": "167f09972ef5f17b1c3634f42c135c54a9bf1c4474a2b1c2ae113dec21c466b5",
+    "source_sha256": "8dbe8b07d349a94d81f523145582c754621144abd61ac7afbe5189587f44d3f0",
     "text": "当键向量平方范数为一时，delta 步骤后的状态平方范数精确等于原范数减去 β(2−β) 乘投影平方；该恒等式适用于任意实数 β。"
   },
   "CGB.Generation.deltaStep_sub": {
-    "source_sha256": "167f09972ef5f17b1c3634f42c135c54a9bf1c4474a2b1c2ae113dec21c466b5",
+    "source_sha256": "8dbe8b07d349a94d81f523145582c754621144abd61ac7afbe5189587f44d3f0",
     "text": "对于固定键与强度，两个状态分别经过 delta 更新后的差，等于对它们的原始差应用同一 delta 更新。这体现该步骤相对状态的线性。"
   },
   "CGB.Generation.linear_hold_keeps_error": {
-    "source_sha256": "167f09972ef5f17b1c3634f42c135c54a9bf1c4474a2b1c2ae113dec21c466b5",
+    "source_sha256": "8dbe8b07d349a94d81f523145582c754621144abd61ac7afbe5189587f44d3f0",
     "text": "若线性映射原样保持信号 s，那么沿 s 方向的任意比例扰动也会原样保留。因此该映射不能同时对这类扰动作精确纠错；结论只针对这里的线性映射及扰动方向。"
   },
   "CGB.GradientFilter.memoryless_gain_excess": {
@@ -452,175 +452,175 @@
     "text": "在该共享势、非负耦合模型中，若较低活动单位达到强连接阈值而较高活动单位未达到，则产生矛盾。"
   },
   "CGB.LanguageLifeKernel.charge_total_preserved": {
-    "source_sha256": "9f9756fb32233317611b455e48aaeeedf30bbd3d456e6ebaba4ecfc87450cc0e",
+    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
     "text": "对该有向图的任意整数边流，所有节点经关联矩阵更新后的电荷总和与更新前相等。"
   },
   "CGB.LanguageLifeKernel.conservation_does_not_identify_components": {
-    "source_sha256": "9f9756fb32233317611b455e48aaeeedf30bbd3d456e6ebaba4ecfc87450cc0e",
+    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
     "text": "存在两组各自分量不同但总流量相等的分解，说明仅知道守恒总量不能唯一识别各分量。"
   },
   "CGB.LanguageLifeKernel.conserved_carrier_path_balance": {
-    "source_sha256": "9f9756fb32233317611b455e48aaeeedf30bbd3d456e6ebaba4ecfc87450cc0e",
+    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
     "text": "沿守恒载体轨迹，任意有限步的状态净变化等于这段时间输入减输出之和。"
   },
   "CGB.LanguageLifeKernel.conserved_carrier_path_no_output": {
-    "source_sha256": "9f9756fb32233317611b455e48aaeeedf30bbd3d456e6ebaba4ecfc87450cc0e",
+    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
     "text": "沿守恒载体轨迹，如果各步输出均为零，则状态净变化等于累计输入。"
   },
   "CGB.LanguageLifeKernel.conserved_transfer_source_trace": {
-    "source_sha256": "9f9756fb32233317611b455e48aaeeedf30bbd3d456e6ebaba4ecfc87450cc0e",
+    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
     "text": "一次局部守恒转移的来源减少量恰等于转移量。"
   },
   "CGB.LanguageLifeKernel.conserved_transfer_target_trace": {
-    "source_sha256": "9f9756fb32233317611b455e48aaeeedf30bbd3d456e6ebaba4ecfc87450cc0e",
+    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
     "text": "一次局部守恒转移的目标增加量恰等于转移量。"
   },
   "CGB.LanguageLifeKernel.conserved_transfer_total_preserved": {
-    "source_sha256": "9f9756fb32233317611b455e48aaeeedf30bbd3d456e6ebaba4ecfc87450cc0e",
+    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
     "text": "一次局部守恒转移前后，来源与目标的总量相等。"
   },
   "CGB.LanguageLifeKernel.delayed_credit_requires_history_carrier": {
-    "source_sha256": "9f9756fb32233317611b455e48aaeeedf30bbd3d456e6ebaba4ecfc87450cc0e",
+    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
     "text": "当同一个当前可见输入需要两个不同信用值时，任何只依赖该输入的确定规则都不可能同时输出两者。"
   },
   "CGB.LanguageLifeKernel.external_causal_readout_exists_iff": {
-    "source_sha256": "9f9756fb32233317611b455e48aaeeedf30bbd3d456e6ebaba4ecfc87450cc0e",
+    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
     "text": "在给定检索接口和默认值下，存在能对所有历史和查询给出所需结果的读取规则，当且仅当不可区分的内部状态与检索结果不会要求不同输出。"
   },
   "CGB.LanguageLifeKernel.external_trace_requires_retrieved_distinction": {
-    "source_sha256": "9f9756fb32233317611b455e48aaeeedf30bbd3d456e6ebaba4ecfc87450cc0e",
+    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
     "text": "若确定读出规则能给出所有所需信用，当两段历史的内部状态相同但所需信用不同，检索出的外部记录必须不同。"
   },
   "CGB.LanguageLifeKernel.history_readout_exists_iff": {
-    "source_sha256": "9f9756fb32233317611b455e48aaeeedf30bbd3d456e6ebaba4ecfc87450cc0e",
+    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
     "text": "对所有历史存在准确读出规则，当且仅当编码相同的历史具有相同所需输出；默认输出用于构造读出。"
   },
   "CGB.LanguageLifeKernel.history_transition_exists_iff": {
-    "source_sha256": "9f9756fb32233317611b455e48aaeeedf30bbd3d456e6ebaba4ecfc87450cc0e",
+    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
     "text": "存在只依赖当前编码与输入的确定状态更新，当且仅当编码相同的历史在同一后续输入下仍产生相同后继编码。"
   },
   "CGB.LanguageLifeKernel.incidence_sum_zero": {
-    "source_sha256": "9f9756fb32233317611b455e48aaeeedf30bbd3d456e6ebaba4ecfc87450cc0e",
+    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
     "text": "每条边的节点关联系数之和为零，这是图上内部流动保持总量的基础。"
   },
   "CGB.LanguageLifeKernel.incidence_ternary": {
-    "source_sha256": "9f9756fb32233317611b455e48aaeeedf30bbd3d456e6ebaba4ecfc87450cc0e",
+    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
     "text": "该有向图定义中的每个节点—边关联系数只可能是 −1、0 或 1。"
   },
   "CGB.LanguageLifeKernel.leaky_transfer_readout_is_net": {
-    "source_sha256": "9f9756fb32233317611b455e48aaeeedf30bbd3d456e6ebaba4ecfc87450cc0e",
+    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
     "text": "带泄漏的守恒转移中，载体前后差值等于输入减泄漏，不能仅凭净变化单独读出输入。"
   },
   "CGB.LanguageLifeKernel.no_visible_only_delayed_credit_rule": {
-    "source_sha256": "9f9756fb32233317611b455e48aaeeedf30bbd3d456e6ebaba4ecfc87450cc0e",
+    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
     "text": "同一可见值对应两种不同的延迟信用目标时，只看当前可见值的确定规则无法同时满足两种目标。"
   },
   "CGB.LanguageLifeKernel.observable_transfer_recovers_amount": {
-    "source_sha256": "9f9756fb32233317611b455e48aaeeedf30bbd3d456e6ebaba4ecfc87450cc0e",
+    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
     "text": "在该可观测守恒转移结构的读出前提下，目标端读数恰好等于转移量。"
   },
   "CGB.LanguageLifeKernel.observational_record_does_not_fix_intervention": {
-    "source_sha256": "9f9756fb32233317611b455e48aaeeedf30bbd3d456e6ebaba4ecfc87450cc0e",
+    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
     "text": "给出两个在观测输入一致时输出相同、但在一次干预下输出不同的规则，说明被动观测一致不足以确定干预结果。"
   },
   "CGB.LanguageLifeKernel.reserve_balance": {
-    "source_sha256": "9f9756fb32233317611b455e48aaeeedf30bbd3d456e6ebaba4ecfc87450cc0e",
+    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
     "text": "若支出不超过原有储备与收入之和，储备更新后的余额加支出恰等于原储备加收入。"
   },
   "CGB.LanguageLifeKernel.step_charge_conserved": {
-    "source_sha256": "9f9756fb32233317611b455e48aaeeedf30bbd3d456e6ebaba4ecfc87450cc0e",
+    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
     "text": "语言核一步图流更新前后，所有节点电荷总和相等。"
   },
   "CGB.LanguageLifeKernel.step_clock_advances": {
-    "source_sha256": "9f9756fb32233317611b455e48aaeeedf30bbd3d456e6ebaba4ecfc87450cc0e",
+    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
     "text": "语言核的离散时间标记在每次 step 后严格增加。"
   },
   "CGB.LanguageLifeKernel.step_reserve_paid": {
-    "source_sha256": "9f9756fb32233317611b455e48aaeeedf30bbd3d456e6ebaba4ecfc87450cc0e",
+    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
     "text": "支出有足够储备和收入覆盖时，语言核一步更新后的储备加支出等于旧储备加收入。"
   },
   "CGB.LanguageLifeKernel.superposed_transfer_readout_is_net": {
-    "source_sha256": "9f9756fb32233317611b455e48aaeeedf30bbd3d456e6ebaba4ecfc87450cc0e",
+    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
     "text": "同一目标叠加两条整数流后，其前后差值等于两流之和，单独分量不会由这个差值直接区分。"
   },
   "CGB.LanguageLifeKernel.Approximation.fold_error": {
-    "source_sha256": "9f9756fb32233317611b455e48aaeeedf30bbd3d456e6ebaba4ecfc87450cc0e",
+    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
     "text": "若每步近似误差至多按因子 L 放大并增加 δ，有限输入序列后的总误差满足几何累积上界。"
   },
   "CGB.LanguageLifeKernel.Approximation.invariant_error": {
-    "source_sha256": "9f9756fb32233317611b455e48aaeeedf30bbd3d456e6ebaba4ecfc87450cc0e",
+    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
     "text": "若单步误差递推满足 Lε+δ≤ε，则从误差不超过 ε 出发，任意有限输入序列后误差仍不超过 ε。"
   },
   "CGB.LanguageLifeKernel.CausalRecord.update_least": {
-    "source_sha256": "9f9756fb32233317611b455e48aaeeedf30bbd3d456e6ebaba4ecfc87450cc0e",
+    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
     "text": "任何包含所有与先验、动作和观测相容后继世界的集合，都包含该因果记录更新结果。"
   },
   "CGB.LanguageLifeKernel.CausalRecord.update_sound": {
-    "source_sha256": "9f9756fb32233317611b455e48aaeeedf30bbd3d456e6ebaba4ecfc87450cc0e",
+    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
     "text": "对于非空主体状态，真实世界一步转移有正权重时，相应观测下的后继世界被因果记录更新保留。"
   },
   "CGB.LanguageLifeKernel.CausalRecord.weights_exact": {
-    "source_sha256": "9f9756fb32233317611b455e48aaeeedf30bbd3d456e6ebaba4ecfc87450cc0e",
+    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
     "text": "对于非空主体状态，给定世界转移权重恰为因果记录整数权重除以二。"
   },
   "CGB.LanguageLifeKernel.CausalState.finite_alphabets_unbounded": {
-    "source_sha256": "9f9756fb32233317611b455e48aaeeedf30bbd3d456e6ebaba4ecfc87450cc0e",
+    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
     "text": "即使输入为有限布尔字母表，要求判断真值与假值出现次数是否相等的历史也具有无限多个可区分因果状态。"
   },
   "CGB.LanguageLifeKernel.CausalState.finite_bound": {
-    "source_sha256": "9f9756fb32233317611b455e48aaeeedf30bbd3d456e6ebaba4ecfc87450cc0e",
+    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
     "text": "若有限状态机能对所有历史准确实现指定输出，则所需因果状态有限且数量不超过实现机器的状态数。"
   },
   "CGB.LanguageLifeKernel.CausalState.fold_refines": {
-    "source_sha256": "9f9756fb32233317611b455e48aaeeedf30bbd3d456e6ebaba4ecfc87450cc0e",
+    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
     "text": "对因果状态逐个处理一个后缀，得到的状态等于先把后缀接到历史上再编码的状态。"
   },
   "CGB.LanguageLifeKernel.CausalState.minimal": {
-    "source_sha256": "9f9756fb32233317611b455e48aaeeedf30bbd3d456e6ebaba4ecfc87450cc0e",
+    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
     "text": "任何准确实现指定历史输出的状态机都能满射到相应因果状态，表达该因果状态表示的最小性。"
   },
   "CGB.LanguageLifeKernel.CausalState.realizes": {
-    "source_sha256": "9f9756fb32233317611b455e48aaeeedf30bbd3d456e6ebaba4ecfc87450cc0e",
+    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
     "text": "因果状态编码能够读出历史所需输出，并且处理一个输入后与更新历史再编码一致。"
   },
   "CGB.LanguageLifeKernel.FirstHit.first_hit_sum": {
-    "source_sha256": "9f9756fb32233317611b455e48aaeeedf30bbd3d456e6ebaba4ecfc87450cc0e",
+    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
     "text": "首次命中表达式 1−(1−r)^t 可写成 r 乘有限几何级数。"
   },
   "CGB.LanguageLifeKernel.FirstHit.probability_bounds": {
-    "source_sha256": "9f9756fb32233317611b455e48aaeeedf30bbd3d456e6ebaba4ecfc87450cc0e",
+    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
     "text": "当权重非负且归一、单步命中率位于零和一之间时，加权首次命中成功率也位于零和一之间。"
   },
   "CGB.LanguageLifeKernel.FirstHit.truncation": {
-    "source_sha256": "9f9756fb32233317611b455e48aaeeedf30bbd3d456e6ebaba4ecfc87450cc0e",
+    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
     "text": "在权重非负且单步命中率介于零和一之间时，将寿命截断到有限时限不会增加首次命中成功率。"
   },
   "CGB.LanguageLifeKernel.LocalEdit.accepts_iff": {
-    "source_sha256": "9f9756fb32233317611b455e48aaeeedf30bbd3d456e6ebaba4ecfc87450cc0e",
+    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
     "text": "当旧分布和候选分布总权重均为正时，整数交叉乘法接受判据等价于候选事件概率严格提高。"
   },
   "CGB.LanguageLifeKernel.LocalEdit.binary_factor_balance": {
-    "source_sha256": "9f9756fb32233317611b455e48aaeeedf30bbd3d456e6ebaba4ecfc87450cc0e",
+    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
     "text": "二元因子修改前后的交叉乘积差可精确分解为修改幅度 v−u 与联合表行列式 ad−bc 的乘积。"
   },
   "CGB.LanguageLifeKernel.PaidRecord.attach_refines": {
-    "source_sha256": "9f9756fb32233317611b455e48aaeeedf30bbd3d456e6ebaba4ecfc87450cc0e",
+    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
     "text": "给已有交互机器附加更新记录后，投影到原状态仍细化原机器的行为。"
   },
   "CGB.LanguageLifeKernel.PaidRecord.world_feedback_possible": {
-    "source_sha256": "9f9756fb32233317611b455e48aaeeedf30bbd3d456e6ebaba4ecfc87450cc0e",
+    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
     "text": "非空主体在真实世界转移有正权重时，付费记录的可能性判据接受相应动作和后继观测。"
   },
   "CGB.LanguageLifeKernel.SensoryRecord.exact_record_contract": {
-    "source_sha256": "9f9756fb32233317611b455e48aaeeedf30bbd3d456e6ebaba4ecfc87450cc0e",
+    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
     "text": "该 16 状态感官记录编码与读出在合法状态上互逆，并保持合法性。"
   },
   "CGB.LanguageLifeKernel.SensoryRecord.fold_refines": {
-    "source_sha256": "9f9756fb32233317611b455e48aaeeedf30bbd3d456e6ebaba4ecfc87450cc0e",
+    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
     "text": "对编码记录连续写入感官输入，再读出，等于在原感官状态上连续执行对应更新。"
   },
   "CGB.LanguageLifeKernel.SensoryRecord.action_content_distinguishes": {
-    "source_sha256": "9f9756fb32233317611b455e48aaeeedf30bbd3d456e6ebaba4ecfc87450cc0e",
+    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
     "text": "在该 16 状态见证中，若两条记录读出的策略动作和内容成本均相同，则两条记录相同。"
   },
   "CGB.Generation.adapted_gap_zero": {
@@ -648,23 +648,23 @@
     "text": "若某有限循环正反速率乘积不相等，则不存在满足所有边细致平衡的严格正权重。"
   },
   "CGB.Generation.delta_nonexpansive": {
-    "source_sha256": "167f09972ef5f17b1c3634f42c135c54a9bf1c4474a2b1c2ae113dec21c466b5",
+    "source_sha256": "8dbe8b07d349a94d81f523145582c754621144abd61ac7afbe5189587f44d3f0",
     "text": "键向量范数为一且强度 β 位于零到二之间时，delta 更新不会增大状态的平方范数。"
   },
   "CGB.Generation.gated_delta_contracts": {
-    "source_sha256": "167f09972ef5f17b1c3634f42c135c54a9bf1c4474a2b1c2ae113dec21c466b5",
-    "text": "在指定键和强度条件下，带 α 门控的 delta 更新后的平方范数不超过原平方范数乘 α²。"
+    "source_sha256": "8dbe8b07d349a94d81f523145582c754621144abd61ac7afbe5189587f44d3f0",
+    "text": "对指定形式 α·deltaStep(k,β,d)，若键为单位向量且 β 在零到二之间，更新后的平方范数不超过原平方范数乘 α²；此式不自动适用于 αd−β⟨k,d⟩k。"
   },
   "CGB.Generation.geometric_bank_covers": {
     "source_sha256": "98d0e6e042469d7ed5a2fdff9e4ce0b9953489f9b9621e5d0e7111db8da0fb3e",
     "text": "对于正初始时间常数和大于一的几何比，覆盖范围内的任意 t 都有一个池时间常数落在 [t,γt]。"
   },
   "CGB.Generation.histories_merge": {
-    "source_sha256": "167f09972ef5f17b1c3634f42c135c54a9bf1c4474a2b1c2ae113dec21c466b5",
+    "source_sha256": "8dbe8b07d349a94d81f523145582c754621144abd61ac7afbe5189587f44d3f0",
     "text": "若每步历史差距至多乘以非负因子 α，T 步后的差距不超过初始差距乘所有 α 的积。"
   },
   "CGB.Generation.histories_merge_uniform": {
-    "source_sha256": "167f09972ef5f17b1c3634f42c135c54a9bf1c4474a2b1c2ae113dec21c466b5",
+    "source_sha256": "8dbe8b07d349a94d81f523145582c754621144abd61ac7afbe5189587f44d3f0",
     "text": "若各步收缩因子均不超过统一上界，历史差距受该上界的 T 次幂乘初始差距约束。"
   },
   "CGB.Generation.integral_feedback_adapts": {
@@ -1292,31 +1292,31 @@
     "text": "在指定三部分加性速率、乘积权重与各因子非恒定的条件下，平衡恒等式迫使选定状态的总反向速率为零。"
   },
   "CGB.InformationEnergy.freeEnergy_eq_kl": {
-    "source_sha256": "fbfab5463a5c50f9a2b63346ccd3f4a0293def8696968f1618d1f8abcab027ea",
+    "source_sha256": "561505fdc0c02025a772ea97f014d533a81c5f0c9bfc33c9aa97080e4bdfe6d2",
     "text": "有限状态下，按给定平衡权重定义的自由能恰等于分布相对于该权重的 KL 表达式。"
   },
   "CGB.InformationEnergy.freeEnergy_at_law": {
-    "source_sha256": "fbfab5463a5c50f9a2b63346ccd3f4a0293def8696968f1618d1f8abcab027ea",
+    "source_sha256": "561505fdc0c02025a772ea97f014d533a81c5f0c9bfc33c9aa97080e4bdfe6d2",
     "text": "在该自由能定义下，将当前分布取为参考分布时自由能为零。"
   },
   "CGB.InformationEnergy.kl_nonneg": {
-    "source_sha256": "fbfab5463a5c50f9a2b63346ccd3f4a0293def8696968f1618d1f8abcab027ea",
+    "source_sha256": "561505fdc0c02025a772ea97f014d533a81c5f0c9bfc33c9aa97080e4bdfe6d2",
     "text": "当 q 非负归一且 π 严格正并归一时，其有限状态 KL 散度非负。"
   },
   "CGB.InformationEnergy.snapshot_misses_hidden": {
-    "source_sha256": "fbfab5463a5c50f9a2b63346ccd3f4a0293def8696968f1618d1f8abcab027ea",
+    "source_sha256": "561505fdc0c02025a772ea97f014d533a81c5f0c9bfc33c9aa97080e4bdfe6d2",
     "text": "在所定义的联合分布和只读取可见变量的测量核中，测量对联合状态的信息等于其对可见变量的信息。"
   },
   "CGB.InformationEnergy.finite_memory_bounds_net_work": {
-    "source_sha256": "fbfab5463a5c50f9a2b63346ccd3f4a0293def8696968f1618d1f8abcab027ea",
+    "source_sha256": "561505fdc0c02025a772ea97f014d533a81c5f0c9bfc33c9aa97080e4bdfe6d2",
     "text": "如果提取功上限为 kT·I 且超出容量的擦除成本至少为 kT·(I−cap)，净功不超过 kT·cap。"
   },
   "CGB.InformationEnergy.passivity_ends": {
-    "source_sha256": "fbfab5463a5c50f9a2b63346ccd3f4a0293def8696968f1618d1f8abcab027ea",
-    "text": "在正漂移使方差每步递增、噪声为正的模型里，一次观测的信息值终会超过任意指定正成本。"
+    "source_sha256": "561505fdc0c02025a772ea97f014d533a81c5f0c9bfc33c9aa97080e4bdfe6d2",
+    "text": "在正漂移的指定方差递推和正噪声条件下，对数表达式最终超过任意给定正数；这本身不决定是否行动。"
   },
   "CGB.InformationEnergy.mixture_regret_le": {
-    "source_sha256": "fbfab5463a5c50f9a2b63346ccd3f4a0293def8696968f1618d1f8abcab027ea",
+    "source_sha256": "561505fdc0c02025a772ea97f014d533a81c5f0c9bfc33c9aa97080e4bdfe6d2",
     "text": "正先验权重的有限混合模型，对任一正概率假设的负对数损失至多比该假设多 log(1/w) 。"
   },
   "CGB.Medium.kernel_self_le": {
@@ -1336,55 +1336,55 @@
     "text": "在指定双体介质中，一个正系数、两位置不同且内容变化非零的反应可见证内容交换。"
   },
   "CGB.Generation.dot_self_nonneg": {
-    "source_sha256": "a148440bb7c0866fae7a8ebccad315e1eeff0f3861e91df2684525a5fd2c8f21",
+    "source_sha256": "915f6f956ec505d2dd5ecb5f5fe4e324c79e81e8eae4c8063ae7ef44a18bc395",
     "text": "有限实向量与自身点积非负。"
   },
   "CGB.Generation.eq_zero_of_dot_self": {
-    "source_sha256": "a148440bb7c0866fae7a8ebccad315e1eeff0f3861e91df2684525a5fd2c8f21",
+    "source_sha256": "915f6f956ec505d2dd5ecb5f5fe4e324c79e81e8eae4c8063ae7ef44a18bc395",
     "text": "有限实向量的自身点积为零时，该向量为零。"
   },
   "CGB.Generation.silent_rest_unique": {
-    "source_sha256": "a148440bb7c0866fae7a8ebccad315e1eeff0f3861e91df2684525a5fd2c8f21",
-    "text": "单位键、有效 delta 强度和严格小于一的非负门控下，无写入更新的唯一不动点为零。"
+    "source_sha256": "915f6f956ec505d2dd5ecb5f5fe4e324c79e81e8eae4c8063ae7ef44a18bc395",
+    "text": "对指定无写入更新 α·deltaStep，单位键、β 在零到二之间且 0≤α<1 时，唯一不动点为零；其他更新需另行核对。"
   },
   "CGB.Generation.tiedWrite_eq_delta_add": {
-    "source_sha256": "a148440bb7c0866fae7a8ebccad315e1eeff0f3861e91df2684525a5fd2c8f21",
+    "source_sha256": "915f6f956ec505d2dd5ecb5f5fe4e324c79e81e8eae4c8063ae7ef44a18bc395",
     "text": "所定义的绑定写入等于 delta 更新加上目标值沿键方向的写入项。"
   },
   "CGB.Generation.tied_write_is_error_descent": {
-    "source_sha256": "a148440bb7c0866fae7a8ebccad315e1eeff0f3861e91df2684525a5fd2c8f21",
+    "source_sha256": "915f6f956ec505d2dd5ecb5f5fe4e324c79e81e8eae4c8063ae7ef44a18bc395",
     "text": "绑定写入可代数改写为按预测误差乘键方向进行的一步更新。"
   },
   "CGB.Generation.tied_write_error_shrinks": {
-    "source_sha256": "a148440bb7c0866fae7a8ebccad315e1eeff0f3861e91df2684525a5fd2c8f21",
+    "source_sha256": "915f6f956ec505d2dd5ecb5f5fe4e324c79e81e8eae4c8063ae7ef44a18bc395",
     "text": "单位键下，绑定写入后的预测误差等于原预测误差乘以 1−β。"
   },
   "CGB.Generation.exact_prediction_no_write": {
-    "source_sha256": "a148440bb7c0866fae7a8ebccad315e1eeff0f3861e91df2684525a5fd2c8f21",
+    "source_sha256": "915f6f956ec505d2dd5ecb5f5fe4e324c79e81e8eae4c8063ae7ef44a18bc395",
     "text": "预测值恰好等于目标值时，绑定写入不改变状态。"
   },
   "CGB.Generation.occurrence_decay_retains": {
-    "source_sha256": "a148440bb7c0866fae7a8ebccad315e1eeff0f3861e91df2684525a5fd2c8f21",
+    "source_sha256": "915f6f956ec505d2dd5ecb5f5fe4e324c79e81e8eae4c8063ae7ef44a18bc395",
     "text": "当衰减系数位于零到一且每步权重不超过一时，按权重衰减的有限乘积不小于每步完整衰减。"
   },
   "CGB.Generation.unused_column_kept": {
-    "source_sha256": "a148440bb7c0866fae7a8ebccad315e1eeff0f3861e91df2684525a5fd2c8f21",
+    "source_sha256": "915f6f956ec505d2dd5ecb5f5fe4e324c79e81e8eae4c8063ae7ef44a18bc395",
     "text": "未使用方向每步的衰减指数为零，因此任意有限步累计乘积为一。"
   },
   "CGB.Generation.no_latch_below_unit_gain": {
-    "source_sha256": "a148440bb7c0866fae7a8ebccad315e1eeff0f3861e91df2684525a5fd2c8f21",
+    "source_sha256": "915f6f956ec505d2dd5ecb5f5fe4e324c79e81e8eae4c8063ae7ef44a18bc395",
     "text": "固定零点的一 Lipschitz 非线性与小于一的非负增益组合，其不动点只能是零。"
   },
   "CGB.Generation.hardSat_zero": {
-    "source_sha256": "a148440bb7c0866fae7a8ebccad315e1eeff0f3861e91df2684525a5fd2c8f21",
+    "source_sha256": "915f6f956ec505d2dd5ecb5f5fe4e324c79e81e8eae4c8063ae7ef44a18bc395",
     "text": "指定硬饱和函数在零点的值为零。"
   },
   "CGB.Generation.hardSat_lipschitz": {
-    "source_sha256": "a148440bb7c0866fae7a8ebccad315e1eeff0f3861e91df2684525a5fd2c8f21",
+    "source_sha256": "915f6f956ec505d2dd5ecb5f5fe4e324c79e81e8eae4c8063ae7ef44a18bc395",
     "text": "指定硬饱和函数不会增大任意两个输入之间的距离。"
   },
   "CGB.Generation.latch_above_unit_gain": {
-    "source_sha256": "a148440bb7c0866fae7a8ebccad315e1eeff0f3861e91df2684525a5fd2c8f21",
+    "source_sha256": "915f6f956ec505d2dd5ecb5f5fe4e324c79e81e8eae4c8063ae7ef44a18bc395",
     "text": "在增益至少为一时，硬饱和反馈有 −1、0 和 1 三个所列不动点。"
   },
   "CGB.Generation.occupancy_le_exp": {
@@ -3932,39 +3932,39 @@
     "text": "在有限空间中若持续产生死亡个体，则必须存在尸体分解与清除机制以防止空间饱和终止流动（定理G26c）。"
   },
   "CGB.PredictiveHarvest.growth_eq_log_card_sub_crossEntropy": {
-    "source_sha256": "caae0c1c28cc600a387b97bb023c95251008b3917120c46f27b2d0cb2e33d249",
+    "source_sha256": "a2231691d1d58bbc7445ad7b0c1c233bb40dc3401fde80b7f5a1c280d9802b21",
     "text": "当 p 总和为一且各分配 c 为正时，定义的增长量等于 log|B| 减交叉熵。"
   },
   "CGB.PredictiveHarvest.gibbs_term": {
-    "source_sha256": "caae0c1c28cc600a387b97bb023c95251008b3917120c46f27b2d0cb2e33d249",
+    "source_sha256": "a2231691d1d58bbc7445ad7b0c1c233bb40dc3401fde80b7f5a1c280d9802b21",
     "text": "若 x 非负且 y 为正，则 x(log y−log x) 不超过 y−x。"
   },
   "CGB.PredictiveHarvest.gibbs_inequality": {
-    "source_sha256": "caae0c1c28cc600a387b97bb023c95251008b3917120c46f27b2d0cb2e33d249",
+    "source_sha256": "a2231691d1d58bbc7445ad7b0c1c233bb40dc3401fde80b7f5a1c280d9802b21",
     "text": "对非负归一 p 和严格正、归一的 c，p 加权的 log c 不超过 p 加权的 log p。"
   },
   "CGB.PredictiveHarvest.growth_le": {
-    "source_sha256": "caae0c1c28cc600a387b97bb023c95251008b3917120c46f27b2d0cb2e33d249",
+    "source_sha256": "a2231691d1d58bbc7445ad7b0c1c233bb40dc3401fde80b7f5a1c280d9802b21",
     "text": "若 p 非负归一、c 严格正且归一，则指定增长量不超过 log|B| 减去 p 的熵。"
   },
   "CGB.PredictiveHarvest.growth_at_law": {
-    "source_sha256": "caae0c1c28cc600a387b97bb023c95251008b3917120c46f27b2d0cb2e33d249",
+    "source_sha256": "a2231691d1d58bbc7445ad7b0c1c233bb40dc3401fde80b7f5a1c280d9802b21",
     "text": "当 p 的总和为一时，定义的 growth p p 等于 log|B| 减去定义的熵。"
   },
   "CGB.PredictiveHarvest.uniform_growth_zero": {
-    "source_sha256": "caae0c1c28cc600a387b97bb023c95251008b3917120c46f27b2d0cb2e33d249",
+    "source_sha256": "a2231691d1d58bbc7445ad7b0c1c233bb40dc3401fde80b7f5a1c280d9802b21",
     "text": "在非空有限符号集上，均匀分配代入所定义的 growth 时结果为零。"
   },
   "CGB.PredictiveHarvest.no_allocation_persists": {
-    "source_sha256": "caae0c1c28cc600a387b97bb023c95251008b3917120c46f27b2d0cb2e33d249",
+    "source_sha256": "a2231691d1d58bbc7445ad7b0c1c233bb40dc3401fde80b7f5a1c280d9802b21",
     "text": "对非负归一分布，若其熵超过 log|B|−m，则任意正且归一的分配都使指定对数增长量减 m 为负。"
   },
   "CGB.PredictiveHarvest.persists_of_crossEntropy": {
-    "source_sha256": "caae0c1c28cc600a387b97bb023c95251008b3917120c46f27b2d0cb2e33d249",
+    "source_sha256": "a2231691d1d58bbc7445ad7b0c1c233bb40dc3401fde80b7f5a1c280d9802b21",
     "text": "在所列归一化与正分配条件下，若交叉熵低于 log|B|−m，则定义的对数增长量减 m 严格为正。"
   },
   "CGB.PredictiveHarvest.additive_payoff_mode": {
-    "source_sha256": "caae0c1c28cc600a387b97bb023c95251008b3917120c46f27b2d0cb2e33d249",
+    "source_sha256": "a2231691d1d58bbc7445ad7b0c1c233bb40dc3401fde80b7f5a1c280d9802b21",
     "text": "若 bs 的权重不小于其他符号且分配非负归一，则加性加权收益不超过把全部分配放在 bs 的收益。"
   },
   "CGB.InteractionControls.independent_bit_refines": {
@@ -4380,43 +4380,43 @@
     "text": "在平稳静默中断期间，系统对外声称的摄入物质通量严格为零。"
   },
   "CGB.LanguageLifeKernel.SensoryRecord.record_state_lower_bound": {
-    "source_sha256": "9f9756fb32233317611b455e48aaeeedf30bbd3d456e6ebaba4ecfc87450cc0e",
+    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
     "text": "能够同时无损读取决策动作与维持成本的感知记录载体，其状态空间基数至少为16。"
   },
   "CGB.LanguageLifeKernel.SensoryRecord.joint_successor_reconstruct": {
-    "source_sha256": "9f9756fb32233317611b455e48aaeeedf30bbd3d456e6ebaba4ecfc87450cc0e",
+    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
     "text": "原联合机体-世界演化过程中的每个正概率后继状态均可由内部感知记录精确编码与无损重构。"
   },
   "_private.CGBAxioms.LanguageLifeKernel.0.CGB.LanguageLifeKernel.CausalRecord.policy_cases": {
-    "source_sha256": "9f9756fb32233317611b455e48aaeeedf30bbd3d456e6ebaba4ecfc87450cc0e",
+    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
     "text": "给出因果记录模块中细胞各离散构型对应决策策略动作的显式分情况查找表。"
   },
   "CGB.LanguageLifeKernel.CausalRecord.sensor_alias_witness": {
-    "source_sha256": "9f9756fb32233317611b455e48aaeeedf30bbd3d456e6ebaba4ecfc87450cc0e",
+    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
     "text": "存在相同当前传感器读数但在相同动作下产生不同环境反馈后果的见证实例（传感器别名混淆）。"
   },
   "CGB.LanguageLifeKernel.CausalRecord.action_feedback_witness": {
-    "source_sha256": "9f9756fb32233317611b455e48aaeeedf30bbd3d456e6ebaba4ecfc87450cc0e",
+    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
     "text": "后续相同的传感器观测在前期采取不同动作时对应不同的因果环境后继状态解释。"
   },
   "CGB.LanguageLifeKernel.PaidRecord.settlement_contract": {
-    "source_sha256": "9f9756fb32233317611b455e48aaeeedf30bbd3d456e6ebaba4ecfc87450cc0e",
+    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
     "text": "有偿记忆记录在结算时的剩余能量储备与扣除费用之和严格守恒，且合法候选假设集保持无损收缩。"
   },
   "CGB.LanguageLifeKernel.PaidRecord.combined_write_budget": {
-    "source_sha256": "9f9756fb32233317611b455e48aaeeedf30bbd3d456e6ebaba4ecfc87450cc0e",
+    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
     "text": "综合有偿记录在单步演化中信用余额、写入能耗与手续费的综合支出受基础热力学第一定律预算严格约束。"
   },
   "CGB.LanguageLifeKernel.PaidRecord.historical_frame_witness": {
-    "source_sha256": "9f9756fb32233317611b455e48aaeeedf30bbd3d456e6ebaba4ecfc87450cc0e",
+    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
     "text": "存在仅读取当前瞬间观测无法确定真实世界状态的历史因果歧义见证。"
   },
   "CGB.LanguageLifeKernel.PaidRecord.joint_source_possible": {
-    "source_sha256": "9f9756fb32233317611b455e48aaeeedf30bbd3d456e6ebaba4ecfc87450cc0e",
+    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
     "text": "在联合状态演化下真实环境历史始终属于有偿记忆记录的可能候选集合。"
   },
   "CGB.LanguageLifeKernel.CausalState.separated_histories_capacity": {
-    "source_sha256": "9f9756fb32233317611b455e48aaeeedf30bbd3d456e6ebaba4ecfc87450cc0e",
+    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
     "text": "导出为区分非等价历史轨迹，因果状态记录载体所需容量的严格下界。"
   },
   "CGB.RenewableEncoding.code_roundtrip": {

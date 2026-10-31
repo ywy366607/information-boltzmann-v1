@@ -1,0 +1,99 @@
+{
+  "graph": "data\\malecns_v1\\fly_reservoir_coba_r2.npz",
+  "neurons": 165122,
+  "edges": 25321395,
+  "registry_schema_version": 1,
+  "systems": [
+    {
+      "id": "sensory_surfaces",
+      "neurons_by_annotation": 15896,
+      "anatomical_graph": "present_by_full_graph",
+      "full_dynamics": "generic_connectome_update",
+      "specialized_role": "generic_sensory_surface",
+      "closed_loop": "unmeasured",
+      "next_unified_mechanism": "modality_specific_delay_gain_and_local_inhibition"
+    },
+    {
+      "id": "olfactory_relay",
+      "neurons_by_annotation": 3783,
+      "anatomical_graph": "present_by_full_graph",
+      "full_dynamics": "generic_connectome_update",
+      "specialized_role": "graph_present_role_under_specialized",
+      "closed_loop": "unmeasured",
+      "next_unified_mechanism": "AL_local_circuit_and_projection_dynamics"
+    },
+    {
+      "id": "mushroom_body_memory",
+      "neurons_by_annotation": 4501,
+      "anatomical_graph": "present_by_full_graph",
+      "full_dynamics": "generic_connectome_update",
+      "specialized_role": "partially_specialized",
+      "closed_loop": "unmeasured",
+      "next_unified_mechanism": "DPM_APL_consolidation_and_MBON_action_coupling"
+    },
+    {
+      "id": "neuromodulatory_state",
+      "neurons_by_annotation": 389,
+      "anatomical_graph": "present_by_full_graph",
+      "full_dynamics": "generic_connectome_update",
+      "specialized_role": "dopamine_partial_amine_first_version",
+      "closed_loop": "unmeasured",
+      "next_unified_mechanism": "one_constrained_modulator_registry_for_DA_OA_5HT_DPM_APL"
+    },
+    {
+      "id": "central_complex_state_action",
+      "neurons_by_annotation": 2950,
+      "anatomical_graph": "present_by_full_graph",
+      "full_dynamics": "generic_connectome_update",
+      "specialized_role": "persistent_cx_trace_first_version",
+      "closed_loop": "unmeasured",
+      "next_unified_mechanism": "connectome_constrained_continuous_state_and_selection"
+    },
+    {
+      "id": "association_and_context",
+      "neurons_by_annotation": 121550,
+      "anatomical_graph": "present_by_full_graph",
+      "full_dynamics": "generic_connectome_update",
+      "specialized_role": "generic_connectome_dynamics",
+      "closed_loop": "unmeasured",
+      "next_unified_mechanism": "only role-supported state variables, no blanket per-ROI module"
+    },
+    {
+      "id": "ascending_body_feedback",
+      "neurons_by_annotation": 21362,
+      "anatomical_graph": "present_by_full_graph",
+      "full_dynamics": "generic_connectome_update",
+      "specialized_role": "generic_connectome_dynamics_no_body_loop",
+      "closed_loop": "unmeasured",
+      "next_unified_mechanism": "matched_ascending_consequence_route"
+    },
+    {
+      "id": "descending_and_vnc_motor",
+      "neurons_by_annotation": 2227,
+      "anatomical_graph": "present_by_full_graph",
+      "full_dynamics": "generic_connectome_update",
+      "specialized_role": "output_surface_without_body_execution",
+      "closed_loop": "unmeasured",
+      "next_unified_mechanism": "descending_to_VNC_motor_and_proprioceptive_return"
+    },
+    {
+      "id": "visual_and_long_range_projection",
+      "neurons_by_annotation": 99154,
+      "anatomical_graph": "present_by_full_graph",
+      "full_dynamics": "generic_connectome_update",
+      "specialized_role": "generic_visual_dynamics",
+      "closed_loop": "unmeasured",
+      "next_unified_mechanism": "visual_projection_to_CX_with_learnable_context_gain"
+    },
+    {
+      "id": "endocrine_and_ens",
+      "neurons_by_annotation": 141,
+      "anatomical_graph": "present_by_full_graph",
+      "full_dynamics": "generic_connectome_update",
+      "specialized_role": "not_specialized",
+      "closed_loop": "unmeasured",
+      "next_unified_mechanism": "observable_slow_body_state_before_any_hunger_reward_proxy"
+    }
+  ],
+  "interpretation": "generic full dynamics and specialized biological function are separate statuses"
+}

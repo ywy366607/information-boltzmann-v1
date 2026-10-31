@@ -1,0 +1,23 @@
+{
+  "date": "2026-10-18",
+  "source_checkpoint": "F:/fly_stream_overflow/native_cx_20261018/last.pt",
+  "candidate_checkpoint": "F:/fly_stream_overflow/native_mb_20261018/last.pt",
+  "trained_tokens": 32704,
+  "new_tokens": 64,
+  "mechanisms": ["cx_state", "mb_consolidation"],
+  "peak_vram_mib": 3572.0,
+  "prequential_window_nll": 4.754235878586769,
+  "dpm_trace": 0.3149905800819397,
+  "apl_trace": 0.5576829314231873,
+  "dpm_tau_ticks": 256.00067138671875,
+  "apl_tau_ticks": 15.964603424072266,
+  "dpm_consolidation_parameter": 0.0,
+  "apl_feedback_parameter": -0.00626666285097599,
+  "native_parameter_gradient_evidence": {
+    "mb_apl_logit_decay": 5.8428440752322786e-08,
+    "mb_apl_feedback": 0.017430562525987625,
+    "mb_dpm_consolidation": "not observed in this short segment"
+  },
+  "complete_state_metadata": "F:/fly_stream_overflow/native_mb_20261018/checkpoint_metadata.json",
+  "scope": "This validates DPM/APL trace delivery and complete persistence; DPM consolidation benefit and long-term forgetting behavior require longer matched controls."
+}

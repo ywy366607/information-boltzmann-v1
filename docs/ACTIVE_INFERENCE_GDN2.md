@@ -15,10 +15,10 @@ q(M_t)=\mathcal N(\eta_t/\Lambda_t,\Lambda_t^{-1}).
 
 Process variance releases obsolete precision,
 \(\Lambda^-=(\Lambda^{-1}+Q)^{-1}\), while observed Slice likelihoods add
-precision and natural parameters. This gives the VFE/Bayes interpretation of
-GDN-2 erase/write: erase is uncertainty growth; write is precision-weighted
-evidence accumulation. Suppressing normalization and learning fixed gates
-recovers the gated delta-rule degeneration.
+precision and natural parameters. Here erase is uncertainty growth and write
+is precision-weighted evidence accumulation. With a one-hot address, no global
+decay and a matching precision-derived gain, its mean update agrees with a
+delta write; mixed addresses generally lead to different updates.
 
 ## Closed Physical Coordinates
 

@@ -1,0 +1,108 @@
+{
+  "at": "2026-10-17T00:46:36.824489+00:00",
+  "source_checkpoint": 30848,
+  "source_sha256": "237cbcb57f55e53f72117ce2c9cea572e4b7543978b85cfab80dd4774872114d",
+  "actual_regression": {
+    "recent50_silent_fraction": 0.84,
+    "previous": 0.3,
+    "spoken_normalized_words": 17,
+    "child_hazard_median": 0.006858568638563156,
+    "previous_hazard_median": 0.03401015140116215,
+    "normal_reply_targets": 571,
+    "normal_reply_nll": 5.137949989863953,
+    "fixed_unigram_nll": 6.9483603321686775
+  },
+  "confirmed_delivery_bug": "API mouth retained only text before the first newline. At29888 the child heard an introduction to a note, while Dear Mengli/body/signature were discarded. Other normal paragraphs were silently dropped too. This is verified interface data loss, not a proven sole explanation of policy decline.",
+  "repair": "Preserve complete API messages and paragraph/verse breaks for DeepSeek/fallback and Gemini, including optional vocative cleaning. Note words remain normal external targets with original source; world save/restore keeps full queue. Positive caregiver guidance allows coherent events to advance during quiet and avoids repeated negative-example prompting. Max reply budget128->192 permits complete thoughts; bounded training budget and real clock unchanged. No brain or second teacher-context reset.",
+  "tests_passed": 53,
+  "preview_report": "E:\\fly_stream_overflow\\multiline_regression_30848\\mother_preview.json",
+  "preview_scope": "Two actual recorded quiet-call contexts with new guidance: key is tried and garden becomes visible. Environment previews only; no child update or capability pass.",
+  "completed_neural_audit": {
+    "report": "E:/fly_stream_overflow/native_regression_30848_history32/report.json",
+    "tokens": 32,
+    "ticks": 429,
+    "source_counts": {
+      "mother_reply": 30,
+      "self_hearing": 2
+    },
+    "summary": {
+      "KC_off": {
+        "mean_ce_delta": -0.014385219663381577,
+        "mean_absolute_hazard_delta": 0.05881370769681464,
+        "max_clamp_residual": 0
+      },
+      "MBON_off": {
+        "mean_ce_delta": 0.09366587176918983,
+        "mean_absolute_hazard_delta": 0.06547876378282154,
+        "max_clamp_residual": 0
+      },
+      "DAN_off": {
+        "mean_ce_delta": -0.021866191178560257,
+        "mean_absolute_hazard_delta": 0.06755231611898514,
+        "max_clamp_residual": 0
+      },
+      "phi_zero": {
+        "mean_ce_delta": 0.03584529832005501,
+        "mean_absolute_hazard_delta": 0.047431930046932885,
+        "max_clamp_residual": 0
+      },
+      "kc_terminal_off": {
+        "mean_ce_delta": 0.07350584864616394,
+        "mean_absolute_hazard_delta": 0.05420190713504411,
+        "max_clamp_residual": 0
+      }
+    },
+    "ce_by_source": {
+      "KC_off": {
+        "mother_reply": -0.007016368707021077,
+        "self_hearing": -0.12491798400878906
+      },
+      "MBON_off": {
+        "mother_reply": 0.08455658356348673,
+        "self_hearing": 0.23030519485473633
+      },
+      "DAN_off": {
+        "mother_reply": -0.02436272700627645,
+        "self_hearing": 0.015581846237182617
+      },
+      "phi_zero": {
+        "mother_reply": 0.024940319856007895,
+        "self_hearing": 0.19941997528076172
+      },
+      "kc_terminal_off": {
+        "mother_reply": 0.08304103215535481,
+        "self_hearing": -0.06952190399169922
+      }
+    },
+    "controls": "identity and all4 shams passed; saved model/brain/state/RNG/source untouched",
+    "scope": "Acute functional contribution; hazard means cover ALL physical ticks, not only actual child decisions. No claim that native circuitry is the cause of silence or that useful exploration is established."
+  },
+  "decision_conditioned_audit": {
+    "status": "not_accepted_controls_incomplete",
+    "path": "E:/fly_stream_overflow/native_regression_30848_decisions128",
+    "tokens_requested": 128,
+    "failed_window": 4,
+    "ce_delta": 0.0,
+    "hazard_delta": 0.0,
+    "credit_comp_maxabs": 1.9073486328125e-05,
+    "reason": "Forward CE/hazard/muscle match, but carried derivative state fails existing sham tolerance. No partial windows promoted, no tolerance relaxed, no actual-decision causal conclusion."
+  },
+  "next": "Approve only a512-input live observation30848->31360 after fresh review. Preserve30848 full state and all queued input; observe actual complete messages and behavior. Do not force speaking or claim recovery.",
+  "runtime_sha256": {
+    "information_boltzmann/core/fly_mother_world.py": "833cb95064c24cc9b24fa578b70263ce515c43e8875fd87b5ae8d90b7057c561",
+    "scripts/ib/fly_interface/native_causal_audit.py": "0de33d80c26a64f1caefbfead889220f103d92fba604f5534a7793f0c4c39af6",
+    "scripts/ib/fly_interface/ling_harness.py": "79e9935c0722601905380ae6a65711b5bcdfb7f5be04ce9bcc2b9b02edf0cabd",
+    "scripts/ib/dashboard/static/index.html": "ed250226732d6b63992b85aeb91d5cb0d4e22e8f3ad90dd586649d896e35c7d9",
+    "tests/test_mother_heart_and_mouth.py": "40941be74483f22cfda5841444f79d04c88a4efd99fbfabf0be5ab2056c30581",
+    "tests/test_fly_mother_continuation.py": "fb9555e94dfd39218b271cebfb343e834c35788136e5449a300309956160cc08",
+    "tests/test_native_audit_decision_clock.py": "27c88b59b32ab42c6659593f49632449bf56996a13abc81732e52c3abff93cdf",
+    "tests/test_ling_causal_evidence.py": "72bf7030de52cff005385a4ab368034614926f5caae69e60590dc5431f99da7b",
+    "data/harness/raising.json": "e27e3970d9c234b0a532f2f29f61a0f6108ae5b03babe3d8eeb63dd7d9f8558f"
+  },
+  "test_scope": "51 affected interface/causal-metric checks plus2 dashboard source checks; JavaScript syntax check passed",
+  "first_live_payload_30880": {
+    "raw_equals_delivered": true,
+    "paragraphs": 3,
+    "scope": "Complete message now queued as one mother turn; not proof that the whole reply was heard or that behavior recovered."
+  }
+}

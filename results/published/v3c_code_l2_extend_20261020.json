@@ -1,0 +1,72 @@
+{
+ "note": "V3c extension: the V3c code fits chose l2 = 10, the edge of the grid; refit codes with l2 up to 1000 (same footing,\nsame split, l2 chosen on validation) to get the converged code gains. Also the code alone (no geometry).",
+ "geometry_test": 0.316,
+ "geometry_plus_reverse_test": 0.3418,
+ "rows": [
+  {
+   "model": "geometry + symmetric code 16",
+   "train": 0.3889,
+   "val": 0.3224,
+   "test": 0.316,
+   "l2": 10,
+   "l2_at_grid_edge": true
+  },
+  {
+   "model": "geometry + symmetric code 64",
+   "train": 0.5573,
+   "val": 0.3642,
+   "test": 0.3705,
+   "l2": 10,
+   "l2_at_grid_edge": true
+  },
+  {
+   "model": "geometry + symmetric code 256",
+   "train": 0.5049,
+   "val": 0.3853,
+   "test": 0.3899,
+   "l2": 100,
+   "l2_at_grid_edge": false
+  },
+  {
+   "model": "geometry + general code 16",
+   "train": 0.3889,
+   "val": 0.3224,
+   "test": 0.316,
+   "l2": 10,
+   "l2_at_grid_edge": true
+  },
+  {
+   "model": "geometry + general code 64",
+   "train": 0.7088,
+   "val": 0.4193,
+   "test": 0.4217,
+   "l2": 10,
+   "l2_at_grid_edge": true
+  },
+  {
+   "model": "geometry + general code 256",
+   "train": 0.5372,
+   "val": 0.4047,
+   "test": 0.4061,
+   "l2": 100,
+   "l2_at_grid_edge": false
+  },
+  {
+   "model": "general code 64 alone",
+   "train": 0.7291,
+   "val": 0.196,
+   "test": 0.2169,
+   "l2": 10,
+   "l2_at_grid_edge": true
+  },
+  {
+   "model": "geometry + general code 64 + reverse",
+   "train": 0.7076,
+   "val": 0.4236,
+   "test": 0.434,
+   "l2": 10,
+   "l2_at_grid_edge": true
+  }
+ ],
+ "seconds": 1181
+}

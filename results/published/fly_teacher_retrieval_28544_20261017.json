@@ -1,0 +1,59 @@
+{
+  "at": "2026-10-16T23:43:22.375717+00:00",
+  "source_checkpoint": 28544,
+  "source_sha256": "40e2a256b55a1e76188180822ec7cb5b11ecaf8beb3b0d309f55267db909a570",
+  "main_learning_state_reset": false,
+  "source_archive": "E:/ib_checkpoints/newborn_reading/recovery/000000028544_chunk_end",
+  "observed_teacher_loop": "All12 actual mother requests in27264->28544 injected3 full book excerpts, including when/She the/despite We I. Adult repeatedly retold the same fall/opening. Home-memory retrieval also matched she/we/when to unrelated cat/ball facts.",
+  "repair": "Opt-in on_interest excerpt policy: all strands and book catalogue remain open; relevant content or an explicit reading request retrieves full excerpts. Common grammatical words do not retrieve home facts. One teacher-only few-shot context revision removes repetitive adult demonstrations; original transcript, child brain, weights, optimizer, RNG, pending response score and108 queued mother targets stay intact.",
+  "checks_passed": 42,
+  "tests": [
+    "tests/test_fly_parenting_harness.py",
+    "tests/test_fly_mother_continuation.py",
+    "tests/test_mother_heart_and_mouth.py",
+    "tests/test_mother_fallback.py"
+  ],
+  "preview_without_context_repair": "E:\\fly_stream_overflow\\reading_retrieval_28544\\preview.json",
+  "preview_with_context_repair": "E:\\fly_stream_overflow\\reading_retrieval_28544\\context_repair_preview.json",
+  "preview_interpretation": "Removing excerpts alone left old adult history strongly story-bound. Teacher-only repaired-context previews for3 actual recorded fragments used no full excerpts and no repeated fall narrative. These are environment previews, not child experiences, recovery or understanding evidence.",
+  "runtime_sha256": {
+    "information_boltzmann/core/fly_parenting_harness.py": "c7b21d08fb2b26e36085eb472c5290521141a89070c7c3f507ee3aae83a70eeb",
+    "information_boltzmann/core/fly_mother_world.py": "b6b9cd2ab115445c06b8944f6199965a7c68d24483491818dfefbebd71414356",
+    "tests/test_fly_parenting_harness.py": "a6ba9f2c722a8b8851c4ff6a4003734a1a1b9638c5d06a12345f673f433b5080",
+    "data/harness/raising.json": "d98f762d195d4d5ac7b36b8f549366efb96c8fbaa2071dbbf67a5f681df31c88"
+  },
+  "old_plan_sha256": "a638064f83a66f6dea0372761d89448db3889fb240ccfc779847c6ac4978626a",
+  "new_plan_sha256": "d98f762d195d4d5ac7b36b8f549366efb96c8fbaa2071dbbf67a5f681df31c88",
+  "next": "One bounded1024-input observation28544->29568 after fresh caregiver review; confirm actual prompt/context repair and delivered teaching, not just previews.",
+  "live_followup_29568": {
+    "inputs": 1024,
+    "updates": 128,
+    "mother_requests": 16,
+    "full_excerpt_counts": [
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1
+    ],
+    "teacher_context_repair_counter_before": 3,
+    "after": 4,
+    "preserved_full_transcript_rows": 1789,
+    "normal_reply_targets": 913,
+    "normal_reply_nll": 5.364479421973555,
+    "fixed_unigram_nll": 7.24448909266376,
+    "world_queue": 61,
+    "outcome": "Actual source/context change verified, but all16 mother replies stayed in the same story. Environment previews did not establish teaching breadth or child capability. Child first utterance named falling, so its contribution cannot be separated from adult inertia here. Strengthened contraction/single-letter retrieval filtering after actual false matches;42 checks pass. Caregiver now offers one actual short message exchange as a possible bridge, with all subjects open and no second context reset."
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "status": "completed_probe",
+  "scope": "300-update single-seed real OWT A→B→A probe of calibrated outcome gating of existing phase eligibility",
+  "registration": "results/published/optimizer_calibrated_phase_probe_prereg_20261029.json",
+  "preflight": "results/calibrated_phase_probe_owt_20261029/preflight.json",
+  "arms": {
+    "calibrated_phase_on": {
+      "prequential_bpb": 4.335123404857106,
+      "validation_A_bpb": 3.9590294037130365,
+      "validation_B_bpb": 4.029750218848287,
+      "wall_seconds": 28.097121299999344,
+      "state_bytes": 1194608,
+      "fresh_measurements": 75,
+      "rho_range": [
+        0.9233793466057982,
+        1.0102233132942802
+      ],
+      "rho_final": 0.9374914905054564,
+      "gate_range": [
+        0.5625,
+        0.9895959233771228
+      ],
+      "gate_final": 0.7853895527229711,
+      "prob_final": 0.7853895527229711,
+      "evidence_mean": -0.011211210040176714,
+      "phase_positive_fraction": 0.2208650420984456,
+      "checkpoint_state": {
+        "rho": 0.9374914905054564,
+        "outcome_probability": 0.7853895527229711,
+        "outcome_gate": 0.7853895527229711,
+        "outcome_score_ema": -0.1926189949323625,
+        "outcome_score_count": 75,
+        "calibrated_outcome": true
+      }
+    },
+    "calibrated_phase_off": {
+      "prequential_bpb": 4.611995137183889,
+      "validation_A_bpb": 4.288238717980529,
+      "validation_B_bpb": 4.382035030926297,
+      "wall_seconds": 26.765685999998823,
+      "state_bytes": 1194608,
+      "fresh_measurements": 75,
+      "rho_range": [
+        0.04765220950975542,
+        1.0
+      ],
+      "rho_final": 0.052536560984505355,
+      "gate_range": [
+        0.5,
+        0.5
+      ],
+      "gate_final": 0.5,
+      "prob_final": 0.5,
+      "evidence_mean": -0.002450344703515081,
+      "phase_positive_fraction": 0.26781088082901555,
+      "checkpoint_state": {
+        "rho": 0.052536560984505355,
+        "outcome_probability": 0.5,
+        "outcome_gate": 0.5,
+        "outcome_score_ema": 0.0,
+        "outcome_score_count": 0,
+        "calibrated_outcome": false
+      }
+    }
+  },
+  "decision": "retain_as_promising_phase_gate_probe",
+  "interpretation": {
+    "on": "Calibrated outcome probability gates the existing phase/history transition and rho remains bounded; trajectory separates from raw gate control.",
+    "off": "Raw outcome residual gate collapses rho again and leaves the phase ungated.",
+    "claim_boundary": "One seed and 300 updates; no convergence or general optimizer superiority claim.",
+    "telemetry_correction": "The historical curve outcome_evidence and summary evidence statistics are the raw realized-minus-predicted residual, not calibrated score-minus-baseline. Checkpoint last_outcome_evidence is the actual calibrated evidence."
+  }
+}

@@ -4,33 +4,34 @@ import CGBAxioms.GenerationGradientFilter
 /-!
 # Information and energy for a finite body in a stream (generation chain, 2026-10-28)
 
-The missing edges N1–N5 of `docs/information_boltzmann/CGB_THEOREM_RELATION_MAP_20261028.md`. The
-energy is the one the axioms already give (T-E: `E = -log π` for a reversible process); nothing new
-is assumed about what energy is.
+Selected mathematical identities and conditional bounds for the information
+economics map. Their assumptions must be checked independently for any
+language-world implementation.
 
 * **N1, mismatch is free energy** (`freeEnergy_eq_kl`, `kl_nonneg`, `freeEnergy_at_law`): in the
   landscape `E = -log π` (temperature one), a body whose state law is `q` has free energy
   `Σ q E + Σ q log q = KL(q ‖ π) ≥ 0`, zero at `q = π`. What a body can be driven by is how far its
-  state is from the law its boundary sets (for a Gaussian, the precision-weighted squared error).
+  state law differs from the chosen reference law. A physical interpretation
+  requires the reference law and energy convention to be justified separately.
 * **N2, one snapshot misses hidden memory** (`snapshot_misses_hidden`): if a measurement `M` reads
   only `X` (its channel `k x m` does not depend on the hidden part `Y`), the information it carries
   about `(X, Y)` equals the information about `X`. Hidden degrees of freedom (a topic, an intention,
   a world's slow part) are reached only through records across time: memory.
-* **N3, a finite memory bounds the net harvest from a world in equilibrium**
+* **N3, an assumed work/erasure accounting bounds net harvest**
   (`finite_memory_bounds_net_work`): if the work drawn from acquired information `I` is at most
   `kT · I` (Sagawa–Ueda), and the part of `I` beyond the capacity must be erased (G16a
   `export_forced`) at a Landauer cost of at least `kT` per unit, the net is at most `kT · cap`,
-  whatever `I` is: no sustained harvest from an equilibrium world. A body lives on a world that is
-  out of equilibrium (food, rain, a low-entropy stream).
+  whatever `I` is. The theorem does not derive the two accounting bounds or
+  establish an equilibrium-world model or a trajectory-level persistence result.
 * **N4, passivity ends** (`passivity_ends`): with drift `q > 0` and no observation (W2 with gain
   zero), the variance of a hidden state exceeds any bound, so the information `½ log (1 + V / r)` of
-  one observation exceeds any fixed cost of acting: acting is due within finite time. Only `q = 0`
-  (nothing changes) or a cost that is higher for a while (night, winter) allows rest, and with
-  `q > 0` that while ends.
+  one observation exceeds any fixed numeric threshold. This alone does not
+  imply that a particular policy acts, or that information and action cost have
+  commensurate units or the assumed decision value.
 * **N5, learning saturates** (`mixture_regret_le`): a learner mixing hypotheses `θ` with prior
   weights `w θ` codes any sequence at most `log (1 / w θ₀)` worse than the source's own law `θ₀`.
-  The total a source can teach is the description length of its law; a source once learned teaches
-  nothing more (cf. `CausalLearning.agreement_no_write`: a predictable observation writes nothing).
+  This pathwise excess-code-length bound does not imply that a source stops
+  providing useful information or that the learner's parameters stop changing.
 -/
 
 namespace CGB.InformationEnergy
@@ -137,7 +138,7 @@ theorem passivity_ends (V : ℕ → ℝ) (q r c : ℝ) (hq : 0 < q) (hr : 0 < r)
     linarith
   linarith
 
-/-- **N5 (learning saturates)**: the Bayes mixture codes the sequence at most `log (1 / w θ₀)` worse
+/-- **N5 (mixture regret)**: the Bayes mixture codes the sequence at most `log (1 / w θ₀)` worse
 than the source's law `θ₀` (pathwise, for every sequence and length). `P θ` is the probability the
 hypothesis `θ` gives to the whole sequence. -/
 theorem mixture_regret_le {Θ : Type*} [Fintype Θ] (w P : Θ → ℝ) (hw : ∀ θ, 0 < w θ)

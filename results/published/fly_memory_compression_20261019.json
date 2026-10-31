@@ -1,0 +1,136 @@
+{
+  "created_at": "2026-10-19T03:13:57.058235+00:00",
+  "scope": "Lossless storage/workspace changes and matched numerical/resource checks; no formal training or new dialogue",
+  "main_inputs": 32384,
+  "main_paused": true,
+  "candidate_checkpoint": {
+    "path": "E:/fly_stream_overflow/native_dan_receiver_credit_20261019/last.pt",
+    "sha256": "2d849cc21574e79d90ccafa529498b108e60a0a507c51bebb377b17208e60e1a",
+    "inputs": 33000
+  },
+  "tests": {
+    "path": "F:/fly_stream_overflow/native_memory_compression_tests_20261019.xml",
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "tests": "160",
+    "time": "19.038",
+    "timestamp": "2026-10-19T11:12:46.203396+08:00",
+    "hostname": "llm"
+  },
+  "deslice_check": "Standalone script passed; not full suite certification",
+  "real_geometry": {
+    "scope": "Real KC geometry and archived GABA field, CPU operator equivalence only",
+    "nodes": 4184720,
+    "edges": 4180127,
+    "rows": 4,
+    "field_nonzero": 8977781,
+    "float32_output_absmax": 0.0,
+    "bitwise_equal": true,
+    "old_warm_solve_seconds": 0.5760551999992458,
+    "new_streamed_operator_seconds": 1.0395774000062374,
+    "timing_scope": "old solve only vs new full transfer/check operator; not an end-to-end speed comparison",
+    "old_index_bytes": 167315312,
+    "new_index_bytes": 83657656,
+    "old_coefficient_cache_bytes": 133874296,
+    "new_coefficient_cache_bytes": 66955520
+  },
+  "complete_restore": {
+    "checkpoint": "E:\\fly_stream_overflow\\native_dan_receiver_credit_20261019\\last.pt",
+    "sha256": "2d849cc21574e79d90ccafa529498b108e60a0a507c51bebb377b17208e60e1a",
+    "trained": 33000,
+    "scope": "zero-exposure complete trainer restore",
+    "storage_only_override": null,
+    "empty_physical_schema_fields_added": [],
+    "missing_model_entries": [],
+    "extra_model_entries": [],
+    "changed_model_entries": [],
+    "changed_learner_entries": [],
+    "cpu_cuda_rng_exact": true,
+    "source_unchanged": true,
+    "mother_world_roundtrip_exact": true,
+    "mother_rng_exact": true,
+    "mother_world_scope": "real MotherWorld state restored without new exposure or network call",
+    "status": "exact_restore_passed"
+  },
+  "restore_scope_note": "Complete state comparison predates pure operator checkpoint wrappers; state schema unchanged",
+  "latest_resource_check": {
+    "status": "cuda_out_of_memory",
+    "stages": [
+      {
+        "cpu_rss_MiB": 3520.08203125,
+        "cpu_private_MiB": 10189.2421875,
+        "system_available_MiB": 1600.0078125,
+        "stage": "restored_training_state",
+        "seconds": 28.749313099993742,
+        "allocated_MiB": 2273.13232421875,
+        "reserved_MiB": 2396.0,
+        "peak_allocated_MiB": 2273.13232421875,
+        "driver_used_MiB": 3204.9375
+      },
+      {
+        "cpu_rss_MiB": 3934.05078125,
+        "cpu_private_MiB": 11219.98828125,
+        "system_available_MiB": 1245.09375,
+        "stage": "one_tick_forward_with_graph",
+        "seconds": 36.214843399997335,
+        "allocated_MiB": 2816.455078125,
+        "reserved_MiB": 2958.0,
+        "peak_allocated_MiB": 2900.91845703125,
+        "driver_used_MiB": 3778.9375
+      },
+      {
+        "cpu_rss_MiB": 4123.87109375,
+        "cpu_private_MiB": 11615.125,
+        "system_available_MiB": 1068.8359375,
+        "stage": "motor_score_vjp",
+        "seconds": 36.45762939999986,
+        "allocated_MiB": 2939.02197265625,
+        "reserved_MiB": 3106.0,
+        "peak_allocated_MiB": 2988.423828125,
+        "driver_used_MiB": 3934.9375
+      },
+      {
+        "cpu_rss_MiB": 4128.9921875,
+        "cpu_private_MiB": 11815.75390625,
+        "system_available_MiB": 1063.2734375,
+        "stage": "failure",
+        "seconds": 36.49592529999791,
+        "allocated_MiB": 3092.3291015625,
+        "reserved_MiB": 3238.0,
+        "peak_allocated_MiB": 3092.3291015625,
+        "driver_used_MiB": 4066.9375
+      }
+    ],
+    "scope": "Disposable one-tick motor-score VJP and optimizer allocation only, not full NLL training; no checkpoint saved or world interaction"
+  },
+  "restore_cuda_allocated_MiB": {
+    "before": 2468.989,
+    "after": 2273.132,
+    "saved": 195.857
+  },
+  "parameter_inventory": {
+    "scope": "Floating model entries in candidate checkpoint, includes frozen parameters; no intelligence equivalence implied",
+    "total": 152448096,
+    "connection_weights": 24839985,
+    "language_perception_prediction": 88069969,
+    "language_action": 39274321,
+    "native_dynamics_and_other": 263821,
+    "physical_package_tensor_elements": 92891840
+  },
+  "training_admitted": false,
+  "remaining_blocker": "First Adam exp_avg_sq allocation for large language-action head; one-tick forward and motor VJP now pass, optimizer step does not",
+  "next_storage_target": "Preserve Adam update semantics while scheduling/offloading large head moments; not yet implemented",
+  "learning_policy": "Local eligibility is native learning dynamics, not required to reproduce global historical AD",
+  "code_sha256": {
+    "information_boltzmann/core/fly_apl_cable.py": "4b3827ae622713c300d4bf9db620451b107f09fc247e093ec54a57003e44a679",
+    "information_boltzmann/core/fly_kc_terminals.py": "402606782ada9a49921edf2299ec8b19a0a8bc21fce47bda57d37e399b759290",
+    "information_boltzmann/core/triton_synapse.py": "57e59309800642b8af3ca7def65ee17bee596c7a137c0c9e9d65b9d00cfd3c24",
+    "information_boltzmann/core/fly_reservoir.py": "fb609fbf33cfd668e9a009506acd2b9d374c02f79c0dc68932a0be636fc8d9b9",
+    "information_boltzmann/core/fly_carried_credit.py": "72a7607d03db786f313e1a4154b8782af7ffea2b9302b190e0e808f4cf667fda",
+    "information_boltzmann/core/fly_bptt_learning.py": "ee84313fe7c6046bb17f04f2c1d6cba331b0b95d5d8c61b8a2e059171d4bc80f",
+    "information_boltzmann/core/fly_native_policy_credit.py": "f4bbdebbc11c0cb41df1750edc734732629d93cc1da533f84b963b21d2d7aba8",
+    "scripts/ib/fly_interface/native_motor_admission.py": "a84793266fd2e145bdd7b02fac42ea8c86759939df92a22279ea457f23407483"
+  }
+}

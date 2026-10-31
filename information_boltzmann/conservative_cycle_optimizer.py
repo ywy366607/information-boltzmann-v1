@@ -253,24 +253,29 @@ class ResourceCycle(torch.optim.Optimizer):
                  sinkhorn_steps=8, chunk_compartments=1024, auto_step=False,
                  rho_min=1e-4, rho_max=10.0, gamma_up=1.05, gamma_down=0.95, deadband_eps=1e-7,
                  adam_base=False, betas=(.9, .999), eps=1e-8, competition_strength=1.0,
-                 latch_state=False, latch_strength=1.0, anchor_rate=.05,
+                 latch_state=False, latch_strength=1.0, anchor_rate=.05, latch_window=4,
                  resource_fatigue=False, resource_recovery_rate=.25,
                  outcome_modulation=False, outcome_deadband=1e-5,
                  calibrated_outcome=False, outcome_ema=.125,
-                 calibrated_outcome_rate=.05):
+                 calibrated_outcome_rate=.05, phase_latch_enabled=None,
+                 anchor_enabled=None, outcome_rho_enabled=None):
         super().__init__(params, dict(lr=lr, observer_rate=observer_rate,
             feedback=feedback, sinkhorn_steps=sinkhorn_steps, chunk_compartments=chunk_compartments,
             auto_step=auto_step, rho=1.0, rho_min=rho_min, rho_max=rho_max,
             gamma_up=gamma_up, gamma_down=gamma_down, deadband_eps=deadband_eps,
             last_pred_decrease=0.0, adam_base=adam_base, betas=betas, eps=eps,
             competition_strength=competition_strength, latch_state=latch_state,
-            latch_strength=latch_strength, anchor_rate=anchor_rate, resource_fatigue=resource_fatigue,
+            latch_strength=latch_strength, anchor_rate=anchor_rate, latch_window=latch_window,
+            latch_active=False, latch_positive_run=0, latch_contrary_run=0,
+            resource_fatigue=resource_fatigue,
             resource_recovery_rate=resource_recovery_rate, outcome_modulation=outcome_modulation,
             outcome_deadband=outcome_deadband, last_outcome_evidence=0.0,
             calibrated_outcome=calibrated_outcome, outcome_ema=outcome_ema,
             calibrated_outcome_rate=calibrated_outcome_rate,
             outcome_probability=.5, outcome_score_ema=0.0, outcome_score_count=0,
-            last_outcome_score=0.0))
+            outcome_gate=.5, last_outcome_score=0.0, last_outcome_prediction_error=0.0,
+            phase_latch_enabled=phase_latch_enabled, anchor_enabled=anchor_enabled,
+            outcome_rho_enabled=outcome_rho_enabled))
         for group in self.param_groups:
             self._validate_group(group)
 
@@ -288,6 +293,9 @@ class ResourceCycle(torch.optim.Optimizer):
             raise ValueError('outcome_modulation must be boolean')
         if type(group.get('calibrated_outcome', False)) is not bool:
             raise ValueError('calibrated_outcome must be boolean')
+        for key in ('phase_latch_enabled', 'anchor_enabled', 'outcome_rho_enabled'):
+            if group.get(key) is not None and type(group[key]) is not bool:
+                raise ValueError(f'{key} must be boolean or None')
         if not math.isfinite(group.get('outcome_deadband', 1e-5)) or group.get('outcome_deadband', 1e-5) < 0:
             raise ValueError('invalid outcome_deadband')
         if not math.isfinite(group.get('outcome_ema', .125)) or not 0 < group.get('outcome_ema', .125) <= 1:
@@ -297,6 +305,8 @@ class ResourceCycle(torch.optim.Optimizer):
             raise ValueError('invalid calibrated_outcome_rate')
         if not 0 <= group.get('outcome_probability', .5) <= 1:
             raise ValueError('invalid outcome_probability')
+        if not 0 <= group.get('outcome_gate', .5) <= 1:
+            raise ValueError('invalid outcome_gate')
         if (not math.isfinite(group.get('resource_recovery_rate', .25)) or
                 not 0 < group.get('resource_recovery_rate', .25) <= 1):
             raise ValueError('invalid resource_recovery_rate')
@@ -335,6 +345,10 @@ class ResourceCycle(torch.optim.Optimizer):
             raise ValueError('invalid latch_strength')
         if not math.isfinite(group.get('anchor_rate', .05)) or not 0 < group.get('anchor_rate', .05) <= 1:
             raise ValueError('invalid anchor_rate')
+        if type(group.get('latch_window', 4)) is not int or group.get('latch_window', 4) < 1:
+            raise ValueError('latch_window must be positive')
+        if type(group.get('latch_active', False)) is not bool:
+            raise ValueError('latch_active must be boolean')
         if group.get('latch_state', False) and group.get('auto_step', False):
             raise ValueError('directional auto_step is unavailable with latch_state')
 
@@ -404,7 +418,7 @@ class ResourceCycle(torch.optim.Optimizer):
                     state['mass'] = torch.zeros((), device=p.device, dtype=dtype)
                     if group.get('adam_base', False):
                         state['adam_step'] = 0
-                    if group.get('latch_state', False):
+                    if group.get('anchor_enabled') if group.get('anchor_enabled') is not None else group.get('latch_state', False):
                         state['anchor'] = p.detach().view(rows, cols).to(dtype).clone()
                 g = p.grad.view(rows, cols).to(dtype)
                 mean, rms, phase = state['mean'], state['rms'], state['phase']
@@ -443,7 +457,19 @@ class ResourceCycle(torch.optim.Optimizer):
                 # A saturated phase must be releasable by sustained absent
                 # evidence (cue=-1): with reserves in [.5,1], |phase|<=1
                 # leaves a strictly contrary margin at the positive endpoint.
-                nphase = ((.5+drive)*phase + cue).clamp(-1, 1)
+                raw_phase = ((.5+drive)*phase + cue).clamp(-1, 1)
+                if group.get('calibrated_outcome', False):
+                    # The calibrated third factor gates the existing local
+                    # history carrier.  Zero holds the eligibility state;
+                    # one takes the full phase transition.  This is the
+                    # signed [-1,1] production form of the Lean convex gate.
+                    gate = group.get('outcome_gate', .5)
+                    phase_latch = group.get('phase_latch_enabled')
+                    if (group.get('latch_state', False) if phase_latch is None else phase_latch) and group.get('latch_active', False):
+                        gate = 0.0
+                    nphase = phase + gate * (raw_phase - phase)
+                else:
+                    nphase = raw_phase
                 allocation, row_budget, col_budget = _matrix_allocation(
                     nphase, row, col, group.get('sinkhorn_steps', 8))
                 residuals.append(torch.maximum((allocation.mean(dim=1, keepdim=True)-row_budget).abs().amax(),
@@ -474,7 +500,8 @@ class ResourceCycle(torch.optim.Optimizer):
                     update = eff_lr * factor * direction
                 else:
                     update = eff_lr * allocation * (row+col)/2 * signal/scale
-                if group.get('latch_state', False):
+                anchor_enabled = group.get('anchor_enabled')
+                if group.get('latch_state', False) if anchor_enabled is None else anchor_enabled:
                     # A moving internal reference supplies a restorative path.
                     # Phase retains it; sustained gradient-driven displacement
                     # increases its rate of following the changing parameter.
@@ -531,6 +558,7 @@ class ResourceCycle(torch.optim.Optimizer):
                 # raw (realized - predicted) evidence collapse rho.
                 p = float(group.get('outcome_probability', .5))
                 y = 1.0 if realized > 0 else 0.0
+                group['last_outcome_prediction_error'] = y - p
                 score = 2.0 * p * y - p * p - y * y
                 count = int(group.get('outcome_score_count', 0))
                 baseline = float(group.get('outcome_score_ema', 0.0))
@@ -539,9 +567,27 @@ class ResourceCycle(torch.optim.Optimizer):
                 group['outcome_score_ema'] = (1.0 - ema) * baseline + ema * score
                 group['outcome_probability'] = (1.0 - ema) * p + ema * y
                 group['outcome_score_count'] = count + 1
+                group['outcome_gate'] = group['outcome_probability']
                 group['last_outcome_score'] = score
                 group['last_outcome_evidence'] = evidence
-                if abs(evidence) > group.get('outcome_deadband', 1e-5):
+                phase_latch = group.get('phase_latch_enabled')
+                if group.get('latch_state', False) if phase_latch is None else phase_latch:
+                    window = group.get('latch_window', 4)
+                    if evidence > group.get('outcome_deadband', 1e-5):
+                        group['latch_contrary_run'] = 0
+                        if not group.get('latch_active', False):
+                            group['latch_positive_run'] = group.get('latch_positive_run', 0) + 1
+                            if group['latch_positive_run'] >= window:
+                                group['latch_active'] = True
+                                group['latch_positive_run'] = 0
+                    elif evidence < -group.get('outcome_deadband', 1e-5):
+                        group['latch_positive_run'] = 0
+                        if group.get('latch_active', False):
+                            group['latch_contrary_run'] = group.get('latch_contrary_run', 0) + 1
+                            if group['latch_contrary_run'] >= window:
+                                group['latch_active'] = False
+                                group['latch_contrary_run'] = 0
+                if group.get('outcome_rho_enabled') is not False and abs(evidence) > group.get('outcome_deadband', 1e-5):
                     rate = group.get('calibrated_outcome_rate', .05)
                     group['rho'] = min(group.get('rho_max', 10.0),
                                        max(group.get('rho_min', 1e-4),
@@ -579,6 +625,10 @@ class ResourceCycle(torch.optim.Optimizer):
             stored.setdefault('latch_state', False)
             stored.setdefault('latch_strength', 1.0)
             stored.setdefault('anchor_rate', .05)
+            stored.setdefault('latch_window', 4)
+            stored.setdefault('latch_active', False)
+            stored.setdefault('latch_positive_run', 0)
+            stored.setdefault('latch_contrary_run', 0)
             stored.setdefault('resource_fatigue', False)
             stored.setdefault('resource_recovery_rate', .25)
             stored.setdefault('outcome_modulation', False)
@@ -590,7 +640,12 @@ class ResourceCycle(torch.optim.Optimizer):
             stored.setdefault('outcome_probability', .5)
             stored.setdefault('outcome_score_ema', 0.0)
             stored.setdefault('outcome_score_count', 0)
+            stored.setdefault('outcome_gate', .5)
             stored.setdefault('last_outcome_score', 0.0)
+            stored.setdefault('last_outcome_prediction_error', 0.0)
+            stored.setdefault('phase_latch_enabled', None)
+            stored.setdefault('anchor_enabled', None)
+            stored.setdefault('outcome_rho_enabled', None)
             self._validate_group(stored)
             if len(current['params']) != len(stored['params']):
                 raise ValueError('different parameter group size')
@@ -603,7 +658,7 @@ class ResourceCycle(torch.optim.Optimizer):
                 shapes = {'mean':(r,c), 'rms':(r,c), 'phase':(r,c),
                           'row_reserve':(r,1), 'col_reserve':(1,c),
                           'resource_pool':(), 'mass':()}
-                if stored['latch_state']:
+                if stored['latch_state'] if stored['anchor_enabled'] is None else stored['anchor_enabled']:
                     shapes['anchor'] = (r,c)
                 if 'previous_update' in payload:
                     shapes['previous_update'] = tuple(p.shape)

@@ -1,0 +1,90 @@
+{
+  "source": 24448,
+  "source_sha256": "57765ff10890721d015e23933b71f83e5e5b0469e34b547b8ee24a4aebee9da2",
+  "regression": {
+    "recent50_silent_fraction": 0.92,
+    "spoken_tokens": 11,
+    "normal_reply_nll": 5.051708752676001,
+    "unigram": 7.0527716663748805,
+    "child_hazard_median_last384": 0.014465775340795517
+  },
+  "change": "Noncontingent mother may share varied content during quiet; source remains mother_call, excluded from action novelty/PAM rewards. No speech-rate prior or brain reset.",
+  "tests_passed": 109,
+  "isolated": {
+    "tests_passed": 109,
+    "isolated_report": "E:/fly_stream_overflow/quiet_presence_24448_128/report.json",
+    "isolated_targets": 128,
+    "isolated_updates": 16,
+    "interaction_roundtrip_exact": true,
+    "source_unchanged": true,
+    "peak_mib": 3392.36572265625,
+    "quiet_generation_in_real_copy": "Not triggered:127 normal reply targets and1 self-hearing target; call execution/source semantics covered by deterministic interface tests. Must observe real spontaneous calls in main before calling deployment path verified."
+  },
+  "main": {
+    "start": 24448,
+    "target": 24960,
+    "status": "completed_full_state_saved",
+    "checkpoint_sha256": "f2e65c7004a3ccb295fca1f5a52045418e139de160df904db57328d32849155e",
+    "inputs": 512,
+    "optimizer_updates": 64,
+    "mother_spontaneous_calls": 1,
+    "sources": {
+      "mother_reply": {
+        "targets": 435,
+        "nll": 5.437585145046656,
+        "fixed_unigram_nll": 7.231156201633352
+      },
+      "mother_call": {
+        "targets": 70,
+        "nll": 5.117638365711485,
+        "fixed_unigram_nll": 6.841042180265286,
+        "reply_onsets": 0
+      },
+      "self_hearing": {
+        "targets": 7,
+        "nll": 6.650159767695835,
+        "fixed_unigram_nll": 8.042629622732422
+      }
+    },
+    "actual_branch": "After three quiet yields at24528, the mother shared clock/counting language. All70 targets tagged mother_call, no reply onsets; call-only windows have no consequence observations. One mixed transition window settled the preceding normal reply, not the call.",
+    "child_voiced_turns": [
+      "that's",
+      "comes",
+      "oak story",
+      "resting"
+    ],
+    "recent50": {
+      "silent_fraction": 0.84,
+      "normalized_spoken_words": 16,
+      "effective_vocabulary": 6.829510705709076
+    },
+    "child_decision_hazard": {
+      "decisions": 20,
+      "commits": 7,
+      "median": 0.040865350514650345,
+      "mean": 0.06234156049617593
+    },
+    "limits": "Only four voiced turns after one generated quiet input. No matched no-change learning control; not proof of recovery or cause. No stage promotion."
+  },
+  "interpretation": "Actual recovery and causal attribution remain unproven.",
+  "followup_25984": {
+    "start": 24960,
+    "end": 25984,
+    "inputs": 1024,
+    "optimizer_updates": 128,
+    "checkpoint_sha256": "ab4df2b1932d066a7ec52eae1ca2c565bc2745931468155e61b32621da83d40f",
+    "normal_reply_targets": 815,
+    "normal_reply_preupdate_nll": 5.126623512502828,
+    "fixed_unigram_nll": 7.117791533623968,
+    "mother_call_targets": 191,
+    "mother_call_reply_onsets": 0,
+    "self_hearing_targets": 18,
+    "new_child_turn_records": 18,
+    "voiced_child_turns": 8,
+    "recent50_silent_fraction": 0.68,
+    "recent50_normalized_spoken_words": 30,
+    "additional_spontaneous_calls": 3,
+    "new_consequence_settlements": 9,
+    "learning_outcome": "Short varied attempts continue, but no controlled recovery or comprehension claim. Parent still overuses names, word definitions and story openings; agent refined teaching while preserving full state and all curriculum strands."
+  }
+}

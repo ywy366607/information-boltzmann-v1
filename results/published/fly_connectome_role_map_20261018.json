@@ -1,0 +1,33 @@
+{
+  "date": "2026-10-18",
+  "graph": "data/malecns_v1/fly_reservoir_coba_r2.npz",
+  "neurons": 165122,
+  "counts": {
+    "KC": 4064,
+    "MBON": 97,
+    "DAN": 340,
+    "octopamine_named_types": 37,
+    "serotonin_named_types": 8,
+    "APL_named": 2,
+    "DPM_named": 2,
+    "CX_class": 2950,
+    "ALPN_class": 686,
+    "ALLN_class": 420,
+    "ALIN_class": 24,
+    "ALON_class": 14,
+    "ascending_neuron": 1846,
+    "descending_neuron": 1314,
+    "vnc_motor": 708,
+    "vnc_sensory": 6365,
+    "ENS": 47,
+    "untyped_fine_class": 140598
+  },
+  "neuprint": {
+    "dataset": "male-cns:v1.0",
+    "query": "gL(L) -> CAN(R)",
+    "edge_count": 19045,
+    "weight_sum": 143840,
+    "interpretation": "CAN/CX participates in cross-system state and body-action routing; current model has no dedicated continuous CX/CAN state or body-return loop."
+  },
+  "scope": "role inventory and model-gap audit, not a claim that every annotation has a uniquely known function"
+}

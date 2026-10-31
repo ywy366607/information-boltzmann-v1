@@ -1,0 +1,612 @@
+{
+  "scope": "deterministic algebra/state checks; no training or capability evidence",
+  "source_sha256": {
+    "scripts\\run_optimizer_continual.py": "693a16810a40e4ae943f5a1e5eea8c2d6f87039fa8be3104a483c076fef5f05f",
+    "scripts\\run_optimizer_continual_v4.py": "a08aa971b3d9d463e18c400870bbea93949c594c305eee8fb8623084155c97b0",
+    "scripts\\run_optimizer_continual_v5.py": "7613f4349115053f47c59e84f7f8736812456e562e208f3fcb379716de5a8174",
+    "scripts\\run_optimizer_continual_v6.py": "8dbd905332bf2de4b67954755d110d7447785f4eddc90684b6aac9d22cc45c00"
+  },
+  "initial_optimizer_storage": {
+    "measurements": [
+      {
+        "shape": [
+          8,
+          32
+        ],
+        "allocated_tensor_bytes": 26112,
+        "formula_bytes": 26112,
+        "fields": {
+          "Rx": {
+            "shape": [
+              32,
+              32
+            ],
+            "dtype": "torch.float32",
+            "bytes": 4096
+          },
+          "Q": {
+            "shape": [
+              32,
+              32
+            ],
+            "dtype": "torch.float32",
+            "bytes": 4096
+          },
+          "m": {
+            "shape": [
+              8,
+              32
+            ],
+            "dtype": "torch.float32",
+            "bytes": 1024
+          },
+          "P": {
+            "shape": [
+              8,
+              32
+            ],
+            "dtype": "torch.float32",
+            "bytes": 1024
+          },
+          "gprev": {
+            "shape": [
+              8,
+              32
+            ],
+            "dtype": "torch.float32",
+            "bytes": 1024
+          },
+          "thprev": {
+            "shape": [
+              8,
+              32
+            ],
+            "dtype": "torch.float32",
+            "bytes": 1024
+          },
+          "eprev": {
+            "shape": [
+              8,
+              32
+            ],
+            "dtype": "torch.float32",
+            "bytes": 1024
+          },
+          "e2": {
+            "shape": [
+              8,
+              32
+            ],
+            "dtype": "torch.float32",
+            "bytes": 1024
+          },
+          "e11": {
+            "shape": [
+              8,
+              32
+            ],
+            "dtype": "torch.float32",
+            "bytes": 1024
+          },
+          "sxy": {
+            "shape": [
+              8,
+              32
+            ],
+            "dtype": "torch.float32",
+            "bytes": 1024
+          },
+          "sxx": {
+            "shape": [
+              8,
+              32
+            ],
+            "dtype": "torch.float32",
+            "bytes": 1024
+          },
+          "cons": {
+            "shape": [
+              8,
+              32
+            ],
+            "dtype": "torch.bool",
+            "bytes": 256
+          },
+          "run": {
+            "shape": [
+              8,
+              32
+            ],
+            "dtype": "torch.float32",
+            "bytes": 1024
+          },
+          "n": {
+            "shape": [
+              8,
+              1
+            ],
+            "dtype": "torch.float32",
+            "bytes": 32
+          },
+          "nd": {
+            "shape": [
+              8,
+              1
+            ],
+            "dtype": "torch.float32",
+            "bytes": 32
+          },
+          "avail": {
+            "shape": [
+              8,
+              1
+            ],
+            "dtype": "torch.float32",
+            "bytes": 32
+          },
+          "S": {
+            "shape": [
+              8,
+              32
+            ],
+            "dtype": "torch.float32",
+            "bytes": 1024
+          },
+          "J": {
+            "shape": [
+              8,
+              32
+            ],
+            "dtype": "torch.float32",
+            "bytes": 1024
+          },
+          "age": {
+            "shape": [
+              8,
+              32
+            ],
+            "dtype": "torch.float32",
+            "bytes": 1024
+          },
+          "sh": {
+            "shape": [
+              8,
+              32
+            ],
+            "dtype": "torch.float32",
+            "bytes": 1024
+          },
+          "qs": {
+            "shape": [
+              8,
+              32
+            ],
+            "dtype": "torch.float32",
+            "bytes": 1024
+          },
+          "nqs": {
+            "shape": [
+              8,
+              32
+            ],
+            "dtype": "torch.float32",
+            "bytes": 1024
+          },
+          "e_last": {
+            "shape": [
+              8,
+              32
+            ],
+            "dtype": "torch.float32",
+            "bytes": 1024
+          },
+          "axy": {
+            "shape": [
+              8,
+              1
+            ],
+            "dtype": "torch.float32",
+            "bytes": 32
+          },
+          "axx": {
+            "shape": [
+              8,
+              1
+            ],
+            "dtype": "torch.float32",
+            "bytes": 32
+          },
+          "a1": {
+            "shape": [
+              8,
+              1
+            ],
+            "dtype": "torch.float32",
+            "bytes": 32
+          },
+          "a2": {
+            "shape": [
+              8,
+              1
+            ],
+            "dtype": "torch.float32",
+            "bytes": 32
+          },
+          "na": {
+            "shape": [
+              8,
+              1
+            ],
+            "dtype": "torch.float32",
+            "bytes": 32
+          }
+        }
+      },
+      {
+        "shape": [
+          32,
+          32
+        ],
+        "allocated_tensor_bytes": 79872,
+        "formula_bytes": 79872,
+        "fields": {
+          "Rx": {
+            "shape": [
+              32,
+              32
+            ],
+            "dtype": "torch.float32",
+            "bytes": 4096
+          },
+          "Q": {
+            "shape": [
+              32,
+              32
+            ],
+            "dtype": "torch.float32",
+            "bytes": 4096
+          },
+          "m": {
+            "shape": [
+              32,
+              32
+            ],
+            "dtype": "torch.float32",
+            "bytes": 4096
+          },
+          "P": {
+            "shape": [
+              32,
+              32
+            ],
+            "dtype": "torch.float32",
+            "bytes": 4096
+          },
+          "gprev": {
+            "shape": [
+              32,
+              32
+            ],
+            "dtype": "torch.float32",
+            "bytes": 4096
+          },
+          "thprev": {
+            "shape": [
+              32,
+              32
+            ],
+            "dtype": "torch.float32",
+            "bytes": 4096
+          },
+          "eprev": {
+            "shape": [
+              32,
+              32
+            ],
+            "dtype": "torch.float32",
+            "bytes": 4096
+          },
+          "e2": {
+            "shape": [
+              32,
+              32
+            ],
+            "dtype": "torch.float32",
+            "bytes": 4096
+          },
+          "e11": {
+            "shape": [
+              32,
+              32
+            ],
+            "dtype": "torch.float32",
+            "bytes": 4096
+          },
+          "sxy": {
+            "shape": [
+              32,
+              32
+            ],
+            "dtype": "torch.float32",
+            "bytes": 4096
+          },
+          "sxx": {
+            "shape": [
+              32,
+              32
+            ],
+            "dtype": "torch.float32",
+            "bytes": 4096
+          },
+          "cons": {
+            "shape": [
+              32,
+              32
+            ],
+            "dtype": "torch.bool",
+            "bytes": 1024
+          },
+          "run": {
+            "shape": [
+              32,
+              32
+            ],
+            "dtype": "torch.float32",
+            "bytes": 4096
+          },
+          "n": {
+            "shape": [
+              32,
+              1
+            ],
+            "dtype": "torch.float32",
+            "bytes": 128
+          },
+          "nd": {
+            "shape": [
+              32,
+              1
+            ],
+            "dtype": "torch.float32",
+            "bytes": 128
+          },
+          "avail": {
+            "shape": [
+              32,
+              1
+            ],
+            "dtype": "torch.float32",
+            "bytes": 128
+          },
+          "S": {
+            "shape": [
+              32,
+              32
+            ],
+            "dtype": "torch.float32",
+            "bytes": 4096
+          },
+          "J": {
+            "shape": [
+              32,
+              32
+            ],
+            "dtype": "torch.float32",
+            "bytes": 4096
+          },
+          "age": {
+            "shape": [
+              32,
+              32
+            ],
+            "dtype": "torch.float32",
+            "bytes": 4096
+          },
+          "sh": {
+            "shape": [
+              32,
+              32
+            ],
+            "dtype": "torch.float32",
+            "bytes": 4096
+          },
+          "qs": {
+            "shape": [
+              32,
+              32
+            ],
+            "dtype": "torch.float32",
+            "bytes": 4096
+          },
+          "nqs": {
+            "shape": [
+              32,
+              32
+            ],
+            "dtype": "torch.float32",
+            "bytes": 4096
+          },
+          "e_last": {
+            "shape": [
+              32,
+              32
+            ],
+            "dtype": "torch.float32",
+            "bytes": 4096
+          },
+          "axy": {
+            "shape": [
+              32,
+              1
+            ],
+            "dtype": "torch.float32",
+            "bytes": 128
+          },
+          "axx": {
+            "shape": [
+              32,
+              1
+            ],
+            "dtype": "torch.float32",
+            "bytes": 128
+          },
+          "a1": {
+            "shape": [
+              32,
+              1
+            ],
+            "dtype": "torch.float32",
+            "bytes": 128
+          },
+          "a2": {
+            "shape": [
+              32,
+              1
+            ],
+            "dtype": "torch.float32",
+            "bytes": 128
+          },
+          "na": {
+            "shape": [
+              32,
+              1
+            ],
+            "dtype": "torch.float32",
+            "bytes": 128
+          }
+        }
+      }
+    ],
+    "formula_bytes_for_K_by_D": "69*K*D + 8*D*D + 32*K",
+    "scope": "Initial direct tensor fields only; excludes weights, gradients, later state, temporaries, Python objects and allocator overhead. Includes inherited unused fields; no 1B allocation performed."
+  },
+  "coupled_quadratic_diagonal_step": {
+    "H": [
+      [
+        2.0,
+        1.0
+      ],
+      [
+        1.0,
+        2.0
+      ]
+    ],
+    "scalar_step": 0.5,
+    "error_transition": [
+      [
+        0.0,
+        -0.5
+      ],
+      [
+        -0.5,
+        0.0
+      ]
+    ],
+    "squared_norm_factor": 0.25,
+    "scope": "Exact one-step identity for this SPD quadratic; refutes necessity of whitening for convergence, not comparative efficiency on language."
+  },
+  "allocation_breaks_scalar_descent": {
+    "gradient": [
+      [
+        1.0
+      ],
+      [
+        1.0
+      ]
+    ],
+    "diagonal_curvature": [
+      [
+        1.0
+      ],
+      [
+        1000.0
+      ]
+    ],
+    "rho": 10.0,
+    "bounded_proposal": [
+      [
+        0.9966799462495581
+      ],
+      [
+        0.0009999999966666666
+      ]
+    ],
+    "equal_row_budget_step": [
+      [
+        0.7047595033967315
+      ],
+      [
+        0.7047595033967315
+      ]
+    ],
+    "quadratic_decrease_before_allocation": 0.5004944886215471,
+    "quadratic_decrease_after_allocation": -247.18180278602438,
+    "scope": "Algebraic special case of one-column equal-row allocation, not a claim that a measured CLO6 trajectory reaches this state; complete-step descent needs its own certificate."
+  },
+  "float32_age_resolution": {
+    "age": 16777216,
+    "increment_changes_value": false,
+    "scope": "Exact arithmetic check on current float32 counter representation; does not claim unlimited fixed-bit counters are needed."
+  },
+  "column_prior_rebase": {
+    "actual": [
+      [
+        4.999999523162842,
+        4.999999523162842
+      ]
+    ],
+    "diagonal_transport_reference": [
+      [
+        4.999999523162842,
+        4.999999523162842
+      ]
+    ],
+    "max_abs_difference": 0.0,
+    "matches_existing_diagonal_transport_convention": true,
+    "qualification": "Diagonal transport is itself an approximation for general rotations."
+  },
+  "column_prior_uses_own_element": {
+    "original_prior": [
+      [
+        1.5
+      ]
+    ],
+    "changed_prior": [
+      [
+        13.5
+      ]
+    ],
+    "original_gain": [
+      [
+        0.6000000238418579
+      ],
+      [
+        0.6000000238418579
+      ]
+    ],
+    "changed_gain": [
+      [
+        0.931034505367279
+      ],
+      [
+        0.931034505367279
+      ]
+    ],
+    "same_element_changes_its_prior": true
+  },
+  "gaussian_posterior_identity": {
+    "prior_variance": 1,
+    "noise_variance": 1,
+    "expected_squared_posterior_mean": 0.5,
+    "posterior_variance": 0.5,
+    "subtraction": 0,
+    "sum": 1,
+    "qualification": "Exact conjugate-model counterexample to a general unbiasedness claim; not a claim that CLO6 is an exact Gaussian posterior."
+  },
+  "scalar_newton_boundary": {
+    "0.4": 1.5,
+    "0.5": 1.0,
+    "1.0": 0.0,
+    "2.0": 0.5
+  }
+}

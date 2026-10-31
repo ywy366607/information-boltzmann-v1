@@ -9,6 +9,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import re
 import subprocess
 import sys
@@ -163,8 +164,12 @@ def main() -> None:
         names = re.findall(r"\b(?:theorem|lemma|def|abbrev|opaque)\s+([\w'.]+)", code)
         declarations[module] = names
     build = run(["lake", "build"])
-    audit = run(["lake", "env", "lean", "CGBAxioms/AuditAll.lean"])
-    inventory = parse_inventory(audit.stdout, expected)
+    # Resolve Lake's library path once; do not retain a large Lake parent for every audit.
+    lean_path = run(["lake", "env", sys.executable, "-c",
+                     "import os; print(os.environ['LEAN_PATH'])"]).stdout.strip()
+    os.environ["LEAN_PATH"] = lean_path
+    audit_output = run(["lean", "CGBAxioms/AuditAll.lean"]).stdout
+    inventory = parse_inventory(audit_output, expected)
     authored = []
     for record in inventory["declarations"]:
         record["source_declared"] = any(record["name"] == name or record["name"].endswith("." + name)
@@ -186,12 +191,17 @@ def main() -> None:
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(inventory, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     args.output.with_suffix(".build.log").write_text(build.stdout, encoding="utf-8")
-    args.output.with_suffix(".audit.log").write_text(audit.stdout, encoding="utf-8")
+    args.output.with_suffix(".audit.log").write_text(audit_output, encoding="utf-8")
     index_command = [sys.executable, str(PROJECT.parent.parent / "scripts/build_proven_index.py"),
                      "--inventory", str(args.output.resolve())]
     if args.check_index:
         index_command.append("--check")
     print(run(index_command).stdout, end="")
+    basis_command = [sys.executable, str(PROJECT.parent.parent / "scripts/build_theorem_basis.py"),
+                     "--inventory", str(args.output.resolve())]
+    if args.check_index:
+        basis_command.append("--check")
+    print(run(basis_command).stdout, end="")
     catalog_command = [sys.executable, str(PROJECT.parent.parent / "scripts/build_theorem_catalog.py"),
                        "--inventory", str(args.output.resolve())]
     if args.check_index:

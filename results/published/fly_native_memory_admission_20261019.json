@@ -1,0 +1,67 @@
+{
+  "kind": "one_tick_resource_diagnostic",
+  "at": "2026-10-19T02:17:28.133870+00:00",
+  "checkpoint": "E:\\fly_stream_overflow\\native_dan_receiver_credit_20261019\\last.pt",
+  "sha256": "2d849cc21574e79d90ccafa529498b108e60a0a507c51bebb377b17208e60e1a",
+  "source_unchanged": true,
+  "graph_enabled": {
+    "status": "failed",
+    "stages": [
+      {
+        "stage": "restored_training_state",
+        "seconds": 28.880843399994774,
+        "allocated_MiB": 2468.9892578125,
+        "reserved_MiB": 2598.0,
+        "peak_allocated_MiB": 2468.9892578125,
+        "driver_used_MiB": 3406.9375
+      },
+      {
+        "stage": "failure",
+        "seconds": 33.04757159999281,
+        "allocated_MiB": 2874.26953125,
+        "reserved_MiB": 3380.0,
+        "peak_allocated_MiB": 3147.791015625,
+        "driver_used_MiB": 4095.6875
+      }
+    ],
+    "scope": "Disposable one-tick motor-score VJP and optimizer allocation only, not full NLL training; no checkpoint saved or world interaction"
+  },
+  "graph_disabled": {
+    "status": "failed",
+    "stages": [
+      {
+        "stage": "restored_training_state",
+        "seconds": 28.888275400007842,
+        "allocated_MiB": 2468.9892578125,
+        "reserved_MiB": 2598.0,
+        "peak_allocated_MiB": 2468.9892578125,
+        "driver_used_MiB": 3406.9375
+      },
+      {
+        "stage": "failure",
+        "seconds": 33.71691700001247,
+        "allocated_MiB": 2788.8525390625,
+        "reserved_MiB": 3346.0,
+        "peak_allocated_MiB": 3097.86279296875,
+        "driver_used_MiB": 4095.6875
+      }
+    ],
+    "scope": "Disposable one-tick motor-score VJP and optimizer allocation only, not full NLL training; no checkpoint saved or world interaction"
+  },
+  "graph_enabled_failure": "Traceback (most recent call last):\n  File \"F:\\fly_stream_overflow\\profile_native_memory_20261019.py\", line 25, in <module>\n    namespace[\"audit\"](Path(\"E:/fly_stream_overflow/native_dan_receiver_credit_20261019/last.pt\"),output)\n  File \"D:\\information-boltzmann-v1\\scripts\\ib\\fly_interface\\native_motor_admission.py\", line 44, in audit\n    torch.tensor([learner.previous_token], device=state.h.device), ticks=1,\n  File \"D:\\information-boltzmann-v1\\information_boltzmann\\core\\fly_bptt_learning.py\", line 1115, in advance_fly_token_stream\n    return _with_transmission_reuse(_advance_fly_token_stream, model, state, token, schedule_box, **kwargs)\n  File \"D:\\information-boltzmann-v1\\information_boltzmann\\core\\fly_bptt_learning.py\", line 1096, in _with_transmission_reuse\n    return inner(model, state, token, schedule_box, **kwargs)\n  File \"D:\\information-boltzmann-v1\\information_boltzmann\\core\\fly_bptt_learning.py\", line 2751, in _advance_fly_token_stream\n    current = step_fly_physical_tick(model, current, token, drive, baseline, options,\n  File \"D:\\information-boltzmann-v1\\information_boltzmann\\core\\fly_bptt_learning.py\", line 673, in step_fly_physical_tick\n    kc_values = advance_kc_terminals(model, current, ring[0], base_rates=base_rates,\n  File \"D:\\information-boltzmann-v1\\information_boltzmann\\core\\fly_kc_terminals.py\", line 270, in advance_kc_terminals\n    gaba=diffuse(gaba,model.kc_terminal_log_diffusion[0],model.kct_geometries[0])\n  File \"D:\\information-boltzmann-v1\\information_boltzmann\\core\\fly_apl_cable.py\", line 100, in diffuse\n    return _Diffuse.apply(voltage, log_axial, geometry)\n  File \"D:\\conda_envs\\vox\\lib\\site-packages\\torch\\autograd\\function.py\", line 581, in apply\n    return super().apply(*args, **kwargs)  # type: ignore[misc]\n  File \"D:\\information-boltzmann-v1\\information_boltzmann\\core\\fly_apl_cable.py\", line 79, in forward\n    matrix, factor, weight = geometry.factor(log_axial)\n  File \"D:\\information-boltzmann-v1\\information_boltzmann\\core\\fly_kc_terminals.py\", line 117, in factor\n    weight=self.conductance*np.exp(values)[self.owner[self.first]]\nnumpy._core._exceptions._ArrayMemoryError: Unable to allocate 31.9 MiB for an array with shape (4180127,) and data type int64\n",
+  "graph_disabled_failure": "Traceback (most recent call last):\n  File \"F:\\fly_stream_overflow\\profile_native_memory_no_grad_20261019.py\", line 30, in <module>\n    namespace[\"audit\"](Path(\"E:/fly_stream_overflow/native_dan_receiver_credit_20261019/last.pt\"),output)\n  File \"D:\\information-boltzmann-v1\\scripts\\ib\\fly_interface\\native_motor_admission.py\", line 45, in audit\n    hold_input=learner.hold_input, writer_baseline_clock=learner.writer_baseline_clock,\n  File \"D:\\information-boltzmann-v1\\information_boltzmann\\core\\fly_bptt_learning.py\", line 1115, in advance_fly_token_stream\n    return _with_transmission_reuse(_advance_fly_token_stream, model, state, token, schedule_box, **kwargs)\n  File \"D:\\information-boltzmann-v1\\information_boltzmann\\core\\fly_bptt_learning.py\", line 1096, in _with_transmission_reuse\n    return inner(model, state, token, schedule_box, **kwargs)\n  File \"D:\\information-boltzmann-v1\\information_boltzmann\\core\\fly_bptt_learning.py\", line 2751, in _advance_fly_token_stream\n    current = step_fly_physical_tick(model, current, token, drive, baseline, options,\n  File \"D:\\information-boltzmann-v1\\information_boltzmann\\core\\fly_bptt_learning.py\", line 673, in step_fly_physical_tick\n    kc_values = advance_kc_terminals(model, current, ring[0], base_rates=base_rates,\n  File \"D:\\information-boltzmann-v1\\information_boltzmann\\core\\fly_kc_terminals.py\", line 270, in advance_kc_terminals\n    gaba=diffuse(gaba,model.kc_terminal_log_diffusion[0],model.kct_geometries[0])\n  File \"D:\\information-boltzmann-v1\\information_boltzmann\\core\\fly_apl_cable.py\", line 100, in diffuse\n    return _Diffuse.apply(voltage, log_axial, geometry)\n  File \"D:\\conda_envs\\vox\\lib\\site-packages\\torch\\autograd\\function.py\", line 581, in apply\n    return super().apply(*args, **kwargs)  # type: ignore[misc]\n  File \"D:\\information-boltzmann-v1\\information_boltzmann\\core\\fly_apl_cable.py\", line 80, in forward\n    rhs = geometry.area[:, None] * voltage.detach().double().cpu().numpy().T\nnumpy._core._exceptions._ArrayMemoryError: Unable to allocate 128. MiB for an array with shape (4184720, 4) and data type float64\n",
+  "interpretation": [
+    "Both runs restored the complete training state and retained persistent sensitivity arrays.",
+    "Both failed during the first forward tick in CPU NumPy geometry workspace, before VJP/backward/optimizer.",
+    "Graph-disabled failure does not establish that BPTT is the sole bottleneck.",
+    "Do not subtract peaks from different failure locations as an isolated graph memory cost.",
+    "Neither run used a complete real word duration or qualifies as training admission.",
+    "No checkpoint, mother interaction, or main training state was changed."
+  ],
+  "next_priorities": [
+    "Reduce exact physical-solver workspace and redundant execution/state storage.",
+    "Use bounded local biological eligibility for ongoing slow plasticity; do not require it to reproduce window gradients.",
+    "Retain local BPTT for fast paths only within a measured bounded budget.",
+    "Recheck complete one-input real-clock forward/backward admission after memory changes."
+  ]
+}

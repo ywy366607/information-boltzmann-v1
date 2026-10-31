@@ -167,6 +167,51 @@ def main():
     result = bridge.step(Observation(0, 17), write_units=1, dissipation_units=2)
     assert result.target == 17 and result.ledger_row.useful_bits == 0.0
     assert learner.calls == ["predict", (17, True)]
+
+    class ScoreFrame:
+        def nll(self, token):
+            assert token == 17
+            return math.log(2.0)
+
+    class PostUpdateScoreLearner:
+        def __init__(self): self.calls = []
+        def predict(self): self.calls.append("predict"); return ScoreFrame()
+        def observe(self, token, *, external=True):
+            self.calls.append((token, external)); return 0.0
+
+    score_learner = PostUpdateScoreLearner()
+    score_ledger = modules["cgb_information_ledger"].PredictiveInformationLedger(reference_name="fixed")
+    score_bridge = modules["cgb_prequential_bridge"].CGBPrequentialBridge(
+        score_learner, score_ledger, lambda _: math.log(2.0))
+    score = score_bridge.step(Observation(0, 17), write_units=1, dissipation_units=0)
+    assert math.isclose(score.model_nll_nats, math.log(2.0))
+    assert math.isclose(score.ledger_row.model_nll_bits, 1.0)
+    assert score_learner.calls == ["predict", (17, True)]
+
+    # The world may reveal the target only after prepare. The bridge must use
+    # exactly that frame, rather than asking the learner to predict again.
+    prepared_learner = PostUpdateScoreLearner()
+    prepared_ledger = modules["cgb_information_ledger"].PredictiveInformationLedger()
+    prepared_bridge = modules["cgb_prequential_bridge"].CGBPrequentialBridge(
+        prepared_learner, prepared_ledger, lambda _: math.log(2.0), strict_scoring=True)
+    frame = prepared_bridge.prepare()
+    assert prepared_learner.calls == ["predict"]
+    try:
+        prepared_bridge.prepare()
+        raise AssertionError("duplicate prediction was accepted")
+    except ValueError:
+        pass
+    try:
+        prepared_bridge.step(Observation(0, 17), write_units=0,
+                             dissipation_units=0, auxiliary=(1,))
+        raise AssertionError("mismatched context was accepted")
+    except ValueError:
+        pass
+    assert prepared_learner.calls == ["predict"]
+    prepared_result = prepared_bridge.step(Observation(0, 17), write_units=0, dissipation_units=0)
+    assert prepared_result.prediction is frame
+    assert prepared_learner.calls == ["predict", (17, True)]
+    assert math.isclose(prepared_result.model_nll_nats, math.log(2.0))
     reject(lambda: bridge.step(Observation(2, 18), write_units=0, dissipation_units=0), bridge)
     for value in (-1, math.nan, math.inf):
         bridge.reference_nll_nats = lambda _, value=value: value

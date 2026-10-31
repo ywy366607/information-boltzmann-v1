@@ -1,0 +1,185 @@
+{
+  "created_at": "2026-10-19T04:57:18.673948+00:00",
+  "dataset": "male-cns:v1.0",
+  "source": "Authenticated live neuPrint read-only catalog, plus existing anatomical archives; token not recorded",
+  "live_dataset_uuid": "4b2087c0fbe046bfaf0d60bc970e3e5d",
+  "live_database_edit": "2026-03-28 11:56:30.222612573-04:00 / 2026-06-08T01:31:39-04:00 (segment property update)",
+  "remote_neuron_coverage": [
+    {
+      "neurons": 176422,
+      "typed": 164506,
+      "classified": 26513,
+      "consensusNt": 174165,
+      "receptorType": 752,
+      "birthtime": 7904,
+      "trumanHl": 19753,
+      "hemibrainType": 32919
+    }
+  ],
+  "remote_neuron_status": [
+    {
+      "status": "Traced",
+      "neurons": 165122
+    },
+    {
+      "status": "Orphan",
+      "neurons": 6464
+    },
+    {
+      "status": null,
+      "neurons": 4214
+    },
+    {
+      "status": "Anchor",
+      "neurons": 611
+    },
+    {
+      "status": "Assign",
+      "neurons": 11
+    }
+  ],
+  "remote_neuron_pair_totals": [
+    {
+      "neuron_pair_edges": 25862574,
+      "connection_weight_sum": 125024863
+    }
+  ],
+  "remote_neuron_property_schema": {
+    "post": "int",
+    "pre": "int",
+    "downstream": "int",
+    "upstream": "int",
+    "synweight": "int",
+    "assignedOlHex1": "float",
+    "assignedOlHex2": "float",
+    "bodyId": "long",
+    "flywireType": "string",
+    "group": "long",
+    "instance": "string",
+    "somaSide": "string",
+    "statusLabel": "string",
+    "superclass": "string",
+    "type": "string",
+    "vfbId": "string",
+    "hemibrainType": "string",
+    "itoleeHl": "string",
+    "supertype": "string",
+    "birthtime": "string",
+    "mancBodyid": "float",
+    "mancGroup": "float",
+    "mancType": "string",
+    "subclass": "string",
+    "synonyms": "string",
+    "class": "string",
+    "rootSide": "string",
+    "somaNeuromere": "string",
+    "trumanHl": "string",
+    "dimorphism": "string",
+    "matchingNotes": "string",
+    "entryNerve": "string",
+    "mancSerial": "float",
+    "mcnsSerial": "float",
+    "serialMotif": "string",
+    "fruDsx": "string",
+    "exitNerve": "string",
+    "receptorType": "string",
+    "somaLocation": "point{srid:9157}",
+    "tosomaLocation": "point{srid:9157}",
+    "status": "string",
+    "totalNtPredictions": "float",
+    "predictedNtConfidence": "float",
+    "predictedNt": "string",
+    "celltypeTotalNtPredictions": "float",
+    "celltypePredictedNt": "string",
+    "celltypePredictedNtConfidence": "float",
+    "consensusNt": "string",
+    "roiInfo": "string",
+    "size": "long",
+    "locationType": "string"
+  },
+  "remote_receptorType_values": [
+    {
+      "receptorType": "putative_IR52b",
+      "neurons": 226
+    },
+    {
+      "receptorType": "putative_ppk23",
+      "neurons": 269
+    },
+    {
+      "receptorType": "putative_ppk25",
+      "neurons": 257
+    }
+  ],
+  "local_graph": {
+    "graph": "D:\\information-boltzmann-v1\\data\\malecns_v1\\fly_reservoir_coba_r2.npz",
+    "local_neurons": 165122,
+    "remote_neurons": 176422,
+    "all_remote_neuron_ids_present": false,
+    "ordered_remote_id_sha256": "a21dcf2576c352eda0f4d455683b648ec28272fd7f4918fdfbf2c97aff9df465",
+    "edge_scope": "Counts only; edge identity/weight equality not established by equal counts",
+    "local_fast_edges": 24839985,
+    "local_separate_dopamine_edges": 236767,
+    "local_stored_edge_channels_total": 25076752,
+    "missing_remote_status": {
+      "Orphan": 6464,
+      "null": 4214,
+      "Anchor": 611,
+      "Assign": 11
+    },
+    "missing_remote_typed": 1989,
+    "all_local_neurons_status_Traced": true,
+    "missing_remote_all_nonTraced": true,
+    "original_traced_nonself_anatomical_pairs": 25563096,
+    "pre_r2_fast_edges": 25321395,
+    "r2_fast_edge_count_reduction": 481410,
+    "filter_evidence": [
+      "scripts/ib/build_fly_reservoir_graph.py: Traced nodes only, positive weight, pre != post",
+      "scripts/ib/build_fly_reservoir_biological_graph.py: separate dopamine delivery graph",
+      "scripts/ib/build_coba_graph.py: optional removal of inputs to sensory neurons"
+    ],
+    "interpretation": "Remote Neuron label includes additional non-Traced entries; no evidence of missing local Traced nodes. Fast-channel reductions need route coverage, not blind somatic restoration."
+  },
+  "sensory_return_catalog": {
+    "original_graph": "data\\malecns_v1\\fly_reservoir_coba.npz",
+    "current_graph": "data\\malecns_v1\\fly_reservoir_coba_r2.npz",
+    "original_all_channels_edges": 25563096,
+    "current_all_channels_edges": 25076752,
+    "sensory_return_pairs": 486344,
+    "source_channel_counts": {
+      "e": 331598,
+      "i": 154746
+    },
+    "target_superclass_counts": {
+      "vnc_sensory": 238779,
+      "cb_sensory": 208786,
+      "ol_sensory": 20237,
+      "sensory_ascending": 17323,
+      "sensory_descending": 998,
+      "cb_sensory_tbc": 146,
+      "vnc_sensory_tbc": 49,
+      "sensory_ascending_tbc": 26
+    },
+    "total_count_gap_matches_sensory_catalog": true,
+    "scope": "Anatomical routing candidates only. Counts are not full edge-set equality; current specialized-module coverage still needs endpoint audit.",
+    "runtime_changed": false,
+    "checkpoint_changed": false,
+    "requirements": [
+      "Obtain actual postsynaptic contact locations and justified receptor/effectors",
+      "Route local axonal/dendritic effects without turning all feedback into somatic excitation",
+      "Reference old weights are provenance, not current learned parameters or an approved reinitialization"
+    ]
+  },
+  "catalog": "F:\\fly_stream_overflow\\malecns_live_catalog_20261019\\catalog.json",
+  "sensory_return_edge_table": "F:\\fly_stream_overflow\\malecns_sensory_return_catalog_20261019\\sensory_return_edges.feather",
+  "runtime_changed": false,
+  "checkpoint_changed": false,
+  "new_formal_inputs": 0,
+  "next_implementation": "Use an anatomical master graph and component/endpoint compilation; audit coverage of the original sensory return routes before any state-preserving wiring migration",
+  "limits": [
+    "Remote Neuron entries include non-Traced bodies; do not automatically instantiate all orphan entries as complete cells",
+    "Matching edge counts are not edge identity or weight equivalence",
+    "receptorType here contains three putative sensory receptor labels, not a whole-brain neurotransmitter-receptor/channel expression atlas",
+    "The 486344 return pairs are cataloged only; their correct local mechanism routing is not yet implemented/validated by this catalog"
+  ]
+}

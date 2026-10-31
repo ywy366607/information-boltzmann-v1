@@ -1,0 +1,31 @@
+{
+  "checkpoint": "F:\\fly_stream_overflow\\native_body_20261018\\last.pt",
+  "tokens": 32768,
+  "source": "F:/fly_stream_overflow/native_mb_20261018/last.pt",
+  "status": "isolated_continuation_completed",
+  "mechanism": "ascending_descending_body_loop",
+  "body_descending_count": 1314,
+  "body_ascending_count": 1846,
+  "body_tau_ticks": 32.271244049072266,
+  "body_feedback_mean": -0.0023130448535084724,
+  "body_action_trace_mean": 0.05962386727333069,
+  "body_feedback_trace_mean": 0.01560729369521141,
+  "body_state_saved": true,
+  "native_policy_names": [
+    "body_logit_decay",
+    "body_feedback"
+  ],
+  "evidence": "state persistence, native parameter registration, matched training path and finite gradients; no claim of learned proprioceptive capability from 64 tokens",
+  "arrival_ce": 4.539969444274902,
+  "first_pass_train_nll": 5.325344564110708,
+  "first_pass_fixed_unigram_nll": 7.311362409031667,
+  "first_pass_gain_over_fixed_unigram": 1.9860178449209593,
+  "native_body_gradients": {
+    "body_logit_decay": 1.7915807859480992E-07,
+    "body_feedback": 0.0001827769103473176
+  },
+  "vram_peak_mib": 3494.02294921875,
+  "physical_ticks": 468426,
+  "start_tokens": 32704,
+  "new_tokens": 64
+}

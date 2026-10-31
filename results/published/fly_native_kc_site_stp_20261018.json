@@ -1,0 +1,267 @@
+{
+  "at": "2026-10-18T15:56:00.376727+00:00",
+  "status": "site_resource_route_and_full_state_checks_passed",
+  "migration": {
+    "source": "E:\\fly_stream_overflow\\native_kc_terminals_20261018\\last.pt",
+    "source_sha256": "4cbc6c37fd553fb6d08595598b162c302b987f565ce8b7e71f5e3b4b004dfe16",
+    "candidate_sha256": "c43ad2e116a6e64bd060d6e1fe459aec652cd2e9bb8faf20471361d2ba8880e1",
+    "trained": 33000,
+    "new_inputs": 0,
+    "new_optimizer_updates": 0,
+    "future_window_tokens": 1,
+    "old_weights_physical_optimizer_credit_world_rng_exact": true,
+    "new_state_scope": "Previously unrepresented resource coordinates initialized as rested; no past resource history invented. Existing packets, phi and all old state unchanged.",
+    "status": "zero_exposure_site_resource_extension_verified"
+  },
+  "restore": {
+    "checkpoint": "E:\\fly_stream_overflow\\native_kc_site_stp_20261018\\last.pt",
+    "sha256": "c43ad2e116a6e64bd060d6e1fe459aec652cd2e9bb8faf20471361d2ba8880e1",
+    "trained": 33000,
+    "scope": "zero-exposure complete trainer restore",
+    "storage_only_override": null,
+    "empty_physical_schema_fields_added": [],
+    "missing_model_entries": [],
+    "extra_model_entries": [],
+    "changed_model_entries": [],
+    "changed_learner_entries": [],
+    "cpu_cuda_rng_exact": true,
+    "source_unchanged": true,
+    "mother_world_roundtrip_exact": true,
+    "mother_rng_exact": true,
+    "mother_world_scope": "real MotherWorld state restored without new exposure or network call",
+    "status": "exact_restore_passed"
+  },
+  "candidate": {
+    "path": "E:\\fly_stream_overflow\\native_kc_site_stp_20261018\\last.pt",
+    "sha256": "c43ad2e116a6e64bd060d6e1fe459aec652cd2e9bb8faf20471361d2ba8880e1",
+    "trained": 33000,
+    "updates": 4154,
+    "new_training_inputs": 0,
+    "new_optimizer_updates": 0,
+    "future_bptt_window_tokens": 1,
+    "clock_scope": "One-token window retains every actual physical tick; current frozen check uses19 actual ticks. No brain/trace/world reset."
+  },
+  "mechanism": {
+    "coordinates": "709034 actual presynaptic positions; partner routes share each site event/resource consumption",
+    "states": [
+      "kc_site_resources",
+      "kc_site_utilization"
+    ],
+    "persistent_state_mib": 5.4095001220703125,
+    "learned_parameters": 12192,
+    "law": "a=u+U*(1-u)*s; r=a*x*q*s; x_next=1+(x-r-1)*rho_rec; u_next=U+(a-U)*rho_fac",
+    "q": "Actual local APL/DPM receptor signal gates both delivered release and physical resource consumption",
+    "normalization": "Prior graph isolated-event efficacy unit U*(2-U); actual resource loss uses unnormalized r",
+    "initialization": "Unrepresented resource coordinates initialized as rested. Prior packets, weights, phi, optimizer, RNG, world and pending credit preserved; past vesicle history not reconstructed.",
+    "scope": "Native-coordinate extension of existing resource/facilitation law, not identified molecular priming/calcium kinetics.",
+    "routes": [
+      "KC_fast",
+      "KC_MBON_phi",
+      "KC_DAN_feedback",
+      "KC_local_APL"
+    ]
+  },
+  "causal": {
+    "path": "F:\\fly_stream_overflow\\kc_site_stp_targeted_20261018\\report.json",
+    "arms": 4,
+    "ticks": 19,
+    "targets": 1,
+    "clock_source": "saved_pending_queue_native_rng_continuation",
+    "controls_passed": true,
+    "source_and_rng_preserved": true,
+    "intact_snapshot": {
+      "nodes": 4184720,
+      "release_sites": 709034,
+      "kc_with_different_site_release": 27,
+      "within_kc_release_range_max": 0.9142079949378967,
+      "gaba_effector_max": 13.436656951904297,
+      "5ht_effector_max": 8.933037757873535,
+      "local_eligibility_max": 0.9657557010650635,
+      "resources_min": 0.0998111367225647,
+      "utilization_max": 0.6562253832817078,
+      "scope": "actual sites and spatial effective receptor signals; not axonal action-potential cable or identified molecular localization"
+    },
+    "site_stp_off": {
+      "replay_seconds": 21.44651729999896,
+      "peak_allocated_mib": 2490.416015625,
+      "ce": 4.771544456481934,
+      "ce_delta": 6.198883056640625e-05,
+      "state_close_to_intact": false,
+      "log_prob_absmax": 0.0008373260498046875,
+      "muscle_absmax": 0.0,
+      "motor_logit_absmax": 0.0,
+      "action_log_prob_absmax": 0.0,
+      "command_hazard_absmax": 0.0,
+      "native_motor_packet_ticks": 19,
+      "physical_absmax_by_field": {
+        "h": 0.14517126977443695,
+        "ring": 1.0,
+        "ge": 0.23285937309265137,
+        "gi": 2.3679728507995605,
+        "b": 0.05626493692398071,
+        "x": 0.0,
+        "u": 0.0,
+        "baseline": 0.0,
+        "h_mean": 0.002967521548271179,
+        "dan_gate": 0.0,
+        "gamma_z1": 0.0,
+        "gamma_z2": 0.0,
+        "observer_prior": 0.0,
+        "observer_history": 0.0,
+        "read_bank": 0.0,
+        "modulator": 0.0,
+        "expected_input": 2.5659799575805664e-05,
+        "dopamine": 0.09470343589782715,
+        "da_trace": 0.0,
+        "da_memory": 0.0,
+        "homeostasis": 0.0,
+        "regime": 0.0,
+        "comp_trace": 0.0,
+        "comp_memory": 0.0003376603126525879,
+        "credit_comp": 0.001201130449771881,
+        "credit_comp_trace": 0.0,
+        "credit_dopamine": 0.09052645415067673,
+        "credit_stp": 0.0,
+        "kc_avail": 0.0,
+        "comp_da_trace": 0.0013896971940994263,
+        "comp_p_stats": 6.92903995513916e-05,
+        "comp_camp": 0.0,
+        "credit_comp_camp": 0.0,
+        "amine_concentration": 0.0,
+        "amine_receptor": 0.0,
+        "cx_trace": 0.0,
+        "dpm_trace": 0.0,
+        "apl_trace": 0.0,
+        "mb_terminal_gaba": 0.0,
+        "mb_dpm_concentration": 0.0,
+        "mb_dpm_receptor": 0.0,
+        "apl_voltage": 0.2647632956504822,
+        "apl_ge": 67.48687744140625,
+        "apl_gi": 286.5334777832031,
+        "apl_packets": 0.07345601916313171,
+        "kc_terminal_gaba": 0.0725700855255127,
+        "kc_terminal_5ht": 0.0,
+        "kc_terminal_receptor": 0.0,
+        "kc_terminal_packets": 0.5909755229949951,
+        "kc_terminal_eligibility": 0.07994037866592407,
+        "kc_terminal_eligibility_credit": 0.06722377985715866,
+        "kc_site_resources": 0.9001888632774353,
+        "kc_site_utilization": 0.40622538328170776,
+        "body_action_trace": 0.0,
+        "body_feedback_trace": 0.0,
+        "al_local_trace": 0.0,
+        "al_pn_drive": 0.0,
+        "body_muscle": 0.0,
+        "body_reafference": 0.0,
+        "endocrine_calcium": 0.0,
+        "endocrine_lk": 0.0,
+        "endocrine_receptor": 0.0
+      },
+      "membrane_group_absmax": {
+        "visual": 0.0,
+        "CX": 0.005207862704992294,
+        "KC": 0.002576075494289398,
+        "MBON": 0.06687016040086746,
+        "DAN": 0.1318577527999878,
+        "OA": 0.010881979018449783,
+        "5HT": 0.0009068846702575684
+      },
+      "amine_terminal_snapshot": {
+        "oa": {
+          "concentration_max": 0.18825757503509521,
+          "occupancy_max": 0.27594026923179626,
+          "occupied_cells": 63413,
+          "response_absmax": 0.1131713017821312
+        },
+        "5ht": {
+          "concentration_max": 0.23406803607940674,
+          "occupancy_max": 0.3196566700935364,
+          "occupied_cells": 25497,
+          "response_absmax": 0.10953004658222198
+        }
+      },
+      "mb_terminal_snapshot": {
+        "source_body_ids": [
+          11734,
+          12569,
+          10540,
+          10977
+        ],
+        "gaba_max_by_source": [
+          5.562627181793234e-12,
+          0.007834377698600292,
+          0.037207357585430145,
+          0.02117932215332985
+        ],
+        "5ht_concentration_max_by_dpm": [
+          0.025821557268500328,
+          0.07829848676919937
+        ],
+        "5ht_receptor_max": 0.14361540973186493,
+        "spatial_scope": "historical pooled snapshot retained, inactive; current local signals are in kc_terminal_snapshot"
+      },
+      "apl_cable_snapshot": {
+        "nodes": 88905,
+        "local_voltage_min": -0.14976166188716888,
+        "local_voltage_max": 0.5478740334510803,
+        "local_voltage_sd": 0.14555294811725616,
+        "packet_nonzero_nodes": 71236,
+        "scope": "all supplied native APL tree nodes; KC bouton cable not reconstructed"
+      },
+      "kc_terminal_snapshot": {
+        "nodes": 4184720,
+        "release_sites": 709034,
+        "kc_with_different_site_release": 27,
+        "within_kc_release_range_max": 0.9142079949378967,
+        "gaba_effector_max": 13.436656951904297,
+        "5ht_effector_max": 8.933037757873535,
+        "local_eligibility_max": 0.9941813945770264,
+        "resources_min": 1.0,
+        "utilization_max": 0.25,
+        "scope": "actual sites and spatial effective receptor signals; not axonal action-potential cable or identified molecular localization"
+      }
+    },
+    "scope": "Acute same-state delivery. Mother is speaking, no actual commits; not action/learning benefit."
+  },
+  "resources": {
+    "intact_frozen_replay_seconds": 21.49921319999703,
+    "intact_frozen_peak_allocated_mib": 2194.142578125,
+    "max_matrix_peak_allocated_mib": 2495.16162109375,
+    "scope": "CUDA allocator peak of frozen replay including resident source and paired states; not total process VRAM and not training peak. Does not certify4GB long learning.",
+    "bptt_window_one": "Numerical one-token update/recomputation test passes. No new real-checkpoint optimizer update this turn.",
+    "remaining_cost": "Full4.18M-node transport and CPU/GPU exchange retained; unified execution optimization deferred.",
+    "initial_memory_pressure_repair_scope": "Frozen runner retains only fields actually used by physical replay after complete restore. Original saved optimizer/world/credit unchanged; training state size not reduced."
+  },
+  "validation": {
+    "affected_passed": 226,
+    "log": "F:\\fly_stream_overflow\\kc_site_stp_affected_20261018.log",
+    "numerical_contracts": [
+      "release conserves local resources, local inhibition spares resources, exact recovery",
+      "repeated release bounds and nonzero learned-kinetic gradients",
+      "actual delayed site packets feed native routes",
+      "full local state detach/roundtrip, malformed history fails",
+      "global/site double STP rejected",
+      "learned parameters restore exactly, nonfinite rejection",
+      "one-token optimizer update equals recomputation with all local fields"
+    ],
+    "deslice": "ALL UNIT TESTS PASSED",
+    "full_suite": "Same5 missing diagnostic script/module collection errors;8 import-time training/benchmark entries excluded. Not full-suite pass.",
+    "initial_full_matrix": "Stopped own read-only18-arm attempt when host commit free fell to about600MiB; not accepted. Frozen runner now releases unused training copies after full restore, and this targeted4-arm check is separate.",
+    "initial_restore_rejection": "New parameter names reached early base model loader before local module attachment; filter corrected, exact full restore then passed. Rejected log preserved.",
+    "full_collection_log": "F:/fly_stream_overflow/kc_site_stp_full_collection_20261018.log"
+  },
+  "remaining_gaps": [
+    "Molecular vesicle priming, local calcium/channels and axonal voltage wave",
+    "Independent phi per physical release position",
+    "Long-term familiarity valuation and separate slow habituation",
+    "Native KC electrical/axo-axonal coupling",
+    "Full slow-parameter cross-window credit and actual sustained interaction/learning benefit"
+  ],
+  "training_adoption_approved": false,
+  "main_status": "paused_by_user_for_repair",
+  "sources": [
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC6623142/",
+    "https://pubmed.ncbi.nlm.nih.gov/9573407/",
+    "https://elifesciences.org/articles/40385"
+  ]
+}

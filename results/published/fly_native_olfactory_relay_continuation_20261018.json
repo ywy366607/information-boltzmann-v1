@@ -1,0 +1,25 @@
+{
+  "checkpoint": "F:\\fly_stream_overflow\\native_al_20261018\\last.pt",
+  "source": "F:/fly_stream_overflow/native_body_20261018/last.pt",
+  "start_tokens": 32768,
+  "saved_tokens": 32772,
+  "new_tokens_saved": 4,
+  "status": "partial_checkpoint_after_save_space_failure",
+  "mechanism": "antennal_lobe_local_inhibition_relay",
+  "al_local_count": 379,
+  "al_pn_count": 808,
+  "al_inhibitory_contacts": 29630,
+  "al_local_tau_ticks": 15.99998664855957,
+  "al_pn_feedback_mean": -7.213062781374902e-05,
+  "al_local_trace_mean": 0.03525254502892494,
+  "al_pn_drive_mean": 0.04973442852497101,
+  "arrival_ce": 4.7632670402526855,
+  "nll": null,
+  "vram_peak_mib": 3595.28857421875,
+  "native_al_gradients": {
+    "al_local_logit_decay": 1.0318967724742834e-07,
+    "al_pn_feedback": 1.918673875224763e-05
+  },
+  "state_saved": true,
+  "evidence": "real graph continuation reached the checkpoint save boundary with AL state and parameters present; final atomic save failed from disk exhaustion, so only the valid 32772-token checkpoint is retained"
+}

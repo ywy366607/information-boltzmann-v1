@@ -4,9 +4,9 @@ The official GDN-2 recurrence is a useful fixed-size fast-weight
 approximation, but its erase/write gates are not by themselves a variational
 posterior.  This module stores Gaussian natural parameters on a stable spatial
 atlas.  Process noise lowers old precision (erase); likelihood precision adds
-new natural parameters (write).  Suppressing the precision normalization and
-making both precisions state-independent recovers the usual gated delta-rule
-shape.
+new natural parameters (write). With a one-hot address, no global decay and
+a matching precision-derived gain, the mean update agrees with a delta write;
+mixed addresses generally give different updates.
 
 Transient Slice vectors are observations of this state, not the state itself.
 The state may therefore be passed between *physical* frames without tying
@@ -31,10 +31,11 @@ class ActiveInferenceState:
     precision: torch.Tensor     # [B,K,1]
     velocity_mean: torch.Tensor # [B,2] in normalized (y,x) coordinates
     velocity_precision: torch.Tensor  # [B,1]
+    # Cached causal address input; with the legacy shared representation this
+    # is exactly the last event value tensor.
     last_tokens: Optional[torch.Tensor] = None
     last_centers: Optional[torch.Tensor] = None
     last_observation_precision: Optional[torch.Tensor] = None
-
 
 def _atlas(n_slots: int) -> torch.Tensor:
     """Approximately square, fixed Eulerian address atlas in [-1,1]^2."""
@@ -52,7 +53,7 @@ def periodic_delta(a: torch.Tensor, b: torch.Tensor) -> torch.Tensor:
 
 
 class ActiveInferenceGDN2(nn.Module):
-    """Bayesian fast-weight memory with a GDN-2-compatible degeneration.
+    """Bayesian fast-weight memory with a conditional delta-write relation.
 
     The memory distribution is
 
@@ -115,6 +116,135 @@ class ActiveInferenceGDN2(nn.Module):
         )
 
         self.last_diagnostics: Dict[str, torch.Tensor] = {}
+
+    @staticmethod
+    def association_write(
+        keys: torch.Tensor,
+        values: torch.Tensor,
+        weights: Optional[torch.Tensor] = None,
+    ) -> torch.Tensor:
+        """Return the value-by-key outer-product sum ``V Kᵀ``.
+
+        ``keys`` are the soft atlas addresses ``[B,M,K]`` and ``values`` are
+        event contents ``[B,M,D]``.  The result ``[B,D,K]`` is the exact
+        associative state used by the Lean `associationState` reference;
+        observation weights only scale the arrived events.
+        """
+        if weights is not None:
+            values = values * weights
+        return torch.einsum("bmk,bmd->bdk", keys, values)
+
+    @staticmethod
+    def association_state(state: ActiveInferenceState) -> torch.Tensor:
+        """Expose the persistent natural state as a value-by-key matrix."""
+        return state.natural.transpose(-1, -2)
+
+    @staticmethod
+    def association_readout(
+        state: ActiveInferenceState,
+        keys: torch.Tensor,
+    ) -> torch.Tensor:
+        """Read value vectors from soft keys in the associative state.
+
+        `keys` has shape ``[B,M,K]`` and the result has ``[B,M,D]``.  The
+        precision-normalized value-by-key matrix is queried by the same
+        contraction as the Lean associative state, so probe error can be
+        measured without changing the causal update.
+        """
+        value_by_key = ActiveInferenceGDN2.association_state(state)
+        value_by_key = value_by_key / state.precision.transpose(-1, -2).clamp_min(1e-6)
+        return torch.einsum("bdk,bmk->bmd", value_by_key, keys)
+
+    @staticmethod
+    def association_probe_error(
+        state: ActiveInferenceState,
+        keys: torch.Tensor,
+        targets: torch.Tensor,
+    ) -> torch.Tensor:
+        """Return per-batch worst absolute error on a declared probe set."""
+        readout = ActiveInferenceGDN2.association_readout(state, keys)
+        return (readout - targets).abs().amax(dim=(-1, -2))
+
+    @staticmethod
+    def association_interference_bound(
+        effective_keys: torch.Tensor, queries: torch.Tensor,
+    ) -> torch.Tensor:
+        """Row-sum error bound for bounded values, on a declared probe family.
+
+        Both inputs are ``[B, M, K]``. The result ``[B, M]`` is the
+        absolute row sum of ``queries @ effective_keys.T - I``. It applies
+        to values in [-1, 1] and excludes any old-state contribution and
+        floating-point roundoff. This diagnostic materializes an M-by-M
+        temporary; it is not persistent organism state or a per-tick update.
+        """
+        cross = torch.matmul(queries, effective_keys.transpose(-1, -2))
+        identity = torch.eye(cross.shape[-1], dtype=cross.dtype, device=cross.device)
+        return (cross - identity).abs().sum(dim=-1)
+
+    @staticmethod
+    def association_delta_update(
+        state: ActiveInferenceState,
+        key: torch.Tensor,
+        value: torch.Tensor,
+        beta: float = 1.0,
+    ) -> ActiveInferenceState:
+        """Reference GDN delta write: erase the key's prediction, then write value.
+
+        In mean value-by-key form this is ``S ← S + β(v − S k)kᵀ``, where
+        ``S`` is natural state divided by slot precision, as in readout. The
+        changed mean is re-encoded into natural parameters using the same
+        clamped precision. The Bayesian assimilate path remains unchanged.
+        """
+        state_matrix = ActiveInferenceGDN2.association_state(state)
+        precision = state.precision.transpose(-1, -2).clamp_min(1e-6)
+        mean = state_matrix / precision
+        prediction = torch.einsum("bdk,bk->bd", mean, key)
+        mean_delta = float(beta) * torch.einsum("bd,bk->bdk", value - prediction, key)
+        state_matrix = state_matrix + precision * mean_delta
+        return ActiveInferenceState(
+            natural=state_matrix.transpose(-1, -2),
+            precision=state.precision,
+            velocity_mean=state.velocity_mean,
+            velocity_precision=state.velocity_precision,
+            last_tokens=state.last_tokens,
+            last_centers=state.last_centers,
+            last_observation_precision=state.last_observation_precision,
+        )
+
+    @staticmethod
+    def association_dual_keys(keys: torch.Tensor, ridge: float = 0.0) -> torch.Tensor:
+        """Return the exact Gram-dual query keys when the probe Gram is full rank.
+
+        For row keys ``K``, the returned ``Q`` satisfies ``K @ Q.T = I``
+        when ``ridge=0`` and the rows are independent.  A positive ridge is
+        an explicit approximate-decoding choice, not part of the exact Lean
+        capacity theorem.
+        """
+        gram = torch.matmul(keys, keys.transpose(-1, -2))
+        if ridge:
+            eye = torch.eye(gram.shape[-1], device=gram.device, dtype=gram.dtype)
+            gram = gram + float(ridge) * eye
+        return torch.linalg.solve(gram, keys)
+
+    @staticmethod
+    def association_dual_readout(
+        state: ActiveInferenceState,
+        keys: torch.Tensor,
+        ridge: float = 0.0,
+    ) -> torch.Tensor:
+        """Read an associative state with the Gram-dual probe decoder."""
+        return ActiveInferenceGDN2.association_readout(
+            state, ActiveInferenceGDN2.association_dual_keys(keys, ridge=ridge),
+        )
+
+    @staticmethod
+    def association_probe_uncertainty(
+        state: ActiveInferenceState,
+        keys: torch.Tensor,
+    ) -> torch.Tensor:
+        """Return per-query variance induced by the slot precision."""
+        slot_variance = 1.0 / state.precision.clamp_min(1e-6)
+        return torch.einsum("bmk,bkq->bmq", keys.square(), slot_variance)
 
     @staticmethod
     def slice_centers(weights: torch.Tensor, point_coords: torch.Tensor) -> torch.Tensor:
@@ -222,9 +352,27 @@ class ActiveInferenceGDN2(nn.Module):
         observation_precision,
         update_motion: bool = True,
         transport_memory: bool = True,
+        *,
+        address_tokens: Optional[torch.Tensor] = None,
+        likelihood_tokens: Optional[torch.Tensor] = None,
     ) -> ActiveInferenceState:
-        """Minimize observation VFE by a closed-form natural update."""
+        """Minimize observation VFE by a closed-form natural update.
+
+        ``tokens`` are values written into the associative state.  The optional
+        address and likelihood views expose the three distinct terms of the
+        update while defaulting to the historical shared representation.  The
+        explicit views allow a proven value-only learning path without silently
+        changing where the event is written or how strongly it is trusted.
+        """
         batch, n_events, _ = tokens.shape
+        if address_tokens is None:
+            address_tokens = tokens
+        if likelihood_tokens is None:
+            likelihood_tokens = tokens
+        if tuple(address_tokens.shape) != tuple(tokens.shape):
+            raise ValueError("address tokens must match written-value shape")
+        if tuple(likelihood_tokens.shape) != tuple(tokens.shape):
+            raise ValueError("likelihood tokens must match written-value shape")
         obs_pi = torch.as_tensor(
             observation_precision, device=tokens.device, dtype=tokens.dtype,
         )
@@ -235,7 +383,7 @@ class ActiveInferenceGDN2(nn.Module):
         velocity_precision = state.velocity_precision
         if update_motion and state.last_tokens is not None and state.last_centers is not None:
             v_obs, v_pi = self._infer_velocity(
-                state.last_tokens, state.last_centers, tokens, centers,
+                state.last_tokens, state.last_centers, address_tokens, centers,
             )
             previous_pi = state.last_observation_precision
             if previous_pi is not None:
@@ -253,18 +401,23 @@ class ActiveInferenceGDN2(nn.Module):
                 displacement = velocity_mean * (obs_pi > 0).to(tokens.dtype)
                 state = self.transport_state(state, displacement)
 
-        address = self.address(tokens, centers)
-        local_pi = F.softplus(self.log_likelihood_precision(tokens))
+        address = self.address(address_tokens, centers)
+        local_pi = F.softplus(self.log_likelihood_precision(likelihood_tokens))
         event_pi = obs_pi.unsqueeze(1) * local_pi / max(1, n_events)
         write = address.unsqueeze(-1) * event_pi.unsqueeze(-2)  # B,M,K,1
         precision_add = write.sum(dim=1)
-        natural_add = (write * tokens.unsqueeze(-2)).sum(dim=1)
+        natural_add = self.association_write(
+            address, tokens, event_pi,
+        ).transpose(-1, -2)
         precision = state.precision + precision_add
         natural = state.natural + natural_add
 
         live = obs_pi > 0
-        last_tokens = tokens if state.last_tokens is None else torch.where(
-            live.unsqueeze(-1), tokens, state.last_tokens,
+        # The retained causal key is the address view.  With the defaults it
+        # is exactly the old ``tokens`` cache; a value-only update therefore
+        # cannot alter the next query through this cache.
+        last_tokens = address_tokens if state.last_tokens is None else torch.where(
+            live.unsqueeze(-1), address_tokens, state.last_tokens,
         )
         last_centers = centers if state.last_centers is None else torch.where(
             live.unsqueeze(-1), centers, state.last_centers,
@@ -366,11 +519,8 @@ class ActiveInferenceGDN2(nn.Module):
             displacement = displacement + tau * api * F.softplus(self.action_scale_raw) * act_yx
         source_centers = torch.remainder(target_centers - displacement.unsqueeze(1) + 1.0, 2.0) - 1.0
         address = self.address(tokens, source_centers)
-        memory_mean = state.natural / state.precision.clamp_min(1e-6)
-        mean = torch.einsum("bmk,bkd->bmd", address, memory_mean)
-        variance = torch.einsum(
-            "bmk,bkq->bmq", address.square(), 1.0 / state.precision.clamp_min(1e-6),
-        )
+        mean = self.association_readout(state, address)
+        variance = self.association_probe_uncertainty(state, address)
         logvar = variance.clamp_min(1e-6).log().expand_as(mean)
         diagnostics = {
             **self.last_diagnostics,

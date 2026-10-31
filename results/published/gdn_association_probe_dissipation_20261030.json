@@ -1,0 +1,45 @@
+{
+  "experiment": "gdn_association_probe_dissipation_20261030",
+  "status": "mechanism_diagnostic_only",
+  "config": {
+    "seed": 0,
+    "d_model": 4,
+    "n_slots": 4,
+    "res": 4
+  },
+  "rows": [
+    {
+      "seed": 0,
+      "horizon": 1.0,
+      "zero_write_delta": 0.0,
+      "written_probe_error": 0.11726707220077515,
+      "erased_probe_error": 0.11726707220077515,
+      "written_mean_probe_variance": 5.1438093185424805,
+      "erased_mean_probe_variance": 5.16168212890625,
+      "mean_precision_retention": 0.9965375065803528,
+      "max_precision_retention": 0.9965375065803528
+    },
+    {
+      "seed": 0,
+      "horizon": 8.0,
+      "zero_write_delta": 0.0,
+      "written_probe_error": 0.11726707220077515,
+      "erased_probe_error": 0.11726707220077515,
+      "written_mean_probe_variance": 5.1438093185424805,
+      "erased_mean_probe_variance": 5.286789417266846,
+      "mean_precision_retention": 0.9729552865028381,
+      "max_precision_retention": 0.9729552865028381
+    },
+    {
+      "seed": 0,
+      "horizon": 64.0,
+      "zero_write_delta": 0.0,
+      "written_probe_error": 0.11726707220077515,
+      "erased_probe_error": 0.11726707220077515,
+      "written_mean_probe_variance": 5.1438093185424805,
+      "erased_mean_probe_variance": 6.287649154663086,
+      "mean_precision_retention": 0.8180815577507019,
+      "max_precision_retention": 0.8180816173553467
+    }
+  ]
+}

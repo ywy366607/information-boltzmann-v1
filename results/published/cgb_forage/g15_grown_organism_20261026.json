@@ -1,0 +1,153 @@
+{
+ "world": {
+  "hazard": 0.005,
+  "cost": 0.6,
+  "reserve": 300.0,
+  "capacity": 600.0,
+  "p_rich": 0.9,
+  "p_poor": 0.1,
+  "ticks": 100000,
+  "shuffle_bytes": 0,
+  "taus": "16,300",
+  "window": 32,
+  "sources": 3,
+  "stage": 1,
+  "stage2_rule": "document digit fraction >= median over sources",
+  "stage3_rule": "a digit in the last `window` bytes of the source text (including the current byte)"
+ },
+ "hidden": 256,
+ "seeds": 8,
+ "g15": {
+  "eta": 0.1,
+  "trace": 0.9,
+  "relax": 0.0,
+  "state_baseline": 0,
+  "base_rate": 0.01,
+  "couple": 0.0,
+  "slow_c": 10.0,
+  "slow_leak": 0.0
+ },
+ "provenance": {
+  "manifest": "3614c380d4c72688ac8ccde42f32ea0655d16bec1ba0874a924fd777af904d2d",
+  "files": {
+   "tokenizer.json": "e727da4afe06d37d6ffff7db05ab21f69c5be39253ee7b7f7ec759cadab69c1d",
+   "train.npy": "2f227239bc63b89daf31956701d243a93f9dd46671702fff03763b33dc6db4fb",
+   "validation.npy": "60d41d3fdda8c1718ad1735693eda0dae2b23a0032c5e04a29aac9d0c6d35d8c"
+  },
+  "verified_document_counts": {
+   "train": 9786,
+   "validation": 114
+  },
+  "native_byte_counts": {
+   "train": 48125691,
+   "validation": 467911
+  }
+ },
+ "per_seed": {
+  "org_grown": [
+   {
+    "survival": 100000,
+    "intake_rate": 0.75445,
+    "switches": 0.07665,
+    "bytes_heard": 92335,
+    "byte_bits_last": 4.212355589273683
+   },
+   {
+    "survival": 100000,
+    "intake_rate": 0.78287,
+    "switches": 0.03372,
+    "bytes_heard": 96628,
+    "byte_bits_last": 4.127729981602842
+   },
+   {
+    "survival": 100000,
+    "intake_rate": 0.76781,
+    "switches": 0.03781,
+    "bytes_heard": 96219,
+    "byte_bits_last": 4.126987010940771
+   },
+   {
+    "survival": 100000,
+    "intake_rate": 0.75947,
+    "switches": 0.03362,
+    "bytes_heard": 96638,
+    "byte_bits_last": 4.1809476095626055
+   },
+   {
+    "survival": 100000,
+    "intake_rate": 0.74472,
+    "switches": 0.05259,
+    "bytes_heard": 94741,
+    "byte_bits_last": 4.138899103056258
+   },
+   {
+    "survival": 100000,
+    "intake_rate": 0.76609,
+    "switches": 0.04256,
+    "bytes_heard": 95744,
+    "byte_bits_last": 4.132215316754593
+   },
+   {
+    "survival": 100000,
+    "intake_rate": 0.78973,
+    "switches": 0.03124,
+    "bytes_heard": 96876,
+    "byte_bits_last": 4.123223248164834
+   },
+   {
+    "survival": 100000,
+    "intake_rate": 0.77139,
+    "switches": 0.05545,
+    "bytes_heard": 94455,
+    "byte_bits_last": 4.22884548354929
+   }
+  ]
+ },
+ "summary": {
+  "org_grown": {
+   "survival": {
+    "min": 100000,
+    "median": 100000.0,
+    "mean": 100000,
+    "max": 100000
+   },
+   "intake_rate": {
+    "min": 0.74472,
+    "median": 0.76695,
+    "mean": 0.7670662500000001,
+    "max": 0.78973
+   },
+   "switches": {
+    "min": 0.03124,
+    "median": 0.040185,
+    "mean": 0.045455,
+    "max": 0.07665
+   },
+   "bytes_heard": {
+    "min": 92335,
+    "median": 95981.5,
+    "mean": 95454.5,
+    "max": 96876
+   },
+   "byte_bits_last": {
+    "min": 4.123223248164834,
+    "median": 4.135557209905425,
+    "mean": 4.1589004178631095,
+    "max": 4.22884548354929
+   }
+  }
+ },
+ "admitted": false,
+ "gate": {
+  "g15_organism": {
+   "admitted": false,
+   "failures": [
+    "score_carrier_form (structure): no valid Lean theorem",
+    "hidden_write_weights (structure): no valid Lean theorem",
+    "hidden_recurrence_draw (structure): no valid Lean theorem",
+    "lagged_trace_p2 (structure): no valid Lean theorem",
+    "no Lean Medium instance with an Axioms proof"
+   ]
+  }
+ }
+}

@@ -1,0 +1,70 @@
+{
+  "scope": "deterministic algebra/state checks; no training or capability evidence",
+  "source_sha256": {
+    "scripts\\run_optimizer_continual.py": "693a16810a40e4ae943f5a1e5eea8c2d6f87039fa8be3104a483c076fef5f05f",
+    "scripts\\run_optimizer_continual_v4.py": "a08aa971b3d9d463e18c400870bbea93949c594c305eee8fb8623084155c97b0",
+    "scripts\\run_optimizer_continual_v5.py": "7613f4349115053f47c59e84f7f8736812456e562e208f3fcb379716de5a8174",
+    "scripts\\run_optimizer_continual_v6.py": "24f8f22e1e12298bcf5988cdef71630985050b7cea8001906e14d06319724416"
+  },
+  "column_prior_rebase": {
+    "actual": [
+      [
+        1.0,
+        9.0
+      ]
+    ],
+    "diagonal_transport_reference": [
+      [
+        4.999999523162842,
+        4.999999523162842
+      ]
+    ],
+    "max_abs_difference": 4.000000476837158,
+    "matches_existing_diagonal_transport_convention": false,
+    "qualification": "Diagonal transport is itself an approximation for general rotations."
+  },
+  "column_prior_uses_own_element": {
+    "original_prior": [
+      [
+        1.5
+      ]
+    ],
+    "changed_prior": [
+      [
+        13.5
+      ]
+    ],
+    "original_gain": [
+      [
+        0.6000000238418579
+      ],
+      [
+        0.6000000238418579
+      ]
+    ],
+    "changed_gain": [
+      [
+        0.931034505367279
+      ],
+      [
+        0.931034505367279
+      ]
+    ],
+    "same_element_changes_its_prior": true
+  },
+  "gaussian_posterior_identity": {
+    "prior_variance": 1,
+    "noise_variance": 1,
+    "expected_squared_posterior_mean": 0.5,
+    "posterior_variance": 0.5,
+    "subtraction": 0,
+    "sum": 1,
+    "qualification": "Exact conjugate-model counterexample to a general unbiasedness claim; not a claim that CLO6 is an exact Gaussian posterior."
+  },
+  "scalar_newton_boundary": {
+    "0.4": 1.5,
+    "0.5": 1.0,
+    "1.0": 0.0,
+    "2.0": 0.5
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "date": "2026-10-18",
+  "source_checkpoint": "E:/fly_stream_overflow/native_context_20261018/continue128/candidate.pt",
+  "candidate_checkpoint": "F:/fly_stream_overflow/native_cx_20261018/last.pt",
+  "trained_tokens": 32640,
+  "new_tokens": 64,
+  "optimizer_updates": 4080,
+  "physical_ticks": 466519,
+  "peak_vram_mib": 3485.69,
+  "prequential_window_nll": 6.468216896057129,
+  "cx_trace_mean": 0.01883767917752266,
+  "cx_trace_sd": 0.03476838767528534,
+  "cx_feedback_mean": 0.00021461206779349595,
+  "cx_tau_mean_ticks": 64.0001449584961,
+  "cx_native_parameter_gradients": {
+    "cx_logit_decay": 5.55229354863552e-08,
+    "cx_feedback": 1.1851500619972572e-05
+  },
+  "response_settlements": 1,
+  "complete_state_metadata": "F:/fly_stream_overflow/native_cx_20261018/checkpoint_metadata.json",
+  "scope": "This validates real continuation, persistent CX state, native gradients and complete save; it does not establish navigation or action capability benefit without matched CX-off/sham controls."
+}

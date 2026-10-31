@@ -1,0 +1,192 @@
+{
+  "at": "2026-10-19T01:30:37.645984+00:00",
+  "status": "matched_resource_accounting_checked_material_calibration_unresolved",
+  "checkpoint": "E:\\fly_stream_overflow\\native_dan_release_20261019\\last.pt",
+  "sha256": "7813c2aba85c65165c260543c47947159ca52d27439dd9da555e6f134dd2bd08",
+  "new_inputs": 0,
+  "new_optimizer_updates": 0,
+  "main_tokens": 32384,
+  "candidate_tokens": 33000,
+  "clock": {
+    "intervals": [
+      19
+    ],
+    "ticks": 19,
+    "source": "saved_pending_queue_native_rng_continuation"
+  },
+  "controls_passed": true,
+  "source_and_rng_preserved": true,
+  "material": {
+    "use_stp": false,
+    "graded_DAN": 0,
+    "recovery_rho": {
+      "min": 0.9990265369415283,
+      "p01": 0.9990265369415283,
+      "p10": 0.9990265369415283,
+      "median": 0.9990265369415283,
+      "p90": 0.9990265369415283,
+      "p99": 0.9990265369415283,
+      "max": 0.9990265369415283
+    },
+    "recovery_tau_ticks": {
+      "min": 1026.76025390625,
+      "p01": 1026.76025390625,
+      "p10": 1026.76025390625,
+      "median": 1026.76025390625,
+      "p90": 1026.76025390625,
+      "p99": 1026.76025390625,
+      "max": 1026.76025390625
+    },
+    "calcium_rho": {
+      "min": 0.977946937084198,
+      "p01": 0.977946937084198,
+      "p10": 0.977946937084198,
+      "median": 0.977946937084198,
+      "p90": 0.977946937084198,
+      "p99": 0.977946937084198,
+      "max": 0.977946937084198
+    },
+    "release_rate": {
+      "min": 1.0,
+      "p01": 1.0,
+      "p10": 1.0,
+      "median": 1.0,
+      "p90": 1.0,
+      "p99": 1.0,
+      "max": 1.0
+    },
+    "inherited_DA_slow_rho": 0.9990265369415283
+  },
+  "intact_final": {
+    "feedback_enabled": true,
+    "native_spike_cells": 30,
+    "transmitted_active_cells": 30,
+    "transmission_amplitude": {
+      "min": 0.0,
+      "p01": 0.0,
+      "p10": 0.0,
+      "median": 0.0,
+      "p90": 0.0,
+      "p99": 1.0,
+      "max": 1.0
+    },
+    "packet_vs_spike_absmax": 0.0,
+    "local_release_drive": {
+      "min": 0.0,
+      "p01": 0.0,
+      "p10": 0.0,
+      "median": 0.0,
+      "p90": 0.0002035445417277516,
+      "p99": 0.0017495267919730396,
+      "max": 0.010442004539072514
+    },
+    "release_probability": {
+      "min": 0.0,
+      "p01": 0.0,
+      "p10": 0.0,
+      "median": 0.0,
+      "p90": 0.0006459789408836533,
+      "p99": 0.6321321725845337,
+      "max": 0.6327356100082397
+    },
+    "resources": {
+      "min": 0.0022309422492980957,
+      "p01": 0.0022309422492980957,
+      "p10": 0.02274777293205261,
+      "median": 0.3690314292907715,
+      "p90": 1.0,
+      "p99": 1.0,
+      "max": 1.0
+    },
+    "sites_below_001": 8960,
+    "site_fraction_below_001": 0.04781114597340505,
+    "cells_with_sites_below_001": 20,
+    "released_total": 1499.026611328125,
+    "recovered_total": 101.53660583496094,
+    "accounting_absmax": 5.960464477539063e-08
+  },
+  "feedback_off_final": {
+    "feedback_enabled": false,
+    "native_spike_cells": 30,
+    "transmitted_active_cells": 30,
+    "transmission_amplitude": {
+      "min": 0.0,
+      "p01": 0.0,
+      "p10": 0.0,
+      "median": 0.0,
+      "p90": 0.0,
+      "p99": 1.0,
+      "max": 1.0
+    },
+    "packet_vs_spike_absmax": 0.0,
+    "local_release_drive": {
+      "min": 0.0,
+      "p01": 0.0,
+      "p10": 0.0,
+      "median": 0.0,
+      "p90": 0.0,
+      "p99": 0.0,
+      "max": 0.0
+    },
+    "release_probability": {
+      "min": 0.0,
+      "p01": 0.0,
+      "p10": 0.0,
+      "median": 0.0,
+      "p90": 0.0,
+      "p99": 0.6321205496788025,
+      "max": 0.6321205496788025
+    },
+    "resources": {
+      "min": 0.0022309422492980957,
+      "p01": 0.0022309422492980957,
+      "p10": 0.022749006748199463,
+      "median": 0.369109570980072,
+      "p90": 1.0,
+      "p99": 1.0,
+      "max": 1.0
+    },
+    "sites_below_001": 8960,
+    "site_fraction_below_001": 0.04781114597340505,
+    "cells_with_sites_below_001": 20,
+    "released_total": 1490.54638671875,
+    "recovered_total": 101.48230743408203,
+    "accounting_absmax": 4.0978193283081055e-08
+  },
+  "all_replays_packet_vs_spike_absmax": 0.0,
+  "all_replays_accounting_absmax": 5.960464477539063e-08,
+  "isolated_unit_AP_use": 0.6321205588285577,
+  "total_intact_spike_events": 813,
+  "interpretation": [
+    "Strong use affects4.781% of sites and20DAN in this19tick replay; median resource0.369, not global exhaustion.",
+    "Turning off reciprocal KC feedback leaves low-site count and minimum unchanged; AP-driven use dominates this short observation.",
+    "Recovery uses an independent learnable material seeded from prior DA clearance; this seed is not measured vesicle kinetics.",
+    "No numerical resource defect or current packet/event mismatch found; biological calibration and ongoing learning benefit remain unmeasured."
+  ],
+  "next_gap": "Carry credit through the new slow receptor/calcium/resource states across windows; then evaluate materials and learning on real continuous experience.",
+  "training_adoption_approved": false,
+  "brain_dynamics_changed": false,
+  "validation": {
+    "focused_passed": 7,
+    "scope": "observer noninterference/exception restoration plus existing local DAN contracts; no new full-suite claim"
+  },
+  "evidence": {
+    "resource_trace": "F:\\fly_stream_overflow\\dan_resource_audit_20261019\\resources.json",
+    "resource_trace_sha256": "f089cb6df9a61bb6844f8764d0f60db8d09a1b51ed1c73c4ac767429d14335e8",
+    "matched_controls": "F:\\fly_stream_overflow\\dan_resource_audit_20261019\\report.json"
+  },
+  "sources": [
+    {
+      "path": "scripts/ib/fly_interface/dan_resource_audit.py",
+      "sha256": "66f610a3bff064c35f5892971cf312530ecf1be51e8016f227f01786bc5e3a83"
+    },
+    {
+      "path": "tests/test_dan_resource_audit.py",
+      "sha256": "228d0c76dfccfeac1eec33941a0b73b09d379c565e955b87c07304fc1b9867d3"
+    },
+    {
+      "path": "docs/information_boltzmann/FLY_DAN_RESOURCE_AUDIT_20261019.md",
+      "sha256": "606922775b0d56ab3a989d1ad975ea367c0f845be99d0405f18b93a8211f6e61"
+    }
+  ]
+}

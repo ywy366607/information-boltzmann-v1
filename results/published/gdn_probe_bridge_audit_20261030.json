@@ -1,0 +1,30 @@
+{
+  "experiment": "gdn_probe_bridge_audit_20261030",
+  "status": "mechanism_diagnostic_only",
+  "result": {
+    "seed": 0,
+    "erase_horizon": 64.0,
+    "overwrite_precision": 8.0,
+    "epsilon": 0.2,
+    "address_rank": 4,
+    "address_pairwise_min_distance": 1.3979272842407227,
+    "written": {
+      "probe_error": 0.11726707220077515,
+      "mean_probe_variance": 5.1438093185424805
+    },
+    "erased": {
+      "probe_error": 0.11726707220077515,
+      "mean_probe_variance": 6.287649154663086
+    },
+    "overwritten": {
+      "probe_error": 1.7614456415176392,
+      "mean_probe_variance": 0.6241330504417419
+    },
+    "bridge_conditions": {
+      "probe_injective": true,
+      "written_probe_recoverable": true,
+      "overwritten_probe_unrecoverable": true
+    },
+    "zero_observation_write_delta": 0.0
+  }
+}

@@ -1,0 +1,454 @@
+{
+  "at": "2026-10-17T11:28:35.421698+00:00",
+  "status": "actuated_finite_candidate_not_silence_recovery",
+  "source": {
+    "trained": 32384,
+    "sha256": "9dacf767b558b3cf4f8642644f51092a7f4047af8712c98b53f543beb380ebe4",
+    "unchanged": true,
+    "main_pause_unchanged": true
+  },
+  "implementation": {
+    "actual_policy_actuation": true,
+    "native_policy_score_learning": true,
+    "fixed_speech_kl": false,
+    "count_eye_reward": false,
+    "direct_epistemic_dan_teaching": false,
+    "uncertainty_object": "binary adaptive-current versus retained-ancestor predictive algorithms"
+  },
+  "actual_copy": {
+    "inputs": 256,
+    "optimizer_updates": 32,
+    "physical_ticks": 3215,
+    "actual_decisions": 6,
+    "actual_commits": 0,
+    "response_settlements": 1,
+    "self_excluded": 0,
+    "external_evidence_updates": 256,
+    "peak_mib": 3384.12109375,
+    "seconds": 338.95300000000134,
+    "raw_nll_all_sources": 5.27125574630918,
+    "source_counts": {
+      "mother_call": 256
+    },
+    "max_actual_forecast_logp_error": 0.0,
+    "settled_window_credit_norms": [
+      0.417659561267536
+    ],
+    "interaction_roundtrip_exact": true,
+    "full_candidate": {
+      "path": "F:\\mengli_native_control\\live256\\candidate.pt",
+      "sha256": "ba3506252d604525e8ac77fe7e61b1f3ede826b2259000d03038ad95435bba00",
+      "trained": 32640,
+      "bytes": 1583943787
+    },
+    "full_readback": {
+      "trained": 32640,
+      "optimizer_state": true,
+      "rng": true,
+      "native_posterior": "native-categorical-world-v1",
+      "pending_response_preserved": true,
+      "pending_world_tokens": 18,
+      "first_pass_meter_targets": 32640,
+      "phase_meter_targets": 256
+    },
+    "native_parameter_delta_ce_and_policy_combined": {
+      "comp_burst_k": {
+        "maxabs": 0.0,
+        "norm": 0.0,
+        "changed_elements": 0
+      },
+      "comp_eta": {
+        "maxabs": 0.0005088029429316521,
+        "norm": 0.0005088029429316521,
+        "changed_elements": 1
+      },
+      "comp_eta_pot": {
+        "maxabs": 0.0,
+        "norm": 0.0,
+        "changed_elements": 0
+      },
+      "comp_logit_forget": {
+        "maxabs": 0.0,
+        "norm": 0.0,
+        "changed_elements": 0
+      },
+      "comp_logit_tonic": {
+        "maxabs": 0.0,
+        "norm": 0.0,
+        "changed_elements": 0
+      },
+      "comp_logit_trace": {
+        "maxabs": 0.0,
+        "norm": 0.0,
+        "changed_elements": 0
+      },
+      "comp_weight": {
+        "maxabs": 0.007968361489474773,
+        "norm": 0.18229064922763483,
+        "changed_elements": 55149
+      },
+      "dopamine_logit_fast": {
+        "maxabs": 0.0,
+        "norm": 0.0,
+        "changed_elements": 0
+      },
+      "dopamine_logit_slow": {
+        "maxabs": 0.0,
+        "norm": 0.0,
+        "changed_elements": 0
+      },
+      "dopamine_sensitivity": {
+        "maxabs": 0.15999987721443176,
+        "norm": 0.5890666612371106,
+        "changed_elements": 85
+      },
+      "log_beta": {
+        "maxabs": 0.14999985694885254,
+        "norm": 0.3832423774301364,
+        "changed_elements": 59
+      },
+      "log_g_e": {
+        "maxabs": 0.0016136765480041504,
+        "norm": 0.0016136765480041504,
+        "changed_elements": 1
+      },
+      "log_g_i": {
+        "maxabs": 0.0019913911819458008,
+        "norm": 0.0019913911819458008,
+        "changed_elements": 1
+      },
+      "log_graded_gain": {
+        "maxabs": 0.0006849765777587891,
+        "norm": 0.0008377508797024569,
+        "changed_elements": 4
+      },
+      "log_input_gain": {
+        "maxabs": 0.15999984741210938,
+        "norm": 0.5415484145934185,
+        "changed_elements": 111
+      },
+      "log_kc_release": {
+        "maxabs": 0.0,
+        "norm": 0.0,
+        "changed_elements": 0
+      },
+      "log_tau_a": {
+        "maxabs": 0.160003662109375,
+        "norm": 0.5558229408958123,
+        "changed_elements": 75
+      },
+      "log_tau_m": {
+        "maxabs": 0.15999996662139893,
+        "norm": 0.5161729380237217,
+        "changed_elements": 83
+      },
+      "log_tau_s_e": {
+        "maxabs": 0.15499985218048096,
+        "norm": 0.712916863082146,
+        "changed_elements": 177
+      },
+      "log_tau_s_i": {
+        "maxabs": 0.15999984741210938,
+        "norm": 0.6466445867058904,
+        "changed_elements": 119
+      },
+      "log_threshold": {
+        "maxabs": 0.11000251770019531,
+        "norm": 0.34088896941979735,
+        "changed_elements": 54
+      },
+      "mbon_kappa": {
+        "maxabs": 0.0,
+        "norm": 0.0,
+        "changed_elements": 0
+      }
+    },
+    "head_maxabs_delta_ce_and_policy_combined": {
+      "ai_b": 1.2993812561035156e-05,
+      "ai_w": 0.0011864742264151573,
+      "read_norm.weight": 0.0035256892442703247,
+      "decoder.bias": 0.010304450988769531
+    },
+    "pending_response_native_score_norm": 0.22206028167795927,
+    "pending_response_head_score_norm": 32.04345941216399,
+    "compartment_memory_delta_norm": 3.713820973929563,
+    "full_checkpoint_resume": {
+      "report": "F:\\mengli_native_control\\resume8\\report.json",
+      "status": "interface_passed",
+      "inputs": 8,
+      "optimizer_updates": 1,
+      "interaction_roundtrip_exact": true,
+      "candidate_unchanged": true,
+      "main_pause_unchanged": true,
+      "peak_mib": 3292.212890625
+    }
+  },
+  "acute_causality": {
+    "at": "2026-10-17T11:15:59.308103+00:00",
+    "trained": 32384,
+    "source_checkpoint": "E:\\ib_checkpoints\\newborn_reading\\last.pt",
+    "source_sha256": "9dacf767b558b3cf4f8642644f51092a7f4047af8712c98b53f543beb380ebe4",
+    "scope": "acute native-categorical value mediation, no capability claim",
+    "gpu_admission": {
+      "idle_desktop_pids": [
+        15536,
+        25216
+      ],
+      "gpu_load": "49, 0"
+    },
+    "ticks": 16,
+    "eye_gain": 0.9992452263832092,
+    "candidate_ids": [
+      198,
+      383,
+      314,
+      1375
+    ],
+    "arms": {
+      "plain": {
+        "wait_information": 0.00032702722819522023,
+        "word_information": [
+          0.0001879085466498509,
+          0.0007959944778122008,
+          0.0008486031438224018,
+          0.0005410201847553253
+        ],
+        "timing_logit_delta": 8.746347157284617e-05,
+        "speak_probability_per_tick": 8.24151502456516e-05,
+        "base_speak_probability_per_tick": 8.240791066782549e-05,
+        "selected_word_probability": [
+          0.2542283833026886,
+          0.1858026385307312,
+          0.049336522817611694,
+          0.045851875096559525
+        ],
+        "word_policy_maxabs_delta": 0.0,
+        "predictive_logp_maxabs_delta": 0.0
+      },
+      "sham": {
+        "wait_information": 0.00032702722819522023,
+        "word_information": [
+          0.0001879085466498509,
+          0.0007959944778122008,
+          0.0008486031438224018,
+          0.0005410201847553253
+        ],
+        "timing_logit_delta": 8.746347157284617e-05,
+        "speak_probability_per_tick": 8.24151502456516e-05,
+        "base_speak_probability_per_tick": 8.240791066782549e-05,
+        "selected_word_probability": [
+          0.2542283833026886,
+          0.1858026385307312,
+          0.049336522817611694,
+          0.045851875096559525
+        ],
+        "word_policy_maxabs_delta": 0.0,
+        "predictive_logp_maxabs_delta": 0.0
+      },
+      "phi_zero": {
+        "wait_information": 0.0005352161242626607,
+        "word_information": [
+          8.316037565236911e-05,
+          0.0009634668240323663,
+          0.0010548523860052228,
+          0.0006138502503745258
+        ],
+        "timing_logit_delta": -6.165297236293554e-06,
+        "speak_probability_per_tick": 8.24074522824958e-05,
+        "base_speak_probability_per_tick": 8.240791066782549e-05,
+        "selected_word_probability": [
+          0.2541726231575012,
+          0.18581245839595795,
+          0.04934104159474373,
+          0.045849960297346115
+        ],
+        "word_policy_maxabs_delta": 5.576014518737793e-05,
+        "predictive_logp_maxabs_delta": 0.16007137298583984
+      },
+      "KC_off": {
+        "wait_information": 0.00022906374942976981,
+        "word_information": [
+          0.00038396971649490297,
+          0.0009571713162586093,
+          0.0022780101280659437,
+          0.0005087389145046473
+        ],
+        "timing_logit_delta": 0.0002885430003516376,
+        "speak_probability_per_tick": 8.243173215305433e-05,
+        "base_speak_probability_per_tick": 8.240791066782549e-05,
+        "selected_word_probability": [
+          0.25425201654434204,
+          0.18581341207027435,
+          0.04940200597047806,
+          0.04584566503763199
+        ],
+        "word_policy_maxabs_delta": 6.548315286636353e-05,
+        "predictive_logp_maxabs_delta": 0.1587686538696289
+      },
+      "MBON_off": {
+        "wait_information": 0.000310050614643842,
+        "word_information": [
+          0.0001665544114075601,
+          0.0015024238964542747,
+          0.0017604600870981812,
+          0.001511298236437142
+        ],
+        "timing_logit_delta": 0.000311745039653033,
+        "speak_probability_per_tick": 8.24336166260764e-05,
+        "base_speak_probability_per_tick": 8.240791066782549e-05,
+        "selected_word_probability": [
+          0.2541702687740326,
+          0.1858954131603241,
+          0.049371302127838135,
+          0.045886874198913574
+        ],
+        "word_policy_maxabs_delta": 9.277462959289551e-05,
+        "predictive_logp_maxabs_delta": 0.2632918357849121
+      },
+      "DAN_off": {
+        "wait_information": 0.00030479635461233556,
+        "word_information": [
+          0.00014385032409336418,
+          0.0011182025773450732,
+          0.0017632183153182268,
+          0.0008859874214977026
+        ],
+        "timing_logit_delta": 0.00020899568335153162,
+        "speak_probability_per_tick": 8.242513285949826e-05,
+        "base_speak_probability_per_tick": 8.240791066782549e-05,
+        "selected_word_probability": [
+          0.25419193506240845,
+          0.1858440488576889,
+          0.04937675595283508,
+          0.045863132923841476
+        ],
+        "word_policy_maxabs_delta": 4.141032695770264e-05,
+        "predictive_logp_maxabs_delta": 0.24910831451416016
+      },
+      "kc_terminal_off": {
+        "wait_information": 0.0003269350854679942,
+        "word_information": [
+          0.00015417240501847118,
+          0.0010016369633376598,
+          0.0009001836879178882,
+          0.0007673028158023953
+        ],
+        "timing_logit_delta": 0.00012999412138015032,
+        "speak_probability_per_tick": 8.241860632551834e-05,
+        "base_speak_probability_per_tick": 8.240791066782549e-05,
+        "selected_word_probability": [
+          0.2542090117931366,
+          0.18583297729492188,
+          0.049336984753608704,
+          0.045860305428504944
+        ],
+        "word_policy_maxabs_delta": 3.0338764190673828e-05,
+        "predictive_logp_maxabs_delta": 0.008342742919921875
+      },
+      "restored": {
+        "wait_information": 0.00032702722819522023,
+        "word_information": [
+          0.0001879085466498509,
+          0.0007959944778122008,
+          0.0008486031438224018,
+          0.0005410201847553253
+        ],
+        "timing_logit_delta": 8.746347157284617e-05,
+        "speak_probability_per_tick": 8.24151502456516e-05,
+        "base_speak_probability_per_tick": 8.240791066782549e-05,
+        "selected_word_probability": [
+          0.2542283833026886,
+          0.1858026385307312,
+          0.049336522817611694,
+          0.045851875096559525
+        ],
+        "word_policy_maxabs_delta": 0.0,
+        "predictive_logp_maxabs_delta": 0.0
+      }
+    },
+    "main_training_started": false,
+    "actual_external_evidence": {
+      "updated": true,
+      "source": "mother_call",
+      "prequential_logp": -9.193868971875416,
+      "realized_information": 0.00018703888628342907,
+      "weights_before": [
+        0.5,
+        0.5
+      ],
+      "weights_after": [
+        0.4903297563419796,
+        0.5096702436580204
+      ]
+    },
+    "same_state_after_evidence": {
+      "wait_information": 0.00032693849061615765,
+      "word_information": [
+        0.00018786193686537445,
+        0.0007958731730468571,
+        0.0008482325938530266,
+        0.0005408285651355982
+      ],
+      "timing_logit_delta": 8.743299986235797e-05,
+      "speak_probability_per_tick": 8.24151502456516e-05,
+      "base_speak_probability_per_tick": 8.240791066782549e-05,
+      "selected_word_probability": [
+        0.254228413105011,
+        0.18580262362957,
+        0.049336519092321396,
+        0.04585186764597893
+      ],
+      "word_policy_maxabs_delta": 2.9802322387695312e-08
+    },
+    "identity_reference": {
+      "wait_information": 0.0,
+      "word_information": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "timing_logit_delta": 1.1920928955078125e-07,
+      "speak_probability_per_tick": 8.240791066782549e-05,
+      "base_speak_probability_per_tick": 8.240791066782549e-05,
+      "selected_word_probability": [
+        0.2542859613895416,
+        0.18573173880577087,
+        0.049315109848976135,
+        0.04584606736898422
+      ]
+    },
+    "controls_passed": true,
+    "status": "acute_controls_passed",
+    "elapsed_seconds": 21.7970000000023,
+    "source_unchanged": true,
+    "pause_unchanged": true,
+    "physical_state_unchanged": true,
+    "model_parameters_unchanged": true,
+    "rng_unchanged": true,
+    "peak_mib": 2276.669921875
+  },
+  "tests": {
+    "passed": 238,
+    "log": "F:\\mengli_native_control\\pytest_final.log"
+  },
+  "limitations_and_decision": {
+    "behavior_recovered": false,
+    "selective_familiarization": "not established",
+    "native_dan_epistemic_teaching": "not implemented by optimizer score learning",
+    "finite_identity_information": "At most ln2 per decision; coherent fixed-identity expected lifetime total also at most ln2.",
+    "default_enabled": false,
+    "main_training_started": false,
+    "next_generative_object": "continuing external-world/state uncertainty, identifiable sensory evidence and native local teaching/value coupling"
+  },
+  "evidence_paths": {
+    "live": "F:\\mengli_native_control\\live256\\report.json",
+    "causal": "F:\\mengli_native_control\\causal32384\\report.json"
+  },
+  "execution_source_archive": "F:\\mengli_native_control\\runtime_live256.zip",
+  "followup_compatibility_repairs": [
+    "Learning-mode resolver accepts omitted reset/dendritic fields in partial restore namespaces; full-parser behavior unchanged.",
+    "Public clamp_edges runs under no_grad; ordinary trainer already called it under no_grad.",
+    "238 affected checks passed and the full candidate restored and advanced8 actual inputs after these repairs."
+  ]
+}

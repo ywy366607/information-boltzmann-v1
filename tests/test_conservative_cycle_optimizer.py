@@ -538,17 +538,17 @@ def test_resource_cycle_auto_step_preserves_full_state_continuation():
     for _ in range(3):
         p.grad = torch.randn(16)
         opt1.step()
-    
+
     # Checkpoint
     checkpoint = copy.deepcopy(opt1.state_dict())
-    
+
     p2 = p.detach().clone().requires_grad_()
     opt2 = ResourceCycle([p2], lr=0.05, auto_step=True)
     opt2.load_state_dict(checkpoint)
-    
+
     assert opt1.param_groups[0]["rho"] == opt2.param_groups[0]["rho"]
     assert opt1.param_groups[0]["last_pred_decrease"] == opt2.param_groups[0]["last_pred_decrease"]
-    
+
     # Continued steps must be bitwise identical
     for _ in range(3):
         g = torch.randn(16)
@@ -733,3 +733,97 @@ def test_calibrated_outcome_scores_are_centered_and_bounded():
     assert restored.param_groups[0]['outcome_score_count'] == len(values)
     assert restored.param_groups[0]['outcome_probability'] == pytest.approx(
         group['outcome_probability'])
+
+
+def test_calibrated_outcome_gates_existing_phase_without_extra_parameter_state():
+    p = torch.zeros((2, 2), requires_grad=True)
+    q = p.detach().clone().requires_grad_()
+    gated = ResourceCycle([p], lr=.01, adam_base=True,
+                          outcome_modulation=True, calibrated_outcome=True)
+    full = ResourceCycle([q], lr=.01, adam_base=True,
+                         outcome_modulation=True, calibrated_outcome=True)
+    gated.param_groups[0]['outcome_gate'] = 0.0
+    full.param_groups[0]['outcome_gate'] = 1.0
+    p.grad = torch.tensor([[2., 0.], [0., 0.]])
+    q.grad = p.grad.clone()
+    gated.step(); full.step()
+    assert torch.equal(gated.state[p]['phase'], torch.zeros_like(gated.state[p]['phase']))
+    assert not torch.equal(full.state[q]['phase'], torch.zeros_like(full.state[q]['phase']))
+    assert set(gated.state[p]) == set(full.state[q])
+
+
+def test_calibrated_latch_holds_phase_then_releases_after_contrary_run():
+    p = torch.zeros((2, 2), requires_grad=True)
+    opt = ResourceCycle([p], lr=.01, adam_base=True,
+                        outcome_modulation=True, calibrated_outcome=True,
+                        latch_state=True, latch_window=2,
+                        outcome_ema=.1, calibrated_outcome_rate=0.0)
+    group = opt.param_groups[0]
+    # Make two clearly positive calibrated outcomes arm the latch.
+    group['outcome_probability'] = .9
+    group['outcome_score_ema'] = -1.0
+    group['outcome_score_count'] = 1
+    opt.observe_outcome(1.0)
+    opt.observe_outcome(1.0)
+    assert group['latch_active'] is True
+    p.grad = torch.tensor([[2., 0.], [0., 0.]])
+    opt.step()
+    held = opt.state[p]['phase'].clone()
+    p.grad = torch.tensor([[0., 2.], [0., 0.]])
+    opt.step()
+    torch.testing.assert_close(opt.state[p]['phase'], held, rtol=0, atol=0)
+    # Two strong contrary outcomes release the latch while sensing continues.
+    group['outcome_score_ema'] = 1.0
+    opt.observe_outcome(0.0)
+    opt.observe_outcome(0.0)
+    assert group['latch_active'] is False
+    p.grad = torch.tensor([[0., 2.], [0., 0.]])
+    opt.step()
+    assert not torch.equal(opt.state[p]['phase'], held)
+
+
+def test_calibrated_latch_release_with_reachable_score_baseline():
+    p = torch.zeros((2, 2), requires_grad=True)
+    opt = ResourceCycle([p], adam_base=True, calibrated_outcome=True,
+                        latch_state=True, latch_window=2, outcome_ema=.125)
+    group = opt.param_groups[0]
+    for _ in range(30):
+        opt.observe_outcome(1.0)
+    assert group['latch_active']
+    opt.observe_outcome(-1.0)
+    assert group['latch_active'] and group['latch_contrary_run'] == 1
+    opt.observe_outcome(-1.0)
+    assert not group['latch_active']
+    # A moving score baseline can falsely re-arm on consistently bad outcomes.
+    for _ in range(5):
+        opt.observe_outcome(-1.0)
+    assert group['latch_active']
+
+
+@pytest.mark.parametrize('anchor,phase_latch,rho_control', [
+    (False, False, False), (True, False, False),
+    (False, True, False), (False, False, True)])
+def test_calibrated_controls_are_independent_and_resume(anchor, phase_latch, rho_control):
+    p = torch.zeros((2, 2), requires_grad=True)
+    kwargs = dict(adam_base=True, calibrated_outcome=True, latch_state=False,
+                  anchor_enabled=anchor, phase_latch_enabled=phase_latch,
+                  outcome_rho_enabled=rho_control, latch_window=2)
+    opt = ResourceCycle([p], **kwargs)
+    p.grad = torch.tensor([[1., 0.], [0., 0.]])
+    opt.step()
+    assert ('anchor' in opt.state[p]) == anchor
+    group = opt.param_groups[0]
+    assert group['last_outcome_prediction_error'] == 0
+    opt.observe_outcome(1.0)
+    assert group['last_outcome_prediction_error'] == pytest.approx(.5)
+    for _ in range(10):
+        opt.observe_outcome(1.0)
+    assert group['latch_active'] == phase_latch
+    assert (group['rho'] != 1.0) == rho_control
+    state = copy.deepcopy(opt.state_dict())
+    q = p.detach().clone().requires_grad_()
+    restored = ResourceCycle([q], **kwargs)
+    restored.load_state_dict(state)
+    p.grad = torch.ones_like(p); q.grad = p.grad.clone()
+    opt.step(); restored.step()
+    torch.testing.assert_close(p, q, rtol=0, atol=0)

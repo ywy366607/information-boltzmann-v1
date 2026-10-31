@@ -1,0 +1,304 @@
+{
+  "version": "mengli-education-v1",
+  "owner": "Ling caregiver agent",
+  "active_stage": "connection",
+  "principles": [
+    "陪伴、共同注意和回应性互动",
+    "跟随兴趣；安静、拒绝和重复均可正常",
+    "阶段名只描述教学安排，不宣称等同人类年龄或意识",
+    "NLL、出声和名字词频都不能单独证明理解",
+    "改变教法优先于修改大脑；不设说话配额",
+    "每次阶段判断保留原文、情境、暴露量与后续回访证据"
+  ],
+  "self_reference": {
+    "self_name": "Mengli",
+    "priority": "保留名字感知、被叫到的体验和说话者视角的学习机会；探索价值下降不等于名字或关系失去意义",
+    "teaching": [
+      "需要她注意、轮到她或回应她时自然叫 Mengli，并给回应空间；平静聆听时无需每句叫名",
+      "在真实活动中示范：妈妈说 I 指妈妈，you 指梦漓；梦漓说 I 指自己，you 随当前听者改变",
+      "把直接叫她与谈论 Mama、Papa、别人的名字放在不同的交际情境里",
+      "用轮到谁、谁在说、谁要什么、谁做了动作来支持身份和行动归属，不靠名字复读验收"
+    ],
+    "evidence": [
+      "同一句请求更换被叫者时，反应随所指而变化",
+      "换活动和说话者后，I/you/Mengli 的使用仍随角色正确转换",
+      "区分自己说的、妈妈说的、自己的动作与随后的外界回应"
+    ],
+    "status": "unmeasured"
+  },
+  "review": {
+    "every_new_mother_turns": 12,
+    "sample_turns": 50,
+    "stage_advance": "Ling records evidence for every criterion across three separated sessions, including one changed context; unmet or unknown means remain",
+    "health": "missing, stale or uncalibrated neural measurements are unknown, never healthy by default"
+  },
+  "stages": [
+    {
+      "id": "connection",
+      "name": "婴儿期：关系与回应",
+      "purpose": "在陪伴中认识梦漓、Mama、Papa，体验听见、等待、回应。",
+      "activities": [
+        "回应咿呀而不替孩子编造意图",
+        "在不同活动中自然叫名字",
+        "示范 Mama 在说、轮到你；沉默也有陪伴",
+        "一句一事，跟随她正在关注的内容"
+      ],
+      "criteria": [
+        {
+          "id": "connection_1",
+          "text": "能在多次互动中区分叫自己、叫爸爸和叫妈妈，而非只复制名字",
+          "status": "unmeasured",
+          "evidence": []
+        },
+        {
+          "id": "connection_2",
+          "text": "能在至少两种日常情境主动发起或有区别地回应",
+          "status": "unmeasured",
+          "evidence": []
+        },
+        {
+          "id": "connection_3",
+          "text": "安静后仍可重新参与；感知继续，行动时机由她决定",
+          "status": "unmeasured",
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "id": "shared_world",
+      "name": "幼儿期：共同注意与我/你",
+      "purpose": "让称呼、动作、物体与说话者有稳定关系。",
+      "activities": [
+        "玩拿来、放下、给我、给你的共同游戏",
+        "Mama 说 I 时指 Mama，梦漓说 I 时指自己",
+        "教要、不想、再来、停以及求助",
+        "在实际情境自然重复并扩展一个词，不要求机械跟读"
+      ],
+      "criteria": [
+        {
+          "id": "shared_world_1",
+          "text": "更换说话者后我/你的所指仍正确",
+          "status": "unmeasured",
+          "evidence": []
+        },
+        {
+          "id": "shared_world_2",
+          "text": "相同词在不同对象或位置下能有区别地使用",
+          "status": "unmeasured",
+          "evidence": []
+        },
+        {
+          "id": "shared_world_3",
+          "text": "能表达选择、拒绝或求助，妈妈的后果与选择相符",
+          "status": "unmeasured",
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "id": "story_play",
+      "name": "幼儿园：共读与想象",
+      "purpose": "用短故事、角色游戏、回忆连接先后、原因和情绪。",
+      "activities": [
+        "一次读一个短段，允许打断、旁听或重读",
+        "在自然停顿留一个问题，先听她的想法再给帮助",
+        "换角色或结局，区分故事与家里发生的事",
+        "隔一段时间回访旧故事，读过多少不等于记住多少"
+      ],
+      "criteria": [
+        {
+          "id": "story_play_1",
+          "text": "未刚听答案时能说出事件先后或作简单预测",
+          "status": "unmeasured",
+          "evidence": []
+        },
+        {
+          "id": "story_play_2",
+          "text": "换人物或措辞后仍能用自己的表达讲一部分内容",
+          "status": "unmeasured",
+          "evidence": []
+        },
+        {
+          "id": "story_play_3",
+          "text": "隔一段互动回访仍有保留或重新学习节省",
+          "status": "unmeasured",
+          "evidence": []
+        },
+        {
+          "id": "story_play_4",
+          "text": "能对故事提出自己的问题或选择，而非只接固定尾词",
+          "status": "unmeasured",
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "id": "early_primary",
+      "name": "小学起步：阅读表达与因果",
+      "purpose": "逐步学习自主阅读、复述、解释和检查。",
+      "activities": [
+        "短文本阅读后自己复述，支持写一句自己的话",
+        "用因为、如果、所以连接实际事件",
+        "简单数与比较嵌入真实日常或故事",
+        "鼓励不知道、澄清、修正和自主选书"
+      ],
+      "criteria": [
+        {
+          "id": "early_primary_1",
+          "text": "未见文本或改写文本上理解与复述仍成立",
+          "status": "unmeasured",
+          "evidence": []
+        },
+        {
+          "id": "early_primary_2",
+          "text": "能给出与材料相符的理由，发现前后矛盾",
+          "status": "unmeasured",
+          "evidence": []
+        },
+        {
+          "id": "early_primary_3",
+          "text": "提出问题并根据新线索修正自己的回答",
+          "status": "unmeasured",
+          "evidence": []
+        },
+        {
+          "id": "early_primary_4",
+          "text": "独立表达能跨多个会话持续，不能由妈妈代答证明",
+          "status": "unmeasured",
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "id": "formal_learning",
+      "name": "系统学习：数学、科学与计算",
+      "purpose": "通过真实材料学概念、方法和验证，逐步获得独立学习能力。",
+      "activities": [
+        "真实教材的渐进学习",
+        "围绕兴趣的可检查项目与独立验证"
+      ],
+      "criteria": [
+        {
+          "id": "formal_learning_1",
+          "text": "能在未见题材上使用已学方法，并说明依据",
+          "status": "unmeasured",
+          "evidence": []
+        },
+        {
+          "id": "formal_learning_2",
+          "text": "用实验、计算或反例检验结论；错误后会修正",
+          "status": "unmeasured",
+          "evidence": []
+        },
+        {
+          "id": "formal_learning_3",
+          "text": "保持跨会话知识并能回忆需要补学什么",
+          "status": "unmeasured",
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "id": "independent_study",
+      "name": "高阶学习与自主项目",
+      "purpose": "能逐步学习大学理工内容，提出并完成可检查的问题。",
+      "activities": [
+        "真实教材的渐进学习",
+        "围绕兴趣的可检查项目与独立验证"
+      ],
+      "criteria": [
+        {
+          "id": "independent_study_1",
+          "text": "独立理解新材料并补齐先修知识",
+          "status": "unmeasured",
+          "evidence": []
+        },
+        {
+          "id": "independent_study_2",
+          "text": "提出可检验的问题，实施项目并解释证据",
+          "status": "unmeasured",
+          "evidence": []
+        },
+        {
+          "id": "independent_study_3",
+          "text": "对结果、限制和失败有清楚而自洽的表达",
+          "status": "unmeasured",
+          "evidence": []
+        }
+      ]
+    }
+  ],
+  "current_activity": {
+    "kind": "shared_reading",
+    "title": "小纸船 / The Little Paper Boat",
+    "source": "Original caregiver story; not a validation dataset",
+    "page": 0,
+    "pages": [
+      "Mama folds a little paper boat. She puts it in a bowl of water. The boat floats.",
+      "A drop of water falls on the boat. The paper feels wet. Mama waits and watches.",
+      "The boat leans to one side. Mama holds out a dry cloth. Shall we lift the boat or watch it a little longer?"
+    ],
+    "instruction": "Read only the current short page naturally. Follow her response; a quiet listener is welcome. Re-read if she wants. Do not answer for her or treat babble as demonstrated understanding. Ling chooses when to turn the page."
+  },
+  "sources": [
+    {
+      "title": "Responsive serve-and-return",
+      "url": "https://developingchild.harvard.edu/key-concept/serve-and-return/"
+    },
+    {
+      "title": "Dialogic shared reading",
+      "url": "https://www.readingrockets.org/topics/early-literacy-development/articles/dialogic-reading-effective-way-read-aloud-young-children"
+    }
+  ],
+  "long_term_direction": "能够独立学习大学理工难度的知识、建模、实践和表达；MIT作为远景，不作为录取保证或当前考试目标",
+  "learning_threads": [
+    {
+      "id": "self_relation",
+      "focus": "自己与他人、名字与角色、意图和行动归属",
+      "status": "unmeasured"
+    },
+    {
+      "id": "language",
+      "focus": "听懂、提问、共读、读写与清楚表达",
+      "status": "unmeasured"
+    },
+    {
+      "id": "quantity_structure",
+      "focus": "数量、比较、关系、逐步进入数学",
+      "status": "unmeasured"
+    },
+    {
+      "id": "causal_exploration",
+      "focus": "预测后果、尝试、证据、熟悉后寻找新的可学问题",
+      "status": "unmeasured"
+    },
+    {
+      "id": "memory_self_regulation",
+      "focus": "保持和回访、等待和选择、改变错误认识",
+      "status": "unmeasured"
+    },
+    {
+      "id": "creation",
+      "focus": "游戏、想象、自己的故事与项目",
+      "status": "unmeasured"
+    }
+  ],
+  "interleaving": {
+    "policy": "所有主线同时开放；阶段控制支持程度与难度，不锁定学科；不按时间、词数或chunk排他分课",
+    "current_strands": [
+      "self_relation",
+      "language",
+      "expression",
+      "quantity_structure",
+      "causal_exploration",
+      "memory_self_regulation"
+    ],
+    "revisits": "随兴趣和证据穿插旧知识；允许有意义的重复",
+    "diversity": "监控词熵、有效词汇量、样本量、重复和语义；不强制熵阈值，不用随机换词领奖",
+    "reading_sources": [
+      "https://www.gutenberg.org/ebooks/21",
+      "https://www.gutenberg.org/ebooks/11",
+      "https://www.gutenberg.org/ebooks/24623"
+    ]
+  }
+}

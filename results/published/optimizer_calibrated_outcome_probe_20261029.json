@@ -1,0 +1,61 @@
+{
+  "status": "completed_probe",
+  "scope": "600-update single-seed real OWT A→B→A probe of proper-score calibrated third factor on existing continuous ResourceCycle",
+  "registration": "results/published/optimizer_calibrated_outcome_probe_prereg_20261029.json",
+  "preflight": "results/calibrated_outcome_probe_owt_20261029/preflight.json",
+  "arms": {
+    "calibrated_on": {
+      "prequential_bpb": 4.044204295141066,
+      "validation_A_bpb": 3.7524273925711853,
+      "validation_B_bpb": 3.7537757718823346,
+      "wall_seconds": 50.16611809999995,
+      "state_bytes": 1194608,
+      "peak_cuda_bytes": 86040064,
+      "fresh_measurements": 150,
+      "rho_initial": 1.0,
+      "rho_final": 0.9312538721452575,
+      "rho_min": 0.9079928125420572,
+      "rho_max": 1.0095234216120372,
+      "evidence_mean": -0.01283598753646705,
+      "evidence_median": -0.011029611909179948,
+      "calibrated_state": {
+        "calibrated_outcome": true,
+        "outcome_probability": 0.758563664415174,
+        "outcome_score_ema": -0.2093083782217055,
+        "outcome_score_count": 150,
+        "last_outcome_score": -0.07613584214286206,
+        "last_outcome_evidence": 0.1521971840901068
+      }
+    },
+    "calibrated_off": {
+      "prequential_bpb": 4.418404410464974,
+      "validation_A_bpb": 4.257110751368651,
+      "validation_B_bpb": 4.347667438823278,
+      "wall_seconds": 49.84881250000035,
+      "state_bytes": 1194608,
+      "peak_cuda_bytes": 86040064,
+      "fresh_measurements": 150,
+      "rho_initial": 1.0,
+      "rho_final": 0.003227301658524386,
+      "rho_min": 0.0030890465533920837,
+      "rho_max": 1.0,
+      "evidence_mean": -0.001412027353142662,
+      "evidence_median": -0.00047597715365554905,
+      "calibrated_state": {
+        "calibrated_outcome": false,
+        "outcome_probability": 0.5,
+        "outcome_score_ema": 0.0,
+        "outcome_score_count": 0,
+        "last_outcome_score": 0.0,
+        "last_outcome_evidence": -6.457484528255009e-05
+      }
+    }
+  },
+  "decision": "retain_as_promising_probe_only",
+  "interpretation": {
+    "calibrated_on": "rho remained in [0.908,1.010] and validation was lower than matched raw-gate control; this supports bounded calibrated modulation for further testing.",
+    "calibrated_off": "raw outcome gate collapsed rho to about 0.0032 within the same 600-step probe.",
+    "claim_boundary": "One seed and 600 updates; no convergence or general optimizer superiority claim.",
+    "telemetry_correction": "The historical curve outcome_evidence and summary evidence statistics are the raw realized-minus-predicted residual, not calibrated score-minus-baseline. Checkpoint last_outcome_evidence is the actual calibrated evidence."
+  }
+}

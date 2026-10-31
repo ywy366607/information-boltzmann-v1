@@ -1,0 +1,196 @@
+{
+  "created_at": "2026-10-19T04:18:12.784546+00:00",
+  "implementation": "Actual KC axonal contact packets -> local muscarinic inhibitory receptor/effector -> existing release-resource and cAMP teaching interfaces",
+  "scope": "Anatomical local modulation and interfaces; not complete receptor electrophysiology or whole-brain/learning acceptance",
+  "migration": {
+    "source": "E:\\fly_stream_overflow\\native_apl_local_release_20261019\\last.pt",
+    "source_sha256": "cac15cd68d3d05accd3655e82fa68a81b202e9652fa219b3b0b0e443a586374f",
+    "candidate": "F:\\fly_stream_overflow\\native_kc_lateral_20261019\\last.pt",
+    "candidate_sha256": "9b1a2142c297f5669ad2282afdb9363c2a2d3a858670f21b0f59f8304276bf6b",
+    "trained": 33000,
+    "new_formal_inputs": 0,
+    "new_formal_updates": 0,
+    "old_model_physical_optimizer_credit_world_rng_exact": true,
+    "verification": "Sequential archive SHA256 fingerprints; one mapped archive per process",
+    "new_state_bytes": 33477760,
+    "new_parameters": 24384,
+    "archive_only": true,
+    "training_adoption_approved": false,
+    "initialization": "New receptor/effector coordinates at rest; existing packets and history retained",
+    "status": "zero_exposure_KC_lateral_extension_verified"
+  },
+  "anatomy": {
+    "dataset": "male-cns:v1.0",
+    "version": 1,
+    "kc_geometry_sha256": "8de40839b5da3ab72cca8443e0f3ca8fed211250339079b3022c5714fedc9385",
+    "contacts": 1119929,
+    "grouped_contact_routes": 1119929,
+    "edges": 619572,
+    "pinned_axonal_edges_covered": 612115,
+    "recipient_nodes": 727972,
+    "maximum_projection_um": 3.581874369656179,
+    "scope": "All existing non-calyx KC-to-KC contact positions projected onto the unchanged supplied morphology; no receptor localization measured",
+    "npz_sha256": "f1d71b842bc61d329f2e2850e1a44f0fb9b168b445a0abf74f3a3951531571b2",
+    "all_KC_pair_edges": 642932,
+    "calyx_share_table": "Sparse positive-only table; absent pairs have zero calyx share"
+  },
+  "acute_actual_packet_delivery": {
+    "checkpoint": "F:\\fly_stream_overflow\\native_kc_lateral_20261019\\last.pt",
+    "sha256": "9b1a2142c297f5669ad2282afdb9363c2a2d3a858670f21b0f59f8304276bf6b",
+    "scope": "One receptor/effector tick on the full real KC morphology, actual saved physical-delay packet slots; no full-brain/action/NLL replay",
+    "nodes": 4184720,
+    "source_packet_nonzero": 5278,
+    "anatomy": {
+      "dataset": "male-cns:v1.0",
+      "version": 1,
+      "kc_geometry_sha256": "8de40839b5da3ab72cca8443e0f3ca8fed211250339079b3022c5714fedc9385",
+      "contacts": 1119929,
+      "grouped_contact_routes": 1119929,
+      "edges": 619572,
+      "pinned_axonal_edges_covered": 612115,
+      "recipient_nodes": 727972,
+      "maximum_projection_um": 3.581874369656179,
+      "scope": "All existing non-calyx KC-to-KC contact positions projected onto the unchanged supplied morphology; no receptor localization measured",
+      "npz_sha256": "f1d71b842bc61d329f2e2850e1a44f0fb9b168b445a0abf74f3a3951531571b2",
+      "all_KC_pair_edges": 642932,
+      "calyx_share_table": "Sparse positive-only table; absent pairs have zero calyx share"
+    },
+    "arms": {
+      "intact": {
+        "receptor_max": 0.9958972930908203,
+        "effector_max": 0.06312114000320435,
+        "calcium_gate_min": 0.9391967058181763,
+        "camp_gate_min": 0.9405466914176941,
+        "calcium_gated_sites": 13157,
+        "camp_gated_plastic_contacts": 7629,
+        "absmax_delta_from_intact": {
+          "receptor": 0.0,
+          "signal": 0.0,
+          "calcium_gate": 0.0,
+          "camp_gate": 0.0
+        }
+      },
+      "sham": {
+        "receptor_max": 0.9958972930908203,
+        "effector_max": 0.06312114000320435,
+        "calcium_gate_min": 0.9391967058181763,
+        "camp_gate_min": 0.9405466914176941,
+        "calcium_gated_sites": 13157,
+        "camp_gated_plastic_contacts": 7629,
+        "absmax_delta_from_intact": {
+          "receptor": 0.0,
+          "signal": 0.0,
+          "calcium_gate": 0.0,
+          "camp_gate": 0.0
+        }
+      },
+      "source_off": {
+        "receptor_max": 0.0,
+        "effector_max": 0.0,
+        "calcium_gate_min": 1.0,
+        "camp_gate_min": 1.0,
+        "calcium_gated_sites": 0,
+        "camp_gated_plastic_contacts": 0,
+        "absmax_delta_from_intact": {
+          "receptor": 0.9958972930908203,
+          "signal": 0.06312114000320435,
+          "calcium_gate": 0.06080329418182373,
+          "camp_gate": 0.05945330858230591
+        }
+      },
+      "calcium_off": {
+        "receptor_max": 0.9958972930908203,
+        "effector_max": 0.06312114000320435,
+        "calcium_gate_min": 1.0,
+        "camp_gate_min": 0.9405466914176941,
+        "calcium_gated_sites": 0,
+        "camp_gated_plastic_contacts": 7629,
+        "absmax_delta_from_intact": {
+          "receptor": 0.0,
+          "signal": 0.0,
+          "calcium_gate": 0.06080329418182373,
+          "camp_gate": 0.0
+        }
+      },
+      "camp_off": {
+        "receptor_max": 0.9958972930908203,
+        "effector_max": 0.06312114000320435,
+        "calcium_gate_min": 0.9391967058181763,
+        "camp_gate_min": 1.0,
+        "calcium_gated_sites": 13157,
+        "camp_gated_plastic_contacts": 0,
+        "absmax_delta_from_intact": {
+          "receptor": 0.0,
+          "signal": 0.0,
+          "calcium_gate": 0.0,
+          "camp_gate": 0.05945330858230591
+        }
+      },
+      "restored": {
+        "receptor_max": 0.9958972930908203,
+        "effector_max": 0.06312114000320435,
+        "calcium_gate_min": 0.9391967058181763,
+        "camp_gate_min": 0.9405466914176941,
+        "calcium_gated_sites": 13157,
+        "camp_gated_plastic_contacts": 7629,
+        "absmax_delta_from_intact": {
+          "receptor": 0.0,
+          "signal": 0.0,
+          "calcium_gate": 0.0,
+          "camp_gate": 0.0
+        }
+      }
+    },
+    "controls_passed": true,
+    "dual_effector_delivery_observed": true,
+    "source_unchanged": true,
+    "full_trainer_restore": "unmeasured for this candidate",
+    "learning_or_behavior_benefit": "unmeasured",
+    "status": "acute_dual_effector_delivery_passed"
+  },
+  "tests": {
+    "distinct_passed": 226,
+    "unresolved_failures": 0,
+    "junit_reports": [
+      "F:\\fly_stream_overflow\\kc_lateral_regression_20261019.xml",
+      "F:\\fly_stream_overflow\\kc_lateral_gpu_retry_20261019.xml",
+      "F:\\fly_stream_overflow\\kc_lateral_final_20261019.xml"
+    ],
+    "initial_gpu_failures": 10,
+    "gpu_retry_passed": 10,
+    "retry_reason": "Empty CUDA_VISIBLE_DEVICES did not hide CUDA on this Windows build and caused Triton Invalid device id; corrected to device 0, same 10 cases passed.",
+    "scope": "Affected numerical/interface suites including small CPU/CUDA checks; entire repository suite not certified",
+    "deslice": "Standalone tests/test_deslice_scatter_and_gate.py passed"
+  },
+  "new_state_bytes": 33477760,
+  "new_parameters": 24384,
+  "new_main_inputs": 0,
+  "new_main_updates": 0,
+  "main_paused_at": 32384,
+  "full_trainer_restore": "Not executed for new candidate; archive content equivalence and small learner continuation tested separately",
+  "remaining": [
+    "KC local axonal voltage/AP and voltage-dependent mAChR-B switch missing",
+    "KC subtype receptor density/localization unresolved; initial unit gains are model assumptions",
+    "New slow material histories across windows are not full-system historical derivatives",
+    "Whole-brain matched-clock/action/NLL effects and sustained learning benefit unmeasured for this candidate",
+    "Archive-only candidate; atomic replacement space and full training runtime not admitted"
+  ],
+  "sources": [
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC9613607/",
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC12948350/"
+  ],
+  "storage": {
+    "C": 86544384,
+    "D": 2713182208,
+    "E": 1543036928,
+    "F": 1673093120
+  },
+  "relocation": {
+    "APL_parent_physical": "E:/fly_stream_overflow/native_apl_local_release_20261019",
+    "APL_old_path_junction": "C:/Users/85750/.codex/tmp/fly_apl_local_release_20261019",
+    "checkpoint_sha256": "cac15cd68d3d05accd3655e82fa68a81b202e9652fa219b3b0b0e443a586374f",
+    "crash_dump_physical": "D:/fly_system_reserve_20261019/CrashDumps",
+    "crash_dump_original_junction": "C:/Users/85750/AppData/Local/CrashDumps",
+    "method": "Copy, verify each file SHA256, remove originals, preserve original path through junction; no learning state deleted"
+  }
+}
