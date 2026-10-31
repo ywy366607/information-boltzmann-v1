@@ -50,3 +50,49 @@
               (CGB.GDNLife.Process.futureLanguageSignature M Q.toExternalFutureProbes before i) →
           CGB.GDNLife.Process.futureLanguagePaid M Q before after
 ```
+
+## CGB.GDNLife.Process.empirical_future_cross_entropy_congr
+
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationFutureValue.lean#L109)
+
+源码说明：If no actual re-entered continuation can tell two body states apart in language code length, the empirical future-value audit is equal. Unobserved possible continuations never enter this quantity.
+
+形式陈述：
+
+```lean
+∀ {k d : ℕ} (M : CGB.GDNLife.Model k d) {m n : ℕ} (Q : CGB.GDNLife.Process.ExternalFutureProbes m)
+  (law : Fin m → CGB.GDNLife.Byte → ℝ) (observed : Fin n → Fin m) (s s' : CGB.GDNLife.State k d),
+  (∀ (t : Fin n),
+      CGB.PredictiveHarvest.crossEntropy (law (observed t))
+          (CGB.GDNLife.Process.futureLanguageSignature M Q s (observed t)) =
+        CGB.PredictiveHarvest.crossEntropy (law (observed t))
+          (CGB.GDNLife.Process.futureLanguageSignature M Q s' (observed t))) →
+    CGB.GDNLife.Process.empiricalFutureLanguageCrossEntropy M Q law observed s =
+      CGB.GDNLife.Process.empiricalFutureLanguageCrossEntropy M Q law observed s'
+```
+
+## CGB.GDNLife.Process.observed_continuation_improvement_is_empirically_paid
+
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationFutureValue.lean#L126)
+
+源码说明：One strictly better re-entered continuation, with no worse observed continuation, strictly improves the empirical future language code length. Thus a stream can supply the retention signal by its own recurrence and prediction errors, without an external reward table.
+
+形式陈述：
+
+```lean
+∀ {k d : ℕ} (M : CGB.GDNLife.Model k d) {m n : ℕ} (Q : CGB.GDNLife.Process.ExternalFutureProbes m)
+  (law : Fin m → CGB.GDNLife.Byte → ℝ) (observed : Fin n → Fin m) (before after : CGB.GDNLife.State k d),
+  0 < n →
+    (∀ (t : Fin n),
+        CGB.PredictiveHarvest.crossEntropy (law (observed t))
+            (CGB.GDNLife.Process.futureLanguageSignature M Q after (observed t)) ≤
+          CGB.PredictiveHarvest.crossEntropy (law (observed t))
+            (CGB.GDNLife.Process.futureLanguageSignature M Q before (observed t))) →
+      ∀ (t : Fin n),
+        CGB.PredictiveHarvest.crossEntropy (law (observed t))
+              (CGB.GDNLife.Process.futureLanguageSignature M Q after (observed t)) <
+            CGB.PredictiveHarvest.crossEntropy (law (observed t))
+              (CGB.GDNLife.Process.futureLanguageSignature M Q before (observed t)) →
+          CGB.GDNLife.Process.empiricalFutureLanguageCrossEntropy M Q law observed after <
+            CGB.GDNLife.Process.empiricalFutureLanguageCrossEntropy M Q law observed before
+```

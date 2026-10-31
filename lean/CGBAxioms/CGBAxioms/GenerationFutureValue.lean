@@ -88,3 +88,67 @@ theorem positive_continuation_improvement_is_future_paid (M : Model k d)
   · exact ⟨i, mem_univ i, mul_lt_mul_of_pos_left hlt hweight⟩
 
 end CGB.GDNLife.Process
+
+namespace CGB.GDNLife.Process
+
+open Finset
+
+/-- The empirical future code length over continuations that actually re-entered
+the language boundary.  This is the finite-stream estimator of the weighted
+world-side audit: no continuation probabilities or semantic labels are stored
+in the body. -/
+noncomputable def empiricalFutureLanguageCrossEntropy (M : Model k d)
+    {m n : ℕ} (Q : ExternalFutureProbes m) (law : Fin m → Byte → ℝ)
+    (observed : Fin n → Fin m) (s : State k d) : ℝ :=
+  (∑ t, CGB.PredictiveHarvest.crossEntropy (law (observed t))
+    (futureLanguageSignature M Q s (observed t))) / n
+
+/-- If no actual re-entered continuation can tell two body states apart in
+language code length, the empirical future-value audit is equal.  Unobserved
+possible continuations never enter this quantity. -/
+theorem empirical_future_cross_entropy_congr (M : Model k d)
+    {m n : ℕ} (Q : ExternalFutureProbes m) (law : Fin m → Byte → ℝ)
+    (observed : Fin n → Fin m) (s s' : State k d)
+    (h : ∀ t, CGB.PredictiveHarvest.crossEntropy (law (observed t))
+        (futureLanguageSignature M Q s (observed t)) =
+      CGB.PredictiveHarvest.crossEntropy (law (observed t))
+        (futureLanguageSignature M Q s' (observed t))) :
+    empiricalFutureLanguageCrossEntropy M Q law observed s =
+      empiricalFutureLanguageCrossEntropy M Q law observed s' := by
+  unfold empiricalFutureLanguageCrossEntropy
+  congr 1
+  exact sum_congr rfl fun t _ => h t
+
+/-- One strictly better re-entered continuation, with no worse observed
+continuation, strictly improves the empirical future language code length.
+Thus a stream can supply the retention signal by its own recurrence and
+prediction errors, without an external reward table. -/
+theorem observed_continuation_improvement_is_empirically_paid (M : Model k d)
+    {m n : ℕ} (Q : ExternalFutureProbes m) (law : Fin m → Byte → ℝ)
+    (observed : Fin n → Fin m) (before after : State k d) (hn : 0 < n)
+    (hle : ∀ t, CGB.PredictiveHarvest.crossEntropy (law (observed t))
+        (futureLanguageSignature M Q after (observed t)) ≤
+      CGB.PredictiveHarvest.crossEntropy (law (observed t))
+        (futureLanguageSignature M Q before (observed t)))
+    (t : Fin n)
+    (hlt : CGB.PredictiveHarvest.crossEntropy (law (observed t))
+        (futureLanguageSignature M Q after (observed t)) <
+      CGB.PredictiveHarvest.crossEntropy (law (observed t))
+        (futureLanguageSignature M Q before (observed t))) :
+    empiricalFutureLanguageCrossEntropy M Q law observed after <
+      empiricalFutureLanguageCrossEntropy M Q law observed before := by
+  unfold empiricalFutureLanguageCrossEntropy
+  have hnreal : 0 < (n : ℝ) := by exact_mod_cast hn
+  apply (div_lt_div_iff₀ hnreal hnreal).mpr
+  have hsum :
+      (∑ u, CGB.PredictiveHarvest.crossEntropy (law (observed u))
+        (futureLanguageSignature M Q after (observed u))) <
+      ∑ u, CGB.PredictiveHarvest.crossEntropy (law (observed u))
+        (futureLanguageSignature M Q before (observed u)) := by
+    apply sum_lt_sum
+    · intro u _
+      exact hle u
+    · exact ⟨t, mem_univ t, hlt⟩
+  exact mul_lt_mul_of_pos_right hsum hnreal
+
+end CGB.GDNLife.Process
