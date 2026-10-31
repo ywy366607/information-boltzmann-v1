@@ -245,6 +245,23 @@ class CGBColumnLanguageBody(nn.Module):
         net = (east.roll(1, dims=2) - east + south.roll(1, dims=1) - south)
         return flux, net
 
+    def advance_time(
+        self,
+        state: ColumnBodyState,
+        elapsed: float | torch.Tensor,
+    ) -> ColumnBodyState:
+        """Apply only the declared continuous C release during an empty gap."""
+        self._validate_state(state)
+        dt = self._as_elapsed(elapsed, state.activity.shape[0], state.precision)
+        process = F.softplus(self.process_variance_raw).to(dtype=state.precision.dtype)
+        precision = state.precision / (1.0 + dt * process * state.precision)
+        return ColumnBodyState(
+            activity=state.activity,
+            natural=precision * (state.natural / state.precision),
+            precision=precision,
+            participation=state.participation,
+        )
+
     @torch.no_grad()
     def update_readout_from_arrival(
         self,
@@ -313,10 +330,9 @@ class CGBColumnLanguageBody(nn.Module):
         features = (route_d * (mean + state.activity)).sum(dim=(1, 2))
         logits = self.readout(features)
 
-        dt = self._as_elapsed(elapsed, batch, state.precision)
-        process = F.softplus(self.process_variance_raw).to(dtype=state.precision.dtype)
-        prior_precision = state.precision / (1.0 + dt * process * state.precision)
-        prior_natural = prior_precision * mean
+        prior = self.advance_time(state, elapsed)
+        prior_precision = prior.precision
+        prior_natural = prior.natural
         evidence_precision = F.softplus(self.event_likelihood(event)).view(batch, 1, 1, 1)
         write_precision = route_d * evidence_precision
         value = self.event_value(event).view(batch, 1, 1, self.d_model)

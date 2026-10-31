@@ -147,3 +147,14 @@ def test_arriving_byte_cannot_select_its_own_pre_update_prediction_route():
     assert torch.equal(first.features, second.features)
     assert torch.equal(first.logits, second.logits)
     assert not torch.equal(first.state.natural, second.state.natural)
+
+
+def test_empty_elapsed_time_releases_only_c_precision_and_keeps_h_s_exactly():
+    body = _body()
+    state = body.step(body.initial_state(1), torch.tensor([70]), elapsed=0.0).state
+    advanced = body.advance_time(state, 2.0)
+    assert torch.equal(advanced.activity, state.activity)
+    assert torch.equal(advanced.participation, state.participation)
+    assert torch.all(advanced.precision < state.precision)
+    assert torch.allclose(advanced.natural / advanced.precision,
+                          state.natural / state.precision, atol=1e-6)
