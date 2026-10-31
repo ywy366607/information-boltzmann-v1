@@ -1,0 +1,296 @@
+{
+  "status": "reciprocal_teaching_admission",
+  "claim_scope": "Paired real-OWT prequential comparison of an H/C/S column body with or without post-arrival reciprocal teaching settlement.",
+  "not_claimed": [
+    "full feedback-path alignment",
+    "delayed action credit",
+    "active language acquisition",
+    "language-model capability",
+    "life closure"
+  ],
+  "mechanism": {
+    "persistent_state": "one H/C/S body; S has arrival and signed teaching types",
+    "third_factor": "arrived byte observed-minus-predicted residual",
+    "eligibility": "local H-to-S map read at routed columns",
+    "reciprocity": "H-to-S and S-to-H maps receive the same local outer product and scaled common release",
+    "causal_order": "score old H/C; arrive byte; G14 head update; optionally settle teaching S; next event reads teaching S modulatively"
+  },
+  "protocol": {
+    "data": "same continuous OWT train then validation stream for both arms",
+    "autograd_history": "absent",
+    "bptt": "absent",
+    "baseline": "same output G14 update, teaching settlement omitted",
+    "alignment": "cosine between S-to-H local teaching direction and exact immediate affine G14 feature score before updates"
+  },
+  "model": {
+    "d_model": 32,
+    "grid_shape": [
+      8,
+      8
+    ],
+    "active_columns": 8,
+    "contact_rank": 4,
+    "head_step": 0.01,
+    "teaching_step": 0.01,
+    "seed": 20261031,
+    "device": "cuda",
+    "baseline_parameters": 34445,
+    "reciprocal_parameters": 34445,
+    "baseline_state_bytes_fp32": {
+      "H_activity": 8192,
+      "C_natural": 8192,
+      "C_precision": 256,
+      "S_participation": 16384,
+      "total": 33024
+    },
+    "reciprocal_state_bytes_fp32": {
+      "H_activity": 8192,
+      "C_natural": 8192,
+      "C_precision": 256,
+      "S_participation": 16384,
+      "total": 33024
+    }
+  },
+  "source": {
+    "train": {
+      "source": "openwebtext",
+      "revision": "433fe0f44ed7894fea29c08b3202aa348ccc6369",
+      "split": "train",
+      "path": "data\\ib_owt_10000\\train.npy",
+      "tokens_available": 48145263,
+      "tokens_presented": 100000,
+      "manifest_sha256": "3614c380d4c72688ac8ccde42f32ea0655d16bec1ba0874a924fd777af904d2d",
+      "tokenizer_sha256": "e727da4afe06d37d6ffff7db05ab21f69c5be39253ee7b7f7ec759cadab69c1d",
+      "token_file_sha256": "2f227239bc63b89daf31956701d243a93f9dd46671702fff03763b33dc6db4fb",
+      "split_rule": "NFC_document_sha256_mod100_98_1_1"
+    },
+    "validation": {
+      "source": "openwebtext",
+      "revision": "433fe0f44ed7894fea29c08b3202aa348ccc6369",
+      "split": "validation",
+      "path": "data\\ib_owt_10000\\validation.npy",
+      "tokens_available": 468139,
+      "tokens_presented": 100000,
+      "manifest_sha256": "3614c380d4c72688ac8ccde42f32ea0655d16bec1ba0874a924fd777af904d2d",
+      "tokenizer_sha256": "e727da4afe06d37d6ffff7db05ab21f69c5be39253ee7b7f7ec759cadab69c1d",
+      "token_file_sha256": "60d41d3fdda8c1718ad1735693eda0dae2b23a0032c5e04a29aac9d0c6d35d8c",
+      "split_rule": "NFC_document_sha256_mod100_98_1_1"
+    }
+  },
+  "arms": {
+    "g14_without_teaching_settlement": {
+      "train_first_pass": {
+        "scored_bytes": 99950,
+        "special_tokens_elapsed_without_lexical_write": 50,
+        "bits_per_byte": 4.606346552522193,
+        "mean_nll_nats": 3.1928761255627816,
+        "mean_teaching_to_g14_cosine": null,
+        "seconds": 71.78099999998813,
+        "bytes_per_second": 1392.4297516058084,
+        "progress": [
+          {
+            "scored_bytes": 10000,
+            "bits_per_byte": 4.741147873666913
+          },
+          {
+            "scored_bytes": 20000,
+            "bits_per_byte": 4.675824501939537
+          },
+          {
+            "scored_bytes": 30000,
+            "bits_per_byte": 4.668394340702583
+          },
+          {
+            "scored_bytes": 40000,
+            "bits_per_byte": 4.6692131828488375
+          },
+          {
+            "scored_bytes": 50000,
+            "bits_per_byte": 4.657465925767849
+          },
+          {
+            "scored_bytes": 60000,
+            "bits_per_byte": 4.6505755541402705
+          },
+          {
+            "scored_bytes": 70000,
+            "bits_per_byte": 4.62281548237507
+          },
+          {
+            "scored_bytes": 80000,
+            "bits_per_byte": 4.623123584714438
+          },
+          {
+            "scored_bytes": 90000,
+            "bits_per_byte": 4.615280621087855
+          }
+        ]
+      },
+      "validation_continuing_first_pass": {
+        "scored_bytes": 99954,
+        "special_tokens_elapsed_without_lexical_write": 46,
+        "bits_per_byte": 4.453908138074672,
+        "mean_nll_nats": 3.0872138683794543,
+        "mean_teaching_to_g14_cosine": null,
+        "seconds": 74.0789999999979,
+        "bytes_per_second": 1349.2892722634326,
+        "progress": [
+          {
+            "scored_bytes": 10000,
+            "bits_per_byte": 4.475953474619504
+          },
+          {
+            "scored_bytes": 20000,
+            "bits_per_byte": 4.484337167110045
+          },
+          {
+            "scored_bytes": 30000,
+            "bits_per_byte": 4.485784464498395
+          },
+          {
+            "scored_bytes": 40000,
+            "bits_per_byte": 4.477260071671185
+          },
+          {
+            "scored_bytes": 50000,
+            "bits_per_byte": 4.460538503528706
+          },
+          {
+            "scored_bytes": 60000,
+            "bits_per_byte": 4.462392141235148
+          },
+          {
+            "scored_bytes": 70000,
+            "bits_per_byte": 4.444539273149362
+          },
+          {
+            "scored_bytes": 80000,
+            "bits_per_byte": 4.425145249306447
+          },
+          {
+            "scored_bytes": 90000,
+            "bits_per_byte": 4.446023939452229
+          }
+        ]
+      }
+    },
+    "g14_with_reciprocal_teaching_settlement": {
+      "train_first_pass": {
+        "scored_bytes": 99950,
+        "special_tokens_elapsed_without_lexical_write": 50,
+        "bits_per_byte": 4.613625883615822,
+        "mean_nll_nats": 3.1979217733866934,
+        "mean_teaching_to_g14_cosine": 0.0008481388368744919,
+        "seconds": 113.14000000001397,
+        "bytes_per_second": 883.4187732012344,
+        "progress": [
+          {
+            "scored_bytes": 10000,
+            "bits_per_byte": 4.741236915001467,
+            "mean_teaching_to_g14_cosine": 0.008477147674560547
+          },
+          {
+            "scored_bytes": 20000,
+            "bits_per_byte": 4.67973245848682,
+            "mean_teaching_to_g14_cosine": 0.004238573837280274
+          },
+          {
+            "scored_bytes": 30000,
+            "bits_per_byte": 4.674733182038489,
+            "mean_teaching_to_g14_cosine": 0.0028257158915201822
+          },
+          {
+            "scored_bytes": 40000,
+            "bits_per_byte": 4.6764074972597705,
+            "mean_teaching_to_g14_cosine": 0.002119286918640137
+          },
+          {
+            "scored_bytes": 50000,
+            "bits_per_byte": 4.664967489138272,
+            "mean_teaching_to_g14_cosine": 0.0016954295349121094
+          },
+          {
+            "scored_bytes": 60000,
+            "bits_per_byte": 4.6584232140397726,
+            "mean_teaching_to_g14_cosine": 0.0014128579457600911
+          },
+          {
+            "scored_bytes": 70000,
+            "bits_per_byte": 4.6303471233608535,
+            "mean_teaching_to_g14_cosine": 0.0012110210963657924
+          },
+          {
+            "scored_bytes": 80000,
+            "bits_per_byte": 4.630708159404986,
+            "mean_teaching_to_g14_cosine": 0.0010596434593200684
+          },
+          {
+            "scored_bytes": 90000,
+            "bits_per_byte": 4.6227300370437785,
+            "mean_teaching_to_g14_cosine": 0.0009419052971733941
+          }
+        ]
+      },
+      "validation_continuing_first_pass": {
+        "scored_bytes": 99954,
+        "special_tokens_elapsed_without_lexical_write": 46,
+        "bits_per_byte": 4.454305512845512,
+        "mean_nll_nats": 3.0874893075814875,
+        "mean_teaching_to_g14_cosine": 0.0,
+        "seconds": 113.14000000001397,
+        "bytes_per_second": 883.4541276293766,
+        "progress": [
+          {
+            "scored_bytes": 10000,
+            "bits_per_byte": 4.482345853466693,
+            "mean_teaching_to_g14_cosine": 0.0
+          },
+          {
+            "scored_bytes": 20000,
+            "bits_per_byte": 4.491211665335157,
+            "mean_teaching_to_g14_cosine": 0.0
+          },
+          {
+            "scored_bytes": 30000,
+            "bits_per_byte": 4.49065093034856,
+            "mean_teaching_to_g14_cosine": 0.0
+          },
+          {
+            "scored_bytes": 40000,
+            "bits_per_byte": 4.481942913250195,
+            "mean_teaching_to_g14_cosine": 0.0
+          },
+          {
+            "scored_bytes": 50000,
+            "bits_per_byte": 4.46515377513295,
+            "mean_teaching_to_g14_cosine": 0.0
+          },
+          {
+            "scored_bytes": 60000,
+            "bits_per_byte": 4.466665749591948,
+            "mean_teaching_to_g14_cosine": 0.0
+          },
+          {
+            "scored_bytes": 70000,
+            "bits_per_byte": 4.448469329015212,
+            "mean_teaching_to_g14_cosine": 0.0
+          },
+          {
+            "scored_bytes": 80000,
+            "bits_per_byte": 4.4291467556102875,
+            "mean_teaching_to_g14_cosine": 0.0
+          },
+          {
+            "scored_bytes": 90000,
+            "bits_per_byte": 4.448562681975571,
+            "mean_teaching_to_g14_cosine": 0.0
+          }
+        ]
+      }
+    }
+  },
+  "effects": {
+    "train_bpb_delta_teaching_minus_baseline": 0.0072793310936294375,
+    "validation_bpb_delta_teaching_minus_baseline": 0.00039737477083967576
+  }
+}
