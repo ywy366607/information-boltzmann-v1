@@ -231,7 +231,9 @@ def test_current_s_write_is_blind_to_the_arrived_language_innovation():
     # Every historical factor is reconstructed from the pre-arrival common
     # body.  The innovation is the sole new, immediately consumed boundary
     # datum; the receipt itself cannot become an extra state page.
-    route = body._state_route(state).flatten(1)
+    # S enters H at the post-arrival write neighbourhood.  That same address
+    # is the next causal read route, so it is the eligible local support.
+    route = first.route.flatten(1)
     route_weight, route_index = route.topk(body.active_columns, dim=-1)
     torch.testing.assert_close(receipt.route_index, route_index)
     torch.testing.assert_close(receipt.route_weight, route_weight)

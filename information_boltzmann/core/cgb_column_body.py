@@ -74,8 +74,8 @@ class ContactTeachingReceipt:
     """
 
     innovation: torch.Tensor    # [B, byte_vocab], arrived minus predicted
-    route_index: torch.Tensor   # [B, active_columns], flattened old-C addresses
-    route_weight: torch.Tensor  # [B, active_columns], old-C read weights
+    route_index: torch.Tensor   # [B, active_columns], post-arrival C write addresses
+    route_weight: torch.Tensor  # [B, active_columns], post-arrival write weights
     trace: torch.Tensor         # [B, active_columns, 4, 2, rank], old C/S only
 
 
@@ -540,10 +540,11 @@ class CGBColumnLanguageBody(nn.Module):
         """Expose only the causal factors available after a language arrival.
 
         `prepared.logits` was read from `state`; `target` is the just-arrived
-        byte.  The returned factors are sufficient to audit a proposed local
-        teaching path without keeping an autograd graph, event history, or a
-        persistent feedback/eligibility tensor.  The method has no side
-        effects and does not make S result-sensitive by itself.
+        byte.  The contact weights influence H only at the event's write
+        neighbourhood, and that byte becomes the next causal read query.
+        The receipt therefore samples old C/S at `prepared.route`, never at
+        the preceding prediction address.  It has no side effects and does
+        not make S result-sensitive by itself.
         """
         self._validate_state(state)
         if target.ndim != 1 or tuple(target.shape) != (prepared.logits.shape[0],):
@@ -552,8 +553,9 @@ class CGBColumnLanguageBody(nn.Module):
             raise ValueError("target must contain byte indices")
         if prepared.logits.shape != (state.activity.shape[0], self.byte_vocab):
             raise ValueError("prepared prediction does not match state or byte boundary")
-        read_route = self._state_route(state)
-        route_weight, route_index = read_route.flatten(1).topk(self.active_columns, dim=-1)
+        if prepared.route.shape != state.activity.shape[:-1]:
+            raise ValueError("prepared write route does not match state")
+        route_weight, route_index = prepared.route.flatten(1).topk(self.active_columns, dim=-1)
         participation = state.participation.reshape(
             state.activity.shape[0], self.columns, 4, 2, self.contact_rank,
         )
