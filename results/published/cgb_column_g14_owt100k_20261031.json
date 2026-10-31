@@ -15,7 +15,7 @@
     "autograd_history": "absent",
     "online_update": "G14 affine readout only; matched bias-only control",
     "action": "absent",
-    "execution": "cuda_graph_shared_body"
+    "execution": "cuda_graph_block128_shared_body"
   },
   "model": {
     "runtime": "CGBColumnLanguageBody",
@@ -26,7 +26,8 @@
     ],
     "active_columns": 8,
     "device": "cuda",
-    "seed": 20261031
+    "seed": 20261031,
+    "cuda_graph_block": 128
   },
   "source": {
     "train": {
@@ -67,12 +68,12 @@
         "total": 18688
       },
       "shared_body_trajectory": true,
-      "execution": "cuda_graph_shared_body",
+      "execution": "cuda_graph_block128_shared_body",
       "train_first_pass": {
         "scored_bytes": 99950,
         "special_tokens_elapsed_without_lexical_write": 50,
-        "seconds": 54.96799999999348,
-        "bytes_per_second": 1818.330665114464,
+        "seconds": 59.10899999999674,
+        "bytes_per_second": 1690.9438494984777,
         "progress": [
           {
             "scored_bytes": 10000,
@@ -135,8 +136,8 @@
       "validation_continuing_first_pass": {
         "scored_bytes": 99954,
         "special_tokens_elapsed_without_lexical_write": 46,
-        "seconds": 58.235000000015134,
-        "bytes_per_second": 1716.3904868201944,
+        "seconds": 61.937999999994645,
+        "bytes_per_second": 1613.775065388108,
         "progress": [
           {
             "scored_bytes": 10000,
@@ -209,12 +210,12 @@
         "total": 18688
       },
       "shared_body_trajectory": true,
-      "execution": "cuda_graph_shared_body",
+      "execution": "cuda_graph_block128_shared_body",
       "train_first_pass": {
         "scored_bytes": 99950,
         "special_tokens_elapsed_without_lexical_write": 50,
-        "seconds": 54.96799999999348,
-        "bytes_per_second": 1818.330665114464,
+        "seconds": 59.10899999999674,
+        "bytes_per_second": 1690.9438494984777,
         "progress": [
           {
             "scored_bytes": 10000,
@@ -277,8 +278,8 @@
       "validation_continuing_first_pass": {
         "scored_bytes": 99954,
         "special_tokens_elapsed_without_lexical_write": 46,
-        "seconds": 58.235000000015134,
-        "bytes_per_second": 1716.3904868201944,
+        "seconds": 61.937999999994645,
+        "bytes_per_second": 1613.775065388108,
         "progress": [
           {
             "scored_bytes": 10000,
@@ -351,12 +352,12 @@
         "total": 18688
       },
       "shared_body_trajectory": true,
-      "execution": "cuda_graph_shared_body",
+      "execution": "cuda_graph_block128_shared_body",
       "train_first_pass": {
         "scored_bytes": 99950,
         "special_tokens_elapsed_without_lexical_write": 50,
-        "seconds": 54.96799999999348,
-        "bytes_per_second": 1818.330665114464,
+        "seconds": 59.10899999999674,
+        "bytes_per_second": 1690.9438494984777,
         "progress": [
           {
             "scored_bytes": 10000,
@@ -419,8 +420,8 @@
       "validation_continuing_first_pass": {
         "scored_bytes": 99954,
         "special_tokens_elapsed_without_lexical_write": 46,
-        "seconds": 58.235000000015134,
-        "bytes_per_second": 1716.3904868201944,
+        "seconds": 61.937999999994645,
+        "bytes_per_second": 1613.775065388108,
         "progress": [
           {
             "scored_bytes": 10000,

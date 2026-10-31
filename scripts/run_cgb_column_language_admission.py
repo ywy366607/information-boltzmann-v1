@@ -77,21 +77,36 @@ class PairHeads:
     bias_only: torch.Tensor
 
 
-class CudaGraphPair:
-    """Fixed-shape online execution without a Python/CUDA launch per local op."""
+@dataclass
+class CudaGraphBlock:
+    """One fixed-length, unrolled causal execution graph and its inputs."""
 
-    def __init__(self, body: CGBColumnLanguageBody, state: ColumnBodyState, step_size: float) -> None:
+    graph: torch.cuda.CUDAGraph
+    tokens: torch.Tensor
+    targets: torch.Tensor
+
+
+class CudaGraphPair:
+    """Fixed-shape online execution with exact, unrolled causal blocks.
+
+    A block is not an associative scan: its individual steps remain ordered,
+    so H/C/S and the G14 head are updated after every byte.  Capturing an
+    entire block simply removes host launch overhead between those steps.
+    """
+
+    def __init__(self, body: CGBColumnLanguageBody, state: ColumnBodyState,
+                 step_size: float, block_size: int) -> None:
+        if block_size < 1:
+            raise ValueError("CUDA graph block size must be positive")
         self.body = body
         self.step_size = float(step_size)
+        self.block_size = int(block_size)
         self.activity, self.natural, self.precision, self.participation = (
             value.detach().clone() for value in (
                 state.activity, state.natural, state.precision, state.participation,
             )
         )
         device = self.activity.device
-        self.token = torch.zeros(1, device=device, dtype=torch.long)
-        self.target_one_hot = torch.zeros(1, BYTE_VOCAB, device=device)
-        self.target_one_hot[:, 0] = 1
         self.elapsed_zero = torch.zeros(1, device=device)
         self.external_source = torch.zeros(1, device=device, dtype=torch.long)
         self.total_nll = torch.zeros(3, device=device)
@@ -101,38 +116,74 @@ class CudaGraphPair:
             readout.weight, readout.bias, readout.weight, readout.bias, readout.bias,
         )))
 
-        # Materialise all allocations before capture.  The captured graph then
-        # advances the genuine state and the G14 head once per arriving byte.
+        # Materialise allocations before capture. Capturing executes the graph
+        # once, so `_capture_block` snapshots and restores every mutable state
+        # tensor afterwards; capture can never become a phantom language event.
         with torch.no_grad():
+            probe = torch.zeros(1, device=device, dtype=torch.long)
             body._step_tensors(self.activity, self.natural, self.precision,
-                               self.participation, self.token, self.elapsed_zero,
+                               self.participation, probe, self.elapsed_zero,
                                self.external_source)
+        self.graphs = {1: self._capture_block(1)}
+        if self.block_size > 1:
+            self.graphs[self.block_size] = self._capture_block(self.block_size)
+
+    def _mutable_tensors(self) -> tuple[torch.Tensor, ...]:
+        return (self.activity, self.natural, self.precision, self.participation,
+                self.heads.frozen_weight, self.heads.frozen_bias,
+                self.heads.learned_weight, self.heads.learned_bias,
+                self.heads.bias_only, self.total_nll)
+
+    @torch.no_grad()
+    def _capture_block(self, length: int) -> CudaGraphBlock:
+        device = self.activity.device
+        tokens = torch.zeros(length, device=device, dtype=torch.long)
+        targets = torch.zeros(length, BYTE_VOCAB, device=device)
+        targets[:, 0] = 1
+        snapshots = tuple(value.clone() for value in self._mutable_tensors())
         torch.cuda.synchronize(device)
-        self.graph = torch.cuda.CUDAGraph()
-        with torch.no_grad(), torch.cuda.graph(self.graph):
-            (activity, natural, precision, participation,
-             features, _, _) = body._step_tensors(
-                self.activity, self.natural, self.precision, self.participation,
-                self.token, self.elapsed_zero, self.external_source,
-            )
-            frozen_logits = F.linear(features, self.heads.frozen_weight, self.heads.frozen_bias)
-            learned_logits = F.linear(features, self.heads.learned_weight, self.heads.learned_bias)
-            bias_only_logits = self.heads.bias_only.unsqueeze(0)
-            frozen_nll = torch.logsumexp(frozen_logits, dim=-1) - (frozen_logits * self.target_one_hot).sum(dim=-1)
-            learned_nll = torch.logsumexp(learned_logits, dim=-1) - (learned_logits * self.target_one_hot).sum(dim=-1)
-            bias_only_nll = torch.logsumexp(bias_only_logits, dim=-1) - (bias_only_logits * self.target_one_hot).sum(dim=-1)
-            self.total_nll.add_(torch.cat((frozen_nll, bias_only_nll, learned_nll)))
-            innovation = self.target_one_hot - torch.softmax(learned_logits, dim=-1)
-            self.heads.learned_weight.add_(innovation.transpose(0, 1) @ features, alpha=self.step_size)
-            self.heads.learned_bias.add_(innovation.sum(dim=0), alpha=self.step_size)
-            self.heads.bias_only.add_(
-                (self.target_one_hot - torch.softmax(bias_only_logits, dim=-1)).sum(dim=0),
-                alpha=self.step_size,
-            )
-            self.activity.copy_(activity)
-            self.natural.copy_(natural)
-            self.precision.copy_(precision)
-            self.participation.copy_(participation)
+        graph = torch.cuda.CUDAGraph()
+        with torch.cuda.graph(graph):
+            for index in range(length):
+                target = targets[index:index + 1]
+                (activity, natural, precision, participation,
+                 features, _, _) = self.body._step_tensors(
+                    self.activity, self.natural, self.precision, self.participation,
+                    tokens[index:index + 1], self.elapsed_zero, self.external_source,
+                )
+                frozen_logits = F.linear(features, self.heads.frozen_weight, self.heads.frozen_bias)
+                learned_logits = F.linear(features, self.heads.learned_weight, self.heads.learned_bias)
+                bias_only_logits = self.heads.bias_only.unsqueeze(0)
+                frozen_nll = torch.logsumexp(frozen_logits, dim=-1) - (frozen_logits * target).sum(dim=-1)
+                learned_nll = torch.logsumexp(learned_logits, dim=-1) - (learned_logits * target).sum(dim=-1)
+                bias_only_nll = torch.logsumexp(bias_only_logits, dim=-1) - (bias_only_logits * target).sum(dim=-1)
+                self.total_nll.add_(torch.cat((frozen_nll, bias_only_nll, learned_nll)))
+                innovation = target - torch.softmax(learned_logits, dim=-1)
+                self.heads.learned_weight.add_(innovation.transpose(0, 1) @ features, alpha=self.step_size)
+                self.heads.learned_bias.add_(innovation.sum(dim=0), alpha=self.step_size)
+                self.heads.bias_only.add_(
+                    (target - torch.softmax(bias_only_logits, dim=-1)).sum(dim=0),
+                    alpha=self.step_size,
+                )
+                self.activity.copy_(activity)
+                self.natural.copy_(natural)
+                self.precision.copy_(precision)
+                self.participation.copy_(participation)
+        torch.cuda.synchronize(device)
+        for mutable, snapshot in zip(self._mutable_tensors(), snapshots):
+            mutable.copy_(snapshot)
+        torch.cuda.synchronize(device)
+        return CudaGraphBlock(graph, tokens, targets)
+
+    @torch.no_grad()
+    def _replay(self, byte_values: np.ndarray) -> None:
+        block = self.graphs.get(len(byte_values))
+        if block is None:
+            raise ValueError("only captured CUDA graph lengths may be replayed")
+        values = torch.as_tensor(byte_values, device=self.activity.device, dtype=torch.long)
+        block.tokens.copy_(values)
+        block.targets.copy_(self.one_hot_table.index_select(0, block.tokens))
+        block.graph.replay()
 
     @torch.no_grad()
     def advance_empty_time(self) -> None:
@@ -149,26 +200,39 @@ class CudaGraphPair:
         scored = skipped = 0
         progress: list[dict] = []
         started = time.monotonic()
-        for raw in raw_tokens:
-            value = int(raw)
+        index = 0
+        while index < len(raw_tokens):
+            value = int(raw_tokens[index])
             if not BYTE_OFFSET <= value < BYTE_OFFSET + BYTE_VOCAB:
                 self.advance_empty_time()
                 skipped += 1
+                index += 1
                 continue
-            byte = value - BYTE_OFFSET
-            self.token.fill_(byte)
-            self.target_one_hot.copy_(self.one_hot_table[byte:byte + 1])
-            self.graph.replay()
-            scored += 1
-            if scored % report_every == 0:
-                torch.cuda.synchronize(self.activity.device)
-                totals = self.total_nll.cpu().tolist()
-                progress.append({
-                    "scored_bytes": scored,
-                    "frozen_readout_bits_per_byte": bpb(totals[0], scored),
-                    "bias_only_g14_bits_per_byte": bpb(totals[1], scored),
-                    "local_g14_readout_bits_per_byte": bpb(totals[2], scored),
-                })
+            run_start = index
+            index += 1
+            while index < len(raw_tokens) and BYTE_OFFSET <= int(raw_tokens[index]) < BYTE_OFFSET + BYTE_VOCAB:
+                index += 1
+            bytes_in_run = np.asarray(raw_tokens[run_start:index], dtype=np.int64) - BYTE_OFFSET
+            cursor = 0
+            while cursor < len(bytes_in_run):
+                until_report = report_every - (scored % report_every)
+                block = min(self.block_size, len(bytes_in_run) - cursor, until_report)
+                if block == self.block_size:
+                    self._replay(bytes_in_run[cursor:cursor + block])
+                else:
+                    for byte in bytes_in_run[cursor:cursor + block]:
+                        self._replay(np.asarray([byte], dtype=np.int64))
+                cursor += block
+                scored += block
+                if scored % report_every == 0:
+                    torch.cuda.synchronize(self.activity.device)
+                    totals = self.total_nll.cpu().tolist()
+                    progress.append({
+                        "scored_bytes": scored,
+                        "frozen_readout_bits_per_byte": bpb(totals[0], scored),
+                        "bias_only_g14_bits_per_byte": bpb(totals[1], scored),
+                        "local_g14_readout_bits_per_byte": bpb(totals[2], scored),
+                    })
         torch.cuda.synchronize(self.activity.device)
         elapsed = time.monotonic() - started
         totals = self.total_nll.cpu().tolist()
@@ -244,15 +308,15 @@ def eager_pair_phase(body: CGBColumnLanguageBody, state: ColumnBodyState, heads:
 
 
 def run_pair(template: CGBColumnLanguageBody, train: np.ndarray, validation: np.ndarray, *,
-             step_size: float, report_every: int, device: torch.device):
+             step_size: float, report_every: int, device: torch.device, graph_block: int):
     body = template.to(device).eval()
     initial_state = body.initial_state(1, device=device)
     if device.type == "cuda":
-        runner = CudaGraphPair(body, initial_state, step_size)
+        runner = CudaGraphPair(body, initial_state, step_size, graph_block)
         frozen_train, bias_train, learned_train = runner.phase(train, report_every)
         frozen_validation, bias_validation, learned_validation = runner.phase(validation, report_every)
         final_state = runner.state()
-        execution = "cuda_graph_shared_body"
+        execution = f"cuda_graph_block{graph_block}_shared_body"
     else:
         readout = body.readout
         heads = PairHeads(*(parameter.detach().clone() for parameter in (
@@ -287,10 +351,12 @@ def main() -> None:
     parser.add_argument("--seed", type=int, default=20261031)
     parser.add_argument("--device", default="auto")
     parser.add_argument("--report-every", type=int, default=10_000)
+    parser.add_argument("--graph-block", type=int, default=128,
+                        help="ordered byte steps unrolled into each CUDA Graph replay")
     parser.add_argument("--output", type=Path,
                         default=ROOT / "results" / "published" / "cgb_column_g14_owt100k_20261031.json")
     args = parser.parse_args()
-    if args.limit < 1 or args.report_every < 1 or args.head_step < 0:
+    if args.limit < 1 or args.report_every < 1 or args.graph_block < 1 or args.head_step < 0:
         raise ValueError("limits and step sizes must be nonnegative, with positive presentation/report limits")
     if args.device == "auto":
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -304,7 +370,7 @@ def main() -> None:
     template = CGBColumnLanguageBody(args.d_model, (args.grid, args.grid),
                                      active_columns=args.active_columns).to(device)
     arms = run_pair(template, train, validation, step_size=args.head_step,
-                    report_every=args.report_every, device=device)
+                    report_every=args.report_every, device=device, graph_block=args.graph_block)
     by_name = {arm["name"]: arm for arm in arms}
     frozen = by_name["frozen_readout"]
     bias_only = by_name["bias_only_g14"]
@@ -320,7 +386,7 @@ def main() -> None:
                      "execution": arms[0]["execution"]},
         "model": {"runtime": "CGBColumnLanguageBody", "d_model": args.d_model,
                   "grid_shape": [args.grid, args.grid], "active_columns": args.active_columns,
-                  "device": str(device), "seed": args.seed},
+                  "device": str(device), "seed": args.seed, "cuda_graph_block": args.graph_block},
         "source": {"train": train_source, "validation": validation_source},
         "arms": arms,
         "effect_of_g14": {"train_bpb_delta_vs_frozen": learned["train_first_pass"]["bits_per_byte"] - frozen["train_first_pass"]["bits_per_byte"],
