@@ -139,6 +139,13 @@ class CGBColumnLanguageBody(nn.Module):
         self.edge_flow = nn.Linear(2 * d_model + 1, 2)
         self.edge_participation = nn.Linear(2 * d_model + 1, 4 * self.contact_rank)
         self.participation_retain = nn.Linear(d_model + 1, 1)
+        # A single local release and one trainable shared ratio generate the lifetime
+        # ladder of the existing S rank coordinates.  This is not a rank-wise
+        # clock or another memory array: rank k releases at r / gamma**k, with
+        # gamma > 1.  It is the executable instance of the geometric two-state
+        # bank required only when the language stream presents broad re-entry
+        # delays (GenerationCascadeMemory).
+        self.participation_scale_raw = nn.Parameter(torch.tensor(0.0))
 
         self.prior_precision_raw = nn.Parameter(torch.tensor(-2.0))
         self.process_variance_raw = nn.Parameter(torch.tensor(-3.0))
@@ -203,6 +210,23 @@ class CGBColumnLanguageBody(nn.Module):
     def trace(self, state: ColumnBodyState) -> torch.Tensor:
         """Typed generalized eligibility reconstructed solely from C and S."""
         return state.participation * self.demand(state).unsqueeze(-1).unsqueeze(-1)
+
+    def participation_scale(self) -> torch.Tensor:
+        """The trainable geometric separation of adjacent existing S ranks."""
+        return 1.0 + F.softplus(self.participation_scale_raw)
+
+    def _rank_retention(self, base_retain: torch.Tensor) -> torch.Tensor:
+        """Generate rank-wise S retention from one local release.
+
+        ``base_retain`` is the local F_theta output for rank zero.  Every
+        higher rank receives the same local evidence but releases more slowly
+        by a learned geometric factor.  The returned tensor is a readout of
+        existing local quantities; S itself remains the only stored trace.
+        """
+        release = 1.0 - base_retain
+        ranks = torch.arange(self.contact_rank, device=release.device, dtype=release.dtype)
+        scale = self.participation_scale().to(dtype=release.dtype)
+        return 1.0 - release.unsqueeze(-1) / scale.pow(ranks)
 
     @staticmethod
     def arrival_participation(state: ColumnBodyState) -> torch.Tensor:
@@ -384,7 +408,7 @@ class CGBColumnLanguageBody(nn.Module):
             edge_retain.append(0.5 * (endpoint_retain + neighbour_retain))
             edge_active.append(torch.maximum(route, neighbour_route))
         drive = torch.stack(edge_drive, dim=-2)
-        retain = torch.stack(edge_retain, dim=-1)
+        retain = self._rank_retention(torch.stack(edge_retain, dim=-1))
         active = torch.stack(edge_active, dim=-1)
         source_one_hot = F.one_hot(source_index, num_classes=2).to(dtype=participation.dtype)
         target = (drive.unsqueeze(-2) *
@@ -407,7 +431,15 @@ class CGBColumnLanguageBody(nn.Module):
         Its unoccupied partner is ``1 - occupied`` and remains implicit.
         """
         scale = active.unsqueeze(-1).unsqueeze(-1)
-        hold = retain.unsqueeze(-1).unsqueeze(-1)
+        # A scalar hold is shared across rank in the smallest body.  A
+        # generated bank supplies one hold per rank without allocating a new
+        # state coordinate, so insert only the source-type axis.
+        if retain.ndim == drive.ndim - 2:
+            hold = retain.unsqueeze(-1).unsqueeze(-1)
+        elif retain.ndim == drive.ndim - 1:
+            hold = retain.unsqueeze(-2)
+        else:
+            raise ValueError("retain must provide one value per edge or per edge/rank")
         k_plus = scale * drive
         k_minus = scale * (1.0 - hold)
         return occupied + k_plus * (1.0 - occupied) - k_minus * occupied

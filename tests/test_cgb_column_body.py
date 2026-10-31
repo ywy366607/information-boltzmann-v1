@@ -106,6 +106,43 @@ def test_contact_basis_rank_expands_only_s_not_the_number_of_persistent_pages():
     assert body.trace(step.state).shape == state.participation.shape
 
 
+def test_existing_s_rank_is_a_generated_geometric_release_bank():
+    """Broad-delay capacity changes retention, never the state-page count.
+
+    `GenerationCascadeMemory` admits a bank only when its rank coordinates
+    really have separated time scales.  One local release and one trainable
+    ratio generate those scales here; no rank-specific clock, eligibility
+    tensor, or historical event list is introduced.
+    """
+    torch.manual_seed(7)
+    body = CGBColumnLanguageBody(6, (3, 4), active_columns=3, contact_rank=3)
+    base_retain = torch.full((1, 3, 4, 4), 0.2)
+    retain = body._rank_retention(base_retain)
+    release = 1.0 - retain
+    scale = body.participation_scale()
+    assert retain.shape == (1, 3, 4, 4, 3)
+    torch.testing.assert_close(release[..., 1], release[..., 0] / scale)
+    torch.testing.assert_close(release[..., 2], release[..., 1] / scale)
+    scale.backward()
+    assert body.participation_scale_raw.grad is not None
+    assert body.participation_scale_raw.grad.item() > 0
+
+    # Under equally local repeated use, occupied fast coordinates release
+    # first while the slow coordinates remain readable.  The complement of
+    # every two-state pool remains implicit and exact.
+    occupied = torch.ones(1, 3, 4, 4, 2, 3)
+    drive = torch.zeros_like(occupied)
+    active = torch.ones(1, 3, 4, 4)
+    after = body._adaptive_phase_exchange(occupied, drive, retain, active)
+    assert torch.all(after[..., 0] < after[..., 1])
+    assert torch.all(after[..., 1] < after[..., 2])
+    assert torch.all((0.0 <= after) & (after <= 1.0))
+    state = body.initial_state(1)
+    assert set(state.__dataclass_fields__) == {
+        "activity", "natural", "precision", "causal_token", "participation",
+    }
+
+
 def test_old_contact_state_changes_next_local_activity_but_not_its_prepared_prediction():
     body = _body()
     with torch.no_grad():

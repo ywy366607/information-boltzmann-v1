@@ -85,3 +85,27 @@
 ∀ (τ₀ γ t : ℝ) (m : ℕ),
   0 < τ₀ → 1 < γ → τ₀ ≤ t → t ≤ τ₀ * γ ^ m → ∃ k ∈ Finset.range (m + 1), t ≤ τ₀ * γ ^ k ∧ τ₀ * γ ^ k ≤ γ * t
 ```
+
+## CGB.Generation.ranked_release_eq_inv_time
+
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationCascadeMemory.lean#L123)
+
+源码说明：A ranked release is exactly the reciprocal of its ranked relaxation time.
+
+形式陈述：
+
+```lean
+∀ (r γ : ℝ) (k : ℕ), 0 < r → 0 < γ → CGB.Generation.rankedRelease r γ k = 1 / CGB.Generation.rankedTime r γ k
+```
+
+## CGB.Generation.ranked_time_succ
+
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationCascadeMemory.lean#L130)
+
+源码说明：Adjacent ranks have the geometric time-scale ratio used by `geometric_bank_covers`.
+
+形式陈述：
+
+```lean
+∀ (r γ : ℝ) (k : ℕ), 0 < r → CGB.Generation.rankedTime r γ (k + 1) = γ * CGB.Generation.rankedTime r γ k
+```

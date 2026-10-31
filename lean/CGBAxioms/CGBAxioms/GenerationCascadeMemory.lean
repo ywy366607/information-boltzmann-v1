@@ -103,4 +103,34 @@ theorem geometric_bank_covers (τ₀ γ t : ℝ) (m : ℕ) (hτ₀ : 0 < τ₀) 
     have hγ0 : 0 < γ := by linarith
     nlinarith
 
+/-! ## Generated geometric release coordinates
+
+The executable column body already has a finite `rank` coordinate in its
+bounded contact state.  The following is the smallest bridge from that
+coordinate to the bank above: one local release `r` and one shared learned
+ratio `γ > 1` generate every rank's release and relaxation time.  They do not
+introduce one manually scheduled clock or one extra history page per scale.
+-/
+
+/-- The release of rank `k` is the local base release divided by its generated
+geometric scale. -/
+noncomputable def rankedRelease (r γ : ℝ) (k : ℕ) : ℝ := r / γ ^ k
+
+/-- The corresponding relaxation time of rank `k`. -/
+noncomputable def rankedTime (r γ : ℝ) (k : ℕ) : ℝ := γ ^ k / r
+
+/-- A ranked release is exactly the reciprocal of its ranked relaxation time. -/
+theorem ranked_release_eq_inv_time (r γ : ℝ) (k : ℕ) (hr : 0 < r) (hγ : 0 < γ) :
+    rankedRelease r γ k = 1 / rankedTime r γ k := by
+  unfold rankedRelease rankedTime
+  field_simp
+
+/-- Adjacent ranks have the geometric time-scale ratio used by
+`geometric_bank_covers`. -/
+theorem ranked_time_succ (r γ : ℝ) (k : ℕ) (hr : 0 < r) :
+    rankedTime r γ (k + 1) = γ * rankedTime r γ k := by
+  unfold rankedTime
+  rw [pow_succ]
+  field_simp
+
 end CGB.Generation
