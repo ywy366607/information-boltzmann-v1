@@ -62,6 +62,23 @@ class ColumnBodyStep:
     value_eligibility: torch.Tensor  # [B], reconstructed direct C sensitivity
 
 
+@dataclass(frozen=True)
+class ContactTeachingReceipt:
+    """One consumed boundary result expressed through the existing body.
+
+    This is an event-local receipt, never a fourth state page.  It makes the
+    three factors required by an eventual S teaching rule explicit: language
+    innovation at the boundary, the pre-arrival read support, and the C/S
+    trace.  It deliberately contains no feedback matrix or update rule: such
+    a route must first meet the reciprocal-alignment admission.
+    """
+
+    innovation: torch.Tensor    # [B, byte_vocab], arrived minus predicted
+    route_index: torch.Tensor   # [B, active_columns], flattened old-C addresses
+    route_weight: torch.Tensor  # [B, active_columns], old-C read weights
+    trace: torch.Tensor         # [B, active_columns, 4, 2, rank], old C/S only
+
+
 class CGBColumnLanguageBody(nn.Module):
     """A scalable local recurrent body with a byte prediction boundary.
 
@@ -472,8 +489,7 @@ class CGBColumnLanguageBody(nn.Module):
         step_size: float,
     ) -> None:
         """Capture-safe value update; public wrapper owns input validation."""
-        innovation = -torch.softmax(logits, dim=-1)
-        innovation[torch.arange(target.shape[0], device=target.device), target] += 1
+        innovation = self._language_innovation(logits, target)
         language_error = innovation @ self.readout.weight.detach()
         source = self.byte_embedding(credit_token.clamp_min(0)).detach()
         valid = (credit_token >= 0).to(dtype=language_error.dtype).unsqueeze(-1)
@@ -508,6 +524,52 @@ class CGBColumnLanguageBody(nn.Module):
             prepared.value_eligibility, target, float(step_size),
         )
 
+    @staticmethod
+    def _language_innovation(logits: torch.Tensor, target: torch.Tensor) -> torch.Tensor:
+        """Return the arrived-minus-predicted byte vector for one receipt."""
+        innovation = -torch.softmax(logits.detach(), dim=-1)
+        innovation[torch.arange(target.shape[0], device=target.device), target] += 1
+        return innovation
+
+    def contact_teaching_receipt(
+        self,
+        state: ColumnBodyState,
+        prepared: ColumnBodyStep,
+        target: torch.Tensor,
+    ) -> ContactTeachingReceipt:
+        """Expose only the causal factors available after a language arrival.
+
+        `prepared.logits` was read from `state`; `target` is the just-arrived
+        byte.  The returned factors are sufficient to audit a proposed local
+        teaching path without keeping an autograd graph, event history, or a
+        persistent feedback/eligibility tensor.  The method has no side
+        effects and does not make S result-sensitive by itself.
+        """
+        self._validate_state(state)
+        if target.ndim != 1 or tuple(target.shape) != (prepared.logits.shape[0],):
+            raise ValueError("target must contain one byte index per prepared prediction")
+        if target.dtype != torch.long or not bool(((0 <= target) & (target < self.byte_vocab)).all()):
+            raise ValueError("target must contain byte indices")
+        if prepared.logits.shape != (state.activity.shape[0], self.byte_vocab):
+            raise ValueError("prepared prediction does not match state or byte boundary")
+        read_route = self._state_route(state)
+        route_weight, route_index = read_route.flatten(1).topk(self.active_columns, dim=-1)
+        participation = state.participation.reshape(
+            state.activity.shape[0], self.columns, 4, 2, self.contact_rank,
+        )
+        contact_index = route_index[..., None, None, None].expand_as(
+            participation[:, :self.active_columns],
+        )
+        local_participation = participation.gather(1, contact_index)
+        demand = self.demand(state).reshape(state.activity.shape[0], self.columns, 1)
+        local_demand = demand.gather(1, route_index.unsqueeze(-1))
+        return ContactTeachingReceipt(
+            innovation=self._language_innovation(prepared.logits, target),
+            route_index=route_index.detach(),
+            route_weight=route_weight.detach(),
+            trace=(local_participation * local_demand[..., None, None]).detach(),
+        )
+
     @torch.no_grad()
     def update_readout_from_arrival(
         self,
@@ -534,8 +596,7 @@ class CGBColumnLanguageBody(nn.Module):
             raise ValueError("target must contain byte indices")
         if step_size == 0:
             return
-        innovation = -torch.softmax(prepared.logits.detach(), dim=-1)
-        innovation[torch.arange(target.shape[0], device=target.device), target] += 1
+        innovation = self._language_innovation(prepared.logits, target)
         self.readout.weight.add_(innovation.transpose(0, 1) @ prepared.features.detach(), alpha=float(step_size))
         if self.readout.bias is not None:
             self.readout.bias.add_(innovation.sum(dim=0), alpha=float(step_size))

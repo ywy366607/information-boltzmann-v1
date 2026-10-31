@@ -225,11 +225,28 @@ def test_current_s_write_is_blind_to_the_arrived_language_innovation():
     first = body.step(state, token, elapsed=0.0)
     alternate = alternate_head.step(state, token, elapsed=0.0)
 
-    innovation = -torch.softmax(first.logits, dim=-1)
-    innovation[0, target.item()] += 1
-    alternate_innovation = -torch.softmax(alternate.logits, dim=-1)
-    alternate_innovation[0, target.item()] += 1
-    assert not torch.equal(innovation, alternate_innovation)
+    receipt = body.contact_teaching_receipt(state, first, target)
+    alternate_receipt = alternate_head.contact_teaching_receipt(state, alternate, target)
+    assert not torch.equal(receipt.innovation, alternate_receipt.innovation)
+    # Every historical factor is reconstructed from the pre-arrival common
+    # body.  The innovation is the sole new, immediately consumed boundary
+    # datum; the receipt itself cannot become an extra state page.
+    route = body._state_route(state).flatten(1)
+    route_weight, route_index = route.topk(body.active_columns, dim=-1)
+    torch.testing.assert_close(receipt.route_index, route_index)
+    torch.testing.assert_close(receipt.route_weight, route_weight)
+    expected_trace = body.trace(state).reshape(
+        1, body.columns, 4, 2, body.contact_rank,
+    ).gather(1, route_index[..., None, None, None].expand(
+        1, body.active_columns, 4, 2, body.contact_rank,
+    ))
+    torch.testing.assert_close(receipt.trace, expected_trace)
+    assert all(not value.requires_grad for value in (
+        receipt.innovation, receipt.route_index, receipt.route_weight, receipt.trace,
+    ))
+    torch.testing.assert_close(receipt.route_index, alternate_receipt.route_index)
+    torch.testing.assert_close(receipt.route_weight, alternate_receipt.route_weight)
+    torch.testing.assert_close(receipt.trace, alternate_receipt.trace)
 
     # `_reciprocal_contact_update` reads only local H/C, post-arrival route,
     # and source type.  It cannot condition S on this boundary difference.
