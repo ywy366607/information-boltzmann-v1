@@ -169,6 +169,33 @@ def test_old_contact_state_changes_next_local_activity_but_not_its_prepared_pred
     assert not torch.equal(no_contact.state.activity, with_contact.state.activity)
 
 
+def test_s_participation_reaches_a_later_language_prediction_through_h():
+    """S has a causal route to a later score, without a hidden BPTT buffer."""
+    torch.manual_seed(7)
+    body = CGBColumnLanguageBody(6, (3, 4), active_columns=3, contact_rank=3)
+    with torch.no_grad():
+        body.contact_to_activity.weight.fill_(0.1)
+    baseline = body.initial_state(1)
+    charged = ColumnBodyState(
+        activity=baseline.activity,
+        natural=baseline.natural,
+        precision=baseline.precision,
+        causal_token=baseline.causal_token,
+        participation=torch.full_like(baseline.participation, 0.5),
+    )
+
+    # The first score cannot inspect the current S readout; S influences the
+    # post-arrival H transition.  That changed H is then visible at the next
+    # score, establishing the actual S -> H -> language boundary path needed
+    # before an S teaching rule could be admitted.
+    first_plain = body.step(baseline, torch.tensor([41]), elapsed=0.0)
+    first_charged = body.step(charged, torch.tensor([41]), elapsed=0.0)
+    assert torch.equal(first_plain.logits, first_charged.logits)
+    second_plain = body.step(first_plain.state, torch.tensor([73]), elapsed=0.0)
+    second_charged = body.step(first_charged.state, torch.tensor([73]), elapsed=0.0)
+    assert not torch.equal(second_plain.logits, second_charged.logits)
+
+
 def test_muting_contact_readout_preserves_the_s_write_but_removes_its_h_effect():
     body = _body()
     baseline = body.initial_state(1)
