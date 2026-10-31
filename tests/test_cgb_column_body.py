@@ -14,7 +14,7 @@ def test_common_state_is_exactly_h_c_s_and_readouts_add_no_history_page():
     assert state.activity.shape == (2, 3, 4, 6)
     assert state.natural.shape == state.activity.shape
     assert state.precision.shape == (2, 3, 4, 1)
-    assert state.participation.shape == (2, 3, 4, 4, 2)
+    assert state.participation.shape == (2, 3, 4, 4, 2, 1)
     assert set(state.__dataclass_fields__) == {
         "activity", "natural", "precision", "participation",
     }
@@ -22,7 +22,7 @@ def test_common_state_is_exactly_h_c_s_and_readouts_add_no_history_page():
     trace = body.trace(state)
     assert demand.shape == state.precision.shape
     assert trace.shape == state.participation.shape
-    assert torch.equal(trace, state.participation * demand.unsqueeze(-2))
+    assert torch.equal(trace, state.participation * demand.unsqueeze(-1).unsqueeze(-1))
 
 
 def test_source_type_is_retained_in_local_s_without_a_separate_action_log():
@@ -37,10 +37,10 @@ def test_source_type_is_retained_in_local_s_without_a_separate_action_log():
     assert torch.equal(external.state.natural, self_event.state.natural)
     assert torch.equal(external.state.precision, self_event.state.precision)
     assert not torch.equal(external.state.participation, self_event.state.participation)
-    assert external.state.participation[..., 0].sum() > 0
-    assert external.state.participation[..., 1].sum() == 0
-    assert self_event.state.participation[..., 1].sum() > 0
-    assert self_event.state.participation[..., 0].sum() == 0
+    assert external.state.participation[..., 0, :].sum() > 0
+    assert external.state.participation[..., 1, :].sum() == 0
+    assert self_event.state.participation[..., 1, :].sum() > 0
+    assert self_event.state.participation[..., 0, :].sum() == 0
 
 
 def test_prediction_is_pre_update_and_zero_elapsed_only_writes_selected_carrier_columns():
@@ -81,8 +81,22 @@ def test_selected_local_contacts_are_reciprocal_without_a_feedback_state_page():
 
     mismatch = body.reciprocal_participation_mismatch(step.state.participation)
     assert torch.allclose(mismatch, torch.zeros_like(mismatch), atol=1e-7)
-    assert step.state.participation[..., 0].sum() > 0
-    assert step.state.participation[..., 1].sum() == 0
+    assert step.state.participation[..., 0, :].sum() > 0
+    assert step.state.participation[..., 1, :].sum() == 0
+
+
+def test_contact_basis_rank_expands_only_s_not_the_number_of_persistent_pages():
+    torch.manual_seed(7)
+    body = CGBColumnLanguageBody(6, (3, 4), active_columns=3, contact_rank=3)
+    state = body.initial_state(1)
+    assert state.participation.shape == (1, 3, 4, 4, 2, 3)
+    assert set(state.__dataclass_fields__) == {
+        "activity", "natural", "precision", "participation",
+    }
+    step = body.step(state, torch.tensor([39]), elapsed=0.0)
+    mismatch = body.reciprocal_participation_mismatch(step.state.participation)
+    assert torch.allclose(mismatch, torch.zeros_like(mismatch), atol=1e-7)
+    assert body.trace(step.state).shape == state.participation.shape
 
 
 def test_old_contact_state_changes_next_local_activity_but_not_its_prepared_prediction():

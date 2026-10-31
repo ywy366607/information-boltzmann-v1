@@ -45,7 +45,7 @@ class ColumnBodyState:
     activity: torch.Tensor       # H: [B, rows, cols, D], in [-1, 1]
     natural: torch.Tensor        # C: [B, rows, cols, D]
     precision: torch.Tensor      # C: [B, rows, cols, 1], positive
-    participation: torch.Tensor  # S: [B, rows, cols, 4, 2], in [0, 1]
+    participation: torch.Tensor  # S: [B, rows, cols, 4, 2, rank], in [0, 1]
 
 
 @dataclass(frozen=True)
@@ -75,6 +75,7 @@ class CGBColumnLanguageBody(nn.Module):
         grid_shape: tuple[int, int],
         *,
         active_columns: int = 8,
+        contact_rank: int = 1,
         byte_vocab: int = 256,
     ) -> None:
         super().__init__()
@@ -86,6 +87,8 @@ class CGBColumnLanguageBody(nn.Module):
         columns = rows * cols
         if not 1 <= int(active_columns) <= columns:
             raise ValueError("active_columns must lie in [1, rows * cols]")
+        if int(contact_rank) < 1:
+            raise ValueError("contact_rank must be positive")
         if byte_vocab != 256:
             raise ValueError("the current language boundary is the 256-byte alphabet")
 
@@ -93,6 +96,10 @@ class CGBColumnLanguageBody(nn.Module):
         self.cols = cols
         self.d_model = int(d_model)
         self.active_columns = int(active_columns)
+        # S uses one bounded basis coordinate per local contact factor.  It is
+        # the same carrier at every rank: raising this only supplies further
+        # distinguishable causal directions, never a separate trace page.
+        self.contact_rank = int(contact_rank)
         self.byte_vocab = int(byte_vocab)
 
         # Boundary coding and routing are learned, but all columns share the
@@ -115,11 +122,11 @@ class CGBColumnLanguageBody(nn.Module):
         # S is a standing local contact, not a diagnostic-only ledger.  Its
         # old-state typed reading enters the same shared activity rule on the
         # next event; no extra feedback state is introduced.
-        self.contact_to_activity = nn.Linear(4 * 2, d_model, bias=False)
+        self.contact_to_activity = nn.Linear(4 * 2 * self.contact_rank, d_model, bias=False)
         self.activity_gain = nn.Linear(2 * d_model + 1, 1)
         self.activity_release = nn.Linear(2 * d_model + 1, 1)
         self.edge_flow = nn.Linear(2 * d_model + 1, 2)
-        self.edge_participation = nn.Linear(2 * d_model + 1, 4)
+        self.edge_participation = nn.Linear(2 * d_model + 1, 4 * self.contact_rank)
         self.participation_retain = nn.Linear(d_model + 1, 1)
 
         self.prior_precision_raw = nn.Parameter(torch.tensor(-2.0))
@@ -145,7 +152,7 @@ class CGBColumnLanguageBody(nn.Module):
             activity=torch.zeros(*shape, self.d_model, device=device, dtype=dtype),
             natural=torch.zeros(*shape, self.d_model, device=device, dtype=dtype),
             precision=prior.expand(*shape, 1).clone(),
-            participation=torch.zeros(*shape, 4, 2, device=device, dtype=dtype),
+            participation=torch.zeros(*shape, 4, 2, self.contact_rank, device=device, dtype=dtype),
         )
 
     @staticmethod
@@ -179,7 +186,7 @@ class CGBColumnLanguageBody(nn.Module):
 
     def trace(self, state: ColumnBodyState) -> torch.Tensor:
         """Typed generalized eligibility reconstructed solely from C and S."""
-        return state.participation * self.demand(state).unsqueeze(-2)
+        return state.participation * self.demand(state).unsqueeze(-1).unsqueeze(-1)
 
     def _validate_state(self, state: ColumnBodyState) -> None:
         expected = (self.rows, self.cols)
@@ -191,8 +198,8 @@ class CGBColumnLanguageBody(nn.Module):
             raise ValueError("natural carrier must align with activity")
         if state.precision.shape != (*state.activity.shape[:-1], 1):
             raise ValueError("precision carrier must have one local scalar per column")
-        if state.participation.shape != (*state.activity.shape[:-1], 4, 2):
-            raise ValueError("participation must be one four-neighbour typed S state")
+        if state.participation.shape != (*state.activity.shape[:-1], 4, 2, self.contact_rank):
+            raise ValueError("participation must be one four-neighbour typed low-rank S state")
         if not bool(torch.isfinite(state.precision).all()) or not bool((state.precision > 0).all()):
             raise ValueError("carrier precision must be finite and positive")
 
@@ -261,16 +268,16 @@ class CGBColumnLanguageBody(nn.Module):
         A zero result says that the two endpoint readings of every typed local
         contact agree.
         """
-        if participation.ndim != 5 or participation.shape[-2:] != (4, 2):
-            raise ValueError("participation must have shape [B, rows, cols, 4, 2]")
+        if participation.ndim != 6 or participation.shape[-3:-1] != (4, 2):
+            raise ValueError("participation must have shape [B, rows, cols, 4, 2, rank]")
         reciprocal = []
         for direction, (row_shift, col_shift) in enumerate(_GRID_DIRECTION_SHIFTS):
             opposite = _OPPOSITE_DIRECTION[direction]
-            neighbour = participation[..., opposite, :].roll(
+            neighbour = participation[..., opposite, :, :].roll(
                 shifts=(-row_shift, -col_shift), dims=(1, 2),
             )
-            reciprocal.append(participation[..., direction, :] - neighbour)
-        return torch.stack(reciprocal, dim=-2)
+            reciprocal.append(participation[..., direction, :, :] - neighbour)
+        return torch.stack(reciprocal, dim=-3)
 
     def _reciprocal_contact_update(
         self,
@@ -287,7 +294,7 @@ class CGBColumnLanguageBody(nn.Module):
         ``reciprocal_shared_update_mismatch`` admission kernel.  This creates
         no feedback page: it rewrites the existing source-typed S contact.
         """
-        raw_drive = self.edge_participation(local)
+        raw_drive = self.edge_participation(local).unflatten(-1, (4, self.contact_rank))
         endpoint_retain = torch.sigmoid(
             self.participation_retain(torch.cat(
                 (local[..., self.d_model:2 * self.d_model], local[..., -1:]), dim=-1,
@@ -296,23 +303,24 @@ class CGBColumnLanguageBody(nn.Module):
         edge_drive, edge_retain, edge_active = [], [], []
         for direction, (row_shift, col_shift) in enumerate(_GRID_DIRECTION_SHIFTS):
             opposite = _OPPOSITE_DIRECTION[direction]
-            neighbour_drive = raw_drive[..., opposite].roll(
+            neighbour_drive = raw_drive[..., opposite, :].roll(
                 shifts=(-row_shift, -col_shift), dims=(1, 2),
             )
             neighbour_retain = endpoint_retain.roll(
                 shifts=(-row_shift, -col_shift), dims=(1, 2),
             )
             neighbour_route = route.roll(shifts=(-row_shift, -col_shift), dims=(1, 2))
-            edge_drive.append(torch.sigmoid(0.5 * (raw_drive[..., direction] + neighbour_drive)))
+            edge_drive.append(torch.sigmoid(0.5 * (raw_drive[..., direction, :] + neighbour_drive)))
             edge_retain.append(0.5 * (endpoint_retain + neighbour_retain))
             edge_active.append(torch.maximum(route, neighbour_route))
-        drive = torch.stack(edge_drive, dim=-1)
+        drive = torch.stack(edge_drive, dim=-2)
         retain = torch.stack(edge_retain, dim=-1)
         active = torch.stack(edge_active, dim=-1)
         source_one_hot = F.one_hot(source_index, num_classes=2).to(dtype=participation.dtype)
-        target = drive.unsqueeze(-1) * source_one_hot[:, None, None, None, :]
-        return participation + active.unsqueeze(-1) * (
-            retain.unsqueeze(-1) * participation + target - participation
+        target = (drive.unsqueeze(-2) *
+                  source_one_hot[:, None, None, None, :, None])
+        return participation + active.unsqueeze(-1).unsqueeze(-1) * (
+            retain.unsqueeze(-1).unsqueeze(-1) * participation + target - participation
         )
 
     def advance_time(
@@ -415,7 +423,7 @@ class CGBColumnLanguageBody(nn.Module):
             (activity.roll(1, dims=1) + activity.roll(-1, dims=1) +
              activity.roll(1, dims=2) + activity.roll(-1, dims=2)) * 0.25
         )
-        contact_message = self.contact_to_activity(participation.flatten(start_dim=-2))
+        contact_message = self.contact_to_activity(participation.flatten(start_dim=-3))
         recurrent_gain = 1.0 + F.softplus(self.activity_gain(local))
         release = torch.sigmoid(self.activity_release(local))
         proposed_activity = F.hardtanh(

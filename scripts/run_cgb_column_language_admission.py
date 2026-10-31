@@ -347,6 +347,8 @@ def main() -> None:
     parser.add_argument("--d-model", type=int, default=32)
     parser.add_argument("--grid", type=int, default=8)
     parser.add_argument("--active-columns", type=int, default=8)
+    parser.add_argument("--contact-rank", type=int, default=1,
+                        help="number of bounded causal basis coordinates in the existing S carrier")
     parser.add_argument("--head-step", type=float, default=0.01)
     parser.add_argument("--seed", type=int, default=20261031)
     parser.add_argument("--device", default="auto")
@@ -370,7 +372,8 @@ def main() -> None:
     validation, validation_source = load_split(args.data_root, "validation", args.limit)
     torch.manual_seed(args.seed)
     template = CGBColumnLanguageBody(args.d_model, (args.grid, args.grid),
-                                     active_columns=args.active_columns).to(device)
+                                     active_columns=args.active_columns,
+                                     contact_rank=args.contact_rank).to(device)
     if args.mute_contact_readout:
         # This retains the S carrier and its reciprocal update exactly.  Only
         # its old-state contribution to the succeeding local H rule is muted.
@@ -394,6 +397,7 @@ def main() -> None:
                      "execution": arms[0]["execution"]},
         "model": {"runtime": "CGBColumnLanguageBody", "d_model": args.d_model,
                   "grid_shape": [args.grid, args.grid], "active_columns": args.active_columns,
+                  "contact_rank": args.contact_rank,
                   "device": str(device), "seed": args.seed, "cuda_graph_block": args.graph_block,
                   "contact_readout": "muted_S_to_H" if args.mute_contact_readout else "enabled_S_to_H"},
         "source": {"train": train_source, "validation": validation_source},
