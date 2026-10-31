@@ -1,0 +1,294 @@
+"""One shared recurrent column body for the CGB language organism.
+
+This is a G2 implementation candidate, not a language-capability claim.  Its
+only persistent state is the three projections required by
+``GenerationColumnRefinement``:
+
+* ``H``: bounded column activity;
+* ``C``: natural/precision causal carrier;
+* ``S``: typed, local edge participation.
+
+Eligibility and local demand are *readouts* of that state.  A byte event is
+scored before it is written.  The cell uses an implicit periodic lattice, so
+it holds no edge-index table or unbounded event history.
+"""
+
+from __future__ import annotations
+
+from dataclasses import dataclass
+from typing import Literal
+
+import torch
+from torch import nn
+from torch.nn import functional as F
+
+
+SourceKind = Literal["external", "self"]
+_EXTERNAL = 0
+_SELF = 1
+
+
+@dataclass(frozen=True)
+class ColumnBodyState:
+    """The complete persistent state of the executable column body.
+
+    ``natural`` and ``precision`` together form C.  ``participation`` is S:
+    for each grid cell, the four local directions, and the two source kinds,
+    it stores a bounded local participation reading.  It is not a fourth
+    eligibility page; :meth:`CGBColumnLanguageBody.trace` reconstructs the
+    usable trace from ``participation`` and the precision already in C.
+    """
+
+    activity: torch.Tensor       # H: [B, rows, cols, D], in [-1, 1]
+    natural: torch.Tensor        # C: [B, rows, cols, D]
+    precision: torch.Tensor      # C: [B, rows, cols, 1], positive
+    participation: torch.Tensor  # S: [B, rows, cols, 4, 2], in [0, 1]
+
+
+@dataclass(frozen=True)
+class ColumnBodyStep:
+    """Transient products of one causal event; none is retained implicitly."""
+
+    state: ColumnBodyState
+    logits: torch.Tensor         # prediction prepared from the old state
+    route: torch.Tensor          # [B, rows, cols], sparse event participation
+    edge_flux: torch.Tensor      # [B, rows, cols, 2], east/south oriented flow
+
+
+class CGBColumnLanguageBody(nn.Module):
+    """A scalable local recurrent body with a byte prediction boundary.
+
+    The neural maps are shared across columns.  Spatial differentiation comes
+    from the finite body state and event route, never from pre-labelled expert
+    modules.  The four-neighbour topology is an address formula on a periodic
+    grid; runtime state therefore scales as O(columns * width), with constant
+    degree and no edge index tensor.
+    """
+
+    def __init__(
+        self,
+        d_model: int,
+        grid_shape: tuple[int, int],
+        *,
+        active_columns: int = 8,
+        byte_vocab: int = 256,
+    ) -> None:
+        super().__init__()
+        rows, cols = (int(grid_shape[0]), int(grid_shape[1]))
+        if rows < 1 or cols < 1:
+            raise ValueError("grid dimensions must be positive")
+        if d_model < 1:
+            raise ValueError("d_model must be positive")
+        columns = rows * cols
+        if not 1 <= int(active_columns) <= columns:
+            raise ValueError("active_columns must lie in [1, rows * cols]")
+        if byte_vocab != 256:
+            raise ValueError("the current language boundary is the 256-byte alphabet")
+
+        self.rows = rows
+        self.cols = cols
+        self.d_model = int(d_model)
+        self.active_columns = int(active_columns)
+        self.byte_vocab = int(byte_vocab)
+
+        # Boundary coding and routing are learned, but all columns share the
+        # same local dynamics below.  Keys select transiently active columns;
+        # they are neither an MoE label nor a persistent event archive.
+        self.byte_embedding = nn.Embedding(byte_vocab, d_model)
+        self.column_keys = nn.Parameter(torch.empty(rows, cols, d_model))
+        nn.init.normal_(self.column_keys, std=d_model ** -0.5)
+        self.event_value = nn.Linear(d_model, d_model, bias=False)
+        self.event_likelihood = nn.Linear(d_model, 1)
+        self.readout = nn.Linear(d_model, byte_vocab)
+
+        # Shared column rule F_theta.  It reads only local H/C and local
+        # neighbour transfers.  A gain above one with hard saturation permits
+        # retention; the learned release gate reads C, so contradictory local
+        # evidence can release a held activity rather than freeze it forever.
+        self.neighbour_mix = nn.Linear(d_model, d_model, bias=False)
+        self.activity_gain = nn.Linear(2 * d_model + 1, 1)
+        self.activity_release = nn.Linear(2 * d_model + 1, 1)
+        self.edge_flow = nn.Linear(2 * d_model + 1, 2)
+        self.edge_participation = nn.Linear(2 * d_model + 1, 4)
+        self.participation_retain = nn.Linear(d_model + 1, 1)
+
+        self.prior_precision_raw = nn.Parameter(torch.tensor(-2.0))
+        self.process_variance_raw = nn.Parameter(torch.tensor(-3.0))
+
+    @property
+    def columns(self) -> int:
+        return self.rows * self.cols
+
+    def initial_state(
+        self,
+        batch: int,
+        device: torch.device | str | None = None,
+        dtype: torch.dtype | None = None,
+    ) -> ColumnBodyState:
+        if batch < 1:
+            raise ValueError("batch must be positive")
+        device = self.column_keys.device if device is None else device
+        dtype = self.column_keys.dtype if dtype is None else dtype
+        prior = F.softplus(self.prior_precision_raw).to(device=device, dtype=dtype)
+        shape = (batch, self.rows, self.cols)
+        return ColumnBodyState(
+            activity=torch.zeros(*shape, self.d_model, device=device, dtype=dtype),
+            natural=torch.zeros(*shape, self.d_model, device=device, dtype=dtype),
+            precision=prior.expand(*shape, 1).clone(),
+            participation=torch.zeros(*shape, 4, 2, device=device, dtype=dtype),
+        )
+
+    @staticmethod
+    def detach_state(state: ColumnBodyState) -> ColumnBodyState:
+        """Cut numerical training history without removing causal state."""
+        return ColumnBodyState(*(value.detach() for value in (
+            state.activity, state.natural, state.precision, state.participation,
+        )))
+
+    def demand(self, state: ColumnBodyState) -> torch.Tensor:
+        """Local write availability, reconstructed from C rather than stored."""
+        return state.precision.reciprocal() / (1.0 + state.precision.reciprocal())
+
+    def trace(self, state: ColumnBodyState) -> torch.Tensor:
+        """Typed generalized eligibility reconstructed solely from C and S."""
+        return state.participation * self.demand(state).unsqueeze(-2)
+
+    def _validate_state(self, state: ColumnBodyState) -> None:
+        expected = (self.rows, self.cols)
+        if state.activity.ndim != 4 or tuple(state.activity.shape[1:3]) != expected:
+            raise ValueError("activity does not match the configured column grid")
+        if state.activity.shape[-1] != self.d_model:
+            raise ValueError("activity width does not match d_model")
+        if state.natural.shape != state.activity.shape:
+            raise ValueError("natural carrier must align with activity")
+        if state.precision.shape != (*state.activity.shape[:-1], 1):
+            raise ValueError("precision carrier must have one local scalar per column")
+        if state.participation.shape != (*state.activity.shape[:-1], 4, 2):
+            raise ValueError("participation must be one four-neighbour typed S state")
+        if not bool(torch.isfinite(state.precision).all()) or not bool((state.precision > 0).all()):
+            raise ValueError("carrier precision must be finite and positive")
+
+    def _event_route(self, event: torch.Tensor) -> torch.Tensor:
+        event = F.normalize(event, dim=-1, eps=1e-6)
+        keys = F.normalize(self.column_keys, dim=-1, eps=1e-6)
+        scores = torch.einsum("bd,hwd->bhw", event, keys)
+        flat_scores = scores.flatten(1)
+        values, indices = flat_scores.topk(self.active_columns, dim=-1)
+        sparse = torch.zeros_like(flat_scores)
+        sparse.scatter_(1, indices, torch.softmax(values, dim=-1))
+        return sparse.view_as(scores)
+
+    @staticmethod
+    def _as_elapsed(
+        elapsed: float | torch.Tensor,
+        batch: int,
+        like: torch.Tensor,
+    ) -> torch.Tensor:
+        value = torch.as_tensor(elapsed, device=like.device, dtype=like.dtype)
+        if value.ndim == 0:
+            value = value.expand(batch)
+        if tuple(value.shape) != (batch,) or not bool(torch.isfinite(value).all()) or not bool((value >= 0).all()):
+            raise ValueError("elapsed must be a finite nonnegative scalar or one value per batch item")
+        return value.view(batch, 1, 1, 1)
+
+    @staticmethod
+    def _source_index(source: SourceKind | bool | torch.Tensor, batch: int, like: torch.Tensor) -> torch.Tensor:
+        if isinstance(source, str):
+            if source not in ("external", "self"):
+                raise ValueError("source must be external or self")
+            return torch.full((batch,), _EXTERNAL if source == "external" else _SELF,
+                              device=like.device, dtype=torch.long)
+        value = torch.as_tensor(source, device=like.device)
+        if value.ndim == 0:
+            value = value.expand(batch)
+        if tuple(value.shape) != (batch,):
+            raise ValueError("tensor source must provide one boolean per batch item")
+        if value.dtype != torch.bool:
+            raise ValueError("tensor source is boolean: True means external")
+        return torch.where(value, torch.full_like(value, _EXTERNAL, dtype=torch.long),
+                           torch.full_like(value, _SELF, dtype=torch.long))
+
+    def _edge_flux(self, local: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
+        """Return oriented local flux and its exact endpoint net contribution.
+
+        ``flux[..., 0]`` is eastward and ``flux[..., 1]`` southward.  Periodic
+        incoming minus outgoing construction has zero total before any bounded
+        activity nonlinearity, the executable form of local conservative
+        transport rather than a separate global resource account.
+        """
+        flux = torch.tanh(self.edge_flow(local))
+        east, south = flux[..., 0], flux[..., 1]
+        net = (east.roll(1, dims=2) - east + south.roll(1, dims=1) - south)
+        return flux, net
+
+    def step(
+        self,
+        state: ColumnBodyState,
+        token: torch.Tensor,
+        *,
+        elapsed: float | torch.Tensor = 1.0,
+        source: SourceKind | bool | torch.Tensor = "external",
+    ) -> ColumnBodyStep:
+        """Score one byte from old Z, then assimilate that arrived event locally."""
+        self._validate_state(state)
+        if token.ndim != 1 or token.shape[0] != state.activity.shape[0]:
+            raise ValueError("token must be one byte index per body")
+        if token.dtype != torch.long or not bool(((0 <= token) & (token < self.byte_vocab)).all()):
+            raise ValueError("token must contain byte indices")
+
+        batch = token.shape[0]
+        event = self.byte_embedding(token)
+        route = self._event_route(event)
+        route_d = route.unsqueeze(-1)
+        mean = state.natural / state.precision
+        # The prediction is causally prepared from old state.  It remains a
+        # standard 256-byte head, so a later large language cortex can replace
+        # the boundary coding/readout without adding persistent history.
+        features = (route_d * (mean + state.activity)).sum(dim=(1, 2))
+        logits = self.readout(features)
+
+        dt = self._as_elapsed(elapsed, batch, state.precision)
+        process = F.softplus(self.process_variance_raw).to(dtype=state.precision.dtype)
+        prior_precision = state.precision / (1.0 + dt * process * state.precision)
+        prior_natural = prior_precision * mean
+        evidence_precision = F.softplus(self.event_likelihood(event)).view(batch, 1, 1, 1)
+        write_precision = route_d * evidence_precision
+        value = self.event_value(event).view(batch, 1, 1, self.d_model)
+        natural = prior_natural + write_precision * value
+        precision = prior_precision + write_precision
+
+        demand = self.demand(ColumnBodyState(
+            state.activity, natural, precision, state.participation,
+        ))
+        local = torch.cat((state.activity, mean, demand), dim=-1)
+        flux, net_flux = self._edge_flux(local)
+        neighbour = self.neighbour_mix(
+            (state.activity.roll(1, dims=1) + state.activity.roll(-1, dims=1) +
+             state.activity.roll(1, dims=2) + state.activity.roll(-1, dims=2)) * 0.25
+        )
+        recurrent_gain = 1.0 + F.softplus(self.activity_gain(local))
+        release = torch.sigmoid(self.activity_release(local))
+        injection = route_d * value
+        activity = F.hardtanh((1.0 - release) * recurrent_gain * state.activity +
+                              neighbour + injection + net_flux.unsqueeze(-1))
+
+        # Only currently participating local columns change their typed S
+        # reading.  The two source channels make a self utterance and an
+        # otherwise identical external utterance distinguishable without an
+        # action log or a full event tape.
+        retain = torch.sigmoid(self.participation_retain(torch.cat((mean, demand), dim=-1)))
+        edge_drive = torch.sigmoid(self.edge_participation(local)) * route_d
+        source_index = self._source_index(source, batch, state.activity)
+        source_one_hot = F.one_hot(source_index, num_classes=2).to(dtype=state.activity.dtype)
+        proposed = edge_drive.unsqueeze(-1) * source_one_hot[:, None, None, None, :]
+        participation = state.participation + route_d.unsqueeze(-1) * (
+            retain.unsqueeze(-1) * state.participation + proposed - state.participation
+        )
+        participation = participation.clamp(0.0, 1.0)
+
+        return ColumnBodyStep(
+            state=ColumnBodyState(activity, natural, precision, participation),
+            logits=logits,
+            route=route,
+            edge_flux=flux,
+        )
