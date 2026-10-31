@@ -106,3 +106,15 @@ def test_zero_elapsed_language_arrival_leaves_nonparticipants_unchanged():
     assert torch.equal(step.state.natural[~selected], state.natural[~selected])
     assert torch.equal(step.state.precision[~selected], state.precision[~selected])
     assert torch.equal(step.state.participation[~selected], state.participation[~selected])
+
+
+def test_g14_readout_update_improves_the_arrived_byte_without_persistent_receipt_state():
+    body = _body()
+    state = body.initial_state(1)
+    prepared = body.step(state, torch.tensor([44]), elapsed=0.0)
+    target = torch.tensor([17], dtype=torch.long)
+    before = torch.log_softmax(prepared.logits, dim=-1)[0, target.item()]
+    body.update_readout_from_arrival(prepared, target, step_size=0.01)
+    after = torch.log_softmax(body.readout(prepared.features.detach()), dim=-1)[0, target.item()]
+    assert after > before
+    assert "features" not in prepared.state.__dataclass_fields__

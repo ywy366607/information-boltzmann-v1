@@ -51,6 +51,7 @@ class ColumnBodyStep:
 
     state: ColumnBodyState
     logits: torch.Tensor         # prediction prepared from the old state
+    features: torch.Tensor       # old-state local readout, transient only
     route: torch.Tensor          # [B, rows, cols], sparse event participation
     edge_flux: torch.Tensor      # [B, rows, cols, 2], east/south oriented flow
 
@@ -221,6 +222,38 @@ class CGBColumnLanguageBody(nn.Module):
         net = (east.roll(1, dims=2) - east + south.roll(1, dims=1) - south)
         return flux, net
 
+    @torch.no_grad()
+    def update_readout_from_arrival(
+        self,
+        prepared: ColumnBodyStep,
+        target: torch.Tensor,
+        *,
+        step_size: float,
+    ) -> None:
+        """Apply Lean G14 to the already prepared byte prediction.
+
+        This is the exact observed-minus-predicted affine head update.  Its
+        feature belongs to the returned event receipt, never to persistent Z;
+        calling it after the target arrives cannot reopen an autograd history.
+        It is the immediate supervised language path, not delayed action
+        credit or a replacement for the later three-factor S readout.
+        """
+        if not isinstance(step_size, (float, int)) or isinstance(step_size, bool) or step_size < 0:
+            raise ValueError("step_size must be a finite nonnegative scalar")
+        if not torch.isfinite(torch.as_tensor(step_size)):
+            raise ValueError("step_size must be finite")
+        if target.ndim != 1 or tuple(target.shape) != (prepared.logits.shape[0],):
+            raise ValueError("target must contain one byte index per prepared prediction")
+        if target.dtype != torch.long or not bool(((0 <= target) & (target < self.byte_vocab)).all()):
+            raise ValueError("target must contain byte indices")
+        if step_size == 0:
+            return
+        innovation = -torch.softmax(prepared.logits.detach(), dim=-1)
+        innovation[torch.arange(target.shape[0], device=target.device), target] += 1
+        self.readout.weight.add_(innovation.transpose(0, 1) @ prepared.features.detach(), alpha=float(step_size))
+        if self.readout.bias is not None:
+            self.readout.bias.add_(innovation.sum(dim=0), alpha=float(step_size))
+
     @staticmethod
     def _local_neighbourhood(route: torch.Tensor) -> torch.Tensor:
         """The event's routed columns and their four geometric neighbours."""
@@ -304,6 +337,7 @@ class CGBColumnLanguageBody(nn.Module):
         return ColumnBodyStep(
             state=ColumnBodyState(activity, natural, precision, participation),
             logits=logits,
+            features=features,
             route=route,
             edge_flux=flux,
         )
