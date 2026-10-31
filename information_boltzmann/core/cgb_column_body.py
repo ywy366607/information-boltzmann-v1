@@ -146,6 +146,24 @@ class CGBColumnLanguageBody(nn.Module):
             state.activity, state.natural, state.precision, state.participation,
         )))
 
+    @staticmethod
+    def clone_state(state: ColumnBodyState) -> ColumnBodyState:
+        """Create a complete causal checkpoint with no shared mutable storage."""
+        return ColumnBodyState(*(value.detach().clone() for value in (
+            state.activity, state.natural, state.precision, state.participation,
+        )))
+
+    @staticmethod
+    def persistent_state_bytes(state: ColumnBodyState) -> dict[str, int]:
+        """Report the physical H/C/S state separately from parameters/workspace."""
+        sizes = {
+            "H_activity": state.activity.numel() * state.activity.element_size(),
+            "C_natural": state.natural.numel() * state.natural.element_size(),
+            "C_precision": state.precision.numel() * state.precision.element_size(),
+            "S_participation": state.participation.numel() * state.participation.element_size(),
+        }
+        return {**sizes, "total": sum(sizes.values())}
+
     def demand(self, state: ColumnBodyState) -> torch.Tensor:
         """Local write availability, reconstructed from C rather than stored."""
         return state.precision.reciprocal() / (1.0 + state.precision.reciprocal())

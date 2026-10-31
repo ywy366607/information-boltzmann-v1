@@ -118,3 +118,21 @@ def test_g14_readout_update_improves_the_arrived_byte_without_persistent_receipt
     after = torch.log_softmax(body.readout(prepared.features.detach()), dim=-1)[0, target.item()]
     assert after > before
     assert "features" not in prepared.state.__dataclass_fields__
+
+
+def test_complete_hcs_snapshot_restores_values_and_reports_only_persistent_state():
+    body = _body()
+    state = body.step(body.initial_state(1), torch.tensor([81]), elapsed=0.25).state
+    snapshot = body.clone_state(state)
+    footprint = body.persistent_state_bytes(snapshot)
+    assert footprint["total"] == sum(footprint[name] for name in (
+        "H_activity", "C_natural", "C_precision", "S_participation",
+    ))
+    assert footprint["total"] == sum(value.numel() * value.element_size() for value in (
+        snapshot.activity, snapshot.natural, snapshot.precision, snapshot.participation,
+    ))
+    state.activity.add_(1)
+    assert not torch.equal(state.activity, snapshot.activity)
+    assert all(not value.requires_grad for value in (
+        snapshot.activity, snapshot.natural, snapshot.precision, snapshot.participation,
+    ))
