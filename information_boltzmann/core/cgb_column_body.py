@@ -157,10 +157,6 @@ class CGBColumnLanguageBody(nn.Module):
         contact_width = 4 * 2 * self.contact_rank
         self.teaching_to_activity = nn.Linear(contact_width, d_model, bias=False)
         self.activity_to_teaching = nn.Linear(d_model, contact_width, bias=False)
-        # This boundary map carries an already-arrived language residual into
-        # the existing typed S carrier.  Its full feedback alignment is an
-        # admission measurement, not assumed by this implementation.
-        self.error_to_teaching = nn.Linear(byte_vocab, contact_width, bias=False)
 
     @property
     def columns(self) -> int:
@@ -456,20 +452,24 @@ class CGBColumnLanguageBody(nn.Module):
         participation: torch.Tensor,
         local: torch.Tensor,
         route: torch.Tensor,
-        teaching: torch.Tensor,
+        raw_teaching: torch.Tensor,
+        modulation: torch.Tensor,
     ) -> torch.Tensor:
-        """Write an arrived language residual into signed S at both edge ends.
+        """Outcome-gate a local signed S phase at both endpoints.
 
-        ``teaching`` is transient boundary evidence with one contact coordinate
-        per batch item.  Its edge target and release are symmetrised from the
-        two endpoints, so the resulting directed S readings satisfy the same
-        reciprocal splice condition as the arrival phase.  The write happens
-        only after the byte's old-state prediction was scored.
+        ``raw_teaching`` is the local H/S phase that existed before outcome
+        evaluation. ``modulation`` is a bounded language-surprise amplitude
+        only available after the byte arrives.  The final interpolation is
+        `eligibilityGatedSignedPhase`: zero outcome evidence holds the signed
+        phase exactly, one recovers the local raw transition.  It never asks a
+        learned feedback map to imitate an output gradient.
         """
-        if teaching.shape != (participation.shape[0], 4 * 2 * self.contact_rank):
-            raise ValueError("teaching must provide one signed local contact vector per body")
+        if raw_teaching.shape != (participation.shape[0], 4 * 2 * self.contact_rank):
+            raise ValueError("raw_teaching must provide one signed local contact vector per body")
+        if modulation.shape != (participation.shape[0],):
+            raise ValueError("modulation must provide one outcome gate per body")
         batch = participation.shape[0]
-        teaching = teaching.reshape(batch, 4, 2, self.contact_rank)
+        raw_teaching = raw_teaching.reshape(batch, 4, 2, self.contact_rank)
         endpoint_retain = torch.sigmoid(
             self.participation_retain(torch.cat(
                 (local[..., self.d_model:2 * self.d_model], local[..., -1:]), dim=-1,
@@ -481,7 +481,7 @@ class CGBColumnLanguageBody(nn.Module):
             neighbour_route = route.roll(shifts=(-row_shift, -col_shift), dims=(1, 2))
             # The same batch-level residual is offered to both physical ends;
             # only local route participation decides whether that edge writes.
-            edge_target.append(0.5 * (teaching[:, direction] + teaching[:, opposite])[:, None, None])
+            edge_target.append(0.5 * (raw_teaching[:, direction] + raw_teaching[:, opposite])[:, None, None])
             edge_retain.append(0.5 * (
                 endpoint_retain + endpoint_retain.roll(shifts=(-row_shift, -col_shift), dims=(1, 2))
             ))
@@ -493,32 +493,46 @@ class CGBColumnLanguageBody(nn.Module):
         teaching_state = previous + active.unsqueeze(-1).unsqueeze(-1) * (
             retain.unsqueeze(-1).unsqueeze(-1) * previous + target - previous
         )
+        gate = modulation[:, None, None, None, None, None]
+        teaching_state = previous + gate * (teaching_state - previous)
         return torch.stack((participation[..., _ARRIVAL, :], teaching_state.clamp(-1.0, 1.0)), dim=-2)
 
     def reciprocal_teaching_mismatch(self) -> torch.Tensor:
         """The learnable splice error covered by the Lean reciprocal theorem."""
         return self.teaching_to_activity.weight - self.activity_to_teaching.weight.transpose(0, 1)
 
-    def _teaching_contact_from_arrival(
+    def _teaching_phase_from_state(
         self,
-        prepared: ColumnBodyStep,
+        state: ColumnBodyState,
+        route: torch.Tensor,
         innovation: torch.Tensor,
-    ) -> tuple[torch.Tensor, torch.Tensor]:
-        """Read a local eligibility and gate it by the arrived third factor."""
-        mass = prepared.route.sum(dim=(1, 2)).clamp_min(
-            torch.finfo(prepared.state.activity.dtype).eps
+    ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
+        """Read a local S trace and its outcome gate after a byte arrives.
+
+        The local H-to-S coordinate supplies the signed direction, while the
+        existing arrival occupancy is its causal eligibility amplitude.  The
+        observed-minus-predicted byte distribution is reduced only to a
+        bounded surprise *amplitude*; it decides whether to consolidate this
+        local phase, not what its direction should be.
+        """
+        mass = route.sum(dim=(1, 2)).clamp_min(
+            torch.finfo(state.activity.dtype).eps
         )
         local_activity = (
-            prepared.route.unsqueeze(-1) * prepared.state.activity
+            route.unsqueeze(-1) * state.activity
         ).sum(dim=(1, 2)) / mass.unsqueeze(-1)
-        eligibility = self.activity_to_teaching(local_activity)
-        third_factor = self.error_to_teaching(innovation)
-        # This is the operational three-factor contact write: existing local
-        # H-to-S sensitivity, multiplied by a residual only available after
-        # the byte arrives.  It is bounded before entering physical S.
-        return torch.tanh(eligibility * third_factor), local_activity
+        arrival = self.arrival_participation(state)
+        local_arrival = (
+            route[..., None, None, None] * arrival
+        ).sum(dim=(1, 2)) / mass[:, None, None, None]
+        raw_phase = torch.tanh(self.activity_to_teaching(local_activity))
+        raw_phase = raw_phase * local_arrival.flatten(start_dim=1)
+        # Every component of a categorical innovation is in [-1, 1], hence
+        # its mean square is a bounded, parameter-free outcome gate.
+        modulation = innovation.square().mean(dim=-1)
+        return raw_phase, modulation, local_activity
 
-    def teaching_alignment_to_g14(
+    def teaching_alignment_diagnostic_to_g14(
         self,
         prepared: ColumnBodyStep,
         target: torch.Tensor,
@@ -532,8 +546,8 @@ class CGBColumnLanguageBody(nn.Module):
         innovation = -torch.softmax(prepared.logits.detach(), dim=-1)
         innovation[torch.arange(target.shape[0], device=target.device), target] += 1
         exact = innovation @ self.readout.weight.detach()
-        contact, _ = self._teaching_contact_from_arrival(prepared, innovation)
-        teaching = self.teaching_to_activity(contact)
+        raw_phase, modulation, _ = self._teaching_phase_from_state(prepared.state, prepared.route, innovation)
+        teaching = modulation.unsqueeze(-1) * self.teaching_to_activity(raw_phase)
         return F.cosine_similarity(teaching, exact, dim=-1, eps=1e-8)
 
     def _teaching_release(self, state: ColumnBodyState, route: torch.Tensor) -> torch.Tensor:
@@ -555,15 +569,12 @@ class CGBColumnLanguageBody(nn.Module):
     ) -> ColumnBodyState:
         """Settle one post-arrival, three-factor reciprocal teaching event.
 
-        The byte residual is the already-arrived third factor.  The route-
-        weighted local activity is the first factor and the signed S write is
-        the finite history/participation factor.  Both H-to-S and S-to-H maps
-        receive the identical local outer product and identical release; thus
-        their splice mismatch contracts exactly as
-        ``reciprocal_shared_update_mismatch`` states.  No transpose is copied
-        and no past autograd graph is retained.  This is deliberately narrower
-        than a claim that the complete feedback path is already aligned with
-        the exact G14 score.
+        The route-weighted local activity supplies the first factor, existing
+        arrival S occupancy supplies the second, and post-score language
+        surprise gates the third.  Both H-to-S and S-to-H maps receive the
+        same gated local outer product, so their splice mismatch contracts.
+        No transpose is copied, no reverse-time graph is retained, and this
+        does not claim alignment with the exact G14 direction.
         """
         if not isinstance(step_size, (float, int)) or isinstance(step_size, bool) or step_size < 0:
             raise ValueError("step_size must be a finite nonnegative scalar")
@@ -576,13 +587,13 @@ class CGBColumnLanguageBody(nn.Module):
 
         innovation = -torch.softmax(prepared.logits.detach(), dim=-1)
         innovation[torch.arange(target.shape[0], device=target.device), target] += 1
-        residual_contact, local_activity = self._teaching_contact_from_arrival(prepared, innovation)
+        raw_phase, modulation, local_activity = self._teaching_phase_from_state(prepared.state, prepared.route, innovation)
         state = prepared.state
         mean = state.natural / state.precision
         demand = self.demand(state)
         local = torch.cat((state.activity, mean, demand), dim=-1)
         written = self._reciprocal_teaching_update(
-            state.participation, local, prepared.route, residual_contact,
+            state.participation, local, prepared.route, raw_phase, modulation,
         )
 
         # A common event-level release gate is enough for the theorem: every
@@ -591,8 +602,8 @@ class CGBColumnLanguageBody(nn.Module):
         # update scale as the outer-product write; applying the raw [0,1]
         # gate as full per-byte weight decay would be a different, unjustified
         # parameter dynamics.
-        release = float(step_size) * self._teaching_release(state, prepared.route)
-        shared = (local_activity.transpose(0, 1) @ residual_contact) / local_activity.shape[0]
+        release = float(step_size) * modulation.mean() * self._teaching_release(state, prepared.route)
+        shared = (local_activity.transpose(0, 1) @ raw_phase) / local_activity.shape[0]
         factor = 1.0 - release
         self.teaching_to_activity.weight.mul_(factor).add_(shared, alpha=float(step_size))
         self.activity_to_teaching.weight.mul_(factor).add_(shared.transpose(0, 1), alpha=float(step_size))

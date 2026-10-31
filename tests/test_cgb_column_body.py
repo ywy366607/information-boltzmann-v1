@@ -252,7 +252,10 @@ def test_post_arrival_reciprocal_teaching_stays_in_s_and_contracts_its_splice():
     before = body.reciprocal_teaching_mismatch().detach().clone()
     assert not torch.allclose(body.teaching_to_activity.weight,
                               body.activity_to_teaching.weight.transpose(0, 1))
-    release = 0.01 * body._teaching_release(prepared.state, prepared.route).detach()
+    innovation = -torch.softmax(prepared.logits.detach(), dim=-1)
+    innovation[0, 44] += 1
+    _, modulation, _ = body._teaching_phase_from_state(prepared.state, prepared.route, innovation)
+    release = 0.01 * modulation.mean() * body._teaching_release(prepared.state, prepared.route).detach()
     settled = body.settle_reciprocal_teaching_from_arrival(
         prepared, torch.tensor([44]), step_size=0.01,
     )
@@ -273,6 +276,50 @@ def test_post_arrival_reciprocal_teaching_stays_in_s_and_contracts_its_splice():
                                atol=2e-7, rtol=2e-7)
 
 
+def test_teaching_phase_is_an_existing_arrival_trace_gated_by_bounded_outcome():
+    body = _body()
+    prepared = body.step(body.initial_state(1), torch.tensor([44]), elapsed=0.0)
+    innovation = -torch.softmax(prepared.logits.detach(), dim=-1)
+    innovation[0, 17] += 1
+    raw_phase, modulation, _ = body._teaching_phase_from_state(
+        prepared.state, prepared.route, innovation,
+    )
+    assert raw_phase.abs().sum() > 0
+    assert torch.all((0.0 <= modulation) & (modulation <= 1.0))
+
+    # Removing only the old S arrival occupancy removes the local trace.  No
+    # new eligibility tensor or copied reverse-time derivative is consulted.
+    without_arrival = ColumnBodyState(
+        prepared.state.activity, prepared.state.natural, prepared.state.precision,
+        prepared.state.causal_token,
+        torch.stack((
+            torch.zeros_like(body.arrival_participation(prepared.state)),
+            body.teaching_participation(prepared.state),
+        ), dim=-2),
+    )
+    absent, same_gate, _ = body._teaching_phase_from_state(
+        without_arrival, prepared.route, innovation,
+    )
+    torch.testing.assert_close(absent, torch.zeros_like(absent))
+    torch.testing.assert_close(same_gate, modulation)
+
+
+def test_zero_outcome_gate_holds_the_existing_signed_s_phase_exactly():
+    body = _body()
+    initial = body.initial_state(1)
+    participation = torch.stack((
+        body.arrival_participation(initial),
+        torch.empty_like(body.teaching_participation(initial)).uniform_(-0.8, 0.8),
+    ), dim=-2)
+    local = torch.randn(1, body.rows, body.cols, 2 * body.d_model + 1)
+    route = torch.rand(1, body.rows, body.cols)
+    raw = torch.empty(1, 4 * 2 * body.contact_rank).uniform_(-1.0, 1.0)
+    held = body._reciprocal_teaching_update(
+        participation, local, route, raw, torch.zeros(1),
+    )
+    torch.testing.assert_close(held, participation)
+
+
 def test_teaching_s_only_modulates_the_next_h_transition_and_exposes_alignment_measure():
     body = _body()
     prepared = body.step(body.initial_state(1), torch.tensor([52]), elapsed=0.0)
@@ -289,7 +336,7 @@ def test_teaching_s_only_modulates_the_next_h_transition_and_exposes_alignment_m
     assert torch.equal(without_teaching.features, with_teaching.features)
     assert torch.equal(without_teaching.logits, with_teaching.logits)
     assert not torch.equal(without_teaching.state.activity, with_teaching.state.activity)
-    alignment = body.teaching_alignment_to_g14(prepared, torch.tensor([52]))
+    alignment = body.teaching_alignment_diagnostic_to_g14(prepared, torch.tensor([52]))
     assert alignment.shape == (1,)
     assert torch.isfinite(alignment).all()
 

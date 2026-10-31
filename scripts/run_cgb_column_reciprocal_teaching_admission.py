@@ -57,7 +57,7 @@ def run_phase(
         if teaching_step is not None:
             # This compares the live local direction to the exact immediate
             # G14 feature direction before either parameter family is changed.
-            total_alignment += float(body.teaching_alignment_to_g14(prepared, target).sum())
+            total_alignment += float(body.teaching_alignment_diagnostic_to_g14(prepared, target).sum())
             alignment_count += target.shape[0]
         body.update_readout_from_arrival(prepared, target, step_size=head_step)
         state = (body.settle_reciprocal_teaching_from_arrival(
@@ -128,7 +128,7 @@ class CudaOnlineTeaching:
 
     def _mutable_tensors(self) -> tuple[torch.Tensor, ...]:
         tensors = [
-            self.activity, self.natural, self.precision, self.participation,
+            self.activity, self.natural, self.precision, self.causal_token, self.participation,
             self.body.readout.weight, self.body.readout.bias,
             self.total_nll, self.total_alignment,
         ]
@@ -149,7 +149,7 @@ class CudaOnlineTeaching:
         with torch.cuda.graph(graph):
             for index in range(length):
                 target = targets[index:index + 1]
-                activity, natural, precision, causal_token, participation, features, route, _ = self.body._step_tensors(
+                activity, natural, precision, causal_token, participation, features, route, _, _, _ = self.body._step_tensors(
                     self.activity, self.natural, self.precision, self.causal_token, self.participation,
                     tokens[index:index + 1], self.elapsed_zero, self.external_source,
                 )
@@ -157,21 +157,19 @@ class CudaOnlineTeaching:
                 self.total_nll.add_(torch.logsumexp(logits, dim=-1) - (logits * target).sum(dim=-1))
                 innovation = target - torch.softmax(logits, dim=-1)
                 if self.teaching_step is not None:
-                    state = ColumnBodyState(activity, natural, precision, participation)
-                    mass = route.sum(dim=(1, 2)).clamp_min(torch.finfo(activity.dtype).eps)
-                    local_activity = (route.unsqueeze(-1) * activity).sum(dim=(1, 2)) / mass.unsqueeze(-1)
-                    contact = torch.tanh(
-                        self.body.activity_to_teaching(local_activity) * self.body.error_to_teaching(innovation)
+                    state = ColumnBodyState(activity, natural, precision, causal_token, participation)
+                    raw_phase, modulation, local_activity = self.body._teaching_phase_from_state(
+                        state, route, innovation,
                     )
-                    teaching = self.body.teaching_to_activity(contact)
+                    teaching = modulation.unsqueeze(-1) * self.body.teaching_to_activity(raw_phase)
                     exact = innovation @ self.body.readout.weight
                     self.total_alignment.add_(F.cosine_similarity(teaching, exact, dim=-1, eps=1e-8))
                     local = torch.cat((activity, natural / precision, self.body.demand(state)), dim=-1)
                     participation = self.body._reciprocal_teaching_update(
-                        participation, local, route, contact,
+                        participation, local, route, raw_phase, modulation,
                     )
-                    release = self.teaching_step * self.body._teaching_release(state, route)
-                    shared = (local_activity.transpose(0, 1) @ contact) / local_activity.shape[0]
+                    release = self.teaching_step * modulation.mean() * self.body._teaching_release(state, route)
+                    shared = (local_activity.transpose(0, 1) @ raw_phase) / local_activity.shape[0]
                     factor = 1.0 - release
                     self.body.teaching_to_activity.weight.mul_(factor).add_(shared, alpha=self.teaching_step)
                     self.body.activity_to_teaching.weight.mul_(factor).add_(shared.transpose(0, 1),
@@ -345,23 +343,23 @@ def main() -> None:
         )
     report = {
         "status": "reciprocal_teaching_admission",
-        "claim_scope": "Paired real-OWT prequential comparison of an H/C/S column body with or without post-arrival reciprocal teaching settlement.",
+        "claim_scope": "Paired real-OWT prequential comparison of an H/C/S column body with or without a local surprise-gated signed-S teaching phase.",
         "not_claimed": [
             "full feedback-path alignment", "delayed action credit", "active language acquisition",
             "language-model capability", "life closure",
         ],
         "mechanism": {
             "persistent_state": "one H/C/S body; S has arrival and signed teaching types",
-            "third_factor": "arrived byte observed-minus-predicted residual",
-            "eligibility": "local H-to-S map read at routed columns",
-            "reciprocity": "H-to-S and S-to-H maps receive the same local outer product and scaled common release",
+            "third_factor": "bounded post-score categorical innovation mean-square surprise gate",
+            "eligibility": "routed arrival S occupancy times a learned local H-to-S signed phase",
+            "reciprocity": "H-to-S and S-to-H maps receive the same surprise-gated local outer product and release",
             "causal_order": "score old H/C; arrive byte; G14 head update; optionally settle teaching S; next event reads teaching S modulatively",
         },
         "protocol": {
             "data": "same continuous OWT train then validation stream for both arms",
             "autograd_history": "absent", "bptt": "absent",
             "baseline": "same output G14 update, teaching settlement omitted",
-            "alignment": "cosine between S-to-H local teaching direction and exact immediate affine G14 feature score before updates",
+            "alignment": "diagnostic-only cosine between local teaching direction and the exact immediate affine G14 feature score; it is never an update target",
         },
         "model": {
             "d_model": args.d_model, "grid_shape": [args.grid, args.grid],
