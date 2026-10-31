@@ -101,9 +101,9 @@ class CudaGraphPair:
         self.body = body
         self.step_size = float(step_size)
         self.block_size = int(block_size)
-        self.activity, self.natural, self.precision, self.participation = (
+        self.activity, self.natural, self.precision, self.causal_token, self.participation = (
             value.detach().clone() for value in (
-                state.activity, state.natural, state.precision, state.participation,
+                state.activity, state.natural, state.precision, state.causal_token, state.participation,
             )
         )
         device = self.activity.device
@@ -121,7 +121,7 @@ class CudaGraphPair:
         # tensor afterwards; capture can never become a phantom language event.
         with torch.no_grad():
             probe = torch.zeros(1, device=device, dtype=torch.long)
-            body._step_tensors(self.activity, self.natural, self.precision,
+            body._step_tensors(self.activity, self.natural, self.precision, self.causal_token,
                                self.participation, probe, self.elapsed_zero,
                                self.external_source)
         self.graphs = {1: self._capture_block(1)}
@@ -129,7 +129,7 @@ class CudaGraphPair:
             self.graphs[self.block_size] = self._capture_block(self.block_size)
 
     def _mutable_tensors(self) -> tuple[torch.Tensor, ...]:
-        return (self.activity, self.natural, self.precision, self.participation,
+        return (self.activity, self.natural, self.precision, self.causal_token, self.participation,
                 self.heads.frozen_weight, self.heads.frozen_bias,
                 self.heads.learned_weight, self.heads.learned_bias,
                 self.heads.bias_only, self.total_nll)
@@ -146,9 +146,9 @@ class CudaGraphPair:
         with torch.cuda.graph(graph):
             for index in range(length):
                 target = targets[index:index + 1]
-                (activity, natural, precision, participation,
+                (activity, natural, precision, causal_token, participation,
                  features, _, _) = self.body._step_tensors(
-                    self.activity, self.natural, self.precision, self.participation,
+                    self.activity, self.natural, self.precision, self.causal_token, self.participation,
                     tokens[index:index + 1], self.elapsed_zero, self.external_source,
                 )
                 frozen_logits = F.linear(features, self.heads.frozen_weight, self.heads.frozen_bias)
@@ -168,6 +168,7 @@ class CudaGraphPair:
                 self.activity.copy_(activity)
                 self.natural.copy_(natural)
                 self.precision.copy_(precision)
+                self.causal_token.copy_(causal_token)
                 self.participation.copy_(participation)
         torch.cuda.synchronize(device)
         for mutable, snapshot in zip(self._mutable_tensors(), snapshots):
@@ -252,7 +253,7 @@ class CudaGraphPair:
 
     def state(self) -> ColumnBodyState:
         return ColumnBodyState(*(value.detach().clone() for value in (
-            self.activity, self.natural, self.precision, self.participation,
+            self.activity, self.natural, self.precision, self.causal_token, self.participation,
         )))
 
 

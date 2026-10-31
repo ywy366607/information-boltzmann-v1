@@ -47,6 +47,7 @@ class ColumnBodyState:
     activity: torch.Tensor       # H: [B, rows, cols, D], in [-1, 1]
     natural: torch.Tensor        # C: [B, rows, cols, D]
     precision: torch.Tensor      # C: [B, rows, cols, 1], positive
+    causal_token: torch.Tensor   # C: [B], previous live byte or -1 at birth
     participation: torch.Tensor  # S: [B, rows, cols, 4, 2, 2, rank]
 
 
@@ -171,6 +172,10 @@ class CGBColumnLanguageBody(nn.Module):
             activity=torch.zeros(*shape, self.d_model, device=device, dtype=dtype),
             natural=torch.zeros(*shape, self.d_model, device=device, dtype=dtype),
             precision=prior.expand(*shape, 1).clone(),
+            # This is the compact causal query already required by the GDN
+            # value-credit theorem: it belongs to C, alongside natural and
+            # precision, rather than creating an eligibility/history page.
+            causal_token=torch.full((batch,), -1, device=device, dtype=torch.long),
             participation=torch.zeros(*shape, 4, 2, 2, self.contact_rank, device=device, dtype=dtype),
         )
 
@@ -178,14 +183,14 @@ class CGBColumnLanguageBody(nn.Module):
     def detach_state(state: ColumnBodyState) -> ColumnBodyState:
         """Cut numerical training history without removing causal state."""
         return ColumnBodyState(*(value.detach() for value in (
-            state.activity, state.natural, state.precision, state.participation,
+            state.activity, state.natural, state.precision, state.causal_token, state.participation,
         )))
 
     @staticmethod
     def clone_state(state: ColumnBodyState) -> ColumnBodyState:
         """Create a complete causal checkpoint with no shared mutable storage."""
         return ColumnBodyState(*(value.detach().clone() for value in (
-            state.activity, state.natural, state.precision, state.participation,
+            state.activity, state.natural, state.precision, state.causal_token, state.participation,
         )))
 
     @staticmethod
@@ -195,6 +200,7 @@ class CGBColumnLanguageBody(nn.Module):
             "H_activity": state.activity.numel() * state.activity.element_size(),
             "C_natural": state.natural.numel() * state.natural.element_size(),
             "C_precision": state.precision.numel() * state.precision.element_size(),
+            "C_causal_token": state.causal_token.numel() * state.causal_token.element_size(),
             "S_participation": state.participation.numel() * state.participation.element_size(),
         }
         return {**sizes, "total": sum(sizes.values())}
@@ -227,6 +233,12 @@ class CGBColumnLanguageBody(nn.Module):
             raise ValueError("natural carrier must align with activity")
         if state.precision.shape != (*state.activity.shape[:-1], 1):
             raise ValueError("precision carrier must have one local scalar per column")
+        if state.causal_token.shape != (state.activity.shape[0],):
+            raise ValueError("causal-token carrier must have one entry per body")
+        if state.causal_token.dtype != torch.long:
+            raise ValueError("causal-token carrier must use integer byte identities")
+        if not bool(((-1 <= state.causal_token) & (state.causal_token < self.byte_vocab)).all()):
+            raise ValueError("causal-token carrier must be a byte index or the birth sentinel -1")
         if state.participation.shape != (*state.activity.shape[:-1], 4, 2, 2, self.contact_rank):
             raise ValueError("participation must be one four-neighbour typed low-rank S state")
         arrival = self.arrival_participation(state)
@@ -513,7 +525,8 @@ class CGBColumnLanguageBody(nn.Module):
         factor = 1.0 - release
         self.teaching_to_activity.weight.mul_(factor).add_(shared, alpha=float(step_size))
         self.activity_to_teaching.weight.mul_(factor).add_(shared.transpose(0, 1), alpha=float(step_size))
-        return ColumnBodyState(state.activity, state.natural, state.precision, written)
+        return ColumnBodyState(state.activity, state.natural, state.precision,
+                               state.causal_token, written)
 
     def advance_time(
         self,
@@ -529,6 +542,7 @@ class CGBColumnLanguageBody(nn.Module):
             activity=state.activity,
             natural=precision * (state.natural / state.precision),
             precision=precision,
+            causal_token=state.causal_token,
             participation=state.participation,
         )
 
@@ -576,6 +590,7 @@ class CGBColumnLanguageBody(nn.Module):
         activity: torch.Tensor,
         natural: torch.Tensor,
         precision: torch.Tensor,
+        causal_token: torch.Tensor,
         participation: torch.Tensor,
         token: torch.Tensor,
         elapsed: torch.Tensor,
@@ -590,7 +605,7 @@ class CGBColumnLanguageBody(nn.Module):
         H/C/S recurrence.  It deliberately returns no logits: prediction is a
         boundary readout from the returned *old-state* features.
         """
-        state = ColumnBodyState(activity, natural, precision, participation)
+        state = ColumnBodyState(activity, natural, precision, causal_token, participation)
         batch = token.shape[0]
         event = self.byte_embedding(token)
         route = self._state_route(state)
@@ -639,7 +654,9 @@ class CGBColumnLanguageBody(nn.Module):
         participation = self._reciprocal_contact_update(
             participation, local, route, source_index,
         )
-        return (activity, natural, precision, participation,
+        # A live arrival becomes the query identity for the following causal
+        # prediction.  No score reads this new token in the current event.
+        return (activity, natural, precision, token.clone(), participation,
                 features, route, flux)
 
     def step(
@@ -660,14 +677,14 @@ class CGBColumnLanguageBody(nn.Module):
         batch = token.shape[0]
         dt = self._as_elapsed(elapsed, batch, state.precision).reshape(batch)
         source_index = self._source_index(source, batch, state.activity)
-        (activity, natural, precision, participation,
+        (activity, natural, precision, causal_token, participation,
          features, route, flux) = self._step_tensors(
-            state.activity, state.natural, state.precision, state.participation,
+            state.activity, state.natural, state.precision, state.causal_token, state.participation,
             token, dt, source_index,
         )
 
         return ColumnBodyStep(
-            state=ColumnBodyState(activity, natural, precision, participation),
+            state=ColumnBodyState(activity, natural, precision, causal_token, participation),
             logits=self.readout(features),
             features=features,
             route=route,

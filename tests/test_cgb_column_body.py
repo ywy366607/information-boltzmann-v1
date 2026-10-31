@@ -15,9 +15,12 @@ def test_common_state_is_exactly_h_c_s_and_readouts_add_no_history_page():
     assert state.natural.shape == state.activity.shape
     assert state.precision.shape == (2, 3, 4, 1)
     assert state.participation.shape == (2, 3, 4, 4, 2, 2, 1)
+    # C comprises its numerical natural/precision fields and one 8-bit-scale
+    # causal query identity.  It remains one carrier, not a fourth state page.
     assert set(state.__dataclass_fields__) == {
-        "activity", "natural", "precision", "participation",
+        "activity", "natural", "precision", "causal_token", "participation",
     }
+    assert torch.equal(state.causal_token, torch.full((2,), -1, dtype=torch.long))
     demand = body.demand(state)
     trace = body.trace(state)
     assert demand.shape == state.precision.shape
@@ -91,9 +94,12 @@ def test_contact_basis_rank_expands_only_s_not_the_number_of_persistent_pages():
     body = CGBColumnLanguageBody(6, (3, 4), active_columns=3, contact_rank=3)
     state = body.initial_state(1)
     assert state.participation.shape == (1, 3, 4, 4, 2, 2, 3)
+    # C comprises its numerical natural/precision fields and one 8-bit-scale
+    # causal query identity.  It remains one carrier, not a fourth state page.
     assert set(state.__dataclass_fields__) == {
-        "activity", "natural", "precision", "participation",
+        "activity", "natural", "precision", "causal_token", "participation",
     }
+    assert torch.equal(state.causal_token, torch.full((1,), -1, dtype=torch.long))
     step = body.step(state, torch.tensor([39]), elapsed=0.0)
     mismatch = body.reciprocal_participation_mismatch(step.state.participation)
     assert torch.allclose(mismatch, torch.zeros_like(mismatch), atol=1e-7)
@@ -109,6 +115,7 @@ def test_old_contact_state_changes_next_local_activity_but_not_its_prepared_pred
         activity=baseline.activity,
         natural=baseline.natural,
         precision=baseline.precision,
+        causal_token=baseline.causal_token,
         participation=torch.stack((
             torch.full_like(body.arrival_participation(baseline), 0.5),
             body.teaching_participation(baseline),
@@ -135,6 +142,7 @@ def test_muting_contact_readout_preserves_the_s_write_but_removes_its_h_effect()
         activity=baseline.activity,
         natural=baseline.natural,
         precision=baseline.precision,
+        causal_token=baseline.causal_token,
         participation=torch.stack((
             torch.full_like(body.arrival_participation(baseline), 0.5),
             body.teaching_participation(baseline),
@@ -162,8 +170,10 @@ def test_state_detach_preserves_values_and_removes_autograd_history():
     loss.backward()
     detached = body.detach_state(step.state)
     for before, after in zip(
-        (step.state.activity, step.state.natural, step.state.precision, step.state.participation),
-        (detached.activity, detached.natural, detached.precision, detached.participation),
+        (step.state.activity, step.state.natural, step.state.precision, step.state.causal_token,
+         step.state.participation),
+        (detached.activity, detached.natural, detached.precision, detached.causal_token,
+         detached.participation),
     ):
         assert torch.equal(before, after)
         assert not after.requires_grad
@@ -176,6 +186,7 @@ def test_zero_elapsed_language_arrival_leaves_nonparticipants_unchanged():
         activity=torch.empty_like(initial.activity).uniform_(-0.7, 0.7),
         natural=torch.randn_like(initial.natural),
         precision=initial.precision,
+        causal_token=initial.causal_token,
         participation=torch.rand_like(initial.participation),
     )
     step = body.step(state, torch.tensor([23]), elapsed=0.0)
@@ -257,15 +268,15 @@ def test_complete_hcs_snapshot_restores_values_and_reports_only_persistent_state
     snapshot = body.clone_state(state)
     footprint = body.persistent_state_bytes(snapshot)
     assert footprint["total"] == sum(footprint[name] for name in (
-        "H_activity", "C_natural", "C_precision", "S_participation",
+        "H_activity", "C_natural", "C_precision", "C_causal_token", "S_participation",
     ))
     assert footprint["total"] == sum(value.numel() * value.element_size() for value in (
-        snapshot.activity, snapshot.natural, snapshot.precision, snapshot.participation,
+        snapshot.activity, snapshot.natural, snapshot.precision, snapshot.causal_token, snapshot.participation,
     ))
     state.activity.add_(1)
     assert not torch.equal(state.activity, snapshot.activity)
     assert all(not value.requires_grad for value in (
-        snapshot.activity, snapshot.natural, snapshot.precision, snapshot.participation,
+        snapshot.activity, snapshot.natural, snapshot.precision, snapshot.causal_token, snapshot.participation,
     ))
 
 
@@ -300,12 +311,29 @@ def test_compilable_tensor_step_is_exactly_the_validated_public_transition():
     elapsed = body._as_elapsed(0.25, 1, state.precision).reshape(1)
     source = body._source_index("external", 1, state.activity)
     actual = body._step_tensors(
-        state.activity, state.natural, state.precision, state.participation,
-        token, elapsed, source,
+        state.activity, state.natural, state.precision, state.causal_token,
+        state.participation, token, elapsed, source,
     )
     expected = (
         public.state.activity, public.state.natural, public.state.precision,
-        public.state.participation, public.features, public.route, public.edge_flux,
+        public.state.causal_token, public.state.participation,
+        public.features, public.route, public.edge_flux,
     )
     for from_kernel, from_public in zip(actual, expected):
         torch.testing.assert_close(from_kernel, from_public)
+
+
+def test_live_arrival_updates_only_causal_query_for_the_next_event():
+    body = _body()
+    born = body.initial_state(2)
+    token = torch.tensor([17, 203], dtype=torch.long)
+    step = body.step(born, token, elapsed=0.0)
+
+    # This is CGB.GDNLife.positive_observation_sets_last_byte at the column
+    # carrier boundary: a current byte cannot affect its already issued score,
+    # but it is retained as the next event's causal query identity.
+    assert torch.equal(step.state.causal_token, token)
+    replay = body.step(born, token, elapsed=0.0)
+    assert torch.equal(step.logits, replay.logits)
+    advanced = body.advance_time(step.state, 3.0)
+    assert torch.equal(advanced.causal_token, token)

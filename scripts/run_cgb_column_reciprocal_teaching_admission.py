@@ -105,9 +105,9 @@ class CudaOnlineTeaching:
         self.head_step = float(head_step)
         self.teaching_step = teaching_step
         self.block_size = int(block_size)
-        self.activity, self.natural, self.precision, self.participation = (
+        self.activity, self.natural, self.precision, self.causal_token, self.participation = (
             value.detach().clone() for value in (
-                state.activity, state.natural, state.precision, state.participation,
+                state.activity, state.natural, state.precision, state.causal_token, state.participation,
             )
         )
         device = self.activity.device
@@ -119,7 +119,7 @@ class CudaOnlineTeaching:
         self.alignment_count = 0
         with torch.no_grad():
             probe = torch.zeros(1, device=device, dtype=torch.long)
-            body._step_tensors(self.activity, self.natural, self.precision,
+            body._step_tensors(self.activity, self.natural, self.precision, self.causal_token,
                                self.participation, probe, self.elapsed_zero,
                                self.external_source)
         self.graphs = {1: self._capture_block(1)}
@@ -149,8 +149,8 @@ class CudaOnlineTeaching:
         with torch.cuda.graph(graph):
             for index in range(length):
                 target = targets[index:index + 1]
-                activity, natural, precision, participation, features, route, _ = self.body._step_tensors(
-                    self.activity, self.natural, self.precision, self.participation,
+                activity, natural, precision, causal_token, participation, features, route, _ = self.body._step_tensors(
+                    self.activity, self.natural, self.precision, self.causal_token, self.participation,
                     tokens[index:index + 1], self.elapsed_zero, self.external_source,
                 )
                 logits = self.body.readout(features)
@@ -181,6 +181,7 @@ class CudaOnlineTeaching:
                 self.activity.copy_(activity)
                 self.natural.copy_(natural)
                 self.precision.copy_(precision)
+                self.causal_token.copy_(causal_token)
                 self.participation.copy_(participation)
         torch.cuda.synchronize(device)
         for mutable, snapshot in zip(self._mutable_tensors(), snapshots):
@@ -262,7 +263,7 @@ class CudaOnlineTeaching:
 
     def state(self) -> ColumnBodyState:
         return ColumnBodyState(*(value.detach().clone() for value in (
-            self.activity, self.natural, self.precision, self.participation,
+            self.activity, self.natural, self.precision, self.causal_token, self.participation,
         )))
 
 
