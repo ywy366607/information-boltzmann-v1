@@ -196,6 +196,28 @@ def test_s_participation_reaches_a_later_language_prediction_through_h():
     assert not torch.equal(second_plain.logits, second_charged.logits)
 
 
+def test_generated_s_timescale_has_a_finite_path_to_a_later_language_score():
+    """Audit structural reachability before proposing an online rule.
+
+    The retained graph exists only in this four-event unit test.  Production
+    state is detached after each event, so this is neither BPTT nor a training
+    path.  It proves the trainable S scale can in principle affect a later
+    language score through the declared S -> H -> boundary route.
+    """
+    torch.manual_seed(7)
+    body = CGBColumnLanguageBody(6, (3, 4), active_columns=3, contact_rank=3)
+    with torch.no_grad():
+        body.contact_to_activity.weight.fill_(0.1)
+    state = body.initial_state(1)
+    for _ in range(4):
+        prepared = body.step(state, torch.tensor([41]), elapsed=0.0)
+        state = prepared.state
+    score = torch.log_softmax(prepared.logits, dim=-1)[0, 41]
+    scale_score, = torch.autograd.grad(score, body.participation_scale_raw)
+    assert torch.isfinite(scale_score)
+    assert scale_score.abs() > 1e-7
+
+
 def test_muting_contact_readout_preserves_the_s_write_but_removes_its_h_effect():
     body = _body()
     baseline = body.initial_state(1)
