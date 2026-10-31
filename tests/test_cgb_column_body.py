@@ -158,3 +158,23 @@ def test_empty_elapsed_time_releases_only_c_precision_and_keeps_h_s_exactly():
     assert torch.all(advanced.precision < state.precision)
     assert torch.allclose(advanced.natural / advanced.precision,
                           state.natural / state.precision, atol=1e-6)
+
+
+def test_compilable_tensor_step_is_exactly_the_validated_public_transition():
+    """The CUDA execution kernel may remove Python overhead, never semantics."""
+    body = _body()
+    state = body.step(body.initial_state(1), torch.tensor([70]), elapsed=0.0).state
+    token = torch.tensor([19], dtype=torch.long)
+    public = body.step(state, token, elapsed=0.25, source="external")
+    elapsed = body._as_elapsed(0.25, 1, state.precision).reshape(1)
+    source = body._source_index("external", 1, state.activity)
+    actual = body._step_tensors(
+        state.activity, state.natural, state.precision, state.participation,
+        token, elapsed, source,
+    )
+    expected = (
+        public.state.activity, public.state.natural, public.state.precision,
+        public.state.participation, public.features, public.route, public.edge_flux,
+    )
+    for from_kernel, from_public in zip(actual, expected):
+        torch.testing.assert_close(from_kernel, from_public)

@@ -301,6 +301,70 @@ class CGBColumnLanguageBody(nn.Module):
         return (selected | selected.roll(1, dims=1) | selected.roll(-1, dims=1) |
                 selected.roll(1, dims=2) | selected.roll(-1, dims=2))
 
+    def _step_tensors(
+        self,
+        activity: torch.Tensor,
+        natural: torch.Tensor,
+        precision: torch.Tensor,
+        participation: torch.Tensor,
+        token: torch.Tensor,
+        elapsed: torch.Tensor,
+        source_index: torch.Tensor,
+    ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor,
+               torch.Tensor, torch.Tensor, torch.Tensor]:
+        """Unchecked tensor kernel for one causal arrival.
+
+        ``step`` remains the public, validated interface.  This factorisation
+        exists so a long, fixed-shape online stream can compile the local
+        tensor work without compiling Python validation or changing the
+        H/C/S recurrence.  It deliberately returns no logits: prediction is a
+        boundary readout from the returned *old-state* features.
+        """
+        state = ColumnBodyState(activity, natural, precision, participation)
+        batch = token.shape[0]
+        event = self.byte_embedding(token)
+        route = self._state_route(state)
+        route_d = route.unsqueeze(-1)
+        mean = natural / precision
+        features = (route_d * (mean + activity)).sum(dim=(1, 2))
+
+        dt = elapsed.view(batch, 1, 1, 1)
+        process = F.softplus(self.process_variance_raw).to(dtype=precision.dtype)
+        prior_precision = precision / (1.0 + dt * process * precision)
+        prior_natural = prior_precision * mean
+        evidence_precision = F.softplus(self.event_likelihood(event)).view(batch, 1, 1, 1)
+        write_precision = route_d * evidence_precision
+        value = self.event_value(event).view(batch, 1, 1, self.d_model)
+        natural = prior_natural + write_precision * value
+        precision = prior_precision + write_precision
+
+        demand = precision.reciprocal() / (1.0 + precision.reciprocal())
+        local = torch.cat((activity, mean, demand), dim=-1)
+        flux, net_flux = self._edge_flux(local)
+        neighbour = self.neighbour_mix(
+            (activity.roll(1, dims=1) + activity.roll(-1, dims=1) +
+             activity.roll(1, dims=2) + activity.roll(-1, dims=2)) * 0.25
+        )
+        recurrent_gain = 1.0 + F.softplus(self.activity_gain(local))
+        release = torch.sigmoid(self.activity_release(local))
+        proposed_activity = F.hardtanh(
+            (1.0 - release) * recurrent_gain * activity + neighbour +
+            route_d * value + net_flux.unsqueeze(-1)
+        )
+        activity = torch.where(
+            self._local_neighbourhood(route).unsqueeze(-1), proposed_activity, activity,
+        )
+
+        retain = torch.sigmoid(self.participation_retain(torch.cat((mean, demand), dim=-1)))
+        edge_drive = torch.sigmoid(self.edge_participation(local)) * route_d
+        source_one_hot = F.one_hot(source_index, num_classes=2).to(dtype=activity.dtype)
+        proposed = edge_drive.unsqueeze(-1) * source_one_hot[:, None, None, None, :]
+        participation = participation + route_d.unsqueeze(-1) * (
+            retain.unsqueeze(-1) * participation + proposed - participation
+        )
+        return (activity, natural, precision, participation.clamp(0.0, 1.0),
+                features, route, flux)
+
     def step(
         self,
         state: ColumnBodyState,
@@ -317,68 +381,17 @@ class CGBColumnLanguageBody(nn.Module):
             raise ValueError("token must contain byte indices")
 
         batch = token.shape[0]
-        event = self.byte_embedding(token)
-        # This route is an old-body readout.  The arriving byte is not used
-        # until after logits have been prepared and can therefore never leak
-        # into its own prequential score.
-        route = self._state_route(state)
-        route_d = route.unsqueeze(-1)
-        mean = state.natural / state.precision
-        # The prediction is causally prepared from old state.  It remains a
-        # standard 256-byte head, so a later large language cortex can replace
-        # the boundary coding/readout without adding persistent history.
-        features = (route_d * (mean + state.activity)).sum(dim=(1, 2))
-        logits = self.readout(features)
-
-        prior = self.advance_time(state, elapsed)
-        prior_precision = prior.precision
-        prior_natural = prior.natural
-        evidence_precision = F.softplus(self.event_likelihood(event)).view(batch, 1, 1, 1)
-        write_precision = route_d * evidence_precision
-        value = self.event_value(event).view(batch, 1, 1, self.d_model)
-        natural = prior_natural + write_precision * value
-        precision = prior_precision + write_precision
-
-        demand = self.demand(ColumnBodyState(
-            state.activity, natural, precision, state.participation,
-        ))
-        local = torch.cat((state.activity, mean, demand), dim=-1)
-        flux, net_flux = self._edge_flux(local)
-        neighbour = self.neighbour_mix(
-            (state.activity.roll(1, dims=1) + state.activity.roll(-1, dims=1) +
-             state.activity.roll(1, dims=2) + state.activity.roll(-1, dims=2)) * 0.25
-        )
-        recurrent_gain = 1.0 + F.softplus(self.activity_gain(local))
-        release = torch.sigmoid(self.activity_release(local))
-        injection = route_d * value
-        proposed_activity = F.hardtanh(
-            (1.0 - release) * recurrent_gain * state.activity + neighbour +
-            injection + net_flux.unsqueeze(-1)
-        )
-        # A language arrival is a local event.  Precision release above is the
-        # separately declared elapsed-time process; it must not be used as an
-        # excuse to let the arrival rewrite untouched columns.  This mask is
-        # the executable P1b boundary for H.
-        activity_mask = self._local_neighbourhood(route).unsqueeze(-1)
-        activity = torch.where(activity_mask, proposed_activity, state.activity)
-
-        # Only currently participating local columns change their typed S
-        # reading.  The two source channels make a self utterance and an
-        # otherwise identical external utterance distinguishable without an
-        # action log or a full event tape.
-        retain = torch.sigmoid(self.participation_retain(torch.cat((mean, demand), dim=-1)))
-        edge_drive = torch.sigmoid(self.edge_participation(local)) * route_d
+        dt = self._as_elapsed(elapsed, batch, state.precision).reshape(batch)
         source_index = self._source_index(source, batch, state.activity)
-        source_one_hot = F.one_hot(source_index, num_classes=2).to(dtype=state.activity.dtype)
-        proposed = edge_drive.unsqueeze(-1) * source_one_hot[:, None, None, None, :]
-        participation = state.participation + route_d.unsqueeze(-1) * (
-            retain.unsqueeze(-1) * state.participation + proposed - state.participation
+        (activity, natural, precision, participation,
+         features, route, flux) = self._step_tensors(
+            state.activity, state.natural, state.precision, state.participation,
+            token, dt, source_index,
         )
-        participation = participation.clamp(0.0, 1.0)
 
         return ColumnBodyStep(
             state=ColumnBodyState(activity, natural, precision, participation),
-            logits=logits,
+            logits=self.readout(features),
             features=features,
             route=route,
             edge_flux=flux,
