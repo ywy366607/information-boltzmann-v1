@@ -26,6 +26,9 @@ from torch.nn import functional as F
 SourceKind = Literal["external", "self"]
 _EXTERNAL = 0
 _SELF = 1
+_NORTH, _EAST, _SOUTH, _WEST = range(4)
+_OPPOSITE_DIRECTION = (_SOUTH, _WEST, _NORTH, _EAST)
+_GRID_DIRECTION_SHIFTS = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 
 @dataclass(frozen=True)
@@ -109,6 +112,10 @@ class CGBColumnLanguageBody(nn.Module):
         # retention; the learned release gate reads C, so contradictory local
         # evidence can release a held activity rather than freeze it forever.
         self.neighbour_mix = nn.Linear(d_model, d_model, bias=False)
+        # S is a standing local contact, not a diagnostic-only ledger.  Its
+        # old-state typed reading enters the same shared activity rule on the
+        # next event; no extra feedback state is introduced.
+        self.contact_to_activity = nn.Linear(4 * 2, d_model, bias=False)
         self.activity_gain = nn.Linear(2 * d_model + 1, 1)
         self.activity_release = nn.Linear(2 * d_model + 1, 1)
         self.edge_flow = nn.Linear(2 * d_model + 1, 2)
@@ -245,6 +252,69 @@ class CGBColumnLanguageBody(nn.Module):
         net = (east.roll(1, dims=2) - east + south.roll(1, dims=1) - south)
         return flux, net
 
+    @staticmethod
+    def reciprocal_participation_mismatch(participation: torch.Tensor) -> torch.Tensor:
+        """Read each directed contact minus its reciprocal endpoint reading.
+
+        This is a diagnostic readout of S, not another state array.  Direction
+        order is north, east, south, west; source type remains the final axis.
+        A zero result says that the two endpoint readings of every typed local
+        contact agree.
+        """
+        if participation.ndim != 5 or participation.shape[-2:] != (4, 2):
+            raise ValueError("participation must have shape [B, rows, cols, 4, 2]")
+        reciprocal = []
+        for direction, (row_shift, col_shift) in enumerate(_GRID_DIRECTION_SHIFTS):
+            opposite = _OPPOSITE_DIRECTION[direction]
+            neighbour = participation[..., opposite, :].roll(
+                shifts=(-row_shift, -col_shift), dims=(1, 2),
+            )
+            reciprocal.append(participation[..., direction, :] - neighbour)
+        return torch.stack(reciprocal, dim=-2)
+
+    def _reciprocal_contact_update(
+        self,
+        participation: torch.Tensor,
+        local: torch.Tensor,
+        route: torch.Tensor,
+        source_index: torch.Tensor,
+    ) -> torch.Tensor:
+        """Update each selected local contact from one endpoint-shared statistic.
+
+        The two directed readings of an edge receive the same learned
+        heterosynaptic drive and retention coefficient.  Hence their mismatch
+        contracts whenever that edge participates, exactly matching the
+        ``reciprocal_shared_update_mismatch`` admission kernel.  This creates
+        no feedback page: it rewrites the existing source-typed S contact.
+        """
+        raw_drive = self.edge_participation(local)
+        endpoint_retain = torch.sigmoid(
+            self.participation_retain(torch.cat(
+                (local[..., self.d_model:2 * self.d_model], local[..., -1:]), dim=-1,
+            ))
+        ).squeeze(-1)
+        edge_drive, edge_retain, edge_active = [], [], []
+        for direction, (row_shift, col_shift) in enumerate(_GRID_DIRECTION_SHIFTS):
+            opposite = _OPPOSITE_DIRECTION[direction]
+            neighbour_drive = raw_drive[..., opposite].roll(
+                shifts=(-row_shift, -col_shift), dims=(1, 2),
+            )
+            neighbour_retain = endpoint_retain.roll(
+                shifts=(-row_shift, -col_shift), dims=(1, 2),
+            )
+            neighbour_route = route.roll(shifts=(-row_shift, -col_shift), dims=(1, 2))
+            edge_drive.append(torch.sigmoid(0.5 * (raw_drive[..., direction] + neighbour_drive)))
+            edge_retain.append(0.5 * (endpoint_retain + neighbour_retain))
+            edge_active.append(torch.maximum(route, neighbour_route))
+        drive = torch.stack(edge_drive, dim=-1)
+        retain = torch.stack(edge_retain, dim=-1)
+        active = torch.stack(edge_active, dim=-1)
+        source_one_hot = F.one_hot(source_index, num_classes=2).to(dtype=participation.dtype)
+        target = drive.unsqueeze(-1) * source_one_hot[:, None, None, None, :]
+        return participation + active.unsqueeze(-1) * (
+            retain.unsqueeze(-1) * participation + target - participation
+        )
+
     def advance_time(
         self,
         state: ColumnBodyState,
@@ -345,22 +415,19 @@ class CGBColumnLanguageBody(nn.Module):
             (activity.roll(1, dims=1) + activity.roll(-1, dims=1) +
              activity.roll(1, dims=2) + activity.roll(-1, dims=2)) * 0.25
         )
+        contact_message = self.contact_to_activity(participation.flatten(start_dim=-2))
         recurrent_gain = 1.0 + F.softplus(self.activity_gain(local))
         release = torch.sigmoid(self.activity_release(local))
         proposed_activity = F.hardtanh(
             (1.0 - release) * recurrent_gain * activity + neighbour +
-            route_d * value + net_flux.unsqueeze(-1)
+            contact_message + route_d * value + net_flux.unsqueeze(-1)
         )
         activity = torch.where(
             self._local_neighbourhood(route).unsqueeze(-1), proposed_activity, activity,
         )
 
-        retain = torch.sigmoid(self.participation_retain(torch.cat((mean, demand), dim=-1)))
-        edge_drive = torch.sigmoid(self.edge_participation(local)) * route_d
-        source_one_hot = F.one_hot(source_index, num_classes=2).to(dtype=activity.dtype)
-        proposed = edge_drive.unsqueeze(-1) * source_one_hot[:, None, None, None, :]
-        participation = participation + route_d.unsqueeze(-1) * (
-            retain.unsqueeze(-1) * participation + proposed - participation
+        participation = self._reciprocal_contact_update(
+            participation, local, route, source_index,
         )
         return (activity, natural, precision, participation.clamp(0.0, 1.0),
                 features, route, flux)

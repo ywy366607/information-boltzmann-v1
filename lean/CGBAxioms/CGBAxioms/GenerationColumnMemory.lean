@@ -175,6 +175,58 @@ theorem tied_write_cross_read (k q x : Fin n → ℝ) (β v : ℝ) :
   rw [he]
   ring
 
+/-! ## Reciprocal local teaching paths
+
+One local contact can expose a forward coefficient and a coefficient in the
+reciprocal direction.  When both receive the *same local heterosynaptic
+statistic* and have the same release rate, their mismatch is not manually
+transposed: the shared statistic cancels from the mismatch update.  This is
+the strictly proved splice-alignment portion of a self-assembling teaching
+path.  It does not establish that the complete multi-hop teaching path has
+small error; that remains a separately measurable admission condition. -/
+
+structure ReciprocalPair (m n : ℕ) where
+  forward : Fin m → Fin n → ℝ
+  feedback : Fin n → Fin m → ℝ
+
+def reciprocalStep {m n : ℕ} (release rate : ℝ)
+    (shared : Fin m → Fin n → ℝ) (pair : ReciprocalPair m n) :
+    ReciprocalPair m n where
+  forward := fun i j => (1 - release) * pair.forward i j + rate * shared i j
+  feedback := fun j i => (1 - release) * pair.feedback j i + rate * shared i j
+
+def reciprocalMismatch {m n : ℕ} (pair : ReciprocalPair m n) (i : Fin m) (j : Fin n) : ℝ :=
+  pair.forward i j - pair.feedback j i
+
+/-- A matched reciprocal update contracts its splice mismatch by its release
+factor.  No initial transpose relation is assumed. -/
+theorem reciprocal_shared_update_mismatch {m n : ℕ} (release rate : ℝ)
+    (shared : Fin m → Fin n → ℝ) (pair : ReciprocalPair m n)
+    (i : Fin m) (j : Fin n) :
+    reciprocalMismatch (reciprocalStep release rate shared pair) i j =
+      (1 - release) * reciprocalMismatch pair i j := by
+  simp only [reciprocalMismatch, reciprocalStep]
+  ring
+
+def reciprocalIter {m n : ℕ} (release rate : ℝ)
+    (shared : ℕ → Fin m → Fin n → ℝ) (pair : ReciprocalPair m n) :
+    ℕ → ReciprocalPair m n
+  | 0 => pair
+  | t + 1 => reciprocalStep release rate (shared t) (reciprocalIter release rate shared pair t)
+
+/-- The mismatch is geometric even when the common local statistic changes at
+each event.  Thus alignment does not require either contact to stop learning. -/
+theorem reciprocal_iter_mismatch {m n : ℕ} (release rate : ℝ)
+    (shared : ℕ → Fin m → Fin n → ℝ) (pair : ReciprocalPair m n)
+    (t : ℕ) (i : Fin m) (j : Fin n) :
+    reciprocalMismatch (reciprocalIter release rate shared pair t) i j =
+      (1 - release) ^ t * reciprocalMismatch pair i j := by
+  induction t with
+  | zero => simp [reciprocalIter]
+  | succ t ih =>
+      rw [reciprocalIter, reciprocal_shared_update_mismatch, ih, pow_succ]
+      ring
+
 /-- Reuse one finite row by writing each arriving value at the same unit key.
 The stream is an external input; only the current row is the memory state. -/
 def reusedKeyState (k x : Fin n → ℝ) (v : ℕ → ℝ) : ℕ → (Fin n → ℝ)

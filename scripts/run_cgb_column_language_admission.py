@@ -353,6 +353,8 @@ def main() -> None:
     parser.add_argument("--report-every", type=int, default=10_000)
     parser.add_argument("--graph-block", type=int, default=128,
                         help="ordered byte steps unrolled into each CUDA Graph replay")
+    parser.add_argument("--mute-contact-readout", action="store_true",
+                        help="ablate the S-to-H read while retaining the identical reciprocal S write")
     parser.add_argument("--output", type=Path,
                         default=ROOT / "results" / "published" / "cgb_column_g14_owt100k_20261031.json")
     args = parser.parse_args()
@@ -369,6 +371,12 @@ def main() -> None:
     torch.manual_seed(args.seed)
     template = CGBColumnLanguageBody(args.d_model, (args.grid, args.grid),
                                      active_columns=args.active_columns).to(device)
+    if args.mute_contact_readout:
+        # This retains the S carrier and its reciprocal update exactly.  Only
+        # its old-state contribution to the succeeding local H rule is muted.
+        # It is therefore a causal read ablation, rather than a smaller body.
+        with torch.no_grad():
+            template.contact_to_activity.weight.zero_()
     arms = run_pair(template, train, validation, step_size=args.head_step,
                     report_every=args.report_every, device=device, graph_block=args.graph_block)
     by_name = {arm["name"]: arm for arm in arms}
@@ -386,7 +394,8 @@ def main() -> None:
                      "execution": arms[0]["execution"]},
         "model": {"runtime": "CGBColumnLanguageBody", "d_model": args.d_model,
                   "grid_shape": [args.grid, args.grid], "active_columns": args.active_columns,
-                  "device": str(device), "seed": args.seed, "cuda_graph_block": args.graph_block},
+                  "device": str(device), "seed": args.seed, "cuda_graph_block": args.graph_block,
+                  "contact_readout": "muted_S_to_H" if args.mute_contact_readout else "enabled_S_to_H"},
         "source": {"train": train_source, "validation": validation_source},
         "arms": arms,
         "effect_of_g14": {"train_bpb_delta_vs_frozen": learned["train_first_pass"]["bits_per_byte"] - frozen["train_first_pass"]["bits_per_byte"],

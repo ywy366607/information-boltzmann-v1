@@ -804,6 +804,43 @@ theorem value_future_log_likelihood_deriv (M : Model k d)
   funext b
   exact value_future_logit_eligibility_exact M direction θ elapsed s a hpositive b
 
+/-- An endogenous teaching amplitude need not be a transpose of the forward
+path.  The only admission condition for this immediate language path is its
+measurable alignment with the already-derived future score: scaling a local
+direction by `teaching` gives the corresponding directional derivative.
+
+This is deliberately an identity, not a claim that a particular circuit has
+learnt the amplitude or that delayed action credit is solved. -/
+theorem value_future_teaching_direction_deriv (M : Model k d)
+    (direction : Byte → Fin d → ℝ) (teaching elapsed : ℝ) (s : State k d)
+    (a : Arrival) (hpositive : 0 < a.observationPrecision) (target : Byte) :
+    HasDerivAt
+      (fun η =>
+        let Mη := valuePerturb M direction (η * teaching)
+        Real.log (allocation Mη (prior Mη (assimilate Mη s a) elapsed) target))
+      (teaching * valueFutureScore M direction s a elapsed target) 0 := by
+  have hscore := value_future_log_likelihood_deriv M direction elapsed s a hpositive target
+  have hscale : HasDerivAt (fun η : ℝ => η * teaching) teaching 0 :=
+    by simpa only [id, one_mul] using (hasDerivAt_id (0 : ℝ)).mul_const teaching
+  simpa only [Function.comp_def, id, one_mul, mul_comm] using
+    hscore.comp_of_eq 0 hscale (by simp)
+
+/-- Positive alignment with the exact future score is the minimal local
+ascent admission for a learned teaching signal.  It does not mandate how the
+signal is represented; a concrete shared-body rule must establish the premise
+without preset transposed weights. -/
+theorem positive_teaching_alignment_is_local_ascent (M : Model k d)
+    (direction : Byte → Fin d → ℝ) (teaching elapsed : ℝ) (s : State k d)
+    (a : Arrival) (hpositive : 0 < a.observationPrecision) (target : Byte)
+    (halign : 0 < teaching * valueFutureScore M direction s a elapsed target) :
+    ∃ deriv : ℝ, 0 < deriv ∧ HasDerivAt
+      (fun η =>
+        let Mη := valuePerturb M direction (η * teaching)
+        Real.log (allocation Mη (prior Mη (assimilate Mη s a) elapsed) target))
+      deriv 0 :=
+  ⟨teaching * valueFutureScore M direction s a elapsed target, halign,
+    value_future_teaching_direction_deriv M direction teaching elapsed s a hpositive target⟩
+
 /-- The predicted free-phase language error at one feature coordinate.  It is
 computed from the same next-state head and readout that produced the score. -/
 noncomputable def nextFeatureLanguageError (M : Model k d)

@@ -1,0 +1,493 @@
+{
+  "status": "column_body_language_admission",
+  "claim_scope": "Real OWT UTF-8 byte prequential comparison of frozen, bias-only G14, and H/C/S-feature G14 readouts on one continuous H/C/S column body.",
+  "not_claimed": [
+    "full body parameter learning",
+    "delayed three-factor action credit",
+    "active language acquisition",
+    "general language-model capability",
+    "life closure"
+  ],
+  "protocol": {
+    "prediction": "score before target write",
+    "state": "one H/C/S trajectory across train then validation; frozen/G14 readout heads do not feed back into H/C/S",
+    "special_tokens": "advance empty time without lexical write",
+    "autograd_history": "absent",
+    "online_update": "G14 affine readout only; matched bias-only control",
+    "action": "absent",
+    "execution": "cuda_graph_block128_shared_body"
+  },
+  "model": {
+    "runtime": "CGBColumnLanguageBody",
+    "d_model": 32,
+    "grid_shape": [
+      8,
+      8
+    ],
+    "active_columns": 8,
+    "device": "cuda",
+    "seed": 20261031,
+    "cuda_graph_block": 128,
+    "contact_readout": "muted_S_to_H"
+  },
+  "source": {
+    "train": {
+      "source": "openwebtext",
+      "revision": "433fe0f44ed7894fea29c08b3202aa348ccc6369",
+      "split": "train",
+      "path": "data\\ib_owt_10000\\train.npy",
+      "tokens_available": 48145263,
+      "tokens_presented": 100000,
+      "manifest_sha256": "3614c380d4c72688ac8ccde42f32ea0655d16bec1ba0874a924fd777af904d2d",
+      "tokenizer_sha256": "e727da4afe06d37d6ffff7db05ab21f69c5be39253ee7b7f7ec759cadab69c1d",
+      "token_file_sha256": "2f227239bc63b89daf31956701d243a93f9dd46671702fff03763b33dc6db4fb",
+      "split_rule": "NFC_document_sha256_mod100_98_1_1"
+    },
+    "validation": {
+      "source": "openwebtext",
+      "revision": "433fe0f44ed7894fea29c08b3202aa348ccc6369",
+      "split": "validation",
+      "path": "data\\ib_owt_10000\\validation.npy",
+      "tokens_available": 468139,
+      "tokens_presented": 100000,
+      "manifest_sha256": "3614c380d4c72688ac8ccde42f32ea0655d16bec1ba0874a924fd777af904d2d",
+      "tokenizer_sha256": "e727da4afe06d37d6ffff7db05ab21f69c5be39253ee7b7f7ec759cadab69c1d",
+      "token_file_sha256": "60d41d3fdda8c1718ad1735693eda0dae2b23a0032c5e04a29aac9d0c6d35d8c",
+      "split_rule": "NFC_document_sha256_mod100_98_1_1"
+    }
+  },
+  "arms": [
+    {
+      "name": "frozen_readout",
+      "head_step_size": 0.0,
+      "parameter_numbers": 22645,
+      "persistent_state_bytes_fp32": {
+        "H_activity": 8192,
+        "C_natural": 8192,
+        "C_precision": 256,
+        "S_participation": 2048,
+        "total": 18688
+      },
+      "shared_body_trajectory": true,
+      "execution": "cuda_graph_block128_shared_body",
+      "train_first_pass": {
+        "scored_bytes": 99950,
+        "special_tokens_elapsed_without_lexical_write": 50,
+        "seconds": 76.57800000000861,
+        "bytes_per_second": 1305.2051503041182,
+        "progress": [
+          {
+            "scored_bytes": 10000,
+            "frozen_readout_bits_per_byte": 8.050711148917957,
+            "bias_only_g14_bits_per_byte": 5.809518779614724,
+            "local_g14_readout_bits_per_byte": 4.8619194822773295
+          },
+          {
+            "scored_bytes": 20000,
+            "frozen_readout_bits_per_byte": 8.042196993965712,
+            "bias_only_g14_bits_per_byte": 5.381822817899185,
+            "local_g14_readout_bits_per_byte": 4.764704942184178
+          },
+          {
+            "scored_bytes": 30000,
+            "frozen_readout_bits_per_byte": 8.039741218930615,
+            "bias_only_g14_bits_per_byte": 5.228027769522086,
+            "local_g14_readout_bits_per_byte": 4.752269775045932
+          },
+          {
+            "scored_bytes": 40000,
+            "frozen_readout_bits_per_byte": 8.041200069150348,
+            "bias_only_g14_bits_per_byte": 5.15095723463918,
+            "local_g14_readout_bits_per_byte": 4.759062652047701
+          },
+          {
+            "scored_bytes": 50000,
+            "frozen_readout_bits_per_byte": 8.043322408808155,
+            "bias_only_g14_bits_per_byte": 5.082831033307952,
+            "local_g14_readout_bits_per_byte": 4.748687984045459
+          },
+          {
+            "scored_bytes": 60000,
+            "frozen_readout_bits_per_byte": 8.048514608148022,
+            "bias_only_g14_bits_per_byte": 5.04195279530693,
+            "local_g14_readout_bits_per_byte": 4.746179648323847
+          },
+          {
+            "scored_bytes": 70000,
+            "frozen_readout_bits_per_byte": 8.050096634897471,
+            "bias_only_g14_bits_per_byte": 4.984983784491232,
+            "local_g14_readout_bits_per_byte": 4.719744623253939
+          },
+          {
+            "scored_bytes": 80000,
+            "frozen_readout_bits_per_byte": 8.052925347674073,
+            "bias_only_g14_bits_per_byte": 4.968743723869403,
+            "local_g14_readout_bits_per_byte": 4.725488433393013
+          },
+          {
+            "scored_bytes": 90000,
+            "frozen_readout_bits_per_byte": 8.056954374137222,
+            "bias_only_g14_bits_per_byte": 4.946635111154475,
+            "local_g14_readout_bits_per_byte": 4.721827156407952
+          }
+        ],
+        "bits_per_byte": 8.057810853281241,
+        "mean_nll_nats": 5.585248874437219
+      },
+      "validation_continuing_first_pass": {
+        "scored_bytes": 99954,
+        "special_tokens_elapsed_without_lexical_write": 46,
+        "seconds": 79.71899999998277,
+        "bytes_per_second": 1253.82907462489,
+        "progress": [
+          {
+            "scored_bytes": 10000,
+            "frozen_readout_bits_per_byte": 8.050532502696097,
+            "bias_only_g14_bits_per_byte": 4.688566711401263,
+            "local_g14_readout_bits_per_byte": 4.625677887555387
+          },
+          {
+            "scored_bytes": 20000,
+            "frozen_readout_bits_per_byte": 8.059779276223795,
+            "bias_only_g14_bits_per_byte": 4.719695674672194,
+            "local_g14_readout_bits_per_byte": 4.6484130143862705
+          },
+          {
+            "scored_bytes": 30000,
+            "frozen_readout_bits_per_byte": 8.058460938489816,
+            "bias_only_g14_bits_per_byte": 4.733658257614797,
+            "local_g14_readout_bits_per_byte": 4.653584174423457
+          },
+          {
+            "scored_bytes": 40000,
+            "frozen_readout_bits_per_byte": 8.058607086503073,
+            "bias_only_g14_bits_per_byte": 4.729667740589589,
+            "local_g14_readout_bits_per_byte": 4.646640359210053
+          },
+          {
+            "scored_bytes": 50000,
+            "frozen_readout_bits_per_byte": 8.059928730413187,
+            "bias_only_g14_bits_per_byte": 4.71267696329827,
+            "local_g14_readout_bits_per_byte": 4.63354559114771
+          },
+          {
+            "scored_bytes": 60000,
+            "frozen_readout_bits_per_byte": 8.064785503156047,
+            "bias_only_g14_bits_per_byte": 4.709789168724757,
+            "local_g14_readout_bits_per_byte": 4.633552128359614
+          },
+          {
+            "scored_bytes": 70000,
+            "frozen_readout_bits_per_byte": 8.071034390738658,
+            "bias_only_g14_bits_per_byte": 4.692847377585365,
+            "local_g14_readout_bits_per_byte": 4.622765245672753
+          },
+          {
+            "scored_bytes": 80000,
+            "frozen_readout_bits_per_byte": 8.07720094594803,
+            "bias_only_g14_bits_per_byte": 4.675640501966548,
+            "local_g14_readout_bits_per_byte": 4.612984425406565
+          },
+          {
+            "scored_bytes": 90000,
+            "frozen_readout_bits_per_byte": 8.080509877230181,
+            "bias_only_g14_bits_per_byte": 4.702590220657876,
+            "local_g14_readout_bits_per_byte": 4.636451168941345
+          }
+        ],
+        "bits_per_byte": 8.079651169745533,
+        "mean_nll_nats": 5.60038742821698
+      }
+    },
+    {
+      "name": "bias_only_g14",
+      "head_step_size": 0.01,
+      "parameter_numbers": 22645,
+      "persistent_state_bytes_fp32": {
+        "H_activity": 8192,
+        "C_natural": 8192,
+        "C_precision": 256,
+        "S_participation": 2048,
+        "total": 18688
+      },
+      "shared_body_trajectory": true,
+      "execution": "cuda_graph_block128_shared_body",
+      "train_first_pass": {
+        "scored_bytes": 99950,
+        "special_tokens_elapsed_without_lexical_write": 50,
+        "seconds": 76.57800000000861,
+        "bytes_per_second": 1305.2051503041182,
+        "progress": [
+          {
+            "scored_bytes": 10000,
+            "frozen_readout_bits_per_byte": 8.050711148917957,
+            "bias_only_g14_bits_per_byte": 5.809518779614724,
+            "local_g14_readout_bits_per_byte": 4.8619194822773295
+          },
+          {
+            "scored_bytes": 20000,
+            "frozen_readout_bits_per_byte": 8.042196993965712,
+            "bias_only_g14_bits_per_byte": 5.381822817899185,
+            "local_g14_readout_bits_per_byte": 4.764704942184178
+          },
+          {
+            "scored_bytes": 30000,
+            "frozen_readout_bits_per_byte": 8.039741218930615,
+            "bias_only_g14_bits_per_byte": 5.228027769522086,
+            "local_g14_readout_bits_per_byte": 4.752269775045932
+          },
+          {
+            "scored_bytes": 40000,
+            "frozen_readout_bits_per_byte": 8.041200069150348,
+            "bias_only_g14_bits_per_byte": 5.15095723463918,
+            "local_g14_readout_bits_per_byte": 4.759062652047701
+          },
+          {
+            "scored_bytes": 50000,
+            "frozen_readout_bits_per_byte": 8.043322408808155,
+            "bias_only_g14_bits_per_byte": 5.082831033307952,
+            "local_g14_readout_bits_per_byte": 4.748687984045459
+          },
+          {
+            "scored_bytes": 60000,
+            "frozen_readout_bits_per_byte": 8.048514608148022,
+            "bias_only_g14_bits_per_byte": 5.04195279530693,
+            "local_g14_readout_bits_per_byte": 4.746179648323847
+          },
+          {
+            "scored_bytes": 70000,
+            "frozen_readout_bits_per_byte": 8.050096634897471,
+            "bias_only_g14_bits_per_byte": 4.984983784491232,
+            "local_g14_readout_bits_per_byte": 4.719744623253939
+          },
+          {
+            "scored_bytes": 80000,
+            "frozen_readout_bits_per_byte": 8.052925347674073,
+            "bias_only_g14_bits_per_byte": 4.968743723869403,
+            "local_g14_readout_bits_per_byte": 4.725488433393013
+          },
+          {
+            "scored_bytes": 90000,
+            "frozen_readout_bits_per_byte": 8.056954374137222,
+            "bias_only_g14_bits_per_byte": 4.946635111154475,
+            "local_g14_readout_bits_per_byte": 4.721827156407952
+          }
+        ],
+        "bits_per_byte": 4.923051132155459,
+        "mean_nll_nats": 3.412399012006003
+      },
+      "validation_continuing_first_pass": {
+        "scored_bytes": 99954,
+        "special_tokens_elapsed_without_lexical_write": 46,
+        "seconds": 79.71899999998277,
+        "bytes_per_second": 1253.82907462489,
+        "progress": [
+          {
+            "scored_bytes": 10000,
+            "frozen_readout_bits_per_byte": 8.050532502696097,
+            "bias_only_g14_bits_per_byte": 4.688566711401263,
+            "local_g14_readout_bits_per_byte": 4.625677887555387
+          },
+          {
+            "scored_bytes": 20000,
+            "frozen_readout_bits_per_byte": 8.059779276223795,
+            "bias_only_g14_bits_per_byte": 4.719695674672194,
+            "local_g14_readout_bits_per_byte": 4.6484130143862705
+          },
+          {
+            "scored_bytes": 30000,
+            "frozen_readout_bits_per_byte": 8.058460938489816,
+            "bias_only_g14_bits_per_byte": 4.733658257614797,
+            "local_g14_readout_bits_per_byte": 4.653584174423457
+          },
+          {
+            "scored_bytes": 40000,
+            "frozen_readout_bits_per_byte": 8.058607086503073,
+            "bias_only_g14_bits_per_byte": 4.729667740589589,
+            "local_g14_readout_bits_per_byte": 4.646640359210053
+          },
+          {
+            "scored_bytes": 50000,
+            "frozen_readout_bits_per_byte": 8.059928730413187,
+            "bias_only_g14_bits_per_byte": 4.71267696329827,
+            "local_g14_readout_bits_per_byte": 4.63354559114771
+          },
+          {
+            "scored_bytes": 60000,
+            "frozen_readout_bits_per_byte": 8.064785503156047,
+            "bias_only_g14_bits_per_byte": 4.709789168724757,
+            "local_g14_readout_bits_per_byte": 4.633552128359614
+          },
+          {
+            "scored_bytes": 70000,
+            "frozen_readout_bits_per_byte": 8.071034390738658,
+            "bias_only_g14_bits_per_byte": 4.692847377585365,
+            "local_g14_readout_bits_per_byte": 4.622765245672753
+          },
+          {
+            "scored_bytes": 80000,
+            "frozen_readout_bits_per_byte": 8.07720094594803,
+            "bias_only_g14_bits_per_byte": 4.675640501966548,
+            "local_g14_readout_bits_per_byte": 4.612984425406565
+          },
+          {
+            "scored_bytes": 90000,
+            "frozen_readout_bits_per_byte": 8.080509877230181,
+            "bias_only_g14_bits_per_byte": 4.702590220657876,
+            "local_g14_readout_bits_per_byte": 4.636451168941345
+          }
+        ],
+        "bits_per_byte": 4.706064306081858,
+        "mean_nll_nats": 3.2619952052944354
+      }
+    },
+    {
+      "name": "local_g14_readout",
+      "head_step_size": 0.01,
+      "parameter_numbers": 22645,
+      "persistent_state_bytes_fp32": {
+        "H_activity": 8192,
+        "C_natural": 8192,
+        "C_precision": 256,
+        "S_participation": 2048,
+        "total": 18688
+      },
+      "shared_body_trajectory": true,
+      "execution": "cuda_graph_block128_shared_body",
+      "train_first_pass": {
+        "scored_bytes": 99950,
+        "special_tokens_elapsed_without_lexical_write": 50,
+        "seconds": 76.57800000000861,
+        "bytes_per_second": 1305.2051503041182,
+        "progress": [
+          {
+            "scored_bytes": 10000,
+            "frozen_readout_bits_per_byte": 8.050711148917957,
+            "bias_only_g14_bits_per_byte": 5.809518779614724,
+            "local_g14_readout_bits_per_byte": 4.8619194822773295
+          },
+          {
+            "scored_bytes": 20000,
+            "frozen_readout_bits_per_byte": 8.042196993965712,
+            "bias_only_g14_bits_per_byte": 5.381822817899185,
+            "local_g14_readout_bits_per_byte": 4.764704942184178
+          },
+          {
+            "scored_bytes": 30000,
+            "frozen_readout_bits_per_byte": 8.039741218930615,
+            "bias_only_g14_bits_per_byte": 5.228027769522086,
+            "local_g14_readout_bits_per_byte": 4.752269775045932
+          },
+          {
+            "scored_bytes": 40000,
+            "frozen_readout_bits_per_byte": 8.041200069150348,
+            "bias_only_g14_bits_per_byte": 5.15095723463918,
+            "local_g14_readout_bits_per_byte": 4.759062652047701
+          },
+          {
+            "scored_bytes": 50000,
+            "frozen_readout_bits_per_byte": 8.043322408808155,
+            "bias_only_g14_bits_per_byte": 5.082831033307952,
+            "local_g14_readout_bits_per_byte": 4.748687984045459
+          },
+          {
+            "scored_bytes": 60000,
+            "frozen_readout_bits_per_byte": 8.048514608148022,
+            "bias_only_g14_bits_per_byte": 5.04195279530693,
+            "local_g14_readout_bits_per_byte": 4.746179648323847
+          },
+          {
+            "scored_bytes": 70000,
+            "frozen_readout_bits_per_byte": 8.050096634897471,
+            "bias_only_g14_bits_per_byte": 4.984983784491232,
+            "local_g14_readout_bits_per_byte": 4.719744623253939
+          },
+          {
+            "scored_bytes": 80000,
+            "frozen_readout_bits_per_byte": 8.052925347674073,
+            "bias_only_g14_bits_per_byte": 4.968743723869403,
+            "local_g14_readout_bits_per_byte": 4.725488433393013
+          },
+          {
+            "scored_bytes": 90000,
+            "frozen_readout_bits_per_byte": 8.056954374137222,
+            "bias_only_g14_bits_per_byte": 4.946635111154475,
+            "local_g14_readout_bits_per_byte": 4.721827156407952
+          }
+        ],
+        "bits_per_byte": 4.716366934625203,
+        "mean_nll_nats": 3.269136443221611
+      },
+      "validation_continuing_first_pass": {
+        "scored_bytes": 99954,
+        "special_tokens_elapsed_without_lexical_write": 46,
+        "seconds": 79.71899999998277,
+        "bytes_per_second": 1253.82907462489,
+        "progress": [
+          {
+            "scored_bytes": 10000,
+            "frozen_readout_bits_per_byte": 8.050532502696097,
+            "bias_only_g14_bits_per_byte": 4.688566711401263,
+            "local_g14_readout_bits_per_byte": 4.625677887555387
+          },
+          {
+            "scored_bytes": 20000,
+            "frozen_readout_bits_per_byte": 8.059779276223795,
+            "bias_only_g14_bits_per_byte": 4.719695674672194,
+            "local_g14_readout_bits_per_byte": 4.6484130143862705
+          },
+          {
+            "scored_bytes": 30000,
+            "frozen_readout_bits_per_byte": 8.058460938489816,
+            "bias_only_g14_bits_per_byte": 4.733658257614797,
+            "local_g14_readout_bits_per_byte": 4.653584174423457
+          },
+          {
+            "scored_bytes": 40000,
+            "frozen_readout_bits_per_byte": 8.058607086503073,
+            "bias_only_g14_bits_per_byte": 4.729667740589589,
+            "local_g14_readout_bits_per_byte": 4.646640359210053
+          },
+          {
+            "scored_bytes": 50000,
+            "frozen_readout_bits_per_byte": 8.059928730413187,
+            "bias_only_g14_bits_per_byte": 4.71267696329827,
+            "local_g14_readout_bits_per_byte": 4.63354559114771
+          },
+          {
+            "scored_bytes": 60000,
+            "frozen_readout_bits_per_byte": 8.064785503156047,
+            "bias_only_g14_bits_per_byte": 4.709789168724757,
+            "local_g14_readout_bits_per_byte": 4.633552128359614
+          },
+          {
+            "scored_bytes": 70000,
+            "frozen_readout_bits_per_byte": 8.071034390738658,
+            "bias_only_g14_bits_per_byte": 4.692847377585365,
+            "local_g14_readout_bits_per_byte": 4.622765245672753
+          },
+          {
+            "scored_bytes": 80000,
+            "frozen_readout_bits_per_byte": 8.07720094594803,
+            "bias_only_g14_bits_per_byte": 4.675640501966548,
+            "local_g14_readout_bits_per_byte": 4.612984425406565
+          },
+          {
+            "scored_bytes": 90000,
+            "frozen_readout_bits_per_byte": 8.080509877230181,
+            "bias_only_g14_bits_per_byte": 4.702590220657876,
+            "local_g14_readout_bits_per_byte": 4.636451168941345
+          }
+        ],
+        "bits_per_byte": 4.642155527528562,
+        "mean_nll_nats": 3.2176970156271887
+      }
+    }
+  ],
+  "effect_of_g14": {
+    "train_bpb_delta_vs_frozen": -3.3414439186560383,
+    "validation_bpb_delta_vs_frozen": -3.4374956422169713,
+    "train_bpb_delta_vs_bias_only": -0.20668419753025624,
+    "validation_bpb_delta_vs_bias_only": -0.06390877855329613
+  }
+}

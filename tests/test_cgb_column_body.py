@@ -74,6 +74,65 @@ def test_implicit_edge_flux_has_zero_total_and_no_edge_index_state():
                    for field in step.state.__dataclass_fields__)
 
 
+def test_selected_local_contacts_are_reciprocal_without_a_feedback_state_page():
+    body = _body()
+    state = body.initial_state(1)
+    step = body.step(state, torch.tensor([39]), elapsed=0.0, source="external")
+
+    mismatch = body.reciprocal_participation_mismatch(step.state.participation)
+    assert torch.allclose(mismatch, torch.zeros_like(mismatch), atol=1e-7)
+    assert step.state.participation[..., 0].sum() > 0
+    assert step.state.participation[..., 1].sum() == 0
+
+
+def test_old_contact_state_changes_next_local_activity_but_not_its_prepared_prediction():
+    body = _body()
+    with torch.no_grad():
+        body.contact_to_activity.weight.fill_(0.1)
+    baseline = body.initial_state(1)
+    charged = ColumnBodyState(
+        activity=baseline.activity,
+        natural=baseline.natural,
+        precision=baseline.precision,
+        participation=torch.full_like(baseline.participation, 0.5),
+    )
+    token = torch.tensor([41], dtype=torch.long)
+    no_contact = body.step(baseline, token, elapsed=0.0)
+    with_contact = body.step(charged, token, elapsed=0.0)
+
+    # The byte is scored from old H/C.  S can affect the succeeding local
+    # dynamics, but cannot make the arrived byte choose its own prediction.
+    assert torch.equal(no_contact.route, with_contact.route)
+    assert torch.equal(no_contact.features, with_contact.features)
+    assert torch.equal(no_contact.logits, with_contact.logits)
+    assert torch.equal(no_contact.state.natural, with_contact.state.natural)
+    assert torch.equal(no_contact.state.precision, with_contact.state.precision)
+    assert not torch.equal(no_contact.state.activity, with_contact.state.activity)
+
+
+def test_muting_contact_readout_preserves_the_s_write_but_removes_its_h_effect():
+    body = _body()
+    baseline = body.initial_state(1)
+    charged = ColumnBodyState(
+        activity=baseline.activity,
+        natural=baseline.natural,
+        precision=baseline.precision,
+        participation=torch.full_like(baseline.participation, 0.5),
+    )
+    with torch.no_grad():
+        body.contact_to_activity.weight.zero_()
+    token = torch.tensor([42], dtype=torch.long)
+    no_contact = body.step(baseline, token, elapsed=0.0)
+    muted_contact = body.step(charged, token, elapsed=0.0)
+
+    # The carrier still evolves through its reciprocal local write, but cannot
+    # influence H when its only readout edge has been muted.
+    assert torch.equal(no_contact.state.activity, muted_contact.state.activity)
+    assert torch.equal(no_contact.state.natural, muted_contact.state.natural)
+    assert torch.equal(no_contact.state.precision, muted_contact.state.precision)
+    assert not torch.equal(no_contact.state.participation, muted_contact.state.participation)
+
+
 def test_state_detach_preserves_values_and_removes_autograd_history():
     body = _body()
     state = body.initial_state(1)
@@ -105,7 +164,9 @@ def test_zero_elapsed_language_arrival_leaves_nonparticipants_unchanged():
     assert torch.equal(step.state.activity[~neighbourhood], state.activity[~neighbourhood])
     assert torch.equal(step.state.natural[~selected], state.natural[~selected])
     assert torch.equal(step.state.precision[~selected], state.precision[~selected])
-    assert torch.equal(step.state.participation[~selected], state.participation[~selected])
+    # A contact is local to both endpoints: the routed column and a direct
+    # neighbour share its reciprocal S update.  No remote contact changes.
+    assert torch.equal(step.state.participation[~neighbourhood], state.participation[~neighbourhood])
 
 
 def test_g14_readout_update_improves_the_arrived_byte_without_persistent_receipt_state():
