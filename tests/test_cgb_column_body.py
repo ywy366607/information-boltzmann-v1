@@ -1,3 +1,5 @@
+import copy
+
 import torch
 
 from information_boltzmann.core.cgb_column_body import CGBColumnLanguageBody, ColumnBodyState
@@ -194,6 +196,50 @@ def test_s_participation_reaches_a_later_language_prediction_through_h():
     second_plain = body.step(first_plain.state, torch.tensor([73]), elapsed=0.0)
     second_charged = body.step(first_charged.state, torch.tensor([73]), elapsed=0.0)
     assert not torch.equal(second_plain.logits, second_charged.logits)
+
+
+def test_current_s_write_is_blind_to_the_arrived_language_innovation():
+    """A result-sensitive S learner needs a transient boundary input.
+
+    Keep H/C/S, the arrived byte, and all local S-rule parameters identical,
+    but issue two different language predictions by changing only the affine
+    boundary head.  The resulting observed-minus-predicted innovations differ,
+    while the current H/C/S transition is exactly identical.  This is the
+    executable counterexample behind Lean G9: the present reciprocal exchange
+    is a causal trace generator, not yet an error-conditioned plastic rule.
+
+    The test does *not* introduce a feedback state or prescribe a teaching
+    matrix.  It fixes the minimal missing interface before an admissible
+    three-factor candidate can be measured against the future-score theorem.
+    """
+    body = _body()
+    alternate_head = copy.deepcopy(body)
+    with torch.no_grad():
+        alternate_head.readout.weight.zero_()
+        alternate_head.readout.bias.fill_(-6.0)
+        alternate_head.readout.bias[17] = 6.0
+
+    state = body.initial_state(1)
+    token = torch.tensor([41], dtype=torch.long)
+    target = torch.tensor([73], dtype=torch.long)
+    first = body.step(state, token, elapsed=0.0)
+    alternate = alternate_head.step(state, token, elapsed=0.0)
+
+    innovation = -torch.softmax(first.logits, dim=-1)
+    innovation[0, target.item()] += 1
+    alternate_innovation = -torch.softmax(alternate.logits, dim=-1)
+    alternate_innovation[0, target.item()] += 1
+    assert not torch.equal(innovation, alternate_innovation)
+
+    # `_reciprocal_contact_update` reads only local H/C, post-arrival route,
+    # and source type.  It cannot condition S on this boundary difference.
+    for actual, expected in zip(
+        (first.state.activity, first.state.natural, first.state.precision,
+         first.state.causal_token, first.state.participation),
+        (alternate.state.activity, alternate.state.natural, alternate.state.precision,
+         alternate.state.causal_token, alternate.state.participation),
+    ):
+        torch.testing.assert_close(actual, expected, rtol=0.0, atol=0.0)
 
 
 def test_generated_s_timescale_has_a_finite_path_to_a_later_language_score():
