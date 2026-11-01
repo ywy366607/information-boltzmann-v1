@@ -10,6 +10,8 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L73)
 
+解释：输入模型参数与字节输入，经指数函数严格正性传递，输出寻址权重在每个槽位上均严格为正。
+
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
 
 形式陈述：
@@ -21,6 +23,8 @@
 ## CGB.GDNLife.action_head_score_deriv
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L107)
+
+解释：输入模型与状态，经G14对数Softmax法则展开，输出动作头对数得分对输出对数几率的导数精确等价于Softmax指示差分。
 
 源码说明：The existing G14 log-softmax law instantiated at the GDN language head. Thus the first two factors of delayed action credit are fixed by the pre-action body and emitted byte; only their persistence until an external outcome is a separate causal-carrier obligation.
 
@@ -43,6 +47,8 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L187)
 
+解释：输入模型与基底扰动，经Softmax求导法则，输出地址对数几率基底坐标扰动的精确Softmax导数。
+
 源码说明：Exact softmax derivative for an address-logit basis coordinate. This is the G14 finite-alphabet score identity applied to the GDN address, rather than an assumed attention-gradient rule.
 
 形式陈述：
@@ -56,6 +62,8 @@
 ## CGB.GDNLife.assimilate_addressLogitPerturb_natural_deriv
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L211)
+
+解释：输入模型、状态与地址扰动，经自然参数积分展开，输出地址侧对GDN自然参数变动的精确导数。
 
 源码说明：The exact address-side contribution to a GDN natural-parameter write. The address and value paths are separate summands of an encoder's total derivative; neither may be silently discarded.
 
@@ -71,6 +79,8 @@
 ## CGB.GDNLife.assimilate_addressLogitPerturb_precision_deriv
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L235)
+
+解释：输入状态与地址扰动，经精度累加分析，输出地址扰动导致的精度变动严格受地址敏感度调控。
 
 源码说明：The same address perturbation changes precision by the address-side incoming derivative. It is part of the future state sensitivity and cannot be represented by the value-only result.
 
@@ -88,6 +98,8 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L262)
 
+解释：输入Softplus置信度参数，经微积分导数计算，输出Softplus置信度参数的精确一阶导数等于标准Logistic Sigmoid函数。
+
 源码说明：Exact derivative of the actual softplus confidence parametrization.
 
 形式陈述：
@@ -99,6 +111,8 @@
 ## CGB.GDNLife.assimilate_likelihoodLogitPerturb_natural_deriv
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L302)
+
+解释：输入模型与似然对数几率扰动，经自然参数增量求导，输出似然对数几率对自然参数更新的精确导数。
 
 源码说明：The likelihood side of the current GDN write: a learned confidence logit changes the natural parameter by its softplus slope times the existing address, observation precision and value.
 
@@ -115,6 +129,8 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L319)
 
+解释：输入学习置信度参数与扰动，经精度更新方程求导，输出置信度对存储自然精度的精确导数。
+
 源码说明：The same learned confidence changes the stored precision. Thus it cannot be treated as a fixed write scale while claiming the encoder is trainable.
 
 形式陈述：
@@ -128,6 +144,8 @@
 ## CGB.GDNLife.assimilate_likelihoodLogitPerturb_zero
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L338)
+
+解释：输入表示当前置信度的原始对数几率，经零扰动求值，输出零摄动下自然参数与精度导数恒为零。
 
 源码说明：When the raw logit represents the current confidence, the perturbation passes through the actual arrival transition at zero exactly. This establishes that the two derivative theorems are tangents of the existing model, rather than of an auxiliary learning rule.
 
@@ -143,6 +161,8 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L346)
 
+解释：输入未到达字节编码扰动，经准备算子求解，输出改变未来字节编码无法影响在当前流逝时间下预先准备好的预测状态。
+
 源码说明：Altering a byte value cannot alter the prediction prepared before that byte arrives. This is the causal boundary for its later credit.
 
 形式陈述：
@@ -157,6 +177,8 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L353)
 
+解释：输入字节编码器扰动，经流入强度核算，输出修改字节值编码严格保持到达包的流入权重不变。
+
 源码说明：Changing the byte encoder leaves the arrival weight unchanged: it does not silently alter the address or likelihood path.
 
 形式陈述：
@@ -169,6 +191,8 @@
 ## CGB.GDNLife.assimilate_valuePerturb_natural
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L362)
+
+解释：输入字节编码器单点扰动，经自然参数累加展开，输出编码坐标扰动对存储自然参数的精确一阶变动。
 
 源码说明：Exact one-arrival finite difference for a byte encoder coordinate. The coefficient is an arrival-local eligibility seed. It is a theorem about the actual GDN assimilation arithmetic, not a claim that delayed future credit can already be recovered without propagating this sensitivity.
 
@@ -185,6 +209,8 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L378)
 
+解释：输入字节编码器扰动，经精度更新分析，输出该扰动使存储精度严格保持不变。
+
 源码说明：The same perturbation leaves precision unchanged. A future learner can therefore not attribute an encoder-value effect to a fabricated precision change in this fixed-address GDN subcase.
 
 形式陈述：
@@ -199,6 +225,8 @@
 ## CGB.GDNLife.assimilate_valuePerturb_difference
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L387)
+
+解释：输入两组编码器坐标摄动，经有限差分比较，输出输入编码器不同坐标引起的精确有限差分。
 
 源码说明：Comparing two encoder coordinates gives the exact finite difference, without invoking reverse-time differentiation.
 
@@ -216,6 +244,8 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L397)
 
+解释：输入无流入到达包（流入强度为零），经资格迹传递链展开，输出该槽位处编码器值的后向资格迹恒等于零。
+
 源码说明：No arriving flow means no encoder-value eligibility at that address.
 
 形式陈述：
@@ -228,6 +258,8 @@
 ## CGB.GDNLife.value_sensitivity_two_arrivals
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L405)
+
+解释：输入连续两次到达事件，经自然参数吸收链推演，输出编码器值敏感度由同一自然状态载体连续运载与复合传递。
 
 源码说明：The value-side sensitivity is carried by the same natural state across a second arrival. The second local term is added; no history buffer or reverse computation is introduced.
 
@@ -247,6 +279,8 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L434)
 
+解释：输入正的初始精度参数，经初始状态构造，输出初始GDN物理状态满足正精度公理。
+
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
 
 形式陈述：
@@ -262,6 +296,8 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L438)
 
+解释：输入GDN状态与零流逝时间，经先验算子求值，输出零时间流逝下的先验状态严格等于当前状态。
+
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
 
 形式陈述：
@@ -273,6 +309,8 @@
 ## CGB.GDNLife.prior_natural_difference
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L451)
+
+解释：输入保持槽位精度不变的扰动，经先验时间衰减传递，输出先验演化精确保留自然参数在各槽位上的差分。
 
 源码说明：If a perturbation leaves a slot's precision unchanged, the prior transports its natural-state difference by `priorNaturalScale`; no past input is reread.
 
@@ -288,6 +326,8 @@
 ## CGB.GDNLife.value_sensitivity_through_prior
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L472)
+
+解释：输入编码器写入敏感度，经物理先验时间演化，输出敏感度在经历时间先验后依然保存在相同的自然状态流形中。
 
 源码说明：A value-write sensitivity remains in the same state after the time prior. The result is exact for the present GDN path: the prior rescales the existing trace instead of allocating a separate history carrier.
 
@@ -308,6 +348,8 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L492)
 
+解释：输入共享查询与相同精度下的两组自然状态，经特征解码映射，输出两状态特征读出之差精确正比于自然参数之差。
+
 源码说明：With unchanged precision and causal query, an existing natural-state difference is read out linearly by the same GDN feature map. This is the readout side of forward sensitivity, not an auxiliary eligibility array.
 
 形式陈述：
@@ -325,6 +367,8 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L509)
 
+解释：输入字节值编码器摄动，经预测读出分析，输出未到达字节的值编码扰动对当前已准备的特征读出无直接影响。
+
 源码说明：A perturbation of the byte-value encoder has no direct readout path. Its only possible effect is the natural-state flow written at arrival.
 
 形式陈述：
@@ -338,6 +382,8 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L516)
 
+解释：输入正置信度到达包，经因果缓存写入，输出该到达字节精确成为下一次预测的因果查询。
+
 源码说明：A positive-confidence arrival makes that byte the next causal query. This is an existing `lastByte` state field, rather than a new trace.
 
 形式陈述：
@@ -350,6 +396,8 @@
 ## CGB.GDNLife.value_read_eligibility_exact
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L534)
+
+解释：输入单步字节编码器方向，经因果读出展开，输出该方向对下一因果读出的资格迹精确等于槽位权重归一化因子。
 
 源码说明：One byte-value encoder direction reaches the next causal readout exactly through `valueReadEligibility`. No reverse-time graph, copied history, or separate eligibility state is used: the coefficient is reconstructed from the same material state that already stores the write.
 
@@ -368,6 +416,8 @@
 ## CGB.GDNLife.value_future_read_eligibility_exact
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L587)
+
+解释：输入后继准备好的读出状态，经前向敏感度递推，输出后继特征读出的前向资格迹精确满足一步前向闭式递推。
 
 源码说明：The exact encoder-value eligibility at the next prepared readout. A write is transported by the GDN prior and read by the same causal query; no backward graph or unbounded trace is introduced.
 
@@ -390,6 +440,8 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L658)
 
+解释：输入模型、状态与到达包，经吸收步进计算，输出吸收操作仅写入物理内存场与因果缓存，输出头权重矩阵保持不变。
+
 源码说明：Assimilation writes only the material memory fields and causal observation cache; it does not create a second copy of the language readout parameters.
 
 形式陈述：
@@ -402,6 +454,8 @@
 ## CGB.GDNLife.assimilate_bias
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L661)
+
+解释：输入模型、状态与到达包，经吸收更新算子，输出吸收变换保持读出头的偏置参数严格不变。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
 
@@ -416,6 +470,8 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L665)
 
+解释：输入物理时间先验转移算子，经参数传递性验证，输出时间先验仅迁移记忆均值与精度，严格保留相同的输出头矩阵与偏置。
+
 源码说明：The time prior transports memory but retains the same head and bias.
 
 形式陈述：
@@ -429,6 +485,8 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L669)
 
+解释：输入GDN状态与经过时间，经先验衰减演化，输出时间先验演化严格保持输出头偏置不变。
+
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
 
 形式陈述：
@@ -441,6 +499,8 @@
 ## CGB.GDNLife.value_future_logit_eligibility_exact
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L684)
+
+解释：输入后继字节对数几率位移，经链式法则推导，输出后继对数几率位移精确等于输出头权重与编码器前向资格迹的内积。
 
 源码说明：The next byte-logit displacement is exactly the forward eligibility read through the unchanged affine head. This is still an identity, before an external outcome is used as a third factor.
 
@@ -467,6 +527,8 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L721)
 
+解释：输入对数几率方向向量，经有限维Softmax求导展开，输出字节对数Softmax沿整个对数几率方向的一阶导数。
+
 源码说明：G14 for a whole finite logit direction. Coordinate G14 is the special case in which `direction` has one nonzero component.
 
 形式陈述：
@@ -480,6 +542,8 @@
 ## CGB.GDNLife.value_future_log_likelihood_deriv
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L777)
+
+解释：输入未来后继字节到达与GDN单步位移，经G14导数法则，输出未来对数似然对编码器值的全导数精确由前向资格迹给出。
 
 源码说明：G14 applied to the exact next-byte GDN displacement: the derivative of next-byte log likelihood with respect to an encoder-value direction is the forward eligibility weighted by the observed-minus-predicted language error. This derives the local two factors; a delayed external outcome may only enter later as the already-required third factor.
 
@@ -500,9 +564,59 @@
         (CGB.GDNLife.valueFutureScore M direction s a elapsed target) 0
 ```
 
+## CGB.GDNLife.value_future_teaching_direction_deriv
+
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L814)
+
+解释：An endogenous teaching amplitude need not be a transpose of the forward path. The only admission condition for this immediate language path is its measurable alignment with the already-derived future score: scaling a local direction by `teaching` gives the corresponding directional derivative. This is deliberately an identity, not a claim that a particular circuit has learnt the amplitude or that delayed action credit is solved.
+
+源码说明：An endogenous teaching amplitude need not be a transpose of the forward path. The only admission condition for this immediate language path is its measurable alignment with the already-derived future score: scaling a local direction by `teaching` gives the corresponding directional derivative. This is deliberately an identity, not a claim that a particular circuit has learnt the amplitude or that delayed action credit is solved.
+
+形式陈述：
+
+```lean
+∀ {k d : ℕ} (M : CGB.GDNLife.Model k d) (direction : CGB.GDNLife.Byte → Fin d → ℝ) (teaching elapsed : ℝ)
+  (s : CGB.GDNLife.State k d) (a : CGB.GDNLife.Arrival),
+  0 < a.observationPrecision →
+    ∀ (target : CGB.GDNLife.Byte),
+      HasDerivAt
+        (fun η =>
+          have Mη := CGB.GDNLife.valuePerturb M direction (η * teaching);
+          Real.log (CGB.GDNLife.allocation Mη (CGB.GDNLife.prior Mη (CGB.GDNLife.assimilate Mη s a) elapsed) target))
+        (teaching * CGB.GDNLife.valueFutureScore M direction s a elapsed target) 0
+```
+
+## CGB.GDNLife.positive_teaching_alignment_is_local_ascent
+
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L832)
+
+解释：Positive alignment with the exact future score is the minimal local ascent admission for a learned teaching signal. It does not mandate how the signal is represented; a concrete shared-body rule must establish the premise without preset transposed weights.
+
+源码说明：Positive alignment with the exact future score is the minimal local ascent admission for a learned teaching signal. It does not mandate how the signal is represented; a concrete shared-body rule must establish the premise without preset transposed weights.
+
+形式陈述：
+
+```lean
+∀ {k d : ℕ} (M : CGB.GDNLife.Model k d) (direction : CGB.GDNLife.Byte → Fin d → ℝ) (teaching elapsed : ℝ)
+  (s : CGB.GDNLife.State k d) (a : CGB.GDNLife.Arrival),
+  0 < a.observationPrecision →
+    ∀ (target : CGB.GDNLife.Byte),
+      0 < teaching * CGB.GDNLife.valueFutureScore M direction s a elapsed target →
+        ∃ deriv,
+          0 < deriv ∧
+            HasDerivAt
+              (fun η =>
+                have Mη := CGB.GDNLife.valuePerturb M direction (η * teaching);
+                Real.log
+                  (CGB.GDNLife.allocation Mη (CGB.GDNLife.prior Mη (CGB.GDNLife.assimilate Mη s a) elapsed) target))
+              deriv 0
+```
+
 ## CGB.GDNLife.value_future_score_factor
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L818)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L855)
+
+解释：输入编码器值得分函数，经梯度因式分解，输出未来得分精确分解为前向资格迹因子与即时创新误差的乘积。
 
 源码说明：Exact factorization of the encoder-value score. The forward material eligibility and the observed-minus-predicted language error are sufficient statistics for this one-step value path; their product is not a hand-added surrogate for BPTT.
 
@@ -519,7 +633,9 @@
 
 ## CGB.GDNLife.address_nonneg
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L868)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L905)
+
+解释：输入模型参数与输入字节，经软寻址Softmax计算，输出地址权重向量各槽位分量恒非负。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
 
@@ -531,7 +647,9 @@
 
 ## CGB.GDNLife.incoming_nonneg
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L872)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L909)
+
+解释：输入模型参数与到达包，经流入权重映射，输出到达各槽位的流入强度非负。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
 
@@ -543,7 +661,9 @@
 
 ## CGB.GDNLife.prior_positive
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L877)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L914)
+
+解释：输入满足正精度的GDN状态与非负流逝时间，经时间先验指数衰减，输出衰减后状态的精度依然严格保持正性。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
 
@@ -556,7 +676,9 @@
 
 ## CGB.GDNLife.assimilate_positive
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L889)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L926)
+
+解释：输入正精度初始状态与到达包，经吸收更新，输出更新后状态的所有槽位精度继续保持严格正性。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
 
@@ -569,7 +691,9 @@
 
 ## CGB.GDNLife.step_positive
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L894)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L931)
+
+解释：输入正精度的GDN状态与到达包，经单步复合推进更新，输出完整步进后的后继状态依然满足正精度条件。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
 
@@ -582,7 +706,9 @@
 
 ## CGB.GDNLife.zero_precision_keeps_last_byte
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L900)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L937)
+
+解释：输入零精度输入包，经状态更新判定，输出零精度输入保持既有最后观测缓存不变，避免虚假覆写。
 
 源码说明：Zero-precision input retains an existing last observation, matching `assimilate`'s live-observation mask rather than silently changing query.
 
@@ -595,7 +721,9 @@
 
 ## CGB.GDNLife.first_observation_sets_last_byte
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L906)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L943)
+
+解释：输入零初始精度状态与首个输入字节，经缓存写入规则，输出即使在零精度下首个观测字节仍精确写入因果查询缓存。
 
 源码说明：The first input still installs the cache, even at zero precision.
 
@@ -608,7 +736,9 @@
 
 ## CGB.GDNLife.positive_observation_sets_last_byte
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L912)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L949)
+
+解释：输入任意正置信度到达观测，经因果读出更新，输出该字节直接写入下一次因果查询。
 
 源码说明：Any live arrival writes its byte into the existing causal query field. This is a state transition, not a separate eligibility or action-log array.
 
@@ -621,7 +751,9 @@
 
 ## CGB.GDNLife.step_positive_observation_sets_last_byte
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L921)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L958)
+
+解释：输入完整GDN单步推进算子与正置信度输入，经端到端追踪，输出完整步进精确保持因果查询缓存写入。
 
 源码说明：The complete GDN step preserves that live causal write through its local head update. A self-produced language byte can therefore use the same body transition as an external byte; source provenance remains a boundary condition for later outcome modulation.
 
@@ -634,7 +766,9 @@
 
 ## CGB.GDNLife.distinct_live_bytes_separate_steps
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L931)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L968)
+
+解释：输入两个不同的有效输入字节，经状态写入推进，输出更新后的后继状态必然可分离且两两不等。
 
 源码说明：Distinct live language emissions produce distinct post-step bodies through an existing causal field. This establishes the positive premise needed by `delayed_action_credit_requires_state_separation` for a byte-level speech act; it does not claim that the distinction survives arbitrary later interference.
 
@@ -648,7 +782,9 @@
 
 ## CGB.GDNLife.step_source_irrelevant
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L944)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L981)
+
+解释：输入外部源标签，经状态学习转移比对，输出输入源标签不改变语言费用或GDN学习规则本身。
 
 源码说明：Source labels do not invent a speech fee or a different learning rule. The world must still distinguish external provenance from self-produced text when deciding whether an event is new evidence.
 
@@ -665,7 +801,9 @@
 
 ## CGB.GDNLife.preparation_uses_only_elapsed
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L948)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L985)
+
+解释：输入当前已到达历史与未来未到达字节，经因果隔离分析，输出预测准备过程仅依赖流逝时间与历史，无法窥探未来字节。
 
 源码说明：Prediction cannot inspect the not-yet-arrived byte or its source.
 
@@ -678,7 +816,9 @@
 
 ## CGB.GDNLife.head_update_preserves_memory
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L953)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L990)
+
+解释：输入局部头参数更新算子，经状态分量独立性分析，输出局部读出头参数学习绝不改变内部记忆状态或其不确定度（精度）。
 
 源码说明：Local head learning does not modify the memory or its uncertainty.
 
@@ -691,7 +831,9 @@
 
 ## CGB.GDNLife.head_update_logits
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L959)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L996)
+
+解释：输入参数更新步长与特征向量，经仿射变换展开，输出参数步进在输出层诱导出大小精确为学习率乘以特征模方的一阶对数几率增量。
 
 源码说明：The actual affine parameter step induces a score step of size `eta * (1 + squared feature norm)`, including the learned bias.
 
@@ -703,9 +845,27 @@
     CGB.GDNLife.logits s f b + η * (1 + ∑ i, f i * f i) * CGB.GDNLife.innovation s f target b
 ```
 
+## CGB.GDNLife.head_update_other_feature
+
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1015)
+
+解释：A G14 head update remains a rank-one change when read on a later feature. The complete effect of this *one known update* is recoverable from its boundary receipt (`innovation`, saved feature) and the later feature through one inner product. This does not supply the derivative of the later feature with respect to an earlier contact parameter; that separate causal factor is the open long-credit obligation.
+
+源码说明：A G14 head update remains a rank-one change when read on a later feature. The complete effect of this *one known update* is recoverable from its boundary receipt (`innovation`, saved feature) and the later feature through one inner product. This does not supply the derivative of the later feature with respect to an earlier contact parameter; that separate causal factor is the open long-credit obligation.
+
+形式陈述：
+
+```lean
+∀ {k d : ℕ} (η : ℝ) (s : CGB.GDNLife.State k d) (written read : Fin d → ℝ) (target b : CGB.GDNLife.Byte),
+  CGB.GDNLife.logits (CGB.GDNLife.headUpdate η s written target) read b =
+    CGB.GDNLife.logits s read b + η * CGB.GDNLife.innovation s written target b * (1 + ∑ i, written i * read i)
+```
+
 ## CGB.GDNLife.head_update_improves_saved_feature
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L973)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1031)
+
+解释：输入保存特征向量，经局部仿射头参数单步更新，输出保存特征上的分类负对数似然损失严格单调下降。
 
 源码说明：Strict improvement on the saved feature, not a future-language claim.
 
@@ -721,7 +881,9 @@
 
 ## CGB.GDNLife.carrier_next
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1012)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1070)
+
+解释：输入GDN生命载体模型、初始正状态与策略响应映射，经单步推进算子，输出可再生语言后继步进精确等同于标准GDN单步更新算子。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
 
@@ -736,7 +898,9 @@
 
 ## CGB.GDNLife.carrier_fold
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1020)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1078)
+
+解释：输入实际输入历史序列，经实状态载体连续折叠，输出历史序列折叠轨迹不依赖离散状态替换，直接在连续GDN状态上执行。
 
 源码说明：Actual input histories fold through this same real body, with no reset.
 
@@ -752,7 +916,9 @@
 
 ## CGB.GDNLife.exists_open_real_gdn_trajectory
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1045)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1103)
+
+解释：输入连续GDN动力学模型，经开流轨迹存在性定理，输出存在一条连续可存活且产生正信息的真实无限流轨迹。
 
 源码说明：An actual continuous GDN, not a finite surrogate, has one infinite open numerical trajectory. Future benefit, active maintenance and the full life definition are not conclusions of positive precision.
 
@@ -775,7 +941,9 @@
 
 ## CGB.GDNLife.finish_saved_logits
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1072)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1130)
+
+解释：输入保存的特征向量与局部头更新，经仿射映射分解，输出吸收后的局部更新不改变基于保存特征的中间对数几率。
 
 源码说明：Assimilation does not change the head. Thus its local update is exactly on the prediction-time feature, despite the changed memory underneath it.
 
@@ -789,7 +957,9 @@
 
 ## CGB.GDNLife.byte_softmax_pos
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1082)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1140)
+
+解释：输入任意实对数几率向量与字节目标，经Softmax指数归一化，输出归一化字节预测概率严格大于零。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
 
@@ -801,7 +971,9 @@
 
 ## CGB.GDNLife.finish_saved_nll_improves
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1089)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1147)
+
+解释：输入保存特征与到达字节目标，经梯度下降步进分析，输出基于保存特征的当前字节负对数似然损失在正学习率下严格单调下降。
 
 源码说明：The saved-feature current-byte loss strictly decreases at any positive head step. No assumption about the next byte is hidden in this result.
 
@@ -817,7 +989,9 @@
 
 ## CGB.GDNLife.future_ce_improves_of_target_mass
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1102)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1160)
+
+解释：输入目标字符分布具有正概率质量的条件，经期望梯度分解，输出分布级条件能够保证未来交叉熵严格改进。
 
 源码说明：A distributional, not in-sample, sufficient condition. A known target loss gain beats all possible other-byte loss increases when the *same* future law assigns enough mass to the target.
 
@@ -836,7 +1010,9 @@
 
 ## CGB.GDNLife.finish_future_ce_improves
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1131)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1189)
+
+解释：输入局部头更新与未来转移律，经交叉熵求导分析，输出具体头更新能够严格降低系统在未来语言律下的预测交叉熵。
 
 源码说明：A concrete head update can improve a declared future law even after the memory/query changed: the saved-feature gain must exceed the readout drift, and the law must be sufficiently persistent. These are numeric/world conditions, not an assumption that future CE already improved.
 
@@ -867,7 +1043,9 @@
 
 ## CGB.GDNLife.real_bias_injective
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1162)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1220)
+
+解释：输入实数头偏置族，经实坐标嵌入检验，输出实偏置参数族在输出层具备单射可辨识性。
 
 源码说明：The real family already embeds a real coordinate in an existing head bias. No finite body-state enumeration is being smuggled into this carrier.
 
@@ -879,7 +1057,9 @@
 
 ## CGB.GDNLife.prior_logits
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1167)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1225)
+
+解释：输入GDN状态、经过时间与特征向量，经仿射头计算，输出时间先验演化不改变由当前特征生成的输出对数几率。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
 
@@ -892,7 +1072,9 @@
 
 ## CGB.GDNLife.step_ne_of_positive_head_step
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1176)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1234)
+
+解释：输入正的真实读出头学习步长，经状态差异比较，输出正头学习步使本体状态在每个到达输入下均发生真实物理改变。
 
 源码说明：A positive real head step changes the body on every arriving byte. This alone is not evidence of useful learning; unpredictable input also moves parameters. Finite-precision stalling is a separate numerical issue.
 
@@ -905,7 +1087,9 @@
 
 ## CGB.GDNLife.Process.run_initial
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1229)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1287)
+
+解释：输入离散运行过程，经初值提取，输出第0步联合状态精确等于本体与环境的初始状态元组。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
 
@@ -918,7 +1102,9 @@
 
 ## CGB.GDNLife.Process.run_step
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1231)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1289)
+
+解释：输入GDN过程与当前时间步，经联合转移核步进，输出第n+1步联合状态精确等于本体更新与环境演化的直和推进。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
 
@@ -933,7 +1119,9 @@
 
 ## CGB.GDNLife.Process.run_positive
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1239)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1297)
+
+解释：输入正定初值的GDN离散过程与任意时间步，经数学归纳法推演，输出全轨迹上各时刻本体状态的精度恒严格为正。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
 
@@ -946,7 +1134,9 @@
 
 ## CGB.GDNLife.Process.run_body_step
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1243)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1301)
+
+解释：输入离散物理过程模型与时间步，经多步迭代推进，输出第n+1步的本体状态精确由前一步快照与到达包经finish算子生成。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
 
@@ -959,7 +1149,9 @@
 
 ## CGB.GDNLife.Process.self_speech_action_contrast_writes_body
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1252)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1310)
+
+解释：输入发出不同自生语言字节的两个候选动作，经因果回馈写入，输出不同自生言语动作在本体中写入可区分的物理内部状态。
 
 源码说明：Two candidate language actions that emit different live self-produced bytes write distinct next bodies through the ordinary GDN boundary transition. The byte is the action's existing bodily consequence, not a separately stored action record.
 
@@ -978,7 +1170,9 @@
 
 ## CGB.GDNLife.Process.next_byte_improves
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1268)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1326)
+
+解释：输入外部世界真实生成的下一字节，经自回归吸收步进，输出更新对世界真实下一字节的预测对数似然严格单调提升。
 
 源码说明：Repetition refers to the world's actual next byte, not a byte chosen for rescoring. The readout-drift budget includes the next physical-time prior.
 
@@ -1002,7 +1196,9 @@
 
 ## CGB.GDNLife.Process.externallyUseful_improves
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1302)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1360)
+
+解释：输入有用外部事件凭据，经因果响应分析，输出有用事件的发生能严格改善系统的外周适应度与预测增益。
 
 源码说明：The useful-event certificate invokes the earlier causal result; it does not inspect the next byte while preparing the current prediction.
 
@@ -1016,7 +1212,9 @@
 
 ## CGB.GDNLife.Process.self_not_externallyUseful
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1311)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1369)
+
+解释：输入自身复制发出的语言字节，经信息论有用性判据，输出复制自身的自生字节绝不可能凭空转化为有价值的外部独立环境证据。
 
 源码说明：A copied self byte never becomes external evidence just by passing through the same learning rule. It can still affect the body through `step`.
 
@@ -1029,7 +1227,9 @@
 
 ## CGB.GDNLife.Process.externalInformation_nonneg
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1346)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1404)
+
+解释：输入外部语言转移律，经互信息非负性检验，输出系统外部语言条件互信息恒非负。
 
 源码说明：A valid external language law has nonnegative information opportunity. This is finite conditional mutual information, rather than an arbitrary natural-number intake signal.
 
@@ -1042,7 +1242,9 @@
 
 ## CGB.GDNLife.Process.ExternalLanguageLaw.information_nonneg
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1355)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1413)
+
+解释：输入状态与动作索引的机会测度，经条件互信息非负性继承，输出各状态动作条件下的信息增益测度恒非负。
 
 源码说明：The state/action-indexed opportunity inherits CMI nonnegativity from the registered external language law.
 
@@ -1055,7 +1257,9 @@
 
 ## CGB.GDNLife.Process.future_reserve_preserved_keeps_signature_distinction
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1394)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1452)
+
+解释：输入保留的未来语言储备，经特征签名映射，输出保持的未来储备保证不同语言签名在演化中不可默默合并。
 
 源码说明：A preserved future-language reserve cannot silently merge two histories that a registered external continuation could previously distinguish. This is the long-delay retention condition for any causal difference already carried by the body; it adds neither an action log nor a separate eligibility state.
 
@@ -1073,7 +1277,9 @@
 
 ## CGB.GDNLife.Process.future_reserve_recoverable_iff
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1437)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1495)
+
+解释：输入未来状态区分，经耗散测度分析，输出未来区分度可无损恢复当且仅当该过程的所有离散签名均未发生耗散。
 
 源码说明：A future distinction is not dissipated exactly when all of the prior future language signature remains readable from the post-update signature. This reuses the existing causal-carrier theorem instead of introducing a separate retention mechanism.
 
@@ -1091,7 +1297,9 @@
 
 ## CGB.GDNLife.Process.loses_future_language_distinction_iff_not_preserved
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1452)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1510)
+
+解释：输入两先前可区分的未来语言签名，经等价性证明，输出二者合并丧失区分度当且仅当未来储备未被有效保留。
 
 源码说明：Merging a prior distinct future-language signature is precisely the failure of that causal retention contract.
 
@@ -1106,7 +1314,9 @@
 
 ## CGB.GDNLife.Process.recurrent_external_information_forces_activity
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1475)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1533)
+
+解释：输入循环外部信息流与GDN物理模型，经信息论主动必要性定理，输出维持循环正信息摄入严格迫使系统必须维持主动干预策略。
 
 源码说明：Information-theoretic active necessity for the concrete GDN port. If settling into `passive` eliminates the conditional information available from the external language boundary, while positive external information recurs on the realised trajectory, the policy cannot settle into `passive`. The premise is deliberately a boundary statement, not a synthetic hunger counter. To turn available information into a learning claim, it must also meet the causal `externallyUseful` scoring certificate above.
 
@@ -1126,7 +1336,9 @@
 
 ## CGB.GDNLife.Process.recurrent_external_evidence_forces_activity
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1494)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1552)
+
+解释：输入循环出现的外部证据序列与生存约束，经反证法推导，输出若策略最终退化为被动停滞，则无法循环摄取生存所需外部证据。
 
 源码说明：If settling into a passive policy rules out recurrent externally useful language, but such events actually recur on this same trajectory, the policy cannot settle. This is the language form of active necessity: no arbitrary `intake`, opportunity counter, food pool, or maintenance currency is added.
 
@@ -1142,7 +1354,9 @@
 
 ## CGB.GDNLife.Process.scored_external_language_trajectory
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1512)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1570)
+
+解释：输入实数GDN模型与外部语言流，经打分联合轨迹判定，输出存在满足条件语言级打分联合轨迹，且每步维持有效正预测增益。
 
 源码说明：Conditional language-level joint result for the real GDN. Every condition is about the actual language trajectory: source provenance, recurrent post-update improvement, the causal effect of action on the next arrival, and a non-uniform prequential margin. The result intentionally says nothing about physical food, material ingestion, or an auxiliary reserve state. It is still not a full `Medium.Lives` construction.
 
@@ -1173,7 +1387,9 @@
 
 ## CGB.GDNLife.Process.scored_joint_trajectory
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1554)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1612)
+
+解释：输入连续实数GDN生命过程，经开流联合状态演化，输出全时域联合轨迹在无截断下严格满足条件打分与存活标准。
 
 源码说明：A conditional scored joint trajectory for this real GDN. Conditions are on the actual world: registered intake, a finite passive opportunity budget under the same intervenable transition, an action contrast, a nonnegative predictive margin, and recurrent next-byte persistence with bounded readout drift. Recurrent future score gain is *derived*, not supplied as `hlearn`. Numeric positivity is still not material/biological viability. This deterministic-world statement scores actual future bytes, not a claim about the conditional law of an unspecified stochastic language world.
 

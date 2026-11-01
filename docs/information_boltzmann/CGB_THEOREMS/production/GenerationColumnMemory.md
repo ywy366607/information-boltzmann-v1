@@ -100,6 +100,8 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L104)
 
+解释：输入当前预测概率、二值真实目标与学习步长，经Delta规则更新概率，输出更新后概率严格保持在有效区间且对目标标签的交叉熵损失严格单调下降。
+
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
 
 形式陈述：
@@ -120,6 +122,8 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L168)
 
+解释：输入写入键、查询键、当前状态、更新率与写入值，经绑定写入变换后沿查询键投影读出，输出读出改变量精确等于写入误差项乘以两键之间的几何内积。
+
 源码说明：The change in any other readout is exactly the prediction error times the key overlap and write gain. Orthogonal readouts are therefore preserved.
 
 形式陈述：
@@ -130,9 +134,45 @@
     β * (v - CGB.Generation.dot k x) * CGB.Generation.dot q k
 ```
 
+## CGB.Generation.reciprocal_shared_update_mismatch
+
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L203)
+
+解释：A matched reciprocal update contracts its splice mismatch by its release factor. No initial transpose relation is assumed.
+
+源码说明：A matched reciprocal update contracts its splice mismatch by its release factor. No initial transpose relation is assumed.
+
+形式陈述：
+
+```lean
+∀ {m n : ℕ} (release rate : ℝ) (shared : Fin m → Fin n → ℝ) (pair : CGB.Generation.ReciprocalPair m n) (i : Fin m)
+  (j : Fin n),
+  CGB.Generation.reciprocalMismatch (CGB.Generation.reciprocalStep release rate shared pair) i j =
+    (1 - release) * CGB.Generation.reciprocalMismatch pair i j
+```
+
+## CGB.Generation.reciprocal_iter_mismatch
+
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L219)
+
+解释：The mismatch is geometric even when the common local statistic changes at each event. Thus alignment does not require either contact to stop learning.
+
+源码说明：The mismatch is geometric even when the common local statistic changes at each event. Thus alignment does not require either contact to stop learning.
+
+形式陈述：
+
+```lean
+∀ {m n : ℕ} (release rate : ℝ) (shared : ℕ → Fin m → Fin n → ℝ) (pair : CGB.Generation.ReciprocalPair m n) (t : ℕ)
+  (i : Fin m) (j : Fin n),
+  CGB.Generation.reciprocalMismatch (CGB.Generation.reciprocalIter release rate shared pair t) i j =
+    (1 - release) ^ t * CGB.Generation.reciprocalMismatch pair i j
+```
+
 ## CGB.Generation.reused_key_tracks_and_rewrites
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L187)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L239)
+
+解释：输入单位模长键向量、初始状态与值序列，经多步键态外积动力学迭代，输出第t+1步键方向投影精确追踪上一时刻目标值，且目标改变时状态发生有效重写。
 
 源码说明：Every write recovers the latest value. Whenever consecutive arrivals differ, the finite state must change again; reuse is not a monotonically shrinking set of permanently excluded candidates.
 
@@ -148,7 +188,7 @@
 
 ## CGB.Generation.exact_prediction_no_write
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L204)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L256)
 
 解释：预测值恰好等于目标值时，绑定写入不改变状态。
 
@@ -162,7 +202,7 @@
 
 ## CGB.Generation.occurrence_decay_retains
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L211)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L263)
 
 解释：当衰减系数位于零到一且每步权重不超过一时，按权重衰减的有限乘积不小于每步完整衰减。
 
@@ -176,7 +216,7 @@
 
 ## CGB.Generation.unused_column_kept
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L221)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L273)
 
 解释：未使用方向每步的衰减指数为零，因此任意有限步累计乘积为一。
 
@@ -190,7 +230,7 @@
 
 ## CGB.Generation.no_latch_below_unit_gain
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L226)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L278)
 
 解释：固定零点的一 Lipschitz 非线性与小于一的非负增益组合，其不动点只能是零。
 
@@ -205,7 +245,7 @@
 
 ## CGB.Generation.hardSat_zero
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L235)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L287)
 
 解释：指定硬饱和函数在零点的值为零。
 
@@ -219,7 +259,7 @@ CGB.Generation.hardSat 0 = 0
 
 ## CGB.Generation.hardSat_lipschitz
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L237)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L289)
 
 解释：指定硬饱和函数不会增大任意两个输入之间的距离。
 
@@ -233,7 +273,7 @@ CGB.Generation.hardSat 0 = 0
 
 ## CGB.Generation.latch_above_unit_gain
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L241)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L293)
 
 解释：在增益至少为一时，硬饱和反馈有 −1、0 和 1 三个所列不动点。
 
@@ -248,7 +288,9 @@ CGB.Generation.hardSat 0 = 0
 
 ## CGB.Generation.self_listening_increment
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L259)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L311)
+
+解释：输入自监听状态推进算子的前后两组参数与状态，经双变量变动展开，输出更新步长增量精确分解为状态变化项与参数敏感度项的二阶线性耦合。
 
 源码说明：Exact two-trajectory increment, including the feedback contribution.
 
@@ -262,7 +304,9 @@ CGB.Generation.hardSat 0 = 0
 
 ## CGB.Generation.self_listening_frozen_state_gap
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L266)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L318)
+
+解释：输入自监听系数、内部状态与参数敏感度，经线性代数展开，输出自变状态更新与冻结状态更新之间的差值精确等于自反馈耦合增量项。
 
 源码说明：Freezing the self-listening input loses the feedback part of state credit.
 
@@ -274,7 +318,9 @@ CGB.Generation.hardSat 0 = 0
 
 ## CGB.Generation.self_listening_frozen_state_counterexample
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L272)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L324)
+
+解释：输入自监听状态反例赋值，经数值代数验证，输出当自反馈状态被固化时，反馈项不再提供有效增益导数（验证自反馈非冻结的必要性）。
 
 源码说明：A concrete nonzero feedback path makes the frozen-input credit incorrect.
 

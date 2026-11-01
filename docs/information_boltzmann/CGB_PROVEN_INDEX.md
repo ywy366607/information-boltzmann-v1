@@ -3,7 +3,7 @@
 由 `scripts/build_proven_index.py` 从 Lean 源码生成，并逐条核对当前审计清单。新工作开始前先检索已有机制；点击完整定理名查看源码、前提及结论。
 渐进检索入口：[主题导航与逐条完整陈述](CGB_THEOREMS/README.md)；先查主题，再按模块阅读。无源码解释的条目明确标注，避免把机器猜测当作定理含义。
 
-共 **1575** 条已审计源码定理/引理，来自 **118** 个生产模块。编译声明共 **6522** 项，含定义及自动生成项，不作为机制数量。
+共 **1642** 条已审计源码定理/引理，来自 **126** 个生产模块。编译声明共 **6667** 项，含定义及自动生成项，不作为机制数量。
 生成时全部生产源码哈希与通过信任/覆盖检查的库存一致；运行 `--check` 检测过时索引。标准入口 `lean/CGBAxioms/scripts/audit.py` 在构建、审计成功后自动刷新本页；其 `--check-index` 模式只核对索引、不改写索引。
 
 **未入 Lean 的手工推导与数值见证**另列在 `CGB_HAND_DERIVATIONS.md`，检索时两处都要看。
@@ -21,7 +21,7 @@
 | GenerationActiveInference | [Active necessity.](../../lean/CGBAxioms/CGBAxioms/GenerationActiveInference.lean#L52)；[Active closure.](../../lean/CGBAxioms/CGBAxioms/GenerationActiveInference.lean#L92) |
 | GenerationAmplifier | [G25a (H stays off below threshold)](../../lean/CGBAxioms/CGBAxioms/GenerationAmplifier.lean#L68)；[G25b (switch width)](../../lean/CGBAxioms/CGBAxioms/GenerationAmplifier.lean#L78)；[G25c (equilibrium Hill coefficient is one)](../../lean/CGBAxioms/CGBAxioms/GenerationAmplifier.lean#L90)；[G25d (cooperativity from multiple quanta)](../../lean/CGBAxioms/CGBAxioms/GenerationAmplifier.lean#L99)；[G25e (gain–range bound)](../../lean/CGBAxioms/CGBAxioms/GenerationAmplifier.lean#L140)；[G25f (a fixed threshold fails on a wide world)](../../lean/CGBAxioms/CGBAxioms/GenerationAmplifier.lean#L163)；[G25f (a threshold centred on the prediction works everywhere)](../../lean/CGBAxioms/CGBAxioms/GenerationAmplifier.lean#L178) |
 | GenerationAxiomAudit | [Homogeneity forces a regular contact graph](../../lean/CGBAxioms/CGBAxioms/GenerationAxiomAudit.lean#L26) |
-| GenerationColumnMemory | [Silence has one rest](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L53)；[Error descent](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L76)；[Decay by use keeps rare topics](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L211)；[No latch below unit gain](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L226)；[A latch above unit gain](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L241) |
+| GenerationColumnMemory | [Silence has one rest](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L53)；[Error descent](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L76)；[Decay by use keeps rare topics](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L263)；[No latch below unit gain](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L278)；[A latch above unit gain](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L293) |
 | GenerationCRN | [M2](../../lean/CGBAxioms/CGBAxioms/GenerationCRN.lean#L263) |
 | GenerationExport | [G16a (export is forced)](../../lean/CGBAxioms/CGBAxioms/GenerationExport.lean#L25)；[G16b (write-only bodies starve)](../../lean/CGBAxioms/CGBAxioms/GenerationExport.lean#L42)；[G16c](../../lean/CGBAxioms/CGBAxioms/GenerationExport.lean#L50)；[G17a (unselective export forgets)](../../lean/CGBAxioms/CGBAxioms/GenerationExport.lean#L67)；[G17b (retention needs selectivity)](../../lean/CGBAxioms/CGBAxioms/GenerationExport.lean#L90) |
 | GenerationGradientFilter | [W2 (drift forbids a vanishing gain)](../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L108)；[W3 (an occurrence clock)](../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L163)；[W4 (a relation basis)](../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L177)；[W5 is implied by W3](../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L187)；[W6 (nonconvex data)](../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L247) |
@@ -70,15 +70,20 @@
 - [GenerationAmplifier（13）](#generationamplifier13)
 - [GenerationAssociationCapacity（15）](#generationassociationcapacity15)
 - [GenerationAxiomAudit（2）](#generationaxiomaudit2)
-- [GenerationCascadeMemory（5）](#generationcascadememory5)
+- [GenerationCascadeMemory（7）](#generationcascadememory7)
 - [GenerationClosedLoopCredit（7）](#generationclosedloopcredit7)
-- [GenerationColumnMemory（19）](#generationcolumnmemory19)
+- [GenerationColumnMemory（21）](#generationcolumnmemory21)
 - [GenerationColumnRefinement（5）](#generationcolumnrefinement5)
 - [GenerationConservedMemory（24）](#generationconservedmemory24)
+- [GenerationContactCompetition（18）](#generationcontactcompetition18)
+- [GenerationContactEligibility（5）](#generationcontacteligibility5)
+- [GenerationContactPlasticity（14）](#generationcontactplasticity14)
 - [GenerationContinualOptimizer（42）](#generationcontinualoptimizer42)
 - [GenerationCRN（10）](#generationcrn10)
+- [GenerationDynamicTeaching（2）](#generationdynamicteaching2)
 - [GenerationExport（6）](#generationexport6)
-- [GenerationGDNLife（76）](#generationgdnlife76)
+- [GenerationFutureValue（4）](#generationfuturevalue4)
+- [GenerationGDNLife（79）](#generationgdnlife79)
 - [GenerationGraceMemory（13）](#generationgracememory13)
 - [GenerationGradientFilter（35）](#generationgradientfilter35)
 - [GenerationGrowth（16）](#generationgrowth16)
@@ -101,6 +106,9 @@
 - [GenerationOrganismGeneratedS0（3）](#generationorganismgenerateds03)
 - [GenerationPersistence（6）](#generationpersistence6)
 - [GenerationPredictiveHarvest（9）](#generationpredictiveharvest9)
+- [GenerationReciprocalCredit（2）](#generationreciprocalcredit2)
+- [GenerationResponseGatedCarrier（12）](#generationresponsegatedcarrier12)
+- [GenerationRoutingCredit（3）](#generationroutingcredit3)
 - [GenerationSeedMemory（15）](#generationseedmemory15)
 - [GenerationSelfProduction（138）](#generationselfproduction138)
 - [GenerationSpeechTempo（14）](#generationspeechtempo14)
@@ -473,7 +481,7 @@ _Which axiom parts work (generation chain, audit) Usage in the generation chain 
 - [`CGB.Medium.homogeneous_regular`](../../lean/CGBAxioms/CGBAxioms/GenerationAxiomAudit.lean#L26)：**Homogeneity forces a regular contact graph**: every unit has the same number of contacts.
 - [`CGB.Medium.not_homogeneous_of_degrees`](../../lean/CGBAxioms/CGBAxioms/GenerationAxiomAudit.lean#L45)：A unit with a different number of contacts than another rules out homogeneity.
 
-## GenerationCascadeMemory（5）
+## GenerationCascadeMemory（7）
 _A bank of two-state pools keeps a power-law trace (generation chain, cascade memory, 2026-10-27) G20a (`two_state_geometric`) makes the trace of one two-state pool exponential._
 
 - [`CGB.Generation.single_pool_falls_below_power`](../../lean/CGBAxioms/CGBAxioms/GenerationCascadeMemory.lean#L29)：One pool's trace drops below `c / t` once `t > 2 τ / c`.
@@ -481,6 +489,8 @@ _A bank of two-state pools keeps a power-law trace (generation chain, cascade me
 - [`CGB.Generation.pool_in_band_bound`](../../lean/CGBAxioms/CGBAxioms/GenerationCascadeMemory.lean#L63)：A pool with `t ≤ τ ≤ γ t` alone keeps `1 / (e γ t)`.
 - [`CGB.Generation.bank_power_law_lower_bound`](../../lean/CGBAxioms/CGBAxioms/GenerationCascadeMemory.lean#L77)
 - [`CGB.Generation.geometric_bank_covers`](../../lean/CGBAxioms/CGBAxioms/GenerationCascadeMemory.lean#L84)：Geometric time constants cover the band: every `t ∈ [τ₀, τ₀ γ^m]` has a level `k ≤ m` with `t ≤ τ₀ γ^k ≤ γ t`.
+- [`CGB.Generation.ranked_release_eq_inv_time`](../../lean/CGBAxioms/CGBAxioms/GenerationCascadeMemory.lean#L123)：A ranked release is exactly the reciprocal of its ranked relaxation time.
+- [`CGB.Generation.ranked_time_succ`](../../lean/CGBAxioms/CGBAxioms/GenerationCascadeMemory.lean#L130)：Adjacent ranks have the geometric time-scale ratio used by `geometric_bank_covers`.
 
 ## GenerationClosedLoopCredit（7）
 _Closed-loop credit with a shared policy and predictor G15 (`Medium.expected_reward_deriv`) differentiates a fixed reward table._
@@ -493,7 +503,7 @@ _Closed-loop credit with a shared policy and predictor G15 (`Medium.expected_rew
 - [`CGB.ClosedLoopCredit.missing_score_derivative_counterexample`](../../lean/CGBAxioms/CGBAxioms/GenerationClosedLoopCredit.lean#L114)：Singleton action/outcome, π=K=1, Rθ=θ: both laws are fixed and normalized; the policy-only estimator is zero while the actual objective derivative is one.
 - [`CGB.ClosedLoopCredit.constant_likelihood_posterior`](../../lean/CGBAxioms/CGBAxioms/GenerationClosedLoopCredit.lean#L135)：Constant positive likelihood leaves a normalized prior unchanged.
 
-## GenerationColumnMemory（19）
+## GenerationColumnMemory（21）
 _Column memory for the language organism (generation chain, 2026-10-28) The language organism's synaptic page is a set of columns `S_m` written by the gated delta rule (`GenerationLinearMemory`), with the activity page re_
 
 - [`CGB.Generation.dot_self_nonneg`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L43)
@@ -504,17 +514,19 @@ _Column memory for the language organism (generation chain, 2026-10-28) The lang
 - [`CGB.Generation.tied_write_error_shrinks`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L83)：With a unit key the prediction error shrinks by `1 - β`.
 - [`CGB.Generation.binary_delta_crossEntropy_decreases`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L104)
 - [`CGB.Generation.tied_write_cross_read`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L168)：The change in any other readout is exactly the prediction error times the key overlap and write gain.
-- [`CGB.Generation.reused_key_tracks_and_rewrites`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L187)：Every write recovers the latest value.
-- [`CGB.Generation.exact_prediction_no_write`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L204)：An exact prediction writes nothing.
-- [`CGB.Generation.occurrence_decay_retains`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L211)：**Decay by use keeps rare topics**: decaying by `α ^ w t` with `w t ∈ [0, 1]` keeps at least what decaying by `α` every tick keeps.
-- [`CGB.Generation.unused_column_kept`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L221)：An unused column keeps everything.
-- [`CGB.Generation.no_latch_below_unit_gain`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L226)：**No latch below unit gain**: `x ↦ σ (g x)` with a 1-Lipschitz `σ`, `σ 0 = 0` and `0 ≤ g < 1` rests only at zero.
-- [`CGB.Generation.hardSat_zero`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L235)
-- [`CGB.Generation.hardSat_lipschitz`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L237)
-- [`CGB.Generation.latch_above_unit_gain`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L241)：**A latch above unit gain**: with saturation and `g ≥ 1`, `± 1` rest besides `0`.
-- [`CGB.Generation.self_listening_increment`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L259)：Exact two-trajectory increment, including the feedback contribution.
-- [`CGB.Generation.self_listening_frozen_state_gap`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L266)：Freezing the self-listening input loses the feedback part of state credit.
-- [`CGB.Generation.self_listening_frozen_state_counterexample`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L272)：A concrete nonzero feedback path makes the frozen-input credit incorrect.
+- [`CGB.Generation.reciprocal_shared_update_mismatch`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L203)：A matched reciprocal update contracts its splice mismatch by its release factor.
+- [`CGB.Generation.reciprocal_iter_mismatch`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L219)：The mismatch is geometric even when the common local statistic changes at each event.
+- [`CGB.Generation.reused_key_tracks_and_rewrites`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L239)：Every write recovers the latest value.
+- [`CGB.Generation.exact_prediction_no_write`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L256)：An exact prediction writes nothing.
+- [`CGB.Generation.occurrence_decay_retains`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L263)：**Decay by use keeps rare topics**: decaying by `α ^ w t` with `w t ∈ [0, 1]` keeps at least what decaying by `α` every tick keeps.
+- [`CGB.Generation.unused_column_kept`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L273)：An unused column keeps everything.
+- [`CGB.Generation.no_latch_below_unit_gain`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L278)：**No latch below unit gain**: `x ↦ σ (g x)` with a 1-Lipschitz `σ`, `σ 0 = 0` and `0 ≤ g < 1` rests only at zero.
+- [`CGB.Generation.hardSat_zero`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L287)
+- [`CGB.Generation.hardSat_lipschitz`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L289)
+- [`CGB.Generation.latch_above_unit_gain`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L293)：**A latch above unit gain**: with saturation and `g ≥ 1`, `± 1` rest besides `0`.
+- [`CGB.Generation.self_listening_increment`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L311)：Exact two-trajectory increment, including the feedback contribution.
+- [`CGB.Generation.self_listening_frozen_state_gap`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L318)：Freezing the self-listening input loses the feedback part of state credit.
+- [`CGB.Generation.self_listening_frozen_state_counterexample`](../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L324)：A concrete nonzero feedback path makes the frozen-input credit incorrect.
 
 ## GenerationColumnRefinement（5）
 _Column refinement: one body, several readable projections This file does not construct a column organism._
@@ -552,6 +564,55 @@ _Memory carried by a conserved observable, not a frozen body Generalize the exis
 - [`CGB.ConservedMemory.seed_quiet_total_memory_marginal`](../../lean/CGBAxioms/CGBAxioms/GenerationConservedMemory.lean#L370)：Content distinctions written through the original seed's reservoir ports have invariant quiet marginals despite its nontrivial hopping.
 - [`CGB.ConservedMemory.historical_persistence_requires_alive_change`](../../lean/CGBAxioms/CGBAxioms/GenerationConservedMemory.lean#L386)：Historical persistence requires calm to change the viability observable, not merely to move some microscopic states.
 - [`CGB.ConservedMemory.conserving_calm_needs_organizational_viability`](../../lean/CGBAxioms/CGBAxioms/GenerationConservedMemory.lean#L416)：If calm conserves total and viability reads *only* total, the original long-disconnection death requirement is impossible.
+
+## GenerationContactCompetition（18）
+_A shared finite contact reservoir `S` is already a bounded, typed local contact state._
+
+- [`CGB.Generation.receipt_rate_in_unit_interval`](../../lean/CGBAxioms/CGBAxioms/GenerationContactCompetition.lean#L31)：A nonnegative receipt produces a legal exchange rate, even when its raw magnitude is unbounded.
+- [`CGB.Generation.shared_contact_pool_total`](../../lean/CGBAxioms/CGBAxioms/GenerationContactCompetition.lean#L49)：The whole contact bundle follows one two-state exchange.
+- [`CGB.Generation.full_shared_pool_blocks_admission`](../../lean/CGBAxioms/CGBAxioms/GenerationContactCompetition.lean#L77)：Once a local bundle is full, no positive admission can add to any of its contacts.
+- [`CGB.Generation.shared_pool_marginal_admission_is_anti_dominant`](../../lean/CGBAxioms/CGBAxioms/GenerationContactCompetition.lean#L89)：For a positive local admission gate, an already more occupied bundle has strictly less remaining marginal capacity.
+- [`CGB.Generation.shared_pool_closed_gate_holds`](../../lean/CGBAxioms/CGBAxioms/GenerationContactCompetition.lean#L100)：When a local evidence gate is closed, the complete bundle holds exactly.
+- [`CGB.Generation.shared_contact_pool_vector_constant_release`](../../lean/CGBAxioms/CGBAxioms/GenerationContactCompetition.lean#L114)：Constant vector release recovers the original interface exactly.
+- [`CGB.Generation.shared_contact_pool_vector_total`](../../lean/CGBAxioms/CGBAxioms/GenerationContactCompetition.lean#L122)
+- [`CGB.Generation.shared_contact_pool_vector_conserves_total`](../../lean/CGBAxioms/CGBAxioms/GenerationContactCompetition.lean#L152)
+- [`CGB.Generation.shared_contact_pool_vector_nonneg`](../../lean/CGBAxioms/CGBAxioms/GenerationContactCompetition.lean#L161)
+- [`CGB.Generation.shared_contact_pool_free_nonneg`](../../lean/CGBAxioms/CGBAxioms/GenerationContactCompetition.lean#L179)
+- [`CGB.Generation.shared_contact_pool_vector_total_le_one`](../../lean/CGBAxioms/CGBAxioms/GenerationContactCompetition.lean#L191)
+- [`CGB.Generation.full_shared_pool_vector_blocks_admission`](../../lean/CGBAxioms/CGBAxioms/GenerationContactCompetition.lean#L203)
+- [`CGB.Generation.shared_pool_vector_closed_gate_holds`](../../lean/CGBAxioms/CGBAxioms/GenerationContactCompetition.lean#L212)
+- [`CGB.Generation.shared_contact_pool_vector_endpoint_agreement`](../../lean/CGBAxioms/CGBAxioms/GenerationContactCompetition.lean#L220)：Endpoints applying the same inputs to the same shared state cannot write inconsistent copies of that edge's reservoir.
+- [`CGB.Generation.shared_edge_response_gate_symmetric`](../../lean/CGBAxioms/CGBAxioms/GenerationContactCompetition.lean#L229)
+- [`CGB.Generation.shared_edge_response_gate_bounds`](../../lean/CGBAxioms/CGBAxioms/GenerationContactCompetition.lean#L233)
+- [`CGB.Generation.shared_edge_response_gate_closed`](../../lean/CGBAxioms/CGBAxioms/GenerationContactCompetition.lean#L238)
+- [`CGB.Generation.shared_edge_response_gate_one`](../../lean/CGBAxioms/CGBAxioms/GenerationContactCompetition.lean#L241)
+
+## GenerationContactEligibility（5）
+_Local contact eligibility is a forward response, not occupancy alone For a column contact `w` with local participation `s`, the next activity is `hardSat (base + w * s)`._
+
+- [`CGB.Generation.hardSat_eq_self`](../../lean/CGBAxioms/CGBAxioms/GenerationContactEligibility.lean#L26)
+- [`CGB.Generation.hardSat_eq_one`](../../lean/CGBAxioms/CGBAxioms/GenerationContactEligibility.lean#L31)
+- [`CGB.Generation.contact_response_unsaturated_increment`](../../lean/CGBAxioms/CGBAxioms/GenerationContactEligibility.lean#L38)：On one unsaturated response segment, participation is the exact local forward finite-difference factor of a contact-weight perturbation.
+- [`CGB.Generation.contact_response_saturated_increment_zero`](../../lean/CGBAxioms/CGBAxioms/GenerationContactEligibility.lean#L53)：A bounded activity face carries no additional local contact evidence: as long as both responses remain saturated at `+1`, their difference is zero.
+- [`CGB.Generation.contact_score_unsaturated_increment`](../../lean/CGBAxioms/CGBAxioms/GenerationContactEligibility.lean#L66)：A score whose local read coefficient is `q` inherits both cases.
+
+## GenerationContactPlasticity（14）
+_Compartment tags modulate a current-event spatial pullback The coefficient `c = lambda * eligibility` is fixed during this event's parameter differentiation._
+
+- [`CGB.Generation.ContactPlasticity.linear_contact_return`](../../lean/CGBAxioms/CGBAxioms/GenerationContactPlasticity.lean#L25)：Transposing a finite linear contact read returns exactly the same scalar contraction; the return is not an independently learned feedback matrix.
+- [`CGB.Generation.ContactPlasticity.periodic_flux_return`](../../lean/CGBAxioms/CGBAxioms/GenerationContactPlasticity.lean#L39)：Incoming-minus-outgoing periodic flux has the next-minus-local adjoint.
+- [`CGB.Generation.ContactPlasticity.two_direction_flux_return`](../../lean/CGBAxioms/CGBAxioms/GenerationContactPlasticity.lean#L53)：Two transport directions add their local adjoints without retaining a transport trajectory or its past pullbacks.
+- [`CGB.Generation.ContactPlasticity.allocation_normalization_cancels`](../../lean/CGBAxioms/CGBAxioms/GenerationContactPlasticity.lean#L63)：Positive total drive cancels between admission and normalized target.
+- [`CGB.Generation.ContactPlasticity.normalized_actual_pool`](../../lean/CGBAxioms/CGBAxioms/GenerationContactPlasticity.lean#L73)：The cancellation holds inside the actual shared reservoir, with its old occupation and coordinatewise release unchanged.
+- [`CGB.Generation.ContactPlasticity.sigmoid_runtime_formula`](../../lean/CGBAxioms/CGBAxioms/GenerationContactPlasticity.lean#L96)：Mathlib's sigmoid is exactly the runtime logistic expression.
+- [`CGB.Generation.ContactPlasticity.endpoint_allocation_deriv`](../../lean/CGBAxioms/CGBAxioms/GenerationContactPlasticity.lean#L102)：Exact allocation response to one endpoint's local pre-weight perturbation; `pre` is fixed and the sigmoid supplies the current post-response factor.
+- [`CGB.Generation.ContactPlasticity.endpoint_retention_deriv`](../../lean/CGBAxioms/CGBAxioms/GenerationContactPlasticity.lean#L113)：Exact mean-retention response at one perturbed endpoint.
+- [`CGB.Generation.ContactPlasticity.local_potential_zero_eligibility`](../../lean/CGBAxioms/CGBAxioms/GenerationContactPlasticity.lean#L131)：Vanishing participation tags make the entire parameter-dependent proxy identically zero, not merely its value at a chosen parameter.
+- [`CGB.Generation.ContactPlasticity.local_potential_zero_return`](../../lean/CGBAxioms/CGBAxioms/GenerationContactPlasticity.lean#L137)：A zero current local return also makes the stopped-coefficient proxy zero.
+- [`CGB.Generation.ContactPlasticity.local_potential_deriv`](../../lean/CGBAxioms/CGBAxioms/GenerationContactPlasticity.lean#L145)：Exact current-event derivative through the actual inflow and coordinatewise release.
+- [`CGB.Generation.ContactPlasticity.allocation_pool_pre_post_coefficient`](../../lean/CGBAxioms/CGBAxioms/GenerationContactPlasticity.lean#L167)：Actual normalized allocation, allowing target and total admission to vary together.
+- [`CGB.Generation.ContactPlasticity.retention_pool_pre_post_coefficient`](../../lean/CGBAxioms/CGBAxioms/GenerationContactPlasticity.lean#L201)：The actual release is A*(1-retention), so a retention logit's response has a positive sign and is contracted with old S across all source coordinates.
+- [`CGB.Generation.ContactPlasticity.local_direction_self_nonneg`](../../lean/CGBAxioms/CGBAxioms/GenerationContactPlasticity.lean#L225)：A parameter direction contracted with itself is nonnegative.
 
 ## GenerationContinualOptimizer（42）
 _A continual optimizer: competition, no winner-take-all, a healthy latch (side branch, 2026-10-27) The optimizer of a stream learner must (i) make units compete so that they differentiate, (ii) keep one unit from taking e_
@@ -613,6 +674,12 @@ _Well-mixed pair reaction media are admitted (generation chain, M2) One compartm
 - [`CGB.PairCRN.homogeneous`](../../lean/CGBAxioms/CGBAxioms/GenerationCRN.lean#L256)：The single compartment's contact is homogeneous (an optional model property).
 - [`CGB.PairCRN.axioms`](../../lean/CGBAxioms/CGBAxioms/GenerationCRN.lean#L263)：**M2**: a well-mixed pair reaction medium is a model of the CGB axioms as soon as its finite rule table passes the local obligations: content levels (P1a), conservation of closed rules (P2a), reversible rules with symmet
 
+## GenerationDynamicTeaching（2）
+_Dynamic boundary teaching has a necessary cross term `GenerationContactPlasticity` proves the current spatial pullback while its returned teaching coefficient is stopped._
+
+- [`CGB.Generation.DynamicTeaching.teaching_response_deriv`](../../lean/CGBAxioms/CGBAxioms/GenerationDynamicTeaching.lean#L24)：A boundary teaching coefficient times a contact response.
+- [`CGB.Generation.DynamicTeaching.stopped_teaching_complete_iff`](../../lean/CGBAxioms/CGBAxioms/GenerationDynamicTeaching.lean#L35)：The stopped-teaching spatial term is complete exactly when its omitted teaching-motion product vanishes.
+
 ## GenerationExport（6）
 _Export and selective export (generation chain, G16-G17) P1a makes the body finite; P2a gives the content ledger `content (t+1) + out t = content t + in t` (`MaterialLedger.balance`)._
 
@@ -623,7 +690,15 @@ _Export and selective export (generation chain, G16-G17) P1a makes the body fini
 - [`CGB.Generation.unselective_export_forgets`](../../lean/CGBAxioms/CGBAxioms/GenerationExport.lean#L79)
 - [`CGB.Generation.retention_needs_selectivity`](../../lean/CGBAxioms/CGBAxioms/GenerationExport.lean#L90)：**G17b (retention needs selectivity)**: if an item must survive every number of exports with probability at least `p > 0`, its per-export removal probability has no positive lower bound: export must eventually spare it,
 
-## GenerationGDNLife（76）
+## GenerationFutureValue（4）
+_Future-paid language distinctions A finite body cannot retain every distinction that *might* be queried._
+
+- [`CGB.GDNLife.Process.future_cross_entropy_congr_on_positive_support`](../../lean/CGBAxioms/CGBAxioms/GenerationFutureValue.lean#L52)：A continuation of zero world-side recurrence has no effect on the future code-length audit.
+- [`CGB.GDNLife.Process.positive_continuation_improvement_is_future_paid`](../../lean/CGBAxioms/CGBAxioms/GenerationFutureValue.lean#L71)：If a body change never worsens any declared future continuation and strictly improves one continuation that recurs with positive mass, it strictly improves expected future language code length.
+- [`CGB.GDNLife.Process.empirical_future_cross_entropy_congr`](../../lean/CGBAxioms/CGBAxioms/GenerationFutureValue.lean#L109)：If no actual re-entered continuation can tell two body states apart in language code length, the empirical future-value audit is equal.
+- [`CGB.GDNLife.Process.observed_continuation_improvement_is_empirically_paid`](../../lean/CGBAxioms/CGBAxioms/GenerationFutureValue.lean#L126)：One strictly better re-entered continuation, with no worse observed continuation, strictly improves the empirical future language code length.
+
+## GenerationGDNLife（79）
 _Real-valued GDN carrier on one open trajectory The body is a fixed-dimensional real state, not a finite enumeration._
 
 - [`CGB.GDNLife.address_pos`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L73)
@@ -658,50 +733,53 @@ _Real-valued GDN carrier on one open trajectory The body is a fixed-dimensional 
 - [`CGB.GDNLife.value_future_logit_eligibility_exact`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L684)：The next byte-logit displacement is exactly the forward eligibility read through the unchanged affine head.
 - [`CGB.GDNLife.byte_log_softmax_direction_deriv`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L721)：G14 for a whole finite logit direction.
 - [`CGB.GDNLife.value_future_log_likelihood_deriv`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L777)：G14 applied to the exact next-byte GDN displacement: the derivative of next-byte log likelihood with respect to an encoder-value direction is the forward eligibility weighted by the observed-minus-predicted language erro
-- [`CGB.GDNLife.value_future_score_factor`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L818)：Exact factorization of the encoder-value score.
-- [`CGB.GDNLife.address_nonneg`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L868)
-- [`CGB.GDNLife.incoming_nonneg`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L872)
-- [`CGB.GDNLife.prior_positive`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L877)
-- [`CGB.GDNLife.assimilate_positive`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L889)
-- [`CGB.GDNLife.step_positive`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L894)
-- [`CGB.GDNLife.zero_precision_keeps_last_byte`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L900)：Zero-precision input retains an existing last observation, matching `assimilate`'s live-observation mask rather than silently changing query.
-- [`CGB.GDNLife.first_observation_sets_last_byte`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L906)：The first input still installs the cache, even at zero precision.
-- [`CGB.GDNLife.positive_observation_sets_last_byte`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L912)：Any live arrival writes its byte into the existing causal query field.
-- [`CGB.GDNLife.step_positive_observation_sets_last_byte`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L921)：The complete GDN step preserves that live causal write through its local head update.
-- [`CGB.GDNLife.distinct_live_bytes_separate_steps`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L931)：Distinct live language emissions produce distinct post-step bodies through an existing causal field.
-- [`CGB.GDNLife.step_source_irrelevant`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L944)：Source labels do not invent a speech fee or a different learning rule.
-- [`CGB.GDNLife.preparation_uses_only_elapsed`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L948)：Prediction cannot inspect the not-yet-arrived byte or its source.
-- [`CGB.GDNLife.head_update_preserves_memory`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L953)：Local head learning does not modify the memory or its uncertainty.
-- [`CGB.GDNLife.head_update_logits`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L959)：The actual affine parameter step induces a score step of size `eta * (1 + squared feature norm)`, including the learned bias.
-- [`CGB.GDNLife.head_update_improves_saved_feature`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L973)：Strict improvement on the saved feature, not a future-language claim.
-- [`CGB.GDNLife.carrier_next`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1012)
-- [`CGB.GDNLife.carrier_fold`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1020)：Actual input histories fold through this same real body, with no reset.
-- [`CGB.GDNLife.exists_open_real_gdn_trajectory`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1045)：An actual continuous GDN, not a finite surrogate, has one infinite open numerical trajectory.
-- [`CGB.GDNLife.finish_saved_logits`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1072)：Assimilation does not change the head.
-- [`CGB.GDNLife.byte_softmax_pos`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1082)
-- [`CGB.GDNLife.finish_saved_nll_improves`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1089)：The saved-feature current-byte loss strictly decreases at any positive head step.
-- [`CGB.GDNLife.future_ce_improves_of_target_mass`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1102)：A distributional, not in-sample, sufficient condition.
-- [`CGB.GDNLife.finish_future_ce_improves`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1131)：A concrete head update can improve a declared future law even after the memory/query changed: the saved-feature gain must exceed the readout drift, and the law must be sufficiently persistent.
-- [`CGB.GDNLife.real_bias_injective`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1162)：The real family already embeds a real coordinate in an existing head bias.
-- [`CGB.GDNLife.prior_logits`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1167)
-- [`CGB.GDNLife.step_ne_of_positive_head_step`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1176)：A positive real head step changes the body on every arriving byte.
-- [`CGB.GDNLife.Process.run_initial`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1229)
-- [`CGB.GDNLife.Process.run_step`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1231)
-- [`CGB.GDNLife.Process.run_positive`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1239)
-- [`CGB.GDNLife.Process.run_body_step`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1243)
-- [`CGB.GDNLife.Process.self_speech_action_contrast_writes_body`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1252)：Two candidate language actions that emit different live self-produced bytes write distinct next bodies through the ordinary GDN boundary transition.
-- [`CGB.GDNLife.Process.next_byte_improves`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1268)：Repetition refers to the world's actual next byte, not a byte chosen for rescoring.
-- [`CGB.GDNLife.Process.externallyUseful_improves`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1302)：The useful-event certificate invokes the earlier causal result; it does not inspect the next byte while preparing the current prediction.
-- [`CGB.GDNLife.Process.self_not_externallyUseful`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1311)：A copied self byte never becomes external evidence just by passing through the same learning rule.
-- [`CGB.GDNLife.Process.externalInformation_nonneg`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1346)：A valid external language law has nonnegative information opportunity.
-- [`CGB.GDNLife.Process.ExternalLanguageLaw.information_nonneg`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1355)：The state/action-indexed opportunity inherits CMI nonnegativity from the registered external language law.
-- [`CGB.GDNLife.Process.future_reserve_preserved_keeps_signature_distinction`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1394)：A preserved future-language reserve cannot silently merge two histories that a registered external continuation could previously distinguish.
-- [`CGB.GDNLife.Process.future_reserve_recoverable_iff`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1437)：A future distinction is not dissipated exactly when all of the prior future language signature remains readable from the post-update signature.
-- [`CGB.GDNLife.Process.loses_future_language_distinction_iff_not_preserved`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1452)：Merging a prior distinct future-language signature is precisely the failure of that causal retention contract.
-- [`CGB.GDNLife.Process.recurrent_external_information_forces_activity`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1475)：Information-theoretic active necessity for the concrete GDN port.
-- [`CGB.GDNLife.Process.recurrent_external_evidence_forces_activity`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1494)：If settling into a passive policy rules out recurrent externally useful language, but such events actually recur on this same trajectory, the policy cannot settle.
-- [`CGB.GDNLife.Process.scored_external_language_trajectory`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1512)：Conditional language-level joint result for the real GDN.
-- [`CGB.GDNLife.Process.scored_joint_trajectory`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1554)：A conditional scored joint trajectory for this real GDN.
+- [`CGB.GDNLife.value_future_teaching_direction_deriv`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L814)：An endogenous teaching amplitude need not be a transpose of the forward path.
+- [`CGB.GDNLife.positive_teaching_alignment_is_local_ascent`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L832)：Positive alignment with the exact future score is the minimal local ascent admission for a learned teaching signal.
+- [`CGB.GDNLife.value_future_score_factor`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L855)：Exact factorization of the encoder-value score.
+- [`CGB.GDNLife.address_nonneg`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L905)
+- [`CGB.GDNLife.incoming_nonneg`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L909)
+- [`CGB.GDNLife.prior_positive`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L914)
+- [`CGB.GDNLife.assimilate_positive`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L926)
+- [`CGB.GDNLife.step_positive`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L931)
+- [`CGB.GDNLife.zero_precision_keeps_last_byte`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L937)：Zero-precision input retains an existing last observation, matching `assimilate`'s live-observation mask rather than silently changing query.
+- [`CGB.GDNLife.first_observation_sets_last_byte`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L943)：The first input still installs the cache, even at zero precision.
+- [`CGB.GDNLife.positive_observation_sets_last_byte`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L949)：Any live arrival writes its byte into the existing causal query field.
+- [`CGB.GDNLife.step_positive_observation_sets_last_byte`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L958)：The complete GDN step preserves that live causal write through its local head update.
+- [`CGB.GDNLife.distinct_live_bytes_separate_steps`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L968)：Distinct live language emissions produce distinct post-step bodies through an existing causal field.
+- [`CGB.GDNLife.step_source_irrelevant`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L981)：Source labels do not invent a speech fee or a different learning rule.
+- [`CGB.GDNLife.preparation_uses_only_elapsed`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L985)：Prediction cannot inspect the not-yet-arrived byte or its source.
+- [`CGB.GDNLife.head_update_preserves_memory`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L990)：Local head learning does not modify the memory or its uncertainty.
+- [`CGB.GDNLife.head_update_logits`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L996)：The actual affine parameter step induces a score step of size `eta * (1 + squared feature norm)`, including the learned bias.
+- [`CGB.GDNLife.head_update_other_feature`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1015)：A G14 head update remains a rank-one change when read on a later feature.
+- [`CGB.GDNLife.head_update_improves_saved_feature`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1031)：Strict improvement on the saved feature, not a future-language claim.
+- [`CGB.GDNLife.carrier_next`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1070)
+- [`CGB.GDNLife.carrier_fold`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1078)：Actual input histories fold through this same real body, with no reset.
+- [`CGB.GDNLife.exists_open_real_gdn_trajectory`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1103)：An actual continuous GDN, not a finite surrogate, has one infinite open numerical trajectory.
+- [`CGB.GDNLife.finish_saved_logits`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1130)：Assimilation does not change the head.
+- [`CGB.GDNLife.byte_softmax_pos`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1140)
+- [`CGB.GDNLife.finish_saved_nll_improves`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1147)：The saved-feature current-byte loss strictly decreases at any positive head step.
+- [`CGB.GDNLife.future_ce_improves_of_target_mass`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1160)：A distributional, not in-sample, sufficient condition.
+- [`CGB.GDNLife.finish_future_ce_improves`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1189)：A concrete head update can improve a declared future law even after the memory/query changed: the saved-feature gain must exceed the readout drift, and the law must be sufficiently persistent.
+- [`CGB.GDNLife.real_bias_injective`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1220)：The real family already embeds a real coordinate in an existing head bias.
+- [`CGB.GDNLife.prior_logits`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1225)
+- [`CGB.GDNLife.step_ne_of_positive_head_step`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1234)：A positive real head step changes the body on every arriving byte.
+- [`CGB.GDNLife.Process.run_initial`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1287)
+- [`CGB.GDNLife.Process.run_step`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1289)
+- [`CGB.GDNLife.Process.run_positive`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1297)
+- [`CGB.GDNLife.Process.run_body_step`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1301)
+- [`CGB.GDNLife.Process.self_speech_action_contrast_writes_body`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1310)：Two candidate language actions that emit different live self-produced bytes write distinct next bodies through the ordinary GDN boundary transition.
+- [`CGB.GDNLife.Process.next_byte_improves`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1326)：Repetition refers to the world's actual next byte, not a byte chosen for rescoring.
+- [`CGB.GDNLife.Process.externallyUseful_improves`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1360)：The useful-event certificate invokes the earlier causal result; it does not inspect the next byte while preparing the current prediction.
+- [`CGB.GDNLife.Process.self_not_externallyUseful`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1369)：A copied self byte never becomes external evidence just by passing through the same learning rule.
+- [`CGB.GDNLife.Process.externalInformation_nonneg`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1404)：A valid external language law has nonnegative information opportunity.
+- [`CGB.GDNLife.Process.ExternalLanguageLaw.information_nonneg`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1413)：The state/action-indexed opportunity inherits CMI nonnegativity from the registered external language law.
+- [`CGB.GDNLife.Process.future_reserve_preserved_keeps_signature_distinction`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1452)：A preserved future-language reserve cannot silently merge two histories that a registered external continuation could previously distinguish.
+- [`CGB.GDNLife.Process.future_reserve_recoverable_iff`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1495)：A future distinction is not dissipated exactly when all of the prior future language signature remains readable from the post-update signature.
+- [`CGB.GDNLife.Process.loses_future_language_distinction_iff_not_preserved`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1510)：Merging a prior distinct future-language signature is precisely the failure of that causal retention contract.
+- [`CGB.GDNLife.Process.recurrent_external_information_forces_activity`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1533)：Information-theoretic active necessity for the concrete GDN port.
+- [`CGB.GDNLife.Process.recurrent_external_evidence_forces_activity`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1552)：If settling into a passive policy rules out recurrent externally useful language, but such events actually recur on this same trajectory, the policy cannot settle.
+- [`CGB.GDNLife.Process.scored_external_language_trajectory`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1570)：Conditional language-level joint result for the real GDN.
+- [`CGB.GDNLife.Process.scored_joint_trajectory`](../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1612)：A conditional scored joint trajectory for this real GDN.
 
 ## GenerationGraceMemory（13）
 _Historical memory in the unchanged grace process The natural law at tick four has one body state and three world states._
@@ -1063,6 +1141,35 @@ _Prediction is metabolism under reinvestment (language-stream life, T1) World co
 - [`CGB.PredictiveHarvest.no_allocation_persists`](../../lean/CGBAxioms/CGBAxioms/GenerationPredictiveHarvest.lean#L106)：When entropy exceeds `log |B| - m`, every admissible allocation has negative expected net log growth under this niche contract.
 - [`CGB.PredictiveHarvest.persists_of_crossEntropy`](../../lean/CGBAxioms/CGBAxioms/GenerationPredictiveHarvest.lean#L113)：Below the cross-entropy threshold, expected net log growth is positive.
 - [`CGB.PredictiveHarvest.additive_payoff_mode`](../../lean/CGBAxioms/CGBAxioms/GenerationPredictiveHarvest.lean#L122)：Without reinvestment (payoff additive in the capacity placed on the arrived byte) the best allocation puts everything on a most likely byte: probability matching is a consequence of the multiplicative contract, not of pr
+
+## GenerationReciprocalCredit（2）
+_Reciprocal local credit This is the common algebraic core for every slow map in a generated local medium._
+
+- [`CGB.Generation.reciprocal_contact_response_deriv`](../../lean/CGBAxioms/CGBAxioms/GenerationReciprocalCredit.lean#L41)：The exact local forward response of one reciprocal contact.
+- [`CGB.Generation.reciprocal_contact_teaching_deriv`](../../lean/CGBAxioms/CGBAxioms/GenerationReciprocalCredit.lean#L98)：Scaling a local response by a fresh boundary teaching signal preserves its identity as the exact directional derivative.
+
+## GenerationResponseGatedCarrier（12）
+_Response-gated conserved contact carrier `GenerationContactEligibility` establishes that a saturated local H contact has zero forward response._
+
+- [`CGB.Generation.response_gated_contact_closed_holds`](../../lean/CGBAxioms/CGBAxioms/GenerationResponseGatedCarrier.lean#L25)：A response gate closed at the source event leaves every coordinate of the existing shared contact reservoir unchanged.
+- [`CGB.Generation.response_gated_contact_write_distinguishes`](../../lean/CGBAxioms/CGBAxioms/GenerationResponseGatedCarrier.lean#L34)：If opening the existing shared exchange produces a nonzero local transfer, the S coordinate distinguishes it from a saturated (closed-gate) event.
+- [`CGB.Generation.shared_contact_pool_vector_affine`](../../lean/CGBAxioms/CGBAxioms/GenerationResponseGatedCarrier.lean#L58)：Exact connection of the retention/injection decomposition to the executable coordinatewise-release shared reservoir.
+- [`CGB.Generation.contact_retention_bounds`](../../lean/CGBAxioms/CGBAxioms/GenerationResponseGatedCarrier.lean#L66)
+- [`CGB.Generation.affine_forward_history`](../../lean/CGBAxioms/CGBAxioms/GenerationResponseGatedCarrier.lean#L78)：Algebraic forward expansion only.
+- [`CGB.Generation.response_gated_vector_history_expansion`](../../lean/CGBAxioms/CGBAxioms/GenerationResponseGatedCarrier.lean#L102)：Every actual coordinate is its retained initial value plus its finitely many injections, each weighted by subsequent retention.
+- [`CGB.Generation.response_gated_vector_no_injection_retention`](../../lean/CGBAxioms/CGBAxioms/GenerationResponseGatedCarrier.lean#L118)：With no new injection into this type during the interval, only the product of its actual coordinatewise retention acts on its initial content.
+- [`CGB.Generation.response_gated_vector_zero_without_injection`](../../lean/CGBAxioms/CGBAxioms/GenerationResponseGatedCarrier.lean#L135)：A type absent at birth cannot appear without an injection of that type.
+- [`CGB.Generation.response_gated_vector_history_difference`](../../lean/CGBAxioms/CGBAxioms/GenerationResponseGatedCarrier.lean#L148)：Equal external inputs alone do not guarantee equal injections: the free pool depends on each trajectory.
+- [`CGB.Generation.response_gated_vector_nonzero_retention_distinguishes`](../../lean/CGBAxioms/CGBAxioms/GenerationResponseGatedCarrier.lean#L173)：Nonzero retained product preserves an initial scalar distinction, not a claim that the complete old pre×gate vector can be decoded.
+- [`CGB.Generation.response_gated_vector_source_difference`](../../lean/CGBAxioms/CGBAxioms/GenerationResponseGatedCarrier.lean#L193)：Equal rank-release rates give a direct source-contrast recurrence inside one and the same reservoir; the common free pool is retained in the formula.
+- [`CGB.Generation.positive_demand_preserves_contact_distinction`](../../lean/CGBAxioms/CGBAxioms/GenerationResponseGatedCarrier.lean#L204)
+
+## GenerationRoutingCredit（3）
+_Finite sparse-route credit A fixed sparse support is a finite boundary alphabet._
+
+- [`CGB.Generation.log_softmax_direction_deriv`](../../lean/CGBAxioms/CGBAxioms/GenerationRoutingCredit.lean#L28)：The log-softmax derivative for an arbitrary finite direction.
+- [`CGB.Generation.softmax_direction_deriv`](../../lean/CGBAxioms/CGBAxioms/GenerationRoutingCredit.lean#L72)：Each selected route probability has the expected softmax response.
+- [`CGB.Generation.softmax_read_direction_deriv`](../../lean/CGBAxioms/CGBAxioms/GenerationRoutingCredit.lean#L98)：A route read changes by the sum of its local, centered softmax responses.
 
 ## GenerationSeedMemory（15）
 _An actual memory world for the unchanged physical seed The first quiet tick moves the source particle and independently selects a quiet or food world._

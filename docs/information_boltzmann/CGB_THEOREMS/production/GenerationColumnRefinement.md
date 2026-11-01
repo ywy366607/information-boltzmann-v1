@@ -10,6 +10,8 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationColumnRefinement.lean#L83)
 
+解释：输入局部柱投影算子、介质动作与局部性公理P1b，经空间动作支持集分离分析，输出动作作用外部件的柱节点内部活动状态在动作施加后严格保持不变。
+
 源码说明：P1b makes a nonparticipant's activity readout unchanged under the same physical event. No independent activity update is permitted.
 
 形式陈述：
@@ -24,6 +26,8 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationColumnRefinement.lean#L89)
 
+解释：输入局部柱投影算子、动作输入与局部性公理P1b，经局部载体支持分析，输出非动作作用范围外部件的底层物质载体在转移后严格不变。
+
 源码说明：The same event leaves a nonparticipant's local causal reading unchanged.
 
 形式陈述：
@@ -37,6 +41,8 @@
 ## CGB.Generation.LocalColumnProjections.contact_unchanged_outside
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationColumnRefinement.lean#L95)
+
+解释：输入局部柱投影算子、介质动作与公理P1b，经外周接触面隔离判定，输出不在动作作用区域内的柱节点接触面状态在系统动作后保持不变。
 
 源码说明：A contact reading changes only when at least one endpoint participates.
 
@@ -53,6 +59,8 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationColumnRefinement.lean#L111)
 
+解释：输入物理多柱因果载体，经载体算子抽象提升，输出存在一致的读出算子与推进算子，使编码物理状态精确复现历史依赖的读出与推进契约。
+
 源码说明：The carrier fields meet the existing exact readout-and-successor contract. This is a use of the actual body step, not a second recurrence.
 
 形式陈述：
@@ -68,6 +76,8 @@
 ## CGB.Generation.BodyCausalCarrier.merged_history_preserves_read_and_successor
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationColumnRefinement.lean#L120)
+
+解释：输入多柱物理介质载体对象，经历史合并状态等价性检验，输出在编码状态相同时保证目标读出严格一致，且对任意到达输入其后继推进状态依然严格相等。
 
 源码说明：Equivalently, any two histories merged by the carrier agree on every declared readout and on the carrier successor for each arrival.
 

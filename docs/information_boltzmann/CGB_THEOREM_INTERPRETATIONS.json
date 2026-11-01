@@ -72,15 +72,15 @@
     "text": "在给定线性梯度模型中，同一个噪声 ξ 在新旧参数梯度差里抵消，得到 h·a²。这为同批次测量自身步长造成的梯度变化提供代数依据，但并不保证任意非线性模型都精确。"
   },
   "CGB.Generation.dot_delta": {
-    "source_sha256": "8dbe8b07d349a94d81f523145582c754621144abd61ac7afbe5189587f44d3f0",
+    "source_sha256": "40d149b303903637478cb56de93fd19b4693784171b65bcab8b62908ae581568",
     "text": "当键向量平方范数为一时，delta 步骤后的状态平方范数精确等于原范数减去 β(2−β) 乘投影平方；该恒等式适用于任意实数 β。"
   },
   "CGB.Generation.deltaStep_sub": {
-    "source_sha256": "8dbe8b07d349a94d81f523145582c754621144abd61ac7afbe5189587f44d3f0",
+    "source_sha256": "40d149b303903637478cb56de93fd19b4693784171b65bcab8b62908ae581568",
     "text": "对于固定键与强度，两个状态分别经过 delta 更新后的差，等于对它们的原始差应用同一 delta 更新。这体现该步骤相对状态的线性。"
   },
   "CGB.Generation.linear_hold_keeps_error": {
-    "source_sha256": "8dbe8b07d349a94d81f523145582c754621144abd61ac7afbe5189587f44d3f0",
+    "source_sha256": "40d149b303903637478cb56de93fd19b4693784171b65bcab8b62908ae581568",
     "text": "若线性映射原样保持信号 s，那么沿 s 方向的任意比例扰动也会原样保留。因此该映射不能同时对这类扰动作精确纠错；结论只针对这里的线性映射及扰动方向。"
   },
   "CGB.GradientFilter.memoryless_gain_excess": {
@@ -452,175 +452,175 @@
     "text": "在该共享势、非负耦合模型中，若较低活动单位达到强连接阈值而较高活动单位未达到，则产生矛盾。"
   },
   "CGB.LanguageLifeKernel.charge_total_preserved": {
-    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
+    "source_sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883",
     "text": "对该有向图的任意整数边流，所有节点经关联矩阵更新后的电荷总和与更新前相等。"
   },
   "CGB.LanguageLifeKernel.conservation_does_not_identify_components": {
-    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
+    "source_sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883",
     "text": "存在两组各自分量不同但总流量相等的分解，说明仅知道守恒总量不能唯一识别各分量。"
   },
   "CGB.LanguageLifeKernel.conserved_carrier_path_balance": {
-    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
+    "source_sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883",
     "text": "沿守恒载体轨迹，任意有限步的状态净变化等于这段时间输入减输出之和。"
   },
   "CGB.LanguageLifeKernel.conserved_carrier_path_no_output": {
-    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
+    "source_sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883",
     "text": "沿守恒载体轨迹，如果各步输出均为零，则状态净变化等于累计输入。"
   },
   "CGB.LanguageLifeKernel.conserved_transfer_source_trace": {
-    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
+    "source_sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883",
     "text": "一次局部守恒转移的来源减少量恰等于转移量。"
   },
   "CGB.LanguageLifeKernel.conserved_transfer_target_trace": {
-    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
+    "source_sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883",
     "text": "一次局部守恒转移的目标增加量恰等于转移量。"
   },
   "CGB.LanguageLifeKernel.conserved_transfer_total_preserved": {
-    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
+    "source_sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883",
     "text": "一次局部守恒转移前后，来源与目标的总量相等。"
   },
   "CGB.LanguageLifeKernel.delayed_credit_requires_history_carrier": {
-    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
+    "source_sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883",
     "text": "当同一个当前可见输入需要两个不同信用值时，任何只依赖该输入的确定规则都不可能同时输出两者。"
   },
   "CGB.LanguageLifeKernel.external_causal_readout_exists_iff": {
-    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
+    "source_sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883",
     "text": "在给定检索接口和默认值下，存在能对所有历史和查询给出所需结果的读取规则，当且仅当不可区分的内部状态与检索结果不会要求不同输出。"
   },
   "CGB.LanguageLifeKernel.external_trace_requires_retrieved_distinction": {
-    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
+    "source_sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883",
     "text": "若确定读出规则能给出所有所需信用，当两段历史的内部状态相同但所需信用不同，检索出的外部记录必须不同。"
   },
   "CGB.LanguageLifeKernel.history_readout_exists_iff": {
-    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
+    "source_sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883",
     "text": "对所有历史存在准确读出规则，当且仅当编码相同的历史具有相同所需输出；默认输出用于构造读出。"
   },
   "CGB.LanguageLifeKernel.history_transition_exists_iff": {
-    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
+    "source_sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883",
     "text": "存在只依赖当前编码与输入的确定状态更新，当且仅当编码相同的历史在同一后续输入下仍产生相同后继编码。"
   },
   "CGB.LanguageLifeKernel.incidence_sum_zero": {
-    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
+    "source_sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883",
     "text": "每条边的节点关联系数之和为零，这是图上内部流动保持总量的基础。"
   },
   "CGB.LanguageLifeKernel.incidence_ternary": {
-    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
+    "source_sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883",
     "text": "该有向图定义中的每个节点—边关联系数只可能是 −1、0 或 1。"
   },
   "CGB.LanguageLifeKernel.leaky_transfer_readout_is_net": {
-    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
+    "source_sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883",
     "text": "带泄漏的守恒转移中，载体前后差值等于输入减泄漏，不能仅凭净变化单独读出输入。"
   },
   "CGB.LanguageLifeKernel.no_visible_only_delayed_credit_rule": {
-    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
+    "source_sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883",
     "text": "同一可见值对应两种不同的延迟信用目标时，只看当前可见值的确定规则无法同时满足两种目标。"
   },
   "CGB.LanguageLifeKernel.observable_transfer_recovers_amount": {
-    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
+    "source_sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883",
     "text": "在该可观测守恒转移结构的读出前提下，目标端读数恰好等于转移量。"
   },
   "CGB.LanguageLifeKernel.observational_record_does_not_fix_intervention": {
-    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
+    "source_sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883",
     "text": "给出两个在观测输入一致时输出相同、但在一次干预下输出不同的规则，说明被动观测一致不足以确定干预结果。"
   },
   "CGB.LanguageLifeKernel.reserve_balance": {
-    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
+    "source_sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883",
     "text": "若支出不超过原有储备与收入之和，储备更新后的余额加支出恰等于原储备加收入。"
   },
   "CGB.LanguageLifeKernel.step_charge_conserved": {
-    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
+    "source_sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883",
     "text": "语言核一步图流更新前后，所有节点电荷总和相等。"
   },
   "CGB.LanguageLifeKernel.step_clock_advances": {
-    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
+    "source_sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883",
     "text": "语言核的离散时间标记在每次 step 后严格增加。"
   },
   "CGB.LanguageLifeKernel.step_reserve_paid": {
-    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
+    "source_sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883",
     "text": "支出有足够储备和收入覆盖时，语言核一步更新后的储备加支出等于旧储备加收入。"
   },
   "CGB.LanguageLifeKernel.superposed_transfer_readout_is_net": {
-    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
+    "source_sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883",
     "text": "同一目标叠加两条整数流后，其前后差值等于两流之和，单独分量不会由这个差值直接区分。"
   },
   "CGB.LanguageLifeKernel.Approximation.fold_error": {
-    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
+    "source_sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883",
     "text": "若每步近似误差至多按因子 L 放大并增加 δ，有限输入序列后的总误差满足几何累积上界。"
   },
   "CGB.LanguageLifeKernel.Approximation.invariant_error": {
-    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
+    "source_sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883",
     "text": "若单步误差递推满足 Lε+δ≤ε，则从误差不超过 ε 出发，任意有限输入序列后误差仍不超过 ε。"
   },
   "CGB.LanguageLifeKernel.CausalRecord.update_least": {
-    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
+    "source_sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883",
     "text": "任何包含所有与先验、动作和观测相容后继世界的集合，都包含该因果记录更新结果。"
   },
   "CGB.LanguageLifeKernel.CausalRecord.update_sound": {
-    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
+    "source_sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883",
     "text": "对于非空主体状态，真实世界一步转移有正权重时，相应观测下的后继世界被因果记录更新保留。"
   },
   "CGB.LanguageLifeKernel.CausalRecord.weights_exact": {
-    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
+    "source_sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883",
     "text": "对于非空主体状态，给定世界转移权重恰为因果记录整数权重除以二。"
   },
   "CGB.LanguageLifeKernel.CausalState.finite_alphabets_unbounded": {
-    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
+    "source_sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883",
     "text": "即使输入为有限布尔字母表，要求判断真值与假值出现次数是否相等的历史也具有无限多个可区分因果状态。"
   },
   "CGB.LanguageLifeKernel.CausalState.finite_bound": {
-    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
+    "source_sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883",
     "text": "若有限状态机能对所有历史准确实现指定输出，则所需因果状态有限且数量不超过实现机器的状态数。"
   },
   "CGB.LanguageLifeKernel.CausalState.fold_refines": {
-    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
+    "source_sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883",
     "text": "对因果状态逐个处理一个后缀，得到的状态等于先把后缀接到历史上再编码的状态。"
   },
   "CGB.LanguageLifeKernel.CausalState.minimal": {
-    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
+    "source_sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883",
     "text": "任何准确实现指定历史输出的状态机都能满射到相应因果状态，表达该因果状态表示的最小性。"
   },
   "CGB.LanguageLifeKernel.CausalState.realizes": {
-    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
+    "source_sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883",
     "text": "因果状态编码能够读出历史所需输出，并且处理一个输入后与更新历史再编码一致。"
   },
   "CGB.LanguageLifeKernel.FirstHit.first_hit_sum": {
-    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
+    "source_sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883",
     "text": "首次命中表达式 1−(1−r)^t 可写成 r 乘有限几何级数。"
   },
   "CGB.LanguageLifeKernel.FirstHit.probability_bounds": {
-    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
+    "source_sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883",
     "text": "当权重非负且归一、单步命中率位于零和一之间时，加权首次命中成功率也位于零和一之间。"
   },
   "CGB.LanguageLifeKernel.FirstHit.truncation": {
-    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
+    "source_sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883",
     "text": "在权重非负且单步命中率介于零和一之间时，将寿命截断到有限时限不会增加首次命中成功率。"
   },
   "CGB.LanguageLifeKernel.LocalEdit.accepts_iff": {
-    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
+    "source_sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883",
     "text": "当旧分布和候选分布总权重均为正时，整数交叉乘法接受判据等价于候选事件概率严格提高。"
   },
   "CGB.LanguageLifeKernel.LocalEdit.binary_factor_balance": {
-    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
+    "source_sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883",
     "text": "二元因子修改前后的交叉乘积差可精确分解为修改幅度 v−u 与联合表行列式 ad−bc 的乘积。"
   },
   "CGB.LanguageLifeKernel.PaidRecord.attach_refines": {
-    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
+    "source_sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883",
     "text": "给已有交互机器附加更新记录后，投影到原状态仍细化原机器的行为。"
   },
   "CGB.LanguageLifeKernel.PaidRecord.world_feedback_possible": {
-    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
+    "source_sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883",
     "text": "非空主体在真实世界转移有正权重时，付费记录的可能性判据接受相应动作和后继观测。"
   },
   "CGB.LanguageLifeKernel.SensoryRecord.exact_record_contract": {
-    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
+    "source_sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883",
     "text": "该 16 状态感官记录编码与读出在合法状态上互逆，并保持合法性。"
   },
   "CGB.LanguageLifeKernel.SensoryRecord.fold_refines": {
-    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
+    "source_sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883",
     "text": "对编码记录连续写入感官输入，再读出，等于在原感官状态上连续执行对应更新。"
   },
   "CGB.LanguageLifeKernel.SensoryRecord.action_content_distinguishes": {
-    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
+    "source_sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883",
     "text": "在该 16 状态见证中，若两条记录读出的策略动作和内容成本均相同，则两条记录相同。"
   },
   "CGB.Generation.adapted_gap_zero": {
@@ -628,11 +628,11 @@
     "text": "积分反馈达到固定点且增益非零时，输出偏离目标为零，故任何在零处取零的偏差函数也为零。"
   },
   "CGB.Generation.bank_power_law_lower_bound": {
-    "source_sha256": "98d0e6e042469d7ed5a2fdff9e4ce0b9953489f9b9621e5d0e7111db8da0fb3e",
+    "source_sha256": "dcd6d7f8b8611236e82ee6f25dafaa6cc4e8867db3aa93ca5304cac039031b54",
     "text": "若有限记忆池中有时间常数位于 t 到 γt 之间，则该池组的总轨迹有一个与 1/t 成比例的下界。"
   },
   "CGB.Generation.bank_trace_ge_one_term": {
-    "source_sha256": "98d0e6e042469d7ed5a2fdff9e4ce0b9953489f9b9621e5d0e7111db8da0fb3e",
+    "source_sha256": "dcd6d7f8b8611236e82ee6f25dafaa6cc4e8867db3aa93ca5304cac039031b54",
     "text": "正时间常数的有限池组轨迹总和不小于其中任一单池轨迹。"
   },
   "CGB.Generation.contraction_unique_rest": {
@@ -648,23 +648,23 @@
     "text": "若某有限循环正反速率乘积不相等，则不存在满足所有边细致平衡的严格正权重。"
   },
   "CGB.Generation.delta_nonexpansive": {
-    "source_sha256": "8dbe8b07d349a94d81f523145582c754621144abd61ac7afbe5189587f44d3f0",
+    "source_sha256": "40d149b303903637478cb56de93fd19b4693784171b65bcab8b62908ae581568",
     "text": "键向量范数为一且强度 β 位于零到二之间时，delta 更新不会增大状态的平方范数。"
   },
   "CGB.Generation.gated_delta_contracts": {
-    "source_sha256": "8dbe8b07d349a94d81f523145582c754621144abd61ac7afbe5189587f44d3f0",
+    "source_sha256": "40d149b303903637478cb56de93fd19b4693784171b65bcab8b62908ae581568",
     "text": "对指定形式 α·deltaStep(k,β,d)，若键为单位向量且 β 在零到二之间，更新后的平方范数不超过原平方范数乘 α²；此式不自动适用于 αd−β⟨k,d⟩k。"
   },
   "CGB.Generation.geometric_bank_covers": {
-    "source_sha256": "98d0e6e042469d7ed5a2fdff9e4ce0b9953489f9b9621e5d0e7111db8da0fb3e",
+    "source_sha256": "dcd6d7f8b8611236e82ee6f25dafaa6cc4e8867db3aa93ca5304cac039031b54",
     "text": "对于正初始时间常数和大于一的几何比，覆盖范围内的任意 t 都有一个池时间常数落在 [t,γt]。"
   },
   "CGB.Generation.histories_merge": {
-    "source_sha256": "8dbe8b07d349a94d81f523145582c754621144abd61ac7afbe5189587f44d3f0",
+    "source_sha256": "40d149b303903637478cb56de93fd19b4693784171b65bcab8b62908ae581568",
     "text": "若每步历史差距至多乘以非负因子 α，T 步后的差距不超过初始差距乘所有 α 的积。"
   },
   "CGB.Generation.histories_merge_uniform": {
-    "source_sha256": "8dbe8b07d349a94d81f523145582c754621144abd61ac7afbe5189587f44d3f0",
+    "source_sha256": "40d149b303903637478cb56de93fd19b4693784171b65bcab8b62908ae581568",
     "text": "若各步收缩因子均不超过统一上界，历史差距受该上界的 T 次幂乘初始差距约束。"
   },
   "CGB.Generation.integral_feedback_adapts": {
@@ -676,11 +676,11 @@
     "text": "可微实函数若有两个不同不动点，则两点之间至少有一点的导数等于一。"
   },
   "CGB.Generation.pool_in_band_bound": {
-    "source_sha256": "98d0e6e042469d7ed5a2fdff9e4ce0b9953489f9b9621e5d0e7111db8da0fb3e",
+    "source_sha256": "dcd6d7f8b8611236e82ee6f25dafaa6cc4e8867db3aa93ca5304cac039031b54",
     "text": "正时间常数 τ 位于 [t,γt] 时，其指数轨迹 exp(−t/τ)/τ 具有给定的 1/t 型下界。"
   },
   "CGB.Generation.single_pool_falls_below_power": {
-    "source_sha256": "98d0e6e042469d7ed5a2fdff9e4ce0b9953489f9b9621e5d0e7111db8da0fb3e",
+    "source_sha256": "dcd6d7f8b8611236e82ee6f25dafaa6cc4e8867db3aa93ca5304cac039031b54",
     "text": "对于正时间常数和正系数，足够晚时单个指数池轨迹小于 c/t。"
   },
   "CGB.PairCRN.rate_pos": {
@@ -1336,55 +1336,55 @@
     "text": "在指定双体介质中，一个正系数、两位置不同且内容变化非零的反应可见证内容交换。"
   },
   "CGB.Generation.dot_self_nonneg": {
-    "source_sha256": "915f6f956ec505d2dd5ecb5f5fe4e324c79e81e8eae4c8063ae7ef44a18bc395",
+    "source_sha256": "9221268652acc9babc33535a2dd5f52fdb17dcc72f5a71c13f63900239ba37ad",
     "text": "有限实向量与自身点积非负。"
   },
   "CGB.Generation.eq_zero_of_dot_self": {
-    "source_sha256": "915f6f956ec505d2dd5ecb5f5fe4e324c79e81e8eae4c8063ae7ef44a18bc395",
+    "source_sha256": "9221268652acc9babc33535a2dd5f52fdb17dcc72f5a71c13f63900239ba37ad",
     "text": "有限实向量的自身点积为零时，该向量为零。"
   },
   "CGB.Generation.silent_rest_unique": {
-    "source_sha256": "915f6f956ec505d2dd5ecb5f5fe4e324c79e81e8eae4c8063ae7ef44a18bc395",
+    "source_sha256": "9221268652acc9babc33535a2dd5f52fdb17dcc72f5a71c13f63900239ba37ad",
     "text": "对指定无写入更新 α·deltaStep，单位键、β 在零到二之间且 0≤α<1 时，唯一不动点为零；其他更新需另行核对。"
   },
   "CGB.Generation.tiedWrite_eq_delta_add": {
-    "source_sha256": "915f6f956ec505d2dd5ecb5f5fe4e324c79e81e8eae4c8063ae7ef44a18bc395",
+    "source_sha256": "9221268652acc9babc33535a2dd5f52fdb17dcc72f5a71c13f63900239ba37ad",
     "text": "所定义的绑定写入等于 delta 更新加上目标值沿键方向的写入项。"
   },
   "CGB.Generation.tied_write_is_error_descent": {
-    "source_sha256": "915f6f956ec505d2dd5ecb5f5fe4e324c79e81e8eae4c8063ae7ef44a18bc395",
+    "source_sha256": "9221268652acc9babc33535a2dd5f52fdb17dcc72f5a71c13f63900239ba37ad",
     "text": "绑定写入可代数改写为按预测误差乘键方向进行的一步更新。"
   },
   "CGB.Generation.tied_write_error_shrinks": {
-    "source_sha256": "915f6f956ec505d2dd5ecb5f5fe4e324c79e81e8eae4c8063ae7ef44a18bc395",
+    "source_sha256": "9221268652acc9babc33535a2dd5f52fdb17dcc72f5a71c13f63900239ba37ad",
     "text": "单位键下，绑定写入后的预测误差等于原预测误差乘以 1−β。"
   },
   "CGB.Generation.exact_prediction_no_write": {
-    "source_sha256": "915f6f956ec505d2dd5ecb5f5fe4e324c79e81e8eae4c8063ae7ef44a18bc395",
+    "source_sha256": "9221268652acc9babc33535a2dd5f52fdb17dcc72f5a71c13f63900239ba37ad",
     "text": "预测值恰好等于目标值时，绑定写入不改变状态。"
   },
   "CGB.Generation.occurrence_decay_retains": {
-    "source_sha256": "915f6f956ec505d2dd5ecb5f5fe4e324c79e81e8eae4c8063ae7ef44a18bc395",
+    "source_sha256": "9221268652acc9babc33535a2dd5f52fdb17dcc72f5a71c13f63900239ba37ad",
     "text": "当衰减系数位于零到一且每步权重不超过一时，按权重衰减的有限乘积不小于每步完整衰减。"
   },
   "CGB.Generation.unused_column_kept": {
-    "source_sha256": "915f6f956ec505d2dd5ecb5f5fe4e324c79e81e8eae4c8063ae7ef44a18bc395",
+    "source_sha256": "9221268652acc9babc33535a2dd5f52fdb17dcc72f5a71c13f63900239ba37ad",
     "text": "未使用方向每步的衰减指数为零，因此任意有限步累计乘积为一。"
   },
   "CGB.Generation.no_latch_below_unit_gain": {
-    "source_sha256": "915f6f956ec505d2dd5ecb5f5fe4e324c79e81e8eae4c8063ae7ef44a18bc395",
+    "source_sha256": "9221268652acc9babc33535a2dd5f52fdb17dcc72f5a71c13f63900239ba37ad",
     "text": "固定零点的一 Lipschitz 非线性与小于一的非负增益组合，其不动点只能是零。"
   },
   "CGB.Generation.hardSat_zero": {
-    "source_sha256": "915f6f956ec505d2dd5ecb5f5fe4e324c79e81e8eae4c8063ae7ef44a18bc395",
+    "source_sha256": "9221268652acc9babc33535a2dd5f52fdb17dcc72f5a71c13f63900239ba37ad",
     "text": "指定硬饱和函数在零点的值为零。"
   },
   "CGB.Generation.hardSat_lipschitz": {
-    "source_sha256": "915f6f956ec505d2dd5ecb5f5fe4e324c79e81e8eae4c8063ae7ef44a18bc395",
+    "source_sha256": "9221268652acc9babc33535a2dd5f52fdb17dcc72f5a71c13f63900239ba37ad",
     "text": "指定硬饱和函数不会增大任意两个输入之间的距离。"
   },
   "CGB.Generation.latch_above_unit_gain": {
-    "source_sha256": "915f6f956ec505d2dd5ecb5f5fe4e324c79e81e8eae4c8063ae7ef44a18bc395",
+    "source_sha256": "9221268652acc9babc33535a2dd5f52fdb17dcc72f5a71c13f63900239ba37ad",
     "text": "在增益至少为一时，硬饱和反馈有 −1、0 和 1 三个所列不动点。"
   },
   "CGB.Generation.occupancy_le_exp": {
@@ -4380,43 +4380,43 @@
     "text": "在平稳静默中断期间，系统对外声称的摄入物质通量严格为零。"
   },
   "CGB.LanguageLifeKernel.SensoryRecord.record_state_lower_bound": {
-    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
+    "source_sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883",
     "text": "能够同时无损读取决策动作与维持成本的感知记录载体，其状态空间基数至少为16。"
   },
   "CGB.LanguageLifeKernel.SensoryRecord.joint_successor_reconstruct": {
-    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
+    "source_sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883",
     "text": "原联合机体-世界演化过程中的每个正概率后继状态均可由内部感知记录精确编码与无损重构。"
   },
   "_private.CGBAxioms.LanguageLifeKernel.0.CGB.LanguageLifeKernel.CausalRecord.policy_cases": {
-    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
+    "source_sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883",
     "text": "给出因果记录模块中细胞各离散构型对应决策策略动作的显式分情况查找表。"
   },
   "CGB.LanguageLifeKernel.CausalRecord.sensor_alias_witness": {
-    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
+    "source_sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883",
     "text": "存在相同当前传感器读数但在相同动作下产生不同环境反馈后果的见证实例（传感器别名混淆）。"
   },
   "CGB.LanguageLifeKernel.CausalRecord.action_feedback_witness": {
-    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
+    "source_sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883",
     "text": "后续相同的传感器观测在前期采取不同动作时对应不同的因果环境后继状态解释。"
   },
   "CGB.LanguageLifeKernel.PaidRecord.settlement_contract": {
-    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
+    "source_sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883",
     "text": "有偿记忆记录在结算时的剩余能量储备与扣除费用之和严格守恒，且合法候选假设集保持无损收缩。"
   },
   "CGB.LanguageLifeKernel.PaidRecord.combined_write_budget": {
-    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
+    "source_sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883",
     "text": "综合有偿记录在单步演化中信用余额、写入能耗与手续费的综合支出受基础热力学第一定律预算严格约束。"
   },
   "CGB.LanguageLifeKernel.PaidRecord.historical_frame_witness": {
-    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
+    "source_sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883",
     "text": "存在仅读取当前瞬间观测无法确定真实世界状态的历史因果歧义见证。"
   },
   "CGB.LanguageLifeKernel.PaidRecord.joint_source_possible": {
-    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
+    "source_sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883",
     "text": "在联合状态演化下真实环境历史始终属于有偿记忆记录的可能候选集合。"
   },
   "CGB.LanguageLifeKernel.CausalState.separated_histories_capacity": {
-    "source_sha256": "e1a5c76f88f430482afb61a0b660e5686169fccb9562b44df15f288d872ad1da",
+    "source_sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883",
     "text": "导出为区分非等价历史轨迹，因果状态记录载体所需容量的严格下界。"
   },
   "CGB.RenewableEncoding.code_roundtrip": {
@@ -5734,5 +5734,1881 @@
   "CGB.SensoryMaintenanceRepairCandidates.region_repair_preserves_one_tick": {
     "source_sha256": "9455c1062d0e481827392055ffc79298e52fdcbdacaf088be17008b5f405fc80",
     "text": "复用已有定理，证明原感知维护见证满足误差参数零的一拍感官丢失耐受条件。"
+  },
+  "CGB.ActiveInference.action_condition_required": {
+    "source_sha256": "aa7b173e798f344a828bbc06f55a61edf974f4b261e3f34df2dd5beb225cd14e",
+    "text": "输入动作敏感的环境条件响应算子与动作盲目的预测器，经反证法推导，输出动作盲目预测器无法在所有动作条件下精确拟合动作敏感环境的实际响应。"
+  },
+  "CGB.ActiveInference.active_closure": {
+    "source_sha256": "aa7b173e798f344a828bbc06f55a61edf974f4b261e3f34df2dd5beb225cd14e",
+    "text": "输入策略序列、可用生存信号、动作敏感响应算子与预测器，经主动推理生存闭包推演，输出长期维持生存排除了最终被动策略，且动作敏感环境排除了动作盲目预测器。"
+  },
+  "CGB.ActiveInference.not_unbounded_of_bounded": {
+    "source_sha256": "aa7b173e798f344a828bbc06f55a61edf974f4b261e3f34df2dd5beb225cd14e",
+    "text": "输入累积信号有上界的信号生成序列，经有界性检验，输出该信号序列必然无法满足生命体长期存活所需的发散无界信号条件。"
+  },
+  "CGB.ActiveInference.silence_condition_required": {
+    "source_sha256": "aa7b173e798f344a828bbc06f55a61edf974f4b261e3f34df2dd5beb225cd14e",
+    "text": "输入字节级世界响应模型与无条件预测器，经动作干预导致零字节（沉默）概率变化的判据，输出盲目预测器无法拟合由自身动作干预引起的条件输出概率。"
+  },
+  "CGB.ActiveInference.viable_not_eventually_passive": {
+    "source_sha256": "aa7b173e798f344a828bbc06f55a61edf974f4b261e3f34df2dd5beb225cd14e",
+    "text": "输入长期策略、可用累积信号与初始参考动作，经生存必要性规约，输出若生存需要无界累积信号且所有最终被动策略仅产生有界信号，则存活策略绝不能最终停滞于被动状态。"
+  },
+  "CGB.ClosedLoopCredit.constant_likelihood_posterior": {
+    "source_sha256": "78dd53b5564284e29ff132beed024ca524467d4580df31794a8d2effa6722cb7",
+    "text": "输入归一化先验分布与严格正的常数似然函数，经贝叶斯后验概率归一化变换，输出后验分布严格等于原先验分布（证明常数似然不提供关于未知状态的新证据）。"
+  },
+  "CGB.ClosedLoopCredit.log_policy_deriv": {
+    "source_sha256": "78dd53b5564284e29ff132beed024ca524467d4580df31794a8d2effa6722cb7",
+    "text": "输入可微的正值策略分布，经复合函数对数求导法则，输出策略对数概率对参数的导数严格等于策略导数与当前策略概率的比值（得分函数标准形式）。"
+  },
+  "CGB.ClosedLoopCredit.missing_score_derivative_counterexample": {
+    "source_sha256": "78dd53b5564284e29ff132beed024ca524467d4580df31794a8d2effa6722cb7",
+    "text": "输入参数基线反例，经闭环目标导数计算，输出若仅计算策略得分项而忽略直接得分导数，则策略估计梯度为零而实际目标导数为一，证实必须引入三因子闭环直接梯度。"
+  },
+  "CGB.ClosedLoopCredit.objective_deriv": {
+    "source_sha256": "78dd53b5564284e29ff132beed024ca524467d4580df31794a8d2effa6722cb7",
+    "text": "输入参数化策略、环境转移核与奖赏损失函数，经乘积求导法则，输出闭环目标函数的全导数严格分解为策略探索导数项与价值直接导数项之和。"
+  },
+  "CGB.ClosedLoopCredit.objective_deriv_advantage": {
+    "source_sha256": "78dd53b5564284e29ff132beed024ca524467d4580df31794a8d2effa6722cb7",
+    "text": "输入参数化策略、环境核、目标值与任意标量基线函数，经优势重整化变换，输出闭环导数在标量基线减免下保持无偏，精确表示为优势加权的得分三因子项与直接得分导数项。"
+  },
+  "CGB.ClosedLoopCredit.policy_deriv_sum_zero": {
+    "source_sha256": "78dd53b5564284e29ff132beed024ca524467d4580df31794a8d2effa6722cb7",
+    "text": "输入概率归一化的参数化策略，经对全动作求和并交换求导次序，输出策略导数在全动作空间上的积分严格为零。"
+  },
+  "CGB.ClosedLoopCredit.scalar_baseline_zero": {
+    "source_sha256": "78dd53b5564284e29ff132beed024ca524467d4580df31794a8d2effa6722cb7",
+    "text": "输入条件概率核、全空间积分为零的策略导数与常数基线，经双重求和展开，输出常数基线与策略导数的乘积在全空间期望值恒等于零。"
+  },
+  "CGB.ConservedMemory.conserving_calm_needs_organizational_viability": {
+    "source_sha256": "6a1df0eabf3a6f138b3ad4db5e008080a052f658a224e6191f20c541b9ad0494",
+    "text": "输入静息守恒系统且存活准则仅读取物质总量，经条件互信息不变性检验，输出若系统维持长期记忆则存活准则必须扩展至组织结构可观测量而不仅是简单物质总量。"
+  },
+  "CGB.ConservedMemory.event_observable_kernel": {
+    "source_sha256": "6a1df0eabf3a6f138b3ad4db5e008080a052f658a224e6191f20c541b9ad0494",
+    "text": "输入局部事件可观测量不变性前提，经均匀化静息核提升，输出局部守恒律提升为全局静息马尔可夫核下的严格条件期望不变性。"
+  },
+  "CGB.ConservedMemory.historical_persistence_requires_alive_change": {
+    "source_sha256": "6a1df0eabf3a6f138b3ad4db5e008080a052f658a224e6191f20c541b9ad0494",
+    "text": "输入历史持久性记忆公理，经静息状态分析，输出为了抵抗物理耗散，静息动力学必须能够对微观存活可观测量施加非平凡的内部状态演化。"
+  },
+  "CGB.ConservedMemory.observable_indicator_preserved": {
+    "source_sha256": "6a1df0eabf3a6f138b3ad4db5e008080a052f658a224e6191f20c541b9ad0494",
+    "text": "输入保持某可观测量的随机转移核，经指示函数期望展开，输出该随机核精确保持该可观测量任意水平集的示性函数期望值不变。"
+  },
+  "CGB.ConservedMemory.observable_test_preserved": {
+    "source_sha256": "6a1df0eabf3a6f138b3ad4db5e008080a052f658a224e6191f20c541b9ad0494",
+    "text": "输入守恒可观测量与任意实检验函数，经算子交换，输出检验函数的条件期望在转移核下保持恒定。"
+  },
+  "CGB.ConservedMemory.observed_memory_as_project": {
+    "source_sha256": "6a1df0eabf3a6f138b3ad4db5e008080a052f658a224e6191f20c541b9ad0494",
+    "text": "输入确定性粗粒化投影，经分布前推算子，输出可观测记忆测度严格等同于微观分布沿投影映射的前推测度。"
+  },
+  "CGB.ConservedMemory.observed_memory_information_le": {
+    "source_sha256": "6a1df0eabf3a6f138b3ad4db5e008080a052f658a224e6191f20c541b9ad0494",
+    "text": "输入微观本体分布与其粗粒化可观测投影，经数据处理不等式，输出粗粒化记忆条件互信息为微观全状态条件互信息的保证下界。"
+  },
+  "CGB.ConservedMemory.observed_memory_nonneg": {
+    "source_sha256": "6a1df0eabf3a6f138b3ad4db5e008080a052f658a224e6191f20c541b9ad0494",
+    "text": "输入粗粒化转移概率，经概率测度非负性判定，输出可观测记忆测度在所有配置下非负。"
+  },
+  "CGB.ConservedMemory.observed_write_pos_of_transition": {
+    "source_sha256": "6a1df0eabf3a6f138b3ad4db5e008080a052f658a224e6191f20c541b9ad0494",
+    "text": "输入正概率转移与正概率前缀，经前推测度组合，输出粗粒化写入状态转移具有严格正的生成概率。"
+  },
+  "CGB.ConservedMemory.one_write_body_marginal": {
+    "source_sha256": "6a1df0eabf3a6f138b3ad4db5e008080a052f658a224e6191f20c541b9ad0494",
+    "text": "输入单次写入世界模型，经环境边际化求和，输出首步写入后的本体边际概率分布等于世界归一化后继转移律的边际投射。"
+  },
+  "CGB.ConservedMemory.one_write_observed_mass": {
+    "source_sha256": "6a1df0eabf3a6f138b3ad4db5e008080a052f658a224e6191f20c541b9ad0494",
+    "text": "输入单次写入的粗粒化观测测度，经可观测输出全求和，输出总质量精确等于真实前缀历史的概率质量。"
+  },
+  "CGB.ConservedMemory.one_write_observed_row": {
+    "source_sha256": "6a1df0eabf3a6f138b3ad4db5e008080a052f658a224e6191f20c541b9ad0494",
+    "text": "输入前缀历史与单步观测转移，经联合条件概率展开，输出粗粒化转移矩阵的单行精确等于前缀质量乘以单步条件观测概率。"
+  },
+  "CGB.ConservedMemory.quiet_event_observable_kernel": {
+    "source_sha256": "6a1df0eabf3a6f138b3ad4db5e008080a052f658a224e6191f20c541b9ad0494",
+    "text": "输入静息事件算子，经局部事件不变性特化，输出静息事件算子精确保持宏观可观测量的条件期望值。"
+  },
+  "CGB.ConservedMemory.quiet_observable_memory_marginal": {
+    "source_sha256": "6a1df0eabf3a6f138b3ad4db5e008080a052f658a224e6191f20c541b9ad0494",
+    "text": "输入未来任意延迟时刻的静息演化，经观测守恒提升，输出未来各步的粗粒化可观测边际分布恒等于首步写入后的边际分布。"
+  },
+  "CGB.ConservedMemory.quiet_total_kernel": {
+    "source_sha256": "6a1df0eabf3a6f138b3ad4db5e008080a052f658a224e6191f20c541b9ad0494",
+    "text": "输入静息物理事件，经正反应速率约束，输出守恒律在所有实际发生（正速率）的静息反应中精确成立。"
+  },
+  "CGB.ConservedMemory.quiet_total_memory_marginal": {
+    "source_sha256": "6a1df0eabf3a6f138b3ad4db5e008080a052f658a224e6191f20c541b9ad0494",
+    "text": "输入封闭静息动力学与公理P2a（物质守恒），经条件概率边缘化，输出系统微观总物质含量的边际分布在闭合静息演化下恒定不变。"
+  },
+  "CGB.ConservedMemory.registered_event_kernel_pos": {
+    "source_sha256": "6a1df0eabf3a6f138b3ad4db5e008080a052f658a224e6191f20c541b9ad0494",
+    "text": "输入正速率登记物理事件，经主方程对角化分解，输出该事件在微观马尔可夫转移核中对应严格正的单步转移概率。"
+  },
+  "CGB.ConservedMemory.remembers_of_conserved_observable": {
+    "source_sha256": "6a1df0eabf3a6f138b3ad4db5e008080a052f658a224e6191f20c541b9ad0494",
+    "text": "输入写入守恒可观测量的非零互信息与守恒保持核，经多步延迟推演，输出系统在任意长延迟下满足记忆保持公理Remembers。"
+  },
+  "CGB.ConservedMemory.remembers_of_quiet_and_actual_write": {
+    "source_sha256": "6a1df0eabf3a6f138b3ad4db5e008080a052f658a224e6191f20c541b9ad0494",
+    "text": "输入反事实实际写入与静息保持算子，经条件互信息差分分析，输出单次实际写入产生严格正的信息，且在静息演化下长期得以保留。"
+  },
+  "CGB.ConservedMemory.seed_calm_event_conserves": {
+    "source_sha256": "6a1df0eabf3a6f138b3ad4db5e008080a052f658a224e6191f20c541b9ad0494",
+    "text": "输入四位点物理种子模型，经静息期外周关闭判定，输出静息动力学切断储备池端口，严格守恒内部物理微观粒子数。"
+  },
+  "CGB.ConservedMemory.seed_calm_has_nontrivial_event": {
+    "source_sha256": "6a1df0eabf3a6f138b3ad4db5e008080a052f658a224e6191f20c541b9ad0494",
+    "text": "输入四位点物理种子模型，经内部跳跃动力学求值，输出静息状态下内部具有正速率的非平凡跳跃事件，微观状态持续动态演化。"
+  },
+  "CGB.ConservedMemory.seed_event_clocked": {
+    "source_sha256": "6a1df0eabf3a6f138b3ad4db5e008080a052f658a224e6191f20c541b9ad0494",
+    "text": "输入种子模型的反应图谱，经反应通道有限计数，输出系统至多包含18个登记事件，且每个微观态的出度转移速率和不超过18（满足严格时钟界）。"
+  },
+  "CGB.ConservedMemory.seed_quiet_total_memory_marginal": {
+    "source_sha256": "6a1df0eabf3a6f138b3ad4db5e008080a052f658a224e6191f20c541b9ad0494",
+    "text": "输入种子模型储备端口写入的粒子区别，经静息期孤立系统分析，输出写入的总物质差异在静息期后依然精确保留在边际分布中。"
+  },
+  "CGB.ConservedMemory.tagged_memory_nonneg": {
+    "source_sha256": "6a1df0eabf3a6f138b3ad4db5e008080a052f658a224e6191f20c541b9ad0494",
+    "text": "输入记忆定义中带标签的历史概率核，经测度非负性验证，输出带标签的记忆测度在所有支持点上均大于等于零。"
+  },
+  "CGB.GDNLife.action_head_score_deriv": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入模型与状态，经G14对数Softmax法则展开，输出动作头对数得分对输出对数几率的导数精确等价于Softmax指示差分。"
+  },
+  "CGB.GDNLife.addressLogitPerturb_deriv": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入模型与基底扰动，经Softmax求导法则，输出地址对数几率基底坐标扰动的精确Softmax导数。"
+  },
+  "CGB.GDNLife.address_nonneg": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入模型参数与输入字节，经软寻址Softmax计算，输出地址权重向量各槽位分量恒非负。"
+  },
+  "CGB.GDNLife.address_pos": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入模型参数与字节输入，经指数函数严格正性传递，输出寻址权重在每个槽位上均严格为正。"
+  },
+  "CGB.GDNLife.assimilate_addressLogitPerturb_natural_deriv": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入模型、状态与地址扰动，经自然参数积分展开，输出地址侧对GDN自然参数变动的精确导数。"
+  },
+  "CGB.GDNLife.assimilate_addressLogitPerturb_precision_deriv": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入状态与地址扰动，经精度累加分析，输出地址扰动导致的精度变动严格受地址敏感度调控。"
+  },
+  "CGB.GDNLife.assimilate_bias": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入模型、状态与到达包，经吸收更新算子，输出吸收变换保持读出头的偏置参数严格不变。"
+  },
+  "CGB.GDNLife.assimilate_head": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入模型、状态与到达包，经吸收步进计算，输出吸收操作仅写入物理内存场与因果缓存，输出头权重矩阵保持不变。"
+  },
+  "CGB.GDNLife.assimilate_lastByte_of_positive": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入正置信度到达包，经因果缓存写入，输出该到达字节精确成为下一次预测的因果查询。"
+  },
+  "CGB.GDNLife.assimilate_likelihoodLogitPerturb_natural_deriv": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入模型与似然对数几率扰动，经自然参数增量求导，输出似然对数几率对自然参数更新的精确导数。"
+  },
+  "CGB.GDNLife.assimilate_likelihoodLogitPerturb_precision_deriv": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入学习置信度参数与扰动，经精度更新方程求导，输出置信度对存储自然精度的精确导数。"
+  },
+  "CGB.GDNLife.assimilate_likelihoodLogitPerturb_zero": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入表示当前置信度的原始对数几率，经零扰动求值，输出零摄动下自然参数与精度导数恒为零。"
+  },
+  "CGB.GDNLife.assimilate_positive": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入正精度初始状态与到达包，经吸收更新，输出更新后状态的所有槽位精度继续保持严格正性。"
+  },
+  "CGB.GDNLife.assimilate_valuePerturb_difference": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入两组编码器坐标摄动，经有限差分比较，输出输入编码器不同坐标引起的精确有限差分。"
+  },
+  "CGB.GDNLife.assimilate_valuePerturb_natural": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入字节编码器单点扰动，经自然参数累加展开，输出编码坐标扰动对存储自然参数的精确一阶变动。"
+  },
+  "CGB.GDNLife.assimilate_valuePerturb_precision": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入字节编码器扰动，经精度更新分析，输出该扰动使存储精度严格保持不变。"
+  },
+  "CGB.GDNLife.byte_log_softmax_direction_deriv": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入对数几率方向向量，经有限维Softmax求导展开，输出字节对数Softmax沿整个对数几率方向的一阶导数。"
+  },
+  "CGB.GDNLife.byte_softmax_pos": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入任意实对数几率向量与字节目标，经Softmax指数归一化，输出归一化字节预测概率严格大于零。"
+  },
+  "CGB.GDNLife.carrier_fold": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入实际输入历史序列，经实状态载体连续折叠，输出历史序列折叠轨迹不依赖离散状态替换，直接在连续GDN状态上执行。"
+  },
+  "CGB.GDNLife.carrier_next": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入GDN生命载体模型、初始正状态与策略响应映射，经单步推进算子，输出可再生语言后继步进精确等同于标准GDN单步更新算子。"
+  },
+  "CGB.GDNLife.distinct_live_bytes_separate_steps": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入两个不同的有效输入字节，经状态写入推进，输出更新后的后继状态必然可分离且两两不等。"
+  },
+  "CGB.GDNLife.exists_open_real_gdn_trajectory": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入连续GDN动力学模型，经开流轨迹存在性定理，输出存在一条连续可存活且产生正信息的真实无限流轨迹。"
+  },
+  "CGB.GDNLife.feature_difference_of_shared_query": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入共享查询与相同精度下的两组自然状态，经特征解码映射，输出两状态特征读出之差精确正比于自然参数之差。"
+  },
+  "CGB.GDNLife.feature_valuePerturb": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入字节值编码器摄动，经预测读出分析，输出未到达字节的值编码扰动对当前已准备的特征读出无直接影响。"
+  },
+  "CGB.GDNLife.finish_future_ce_improves": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入局部头更新与未来转移律，经交叉熵求导分析，输出具体头更新能够严格降低系统在未来语言律下的预测交叉熵。"
+  },
+  "CGB.GDNLife.finish_saved_logits": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入保存的特征向量与局部头更新，经仿射映射分解，输出吸收后的局部更新不改变基于保存特征的中间对数几率。"
+  },
+  "CGB.GDNLife.finish_saved_nll_improves": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入保存特征与到达字节目标，经梯度下降步进分析，输出基于保存特征的当前字节负对数似然损失在正学习率下严格单调下降。"
+  },
+  "CGB.GDNLife.first_observation_sets_last_byte": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入零初始精度状态与首个输入字节，经缓存写入规则，输出即使在零精度下首个观测字节仍精确写入因果查询缓存。"
+  },
+  "CGB.GDNLife.future_ce_improves_of_target_mass": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入目标字符分布具有正概率质量的条件，经期望梯度分解，输出分布级条件能够保证未来交叉熵严格改进。"
+  },
+  "CGB.GDNLife.head_update_improves_saved_feature": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入保存特征向量，经局部仿射头参数单步更新，输出保存特征上的分类负对数似然损失严格单调下降。"
+  },
+  "CGB.GDNLife.head_update_logits": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入参数更新步长与特征向量，经仿射变换展开，输出参数步进在输出层诱导出大小精确为学习率乘以特征模方的一阶对数几率增量。"
+  },
+  "CGB.GDNLife.head_update_preserves_memory": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入局部头参数更新算子，经状态分量独立性分析，输出局部读出头参数学习绝不改变内部记忆状态或其不确定度（精度）。"
+  },
+  "CGB.GDNLife.incoming_nonneg": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入模型参数与到达包，经流入权重映射，输出到达各槽位的流入强度非负。"
+  },
+  "CGB.GDNLife.incoming_valuePerturb": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入字节编码器扰动，经流入强度核算，输出修改字节值编码严格保持到达包的流入权重不变。"
+  },
+  "CGB.GDNLife.initial_positive": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入正的初始精度参数，经初始状态构造，输出初始GDN物理状态满足正精度公理。"
+  },
+  "CGB.GDNLife.likelihoodSoftplus_deriv": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入Softplus置信度参数，经微积分导数计算，输出Softplus置信度参数的精确一阶导数等于标准Logistic Sigmoid函数。"
+  },
+  "CGB.GDNLife.positive_observation_sets_last_byte": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入任意正置信度到达观测，经因果读出更新，输出该字节直接写入下一次因果查询。"
+  },
+  "CGB.GDNLife.preparation_uses_only_elapsed": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入当前已到达历史与未来未到达字节，经因果隔离分析，输出预测准备过程仅依赖流逝时间与历史，无法窥探未来字节。"
+  },
+  "CGB.GDNLife.prepare_valuePerturb": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入未到达字节编码扰动，经准备算子求解，输出改变未来字节编码无法影响在当前流逝时间下预先准备好的预测状态。"
+  },
+  "CGB.GDNLife.prior_bias": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入GDN状态与经过时间，经先验衰减演化，输出时间先验演化严格保持输出头偏置不变。"
+  },
+  "CGB.GDNLife.prior_head": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入物理时间先验转移算子，经参数传递性验证，输出时间先验仅迁移记忆均值与精度，严格保留相同的输出头矩阵与偏置。"
+  },
+  "CGB.GDNLife.prior_logits": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入GDN状态、经过时间与特征向量，经仿射头计算，输出时间先验演化不改变由当前特征生成的输出对数几率。"
+  },
+  "CGB.GDNLife.prior_natural_difference": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入保持槽位精度不变的扰动，经先验时间衰减传递，输出先验演化精确保留自然参数在各槽位上的差分。"
+  },
+  "CGB.GDNLife.prior_positive": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入满足正精度的GDN状态与非负流逝时间，经时间先验指数衰减，输出衰减后状态的精度依然严格保持正性。"
+  },
+  "CGB.GDNLife.prior_zero": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入GDN状态与零流逝时间，经先验算子求值，输出零时间流逝下的先验状态严格等于当前状态。"
+  },
+  "CGB.GDNLife.real_bias_injective": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入实数头偏置族，经实坐标嵌入检验，输出实偏置参数族在输出层具备单射可辨识性。"
+  },
+  "CGB.GDNLife.step_ne_of_positive_head_step": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入正的真实读出头学习步长，经状态差异比较，输出正头学习步使本体状态在每个到达输入下均发生真实物理改变。"
+  },
+  "CGB.GDNLife.step_positive": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入正精度的GDN状态与到达包，经单步复合推进更新，输出完整步进后的后继状态依然满足正精度条件。"
+  },
+  "CGB.GDNLife.step_positive_observation_sets_last_byte": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入完整GDN单步推进算子与正置信度输入，经端到端追踪，输出完整步进精确保持因果查询缓存写入。"
+  },
+  "CGB.GDNLife.step_source_irrelevant": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入外部源标签，经状态学习转移比对，输出输入源标签不改变语言费用或GDN学习规则本身。"
+  },
+  "CGB.GDNLife.valueEligibility_zero_of_no_incoming": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入无流入到达包（流入强度为零），经资格迹传递链展开，输出该槽位处编码器值的后向资格迹恒等于零。"
+  },
+  "CGB.GDNLife.value_future_log_likelihood_deriv": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入未来后继字节到达与GDN单步位移，经G14导数法则，输出未来对数似然对编码器值的全导数精确由前向资格迹给出。"
+  },
+  "CGB.GDNLife.value_future_logit_eligibility_exact": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入后继字节对数几率位移，经链式法则推导，输出后继对数几率位移精确等于输出头权重与编码器前向资格迹的内积。"
+  },
+  "CGB.GDNLife.value_future_read_eligibility_exact": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入后继准备好的读出状态，经前向敏感度递推，输出后继特征读出的前向资格迹精确满足一步前向闭式递推。"
+  },
+  "CGB.GDNLife.value_future_score_factor": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入编码器值得分函数，经梯度因式分解，输出未来得分精确分解为前向资格迹因子与即时创新误差的乘积。"
+  },
+  "CGB.GDNLife.value_read_eligibility_exact": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入单步字节编码器方向，经因果读出展开，输出该方向对下一因果读出的资格迹精确等于槽位权重归一化因子。"
+  },
+  "CGB.GDNLife.value_sensitivity_through_prior": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入编码器写入敏感度，经物理先验时间演化，输出敏感度在经历时间先验后依然保存在相同的自然状态流形中。"
+  },
+  "CGB.GDNLife.value_sensitivity_two_arrivals": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入连续两次到达事件，经自然参数吸收链推演，输出编码器值敏感度由同一自然状态载体连续运载与复合传递。"
+  },
+  "CGB.GDNLife.zero_precision_keeps_last_byte": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入零精度输入包，经状态更新判定，输出零精度输入保持既有最后观测缓存不变，避免虚假覆写。"
+  },
+  "CGB.Generation.associationState_row": {
+    "source_sha256": "afbaae9b35df112be27935effb22c68c67ecc1530c0b9c488ab24e66459f66fe",
+    "text": "输入键矩阵与值矩阵，经矩阵外积V Kᵀ行展开，输出关联矩阵的每个输出维度行精确表示为标量值加权的键向量线性叠加。"
+  },
+  "CGB.Generation.association_readout_interference_bound": {
+    "source_sha256": "afbaae9b35df112be27935effb22c68c67ecc1530c0b9c488ab24e66459f66fe",
+    "text": "输入键矩阵、查询矩阵与有界值矩阵，经三角不等式与读出展开，输出查询读出误差受关联矩阵与对角阵之差的行绝对和一致上界控制。"
+  },
+  "CGB.Generation.association_slot_retention": {
+    "source_sha256": "afbaae9b35df112be27935effb22c68c67ecc1530c0b9c488ab24e66459f66fe",
+    "text": "输入关联矩阵与槽位衰减系数，经逐槽自然参数衰减变换，输出等价于将每个存储键向量按相同槽位因子线性缩放后的新关联状态。"
+  },
+  "CGB.Generation.association_state_readout": {
+    "source_sha256": "afbaae9b35df112be27935effb22c68c67ecc1530c0b9c488ab24e66459f66fe",
+    "text": "输入关联状态矩阵与查询向量，经双线性读出投影，输出每个输出维度的读出值严格等于各样本值与键查询内积的加权和。"
+  },
+  "CGB.Generation.binary_delta_crossEntropy_decreases": {
+    "source_sha256": "9221268652acc9babc33535a2dd5f52fdb17dcc72f5a71c13f63900239ba37ad",
+    "text": "输入当前预测概率、二值真实目标与学习步长，经Delta规则更新概率，输出更新后概率严格保持在有效区间且对目标标签的交叉熵损失严格单调下降。"
+  },
+  "CGB.Generation.bounded_decoder_association_readout": {
+    "source_sha256": "afbaae9b35df112be27935effb22c68c67ecc1530c0b9c488ab24e66459f66fe",
+    "text": "输入有界ε-解码器假设与有界值矩阵，经线性解码算子作用，输出存在解码算子使读出值与真实目标值的最大偏差不超过ε。"
+  },
+  "CGB.Generation.collision_of_excess_keys": {
+    "source_sha256": "afbaae9b35df112be27935effb22c68c67ecc1530c0b9c488ab24e66459f66fe",
+    "text": "输入特征维度小于样本数的键向量集，经线性代数维数定理，输出存在两组不同系数使线性叠加状态碰撞（证明联想矩阵超过维度容量必发生混叠）。"
+  },
+  "CGB.Generation.exact_decoder_association_readout": {
+    "source_sha256": "afbaae9b35df112be27935effb22c68c67ecc1530c0b9c488ab24e66459f66fe",
+    "text": "输入精确逆解码算子与值矩阵，经线性映射求值，输出关联状态经解码后精确恢复原始目标值向量。"
+  },
+  "CGB.Generation.exact_decoder_capacity": {
+    "source_sha256": "afbaae9b35df112be27935effb22c68c67ecc1530c0b9c488ab24e66459f66fe",
+    "text": "输入具有精确解码器的键向量集，经满秩映射维数约束，输出存储样本数必须小于等于特征空间维度。"
+  },
+  "CGB.Generation.exact_decoder_is_bounded_decoder": {
+    "source_sha256": "afbaae9b35df112be27935effb22c68c67ecc1530c0b9c488ab24e66459f66fe",
+    "text": "输入精确解码器假设，经零误差特化，输出精确解码器自动构成容差为0的有界解码器。"
+  },
+  "CGB.Generation.exact_key_capacity": {
+    "source_sha256": "afbaae9b35df112be27935effb22c68c67ecc1530c0b9c488ab24e66459f66fe",
+    "text": "输入在特征空间线性无关的键向量集，经线性代数维数定理，输出线性无关键向量个数必须小于等于向量空间维度。"
+  },
+  "CGB.Generation.normalized_assimilation_decoder_bound": {
+    "source_sha256": "afbaae9b35df112be27935effb22c68c67ecc1530c0b9c488ab24e66459f66fe",
+    "text": "输入旧关联矩阵、新到达键值对、写入权重与精度归一化参数，经归一化自然参数写入分解，输出全解码误差受新键解码误差与残余旧态贡献之和上界控制。"
+  },
+  "CGB.Generation.precision_assimilation_gain_bounds": {
+    "source_sha256": "afbaae9b35df112be27935effb22c68c67ecc1530c0b9c488ab24e66459f66fe",
+    "text": "输入正的先验精度与正写入权重，经精度更新增益求导分析，输出槽位增益参数严格介于0到1之间且受限于权重与先验精度之比。"
+  },
+  "CGB.Generation.precision_assimilation_is_innovation": {
+    "source_sha256": "afbaae9b35df112be27935effb22c68c67ecc1530c0b9c488ab24e66459f66fe",
+    "text": "输入旧均值、新观测值与精度增益系数，经自然参数精度步进变换，输出均值更新严格等价于基于预测误差（新观测减去旧均值）的新息更新形式。"
+  },
+  "CGB.Generation.probeFamilyAccurate_mono": {
+    "source_sha256": "afbaae9b35df112be27935effb22c68c67ecc1530c0b9c488ab24e66459f66fe",
+    "text": "输入探测族容差单调参数，经集合包含性比较，输出精度在较小容差下的探测族保证自动在较大容差下单调成立。"
+  },
+  "CGB.Generation.process_noise_gain_floor": {
+    "source_sha256": "afbaae9b35df112be27935effb22c68c67ecc1530c0b9c488ab24e66459f66fe",
+    "text": "输入正的过程方差与到达精度下界，经滤波更新方差展开，输出系统增益存在严格正的下界（保证过程噪声下持续保持非零学习率）。"
+  },
+  "CGB.Generation.reused_key_tracks_and_rewrites": {
+    "source_sha256": "9221268652acc9babc33535a2dd5f52fdb17dcc72f5a71c13f63900239ba37ad",
+    "text": "输入单位模长键向量、初始状态与值序列，经多步键态外积动力学迭代，输出第t+1步键方向投影精确追踪上一时刻目标值，且目标改变时状态发生有效重写。"
+  },
+  "CGB.Generation.self_listening_frozen_state_counterexample": {
+    "source_sha256": "9221268652acc9babc33535a2dd5f52fdb17dcc72f5a71c13f63900239ba37ad",
+    "text": "输入自监听状态反例赋值，经数值代数验证，输出当自反馈状态被固化时，反馈项不再提供有效增益导数（验证自反馈非冻结的必要性）。"
+  },
+  "CGB.Generation.self_listening_frozen_state_gap": {
+    "source_sha256": "9221268652acc9babc33535a2dd5f52fdb17dcc72f5a71c13f63900239ba37ad",
+    "text": "输入自监听系数、内部状态与参数敏感度，经线性代数展开，输出自变状态更新与冻结状态更新之间的差值精确等于自反馈耦合增量项。"
+  },
+  "CGB.Generation.self_listening_increment": {
+    "source_sha256": "9221268652acc9babc33535a2dd5f52fdb17dcc72f5a71c13f63900239ba37ad",
+    "text": "输入自监听状态推进算子的前后两组参数与状态，经双变量变动展开，输出更新步长增量精确分解为状态变化项与参数敏感度项的二阶线性耦合。"
+  },
+  "CGB.Generation.tied_write_cross_read": {
+    "source_sha256": "9221268652acc9babc33535a2dd5f52fdb17dcc72f5a71c13f63900239ba37ad",
+    "text": "输入写入键、查询键、当前状态、更新率与写入值，经绑定写入变换后沿查询键投影读出，输出读出改变量精确等于写入误差项乘以两键之间的几何内积。"
+  },
+  "CGB.GraceMemory.actual_event_law_four": {
+    "source_sha256": "0ac95f13515d9f019ba5304d1fd5ad4fab6a040f5ccb60ff6d511cdd2c3e80c4",
+    "text": "输入初始状态与第4步延迟，经注册事件转移概率迭代，输出实际事件发生概率律等于预计算的分步前向稀疏概率矩阵。"
+  },
+  "CGB.GraceMemory.kernel_table": {
+    "source_sha256": "0ac95f13515d9f019ba5304d1fd5ad4fab6a040f5ccb60ff6d511cdd2c3e80c4",
+    "text": "输入外周信号与细胞离散状态，经忽略实际事件标签的本体转移核约化，输出本体确定性转移核等同于按控制位与信号计算的确定性单点概率。"
+  },
+  "CGB.GraceMemory.natural_law_early": {
+    "source_sha256": "0ac95f13515d9f019ba5304d1fd5ad4fab6a040f5ccb60ff6d511cdd2c3e80c4",
+    "text": "输入不超过4步的时间步数与细胞环境状态，经本体感知前向迭代，输出在不展开历史笛卡尔积的情况下本体前向概率律等于稀疏行迭代矩阵。"
+  },
+  "CGB.GraceMemory.one_write_information": {
+    "source_sha256": "0ac95f13515d9f019ba5304d1fd5ad4fab6a040f5ccb60ff6d511cdd2c3e80c4",
+    "text": "输入4步单次写入联合转移概率律，经条件互信息算子计算，输出写入后的条件互信息精确等于一比特（ln 2 nats）。"
+  },
+  "CGB.GraceMemory.one_write_joint": {
+    "source_sha256": "0ac95f13515d9f019ba5304d1fd5ad4fab6a040f5ccb60ff6d511cdd2c3e80c4",
+    "text": "输入两代细胞状态与环境初态，经环境边际化求和，输出非零联合转移概率严格集中在三个离散输出取值上，质量分别为1/4、1/4和1/2。"
+  },
+  "CGB.GraceMemory.remembers": {
+    "source_sha256": "0ac95f13515d9f019ba5304d1fd5ad4fab6a040f5ccb60ff6d511cdd2c3e80c4",
+    "text": "输入优雅恢复机制下的本体与环境系统，经长期条件互信息保持性检验，输出系统满足生命记忆保持公理Remembers。"
+  },
+  "CGB.GraceMemory.remembers_with_reachable_action_change": {
+    "source_sha256": "0ac95f13515d9f019ba5304d1fd5ad4fab6a040f5ccb60ff6d511cdd2c3e80c4",
+    "text": "输入优雅恢复本体与自然过程，经正概率转移轨迹复合，输出系统在维持记忆保持公理的同时存在可达轨迹使不同内部状态选择不同的外周动作。"
+  },
+  "CGB.GraceMemory.retained_information": {
+    "source_sha256": "0ac95f13515d9f019ba5304d1fd5ad4fab6a040f5ccb60ff6d511cdd2c3e80c4",
+    "text": "输入任意静息延迟步数，经静息期转移算子迭代，输出在任意长延迟下保持的条件互信息恒等于ln 2。"
+  },
+  "CGB.InformationEconomics.causal_carrier_contract_iff": {
+    "source_sha256": "f4f7a705118a6a44c90c400dea155b886428e46b085531bb2d9c90a7a9a7a4d8",
+    "text": "输入历史空间编码函数、目标读出与后继推进算子，经同态等价分析，输出存在相容因果载体读出与推进算子充要等同于编码状态具有读出确定性与状态转移同态不变性。"
+  },
+  "CGB.InformationEconomics.predictive_growth_contract": {
+    "source_sha256": "f4f7a705118a6a44c90c400dea155b886428e46b085531bb2d9c90a7a9a7a4d8",
+    "text": "输入真实环境分布与正值预测配置分布，经对数财富增长分解，输出预测增长率精确等于字符集最大熵减去交叉熵，且受真实香农熵上限严格约束。"
+  },
+  "CGB.InformationEconomics.selective_write_contract": {
+    "source_sha256": "f4f7a705118a6a44c90c400dea155b886428e46b085531bb2d9c90a7a9a7a4d8",
+    "text": "输入因果候选支撑判定器、有限内存池及当前上下文与观测，经内存步进算子过滤，输出相容候选全保留且零手续费，不相容候选被剔除并消耗单位手续费储备。"
+  },
+  "CGB.InformationProjection.condMutualInfo_eq_kl": {
+    "source_sha256": "7414c012529bbaa6e546ab07601d833823604ecc6129c0d4900834fc1eadf650",
+    "text": "输入三变量非负联合分布，经对数求和恒等变换，输出条件互信息形式精确等价于联合分布与其条件独立乘积参考分布之间的相对熵（KL散度）。"
+  },
+  "CGB.InformationProjection.condMutualInfo_nonneg": {
+    "source_sha256": "7414c012529bbaa6e546ab07601d833823604ecc6129c0d4900834fc1eadf650",
+    "text": "输入有限离散变量上的非负联合分布，经相对熵非负性推导，输出非归一化条件互信息恒大于等于零。"
+  },
+  "CGB.InformationProjection.condMutualInfo_pos_of_missing_rectangle": {
+    "source_sha256": "7414c012529bbaa6e546ab07601d833823604ecc6129c0d4900834fc1eadf650",
+    "text": "输入具有正边际矩形但内部存在零概率条目的非负联合分布，经相对熵支撑集分析，输出其条件互信息严格大于零。"
+  },
+  "CGB.InformationProjection.condMutualInfo_project_le": {
+    "source_sha256": "7414c012529bbaa6e546ab07601d833823604ecc6129c0d4900834fc1eadf650",
+    "text": "输入确定性粗粒化投影函数与联合分布，经对数和不等式展开，输出投影后的粗粒化条件互信息小于等于原始条件互信息（信息投影数据处理不等式）。"
+  },
+  "CGB.InformationProjection.gibbs_term_supported": {
+    "source_sha256": "7414c012529bbaa6e546ab07601d833823604ecc6129c0d4900834fc1eadf650",
+    "text": "输入相容非负实数对，经吉布斯点态对数放缩，输出x (ln y - ln x) ≤ y - x在允许零支撑的条件下普遍成立。"
+  },
+  "CGB.InformationProjection.kl_nonneg_supported": {
+    "source_sha256": "7414c012529bbaa6e546ab07601d833823604ecc6129c0d4900834fc1eadf650",
+    "text": "输入同支撑集且归一化的离散概率分布，经琴生不等式，输出两分布间的相对熵恒大于等于零。"
+  },
+  "CGB.InformationProjection.kl_pos_of_support_gap": {
+    "source_sha256": "7414c012529bbaa6e546ab07601d833823604ecc6129c0d4900834fc1eadf650",
+    "text": "输入同等总质量的非负测度且存在支撑集间隙（x(i)=0而y(i)>0），经单项非负分解，输出相对熵严格大于零。"
+  },
+  "CGB.InformationProjection.kl_project_le": {
+    "source_sha256": "7414c012529bbaa6e546ab07601d833823604ecc6129c0d4900834fc1eadf650",
+    "text": "输入确定性投影函数与两组相容测度，经纤维化对数和分解，输出投影后的粗粒化相对熵小于等于原测度相对熵。"
+  },
+  "CGB.InformationProjection.log_sum_le": {
+    "source_sha256": "7414c012529bbaa6e546ab07601d833823604ecc6129c0d4900834fc1eadf650",
+    "text": "输入非负实数序列，经对数函数凹性分析，输出有限项对数和不等式∑ x ln(∑ x / ∑ y) ≤ ∑ x ln(x / y)成立。"
+  },
+  "CGB.InformationProjection.project_nonneg": {
+    "source_sha256": "7414c012529bbaa6e546ab07601d833823604ecc6129c0d4900834fc1eadf650",
+    "text": "输入非负测度与确定性投影映射，经原像非负累加求和，输出投影后测度在目标空间各点的值恒非负。"
+  },
+  "CGB.InformationProjection.reference_nonneg": {
+    "source_sha256": "7414c012529bbaa6e546ab07601d833823604ecc6129c0d4900834fc1eadf650",
+    "text": "输入二元非负测度，经边际乘积归一化构造，输出参考分布在所有状态对上的取值恒非负。"
+  },
+  "CGB.InformationProjection.reference_pos_of_pos": {
+    "source_sha256": "7414c012529bbaa6e546ab07601d833823604ecc6129c0d4900834fc1eadf650",
+    "text": "输入在某点处严格为正的二元测度，经边际正性传递，输出对应的乘积参考测度在该点严格大于零。"
+  },
+  "CGB.InformationProjection.reference_project": {
+    "source_sha256": "7414c012529bbaa6e546ab07601d833823604ecc6129c0d4900834fc1eadf650",
+    "text": "输入第三变量投影函数与双变量测度，经求和算子交换，输出参考测度的边际投影与投影测度的参考测度严格可交换。"
+  },
+  "CGB.InformationProjection.reference_sum": {
+    "source_sha256": "7414c012529bbaa6e546ab07601d833823604ecc6129c0d4900834fc1eadf650",
+    "text": "输入有限双变量测度，经双重求和展开，输出乘积参考测度的全空间总质量精确等于原始测度的总质量。"
+  },
+  "CGB.InformationProjection.sum_project": {
+    "source_sha256": "7414c012529bbaa6e546ab07601d833823604ecc6129c0d4900834fc1eadf650",
+    "text": "输入测度与投影映射，经划分重组求和，输出投影后测度的全空间积分精确等于原测度全空间积分。"
+  },
+  "CGB.LanguageExistence.assimilate_unit_memory": {
+    "source_sha256": "6641824b4c0e59286bece1e9578514828e5260687f36de232e963ac5ef74f61b",
+    "text": "输入处于有界单位内存流形的状态与到达字节，经GDN吸收推进变换，输出吸收后的后继状态依然严格保持在有界单位内存集合内。"
+  },
+  "CGB.LanguageExistence.bounded_mean": {
+    "source_sha256": "6641824b4c0e59286bece1e9578514828e5260687f36de232e963ac5ef74f61b",
+    "text": "输入有界单位内存状态，经槽位均值范数投影，输出各槽位均值参数均受预设绝对值界限控制。"
+  },
+  "CGB.LanguageExistence.finite_body_stationary_loss_eventually_constant": {
+    "source_sha256": "6641824b4c0e59286bece1e9578514828e5260687f36de232e963ac5ef74f61b",
+    "text": "输入有限状态物理本体与固定的稳态预测损失，经有限值域非增实数列分析，输出在有限物理轨迹上稳态损失必在有限步后恒定为常数，无法持续严格下降。"
+  },
+  "CGB.LanguageExistence.finite_range_nonincreasing_eventually_constant": {
+    "source_sha256": "6641824b4c0e59286bece1e9578514828e5260687f36de232e963ac5ef74f61b",
+    "text": "输入值域有限的单调非增实数序列，经有限鸽巢与下确界原理，输出该实数序列必在有限步后恒定为常数。"
+  },
+  "CGB.LanguageExistence.gdn_alternative_arrival_bias": {
+    "source_sha256": "6641824b4c0e59286bece1e9578514828e5260687f36de232e963ac5ef74f61b",
+    "text": "输入不同字节输入到达同一准备好的本体状态，经头偏置写入求导，输出不同输入字符在输出层生成可区分的头偏置位移。"
+  },
+  "CGB.LanguageExistence.gdn_prior_preserves_bias": {
+    "source_sha256": "6641824b4c0e59286bece1e9578514828e5260687f36de232e963ac5ef74f61b",
+    "text": "输入物理时间先验步进算子，经输出头参数线性传递，输出无观测下的物理时间先验转移绝对不会重写或抹除已学习的输出头偏置。"
+  },
+  "CGB.LanguageExistence.gdn_silent_continuation_bias": {
+    "source_sha256": "6641824b4c0e59286bece1e9578514828e5260687f36de232e963ac5ef74f61b",
+    "text": "输入连续静息输入序列，经物理先验多步复合，输出任意长度的静息转移过程均保持既有输出头偏置结构不变。"
+  },
+  "CGB.LanguageExistence.gdn_written_distinction_survives_silence": {
+    "source_sha256": "6641824b4c0e59286bece1e9578514828e5260687f36de232e963ac5ef74f61b",
+    "text": "输入不同输入字符写入的内部状态差异，经任意步静息物理演化，输出该状态差异在静息期后仍保持非零，不被静息时间重置。"
+  },
+  "CGB.LanguageExistence.no_global_finite_gdn_codec": {
+    "source_sha256": "6641824b4c0e59286bece1e9578514828e5260687f36de232e963ac5ef74f61b",
+    "text": "输入有限状态物理存储器与连续实数GDN状态集，经基数势能分析，输出不存在有限物理编码器能无损精确表示所有GDN实数连续状态。"
+  },
+  "CGB.LanguageExistence.p1a_no_global_real_codec": {
+    "source_sha256": "6641824b4c0e59286bece1e9578514828e5260687f36de232e963ac5ef74f61b",
+    "text": "输入公理P1a（有限物理位点）与连续实参数空间，经可数性与紧致性分析，输出有限物理载体排除全局连续实状态精确编解码器。"
+  },
+  "CGB.LanguageExistence.precision_assimilation_is_two_state_step": {
+    "source_sha256": "6641824b4c0e59286bece1e9578514828e5260687f36de232e963ac5ef74f61b",
+    "text": "输入离散二状态转移系统，经转移速率映射，输出其群体稳态动力学在平均意义下精确等价于GDN精度吸收步进方程。"
+  },
+  "CGB.LanguageExistence.precision_two_state_rates_valid": {
+    "source_sha256": "6641824b4c0e59286bece1e9578514828e5260687f36de232e963ac5ef74f61b",
+    "text": "输入有界占有率目标，经速率归一化核算，输出构建的二状态跳跃速率严格落在有效概率区间[0, 1]内。"
+  },
+  "CGB.LanguageExistence.prior_unit_memory": {
+    "source_sha256": "6641824b4c0e59286bece1e9578514828e5260687f36de232e963ac5ef74f61b",
+    "text": "输入物理时间先验转移算子与单位内存状态，经先验衰减收缩，输出演化后的状态保持在单位内存有效几何集合内。"
+  },
+  "CGB.LanguageExistence.recurrent_gain_excludes_eventual_stationary_descent": {
+    "source_sha256": "6641824b4c0e59286bece1e9578514828e5260687f36de232e963ac5ef74f61b",
+    "text": "输入具有循环反馈增益的预测系统，经能量平衡分析，输出非零循环增益排除了稳态预测损失无限严格单调下降的可能性。"
+  },
+  "CGB.LanguageExistence.restricted_fold_refines": {
+    "source_sha256": "6641824b4c0e59286bece1e9578514828e5260687f36de232e963ac5ef74f61b",
+    "text": "输入受限序列折叠算子，经子流形结构保持性验证，输出受限轨迹折叠精确精化原始系统转移轨迹。"
+  },
+  "CGB.LanguageExistence.restricted_step_refines": {
+    "source_sha256": "6641824b4c0e59286bece1e9578514828e5260687f36de232e963ac5ef74f61b",
+    "text": "输入单步受限推进算子，经条件限制验证，输出单步受限状态推进与全空间动力学相容。"
+  },
+  "CGB.LanguageExistence.step_unit_memory": {
+    "source_sha256": "6641824b4c0e59286bece1e9578514828e5260687f36de232e963ac5ef74f61b",
+    "text": "输入有界字符嵌入向量与先验状态，经完整GDN前向吸收算子，输出完整步进后的内存均值与方差全局有界。"
+  },
+  "CGB.LanguageExistence.strict_descent_has_no_finite_exact_readout": {
+    "source_sha256": "6641824b4c0e59286bece1e9578514828e5260687f36de232e963ac5ef74f61b",
+    "text": "输入单条真实物理轨迹上的预测损失，经有限物理状态集矛盾推导，输出有限本体不可能在单一轨迹上无限维持严格损失下降且具有精确读出。"
+  },
+  "CGB.LanguageLifeAdmission.joint_admission": {
+    "source_sha256": "0a868a11069c7cd189012102025ea808896983bc874248e405a4d0102d467420",
+    "text": "输入满足因果候选约化的语言生命候选模型，经联合准入条件检验，输出同一物理状态同时保证因果压缩、选择性写入、预测性收益增益以及主动推理生存闭包四项基础契约。"
+  },
+  "CGB.LanguageLifeKernel.delayed_action_credit_requires_state_separation": {
+    "source_sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883",
+    "text": "输入单步状态推进函数、信用分配规则及初始状态下的两个不同动作，若两动作产生相同后继状态但目标信用不同，经确定性映射矛盾推导，输出确定性后继状态无法同时赋予不同延迟信用（证明延迟动作归因必然要求状态可分离）。"
+  },
+  "CGB.SeedMemory.clocked": {
+    "source_sha256": "c001a6fdc61f961852e6a9aed3cb757424f840bdf9abe023a4acde09a72f5870",
+    "text": "输入种子环境时钟算子，经结构事件界校验，输出系统满足有限离散时钟界公理Clocked。"
+  },
+  "CGB.SeedMemory.first_hop_act": {
+    "source_sha256": "c001a6fdc61f961852e6a9aed3cb757424f840bdf9abe023a4acde09a72f5870",
+    "text": "输入初始种子状态与输入动作，经介质动作推进，输出首步跳跃后的状态严格等于预设的写入前状态。"
+  },
+  "CGB.SeedMemory.first_hop_pos": {
+    "source_sha256": "c001a6fdc61f961852e6a9aed3cb757424f840bdf9abe023a4acde09a72f5870",
+    "text": "输入初始状态与写入前状态，经物理核单步积分，输出首步转移概率严格大于零。"
+  },
+  "CGB.SeedMemory.law_one": {
+    "source_sha256": "c001a6fdc61f961852e6a9aed3cb757424f840bdf9abe023a4acde09a72f5870",
+    "text": "输入物理介质、世界模型与首步感知调度，经单步转移律坍缩，输出单步联合概率等于世界转移项与介质转移核的标量乘积。"
+  },
+  "CGB.SeedMemory.partial_has_hop": {
+    "source_sha256": "c001a6fdc61f961852e6a9aed3cb757424f840bdf9abe023a4acde09a72f5870",
+    "text": "输入部分占据的4位环状布尔微观状态，经邻接关系搜索，输出必然存在相邻的一对占据与非占据节点允许发生跳跃。"
+  },
+  "CGB.SeedMemory.partial_hold_bound": {
+    "source_sha256": "c001a6fdc61f961852e6a9aed3cb757424f840bdf9abe023a4acde09a72f5870",
+    "text": "输入部分占据的种子微观态与调度序列，经多步保持核连乘分析，输出连续n步未离开当前微观态的保持概率受(1 - 1/18)^n几何衰减约束。"
+  },
+  "CGB.SeedMemory.partial_rate_one": {
+    "source_sha256": "c001a6fdc61f961852e6a9aed3cb757424f840bdf9abe023a4acde09a72f5870",
+    "text": "输入部分占据微观态与任意外部刺激，经动作空间检验，输出存在速率为1的合法跳跃动作使物理状态发生非平凡改变。"
+  },
+  "CGB.SeedMemory.physical_memory_component": {
+    "source_sha256": "c001a6fdc61f961852e6a9aed3cb757424f840bdf9abe023a4acde09a72f5870",
+    "text": "输入种子物理介质与世界模型，经公理检验与静息分析，输出该介质同时满足物理公理、有界时钟、记忆保持公理以及具有非平凡静息状态转移。"
+  },
+  "CGB.SeedMemory.prefix_pos": {
+    "source_sha256": "c001a6fdc61f961852e6a9aed3cb757424f840bdf9abe023a4acde09a72f5870",
+    "text": "输入布尔输入标签，经单步可达性验证，输出该标签在写入前状态具有严格正的生成概率。"
+  },
+  "CGB.SeedMemory.quiet_has_nontrivial_event": {
+    "source_sha256": "c001a6fdc61f961852e6a9aed3cb757424f840bdf9abe023a4acde09a72f5870",
+    "text": "输入静息条件下的种子介质，经反应事件搜索，输出存在正速率物理事件能够改变本体微观状态（静息不等于恒等静止）。"
+  },
+  "CGB.SeedMemory.quiet_preserves": {
+    "source_sha256": "c001a6fdc61f961852e6a9aed3cb757424f840bdf9abe023a4acde09a72f5870",
+    "text": "输入静息转移对，经粗粒化观测算子投影，输出任意正概率静息跳跃均严格保持宏观读出观测值不变。"
+  },
+  "CGB.SeedMemory.remembers": {
+    "source_sha256": "c001a6fdc61f961852e6a9aed3cb757424f840bdf9abe023a4acde09a72f5870",
+    "text": "输入种子物理介质与世界模型，经实际正概率前缀与摄入通道的条件互信息综合，输出系统满足条件互信息记忆保持公理Remembers。"
+  },
+  "CGB.SeedMemory.write_act": {
+    "source_sha256": "c001a6fdc61f961852e6a9aed3cb757424f840bdf9abe023a4acde09a72f5870",
+    "text": "输入写入前微观态与写入动作，经物质源摄入动作变换，输出状态精确转变为写入后微观态。"
+  },
+  "CGB.SeedMemory.write_pos": {
+    "source_sha256": "c001a6fdc61f961852e6a9aed3cb757424f840bdf9abe023a4acde09a72f5870",
+    "text": "输入写入动作刺激与写入前后状态，经转移核求值，输出写入转移概率严格大于零。"
+  },
+  "CGB.SeedMemory.write_totals": {
+    "source_sha256": "c001a6fdc61f961852e6a9aed3cb757424f840bdf9abe023a4acde09a72f5870",
+    "text": "输入写入前后状态，经总占有数求和算子，输出写入动作使系统物质总占有数从1严格增加到2。"
+  },
+  "CGB.SelfProduction.action_consequence_model_exists": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入以动作为条件的边界转移规则，经自身确定性映射构造，输出边界规则本身直接构成一个精确的自条件因果模型（无需引入额外辅助通道）。"
+  },
+  "CGB.SelfProduction.action_distinction_preserved": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入在存活状态下具有不同边界后果的两个动作，经状态转移推进，输出系统执行两动作后的后继状态必然可区分。"
+  },
+  "CGB.SelfProduction.actual_actions_reproduce_trajectory": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入在同一世界中重放实际采取的动作序列，经确定性历史重现归纳，输出重放序列精确无误复现原始的本体状态与观察历史轨迹。"
+  },
+  "CGB.SelfProduction.association_affine_language_nll_bound": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入关联干扰证书与仿射读出头，经对数Softmax李普希茨连续性放缩，输出语言负对数似然损失偏差受关联干扰矩阵一致上界控制。"
+  },
+  "CGB.SelfProduction.association_assimilation_improves_iff": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入固定查询与目标下的自然参数吸收算子，经内积对偶性推导，输出吸收改善读出准确度当且仅当目标与旧读出的差值与新信息保持同向对齐。"
+  },
+  "CGB.SelfProduction.association_assimilation_query_change": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入自然参数吸收步进与查询变动，经双线性矩阵乘积展开，输出新查询下的读出增量精确由旧态偏差项与新到达项共同线性构成。"
+  },
+  "CGB.SelfProduction.association_assimilation_softmax_improves_iff": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入逐槽吸收算子与仿射输出头更新，经交叉熵微分不等式分析，输出输出层Softmax交叉熵严格下降充要等价于参数更新与真实梯度内积为负。"
+  },
+  "CGB.SelfProduction.association_delta_read_contract": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入单步行增量矩阵与关联读出契约，经线性组合代数装配，输出全矩阵读出增量精确等于各行增量在查询方向上的投影之和。"
+  },
+  "CGB.SelfProduction.candidate_erase_balance": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入因果支撑判定器、内存状态与当前观测，经候选集消除计数计算，输出推进后的候选集基数加上被擦除候选数严格等于原候选集基数。"
+  },
+  "CGB.SelfProduction.candidate_erase_ge_fee": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入因果内存状态与观测，经手续费核算与擦除比较，输出单步产生的消除手续费不超过实际被擦除的因果候选数量。"
+  },
+  "CGB.SelfProduction.candidate_erasure_not_unbounded_signal": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入有限候选集的单向消除机制，经有限基数势能分析，输出单向消除产生的有效信号在有限步后必耗尽，无法独立提供发散无界的生存信号。"
+  },
+  "CGB.SelfProduction.candidate_reference_probe_loss_eq_dissipation": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入语言自生产候选模型、历史与到达字节，经候选参考探测桥接计算，输出探测损失精确等于该步语言耗散度量。"
+  },
+  "CGB.SelfProduction.categorical_precision_next_loss_direction": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入分类精度加权的自然参数吸收更新，经方向导数展开，输出吸收步进在下一字符预测方向上严格单调降低交叉熵损失。"
+  },
+  "CGB.SelfProduction.counterfactual_passive_bound_forces_activity": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入反事实最终被动干预具有有限累积信号的环境，经反证法推导，输出任何能够长期存活的策略必然具有无界的主动干预动作。"
+  },
+  "CGB.SelfProduction.delayed_readout_capacity_with_retrieval": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入固定未来查询与外部检索视图，经联想检索容量定理，输出外周检索使得延迟读出容量不再受限于单步内部工作区维度。"
+  },
+  "CGB.SelfProduction.effective_write_erases_distinction": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入因果内存池与观测，若产生单位消除手续费，经逆向推理，输出单步被擦除的因果候选数严格大于零。"
+  },
+  "CGB.SelfProduction.existing_renewable_autonomous_cycle": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入确定性见证世界模型，经有限周期轨迹闭包分析，输出系统在无外部重启下能够自主运转并循环往复保持自维持闭环。"
+  },
+  "CGB.SelfProduction.existing_renewable_carrier_reuses_old_rule": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入可再生载体转移规则，经相容性检验，输出派生出的新状态转移算子完全继承并复用旧见证系统的写入与恢复规则。"
+  },
+  "CGB.SelfProduction.existing_renewable_cycle_active_and_viable": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入有限见证系统循环轨迹，经真空态与被动策略排查，输出该循环轨迹全局脱离真空死态、拒绝最终被动性且始终位于存活流形内。"
+  },
+  "CGB.SelfProduction.existing_renewable_open_stream_witness": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入外部字符游标单向推进的开放流模型，经有限状态吸收检验，输出系统在每个时钟周期稳步摄入并处理外源字符流。"
+  },
+  "CGB.SelfProduction.exists_conditionally_operating_language_life_of_minimal_generator": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入可容许的最小生成元，经全门控存在性提升，输出存在一个条件运行的语言生命候选实体，其完整联合闭环全时域成立。"
+  },
+  "CGB.SelfProduction.exists_infinite_self_producing_trajectory": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入自生产契约规范，经无穷轨迹归纳构造，输出系统存在一条全局存活且持续满足自生产公理的无限长物理演化轨迹。"
+  },
+  "CGB.SelfProduction.exists_language_infinite_stream_life_of_minimal_generator": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入可容许最小生成元，经无限流状态闭包推演，输出存在满足全开流语言生命候选准入的完整无限流生命系统。"
+  },
+  "CGB.SelfProduction.exists_renewable_language_life_of_generator": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入可再生生成元，经可再生门控存在性定理，输出由生成元构造的轨迹在每个有限前缀上均严格满足可再生语言生命准入规约。"
+  },
+  "CGB.SelfProduction.generated_boundary_signal_forces_active": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入由边界衍生的非负存活信号序列，经发散性条件检验，输出为维持信号无界性，系统动作序列绝不能最终陷入被动静止。"
+  },
+  "CGB.SelfProduction.generated_history_encodes_self_production": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入生成的物理历史序列，经递归状态等价性验证，输出历史序列编码与底层状态递推关系在所有时间步精确一致。"
+  },
+  "CGB.SelfProduction.grace_action_intervention_contrast": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入重连本体内部策略后的动作干预，经轨迹概率比对，输出策略重连精确复现原随机过程在每个有限视界内的全部转移概率。"
+  },
+  "CGB.SelfProduction.grace_action_world_matches": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入非真空本体状态与环境状态，经策略动作重连映射，输出环境自发转移核与外周动作驱动转移核严格重合。"
+  },
+  "CGB.SelfProduction.grace_action_zero_vacuum_probability": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入恒定执行动作0的干预策略，经2步动力学推进，输出两步后本体以概率1衰变塌缩至真空死态。"
+  },
+  "CGB.SelfProduction.grace_exists_recurrently_intaking_path": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入原始优雅恢复随机过程，经可达分支遍历，输出存在至少一条具有正概率支撑的无限路径能够无限循环摄入外周负熵。"
+  },
+  "CGB.SelfProduction.grace_historical_memory_iff_one_write": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入优雅恢复见证模型，经单次写入检验充分性证明，输出历史记忆保持准则成立充要等同于仅检验单步写入后的状态差异。"
+  },
+  "CGB.SelfProduction.grace_infinite_supported_learning_and_intake": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入已登记的带付费重学习路径，经无穷时间极限提升，输出该路径自身构成一条同时具有持续学习和持续物质摄入的无限有效路径。"
+  },
+  "CGB.SelfProduction.grace_joint_recovery_generator_exists": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入有限优雅恢复环境模型，经生成元参数提取，输出系统存在满足强化联合恢复生成元条件的具体物理生成元。"
+  },
+  "CGB.SelfProduction.grace_not_historical_persists": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入在静息条件下冻结的优雅恢复见证本体，经反证法推导，输出该本体无法满足要求非平凡静息演化的历史持久性公理Persists。"
+  },
+  "CGB.SelfProduction.grace_one_reopening_intervention_consequence": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入在出现不匹配时覆盖重开放的一个事件干预，经转移追踪，输出单次动作覆盖导致系统在有限步后进入可区分的后继支路。"
+  },
+  "CGB.SelfProduction.grace_original_policy_joint_certificate": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入具体本体策略及其对应随机过程，经联合条件验证，输出该系统同时满足确定性存活、操作级恢复与可达动作对比三项证书。"
+  },
+  "CGB.SelfProduction.grace_reachable_equal_budget_memory_contrast": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入来自同一起始状态的两条历史轨迹，经算术比对，输出两条可达历史在达到相同预算和环境的同时内部记忆状态显著不同。"
+  },
+  "CGB.SelfProduction.grace_reachable_memory_changes_action": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入优雅恢复世界中两条已认证的有限路径，经策略查表比较，输出两路径在终止时刻根据其保留的不同记忆选择不同的外部动作。"
+  },
+  "CGB.SelfProduction.grace_reachable_one_action_consequence": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入已认证的前缀路径并在终止处施加单步动作覆盖，经转移核求值，输出单步动作干预以严格为正的概率产生不同的环境状态。"
+  },
+  "CGB.SelfProduction.grace_recovery_learning_joint": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入优雅恢复随机过程，经联合恢复与学习公理检验，输出该系统同时具备操作持久性、单次写入记忆保持及循环重学习能力。"
+  },
+  "CGB.SelfProduction.grace_stochastic_joint_generator_exists": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入既有优雅恢复见证模型，经局部马尔可夫核参数提取，输出其满足随机联合生成元的全部局部条件。"
+  },
+  "CGB.SelfProduction.grace_supported_path_eventually_no_writes": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入优雅恢复随机过程，经特定路径构造，输出存在一条正概率支撑的无限路径，在其有限前缀后不再发生任何物理写入。"
+  },
+  "CGB.SelfProduction.grace_supported_paths_recurrently_intake": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入优雅恢复系统的任意正概率支撑无限路径，经吸收态分析，输出只要系统维持存活，则该路径必无限循环摄入外周负熵。"
+  },
+  "CGB.SelfProduction.historical_persistence_requires_calm_change": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入在静息条件下内部微观状态完全冻结的本体，经公理矛盾推导，输出系统无法满足要求静息动态调整的历史持久性公理Persists。"
+  },
+  "CGB.SelfProduction.indistinguishable_joint_worlds_cannot_both_stay_viable": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入对当前本体完全隐藏不可区分的两个外部世界，经反事实存活推演，输出单一固定盲目策略不可能在两个对立世界中同时永久存活。"
+  },
+  "CGB.SelfProduction.joint_viability_policy_generation": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入局部相容的联合存活区域，经充要条件构造，输出存在仅依赖本体状态的策略能够使系统在正概率路径上全时域保持在存活区间内。"
+  },
+  "CGB.SelfProduction.language_admission_trajectory_aligned": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入语言准入候选模型与生成的轨迹，经过时间对齐检验，输出物理轨迹各步与语言编码模型在预测、读出和动作上完全对齐。"
+  },
+  "CGB.SelfProduction.language_candidate_eventually_constant_boundary": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入候选自生产语言模型，若内部记忆最终冻结，经策略与响应递推，输出该自治见证的策略动作与边界字节在有限步后必恒定为常数（无法自主生成无限变化的边界流）。"
+  },
+  "CGB.SelfProduction.language_candidate_predictive_growth_positive": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入语言候选分配超越再投资成本的编码历史，经对数增益下界推导，输出预测流契约在所有该类历史上具有严格为正的净对数期望增长。"
+  },
+  "CGB.SelfProduction.language_conditional_joint_existence": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入满足轨迹对齐、交叉熵阈值与块学习递推条件的语言候选实体，经联合准入综合定理，输出同一候选模型全时域满足联合准入、无限存活、非最终被动性及正预测增长。"
+  },
+  "CGB.SelfProduction.language_conditional_joint_specification": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入语言自生产候选模型，经条件联合规约展开，输出系统各步完全满足可存活、非被动、正对数增长以及块学习有界衰减等多项综合保证。"
+  },
+  "CGB.SelfProduction.language_controlled_erasure_balance": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入受控擦除模型与到达观测，经因果候选基数守恒，输出推进后的相容候选数加上受控擦除数精确等于原候选集基数。"
+  },
+  "CGB.SelfProduction.language_controlled_erasure_not_unbounded": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入有限候选族受控消除过程与任意动作序列，经有限基数分析，输出单向消除产生的耗散信号序列必然有界，无法满足无界生存信号条件。"
+  },
+  "CGB.SelfProduction.language_controlled_memory_eventually_stops": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入基于单向候选消除的语言自生产模型与任意动作序列，经有限状态下确界分析，输出系统内部物理内存在有限步后必彻底停止更新。"
+  },
+  "CGB.SelfProduction.language_controlled_trajectory_viable": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入任意外部控制动作序列与语言候选系统，经可存活区域不变性验证，输出所有外部控制轨迹在所有时间步始终保持在语言存活流形内。"
+  },
+  "CGB.SelfProduction.language_cumulative_erasure_balance": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入编码历史与字节输入序列，经累积消除计数求和，输出任意时刻剩余候选数加上累积语言耗散精确等于初始候选集基数。"
+  },
+  "CGB.SelfProduction.language_cumulative_erasure_bounded": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入任意长输入字节序列与初始历史，经单向消除有界性检验，输出系统在全时域累积消除的因果候选总数受初始候选集基数一致上界控制。"
+  },
+  "CGB.SelfProduction.language_dissipation_encoded_eq_candidate_erase": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入语言自生产候选模型与历史输入，经耗散度量展开，输出编码状态下的单步语言耗散精确等于被擦除因果候选的数量。"
+  },
+  "CGB.SelfProduction.language_infinite_stream_life_complete": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入语言生命候选模型，经因果充分统计量与容量分析，输出系统在无限流下具备充分压缩载体、有限容量界、无界存活及形式因果后果模型。"
+  },
+  "CGB.SelfProduction.language_joint_admission_and_self_production": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入语言自生产候选模型，经联合公理规约检验，输出候选模型同时通过语言生命联合准入且在自身诱导的契约下满足自生产公理。"
+  },
+  "CGB.SelfProduction.language_joint_admission_self_production_active_if_aligned": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入对齐的语言自生产候选模型与无界累积信号条件，经主动推理生存闭包推导，输出该系统在满足联合准入与自生产的同时其策略绝非最终被动。"
+  },
+  "CGB.SelfProduction.language_probe_loss_eq_dissipation": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入语言自生产候选实体、当前历史与到达字节，经候选参考探测桥接计算，输出探测损失精确等于该步语言耗散度量。"
+  },
+  "CGB.SelfProduction.language_self_consequence_model_exists": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入语言候选模型自身动作条件下的边界转移核，经恒等映射构造，输出系统存在精确预测自身动作边界后果的因果模型。"
+  },
+  "CGB.SelfProduction.language_self_production_active_if_aligned": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入诱导契约生成轨迹且边界信号与存活信号对齐的系统，经反证法，输出若生存需要无界信号则自生产轨迹的动作策略绝不陷入最终被动。"
+  },
+  "CGB.SelfProduction.language_self_production_bridge": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入语言自生产候选模型，经自生产契约映射提升，输出该候选模型直接诱导出一个良定的自生产契约实例。"
+  },
+  "CGB.SelfProduction.language_self_production_memory_eventually_stops": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入语言自生产契约生成的自主轨迹，经有限消除基数递推，输出自主轨迹上的全部因果内存在经历有限步演化后必停止改变。"
+  },
+  "CGB.SelfProduction.language_state_capacity": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入有限模型空间与有限储备预算，经基数组合数计算，输出因果内存状态空间的离散势精确等于2^|Model| * (reserve + 1)。"
+  },
+  "CGB.SelfProduction.language_viable_next": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入满足可存活谓词的因果内存状态与任意到达字节，经转移保持性推导，输出经后继算子推进后的新状态依然严格满足存活条件。"
+  },
+  "CGB.SelfProduction.masked_open_world_information_limit": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入对外部状态具有部分遮蔽观测的开放世界模型，经互信息上界定理，输出本体可摄取的外源信息流受遮蔽信道容量严格限制。"
+  },
+  "CGB.SelfProduction.masked_world_prediction_and_viability_limit": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入隐藏变量不可观测的受遮蔽世界，经贝叶斯滤波可辨识性分析，输出本体预测准确度与存活概率受限于对未观测隐变量的先验不确定性。"
+  },
+  "CGB.SelfProduction.merged_histories_binary_logloss_floor": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入在内部状态中被合并消除的两个相异二值历史，经期望对数损失下界分析，输出混淆历史使得预测器的期望交叉熵损失存在严格正的无法消除底线。"
+  },
+  "CGB.SelfProduction.minimal_generator_conditional_joint_existence": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入满足对齐、学习优势与收缩条件的最小生成元，经联合存在性定理，输出系统存在满足联合准入、无界自生产且非最终被动的语言生命实例。"
+  },
+  "CGB.SelfProduction.minimal_generator_conditional_joint_specification": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入满足相容条件的最小生成元，经综合规约展开，输出系统各时间步满足轨迹可存活、策略非被动与正预测增长等多重保证。"
+  },
+  "CGB.SelfProduction.minimal_generator_infinite_stream_life_complete": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入最小生成元驱动的无限流系统，经完整性定理推导，输出该系统在无限流输入下完全具备因果压缩充分性、状态容量界与无限存活保证。"
+  },
+  "CGB.SelfProduction.mixed_key_delta_differs_from_slot_assimilation": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入混合非单热键向量与到达观测，经矩阵增量代数展开，输出多键混合更新与单槽位解耦吸收更新在特征流形上产生不同几何位移。"
+  },
+  "CGB.SelfProduction.one_hot_delta_is_precision_assimilation": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入单热单位基底键向量与精度更新步长，经Delta规则代数计算，输出单热键增量更新形式严格等价于单槽位精度吸收更新。"
+  },
+  "CGB.SelfProduction.open_world_body_prediction_iff": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入开放世界模型与依赖本体的预测算子，经充要等价性推导，输出存在准确本体预测器当且仅当本体状态包含外部世界后继状态的充分统计量。"
+  },
+  "CGB.SelfProduction.open_world_categorical_next_loss_direction": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入开放流环境下的多类到达输入与精度更新，经方向导数分解，输出精度加权吸收步进沿下一字符对数似然梯度方向产生严格正向收益。"
+  },
+  "CGB.SelfProduction.open_world_closure_excludes_conflicting_safe_actions": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入具有开流冲突环境的安全转移闭包，经反证法，输出在面对未观测外源扰动时系统不可能同时存在两个互斥且绝对安全的外周动作。"
+  },
+  "CGB.SelfProduction.open_world_input_not_body_determined": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入外生开放流环境，经因果干预分析，输出到达输入字符序列独立于本体微观物理状态及其内部读出动作。"
+  },
+  "CGB.SelfProduction.open_world_precision_update_improves_next_prediction": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入开流到达观测与严格正的输入精度，经自然参数步进凸性放缩，输出吸收更新后对下一时刻到达字符的预测交叉熵严格降低。"
+  },
+  "CGB.SelfProduction.passive_opportunity_bounds_eventual_interventions": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入有限被动机会势能与被动动作干预，经势能单调递减分析，输出系统在被动模式下所能获得的全部累积摄入严格受限于初始机会势能。"
+  },
+  "CGB.SelfProduction.passive_opportunity_budget": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入具有非负单步消耗的机会势能函数与被动策略，经裂项累加展开，输出从任意时刻起的累积被动摄入受当前剩余机会预算严格控制。"
+  },
+  "CGB.SelfProduction.passive_opportunity_forces_activity": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入有限被动机会预算与生命存活所需的无界实际摄入，经能量预算矛盾分析，输出系统为维持生存必然要求循环往复执行非被动主动干预。"
+  },
+  "CGB.SelfProduction.positive_soft_query_changes_under_delta": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入严格正的软寻址键与正查询向量，经内积严格正性传递，输出任意具有非零新息的Delta写入必然导致每个正查询方向上的读出值发生改变。"
+  },
+  "CGB.SelfProduction.precision_binary_sample_gain_not_future_guarantee": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入样本二值到达与底层平稳流，经信息散度比较，输出单步精度更新虽改进到达样本损失，但不保证已校准预测器在真实流上的期望损失能进一步降低。"
+  },
+  "CGB.SelfProduction.precision_binary_update_is_predictive_improvement": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入任意正到达精度的二值输入与当前预测概率，经自然参数增量分析，输出精度导出的吸收更新严格降低到达样本的交叉熵损失且保持概率有界。"
+  },
+  "CGB.SelfProduction.precision_distinguishes_equal_mean_histories": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入均值相同但精度不同的两个槽位与相同到达观测，经贝叶斯自然参数后验计算，输出两槽位后继均值严格不相等（证明确定性均值单变量无法复现精度动态）。"
+  },
+  "CGB.SelfProduction.probeLoss_eq_candidate_erase": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入单射探测映射与可恢复性判定，经候选子集求交与差分展开，输出探测损失精确等于更新前后被消除的因果候选数量差。"
+  },
+  "CGB.SelfProduction.quiet_identity_memory_marginal": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入静息条件下本体冻结的物理介质，经世界归一化核展开，输出在首个观测之后的任意长静息延迟时刻其带标签记忆边际分布恒定不变。"
+  },
+  "CGB.SelfProduction.quiet_identity_old_memory_iff_one_write": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入静息条件下内部微观状态冻结的物理本体，经无限时间条件互信息化简，输出该历史记忆保持公理成立充要等价于存在单次正信息写入。"
+  },
+  "CGB.SelfProduction.ranked_exists_recurrently_marked_path": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入带有分级恢复证书的有限事件核与种子初态，经确定性路径提升，输出存在一条正概率支撑的无限路径，在其任意有限视界窗口内必循环出现标记恢复事件。"
+  },
+  "CGB.SelfProduction.ranked_supported_path_recurrent": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入满足分级恢复证书的系统与任意正概率支撑无限序列，经时间窗口覆盖定理，输出在任意长度为horizon的连续窗口内必包含至少一个标记事件。"
+  },
+  "CGB.SelfProduction.reachable_consequence_readout_iff": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入限制在可达联合状态集上的后果预测器，经单态延拓推演，输出存在精确后果预测算子充要等价于在所有可达状态上因果读出相容。"
+  },
+  "CGB.SelfProduction.renewable_action_autonomous_eq": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入通过闭环策略关闭显式动作端口的自主系统，经动力学轨迹比对，输出闭环自主演化完全等同于由外周策略驱动的联合系统演化。"
+  },
+  "CGB.SelfProduction.renewable_action_machine_reproduces": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入提供原始认证策略的可再生动作机，经马尔可夫转移核求值，输出该动作机精确复现原始系统的全部联合事件与正概率支撑轨迹。"
+  },
+  "CGB.SelfProduction.renewable_action_world_contract": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入显式动作转移核与既有世界模型，经归一化与边缘分布检验，输出该动作核在各状态下归一化且与既有世界转移完全一致。"
+  },
+  "CGB.SelfProduction.renewable_action_zero_eventual_vacuum": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入在可再生系统中施加恒定为0的动作干预，经有限步推进，输出系统在有限步内必以概率1衰变塌缩至真空死亡状态。"
+  },
+  "CGB.SelfProduction.renewable_action_zero_failure_steps": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入施加零动作干预的动作端口系统，经步数计数与故障判定，输出系统在不超过预设的有限故障步数内彻底失去存活能力。"
+  },
+  "CGB.SelfProduction.renewable_hidden_branch_reopens_and_rewrites": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入认证世界中以正概率发生的隐藏环境变化，经内部状态重开放演化，输出系统能够安全重新开放隐藏分支并在状态中重新写入最新区分信息。"
+  },
+  "CGB.SelfProduction.renewable_language_carrier_correct": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入可再生语言生成器与历史状态，经读出与推进算子检验，输出其读出值精确复现目标要求，且其单步推进与历史推进同态严格等价。"
+  },
+  "CGB.SelfProduction.renewable_language_carrier_trajectory": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入可再生状态载体与生成轨迹，经逐项比较，输出该载体轨迹精确复现目标读出、字节状态转移以及与历史序列的一致对齐。"
+  },
+  "CGB.SelfProduction.renewable_language_life_gate": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入可再生载体、显式预测付费机制与动作干预对比，经联合准入条件审核，输出系统通过可再生语言生命的全部门控公理。"
+  },
+  "CGB.SelfProduction.renewable_maintenance_and_supported_relearning": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入随机本体-环境耦合过程，经稳态与重学习检验，输出系统同时具备操作级负熵稳态维持与带正概率支撑的循环再学习能力。"
+  },
+  "CGB.SelfProduction.renewable_maintenance_world_action_contrast": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入认证的随机过程，经过动作干预对比，输出施加不同的外周干预动作能够在世界中引发具有显著物理差异的可区分转移后果。"
+  },
+  "CGB.SelfProduction.renewable_observable_block_contract": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入任意可观测块序列的单步转移，经分块转移核展开，输出块内每一步及跨块转移均严格满足正概率支撑的可观测块契约。"
+  },
+  "CGB.SelfProduction.renewable_observable_from_birth": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入系统初始出生状态，经有限前缀概率推演，输出从初始态出发的每一个选定分支序列的有限前缀均具有严格为正的生成概率。"
+  },
+  "CGB.SelfProduction.renewable_observable_path_contract": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入选定分支序列的任意有限前缀，经正概率生成路径核验，输出系统全部分支前缀严格具备正概率支撑，保证演化无死角覆盖。"
+  },
+  "CGB.SelfProduction.renewable_open_always_passive_stays_search": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入在开放流见证系统上施加全被动动作干预，经状态转移轨迹追踪，输出全被动策略使系统永久停滞在未初始化的初始搜索态，无法进入工作循环。"
+  },
+  "CGB.SelfProduction.renewable_open_distinct_inputs_reach_distinct_states": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入在首个观察位上取值不同的两个外源世界输入，经开放流初始探测，输出系统在首个时间步即转移至两个完全不同且互斥的内部物理状态。"
+  },
+  "CGB.SelfProduction.renewable_open_first_action_affects_body": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入开放见证世界中的初始探测动作与替代动作，经状态转移单步比较，输出改变初始动作对后继本体微观物理状态产生本质改变。"
+  },
+  "CGB.SelfProduction.renewable_open_first_input_recorded": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入开放环境的首个外源输入，经初始探测步进，输出有限状态载体精确记录并锁存首个外部输入信号，供后续多周期读取。"
+  },
+  "CGB.SelfProduction.renewable_open_language_joint_gate": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入开放本体-环境联合演化轨迹，经开流联合准入门控综合评定，输出开流系统在全时域上完全满足语言生命联合门控准入条件。"
+  },
+  "CGB.SelfProduction.renewable_open_probe_enables_conditional_action": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入存储了初始外源探测记录的内部载体，经下游动作策略读取，输出已记录的历史信息直接使下游动作能够执行有条件的差异化动作分支。"
+  },
+  "CGB.SelfProduction.renewable_open_probe_records_then_reopens": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入开放探测机制，经时序演化分解，输出每次探测能够连续保留当前外源比特两个周期，随后按节拍安全重开放隐藏分支。"
+  },
+  "CGB.SelfProduction.renewable_open_rewriting_loses_old_distinction": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入简单循环重写机制与相隔两周期的历史区分，经重写覆盖推导，输出若仅依赖无保护的循环重写，新到达输入将不可逆抹除旧的延迟历史区分信息。"
+  },
+  "CGB.SelfProduction.renewable_open_stream_recurrently_writes": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入处于开放流中的见证系统，经时钟节拍分析，输出系统每隔三个时间步循环回到探测状态并执行一次物理有效写入。"
+  },
+  "CGB.SelfProduction.renewable_open_world_is_exogenous": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入开放流世界中的外部输入流，经因果干预隔离分析，输出外部世界的字符流由外生过程生成，不被本体内部微观动作所虚假篡改。"
+  },
+  "CGB.SelfProduction.renewable_open_world_trajectory": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入开放世界单条具体演化轨迹，经存活与可再生性评定，输出该轨迹在面对任意开放输入流时均全局维持存活且严格实现可再生契约。"
+  },
+  "CGB.SelfProduction.renewable_reopen_control_branch": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入正常演化路径与重开放被禁用的对照路径，经有限步轨迹比较，输出两路径在前缀阶段完全一致，随后在触发重开放处明确分化。"
+  },
+  "CGB.SelfProduction.renewable_reopening_not_single_old_advance": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入现有的可再生见证系统，经单步转移分析，输出系统重开放已排除分支的过程无法被压缩表示为单一的旧状态步进算子。"
+  },
+  "CGB.SelfProduction.renewable_witness_unbounded_supported_writes": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入认证的可再生生命过程，经写入计数序列分析，输出该系统在无限时间轴上具有任意长且带有正概率支撑的有效物理写入序列。"
+  },
+  "CGB.SelfProduction.renewable_world_aligned_state_supported": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入就绪状态与对应食物环境配对的对齐状态，经可达性分析，输出该对齐状态具有严格正的生成概率，在物理演化中必然可达。"
+  },
+  "CGB.SelfProduction.renewable_world_hidden_branch_and_delayed_consequence": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入处于就绪对齐状态的本体，经隐藏分支演化求解，输出系统具有两条正概率演化支路，并在延迟时刻表现出互斥的物理后果。"
+  },
+  "CGB.SelfProduction.repeated_assimilation_association_readout": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入单槽位保持衰减律与多步吸收算子，经矩阵级数复合，输出多步重复吸收后的关联读出精确等价于累积衰减加权的值读出矩阵。"
+  },
+  "CGB.SelfProduction.repeated_assimilation_probe_family": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入未来查询探测族与重复吸收序列，经误差界传递定理，输出当目标槽位在重复吸收中维持高置信度时，整个探测族持续保持高精度读出。"
+  },
+  "CGB.SelfProduction.repeated_assimilation_retention": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入无先验介入条件下的重复相同槽位输入证据，经吸收递推方程求解，输出状态保持因子精确按(1 - weight)^n几何幂次递推。"
+  },
+  "CGB.SelfProduction.sensory_loss_and_historical_interrupt_differ": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入单次感知丢失冲击与要求完全无中断的历史持久性公理，经鲁棒性对比，输出感知维持系统能容忍单次感知丢失，但该动态演化不满足严格的静态历史公理。"
+  },
+  "CGB.SelfProduction.softmax_nll_logit_error_bound": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入对数几率变动上界为δ的Softmax输出头，经中值定理与范数放缩，输出观测字节的负对数似然损失改变量严格不超过2*δ。"
+  },
+  "CGB.SelfProduction.state_conditioned_logloss_decomposition": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入依赖于状态的条件预测器与真实联合分布，经条件期望展开，输出期望对数损失精确分解为状态条件熵与预测分布相对熵之和。"
+  },
+  "CGB.SelfProduction.state_conditioned_logloss_le_fixed": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入利用真实物理状态的条件预测器与任意固定盲目预测器，经琴生不等式，输出利用物理状态的条件预测器的期望对数损失严格小于等于任意固定预测器。"
+  },
+  "CGB.SelfProduction.stationary_nonincreasing_loss_flat_on_existing_cycle": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入闭合三状态循环轨迹与单调非增的固定状态预测损失，经有限循环鸽巢分析，输出该损失在整个循环轨道上的所有状态处必恒定为同一常数。"
+  },
+  "CGB.SelfProduction.stochastic_joint_recovery_policy_generation": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入具有操作级恢复需求的系统模型，经随机策略参数化，输出构造出一个随机闭环策略，使系统同时满足操作级恢复与确定性可达性要求。"
+  },
+  "CGB.SelfProduction.stochastic_joint_viability_policy_generation": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入随机物理环境模型，经仅依赖本体状态的马尔可夫策略构造，输出该策略能确保系统在所有正概率转移路径上全时域保持在可存活区间内。"
+  },
+  "CGB.SelfProduction.trajectory_viable": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入由确定性自生产规则生成的物理状态序列，经离散时间归纳法，输出在任意有限时间步系统状态均严格落在可存活集合内。"
+  },
+  "CGB.SelfProduction.two_phase_finite_score_step_improves": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入字符数不小于2的有限字母表与正的特征分数增量，经两阶段更新求导分析，输出得分正步长更新严格降低目标字符的交叉熵损失。"
+  },
+  "CGB.SelfProduction.uniform_block_learning_failure_decay": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入具有独立不可逆失效概率的分块学习系统，经伯努利概率连乘，输出持续学习整体失败的概率随时间块数呈指数几何衰减。"
+  },
+  "CGB.SurvivalBounds.cumulative_risk_lower": {
+    "source_sha256": "6cd1c4b5fb7d28b28eaa6a3eb6519ef3cbc9a8a7cd1684c891793cfdd47b7992",
+    "text": "输入存活概率序列与非负风险序列，经裂项求和不等式推导，输出第n步存活概率下界由初始概率减去累积风险严格控制（无需独立性假设）。"
+  },
+  "CGB.SurvivalBounds.decay_eventually_lt": {
+    "source_sha256": "6cd1c4b5fb7d28b28eaa6a3eb6519ef3cbc9a8a7cd1684c891793cfdd47b7992",
+    "text": "输入几何衰减率与正阈值，经阿基米德性与几何级数分析，输出经过有限时间步后存活度量最终严格低于指定正阈值。"
+  },
+  "CGB.SurvivalBounds.expectedLifetime_strict_of_row_gap": {
+    "source_sha256": "6cd1c4b5fb7d28b28eaa6a3eb6519ef3cbc9a8a7cd1684c891793cfdd47b7992",
+    "text": "输入有限状态吸收马尔可夫链的行转移间隙，经预期寿命级数求和，输出在无不死吸收态的前提下个体的预期存活寿命严格有限。"
+  },
+  "CGB.SurvivalBounds.expected_step": {
+    "source_sha256": "6cd1c4b5fb7d28b28eaa6a3eb6519ef3cbc9a8a7cd1684c891793cfdd47b7992",
+    "text": "输入非负单步存活期望，经过单步期望算子递推，输出下一时刻预期存活度量由当前转移算子下界严格约束。"
+  },
+  "CGB.SurvivalBounds.finite_window_lifetime_transfer": {
+    "source_sha256": "6cd1c4b5fb7d28b28eaa6a3eb6519ef3cbc9a8a7cd1684c891793cfdd47b7992",
+    "text": "输入有限存活观测窗口与正耗散率，经过时间截断估计，输出窗口内的有限存活界可有效传递至全时域寿命上界。"
+  },
+  "CGB.SurvivalBounds.geometric_lower": {
+    "source_sha256": "6cd1c4b5fb7d28b28eaa6a3eb6519ef3cbc9a8a7cd1684c891793cfdd47b7992",
+    "text": "输入每步乘性保持率下界，经指数连乘归纳，输出总体存活概率保持不低于单步因子的几何幂次下界。"
+  },
+  "CGB.SurvivalBounds.geometric_tail_bound": {
+    "source_sha256": "6cd1c4b5fb7d28b28eaa6a3eb6519ef3cbc9a8a7cd1684c891793cfdd47b7992",
+    "text": "输入几何收缩转移过程，经尾部几何级数放缩，输出吸收态之外的残余概率尾部具有指数几何衰减上界。"
+  },
+  "CGB.SurvivalBounds.mean_contraction": {
+    "source_sha256": "6cd1c4b5fb7d28b28eaa6a3eb6519ef3cbc9a8a7cd1684c891793cfdd47b7992",
+    "text": "输入收缩转移算子与有界可观测量，经积分压缩映射求值，输出可观测量的期望值按严格小于1的比例单步收缩。"
+  },
+  "CGB.SurvivalBounds.mean_initial": {
+    "source_sha256": "6cd1c4b5fb7d28b28eaa6a3eb6519ef3cbc9a8a7cd1684c891793cfdd47b7992",
+    "text": "输入系统初始概率测度与评估函数，经期望定义展开，输出零时刻可观测量的期望值精确等于初始状态处的函数值。"
+  },
+  "CGB.SurvivalBounds.mean_retention_step": {
+    "source_sha256": "6cd1c4b5fb7d28b28eaa6a3eb6519ef3cbc9a8a7cd1684c891793cfdd47b7992",
+    "text": "输入单步乘性保持率与物理转移律，经过马尔可夫期望传递，输出后继步的均值保持率不低于前一步均值乘以下界因子。"
+  },
+  "CGB.SurvivalBounds.mean_risk_step": {
+    "source_sha256": "6cd1c4b5fb7d28b28eaa6a3eb6519ef3cbc9a8a7cd1684c891793cfdd47b7992",
+    "text": "输入单步可加风险余量与转移机模型，经局部加性风险传递，输出均值演化在无独立性假设下满足单步风险扣除下界。"
+  },
+  "CGB.SurvivalBounds.mean_unit_interval": {
+    "source_sha256": "6cd1c4b5fb7d28b28eaa6a3eb6519ef3cbc9a8a7cd1684c891793cfdd47b7992",
+    "text": "输入取值在单位区间[0, 1]内的可观测量与任意时间步，经过转移律非负归一化性质，输出该可观测量在任意时刻的期望值仍严格落在[0, 1]内。"
+  },
+  "CGB.SurvivalBounds.no_uniform_positive_lower": {
+    "source_sha256": "6cd1c4b5fb7d28b28eaa6a3eb6519ef3cbc9a8a7cd1684c891793cfdd47b7992",
+    "text": "输入单步具有一致不可逆耗散损失的衰减序列，经反证法推导，输出该序列不可能存在全局一致为正的下确界下界。"
+  },
+  "CGB.SurvivalBounds.normal_cut_eventual_gap": {
+    "source_sha256": "6cd1c4b5fb7d28b28eaa6a3eb6519ef3cbc9a8a7cd1684c891793cfdd47b7992",
+    "text": "输入正常与截断两组转移机、初始状态及可观测量，经前缀风险预算对截断收缩的差分放大，输出在有限步后两过程的期望值差异必严格大于正间隙(1-δ)/2。"
+  },
+  "CGB.SurvivalBounds.prefix_gap_persists": {
+    "source_sha256": "6cd1c4b5fb7d28b28eaa6a3eb6519ef3cbc9a8a7cd1684c891793cfdd47b7992",
+    "text": "输入前缀阶段累积优势超出尾部允许总量的两过程，经后继积分放缩，输出该前缀优势在之后任意时间视界内持续保持。"
+  },
+  "CGB.SurvivalBounds.risk_budget_uniform_lower": {
+    "source_sha256": "6cd1c4b5fb7d28b28eaa6a3eb6519ef3cbc9a8a7cd1684c891793cfdd47b7992",
+    "text": "输入具有累积有界风险预算δ的单步风险序列，经求和放缩，输出系统在所有时间步上的存活概率全局一致不低于1 - δ。"
+  },
+  "CGB.Unified.balanced_allocation_contract": {
+    "source_sha256": "d38e6bc16c96fa1323e7280801b0d5e56f4eb5f14d35b959b8c7528d84da1370",
+    "text": "输入交换比例参数p∈[0, 1]，经双预算可行集检验，输出平衡分配矩阵满足非负性、列预算与行预算，且集中收益不超过2。"
+  },
+  "CGB.Unified.balanced_allocation_has_relation": {
+    "source_sha256": "d38e6bc16c96fa1323e7280801b0d5e56f4eb5f14d35b959b8c7528d84da1370",
+    "text": "输入非对称分配参数p≠1/2，经双向差分检验，输出平衡分配矩阵满足非平凡两两关系载体条件。"
+  },
+  "CGB.Unified.balanced_allocation_interaction": {
+    "source_sha256": "d38e6bc16c96fa1323e7280801b0d5e56f4eb5f14d35b959b8c7528d84da1370",
+    "text": "输入参数p，经矩阵相互作用泛函求值，输出相互作用量精确等于4*p - 2。"
+  },
+  "CGB.Unified.balanced_col_budget": {
+    "source_sha256": "d38e6bc16c96fa1323e7280801b0d5e56f4eb5f14d35b959b8c7528d84da1370",
+    "text": "输入平衡分配矩阵，经列向求和计算，输出每列分配总和精确守恒为1。"
+  },
+  "CGB.Unified.balanced_max_differentiates": {
+    "source_sha256": "d38e6bc16c96fa1323e7280801b0d5e56f4eb5f14d35b959b8c7528d84da1370",
+    "text": "输入达到双预算极值收益2的分配矩阵，经两行极值比较，输出两行分别完全独占不同方向实现完全分化。"
+  },
+  "CGB.Unified.balanced_nonneg": {
+    "source_sha256": "d38e6bc16c96fa1323e7280801b0d5e56f4eb5f14d35b959b8c7528d84da1370",
+    "text": "输入落在单位区间[0, 1]内的交换参数p，经元素符号检验，输出平衡分配矩阵各元素非负。"
+  },
+  "CGB.Unified.balanced_row_budget": {
+    "source_sha256": "d38e6bc16c96fa1323e7280801b0d5e56f4eb5f14d35b959b8c7528d84da1370",
+    "text": "输入平衡分配矩阵，经行向求和计算，输出每行分配总和精确守恒为1。"
+  },
+  "CGB.Unified.bernoulli_expected_brier_calibrated": {
+    "source_sha256": "d38e6bc16c96fa1323e7280801b0d5e56f4eb5f14d35b959b8c7528d84da1370",
+    "text": "输入预测概率p与目标概率q，经Brier得分期望展开，输出在自校准预测点p=q处期望Brier得分取得全局最大值。"
+  },
+  "CGB.Unified.bernoulli_expected_brier_gap": {
+    "source_sha256": "d38e6bc16c96fa1323e7280801b0d5e56f4eb5f14d35b959b8c7528d84da1370",
+    "text": "输入预测概率p与目标概率q，经平方误差分解，输出期望得分与校准得分之差严格等于平方差距-(p - q)²。"
+  },
+  "CGB.Unified.bernoulli_prediction_error_expectation": {
+    "source_sha256": "d38e6bc16c96fa1323e7280801b0d5e56f4eb5f14d35b959b8c7528d84da1370",
+    "text": "输入预测概率p与目标分布q，经伯努利线性期望展开，输出单步预测误差的无偏期望精确等于真实概率与预测概率之差q - p。"
+  },
+  "CGB.Unified.brier_score_is_not_outcome_prediction_error": {
+    "source_sha256": "d38e6bc16c96fa1323e7280801b0d5e56f4eb5f14d35b959b8c7528d84da1370",
+    "text": "输入中性预测p=1/2与结果0，经代数比较，输出Brier得分计算与线性预测误差严格不等（证明二者非等价）。"
+  },
+  "CGB.Unified.build_has_competition_and_differentiation": {
+    "source_sha256": "d38e6bc16c96fa1323e7280801b0d5e56f4eb5f14d35b959b8c7528d84da1370",
+    "text": "输入构建的多柱优化器架构，经资源与方向分配分析，输出系统同时满足行向与列向竞争与特化分化条件。"
+  },
+  "CGB.Unified.build_history_balance": {
+    "source_sha256": "d38e6bc16c96fa1323e7280801b0d5e56f4eb5f14d35b959b8c7528d84da1370",
+    "text": "输入带类型的载体状态，经裂项级数平衡分析，输出历史痕迹满足守恒平衡方程。"
+  },
+  "CGB.Unified.build_history_is_geometric": {
+    "source_sha256": "d38e6bc16c96fa1323e7280801b0d5e56f4eb5f14d35b959b8c7528d84da1370",
+    "text": "输入两状态转移率与初态，经差分方程求解，输出保留的历史状态精确等于由两状态参数生成的几何衰减轨迹。"
+  },
+  "CGB.Unified.build_is_cgb_candidate": {
+    "source_sha256": "d38e6bc16c96fa1323e7280801b0d5e56f4eb5f14d35b959b8c7528d84da1370",
+    "text": "输入复合关系矩阵与增益调节算子，经准入谓词核算，输出构建的优化器候选满足CGB准入公理。"
+  },
+  "CGB.Unified.build_latch_holds_and_releases": {
+    "source_sha256": "d38e6bc16c96fa1323e7280801b0d5e56f4eb5f14d35b959b8c7528d84da1370",
+    "text": "输入阈值判定逻辑与反向证据序列，经双稳态动力学求解，输出锁存在短程反向证据下保持，并在累积证据突破阈值后快速释放。"
+  },
+  "CGB.Unified.build_mechanical_admission": {
+    "source_sha256": "d38e6bc16c96fa1323e7280801b0d5e56f4eb5f14d35b959b8c7528d84da1370",
+    "text": "输入关系载体、竞争结构与历史追踪，经复合机械准入规约，输出系统整体通过机械物理准入审计。"
+  },
+  "CGB.Unified.build_modulation_stays_in_band": {
+    "source_sha256": "d38e6bc16c96fa1323e7280801b0d5e56f4eb5f14d35b959b8c7528d84da1370",
+    "text": "输入结果门控与死区范围，经非线性饱和截断分析，输出调制信号在死区外保持且全局稳定在置信带宽之内。"
+  },
+  "CGB.Unified.calibrated_evidence_penalty_is_square": {
+    "source_sha256": "d38e6bc16c96fa1323e7280801b0d5e56f4eb5f14d35b959b8c7528d84da1370",
+    "text": "输入预测概率与真实概率，经期望差分展开，输出校准惩罚量精确等于二者概率偏差的二次方(p - q)²。"
+  },
+  "CGB.Unified.centered_bernoulli_evidence_zero_mean": {
+    "source_sha256": "d38e6bc16c96fa1323e7280801b0d5e56f4eb5f14d35b959b8c7528d84da1370",
+    "text": "输入均值中心化的伯努利证据变量，经期望积分计算，输出中心化证据在真实分布下的数学期望恒等于0。"
+  },
+  "CGB.Unified.eligibility_gate_one_recovers": {
+    "source_sha256": "d38e6bc16c96fa1323e7280801b0d5e56f4eb5f14d35b959b8c7528d84da1370",
+    "text": "输入两状态速率与门控值1，经门控步进计算，输出当资格门控全开时状态更新精确复现标准两状态步进。"
+  },
+  "CGB.Unified.eligibility_gate_zero_holds": {
+    "source_sha256": "d38e6bc16c96fa1323e7280801b0d5e56f4eb5f14d35b959b8c7528d84da1370",
+    "text": "输入两状态速率与门控值0，经步进计算，输出当资格门控关闭时状态严格保持不变（零门控锁存）。"
+  },
+  "CGB.Unified.eligibility_gated_phase_stays_in_unit_interval": {
+    "source_sha256": "d38e6bc16c96fa1323e7280801b0d5e56f4eb5f14d35b959b8c7528d84da1370",
+    "text": "输入在[0, 1]内的两状态速率、初始相位与门控值，经凸组合放缩，输出门控后继相位依然严格保持在单位区间[0, 1]内。"
+  },
+  "CGB.Unified.eligibility_gated_signed_phase_stays_bounded": {
+    "source_sha256": "d38e6bc16c96fa1323e7280801b0d5e56f4eb5f14d35b959b8c7528d84da1370",
+    "text": "输入在[-1, 1]内的前序有符号相位、原始值与有效门控，经插值缩放，输出门控后的有符号相位严格有界于[-1, 1]。"
+  },
+  "CGB.Unified.eligibility_gated_signed_phase_zero_holds": {
+    "source_sha256": "d38e6bc16c96fa1323e7280801b0d5e56f4eb5f14d35b959b8c7528d84da1370",
+    "text": "输入前序相位与零门控，经插值求值，输出在门控为0时有符号相位严格等于前序状态。"
+  },
+  "CGB.Unified.eligibility_gated_transfer_is_conserved": {
+    "source_sha256": "d38e6bc16c96fa1323e7280801b0d5e56f4eb5f14d35b959b8c7528d84da1370",
+    "text": "输入源与目标相位转移量，经代数求和，输出门控转移后的源与目标总量精确守恒为1。"
+  },
+  "CGB.Unified.eligibility_gated_transfer_reads_phase": {
+    "source_sha256": "d38e6bc16c96fa1323e7280801b0d5e56f4eb5f14d35b959b8c7528d84da1370",
+    "text": "输入门控相位转移结构，经目标差分提取，输出目标增量严格精确等于声明的转移量amount。"
+  },
+  "CGB.Unified.ema_history_collision": {
+    "source_sha256": "d38e6bc16c96fa1323e7280801b0d5e56f4eb5f14d35b959b8c7528d84da1370",
+    "text": "输入EMA平滑系数与两组不同历史输入，经二阶多项式求值，输出两组非零不同历史序列生成完全相同的EMA一阶与二阶矩（证明有限阶EMA无法唯一区分高阶历史）。"
+  },
+  "CGB.Unified.fresh_outcome_measurement_unbiased": {
+    "source_sha256": "d38e6bc16c96fa1323e7280801b0d5e56f4eb5f14d35b959b8c7528d84da1370",
+    "text": "输入扰动项与对称零均值噪声，经两极扰动期望抵消，输出新鲜测量差分对真实目标导数无偏。"
+  },
+  "CGB.Unified.fresh_outcome_trust_stays_in_band": {
+    "source_sha256": "d38e6bc16c96fa1323e7280801b0d5e56f4eb5f14d35b959b8c7528d84da1370",
+    "text": "输入置信带宽因子γ、基准R及当前置信度，经门控限幅截断，输出后继置信度参数严格被夹在闭区间[R/γ, R*γ]内。"
+  },
+  "CGB.Unified.latch_phase_holds_before_release": {
+    "source_sha256": "d38e6bc16c96fa1323e7280801b0d5e56f4eb5f14d35b959b8c7528d84da1370",
+    "text": "输入释放阈值c与当前运行计数run < c，经资格门控求值，输出未达阈值前锁存相位严格保持前序值不变。"
+  },
+  "CGB.Unified.latch_phase_releases_at_threshold": {
+    "source_sha256": "d38e6bc16c96fa1323e7280801b0d5e56f4eb5f14d35b959b8c7528d84da1370",
+    "text": "输入运行步数达到阈值run ≥ c，经门控激活判定，输出锁存相位在达到阈值后正常释放并按输入信号更新。"
+  },
+  "CGB.Unified.phase_exchange_transfer_is_conserved": {
+    "source_sha256": "d38e6bc16c96fa1323e7280801b0d5e56f4eb5f14d35b959b8c7528d84da1370",
+    "text": "输入相位交换转移算子，经前后状态求和，输出转移前后的总相位质量严格守恒为1。"
+  },
+  "CGB.Unified.phase_exchange_transfer_reads_phase": {
+    "source_sha256": "d38e6bc16c96fa1323e7280801b0d5e56f4eb5f14d35b959b8c7528d84da1370",
+    "text": "输入相位交换转移结构，经后继与前序做差，输出目标节点相位净增量精确等于单步交换转移量。"
+  },
+  "CGB.Unified.phase_history_is_generated": {
+    "source_sha256": "d38e6bc16c96fa1323e7280801b0d5e56f4eb5f14d35b959b8c7528d84da1370",
+    "text": "输入非零速率和与时间步t，经一阶常系数差分方程解析求解，输出相位偏差随时间按(1 - kp - km)^t几何幂次指数收敛。"
+  },
+  "CGB.Unified.phase_history_stays_in_unit_interval": {
+    "source_sha256": "d38e6bc16c96fa1323e7280801b0d5e56f4eb5f14d35b959b8c7528d84da1370",
+    "text": "输入各合法速率参数与初态，经数学归纳法推演，输出相位在任意离散时间步均严格保持在单位区间[0, 1]内。"
+  },
+  "CGB.Unified.phase_relation_has_relation": {
+    "source_sha256": "d38e6bc16c96fa1323e7280801b0d5e56f4eb5f14d35b959b8c7528d84da1370",
+    "text": "输入非零增益κ与非中心相位h≠1/2，经差分检验，输出相位关系矩阵满足两两反对称非平凡关系载体条件。"
+  },
+  "CGB.Unified.phase_relation_interaction": {
+    "source_sha256": "d38e6bc16c96fa1323e7280801b0d5e56f4eb5f14d35b959b8c7528d84da1370",
+    "text": "输入增益κ与相位h，经相互作用泛函求值，输出相位相互作用量精确等于κ * (2 * h - 1)。"
+  },
+  "CGB.Unified.phase_step_stays_in_unit_interval": {
+    "source_sha256": "d38e6bc16c96fa1323e7280801b0d5e56f4eb5f14d35b959b8c7528d84da1370",
+    "text": "输入各合法参数，经单步凸组合检验，输出单步两状态步进后的相位严格落在单位区间[0, 1]内。"
+  },
+  "CGB.Unified.real_transfer_target_readout": {
+    "source_sha256": "d38e6bc16c96fa1323e7280801b0d5e56f4eb5f14d35b959b8c7528d84da1370",
+    "text": "输入实数守恒转移记录，经目标增量提取，输出转移后目标值减去转移前目标值严格等于转移量amount。"
+  },
+  "CGB.Unified.real_transfer_total": {
+    "source_sha256": "d38e6bc16c96fa1323e7280801b0d5e56f4eb5f14d35b959b8c7528d84da1370",
+    "text": "输入实数守恒转移算子，经全量代数求和，输出转移后两端总量与转移前两端总量严格守恒相等。"
+  },
+  "CGB.Unified.uniform_allocation_is_budgeted": {
+    "source_sha256": "d38e6bc16c96fa1323e7280801b0d5e56f4eb5f14d35b959b8c7528d84da1370",
+    "text": "输入均匀分配矩阵，经行列求和检验与反对称分析，输出均匀矩阵满足行列双预算但无法提供非平凡的两两特化关系。"
+  },
+  "_private.CGBAxioms.GenerationGraceMemory.0.CGB.GraceMemory.one_write_marginal": {
+    "source_sha256": "0ac95f13515d9f019ba5304d1fd5ad4fab6a040f5ccb60ff6d511cdd2c3e80c4",
+    "text": "输入步数与单步推进核，经环境积分分解，输出单步写入的联合记忆概率分解为第n步本体边际概率与当前感知转移核的乘积。"
+  },
+  "_private.CGBAxioms.GenerationGraceMemory.0.CGB.GraceMemory.policy_table": {
+    "source_sha256": "0ac95f13515d9f019ba5304d1fd5ad4fab6a040f5ccb60ff6d511cdd2c3e80c4",
+    "text": "输入离散细胞状态，经查表匹配，输出对应动作为0（A分支）、1（B分支）或2（其他非活动状态）。"
+  },
+  "_private.CGBAxioms.GenerationGraceMemory.0.CGB.GraceMemory.sum_cells": {
+    "source_sha256": "0ac95f13515d9f019ba5304d1fd5ad4fab6a040f5ccb60ff6d511cdd2c3e80c4",
+    "text": "输入细胞状态上的实值函数，经全空间有限枚举，输出全状态求和展开为真空态、搜索态及各分支状态函数值之和。"
+  },
+  "_private.CGBAxioms.GenerationGraceMemory.0.CGB.GraceMemory.sum_configs": {
+    "source_sha256": "0ac95f13515d9f019ba5304d1fd5ad4fab6a040f5ccb60ff6d511cdd2c3e80c4",
+    "text": "输入配置空间函数，经配置空间求和展开，输出其求和展开为真空、搜索与对应分支配对项之和。"
+  },
+  "_private.CGBAxioms.GenerationGraceMemory.0.CGB.GraceMemory.sum_env": {
+    "source_sha256": "0ac95f13515d9f019ba5304d1fd5ad4fab6a040f5ccb60ff6d511cdd2c3e80c4",
+    "text": "输入环境状态函数，经环境状态枚举，输出求和展开为环境各离散状态函数值之和。"
+  },
+  "_private.CGBAxioms.GenerationInformationProjection.0.CGB.InformationProjection.marginals_pos": {
+    "source_sha256": "7414c012529bbaa6e546ab07601d833823604ecc6129c0d4900834fc1eadf650",
+    "text": "输入正概率点处的非负测度，经分量边际求和，输出该点所在的两边缘边际和及总质量均严格大于零。"
+  },
+  "_private.CGBAxioms.GenerationInformationProjection.0.CGB.InformationProjection.project_sum": {
+    "source_sha256": "7414c012529bbaa6e546ab07601d833823604ecc6129c0d4900834fc1eadf650",
+    "text": "输入二元测度与投影函数，经求和与投影算子交换，输出边际求和后投影等价于先投影后边际求和。"
+  },
+  "_private.CGBAxioms.GenerationSelfProduction.0.CGB.SelfProduction.closed_region_law_zero": {
+    "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "text": "输入在某封闭区域内起始的有限状态机与外部不可达状态，经单步转移闭包归纳，输出外部状态在任意时间步的前向生成概率恒为零。"
+  },
+  "CGB.GDNLife.Process.externalInformation_nonneg": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入外部语言转移律，经互信息非负性检验，输出系统外部语言条件互信息恒非负。"
+  },
+  "CGB.GDNLife.Process.externallyUseful_improves": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入有用外部事件凭据，经因果响应分析，输出有用事件的发生能严格改善系统的外周适应度与预测增益。"
+  },
+  "CGB.GDNLife.Process.future_reserve_preserved_keeps_signature_distinction": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入保留的未来语言储备，经特征签名映射，输出保持的未来储备保证不同语言签名在演化中不可默默合并。"
+  },
+  "CGB.GDNLife.Process.future_reserve_recoverable_iff": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入未来状态区分，经耗散测度分析，输出未来区分度可无损恢复当且仅当该过程的所有离散签名均未发生耗散。"
+  },
+  "CGB.GDNLife.Process.loses_future_language_distinction_iff_not_preserved": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入两先前可区分的未来语言签名，经等价性证明，输出二者合并丧失区分度当且仅当未来储备未被有效保留。"
+  },
+  "CGB.GDNLife.Process.next_byte_improves": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入外部世界真实生成的下一字节，经自回归吸收步进，输出更新对世界真实下一字节的预测对数似然严格单调提升。"
+  },
+  "CGB.GDNLife.Process.recurrent_external_evidence_forces_activity": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入循环出现的外部证据序列与生存约束，经反证法推导，输出若策略最终退化为被动停滞，则无法循环摄取生存所需外部证据。"
+  },
+  "CGB.GDNLife.Process.recurrent_external_information_forces_activity": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入循环外部信息流与GDN物理模型，经信息论主动必要性定理，输出维持循环正信息摄入严格迫使系统必须维持主动干预策略。"
+  },
+  "CGB.GDNLife.Process.run_body_step": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入离散物理过程模型与时间步，经多步迭代推进，输出第n+1步的本体状态精确由前一步快照与到达包经finish算子生成。"
+  },
+  "CGB.GDNLife.Process.run_initial": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入离散运行过程，经初值提取，输出第0步联合状态精确等于本体与环境的初始状态元组。"
+  },
+  "CGB.GDNLife.Process.run_positive": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入正定初值的GDN离散过程与任意时间步，经数学归纳法推演，输出全轨迹上各时刻本体状态的精度恒严格为正。"
+  },
+  "CGB.GDNLife.Process.run_step": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入GDN过程与当前时间步，经联合转移核步进，输出第n+1步联合状态精确等于本体更新与环境演化的直和推进。"
+  },
+  "CGB.GDNLife.Process.scored_external_language_trajectory": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入实数GDN模型与外部语言流，经打分联合轨迹判定，输出存在满足条件语言级打分联合轨迹，且每步维持有效正预测增益。"
+  },
+  "CGB.GDNLife.Process.scored_joint_trajectory": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入连续实数GDN生命过程，经开流联合状态演化，输出全时域联合轨迹在无截断下严格满足条件打分与存活标准。"
+  },
+  "CGB.GDNLife.Process.self_not_externallyUseful": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入自身复制发出的语言字节，经信息论有用性判据，输出复制自身的自生字节绝不可能凭空转化为有价值的外部独立环境证据。"
+  },
+  "CGB.GDNLife.Process.self_speech_action_contrast_writes_body": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入发出不同自生语言字节的两个候选动作，经因果回馈写入，输出不同自生言语动作在本体中写入可区分的物理内部状态。"
+  },
+  "CGB.Generation.BodyCausalCarrier.merged_history_preserves_read_and_successor": {
+    "source_sha256": "7d8c6d1b14b719f9dfc87c507423cb8c211c2fb47217125c87e3fa3e45f6d1c8",
+    "text": "输入多柱物理介质载体对象，经历史合并状态等价性检验，输出在编码状态相同时保证目标读出严格一致，且对任意到达输入其后继推进状态依然严格相等。"
+  },
+  "CGB.Generation.BodyCausalCarrier.satisfies_causal_carrier_contract": {
+    "source_sha256": "7d8c6d1b14b719f9dfc87c507423cb8c211c2fb47217125c87e3fa3e45f6d1c8",
+    "text": "输入物理多柱因果载体，经载体算子抽象提升，输出存在一致的读出算子与推进算子，使编码物理状态精确复现历史依赖的读出与推进契约。"
+  },
+  "CGB.Generation.LocalColumnProjections.activity_unchanged_outside": {
+    "source_sha256": "7d8c6d1b14b719f9dfc87c507423cb8c211c2fb47217125c87e3fa3e45f6d1c8",
+    "text": "输入局部柱投影算子、介质动作与局部性公理P1b，经空间动作支持集分离分析，输出动作作用外部件的柱节点内部活动状态在动作施加后严格保持不变。"
+  },
+  "CGB.Generation.LocalColumnProjections.carrier_unchanged_outside": {
+    "source_sha256": "7d8c6d1b14b719f9dfc87c507423cb8c211c2fb47217125c87e3fa3e45f6d1c8",
+    "text": "输入局部柱投影算子、动作输入与局部性公理P1b，经局部载体支持分析，输出非动作作用范围外部件的底层物质载体在转移后严格不变。"
+  },
+  "CGB.Generation.LocalColumnProjections.contact_unchanged_outside": {
+    "source_sha256": "7d8c6d1b14b719f9dfc87c507423cb8c211c2fb47217125c87e3fa3e45f6d1c8",
+    "text": "输入局部柱投影算子、介质动作与公理P1b，经外周接触面隔离判定，输出不在动作作用区域内的柱节点接触面状态在系统动作后保持不变。"
+  },
+  "CGB.GDNLife.Process.ExternalLanguageLaw.information_nonneg": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "输入状态与动作索引的机会测度，经条件互信息非负性继承，输出各状态动作条件下的信息增益测度恒非负。"
+  },
+  "CGB.GDNLife.positive_teaching_alignment_is_local_ascent": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "Positive alignment with the exact future score is the minimal local ascent admission for a learned teaching signal. It does not mandate how the signal is represented; a concrete shared-body rule must establish the premise without preset transposed weights."
+  },
+  "CGB.GDNLife.value_future_teaching_direction_deriv": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "An endogenous teaching amplitude need not be a transpose of the forward path. The only admission condition for this immediate language path is its measurable alignment with the already-derived future score: scaling a local direction by `teaching` gives the corresponding directional derivative. This is deliberately an identity, not a claim that a particular circuit has learnt the amplitude or that delayed action credit is solved."
+  },
+  "CGB.Generation.reciprocal_iter_mismatch": {
+    "source_sha256": "9221268652acc9babc33535a2dd5f52fdb17dcc72f5a71c13f63900239ba37ad",
+    "text": "The mismatch is geometric even when the common local statistic changes at each event. Thus alignment does not require either contact to stop learning."
+  },
+  "CGB.Generation.reciprocal_shared_update_mismatch": {
+    "source_sha256": "9221268652acc9babc33535a2dd5f52fdb17dcc72f5a71c13f63900239ba37ad",
+    "text": "A matched reciprocal update contracts its splice mismatch by its release factor. No initial transpose relation is assumed."
+  },
+  "CGB.Generation.contact_response_saturated_increment_zero": {
+    "source_sha256": "75f2608faf933365a4bc946a0cf0feccfcab606af69901f874f043296e2a7145",
+    "text": "A bounded activity face carries no additional local contact evidence: as long as both responses remain saturated at `+1`, their difference is zero."
+  },
+  "CGB.Generation.contact_response_unsaturated_increment": {
+    "source_sha256": "75f2608faf933365a4bc946a0cf0feccfcab606af69901f874f043296e2a7145",
+    "text": "On one unsaturated response segment, participation is the exact local forward finite-difference factor of a contact-weight perturbation."
+  },
+  "CGB.Generation.contact_retention_bounds": {
+    "source_sha256": "9760acc0e033acdadd6d21e9081f95acea5b91d870e5123ccb9076c06cb851b3",
+    "text": "输入contact_retention_bounds形式化前提参量，经底层算子变换与代数化简，输出形式陈述所保证的严格等式或不变性结论。"
+  },
+  "CGB.Generation.contact_score_unsaturated_increment": {
+    "source_sha256": "75f2608faf933365a4bc946a0cf0feccfcab606af69901f874f043296e2a7145",
+    "text": "A score whose local read coefficient is `q` inherits both cases. This is the one-contact part of the next-byte forward eligibility before its language innovation is used as the third factor."
+  },
+  "CGB.Generation.full_shared_pool_blocks_admission": {
+    "source_sha256": "b7c973a581d59883e68023e7d34630d21450c91e407a9630bfdf44aea6606f4a",
+    "text": "Once a local bundle is full, no positive admission can add to any of its contacts. Only its release channel can change it."
+  },
+  "CGB.Generation.full_shared_pool_vector_blocks_admission": {
+    "source_sha256": "b7c973a581d59883e68023e7d34630d21450c91e407a9630bfdf44aea6606f4a",
+    "text": "输入full_shared_pool_vector_blocks_admission形式化前提参量，经底层算子变换与代数化简，输出形式陈述所保证的严格等式或不变性结论。"
+  },
+  "CGB.Generation.hardSat_eq_one": {
+    "source_sha256": "75f2608faf933365a4bc946a0cf0feccfcab606af69901f874f043296e2a7145",
+    "text": "输入hardSat_eq_one形式化前提参量，经底层算子变换与代数化简，输出形式陈述所保证的严格等式或不变性结论。"
+  },
+  "CGB.Generation.hardSat_eq_self": {
+    "source_sha256": "75f2608faf933365a4bc946a0cf0feccfcab606af69901f874f043296e2a7145",
+    "text": "输入hardSat_eq_self形式化前提参量，经底层算子变换与代数化简，输出形式陈述所保证的严格等式或不变性结论。"
+  },
+  "CGB.Generation.log_softmax_direction_deriv": {
+    "source_sha256": "5699c927679f0b1e3f14da1c7823bef46e8a59f768d4487e4b8feb00cc892290",
+    "text": "The log-softmax derivative for an arbitrary finite direction. G14b is the one-coordinate instance; a selected route may change all of its fixed support logits together."
+  },
+  "CGB.Generation.positive_demand_preserves_contact_distinction": {
+    "source_sha256": "9760acc0e033acdadd6d21e9081f95acea5b91d870e5123ccb9076c06cb851b3",
+    "text": "输入positive_demand_preserves_contact_distinction形式化前提参量，经底层算子变换与代数化简，输出形式陈述所保证的严格等式或不变性结论。"
+  },
+  "CGB.Generation.ranked_release_eq_inv_time": {
+    "source_sha256": "dcd6d7f8b8611236e82ee6f25dafaa6cc4e8867db3aa93ca5304cac039031b54",
+    "text": "A ranked release is exactly the reciprocal of its ranked relaxation time."
+  },
+  "CGB.Generation.ranked_time_succ": {
+    "source_sha256": "dcd6d7f8b8611236e82ee6f25dafaa6cc4e8867db3aa93ca5304cac039031b54",
+    "text": "Adjacent ranks have the geometric time-scale ratio used by `geometric_bank_covers`."
+  },
+  "CGB.Generation.reciprocal_contact_response_deriv": {
+    "source_sha256": "826ca3c0cd365026cbaa7e3c7383d052fe5f42f315445a2879a346a6bd383852",
+    "text": "The exact local forward response of one reciprocal contact. It is the pre/post eligibility product, derived from the actual contact read rather than stipulated as a biological analogy."
+  },
+  "CGB.Generation.reciprocal_contact_teaching_deriv": {
+    "source_sha256": "826ca3c0cd365026cbaa7e3c7383d052fe5f42f315445a2879a346a6bd383852",
+    "text": "Scaling a local response by a fresh boundary teaching signal preserves its identity as the exact directional derivative. This is the abstract three-factor form: pre × post × outcome."
+  },
+  "CGB.Generation.response_gated_contact_closed_holds": {
+    "source_sha256": "9760acc0e033acdadd6d21e9081f95acea5b91d870e5123ccb9076c06cb851b3",
+    "text": "A response gate closed at the source event leaves every coordinate of the existing shared contact reservoir unchanged."
+  },
+  "CGB.Generation.response_gated_contact_write_distinguishes": {
+    "source_sha256": "9760acc0e033acdadd6d21e9081f95acea5b91d870e5123ccb9076c06cb851b3",
+    "text": "If opening the existing shared exchange produces a nonzero local transfer, the S coordinate distinguishes it from a saturated (closed-gate) event. This is exactly the missing condition for a delayed reader to retain the local response distinction; no separate eligibility page is added."
+  },
+  "CGB.Generation.response_gated_vector_history_difference": {
+    "source_sha256": "9760acc0e033acdadd6d21e9081f95acea5b91d870e5123ccb9076c06cb851b3",
+    "text": "Equal external inputs alone do not guarantee equal injections: the free pool depends on each trajectory. This result explicitly requires equal actual injections as well as the shared retention schedule."
+  },
+  "CGB.Generation.response_gated_vector_history_expansion": {
+    "source_sha256": "9760acc0e033acdadd6d21e9081f95acea5b91d870e5123ccb9076c06cb851b3",
+    "text": "Every actual coordinate is its retained initial value plus its finitely many injections, each weighted by subsequent retention. The formula does not require the runtime to save or replay those injections."
+  },
+  "CGB.Generation.response_gated_vector_no_injection_retention": {
+    "source_sha256": "9760acc0e033acdadd6d21e9081f95acea5b91d870e5123ccb9076c06cb851b3",
+    "text": "With no new injection into this type during the interval, only the product of its actual coordinatewise retention acts on its initial content."
+  },
+  "CGB.Generation.response_gated_vector_nonzero_retention_distinguishes": {
+    "source_sha256": "9760acc0e033acdadd6d21e9081f95acea5b91d870e5123ccb9076c06cb851b3",
+    "text": "Nonzero retained product preserves an initial scalar distinction, not a claim that the complete old pre×gate vector can be decoded."
+  },
+  "CGB.Generation.response_gated_vector_source_difference": {
+    "source_sha256": "9760acc0e033acdadd6d21e9081f95acea5b91d870e5123ccb9076c06cb851b3",
+    "text": "Equal rank-release rates give a direct source-contrast recurrence inside one and the same reservoir; the common free pool is retained in the formula."
+  },
+  "CGB.Generation.response_gated_vector_zero_without_injection": {
+    "source_sha256": "9760acc0e033acdadd6d21e9081f95acea5b91d870e5123ccb9076c06cb851b3",
+    "text": "A type absent at birth cannot appear without an injection of that type."
+  },
+  "CGB.Generation.shared_contact_pool_free_nonneg": {
+    "source_sha256": "b7c973a581d59883e68023e7d34630d21450c91e407a9630bfdf44aea6606f4a",
+    "text": "输入shared_contact_pool_free_nonneg形式化前提参量，经底层算子变换与代数化简，输出形式陈述所保证的严格等式或不变性结论。"
+  },
+  "CGB.Generation.shared_contact_pool_total": {
+    "source_sha256": "b7c973a581d59883e68023e7d34630d21450c91e407a9630bfdf44aea6606f4a",
+    "text": "The whole contact bundle follows one two-state exchange. Coordinate shares may differ, but their sum can draw only from the same implicit pool."
+  },
+  "CGB.Generation.shared_contact_pool_vector_affine": {
+    "source_sha256": "9760acc0e033acdadd6d21e9081f95acea5b91d870e5123ccb9076c06cb851b3",
+    "text": "Exact connection of the retention/injection decomposition to the executable coordinatewise-release shared reservoir."
+  },
+  "CGB.Generation.shared_contact_pool_vector_conserves_total": {
+    "source_sha256": "b7c973a581d59883e68023e7d34630d21450c91e407a9630bfdf44aea6606f4a",
+    "text": "输入shared_contact_pool_vector_conserves_total形式化前提参量，经底层算子变换与代数化简，输出形式陈述所保证的严格等式或不变性结论。"
+  },
+  "CGB.Generation.shared_contact_pool_vector_constant_release": {
+    "source_sha256": "b7c973a581d59883e68023e7d34630d21450c91e407a9630bfdf44aea6606f4a",
+    "text": "Constant vector release recovers the original interface exactly."
+  },
+  "CGB.Generation.shared_contact_pool_vector_endpoint_agreement": {
+    "source_sha256": "b7c973a581d59883e68023e7d34630d21450c91e407a9630bfdf44aea6606f4a",
+    "text": "Endpoints applying the same inputs to the same shared state cannot write inconsistent copies of that edge's reservoir."
+  },
+  "CGB.Generation.shared_contact_pool_vector_nonneg": {
+    "source_sha256": "b7c973a581d59883e68023e7d34630d21450c91e407a9630bfdf44aea6606f4a",
+    "text": "输入shared_contact_pool_vector_nonneg形式化前提参量，经底层算子变换与代数化简，输出形式陈述所保证的严格等式或不变性结论。"
+  },
+  "CGB.Generation.shared_contact_pool_vector_total": {
+    "source_sha256": "b7c973a581d59883e68023e7d34630d21450c91e407a9630bfdf44aea6606f4a",
+    "text": "输入shared_contact_pool_vector_total形式化前提参量，经底层算子变换与代数化简，输出形式陈述所保证的严格等式或不变性结论。"
+  },
+  "CGB.Generation.shared_contact_pool_vector_total_le_one": {
+    "source_sha256": "b7c973a581d59883e68023e7d34630d21450c91e407a9630bfdf44aea6606f4a",
+    "text": "输入shared_contact_pool_vector_total_le_one形式化前提参量，经底层算子变换与代数化简，输出形式陈述所保证的严格等式或不变性结论。"
+  },
+  "CGB.Generation.shared_edge_response_gate_bounds": {
+    "source_sha256": "b7c973a581d59883e68023e7d34630d21450c91e407a9630bfdf44aea6606f4a",
+    "text": "输入shared_edge_response_gate_bounds形式化前提参量，经底层算子变换与代数化简，输出形式陈述所保证的严格等式或不变性结论。"
+  },
+  "CGB.Generation.shared_edge_response_gate_closed": {
+    "source_sha256": "b7c973a581d59883e68023e7d34630d21450c91e407a9630bfdf44aea6606f4a",
+    "text": "输入shared_edge_response_gate_closed形式化前提参量，经底层算子变换与代数化简，输出形式陈述所保证的严格等式或不变性结论。"
+  },
+  "CGB.Generation.shared_edge_response_gate_one": {
+    "source_sha256": "b7c973a581d59883e68023e7d34630d21450c91e407a9630bfdf44aea6606f4a",
+    "text": "输入shared_edge_response_gate_one形式化前提参量，经底层算子变换与代数化简，输出形式陈述所保证的严格等式或不变性结论。"
+  },
+  "CGB.Generation.shared_edge_response_gate_symmetric": {
+    "source_sha256": "b7c973a581d59883e68023e7d34630d21450c91e407a9630bfdf44aea6606f4a",
+    "text": "输入shared_edge_response_gate_symmetric形式化前提参量，经底层算子变换与代数化简，输出形式陈述所保证的严格等式或不变性结论。"
+  },
+  "CGB.Generation.shared_pool_closed_gate_holds": {
+    "source_sha256": "b7c973a581d59883e68023e7d34630d21450c91e407a9630bfdf44aea6606f4a",
+    "text": "When a local evidence gate is closed, the complete bundle holds exactly. This lets delayed evidence regulate the existing S carrier without advancing a separate trace or a global learning-rate state."
+  },
+  "CGB.Generation.shared_pool_marginal_admission_is_anti_dominant": {
+    "source_sha256": "b7c973a581d59883e68023e7d34630d21450c91e407a9630bfdf44aea6606f4a",
+    "text": "For a positive local admission gate, an already more occupied bundle has strictly less remaining marginal capacity. This is the local anti-dominance law required to prevent unlimited winner growth; it does not prescribe a global balancing scalar."
+  },
+  "CGB.Generation.shared_pool_vector_closed_gate_holds": {
+    "source_sha256": "b7c973a581d59883e68023e7d34630d21450c91e407a9630bfdf44aea6606f4a",
+    "text": "输入shared_pool_vector_closed_gate_holds形式化前提参量，经底层算子变换与代数化简，输出形式陈述所保证的严格等式或不变性结论。"
+  },
+  "CGB.Generation.softmax_direction_deriv": {
+    "source_sha256": "5699c927679f0b1e3f14da1c7823bef46e8a59f768d4487e4b8feb00cc892290",
+    "text": "Each selected route probability has the expected softmax response."
+  },
+  "CGB.Generation.softmax_read_direction_deriv": {
+    "source_sha256": "5699c927679f0b1e3f14da1c7823bef46e8a59f768d4487e4b8feb00cc892290",
+    "text": "A route read changes by the sum of its local, centered softmax responses. This is the exact receipt used by an immediately scored fixed-support route."
+  },
+  "_private.CGBAxioms.GenerationResponseGatedCarrier.0.CGB.Generation.affine_forward_history": {
+    "source_sha256": "9760acc0e033acdadd6d21e9081f95acea5b91d870e5123ccb9076c06cb851b3",
+    "text": "输入affine_forward_history形式化前提参量，经底层算子变换与代数化简，输出形式陈述所保证的严格等式或不变性结论。"
+  },
+  "CGB.GDNLife.Process.empirical_future_cross_entropy_congr": {
+    "source_sha256": "2babc8ee485ecc97ae48eac0866fa5cd6ea8bc50851f9ea07d287c00216eeb05",
+    "text": "If no actual re-entered continuation can tell two body states apart in language code length, the empirical future-value audit is equal. Unobserved possible continuations never enter this quantity."
+  },
+  "CGB.GDNLife.Process.future_cross_entropy_congr_on_positive_support": {
+    "source_sha256": "2babc8ee485ecc97ae48eac0866fa5cd6ea8bc50851f9ea07d287c00216eeb05",
+    "text": "A continuation of zero world-side recurrence has no effect on the future code-length audit. Therefore a distinction useful only under such a continuation creates no retention obligation."
+  },
+  "CGB.GDNLife.Process.observed_continuation_improvement_is_empirically_paid": {
+    "source_sha256": "2babc8ee485ecc97ae48eac0866fa5cd6ea8bc50851f9ea07d287c00216eeb05",
+    "text": "One strictly better re-entered continuation, with no worse observed continuation, strictly improves the empirical future language code length. Thus a stream can supply the retention signal by its own recurrence and prediction errors, without an external reward table."
+  },
+  "CGB.GDNLife.Process.positive_continuation_improvement_is_future_paid": {
+    "source_sha256": "2babc8ee485ecc97ae48eac0866fa5cd6ea8bc50851f9ea07d287c00216eeb05",
+    "text": "If a body change never worsens any declared future continuation and strictly improves one continuation that recurs with positive mass, it strictly improves expected future language code length. This makes the preservation value an information-theoretic quantity, rather than a hand-assigned reward."
+  },
+  "CGB.Generation.ContactPlasticity.allocation_normalization_cancels": {
+    "source_sha256": "99b7791844598bc1f73c3ee07da289f5a403a83f2b0fade18c56aed172bdab1a",
+    "text": "Positive total drive cancels between admission and normalized target. No assumption on the capacity divisor is needed for this algebraic identity."
+  },
+  "CGB.Generation.ContactPlasticity.allocation_pool_pre_post_coefficient": {
+    "source_sha256": "99b7791844598bc1f73c3ee07da289f5a403a83f2b0fade18c56aed172bdab1a",
+    "text": "Actual normalized allocation, allowing target and total admission to vary together. `capacity` is rank K, not the number of source-expanded coordinates. Only the selected source's drive is nonzero in the runtime instantiation."
+  },
+  "CGB.Generation.ContactPlasticity.endpoint_allocation_deriv": {
+    "source_sha256": "99b7791844598bc1f73c3ee07da289f5a403a83f2b0fade18c56aed172bdab1a",
+    "text": "Exact allocation response to one endpoint's local pre-weight perturbation; `pre` is fixed and the sigmoid supplies the current post-response factor."
+  },
+  "CGB.Generation.ContactPlasticity.endpoint_retention_deriv": {
+    "source_sha256": "99b7791844598bc1f73c3ee07da289f5a403a83f2b0fade18c56aed172bdab1a",
+    "text": "Exact mean-retention response at one perturbed endpoint. Unlike allocation, the sigmoid is applied before the two endpoints are averaged."
+  },
+  "CGB.Generation.ContactPlasticity.linear_contact_return": {
+    "source_sha256": "99b7791844598bc1f73c3ee07da289f5a403a83f2b0fade18c56aed172bdab1a",
+    "text": "Transposing a finite linear contact read returns exactly the same scalar contraction; the return is not an independently learned feedback matrix."
+  },
+  "CGB.Generation.ContactPlasticity.local_direction_self_nonneg": {
+    "source_sha256": "99b7791844598bc1f73c3ee07da289f5a403a83f2b0fade18c56aed172bdab1a",
+    "text": "A parameter direction contracted with itself is nonnegative. This concerns only the local proxy's own direction, not descent of a different CE objective."
+  },
+  "CGB.Generation.ContactPlasticity.local_potential_deriv": {
+    "source_sha256": "99b7791844598bc1f73c3ee07da289f5a403a83f2b0fade18c56aed172bdab1a",
+    "text": "Exact current-event derivative through the actual inflow and coordinatewise release. Old S, target, gate, lambda and eligibility are constant here; this is not the derivative of a state trajectory or of the current language CE."
+  },
+  "CGB.Generation.ContactPlasticity.local_potential_zero_eligibility": {
+    "source_sha256": "99b7791844598bc1f73c3ee07da289f5a403a83f2b0fade18c56aed172bdab1a",
+    "text": "Vanishing participation tags make the entire parameter-dependent proxy identically zero, not merely its value at a chosen parameter."
+  },
+  "CGB.Generation.ContactPlasticity.local_potential_zero_return": {
+    "source_sha256": "99b7791844598bc1f73c3ee07da289f5a403a83f2b0fade18c56aed172bdab1a",
+    "text": "A zero current local return also makes the stopped-coefficient proxy zero."
+  },
+  "CGB.Generation.ContactPlasticity.normalized_actual_pool": {
+    "source_sha256": "99b7791844598bc1f73c3ee07da289f5a403a83f2b0fade18c56aed172bdab1a",
+    "text": "The cancellation holds inside the actual shared reservoir, with its old occupation and coordinatewise release unchanged."
+  },
+  "CGB.Generation.ContactPlasticity.periodic_flux_return": {
+    "source_sha256": "99b7791844598bc1f73c3ee07da289f5a403a83f2b0fade18c56aed172bdab1a",
+    "text": "Incoming-minus-outgoing periodic flux has the next-minus-local adjoint. `next.symm` is the predecessor, so this covers any finite periodic geometry."
+  },
+  "CGB.Generation.ContactPlasticity.retention_pool_pre_post_coefficient": {
+    "source_sha256": "99b7791844598bc1f73c3ee07da289f5a403a83f2b0fade18c56aed172bdab1a",
+    "text": "The actual release is A*(1-retention), so a retention logit's response has a positive sign and is contracted with old S across all source coordinates. Equal per-rank endpoint logits across sources specialize this sum directly."
+  },
+  "CGB.Generation.ContactPlasticity.sigmoid_runtime_formula": {
+    "source_sha256": "99b7791844598bc1f73c3ee07da289f5a403a83f2b0fade18c56aed172bdab1a",
+    "text": "Mathlib's sigmoid is exactly the runtime logistic expression."
+  },
+  "CGB.Generation.ContactPlasticity.two_direction_flux_return": {
+    "source_sha256": "99b7791844598bc1f73c3ee07da289f5a403a83f2b0fade18c56aed172bdab1a",
+    "text": "Two transport directions add their local adjoints without retaining a transport trajectory or its past pullbacks."
+  },
+  "CGB.Generation.DynamicTeaching.stopped_teaching_complete_iff": {
+    "source_sha256": "0da60c6412e3a0feac14578277fccd8b84bc901e61c62acde85222552185ec5d",
+    "text": "A frozen-teaching local derivative equals the coupled derivative exactly when the omitted teaching-motion times current response is zero."
+  },
+  "CGB.Generation.DynamicTeaching.teaching_response_deriv": {
+    "source_sha256": "0da60c6412e3a0feac14578277fccd8b84bc901e61c62acde85222552185ec5d",
+    "text": "When boundary teaching and local contact response both vary, the derivative is teaching-motion times response plus teaching times local response; the latter alone is only a stopped-coefficient proxy."
+  },
+  "CGB.GDNLife.head_update_other_feature": {
+    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "text": "A G14 head update remains a rank-one change when read on a later feature. The complete effect of this *one known update* is recoverable from its boundary receipt (`innovation`, saved feature) and the later feature through one inner product. This does not supply the derivative of the later feature with respect to an earlier contact parameter; that separate causal factor is the open long-credit obligation."
+  },
+  "CGB.Generation.receipt_rate_in_unit_interval": {
+    "source_sha256": "b7c973a581d59883e68023e7d34630d21450c91e407a9630bfdf44aea6606f4a",
+    "text": "A nonnegative receipt produces a legal exchange rate, even when its raw magnitude is unbounded. This is the precise range premise needed to apply the shared-pool conservation and nonnegativity laws to the executable ``-expm1(-x)`` conversion."
   }
 }

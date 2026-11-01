@@ -90,6 +90,8 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationCascadeMemory.lean#L123)
 
+解释：A ranked release is exactly the reciprocal of its ranked relaxation time.
+
 源码说明：A ranked release is exactly the reciprocal of its ranked relaxation time.
 
 形式陈述：
@@ -101,6 +103,8 @@
 ## CGB.Generation.ranked_time_succ
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationCascadeMemory.lean#L130)
+
+解释：Adjacent ranks have the geometric time-scale ratio used by `geometric_bank_covers`.
 
 源码说明：Adjacent ranks have the geometric time-scale ratio used by `geometric_bank_covers`.
 

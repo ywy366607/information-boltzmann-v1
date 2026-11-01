@@ -152,6 +152,8 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L119)
 
+解释：输入单步状态推进函数、信用分配规则及初始状态下的两个不同动作，若两动作产生相同后继状态但目标信用不同，经确定性映射矛盾推导，输出确定性后继状态无法同时赋予不同延迟信用（证明延迟动作归因必然要求状态可分离）。
+
 源码说明：Delayed action credit needs a state distinction between alternatives whose later consequences require different credit. This does not require a separate action log: an existing action-induced body change, a self-produced utterance written into the same state, or a world-mediated state change may supply the needed distinction. If all are absent, no rule reading only the later state can recover which action occurred.
 
 形式陈述：

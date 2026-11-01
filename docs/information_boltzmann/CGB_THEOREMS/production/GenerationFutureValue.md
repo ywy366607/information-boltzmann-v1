@@ -10,6 +10,8 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationFutureValue.lean#L52)
 
+解释：A continuation of zero world-side recurrence has no effect on the future code-length audit. Therefore a distinction useful only under such a continuation creates no retention obligation.
+
 源码说明：A continuation of zero world-side recurrence has no effect on the future code-length audit. Therefore a distinction useful only under such a continuation creates no retention obligation.
 
 形式陈述：
@@ -29,6 +31,8 @@
 ## CGB.GDNLife.Process.positive_continuation_improvement_is_future_paid
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationFutureValue.lean#L71)
+
+解释：If a body change never worsens any declared future continuation and strictly improves one continuation that recurs with positive mass, it strictly improves expected future language code length. This makes the preservation value an information-theoretic quantity, rather than a hand-assigned reward.
 
 源码说明：If a body change never worsens any declared future continuation and strictly improves one continuation that recurs with positive mass, it strictly improves expected future language code length. This makes the preservation value an information-theoretic quantity, rather than a hand-assigned reward.
 
@@ -55,6 +59,8 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationFutureValue.lean#L109)
 
+解释：If no actual re-entered continuation can tell two body states apart in language code length, the empirical future-value audit is equal. Unobserved possible continuations never enter this quantity.
+
 源码说明：If no actual re-entered continuation can tell two body states apart in language code length, the empirical future-value audit is equal. Unobserved possible continuations never enter this quantity.
 
 形式陈述：
@@ -74,6 +80,8 @@
 ## CGB.GDNLife.Process.observed_continuation_improvement_is_empirically_paid
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationFutureValue.lean#L126)
+
+解释：One strictly better re-entered continuation, with no worse observed continuation, strictly improves the empirical future language code length. Thus a stream can supply the retention signal by its own recurrence and prediction errors, without an external reward table.
 
 源码说明：One strictly better re-entered continuation, with no worse observed continuation, strictly improves the empirical future language code length. Thus a stream can supply the retention signal by its own recurrence and prediction errors, without an external reward table.
 

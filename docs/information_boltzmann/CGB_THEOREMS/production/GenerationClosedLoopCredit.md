@@ -10,6 +10,8 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationClosedLoopCredit.lean#L43)
 
+解释：输入参数化策略、环境转移核与奖赏损失函数，经乘积求导法则，输出闭环目标函数的全导数严格分解为策略探索导数项与价值直接导数项之和。
+
 源码说明：Product rule for the shared policy/predictor, including direct score credit. No derivative of the objective is assumed: only component total derivatives.
 
 形式陈述：
@@ -26,6 +28,8 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationClosedLoopCredit.lean#L61)
 
+解释：输入概率归一化的参数化策略，经对全动作求和并交换求导次序，输出策略导数在全动作空间上的积分严格为零。
+
 源码说明：Differentiating normalization forces the policy tangents to sum to zero.
 
 形式陈述：
@@ -39,6 +43,8 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationClosedLoopCredit.lean#L72)
 
+解释：输入条件概率核、全空间积分为零的策略导数与常数基线，经双重求和展开，输出常数基线与策略导数的乘积在全空间期望值恒等于零。
+
 源码说明：A scalar baseline cancels against a normalized conditional outcome law. An action/outcome-dependent baseline cannot use this lemma: its conditional mean must instead be shown identical across actions (or cancellation proved).
 
 形式陈述：
@@ -51,6 +57,8 @@
 ## CGB.ClosedLoopCredit.objective_deriv_advantage
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationClosedLoopCredit.lean#L82)
+
+解释：输入参数化策略、环境核、目标值与任意标量基线函数，经优势重整化变换，输出闭环导数在标量基线减免下保持无偏，精确表示为优势加权的得分三因子项与直接得分导数项。
 
 源码说明：Three-factor advantage/score credit PLUS the complete direct score derivative. `baseline θ₀` may depend on θ, the conditioned body and the past. Only its current scalar value is used; this is not differentiation of a baseline-subtracted loss. Consequently no derivative premise for `baseline` is required.
 
@@ -74,6 +82,8 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationClosedLoopCredit.lean#L106)
 
+解释：输入可微的正值策略分布，经复合函数对数求导法则，输出策略对数概率对参数的导数严格等于策略导数与当前策略概率的比值（得分函数标准形式）。
+
 源码说明：For a positive policy, the ratio appearing above really is the log score.
 
 形式陈述：
@@ -87,6 +97,8 @@
 ## CGB.ClosedLoopCredit.missing_score_derivative_counterexample
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationClosedLoopCredit.lean#L114)
+
+解释：输入参数基线反例，经闭环目标导数计算，输出若仅计算策略得分项而忽略直接得分导数，则策略估计梯度为零而实际目标导数为一，证实必须引入三因子闭环直接梯度。
 
 源码说明：Singleton action/outcome, π=K=1, Rθ=θ: both laws are fixed and normalized; the policy-only estimator is zero while the actual objective derivative is one.
 
@@ -103,6 +115,8 @@
 ## CGB.ClosedLoopCredit.constant_likelihood_posterior
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationClosedLoopCredit.lean#L135)
+
+解释：输入归一化先验分布与严格正的常数似然函数，经贝叶斯后验概率归一化变换，输出后验分布严格等于原先验分布（证明常数似然不提供关于未知状态的新证据）。
 
 源码说明：Constant positive likelihood leaves a normalized prior unchanged. This is conditional on the current body/action: a pure command copy has no new evidence about an unknown world if its likelihood is independent of that unknown state. It does NOT exclude learning from reafference whose likelihood depends on an unknown body/world, or training a predictor to reproduce a known command.
 
