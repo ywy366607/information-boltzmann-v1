@@ -10457,6 +10457,31 @@
         "confidence": "D"
     },
     {
+        "id": "IB_RECIP_BOUNDARY_OWT_20261101",
+        "parent": "IB_CGB_VPATH_TEACH_20261101",
+        "layer": "experiment",
+        "direction": "deduction",
+        "status": "pruned",
+        "title": "Reciprocal language-boundary pairing does not validate the current S trace",
+        "claim": "A forward byte head and independently initialized byte-to-body boundary contact were updated with the same innovation-by-feature statistic and C-derived release. Their Frobenius mismatch contracted from 9.77 to 0.0 after 99,950 OWT bytes, yet the proposed S times demand direction had mean exact one-next-byte gradient cosine -0.0360, 46.3% positive dots, and did not exceed its byte-permutation null. Pairwise reciprocity alone therefore does not validate the current trace as a contact eligibility.",
+        "evidence": "A CUDA-Graph OWT warmup was followed by 512 detached two-event exact-gradient checks. The reverse boundary contact was independently initialized and learned only through the shared local statistic; no S/body update was applied.",
+        "artifacts": [
+            "results/published/cgb_column_reciprocal_boundary_alignment_owt_20261101.json"
+        ],
+        "next_action": "Derive the actual contact eligibility: next-score read support, local activity response including saturation, and neighbourhood overlap. Then test whether those factors are reconstructable from existing H/C/S; if not, prove the minimal distinguishable S refinement required rather than adding a history page.",
+        "invalidation": "This rejects this executable teaching direction, not the reciprocal-update theorem or a future self-assembled feedback path.",
+        "external_id": "IB_RECIP_BOUNDARY_OWT_20261101",
+        "source_status": "single_seed_real_owt_gradient_audit",
+        "motivation": "Separate contraction of a reciprocal boundary pair from end-to-end future-score alignment.",
+        "action": "Do not rerun or tune this candidate. Use it as the precise omission test for the successor derivation.",
+        "pruning_record": {
+            "reason": "The measured direction is anti-aligned on average and does not improve over its permutation null, despite exact reciprocal-pair contraction.",
+            "pruning_commit": "pending-commit",
+            "recovery_note": "Retain the OWT record; reconstruct the omitted local eligibility factors before proposing another update."
+        },
+        "confidence": "D"
+    },
+    {
         "id": "IB_CGB_VPATH_TEACH_20261101",
         "parent": "IB_CGB_COLUMN_G14_OWT_20261031",
         "layer": "experiment",

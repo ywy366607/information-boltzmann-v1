@@ -1,0 +1,102 @@
+{
+  "status": "reciprocal_boundary_contact_teaching_alignment_audit",
+  "claim_scope": "Real-OWT admission audit of a self-assembling boundary teaching contact against the exact one-next-byte S-to-H gradient.",
+  "not_claimed": [
+    "an online S/body update",
+    "pointwise positive alignment",
+    "delayed action credit",
+    "BPTT-free learning for all parameters",
+    "language capability",
+    "life closure"
+  ],
+  "mechanism": {
+    "forward": "readout feature-to-byte contact",
+    "feedback": "independently initialized byte-to-body contact",
+    "shared_statistic": "(arrived - predicted) outer old feature",
+    "shared_release": "head_step times old C demand at causal read route",
+    "new_persistent_state": false,
+    "contact_update_applied": false
+  },
+  "protocol": {
+    "warmup": "continuous real OWT reciprocal-boundary head plus exact direct C-value credit",
+    "warmup_metrics": {
+      "scored_bytes": 99950,
+      "special_tokens_elapsed_without_lexical_write": 50,
+      "bits_per_byte": 4.6495714713498275,
+      "mean_nll_nats": 3.222837356178089,
+      "seconds": 66.67200000000003,
+      "bytes_per_second": 1499.130069594432,
+      "progress": []
+    },
+    "audit_pairs_requested": 512,
+    "audit_pairs_nonzero": 512,
+    "zero_reference_pairs": 0,
+    "special_or_terminal_events": 0,
+    "pair_stride": 2
+  },
+  "alignment": {
+    "candidate": {
+      "mean_cosine": -0.03604032900747711,
+      "positive_dot_fraction": 0.462890625,
+      "mean_exact_normalized_dot": -0.001721749142403084
+    },
+    "permuted_boundary_null": {
+      "mean_cosine": -0.0074171958570445895,
+      "positive_dot_fraction": 0.45703125,
+      "mean_exact_normalized_dot": 7.710094634794107e-05,
+      "permutation_seed": 20261032,
+      "control": "same state, reciprocal pair, receipt and exact gradient; only learned reverse-boundary byte columns permuted"
+    }
+  },
+  "pair_contraction": {
+    "initial_frobenius_mismatch": 9.772331237792969,
+    "after_warmup_frobenius_mismatch": 0.0
+  },
+  "model": {
+    "runtime": "CGBColumnLanguageBody",
+    "d_model": 32,
+    "grid_shape": [
+      8,
+      8
+    ],
+    "active_columns": 8,
+    "contact_rank": 4,
+    "parameter_numbers": 41581,
+    "persistent_state_bytes_fp32": {
+      "H_activity": 8192,
+      "C_natural": 8192,
+      "C_precision": 256,
+      "C_causal_token": 8,
+      "S_participation": 8192,
+      "total": 24840
+    },
+    "device": "cuda",
+    "seed": 20261031
+  },
+  "source": {
+    "train": {
+      "source": "openwebtext",
+      "revision": "433fe0f44ed7894fea29c08b3202aa348ccc6369",
+      "split": "train",
+      "path": "data\\ib_owt_10000\\train.npy",
+      "tokens_available": 48145263,
+      "tokens_presented": 100000,
+      "manifest_sha256": "3614c380d4c72688ac8ccde42f32ea0655d16bec1ba0874a924fd777af904d2d",
+      "tokenizer_sha256": "e727da4afe06d37d6ffff7db05ab21f69c5be39253ee7b7f7ec759cadab69c1d",
+      "token_file_sha256": "2f227239bc63b89daf31956701d243a93f9dd46671702fff03763b33dc6db4fb",
+      "split_rule": "NFC_document_sha256_mod100_98_1_1"
+    },
+    "validation": {
+      "source": "openwebtext",
+      "revision": "433fe0f44ed7894fea29c08b3202aa348ccc6369",
+      "split": "validation",
+      "path": "data\\ib_owt_10000\\validation.npy",
+      "tokens_available": 468139,
+      "tokens_presented": 4096,
+      "manifest_sha256": "3614c380d4c72688ac8ccde42f32ea0655d16bec1ba0874a924fd777af904d2d",
+      "tokenizer_sha256": "e727da4afe06d37d6ffff7db05ab21f69c5be39253ee7b7f7ec759cadab69c1d",
+      "token_file_sha256": "60d41d3fdda8c1718ad1735693eda0dae2b23a0032c5e04a29aac9d0c6d35d8c",
+      "split_rule": "NFC_document_sha256_mod100_98_1_1"
+    }
+  }
+}
