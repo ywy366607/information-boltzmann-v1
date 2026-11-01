@@ -1,0 +1,103 @@
+{
+  "status": "causal_parameter_path_audit",
+  "claim_scope": "Exact short unroll used only to measure causal reachability from a detached OpenWebText state; no parameters were updated and this is not a BPTT-free learning rule.",
+  "not_claimed": [
+    "an online local learning rule",
+    "self-assembled teaching alignment",
+    "long-horizon credit",
+    "language capability"
+  ],
+  "result": {
+    "continuing_parameter_groups": 24,
+    "all_reached_within_horizon": true,
+    "earliest_score_horizon": {
+      "column_keys": 1,
+      "participation_scale_raw": 3,
+      "process_variance_raw": 2,
+      "byte_embedding.weight": 2,
+      "causal_address.weight": 1,
+      "event_value.weight": 2,
+      "dynamics_value.weight": 2,
+      "event_likelihood.weight": 2,
+      "event_likelihood.bias": 2,
+      "activity_carrier.weight": 2,
+      "readout.weight": 1,
+      "readout.bias": 1,
+      "neighbour_mix.weight": 2,
+      "contact_to_activity.weight": 2,
+      "activity_gain.weight": 2,
+      "activity_gain.bias": 2,
+      "activity_release.weight": 2,
+      "activity_release.bias": 2,
+      "edge_flow.weight": 2,
+      "edge_flow.bias": 2,
+      "edge_participation.weight": 3,
+      "edge_participation.bias": 3,
+      "participation_retain.weight": 3,
+      "participation_retain.bias": 3
+    },
+    "groups": {
+      "event_1": [
+        "column_keys",
+        "causal_address.weight",
+        "readout.weight",
+        "readout.bias"
+      ],
+      "event_3": [
+        "participation_scale_raw",
+        "edge_participation.weight",
+        "edge_participation.bias",
+        "participation_retain.weight",
+        "participation_retain.bias"
+      ],
+      "event_2": [
+        "process_variance_raw",
+        "byte_embedding.weight",
+        "event_value.weight",
+        "dynamics_value.weight",
+        "event_likelihood.weight",
+        "event_likelihood.bias",
+        "activity_carrier.weight",
+        "neighbour_mix.weight",
+        "contact_to_activity.weight",
+        "activity_gain.weight",
+        "activity_gain.bias",
+        "activity_release.weight",
+        "activity_release.bias",
+        "edge_flow.weight",
+        "edge_flow.bias"
+      ]
+    }
+  },
+  "model": {
+    "d_model": 32,
+    "grid_shape": [
+      8,
+      8
+    ],
+    "active_columns": 8,
+    "contact_rank": 4,
+    "parameter_numbers": 33389,
+    "persistent_state_bytes_fp32": {
+      "H_activity": 8192,
+      "C_natural": 8192,
+      "C_precision": 256,
+      "C_causal_token": 8,
+      "S_participation": 8192,
+      "total": 24840
+    }
+  },
+  "protocol": {
+    "warmup_events": 48,
+    "max_horizon": 3,
+    "state_history": "warmup state is detached before every measured horizon",
+    "parameter_write": false,
+    "seed": 20261101,
+    "device": "cuda"
+  },
+  "source": {
+    "path": "data\\ib_owt_10000\\train.npy",
+    "sha256": "2f227239bc63b89daf31956701d243a93f9dd46671702fff03763b33dc6db4fb",
+    "manifest_sha256": "3614c380d4c72688ac8ccde42f32ea0655d16bec1ba0874a924fd777af904d2d"
+  }
+}

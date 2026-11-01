@@ -10435,6 +10435,28 @@
         "confidence": "D"
     },
     {
+        "id": "IB_CGB_PARAMETER_PATHS_20261101",
+        "parent": "IB_CGB_VPATH_TEACH_20261101",
+        "layer": "algorithm",
+        "direction": "deduction",
+        "status": "partially_reusable",
+        "title": "Three-event causal coverage of continuing column parameters",
+        "claim": "After removing the two birth-only degrees of freedom, every one of the 24 continuing parameter groups in CGBColumnLanguageBody has a finite causal path to a future OpenWebText byte score from a detached persistent H/C/S state: four within one event, fifteen within two events, and five S-formation groups within three events. This is reachability only, not an implemented local learning rule.",
+        "evidence": "The published audit warms a real UTF-8 OpenWebText body for 48 events without gradients, detaches the full H/C/S state, then separately retains only each 1-3 event score path to measure exact nonzero parameter sensitivity. It writes no parameter. The continuing body has 33,389 parameters and 24,840 FP32 bytes of persistent H/C/S state.",
+        "artifacts": [
+            "information_boltzmann/core/cgb_column_body.py",
+            "scripts/audit_cgb_column_parameter_paths.py",
+            "results/published/cgb_column_parameter_paths_owt_20261101.json"
+        ],
+        "next_action": "Construct one common boundary teaching message and reconstruct the required one-, two-, and three-event local eligibility from H/C/S. Do not use the retained audit graph as an online update; admit each generated local direction against its exact future score.",
+        "invalidation": "Finite score reachability neither supplies a BPTT-free update law nor proves self-assembled feedback alignment, long delayed credit, language capability, or life closure.",
+        "external_id": "IB_CGB_PARAMETER_PATHS_20261101",
+        "source_status": "single_seed_real_owt_gradient_audit",
+        "motivation": "Replace the vague request that every parameter learn with a minimal causal-depth contract, while removing birth-only parameters that a continuous individual could never revise.",
+        "action": "Use the three depth classes as the sole eligibility design target; reject any proposed update that needs an additional persistent history page or silently retains longer BPTT.",
+        "confidence": "D"
+    },
+    {
         "id": "IB_CGB_VPATH_TEACH_20261101",
         "parent": "IB_CGB_COLUMN_G14_OWT_20261031",
         "layer": "experiment",

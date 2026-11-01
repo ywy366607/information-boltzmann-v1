@@ -131,7 +131,9 @@ class CGBColumnLanguageBody(nn.Module):
         # The causal address is independent of the value write.  This is the
         # separation required by `GDNLife.valuePerturb`: a value update may
         # not silently alter the next query/address path.
-        self.birth_query = nn.Parameter(torch.zeros(d_model))
+        # Before the first arrival no causal language distinction exists.
+        # A learned birth-only query could be trained only by restarting lives,
+        # so it is not part of a continuously learning organism.
         self.causal_address = nn.Embedding(byte_vocab, d_model)
         # `event_value` is the only online-plastic value path.  Dynamics and
         # confidence have their own maps, so a credit update cannot mutate an
@@ -164,7 +166,11 @@ class CGBColumnLanguageBody(nn.Module):
         # delays (GenerationCascadeMemory).
         self.participation_scale_raw = nn.Parameter(torch.tensor(0.0))
 
-        self.prior_precision_raw = nn.Parameter(torch.tensor(-2.0))
+        # Birth precision is an initial condition, not a continual plastic
+        # degree of freedom: a single non-resetting organism cannot revisit
+        # its birth to learn it.  Ongoing release is governed by the learned
+        # `process_variance_raw` below.
+        self.initial_precision = float(F.softplus(torch.tensor(-2.0)))
         self.process_variance_raw = nn.Parameter(torch.tensor(-3.0))
 
     @property
@@ -181,7 +187,7 @@ class CGBColumnLanguageBody(nn.Module):
             raise ValueError("batch must be positive")
         device = self.column_keys.device if device is None else device
         dtype = self.column_keys.dtype if dtype is None else dtype
-        prior = F.softplus(self.prior_precision_raw).to(device=device, dtype=dtype)
+        prior = torch.as_tensor(self.initial_precision, device=device, dtype=dtype)
         shape = (batch, self.rows, self.cols)
         return ColumnBodyState(
             activity=torch.zeros(*shape, self.d_model, device=device, dtype=dtype),
@@ -293,8 +299,8 @@ class CGBColumnLanguageBody(nn.Module):
         """Read the next causal query from existing C before the arrival."""
         has_causal_token = (state.causal_token >= 0).unsqueeze(-1)
         token = state.causal_token.clamp_min(0)
-        query = torch.where(has_causal_token, self.causal_address(token),
-                            self.birth_query.unsqueeze(0).expand(token.shape[0], -1))
+        query = self.causal_address(token)
+        query = query * has_causal_token.to(dtype=query.dtype)
         return self._route_from_query(query)
 
     def _value_eligibility_tensors(
